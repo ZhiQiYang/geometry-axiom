@@ -1,0 +1,172 @@
+{
+  "actor": "/root/race_review/hole_order_oracle_review",
+  "at": "2026-10-09T15:25:18.161485+00:00",
+  "source": {
+    "path": "<workspace-path>",
+    "sha256": "573f192f8f71108ded270f7a9aecb40af93cad30c37cdfa682d3a7df2659c8b4"
+  },
+  "verdict": "accepted-for-six-direct-Python-probes",
+  "scope": "Source review, pure AST binding fixtures and read-only live capture of this reviewer Python process only. No observer main, original gate, browser, product or service run.",
+  "checks": [
+    {
+      "check": "valid-exact-probe-node-chrome-chain-accepted",
+      "ok": true,
+      "bindingResult": {
+        "probe_python": [
+          102
+        ],
+        "driver_node": [
+          103
+        ],
+        "main_chrome": [
+          104
+        ]
+      }
+    },
+    {
+      "check": "original-forwarded-gate-argv-counterexample-rejected",
+      "ok": true,
+      "bindingResult": {
+        "probe_python": [],
+        "driver_node": [],
+        "main_chrome": []
+      }
+    },
+    {
+      "check": "exact-probe-argv-required",
+      "ok": true,
+      "bindingResult": {
+        "probe_python": [],
+        "driver_node": [],
+        "main_chrome": []
+      }
+    },
+    {
+      "check": "node-requires-exact-probe-parent",
+      "ok": true,
+      "bindingResult": {
+        "probe_python": [
+          102
+        ],
+        "driver_node": [],
+        "main_chrome": []
+      }
+    },
+    {
+      "check": "node-rejects-reused-python-parent-pid",
+      "ok": true,
+      "bindingResult": {
+        "probe_python": [
+          102
+        ],
+        "driver_node": [],
+        "main_chrome": []
+      }
+    },
+    {
+      "check": "chrome-requires-exact-driver-parent",
+      "ok": true,
+      "bindingResult": {
+        "probe_python": [
+          102
+        ],
+        "driver_node": [
+          103
+        ],
+        "main_chrome": []
+      }
+    },
+    {
+      "check": "chrome-rejects-reused-node-parent-pid",
+      "ok": true,
+      "bindingResult": {
+        "probe_python": [
+          102
+        ],
+        "driver_node": [
+          103
+        ],
+        "main_chrome": []
+      }
+    },
+    {
+      "check": "renderer-does-not-count-as-main-chrome",
+      "ok": true,
+      "bindingResult": {
+        "probe_python": [
+          102
+        ],
+        "driver_node": [
+          103
+        ],
+        "main_chrome": []
+      }
+    },
+    {
+      "check": "actual-inner-execution-pid-required",
+      "ok": true,
+      "bindingResult": {
+        "probe_python": [],
+        "driver_node": [],
+        "main_chrome": []
+      }
+    },
+    {
+      "check": "reviewer-self-fd-byte-capture-sanity",
+      "ok": true
+    },
+    {
+      "check": "metadata-relocation-review-remains-pass",
+      "ok": true
+    }
+  ],
+  "reviewerSelfCapture": {
+    "pid": 121835,
+    "parent": 121832,
+    "parentStartTicks": "982757",
+    "state": "R",
+    "startTicks": "982758",
+    "exe": "<python-runtime>/bin/python3.12",
+    "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+    "executableFileIdentity": {
+      "device": 27,
+      "inode": 9223372036854858618,
+      "size": 30894944,
+      "mtimeNs": 1788486252000000000,
+      "ctimeNs": 1788486252000000000
+    },
+    "argv": [
+      "python",
+      "-B",
+      "<workspace-path>"
+    ],
+    "cwd": "/workspace",
+    "observedAt": "2026-10-09T15:25:18.136883+00:00"
+  },
+  "resolvedOriginalFindings": [
+    "Exact inner execution PID, complete original argv and interpreter path required for actual probe Python.",
+    "Node and main Chrome bind direct parent PID plus process startTicks to the same probe interpreter chain.",
+    "Historical exec states retained by PID/startTicks/exe/argv rather than first PID sample only.",
+    "Executable fd hash is cached by device/inode/size/mtime/ctime and process/exe/argv rechecked.",
+    "Native stable comparison includes startTicks.",
+    "Observer/snapshot failures produce fatal exit-2 receipts and preserve existing inner original gate evidence."
+  ],
+  "remainingRecoverableLimitations": [
+    {
+      "severity": "medium",
+      "finding": "disk-vs-opened-fd inode mismatch uses assert, while polling catches only OSError/ValueError. A concurrent exec may therefore produce a recorded fatal observer failure rather than retrying that sample.",
+      "next": "Use ValueError for this transient identity mismatch; no change to probe or acceptance conditions."
+    },
+    {
+      "severity": "medium",
+      "finding": "Timeout cleanup uses TERM and bounded wait, with no final KILL or inventory of survivors. A client ignoring TERM may remain alive; cleanup error is recorded and result is exit 2, so it cannot yield green evidence.",
+      "next": "Bounded cleanup of verified owned PID/startTicks, with survivor identity inventory. Keep failure evidence; never stop service or unrelated processes."
+    }
+  ],
+  "acceptanceBoundary": "Original six commands must directly run their browser probe Python scripts, as parent confirmed. This direct-child rule does not cover run_*.py launch wrappers or Node Resume. New real runs still must pass original census and all live-role/source checks; static review is not product acceptance.",
+  "notVerified": [
+    "Real observer execution or any of the six product probe results.",
+    "Actual probe Python/driver Node/Chrome from a live product run.",
+    "Windows originals or golden comparison."
+  ]
+}

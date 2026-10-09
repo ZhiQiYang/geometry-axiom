@@ -1,0 +1,1317 @@
+{
+  "schema": "geometry-scoped-live-interpreter-observation/1",
+  "actor": "/root/race_review",
+  "started": "2026-10-09T15:50:12.340704+00:00",
+  "finished": "2026-10-09T15:50:23.346666+00:00",
+  "command": [
+    "<python-runtime>/bin/python",
+    "<original-evidence-root>/run_gate.py",
+    "--root",
+    "<workspace-path>",
+    "--url",
+    "http://127.0.0.1:19186/",
+    "--bridge",
+    "<isolated-test-directory>",
+    "--model-base",
+    "<isolated-test-directory>",
+    "--feedback-dir",
+    "<isolated-test-directory>",
+    "--output",
+    "<workspace-path>",
+    "--artifact-dir",
+    "<workspace-path>",
+    "--expected-cases",
+    "4",
+    "--timeout",
+    "900",
+    "--",
+    "<python-runtime>/bin/python",
+    "<original-evidence-root>/portable/card390/script.py",
+    "--url",
+    "http://127.0.0.1:19186/",
+    "--out",
+    "<workspace-path>",
+    "--root",
+    "<workspace-path>",
+    "--bridge",
+    "<isolated-test-directory>"
+  ],
+  "cwd": "<workspace-path>",
+  "fatalObserverError": null,
+  "expectedFullSHA": "243326b512896ace70e068f62c8f3d6397f6000d",
+  "probeCommand": [
+    "<python-runtime>/bin/python",
+    "<original-evidence-root>/portable/card390/script.py",
+    "--url",
+    "http://127.0.0.1:19186/",
+    "--out",
+    "<workspace-path>",
+    "--root",
+    "<workspace-path>",
+    "--bridge",
+    "<isolated-test-directory>"
+  ],
+  "innerExitCode": 0,
+  "exitCode": 0,
+  "before": {
+    "at": "2026-10-09T15:50:12.105742+00:00",
+    "fullSHA": "243326b512896ace70e068f62c8f3d6397f6000d",
+    "dirty": "",
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "545f021b8cbb26b6afaabde19b73fa82d30a8a138b99d8c721a35fb54f73999b",
+      "fresh": true,
+      "root": "<workspace-path>",
+      "pid": 132367,
+      "session": "a3952446781e45209ac81df31a31221e"
+    },
+    "configuredExecutables": {
+      "python": {
+        "path": "<python-runtime>/bin/python",
+        "resolved": "<python-runtime>/bin/python3.12",
+        "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+        "version": "Python 3.12.14"
+      },
+      "node": {
+        "path": "<node-runtime>/bin/node",
+        "resolved": "<node-runtime>/bin/node",
+        "sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12",
+        "version": "v24.19.0"
+      },
+      "chromeLauncher": {
+        "path": "/usr/bin/chromium",
+        "resolved": "/usr/bin/chromium",
+        "sha256": "2c8d32d29dc6781c35ae196ea83299d507ac88fc339301abe74672feda299779",
+        "version": "Chromium 151.0.7922.173 built on Debian GNU/Linux 13 (trixie)"
+      }
+    },
+    "actualServiceProcesses": [
+      {
+        "pid": 132367,
+        "parent": 132364,
+        "parentStartTicks": "1125415",
+        "state": "S",
+        "startTicks": "1125416",
+        "exe": "<python-runtime>/bin/python3.12",
+        "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+        "executableFileIdentity": {
+          "device": 27,
+          "inode": 9223372036854858618,
+          "size": 30894944,
+          "mtimeNs": 1788486252000000000,
+          "ctimeNs": 1788486252000000000
+        },
+        "argv": [
+          "<python-runtime>/bin/python",
+          "-u",
+          "<workspace-path>",
+          "19186"
+        ],
+        "cwd": "<workspace-path>",
+        "observedAt": "2026-10-09T15:50:12.317469+00:00"
+      },
+      {
+        "pid": 132390,
+        "parent": 132367,
+        "parentStartTicks": "1125416",
+        "state": "S",
+        "startTicks": "1126972",
+        "exe": "<isolated-test-directory>",
+        "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b",
+        "executableFileIdentity": {
+          "device": 33,
+          "inode": 297096,
+          "size": 566448,
+          "mtimeNs": 1791560955607590755,
+          "ctimeNs": 1791560955607602563
+        },
+        "argv": [
+          "<isolated-test-directory>"
+        ],
+        "cwd": "<workspace-path>",
+        "observedAt": "2026-10-09T15:50:12.317941+00:00"
+      }
+    ],
+    "nativeActualChildren": [
+      {
+        "pid": 132390,
+        "parent": 132367,
+        "parentStartTicks": "1125416",
+        "state": "S",
+        "startTicks": "1126972",
+        "exe": "<isolated-test-directory>",
+        "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b",
+        "executableFileIdentity": {
+          "device": 33,
+          "inode": 297096,
+          "size": 566448,
+          "mtimeNs": 1791560955607590755,
+          "ctimeNs": 1791560955607602563
+        },
+        "argv": [
+          "<isolated-test-directory>"
+        ],
+        "cwd": "<workspace-path>",
+        "observedAt": "2026-10-09T15:50:12.317941+00:00"
+      }
+    ],
+    "transientServiceProcessCaptureErrors": [],
+    "executionFiles": {
+      "<workspace-path>": "573f192f8f71108ded270f7a9aecb40af93cad30c37cdfa682d3a7df2659c8b4",
+      "<original-evidence-root>/run_gate.py": "c467822e22f619cc4b46e31f318dce8ad5b5980a7e6350671f6b65e289c71a8c",
+      "<python-runtime>/bin/python3.12": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+      "<python-runtime>/bin/dumppdf.py": "53f05a7f5edae06d3dbe8c44f434b70b625568c6afbbe92626189c1b517fa8aa",
+      "<python-runtime>/bin/pdf2txt.py": "ea0d3a4e590bc824f2104428bca10ae97d274a76b7ae60af1a46fa3416f7c1ee",
+      "<python-runtime>/bin/runxlrd.py": "4aea91a235eb82981f4af6e6a3304e1d6a54cfcc14fa496d49d471cab09923de",
+      "<python-runtime>/bin/vba_extract.py": "c0013dac942d09b0f3d37e1888af325111e8137a271e046ee0aac773698aeb74",
+      "<original-evidence-root>/portable/card390/script.py": "b81a9f25b08c581168e63f5d407a89c3afc386a160cb1dd1384dcd1cb1754a9c",
+      "<isolated-test-directory>|basename=bridge|originalKeySha256=f9ac99deaa92caaac25e27476650e6b03385394c2de4d07988820ca12fd5f9ff": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b",
+      "<isolated-test-directory>|basename=model-base.fingerprint.json|originalKeySha256=ca56d3288290dacecaddffc0f4da3b7ecdc77502941f3ace8cc3cccc50577efb": "bb3ed24616c6581375b9efbdf3d971ab6c9a0b38189f125ed42aacde6cb031e4",
+      "<isolated-test-directory>|basename=bridge.fingerprint.json|originalKeySha256=98b20b2e55b8cddfab9db8f74f3548458685011c445ccf6324cdaa971a7a8542": "62b1d145d4ad9695fad642c1de829d291f1b9fc31836b04a38a128c9a8d564dd",
+      "<isolated-test-directory>|basename=core.fingerprint.json|originalKeySha256=34e18b07f6505d3cb4f884254e97034c5203db1aaf30c291cce75a6436d52243": "820a313a2b6c749c6df4b3e881797a2a359508b61ea69d702578160baa6fb2e6"
+    },
+    "actualThisWrapper": {
+      "pid": 137781,
+      "parent": 132392,
+      "parentStartTicks": "1126996",
+      "state": "R",
+      "startTicks": "1132155",
+      "exe": "<python-runtime>/bin/python3.12",
+      "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+      "executableFileIdentity": {
+        "device": 27,
+        "inode": 9223372036854858618,
+        "size": 30894944,
+        "mtimeNs": 1788486252000000000,
+        "ctimeNs": 1788486252000000000
+      },
+      "argv": [
+        "<python-runtime>/bin/python",
+        "<workspace-path>",
+        "--root",
+        "<workspace-path>",
+        "--expected-head",
+        "243326b512896ace70e068f62c8f3d6397f6000d",
+        "--url",
+        "http://127.0.0.1:19186/",
+        "--bridge",
+        "<isolated-test-directory>",
+        "--model-base",
+        "<isolated-test-directory>",
+        "--feedback-dir",
+        "<isolated-test-directory>",
+        "--output",
+        "<workspace-path>",
+        "--artifact-dir",
+        "<workspace-path>",
+        "--expected-cases",
+        "4",
+        "--",
+        "<python-runtime>/bin/python",
+        "<original-evidence-root>/portable/card390/script.py",
+        "--url",
+        "http://127.0.0.1:19186/",
+        "--out",
+        "<workspace-path>",
+        "--root",
+        "<workspace-path>",
+        "--bridge",
+        "<isolated-test-directory>"
+      ],
+      "cwd": "<workspace-path>",
+      "observedAt": "2026-10-09T15:50:12.340582+00:00"
+    }
+  },
+  "after": {
+    "at": "2026-10-09T15:50:23.133015+00:00",
+    "fullSHA": "243326b512896ace70e068f62c8f3d6397f6000d",
+    "dirty": "",
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "545f021b8cbb26b6afaabde19b73fa82d30a8a138b99d8c721a35fb54f73999b",
+      "fresh": true,
+      "root": "<workspace-path>",
+      "pid": 132367,
+      "session": "a3952446781e45209ac81df31a31221e"
+    },
+    "configuredExecutables": {
+      "python": {
+        "path": "<python-runtime>/bin/python",
+        "resolved": "<python-runtime>/bin/python3.12",
+        "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+        "version": "Python 3.12.14"
+      },
+      "node": {
+        "path": "<node-runtime>/bin/node",
+        "resolved": "<node-runtime>/bin/node",
+        "sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12",
+        "version": "v24.19.0"
+      },
+      "chromeLauncher": {
+        "path": "/usr/bin/chromium",
+        "resolved": "/usr/bin/chromium",
+        "sha256": "2c8d32d29dc6781c35ae196ea83299d507ac88fc339301abe74672feda299779",
+        "version": "Chromium 151.0.7922.173 built on Debian GNU/Linux 13 (trixie)"
+      }
+    },
+    "actualServiceProcesses": [
+      {
+        "pid": 132367,
+        "parent": 132364,
+        "parentStartTicks": "1125415",
+        "state": "S",
+        "startTicks": "1125416",
+        "exe": "<python-runtime>/bin/python3.12",
+        "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+        "executableFileIdentity": {
+          "device": 27,
+          "inode": 9223372036854858618,
+          "size": 30894944,
+          "mtimeNs": 1788486252000000000,
+          "ctimeNs": 1788486252000000000
+        },
+        "argv": [
+          "<python-runtime>/bin/python",
+          "-u",
+          "<workspace-path>",
+          "19186"
+        ],
+        "cwd": "<workspace-path>",
+        "observedAt": "2026-10-09T15:50:23.328505+00:00"
+      },
+      {
+        "pid": 132390,
+        "parent": 132367,
+        "parentStartTicks": "1125416",
+        "state": "S",
+        "startTicks": "1126972",
+        "exe": "<isolated-test-directory>",
+        "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b",
+        "executableFileIdentity": {
+          "device": 33,
+          "inode": 297096,
+          "size": 566448,
+          "mtimeNs": 1791560955607590755,
+          "ctimeNs": 1791560955607602563
+        },
+        "argv": [
+          "<isolated-test-directory>"
+        ],
+        "cwd": "<workspace-path>",
+        "observedAt": "2026-10-09T15:50:23.328669+00:00"
+      }
+    ],
+    "nativeActualChildren": [
+      {
+        "pid": 132390,
+        "parent": 132367,
+        "parentStartTicks": "1125416",
+        "state": "S",
+        "startTicks": "1126972",
+        "exe": "<isolated-test-directory>",
+        "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b",
+        "executableFileIdentity": {
+          "device": 33,
+          "inode": 297096,
+          "size": 566448,
+          "mtimeNs": 1791560955607590755,
+          "ctimeNs": 1791560955607602563
+        },
+        "argv": [
+          "<isolated-test-directory>"
+        ],
+        "cwd": "<workspace-path>",
+        "observedAt": "2026-10-09T15:50:23.328669+00:00"
+      }
+    ],
+    "transientServiceProcessCaptureErrors": [],
+    "executionFiles": {
+      "<workspace-path>": "573f192f8f71108ded270f7a9aecb40af93cad30c37cdfa682d3a7df2659c8b4",
+      "<original-evidence-root>/run_gate.py": "c467822e22f619cc4b46e31f318dce8ad5b5980a7e6350671f6b65e289c71a8c",
+      "<python-runtime>/bin/python3.12": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+      "<python-runtime>/bin/dumppdf.py": "53f05a7f5edae06d3dbe8c44f434b70b625568c6afbbe92626189c1b517fa8aa",
+      "<python-runtime>/bin/pdf2txt.py": "ea0d3a4e590bc824f2104428bca10ae97d274a76b7ae60af1a46fa3416f7c1ee",
+      "<python-runtime>/bin/runxlrd.py": "4aea91a235eb82981f4af6e6a3304e1d6a54cfcc14fa496d49d471cab09923de",
+      "<python-runtime>/bin/vba_extract.py": "c0013dac942d09b0f3d37e1888af325111e8137a271e046ee0aac773698aeb74",
+      "<original-evidence-root>/portable/card390/script.py": "b81a9f25b08c581168e63f5d407a89c3afc386a160cb1dd1384dcd1cb1754a9c",
+      "<isolated-test-directory>|basename=bridge|originalKeySha256=f9ac99deaa92caaac25e27476650e6b03385394c2de4d07988820ca12fd5f9ff": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b",
+      "<isolated-test-directory>|basename=model-base.fingerprint.json|originalKeySha256=ca56d3288290dacecaddffc0f4da3b7ecdc77502941f3ace8cc3cccc50577efb": "bb3ed24616c6581375b9efbdf3d971ab6c9a0b38189f125ed42aacde6cb031e4",
+      "<isolated-test-directory>|basename=bridge.fingerprint.json|originalKeySha256=98b20b2e55b8cddfab9db8f74f3548458685011c445ccf6324cdaa971a7a8542": "62b1d145d4ad9695fad642c1de829d291f1b9fc31836b04a38a128c9a8d564dd",
+      "<isolated-test-directory>|basename=core.fingerprint.json|originalKeySha256=34e18b07f6505d3cb4f884254e97034c5203db1aaf30c291cce75a6436d52243": "820a313a2b6c749c6df4b3e881797a2a359508b61ea69d702578160baa6fb2e6"
+    },
+    "actualThisWrapper": {
+      "pid": 137781,
+      "parent": 132392,
+      "parentStartTicks": "1126996",
+      "state": "R",
+      "startTicks": "1132155",
+      "exe": "<python-runtime>/bin/python3.12",
+      "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+      "executableFileIdentity": {
+        "device": 27,
+        "inode": 9223372036854858618,
+        "size": 30894944,
+        "mtimeNs": 1788486252000000000,
+        "ctimeNs": 1788486252000000000
+      },
+      "argv": [
+        "<python-runtime>/bin/python",
+        "<workspace-path>",
+        "--root",
+        "<workspace-path>",
+        "--expected-head",
+        "243326b512896ace70e068f62c8f3d6397f6000d",
+        "--url",
+        "http://127.0.0.1:19186/",
+        "--bridge",
+        "<isolated-test-directory>",
+        "--model-base",
+        "<isolated-test-directory>",
+        "--feedback-dir",
+        "<isolated-test-directory>",
+        "--output",
+        "<workspace-path>",
+        "--artifact-dir",
+        "<workspace-path>",
+        "--expected-cases",
+        "4",
+        "--",
+        "<python-runtime>/bin/python",
+        "<original-evidence-root>/portable/card390/script.py",
+        "--url",
+        "http://127.0.0.1:19186/",
+        "--out",
+        "<workspace-path>",
+        "--root",
+        "<workspace-path>",
+        "--bridge",
+        "<isolated-test-directory>"
+      ],
+      "cwd": "<workspace-path>",
+      "observedAt": "2026-10-09T15:50:23.346361+00:00"
+    }
+  },
+  "observedActualOwnedProbeProcesses": [
+    {
+      "pid": 137810,
+      "parent": 137781,
+      "parentStartTicks": "1132155",
+      "state": "R",
+      "startTicks": "1132182",
+      "exe": "<python-runtime>/bin/python3.12",
+      "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+      "executableFileIdentity": {
+        "device": 27,
+        "inode": 9223372036854858618,
+        "size": 30894944,
+        "mtimeNs": 1788486252000000000,
+        "ctimeNs": 1788486252000000000
+      },
+      "argv": [
+        "<python-runtime>/bin/python",
+        "<original-evidence-root>/run_gate.py",
+        "--root",
+        "<workspace-path>",
+        "--url",
+        "http://127.0.0.1:19186/",
+        "--bridge",
+        "<isolated-test-directory>",
+        "--model-base",
+        "<isolated-test-directory>",
+        "--feedback-dir",
+        "<isolated-test-directory>",
+        "--output",
+        "<workspace-path>",
+        "--artifact-dir",
+        "<workspace-path>",
+        "--expected-cases",
+        "4",
+        "--timeout",
+        "900",
+        "--",
+        "<python-runtime>/bin/python",
+        "<original-evidence-root>/portable/card390/script.py",
+        "--url",
+        "http://127.0.0.1:19186/",
+        "--out",
+        "<workspace-path>",
+        "--root",
+        "<workspace-path>",
+        "--bridge",
+        "<isolated-test-directory>"
+      ],
+      "cwd": "<workspace-path>",
+      "observedAt": "2026-10-09T15:50:12.345949+00:00"
+    },
+    {
+      "pid": 137826,
+      "parent": 137810,
+      "parentStartTicks": "1132182",
+      "state": "R",
+      "startTicks": "1132198",
+      "exe": "<python-runtime>/bin/python3.12",
+      "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+      "executableFileIdentity": {
+        "device": 27,
+        "inode": 9223372036854858618,
+        "size": 30894944,
+        "mtimeNs": 1788486252000000000,
+        "ctimeNs": 1788486252000000000
+      },
+      "argv": [
+        "<python-runtime>/bin/python",
+        "<original-evidence-root>/portable/card390/script.py",
+        "--url",
+        "http://127.0.0.1:19186/",
+        "--out",
+        "<workspace-path>",
+        "--root",
+        "<workspace-path>",
+        "--bridge",
+        "<isolated-test-directory>"
+      ],
+      "cwd": "<workspace-path>",
+      "observedAt": "2026-10-09T15:50:12.510791+00:00"
+    },
+    {
+      "pid": 137851,
+      "parent": 137826,
+      "parentStartTicks": "1132198",
+      "state": "R",
+      "startTicks": "1132211",
+      "exe": "<node-runtime>/bin/node",
+      "sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12",
+      "executableFileIdentity": {
+        "device": 27,
+        "inode": 9223372036854817388,
+        "size": 125989464,
+        "mtimeNs": 1788486252000000000,
+        "ctimeNs": 1788486252000000000
+      },
+      "argv": [
+        "<node-runtime>/bin/node",
+        "<python-runtime>/lib/python3.12/site-packages/playwright/driver/package/cli.js",
+        "run-driver"
+      ],
+      "cwd": "<workspace-path>",
+      "observedAt": "2026-10-09T15:50:12.739025+00:00"
+    },
+    {
+      "pid": 137866,
+      "parent": 137851,
+      "parentStartTicks": "1132211",
+      "state": "R",
+      "startTicks": "1132230",
+      "exe": "/usr/lib/chromium/chromium",
+      "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+      "executableFileIdentity": {
+        "device": 27,
+        "inode": 9223372036855114370,
+        "size": 321686360,
+        "mtimeNs": 1787420757000000000,
+        "ctimeNs": 1787420757000000000
+      },
+      "argv": [
+        "/usr/lib/chromium/chromium",
+        "--show-component-extension-options",
+        "--enable-gpu-rasterization",
+        "--no-default-browser-check",
+        "--disable-pings",
+        "--media-router=0",
+        "--enable-remote-extensions",
+        "--load-extension=",
+        "--disable-field-trial-config",
+        "--disable-background-networking",
+        "--disable-background-timer-throttling",
+        "--disable-backgrounding-occluded-windows",
+        "--disable-back-forward-cache",
+        "--disable-breakpad",
+        "--disable-client-side-phishing-detection",
+        "--disable-component-extensions-with-background-pages",
+        "--disable-component-update",
+        "--no-default-browser-check",
+        "--disable-default-apps",
+        "--disable-dev-shm-usage",
+        "--disable-edgeupdater",
+        "--disable-extensions",
+        "--disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion",
+        "--enable-features=CDPScreenshotNewSurface",
+        "--allow-pre-commit-input",
+        "--disable-hang-monitor",
+        "--disable-ipc-flooding-protection",
+        "--disable-popup-blocking",
+        "--disable-prompt-on-repost",
+        "--disable-renderer-backgrounding",
+        "--disable-updater-scheduler",
+        "--force-color-profile=srgb",
+        "--metrics-recording-only",
+        "--no-first-run",
+        "--password-store=basic",
+        "--use-mock-keychain",
+        "--no-service-autorun",
+        "--export-tagged-pdf",
+        "--disable-search-engine-choice-screen",
+        "--unsafely-disable-devtools-self-xss-warnings",
+        "--edge-skip-compat-layer-relaunch",
+        "--disable-infobars",
+        "--disable-search-engine-choice-screen",
+        "--disable-sync",
+        "--enable-unsafe-swiftshader",
+        "--headless",
+        "--hide-scrollbars",
+        "--mute-audio",
+        "--blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4",
+        "--user-data-dir=<isolated-browser-profile>",
+        "--remote-debugging-pipe",
+        "--no-startup-window"
+      ],
+      "cwd": "<workspace-path>",
+      "observedAt": "2026-10-09T15:50:13.008683+00:00"
+    },
+    {
+      "pid": 137888,
+      "parent": 137866,
+      "parentStartTicks": "1132230",
+      "state": "S",
+      "startTicks": "1132234",
+      "exe": "/usr/lib/chromium/chromium",
+      "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+      "executableFileIdentity": {
+        "device": 27,
+        "inode": 9223372036855114370,
+        "size": 321686360,
+        "mtimeNs": 1787420757000000000,
+        "ctimeNs": 1787420757000000000
+      },
+      "argv": [
+        "/usr/lib/chromium/chromium --type=zygote --no-zygote-sandbox --headless --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=<isolated-browser-profile> --change-stack-guard-on-fork=enable --no-first-run --ozone-platform=headless --ozone-override-screen-size=800,600 --use-angle=swiftshader-webgl"
+      ],
+      "cwd": "<workspace-path>",
+      "observedAt": "2026-10-09T15:50:13.066135+00:00"
+    },
+    {
+      "pid": 137889,
+      "parent": 137866,
+      "parentStartTicks": "1132230",
+      "state": "S",
+      "startTicks": "1132234",
+      "exe": "/usr/lib/chromium/chromium",
+      "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+      "executableFileIdentity": {
+        "device": 27,
+        "inode": 9223372036855114370,
+        "size": 321686360,
+        "mtimeNs": 1787420757000000000,
+        "ctimeNs": 1787420757000000000
+      },
+      "argv": [
+        "/usr/lib/chromium/chromium --type=zygote --headless --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=<isolated-browser-profile> --change-stack-guard-on-fork=enable --no-first-run --ozone-platform=headless --ozone-override-screen-size=800,600 --use-angle=swiftshader-webgl"
+      ],
+      "cwd": "/proc/137890/fdinfo",
+      "observedAt": "2026-10-09T15:50:13.066258+00:00"
+    },
+    {
+      "pid": 137891,
+      "parent": 137889,
+      "parentStartTicks": "1132234",
+      "state": "S",
+      "startTicks": "1132237",
+      "exe": "/usr/lib/chromium/chromium",
+      "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+      "executableFileIdentity": {
+        "device": 27,
+        "inode": 9223372036855114370,
+        "size": 321686360,
+        "mtimeNs": 1787420757000000000,
+        "ctimeNs": 1787420757000000000
+      },
+      "argv": [
+        "/usr/lib/chromium/chromium --type=zygote --headless --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=<isolated-browser-profile> --change-stack-guard-on-fork=enable --no-first-run --ozone-platform=headless --ozone-override-screen-size=800,600 --use-angle=swiftshader-webgl"
+      ],
+      "cwd": "/proc/137890/fdinfo",
+      "observedAt": "2026-10-09T15:50:13.066394+00:00"
+    },
+    {
+      "pid": 137912,
+      "parent": 137888,
+      "parentStartTicks": "1132234",
+      "state": "S",
+      "startTicks": "1132238",
+      "exe": "/usr/lib/chromium/chromium",
+      "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+      "executableFileIdentity": {
+        "device": 27,
+        "inode": 9223372036855114370,
+        "size": 321686360,
+        "mtimeNs": 1787420757000000000,
+        "ctimeNs": 1787420757000000000
+      },
+      "argv": [
+        "/usr/lib/chromium/chromium --type=gpu-process --disable-dev-shm-usage --disable-breakpad --enable-gpu-rasterization --headless --ozone-platform=headless --use-angle=swiftshader-webgl --enable-unsafe-swiftshader --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=<isolated-browser-profile> --change-stack-guard-on-fork=enable --gpu-preferences=YAAAAAAAAAAgAAAEAAAAAAAAAAAAAGAASAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAwAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAMAAAAAQAAAAAAAAAAAAAACAAAAAAAAAAIAAAAAAAAAA== --shared-files --field-trial-handle=3,i,17708767715274116095,12949577704897047474,262144 --enable-features=CDPScreenshotNewSurface --disable-features=AutoDeElevate,AvoidUnnecessaryBeforeUnloadCheckSync,BlockOriginHeaderModificationOnRedirect,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,OptimizationHints,PaintHolding,ThirdPartyStoragePartitioning,Translate,msEdgeUpdateLaunchServicesPreferredVersion,msForceBrowserSignIn --variations-seed-version --pseudonymization-salt-handle=7,i,38826448483232647,14608087528287200268,4 --trace-process-track-uuid=3190708988185955192"
+      ],
+      "cwd": "<workspace-path>",
+      "observedAt": "2026-10-09T15:50:13.066495+00:00"
+    },
+    {
+      "pid": 137914,
+      "parent": 137866,
+      "parentStartTicks": "1132230",
+      "state": "S",
+      "startTicks": "1132238",
+      "exe": "/usr/lib/chromium/chromium",
+      "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+      "executableFileIdentity": {
+        "device": 27,
+        "inode": 9223372036855114370,
+        "size": 321686360,
+        "mtimeNs": 1787420757000000000,
+        "ctimeNs": 1787420757000000000
+      },
+      "argv": [
+        "/usr/lib/chromium/chromium --type=utility --utility-sub-type=network.mojom.NetworkService --lang=en-US --service-sandbox-type=none --disable-dev-shm-usage --use-angle=swiftshader-webgl --mute-audio --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=<isolated-browser-profile> --change-stack-guard-on-fork=enable --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,17708767715274116095,12949577704897047474,262144 --enable-features=CDPScreenshotNewSurface --disable-features=AutoDeElevate,AvoidUnnecessaryBeforeUnloadCheckSync,BlockOriginHeaderModificationOnRedirect,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,OptimizationHints,PaintHolding,ThirdPartyStoragePartitioning,Translate,msEdgeUpdateLaunchServicesPreferredVersion,msForceBrowserSignIn --variations-seed-version --pseudonymization-salt-handle=7,i,38826448483232647,14608087528287200268,4 --trace-process-track-uuid=3190708989122997041"
+      ],
+      "cwd": "<workspace-path>",
+      "observedAt": "2026-10-09T15:50:13.066617+00:00"
+    },
+    {
+      "pid": 137928,
+      "parent": 137891,
+      "parentStartTicks": "1132237",
+      "state": "S",
+      "startTicks": "1132241",
+      "exe": "/usr/lib/chromium/chromium",
+      "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+      "executableFileIdentity": {
+        "device": 27,
+        "inode": 9223372036855114370,
+        "size": 321686360,
+        "mtimeNs": 1787420757000000000,
+        "ctimeNs": 1787420757000000000
+      },
+      "argv": [
+        "/usr/lib/chromium/chromium --type=utility --utility-sub-type=storage.mojom.StorageService --lang=en-US --service-sandbox-type=utility --disable-dev-shm-usage --use-angle=swiftshader-webgl --mute-audio --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=<isolated-browser-profile> --change-stack-guard-on-fork=enable --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,17708767715274116095,12949577704897047474,262144 --enable-features=CDPScreenshotNewSurface --disable-features=AutoDeElevate,AvoidUnnecessaryBeforeUnloadCheckSync,BlockOriginHeaderModificationOnRedirect,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,OptimizationHints,PaintHolding,ThirdPartyStoragePartitioning,Translate,msEdgeUpdateLaunchServicesPreferredVersion,msForceBrowserSignIn --variations-seed-version --pseudonymization-salt-handle=7,i,38826448483232647,14608087528287200268,4 --trace-process-track-uuid=3190708990060038890"
+      ],
+      "cwd": "/proc/137890/fdinfo",
+      "observedAt": "2026-10-09T15:50:13.066723+00:00"
+    },
+    {
+      "pid": 137959,
+      "parent": 137891,
+      "parentStartTicks": "1132237",
+      "state": "R",
+      "startTicks": "1132248",
+      "exe": "/usr/lib/chromium/chromium",
+      "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+      "executableFileIdentity": {
+        "device": 27,
+        "inode": 9223372036855114370,
+        "size": 321686360,
+        "mtimeNs": 1787420757000000000,
+        "ctimeNs": 1787420757000000000
+      },
+      "argv": [
+        "/usr/lib/chromium/chromium --type=renderer --top-chrome-webui --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=<isolated-browser-profile> --disable-print-preview --change-stack-guard-on-fork=enable --disable-dev-shm-usage --disable-back-forward-cache --disable-background-timer-throttling --disable-breakpad --force-color-profile=srgb --remote-debugging-pipe --allow-pre-commit-input --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=5 --time-ticks-at-unix-epoch=-1791549690512340 --launch-time-ticks=11322483709 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,17708767715274116095,12949577704897047474,262144 --enable-features=CDPScreenshotNewSurface --disable-features=AutoDeElevate,AvoidUnnecessaryBeforeUnloadCheckSync,BlockOriginHeaderModificationOnRedirect,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,OptimizationHints,PaintHolding,ThirdPartyStoragePartitioning,Translate,msEdgeUpdateLaunchServicesPreferredVersion,msForceBrowserSignIn --variations-seed-version --pseudonymization-salt-handle=7,i,38826448483232647,14608087528287200268,4 --trace-process-track-uuid=3190708990997080739"
+      ],
+      "cwd": "/proc/137890/fdinfo",
+      "observedAt": "2026-10-09T15:50:13.066833+00:00"
+    },
+    {
+      "pid": 137968,
+      "parent": 137891,
+      "parentStartTicks": "1132237",
+      "state": "S",
+      "startTicks": "1132249",
+      "exe": "/usr/lib/chromium/chromium",
+      "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+      "executableFileIdentity": {
+        "device": 27,
+        "inode": 9223372036855114370,
+        "size": 321686360,
+        "mtimeNs": 1787420757000000000,
+        "ctimeNs": 1787420757000000000
+      },
+      "argv": [
+        "/usr/lib/chromium/chromium --type=renderer --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=<isolated-browser-profile> --disable-print-preview --change-stack-guard-on-fork=enable --disable-dev-shm-usage --disable-back-forward-cache --disable-background-timer-throttling --disable-breakpad --force-color-profile=srgb --remote-debugging-pipe --allow-pre-commit-input --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=7 --time-ticks-at-unix-epoch=-1791549690512340 --launch-time-ticks=11322498376 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,17708767715274116095,12949577704897047474,262144 --enable-features=CDPScreenshotNewSurface --disable-features=AutoDeElevate,AvoidUnnecessaryBeforeUnloadCheckSync,BlockOriginHeaderModificationOnRedirect,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,OptimizationHints,PaintHolding,ThirdPartyStoragePartitioning,Translate,msEdgeUpdateLaunchServicesPreferredVersion,msForceBrowserSignIn --variations-seed-version --pseudonymization-salt-handle=7,i,38826448483232647,14608087528287200268,4 --trace-process-track-uuid=3190708992871164437"
+      ],
+      "cwd": "/proc/137890/fdinfo",
+      "observedAt": "2026-10-09T15:50:13.066936+00:00"
+    },
+    {
+      "pid": 137969,
+      "parent": 137891,
+      "parentStartTicks": "1132237",
+      "state": "S",
+      "startTicks": "1132250",
+      "exe": "/usr/lib/chromium/chromium",
+      "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+      "executableFileIdentity": {
+        "device": 27,
+        "inode": 9223372036855114370,
+        "size": 321686360,
+        "mtimeNs": 1787420757000000000,
+        "ctimeNs": 1787420757000000000
+      },
+      "argv": [
+        "/usr/lib/chromium/chromium --type=renderer --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=<isolated-browser-profile> --disable-print-preview --change-stack-guard-on-fork=enable --disable-dev-shm-usage --disable-back-forward-cache --disable-background-timer-throttling --disable-breakpad --force-color-profile=srgb --remote-debugging-pipe --allow-pre-commit-input --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=6 --time-ticks-at-unix-epoch=-1791549690512340 --launch-time-ticks=11322499985 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,17708767715274116095,12949577704897047474,262144 --enable-features=CDPScreenshotNewSurface --disable-features=AutoDeElevate,AvoidUnnecessaryBeforeUnloadCheckSync,BlockOriginHeaderModificationOnRedirect,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,OptimizationHints,PaintHolding,ThirdPartyStoragePartitioning,Translate,msEdgeUpdateLaunchServicesPreferredVersion,msForceBrowserSignIn --variations-seed-version --pseudonymization-salt-handle=7,i,38826448483232647,14608087528287200268,4 --trace-process-track-uuid=3190708991934122588"
+      ],
+      "cwd": "/proc/137890/fdinfo",
+      "observedAt": "2026-10-09T15:50:13.067034+00:00"
+    },
+    {
+      "pid": 138155,
+      "parent": 137891,
+      "parentStartTicks": "1132237",
+      "state": "R",
+      "startTicks": "1132497",
+      "exe": "/usr/lib/chromium/chromium",
+      "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+      "executableFileIdentity": {
+        "device": 27,
+        "inode": 9223372036855114370,
+        "size": 321686360,
+        "mtimeNs": 1787420757000000000,
+        "ctimeNs": 1787420757000000000
+      },
+      "argv": [
+        "/usr/lib/chromium/chromium --type=renderer --top-chrome-webui --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=<isolated-browser-profile> --disable-print-preview --change-stack-guard-on-fork=enable --disable-dev-shm-usage --disable-back-forward-cache --disable-background-timer-throttling --disable-breakpad --force-color-profile=srgb --remote-debugging-pipe --allow-pre-commit-input --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=8 --time-ticks-at-unix-epoch=-1791549690512340 --launch-time-ticks=11324972910 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,17708767715274116095,12949577704897047474,262144 --enable-features=CDPScreenshotNewSurface --disable-features=AutoDeElevate,AvoidUnnecessaryBeforeUnloadCheckSync,BlockOriginHeaderModificationOnRedirect,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,OptimizationHints,PaintHolding,ThirdPartyStoragePartitioning,Translate,msEdgeUpdateLaunchServicesPreferredVersion,msForceBrowserSignIn --variations-seed-version --pseudonymization-salt-handle=7,i,38826448483232647,14608087528287200268,4 --trace-process-track-uuid=3190708993808206286"
+      ],
+      "cwd": "/proc/137890/fdinfo",
+      "observedAt": "2026-10-09T15:50:15.547022+00:00"
+    },
+    {
+      "pid": 138164,
+      "parent": 137891,
+      "parentStartTicks": "1132237",
+      "state": "S",
+      "startTicks": "1132498",
+      "exe": "/usr/lib/chromium/chromium",
+      "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+      "executableFileIdentity": {
+        "device": 27,
+        "inode": 9223372036855114370,
+        "size": 321686360,
+        "mtimeNs": 1787420757000000000,
+        "ctimeNs": 1787420757000000000
+      },
+      "argv": [
+        "/usr/lib/chromium/chromium --type=renderer --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=<isolated-browser-profile> --disable-print-preview --change-stack-guard-on-fork=enable --disable-dev-shm-usage --disable-back-forward-cache --disable-background-timer-throttling --disable-breakpad --force-color-profile=srgb --remote-debugging-pipe --allow-pre-commit-input --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=10 --time-ticks-at-unix-epoch=-1791549690512340 --launch-time-ticks=11324983653 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,17708767715274116095,12949577704897047474,262144 --enable-features=CDPScreenshotNewSurface --disable-features=AutoDeElevate,AvoidUnnecessaryBeforeUnloadCheckSync,BlockOriginHeaderModificationOnRedirect,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,OptimizationHints,PaintHolding,ThirdPartyStoragePartitioning,Translate,msEdgeUpdateLaunchServicesPreferredVersion,msForceBrowserSignIn --variations-seed-version --pseudonymization-salt-handle=7,i,38826448483232647,14608087528287200268,4 --trace-process-track-uuid=3190708995682289984"
+      ],
+      "cwd": "/proc/137890/fdinfo",
+      "observedAt": "2026-10-09T15:50:15.547126+00:00"
+    },
+    {
+      "pid": 138165,
+      "parent": 137891,
+      "parentStartTicks": "1132237",
+      "state": "S",
+      "startTicks": "1132498",
+      "exe": "/usr/lib/chromium/chromium",
+      "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+      "executableFileIdentity": {
+        "device": 27,
+        "inode": 9223372036855114370,
+        "size": 321686360,
+        "mtimeNs": 1787420757000000000,
+        "ctimeNs": 1787420757000000000
+      },
+      "argv": [
+        "/usr/lib/chromium/chromium --type=renderer --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=<isolated-browser-profile> --disable-print-preview --change-stack-guard-on-fork=enable --disable-dev-shm-usage --disable-back-forward-cache --disable-background-timer-throttling --disable-breakpad --force-color-profile=srgb --remote-debugging-pipe --allow-pre-commit-input --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=9 --time-ticks-at-unix-epoch=-1791549690512340 --launch-time-ticks=11324985079 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,17708767715274116095,12949577704897047474,262144 --enable-features=CDPScreenshotNewSurface --disable-features=AutoDeElevate,AvoidUnnecessaryBeforeUnloadCheckSync,BlockOriginHeaderModificationOnRedirect,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,OptimizationHints,PaintHolding,ThirdPartyStoragePartitioning,Translate,msEdgeUpdateLaunchServicesPreferredVersion,msForceBrowserSignIn --variations-seed-version --pseudonymization-salt-handle=7,i,38826448483232647,14608087528287200268,4 --trace-process-track-uuid=3190708994745248135"
+      ],
+      "cwd": "/proc/137890/fdinfo",
+      "observedAt": "2026-10-09T15:50:15.547228+00:00"
+    },
+    {
+      "pid": 138341,
+      "parent": 137891,
+      "parentStartTicks": "1132237",
+      "state": "R",
+      "startTicks": "1132773",
+      "exe": "/usr/lib/chromium/chromium",
+      "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+      "executableFileIdentity": {
+        "device": 27,
+        "inode": 9223372036855114370,
+        "size": 321686360,
+        "mtimeNs": 1787420757000000000,
+        "ctimeNs": 1787420757000000000
+      },
+      "argv": [
+        "/usr/lib/chromium/chromium --type=renderer --top-chrome-webui --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=<isolated-browser-profile> --disable-print-preview --change-stack-guard-on-fork=enable --disable-dev-shm-usage --disable-back-forward-cache --disable-background-timer-throttling --disable-breakpad --force-color-profile=srgb --remote-debugging-pipe --allow-pre-commit-input --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=11 --time-ticks-at-unix-epoch=-1791549690512340 --launch-time-ticks=11327731427 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,17708767715274116095,12949577704897047474,262144 --enable-features=CDPScreenshotNewSurface --disable-features=AutoDeElevate,AvoidUnnecessaryBeforeUnloadCheckSync,BlockOriginHeaderModificationOnRedirect,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,OptimizationHints,PaintHolding,ThirdPartyStoragePartitioning,Translate,msEdgeUpdateLaunchServicesPreferredVersion,msForceBrowserSignIn --variations-seed-version --pseudonymization-salt-handle=7,i,38826448483232647,14608087528287200268,4 --trace-process-track-uuid=3190708996619331833"
+      ],
+      "cwd": "/proc/137890/fdinfo",
+      "observedAt": "2026-10-09T15:50:18.258432+00:00"
+    },
+    {
+      "pid": 138347,
+      "parent": 137891,
+      "parentStartTicks": "1132237",
+      "state": "S",
+      "startTicks": "1132774",
+      "exe": "/usr/lib/chromium/chromium",
+      "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+      "executableFileIdentity": {
+        "device": 27,
+        "inode": 9223372036855114370,
+        "size": 321686360,
+        "mtimeNs": 1787420757000000000,
+        "ctimeNs": 1787420757000000000
+      },
+      "argv": [
+        "/usr/lib/chromium/chromium --type=renderer --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=<isolated-browser-profile> --disable-print-preview --change-stack-guard-on-fork=enable --disable-dev-shm-usage --disable-back-forward-cache --disable-background-timer-throttling --disable-breakpad --force-color-profile=srgb --remote-debugging-pipe --allow-pre-commit-input --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=13 --time-ticks-at-unix-epoch=-1791549690512340 --launch-time-ticks=11327741654 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,17708767715274116095,12949577704897047474,262144 --enable-features=CDPScreenshotNewSurface --disable-features=AutoDeElevate,AvoidUnnecessaryBeforeUnloadCheckSync,BlockOriginHeaderModificationOnRedirect,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,OptimizationHints,PaintHolding,ThirdPartyStoragePartitioning,Translate,msEdgeUpdateLaunchServicesPreferredVersion,msForceBrowserSignIn --variations-seed-version --pseudonymization-salt-handle=7,i,38826448483232647,14608087528287200268,4 --trace-process-track-uuid=3190708998493415531"
+      ],
+      "cwd": "/proc/137890/fdinfo",
+      "observedAt": "2026-10-09T15:50:18.320274+00:00"
+    },
+    {
+      "pid": 138351,
+      "parent": 137891,
+      "parentStartTicks": "1132237",
+      "state": "R",
+      "startTicks": "1132774",
+      "exe": "/usr/lib/chromium/chromium",
+      "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+      "executableFileIdentity": {
+        "device": 27,
+        "inode": 9223372036855114370,
+        "size": 321686360,
+        "mtimeNs": 1787420757000000000,
+        "ctimeNs": 1787420757000000000
+      },
+      "argv": [
+        "/usr/lib/chromium/chromium --type=renderer --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=<isolated-browser-profile> --disable-print-preview --change-stack-guard-on-fork=enable --disable-dev-shm-usage --disable-back-forward-cache --disable-background-timer-throttling --disable-breakpad --force-color-profile=srgb --remote-debugging-pipe --allow-pre-commit-input --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=12 --time-ticks-at-unix-epoch=-1791549690512340 --launch-time-ticks=11327743611 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,17708767715274116095,12949577704897047474,262144 --enable-features=CDPScreenshotNewSurface --disable-features=AutoDeElevate,AvoidUnnecessaryBeforeUnloadCheckSync,BlockOriginHeaderModificationOnRedirect,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,OptimizationHints,PaintHolding,ThirdPartyStoragePartitioning,Translate,msEdgeUpdateLaunchServicesPreferredVersion,msForceBrowserSignIn --variations-seed-version --pseudonymization-salt-handle=7,i,38826448483232647,14608087528287200268,4 --trace-process-track-uuid=3190708997556373682"
+      ],
+      "cwd": "/proc/137890/fdinfo",
+      "observedAt": "2026-10-09T15:50:18.320438+00:00"
+    },
+    {
+      "pid": 138556,
+      "parent": 137891,
+      "parentStartTicks": "1132237",
+      "state": "S",
+      "startTicks": "1132991",
+      "exe": "/usr/lib/chromium/chromium",
+      "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+      "executableFileIdentity": {
+        "device": 27,
+        "inode": 9223372036855114370,
+        "size": 321686360,
+        "mtimeNs": 1787420757000000000,
+        "ctimeNs": 1787420757000000000
+      },
+      "argv": [
+        "/usr/lib/chromium/chromium --type=renderer --top-chrome-webui --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=<isolated-browser-profile> --disable-print-preview --change-stack-guard-on-fork=enable --disable-dev-shm-usage --disable-back-forward-cache --disable-background-timer-throttling --disable-breakpad --force-color-profile=srgb --remote-debugging-pipe --allow-pre-commit-input --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=14 --time-ticks-at-unix-epoch=-1791549690512340 --launch-time-ticks=11329917834 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,17708767715274116095,12949577704897047474,262144 --enable-features=CDPScreenshotNewSurface --disable-features=AutoDeElevate,AvoidUnnecessaryBeforeUnloadCheckSync,BlockOriginHeaderModificationOnRedirect,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,OptimizationHints,PaintHolding,ThirdPartyStoragePartitioning,Translate,msEdgeUpdateLaunchServicesPreferredVersion,msForceBrowserSignIn --variations-seed-version --pseudonymization-salt-handle=7,i,38826448483232647,14608087528287200268,4 --trace-process-track-uuid=3190708999430457380"
+      ],
+      "cwd": "/proc/137890/fdinfo",
+      "observedAt": "2026-10-09T15:50:20.474737+00:00"
+    },
+    {
+      "pid": 138562,
+      "parent": 137891,
+      "parentStartTicks": "1132237",
+      "state": "S",
+      "startTicks": "1132992",
+      "exe": "/usr/lib/chromium/chromium",
+      "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+      "executableFileIdentity": {
+        "device": 27,
+        "inode": 9223372036855114370,
+        "size": 321686360,
+        "mtimeNs": 1787420757000000000,
+        "ctimeNs": 1787420757000000000
+      },
+      "argv": [
+        "/usr/lib/chromium/chromium --type=renderer --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=<isolated-browser-profile> --disable-print-preview --change-stack-guard-on-fork=enable --disable-dev-shm-usage --disable-back-forward-cache --disable-background-timer-throttling --disable-breakpad --force-color-profile=srgb --remote-debugging-pipe --allow-pre-commit-input --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=16 --time-ticks-at-unix-epoch=-1791549690512340 --launch-time-ticks=11329927034 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,17708767715274116095,12949577704897047474,262144 --enable-features=CDPScreenshotNewSurface --disable-features=AutoDeElevate,AvoidUnnecessaryBeforeUnloadCheckSync,BlockOriginHeaderModificationOnRedirect,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,OptimizationHints,PaintHolding,ThirdPartyStoragePartitioning,Translate,msEdgeUpdateLaunchServicesPreferredVersion,msForceBrowserSignIn --variations-seed-version --pseudonymization-salt-handle=7,i,38826448483232647,14608087528287200268,4 --trace-process-track-uuid=3190709001304541078"
+      ],
+      "cwd": "/proc/137890/fdinfo",
+      "observedAt": "2026-10-09T15:50:20.474892+00:00"
+    },
+    {
+      "pid": 138564,
+      "parent": 137891,
+      "parentStartTicks": "1132237",
+      "state": "S",
+      "startTicks": "1132992",
+      "exe": "/usr/lib/chromium/chromium",
+      "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+      "executableFileIdentity": {
+        "device": 27,
+        "inode": 9223372036855114370,
+        "size": 321686360,
+        "mtimeNs": 1787420757000000000,
+        "ctimeNs": 1787420757000000000
+      },
+      "argv": [
+        "/usr/lib/chromium/chromium --type=renderer --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=<isolated-browser-profile> --disable-print-preview --change-stack-guard-on-fork=enable --disable-dev-shm-usage --disable-back-forward-cache --disable-background-timer-throttling --disable-breakpad --force-color-profile=srgb --remote-debugging-pipe --allow-pre-commit-input --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=15 --time-ticks-at-unix-epoch=-1791549690512340 --launch-time-ticks=11329927691 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,17708767715274116095,12949577704897047474,262144 --enable-features=CDPScreenshotNewSurface --disable-features=AutoDeElevate,AvoidUnnecessaryBeforeUnloadCheckSync,BlockOriginHeaderModificationOnRedirect,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,OptimizationHints,PaintHolding,ThirdPartyStoragePartitioning,Translate,msEdgeUpdateLaunchServicesPreferredVersion,msForceBrowserSignIn --variations-seed-version --pseudonymization-salt-handle=7,i,38826448483232647,14608087528287200268,4 --trace-process-track-uuid=3190709000367499229"
+      ],
+      "cwd": "/proc/137890/fdinfo",
+      "observedAt": "2026-10-09T15:50:20.475063+00:00"
+    }
+  ],
+  "directActualProbeBindings": {
+    "innerGateExecutionPid": 137826,
+    "probePython": [
+      {
+        "pid": 137826,
+        "parent": 137810,
+        "parentStartTicks": "1132182",
+        "state": "R",
+        "startTicks": "1132198",
+        "exe": "<python-runtime>/bin/python3.12",
+        "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+        "executableFileIdentity": {
+          "device": 27,
+          "inode": 9223372036854858618,
+          "size": 30894944,
+          "mtimeNs": 1788486252000000000,
+          "ctimeNs": 1788486252000000000
+        },
+        "argv": [
+          "<python-runtime>/bin/python",
+          "<original-evidence-root>/portable/card390/script.py",
+          "--url",
+          "http://127.0.0.1:19186/",
+          "--out",
+          "<workspace-path>",
+          "--root",
+          "<workspace-path>",
+          "--bridge",
+          "<isolated-test-directory>"
+        ],
+        "cwd": "<workspace-path>",
+        "observedAt": "2026-10-09T15:50:12.510791+00:00"
+      }
+    ],
+    "ownedDriverNode": [
+      {
+        "pid": 137851,
+        "parent": 137826,
+        "parentStartTicks": "1132198",
+        "state": "R",
+        "startTicks": "1132211",
+        "exe": "<node-runtime>/bin/node",
+        "sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12",
+        "executableFileIdentity": {
+          "device": 27,
+          "inode": 9223372036854817388,
+          "size": 125989464,
+          "mtimeNs": 1788486252000000000,
+          "ctimeNs": 1788486252000000000
+        },
+        "argv": [
+          "<node-runtime>/bin/node",
+          "<python-runtime>/lib/python3.12/site-packages/playwright/driver/package/cli.js",
+          "run-driver"
+        ],
+        "cwd": "<workspace-path>",
+        "observedAt": "2026-10-09T15:50:12.739025+00:00"
+      }
+    ],
+    "ownedMainChrome": [
+      {
+        "pid": 137866,
+        "parent": 137851,
+        "parentStartTicks": "1132211",
+        "state": "R",
+        "startTicks": "1132230",
+        "exe": "/usr/lib/chromium/chromium",
+        "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+        "executableFileIdentity": {
+          "device": 27,
+          "inode": 9223372036855114370,
+          "size": 321686360,
+          "mtimeNs": 1787420757000000000,
+          "ctimeNs": 1787420757000000000
+        },
+        "argv": [
+          "/usr/lib/chromium/chromium",
+          "--show-component-extension-options",
+          "--enable-gpu-rasterization",
+          "--no-default-browser-check",
+          "--disable-pings",
+          "--media-router=0",
+          "--enable-remote-extensions",
+          "--load-extension=",
+          "--disable-field-trial-config",
+          "--disable-background-networking",
+          "--disable-background-timer-throttling",
+          "--disable-backgrounding-occluded-windows",
+          "--disable-back-forward-cache",
+          "--disable-breakpad",
+          "--disable-client-side-phishing-detection",
+          "--disable-component-extensions-with-background-pages",
+          "--disable-component-update",
+          "--no-default-browser-check",
+          "--disable-default-apps",
+          "--disable-dev-shm-usage",
+          "--disable-edgeupdater",
+          "--disable-extensions",
+          "--disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion",
+          "--enable-features=CDPScreenshotNewSurface",
+          "--allow-pre-commit-input",
+          "--disable-hang-monitor",
+          "--disable-ipc-flooding-protection",
+          "--disable-popup-blocking",
+          "--disable-prompt-on-repost",
+          "--disable-renderer-backgrounding",
+          "--disable-updater-scheduler",
+          "--force-color-profile=srgb",
+          "--metrics-recording-only",
+          "--no-first-run",
+          "--password-store=basic",
+          "--use-mock-keychain",
+          "--no-service-autorun",
+          "--export-tagged-pdf",
+          "--disable-search-engine-choice-screen",
+          "--unsafely-disable-devtools-self-xss-warnings",
+          "--edge-skip-compat-layer-relaunch",
+          "--disable-infobars",
+          "--disable-search-engine-choice-screen",
+          "--disable-sync",
+          "--enable-unsafe-swiftshader",
+          "--headless",
+          "--hide-scrollbars",
+          "--mute-audio",
+          "--blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4",
+          "--user-data-dir=<isolated-browser-profile>",
+          "--remote-debugging-pipe",
+          "--no-startup-window"
+        ],
+        "cwd": "<workspace-path>",
+        "observedAt": "2026-10-09T15:50:13.008683+00:00"
+      }
+    ],
+    "rule": "Exact inner execution pid and argv for probe Python; direct parent pid plus process startTicks bind Node to that Python and Chrome to that Node, observed live."
+  },
+  "transientProcessCaptureErrors": [
+    {
+      "pid": 138341,
+      "at": "2026-10-09T15:50:20.414910+00:00",
+      "error": "FileNotFoundError(2, 'No such file or directory')"
+    },
+    {
+      "pid": 138347,
+      "at": "2026-10-09T15:50:20.414941+00:00",
+      "error": "FileNotFoundError(2, 'No such file or directory')"
+    },
+    {
+      "pid": 138556,
+      "at": "2026-10-09T15:50:22.750500+00:00",
+      "error": "FileNotFoundError(2, 'No such file or directory')"
+    },
+    {
+      "pid": 138562,
+      "at": "2026-10-09T15:50:22.750526+00:00",
+      "error": "FileNotFoundError(2, 'No such file or directory')"
+    },
+    {
+      "pid": 137851,
+      "at": "2026-10-09T15:50:22.809815+00:00",
+      "error": "FileNotFoundError(2, 'No such file or directory')"
+    }
+  ],
+  "checks": {
+    "fullSHAAndDirtyStable": true,
+    "executionFilesStable": true,
+    "configuredExecutableBytesStable": true,
+    "exactRuntimeStable": true,
+    "nativePidBytesStable": true,
+    "actualProbePythonObserved": true,
+    "actualPlaywrightDriverNodeObserved": true,
+    "actualMainChromeObserved": true,
+    "innerOriginalGateVerified": true
+  },
+  "innerOriginalGate": {
+    "path": "<workspace-path>",
+    "sha256": "27959cec8e39caf0d4d8c9b947fcf3a57619cdd8c2597487aed5e001faa17361"
+  },
+  "rawLog": {
+    "path": "<workspace-path>",
+    "sha256": "040c92275f4b014edc8e31e4a71df6df255354395cbe3b0fdb8480ce1954a598"
+  },
+  "originalCommandRawLog": {
+    "path": "<workspace-path>",
+    "bytes": 324,
+    "sha256": "c6702b48a96c52b572817f204b60d95604230f7be4e77bcb6b1d380b91ddd1fa"
+  },
+  "probeCensus": {
+    "resultsPath": "<workspace-path>",
+    "resultsSha256": "a173e3f146ccbdd9addc1dd5928131bec9363b70341a38b215e69bcb93909fdd",
+    "expectedCases": 4,
+    "actualCases": 4,
+    "pass": 4,
+    "fail": 0,
+    "completed": true,
+    "cases": [
+      {
+        "name": "beam-1400",
+        "ok": true,
+        "harnessError": null,
+        "pageErrors": []
+      },
+      {
+        "name": "slots-1400",
+        "ok": true,
+        "harnessError": null,
+        "pageErrors": []
+      },
+      {
+        "name": "beam-390",
+        "ok": true,
+        "harnessError": null,
+        "pageErrors": []
+      },
+      {
+        "name": "slots-390",
+        "ok": true,
+        "harnessError": null,
+        "pageErrors": []
+      }
+    ]
+  },
+  "scope": "One unchanged scoped probe with actual live process bytes, not full CDP/Windows/golden. The inner original gate and probe are not modified.",
+  "publicProjection": {
+    "originalSha256": "6e240bd398677858eb736fd72cb9b73228bc293d03270c698a9c90d7015fa318",
+    "originalBytes": 66418,
+    "originalPathLabel": "<workspace-path>",
+    "originalRetainedOutsideGit": true,
+    "changes": "Machine/executable/isolated source, feedback and profile path labels; colliding absolute-path dictionary keys retain basename and original-key SHA256, preserving all entries. Result, full SHA, dirty, command, exit and original hashes remain.",
+    "dictionaryKeyAudit": [
+      {
+        "dictionaryLocation": "$.before.executionFiles",
+        "originalEntries": 12,
+        "publicEntries": 12,
+        "rule": "Colliding public path keys retain basename plus full SHA256 of original key; values retained one-to-one",
+        "mapping": [
+          {
+            "originalKeySha256": "8b574c7b9ed85e9fc026e59b7e4e45b32b7a9054eb553f869b5e61f07957e4f6",
+            "originalBasename": "observer-r3-573f192f.py",
+            "publicKey": "<workspace-path>"
+          },
+          {
+            "originalKeySha256": "f288205ee9c2e38cddd960f7c0dafe1411ad662f85cb03bf5b1a7890ff33194f",
+            "originalBasename": "run_gate.py",
+            "publicKey": "<original-evidence-root>/run_gate.py"
+          },
+          {
+            "originalKeySha256": "65fe300dfb28a7ca3f663634ae0aac5615189445bde833a7409891e1a273b22b",
+            "originalBasename": "python3.12",
+            "publicKey": "<python-runtime>/bin/python3.12"
+          },
+          {
+            "originalKeySha256": "87e5f0bb7584cc741d3d075cea4dfc4fb43e611d4afbbe21acbf70e0f2ccc46a",
+            "originalBasename": "dumppdf.py",
+            "publicKey": "<python-runtime>/bin/dumppdf.py"
+          },
+          {
+            "originalKeySha256": "5306fa78c0bb9aed4773eacefca8705d5b5d2e829af45fad32d466866f183744",
+            "originalBasename": "pdf2txt.py",
+            "publicKey": "<python-runtime>/bin/pdf2txt.py"
+          },
+          {
+            "originalKeySha256": "93b00a4df9bd371b43ee9841fd98ad2c3777c8c3de19252410bf8570271ec312",
+            "originalBasename": "runxlrd.py",
+            "publicKey": "<python-runtime>/bin/runxlrd.py"
+          },
+          {
+            "originalKeySha256": "8265d8c8b5a29afcd90a70b7ca7b742544e465b5b9e20f3090ab84a9283ef3af",
+            "originalBasename": "vba_extract.py",
+            "publicKey": "<python-runtime>/bin/vba_extract.py"
+          },
+          {
+            "originalKeySha256": "8a0d355a1f46a81982e5addf84c86dd53c8278995816c3977fa93de992df38c5",
+            "originalBasename": "script.py",
+            "publicKey": "<original-evidence-root>/portable/card390/script.py"
+          },
+          {
+            "originalKeySha256": "f9ac99deaa92caaac25e27476650e6b03385394c2de4d07988820ca12fd5f9ff",
+            "originalBasename": "bridge",
+            "publicKey": "<isolated-test-directory>|basename=bridge|originalKeySha256=f9ac99deaa92caaac25e27476650e6b03385394c2de4d07988820ca12fd5f9ff"
+          },
+          {
+            "originalKeySha256": "ca56d3288290dacecaddffc0f4da3b7ecdc77502941f3ace8cc3cccc50577efb",
+            "originalBasename": "model-base.fingerprint.json",
+            "publicKey": "<isolated-test-directory>|basename=model-base.fingerprint.json|originalKeySha256=ca56d3288290dacecaddffc0f4da3b7ecdc77502941f3ace8cc3cccc50577efb"
+          },
+          {
+            "originalKeySha256": "98b20b2e55b8cddfab9db8f74f3548458685011c445ccf6324cdaa971a7a8542",
+            "originalBasename": "bridge.fingerprint.json",
+            "publicKey": "<isolated-test-directory>|basename=bridge.fingerprint.json|originalKeySha256=98b20b2e55b8cddfab9db8f74f3548458685011c445ccf6324cdaa971a7a8542"
+          },
+          {
+            "originalKeySha256": "34e18b07f6505d3cb4f884254e97034c5203db1aaf30c291cce75a6436d52243",
+            "originalBasename": "core.fingerprint.json",
+            "publicKey": "<isolated-test-directory>|basename=core.fingerprint.json|originalKeySha256=34e18b07f6505d3cb4f884254e97034c5203db1aaf30c291cce75a6436d52243"
+          }
+        ]
+      },
+      {
+        "dictionaryLocation": "$.after.executionFiles",
+        "originalEntries": 12,
+        "publicEntries": 12,
+        "rule": "Colliding public path keys retain basename plus full SHA256 of original key; values retained one-to-one",
+        "mapping": [
+          {
+            "originalKeySha256": "8b574c7b9ed85e9fc026e59b7e4e45b32b7a9054eb553f869b5e61f07957e4f6",
+            "originalBasename": "observer-r3-573f192f.py",
+            "publicKey": "<workspace-path>"
+          },
+          {
+            "originalKeySha256": "f288205ee9c2e38cddd960f7c0dafe1411ad662f85cb03bf5b1a7890ff33194f",
+            "originalBasename": "run_gate.py",
+            "publicKey": "<original-evidence-root>/run_gate.py"
+          },
+          {
+            "originalKeySha256": "65fe300dfb28a7ca3f663634ae0aac5615189445bde833a7409891e1a273b22b",
+            "originalBasename": "python3.12",
+            "publicKey": "<python-runtime>/bin/python3.12"
+          },
+          {
+            "originalKeySha256": "87e5f0bb7584cc741d3d075cea4dfc4fb43e611d4afbbe21acbf70e0f2ccc46a",
+            "originalBasename": "dumppdf.py",
+            "publicKey": "<python-runtime>/bin/dumppdf.py"
+          },
+          {
+            "originalKeySha256": "5306fa78c0bb9aed4773eacefca8705d5b5d2e829af45fad32d466866f183744",
+            "originalBasename": "pdf2txt.py",
+            "publicKey": "<python-runtime>/bin/pdf2txt.py"
+          },
+          {
+            "originalKeySha256": "93b00a4df9bd371b43ee9841fd98ad2c3777c8c3de19252410bf8570271ec312",
+            "originalBasename": "runxlrd.py",
+            "publicKey": "<python-runtime>/bin/runxlrd.py"
+          },
+          {
+            "originalKeySha256": "8265d8c8b5a29afcd90a70b7ca7b742544e465b5b9e20f3090ab84a9283ef3af",
+            "originalBasename": "vba_extract.py",
+            "publicKey": "<python-runtime>/bin/vba_extract.py"
+          },
+          {
+            "originalKeySha256": "8a0d355a1f46a81982e5addf84c86dd53c8278995816c3977fa93de992df38c5",
+            "originalBasename": "script.py",
+            "publicKey": "<original-evidence-root>/portable/card390/script.py"
+          },
+          {
+            "originalKeySha256": "f9ac99deaa92caaac25e27476650e6b03385394c2de4d07988820ca12fd5f9ff",
+            "originalBasename": "bridge",
+            "publicKey": "<isolated-test-directory>|basename=bridge|originalKeySha256=f9ac99deaa92caaac25e27476650e6b03385394c2de4d07988820ca12fd5f9ff"
+          },
+          {
+            "originalKeySha256": "ca56d3288290dacecaddffc0f4da3b7ecdc77502941f3ace8cc3cccc50577efb",
+            "originalBasename": "model-base.fingerprint.json",
+            "publicKey": "<isolated-test-directory>|basename=model-base.fingerprint.json|originalKeySha256=ca56d3288290dacecaddffc0f4da3b7ecdc77502941f3ace8cc3cccc50577efb"
+          },
+          {
+            "originalKeySha256": "98b20b2e55b8cddfab9db8f74f3548458685011c445ccf6324cdaa971a7a8542",
+            "originalBasename": "bridge.fingerprint.json",
+            "publicKey": "<isolated-test-directory>|basename=bridge.fingerprint.json|originalKeySha256=98b20b2e55b8cddfab9db8f74f3548458685011c445ccf6324cdaa971a7a8542"
+          },
+          {
+            "originalKeySha256": "34e18b07f6505d3cb4f884254e97034c5203db1aaf30c291cce75a6436d52243",
+            "originalBasename": "core.fingerprint.json",
+            "publicKey": "<isolated-test-directory>|basename=core.fingerprint.json|originalKeySha256=34e18b07f6505d3cb4f884254e97034c5203db1aaf30c291cce75a6436d52243"
+          }
+        ]
+      }
+    ]
+  }
+}

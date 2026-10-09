@@ -1,0 +1,83 @@
+{
+  "utc": "2026-10-09T15:50:23.935020+00:00",
+  "commands": [
+    {
+      "argv": [
+        "pwd"
+      ],
+      "exitCode": 0,
+      "stdout": "<workspace-path>\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--short"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exitCode": 0,
+      "stdout": "243326b512896ace70e068f62c8f3d6397f6000d\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD^{tree}"
+      ],
+      "exitCode": 0,
+      "stdout": "3a94d684e90fc8ee77883ca929b7e6e9520e656f\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--binary"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--cached",
+        "--binary"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "runtime": {
+    "schema": "geometry-runtime/1",
+    "version": "545f021b8cbb26b6afaabde19b73fa82d30a8a138b99d8c721a35fb54f73999b",
+    "fresh": true,
+    "root": "<workspace-path>",
+    "pid": 132367,
+    "session": "a3952446781e45209ac81df31a31221e"
+  },
+  "runtimeBodySha256": "409c9a7dea9ec91fa4da18cc8393aadbe2e8a959a949823623a1d963a5895178",
+  "sourceSha256": {
+    "geometry-web/app.js": "da0a2337cc986c79231c74fd66380178646a129e7ab577d2059acbd1160774de",
+    "geometry-web/space-workspace.js": "88709be1ffab50a4c11dbca42466097bfaee2e435c41a14cda9be7cd05e0ad3e",
+    "geometry-web/app.css": "4e6dac9541329f9d17d33d66635f2dcc77e6d3c816cfbe719105b46e3b653432",
+    "geometry-web/index.html": "5084ee2b214a1653bcdfd31105bbb05b786f1447d14f9eb177ecb3185d27a9a4"
+  },
+  "scriptSha256": {
+    "browser_race_ownership.py": "4094e1c01f598e8b5dee868f1555c2d315c7f7562c9d3ae44247bfd90be4cfd2",
+    "browser_race_ownership_instrumentation.js": "64c51184301f28f88ef6b1113e842c98c9711ceea82b5d54d1702b0babd8819f"
+  }
+}

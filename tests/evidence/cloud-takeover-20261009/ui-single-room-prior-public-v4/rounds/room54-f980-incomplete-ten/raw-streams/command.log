@@ -1,0 +1,250 @@
+PASS isolated runtime is fresh and belongs to this checkout {"schema":"geometry-runtime/1","version":"1e681982fe5b0c8b812d938a690136d34f2abfa012d32983d4efb8ddf18bb41c","fresh":true,"root":"<workspace-path>","pid":67442,"session":"82483dbab6cd44a5964175264620fd49"}
+PASS page identity and nonblank UI 
+PASS pdf-rectangle: imported source is the selected file bytes 
+PASS pdf-rectangle: pre-calibration candidate blocked 
+PASS pdf-rectangle: real calibration is 10 mm/source unit {"points":[[30.000004695012016,29.999995304987987],[230.00000313000797,29.999995304987987]],"distanceMm":2000,"inputValue":2000,"inputUnit":"mm"}
+PASS pdf-rectangle: expected local acquisition method 
+PASS pdf-rectangle: exact cyclic topology with correct concavity {"points":[[320,320],[2280,320],[2280,1480],[320,1480]],"oracle":[[320,320],[2280,320],[2280,1480],[320,1480]]}
+PASS pdf-rectangle: candidate overlay and untouched original 
+PASS pdf-rectangle: Cancel preserves original 
+PASS pdf-rectangle: direct dimension row exists for every true candidate edge 
+PASS pdf-rectangle: dimension changes candidate only 
+PASS pdf-rectangle: directly editable rows retain independently authored dimensions and order 
+PASS pdf-rectangle: each displayed edge checked against independent oracle 
+PASS pdf-rectangle: corrections still do not mutate original 
+PASS pdf-rectangle: Confirm creates exact ordered oracle geometry 
+PASS pdf-rectangle: Undo exact original 
+PASS pdf-rectangle: Redo exact confirmed 
+PASS pdf-rectangle: uses real download capability 
+PASS pdf-rectangle: real gcanvas file downloaded 
+PASS pdf-rectangle: manual comparison starts from identical native scene 
+PASS pdf-rectangle: comparison source, camera, snap, review and disclosures share the same start {"candidate":{"source":{"sourceId":"f1d30a10eb1caa557fa083c051d09ada7b006c8e9012942c933e67a5d81b9677","page":1,"imgW":280,"imgH":190,"crop":[0,0,280,190],"mmPerPx":10.000000078250203,"x":0,"y":0,"rot":0,"calibration":{"points":[[30.000004695012016,29.999995304987987],[230.00000313000797,29.999995304987987]],"distanceMm":2000,"inputValue":2000,"inputUnit":"mm"}},"camera":[0.27857142639160154,40,165.35714285714283],"review":"unreviewed","tool":"select","tab":"underlay","snap":false,"method":"auto","disclosures":[["refAlignmentDetails",false],["refOutlineDetails",true],["缺口與連通房間：明確分隔後重取",false],["refSourceDetails",false],["refRecordDetails",false]]},"manual":{"source":{"sourceId":"f1d30a10eb1caa557fa083c051d09ada7b006c8e9012942c933e67a5d81b9677","page":1,"imgW":280,"imgH":190,"crop":[0,0,280,190],"mmPerPx":10.000000078250203,"x":0,"y":0,"rot":0,"calibration":{"points":[[30.000004695012016,29.999995304987987],[230.00000313000797,29.999995304987987]],"distanceMm":2000,"inputValue":2000,"inputUnit":"mm"}},"camera":[0.27857142639160154,40,165.35714285714283],"review":"unreviewed","tool":"select","tab":"underlay","snap":false,"method":"auto","disclosures":[["refAlignmentDetails",false],["refOutlineDetails",true],["缺口與連通房間：明確分隔後重取",false],["refSourceDetails",false],["refRecordDetails",false]]}}
+PASS pdf-rectangle: manual comparison ends at exact same reviewed geometry {"points":[[320,320],[2280,320],[2280,1480],[320,1480]],"expected":[[320,320],[2280,320],[2280,1480],[320,1480]]}
+PASS pdf-rectangle: new browser starts without attachment context 
+PASS pdf-rectangle: new project is actually blank before Open 
+PASS pdf-rectangle: Open preserves exact native ordered topology [[320,320],[2280,320],[2280,1480],[320,1480]]
+PASS pdf-rectangle: Open preserves source bytes, page, transform and calibration {"sourceSHA256":"f1d30a10eb1caa557fa083c051d09ada7b006c8e9012942c933e67a5d81b9677","page":{"id":"f12cff61-d153-410d-9d92-a2fab9380d50","sourceId":"f1d30a10eb1caa557fa083c051d09ada7b006c8e9012942c933e67a5d81b9677","page":1,"imgW":280,"imgH":190,"crop":[0,0,280,190],"mmPerPx":10.000000078250203,"x":0,"y":0,"rot":0,"opacity":0.5,"locked":false,"calibration":{"points":[[30.000004695012016,29.999995304987987],[230.00000313000797,29.999995304987987]],"distanceMm":2000,"inputValue":2000,"inputUnit":"mm"},"reviewRequired":false,"records":[]}}
+PASS pdf-rectangle: Open preserves exact confirmed receipt 
+SCENARIO_DONE pdf-rectangle 7961
+PASS pdf-l: imported source is the selected file bytes 
+PASS pdf-l: pre-calibration candidate blocked 
+PASS pdf-l: real calibration is 10 mm/source unit {"points":[[30.000004695012016,29.999995304987987],[230.00000313000797,29.999995304987987]],"distanceMm":2000,"inputValue":2000,"inputUnit":"mm"}
+PASS pdf-l: expected local acquisition method 
+PASS pdf-l: exact cyclic topology with correct concavity {"points":[[320,320],[2280,320],[2280,780],[1280,780],[1280,1480],[320,1480]],"oracle":[[320,320],[2280,320],[2280,780],[1280,780],[1280,1480],[320,1480]]}
+PASS pdf-l: candidate overlay and untouched original 
+PASS pdf-l: Cancel preserves original 
+PASS pdf-l: direct dimension row exists for every true candidate edge 
+PASS pdf-l: dimension changes candidate only 
+PASS pdf-l: directly editable rows retain independently authored dimensions and order 
+PASS pdf-l: each displayed edge checked against independent oracle 
+PASS pdf-l: corrections still do not mutate original 
+PASS pdf-l: Confirm creates exact ordered oracle geometry 
+PASS pdf-l: Undo exact original 
+PASS pdf-l: Redo exact confirmed 
+PASS pdf-l: uses real download capability 
+PASS pdf-l: real gcanvas file downloaded 
+PASS pdf-l: manual comparison starts from identical native scene 
+PASS pdf-l: comparison source, camera, snap, review and disclosures share the same start {"candidate":{"source":{"sourceId":"f1d30a10eb1caa557fa083c051d09ada7b006c8e9012942c933e67a5d81b9677","page":2,"imgW":280,"imgH":190,"crop":[0,0,280,190],"mmPerPx":10.000000078250203,"x":0,"y":0,"rot":0,"calibration":{"points":[[30.000004695012016,29.999995304987987],[230.00000313000797,29.999995304987987]],"distanceMm":2000,"inputValue":2000,"inputUnit":"mm"}},"camera":[0.27857142639160154,40,165.35714285714283],"review":"unreviewed","tool":"select","tab":"underlay","snap":false,"method":"auto","disclosures":[["refAlignmentDetails",false],["refOutlineDetails",true],["缺口與連通房間：明確分隔後重取",false],["refSourceDetails",false],["refRecordDetails",false]]},"manual":{"source":{"sourceId":"f1d30a10eb1caa557fa083c051d09ada7b006c8e9012942c933e67a5d81b9677","page":2,"imgW":280,"imgH":190,"crop":[0,0,280,190],"mmPerPx":10.000000078250203,"x":0,"y":0,"rot":0,"calibration":{"points":[[30.000004695012016,29.999995304987987],[230.00000313000797,29.999995304987987]],"distanceMm":2000,"inputValue":2000,"inputUnit":"mm"}},"camera":[0.27857142639160154,40,165.35714285714283],"review":"unreviewed","tool":"select","tab":"underlay","snap":false,"method":"auto","disclosures":[["refAlignmentDetails",false],["refOutlineDetails",true],["缺口與連通房間：明確分隔後重取",false],["refSourceDetails",false],["refRecordDetails",false]]}}
+PASS pdf-l: manual comparison ends at exact same reviewed geometry {"points":[[320,320],[2280,320],[2280,780],[1280,780],[1280,1480],[320,1480]],"expected":[[320,320],[2280,320],[2280,780],[1280,780],[1280,1480],[320,1480]]}
+PASS pdf-l: new browser starts without attachment context 
+PASS pdf-l: new project is actually blank before Open 
+PASS pdf-l: Open preserves exact native ordered topology [[320,320],[2280,320],[2280,780],[1280,780],[1280,1480],[320,1480]]
+PASS pdf-l: Open preserves source bytes, page, transform and calibration {"sourceSHA256":"f1d30a10eb1caa557fa083c051d09ada7b006c8e9012942c933e67a5d81b9677","page":{"id":"cee2de76-ecfa-4cc9-9e75-4bab26bf17fa","sourceId":"f1d30a10eb1caa557fa083c051d09ada7b006c8e9012942c933e67a5d81b9677","page":2,"imgW":280,"imgH":190,"crop":[0,0,280,190],"mmPerPx":10.000000078250203,"x":0,"y":0,"rot":0,"opacity":0.5,"locked":false,"calibration":{"points":[[30.000004695012016,29.999995304987987],[230.00000313000797,29.999995304987987]],"distanceMm":2000,"inputValue":2000,"inputUnit":"mm"},"reviewRequired":false,"records":[]}}
+PASS pdf-l: Open preserves exact confirmed receipt 
+SCENARIO_DONE pdf-l 8417
+PASS pdf-notch: imported source is the selected file bytes 
+PASS pdf-notch: pre-calibration candidate blocked 
+PASS pdf-notch: real calibration is 10 mm/source unit {"points":[[30.000004695012016,29.999995304987987],[230.00000313000797,29.999995304987987]],"distanceMm":2000,"inputValue":2000,"inputUnit":"mm"}
+PASS pdf-notch: expected local acquisition method 
+PASS pdf-notch: exact cyclic topology with correct concavity {"points":[[320,320],[2280,320],[2280,1480],[1720,1480],[1720,1080],[1280,1080],[1280,1480],[320,1480]],"oracle":[[320,320],[2280,320],[2280,1480],[1720,1480],[1720,1080],[1280,1080],[1280,1480],[320,1480]]}
+PASS pdf-notch: candidate overlay and untouched original 
+PASS pdf-notch: Cancel preserves original 
+PASS pdf-notch: direct dimension row exists for every true candidate edge 
+PASS pdf-notch: dimension changes candidate only 
+PASS pdf-notch: directly editable rows retain independently authored dimensions and order 
+PASS pdf-notch: each displayed edge checked against independent oracle 
+PASS pdf-notch: corrections still do not mutate original 
+PASS pdf-notch: Confirm creates exact ordered oracle geometry 
+PASS pdf-notch: Undo exact original 
+PASS pdf-notch: Redo exact confirmed 
+PASS pdf-notch: uses real download capability 
+PASS pdf-notch: real gcanvas file downloaded 
+PASS pdf-notch: manual comparison starts from identical native scene 
+PASS pdf-notch: comparison source, camera, snap, review and disclosures share the same start {"candidate":{"source":{"sourceId":"f1d30a10eb1caa557fa083c051d09ada7b006c8e9012942c933e67a5d81b9677","page":3,"imgW":280,"imgH":190,"crop":[0,0,280,190],"mmPerPx":10.000000078250203,"x":0,"y":0,"rot":0,"calibration":{"points":[[30.000004695012016,29.999995304987987],[230.00000313000797,29.999995304987987]],"distanceMm":2000,"inputValue":2000,"inputUnit":"mm"}},"camera":[0.27857142639160154,40,165.35714285714283],"review":"unreviewed","tool":"select","tab":"underlay","snap":false,"method":"auto","disclosures":[["refAlignmentDetails",false],["refOutlineDetails",true],["缺口與連通房間：明確分隔後重取",false],["refSourceDetails",false],["refRecordDetails",false]]},"manual":{"source":{"sourceId":"f1d30a10eb1caa557fa083c051d09ada7b006c8e9012942c933e67a5d81b9677","page":3,"imgW":280,"imgH":190,"crop":[0,0,280,190],"mmPerPx":10.000000078250203,"x":0,"y":0,"rot":0,"calibration":{"points":[[30.000004695012016,29.999995304987987],[230.00000313000797,29.999995304987987]],"distanceMm":2000,"inputValue":2000,"inputUnit":"mm"}},"camera":[0.27857142639160154,40,165.35714285714283],"review":"unreviewed","tool":"select","tab":"underlay","snap":false,"method":"auto","disclosures":[["refAlignmentDetails",false],["refOutlineDetails",true],["缺口與連通房間：明確分隔後重取",false],["refSourceDetails",false],["refRecordDetails",false]]}}
+PASS pdf-notch: manual comparison ends at exact same reviewed geometry {"points":[[320,320],[2280,320],[2280,1480],[1720,1480],[1720,1080],[1280,1080],[1280,1480],[320,1480]],"expected":[[320,320],[2280,320],[2280,1480],[1720,1480],[1720,1080],[1280,1080],[1280,1480],[320,1480]]}
+PASS pdf-notch: new browser starts without attachment context 
+PASS pdf-notch: new project is actually blank before Open 
+PASS pdf-notch: Open preserves exact native ordered topology [[320,320],[2280,320],[2280,1480],[1720,1480],[1720,1080],[1280,1080],[1280,1480],[320,1480]]
+PASS pdf-notch: Open preserves source bytes, page, transform and calibration {"sourceSHA256":"f1d30a10eb1caa557fa083c051d09ada7b006c8e9012942c933e67a5d81b9677","page":{"id":"6bc9a5b5-d14a-4dbf-8b48-b8978109fac1","sourceId":"f1d30a10eb1caa557fa083c051d09ada7b006c8e9012942c933e67a5d81b9677","page":3,"imgW":280,"imgH":190,"crop":[0,0,280,190],"mmPerPx":10.000000078250203,"x":0,"y":0,"rot":0,"opacity":0.5,"locked":false,"calibration":{"points":[[30.000004695012016,29.999995304987987],[230.00000313000797,29.999995304987987]],"distanceMm":2000,"inputValue":2000,"inputUnit":"mm"},"reviewRequired":false,"records":[]}}
+PASS pdf-notch: Open preserves exact confirmed receipt 
+PASS pdf-notch: projection and space use the whole oracle outline {"oracleAreaMm2":2097600,"preview":{"bottom":0,"clearance_mm3":"6292800000","closed":true,"face_count":10,"generated_faces":[{"label":"外環第 1 邊","orientation":1,"placement_id":2,"purpose":"boundary"},{"label":"外環第 2 邊","orientation":1,"placement_id":3,"purpose":"boundary"},{"label":"外環第 3 邊","orientation":1,"placement_id":4,"purpose":"boundary"},{"label":"外環第 4 邊","orientation":1,"placement_id":5,"purpose":"boundary"},{"label":"外環第 5 邊","orientation":1,"placement_id":6,"purpose":"boundary"},{"label":"外環第 6 邊","orientation":1,"placement_id":7,"purpose":"boundary"},{"label":"外環第 7 邊","orientation":1,"placement_id":8,"purpose":"boundary"},{"label":"外環第 8 邊","orientation":1,"placement_id":9,"purpose":"boundary"},{"label":"底面","orientation":-1,"placement_id":10,"purpose":"boundary"},{"label":"頂面","orientation":1,"placement_id":11,"purpose":"boundary"}],"missing":[],"source_placement":1,"source_z":2500,"top":3000,"volume_mm3":"6292800000","wall_diagnostics":[],"wall_volume_mm3":null}}
+PASS pdf-notch: created model contains exact source scene and explicit settings 
+PASS pdf-notch: uses real download capability 
+PASS pdf-notch: real gcanvas file downloaded 
+PASS pdf-notch: real downloaded archive contains exact created model and native scene 
+PASS pdf-notch: new browser starts without attachment context 
+PASS pdf-notch: new project is actually blank before Open 
+PASS pdf-notch: Open preserves exact native ordered topology [[320,320],[2280,320],[2280,1480],[1720,1480],[1720,1080],[1280,1080],[1280,1480],[320,1480]]
+PASS pdf-notch: Open preserves source bytes, page, transform and calibration {"sourceSHA256":"f1d30a10eb1caa557fa083c051d09ada7b006c8e9012942c933e67a5d81b9677","page":{"id":"6bc9a5b5-d14a-4dbf-8b48-b8978109fac1","sourceId":"f1d30a10eb1caa557fa083c051d09ada7b006c8e9012942c933e67a5d81b9677","page":3,"imgW":280,"imgH":190,"crop":[0,0,280,190],"mmPerPx":10.000000078250203,"x":0,"y":0,"rot":0,"opacity":0.5,"locked":false,"calibration":{"points":[[30.000004695012016,29.999995304987987],[230.00000313000797,29.999995304987987]],"distanceMm":2000,"inputValue":2000,"inputUnit":"mm"},"reviewRequired":false,"records":[]}}
+PASS pdf-notch: Open preserves exact confirmed receipt 
+PASS pdf-notch: fresh Open restores the exact created model 
+SCENARIO_DONE pdf-notch 13962
+PASS image-rectangle: imported source is the selected file bytes 
+PASS image-rectangle: pre-calibration candidate blocked 
+PASS image-rectangle: real calibration is 10 mm/source unit {"points":[[30.000004695012016,29.999995304987987],[230.00000313000797,29.999995304987987]],"distanceMm":2000,"inputValue":2000,"inputUnit":"mm"}
+PASS image-rectangle: expected local acquisition method 
+PASS image-rectangle: exact cyclic topology with correct concavity {"points":[[320,320],[2280,320],[2280,1480],[320,1480]],"oracle":[[320,320],[2280,320],[2280,1480],[320,1480]]}
+PASS image-rectangle: candidate overlay and untouched original 
+PASS image-rectangle: Cancel preserves original 
+PASS image-rectangle: direct dimension row exists for every true candidate edge 
+PASS image-rectangle: dimension changes candidate only 
+PASS image-rectangle: directly editable rows retain independently authored dimensions and order 
+PASS image-rectangle: each displayed edge checked against independent oracle 
+PASS image-rectangle: corrections still do not mutate original 
+PASS image-rectangle: Confirm creates exact ordered oracle geometry 
+PASS image-rectangle: Undo exact original 
+PASS image-rectangle: Redo exact confirmed 
+PASS image-rectangle: uses real download capability 
+PASS image-rectangle: real gcanvas file downloaded 
+PASS image-rectangle: manual comparison starts from identical native scene 
+PASS image-rectangle: comparison source, camera, snap, review and disclosures share the same start {"candidate":{"source":{"sourceId":"12eee7286181a61983a140d80644ccada83eb928166f020096f96008578f65c4","page":1,"imgW":280,"imgH":190,"crop":[0,0,280,190],"mmPerPx":10.000000078250203,"x":0,"y":0,"rot":0,"calibration":{"points":[[30.000004695012016,29.999995304987987],[230.00000313000797,29.999995304987987]],"distanceMm":2000,"inputValue":2000,"inputUnit":"mm"}},"camera":[0.27857142639160154,40,165.35714285714283],"review":"unreviewed","tool":"select","tab":"underlay","snap":false,"method":"auto","disclosures":[["refAlignmentDetails",false],["refOutlineDetails",true],["缺口與連通房間：明確分隔後重取",false],["refSourceDetails",false],["refRecordDetails",false]]},"manual":{"source":{"sourceId":"12eee7286181a61983a140d80644ccada83eb928166f020096f96008578f65c4","page":1,"imgW":280,"imgH":190,"crop":[0,0,280,190],"mmPerPx":10.000000078250203,"x":0,"y":0,"rot":0,"calibration":{"points":[[30.000004695012016,29.999995304987987],[230.00000313000797,29.999995304987987]],"distanceMm":2000,"inputValue":2000,"inputUnit":"mm"}},"camera":[0.27857142639160154,40,165.35714285714283],"review":"unreviewed","tool":"select","tab":"underlay","snap":false,"method":"auto","disclosures":[["refAlignmentDetails",false],["refOutlineDetails",true],["缺口與連通房間：明確分隔後重取",false],["refSourceDetails",false],["refRecordDetails",false]]}}
+PASS image-rectangle: manual comparison ends at exact same reviewed geometry {"points":[[320,320],[2280,320],[2280,1480],[320,1480]],"expected":[[320,320],[2280,320],[2280,1480],[320,1480]]}
+PASS image-rectangle: new browser starts without attachment context 
+PASS image-rectangle: new project is actually blank before Open 
+PASS image-rectangle: Open preserves exact native ordered topology [[320,320],[2280,320],[2280,1480],[320,1480]]
+PASS image-rectangle: Open preserves source bytes, page, transform and calibration {"sourceSHA256":"12eee7286181a61983a140d80644ccada83eb928166f020096f96008578f65c4","page":{"id":"b803dc24-85b6-4971-bf3c-88088ab18b17","sourceId":"12eee7286181a61983a140d80644ccada83eb928166f020096f96008578f65c4","page":1,"imgW":280,"imgH":190,"crop":[0,0,280,190],"mmPerPx":10.000000078250203,"x":0,"y":0,"rot":0,"opacity":0.5,"locked":false,"calibration":{"points":[[30.000004695012016,29.999995304987987],[230.00000313000797,29.999995304987987]],"distanceMm":2000,"inputValue":2000,"inputUnit":"mm"},"reviewRequired":false,"records":[]}}
+PASS image-rectangle: Open preserves exact confirmed receipt 
+SCENARIO_DONE image-rectangle 8104
+PASS image-l: imported source is the selected file bytes 
+PASS image-l: pre-calibration candidate blocked 
+PASS image-l: real calibration is 10 mm/source unit {"points":[[30.000004695012016,29.999995304987987],[230.00000313000797,29.999995304987987]],"distanceMm":2000,"inputValue":2000,"inputUnit":"mm"}
+PASS image-l: expected local acquisition method 
+PASS image-l: exact cyclic topology with correct concavity {"points":[[320,320],[2280,320],[2280,780],[1280,780],[1280,1480],[320,1480]],"oracle":[[320,320],[2280,320],[2280,780],[1280,780],[1280,1480],[320,1480]]}
+PASS image-l: candidate overlay and untouched original 
+PASS image-l: Cancel preserves original 
+PASS image-l: direct dimension row exists for every true candidate edge 
+PASS image-l: dimension changes candidate only 
+PASS image-l: directly editable rows retain independently authored dimensions and order 
+PASS image-l: each displayed edge checked against independent oracle 
+PASS image-l: corrections still do not mutate original 
+PASS image-l: Confirm creates exact ordered oracle geometry 
+PASS image-l: Undo exact original 
+PASS image-l: Redo exact confirmed 
+PASS image-l: uses real download capability 
+PASS image-l: real gcanvas file downloaded 
+PASS image-l: manual comparison starts from identical native scene 
+PASS image-l: comparison source, camera, snap, review and disclosures share the same start {"candidate":{"source":{"sourceId":"927b84b1aac70e5e6966b10d4246e8c4cead2201a2be3fc5bf460de3f9d4e28c","page":1,"imgW":280,"imgH":190,"crop":[0,0,280,190],"mmPerPx":10.000000078250203,"x":0,"y":0,"rot":0,"calibration":{"points":[[30.000004695012016,29.999995304987987],[230.00000313000797,29.999995304987987]],"distanceMm":2000,"inputValue":2000,"inputUnit":"mm"}},"camera":[0.27857142639160154,40,165.35714285714283],"review":"unreviewed","tool":"select","tab":"underlay","snap":false,"method":"auto","disclosures":[["refAlignmentDetails",false],["refOutlineDetails",true],["缺口與連通房間：明確分隔後重取",false],["refSourceDetails",false],["refRecordDetails",false]]},"manual":{"source":{"sourceId":"927b84b1aac70e5e6966b10d4246e8c4cead2201a2be3fc5bf460de3f9d4e28c","page":1,"imgW":280,"imgH":190,"crop":[0,0,280,190],"mmPerPx":10.000000078250203,"x":0,"y":0,"rot":0,"calibration":{"points":[[30.000004695012016,29.999995304987987],[230.00000313000797,29.999995304987987]],"distanceMm":2000,"inputValue":2000,"inputUnit":"mm"}},"camera":[0.27857142639160154,40,165.35714285714283],"review":"unreviewed","tool":"select","tab":"underlay","snap":false,"method":"auto","disclosures":[["refAlignmentDetails",false],["refOutlineDetails",true],["缺口與連通房間：明確分隔後重取",false],["refSourceDetails",false],["refRecordDetails",false]]}}
+PASS image-l: manual comparison ends at exact same reviewed geometry {"points":[[320,320],[2280,320],[2280,780],[1280,780],[1280,1480],[320,1480]],"expected":[[320,320],[2280,320],[2280,780],[1280,780],[1280,1480],[320,1480]]}
+PASS image-l: new browser starts without attachment context 
+PASS image-l: new project is actually blank before Open 
+PASS image-l: Open preserves exact native ordered topology [[320,320],[2280,320],[2280,780],[1280,780],[1280,1480],[320,1480]]
+PASS image-l: Open preserves source bytes, page, transform and calibration {"sourceSHA256":"927b84b1aac70e5e6966b10d4246e8c4cead2201a2be3fc5bf460de3f9d4e28c","page":{"id":"3c609d15-6a56-4451-9837-bb6c22131fa8","sourceId":"927b84b1aac70e5e6966b10d4246e8c4cead2201a2be3fc5bf460de3f9d4e28c","page":1,"imgW":280,"imgH":190,"crop":[0,0,280,190],"mmPerPx":10.000000078250203,"x":0,"y":0,"rot":0,"opacity":0.5,"locked":false,"calibration":{"points":[[30.000004695012016,29.999995304987987],[230.00000313000797,29.999995304987987]],"distanceMm":2000,"inputValue":2000,"inputUnit":"mm"},"reviewRequired":false,"records":[]}}
+PASS image-l: Open preserves exact confirmed receipt 
+SCENARIO_DONE image-l 8265
+PASS image-notch: imported source is the selected file bytes 
+PASS image-notch: pre-calibration candidate blocked 
+PASS image-notch: real calibration is 10 mm/source unit {"points":[[30.000004695012016,29.999995304987987],[230.00000313000797,29.999995304987987]],"distanceMm":2000,"inputValue":2000,"inputUnit":"mm"}
+PASS image-notch: expected local acquisition method 
+PASS image-notch: exact cyclic topology with correct concavity {"points":[[320,320],[2280,320],[2280,1480],[1720,1480],[1720,1080],[1280,1080],[1280,1480],[320,1480]],"oracle":[[320,320],[2280,320],[2280,1480],[1720,1480],[1720,1080],[1280,1080],[1280,1480],[320,1480]]}
+PASS image-notch: candidate overlay and untouched original 
+PASS image-notch: Cancel preserves original 
+PASS image-notch: direct dimension row exists for every true candidate edge 
+PASS image-notch: dimension changes candidate only 
+PASS image-notch: directly editable rows retain independently authored dimensions and order 
+PASS image-notch: each displayed edge checked against independent oracle 
+PASS image-notch: corrections still do not mutate original 
+PASS image-notch: Confirm creates exact ordered oracle geometry 
+PASS image-notch: Undo exact original 
+PASS image-notch: Redo exact confirmed 
+PASS image-notch: uses real download capability 
+PASS image-notch: real gcanvas file downloaded 
+PASS image-notch: manual comparison starts from identical native scene 
+PASS image-notch: comparison source, camera, snap, review and disclosures share the same start {"candidate":{"source":{"sourceId":"e19c9fa5ea9af8d6b94d743fe72c6ab390f7e0c14e06abca11512507b28f5d59","page":1,"imgW":280,"imgH":190,"crop":[0,0,280,190],"mmPerPx":10.000000078250203,"x":0,"y":0,"rot":0,"calibration":{"points":[[30.000004695012016,29.999995304987987],[230.00000313000797,29.999995304987987]],"distanceMm":2000,"inputValue":2000,"inputUnit":"mm"}},"camera":[0.27857142639160154,40,165.35714285714283],"review":"unreviewed","tool":"select","tab":"underlay","snap":false,"method":"auto","disclosures":[["refAlignmentDetails",false],["refOutlineDetails",true],["缺口與連通房間：明確分隔後重取",false],["refSourceDetails",false],["refRecordDetails",false]]},"manual":{"source":{"sourceId":"e19c9fa5ea9af8d6b94d743fe72c6ab390f7e0c14e06abca11512507b28f5d59","page":1,"imgW":280,"imgH":190,"crop":[0,0,280,190],"mmPerPx":10.000000078250203,"x":0,"y":0,"rot":0,"calibration":{"points":[[30.000004695012016,29.999995304987987],[230.00000313000797,29.999995304987987]],"distanceMm":2000,"inputValue":2000,"inputUnit":"mm"}},"camera":[0.27857142639160154,40,165.35714285714283],"review":"unreviewed","tool":"select","tab":"underlay","snap":false,"method":"auto","disclosures":[["refAlignmentDetails",false],["refOutlineDetails",true],["缺口與連通房間：明確分隔後重取",false],["refSourceDetails",false],["refRecordDetails",false]]}}
+PASS image-notch: manual comparison ends at exact same reviewed geometry {"points":[[320,320],[2280,320],[2280,1480],[1720,1480],[1720,1080],[1280,1080],[1280,1480],[320,1480]],"expected":[[320,320],[2280,320],[2280,1480],[1720,1480],[1720,1080],[1280,1080],[1280,1480],[320,1480]]}
+PASS image-notch: new browser starts without attachment context 
+PASS image-notch: new project is actually blank before Open 
+PASS image-notch: Open preserves exact native ordered topology [[320,320],[2280,320],[2280,1480],[1720,1480],[1720,1080],[1280,1080],[1280,1480],[320,1480]]
+PASS image-notch: Open preserves source bytes, page, transform and calibration {"sourceSHA256":"e19c9fa5ea9af8d6b94d743fe72c6ab390f7e0c14e06abca11512507b28f5d59","page":{"id":"e7e866ff-9e3c-498c-a357-cb1ece777585","sourceId":"e19c9fa5ea9af8d6b94d743fe72c6ab390f7e0c14e06abca11512507b28f5d59","page":1,"imgW":280,"imgH":190,"crop":[0,0,280,190],"mmPerPx":10.000000078250203,"x":0,"y":0,"rot":0,"opacity":0.5,"locked":false,"calibration":{"points":[[30.000004695012016,29.999995304987987],[230.00000313000797,29.999995304987987]],"distanceMm":2000,"inputValue":2000,"inputUnit":"mm"},"reviewRequired":false,"records":[]}}
+PASS image-notch: Open preserves exact confirmed receipt 
+SCENARIO_DONE image-notch 8628
+PASS image-rectangle-box: imported source is the selected file bytes 
+PASS image-rectangle-box: pre-calibration candidate blocked 
+PASS image-rectangle-box: real calibration is 10 mm/source unit {"points":[[30.000004695012016,29.999995304987987],[230.00000313000797,29.999995304987987]],"distanceMm":2000,"inputValue":2000,"inputUnit":"mm"}
+PASS image-rectangle-box: expected local acquisition method 
+PASS image-rectangle-box: raster estimate has matched corners within one source pixel and is not its search crop {"raw":[[319,320],[2281,320],[2281,1480],[319,1480]],"exactOracle":[[320,320],[2280,320],[2280,1480],[320,1480]],"rawEqualsOracle":false,"maxPairedCoordinateErrorMm":1,"samplingBoundMm":10.000000078250203,"samplingBoundBasis":"One pixel of the source raster at the independently calibrated scale. This bounds a candidate estimate; final native coordinates must equal the oracle exactly.","crop":[20.000003130008015,20.00000469501203,230.000003130008,144.99999530498798],"cropCorners":[[200,200],[2500,200],[2500,1650],[200,1650]],"deviation":0.48055490651950095,"warnings":["影像暗線不是精確量測；薄線、文字與弧線可能被排除，需逐邊核對室內淨範圍。","此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"]}
+PASS image-rectangle-box: candidate overlay and untouched original 
+PASS image-rectangle-box: Cancel preserves original 
+PASS image-rectangle-box: direct dimension row exists for every true candidate edge 
+PASS image-rectangle-box: dimension changes candidate only 
+PASS image-rectangle-box: directly editable rows retain independently authored dimensions and order 
+PASS image-rectangle-box: each displayed edge checked against independent oracle 
+PASS image-rectangle-box: corrections still do not mutate original 
+PASS image-rectangle-box: Confirm creates exact ordered oracle geometry 
+PASS image-rectangle-box: Undo exact original 
+PASS image-rectangle-box: Redo exact confirmed 
+PASS image-rectangle-box: uses real download capability 
+PASS image-rectangle-box: real gcanvas file downloaded 
+PASS image-rectangle-box: new browser starts without attachment context 
+PASS image-rectangle-box: new project is actually blank before Open 
+PASS image-rectangle-box: Open preserves exact native ordered topology [[320,320],[2280,320],[2280,1480],[320,1480]]
+PASS image-rectangle-box: Open preserves source bytes, page, transform and calibration {"sourceSHA256":"12eee7286181a61983a140d80644ccada83eb928166f020096f96008578f65c4","page":{"id":"f8e9861c-f5ae-48db-948d-cc725b8324b7","sourceId":"12eee7286181a61983a140d80644ccada83eb928166f020096f96008578f65c4","page":1,"imgW":280,"imgH":190,"crop":[0,0,280,190],"mmPerPx":10.000000078250203,"x":0,"y":0,"rot":0,"opacity":0.5,"locked":false,"calibration":{"points":[[30.000004695012016,29.999995304987987],[230.00000313000797,29.999995304987987]],"distanceMm":2000,"inputValue":2000,"inputUnit":"mm"},"reviewRequired":false,"records":[]}}
+PASS image-rectangle-box: Open preserves exact confirmed receipt 
+SCENARIO_DONE image-rectangle-box 5012
+PASS pdf-l-mobile: imported source is the selected file bytes 
+PASS pdf-l-mobile: pre-calibration candidate blocked 
+PASS pdf-l-mobile: real calibration is 10 mm/source unit {"points":[[30.000000984438,29.99999212449598],[229.999996062248,29.99999212449598]],"distanceMm":2000,"inputValue":2000,"inputUnit":"mm"}
+PASS pdf-l-mobile: expected local acquisition method 
+PASS pdf-l-mobile: exact cyclic topology with correct concavity {"points":[[320,320],[2280,320],[2280,780],[1280,780],[1280,1480],[320,1480]],"oracle":[[320,320],[2280,320],[2280,780],[1280,780],[1280,1480],[320,1480]]}
+PASS pdf-l-mobile: candidate overlay and untouched original 
+PASS pdf-l-mobile: narrow layout stays within the viewport 
+PASS pdf-l-mobile: Cancel preserves original 
+PASS pdf-l-mobile: direct dimension row exists for every true candidate edge 
+PASS pdf-l-mobile: dimension changes candidate only 
+PASS pdf-l-mobile: directly editable rows retain independently authored dimensions and order 
+PASS pdf-l-mobile: each displayed edge checked against independent oracle 
+PASS pdf-l-mobile: corrections still do not mutate original 
+PASS pdf-l-mobile: Confirm creates exact ordered oracle geometry 
+PASS pdf-l-mobile: Undo exact original 
+PASS pdf-l-mobile: Redo exact confirmed 
+PASS pdf-l-mobile: uses real download capability 
+PASS pdf-l-mobile: real gcanvas file downloaded 
+PASS pdf-l-mobile: new browser starts without attachment context 
+PASS pdf-l-mobile: new project is actually blank before Open 
+PASS pdf-l-mobile: Open preserves exact native ordered topology [[320,320],[2280,320],[2280,780],[1280,780],[1280,1480],[320,1480]]
+PASS pdf-l-mobile: Open preserves source bytes, page, transform and calibration {"sourceSHA256":"f1d30a10eb1caa557fa083c051d09ada7b006c8e9012942c933e67a5d81b9677","page":{"id":"41fa388a-51df-405a-ab1f-922780197cfe","sourceId":"f1d30a10eb1caa557fa083c051d09ada7b006c8e9012942c933e67a5d81b9677","page":2,"imgW":280,"imgH":190,"crop":[0,0,280,190],"mmPerPx":10.000000246109506,"x":0,"y":0,"rot":0,"opacity":0.5,"locked":false,"calibration":{"points":[[30.000000984438,29.99999212449598],[229.999996062248,29.99999212449598]],"distanceMm":2000,"inputValue":2000,"inputUnit":"mm"},"reviewRequired":false,"records":[]}}
+PASS pdf-l-mobile: Open preserves exact confirmed receipt 
+SCENARIO_DONE pdf-l-mobile 5411
+ACCEPTANCE_ERROR image-notch-mobile locator.click: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for locator('#btnNewProject')[22m
+[2m    - locator resolved to <button type="button" class="menu-item" id="btnNewProject">新專案…</button>[22m
+[2m  - attempting click action[22m
+[2m    2 × waiting for element to be visible, enabled and stable[22m
+[2m      - element is visible, enabled and stable[22m
+[2m      - scrolling into view if needed[22m
+[2m      - done scrolling[22m
+[2m      - <button type="button" data-close-panel="right" class="drawer-close right-toggle">關閉 ×</button> from <main id="objectWorkspaceContent" class="object-workspace-content">…</main> subtree intercepts pointer events[22m
+[2m    - retrying click action[22m
+[2m    - waiting 20ms[22m
+[2m    2 × waiting for element to be visible, enabled and stable[22m
+[2m      - element is visible, enabled and stable[22m
+[2m      - scrolling into view if needed[22m
+[2m      - done scrolling[22m
+[2m      - <button type="button" data-close-panel="right" class="drawer-close right-toggle">關閉 ×</button> from <main id="objectWorkspaceContent" class="object-workspace-content">…</main> subtree intercepts pointer events[22m
+[2m    - retrying click action[22m
+[2m      - waiting 100ms[22m
+[2m    58 × waiting for element to be visible, enabled and stable[22m
+[2m       - element is visible, enabled and stable[22m
+[2m       - scrolling into view if needed[22m
+[2m       - done scrolling[22m
+[2m       - <button type="button" data-close-panel="right" class="drawer-close right-toggle">關閉 ×</button> from <main id="objectWorkspaceContent" class="object-workspace-content">…</main> subtree intercepts pointer events[22m
+[2m     - retrying click action[22m
+[2m       - waiting 500ms[22m
+
+    at ctl (<workspace-path>
+    at async menu (<workspace-path>
+    at async newProject (<workspace-path>
+    at async setup (<workspace-path>
+    at async main (<workspace-path>
+    at async <workspace-path>
+ACCEPTANCE_RESULT {"ok":false,"checks":209,"failures":1,"out":"<isolated-test-directory>"}

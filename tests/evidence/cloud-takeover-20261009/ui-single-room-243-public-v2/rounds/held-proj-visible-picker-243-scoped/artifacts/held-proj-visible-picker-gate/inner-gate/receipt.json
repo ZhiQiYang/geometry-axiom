@@ -1,0 +1,208 @@
+{
+  "schema": "geometry-release-command/1",
+  "created": "2026-10-09T15:50:06.851930+00:00",
+  "command": [
+    "<python-runtime>/bin/python",
+    "<workspace-path>",
+    "--url",
+    "http://127.0.0.1:19186/",
+    "--out",
+    "<workspace-path>",
+    "--only",
+    "handles"
+  ],
+  "cwd": "<workspace-path>",
+  "url": "http://127.0.0.1:19186/",
+  "timeoutSeconds": 900.0,
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "status": "execution-verified",
+  "executionVerified": true,
+  "releaseApproved": false,
+  "problems": [],
+  "limitations": [
+    "Only this command is covered; independent delivery gates remain separate.",
+    "Native receipts attest configured files; /runtime does not attest the running native process.",
+    "Before/after identity checks do not prove absence of transient source changes."
+  ],
+  "environment": {
+    "GEOMETRY_TEST_BRIDGE": "<isolated-test-directory>",
+    "GEOMETRY_BRIDGE": "<isolated-test-directory>",
+    "GEOMETRY_MODEL_BASE": "<isolated-test-directory>",
+    "GEOMETRY_FEEDBACK_DIR": "<isolated-test-directory>",
+    "GEOMETRY_CHROME": "/usr/bin/chromium",
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:19186/"
+  },
+  "kind": "command",
+  "before": {
+    "at": "2026-10-09T15:50:06.853188+00:00",
+    "root": "<workspace-path>",
+    "problems": [],
+    "git": {
+      "root": "<workspace-path>",
+      "head": "243326b512896ace70e068f62c8f3d6397f6000d",
+      "tree": "3a94d684e90fc8ee77883ca929b7e6e9520e656f",
+      "status": ""
+    },
+    "sourceVersion": "545f021b8cbb26b6afaabde19b73fa82d30a8a138b99d8c721a35fb54f73999b",
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "545f021b8cbb26b6afaabde19b73fa82d30a8a138b99d8c721a35fb54f73999b",
+      "fresh": true,
+      "root": "<workspace-path>",
+      "pid": 132367,
+      "session": "a3952446781e45209ac81df31a31221e"
+    },
+    "native": {
+      "bridge": {
+        "name": "bridge",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T15:49:15+00:00）",
+        "path": "<isolated-test-directory>",
+        "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+        "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b",
+        "sidecarSha256": "62b1d145d4ad9695fad642c1de829d291f1b9fc31836b04a38a128c9a8d564dd"
+      },
+      "model-base": {
+        "name": "model-base",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T15:49:20+00:00）",
+        "path": "<isolated-test-directory>",
+        "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+        "sha256": "576a0e04c7ddaeafee20a64e03f063f1d27cbebb9694c50f20fcc2b0508d7aeb",
+        "sidecarSha256": "bb3ed24616c6581375b9efbdf3d971ab6c9a0b38189f125ed42aacde6cb031e4"
+      }
+    },
+    "sources": {
+      "geometry-web/app.js": "da0a2337cc986c79231c74fd66380178646a129e7ab577d2059acbd1160774de",
+      "geometry-web/space-workspace.js": "88709be1ffab50a4c11dbca42466097bfaee2e435c41a14cda9be7cd05e0ad3e",
+      "geometry-web/app.css": "4e6dac9541329f9d17d33d66635f2dcc77e6d3c816cfbe719105b46e3b653432",
+      "geometry-web/index.html": "5084ee2b214a1653bcdfd31105bbb05b786f1447d14f9eb177ecb3185d27a9a4",
+      "geometry-web/serve.py": "bacc291874f7191739236696cf6e1c231daee57008f827d96389a562f5f30fb6",
+      "tests/release_gate.py": "ad460ddbdd52c48995188079339bc224e7f39b3d01e3147091a858ba8f541389",
+      "tests/binaries.py": "a211fd0d066b8a5138855c4773373f9f526717f26264de909c0f61f997ac9aba"
+    },
+    "executionFiles": {
+      "<original-evidence-root>/run_gate.py": "c467822e22f619cc4b46e31f318dce8ad5b5980a7e6350671f6b65e289c71a8c",
+      "<python-runtime>/bin/python3.12": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+      "<workspace-path>": "2e5d42cfc468836cb81d329b90e768489dead68b284532e0dc0016f61f6574d1"
+    },
+    "liveBridge": [
+      {
+        "pid": 132390,
+        "parent": 132367,
+        "exe": "<isolated-test-directory>",
+        "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b"
+      }
+    ]
+  },
+  "execution": {
+    "started": "2026-10-09T15:50:06.978247+00:00",
+    "exitCode": 0,
+    "timedOut": false,
+    "interrupted": false,
+    "pid": 136998,
+    "finished": "2026-10-09T15:50:11.670312+00:00"
+  },
+  "after": {
+    "at": "2026-10-09T15:50:11.670330+00:00",
+    "root": "<workspace-path>",
+    "problems": [],
+    "git": {
+      "root": "<workspace-path>",
+      "head": "243326b512896ace70e068f62c8f3d6397f6000d",
+      "tree": "3a94d684e90fc8ee77883ca929b7e6e9520e656f",
+      "status": ""
+    },
+    "sourceVersion": "545f021b8cbb26b6afaabde19b73fa82d30a8a138b99d8c721a35fb54f73999b",
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "545f021b8cbb26b6afaabde19b73fa82d30a8a138b99d8c721a35fb54f73999b",
+      "fresh": true,
+      "root": "<workspace-path>",
+      "pid": 132367,
+      "session": "a3952446781e45209ac81df31a31221e"
+    },
+    "native": {
+      "bridge": {
+        "name": "bridge",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T15:49:15+00:00）",
+        "path": "<isolated-test-directory>",
+        "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+        "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b",
+        "sidecarSha256": "62b1d145d4ad9695fad642c1de829d291f1b9fc31836b04a38a128c9a8d564dd"
+      },
+      "model-base": {
+        "name": "model-base",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T15:49:20+00:00）",
+        "path": "<isolated-test-directory>",
+        "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+        "sha256": "576a0e04c7ddaeafee20a64e03f063f1d27cbebb9694c50f20fcc2b0508d7aeb",
+        "sidecarSha256": "bb3ed24616c6581375b9efbdf3d971ab6c9a0b38189f125ed42aacde6cb031e4"
+      }
+    },
+    "sources": {
+      "geometry-web/app.js": "da0a2337cc986c79231c74fd66380178646a129e7ab577d2059acbd1160774de",
+      "geometry-web/space-workspace.js": "88709be1ffab50a4c11dbca42466097bfaee2e435c41a14cda9be7cd05e0ad3e",
+      "geometry-web/app.css": "4e6dac9541329f9d17d33d66635f2dcc77e6d3c816cfbe719105b46e3b653432",
+      "geometry-web/index.html": "5084ee2b214a1653bcdfd31105bbb05b786f1447d14f9eb177ecb3185d27a9a4",
+      "geometry-web/serve.py": "bacc291874f7191739236696cf6e1c231daee57008f827d96389a562f5f30fb6",
+      "tests/release_gate.py": "ad460ddbdd52c48995188079339bc224e7f39b3d01e3147091a858ba8f541389",
+      "tests/binaries.py": "a211fd0d066b8a5138855c4773373f9f526717f26264de909c0f61f997ac9aba"
+    },
+    "executionFiles": {
+      "<original-evidence-root>/run_gate.py": "c467822e22f619cc4b46e31f318dce8ad5b5980a7e6350671f6b65e289c71a8c",
+      "<python-runtime>/bin/python3.12": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+      "<workspace-path>": "2e5d42cfc468836cb81d329b90e768489dead68b284532e0dc0016f61f6574d1"
+    },
+    "liveBridge": [
+      {
+        "pid": 132390,
+        "parent": 132367,
+        "exe": "<isolated-test-directory>",
+        "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b"
+      }
+    ]
+  },
+  "evidence": {
+    "scope": "command-only",
+    "completionVerified": false,
+    "note": "Exit status recorded; no generic test-completion or release claim."
+  },
+  "log": {
+    "path": "<workspace-path>",
+    "bytes": 117,
+    "sha256": "2891c032d5b993aa0c999db63d19975cdbbc6f66b443d1c275863b46beaed7d3"
+  },
+  "finished": "2026-10-09T15:50:11.797108+00:00",
+  "gateExitCode": 0,
+  "harnessScope": "Scoped unchanged probe, synthetic fixtures; not full product acceptance",
+  "stackBytes": 16777216,
+  "runnerSha256": "c467822e22f619cc4b46e31f318dce8ad5b5980a7e6350671f6b65e289c71a8c",
+  "probeCensus": {
+    "resultsPath": "<workspace-path>",
+    "resultsSha256": "f763bd26d0ffdbdc48f2872c2610217d5b986e0bda01cd489f0f5f8d86c35bdc",
+    "expectedCases": 2,
+    "actualCases": 2,
+    "pass": 2,
+    "fail": 0,
+    "completed": true,
+    "cases": [
+      {
+        "name": "handles-1400",
+        "ok": true,
+        "harnessError": null,
+        "pageErrors": []
+      },
+      {
+        "name": "handles-390",
+        "ok": true,
+        "harnessError": null,
+        "pageErrors": []
+      }
+    ]
+  },
+  "probeVerified": true
+}

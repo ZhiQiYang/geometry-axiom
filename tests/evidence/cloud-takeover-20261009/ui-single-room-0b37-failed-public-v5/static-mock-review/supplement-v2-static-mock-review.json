@@ -1,0 +1,365 @@
+{
+  "at": "2026-10-09T15:24:00.637Z",
+  "candidate": {
+    "path": "<workspace-path>",
+    "sha256": "8dbf04fe3af69a7656fbe38445afe190f520dac660b6046555595d386a08c5a9"
+  },
+  "original": {
+    "path": "<workspace-path>",
+    "sha256": "43a3d2b6adf011dec05f85af71c14d0de110e24071b69b5bd636dcf30d0e72ca"
+  },
+  "tool": {
+    "path": "<workspace-path>",
+    "sha256": "1e28bdaa48cb318b58cd393229b0c54e2a502ed3d1d4fd14162a30cafcf2c7dc",
+    "node": "<node-runtime>/bin/node",
+    "nodeSHA256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12",
+    "command": [
+      "<node-runtime>/bin/node",
+      "<workspace-path>"
+    ]
+  },
+  "browserExecuted": false,
+  "nativeExecuted": false,
+  "repoWritten": false,
+  "checks": [
+    {
+      "name": "exact reviewed original43a3 and candidate8dbf bytes",
+      "ok": true
+    },
+    {
+      "name": "every original assertion expression is retained byte identical with multiplicity",
+      "ok": true,
+      "detail": {
+        "original": 125,
+        "new": 145
+      }
+    },
+    {
+      "name": "all original six bodies remain unchanged",
+      "ok": true
+    },
+    {
+      "name": "unchanged existing top-level helper settle",
+      "ok": true
+    },
+    {
+      "name": "unchanged existing top-level helper click",
+      "ok": true
+    },
+    {
+      "name": "unchanged existing top-level helper fill",
+      "ok": true
+    },
+    {
+      "name": "unchanged existing top-level helper select",
+      "ok": true
+    },
+    {
+      "name": "unchanged existing top-level helper panel",
+      "ok": true
+    },
+    {
+      "name": "unchanged existing top-level helper tab",
+      "ok": true
+    },
+    {
+      "name": "unchanged existing top-level helper shot",
+      "ok": true
+    },
+    {
+      "name": "unchanged existing top-level helper focusByTab",
+      "ok": true
+    },
+    {
+      "name": "unchanged existing top-level helper expectedConfirm",
+      "ok": true
+    },
+    {
+      "name": "unchanged existing top-level helper newProject",
+      "ok": true
+    },
+    {
+      "name": "unchanged existing top-level helper setup",
+      "ok": true
+    },
+    {
+      "name": "unchanged existing top-level helper enterFace",
+      "ok": true
+    },
+    {
+      "name": "unchanged existing top-level helper sourceGrid",
+      "ok": true
+    },
+    {
+      "name": "unchanged existing top-level helper modelEmpty",
+      "ok": true
+    },
+    {
+      "name": "unchanged existing top-level helper modelExample",
+      "ok": true
+    },
+    {
+      "name": "unchanged existing top-level helper archiveInput",
+      "ok": true
+    },
+    {
+      "name": "unchanged existing top-level helper freshContext",
+      "ok": true
+    },
+    {
+      "name": "unchanged existing top-level helper canvasFootprint",
+      "ok": true
+    },
+    {
+      "name": "unchanged existing top-level helper visibleModel",
+      "ok": true
+    },
+    {
+      "name": "unchanged existing top-level helper v3PointerPoint",
+      "ok": true
+    },
+    {
+      "name": "unchanged existing top-level helper runtime",
+      "ok": true
+    },
+    {
+      "name": "unchanged existing top-level helper nativeIdentity",
+      "ok": true
+    },
+    {
+      "name": "unchanged existing top-level helper leftPanel",
+      "ok": true
+    },
+    {
+      "name": "unchanged existing top-level helper typedOnly",
+      "ok": true
+    },
+    {
+      "name": "unchanged existing top-level helper canonicalRoom",
+      "ok": true
+    },
+    {
+      "name": "unchanged existing top-level helper sourceWorld",
+      "ok": true
+    },
+    {
+      "name": "unchanged existing top-level helper roomSourcePoint",
+      "ok": true
+    },
+    {
+      "name": "unchanged existing top-level helper importCalibratedRoom",
+      "ok": true
+    },
+    {
+      "name": "unchanged existing top-level helper proposePublicRoom",
+      "ok": true
+    },
+    {
+      "name": "unchanged existing top-level helper rectangularEdgeExtension",
+      "ok": true
+    },
+    {
+      "name": "unchanged existing top-level helper readQuotedCSV",
+      "ok": true
+    },
+    {
+      "name": "unchanged existing top-level helper independentTimberRows",
+      "ok": true
+    },
+    {
+      "name": "unchanged existing top-level helper checkBOMRows",
+      "ok": true
+    },
+    {
+      "name": "original receipt completion/failure logic remains byte identical",
+      "ok": true
+    },
+    {
+      "name": "no forced input native bypass or sandbox disabling flags",
+      "ok": true
+    },
+    {
+      "name": "BOM requests exact genuine requested id native preview then explicit real Confirm",
+      "ok": true
+    },
+    {
+      "name": "BOM full native scene captured before delete and unchanged before Confirm",
+      "ok": true
+    },
+    {
+      "name": "BOM has no native API commit or state injection",
+      "ok": true
+    },
+    {
+      "name": "BOM original removed waits realcleanup and Undo assertions retained",
+      "ok": true
+    },
+    {
+      "name": "negative confirm requires actual disabled rawzero dirty row livehit target",
+      "ok": true
+    },
+    {
+      "name": "negative confirm uses one physical mouse attempt and trusted exacttarget down/up",
+      "ok": true
+    },
+    {
+      "name": "negative confirm passive request census occurs before original native dump",
+      "ok": true
+    },
+    {
+      "name": "own closed summary must be left for one original caller click",
+      "ok": true,
+      "detail": {
+        "opened": [],
+        "outerOpen": true,
+        "innerOpen": false,
+        "error": null
+      }
+    },
+    {
+      "name": "own summary descendant also must not auto-toggle",
+      "ok": true,
+      "detail": {
+        "opened": [],
+        "outerOpen": true,
+        "innerOpen": false,
+        "error": null
+      }
+    },
+    {
+      "name": "closed details content normal ancestor opened once",
+      "ok": true,
+      "detail": {
+        "opened": [
+          "inner"
+        ],
+        "outerOpen": true,
+        "innerOpen": true,
+        "error": null
+      }
+    },
+    {
+      "name": "closed outer ancestor of a closed inner summary opened once",
+      "ok": true,
+      "detail": {
+        "opened": [
+          "outer"
+        ],
+        "outerOpen": true,
+        "innerOpen": false,
+        "error": null
+      }
+    },
+    {
+      "name": "open details content untouched",
+      "ok": true,
+      "detail": {
+        "opened": [],
+        "outerOpen": true,
+        "innerOpen": true,
+        "error": null
+      }
+    },
+    {
+      "name": "inherited two-closed-details limitation is explicitly detected without force",
+      "ok": true,
+      "detail": {
+        "opened": [],
+        "outerOpen": false,
+        "innerOpen": false,
+        "error": "Inner summary is not visible while outer is closed"
+      }
+    },
+    {
+      "name": "all embedded actual page expressions parse",
+      "ok": true,
+      "detail": {
+        "count": 148,
+        "failed": []
+      }
+    },
+    {
+      "name": "added compact vertex anchor exact native identities keyboard nextTab and unchanged owner guards remain",
+      "ok": true
+    }
+  ],
+  "ok": true,
+  "limits": [
+    "Static/mock review is not browser acceptance.",
+    "The generic nearest-closed-ancestor helper inherits a two-closed-details content-navigation limitation; same-target-summary behavior is fixed and normal outer ancestor remains handled. This is recorded, not forced."
+  ],
+  "mockCases": [
+    {
+      "name": "own closed summary must be left for one original caller click",
+      "spec": {
+        "target": "summary"
+      },
+      "actual": {
+        "opened": [],
+        "outerOpen": true,
+        "innerOpen": false,
+        "error": null
+      }
+    },
+    {
+      "name": "own summary descendant also must not auto-toggle",
+      "spec": {
+        "target": "summaryChild"
+      },
+      "actual": {
+        "opened": [],
+        "outerOpen": true,
+        "innerOpen": false,
+        "error": null
+      }
+    },
+    {
+      "name": "closed details content normal ancestor opened once",
+      "spec": {
+        "target": "button"
+      },
+      "actual": {
+        "opened": [
+          "inner"
+        ],
+        "outerOpen": true,
+        "innerOpen": true,
+        "error": null
+      }
+    },
+    {
+      "name": "closed outer ancestor of a closed inner summary opened once",
+      "spec": {
+        "target": "summary",
+        "outerOpen": false
+      },
+      "actual": {
+        "opened": [
+          "outer"
+        ],
+        "outerOpen": true,
+        "innerOpen": false,
+        "error": null
+      }
+    },
+    {
+      "name": "open details content untouched",
+      "spec": {
+        "target": "button",
+        "innerOpen": true
+      },
+      "actual": {
+        "opened": [],
+        "outerOpen": true,
+        "innerOpen": true,
+        "error": null
+      }
+    }
+  ],
+  "nestedClosedLimitation": {
+    "opened": [],
+    "outerOpen": false,
+    "innerOpen": false,
+    "error": "Inner summary is not visible while outer is closed"
+  }
+}

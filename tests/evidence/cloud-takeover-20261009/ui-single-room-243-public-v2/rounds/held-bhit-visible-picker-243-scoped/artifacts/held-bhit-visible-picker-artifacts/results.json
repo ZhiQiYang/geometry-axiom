@@ -1,0 +1,618 @@
+[
+  {
+    "name": "bhit-1400",
+    "utc": "2026-10-09T15:50:01.905800+00:00",
+    "ok": true,
+    "before": {
+      "tool": "edit",
+      "editBid": 712,
+      "editToken": 5,
+      "editDrag": null,
+      "groups": 1,
+      "handles": 5
+    },
+    "after": {
+      "tool": "edit",
+      "editBid": 712,
+      "editToken": 5,
+      "editDrag": null,
+      "groups": 1,
+      "handles": 5
+    },
+    "worldUnchanged": true,
+    "trustedPointerDownAndUp": true,
+    "point": {
+      "x": 243.9518051147461,
+      "y": 413.4025573730469
+    },
+    "hitTest": {
+      "inViewport": true,
+      "canvas": true,
+      "tag": "circle"
+    },
+    "fixture": [
+      {
+        "ok": true
+      },
+      {
+        "ok": true
+      },
+      {
+        "ok": true
+      }
+    ],
+    "audit": {
+      "gate": {
+        "id": 711,
+        "phase": "released",
+        "release": null,
+        "promise": null,
+        "command": "bhit 711 0 0 72",
+        "stack": "Error\n    at window.fetch (eval at evaluate (:311:30), <anonymous>:8:19)\n    at apiRequest (http://127.0.0.1:19186/app.js:639:21)\n    at api (http://127.0.0.1:19186/app.js:691:24)\n    at canvasDown (http://127.0.0.1:19186/app.js:1493:21)\n    at async canvasDown (eval at evaluate (:311:30), <anonymous>:38:18)",
+        "nativeReply": {
+          "ok": true,
+          "kind": "vertex",
+          "loop": -1,
+          "index": 0
+        }
+      },
+      "downs": [
+        {
+          "phase": "settled",
+          "trusted": true,
+          "before": {
+            "tool": "edit",
+            "editBid": 711,
+            "editToken": 2,
+            "editDrag": null,
+            "groups": 1,
+            "handles": 5
+          },
+          "sv": {
+            "v": 2,
+            "x": 0,
+            "y": 0,
+            "r": 72
+          },
+          "after": {
+            "tool": "edit",
+            "editBid": 712,
+            "editToken": 5,
+            "editDrag": null,
+            "groups": 1,
+            "handles": 5
+          }
+        }
+      ],
+      "ups": [
+        {
+          "phase": "settled",
+          "trusted": true,
+          "before": {
+            "tool": "edit",
+            "editBid": 711,
+            "editToken": 2,
+            "editDrag": null,
+            "groups": 1,
+            "handles": 5
+          },
+          "after": {
+            "tool": "edit",
+            "editBid": 711,
+            "editToken": 2,
+            "editDrag": null,
+            "groups": 1,
+            "handles": 5
+          }
+        }
+      ],
+      "draws": [
+        {
+          "token": 2,
+          "bid": 711,
+          "phase": "settled"
+        },
+        {
+          "token": 5,
+          "bid": 712,
+          "phase": "settled"
+        }
+      ],
+      "pointers": [
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "button": 0,
+          "x": 243.95181274414062,
+          "y": 413.4025573730469,
+          "state": {
+            "tool": "edit",
+            "editBid": 711,
+            "editToken": 2,
+            "editDrag": null,
+            "groups": 1,
+            "handles": 5
+          }
+        },
+        {
+          "type": "pointerup",
+          "trusted": true,
+          "button": 0,
+          "x": 243.95181274414062,
+          "y": 413.4025573730469,
+          "state": {
+            "tool": "edit",
+            "editBid": 711,
+            "editToken": 2,
+            "editDrag": null,
+            "groups": 1,
+            "handles": 5
+          }
+        }
+      ],
+      "fetches": [
+        {
+          "command": "reset",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "line surface 711 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "line surface 712 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+          "status": 200
+        },
+        {
+          "command": "objects",
+          "status": 200
+        },
+        {
+          "command": "surfaces",
+          "status": 200
+        },
+        {
+          "command": "boundary 711",
+          "status": 200
+        },
+        {
+          "command": "boundary 712",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "line canvas-pos boundary 711 60 60",
+          "status": 200
+        },
+        {
+          "command": "line canvas-pos boundary 712 440 60",
+          "status": 200
+        },
+        {
+          "command": "render",
+          "status": 200
+        },
+        {
+          "command": "surfaces",
+          "status": 200
+        },
+        {
+          "command": "boundary 711",
+          "status": 200
+        },
+        {
+          "command": "proj 0 0 0 711",
+          "status": 200
+        },
+        {
+          "command": "proj 0 1000 0 711",
+          "status": 200
+        },
+        {
+          "command": "proj 0 0 1000 711",
+          "status": 200
+        },
+        {
+          "command": "proj 1 1000 0 711",
+          "status": 200
+        },
+        {
+          "command": "proj 1 0 1000 711",
+          "status": 200
+        },
+        {
+          "command": "proj 1 0 0 711",
+          "status": 200
+        },
+        {
+          "command": "proj 2 0 0 711",
+          "status": 200
+        },
+        {
+          "command": "proj 2 1000 0 711",
+          "status": 200
+        },
+        {
+          "command": "proj 2 0 1000 711",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        },
+        {
+          "command": "bhit 711 0 0 72",
+          "status": 200
+        },
+        {
+          "command": "boundary 712",
+          "status": 200
+        },
+        {
+          "command": "proj 0 0 0 712",
+          "status": 200
+        },
+        {
+          "command": "proj 0 1000 0 712",
+          "status": 200
+        },
+        {
+          "command": "proj 0 0 1000 712",
+          "status": 200
+        },
+        {
+          "command": "proj 1 0 0 712",
+          "status": 200
+        },
+        {
+          "command": "proj 1 1000 0 712",
+          "status": 200
+        },
+        {
+          "command": "proj 1 0 1000 712",
+          "status": 200
+        },
+        {
+          "command": "proj 2 0 0 712",
+          "status": 200
+        },
+        {
+          "command": "proj 2 1000 0 712",
+          "status": 200
+        },
+        {
+          "command": "proj 2 0 1000 712",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        }
+      ]
+    },
+    "pageErrors": []
+  },
+  {
+    "name": "bhit-390",
+    "utc": "2026-10-09T15:50:04.219733+00:00",
+    "ok": true,
+    "before": {
+      "tool": "edit",
+      "editBid": 712,
+      "editToken": 5,
+      "editDrag": null,
+      "groups": 1,
+      "handles": 5
+    },
+    "after": {
+      "tool": "edit",
+      "editBid": 712,
+      "editToken": 5,
+      "editDrag": null,
+      "groups": 1,
+      "handles": 5
+    },
+    "worldUnchanged": true,
+    "trustedPointerDownAndUp": true,
+    "point": {
+      "x": 26.783133506774902,
+      "y": 450.7278289794922
+    },
+    "hitTest": {
+      "inViewport": true,
+      "canvas": true,
+      "tag": "circle"
+    },
+    "fixture": [
+      {
+        "ok": true
+      },
+      {
+        "ok": true
+      },
+      {
+        "ok": true
+      }
+    ],
+    "audit": {
+      "gate": {
+        "id": 711,
+        "phase": "released",
+        "release": null,
+        "promise": null,
+        "command": "bhit 711 0 0 186",
+        "stack": "Error\n    at window.fetch (eval at evaluate (:311:30), <anonymous>:8:19)\n    at apiRequest (http://127.0.0.1:19186/app.js:639:21)\n    at api (http://127.0.0.1:19186/app.js:691:24)\n    at canvasDown (http://127.0.0.1:19186/app.js:1493:21)\n    at async canvasDown (eval at evaluate (:311:30), <anonymous>:38:18)",
+        "nativeReply": {
+          "ok": true,
+          "kind": "vertex",
+          "loop": -1,
+          "index": 0
+        }
+      },
+      "downs": [
+        {
+          "phase": "settled",
+          "trusted": true,
+          "before": {
+            "tool": "edit",
+            "editBid": 711,
+            "editToken": 2,
+            "editDrag": null,
+            "groups": 1,
+            "handles": 5
+          },
+          "sv": {
+            "v": 2,
+            "x": 0,
+            "y": 0,
+            "r": 186
+          },
+          "after": {
+            "tool": "edit",
+            "editBid": 712,
+            "editToken": 5,
+            "editDrag": null,
+            "groups": 1,
+            "handles": 5
+          }
+        }
+      ],
+      "ups": [
+        {
+          "phase": "settled",
+          "trusted": true,
+          "before": {
+            "tool": "edit",
+            "editBid": 711,
+            "editToken": 2,
+            "editDrag": null,
+            "groups": 1,
+            "handles": 5
+          },
+          "after": {
+            "tool": "edit",
+            "editBid": 711,
+            "editToken": 2,
+            "editDrag": null,
+            "groups": 1,
+            "handles": 5
+          }
+        }
+      ],
+      "draws": [
+        {
+          "token": 2,
+          "bid": 711,
+          "phase": "settled"
+        },
+        {
+          "token": 5,
+          "bid": 712,
+          "phase": "settled"
+        }
+      ],
+      "pointers": [
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "button": 0,
+          "x": 26.78313446044922,
+          "y": 450.72784423828125,
+          "state": {
+            "tool": "edit",
+            "editBid": 711,
+            "editToken": 2,
+            "editDrag": null,
+            "groups": 1,
+            "handles": 5
+          }
+        },
+        {
+          "type": "pointerup",
+          "trusted": true,
+          "button": 0,
+          "x": 26.78313446044922,
+          "y": 450.72784423828125,
+          "state": {
+            "tool": "edit",
+            "editBid": 711,
+            "editToken": 2,
+            "editDrag": null,
+            "groups": 1,
+            "handles": 5
+          }
+        }
+      ],
+      "fetches": [
+        {
+          "command": "reset",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "line surface 711 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "line surface 712 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+          "status": 200
+        },
+        {
+          "command": "objects",
+          "status": 200
+        },
+        {
+          "command": "surfaces",
+          "status": 200
+        },
+        {
+          "command": "boundary 711",
+          "status": 200
+        },
+        {
+          "command": "boundary 712",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "line canvas-pos boundary 711 60 60",
+          "status": 200
+        },
+        {
+          "command": "line canvas-pos boundary 712 60 360",
+          "status": 200
+        },
+        {
+          "command": "render",
+          "status": 200
+        },
+        {
+          "command": "surfaces",
+          "status": 200
+        },
+        {
+          "command": "boundary 711",
+          "status": 200
+        },
+        {
+          "command": "proj 0 0 0 711",
+          "status": 200
+        },
+        {
+          "command": "proj 0 1000 0 711",
+          "status": 200
+        },
+        {
+          "command": "proj 0 0 1000 711",
+          "status": 200
+        },
+        {
+          "command": "proj 1 0 0 711",
+          "status": 200
+        },
+        {
+          "command": "proj 1 1000 0 711",
+          "status": 200
+        },
+        {
+          "command": "proj 1 0 1000 711",
+          "status": 200
+        },
+        {
+          "command": "proj 2 1000 0 711",
+          "status": 200
+        },
+        {
+          "command": "proj 2 0 0 711",
+          "status": 200
+        },
+        {
+          "command": "proj 2 0 1000 711",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        },
+        {
+          "command": "bhit 711 0 0 186",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        },
+        {
+          "command": "boundary 712",
+          "status": 200
+        },
+        {
+          "command": "proj 0 0 0 712",
+          "status": 200
+        },
+        {
+          "command": "proj 0 1000 0 712",
+          "status": 200
+        },
+        {
+          "command": "proj 0 0 1000 712",
+          "status": 200
+        },
+        {
+          "command": "proj 1 0 0 712",
+          "status": 200
+        },
+        {
+          "command": "proj 1 0 1000 712",
+          "status": 200
+        },
+        {
+          "command": "proj 1 1000 0 712",
+          "status": 200
+        },
+        {
+          "command": "proj 2 0 0 712",
+          "status": 200
+        },
+        {
+          "command": "proj 2 1000 0 712",
+          "status": 200
+        },
+        {
+          "command": "proj 2 0 1000 712",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        }
+      ]
+    },
+    "pageErrors": []
+  }
+]

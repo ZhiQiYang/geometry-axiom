@@ -1,0 +1,58 @@
+{
+  "actor": "/root/race_review",
+  "scope": "corrected-v2-ten",
+  "sourceSHA": "640a81443b3d070dba3d8a0aa52adb2d64cebe0b",
+  "command": [
+    "<python-runtime>/bin/python",
+    "<workspace-path>",
+    "--root",
+    "<workspace-path>",
+    "--url",
+    "http://127.0.0.1:19186/",
+    "--out",
+    "<workspace-path>",
+    "--expected-head",
+    "640a81443b3d070dba3d8a0aa52adb2d64cebe0b"
+  ],
+  "cwd": "<workspace-path>",
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "GEOMETRY_TEST_BRIDGE": "<isolated-test-directory>",
+    "GEOMETRY_MODEL_BASE": "<isolated-test-directory>"
+  },
+  "started": "2026-10-09T15:07:47.029574+00:00",
+  "finished": "2026-10-09T15:08:21.586247+00:00",
+  "exitCode": 0,
+  "rawLog": {
+    "path": "<workspace-path>",
+    "sha256": "c2b3a5a48402c596c14b41620b2a9023e273f6fc3d72d995d042771cf1469a84"
+  },
+  "script": {
+    "path": "<workspace-path>",
+    "sha256": "9594ab91fbddabc71ad43970d6dbe771ba5e450531c692e1918e573548ec937d"
+  },
+  "scriptResult": {
+    "path": "<workspace-path>",
+    "sha256": "495f04c07da7b957f1f9ea5d8c890a178df3bca2a8e22279deb6011a65bcc91d"
+  },
+  "serviceLauncher": {
+    "path": "<workspace-path>",
+    "sha256": "d2dbdd3c30631874c63a3fdaac763868f9a5809588c085cf12baed61bed33631",
+    "argv": [
+      "<python-runtime>/bin/python",
+      "<workspace-path>",
+      "<workspace-path>",
+      "19186",
+      "<isolated-test-directory>"
+    ],
+    "logPath": "<workspace-path>"
+  },
+  "publicProjection": {
+    "originalSha256": "f64713272dfc1c4354c0414c04ca15cfe40e6670ca32468ce941471d5fa8d39d",
+    "originalBytes": 2176,
+    "originalPathLabel": "<workspace-path>",
+    "originalRetainedOutsideGit": true,
+    "changes": "Machine/executable/isolated source, feedback and profile path labels; colliding absolute-path dictionary keys retain basename and original-key SHA256, preserving all entries. Result, full SHA, dirty, command, exit and original hashes remain.",
+    "dictionaryKeyAudit": []
+  }
+}

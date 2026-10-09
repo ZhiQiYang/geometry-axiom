@@ -1,0 +1,272 @@
+{
+  "schema": "geometry-executor-full-failure-index/1",
+  "indexedUtc": "2026-10-09T16:08:57.743768+00:00",
+  "reviewerRole": "same executing agent, not independent reviewer",
+  "git": {
+    "root": "<workspace-path>",
+    "head": "243326b512896ace70e068f62c8f3d6397f6000d",
+    "tree": "3a94d684e90fc8ee77883ca929b7e6e9520e656f",
+    "status": ""
+  },
+  "command": [
+    "node",
+    "geometry-web/cdp_test.js"
+  ],
+  "environment": {
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:19182/",
+    "GEOMETRY_TEST_BRIDGE": "<isolated-test-directory>",
+    "GEOMETRY_BRIDGE": "<isolated-test-directory>",
+    "GEOMETRY_MODEL_BASE": "<isolated-test-directory>",
+    "GEOMETRY_FEEDBACK_DIR": "<isolated-test-directory>",
+    "GEOMETRY_CHROME": "/usr/bin/chromium",
+    "GEOMETRY_CDP_PORT": "56511"
+  },
+  "execution": {
+    "started": "2026-10-09T15:50:08.690653+00:00",
+    "exitCode": 1,
+    "timedOut": false,
+    "interrupted": false,
+    "pid": 137311,
+    "finished": "2026-10-09T16:08:22.682856+00:00"
+  },
+  "result": {
+    "schema": "geometry-cdp-result/1",
+    "scope": {
+      "mode": "full",
+      "filters": [],
+      "modifiers": [],
+      "url": "http://127.0.0.1:19182/",
+      "feedbackDirectory": "<isolated-test-directory>",
+      "browserProfile": "<isolated-test-directory>",
+      "cdpPort": 56511,
+      "browserPid": 137327
+    },
+    "completed": false,
+    "passedAssertions": 1713,
+    "failedAssertions": 6,
+    "fatal": "P75 退出網格後真拖框可選本面兩支角材 []",
+    "skipped": [],
+    "sections": {
+      "1": 14,
+      "2": 3,
+      "3": 1,
+      "4": 1,
+      "5": 1,
+      "6": 1,
+      "7": 1,
+      "8": 0,
+      "9": 12,
+      "10": 0,
+      "Setup": 0,
+      "P3": 14,
+      "P4": 11,
+      "P5": 2,
+      "P6": 4,
+      "P7": 54,
+      "P8": 116,
+      "P9": 9,
+      "P10": 9,
+      "P11": 12,
+      "P12": 8,
+      "P13": 4,
+      "P14": 16,
+      "P15": 6,
+      "P16": 10,
+      "P17": 11,
+      "P18": 20,
+      "P19": 17,
+      "BF2": 5,
+      "BF3": 1,
+      "BF4": 9,
+      "P20": 10,
+      "P21": 4,
+      "P22": 45,
+      "P32": 33,
+      "P33": 9,
+      "P34": 7,
+      "P35": 14,
+      "P36": 2,
+      "P37": 19,
+      "P38": 13,
+      "P39": 8,
+      "P40": 4,
+      "P41": 3,
+      "P42": 12,
+      "P43": 12,
+      "P44": 19,
+      "P45": 2,
+      "P46": 7,
+      "P47": 9,
+      "P48": 14,
+      "P49": 17,
+      "P50": 33,
+      "P51": 13,
+      "P52": 43,
+      "P53": 28,
+      "P57": 56,
+      "P62": 38,
+      "P63": 18,
+      "P64": 20,
+      "P65": 5,
+      "P66": 4,
+      "P68": 36,
+      "P69": 160,
+      "P67": 96,
+      "P70": 117,
+      "P71": 9,
+      "P78": 23,
+      "P87": 60,
+      "P88": 137,
+      "P72": 52,
+      "P73": 69,
+      "P74": 52,
+      "P75": 9
+    },
+    "sectionsFailed": {
+      "P32": 1,
+      "P64": 4,
+      "P75": 1
+    },
+    "currentSection": "P75",
+    "goldenCompare": "not compared (run did not complete)"
+  },
+  "receipt": {
+    "path": "<original-evidence-root>/after-final-243326b5-full-cdp-20261009/receipt.json",
+    "sha256": "ddeffa3dd2e24e8475c45fd2a75937e864642a236711c72a6edaa4ced8491c13",
+    "unchanged": true
+  },
+  "rawLog": {
+    "path": "<original-evidence-root>/after-final-243326b5-full-cdp-20261009/command.log",
+    "sha256": "c2f16b7063ba219af9f1167892e1fba52ca753e8db260701ae69c214c4739087",
+    "bytes": 181766
+  },
+  "executionIdentity": {
+    "liveBinding": {
+      "observedUtc": "2026-10-09T15:50:09.223515+00:00",
+      "scope": "Observed the actual owned Chromium ELF and live canonical Node parent during this command; launcher stages excluded",
+      "cdpScope": {
+        "mode": "full",
+        "filters": [],
+        "modifiers": [],
+        "url": "http://127.0.0.1:19182/",
+        "feedbackDirectory": "<isolated-test-directory>",
+        "browserProfile": "<isolated-test-directory>",
+        "cdpPort": 56511,
+        "browserPid": 137327
+      },
+      "processes": [
+        {
+          "role": "actual CDP_SCOPE Chromium main process",
+          "pid": 137327,
+          "exe": "/usr/lib/chromium/chromium",
+          "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+          "executableMagicHex": "7f454c46",
+          "cmdline": [
+            "/usr/lib/chromium/chromium",
+            "--show-component-extension-options",
+            "--enable-gpu-rasterization",
+            "--no-default-browser-check",
+            "--disable-pings",
+            "--media-router=0",
+            "--enable-remote-extensions",
+            "--load-extension=",
+            "about:blank",
+            "--headless=new",
+            "--disable-gpu",
+            "--no-first-run",
+            "--remote-debugging-port=56511",
+            "--window-size=1400,900",
+            "--user-data-dir=<isolated-test-directory>"
+          ],
+          "cwd": "<workspace-path>"
+        },
+        {
+          "role": "actual browser parent Node",
+          "pid": 137311,
+          "exe": "<node-runtime>/bin/node",
+          "sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12",
+          "executableMagicHex": "7f454c46",
+          "cmdline": [
+            "node",
+            "geometry-web/cdp_test.js"
+          ],
+          "cwd": "<workspace-path>"
+        }
+      ]
+    },
+    "errors": [],
+    "excludedLauncherStages": [
+      {
+        "pid": 137327,
+        "exe": "/usr/bin/dash",
+        "cmdline": [
+          "/bin/sh",
+          "/usr/bin/chromium",
+          "--headless=new",
+          "--disable-gpu",
+          "--no-first-run",
+          "--remote-debugging-port=56511",
+          "--window-size=1400,900",
+          "--user-data-dir=<isolated-test-directory>",
+          "about:blank"
+        ]
+      }
+    ]
+  },
+  "liveBridgeBefore": [
+    {
+      "pid": 135363,
+      "parent": 135347,
+      "exe": "<isolated-test-directory>",
+      "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b"
+    }
+  ],
+  "liveBridgeAfter": [
+    {
+      "pid": 135363,
+      "parent": 135347,
+      "exe": "<isolated-test-directory>",
+      "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b"
+    }
+  ],
+  "sourceSnapshotDirectory": "<original-evidence-root>/after-final-243326b5-full-cdp-20261009/executed-harness-sources",
+  "wrapperSnapshots": [
+    {
+      "path": "<original-evidence-root>/after-final-243326b5-full-cdp-20261009/executed-wrapper-sources/run_full_cdp_identity.py",
+      "sha256": "5ce8212de96e45d0b613b17888a053a7a679024dc1a230f4c734a6170cc5da89"
+    },
+    {
+      "path": "<original-evidence-root>/after-final-243326b5-full-cdp-20261009/executed-wrapper-sources/cdp_execution_identity_v2.py",
+      "sha256": "b34554e6f8e643d5f040d6f9b0b5e7bc1619a75b52d3d5d5bdb1f7dc9069a0cc"
+    },
+    {
+      "path": "<original-evidence-root>/after-final-243326b5-full-cdp-20261009/executed-wrapper-sources/full-launch-adapters/sandbox-launch.cjs",
+      "sha256": "c917611c821f63cea2e5ef3ed1c0ddde128dcf47fde65d1a7ace8ff24fba2b1e"
+    },
+    {
+      "path": "<original-evidence-root>/after-final-243326b5-full-cdp-20261009/executed-wrapper-sources/full-launch-adapters/sitecustomize.py",
+      "sha256": "e49545951bb661db0169e3d466c96321ee67c5f8a39fac3f7f0ed6954c22a7be"
+    },
+    {
+      "path": "<original-evidence-root>/after-final-243326b5-full-cdp-20261009/executed-wrapper-sources/cdp_sections.golden.json",
+      "sha256": "e3e742ec3d731e701afc22149efa9bc11cf6506340715176175e594c94778bd9"
+    }
+  ],
+  "ownedBrowserPortConnectExAfter": 111,
+  "failureLines": [
+    "V1 V2 toolbar does not overlap drawing and adopted empty inspector retains 240px ✗ \"\"",
+    "P64 F2 Esc 取消形狀選擇且 R 開口仍可啟用取消 ✗ false",
+    "P64 F3-F5 四頁、構件段與形狀庫 ✗ false",
+    "P64 R2 中寬面畫布與檢查器皆可操作 ✗ false",
+    "P64 R2 手機面畫布可點且無水平溢出 ✗ false",
+    "P75 退出網格後真拖框可選本面兩支角材 ✗ []",
+    "FATAL: P75 退出網格後真拖框可選本面兩支角材 []"
+  ],
+  "diagnosticLimits": [
+    "Source-supported P32 mode-panel selector diagnosis and P64 existing-Esc hierarchy diagnosis are separate from the combined verdicts; the full raw log does not print all failed conjunction terms",
+    "No original receipt edit, force clicks, relaxed assertions, retries or golden update",
+    "This result is failed; completion and golden status are taken verbatim from actual CDP_RESULT",
+    "A corrected later SHA needs its own receipt; this receipt must not be rebound",
+    "Windows originals remain unreceived"
+  ]
+}

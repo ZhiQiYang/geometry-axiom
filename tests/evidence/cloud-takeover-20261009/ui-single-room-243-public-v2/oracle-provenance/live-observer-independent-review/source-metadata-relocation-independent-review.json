@@ -1,0 +1,445 @@
+{
+  "actor": "/root/race_review/hole_order_oracle_review",
+  "at": "2026-10-09T15:21:01.581261+00:00",
+  "verdict": "pass",
+  "scope": "Four source-only metadata root relocations; no execution or product acceptance.",
+  "ledger": {
+    "path": "<workspace-path>",
+    "sha256": "e675b666df85d637765f01d666fc8f53f177d1ee728fb29219c0b50b4393a1f8"
+  },
+  "checks": [
+    {
+      "check": "ledger-hash",
+      "ok": true
+    },
+    {
+      "check": "replacement:source-hashes",
+      "ok": true
+    },
+    {
+      "check": "replacement:exact-path-only-byte-change",
+      "ok": true
+    },
+    {
+      "check": "replacement:every-assert-AST-identical",
+      "ok": true
+    },
+    {
+      "check": "replacement:every-assert-source-identical",
+      "ok": true
+    },
+    {
+      "check": "replacement:all-other-executable-AST-identical",
+      "ok": true
+    },
+    {
+      "check": "replacement:patch-hash-bound",
+      "ok": true
+    },
+    {
+      "check": "replacement:patch-exact-two-REPO-lines",
+      "ok": true
+    },
+    {
+      "check": "replacement:related-byte-identical:run_browser.py",
+      "ok": true
+    },
+    {
+      "check": "replacement:related-byte-identical:browser_instrumentation.js",
+      "ok": true
+    },
+    {
+      "check": "cross-b:source-hashes",
+      "ok": true
+    },
+    {
+      "check": "cross-b:exact-path-only-byte-change",
+      "ok": true
+    },
+    {
+      "check": "cross-b:every-assert-AST-identical",
+      "ok": true
+    },
+    {
+      "check": "cross-b:every-assert-source-identical",
+      "ok": true
+    },
+    {
+      "check": "cross-b:all-other-executable-AST-identical",
+      "ok": true
+    },
+    {
+      "check": "cross-b:patch-hash-bound",
+      "ok": true
+    },
+    {
+      "check": "cross-b:patch-exact-two-REPO-lines",
+      "ok": true
+    },
+    {
+      "check": "cross-b:related-byte-identical:edge_transition_instrumentation.js",
+      "ok": true
+    },
+    {
+      "check": "cross-b:related-byte-identical:source-plan.md",
+      "ok": true
+    },
+    {
+      "check": "cross-b:related-byte-identical:run_edge_transition_probe.py",
+      "ok": true
+    },
+    {
+      "check": "cross-b:SCRIPTS-closure-complete",
+      "ok": true
+    },
+    {
+      "check": "held-bhit:source-hashes",
+      "ok": true
+    },
+    {
+      "check": "held-bhit:exact-path-only-byte-change",
+      "ok": true
+    },
+    {
+      "check": "held-bhit:every-assert-AST-identical",
+      "ok": true
+    },
+    {
+      "check": "held-bhit:every-assert-source-identical",
+      "ok": true
+    },
+    {
+      "check": "held-bhit:all-other-executable-AST-identical",
+      "ok": true
+    },
+    {
+      "check": "held-bhit:patch-hash-bound",
+      "ok": true
+    },
+    {
+      "check": "held-bhit:patch-exact-two-REPO-lines",
+      "ok": true
+    },
+    {
+      "check": "held-bhit:related-byte-identical:bhit_instrumentation.js",
+      "ok": true
+    },
+    {
+      "check": "held-bhit:related-byte-identical:run_bhit_probe.py",
+      "ok": true
+    },
+    {
+      "check": "held-proj:source-hashes",
+      "ok": true
+    },
+    {
+      "check": "held-proj:exact-path-only-byte-change",
+      "ok": true
+    },
+    {
+      "check": "held-proj:every-assert-AST-identical",
+      "ok": true
+    },
+    {
+      "check": "held-proj:every-assert-source-identical",
+      "ok": true
+    },
+    {
+      "check": "held-proj:all-other-executable-AST-identical",
+      "ok": true
+    },
+    {
+      "check": "held-proj:patch-hash-bound",
+      "ok": true
+    },
+    {
+      "check": "held-proj:patch-exact-two-REPO-lines",
+      "ok": true
+    },
+    {
+      "check": "held-proj:related-byte-identical:run_browser.py",
+      "ok": true
+    },
+    {
+      "check": "held-proj:related-byte-identical:browser_instrumentation.js",
+      "ok": true
+    }
+  ],
+  "rows": [
+    {
+      "group": "replacement",
+      "assertCount": 0,
+      "oldSource": {
+        "path": "<original-evidence-root>/portable/replacement/browser_probe.py",
+        "sha256": "6e90d7878429d9f93f97f36361e77d5cffa76f9b4363a279a1759deb20e45a7e"
+      },
+      "newSource": {
+        "path": "<workspace-path>",
+        "sha256": "e21238785aa6e1a6250e4f363004e303377b8f026f367f542e4ff39cfff103c7"
+      },
+      "relatedIdentical": [
+        {
+          "name": "run_browser.py",
+          "sha256": "099efe265f5e78ff1df051dba688240372899deddf5ad8c3ded5493d2fe2421f"
+        },
+        {
+          "name": "browser_instrumentation.js",
+          "sha256": "83e8f28a97b4d03339d27f7646756e8d6bedd4e7f7f9745984d51e1dee54fb44"
+        }
+      ],
+      "REPOLoadUses": [
+        {
+          "line": 18,
+          "sourceLine": "        p=subprocess.run(cmd,cwd=REPO,capture_output=True,text=True)"
+        },
+        {
+          "line": 22,
+          "sourceLine": "      'sourceSha256':{f:hashlib.sha256((REPO/f).read_bytes()).hexdigest() for f in ['geometry-web/app.js','geometry-web/space-workspace.js']},"
+        }
+      ]
+    },
+    {
+      "group": "cross-b",
+      "assertCount": 0,
+      "oldSource": {
+        "path": "<original-evidence-root>/portable/cross-b/edge_transition_probe.py",
+        "sha256": "93320a9487cec71e04d69965fd253ed2b49920e58d76f1d3c519b9075beacd1c"
+      },
+      "newSource": {
+        "path": "<workspace-path>",
+        "sha256": "3c54aef8badd864bc10bbe8ef6ad8b567cf05f6070443237ef2a8f97ff78f24d"
+      },
+      "relatedIdentical": [
+        {
+          "name": "edge_transition_instrumentation.js",
+          "sha256": "173e236c5aeac4786f5878495323398a249f1cc448f537908b9d4bcee9bc6d68"
+        },
+        {
+          "name": "source-plan.md",
+          "sha256": "de993e429657fbb1bc25859e9e2d1b1d945831f7119434c7649d876f579c7c99"
+        },
+        {
+          "name": "run_edge_transition_probe.py",
+          "sha256": "7a78f7c691b8ed1eee1fbe9c208d93289efd21515b020a49bfa7c75c5f66ac6c"
+        }
+      ],
+      "REPOLoadUses": [
+        {
+          "line": 52,
+          "sourceLine": "        result = subprocess.run(cmd, cwd=REPO, capture_output=True, text=True, timeout=15)"
+        },
+        {
+          "line": 56,
+          "sourceLine": "            'sourceSha256':{str(p.relative_to(REPO)):sha(p) for p in sorted("
+        },
+        {
+          "line": 57,
+          "sourceLine": "                [REPO/'geometry-web/app.js', REPO/'geometry-web/space-workspace.js',"
+        },
+        {
+          "line": 57,
+          "sourceLine": "                [REPO/'geometry-web/app.js', REPO/'geometry-web/space-workspace.js',"
+        },
+        {
+          "line": 58,
+          "sourceLine": "                 REPO/'geometry-web/index.html', *REPO.glob('geometry-web/*.css')])},"
+        },
+        {
+          "line": 58,
+          "sourceLine": "                 REPO/'geometry-web/index.html', *REPO.glob('geometry-web/*.css')])},"
+        }
+      ]
+    },
+    {
+      "group": "held-bhit",
+      "assertCount": 0,
+      "oldSource": {
+        "path": "<original-evidence-root>/portable/held-bhit/bhit_probe.py",
+        "sha256": "430a2ac86d2bac9e6bbf6a82f3681dbb0544fb3de778e9eba90766beab15cc1f"
+      },
+      "newSource": {
+        "path": "<workspace-path>",
+        "sha256": "40af3ad365d4dd40369780fcee64f17e2c54408f39fb49c89e7e7e02d609c39e"
+      },
+      "relatedIdentical": [
+        {
+          "name": "bhit_instrumentation.js",
+          "sha256": "2381dc71c645dba6a45c52cb0baf3d0b289d9903797e0b466c25b4cf3e47a64d"
+        },
+        {
+          "name": "run_bhit_probe.py",
+          "sha256": "f41212a88142caa928776d164fe76ebca3e7a3ab3695543a79b70e3af7f4552c"
+        }
+      ],
+      "REPOLoadUses": [
+        {
+          "line": 17,
+          "sourceLine": "        p=subprocess.run(cmd,cwd=REPO,capture_output=True,text=True)"
+        },
+        {
+          "line": 21,
+          "sourceLine": "      'sourceSha256':{f:hashlib.sha256((REPO/f).read_bytes()).hexdigest() for f in ['geometry-web/app.js','geometry-web/space-workspace.js']},"
+        }
+      ]
+    },
+    {
+      "group": "held-proj",
+      "assertCount": 0,
+      "oldSource": {
+        "path": "<original-evidence-root>/portable/held-proj/browser_probe.py",
+        "sha256": "6e90d7878429d9f93f97f36361e77d5cffa76f9b4363a279a1759deb20e45a7e"
+      },
+      "newSource": {
+        "path": "<workspace-path>",
+        "sha256": "e21238785aa6e1a6250e4f363004e303377b8f026f367f542e4ff39cfff103c7"
+      },
+      "relatedIdentical": [
+        {
+          "name": "run_browser.py",
+          "sha256": "099efe265f5e78ff1df051dba688240372899deddf5ad8c3ded5493d2fe2421f"
+        },
+        {
+          "name": "browser_instrumentation.js",
+          "sha256": "83e8f28a97b4d03339d27f7646756e8d6bedd4e7f7f9745984d51e1dee54fb44"
+        }
+      ],
+      "REPOLoadUses": [
+        {
+          "line": 18,
+          "sourceLine": "        p=subprocess.run(cmd,cwd=REPO,capture_output=True,text=True)"
+        },
+        {
+          "line": 22,
+          "sourceLine": "      'sourceSha256':{f:hashlib.sha256((REPO/f).read_bytes()).hexdigest() for f in ['geometry-web/app.js','geometry-web/space-workspace.js']},"
+        }
+      ]
+    }
+  ],
+  "artifacts": {
+    "<original-evidence-root>/portable/replacement/browser_probe.py": {
+      "sha256": "6e90d7878429d9f93f97f36361e77d5cffa76f9b4363a279a1759deb20e45a7e",
+      "bytes": 10746
+    },
+    "<workspace-path>|basename=browser_probe.py|originalKeySha256=1ea33ace33b30eb10c31ea78e4188f070344a0e9765a40a9894b9cd88dbbe7df": {
+      "sha256": "e21238785aa6e1a6250e4f363004e303377b8f026f367f542e4ff39cfff103c7",
+      "bytes": 10745
+    },
+    "<workspace-path>|basename=replacement-identity-only.patch|originalKeySha256=e551782e32751dbee3dd6afc8ec4c8677454a685cac668bbb3f2bde8e5c07f1e": {
+      "sha256": "fb285010581735318901980a1712eb11a329ebe4a56d44aa485c6e42c8cdfa87",
+      "bytes": 568
+    },
+    "<original-evidence-root>/portable/replacement/run_browser.py": {
+      "sha256": "099efe265f5e78ff1df051dba688240372899deddf5ad8c3ded5493d2fe2421f",
+      "bytes": 625
+    },
+    "<workspace-path>|basename=run_browser.py|originalKeySha256=ff50c9baf171d5dfa8c8fc24da3fcaf44c31aefc2fdfb309a672f5c0267bdbbd": {
+      "sha256": "099efe265f5e78ff1df051dba688240372899deddf5ad8c3ded5493d2fe2421f",
+      "bytes": 625
+    },
+    "<original-evidence-root>/portable/replacement/browser_instrumentation.js": {
+      "sha256": "83e8f28a97b4d03339d27f7646756e8d6bedd4e7f7f9745984d51e1dee54fb44",
+      "bytes": 2427
+    },
+    "<workspace-path>|basename=browser_instrumentation.js|originalKeySha256=f088c809887c1fe551ff6c72cb1504bc74055e7524282b559d3d3659c40596fd": {
+      "sha256": "83e8f28a97b4d03339d27f7646756e8d6bedd4e7f7f9745984d51e1dee54fb44",
+      "bytes": 2427
+    },
+    "<original-evidence-root>/portable/cross-b/edge_transition_probe.py": {
+      "sha256": "93320a9487cec71e04d69965fd253ed2b49920e58d76f1d3c519b9075beacd1c",
+      "bytes": 18499
+    },
+    "<workspace-path>|basename=edge_transition_probe.py|originalKeySha256=e7439eb42495ee4d00d970ba702365393e66243c6693eaaa6299fa1f638d2bae": {
+      "sha256": "3c54aef8badd864bc10bbe8ef6ad8b567cf05f6070443237ef2a8f97ff78f24d",
+      "bytes": 18498
+    },
+    "<workspace-path>|basename=cross-b-identity-only.patch|originalKeySha256=ec8668bb387cae30f1894b9851fb1a8339d2e3810ee2f9ca092bc1b6d3f48f08": {
+      "sha256": "a4e27ee3a0eb3c7a6c6c14c5402f984bd33f57e2693882ceedceb3dfe1ea1264",
+      "bytes": 681
+    },
+    "<original-evidence-root>/portable/cross-b/edge_transition_instrumentation.js": {
+      "sha256": "173e236c5aeac4786f5878495323398a249f1cc448f537908b9d4bcee9bc6d68",
+      "bytes": 4549
+    },
+    "<workspace-path>|basename=edge_transition_instrumentation.js|originalKeySha256=46bf4eb39b3f3c1d09d17409ab86c6ba2ab705733e61eabfee41fb5059331ee9": {
+      "sha256": "173e236c5aeac4786f5878495323398a249f1cc448f537908b9d4bcee9bc6d68",
+      "bytes": 4549
+    },
+    "<original-evidence-root>/portable/cross-b/source-plan.md": {
+      "sha256": "de993e429657fbb1bc25859e9e2d1b1d945831f7119434c7649d876f579c7c99",
+      "bytes": 6371
+    },
+    "<workspace-path>|basename=source-plan.md|originalKeySha256=fc11a9e754f4044a390f22d16f835433d7cbbd65c87bb2a8b2494bf6705098d8": {
+      "sha256": "de993e429657fbb1bc25859e9e2d1b1d945831f7119434c7649d876f579c7c99",
+      "bytes": 6371
+    },
+    "<original-evidence-root>/portable/cross-b/run_edge_transition_probe.py": {
+      "sha256": "7a78f7c691b8ed1eee1fbe9c208d93289efd21515b020a49bfa7c75c5f66ac6c",
+      "bytes": 1262
+    },
+    "<workspace-path>|basename=run_edge_transition_probe.py|originalKeySha256=4d11199b81352d9950f9db6f8d15c92bd536a99649dafa924ea25ccca85d24eb": {
+      "sha256": "7a78f7c691b8ed1eee1fbe9c208d93289efd21515b020a49bfa7c75c5f66ac6c",
+      "bytes": 1262
+    },
+    "<original-evidence-root>/portable/held-bhit/bhit_probe.py": {
+      "sha256": "430a2ac86d2bac9e6bbf6a82f3681dbb0544fb3de778e9eba90766beab15cc1f",
+      "bytes": 7989
+    },
+    "<workspace-path>|basename=bhit_probe.py|originalKeySha256=3839f07088d7576bdb647db3d9d126df582558178815c95f75d1eb443d26a878": {
+      "sha256": "40af3ad365d4dd40369780fcee64f17e2c54408f39fb49c89e7e7e02d609c39e",
+      "bytes": 7988
+    },
+    "<workspace-path>|basename=held-bhit-identity-only.patch|originalKeySha256=2751bdb800d45d3ce9500b480f99f49355c37f583ddf97f227cf7cb228a4680d": {
+      "sha256": "dadf6620336ef0e60751f70cc606d1cd2e406b783ecc1508d8164c4e325778d8",
+      "bytes": 548
+    },
+    "<original-evidence-root>/portable/held-bhit/bhit_instrumentation.js": {
+      "sha256": "2381dc71c645dba6a45c52cb0baf3d0b289d9903797e0b466c25b4cf3e47a64d",
+      "bytes": 2677
+    },
+    "<workspace-path>|basename=bhit_instrumentation.js|originalKeySha256=ff467fe0136c0ca7b42e9110bca126c080744419b112dddfd527e5e92fb9bd52": {
+      "sha256": "2381dc71c645dba6a45c52cb0baf3d0b289d9903797e0b466c25b4cf3e47a64d",
+      "bytes": 2677
+    },
+    "<original-evidence-root>/portable/held-bhit/run_bhit_probe.py": {
+      "sha256": "f41212a88142caa928776d164fe76ebca3e7a3ab3695543a79b70e3af7f4552c",
+      "bytes": 622
+    },
+    "<workspace-path>|basename=run_bhit_probe.py|originalKeySha256=4ba882b3a24de1277502f31b15f400d3fe2c82c4b99f03c7165e0cc9b33931ad": {
+      "sha256": "f41212a88142caa928776d164fe76ebca3e7a3ab3695543a79b70e3af7f4552c",
+      "bytes": 622
+    },
+    "<original-evidence-root>/portable/held-proj/browser_probe.py": {
+      "sha256": "6e90d7878429d9f93f97f36361e77d5cffa76f9b4363a279a1759deb20e45a7e",
+      "bytes": 10746
+    },
+    "<workspace-path>|basename=browser_probe.py|originalKeySha256=4ca44b22b4efbb6577b19e5e8dca5688cf9eb226dea463419477b3032b7f2605": {
+      "sha256": "e21238785aa6e1a6250e4f363004e303377b8f026f367f542e4ff39cfff103c7",
+      "bytes": 10745
+    },
+    "<workspace-path>|basename=held-proj-identity-only.patch|originalKeySha256=50f247568d420b72490f8a4847e2f7858c694674a4846d4dbcf5d90fdf4ef61e": {
+      "sha256": "342042d5976722a1637c49caee4573acecb1d42597a39ec715f3767c6600b8bd",
+      "bytes": 564
+    },
+    "<original-evidence-root>/portable/held-proj/run_browser.py": {
+      "sha256": "099efe265f5e78ff1df051dba688240372899deddf5ad8c3ded5493d2fe2421f",
+      "bytes": 625
+    },
+    "<workspace-path>|basename=run_browser.py|originalKeySha256=dff7594f284dc85345b692cedd247ab713098f297ea8a24e71834c3afba84574": {
+      "sha256": "099efe265f5e78ff1df051dba688240372899deddf5ad8c3ded5493d2fe2421f",
+      "bytes": 625
+    },
+    "<original-evidence-root>/portable/held-proj/browser_instrumentation.js": {
+      "sha256": "83e8f28a97b4d03339d27f7646756e8d6bedd4e7f7f9745984d51e1dee54fb44",
+      "bytes": 2427
+    },
+    "<workspace-path>|basename=browser_instrumentation.js|originalKeySha256=1aed61281d72db0c1fc2f71f3ab18c1244da523ee17b3b45c25955e13e9a2d87": {
+      "sha256": "83e8f28a97b4d03339d27f7646756e8d6bedd4e7f7f9745984d51e1dee54fb44",
+      "bytes": 2427
+    }
+  },
+  "semanticReview": "All REPO load uses were read in the source identity helpers. They set git cwd, source-file hashes and relative metadata labels. They do not alter fixture commands, native operations, UI actions, expected Worlds or product assertions. Cross-B SCRIPTS includes its unchanged run wrapper and source-plan.",
+  "limits": [
+    "No browser or service run.",
+    "This approves source relocation identity metadata only; it does not prove actual interpreter observations or product test results."
+  ]
+}

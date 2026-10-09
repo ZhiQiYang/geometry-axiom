@@ -1,0 +1,77 @@
+{
+  "actor": "/root/race_review",
+  "at": "2026-10-09T15:33:32.626995+00:00",
+  "status": "proposed; not executed; pending parent and independent reviewer proof",
+  "acceptedContract": "geometry-web/docs/DOM-CONTRACT.md lines33/215; hiddenworkSurfconsumer, unique visiblev3ToolbarSurf inrecttools",
+  "originalCrossBFailure": "clean0b 4pass/4harnessfail completedfalse legacyhidden #workSurf click7s timeout, raw retained",
+  "rows": [
+    {
+      "group": "cross-b",
+      "original": {
+        "path": "<workspace-path>",
+        "sha256": "3c54aef8badd864bc10bbe8ef6ad8b567cf05f6070443237ef2a8f97ff78f24d"
+      },
+      "adapted": {
+        "path": "<workspace-path>",
+        "sha256": "ef3a799180c4c01c35a17bd865dc18b7536aa34610b8955d0bbd8809d660aebb"
+      },
+      "patch": {
+        "path": "<workspace-path>",
+        "sha256": "0959ffecdda5d2b0f3b4608dd36e21975a8768e40bab3e3187cad37e5efd0880"
+      },
+      "assertStatementsUnchanged": true,
+      "change": "Current accepted normal toolbar route: close drawers, choose rect tool to show plane picker, same Home/ArrowDown/Enter on v3ToolbarSurf, then original edit/hole; no changed oracle, geometry, native payload, loop retry or force."
+    },
+    {
+      "group": "held-bhit",
+      "original": {
+        "path": "<workspace-path>",
+        "sha256": "40af3ad365d4dd40369780fcee64f17e2c54408f39fb49c89e7e7e02d609c39e"
+      },
+      "adapted": {
+        "path": "<workspace-path>",
+        "sha256": "43f1e35b56070cb4d0af8deb1e83fe487b94cac425c648fd5c8d768d47cd4dfc"
+      },
+      "patch": {
+        "path": "<workspace-path>",
+        "sha256": "4f53c15e1fad1f3849adb6028e56358794adad7316126307df49715a61deae32"
+      },
+      "assertStatementsUnchanged": true,
+      "change": "Current accepted normal toolbar route: close drawers, choose rect tool to show plane picker, same Home/ArrowDown/Enter on v3ToolbarSurf, then original edit/hole; no changed oracle, geometry, native payload, loop retry or force."
+    },
+    {
+      "group": "held-proj",
+      "original": {
+        "path": "<workspace-path>",
+        "sha256": "e21238785aa6e1a6250e4f363004e303377b8f026f367f542e4ff39cfff103c7"
+      },
+      "adapted": {
+        "path": "<workspace-path>",
+        "sha256": "2e5d42cfc468836cb81d329b90e768489dead68b284532e0dc0016f61f6574d1"
+      },
+      "patch": {
+        "path": "<workspace-path>",
+        "sha256": "88cab9cbee4596b05ad2b4c3221e38819499b0545ebb83407c348e1956fedb60"
+      },
+      "assertStatementsUnchanged": true,
+      "change": "Current accepted normal toolbar route: close drawers, choose rect tool to show plane picker, same Home/ArrowDown/Enter on v3ToolbarSurf, then original edit/hole; no changed oracle, geometry, native payload, loop retry or force."
+    },
+    {
+      "group": "formal-race",
+      "original": {
+        "path": "<workspace-path>",
+        "sha256": "c7302e8259c0ea60ff46b29ccccba3897101f5198826355e90bd1b3a6ae412db"
+      },
+      "adapted": {
+        "path": "<workspace-path>",
+        "sha256": "4094e1c01f598e8b5dee868f1555c2d315c7f7562c9d3ae44247bfd90be4cfd2"
+      },
+      "patch": {
+        "path": "<workspace-path>",
+        "sha256": "6e440e37d9ea8f2c5974ac5118cc162b5f7fda6fff4cc1bcddfda65d2704539d"
+      },
+      "assertStatementsUnchanged": true,
+      "change": "Current accepted normal toolbar route: close drawers, choose rect tool to show plane picker, same Home/ArrowDown/Enter on v3ToolbarSurf, then original edit/hole; no changed oracle, geometry, native payload, loop retry or force."
+    }
+  ]
+}

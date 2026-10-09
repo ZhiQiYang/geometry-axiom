@@ -1,0 +1,2479 @@
+{
+  "run": {
+    "schema": "geometry-issue123-adopted-slices/1",
+    "startedAt": "2026-10-09T14:49:56.954Z",
+    "command": [
+      "<node-runtime>/bin/node",
+      "<workspace-path>"
+    ],
+    "commandEnvironment": {
+      "GEOMETRY_REPO": "<workspace-path>",
+      "GEOMETRY_EXPECTED_SHA": "c0f05baade2424482fab94c72f0592f7b02326ae",
+      "GEOMETRY_ISOLATED_SERVICE": "1",
+      "GEOMETRY_TEST_URL": "http://127.0.0.1:19180/",
+      "GEOMETRY_TEST_BRIDGE": "<isolated-test-directory>",
+      "GEOMETRY_MODEL_BASE": "<isolated-test-directory>",
+      "GEOMETRY_CHROME": "/usr/bin/chromium",
+      "GEOMETRY_UI123_OUT": "<isolated-test-directory>",
+      "GEOMETRY_UI123_GROUPS": "colors,headers,components,v3,grid-mobile,model"
+    },
+    "node": {
+      "path": "<node-runtime>/bin/node",
+      "sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12",
+      "version": "v24.19.0"
+    },
+    "expectedSHA": "c0f05baade2424482fab94c72f0592f7b02326ae",
+    "head": "c0f05baade2424482fab94c72f0592f7b02326ae",
+    "dirty": "",
+    "pwd": "<workspace-path>",
+    "scriptSHA256": "8af64c5beabb62d55e4bb17c64b15bb70fbd9f7e5aa4568f34d71b0a3a7da714",
+    "sources": {
+      "geometry-web/app.js": "b70f8e428d49dcc5d7d83821ae32ebab1084251b7881d0f6cd503c4a05e84355",
+      "geometry-web/app.css": "36fff1d84396a35d3221aad02c1ba673303e447c01229d9999a0ef1a8be1e355",
+      "geometry-web/index.html": "65c849abc850814f3a33740f74979eaf769a987188730ebdddb9d9df0f8da244",
+      "geometry-web/workspace-shell.js": "780a26eb4e061069f8161bedd44665d2ed4ece9f695cefeffef7a7d855ec3b4c",
+      "geometry-web/workspace-shell.css": "d67f212410bb6e94cd3db26d3ab7891a0331f2effe6c02365dd5bed5418171c2",
+      "geometry-web/space-workspace.js": "50a8cbf2515e15e3d793f9440dd4d4fa6ba14a0b0f553af6dba1a98d43ee65e3",
+      "geometry-web/space-workspace.css": "6a9b12969c518609ede4d4c3354e43b40e783eb1055cd41863ebe68c983af6da",
+      "geometry-web/grid-system-workspace.js": "5caddb31298f4cd489bf0ebc0720d1855ff460952d5daa23b2399fb0ab6bb323",
+      "geometry-web/grid-system-workspace.css": "35c29494471a6c1d4e65dbdc4e7775c36998faae86eb03774249161409ec1231",
+      "geometry-web/grid-inspector.css": "811afcf6a861f0d45310e062c4250ee4de07b17805ab593ed30ce8f92868bfd4",
+      "geometry-web/room-outline-workspace.js": "6a7985ec31e6904236f55a1f0cf8ca952da517928d0c9b438a11a9d9918e2e1c",
+      "geometry-web/reference-workspace.js": "4637836fe46c016a4bb623e9f2337fda9a8e2aeac853bcca33e9d5fff55b7c62",
+      "geometry-web/model-viewer.js": "443d0a8d82f91b02ea2dd38ee9f32b39f0ff2287369aea5481768a29fe513d5a",
+      "tests/binaries.py": "a211fd0d066b8a5138855c4773373f9f526717f26264de909c0f61f997ac9aba"
+    },
+    "scope": {
+      "mode": "explicit-partial-adopted-ui-contract",
+      "included": [
+        "colors",
+        "headers",
+        "components",
+        "v3",
+        "grid-mobile",
+        "model"
+      ],
+      "omitted": [],
+      "fixture": "Synthetic native setup through API; no UI geometry-authoring claim; v3 uses one declared free column for actual ScenePick",
+      "input": "Trusted pointer/keyboard after fixture setup",
+      "notCovered": [
+        "full CDP or full space regression",
+        "physical phone/touch/IME",
+        "operating-system dialogs",
+        "private ZIP pixel/reference comparison",
+        "new snapping or nearby-object policies",
+        "all 43 checklist items"
+      ]
+    },
+    "sandbox": true,
+    "browserExecuted": true,
+    "nativeStandaloneSuiteExecuted": false,
+    "runtimeBefore": {
+      "schema": "geometry-runtime/1",
+      "version": "59f19ae5f5d2265566bfc3fa8a2f48d4575c27b24e821dfc26521947475690a2",
+      "fresh": true,
+      "root": "<workspace-path>",
+      "pid": 82128,
+      "session": "00a2678cbf464ddf9ce807ec3c868e71"
+    },
+    "executables": {
+      "bridge": {
+        "path": "<isolated-test-directory>",
+        "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b"
+      },
+      "modelBase": {
+        "path": "<isolated-test-directory>",
+        "sha256": "576a0e04c7ddaeafee20a64e03f063f1d27cbebb9694c50f20fcc2b0508d7aeb"
+      },
+      "infos": [
+        {
+          "name": "bridge",
+          "state": "fresh",
+          "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T14:05:28+00:00）",
+          "path": "<isolated-test-directory>",
+          "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e"
+        },
+        {
+          "name": "model-base",
+          "state": "fresh",
+          "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T14:05:32+00:00）",
+          "path": "<isolated-test-directory>",
+          "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b"
+        }
+      ],
+      "liveDirectChildren": [
+        {
+          "pid": 82134,
+          "executable": "<isolated-test-directory>",
+          "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b",
+          "command": "<isolated-test-directory> "
+        }
+      ]
+    },
+    "browserVersion": "151.0.7922.173",
+    "browserLauncher": {
+      "path": "/usr/bin/chromium",
+      "realPath": "/usr/bin/chromium",
+      "sha256": "2c8d32d29dc6781c35ae196ea83299d507ac88fc339301abe74672feda299779",
+      "version": "151.0.7922.173",
+      "identityLimit": "Launcher bytes and browser reported version recorded; native bridge live executable bytes checked separately"
+    },
+    "runtimeAfter": {
+      "schema": "geometry-runtime/1",
+      "version": "59f19ae5f5d2265566bfc3fa8a2f48d4575c27b24e821dfc26521947475690a2",
+      "fresh": true,
+      "root": "<workspace-path>",
+      "pid": 82128,
+      "session": "00a2678cbf464ddf9ce807ec3c868e71"
+    },
+    "headAfter": "c0f05baade2424482fab94c72f0592f7b02326ae",
+    "dirtyAfter": "",
+    "finishedAt": "2026-10-09T14:50:22.243Z",
+    "exitCode": 1,
+    "rawLogPath": "<isolated-test-directory>",
+    "rawLogSHA256": "3fa8050f0e6374d5366024cdcbb1f9e9142d24e42553508b198c90d269dfe6c5"
+  },
+  "completed": true,
+  "passed": 174,
+  "failed": 1,
+  "results": [
+    {
+      "group": "preflight",
+      "name": "frozen checkout matches full SHA and is clean",
+      "ok": true,
+      "detail": {
+        "head": "c0f05baade2424482fab94c72f0592f7b02326ae",
+        "dirty": ""
+      }
+    },
+    {
+      "group": "preflight",
+      "name": "isolated runtime is fresh and belongs to exact checkout",
+      "ok": true,
+      "detail": {
+        "schema": "geometry-runtime/1",
+        "version": "59f19ae5f5d2265566bfc3fa8a2f48d4575c27b24e821dfc26521947475690a2",
+        "fresh": true,
+        "root": "<workspace-path>",
+        "pid": 82128,
+        "session": "00a2678cbf464ddf9ce807ec3c868e71"
+      }
+    },
+    {
+      "group": "preflight",
+      "name": "native binary closure fingerprints are fresh",
+      "ok": true,
+      "detail": [
+        {
+          "name": "bridge",
+          "state": "fresh",
+          "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T14:05:28+00:00）",
+          "path": "<isolated-test-directory>",
+          "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e"
+        },
+        {
+          "name": "model-base",
+          "state": "fresh",
+          "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T14:05:32+00:00）",
+          "path": "<isolated-test-directory>",
+          "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b"
+        }
+      ]
+    },
+    {
+      "group": "preflight",
+      "name": "live direct-child bridge matches recorded native executable bytes",
+      "ok": true,
+      "detail": [
+        {
+          "pid": 82134,
+          "executable": "<isolated-test-directory>",
+          "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b",
+          "command": "<isolated-test-directory> "
+        }
+      ]
+    },
+    {
+      "group": "colors",
+      "name": "declared product confirmation appeared exactly once",
+      "ok": true
+    },
+    {
+      "group": "colors",
+      "name": "actual model primary is enabled before computed-color comparison",
+      "ok": true
+    },
+    {
+      "group": "colors",
+      "name": "four real view primary computed backgrounds agree at 1382",
+      "ok": true,
+      "detail": [
+        {
+          "view": "main",
+          "color": "rgb(78, 103, 232)"
+        },
+        {
+          "view": "face",
+          "color": "rgb(78, 103, 232)"
+        },
+        {
+          "view": "grid",
+          "color": "rgb(78, 103, 232)"
+        },
+        {
+          "view": "model",
+          "color": "rgb(78, 103, 232)"
+        }
+      ]
+    },
+    {
+      "group": "colors",
+      "name": "color/view changes and independent example preview do not mutate native scene at 1382",
+      "ok": true
+    },
+    {
+      "group": "colors",
+      "name": "declared product confirmation appeared exactly once",
+      "ok": true
+    },
+    {
+      "group": "colors",
+      "name": "actual model primary is enabled before computed-color comparison",
+      "ok": true
+    },
+    {
+      "group": "colors",
+      "name": "four real view primary computed backgrounds agree at 390",
+      "ok": true,
+      "detail": [
+        {
+          "view": "main",
+          "color": "rgb(78, 103, 232)"
+        },
+        {
+          "view": "face",
+          "color": "rgb(78, 103, 232)"
+        },
+        {
+          "view": "grid",
+          "color": "rgb(78, 103, 232)"
+        },
+        {
+          "view": "model",
+          "color": "rgb(78, 103, 232)"
+        }
+      ]
+    },
+    {
+      "group": "colors",
+      "name": "color/view changes and independent example preview do not mutate native scene at 390",
+      "ok": true
+    },
+    {
+      "group": "headers",
+      "name": "declared product confirmation appeared exactly once",
+      "ok": true
+    },
+    {
+      "group": "headers",
+      "name": "main documented header single/double row at 1382",
+      "ok": true,
+      "detail": {
+        "x": 0,
+        "y": 0,
+        "left": 0,
+        "right": 1382,
+        "top": 0,
+        "bottom": 56,
+        "width": 1382,
+        "height": 56,
+        "display": "grid",
+        "visibility": "visible"
+      }
+    },
+    {
+      "group": "headers",
+      "name": "original history and every visible action remain reachable inside header at 1382",
+      "ok": true,
+      "detail": [
+        {
+          "selector": "#faceUndoButton",
+          "width": 33,
+          "height": 34,
+          "inside": true,
+          "hit": true,
+          "rightActions": true
+        },
+        {
+          "selector": "#faceRedoButton",
+          "width": 33,
+          "height": 34,
+          "inside": true,
+          "hit": true,
+          "rightActions": true
+        },
+        {
+          "selector": "#workspaceFitButton",
+          "width": 33,
+          "height": 34,
+          "inside": true,
+          "hit": true,
+          "rightActions": true
+        },
+        {
+          "selector": "#workspaceToggleLeft",
+          "width": 0,
+          "height": 0,
+          "inside": true,
+          "hit": false,
+          "rightActions": true
+        },
+        {
+          "selector": "#workspaceToggleRight",
+          "width": 0,
+          "height": 0,
+          "inside": true,
+          "hit": false,
+          "rightActions": true
+        },
+        {
+          "selector": "#fileMenuBtn",
+          "width": 65.015625,
+          "height": 32,
+          "inside": true,
+          "hit": true,
+          "rightActions": true
+        },
+        {
+          "selector": "#workspaceProjectActions .project-save",
+          "width": 66,
+          "height": 32,
+          "inside": true,
+          "hit": true,
+          "rightActions": true
+        },
+        {
+          "selector": "#workspaceProjectActions .project-info-button",
+          "width": 34,
+          "height": 34,
+          "inside": true,
+          "hit": true,
+          "rightActions": true
+        }
+      ]
+    },
+    {
+      "group": "headers",
+      "name": "face documented header single/double row at 1382",
+      "ok": true,
+      "detail": {
+        "x": 0,
+        "y": 0,
+        "left": 0,
+        "right": 1382,
+        "top": 0,
+        "bottom": 56,
+        "width": 1382,
+        "height": 56,
+        "display": "grid",
+        "visibility": "visible"
+      }
+    },
+    {
+      "group": "headers",
+      "name": "face viewport meets adopted viewport-minus-88 minimum at 1382",
+      "ok": true,
+      "detail": {
+        "x": 260,
+        "y": 56,
+        "left": 260,
+        "right": 1062,
+        "top": 56,
+        "bottom": 772,
+        "width": 802,
+        "height": 716,
+        "display": "block",
+        "visibility": "visible"
+      }
+    },
+    {
+      "group": "headers",
+      "name": "one original file/save/history DOM remains",
+      "ok": true
+    },
+    {
+      "group": "headers",
+      "name": "real Tab reaches visible focus target #workspaceBackButton",
+      "ok": true,
+      "detail": [
+        {
+          "id": "workspaceBackButton",
+          "tag": "BUTTON",
+          "text": "← 物件畫布",
+          "target": true,
+          "visible": true,
+          "outline": "solid"
+        }
+      ]
+    },
+    {
+      "group": "headers",
+      "name": "grid project and return share adopted header row at 1382",
+      "ok": true,
+      "detail": {
+        "top": 0,
+        "bottom": 56,
+        "height": 56
+      }
+    },
+    {
+      "group": "headers",
+      "name": "model project and return share adopted header row at 1382",
+      "ok": true,
+      "detail": {
+        "top": 0,
+        "bottom": 56,
+        "height": 56
+      }
+    },
+    {
+      "group": "headers",
+      "name": "declared product confirmation appeared exactly once",
+      "ok": true
+    },
+    {
+      "group": "headers",
+      "name": "main documented header single/double row at 900",
+      "ok": true,
+      "detail": {
+        "x": 0,
+        "y": 0,
+        "left": 0,
+        "right": 900,
+        "top": 0,
+        "bottom": 56,
+        "width": 900,
+        "height": 56,
+        "display": "grid",
+        "visibility": "visible"
+      }
+    },
+    {
+      "group": "headers",
+      "name": "original history and every visible action remain reachable inside header at 900",
+      "ok": false,
+      "detail": [
+        {
+          "selector": "#faceUndoButton",
+          "width": 33,
+          "height": 34,
+          "inside": true,
+          "hit": true,
+          "rightActions": true
+        },
+        {
+          "selector": "#faceRedoButton",
+          "width": 33,
+          "height": 34,
+          "inside": true,
+          "hit": true,
+          "rightActions": true
+        },
+        {
+          "selector": "#workspaceFitButton",
+          "width": 33,
+          "height": 34,
+          "inside": true,
+          "hit": true,
+          "rightActions": true
+        },
+        {
+          "selector": "#workspaceToggleLeft",
+          "width": 33,
+          "height": 34,
+          "inside": true,
+          "hit": true,
+          "rightActions": true
+        },
+        {
+          "selector": "#workspaceToggleRight",
+          "width": 0,
+          "height": 0,
+          "inside": true,
+          "hit": false,
+          "rightActions": true
+        },
+        {
+          "selector": "#fileMenuBtn",
+          "width": 65.015625,
+          "height": 32,
+          "inside": true,
+          "hit": true,
+          "rightActions": true
+        },
+        {
+          "selector": "#workspaceProjectActions .project-save",
+          "width": 30,
+          "height": 32,
+          "inside": true,
+          "hit": true,
+          "rightActions": true
+        },
+        {
+          "selector": "#workspaceProjectActions .project-info-button",
+          "width": 34,
+          "height": 34,
+          "inside": true,
+          "hit": true,
+          "rightActions": true
+        }
+      ]
+    },
+    {
+      "group": "components",
+      "name": "declared product confirmation appeared exactly once",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "adopted component switch retains three original roles",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "only guide form is visible",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "only timber form is visible",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "actual input contains typed raw value #tbA",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "actual input contains typed raw value #tbB",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "actual input contains typed raw value #tbSelector",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "only grid form is visible",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "actual input contains typed raw value #gridU",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "guide draft survives component navigation",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "timber draft survives component navigation",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "real Tab reaches visible focus target [data-component-tab=\"grid\"]",
+      "ok": true,
+      "detail": [
+        {
+          "id": "",
+          "tag": "BUTTON",
+          "text": "網格",
+          "target": true,
+          "visible": true,
+          "outline": "solid"
+        }
+      ]
+    },
+    {
+      "group": "components",
+      "name": "keyboard component switch selects only grid and retains grid draft",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "unsubmitted component drafts leave full native scene unchanged",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "declared product confirmation appeared exactly once",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "adopted component switch retains three original roles",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "only guide form is visible",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "only timber form is visible",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "actual input contains typed raw value #tbA",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "actual input contains typed raw value #tbB",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "actual input contains typed raw value #tbSelector",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "only grid form is visible",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "actual input contains typed raw value #gridU",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "guide draft survives component navigation",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "timber draft survives component navigation",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "real Tab reaches visible focus target [data-component-tab=\"grid\"]",
+      "ok": true,
+      "detail": [
+        {
+          "id": "",
+          "tag": "BUTTON",
+          "text": "網格",
+          "target": true,
+          "visible": true,
+          "outline": "solid"
+        }
+      ]
+    },
+    {
+      "group": "components",
+      "name": "keyboard component switch selects only grid and retains grid draft",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "unsubmitted component drafts leave full native scene unchanged",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "declared product confirmation appeared exactly once",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "desktop unselected three-view inspector is continuously 240px",
+      "ok": true,
+      "detail": {
+        "x": 1142,
+        "y": 56,
+        "left": 1142,
+        "right": 1382,
+        "top": 56,
+        "bottom": 772,
+        "width": 240,
+        "height": 716,
+        "display": "block",
+        "visibility": "visible"
+      }
+    },
+    {
+      "group": "v3",
+      "name": "existing empty-state readout is discoverable",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "seven original view/layer labels remain",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "normal full label pointer activates exact original view/layer #0",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "real Space returns original checked view/layer #0",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "normal full label pointer activates exact original view/layer #1",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "real Space returns original checked view/layer #1",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "normal full label pointer activates exact original view/layer #2",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "real Space returns original checked view/layer #2",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "normal full label pointer activates exact original view/layer #3",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "real Space returns original checked view/layer #3",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "normal full label pointer activates exact original view/layer #4",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "real Space returns original checked view/layer #4",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "normal full label pointer activates exact original view/layer #5",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "real Space returns original checked view/layer #5",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "normal full label pointer activates exact original view/layer #6",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "real Space returns original checked view/layer #6",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "one native hit point inside unobstructed three-view SVG is available",
+      "ok": true,
+      "detail": {
+        "point": {
+          "px": 474.1157328039408,
+          "py": 269.15889900922775,
+          "source": "rendered-shape-center",
+          "sv": {
+            "v": 0,
+            "x": 1700,
+            "y": -1250,
+            "r": 90
+          },
+          "response": {
+            "ok": true,
+            "none": false,
+            "desc": "柱1",
+            "guide": -1,
+            "timber": -1,
+            "face": 6,
+            "column": 0,
+            "beam": -1,
+            "hover": [
+              {
+                "op": "begin",
+                "tx": 250,
+                "ty": 2890
+              },
+              {
+                "op": "poly",
+                "p": [
+                  1500,
+                  -2500,
+                  1900,
+                  -2500,
+                  1900,
+                  0,
+                  1500,
+                  0
+                ],
+                "s": 12
+              },
+              {
+                "op": "end"
+              }
+            ]
+          }
+        },
+        "tried": [
+          {
+            "px": 500.9635878056288,
+            "py": 262.8943995088339,
+            "source": "rendered-shape-center",
+            "sv": {
+              "v": 0,
+              "x": 2000,
+              "y": -1320,
+              "r": 90
+            },
+            "response": {
+              "ok": true,
+              "none": true,
+              "desc": "",
+              "guide": -1,
+              "timber": -1,
+              "face": 6,
+              "column": -1,
+              "beam": -1,
+              "hover": []
+            }
+          },
+          {
+            "px": 474.1157328039408,
+            "py": 269.15889900922775,
+            "source": "rendered-shape-center",
+            "sv": {
+              "v": 0,
+              "x": 1700,
+              "y": -1250,
+              "r": 90
+            },
+            "response": {
+              "ok": true,
+              "none": false,
+              "desc": "柱1",
+              "guide": -1,
+              "timber": -1,
+              "face": 6,
+              "column": 0,
+              "beam": -1,
+              "hover": [
+                {
+                  "op": "begin",
+                  "tx": 250,
+                  "ty": 2890
+                },
+                {
+                  "op": "poly",
+                  "p": [
+                    1500,
+                    -2500,
+                    1900,
+                    -2500,
+                    1900,
+                    0,
+                    1500,
+                    0
+                  ],
+                  "s": 12
+                },
+                {
+                  "op": "end"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "group": "v3",
+      "name": "real pointer selects the exact independent native-picked object",
+      "ok": true,
+      "detail": {
+        "preflight": {
+          "px": 474.1157328039408,
+          "py": 269.15889900922775,
+          "source": "rendered-shape-center",
+          "sv": {
+            "v": 0,
+            "x": 1700,
+            "y": -1250,
+            "r": 90
+          },
+          "response": {
+            "ok": true,
+            "none": false,
+            "desc": "柱1",
+            "guide": -1,
+            "timber": -1,
+            "face": 6,
+            "column": 0,
+            "beam": -1,
+            "hover": [
+              {
+                "op": "begin",
+                "tx": 250,
+                "ty": 2890
+              },
+              {
+                "op": "poly",
+                "p": [
+                  1500,
+                  -2500,
+                  1900,
+                  -2500,
+                  1900,
+                  0,
+                  1500,
+                  0
+                ],
+                "s": 12
+              },
+              {
+                "op": "end"
+              }
+            ]
+          }
+        },
+        "actual": {
+          "ok": true,
+          "none": false,
+          "desc": "柱1",
+          "guide": -1,
+          "timber": -1,
+          "face": 6,
+          "column": 0,
+          "beam": -1,
+          "hover": [
+            {
+              "op": "begin",
+              "tx": 250,
+              "ty": 2890
+            },
+            {
+              "op": "poly",
+              "p": [
+                1500,
+                -2500,
+                1900,
+                -2500,
+                1900,
+                0,
+                1500,
+                0
+              ],
+              "s": 12
+            },
+            {
+              "op": "end"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "v3",
+      "name": "one native none point inside unobstructed three-view SVG is available",
+      "ok": true,
+      "detail": {
+        "point": {
+          "px": 500.96358580508473,
+          "py": 593.1230137711864,
+          "source": "declared-view-fraction",
+          "v": 2,
+          "sv": {
+            "v": 2,
+            "x": 2000,
+            "y": 1430,
+            "r": 90
+          },
+          "response": {
+            "ok": true,
+            "none": true,
+            "desc": "",
+            "guide": -1,
+            "timber": -1,
+            "face": 6,
+            "column": -1,
+            "beam": -1,
+            "hover": []
+          }
+        },
+        "tried": [
+          {
+            "px": 500.96358580508473,
+            "py": 593.1230137711864,
+            "source": "declared-view-fraction",
+            "v": 2,
+            "sv": {
+              "v": 2,
+              "x": 2000,
+              "y": 1430,
+              "r": 90
+            },
+            "response": {
+              "ok": true,
+              "none": true,
+              "desc": "",
+              "guide": -1,
+              "timber": -1,
+              "face": 6,
+              "column": -1,
+              "beam": -1,
+              "hover": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "group": "v3",
+      "name": "real pointer clears selection at the independent native-empty point",
+      "ok": true,
+      "detail": {
+        "preflight": {
+          "px": 500.96358580508473,
+          "py": 593.1230137711864,
+          "source": "declared-view-fraction",
+          "v": 2,
+          "sv": {
+            "v": 2,
+            "x": 2000,
+            "y": 1430,
+            "r": 90
+          },
+          "response": {
+            "ok": true,
+            "none": true,
+            "desc": "",
+            "guide": -1,
+            "timber": -1,
+            "face": 6,
+            "column": -1,
+            "beam": -1,
+            "hover": []
+          }
+        },
+        "actual": null
+      }
+    },
+    {
+      "group": "v3",
+      "name": "initial, selected and cleared three-view keep the same continuous canvas rectangle",
+      "ok": true,
+      "detail": {
+        "initial": {
+          "x": 200,
+          "y": 106.390625,
+          "left": 200,
+          "right": 1142,
+          "top": 106.390625,
+          "bottom": 772,
+          "width": 942,
+          "height": 665.609375,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "picked": {
+          "x": 200,
+          "y": 106.390625,
+          "left": 200,
+          "right": 1142,
+          "top": 106.390625,
+          "bottom": 772,
+          "width": 942,
+          "height": 665.609375,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "after": {
+          "x": 200,
+          "y": 106.390625,
+          "left": 200,
+          "right": 1142,
+          "top": 106.390625,
+          "bottom": 772,
+          "width": 942,
+          "height": 665.609375,
+          "display": "block",
+          "visibility": "visible"
+        }
+      }
+    },
+    {
+      "group": "v3",
+      "name": "view and layer gestures never change native geometry",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "declared product confirmation appeared exactly once",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "390 inspector opens through original drawer",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "drawer close restores focus to its original opener",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "seven original view/layer labels remain",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "390 full-row view/layer target is at least 44px #0",
+      "ok": true,
+      "detail": {
+        "x": 16,
+        "y": 193.78125,
+        "width": 247,
+        "height": 44
+      }
+    },
+    {
+      "group": "v3",
+      "name": "normal full label pointer activates exact original view/layer #0",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "real Space returns original checked view/layer #0",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "390 full-row view/layer target is at least 44px #1",
+      "ok": true,
+      "detail": {
+        "x": 16,
+        "y": 242.78125,
+        "width": 247,
+        "height": 44
+      }
+    },
+    {
+      "group": "v3",
+      "name": "normal full label pointer activates exact original view/layer #1",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "real Space returns original checked view/layer #1",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "390 full-row view/layer target is at least 44px #2",
+      "ok": true,
+      "detail": {
+        "x": 16,
+        "y": 291.78125,
+        "width": 247,
+        "height": 44
+      }
+    },
+    {
+      "group": "v3",
+      "name": "normal full label pointer activates exact original view/layer #2",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "real Space returns original checked view/layer #2",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "390 full-row view/layer target is at least 44px #3",
+      "ok": true,
+      "detail": {
+        "x": 16,
+        "y": 382.71875,
+        "width": 247,
+        "height": 44
+      }
+    },
+    {
+      "group": "v3",
+      "name": "normal full label pointer activates exact original view/layer #3",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "real Space returns original checked view/layer #3",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "390 full-row view/layer target is at least 44px #4",
+      "ok": true,
+      "detail": {
+        "x": 16,
+        "y": 431.71875,
+        "width": 247,
+        "height": 44
+      }
+    },
+    {
+      "group": "v3",
+      "name": "normal full label pointer activates exact original view/layer #4",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "real Space returns original checked view/layer #4",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "390 full-row view/layer target is at least 44px #5",
+      "ok": true,
+      "detail": {
+        "x": 16,
+        "y": 480.71875,
+        "width": 247,
+        "height": 44
+      }
+    },
+    {
+      "group": "v3",
+      "name": "normal full label pointer activates exact original view/layer #5",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "real Space returns original checked view/layer #5",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "390 full-row view/layer target is at least 44px #6",
+      "ok": true,
+      "detail": {
+        "x": 16,
+        "y": 529.71875,
+        "width": 247,
+        "height": 44
+      }
+    },
+    {
+      "group": "v3",
+      "name": "normal full label pointer activates exact original view/layer #6",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "real Space returns original checked view/layer #6",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "one native hit point inside unobstructed three-view SVG is available",
+      "ok": true,
+      "detail": {
+        "point": {
+          "px": 100.10843815654516,
+          "py": 397.24350240826607,
+          "source": "rendered-shape-center",
+          "sv": {
+            "v": 0,
+            "x": 1700,
+            "y": -1250,
+            "r": 186
+          },
+          "response": {
+            "ok": true,
+            "none": false,
+            "desc": "柱1",
+            "guide": -1,
+            "timber": -1,
+            "face": 6,
+            "column": 0,
+            "beam": -1,
+            "hover": [
+              {
+                "op": "begin",
+                "tx": 250,
+                "ty": 2890
+              },
+              {
+                "op": "poly",
+                "p": [
+                  1500,
+                  -2500,
+                  1900,
+                  -2500,
+                  1900,
+                  0,
+                  1500,
+                  0
+                ],
+                "s": 12
+              },
+              {
+                "op": "end"
+              }
+            ]
+          }
+        },
+        "tried": [
+          {
+            "px": 113.04819787293673,
+            "py": 394.22422514110804,
+            "source": "rendered-shape-center",
+            "sv": {
+              "v": 0,
+              "x": 2000,
+              "y": -1320,
+              "r": 186
+            },
+            "response": {
+              "ok": true,
+              "none": true,
+              "desc": "",
+              "guide": -1,
+              "timber": -1,
+              "face": 6,
+              "column": -1,
+              "beam": -1,
+              "hover": []
+            }
+          },
+          {
+            "px": 100.10843815654516,
+            "py": 397.24350240826607,
+            "source": "rendered-shape-center",
+            "sv": {
+              "v": 0,
+              "x": 1700,
+              "y": -1250,
+              "r": 186
+            },
+            "response": {
+              "ok": true,
+              "none": false,
+              "desc": "柱1",
+              "guide": -1,
+              "timber": -1,
+              "face": 6,
+              "column": 0,
+              "beam": -1,
+              "hover": [
+                {
+                  "op": "begin",
+                  "tx": 250,
+                  "ty": 2890
+                },
+                {
+                  "op": "poly",
+                  "p": [
+                    1500,
+                    -2500,
+                    1900,
+                    -2500,
+                    1900,
+                    0,
+                    1500,
+                    0
+                  ],
+                  "s": 12
+                },
+                {
+                  "op": "end"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "group": "v3",
+      "name": "real pointer selects the exact independent native-picked object",
+      "ok": true,
+      "detail": {
+        "preflight": {
+          "px": 100.10843815654516,
+          "py": 397.24350240826607,
+          "source": "rendered-shape-center",
+          "sv": {
+            "v": 0,
+            "x": 1700,
+            "y": -1250,
+            "r": 186
+          },
+          "response": {
+            "ok": true,
+            "none": false,
+            "desc": "柱1",
+            "guide": -1,
+            "timber": -1,
+            "face": 6,
+            "column": 0,
+            "beam": -1,
+            "hover": [
+              {
+                "op": "begin",
+                "tx": 250,
+                "ty": 2890
+              },
+              {
+                "op": "poly",
+                "p": [
+                  1500,
+                  -2500,
+                  1900,
+                  -2500,
+                  1900,
+                  0,
+                  1500,
+                  0
+                ],
+                "s": 12
+              },
+              {
+                "op": "end"
+              }
+            ]
+          }
+        },
+        "actual": {
+          "ok": true,
+          "none": false,
+          "desc": "柱1",
+          "guide": -1,
+          "timber": -1,
+          "face": 6,
+          "column": 0,
+          "beam": -1,
+          "hover": [
+            {
+              "op": "begin",
+              "tx": 250,
+              "ty": 2890
+            },
+            {
+              "op": "poly",
+              "p": [
+                1500,
+                -2500,
+                1900,
+                -2500,
+                1900,
+                0,
+                1500,
+                0
+              ],
+              "s": 12
+            },
+            {
+              "op": "end"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "v3",
+      "name": "one native none point inside unobstructed three-view SVG is available",
+      "ok": true,
+      "detail": {
+        "point": {
+          "px": 113.04819277108433,
+          "py": 553.383264307229,
+          "source": "declared-view-fraction",
+          "v": 2,
+          "sv": {
+            "v": 2,
+            "x": 2000,
+            "y": 1430,
+            "r": 186
+          },
+          "response": {
+            "ok": true,
+            "none": true,
+            "desc": "",
+            "guide": -1,
+            "timber": -1,
+            "face": 6,
+            "column": -1,
+            "beam": -1,
+            "hover": []
+          }
+        },
+        "tried": [
+          {
+            "px": 113.04819277108433,
+            "py": 553.383264307229,
+            "source": "declared-view-fraction",
+            "v": 2,
+            "sv": {
+              "v": 2,
+              "x": 2000,
+              "y": 1430,
+              "r": 186
+            },
+            "response": {
+              "ok": true,
+              "none": true,
+              "desc": "",
+              "guide": -1,
+              "timber": -1,
+              "face": 6,
+              "column": -1,
+              "beam": -1,
+              "hover": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "group": "v3",
+      "name": "real pointer clears selection at the independent native-empty point",
+      "ok": true,
+      "detail": {
+        "preflight": {
+          "px": 113.04819277108433,
+          "py": 553.383264307229,
+          "source": "declared-view-fraction",
+          "v": 2,
+          "sv": {
+            "v": 2,
+            "x": 2000,
+            "y": 1430,
+            "r": 186
+          },
+          "response": {
+            "ok": true,
+            "none": true,
+            "desc": "",
+            "guide": -1,
+            "timber": -1,
+            "face": 6,
+            "column": -1,
+            "beam": -1,
+            "hover": []
+          }
+        },
+        "actual": null
+      }
+    },
+    {
+      "group": "v3",
+      "name": "view and layer gestures never change native geometry",
+      "ok": true
+    },
+    {
+      "group": "grid-mobile",
+      "name": "declared product confirmation appeared exactly once",
+      "ok": true
+    },
+    {
+      "group": "grid-mobile",
+      "name": "390 original zoom controls reachable before settings/scroll",
+      "ok": true,
+      "detail": {
+        "view": {
+          "x": 0,
+          "y": 157,
+          "left": 0,
+          "right": 390,
+          "top": 157,
+          "bottom": 497,
+          "width": 390,
+          "height": 340,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "zoom": {
+          "x": 15.265625,
+          "y": 429,
+          "left": 15.265625,
+          "right": 374,
+          "top": 429,
+          "bottom": 481,
+          "width": 358.734375,
+          "height": 52,
+          "display": "flex",
+          "visibility": "visible"
+        },
+        "settings": {
+          "x": 0,
+          "y": 497,
+          "left": 0,
+          "right": 390,
+          "top": 497,
+          "bottom": 2271.34375,
+          "width": 390,
+          "height": 1774.34375,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "hits": [
+          {
+            "id": "igZoomOut",
+            "width": 44,
+            "height": 44,
+            "top": 433,
+            "bottom": 477,
+            "hit": true
+          },
+          {
+            "id": "igZoomIn",
+            "width": 44,
+            "height": 44,
+            "top": 433,
+            "bottom": 477,
+            "hit": true
+          },
+          {
+            "id": "igFit",
+            "width": 68.015625,
+            "height": 44,
+            "top": 433,
+            "bottom": 477,
+            "hit": true
+          }
+        ]
+      }
+    },
+    {
+      "group": "grid-mobile",
+      "name": "zoom retains source-spacing and screen-pixel readout",
+      "ok": true
+    },
+    {
+      "group": "grid-mobile",
+      "name": "grid display gestures do not mutate original scene",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "declared product confirmation appeared exactly once",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "empty build has one visible primary welcome trial",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "additional original trial is not a parallel welcome action smTryRectangle",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "additional original trial is not a parallel welcome action smTryLShape",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "additional original trial is not a parallel welcome action smTryTimberFrame",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "no-source controls and metrics hidden .sm-view-tools",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "no-source controls and metrics hidden #smViewDirection",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "no-source controls and metrics hidden .sm-display-options",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "no-source controls and metrics hidden .sm-metrics",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "real rectangle example preview has exact adopted source topology and volume",
+      "ok": true,
+      "detail": {
+        "bottom": 0,
+        "clearance_mm3": "36000000000",
+        "closed": true,
+        "face_count": 6,
+        "generated_faces": [
+          {
+            "label": "外環第 1 邊",
+            "orientation": 1,
+            "placement_id": 2,
+            "purpose": "boundary"
+          },
+          {
+            "label": "外環第 2 邊",
+            "orientation": 1,
+            "placement_id": 3,
+            "purpose": "boundary"
+          },
+          {
+            "label": "外環第 3 邊",
+            "orientation": 1,
+            "placement_id": 4,
+            "purpose": "boundary"
+          },
+          {
+            "label": "外環第 4 邊",
+            "orientation": 1,
+            "placement_id": 5,
+            "purpose": "boundary"
+          },
+          {
+            "label": "底面",
+            "orientation": -1,
+            "placement_id": 6,
+            "purpose": "boundary"
+          },
+          {
+            "label": "頂面",
+            "orientation": 1,
+            "placement_id": 7,
+            "purpose": "boundary"
+          }
+        ],
+        "missing": [],
+        "source_placement": 1,
+        "source_z": 2500,
+        "top": 3000,
+        "volume_mm3": "36000000000",
+        "wall_diagnostics": [],
+        "wall_volume_mm3": "4320000000"
+      }
+    },
+    {
+      "group": "model",
+      "name": "real preview reveals corresponding controls .sm-view-tools",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "real preview reveals corresponding controls #smViewDirection",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "real preview reveals corresponding controls .sm-display-options",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "real preview reveals corresponding controls .sm-metrics",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "actual connected rendered model footprint initial preview 1382",
+      "ok": true,
+      "detail": {
+        "canvasWidth": 997,
+        "canvasHeight": 374,
+        "pixelWidth": 295,
+        "pixelHeight": 308,
+        "pixels": 63847,
+        "docWidth": 1382,
+        "innerWidth": 1382
+      }
+    },
+    {
+      "group": "model",
+      "name": "preview creates no native geometry",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "actual input contains typed raw value #smHeight",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "editing explicit height marks preview stale and blocks creation",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "stale preview remains visible with controls",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "real Tab reaches visible focus target #smCreate",
+      "ok": true,
+      "detail": [
+        {
+          "id": "smPreview",
+          "tag": "BUTTON",
+          "text": "更新預覽",
+          "target": false,
+          "visible": true,
+          "outline": "solid"
+        },
+        {
+          "id": "smCreate",
+          "tag": "BUTTON",
+          "text": "建立空間",
+          "target": true,
+          "visible": true,
+          "outline": "solid"
+        }
+      ]
+    },
+    {
+      "group": "model",
+      "name": "one explicit model created with new height and full preview",
+      "ok": true,
+      "detail": [
+        {
+          "id": "285cc783-2147-4d02-95ec-6a2cd156f9ee",
+          "input": {
+            "bottom": 0,
+            "height": 3100,
+            "edges": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "floor": "boundary",
+            "ceiling": "boundary",
+            "holes": "none",
+            "wall_thickness": 100
+          },
+          "result": {
+            "bottom": 0,
+            "clearance_mm3": "37200000000",
+            "closed": true,
+            "face_count": 6,
+            "generated_faces": [
+              {
+                "label": "外環第 1 邊",
+                "orientation": 1,
+                "placement_id": 2,
+                "purpose": "boundary"
+              },
+              {
+                "label": "外環第 2 邊",
+                "orientation": 1,
+                "placement_id": 3,
+                "purpose": "boundary"
+              },
+              {
+                "label": "外環第 3 邊",
+                "orientation": 1,
+                "placement_id": 4,
+                "purpose": "boundary"
+              },
+              {
+                "label": "外環第 4 邊",
+                "orientation": 1,
+                "placement_id": 5,
+                "purpose": "boundary"
+              },
+              {
+                "label": "底面",
+                "orientation": -1,
+                "placement_id": 6,
+                "purpose": "boundary"
+              },
+              {
+                "label": "頂面",
+                "orientation": 1,
+                "placement_id": 7,
+                "purpose": "boundary"
+              }
+            ],
+            "missing": [],
+            "source_placement": 1,
+            "source_z": 2500,
+            "top": 3100,
+            "volume_mm3": "37200000000",
+            "wall_diagnostics": [],
+            "wall_volume_mm3": "4464000000"
+          }
+        }
+      ]
+    },
+    {
+      "group": "model",
+      "name": "explicit model creation preserves full original native scene",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "real product save downloaded complete archive",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "declared product confirmation appeared exactly once",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "UI New clears model list before Open",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "UI Open restores exact full saved model",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "UI Open restores full original native scene",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "saved model opens real preview with original controls",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "actual connected rendered model footprint saved model re-open 1382",
+      "ok": true,
+      "detail": {
+        "canvasWidth": 997,
+        "canvasHeight": 374,
+        "pixelWidth": 291,
+        "pixelHeight": 308,
+        "pixels": 63380,
+        "docWidth": 1382,
+        "innerWidth": 1382
+      }
+    },
+    {
+      "group": "model",
+      "name": "actual input contains typed raw value #smEditHeight",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "cancelled height edit preserves exact saved model",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "declared product confirmation appeared exactly once",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "empty build has one visible primary welcome trial",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "additional original trial is not a parallel welcome action smTryRectangle",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "additional original trial is not a parallel welcome action smTryLShape",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "additional original trial is not a parallel welcome action smTryTimberFrame",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "no-source controls and metrics hidden .sm-view-tools",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "no-source controls and metrics hidden #smViewDirection",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "no-source controls and metrics hidden .sm-display-options",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "no-source controls and metrics hidden .sm-metrics",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "real rectangle example preview has exact adopted source topology and volume",
+      "ok": true,
+      "detail": {
+        "bottom": 0,
+        "clearance_mm3": "36000000000",
+        "closed": true,
+        "face_count": 6,
+        "generated_faces": [
+          {
+            "label": "外環第 1 邊",
+            "orientation": 1,
+            "placement_id": 2,
+            "purpose": "boundary"
+          },
+          {
+            "label": "外環第 2 邊",
+            "orientation": 1,
+            "placement_id": 3,
+            "purpose": "boundary"
+          },
+          {
+            "label": "外環第 3 邊",
+            "orientation": 1,
+            "placement_id": 4,
+            "purpose": "boundary"
+          },
+          {
+            "label": "外環第 4 邊",
+            "orientation": 1,
+            "placement_id": 5,
+            "purpose": "boundary"
+          },
+          {
+            "label": "底面",
+            "orientation": -1,
+            "placement_id": 6,
+            "purpose": "boundary"
+          },
+          {
+            "label": "頂面",
+            "orientation": 1,
+            "placement_id": 7,
+            "purpose": "boundary"
+          }
+        ],
+        "missing": [],
+        "source_placement": 1,
+        "source_z": 2500,
+        "top": 3000,
+        "volume_mm3": "36000000000",
+        "wall_diagnostics": [],
+        "wall_volume_mm3": "4320000000"
+      }
+    },
+    {
+      "group": "model",
+      "name": "real preview reveals corresponding controls .sm-view-tools",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "real preview reveals corresponding controls #smViewDirection",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "real preview reveals corresponding controls .sm-display-options",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "real preview reveals corresponding controls .sm-metrics",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "actual connected rendered model footprint initial preview 390",
+      "ok": true,
+      "detail": {
+        "canvasWidth": 390,
+        "canvasHeight": 136.671875,
+        "pixelWidth": 108,
+        "pixelHeight": 114,
+        "pixels": 8837,
+        "docWidth": 390,
+        "innerWidth": 390
+      }
+    },
+    {
+      "group": "model",
+      "name": "preview creates no native geometry",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "actual input contains typed raw value #smHeight",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "editing explicit height marks preview stale and blocks creation",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "stale preview remains visible with controls",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "real Tab reaches visible focus target #smCreate",
+      "ok": true,
+      "detail": [
+        {
+          "id": "smPreview",
+          "tag": "BUTTON",
+          "text": "更新預覽",
+          "target": false,
+          "visible": true,
+          "outline": "solid"
+        },
+        {
+          "id": "smCreate",
+          "tag": "BUTTON",
+          "text": "建立空間",
+          "target": true,
+          "visible": true,
+          "outline": "solid"
+        }
+      ]
+    },
+    {
+      "group": "model",
+      "name": "one explicit model created with new height and full preview",
+      "ok": true,
+      "detail": [
+        {
+          "id": "80765c37-f2bb-4881-b0cf-845c11709895",
+          "input": {
+            "bottom": 0,
+            "height": 3100,
+            "edges": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "floor": "boundary",
+            "ceiling": "boundary",
+            "holes": "none",
+            "wall_thickness": 100
+          },
+          "result": {
+            "bottom": 0,
+            "clearance_mm3": "37200000000",
+            "closed": true,
+            "face_count": 6,
+            "generated_faces": [
+              {
+                "label": "外環第 1 邊",
+                "orientation": 1,
+                "placement_id": 2,
+                "purpose": "boundary"
+              },
+              {
+                "label": "外環第 2 邊",
+                "orientation": 1,
+                "placement_id": 3,
+                "purpose": "boundary"
+              },
+              {
+                "label": "外環第 3 邊",
+                "orientation": 1,
+                "placement_id": 4,
+                "purpose": "boundary"
+              },
+              {
+                "label": "外環第 4 邊",
+                "orientation": 1,
+                "placement_id": 5,
+                "purpose": "boundary"
+              },
+              {
+                "label": "底面",
+                "orientation": -1,
+                "placement_id": 6,
+                "purpose": "boundary"
+              },
+              {
+                "label": "頂面",
+                "orientation": 1,
+                "placement_id": 7,
+                "purpose": "boundary"
+              }
+            ],
+            "missing": [],
+            "source_placement": 1,
+            "source_z": 2500,
+            "top": 3100,
+            "volume_mm3": "37200000000",
+            "wall_diagnostics": [],
+            "wall_volume_mm3": "4464000000"
+          }
+        }
+      ]
+    },
+    {
+      "group": "model",
+      "name": "explicit model creation preserves full original native scene",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "real product save downloaded complete archive",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "declared product confirmation appeared exactly once",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "UI New clears model list before Open",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "UI Open restores exact full saved model",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "UI Open restores full original native scene",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "saved model opens real preview with original controls",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "actual connected rendered model footprint saved model re-open 390",
+      "ok": true,
+      "detail": {
+        "canvasWidth": 390,
+        "canvasHeight": 136.671875,
+        "pixelWidth": 108,
+        "pixelHeight": 114,
+        "pixels": 8836,
+        "docWidth": 390,
+        "innerWidth": 390
+      }
+    },
+    {
+      "group": "model",
+      "name": "actual input contains typed raw value #smEditHeight",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "cancelled height edit preserves exact saved model",
+      "ok": true
+    },
+    {
+      "group": "final",
+      "name": "runtime source/session fresh and unchanged after explicit scopes",
+      "ok": true,
+      "detail": {
+        "schema": "geometry-runtime/1",
+        "version": "59f19ae5f5d2265566bfc3fa8a2f48d4575c27b24e821dfc26521947475690a2",
+        "fresh": true,
+        "root": "<workspace-path>",
+        "pid": 82128,
+        "session": "00a2678cbf464ddf9ce807ec3c868e71"
+      }
+    },
+    {
+      "group": "final",
+      "name": "all measured product and harness source identities remain frozen",
+      "ok": true
+    },
+    {
+      "group": "final",
+      "name": "no unexpected page errors or native dialogs",
+      "ok": true,
+      "detail": []
+    }
+  ],
+  "groupResults": [
+    {
+      "group": "colors",
+      "startedAt": "2026-10-09T14:49:57.392Z",
+      "finishedAt": "2026-10-09T14:50:02.243Z",
+      "ok": true,
+      "checks": 8
+    },
+    {
+      "group": "headers",
+      "startedAt": "2026-10-09T14:50:02.243Z",
+      "finishedAt": "2026-10-09T14:50:05.093Z",
+      "ok": false,
+      "checks": 12
+    },
+    {
+      "group": "components",
+      "startedAt": "2026-10-09T14:50:05.093Z",
+      "finishedAt": "2026-10-09T14:50:08.740Z",
+      "ok": true,
+      "checks": 28
+    },
+    {
+      "group": "v3",
+      "startedAt": "2026-10-09T14:50:08.740Z",
+      "finishedAt": "2026-10-09T14:50:12.488Z",
+      "ok": true,
+      "checks": 54
+    },
+    {
+      "group": "grid-mobile",
+      "startedAt": "2026-10-09T14:50:12.488Z",
+      "finishedAt": "2026-10-09T14:50:13.926Z",
+      "ok": true,
+      "checks": 4
+    },
+    {
+      "group": "model",
+      "startedAt": "2026-10-09T14:50:13.926Z",
+      "finishedAt": "2026-10-09T14:50:22.110Z",
+      "ok": true,
+      "checks": 62
+    }
+  ],
+  "errors": [],
+  "dialogs": [
+    {
+      "group": "colors",
+      "context": 1,
+      "type": "confirm",
+      "message": "建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+      "accepted": true
+    },
+    {
+      "group": "colors",
+      "context": 2,
+      "type": "confirm",
+      "message": "建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+      "accepted": true
+    },
+    {
+      "group": "headers",
+      "context": 3,
+      "type": "confirm",
+      "message": "建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+      "accepted": true
+    },
+    {
+      "group": "headers",
+      "context": 4,
+      "type": "confirm",
+      "message": "建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+      "accepted": true
+    },
+    {
+      "group": "components",
+      "context": 5,
+      "type": "confirm",
+      "message": "建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+      "accepted": true
+    },
+    {
+      "group": "components",
+      "context": 6,
+      "type": "confirm",
+      "message": "建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+      "accepted": true
+    },
+    {
+      "group": "v3",
+      "context": 7,
+      "type": "confirm",
+      "message": "建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+      "accepted": true
+    },
+    {
+      "group": "v3",
+      "context": 8,
+      "type": "confirm",
+      "message": "建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+      "accepted": true
+    },
+    {
+      "group": "grid-mobile",
+      "context": 9,
+      "type": "confirm",
+      "message": "建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+      "accepted": true
+    },
+    {
+      "group": "model",
+      "context": 10,
+      "type": "confirm",
+      "message": "建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+      "accepted": true
+    },
+    {
+      "group": "model",
+      "context": 10,
+      "type": "confirm",
+      "message": "建立一份空白新專案，切換為新的專案識別及「未命名專案」。目前尚未保存的變更不會自動寫入檔案。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+      "accepted": true
+    },
+    {
+      "group": "model",
+      "context": 11,
+      "type": "confirm",
+      "message": "建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+      "accepted": true
+    },
+    {
+      "group": "model",
+      "context": 11,
+      "type": "confirm",
+      "message": "建立一份空白新專案，切換為新的專案識別及「未命名專案」。目前尚未保存的變更不會自動寫入檔案。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+      "accepted": true
+    }
+  ],
+  "publicProjection": {
+    "originalSha256": "8c1f2a452806baf9a05d2916fa12a28a5fc1fbe37be1b5242342dd2f18ee8b79",
+    "originalBytes": 65515,
+    "originalPathLabel": "<isolated-test-directory>",
+    "originalRetainedOutsideGit": true,
+    "changes": "Machine/executable/isolated source, feedback and profile path labels; colliding absolute-path dictionary keys retain basename and original-key SHA256, preserving all entries. Result, full SHA, dirty, command, exit and original hashes remain.",
+    "dictionaryKeyAudit": []
+  }
+}

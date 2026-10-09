@@ -1,0 +1,722 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>構形 Canvas · 工程規格與空間建模</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231d365b'/%3E%3Cpath d='M7 10l9-5 9 5v11l-9 5-9-5zm0 0l9 5 9-5M16 15v11' fill='none' stroke='white' stroke-width='1.7' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="space-workspace.css">
+<link rel="stylesheet" href="model-update.css">
+<link rel="stylesheet" href="engineering-workspace.css">
+<link rel="stylesheet" href="grid-system-workspace.css">
+<link rel="stylesheet" href="parameters.css">
+<link rel="stylesheet" href="grid-inspector.css">
+<link rel="stylesheet" href="source-inspector.css">
+<link rel="stylesheet" href="canvas-labels.css">
+<link rel="stylesheet" href="workspace-guidance.css">
+<link rel="stylesheet" href="project-ui.css">
+<link rel="stylesheet" href="workspace-shell.css">
+<link rel="stylesheet" href="assembly-workspace.css">
+<link rel="stylesheet" href="section-profile-workspace.css">
+<link rel="stylesheet" href="rule-case-workbench.css">
+<link rel="stylesheet" href="documents.css">
+<link rel="stylesheet" href="document-cases.css">
+<link rel="stylesheet" href="face-context-menu.css">
+<link rel="stylesheet" href="scenario-workspace.css">
+</head>
+<body class="connection-blocked">
+<section id="connectionNotice" class="connection-notice" role="status" aria-live="polite">
+  <div><strong id="connectionTitle">正在讀取場景</strong><p id="connectionMessage">連線完成後即可編輯。</p></div>
+  <button id="connectionRetry" type="button" class="secondary-button" hidden>重新連線</button>
+</section>
+<div id="app" class="app-shell" inert>
+  <header class="topbar">
+    <div class="brand" aria-label="構形 Canvas">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32"><path d="M7 8.5 16 3l9 5.5v10L16 24l-9-5.5z"/><path d="M7 8.5 16 14l9-5.5M16 14v10"/></svg>
+      </span>
+      <span class="brand-title">構形 Canvas</span>
+    </div>
+
+    <button id="mobileCreateObject" class="mobile-create-object primary-button" type="button" aria-haspopup="menu" aria-controls="createObjectPop" aria-expanded="false"><span data-icon="plus"></span><span>建立</span></button>
+
+    <div class="top-actions">
+      <button id="toggleLeft" class="icon-button panel-toggle left-toggle" type="button" title="物件庫" aria-label="物件庫" aria-expanded="false"><span data-icon="layers"></span></button>
+      <button id="toggleRight" class="icon-button panel-toggle right-toggle" type="button" title="檢查器" aria-label="檢查器" aria-expanded="false"><span data-icon="inspect"></span></button>
+      <button id="btnUndo" class="icon-button" type="button" title="復原 (Ctrl+Z)" aria-label="復原"><span data-icon="undo"></span></button>
+      <button id="btnRedo" class="icon-button" type="button" title="重做 (Ctrl+Y)" aria-label="重做"><span data-icon="redo"></span></button>
+      <span class="toolbar-separator" aria-hidden="true"></span>
+      <div id="viewSwitch" class="segmented" role="group" aria-label="視圖切換">
+        <button id="btnCanvasView" class="seg active" type="button" title="物件畫布" aria-label="物件畫布" aria-pressed="true"><span data-icon="space"></span><span>物件畫布</span></button>
+        <button id="btnObj" class="seg" type="button" title="三視圖" aria-label="三視圖" aria-pressed="false"><span data-icon="layers"></span><span>三視圖</span></button>
+      </div>
+      <span class="toolbar-separator" aria-hidden="true"></span>
+      <div id="fileMenu" class="menu">
+        <button id="fileMenuBtn" class="secondary-button" type="button" aria-haspopup="menu" aria-label="檔案">
+          <span class="file-menu-label">檔案</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg>
+        </button>
+        <div id="fileMenuPop" class="menu-pop" role="menu" hidden>
+          <section data-file-section="project" role="group" aria-label="專案">
+            <h3 class="file-section-label">專案</h3>
+            <button id="btnNewProject" class="menu-item" type="button">新專案…</button>
+            <button id="btnOpenProject" class="menu-item" type="button">開啟專案… <small>.gcanvas</small></button>
+            <button id="btnMenuSaveProject" class="menu-item" type="button" data-project-action="save">保存專案</button>
+            <button id="btnSaveProject" class="menu-item" type="button">另存新檔…</button>
+            <button id="btnProjectName" class="menu-item" type="button">專案名稱 <span id="projectName"></span></button>
+          </section>
+          <section data-file-section="transfer" role="group" aria-label="匯入與匯出">
+            <h3 class="file-section-label">匯入與匯出</h3>
+            <button id="btnImportReference" class="menu-item" type="button">匯入參考資料… <small>PDF／圖片</small></button>
+            <button id="btnOpen" class="menu-item" type="button">開啟場景檔… <small>.scene</small></button>
+            <button id="btnExport" class="menu-item" type="button" title="匯出 .scene，包含幾何與工程來源" aria-label="匯出 .scene，不含底圖、草稿、空間模型">匯出場景檔… <small>不含底圖、草稿、空間模型</small></button>
+          </section>
+          <section data-file-section="resources" role="group" aria-label="工程與範例">
+            <h3 class="file-section-label">工程與範例</h3>
+            <button id="btnDatums" class="menu-item" type="button">共用基準</button>
+            <button id="btnEngineeringSpecs" class="menu-item" type="button" data-engineering-open>工程規格 · 面材與角材</button>
+            <button id="btnModelLibraryMenu" class="menu-item" type="button">3D 模型庫</button>
+            <div id="exampleMenu" class="menu menu-nested">
+              <button id="exampleMenuBtn" class="menu-item" type="button" aria-haspopup="menu">範例 <span aria-hidden="true">▸</span></button>
+              <div id="exampleMenuPop" class="menu-pop" role="menu" hidden>
+                <button id="btnEngineeringExample" class="menu-item" type="button">試用工程規格現成專案…</button>
+                <button id="btnSpaceModelTrial" type="button" class="menu-item">從面建立 3D 空間 · 現成範例</button>
+                <div id="sceneList" class="menu menu-nested">
+                  <button id="sceneMenuBtn" class="menu-item" type="button" aria-haspopup="menu">場景範例 <span id="sceneMenuLabel" hidden></span> ▸</button>
+                  <div id="sceneMenuPop" class="menu-pop" role="menu" hidden></div>
+                </div>
+                <button id="btnEx" class="menu-item" type="button">載入預設場景範例</button>
+              </div>
+            </div>
+            <button id="btnDocuments" class="menu-item" type="button">文件 · 規格與案例閱讀</button>
+          </section>
+          <hr class="menu-sep">
+          <button id="btnClear" class="menu-item danger" type="button"><span data-icon="trash"></span>清空專案內容…</button>
+        </div>
+      </div>
+      <div id="projectBar" class="project-bar" aria-label="目前專案">
+        <strong class="project-bar-name main-project-name" data-project-name>未命名專案</strong>
+        <button id="projectInfoButton" class="project-info-button" type="button" aria-label="專案資訊" title="來源、保存與復原" popovertarget="projectInfoPanel"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 10v7M12 6.5v1"/></svg></button>
+        <section id="projectInfoPanel" class="project-info-panel" popover="auto" role="dialog" aria-labelledby="projectInfoTitle">
+          <header><h2 id="projectInfoTitle">目前專案</h2><button type="button" class="text-button" popovertarget="projectInfoPanel" popovertargetaction="hide" aria-label="關閉專案資訊">關閉</button></header>
+          <dl id="projectInfoDetails"></dl>
+          <button id="projectRecoveryRetry" class="project-recovery-retry" type="button" hidden>重新連接此工作</button>
+          <details class="project-concepts"><summary>完整專案與候選方案</summary><p><strong>專案 .gcanvas</strong> 包含場景、原圖、草稿、模型及完整候選方案；單獨的 .scene 只帶場景。本機暫存不代表已保存檔案。</p><button id="scenarioOpen" type="button" class="btn">保存、試改與比較方案</button></details>
+        </section>
+        <span class="main-project-status" data-project-status role="status">尚未保存</span>
+        <button class="project-save" type="button" data-project-action="save" aria-label="保存專案" title="保存完整專案"><span data-icon="save"></span><span>保存</span></button>
+      </div>
+      <input id="file" type="file" accept=".scene" hidden>
+      <input id="referenceFile" type="file" accept="application/pdf,image/png,image/jpeg,image/webp,image/gif" hidden>
+      <input id="projectFile" type="file" accept=".gcanvas" hidden>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <aside class="sidebar sidebar-left" aria-label="物件庫">
+      <button type="button" class="drawer-close left-toggle" data-close-panel="left" aria-label="關閉物件庫">關閉 ×</button>
+
+      <section class="sidebar-section create-section canvas-create-section" aria-label="建立物件">
+        <button id="btnCreateObject" class="create-object-button primary-button" type="button" aria-haspopup="menu" aria-controls="createObjectPop" aria-expanded="false"><span data-icon="plus"></span><span>建立物件</span></button>
+        <div class="canvas-quick-entries">
+          <button id="btnNewGridSystem" type="button" class="quick-create grid-system-create canvas-quick-entry" title="建立無限延伸的網格來源">
+            <span class="type-icon grid-system"><span data-icon="grid"></span></span>
+            <span class="quick-entry-copy"><strong>網格系統</strong><small>建立無限延伸的網格來源</small></span>
+          </button>
+          <button id="btnQuickBoundary" type="button" class="quick-create canvas-quick-entry boundary-create" title="建立矩形或多邊形邊界" aria-haspopup="menu" aria-controls="quickBoundaryPop" aria-expanded="false">
+            <span class="type-icon face"><span data-icon="rectangle"></span></span>
+            <span class="quick-entry-copy"><strong>邊界</strong><small>建立矩形或多邊形邊界</small></span>
+          </button>
+        </div>
+      </section>
+
+      <section class="sidebar-section project-library-entry" aria-label="專案資料庫">
+        <button id="btnSpaceModels" type="button" class="text-button"><span data-icon="space"></span>3D 模型 <span id="spaceModelCount">0</span></button>
+        <span class="space-model-release" hidden>正在確認建模服務版本…</span>
+      </section>
+
+      <div class="sidebar-search">
+        <label class="search-control" title="搜尋物件">
+          <span data-icon="search"></span>
+          <input id="searchInput" type="search" aria-label="搜尋物件名稱或編號" placeholder="搜尋物件(名稱或 id)" autocomplete="off">
+          <kbd>/</kbd>
+        </label>
+      </div>
+
+
+
+      <section class="sidebar-section object-tree-section">
+        <div class="section-label-row">
+          <span class="section-label">物件</span>
+          <span id="objectCountBadge" class="count-badge">—</span>
+        </div>
+        <div id="objectList" class="object-list" role="list"></div>
+      </section>
+
+      <section id="v3Panel" class="sidebar-section v3-panel" hidden aria-label="三視圖視圖與圖層">
+        <label class="v3-surf-label">工作面 <select id="workSurf"></select></label>
+        <div class="section-label-row"><span class="section-label">視圖</span></div>
+        <div class="v3-check-col">
+          <label><input type="checkbox" data-v3-view="0" checked> 正面</label>
+          <label><input type="checkbox" data-v3-view="1" checked> 側面</label>
+          <label><input type="checkbox" data-v3-view="2" checked> 仰視</label>
+        </div>
+        <div class="section-label-row"><span class="section-label">圖層</span></div>
+        <div class="v3-check-col">
+          <label><input type="checkbox" data-v3-layer="face" checked> 面</label>
+          <label><input type="checkbox" data-v3-layer="guide" checked> 參考線</label>
+          <label><input type="checkbox" data-v3-layer="timber" checked> 角材</label>
+          <label><input type="checkbox" data-v3-layer="rc" checked> 柱樑</label>
+        </div>
+      </section>
+
+      <footer class="canvas-library-footer">
+        <button id="btnCollapseLibrary" type="button" class="library-collapse-button" title="收合選單" aria-label="收合物件庫" aria-expanded="true"><span data-icon="arrowLeft"></span><span>收合選單</span></button>
+        <details id="filterDisclosure" class="library-filter-menu">
+          <summary title="篩選顯示的物件類型">篩選</summary>
+      <section class="sidebar-section filter-section">
+        <div class="section-label-row">
+          <span class="section-label">顯示類型</span>
+          <button id="filterAll" class="chip-reset" type="button">全部顯示</button>
+        </div>
+        <div class="chip-row">
+          <button class="chip" type="button" data-filter-group="sources" aria-pressed="true"><span class="dot face"></span>來源<strong id="sourceCount">—</strong></button>
+          <button class="chip" type="button" data-filter-group="bindings" aria-pressed="true"><span class="dot grid-binding"></span>配置<strong id="bindingCount">—</strong></button>
+          <button class="chip" type="button" data-filter-group="structures" aria-pressed="true"><span class="dot space"></span>空間與構件<strong id="structureCount">—</strong></button>
+        </div>
+      </section>
+        </details>
+      </footer>
+    </aside>
+
+    <section id="canvasViewport" class="canvas-viewport show-grid" tabindex="0" aria-label="無限畫布">
+    <nav id="canvasDrawToolbar" class="tool-group canvas-draw-toolbar" aria-label="畫布工具">
+      <button class="tool-button active" type="button" data-tool="select" title="選取/移動 (V)">
+        <span data-icon="pointer"></span><span>選取</span><kbd>V</kbd>
+      </button>
+      <button class="tool-button" type="button" data-tool="pan" title="平移 (H 或空白鍵)">
+        <span data-icon="hand"></span><span>平移</span><kbd>H</kbd>
+      </button>
+      <button id="btnNewRect" class="tool-button" type="button" title="矩形面：在畫布拖曳 (R)">
+        <span data-icon="rectangle"></span><span>矩形</span><kbd>R</kbd>
+      </button>
+      <button id="btnNewPoly" class="tool-button" type="button" title="多邊形面：進入面內畫外環 (P)">
+        <span data-icon="vertex"></span><span>多邊形</span><kbd>P</kbd>
+      </button>
+    </nav>
+      <div id="ocSelectionSummary" class="selection-summary" aria-label="物件選取"><span class="selection-copy"><strong role="status" aria-live="polite">拖曳空白處框選物件</strong><small>向右完整框住 · 向左相交即選 · Shift 加選 · 空白鍵平移</small></span><button type="button" data-selection-clear="oc" hidden>清除選取</button></div>
+      <!-- 三段浮標(工具名/情境提示/kbd),目前只有矩形工具使用 -->
+      <div id="canvasModeHint" class="canvas-mode-hint" hidden>
+        <span class="hint-tool"></span>
+        <span class="hint-context"></span>
+        <span class="hint-kbd"></span>
+      </div>
+      <svg id="ocv">
+        <defs>
+          <marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5"
+                  markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0L10 5L0 10z" fill="#929bad"/>
+          </marker>
+          <marker id="grid-arrow-grid-system" viewBox="0 0 10 10" refX="9" refY="5"
+                  markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0L10 5L0 10z" fill="#467fb0"/>
+          </marker>
+          <marker id="grid-arrow-boundary" viewBox="0 0 10 10" refX="9" refY="5"
+                  markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0L10 5L0 10z" fill="#2f8f7b"/>
+          </marker>
+          <linearGradient id="faceGrad" x1="0" x2="1" y1="0" y2="1">
+            <stop offset="0" stop-color="#dff3ed"/><stop offset="1" stop-color="#b9ded4"/>
+          </linearGradient>
+          <pattern id="faceGridPat" width="16" height="16" patternUnits="userSpaceOnUse">
+            <path d="M16 0H0V16" fill="none" stroke="#2f8f7b" stroke-opacity=".08" stroke-width="1"/>
+          </pattern>
+        </defs>
+        <g id="oroot"><g id="edgeGroup"></g><g id="cardLayer"></g></g>
+      </svg>
+      <svg id="cv" hidden><g id="world"></g><g id="overlay"></g></svg>
+
+      <div id="viewToolbar" class="view-toolbar" hidden>
+        <div class="v3-seg" role="group" aria-label="三視圖工具">
+          <button type="button" class="v3-seg-btn active" data-v3-tool="view" title="檢視／選取"><span data-icon="pointer"></span>檢視</button>
+          <button type="button" class="v3-seg-btn" data-v3-tool="rect" title="拉矩形建面"><span data-icon="rectangle"></span>矩形</button>
+          <button type="button" class="v3-seg-btn" data-v3-tool="hole" title="挖矩形孔"><span data-icon="hole"></span>挖孔</button>
+          <button type="button" class="v3-seg-btn" data-v3-tool="edit" title="編輯邊界"><span data-icon="edit"></span>編輯</button>
+        </div>
+        <select id="tool" class="v3-native-select" aria-hidden="true" tabindex="-1">
+          <option value="view">檢視／選取</option>
+          <option value="rect">▭ 拉矩形建面</option>
+          <option value="hole">▨ 挖矩形孔</option>
+          <option value="edit">✥ 編輯邊界</option>
+        </select>
+        <label id="v3PlaneControls" class="v3-plane-controls" hidden>工作面
+          <select id="v3ToolbarSurf" aria-label="矩形工作面"></select>
+          <span>z</span><span id="v3ExistingZ">0</span><input id="newZ" type="number" value="0" step="100" title="新平面高度 z（mm）" hidden><span>mm</span>
+        </label>
+      </div>
+
+      <div id="focusBar" class="focus-bar" hidden>
+        <button id="btnBack" type="button"><span data-icon="arrowLeft"></span>返回</button>
+        <span id="crumb"></span>
+        <button id="btnHole2" type="button"><span data-icon="hole"></span>挖孔</button>
+      </div>
+
+      <div id="emptyState" class="empty-state" hidden>
+        <div class="empty-illustration" aria-hidden="true">
+          <span class="empty-tile tile-a"></span><span class="empty-tile tile-b"></span><span class="empty-line"></span>
+        </div>
+        <h2>建立第一個領域物件</h2>
+        <p>先建立網格系統、面或空間。網格可獨立保存，之後再選擇要套用的承載面。</p>
+        <button id="emptyNewGridSystem" type="button" class="primary-button">建立網格系統</button>
+      </div>
+
+      <div class="canvas-controls" aria-label="縮放控制">
+        <button id="zoomOutButton" class="icon-button" type="button" title="縮小" aria-label="縮小"><span data-icon="minus"></span></button>
+        <button id="zoomLevelButton" class="zoom-level" type="button" title="回到 100%">100%</button>
+        <button id="zoomInButton" class="icon-button" type="button" title="放大" aria-label="放大"><span data-icon="plus"></span></button>
+        <span class="toolbar-separator vertical"></span>
+        <button id="btnZoom" class="icon-button" type="button" title="顯示全部 (F)" aria-label="顯示全部"><span data-icon="fit"></span></button>
+        <button id="homeButton" class="icon-button" type="button" title="回到原點" aria-label="回到原點"><span data-icon="home"></span></button>
+        <span class="toolbar-separator vertical"></span>
+        <button id="snapToggle" class="mini-toggle on" type="button" aria-pressed="true" title="格點吸附">吸附</button>
+        <button id="gridToggle" class="mini-toggle on" type="button" aria-pressed="true" title="顯示背景格點">格點</button>
+      </div>
+
+      <!-- D2:三視圖獨立左下縮放列(樣式沿用主畫布 .canvas-controls),與 #viewToolbar 分離 -->
+      <div id="v3ZoomBar" class="canvas-controls" aria-label="三視圖縮放控制" hidden>
+        <span class="v3-zoom" role="group" aria-label="三視圖縮放">
+          <button id="v3ZoomOut" class="icon-button" type="button" title="縮小" aria-label="縮小"><span data-icon="minus"></span></button>
+          <button id="v3ZoomLevel" class="zoom-level" type="button" title="回到 100%">100%</button>
+          <button id="v3ZoomIn" class="icon-button" type="button" title="放大" aria-label="放大"><span data-icon="plus"></span></button>
+          <button id="v3ZoomFit" class="icon-button" type="button" title="顯示全部" aria-label="顯示全部"><span data-icon="fit"></span></button>
+        </span>
+      </div>
+
+      <div class="minimap-shell">
+        <button id="minimapToggle" class="minimap-toggle" type="button" title="收合小地圖" aria-label="收合小地圖">▾</button>
+        <canvas id="minimap" width="150" height="96" aria-label="畫布小地圖"></canvas>
+        <span>小地圖</span>
+      </div>
+    </section>
+
+    <aside class="sidebar sidebar-right" aria-label="物件檢查器">
+      <button type="button" class="drawer-close right-toggle" data-close-panel="right" aria-label="關閉檢查器">關閉 ×</button>
+      <div id="inspectorEmpty" class="inspector-empty">
+        <div class="inspector-empty-icon"><span data-icon="inspect"></span></div>
+        <h2>尚未選取物件</h2>
+        <p>選取畫布上的卡片或左欄清單列，這裡會顯示物件屬性與可用操作。</p>
+      </div>
+      <div id="inspectorContent" class="inspector-content" hidden></div>
+      <div id="v3PickPanel" class="v3-pick-panel" hidden>
+        <div class="section-label-row"><span class="section-label">選取結果</span></div>
+        <div id="v3PickInfo" class="v3-pick-info">在三視圖上點選物件，這裡顯示結果。</div>
+        <div class="section-label-row"><span class="section-label">游標位置</span></div>
+        <div id="v3HoverInfo" class="v3-pick-info v3-hover-info">—</div>
+      </div>
+    </aside>
+  </main>
+  <div id="createObjectPop" class="canvas-create-menu menu menu-pop" role="menu" aria-label="建立物件" hidden>
+    <div class="create-menu-heading">建立物件</div>
+    <button id="btnQuickGrid" class="create-menu-entry menu-item" type="button" role="menuitem"><span class="type-icon grid-system"><span data-icon="grid"></span></span><span><strong>網格系統</strong><small>建立無限延伸的格線來源</small></span></button>
+    <button id="btnCreateRect" class="create-menu-entry menu-item" type="button" role="menuitem"><span class="type-icon face"><span data-icon="rectangle"></span></span><span><strong>矩形邊界</strong><small>在畫布拖曳建立</small></span></button>
+    <button id="btnCreatePoly" class="create-menu-entry menu-item" type="button" role="menuitem"><span class="type-icon face"><span data-icon="vertex"></span></span><span><strong>多邊形邊界</strong><small>逐點描繪輪廓</small></span></button>
+    <button id="btnNewParameter" class="create-menu-entry menu-item" type="button" role="menuitem"><span class="type-icon">ƒ</span><span><strong>參數</strong><small>建立可重用的尺寸與算式</small></span></button>
+    <button id="btnNewAssembly" class="create-menu-entry menu-item" type="button" role="menuitem"><span class="type-icon">⋈</span><span><strong>組構規則</strong><small>定義局部接合與材料配置</small></span></button>
+    <button id="btnNewSectionProfile" class="create-menu-entry menu-item" type="button" role="menuitem"><span class="type-icon">⌞</span><span><strong>斷面與拉伸</strong><small>編輯輪廓與構件，預覽直線拉伸</small></span></button>
+          <button id="btnNewSpace" type="button" class="create-menu-entry menu-item" role="menuitem" title="＋空間:空容器">
+            <span class="type-icon space"><span data-icon="space"></span></span>
+            <span><strong>空間</strong><small>空容器</small></span>
+          </button>
+          <button id="btnNewColumn" type="button" class="create-menu-entry menu-item" role="menuitem" title="＋柱:RC 柱 w×d">
+            <span class="type-icon column"><span data-icon="column"></span></span>
+            <span><strong>柱</strong><small>RC 柱 w×d</small></span>
+          </button>
+          <button id="btnNewBeam" type="button" class="create-menu-entry menu-item" role="menuitem" title="＋樑:RC 樑 w×d">
+            <span class="type-icon beam"><span data-icon="beam"></span></span>
+            <span><strong>樑</strong><small>RC 樑 w×d</small></span>
+          </button>
+          <button id="btnBox6" type="button" class="create-menu-entry menu-item" role="menuitem" title="輸入寬、深、高，一次建立六面盒">
+            <span class="type-icon space"><span data-icon="space"></span></span>
+            <span><strong>知道尺寸 → 六面盒</strong><small>輸入寬・深・高，一次建好</small></span>
+          </button>
+  </div>
+  <div id="quickBoundaryPop" class="canvas-boundary-menu menu menu-pop" role="menu" aria-label="選擇邊界形狀" hidden>
+    <button id="btnQuickRect" class="menu-item" type="button" role="menuitem"><span data-icon="rectangle"></span>矩形邊界</button>
+    <button id="btnQuickPoly" class="menu-item" type="button" role="menuitem"><span data-icon="vertex"></span>多邊形邊界</button>
+  </div>
+
+
+  <footer class="statusbar">
+    <div class="status-left">
+      <span id="busyIndicator" hidden><span class="busy-spinner"></span>套用中…</span>
+      <span id="status"></span>
+      <span class="status-divider"></span>
+      <span id="hovertxt"></span>
+    </div>
+    <div class="status-right">
+      <span id="statusSummary" class="status-summary"></span>
+      <button id="cmdToggle" class="icon-button compact" type="button" title="指令列 (:)" aria-label="指令列" aria-expanded="false">›</button>
+      <div id="cmdPanel" class="command-panel" hidden><label for="cmd">進階指令</label><input id="cmd" placeholder="輸入指令，Enter 執行 · Esc 關閉" autocomplete="off"></div>
+    </div>
+  </footer>
+</div>
+
+  <section id="objectWorkspace" class="object-workspace" aria-label="物件內部工作區" hidden>
+    <header class="object-workspace-topbar">
+      <div class="object-workspace-trail">
+        <button id="workspaceBackButton" type="button" class="workspace-back-button" aria-label="返回物件畫布"><span>←</span> <span id="workspaceBackLabel">物件畫布</span></button>
+        <span id="workspaceTypeIcon" class="face-layer-icon" data-icon="face"></span>
+        <div class="workspace-title-copy">
+          <small id="workspaceEyebrow">面內工作區</small>
+          <strong id="workspaceTitle">面</strong>
+        </div>
+        <span id="workspacePlaceTag" class="place-capsule" hidden></span>
+      </div>
+      <div class="workspace-tools-row" aria-label="工作區工具，可左右捲動">
+      <nav id="faceWorkspaceTools" class="face-workspace-tools" aria-label="面內工具">
+        <button type="button" class="workspace-tool" data-face-tool="select" title="選取/拖曳 (v)"><span data-icon="pointer"></span><span>選取</span><kbd>V</kbd></button>
+        <button type="button" class="workspace-tool" data-face-tool="redraw" title="重畫外環 (e)"><span data-icon="redraw"></span><span>外環</span><kbd>E</kbd></button>
+        <div class="shape-tool-menu">
+          <button id="shapeToolButton" type="button" class="workspace-tool" aria-expanded="false" aria-controls="shapeToolPop"><span data-icon="notch"></span><span>形狀 ▾</span></button>
+          <div id="shapeToolPop" class="shape-tool-pop" hidden>
+            <button type="button" data-shape-action="notch">凹口</button><button type="button" data-shape-action="extend">外凸</button><button type="button" data-shape-action="push">推拉</button><button type="button" data-shape-action="corner">切角</button><button type="button" data-shape-action="hole">開口</button>
+          </div>
+        </div>
+        <button type="button" class="workspace-tool" data-face-tool="guide" title="參考線 (l)"><span data-icon="guide"></span><span>參考線</span><kbd>L</kbd></button>
+        <button type="button" class="workspace-tool" data-face-tool="hole" title="開口 (r)"><span data-icon="hole"></span><span>開口</span><kbd>R</kbd></button>
+        <button type="button" class="workspace-tool" data-face-tool="timber" title="角材 (t)"><span data-icon="timber"></span><span>角材</span><kbd>T</kbd></button>
+        <button type="button" class="workspace-tool" data-face-tool="grid" title="網格 (g)"><span data-icon="grid"></span><span>網格</span><kbd>G</kbd></button>
+        <button type="button" class="workspace-tool" data-face-tool="pan" title="平移 (h/空白鍵)"><span data-icon="hand"></span><span>平移</span><kbd>H</kbd></button>
+      </nav>
+      <nav id="spaceWorkspaceTools" class="face-workspace-tools" aria-label="空間工具" hidden>
+        <button id="spacePlaceColumn" class="workspace-tool" type="button" title="點一下平面圖放柱"><span data-icon="column"></span><span>點放柱</span></button>
+        <button id="spacePlaceBeam" class="workspace-tool" type="button" title="拖一段平面圖放樑"><span data-icon="beam"></span><span>拖放樑</span></button>
+        <span id="spaceSizeTools" hidden></span>
+      </nav>
+      </div>
+      <div class="object-workspace-actions">
+      <div class="workspace-history-tools" role="group" aria-label="復原與視角">
+        <button type="button" id="faceUndoButton" class="workspace-icon-button" title="復原 (Ctrl+Z)" aria-label="復原"><span data-icon="undo"></span></button>
+        <button type="button" id="faceRedoButton" class="workspace-icon-button" title="重做 (Ctrl+Y)" aria-label="重做"><span data-icon="redo"></span></button>
+        <button type="button" id="workspaceFitButton" class="workspace-icon-button" title="顯示全部 (f)" aria-label="顯示全部"><span data-icon="fit"></span></button>
+      </div>
+        <button id="workspaceToggleLeft" class="workspace-icon-button panel-toggle left-toggle" type="button" title="物件清單" aria-label="物件清單" aria-expanded="false"><span data-icon="layers"></span></button>
+        <button id="workspaceToggleRight" class="workspace-icon-button panel-toggle right-toggle" type="button" title="檢查器" aria-label="檢查器" aria-expanded="false"><span data-icon="inspect"></span></button>
+        <span id="workspaceProjectActions"></span>
+      </div>
+    </header>
+    <main id="objectWorkspaceContent" class="object-workspace-content">
+      <div id="faceWorkspaceLayout" class="face-workspace-layout">
+        <aside class="inner-panel face-layer-panel">
+          <button type="button" class="drawer-close left-toggle" data-close-panel="left">關閉 ×</button>
+          <section class="inner-section reference-library" aria-label="底圖與來源">
+            <h2>底圖／來源</h2>
+            <button class="reference-entry" type="button" data-project-action="import"><span data-icon="upload"></span><span class="reference-entry-copy"><strong>從 PDF／圖片描面</strong><small>可關聯多張參考頁</small></span><span class="reference-add-label">＋ 加頁</span></button>
+            <div id="faceReferenceSummary"></div>
+          </section>
+          <section class="inner-section">
+            <div class="inner-section-title"><span>面內物件</span><span id="faceLayerCount">0</span></div>
+            <div id="faceReferenceVisibility" class="reference-visibility" hidden></div>
+            <div id="faceLayerList" class="face-layer-list"></div>
+          </section>
+        </aside>
+        <div id="faceDraftNotice" class="face-draft-notice" hidden>
+            <strong id="faceDraftTitle">外環草稿 · 尚未套用</strong>
+            <span id="faceDraftMessage"></span>
+            <div><button id="faceDraftFinish" type="button" class="btn">完成外環</button><button id="faceDraftCancel" type="button" class="btn">放棄草稿</button></div>
+        </div>
+        <section id="faceEditorViewport" class="face-editor-viewport tool-select" tabindex="-1" aria-label="面編輯畫布">
+          <div id="feSelectionSummary" class="selection-summary" aria-label="角材選取"><span class="selection-copy"><strong role="status" aria-live="polite">拖曳空白處框選角材</strong><small>向右完整框住 · 向左相交即選 · Shift 加選 · 空白鍵平移</small></span><button type="button" data-selection-clear="fe" hidden>清除選取</button></div>
+          <svg id="faceEditorSvg" class="face-editor-svg"><g id="faceEditorRoot"></g></svg>
+          <input id="feLenInput" class="fe-len-input" type="text" hidden
+                 aria-label="段長 mm" readonly>
+          <div id="faceCanvasHint" class="face-canvas-hint" hidden></div>
+          <div id="calibrationCanvasPrompt" class="calibration-canvas-prompt" hidden><span role="status"></span><button type="button" id="cancelCalibration">取消</button></div>
+          <div id="feGuidePick" class="fe-guide-pick" hidden>
+            <button type="button" data-axis="u">u 線</button>
+            <button type="button" data-axis="v">v 線</button>
+          </div>
+          <!-- GEO-188 形狀編輯:選邊/角後的浮動操作列 + 就地參數面板(內容由 feSyncOverlays 產生) -->
+          <div id="feActionBar" class="fe-action-bar" role="toolbar" aria-label="形狀操作" hidden></div>
+          <div id="feOpPanel" class="fe-op-panel" role="dialog" aria-label="形狀操作參數" hidden></div>
+          <!-- GEO-192:右鍵選單,內容與 #feActionBar 同一份資料來源(feActionsFor) -->
+          <div id="feCtxMenu" class="fe-ctx-menu" role="menu" hidden></div>
+          <div class="face-canvas-controls" aria-label="面內縮放控制">
+            <button id="feZoomOut" class="icon-button" type="button" title="縮小"><span data-icon="minus"></span></button>
+            <button id="feZoomLevel" class="zoom-level" type="button" title="回到 100%">100%</button>
+            <button id="feZoomIn" class="icon-button" type="button" title="放大"><span data-icon="plus"></span></button>
+            <button id="feZoomFit" class="icon-button" type="button" title="顯示全部 (f)"><span data-icon="fit"></span></button>
+            <span class="toolbar-separator vertical"></span>
+            <label class="face-mini-opt mini-toggle" role="button" aria-pressed="true" title="吸附格點"><input id="faceSnapToggle" type="checkbox" checked><span>吸附</span></label>
+            <label class="face-mini-opt mini-toggle" role="button" aria-pressed="true" title="顯示背景格點"><input id="faceGridToggle" type="checkbox" checked><span>格點</span></label>
+            <label class="face-mini-opt face-grid-size" title="吸附格距">
+              格距
+              <select id="faceGridSizeSelect">
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50" selected>50</option>
+                <option value="100">100</option>
+              </select> mm
+            </label>
+          </div>
+          <div id="gridLegend" class="grid-canvas-legend" hidden><span class="primary">主支 2</span><span class="secondary">副支 3</span><span>所有座標見右欄</span></div>
+          <button type="button" id="gridReturnSettings" class="grid-return-settings" hidden>返回網格設定</button>
+          <div id="faceCoordinateReadout" class="face-coordinate-readout">u 0 v 0 mm</div>
+        </section>
+        <aside class="inner-panel face-inspector-panel">
+          <button type="button" class="drawer-close right-toggle" data-close-panel="right">關閉 ×</button>
+          <nav id="faceInspectorTabs" class="fi-tabs" aria-label="檢視器分頁">
+            <button type="button" class="fi-tab active" data-fi-tab="prop">屬性</button>
+            <button type="button" class="fi-tab" data-fi-tab="shape">形狀</button>
+            <button type="button" class="fi-tab" data-fi-tab="components">構件</button>
+            <button type="button" class="fi-tab" data-fi-tab="underlay">底圖</button>
+          </nav>
+          <div id="faceInspectorContent"></div>
+          <button type="button" class="btn shape-action" id="faceShapeButton" title="形狀庫" hidden><span data-icon="layers"></span>以形狀庫取代外環（L／U／T）…</button>
+        </aside>
+      </div>
+      <div id="spaceWorkspaceLayout" class="space-workspace-layout" hidden>
+        <aside class="inner-panel space-boundary-panel">
+          <button type="button" class="drawer-close left-toggle" data-close-panel="left">關閉 ×</button>
+          <section class="inner-section">
+            <div class="inner-section-title"><span>成員面 <span id="spaceMemberCount">0</span></span><button id="spaceAddMembers" type="button" class="space-member-add" title="收成員" aria-label="收成員"><span data-icon="plus"></span></button></div>
+            <div id="spaceMemberList" class="space-boundary-list"></div>
+          </section>
+          <section class="inner-section">
+            <div class="inner-section-title"><span>構件（柱/樑）</span><span id="spaceRcCount">0</span></div>
+            <div id="spaceRcList" class="space-boundary-list"></div>
+            <div class="inner-section-title"><span>游離構件</span></div>
+            <div id="spaceRcFreeList" class="space-boundary-list"></div>
+          </section>
+        </aside>
+        <section class="space-workspace-stage">
+          <nav id="spaceStageTabs" class="ss-tabs" aria-label="空間舞台分頁">
+            <button type="button" class="ss-tab active" data-ss-tab="plan">平面示意</button>
+            <button type="button" class="ss-tab" data-ss-tab="proj">三視圖</button>
+          </nav>
+          <div data-ss-pane="plan" class="ss-pane">
+            <div class="space-plan-strip">
+              <div class="space-plan-head">
+                <span class="space-plan-tools">
+                  <label class="plan-chip" data-size-for="column" title="點一下放柱（見方 mm）">柱<select id="planColSize">
+                    <option>500</option><option selected>600</option>
+                    <option>700</option><option>800</option>
+                    <option value="custom">自訂</option></select>
+                    <input id="planColCustom" class="plan-custom" type="number"
+                      min="100" step="50" value="450" hidden></label>
+                  <label class="plan-chip" data-size-for="beam" title="拖一段放樑（寬×深 mm）">樑<select id="planBeamSize">
+                    <option value="300x500">300×500</option>
+                    <option value="350x600" selected>350×600</option>
+                    <option value="400x700">400×700</option>
+                    <option value="custom">自訂</option></select>
+                    <input id="planBeamW" class="plan-custom" type="number"
+                      min="100" step="50" value="300" title="寬" hidden><span class="plan-size-separator">×</span><input
+                      id="planBeamD" class="plan-custom" type="number"
+                      min="100" step="50" value="500" title="深" hidden></label>
+                </span>
+              </div>
+              <svg id="spacePlanSvg"></svg>
+            </div>
+          </div>
+          <div data-ss-pane="proj" class="ss-pane" hidden>
+            <div class="space-hero-preview" id="spaceProjWrap">
+              <svg id="spaceProjSvg"></svg>
+            </div>
+          </div>
+        </section>
+        <aside class="inner-panel space-info-panel">
+          <button type="button" class="drawer-close right-toggle" data-close-panel="right">關閉 ×</button>
+          <div id="spaceInspectorContent"></div>
+        </aside>
+      </div>
+    </main>
+    <footer class="object-workspace-statusbar">
+      <div><span id="workspaceToolStatus">工具：選取</span>
+      <span class="status-divider"></span>
+      <span id="workspaceSelectionStatus"></span></div>
+      <div class="ws-kbd-hints" id="workspaceKeyHints"><kbd>L</kbd> 參考線 <kbd>R</kbd> 開口 <kbd>T</kbd> 角材 <kbd>Esc</kbd> 返回</div>
+    </footer>
+  </section>
+
+<div id="modalBackdrop" class="modal-backdrop" hidden></div>
+
+<section id="box6Dialog" class="dialog" role="dialog" aria-modal="true" hidden>
+  <header class="dialog-header">
+    <div><span class="dialog-eyebrow">快速建立</span><h2>六面盒空間</h2></div>
+    <button id="box6Close" class="dialog-close text-button" type="button">返回畫布</button>
+  </header>
+  <div class="dialog-body">
+    <div class="place-form">
+      <label>寬 W (mm)<input id="box6W" type="number" step="1" value="4000"></label>
+      <label>深 D (mm)<input id="box6D" type="number" step="1" value="3000"></label>
+      <label>高 H (mm)<input id="box6H" type="number" step="1" value="2500" aria-describedby="box6HeightNote"></label>
+      <label class="face-option-row"><span>含地板</span><input id="box6Floor" type="checkbox" checked></label>
+    </div>
+    <p id="box6HeightNote" class="dialog-field-note">底面位於 z = 0；H 同時決定四面牆的高度與頂面 z 座標，此處預設 2500 mm。空間建模入口的牆高預設為 3000 mm；兩個入口皆可依專案修改。</p>
+  </div>
+  <footer class="dialog-footer">
+    <button id="box6Cancel" class="btn" type="button">取消</button>
+    <button id="box6Submit" class="primary-button" type="button"><span>建立</span></button>
+  </footer>
+</section>
+
+<section id="memberDialog" class="dialog" role="dialog" aria-modal="true" hidden>
+  <header class="dialog-header">
+    <div><span class="dialog-eyebrow">空間成員</span><h2 id="memberDialogTitle">編輯成員</h2></div>
+    <button id="memberClose" class="dialog-close text-button" type="button">✕</button>
+  </header>
+  <div class="dialog-body">
+    <div id="memberCheckList" class="member-check-list"></div>
+  </div>
+  <footer class="dialog-footer">
+    <button id="memberCancel" class="btn" type="button">取消</button>
+    <button id="memberSubmit" class="primary-button" type="button"><span>確認</span></button>
+  </footer>
+</section>
+
+<section id="shapeDialog" class="dialog" role="dialog" aria-modal="true" hidden>
+  <header class="dialog-header">
+    <div><span class="dialog-eyebrow">形狀庫</span><h2>預設外環</h2></div>
+    <button id="shapeClose" class="dialog-close text-button" type="button">✕</button>
+  </header>
+  <div class="dialog-body">
+    <div class="member-check-list">
+      <label class="member-check-row"><input type="radio" name="shapeKind" value="L" checked><span>L 形（兩臂同寬 a)</span></label>
+      <label class="member-check-row"><input type="radio" name="shapeKind" value="U"><span>U 形（槽口朝上，臂寬 a)</span></label>
+      <label class="member-check-row"><input type="radio" name="shapeKind" value="T"><span>T 形（頂深 a、肋寬 b)</span></label>
+    </div>
+    <div class="place-form">
+      <label>總寬 W (mm)<input id="shapeW" type="number" step="1" value="4000"></label>
+      <label>總深 D (mm)<input id="shapeD" type="number" step="1" value="3000"></label>
+      <label>臂寬 a (mm)<input id="shapeA" type="number" step="1" value="1000"></label>
+      <label id="shapeBRow">肋寬 b (mm)<input id="shapeB" type="number" step="1" value="1000"></label>
+    </div>
+    <div class="face-help">取代現有外環；孔保留（若落在新外環外會被核心拒絕）。</div>
+  </div>
+  <footer class="dialog-footer">
+    <button id="shapeCancel" class="btn" type="button">取消</button>
+    <button id="shapeSubmit" class="primary-button" type="button"><span>套用</span></button>
+  </footer>
+</section>
+
+<section id="rcDialog" class="dialog" role="dialog" aria-modal="true" hidden>
+  <header class="dialog-header">
+    <div><span class="dialog-eyebrow">RC 構件</span><h2 id="rcTitle">建立柱</h2></div>
+    <button id="rcClose" class="dialog-close text-button" type="button">✕</button>
+  </header>
+  <div class="dialog-body">
+    <div id="rcPresets" class="member-check-list"></div>
+    <div class="place-form">
+      <label>寬 w (mm)<input id="rcW" type="number" step="1" value="500"></label>
+      <label>深 d (mm)<input id="rcD" type="number" step="1" value="500"></label>
+      <label>所屬空間<select id="rcSpace"><option value="0">（游離）</option></select></label>
+    </div>
+    <div class="place-form" id="rcColFields">
+      <label>足跡 x (mm)<input id="rcX" type="number" step="1" value="0"></label>
+      <label>足跡 y (mm)<input id="rcY" type="number" step="1" value="0"></label>
+      <label>z0(留空=空間下界)<input id="rcZ0" type="number" step="1" placeholder="自動"></label>
+      <label>z1(留空=空間上界)<input id="rcZ1" type="number" step="1" placeholder="自動"></label>
+    </div>
+    <div class="place-form" id="rcBeamFields" hidden>
+      <label>走向軸<select id="rcAxis"><option value="x">沿 x</option><option value="y">沿 y</option></select></label>
+      <label>from (mm)<input id="rcA" type="number" step="1" value="0"></label>
+      <label>to (mm)<input id="rcB" type="number" step="1" value="4000"></label>
+      <label>at 中線 c (mm)<input id="rcC" type="number" step="1" value="1500"></label>
+      <label>top(留空=空間上界)<input id="rcTop" type="number" step="1" placeholder="自動"></label>
+    </div>
+    <div class="face-help" id="rcErr" role="alert" hidden></div>
+    <div class="face-help" id="rcHint"></div>
+  </div>
+  <footer class="dialog-footer">
+    <button id="rcCancel" class="btn" type="button">取消</button>
+    <button id="rcSubmit" class="primary-button" type="button"><span>建立</span></button>
+  </footer>
+</section>
+
+<div id="toastRegion" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+
+<dialog id="referenceDialog" class="reference-dialog" aria-labelledby="refDialogTitle">
+  <header><div><h2 id="refDialogTitle">選取參考圖頁</h2><p id="refSourceName"></p></div><button id="refClose" type="button" class="text-button" aria-label="取消匯入">取消</button></header>
+  <div class="ref-toolbar">
+    <button id="refPrev" type="button" class="btn" aria-label="上一頁">←</button>
+    <label>第 <input id="refPageNumber" type="number" min="1" value="1" aria-label="PDF 頁碼"></label><span id="refPageCount"></span>
+    <button id="refNext" type="button" class="btn" aria-label="下一頁">→</button>
+    <label>預覽 <select id="refZoom"><option value="page">適合整頁</option><option value="1">適合寬度</option><option value="1.5">150%</option><option value="2">200%</option><option value="3">300%</option></select></label>
+    <button id="refResetCrop" type="button" class="btn">清除取景框</button>
+  </div>
+  <p id="refPreviewMessage" role="status"></p>
+  <div class="ref-preview-scroll"><div id="refPagePreview"></div></div>
+  <nav id="refThumbnails" aria-label="附近圖頁"></nav>
+  <footer><label>加入位置<select id="refTarget"></select></label><button id="refApply" type="button" class="primary-button" disabled>加入參考頁</button></footer>
+</dialog>
+<dialog id="scenarioDialog" class="scenario-dialog" aria-labelledby="scenarioTitle">
+  <header><h2 id="scenarioTitle">完整候選方案</h2><button type="button" class="btn" data-scenario-close>關閉</button></header>
+  <p>保存目前專案為基準，建立副本再隔離試改。每份方案的對位、草稿與模型各自保留。</p><p id="scenarioCount"></p>
+  <label>方案名稱 <input id="scenarioName" maxlength="200" value="方案 A"></label><button id="scenarioCapture" class="primary-button" type="button">保存目前為方案</button>
+  <label>複製基準 <select id="scenarioBase"></select></label><button id="scenarioFork" class="btn" type="button">建立獨立副本</button>
+  <div class="scenario-selectors"><label>左側方案 <select id="scenarioBefore"></select></label><label>右側方案 <select id="scenarioAfter"></select></label></div>
+  <div class="scenario-actions"><button id="scenarioEdit" class="btn" type="button">隔離試改右側方案</button><button id="scenarioCompare" class="btn" type="button">比較完整定義</button><button id="scenarioAdopt" class="primary-button" type="button" disabled>整體採用右側方案</button></div>
+  <p id="scenarioStatus" role="status"></p><div id="scenarioDifference"></div>
+</dialog>
+<dialog id="scenarioEditorDialog" class="scenario-editor-dialog" aria-labelledby="scenarioEditorTitle">
+  <header><h2 id="scenarioEditorTitle">隔離試改</h2><button id="scenarioPauseEdit" class="btn" type="button" disabled>暫存並離開</button><button id="scenarioCancelEdit" class="btn" type="button">取消試改</button><button id="scenarioFinishEdit" class="primary-button" type="button" disabled>保存試改</button></header>
+  <p id="scenarioEditorStatus" role="status"></p><iframe id="scenarioEditorFrame" title="獨立方案編輯畫布"></iframe>
+</dialog>
+<script src="native-transport.js"></script>
+<script src="vendor/fflate/umd/index.js"></script>
+<script src="reference-display.js"></script>
+<script src="source-plane.js"></script>
+<script src="evidence-links.js"></script>
+<script src="evidence-links-ui.js"></script>
+<script src="rule-case-data.js"></script>
+<script src="feature-attachments.js"></script>
+<script src="scenario-catalog.js"></script>
+<script src="project-store.js"></script>
+<script src="scenario-snapshots.js"></script>
+<script src="scenario-diff.js"></script>
+<script src="scenario-integration.js"></script>
+<script src="reference-workspace.js"></script>
+<script src="project-ui.js"></script>
+<script src="workspace-guidance.js"></script>
+<script src="workspace-shell.js"></script>
+<script src="feedback.js"></script>
+<script src="reference-ui.js"></script>
+<script src="grid-rule-lines.js"></script>
+<script src="polydraft.js"></script>
+<script src="timber-schedule.js"></script>
+<script src="timber-supports.js"></script>
+<script src="room-outline.js"></script>
+<script src="room-outline-workspace.js"></script>
+<script src="cursor-v2.js"></script>
+<script src="app.js"></script>
+<script src="room-collection.js"></script>
+<script src="room-collection-workspace.js"></script>
+<script src="face-menu-icons.js"></script>
+<script src="face-context-menu.js"></script>
+<script src="grid-trial.js"></script>
+<script src="grid-anchor-positions.js"></script>
+<script src="grid-system-workspace.js"></script>
+<script src="grid-inspector.js"></script>
+<script src="model-viewer.js"></script>
+<script src="space-workspace.js"></script>
+<script src="engineering-workspace.js"></script>
+<script src="engineering-adapter.js"></script>
+<script src="parameters.js"></script>
+<script src="context-operations.js"></script>
+<script src="rule-case-workbench.js"></script>
+<script src="rule-case-host.js"></script>
+<script src="assembly-workspace.js"></script>
+<script src="section-profile-workspace.js"></script>
+<script src="source-inspector.js"></script>
+<script src="source-inspector-app.js"></script>
+<script src="evidence-links-app.js"></script>
+<script src="model-update.js"></script>
+<script src="model-update-app.js"></script>
+<script src="scenario-workspace.js"></script>
+<script src="document-format.js"></script>
+<script src="document-cases.js"></script>
+<script src="documents.js"></script>
+</body>
+</html>

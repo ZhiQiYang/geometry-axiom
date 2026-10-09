@@ -1,0 +1,32 @@
+{
+  "atUtc": "2026-10-09T15:14:27.912233+00:00",
+  "ownedPort": 19182,
+  "before": [
+    {
+      "pid": 92817,
+      "exe": "<isolated-test-directory>",
+      "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b",
+      "cmdline": [
+        "<isolated-test-directory>"
+      ]
+    },
+    {
+      "pid": 92814,
+      "exe": "<python-runtime>/bin/python3.12",
+      "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+      "cmdline": [
+        "<python-runtime>/bin/python3",
+        "-u",
+        "<workspace-path>",
+        "19182"
+      ]
+    }
+  ],
+  "signal": "SIGTERM",
+  "afterPortConnectEx": 111,
+  "afterProcExists": {
+    "92817": true,
+    "92814": false
+  },
+  "otherServicesTouched": false
+}
