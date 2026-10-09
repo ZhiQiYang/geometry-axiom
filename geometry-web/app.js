@@ -7048,7 +7048,7 @@ function feShapePaneHTML(bid) {
       `<label>${sideOpt("ay", ["top", "bottom"])}<input type="number" step="1" min="0" data-feat-num="dy" value="${m.dy}"></label>` +
       `</div></div>`;
   });
-  html += `</div></div>`;
+  html += `</div><section id="faceProjectionEditor" aria-label="柱樑投影套用"></section></div>`;
   return html;
 }
 function feBindShapePane(pane, bid) {
@@ -7204,11 +7204,17 @@ async function feExportTimberSchedule() {
     setTimeout(()=>URL.revokeObjectURL(url),1000);return true;
   } catch(error) {toast(error.message);return false;}
 }
-function renderFaceLayers() {
+function feProjectionDraft() {
+  const pane=$('faceProjectionEditor');
+  if (!pane || pane._projectionEdit !== oc.edit) return null;
+  return {edit:oc.edit,checks:new Map([...pane.querySelectorAll('.fe-ob-check')].map(c=>[c.dataset.itemType+':'+c.dataset.itemId,c.checked])),cut:!!pane.querySelector('#feCutStrip')?.checked};
+}
+function renderFaceLayers(projectionDraft = feProjectionDraft()) {
   const e = oc.edit;
   const list = $("faceLayerList");
   if (!e || !list) return;
   const schedulePane=$('faceTimberSchedule');if(schedulePane)schedulePane.replaceChildren();
+  const projectionPane=$('faceProjectionEditor');if(projectionPane){projectionPane.replaceChildren();projectionPane._projectionEdit=e;}
   const loops = fe.work || oc.bmap[e.bid] || [];
   let n = 0;
   list.textContent = "";
@@ -7374,7 +7380,8 @@ function renderFaceLayers() {
       const cb = document.createElement("input");
       cb.type = "checkbox"; cb.className = "fe-ob-check";
       cb.dataset.itemId = it.id; cb.dataset.itemType = it.type;
-      cb.checked = it.cls !== "strip";   /* 條帶預設不裁,不預選 */
+      cb.checked = projectionDraft?.edit===e && projectionDraft.checks.has(it.type+':'+it.id)
+        ? projectionDraft.checks.get(it.type+':'+it.id) : it.cls !== "strip"; /* 條帶預設不裁,不預選 */
       cb.addEventListener("change", feSyncObApply);
       const symbol = document.createElement("span");
       symbol.className = `face-layer-icon ${it.type}`; symbol.innerHTML = icon(it.type === "beam" ? "beam" : "column");
@@ -7388,7 +7395,10 @@ function renderFaceLayers() {
         `<small>${sub}</small>`;
       r.appendChild(copy);
       cb.setAttribute("aria-label", `套用${it.type === "beam" ? "樑" : "柱"} ${it.id} 投影`);
-      r.appendChild(cb);
+      if (projectionPane) { const editorRow=r.cloneNode(true);editorRow.appendChild(cb);projectionPane.appendChild(editorRow); }
+      r.tabIndex=0;r.setAttribute('role','button');r.setAttribute('aria-label',`編輯${it.type === "beam" ? "樑" : "柱"} ${it.id} 投影`);
+      const open=()=>{fiShowTab('shape');if(innerWidth<=680)openPanel('right',$('workspaceToggleRight'));};
+      r.onclick=open;r.onkeydown=ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();open();}};
       list.appendChild(r);
       ++n;
     }
@@ -7399,8 +7409,9 @@ function renderFaceLayers() {
       `<label class="fe-ob-cut"><input type="checkbox" id="feCutStrip"> 裁切條帶</label>` +
       `<button id="feApplyProj" class="btn">套用投影</button>` +
       `<small class="fe-ob-note">套用後成為面的一部分，不再跟隨柱樑變動；可 Ctrl+Z 復原。拆面後會產生新的面編號。</small>`;
-    list.appendChild(ctrl);
-    $("feApplyProj").addEventListener("click", feApplyProj);
+    if(projectionPane)projectionPane.appendChild(ctrl);
+    if(projectionDraft?.edit===e)ctrl.querySelector('#feCutStrip').checked=projectionDraft.cut;
+    ctrl.querySelector('#feApplyProj').addEventListener("click", feApplyProj);
     feSyncObApply();
   } else { group("柱樑投影");
     const note = document.createElement("div"); note.className = "fl-empty";
@@ -8420,6 +8431,7 @@ function renderFaceInspector() {
     return;
   }
   const dirtyInputs = captureDirtyInputs(pane);
+  const projectionDraft = feProjectionDraft();
   ++fe.gridPreviewSeq;
   const bid = e.bid;
   const saved = inspectorState(pane, bid);
@@ -8730,7 +8742,7 @@ function renderFaceInspector() {
   }
   GridEditor.bind(pane, bid, currentGrid, surf);
   for(const button of pane.querySelectorAll('[data-component-tab]'))button.onclick=()=>fiShowTab(button.dataset.componentTab);
-  renderFaceLayers();
+  renderFaceLayers(projectionDraft);
   feTimberAutoBadges(pane);
   ReferenceWorkspace.present();
   if (!saved || (saved.placement === "null" && surf)) feTimberSuggestForm();

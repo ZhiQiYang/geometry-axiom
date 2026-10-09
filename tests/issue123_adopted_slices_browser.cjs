@@ -33,7 +33,22 @@ const check=(name,ok,detail)=>{const r={group:current,name,ok:ok===true,...(deta
 const read=expression=>page.evaluate(expression);
 const wait=expression=>page.waitForFunction(expression,null,{timeout:20000});
 const equal=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
-const visible=selector=>read(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)return false;const s=getComputedStyle(e),r=e.getBoundingClientRect();return s.display!=='none'&&s.visibility!=='hidden'&&r.width>0&&r.height>0;})()`);
+const visible=selector=>read(`(()=>{
+  const e=document.querySelector(${JSON.stringify(selector)});if(!e)return false;
+  const s=getComputedStyle(e),r=e.getBoundingClientRect();
+  if(!(s.display!=='none'&&s.visibility!=='hidden'&&r.width>0&&r.height>0))return false;
+  // Closed disclosure contents can retain nonzero layout rectangles. The first
+  // summary stays visible; the remaining content does not participate in paint.
+  for(let n=e;n;n=n.parentElement){
+    const style=getComputedStyle(n);
+    if(style.display==='none'||style.contentVisibility==='hidden')return false;
+    if(n!==e&&n.tagName==='DETAILS'&&!n.open){
+      const summary=n.querySelector(':scope > summary');
+      if(!summary||!summary.contains(e))return false;
+    }
+  }
+  return true;
+})()`);
 const rect=selector=>read(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)throw Error('Missing '+${JSON.stringify(selector)});const r=e.getBoundingClientRect(),s=getComputedStyle(e);return {x:r.x,y:r.y,left:r.left,right:r.right,top:r.top,bottom:r.bottom,width:r.width,height:r.height,display:s.display,visibility:s.visibility};})()`);
 const dump=()=>read(`api('dump').then(r=>{if(!r.ok||typeof r.text!=='string')throw Error(JSON.stringify(r));return r.text;})`);
 async function settle(){await wait(`connection.phase==='ready'&&!oc.busy&&!ReferenceWorkspace.busy&&!ReferenceWorkspace.history.group`);await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));}
@@ -51,7 +66,13 @@ const fixture=['boundary 1 outline 0,0 4000,0 4000,3000 0,3000','placement 1 on 
 const gridFixture=[...fixture,'grid-system 1 name-hex 7461696c20736f75726365 main-along u u repeat 0 600 v repeat 0 400','canvas-pos grid-system 1 560 100'];
 async function setup(lines=fixture){await newProject();const responses=await read(`(async()=>{const rows=[];for(const line of ${JSON.stringify(lines)}){const r=await api('line '+line);rows.push({line,response:r});if(!r.ok)throw Error(JSON.stringify(rows));}await renderObjects();return rows;})()`);fs.writeFileSync(path.join(OUT,current+'-context-'+contextOrdinal+'-fixture.json'),JSON.stringify(responses,null,2)+'\n');await click('#btnZoom');await settle();}
 async function enterFace(){await page.locator('.ocard[data-kind="boundary"][data-id="1"]').dblclick();await wait(`oc.edit?.bid===1&&!$('objectWorkspace').hidden`);await settle();}
-async function sourceGrid(){await page.locator('.ocard[data-kind="grid-system"][data-id="1"]').dblclick();await wait(`$('infiniteGridWorkspace')?.open&&!!$('igName')`);await settle();}
+async function sourceGrid(){
+  // Return restores the object camera to 100%; fit the declared x560 card once
+  // through the normal shortcut before a narrow-viewport pointer double-click.
+  if(await read('innerWidth===390')){await page.keyboard.press('f');await settle();}
+  await page.locator('.ocard[data-kind="grid-system"][data-id="1"]').dblclick();
+  await wait(`$('infiniteGridWorkspace')?.open&&!!$('igName')`);await settle();
+}
 async function modelEmpty(){await click('#fileMenuBtn');await click('#btnModelLibraryMenu');await wait(`$('smWorkspace')?.open&&!$('smLibraryPanel').hidden`);await click('#smBackToBuild');await wait(`!$('smMain').hidden&&SpaceModelWorkspace.snapshot().sourceKind===null`);}
 async function modelExample(){await click('#smWelcomeTry');await wait(`SpaceModelWorkspace.snapshot().resultSummary!==null&&!SpaceModelWorkspace.snapshot().stale`);await settle();}
 async function archiveInput(){if(!page||page.isClosed())return;const rows=await read('window.__ui123Input').catch(error=>({error:error.message}));fs.writeFileSync(path.join(OUT,contextGroup+'-context-'+contextOrdinal+'-trusted-input-events.json'),JSON.stringify(rows,null,2)+'\n');}

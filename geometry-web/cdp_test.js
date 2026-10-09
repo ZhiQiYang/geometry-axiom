@@ -2361,8 +2361,8 @@ async function main() {
   for (let i = 0; i < 15; ++i) {
     await sleep(300);
     obUi = await eval_(`({
-      checks: document.querySelectorAll("#faceLayerList .fe-ob-check").length,
-      checked: document.querySelectorAll("#faceLayerList .fe-ob-check:checked").length,
+      checks: document.querySelectorAll("#faceProjectionEditor .fe-ob-check").length,
+      checked: document.querySelectorAll("#faceProjectionEditor .fe-ob-check:checked").length,
       btn: !!document.getElementById("feApplyProj"),
       cut: !!document.getElementById("feCutStrip"),
       btnTxt: document.getElementById("feApplyProj") &&
@@ -2383,7 +2383,7 @@ async function main() {
     ? "✓" : `✗ ${JSON.stringify(ap1)}`));
   /* 只勾樑(取消已套用的柱:重套=拒絕)+ 裁切條帶 → 套用 */
   await eval_(`(()=>{
-    for (const c of document.querySelectorAll("#faceLayerList .fe-ob-check")) {
+    for (const c of document.querySelectorAll("#faceProjectionEditor .fe-ob-check")) {
       c.checked = c.dataset.itemType === "beam";
       c.dispatchEvent(new Event("change"));
     }
@@ -3758,7 +3758,7 @@ async function main() {
   check('F2 form drafts survive redraw',await eval_(`document.querySelector('#gridU').value==='100 200' && document.querySelector('#placeOX').value==='250'`));
   for (const width of [1382,1160,900,680,600]) {
     await send('Emulation.setDeviceMetricsOverride',{width,height:804,deviceScaleFactor:1,mobile:false});
-    check('T4 workspace identity and scrollable tools occupy separate usable rows @'+width,await eval_(`(()=>{const h=document.querySelector('.object-workspace-topbar').getBoundingClientRect(),s=document.querySelector('.object-workspace-statusbar').getBoundingClientRect(),t=document.querySelector('.workspace-tools-row').getBoundingClientRect(),a=document.querySelector('.object-workspace-actions').getBoundingClientRect(),title=document.querySelector('#workspaceTitle').getBoundingClientRect(),vp=$('faceEditorViewport').getBoundingClientRect();return h.height>=100 && h.height<=150 && s.height===32 && a.right<=innerWidth+1 && t.left>=0 && t.right<=innerWidth+1 && t.top>=a.bottom-1 && title.width>0 && vp.top>=h.bottom-1 && vp.height>300})()`));
+    check('T4 adopted 56/96 header, reachable tools and history in right actions @'+width,await eval_(`(()=>{const h=document.querySelector('.object-workspace-topbar').getBoundingClientRect(),s=document.querySelector('.object-workspace-statusbar').getBoundingClientRect(),t=document.querySelector('.workspace-tools-row').getBoundingClientRect(),a=document.querySelector('.object-workspace-actions').getBoundingClientRect(),title=document.querySelector('#workspaceTitle').getBoundingClientRect(),vp=$('faceEditorViewport').getBoundingClientRect();return h.height===(innerWidth<=560?96:56) && s.height===32 && a.right<=innerWidth+1 && t.left>=0 && t.right<=innerWidth+1 && (innerWidth<=560?t.top>=h.top+44:t.top>=h.top&&t.bottom<=h.bottom) && document.querySelector('.object-workspace-actions').contains(document.querySelector('.workspace-history-tools')) && title.width>0 && vp.top>=h.bottom-1 && vp.height>300})()`));
   }
   await clickSelector('#workspaceToggleRight');
   await eval_(`document.querySelector('#edgeLength0').scrollIntoView({block:'center',inline:'nearest'})`);
@@ -4696,7 +4696,7 @@ async function main() {
   const p43_7c = await eval_(`fe.timbers.some(t=>t.id===10)`);
   check('P43-7c Ctrl+Z → 角材回來', p43_7c === true, p43_7c);
   const p43FaceLayout=await eval_(`(()=>{const top=document.querySelector('.object-workspace-topbar').getBoundingClientRect(),vp=$('faceEditorViewport').getBoundingClientRect();return {focus:oc.focus,composition:document.body.classList.contains('canvas-composition'),topHeight:top.height,viewportTop:vp.top,viewportHeight:vp.height,topBottom:top.bottom};})()`);
-  check('P43-7d Undo 後仍是面內版面，沒有主畫布底部樣式殘留',p43FaceLayout.focus?.t==='face'&&!p43FaceLayout.composition&&p43FaceLayout.topHeight>=100&&p43FaceLayout.topHeight<=150&&p43FaceLayout.viewportHeight>300&&p43FaceLayout.viewportTop>=p43FaceLayout.topBottom,p43FaceLayout);
+  check('P43-7d Undo 後仍是面內版面，沒有主畫布底部樣式殘留',p43FaceLayout.focus?.t==='face'&&!p43FaceLayout.composition&&p43FaceLayout.topHeight===56&&p43FaceLayout.viewportHeight>300&&p43FaceLayout.viewportTop>=p43FaceLayout.topBottom,p43FaceLayout);
 
   /* (8) 切到重畫外環工具 e,在角材位置落點仍成功(角材不擋) */
   await eval_(`feSetTool('redraw')`);

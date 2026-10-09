@@ -202,6 +202,7 @@
   .ig-hint { display: none; }
   .ig-workspace { --ig-fh: 44px; --ig-icon-w: 44px; }
   .ig-workspace button, .ig-workspace input, .ig-workspace select { min-height: 44px; }
+  .ig-zoombar button { min-width:44px; }
   .ig-workspace .ig-def-stage .ig-chip, .ig-workspace .ig-def-stage .ig-chip-phase { min-height: 0; }
   .ig-workspace .ig-def-stage .ig-chip::after { content: ''; position: absolute; inset: -11px -4px; }
   .ig-settings .ig-axis-head, .ig-settings .ig-pf-box input, .ig-settings .ig-pf-main select { min-height: 0; }

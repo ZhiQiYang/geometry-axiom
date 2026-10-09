@@ -143,7 +143,7 @@ window.ScenarioWorkspace = (() => {
           await loadEditorFrame(owner,pending.context);guard();
           await childRequest(owner,'scenario-resume',{ticket:pending});guard();
           owner.recovered=false;owner.ready=true;owner.frame.inert=false;
-          $('scenarioEditorStatus').textContent='已續接明確暫存的完整試改；這裡的變更仍只在獨立方案內。';editorControls(owner);return;
+          $('scenarioEditorStatus').textContent='';editorControls(owner);return;
         }catch(error){retained(owner,error);return;}
       }
       if(pending.phase!=='retiring')return;
@@ -166,7 +166,7 @@ window.ScenarioWorkspace = (() => {
       await loadEditorFrame(owner,created.context);guard();
       await childRequest(owner,'scenario-open',{bytes,name:label+'.gcanvas',ticket:owner.ticket});guard();
       await writeTicket(owner,{phase:'active',context:created.context});guard();
-      owner.ready=true;owner.frame.inert=false;$('scenarioEditorStatus').textContent='此處變更只在獨立方案內；完成後保存試改，或取消。';editorControls(owner);
+      owner.ready=true;owner.frame.inert=false;$('scenarioEditorStatus').textContent='';editorControls(owner);
     }catch(e){if(!owner.cancelled)retained(owner,e);throw e;}
   }
   async function releaseFreeze(owner){if(owner.cancelling)await owner.cancelling.catch(()=>{});

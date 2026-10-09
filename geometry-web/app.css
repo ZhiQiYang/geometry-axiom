@@ -1441,8 +1441,8 @@ body.oc-busy .face-layer-row { pointer-events: none; }
   border-radius: 6px; background: #fff; color: var(--accent-strong); cursor: pointer; }
 .rc-act:hover { background: #e8effb; border-color: #b8cdf0; }
 /* D1:三視圖左右欄切換 */
-body.v3-mode .sidebar-left > *:not(#v3Panel) { display: none; }
-body.v3-mode .sidebar-right > *:not(#v3PickPanel) { display: none; }
+body.v3-mode .sidebar-left > *:not(#v3Panel):not(.drawer-close) { display: none; }
+body.v3-mode .sidebar-right > *:not(#v3PickPanel):not(.drawer-close) { display: none; }
 #v3Panel { display: flex; flex-direction: column; gap: 6px; }
 #v3Panel[hidden] { display: none; }
 .v3-check-col { display: flex; flex-direction: column; gap: 5px;
@@ -2513,6 +2513,8 @@ body.v3-mode .sidebar-left { overflow-y: auto; }
   .workspace-tools-row .workspace-tool span:not([data-icon]) { display: inline; }
   .workspace-project-status { max-width: 44px; }
   .workspace-history-tools { gap: 2px; padding-left: 5px; }
+  .object-workspace-actions .workspace-history-tools { position:absolute;right:8px;bottom:4px; }
+  .object-workspace-topbar > .workspace-tools-row { padding-right:140px; }
   .face-canvas-controls { left: 8px; right: 8px; bottom: 8px; width: auto; max-width: none; flex-wrap: wrap; gap: 4px; padding: 6px; }
   .face-canvas-controls button, .face-canvas-controls .icon-button, .face-canvas-controls .zoom-level,
   .face-canvas-controls .face-mini-opt, .face-canvas-controls .face-mini-opt select { min-width: 44px; min-height: 44px; height: 44px; flex-shrink: 0; }
