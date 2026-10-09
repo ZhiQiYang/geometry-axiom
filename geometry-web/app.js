@@ -1096,18 +1096,20 @@ cv.addEventListener("pointerdown", async e => {
   })().catch(err => { d.failed = true; toast(err.message || "選取失敗"); });
 });
 cv.addEventListener("pointerup", async e => {
+  // Retire a pending down synchronously, before any bridge continuation.
+  const gesture = e.button === 0 ? retireCanvasGesture(e) : null;
   if (e.button === 1) panning = null;
   if (e.button === 0 && dragging) await finishGuideDrag(false, screenToView(e.clientX, e.clientY));
   if (tool !== "view" && e.button === 0) {
     const sv = screenToView(e.clientX, e.clientY);
-    await canvasUp(e, sv);
+    await canvasUp(e, sv, gesture);
   }
   document.body.classList.toggle("v3-picked", !!selected);
   applyTransform();
 });
 cv.addEventListener("pointerleave", () => { hoverPickScheduler.cancel(); clearMainHover(); });
-cv.addEventListener("pointercancel", () => { hoverPickScheduler.cancel(); panning = null; finishGuideDrag(true); });
-cv.addEventListener("lostpointercapture", () => { if (dragging) finishGuideDrag(true); });
+cv.addEventListener("pointercancel", e => { retireCanvasGesture(e, true); hoverPickScheduler.cancel(); panning = null; finishGuideDrag(true); });
+cv.addEventListener("lostpointercapture", e => { retireCanvasGesture(e, true); if (dragging) finishGuideDrag(true); });
 cv.addEventListener("wheel", e => {
   e.preventDefault();
   const r = cv.getBoundingClientRect();
@@ -1139,13 +1141,41 @@ let rectStart = null;         /* 矩形起點 {u,v} */
 let editLoops = null;         /* 編輯中邊界 loops（[{verts,fixity}]） */
 let editToken = 0;            /* enterEdit 這一次的代號；離開或重進編輯即失效 */
 let editBid = 0;
-let editDrag = null;          /* {loop,index,kind} */
+let editDrag = null;
+let canvasGesture = null, rectGesture = null, canvasGestureSequence = 0;
+function beginCanvasGesture(event) {
+  retireCanvasGesture(null, true);
+  const sequence = ++canvasGestureSequence;
+  const owner = presentationCurrent(), bid = editBid, loops = editLoops;
+  const gesture = { sequence, pointerId: event.pointerId, live: true, owner,
+    current: () => canvasGesture === gesture && gesture.live && owner() && editBid === bid && editLoops === loops };
+  canvasGesture = gesture;
+  return gesture;
+}
+function retireCanvasGesture(event, cancel = false) {
+  const gesture = canvasGesture;
+  if (!gesture || (event && event.pointerId !== gesture.pointerId)) return null;
+  const ownsPresentation = gesture.owner();
+  canvasGesture = null;
+  gesture.live = false;
+  if (cancel) {
+    ++canvasGestureSequence;
+    const ownsDrag = editDrag?.gesture === gesture.sequence, ownsRect = rectGesture === gesture;
+    if (ownsDrag) editDrag = null;
+    if (ownsRect) { rectStart = null; rectGesture = null; }
+    if ((ownsDrag || ownsRect) && ownsPresentation) {
+      previewClear();
+      if (tool === "edit") void drawEditHandles();
+    }
+  }
+  return gesture;
+}          /* {loop,index,kind} */
 let affineCache = {};         /* "v:sid" → uv↔view-mm 仿射映射 */
 let previewGs = [];
 
 /* uv↔view-mm 仿射映射：取 3 個 proj 樣本解出（C 端永遠是計算來源）。 */
 async function uvMapFor(v, sid) {
-  const key = v + ":" + sid;
+  const key = v + ":" + sid, cache = affineCache, current = presentationCurrent();
   if (affineCache[key]) return affineCache[key];
   const [p00, p10, p01] = await Promise.all([
     api(`proj ${v} 0 0 ${sid}`),
@@ -1160,7 +1190,7 @@ async function uvMapFor(v, sid) {
   };
   m.det = m.ax * m.by - m.ay * m.bx;
   if (!m.det) return null;                    /* 這視圖看不到這面 */
-  affineCache[key] = m;
+  if (cache === affineCache && current()) cache[key] = m;
   return m;
 }
 function mapUv(m, u, v) {
@@ -1228,11 +1258,11 @@ function presentationCurrent() {
   const context = ReferenceWorkspace.context(), frame = ReferenceWorkspace.history.frame,
     session = connection.session, focus = oc.focus, edit = oc.edit, objectMode = oc.on,
     navigation = oc.navigationSequence, threeView = view3, activeTool = tool,
-    token = editToken, surface = $("workSurf").value;
+    token = editToken, surface = $("workSurf").value, gestureSequence = canvasGestureSequence;
   return () => ReferenceWorkspace.context() === context && ReferenceWorkspace.history.frame === frame &&
     connection.session === session && oc.focus === focus && oc.edit === edit && oc.on === objectMode &&
     oc.navigationSequence === navigation && view3 === threeView && tool === activeTool &&
-    editToken === token && $("workSurf").value === surface;
+    editToken === token && $("workSurf").value === surface && canvasGestureSequence === gestureSequence;
 }
 async function emitLine(text, options = {}) {
   if (oc.busy) return false;
@@ -1258,9 +1288,9 @@ async function emitLine(text, options = {}) {
 }
 
 /* 在選定平面上建新「surface」（boundary + placement 合體一行）。 */
-async function emitNewSurface(pts) {
+async function emitNewSurface(pts, current = presentationCurrent(), s = curSurf()) {
   const ids = await api("newid");
-  const s = curSurf();
+  if (!current() || canvasGesture) return false;
   if (!s) { setStatus("✗ 沒有選工作面"); return false; }
   /* GEO-157：`surface` 一行同時宣告 boundary 與 placement，所以 id 必須兩邊都空。
      原本用 Math.max(ids.boundary, ids.placement) 湊——那只在「沒有回繞」時成立
@@ -1320,6 +1350,7 @@ function syncV3PlaneControls() {
 
 /* ---- 編輯工具 ---- */
 async function enterEdit() {
+  retireCanvasGesture(null, true);
   const token = ++editToken;
   editLoops = null; editBid = 0; editDrag = null; previewClear();
   const s = curSurf();
@@ -1337,13 +1368,13 @@ async function enterEdit() {
   await drawEditHandles(token);
 }
 
-async function drawEditHandles(token = editToken) {
-  if (token !== editToken || tool !== "edit" || !editLoops) return;
+async function drawEditHandles(token = editToken, current = presentationCurrent()) {
+  if (token !== editToken || tool !== "edit" || !editLoops || !current()) return;
   previewClear();
   for (let v = 0; v < 3; ++v) {
     const m = await uvMap(v);
     /* 這次投影對應已經過期。較新的編輯擁有目前手把，過期回覆不得清掉。 */
-    if (token !== editToken || tool !== "edit") return;
+    if (token !== editToken || tool !== "edit" || !current()) return;
     if (!editLoops) { previewClear(); return; }
     if (!m) continue;                     /* det=0：此視圖看這面是線 */
     const g = previewIn(v);
@@ -1448,27 +1479,30 @@ function edgeListRowsHTML(loops, idPrefix) {
 
 /* ---- 畫布滑鼠流程 ---- */
 async function canvasDown(e, sv) {
+  const gesture = beginCanvasGesture(e), bid = editBid, loops = editLoops;
   const m = await uvMap(sv.v);
+  if (!gesture.current()) return;
   if (!m) { setStatus("這個視圖看不到工作面（換俯視圖或換工作面）"); return; }
   const uv = unmapView(m, sv.x, sv.y);
 
   if (tool === "rect" || tool === "hole") {
+    rectGesture = gesture;
     rectStart = uv; previewClear(); previewPoly(m, [[uv.u, uv.v], [uv.u, uv.v]], true, previewIn(sv.v));
   } else if (tool === "edit" && editLoops) {
-    const s = curSurf();
-    const h = await api(`bhit ${editBid} ${uv.u} ${uv.v} ${sv.r}`);
-    if (!h.ok) return;
-    editDrag = { loop: h.loop, index: h.index, kind: h.kind,
-                 loops: editLoops.map(l => ({ verts: l.verts.map(p => [...p]),
+    const h = await api(`bhit ${bid} ${uv.u} ${uv.v} ${sv.r}`);
+    if (!h.ok || !gesture.current()) return;
+    editDrag = { gesture: gesture.sequence, bid, loop: h.loop, index: h.index, kind: h.kind,
+                 loops: loops.map(l => ({ verts: l.verts.map(p => [...p]),
                                             fixity: [...l.fixity] })) };
     previewClear(); previewIn(sv.v);
   }
 }
 
 async function canvasMove(e, sv) {
-  if (tool === "view") return;
+  const gesture = canvasGesture, drag = editDrag, start = rectStart;
+  if (tool === "view" || !gesture?.current() || e.pointerId !== gesture.pointerId) return;
   const m = await uvMap(sv.v);
-  if (!m) return;
+  if (!m || !gesture.current() || editDrag !== drag || rectStart !== start) return;
   const uv = unmapView(m, sv.x, sv.y);
 
   if ((tool === "rect" || tool === "hole") && rectStart) {
@@ -1486,35 +1520,42 @@ async function canvasMove(e, sv) {
   }
 }
 
-async function canvasUp(e, sv) {
-  if ((tool === "rect" || tool === "hole") && rectStart) {
+async function canvasUp(e, sv, gesture) {
+  if (!gesture || !gesture.owner()) return;
+  const owner = gesture.owner, surface = curSurf(), activeTool = tool;
+  if ((tool === "rect" || tool === "hole") && rectStart && rectGesture === gesture) {
+    const st = rectStart;
     if (!sv) { rectStart = null; previewClear(); return; }
     const m = await uvMap(sv.v);
+    if (!owner() || rectStart !== st || rectGesture !== gesture) return;
     const uv = m ? unmapView(m, sv.x, sv.y) : null;
-    const st = rectStart; rectStart = null; previewClear();
+    rectStart = null; rectGesture = null; previewClear();
     if (!uv || st.u === uv.u || st.v === uv.v) return;
     const u0 = Math.min(st.u, uv.u), u1 = Math.max(st.u, uv.u);
     const v0 = Math.min(st.v, uv.v), v1 = Math.max(st.v, uv.v);
     const pts = [[u0, v0], [u1, v0], [u1, v1], [u0, v1]];
-    if (tool === "rect") {
-      await emitNewSurface(pts);
+    if (activeTool === "rect") {
+      await emitNewSurface(pts, owner, surface);
     } else {
       /* 挖孔：把矩形當新孔併進工作面的邊界，整體重宣告。 */
-      const s = curSurf();
+      const s = surface;
       if (!s || !s.boundary) { setStatus("✗ 挖孔要有邊界面的工作面"); return; }
       const b = await api("boundary " + s.boundary);
-      if (!b.ok) return;
+      if (!b.ok || !owner() || canvasGesture) return;
       b.loops.push({ verts: pts, fixity: pts.map(() => 1) });
       await emitBoundary(s.boundary, b.loops);
     }
-  } else if (tool === "edit" && editDrag) {
-    const loops = editDrag.loops; editDrag = null;
-    if (await emitBoundary(editBid, loops)) { await enterEdit(); }
-    else { await drawEditHandles(); }
+  } else if (tool === "edit" && editDrag?.gesture === gesture.sequence) {
+    const drag = editDrag; editDrag = null;
+    const ok = await emitBoundary(drag.bid, drag.loops);
+    if (!owner() || canvasGesture) return;
+    if (ok) await enterEdit();
+    else await drawEditHandles();
   }
 }
 
 async function v3SetTool(t) {
+  retireCanvasGesture(null, true);
   if (t === "edit" || tool === "edit") editToken++;
   tool = t;
   $("tool").value = t;
@@ -1551,6 +1592,7 @@ $("v3ZoomFit").addEventListener("click", () => { zoom = 1; panX = panY = 0; appl
 for (const c of document.querySelectorAll("[data-v3-view],[data-v3-layer]"))
   c.addEventListener("change", () => { if (view3) render(); });
 $("workSurf").addEventListener("change", async () => {
+  retireCanvasGesture(null, true);
   syncV3PlaneControls();
   if (tool === "edit") await enterEdit();
 });
