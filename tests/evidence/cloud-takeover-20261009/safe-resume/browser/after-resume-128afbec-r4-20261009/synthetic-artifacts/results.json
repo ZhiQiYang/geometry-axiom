@@ -1,0 +1,3754 @@
+[
+  {
+    "name": "pause-resume-finish-1280",
+    "width": 1280,
+    "terminal": "finish",
+    "ok": true,
+    "assertions": [
+      {
+        "label": "metadata-only fixture retains the latest unchanged native B while source and drafts are complete",
+        "passed": true
+      },
+      {
+        "label": "live A confirmed state is unchanged by B native and metadata editing",
+        "passed": true
+      },
+      {
+        "label": "B owns its native editor and native-specific recovery locks before Pause",
+        "passed": true
+      },
+      {
+        "label": "Pause blank frame releases both B leases while keeping exact active ticket and live native B",
+        "passed": true
+      },
+      {
+        "label": "strict Pause record retains exact full latest package and source closure",
+        "passed": true
+      },
+      {
+        "label": "Pause does not close or create native B",
+        "passed": true
+      },
+      {
+        "label": "Resume resolves the same native B and restores exact complete metadata/source package",
+        "passed": true
+      },
+      {
+        "label": "Resume consumed only its eligible journal and left exact ticket and parent A unchanged",
+        "passed": true
+      },
+      {
+        "label": "resumed B reacquires both exact native-specific editor and recovery locks",
+        "passed": true
+      },
+      {
+        "label": "Resume sent exact resolve once with zero upload/create/close/reset/loadfile/native mutation",
+        "passed": true
+      },
+      {
+        "label": "resumed B accepts a new normal parameter edit without touching A or prior metadata",
+        "passed": true
+      },
+      {
+        "label": "normal finish retires exact B context and clears its ticket",
+        "passed": true
+      },
+      {
+        "label": "Finish preserves live A and complete A archive while recording latest full B once",
+        "passed": true
+      },
+      {
+        "label": "no unexpected browser exception",
+        "passed": true
+      }
+    ],
+    "pageErrors": [],
+    "preconditionOrHarnessError": null,
+    "requests": [
+      {
+        "route": "/api",
+        "context": null,
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/scenarios/verify-native",
+        "context": null,
+        "body": {
+          "manifest": {
+            "projectId": "7f02b397-95c5-423a-adcc-700cbcf390c6",
+            "name": "未命名專案",
+            "sources": [
+              {
+                "id": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "hash": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "name": "resume-synthetic.pdf",
+                "type": "application/pdf",
+                "size": 1713,
+                "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+              }
+            ],
+            "faces": [
+              {
+                "bid": 1,
+                "activePageId": "7cfde957-a5f4-41e6-ae39-e1a2bdd68004",
+                "pages": [
+                  {
+                    "id": "7cfde957-a5f4-41e6-ae39-e1a2bdd68004",
+                    "sourceId": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                    "page": 1,
+                    "imgW": 300,
+                    "imgH": 200,
+                    "crop": [
+                      0,
+                      0,
+                      300,
+                      200
+                    ],
+                    "mmPerPx": 13.333333333333334,
+                    "x": 0,
+                    "y": 0,
+                    "rot": 0,
+                    "opacity": 0.5,
+                    "locked": false,
+                    "calibration": null,
+                    "reviewRequired": false,
+                    "records": []
+                  }
+                ]
+              }
+            ],
+            "format": "geometry-canvas/6",
+            "sceneHash": "cc1d9baffc3a159b65ad577d27d64fcaa1e0af4ba0c40eee157c06792e7c650a",
+            "requiredCapabilities": [
+              "parameters/1"
+            ],
+            "models": [],
+            "faceProjections": []
+          },
+          "scene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIyMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 -59 424\n"
+        }
+      },
+      {
+        "route": "/scenarios/verify-native",
+        "context": null,
+        "body": {
+          "manifest": {
+            "projectId": "7f02b397-95c5-423a-adcc-700cbcf390c6",
+            "name": "未命名專案",
+            "sources": [
+              {
+                "id": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "hash": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "name": "resume-synthetic.pdf",
+                "type": "application/pdf",
+                "size": 1713,
+                "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+              }
+            ],
+            "faces": [
+              {
+                "bid": 1,
+                "activePageId": "7cfde957-a5f4-41e6-ae39-e1a2bdd68004",
+                "pages": [
+                  {
+                    "id": "7cfde957-a5f4-41e6-ae39-e1a2bdd68004",
+                    "sourceId": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                    "page": 1,
+                    "imgW": 300,
+                    "imgH": 200,
+                    "crop": [
+                      0,
+                      0,
+                      300,
+                      200
+                    ],
+                    "mmPerPx": 13.333333333333334,
+                    "x": 0,
+                    "y": 0,
+                    "rot": 0,
+                    "opacity": 0.5,
+                    "locked": false,
+                    "calibration": null,
+                    "reviewRequired": false,
+                    "records": []
+                  }
+                ]
+              }
+            ],
+            "format": "geometry-canvas/6",
+            "sceneHash": "cc1d9baffc3a159b65ad577d27d64fcaa1e0af4ba0c40eee157c06792e7c650a",
+            "requiredCapabilities": [
+              "parameters/1"
+            ],
+            "models": [],
+            "faceProjections": []
+          },
+          "scene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIyMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 -59 424\n"
+        }
+      },
+      {
+        "route": "/api",
+        "context": null,
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/scenarios/editor",
+        "context": null,
+        "body": {
+          "action": "create",
+          "requestId": "d9b459a6-9875-486a-a5a3-293ff5832602",
+          "sequence": 2,
+          "session": "dd441b41a3574c98bea61a8d19daaf00"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "objects"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "boundary 1"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/upload/prepare",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIyMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 -59 424\n"
+      },
+      {
+        "route": "/upload/confirm",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": 1
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "objects"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "boundary 1"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "references"
+        }
+      },
+      {
+        "route": "/api",
+        "context": null,
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "engineering-read"
+        }
+      },
+      {
+        "route": "/engineering/preview",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "schema": "engineering-transaction/1",
+          "expectedRevision": 11,
+          "operations": [
+            {
+              "op": "put-parameter",
+              "value": {
+                "id": 1,
+                "name": "Resume authored parameter",
+                "nextFieldId": 2,
+                "fields": [
+                  {
+                    "id": 1,
+                    "name": "尺寸",
+                    "type": "dimension",
+                    "input": "300"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "engineering-confirm 1",
+          "requestId": "05e051d3-dd78-4625-a498-a230e83d1e21",
+          "session": "41d3d25cd82f4ae8a1b4a069f1891b83",
+          "ack": []
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "section-profile-read"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "objects"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "boundary 1"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "objects"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "boundary 1"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "references"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": null,
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/scenarios/editor",
+        "context": null,
+        "body": {
+          "action": "resolve",
+          "requestId": "d9b459a6-9875-486a-a5a3-293ff5832602",
+          "sequence": 2,
+          "session": "dd441b41a3574c98bea61a8d19daaf00",
+          "context": "41d3d25cd82f4ae8a1b4a069f1891b83"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "objects"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "boundary 1"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/scenarios/verify-native",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "manifest": {
+            "projectId": "7f02b397-95c5-423a-adcc-700cbcf390c6",
+            "name": "Latest B 1280 finish",
+            "sources": [
+              {
+                "id": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "hash": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "name": "resume-synthetic.pdf",
+                "type": "application/pdf",
+                "size": 1713,
+                "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+              }
+            ],
+            "faces": [
+              {
+                "bid": 1,
+                "activePageId": "7cfde957-a5f4-41e6-ae39-e1a2bdd68004",
+                "pages": [
+                  {
+                    "id": "7cfde957-a5f4-41e6-ae39-e1a2bdd68004",
+                    "sourceId": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                    "page": 1,
+                    "imgW": 300,
+                    "imgH": 200,
+                    "crop": [
+                      0,
+                      0,
+                      300,
+                      200
+                    ],
+                    "mmPerPx": 10,
+                    "x": 42,
+                    "y": 0,
+                    "rot": 0,
+                    "opacity": 0.73,
+                    "locked": false,
+                    "calibration": {
+                      "points": [
+                        [
+                          0,
+                          0
+                        ],
+                        [
+                          10,
+                          0
+                        ]
+                      ],
+                      "distanceMm": 100,
+                      "inputValue": 10,
+                      "inputUnit": "cm"
+                    },
+                    "reviewRequired": true,
+                    "records": []
+                  }
+                ]
+              }
+            ],
+            "assemblyDrafts": {
+              "schema": "assembly-drafts/1",
+              "records": [
+                {
+                  "id": "resume-latest-assembly",
+                  "kind": "rule",
+                  "base_ref": null,
+                  "data": {
+                    "id": 1,
+                    "version": 1,
+                    "name": "Latest B 1280 finish",
+                    "slots": [],
+                    "members": [],
+                    "joints": []
+                  },
+                  "updated_at": "2026-10-09T00:00:00.000Z"
+                }
+              ]
+            },
+            "engineeringDrafts": {
+              "schema": "engineering-drafts/1",
+              "records": [
+                {
+                  "id": "resume-latest-engineering",
+                  "kind": "material",
+                  "base_ref": null,
+                  "data": {
+                    "name": "Latest B 1280 finish",
+                    "width": "123",
+                    "length": "456"
+                  },
+                  "updated_at": "2026-10-09T00:00:00.000Z"
+                }
+              ]
+            },
+            "format": "geometry-canvas/7",
+            "models": [],
+            "faceProjections": [],
+            "sceneHash": "e6ca5bf68e1a83b7c31d2db6f26c7f086956ff6ded0abaa2d93f10a8d1501fa3",
+            "requiredCapabilities": [
+              "assembly-rule-authoring/1",
+              "parameters/1"
+            ]
+          },
+          "scene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIzMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 -59 424\n"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": null,
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "references"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "engineering-read"
+        }
+      },
+      {
+        "route": "/engineering/preview",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "schema": "engineering-transaction/1",
+          "expectedRevision": 12,
+          "operations": [
+            {
+              "op": "put-parameter",
+              "value": {
+                "id": 1,
+                "name": "Resume authored parameter",
+                "nextFieldId": 2,
+                "fields": [
+                  {
+                    "id": 1,
+                    "name": "尺寸",
+                    "type": "dimension",
+                    "input": "400"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "engineering-confirm 2",
+          "requestId": "9bcea3b1-7a3a-4652-b192-83a8bf8d953c",
+          "session": "41d3d25cd82f4ae8a1b4a069f1891b83",
+          "ack": []
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "section-profile-read"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "objects"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "boundary 1"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "objects"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "boundary 1"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "references"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": null,
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/scenarios/verify-native",
+        "context": null,
+        "body": {
+          "manifest": {
+            "projectId": "7f02b397-95c5-423a-adcc-700cbcf390c6",
+            "name": "未命名專案",
+            "sources": [
+              {
+                "id": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "hash": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "name": "resume-synthetic.pdf",
+                "type": "application/pdf",
+                "size": 1713,
+                "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+              }
+            ],
+            "faces": [
+              {
+                "bid": 1,
+                "activePageId": "7cfde957-a5f4-41e6-ae39-e1a2bdd68004",
+                "pages": [
+                  {
+                    "id": "7cfde957-a5f4-41e6-ae39-e1a2bdd68004",
+                    "sourceId": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                    "page": 1,
+                    "imgW": 300,
+                    "imgH": 200,
+                    "crop": [
+                      0,
+                      0,
+                      300,
+                      200
+                    ],
+                    "mmPerPx": 13.333333333333334,
+                    "x": 0,
+                    "y": 0,
+                    "rot": 0,
+                    "opacity": 0.5,
+                    "locked": false,
+                    "calibration": null,
+                    "reviewRequired": false,
+                    "records": []
+                  }
+                ]
+              }
+            ],
+            "format": "geometry-canvas/6",
+            "sceneHash": "cc1d9baffc3a159b65ad577d27d64fcaa1e0af4ba0c40eee157c06792e7c650a",
+            "requiredCapabilities": [
+              "parameters/1"
+            ],
+            "models": [],
+            "faceProjections": []
+          },
+          "scene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIyMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 -59 424\n"
+        }
+      },
+      {
+        "route": "/scenarios/verify-native",
+        "context": null,
+        "body": {
+          "manifest": {
+            "projectId": "7f02b397-95c5-423a-adcc-700cbcf390c6",
+            "name": "未命名專案",
+            "sources": [
+              {
+                "id": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "hash": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "name": "resume-synthetic.pdf",
+                "type": "application/pdf",
+                "size": 1713,
+                "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+              }
+            ],
+            "faces": [
+              {
+                "bid": 1,
+                "activePageId": "7cfde957-a5f4-41e6-ae39-e1a2bdd68004",
+                "pages": [
+                  {
+                    "id": "7cfde957-a5f4-41e6-ae39-e1a2bdd68004",
+                    "sourceId": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                    "page": 1,
+                    "imgW": 300,
+                    "imgH": 200,
+                    "crop": [
+                      0,
+                      0,
+                      300,
+                      200
+                    ],
+                    "mmPerPx": 13.333333333333334,
+                    "x": 0,
+                    "y": 0,
+                    "rot": 0,
+                    "opacity": 0.5,
+                    "locked": false,
+                    "calibration": null,
+                    "reviewRequired": false,
+                    "records": []
+                  }
+                ]
+              }
+            ],
+            "format": "geometry-canvas/6",
+            "sceneHash": "cc1d9baffc3a159b65ad577d27d64fcaa1e0af4ba0c40eee157c06792e7c650a",
+            "requiredCapabilities": [
+              "parameters/1"
+            ],
+            "models": [],
+            "faceProjections": []
+          },
+          "scene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIyMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 -59 424\n"
+        }
+      },
+      {
+        "route": "/scenarios/verify-native",
+        "context": null,
+        "body": {
+          "manifest": {
+            "projectId": "7f02b397-95c5-423a-adcc-700cbcf390c6",
+            "name": "Latest B 1280 finish",
+            "sources": [
+              {
+                "id": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "hash": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "name": "resume-synthetic.pdf",
+                "type": "application/pdf",
+                "size": 1713,
+                "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+              }
+            ],
+            "faces": [
+              {
+                "bid": 1,
+                "activePageId": "7cfde957-a5f4-41e6-ae39-e1a2bdd68004",
+                "pages": [
+                  {
+                    "id": "7cfde957-a5f4-41e6-ae39-e1a2bdd68004",
+                    "sourceId": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                    "page": 1,
+                    "imgW": 300,
+                    "imgH": 200,
+                    "crop": [
+                      0,
+                      0,
+                      300,
+                      200
+                    ],
+                    "mmPerPx": 10,
+                    "x": 42,
+                    "y": 0,
+                    "rot": 0,
+                    "opacity": 0.73,
+                    "locked": false,
+                    "calibration": {
+                      "points": [
+                        [
+                          0,
+                          0
+                        ],
+                        [
+                          10,
+                          0
+                        ]
+                      ],
+                      "distanceMm": 100,
+                      "inputValue": 10,
+                      "inputUnit": "cm"
+                    },
+                    "reviewRequired": true,
+                    "records": []
+                  }
+                ]
+              }
+            ],
+            "assemblyDrafts": {
+              "schema": "assembly-drafts/1",
+              "records": [
+                {
+                  "id": "resume-latest-assembly",
+                  "kind": "rule",
+                  "base_ref": null,
+                  "data": {
+                    "id": 1,
+                    "version": 1,
+                    "name": "Latest B 1280 finish",
+                    "slots": [],
+                    "members": [],
+                    "joints": []
+                  },
+                  "updated_at": "2026-10-09T00:00:00.000Z"
+                }
+              ]
+            },
+            "engineeringDrafts": {
+              "schema": "engineering-drafts/1",
+              "records": [
+                {
+                  "id": "resume-latest-engineering",
+                  "kind": "material",
+                  "base_ref": null,
+                  "data": {
+                    "name": "Latest B 1280 finish",
+                    "width": "123",
+                    "length": "456"
+                  },
+                  "updated_at": "2026-10-09T00:00:00.000Z"
+                }
+              ]
+            },
+            "format": "geometry-canvas/7",
+            "models": [],
+            "faceProjections": [],
+            "sceneHash": "438a3a33a7f052b0c5ed8615b56d00b62930fa2f14478bf1b74de5781bf6dac7",
+            "requiredCapabilities": [
+              "assembly-rule-authoring/1",
+              "parameters/1"
+            ]
+          },
+          "scene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI0MDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 -59 424\n"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": null,
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": null,
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/scenarios/editor",
+        "context": null,
+        "body": {
+          "action": "close",
+          "requestId": "d9b459a6-9875-486a-a5a3-293ff5832602",
+          "sequence": 2,
+          "session": "dd441b41a3574c98bea61a8d19daaf00"
+        }
+      },
+      {
+        "route": "/api",
+        "context": null,
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+        "body": {
+          "cmd": "dump"
+        }
+      }
+    ],
+    "activeTicket": {
+      "schema": "scenario-editor-ticket/1",
+      "rootSession": "dd441b41a3574c98bea61a8d19daaf00",
+      "request": {
+        "action": "create",
+        "requestId": "d9b459a6-9875-486a-a5a3-293ff5832602",
+        "sequence": 2,
+        "session": "dd441b41a3574c98bea61a8d19daaf00"
+      },
+      "scenarioId": "d895fead-49aa-4c9d-bf26-5e83354b7e6a",
+      "label": "B",
+      "parentCheckpoint": {
+        "key": "b6aa97c0-b85d-4326-ae12-08744edec2a1",
+        "sceneHash": "cc1d9baffc3a159b65ad577d27d64fcaa1e0af4ba0c40eee157c06792e7c650a",
+        "packageHash": "cbcc660473904a38bb2d8a3ba637891652a6633df93065ea8676e938f0cf791c",
+        "projectId": "7f02b397-95c5-423a-adcc-700cbcf390c6"
+      },
+      "phase": "active",
+      "context": "41d3d25cd82f4ae8a1b4a069f1891b83",
+      "eligible": false,
+      "retirement": null
+    }
+  },
+  {
+    "name": "pause-resume-cancel-1280",
+    "width": 1280,
+    "terminal": "cancel",
+    "ok": true,
+    "assertions": [
+      {
+        "label": "metadata-only fixture retains the latest unchanged native B while source and drafts are complete",
+        "passed": true
+      },
+      {
+        "label": "live A confirmed state is unchanged by B native and metadata editing",
+        "passed": true
+      },
+      {
+        "label": "B owns its native editor and native-specific recovery locks before Pause",
+        "passed": true
+      },
+      {
+        "label": "Pause blank frame releases both B leases while keeping exact active ticket and live native B",
+        "passed": true
+      },
+      {
+        "label": "strict Pause record retains exact full latest package and source closure",
+        "passed": true
+      },
+      {
+        "label": "Pause does not close or create native B",
+        "passed": true
+      },
+      {
+        "label": "Resume resolves the same native B and restores exact complete metadata/source package",
+        "passed": true
+      },
+      {
+        "label": "Resume consumed only its eligible journal and left exact ticket and parent A unchanged",
+        "passed": true
+      },
+      {
+        "label": "resumed B reacquires both exact native-specific editor and recovery locks",
+        "passed": true
+      },
+      {
+        "label": "Resume sent exact resolve once with zero upload/create/close/reset/loadfile/native mutation",
+        "passed": true
+      },
+      {
+        "label": "resumed B accepts a new normal parameter edit without touching A or prior metadata",
+        "passed": true
+      },
+      {
+        "label": "normal cancel retires exact B context and clears its ticket",
+        "passed": true
+      },
+      {
+        "label": "Cancel preserves complete confirmed A and its original B archive",
+        "passed": true
+      },
+      {
+        "label": "no unexpected browser exception",
+        "passed": true
+      }
+    ],
+    "pageErrors": [],
+    "preconditionOrHarnessError": null,
+    "requests": [
+      {
+        "route": "/api",
+        "context": null,
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/scenarios/verify-native",
+        "context": null,
+        "body": {
+          "manifest": {
+            "projectId": "1458cf98-ce77-4db2-9ac9-f8b430fdaf8a",
+            "name": "未命名專案",
+            "sources": [
+              {
+                "id": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "hash": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "name": "resume-synthetic.pdf",
+                "type": "application/pdf",
+                "size": 1713,
+                "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+              }
+            ],
+            "faces": [
+              {
+                "bid": 1,
+                "activePageId": "46b7015f-df90-4c3c-a942-c3e2b9da4368",
+                "pages": [
+                  {
+                    "id": "46b7015f-df90-4c3c-a942-c3e2b9da4368",
+                    "sourceId": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                    "page": 1,
+                    "imgW": 300,
+                    "imgH": 200,
+                    "crop": [
+                      0,
+                      0,
+                      300,
+                      200
+                    ],
+                    "mmPerPx": 13.333333333333334,
+                    "x": 0,
+                    "y": 0,
+                    "rot": 0,
+                    "opacity": 0.5,
+                    "locked": false,
+                    "calibration": null,
+                    "reviewRequired": false,
+                    "records": []
+                  }
+                ]
+              }
+            ],
+            "format": "geometry-canvas/6",
+            "sceneHash": "cc1d9baffc3a159b65ad577d27d64fcaa1e0af4ba0c40eee157c06792e7c650a",
+            "requiredCapabilities": [
+              "parameters/1"
+            ],
+            "models": [],
+            "faceProjections": []
+          },
+          "scene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIyMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 -59 424\n"
+        }
+      },
+      {
+        "route": "/scenarios/verify-native",
+        "context": null,
+        "body": {
+          "manifest": {
+            "projectId": "1458cf98-ce77-4db2-9ac9-f8b430fdaf8a",
+            "name": "未命名專案",
+            "sources": [
+              {
+                "id": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "hash": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "name": "resume-synthetic.pdf",
+                "type": "application/pdf",
+                "size": 1713,
+                "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+              }
+            ],
+            "faces": [
+              {
+                "bid": 1,
+                "activePageId": "46b7015f-df90-4c3c-a942-c3e2b9da4368",
+                "pages": [
+                  {
+                    "id": "46b7015f-df90-4c3c-a942-c3e2b9da4368",
+                    "sourceId": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                    "page": 1,
+                    "imgW": 300,
+                    "imgH": 200,
+                    "crop": [
+                      0,
+                      0,
+                      300,
+                      200
+                    ],
+                    "mmPerPx": 13.333333333333334,
+                    "x": 0,
+                    "y": 0,
+                    "rot": 0,
+                    "opacity": 0.5,
+                    "locked": false,
+                    "calibration": null,
+                    "reviewRequired": false,
+                    "records": []
+                  }
+                ]
+              }
+            ],
+            "format": "geometry-canvas/6",
+            "sceneHash": "cc1d9baffc3a159b65ad577d27d64fcaa1e0af4ba0c40eee157c06792e7c650a",
+            "requiredCapabilities": [
+              "parameters/1"
+            ],
+            "models": [],
+            "faceProjections": []
+          },
+          "scene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIyMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 -59 424\n"
+        }
+      },
+      {
+        "route": "/api",
+        "context": null,
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/scenarios/editor",
+        "context": null,
+        "body": {
+          "action": "create",
+          "requestId": "4a9befde-ec56-4298-8cc4-31bc6dc1f4f0",
+          "sequence": 3,
+          "session": "dd441b41a3574c98bea61a8d19daaf00"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "objects"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "boundary 1"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/upload/prepare",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIyMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 -59 424\n"
+      },
+      {
+        "route": "/upload/confirm",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": 1
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "objects"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "boundary 1"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "references"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "engineering-read"
+        }
+      },
+      {
+        "route": "/api",
+        "context": null,
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/engineering/preview",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "schema": "engineering-transaction/1",
+          "expectedRevision": 11,
+          "operations": [
+            {
+              "op": "put-parameter",
+              "value": {
+                "id": 1,
+                "name": "Resume authored parameter",
+                "nextFieldId": 2,
+                "fields": [
+                  {
+                    "id": 1,
+                    "name": "尺寸",
+                    "type": "dimension",
+                    "input": "300"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "engineering-confirm 1",
+          "requestId": "4b1b1ce5-af03-49aa-a8a0-3210eec4051a",
+          "session": "ee46801cd773474cb743d82a3b05a34d",
+          "ack": []
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "section-profile-read"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "objects"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "boundary 1"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "objects"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "boundary 1"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "references"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": null,
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/scenarios/editor",
+        "context": null,
+        "body": {
+          "action": "resolve",
+          "requestId": "4a9befde-ec56-4298-8cc4-31bc6dc1f4f0",
+          "sequence": 3,
+          "session": "dd441b41a3574c98bea61a8d19daaf00",
+          "context": "ee46801cd773474cb743d82a3b05a34d"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "objects"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "boundary 1"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/scenarios/verify-native",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "manifest": {
+            "projectId": "1458cf98-ce77-4db2-9ac9-f8b430fdaf8a",
+            "name": "Latest B 1280 cancel",
+            "sources": [
+              {
+                "id": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "hash": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "name": "resume-synthetic.pdf",
+                "type": "application/pdf",
+                "size": 1713,
+                "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+              }
+            ],
+            "faces": [
+              {
+                "bid": 1,
+                "activePageId": "46b7015f-df90-4c3c-a942-c3e2b9da4368",
+                "pages": [
+                  {
+                    "id": "46b7015f-df90-4c3c-a942-c3e2b9da4368",
+                    "sourceId": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                    "page": 1,
+                    "imgW": 300,
+                    "imgH": 200,
+                    "crop": [
+                      0,
+                      0,
+                      300,
+                      200
+                    ],
+                    "mmPerPx": 10,
+                    "x": 42,
+                    "y": 0,
+                    "rot": 0,
+                    "opacity": 0.73,
+                    "locked": false,
+                    "calibration": {
+                      "points": [
+                        [
+                          0,
+                          0
+                        ],
+                        [
+                          10,
+                          0
+                        ]
+                      ],
+                      "distanceMm": 100,
+                      "inputValue": 10,
+                      "inputUnit": "cm"
+                    },
+                    "reviewRequired": true,
+                    "records": []
+                  }
+                ]
+              }
+            ],
+            "assemblyDrafts": {
+              "schema": "assembly-drafts/1",
+              "records": [
+                {
+                  "id": "resume-latest-assembly",
+                  "kind": "rule",
+                  "base_ref": null,
+                  "data": {
+                    "id": 1,
+                    "version": 1,
+                    "name": "Latest B 1280 cancel",
+                    "slots": [],
+                    "members": [],
+                    "joints": []
+                  },
+                  "updated_at": "2026-10-09T00:00:00.000Z"
+                }
+              ]
+            },
+            "engineeringDrafts": {
+              "schema": "engineering-drafts/1",
+              "records": [
+                {
+                  "id": "resume-latest-engineering",
+                  "kind": "material",
+                  "base_ref": null,
+                  "data": {
+                    "name": "Latest B 1280 cancel",
+                    "width": "123",
+                    "length": "456"
+                  },
+                  "updated_at": "2026-10-09T00:00:00.000Z"
+                }
+              ]
+            },
+            "format": "geometry-canvas/7",
+            "models": [],
+            "faceProjections": [],
+            "sceneHash": "e6ca5bf68e1a83b7c31d2db6f26c7f086956ff6ded0abaa2d93f10a8d1501fa3",
+            "requiredCapabilities": [
+              "assembly-rule-authoring/1",
+              "parameters/1"
+            ]
+          },
+          "scene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIzMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 -59 424\n"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": null,
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "references"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "engineering-read"
+        }
+      },
+      {
+        "route": "/engineering/preview",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "schema": "engineering-transaction/1",
+          "expectedRevision": 12,
+          "operations": [
+            {
+              "op": "put-parameter",
+              "value": {
+                "id": 1,
+                "name": "Resume authored parameter",
+                "nextFieldId": 2,
+                "fields": [
+                  {
+                    "id": 1,
+                    "name": "尺寸",
+                    "type": "dimension",
+                    "input": "400"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "engineering-confirm 2",
+          "requestId": "20aee558-52b6-4185-a9c2-32d232828a65",
+          "session": "ee46801cd773474cb743d82a3b05a34d",
+          "ack": []
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "section-profile-read"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "objects"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "boundary 1"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "objects"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "boundary 1"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "references"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": null,
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/scenarios/editor",
+        "context": null,
+        "body": {
+          "action": "close",
+          "requestId": "4a9befde-ec56-4298-8cc4-31bc6dc1f4f0",
+          "sequence": 3,
+          "session": "dd441b41a3574c98bea61a8d19daaf00"
+        }
+      },
+      {
+        "route": "/api",
+        "context": null,
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ee46801cd773474cb743d82a3b05a34d",
+        "body": {
+          "cmd": "dump"
+        }
+      }
+    ],
+    "activeTicket": {
+      "schema": "scenario-editor-ticket/1",
+      "rootSession": "dd441b41a3574c98bea61a8d19daaf00",
+      "request": {
+        "action": "create",
+        "requestId": "4a9befde-ec56-4298-8cc4-31bc6dc1f4f0",
+        "sequence": 3,
+        "session": "dd441b41a3574c98bea61a8d19daaf00"
+      },
+      "scenarioId": "5514cc56-548b-406d-9f13-f90ed94dd25b",
+      "label": "B",
+      "parentCheckpoint": {
+        "key": "48c24244-a558-40e1-a14c-c7d08b43be10",
+        "sceneHash": "cc1d9baffc3a159b65ad577d27d64fcaa1e0af4ba0c40eee157c06792e7c650a",
+        "packageHash": "cf7565716e4c105a9494d09c4aa25428c6bc82f73dd2e54442c14ba1842f0cd3",
+        "projectId": "1458cf98-ce77-4db2-9ac9-f8b430fdaf8a"
+      },
+      "phase": "active",
+      "context": "ee46801cd773474cb743d82a3b05a34d",
+      "eligible": false,
+      "retirement": null
+    }
+  },
+  {
+    "name": "pause-resume-finish-390",
+    "width": 390,
+    "terminal": "finish",
+    "ok": true,
+    "assertions": [
+      {
+        "label": "metadata-only fixture retains the latest unchanged native B while source and drafts are complete",
+        "passed": true
+      },
+      {
+        "label": "live A confirmed state is unchanged by B native and metadata editing",
+        "passed": true
+      },
+      {
+        "label": "B owns its native editor and native-specific recovery locks before Pause",
+        "passed": true
+      },
+      {
+        "label": "Pause blank frame releases both B leases while keeping exact active ticket and live native B",
+        "passed": true
+      },
+      {
+        "label": "strict Pause record retains exact full latest package and source closure",
+        "passed": true
+      },
+      {
+        "label": "Pause does not close or create native B",
+        "passed": true
+      },
+      {
+        "label": "Resume resolves the same native B and restores exact complete metadata/source package",
+        "passed": true
+      },
+      {
+        "label": "Resume consumed only its eligible journal and left exact ticket and parent A unchanged",
+        "passed": true
+      },
+      {
+        "label": "resumed B reacquires both exact native-specific editor and recovery locks",
+        "passed": true
+      },
+      {
+        "label": "Resume sent exact resolve once with zero upload/create/close/reset/loadfile/native mutation",
+        "passed": true
+      },
+      {
+        "label": "resumed B accepts a new normal parameter edit without touching A or prior metadata",
+        "passed": true
+      },
+      {
+        "label": "normal finish retires exact B context and clears its ticket",
+        "passed": true
+      },
+      {
+        "label": "Finish preserves live A and complete A archive while recording latest full B once",
+        "passed": true
+      },
+      {
+        "label": "no unexpected browser exception",
+        "passed": true
+      }
+    ],
+    "pageErrors": [],
+    "preconditionOrHarnessError": null,
+    "requests": [
+      {
+        "route": "/api",
+        "context": null,
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/scenarios/verify-native",
+        "context": null,
+        "body": {
+          "manifest": {
+            "projectId": "a2eee5db-caf0-4d5c-9a21-048a03235a4e",
+            "name": "未命名專案",
+            "sources": [
+              {
+                "id": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "hash": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "name": "resume-synthetic.pdf",
+                "type": "application/pdf",
+                "size": 1713,
+                "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+              }
+            ],
+            "faces": [
+              {
+                "bid": 1,
+                "activePageId": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+                "pages": [
+                  {
+                    "id": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+                    "sourceId": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                    "page": 1,
+                    "imgW": 300,
+                    "imgH": 200,
+                    "crop": [
+                      0,
+                      0,
+                      300,
+                      200
+                    ],
+                    "mmPerPx": 13.333333333333334,
+                    "x": 0,
+                    "y": 0,
+                    "rot": 0,
+                    "opacity": 0.5,
+                    "locked": false,
+                    "calibration": null,
+                    "reviewRequired": false,
+                    "records": []
+                  }
+                ]
+              }
+            ],
+            "format": "geometry-canvas/6",
+            "sceneHash": "4fab08a9ba6c81bfb3eaf233df9f3b67d892d2cf978c515934021c9c9353e4e4",
+            "requiredCapabilities": [
+              "parameters/1"
+            ],
+            "models": [],
+            "faceProjections": []
+          },
+          "scene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIyMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 55 443\n"
+        }
+      },
+      {
+        "route": "/scenarios/verify-native",
+        "context": null,
+        "body": {
+          "manifest": {
+            "projectId": "a2eee5db-caf0-4d5c-9a21-048a03235a4e",
+            "name": "未命名專案",
+            "sources": [
+              {
+                "id": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "hash": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "name": "resume-synthetic.pdf",
+                "type": "application/pdf",
+                "size": 1713,
+                "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+              }
+            ],
+            "faces": [
+              {
+                "bid": 1,
+                "activePageId": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+                "pages": [
+                  {
+                    "id": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+                    "sourceId": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                    "page": 1,
+                    "imgW": 300,
+                    "imgH": 200,
+                    "crop": [
+                      0,
+                      0,
+                      300,
+                      200
+                    ],
+                    "mmPerPx": 13.333333333333334,
+                    "x": 0,
+                    "y": 0,
+                    "rot": 0,
+                    "opacity": 0.5,
+                    "locked": false,
+                    "calibration": null,
+                    "reviewRequired": false,
+                    "records": []
+                  }
+                ]
+              }
+            ],
+            "format": "geometry-canvas/6",
+            "sceneHash": "4fab08a9ba6c81bfb3eaf233df9f3b67d892d2cf978c515934021c9c9353e4e4",
+            "requiredCapabilities": [
+              "parameters/1"
+            ],
+            "models": [],
+            "faceProjections": []
+          },
+          "scene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIyMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 55 443\n"
+        }
+      },
+      {
+        "route": "/api",
+        "context": null,
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/scenarios/editor",
+        "context": null,
+        "body": {
+          "action": "create",
+          "requestId": "4decb02f-da94-49ae-9dd4-aa3752bb0292",
+          "sequence": 4,
+          "session": "dd441b41a3574c98bea61a8d19daaf00"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "objects"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "boundary 1"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/upload/prepare",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIyMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 55 443\n"
+      },
+      {
+        "route": "/upload/confirm",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": 1
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "objects"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "boundary 1"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "references"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "engineering-read"
+        }
+      },
+      {
+        "route": "/engineering/preview",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "schema": "engineering-transaction/1",
+          "expectedRevision": 11,
+          "operations": [
+            {
+              "op": "put-parameter",
+              "value": {
+                "id": 1,
+                "name": "Resume authored parameter",
+                "nextFieldId": 2,
+                "fields": [
+                  {
+                    "id": 1,
+                    "name": "尺寸",
+                    "type": "dimension",
+                    "input": "300"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "route": "/api",
+        "context": null,
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "engineering-confirm 1",
+          "requestId": "30bf5bb4-91c6-4220-a3e8-f9595933e9ff",
+          "session": "a977b8ae1570407c9c94cd6cb2815261",
+          "ack": []
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "section-profile-read"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "objects"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "boundary 1"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "objects"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "boundary 1"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "references"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": null,
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/scenarios/editor",
+        "context": null,
+        "body": {
+          "action": "resolve",
+          "requestId": "4decb02f-da94-49ae-9dd4-aa3752bb0292",
+          "sequence": 4,
+          "session": "dd441b41a3574c98bea61a8d19daaf00",
+          "context": "a977b8ae1570407c9c94cd6cb2815261"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "objects"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "boundary 1"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/scenarios/verify-native",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "manifest": {
+            "projectId": "a2eee5db-caf0-4d5c-9a21-048a03235a4e",
+            "name": "Latest B 390 finish",
+            "sources": [
+              {
+                "id": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "hash": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "name": "resume-synthetic.pdf",
+                "type": "application/pdf",
+                "size": 1713,
+                "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+              }
+            ],
+            "faces": [
+              {
+                "bid": 1,
+                "activePageId": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+                "pages": [
+                  {
+                    "id": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+                    "sourceId": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                    "page": 1,
+                    "imgW": 300,
+                    "imgH": 200,
+                    "crop": [
+                      0,
+                      0,
+                      300,
+                      200
+                    ],
+                    "mmPerPx": 10,
+                    "x": 42,
+                    "y": 0,
+                    "rot": 0,
+                    "opacity": 0.73,
+                    "locked": false,
+                    "calibration": {
+                      "points": [
+                        [
+                          0,
+                          0
+                        ],
+                        [
+                          10,
+                          0
+                        ]
+                      ],
+                      "distanceMm": 100,
+                      "inputValue": 10,
+                      "inputUnit": "cm"
+                    },
+                    "reviewRequired": true,
+                    "records": []
+                  }
+                ]
+              }
+            ],
+            "assemblyDrafts": {
+              "schema": "assembly-drafts/1",
+              "records": [
+                {
+                  "id": "resume-latest-assembly",
+                  "kind": "rule",
+                  "base_ref": null,
+                  "data": {
+                    "id": 1,
+                    "version": 1,
+                    "name": "Latest B 390 finish",
+                    "slots": [],
+                    "members": [],
+                    "joints": []
+                  },
+                  "updated_at": "2026-10-09T00:00:00.000Z"
+                }
+              ]
+            },
+            "engineeringDrafts": {
+              "schema": "engineering-drafts/1",
+              "records": [
+                {
+                  "id": "resume-latest-engineering",
+                  "kind": "material",
+                  "base_ref": null,
+                  "data": {
+                    "name": "Latest B 390 finish",
+                    "width": "123",
+                    "length": "456"
+                  },
+                  "updated_at": "2026-10-09T00:00:00.000Z"
+                }
+              ]
+            },
+            "format": "geometry-canvas/7",
+            "models": [],
+            "faceProjections": [],
+            "sceneHash": "25aa95fc12494ae90d730b76205da28ede52a5675e216719b0f7856f79e52be3",
+            "requiredCapabilities": [
+              "assembly-rule-authoring/1",
+              "parameters/1"
+            ]
+          },
+          "scene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIzMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 55 443\n"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": null,
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "references"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "engineering-read"
+        }
+      },
+      {
+        "route": "/engineering/preview",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "schema": "engineering-transaction/1",
+          "expectedRevision": 12,
+          "operations": [
+            {
+              "op": "put-parameter",
+              "value": {
+                "id": 1,
+                "name": "Resume authored parameter",
+                "nextFieldId": 2,
+                "fields": [
+                  {
+                    "id": 1,
+                    "name": "尺寸",
+                    "type": "dimension",
+                    "input": "400"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "engineering-confirm 2",
+          "requestId": "d8da7f39-6c03-4d8c-b51b-657006b707d1",
+          "session": "a977b8ae1570407c9c94cd6cb2815261",
+          "ack": []
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "section-profile-read"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "objects"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "boundary 1"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "objects"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "boundary 1"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "references"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": null,
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/scenarios/verify-native",
+        "context": null,
+        "body": {
+          "manifest": {
+            "projectId": "a2eee5db-caf0-4d5c-9a21-048a03235a4e",
+            "name": "未命名專案",
+            "sources": [
+              {
+                "id": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "hash": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "name": "resume-synthetic.pdf",
+                "type": "application/pdf",
+                "size": 1713,
+                "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+              }
+            ],
+            "faces": [
+              {
+                "bid": 1,
+                "activePageId": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+                "pages": [
+                  {
+                    "id": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+                    "sourceId": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                    "page": 1,
+                    "imgW": 300,
+                    "imgH": 200,
+                    "crop": [
+                      0,
+                      0,
+                      300,
+                      200
+                    ],
+                    "mmPerPx": 13.333333333333334,
+                    "x": 0,
+                    "y": 0,
+                    "rot": 0,
+                    "opacity": 0.5,
+                    "locked": false,
+                    "calibration": null,
+                    "reviewRequired": false,
+                    "records": []
+                  }
+                ]
+              }
+            ],
+            "format": "geometry-canvas/6",
+            "sceneHash": "4fab08a9ba6c81bfb3eaf233df9f3b67d892d2cf978c515934021c9c9353e4e4",
+            "requiredCapabilities": [
+              "parameters/1"
+            ],
+            "models": [],
+            "faceProjections": []
+          },
+          "scene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIyMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 55 443\n"
+        }
+      },
+      {
+        "route": "/scenarios/verify-native",
+        "context": null,
+        "body": {
+          "manifest": {
+            "projectId": "a2eee5db-caf0-4d5c-9a21-048a03235a4e",
+            "name": "未命名專案",
+            "sources": [
+              {
+                "id": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "hash": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "name": "resume-synthetic.pdf",
+                "type": "application/pdf",
+                "size": 1713,
+                "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+              }
+            ],
+            "faces": [
+              {
+                "bid": 1,
+                "activePageId": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+                "pages": [
+                  {
+                    "id": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+                    "sourceId": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                    "page": 1,
+                    "imgW": 300,
+                    "imgH": 200,
+                    "crop": [
+                      0,
+                      0,
+                      300,
+                      200
+                    ],
+                    "mmPerPx": 13.333333333333334,
+                    "x": 0,
+                    "y": 0,
+                    "rot": 0,
+                    "opacity": 0.5,
+                    "locked": false,
+                    "calibration": null,
+                    "reviewRequired": false,
+                    "records": []
+                  }
+                ]
+              }
+            ],
+            "format": "geometry-canvas/6",
+            "sceneHash": "4fab08a9ba6c81bfb3eaf233df9f3b67d892d2cf978c515934021c9c9353e4e4",
+            "requiredCapabilities": [
+              "parameters/1"
+            ],
+            "models": [],
+            "faceProjections": []
+          },
+          "scene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIyMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 55 443\n"
+        }
+      },
+      {
+        "route": "/scenarios/verify-native",
+        "context": null,
+        "body": {
+          "manifest": {
+            "projectId": "a2eee5db-caf0-4d5c-9a21-048a03235a4e",
+            "name": "Latest B 390 finish",
+            "sources": [
+              {
+                "id": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "hash": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "name": "resume-synthetic.pdf",
+                "type": "application/pdf",
+                "size": 1713,
+                "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+              }
+            ],
+            "faces": [
+              {
+                "bid": 1,
+                "activePageId": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+                "pages": [
+                  {
+                    "id": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+                    "sourceId": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                    "page": 1,
+                    "imgW": 300,
+                    "imgH": 200,
+                    "crop": [
+                      0,
+                      0,
+                      300,
+                      200
+                    ],
+                    "mmPerPx": 10,
+                    "x": 42,
+                    "y": 0,
+                    "rot": 0,
+                    "opacity": 0.73,
+                    "locked": false,
+                    "calibration": {
+                      "points": [
+                        [
+                          0,
+                          0
+                        ],
+                        [
+                          10,
+                          0
+                        ]
+                      ],
+                      "distanceMm": 100,
+                      "inputValue": 10,
+                      "inputUnit": "cm"
+                    },
+                    "reviewRequired": true,
+                    "records": []
+                  }
+                ]
+              }
+            ],
+            "assemblyDrafts": {
+              "schema": "assembly-drafts/1",
+              "records": [
+                {
+                  "id": "resume-latest-assembly",
+                  "kind": "rule",
+                  "base_ref": null,
+                  "data": {
+                    "id": 1,
+                    "version": 1,
+                    "name": "Latest B 390 finish",
+                    "slots": [],
+                    "members": [],
+                    "joints": []
+                  },
+                  "updated_at": "2026-10-09T00:00:00.000Z"
+                }
+              ]
+            },
+            "engineeringDrafts": {
+              "schema": "engineering-drafts/1",
+              "records": [
+                {
+                  "id": "resume-latest-engineering",
+                  "kind": "material",
+                  "base_ref": null,
+                  "data": {
+                    "name": "Latest B 390 finish",
+                    "width": "123",
+                    "length": "456"
+                  },
+                  "updated_at": "2026-10-09T00:00:00.000Z"
+                }
+              ]
+            },
+            "format": "geometry-canvas/7",
+            "models": [],
+            "faceProjections": [],
+            "sceneHash": "17d4842e94cad0ee38b4a95e205363020dce8a1ea61d08a6683fce12c9693166",
+            "requiredCapabilities": [
+              "assembly-rule-authoring/1",
+              "parameters/1"
+            ]
+          },
+          "scene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI0MDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 55 443\n"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": null,
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": null,
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/scenarios/editor",
+        "context": null,
+        "body": {
+          "action": "close",
+          "requestId": "4decb02f-da94-49ae-9dd4-aa3752bb0292",
+          "sequence": 4,
+          "session": "dd441b41a3574c98bea61a8d19daaf00"
+        }
+      },
+      {
+        "route": "/api",
+        "context": null,
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "a977b8ae1570407c9c94cd6cb2815261",
+        "body": {
+          "cmd": "dump"
+        }
+      }
+    ],
+    "activeTicket": {
+      "schema": "scenario-editor-ticket/1",
+      "rootSession": "dd441b41a3574c98bea61a8d19daaf00",
+      "request": {
+        "action": "create",
+        "requestId": "4decb02f-da94-49ae-9dd4-aa3752bb0292",
+        "sequence": 4,
+        "session": "dd441b41a3574c98bea61a8d19daaf00"
+      },
+      "scenarioId": "1d8fa1ff-7bd0-4b9e-98b1-88b13a1a19c4",
+      "label": "B",
+      "parentCheckpoint": {
+        "key": "8555b3a4-78d6-446f-8574-8289055f1827",
+        "sceneHash": "4fab08a9ba6c81bfb3eaf233df9f3b67d892d2cf978c515934021c9c9353e4e4",
+        "packageHash": "79b4d551974cd2bd7e46f740fbfd2ba6acebb3131fb71f7895abd60efd72f5fb",
+        "projectId": "a2eee5db-caf0-4d5c-9a21-048a03235a4e"
+      },
+      "phase": "active",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "eligible": false,
+      "retirement": null
+    }
+  },
+  {
+    "name": "pause-resume-cancel-390",
+    "width": 390,
+    "terminal": "cancel",
+    "ok": true,
+    "assertions": [
+      {
+        "label": "metadata-only fixture retains the latest unchanged native B while source and drafts are complete",
+        "passed": true
+      },
+      {
+        "label": "live A confirmed state is unchanged by B native and metadata editing",
+        "passed": true
+      },
+      {
+        "label": "B owns its native editor and native-specific recovery locks before Pause",
+        "passed": true
+      },
+      {
+        "label": "Pause blank frame releases both B leases while keeping exact active ticket and live native B",
+        "passed": true
+      },
+      {
+        "label": "strict Pause record retains exact full latest package and source closure",
+        "passed": true
+      },
+      {
+        "label": "Pause does not close or create native B",
+        "passed": true
+      },
+      {
+        "label": "Resume resolves the same native B and restores exact complete metadata/source package",
+        "passed": true
+      },
+      {
+        "label": "Resume consumed only its eligible journal and left exact ticket and parent A unchanged",
+        "passed": true
+      },
+      {
+        "label": "resumed B reacquires both exact native-specific editor and recovery locks",
+        "passed": true
+      },
+      {
+        "label": "Resume sent exact resolve once with zero upload/create/close/reset/loadfile/native mutation",
+        "passed": true
+      },
+      {
+        "label": "resumed B accepts a new normal parameter edit without touching A or prior metadata",
+        "passed": true
+      },
+      {
+        "label": "normal cancel retires exact B context and clears its ticket",
+        "passed": true
+      },
+      {
+        "label": "Cancel preserves complete confirmed A and its original B archive",
+        "passed": true
+      },
+      {
+        "label": "no unexpected browser exception",
+        "passed": true
+      }
+    ],
+    "pageErrors": [],
+    "preconditionOrHarnessError": null,
+    "requests": [
+      {
+        "route": "/api",
+        "context": null,
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/scenarios/verify-native",
+        "context": null,
+        "body": {
+          "manifest": {
+            "projectId": "6e16a3e1-c1c8-4406-87dc-c32472e02240",
+            "name": "未命名專案",
+            "sources": [
+              {
+                "id": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "hash": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "name": "resume-synthetic.pdf",
+                "type": "application/pdf",
+                "size": 1713,
+                "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+              }
+            ],
+            "faces": [
+              {
+                "bid": 1,
+                "activePageId": "76614d34-cf7f-4b3e-b3a5-13c98cb3f7ce",
+                "pages": [
+                  {
+                    "id": "76614d34-cf7f-4b3e-b3a5-13c98cb3f7ce",
+                    "sourceId": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                    "page": 1,
+                    "imgW": 300,
+                    "imgH": 200,
+                    "crop": [
+                      0,
+                      0,
+                      300,
+                      200
+                    ],
+                    "mmPerPx": 13.333333333333334,
+                    "x": 0,
+                    "y": 0,
+                    "rot": 0,
+                    "opacity": 0.5,
+                    "locked": false,
+                    "calibration": null,
+                    "reviewRequired": false,
+                    "records": []
+                  }
+                ]
+              }
+            ],
+            "format": "geometry-canvas/6",
+            "sceneHash": "4fab08a9ba6c81bfb3eaf233df9f3b67d892d2cf978c515934021c9c9353e4e4",
+            "requiredCapabilities": [
+              "parameters/1"
+            ],
+            "models": [],
+            "faceProjections": []
+          },
+          "scene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIyMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 55 443\n"
+        }
+      },
+      {
+        "route": "/scenarios/verify-native",
+        "context": null,
+        "body": {
+          "manifest": {
+            "projectId": "6e16a3e1-c1c8-4406-87dc-c32472e02240",
+            "name": "未命名專案",
+            "sources": [
+              {
+                "id": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "hash": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "name": "resume-synthetic.pdf",
+                "type": "application/pdf",
+                "size": 1713,
+                "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+              }
+            ],
+            "faces": [
+              {
+                "bid": 1,
+                "activePageId": "76614d34-cf7f-4b3e-b3a5-13c98cb3f7ce",
+                "pages": [
+                  {
+                    "id": "76614d34-cf7f-4b3e-b3a5-13c98cb3f7ce",
+                    "sourceId": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                    "page": 1,
+                    "imgW": 300,
+                    "imgH": 200,
+                    "crop": [
+                      0,
+                      0,
+                      300,
+                      200
+                    ],
+                    "mmPerPx": 13.333333333333334,
+                    "x": 0,
+                    "y": 0,
+                    "rot": 0,
+                    "opacity": 0.5,
+                    "locked": false,
+                    "calibration": null,
+                    "reviewRequired": false,
+                    "records": []
+                  }
+                ]
+              }
+            ],
+            "format": "geometry-canvas/6",
+            "sceneHash": "4fab08a9ba6c81bfb3eaf233df9f3b67d892d2cf978c515934021c9c9353e4e4",
+            "requiredCapabilities": [
+              "parameters/1"
+            ],
+            "models": [],
+            "faceProjections": []
+          },
+          "scene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIyMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 55 443\n"
+        }
+      },
+      {
+        "route": "/api",
+        "context": null,
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/scenarios/editor",
+        "context": null,
+        "body": {
+          "action": "create",
+          "requestId": "9931b41d-7ac5-4c59-9bcd-93b90e7a8768",
+          "sequence": 5,
+          "session": "dd441b41a3574c98bea61a8d19daaf00"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "objects"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "boundary 1"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/upload/prepare",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIyMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 55 443\n"
+      },
+      {
+        "route": "/upload/confirm",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": 1
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "objects"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "boundary 1"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "references"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "engineering-read"
+        }
+      },
+      {
+        "route": "/engineering/preview",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "schema": "engineering-transaction/1",
+          "expectedRevision": 11,
+          "operations": [
+            {
+              "op": "put-parameter",
+              "value": {
+                "id": 1,
+                "name": "Resume authored parameter",
+                "nextFieldId": 2,
+                "fields": [
+                  {
+                    "id": 1,
+                    "name": "尺寸",
+                    "type": "dimension",
+                    "input": "300"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "route": "/api",
+        "context": null,
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "engineering-confirm 1",
+          "requestId": "36252e6d-3d0b-4174-aa08-ffc1727d8674",
+          "session": "ab34f3239739426cbd7d1b4af93a0644",
+          "ack": []
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "section-profile-read"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "objects"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "boundary 1"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "objects"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "boundary 1"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "references"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": null,
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/scenarios/editor",
+        "context": null,
+        "body": {
+          "action": "resolve",
+          "requestId": "9931b41d-7ac5-4c59-9bcd-93b90e7a8768",
+          "sequence": 5,
+          "session": "dd441b41a3574c98bea61a8d19daaf00",
+          "context": "ab34f3239739426cbd7d1b4af93a0644"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "objects"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "boundary 1"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/scenarios/verify-native",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "manifest": {
+            "projectId": "6e16a3e1-c1c8-4406-87dc-c32472e02240",
+            "name": "Latest B 390 cancel",
+            "sources": [
+              {
+                "id": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "hash": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                "name": "resume-synthetic.pdf",
+                "type": "application/pdf",
+                "size": 1713,
+                "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+              }
+            ],
+            "faces": [
+              {
+                "bid": 1,
+                "activePageId": "76614d34-cf7f-4b3e-b3a5-13c98cb3f7ce",
+                "pages": [
+                  {
+                    "id": "76614d34-cf7f-4b3e-b3a5-13c98cb3f7ce",
+                    "sourceId": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                    "page": 1,
+                    "imgW": 300,
+                    "imgH": 200,
+                    "crop": [
+                      0,
+                      0,
+                      300,
+                      200
+                    ],
+                    "mmPerPx": 10,
+                    "x": 42,
+                    "y": 0,
+                    "rot": 0,
+                    "opacity": 0.73,
+                    "locked": false,
+                    "calibration": {
+                      "points": [
+                        [
+                          0,
+                          0
+                        ],
+                        [
+                          10,
+                          0
+                        ]
+                      ],
+                      "distanceMm": 100,
+                      "inputValue": 10,
+                      "inputUnit": "cm"
+                    },
+                    "reviewRequired": true,
+                    "records": []
+                  }
+                ]
+              }
+            ],
+            "assemblyDrafts": {
+              "schema": "assembly-drafts/1",
+              "records": [
+                {
+                  "id": "resume-latest-assembly",
+                  "kind": "rule",
+                  "base_ref": null,
+                  "data": {
+                    "id": 1,
+                    "version": 1,
+                    "name": "Latest B 390 cancel",
+                    "slots": [],
+                    "members": [],
+                    "joints": []
+                  },
+                  "updated_at": "2026-10-09T00:00:00.000Z"
+                }
+              ]
+            },
+            "engineeringDrafts": {
+              "schema": "engineering-drafts/1",
+              "records": [
+                {
+                  "id": "resume-latest-engineering",
+                  "kind": "material",
+                  "base_ref": null,
+                  "data": {
+                    "name": "Latest B 390 cancel",
+                    "width": "123",
+                    "length": "456"
+                  },
+                  "updated_at": "2026-10-09T00:00:00.000Z"
+                }
+              ]
+            },
+            "format": "geometry-canvas/7",
+            "models": [],
+            "faceProjections": [],
+            "sceneHash": "25aa95fc12494ae90d730b76205da28ede52a5675e216719b0f7856f79e52be3",
+            "requiredCapabilities": [
+              "assembly-rule-authoring/1",
+              "parameters/1"
+            ]
+          },
+          "scene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIzMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 55 443\n"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": null,
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "references"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "engineering-read"
+        }
+      },
+      {
+        "route": "/engineering/preview",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "schema": "engineering-transaction/1",
+          "expectedRevision": 12,
+          "operations": [
+            {
+              "op": "put-parameter",
+              "value": {
+                "id": 1,
+                "name": "Resume authored parameter",
+                "nextFieldId": 2,
+                "fields": [
+                  {
+                    "id": 1,
+                    "name": "尺寸",
+                    "type": "dimension",
+                    "input": "400"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "engineering-confirm 2",
+          "requestId": "e46d02f8-5453-42d1-ba26-8584b22f2f68",
+          "session": "ab34f3239739426cbd7d1b4af93a0644",
+          "ack": []
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "section-profile-read"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "objects"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "boundary 1"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "objects"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "surfaces"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "boundary 1"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "references"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": null,
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/scenarios/editor",
+        "context": null,
+        "body": {
+          "action": "close",
+          "requestId": "9931b41d-7ac5-4c59-9bcd-93b90e7a8768",
+          "sequence": 5,
+          "session": "dd441b41a3574c98bea61a8d19daaf00"
+        }
+      },
+      {
+        "route": "/api",
+        "context": null,
+        "body": {
+          "cmd": "dump"
+        }
+      },
+      {
+        "route": "/api",
+        "context": "ab34f3239739426cbd7d1b4af93a0644",
+        "body": {
+          "cmd": "dump"
+        }
+      }
+    ],
+    "activeTicket": {
+      "schema": "scenario-editor-ticket/1",
+      "rootSession": "dd441b41a3574c98bea61a8d19daaf00",
+      "request": {
+        "action": "create",
+        "requestId": "9931b41d-7ac5-4c59-9bcd-93b90e7a8768",
+        "sequence": 5,
+        "session": "dd441b41a3574c98bea61a8d19daaf00"
+      },
+      "scenarioId": "6d53d596-3222-4a10-ac6f-447ba382d6c7",
+      "label": "B",
+      "parentCheckpoint": {
+        "key": "765f0f7f-61e3-4d9e-9904-89a8d3bb0a52",
+        "sceneHash": "4fab08a9ba6c81bfb3eaf233df9f3b67d892d2cf978c515934021c9c9353e4e4",
+        "packageHash": "115478582ee21af83c12b939bd48e8d8bde4989020a8584543ffd3dbcdadf54e",
+        "projectId": "6e16a3e1-c1c8-4406-87dc-c32472e02240"
+      },
+      "phase": "active",
+      "context": "ab34f3239739426cbd7d1b4af93a0644",
+      "eligible": false,
+      "retirement": null
+    }
+  }
+]

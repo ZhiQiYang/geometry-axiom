@@ -1,0 +1,8 @@
+{
+  "oldRunner": "<original-evidence-root>/run_resume_gate_identity.py",
+  "oldSha256": "57816b11e135887ef2f995434dcf2e54c818356d936cf4a46555e64c44d8d25b",
+  "newRunner": "<original-evidence-root>/run_resume_gate_identity_v2.py",
+  "newSha256": "3499daea009964acb47fa145db92a2c72979a4c96fac4c5868829fdc735d5412",
+  "correction": "Scenario lifecycle legitimately creates/retains/retire multiple direct-child bridge processes. Require all live executables match exact configured bridge; require preexisting root/retained contexts still exist; do not require identical count. No product oracle changed.",
+  "rejectedReceipt": "<original-evidence-root>/after-resume-128afbec-r3-20261009/receipt.json"
+}
