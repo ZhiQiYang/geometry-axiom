@@ -344,7 +344,7 @@ function inspectorState(pane, bid) {
     referencePage: pane.dataset.referencePage, calibrationPoints: pane.dataset.calibrationPoints,
     gridIdentity: pane.dataset.gridIdentity,
     drafts: [...pane.querySelectorAll("input[id],select[id]")]
-      .filter(e => /^(tb|ref|grid|subgrid|place[OUV]|ulCalib)/.test(e.id)).map(e => [e.id, e.value, e.selectedOptions?.[0]?.textContent]),
+      .filter(e => !e.matches("[data-room-edge-length]") && /^(tb|ref|grid|subgrid|place[OUV]|ulCalib)/.test(e.id)).map(e => [e.id, e.value, e.selectedOptions?.[0]?.textContent]),
     details: [...pane.querySelectorAll("details[id]")].map(e => [e.id, e.open]) };
 }
 function restoreInspectorState(pane, state) {

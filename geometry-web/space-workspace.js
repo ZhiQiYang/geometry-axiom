@@ -394,6 +394,8 @@ window.SpaceModelWorkspace = (() => {
   }
   function renderSource(source, settings = {}) {
     state.source = source; state.phase = "ready";
+    // Source selection is complete; retire the expanded picker before setup.
+    $("smOtherExamples").open=false;
     const loops = source.loops || [], verts = loops[0]?.verts || [];
     $("smSourceSummary").innerHTML = `<strong>${esc(source.name)} · ${source.kind === "example" ? "獨立範例" : "目前專案"}</strong><span>放置面 #${esc(source.placement_id)} · 圖面 z = ${esc(source.source_z ?? "非水平面")} mm · ${source.timbers?.length||0} 支角材</span>`;
     $("smModelName").value = source.name.replace(/\s*#\s*(\d+)$/, " $1") + "空間";

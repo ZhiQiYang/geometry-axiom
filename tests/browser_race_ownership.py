@@ -97,8 +97,9 @@ def main():
             click(page,'#workspaceBackButton');wait(page,"oc.focus===null&&oc.edit===null")
         if not page.evaluate('view3'):
             click(page,'#btnObj');wait(page,"view3&&workSurfaces.length===2&&!!layout")
-        drawer(page,'left')
-        click(page,'#workSurf');page.keyboard.press('Home')
+        drawers_closed(page)
+        click(page,'[data-v3-tool="rect"]')
+        click(page,'#v3ToolbarSurf');page.keyboard.press('Home')
         if bid==732:page.keyboard.press('ArrowDown')
         page.keyboard.press('Enter')
         wait(page,f'document.querySelector("#workSurf").value==="{bid}"')

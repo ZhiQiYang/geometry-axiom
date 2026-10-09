@@ -266,7 +266,7 @@ async function click(x, y) {
 async function clickControl(selector) {
   const menu=await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});return e?.closest('#exampleMenuPop')?.hidden?'examples':e?.closest('#fileMenuPop')?.hidden?'file':e?.closest('#createObjectPop')?.hidden?'create':e?.closest('#filterDisclosure')&&!e.matches('summary')&&!e.closest('#filterDisclosure').open?'filter':null;})()`);
   if(menu==='create'){
-    const trigger=await eval_(`innerWidth<=900?'#mobileCreateObject':'#btnCreateObject'`);
+    const trigger=await eval_(`(()=>{const visible=['mobileCreateObject','btnCreateObject'].filter(id=>{const e=document.getElementById(id),r=e?.getBoundingClientRect();return r&&r.width>0&&r.height>0;});if(visible.length!==1)throw Error('Expected one visible create-object opener: '+visible.join(','));return '#'+visible[0];})()`);
     await clickControl(trigger);
   }else if(menu==='examples')await clickControl('#exampleMenuBtn');
   else if(menu==='file')await clickControl('#fileMenuBtn');
@@ -397,7 +397,7 @@ async function main() {
     const kids=[app.querySelector(':scope > .topbar'),app.querySelector(':scope > .workspace'),app.querySelector(':scope > .statusbar')];return {n:kids.filter(Boolean).length,
       cls:kids.map(k=>k.className.split(" ")[0]).join(","),
       h:kids.map(k=>Math.round(k.getBoundingClientRect().height))}})()`);
-  console.log("app rows:", JSON.stringify(rows),explicitVerdict(rows.n === 3 && rows.h[0] === 60 && rows.h[2] === 28 ? "✓ 三列殼" : "✗"));
+  console.log("app rows:", JSON.stringify(rows),explicitVerdict(rows.n === 3 && rows.h[0] === 56 && rows.h[2] === 28 ? "✓ 三列殼" : "✗"));
   /* (b) 主畫布不再保留空白右欄，物件庫與畫布共用完整寬度。 */
   const cols = await eval_(`(()=>{const w=document.querySelector(".workspace");
     const l=w.querySelector('.sidebar-left').getBoundingClientRect(),c=$('canvasViewport').getBoundingClientRect();return {left:l.width,leftRight:l.right,canvasLeft:c.left,canvasRight:c.right,canvasWidth:c.width,iw:innerWidth,composition:document.body.classList.contains('canvas-composition'),hasInspector:document.body.classList.contains('canvas-has-inspector')};})()`);
@@ -3558,7 +3558,7 @@ async function main() {
   };
   const clickSelector = async sel => {
     const menu=await eval_(`document.querySelector(${JSON.stringify(sel)})?.closest('#createObjectPop')?.hidden===true`);
-    if(menu)await clickControl(await eval_(`innerWidth<=900?'#mobileCreateObject':'#btnCreateObject'`));
+    if(menu)await clickControl(await eval_(`(()=>{const visible=['mobileCreateObject','btnCreateObject'].filter(id=>{const e=document.getElementById(id),r=e?.getBoundingClientRect();return r&&r.width>0&&r.height>0;});if(visible.length!==1)throw Error('Expected one visible create-object opener: '+visible.join(','));return '#'+visible[0];})()`));
     const p = await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(sel)});if(!e)throw Error('Missing control '+${JSON.stringify(sel)}+' '+JSON.stringify({focus:oc.focus,connection:connection.phase,error:connection.error,status:$('status').textContent}));e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,hit=document.elementFromPoint(x,y);return {x,y,hit:e.contains(hit),target:hit?.outerHTML?.slice(0,200)}})()`);
     if (!p.hit) throw Error('Control is not reachable '+sel+' '+JSON.stringify(p));
     await click(p.x,p.y); await sleep(120); await waitIdle();
@@ -3812,7 +3812,7 @@ async function main() {
   await eval_(`renderFaceInspector()`);
   check('F9 both disclosures keep expanded state',await eval_(`document.querySelector('#placeDetails').open && document.querySelector('#projectionDetails').open`));
   await clickSelector('#workspaceBackButton');await clickSelector('#btnObj');
-  check('V1 V2 toolbar does not overlap drawing and empty inspector collapses',await eval_(`(()=>{const t=document.querySelector('#viewToolbar').getBoundingClientRect(),c=document.querySelector('#cv').getBoundingClientRect(),r=document.querySelector('.sidebar-right').getBoundingClientRect();return c.top>=t.bottom-1 && c.height>400 && r.width===0})()`));
+  check('V1 V2 toolbar does not overlap drawing and adopted empty inspector retains 240px',await eval_(`(()=>{const t=document.querySelector('#viewToolbar').getBoundingClientRect(),c=document.querySelector('#cv').getBoundingClientRect(),r=document.querySelector('.sidebar-right').getBoundingClientRect(),e=$('inspectorEmpty'),b=e.getBoundingClientRect();return c.top>=t.bottom-1 && c.height>400 && r.width===240 && Math.abs(c.right-r.left)<=1 && r.right<=innerWidth && !oc.sel && !e.hidden && b.width>0 && b.height>0 && b.left>=r.left && b.right<=r.right})()`));
   await clickSelector('#btnObj');
   check('V3 selecting three-view twice stays in three-view',await eval_(`!oc.on && document.querySelectorAll('#canvasDrawToolbar [data-tool]').length===2 && [...document.querySelectorAll('#canvasDrawToolbar [data-tool]')].every(b=>b.disabled)`));
   await remainingShot('ui-v2-three-view');

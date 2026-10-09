@@ -2422,8 +2422,13 @@ body:has(#objectWorkspace:not([hidden])) { --topbar-h: 56px; }
 .workspace-tools-row::-webkit-scrollbar-thumb { background: #9aa9bc; border-radius: 4px; }
 .workspace-tools-row::-webkit-scrollbar-track { background: #edf1f6; }
 .workspace-tools-row .face-workspace-tools {
-  flex: 0 0 auto; min-width: max-content; max-width: none;
-  overflow: visible; padding: 3px; gap: 3px;
+  flex: 1 1 auto; min-width: 0; max-width: 100%;
+  overflow-x: auto; overflow-y: hidden; padding: 3px; gap: 3px;
+  scrollbar-width: thin; scroll-padding-inline: 8px;
+}
+@media (min-width: 561px) and (max-width: 680px) {
+  /* Existing 44px controls and their scrollbar fit the 56px desktop header. */
+  .workspace-tools-row .face-workspace-tools { padding-block: 0; }
 }
 .workspace-tools-row .workspace-tool { white-space: nowrap; }
 .workspace-history-tools { display: flex; align-items: center; gap: 4px; flex: 0 0 auto; padding-inline-start: 8px; border-left: 1px solid var(--border); }

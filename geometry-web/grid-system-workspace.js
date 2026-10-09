@@ -1028,7 +1028,11 @@
     prompt.innerHTML='<div><p id="igDiscardQuestion">捨棄這份未發布的原始草稿？已保存到場景的網格保持不變。</p><div><button id="igDiscardCancel" class="btn" type="button">保留草稿</button><button id="igDiscardConfirm" class="btn danger" type="button">捨棄草稿</button></div></div>';
     const siblings=[...dialog.children].map(node=>[node,node.inert]);for(const [node] of siblings)node.inert=true;
     s.discardPrompt=prompt;dialog.append(prompt);
-    const cleanup=()=>{prompt.remove();if(s.discardPrompt===prompt)s.discardPrompt=null;for(const [node,inert] of siblings)if(node.isConnected)node.inert=inert;};
+    let cleaned=false;
+    const cleanup=()=>{if(cleaned)return;cleaned=true;prompt.remove();
+      if(s.discardPrompt===prompt)s.discardPrompt=null;if(s.discardCleanup===cleanup)s.discardCleanup=null;
+      for(const [node,inert] of siblings)if(node.isConnected)node.inert=inert;};
+    s.discardCleanup=cleanup;
     const cancel=()=>{cleanup();if(current(s)&&trigger.isConnected)trigger.focus();};
     prompt.querySelector('#igDiscardCancel').onclick=cancel;
     prompt.querySelector('#igDiscardConfirm').onclick=()=>{if(pending()){cancel();return;}
@@ -1037,7 +1041,7 @@
       else if(event.key==='Tab'){const buttons=[...prompt.querySelectorAll('button')],index=buttons.indexOf(document.activeElement);event.preventDefault();buttons[(index+(event.shiftKey?-1:1)+buttons.length)%buttons.length].focus();}};
     prompt.querySelector('#igDiscardCancel').focus();
   }
-  function close(force=false,discard=false) { if(!force && (state?.busy || state?.initializing || state?.projectControls || !mayLeave(state)))return false;if(state?.discardPrompt)state.discardPrompt.querySelector('#igDiscardCancel').click();if(!discard&&!state?.heldControls)capture(state);state?.trial?.dispose();state=null;++serial;dialog.close();WorkspaceShell.detach(dialog);window.ParamGridLesson?.place();return true; }
+  function close(force=false,discard=false) { if(!force && (state?.busy || state?.initializing || state?.projectControls || !mayLeave(state)))return false;state?.discardCleanup?.();if(!discard&&!state?.heldControls)capture(state);state?.trial?.dispose();state=null;++serial;dialog.close();WorkspaceShell.detach(dialog);window.ParamGridLesson?.place();return true; }
   dialog.addEventListener('cancel',event=>{event.preventDefault();close();});
   window.addEventListener('face-projections-changed',()=>{if(state&&state.context!==ReferenceWorkspace.context())close(true);});
   window.addEventListener('project-info-changed',()=>{if(state&&!current(state))close(true,true);else if(state)void releaseHeldControls(state);});
