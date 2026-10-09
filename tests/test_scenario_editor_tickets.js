@@ -92,20 +92,35 @@ const before=(f,a,b)=>assert.ok(f.events.indexOf(a)>=0&&f.events.indexOf(a)<f.ev
 
 test('twelve interrupted reload/Edit attempts retain one identity without allocation, iframe or import',async()=>{
   const store={ticket:ticket()},original=clone(store.ticket);
-  for(let n=0;n<12;n++){const f=fixture({},store);await f.start();assert.deepEqual(store.ticket,original);assert.equal(f.uuids,0);assert.equal(f.requests.length,0);
-    assert.equal(f.posts.length,0);assert.equal(f.frame.src,'about:blank');assert.equal(f.element('scenarioFinishEdit').disabled,true);assert.match(f.element('scenarioEditorStatus').textContent,/保留/);}
+  for(let n=0;n<12;n++){const f=fixture({},store),a=clone(f.root);await f.start();assert.deepEqual(store.ticket,original);assert.equal(f.uuids,0);
+    // The original fixture cannot prove an active surviving B. Its one exact
+    // read-only resolver is allowed; it cannot authorize another allocation.
+    assert.deepEqual(f.requests,[{...original.request,action:'resolve',context:original.context}]);
+    assert.deepEqual(f.events,['ticket:read','http:resolve'],'no ticket rewrite, import, freeze or A commit');
+    assert.deepEqual(f.root,a);assert.equal(f.commits,0);assert.equal(f.frozen,false);
+    assert.equal(f.posts.length,0);assert.equal(f.frame.src,'about:blank');assert.equal(f.frame.inert,true);
+    assert.equal(f.element('scenarioFinishEdit').disabled,true);assert.match(f.element('scenarioEditorStatus').textContent,/保留/);}
 });
 test('interrupted creating and initializing tickets never replay create or ordinary import',async()=>{
   for(const phase of ['creating','initializing']){const f=fixture({},{ticket:ticket(phase)});await f.start();assert.equal(f.requests.length,0);assert.equal(f.posts.length,0);assert.equal(f.element('scenarioEditorDialog').open,true);}
 });
 test('recovered discard specifically names B and warns it may be open elsewhere; declining retains all data',async()=>{
-  const f=fixture({confirm:false},{ticket:ticket()}),original=clone(f.store.ticket);await f.start();await f.cancel();
+  const f=fixture({confirm:false},{ticket:ticket()}),original=clone(f.store.ticket),a=clone(f.root);await f.start();await f.cancel();
   assert.equal(f.confirmations.length,1);for(const value of ['Retained B','scenario-B',CONTEXT,'其他分頁'])assert.ok(f.confirmations[0].includes(value));
-  assert.deepEqual(f.store.ticket,original);assert.equal(f.requests.length,0);assert.equal(f.element('scenarioEditorDialog').open,true);
+  assert.deepEqual(f.store.ticket,original);assert.deepEqual(f.requests,[{...original.request,action:'resolve',context:original.context}]);
+  assert.deepEqual(f.events,['ticket:read','http:resolve'],'declined discard sends no close or owner mutation');
+  assert.deepEqual(f.root,a);assert.equal(f.uuids,0);assert.equal(f.commits,0);assert.equal(f.frozen,false);assert.equal(f.posts.length,0);
+  assert.equal(f.frame.src,'about:blank');assert.equal(f.frame.inert,true);assert.equal(f.element('scenarioFinishEdit').disabled,true);
+  assert.equal(f.element('scenarioEditorDialog').open,true);
 });
 test('confirmed recovered discard persists intent before exact close and preserves A',async()=>{
   const f=fixture({},{ticket:ticket()}),a=clone(f.root),original=clone(f.store.ticket);await f.start();await f.cancel();
-  before(f,'ticket:cancel:durable','http:close');assert.deepEqual(f.requests,[{...original.request,action:'close'}]);assert.equal(f.store.ticket,null);assert.deepEqual(f.root,a);
+  before(f,'ticket:cancel:durable','http:close');assert.deepEqual(f.requests,[
+    {...original.request,action:'resolve',context:original.context},{...original.request,action:'close'}]);
+  assert.deepEqual(f.events,['ticket:read','http:resolve','ticket:read','ticket:cancel:begin','ticket:cancel:durable',
+    'ticket:verify','http:close','ticket:clear','frame:about:blank'],'only durable discard and exact retirement may mutate the owner');
+  assert.equal(f.store.ticket,null);assert.deepEqual(f.root,a);assert.equal(f.uuids,0);assert.equal(f.commits,0);
+  assert.equal(f.frozen,false);assert.equal(f.posts.length,0);assert.equal(f.frame.src,'about:blank');assert.equal(f.frame.inert,true);
 });
 test('unreadable or malformed reserved ticket fails closed before any allocation',async()=>{
   const f=fixture({readError:true});await f.start();assert.equal(f.requests.length,0);assert.equal(f.uuids,0);assert.match(f.element('scenarioStatus').textContent,/malformed/);

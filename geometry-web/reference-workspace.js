@@ -1440,11 +1440,17 @@ const ReferenceWorkspace = (() => {
   }
   const scenarioResumeKey=native=>"geometry-scenario-resume-"+native;
   const scenarioResumePackageKey=native=>"geometry-scenario-resume-package-"+native;
+  async function readScenarioResume(native,ticket){
+    let count;const value=await recoveryStore("readonly",store=>{count=store.count(scenarioResumeKey(native));return store.get(scenarioResumeKey(native));});
+    if(count.result===0)return null;
+    if(count.result!==1||value==null)throw new Error("試改續接記錄已損壞，原資料已保留。");
+    return validateScenarioResume(value,ticket);
+  }
   function validateScenarioResume(value,ticket){
-    if(!value||Object.keys(value).sort().join(",")!=="context,eligible,epoch,packageHash,projectId,requestId,rootSession,sceneHash,schema,sequence"||
+    if(!value||Object.keys(value).sort().join(",")!=="context,eligible,epoch,metadataHash,packageHash,projectId,requestId,rootSession,sceneHash,schema,sequence"||
        value.schema!=="scenario-resume/1"||typeof value.eligible!=="boolean"||typeof value.epoch!=="string"||!/^[a-f0-9-]{36}$/.test(value.epoch)||
        value.rootSession!==ticket.rootSession||value.requestId!==ticket.request.requestId||value.sequence!==ticket.request.sequence||value.context!==ticket.context||
-       typeof value.projectId!=="string"||!value.projectId||!/^[a-f0-9]{64}$/.test(value.packageHash)||!/^[a-f0-9]{64}$/.test(value.sceneHash))
+       typeof value.projectId!=="string"||!value.projectId||!/^[a-f0-9]{64}$/.test(value.metadataHash)||!/^[a-f0-9]{64}$/.test(value.packageHash)||!/^[a-f0-9]{64}$/.test(value.sceneHash))
       throw new Error("試改續接點不完整或不屬於這次試改；原資料已保留。");
     return structuredClone(value);
   }
@@ -1463,8 +1469,8 @@ const ReferenceWorkspace = (() => {
       const saved=store.get(scenarioTicketKey(ticket.rootSession));
       saved.onsuccess=()=>{try{
         assertCurrent();if(connection.session!==session||JSON.stringify(validateScenarioTicket(saved.result))!==JSON.stringify(ticket))throw new Error("試改已取消或完成，未覆寫新決定。");
-        const journal=store.get(key);journal.onsuccess=()=>{try{
-          assertCurrent();if(JSON.stringify(journal.result??null)!==JSON.stringify(expected))throw new Error("試改續接點已變更，未重用舊資格。");
+        const count=store.count(key),journal=store.get(key);journal.onsuccess=()=>{try{
+          assertCurrent();if(count.result!==(expected===null?0:1)||JSON.stringify(journal.result??null)!==JSON.stringify(expected))throw new Error("試改續接點已變更，未重用舊資格。");
           if(record)store.put(record,scenarioResumePackageKey(native));store.put(next,key);
         }catch(error){abort(error);}};
         journal.onerror=()=>abort(journal.error);
@@ -1479,13 +1485,13 @@ const ReferenceWorkspace = (() => {
     // eligible checkpoint and an editable page must never coexist.
     await freezeScenarioProject();const frozen=scenarioFreeze;
     const check=()=>{if(scenarioFreeze!==frozen||connection.session!==native)throw new Error("試改保全身份已變更。");assertSnapshot(frozen.stamp,frozen.owner);};
-    const previous=await recoveryStore("readonly",store=>store.get(scenarioResumeKey(native)));check();
+    const previous=await readScenarioResume(native,ticket);check();
     if(previous&&validateScenarioResume(previous,ticket).eligible)throw new Error("已有未確認的暫存點；保持凍結，請重新核對。");
     const c=frozen.stamp.context,packageHash=await P.sha(frozen.bytes);check();await assertScenarioFrozen(frozen.token);check();
-    const next={schema:"scenario-resume/1",rootSession:ticket.rootSession,requestId:ticket.request.requestId,sequence:ticket.request.sequence,
-      context:native,epoch:uuid(),eligible:true,packageHash,sceneHash:frozen.sceneHash,projectId:c.id};
     const record={version:1,session:native,sceneHash:frozen.sceneHash,bytes:frozen.bytes,
       project:{dirty:!!c.dirty,dirtyReason:c.dirtyReason||"",saved:!!c.saved,downloaded:!!c.downloaded,provenance:{...c.provenance}}};
+    const next={schema:"scenario-resume/1",rootSession:ticket.rootSession,requestId:ticket.request.requestId,sequence:ticket.request.sequence,
+      context:native,epoch:uuid(),eligible:true,packageHash,metadataHash:await P.sha(new TextEncoder().encode(JSON.stringify(record.project))),sceneHash:frozen.sceneHash,projectId:c.id};check();
     await scenarioResumeTransaction(ticket,previous??null,next,record,check);await assertScenarioFrozen(frozen.token);check();
     scenarioBootstrap="paused";recoveryReady=false;return {ok:true,epoch:next.epoch};
   }
@@ -1497,11 +1503,17 @@ const ReferenceWorkspace = (() => {
     const check=()=>{if(connection.session!==native||scenarioBootstrap!=="blocked"||!unchanged(initial))throw new Error("試改續接期間身份已變更。");};
     busy=true;busyLabel="正在核對完整試改暫存點…";present();
     try{
-      const journal=validateScenarioResume(await recoveryStore("readonly",store=>store.get(scenarioResumeKey(native))),ticket);check();
+      const journal=validateScenarioResume(await readScenarioResume(native,ticket),ticket);check();
       if(!journal.eligible)throw new Error("這次試改未在離開前完成明確暫存，不能以舊附件續接。");
       const record=await recoveryStore("readonly",store=>store.get(scenarioResumePackageKey(native)));check();
       if(!record||record.version!==1||record.session!==native||record.sceneHash!==journal.sceneHash||await P.sha(record.bytes)!==journal.packageHash)
         throw new Error("試改完整包或指紋不符，未附回舊資料。");
+      const p=record.project;
+      if(!p||Object.keys(p).sort().join(',')!=="dirty,dirtyReason,downloaded,provenance,saved"||
+         !['dirty','saved','downloaded'].every(k=>typeof p[k]==='boolean')||typeof p.dirtyReason!=='string'||
+         !p.provenance||Array.isArray(p.provenance)||typeof p.provenance.kind!=='string'||typeof p.provenance.label!=='string'||
+         await P.sha(new TextEncoder().encode(JSON.stringify(p)))!==journal.metadataHash)
+        throw new Error("試改保存旗標或來源記錄指紋不符；未恢復舊資料。");check();
       const dump=await api("dump");check();if(!dump.ok||await sceneFingerprint(dump.text)!==journal.sceneHash)throw new Error("試改原生內容與暫存點不符。");
       const loaded=await readProjectContext(record.bytes,"試改續接點",label=>{busyLabel=label;present();},check,true);prepared=loaded.c;check();
       if(loaded.loaded.manifest.projectId!==journal.projectId||await sceneFingerprint(loaded.loaded.scene)!==journal.sceneHash)throw new Error("試改完整包的專案身份不符。");
@@ -1512,7 +1524,6 @@ const ReferenceWorkspace = (() => {
       // Recheck the terminal decision after every asynchronous preparation.
       const current=await readStoredScenarioTicket(ticket.rootSession);check();
       if(JSON.stringify(current)!==JSON.stringify(ticket))throw new Error("試改已取消或完成，未重新開啟。");
-      const p=record.project;if(!p||typeof p.provenance?.kind!=="string"||typeof p.provenance?.label!=="string")throw new Error("試改來源記錄不完整。");
       Object.assign(prepared,{dirty:!!p.dirty,dirtyReason:String(p.dirtyReason||""),saved:!!p.saved,downloaded:!!p.downloaded,provenance:{...p.provenance}});
       history.frame={context:prepared,ids:new Map(loaded.ids)};history.undo=[];history.redo=[];history.group=null;history.blockCoreRedo=false;
       detachedPDFContexts.delete(prepared);scenarioBootstrap="ready";recoveryReady=true;sync();
