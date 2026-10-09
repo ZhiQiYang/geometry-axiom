@@ -831,7 +831,7 @@ async function fontLayoutRegression() {
   for(const width of [1382,1160,900,680,600]){
     await viewport(width,804);
     const rows=await evaluate(`(()=>{const h=document.querySelector('.object-workspace-topbar').getBoundingClientRect(),s=document.querySelector('.object-workspace-statusbar').getBoundingClientRect(),t=document.querySelector('#faceWorkspaceTools').getBoundingClientRect(),a=document.querySelector('.object-workspace-actions').getBoundingClientRect(),title=document.querySelector('#workspaceTitle').getBoundingClientRect();return {header:h.height,status:s.height,actionsRight:a.right,toolsRight:t.right,actionsLeft:a.left,toolsTop:t.top,toolsBottom:t.bottom,actionsTop:a.top,actionsBottom:a.bottom,docWidth:document.documentElement.scrollWidth,titleWidth:title.width,width:innerWidth};})()`);
-    check('documented face header rows fit at '+width+'px',rows.header===(width<=720?122:116)&&rows.status===32&&rows.actionsRight<=rows.width&&rows.docWidth<=rows.width+1&&(rows.toolsRight<=rows.actionsLeft+1||rows.toolsTop>=rows.actionsBottom-1||rows.toolsBottom<=rows.actionsTop+1)&&rows.titleWidth>0,rows);
+    check('documented face header rows fit at '+width+'px',rows.header===(width<=560?96:56)&&rows.status===32&&rows.actionsRight<=rows.width&&rows.docWidth<=rows.width+1&&(rows.toolsRight<=rows.actionsLeft+1||rows.toolsTop>=rows.actionsBottom-1||rows.toolsBottom<=rows.actionsTop+1)&&rows.titleWidth>0,rows);
   }
   await viewport(1382,804);
   await evaluate(`(async()=>{await leaveFocus();await enterFocus('space',1);})()`); await settle();

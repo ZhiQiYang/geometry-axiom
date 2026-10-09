@@ -4,8 +4,8 @@
 .ig-workspace.workspace-shell > .ig-header { grid-area: 1 / 1; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 10px; min-width: 0; min-height: 0; padding: 0 12px 0 10px; border-bottom: 1px solid var(--border); background: var(--panel); }
 .ig-workspace.workspace-shell > .workspace-project-header { grid-area: 1 / 2; min-height: 0; padding: 0 16px 0 0; border-bottom: 1px solid var(--border); background: var(--panel); }
 .ig-workspace .workspace-project-header #projectBar .project-bar-name { display: none; }
-.ig-workspace .workspace-project-header .project-save { background: #fff; color: var(--ink); border: 1px solid var(--border); }
-.ig-workspace .workspace-project-header .project-save:hover:not(:disabled) { background: var(--panel-muted); }
+.ig-workspace .workspace-project-header .project-save { background: var(--accent); color: #fff; border: 1px solid var(--accent); }
+.ig-workspace .workspace-project-header .project-save:hover:not(:disabled) { background: var(--accent-strong); }
 .ig-workspace.workspace-shell > .ig-header .ig-back { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 12px 0 10px; border: 0; background: transparent; font-weight: 500; }
 .ig-workspace.workspace-shell > .ig-header .ig-back:hover { background: var(--panel-muted); }
 .ig-sep { flex: none; width: 1px; height: 20px; background: var(--border); }
@@ -196,7 +196,7 @@
   .ig-layout { display: flex; flex-direction: column; overflow: auto; }
   .ig-inspector { display: contents; }
   .ig-settings { order: 1; flex: none; overflow: visible; border-bottom: 1px solid var(--border); }
-  .ig-main { order: 2; flex: none; overflow: visible; }
+  .ig-main { order: 0; flex: none; overflow: visible; }
   .ig-workspace .ig-inspector .ig-footer { order: 3; position: sticky; bottom: 0; z-index: 3; padding: 10px 14px max(12px, env(safe-area-inset-bottom)); }
   .ig-canvas { flex: 0 0 340px; min-height: 270px; }
   .ig-hint { display: none; }

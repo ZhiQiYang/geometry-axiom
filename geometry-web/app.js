@@ -1338,6 +1338,7 @@ async function refreshSurfaces(current = presentationCurrent()) {
 }
 function syncV3PlaneControls() {
   const sel = $("workSurf"), bar = $("v3ToolbarSurf");
+  sel.closest('label').hidden=true; // Keep the original value/consumer, one visible entry in the toolbar.
   bar.innerHTML = sel.innerHTML;
   bar.value = sel.value;
   $("v3PlaneControls").hidden = tool !== "rect";
@@ -3521,6 +3522,7 @@ function renderSpacePlan(sp) {
       class: "space-plan-label" }, svg).textContent =
       `樑${bm.id} ${b[3] - b[0]}×${b[4] - b[1]}`;
   }
+  syncSpacePlanAnnotations();
 
   const preview = el("rect", { class: "space-plan-preview", visibility: "hidden" }, svg);
 
@@ -3540,6 +3542,8 @@ function renderSpacePlan(sp) {
     svg.dataset.spMoved = "";            /* 自訂游標讀取:按下未拖=點放柱 */
   };
   svg.onpointermove = ev => {
+    const point=toRoom(ev),metrics=$('spacePlanMetrics');
+    if(metrics)metrics.textContent=`x ${Math.round(point[0])} · y ${Math.round(point[1])} mm · 格距 ${svg.dataset.planGridStep} mm`;
     if (!drag) return;
     drag.p1 = toRoom(ev);
     const dx = Math.abs(drag.p1[0] - drag.p0[0]);
@@ -3596,6 +3600,21 @@ function renderSpacePlan(sp) {
     if (await emitLine(line)) await renderSpaceWorkspace();
   };
   svg.onpointercancel = () => { drag = null; preview.setAttribute("visibility", "hidden"); };
+}
+function syncSpacePlanAnnotations(){
+  const svg=$('spacePlanSvg'),matrix=svg?.getScreenCTM();if(!svg||svg.hidden||!matrix)return;
+  const scale=Math.hypot(matrix.a,matrix.b);if(!Number.isFinite(scale)||scale<=0)return;
+  for(const label of svg.querySelectorAll('.space-plan-label'))label.style.fontSize=(12/scale)+'px';
+  const step=10**Math.floor(Math.log10(80/scale)),box=svg.viewBox.baseVal;
+  svg.dataset.planGridStep=String(step);
+  let grid=svg.querySelector('[data-plan-grid]');
+  if(!grid){const defs=el('defs',{},svg),pattern=el('pattern',{id:'spacePlanGridPattern',patternUnits:'userSpaceOnUse'},defs);
+    el('path',{'data-plan-grid-path':'',fill:'none',stroke:'var(--border)','stroke-width':1,'vector-effect':'non-scaling-stroke'},pattern);
+    grid=el('rect',{'data-plan-grid':'',fill:'url(#spacePlanGridPattern)','pointer-events':'none'},svg);svg.prepend(defs,grid);}
+  const pattern=svg.querySelector('#spacePlanGridPattern');pattern.setAttribute('width',step);pattern.setAttribute('height',step);
+  pattern.firstChild.setAttribute('d',`M ${step} 0 H 0 V ${step}`);
+  for(const [key,value] of Object.entries({x:box.x,y:box.y,width:box.width,height:box.height}))grid.setAttribute(key,value);
+  const metrics=$('spacePlanMetrics');if(metrics)metrics.textContent=`x ${Math.round(box.x)}…${Math.round(box.x+box.width)} · y ${Math.round(box.y)}…${Math.round(box.y+box.height)} mm · 格距 ${step} mm`;
 }
 
 /* C3:六槽語意名+軸向副標;空槽「＋放置一片面到這裡」→ 進游離面帶入對應預設 */
@@ -7189,6 +7208,7 @@ function renderFaceLayers() {
   const e = oc.edit;
   const list = $("faceLayerList");
   if (!e || !list) return;
+  const schedulePane=$('faceTimberSchedule');if(schedulePane)schedulePane.replaceChildren();
   const loops = fe.work || oc.bmap[e.bid] || [];
   let n = 0;
   list.textContent = "";
@@ -7255,14 +7275,23 @@ function renderFaceLayers() {
     }
   } else emptyGroup("參考線", "尚無參考線 · 開啟建立表單", "guide");
   if ((fe.timbers || []).length) {
-    group("角材料單");
+    group("角材");
+    for(const timber of fe.timbers){
+      const r=row(icon('timber'),`角材 ${timber.id}`,`定位 ${timber.anchor||'—'}`,()=>feDeleteTimber(timber.id));r.dataset.timberId=timber.id;
+      r.classList.toggle('sel',feTimberSelected(timber.id));
+      const pick=document.createElement('button');pick.type='button';pick.className='grid-layer-open';
+      pick.append(r.querySelector('.face-layer-icon'),r.querySelector('.face-layer-copy'));r.prepend(pick);
+      pick.onclick=ev=>{feSelectTimber(timber.id,ev.shiftKey);const box=feTimberRect(timber),vp=$('faceEditorViewport');
+        fe.panX=vp.clientWidth/2-(box[0]+box[2])/2*fe.zoom;fe.panY=vp.clientHeight/2-(box[1]+box[3])/2*fe.zoom;feApplyZoom();};
+      r.onmouseenter=()=>{fe.hoverTimber=timber.id;drawFaceEditor();};r.onmouseleave=()=>{fe.hoverTimber=null;drawFaceEditor();};
+    }
     let schedule;
     try { schedule=feTimberScheduleSnapshot(); }
-    catch(error) { const note=document.createElement("p");note.id="timberScheduleStatus";note.textContent=error.message;list.append(note); }
+    catch(error) { const note=document.createElement("p");note.id="timberScheduleStatus";note.textContent=error.message;schedulePane?.append(note); }
     const view=fe.scheduleView;
     const controls=document.createElement("div");controls.className="timber-schedule-controls";
     controls.innerHTML='<label>範圍<select id="timberScheduleScope"><option value="surface">此承載面的全部角材</option><option value="selection">所選角材集合</option></select></label><label>顯示單位<select id="timberScheduleUnit"><option>mm</option><option>cm</option></select></label><label>排序<select id="timberScheduleOrder"><option value="id">構件身分</option><option value="length">完成長度</option></select></label><button type="button" id="timberScheduleCSV" class="btn">匯出精確 mm CSV</button>';
-    list.append(controls);
+    schedulePane?.append(controls);
     controls.querySelector('#timberScheduleScope').value=view.ids===null?'surface':'selection';
     controls.querySelector('#timberScheduleScope').onchange=ev=>{
       if(ev.target.value==='selection' && !fe.timberSelection.size){toast('請先選取角材，再選擇料單範圍。');ev.target.value=view.ids===null?'surface':'selection';return;}
@@ -7274,15 +7303,14 @@ function renderFaceLayers() {
     controls.querySelector('#timberScheduleOrder').onchange=ev=>{view.order=ev.target.value;renderFaceLayers();};
     controls.querySelector('#timberScheduleCSV').disabled=!schedule?.rows.length;
     controls.querySelector('#timberScheduleCSV').onclick=feExportTimberSchedule;
-    if(schedule){const status=document.createElement('p');status.id='timberScheduleStatus';status.className='fi-note';status.textContent=`承載面 ${schedule.surface} · ${schedule.rows.length} 支正式角材 · 材料／加工未設定者保持未知`;list.append(status);}
+    if(schedule){const status=document.createElement('p');status.id='timberScheduleStatus';status.className='fi-note';status.textContent=`承載面 ${schedule.surface} · ${schedule.rows.length} 支正式角材 · 材料／加工未設定者保持未知`;schedulePane?.append(status);}
     /* GEO-191:角材列可選——不用共用的 row()(它沒有 hover/click/data-timber-id 掛鉤),
        hover → 畫布矩形加 .hover;點列(非 ✕ 鈕)→ 與畫布點選同一效果。 */
     for (const item of TimberSchedule.sorted(schedule?.rows || [],view.order)) {
       const t2=fe.timbers.find(t=>t.id===item.id);
       const selT = feTimberSelected(t2.id);
       const r = document.createElement("div");
-      r.className = "face-layer-row" + (selT ? " sel" : "");
-      r.dataset.timberId = t2.id;
+      r.className = "timber-schedule-row" + (selT ? " sel" : "");
       const copy=document.createElement('span');copy.className='face-layer-copy';
       const pick=document.createElement('button');pick.type='button';pick.className='timber-schedule-pick';pick.dataset.scheduleTimber=item.id;
       pick.setAttribute('aria-pressed',String(selT));pick.setAttribute('aria-label',`定位角材 ${item.id}`);
@@ -7307,8 +7335,7 @@ function renderFaceLayers() {
         const box=feTimberRect(t2),cx=(box[0]+box[2])/2,cy=(box[1]+box[3])/2,vp=$('faceEditorViewport');
         fe.panX=vp.clientWidth/2-cx*fe.zoom;fe.panY=vp.clientHeight/2-cy*fe.zoom;feApplyZoom();
       });
-      list.appendChild(r);
-      ++n;
+      schedulePane?.appendChild(r);
     }
   } else emptyGroup("角材", "尚無角材 · 設定並放置", "timber");
   if ((fe.grids || []).length) {
@@ -7938,13 +7965,14 @@ const GridEditor = (() => {
   }
   function focusSection() {
     const p=$("faceInspectorContent");if(!p) return;
-    const selected=["grid","timber","guide"].includes(fe.fiTab) ? fe.fiTab : null;
+    const selected=["grid","timber","guide"].includes(fe.fiTab) ? fe.fiTab : "guide";
     p.dataset.componentFocus=selected || "all";
     for(const sec of p.querySelectorAll("[data-component-section]")) {
       const focused=!selected || selected === sec.dataset.componentSection;
       sec.classList.toggle("component-collapsed",!focused);
       sec.querySelector(".component-heading button")?.setAttribute("aria-expanded",String(focused));
     }
+    for(const button of p.querySelectorAll('[data-component-tab]')){button.classList.toggle('active',button.dataset.componentTab===selected);button.setAttribute('aria-selected',String(button.dataset.componentTab===selected));}
     document.body.classList.toggle("grid-workspace-active",selected === "grid");
     if(selected !== "grid" && $("gridReturnSettings")) $("gridReturnSettings").hidden=true;
   }
@@ -8477,6 +8505,7 @@ function renderFaceInspector() {
     `</div><div id="projViews"></div></div></details></div>`;
   html += `</div>`;
   html += `<div data-fi-pane="components"${["components", "guide", "timber", "grid"].includes(fe.fiTab) ? "" : " hidden"}>` +
+    `<div id="faceComponentSwitch" class="segmented" role="tablist" aria-label="構件種類">${[['guide','參考線'],['timber','角材'],['grid','網格']].map(([id,label])=>`<button type="button" class="seg" role="tab" data-component-tab="${id}">${label}</button>`).join('')}</div>` +
     `<section data-component-section="guide"><h2 class="component-heading">參考線</h2>${guideHTML}</section>`;
   /* B2:角材頁（游離面顯示停用說明,欄位一併停用）
      GEO-195:定位引用改用 referenceAnchorOptions 的新排序(未占用在前,預設自然選中第一條
@@ -8511,7 +8540,7 @@ function renderFaceInspector() {
     (surf ? "選好定位引用後可直接放置；畫布點線也是快捷入口，點擊位置不作為尺寸輸入。"
           : "游離面：先「放置」才可放角材") + `</div>` +
     `<div class="timber-suggestion"${surf ? "" : " hidden"}><span id="tbSuggestion"></span><button id="tbUseSuggestion" type="button" class="btn">套用建議</button></div>` +
-    `<button id="tbPlace" class="primary-button"${surf ? "" : " disabled"}>放置角材</button></div></section>`;
+    `<button id="tbPlace" class="primary-button"${surf ? "" : " disabled"}>放置角材</button></div><section id="faceTimberSchedule" aria-label="角材料單"></section></section>`;
   html += GridEditor.html(currentGrid, surf) + `</div>`;
   /* GEO-188(方案 B):形狀頁 */
   html += feShapePaneHTML(bid);
@@ -8698,6 +8727,8 @@ function renderFaceInspector() {
     updateGuideSource(true, saved?.drafts.find(([id]) => id === "refGuideSource")?.[1]);
   }
   GridEditor.bind(pane, bid, currentGrid, surf);
+  for(const button of pane.querySelectorAll('[data-component-tab]'))button.onclick=()=>fiShowTab(button.dataset.componentTab);
+  renderFaceLayers();
   feTimberAutoBadges(pane);
   ReferenceWorkspace.present();
   if (!saved || (saved.placement === "null" && surf)) feTimberSuggestForm();
@@ -10611,6 +10642,10 @@ for (const [id, label] of [["spacePlaceColumn", "在平面圖點一下放柱"], 
 /* Current size appears next to the selected placement mode. */
 $("spaceSizeTools").appendChild(document.querySelector(".space-plan-tools"));
 document.querySelector(".space-plan-head").remove();
+document.querySelector('.space-plan-strip').prepend($('spaceWorkspaceTools'));
+const planMetrics=document.createElement('p');planMetrics.id='spacePlanMetrics';planMetrics.className='space-plan-metrics';
+$('spacePlanSvg').before(planMetrics);
+new ResizeObserver(syncSpacePlanAnnotations).observe($('spacePlanSvg'));
 let canvasResizeFrame = 0;
 window.addEventListener("resize", () => {
   cancelAnimationFrame(canvasResizeFrame);

@@ -182,7 +182,7 @@ const RoomOutlineWorkspace=(()=>{
       const apply=safe(()=>{if(!input.isConnected||pane.querySelector('#'+input.id)!==input||!current(boundDraft))throw Error('候選已過期。');
         const edge=Number(input.dataset.roomEdgeLength),length=Number(input.value);
         editPoints(R.resizeEdge(fe.draft.pts,edge,length),[{edge,length,kind:'user-confirmed-mm'}]);});
-      input.addEventListener('change',apply);
+      input.addEventListener('blur',apply);
       input.addEventListener('keydown',e=>{if(e.key!=='Enter'||e.defaultPrevented||e.isComposing||e.keyCode===229)return;
         e.stopPropagation();e.preventDefault();if(e.repeat||e.altKey||e.ctrlKey||e.metaKey||e.shiftKey)return;apply();});
     }

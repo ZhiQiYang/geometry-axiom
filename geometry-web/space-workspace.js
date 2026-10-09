@@ -61,6 +61,13 @@ window.SpaceModelWorkspace = (() => {
   // Keep the established controls and validation, while putting the common path
   // ahead of optional source choices and per-face configuration.
   function organizeSetup() {
+    const header=dialog.querySelector('.sm-header');header.prepend($('smClose'));
+    const examples=document.createElement('details');examples.id='smOtherExamples';examples.className='sm-other-examples';
+    examples.innerHTML='<summary>其他範例</summary>';
+    examples.append($('smTryTimberFrame'),$('smTryRectangle'),$('smTryLShape'));
+    dialog.querySelector('.sm-source-actions').prepend(examples);
+    // The single three-step trail carries numbering; section titles carry content.
+    for(const number of dialog.querySelectorAll('.sm-section-heading > span'))number.remove();
     const sourceSection=$('smSourceSummary').closest('.sm-section');
     sourceSection.querySelector('h2').textContent='來源與名稱';
     const sourceAdvanced=document.createElement('details');sourceAdvanced.id='smSourceAdvanced';sourceAdvanced.className='sm-advanced';
@@ -307,6 +314,7 @@ window.SpaceModelWorkspace = (() => {
     const busy = state.viewerLoading || !state.viewer || state.projectionPending || state.phase === "loading" || state.phase === "previewing" || state.phase === "creating";
     WorkspaceShell.refresh(dialog);
     syncLibraryActions();
+    for(const selector of ['.sm-view-tools','#smViewDirection','.sm-display-options','.sm-metrics'])dialog.querySelector(selector).hidden=!state.result;
     const missingProjection=needsProjection()&&!validProjection(state.source.projection);
     $("smPreview").disabled = !state.source || busy || missingProjection || (state.readonly && !state.editing);
     $("smCreate").disabled = busy || missingProjection || !state.result || wallRequirementMissing(state.input,state.result) || state.previewRevision !== state.revision || !$("smConfirmFaces").checked || !!state.createdId;

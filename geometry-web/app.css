@@ -889,7 +889,11 @@ input.invalid, select.invalid { border-color: var(--danger) !important; box-shad
 .space-plan-preview { fill: rgba(64,110,201,.18); stroke: #406ec9;
   stroke-width: 2; stroke-dasharray: 8 5; vector-effect: non-scaling-stroke;
   pointer-events: none; }
-.space-plan-label { fill: #3d4b63; font-size: 150px; pointer-events: none; }
+.space-plan-label { fill: #3d4b63; pointer-events: none; }
+.space-plan-metrics { font-size:12px;color:var(--muted);padding:4px 12px;margin:0; }
+.space-plan-strip>#spaceWorkspaceTools { display:flex;flex-wrap:wrap;padding:6px;gap:6px; }
+.space-plan-strip>#spaceWorkspaceTools[hidden] { display:none; }
+.timber-schedule-row { display:flex;gap:6px;padding:8px;border-bottom:1px solid var(--border); }
 .space-face-grid { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, minmax(190px,1fr)); gap: 12px; }
 .space-face-card { min-width: 0; overflow: hidden; border: 1px solid var(--border); border-radius: 11px; background: #fff; box-shadow: var(--shadow-sm); }
 .space-face-preview { height: 126px; border-bottom: 1px solid var(--border); background: #f7f9fb; }
@@ -1235,7 +1239,7 @@ body.oc-busy .face-layer-row { pointer-events: none; }
 .impact-grids li { margin-block: 16px; }
 .impact-grids p { margin: 6px 0; overflow-wrap: anywhere; line-height: 1.6; font-variant-numeric: tabular-nums; }
 .component-heading button { display: block; width: 100%; text-align: left; background: none; color: inherit; border: 0; font: inherit; cursor: pointer; padding: 8px 0; }
-.component-collapsed > :not(.component-heading) { display: none !important; }
+.component-collapsed { display: none !important; }
 .component-collapsed .component-heading button::before { content: '›'; margin-right: 8px; }
 .grid-layer-open { grid-column: 1 / span 2; display: flex; min-width: 0; align-items: center; gap: 8px; text-align: left; border: 0; background: transparent; color: inherit; padding: 6px 0; cursor: pointer; }
 .grid-layer-open .face-layer-icon { flex-shrink: 0; }
@@ -1578,8 +1582,6 @@ body.oc-busy { cursor: progress; }
 .face-editor-svg .obstacle-ghost[data-type="column"] { fill: #b96a162e; stroke: var(--warning); }
 .face-editor-svg .obstacle-ghost[data-type="beam"] { fill: #3d54d42e; stroke: var(--accent-strong); }
 body.v3-mode { --left-w: 200px; --right-w: 240px; }
-body.v3-mode:not(.v3-picked) { --right-w: 0px; }
-body.v3-mode:not(.v3-picked) .sidebar-right { display: none; }
 body.v3-mode .topbar > .tool-group { visibility: hidden; }
 body.v3-mode #canvasViewport { display: flex; flex-direction: column; background: var(--panel); }
 body.v3-mode #cv { position: relative; inset: auto; order: 2; width: 100%; height: 0; min-height: 0; flex: 1; }
@@ -2179,10 +2181,9 @@ body.fb-picking, body.fb-picking * { cursor: crosshair !important; }
 #quickBoundaryPop .menu-item svg { width: 19px; height: 19px; color: var(--face); }
 
 body.canvas-composition {
-  --left-w: 278px; --right-w: 0px; --topbar-h: 60px; --statusbar-h: 28px;
+  --left-w: 278px; --right-w: 0px; --topbar-h: 56px; --statusbar-h: 28px;
   --bg: #f6f8fc; --canvas: #fbfcfe; --ink: #22344d; --muted: #566b85;
   --border: #dfe6ef; --border-strong: #cbd8e7;
-  --accent: #365bf5; --accent-strong: #2d50db; --accent-soft: #edf2ff;
   font-size: 14px;
 }
 body.canvas-composition .topbar { grid-template-columns: minmax(0, 1fr) auto; gap: 16px; padding: 0 20px; background: #fff; }
@@ -2344,7 +2345,7 @@ body.canvas-composition #fbButton { top: calc(var(--topbar-h) + 18px); left: aut
 }
 @media (max-width: 680px) {
   .topbar > .top-actions { grid-column: 3; }
-  body.canvas-composition { --topbar-h: 100px; --statusbar-h: 26px; }
+  body.canvas-composition { --statusbar-h: 26px; }
   body.canvas-composition .topbar { grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: 48px 44px; padding: 4px 12px; gap: 0 8px; }
   body.canvas-composition .topbar > .brand { grid-row: 1; grid-column: 1; gap: 9px; }
   body.canvas-composition .brand-mark { width: 28px; height: 28px; border-radius: 7px; }
@@ -2385,28 +2386,32 @@ body.canvas-composition #fbButton { top: calc(var(--topbar-h) + 18px); left: aut
   body.canvas-composition .canvas-controls .zoom-level { min-width: 40px; }
   body.canvas-composition .canvas-controls .toolbar-separator.vertical { margin-left: 3px; margin-right: 3px; }
 }
+@media(min-width:561px) and (max-width:680px){
+  body.canvas-composition .topbar{height:56px;grid-template-rows:56px;padding:0 12px}
+  body.canvas-composition .topbar>.top-actions{grid-column:2;grid-row:1}
+  body.canvas-composition .mobile-create-object{display:none}
+}
 @media (max-width: 560px) {
   .topbar > .top-actions { grid-column: 1 / -1; }
 }
 
-/* The project trail and actions have their own row; adding a tool must never
-   squeeze a return label or a placement summary into several lines. */
+/* One desktop row; the tool group scrolls instead of moving save/history. */
 :root:has(#objectWorkspace:not([hidden])),
-body:has(#objectWorkspace:not([hidden])) { --topbar-h: 116px; }
+body:has(#objectWorkspace:not([hidden])) { --topbar-h: 56px; }
 .object-workspace-topbar,
 .reference-editor .object-workspace-topbar {
-  grid-template-columns: minmax(0, 1fr) auto;
-  grid-template-rows: 44px 54px;
-  gap: 4px 12px;
+  grid-template-columns: minmax(120px, .65fr) minmax(0, 1fr) auto;
+  grid-template-rows: 44px;
+  gap: 0 8px;
   padding: 6px 14px;
 }
 .object-workspace-trail { grid-column: 1; grid-row: 1; }
-.object-workspace-actions { grid-column: 2; grid-row: 1; }
+.object-workspace-actions { grid-column: 3; grid-row: 1; }
 .workspace-back-button { flex: 0 0 auto; white-space: nowrap; }
 .workspace-title-copy { flex: 0 1 auto; }
 .place-capsule { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .workspace-tools-row {
-  grid-column: 1 / -1; grid-row: 2;
+  grid-column: 2; grid-row: 1;
   display: flex; align-items: center; gap: 10px;
   min-width: 0; overflow-x: auto; overflow-y: hidden;
   scrollbar-width: thin; scrollbar-color: #9aa9bc #edf1f6;
@@ -2442,6 +2447,18 @@ body:has(#objectWorkspace:not([hidden])) { --topbar-h: 116px; }
 .ref-advanced { margin-top: 10px; }
 .ref-advanced > summary { padding: 10px 0; cursor: pointer; color: var(--accent-strong); }
 .v3-label-details { margin-top: 10px; border-top: 1px solid var(--border); color: var(--muted); font-size: 12px; }
+#faceComponentSwitch { position:sticky;top:0;z-index:2;background:var(--panel);margin-bottom:12px; }
+#faceComponentSwitch button { min-height:36px;flex:1; }
+#faceTimberSchedule:empty { display:none; }
+[data-room-dimensions] li { display:flex;align-items:center;justify-content:space-between;gap:8px;margin:6px 0; }
+[data-room-edge-length] { width:90px;min-height:36px; }
+@media(max-width:560px){
+  body.canvas-composition { --topbar-h:96px; }
+  body.canvas-composition .topbar { height:96px;grid-template-rows:44px 44px;padding:4px 8px;gap:0 6px; }
+  body.canvas-composition .topbar>.top-actions { grid-column:1 / -1;grid-row:2; }
+  .v3-check-col label { min-height:44px;display:flex;align-items:center;width:100%;cursor:pointer; }
+  #faceComponentSwitch button,[data-room-edge-length] { min-height:44px; }
+}
 .v3-label-details > summary { min-height: 44px; padding: 10px 0; cursor: pointer; color: var(--accent-strong); }
 .v3-label-details p { margin: 0 0 8px; line-height: 1.6; }
 .v3-label-details ul { max-height: min(240px, 30dvh); overflow-y: auto; margin: 0; padding: 0 0 8px 20px; line-height: 1.75; overflow-wrap: anywhere; }
@@ -2471,10 +2488,12 @@ body.v3-mode .sidebar-left { overflow-y: auto; }
   .workspace-back-button span:last-child { display: inline; }
   #workspacePlaceTag { display: inline; max-width: 35vw; }
 }
-@media (max-width: 680px) {
+@media (max-width: 560px) {
   :root:has(#objectWorkspace:not([hidden])),
-  body:has(#objectWorkspace:not([hidden])) { --topbar-h: 122px; }
-  .object-workspace-topbar, .reference-editor .object-workspace-topbar { grid-template-rows: 50px 54px; padding: 6px 8px; gap: 4px 6px; }
+  body:has(#objectWorkspace:not([hidden])) { --topbar-h: 96px; }
+  .object-workspace-topbar, .reference-editor .object-workspace-topbar { grid-template-columns:minmax(0,1fr) auto;grid-template-rows: 44px 40px; padding: 6px 8px; gap: 0 6px; }
+  .object-workspace-actions { grid-column:2; }
+  .workspace-tools-row { grid-column:1 / -1;grid-row:2; }
   .object-workspace-trail { gap: 5px; }
   .workspace-back-button, .reference-editor .workspace-back-button { width: 44px; height: 44px; min-width: 44px; padding: 0; justify-content: center; }
   .workspace-back-button span:last-child, #workspacePlaceTag, #workspaceEyebrow { display: none; }
