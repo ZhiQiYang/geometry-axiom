@@ -18,7 +18,11 @@ module.exports=async function ruleEditorTests({send,eval_,sleep,click,waitForUI,
   const leave=async()=>{if(await read(`!!$('infiniteGridWorkspace')?.open`))await ctl('#igClose');};
   const newProject=async()=>{await leave();const warning=await read('ReferenceWorkspace.context().dirty');await ctl('#fileMenuBtn');
     await expectNativeDialog(()=>ctl('#btnNewProject'),{message:'建立一份空白新專案，切換為新的專案識別及「未命名專案」。'+(warning?'目前尚未保存的變更不會自動寫入檔案。':'')+'本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？',accept:true});await settled();};
-  const open=async(id,enabled=true)=>{await leave();await ctl(`.ocard[data-kind="grid-system"][data-id="${id}"]`);await wait(`!!$('gridObjectOpen')`);await ctl('#gridObjectOpen');await wait(`!!$('infiniteGridWorkspace')?.open&&!!$('igRuleAdd')${enabled?"&&!$('igRuleAdd').disabled":''}`);};
+  const open=async(id,enabled=true)=>{await leave();
+    // SVG cards do not scroll into view. Use the existing real F shortcut once
+    // before the unchanged hit test, so camera inherited from 390px can show all cards.
+    await key('f','KeyF',70);
+    await ctl(`.ocard[data-kind="grid-system"][data-id="${id}"]`);await wait(`!!$('gridObjectOpen')`);await ctl('#gridObjectOpen');await wait(`!!$('infiniteGridWorkspace')?.open&&!!$('igRuleAdd')${enabled?"&&!$('igRuleAdd').disabled":''}`);};
   const choose=async(selector,value)=>{const index=await read(`(()=>{const n=document.querySelector(${JSON.stringify(selector)});return [...n.options].findIndex(o=>o.value===${JSON.stringify(value)});})()`);if(index<0)throw Error('Missing rule option');await ctl(selector);await key('Home','Home',36);for(let i=0;i<index;i++)await key('ArrowDown','ArrowDown',40);await key('Enter','Enter',13);await wait(`document.querySelector(${JSON.stringify(selector)}).value===${JSON.stringify(value)}`);};
   const fixture=async line=>read(`(async()=>{let r=await apiRequest('line '+${JSON.stringify(line)});if(r.preview){if(!r.preview.valid)throw Error(JSON.stringify(r));r=await apiRequest('line confirm '+r.preview.token);}if(!r.ok)throw Error(JSON.stringify(r));await renderObjects();return true;})()`);
   const shot=cdp.makeShot(send,['GEOMETRY_GRID_RULE_SCREENSHOT_DIR']);
