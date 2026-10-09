@@ -14,7 +14,14 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,expectNativeDial
     if(root==='face'&&!await read(`document.body.classList.contains('drawer-right-open')`))await baseCtl('#workspaceToggleRight');
     if(root==='face-left'&&!await read(`document.body.classList.contains('drawer-left-open')`))await baseCtl('#workspaceToggleLeft');
     if(selector.startsWith('.face-rule-hit')&&await read(`document.body.classList.contains('drawer-right-open')`))await baseCtl('#workspaceToggleRight');
-  }if(await read(`document.querySelector(${JSON.stringify(selector)})?.closest('#createObjectPop')?.hidden===true`))await baseCtl(await read(`innerWidth<=900?'#mobileCreateObject':'#btnCreateObject'`));return baseCtl(selector);};
+  }if(await read(`document.querySelector(${JSON.stringify(selector)})?.closest('#createObjectPop')?.hidden===true`))await baseCtl(await read(`innerWidth<=900?'#mobileCreateObject':'#btnCreateObject'`));// #123 S3 exposes one component form at a time. Enter its existing tab
+  // with the same trusted hit-tested controls before using a migrated field.
+  const section=await read(`document.querySelector(${JSON.stringify(selector)})?.closest('[data-component-section]')?.dataset.componentSection||null`);
+  if(section&&await read(`(()=>{const n=document.querySelector(${JSON.stringify(selector)}),p=n?.closest('[data-fi-pane]'),s=n?.closest('[data-component-section]');return !!p?.hidden||!!s?.classList.contains('component-collapsed');})()`)){
+    await baseCtl('#faceInspectorTabs [data-fi-tab="components"]');
+    await baseCtl('[data-component-tab="'+section+'"]');
+  }
+  return baseCtl(selector);};
   // A default-valued select must not pass after a click reached another
   // element. Check the actual keyboard target before sending input.
   const focusedCtl=async selector=>{await ctl(selector);await wait(`document.activeElement===document.querySelector(${JSON.stringify(selector)})`);};
@@ -71,7 +78,7 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,expectNativeDial
       }
       await ctl('[data-face-tool="select"]');
       const before=await dump(),count=await read('ReferenceWorkspace.history.undo.length'),raw=await read(`ReferenceWorkspace.readFeatureAttachment('grid-draft')`);
-      if(width===390){await ctl('#faceInspectorTabs [data-fi-tab="components"]');const sizes=await read(`({controls:[...document.querySelectorAll('.grid-rule-details button,.grid-rule-details input,.grid-rule-details select')].map(n=>({id:n.id,height:n.getBoundingClientRect().height})),panel:[$('faceInspectorContent').scrollWidth,$('faceInspectorContent').clientWidth],page:[document.documentElement.scrollWidth,innerWidth]})`);check(`390 面 ${index} source/cell 觸控高度及 inspector 無水平溢出`,sizes.controls.every(n=>n.height>=44)&&sizes.panel[0]<=sizes.panel[1]&&sizes.page[0]<=sizes.page[1],sizes);}
+      if(width===390){await ctl('#faceInspectorTabs [data-fi-tab="components"]');await ctl('[data-component-tab="grid"]');const sizes=await read(`({controls:[...document.querySelectorAll('.grid-rule-details button,.grid-rule-details input,.grid-rule-details select')].map(n=>({id:n.id,height:n.getBoundingClientRect().height})),panel:[$('faceInspectorContent').scrollWidth,$('faceInspectorContent').clientWidth],page:[document.documentElement.scrollWidth,innerWidth]})`);check(`390 面 ${index} source/cell 觸控高度及 inspector 無水平溢出`,sizes.controls.every(n=>n.height>=44)&&sizes.panel[0]<=sizes.panel[1]&&sizes.page[0]<=sizes.page[1],sizes);}
       await ctl('#faceReferenceVisibility [data-ref-visible="all"]');check(`${width} 面 ${index} 共用參考線隱藏同時停用 rule hit/anchor 且零寫入`,await read(`document.querySelectorAll('.face-rule-hit').length===0&&!ReferenceVisibility.anchorVisible($('tbAnchor').value)`)&&(await dump())===before);await ctl('#faceReferenceVisibility [data-ref-visible="all"]');
       await pickRule(`${grids[index]}:${sid}:1:${cells[index].join(':')}:u:0`);
       check(`${width} 面 ${index} 首指標選取及標籤不改 native/raw/history`,await read(`fe.ruleSelection?.appliedGridId===${grids[index]}&&!!document.querySelector('[data-rule-label]')&&document.querySelector('[data-rule-selected]').textContent.includes(${JSON.stringify(cells[index][0])})`)&&(await dump())===before&&await read('ReferenceWorkspace.history.undo.length')===count&&JSON.stringify(await read(`ReferenceWorkspace.readFeatureAttachment('grid-draft')`))===JSON.stringify(raw));
@@ -160,6 +167,11 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,expectNativeDial
         :`window.__ruleGate.phase==='released'&&window.__ruleGate.clickSettled===true`;
       try{
         await ctl('[data-rule-exact]');await wait(`window.__ruleGate.phase==='held'&&!!window.__ruleRelease&&window.__ruleGate.clickSettled===false`);
+        // The query starts in Grid; the later real Guide focus owns the reply
+        // while the original move and no-focus-steal oracles remain unchanged.
+        await ctl('[data-component-tab="guide"]');await focusedCtl('#refGuideExpr');
+        await key('Enter','Enter',13);await wait(`document.activeElement===document.querySelector('#refGuideExpr')`);
+        await key('Tab','Tab',9);await wait(`document.activeElement===document.querySelector('#refGuideCreate')`);
         await move();
         const before=await guideTarget();
         check(`${width} ${label} 已離開引用式`,await accept(before));

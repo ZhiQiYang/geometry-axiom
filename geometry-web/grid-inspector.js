@@ -131,13 +131,13 @@
     const view=$(s,'giAnchorView');view.replaceChildren();
     svg('rect',{x:14,y:14,width:72,height:72,rx:2,class:'gi-anchor-cell'},view);
     svg('path',{d:'M50 14V86M14 50H86',class:'gi-anchor-midlines'},view);
-    const titles=['左上','上中','右上','左中','中心','右中','左下','下中','右下'];let selectedTitle=null;
-    for(let v=0;v<3;v++)for(let u=0;u<3;u++){
-      const selected=u*s.anchor[0].den===2*s.anchor[0].num && v*s.anchor[1].den===2*s.anchor[1].num;
-      if(selected)selectedTitle=titles[v*3+u];
-      const g=svg('g',{'data-gi-anchor':u+','+v,role:'button',tabindex:0,'aria-label':titles[v*3+u],'aria-pressed':String(selected),class:'gi-anchor-point'},view);
+    let selectedTitle=null;
+    for(const position of GridAnchorPositions.positions){const {u,v,name}=position;
+      const selected=GridAnchorPositions.selected(position,s.anchor);
+      if(selected)selectedTitle=name;
+      const g=svg('g',{'data-gi-anchor':u+','+v,role:'button',tabindex:0,'aria-label':name,'aria-pressed':String(selected),class:'gi-anchor-point'},view);
       svg('circle',{cx:14+36*u,cy:14+36*v,r:13,class:'gi-hit'},g);svg('circle',{cx:14+36*u,cy:14+36*v,r:selected?5.5:3.5,class:'gi-anchor-dot'},g);
-      activate(g,()=>{if(!current(s)||s.busy)return;s.anchor=[u,v].map(n=>({num:n===2?1:n,den:n===1?2:1}));drawAnchor(s);alignmentStatus(s);});
+      activate(g,()=>{if(!current(s)||s.busy)return;s.anchor=GridAnchorPositions.fractions(position);drawAnchor(s);alignmentStatus(s);});
     }
     $(s,'giAnchorSummary').textContent=(selectedTitle||'自訂比例')+' · '+s.anchor.map(a=>a.num+'/'+a.den).join(', ');
   }

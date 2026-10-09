@@ -12,6 +12,40 @@
 
 完整場景使用 `geometry-canvas/16` 與 `section-profile/1`。工作區不另存材料網格副本；重開依原生來源重建。`#spTeach` 是可關閉並記住的首次教學卡，沒有新增常駐工具列。
 
+## #123 已採納介面切片（2026-10-09，來源對照；驗收另記）
+
+S2 接續：`#igBoundarySection/#igBoundaryView` 是右側 `#igBindingForm` 第 2 步唯一原節點；footer 的 `#igDiscardDraft` 在原預覽主動作左側。捨棄用同工作區 `#igDiscardConfirmation` 臨時 alertdialog，`#igDiscardCancel`／Escape 保留 raw／native，`#igDiscardConfirm` 仍只清原 grid-draft 並關閉；未知回執、owner 漂移或保存／初始化期間不清稿。`#igDeleteBinding` 保留在 `.ig-delete-section` disclosure，仍核心預覽／確認。保存提示區分 scene 套用与完整 project 保存。`GridAnchorPositions` 共用九點名稱、比例與選中判定，原 `data-ig-anchor`／`data-gi-anchor` 和自訂精確比例保留。這些源碼接線尚須同版新執行核收，不把歷史結果改綁。
+
+本節記錄本輪已接上的有界切片，優先於下方較早的頂列、三視圖欄寬及料單位置紀錄。文件基底為 `f98078dc150c22960cbe2d212afb3ded61954bb9`，另對照本輪未提交修正的保留 source／hash（最終交付收據）；不能將 dirty 修正綁成乾淨 f980 的測試結果。DOM／CSS／事件 source 已接線與真瀏覽器核收分列，也不代表 #123 的 43 項全部完成。原設計 ZIP 未在本輪核收，像素及稿件衝突對照仍為 unknown。
+
+- 頂列：主畫布與 `#objectWorkspace` 桌面為 56px；寬度 ≤560px 為 96px 兩列。面／空間的 `.workspace-tools-row` 在桌面中欄，返回及標題在左，原 `.workspace-history-tools` 已移入右 `.object-workspace-actions`，與檔案／原專案保存節點共用操作群；窄螢幕工具改到第二列並可水平捲動，歷史 DOM／CSS 仍位於右操作群，可達性須由同版正常 pointer／Tab 證明。這是同 node／原 ID 的移位；正常 pointer／Tab、焦點及實際位置待同版瀏覽器核收。大型工程／網格／3D 工作區沿用同一 `#projectBar`，不增加獨立專案列；原返回節點在 DOM／Tab 順序先於專案操作。原 #123 的面畫布至少 viewport−88px 下限與 ≤560px 的 96px 頂列要求，仍須依原句及既有 oracle 核對寬度適用範圍並實測；本輪未自行降低下限。控制可達、焦點與返回路徑也須真瀏覽器量測。
+- 主要按鈕：主畫布／面內／網格保存／3D 的主要操作共用 `--accent`，3D 的 `--sm-primary` 引用它；hover 共用 `--accent-strong`。四處 computed background 相等是驗收條件，不能由 CSS 字串一致宣稱已實測。
+- 面內構件：`#faceComponentSwitch [data-component-tab]` 是同一構件頁的子分段，值為 `guide`、`timber` 或 `grid`，預設參考線；`aria-selected` 與 `#faceInspectorContent[data-component-focus]` 同步，未選的 `[data-component-section]` 整段隱藏。三種表單保留在同一檢查器，切換或重繪須保留未提交 raw／焦點，不能把隱藏當作提交或捨棄。原 `fiShowTab('guide'|'timber'|'grid')` 路由不變。
+- 角材料單：`#faceTimberSchedule` 位於構件→角材；範圍／單位／排序／CSV 與來源細節從左欄移入此處。左欄角材列保留定位、選取／hover 與刪除，沒有第二份料單。原柱樑投影 `.fe-ob-check`、`#feApplyCard`／`#feCutStrip`／`#feApplyProj` 已移到右 Shape 的 `#faceProjectionEditor`，左鬼影列只負責圖層及開啟編輯；原顯示控制保留。目前 dirty source 以 `faceProjectionDrafts` WeakMap 按 edit 分開保存 typed item 勾選／cut，`renderFaceInspector()` 在多選分支之前擷取，右表單暫時不在 DOM 時由同 edit cache 取回；新 owner 不借舊值。`feApplyProj()` 在 native 回覆後核對 presentation owner、原 work／drag／panHold 及 tool／draft 身分，載入後再守門，舊回覆不能清掉新操作或手勢。這些接線仍須跨多選／重繪、新工作區與新手勢回歸；乾淨 f980 曾有多選提前 return 的保全缺口，該歷史限制不沿用為目前 source 未修。非 strip 初始預選、strip／cut 初始不選、原 apply-proj 完整交易都維持。本輪不宣稱 S3 其餘去重／提示項或真 pointer／Tab／跨重繪保全已驗收。
+- 空間平面圖：原 `#spaceWorkspaceTools` 及尺寸節點移到 `.space-plan-strip`，三視圖舞台不顯示放置工具。`#spacePlanMetrics`、`data-plan-grid-step`、`[data-plan-grid]` 是座標及格距的呈現；`.space-plan-label` 維持 12px 螢幕字級。這些 C1 標註及格線不改 World、柱樑尺寸或指標入值，不增加吸附；新吸附仍須另提幾何契約。
+- 三視圖：桌面右欄固定 240px，未選取也保留空狀態；`body.v3-picked` 只標選取狀態，不控制桌面欄寬。窄螢幕沿用抽屜與關閉後焦點返回，不把「固定欄寬」解讀為手機常開。原 `#workSurf` 作隱藏相容值／consumer；唯一可見入口 `#v3ToolbarSurf` 位於矩形工具的 `#v3PlaneControls`，其他工具收起；視圖／圖層整列 label 可點並可鍵盤 Space。`#world .v3-annotation-layer` 在所有幾何繪完後再附加，置於幾何上層，仍保留完整 label／title／全部標註清單，不改原生 draw operations。
+- 網格窄畫面：390px 時 `.ig-main` 預覽在 `.ig-settings` 前，footer 仍為既有預覽／保存入口；排序只改呈現，不改來源、配置及確認交易。
+- 3D 建模：`#smClose` 在左並保留返回畫布動作；歡迎區只常顯示 `#smWelcomeTry` 主要範例，原三個範例 ID 搬入 `#smOtherExamples` disclosure。唯一三步 trail 保留編號，移除各節重複編號。沒有結果時收起 `.sm-view-tools`、`#smViewDirection`、`.sm-display-options` 與 `.sm-metrics`；真預覽／已保存結果才顯示，設定變更仍標舊預覽並禁止未重新核對的建立。保留既有 ≤900px 短高度版面及 #119 完整性診斷，不以排版修正代替真預覽／建立／保存重開。
+
+新增實際掛點是 `#faceComponentSwitch`、`[data-component-tab]`、`#faceTimberSchedule`、`#spacePlanMetrics`、`[data-plan-grid]`、`data-plan-grid-step`、`.v3-annotation-layer` 及 `#smOtherExamples`；採納規格中的 `spacePlanReadout` 等提議名稱不冒充現行 DOM。既有 DOM ID、幾何來源、預覽／確認／取消、保存與 Undo/Redo 契約不變。正式整合閘門及本輪實跑結果另記，局部 source／probe 不代替完整 CDP／Space。
+
+
+本輪已核收的具名歷史執行：乾淨 `f98078dc150c22960cbe2d212afb3ded61954bb9` 的原六組（colors／headers／components／v3／grid-mobile／model）完整 194 通過／0 失敗、exit 0；範圍只是六組，不能冒稱全部 43 項、完整 CDP 或完整 Space。原始收據／log：`/workspace/scratch/geometry-ui-verification/ui123-f98078dc-gate/receipt.json`、`command.log`（SHA256 `abc33da78fce6c0f5356f7ddd3f0d7c47076d2404f1441e73d45057ef5f0381f`）。同版 #54 是 208 通過／1 失敗、exit 1、completed:false：第九個 `image-notch-mobile` 的正常 New 被抽屜 close 攔截，後段負例未到，不能稱完整 #54。其原 log 在 `room54-f98078dc-gate/command.log`（SHA256 `50780d76645fc18ad070a8aaa95daeaecb4f4ed446e16e8996110b186ed0e483`）。六份 `room-direct-row-dimensions/1` 測量的 PDF／image 矩形、L、缺口均為候選 12／14／16 對原手動 16／20／24 操作；各同校準來源、camera、disclosures、snap、review／起始場景與精確終點，成本定義排除匯入／校準及 Save/New/Open，不把機器等待當人類工時，且不替代未完成的後段驗收。
+
+目前 dirty source 的後续修正：頂列 relative positioning、正常 `fileMenuPop` 開啟先 `closePanels()` 並以 fixed viewport 定位，以處理手機 New 遮擋；投影 WeakMap／owner 守門如上。P70 保存按鈕 oracle 對照原採納的共用 accent；不是降低產品規格。這些新 source 不借用 f980 六組或 #54 的歷史 pass；390px FileMenu→New、正常歷史 pointer／Tab、投影多選 raw／新 owner、新手勢、必要完整 CDP／Space 仍待新凍結候選收據。完整 CDP 2207／0／0 仍只綁乾淨 `5174a8dafd8c48329d7166abbd3d104e3c28c0c4`；9029 是後續文件／證據提交。#173 Windows 完整模式 1692／2、exit 1、completed:false、未比對 golden 的歷史保留，後續局部結果不得相加。
+
+## 安全暫存與 Resume（2026-10-09，明確續接點）
+
+- 原 `#scenarioEdit` 兼作進入／核對續接入口，不新增另一份 B。`#scenarioPauseEdit` 只在目前 active、ready、非 recovered／finishing／cancelled 的同 owner 試改啟用；子 frame 先 inert，再確認連線 ready 且沒有 pending API 結果。`pauseScenarioProject()` flush 可保存草稿後沿原 `assertSaveReady()` 守門：nativePending、房間／參數／斷面草稿、busy／拖曳、history group／pending load、未套用外環／校準均拒絕；不自動套用工具草稿。
+- Pause 保持同 scene transaction／context／frame／revision／native session 的凍結，取得完整 `.gcanvas` 包及 dirty／saved／downloaded／provenance metadata。嚴格儲存交易同時核對未變的 active ticket、前一 journal 與新 `scenario-resume/1`：rootSession／requestId／sequence／B context／projectId、sceneHash／packageHash／metadataHash，以及新 epoch、`eligible:true`。已存在未消耗資格、交易拒絕或未知 acknowledgment 時保持凍結與原資料；可編輯 B 不得與可重用的續接資格並存。
+- 原入口對保留的 active ticket 先只讀 `resolve` 精確 existing tuple；服務須回同 requestId／sequence／context 的 active 原 B，不能以 create、upload、close、重建或舊 A 附件探測。`absent`／`unavailable`／服務換代或 tuple 不符保持 unknown／拒絕；高水位 `fenced` 不等於該 UUID 已確認退休。
+- 子 frame 的 Resume 只接受同 native session、active ticket、blocked bootstrap、owned editor lease 及可讀 recovery store。依序核對整份包／metadata／projectId／目前原生 dump 與完整 hashes；每次非同步準備後重驗 native session／bootstrap／context／frame／revision，strict compare-and-swap 及附回前再核對持久 ticket。先將同 epoch 的 `eligible` 置 false，終態確認後再次核對 dump／ticket，才附回最新完整 metadata／sources／草稿並開放編輯。不能搬入舊 Undo/Redo 或重送原生 mutation。
+- 一次 Resume 消耗整個 epoch 的資格；活躍編輯的自動暫存、突然 reload／斷線、缺少明確 Pause 或已消耗 journal 都不能續接舊完整包。要進入下一 epoch 須再次明確暫存最新完整資料。取消／完成先持久確認原 terminal ticket，再結束 B；遲到回覆不能重新取得資格或改動新 owner。
+
+GEO-219 實際減項：移除新建 ready 與 Resume-ready 分支在同一 `#scenarioEditorStatus` 的重複永久說明，抵同一試改畫面的 Pause 入口；保留 status 節點與 loading／error／unknown／retiring 回饋。兩分支是替代文字，不算同時兩塊减項；空白節點是否仍占位及真可達待瀏覽器核收。
+
+本節以 `ReferenceWorkspace.pauseScenarioProject/resumeScenarioProject`、`ScenarioWorkspace` 和服務只讀 resolver 的來源為準；不是一般「中斷即自動恢復」承諾。native-only／VM 回歸不證明真瀏覽器儲存持久性、BFCache、跨 profile、實體手機或服務重啟續接；本輪執行範圍另列實際收據。原 EPERM／未執行紀錄保留為各自歷史環境，不能據此宣稱現在所有驗收均未執行。
+
 ## #123 S1 模型庫的既有歷史入口
 
 - 僅 `#smWorkspace` 的 `#smLibraryPanel` 顯示時 opt-in：`WorkspaceShell.attach` 的 `history.state/run/onError` 介面將原 `#btnUndo`／`#btnRedo` 搬入同一 `#projectBar`；不是複製按鈕。保留 ID、圖示、文案與 `doUndoRedo`，沿用 44px 最小觸控尺寸；離開模型庫、關閉或切到其他殼層即還原原 DOM 位置與屬性。面內既有按鈕不動。
@@ -29,7 +63,7 @@
 
 ## 原生角材料單（#47 F4a）
 
-`#faceLayerList` 的既有 `[data-timber-id]` 列直接提供料單，不另建清單工作區。
+`#faceLayerList` 的 `[data-timber-id]` 列保留定位／選取與刪除；料單控制及完成尺寸移入構件→角材的唯一 `#faceTimberSchedule`，不另建清單工作區。
 `[data-schedule-timber]` 是可鍵盤操作的定位按鈕，`aria-pressed` 與畫布角材選取同步。
 `#timberScheduleScope` 明選承載面全部或當次選取的 ID 集合；`#timberScheduleUnit` 只格式化 mm/cm；
 `#timberScheduleOrder` 按身分或完成長度排序。`#timberScheduleCSV` 導出同一集合的精確 mm，
@@ -52,7 +86,7 @@
 - 保留 `#refDrawOutline` 原步驟，標示「選房間／描外環」，在既有底圖 pane 啟動房間選點／框選；`#refOutlineDetails` 集中候選、人工修正與來源核對，套用校準後展開。既有 `#refFit` 從來源 disclosure 移入此區，只 fit 來源取景視野，不改幾何。移除重複 `.reference-intro`／`.calibration-instruction`。
 - `#refRoomMethod` 選向量優先／本地影像／人工描繪；`#refRoomMinWidth`、`#refRoomMinLength` 使用固定來源單位，`#refRoomPick` 啟動選房間。未校準停用。
 - `#refRoomHorizontal`／`#refRoomVertical` 與 `#refRoomClearBarriers` 是展開後的搜尋分隔控制，不寫正式牆。`#refRoomStatus` 明示取得失敗與過期。
-- `#roomCandidateOverlay` 疊在既有 `#feDraftLayer`；點仍是 `fe.draft.pts`。`#refRoomEdge`／`#refRoomLength`／`#refRoomSetLength` 核對入值，`#refRoomVertices`／`#refRoomApplyVertices` 局部補點，`#refRoomReviewed` 每次修正後清除。
+- `#roomCandidateOverlay` 疊在既有 `#feDraftLayer`；點仍是 `fe.draft.pts`。`[data-room-dimensions]` 每列的 `#refRoomEdgeLengthN[data-room-edge-length="N"]` 直接輸入整數 mm；N 自 0 起算，對應畫面第 N+1 邊。input 清除 review，blur／無修飾 Enter 沿原 resize／正交驗證套用，同頂點數時原列節點保持連線。僅現行 pane／同 draft／current stamp 可寫，非法值或未完成的 row dirty 不得 Confirm。原 `#refRoomEdge`／`#refRoomLength`／`#refRoomSetLength` 搬入 `#refRoomSingleEdge` 進階 disclosure，ID 及原 Enter 契約保留；`#refRoomVertices`／`#refRoomApplyVertices` 仍供局部補點，`#refRoomReviewed` 每次修正後清除。新的逐列流程成本須依獨立 protocol 實測，不改綁歷史 P79 或原完整成本比較。
 - `#refRoomLength` 的無修飾 Enter 沿用 `#refRoomSetLength` click 驗證；僅現行 pane 的連線輸入節點可套用。成功後清核對並保留焦點／選邊，非法值與 click 保持相同拒絕及原 review 狀態。組字／229、repeat、已阻止及修飾鍵不套用；組字不阻止預設事件，Escape 與其他欄位不攔。尺寸套用不等於正式 Confirm。
 - `#refRoomConfirm`／`#refRoomCancel` 與既有 `#faceDraftFinish`／`#faceDraftCancel` 操作同一草稿。確認走核心 `emitBoundary`，依賴沿用 `.reference-impact`；取消／拒絕保留原面。H／空白鍵平移不清候選。
 - `[data-reconstruction-state]` 依實際來源頁、校準／變換、核心輪廓顯示 `unreviewed|candidate|confirmed|recheck`。`#refConfirmChecked` 在此區記錄人工流程核對；任意頂點不算完成。
@@ -80,12 +114,12 @@
 - `#ocSelectionSummary` 恢復 GEO-216 契約：0／1 選取時視覺隱藏，僅多選或框選中顯示；`data-count` 與 `aria-live` 節點保留於 DOM。`[data-guidance-dynamic]` 顯示規則明確排除 `data-count="1"`；「工具說明」（`.guidance-help`）的明確重開不受此限。`#feSelectionSummary` 不變。
 - `space_model_test.js` 的建模／投影入口全部改走屬性欄真實點擊（`facePropEntry` helper）；390px 下先開右側抽屜。
 
-## 2026-09-28 Canvas 審查修正（面工作區及保存回饋）
+## 2026-09-28 Canvas 審查修正（面工作區及保存回饋；頂列後由 #123 更新）
 
-本節取代舊節的一列面工作區頂列、隱藏窄螢幕保存狀態及復原按鈕位置要求。其餘幾何／預覽守門維持原契約；驗收範圍見 `UIUX-FIXES-2026-09-28.md`。
+本節保留當日審查與驗收來源；頂列現況以本檔 2026-10-09 #123 切片為準。當時 116／122px 的兩列修正是歷史，不改綁為本輪驗收。其餘幾何／預覽守門維持原契約；當日驗收範圍見 `UIUX-FIXES-2026-09-28.md`。
 
-- `.workspace-tools-row` 是面／空間頂列第二列，包含既有工具與 `.workspace-history-tools` 的復原／重做／全圖；原 ID 不變。第一列是返回、物件名稱、放置摘要、抽屜與檔案／保存操作。第二列可水平捲動，焦點控制保持可達。
-- `#objectWorkspace:not([hidden])` 使根節點與 body 同步頂列高度；桌面為 116px，手機斷點為 122px。`--topbar-h` 同步畫布、抽屜、提示的位置。主物件畫布維持自己的響應式頂列，不能將工作區高度套到主畫布。
+- `.workspace-tools-row` 現在位於桌面面／空間頂列中欄，只包含當前工具；原 `.workspace-history-tools` 的復原／重做／全圖已移入右 `.object-workspace-actions`，原 ID／node／history 路由不變。寬度 ≤560px 移到第二列並可水平捲動，焦點控制必須保持可達，實測另列；返回、物件名稱、放置摘要、抽屜與檔案／保存仍沿既有節點。
+- `#objectWorkspace:not([hidden])` 使根節點與 body 同步頂列高度；現行桌面為 56px、寬度 ≤560px 為 96px。`--topbar-h` 同步畫布、抽屜、提示的位置；主物件畫布沿自己的響應式規則使用相同 56／96px 契約。原 116／122px 是當日歷史版面，不是目前量測結果。
 - `[data-project-status]` 保留完整狀態文字、`title` 與可及名稱；`data-status-short` 供窄螢幕顯示「未保存／已保存／讀取中／驗證中」等短字。檔案入口保留文字。
 - 開啟專案及試用工程期間，`#busyIndicator` 立即顯示真實讀取／驗證／載入階段，`ReferenceWorkspace.busy` 阻擋 UI 及重複開啟。`ReferenceWorkspace.historyActionLabel('undo'|'redo')` 提供待復原的專案開啟操作名稱。
 - 面視野由 `ResizeObserver` 跟隨畫布容器尺寸：全圖模式重新適配，手動視角保留倍率與中心。三視圖切換重新同步 `#ocSelectionSummary`，三視圖不顯示框選提示。
@@ -170,8 +204,8 @@ P73 `uiux_review_test.js` 透過 `cdp_test.js` 驗證本節，也可用 `GEOMETR
 
 - 主頂列 `.tool-group` 顯示選取／平移與 `#btnNewRect`／`#btnNewPoly` 四種工具；左欄 `.start-options` 是描面、六面盒兩張起點卡，`.quick-create-grid` 只有 `#btnNewSpace`、`#btnNewColumn`、`#btnNewBeam` 一列。`#sceneList` 位於 `#fileMenuPop` 內，主頂列顯示 `[data-project-name]`／`[data-project-status]`。保存控制 `[data-project-action="save"]` 會在進出工作區時移動同一個 DOM 節點，工作區掛點為 `#workspaceProjectActions`；`#btnSaveProject` 是「另存新檔」選單入口。
 - `#objectWorkspace` 只有 `.object-workspace-topbar` 和 `.object-workspace-statusbar`；已移除 `.workspace-project-bar`／`.workspace-file-menu`。工作區頂列借用主頂列的 `#fileMenu`，Esc 關閉 `#fileMenuPop` 而不離開工作區。`#shapeToolButton` 開啟 `#shapeToolPop [data-shape-action]`；選操作後以 `fe.queuedShapeAction` 等待邊／角，開口轉入既有開口工具。外環邊的浮動列和右鍵選單含 `[data-fe-act="timber"]`，沿選邊預填並放置角材。
-- `#faceInspectorTabs [data-fi-tab]` 順序是 `prop,shape,components,underlay`，右欄對應 `[data-fi-pane]`。原 `guide,timber,grid` 仍可傳給 `fiShowTab()`，會打開構件頁並捲到 `[data-component-section]`。形狀庫 `#faceShapeButton` 由程式移入形狀頁；角材表單 `#tbPlace` 直接提交同一筆宣告與放置交易。`#faceReferenceSummary` 顯示來源，`[data-reference-step]` 表示選頁／校準／描外環。未放置面標示「未放置」。
-- 空間左欄 `#spaceAddMembers` 在成員面標題旁；`#spaceSizeTools` 依平面圖放柱／樑工具移到頂列，三視圖不顯示放置工具。三視圖矩形工具使用 `#v3PlaneControls`、`#v3ToolbarSurf`、`#v3ExistingZ`、`#newZ` 顯示並修改工作面與高度。
+- `#faceInspectorTabs [data-fi-tab]` 順序是 `prop,shape,components,underlay`，右欄對應 `[data-fi-pane]`。原 `guide,timber,grid` 仍可傳給 `fiShowTab()`，會打開構件頁並選中同一 `#faceComponentSwitch` 子分段，只顯示相應 `[data-component-section]`。形狀庫 `#faceShapeButton` 由程式移入形狀頁；角材表單 `#tbPlace` 直接提交同一筆宣告與放置交易。`#faceReferenceSummary` 顯示來源，`[data-reference-step]` 表示選頁／校準／描外環。未放置面標示「未放置」。
+- 空間左欄 `#spaceAddMembers` 在成員面標題旁；`#spaceSizeTools` 與放柱／樑工具現在位於 `.space-plan-strip` 平面工具列，三視圖不顯示放置工具。三視圖矩形工具使用 `#v3PlaneControls`、唯一可見的 `#v3ToolbarSurf`、`#v3ExistingZ`、`#newZ` 顯示並修改工作面與高度；原 `#workSurf` 隱藏相容值／consumer 保留。
 - 審查項目與驗收流程見 `UIUX-REVIEW-2026-09-27.md`；下列舊節保留各階段的歷史決策。除 2026-09-28 更新的主畫布範圍外，若其 DOM 位置或頁數不同，以本節為準。
 > 來源:UI-REDESIGN-PLAN.md 附錄 B §7(cdp_test.js 依賴清單)+ §7 測試合約。
 
@@ -217,19 +251,19 @@ P73 `uiux_review_test.js` 透過 `cdp_test.js` 驗證本節，也可用 `GEOMETR
 | `.fl-empty` | 五類圖層的空狀態；有可建操作者提供分頁入口 |
 | `#spaceWorkspaceTools` / `#spaceAddMembers` / `#spacePlaceColumn` / `#spacePlaceBeam` | 空間工作區中間工具群 |
 | `#workspaceKeyHints` | 面內 L/R/T/Esc；空間點放柱／拖放樑／Esc |
-| `body.v3-picked` | 有三視圖選取才展開右欄；主畫布 `[data-tool]` 在三視圖 disabled |
+| `body.v3-picked` | 標記三視圖選取狀態；桌面右欄固定 240px 並保留未選空狀態，手機沿用抽屜；主畫布 `[data-tool]` 在三視圖 disabled |
 | `.is-busy` | 觸發按鈕上的 spinner；不降低全頁透明度 |
 
 移除 `#btnScene`（由場景選單載入）與 `#workspaceDoneButton`（只保留返回）。
 `#btnDatums` 移進檔案選單；`#faceShapeButton` 現位於形狀頁的基底外環；
-工作區 undo/redo/fit 移到右側操作群；尺寸 chip 跟隨 `#spaceWorkspaceTools` 中的放柱／放樑工具；`.space-plan-head` 移除。
-七個測試寬度：1382、1160、900、680、600、390、320 px。桌面欄寬 260/320；三視圖左欄 200。
+工作區 undo/redo/fit 沿原操作群；尺寸 chip 跟隨 `.space-plan-strip` 內 `#spaceWorkspaceTools` 的放柱／放樑工具；`.space-plan-head` 移除。
+七個既有測試寬度：1382、1160、900、680、600、390、320 px；本輪是否實跑另看收據。桌面一般欄寬 260/320；三視圖左欄 200、右欄固定 240。
 共用頂列／狀態列高為 56/32；寬度 ≤560 px 時頂列改為 96 px 的兩列，狀態列仍為 32 px。
 主畫布第一列為場景與選取／平移，第二列為抽屜、復原／重做、視圖與檔案操作；
-面／空間工作區第一列為返回、標題與操作，第二列為工具群。所有頂列按鈕必須在畫面寬度內可達。
+面／空間工作區桌面同列為左返回／標題、中工具、右原歷史／檔案／保存操作；寬度 ≤560px 才以第二列承接工具群。原 `.workspace-history-tools` 已移入右 `.object-workspace-actions`，ID 及路由不變；實際可達／焦點待同版真瀏覽器驗收。所有頂列按鈕必須在畫面寬度內可達。
 `--topbar-h` 同時決定主畫布與工作區的頂列、畫布剩餘高度、抽屜頂部與 toast 起點，不得個別寫死 56 px。
 `.app-shell` 與 `.object-workspace` 必須明定單欄 `minmax(0,1fr)`，子列不得以內容最小寬度撐開畫面。
-600 px 以上維持既有單列配置。
+561 px 以上維持單列配置。
 
 空槽現在記錄 `pendingSlot`，引導建立或選取游離面，使用者確認尺寸與原點後一次交易放置並收進原空間。
 不得以「空槽點擊就立即 placed:true」為測試前提；空空間沒有可推導尺寸。
@@ -298,16 +332,16 @@ P73 `uiux_review_test.js` 透過 `cdp_test.js` 驗證本節，也可用 `GEOMETR
 | `#placeFlow` | 建面→放置→收成員流程條(S6 新增,兩處檢視器共用) | `.pf-step.done/.current` |
 | `#placeValid` | 放置表單 u⊥v 即時驗證(S6 新增) | textContent、`.ok/.bad` |
 | `[data-filter-group]` | 顯示組篩選 chips(button,`aria-pressed`)：`sources` 來源、`bindings` 配置、`structures` 空間與構件 | `aria-pressed`、`.click()` |
-| `#faceInspectorTabs` / `[data-fi-tab]` | 面內檢視器分頁 屬性／形狀／構件／底圖；構件頁有 guide/timber/grid 三段 | `.active`、`.click()`、`[data-fi-pane]` 顯隱 |
+| `#faceInspectorTabs` / `[data-fi-tab]` | 面內檢視器分頁 屬性／形狀／構件／底圖；構件頁以 `#faceComponentSwitch [data-component-tab]` 在 guide/timber/grid 三段中一次顯示一表單 | `.active`、`aria-selected`、`.click()`、`[data-fi-pane]`／`[data-component-section]` 顯隱與 raw 保全 |
 | `#workspacePlaceTag` | 工作區放置膠囊(B9:天花·z=N / 游離) | textContent、`.placed/.free` |
 | `#faceCanvasHint` | 面內模式浮標——**限多步工具**(redraw)顯示 | `hidden`、textContent |
 | `#feZoomOut` / `#feZoomLevel` / `#feZoomIn` / `#feZoomFit` | 面內左下縮放列(B8) | `.click()`、百分比 textContent |
-| `#feApplyCard` | 投影套用灰底卡(B7,含 `#feCutStrip`/`#feApplyProj`) | 存在性、子元素 |
+| `#faceProjectionEditor` / `#feApplyCard` | 右 Shape 的唯一柱樑投影表單；灰底卡(B7)保留 `#feCutStrip`／`#feApplyProj`，左列只呈現圖層及開啟編輯 | 存在性、typed checkbox／cut 初始預設、同 owner 跨重繪保全、正常 pointer／Tab、完整原交易 |
 | `.fl-group` | 圖層分組標題(邊界/參考線/角材/網格/柱樑投影) | textContent |
 | `.ws-kbd-hints` | 工作區狀態列右側快捷鍵(B1) | `kbd` 文字 L/R/Esc |
 | `#spaceStageTabs` / `[data-ss-tab]` | 空間舞台分頁 平面示意/三視圖(C1) | `.active`、`.click()`、`[data-ss-pane]` 顯隱 |
 | `#v3Panel` / `[data-v3-view]` / `[data-v3-layer]` | 三視圖左欄:視圖+圖層勾選(D1) | `hidden`、`checked` |
-| `#v3PickPanel` / `#v3PickInfo` / `#v3HoverInfo` | 三視圖右欄:pick 結果+游標位置(D1) | textContent |
+| `#v3PickPanel` / `#v3PickInfo` / `#v3HoverInfo` | 三視圖右欄:pick 結果+游標位置(D1)；桌面固定 240px、無 pick 保留空狀態，窄螢幕用原抽屜 | textContent、選取／清選前後 rect、抽屜與焦點返回 |
 | `.v3-seg` / `[data-v3-tool]` | 三視圖工具 segmented(D2;`#tool` 保留為 `.v3-native-select` 隱藏相容);四件 view/rect/hole/edit,舊 `poly` 已依 🔒 Q17 移除(GEO-181) | `.active`、`.click()`、數量 4 且無 `poly` |
 | `#v3ZoomBar` / `.v3-zoom` / `#v3ZoomOut` `#v3ZoomLevel` `#v3ZoomIn` `#v3ZoomFit` | 三視圖獨立左下縮放列(D2 修正:移出 `#viewToolbar`,樣式沿用 `.canvas-controls`;主畫布左下縮放列/小地圖在 `body.v3-mode` 下讓位) | `hidden` 切換、rect 左下位置、`.click()`、百分比 |
 | `.slot-row` / `.slot-face` / `.slot-empty` | 空間六槽列(C3 語意名+軸向副標;空槽放置鈕。`data-slot-preset` 存 `PLACE_PRESETS` 鍵、`data-slot-label` 存中文方位名,點擊帶入該槽 u/v 預設並選取對應游離面) | `.on`、`.click()` |
@@ -491,8 +525,8 @@ P73 `uiux_review_test.js` 透過 `cdp_test.js` 驗證本節，也可用 `GEOMETR
 ## RC Phase 6 apply-proj 套用(cdp_test §P13,canvas_test §M)
 
 - DSL:`apply-proj <boundary_id> <item>… [cut-strip]`;item = 裸 id(柱樑皆套)或 `c<id>`/`b<id>` 型別消歧(R12);單一交易,任何一步失敗全回滾。
-- 圖層列 `#faceLayerList` 的鬼影列改為 `.fe-ob-row` + 勾選框 `.fe-ob-check[data-item-id][data-item-type]`;`strip` 項預設不勾(🔒 Q8 不裁)。
-- 控制卡 `#feApplyCard`(動態插入,灰底):`.fe-ob-cut > #feCutStrip`(裁切條帶)+ `#feApplyProj`(文案隨勾數變「套用 N 項投影」,0 勾 disabled)+ `.fe-ob-note` 快照說明。
+- 左 `#faceLayerList .fe-ob-row` 只呈現鬼影圖層並以 click／Enter／Space 開右 Shape；唯一 `.fe-ob-check[data-item-id][data-item-type]` 在 `#faceProjectionEditor`，不複製checkbox。新 editor 的非 strip 項按原預設勾選、`strip` 項與 `#feCutStrip` 預設不勾(🔒 Q8 不裁)。同 edit／typed item 的未套用選擇跨重繪保留，新 owner 不沿用舊值；同版真UI待核收。
+- 控制卡 `#feApplyCard` 動態插在右 Shape 的 `#faceProjectionEditor`；保留 `.fe-ob-cut > #feCutStrip`(裁切條帶)、`#feApplyProj`(文案隨勾數變「套用 N 項投影」,0 勾 disabled)及 `.fe-ob-note` 快照說明。正常 pointer／Tab／Space 可操作；移位不改 R7–R15 的 typed 項目、cut-strip/no-op、完整候選及整筆回滾。
 - `feApplyProj()`(全域)送 `apply-proj`,成功後 `fe.work` 清空、`feLoadGuides`+`renderFaceLayers`+`renderFaceInspector` 重繪;失敗保留草稿(核心已回滾)。
 - 語意:拆分=原 id 留最大面積片+其餘新 id+孔隨片走(R10);拆片/生成面退出空間成員變游離(R11);重套已存在的孔=退化拒絕(快照無連結,R8)。
 

@@ -1142,7 +1142,7 @@ let editLoops = null;         /* 編輯中邊界 loops（[{verts,fixity}]） */
 let editToken = 0;            /* enterEdit 這一次的代號；離開或重進編輯即失效 */
 let editBid = 0;
 let editDrag = null;
-let canvasGesture = null, rectGesture = null, canvasGestureSequence = 0;
+let canvasGesture = null, rectGesture = null, canvasGestureSequence = 0, faceGestureSequence = 0;
 function beginCanvasGesture(event) {
   retireCanvasGesture(null, true);
   const sequence = ++canvasGestureSequence;
@@ -1258,11 +1258,11 @@ function presentationCurrent() {
   const context = ReferenceWorkspace.context(), frame = ReferenceWorkspace.history.frame,
     session = connection.session, focus = oc.focus, edit = oc.edit, objectMode = oc.on,
     navigation = oc.navigationSequence, threeView = view3, activeTool = tool,
-    token = editToken, surface = $("workSurf").value, gestureSequence = canvasGestureSequence;
+    token = editToken, surface = $("workSurf").value, gestureSequence = canvasGestureSequence, faceSequence = faceGestureSequence;
   return () => ReferenceWorkspace.context() === context && ReferenceWorkspace.history.frame === frame &&
     connection.session === session && oc.focus === focus && oc.edit === edit && oc.on === objectMode &&
     oc.navigationSequence === navigation && view3 === threeView && tool === activeTool &&
-    editToken === token && $("workSurf").value === surface && canvasGestureSequence === gestureSequence;
+    editToken === token && $("workSurf").value === surface && canvasGestureSequence === gestureSequence && faceGestureSequence === faceSequence;
 }
 async function emitLine(text, options = {}) {
   if (oc.busy) return false;
@@ -1886,6 +1886,11 @@ function bindMenu(btnId, popId) {
     }
     pop.hidden = !open;
     button.setAttribute("aria-expanded",String(open));
+    if(open && popId === 'fileMenuPop') {
+      closePanels();
+      pop.style.position='fixed';pop.style.right='auto';
+      positionCanvasMenu(pop,button);
+    }
     if (open && canvasMenu) {
       canvasMenuTrigger = button;
       positionCanvasMenu(pop,button);
@@ -5626,6 +5631,7 @@ function feDraftPreviewMove(pt, defer = false) {
 async function feDown(pt, ev) {
   const e = oc.edit;
   if (!e) return;
+  ++faceGestureSequence;
   if (fe.tool === "pan" || fe.spaceDown) {
     fe.panHold = fe.drag || null;         /* 保留重畫草稿 */
     fe.drag = { kind: "pan", cx: ev.clientX, cy: ev.clientY };
@@ -7204,10 +7210,12 @@ async function feExportTimberSchedule() {
     setTimeout(()=>URL.revokeObjectURL(url),1000);return true;
   } catch(error) {toast(error.message);return false;}
 }
+const faceProjectionDrafts = new WeakMap();
 function feProjectionDraft() {
   const pane=$('faceProjectionEditor');
-  if (!pane || pane._projectionEdit !== oc.edit) return null;
-  return {edit:oc.edit,checks:new Map([...pane.querySelectorAll('.fe-ob-check')].map(c=>[c.dataset.itemType+':'+c.dataset.itemId,c.checked])),cut:!!pane.querySelector('#feCutStrip')?.checked};
+  if (!pane || pane._projectionEdit !== oc.edit) return faceProjectionDrafts.get(oc.edit) || null;
+  const draft={edit:oc.edit,checks:new Map([...pane.querySelectorAll('.fe-ob-check')].map(c=>[c.dataset.itemType+':'+c.dataset.itemId,c.checked])),cut:!!pane.querySelector('#feCutStrip')?.checked};
+  faceProjectionDrafts.set(oc.edit,draft);return draft;
 }
 function renderFaceLayers(projectionDraft = feProjectionDraft()) {
   const e = oc.edit;
@@ -7433,14 +7441,17 @@ function feSyncObApply() {
 async function feApplyProj() {
   const e = oc.edit;
   if (!e || !fe.obstacles) return;
+  const owner=presentationCurrent(),work=fe.work,drag=fe.drag,panHold=fe.panHold,faceTool=fe.tool,draft=fe.draft;
+  const sameDraft=()=>fe.tool===faceTool && fe.draft===draft;
   const ids = [...document.querySelectorAll(".fe-ob-check:checked")]
     .map(c => (c.dataset.itemType === "beam" ? "b" : "c") + c.dataset.itemId);
   if (!ids.length) { toast("先勾選要套用的投影項"); return; }
   let line = `apply-proj ${e.bid} ${ids.join(" ")}`;
   if ($("feCutStrip") && $("feCutStrip").checked) line += " cut-strip";
-  if (await emitLine(line)) {
+  if (await emitLine(line) && owner() && sameDraft() && fe.work === work && fe.drag === drag && fe.panHold === panHold) {
     fe.work = null; fe.drag = null; fe.panHold = null;
     await feLoadGuides();
+    if(!owner() || !sameDraft() || fe.work !== null || fe.drag !== null || fe.panHold !== null)return;
     renderFaceLayers(); drawFaceEditor(); renderFaceInspector();
   }
 }
@@ -8424,6 +8435,7 @@ function renderFaceInspector() {
   if (!e || !pane) return;
   disarmEdgeInputs(pane);
   if (e.contextId !== ReferenceWorkspace.context().id) { resetSceneFocus(); return; }
+  const projectionDraft = feProjectionDraft();
   if (fe.timberSelection.size > 1) {
     GridEditor.clear();
     pane.dataset.redrawOwner = "";
@@ -8431,7 +8443,6 @@ function renderFaceInspector() {
     return;
   }
   const dirtyInputs = captureDirtyInputs(pane);
-  const projectionDraft = feProjectionDraft();
   ++fe.gridPreviewSeq;
   const bid = e.bid;
   const saved = inspectorState(pane, bid);

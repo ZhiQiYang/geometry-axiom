@@ -3,6 +3,16 @@
 'use strict';
 const cdp=require('./cdp_helpers.js');
 module.exports=async function ruleEditorTests({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount}){
+  // S2 keeps the same exact discard question inside the active workspace.
+  const discardDraft=async({message,accept})=>{
+    await ctl('#igDiscardDraft');
+    await waitForUI(`!!$('igDiscardConfirmation')&&$('igDiscardConfirmation').getAttribute('role')==='alertdialog'`,10000);
+    const actual=await eval_(`$('igDiscardQuestion').textContent`);
+    if(actual!==message)throw Error('Discard question changed: '+JSON.stringify({expected:message,actual}));
+    await ctl(accept?'#igDiscardConfirm':'#igDiscardCancel');
+    await waitForUI(`!$('igDiscardConfirmation')`,10000);
+  };
+
   console.log('=== P87. 來源規則 CRUD、typed baseline、原始草稿與正式 ZIP ===');
   const fs=require('fs'),path=require('path'),os=require('os'),P=require('./project-store.js'),zip=require('./vendor/fflate/umd/index.js');
   const read=cdp.makeRead(eval_),wait=cdp.makeWait(waitForUI,20000),check=cdp.makeCheck({prefix:'P87 ',throwOnFail:true}),startExceptions=exceptionCount();
@@ -14,7 +24,7 @@ module.exports=async function ruleEditorTests({send,eval_,sleep,click,waitForUI,
   const settled=()=>wait('!oc.busy&&!ReferenceWorkspace.busy'),impact=()=>wait(`!!document.querySelector('.reference-impact[open]')`);
   const confirm=async()=>{await ctl('#impact-confirm');await wait(`!document.querySelector('.reference-impact[open]')`);await settled();};
   const cancel=async()=>{await ctl('.reference-impact .impact-actions button:first-child');await wait(`!document.querySelector('.reference-impact[open]')`);await settled();};
-  const discard=async()=>{await expectNativeDialog(()=>ctl('#igDiscardDraft'),{message:'捨棄這份未發布的原始草稿？已保存到場景的網格保持不變。',accept:true});};
+  const discard=async()=>{await discardDraft({message:'捨棄這份未發布的原始草稿？已保存到場景的網格保持不變。',accept:true});};
   const leave=async()=>{if(await read(`!!$('infiniteGridWorkspace')?.open`))await ctl('#igClose');};
   const newProject=async()=>{await leave();const warning=await read('ReferenceWorkspace.context().dirty');await ctl('#fileMenuBtn');
     await expectNativeDialog(()=>ctl('#btnNewProject'),{message:'建立一份空白新專案，切換為新的專案識別及「未命名專案」。'+(warning?'目前尚未保存的變更不會自動寫入檔案。':'')+'本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？',accept:true});await settled();};

@@ -113,7 +113,7 @@ module.exports = async function engineeringWorkflow({send,eval_,sleep,click,wait
     check('取消子格草稿保留主格全部工程來源',same(await state(),before)&&(await dump())===scene);
     const timber=before.sources.find(b=>b.target.kind==='timber'&&b.source.kind==='application');
     if(!timber)throw Error('Bound-timber inspector fixture is missing');
-    await ctl('.face-layer-row[data-timber-id="'+timber.target.id+'"]');await ctl('[data-fi-tab="components"]');
+    await ctl('.face-layer-row[data-timber-id="'+timber.target.id+'"]');await ctl('[data-fi-tab="components"]');await ctl('[data-component-tab="timber"]');
     check('已綁角材檢查器顯示來源，精確定位收在詳細資料',await read(`!!$('tbSelected') && /工程|來源/.test($('tbSelected').textContent) && !!$('tbTechnicalDetails') && !$('tbTechnicalDetails').open && /at-face e0/.test($('tbTechnicalDetails').textContent) && !!$('tbSelected').querySelector('[data-engineering-open]') && !$('tbEditA')`));
     await shot('engineering-bound-timber-inspector');
     check('檢視已綁角材不改工程來源',same(await state(),before)&&(await dump())===scene);

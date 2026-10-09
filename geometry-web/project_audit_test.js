@@ -104,7 +104,7 @@ module.exports = async function projectAudit({send,eval_,sleep,click,waitForUI,e
     {name:'between支撐',lines:[base,'timber 90 20 33 role boundary','place 90 on 1 at-face e0 +u +n','timber 91 20 33 role boundary','place 91 on 1 at-face e2 +u +n','spec center_x 1000','guide 0 1 v spec:center_x','timber 0 27 33 role primary','place 0 on 1 at-line guide 0 between t90 t91 +v +n'],anchor:'at-line guide 0',selector:'between t90 t91',priority:2}
   ];
   for(const c of cases){
-    await reset(c.lines,1);await ctl('[data-timber-id="0"]');await ctl('[data-fi-tab="components"]');
+    await reset(c.lines,1);await ctl('[data-timber-id="0"]');await ctl('[data-fi-tab="components"]');await ctl('[data-component-tab="timber"]');
     // Open the existing timber section through its visible disclosure if collapsed.
     const disclosure=await read(`(()=>{const e=$('tbEditAnchor')?.closest('details');return e&&!e.open?e.id:null;})()`);if(disclosure)await ctl('#'+disclosure+' > summary');
     const originalScene=await dump(),original=(await refs()).timbers.find(t=>t.id===0),fields=await read(`({anchor:$('tbEditAnchor')?.value,selector:$('tbEditSelector')?.value,priority:$('tbEditPri')?.value,note:$('tbSelected')?.textContent})`);

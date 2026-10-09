@@ -89,7 +89,7 @@ module.exports = async function selectionCursor({send,eval_,sleep,click,drag,wai
   check('子格重新選父格會恢復有效網格工具',await read(`fe.tool==='grid'&&document.querySelectorAll('.subgrid-cell-target').length>0`));
   await ctl('.subgrid-cell-target');
   check('離開再返回的父格選擇可實際命中',await read(`!!$('subgridCellChoice').value&&!document.querySelector('.subgrid-cell-target')`));
-  await ctl('[data-fi-tab="components"]');
+  await ctl('[data-fi-tab="components"]');await ctl('[data-component-tab="grid"]');
   await ctl('#subgridCancel');
   check('檢視來源與取消子格草稿不改工程世界',(await dump())===engineeringBefore);
 

@@ -13,9 +13,13 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,exceptionCount})
     if(!p.hit)throw Error('Support control is covered: '+selector);
     await click(p.x,p.y);await sleep(100);
   };
+  const timberPane=async()=>{
+    if(await eval_(`innerWidth<=680&&!document.body.classList.contains('drawer-right-open')`))await ctl('#workspaceToggleRight');
+    await ctl('[data-fi-tab="components"]');await ctl('[data-component-tab="timber"]');
+  };
   const snapshot=()=>eval_(`(async()=>({dump:(await api('dump')).text,dirty:ReferenceWorkspace.context().dirty,undo:ReferenceWorkspace.history.undo.length,redo:ReferenceWorkspace.history.redo.length}))()`);
   await send('Emulation.setDeviceMetricsOverride',{width:1400,height:900,deviceScaleFactor:1,mobile:false});
-  await eval_(`(async()=>{resetSceneFocus();const r=await fetch('/examples/assembly-generation-v1.gcanvas');if(!r.ok)throw Error('Example unavailable');await ReferenceWorkspace.importBytes(new Uint8Array(await r.arrayBuffer()),'support.gcanvas');await renderObjects();await enterFocus('face',1);})()`);
+  await eval_(`(async()=>{resetSceneFocus();const r=await fetch('/examples/assembly-generation-v1.gcanvas');if(!r.ok)throw Error('Example unavailable');await ReferenceWorkspace.importBytes(new Uint8Array(await r.arrayBuffer()),'support.gcanvas');await renderObjects();await enterFocus('face',1);})()`);await timberPane();
   await waitForUI(`!!$('timberScheduleCSV')&&!$('timberScheduleCSV').disabled`);
   check('native support projection and schedule share one formal source fingerprint',await eval_(`(()=>{const s=feTimberScheduleSnapshot(),r=fe.timberReferenceData;return r.timberSupports.schema==='native-timber-supports/1'&&s.sourceFingerprint===r.timberSupports.sourceFingerprint&&s.rows.length===5&&new Set(s.ids).size===5&&s.rows.filter(x=>x.assembly).length===3;})()`));
   const id=await eval_(`feTimberScheduleSnapshot().rows.find(r=>r.assembly?.memberId===3).id`);
@@ -48,10 +52,10 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,exceptionCount})
   await eval_(`document.querySelector('[data-timber-id="${id}"] .timber-schedule-source p').scrollIntoView({block:'start'});`);
   await sleep(100);
   fs.writeFileSync(path.join(out,'support-desktop.png'),Buffer.from((await send('Page.captureScreenshot',{format:'png'})).result.data,'base64'));
-  await eval_(`(async()=>{window.__supportRows=JSON.stringify(feTimberScheduleSnapshot().rows);const bytes=await ReferenceWorkspace.exportBytes();await ReferenceWorkspace.importBytes(bytes,'support-reopened.gcanvas');await renderObjects();await enterFocus('face',1);})()`);
+  await eval_(`(async()=>{window.__supportRows=JSON.stringify(feTimberScheduleSnapshot().rows);const bytes=await ReferenceWorkspace.exportBytes();await ReferenceWorkspace.importBytes(bytes,'support-reopened.gcanvas');await renderObjects();await enterFocus('face',1);})()`);await timberPane();
   check('real gcanvas export and reimport retain identical row provenance',await eval_(`JSON.stringify(feTimberScheduleSnapshot().rows)===__supportRows`));
   await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
-  await eval_(`openPanel('left',$('workspaceToggleLeft'));`);await sleep(100);
+  await timberPane();await sleep(100);
   await ctl(`[data-schedule-timber="${id}"]`);
   await ctl(`[data-timber-id="${id}"] .timber-schedule-source summary`);
   check('390px exposes the same local support faces in existing details',await eval_(`fe.timberSelection.has(${id})&&document.querySelector('[data-timber-id="${id}"] .timber-schedule-source').open&&document.querySelector('[data-timber-id="${id}"] .timber-schedule-source p').textContent.includes('B0')`));
