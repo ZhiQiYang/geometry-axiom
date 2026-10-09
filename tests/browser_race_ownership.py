@@ -188,9 +188,14 @@ def main():
             # Explicit capture-loss injection through the native DOM API; the
             # subsequent real mouse move makes the UA emit lostpointercapture.
             pointer=page.evaluate('__raceSupplement.downs[0].pointerId')
+            # setPointerCapture records pending capture. Establish actual UA
+            # capture with a real move before testing its subsequent loss.
+            page.mouse.move(point['x']+1,point['y']+1)
+            wait(page,"__raceSupplement.events.some(e=>e.type==='gotpointercapture'&&e.trusted)")
+            wait(page,"__raceSupplement.moves.every(x=>x.phase==='settled')")
             assert page.evaluate('(id)=>cv.hasPointerCapture(id)',pointer),'Canvas did not actually own pointer capture'
             page.evaluate('(id)=>cv.releasePointerCapture(id)',pointer)
-            page.mouse.move(point['x']+1,point['y']+1)
+            page.mouse.move(point['x']+2,point['y']+2)
             wait(page,"__raceSupplement.events.some(e=>e.type==='lostpointercapture'&&e.trusted)")
             wait(page,"__raceSupplement.moves.every(x=>x.phase==='settled')")
         before=state(page);assert before['editDrag'] is None and before['rectStart'] is None,before
@@ -266,7 +271,7 @@ def main():
         box=card.bounding_box();assert box,'No visible card after trusted fit/zoom'
         # Choose rendered header space; no forced click or synthesized selection.
         point={'x':box['x']+box['width']*0.25,'y':box['y']+min(18,box['height']*0.1)}
-        usable=page.evaluate('p=>!!document.elementFromPoint(p.x,p.y)?.closest(".ocard[data-id=\"731\"]")',point)
+        usable=page.evaluate('p=>!!document.elementFromPoint(p.x,p.y)?.closest(`.ocard[data-id="731"]`)',point)
         assert usable,'Card target is obstructed'
         page.mouse.click(point['x'],point['y']);wait(page,"oc.sel?.id===731&&oc.sel.kind==='boundary'&&oc.focus===null")
         assert page.evaluate('ocCardClick!==null'),'First card click was not eligible for double-click recognition'

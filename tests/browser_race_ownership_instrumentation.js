@@ -51,7 +51,7 @@
     }
     return add.call(this,type,listener,...rest);
   };
-  for(const type of ['pointerdown','pointermove','pointerup','pointercancel','lostpointercapture','click','keydown','change'])document.addEventListener(type,event=>{
+  for(const type of ['pointerdown','pointermove','pointerup','pointercancel','gotpointercapture','lostpointercapture','click','keydown','change'])document.addEventListener(type,event=>{
     const target=event.target.closest?.('.ocard,button,input,select')||event.target;
     audit.events.push({type,trusted:event.isTrusted,id:target.id||null,card:target.dataset?.kind||null,cardId:target.dataset?.id||null,
       key:event.key||null,pointerId:event.pointerId??null,pointerType:event.pointerType??null,button:event.button??null,buttons:event.buttons??null,
