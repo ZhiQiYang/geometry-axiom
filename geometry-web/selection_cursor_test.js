@@ -52,8 +52,11 @@ module.exports = async function selectionCursor({send,eval_,sleep,click,drag,wai
   await send('Input.dispatchMouseEvent',{type:'mousePressed',x:guidePoint.x,y:guidePoint.y,button:'left',clickCount:1});
   check('角材後真按參考線可開始拖曳',await read(`fe.drag?.kind==='guide'&&fe.drag.id===1&&fe.timberSelection.size===0`),await read('fe.drag'));
   await send('Input.dispatchMouseEvent',{type:'mouseReleased',x:guidePoint.x,y:guidePoint.y,button:'left',clickCount:1});await sleep(160);
-  // Start the marquee from the lower right, away from the live top summary.
-  await ctl('#feZoomFit');const a=await facePoint(4100,3100),b=await facePoint(-100,-100);
+  // Start at the upper-right blank corner, clear of the summary and feedback.
+  // Preserve the crossing direction and exact rectangle [-100,-100,4100,3100].
+  await ctl('#feZoomFit');const a=await facePoint(4100,-100),b=await facePoint(-100,3100);
+  const blankOrigin=await read(`(()=>{const vp=$('faceEditorViewport'),svg=$('faceEditorSvg'),e=document.elementFromPoint(${a.x},${a.y});return !!e&&svg.contains(e)&&vp.contains(e)&&!e.closest('button,input,select,textarea,[data-face-hit]');})()`);
+  if(!blankOrigin)throw Error('P75 crossing origin must hit visible blank canvas '+JSON.stringify(a));
   await drag(a.x,a.y,b.x,b.y);await sleep(160);
   check('退出網格後真拖框可選本面兩支角材',JSON.stringify(await selected())==='[10,11]',await selected());
   check('點選與框選不改幾何世界',(await dump())===before);
@@ -83,7 +86,7 @@ module.exports = async function selectionCursor({send,eval_,sleep,click,drag,wai
   await ctl('#subgridNew');await wait(`!!$('subgridCellChoice')`);
   check('來源格仍能開始子網格草稿',await read(`fe.tool==='grid'&&!!$('subgridPickCell')`));
   await ctl('[data-fi-tab="prop"]');check('離開子格頁也能恢復選取',await selectionMode());
-  await ctl('[data-fi-tab="components"]');
+  await ctl('[data-fi-tab="components"]');await ctl('[data-component-tab="grid"]');
   await ctl('[data-component-section="grid"] .component-heading button');
   await ctl('#subgridPickCell');
   check('子格重新選父格會恢復有效網格工具',await read(`fe.tool==='grid'&&document.querySelectorAll('.subgrid-cell-target').length>0`));

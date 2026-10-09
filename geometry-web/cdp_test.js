@@ -3812,7 +3812,7 @@ async function main() {
   await eval_(`renderFaceInspector()`);
   check('F9 both disclosures keep expanded state',await eval_(`document.querySelector('#placeDetails').open && document.querySelector('#projectionDetails').open`));
   await clickSelector('#workspaceBackButton');await clickSelector('#btnObj');
-  check('V1 V2 toolbar does not overlap drawing and adopted empty inspector retains 240px',await eval_(`(()=>{const t=document.querySelector('#viewToolbar').getBoundingClientRect(),c=document.querySelector('#cv').getBoundingClientRect(),r=document.querySelector('.sidebar-right').getBoundingClientRect(),e=$('inspectorEmpty'),b=e.getBoundingClientRect();return c.top>=t.bottom-1 && c.height>400 && r.width===240 && Math.abs(c.right-r.left)<=1 && r.right<=innerWidth && !oc.sel && !e.hidden && b.width>0 && b.height>0 && b.left>=r.left && b.right<=r.right})()`));
+  check('V1 V2 toolbar does not overlap drawing and adopted empty inspector retains 240px',await eval_(`(()=>{const t=document.querySelector('#viewToolbar').getBoundingClientRect(),c=document.querySelector('#cv').getBoundingClientRect(),r=document.querySelector('.sidebar-right').getBoundingClientRect(),e=$('v3PickPanel'),b=e.getBoundingClientRect();return c.top>=t.bottom-1 && c.height>400 && r.width===240 && Math.abs(c.right-r.left)<=1 && r.right<=innerWidth && !oc.sel && !document.body.classList.contains('v3-picked') && !e.hidden && b.width>0 && b.height>0 && b.left>=r.left && b.right<=r.right && b.top>=r.top && b.bottom<=r.bottom && $('v3PickInfo').textContent.trim().length>0})()`));
   await clickSelector('#btnObj');
   check('V3 selecting three-view twice stays in three-view',await eval_(`!oc.on && document.querySelectorAll('#canvasDrawToolbar [data-tool]').length===2 && [...document.querySelectorAll('#canvasDrawToolbar [data-tool]')].every(b=>b.disabled)`));
   await remainingShot('ui-v2-three-view');
@@ -6963,8 +6963,8 @@ async function main() {
     const cancelledShape=await eval_(`!fe.queuedShapeAction && !!oc.edit`);
     for (const type of ['keyDown','keyUp']) await send('Input.dispatchKeyEvent',{type,key:'r',code:'KeyR',windowsVirtualKeyCode:82});
     const retainedHoleShortcut=await eval_(`fe.tool==='hole' && !!oc.edit && !fe.queuedShapeAction`);
-    for (const type of ['keyDown','keyUp']) await send('Input.dispatchKeyEvent',{type,key:'Escape',code:'Escape',windowsVirtualKeyCode:27});
-    check('P64 F2 Esc 取消形狀選擇且 R 開口仍可啟用取消',cancelledShape&&retainedHoleShortcut&&await eval_(`!fe.queuedShapeAction && !!oc.edit && fe.tool==='select'`));
+    for (const type of ['keyDown','keyUp']) await send('Input.dispatchKeyEvent',{type,key:'v',code:'KeyV',windowsVirtualKeyCode:86});
+    check('P64 F2 Esc 取消形狀選擇且 R 開口與 V 選取快捷鍵仍可用',cancelledShape&&retainedHoleShortcut&&await eval_(`!fe.queuedShapeAction && !!oc.edit && fe.tool==='select'`));
     check('P64 F3-F5 四頁、構件段與形狀庫',await eval_(`(()=>{
       const tabs=[...document.querySelectorAll('#faceInspectorTabs [data-fi-tab]')].map(e=>e.dataset.fiTab);
       fiShowTab('shape');const shape=$('faceInspectorContent').contains($('faceShapeButton'))&&!$('faceShapeButton').hidden;
