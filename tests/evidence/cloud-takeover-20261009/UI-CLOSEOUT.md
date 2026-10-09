@@ -1,6 +1,16 @@
 # Geometry 現有工作段落：2026-10-09 交付索引
 
-本次交付由雲端唯一產品修正者接管，既有本地交接已解除。產品提交 `6784b6e0b74949bb7b425d13d1a3ad1c5a433127` 已推送 draft #179；此索引刊出時，新 caption 與完整 CDP 尚待下一乾淨候選實跑。文件發布 SHA 與下列受測 SHA 分開，不把歷史收據改綁。
+本次交付由雲端唯一產品修正者接管，既有本地交接已解除。產品提交 `6784b6e0b74949bb7b425d13d1a3ad1c5a433127` 已推送 draft #179。下方歷史執行與最新追加結果分列；文件發布 SHA 與受測 SHA 分開，不把歷史收據改綁。
+
+## 102ff 追加核收與剩餘產品缺陷
+
+乾淨受測完整 SHA `102ff28ecb005a85b42a8ae9cd7f22fdcf8cf01c` 的正式 UI 六組為 198／0、exit 0、completed:true。獨立七寬度 caption 為 27／1、exit 1、acceptance completed:false：第一個 1382px 的第七次 Tab 到 PAN 時，按鈕取得焦點卻被工具列裁切；其他六寬度與逆向 Tab 後段未到。另一次只讀、單 1382px 診斷也為 27／1，不當七寬度驗收；實測 pointer PAN 使 nav.scrollLeft=50，但 Tab 到 PAN 時仍為 0，按鈕中心命中 HEADER。外層 scrollWidth 等於 clientWidth，不能把兩層 overflow 配置宣稱為兩層實際滾動。
+
+同版必要完整 CDP 已終止：1800 通過／1 失敗、actual exit 1、completed:false，尚未比對 golden。P32、P64 與正式 P75 的 37 項均已通過；唯一停止點為 P76 的 390px 參數面板使可見畫布只剩 137px，原下限為 150px。這兩項是待修產品缺陷，下一步在新乾淨候選保持原命中／焦點／尺寸斷言重驗；完整 CDP 原件另包追加，不覆寫下列 scope 包。
+
+- [102ff 正式六組、caption 原失敗與單次只讀診斷](ui-102ff-three-scopes-public-v4/README.md)：manifest `ce537c7dc4a2b04bfee905d7b83cab7dfe8a1b43b027409d775cfb74f73ea394`；含當次 exact CI／來源核對及工作管理可用性，current ledger unknown，未建空資料庫。
+- [P75 原導航失敗與保斷言診斷](p75-route-diagnosis-public-v1/README.md)：manifest `a736a07546caeff7d3f40dffa3bec6fbe1e0bbdafb5dcb774bc90249759f0e18`；原 243 full 失敗不改，scratch moduleOverride 37／0 不冒充正式 full。
+- [公開證據投影與獨立核對](ui-publication-reviews-public-v3/README.md)：manifest `2236c2f60c3b19d5834d9067e14d07e81873638679d904266e587d3b0be963f8`；證據 QA 不加到產品測試數。
 
 ## 已修並驗證
 

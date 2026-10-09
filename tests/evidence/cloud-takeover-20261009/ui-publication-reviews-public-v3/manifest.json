@@ -1,0 +1,1712 @@
+{
+  "schema": "geometry-readonly-publication-reviews-public/1",
+  "createdUtc": "2026-10-09T16:32:54.089473+00:00",
+  "actor": "/root/delivery_closeout",
+  "productTestsExecuted": false,
+  "repositoryOrRemoteWrites": false,
+  "reviewRounds": [
+    {
+      "name": "r5",
+      "originalReceiptSha256": "04b363ea85f8d752f4c9794201002e48a3b88398e22ef24cb03b0ee0a5dc4c69",
+      "exitCode": 1,
+      "productTestsExecuted": false,
+      "inventoryScope": "Original failed reviewer raw/receipt/report/source; full inventory retained outsideGit, no product failure inference"
+    },
+    {
+      "name": "r8",
+      "originalReceiptSha256": "89ef35f6caf0b81881c4d5255946b88d62be9b8bfffab9fb8e14e7c06f96e988",
+      "exitCode": 1,
+      "productTestsExecuted": false,
+      "inventoryScope": "Original failed reviewer raw/receipt/report/source; full inventory retained outsideGit, no product failure inference"
+    },
+    {
+      "name": "r9",
+      "originalReceiptSha256": "ea4f3355b948befefd4ade8534c0abe6d8f92777496fb1a65998bc7e207b3174",
+      "exitCode": 0,
+      "productTestsExecuted": false,
+      "inventoryScope": "Full accepted split check inventory"
+    },
+    {
+      "name": "r10",
+      "originalReceiptSha256": "1224c7089f44e8ee2fce5413a0a7b06b56240149c94b2f83c751234802e4e2cf",
+      "exitCode": 1,
+      "productTestsExecuted": false,
+      "inventoryScope": "Original failed reviewer raw/receipt/report/source; full inventory retained outsideGit, no product failure inference"
+    },
+    {
+      "name": "r11",
+      "originalReceiptSha256": "aef084a7c9739c4d784d66c54f0c9d156581582751235c4f0665929cd5abba15",
+      "exitCode": 1,
+      "productTestsExecuted": false,
+      "inventoryScope": "Original failed reviewer raw/receipt/report/source; full inventory retained outsideGit, no product failure inference"
+    },
+    {
+      "name": "r12",
+      "originalReceiptSha256": "7a685efde3d4ca5b21412b3f2f414a816d3c0cd1081cc0e024c5c51b8ced2244",
+      "exitCode": 0,
+      "productTestsExecuted": false,
+      "inventoryScope": "Full accepted split check inventory"
+    }
+  ],
+  "originalAndPublicReferences": [
+    {
+      "path": "r5/receipt.public.json",
+      "bytes": 6745,
+      "sha256": "817e2f1f89ee423211f7ddf342ca37d4f71580bb3e8f2fa31725bb05468956f7",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 8691,
+      "originalSha256": "04b363ea85f8d752f4c9794201002e48a3b88398e22ef24cb03b0ee0a5dc4c69",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated path labels; colliding dictionary path keys retain stable original-key SHA256 IDs without dropping entries."
+      ],
+      "projectionDictionaryKeyAudit": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Original evidence QA command/executable/source/actual exit; never product or browser acceptance."
+    },
+    {
+      "path": "r5/r5.raw.log",
+      "bytes": 3167,
+      "sha256": "2b52758124e5fcdece1ddfc98050a02f6c68b1cfe07171d73c2a64d870f94e50",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 3409,
+      "originalSha256": "c5797b13201543377e062b5bca4d0ab9d4b573ceed7371c541521121db06e86c",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact original QA raw/result/executed source or input; public path projection is not executed."
+    },
+    {
+      "path": "r5/report.json",
+      "bytes": 27073,
+      "sha256": "9ddf90876acb721cfffaa6c00c4ba1629b4cadcd36332ab409acdeb10aeb12e4",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 30698,
+      "originalSha256": "fda7f96cd0dca0853a0bbce0e3f800bffbdd751051ee132700230e7bce382514",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated path labels; colliding dictionary path keys retain stable original-key SHA256 IDs without dropping entries."
+      ],
+      "projectionDictionaryKeyAudit": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact original QA raw/result/executed source or input; public path projection is not executed."
+    },
+    {
+      "path": "r5/r5.executed-review_packets.py",
+      "bytes": 36154,
+      "sha256": "437c9c586e1e9dbe5a552dc6f76f53d0e0a3f133cf3a4afd9ee2defdf1422f4b",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 36745,
+      "originalSha256": "2711b225cbad47e932f01aa4c719faa07a449b64d195ad01ab585b886999cb4f",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only.",
+        "Generic machine-root matcher prefix labels projected; source copy was not executed."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact original QA raw/result/executed source or input; public path projection is not executed."
+    },
+    {
+      "path": "r5/r5-manifests.json",
+      "bytes": 319,
+      "sha256": "4c87b46eb881256ebe2e7579412d9fa46904af0d3890e5a0cdc4e2a65319af5a",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 319,
+      "originalSha256": "4c87b46eb881256ebe2e7579412d9fa46904af0d3890e5a0cdc4e2a65319af5a",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact original QA raw/result/executed source or input; public path projection is not executed."
+    },
+    {
+      "path": "r8/receipt.public.json",
+      "bytes": 7050,
+      "sha256": "add2801f1bc368990e77526b56e907fb9c936331d1abcdcc583dbdc9b59ec1b1",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 9055,
+      "originalSha256": "89ef35f6caf0b81881c4d5255946b88d62be9b8bfffab9fb8e14e7c06f96e988",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated path labels; colliding dictionary path keys retain stable original-key SHA256 IDs without dropping entries."
+      ],
+      "projectionDictionaryKeyAudit": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Original evidence QA command/executable/source/actual exit; never product or browser acceptance."
+    },
+    {
+      "path": "r8/r8.raw.log",
+      "bytes": 5921,
+      "sha256": "8d2c395f115c00922348b15e5e08edd0a8fe99b2e220527f1eff5419af90cb5d",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 6163,
+      "originalSha256": "97e423fec6688256e6a63e6ae91ef0921350b5b2ae581ef028d3dfd91ef95abe",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact original QA raw/result/executed source or input; public path projection is not executed."
+    },
+    {
+      "path": "r8/report.json",
+      "bytes": 44321,
+      "sha256": "cdacda9bcd43b602727dc5e64855af07ff9797b7b15247fd1cc2f9fa89f2a5aa",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 48005,
+      "originalSha256": "dfb0d4a5d6b3826d2e32ae228a5e1fa84aabdad60b9052d865b4f33e0f5b5f17",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated path labels; colliding dictionary path keys retain stable original-key SHA256 IDs without dropping entries."
+      ],
+      "projectionDictionaryKeyAudit": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact original QA raw/result/executed source or input; public path projection is not executed."
+    },
+    {
+      "path": "r8/r8.executed-review_packets.py",
+      "bytes": 38783,
+      "sha256": "4eb451fb2d68c5ebf15d1bc76545ddffea8c4378a02bd08a05bf0cb4c5d1d501",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 39374,
+      "originalSha256": "60c0516a6313f33cf867f0fa8e2b39b926322527c174290806e6686d1cafe64c",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only.",
+        "Generic machine-root matcher prefix labels projected; source copy was not executed."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact original QA raw/result/executed source or input; public path projection is not executed."
+    },
+    {
+      "path": "r8/r8-manifests.json",
+      "bytes": 319,
+      "sha256": "5bdf99a108a29a3a684ecc349124063d01d8b79de38214607b7e3180966ffb92",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 319,
+      "originalSha256": "5bdf99a108a29a3a684ecc349124063d01d8b79de38214607b7e3180966ffb92",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact original QA raw/result/executed source or input; public path projection is not executed."
+    },
+    {
+      "path": "r9/receipt.public.json",
+      "bytes": 7472,
+      "sha256": "bd965ccff027f3cf0d19196a671f007fe43f5680a7eace8771ff9b4feeb39de3",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 9595,
+      "originalSha256": "ea4f3355b948befefd4ade8534c0abe6d8f92777496fb1a65998bc7e207b3174",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated path labels; colliding dictionary path keys retain stable original-key SHA256 IDs without dropping entries."
+      ],
+      "projectionDictionaryKeyAudit": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Original evidence QA command/executable/source/actual exit; never product or browser acceptance."
+    },
+    {
+      "path": "r9/r9.raw.log",
+      "bytes": 1398,
+      "sha256": "0c194bb39c2ef81a727c2092e4e97f65722a8c0e14ad67efa2df7d9b40e69022",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 1640,
+      "originalSha256": "9d1ad723e4d0169d12f870fb2e2ab275f9c5c40998ca7272d9996d7944707ff7",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact original QA raw/result/executed source or input; public path projection is not executed."
+    },
+    {
+      "path": "r9/report.json",
+      "bytes": 25409,
+      "sha256": "cc15f49864b1404ef5c2b171d55958364f8b69e16993bdbfb88344add05a7b6c",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 29211,
+      "originalSha256": "2d3cba77773cf01e9516fe62b55f781b7b031c0632d1c28bea8da76441cdf450",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated path labels; colliding dictionary path keys retain stable original-key SHA256 IDs without dropping entries."
+      ],
+      "projectionDictionaryKeyAudit": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact original QA raw/result/executed source or input; public path projection is not executed."
+    },
+    {
+      "path": "r9/r9.executed-review_packets.py",
+      "bytes": 39232,
+      "sha256": "61e5a3cea39167b023672213ebe26ee4f9bfbcec7fab34d4c2649db901d80c33",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 39823,
+      "originalSha256": "7ad630602203e8a6dfa04d6c618db7b89a711d56e3318611dfcfdddd834e843e",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only.",
+        "Generic machine-root matcher prefix labels projected; source copy was not executed."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact original QA raw/result/executed source or input; public path projection is not executed."
+    },
+    {
+      "path": "r9/r9-manifests.json",
+      "bytes": 319,
+      "sha256": "5bdf99a108a29a3a684ecc349124063d01d8b79de38214607b7e3180966ffb92",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 319,
+      "originalSha256": "5bdf99a108a29a3a684ecc349124063d01d8b79de38214607b7e3180966ffb92",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact original QA raw/result/executed source or input; public path projection is not executed."
+    },
+    {
+      "path": "r9/inventories/artifact-checks-001.jsonl",
+      "bytes": 355858,
+      "sha256": "4c0a70f1e193964bc48c461561e071c0180136d250d607aafd3aa9ee75500636",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 355858,
+      "originalSha256": "4c0a70f1e193964bc48c461561e071c0180136d250d607aafd3aa9ee75500636",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r9/inventories/artifact-checks-002.jsonl",
+      "bytes": 341508,
+      "sha256": "f37a3a42a1d5327837eb706179b80a872e738b76a97dd86514627c5aa0c30a6b",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 341508,
+      "originalSha256": "f37a3a42a1d5327837eb706179b80a872e738b76a97dd86514627c5aa0c30a6b",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r9/inventories/artifact-checks-003.jsonl",
+      "bytes": 372595,
+      "sha256": "e8438270b862e4bc52ae3d0456553d899ee307135d3ad11280cd999d2df341da",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 372595,
+      "originalSha256": "e8438270b862e4bc52ae3d0456553d899ee307135d3ad11280cd999d2df341da",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r9/inventories/artifact-checks-004.jsonl",
+      "bytes": 335154,
+      "sha256": "39e75ac47aec959dd7aa423e03ce413eadacda589aca423b7f78605ec6234148",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 335154,
+      "originalSha256": "39e75ac47aec959dd7aa423e03ce413eadacda589aca423b7f78605ec6234148",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r9/inventories/artifact-checks-005.jsonl",
+      "bytes": 321637,
+      "sha256": "085a3f0aac4c86b05df74aff859991f0db9029c7f87b2a745c51e7e2aa5861ee",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 321637,
+      "originalSha256": "085a3f0aac4c86b05df74aff859991f0db9029c7f87b2a745c51e7e2aa5861ee",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r9/inventories/artifact-checks-006.jsonl",
+      "bytes": 357035,
+      "sha256": "cf47426b6370ca114b3e0652d4a3a18df545f4957ae1bb712dc245fcbee6e515",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 357035,
+      "originalSha256": "cf47426b6370ca114b3e0652d4a3a18df545f4957ae1bb712dc245fcbee6e515",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r9/inventories/artifact-checks-007.jsonl",
+      "bytes": 364394,
+      "sha256": "85b5ce35045221b624d7a5f87d325aba8773c65f8de9afe6319bb29bca705bee",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 364394,
+      "originalSha256": "85b5ce35045221b624d7a5f87d325aba8773c65f8de9afe6319bb29bca705bee",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r9/inventories/artifact-checks-008.jsonl",
+      "bytes": 342286,
+      "sha256": "b8f33c8158bdd63ef7c83f268c2a0343cca2e04c91f7c1399ad30113a0774976",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 342286,
+      "originalSha256": "b8f33c8158bdd63ef7c83f268c2a0343cca2e04c91f7c1399ad30113a0774976",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r9/inventories/artifact-checks-009.jsonl",
+      "bytes": 417278,
+      "sha256": "e5be0ca129eb5a3e407e04b4fdba961be4a50a4714a6d0b39970cfdd7750c370",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 434431,
+      "originalSha256": "e1e61e3c7cca1c6a67e98d37e31b3ada25b2c09806e60ff4d3ece55db5f22084",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "StructuredJSONL path string projection preserves valid JSON rows and one-to-one dictionary keys."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r9/inventories/artifact-checks-010.jsonl",
+      "bytes": 475918,
+      "sha256": "c52fbe9b0ffdd3eedcb0e6487452d8d8c493cd8e993c50de011248f75f87d2bc",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 475918,
+      "originalSha256": "c52fbe9b0ffdd3eedcb0e6487452d8d8c493cd8e993c50de011248f75f87d2bc",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r9/inventories/artifact-checks-011.jsonl",
+      "bytes": 482589,
+      "sha256": "e7cb32718d9061fefc5dba49f98d5a439289a297839fd3ec59c8ef982b3143b9",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 482589,
+      "originalSha256": "e7cb32718d9061fefc5dba49f98d5a439289a297839fd3ec59c8ef982b3143b9",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r9/inventories/artifact-checks-012.jsonl",
+      "bytes": 479566,
+      "sha256": "960533903c25de2e9e2910119e22f1e3d2460d1888f5ac6b2ffe08ed20351114",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 479566,
+      "originalSha256": "960533903c25de2e9e2910119e22f1e3d2460d1888f5ac6b2ffe08ed20351114",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r9/inventories/artifact-checks-013.jsonl",
+      "bytes": 475879,
+      "sha256": "78594b86ec74d45dd1ef5e7cd65c79e6e3c9457211b30afeb3e73d08c8dc43f5",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 475879,
+      "originalSha256": "78594b86ec74d45dd1ef5e7cd65c79e6e3c9457211b30afeb3e73d08c8dc43f5",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r9/inventories/artifact-checks-014.jsonl",
+      "bytes": 484597,
+      "sha256": "b7762680846e800283b504abdd8ba3aac04e252c49f835c01c56abdb431b7f46",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 484597,
+      "originalSha256": "b7762680846e800283b504abdd8ba3aac04e252c49f835c01c56abdb431b7f46",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r9/inventories/artifact-checks-015.jsonl",
+      "bytes": 454291,
+      "sha256": "b20fe8bf2ec265e3c321f175c404cf64b3ef7caecca8c0a50174991eebe63d4b",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 454291,
+      "originalSha256": "b20fe8bf2ec265e3c321f175c404cf64b3ef7caecca8c0a50174991eebe63d4b",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r9/inventories/artifact-checks-016.jsonl",
+      "bytes": 447810,
+      "sha256": "5f4aa3ab2569bb9615cb19e707ff67e32a576cbb0017840e898659521b6293bb",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 447810,
+      "originalSha256": "5f4aa3ab2569bb9615cb19e707ff67e32a576cbb0017840e898659521b6293bb",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r9/inventories/artifact-checks-017.jsonl",
+      "bytes": 465256,
+      "sha256": "d27504b0588a6c3e25cdf67283ff498e062f6a157db2ab5a51914f59413abe7f",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 465256,
+      "originalSha256": "d27504b0588a6c3e25cdf67283ff498e062f6a157db2ab5a51914f59413abe7f",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r9/inventories/artifact-checks-018.jsonl",
+      "bytes": 482006,
+      "sha256": "93a241382382096b2e82eebb25f358325461c8423a1ccf9dacdf1b0da85da367",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 482006,
+      "originalSha256": "93a241382382096b2e82eebb25f358325461c8423a1ccf9dacdf1b0da85da367",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r9/inventories/artifact-checks-019.jsonl",
+      "bytes": 485011,
+      "sha256": "ee058710ce3542b7bc145925aa0d805f6b46a22f0e4b78e0289ac53ab5c3c393",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 485011,
+      "originalSha256": "ee058710ce3542b7bc145925aa0d805f6b46a22f0e4b78e0289ac53ab5c3c393",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r9/inventories/artifact-checks-020.jsonl",
+      "bytes": 495242,
+      "sha256": "68a78c559d90989cfa51974266c98aba1827b665a1199a3806ef0b1fdafba114",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 495242,
+      "originalSha256": "68a78c559d90989cfa51974266c98aba1827b665a1199a3806ef0b1fdafba114",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r9/inventories/artifact-checks-021.jsonl",
+      "bytes": 478941,
+      "sha256": "c379b9853318a7709ae152e37750270ca0379cc5c48d559a72bce7e0eb964e71",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 478941,
+      "originalSha256": "c379b9853318a7709ae152e37750270ca0379cc5c48d559a72bce7e0eb964e71",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r9/inventories/artifact-checks-022.jsonl",
+      "bytes": 512968,
+      "sha256": "2439e85ca6db38c8a33bc94be3700f875acb2a10687db06edd2a60f1ea55e67d",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 512968,
+      "originalSha256": "2439e85ca6db38c8a33bc94be3700f875acb2a10687db06edd2a60f1ea55e67d",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r9/inventories/artifact-checks-023.jsonl",
+      "bytes": 508035,
+      "sha256": "00f12094f475819366c176f5734c65c663b32ca02b705fa721504f076005d0e2",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 508035,
+      "originalSha256": "00f12094f475819366c176f5734c65c663b32ca02b705fa721504f076005d0e2",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r9/inventories/artifact-checks-024.jsonl",
+      "bytes": 525666,
+      "sha256": "7a3d0052e232646ba1959a3d1fe755e4dbcbf20e70da528d7df86fef61ecd5f0",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 525666,
+      "originalSha256": "7a3d0052e232646ba1959a3d1fe755e4dbcbf20e70da528d7df86fef61ecd5f0",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r9/inventories/artifact-checks-025.jsonl",
+      "bytes": 455258,
+      "sha256": "945fa71f40adf595729ec248b13e78d9974ea36777c90bbd87f44f53b4ff20b3",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 455258,
+      "originalSha256": "945fa71f40adf595729ec248b13e78d9974ea36777c90bbd87f44f53b4ff20b3",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r9/inventories/artifact-checks-026.jsonl",
+      "bytes": 247370,
+      "sha256": "438c6e9468f2abc0d71fa6d0a9b231d0a6ff03df8819fb6c528899997c90550f",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 256966,
+      "originalSha256": "69057554a3b1dc4e5623862eb0d479523d7769d1f7164940d6c7e324ba2636c3",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "StructuredJSONL path string projection preserves valid JSON rows and one-to-one dictionary keys."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r9/accepted.md",
+      "bytes": 3266,
+      "sha256": "e8c2c20bec56090b3b7094e5d65c7be479be10d8292528628ca9146721e3249f",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 3266,
+      "originalSha256": "e8c2c20bec56090b3b7094e5d65c7be479be10d8292528628ca9146721e3249f",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Readable QA summary of preserved independent scopes and remaining limits."
+    },
+    {
+      "path": "r10/receipt.public.json",
+      "bytes": 2427,
+      "sha256": "2c098a6b8f3da870eb38c1bd49f5f9b4f8c6b303a80d13b4f4a20db22476ea21",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 2986,
+      "originalSha256": "1224c7089f44e8ee2fce5413a0a7b06b56240149c94b2f83c751234802e4e2cf",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated path labels; colliding dictionary path keys retain stable original-key SHA256 IDs without dropping entries."
+      ],
+      "projectionDictionaryKeyAudit": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Original evidence QA command/executable/source/actual exit; never product or browser acceptance."
+    },
+    {
+      "path": "r10/r10.raw.log",
+      "bytes": 953,
+      "sha256": "3927e883826d2280c3137beecca9ca62500be46b5f3c6f9694ba9e6ab351b969",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 1268,
+      "originalSha256": "ead700d475015caf8e121825e4751f27acb109f435de77832516a92788f67255",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact original QA raw/result/executed source or input; public path projection is not executed."
+    },
+    {
+      "path": "r10/report.json",
+      "bytes": 1721,
+      "sha256": "7c2506d93116a3fb233c0c530f1fdbdab96d5e3e149c0fd9042819befe8c4fcd",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 1948,
+      "originalSha256": "6e00f81df55a2ca84f702b4d0048362e71ff8e1326aa6810b8c181991aee4500",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated path labels; colliding dictionary path keys retain stable original-key SHA256 IDs without dropping entries."
+      ],
+      "projectionDictionaryKeyAudit": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact original QA raw/result/executed source or input; public path projection is not executed."
+    },
+    {
+      "path": "r10/r10.executed-review_243.py",
+      "bytes": 45400,
+      "sha256": "0302d041d7d4840b8058f8cc1515e0ac97ade8e676cdb4037d07e65685eb7aec",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 45967,
+      "originalSha256": "b9e147704d307380cf074e1abe3d1b9e381a6dde150791ce488a350b0c59ac0e",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only.",
+        "Generic machine-root matcher prefix labels projected; source copy was not executed."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact original QA raw/result/executed source or input; public path projection is not executed."
+    },
+    {
+      "path": "r10/r10-manifests.json",
+      "bytes": 105,
+      "sha256": "c64f47ba8e30190880a30f831a50805b086d2c00cdf7a56f640477af0f761444",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 105,
+      "originalSha256": "c64f47ba8e30190880a30f831a50805b086d2c00cdf7a56f640477af0f761444",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact original QA raw/result/executed source or input; public path projection is not executed."
+    },
+    {
+      "path": "r11/receipt.public.json",
+      "bytes": 5112,
+      "sha256": "1acd6d3a9c06d759bc6ca7e77d44fa4c54c5a4d479b1900a3d34e8c00e2b660c",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 6593,
+      "originalSha256": "aef084a7c9739c4d784d66c54f0c9d156581582751235c4f0665929cd5abba15",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated path labels; colliding dictionary path keys retain stable original-key SHA256 IDs without dropping entries."
+      ],
+      "projectionDictionaryKeyAudit": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Original evidence QA command/executable/source/actual exit; never product or browser acceptance."
+    },
+    {
+      "path": "r11/r11.raw.log",
+      "bytes": 1218,
+      "sha256": "f143d48a0adb06564cf8d8cd17a4ea55823cef1a9dff824cfefd5f1103145e54",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 1522,
+      "originalSha256": "0443e47b9597b769b74bf85791db79b3740f532ee8e5956a1e07f07289d9ae36",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact original QA raw/result/executed source or input; public path projection is not executed."
+    },
+    {
+      "path": "r11/report.json",
+      "bytes": 13778,
+      "sha256": "3b7d2fb69431cc7f11b5a00a9b382fc963631fc660db2ff8f080ae68e4ff4835",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 16066,
+      "originalSha256": "69e46a1c4968b5fbed63577037da2a23aa5bc4c65197e7add87bb2d5896eff79",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated path labels; colliding dictionary path keys retain stable original-key SHA256 IDs without dropping entries."
+      ],
+      "projectionDictionaryKeyAudit": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact original QA raw/result/executed source or input; public path projection is not executed."
+    },
+    {
+      "path": "r11/r11.executed-review_243.py",
+      "bytes": 45742,
+      "sha256": "ef6c6bb17f844d9cd20753f2c8a6468fde4e9ee38f684d648e41c8bfe73b3809",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 46309,
+      "originalSha256": "83b330dd4b35d715e681e535d761a03116a6f4da09ae2cfc8f74cbaf9238fbc0",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only.",
+        "Generic machine-root matcher prefix labels projected; source copy was not executed."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact original QA raw/result/executed source or input; public path projection is not executed."
+    },
+    {
+      "path": "r11/r11-manifests.json",
+      "bytes": 105,
+      "sha256": "c64f47ba8e30190880a30f831a50805b086d2c00cdf7a56f640477af0f761444",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 105,
+      "originalSha256": "c64f47ba8e30190880a30f831a50805b086d2c00cdf7a56f640477af0f761444",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact original QA raw/result/executed source or input; public path projection is not executed."
+    },
+    {
+      "path": "r12/receipt.public.json",
+      "bytes": 5182,
+      "sha256": "d22ff990fd8621861fd47b2f1b3d7cf3a20ba4e3f6ba9e3ea1d31e59aadaaba8",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 6663,
+      "originalSha256": "7a685efde3d4ca5b21412b3f2f414a816d3c0cd1081cc0e024c5c51b8ced2244",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated path labels; colliding dictionary path keys retain stable original-key SHA256 IDs without dropping entries."
+      ],
+      "projectionDictionaryKeyAudit": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Original evidence QA command/executable/source/actual exit; never product or browser acceptance."
+    },
+    {
+      "path": "r12/r12.raw.log",
+      "bytes": 856,
+      "sha256": "e9a44b1a1e422671fe41f8e30f5f0d094a91602a9a27f48279630c1f4b440db5",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 1083,
+      "originalSha256": "5e78a90d1aed54a3e81b2f7b618a10b68c7030db92b2d17c47b84f0e2fac6fcf",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact original QA raw/result/executed source or input; public path projection is not executed."
+    },
+    {
+      "path": "r12/report.json",
+      "bytes": 13404,
+      "sha256": "992df43c2858dc61aef405ee173d0393deee333674a97eae3e953c1bf0673304",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 15615,
+      "originalSha256": "df04b9dcc6ef0c15d40b9ccaead819be7e7ad6e29a215456d9a4c1fe78f42d04",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated path labels; colliding dictionary path keys retain stable original-key SHA256 IDs without dropping entries."
+      ],
+      "projectionDictionaryKeyAudit": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact original QA raw/result/executed source or input; public path projection is not executed."
+    },
+    {
+      "path": "r12/r12.executed-review_243.py",
+      "bytes": 46560,
+      "sha256": "5db568c235c6b7a5247c4f2c020cf18acefb939c7599055e940989784212bce7",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 47127,
+      "originalSha256": "eea5d0d8208b361a247c8b7beea836b33e98e2b2cd2ab0e41c5ac91d309902d2",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only.",
+        "Generic machine-root matcher prefix labels projected; source copy was not executed."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact original QA raw/result/executed source or input; public path projection is not executed."
+    },
+    {
+      "path": "r12/r12-manifests.json",
+      "bytes": 105,
+      "sha256": "c64f47ba8e30190880a30f831a50805b086d2c00cdf7a56f640477af0f761444",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 105,
+      "originalSha256": "c64f47ba8e30190880a30f831a50805b086d2c00cdf7a56f640477af0f761444",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact original QA raw/result/executed source or input; public path projection is not executed."
+    },
+    {
+      "path": "r12/inventories/artifact-checks-001.jsonl",
+      "bytes": 376098,
+      "sha256": "4c96fe3173116f90023b333651c6367d789d016ef7356ccb780cd825aa3719c6",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 376098,
+      "originalSha256": "4c96fe3173116f90023b333651c6367d789d016ef7356ccb780cd825aa3719c6",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r12/inventories/artifact-checks-002.jsonl",
+      "bytes": 377447,
+      "sha256": "ef802775f9b8a4a2b0472e89407130ea37cf8b4bfc1e471cfdbd8df8c05334b2",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 377447,
+      "originalSha256": "ef802775f9b8a4a2b0472e89407130ea37cf8b4bfc1e471cfdbd8df8c05334b2",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r12/inventories/artifact-checks-003.jsonl",
+      "bytes": 361046,
+      "sha256": "61e9ded56f93a8706a5200068c0eecfc046169824f040e69055b8aa3e548c1b0",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 383433,
+      "originalSha256": "9d3651fbd6157f92c3dbc035637b7951e9aaea2dfb4dba413e07a7b74732f45e",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "StructuredJSONL path string projection preserves valid JSON rows and one-to-one dictionary keys."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r12/inventories/artifact-checks-004.jsonl",
+      "bytes": 307963,
+      "sha256": "dcb11177dc822a5a4ca4c0ad699f5f9b53c369bccea8b52f16f7d14e5c550c80",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 307963,
+      "originalSha256": "dcb11177dc822a5a4ca4c0ad699f5f9b53c369bccea8b52f16f7d14e5c550c80",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r12/inventories/artifact-checks-005.jsonl",
+      "bytes": 325156,
+      "sha256": "2c9a95bd3a4c2a50119521ea4db6b3c60da36f1d3e53dbf816b66f676df39afd",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 325156,
+      "originalSha256": "2c9a95bd3a4c2a50119521ea4db6b3c60da36f1d3e53dbf816b66f676df39afd",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r12/inventories/artifact-checks-006.jsonl",
+      "bytes": 505371,
+      "sha256": "fb29ee2ea6d2c7b881b4bcff9482cd98dad1e56d0efa08b30e3452a37bbec5b6",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 505371,
+      "originalSha256": "fb29ee2ea6d2c7b881b4bcff9482cd98dad1e56d0efa08b30e3452a37bbec5b6",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r12/inventories/artifact-checks-007.jsonl",
+      "bytes": 506304,
+      "sha256": "a6c5ed42ebba1ab510d21ed3f2f2c83329b63f9a00a17af28a9a25bb72db8e61",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 506304,
+      "originalSha256": "a6c5ed42ebba1ab510d21ed3f2f2c83329b63f9a00a17af28a9a25bb72db8e61",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r12/inventories/artifact-checks-008.jsonl",
+      "bytes": 573763,
+      "sha256": "1d298a248c704901146834874c4d500853a042604a3c7267b25222a8451b7805",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 573763,
+      "originalSha256": "1d298a248c704901146834874c4d500853a042604a3c7267b25222a8451b7805",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r12/inventories/artifact-checks-009.jsonl",
+      "bytes": 514665,
+      "sha256": "269caf457eb92307e0e6a76781650ce19c19d6d6fcf6d425fa0e23322422bd0f",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 514665,
+      "originalSha256": "269caf457eb92307e0e6a76781650ce19c19d6d6fcf6d425fa0e23322422bd0f",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r12/inventories/artifact-checks-010.jsonl",
+      "bytes": 431913,
+      "sha256": "27b3d834adda4e6538c078c78fb5b2098f4d9fec115332c2b0190adc659999e3",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 431913,
+      "originalSha256": "27b3d834adda4e6538c078c78fb5b2098f4d9fec115332c2b0190adc659999e3",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r12/inventories/artifact-checks-011.jsonl",
+      "bytes": 477313,
+      "sha256": "2612e2b991d02cea8a7d52889a95490702979e15268ba0acbff93d2fbffcb829",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 477313,
+      "originalSha256": "2612e2b991d02cea8a7d52889a95490702979e15268ba0acbff93d2fbffcb829",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r12/inventories/artifact-checks-012.jsonl",
+      "bytes": 478947,
+      "sha256": "61ab474e94d5a955c1609e9b519ae583b287952c9819eb4dd3a3821d0dc4c93c",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 478947,
+      "originalSha256": "61ab474e94d5a955c1609e9b519ae583b287952c9819eb4dd3a3821d0dc4c93c",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r12/inventories/artifact-checks-013.jsonl",
+      "bytes": 472434,
+      "sha256": "5be01a48dc60c3fd4bffd284e386b64708ccdd72907ab87c602c0813a95627c6",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 472434,
+      "originalSha256": "5be01a48dc60c3fd4bffd284e386b64708ccdd72907ab87c602c0813a95627c6",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r12/inventories/artifact-checks-014.jsonl",
+      "bytes": 480832,
+      "sha256": "4d5028cec8b1d42073b5af74079ed393f74871f91fe14f91b8cbd3cd6a10fbfd",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 480832,
+      "originalSha256": "4d5028cec8b1d42073b5af74079ed393f74871f91fe14f91b8cbd3cd6a10fbfd",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r12/inventories/artifact-checks-015.jsonl",
+      "bytes": 393155,
+      "sha256": "cd3b4a2b4a494f698c99eee6c9c40563d8ddca58ce3bb9cbaf7246b34cc5f61b",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 416241,
+      "originalSha256": "3810d248cfee05cf8b90561eaea1450973ac3b16c5346b4f3535099dd98e8611",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "StructuredJSONL path string projection preserves valid JSON rows and one-to-one dictionary keys."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Accepted read-only evidence checks, not additional product tests."
+    },
+    {
+      "path": "r12/accepted.md",
+      "bytes": 5282,
+      "sha256": "8cc0ee34baaeaa877690473782cee70977d39ab582d1eca7bf58829b97547cd9",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 5424,
+      "originalSha256": "f95b7bb35776c7acc550542630d2accc37ad45264984dafe7846fa23206dee6b",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Readable QA summary of preserved independent scopes and remaining limits."
+    },
+    {
+      "path": "root/root-strict-packet-review.public.json",
+      "bytes": 2231,
+      "sha256": "ee1372883e2bdc378f319e4e2049af43ee2bf86a7e7676d8e61db6aecdf439f6",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 2569,
+      "originalSha256": "19fb8cb0093215372f147fe1cf91dc24748b454bd06ef0de34b57e27e6160562",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated path labels; colliding dictionary path keys retain stable original-key SHA256 IDs without dropping entries."
+      ],
+      "projectionDictionaryKeyAudit": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Separate root read-only hash/strict JSON review; observed dirty repository is not tested product state."
+    },
+    {
+      "path": "root/root-strict-packet-review.py",
+      "bytes": 3534,
+      "sha256": "608fde85bc9d04937cc3348bc3816a0ae212d4adee35dacfb2d8cf76ae9cc0a7",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 3545,
+      "originalSha256": "2c9d965f77f30f57a4331428547588f141a836bde19c3b123737d776fe4b1b2f",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact root reader source, publication projection not executed."
+    },
+    {
+      "path": "publisher-243/receipt.public.json",
+      "bytes": 4165,
+      "sha256": "9fa1d33cbf48198c084ec48360f6bf678f16af524f63e172e27a59fc62eb7183",
+      "originalPathLabel": "<delivery-closeout-root>/ui-single-room-243-public-v2-publisher-execution/receipt.json",
+      "originalBytes": 4720,
+      "originalSha256": "21f0a94dc7228ac981ed80bb0d0f5b09dcba4c4d70ede1b8b601347993fe7fca",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated path labels; colliding dictionary path keys retain stable original-key SHA256 IDs without dropping entries."
+      ],
+      "projectionDictionaryKeyAudit": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Actual evidence publisher Python/source closure/exit0; no product tests executed."
+    },
+    {
+      "path": "publisher-243/command.log",
+      "bytes": 202,
+      "sha256": "01b96c48a4b2be5b4fb377419a4cf3cfc66910a04af6a1e0f2e686c2437ae004",
+      "originalPathLabel": "<delivery-closeout-root>/ui-single-room-243-public-v2-publisher-execution/command.log",
+      "originalBytes": 232,
+      "originalSha256": "c58043e7cd02f142b1c8042543fb65676912949c79ffaf1f77ed089a42a05f67",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Actual publisher raw command output."
+    },
+    {
+      "path": "publisher-243/executed-source-inputs/publish_packet_observed.py",
+      "bytes": 2995,
+      "sha256": "89a7ea4ec6503db658354c96db38f29af001afc5826d2c7c1190171b6f7c96b7",
+      "originalPathLabel": "<delivery-closeout-root>/publish_packet_observed.py",
+      "originalBytes": 2995,
+      "originalSha256": "89a7ea4ec6503db658354c96db38f29af001afc5826d2c7c1190171b6f7c96b7",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact unchanged evidence publication source/input; not a product executed source."
+    },
+    {
+      "path": "publisher-243/executed-source-inputs/prepare_ui_history_packet_v5.py",
+      "bytes": 30677,
+      "sha256": "a439c6791c3d36ba91035186e828d12882d0f79d0ea10d3f7a7ee67c5fd0d37a",
+      "originalPathLabel": "<delivery-closeout-root>/prepare_ui_history_packet_v5.py",
+      "originalBytes": 31081,
+      "originalSha256": "dde39cc7680441b514371dd1300997987df5f517f36021d9b089ac88f99f79c1",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact unchanged evidence publication source/input; not a product executed source."
+    },
+    {
+      "path": "publisher-243/executed-source-inputs/prepare_resume_packet.py",
+      "bytes": 16216,
+      "sha256": "f8510d02415322d6b32c3f74588a4e2349ecd38e78393f9b6c18eb269f2948a5",
+      "originalPathLabel": "<delivery-closeout-root>/prepare_resume_packet.py",
+      "originalBytes": 16290,
+      "originalSha256": "0c2e56002d025a5c52a75225637b557635f03e7b3842634d496b0538d559d598",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only.",
+        "Generic machine-root matcher prefix labels projected; source copy was not executed."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact unchanged evidence publication source/input; not a product executed source."
+    },
+    {
+      "path": "publisher-243/executed-source-inputs/prepare_cdp_diagnosis.py",
+      "bytes": 14845,
+      "sha256": "18f8512513dbe7ba4cff21fe5ae6195eafdd75484425fc3758f5984fac7a0a5e",
+      "originalPathLabel": "<delivery-closeout-root>/prepare_cdp_diagnosis.py",
+      "originalBytes": 14977,
+      "originalSha256": "f8d83463977f852bc236a91fe3fa55d21436a5589aa17e2910315fb75833497b",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only.",
+        "Generic machine-root matcher prefix labels projected; source copy was not executed."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact unchanged evidence publication source/input; not a product executed source."
+    },
+    {
+      "path": "publisher-243/executed-source-inputs/configure_243_packet.py",
+      "bytes": 11852,
+      "sha256": "54bb30d9b7e1558d3144e14c79eef2548c1231b59852dc7372009facc93303df",
+      "originalPathLabel": "<delivery-closeout-root>/configure_243_packet.py",
+      "originalBytes": 12293,
+      "originalSha256": "be8f72d7d14fc0fee77208b7fe5df2f9c6a44ad5706e64e6fe10b6f57806d4f8",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only.",
+        "Generic machine-root matcher prefix labels projected; source copy was not executed."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact unchanged evidence publication source/input; not a product executed source."
+    },
+    {
+      "path": "publisher-243/executed-source-inputs/ui-243-config.json",
+      "bytes": 8523,
+      "sha256": "440264213d594152b819a9913de12cc290377af5e0f0faa7ead85995650fa4d5",
+      "originalPathLabel": "<delivery-closeout-root>/ui-243-config.json",
+      "originalBytes": 12031,
+      "originalSha256": "e63749289aa953f6f5741deb7c996329f63935ca2b161c8a60f2aa303de76ca8",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated path labels; colliding dictionary path keys retain stable original-key SHA256 IDs without dropping entries."
+      ],
+      "projectionDictionaryKeyAudit": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact unchanged evidence publication source/input; not a product executed source."
+    },
+    {
+      "path": "publisher-243/executed-source-inputs/ui-243-extra-evidence.json",
+      "bytes": 50938,
+      "sha256": "136802271ed26965d13331c052ffbb1a40d4c8f4d1a09f5b7ecae837ef17f6a9",
+      "originalPathLabel": "<delivery-closeout-root>/ui-243-extra-evidence.json",
+      "originalBytes": 60354,
+      "originalSha256": "9ff61d103bcdf11adb917bffadb4547391d4e2272c76b1113e67d35fddae3347",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated path labels; colliding dictionary path keys retain stable original-key SHA256 IDs without dropping entries."
+      ],
+      "projectionDictionaryKeyAudit": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact unchanged evidence publication source/input; not a product executed source."
+    },
+    {
+      "path": "publisher-243/executed-source-inputs/ui-243-metadata.json",
+      "bytes": 2114,
+      "sha256": "bf8d34941377b07984846d85cb9dad51eb03f47cbcf4d267234a9e3527ea4005",
+      "originalPathLabel": "<delivery-closeout-root>/ui-243-metadata.json",
+      "originalBytes": 2114,
+      "originalSha256": "bf8d34941377b07984846d85cb9dad51eb03f47cbcf4d267234a9e3527ea4005",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact unchanged evidence publication source/input; not a product executed source."
+    },
+    {
+      "path": "publisher-243/executed-source-inputs/ui-243-README.md",
+      "bytes": 7106,
+      "sha256": "d12373c084adba3c1dbf879b0002820702912156d8112d32a1420ef049b5fab5",
+      "originalPathLabel": "<delivery-closeout-root>/ui-243-README.md",
+      "originalBytes": 7106,
+      "originalSha256": "d12373c084adba3c1dbf879b0002820702912156d8112d32a1420ef049b5fab5",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact unchanged evidence publication source/input; not a product executed source."
+    }
+  ],
+  "releaseApproved": false,
+  "publicFiles": [
+    {
+      "path": "README.md",
+      "bytes": 2596,
+      "sha256": "c7b38ba229db5b6c7231e6a429f97de6e90d76750675c006c140073d83cd8128"
+    },
+    {
+      "path": "publisher-243/command.log",
+      "bytes": 202,
+      "sha256": "01b96c48a4b2be5b4fb377419a4cf3cfc66910a04af6a1e0f2e686c2437ae004"
+    },
+    {
+      "path": "publisher-243/executed-source-inputs/configure_243_packet.py",
+      "bytes": 11852,
+      "sha256": "54bb30d9b7e1558d3144e14c79eef2548c1231b59852dc7372009facc93303df"
+    },
+    {
+      "path": "publisher-243/executed-source-inputs/prepare_cdp_diagnosis.py",
+      "bytes": 14845,
+      "sha256": "18f8512513dbe7ba4cff21fe5ae6195eafdd75484425fc3758f5984fac7a0a5e"
+    },
+    {
+      "path": "publisher-243/executed-source-inputs/prepare_resume_packet.py",
+      "bytes": 16216,
+      "sha256": "f8510d02415322d6b32c3f74588a4e2349ecd38e78393f9b6c18eb269f2948a5"
+    },
+    {
+      "path": "publisher-243/executed-source-inputs/prepare_ui_history_packet_v5.py",
+      "bytes": 30677,
+      "sha256": "a439c6791c3d36ba91035186e828d12882d0f79d0ea10d3f7a7ee67c5fd0d37a"
+    },
+    {
+      "path": "publisher-243/executed-source-inputs/publish_packet_observed.py",
+      "bytes": 2995,
+      "sha256": "89a7ea4ec6503db658354c96db38f29af001afc5826d2c7c1190171b6f7c96b7"
+    },
+    {
+      "path": "publisher-243/executed-source-inputs/ui-243-README.md",
+      "bytes": 7106,
+      "sha256": "d12373c084adba3c1dbf879b0002820702912156d8112d32a1420ef049b5fab5"
+    },
+    {
+      "path": "publisher-243/executed-source-inputs/ui-243-config.json",
+      "bytes": 8523,
+      "sha256": "440264213d594152b819a9913de12cc290377af5e0f0faa7ead85995650fa4d5"
+    },
+    {
+      "path": "publisher-243/executed-source-inputs/ui-243-extra-evidence.json",
+      "bytes": 50938,
+      "sha256": "136802271ed26965d13331c052ffbb1a40d4c8f4d1a09f5b7ecae837ef17f6a9"
+    },
+    {
+      "path": "publisher-243/executed-source-inputs/ui-243-metadata.json",
+      "bytes": 2114,
+      "sha256": "bf8d34941377b07984846d85cb9dad51eb03f47cbcf4d267234a9e3527ea4005"
+    },
+    {
+      "path": "publisher-243/receipt.public.json",
+      "bytes": 4165,
+      "sha256": "9fa1d33cbf48198c084ec48360f6bf678f16af524f63e172e27a59fc62eb7183"
+    },
+    {
+      "path": "r10/r10-manifests.json",
+      "bytes": 105,
+      "sha256": "c64f47ba8e30190880a30f831a50805b086d2c00cdf7a56f640477af0f761444"
+    },
+    {
+      "path": "r10/r10.executed-review_243.py",
+      "bytes": 45400,
+      "sha256": "0302d041d7d4840b8058f8cc1515e0ac97ade8e676cdb4037d07e65685eb7aec"
+    },
+    {
+      "path": "r10/r10.raw.log",
+      "bytes": 953,
+      "sha256": "3927e883826d2280c3137beecca9ca62500be46b5f3c6f9694ba9e6ab351b969"
+    },
+    {
+      "path": "r10/receipt.public.json",
+      "bytes": 2427,
+      "sha256": "2c098a6b8f3da870eb38c1bd49f5f9b4f8c6b303a80d13b4f4a20db22476ea21"
+    },
+    {
+      "path": "r10/report.json",
+      "bytes": 1721,
+      "sha256": "7c2506d93116a3fb233c0c530f1fdbdab96d5e3e149c0fd9042819befe8c4fcd"
+    },
+    {
+      "path": "r11/r11-manifests.json",
+      "bytes": 105,
+      "sha256": "c64f47ba8e30190880a30f831a50805b086d2c00cdf7a56f640477af0f761444"
+    },
+    {
+      "path": "r11/r11.executed-review_243.py",
+      "bytes": 45742,
+      "sha256": "ef6c6bb17f844d9cd20753f2c8a6468fde4e9ee38f684d648e41c8bfe73b3809"
+    },
+    {
+      "path": "r11/r11.raw.log",
+      "bytes": 1218,
+      "sha256": "f143d48a0adb06564cf8d8cd17a4ea55823cef1a9dff824cfefd5f1103145e54"
+    },
+    {
+      "path": "r11/receipt.public.json",
+      "bytes": 5112,
+      "sha256": "1acd6d3a9c06d759bc6ca7e77d44fa4c54c5a4d479b1900a3d34e8c00e2b660c"
+    },
+    {
+      "path": "r11/report.json",
+      "bytes": 13778,
+      "sha256": "3b7d2fb69431cc7f11b5a00a9b382fc963631fc660db2ff8f080ae68e4ff4835"
+    },
+    {
+      "path": "r12/accepted.md",
+      "bytes": 5282,
+      "sha256": "8cc0ee34baaeaa877690473782cee70977d39ab582d1eca7bf58829b97547cd9"
+    },
+    {
+      "path": "r12/inventories/artifact-checks-001.jsonl",
+      "bytes": 376098,
+      "sha256": "4c96fe3173116f90023b333651c6367d789d016ef7356ccb780cd825aa3719c6"
+    },
+    {
+      "path": "r12/inventories/artifact-checks-002.jsonl",
+      "bytes": 377447,
+      "sha256": "ef802775f9b8a4a2b0472e89407130ea37cf8b4bfc1e471cfdbd8df8c05334b2"
+    },
+    {
+      "path": "r12/inventories/artifact-checks-003.jsonl",
+      "bytes": 361046,
+      "sha256": "61e9ded56f93a8706a5200068c0eecfc046169824f040e69055b8aa3e548c1b0"
+    },
+    {
+      "path": "r12/inventories/artifact-checks-004.jsonl",
+      "bytes": 307963,
+      "sha256": "dcb11177dc822a5a4ca4c0ad699f5f9b53c369bccea8b52f16f7d14e5c550c80"
+    },
+    {
+      "path": "r12/inventories/artifact-checks-005.jsonl",
+      "bytes": 325156,
+      "sha256": "2c9a95bd3a4c2a50119521ea4db6b3c60da36f1d3e53dbf816b66f676df39afd"
+    },
+    {
+      "path": "r12/inventories/artifact-checks-006.jsonl",
+      "bytes": 505371,
+      "sha256": "fb29ee2ea6d2c7b881b4bcff9482cd98dad1e56d0efa08b30e3452a37bbec5b6"
+    },
+    {
+      "path": "r12/inventories/artifact-checks-007.jsonl",
+      "bytes": 506304,
+      "sha256": "a6c5ed42ebba1ab510d21ed3f2f2c83329b63f9a00a17af28a9a25bb72db8e61"
+    },
+    {
+      "path": "r12/inventories/artifact-checks-008.jsonl",
+      "bytes": 573763,
+      "sha256": "1d298a248c704901146834874c4d500853a042604a3c7267b25222a8451b7805"
+    },
+    {
+      "path": "r12/inventories/artifact-checks-009.jsonl",
+      "bytes": 514665,
+      "sha256": "269caf457eb92307e0e6a76781650ce19c19d6d6fcf6d425fa0e23322422bd0f"
+    },
+    {
+      "path": "r12/inventories/artifact-checks-010.jsonl",
+      "bytes": 431913,
+      "sha256": "27b3d834adda4e6538c078c78fb5b2098f4d9fec115332c2b0190adc659999e3"
+    },
+    {
+      "path": "r12/inventories/artifact-checks-011.jsonl",
+      "bytes": 477313,
+      "sha256": "2612e2b991d02cea8a7d52889a95490702979e15268ba0acbff93d2fbffcb829"
+    },
+    {
+      "path": "r12/inventories/artifact-checks-012.jsonl",
+      "bytes": 478947,
+      "sha256": "61ab474e94d5a955c1609e9b519ae583b287952c9819eb4dd3a3821d0dc4c93c"
+    },
+    {
+      "path": "r12/inventories/artifact-checks-013.jsonl",
+      "bytes": 472434,
+      "sha256": "5be01a48dc60c3fd4bffd284e386b64708ccdd72907ab87c602c0813a95627c6"
+    },
+    {
+      "path": "r12/inventories/artifact-checks-014.jsonl",
+      "bytes": 480832,
+      "sha256": "4d5028cec8b1d42073b5af74079ed393f74871f91fe14f91b8cbd3cd6a10fbfd"
+    },
+    {
+      "path": "r12/inventories/artifact-checks-015.jsonl",
+      "bytes": 393155,
+      "sha256": "cd3b4a2b4a494f698c99eee6c9c40563d8ddca58ce3bb9cbaf7246b34cc5f61b"
+    },
+    {
+      "path": "r12/r12-manifests.json",
+      "bytes": 105,
+      "sha256": "c64f47ba8e30190880a30f831a50805b086d2c00cdf7a56f640477af0f761444"
+    },
+    {
+      "path": "r12/r12.executed-review_243.py",
+      "bytes": 46560,
+      "sha256": "5db568c235c6b7a5247c4f2c020cf18acefb939c7599055e940989784212bce7"
+    },
+    {
+      "path": "r12/r12.raw.log",
+      "bytes": 856,
+      "sha256": "e9a44b1a1e422671fe41f8e30f5f0d094a91602a9a27f48279630c1f4b440db5"
+    },
+    {
+      "path": "r12/receipt.public.json",
+      "bytes": 5182,
+      "sha256": "d22ff990fd8621861fd47b2f1b3d7cf3a20ba4e3f6ba9e3ea1d31e59aadaaba8"
+    },
+    {
+      "path": "r12/report.json",
+      "bytes": 13404,
+      "sha256": "992df43c2858dc61aef405ee173d0393deee333674a97eae3e953c1bf0673304"
+    },
+    {
+      "path": "r5/r5-manifests.json",
+      "bytes": 319,
+      "sha256": "4c87b46eb881256ebe2e7579412d9fa46904af0d3890e5a0cdc4e2a65319af5a"
+    },
+    {
+      "path": "r5/r5.executed-review_packets.py",
+      "bytes": 36154,
+      "sha256": "437c9c586e1e9dbe5a552dc6f76f53d0e0a3f133cf3a4afd9ee2defdf1422f4b"
+    },
+    {
+      "path": "r5/r5.raw.log",
+      "bytes": 3167,
+      "sha256": "2b52758124e5fcdece1ddfc98050a02f6c68b1cfe07171d73c2a64d870f94e50"
+    },
+    {
+      "path": "r5/receipt.public.json",
+      "bytes": 6745,
+      "sha256": "817e2f1f89ee423211f7ddf342ca37d4f71580bb3e8f2fa31725bb05468956f7"
+    },
+    {
+      "path": "r5/report.json",
+      "bytes": 27073,
+      "sha256": "9ddf90876acb721cfffaa6c00c4ba1629b4cadcd36332ab409acdeb10aeb12e4"
+    },
+    {
+      "path": "r8/r8-manifests.json",
+      "bytes": 319,
+      "sha256": "5bdf99a108a29a3a684ecc349124063d01d8b79de38214607b7e3180966ffb92"
+    },
+    {
+      "path": "r8/r8.executed-review_packets.py",
+      "bytes": 38783,
+      "sha256": "4eb451fb2d68c5ebf15d1bc76545ddffea8c4378a02bd08a05bf0cb4c5d1d501"
+    },
+    {
+      "path": "r8/r8.raw.log",
+      "bytes": 5921,
+      "sha256": "8d2c395f115c00922348b15e5e08edd0a8fe99b2e220527f1eff5419af90cb5d"
+    },
+    {
+      "path": "r8/receipt.public.json",
+      "bytes": 7050,
+      "sha256": "add2801f1bc368990e77526b56e907fb9c936331d1abcdcc583dbdc9b59ec1b1"
+    },
+    {
+      "path": "r8/report.json",
+      "bytes": 44321,
+      "sha256": "cdacda9bcd43b602727dc5e64855af07ff9797b7b15247fd1cc2f9fa89f2a5aa"
+    },
+    {
+      "path": "r9/accepted.md",
+      "bytes": 3266,
+      "sha256": "e8c2c20bec56090b3b7094e5d65c7be479be10d8292528628ca9146721e3249f"
+    },
+    {
+      "path": "r9/inventories/artifact-checks-001.jsonl",
+      "bytes": 355858,
+      "sha256": "4c0a70f1e193964bc48c461561e071c0180136d250d607aafd3aa9ee75500636"
+    },
+    {
+      "path": "r9/inventories/artifact-checks-002.jsonl",
+      "bytes": 341508,
+      "sha256": "f37a3a42a1d5327837eb706179b80a872e738b76a97dd86514627c5aa0c30a6b"
+    },
+    {
+      "path": "r9/inventories/artifact-checks-003.jsonl",
+      "bytes": 372595,
+      "sha256": "e8438270b862e4bc52ae3d0456553d899ee307135d3ad11280cd999d2df341da"
+    },
+    {
+      "path": "r9/inventories/artifact-checks-004.jsonl",
+      "bytes": 335154,
+      "sha256": "39e75ac47aec959dd7aa423e03ce413eadacda589aca423b7f78605ec6234148"
+    },
+    {
+      "path": "r9/inventories/artifact-checks-005.jsonl",
+      "bytes": 321637,
+      "sha256": "085a3f0aac4c86b05df74aff859991f0db9029c7f87b2a745c51e7e2aa5861ee"
+    },
+    {
+      "path": "r9/inventories/artifact-checks-006.jsonl",
+      "bytes": 357035,
+      "sha256": "cf47426b6370ca114b3e0652d4a3a18df545f4957ae1bb712dc245fcbee6e515"
+    },
+    {
+      "path": "r9/inventories/artifact-checks-007.jsonl",
+      "bytes": 364394,
+      "sha256": "85b5ce35045221b624d7a5f87d325aba8773c65f8de9afe6319bb29bca705bee"
+    },
+    {
+      "path": "r9/inventories/artifact-checks-008.jsonl",
+      "bytes": 342286,
+      "sha256": "b8f33c8158bdd63ef7c83f268c2a0343cca2e04c91f7c1399ad30113a0774976"
+    },
+    {
+      "path": "r9/inventories/artifact-checks-009.jsonl",
+      "bytes": 417278,
+      "sha256": "e5be0ca129eb5a3e407e04b4fdba961be4a50a4714a6d0b39970cfdd7750c370"
+    },
+    {
+      "path": "r9/inventories/artifact-checks-010.jsonl",
+      "bytes": 475918,
+      "sha256": "c52fbe9b0ffdd3eedcb0e6487452d8d8c493cd8e993c50de011248f75f87d2bc"
+    },
+    {
+      "path": "r9/inventories/artifact-checks-011.jsonl",
+      "bytes": 482589,
+      "sha256": "e7cb32718d9061fefc5dba49f98d5a439289a297839fd3ec59c8ef982b3143b9"
+    },
+    {
+      "path": "r9/inventories/artifact-checks-012.jsonl",
+      "bytes": 479566,
+      "sha256": "960533903c25de2e9e2910119e22f1e3d2460d1888f5ac6b2ffe08ed20351114"
+    },
+    {
+      "path": "r9/inventories/artifact-checks-013.jsonl",
+      "bytes": 475879,
+      "sha256": "78594b86ec74d45dd1ef5e7cd65c79e6e3c9457211b30afeb3e73d08c8dc43f5"
+    },
+    {
+      "path": "r9/inventories/artifact-checks-014.jsonl",
+      "bytes": 484597,
+      "sha256": "b7762680846e800283b504abdd8ba3aac04e252c49f835c01c56abdb431b7f46"
+    },
+    {
+      "path": "r9/inventories/artifact-checks-015.jsonl",
+      "bytes": 454291,
+      "sha256": "b20fe8bf2ec265e3c321f175c404cf64b3ef7caecca8c0a50174991eebe63d4b"
+    },
+    {
+      "path": "r9/inventories/artifact-checks-016.jsonl",
+      "bytes": 447810,
+      "sha256": "5f4aa3ab2569bb9615cb19e707ff67e32a576cbb0017840e898659521b6293bb"
+    },
+    {
+      "path": "r9/inventories/artifact-checks-017.jsonl",
+      "bytes": 465256,
+      "sha256": "d27504b0588a6c3e25cdf67283ff498e062f6a157db2ab5a51914f59413abe7f"
+    },
+    {
+      "path": "r9/inventories/artifact-checks-018.jsonl",
+      "bytes": 482006,
+      "sha256": "93a241382382096b2e82eebb25f358325461c8423a1ccf9dacdf1b0da85da367"
+    },
+    {
+      "path": "r9/inventories/artifact-checks-019.jsonl",
+      "bytes": 485011,
+      "sha256": "ee058710ce3542b7bc145925aa0d805f6b46a22f0e4b78e0289ac53ab5c3c393"
+    },
+    {
+      "path": "r9/inventories/artifact-checks-020.jsonl",
+      "bytes": 495242,
+      "sha256": "68a78c559d90989cfa51974266c98aba1827b665a1199a3806ef0b1fdafba114"
+    },
+    {
+      "path": "r9/inventories/artifact-checks-021.jsonl",
+      "bytes": 478941,
+      "sha256": "c379b9853318a7709ae152e37750270ca0379cc5c48d559a72bce7e0eb964e71"
+    },
+    {
+      "path": "r9/inventories/artifact-checks-022.jsonl",
+      "bytes": 512968,
+      "sha256": "2439e85ca6db38c8a33bc94be3700f875acb2a10687db06edd2a60f1ea55e67d"
+    },
+    {
+      "path": "r9/inventories/artifact-checks-023.jsonl",
+      "bytes": 508035,
+      "sha256": "00f12094f475819366c176f5734c65c663b32ca02b705fa721504f076005d0e2"
+    },
+    {
+      "path": "r9/inventories/artifact-checks-024.jsonl",
+      "bytes": 525666,
+      "sha256": "7a3d0052e232646ba1959a3d1fe755e4dbcbf20e70da528d7df86fef61ecd5f0"
+    },
+    {
+      "path": "r9/inventories/artifact-checks-025.jsonl",
+      "bytes": 455258,
+      "sha256": "945fa71f40adf595729ec248b13e78d9974ea36777c90bbd87f44f53b4ff20b3"
+    },
+    {
+      "path": "r9/inventories/artifact-checks-026.jsonl",
+      "bytes": 247370,
+      "sha256": "438c6e9468f2abc0d71fa6d0a9b231d0a6ff03df8819fb6c528899997c90550f"
+    },
+    {
+      "path": "r9/r9-manifests.json",
+      "bytes": 319,
+      "sha256": "5bdf99a108a29a3a684ecc349124063d01d8b79de38214607b7e3180966ffb92"
+    },
+    {
+      "path": "r9/r9.executed-review_packets.py",
+      "bytes": 39232,
+      "sha256": "61e5a3cea39167b023672213ebe26ee4f9bfbcec7fab34d4c2649db901d80c33"
+    },
+    {
+      "path": "r9/r9.raw.log",
+      "bytes": 1398,
+      "sha256": "0c194bb39c2ef81a727c2092e4e97f65722a8c0e14ad67efa2df7d9b40e69022"
+    },
+    {
+      "path": "r9/receipt.public.json",
+      "bytes": 7472,
+      "sha256": "bd965ccff027f3cf0d19196a671f007fe43f5680a7eace8771ff9b4feeb39de3"
+    },
+    {
+      "path": "r9/report.json",
+      "bytes": 25409,
+      "sha256": "cc15f49864b1404ef5c2b171d55958364f8b69e16993bdbfb88344add05a7b6c"
+    },
+    {
+      "path": "root/root-strict-packet-review.public.json",
+      "bytes": 2231,
+      "sha256": "ee1372883e2bdc378f319e4e2049af43ee2bf86a7e7676d8e61db6aecdf439f6"
+    },
+    {
+      "path": "root/root-strict-packet-review.py",
+      "bytes": 3534,
+      "sha256": "608fde85bc9d04937cc3348bc3816a0ae212d4adee35dacfb2d8cf76ae9cc0a7"
+    }
+  ]
+}
