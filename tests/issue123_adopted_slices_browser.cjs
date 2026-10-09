@@ -52,8 +52,36 @@ const visible=selector=>read(`(()=>{
 const rect=selector=>read(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)throw Error('Missing '+${JSON.stringify(selector)});const r=e.getBoundingClientRect(),s=getComputedStyle(e);return {x:r.x,y:r.y,left:r.left,right:r.right,top:r.top,bottom:r.bottom,width:r.width,height:r.height,display:s.display,visibility:s.visibility};})()`);
 const dump=()=>read(`api('dump').then(r=>{if(!r.ok||typeof r.text!=='string')throw Error(JSON.stringify(r));return r.text;})`);
 async function assertHeaderActions(width){
-  const detail=await read(`(()=>{const h=document.querySelector('.object-workspace-topbar').getBoundingClientRect();return ['#faceUndoButton','#faceRedoButton','#workspaceFitButton','#workspaceToggleLeft','#workspaceToggleRight','#fileMenuBtn','#workspaceProjectActions .project-save','#workspaceProjectActions .project-info-button'].map(selector=>{const e=document.querySelector(selector),r=e.getBoundingClientRect();return {selector,width:r.width,height:r.height,inside:r.left>=0&&r.right<=innerWidth&&r.top>=h.top&&r.bottom<=h.bottom,hit:e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)),rightActions:document.querySelector('.object-workspace-actions').contains(e)};});})()`);
-  check('original history and every visible action remain reachable inside header at '+width,detail.every(r=>r.width===0&&width>900&&r.selector.startsWith('#workspaceToggle') || r.width>0&&r.height>0&&r.inside&&r.hit&&r.rightActions&&(width>560||r.width>=44&&r.height>=44)),detail);
+  const detail=await read(`(()=>{
+    const h=document.querySelector('.object-workspace-topbar').getBoundingClientRect();
+    const viewport=document.querySelector('#faceEditorViewport').getBoundingClientRect();
+    function permanentPanel(selector,side){
+      const e=document.querySelector(selector),s=getComputedStyle(e),r=e.getBoundingClientRect();
+      const hit=e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2));
+      const visible=s.display!=='none'&&s.visibility!=='hidden'&&r.width>0&&r.height>0;
+      const inside=r.left>=0&&r.right<=innerWidth&&r.top>=0&&r.bottom<=innerHeight;
+      const viewportUncovered=side==='left'?r.right<=viewport.left:r.left>=viewport.right;
+      return {selector,visible,inside,hit,position:s.position,viewportUncovered,
+        left:r.left,right:r.right,top:r.top,bottom:r.bottom,width:r.width,height:r.height,
+        ok:visible&&inside&&hit&&s.position!=='fixed'&&viewportUncovered};
+    }
+    return ['#faceUndoButton','#faceRedoButton','#workspaceFitButton','#workspaceToggleLeft','#workspaceToggleRight','#fileMenuBtn','#workspaceProjectActions .project-save','#workspaceProjectActions .project-info-button'].map(selector=>{
+      const e=document.querySelector(selector),r=e.getBoundingClientRect(),s=getComputedStyle(e);
+      // The established left drawer begins at900; the right drawer at680.
+      // A hidden opener is acceptable only when its real persistent panel is
+      // painted, hit-testable, wholly inside the viewport and outside the canvas.
+      const panel=selector==='#workspaceToggleLeft'&&innerWidth>900?
+        permanentPanel('#objectWorkspace .face-layer-panel','left'):
+        selector==='#workspaceToggleRight'&&innerWidth>680?
+        permanentPanel('#objectWorkspace .face-inspector-panel','right'):null;
+      return {selector,width:r.width,height:r.height,
+        inside:r.left>=0&&r.right<=innerWidth&&r.top>=h.top&&r.bottom<=h.bottom,
+        hit:e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)),
+        rightActions:document.querySelector('.object-workspace-actions').contains(e),
+        panel,hiddenNonApplicable:r.width===0&&r.height===0&&s.display==='none'&&panel?.ok===true};
+    });
+  })()`);
+  check('original history and every visible action remain reachable inside header at '+width,detail.every(r=>r.hiddenNonApplicable || r.width>0&&r.height>0&&r.inside&&r.hit&&r.rightActions&&(width>560||r.width>=44&&r.height>=44)),detail);
 }
 async function settle(){await wait(`connection.phase==='ready'&&!oc.busy&&!ReferenceWorkspace.busy&&!ReferenceWorkspace.history.group`);await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));}
 async function disclose(selector){for(let i=0;i<8;i++){const item=await page.locator(selector).evaluate(e=>{for(let n=e.parentElement;n;n=n.parentElement)if(n.tagName==='DETAILS'&&!n.open)return {id:n.id,text:n.querySelector(':scope > summary')?.textContent};return null;});if(!item)return;const summary=item.id?page.locator('#'+item.id+' > summary'):page.locator('summary').filter({hasText:item.text}).first();await summary.click();}throw Error('Disclosure nesting exceeds bound: '+selector);}

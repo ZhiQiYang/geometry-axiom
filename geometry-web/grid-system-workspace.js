@@ -654,12 +654,19 @@
     if ((next && next.join()) === (s.hover && s.hover.join())) return;
     s.hover = next; drawGrid(s);
   }
-  function cameraPoint(s, event) { const view=$('igGridView'),k=1/fitCamera(s,box(view)),r=view.getBoundingClientRect(),c=s.camera;return [c[0]+(event.clientX-r.left-view.clientLeft-RL)*k, c[1]+(event.clientY-r.top-view.clientTop-RT)*k]; }
-  function inPlot(event) { const view=$('igGridView'),r=view.getBoundingClientRect();return event.clientX-r.left-view.clientLeft>=RL&&event.clientY-r.top-view.clientTop>=RT; }
+  // Rendering uses SVG viewBox units, which can differ from CSS pixels after
+  // contain fitting, fractional layout or a transformed ancestor.
+  function gridViewPoint(event) {
+    const view=$('igGridView'),point=view.createSVGPoint();
+    point.x=event.clientX;point.y=event.clientY;
+    return point.matrixTransform(view.getScreenCTM().inverse());
+  }
+  function cameraPoint(s, event) { const view=$('igGridView'),k=1/fitCamera(s,box(view)),p=gridViewPoint(event),c=s.camera;return [c[0]+(p.x-RL)*k, c[1]+(p.y-RT)*k]; }
+  function inPlot(event) { const p=gridViewPoint(event);return p.x>=RL&&p.y>=RT; }
   function bindCamera(s) {
     const view=$('igGridView');let drag=null;
-    view.addEventListener('pointerdown',e=>{if(!canEdit(s)||e.button!==0&&e.button!==1)return;fitCamera(s,box(view));s.hover=null;drag={x:e.clientX,y:e.clientY,c:s.camera.slice(),moved:false,id:e.pointerId};view.setPointerCapture(e.pointerId);});
-    view.addEventListener('pointermove',e=>{if(!drag){hoverCell(s,e);return;}const dx=e.clientX-drag.x,dy=e.clientY-drag.y;drag.moved ||= Math.hypot(dx,dy)>5;if(!drag.moved)return;const k=(drag.c[2]-drag.c[0])/box(view).pw;s.camera=[drag.c[0]-dx*k,drag.c[1]-dy*k,drag.c[2]-dx*k,drag.c[3]-dy*k];drawGrid(s);});
+    view.addEventListener('pointerdown',e=>{if(!canEdit(s)||e.button!==0&&e.button!==1)return;fitCamera(s,box(view));s.hover=null;drag={x:e.clientX,y:e.clientY,point:gridViewPoint(e),c:s.camera.slice(),scale:(s.camera[2]-s.camera[0])/box(view).pw,moved:false,id:e.pointerId};view.setPointerCapture(e.pointerId);});
+    view.addEventListener('pointermove',e=>{if(!drag){hoverCell(s,e);return;}drag.moved ||= Math.hypot(e.clientX-drag.x,e.clientY-drag.y)>5;if(!drag.moved)return;const p=gridViewPoint(e),dx=p.x-drag.point.x,dy=p.y-drag.point.y,k=drag.scale;s.camera=[drag.c[0]-dx*k,drag.c[1]-dy*k,drag.c[2]-dx*k,drag.c[3]-dy*k];drawGrid(s);});
     view.addEventListener('pointerup',e=>{if(!drag)return;const moved=drag.moved;drag=null;if(view.hasPointerCapture(e.pointerId))view.releasePointerCapture(e.pointerId);if(!canEdit(s)||moved||!inPlot(e)||s.mode!=='binding'&&!s.defs?.every(Boolean))return;
       try{const cell=cellAtPoint(s,e);if(s.mode!=='binding'){s.sel=s.sel&&s.sel.join()===cell.join()?null:cell;drawGrid(s);syncRuleEditor(s);return;}$('igCellI').value=cell[0].toString();$('igCellJ').value=cell[1].toString();alignment(s);drawGrid(s);}catch(err){status(err.message,true);}});
     view.addEventListener('pointerleave',()=>{if(!drag&&s.hover){s.hover=null;drawGrid(s);}});
@@ -769,11 +776,12 @@
   function boundaryTransform(b, height=360) { const points=b.loops[0].verts,minU=Math.min(...points.map(v=>v[0])),maxU=Math.max(...points.map(v=>v[0])),minV=Math.min(...points.map(v=>v[1])),maxV=Math.max(...points.map(v=>v[1]));const scale=Math.min((W-100)/Math.max(1,maxU-minU),(height-80)/Math.max(1,maxV-minV));return {point:p=>[W/2+(p[0]-(minU+maxU)/2)*scale,height/2+(p[1]-(minV+maxV)/2)*scale],rect:[minU,minV,maxU,maxV]}; }
   function boundaryPath(b,t) { return b.loops.map(l=>l.verts.map((v,k)=>(k?'L':'M')+t.point(v).join(' ')).join(' ')+' Z').join(' '); }
   function drawBoundary(s) {
-    const view=$('igBoundaryView');view.replaceChildren();if(!s.boundary)return;
+    const view=$('igBoundaryView'),focusedVertex=view.contains(document.activeElement)?document.activeElement.dataset.igVertex:null;view.replaceChildren();if(!s.boundary)return;
     const t=boundaryTransform(s.boundary);
     svg('path',{d:boundaryPath(s.boundary,t),fill:'#e8f5f0','fill-rule':'evenodd',stroke:'#4f8b7c','stroke-width':1.6},view);
     for(const v of s.vertices) {const [cx,cy]=t.point([v.u,v.v]),selected=v===s.vertex;const node=svg('circle',{cx,cy,r:selected?9:7,fill:selected?'#c66b2c':'#fff',stroke:selected?'#9e4c15':'#267562','stroke-width':2,'data-ig-vertex':vertexId(v),...(v.key ? {'data-ig-vertex-key':v.key} : {}),tabindex:0,role:'button','aria-label':`${vertexTitle(v)} (${v.u}, ${v.v})`},view);const pick=()=>{if(!canEdit(s))return;s.vertex=v;$('igVertex').value=vertexId(v);drawBoundary(s);alignment(s);};node.addEventListener('click',pick);node.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pick();}});label(view,cx+11,cy-9,(v.loop<0?'外':'孔'+(v.loop+1)+'·')+(v.index+1),{'font-size':12,fill:'#285c51'});}
     $('igVertexSummary').textContent=s.vertex?`2 · 已選 ${vertexTitle(s.vertex)} (${s.vertex.u}, ${s.vertex.v})。`:'2 · 點選圖中的實際頂點，包括孔洞。';
+    if(focusedVertex!=null)Array.from(view.querySelectorAll('[data-ig-vertex]')).find(node=>node.dataset.igVertex===focusedVertex)?.focus({preventScroll:true});
   }
   async function drawResult(s) {
     const view=$('igResultView');view.replaceChildren();if(!s.boundary||!s.binding)return;
