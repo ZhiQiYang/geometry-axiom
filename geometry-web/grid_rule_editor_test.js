@@ -148,7 +148,7 @@ module.exports=async function ruleEditorTests({send,eval_,sleep,click,waitForUI,
     await newProject();await ctl('#emptyNewGridSystem');await wait(`!!$('igName')&&!$('igName').disabled`);await fill('#igName',`Orphan authored ${intent}`);await ctl('#igSaveSource');await impact();await confirm();
     await ctl('#igRuleAdd');await ctl('#igRulePreview');await impact();await confirm();
     await ctl(`[data-ig-rule-key="1"] [data-ig-rule-action="${intent}"]`);if(intent==='edit')await fill('#igRuleName','Pending orphan raw');const ownedRaw=await raw(),ownedId=ownedRaw.baseRef.id;
-    await leave();await ctl(`.ocard[data-kind="grid-system"][data-id="${ownedId}"]`);await ctl('#gridObjectDelete');await settled();
+    await leave();await ctl(`.ocard[data-kind="grid-system"][data-id="${ownedId}"]`);await ctl('.gi-delete-section > summary');await ctl('#gridObjectDelete');await settled();
     if(await read(`!!document.querySelector('.reference-impact[open]')`))await confirm();await wait('oc.gridSystems.length===0');
     const orphanScene=await dump(),orphanCount=await history();
     check(`${intent} 正式卡片刪除來源保留原始 rule 草稿`,JSON.stringify(await raw())===JSON.stringify(ownedRaw));

@@ -240,15 +240,15 @@
 
       <div id="viewToolbar" class="view-toolbar" hidden>
         <div class="v3-seg" role="group" aria-label="三視圖工具">
-          <button type="button" class="v3-seg-btn active" data-v3-tool="view" title="檢視／選取"><span data-icon="pointer"></span>檢視</button>
+          <button type="button" class="v3-seg-btn active" data-v3-tool="view" title="選取／檢視"><span data-icon="pointer"></span>選取</button>
           <button type="button" class="v3-seg-btn" data-v3-tool="rect" title="拉矩形建面"><span data-icon="rectangle"></span>矩形</button>
-          <button type="button" class="v3-seg-btn" data-v3-tool="hole" title="挖矩形孔"><span data-icon="hole"></span>挖孔</button>
+          <button type="button" class="v3-seg-btn" data-v3-tool="hole" title="矩形開口"><span data-icon="hole"></span>開口</button>
           <button type="button" class="v3-seg-btn" data-v3-tool="edit" title="編輯邊界"><span data-icon="edit"></span>編輯</button>
         </div>
         <select id="tool" class="v3-native-select" aria-hidden="true" tabindex="-1">
-          <option value="view">檢視／選取</option>
+          <option value="view">選取／檢視</option>
           <option value="rect">▭ 拉矩形建面</option>
-          <option value="hole">▨ 挖矩形孔</option>
+          <option value="hole">矩形開口</option>
           <option value="edit">✥ 編輯邊界</option>
         </select>
         <label id="v3PlaneControls" class="v3-plane-controls" hidden>工作面
@@ -260,7 +260,7 @@
       <div id="focusBar" class="focus-bar" hidden>
         <button id="btnBack" type="button"><span data-icon="arrowLeft"></span>返回</button>
         <span id="crumb"></span>
-        <button id="btnHole2" type="button"><span data-icon="hole"></span>挖孔</button>
+        <button id="btnHole2" type="button"><span data-icon="hole"></span>開口</button>
       </div>
 
       <div id="emptyState" class="empty-state" hidden>
@@ -381,7 +381,7 @@
         <div class="shape-tool-menu">
           <button id="shapeToolButton" type="button" class="workspace-tool" aria-expanded="false" aria-controls="shapeToolPop"><span data-icon="notch"></span><span>形狀 ▾</span></button>
           <div id="shapeToolPop" class="shape-tool-pop" hidden>
-            <button type="button" data-shape-action="notch">凹口</button><button type="button" data-shape-action="extend">外凸</button><button type="button" data-shape-action="push">推拉</button><button type="button" data-shape-action="corner">切角</button><button type="button" data-shape-action="hole">開口</button>
+            <button type="button" data-shape-action="notch">凹口</button><button type="button" data-shape-action="extend">外凸</button><button type="button" data-shape-action="push">推拉</button><button type="button" data-shape-action="corner">切角</button>
           </div>
         </div>
         <button type="button" class="workspace-tool" data-face-tool="guide" title="參考線 (l)"><span data-icon="guide"></span><span>參考線</span><kbd>L</kbd></button>

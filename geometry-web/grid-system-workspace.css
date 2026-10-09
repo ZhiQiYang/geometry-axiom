@@ -147,6 +147,7 @@
 .ig-zoombar { position: absolute; right: 16px; bottom: 16px; display: flex; align-items: center; gap: 2px; padding: 3px; border: 1px solid var(--border); border-radius: 8px; background: #fff; box-shadow: var(--shadow-sm); }
 .ig-zoombar button { min-width: 34px; min-height: 34px; padding: 0 10px; border: 0; background: transparent; font-size: 14px; }
 .ig-zoombar button:hover { background: var(--panel-muted); }
+.ig-zoombar button svg,.ig-back svg { width:18px;height:18px;flex:none;vertical-align:middle; }
 .ig-zoombar #igFit { font-size: 12px; font-weight: 500; }
 .ig-zoom { min-width: 52px; padding: 0 8px; text-align: center; color: var(--ink); font: 12px var(--ig-mono); white-space: nowrap; }
 .ig-zoom-sep { width: 1px; height: 20px; margin: 0 3px; background: var(--border); }

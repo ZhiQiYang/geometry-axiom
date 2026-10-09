@@ -6956,11 +6956,15 @@ async function main() {
         && ws.querySelector('.object-workspace-topbar .project-save')
         && !!ws.querySelector('.object-workspace-topbar [data-project-status]');})()`));
     await clickSelector('#shapeToolButton');
-    check('P64 F2 形狀選單公開五個操作',await eval_(`!$('shapeToolPop').hidden && ['notch','extend','push','corner','hole'].every(a=>$('shapeToolPop').querySelector('[data-shape-action="'+a+'"]'))`));
+    check('P64 F2 四個不同形狀操作與唯一 R 開口入口',await eval_(`!$('shapeToolPop').hidden && ['notch','extend','push','corner'].every(a=>$('shapeToolPop').querySelector('[data-shape-action="'+a+'"]')) && !$('shapeToolPop').querySelector('[data-shape-action="hole"]') && document.querySelectorAll('#faceWorkspaceTools [data-face-tool="hole"]').length===1 && document.querySelector('#faceWorkspaceTools [data-face-tool="hole"] kbd').textContent==='R'`));
     await clickSelector('[data-shape-action="notch"]');
     check('P64 F2 凹口等待選邊並可取消',await eval_(`fe.queuedShapeAction==='notch' && $('faceCanvasHint').textContent.includes('外環邊')`));
     for (const type of ['keyDown','keyUp']) await send('Input.dispatchKeyEvent',{type,key:'Escape',code:'Escape',windowsVirtualKeyCode:27});
-    check('P64 F2 Esc 取消形狀選擇',await eval_(`!fe.queuedShapeAction && !!oc.edit`));
+    const cancelledShape=await eval_(`!fe.queuedShapeAction && !!oc.edit`);
+    for (const type of ['keyDown','keyUp']) await send('Input.dispatchKeyEvent',{type,key:'r',code:'KeyR',windowsVirtualKeyCode:82});
+    const retainedHoleShortcut=await eval_(`fe.tool==='hole' && !!oc.edit && !fe.queuedShapeAction`);
+    for (const type of ['keyDown','keyUp']) await send('Input.dispatchKeyEvent',{type,key:'Escape',code:'Escape',windowsVirtualKeyCode:27});
+    check('P64 F2 Esc 取消形狀選擇且 R 開口仍可啟用取消',cancelledShape&&retainedHoleShortcut&&await eval_(`!fe.queuedShapeAction && !!oc.edit && fe.tool==='select'`));
     check('P64 F3-F5 四頁、構件段與形狀庫',await eval_(`(()=>{
       const tabs=[...document.querySelectorAll('#faceInspectorTabs [data-fi-tab]')].map(e=>e.dataset.fiTab);
       fiShowTab('shape');const shape=$('faceInspectorContent').contains($('faceShapeButton'))&&!$('faceShapeButton').hidden;

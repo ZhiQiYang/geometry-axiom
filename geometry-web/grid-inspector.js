@@ -45,7 +45,7 @@
       systems:structuredClone(oc.gridSystems || []),boundaries:structuredClone((oc.faces || []).filter(b=>b.kind==='boundary')),
       source:binding ? structuredClone(oc.gridSystems.find(x=>x.id===object.system)) : structuredClone(object),
       anchor:binding ? structuredClone(object.anchor) : null,vertices:[],vertex:null,boundary:null};
-    pane.innerHTML=`<section id="gridInlineInspector" class="gi-inspector" data-gi-kind="${binding?'binding':'source'}"><header class="gi-header"><div class="gi-heading"><span class="gi-eyebrow">${binding?'配置設定':'網格來源'}</span><h2>${binding?'網格配置 '+object.id:esc(object.name)}</h2></div><div class="gi-actions"><button type="button" id="gridObjectOpen" class="btn gi-open">完整工作區</button>${!binding && isInfinite(object)?'<button type="button" id="gridObjectNewBinding" class="btn">建立配置</button>':''}<button type="button" id="gridObjectDelete" class="btn gi-delete" aria-label="刪除${binding?'配置':'來源'}">刪除</button></div></header>${binding?bindingForm(s):sourceForm(s)}<footer class="gi-footer"><p id="giStatus" role="status" aria-live="polite">${binding?'對齊邊界的實際頂點與格子內的位置。':'修改間距會一起預覽使用此來源的配置。'}</p></footer></section>`;
+    pane.innerHTML=`<section id="gridInlineInspector" class="gi-inspector" data-gi-kind="${binding?'binding':'source'}"><header class="gi-header"><div class="gi-heading"><span class="gi-eyebrow">${binding?'配置設定':'網格來源'}</span><h2>${binding?'網格配置 '+object.id:esc(object.name)}</h2></div><div class="gi-actions"><button type="button" id="gridObjectOpen" class="btn gi-open">完整工作區</button>${!binding && isInfinite(object)?'<button type="button" id="gridObjectNewBinding" class="btn">建立配置</button>':''}</div></header>${binding?bindingForm(s):sourceForm(s)}<footer class="gi-footer"><p id="giStatus" role="status" aria-live="polite">${binding?'對齊邊界的實際頂點與格子內的位置。':'修改間距會一起預覽使用此來源的配置。'}</p><details class="gi-delete-section"><summary>刪除${binding?'配置':'來源'}</summary><button type="button" id="gridObjectDelete" class="btn gi-delete" aria-label="刪除${binding?'配置':'來源'}">刪除</button></details></footer></section>`;
     s.node=pane.querySelector('#gridInlineInspector');
     $(s,'gridObjectOpen').onclick=()=>openFull(s);
     $(s,'gridObjectNewBinding')?.addEventListener('click',()=>{if(!s.busy)workspace.createBinding(s.object.id);});
@@ -114,7 +114,7 @@
     node.addEventListener('click',fn);node.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fn(e);}});
   }
   function drawBoundary(s) {
-    const view=$(s,'giBoundaryView');view.replaceChildren();if(!s.boundary)return;
+    const view=$(s,'giBoundaryView'),focusedVertex=view.contains(document.activeElement)?document.activeElement.getAttribute('data-gi-vertex'):null;view.replaceChildren();if(!s.boundary)return;
     const points=s.boundary.loops.flatMap(l=>l.verts),xs=points.map(p=>p[0]),ys=points.map(p=>p[1]);
     const minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys);
     const scale=Math.min(184/Math.max(1,maxX-minX),66/Math.max(1,maxY-minY));
@@ -126,9 +126,10 @@
       if(selected){const t=svg('text',{x:Math.max(9,Math.min(165,p[0]+9)),y:p[1]<25?p[1]+16:p[1]-8,class:'gi-vertex-label'},view);t.textContent='頂點 '+(v.index+1);}
       activate(g,()=>{if(!current(s)||s.busy)return;s.vertex=v;$(s,'giVertex').value=vertexId(v);drawBoundary(s);alignmentStatus(s);});
     }
+    if(focusedVertex!=null)Array.from(view.querySelectorAll('[data-gi-vertex]')).find(node=>node.getAttribute('data-gi-vertex')===focusedVertex)?.focus({preventScroll:true});
   }
   function drawAnchor(s) {
-    const view=$(s,'giAnchorView');view.replaceChildren();
+    const view=$(s,'giAnchorView'),focusedAnchor=view.contains(document.activeElement)?document.activeElement.getAttribute('data-gi-anchor'):null;view.replaceChildren();
     svg('rect',{x:14,y:14,width:72,height:72,rx:2,class:'gi-anchor-cell'},view);
     svg('path',{d:'M50 14V86M14 50H86',class:'gi-anchor-midlines'},view);
     let selectedTitle=null;
@@ -140,6 +141,7 @@
       activate(g,()=>{if(!current(s)||s.busy)return;s.anchor=GridAnchorPositions.fractions(position);drawAnchor(s);alignmentStatus(s);});
     }
     $(s,'giAnchorSummary').textContent=(selectedTitle||'自訂比例')+' · '+s.anchor.map(a=>a.num+'/'+a.den).join(', ');
+    if(focusedAnchor!=null)Array.from(view.querySelectorAll('[data-gi-anchor]')).find(node=>node.getAttribute('data-gi-anchor')===focusedAnchor)?.focus({preventScroll:true});
   }
   function alignmentStatus(s) {
     status(s,s.vertex?`${vertexTitle(s.vertex)} (${s.vertex.uv.join(', ')}) ↔ cell (${$(s,'giCellI').value}, ${$(s,'giCellJ').value})；格內 ${$(s,'giAnchorSummary').textContent}`:'請從縮圖或清單選擇一個實際頂點。');

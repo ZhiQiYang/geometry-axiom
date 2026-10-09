@@ -1,5 +1,12 @@
 # DOM 合約(測試依賴清單)
 
+## #123 最後採納合併（2026-10-09）
+
+- 簡式檢查器的原 `#gridObjectDelete` 位於 footer 的閉合 `.gi-delete-section`；正常展開 summary 後才可點原刪除按鈕。原 owner／busy／核心預覽確認保持，不新增第二重確認。`#gridObjectOpen/#gridObjectNewBinding` 的原 ID、功能及位置保留。
+- `#shapeToolPop [data-shape-action]` 只含 notch／extend／push／corner 四個不同形狀操作；重複 hole 選單入口合併至既有 `[data-face-tool="hole"]` 和 R。`feSetTool('hole')`、正常開口與取消仍用原路徑。三視圖 `data-v3-tool=view/hole`、`#tool` 值及 `#btnHole2` 不變，呈現詞彙與面內統一為選取／開口。
+- `#igClose/#igZoomOut/#igZoomIn` 使用共用 arrowLeft／minus／plus SVG，原 aria labels、hit targets、handlers 及格距／pixel 讀數不變。簡式頂點／九點重繪保留正在操作的 `data-gi-vertex/data-gi-anchor` 鍵盤焦點；完整工作區保留 `data-ig-vertex` 身分。
+- `#igGridView` 的真 pointer 以 SVG screen CTM 的反矩陣轉回 viewBox units，再做原 mm camera inverse；命中／縮放／平移共用轉換。拖曳門檻仍是 5 個螢幕像素，原 floor／native cell oracle 不變。
+
 ## Q38 斷面與拉伸工作區
 
 既有建立選單的 `#btnNewSectionProfile` 開啟唯一 `#sectionProfileWorkspace`。`#spProfileSelect` 切換輪廓；`#spNewProfile`、`#spNewMember`、`#spNewRun` 只建立未套用表單。`#spOutline` 每行輸入一對整數 u,v；`#spU/#spV` 是直接座標。2D 圖的 `[data-sp-pick]` 可用滑鼠或 Enter／Space 選構件。
@@ -203,7 +210,7 @@ P73 `uiux_review_test.js` 透過 `cdp_test.js` 驗證本節，也可用 `GEOMETR
 以下保留當日決策；主畫布入口、工具列、物件清單與檢視器位置若與上方 2026-09-28 節不同，以新節為準。
 
 - 主頂列 `.tool-group` 顯示選取／平移與 `#btnNewRect`／`#btnNewPoly` 四種工具；左欄 `.start-options` 是描面、六面盒兩張起點卡，`.quick-create-grid` 只有 `#btnNewSpace`、`#btnNewColumn`、`#btnNewBeam` 一列。`#sceneList` 位於 `#fileMenuPop` 內，主頂列顯示 `[data-project-name]`／`[data-project-status]`。保存控制 `[data-project-action="save"]` 會在進出工作區時移動同一個 DOM 節點，工作區掛點為 `#workspaceProjectActions`；`#btnSaveProject` 是「另存新檔」選單入口。
-- `#objectWorkspace` 只有 `.object-workspace-topbar` 和 `.object-workspace-statusbar`；已移除 `.workspace-project-bar`／`.workspace-file-menu`。工作區頂列借用主頂列的 `#fileMenu`，Esc 關閉 `#fileMenuPop` 而不離開工作區。`#shapeToolButton` 開啟 `#shapeToolPop [data-shape-action]`；選操作後以 `fe.queuedShapeAction` 等待邊／角，開口轉入既有開口工具。外環邊的浮動列和右鍵選單含 `[data-fe-act="timber"]`，沿選邊預填並放置角材。
+- `#objectWorkspace` 只有 `.object-workspace-topbar` 和 `.object-workspace-statusbar`；已移除 `.workspace-project-bar`／`.workspace-file-menu`。工作區頂列借用主頂列的 `#fileMenu`，Esc 關閉 `#fileMenuPop` 而不離開工作區。`#shapeToolButton` 開啟 `#shapeToolPop [data-shape-action]` 的 notch／extend／push／corner；選操作後以 `fe.queuedShapeAction` 等待邊／角。開口使用唯一原 toolbar／R 工具入口。外環邊的浮動列和右鍵選單含 `[data-fe-act="timber"]`，沿選邊預填並放置角材。
 - `#faceInspectorTabs [data-fi-tab]` 順序是 `prop,shape,components,underlay`，右欄對應 `[data-fi-pane]`。原 `guide,timber,grid` 仍可傳給 `fiShowTab()`，會打開構件頁並選中同一 `#faceComponentSwitch` 子分段，只顯示相應 `[data-component-section]`。形狀庫 `#faceShapeButton` 由程式移入形狀頁；角材表單 `#tbPlace` 直接提交同一筆宣告與放置交易。`#faceReferenceSummary` 顯示來源，`[data-reference-step]` 表示選頁／校準／描外環。未放置面標示「未放置」。
 - 空間左欄 `#spaceAddMembers` 在成員面標題旁；`#spaceSizeTools` 與放柱／樑工具現在位於 `.space-plan-strip` 平面工具列，三視圖不顯示放置工具。三視圖矩形工具使用 `#v3PlaneControls`、唯一可見的 `#v3ToolbarSurf`、`#v3ExistingZ`、`#newZ` 顯示並修改工作面與高度；原 `#workSurf` 隱藏相容值／consumer 保留。
 - 審查項目與驗收流程見 `UIUX-REVIEW-2026-09-27.md`；下列舊節保留各階段的歷史決策。除 2026-09-28 更新的主畫布範圍外，若其 DOM 位置或頁數不同，以本節為準。
