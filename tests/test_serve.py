@@ -471,7 +471,8 @@ class BridgeServerTests(unittest.TestCase):
         mod.root_context.editor_creations[request_id]={'sequence':7,'context':context_id}
         mod.scenario_contexts[context_id]=native
         query={'action':'resolve','requestId':request_id,'sequence':7,'session':mod.root_context.session,'context':context_id}
-        before=(dict(mod.root_context.editor_creations),dict(mod.scenario_contexts),mod.root_context.editor_sequence)
+        import copy
+        before=(copy.deepcopy(mod.root_context.editor_creations),dict(mod.scenario_contexts),mod.root_context.editor_sequence)
         with patch.object(scenario_verify,'_program',side_effect=AssertionError('resolve must not prepare a process')) as program, \
              patch.object(mod,'NativeContext',side_effect=AssertionError('resolve must not allocate')) as factory, \
              patch.object(mod,'ask_bridge',side_effect=AssertionError('resolve must not ask native')) as ask, \

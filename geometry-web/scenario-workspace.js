@@ -89,6 +89,7 @@ window.ScenarioWorkspace = (() => {
     ['action','requestId','sequence','session'].every(k=>a.request?.[k]===b.request?.[k])&&(!a.context||a.context===b.context);}
   function editorControls(owner){if(edit!==owner)return;
     $('scenarioFinishEdit').disabled=!owner.ready||owner.recovered||owner.finishing||owner.cancelled||owner.ticket.phase==='retiring';
+    if($('scenarioPauseEdit'))$('scenarioPauseEdit').disabled=!owner.ready||owner.recovered||owner.finishing||owner.cancelled||owner.ticket.phase!=='active';
     $('scenarioCancelEdit').disabled=!!owner.critical||!!owner.cancelling;
     $('scenarioCancelEdit').textContent=owner.ticket.phase==='retiring'?'重試結束':'取消試改';}
   function showEditor(ticket,guard,recovered=false){const owner={ticket,id:ticket.scenarioId,guard,frame:$('scenarioEditorFrame'),recovered,ready:false};
@@ -135,6 +136,16 @@ window.ScenarioWorkspace = (() => {
   async function startEdit(){if(edit){if(!editor.open)editor.showModal();return;}const guard=lease();
     const pending=await W.readScenarioEditorTicket();guard();
     if(pending){const owner=showEditor(pending,guard,true);retained(owner);
+      if(pending.phase==='active'){
+        try{const resolved=await editorRequest({...pending.request,action:'resolve',context:pending.context});guard();
+          if(resolved.state!=='active'||resolved.context!==pending.context||resolved.requestId!==pending.request.requestId||resolved.sequence!==pending.request.sequence)
+            throw new Error('原試改不存在或無法確認；未建立另一份。');
+          await loadEditorFrame(owner,pending.context);guard();
+          await childRequest(owner,'scenario-resume',{ticket:pending});guard();
+          owner.recovered=false;owner.ready=true;owner.frame.inert=false;
+          $('scenarioEditorStatus').textContent='已續接明確暫存的完整試改；這裡的變更仍只在獨立方案內。';editorControls(owner);return;
+        }catch(error){retained(owner,error);return;}
+      }
       if(pending.phase!=='retiring')return;
       try{await retireEditor(owner);}catch(e){retained(owner,e);throw e;}
       // A verified retirement may be drained, but its cancelled lease cannot
@@ -192,10 +203,26 @@ window.ScenarioWorkspace = (() => {
       }
     }finally{old.critical=false;old.finishing=false;editorControls(old);}
   }
+  async function pauseEdit(){const owner=edit;
+    if(!owner?.ready||owner.recovered||owner.finishing||owner.cancelled||owner.ticket.phase!=='active')return;
+    owner.finishing=true;owner.frame.inert=true;editorControls(owner);
+    try{owner.guard();await childRequest(owner,'scenario-pause',{ticket:owner.ticket});owner.guard();
+      // Keep native B and the exact ticket. Closing the frame releases its
+      // browser leases; no release-freeze or close/create request is sent.
+      owner.guard.cancel();edit=null;owner.frame.src='about:blank';editor.close();
+      message('已暫存完整試改；再次選「隔離試改」可核對並續接。');
+    }catch(error){retained(owner,error);}
+    finally{owner.finishing=false;editorControls(owner);}
+  }
   window.addEventListener('message',async e=>{if(!window.GeometryNativeContext||e.origin!==location.origin||e.source!==parent||!e.data?.requestId)return;
-    const {type,requestId}=e.data;if(!['scenario-open','scenario-export','scenario-assert-frozen','scenario-release'].includes(type))return;
-    try{if(type==='scenario-open'){const start=Date.now();while(connection.phase!=='ready'){if(Date.now()-start>30000)throw new Error('方案服務尚未連線。');await new Promise(r=>setTimeout(r,50));}
-        await W.initializeScenarioProject(e.data.bytes,e.data.name,e.data.ticket);parent.postMessage({requestId,ok:true},location.origin);
+    const {type,requestId}=e.data;if(!['scenario-open','scenario-resume','scenario-pause','scenario-export','scenario-assert-frozen','scenario-release'].includes(type))return;
+    try{if(type==='scenario-open'||type==='scenario-resume'){const start=Date.now();while(connection.phase!=='ready'){if(Date.now()-start>30000)throw new Error('方案服務尚未連線。');await new Promise(r=>setTimeout(r,50));}
+        if(type==='scenario-open')await W.initializeScenarioProject(e.data.bytes,e.data.name,e.data.ticket);
+        else await W.resumeScenarioProject(e.data.ticket);
+        parent.postMessage({requestId,ok:true},location.origin);
+      }else if(type==='scenario-pause'){
+        if(connection.phase!=='ready'||pendingApiResults.size)throw new Error('操作結果尚未確認，不能暫存續接點。');
+        document.body.inert=true;const paused=await W.pauseScenarioProject(e.data.ticket);parent.postMessage({requestId,ok:true,...paused},location.origin);
       }else if(type==='scenario-export'){
         if(childExport||typeof e.data.freezeId!=='string'||!e.data.freezeId)throw new Error('上一筆方案保存尚未結束。');
         const owner={id:e.data.freezeId};childExport=owner;owner.pending=Promise.resolve().then(()=>W.freezeScenarioProject());
@@ -219,6 +246,7 @@ window.ScenarioWorkspace = (() => {
   dialog.addEventListener('cancel',e=>{e.preventDefault();close();});dialog.querySelector('[data-scenario-close]').onclick=close;
   editor.addEventListener('cancel',e=>{e.preventDefault();closeEdit().catch(e=>message(e.message));});
   $('scenarioCancelEdit').onclick=()=>closeEdit().catch(e=>message(e.message));$('scenarioFinishEdit').onclick=finishEdit;
+  if($('scenarioPauseEdit'))$('scenarioPauseEdit').onclick=pauseEdit;
   if(window.GeometryNativeContext)$('scenarioOpen').hidden=true;
   return {open:()=>{$('scenarioOpen').click();}};
 })();
