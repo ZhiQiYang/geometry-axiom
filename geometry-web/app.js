@@ -10453,6 +10453,8 @@ async function setView3(on, { persistPositions = true } = {}) {
   ++oc.navigationSequence;
   clearCanvasSelections();
   if (on === view3) return;
+  disarmEdgeInputs($("inspectorContent"));
+  disarmEdgeInputs($("faceInspectorContent"));
   hoverPickScheduler.cancel();
   closePanels(); pendingSlot = null;
   view3 = on;
@@ -10488,6 +10490,10 @@ async function setView3(on, { persistPositions = true } = {}) {
   }
 }
 $("btnObj").addEventListener("click", () => setView3(true));
+$("btnObj").addEventListener("pointerdown", e => {
+  // View navigation preserves a draft; its focus change is not a submission.
+  if (e.button === 0 && !view3) disarmEdgeInputs($("inspectorContent"));
+});
 $("btnCanvasView").addEventListener("click", () => setView3(false));
 $("btnModelLibraryMenu").addEventListener("click", () => { closeMenus(); $("btnSpaceModels").click(); });
 $("btnBack").addEventListener("click", leaveFocus);
