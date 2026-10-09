@@ -493,13 +493,36 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 data = json.loads(body)
                 if current_native_context() is not root_context:
                     raise ValueError('方案編輯只能由主方案建立或結束。')
-                if not (type(data) is dict and set(data)=={'action','requestId','sequence','session'} and
-                        data['action'] in {'create','close'} and isinstance(data['requestId'],str) and
+                resolving = type(data) is dict and data.get('action') == 'resolve'
+                keys = {'action','requestId','sequence','session'} | ({'context'} if resolving else set())
+                if not (type(data) is dict and set(data)==keys and
+                        data['action'] in {'create','close','resolve'} and isinstance(data['requestId'],str) and
                         re.fullmatch(r'[a-f0-9-]{36}',data['requestId']) and
                         type(data['sequence']) is int and 0<data['sequence']<=9007199254740991 and
-                        data['session']==root_context.session):
+                        data['session']==root_context.session and
+                        (not resolving or isinstance(data['context'],str) and re.fullmatch(r'[a-f0-9]{32}',data['context']))):
                     raise ValueError('無效的方案編輯請求。')
-                if data['action']=='create':
+                if resolving:
+                    # Inspect the exact existing tuple. Never use create as a
+                    # probe, allocate a process, ask a native command or retire B.
+                    with scenario_context_lock:
+                        previous = root_context.editor_creations.get(data['requestId'])
+                        if previous:
+                            if previous['sequence'] != data['sequence'] or previous['context'] != data['context']:
+                                raise ValueError('方案編輯請求身分不一致。')
+                            native = scenario_contexts.get(previous['context'])
+                            active = bool(native and not native.closed and not native.bridge_failure and native.bridge.poll() is None)
+                            result = {'ok':True,'state':'active' if active else 'unavailable',
+                                      'session':root_context.session,'requestId':data['requestId'],
+                                      'sequence':data['sequence'],'context':data['context']}
+                        else:
+                            # High water fences old allocations; it does not
+                            # prove that this unknown UUID was specifically retired.
+                            result = {'ok':True,'state':'absent','fenced':data['sequence']<=root_context.editor_sequence,
+                                      'session':root_context.session,'requestId':data['requestId'],
+                                      'sequence':data['sequence'],'context':data['context']}
+                    self._send(canonical_bytes(result))
+                elif data['action']=='create':
                     if BRIDGE_WSL or len(BRIDGE_CMD) != 1:
                         raise ValueError('目前環境缺少可隔離的原生執行器。')
                     command, _ = _program(BRIDGE_CMD[0])
