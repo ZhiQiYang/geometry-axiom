@@ -67,3 +67,96 @@ SPM41（把精確面積改回 `poly_contains_rect`）使 `test_concave_not_four_
 - Windows／MSVC 路徑；託管 CI（帳號計費阻擋，Actions job 秒失敗，不是程式失敗）。
 - 最終提交本身沒有再整套重跑；它與 `f0c4c71` 的差異只有本目錄與合約文件。
 - 核心 `current_geometry.c` 的 D7／I5 路徑（`poly_contains_rect` 的同一弱點）不在範圍內，已另開 GEO-257。
+
+## 來源綁定（2026-10-11 補）
+
+回應 PR #182 整合審查（issuecomment-6100281749）兩項：受測提交查不到、`--only` 接受未知案例 ID。第一項在本節，第二項見下一節。
+
+### 受測提交已推上 GitHub
+
+| 項目 | 值 |
+|---|---|
+| 分支 | `evidence/q38-tested-f0c4c71-20261010`（只為保存來源；不是要合併的分支） |
+| 受測提交 | `f0c4c71291af5cab699f54de8ac852aa35fa378e`（2026-10-11 用 `gh api repos/ZhiQiYang/geometry-axiom/commits/<sha>` 查得到，回同一個 SHA） |
+| 該提交的 tree | `3e13b79b9ec143ed5297bd6a9ee5944d9b18d49f`（`gh api repos/ZhiQiYang/geometry-axiom/git/trees/<sha>` 查得到，回同一個 SHA） |
+
+### f0c4c71 與審查綁定的 head（`f752994f96e9d8e62ffd5bd6ab02bc3b39b041a0`）的同一性比較
+
+兩者的父提交都是 `c254e1f`（f752994 是 amend 出來的兄弟提交，不是 f0c4c71 的後代，所以 `git log f0c4c71..f752994` 只會列出 f752994 自己）。
+f752994 的 tree 是 `eecf10fe1279b867f6e6ff8976775406524a7324`。
+
+```sh
+git diff --stat f0c4c71 f752994 -- . ':(exclude)tests/release-evidence'
+git diff        f0c4c71 f752994 -- . ':(exclude)tests/release-evidence'
+```
+
+本目錄以外，兩個 tree 各有 10625 個檔，內容不同的只有 2 個：
+
+| 檔 | 差異 | 性質 |
+|---|---|---|
+| `geometry-core/SECTION-PROFILE-NATIVE-CONTRACT.md` | +76／−6 | 文件：把「待 WSL 重驗」的開發樹數字換成 f0c4c71 的實測結果，加 `--explore` 實測表。沒有任何測試或程式讀這份文件（`git grep` 只有其他文件連到它） |
+| `tests/section_profile_mutation_check.py` | +3／−2 | 只有模組 docstring 的說明文字。兩版去掉 docstring 後的 Python AST 完全相同（`ast.dump` 逐字相等），所以沒有任何可執行行為的差異 |
+
+- C 原始碼（`geometry-core/*.inc`、`current_geometry.c`、`geometry-web/*.inc`）、Python 製模器、`tests/test_section_profile_*.py`、`tests/mutants_results.json`、`tests/run_all.py`、`tests/run_all.expected.json`：f0c4c71 與 f752994 的 blob 相同。
+- 本目錄（`tests/release-evidence/20261010-q38-i44/`）：f0c4c71 裡一個檔都沒有；f752994 新增 55 個檔（`SHA256SUMS.txt` 列其中 54 個，另一個是它自己）。比較前先把 f752994 裡這 54 個檔逐一算雜湊，與 `SHA256SUMS.txt` 全部相符（0 個不符）。
+
+結論：f0c4c71 到 f752994 只差文件、docstring 與收據，沒有產品碼或測試邏輯差異。上面的「受驗版本」表和「這份收據證明什麼」仍然指 f0c4c71。
+
+### 完整測試是在 f0c4c71 跑的，不是在最終 head
+
+- 第 1–5 項指令（建置、AC16 閘門、`--explore`、`run_all.py --build`、`mutate.py --check`）都是在 `f0c4c71` 的乾淨 clone 上跑的。
+- 2026-10-11 的修補（下一節）之後，head 多了 `--only` 守門、新測試檔與 run_all 登記。那些**不在**上述完整測試的範圍內；它們另有下一節的驗證。
+- **最終 head 的 7 job 全量由主迴圈另跑，結果會貼在 PR 留言**；本目錄不含那份結果，不能拿本目錄的數字當成最終 head 全套已核。
+
+### WSL 時限條件（照實寫）
+
+- f0c4c71 那五項是在 WSL 直接逐條執行（`env.txt`：20:51:01 → 21:24:36，共 33 分 35 秒），**不是**走 7 job CI 等價 runner，也沒有套任何時限。
+- 其中第 4 項 `run_all.py --build` 的 suite 秒數合計是 1128.7 秒（`run_all.log`「合計」列，不含建置；suite 是循序執行）。原 CI 的 `native` job 是 `timeout-minutes: 15`（900 秒），所以這份收據**不能寫成「在原 CI 時限內通過」**：它只證明在沒有時限的 WSL 上通過。runner 的時限是原 CI 的 ×3（45 分鐘），1128.7 秒在其內，但本收據不是 runner 跑的，不據此主張。
+- 託管 CI 受帳號計費阻擋（Actions job 秒失敗，不是程式失敗），所以沒有任何託管 CI 的秒數可比。
+
+## `--only` 守門修補（2026-10-11）
+
+### 問題
+
+`tests/section_profile_mutation_check.py --only <不存在的 ID>` 選到零案例，不建基準線、不判任何突變，最後 `all([])` 為真而 exit 0。在 f752994 的檔案上實測：`--only SPM3`（少打一個 0）輸出 `{"summary": {}}`、exit 0（`only-guard-fix-20261011/3-pre-fix-typo.log`）。
+
+### 修法
+
+- `select_cases(only, groups)`：未知 ID 丟 `ValueError`（點名未知 ID，並列出全部合法 ID）；選集為空也丟 `ValueError`（例如 `--only SPM36 --group native`，SPM36 屬於 model 組）。
+- `main()` 在 `--list`、`posix_only()`、任何建置之前呼叫它，把 `ValueError` 轉成 `parser.error`：exit 2，不跑任何東西。結束碼 2 沿用該腳本既有的「環境／前置條件不成立」，沒有另立新碼。
+- 合法子集的路徑沒有動：基準線照跑，突變照判。
+
+### 驗證
+
+測試：新檔 `tests/test_section_profile_mutation_check.py`（9 個測試，不需要原生二進位）已登記在 `tests/run_all.py` 的 `PY_NEEDS`（`[]`）與 `tests/run_all.expected.json`。**這是新增 suite（`py:test_section_profile_mutation_check` = 9），不是改既有期望**；其餘 83 個 suite 的期望數沒有動，以 f0c4c71 那次完整跑的 83 個 suite／2611 測試為底，預期總數變成 84／2620。
+
+收據在 `only-guard-fix-20261011/`，驗證於修補提交 `f3c87c21a62bc57df761ffe66fea61f6a49a931c`（tree `e7574f7668754c06936ed67646f4830d4a7c6a76`）的 WSL 乾淨 clone，經佇列鎖（標籤 `pr182fix`），`env.txt` 有環境與起訖時間（02:41:22 → 02:47:41，共 6 分 19 秒）：
+
+| # | 指令 | exit | 結果 |
+|---|---|---|---|
+| 2 | `run_all.py --only section_profile_mutation_check` | 0 | 新 suite 9／9，與 `run_all.expected.json` 登記的數量逐 suite 比對相符（局部跑，不是完整驗收） |
+| 3 | f752994 的舊腳本 `--only SPM3` | 0 | 修前：`{"summary": {}}`，未測任何東西卻成功 |
+| 4 | 修後 `--only SPM3` | **2** | `unknown --only case id(s): 'SPM3'; valid ids: SPM01, …, SPM42` |
+| 5 | 修後 `--only SPM41 --only SPM4l`（合法加錯字） | **2** | 整批拒絕，只點名 `'SPM4l'` |
+| 6 | 修後 `--only SPM36 --group native` | **2** | `no case selected: … (SPM36 is in group model)` |
+| 7 | 修後 `--only SPM41 --only SPM24 --group native`（合法子集，真的編譯） | 0 | native 基準線 exit 0；SPM41 killed、SPM24 equivalent（與 f0c4c71 的判定相同） |
+| 8 | 修後 `--only SPM36`（合法單一 model 案例） | 0 | model 基準線 exit 0；SPM36 killed |
+| 9 | 新測試檔直接跑 | 0 | 9／9 |
+
+秒數：建置 157 秒、第 7 項 190 秒、第 8 項 17 秒，其餘各 0–5 秒；這些不是 CI job，沒有對應的原 CI 時限可比。Windows 上直接跑新測試檔也是 9／9（Python 3.14.4）。
+
+突變（把守門拿掉，新測試必須紅；在 WSL `python3` 對工作樹逐一跑，輕量、單一測試檔，沒有排隊鎖；還原後確認 `tests/section_profile_mutation_check.py` 的雜湊與提交內容相同）：
+
+| 拿掉什麼 | 紅燈（測試數／失敗斷言數，後者含子測試） | 失敗訊息 |
+|---|---|---|
+| 同時拿掉兩道守門（等於修前行為） | 9 個測試裡的 5 個／12 | `0 != 2 : exit 0 means the mistyped selection was taken as a success: no case was selected, so no baseline ran and all([]) reported success`（`guard-mutant-both-removed.out`） |
+| 只拿掉未知 ID 守門 | 4 個／9 | 錯字案例退到「空選集」守門仍 exit 2，但訊息變成 `no case selected`，`'unknown --only case id' not found in …` 紅燈；`--list` 加合法與錯字 ID 時 exit 0 紅燈（`guard-mutant-unknown-removed.out`） |
+| 只拿掉空選集守門 | 2 個／3 | `--only SPM36 --group native` 與 `--only SPM01 --group model` 變成 exit 0、stdout `{"summary": {}}`（`guard-mutant-empty-removed.out`） |
+
+還原後新測試 9／9 回綠（見第 9 項）。
+
+### 這一節不證明什麼
+
+- 沒有重跑 f0c4c71 的完整測試；沒有跑瀏覽器層閘門。
+- 合法子集只實跑了 SPM41、SPM24（native）與 SPM36（model）三例，不是 42 例全量；全量在 f0c4c71 跑過（第 2 項），修補沒有動任何案例定義或判定邏輯。
+- 修補提交到最終 head 之間只增加本目錄的收據與本節文字。
