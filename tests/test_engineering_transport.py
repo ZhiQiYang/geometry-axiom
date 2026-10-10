@@ -28,6 +28,15 @@ class EngineeringTransport(unittest.TestCase):
         self.assertTrue(json.loads(transport.file_request(payload,bridge,generation=True))['ok']);self.assertFalse(paths[0].exists())
         self.assertFalse(json.loads(transport.file_request(payload,lambda _:self.fail('wrong schema dispatched'),assembly=True))['ok'])
 
+    def test_panel_fill_schema_dispatch_preserves_exact_payload_and_cleans_file(self):
+        payload=json.dumps({'schema':'panel-fill-transaction/1','expectedRevision':4,'operations':[{'op':'put-finish-surface','value':{'name':'天花'}}]},ensure_ascii=False).encode()
+        paths=[]
+        def bridge(command):
+            self.assertTrue(command.startswith('panel-fill-preview '));path=Path(command.split(' ',1)[1]);paths.append(path);self.assertEqual(payload,path.read_bytes());return b'{"ok":true}'
+        self.assertTrue(json.loads(transport.file_request(payload,bridge,panel_fill=True))['ok']);self.assertFalse(paths[0].exists())
+        self.assertFalse(json.loads(transport.file_request(payload,lambda _:self.fail('wrong schema dispatched'),section_profile=True))['ok'])
+        self.assertFalse(json.loads(transport.file_request(payload,lambda _:self.fail('wrong schema dispatched')))['ok'])
+
     def test_cleanup_after_bridge_failure(self):
         paths = []
         def bridge(command):

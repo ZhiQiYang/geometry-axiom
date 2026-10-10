@@ -295,6 +295,27 @@ class BridgeServerTests(unittest.TestCase):
                 self.assertFalse(paths[0].exists())
         self.assertEqual(self.process.stdin.getvalue(), b"")
 
+    def test_panel_fill_http_route_preserves_payload_and_uses_the_panel_fill_operation(self):
+        # PF-1: the route must reach the panel-fill core command, never the engineering or section-profile one.
+        transaction = json.dumps({"schema":"panel-fill-transaction/1", "expectedRevision":2,
+                                  "operations":[{"op":"put-finish-surface", "value":{"name":"天花完成面"}}]},
+                                 ensure_ascii=False).encode("utf-8")
+        paths = []
+        def bridge(command):
+            prefix, name = command.split(" ", 1)
+            self.assertEqual(prefix, "panel-fill-preview")
+            source = pathlib.Path(name); paths.append(source)
+            self.assertEqual(source.read_bytes(), transaction)
+            return b'{"ok":true,"route_evidence":"panel-fill handler"}'
+        with patch.object(self.server_module, "ask_bridge", side_effect=bridge) as called, self.http_server() as base:
+            request = urllib.request.Request(base + "/panel-fill/preview", data=transaction, headers={"Content-Type":"application/json"})
+            with urllib.request.urlopen(request, timeout=10) as response:
+                self.assertEqual(json.load(response), {"ok":True,"route_evidence":"panel-fill handler"})
+            called.assert_called_once()
+        self.assertEqual(len(paths), 1)
+        self.assertFalse(paths[0].exists())
+        self.assertEqual(self.process.stdin.getvalue(), b"")
+
     def test_reference_assets_are_local_and_path_allowlisted(self):
         with self.http_server() as base:
             for route, ctype in [("/project-store.js", "text/javascript"),
