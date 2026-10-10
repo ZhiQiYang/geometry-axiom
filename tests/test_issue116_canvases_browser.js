@@ -217,32 +217,34 @@ async function main(){
     check(await page.evaluate(()=>ContextMenuShell.active),null,'b1 no instance is active once everything is closed');
 
     // b2 two-level guard (DP-33) + b3 pre-run current() re-check, on instance A.
-    const itemSel=(id,act)=>`#${id}Menu [data-cm-act="${act}"]`;
+    // The throw-away menus carry no stylesheet (the app's .fcm-* rules are scoped to #feCtxMenu), so a coordinate click can land on
+    // the search icon; dispatch the item's own DOM click instead -- it reaches exactly the listener the shell bound.
+    const clickItem=(id,act)=>page.evaluate(([id,act])=>{document.querySelector(`#${id}Menu [data-cm-act="${act}"]`).click();},[id,act]);
     await page.evaluate(()=>{const {a}=window.__k4;a.ctx.log.length=0;a.shell.open(300,200);});
     check(await page.evaluate(()=>[document.querySelectorAll('#k4aMenu [data-cm-act]').length,document.querySelectorAll('#k4aMenu [data-fe-act]').length]),[4,0],
       'b2 items carry the adapter-chosen attribute (data-cm-act), never data-fe-act');
     await page.evaluate(()=>{const {a}=window.__k4;a.ctx.worldReason='W-REASON';a.ctx.navReason='N-REASON';});
-    await page.locator(itemSel('k4a','v1')).click();
+    await clickItem('k4a','v1');
     check(await page.evaluate(()=>[window.__k4.a.ctx.log.slice(),window.__k4.a.shell.isOpen]),[['v1'],false],'b2 VIEW ITEM WAS GUARDED: a view-level item runs although both write guards refuse');
     await page.evaluate(()=>{const {a}=window.__k4;a.ctx.log.length=0;a.shell.open(300,200);});
-    await page.locator(itemSel('k4a','w1')).click();
+    await clickItem('k4a','w1');
     check(await page.evaluate(()=>[window.__k4.a.ctx.log.slice(),window.__k4.a.shell.isOpen,document.querySelector('#k4aMenu .fcm-footer').textContent]),[[],true,'W-REASON'],
       'b2 WORLD ITEM RAN UNDER A REFUSING WRITE GUARD: refused, reason shown in the footer, menu stays open');
-    await page.locator(itemSel('k4a','n1')).click();
+    await clickItem('k4a','n1');
     check(await page.evaluate(()=>[window.__k4.a.ctx.log.slice(),document.querySelector('#k4aMenu .fcm-footer').textContent]),[[],'N-REASON'],'b2 nav-level item is refused by the nav guard, not the world guard');
     await page.evaluate(()=>{const {a}=window.__k4;a.ctx.worldReason='';});
-    await page.locator(itemSel('k4a','w1')).click();
+    await clickItem('k4a','w1');
     check(await page.evaluate(()=>[window.__k4.a.ctx.log.slice(),window.__k4.a.shell.isOpen]),[['w1'],false],'b2 once the write guard allows, the world item runs and the adapter closes the menu');
     await page.evaluate(()=>{const {a}=window.__k4;a.ctx.log.length=0;a.shell.hide();a.ctx.worldReason='';a.ctx.navReason='';a.shell.open(300,200);});
     await page.evaluate(()=>{window.__k4.a.ctx.n++;});
-    await page.locator(itemSel('k4a','v1')).click();
+    await clickItem('k4a','v1');
     check(await page.evaluate(()=>[window.__k4.a.ctx.log.slice(),window.__k4.a.shell.isOpen,window.__k4.a.menu.hidden]),[[],false,true],
       'b3 STALE NODE RAN: after the adapter context changed, even a view-level item must not run -- the shell re-checks current() before every item');
     await page.evaluate(()=>{const {a}=window.__k4;a.ctx.log.length=0;a.shell.open(300,200);});
     await page.evaluate(()=>{window.__k4.a.ctx.n++;});
     check(await page.evaluate(()=>{window.__k4.a.shell.position();return[window.__k4.a.shell.isOpen,window.__k4.a.menu.hidden];}),[false,true],'b3 position() on a stale menu closes it');
     await page.evaluate(()=>{const {a}=window.__k4;a.ctx.log.length=0;a.shell.open(300,200);a.ctx.throwOn='w1';});
-    await page.locator(itemSel('k4a','w1')).click();
+    await clickItem('k4a','w1');
     check(await page.evaluate(()=>window.__k4.a.ctx.log.slice()),['error:boom w1'],'b3 an item that throws is reported through the adapter onError and does not break the shell');
     await page.evaluate(()=>{const {a}=window.__k4;a.ctx.throwOn=null;a.shell.hide();a.ctx.refuse=true;});
     check(await page.evaluate(()=>{const {a}=window.__k4;return[a.shell.open(300,200),a.shell.isOpen,a.menu.hidden];}),[false,false,true],'b3 begin() refusing keeps the menu closed');
@@ -278,7 +280,7 @@ async function main(){
       check(await inside('k4a'),true,`b5 menu opened at (${x},${y}) is clamped inside its viewport`);
     }
     await page.evaluate(()=>{window.__k4.a.shell.hide();window.__k4.a.shell.open(5000,100);});
-    await page.locator(itemSel('k4a','sub1')).click();
+    await clickItem('k4a','sub1');
     check(await page.evaluate(()=>{const v=document.getElementById('k4aViewport').getBoundingClientRect(),m=document.getElementById('k4aMenu').getBoundingClientRect(),
       s=document.querySelector('#k4aMenu .fcm-submenu').getBoundingClientRect();return[s.left<m.left,s.left>=v.left-1,s.right<=v.right+1];}),[true,true,true],'b5 submenu flips to the left edge when the right side has no room and stays inside the viewport');
     await page.evaluate(()=>window.__k4.a.shell.hide());
