@@ -1,0 +1,2273 @@
+{
+  "before": {
+    "scene": "requires engineering-spec/1\nengineering material eyJmaW5nZXJwcmludCI6ImZhZTE2MjJiMzM4ZmMxN2JiZWI4ZDVmNWY4ZjQ5NzEyOTA0MzEyOWYyNzI3ZGE0NDRkZDA2MTAwZjEyZGM2MTkiLCJ2YWx1ZSI6eyJpZCI6Im1hdGVyaWFsLTdhZTJlMzBkLTY0M2YtNDQ4OS04ZDQ2LWQwMDEzYTBjNDA4ZCIsImtpbmQiOiJwYW5lbCIsImxlbmd0aCI6MTgzMCwibmFtZSI6Iue2suagvOWFpeWPo+aWsOmdouadkCIsInRoaWNrbmVzcyI6IjYiLCJ2ZXJzaW9uIjoxLCJ3aWR0aCI6OTE1fX0=\nengineering method eyJmaW5nZXJwcmludCI6ImI5OTFkZDQ2Y2JiYTFmYjQzMWFkOTAwMjQxN2MyMjg3Yjk1ZjBjN2QyODkxYzkyYTQ2NThjNTJiYzMwNDkxMjAiLCJ2YWx1ZSI6eyJnYXAiOjMsImlkIjoibWV0aG9kLWYwOTdjN2Q0LWIxNDUtNGY3OS1iMWZkLTAzNTAwMDE1ODMwZCIsImxvbmdBeGlzIjoidiIsIm1haW5BbG9uZyI6InUiLCJuYW1lIjoi55u05o6l5byV55So5pei5pyJ6Z2i5p2QIiwibm90ZXMiOm51bGwsInBhbmVsIjp7ImlkIjoibWF0ZXJpYWwtN2FlMmUzMGQtNjQzZi00NDg5LThkNDYtZDAwMTNhMGM0MDhkIiwidmVyc2lvbiI6MX0sInJvbGVzIjp7ImJvdW5kYXJ5IjpudWxsLCJwcmltYXJ5IjpudWxsLCJzZWNvbmRhcnkiOm51bGx9LCJ2ZXJzaW9uIjoxfX0=\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\nboundary 2 outline 0,0 4000,0 4000,3000 0,3000\nplacement 1 on boundary 1 origin 0 0 2500 u +x v +y\nplacement 2 on boundary 2 origin 6000 0 2500 u +x v +y\nspec GridEntryGuide 500\nengineering application eyJhbmNob3JPcHRpb25zIjp7InUiOnsia2luZCI6ImNvb3JkaW5hdGUiLCJ2YWx1ZSI6MH0sInYiOnsia2luZCI6ImNvb3JkaW5hdGUiLCJ2YWx1ZSI6MH19LCJpZCI6ImFwcGxpY2F0aW9uLTcyMGRlNjQ1LThhZTYtNGE2ZS04MTU5LTAzYWQyYmVjMDU2NyIsImxvbmdBeGlzIjoidiIsIm1haW5BbG9uZyI6InUiLCJtZXRob2QiOnsiaWQiOiJtZXRob2QtZjA5N2M3ZDQtYjE0NS00Zjc5LWIxZmQtMDM1MDAwMTU4MzBkIiwidmVyc2lvbiI6MX0sIm92ZXJyaWRlcyI6e30sInBsYWNlbWVudF9pZCI6MX0=\nengineering application eyJhbmNob3JPcHRpb25zIjp7InUiOnsia2luZCI6ImNvb3JkaW5hdGUiLCJ2YWx1ZSI6MH0sInYiOnsia2luZCI6ImNvb3JkaW5hdGUiLCJ2YWx1ZSI6MH19LCJpZCI6ImFwcGxpY2F0aW9uLWVmNDY1NjlkLThiMjAtNDY2NC05ZGU4LTY4ZDQ3M2RkNDI4YiIsImxvbmdBeGlzIjoidiIsIm1haW5BbG9uZyI6InUiLCJtZXRob2QiOnsiaWQiOiJtZXRob2QtZjA5N2M3ZDQtYjE0NS00Zjc5LWIxZmQtMDM1MDAwMTU4MzBkIiwidmVyc2lvbiI6MX0sIm92ZXJyaWRlcyI6e30sInBsYWNlbWVudF9pZCI6Mn0=\nengineering grid eyJheGVzIjp7InUiOnsiYW5jaG9yIjowLCJnYXAiOnsib3ZlcnJpZGUiOm51bGwsInNvdXJjZSI6eyJmaWVsZCI6InUuZ2FwIiwiaWQiOiJhcHBsaWNhdGlvbi03MjBkZTY0NS04YWU2LTRhNmUtODE1OS0wM2FkMmJlYzA1NjciLCJraW5kIjoiYXBwbGljYXRpb24ifX0sImtpbmQiOiJwYW5lbCIsInBhbmVsIjp7Im92ZXJyaWRlIjpudWxsLCJzb3VyY2UiOnsiZmllbGQiOiJ1LnBhbmVsIiwiaWQiOiJhcHBsaWNhdGlvbi03MjBkZTY0NS04YWU2LTRhNmUtODE1OS0wM2FkMmJlYzA1NjciLCJraW5kIjoiYXBwbGljYXRpb24ifX19LCJ2Ijp7ImFuY2hvciI6MCwiZ2FwIjp7Im92ZXJyaWRlIjpudWxsLCJzb3VyY2UiOnsiZmllbGQiOiJ2LmdhcCIsImlkIjoiYXBwbGljYXRpb24tNzIwZGU2NDUtOGFlNi00YTZlLTgxNTktMDNhZDJiZWMwNTY3Iiwia2luZCI6ImFwcGxpY2F0aW9uIn19LCJraW5kIjoicGFuZWwiLCJwYW5lbCI6eyJvdmVycmlkZSI6bnVsbCwic291cmNlIjp7ImZpZWxkIjoidi5wYW5lbCIsImlkIjoiYXBwbGljYXRpb24tNzIwZGU2NDUtOGFlNi00YTZlLTgxNTktMDNhZDJiZWMwNTY3Iiwia2luZCI6ImFwcGxpY2F0aW9uIn19fX0sImlkIjowLCJtYWluQWxvbmciOiJ1IiwicGxhY2VtZW50X2lkIjoxfQ==\nengineering grid eyJheGVzIjp7InUiOnsiYW5jaG9yIjowLCJnYXAiOnsib3ZlcnJpZGUiOm51bGwsInNvdXJjZSI6eyJmaWVsZCI6InUuZ2FwIiwiaWQiOiJhcHBsaWNhdGlvbi1lZjQ2NTY5ZC04YjIwLTQ2NjQtOWRlOC02OGQ0NzNkZDQyOGIiLCJraW5kIjoiYXBwbGljYXRpb24ifX0sImtpbmQiOiJwYW5lbCIsInBhbmVsIjp7Im92ZXJyaWRlIjpudWxsLCJzb3VyY2UiOnsiZmllbGQiOiJ1LnBhbmVsIiwiaWQiOiJhcHBsaWNhdGlvbi1lZjQ2NTY5ZC04YjIwLTQ2NjQtOWRlOC02OGQ0NzNkZDQyOGIiLCJraW5kIjoiYXBwbGljYXRpb24ifX19LCJ2Ijp7ImFuY2hvciI6MCwiZ2FwIjp7Im92ZXJyaWRlIjpudWxsLCJzb3VyY2UiOnsiZmllbGQiOiJ2LmdhcCIsImlkIjoiYXBwbGljYXRpb24tZWY0NjU2OWQtOGIyMC00NjY0LTlkZTgtNjhkNDczZGQ0MjhiIiwia2luZCI6ImFwcGxpY2F0aW9uIn19LCJraW5kIjoicGFuZWwiLCJwYW5lbCI6eyJvdmVycmlkZSI6bnVsbCwic291cmNlIjp7ImZpZWxkIjoidi5wYW5lbCIsImlkIjoiYXBwbGljYXRpb24tZWY0NjU2OWQtOGIyMC00NjY0LTlkZTgtNjhkNDczZGQ0MjhiIiwia2luZCI6ImFwcGxpY2F0aW9uIn19fX0sImlkIjoxLCJtYWluQWxvbmciOiJ1IiwicGxhY2VtZW50X2lkIjoyfQ==\ntimber 1 27 33 role boundary\ntimber 2 27 33 role boundary\ntimber 3 27 33 role primary\nguide 1 1 v spec:GridEntryGuide\nplace 1 on 1 at-face e0 +u +n\n# R18 角材 1: onBoundary=true coversEdge=true boundaryEdge=0\nplace 2 on 1 at-face e2 +u +n\n# R18 角材 2: onBoundary=true coversEdge=true boundaryEdge=2\nplace 3 on 1 at-line guide 1 +v +n\n# R18 角材 3: onBoundary=false coversEdge=false boundaryEdge=-1\ncanvas-pos boundary 1 60 60\ncanvas-pos boundary 2 440 60\n",
+    "state": {
+      "capabilities": [
+        "engineering-spec/1",
+        "parameters/1",
+        "assembly-rule-authoring/1",
+        "assembly-timber-generation/1",
+        "grid-subdivision-rules/1",
+        "section-profile/1"
+      ],
+      "required_capabilities": [
+        "engineering-spec/1"
+      ],
+      "native_capabilities": [
+        "section-profile-native/1"
+      ],
+      "specs": [
+        {
+          "name": "GridEntryGuide",
+          "value": 500
+        }
+      ],
+      "materials": [
+        {
+          "id": "material-7ae2e30d-643f-4489-8d46-d0013a0c408d",
+          "kind": "panel",
+          "length": 1830,
+          "name": "網格入口新面材",
+          "thickness": "6",
+          "version": 1,
+          "width": 915,
+          "fingerprint": "fae1622b338fc17bbeb8d5f5f8f497129043129f2727da444dd06100f12dc619",
+          "archived": false
+        }
+      ],
+      "methods": [
+        {
+          "gap": 3,
+          "id": "method-f097c7d4-b145-4f79-b1fd-03500015830d",
+          "longAxis": "v",
+          "mainAlong": "u",
+          "name": "直接引用既有面材",
+          "notes": null,
+          "panel": {
+            "id": "material-7ae2e30d-643f-4489-8d46-d0013a0c408d",
+            "version": 1
+          },
+          "roles": {
+            "boundary": null,
+            "primary": null,
+            "secondary": null
+          },
+          "version": 1,
+          "fingerprint": "b991dd46cbba1fb431ad9002417c2287b95f0c7d2891c92a4658c52bc3049120",
+          "archived": false
+        }
+      ],
+      "applications": [
+        {
+          "anchorOptions": {
+            "u": {
+              "kind": "coordinate",
+              "value": 0
+            },
+            "v": {
+              "kind": "coordinate",
+              "value": 0
+            }
+          },
+          "id": "application-720de645-8ae6-4a6e-8159-03ad2bec0567",
+          "longAxis": "v",
+          "mainAlong": "u",
+          "method": {
+            "id": "method-f097c7d4-b145-4f79-b1fd-03500015830d",
+            "version": 1
+          },
+          "overrides": {},
+          "placement_id": 1,
+          "bindings": [
+            {
+              "axis": "u",
+              "field": "panel",
+              "id": 0,
+              "kind": "grid"
+            },
+            {
+              "axis": "u",
+              "field": "gap",
+              "id": 0,
+              "kind": "grid"
+            },
+            {
+              "axis": "v",
+              "field": "panel",
+              "id": 0,
+              "kind": "grid"
+            },
+            {
+              "axis": "v",
+              "field": "gap",
+              "id": 0,
+              "kind": "grid"
+            }
+          ]
+        },
+        {
+          "anchorOptions": {
+            "u": {
+              "kind": "coordinate",
+              "value": 0
+            },
+            "v": {
+              "kind": "coordinate",
+              "value": 0
+            }
+          },
+          "id": "application-ef46569d-8b20-4664-9de8-68d473dd428b",
+          "longAxis": "v",
+          "mainAlong": "u",
+          "method": {
+            "id": "method-f097c7d4-b145-4f79-b1fd-03500015830d",
+            "version": 1
+          },
+          "overrides": {},
+          "placement_id": 2,
+          "bindings": [
+            {
+              "axis": "u",
+              "field": "panel",
+              "id": 1,
+              "kind": "grid"
+            },
+            {
+              "axis": "u",
+              "field": "gap",
+              "id": 1,
+              "kind": "grid"
+            },
+            {
+              "axis": "v",
+              "field": "panel",
+              "id": 1,
+              "kind": "grid"
+            },
+            {
+              "axis": "v",
+              "field": "gap",
+              "id": 1,
+              "kind": "grid"
+            }
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "target": {
+            "axis": "u",
+            "field": "panel",
+            "id": 0,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "u.panel",
+            "id": "application-720de645-8ae6-4a6e-8159-03ad2bec0567",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 915,
+          "path": "application:application-720de645-8ae6-4a6e-8159-03ad2bec0567 -> method:method-f097c7d4-b145-4f79-b1fd-03500015830d@1 -> material:material-7ae2e30d-643f-4489-8d46-d0013a0c408d@1.width"
+        },
+        {
+          "target": {
+            "axis": "u",
+            "field": "gap",
+            "id": 0,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "u.gap",
+            "id": "application-720de645-8ae6-4a6e-8159-03ad2bec0567",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 3,
+          "path": "application:application-720de645-8ae6-4a6e-8159-03ad2bec0567 -> method:method-f097c7d4-b145-4f79-b1fd-03500015830d@1 -> explicit integer mm"
+        },
+        {
+          "target": {
+            "axis": "v",
+            "field": "panel",
+            "id": 0,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "v.panel",
+            "id": "application-720de645-8ae6-4a6e-8159-03ad2bec0567",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 1830,
+          "path": "application:application-720de645-8ae6-4a6e-8159-03ad2bec0567 -> method:method-f097c7d4-b145-4f79-b1fd-03500015830d@1 -> material:material-7ae2e30d-643f-4489-8d46-d0013a0c408d@1.length"
+        },
+        {
+          "target": {
+            "axis": "v",
+            "field": "gap",
+            "id": 0,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "v.gap",
+            "id": "application-720de645-8ae6-4a6e-8159-03ad2bec0567",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 3,
+          "path": "application:application-720de645-8ae6-4a6e-8159-03ad2bec0567 -> method:method-f097c7d4-b145-4f79-b1fd-03500015830d@1 -> explicit integer mm"
+        },
+        {
+          "target": {
+            "axis": "u",
+            "field": "panel",
+            "id": 1,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "u.panel",
+            "id": "application-ef46569d-8b20-4664-9de8-68d473dd428b",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 915,
+          "path": "application:application-ef46569d-8b20-4664-9de8-68d473dd428b -> method:method-f097c7d4-b145-4f79-b1fd-03500015830d@1 -> material:material-7ae2e30d-643f-4489-8d46-d0013a0c408d@1.width"
+        },
+        {
+          "target": {
+            "axis": "u",
+            "field": "gap",
+            "id": 1,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "u.gap",
+            "id": "application-ef46569d-8b20-4664-9de8-68d473dd428b",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 3,
+          "path": "application:application-ef46569d-8b20-4664-9de8-68d473dd428b -> method:method-f097c7d4-b145-4f79-b1fd-03500015830d@1 -> explicit integer mm"
+        },
+        {
+          "target": {
+            "axis": "v",
+            "field": "panel",
+            "id": 1,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "v.panel",
+            "id": "application-ef46569d-8b20-4664-9de8-68d473dd428b",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 1830,
+          "path": "application:application-ef46569d-8b20-4664-9de8-68d473dd428b -> method:method-f097c7d4-b145-4f79-b1fd-03500015830d@1 -> material:material-7ae2e30d-643f-4489-8d46-d0013a0c408d@1.length"
+        },
+        {
+          "target": {
+            "axis": "v",
+            "field": "gap",
+            "id": 1,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "v.gap",
+            "id": "application-ef46569d-8b20-4664-9de8-68d473dd428b",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 3,
+          "path": "application:application-ef46569d-8b20-4664-9de8-68d473dd428b -> method:method-f097c7d4-b145-4f79-b1fd-03500015830d@1 -> explicit integer mm"
+        }
+      ],
+      "parameters": [],
+      "assembly": {
+        "capabilities": [
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1"
+        ],
+        "rules": [],
+        "bindings": [],
+        "instances": []
+      },
+      "sectionProfiles": {
+        "profiles": [],
+        "members": [],
+        "runs": []
+      }
+    },
+    "references": {
+      "ok": true,
+      "sourceFingerprint": "ed555aed9087adf4f3fb3c58bfd18becfee7684732be32721b0e2c78edad7fa4",
+      "guides": [
+        {
+          "id": 1,
+          "surface": 1,
+          "source": "local",
+          "datum": 0,
+          "axis": "v",
+          "off": 500,
+          "expression": "spec:GridEntryGuide",
+          "worldPoint": [
+            500,
+            0,
+            2500
+          ],
+          "worldDirection": [
+            0,
+            1,
+            0
+          ],
+          "segments": [
+            [
+              [
+                500,
+                0
+              ],
+              [
+                500,
+                3000
+              ]
+            ]
+          ]
+        }
+      ],
+      "grids": [
+        {
+          "id": 0,
+          "surface": 1,
+          "bindingId": null,
+          "indexSpace": "ordinal",
+          "sourceSystem": null,
+          "origin": [
+            0,
+            0
+          ],
+          "kind": "main",
+          "parentId": null,
+          "cell": null,
+          "divisions": null,
+          "bounds": {
+            "u": [
+              0,
+              4000
+            ],
+            "v": [
+              0,
+              3000
+            ]
+          },
+          "mainAlong": "u",
+          "geometryMode": "exact",
+          "geometryExact": true,
+          "u": [
+            916,
+            1834,
+            2752,
+            3670
+          ],
+          "uDefinition": {
+            "source": "panel",
+            "panel": 915,
+            "gap": 3,
+            "anchor": 0,
+            "anchorExplicit": true
+          },
+          "v": [
+            1831
+          ],
+          "vDefinition": {
+            "source": "panel",
+            "panel": 1830,
+            "gap": 3,
+            "anchor": 0,
+            "anchorExplicit": true
+          },
+          "lines": [
+            {
+              "axis": "u",
+              "index": 0,
+              "coordinate": 916,
+              "role": "secondary",
+              "priority": 3,
+              "segments": [
+                [
+                  [
+                    916,
+                    0
+                  ],
+                  [
+                    916,
+                    3000
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "u",
+              "index": 1,
+              "coordinate": 1834,
+              "role": "secondary",
+              "priority": 3,
+              "segments": [
+                [
+                  [
+                    1834,
+                    0
+                  ],
+                  [
+                    1834,
+                    3000
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "u",
+              "index": 2,
+              "coordinate": 2752,
+              "role": "secondary",
+              "priority": 3,
+              "segments": [
+                [
+                  [
+                    2752,
+                    0
+                  ],
+                  [
+                    2752,
+                    3000
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "u",
+              "index": 3,
+              "coordinate": 3670,
+              "role": "secondary",
+              "priority": 3,
+              "segments": [
+                [
+                  [
+                    3670,
+                    0
+                  ],
+                  [
+                    3670,
+                    3000
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "v",
+              "index": 0,
+              "coordinate": 1831,
+              "role": "primary",
+              "priority": 2,
+              "segments": [
+                [
+                  [
+                    0,
+                    1831
+                  ],
+                  [
+                    4000,
+                    1831
+                  ]
+                ]
+              ]
+            }
+          ],
+          "dependencies": {
+            "children": [],
+            "guides": [],
+            "timbers": []
+          }
+        },
+        {
+          "id": 1,
+          "surface": 2,
+          "bindingId": null,
+          "indexSpace": "ordinal",
+          "sourceSystem": null,
+          "origin": [
+            0,
+            0
+          ],
+          "kind": "main",
+          "parentId": null,
+          "cell": null,
+          "divisions": null,
+          "bounds": {
+            "u": [
+              0,
+              4000
+            ],
+            "v": [
+              0,
+              3000
+            ]
+          },
+          "mainAlong": "u",
+          "geometryMode": "exact",
+          "geometryExact": true,
+          "u": [
+            916,
+            1834,
+            2752,
+            3670
+          ],
+          "uDefinition": {
+            "source": "panel",
+            "panel": 915,
+            "gap": 3,
+            "anchor": 0,
+            "anchorExplicit": true
+          },
+          "v": [
+            1831
+          ],
+          "vDefinition": {
+            "source": "panel",
+            "panel": 1830,
+            "gap": 3,
+            "anchor": 0,
+            "anchorExplicit": true
+          },
+          "lines": [
+            {
+              "axis": "u",
+              "index": 0,
+              "coordinate": 916,
+              "role": "secondary",
+              "priority": 3,
+              "segments": [
+                [
+                  [
+                    916,
+                    0
+                  ],
+                  [
+                    916,
+                    3000
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "u",
+              "index": 1,
+              "coordinate": 1834,
+              "role": "secondary",
+              "priority": 3,
+              "segments": [
+                [
+                  [
+                    1834,
+                    0
+                  ],
+                  [
+                    1834,
+                    3000
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "u",
+              "index": 2,
+              "coordinate": 2752,
+              "role": "secondary",
+              "priority": 3,
+              "segments": [
+                [
+                  [
+                    2752,
+                    0
+                  ],
+                  [
+                    2752,
+                    3000
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "u",
+              "index": 3,
+              "coordinate": 3670,
+              "role": "secondary",
+              "priority": 3,
+              "segments": [
+                [
+                  [
+                    3670,
+                    0
+                  ],
+                  [
+                    3670,
+                    3000
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "v",
+              "index": 0,
+              "coordinate": 1831,
+              "role": "primary",
+              "priority": 2,
+              "segments": [
+                [
+                  [
+                    0,
+                    1831
+                  ],
+                  [
+                    4000,
+                    1831
+                  ]
+                ]
+              ]
+            }
+          ],
+          "dependencies": {
+            "children": [],
+            "guides": [],
+            "timbers": []
+          }
+        }
+      ],
+      "timbers": [
+        {
+          "id": 1,
+          "role": "boundary",
+          "geometry": {
+            "surface": 1,
+            "centerline": 13,
+            "length": 4000,
+            "u": 0,
+            "v": 0,
+            "dir": "+u",
+            "side": "+n",
+            "A": 27,
+            "B": 33,
+            "origin": [
+              0,
+              0,
+              2500
+            ],
+            "axes": [
+              [
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                1
+              ]
+            ]
+          },
+          "definition": {
+            "anchor": "at-face e0",
+            "selector": "",
+            "priority": 1
+          }
+        },
+        {
+          "id": 2,
+          "role": "boundary",
+          "geometry": {
+            "surface": 1,
+            "centerline": 2986,
+            "length": 4000,
+            "u": 0,
+            "v": 2973,
+            "dir": "+u",
+            "side": "+n",
+            "A": 27,
+            "B": 33,
+            "origin": [
+              0,
+              2973,
+              2500
+            ],
+            "axes": [
+              [
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                1
+              ]
+            ]
+          },
+          "definition": {
+            "anchor": "at-face e2",
+            "selector": "",
+            "priority": 1
+          }
+        },
+        {
+          "id": 3,
+          "role": "primary",
+          "geometry": {
+            "surface": 1,
+            "centerline": 500,
+            "length": 2946,
+            "u": 514,
+            "v": 27,
+            "dir": "+v",
+            "side": "+n",
+            "A": 27,
+            "B": 33,
+            "origin": [
+              514,
+              27,
+              2500
+            ],
+            "axes": [
+              [
+                0,
+                1,
+                0
+              ],
+              [
+                -1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                1
+              ]
+            ]
+          },
+          "definition": {
+            "anchor": "at-line guide 1",
+            "selector": "",
+            "priority": 2
+          }
+        }
+      ],
+      "timberSupports": {
+        "schema": "native-timber-supports/1",
+        "sourceFingerprint": "ed555aed9087adf4f3fb3c58bfd18becfee7684732be32721b0e2c78edad7fa4",
+        "entries": [
+          {
+            "id": 1,
+            "surface": 1,
+            "owner": null,
+            "start": {
+              "status": "exact",
+              "at": 0,
+              "crossRange": [
+                0,
+                27
+              ],
+              "relation": {
+                "kind": "outline-edge",
+                "source": {
+                  "kind": "boundary",
+                  "id": 1
+                },
+                "edgeIndex": 3,
+                "holeIndex": null,
+                "localFace": null,
+                "normalWorld": null,
+                "owner": null,
+                "surface": 1,
+                "stop": {
+                  "axis": "u",
+                  "at": 0,
+                  "range": [
+                    0,
+                    3000
+                  ],
+                  "fixity": "fixed"
+                }
+              }
+            },
+            "finish": {
+              "status": "exact",
+              "at": 4000,
+              "crossRange": [
+                0,
+                27
+              ],
+              "relation": {
+                "kind": "outline-edge",
+                "source": {
+                  "kind": "boundary",
+                  "id": 1
+                },
+                "edgeIndex": 1,
+                "holeIndex": null,
+                "localFace": null,
+                "normalWorld": null,
+                "owner": null,
+                "surface": 1,
+                "stop": {
+                  "axis": "u",
+                  "at": 4000,
+                  "range": [
+                    0,
+                    3000
+                  ],
+                  "fixity": "fixed"
+                }
+              }
+            }
+          },
+          {
+            "id": 2,
+            "surface": 1,
+            "owner": null,
+            "start": {
+              "status": "exact",
+              "at": 0,
+              "crossRange": [
+                2973,
+                3000
+              ],
+              "relation": {
+                "kind": "outline-edge",
+                "source": {
+                  "kind": "boundary",
+                  "id": 1
+                },
+                "edgeIndex": 3,
+                "holeIndex": null,
+                "localFace": null,
+                "normalWorld": null,
+                "owner": null,
+                "surface": 1,
+                "stop": {
+                  "axis": "u",
+                  "at": 0,
+                  "range": [
+                    0,
+                    3000
+                  ],
+                  "fixity": "fixed"
+                }
+              }
+            },
+            "finish": {
+              "status": "exact",
+              "at": 4000,
+              "crossRange": [
+                2973,
+                3000
+              ],
+              "relation": {
+                "kind": "outline-edge",
+                "source": {
+                  "kind": "boundary",
+                  "id": 1
+                },
+                "edgeIndex": 1,
+                "holeIndex": null,
+                "localFace": null,
+                "normalWorld": null,
+                "owner": null,
+                "surface": 1,
+                "stop": {
+                  "axis": "u",
+                  "at": 4000,
+                  "range": [
+                    0,
+                    3000
+                  ],
+                  "fixity": "fixed"
+                }
+              }
+            }
+          },
+          {
+            "id": 3,
+            "surface": 1,
+            "owner": null,
+            "start": {
+              "status": "exact",
+              "at": 27,
+              "crossRange": [
+                487,
+                514
+              ],
+              "relation": {
+                "kind": "timber-face",
+                "source": {
+                  "kind": "timber",
+                  "id": 1
+                },
+                "localFace": "B1",
+                "normalWorld": [
+                  0,
+                  1,
+                  0
+                ],
+                "owner": null,
+                "surface": 1,
+                "stop": {
+                  "axis": "v",
+                  "at": 27,
+                  "range": [
+                    0,
+                    4000
+                  ],
+                  "fixity": "fixed"
+                }
+              }
+            },
+            "finish": {
+              "status": "exact",
+              "at": 2973,
+              "crossRange": [
+                487,
+                514
+              ],
+              "relation": {
+                "kind": "timber-face",
+                "source": {
+                  "kind": "timber",
+                  "id": 2
+                },
+                "localFace": "B0",
+                "normalWorld": [
+                  0,
+                  -1,
+                  0
+                ],
+                "owner": null,
+                "surface": 1,
+                "stop": {
+                  "axis": "v",
+                  "at": 2973,
+                  "range": [
+                    0,
+                    4000
+                  ],
+                  "fixity": "fixed"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "specs": [
+        {
+          "name": "GridEntryGuide",
+          "value": 500
+        }
+      ],
+      "datums": [],
+      "engineeringSources": [
+        {
+          "target": {
+            "axis": "u",
+            "field": "panel",
+            "id": 0,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "u.panel",
+            "id": "application-720de645-8ae6-4a6e-8159-03ad2bec0567",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 915,
+          "path": "application:application-720de645-8ae6-4a6e-8159-03ad2bec0567 -> method:method-f097c7d4-b145-4f79-b1fd-03500015830d@1 -> material:material-7ae2e30d-643f-4489-8d46-d0013a0c408d@1.width"
+        },
+        {
+          "target": {
+            "axis": "u",
+            "field": "gap",
+            "id": 0,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "u.gap",
+            "id": "application-720de645-8ae6-4a6e-8159-03ad2bec0567",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 3,
+          "path": "application:application-720de645-8ae6-4a6e-8159-03ad2bec0567 -> method:method-f097c7d4-b145-4f79-b1fd-03500015830d@1 -> explicit integer mm"
+        },
+        {
+          "target": {
+            "axis": "v",
+            "field": "panel",
+            "id": 0,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "v.panel",
+            "id": "application-720de645-8ae6-4a6e-8159-03ad2bec0567",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 1830,
+          "path": "application:application-720de645-8ae6-4a6e-8159-03ad2bec0567 -> method:method-f097c7d4-b145-4f79-b1fd-03500015830d@1 -> material:material-7ae2e30d-643f-4489-8d46-d0013a0c408d@1.length"
+        },
+        {
+          "target": {
+            "axis": "v",
+            "field": "gap",
+            "id": 0,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "v.gap",
+            "id": "application-720de645-8ae6-4a6e-8159-03ad2bec0567",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 3,
+          "path": "application:application-720de645-8ae6-4a6e-8159-03ad2bec0567 -> method:method-f097c7d4-b145-4f79-b1fd-03500015830d@1 -> explicit integer mm"
+        },
+        {
+          "target": {
+            "axis": "u",
+            "field": "panel",
+            "id": 1,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "u.panel",
+            "id": "application-ef46569d-8b20-4664-9de8-68d473dd428b",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 915,
+          "path": "application:application-ef46569d-8b20-4664-9de8-68d473dd428b -> method:method-f097c7d4-b145-4f79-b1fd-03500015830d@1 -> material:material-7ae2e30d-643f-4489-8d46-d0013a0c408d@1.width"
+        },
+        {
+          "target": {
+            "axis": "u",
+            "field": "gap",
+            "id": 1,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "u.gap",
+            "id": "application-ef46569d-8b20-4664-9de8-68d473dd428b",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 3,
+          "path": "application:application-ef46569d-8b20-4664-9de8-68d473dd428b -> method:method-f097c7d4-b145-4f79-b1fd-03500015830d@1 -> explicit integer mm"
+        },
+        {
+          "target": {
+            "axis": "v",
+            "field": "panel",
+            "id": 1,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "v.panel",
+            "id": "application-ef46569d-8b20-4664-9de8-68d473dd428b",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 1830,
+          "path": "application:application-ef46569d-8b20-4664-9de8-68d473dd428b -> method:method-f097c7d4-b145-4f79-b1fd-03500015830d@1 -> material:material-7ae2e30d-643f-4489-8d46-d0013a0c408d@1.length"
+        },
+        {
+          "target": {
+            "axis": "v",
+            "field": "gap",
+            "id": 1,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "v.gap",
+            "id": "application-ef46569d-8b20-4664-9de8-68d473dd428b",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 3,
+          "path": "application:application-ef46569d-8b20-4664-9de8-68d473dd428b -> method:method-f097c7d4-b145-4f79-b1fd-03500015830d@1 -> explicit integer mm"
+        }
+      ],
+      "assembly": {
+        "capabilities": [
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1"
+        ],
+        "rules": [],
+        "bindings": [],
+        "instances": []
+      }
+    },
+    "drafts": []
+  },
+  "after": {
+    "scene": "requires engineering-spec/1\nengineering material eyJmaW5nZXJwcmludCI6ImZhZTE2MjJiMzM4ZmMxN2JiZWI4ZDVmNWY4ZjQ5NzEyOTA0MzEyOWYyNzI3ZGE0NDRkZDA2MTAwZjEyZGM2MTkiLCJ2YWx1ZSI6eyJpZCI6Im1hdGVyaWFsLTdhZTJlMzBkLTY0M2YtNDQ4OS04ZDQ2LWQwMDEzYTBjNDA4ZCIsImtpbmQiOiJwYW5lbCIsImxlbmd0aCI6MTgzMCwibmFtZSI6Iue2suagvOWFpeWPo+aWsOmdouadkCIsInRoaWNrbmVzcyI6IjYiLCJ2ZXJzaW9uIjoxLCJ3aWR0aCI6OTE1fX0=\nengineering method eyJmaW5nZXJwcmludCI6ImI5OTFkZDQ2Y2JiYTFmYjQzMWFkOTAwMjQxN2MyMjg3Yjk1ZjBjN2QyODkxYzkyYTQ2NThjNTJiYzMwNDkxMjAiLCJ2YWx1ZSI6eyJnYXAiOjMsImlkIjoibWV0aG9kLWYwOTdjN2Q0LWIxNDUtNGY3OS1iMWZkLTAzNTAwMDE1ODMwZCIsImxvbmdBeGlzIjoidiIsIm1haW5BbG9uZyI6InUiLCJuYW1lIjoi55u05o6l5byV55So5pei5pyJ6Z2i5p2QIiwibm90ZXMiOm51bGwsInBhbmVsIjp7ImlkIjoibWF0ZXJpYWwtN2FlMmUzMGQtNjQzZi00NDg5LThkNDYtZDAwMTNhMGM0MDhkIiwidmVyc2lvbiI6MX0sInJvbGVzIjp7ImJvdW5kYXJ5IjpudWxsLCJwcmltYXJ5IjpudWxsLCJzZWNvbmRhcnkiOm51bGx9LCJ2ZXJzaW9uIjoxfX0=\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\nboundary 2 outline 0,0 4000,0 4000,3000 0,3000\nplacement 1 on boundary 1 origin 0 0 2500 u +x v +y\nplacement 2 on boundary 2 origin 6000 0 2500 u +x v +y\nspec GridEntryGuide 500\nengineering application eyJhbmNob3JPcHRpb25zIjp7InUiOnsia2luZCI6ImNvb3JkaW5hdGUiLCJ2YWx1ZSI6MH0sInYiOnsia2luZCI6ImNvb3JkaW5hdGUiLCJ2YWx1ZSI6MH19LCJpZCI6ImFwcGxpY2F0aW9uLTcyMGRlNjQ1LThhZTYtNGE2ZS04MTU5LTAzYWQyYmVjMDU2NyIsImxvbmdBeGlzIjoidiIsIm1haW5BbG9uZyI6InUiLCJtZXRob2QiOnsiaWQiOiJtZXRob2QtZjA5N2M3ZDQtYjE0NS00Zjc5LWIxZmQtMDM1MDAwMTU4MzBkIiwidmVyc2lvbiI6MX0sIm92ZXJyaWRlcyI6e30sInBsYWNlbWVudF9pZCI6MX0=\nengineering application eyJhbmNob3JPcHRpb25zIjp7InUiOnsia2luZCI6ImNvb3JkaW5hdGUiLCJ2YWx1ZSI6MH0sInYiOnsia2luZCI6ImNvb3JkaW5hdGUiLCJ2YWx1ZSI6MH19LCJpZCI6ImFwcGxpY2F0aW9uLWVmNDY1NjlkLThiMjAtNDY2NC05ZGU4LTY4ZDQ3M2RkNDI4YiIsImxvbmdBeGlzIjoidiIsIm1haW5BbG9uZyI6InUiLCJtZXRob2QiOnsiaWQiOiJtZXRob2QtZjA5N2M3ZDQtYjE0NS00Zjc5LWIxZmQtMDM1MDAwMTU4MzBkIiwidmVyc2lvbiI6MX0sIm92ZXJyaWRlcyI6e30sInBsYWNlbWVudF9pZCI6Mn0=\nengineering grid eyJheGVzIjp7InUiOnsiYW5jaG9yIjowLCJnYXAiOnsib3ZlcnJpZGUiOm51bGwsInNvdXJjZSI6eyJmaWVsZCI6InUuZ2FwIiwiaWQiOiJhcHBsaWNhdGlvbi03MjBkZTY0NS04YWU2LTRhNmUtODE1OS0wM2FkMmJlYzA1NjciLCJraW5kIjoiYXBwbGljYXRpb24ifX0sImtpbmQiOiJwYW5lbCIsInBhbmVsIjp7Im92ZXJyaWRlIjpudWxsLCJzb3VyY2UiOnsiZmllbGQiOiJ1LnBhbmVsIiwiaWQiOiJhcHBsaWNhdGlvbi03MjBkZTY0NS04YWU2LTRhNmUtODE1OS0wM2FkMmJlYzA1NjciLCJraW5kIjoiYXBwbGljYXRpb24ifX19LCJ2Ijp7ImFuY2hvciI6MCwiZ2FwIjp7Im92ZXJyaWRlIjpudWxsLCJzb3VyY2UiOnsiZmllbGQiOiJ2LmdhcCIsImlkIjoiYXBwbGljYXRpb24tNzIwZGU2NDUtOGFlNi00YTZlLTgxNTktMDNhZDJiZWMwNTY3Iiwia2luZCI6ImFwcGxpY2F0aW9uIn19LCJraW5kIjoicGFuZWwiLCJwYW5lbCI6eyJvdmVycmlkZSI6bnVsbCwic291cmNlIjp7ImZpZWxkIjoidi5wYW5lbCIsImlkIjoiYXBwbGljYXRpb24tNzIwZGU2NDUtOGFlNi00YTZlLTgxNTktMDNhZDJiZWMwNTY3Iiwia2luZCI6ImFwcGxpY2F0aW9uIn19fX0sImlkIjowLCJtYWluQWxvbmciOiJ1IiwicGxhY2VtZW50X2lkIjoxfQ==\nengineering grid eyJheGVzIjp7InUiOnsiYW5jaG9yIjowLCJnYXAiOnsib3ZlcnJpZGUiOm51bGwsInNvdXJjZSI6eyJmaWVsZCI6InUuZ2FwIiwiaWQiOiJhcHBsaWNhdGlvbi1lZjQ2NTY5ZC04YjIwLTQ2NjQtOWRlOC02OGQ0NzNkZDQyOGIiLCJraW5kIjoiYXBwbGljYXRpb24ifX0sImtpbmQiOiJwYW5lbCIsInBhbmVsIjp7Im92ZXJyaWRlIjpudWxsLCJzb3VyY2UiOnsiZmllbGQiOiJ1LnBhbmVsIiwiaWQiOiJhcHBsaWNhdGlvbi1lZjQ2NTY5ZC04YjIwLTQ2NjQtOWRlOC02OGQ0NzNkZDQyOGIiLCJraW5kIjoiYXBwbGljYXRpb24ifX19LCJ2Ijp7ImFuY2hvciI6MCwiZ2FwIjp7Im92ZXJyaWRlIjpudWxsLCJzb3VyY2UiOnsiZmllbGQiOiJ2LmdhcCIsImlkIjoiYXBwbGljYXRpb24tZWY0NjU2OWQtOGIyMC00NjY0LTlkZTgtNjhkNDczZGQ0MjhiIiwia2luZCI6ImFwcGxpY2F0aW9uIn19LCJraW5kIjoicGFuZWwiLCJwYW5lbCI6eyJvdmVycmlkZSI6bnVsbCwic291cmNlIjp7ImZpZWxkIjoidi5wYW5lbCIsImlkIjoiYXBwbGljYXRpb24tZWY0NjU2OWQtOGIyMC00NjY0LTlkZTgtNjhkNDczZGQ0MjhiIiwia2luZCI6ImFwcGxpY2F0aW9uIn19fX0sImlkIjoxLCJtYWluQWxvbmciOiJ1IiwicGxhY2VtZW50X2lkIjoyfQ==\ntimber 1 27 33 role boundary\ntimber 2 27 33 role boundary\ntimber 3 27 33 role primary\nguide 1 1 v spec:GridEntryGuide\nplace 1 on 1 at-face e0 +u +n\n# R18 角材 1: onBoundary=true coversEdge=true boundaryEdge=0\nplace 2 on 1 at-face e2 +u +n\n# R18 角材 2: onBoundary=true coversEdge=true boundaryEdge=2\nplace 3 on 1 at-line guide 1 +v +n\n# R18 角材 3: onBoundary=false coversEdge=false boundaryEdge=-1\ncanvas-pos boundary 1 60 60\ncanvas-pos boundary 2 440 60\n",
+    "state": {
+      "capabilities": [
+        "engineering-spec/1",
+        "parameters/1",
+        "assembly-rule-authoring/1",
+        "assembly-timber-generation/1",
+        "grid-subdivision-rules/1",
+        "section-profile/1"
+      ],
+      "required_capabilities": [
+        "engineering-spec/1"
+      ],
+      "native_capabilities": [
+        "section-profile-native/1"
+      ],
+      "specs": [
+        {
+          "name": "GridEntryGuide",
+          "value": 500
+        }
+      ],
+      "materials": [
+        {
+          "id": "material-7ae2e30d-643f-4489-8d46-d0013a0c408d",
+          "kind": "panel",
+          "length": 1830,
+          "name": "網格入口新面材",
+          "thickness": "6",
+          "version": 1,
+          "width": 915,
+          "fingerprint": "fae1622b338fc17bbeb8d5f5f8f497129043129f2727da444dd06100f12dc619",
+          "archived": false
+        }
+      ],
+      "methods": [
+        {
+          "gap": 3,
+          "id": "method-f097c7d4-b145-4f79-b1fd-03500015830d",
+          "longAxis": "v",
+          "mainAlong": "u",
+          "name": "直接引用既有面材",
+          "notes": null,
+          "panel": {
+            "id": "material-7ae2e30d-643f-4489-8d46-d0013a0c408d",
+            "version": 1
+          },
+          "roles": {
+            "boundary": null,
+            "primary": null,
+            "secondary": null
+          },
+          "version": 1,
+          "fingerprint": "b991dd46cbba1fb431ad9002417c2287b95f0c7d2891c92a4658c52bc3049120",
+          "archived": false
+        }
+      ],
+      "applications": [
+        {
+          "anchorOptions": {
+            "u": {
+              "kind": "coordinate",
+              "value": 0
+            },
+            "v": {
+              "kind": "coordinate",
+              "value": 0
+            }
+          },
+          "id": "application-720de645-8ae6-4a6e-8159-03ad2bec0567",
+          "longAxis": "v",
+          "mainAlong": "u",
+          "method": {
+            "id": "method-f097c7d4-b145-4f79-b1fd-03500015830d",
+            "version": 1
+          },
+          "overrides": {},
+          "placement_id": 1,
+          "bindings": [
+            {
+              "axis": "u",
+              "field": "panel",
+              "id": 0,
+              "kind": "grid"
+            },
+            {
+              "axis": "u",
+              "field": "gap",
+              "id": 0,
+              "kind": "grid"
+            },
+            {
+              "axis": "v",
+              "field": "panel",
+              "id": 0,
+              "kind": "grid"
+            },
+            {
+              "axis": "v",
+              "field": "gap",
+              "id": 0,
+              "kind": "grid"
+            }
+          ]
+        },
+        {
+          "anchorOptions": {
+            "u": {
+              "kind": "coordinate",
+              "value": 0
+            },
+            "v": {
+              "kind": "coordinate",
+              "value": 0
+            }
+          },
+          "id": "application-ef46569d-8b20-4664-9de8-68d473dd428b",
+          "longAxis": "v",
+          "mainAlong": "u",
+          "method": {
+            "id": "method-f097c7d4-b145-4f79-b1fd-03500015830d",
+            "version": 1
+          },
+          "overrides": {},
+          "placement_id": 2,
+          "bindings": [
+            {
+              "axis": "u",
+              "field": "panel",
+              "id": 1,
+              "kind": "grid"
+            },
+            {
+              "axis": "u",
+              "field": "gap",
+              "id": 1,
+              "kind": "grid"
+            },
+            {
+              "axis": "v",
+              "field": "panel",
+              "id": 1,
+              "kind": "grid"
+            },
+            {
+              "axis": "v",
+              "field": "gap",
+              "id": 1,
+              "kind": "grid"
+            }
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "target": {
+            "axis": "u",
+            "field": "panel",
+            "id": 0,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "u.panel",
+            "id": "application-720de645-8ae6-4a6e-8159-03ad2bec0567",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 915,
+          "path": "application:application-720de645-8ae6-4a6e-8159-03ad2bec0567 -> method:method-f097c7d4-b145-4f79-b1fd-03500015830d@1 -> material:material-7ae2e30d-643f-4489-8d46-d0013a0c408d@1.width"
+        },
+        {
+          "target": {
+            "axis": "u",
+            "field": "gap",
+            "id": 0,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "u.gap",
+            "id": "application-720de645-8ae6-4a6e-8159-03ad2bec0567",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 3,
+          "path": "application:application-720de645-8ae6-4a6e-8159-03ad2bec0567 -> method:method-f097c7d4-b145-4f79-b1fd-03500015830d@1 -> explicit integer mm"
+        },
+        {
+          "target": {
+            "axis": "v",
+            "field": "panel",
+            "id": 0,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "v.panel",
+            "id": "application-720de645-8ae6-4a6e-8159-03ad2bec0567",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 1830,
+          "path": "application:application-720de645-8ae6-4a6e-8159-03ad2bec0567 -> method:method-f097c7d4-b145-4f79-b1fd-03500015830d@1 -> material:material-7ae2e30d-643f-4489-8d46-d0013a0c408d@1.length"
+        },
+        {
+          "target": {
+            "axis": "v",
+            "field": "gap",
+            "id": 0,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "v.gap",
+            "id": "application-720de645-8ae6-4a6e-8159-03ad2bec0567",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 3,
+          "path": "application:application-720de645-8ae6-4a6e-8159-03ad2bec0567 -> method:method-f097c7d4-b145-4f79-b1fd-03500015830d@1 -> explicit integer mm"
+        },
+        {
+          "target": {
+            "axis": "u",
+            "field": "panel",
+            "id": 1,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "u.panel",
+            "id": "application-ef46569d-8b20-4664-9de8-68d473dd428b",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 915,
+          "path": "application:application-ef46569d-8b20-4664-9de8-68d473dd428b -> method:method-f097c7d4-b145-4f79-b1fd-03500015830d@1 -> material:material-7ae2e30d-643f-4489-8d46-d0013a0c408d@1.width"
+        },
+        {
+          "target": {
+            "axis": "u",
+            "field": "gap",
+            "id": 1,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "u.gap",
+            "id": "application-ef46569d-8b20-4664-9de8-68d473dd428b",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 3,
+          "path": "application:application-ef46569d-8b20-4664-9de8-68d473dd428b -> method:method-f097c7d4-b145-4f79-b1fd-03500015830d@1 -> explicit integer mm"
+        },
+        {
+          "target": {
+            "axis": "v",
+            "field": "panel",
+            "id": 1,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "v.panel",
+            "id": "application-ef46569d-8b20-4664-9de8-68d473dd428b",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 1830,
+          "path": "application:application-ef46569d-8b20-4664-9de8-68d473dd428b -> method:method-f097c7d4-b145-4f79-b1fd-03500015830d@1 -> material:material-7ae2e30d-643f-4489-8d46-d0013a0c408d@1.length"
+        },
+        {
+          "target": {
+            "axis": "v",
+            "field": "gap",
+            "id": 1,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "v.gap",
+            "id": "application-ef46569d-8b20-4664-9de8-68d473dd428b",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 3,
+          "path": "application:application-ef46569d-8b20-4664-9de8-68d473dd428b -> method:method-f097c7d4-b145-4f79-b1fd-03500015830d@1 -> explicit integer mm"
+        }
+      ],
+      "parameters": [],
+      "assembly": {
+        "capabilities": [
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1"
+        ],
+        "rules": [],
+        "bindings": [],
+        "instances": []
+      },
+      "sectionProfiles": {
+        "profiles": [],
+        "members": [],
+        "runs": []
+      }
+    },
+    "references": {
+      "ok": true,
+      "sourceFingerprint": "ed555aed9087adf4f3fb3c58bfd18becfee7684732be32721b0e2c78edad7fa4",
+      "guides": [
+        {
+          "id": 1,
+          "surface": 1,
+          "source": "local",
+          "datum": 0,
+          "axis": "v",
+          "off": 500,
+          "expression": "spec:GridEntryGuide",
+          "worldPoint": [
+            500,
+            0,
+            2500
+          ],
+          "worldDirection": [
+            0,
+            1,
+            0
+          ],
+          "segments": [
+            [
+              [
+                500,
+                0
+              ],
+              [
+                500,
+                3000
+              ]
+            ]
+          ]
+        }
+      ],
+      "grids": [
+        {
+          "id": 0,
+          "surface": 1,
+          "bindingId": null,
+          "indexSpace": "ordinal",
+          "sourceSystem": null,
+          "origin": [
+            0,
+            0
+          ],
+          "kind": "main",
+          "parentId": null,
+          "cell": null,
+          "divisions": null,
+          "bounds": {
+            "u": [
+              0,
+              4000
+            ],
+            "v": [
+              0,
+              3000
+            ]
+          },
+          "mainAlong": "u",
+          "geometryMode": "exact",
+          "geometryExact": true,
+          "u": [
+            916,
+            1834,
+            2752,
+            3670
+          ],
+          "uDefinition": {
+            "source": "panel",
+            "panel": 915,
+            "gap": 3,
+            "anchor": 0,
+            "anchorExplicit": true
+          },
+          "v": [
+            1831
+          ],
+          "vDefinition": {
+            "source": "panel",
+            "panel": 1830,
+            "gap": 3,
+            "anchor": 0,
+            "anchorExplicit": true
+          },
+          "lines": [
+            {
+              "axis": "u",
+              "index": 0,
+              "coordinate": 916,
+              "role": "secondary",
+              "priority": 3,
+              "segments": [
+                [
+                  [
+                    916,
+                    0
+                  ],
+                  [
+                    916,
+                    3000
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "u",
+              "index": 1,
+              "coordinate": 1834,
+              "role": "secondary",
+              "priority": 3,
+              "segments": [
+                [
+                  [
+                    1834,
+                    0
+                  ],
+                  [
+                    1834,
+                    3000
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "u",
+              "index": 2,
+              "coordinate": 2752,
+              "role": "secondary",
+              "priority": 3,
+              "segments": [
+                [
+                  [
+                    2752,
+                    0
+                  ],
+                  [
+                    2752,
+                    3000
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "u",
+              "index": 3,
+              "coordinate": 3670,
+              "role": "secondary",
+              "priority": 3,
+              "segments": [
+                [
+                  [
+                    3670,
+                    0
+                  ],
+                  [
+                    3670,
+                    3000
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "v",
+              "index": 0,
+              "coordinate": 1831,
+              "role": "primary",
+              "priority": 2,
+              "segments": [
+                [
+                  [
+                    0,
+                    1831
+                  ],
+                  [
+                    4000,
+                    1831
+                  ]
+                ]
+              ]
+            }
+          ],
+          "dependencies": {
+            "children": [],
+            "guides": [],
+            "timbers": []
+          }
+        },
+        {
+          "id": 1,
+          "surface": 2,
+          "bindingId": null,
+          "indexSpace": "ordinal",
+          "sourceSystem": null,
+          "origin": [
+            0,
+            0
+          ],
+          "kind": "main",
+          "parentId": null,
+          "cell": null,
+          "divisions": null,
+          "bounds": {
+            "u": [
+              0,
+              4000
+            ],
+            "v": [
+              0,
+              3000
+            ]
+          },
+          "mainAlong": "u",
+          "geometryMode": "exact",
+          "geometryExact": true,
+          "u": [
+            916,
+            1834,
+            2752,
+            3670
+          ],
+          "uDefinition": {
+            "source": "panel",
+            "panel": 915,
+            "gap": 3,
+            "anchor": 0,
+            "anchorExplicit": true
+          },
+          "v": [
+            1831
+          ],
+          "vDefinition": {
+            "source": "panel",
+            "panel": 1830,
+            "gap": 3,
+            "anchor": 0,
+            "anchorExplicit": true
+          },
+          "lines": [
+            {
+              "axis": "u",
+              "index": 0,
+              "coordinate": 916,
+              "role": "secondary",
+              "priority": 3,
+              "segments": [
+                [
+                  [
+                    916,
+                    0
+                  ],
+                  [
+                    916,
+                    3000
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "u",
+              "index": 1,
+              "coordinate": 1834,
+              "role": "secondary",
+              "priority": 3,
+              "segments": [
+                [
+                  [
+                    1834,
+                    0
+                  ],
+                  [
+                    1834,
+                    3000
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "u",
+              "index": 2,
+              "coordinate": 2752,
+              "role": "secondary",
+              "priority": 3,
+              "segments": [
+                [
+                  [
+                    2752,
+                    0
+                  ],
+                  [
+                    2752,
+                    3000
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "u",
+              "index": 3,
+              "coordinate": 3670,
+              "role": "secondary",
+              "priority": 3,
+              "segments": [
+                [
+                  [
+                    3670,
+                    0
+                  ],
+                  [
+                    3670,
+                    3000
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "v",
+              "index": 0,
+              "coordinate": 1831,
+              "role": "primary",
+              "priority": 2,
+              "segments": [
+                [
+                  [
+                    0,
+                    1831
+                  ],
+                  [
+                    4000,
+                    1831
+                  ]
+                ]
+              ]
+            }
+          ],
+          "dependencies": {
+            "children": [],
+            "guides": [],
+            "timbers": []
+          }
+        }
+      ],
+      "timbers": [
+        {
+          "id": 1,
+          "role": "boundary",
+          "geometry": {
+            "surface": 1,
+            "centerline": 13,
+            "length": 4000,
+            "u": 0,
+            "v": 0,
+            "dir": "+u",
+            "side": "+n",
+            "A": 27,
+            "B": 33,
+            "origin": [
+              0,
+              0,
+              2500
+            ],
+            "axes": [
+              [
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                1
+              ]
+            ]
+          },
+          "definition": {
+            "anchor": "at-face e0",
+            "selector": "",
+            "priority": 1
+          }
+        },
+        {
+          "id": 2,
+          "role": "boundary",
+          "geometry": {
+            "surface": 1,
+            "centerline": 2986,
+            "length": 4000,
+            "u": 0,
+            "v": 2973,
+            "dir": "+u",
+            "side": "+n",
+            "A": 27,
+            "B": 33,
+            "origin": [
+              0,
+              2973,
+              2500
+            ],
+            "axes": [
+              [
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                1
+              ]
+            ]
+          },
+          "definition": {
+            "anchor": "at-face e2",
+            "selector": "",
+            "priority": 1
+          }
+        },
+        {
+          "id": 3,
+          "role": "primary",
+          "geometry": {
+            "surface": 1,
+            "centerline": 500,
+            "length": 2946,
+            "u": 514,
+            "v": 27,
+            "dir": "+v",
+            "side": "+n",
+            "A": 27,
+            "B": 33,
+            "origin": [
+              514,
+              27,
+              2500
+            ],
+            "axes": [
+              [
+                0,
+                1,
+                0
+              ],
+              [
+                -1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                1
+              ]
+            ]
+          },
+          "definition": {
+            "anchor": "at-line guide 1",
+            "selector": "",
+            "priority": 2
+          }
+        }
+      ],
+      "timberSupports": {
+        "schema": "native-timber-supports/1",
+        "sourceFingerprint": "ed555aed9087adf4f3fb3c58bfd18becfee7684732be32721b0e2c78edad7fa4",
+        "entries": [
+          {
+            "id": 1,
+            "surface": 1,
+            "owner": null,
+            "start": {
+              "status": "exact",
+              "at": 0,
+              "crossRange": [
+                0,
+                27
+              ],
+              "relation": {
+                "kind": "outline-edge",
+                "source": {
+                  "kind": "boundary",
+                  "id": 1
+                },
+                "edgeIndex": 3,
+                "holeIndex": null,
+                "localFace": null,
+                "normalWorld": null,
+                "owner": null,
+                "surface": 1,
+                "stop": {
+                  "axis": "u",
+                  "at": 0,
+                  "range": [
+                    0,
+                    3000
+                  ],
+                  "fixity": "fixed"
+                }
+              }
+            },
+            "finish": {
+              "status": "exact",
+              "at": 4000,
+              "crossRange": [
+                0,
+                27
+              ],
+              "relation": {
+                "kind": "outline-edge",
+                "source": {
+                  "kind": "boundary",
+                  "id": 1
+                },
+                "edgeIndex": 1,
+                "holeIndex": null,
+                "localFace": null,
+                "normalWorld": null,
+                "owner": null,
+                "surface": 1,
+                "stop": {
+                  "axis": "u",
+                  "at": 4000,
+                  "range": [
+                    0,
+                    3000
+                  ],
+                  "fixity": "fixed"
+                }
+              }
+            }
+          },
+          {
+            "id": 2,
+            "surface": 1,
+            "owner": null,
+            "start": {
+              "status": "exact",
+              "at": 0,
+              "crossRange": [
+                2973,
+                3000
+              ],
+              "relation": {
+                "kind": "outline-edge",
+                "source": {
+                  "kind": "boundary",
+                  "id": 1
+                },
+                "edgeIndex": 3,
+                "holeIndex": null,
+                "localFace": null,
+                "normalWorld": null,
+                "owner": null,
+                "surface": 1,
+                "stop": {
+                  "axis": "u",
+                  "at": 0,
+                  "range": [
+                    0,
+                    3000
+                  ],
+                  "fixity": "fixed"
+                }
+              }
+            },
+            "finish": {
+              "status": "exact",
+              "at": 4000,
+              "crossRange": [
+                2973,
+                3000
+              ],
+              "relation": {
+                "kind": "outline-edge",
+                "source": {
+                  "kind": "boundary",
+                  "id": 1
+                },
+                "edgeIndex": 1,
+                "holeIndex": null,
+                "localFace": null,
+                "normalWorld": null,
+                "owner": null,
+                "surface": 1,
+                "stop": {
+                  "axis": "u",
+                  "at": 4000,
+                  "range": [
+                    0,
+                    3000
+                  ],
+                  "fixity": "fixed"
+                }
+              }
+            }
+          },
+          {
+            "id": 3,
+            "surface": 1,
+            "owner": null,
+            "start": {
+              "status": "exact",
+              "at": 27,
+              "crossRange": [
+                487,
+                514
+              ],
+              "relation": {
+                "kind": "timber-face",
+                "source": {
+                  "kind": "timber",
+                  "id": 1
+                },
+                "localFace": "B1",
+                "normalWorld": [
+                  0,
+                  1,
+                  0
+                ],
+                "owner": null,
+                "surface": 1,
+                "stop": {
+                  "axis": "v",
+                  "at": 27,
+                  "range": [
+                    0,
+                    4000
+                  ],
+                  "fixity": "fixed"
+                }
+              }
+            },
+            "finish": {
+              "status": "exact",
+              "at": 2973,
+              "crossRange": [
+                487,
+                514
+              ],
+              "relation": {
+                "kind": "timber-face",
+                "source": {
+                  "kind": "timber",
+                  "id": 2
+                },
+                "localFace": "B0",
+                "normalWorld": [
+                  0,
+                  -1,
+                  0
+                ],
+                "owner": null,
+                "surface": 1,
+                "stop": {
+                  "axis": "v",
+                  "at": 2973,
+                  "range": [
+                    0,
+                    4000
+                  ],
+                  "fixity": "fixed"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "specs": [
+        {
+          "name": "GridEntryGuide",
+          "value": 500
+        }
+      ],
+      "datums": [],
+      "engineeringSources": [
+        {
+          "target": {
+            "axis": "u",
+            "field": "panel",
+            "id": 0,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "u.panel",
+            "id": "application-720de645-8ae6-4a6e-8159-03ad2bec0567",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 915,
+          "path": "application:application-720de645-8ae6-4a6e-8159-03ad2bec0567 -> method:method-f097c7d4-b145-4f79-b1fd-03500015830d@1 -> material:material-7ae2e30d-643f-4489-8d46-d0013a0c408d@1.width"
+        },
+        {
+          "target": {
+            "axis": "u",
+            "field": "gap",
+            "id": 0,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "u.gap",
+            "id": "application-720de645-8ae6-4a6e-8159-03ad2bec0567",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 3,
+          "path": "application:application-720de645-8ae6-4a6e-8159-03ad2bec0567 -> method:method-f097c7d4-b145-4f79-b1fd-03500015830d@1 -> explicit integer mm"
+        },
+        {
+          "target": {
+            "axis": "v",
+            "field": "panel",
+            "id": 0,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "v.panel",
+            "id": "application-720de645-8ae6-4a6e-8159-03ad2bec0567",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 1830,
+          "path": "application:application-720de645-8ae6-4a6e-8159-03ad2bec0567 -> method:method-f097c7d4-b145-4f79-b1fd-03500015830d@1 -> material:material-7ae2e30d-643f-4489-8d46-d0013a0c408d@1.length"
+        },
+        {
+          "target": {
+            "axis": "v",
+            "field": "gap",
+            "id": 0,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "v.gap",
+            "id": "application-720de645-8ae6-4a6e-8159-03ad2bec0567",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 3,
+          "path": "application:application-720de645-8ae6-4a6e-8159-03ad2bec0567 -> method:method-f097c7d4-b145-4f79-b1fd-03500015830d@1 -> explicit integer mm"
+        },
+        {
+          "target": {
+            "axis": "u",
+            "field": "panel",
+            "id": 1,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "u.panel",
+            "id": "application-ef46569d-8b20-4664-9de8-68d473dd428b",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 915,
+          "path": "application:application-ef46569d-8b20-4664-9de8-68d473dd428b -> method:method-f097c7d4-b145-4f79-b1fd-03500015830d@1 -> material:material-7ae2e30d-643f-4489-8d46-d0013a0c408d@1.width"
+        },
+        {
+          "target": {
+            "axis": "u",
+            "field": "gap",
+            "id": 1,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "u.gap",
+            "id": "application-ef46569d-8b20-4664-9de8-68d473dd428b",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 3,
+          "path": "application:application-ef46569d-8b20-4664-9de8-68d473dd428b -> method:method-f097c7d4-b145-4f79-b1fd-03500015830d@1 -> explicit integer mm"
+        },
+        {
+          "target": {
+            "axis": "v",
+            "field": "panel",
+            "id": 1,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "v.panel",
+            "id": "application-ef46569d-8b20-4664-9de8-68d473dd428b",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 1830,
+          "path": "application:application-ef46569d-8b20-4664-9de8-68d473dd428b -> method:method-f097c7d4-b145-4f79-b1fd-03500015830d@1 -> material:material-7ae2e30d-643f-4489-8d46-d0013a0c408d@1.length"
+        },
+        {
+          "target": {
+            "axis": "v",
+            "field": "gap",
+            "id": 1,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "v.gap",
+            "id": "application-ef46569d-8b20-4664-9de8-68d473dd428b",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 3,
+          "path": "application:application-ef46569d-8b20-4664-9de8-68d473dd428b -> method:method-f097c7d4-b145-4f79-b1fd-03500015830d@1 -> explicit integer mm"
+        }
+      ],
+      "assembly": {
+        "capabilities": [
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1"
+        ],
+        "rules": [],
+        "bindings": [],
+        "instances": []
+      }
+    },
+    "drafts": []
+  },
+  "result": {
+    "scene": {
+      "equal": true,
+      "differences": []
+    },
+    "state": {
+      "equal": true,
+      "differences": []
+    },
+    "references": {
+      "equal": true,
+      "differences": []
+    },
+    "drafts": {
+      "equal": true,
+      "differences": []
+    }
+  },
+  "normalization": "Only identity-keyed collection order; no geometry, source fields or roles omitted."
+}

@@ -1,0 +1,111 @@
+{
+  "servers": [
+    {
+      "role": "補丁前再現",
+      "port": 8907,
+      "versionPrefix": "526f08427f84",
+      "runtimeVersion": "526f08427f844c7d857d93a255b2f131cc3286b44e67c3ae8d9cf548ee0e6804",
+      "serverPid": 22308,
+      "bridgePid": 24328,
+      "stop": "為載入 app.js 補丁而主動停止",
+      "processExit": 1
+    },
+    {
+      "role": "補丁後第一次，含 verify 未完成輪與髒世界",
+      "port": 8907,
+      "versionPrefix": "38021bc54308",
+      "runtimeVersion": "38021bc54308a464a56785a2e3106af3f2d10f11caac79a541a0b716ce2c3f7f",
+      "serverPid": 17328,
+      "session": "8641936794b74bc5b37fc2320e966e7c",
+      "stop": "世界已有網格，主動停止以換乾淨 bridge",
+      "processExit": 1
+    },
+    {
+      "role": "verify-3",
+      "port": 8907,
+      "versionPrefix": "38021bc54308",
+      "runtimeVersion": "38021bc54308a464a56785a2e3106af3f2d10f11caac79a541a0b716ce2c3f7f",
+      "serverPid": 17304,
+      "session": "53426f9293244a3f9933a0abdbd5e888",
+      "stop": "verify-3 結束後主動停止",
+      "processExit": 1
+    },
+    {
+      "role": "verify-4 通過輪",
+      "port": 8907,
+      "versionPrefix": "38021bc54308",
+      "runtimeVersion": "38021bc54308a464a56785a2e3106af3f2d10f11caac79a541a0b716ce2c3f7f",
+      "fresh": true,
+      "root": "D:\\geometry-axiom-focus390",
+      "serverPid": 5684,
+      "session": "b36e19b4c8d44915a58cf08b61ee6896",
+      "bridgeSha256": "aa2cc6ae4fd47277c4620bf08bbc99ccae0ee48757c0728785528cfd1357736d",
+      "stop": "通過並開出 PR 後主動停止",
+      "processExit": 1
+    },
+    {
+      "role": "乾淨 3574b47 的 GEOMETRY_GRID_SYSTEM_ONLY",
+      "port": 8911,
+      "versionPrefix": "38021bc54308",
+      "runtimeVersion": "38021bc54308a464a56785a2e3106af3f2d10f11caac79a541a0b716ce2c3f7f",
+      "freshAtSuiteStart": true,
+      "root": "D:\\geometry-axiom-focus390",
+      "serverPid": 412,
+      "bridgePid": 10256,
+      "session": "cd826a1307e248fca3a64c2c6aea4011",
+      "bridgeSha256": "aa2cc6ae4fd47277c4620bf08bbc99ccae0ee48757c0728785528cfd1357736d",
+      "stop": "限定流程已結束。測試檔寫入後同一 pid 再探為 fresh:false，主動停止以便用新 runtime 跑焦點回歸",
+      "processExit": 1
+    },
+    {
+      "role": "焦點回歸第一輪",
+      "port": 8912,
+      "runtimeVersion": "dcc5ee0b4c9164f9eb8a7e6d66f507c88ccd969463e24dcacd74c77f5a476b4c",
+      "fresh": true,
+      "root": "D:\\geometry-axiom-focus390",
+      "serverPid": 10968,
+      "bridgePid": 2408,
+      "session": "338a1249769047a3a914f9662f433054",
+      "bridgeSha256": "aa2cc6ae4fd47277c4620bf08bbc99ccae0ee48757c0728785528cfd1357736d",
+      "stop": "焦點斷言已通過，但 390 抽屜蓋住下一景。主動停止以載入測試收尾",
+      "processExit": 1
+    },
+    {
+      "role": "焦點回歸第二輪",
+      "port": 8912,
+      "runtimeVersion": "09fb8f1c4ebdd411a165677d73fbe22c977967e3692b80c98c74c7425aca5fdb",
+      "fresh": true,
+      "root": "D:\\geometry-axiom-focus390",
+      "serverPid": 40080,
+      "bridgePid": 22252,
+      "session": "832bcec780e44015890cf8d00b825978",
+      "bridgeSha256": "aa2cc6ae4fd47277c4620bf08bbc99ccae0ee48757c0728785528cfd1357736d",
+      "stop": "通過後主動停止",
+      "processExit": 1
+    },
+    {
+      "role": "乾淨 163c575，參數路徑逾時",
+      "port": 8913,
+      "runtimeVersion": "1d1fc4931086a75c3f728de9bab88b6dd90dcba9671e80916fa24412ea18baa5",
+      "fresh": true,
+      "serverPid": 36160,
+      "bridgePid": 35108,
+      "session": "c5a22fd385d64853b82933d5519d859a",
+      "bridgeSha256": "aa2cc6ae4fd47277c4620bf08bbc99ccae0ee48757c0728785528cfd1357736d",
+      "stop": "逾時後主動停止，以改測試的完成條件",
+      "processExit": 1
+    },
+    {
+      "role": "乾淨 8982605，限定格線通過",
+      "port": 8913,
+      "runtimeVersion": "168bfaecbe12bf0adbf8def1ca67834fc1177305c76a72cd75045b36794388a6",
+      "fresh": true,
+      "serverPid": 24988,
+      "bridgePid": 38552,
+      "session": "bad0b27f24634522904140e09c45562e",
+      "bridgeSha256": "aa2cc6ae4fd47277c4620bf08bbc99ccae0ee48757c0728785528cfd1357736d",
+      "stop": "通過後主動停止",
+      "processExit": 1
+    }
+  ]
+}

@@ -1,0 +1,438 @@
+{
+  "schema": "geometry-environment-loss-no-receipt-public/1",
+  "preparedUtc": "2026-10-09T18:21:34.490614+00:00",
+  "actor": "/root/delivery_closeout",
+  "productTestsExecuted": false,
+  "repositoryOrRemoteOrServiceWrites": false,
+  "observations": [
+    {
+      "name": "original-full-cdp",
+      "candidateDeclaredByRoot": "9eb670110379ec0d726914f3e5b2d8e7237f2b9c",
+      "candidateBindingOrigin": "ROOT reported the clean frozen candidate and original command; missing gate receipt does not attest before/after execution identity",
+      "rawCanonicalPass": 742,
+      "rawCanonicalFail": 0,
+      "rawCanonicalCompleted": false,
+      "rawCanonicalPrefix": "CDP_RESULT",
+      "rawLogOriginalSha256": "a837c3c956d9347fdd69e9fb88db9aaff235028fdfdee6f5e21c3bb93811f033",
+      "rawLogOriginalBytes": 104311,
+      "originalGateReceiptPresent": false,
+      "actualWrapperExitCode": null,
+      "actualNodeExitCode": null,
+      "actualObserverLiveIdentity": null,
+      "beforeAfterDirtyAttestation": null,
+      "productAcceptance": false,
+      "goldenCompared": false,
+      "rawEvidence": [
+        {
+          "path": "streams/original-full-cdp/command.log",
+          "bytes": 104115,
+          "sha256": "16846537cd40a38375fbe27933ee97f415c5865e8feb5425c41385f75e1b6113",
+          "originalPathLabel": "<workspace-path>",
+          "originalBytes": 104311,
+          "originalSha256": "a837c3c956d9347fdd69e9fb88db9aaff235028fdfdee6f5e21c3bb93811f033",
+          "byteIdenticalOriginal": false,
+          "publicProjection": true,
+          "projectionChanges": [
+            "Machine/executable/isolated feedback/profile path labels only."
+          ],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Retained synthetic artifact from the incomplete original run; original raw result identity preserved. No original gate receipt/actual exit/observer recovered.",
+          "artifactRelativePath": "command.log"
+        }
+      ]
+    },
+    {
+      "name": "original-full-space",
+      "candidateDeclaredByRoot": "9eb670110379ec0d726914f3e5b2d8e7237f2b9c",
+      "candidateBindingOrigin": "ROOT reported the clean frozen candidate and original command; missing gate receipt does not attest before/after execution identity",
+      "rawCanonicalPass": 168,
+      "rawCanonicalFail": 2,
+      "rawCanonicalCompleted": false,
+      "rawCanonicalPrefix": "SPACE_RESULT",
+      "rawLogOriginalSha256": "375da6c8bbf5b971965e6992c5fb5e5e28685ab7e7b620249f14378f5c29235b",
+      "rawLogOriginalBytes": 17981,
+      "originalGateReceiptPresent": false,
+      "actualWrapperExitCode": null,
+      "actualNodeExitCode": null,
+      "actualObserverLiveIdentity": null,
+      "beforeAfterDirtyAttestation": null,
+      "productAcceptance": false,
+      "goldenCompared": false,
+      "rawEvidence": [
+        {
+          "path": "streams/original-full-space/command.log",
+          "bytes": 17700,
+          "sha256": "556fca9ad605c34098393694a5d50538661a856daca7e328f760cc1d38b51517",
+          "originalPathLabel": "<workspace-path>",
+          "originalBytes": 17981,
+          "originalSha256": "375da6c8bbf5b971965e6992c5fb5e5e28685ab7e7b620249f14378f5c29235b",
+          "byteIdenticalOriginal": false,
+          "publicProjection": true,
+          "projectionChanges": [
+            "Machine/executable/isolated feedback/profile path labels only."
+          ],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Retained synthetic artifact from the incomplete original run; original raw result identity preserved. No original gate receipt/actual exit/observer recovered.",
+          "artifactRelativePath": "command.log"
+        },
+        {
+          "path": "streams/original-full-space/space-artifacts/chrome.stderr.log",
+          "bytes": 6107,
+          "sha256": "c8725f3b9ffc2ed96d6fd3969a0e25e95f2a76935708678e3b9e8270449fa94b",
+          "originalPathLabel": "<workspace-path>",
+          "originalBytes": 6107,
+          "originalSha256": "c8725f3b9ffc2ed96d6fd3969a0e25e95f2a76935708678e3b9e8270449fa94b",
+          "byteIdenticalOriginal": true,
+          "publicProjection": false,
+          "projectionChanges": [],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Retained synthetic artifact from the incomplete original run; original raw result identity preserved. No original gate receipt/actual exit/observer recovered.",
+          "artifactRelativePath": "space-artifacts/chrome.stderr.log"
+        },
+        {
+          "path": "streams/original-full-space/space-artifacts/result.json",
+          "bytes": 29654,
+          "sha256": "38537a51105949419cd3bad80075fb40e554e49ea25f8af1f203ec80e4926dc1",
+          "originalPathLabel": "<workspace-path>",
+          "originalBytes": 29867,
+          "originalSha256": "7b06ef6003071c8f4a48262f5adf1a238b3a9725d70ffc1291c571f1f350d822",
+          "byteIdenticalOriginal": false,
+          "publicProjection": true,
+          "projectionChanges": [
+            "Machine/executable/isolated path labels; colliding dictionary path keys retain stable original-key SHA256 IDs without dropping entries."
+          ],
+          "projectionDictionaryKeyAudit": [],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Retained synthetic artifact from the incomplete original run; original raw result identity preserved. No original gate receipt/actual exit/observer recovered.",
+          "artifactRelativePath": "space-artifacts/result.json"
+        }
+      ]
+    }
+  ],
+  "declaredCandidateSourceReferences": [
+    {
+      "path": "declared-candidate-source/geometry-web/cdp_test.js",
+      "bytes": 508380,
+      "sha256": "45558fc343020367d5c582a6e3a0edba93c94990dab19be78943f9eeb7468f05",
+      "originalPathLabel": "<delivery-closeout-root>/no-receipt-declared-source-bytes/9eb670110379ec0d726914f3e5b2d8e7237f2b9c/geometry-web/cdp_test.js",
+      "originalBytes": 508380,
+      "originalSha256": "45558fc343020367d5c582a6e3a0edba93c94990dab19be78943f9eeb7468f05",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact committed declared candidate source; NOT recovered actual executed-source identity or missing observer",
+      "sourceHead": "9eb670110379ec0d726914f3e5b2d8e7237f2b9c",
+      "repositoryPath": "geometry-web/cdp_test.js",
+      "actualExecutedIdentityRecovered": false
+    },
+    {
+      "path": "declared-candidate-source/geometry-web/space_model_test.js",
+      "bytes": 151326,
+      "sha256": "1afbe140d18d857a0a91ad38c375c4943e7dd65126d6394a35ce5a93fa5b9107",
+      "originalPathLabel": "<delivery-closeout-root>/no-receipt-declared-source-bytes/9eb670110379ec0d726914f3e5b2d8e7237f2b9c/geometry-web/space_model_test.js",
+      "originalBytes": 151326,
+      "originalSha256": "1afbe140d18d857a0a91ad38c375c4943e7dd65126d6394a35ce5a93fa5b9107",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact committed declared candidate source; NOT recovered actual executed-source identity or missing observer",
+      "sourceHead": "9eb670110379ec0d726914f3e5b2d8e7237f2b9c",
+      "repositoryPath": "geometry-web/space_model_test.js",
+      "actualExecutedIdentityRecovered": false
+    },
+    {
+      "path": "declared-candidate-source/geometry-web/space_test_floor.js",
+      "bytes": 2465,
+      "sha256": "f2a9219851adff9450e05a5c9ec49613dba1a88fe8484a93a5c9499f2bad8d4d",
+      "originalPathLabel": "<delivery-closeout-root>/no-receipt-declared-source-bytes/9eb670110379ec0d726914f3e5b2d8e7237f2b9c/geometry-web/space_test_floor.js",
+      "originalBytes": 2465,
+      "originalSha256": "f2a9219851adff9450e05a5c9ec49613dba1a88fe8484a93a5c9499f2bad8d4d",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact committed declared candidate source; NOT recovered actual executed-source identity or missing observer",
+      "sourceHead": "9eb670110379ec0d726914f3e5b2d8e7237f2b9c",
+      "repositoryPath": "geometry-web/space_test_floor.js",
+      "actualExecutedIdentityRecovered": false
+    },
+    {
+      "path": "declared-candidate-source/geometry-web/parameter_workflow_test.js",
+      "bytes": 52461,
+      "sha256": "7c017128b7dbfb917305c8b56e3e9ca6ab0f8fd2afbd2b97b92cb71ce4edbdd8",
+      "originalPathLabel": "<delivery-closeout-root>/no-receipt-declared-source-bytes/9eb670110379ec0d726914f3e5b2d8e7237f2b9c/geometry-web/parameter_workflow_test.js",
+      "originalBytes": 52461,
+      "originalSha256": "7c017128b7dbfb917305c8b56e3e9ca6ab0f8fd2afbd2b97b92cb71ce4edbdd8",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact committed declared candidate source; NOT recovered actual executed-source identity or missing observer",
+      "sourceHead": "9eb670110379ec0d726914f3e5b2d8e7237f2b9c",
+      "repositoryPath": "geometry-web/parameter_workflow_test.js",
+      "actualExecutedIdentityRecovered": false
+    },
+    {
+      "path": "declared-candidate-source/geometry-web/app.js",
+      "bytes": 627862,
+      "sha256": "b68832bfd7e48a6c370e2ba64152511944b9aba085d0870397c1b1743dd08227",
+      "originalPathLabel": "<delivery-closeout-root>/no-receipt-declared-source-bytes/9eb670110379ec0d726914f3e5b2d8e7237f2b9c/geometry-web/app.js",
+      "originalBytes": 627862,
+      "originalSha256": "b68832bfd7e48a6c370e2ba64152511944b9aba085d0870397c1b1743dd08227",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact committed declared candidate source; NOT recovered actual executed-source identity or missing observer",
+      "sourceHead": "9eb670110379ec0d726914f3e5b2d8e7237f2b9c",
+      "repositoryPath": "geometry-web/app.js",
+      "actualExecutedIdentityRecovered": false
+    },
+    {
+      "path": "declared-candidate-source/geometry-web/app.css",
+      "bytes": 189999,
+      "sha256": "028c423c50a766f740144d1c883a16b997be5f00ef9a3d35548a5f59f1ec82fc",
+      "originalPathLabel": "<delivery-closeout-root>/no-receipt-declared-source-bytes/9eb670110379ec0d726914f3e5b2d8e7237f2b9c/geometry-web/app.css",
+      "originalBytes": 189999,
+      "originalSha256": "028c423c50a766f740144d1c883a16b997be5f00ef9a3d35548a5f59f1ec82fc",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact committed declared candidate source; NOT recovered actual executed-source identity or missing observer",
+      "sourceHead": "9eb670110379ec0d726914f3e5b2d8e7237f2b9c",
+      "repositoryPath": "geometry-web/app.css",
+      "actualExecutedIdentityRecovered": false
+    },
+    {
+      "path": "declared-candidate-source/geometry-web/parameters.css",
+      "bytes": 16119,
+      "sha256": "425756b84d24302a26709ada8c09bdf0e2c1fe6975c0b03a0d5de96e717c5e2a",
+      "originalPathLabel": "<delivery-closeout-root>/no-receipt-declared-source-bytes/9eb670110379ec0d726914f3e5b2d8e7237f2b9c/geometry-web/parameters.css",
+      "originalBytes": 16119,
+      "originalSha256": "425756b84d24302a26709ada8c09bdf0e2c1fe6975c0b03a0d5de96e717c5e2a",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact committed declared candidate source; NOT recovered actual executed-source identity or missing observer",
+      "sourceHead": "9eb670110379ec0d726914f3e5b2d8e7237f2b9c",
+      "repositoryPath": "geometry-web/parameters.css",
+      "actualExecutedIdentityRecovered": false
+    },
+    {
+      "path": "declared-candidate-source/geometry-web/space-workspace.js",
+      "bytes": 96627,
+      "sha256": "88709be1ffab50a4c11dbca42466097bfaee2e435c41a14cda9be7cd05e0ad3e",
+      "originalPathLabel": "<delivery-closeout-root>/no-receipt-declared-source-bytes/9eb670110379ec0d726914f3e5b2d8e7237f2b9c/geometry-web/space-workspace.js",
+      "originalBytes": 96627,
+      "originalSha256": "88709be1ffab50a4c11dbca42466097bfaee2e435c41a14cda9be7cd05e0ad3e",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact committed declared candidate source; NOT recovered actual executed-source identity or missing observer",
+      "sourceHead": "9eb670110379ec0d726914f3e5b2d8e7237f2b9c",
+      "repositoryPath": "geometry-web/space-workspace.js",
+      "actualExecutedIdentityRecovered": false
+    },
+    {
+      "path": "declared-candidate-source/geometry-web/space-workspace.css",
+      "bytes": 26764,
+      "sha256": "6a9b12969c518609ede4d4c3354e43b40e783eb1055cd41863ebe68c983af6da",
+      "originalPathLabel": "<delivery-closeout-root>/no-receipt-declared-source-bytes/9eb670110379ec0d726914f3e5b2d8e7237f2b9c/geometry-web/space-workspace.css",
+      "originalBytes": 26764,
+      "originalSha256": "6a9b12969c518609ede4d4c3354e43b40e783eb1055cd41863ebe68c983af6da",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact committed declared candidate source; NOT recovered actual executed-source identity or missing observer",
+      "sourceHead": "9eb670110379ec0d726914f3e5b2d8e7237f2b9c",
+      "repositoryPath": "geometry-web/space-workspace.css",
+      "actualExecutedIdentityRecovered": false
+    },
+    {
+      "path": "declared-candidate-source/tests/release_gate.py",
+      "bytes": 17583,
+      "sha256": "ad460ddbdd52c48995188079339bc224e7f39b3d01e3147091a858ba8f541389",
+      "originalPathLabel": "<delivery-closeout-root>/no-receipt-declared-source-bytes/9eb670110379ec0d726914f3e5b2d8e7237f2b9c/tests/release_gate.py",
+      "originalBytes": 17583,
+      "originalSha256": "ad460ddbdd52c48995188079339bc224e7f39b3d01e3147091a858ba8f541389",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Exact committed declared candidate source; NOT recovered actual executed-source identity or missing observer",
+      "sourceHead": "9eb670110379ec0d726914f3e5b2d8e7237f2b9c",
+      "repositoryPath": "tests/release_gate.py",
+      "actualExecutedIdentityRecovered": false
+    }
+  ],
+  "originalAndPublicReferences": [
+    {
+      "path": "streams/original-full-cdp/command.log",
+      "bytes": 104115,
+      "sha256": "16846537cd40a38375fbe27933ee97f415c5865e8feb5425c41385f75e1b6113",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 104311,
+      "originalSha256": "a837c3c956d9347fdd69e9fb88db9aaff235028fdfdee6f5e21c3bb93811f033",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Retained synthetic artifact from the incomplete original run; original raw result identity preserved. No original gate receipt/actual exit/observer recovered.",
+      "artifactRelativePath": "command.log"
+    },
+    {
+      "path": "streams/original-full-space/command.log",
+      "bytes": 17700,
+      "sha256": "556fca9ad605c34098393694a5d50538661a856daca7e328f760cc1d38b51517",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 17981,
+      "originalSha256": "375da6c8bbf5b971965e6992c5fb5e5e28685ab7e7b620249f14378f5c29235b",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Retained synthetic artifact from the incomplete original run; original raw result identity preserved. No original gate receipt/actual exit/observer recovered.",
+      "artifactRelativePath": "command.log"
+    },
+    {
+      "path": "streams/original-full-space/space-artifacts/chrome.stderr.log",
+      "bytes": 6107,
+      "sha256": "c8725f3b9ffc2ed96d6fd3969a0e25e95f2a76935708678e3b9e8270449fa94b",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 6107,
+      "originalSha256": "c8725f3b9ffc2ed96d6fd3969a0e25e95f2a76935708678e3b9e8270449fa94b",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Retained synthetic artifact from the incomplete original run; original raw result identity preserved. No original gate receipt/actual exit/observer recovered.",
+      "artifactRelativePath": "space-artifacts/chrome.stderr.log"
+    },
+    {
+      "path": "streams/original-full-space/space-artifacts/result.json",
+      "bytes": 29654,
+      "sha256": "38537a51105949419cd3bad80075fb40e554e49ea25f8af1f203ec80e4926dc1",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 29867,
+      "originalSha256": "7b06ef6003071c8f4a48262f5adf1a238b3a9725d70ffc1291c571f1f350d822",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated path labels; colliding dictionary path keys retain stable original-key SHA256 IDs without dropping entries."
+      ],
+      "projectionDictionaryKeyAudit": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Retained synthetic artifact from the incomplete original run; original raw result identity preserved. No original gate receipt/actual exit/observer recovered.",
+      "artifactRelativePath": "space-artifacts/result.json"
+    }
+  ],
+  "actualExecutableIdentityRecovered": false,
+  "actualGateExitRecovered": false,
+  "originalReceiptAbsencePreserved": true,
+  "rawPartialCountsAggregated": false,
+  "eventCleanupCause": null,
+  "currentRecoverySelectedObservationOriginalSha256": "4b8fcc0b20aeb2a9018e3192d34e4494a4d282b60d1094c32809e62f8bf21c07",
+  "releaseApproved": false,
+  "publicFiles": [
+    {
+      "path": "README.md",
+      "bytes": 2777,
+      "sha256": "451cb483fc7dff3cba9b4b8f40ff632d7cc550956814ec2b98690b10c4470906"
+    },
+    {
+      "path": "declared-candidate-source/geometry-web/app.css",
+      "bytes": 189999,
+      "sha256": "028c423c50a766f740144d1c883a16b997be5f00ef9a3d35548a5f59f1ec82fc"
+    },
+    {
+      "path": "declared-candidate-source/geometry-web/app.js",
+      "bytes": 627862,
+      "sha256": "b68832bfd7e48a6c370e2ba64152511944b9aba085d0870397c1b1743dd08227"
+    },
+    {
+      "path": "declared-candidate-source/geometry-web/cdp_test.js",
+      "bytes": 508380,
+      "sha256": "45558fc343020367d5c582a6e3a0edba93c94990dab19be78943f9eeb7468f05"
+    },
+    {
+      "path": "declared-candidate-source/geometry-web/parameter_workflow_test.js",
+      "bytes": 52461,
+      "sha256": "7c017128b7dbfb917305c8b56e3e9ca6ab0f8fd2afbd2b97b92cb71ce4edbdd8"
+    },
+    {
+      "path": "declared-candidate-source/geometry-web/parameters.css",
+      "bytes": 16119,
+      "sha256": "425756b84d24302a26709ada8c09bdf0e2c1fe6975c0b03a0d5de96e717c5e2a"
+    },
+    {
+      "path": "declared-candidate-source/geometry-web/space-workspace.css",
+      "bytes": 26764,
+      "sha256": "6a9b12969c518609ede4d4c3354e43b40e783eb1055cd41863ebe68c983af6da"
+    },
+    {
+      "path": "declared-candidate-source/geometry-web/space-workspace.js",
+      "bytes": 96627,
+      "sha256": "88709be1ffab50a4c11dbca42466097bfaee2e435c41a14cda9be7cd05e0ad3e"
+    },
+    {
+      "path": "declared-candidate-source/geometry-web/space_model_test.js",
+      "bytes": 151326,
+      "sha256": "1afbe140d18d857a0a91ad38c375c4943e7dd65126d6394a35ce5a93fa5b9107"
+    },
+    {
+      "path": "declared-candidate-source/geometry-web/space_test_floor.js",
+      "bytes": 2465,
+      "sha256": "f2a9219851adff9450e05a5c9ec49613dba1a88fe8484a93a5c9499f2bad8d4d"
+    },
+    {
+      "path": "declared-candidate-source/tests/release_gate.py",
+      "bytes": 17583,
+      "sha256": "ad460ddbdd52c48995188079339bc224e7f39b3d01e3147091a858ba8f541389"
+    },
+    {
+      "path": "derived-canonical/original-full-cdp.public.json",
+      "bytes": 1349,
+      "sha256": "cca420c18864d4c57510edb2fca7fc78bb6e263b4a2b86136fcd18bd8b54a34a"
+    },
+    {
+      "path": "derived-canonical/original-full-space.public.json",
+      "bytes": 1799,
+      "sha256": "f9231b2c4052228ce9566810d58ba8a80819f4f0a7f688e24d83d20a93547bb4"
+    },
+    {
+      "path": "recovery/current-selected-observation.public.json",
+      "bytes": 1054,
+      "sha256": "1d7a7acd0edbf1d7b07b51a12111906d7d92eb4a79300e72e8d23be54663bcd1"
+    },
+    {
+      "path": "streams/original-full-cdp/command.log",
+      "bytes": 104115,
+      "sha256": "16846537cd40a38375fbe27933ee97f415c5865e8feb5425c41385f75e1b6113"
+    },
+    {
+      "path": "streams/original-full-space/command.log",
+      "bytes": 17700,
+      "sha256": "556fca9ad605c34098393694a5d50538661a856daca7e328f760cc1d38b51517"
+    },
+    {
+      "path": "streams/original-full-space/space-artifacts/chrome.stderr.log",
+      "bytes": 6107,
+      "sha256": "c8725f3b9ffc2ed96d6fd3969a0e25e95f2a76935708678e3b9e8270449fa94b"
+    },
+    {
+      "path": "streams/original-full-space/space-artifacts/result.json",
+      "bytes": 29654,
+      "sha256": "38537a51105949419cd3bad80075fb40e554e49ea25f8af1f203ec80e4926dc1"
+    }
+  ]
+}

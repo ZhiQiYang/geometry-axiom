@@ -1,0 +1,39 @@
+{
+  "schema": "geometry-public-evidence-independent-review-interrupted/1",
+  "status": "reviewer-schema-assumption-error",
+  "scope": "No product tests executed. Interrupted review is not acceptance or a product failure.",
+  "reviewExecutionIdentity": {
+    "actor": "/root/delivery_closeout/packet_readonly_qa",
+    "actualPythonExecutable": "<python-runtime>/bin/python3.12",
+    "actualPythonExecutableSha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+    "argv": [
+      "<workspace-path>",
+      "<workspace-path>",
+      "<workspace-path>"
+    ],
+    "cwd": "<workspace-path>",
+    "pid": 177861,
+    "pythonVersion": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "script": "<workspace-path>",
+    "scriptSha256": "b9e147704d307380cf074e1abe3d1b9e381a6dde150791ce488a350b0c59ac0e"
+  },
+  "repositoryObservedBefore": "Original console observation: HEAD243326b512896ace70e068f62c8f3d6397f6000d; M BACKLOG.md, geometry-web/app.css, geometry-web/cdp_test.js; not product tested state",
+  "repositoryObservedAfter": {
+    "head": "243326b512896ace70e068f62c8f3d6397f6000d",
+    "dirty": "M BACKLOG.md\n M geometry-web/app.css\n M geometry-web/cdp_test.js"
+  },
+  "manifests": {
+    "ui-single-room-243-public-v2": "60379e618ef5863cfe661bf215584caa9a64f36dbe7ac35174ccf3b3686961c1"
+  },
+  "checkCount": 0,
+  "failedCheckCount": 1,
+  "checksRecorded": 0,
+  "checkInventories": [],
+  "findings": [
+    {
+      "kind": "reviewer-premise-error",
+      "detail": "UI formal54 original probe schema has no top-level completed key; wrapper has explicit acceptance. Preserve raw KeyError and fix reviewer to respect original independent schemas."
+    }
+  ],
+  "releaseApproved": false
+}

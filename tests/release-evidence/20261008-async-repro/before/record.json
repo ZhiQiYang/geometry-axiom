@@ -1,0 +1,39 @@
+{
+  "phase": "before-fix",
+  "head": "ce0958ca700753172338fe291a17e781da89465a",
+  "productDiff": "",
+  "status": " M geometry-web/space_model_test.js\n M geometry-web/space_test_floor.js\n?? geometry-web/async_reply_ui_test.js\n?? tests/release-evidence/20261008-async-repro/\n",
+  "lfSha256": {
+    "geometry-web/app.js": "0eb8373cd7fdda7fd328312f8690d87ffc7804fbaa5b3c1d6b15d8263a1193c9",
+    "geometry-web/space-workspace.js": "8c05a72fec9501f279ecb58ce3dfccf4932367a17d0d7e0a18ad8c3072a109ac",
+    "geometry-web/async_reply_ui_test.js": "8220ef389ac652a279a18dbfc8c10b944bcb466f15ccfbf2614cfa65971bbaaa",
+    "geometry-web/space_model_test.js": "a36359a6d2114f2f0f3c435207554f8c82e82bddcccd0dfb357b92e1c472e252",
+    "geometry-web/space_test_floor.js": "03f48a31fc8dc96b75456a207082731e607ae8e038e1fd479ef64d2f446d6591"
+  },
+  "exitCode": 1,
+  "runtime": {
+    "schema": "geometry-runtime/1",
+    "version": "2bc4025b4ffec4223e50aaa710c1c678dad6177d7025cbc485f076b109c03769",
+    "fresh": true,
+    "root": "D:\\geometry-axiom-async-qa",
+    "port": 8921,
+    "cdp": 9521
+  },
+  "bridgeSha256": "aa2cc6ae4fd47277c4620bf08bbc99ccae0ee48757c0728785528cfd1357736d",
+  "bridgeRebuilt": false,
+  "expectedBridgeSha256": "aa2cc6ae4fd47277c4620bf08bbc99ccae0ee48757c0728785528cfd1357736d",
+  "command": "GEOMETRY_TEST_URL=http://127.0.0.1:8921/ GEOMETRY_FEEDBACK_DIR=<local-user>\\\\AppData\\\\Local\\\\Temp\\\\geometry-async-qa-20261008\\\\feedback GEOMETRY_CDP_PORT=9521 GEOMETRY_ASYNC_REPLY_ONLY=1 GEOMETRY_SPACE_TEST_DIR=<local-user>\\\\AppData\\\\Local\\\\Temp\\\\geometry-async-qa-20261008\\\\run-negative GEOMETRY_CHROME_PROFILE=<local-user>\\\\AppData\\\\Local\\\\Temp\\\\geometry-async-qa-20261008\\\\run-negative\\\\chrome-profile node geometry-web/space_model_test.js",
+  "server": "GEOMETRY_BRIDGE_EXECUTABLE=<local-user>\\\\AppData\\\\Local\\\\Temp\\\\geometry-focus390-20261008\\\\geometry-tests\\\\bridge.exe python geometry-web/serve.py 8921",
+  "assertions": {
+    "controlsPassed": [
+      "1400px empty wall bottom focus",
+      "390px empty wall bottom focus"
+    ],
+    "defectsFailed": [
+      "1400px height focus stolen to smBottom while value stayed 3100",
+      "390px height focus stolen to smBottom while value stayed 3100",
+      "1400px late edit handles 5 and editLoops 1 while tool stayed view",
+      "390px late edit handles 5 and editLoops 1 while tool stayed view"
+    ]
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "ok": true,
+  "systemId": 1,
+  "ruleKey": 1,
+  "cell": [
+    "-2",
+    "1"
+  ],
+  "bounds": [
+    100,
+    200,
+    700,
+    600
+  ],
+  "lines": [
+    {
+      "axis": "u",
+      "innerIndex": 0,
+      "coordinate": 300,
+      "segments": [
+        [
+          [
+            300,
+            200
+          ],
+          [
+            300,
+            600
+          ]
+        ]
+      ],
+      "ref": {
+        "kind": "grid-rule-line",
+        "appliedGridId": 2,
+        "systemId": 1,
+        "ruleKey": 1,
+        "cellI": "-2",
+        "cellJ": "1",
+        "axis": "u",
+        "innerIndex": 0
+      }
+    },
+    {
+      "axis": "u",
+      "innerIndex": 1,
+      "coordinate": 500,
+      "segments": [
+        [
+          [
+            500,
+            200
+          ],
+          [
+            500,
+            600
+          ]
+        ]
+      ],
+      "ref": {
+        "kind": "grid-rule-line",
+        "appliedGridId": 2,
+        "systemId": 1,
+        "ruleKey": 1,
+        "cellI": "-2",
+        "cellJ": "1",
+        "axis": "u",
+        "innerIndex": 1
+      }
+    },
+    {
+      "axis": "v",
+      "innerIndex": 0,
+      "coordinate": 400,
+      "segments": [
+        [
+          [
+            100,
+            400
+          ],
+          [
+            700,
+            400
+          ]
+        ]
+      ],
+      "ref": {
+        "kind": "grid-rule-line",
+        "appliedGridId": 2,
+        "systemId": 1,
+        "ruleKey": 1,
+        "cellI": "-2",
+        "cellJ": "1",
+        "axis": "v",
+        "innerIndex": 0
+      }
+    }
+  ]
+}

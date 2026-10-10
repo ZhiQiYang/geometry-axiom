@@ -4,6 +4,11 @@ const RoomOutlineWorkspace=(()=>{
   const R=RoomOutline,P=GeometryProject,W=ReferenceWorkspace,esc=W.escape;
   let draft=null,picking=null,acquiring=null,generation=0,message='',options=null,barriers=[],barrierStamp=null;
   let analysisJob=null;
+  // Raw row ownership follows the exact live candidate, across inspector redraws.
+  // These pending inputs are local UI state, not a new project format.
+  const pendingRows=new WeakMap();
+  const rowsFor=d=>pendingRows.get(d);
+  function rememberRow(d,edge,raw){let rows=rowsFor(d);if(!rows){rows=new Map();pendingRows.set(d,rows);}rows.set(edge,raw);}
   function stopAnalysis(){analysisJob?.cancel();}
   function analyze(data,transfer=[]) {
     stopAnalysis();
@@ -150,10 +155,24 @@ const RoomOutlineWorkspace=(()=>{
     refresh();
     for(const [id,value] of Object.entries(draft.rawInputs)){const input=document.getElementById(id);if(input)input.value=value;}
   }
-  function editPoints(points,dimensions=[]) {
+  function editPoints(points,dimensions=[],keepRows=false,appliedEdge=null) {
     W.assertEditable();if(!current(draft))throw Error('候選已過期，請重新取得。');
     if(points.length<4||points.length>256||!points.every(p=>p.length===2&&p.every(n=>Number.isSafeInteger(n)&&Math.abs(n)<=1e8))||!R.orthogonal(points))throw Error('頂點須為整數 mm、至少四點且每邊正交，不能偷偷修整斜邊。');
-    fe.draft={...fe.draft,pts:points.map(p=>[...p])};draft.dimensions=dimensions;draft.reviewed=false;draft.revision=(draft.revision||0)+1;draft.rawInputs={...(draft.rawInputs||{}),refRoomVertices:points.map(p=>p.join(',')).join('\n')};fe.draftPreview=null;feSyncDraftMirror();refresh();
+    fe.draft={...fe.draft,pts:points.map(p=>[...p])};draft.dimensions=dimensions;draft.reviewed=false;draft.revision=(draft.revision||0)+1;draft.rawInputs={...(draft.rawInputs||{}),refRoomVertices:points.map(p=>p.join(',')).join('\n')};fe.draftPreview=null;feSyncDraftMirror();
+    // Retire raw input only after the candidate passes both ownership and shape validation.
+    if(appliedEdge===null)pendingRows.delete(draft);else rowsFor(draft)?.delete(appliedEdge);
+    if(!keepRows){refresh();return;}
+    // Keep the real pointer/Tab target connected while an input loses focus.
+    // Resizing retains the vertex count, so these rows can update in place.
+    const pane=document.getElementById('faceInspectorContent');
+    for(const input of pane.querySelectorAll('[data-room-edge-length]')){
+      const edge=Number(input.dataset.roomEdgeLength),a=points[edge],b=points[(edge+1)%points.length],length=Math.abs(b[0]-a[0])+Math.abs(b[1]-a[1]);
+      input.parentElement.firstChild.textContent=`邊 ${edge+1}：擬提交 ${length} mm${dimensions.some(d=>d.edge===edge)?'（人工核對入值）':''}`;
+      if(!rowsFor(draft)?.has(edge)){delete input.dataset.rowDirty;input.value=String(length);}
+    }
+    pane.querySelector('#refRoomVertices').value=draft.rawInputs.refRoomVertices;
+    pane.querySelector('#refRoomReviewed').checked=false;pane.querySelector('#refRoomConfirm').disabled=true;
+    document.getElementById('faceDraftFinish').disabled=true;drawFaceEditor();W.present();
   }
   function paneHTML(bid,collection=false) {
     const p=W.active(bid);if(!p)return '';
@@ -165,22 +184,34 @@ const RoomOutlineWorkspace=(()=>{
     html+=`<details class="ref-section"><summary>缺口與連通房間：明確分隔後重取</summary><div class="ref-actions"><button id="refRoomHorizontal" class="btn" type="button">畫水平分隔</button><button id="refRoomVertical" class="btn" type="button">畫垂直分隔</button><button id="refRoomClearBarriers" class="btn" type="button">清除分隔（${barriers.length}）</button></div></details>`;
     if(pending(bid)) {
       const pts=fe.draft.pts;
-      html+=`<section id="refRoomCandidate"><strong>待核對候選 · ${draft.method==='pdf-vector'?'PDF 原始向量內緣推估':'影像暗線內緣推估'}</strong><p>${draft.collectionCandidate?'接受將建立獨立房間；既有房間保持原狀。':`確認將替換目前面 #${bid} 的外環；取消保留原面，確認後可復原。`}轉成整數 mm 最大座標偏差 ${draft.deviation.toFixed(4)} mm。圖上標註尺寸不會自動入值。</p><ul>${draft.warnings.map(w=>`<li>${esc(w)}</li>`).join('')}</ul><ol data-room-dimensions>${pts.map((a,i)=>{const b=pts[(i+1)%pts.length];return `<li>邊 ${i+1}：擬提交 ${Math.abs(b[0]-a[0])+Math.abs(b[1]-a[1])} mm${draft.dimensions.some(d=>d.edge===i)?'（人工核對入值）':''}</li>`;}).join('')}</ol><div class="place-form"><label>核對邊<select id="refRoomEdge">${pts.map((_,i)=>`<option value="${i}">邊 ${i+1}</option>`).join('')}</select></label><label>圖上標註／核對尺寸（mm）<input id="refRoomLength" type="number" min="1" step="1"></label></div><button id="refRoomSetLength" class="btn" type="button">將核對尺寸寫入候選</button><details class="ref-section"><summary>局部補點／凹口與頂點修正</summary><label>沿外環順序輸入 u,v（mm）；可插入凹口與補邊<textarea id="refRoomVertices" rows="6" spellcheck="false">${esc(pts.map(p=>p.join(',')).join('\n'))}</textarea></label><button id="refRoomApplyVertices" class="btn" type="button">更新候選頂點</button></details><label class="ib-row"><input id="refRoomReviewed" type="checkbox"${draft.reviewed?' checked':''}> 已逐邊核對室內淨範圍、連通關係、尺寸及上述修整／警告</label><div class="ref-actions"><button id="refRoomConfirm" class="btn primary" type="button"${draft.reviewed?'':' disabled'}>${draft.collectionCandidate?'接受為新房間，交核心驗證':'確認替換外環，交核心驗證'}</button><button id="refRoomCancel" class="btn" type="button">取消候選</button></div></section>`;
+      html+=`<section id="refRoomCandidate"><strong>待核對候選 · ${draft.method==='pdf-vector'?'PDF 原始向量內緣推估':'影像暗線內緣推估'}</strong><p>${draft.collectionCandidate?'接受將建立獨立房間；既有房間保持原狀。':`確認將替換目前面 #${bid} 的外環；取消保留原面，確認後可復原。`}轉成整數 mm 最大座標偏差 ${draft.deviation.toFixed(4)} mm。圖上標註尺寸不會自動入值。</p><ul>${draft.warnings.map(w=>`<li>${esc(w)}</li>`).join('')}</ul><ol data-room-dimensions>${pts.map((a,i)=>{const b=pts[(i+1)%pts.length],length=Math.abs(b[0]-a[0])+Math.abs(b[1]-a[1]);return `<li>邊 ${i+1}：擬提交 ${length} mm${draft.dimensions.some(d=>d.edge===i)?'（人工核對入值）':''}<input id="refRoomEdgeLength${i}" data-room-edge-length="${i}" aria-label="邊 ${i+1} 核對尺寸（mm）" type="number" min="1" step="1"${rowsFor(draft)?.has(i)?' data-row-dirty="1"':''} value="${esc(rowsFor(draft)?.has(i)?rowsFor(draft).get(i):String(length))}"></li>`;}).join('')}</ol><details id="refRoomSingleEdge" class="ref-section"><summary>進階：指定單邊尺寸</summary><div class="place-form"><label>核對邊<select id="refRoomEdge">${pts.map((_,i)=>`<option value="${i}">邊 ${i+1}</option>`).join('')}</select></label><label>圖上標註／核對尺寸（mm）<input id="refRoomLength" type="number" min="1" step="1"></label></div><button id="refRoomSetLength" class="btn" type="button">將核對尺寸寫入候選</button></details><details class="ref-section"><summary>局部補點／凹口與頂點修正</summary><label>沿外環順序輸入 u,v（mm）；可插入凹口與補邊<textarea id="refRoomVertices" rows="6" spellcheck="false">${esc(pts.map(p=>p.join(',')).join('\n'))}</textarea></label><button id="refRoomApplyVertices" class="btn" type="button">更新候選頂點</button></details><label class="ib-row"><input id="refRoomReviewed" type="checkbox"${draft.reviewed?' checked':''}> 已逐邊核對室內淨範圍、連通關係、尺寸及上述修整／警告</label><div class="ref-actions"><button id="refRoomConfirm" class="btn primary" type="button"${draft.reviewed?'':' disabled'}>${draft.collectionCandidate?'接受為新房間，交核心驗證':'確認替換外環，交核心驗證'}</button><button id="refRoomCancel" class="btn" type="button">取消候選</button></div></section>`;
     } else if(picking||acquiring)html+=`<button id="refRoomCancel" class="btn" type="button">${acquiring?'取消辨識':'取消取點'}</button>`;
     return html+'</details>';
   }
   function bindPane(pane,bid) {
     const boundDraft=draft;
-    const safe=fn=>async()=>{if(!pane.isConnected||pane!==document.getElementById('faceInspectorContent')||boundDraft!==draft)return;try{await fn();}catch(e){notice(e.message);}};
+    const safe=(fn,onError=notice)=>async()=>{if(!pane.isConnected||pane!==document.getElementById('faceInspectorContent')||boundDraft!==draft)return;try{await fn();}catch(e){onError(e.message);}};
+    const rowNotice=text=>{message=text;setStatus(text);const status=pane.querySelector('#refRoomStatus');if(status)status.textContent=text;W.present();};
     pane.querySelector('#refRoomPick')?.addEventListener('click',()=>start(bid,pane));
     pane.querySelector('#refRoomHorizontal')?.addEventListener('click',()=>start(bid,pane,'horizontal'));
     pane.querySelector('#refRoomVertical')?.addEventListener('click',()=>start(bid,pane,'vertical'));
     pane.querySelector('#refRoomClearBarriers')?.addEventListener('click',safe(()=>{W.assertEditable();barriers=[];barrierStamp=null;refresh();}));
     pane.querySelector('#refRoomCancel')?.addEventListener('click',cancel);
     pane.querySelector('#refRoomApplyVertices')?.addEventListener('click',safe(()=>editPoints(pane.querySelector('#refRoomVertices').value.trim().split(/\n/).map(line=>line.trim().split(',').map(Number)))));
+    for(const input of pane.querySelectorAll('[data-room-edge-length]')){
+      input.addEventListener('input',()=>{if(!input.isConnected||boundDraft!==draft||!current(boundDraft))return;
+        rememberRow(boundDraft,Number(input.dataset.roomEdgeLength),input.value);input.dataset.rowDirty='1';draft.reviewed=false;pane.querySelector('#refRoomReviewed').checked=false;pane.querySelector('#refRoomConfirm').disabled=true;document.getElementById('faceDraftFinish').disabled=true;});
+      const apply=safe(()=>{if(!rowsFor(boundDraft)?.has(Number(input.dataset.roomEdgeLength)))return;if(!input.isConnected||pane.querySelector('#'+input.id)!==input||!current(boundDraft))throw Error('候選已過期。');
+        const edge=Number(input.dataset.roomEdgeLength),length=Number(input.value);
+        const points=R.resizeEdge(fe.draft.pts,edge,length);
+        editPoints(points,[{edge,length,kind:'user-confirmed-mm'}],true,edge);},rowNotice);
+      input.addEventListener('blur',apply);
+      input.addEventListener('keydown',e=>{if(e.key!=='Enter'||e.defaultPrevented||e.isComposing||e.keyCode===229)return;
+        e.stopPropagation();e.preventDefault();if(e.repeat||e.altKey||e.ctrlKey||e.metaKey||e.shiftKey)return;apply();});
+    }
     pane.querySelector('#refRoomSetLength')?.addEventListener('click',safe(()=>{
       const edge=Number(pane.querySelector('#refRoomEdge').value),length=Number(pane.querySelector('#refRoomLength').value);
-      const points=R.resizeEdge(fe.draft.pts,edge,length);editPoints(points,[{edge,length,kind:'user-confirmed-mm'}]);
+      const points=R.resizeEdge(fe.draft.pts,edge,length);editPoints(points,[{edge,length,kind:'user-confirmed-mm'}],false,edge);
     }));
     pane.querySelector('#refRoomLength')?.addEventListener('keydown',e=>{
       if(e.key!=='Enter')return;
@@ -196,12 +227,13 @@ const RoomOutlineWorkspace=(()=>{
       pane.querySelector('#refRoomSetLength')?.click();
     });
     for(const id of ['refRoomVertices','refRoomLength','refRoomEdge'])pane.querySelector('#'+id)?.addEventListener('input',safe(()=>{if(!draft?.collectionCandidate)return;draft.rawInputs={...(draft.rawInputs||{}),[id]:pane.querySelector('#'+id).value};draft.reviewed=false;draft.revision=(draft.revision||0)+1;pane.querySelector('#refRoomReviewed').checked=false;pane.querySelector('#refRoomConfirm').disabled=true;document.getElementById('faceDraftFinish').disabled=true;}));
-    pane.querySelector('#refRoomReviewed')?.addEventListener('change',safe(()=>{W.assertEditable();if(!current(draft))throw Error('候選已過期。');draft.reviewed=pane.querySelector('#refRoomReviewed').checked;pane.querySelector('#refRoomConfirm').disabled=!draft.reviewed;document.getElementById('faceDraftFinish').disabled=!draft.reviewed;}));
+    pane.querySelector('#refRoomReviewed')?.addEventListener('change',safe(()=>{W.assertEditable();if(!current(draft))throw Error('候選已過期。');if(rowsFor(draft)?.size){draft.reviewed=false;throw Error('逐邊尺寸尚未完成入值，請先核對或取消。');}draft.reviewed=pane.querySelector('#refRoomReviewed').checked;pane.querySelector('#refRoomConfirm').disabled=!draft.reviewed;document.getElementById('faceDraftFinish').disabled=!draft.reviewed;}));
     pane.querySelector('#refRoomConfirm')?.addEventListener('click',safe(()=>feDraftTryClose()));
   }
   function beforeCommit() {
     if(!draft)return null;
     W.assertEditable();if(!current(draft)||!draft.reviewed)throw Error('請重新核對室內淨輪廓、尺寸與警告，再確認候選。');
+    if(rowsFor(draft)?.size)throw Error('逐邊尺寸尚未完成入值，請先核對或取消。');
     if(!R.orthogonal(fe.draft.pts)||!fe.draft.pts.every(p=>p.every(Number.isSafeInteger)))throw Error('候選須為正交整數 mm。');
     draft.committing=true;return draft;
   }

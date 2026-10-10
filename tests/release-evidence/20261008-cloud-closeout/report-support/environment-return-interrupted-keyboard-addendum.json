@@ -1,0 +1,28 @@
+{
+  "checked_at": "2026-10-08T18:41:36.651746+00:00",
+  "correction": "The earlier environment-return summary omitted completed room-pan/room-worker and the interrupted room-keyboard run. Raw files establish these facts; no original receipt is invented.",
+  "completed": [
+    "room-pan",
+    "room-worker"
+  ],
+  "interrupted": "room-keyboard",
+  "originalCommandExit": "unknown",
+  "originalGateExit": "unknown",
+  "originalCanonicalResult": {
+    "checks": 373,
+    "failures": 1,
+    "goalFailures": 0,
+    "unexpectedFailures": 1,
+    "browserDisconnected": true,
+    "fatal": true
+  },
+  "failureLimit": "Raw includes connection refused/empty response. Exact service disappearance cause is unknown. This cannot establish a product keyboard defect or success.",
+  "retry": "room-keyboard-r2 after independently verified new service entry; unchanged test/oracles; separate output directory",
+  "files": [
+    {
+      "path": "/workspace/closure-evidence/gates/room-keyboard/command.log",
+      "sha256": "15046486db167839f6a08d3b216714d147efebf6ed5c0f488ca9fa04ac7f6a54",
+      "bytes": 31177
+    }
+  ]
+}

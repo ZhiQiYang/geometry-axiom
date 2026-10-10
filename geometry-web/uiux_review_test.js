@@ -40,6 +40,16 @@ function installParameterSettlementGate(scope) {
   evidence.cleanup=()=>{release();if(scope.fetch===intercepted)scope.fetch=original;scope.removeEventListener('pointerdown',observe,true);scope.removeEventListener('keydown',observe,true);};
 }
 module.exports = async function uiuxReview({send,eval_,sleep,click,waitForUI,captureNewToasts,expectNativeDialog,exceptionCount}) {
+  // S2 keeps the same exact discard question inside the active workspace.
+  const discardDraft=async({message,accept})=>{
+    await ctl('#igDiscardDraft');
+    await waitForUI(`!!$('igDiscardConfirmation')&&$('igDiscardConfirmation').getAttribute('role')==='alertdialog'`,10000);
+    const actual=await eval_(`$('igDiscardQuestion').textContent`);
+    if(actual!==message)throw Error('Discard question changed: '+JSON.stringify({expected:message,actual}));
+    await ctl(accept?'#igDiscardConfirm':'#igDiscardCancel');
+    await waitForUI(`!$('igDiscardConfirmation')`,10000);
+  };
+
   console.log('=== P73. UI/UX 審查：可見動作、視角、空狀態與專案回饋 ===');
   const fs=require('fs'),path=require('path'),errors=exceptionCount();
   const check=cdp.makeCheck({prefix:'P73 ',throwOnFail:true});
@@ -123,8 +133,8 @@ module.exports = async function uiuxReview({send,eval_,sleep,click,waitForUI,cap
   const initial=await fitGeometry();check('桌面全圖保留完整面輪廓',fits(initial),initial);
   for(const width of [1382,900,390]){
     await viewport(width,width===1382?804:844);
-    const rows=await read(`(()=>{const top=document.querySelector('.object-workspace-topbar').getBoundingClientRect(),trail=document.querySelector('.object-workspace-trail').getBoundingClientRect(),tools=document.querySelector('.workspace-tools-row').getBoundingClientRect(),vp=$('faceEditorViewport').getBoundingClientRect(),back=$('workspaceBackButton').getBoundingClientRect();return {top:{height:top.height,bottom:top.bottom},trail:{bottom:trail.bottom},tools:{left:tools.left,right:tools.right,top:tools.top,height:tools.height},viewport:{top:vp.top,height:vp.height},back:{height:back.height,width:back.width},pageOverflow:document.documentElement.scrollWidth>innerWidth};})()`);
-    check('身份列與可捲動工具列分開，畫布仍可用 @'+width,rows.top.height>=100&&rows.top.height<=150&&rows.tools.top>=rows.trail.bottom-1&&rows.tools.left>=0&&rows.tools.right<=width+1&&rows.viewport.top>=rows.top.bottom-1&&rows.viewport.height>300&&rows.back.width>=44&&!rows.pageOverflow,rows);
+    const rows=await read(`(()=>{const top=document.querySelector('.object-workspace-topbar').getBoundingClientRect(),trail=document.querySelector('.object-workspace-trail').getBoundingClientRect(),tools=document.querySelector('.workspace-tools-row').getBoundingClientRect(),vp=$('faceEditorViewport').getBoundingClientRect(),back=$('workspaceBackButton').getBoundingClientRect();return {top:{top:top.top,height:top.height,bottom:top.bottom},trail:{bottom:trail.bottom},tools:{left:tools.left,right:tools.right,top:tools.top,height:tools.height},viewport:{top:vp.top,height:vp.height},back:{height:back.height,width:back.width},pageOverflow:document.documentElement.scrollWidth>innerWidth};})()`);
+    check('採納56/96px標頭且工具與畫布仍可用 @'+width,rows.top.height===(width<=560?96:56)&&rows.tools.top>=rows.top.top+(width<=560?44:0)&&rows.tools.top+rows.tools.height<=rows.top.bottom+1&&rows.tools.left>=0&&rows.tools.right<=width+1&&rows.viewport.top>=rows.top.bottom-1&&rows.viewport.height>300&&rows.back.width>=44&&!rows.pageOverflow,rows);
     const geometry=await fitGeometry();check('全圖隨視窗重新適配 @'+width,fits(geometry),geometry);
     if(width===390){
       const targets=await read(`[...document.querySelectorAll('#objectWorkspace button,#objectWorkspace select,#objectWorkspace .mini-toggle')].filter(e=>{const r=e.getBoundingClientRect(),s=getComputedStyle(e);return !e.disabled&&!e.hidden&&s.display!=='none'&&s.visibility!=='hidden'&&r.width&&r.height&&r.bottom>0&&r.top<innerHeight&&r.right>0&&r.left<innerWidth&&!e.closest('.inner-panel');}).map(e=>({id:e.id||e.getAttribute('data-face-tool')||e.textContent.trim(),w:e.getBoundingClientRect().width,h:e.getBoundingClientRect().height,name:e.getAttribute('aria-label')||e.getAttribute('title')||e.labels?.[0]?.textContent||e.textContent.trim()}))`);
@@ -177,7 +187,8 @@ module.exports = async function uiuxReview({send,eval_,sleep,click,waitForUI,cap
   } finally {await read('__parameterSettlementGate.cleanup();void 0');}
   await choose('#refGuideSource',parameterSource);await choose('#refGuideAxis','u');await ctl('#refGuideCreate');await wait(`!!$('impact-confirm')`);await ctl('#impact-confirm');await wait('!oc.busy');await sleep(180);
   check('共用參數入口建立引用，核心保存來源與軸向',await read(`apiRequest('references').then(r=>r.guides.some(g=>g.expression===${JSON.stringify(parameterSource)} && g.axis==='u' && g.off===1700))`));
-  await choose('#refGuideAxis','v');await choose('#refGuideSource','edge:e1:u');await choose('#refGuideRatio','1/2');await ctl('#refGuideCreate');await wait('!oc.busy');await sleep(180);
+  await choose('#refGuideAxis','v');await choose('#refGuideSource','edge:e1:u');await choose('#refGuideRatio','1/2');await ctl('#refGuideCreate');await wait('!oc.busy');
+  await wait(`(()=>{const g=(fe.guides||[]).find(g=>g.expression==='1/2*edge:e1:u'&&g.axis==='v'&&g.off===2000);return !!g&&!!document.querySelector('[data-edit-guide="'+g.id+'"]');})()`);
   check('選已知邊一半產生引用式，位置與走向用語一致',await read(`apiRequest('references').then(r=>{const g=r.guides.find(g=>g.expression==='1/2*edge:e1:u'&&g.axis==='v');if(!g||g.off!==2000)return false;const row=document.querySelector('[data-edit-guide="'+g.id+'"]');return /沿 v/.test($('faceInspectorContent').textContent)&&/u\\s*=\\s*2000/.test($('faceInspectorContent').textContent)&&!!row&&/沿 v/.test(row.textContent)&&/u\\s*=\\s*2000/.test(row.textContent);})`));
   await ctl('#workspaceBackButton');
   await viewport(900);
@@ -218,7 +229,7 @@ module.exports = async function uiuxReview({send,eval_,sleep,click,waitForUI,cap
     check('網格對話框不水平溢出 @'+width,await read(`document.documentElement.scrollWidth<=innerWidth && $('infiniteGridWorkspace').scrollWidth<=$('infiniteGridWorkspace').clientWidth+1`));
   }
   await fill('#igName','UI 審查保留中的草稿');
-  await expectNativeDialog(()=>ctl('#igDiscardDraft'),{message:'捨棄這份未發布的原始草稿？已保存到場景的網格保持不變。',accept:false});
+  await discardDraft({message:'捨棄這份未發布的原始草稿？已保存到場景的網格保持不變。',accept:false});
   check('取消捨棄確認保留完整草稿與視窗',await read(`$('infiniteGridWorkspace').open && $('igName').value==='UI 審查保留中的草稿'`));
   await read(`window.__p73GridPicker=window.showSaveFilePicker;window.__p73GridWrite={bytes:null,closed:false};window.showSaveFilePicker=async()=>({createWritable:async()=>({write:async bytes=>{__p73GridWrite.bytes=Array.from(bytes)},close:async()=>{__p73GridWrite.closed=true},abort:async()=>{}})});void 0`);
   await ctl('#projectBar [data-project-action="save"]');await wait(`!ReferenceWorkspace.busy && window.__p73GridWrite.closed`);

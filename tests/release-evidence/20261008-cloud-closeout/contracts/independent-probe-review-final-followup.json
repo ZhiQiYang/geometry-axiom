@@ -1,0 +1,26 @@
+{
+  "schema": "geometry-native-probe-review-final-followup/1",
+  "reviewer": "/root/remote_inventory",
+  "checked_at": "2026-10-08T16:01:56.515675+00:00",
+  "head": "3a48cf5bacb9a295e15046e5ca0cb021e50c54db",
+  "status": " M tests/integration/assembly_ownership_probe.py\n M tests/integration/grid_rule_reopen_probe.py\n",
+  "source_sha256": {
+    "assembly_ownership_probe.py": "9e158b959975f796a16f40dbe785b9f18934b6a65b2edefa4edbd2c45f7a45fc",
+    "grid_rule_reopen_probe.py": "f9065a83ee9371336c93fe73419f33e6895bf645cd507fcdb3bd41448f6c2e6d"
+  },
+  "previous_reviews": [
+    "independent-probe-review.json",
+    "independent-probe-review-followup.json"
+  ],
+  "resolved_finding": "cleanup-error-swallowed",
+  "status_of_finding": "resolved",
+  "blocking_findings": [],
+  "basis": "Reviewed only final 8-line changes per probe: subsequent session.stop exceptions retain traceback and failed status; absent exit_code now fails through details.get rather than dropping the result with KeyError. Eight actual-finally synthetic cases match exact hashes. Existing fixture/oracle unchanged.",
+  "selfcheck_sha256": "ce0b0d099261c5c25bd5d4cb7cf69537ce56186375c081aefc8718f3b8499b6b",
+  "native_rerun": false,
+  "browser_rerun": false,
+  "limits": [
+    "No new product execution claim.",
+    "Earlier receipts retain original hashes and are not overwritten."
+  ]
+}

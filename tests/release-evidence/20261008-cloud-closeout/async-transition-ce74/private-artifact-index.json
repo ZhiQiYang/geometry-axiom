@@ -1,0 +1,165 @@
+{
+  "note": "Hashes attest retained private originals, not public availability. Only explicit trace event extracts are included; no trace ZIP/browser profile/full snapshot is published.",
+  "artifacts": [
+    {
+      "private_path": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-1400-face-held-success-to-B-trace.zip",
+      "bytes": 1671887,
+      "sha256": "edc9d140e415de6efbde5ea35b47ae2a8947722de710b2478d93fb103fa42663",
+      "trace_member": "trace.trace",
+      "trace_member_sha256": "a8d5069f03189eb67bcec1b966387fc7cb0431951d9336c04d025e4b87375286",
+      "trace_member_lines": 456,
+      "public_extract": "trace-events/edge-transition-1400-face-held-success-to-B-events.jsonl",
+      "extract_sha256": "7e31826e70bb71aadc504a595481f61f61931e3bcee2cf26ca750d5a2d120bb4",
+      "extracted_events": 176
+    },
+    {
+      "private_path": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-1400-face-success-control-trace.zip",
+      "bytes": 1771701,
+      "sha256": "edb14cd9ac21078ff9ca1904b906488a87e86d7813adcd61c1e4517167249ea6",
+      "trace_member": "trace.trace",
+      "trace_member_sha256": "38fca3db3cd34c844a1ab2eac5a6bea06551a790a7147e00b3d6e323ef101574",
+      "trace_member_lines": 261,
+      "public_extract": "trace-events/edge-transition-1400-face-success-control-events.jsonl",
+      "extract_sha256": "1997288bbdf988339616ed82f81c20965b5b82717ca4dab8a8a0a791f4944d1e",
+      "extracted_events": 88
+    },
+    {
+      "private_path": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-1400-main-held-success-to-B-trace.zip",
+      "bytes": 1314119,
+      "sha256": "e4dc9c7cdff459674e6421f14f526323c65502b0d711f4215b34e18be9276359",
+      "trace_member": "trace.trace",
+      "trace_member_sha256": "0f688ee89df56a7ed06fbebbb4e7f93909a5ebf8f4b58abf754a34c8d7898503",
+      "trace_member_lines": 379,
+      "public_extract": "trace-events/edge-transition-1400-main-held-success-to-B-events.jsonl",
+      "extract_sha256": "ed5ca4c458dcdb8502376afd25e336bc35ae86894fa97352aa97b7e202c08ba5",
+      "extracted_events": 130
+    },
+    {
+      "private_path": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-1400-main-success-control-trace.zip",
+      "bytes": 1348370,
+      "sha256": "3fbff193bf66e9acf9cfd8c380c598a7607dad3e4bc3e4011b689b6d40185e7d",
+      "trace_member": "trace.trace",
+      "trace_member_sha256": "fee02d52451892e872d1b6d48dbd9738df8d88dc42ae94b5f085d9c1c774d8a6",
+      "trace_member_lines": 210,
+      "public_extract": "trace-events/edge-transition-1400-main-success-control-events.jsonl",
+      "extract_sha256": "aa074129e7c53a563234ec050f48ee5f60fc20cfbec536b641002e85c7763b0c",
+      "extracted_events": 58
+    },
+    {
+      "private_path": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-390-face-held-success-to-B-trace.zip",
+      "bytes": 1636527,
+      "sha256": "430c0e6c71c790cd7cae59288305e43d954f4aa9830c007c8a41b19b70b85571",
+      "trace_member": "trace.trace",
+      "trace_member_sha256": "3975a43bcb0d159c06cc917d2b4e420c2c6dfb030a3d1dee4f3fe2b1fa1bd9af",
+      "trace_member_lines": 638,
+      "public_extract": "trace-events/edge-transition-390-face-held-success-to-B-events.jsonl",
+      "extract_sha256": "36806118b36d7d6facf394164ff7a3d9c77a77b0d8af21d02c6fb934f700f035",
+      "extracted_events": 239
+    },
+    {
+      "private_path": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-390-face-success-control-trace.zip",
+      "bytes": 1425290,
+      "sha256": "1e5c9b74549dee5623df308e4c2af78d582422d59fca724cbe4515a3854415d6",
+      "trace_member": "trace.trace",
+      "trace_member_sha256": "d09b5d888da85caf4ba7acbb8f3a8cb4d932089cb5e6b2733dd97880f411364c",
+      "trace_member_lines": 376,
+      "public_extract": "trace-events/edge-transition-390-face-success-control-events.jsonl",
+      "extract_sha256": "8390cece6a79b1e732d45af0e0aa4fa68cb642e8fd7604b9d65eeb276986ee82",
+      "extracted_events": 125
+    },
+    {
+      "private_path": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-390-main-held-success-to-B-trace.zip",
+      "bytes": 1389322,
+      "sha256": "9c4701b0a5db493518acfcca113a315790a604b8db7d4b956226219d1e51c465",
+      "trace_member": "trace.trace",
+      "trace_member_sha256": "4b8f94ce19fc859cbb94240396ed94be6c597033dc9f81a32a98f3bb5d047bf9",
+      "trace_member_lines": 508,
+      "public_extract": "trace-events/edge-transition-390-main-held-success-to-B-events.jsonl",
+      "extract_sha256": "ee2cbfbe541e592a7683d7b80104876999aa5faf718a1f6eeb3e21427e02d756",
+      "extracted_events": 172
+    },
+    {
+      "private_path": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-390-main-success-control-trace.zip",
+      "bytes": 1273593,
+      "sha256": "b2fee6f23b4663868a16013e35bddd2dc5bf3e8d1d3184f1dc0d07f5849ace19",
+      "trace_member": "trace.trace",
+      "trace_member_sha256": "8c2b50b28f1f918a5041500cac15a5b6d521730f2de8bd4b35914c1e8a7e43d3",
+      "trace_member_lines": 284,
+      "public_extract": "trace-events/edge-transition-390-main-success-control-events.jsonl",
+      "extract_sha256": "df20de84f04a353098382dfcd7cacc879311f5032ffe78c424aaf1b4bc3dda30",
+      "extracted_events": 79
+    },
+    {
+      "private_path": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-1400-face-held-success-to-B-B-ready.png",
+      "bytes": 63188,
+      "sha256": "dc4f929b9ef06cf0aa304f22b159f48e0d279202c746ffa70bd67b71a12428ef",
+      "kind": "synthetic case screenshot retained privately"
+    },
+    {
+      "private_path": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-1400-face-held-success-to-B-released.png",
+      "bytes": 71942,
+      "sha256": "f8d75ef968bcb816f76961969c64d020832341f0fecc634f26f7ea9621f27f8a",
+      "kind": "synthetic case screenshot retained privately"
+    },
+    {
+      "private_path": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-1400-face-success-control-completed.png",
+      "bytes": 164122,
+      "sha256": "c56076711749ad1a34d09388831a6b272d6652ffde9d32637e1f4619d165b5b0",
+      "kind": "synthetic case screenshot retained privately"
+    },
+    {
+      "private_path": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-1400-main-held-success-to-B-B-ready.png",
+      "bytes": 63188,
+      "sha256": "dc4f929b9ef06cf0aa304f22b159f48e0d279202c746ffa70bd67b71a12428ef",
+      "kind": "synthetic case screenshot retained privately"
+    },
+    {
+      "private_path": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-1400-main-held-success-to-B-released.png",
+      "bytes": 71942,
+      "sha256": "f8d75ef968bcb816f76961969c64d020832341f0fecc634f26f7ea9621f27f8a",
+      "kind": "synthetic case screenshot retained privately"
+    },
+    {
+      "private_path": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-1400-main-success-control-completed.png",
+      "bytes": 132424,
+      "sha256": "206fac9364c98f28f426e9a0488da680e11a097fcf5b6d97cf51a4cca0b97dd8",
+      "kind": "synthetic case screenshot retained privately"
+    },
+    {
+      "private_path": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-390-face-held-success-to-B-B-ready.png",
+      "bytes": 34323,
+      "sha256": "851760c5e588c183da1f1f46397885bf094cad32bc7b6a89edf9d58a799cfe74",
+      "kind": "synthetic case screenshot retained privately"
+    },
+    {
+      "private_path": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-390-face-held-success-to-B-released.png",
+      "bytes": 39791,
+      "sha256": "9b79d191d0e270e7d17dcd84a16d54771e7499233b8a692e1c2f7b342e52fd49",
+      "kind": "synthetic case screenshot retained privately"
+    },
+    {
+      "private_path": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-390-face-success-control-completed.png",
+      "bytes": 62399,
+      "sha256": "02fd7a10a305f75d4c1da8e33846aa965149d17c9643a0398de98ac5c509fca4",
+      "kind": "synthetic case screenshot retained privately"
+    },
+    {
+      "private_path": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-390-main-held-success-to-B-B-ready.png",
+      "bytes": 34323,
+      "sha256": "851760c5e588c183da1f1f46397885bf094cad32bc7b6a89edf9d58a799cfe74",
+      "kind": "synthetic case screenshot retained privately"
+    },
+    {
+      "private_path": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-390-main-held-success-to-B-released.png",
+      "bytes": 39791,
+      "sha256": "9b79d191d0e270e7d17dcd84a16d54771e7499233b8a692e1c2f7b342e52fd49",
+      "kind": "synthetic case screenshot retained privately"
+    },
+    {
+      "private_path": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-390-main-success-control-completed.png",
+      "bytes": 78608,
+      "sha256": "c8560618e23509431e614fbb12c73c79d83bc9039021b58ba3ff3048725efc4a",
+      "kind": "synthetic case screenshot retained privately"
+    }
+  ]
+}

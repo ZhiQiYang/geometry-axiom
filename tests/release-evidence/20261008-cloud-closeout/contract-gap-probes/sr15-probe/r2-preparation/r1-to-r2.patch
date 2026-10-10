@@ -1,0 +1,90 @@
+--- r1/executed-probe.py
++++ r2/sr15_probe.py
+@@ -13,7 +13,12 @@
+ import sys
+ import unittest
+ 
+-ROOT = Path('/workspace/geometry-axiom')
++_bootstrap = argparse.ArgumentParser(add_help=False)
++_bootstrap.add_argument('--repo', type=Path, required=True)
++_location, _ = _bootstrap.parse_known_args()
++ROOT = _location.repo.resolve()
++if not (ROOT / 'tests/test_grid_subdivision_oracle.py').is_file():
++    raise RuntimeError('--repo must identify the geometry-axiom source checkout')
+ sys.path.insert(0, str(ROOT))
+ from tests import _bridge
+ from tests.test_grid_subdivision_oracle import NativeSubdivisionOracle
+@@ -194,6 +199,42 @@
+         self.mark(label+': Undo/Redo restore complete World while revision advances')
+         return redone
+ 
++    def assert_anchor_preview(self, pv, before_anchor):
++        # The native transport enumerates all before bindings and newly added
++        # bindings, not only changed ones (grid_binding_bridge.inc:219-237).
++        # Keep the set exact and prove that the extra existing A is untouched.
++        rows = pv['gridBindings']
++        self.assertEqual(2, len(rows))
++        self.assertEqual({0, 1}, {r['id'] for r in rows})
++        by_id = {r['id']:r for r in rows}
++        live = {b['id']:b for b in before_anchor['world']['objects']['gridBindings']}
++        for identifier in (0, 1):
++            self.assertEqual(live[identifier],
++                             {k:v for k,v in by_id[identifier]['before'].items() if k!='preview'})
++        self.assertEqual(by_id[0]['before'], by_id[0]['after'], 'complete A preview must be unchanged')
++        old, new = by_id[1]['before'], by_id[1]['after']
++        self.assertEqual([{'num':1,'den':2},{'num':1,'den':2}], old['anchor'])
++        self.assertEqual([{'num':1,'den':3},{'num':1,'den':2}], new['anchor'])
++        self.assertEqual([1450,-400], old['translation'])
++        self.assertEqual([1600,-400], new['translation'])
++        self.assertEqual(['1450','-400'], old['translationExact'])
++        self.assertEqual(['1600','-400'], new['translationExact'])
++        changing = {'anchor','translation','translationExact','preview'}
++        self.assertEqual({k:v for k,v in old.items() if k not in changing},
++                         {k:v for k,v in new.items() if k not in changing})
++        # R32: U900 at source cells -1/0 plus translations1450/1600.
++        # This complete fixed rectangle has two U lines; unchanged V uses400.
++        for value, coordinates in [(old['preview'],[550,1450]),
++                                   (new['preview'],[700,1600])]:
++            self.assertTrue(value['ok'], value)
++            self.assertEqual([100,200,2100,1800], value['rect'])
++            lines=value['axes']['u']['lines']
++            self.assertEqual(['-1','0'], [line['index'] for line in lines])
++            self.assertEqual(coordinates, [line['coordinate'] for line in lines])
++            self.assertEqual([[{'a':[x,200],'b':[x,1800]}] for x in coordinates],
++                             [line['segments'] for line in lines])
++        self.assertEqual(old['preview']['axes']['v'], new['preview']['axes']['v'])
++
+     def test_sr15(self):
+         setup = self.parameter_preview(600)
+         self.assertTrue(setup['valid'], setup)
+@@ -240,11 +281,12 @@
+         before_anchor = self.capture('before-anchor-edit')
+         anchor = self.anchor_line()
+         pv = self.preview(anchor)
+-        self.assertEqual({1}, {r['id'] for r in pv['gridBindings']})
++        self.assert_anchor_preview(pv, before_anchor)
+         self.unchanged(before_anchor,'anchor-preview-live')
+         self.commit('cancel-preview')
+         self.unchanged(before_anchor,'anchor-cancel')
+         pv = self.preview(anchor)
++        self.assert_anchor_preview(pv, before_anchor)
+         self.commit('confirm '+str(pv['token']))
+         after_anchor = self.phase('anchor-third',900,'third')
+         self.assertGreater(after_anchor['revision'],before_anchor['revision'])
+@@ -278,12 +320,16 @@
+ def main():
+     global ARGS
+     ap=argparse.ArgumentParser()
++    ap.add_argument('--repo',type=Path,required=True)
+     ap.add_argument('--head',required=True)
+     ap.add_argument('--bridge',required=True)
+     ap.add_argument('--out',type=Path,required=True)
+     ARGS=ap.parse_args()
++    if ARGS.repo.resolve()!=ROOT:
++        raise RuntimeError('Repository changed between argument parsing phases')
+     ARGS.out.mkdir(parents=True,exist_ok=False)
+     REPORT['startedAt']=datetime.datetime.now(datetime.timezone.utc).isoformat()
++    REPORT['repository']=str(ROOT)
+     REPORT['head']=git('rev-parse','HEAD')
+     REPORT['dirtyBefore']=git('status','--porcelain')
+     REPORT['sourceSHA256']={str(p):sha(p) for p in [Path(__file__),

@@ -1,0 +1,70 @@
+{
+  "schema": "geometry-sgr62-original-oracle/1",
+  "tests": [
+    "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_hole_clipping_preserves_line_identity_and_all_visible_segments"
+  ],
+  "testsRun": 1,
+  "failures": 1,
+  "errors": 0,
+  "skipped": [],
+  "unexpectedSuccesses": 0,
+  "expectedFailures": 0,
+  "details": [
+    {
+      "kind": "failure",
+      "test": "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_hole_clipping_preserves_line_identity_and_all_visible_segments",
+      "exception": "AssertionError",
+      "frames": [
+        {
+          "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+          "line": 58,
+          "function": "testPartExecutor"
+        },
+        {
+          "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+          "line": 634,
+          "function": "run"
+        },
+        {
+          "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+          "line": 589,
+          "function": "_callTestMethod"
+        },
+        {
+          "file": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source/tests/test_grid_subdivision_oracle.py",
+          "line": 537,
+          "function": "test_hole_clipping_preserves_line_identity_and_all_visible_segments"
+        },
+        {
+          "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+          "line": 885,
+          "function": "assertEqual"
+        },
+        {
+          "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+          "line": 1091,
+          "function": "assertListEqual"
+        },
+        {
+          "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+          "line": 1073,
+          "function": "assertSequenceEqual"
+        },
+        {
+          "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+          "line": 715,
+          "function": "fail"
+        }
+      ],
+      "traceback": "Traceback (most recent call last):\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 58, in testPartExecutor\n    yield\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 634, in run\n    self._callTestMethod(testMethod)\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 589, in _callTestMethod\n    if method() is not None:\n       ^^^^^^^^\n  File \"/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source/tests/test_grid_subdivision_oracle.py\", line 537, in test_hole_clipping_preserves_line_identity_and_all_visible_segments\n    self.assertEqual(normalized(segments), normalized(by_line[identity][\"segments\"]))\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 885, in assertEqual\n    assertion_func(first, second, msg=msg)\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 1091, in assertListEqual\n    self.assertSequenceEqual(list1, list2, msg, seq_type=list)\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 1073, in assertSequenceEqual\n    self.fail(msg)\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 715, in fail\n    raise self.failureException(msg)\nAssertionError: Lists differ: [((300, 200), (300, 250)), ((300, 550), (300, 600))] != [((300, 200), (300, 600))]\n\nFirst differing element 0:\n((300, 200), (300, 250))\n((300, 200), (300, 600))\n\nFirst list contains 1 additional elements.\nFirst extra element 1:\n((300, 550), (300, 600))\n\n- [((300, 200), (300, 250)), ((300, 550), (300, 600))]\n+ [((300, 200), (300, 600))]\n"
+    }
+  ],
+  "sessions": 1,
+  "unhealthySessions": [],
+  "binary": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/active-bridge",
+  "binarySha256": "b24e1ef828876644effd726e80a23fe367b7fb3fa96c99a013d898612f377e4d",
+  "sanitizerEnvironment": {
+    "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1:abort_on_error=1",
+    "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "command": ["python3", "/workspace/closure-evidence/final-contract-probes/native-sanitizer-mutations/prepare.py", "--repo", "/workspace/geometry-axiom"],
+  "exitCode": 1,
+  "source": "tool-returned stderr, retained as transcription; stdout was empty",
+  "error": "RuntimeError: ('assertion must be unique', 'self.assertFalse(rejected[\"ok\"], rejected)', [778, 811, 901, 955])",
+  "stage": "source copying and static assertion-location identification; no native build/test",
+  "correction": "Locate repeated assertion text within the specifically named original method AST range; expectations and original tests unchanged. Existing copied files were byte-verified before preparation resumed."
+}

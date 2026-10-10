@@ -1,0 +1,73 @@
+{
+  "at": "2026-10-09T15:30:59.067045+00:00",
+  "readOnly": true,
+  "browserExecuted": false,
+  "nativeExecuted": false,
+  "repoWritten": false,
+  "old": {
+    "path": "<workspace-path>",
+    "sha256": "8dbf04fe3af69a7656fbe38445afe190f520dac660b6046555595d386a08c5a9"
+  },
+  "new": {
+    "path": "<workspace-path>",
+    "sha256": "ce4ea0d82cd4eb524c0be6ed80e9682576ed417a2647fc3b5012737e5266d812"
+  },
+  "validator": {
+    "path": "<workspace-path>",
+    "sha256": "630147fdf819fc2cad24d88f18e56871ce78bd7217324804bdb3456f576766ed"
+  },
+  "python": {
+    "path": "<python-runtime>/bin/python",
+    "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7"
+  },
+  "command": [
+    "<python-runtime>/bin/python",
+    "<workspace-path>"
+  ],
+  "checks": [
+    {
+      "name": "exact old executed and new reviewed immutable bytes",
+      "ok": true
+    },
+    {
+      "name": "sole source delta is one normal explicit sort selection with positive native/no-state-write check",
+      "ok": true
+    },
+    {
+      "name": "all original exact dimension/source/world endpoint oracle bytes remain",
+      "ok": true
+    },
+    {
+      "name": "all original row dirty/native/no-write and S2 actual owner invariants retained",
+      "ok": true
+    },
+    {
+      "name": "native preview real Confirm requirement unchanged",
+      "ok": true
+    },
+    {
+      "name": "prior explicit length order and independent CSV comparison remain unchanged",
+      "ok": true
+    },
+    {
+      "name": "no force or API injection introduced",
+      "ok": true
+    },
+    {
+      "name": "actual Node parses complete new source",
+      "ok": true,
+      "detail": {
+        "command": [
+          "node",
+          "--check",
+          "<workspace-path>"
+        ],
+        "exitCode": 0,
+        "stdout": "",
+        "stderr": ""
+      }
+    }
+  ],
+  "ok": true,
+  "scope": "Normal UI sort precondition repair only; no product pending-invalid or old-prompt defect downgrade."
+}

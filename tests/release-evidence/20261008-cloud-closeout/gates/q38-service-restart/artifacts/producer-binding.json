@@ -1,0 +1,60 @@
+{
+  "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+  "tree": "1c0fb168f2854f37c10370f1c65d4a155a83620b",
+  "status": "",
+  "runtime": {
+    "schema": "geometry-runtime/1",
+    "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 196578,
+    "session": "ca31be77efb542b89d45d5a88c3b1b45"
+  },
+  "gate": "q38-fresh-save",
+  "artifactsSha256": {
+    "/workspace/closure-evidence/q38-restart-r1/producer/q38-full.gcanvas": "49e3e05519cd696665d113d18c9839a58f3f04a2ca14422558542f1f9cb3d22b",
+    "/workspace/closure-evidence/q38-restart-r1/producer/original-model.json": "9cb060c49b421aa37c6be360674190e639c0e8c26665cd7be8fa1243d1506ae7"
+  },
+  "recordedAt": "2026-10-08T18:50:08.235184+00:00",
+  "bindingOrigin": "current private wrapper after validating producer receipt/result; not inherited historical delivery",
+  "files": [
+    {
+      "originalPath": "/tmp/geometry-closeout-r2-gates/q38-save-roundtrip/q38-full.gcanvas",
+      "copy": "/workspace/closure-evidence/q38-restart-r1/producer/q38-full.gcanvas",
+      "sha256": "49e3e05519cd696665d113d18c9839a58f3f04a2ca14422558542f1f9cb3d22b",
+      "bytes": 2187
+    },
+    {
+      "originalPath": "/tmp/geometry-closeout-r2-gates/q38-save-roundtrip/original-model.json",
+      "copy": "/workspace/closure-evidence/q38-restart-r1/producer/original-model.json",
+      "sha256": "9cb060c49b421aa37c6be360674190e639c0e8c26665cd7be8fa1243d1506ae7",
+      "bytes": 178293
+    },
+    {
+      "originalPath": "/tmp/geometry-closeout-r2-gates/q38-save-roundtrip/manifest.json",
+      "copy": "/workspace/closure-evidence/q38-restart-r1/producer/manifest.json",
+      "sha256": "9bffd23ecd83bcdff52d60ceaaee0b691c38d8305b914c0386b84930f9ed373e",
+      "bytes": 334
+    },
+    {
+      "originalPath": "/tmp/geometry-closeout-r2-gates/q38-save-roundtrip/run.json",
+      "copy": "/workspace/closure-evidence/q38-restart-r1/producer/run.json",
+      "sha256": "0551d4313eccaf71de247c03b0ca895c4f928211b71a14850aca1005f58735a4",
+      "bytes": 2532
+    },
+    {
+      "originalPath": "/tmp/geometry-closeout-r2-gates/q38-save-roundtrip/result.json",
+      "copy": "/workspace/closure-evidence/q38-restart-r1/producer/result.json",
+      "sha256": "59892dcf46587175e08b80d3eb1a4d1f24cc9b234fc544aa82e96aaa6d001f74",
+      "bytes": 2154
+    },
+    {
+      "originalPath": "/workspace/closure-evidence/gates/q38-save-roundtrip/receipt.json",
+      "copy": "/workspace/closure-evidence/q38-restart-r1/producer/release-receipt.json",
+      "sha256": "960e365023ca4930e74432e071ed083b2098907a9a0d057c27470f0fc79427a0",
+      "bytes": 5219
+    }
+  ],
+  "sourceProducerGate": "/workspace/closure-evidence/gates/q38-save-roundtrip/receipt.json",
+  "producerGateSha256": "960e365023ca4930e74432e071ed083b2098907a9a0d057c27470f0fc79427a0"
+}

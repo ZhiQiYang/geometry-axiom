@@ -1,0 +1,147 @@
+{
+  "schema": "geometry-save-roundtrip-result/1",
+  "completed": true,
+  "expected": 33,
+  "passed": 33,
+  "failed": 0,
+  "ok": true,
+  "checks": [
+    {
+      "name": "runtime worktree is clean before fixture mutation",
+      "ok": true
+    },
+    {
+      "name": "browser URL and title identify the actual nonblank product",
+      "ok": true
+    },
+    {
+      "name": "native 4m x 3m source and persisted canvas position exactly match independent oracle",
+      "ok": true
+    },
+    {
+      "name": "native geometry edit undo restores complete exact World",
+      "ok": true
+    },
+    {
+      "name": "native geometry edit redo applies complete exact World",
+      "ok": true
+    },
+    {
+      "name": "select #smProjectionView",
+      "ok": true
+    },
+    {
+      "name": "independent preview volume equals 4m x 3m x 3m",
+      "ok": true
+    },
+    {
+      "name": "created model has exact source projection",
+      "ok": true
+    },
+    {
+      "name": "independent edited preview volume equals 38.4m3",
+      "ok": true
+    },
+    {
+      "name": "model update leaves all native source bytes intact",
+      "ok": true
+    },
+    {
+      "name": "model height undo returns exact 3000mm",
+      "ok": true
+    },
+    {
+      "name": "model height undo preserves exact native World",
+      "ok": true
+    },
+    {
+      "name": "model height redo restores full raw record and source",
+      "ok": true
+    },
+    {
+      "name": "real Save downloads a nonempty complete project ZIP",
+      "ok": true
+    },
+    {
+      "name": "download branch honestly reports completion still needs user confirmation",
+      "ok": true
+    },
+    {
+      "name": "cancelled picker was invoked with active user activation",
+      "ok": true
+    },
+    {
+      "name": "cancelled picker preserves full fixture, history owner and saved status",
+      "ok": true
+    },
+    {
+      "name": "injected write failure aborts and keeps unsaved state",
+      "ok": true
+    },
+    {
+      "name": "injected write failure preserves full fixture, history owner and saved status",
+      "ok": true
+    },
+    {
+      "name": "New project clears models in a distinct context",
+      "ok": true
+    },
+    {
+      "name": "New project Undo restores nonempty full World and full model/projection fixture manifest",
+      "ok": true
+    },
+    {
+      "name": "New project Redo restores empty project",
+      "ok": true
+    },
+    {
+      "name": "fresh browser profile starts with empty World",
+      "ok": true
+    },
+    {
+      "name": "fresh browser profile has no model records",
+      "ok": true
+    },
+    {
+      "name": "fresh session real chooser reopen restores exact native World, full fixture manifest and raw model/source bytes",
+      "ok": true
+    },
+    {
+      "name": "reopened UI reports exact 3200mm model extent and 38.4m3",
+      "ok": true
+    },
+    {
+      "name": "corrupt archive produces its own archive-specific visible failure",
+      "ok": true
+    },
+    {
+      "name": "corrupt archive chooser consumed the intended file",
+      "ok": true
+    },
+    {
+      "name": "failed archive import preserves full fixture snapshot and history",
+      "ok": true
+    },
+    {
+      "name": "successful import Undo restores previous empty project with no models",
+      "ok": true
+    },
+    {
+      "name": "successful import Redo restores nonempty World and full project payload",
+      "ok": true
+    },
+    {
+      "name": "no uncaught page errors during complete flow",
+      "ok": true
+    },
+    {
+      "name": "clean head tree and runtime source process/session stayed identical during acceptance",
+      "ok": true
+    }
+  ],
+  "limits": [
+    "Linux Chromium download fallback, not real native OS save picker",
+    "Save cancellation and disk failure are deliberately injected environment responses",
+    "Geometric/model/projection data covered; reference images/PDF and draft payloads not included"
+  ]
+}

@@ -11,6 +11,13 @@ function between(start, end) {
   assert(i >= 0 && j > i, `Missing source region: ${start}`);
   return source.slice(i, j);
 }
+function matching(pattern, end) {
+  const found = pattern.exec(source);
+  assert(found, `Missing source region: ${pattern}`);
+  const i = found.index, j = source.indexOf(end, i + found[0].length);
+  assert(j > i, `Missing source region: ${end}`);
+  return source.slice(i, j);
+}
 function layer() {
   return { ops: [], dataset:{}, replaceChildren() {}, get textContent() { return this.text || ""; },
     set textContent(value) { this.text = value; this.ops = []; } };
@@ -46,6 +53,9 @@ function harness() {
     world:layer(), v3FilterOps:ops=>ops, previewGs:[], affineCache:{},
     screenToView:(x,y) => x < 0 ? null : ({v:0,x,y,r:8}),
     applyTransform() {}, canvasMove() {}, canvasDown() {}, canvasUp() {}, render:async () => {},
+    presentationCurrent() { return () => true; },
+    /* Defined after the wheel listener, outside every extracted region. */
+    retireCanvasGesture() { return null; },
     clearCanvasSelections() {}, GridEditor:{clear() {}}, ReferenceVisibility:{clear() {}},
     closePanels() {}, fiShowTab() {}, PolyDraft:{createState:()=>({})}, feSyncDraftMirror() {}, pendingSlot:null,
     document:{body:{classList:{add() {},remove() {},toggle() {}}}},
@@ -56,7 +66,7 @@ function harness() {
     between("function queueGuideDrag(d, sv)", 'cv.addEventListener("wheel"') +
     between("function bindProjectedGuideDrag(svg,", "/* ---- 世界層建立互動 ---- */") +
     between("function resetSceneFocus()", "async function loadScene(") +
-    between("async function render()", "/* ---- 拾取（hover / 點選共用） ---- */") +
+    matching(/async function render\s*\(/, "/* ---- 拾取（hover / 點選共用） ---- */") +
     'function bindProjectionToggle(pane, bid) {\n' +
     between('const pt = pane.querySelector("#projectionDetails");', 'for (const c of pane.querySelectorAll("[data-proj-check]"))') + '}' +
     "\nthis.scheduler = hoverPickScheduler;", env);

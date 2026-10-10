@@ -61,6 +61,13 @@ window.SpaceModelWorkspace = (() => {
   // Keep the established controls and validation, while putting the common path
   // ahead of optional source choices and per-face configuration.
   function organizeSetup() {
+    const header=dialog.querySelector('.sm-header');header.prepend($('smClose'));
+    const examples=document.createElement('details');examples.id='smOtherExamples';examples.className='sm-other-examples';
+    examples.innerHTML='<summary>其他範例</summary>';
+    examples.append($('smTryTimberFrame'),$('smTryRectangle'),$('smTryLShape'));
+    dialog.querySelector('.sm-source-actions').prepend(examples);
+    // The single three-step trail carries numbering; section titles carry content.
+    for(const number of dialog.querySelectorAll('.sm-section-heading > span'))number.remove();
     const sourceSection=$('smSourceSummary').closest('.sm-section');
     sourceSection.querySelector('h2').textContent='來源與名稱';
     const sourceAdvanced=document.createElement('details');sourceAdvanced.id='smSourceAdvanced';sourceAdvanced.className='sm-advanced';
@@ -307,6 +314,7 @@ window.SpaceModelWorkspace = (() => {
     const busy = state.viewerLoading || !state.viewer || state.projectionPending || state.phase === "loading" || state.phase === "previewing" || state.phase === "creating";
     WorkspaceShell.refresh(dialog);
     syncLibraryActions();
+    for(const selector of ['.sm-view-tools','#smViewDirection','.sm-display-options','.sm-metrics'])dialog.querySelector(selector).hidden=!state.result;
     const missingProjection=needsProjection()&&!validProjection(state.source.projection);
     $("smPreview").disabled = !state.source || busy || missingProjection || (state.readonly && !state.editing);
     $("smCreate").disabled = busy || missingProjection || !state.result || wallRequirementMissing(state.input,state.result) || state.previewRevision !== state.revision || !$("smConfirmFaces").checked || !!state.createdId;
@@ -386,6 +394,8 @@ window.SpaceModelWorkspace = (() => {
   }
   function renderSource(source, settings = {}) {
     state.source = source; state.phase = "ready";
+    // Source selection is complete; retire the expanded picker before setup.
+    $("smOtherExamples").open=false;
     const loops = source.loops || [], verts = loops[0]?.verts || [];
     $("smSourceSummary").innerHTML = `<strong>${esc(source.name)} · ${source.kind === "example" ? "獨立範例" : "目前專案"}</strong><span>放置面 #${esc(source.placement_id)} · 圖面 z = ${esc(source.source_z ?? "非水平面")} mm · ${source.timbers?.length||0} 支角材</span>`;
     $("smModelName").value = source.name.replace(/\s*#\s*(\d+)$/, " $1") + "空間";
@@ -519,7 +529,12 @@ window.SpaceModelWorkspace = (() => {
       ReferenceWorkspace.setFaceProjection(source.boundary_id,source.placement_id,{kind:'space-boundary-plan',view,region:'interior',wallSide:'outside'});
       projectionChanged();
       message('已確認用途與觀看方向，現有設定已保留。指定牆底後按「更新預覽」；定義會隨專案保存。','success');
-      const next=$('smBottom').value.trim()?$('smPreview'):$('smBottom');next.scrollIntoView({block:'center'});next.focus();
+      const next=$('smBottom').value.trim()?$('smPreview'):$('smBottom');
+      const field=document.activeElement;
+      if(!(field && $('smSettings').contains(field) && field.matches('input,select,textarea'))){
+        next.scrollIntoView({block:'center'});
+        next.focus();
+      }
     } catch(e) {if(active()){state.previewRevision=-1;message(e.message,'error');}}
     finally {if(serial===state.projectionSequence){state.projectionPending=false;updateActions();}}
   }

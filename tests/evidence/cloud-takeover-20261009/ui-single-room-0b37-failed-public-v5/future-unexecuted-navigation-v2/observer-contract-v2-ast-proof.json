@@ -1,0 +1,2072 @@
+{
+  "schema": "geometry-cross-b-route-observation-ast-proof/2",
+  "actor": "/root/race_review",
+  "at": "2026-10-09T15:44:15.068919+00:00",
+  "scope": "Pure source/AST fixture proof, no browser/native/product execution. Same executor author; parent or independent actor review remains required. Fixture checks are not product test census.",
+  "sourceHashes": {
+    "<workspace-path>|basename=edge_transition_probe.py|originalKeySha256=3f8914c94d89a6ed1bf9a7dde9285a74e6a62d68be05b7367a57833ad899fbef": "ef3a799180c4c01c35a17bd865dc18b7536aa34610b8955d0bbd8809d660aebb",
+    "<workspace-path>|basename=edge_transition_probe.py|originalKeySha256=6cbb55b3e02fbc1affa603ad743ecbb9adeaa4d3acdbe4de0819d910feac5cc6": "db697822181fcb0856805fe3baba678728007044dfe3eb02f06de14ecdb38cd5",
+    "<workspace-path>|basename=edge_transition_instrumentation.js|originalKeySha256=d32dc3fea15c4064895b625402f7bd6107da1d8c544639e9282d70581de4d077": "ee97900618687c6fe3b5a2cfa57b408237101fb794d59afca2efd1f924fa2ed4"
+  },
+  "unchangedOutsideObservationContract": true,
+  "originalRaceAndFixtureModuleASTUnchangedAfterOnlyNavigationBlockRemoval": true,
+  "unchangedRealKeyboardActionSequence": [
+    "Home",
+    "ArrowDown",
+    "Enter"
+  ],
+  "cases": [
+    {
+      "scope": "main",
+      "fixture": "normal-trusted-visible-picker-synthetic-synced-consumer",
+      "expectedV2": true,
+      "observed": {
+        "original": {
+          "route": false,
+          "consumerSync": null,
+          "combined": false
+        },
+        "v2": {
+          "route": true,
+          "consumerSync": true,
+          "combined": true
+        }
+      },
+      "nav": [
+        {
+          "type": "click",
+          "id": "btnObj",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "rect",
+          "trusted": true
+        },
+        {
+          "type": "change",
+          "id": "v3ToolbarSurf",
+          "value": "732",
+          "trusted": true,
+          "sequence": 2,
+          "observedAt": 100.0,
+          "eventTimeStamp": 90.0,
+          "pickerValue": "732",
+          "consumerValue": "731",
+          "before": {
+            "workSurf": "731"
+          }
+        },
+        {
+          "type": "change",
+          "id": "workSurf",
+          "value": "732",
+          "trusted": false,
+          "sequence": 3,
+          "observedAt": 101.0,
+          "eventTimeStamp": 91.0,
+          "pickerValue": "732",
+          "consumerValue": "732",
+          "before": {
+            "workSurf": "732"
+          }
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "edit",
+          "trusted": true
+        }
+      ]
+    },
+    {
+      "scope": "main",
+      "fixture": "untrusted-visible-picker",
+      "expectedV2": false,
+      "observed": {
+        "original": {
+          "route": false,
+          "consumerSync": null,
+          "combined": false
+        },
+        "v2": {
+          "route": false,
+          "consumerSync": false,
+          "combined": false
+        }
+      },
+      "nav": [
+        {
+          "type": "click",
+          "id": "btnObj",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "rect",
+          "trusted": true
+        },
+        {
+          "type": "change",
+          "id": "v3ToolbarSurf",
+          "value": "732",
+          "trusted": false,
+          "sequence": 2,
+          "observedAt": 100.0,
+          "eventTimeStamp": 90.0,
+          "pickerValue": "732",
+          "consumerValue": "731",
+          "before": {
+            "workSurf": "731"
+          }
+        },
+        {
+          "type": "change",
+          "id": "workSurf",
+          "value": "732",
+          "trusted": false,
+          "sequence": 3,
+          "observedAt": 101.0,
+          "eventTimeStamp": 91.0,
+          "pickerValue": "732",
+          "consumerValue": "732",
+          "before": {
+            "workSurf": "732"
+          }
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "edit",
+          "trusted": true
+        }
+      ]
+    },
+    {
+      "scope": "main",
+      "fixture": "wrong-picker-value",
+      "expectedV2": false,
+      "observed": {
+        "original": {
+          "route": false,
+          "consumerSync": null,
+          "combined": false
+        },
+        "v2": {
+          "route": false,
+          "consumerSync": false,
+          "combined": false
+        }
+      },
+      "nav": [
+        {
+          "type": "click",
+          "id": "btnObj",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "rect",
+          "trusted": true
+        },
+        {
+          "type": "change",
+          "id": "v3ToolbarSurf",
+          "value": "731",
+          "trusted": true,
+          "sequence": 2,
+          "observedAt": 100.0,
+          "eventTimeStamp": 90.0,
+          "pickerValue": "732",
+          "consumerValue": "731",
+          "before": {
+            "workSurf": "731"
+          }
+        },
+        {
+          "type": "change",
+          "id": "workSurf",
+          "value": "732",
+          "trusted": false,
+          "sequence": 3,
+          "observedAt": 101.0,
+          "eventTimeStamp": 91.0,
+          "pickerValue": "732",
+          "consumerValue": "732",
+          "before": {
+            "workSurf": "732"
+          }
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "edit",
+          "trusted": true
+        }
+      ]
+    },
+    {
+      "scope": "main",
+      "fixture": "missing-consumer",
+      "expectedV2": false,
+      "observed": {
+        "original": {
+          "route": false,
+          "consumerSync": null,
+          "combined": false
+        },
+        "v2": {
+          "route": true,
+          "consumerSync": false,
+          "combined": false
+        }
+      },
+      "nav": [
+        {
+          "type": "click",
+          "id": "btnObj",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "rect",
+          "trusted": true
+        },
+        {
+          "type": "change",
+          "id": "v3ToolbarSurf",
+          "value": "732",
+          "trusted": true,
+          "sequence": 2,
+          "observedAt": 100.0,
+          "eventTimeStamp": 90.0,
+          "pickerValue": "732",
+          "consumerValue": "731",
+          "before": {
+            "workSurf": "731"
+          }
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "edit",
+          "trusted": true
+        }
+      ]
+    },
+    {
+      "scope": "main",
+      "fixture": "trusted-consumer",
+      "expectedV2": false,
+      "observed": {
+        "original": {
+          "route": true,
+          "consumerSync": null,
+          "combined": true
+        },
+        "v2": {
+          "route": true,
+          "consumerSync": false,
+          "combined": false
+        }
+      },
+      "nav": [
+        {
+          "type": "click",
+          "id": "btnObj",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "rect",
+          "trusted": true
+        },
+        {
+          "type": "change",
+          "id": "v3ToolbarSurf",
+          "value": "732",
+          "trusted": true,
+          "sequence": 2,
+          "observedAt": 100.0,
+          "eventTimeStamp": 90.0,
+          "pickerValue": "732",
+          "consumerValue": "731",
+          "before": {
+            "workSurf": "731"
+          }
+        },
+        {
+          "type": "change",
+          "id": "workSurf",
+          "value": "732",
+          "trusted": true,
+          "sequence": 3,
+          "observedAt": 101.0,
+          "eventTimeStamp": 91.0,
+          "pickerValue": "732",
+          "consumerValue": "732",
+          "before": {
+            "workSurf": "732"
+          }
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "edit",
+          "trusted": true
+        }
+      ]
+    },
+    {
+      "scope": "main",
+      "fixture": "consumer-not-synchronized",
+      "expectedV2": false,
+      "observed": {
+        "original": {
+          "route": false,
+          "consumerSync": null,
+          "combined": false
+        },
+        "v2": {
+          "route": true,
+          "consumerSync": false,
+          "combined": false
+        }
+      },
+      "nav": [
+        {
+          "type": "click",
+          "id": "btnObj",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "rect",
+          "trusted": true
+        },
+        {
+          "type": "change",
+          "id": "v3ToolbarSurf",
+          "value": "732",
+          "trusted": true,
+          "sequence": 2,
+          "observedAt": 100.0,
+          "eventTimeStamp": 90.0,
+          "pickerValue": "732",
+          "consumerValue": "731",
+          "before": {
+            "workSurf": "731"
+          }
+        },
+        {
+          "type": "change",
+          "id": "workSurf",
+          "value": "732",
+          "trusted": false,
+          "sequence": 3,
+          "observedAt": 101.0,
+          "eventTimeStamp": 91.0,
+          "pickerValue": "732",
+          "consumerValue": "731",
+          "before": {
+            "workSurf": "732"
+          }
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "edit",
+          "trusted": true
+        }
+      ]
+    },
+    {
+      "scope": "main",
+      "fixture": "consumer-wrong-model-before",
+      "expectedV2": false,
+      "observed": {
+        "original": {
+          "route": false,
+          "consumerSync": null,
+          "combined": false
+        },
+        "v2": {
+          "route": true,
+          "consumerSync": false,
+          "combined": false
+        }
+      },
+      "nav": [
+        {
+          "type": "click",
+          "id": "btnObj",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "rect",
+          "trusted": true
+        },
+        {
+          "type": "change",
+          "id": "v3ToolbarSurf",
+          "value": "732",
+          "trusted": true,
+          "sequence": 2,
+          "observedAt": 100.0,
+          "eventTimeStamp": 90.0,
+          "pickerValue": "732",
+          "consumerValue": "731",
+          "before": {
+            "workSurf": "731"
+          }
+        },
+        {
+          "type": "change",
+          "id": "workSurf",
+          "value": "732",
+          "trusted": false,
+          "sequence": 3,
+          "observedAt": 101.0,
+          "eventTimeStamp": 91.0,
+          "pickerValue": "732",
+          "consumerValue": "732",
+          "before": {
+            "workSurf": "731"
+          }
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "edit",
+          "trusted": true
+        }
+      ]
+    },
+    {
+      "scope": "main",
+      "fixture": "picker-already-B-no-A-transition",
+      "expectedV2": false,
+      "observed": {
+        "original": {
+          "route": false,
+          "consumerSync": null,
+          "combined": false
+        },
+        "v2": {
+          "route": true,
+          "consumerSync": false,
+          "combined": false
+        }
+      },
+      "nav": [
+        {
+          "type": "click",
+          "id": "btnObj",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "rect",
+          "trusted": true
+        },
+        {
+          "type": "change",
+          "id": "v3ToolbarSurf",
+          "value": "732",
+          "trusted": true,
+          "sequence": 2,
+          "observedAt": 100.0,
+          "eventTimeStamp": 90.0,
+          "pickerValue": "732",
+          "consumerValue": "732",
+          "before": {
+            "workSurf": "731"
+          }
+        },
+        {
+          "type": "change",
+          "id": "workSurf",
+          "value": "732",
+          "trusted": false,
+          "sequence": 3,
+          "observedAt": 101.0,
+          "eventTimeStamp": 91.0,
+          "pickerValue": "732",
+          "consumerValue": "732",
+          "before": {
+            "workSurf": "732"
+          }
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "edit",
+          "trusted": true
+        }
+      ]
+    },
+    {
+      "scope": "main",
+      "fixture": "consumer-sequence-not-next",
+      "expectedV2": false,
+      "observed": {
+        "original": {
+          "route": false,
+          "consumerSync": null,
+          "combined": false
+        },
+        "v2": {
+          "route": true,
+          "consumerSync": false,
+          "combined": false
+        }
+      },
+      "nav": [
+        {
+          "type": "click",
+          "id": "btnObj",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "rect",
+          "trusted": true
+        },
+        {
+          "type": "change",
+          "id": "v3ToolbarSurf",
+          "value": "732",
+          "trusted": true,
+          "sequence": 2,
+          "observedAt": 100.0,
+          "eventTimeStamp": 90.0,
+          "pickerValue": "732",
+          "consumerValue": "731",
+          "before": {
+            "workSurf": "731"
+          }
+        },
+        {
+          "type": "change",
+          "id": "workSurf",
+          "value": "732",
+          "trusted": false,
+          "sequence": 2,
+          "observedAt": 101.0,
+          "eventTimeStamp": 91.0,
+          "pickerValue": "732",
+          "consumerValue": "732",
+          "before": {
+            "workSurf": "732"
+          }
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "edit",
+          "trusted": true
+        }
+      ]
+    },
+    {
+      "scope": "main",
+      "fixture": "consumer-observed-before-picker",
+      "expectedV2": false,
+      "observed": {
+        "original": {
+          "route": false,
+          "consumerSync": null,
+          "combined": false
+        },
+        "v2": {
+          "route": true,
+          "consumerSync": false,
+          "combined": false
+        }
+      },
+      "nav": [
+        {
+          "type": "click",
+          "id": "btnObj",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "rect",
+          "trusted": true
+        },
+        {
+          "type": "change",
+          "id": "v3ToolbarSurf",
+          "value": "732",
+          "trusted": true,
+          "sequence": 2,
+          "observedAt": 100.0,
+          "eventTimeStamp": 90.0,
+          "pickerValue": "732",
+          "consumerValue": "731",
+          "before": {
+            "workSurf": "731"
+          }
+        },
+        {
+          "type": "change",
+          "id": "workSurf",
+          "value": "732",
+          "trusted": false,
+          "sequence": 3,
+          "observedAt": 99.0,
+          "eventTimeStamp": 91.0,
+          "pickerValue": "732",
+          "consumerValue": "732",
+          "before": {
+            "workSurf": "732"
+          }
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "edit",
+          "trusted": true
+        }
+      ]
+    },
+    {
+      "scope": "main",
+      "fixture": "consumer-event-created-before-picker",
+      "expectedV2": false,
+      "observed": {
+        "original": {
+          "route": false,
+          "consumerSync": null,
+          "combined": false
+        },
+        "v2": {
+          "route": true,
+          "consumerSync": false,
+          "combined": false
+        }
+      },
+      "nav": [
+        {
+          "type": "click",
+          "id": "btnObj",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "rect",
+          "trusted": true
+        },
+        {
+          "type": "change",
+          "id": "v3ToolbarSurf",
+          "value": "732",
+          "trusted": true,
+          "sequence": 2,
+          "observedAt": 100.0,
+          "eventTimeStamp": 90.0,
+          "pickerValue": "732",
+          "consumerValue": "731",
+          "before": {
+            "workSurf": "731"
+          }
+        },
+        {
+          "type": "change",
+          "id": "workSurf",
+          "value": "732",
+          "trusted": false,
+          "sequence": 3,
+          "observedAt": 101.0,
+          "eventTimeStamp": 89.0,
+          "pickerValue": "732",
+          "consumerValue": "732",
+          "before": {
+            "workSurf": "732"
+          }
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "edit",
+          "trusted": true
+        }
+      ]
+    },
+    {
+      "scope": "main",
+      "fixture": "extra-consumer",
+      "expectedV2": false,
+      "observed": {
+        "original": {
+          "route": false,
+          "consumerSync": null,
+          "combined": false
+        },
+        "v2": {
+          "route": true,
+          "consumerSync": false,
+          "combined": false
+        }
+      },
+      "nav": [
+        {
+          "type": "click",
+          "id": "btnObj",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "rect",
+          "trusted": true
+        },
+        {
+          "type": "change",
+          "id": "v3ToolbarSurf",
+          "value": "732",
+          "trusted": true,
+          "sequence": 2,
+          "observedAt": 100.0,
+          "eventTimeStamp": 90.0,
+          "pickerValue": "732",
+          "consumerValue": "731",
+          "before": {
+            "workSurf": "731"
+          }
+        },
+        {
+          "type": "change",
+          "id": "workSurf",
+          "value": "732",
+          "trusted": false,
+          "sequence": 3,
+          "observedAt": 101.0,
+          "eventTimeStamp": 91.0,
+          "pickerValue": "732",
+          "consumerValue": "732",
+          "before": {
+            "workSurf": "732"
+          }
+        },
+        {
+          "type": "change",
+          "id": "workSurf",
+          "value": "732",
+          "trusted": false,
+          "sequence": 3,
+          "observedAt": 101.0,
+          "eventTimeStamp": 91.0,
+          "pickerValue": "732",
+          "consumerValue": "732",
+          "before": {
+            "workSurf": "732"
+          }
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "edit",
+          "trusted": true
+        }
+      ]
+    },
+    {
+      "scope": "main",
+      "fixture": "synthetic-consumer-only",
+      "expectedV2": false,
+      "observed": {
+        "original": {
+          "route": false,
+          "consumerSync": null,
+          "combined": false
+        },
+        "v2": {
+          "route": false,
+          "consumerSync": false,
+          "combined": false
+        }
+      },
+      "nav": [
+        {
+          "type": "click",
+          "id": "btnObj",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "rect",
+          "trusted": true
+        },
+        {
+          "type": "change",
+          "id": "workSurf",
+          "value": "732",
+          "trusted": false,
+          "sequence": 3,
+          "observedAt": 101.0,
+          "eventTimeStamp": 91.0,
+          "pickerValue": "732",
+          "consumerValue": "732",
+          "before": {
+            "workSurf": "732"
+          }
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "edit",
+          "trusted": true
+        }
+      ]
+    },
+    {
+      "scope": "main",
+      "fixture": "consumer-after-edit",
+      "expectedV2": false,
+      "observed": {
+        "original": {
+          "route": false,
+          "consumerSync": null,
+          "combined": false
+        },
+        "v2": {
+          "route": true,
+          "consumerSync": false,
+          "combined": false
+        }
+      },
+      "nav": [
+        {
+          "type": "click",
+          "id": "btnObj",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "rect",
+          "trusted": true
+        },
+        {
+          "type": "change",
+          "id": "v3ToolbarSurf",
+          "value": "732",
+          "trusted": true,
+          "sequence": 2,
+          "observedAt": 100.0,
+          "eventTimeStamp": 90.0,
+          "pickerValue": "732",
+          "consumerValue": "731",
+          "before": {
+            "workSurf": "731"
+          }
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "edit",
+          "trusted": true
+        },
+        {
+          "type": "change",
+          "id": "workSurf",
+          "value": "732",
+          "trusted": false,
+          "sequence": 3,
+          "observedAt": 101.0,
+          "eventTimeStamp": 91.0,
+          "pickerValue": "732",
+          "consumerValue": "732",
+          "before": {
+            "workSurf": "732"
+          }
+        }
+      ]
+    },
+    {
+      "scope": "main",
+      "fixture": "wrong-keyboard-result-C",
+      "expectedV2": false,
+      "observed": {
+        "original": {
+          "route": false,
+          "consumerSync": null,
+          "combined": false
+        },
+        "v2": {
+          "route": false,
+          "consumerSync": false,
+          "combined": false
+        }
+      },
+      "nav": [
+        {
+          "type": "click",
+          "id": "btnObj",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "rect",
+          "trusted": true
+        },
+        {
+          "type": "change",
+          "id": "v3ToolbarSurf",
+          "value": "733",
+          "trusted": true,
+          "sequence": 2,
+          "observedAt": 100.0,
+          "eventTimeStamp": 90.0,
+          "pickerValue": "732",
+          "consumerValue": "731",
+          "before": {
+            "workSurf": "731"
+          }
+        },
+        {
+          "type": "change",
+          "id": "workSurf",
+          "value": "732",
+          "trusted": false,
+          "sequence": 3,
+          "observedAt": 101.0,
+          "eventTimeStamp": 91.0,
+          "pickerValue": "732",
+          "consumerValue": "732",
+          "before": {
+            "workSurf": "732"
+          }
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "edit",
+          "trusted": true
+        }
+      ]
+    },
+    {
+      "scope": "main",
+      "fixture": "success-control-no-navigation",
+      "expectedV2": true,
+      "observed": {
+        "original": {
+          "route": true,
+          "consumerSync": null,
+          "combined": true
+        },
+        "v2": {
+          "route": true,
+          "consumerSync": true,
+          "combined": true
+        }
+      },
+      "nav": []
+    },
+    {
+      "scope": "face",
+      "fixture": "normal-trusted-visible-picker-synthetic-synced-consumer",
+      "expectedV2": true,
+      "observed": {
+        "original": {
+          "route": false,
+          "consumerSync": null,
+          "combined": false
+        },
+        "v2": {
+          "route": true,
+          "consumerSync": true,
+          "combined": true
+        }
+      },
+      "nav": [
+        {
+          "type": "click",
+          "id": "workspaceBackButton",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": "btnObj",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "rect",
+          "trusted": true
+        },
+        {
+          "type": "change",
+          "id": "v3ToolbarSurf",
+          "value": "732",
+          "trusted": true,
+          "sequence": 3,
+          "observedAt": 100.0,
+          "eventTimeStamp": 90.0,
+          "pickerValue": "732",
+          "consumerValue": "731",
+          "before": {
+            "workSurf": "731"
+          }
+        },
+        {
+          "type": "change",
+          "id": "workSurf",
+          "value": "732",
+          "trusted": false,
+          "sequence": 4,
+          "observedAt": 101.0,
+          "eventTimeStamp": 91.0,
+          "pickerValue": "732",
+          "consumerValue": "732",
+          "before": {
+            "workSurf": "732"
+          }
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "edit",
+          "trusted": true
+        }
+      ]
+    },
+    {
+      "scope": "face",
+      "fixture": "untrusted-visible-picker",
+      "expectedV2": false,
+      "observed": {
+        "original": {
+          "route": false,
+          "consumerSync": null,
+          "combined": false
+        },
+        "v2": {
+          "route": false,
+          "consumerSync": false,
+          "combined": false
+        }
+      },
+      "nav": [
+        {
+          "type": "click",
+          "id": "workspaceBackButton",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": "btnObj",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "rect",
+          "trusted": true
+        },
+        {
+          "type": "change",
+          "id": "v3ToolbarSurf",
+          "value": "732",
+          "trusted": false,
+          "sequence": 3,
+          "observedAt": 100.0,
+          "eventTimeStamp": 90.0,
+          "pickerValue": "732",
+          "consumerValue": "731",
+          "before": {
+            "workSurf": "731"
+          }
+        },
+        {
+          "type": "change",
+          "id": "workSurf",
+          "value": "732",
+          "trusted": false,
+          "sequence": 4,
+          "observedAt": 101.0,
+          "eventTimeStamp": 91.0,
+          "pickerValue": "732",
+          "consumerValue": "732",
+          "before": {
+            "workSurf": "732"
+          }
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "edit",
+          "trusted": true
+        }
+      ]
+    },
+    {
+      "scope": "face",
+      "fixture": "wrong-picker-value",
+      "expectedV2": false,
+      "observed": {
+        "original": {
+          "route": false,
+          "consumerSync": null,
+          "combined": false
+        },
+        "v2": {
+          "route": false,
+          "consumerSync": false,
+          "combined": false
+        }
+      },
+      "nav": [
+        {
+          "type": "click",
+          "id": "workspaceBackButton",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": "btnObj",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "rect",
+          "trusted": true
+        },
+        {
+          "type": "change",
+          "id": "v3ToolbarSurf",
+          "value": "731",
+          "trusted": true,
+          "sequence": 3,
+          "observedAt": 100.0,
+          "eventTimeStamp": 90.0,
+          "pickerValue": "732",
+          "consumerValue": "731",
+          "before": {
+            "workSurf": "731"
+          }
+        },
+        {
+          "type": "change",
+          "id": "workSurf",
+          "value": "732",
+          "trusted": false,
+          "sequence": 4,
+          "observedAt": 101.0,
+          "eventTimeStamp": 91.0,
+          "pickerValue": "732",
+          "consumerValue": "732",
+          "before": {
+            "workSurf": "732"
+          }
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "edit",
+          "trusted": true
+        }
+      ]
+    },
+    {
+      "scope": "face",
+      "fixture": "missing-consumer",
+      "expectedV2": false,
+      "observed": {
+        "original": {
+          "route": false,
+          "consumerSync": null,
+          "combined": false
+        },
+        "v2": {
+          "route": true,
+          "consumerSync": false,
+          "combined": false
+        }
+      },
+      "nav": [
+        {
+          "type": "click",
+          "id": "workspaceBackButton",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": "btnObj",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "rect",
+          "trusted": true
+        },
+        {
+          "type": "change",
+          "id": "v3ToolbarSurf",
+          "value": "732",
+          "trusted": true,
+          "sequence": 3,
+          "observedAt": 100.0,
+          "eventTimeStamp": 90.0,
+          "pickerValue": "732",
+          "consumerValue": "731",
+          "before": {
+            "workSurf": "731"
+          }
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "edit",
+          "trusted": true
+        }
+      ]
+    },
+    {
+      "scope": "face",
+      "fixture": "trusted-consumer",
+      "expectedV2": false,
+      "observed": {
+        "original": {
+          "route": true,
+          "consumerSync": null,
+          "combined": true
+        },
+        "v2": {
+          "route": true,
+          "consumerSync": false,
+          "combined": false
+        }
+      },
+      "nav": [
+        {
+          "type": "click",
+          "id": "workspaceBackButton",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": "btnObj",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "rect",
+          "trusted": true
+        },
+        {
+          "type": "change",
+          "id": "v3ToolbarSurf",
+          "value": "732",
+          "trusted": true,
+          "sequence": 3,
+          "observedAt": 100.0,
+          "eventTimeStamp": 90.0,
+          "pickerValue": "732",
+          "consumerValue": "731",
+          "before": {
+            "workSurf": "731"
+          }
+        },
+        {
+          "type": "change",
+          "id": "workSurf",
+          "value": "732",
+          "trusted": true,
+          "sequence": 4,
+          "observedAt": 101.0,
+          "eventTimeStamp": 91.0,
+          "pickerValue": "732",
+          "consumerValue": "732",
+          "before": {
+            "workSurf": "732"
+          }
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "edit",
+          "trusted": true
+        }
+      ]
+    },
+    {
+      "scope": "face",
+      "fixture": "consumer-not-synchronized",
+      "expectedV2": false,
+      "observed": {
+        "original": {
+          "route": false,
+          "consumerSync": null,
+          "combined": false
+        },
+        "v2": {
+          "route": true,
+          "consumerSync": false,
+          "combined": false
+        }
+      },
+      "nav": [
+        {
+          "type": "click",
+          "id": "workspaceBackButton",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": "btnObj",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "rect",
+          "trusted": true
+        },
+        {
+          "type": "change",
+          "id": "v3ToolbarSurf",
+          "value": "732",
+          "trusted": true,
+          "sequence": 3,
+          "observedAt": 100.0,
+          "eventTimeStamp": 90.0,
+          "pickerValue": "732",
+          "consumerValue": "731",
+          "before": {
+            "workSurf": "731"
+          }
+        },
+        {
+          "type": "change",
+          "id": "workSurf",
+          "value": "732",
+          "trusted": false,
+          "sequence": 4,
+          "observedAt": 101.0,
+          "eventTimeStamp": 91.0,
+          "pickerValue": "732",
+          "consumerValue": "731",
+          "before": {
+            "workSurf": "732"
+          }
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "edit",
+          "trusted": true
+        }
+      ]
+    },
+    {
+      "scope": "face",
+      "fixture": "consumer-wrong-model-before",
+      "expectedV2": false,
+      "observed": {
+        "original": {
+          "route": false,
+          "consumerSync": null,
+          "combined": false
+        },
+        "v2": {
+          "route": true,
+          "consumerSync": false,
+          "combined": false
+        }
+      },
+      "nav": [
+        {
+          "type": "click",
+          "id": "workspaceBackButton",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": "btnObj",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "rect",
+          "trusted": true
+        },
+        {
+          "type": "change",
+          "id": "v3ToolbarSurf",
+          "value": "732",
+          "trusted": true,
+          "sequence": 3,
+          "observedAt": 100.0,
+          "eventTimeStamp": 90.0,
+          "pickerValue": "732",
+          "consumerValue": "731",
+          "before": {
+            "workSurf": "731"
+          }
+        },
+        {
+          "type": "change",
+          "id": "workSurf",
+          "value": "732",
+          "trusted": false,
+          "sequence": 4,
+          "observedAt": 101.0,
+          "eventTimeStamp": 91.0,
+          "pickerValue": "732",
+          "consumerValue": "732",
+          "before": {
+            "workSurf": "731"
+          }
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "edit",
+          "trusted": true
+        }
+      ]
+    },
+    {
+      "scope": "face",
+      "fixture": "picker-already-B-no-A-transition",
+      "expectedV2": false,
+      "observed": {
+        "original": {
+          "route": false,
+          "consumerSync": null,
+          "combined": false
+        },
+        "v2": {
+          "route": true,
+          "consumerSync": false,
+          "combined": false
+        }
+      },
+      "nav": [
+        {
+          "type": "click",
+          "id": "workspaceBackButton",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": "btnObj",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "rect",
+          "trusted": true
+        },
+        {
+          "type": "change",
+          "id": "v3ToolbarSurf",
+          "value": "732",
+          "trusted": true,
+          "sequence": 3,
+          "observedAt": 100.0,
+          "eventTimeStamp": 90.0,
+          "pickerValue": "732",
+          "consumerValue": "732",
+          "before": {
+            "workSurf": "731"
+          }
+        },
+        {
+          "type": "change",
+          "id": "workSurf",
+          "value": "732",
+          "trusted": false,
+          "sequence": 4,
+          "observedAt": 101.0,
+          "eventTimeStamp": 91.0,
+          "pickerValue": "732",
+          "consumerValue": "732",
+          "before": {
+            "workSurf": "732"
+          }
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "edit",
+          "trusted": true
+        }
+      ]
+    },
+    {
+      "scope": "face",
+      "fixture": "consumer-sequence-not-next",
+      "expectedV2": false,
+      "observed": {
+        "original": {
+          "route": false,
+          "consumerSync": null,
+          "combined": false
+        },
+        "v2": {
+          "route": true,
+          "consumerSync": false,
+          "combined": false
+        }
+      },
+      "nav": [
+        {
+          "type": "click",
+          "id": "workspaceBackButton",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": "btnObj",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "rect",
+          "trusted": true
+        },
+        {
+          "type": "change",
+          "id": "v3ToolbarSurf",
+          "value": "732",
+          "trusted": true,
+          "sequence": 3,
+          "observedAt": 100.0,
+          "eventTimeStamp": 90.0,
+          "pickerValue": "732",
+          "consumerValue": "731",
+          "before": {
+            "workSurf": "731"
+          }
+        },
+        {
+          "type": "change",
+          "id": "workSurf",
+          "value": "732",
+          "trusted": false,
+          "sequence": 3,
+          "observedAt": 101.0,
+          "eventTimeStamp": 91.0,
+          "pickerValue": "732",
+          "consumerValue": "732",
+          "before": {
+            "workSurf": "732"
+          }
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "edit",
+          "trusted": true
+        }
+      ]
+    },
+    {
+      "scope": "face",
+      "fixture": "consumer-observed-before-picker",
+      "expectedV2": false,
+      "observed": {
+        "original": {
+          "route": false,
+          "consumerSync": null,
+          "combined": false
+        },
+        "v2": {
+          "route": true,
+          "consumerSync": false,
+          "combined": false
+        }
+      },
+      "nav": [
+        {
+          "type": "click",
+          "id": "workspaceBackButton",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": "btnObj",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "rect",
+          "trusted": true
+        },
+        {
+          "type": "change",
+          "id": "v3ToolbarSurf",
+          "value": "732",
+          "trusted": true,
+          "sequence": 3,
+          "observedAt": 100.0,
+          "eventTimeStamp": 90.0,
+          "pickerValue": "732",
+          "consumerValue": "731",
+          "before": {
+            "workSurf": "731"
+          }
+        },
+        {
+          "type": "change",
+          "id": "workSurf",
+          "value": "732",
+          "trusted": false,
+          "sequence": 4,
+          "observedAt": 99.0,
+          "eventTimeStamp": 91.0,
+          "pickerValue": "732",
+          "consumerValue": "732",
+          "before": {
+            "workSurf": "732"
+          }
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "edit",
+          "trusted": true
+        }
+      ]
+    },
+    {
+      "scope": "face",
+      "fixture": "consumer-event-created-before-picker",
+      "expectedV2": false,
+      "observed": {
+        "original": {
+          "route": false,
+          "consumerSync": null,
+          "combined": false
+        },
+        "v2": {
+          "route": true,
+          "consumerSync": false,
+          "combined": false
+        }
+      },
+      "nav": [
+        {
+          "type": "click",
+          "id": "workspaceBackButton",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": "btnObj",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "rect",
+          "trusted": true
+        },
+        {
+          "type": "change",
+          "id": "v3ToolbarSurf",
+          "value": "732",
+          "trusted": true,
+          "sequence": 3,
+          "observedAt": 100.0,
+          "eventTimeStamp": 90.0,
+          "pickerValue": "732",
+          "consumerValue": "731",
+          "before": {
+            "workSurf": "731"
+          }
+        },
+        {
+          "type": "change",
+          "id": "workSurf",
+          "value": "732",
+          "trusted": false,
+          "sequence": 4,
+          "observedAt": 101.0,
+          "eventTimeStamp": 89.0,
+          "pickerValue": "732",
+          "consumerValue": "732",
+          "before": {
+            "workSurf": "732"
+          }
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "edit",
+          "trusted": true
+        }
+      ]
+    },
+    {
+      "scope": "face",
+      "fixture": "extra-consumer",
+      "expectedV2": false,
+      "observed": {
+        "original": {
+          "route": false,
+          "consumerSync": null,
+          "combined": false
+        },
+        "v2": {
+          "route": true,
+          "consumerSync": false,
+          "combined": false
+        }
+      },
+      "nav": [
+        {
+          "type": "click",
+          "id": "workspaceBackButton",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": "btnObj",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "rect",
+          "trusted": true
+        },
+        {
+          "type": "change",
+          "id": "v3ToolbarSurf",
+          "value": "732",
+          "trusted": true,
+          "sequence": 3,
+          "observedAt": 100.0,
+          "eventTimeStamp": 90.0,
+          "pickerValue": "732",
+          "consumerValue": "731",
+          "before": {
+            "workSurf": "731"
+          }
+        },
+        {
+          "type": "change",
+          "id": "workSurf",
+          "value": "732",
+          "trusted": false,
+          "sequence": 4,
+          "observedAt": 101.0,
+          "eventTimeStamp": 91.0,
+          "pickerValue": "732",
+          "consumerValue": "732",
+          "before": {
+            "workSurf": "732"
+          }
+        },
+        {
+          "type": "change",
+          "id": "workSurf",
+          "value": "732",
+          "trusted": false,
+          "sequence": 4,
+          "observedAt": 101.0,
+          "eventTimeStamp": 91.0,
+          "pickerValue": "732",
+          "consumerValue": "732",
+          "before": {
+            "workSurf": "732"
+          }
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "edit",
+          "trusted": true
+        }
+      ]
+    },
+    {
+      "scope": "face",
+      "fixture": "synthetic-consumer-only",
+      "expectedV2": false,
+      "observed": {
+        "original": {
+          "route": false,
+          "consumerSync": null,
+          "combined": false
+        },
+        "v2": {
+          "route": false,
+          "consumerSync": false,
+          "combined": false
+        }
+      },
+      "nav": [
+        {
+          "type": "click",
+          "id": "workspaceBackButton",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": "btnObj",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "rect",
+          "trusted": true
+        },
+        {
+          "type": "change",
+          "id": "workSurf",
+          "value": "732",
+          "trusted": false,
+          "sequence": 4,
+          "observedAt": 101.0,
+          "eventTimeStamp": 91.0,
+          "pickerValue": "732",
+          "consumerValue": "732",
+          "before": {
+            "workSurf": "732"
+          }
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "edit",
+          "trusted": true
+        }
+      ]
+    },
+    {
+      "scope": "face",
+      "fixture": "consumer-after-edit",
+      "expectedV2": false,
+      "observed": {
+        "original": {
+          "route": false,
+          "consumerSync": null,
+          "combined": false
+        },
+        "v2": {
+          "route": true,
+          "consumerSync": false,
+          "combined": false
+        }
+      },
+      "nav": [
+        {
+          "type": "click",
+          "id": "workspaceBackButton",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": "btnObj",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "rect",
+          "trusted": true
+        },
+        {
+          "type": "change",
+          "id": "v3ToolbarSurf",
+          "value": "732",
+          "trusted": true,
+          "sequence": 3,
+          "observedAt": 100.0,
+          "eventTimeStamp": 90.0,
+          "pickerValue": "732",
+          "consumerValue": "731",
+          "before": {
+            "workSurf": "731"
+          }
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "edit",
+          "trusted": true
+        },
+        {
+          "type": "change",
+          "id": "workSurf",
+          "value": "732",
+          "trusted": false,
+          "sequence": 4,
+          "observedAt": 101.0,
+          "eventTimeStamp": 91.0,
+          "pickerValue": "732",
+          "consumerValue": "732",
+          "before": {
+            "workSurf": "732"
+          }
+        }
+      ]
+    },
+    {
+      "scope": "face",
+      "fixture": "wrong-keyboard-result-C",
+      "expectedV2": false,
+      "observed": {
+        "original": {
+          "route": false,
+          "consumerSync": null,
+          "combined": false
+        },
+        "v2": {
+          "route": false,
+          "consumerSync": false,
+          "combined": false
+        }
+      },
+      "nav": [
+        {
+          "type": "click",
+          "id": "workspaceBackButton",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": "btnObj",
+          "tool": null,
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "rect",
+          "trusted": true
+        },
+        {
+          "type": "change",
+          "id": "v3ToolbarSurf",
+          "value": "733",
+          "trusted": true,
+          "sequence": 3,
+          "observedAt": 100.0,
+          "eventTimeStamp": 90.0,
+          "pickerValue": "732",
+          "consumerValue": "731",
+          "before": {
+            "workSurf": "731"
+          }
+        },
+        {
+          "type": "change",
+          "id": "workSurf",
+          "value": "732",
+          "trusted": false,
+          "sequence": 4,
+          "observedAt": 101.0,
+          "eventTimeStamp": 91.0,
+          "pickerValue": "732",
+          "consumerValue": "732",
+          "before": {
+            "workSurf": "732"
+          }
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "edit",
+          "trusted": true
+        }
+      ]
+    },
+    {
+      "scope": "face",
+      "fixture": "success-control-no-navigation",
+      "expectedV2": true,
+      "observed": {
+        "original": {
+          "route": true,
+          "consumerSync": null,
+          "combined": true
+        },
+        "v2": {
+          "route": true,
+          "consumerSync": true,
+          "combined": true
+        }
+      },
+      "nav": []
+    }
+  ],
+  "fixtureChecks": 32,
+  "pass": 32,
+  "fail": 0,
+  "captureNote": "Original and revised document change listeners use capture=true. Product new Event(change) is untrusted and nonbubbling; capture observers on ancestor document still receive it. This fact is static DOM event-contract review, not browser execution proof."
+}

@@ -1,0 +1,58 @@
+{
+  "schema": "geometry-phase4-full/1",
+  "head": "457eade180add835e6b9fc854835844c7515281e",
+  "productCommit": "d44ad7fea531a94f67401d5b403565cd891770ae",
+  "status": "",
+  "worktree": "D:\\geometry-axiom-inspector-draft",
+  "service": "http://127.0.0.1:8916/",
+  "runtime": {
+    "version": "f2804c8068805409ccc06cddea3fac6219f768706f9276e981948f1142a286b2",
+    "fresh": true,
+    "pid": 31516,
+    "session": "ba75fc92a0794359b9126079015c9949"
+  },
+  "cdpPort": 9518,
+  "browserPid": 43880,
+  "bridge": {
+    "sha256": "aa2cc6ae4fd47277c4620bf08bbc99ccae0ee48757c0728785528cfd1357736d",
+    "bytes": 783872,
+    "rebuilt": false
+  },
+  "modelBase": {
+    "sha256": "03a487c77ee20adcc73624adc947027019c071cff9025d1c7ba8cc5a81c8476f",
+    "bytes": 536064,
+    "rebuilt": false
+  },
+  "mode": "full",
+  "completed": false,
+  "passedAssertions": 1623,
+  "failedAssertions": 2,
+  "nodeExit": 1,
+  "wrapperExit": 0,
+  "wrapperNote": "PowerShell pipeline through Tee-Object reported process exit 0. The harness line is NODE_EXIT 1.",
+  "goldenCompare": "not compared (run did not complete)",
+  "goldenTotal": 2177,
+  "fatal": "P73 assertion failed: 選已知邊一半產生引用式，位置與走向用語一致 false",
+  "sectionsFailed": {
+    "5": 1,
+    "P73": 1
+  },
+  "sectionDiffs": [
+    {
+      "section": "5",
+      "run": 0,
+      "golden": 1
+    },
+    {
+      "section": "P88",
+      "run": 137,
+      "golden": 107
+    },
+    {
+      "section": "P73",
+      "run": 36,
+      "golden": 69
+    }
+  ],
+  "durationSeconds": 2069
+}

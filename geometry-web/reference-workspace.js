@@ -186,6 +186,9 @@ const ReferenceWorkspace = (() => {
   }
   async function persistSession() {
     if(!recoveryReady)return;
+    // A live B never qualifies a debounce record for Resume. Qualification is
+    // only the explicit frozen pause below; the whole editing epoch is disarmed.
+    if(scenarioContext())return;
     if(recoveryWriting){recoveryAgain=true;return;}
     if(busy || oc.busy || history.group || pendingLoad || preparingSceneLoad || assemblyConfirmation || sceneTransaction){scheduleRecovery();return;}
     if(fe.draft?.pts?.length || fe.ulCalib?.pts?.length || window.WorkspaceShell?.saveState().blocked){
@@ -1435,6 +1438,98 @@ const ReferenceWorkspace = (() => {
       scenarioBootstrap="ready";recoveryReady=true;scheduleRecovery();return {ok:true,context:native};
     }finally{scenarioInitializationPermit=null;if(scenarioBootstrap!=="ready")recoveryReady=false;}
   }
+  const scenarioResumeKey=native=>"geometry-scenario-resume-"+native;
+  const scenarioResumePackageKey=native=>"geometry-scenario-resume-package-"+native;
+  async function readScenarioResume(native,ticket){
+    let count;const value=await recoveryStore("readonly",store=>{count=store.count(scenarioResumeKey(native));return store.get(scenarioResumeKey(native));});
+    if(count.result===0)return null;
+    if(count.result!==1||value==null)throw new Error("試改續接記錄已損壞，原資料已保留。");
+    return validateScenarioResume(value,ticket);
+  }
+  function validateScenarioResume(value,ticket){
+    if(!value||Object.keys(value).sort().join(",")!=="context,eligible,epoch,metadataHash,packageHash,projectId,requestId,rootSession,sceneHash,schema,sequence"||
+       value.schema!=="scenario-resume/1"||typeof value.eligible!=="boolean"||typeof value.epoch!=="string"||!/^[a-f0-9-]{36}$/.test(value.epoch)||
+       value.rootSession!==ticket.rootSession||value.requestId!==ticket.request.requestId||value.sequence!==ticket.request.sequence||value.context!==ticket.context||
+       typeof value.projectId!=="string"||!value.projectId||!/^[a-f0-9]{64}$/.test(value.metadataHash)||!/^[a-f0-9]{64}$/.test(value.packageHash)||!/^[a-f0-9]{64}$/.test(value.sceneHash))
+      throw new Error("試改續接點不完整或不屬於這次試改；原資料已保留。");
+    return structuredClone(value);
+  }
+  function scenarioResumeTransaction(ticket,expected,next,record=null,assertCurrent=()=>{}){
+    const native=scenarioContext(),session=connection.session;
+    if(!native||native!==session||ticket.phase!=="active"||ticket.context!==native||editorLease!=="owned"||!recoveryDB)
+      throw new Error("試改續接儲存的編輯身份不符。");
+    const key=scenarioResumeKey(native);
+    return new Promise((resolve,reject)=>{
+      const tx=recoveryDB.transaction("projects","readwrite",{durability:"strict"}),store=tx.objectStore("projects");let failure=null;
+      const abort=error=>{failure=error;try{tx.abort();}catch(_){reject(error);}};
+      tx.onabort=()=>reject(failure||tx.error||new Error("試改續接儲存交易已中止。"));
+      tx.onerror=()=>{failure ||= tx.error;};
+      tx.oncomplete=()=>{try{assertCurrent();if(connection.session!==session)throw new Error("試改工作階段已變更。");resolve(next);}catch(error){reject(error);}};
+      if(tx.durability!=="strict"){abort(new Error("瀏覽器未確認嚴格儲存提交；試改仍保留但不能續接。"));return;}
+      const saved=store.get(scenarioTicketKey(ticket.rootSession));
+      saved.onsuccess=()=>{try{
+        assertCurrent();if(connection.session!==session||JSON.stringify(validateScenarioTicket(saved.result))!==JSON.stringify(ticket))throw new Error("試改已取消或完成，未覆寫新決定。");
+        const count=store.count(key),journal=store.get(key);journal.onsuccess=()=>{try{
+          assertCurrent();if(count.result!==(expected===null?0:1)||JSON.stringify(journal.result??null)!==JSON.stringify(expected))throw new Error("試改續接點已變更，未重用舊資格。");
+          if(record)store.put(record,scenarioResumePackageKey(native));store.put(next,key);
+        }catch(error){abort(error);}};
+        journal.onerror=()=>abort(journal.error);
+      }catch(error){abort(error);}};
+      saved.onerror=()=>abort(saved.error);
+    });
+  }
+  async function pauseScenarioProject(ticketValue){
+    const ticket=validateScenarioTicket(ticketValue),native=scenarioContext();
+    if(ticket?.phase!=="active"||ticket.context!==native||scenarioBootstrap!=="ready")throw new Error("只有目前完整試改可以暫存並離開。");
+    // Do not release this freeze on an unknown storage acknowledgement. An
+    // eligible checkpoint and an editable page must never coexist.
+    await freezeScenarioProject();const frozen=scenarioFreeze;
+    const check=()=>{if(scenarioFreeze!==frozen||connection.session!==native)throw new Error("試改保全身份已變更。");assertSnapshot(frozen.stamp,frozen.owner);};
+    const previous=await readScenarioResume(native,ticket);check();
+    if(previous&&validateScenarioResume(previous,ticket).eligible)throw new Error("已有未確認的暫存點；保持凍結，請重新核對。");
+    const c=frozen.stamp.context,packageHash=await P.sha(frozen.bytes);check();await assertScenarioFrozen(frozen.token);check();
+    const record={version:1,session:native,sceneHash:frozen.sceneHash,bytes:frozen.bytes,
+      project:{dirty:!!c.dirty,dirtyReason:c.dirtyReason||"",saved:!!c.saved,downloaded:!!c.downloaded,provenance:{...c.provenance}}};
+    const next={schema:"scenario-resume/1",rootSession:ticket.rootSession,requestId:ticket.request.requestId,sequence:ticket.request.sequence,
+      context:native,epoch:uuid(),eligible:true,packageHash,metadataHash:await P.sha(new TextEncoder().encode(JSON.stringify(record.project))),sceneHash:frozen.sceneHash,projectId:c.id};check();
+    await scenarioResumeTransaction(ticket,previous??null,next,record,check);await assertScenarioFrozen(frozen.token);check();
+    scenarioBootstrap="paused";recoveryReady=false;return {ok:true,epoch:next.epoch};
+  }
+  async function resumeScenarioProject(ticketValue){
+    const ticket=validateScenarioTicket(ticketValue),native=scenarioContext();
+    if(ticket?.phase!=="active"||ticket.context!==native||native!==connection.session||scenarioBootstrap!=="blocked"||editorLease!=="owned"||!recoveryDB)
+      throw new Error("試改續接身份不符，未匯入或重建舊方案。");
+    const initial={context:context(),frame:history.frame,revision:revision(context())};let prepared=null;
+    const check=()=>{if(connection.session!==native||scenarioBootstrap!=="blocked"||!unchanged(initial))throw new Error("試改續接期間身份已變更。");};
+    busy=true;busyLabel="正在核對完整試改暫存點…";present();
+    try{
+      const journal=validateScenarioResume(await readScenarioResume(native,ticket),ticket);check();
+      if(!journal.eligible)throw new Error("這次試改未在離開前完成明確暫存，不能以舊附件續接。");
+      const record=await recoveryStore("readonly",store=>store.get(scenarioResumePackageKey(native)));check();
+      if(!record||record.version!==1||record.session!==native||record.sceneHash!==journal.sceneHash||await P.sha(record.bytes)!==journal.packageHash)
+        throw new Error("試改完整包或指紋不符，未附回舊資料。");
+      const p=record.project;
+      if(!p||Object.keys(p).sort().join(',')!=="dirty,dirtyReason,downloaded,provenance,saved"||
+         !['dirty','saved','downloaded'].every(k=>typeof p[k]==='boolean')||typeof p.dirtyReason!=='string'||
+         !p.provenance||Array.isArray(p.provenance)||typeof p.provenance.kind!=='string'||typeof p.provenance.label!=='string'||
+         await P.sha(new TextEncoder().encode(JSON.stringify(p)))!==journal.metadataHash)
+        throw new Error("試改保存旗標或來源記錄指紋不符；未恢復舊資料。");check();
+      const dump=await api("dump");check();if(!dump.ok||await sceneFingerprint(dump.text)!==journal.sceneHash)throw new Error("試改原生內容與暫存點不符。");
+      const loaded=await readProjectContext(record.bytes,"試改續接點",label=>{busyLabel=label;present();},check,true);prepared=loaded.c;check();
+      if(loaded.loaded.manifest.projectId!==journal.projectId||await sceneFingerprint(loaded.loaded.scene)!==journal.sceneHash)throw new Error("試改完整包的專案身份不符。");
+      const disarmed={...journal,eligible:false};
+      await scenarioResumeTransaction(ticket,journal,disarmed,null,check);check();
+      const verify=await api("dump");check();
+      if(!verify.ok||await sceneFingerprint(verify.text)!==journal.sceneHash)throw new Error("撤銷續接資格期間原生内容已變更；未附回資料。");
+      // Recheck the terminal decision after every asynchronous preparation.
+      const current=await readStoredScenarioTicket(ticket.rootSession);check();
+      if(JSON.stringify(current)!==JSON.stringify(ticket))throw new Error("試改已取消或完成，未重新開啟。");
+      Object.assign(prepared,{dirty:!!p.dirty,dirtyReason:String(p.dirtyReason||""),saved:!!p.saved,downloaded:!!p.downloaded,provenance:{...p.provenance}});
+      history.frame={context:prepared,ids:new Map(loaded.ids)};history.undo=[];history.redo=[];history.group=null;history.blockCoreRedo=false;
+      detachedPDFContexts.delete(prepared);scenarioBootstrap="ready";recoveryReady=true;sync();
+      recoveryMessage("restored","已核對並續接明確暫存的完整試改；活躍編輯中斷及未套用工具草稿不會自動恢復。");return {ok:true,context:native};
+    }finally{await releaseDetachedPDFContext(prepared);busy=false;busyLabel="";present();}
+  }
   async function freezeScenarioProject() {
     if(!scenarioContext()||scenarioFreeze)throw new Error("試改尚未就緒或已在保全中。");
     window.AssemblyWorkspace?.flush();window.InfiniteGridWorkspace?.flush();assertSaveReady();
@@ -1930,6 +2025,6 @@ const ReferenceWorkspace = (() => {
     noteSceneSource:({name,kind="scene-file"})=>markSceneSource(name,kind),
     manifest,readScenarioProject,readScenarioCatalog,commitScenarioCatalog,adoptScenario,exportBytes,importBytes,openProject,uploadScene,recoverLoad,mayLeave,sync,save,escape,
     readScenarioEditorTicket,createScenarioEditorTicket,updateScenarioEditorTicket,markScenarioEditorRetiring,verifyScenarioEditorRetirement,clearScenarioEditorTicket,
-    initializeScenarioProject,freezeScenarioProject,assertScenarioFrozen,releaseScenarioProject,finishScenarioEditor,
+    initializeScenarioProject,pauseScenarioProject,resumeScenarioProject,freezeScenarioProject,assertScenarioFrozen,releaseScenarioProject,finishScenarioEditor,
     historyActionLabel:op=>history.actionLabel(op),get busy(){return busy;} };
 })();

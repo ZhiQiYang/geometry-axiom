@@ -1,0 +1,46 @@
+{
+  "originalPrivateFindingsSHA256": "c9328250041975c3373ccc75344e28b09a8d93bf89886eb978385df9789a18c6",
+  "originalPrivateFindingsBytes": 15435,
+  "confirmedFormattingFindings": 4,
+  "additionalLexicalOrNumericOrChineseLossObserved": false,
+  "rows": [
+    {
+      "packet": "ui-single-room-640-public-v4",
+      "relativePath": "ui-actor-review/640a8144-findings.md",
+      "originalSHA256": "2023c624037177c83836972ef4cadd375242744158dc7b360a81fcb81dcd64c7",
+      "priorPublicSHA256": "231e0e2016926c1ef0946628adb6c6124a63be562e0b67b9afe335156b7ece53",
+      "boundedFinding": "Public projection consumed adjacent Markdown closing backticks/punctuation. No additional lexical-word, numeric-token or Chinese prose loss observed in this file.",
+      "lexicalWordsAndNumericTokensPreserved": true,
+      "ChineseCharacterSequencePreserved": true
+    },
+    {
+      "packet": "ui-single-room-0b37-failed-public-v5",
+      "relativePath": "actor-review/0b37d8d8-findings.md",
+      "originalSHA256": "7cd54dee490ae0e997e7b79ae48b80443b1a43d032803ef5d3ca68f2d6b33a59",
+      "priorPublicSHA256": "f44f4161544c8849c33c2fca4157eac711706987605cea46c0de48ecd323575a",
+      "boundedFinding": "Public projection consumed adjacent Markdown closing backticks/punctuation. No additional lexical-word, numeric-token or Chinese prose loss observed in this file.",
+      "lexicalWordsAndNumericTokensPreserved": true,
+      "ChineseCharacterSequencePreserved": true
+    },
+    {
+      "packet": "ui-102ff-three-scopes-public-v4",
+      "relativePath": "scope-review/102ff28e-findings.md",
+      "originalSHA256": "8aa6754b3d90f84eddadbe91e3616b1aee148ed9ccedabb1b770144808f51a3d",
+      "priorPublicSHA256": "577871c891755413c4726b0c4c70d86d6fb5b73b55c654ba08f5c6fa37610e54",
+      "boundedFinding": "Public projection consumed adjacent Markdown closing backticks/punctuation. No additional lexical-word, numeric-token or Chinese prose loss observed in this file.",
+      "lexicalWordsAndNumericTokensPreserved": true,
+      "ChineseCharacterSequencePreserved": true
+    },
+    {
+      "packet": "ui-publication-reviews-public-v3",
+      "relativePath": "r12/accepted.md",
+      "originalSHA256": "f95b7bb35776c7acc550542630d2accc37ad45264984dafe7846fa23206dee6b",
+      "priorPublicSHA256": "8cc0ee34baaeaa877690473782cee70977d39ab582d1eca7bf58829b97547cd9",
+      "boundedFinding": "Public projection consumed adjacent Markdown closing backticks/punctuation. No additional lexical-word, numeric-token or Chinese prose loss observed in this file.",
+      "lexicalWordsAndNumericTokensPreserved": true,
+      "ChineseCharacterSequencePreserved": true
+    }
+  ],
+  "productTestsExecuted": false,
+  "newFullAccepted": false
+}

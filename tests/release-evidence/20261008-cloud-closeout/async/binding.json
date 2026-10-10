@@ -1,0 +1,2089 @@
+{
+  "schema": "geometry-async-evidence-publication/1",
+  "assembledAt": "2026-10-08T16:20:16.805361+00:00",
+  "status": "reproduced product defects; not merge-ready; not a post-fix acceptance",
+  "main": "5cc1ffa1ee85120eca14258b86b715151cad274f",
+  "prHeads": {
+    "173": "d44ad7fea531a94f67401d5b403565cd891770ae",
+    "174": "4e6ab4421e0e634ff4fd06356dadb7d8eaf4feb3"
+  },
+  "testedIntegrationCandidate": "bdd1bf7812ba6126aab9ddffced43cd200ac977e",
+  "versionLimit": "The browser results apply to this exact tested candidate. A later integration or documentation head is not relabelled as tested.",
+  "original173PrivateProbeRecovered": false,
+  "coverage": "Actual sandboxed Chromium and native replies held without changing payload; normal click and keyboard interaction; replacement redraw explicitly injected through product renderer. #173 main/face mean object-canvas inspector and face workspace only; #173 direct three-view editing and pending edge replies across view switching are not executed. #174 handle probes do enter three-view, and do not substitute for #173 coverage. Native success is reached but draft-preservation acceptance fails. Not full CDP/Space, physical-device or IME acceptance.",
+  "copiedOriginals": [
+    {
+      "path": "browser-handles-3/handles-1400.json",
+      "sourceRelativePath": "browser-handles-3/handles-1400.json",
+      "bytes": 3929,
+      "sha256": "bdd281653c2388a6daae96670772b1ab0ee2806b158c794baa7760e737e0368a",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-handles-3/handles-1400-world-before.scene",
+      "sourceRelativePath": "browser-handles-3/handles-1400-world-before.scene",
+      "bytes": 271,
+      "sha256": "1161c1f4a567165a8aa520425fbda9748121c5452f7a9d591ad21d62e0ecd405",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-handles-3/handles-1400-world-after.scene",
+      "sourceRelativePath": "browser-handles-3/handles-1400-world-after.scene",
+      "bytes": 271,
+      "sha256": "1161c1f4a567165a8aa520425fbda9748121c5452f7a9d591ad21d62e0ecd405",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-handles-3/executed-browser_probe.py",
+      "sourceRelativePath": "browser-handles-3/executed-browser_probe.py",
+      "bytes": 10510,
+      "sha256": "4495cb5abfc8c6ac251fe236da8dfdccc2d26e81a938e0f3a1c183a40d1d799e",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-handles-3/receipt.json",
+      "sourceRelativePath": "browser-handles-3/receipt.json",
+      "bytes": 498,
+      "sha256": "2fca99ee3fe0f3f641ed3f18a6c9c2feb2f384ced65bb41dc7349a9107794845",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-handles-3/browser.json",
+      "sourceRelativePath": "browser-handles-3/browser.json",
+      "bytes": 87,
+      "sha256": "d5e2af1806ee02c2e3daea19bb57874e4ac7147fb58b216c6950fb28d1f40803",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-handles-3.command.json",
+      "sourceRelativePath": "browser-handles-3.command.json",
+      "bytes": 334,
+      "sha256": "6b73a90e7e42bc96c2471972397d38d5297c9091e87d5bfcb5f46f278deefc25",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-handles-3.stdout",
+      "sourceRelativePath": "browser-handles-3.stdout",
+      "bytes": 881,
+      "sha256": "268c1b3ba002fdb82f4d3599124caa41b3e6dd0a3c251cf4288bdbab791651f8",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-handles-3.stderr",
+      "sourceRelativePath": "browser-handles-3.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-handles-mobile-4/handles-390.json",
+      "sourceRelativePath": "browser-handles-mobile-4/handles-390.json",
+      "bytes": 3928,
+      "sha256": "92bfa6ebc68a437ea70b7aa2aa6cec12810e650f7f7f3c152e4969e6406ab0ce",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-handles-mobile-4/handles-390-world-before.scene",
+      "sourceRelativePath": "browser-handles-mobile-4/handles-390-world-before.scene",
+      "bytes": 271,
+      "sha256": "58f70175e4fa933ee820f4a49c4097c4237d56cb3c8b2f8b6d799496012b070d",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-handles-mobile-4/handles-390-world-after.scene",
+      "sourceRelativePath": "browser-handles-mobile-4/handles-390-world-after.scene",
+      "bytes": 271,
+      "sha256": "58f70175e4fa933ee820f4a49c4097c4237d56cb3c8b2f8b6d799496012b070d",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-handles-mobile-4/executed-browser_probe.py",
+      "sourceRelativePath": "browser-handles-mobile-4/executed-browser_probe.py",
+      "bytes": 10571,
+      "sha256": "72f260683323dbc35777d1c2ae477968d3507993adf95e2ffbdcfb66b30a4241",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-handles-mobile-4/receipt.json",
+      "sourceRelativePath": "browser-handles-mobile-4/receipt.json",
+      "bytes": 531,
+      "sha256": "f39d1eb9a18841783879207bd0be9ce5ab2e4974fb29dfba2408cebba4ba42ee",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-handles-mobile-4/browser.json",
+      "sourceRelativePath": "browser-handles-mobile-4/browser.json",
+      "bytes": 87,
+      "sha256": "d5e2af1806ee02c2e3daea19bb57874e4ac7147fb58b216c6950fb28d1f40803",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-handles-mobile-4.command.json",
+      "sourceRelativePath": "browser-handles-mobile-4.command.json",
+      "bytes": 367,
+      "sha256": "cfc96821dac6f3136f3700c54d2839c93914345b357b0a9fbfffe8b15f687cb5",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-handles-mobile-4.stdout",
+      "sourceRelativePath": "browser-handles-mobile-4.stdout",
+      "bytes": 59,
+      "sha256": "c5aa7a187a693595e944a3167601c6a87210c0b7656be04204ad2217b662e259",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-handles-mobile-4.stderr",
+      "sourceRelativePath": "browser-handles-mobile-4.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-1/edges-1400-main-same-input-new-value.json",
+      "sourceRelativePath": "browser-edges-1/edges-1400-main-same-input-new-value.json",
+      "bytes": 3445,
+      "sha256": "b60e0014435ce6937b80b2f7f3ab0a06438a83ea866996ad757090381385597d",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-1/edges-1400-main-same-input-new-value-world-before.scene",
+      "sourceRelativePath": "browser-edges-1/edges-1400-main-same-input-new-value-world-before.scene",
+      "bytes": 180,
+      "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-1/edges-1400-main-same-input-new-value-world-after.scene",
+      "sourceRelativePath": "browser-edges-1/edges-1400-main-same-input-new-value-world-after.scene",
+      "bytes": 180,
+      "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-1/edges-1400-main-replacement-rejected-value.json",
+      "sourceRelativePath": "browser-edges-1/edges-1400-main-replacement-rejected-value.json",
+      "bytes": 2926,
+      "sha256": "8c9bc90636b3722c63ddfad36b87ce8dd1e97073c2d9b628cd51a8f3cdc568a9",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-1/edges-1400-main-replacement-rejected-value-world-before.scene",
+      "sourceRelativePath": "browser-edges-1/edges-1400-main-replacement-rejected-value-world-before.scene",
+      "bytes": 180,
+      "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-1/edges-1400-main-replacement-rejected-value-world-after.scene",
+      "sourceRelativePath": "browser-edges-1/edges-1400-main-replacement-rejected-value-world-after.scene",
+      "bytes": 180,
+      "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-1/edges-1400-main-replacement-new-value.json",
+      "sourceRelativePath": "browser-edges-1/edges-1400-main-replacement-new-value.json",
+      "bytes": 3448,
+      "sha256": "9d584f1744e9410e848cb06a80e41dc49a3e5824abe8520f73ecfac2bfb25882",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-1/edges-1400-main-replacement-new-value-world-before.scene",
+      "sourceRelativePath": "browser-edges-1/edges-1400-main-replacement-new-value-world-before.scene",
+      "bytes": 180,
+      "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-1/edges-1400-main-replacement-new-value-world-after.scene",
+      "sourceRelativePath": "browser-edges-1/edges-1400-main-replacement-new-value-world-after.scene",
+      "bytes": 180,
+      "sha256": "f05580cd0327c2fffb2fe5a8e9656b700087e263dcefcc7ac0ecff2653f14aad",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-1/edges-1400-main-success-sibling.json",
+      "sourceRelativePath": "browser-edges-1/edges-1400-main-success-sibling.json",
+      "bytes": 3595,
+      "sha256": "4103f23ca4a0473dfa3ba4cf23c8edd2636faeeb05ec704a10ca82f495cbfb74",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-1/edges-1400-main-success-sibling-world-before.scene",
+      "sourceRelativePath": "browser-edges-1/edges-1400-main-success-sibling-world-before.scene",
+      "bytes": 180,
+      "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-1/edges-1400-main-success-sibling-world-after.scene",
+      "sourceRelativePath": "browser-edges-1/edges-1400-main-success-sibling-world-after.scene",
+      "bytes": 180,
+      "sha256": "40560f527c395bfa61423509b85639d4699d03e488a6518f478733a91480f35b",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-1/edges-1400-face-same-input-new-value.json",
+      "sourceRelativePath": "browser-edges-1/edges-1400-face-same-input-new-value.json",
+      "bytes": 4170,
+      "sha256": "e9e07e76b647778da45e75a3aed67f94e24bc178f0394c460c9bdd979bf505ea",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-1/edges-1400-face-same-input-new-value-world-before.scene",
+      "sourceRelativePath": "browser-edges-1/edges-1400-face-same-input-new-value-world-before.scene",
+      "bytes": 180,
+      "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-1/edges-1400-face-same-input-new-value-world-after.scene",
+      "sourceRelativePath": "browser-edges-1/edges-1400-face-same-input-new-value-world-after.scene",
+      "bytes": 180,
+      "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-1/edges-1400-face-replacement-rejected-value.json",
+      "sourceRelativePath": "browser-edges-1/edges-1400-face-replacement-rejected-value.json",
+      "bytes": 3239,
+      "sha256": "aabc3ba38e1e1261267ac2ce75b9d9fb88a919bd49037af80f90dd092b457f25",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-1/edges-1400-face-replacement-rejected-value-world-before.scene",
+      "sourceRelativePath": "browser-edges-1/edges-1400-face-replacement-rejected-value-world-before.scene",
+      "bytes": 180,
+      "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-1/edges-1400-face-replacement-rejected-value-world-after.scene",
+      "sourceRelativePath": "browser-edges-1/edges-1400-face-replacement-rejected-value-world-after.scene",
+      "bytes": 180,
+      "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-1/edges-1400-face-replacement-new-value.json",
+      "sourceRelativePath": "browser-edges-1/edges-1400-face-replacement-new-value.json",
+      "bytes": 4239,
+      "sha256": "7a7ffa1606fd3682ebc71e731926008be07a3e1395c5adfc7410493bbd75d566",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-1/edges-1400-face-replacement-new-value-world-before.scene",
+      "sourceRelativePath": "browser-edges-1/edges-1400-face-replacement-new-value-world-before.scene",
+      "bytes": 180,
+      "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-1/edges-1400-face-replacement-new-value-world-after.scene",
+      "sourceRelativePath": "browser-edges-1/edges-1400-face-replacement-new-value-world-after.scene",
+      "bytes": 180,
+      "sha256": "f05580cd0327c2fffb2fe5a8e9656b700087e263dcefcc7ac0ecff2653f14aad",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-1/edges-1400-face-success-sibling.json",
+      "sourceRelativePath": "browser-edges-1/edges-1400-face-success-sibling.json",
+      "bytes": 4749,
+      "sha256": "84c5f673d72a785446b969f4a656234c789054c1c6fdfb623091cb3af8177a71",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-1/edges-1400-face-success-sibling-world-before.scene",
+      "sourceRelativePath": "browser-edges-1/edges-1400-face-success-sibling-world-before.scene",
+      "bytes": 180,
+      "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-1/edges-1400-face-success-sibling-world-after.scene",
+      "sourceRelativePath": "browser-edges-1/edges-1400-face-success-sibling-world-after.scene",
+      "bytes": 180,
+      "sha256": "40560f527c395bfa61423509b85639d4699d03e488a6518f478733a91480f35b",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-1/executed-browser_probe.py",
+      "sourceRelativePath": "browser-edges-1/executed-browser_probe.py",
+      "bytes": 10571,
+      "sha256": "72f260683323dbc35777d1c2ae477968d3507993adf95e2ffbdcfb66b30a4241",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-1/receipt.json",
+      "sourceRelativePath": "browser-edges-1/receipt.json",
+      "bytes": 495,
+      "sha256": "b8b7c7d81a54e18d618e91480f04050ecafcf952af6bcfd5b9599b163123e3fb",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-1/browser.json",
+      "sourceRelativePath": "browser-edges-1/browser.json",
+      "bytes": 87,
+      "sha256": "d5e2af1806ee02c2e3daea19bb57874e4ac7147fb58b216c6950fb28d1f40803",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-1.command.json",
+      "sourceRelativePath": "browser-edges-1.command.json",
+      "bytes": 330,
+      "sha256": "2e5f8044bdda80efedeabf3e250b5002bf9e5dfd89ea1d2c2df0a13ccc9b494d",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-1.stdout",
+      "sourceRelativePath": "browser-edges-1.stdout",
+      "bytes": 7480,
+      "sha256": "dbe01706ed6e77cf3b22ff1a3a08444d919ec04f5615755110b0335187e83b05",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-1.stderr",
+      "sourceRelativePath": "browser-edges-1.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-mobile-2/edges-390-main-same-input-new-value.json",
+      "sourceRelativePath": "browser-edges-mobile-2/edges-390-main-same-input-new-value.json",
+      "bytes": 3444,
+      "sha256": "713348c6d2e51987198452e2edcfc152c8de5f669fa5a3d4723e750725f42f8b",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-mobile-2/edges-390-main-same-input-new-value-world-before.scene",
+      "sourceRelativePath": "browser-edges-mobile-2/edges-390-main-same-input-new-value-world-before.scene",
+      "bytes": 180,
+      "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-mobile-2/edges-390-main-same-input-new-value-world-after.scene",
+      "sourceRelativePath": "browser-edges-mobile-2/edges-390-main-same-input-new-value-world-after.scene",
+      "bytes": 180,
+      "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-mobile-2/edges-390-main-replacement-rejected-value.json",
+      "sourceRelativePath": "browser-edges-mobile-2/edges-390-main-replacement-rejected-value.json",
+      "bytes": 2925,
+      "sha256": "ae3dd222370838b499355aa961b43449ba2a2bca9cb1e471f1595862cc9e7ba1",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-mobile-2/edges-390-main-replacement-rejected-value-world-before.scene",
+      "sourceRelativePath": "browser-edges-mobile-2/edges-390-main-replacement-rejected-value-world-before.scene",
+      "bytes": 180,
+      "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-mobile-2/edges-390-main-replacement-rejected-value-world-after.scene",
+      "sourceRelativePath": "browser-edges-mobile-2/edges-390-main-replacement-rejected-value-world-after.scene",
+      "bytes": 180,
+      "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-mobile-2/edges-390-main-replacement-new-value.json",
+      "sourceRelativePath": "browser-edges-mobile-2/edges-390-main-replacement-new-value.json",
+      "bytes": 3447,
+      "sha256": "03a7d98c0ba7a869898d04bd2a099024ed0b8cfe428e07ce6a8e00125ff7f39a",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-mobile-2/edges-390-main-replacement-new-value-world-before.scene",
+      "sourceRelativePath": "browser-edges-mobile-2/edges-390-main-replacement-new-value-world-before.scene",
+      "bytes": 180,
+      "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-mobile-2/edges-390-main-replacement-new-value-world-after.scene",
+      "sourceRelativePath": "browser-edges-mobile-2/edges-390-main-replacement-new-value-world-after.scene",
+      "bytes": 180,
+      "sha256": "f05580cd0327c2fffb2fe5a8e9656b700087e263dcefcc7ac0ecff2653f14aad",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-mobile-2/edges-390-main-success-sibling.json",
+      "sourceRelativePath": "browser-edges-mobile-2/edges-390-main-success-sibling.json",
+      "bytes": 3594,
+      "sha256": "f1bc8cac04cc5aba2d7256f80540583447620003a94c36e5bba73522c2f2da88",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-mobile-2/edges-390-main-success-sibling-world-before.scene",
+      "sourceRelativePath": "browser-edges-mobile-2/edges-390-main-success-sibling-world-before.scene",
+      "bytes": 180,
+      "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-mobile-2/edges-390-main-success-sibling-world-after.scene",
+      "sourceRelativePath": "browser-edges-mobile-2/edges-390-main-success-sibling-world-after.scene",
+      "bytes": 180,
+      "sha256": "40560f527c395bfa61423509b85639d4699d03e488a6518f478733a91480f35b",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-mobile-2/edges-390-face-same-input-new-value.json",
+      "sourceRelativePath": "browser-edges-mobile-2/edges-390-face-same-input-new-value.json",
+      "bytes": 4235,
+      "sha256": "f387585cfb09bdeea7fbd8f054cd7992f1018f9324597fc22eb4bf5281de2c8f",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-mobile-2/edges-390-face-same-input-new-value-world-before.scene",
+      "sourceRelativePath": "browser-edges-mobile-2/edges-390-face-same-input-new-value-world-before.scene",
+      "bytes": 180,
+      "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-mobile-2/edges-390-face-same-input-new-value-world-after.scene",
+      "sourceRelativePath": "browser-edges-mobile-2/edges-390-face-same-input-new-value-world-after.scene",
+      "bytes": 180,
+      "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-mobile-2/edges-390-face-replacement-rejected-value.json",
+      "sourceRelativePath": "browser-edges-mobile-2/edges-390-face-replacement-rejected-value.json",
+      "bytes": 3304,
+      "sha256": "06bcc5a7534b6714995716500b1c3dd8f4b908aa04366828131d3a98e6448329",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-mobile-2/edges-390-face-replacement-rejected-value-world-before.scene",
+      "sourceRelativePath": "browser-edges-mobile-2/edges-390-face-replacement-rejected-value-world-before.scene",
+      "bytes": 180,
+      "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-mobile-2/edges-390-face-replacement-rejected-value-world-after.scene",
+      "sourceRelativePath": "browser-edges-mobile-2/edges-390-face-replacement-rejected-value-world-after.scene",
+      "bytes": 180,
+      "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-mobile-2/edges-390-face-replacement-new-value.json",
+      "sourceRelativePath": "browser-edges-mobile-2/edges-390-face-replacement-new-value.json",
+      "bytes": 4238,
+      "sha256": "ae0c7497b904d06db7082ab5ed2394252df2f1fd88e6eea0eb0a85421a981dd1",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-mobile-2/edges-390-face-replacement-new-value-world-before.scene",
+      "sourceRelativePath": "browser-edges-mobile-2/edges-390-face-replacement-new-value-world-before.scene",
+      "bytes": 180,
+      "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-mobile-2/edges-390-face-replacement-new-value-world-after.scene",
+      "sourceRelativePath": "browser-edges-mobile-2/edges-390-face-replacement-new-value-world-after.scene",
+      "bytes": 180,
+      "sha256": "f05580cd0327c2fffb2fe5a8e9656b700087e263dcefcc7ac0ecff2653f14aad",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-mobile-2/edges-390-face-success-sibling.json",
+      "sourceRelativePath": "browser-edges-mobile-2/edges-390-face-success-sibling.json",
+      "bytes": 4748,
+      "sha256": "11ce2e05044b780f08e81e5b04396b6cd9aa70f34bf01966cfab8b758169930c",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-mobile-2/edges-390-face-success-sibling-world-before.scene",
+      "sourceRelativePath": "browser-edges-mobile-2/edges-390-face-success-sibling-world-before.scene",
+      "bytes": 180,
+      "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-mobile-2/edges-390-face-success-sibling-world-after.scene",
+      "sourceRelativePath": "browser-edges-mobile-2/edges-390-face-success-sibling-world-after.scene",
+      "bytes": 180,
+      "sha256": "40560f527c395bfa61423509b85639d4699d03e488a6518f478733a91480f35b",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-mobile-2/executed-browser_probe.py",
+      "sourceRelativePath": "browser-edges-mobile-2/executed-browser_probe.py",
+      "bytes": 10743,
+      "sha256": "624db4fca454832bb9fbe3b0837571472ce6360baffef172486b2a27826e9dfd",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-mobile-2/receipt.json",
+      "sourceRelativePath": "browser-edges-mobile-2/receipt.json",
+      "bytes": 527,
+      "sha256": "bc3d63de97375715a0c72bcc50420a16b4e8db15a0e7e905000534bc4e81a0e2",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-mobile-2/browser.json",
+      "sourceRelativePath": "browser-edges-mobile-2/browser.json",
+      "bytes": 87,
+      "sha256": "d5e2af1806ee02c2e3daea19bb57874e4ac7147fb58b216c6950fb28d1f40803",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-mobile-2.command.json",
+      "sourceRelativePath": "browser-edges-mobile-2.command.json",
+      "bytes": 363,
+      "sha256": "fe8c18eb29b5c16670ad97a162cb6e63c352b662324a02e92ea5a717be25fe8c",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-mobile-2.stdout",
+      "sourceRelativePath": "browser-edges-mobile-2.stdout",
+      "bytes": 668,
+      "sha256": "604de2a8182487657b0c78935c83c6d66d214df0d038f8677cb354f1af40f793",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-mobile-2.stderr",
+      "sourceRelativePath": "browser-edges-mobile-2.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-handles-3/handles-1400-B-before.png",
+      "sourceRelativePath": "browser-handles-3/handles-1400-B-before.png",
+      "bytes": 62129,
+      "sha256": "cabad214142995ceeb37192d8170d59bcb7c2803e4494ad5a02a3b3e6f491731",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-handles-3/handles-1400-after-A.png",
+      "sourceRelativePath": "browser-handles-3/handles-1400-after-A.png",
+      "bytes": 60424,
+      "sha256": "7d3ea66b1a076136667f929e8f31db19258a1379475b204bc1c1bd1fe9c7232e",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-handles-mobile-4/handles-390-B-before.png",
+      "sourceRelativePath": "browser-handles-mobile-4/handles-390-B-before.png",
+      "bytes": 34533,
+      "sha256": "a3e809629459e153620e5b98859920c837fd0b53c539ea73a93a476c4b8b04d9",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-handles-mobile-4/handles-390-after-A.png",
+      "sourceRelativePath": "browser-handles-mobile-4/handles-390-after-A.png",
+      "bytes": 34056,
+      "sha256": "7ce0fb9ac154bee776fdbed4b8b8120db29f0753d5c0e63fb2e93420aa30aab7",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-1/edges-1400-main-same-input-new-value.png",
+      "sourceRelativePath": "browser-edges-1/edges-1400-main-same-input-new-value.png",
+      "bytes": 134069,
+      "sha256": "593d883c4c636ee29ae62ff9b6262d2ee4df17918ecb373d4a037e591a2c3331",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-1/edges-1400-main-replacement-rejected-value.png",
+      "sourceRelativePath": "browser-edges-1/edges-1400-main-replacement-rejected-value.png",
+      "bytes": 127567,
+      "sha256": "aed318d3307e0882b716afce06229c17d1fe564a5e50632748a81b61b82e96bf",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-mobile-2/edges-390-face-same-input-new-value.png",
+      "sourceRelativePath": "browser-edges-mobile-2/edges-390-face-same-input-new-value.png",
+      "bytes": 69943,
+      "sha256": "894e95510fec78a3b6619b65f2fbe5f2cc93ca661e2cf9368574b6dc26efcb4c",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-mobile-2/edges-390-face-replacement-rejected-value.png",
+      "sourceRelativePath": "browser-edges-mobile-2/edges-390-face-replacement-rejected-value.png",
+      "bytes": 64263,
+      "sha256": "bdf935e1912bd7eb3d9a824eb881bd2e749da9c05382ceacc5a85db5a552814e",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser_probe.py",
+      "sourceRelativePath": "browser_probe.py",
+      "bytes": 10743,
+      "sha256": "624db4fca454832bb9fbe3b0837571472ce6360baffef172486b2a27826e9dfd",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser_instrumentation.js",
+      "sourceRelativePath": "browser_instrumentation.js",
+      "bytes": 2427,
+      "sha256": "83e8f28a97b4d03339d27f7646756e8d6bedd4e7f7f9745984d51e1dee54fb44",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "run_browser.py",
+      "sourceRelativePath": "run_browser.py",
+      "bytes": 625,
+      "sha256": "099efe265f5e78ff1df051dba688240372899deddf5ad8c3ded5493d2fe2421f",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-handles-2.command.json",
+      "sourceRelativePath": "browser-handles-2.command.json",
+      "bytes": 334,
+      "sha256": "efc8174b19e2095a4f8a87ddf2e31120f9ad268b8a28b57e3a42c38fed143767",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-handles-2.stdout",
+      "sourceRelativePath": "browser-handles-2.stdout",
+      "bytes": 213,
+      "sha256": "02be7f72229331cfc2b18a4fee92fc9c58aa9460cc72bf182fca869da8036e31",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-handles-2.stderr",
+      "sourceRelativePath": "browser-handles-2.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-handles-2/receipt.json",
+      "sourceRelativePath": "browser-handles-2/receipt.json",
+      "bytes": 498,
+      "sha256": "394415614aa446421c507eeb83bf44e3d9922531436ca0e16ef6c5f91ce7d142",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-handles-2/handles-1400.json",
+      "sourceRelativePath": "browser-handles-2/handles-1400.json",
+      "bytes": 2186,
+      "sha256": "04485f3f312ea43a325b0a1aa0a139321bda060307b5d03ef576a326bc9ecfc9",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-handles-3/handles-390.json",
+      "sourceRelativePath": "browser-handles-3/handles-390.json",
+      "bytes": 5794,
+      "sha256": "487860ba28bcd498a51402522fadd0b2b476fcd569c86ab581ccc9079988916f",
+      "method": "byte-identical copy"
+    },
+    {
+      "path": "browser-edges-1/edges-390-main-same-input-new-value.json",
+      "sourceRelativePath": "browser-edges-1/edges-390-main-same-input-new-value.json",
+      "bytes": 5229,
+      "sha256": "fcb1d417597e02e4f82ee40358b70ba9bcdf474717f483eb372f1ada2917d5d2",
+      "method": "byte-identical copy"
+    }
+  ],
+  "rounds": [
+    {
+      "round": "browser-handles-3",
+      "browser": {
+        "version": "151.0.7922.173",
+        "sandbox": true,
+        "launchArgumentsRequested": []
+      },
+      "before": {
+        "utc": "2026-10-08T15:51:12.535884+00:00",
+        "head": "bdd1bf7812ba6126aab9ddffced43cd200ac977e",
+        "status": {
+          "argv": [
+            "git",
+            "status",
+            "--short"
+          ],
+          "stdout": "?? tests/integration/assembly_ownership_probe.py\n?? tests/integration/grid_rule_reopen_probe.py\n",
+          "stderr": "",
+          "exitCode": 0
+        },
+        "trackedDiff": {
+          "argv": [
+            "git",
+            "diff",
+            "--binary"
+          ],
+          "stdout": "",
+          "stderr": "",
+          "exitCode": 0
+        },
+        "runtime": {
+          "schema": "geometry-runtime/1",
+          "version": "1ecfdb7abb9914d75b1b24144fc690d290dc856f6596918e0287842bd6d2371b",
+          "fresh": true
+        },
+        "sourceSha256": {
+          "geometry-web/app.js": "86c82675d0b7eb0dc76659705186273112f6d17c2712426f7a681e5fa48497d8",
+          "geometry-web/space-workspace.js": "a735338f5cc14f3ae743578986750ace3c7389e0d73fd44c21773d82c2503868"
+        },
+        "scriptSha256": {
+          "browser_probe.py": "4495cb5abfc8c6ac251fe236da8dfdccc2d26e81a938e0f3a1c183a40d1d799e",
+          "browser_instrumentation.js": "83e8f28a97b4d03339d27f7646756e8d6bedd4e7f7f9745984d51e1dee54fb44"
+        }
+      },
+      "after": {
+        "utc": "2026-10-08T15:51:23.668070+00:00",
+        "head": "bdd1bf7812ba6126aab9ddffced43cd200ac977e",
+        "status": {
+          "argv": [
+            "git",
+            "status",
+            "--short"
+          ],
+          "stdout": "?? tests/integration/assembly_ownership_probe.py\n?? tests/integration/grid_rule_reopen_probe.py\n",
+          "stderr": "",
+          "exitCode": 0
+        },
+        "trackedDiff": {
+          "argv": [
+            "git",
+            "diff",
+            "--binary"
+          ],
+          "stdout": "",
+          "stderr": "",
+          "exitCode": 0
+        },
+        "runtime": {
+          "schema": "geometry-runtime/1",
+          "version": "1ecfdb7abb9914d75b1b24144fc690d290dc856f6596918e0287842bd6d2371b",
+          "fresh": true
+        },
+        "sourceSha256": {
+          "geometry-web/app.js": "86c82675d0b7eb0dc76659705186273112f6d17c2712426f7a681e5fa48497d8",
+          "geometry-web/space-workspace.js": "a735338f5cc14f3ae743578986750ace3c7389e0d73fd44c21773d82c2503868"
+        },
+        "scriptSha256": {
+          "browser_probe.py": "4495cb5abfc8c6ac251fe236da8dfdccc2d26e81a938e0f3a1c183a40d1d799e",
+          "browser_instrumentation.js": "83e8f28a97b4d03339d27f7646756e8d6bedd4e7f7f9745984d51e1dee54fb44"
+        }
+      },
+      "tests": [
+        {
+          "name": "handles-1400",
+          "ok": false,
+          "before": {
+            "tool": "edit",
+            "editBid": 712,
+            "editToken": 5,
+            "groups": 1,
+            "handles": 5
+          },
+          "after": {
+            "tool": "edit",
+            "editBid": 712,
+            "editToken": 5,
+            "groups": 0,
+            "handles": 0
+          },
+          "worldUnchanged": true,
+          "pageErrors": [],
+          "rawWorldEvidence": [
+            {
+              "file": "handles-1400-world-before.scene",
+              "sha256": "1161c1f4a567165a8aa520425fbda9748121c5452f7a9d591ad21d62e0ecd405",
+              "traceCallId": "call@24",
+              "traceSha256": "d21ce047a78f21f4b7de7f6f85d7df0cbe082bf32b8fe488e05e8aeefd446df8"
+            },
+            {
+              "file": "handles-1400-world-after.scene",
+              "sha256": "1161c1f4a567165a8aa520425fbda9748121c5452f7a9d591ad21d62e0ecd405",
+              "traceCallId": "call@50",
+              "traceSha256": "d21ce047a78f21f4b7de7f6f85d7df0cbe082bf32b8fe488e05e8aeefd446df8"
+            }
+          ],
+          "rawDumpComparisonMatchesRecorded": true,
+          "uiPath": "three-view handles (#174 only)"
+        }
+      ]
+    },
+    {
+      "round": "browser-handles-mobile-4",
+      "browser": {
+        "version": "151.0.7922.173",
+        "sandbox": true,
+        "launchArgumentsRequested": []
+      },
+      "before": {
+        "utc": "2026-10-08T15:52:01.112839+00:00",
+        "head": "bdd1bf7812ba6126aab9ddffced43cd200ac977e",
+        "status": {
+          "argv": [
+            "git",
+            "status",
+            "--short"
+          ],
+          "stdout": "?? tests/integration/assembly_ownership_probe.py\n?? tests/integration/grid_rule_reopen_probe.py\n",
+          "stderr": "",
+          "exitCode": 0
+        },
+        "trackedDiff": {
+          "argv": [
+            "git",
+            "diff",
+            "--binary"
+          ],
+          "stdout": "",
+          "stderr": "",
+          "exitCode": 0
+        },
+        "runtime": {
+          "schema": "geometry-runtime/1",
+          "version": "1ecfdb7abb9914d75b1b24144fc690d290dc856f6596918e0287842bd6d2371b",
+          "fresh": true
+        },
+        "sourceSha256": {
+          "geometry-web/app.js": "86c82675d0b7eb0dc76659705186273112f6d17c2712426f7a681e5fa48497d8",
+          "geometry-web/space-workspace.js": "a735338f5cc14f3ae743578986750ace3c7389e0d73fd44c21773d82c2503868"
+        },
+        "scriptSha256": {
+          "browser_probe.py": "72f260683323dbc35777d1c2ae477968d3507993adf95e2ffbdcfb66b30a4241",
+          "browser_instrumentation.js": "83e8f28a97b4d03339d27f7646756e8d6bedd4e7f7f9745984d51e1dee54fb44"
+        }
+      },
+      "after": {
+        "utc": "2026-10-08T15:52:03.977053+00:00",
+        "head": "bdd1bf7812ba6126aab9ddffced43cd200ac977e",
+        "status": {
+          "argv": [
+            "git",
+            "status",
+            "--short"
+          ],
+          "stdout": "?? tests/integration/assembly_ownership_probe.py\n?? tests/integration/grid_rule_reopen_probe.py\n",
+          "stderr": "",
+          "exitCode": 0
+        },
+        "trackedDiff": {
+          "argv": [
+            "git",
+            "diff",
+            "--binary"
+          ],
+          "stdout": "",
+          "stderr": "",
+          "exitCode": 0
+        },
+        "runtime": {
+          "schema": "geometry-runtime/1",
+          "version": "1ecfdb7abb9914d75b1b24144fc690d290dc856f6596918e0287842bd6d2371b",
+          "fresh": true
+        },
+        "sourceSha256": {
+          "geometry-web/app.js": "86c82675d0b7eb0dc76659705186273112f6d17c2712426f7a681e5fa48497d8",
+          "geometry-web/space-workspace.js": "a735338f5cc14f3ae743578986750ace3c7389e0d73fd44c21773d82c2503868"
+        },
+        "scriptSha256": {
+          "browser_probe.py": "72f260683323dbc35777d1c2ae477968d3507993adf95e2ffbdcfb66b30a4241",
+          "browser_instrumentation.js": "83e8f28a97b4d03339d27f7646756e8d6bedd4e7f7f9745984d51e1dee54fb44"
+        }
+      },
+      "tests": [
+        {
+          "name": "handles-390",
+          "ok": false,
+          "before": {
+            "tool": "edit",
+            "editBid": 712,
+            "editToken": 5,
+            "groups": 1,
+            "handles": 5
+          },
+          "after": {
+            "tool": "edit",
+            "editBid": 712,
+            "editToken": 5,
+            "groups": 0,
+            "handles": 0
+          },
+          "worldUnchanged": true,
+          "pageErrors": [],
+          "rawWorldEvidence": [
+            {
+              "file": "handles-390-world-before.scene",
+              "sha256": "58f70175e4fa933ee820f4a49c4097c4237d56cb3c8b2f8b6d799496012b070d",
+              "traceCallId": "call@36",
+              "traceSha256": "8b5711d1be6eb9c49fb8b0c85c18d1c12462952b1d558cafb5310cebc0e03452"
+            },
+            {
+              "file": "handles-390-world-after.scene",
+              "sha256": "58f70175e4fa933ee820f4a49c4097c4237d56cb3c8b2f8b6d799496012b070d",
+              "traceCallId": "call@74",
+              "traceSha256": "8b5711d1be6eb9c49fb8b0c85c18d1c12462952b1d558cafb5310cebc0e03452"
+            }
+          ],
+          "rawDumpComparisonMatchesRecorded": true,
+          "uiPath": "three-view handles (#174 only)"
+        }
+      ]
+    },
+    {
+      "round": "browser-edges-1",
+      "browser": {
+        "version": "151.0.7922.173",
+        "sandbox": true,
+        "launchArgumentsRequested": []
+      },
+      "before": {
+        "utc": "2026-10-08T15:52:15.999987+00:00",
+        "head": "bdd1bf7812ba6126aab9ddffced43cd200ac977e",
+        "status": {
+          "argv": [
+            "git",
+            "status",
+            "--short"
+          ],
+          "stdout": "?? tests/integration/assembly_ownership_probe.py\n?? tests/integration/grid_rule_reopen_probe.py\n",
+          "stderr": "",
+          "exitCode": 0
+        },
+        "trackedDiff": {
+          "argv": [
+            "git",
+            "diff",
+            "--binary"
+          ],
+          "stdout": "",
+          "stderr": "",
+          "exitCode": 0
+        },
+        "runtime": {
+          "schema": "geometry-runtime/1",
+          "version": "1ecfdb7abb9914d75b1b24144fc690d290dc856f6596918e0287842bd6d2371b",
+          "fresh": true
+        },
+        "sourceSha256": {
+          "geometry-web/app.js": "86c82675d0b7eb0dc76659705186273112f6d17c2712426f7a681e5fa48497d8",
+          "geometry-web/space-workspace.js": "a735338f5cc14f3ae743578986750ace3c7389e0d73fd44c21773d82c2503868"
+        },
+        "scriptSha256": {
+          "browser_probe.py": "72f260683323dbc35777d1c2ae477968d3507993adf95e2ffbdcfb66b30a4241",
+          "browser_instrumentation.js": "83e8f28a97b4d03339d27f7646756e8d6bedd4e7f7f9745984d51e1dee54fb44"
+        }
+      },
+      "after": {
+        "utc": "2026-10-08T15:53:37.559947+00:00",
+        "head": "bdd1bf7812ba6126aab9ddffced43cd200ac977e",
+        "status": {
+          "argv": [
+            "git",
+            "status",
+            "--short"
+          ],
+          "stdout": "?? tests/integration/assembly_ownership_probe.py\n?? tests/integration/grid_rule_reopen_probe.py\n",
+          "stderr": "",
+          "exitCode": 0
+        },
+        "trackedDiff": {
+          "argv": [
+            "git",
+            "diff",
+            "--binary"
+          ],
+          "stdout": "",
+          "stderr": "",
+          "exitCode": 0
+        },
+        "runtime": {
+          "schema": "geometry-runtime/1",
+          "version": "1ecfdb7abb9914d75b1b24144fc690d290dc856f6596918e0287842bd6d2371b",
+          "fresh": true
+        },
+        "sourceSha256": {
+          "geometry-web/app.js": "86c82675d0b7eb0dc76659705186273112f6d17c2712426f7a681e5fa48497d8",
+          "geometry-web/space-workspace.js": "a735338f5cc14f3ae743578986750ace3c7389e0d73fd44c21773d82c2503868"
+        },
+        "scriptSha256": {
+          "browser_probe.py": "72f260683323dbc35777d1c2ae477968d3507993adf95e2ffbdcfb66b30a4241",
+          "browser_instrumentation.js": "83e8f28a97b4d03339d27f7646756e8d6bedd4e7f7f9745984d51e1dee54fb44"
+        }
+      },
+      "tests": [
+        {
+          "name": "edges-1400-main-same-input-new-value",
+          "ok": false,
+          "before": {
+            "input": {
+              "value": "5151",
+              "model": "4000"
+            },
+            "sibling": {
+              "value": "3000",
+              "model": "3000"
+            },
+            "focus": "mainEdgeLength0",
+            "originalConnected": true
+          },
+          "after": {
+            "input": {
+              "value": "4000",
+              "model": "4000"
+            },
+            "sibling": {
+              "value": "3000",
+              "model": "3000"
+            },
+            "focus": "",
+            "originalConnected": false
+          },
+          "worldUnchanged": true,
+          "redrawInjection": false,
+          "pageErrors": [],
+          "rawWorldEvidence": [
+            {
+              "file": "edges-1400-main-same-input-new-value-world-before.scene",
+              "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+              "traceCallId": "call@22",
+              "traceSha256": "aa1477af062f889adc7b37e0e8c6c8ebb8e8dd137adf361f8c3d8e57f43b9a53"
+            },
+            {
+              "file": "edges-1400-main-same-input-new-value-world-after.scene",
+              "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+              "traceCallId": "call@54",
+              "traceSha256": "aa1477af062f889adc7b37e0e8c6c8ebb8e8dd137adf361f8c3d8e57f43b9a53"
+            }
+          ],
+          "rawDumpComparisonMatchesRecorded": true,
+          "uiPath": "object-canvas inspector (#173)"
+        },
+        {
+          "name": "edges-1400-main-replacement-rejected-value",
+          "ok": false,
+          "before": {
+            "input": {
+              "value": "2000",
+              "model": "4000"
+            },
+            "sibling": {
+              "value": "3000",
+              "model": "3000"
+            },
+            "focus": "",
+            "originalConnected": false
+          },
+          "after": {
+            "input": {
+              "value": "2000",
+              "model": "4000"
+            },
+            "sibling": {
+              "value": "3000",
+              "model": "3000"
+            },
+            "focus": "",
+            "originalConnected": false
+          },
+          "worldUnchanged": true,
+          "redrawInjection": true,
+          "pageErrors": [],
+          "rawWorldEvidence": [
+            {
+              "file": "edges-1400-main-replacement-rejected-value-world-before.scene",
+              "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+              "traceCallId": "call@84",
+              "traceSha256": "77e99218c911fd736a6f7e0393c02f6cfead1945fcaa906dc8585c1d0967ea69"
+            },
+            {
+              "file": "edges-1400-main-replacement-rejected-value-world-after.scene",
+              "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+              "traceCallId": "call@114",
+              "traceSha256": "77e99218c911fd736a6f7e0393c02f6cfead1945fcaa906dc8585c1d0967ea69"
+            }
+          ],
+          "rawDumpComparisonMatchesRecorded": true,
+          "uiPath": "object-canvas inspector (#173)"
+        },
+        {
+          "name": "edges-1400-main-replacement-new-value",
+          "ok": false,
+          "before": {
+            "input": {
+              "value": "5151",
+              "model": "4000"
+            },
+            "sibling": {
+              "value": "3000",
+              "model": "3000"
+            },
+            "focus": "mainEdgeLength0",
+            "originalConnected": false
+          },
+          "after": {
+            "input": {
+              "value": "5151",
+              "model": "5151"
+            },
+            "sibling": {
+              "value": "3000",
+              "model": "3000"
+            },
+            "focus": "",
+            "originalConnected": false
+          },
+          "worldUnchanged": false,
+          "redrawInjection": true,
+          "pageErrors": [],
+          "rawWorldEvidence": [
+            {
+              "file": "edges-1400-main-replacement-new-value-world-before.scene",
+              "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+              "traceCallId": "call@144",
+              "traceSha256": "04d020b4570b5f1f35239075c65c4f74b4a7a86c75e9804edacb172ceb469854"
+            },
+            {
+              "file": "edges-1400-main-replacement-new-value-world-after.scene",
+              "sha256": "f05580cd0327c2fffb2fe5a8e9656b700087e263dcefcc7ac0ecff2653f14aad",
+              "traceCallId": "call@180",
+              "traceSha256": "04d020b4570b5f1f35239075c65c4f74b4a7a86c75e9804edacb172ceb469854"
+            }
+          ],
+          "rawDumpComparisonMatchesRecorded": true,
+          "uiPath": "object-canvas inspector (#173)"
+        },
+        {
+          "name": "edges-1400-main-success-sibling",
+          "ok": false,
+          "before": {
+            "input": {
+              "value": "4200",
+              "model": "4000"
+            },
+            "sibling": {
+              "value": "4242",
+              "model": "3000"
+            },
+            "focus": "mainEdgeLength1",
+            "originalConnected": true
+          },
+          "after": {
+            "input": {
+              "value": "4200",
+              "model": "4200"
+            },
+            "sibling": {
+              "value": "4242",
+              "model": "4242"
+            },
+            "focus": "",
+            "originalConnected": false
+          },
+          "worldUnchanged": false,
+          "redrawInjection": false,
+          "pageErrors": [],
+          "rawWorldEvidence": [
+            {
+              "file": "edges-1400-main-success-sibling-world-before.scene",
+              "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+              "traceCallId": "call@210",
+              "traceSha256": "04d58863c53f5d04192c4f9b9b4a604b674dbc62ed7c1592f81e2e09c3b37b87"
+            },
+            {
+              "file": "edges-1400-main-success-sibling-world-after.scene",
+              "sha256": "40560f527c395bfa61423509b85639d4699d03e488a6518f478733a91480f35b",
+              "traceCallId": "call@242",
+              "traceSha256": "04d58863c53f5d04192c4f9b9b4a604b674dbc62ed7c1592f81e2e09c3b37b87"
+            }
+          ],
+          "rawDumpComparisonMatchesRecorded": true,
+          "uiPath": "object-canvas inspector (#173)"
+        },
+        {
+          "name": "edges-1400-face-same-input-new-value",
+          "ok": false,
+          "before": {
+            "input": {
+              "value": "5151",
+              "model": "4000"
+            },
+            "sibling": {
+              "value": "3000",
+              "model": "3000"
+            },
+            "focus": "edgeLength0",
+            "originalConnected": true
+          },
+          "after": {
+            "input": {
+              "value": "4000",
+              "model": "4000"
+            },
+            "sibling": {
+              "value": "3000",
+              "model": "3000"
+            },
+            "focus": "edgeLength0",
+            "originalConnected": false
+          },
+          "worldUnchanged": true,
+          "redrawInjection": false,
+          "pageErrors": [],
+          "rawWorldEvidence": [
+            {
+              "file": "edges-1400-face-same-input-new-value-world-before.scene",
+              "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+              "traceCallId": "call@278",
+              "traceSha256": "0218c7481b290474297c0fdd791bae1908f88c8684bfaee37fbb920cd733d9f2"
+            },
+            {
+              "file": "edges-1400-face-same-input-new-value-world-after.scene",
+              "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+              "traceCallId": "call@310",
+              "traceSha256": "0218c7481b290474297c0fdd791bae1908f88c8684bfaee37fbb920cd733d9f2"
+            }
+          ],
+          "rawDumpComparisonMatchesRecorded": true,
+          "uiPath": "face workspace (#173)"
+        },
+        {
+          "name": "edges-1400-face-replacement-rejected-value",
+          "ok": false,
+          "before": {
+            "input": {
+              "value": "2000",
+              "model": "4000"
+            },
+            "sibling": {
+              "value": "3000",
+              "model": "3000"
+            },
+            "focus": "edgeFixed0",
+            "originalConnected": false
+          },
+          "after": {
+            "input": {
+              "value": "2000",
+              "model": "4000"
+            },
+            "sibling": {
+              "value": "3000",
+              "model": "3000"
+            },
+            "focus": "edgeFixed0",
+            "originalConnected": false
+          },
+          "worldUnchanged": true,
+          "redrawInjection": true,
+          "pageErrors": [],
+          "rawWorldEvidence": [
+            {
+              "file": "edges-1400-face-replacement-rejected-value-world-before.scene",
+              "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+              "traceCallId": "call@346",
+              "traceSha256": "2f44eb5dea1d7b5677fac995a95749da8acf74d328fa1811a16bb58b663db244"
+            },
+            {
+              "file": "edges-1400-face-replacement-rejected-value-world-after.scene",
+              "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+              "traceCallId": "call@376",
+              "traceSha256": "2f44eb5dea1d7b5677fac995a95749da8acf74d328fa1811a16bb58b663db244"
+            }
+          ],
+          "rawDumpComparisonMatchesRecorded": true,
+          "uiPath": "face workspace (#173)"
+        },
+        {
+          "name": "edges-1400-face-replacement-new-value",
+          "ok": false,
+          "before": {
+            "input": {
+              "value": "5151",
+              "model": "4000"
+            },
+            "sibling": {
+              "value": "3000",
+              "model": "3000"
+            },
+            "focus": "edgeLength0",
+            "originalConnected": false
+          },
+          "after": {
+            "input": {
+              "value": "5151",
+              "model": "5151"
+            },
+            "sibling": {
+              "value": "3000",
+              "model": "3000"
+            },
+            "focus": "edgeLength0",
+            "originalConnected": false
+          },
+          "worldUnchanged": false,
+          "redrawInjection": true,
+          "pageErrors": [],
+          "rawWorldEvidence": [
+            {
+              "file": "edges-1400-face-replacement-new-value-world-before.scene",
+              "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+              "traceCallId": "call@412",
+              "traceSha256": "381f3abc6c6b459621997e062ee2ed82f84492f446fcf9480dd7f26bcac5a144"
+            },
+            {
+              "file": "edges-1400-face-replacement-new-value-world-after.scene",
+              "sha256": "f05580cd0327c2fffb2fe5a8e9656b700087e263dcefcc7ac0ecff2653f14aad",
+              "traceCallId": "call@448",
+              "traceSha256": "381f3abc6c6b459621997e062ee2ed82f84492f446fcf9480dd7f26bcac5a144"
+            }
+          ],
+          "rawDumpComparisonMatchesRecorded": true,
+          "uiPath": "face workspace (#173)"
+        },
+        {
+          "name": "edges-1400-face-success-sibling",
+          "ok": false,
+          "before": {
+            "input": {
+              "value": "4200",
+              "model": "4000"
+            },
+            "sibling": {
+              "value": "4242",
+              "model": "3000"
+            },
+            "focus": "edgeLength1",
+            "originalConnected": true
+          },
+          "after": {
+            "input": {
+              "value": "4200",
+              "model": "4200"
+            },
+            "sibling": {
+              "value": "4242",
+              "model": "4242"
+            },
+            "focus": "edgeLength1",
+            "originalConnected": false
+          },
+          "worldUnchanged": false,
+          "redrawInjection": false,
+          "pageErrors": [],
+          "rawWorldEvidence": [
+            {
+              "file": "edges-1400-face-success-sibling-world-before.scene",
+              "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+              "traceCallId": "call@484",
+              "traceSha256": "ce263aa04c265d23374c9a0e2e7d803d323525b0e7a89ab8a0de995ebc255cb3"
+            },
+            {
+              "file": "edges-1400-face-success-sibling-world-after.scene",
+              "sha256": "40560f527c395bfa61423509b85639d4699d03e488a6518f478733a91480f35b",
+              "traceCallId": "call@516",
+              "traceSha256": "ce263aa04c265d23374c9a0e2e7d803d323525b0e7a89ab8a0de995ebc255cb3"
+            }
+          ],
+          "rawDumpComparisonMatchesRecorded": true,
+          "uiPath": "face workspace (#173)"
+        }
+      ]
+    },
+    {
+      "round": "browser-edges-mobile-2",
+      "browser": {
+        "version": "151.0.7922.173",
+        "sandbox": true,
+        "launchArgumentsRequested": []
+      },
+      "before": {
+        "utc": "2026-10-08T15:54:23.700498+00:00",
+        "head": "bdd1bf7812ba6126aab9ddffced43cd200ac977e",
+        "status": {
+          "argv": [
+            "git",
+            "status",
+            "--short"
+          ],
+          "stdout": "?? tests/integration/assembly_ownership_probe.py\n?? tests/integration/grid_rule_reopen_probe.py\n",
+          "stderr": "",
+          "exitCode": 0
+        },
+        "trackedDiff": {
+          "argv": [
+            "git",
+            "diff",
+            "--binary"
+          ],
+          "stdout": "",
+          "stderr": "",
+          "exitCode": 0
+        },
+        "runtime": {
+          "schema": "geometry-runtime/1",
+          "version": "1ecfdb7abb9914d75b1b24144fc690d290dc856f6596918e0287842bd6d2371b",
+          "fresh": true
+        },
+        "sourceSha256": {
+          "geometry-web/app.js": "86c82675d0b7eb0dc76659705186273112f6d17c2712426f7a681e5fa48497d8",
+          "geometry-web/space-workspace.js": "a735338f5cc14f3ae743578986750ace3c7389e0d73fd44c21773d82c2503868"
+        },
+        "scriptSha256": {
+          "browser_probe.py": "624db4fca454832bb9fbe3b0837571472ce6360baffef172486b2a27826e9dfd",
+          "browser_instrumentation.js": "83e8f28a97b4d03339d27f7646756e8d6bedd4e7f7f9745984d51e1dee54fb44"
+        }
+      },
+      "after": {
+        "utc": "2026-10-08T15:54:41.637397+00:00",
+        "head": "bdd1bf7812ba6126aab9ddffced43cd200ac977e",
+        "status": {
+          "argv": [
+            "git",
+            "status",
+            "--short"
+          ],
+          "stdout": "?? tests/integration/assembly_ownership_probe.py\n?? tests/integration/grid_rule_reopen_probe.py\n",
+          "stderr": "",
+          "exitCode": 0
+        },
+        "trackedDiff": {
+          "argv": [
+            "git",
+            "diff",
+            "--binary"
+          ],
+          "stdout": "",
+          "stderr": "",
+          "exitCode": 0
+        },
+        "runtime": {
+          "schema": "geometry-runtime/1",
+          "version": "1ecfdb7abb9914d75b1b24144fc690d290dc856f6596918e0287842bd6d2371b",
+          "fresh": true
+        },
+        "sourceSha256": {
+          "geometry-web/app.js": "86c82675d0b7eb0dc76659705186273112f6d17c2712426f7a681e5fa48497d8",
+          "geometry-web/space-workspace.js": "a735338f5cc14f3ae743578986750ace3c7389e0d73fd44c21773d82c2503868"
+        },
+        "scriptSha256": {
+          "browser_probe.py": "624db4fca454832bb9fbe3b0837571472ce6360baffef172486b2a27826e9dfd",
+          "browser_instrumentation.js": "83e8f28a97b4d03339d27f7646756e8d6bedd4e7f7f9745984d51e1dee54fb44"
+        }
+      },
+      "tests": [
+        {
+          "name": "edges-390-main-same-input-new-value",
+          "ok": false,
+          "before": {
+            "input": {
+              "value": "5151",
+              "model": "4000"
+            },
+            "sibling": {
+              "value": "3000",
+              "model": "3000"
+            },
+            "focus": "mainEdgeLength0",
+            "originalConnected": true
+          },
+          "after": {
+            "input": {
+              "value": "4000",
+              "model": "4000"
+            },
+            "sibling": {
+              "value": "3000",
+              "model": "3000"
+            },
+            "focus": "",
+            "originalConnected": false
+          },
+          "worldUnchanged": true,
+          "redrawInjection": false,
+          "pageErrors": [],
+          "rawWorldEvidence": [
+            {
+              "file": "edges-390-main-same-input-new-value-world-before.scene",
+              "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+              "traceCallId": "call@42",
+              "traceSha256": "d7f64141af7821b36800bfa499d8e327c8abe206632dce728aa9d41c695018eb"
+            },
+            {
+              "file": "edges-390-main-same-input-new-value-world-after.scene",
+              "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+              "traceCallId": "call@74",
+              "traceSha256": "d7f64141af7821b36800bfa499d8e327c8abe206632dce728aa9d41c695018eb"
+            }
+          ],
+          "rawDumpComparisonMatchesRecorded": true,
+          "uiPath": "object-canvas inspector (#173)"
+        },
+        {
+          "name": "edges-390-main-replacement-rejected-value",
+          "ok": false,
+          "before": {
+            "input": {
+              "value": "2000",
+              "model": "4000"
+            },
+            "sibling": {
+              "value": "3000",
+              "model": "3000"
+            },
+            "focus": "",
+            "originalConnected": false
+          },
+          "after": {
+            "input": {
+              "value": "2000",
+              "model": "4000"
+            },
+            "sibling": {
+              "value": "3000",
+              "model": "3000"
+            },
+            "focus": "",
+            "originalConnected": false
+          },
+          "worldUnchanged": true,
+          "redrawInjection": true,
+          "pageErrors": [],
+          "rawWorldEvidence": [
+            {
+              "file": "edges-390-main-replacement-rejected-value-world-before.scene",
+              "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+              "traceCallId": "call@124",
+              "traceSha256": "5557dc025069260b1e1b4be7c4d3101cfd6bd63dc19e2f654c4248739df061fc"
+            },
+            {
+              "file": "edges-390-main-replacement-rejected-value-world-after.scene",
+              "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+              "traceCallId": "call@154",
+              "traceSha256": "5557dc025069260b1e1b4be7c4d3101cfd6bd63dc19e2f654c4248739df061fc"
+            }
+          ],
+          "rawDumpComparisonMatchesRecorded": true,
+          "uiPath": "object-canvas inspector (#173)"
+        },
+        {
+          "name": "edges-390-main-replacement-new-value",
+          "ok": false,
+          "before": {
+            "input": {
+              "value": "5151",
+              "model": "4000"
+            },
+            "sibling": {
+              "value": "3000",
+              "model": "3000"
+            },
+            "focus": "mainEdgeLength0",
+            "originalConnected": false
+          },
+          "after": {
+            "input": {
+              "value": "5151",
+              "model": "5151"
+            },
+            "sibling": {
+              "value": "3000",
+              "model": "3000"
+            },
+            "focus": "",
+            "originalConnected": false
+          },
+          "worldUnchanged": false,
+          "redrawInjection": true,
+          "pageErrors": [],
+          "rawWorldEvidence": [
+            {
+              "file": "edges-390-main-replacement-new-value-world-before.scene",
+              "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+              "traceCallId": "call@204",
+              "traceSha256": "ef3ceeeb3680a280c1cc1c1404362aac25f480f7706cea003c4f5d59803778da"
+            },
+            {
+              "file": "edges-390-main-replacement-new-value-world-after.scene",
+              "sha256": "f05580cd0327c2fffb2fe5a8e9656b700087e263dcefcc7ac0ecff2653f14aad",
+              "traceCallId": "call@240",
+              "traceSha256": "ef3ceeeb3680a280c1cc1c1404362aac25f480f7706cea003c4f5d59803778da"
+            }
+          ],
+          "rawDumpComparisonMatchesRecorded": true,
+          "uiPath": "object-canvas inspector (#173)"
+        },
+        {
+          "name": "edges-390-main-success-sibling",
+          "ok": false,
+          "before": {
+            "input": {
+              "value": "4200",
+              "model": "4000"
+            },
+            "sibling": {
+              "value": "4242",
+              "model": "3000"
+            },
+            "focus": "mainEdgeLength1",
+            "originalConnected": true
+          },
+          "after": {
+            "input": {
+              "value": "4200",
+              "model": "4200"
+            },
+            "sibling": {
+              "value": "4242",
+              "model": "4242"
+            },
+            "focus": "",
+            "originalConnected": false
+          },
+          "worldUnchanged": false,
+          "redrawInjection": false,
+          "pageErrors": [],
+          "rawWorldEvidence": [
+            {
+              "file": "edges-390-main-success-sibling-world-before.scene",
+              "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+              "traceCallId": "call@290",
+              "traceSha256": "354ebba39501b634d33a1cc7329cee45522f7e5cfbcd76e0945135b44af87ca7"
+            },
+            {
+              "file": "edges-390-main-success-sibling-world-after.scene",
+              "sha256": "40560f527c395bfa61423509b85639d4699d03e488a6518f478733a91480f35b",
+              "traceCallId": "call@322",
+              "traceSha256": "354ebba39501b634d33a1cc7329cee45522f7e5cfbcd76e0945135b44af87ca7"
+            }
+          ],
+          "rawDumpComparisonMatchesRecorded": true,
+          "uiPath": "object-canvas inspector (#173)"
+        },
+        {
+          "name": "edges-390-face-same-input-new-value",
+          "ok": false,
+          "before": {
+            "input": {
+              "value": "5151",
+              "model": "4000"
+            },
+            "sibling": {
+              "value": "3000",
+              "model": "3000"
+            },
+            "focus": "edgeLength0",
+            "originalConnected": true
+          },
+          "after": {
+            "input": {
+              "value": "4000",
+              "model": "4000"
+            },
+            "sibling": {
+              "value": "3000",
+              "model": "3000"
+            },
+            "focus": "edgeLength0",
+            "originalConnected": false
+          },
+          "worldUnchanged": true,
+          "redrawInjection": false,
+          "pageErrors": [],
+          "rawWorldEvidence": [
+            {
+              "file": "edges-390-face-same-input-new-value-world-before.scene",
+              "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+              "traceCallId": "call@386",
+              "traceSha256": "716456db312ae5704f1e0b3191e0aa8bc2264fee592f9c356554a9bab3b5da69"
+            },
+            {
+              "file": "edges-390-face-same-input-new-value-world-after.scene",
+              "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+              "traceCallId": "call@418",
+              "traceSha256": "716456db312ae5704f1e0b3191e0aa8bc2264fee592f9c356554a9bab3b5da69"
+            }
+          ],
+          "rawDumpComparisonMatchesRecorded": true,
+          "uiPath": "face workspace (#173)"
+        },
+        {
+          "name": "edges-390-face-replacement-rejected-value",
+          "ok": false,
+          "before": {
+            "input": {
+              "value": "2000",
+              "model": "4000"
+            },
+            "sibling": {
+              "value": "3000",
+              "model": "3000"
+            },
+            "focus": "edgeFixed0",
+            "originalConnected": false
+          },
+          "after": {
+            "input": {
+              "value": "2000",
+              "model": "4000"
+            },
+            "sibling": {
+              "value": "3000",
+              "model": "3000"
+            },
+            "focus": "edgeFixed0",
+            "originalConnected": false
+          },
+          "worldUnchanged": true,
+          "redrawInjection": true,
+          "pageErrors": [],
+          "rawWorldEvidence": [
+            {
+              "file": "edges-390-face-replacement-rejected-value-world-before.scene",
+              "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+              "traceCallId": "call@482",
+              "traceSha256": "74c39c2c80eeeace27b75d92833e1d256cab3013be7a39aa7c2d7ba4569a533f"
+            },
+            {
+              "file": "edges-390-face-replacement-rejected-value-world-after.scene",
+              "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+              "traceCallId": "call@512",
+              "traceSha256": "74c39c2c80eeeace27b75d92833e1d256cab3013be7a39aa7c2d7ba4569a533f"
+            }
+          ],
+          "rawDumpComparisonMatchesRecorded": true,
+          "uiPath": "face workspace (#173)"
+        },
+        {
+          "name": "edges-390-face-replacement-new-value",
+          "ok": false,
+          "before": {
+            "input": {
+              "value": "5151",
+              "model": "4000"
+            },
+            "sibling": {
+              "value": "3000",
+              "model": "3000"
+            },
+            "focus": "edgeLength0",
+            "originalConnected": false
+          },
+          "after": {
+            "input": {
+              "value": "5151",
+              "model": "5151"
+            },
+            "sibling": {
+              "value": "3000",
+              "model": "3000"
+            },
+            "focus": "edgeLength0",
+            "originalConnected": false
+          },
+          "worldUnchanged": false,
+          "redrawInjection": true,
+          "pageErrors": [],
+          "rawWorldEvidence": [
+            {
+              "file": "edges-390-face-replacement-new-value-world-before.scene",
+              "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+              "traceCallId": "call@576",
+              "traceSha256": "4281da3cb6bb3c75b50f5d9b2245db25e88ec0cfaa5c2ae76b877c946a86fa57"
+            },
+            {
+              "file": "edges-390-face-replacement-new-value-world-after.scene",
+              "sha256": "f05580cd0327c2fffb2fe5a8e9656b700087e263dcefcc7ac0ecff2653f14aad",
+              "traceCallId": "call@612",
+              "traceSha256": "4281da3cb6bb3c75b50f5d9b2245db25e88ec0cfaa5c2ae76b877c946a86fa57"
+            }
+          ],
+          "rawDumpComparisonMatchesRecorded": true,
+          "uiPath": "face workspace (#173)"
+        },
+        {
+          "name": "edges-390-face-success-sibling",
+          "ok": false,
+          "before": {
+            "input": {
+              "value": "4200",
+              "model": "4000"
+            },
+            "sibling": {
+              "value": "4242",
+              "model": "3000"
+            },
+            "focus": "edgeLength1",
+            "originalConnected": true
+          },
+          "after": {
+            "input": {
+              "value": "4200",
+              "model": "4200"
+            },
+            "sibling": {
+              "value": "4242",
+              "model": "4242"
+            },
+            "focus": "edgeLength1",
+            "originalConnected": false
+          },
+          "worldUnchanged": false,
+          "redrawInjection": false,
+          "pageErrors": [],
+          "rawWorldEvidence": [
+            {
+              "file": "edges-390-face-success-sibling-world-before.scene",
+              "sha256": "9bb960a0d10543d20e24ae1de135d52d35840187640c1415a2ddc181b92429ae",
+              "traceCallId": "call@676",
+              "traceSha256": "abb52e94f4d1918013e83757f64b948ceae644a3eff565ec2a42f6366f21482e"
+            },
+            {
+              "file": "edges-390-face-success-sibling-world-after.scene",
+              "sha256": "40560f527c395bfa61423509b85639d4699d03e488a6518f478733a91480f35b",
+              "traceCallId": "call@708",
+              "traceSha256": "abb52e94f4d1918013e83757f64b948ceae644a3eff565ec2a42f6366f21482e"
+            }
+          ],
+          "rawDumpComparisonMatchesRecorded": true,
+          "uiPath": "face workspace (#173)"
+        }
+      ]
+    }
+  ],
+  "retainedPrivateTraces": [
+    {
+      "path": "browser-handles-3/handles-1400-trace.zip",
+      "bytes": 810544,
+      "sha256": "d21ce047a78f21f4b7de7f6f85d7df0cbe082bf32b8fe488e05e8aeefd446df8",
+      "includedPublicly": false
+    },
+    {
+      "path": "browser-handles-mobile-4/handles-390-trace.zip",
+      "bytes": 804048,
+      "sha256": "8b5711d1be6eb9c49fb8b0c85c18d1c12462952b1d558cafb5310cebc0e03452",
+      "includedPublicly": false
+    },
+    {
+      "path": "browser-edges-1/edges-1400-main-same-input-new-value-trace.zip",
+      "bytes": 1377996,
+      "sha256": "aa1477af062f889adc7b37e0e8c6c8ebb8e8dd137adf361f8c3d8e57f43b9a53",
+      "includedPublicly": false
+    },
+    {
+      "path": "browser-edges-1/edges-1400-main-replacement-rejected-value-trace.zip",
+      "bytes": 1167664,
+      "sha256": "77e99218c911fd736a6f7e0393c02f6cfead1945fcaa906dc8585c1d0967ea69",
+      "includedPublicly": false
+    },
+    {
+      "path": "browser-edges-1/edges-1400-main-replacement-new-value-trace.zip",
+      "bytes": 1376984,
+      "sha256": "04d020b4570b5f1f35239075c65c4f74b4a7a86c75e9804edacb172ceb469854",
+      "includedPublicly": false
+    },
+    {
+      "path": "browser-edges-1/edges-1400-main-success-sibling-trace.zip",
+      "bytes": 1491634,
+      "sha256": "04d58863c53f5d04192c4f9b9b4a604b674dbc62ed7c1592f81e2e09c3b37b87",
+      "includedPublicly": false
+    },
+    {
+      "path": "browser-edges-1/edges-1400-face-same-input-new-value-trace.zip",
+      "bytes": 2042330,
+      "sha256": "0218c7481b290474297c0fdd791bae1908f88c8684bfaee37fbb920cd733d9f2",
+      "includedPublicly": false
+    },
+    {
+      "path": "browser-edges-1/edges-1400-face-replacement-rejected-value-trace.zip",
+      "bytes": 1617212,
+      "sha256": "2f44eb5dea1d7b5677fac995a95749da8acf74d328fa1811a16bb58b663db244",
+      "includedPublicly": false
+    },
+    {
+      "path": "browser-edges-1/edges-1400-face-replacement-new-value-trace.zip",
+      "bytes": 2158178,
+      "sha256": "381f3abc6c6b459621997e062ee2ed82f84492f446fcf9480dd7f26bcac5a144",
+      "includedPublicly": false
+    },
+    {
+      "path": "browser-edges-1/edges-1400-face-success-sibling-trace.zip",
+      "bytes": 2411654,
+      "sha256": "ce263aa04c265d23374c9a0e2e7d803d323525b0e7a89ab8a0de995ebc255cb3",
+      "includedPublicly": false
+    },
+    {
+      "path": "browser-edges-mobile-2/edges-390-main-same-input-new-value-trace.zip",
+      "bytes": 1442494,
+      "sha256": "d7f64141af7821b36800bfa499d8e327c8abe206632dce728aa9d41c695018eb",
+      "includedPublicly": false
+    },
+    {
+      "path": "browser-edges-mobile-2/edges-390-main-replacement-rejected-value-trace.zip",
+      "bytes": 1150934,
+      "sha256": "5557dc025069260b1e1b4be7c4d3101cfd6bd63dc19e2f654c4248739df061fc",
+      "includedPublicly": false
+    },
+    {
+      "path": "browser-edges-mobile-2/edges-390-main-replacement-new-value-trace.zip",
+      "bytes": 1525170,
+      "sha256": "ef3ceeeb3680a280c1cc1c1404362aac25f480f7706cea003c4f5d59803778da",
+      "includedPublicly": false
+    },
+    {
+      "path": "browser-edges-mobile-2/edges-390-main-success-sibling-trace.zip",
+      "bytes": 1553374,
+      "sha256": "354ebba39501b634d33a1cc7329cee45522f7e5cfbcd76e0945135b44af87ca7",
+      "includedPublicly": false
+    },
+    {
+      "path": "browser-edges-mobile-2/edges-390-face-same-input-new-value-trace.zip",
+      "bytes": 1842761,
+      "sha256": "716456db312ae5704f1e0b3191e0aa8bc2264fee592f9c356554a9bab3b5da69",
+      "includedPublicly": false
+    },
+    {
+      "path": "browser-edges-mobile-2/edges-390-face-replacement-rejected-value-trace.zip",
+      "bytes": 1428132,
+      "sha256": "74c39c2c80eeeace27b75d92833e1d256cab3013be7a39aa7c2d7ba4569a533f",
+      "includedPublicly": false
+    },
+    {
+      "path": "browser-edges-mobile-2/edges-390-face-replacement-new-value-trace.zip",
+      "bytes": 1682342,
+      "sha256": "4281da3cb6bb3c75b50f5d9b2245db25e88ec0cfaa5c2ae76b877c946a86fa57",
+      "includedPublicly": false
+    },
+    {
+      "path": "browser-edges-mobile-2/edges-390-face-success-sibling-trace.zip",
+      "bytes": 1802548,
+      "sha256": "abb52e94f4d1918013e83757f64b948ceae644a3eff565ec2a42f6366f21482e",
+      "includedPublicly": false
+    }
+  ],
+  "retainedPrivateOriginalIdentity": [
+    {
+      "path": "browser-handles-3/before.json",
+      "sha256": "4f695433a823027790eb6ed77e416a8b878a9b2166d8d47c818be7bfdc9203fa"
+    },
+    {
+      "path": "browser-handles-3/after.json",
+      "sha256": "d0d5824e708a0153f86a9437578a7b2e4c66b0b82c7e56346c3e37c18567227c"
+    },
+    {
+      "path": "browser-handles-mobile-4/before.json",
+      "sha256": "a446a6612beedd1eedb762ee222c1488696608441bc4168ac299af64b633a244"
+    },
+    {
+      "path": "browser-handles-mobile-4/after.json",
+      "sha256": "c03e51ec82846c6cab90613dc6baab6f62d68e0ae9c7654b0cc411f5d26ae447"
+    },
+    {
+      "path": "browser-edges-1/before.json",
+      "sha256": "275816c88295683c67fea143c2a3432e482fcae53ede9ca28ab5b71b51ac8fda"
+    },
+    {
+      "path": "browser-edges-1/after.json",
+      "sha256": "3b71a6897cf08e40e7029d3883fb54c24949116549b46025341a9c608b4288aa"
+    },
+    {
+      "path": "browser-edges-mobile-2/before.json",
+      "sha256": "db296dc5b296d84a6a5dbf5f7dffa671af05150a64201d5169ade2279a629947"
+    },
+    {
+      "path": "browser-edges-mobile-2/after.json",
+      "sha256": "3649c651cc1ce05f80337d8ea08bdd4eb59761b60f68494b04252f52eef3aefd"
+    }
+  ],
+  "otherRetainedPrivateFailures": [
+    {
+      "path": "browser-handles-2/handles-390.json",
+      "sha256": "30e318aa8c45df7e90eb589f391fc098b2ae2df5928f019ba1b7de4471184838",
+      "classification": "precondition/harness failure; product scenario not executed"
+    },
+    {
+      "path": "browser-edges-1/edges-390-main-replacement-rejected-value.json",
+      "sha256": "0a67858b196248fa66254b0f6436d639b057e16beb33a567ff4e7ce37a25adc0",
+      "classification": "precondition/harness failure; product scenario not executed"
+    },
+    {
+      "path": "browser-edges-1/edges-390-main-replacement-new-value.json",
+      "sha256": "e33a806ef1e5d5e5693fcb16dc3706eb36c29598c930eafe9e1b2761cd9490e6",
+      "classification": "precondition/harness failure; product scenario not executed"
+    },
+    {
+      "path": "browser-edges-1/edges-390-main-success-sibling.json",
+      "sha256": "bdbbed4ba3f6a1e2dc7b2c091074af8695c1602b15b311d059dd265e58194a86",
+      "classification": "precondition/harness failure; product scenario not executed"
+    },
+    {
+      "path": "browser-edges-1/edges-390-face-same-input-new-value.json",
+      "sha256": "0e13f247235a279a927882a2064058a5a9b4f37870f126c660788f372c5f05f3",
+      "classification": "precondition/harness failure; product scenario not executed"
+    },
+    {
+      "path": "browser-edges-1/edges-390-face-replacement-rejected-value.json",
+      "sha256": "20732892be6f31dd7cc081f5c557cb7ee8d2dc17a77a9b18a101c88c65a6d3e0",
+      "classification": "precondition/harness failure; product scenario not executed"
+    },
+    {
+      "path": "browser-edges-1/edges-390-face-replacement-new-value.json",
+      "sha256": "83da5331e307557213bd0bde592679869687a13c53e27db8b2187be240542971",
+      "classification": "precondition/harness failure; product scenario not executed"
+    },
+    {
+      "path": "browser-edges-1/edges-390-face-success-sibling.json",
+      "sha256": "15e8b02fd31bedc1b15b2f772d50ab9bb968d29fbbaa1a1c5fd36ba470425006",
+      "classification": "precondition/harness failure; product scenario not executed"
+    }
+  ],
+  "omittedIdentityFields": [
+    "runtime.session",
+    "runtime.pid",
+    "runtime.root"
+  ],
+  "omissionReason": "Operational identity and whole-session traces remain in private evidence; public identity includes version, freshness, source hashes and exact original receipt hashes. Dirty state and tracked diff are retained below, not silently called clean.",
+  "bridge": {
+    "sha256": "b76a6da590512722d6eda64cfc946392ccc2636f82ab187ef822c1e1606d68b5",
+    "bindingSourceSha256": "fbe9dfab5ae37bbc097970a4563b4ee2066c833e059ba5ccbab26cb4b0dd10b1",
+    "scope": "Service-owner earlier binary receipt plus reviewer post-run hash of the running bridge executable; post-run verification is not represented as pre-run observation."
+  },
+  "derivation": {
+    "README.md": "New concise publication index and owner release conditions based on the preserved results.",
+    "REVIEW.md": "New concise independent read-only review, distinguishing browser findings from source-only findings.",
+    "binding.json": "Derived index; original result files and copied source files are byte-identical, not rewritten."
+  },
+  "failureRoundNotes": [
+    {
+      "round": "browser-handles-1",
+      "classification": "entry not executed",
+      "detail": "Initial Playwright bundled executable was absent. Switched to already-approved /usr/bin/chromium with chromium_sandbox=True; no security bypass."
+    },
+    {
+      "round": "browser-handles-2",
+      "classification": "entry not executed",
+      "detail": "Real navigation returned HTTP409 / X-Geometry-Stale:1; original runtime fresh:false. Public timeout result is retained; complete network trace and runtime receipt remain private. Service owner restarted their isolated service before real scenarios.",
+      "traceSha256": "ae18b70dd3e4a4e27715bd71c3d083f73fc360cd316cbb5294aa07bf1bf0c79e",
+      "runtimeReceiptSha256": "b0a81648f3b4151245a8395d80bff4fccf67095a0a36f328db444133b149a894"
+    },
+    {
+      "round": "browser-handles-3",
+      "classification": "desktop executed; first mobile setup blocked",
+      "detail": "390px drawer close button was not visible in three-view. Later mobile-only probe uses the product Escape route; behavior assertion unchanged."
+    },
+    {
+      "round": "browser-edges-1",
+      "classification": "desktop executed; first mobile setup blocked",
+      "detail": "390px inspector is already inline while #toggleRight is hidden. Later mobile-only probe skips opening a drawer when the inline pane is visible; behavior assertion unchanged."
+    }
+  ],
+  "issue173Coverage": {
+    "main": "Object-canvas inspector; #mainEdgeLength inputs after setView3(false).",
+    "face": "Face workspace entered through #inspEnter; #edgeLength inputs; view3 remains false.",
+    "nativeSuccessReached": true,
+    "successDraftPreservationAcceptancePassed": false,
+    "directThreeViewEdgeEditing": "not executed",
+    "pendingEdgeReplyAcrossThreeViewSwitch": "not executed",
+    "returnFromThreeViewModelAndDraftReadback": "not executed",
+    "threeViewSourceEntry": "#btnObj -> setView3(true); hides the object inspector and shows #cv/#v3PickPanel. Return is #btnCanvasView.",
+    "separate174Coverage": "The A-held proj -> B handles -> release A scenario ran in three-view; it does not exercise edge-length input commits.",
+    "original173ThreeViewProbe": "Unavailable; no claim of recovering its exact intended scenario.",
+    "scopeClarificationBasis": "Read-only inspection of the executed probes, preserved results/scenes and source at tested full SHA bdd1bf7812ba6126aab9ddffced43cd200ac977e. No new browser run."
+  }
+}

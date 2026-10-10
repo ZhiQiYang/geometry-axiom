@@ -117,6 +117,8 @@ window.WorkspaceShell = (() => {
         entry.dialog.prepend(slot);
       }
       slot.append(projectBar);
+      const header=entry.dialog.querySelector(':scope > .ew-header,:scope > .ig-header,:scope > .sm-header');
+      if(header)header.after(slot); // Original return control precedes project actions in DOM/Tab order.
     } else if (home) {
       home.replaceWith(projectBar); home = null;
       window.dispatchEvent(new Event('workspace-shell-closed'));

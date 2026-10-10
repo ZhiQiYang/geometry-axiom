@@ -3,6 +3,16 @@
 'use strict';
 const cdp=require('./cdp_helpers.js');
 module.exports=async function ruleEditorTests({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount}){
+  // S2 keeps the same exact discard question inside the active workspace.
+  const discardDraft=async({message,accept})=>{
+    await ctl('#igDiscardDraft');
+    await waitForUI(`!!$('igDiscardConfirmation')&&$('igDiscardConfirmation').getAttribute('role')==='alertdialog'`,10000);
+    const actual=await eval_(`$('igDiscardQuestion').textContent`);
+    if(actual!==message)throw Error('Discard question changed: '+JSON.stringify({expected:message,actual}));
+    await ctl(accept?'#igDiscardConfirm':'#igDiscardCancel');
+    await waitForUI(`!$('igDiscardConfirmation')`,10000);
+  };
+
   console.log('=== P87. 來源規則 CRUD、typed baseline、原始草稿與正式 ZIP ===');
   const fs=require('fs'),path=require('path'),os=require('os'),P=require('./project-store.js'),zip=require('./vendor/fflate/umd/index.js');
   const read=cdp.makeRead(eval_),wait=cdp.makeWait(waitForUI,20000),check=cdp.makeCheck({prefix:'P87 ',throwOnFail:true}),startExceptions=exceptionCount();
@@ -14,11 +24,15 @@ module.exports=async function ruleEditorTests({send,eval_,sleep,click,waitForUI,
   const settled=()=>wait('!oc.busy&&!ReferenceWorkspace.busy'),impact=()=>wait(`!!document.querySelector('.reference-impact[open]')`);
   const confirm=async()=>{await ctl('#impact-confirm');await wait(`!document.querySelector('.reference-impact[open]')`);await settled();};
   const cancel=async()=>{await ctl('.reference-impact .impact-actions button:first-child');await wait(`!document.querySelector('.reference-impact[open]')`);await settled();};
-  const discard=async()=>{await expectNativeDialog(()=>ctl('#igDiscardDraft'),{message:'捨棄這份未發布的原始草稿？已保存到場景的網格保持不變。',accept:true});};
+  const discard=async()=>{await discardDraft({message:'捨棄這份未發布的原始草稿？已保存到場景的網格保持不變。',accept:true});};
   const leave=async()=>{if(await read(`!!$('infiniteGridWorkspace')?.open`))await ctl('#igClose');};
   const newProject=async()=>{await leave();const warning=await read('ReferenceWorkspace.context().dirty');await ctl('#fileMenuBtn');
     await expectNativeDialog(()=>ctl('#btnNewProject'),{message:'建立一份空白新專案，切換為新的專案識別及「未命名專案」。'+(warning?'目前尚未保存的變更不會自動寫入檔案。':'')+'本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？',accept:true});await settled();};
-  const open=async(id,enabled=true)=>{await leave();await ctl(`.ocard[data-kind="grid-system"][data-id="${id}"]`);await wait(`!!$('gridObjectOpen')`);await ctl('#gridObjectOpen');await wait(`!!$('infiniteGridWorkspace')?.open&&!!$('igRuleAdd')${enabled?"&&!$('igRuleAdd').disabled":''}`);};
+  const open=async(id,enabled=true)=>{await leave();
+    // SVG cards do not scroll into view. Use the existing real F shortcut once
+    // before the unchanged hit test, so camera inherited from 390px can show all cards.
+    await key('f','KeyF',70);
+    await ctl(`.ocard[data-kind="grid-system"][data-id="${id}"]`);await wait(`!!$('gridObjectOpen')`);await ctl('#gridObjectOpen');await wait(`!!$('infiniteGridWorkspace')?.open&&!!$('igRuleAdd')${enabled?"&&!$('igRuleAdd').disabled":''}`);};
   const choose=async(selector,value)=>{const index=await read(`(()=>{const n=document.querySelector(${JSON.stringify(selector)});return [...n.options].findIndex(o=>o.value===${JSON.stringify(value)});})()`);if(index<0)throw Error('Missing rule option');await ctl(selector);await key('Home','Home',36);for(let i=0;i<index;i++)await key('ArrowDown','ArrowDown',40);await key('Enter','Enter',13);await wait(`document.querySelector(${JSON.stringify(selector)}).value===${JSON.stringify(value)}`);};
   const fixture=async line=>read(`(async()=>{let r=await apiRequest('line '+${JSON.stringify(line)});if(r.preview){if(!r.preview.valid)throw Error(JSON.stringify(r));r=await apiRequest('line confirm '+r.preview.token);}if(!r.ok)throw Error(JSON.stringify(r));await renderObjects();return true;})()`);
   const shot=cdp.makeShot(send,['GEOMETRY_GRID_RULE_SCREENSHOT_DIR']);
@@ -134,7 +148,7 @@ module.exports=async function ruleEditorTests({send,eval_,sleep,click,waitForUI,
     await newProject();await ctl('#emptyNewGridSystem');await wait(`!!$('igName')&&!$('igName').disabled`);await fill('#igName',`Orphan authored ${intent}`);await ctl('#igSaveSource');await impact();await confirm();
     await ctl('#igRuleAdd');await ctl('#igRulePreview');await impact();await confirm();
     await ctl(`[data-ig-rule-key="1"] [data-ig-rule-action="${intent}"]`);if(intent==='edit')await fill('#igRuleName','Pending orphan raw');const ownedRaw=await raw(),ownedId=ownedRaw.baseRef.id;
-    await leave();await ctl(`.ocard[data-kind="grid-system"][data-id="${ownedId}"]`);await ctl('#gridObjectDelete');await settled();
+    await leave();await ctl(`.ocard[data-kind="grid-system"][data-id="${ownedId}"]`);await ctl('.gi-delete-section > summary');await ctl('#gridObjectDelete');await settled();
     if(await read(`!!document.querySelector('.reference-impact[open]')`))await confirm();await wait('oc.gridSystems.length===0');
     const orphanScene=await dump(),orphanCount=await history();
     check(`${intent} 正式卡片刪除來源保留原始 rule 草稿`,JSON.stringify(await raw())===JSON.stringify(ownedRaw));

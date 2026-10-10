@@ -1,0 +1,1299 @@
+{
+  "schema": "geometry-public-evidence-independent-review/1",
+  "actor": "/root/delivery_closeout/packet_readonly_qa",
+  "reviewedUtc": "2026-10-09T16:09:56.583540+00:00",
+  "status": "findings",
+  "scope": "Read-only publication/evidence QA; no browser/native/service/product tests executed; checks are never added to product test totals.",
+  "reviewExecutionIdentity": {
+    "actor": "/root/delivery_closeout/packet_readonly_qa",
+    "pid": 164916,
+    "argv": [
+      "<workspace-path>",
+      "<workspace-path>",
+      "<workspace-path>"
+    ],
+    "cwd": "<workspace-path>",
+    "script": "<workspace-path>",
+    "scriptSha256": "60c0516a6313f33cf867f0fa8e2b39b926322527c174290806e6686d1cafe64c",
+    "actualPythonExecutable": "<python-runtime>/bin/python3.12",
+    "actualPythonExecutableSha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+    "pythonVersion": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+  },
+  "repositoryObservedBefore": {
+    "head": "243326b512896ace70e068f62c8f3d6397f6000d",
+    "dirty": "",
+    "cwd": "<workspace-path>"
+  },
+  "repositoryObservedAfter": {
+    "head": "243326b512896ace70e068f62c8f3d6397f6000d",
+    "dirty": "",
+    "cwd": "<workspace-path>"
+  },
+  "repositoryMutationByThisReviewer": false,
+  "manifests": {
+    "ui-single-room-prior-public-v4": "3f2abb29f759de73c6e4c72323ead0c42aab763ca4e6391f63d41f9802ae8e9d",
+    "ui-single-room-640-public-v4": "64a0d10728631d4e9ccdac5c4051f666a95e9104a6159e43eac72950884f0522",
+    "ui-single-room-0b37-failed-public-v5": "389b1fdf3e0d8639bf192f2087f0d49de5a565799229598dc958132bdbcdaa97"
+  },
+  "publicFilesVerified": {
+    "ui-single-room-prior-public-v4": 654,
+    "ui-single-room-640-public-v4": 581,
+    "ui-single-room-0b37-failed-public-v5": 754
+  },
+  "independentScopes": [
+    {
+      "bundle": "ui-single-room-prior-public-v4",
+      "name": "ui123-2703-original-six",
+      "testedHead": "2703e4738ae308b2a268096f666f326f1e9a9b2f",
+      "dirty": false,
+      "originalReceipt": "<isolated-test-directory>",
+      "originalReceiptSha256": "2bd2351c8ec3133629135b8dd41187c6249177f0572c5d98f3bfb45508993a19",
+      "observedIndependentResult": [
+        85,
+        5,
+        true,
+        1
+      ],
+      "declaredResult": {
+        "pass": 85,
+        "fail": 5,
+        "completed": true,
+        "probeCompletedMeaning": "All six groups attempted",
+        "acceptanceCompleted": false,
+        "actualExitCode": 1
+      },
+      "originalLog": null
+    },
+    {
+      "bundle": "ui-single-room-prior-public-v4",
+      "name": "ui123-f980-six",
+      "testedHead": "f98078dc150c22960cbe2d212afb3ded61954bb9",
+      "dirty": false,
+      "originalReceipt": "<isolated-test-directory>",
+      "originalReceiptSha256": "e8e8b63cc1ed9488ce95c05e729dc38fe5719592f2ab45bd7f7addaf9370d194",
+      "observedIndependentResult": [
+        194,
+        0,
+        true,
+        0
+      ],
+      "declaredResult": {
+        "pass": 194,
+        "fail": 0,
+        "completed": true,
+        "actualExitCode": 0
+      },
+      "originalLog": null
+    },
+    {
+      "bundle": "ui-single-room-prior-public-v4",
+      "name": "room54-f980-incomplete-ten",
+      "testedHead": "f98078dc150c22960cbe2d212afb3ded61954bb9",
+      "dirty": false,
+      "originalReceipt": "<workspace-path>",
+      "originalReceiptSha256": "e9d9c9f94348c51887ccb596730b4546d913052c6f64ba40ecc42d78a0dc5198",
+      "observedIndependentResult": [
+        208,
+        1,
+        false,
+        1
+      ],
+      "declaredResult": {
+        "pass": 208,
+        "fail": 1,
+        "completed": false,
+        "actualExitCode": 1
+      },
+      "originalLog": "<workspace-path>"
+    },
+    {
+      "bundle": "ui-single-room-prior-public-v4",
+      "name": "ui123-c0-six",
+      "testedHead": "c0f05baade2424482fab94c72f0592f7b02326ae",
+      "dirty": false,
+      "originalReceipt": "<isolated-test-directory>",
+      "originalReceiptSha256": "8c1f2a452806baf9a05d2916fa12a28a5fc1fbe37be1b5242342dd2f18ee8b79",
+      "observedIndependentResult": [
+        174,
+        1,
+        true,
+        1
+      ],
+      "declaredResult": {
+        "pass": 174,
+        "fail": 1,
+        "completed": true,
+        "probeCompletedMeaning": "All six groups attempted",
+        "acceptanceCompleted": false,
+        "actualExitCode": 1
+      },
+      "originalLog": null
+    },
+    {
+      "bundle": "ui-single-room-prior-public-v4",
+      "name": "grid-c0-incomplete",
+      "testedHead": "c0f05baade2424482fab94c72f0592f7b02326ae",
+      "dirty": false,
+      "originalReceipt": "<original-evidence-root>/after-final-c0f05baa-grid-20261009/receipt.json",
+      "originalReceiptSha256": "8de56123fdbad08040f16d605664cb265917057ab0570897ea0275043f5c1e45",
+      "observedIndependentResult": [
+        99,
+        1,
+        false,
+        1
+      ],
+      "declaredResult": {
+        "pass": 99,
+        "fail": 1,
+        "completed": false,
+        "actualExitCode": 1
+      },
+      "originalLog": "<original-evidence-root>/after-final-c0f05baa-grid-20261009/command.log"
+    },
+    {
+      "bundle": "ui-single-room-prior-public-v4",
+      "name": "projection-f980-original-ten",
+      "testedHead": "f98078dc150c22960cbe2d212afb3ded61954bb9",
+      "dirty": false,
+      "originalReceipt": "<workspace-path>",
+      "originalReceiptSha256": "13b739b592c16861310856c264581accd4a2f44583e2dd1de37500d2972f1746",
+      "observedIndependentResult": [
+        3,
+        7,
+        true,
+        1
+      ],
+      "declaredResult": {
+        "pass": 3,
+        "fail": 7,
+        "completed": true,
+        "actualExitCode": 1
+      },
+      "originalLog": null
+    },
+    {
+      "bundle": "ui-single-room-prior-public-v4",
+      "name": "projection-c0-original-ten",
+      "testedHead": "c0f05baade2424482fab94c72f0592f7b02326ae",
+      "dirty": false,
+      "originalReceipt": "<workspace-path>",
+      "originalReceiptSha256": "7675f17490bc14b470e1954f1e007cb06dc916ee6ab7ccbc1fac179fdd98283f",
+      "observedIndependentResult": [
+        8,
+        2,
+        true,
+        1
+      ],
+      "declaredResult": {
+        "pass": 8,
+        "fail": 2,
+        "completed": true,
+        "actualExitCode": 1
+      },
+      "originalLog": null
+    },
+    {
+      "bundle": "ui-single-room-prior-public-v4",
+      "name": "same-owner-f980",
+      "testedHead": "f98078dc150c22960cbe2d212afb3ded61954bb9",
+      "dirty": false,
+      "originalReceipt": "<workspace-path>",
+      "originalReceiptSha256": "61ed4175546db306c464bae91ae98d3e0e8a3d1c924cd45b73491d7a02045930",
+      "observedIndependentResult": [
+        0,
+        2,
+        true,
+        1
+      ],
+      "declaredResult": {
+        "pass": 0,
+        "fail": 2,
+        "completed": true,
+        "actualExitCode": 1
+      },
+      "originalLog": null
+    },
+    {
+      "bundle": "ui-single-room-prior-public-v4",
+      "name": "same-owner-c0",
+      "testedHead": "c0f05baade2424482fab94c72f0592f7b02326ae",
+      "dirty": false,
+      "originalReceipt": "<workspace-path>",
+      "originalReceiptSha256": "f46ea441f02978482f63327c1cd70e7b18b12803d6901958e1838df0ae849bd5",
+      "observedIndependentResult": [
+        2,
+        0,
+        true,
+        0
+      ],
+      "declaredResult": {
+        "pass": 2,
+        "fail": 0,
+        "completed": true,
+        "actualExitCode": 0
+      },
+      "originalLog": null
+    },
+    {
+      "bundle": "ui-single-room-prior-public-v4",
+      "name": "normal-hole-f980",
+      "testedHead": "f98078dc150c22960cbe2d212afb3ded61954bb9",
+      "dirty": false,
+      "originalReceipt": "<workspace-path>",
+      "originalReceiptSha256": "0619eaba3db96f715c924e5c773eef3cc393a4703331eb04bef110dba58d38d0",
+      "observedIndependentResult": [
+        2,
+        0,
+        true,
+        0
+      ],
+      "declaredResult": {
+        "historicalControl": true
+      },
+      "originalLog": null
+    },
+    {
+      "bundle": "ui-single-room-prior-public-v4",
+      "name": "normal-hole-c0",
+      "testedHead": "c0f05baade2424482fab94c72f0592f7b02326ae",
+      "dirty": false,
+      "originalReceipt": "<workspace-path>",
+      "originalReceiptSha256": "410d04fadfe49797761bf27df29d36be2ff659d45bb17a3722eab4b698556e49",
+      "observedIndependentResult": [
+        2,
+        0,
+        true,
+        0
+      ],
+      "declaredResult": {
+        "historicalControl": true
+      },
+      "originalLog": null
+    },
+    {
+      "bundle": "ui-single-room-prior-public-v4",
+      "name": "resume-c0-four",
+      "testedHead": "c0f05baade2424482fab94c72f0592f7b02326ae",
+      "dirty": false,
+      "originalReceipt": "<workspace-path>",
+      "originalReceiptSha256": "7da8dfdddb122c1406a55304029e3abca6e8d87a47dc9dd1de23d0118da8b794",
+      "observedIndependentResult": [
+        4,
+        0,
+        true,
+        0
+      ],
+      "declaredResult": {
+        "pass": 4,
+        "fail": 0,
+        "assertions": 56,
+        "completed": true,
+        "actualExitCode": 0
+      },
+      "originalLog": "<workspace-path>"
+    },
+    {
+      "bundle": "ui-single-room-prior-public-v4",
+      "name": "scenario-c0-formal-four",
+      "testedHead": "c0f05baade2424482fab94c72f0592f7b02326ae",
+      "dirty": false,
+      "originalReceipt": "<unit-evidence-root>/scenario-units-c0f05baa/receipt.json",
+      "originalReceiptSha256": "316ce124d5914c5bf2ca36781f62cd21d35fd2c61e10b7eb899f5b6bac224bf2",
+      "observedIndependentResult": [
+        131,
+        0,
+        true,
+        0
+      ],
+      "declaredResult": {
+        "pass": 131,
+        "fail": 0,
+        "skip": 1,
+        "completed": true,
+        "actualNodeExitCode": 0,
+        "originalWrapperExitCode": 1,
+        "wrapperReason": "Metadata matcher assumed registry path; original executor intentionally spawned byte-identical native copy. Original wrapper receipt retained; supplemental process-byte identity review accepted."
+      },
+      "originalLog": null
+    },
+    {
+      "bundle": "ui-single-room-640-public-v4",
+      "name": "ui123-640-six-with-header-hit",
+      "testedHead": "640a81443b3d070dba3d8a0aa52adb2d64cebe0b",
+      "dirty": false,
+      "originalReceipt": "<workspace-path>",
+      "originalReceiptSha256": "9efe8a022de5be3178131653d6cc612fba69daac9a711b9fb14f5e6e4de59099",
+      "observedIndependentResult": [
+        198,
+        0,
+        true,
+        0
+      ],
+      "declaredResult": {
+        "pass": 198,
+        "fail": 0,
+        "completed": true,
+        "actualExitCode": 0,
+        "sourceOverride": false
+      },
+      "originalLog": "<workspace-path>"
+    },
+    {
+      "bundle": "ui-single-room-640-public-v4",
+      "name": "room54-640-original-ten-negatives",
+      "testedHead": "640a81443b3d070dba3d8a0aa52adb2d64cebe0b",
+      "dirty": false,
+      "originalReceipt": "<workspace-path>",
+      "originalReceiptSha256": "6dda336600f3a543fa9959a2eea556f36a94f66f06507fcabc5f1ccf5a7dcdca",
+      "observedIndependentResult": [
+        273,
+        0,
+        true,
+        0
+      ],
+      "declaredResult": {
+        "pass": 273,
+        "fail": 0,
+        "completed": true,
+        "actualExitCode": 0,
+        "sourceOverride": false,
+        "costPerPdfAndPng": {
+          "candidate": [
+            12,
+            14,
+            16
+          ],
+          "manual": [
+            16,
+            20,
+            24
+          ]
+        },
+        "costProtocol": "room-direct-row-dimensions/1"
+      },
+      "originalLog": "<workspace-path>"
+    },
+    {
+      "bundle": "ui-single-room-640-public-v4",
+      "name": "formal-edge-640-38",
+      "testedHead": "640a81443b3d070dba3d8a0aa52adb2d64cebe0b",
+      "dirty": false,
+      "originalReceipt": "<original-evidence-root>/after-final-640a8144-formal-edge-20261009/receipt.json",
+      "originalReceiptSha256": "8639b53eca5920d8f00c24fbecfdcc76a7cabe8aa8a766ffbcf4f0bd6bcabc9b",
+      "observedIndependentResult": [
+        38,
+        0,
+        true,
+        0
+      ],
+      "declaredResult": {
+        "pass": 38,
+        "fail": 0,
+        "completed": true,
+        "actualExitCode": 0,
+        "actualExecutableIdentity": "New captured identity in this run only; old missing identity not rebound"
+      },
+      "originalLog": "<original-evidence-root>/after-final-640a8144-formal-edge-20261009/command.log"
+    },
+    {
+      "bundle": "ui-single-room-640-public-v4",
+      "name": "grid-640-partial-identity-gap",
+      "testedHead": "640a81443b3d070dba3d8a0aa52adb2d64cebe0b",
+      "dirty": false,
+      "originalReceipt": "<original-evidence-root>/after-final-640a8144-grid-20261009/receipt.json",
+      "originalReceiptSha256": "bb9e90e1d6ab6885f9882ea3ff47a557049b1df7be9dacc88ba5a2113e1740de",
+      "observedIndependentResult": [
+        346,
+        0,
+        true,
+        0
+      ],
+      "declaredResult": {
+        "pass": 346,
+        "fail": 0,
+        "completed": true,
+        "actualExitCode": 0,
+        "goldenCompared": false,
+        "actualChromeElfIdentity": "unknown",
+        "allExecutableIdentityVerified": false
+      },
+      "originalLog": "<original-evidence-root>/after-final-640a8144-grid-20261009/command.log"
+    },
+    {
+      "bundle": "ui-single-room-640-public-v4",
+      "name": "projection-640-corrected-v2-ten",
+      "testedHead": "640a81443b3d070dba3d8a0aa52adb2d64cebe0b",
+      "dirty": false,
+      "originalReceipt": "<workspace-path>",
+      "originalReceiptSha256": "495f04c07da7b957f1f9ea5d8c890a178df3bca2a8e22279deb6011a65bcc91d",
+      "observedIndependentResult": [
+        10,
+        0,
+        true,
+        0
+      ],
+      "declaredResult": {
+        "pass": 10,
+        "fail": 0,
+        "completed": true,
+        "actualExitCode": 0,
+        "executorSha256": "9594ab91fbddabc71ad43970d6dbe771ba5e450531c692e1918e573548ec937d",
+        "oracleVersion": "corrected-v2"
+      },
+      "originalLog": null
+    },
+    {
+      "bundle": "ui-single-room-640-public-v4",
+      "name": "same-owner-640-two",
+      "testedHead": "640a81443b3d070dba3d8a0aa52adb2d64cebe0b",
+      "dirty": false,
+      "originalReceipt": "<workspace-path>",
+      "originalReceiptSha256": "1fd665769d7f83f926ce1f55b4ac7d4b32d06546df29d9f35920a0994f7abb4f",
+      "observedIndependentResult": [
+        2,
+        0,
+        true,
+        0
+      ],
+      "declaredResult": {
+        "pass": 2,
+        "fail": 0,
+        "completed": true,
+        "actualExitCode": 0
+      },
+      "originalLog": null
+    },
+    {
+      "bundle": "ui-single-room-640-public-v4",
+      "name": "ui123-640-four-supplement-failed",
+      "testedHead": "640a81443b3d070dba3d8a0aa52adb2d64cebe0b",
+      "dirty": false,
+      "originalReceipt": "<workspace-path>",
+      "originalReceiptSha256": "a45b547c7f17ec12268b64abcede3c95922ad48b4073b50bf5186546eb22e183",
+      "observedIndependentResult": [
+        108,
+        3,
+        false,
+        1
+      ],
+      "declaredResult": {
+        "pass": 108,
+        "fail": 3,
+        "completed": false,
+        "actualExitCode": 1,
+        "probeCompleted": true,
+        "probeCompletedMeaning": "All four groups attempted; acceptance incomplete",
+        "sourceOverride": true,
+        "executorSha256": "43a3d2b6adf011dec05f85af71c14d0de110e24071b69b5bd636dcf30d0e72ca"
+      },
+      "originalLog": "<workspace-path>"
+    },
+    {
+      "bundle": "ui-single-room-0b37-failed-public-v5",
+      "name": "ui123-0b37-four-supplement-v2-failed",
+      "testedHead": "0b37d8d8d4ee501fe6208e3e88440b3d078d7c0b",
+      "dirty": false,
+      "originalReceipt": "<workspace-path>",
+      "originalReceiptSha256": "46b0de024726d32ab1f23a8a030fbea2bf2fd5df6765edd69fad219481a71f9e",
+      "observedIndependentResult": [
+        138,
+        3,
+        false,
+        1
+      ],
+      "declaredResult": {
+        "pass": 138,
+        "fail": 3,
+        "completed": false,
+        "actualExitCode": 1,
+        "probeCompleted": true,
+        "probeCompletedMeaning": "All four groups attempted only",
+        "sourceOverride": true,
+        "executorSha256": "8dbf04fe3af69a7656fbe38445afe190f520dac660b6046555595d386a08c5a9"
+      },
+      "originalLog": "<workspace-path>"
+    },
+    {
+      "bundle": "ui-single-room-0b37-failed-public-v5",
+      "name": "full-cdp-0b37-incomplete",
+      "testedHead": "0b37d8d8d4ee501fe6208e3e88440b3d078d7c0b",
+      "dirty": false,
+      "originalReceipt": "<original-evidence-root>/after-final-0b37d8d8-full-cdp-20261009/receipt.json",
+      "originalReceiptSha256": "88a635bc456aed722909bbe181ee235398fc9de98fb4517c55cf5c8244a7cfb5",
+      "observedIndependentResult": [
+        506,
+        4,
+        false,
+        1
+      ],
+      "declaredResult": {
+        "pass": 506,
+        "fail": 4,
+        "skip": 0,
+        "completed": false,
+        "actualExitCode": 1,
+        "goldenCompared": false
+      },
+      "originalLog": "<original-evidence-root>/after-final-0b37d8d8-full-cdp-20261009/command.log"
+    },
+    {
+      "bundle": "ui-single-room-0b37-failed-public-v5",
+      "name": "full-space-0b37-incomplete",
+      "testedHead": "0b37d8d8d4ee501fe6208e3e88440b3d078d7c0b",
+      "dirty": false,
+      "originalReceipt": "<original-evidence-root>/after-final-0b37d8d8-full-space-20261009/receipt.json",
+      "originalReceiptSha256": "4cb0e3ddcb5cb7968c089b66f32cc1d9cbe2de0531b8daa3bec88fd7f610d2c4",
+      "observedIndependentResult": [
+        222,
+        7,
+        false,
+        1
+      ],
+      "declaredResult": {
+        "pass": 222,
+        "fail": 7,
+        "completed": false,
+        "actualExitCode": 1,
+        "included": [
+          "space-height-library",
+          "projection-lifecycle",
+          "projection-placement",
+          "font-layout",
+          "space-flow"
+        ],
+        "omitted": [
+          "timber-material",
+          "timber-source-guards"
+        ]
+      },
+      "originalLog": "<original-evidence-root>/after-final-0b37d8d8-full-space-20261009/command.log"
+    },
+    {
+      "bundle": "ui-single-room-0b37-failed-public-v5",
+      "name": "replacement-0b37-sixteen",
+      "testedHead": "0b37d8d8d4ee501fe6208e3e88440b3d078d7c0b",
+      "dirty": false,
+      "originalReceipt": "<workspace-path>",
+      "originalReceiptSha256": "ae8c7115048d2862bc8ad0d7cc0a90b5d3e0aa3e2e49e691ad109db7a116df88",
+      "observedIndependentResult": [
+        16,
+        0,
+        true,
+        0
+      ],
+      "declaredResult": {
+        "pass": 16,
+        "fail": 0,
+        "completed": true,
+        "actualExitCode": 0
+      },
+      "originalLog": null
+    },
+    {
+      "bundle": "ui-single-room-0b37-failed-public-v5",
+      "name": "cross-b-0b37-old-entry-incomplete",
+      "testedHead": "0b37d8d8d4ee501fe6208e3e88440b3d078d7c0b",
+      "dirty": false,
+      "originalReceipt": "<workspace-path>",
+      "originalReceiptSha256": "28bddbd3f7a2a2ddd47b9b614a3503377bcc7f03b81e974917efa5016d2d99ec",
+      "observedIndependentResult": [
+        4,
+        4,
+        false,
+        1
+      ],
+      "declaredResult": {
+        "pass": 4,
+        "fail": 4,
+        "completed": false,
+        "actualExitCode": 1,
+        "failureKind": "Harness old hidden entry; four held race assertions not reached"
+      },
+      "originalLog": null
+    },
+    {
+      "bundle": "ui-single-room-0b37-failed-public-v5",
+      "name": "card-0b37-four",
+      "testedHead": "0b37d8d8d4ee501fe6208e3e88440b3d078d7c0b",
+      "dirty": false,
+      "originalReceipt": "<workspace-path>",
+      "originalReceiptSha256": "f21397c3d162f5185442e83f2493e3a0ffbdaf444bd78f0789b88017830713da",
+      "observedIndependentResult": [
+        4,
+        0,
+        true,
+        0
+      ],
+      "declaredResult": {
+        "pass": 4,
+        "fail": 0,
+        "completed": true,
+        "actualExitCode": 0
+      },
+      "originalLog": null
+    }
+  ],
+  "distinctOriginalRefsVerified": 1958,
+  "sourceCopiesCheckedAgainstExactGit": 110,
+  "executedSourceSnapshotEntries": {
+    "ui123-640-six-with-header-hit": 304,
+    "room54-640-original-ten-negatives": 304,
+    "ui123-640-four-supplement-failed": 305,
+    "ui123-0b37-four-supplement-v2-failed": 305
+  },
+  "snapshotGitSourcesIndependentlyVerified": 731,
+  "worldFilesCheckedByteIdentical": 219,
+  "archiveEntryReview": {
+    "archives": 107,
+    "projectedEntries": 232,
+    "binaryEntries": 2268,
+    "unchangedEntries": 5988,
+    "maxBytes": 3143370
+  },
+  "checkCount": 46649,
+  "failedCheckCount": 70,
+  "findings": [
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/projection-f980-original-ten/artifacts/baseline-f980-r2/header-history-1382-trace.zip",
+        "entry": "resources/051e17eefa5914e81fe7acfbaa6ece8cf7a65807.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/projection-f980-original-ten/artifacts/baseline-f980-r2/header-history-390-trace.zip",
+        "entry": "resources/051e17eefa5914e81fe7acfbaa6ece8cf7a65807.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/projection-f980-original-ten/artifacts/baseline-f980-r2/held-A-B-hole-1382-trace.zip",
+        "entry": "resources/051e17eefa5914e81fe7acfbaa6ece8cf7a65807.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/projection-f980-original-ten/artifacts/baseline-f980-r2/held-A-B-hole-390-trace.zip",
+        "entry": "resources/051e17eefa5914e81fe7acfbaa6ece8cf7a65807.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/projection-f980-original-ten/artifacts/baseline-f980-r2/held-A-B-vertex-1382-trace.zip",
+        "entry": "resources/051e17eefa5914e81fe7acfbaa6ece8cf7a65807.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/projection-f980-original-ten/artifacts/baseline-f980-r2/held-A-B-vertex-390-trace.zip",
+        "entry": "resources/051e17eefa5914e81fe7acfbaa6ece8cf7a65807.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/projection-f980-original-ten/artifacts/baseline-f980-r2/normal-projection-1382-trace.zip",
+        "entry": "resources/051e17eefa5914e81fe7acfbaa6ece8cf7a65807.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/projection-f980-original-ten/artifacts/baseline-f980-r2/normal-projection-390-trace.zip",
+        "entry": "resources/051e17eefa5914e81fe7acfbaa6ece8cf7a65807.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/projection-f980-original-ten/artifacts/baseline-f980-r2/same-owner-multiselect-1382-trace.zip",
+        "entry": "resources/051e17eefa5914e81fe7acfbaa6ece8cf7a65807.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/projection-f980-original-ten/artifacts/baseline-f980-r2/same-owner-multiselect-390-trace.zip",
+        "entry": "resources/051e17eefa5914e81fe7acfbaa6ece8cf7a65807.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/projection-c0-original-ten/artifacts/after-c0f05baa-r1/header-history-1382-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/projection-c0-original-ten/artifacts/after-c0f05baa-r1/header-history-390-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/projection-c0-original-ten/artifacts/after-c0f05baa-r1/held-A-B-hole-1382-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/projection-c0-original-ten/artifacts/after-c0f05baa-r1/held-A-B-hole-390-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/projection-c0-original-ten/artifacts/after-c0f05baa-r1/held-A-B-vertex-1382-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/projection-c0-original-ten/artifacts/after-c0f05baa-r1/held-A-B-vertex-390-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/projection-c0-original-ten/artifacts/after-c0f05baa-r1/normal-projection-1382-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/projection-c0-original-ten/artifacts/after-c0f05baa-r1/normal-projection-390-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/projection-c0-original-ten/artifacts/after-c0f05baa-r1/same-owner-multiselect-1382-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/projection-c0-original-ten/artifacts/after-c0f05baa-r1/same-owner-multiselect-390-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/same-owner-f980/artifacts/baseline-f980-r1/held-A-same-hole-1382-trace.zip",
+        "entry": "resources/051e17eefa5914e81fe7acfbaa6ece8cf7a65807.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/same-owner-f980/artifacts/baseline-f980-r1/held-A-same-hole-390-trace.zip",
+        "entry": "resources/051e17eefa5914e81fe7acfbaa6ece8cf7a65807.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/same-owner-c0/artifacts/after-c0f05baa-r1/held-A-same-hole-1382-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/same-owner-c0/artifacts/after-c0f05baa-r1/held-A-same-hole-390-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/normal-hole-f980/artifacts/baseline-f980-r1/normal-hole-1382-trace.zip",
+        "entry": "resources/051e17eefa5914e81fe7acfbaa6ece8cf7a65807.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/normal-hole-f980/artifacts/baseline-f980-r1/normal-hole-390-trace.zip",
+        "entry": "resources/051e17eefa5914e81fe7acfbaa6ece8cf7a65807.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/normal-hole-c0/artifacts/after-c0f05baa-r1/normal-hole-1382-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/normal-hole-c0/artifacts/after-c0f05baa-r1/normal-hole-390-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "text-path-only-projection",
+      "detail": {
+        "bundle": "ui-single-room-prior-public-v4",
+        "path": "rounds/scenario-c0-formal-four/raw-streams/python-backend-spawns.jsonl"
+      }
+    },
+    {
+      "kind": "text-path-only-projection",
+      "detail": {
+        "bundle": "ui-single-room-prior-public-v4",
+        "path": "rounds/scenario-c0-formal-four/artifacts/scenario-units-c0f05baa/python-backend-spawns.jsonl"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/projection-640-corrected-v2-ten/artifacts/after-640a8144-r1/header-history-1382-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/projection-640-corrected-v2-ten/artifacts/after-640a8144-r1/header-history-390-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/projection-640-corrected-v2-ten/artifacts/after-640a8144-r1/held-A-B-hole-1382-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/projection-640-corrected-v2-ten/artifacts/after-640a8144-r1/held-A-B-hole-390-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/projection-640-corrected-v2-ten/artifacts/after-640a8144-r1/held-A-B-vertex-1382-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/projection-640-corrected-v2-ten/artifacts/after-640a8144-r1/held-A-B-vertex-390-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/projection-640-corrected-v2-ten/artifacts/after-640a8144-r1/normal-projection-1382-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/projection-640-corrected-v2-ten/artifacts/after-640a8144-r1/normal-projection-390-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/projection-640-corrected-v2-ten/artifacts/after-640a8144-r1/same-owner-multiselect-1382-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/projection-640-corrected-v2-ten/artifacts/after-640a8144-r1/same-owner-multiselect-390-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/same-owner-640-two/artifacts/after-640a8144-r1/held-A-same-hole-1382-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/same-owner-640-two/artifacts/after-640a8144-r1/held-A-same-hole-390-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/replacement-0b37-sixteen/artifacts/replacement-artifacts/edges-1400-face-replacement-new-value-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/replacement-0b37-sixteen/artifacts/replacement-artifacts/edges-1400-face-replacement-rejected-value-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/replacement-0b37-sixteen/artifacts/replacement-artifacts/edges-1400-face-same-input-new-value-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/replacement-0b37-sixteen/artifacts/replacement-artifacts/edges-1400-face-success-sibling-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/replacement-0b37-sixteen/artifacts/replacement-artifacts/edges-1400-main-replacement-new-value-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/replacement-0b37-sixteen/artifacts/replacement-artifacts/edges-1400-main-replacement-rejected-value-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/replacement-0b37-sixteen/artifacts/replacement-artifacts/edges-1400-main-same-input-new-value-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/replacement-0b37-sixteen/artifacts/replacement-artifacts/edges-1400-main-success-sibling-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/replacement-0b37-sixteen/artifacts/replacement-artifacts/edges-390-face-replacement-new-value-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/replacement-0b37-sixteen/artifacts/replacement-artifacts/edges-390-face-replacement-rejected-value-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/replacement-0b37-sixteen/artifacts/replacement-artifacts/edges-390-face-same-input-new-value-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/replacement-0b37-sixteen/artifacts/replacement-artifacts/edges-390-face-success-sibling-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/replacement-0b37-sixteen/artifacts/replacement-artifacts/edges-390-main-replacement-new-value-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/replacement-0b37-sixteen/artifacts/replacement-artifacts/edges-390-main-replacement-rejected-value-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/replacement-0b37-sixteen/artifacts/replacement-artifacts/edges-390-main-same-input-new-value-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/replacement-0b37-sixteen/artifacts/replacement-artifacts/edges-390-main-success-sibling-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/cross-b-0b37-old-entry-incomplete/artifacts/cross-b-artifacts/edge-transition-1400-face-held-success-to-B-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/cross-b-0b37-old-entry-incomplete/artifacts/cross-b-artifacts/edge-transition-1400-face-success-control-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/cross-b-0b37-old-entry-incomplete/artifacts/cross-b-artifacts/edge-transition-1400-main-held-success-to-B-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/cross-b-0b37-old-entry-incomplete/artifacts/cross-b-artifacts/edge-transition-1400-main-success-control-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/cross-b-0b37-old-entry-incomplete/artifacts/cross-b-artifacts/edge-transition-390-face-held-success-to-B-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/cross-b-0b37-old-entry-incomplete/artifacts/cross-b-artifacts/edge-transition-390-face-success-control-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/cross-b-0b37-old-entry-incomplete/artifacts/cross-b-artifacts/edge-transition-390-main-held-success-to-B-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/cross-b-0b37-old-entry-incomplete/artifacts/cross-b-artifacts/edge-transition-390-main-success-control-trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/card-0b37-four/artifacts/card-artifacts/beam-1400/trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/card-0b37-four/artifacts/card-artifacts/beam-390/trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/card-0b37-four/artifacts/card-artifacts/slots-1400/trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    },
+    {
+      "kind": "zip-path-only-projection",
+      "detail": {
+        "archive": "rounds/card-0b37-four/artifacts/card-artifacts/slots-390/trace.zip",
+        "entry": "resources/63314280e9d02f02fc41e76dc55cf9ba1b6b90b1.json"
+      }
+    }
+  ],
+  "checkInventories": [
+    {
+      "path": "<workspace-path>",
+      "bytes": 355858,
+      "sha256": "4c0a70f1e193964bc48c461561e071c0180136d250d607aafd3aa9ee75500636",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 341508,
+      "sha256": "f37a3a42a1d5327837eb706179b80a872e738b76a97dd86514627c5aa0c30a6b",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 372595,
+      "sha256": "e8438270b862e4bc52ae3d0456553d899ee307135d3ad11280cd999d2df341da",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 335154,
+      "sha256": "39e75ac47aec959dd7aa423e03ce413eadacda589aca423b7f78605ec6234148",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 321637,
+      "sha256": "085a3f0aac4c86b05df74aff859991f0db9029c7f87b2a745c51e7e2aa5861ee",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 357035,
+      "sha256": "cf47426b6370ca114b3e0652d4a3a18df545f4957ae1bb712dc245fcbee6e515",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 364394,
+      "sha256": "85b5ce35045221b624d7a5f87d325aba8773c65f8de9afe6319bb29bca705bee",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 342286,
+      "sha256": "b8f33c8158bdd63ef7c83f268c2a0343cca2e04c91f7c1399ad30113a0774976",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 431902,
+      "sha256": "66a3841f08e367431b1e87dee54c424af74510f014fb6891736ffe9b6bd6b8c2",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 466023,
+      "sha256": "ee76dc4be112defca7a1eea7f8e83dad6c2365ddd2546b8b05dddda89dbc0294",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 474830,
+      "sha256": "49cb2a135469f834c6779697a52dca7fd735976df1b9560fdee29d9b1a19f134",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 464609,
+      "sha256": "bf63f7c0d575a9024a3ca2a87d58bec072fd391c1a1baf3f8c4e1fbf5b8bcf26",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 471701,
+      "sha256": "63a101dacd425f3eaa3477f0ec9cf7acf6527d0dfd7e45874872697f711cb7e5",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 448647,
+      "sha256": "97503c039c2dda919af6f3403b538076275e63649c5cc00bf3c86e9299e5947e",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 438094,
+      "sha256": "36303051791136d1551f9afed75d9f09233c5f425bb6a7e7d013c11280a22507",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 472473,
+      "sha256": "1409aef28464fc3d9bc419dbf6a0fe223884c8cc03c1a4692581b2556c9b53e4",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 473289,
+      "sha256": "16e839de4006f719849c9abd21d038cd532d23525e7227df4ff5a90304af2701",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 479752,
+      "sha256": "ec761311794dc72d8ade46791693beed757a3c25ee408ffe6e4127883be3a0ae",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 470099,
+      "sha256": "deb01682275dd6d8b476e7d5f7ee30d03fa5f1bfb05e070e54a711dd4c1a48e1",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 511066,
+      "sha256": "fe50220702be8db4f671af559127d012faa571bba194a2c2d05953deba584217",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 502282,
+      "sha256": "3286215176cad560e211a0d91cce77ab54e8ffd1b5e22695e90aefd35e0bd53f",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 518315,
+      "sha256": "1c16239ffa873db24be43dea657f5eb1e0a7465d3e12fdd246f3bb37aa5f3e1b",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 436514,
+      "sha256": "878eadc036c2a7101e6c8666745327880b11514537a4b0ac2a7b6e700a356d18",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 158822,
+      "sha256": "66929c3ba5437d9c1319f8f450904968ba95f05fa94ea8a303c1ae21dc241a86",
+      "entries": 649
+    }
+  ],
+  "releaseApproved": false,
+  "limits": [
+    "Product behavior, actual served app.js response bytes, historical unknown executable identities, Windows raw originals and private queue state are not established by this QA.",
+    "All original results remain independently scoped; no product count aggregation or rerun/relabel.",
+    "Root is sole repository/GitHub writer; this review writes scratch only."
+  ]
+}

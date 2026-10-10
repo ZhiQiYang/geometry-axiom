@@ -14,7 +14,14 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,expectNativeDial
     if(root==='face'&&!await read(`document.body.classList.contains('drawer-right-open')`))await baseCtl('#workspaceToggleRight');
     if(root==='face-left'&&!await read(`document.body.classList.contains('drawer-left-open')`))await baseCtl('#workspaceToggleLeft');
     if(selector.startsWith('.face-rule-hit')&&await read(`document.body.classList.contains('drawer-right-open')`))await baseCtl('#workspaceToggleRight');
-  }if(await read(`document.querySelector(${JSON.stringify(selector)})?.closest('#createObjectPop')?.hidden===true`))await baseCtl(await read(`innerWidth<=900?'#mobileCreateObject':'#btnCreateObject'`));return baseCtl(selector);};
+  }if(await read(`document.querySelector(${JSON.stringify(selector)})?.closest('#createObjectPop')?.hidden===true`))await baseCtl(await read(`innerWidth<=900?'#mobileCreateObject':'#btnCreateObject'`));// #123 S3 exposes one component form at a time. Enter its existing tab
+  // with the same trusted hit-tested controls before using a migrated field.
+  const section=await read(`document.querySelector(${JSON.stringify(selector)})?.closest('[data-component-section]')?.dataset.componentSection||null`);
+  if(section&&await read(`(()=>{const n=document.querySelector(${JSON.stringify(selector)}),p=n?.closest('[data-fi-pane]'),s=n?.closest('[data-component-section]');return !!p?.hidden||!!s?.classList.contains('component-collapsed');})()`)){
+    await baseCtl('#faceInspectorTabs [data-fi-tab="components"]');
+    await baseCtl('[data-component-tab="'+section+'"]');
+  }
+  return baseCtl(selector);};
   // A default-valued select must not pass after a click reached another
   // element. Check the actual keyboard target before sending input.
   const focusedCtl=async selector=>{await ctl(selector);await wait(`document.activeElement===document.querySelector(${JSON.stringify(selector)})`);};
@@ -71,7 +78,7 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,expectNativeDial
       }
       await ctl('[data-face-tool="select"]');
       const before=await dump(),count=await read('ReferenceWorkspace.history.undo.length'),raw=await read(`ReferenceWorkspace.readFeatureAttachment('grid-draft')`);
-      if(width===390){await ctl('#faceInspectorTabs [data-fi-tab="components"]');const sizes=await read(`({controls:[...document.querySelectorAll('.grid-rule-details button,.grid-rule-details input,.grid-rule-details select')].map(n=>({id:n.id,height:n.getBoundingClientRect().height})),panel:[$('faceInspectorContent').scrollWidth,$('faceInspectorContent').clientWidth],page:[document.documentElement.scrollWidth,innerWidth]})`);check(`390 面 ${index} source/cell 觸控高度及 inspector 無水平溢出`,sizes.controls.every(n=>n.height>=44)&&sizes.panel[0]<=sizes.panel[1]&&sizes.page[0]<=sizes.page[1],sizes);}
+      if(width===390){await ctl('#faceInspectorTabs [data-fi-tab="components"]');await ctl('[data-component-tab="grid"]');const sizes=await read(`({controls:[...document.querySelectorAll('.grid-rule-details button,.grid-rule-details input,.grid-rule-details select')].map(n=>({id:n.id,height:n.getBoundingClientRect().height})),panel:[$('faceInspectorContent').scrollWidth,$('faceInspectorContent').clientWidth],page:[document.documentElement.scrollWidth,innerWidth]})`);check(`390 面 ${index} source/cell 觸控高度及 inspector 無水平溢出`,sizes.controls.every(n=>n.height>=44)&&sizes.panel[0]<=sizes.panel[1]&&sizes.page[0]<=sizes.page[1],sizes);}
       await ctl('#faceReferenceVisibility [data-ref-visible="all"]');check(`${width} 面 ${index} 共用參考線隱藏同時停用 rule hit/anchor 且零寫入`,await read(`document.querySelectorAll('.face-rule-hit').length===0&&!ReferenceVisibility.anchorVisible($('tbAnchor').value)`)&&(await dump())===before);await ctl('#faceReferenceVisibility [data-ref-visible="all"]');
       await pickRule(`${grids[index]}:${sid}:1:${cells[index].join(':')}:u:0`);
       check(`${width} 面 ${index} 首指標選取及標籤不改 native/raw/history`,await read(`fe.ruleSelection?.appliedGridId===${grids[index]}&&!!document.querySelector('[data-rule-label]')&&document.querySelector('[data-rule-selected]').textContent.includes(${JSON.stringify(cells[index][0])})`)&&(await dump())===before&&await read('ReferenceWorkspace.history.undo.length')===count&&JSON.stringify(await read(`ReferenceWorkspace.readFeatureAttachment('grid-draft')`))===JSON.stringify(raw));
@@ -137,6 +144,69 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,expectNativeDial
     try{await ctl('[data-rule-exact]');await wait(`!!window.__ruleRelease`);await ctl('#workspaceBackButton');const scene=await dump();await read(`__ruleRelease();void 0`);await sleep(300);check(`${width} 延遲 exact query 返回時不改新 view/native`,await read(`!oc.edit&&$('objectWorkspace').hidden&&GridRuleLines.entries().length===0`)&&(await dump())===scene);}finally{await read(`apiRequest=__ruleApi;delete window.__ruleApi;delete window.__ruleHold;delete window.__ruleRelease;void 0`);}
     await face(1);await focusCell(cells[0]);await read(`window.__ruleApi=apiRequest;window.__ruleRelease=null;apiRequest=async function(cmd,...rest){const r=await __ruleApi(cmd,...rest);if(cmd==='objects'&&!window.__ruleRelease)await new Promise(resolve=>window.__ruleRelease=resolve);return r;};void 0`);
     try{await ctl('[data-rule-source="1"]');await wait(`!!window.__ruleRelease`);check(`${width} detached source jump 讀取尚未提前離開 face`,await read(`oc.edit?.bid===1&&!$('infiniteGridWorkspace').open`));await ctl('#workspaceBackButton');await read(`__ruleRelease();void 0`);await sleep(300);check(`${width} 延遲 source jump 對換 view 零定位`,await read(`!oc.edit&&!$('infiniteGridWorkspace').open`));}finally{await read(`apiRequest=__ruleApi;delete window.__ruleApi;delete window.__ruleRelease;void 0`);}
+    // A late rule reply rebuilds the inspector. Keyboard targets the user has
+    // already moved must survive that rebuild. Click, Tab and Enter only.
+    const guideTarget=()=>read(`(()=>{const e=document.activeElement;return e?[e.tagName,e.id||'',e.getAttribute('aria-label')||'',e.dataset.kind||'',e.dataset.id||''].join('|'):'';})()`);
+    const armGuide=async()=>{
+      await face(1);await focusCell(cells[0]);await ctl('#faceInspectorTabs [data-fi-tab="components"]');
+      await choose('#refGuideMode','advanced');await focusedCtl('#refGuideExpr');
+      await key('Enter','Enter',13);await wait(`document.activeElement===document.querySelector('#refGuideExpr')`);
+      await key('Tab','Tab',9);await wait(`document.activeElement===document.querySelector('#refGuideCreate')`);
+    };
+    const lateGuide=async(label,move,accept,settle,mode)=>{
+      await armGuide();
+      await read(`window.__ruleApi=apiRequest;window.__ruleRelease=null;window.__ruleOrigRender=renderFaceInspector;window.__ruleGate={phase:'arming',rebuilt:null,clickSettled:false,seqAtRelease:null};
+        renderFaceInspector=function(){const out=window.__ruleOrigRender.apply(this,arguments);const g=window.__ruleGate;if(g&&g.phase==='released'&&g.seqAtRelease!=null&&fe.gridPreviewSeq!==g.seqAtRelease)g.rebuilt=fe.gridPreviewSeq;return out;};
+        const exact=document.querySelector('[data-rule-exact]');const origClick=exact&&exact.onclick;window.__ruleExact=exact;window.__ruleOrigClick=origClick;
+        if(exact)exact.onclick=async function(...args){try{return await origClick.apply(this,args);}finally{if(window.__ruleGate)window.__ruleGate.clickSettled=true;}};
+        apiRequest=async function(cmd,...rest){const r=await __ruleApi(cmd,...rest);const g=window.__ruleGate;if(g&&g.phase==='arming'&&cmd.startsWith('grid-rule-query ')){g.phase='held';await new Promise(resolve=>window.__ruleRelease=resolve);g.phase='released';g.seqAtRelease=fe.gridPreviewSeq;}return r;};void 0`);
+      const done=mode==='rebuild'
+        ?`window.__ruleGate.phase==='released'&&window.__ruleGate.clickSettled===true&&window.__ruleGate.rebuilt>window.__ruleGate.seqAtRelease`
+        :mode==='dropped'
+        ?`window.__ruleGate.phase==='released'&&window.__ruleGate.clickSettled===true&&window.__ruleGate.rebuilt==null&&fe.gridPreviewSeq===window.__ruleGate.seqAtRelease`
+        :`window.__ruleGate.phase==='released'&&window.__ruleGate.clickSettled===true`;
+      try{
+        await ctl('[data-rule-exact]');await wait(`window.__ruleGate.phase==='held'&&!!window.__ruleRelease&&window.__ruleGate.clickSettled===false`);
+        // The query starts in Grid; the later real Guide focus owns the reply
+        // while the original move and no-focus-steal oracles remain unchanged.
+        await ctl('[data-component-tab="guide"]');await focusedCtl('#refGuideExpr');
+        await key('Enter','Enter',13);await wait(`document.activeElement===document.querySelector('#refGuideExpr')`);
+        await key('Tab','Tab',9);await wait(`document.activeElement===document.querySelector('#refGuideCreate')`);
+        await move();
+        const before=await guideTarget();
+        check(`${width} ${label} 已離開引用式`,await accept(before));
+        check(`${width} ${label} 回覆未完成前不得判斷焦點`,await read(done)===false);
+        check(`${width} ${label} 搶回引用式會被判失敗`,await read(`(()=>{const stole=id=>id==='refGuideExpr';return stole('refGuideExpr')===true&&stole(document.activeElement?.id||'')===false;})()`)===true);
+        await read(`if(window.__ruleRelease)window.__ruleRelease();window.__ruleRelease=null;void 0`);
+        await wait(done);
+        const observed=await read(`window.__ruleGate.rebuilt==null?'沒有再重建檢查器':'釋放後重建 '+window.__ruleGate.rebuilt`);
+        check(`${width} ${label} 處理結束時${observed}`,await read(`window.__ruleGate.clickSettled===true&&(window.__ruleGate.rebuilt==null||window.__ruleGate.rebuilt>window.__ruleGate.seqAtRelease)`));
+        const after=await guideTarget();
+        check(`${width} ${label} 舊查詢不搶回焦點`,await read(`document.activeElement?.id!=='refGuideExpr'`)&&await settle(before,after));
+      }finally{await read(`if(window.__ruleRelease)window.__ruleRelease();window.__ruleRelease=null;if(window.__ruleOrigRender)renderFaceInspector=window.__ruleOrigRender;if(window.__ruleExact&&window.__ruleOrigClick)window.__ruleExact.onclick=window.__ruleOrigClick;if(window.__ruleApi)apiRequest=window.__ruleApi;delete window.__ruleApi;delete window.__ruleRelease;delete window.__ruleOrigRender;delete window.__ruleOrigClick;delete window.__ruleExact;delete window.__ruleGate;void 0`);}
+    };
+    const sameTarget=(before,after)=>before===after&&before!=='';
+    await lateGuide('檢查器外',async()=>{await ctl('#fileMenuBtn');await wait(`document.activeElement===$('fileMenuBtn')`);},async()=>read(`document.activeElement===$('fileMenuBtn')`),sameTarget,'rebuild');
+    if(!await read(`$('fileMenuPop').hidden`))await ctl('#fileMenuBtn');
+    await lateGuide(await read(`innerWidth<=680&&document.body.classList.contains('drawer-right-open')`)?'關閉抽屜':'其他對話框',async()=>{
+      if(await read(`innerWidth<=680&&document.body.classList.contains('drawer-right-open')&&$('workspaceToggleRight').getClientRects().length>0`)){await ctl('#workspaceToggleRight');await wait(`document.activeElement===$('workspaceToggleRight')`);}
+      else{await ctl('#refParameterOpen');await wait(`!!$('paramSpecValue')`);await focusedCtl('#paramSpecValue');}
+    // Opening the parameter editor removes the rule details, and closing the
+    // 390 drawer can change the viewport key. Either way paintQuery may not
+    // call renderFaceInspector again. Wait until the click handler finishes;
+    // a rebuild after release is still recorded and must not steal focus.
+    },async before=>before.includes('workspaceToggleRight')||before.includes('paramSpecValue'),sameTarget,'settled');
+    if(await read(`!!$('paramLegacyBack')`))await ctl('#paramLegacyBack');
+    await lateGuide('切換選取並離開面',async()=>{
+      await ctl('#workspaceBackButton');await wait(`!oc.edit`);
+      await ctl('#objectList .object-row[data-kind="boundary"][data-id="2"]');
+      await wait(`oc.selection.some(s=>s.kind==='boundary'&&s.id===2)`);
+      await key('Enter','Enter',13);
+    },async()=>read(`!oc.edit&&oc.selection.some(s=>s.kind==='boundary'&&s.id===2)&&document.activeElement?.id!=='refGuideExpr'`),async()=>read(`!oc.edit&&oc.selection.some(s=>s.kind==='boundary'&&s.id===2)`),'dropped');
+    // The leave case opens the 390 object drawer to click a row. Leave it closed
+    // before the next scenario opens the file menu; the drawer otherwise covers
+    // #btnNewProject. Same toggle click the suite already uses.
+    if(await read(`document.body.classList.contains('drawer-left-open')`))await ctl('#toggleLeft');
     // Cell selectors are a separate native scenario: all-cells and cell rules
     // cannot overlap within a source (I25a), so do not invent a UI exception.
     await fresh();await fixture('boundary 1 outline 0,0 1200,0 1200,800 800,800 800,600 0,600 hole 170,80 170,280 230,280 230,80');await fixture('placement 1 on boundary 1 origin 0 0 0 u +x v +y');

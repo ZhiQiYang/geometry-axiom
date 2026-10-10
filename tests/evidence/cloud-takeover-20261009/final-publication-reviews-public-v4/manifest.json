@@ -1,0 +1,2848 @@
+{
+  "schema": "geometry-final-publication-readonly-review-history-addendum/1",
+  "preparedUtc": "2026-10-09T20:10:36.757473+00:00",
+  "preparerActor": "/root/delivery_closeout",
+  "publicationBuilderOriginalSHA256": "62d6e0a687c7b8c1573bdec5f94707f75ce4f7592c56c6d7f5d30b08b5238b81",
+  "inheritedPublicationRecipeSHA256": "2158b8caf56b7eb5e65cb18996281b002f04cc8b828e31ea53ac19ea1f65470f",
+  "intermediateWrapperSHA256": "74236dca0fe5ee610ed88098778a20d54e317ec2f17fd59a316f9d64f495ade8",
+  "scope": "Existing different-actor metadata QA history, correction proofs and ROOT strict reports only. No product/browser/native/service/queue execution.",
+  "originalActorIndexSHA256": "304f7db805963db8a5b03b1603d4bd1cb52c75f05abc64493c0a67e3bb878eef",
+  "productSHAForContext": "f3b8285729b42cd22451c98cba1e2ec4514517f3",
+  "reviewOutcomes": [
+    {
+      "name": "asm-v4-first",
+      "actor": "/root/publication_final_review/assembly_packet_review",
+      "actualReviewExitCode": 1,
+      "passedMetadataChecks": 1152,
+      "failedMetadataChecks": 3,
+      "countsAreProductAssertions": false,
+      "reportOriginalSHA256": "8cc1e456e1244067da47dd6ee64c92fc04e8cc1992d9f175bc8d0bcb8e020a6a",
+      "originalFindingsPreserved": [
+        {
+          "name": "actual captured source and public bytes geometry-web/model_update_browser_check.js",
+          "passed": false,
+          "details": null
+        },
+        {
+          "name": "actual captured source and public bytes geometry-web/source_inspector_browser_check.js",
+          "passed": false,
+          "details": null
+        },
+        {
+          "name": "configuration preparer identity separate v2",
+          "passed": false,
+          "details": null
+        }
+      ]
+    },
+    {
+      "name": "asm-v4-projection-supplement",
+      "actor": "/root/publication_final_review/assembly_packet_review",
+      "actualReviewExitCode": 0,
+      "passedMetadataChecks": 132,
+      "failedMetadataChecks": 0,
+      "countsAreProductAssertions": false,
+      "reportOriginalSHA256": "73abb1b1ebdb88e33a300146f1e9926d3f7ebeebc9a7fa654efc6f35e907a9b6",
+      "originalFindingsPreserved": []
+    },
+    {
+      "name": "asm-v5-first",
+      "actor": "/root/publication_final_review/assembly_packet_review",
+      "actualReviewExitCode": 1,
+      "passedMetadataChecks": 629,
+      "failedMetadataChecks": 1,
+      "countsAreProductAssertions": false,
+      "reportOriginalSHA256": "95e80baf19eff575ba0ec14545b1b5aa6af8d982cb2763c32e14e8dd18b28dab",
+      "originalFindingsPreserved": [
+        {
+          "name": "all prior result/source/lifecycle metadata retained exact",
+          "passed": false,
+          "details": null
+        }
+      ]
+    },
+    {
+      "name": "asm-v5-time-supplement-final",
+      "actor": "/root/publication_final_review/assembly_packet_review",
+      "actualReviewExitCode": 0,
+      "passedMetadataChecks": 21,
+      "failedMetadataChecks": 0,
+      "countsAreProductAssertions": false,
+      "reportOriginalSHA256": "123062855df2526e6c47445c20abf4fcd6701d9a917e47f673c66ad629e0306b",
+      "originalFindingsPreserved": []
+    },
+    {
+      "name": "space-v2",
+      "actor": "/root/publication_final_review/assembly_packet_review",
+      "actualReviewExitCode": 0,
+      "passedMetadataChecks": 1111,
+      "failedMetadataChecks": 0,
+      "countsAreProductAssertions": false,
+      "reportOriginalSHA256": "28e48a2831eecf1a10bc87e119fc9ed185fc3abfd5e43b10f9b12c7b8907dcbf",
+      "originalFindingsPreserved": []
+    },
+    {
+      "name": "space-v2-source-bindings",
+      "actor": "/root/publication_final_review/assembly_packet_review",
+      "actualReviewExitCode": 0,
+      "passedMetadataChecks": 64,
+      "failedMetadataChecks": 0,
+      "countsAreProductAssertions": false,
+      "reportOriginalSHA256": "af7502ff2ac6ef684f65ef5d6f37b6f3d2807d3eb8ade2ab80777645b4af4d1d",
+      "originalFindingsPreserved": []
+    },
+    {
+      "name": "qualified-first-full",
+      "actor": "/root/publication_final_review",
+      "actualReviewExitCode": 0,
+      "passedMetadataChecks": 2320,
+      "failedMetadataChecks": 0,
+      "countsAreProductAssertions": false,
+      "reportOriginalSHA256": "f48329a496ef926d81a56dd95a9ce51dd1ee36f38334dcb862ac656c8ee3c709",
+      "originalFindingsPreserved": []
+    },
+    {
+      "name": "prose-correction",
+      "actor": "/root/publication_final_review",
+      "actualReviewExitCode": 0,
+      "passedMetadataChecks": 1709,
+      "failedMetadataChecks": 0,
+      "countsAreProductAssertions": false,
+      "reportOriginalSHA256": "89952c9243f5b47bcb306a66e8f6566d783578d1ad2ae1785114dd33d7c6f232",
+      "originalFindingsPreserved": []
+    },
+    {
+      "name": "shell-first",
+      "actor": "/root/publication_final_review",
+      "actualReviewExitCode": 1,
+      "passedMetadataChecks": 14075,
+      "failedMetadataChecks": 3,
+      "countsAreProductAssertions": false,
+      "reportOriginalSHA256": "b397d66eb42692a1f8c911b32ed62b045eda582dd02b37800d4d4cb6c7616452",
+      "originalFindingsPreserved": [
+        {
+          "name": "JSON exact key census rounds/red-original/receipt.public.json",
+          "detail": null
+        },
+        {
+          "name": "JSON exact key census rounds/green-completion-v2/receipt.public.json",
+          "detail": null
+        },
+        {
+          "name": "all original40 check names/order and positive results",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "name": "shell-annotation-mobile-supplement",
+      "actor": "/root/publication_final_review",
+      "actualReviewExitCode": 1,
+      "passedMetadataChecks": 587,
+      "failedMetadataChecks": 1,
+      "countsAreProductAssertions": false,
+      "reportOriginalSHA256": "a4a79770d1e1d3e25c351c7ba651bc921576ead917907426fa8fde8dd060f294",
+      "originalFindingsPreserved": [
+        "original unchanged helper declares both normal visible Create routes"
+      ]
+    },
+    {
+      "name": "shell-visible-create-final",
+      "actor": "/root/publication_final_review",
+      "actualReviewExitCode": 0,
+      "passedMetadataChecks": 569,
+      "failedMetadataChecks": 0,
+      "countsAreProductAssertions": false,
+      "reportOriginalSHA256": "e372ac3994affde49aff7c3c19002070af577a24f9ff733b5b3feba1f60b2ec2",
+      "originalFindingsPreserved": []
+    },
+    {
+      "name": "manager-availability-v3",
+      "actor": "/root/publication_final_review/assembly_packet_review",
+      "actualReviewExitCode": 0,
+      "passedMetadataChecks": 78,
+      "failedMetadataChecks": 0,
+      "countsAreProductAssertions": false,
+      "reportOriginalSHA256": "298c990ef7505c0437fb2d37b5a44a24830f4b094b9b475b5c796190d316351d",
+      "originalFindingsPreserved": []
+    },
+    {
+      "name": "source43-v3-failed",
+      "actor": "/root/ui_tail_contract",
+      "reportOriginalSHA256": "74c7137bf5d743eea6b4afafb1ac60a9234bb857a0aa50d69e2ec9a38326bc8e",
+      "originalResult": {
+        "schema": "geometry-source43-v3-independent-inverse-public-review/1",
+        "actor": "/root/ui_tail_contract",
+        "checkedUTC": "2026-10-09T19:34:14.770768+00:00",
+        "actualCommand": [
+          "python",
+          "-B",
+          "<workspace-path>"
+        ],
+        "actualPython": "<execution-runtime-path>",
+        "actualPythonSHA256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+        "scriptSHA256": "8af42c3e6cfaa5e6dff74e6688ec9da745c15304b01e62057e057464817cbfd1",
+        "manifestSHA256": "d00a9335f86367d71df62132e6674c5ce0280340997225847500b5e9a5f80d46",
+        "checksPassed": 437,
+        "checksFailed": 4,
+        "accepted": false,
+        "exitCode": 1
+      },
+      "countsAreProductAssertions": false
+    },
+    {
+      "name": "source43-v4-accepted",
+      "actor": "/root/ui_tail_contract",
+      "reportOriginalSHA256": "66163a377d9784b9c9dae27d7f6b9b854587f67f6c13c6e104432f0883e42317",
+      "originalResult": {
+        "schema": "geometry-source43-v4-independent-inverse-public-review/1",
+        "actor": "/root/ui_tail_contract",
+        "checkedUTC": "2026-10-09T19:39:47.649728+00:00",
+        "actualCommand": [
+          "python",
+          "-B",
+          "<workspace-path>"
+        ],
+        "actualPython": "<execution-runtime-path>",
+        "actualPythonSHA256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+        "scriptSHA256": "c06e66f31c68d83f194b8ce4263e3d0fdad5a14f361b532441e6842b35bc9045",
+        "manifestSHA256": "d22a0e310ce294e8693406e5857ba6b10e8e7aa895079bcd59486b89059fb269",
+        "checksPassed": 445,
+        "checksFailed": 0,
+        "accepted": true,
+        "exitCode": 0
+      },
+      "countsAreProductAssertions": false
+    }
+  ],
+  "rootSourceStatus": [
+    {
+      "report": "geometry-root-strict-full-102ff-failure-public-review.json",
+      "recordedSourceSHA256": "2c9d965f77f30f57a4331428547588f141a836bde19c3b123737d776fe4b1b2f",
+      "matchingRetainedOriginalSourceAvailable": true,
+      "missingSourceIsUnknownNotBackfilled": false
+    },
+    {
+      "report": "geometry-root-strict-nav-failures-public-review.json",
+      "recordedSourceSHA256": "2c9d965f77f30f57a4331428547588f141a836bde19c3b123737d776fe4b1b2f",
+      "matchingRetainedOriginalSourceAvailable": true,
+      "missingSourceIsUnknownNotBackfilled": false
+    },
+    {
+      "report": "geometry-root-strict-9eb-caption-six-public-review.json",
+      "recordedSourceSHA256": "2c9d965f77f30f57a4331428547588f141a836bde19c3b123737d776fe4b1b2f",
+      "matchingRetainedOriginalSourceAvailable": true,
+      "missingSourceIsUnknownNotBackfilled": false
+    },
+    {
+      "report": "geometry-root-strict-no-receipt-environment-loss-review.json",
+      "recordedSourceSHA256": "2c9d965f77f30f57a4331428547588f141a836bde19c3b123737d776fe4b1b2f",
+      "matchingRetainedOriginalSourceAvailable": true,
+      "missingSourceIsUnknownNotBackfilled": false
+    },
+    {
+      "report": "geometry-root-strict-9eb-recovered-full-failure-public-review.json",
+      "recordedSourceSHA256": "2c9d965f77f30f57a4331428547588f141a836bde19c3b123737d776fe4b1b2f",
+      "matchingRetainedOriginalSourceAvailable": true,
+      "missingSourceIsUnknownNotBackfilled": false
+    },
+    {
+      "report": "geometry-root-strict-f3b-assembly-v5-source43-v4-review.json",
+      "recordedSourceSHA256": "2c9d965f77f30f57a4331428547588f141a836bde19c3b123737d776fe4b1b2f",
+      "matchingRetainedOriginalSourceAvailable": true,
+      "missingSourceIsUnknownNotBackfilled": false
+    },
+    {
+      "report": "geometry-root-strict-f3b-space228-v2-review.json",
+      "recordedSourceSHA256": "2c9d965f77f30f57a4331428547588f141a836bde19c3b123737d776fe4b1b2f",
+      "matchingRetainedOriginalSourceAvailable": true,
+      "missingSourceIsUnknownNotBackfilled": false
+    },
+    {
+      "report": "geometry-root-strict-f3b-shell-manager-final-review.json",
+      "recordedSourceSHA256": "2c9d965f77f30f57a4331428547588f141a836bde19c3b123737d776fe4b1b2f",
+      "matchingRetainedOriginalSourceAvailable": true,
+      "missingSourceIsUnknownNotBackfilled": false
+    },
+    {
+      "report": "geometry-root-strict-f3b-space228-prose-corrections-review.json",
+      "recordedSourceSHA256": "2c9d965f77f30f57a4331428547588f141a836bde19c3b123737d776fe4b1b2f",
+      "matchingRetainedOriginalSourceAvailable": true,
+      "missingSourceIsUnknownNotBackfilled": false
+    },
+    {
+      "report": "geometry-root-strict-f3b-assembly150-unreceipted2207-review.json",
+      "recordedSourceSHA256": "2c9d965f77f30f57a4331428547588f141a836bde19c3b123737d776fe4b1b2f",
+      "matchingRetainedOriginalSourceAvailable": true,
+      "missingSourceIsUnknownNotBackfilled": false
+    }
+  ],
+  "sourceAndArtifactReferences": [
+    {
+      "path": "publication-actor/actor-index.public.json",
+      "bytes": 23288,
+      "sha256": "8ceb82399f090755ffde618639f32167828b8691e142b846595ee33fd429561a",
+      "originalBytes": 29097,
+      "originalSha256": "304f7db805963db8a5b03b1603d4bd1cb52c75f05abc64493c0a67e3bb878eef",
+      "originalPathSHA256": "3166c7fd1769941a5e28275abb1dade0b30c1b158a0e788b9a02e743818efff6",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "actor-index.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original actual independent actor index,12metadatareview records, all failure/supplement outcomes kept.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "publication-actor/source/seal_review_actor_index_v1.py",
+      "bytes": 8534,
+      "sha256": "8bc01adcea9eadc18905d4f8ed544fe1ef6154648c4dcfbda09066cdfde5964b",
+      "originalBytes": 8619,
+      "originalSha256": "ba3ed3b19299033103d07d1bdb3abfcf42812de5137afe0b9848bbab199a759d",
+      "originalPathSHA256": "572a09f9460fc564686f2b01fa34e9d0a7d48b778879b965b100cc367f583202",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "seal_review_actor_index_v1.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Actual actor-index sealing source, not a product executor.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "publication-actor/index-command.raw.public.log",
+      "bytes": 182,
+      "sha256": "753f81bfaaf8b6c51e6ac437806e1fc1bffb4d25efea314d76549ebaf3ee97a5",
+      "originalBytes": 259,
+      "originalSha256": "89bb817a27206c674fa6b2047c8e3a1146ec46c45236f93d61fec6d14d4a69d6",
+      "originalPathSHA256": "1dacf0f0a651515c37bf84843027f0e447aaa30d7601ace3e23846b433224e1e",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "actor-index-v1.raw.log",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Actual index sealing raw tool output; index tool0 is metadata only.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "publication-actor/asm-v4-first/report.public.json",
+      "bytes": 233769,
+      "sha256": "fffd26e320b7b3c53e89e3fb83be9da36fe55ef8ccc5c524ef2ad1cd63f775af",
+      "originalBytes": 251768,
+      "originalSha256": "8cc1e456e1244067da47dd6ee64c92fc04e8cc1992d9f175bc8d0bcb8e020a6a",
+      "originalPathSHA256": "dae6a1213f7f6695ed7bba054cdd4f6093bbc88df2753fbe1e572acaf30dd818",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "report.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original actual readonly report for asm-v4-first; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "publication-actor/asm-v4-first/command.raw.public.log",
+      "bytes": 137317,
+      "sha256": "ad46d111486416f6cb6b5f15dc79055f7aeb431e29df8fb826e4ff99c7c563c6",
+      "originalBytes": 137317,
+      "originalSha256": "ad46d111486416f6cb6b5f15dc79055f7aeb431e29df8fb826e4ff99c7c563c6",
+      "originalPathSHA256": "dada669071e955fe2ef2ec46da27abab33f1bee1a26baca790a27008366a4aa7",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "command.raw.log",
+      "publicProjection": false,
+      "byteIdenticalOriginal": true,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual readonly rawLog for asm-v4-first; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "review-source-bytes/0c7d16eac138b21ec9a2d70235e5e8ba8b57336a5c449cea2e66aa6583f35e60/geometry-assembly-packet-review-v4-independent.py",
+      "bytes": 15954,
+      "sha256": "91ad67dfd72e61743409e3c4e4e6a15d782888442ee5ebd9ffbb8e67b9c6bc47",
+      "originalBytes": 15967,
+      "originalSha256": "0c7d16eac138b21ec9a2d70235e5e8ba8b57336a5c449cea2e66aa6583f35e60",
+      "originalPathSHA256": "3f8d39976477d193809a264a175ef7d5b0c838261f0a35007897c19e72619031",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "geometry-assembly-packet-review-v4-independent.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual readonly executedReviewerSource for asm-v4-first; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "publication-actor/asm-v4-projection-supplement/report.public.json",
+      "bytes": 25247,
+      "sha256": "b2d3e91a712983be712260012d96e01bdcaf16c46135cef5b0c232dbbbfe8a48",
+      "originalBytes": 25538,
+      "originalSha256": "73abb1b1ebdb88e33a300146f1e9926d3f7ebeebc9a7fa654efc6f35e907a9b6",
+      "originalPathSHA256": "fa5205e48eb32755a114a3c8edf94b9b14d18eaeb7e9f7a1d679ad1f0d429e52",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "report.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original actual readonly report for asm-v4-projection-supplement; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "publication-actor/asm-v4-projection-supplement/command.raw.public.log",
+      "bytes": 13572,
+      "sha256": "4203df9c57873db101aff1e631072e5d90308c84cfd4097fdc03e98818aee5c0",
+      "originalBytes": 13572,
+      "originalSha256": "4203df9c57873db101aff1e631072e5d90308c84cfd4097fdc03e98818aee5c0",
+      "originalPathSHA256": "dbca3cd9522a9fd5fea9fa31f860ec4217e4d2cfa3e94025eee73f73c5a026a3",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "command.raw.log",
+      "publicProjection": false,
+      "byteIdenticalOriginal": true,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual readonly rawLog for asm-v4-projection-supplement; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "review-source-bytes/651f30a53a45033509924a572116c5cac2582902f0f19e11f27c99f105220cff/geometry-assembly-packet-review-v4-supplement.py",
+      "bytes": 7427,
+      "sha256": "c98b794cc0788fcd09e6acb8a7b1b8f5b817f102072bf76482737a8eefba0083",
+      "originalBytes": 7429,
+      "originalSha256": "651f30a53a45033509924a572116c5cac2582902f0f19e11f27c99f105220cff",
+      "originalPathSHA256": "ea7443bedfb62e119441c56cccb37e18e32b1af221807964b57f6c1f795ecb3e",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "geometry-assembly-packet-review-v4-supplement.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual readonly executedReviewerSource for asm-v4-projection-supplement; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "publication-actor/asm-v5-first/report.public.json",
+      "bytes": 126934,
+      "sha256": "50710ccfeab3219e837cd9661f83f8f5047506a90b693b9085c492de0e1872ab",
+      "originalBytes": 127292,
+      "originalSha256": "95e80baf19eff575ba0ec14545b1b5aa6af8d982cb2763c32e14e8dd18b28dab",
+      "originalPathSHA256": "97dc62631d61f52e1ba9fd8675dae432751982c3383b86bd7e44c019340c8163",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "report.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original actual readonly report for asm-v5-first; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "publication-actor/asm-v5-first/command.raw.public.log",
+      "bytes": 81506,
+      "sha256": "978231b66353843f57becb9037900dbf80af791f5ebce085617832911dbab6d1",
+      "originalBytes": 81506,
+      "originalSha256": "978231b66353843f57becb9037900dbf80af791f5ebce085617832911dbab6d1",
+      "originalPathSHA256": "2947693264939c0919689f0dc423be390bacddf844ea384f44df1589f7c61584",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "command.raw.log",
+      "publicProjection": false,
+      "byteIdenticalOriginal": true,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual readonly rawLog for asm-v5-first; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "review-source-bytes/5e717febfff2b032bf3524c7ab89107bc8baf04b18b69436fc770ef41d388159/geometry-assembly-packet-review-v5-independent.py",
+      "bytes": 11416,
+      "sha256": "a59fac2ab4972103ded51380076ffba1df9cbd555b337c8438c74abc45958d5c",
+      "originalBytes": 11418,
+      "originalSha256": "5e717febfff2b032bf3524c7ab89107bc8baf04b18b69436fc770ef41d388159",
+      "originalPathSHA256": "5fb59823432e9c6a5e84031868f0b7bdc97e9da84f56a246fd564f6591a0b57d",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "geometry-assembly-packet-review-v5-independent.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual readonly executedReviewerSource for asm-v5-first; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "publication-actor/asm-v5-time-supplement-final/report.public.json",
+      "bytes": 4122,
+      "sha256": "754e6e1f2ca5cc550f5a9b7f454c76ecd61717ae52f98f0570aafaf1df21dc28",
+      "originalBytes": 4411,
+      "originalSha256": "123062855df2526e6c47445c20abf4fcd6701d9a917e47f673c66ad629e0306b",
+      "originalPathSHA256": "0bb8ddbae537438315f27511e3332c61c637282cc283968a2088f07e5f4eff16",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "report.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original actual readonly report for asm-v5-time-supplement-final; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "publication-actor/asm-v5-time-supplement-final/command.raw.public.log",
+      "bytes": 1475,
+      "sha256": "f9f58f4e39fcc4ad1cd18f9932f2789b76bd6acc750f20aba437652bfb250eb5",
+      "originalBytes": 1475,
+      "originalSha256": "f9f58f4e39fcc4ad1cd18f9932f2789b76bd6acc750f20aba437652bfb250eb5",
+      "originalPathSHA256": "19a6e6a58a4476d408fbe6c812c272e27e59643430e03b44db8022b6bc16eb0f",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "command.raw.log",
+      "publicProjection": false,
+      "byteIdenticalOriginal": true,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual readonly rawLog for asm-v5-time-supplement-final; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "review-source-bytes/89e72ecfcb1b8e2f763606befb7df13aa8daa4ae150e7b87bafeca9c5fe05e03/geometry-assembly-packet-review-v5-time-supplement.py",
+      "bytes": 5390,
+      "sha256": "fed7b3a994fc011b5a73ba88bbb57e00e862361b5fe0d02eb01af8ff81a6cee8",
+      "originalBytes": 5392,
+      "originalSha256": "89e72ecfcb1b8e2f763606befb7df13aa8daa4ae150e7b87bafeca9c5fe05e03",
+      "originalPathSHA256": "ef3df66efa62d254d122c24733a09a2f6f43725b1cd69fcb4cc167e764f85820",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "geometry-assembly-packet-review-v5-time-supplement.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual readonly executedReviewerSource for asm-v5-time-supplement-final; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "publication-actor/space-v2/report.public.json",
+      "bytes": 224364,
+      "sha256": "a018b0d6a6678c41836a7f3cb1701ac8e4ea1f4a1c758636c07d9d118dd78b2c",
+      "originalBytes": 242722,
+      "originalSha256": "28e48a2831eecf1a10bc87e119fc9ed185fc3abfd5e43b10f9b12c7b8907dcbf",
+      "originalPathSHA256": "0a014ad0ee1c38ad2dbda4f77834ecee643967b6e2b48be8aed4fcf9c05e2bef",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "report.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original actual readonly report for space-v2; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "publication-actor/space-v2/command.raw.public.log",
+      "bytes": 132827,
+      "sha256": "1ed8742e56ac4afea8e28716feed976f86e6e5f8bf2961a79a63bb812e868dcd",
+      "originalBytes": 132827,
+      "originalSha256": "1ed8742e56ac4afea8e28716feed976f86e6e5f8bf2961a79a63bb812e868dcd",
+      "originalPathSHA256": "01a599bf06f83c30a6754c256045704fdf425637369f04ce6fb8efb195129223",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "command.raw.log",
+      "publicProjection": false,
+      "byteIdenticalOriginal": true,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual readonly rawLog for space-v2; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "review-source-bytes/4788d9c675323d91729347a2b7fcd5906b5ee22e28f9b164e23920239ba3efc9/geometry-space-packet-review-v2-independent.py",
+      "bytes": 17721,
+      "sha256": "52d6f07d598af1da11ceae94f392ec59aecc3caa7cc0504ea828ff9a4a8856fb",
+      "originalBytes": 17723,
+      "originalSha256": "4788d9c675323d91729347a2b7fcd5906b5ee22e28f9b164e23920239ba3efc9",
+      "originalPathSHA256": "df75e84563600f55e58d754cde21f129712b1774bb56d17fb1207a935887667b",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "geometry-space-packet-review-v2-independent.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual readonly executedReviewerSource for space-v2; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "publication-actor/space-v2-source-bindings/report.public.json",
+      "bytes": 10397,
+      "sha256": "b731aaf8dba3238d1b2da0a83bfd3e311985738641d08cecc58372de7cf03843",
+      "originalBytes": 10684,
+      "originalSha256": "af7502ff2ac6ef684f65ef5d6f37b6f3d2807d3eb8ade2ab80777645b4af4d1d",
+      "originalPathSHA256": "f79dcb06c0e318501dc15e610a084cc9d4d6389856d45b3b656ad9acadd4ade6",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "report.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original actual readonly report for space-v2-source-bindings; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "publication-actor/space-v2-source-bindings/command.raw.public.log",
+      "bytes": 6276,
+      "sha256": "5ca1119e033df1ae167c8dd10d14d25ca8cd86a70d2276b6fb8b0df35b5b2f0b",
+      "originalBytes": 6276,
+      "originalSha256": "5ca1119e033df1ae167c8dd10d14d25ca8cd86a70d2276b6fb8b0df35b5b2f0b",
+      "originalPathSHA256": "f6fcbfa00cf27257c0e08f04085fba2e003f5b3b8bd2e4e84dbb73d4d1567481",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "command.raw.log",
+      "publicProjection": false,
+      "byteIdenticalOriginal": true,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual readonly rawLog for space-v2-source-bindings; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "review-source-bytes/1339d22392ebf04f9e72a5e1011cde02dbf548d8599355b0b78f811ab66923dc/geometry-space-packet-review-v2-source-bindings.py",
+      "bytes": 6626,
+      "sha256": "278b910766c2416202d6010e7810903b904f4b931c04be597a2ad2e0567094fc",
+      "originalBytes": 6628,
+      "originalSha256": "1339d22392ebf04f9e72a5e1011cde02dbf548d8599355b0b78f811ab66923dc",
+      "originalPathSHA256": "5020063bf9c9c76eb733b0654320fbfe65c044a6ed70ac581af07507afe820d4",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "geometry-space-packet-review-v2-source-bindings.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual readonly executedReviewerSource for space-v2-source-bindings; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "publication-actor/qualified-first-full/report.public.json",
+      "bytes": 328873,
+      "sha256": "8f185c8e071a78091814aea9b78c1de695bd508f6328b63ab2533993cb806f39",
+      "originalBytes": 348357,
+      "originalSha256": "f48329a496ef926d81a56dd95a9ce51dd1ee36f38334dcb862ac656c8ee3c709",
+      "originalPathSHA256": "b7e272ffaec04ce207024977c91f01add12f7673c088de8dd1750f2abd1a6a5a",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "report.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original actual readonly report for qualified-first-full; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "publication-actor/qualified-first-full/command.raw.public.log",
+      "bytes": 303,
+      "sha256": "2d7a33c67fc6021ad8b9b916f26043cea51a97b226c6d2f2077dfdcdefc8ac70",
+      "originalBytes": 385,
+      "originalSha256": "2659b92588ffaa2035490a9303584d24f93f25c8aae77dc9593cb60bbe178ca4",
+      "originalPathSHA256": "cd262c0e44eaa0e0a52535750b5db6525e342403d8c17ab195abbc9b980368f4",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "qualified-full-v1-review.raw.log",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual readonly rawLog for qualified-first-full; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "review-source-bytes/9a29f6d6e6fb525854feb1a42cb27a713b09be66c9350ca2a17c833069306c03/review_qualified_full_v1.py",
+      "bytes": 16926,
+      "sha256": "68f025cdcb328d69c10f2d13d08a57117021066e0a37a95fa0424c36760380db",
+      "originalBytes": 17524,
+      "originalSha256": "9a29f6d6e6fb525854feb1a42cb27a713b09be66c9350ca2a17c833069306c03",
+      "originalPathSHA256": "902f09bea6edb9d0539ad7d4a6ee51735a25428623f9d55962b17552d18a0842",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "review_qualified_full_v1.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual readonly executedReviewerSource for qualified-first-full; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "publication-actor/prose-correction/report.public.json",
+      "bytes": 289210,
+      "sha256": "dea4736a2914723db21c6cda9d5bad615836c4968a163bdbd6938d88c23eecad",
+      "originalBytes": 324594,
+      "originalSha256": "89952c9243f5b47bcb306a66e8f6566d783578d1ad2ae1785114dd33d7c6f232",
+      "originalPathSHA256": "bae7e951ba729ffa6f7049f1f0c4c02d3af67baca02c6c9bcbff48acf1db4281",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "report.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original actual readonly report for prose-correction; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "publication-actor/prose-correction/command.raw.public.log",
+      "bytes": 303,
+      "sha256": "e0264e828238586d02bf3aa994ef18ed700e4a8d366a26c6340de70bd09641d8",
+      "originalBytes": 387,
+      "originalSha256": "b6d55bde85925822f56200e3e64894174441c21452df731528e9c89112fe3c3a",
+      "originalPathSHA256": "7e1d0e8d909a7052161ac517c0f5137d0cb994f4863569fd262e729c77951c87",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "prose-correction-v1-review.raw.log",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual readonly rawLog for prose-correction; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "review-source-bytes/7e73d4ecdd0e7955b8b096b320542cae61b46012fb7829da94530e0f58fc07b0/review_prose_corrections_v1.py",
+      "bytes": 16605,
+      "sha256": "cdf993160688a7d10c15dce3688b27f3185dead07d411ed3c02e09c91f915330",
+      "originalBytes": 16654,
+      "originalSha256": "7e73d4ecdd0e7955b8b096b320542cae61b46012fb7829da94530e0f58fc07b0",
+      "originalPathSHA256": "26d74f8735419c90dbcd48bc78c32ed73ecb4503a6a2de3c4cd7cde4f7f467fd",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "review_prose_corrections_v1.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual readonly executedReviewerSource for prose-correction; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "publication-actor/shell-first/report.public.json",
+      "bytes": 2622733,
+      "sha256": "19f9034a1a2f050535cb85063baa00c634fe2a6ad7314a720e81f2dc5ba23083",
+      "originalBytes": 2761951,
+      "originalSha256": "b397d66eb42692a1f8c911b32ed62b045eda582dd02b37800d4d4cb6c7616452",
+      "originalPathSHA256": "2206f16bf230a8d47ac9cb7a513751da095e11d3f45d1f0f895a71d1fd4ce9e2",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "report.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original actual readonly report for shell-first; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "publication-actor/shell-first/command.raw.public.log",
+      "bytes": 574,
+      "sha256": "71597cb775b9ddf7346a8e0a0813fa673d0e5d8842534ddb509f3037486dd7a4",
+      "originalBytes": 654,
+      "originalSha256": "c92dfbfa4b962ebbf04f6ed5ea611d470fccae177a02a08b8e2949f50d02403a",
+      "originalPathSHA256": "6549a739c6b054ad1169f9de31bf25e562a3aadf2951246075b6bc0a1dcc95d5",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "shell-packet-v1-review.raw.log",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual readonly rawLog for shell-first; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "review-source-bytes/53afa8597fb279292b2a65bf6c25cac0a3ffb12586e06a7c82234c57f927cfb5/review_shell_packet_v1.py",
+      "bytes": 19446,
+      "sha256": "6d1b8aeb6898bc420e5321bac107b5dfb882fb27f374070e1df11967fe109d74",
+      "originalBytes": 19902,
+      "originalSha256": "53afa8597fb279292b2a65bf6c25cac0a3ffb12586e06a7c82234c57f927cfb5",
+      "originalPathSHA256": "080dbbd0ef1f1710236a4c867082f2888e203239ad9c48d554ad3124b661e3e9",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "review_shell_packet_v1.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual readonly executedReviewerSource for shell-first; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "publication-actor/shell-annotation-mobile-supplement/report.public.json",
+      "bytes": 218274,
+      "sha256": "a73b750616eea0a8f2de6ca58a7ac2d495f48b532aa60c7f61f71f483cff7d7c",
+      "originalBytes": 301742,
+      "originalSha256": "a4a79770d1e1d3e25c351c7ba651bc921576ead917907426fa8fde8dd060f294",
+      "originalPathSHA256": "c9c99a651b02bfb9c2859dddbb8c46768e5dc7f442b961553d1643d31a8622a5",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "report.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original actual readonly report for shell-annotation-mobile-supplement; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "publication-actor/shell-annotation-mobile-supplement/command.raw.public.log",
+      "bytes": 372,
+      "sha256": "5b96796d523727413a74f0e15e5a606dfb0a637a4cc340ae32665890f0f59f06",
+      "originalBytes": 456,
+      "originalSha256": "44c9fbb4cc8046f980448e6d4797514601c9beeb035576745db06239e950b7c3",
+      "originalPathSHA256": "47cd42d1ac9d9957cd607c1c859bbf7039ce2f59b1aa58079d2be546f730ce91",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "shell-packet-v1-supplement.raw.log",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual readonly rawLog for shell-annotation-mobile-supplement; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "review-source-bytes/e1653e178ba2e4af65bd7b873abda2bfd725dca3304f7d9a70a52b78141e6862/review_shell_packet_v1_supplement.py",
+      "bytes": 8603,
+      "sha256": "86dc6733589eeaea4316b13f06e03acca15ccc94c0a5350e8e863755c57af42c",
+      "originalBytes": 8837,
+      "originalSha256": "e1653e178ba2e4af65bd7b873abda2bfd725dca3304f7d9a70a52b78141e6862",
+      "originalPathSHA256": "95da0829c239aa41b81b07456fd98c8d80d967d9acac04bb604ca249837d2f63",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "review_shell_packet_v1_supplement.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual readonly executedReviewerSource for shell-annotation-mobile-supplement; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "publication-actor/shell-visible-create-final/report.public.json",
+      "bytes": 219047,
+      "sha256": "1a81288445424297d7494923ad799b47d6279903b3718bfe54ff56a5bfa90b05",
+      "originalBytes": 302248,
+      "originalSha256": "e372ac3994affde49aff7c3c19002070af577a24f9ff733b5b3feba1f60b2ec2",
+      "originalPathSHA256": "e25501c1fd00125f3364aea146833b188fffd9bb8b76e37008fe05aa05304e94",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "report.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original actual readonly report for shell-visible-create-final; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "publication-actor/shell-visible-create-final/command.raw.public.log",
+      "bytes": 315,
+      "sha256": "1a1981a34a96d9a895413539392b276d4206cc24d5de46342f3d3302f78bff78",
+      "originalBytes": 407,
+      "originalSha256": "69b0a7d260655e5a33415cda81b9bb89d31b7f0389a3f65e249ac155c24c9a1a",
+      "originalPathSHA256": "16148a1bc2211ba09ebd41432c337759d897eef81e7512f893cae1e8f6e8829b",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "shell-visible-create-resolution-v1.raw.log",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual readonly rawLog for shell-visible-create-final; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "review-source-bytes/6acca93de26c7db27f6e60fd4b87125d5b85070e5ddd55f6e247fb63b82b9aa9/review_shell_visible_create_resolution_v1.py",
+      "bytes": 4500,
+      "sha256": "17e899378c527a2e24fa9cecc4cf7301ed9e3581e3be9a02be72549f460cd6b6",
+      "originalBytes": 4718,
+      "originalSha256": "6acca93de26c7db27f6e60fd4b87125d5b85070e5ddd55f6e247fb63b82b9aa9",
+      "originalPathSHA256": "0a0daeeadea4cf14ceddb115b8b62298c2ab9396b6ea3f58d92be876bebd1082",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "review_shell_visible_create_resolution_v1.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual readonly executedReviewerSource for shell-visible-create-final; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "publication-actor/manager-availability-v3/report.public.json",
+      "bytes": 13035,
+      "sha256": "59054253214534ba702090015d5c79bab4fea58b4a7cf3aad8adda9b8c380cad",
+      "originalBytes": 13262,
+      "originalSha256": "298c990ef7505c0437fb2d37b5a44a24830f4b094b9b475b5c796190d316351d",
+      "originalPathSHA256": "408983f47d312a5afa4ac436e4524091d7c666cf59e0cef08575064923132446",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "report.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original actual readonly report for manager-availability-v3; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "publication-actor/manager-availability-v3/command.raw.public.log",
+      "bytes": 5374,
+      "sha256": "9bb77621a1566df46f4bb4d08e2762c6081f9c621699112d5f8ddbe795a12dc2",
+      "originalBytes": 5374,
+      "originalSha256": "9bb77621a1566df46f4bb4d08e2762c6081f9c621699112d5f8ddbe795a12dc2",
+      "originalPathSHA256": "5b09ac04eb0d47bdb5ac904501d658e2bf1c5b388624356028c2ef7595fd8f0c",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "command.raw.log",
+      "publicProjection": false,
+      "byteIdenticalOriginal": true,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual readonly rawLog for manager-availability-v3; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "review-source-bytes/93fd08a591b46f7659ec7edaa7d80d3569bbf7b8a4ba0d924a1f8756b34b6a80/geometry-manager-availability-v3-independent-review.py",
+      "bytes": 14701,
+      "sha256": "195e64ab294550ef441ef37b6069552e694efc8e85dfff4e6c46b51f4f6dd880",
+      "originalBytes": 14786,
+      "originalSha256": "93fd08a591b46f7659ec7edaa7d80d3569bbf7b8a4ba0d924a1f8756b34b6a80",
+      "originalPathSHA256": "371c284b6a2f2dc2e7e6995b6859203ac476b6dc9de20c1fcf50f4224e087257",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "geometry-manager-availability-v3-independent-review.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual readonly executedReviewerSource for manager-availability-v3; product assertions never inferred.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "source43-inverse/source43-v3-failed/receipt.public.json",
+      "bytes": 6069573,
+      "sha256": "2f86a9708f4dd13dffe1f1c418571448b15ef3e2ad5746e8c5c21b75b923b482",
+      "originalBytes": 6074723,
+      "originalSha256": "74c7137bf5d743eea6b4afafb1ac60a9234bb857a0aa50d69e2ec9a38326bc8e",
+      "originalPathSHA256": "23f2f61579d9a91a8b5e090ed0c68f24fef39ebc18cd559d871dc9924551c2c1",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "receipt.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original independent inverse receipt; all failures/values kept.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "source43-inverse/source43-v3-failed/review.raw.log",
+      "bytes": 44839,
+      "sha256": "59de3f75be4fb0a9fe59cef007ee9f4dbe8cdd9c798d3dde40982666b027683f",
+      "originalBytes": 44839,
+      "originalSha256": "59de3f75be4fb0a9fe59cef007ee9f4dbe8cdd9c798d3dde40982666b027683f",
+      "originalPathSHA256": "2b96f460bee2b185048dfa7926540633f2669656bc06537ac27ea0c48cc9543e",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "review.raw.log",
+      "publicProjection": false,
+      "byteIdenticalOriginal": true,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original saved independent raw/source metadata file.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "source43-inverse/source/review_source43_public_v3_inverse_r2.py",
+      "bytes": 11769,
+      "sha256": "10c060ab59c297eaccf17aa76737c14cde638d9829c91372c04f673227775ee0",
+      "originalBytes": 12172,
+      "originalSha256": "8af42c3e6cfaa5e6dff74e6688ec9da745c15304b01e62057e057464817cbfd1",
+      "originalPathSHA256": "eeb72c83666d72052db787f9f9159e4c394fb6aec8aa082945121f874b105005",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "review_source43_public_v3_inverse_r2.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original invocation source, distinct from inherited source-hash field; not retrofitted executable attestation.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "source43-inverse/source43-v4-accepted/receipt.public.json",
+      "bytes": 7815809,
+      "sha256": "c76cf66368e2aef00b38f425d72479c3b77556faf826de3f7ac93b5eb9e3376e",
+      "originalBytes": 7820956,
+      "originalSha256": "66163a377d9784b9c9dae27d7f6b9b854587f67f6c13c6e104432f0883e42317",
+      "originalPathSHA256": "63c655a4743a66b189ae424662ff723ea4997488738183b6efb5cddcaa27f4fc",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "receipt.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original independent inverse receipt; all failures/values kept.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "source43-inverse/source43-v4-accepted/review.raw.log",
+      "bytes": 45160,
+      "sha256": "1cc38e9b5d64a1f5f417e7c31acb1077f83757772f49553ece9352e7f06a6351",
+      "originalBytes": 45160,
+      "originalSha256": "1cc38e9b5d64a1f5f417e7c31acb1077f83757772f49553ece9352e7f06a6351",
+      "originalPathSHA256": "7ae1c90ff4cd6f4ecc6ac58a79514fbedfabbfbbd7d8b70ee7488e0e26a6ae1a",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "review.raw.log",
+      "publicProjection": false,
+      "byteIdenticalOriginal": true,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original saved independent raw/source metadata file.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "source43-inverse/source/review_source43_public_v4_inverse.py",
+      "bytes": 11814,
+      "sha256": "1ad3fdca0f957ff8291ec72346d4f97ecbb4c02f0e973b8a945ec5b65a701672",
+      "originalBytes": 12214,
+      "originalSha256": "c06e66f31c68d83f194b8ce4263e3d0fdad5a14f361b532441e6842b35bc9045",
+      "originalPathSHA256": "f9d44864d637c163f522385a6ba03dfdeeae35b86642b1b478e6bd2b70fc8190",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "review_source43_public_v4_inverse.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original invocation source, distinct from inherited source-hash field; not retrofitted executable attestation.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "source43-inverse/source/review_source43_public_v3_inverse.py",
+      "bytes": 11755,
+      "sha256": "b8a0d0fcb587aa5b4285613f35697e995e3a3df78f7dd6024e8903c6171852d2",
+      "originalBytes": 12155,
+      "originalSha256": "0b3627f784f6462f83bb7ea3e61b736235d01141f1c41b7216b58dc5be3ff4e9",
+      "originalPathSHA256": "e203fb2ba40401231d5009de07570a777c316b8949e4480a4cfe5fad6510fb19",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "review_source43_public_v3_inverse.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Read-only original source/dependency closure, identities separately pinned by each originalreport; no claimed root/browser execution.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "source43-inverse/source/diagnose_source43_inverse_v3.py",
+      "bytes": 2383,
+      "sha256": "a7bb42e784c0d0ee97ba8a10507e1626d9a11369818de35852642e539b27b534",
+      "originalBytes": 2600,
+      "originalSha256": "654a7d23b2dc26ccd76050bf09796a1c8b369b66a675e0e59a7d8c6d282524b5",
+      "originalPathSHA256": "732071ee6b7f69865734e0447f90a69a6763dbdf06c509f98a4089c512ed00ee",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "diagnose_source43_inverse_v3.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Read-only original source/dependency closure, identities separately pinned by each originalreport; no claimed root/browser execution.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "source43-inverse/v3-diagnostic.public.json",
+      "bytes": 14139,
+      "sha256": "3b38db4da9479d811025725a45a61a36752ff8b1dd769e2b65952318fc9d4669",
+      "originalBytes": 15325,
+      "originalSha256": "a57b464f71c77c48c8450d12656212a03cb6b25ea2013953d85b600b3740987d",
+      "originalPathSHA256": "b6c2d185fc1e4a8fc9f93bb1347fd71f0a31075e755452705e4d3be70875f5b9",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "source43-v3-independent-inverse-diagnostic.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Actual oldprose/code-loss diagnosis, not a product failure or new producttest.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "source43-inverse/execution-source-index.public.json",
+      "bytes": 6552,
+      "sha256": "e63dfda97f7977fca6a1ee36f8902a813217fb47879eb6910ff4d926ecb26298",
+      "originalBytes": 8203,
+      "originalSha256": "16beb23a58385feb21dd2d8e0e39587ae26d0a920114ac8ae1dedce5eeb39460",
+      "originalPathSHA256": "6b8c7c6119689c881928a89595c93f21c22098ab512c66e9b421e0ba9e40b965",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "index.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Actual immutable per-role index: direct r2/v4 sources, diagnostic caller and r2 AST helper distinct.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "source43-inverse/source/review_source43_public_v3_inverse.py",
+      "bytes": 11755,
+      "sha256": "b8a0d0fcb587aa5b4285613f35697e995e3a3df78f7dd6024e8903c6171852d2",
+      "originalBytes": 12155,
+      "originalSha256": "0b3627f784f6462f83bb7ea3e61b736235d01141f1c41b7216b58dc5be3ff4e9",
+      "originalPathSHA256": "cc179d7cbc49a0d06fe48a2dbff23fdca5deb950b2628e14fac1fd75187b6430",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "review_source43_public_v3_inverse.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original immutable source per exact execution-role index, not current replacement.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "source43-inverse/role-raw/original-base-failed-before-receipt.raw.public.log",
+      "bytes": 44839,
+      "sha256": "59de3f75be4fb0a9fe59cef007ee9f4dbe8cdd9c798d3dde40982666b027683f",
+      "originalBytes": 44839,
+      "originalSha256": "59de3f75be4fb0a9fe59cef007ee9f4dbe8cdd9c798d3dde40982666b027683f",
+      "originalPathSHA256": "73e1f8b3251d81e3c730da565a73330c1b6439c9704f105fa8f1813b70c959ab",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "review.raw.log",
+      "publicProjection": false,
+      "byteIdenticalOriginal": true,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual readonly raw observation; not invented exit receipt.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "source43-inverse/source/review_source43_public_v3_inverse_r2.py",
+      "bytes": 11769,
+      "sha256": "10c060ab59c297eaccf17aa76737c14cde638d9829c91372c04f673227775ee0",
+      "originalBytes": 12172,
+      "originalSha256": "8af42c3e6cfaa5e6dff74e6688ec9da745c15304b01e62057e057464817cbfd1",
+      "originalPathSHA256": "de9d48ba9b5a42053580dee049b81e0299be09e08e6c321241737e089c02dc12",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "review_source43_public_v3_inverse_r2.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original immutable source per exact execution-role index, not current replacement.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "source43-inverse/source/diagnose_source43_inverse_v3.py",
+      "bytes": 2383,
+      "sha256": "a7bb42e784c0d0ee97ba8a10507e1626d9a11369818de35852642e539b27b534",
+      "originalBytes": 2600,
+      "originalSha256": "654a7d23b2dc26ccd76050bf09796a1c8b369b66a675e0e59a7d8c6d282524b5",
+      "originalPathSHA256": "c481a1f9a143982cc857a736643a12658ae6be5b02769e39f91bd0dcecd2d963",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "diagnose_source43_inverse_v3.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original immutable source per exact execution-role index, not current replacement.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "source43-inverse/source/review_source43_public_v4_inverse.py",
+      "bytes": 11814,
+      "sha256": "1ad3fdca0f957ff8291ec72346d4f97ecbb4c02f0e973b8a945ec5b65a701672",
+      "originalBytes": 12214,
+      "originalSha256": "c06e66f31c68d83f194b8ce4263e3d0fdad5a14f361b532441e6842b35bc9045",
+      "originalPathSHA256": "f1ae865f819e069e5b08645a2e528f325d4f6b0a0218cb30e15652ff55bcf318",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "review_source43_public_v4_inverse.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original immutable source per exact execution-role index, not current replacement.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "source43-inverse/source/package_source43_inverse_execution_index.py",
+      "bytes": 3998,
+      "sha256": "29d4e7f784dfaa8472a569177b01dc76d713ea7677188da6d53087f8b8846411",
+      "originalBytes": 4025,
+      "originalSha256": "a431fb87d5ef81627a4c6523d2a6d6fa2366ffedee66b18347411e03809e7916",
+      "originalPathSHA256": "a2aab2f2a9587268fdfb109328fe6cb500b712a98dca016f7792718d1500be5a",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "package_source43_inverse_execution_index.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Actual execution-role index sealer source.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "root-strict/geometry-root-strict-full-102ff-failure-public-review.json",
+      "bytes": 1261,
+      "sha256": "c50c1ea0c924fdea45c337ff6cdbe3be1af24e5bddeb327e5001814240e1887d",
+      "originalBytes": 1558,
+      "originalSha256": "9e6cb28f5e9c6478ee4a8ecb15aecbd5f27ea3f947977cf2508caae12e6f24ce",
+      "originalPathSHA256": "765308af89dc14a6b761043f86a874bc1c15daeaf34230d596245d8ae516424a",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "geometry-root-strict-full-102ff-failure-public-review.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original ROOT strict syntax/hash/trace read-only report; no product assertion count, original staleversion roles remain dated.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "root-strict/source/geometry-root-strict-packet-review.py",
+      "bytes": 3534,
+      "sha256": "608fde85bc9d04937cc3348bc3816a0ae212d4adee35dacfb2d8cf76ae9cc0a7",
+      "originalBytes": 3545,
+      "originalSha256": "2c9d965f77f30f57a4331428547588f141a836bde19c3b123737d776fe4b1b2f",
+      "originalPathSHA256": "44ec6c52be3564a3bec1ba135914d9fd277b6505d2662ce46a7879a96467e17c",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "geometry-root-strict-packet-review.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Exact SHA-matching ROOT strict source; original recorded invocation/proc limits stay original.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "root-strict/geometry-root-strict-nav-failures-public-review.json",
+      "bytes": 1178,
+      "sha256": "94b2300ff89ac7ae7a7d1be0aed60c4a652894f61151bff6b3599223f7830032",
+      "originalBytes": 1464,
+      "originalSha256": "0dd5ded9b6666e746ea23d0ff6e9e6ae66a9b02750f949441836b53c4e57e37e",
+      "originalPathSHA256": "e9dd4993dd3c8ddbee3639cee7f54c0a510323c7da0a272db02f6a381b87cc10",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "geometry-root-strict-nav-failures-public-review.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original ROOT strict syntax/hash/trace read-only report; no product assertion count, original staleversion roles remain dated.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "root-strict/geometry-root-strict-9eb-caption-six-public-review.json",
+      "bytes": 1178,
+      "sha256": "a2af56897d875bb8b77e3b9a5b6060759280b4d25a9275fec1f61aeb6a8a0573",
+      "originalBytes": 1460,
+      "originalSha256": "faed7e9edd53782be66b37980df737143247e647449d347ebfa7a7cfe6c0ae08",
+      "originalPathSHA256": "b483644d89725a4a6a32b84a73de422f43e00528a2ed720b57fccc022c8ec6da",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "geometry-root-strict-9eb-caption-six-public-review.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original ROOT strict syntax/hash/trace read-only report; no product assertion count, original staleversion roles remain dated.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "root-strict/geometry-root-strict-no-receipt-environment-loss-review.json",
+      "bytes": 1175,
+      "sha256": "4796cb31e2f37e697026addff5827d2d636bfbb74c80c78e38ed7ed8c1b61c0c",
+      "originalBytes": 1489,
+      "originalSha256": "4cc5389ab3f587ca5cb0ffa7a727096ce3c0713279ccbe8abb89bcb69e3e461f",
+      "originalPathSHA256": "3948fdf53432b652e35740d6945aa2d378753a67778fdc390bd43d2a63fbeb4a",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "geometry-root-strict-no-receipt-environment-loss-review.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original ROOT strict syntax/hash/trace read-only report; no product assertion count, original staleversion roles remain dated.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "root-strict/geometry-root-strict-9eb-recovered-full-failure-public-review.json",
+      "bytes": 1183,
+      "sha256": "d803419d32942d6aa49f78203e94c61c54f84349d0c5aa1654e5364c665aac79",
+      "originalBytes": 1496,
+      "originalSha256": "f3c8a75decadfbbd6485819b03c3772df81002612d71be1edec343d9c9e6efd6",
+      "originalPathSHA256": "136582150ee22842f12597495f3127dd09ad2b864e6ae9b05aa9662ce782809b",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "geometry-root-strict-9eb-recovered-full-failure-public-review.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original ROOT strict syntax/hash/trace read-only report; no product assertion count, original staleversion roles remain dated.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "root-strict/geometry-root-strict-f3b-assembly-v5-source43-v4-review.json",
+      "bytes": 1497,
+      "sha256": "8e6381deec5308d3aaefc465bb79bf78f36a6aab1f5bc23d39cab68c5ccc1012",
+      "originalBytes": 1927,
+      "originalSha256": "e0d22a72cbd40db1c85cc74d59df02223758c188b92756656bb484e430aec2cd",
+      "originalPathSHA256": "f3672927cc6ba6a314894b2aef1724b7cf4befd8e93b2e14abeef05f9062df28",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "geometry-root-strict-f3b-assembly-v5-source43-v4-review.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original ROOT strict syntax/hash/trace read-only report; no product assertion count, original staleversion roles remain dated.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "root-strict/geometry-root-strict-f3b-space228-v2-review.json",
+      "bytes": 1177,
+      "sha256": "8033e7709da22c909a3b6c784d26efc3953286a1608abb5a6a3ebbfea449e128",
+      "originalBytes": 1463,
+      "originalSha256": "5caab33133d4a383a93ce51583ecb8586250bd1f9f382941be1e43cf9c8937d0",
+      "originalPathSHA256": "ef7a6d376f45d55cf587aa140a811c6f78e30ed8c14d12b54c8f2c7f65428774",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "geometry-root-strict-f3b-space228-v2-review.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original ROOT strict syntax/hash/trace read-only report; no product assertion count, original staleversion roles remain dated.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "root-strict/geometry-root-strict-f3b-shell-manager-final-review.json",
+      "bytes": 1493,
+      "sha256": "061decd76846d70eacc6081aa04a88ee7584ab1a440e781c167085f4ab4e40cb",
+      "originalBytes": 1935,
+      "originalSha256": "974b872a4d8c856d8cddf1651eacdd70bb42ce1d88c2961603ab1ba71a28ba5e",
+      "originalPathSHA256": "d2cad14d4eae4c761c56f568af5c21df61ba086385ff77f5819247b36f316dd0",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "geometry-root-strict-f3b-shell-manager-final-review.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original ROOT strict syntax/hash/trace read-only report; no product assertion count, original staleversion roles remain dated.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "root-strict/geometry-root-strict-f3b-space228-prose-corrections-review.json",
+      "bytes": 1495,
+      "sha256": "f81a7a90743bf1e263feb547689bdcdfe286a405aa0dd4a722d36a17d1a4e068",
+      "originalBytes": 1927,
+      "originalSha256": "d5468a3ad855cee40ae888b2c20b72e53954d703815b42c99fe832ffa70c66ef",
+      "originalPathSHA256": "880a9d33089e26dec468a3cba8e7f9bce0529d1192b79d950213da041049b8b6",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "geometry-root-strict-f3b-space228-prose-corrections-review.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original ROOT strict syntax/hash/trace read-only report; no product assertion count, original staleversion roles remain dated.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "root-strict/geometry-root-strict-f3b-assembly150-unreceipted2207-review.json",
+      "bytes": 1497,
+      "sha256": "394faadb84d6a2fe763e4a8ecb2385601540115420717e8fe0be583e5c7f6864",
+      "originalBytes": 1929,
+      "originalSha256": "7c034df55566243edb1a8e494ecae51a44f2be235d1618a42da012addd402521",
+      "originalPathSHA256": "04e27978a0d06c3846be7229ad226875183617956fd7da4afc0e1c26cdc3cfa2",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "geometry-root-strict-f3b-assembly150-unreceipted2207-review.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original ROOT strict syntax/hash/trace read-only report; no product assertion count, original staleversion roles remain dated.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-actor/actor-index.public.json",
+      "bytes": 10828,
+      "sha256": "ab8e5e7d6cc70afc90349da80f8e21919f7597749594daaa2448951d739fada2",
+      "originalBytes": 13298,
+      "originalSha256": "e07ca1e6973195ff2b87440e9e3a0066ca36aad52a10dfc0717cc2fe226ed235",
+      "originalPathSHA256": "8080ba34d230e2d36108c256fe32cf6513a72a09b4938b52ed507aee5f1c47a9",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "actor-index.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Actual different-actor FULL/history final index, metadata only; previous304f retained.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-actor/source/seal_formal_full_actor_addendum_v1.py",
+      "bytes": 7484,
+      "sha256": "7455e3ac4e9e11ee7670afcb63f3ea5cf954305d8ab0afce9ccd3c749dd483ae",
+      "originalBytes": 7531,
+      "originalSha256": "077dbf001fc96ad85d402f0d3155ff7dbac5e7491c5e278c8d8e901375aecf58",
+      "originalPathSHA256": "10efa6795f073d5e5db45d81125c1a862562e5ae84eced292f91f1323cc76818",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "seal_formal_full_actor_addendum_v1.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Actual index sealing source; not product runner.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-actor/index-tool-response.raw.public.log",
+      "bytes": 213,
+      "sha256": "a3b13cbbf49159461faeab19b979724d525fce69e0932fe19ec340b2cc2b229b",
+      "originalBytes": 311,
+      "originalSha256": "d6463aa19aded1c9ed327f17fd620dc32a214e16a999f3341404231cfb789ed9",
+      "originalPathSHA256": "9f9fcf22c2d9fbde14d694e9e008734867bdc56f61b5cd1c6b2b829680a2d91f",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "formal-full-actor-index-addendum-v1.tool-response.raw.log",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Exact original index toolresponse preserved later, not a captured original subprocessstderr/PIDreceipt.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-actor/formal-full-v3-primary/executedReviewerSource/review_formal_full_packet_v3.py",
+      "bytes": 16496,
+      "sha256": "678878e2606d81912a9b7012cf29cad746e8b55ad9aeab0d8e7ffd1e0179ef1d",
+      "originalBytes": 16536,
+      "originalSha256": "4c4fc022493c4b1f0ae01d79da6db5b5b457f2d1225d557fc7fc7328e09a3557",
+      "originalPathSHA256": "3fdf3d4419b65025d2ce7d93d49247a622fa1c57b07ceb6efe77f3ce636ac069",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "review_formal_full_packet_v3.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual executedReviewerSource for formal-full-v3-primary; original failures and metadata count remain separate.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-actor/formal-full-v3-primary/report/report.json",
+      "bytes": 1439729,
+      "sha256": "1b11321fe0af06c104730e1cbc35e0842c613ff94e5cae294cf5d1a866d4a156",
+      "originalBytes": 1499667,
+      "originalSha256": "97e87dd32db1799e8dd2074fd1ae90860d644b9dd0bcc2c812f238c0cb25df1c",
+      "originalPathSHA256": "384e76ecb21b6fbe40220b6c61659f2b6b5310ca93071600ffa60f18651df708",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "report.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original actual report for formal-full-v3-primary; original failures and metadata count remain separate.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-actor/formal-full-v3-primary/rawLog/formal-full-v3-review.raw.log",
+      "bytes": 204,
+      "sha256": "37427c5645e7ce0977b4029fea34dcb0c2986f70512b07d823faa669132fe878",
+      "originalBytes": 204,
+      "originalSha256": "37427c5645e7ce0977b4029fea34dcb0c2986f70512b07d823faa669132fe878",
+      "originalPathSHA256": "0d02050d2efc7cd857341aefea516a86238e5f0c7f372a7a186cca2a7159759b",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "formal-full-v3-review.raw.log",
+      "publicProjection": false,
+      "byteIdenticalOriginal": true,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual rawLog for formal-full-v3-primary; original failures and metadata count remain separate.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-actor/formal-full-v3-primary/outerSubprocessExecutionReceipt/formal-full-v3-review.execution.json",
+      "bytes": 817,
+      "sha256": "dc3b574608d3cce7ce0d8d3414e426431e9a83652403f708060e95f01bd101f1",
+      "originalBytes": 1088,
+      "originalSha256": "e010d6734625aaa3d74fbb9e9a95ae7a45a47693a344817bd4deda7b19508942",
+      "originalPathSHA256": "9f938da71513598650c4e2e3d3f53895a624e17effcfc673e3d77aec968d34e3",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "formal-full-v3-review.execution.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original actual outerSubprocessExecutionReceipt for formal-full-v3-primary; original failures and metadata count remain separate.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-actor/formal-full-v3-source-actor-initial/executedReviewerSource/geometry-formal-full-v3-source-actor-closure-review.py",
+      "bytes": 19944,
+      "sha256": "ef3c80c149ba38e99c1fe9d07813e39a9b272a93073497d9c9a997cafcff98b1",
+      "originalBytes": 19946,
+      "originalSha256": "89b5c9cd1be2f1afc669e97ef07071916dcdb97926d53e3da636e7e1bcc1e4be",
+      "originalPathSHA256": "a6ef0a6c3c51c06b2d7fa2441e4e718277718749ef2053ce2b1ba4fda0fa31c2",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "geometry-formal-full-v3-source-actor-closure-review.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual executedReviewerSource for formal-full-v3-source-actor-initial; original failures and metadata count remain separate.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-actor/formal-full-v3-source-actor-initial/report/report.json",
+      "bytes": 51569,
+      "sha256": "2638fd63ff9ebe0c61bf28ae69ad84f9d8e1d7af2f52259cb2b6c428b712db7d",
+      "originalBytes": 51796,
+      "originalSha256": "330767a7e17c98c8307c65c3cc6f4cac5ae319c3cba41f594cb51bf2fe92cc10",
+      "originalPathSHA256": "e5afe312444c1c4c85beb5f3115a5acd39e64c0ec2aaee17226a573bb6677c5b",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "report.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original actual report for formal-full-v3-source-actor-initial; original failures and metadata count remain separate.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-actor/formal-full-v3-source-actor-initial/rawLog/command.raw.log",
+      "bytes": 26593,
+      "sha256": "45c06f2f30dd4cad50ab07cd76089e114ec91dee6e585f3365af5be98b70d79c",
+      "originalBytes": 26593,
+      "originalSha256": "45c06f2f30dd4cad50ab07cd76089e114ec91dee6e585f3365af5be98b70d79c",
+      "originalPathSHA256": "648054a4cea5ddd1b9a02630ec7a3a2a44f94533ebdde28d218b7d65372d43a6",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "command.raw.log",
+      "publicProjection": false,
+      "byteIdenticalOriginal": true,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual rawLog for formal-full-v3-source-actor-initial; original failures and metadata count remain separate.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-actor/formal-full-v3-golden-envelope-supplement/executedReviewerSource/geometry-formal-full-v3-golden-envelope-supplement.py",
+      "bytes": 5844,
+      "sha256": "ff6e35096070de1fbebc39a93e4014477311eb1d7002dc638994f5ebbf62a69c",
+      "originalBytes": 5857,
+      "originalSha256": "9451541a4fc82ccdc676b054e83832948cf0a4e3ebd79f3d944c4a5f3c6b7589",
+      "originalPathSHA256": "e8408a6b6d4d0c94b62bc709cf08726ae7ddc22f0911834993f306142d5f6e83",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "geometry-formal-full-v3-golden-envelope-supplement.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual executedReviewerSource for formal-full-v3-golden-envelope-supplement; original failures and metadata count remain separate.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-actor/formal-full-v3-golden-envelope-supplement/report/report.json",
+      "bytes": 2811,
+      "sha256": "75d50c9aadb001b18c9057d6170a755715eb3680c646472cea439535a8a20f04",
+      "originalBytes": 3102,
+      "originalSha256": "6457e734c48b3578d9a7d46972f80fc8f79d7619db6e815ab772b96137f0b38b",
+      "originalPathSHA256": "390b8457b59fa9dbc3c7360857f09d19a254e0827f0de714ef4d3c2483ecd723",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "report.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original actual report for formal-full-v3-golden-envelope-supplement; original failures and metadata count remain separate.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-actor/formal-full-v3-golden-envelope-supplement/rawLog/command.raw.log",
+      "bytes": 588,
+      "sha256": "d9368bdbb33d7584b4cb9c78bb9628a2799ad93e12107029762e44749a552468",
+      "originalBytes": 588,
+      "originalSha256": "d9368bdbb33d7584b4cb9c78bb9628a2799ad93e12107029762e44749a552468",
+      "originalPathSHA256": "a5aafc025740dd68555449da7e0079955e9d79b6a0ef4e86aeb77d1448112c11",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "command.raw.log",
+      "publicProjection": false,
+      "byteIdenticalOriginal": true,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual rawLog for formal-full-v3-golden-envelope-supplement; original failures and metadata count remain separate.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-actor/publication-history-v3-primary/executedReviewerSource/review_publication_history_v3.py",
+      "bytes": 11768,
+      "sha256": "e3a76b0bc73af83f11736a8db09c6ff4ea0c54fdfb5b4e844d66d175e857ba56",
+      "originalBytes": 11808,
+      "originalSha256": "cdda20f641c21e20aa52bec72c90cc6238d13783908bdb7432ce199382e1ea3f",
+      "originalPathSHA256": "eea501a01ed3a90794b7906d0c5cd604e2832c2e20fe0432d06fafa8c3e0219e",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "review_publication_history_v3.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual executedReviewerSource for publication-history-v3-primary; original failures and metadata count remain separate.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-actor/publication-history-v3-primary/report/report.json",
+      "bytes": 133513,
+      "sha256": "3ce49b59f8897fe474127fd0135dacdb7613c6de71c6e924d1fb309780108d52",
+      "originalBytes": 145812,
+      "originalSha256": "23c160c1009b62e13461da9d000bf12438b6a8bf82b890b0666a3f3b0f48c361",
+      "originalPathSHA256": "b991ec9927c456f4ef790ad27bdc1c29e3c0ff2dba22dbc74d18fba53a85d0d6",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "report.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original actual report for publication-history-v3-primary; original failures and metadata count remain separate.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-actor/publication-history-v3-primary/rawLog/publication-history-v3-review.raw.log",
+      "bytes": 203,
+      "sha256": "005e97aa1a59b1e58e76a7c62c454370e4f3afdc7199f65f15c32febbb0c4652",
+      "originalBytes": 203,
+      "originalSha256": "005e97aa1a59b1e58e76a7c62c454370e4f3afdc7199f65f15c32febbb0c4652",
+      "originalPathSHA256": "5f74c4a285d87de32f258b50c134c4ad01504bf695b63d392a60bbcf855ce146",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "publication-history-v3-review.raw.log",
+      "publicProjection": false,
+      "byteIdenticalOriginal": true,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual rawLog for publication-history-v3-primary; original failures and metadata count remain separate.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-actor/publication-history-v3-primary/outerSubprocessExecutionReceipt/publication-history-v3-review.execution.json",
+      "bytes": 817,
+      "sha256": "4c2a1fb8972a81b2d9979a7ee7cc20e2bc69fc1ab6e87eaa6294dfd888ca15d9",
+      "originalBytes": 1105,
+      "originalSha256": "605e771fe5a64d2c77247a56a5ea3851e04bdb84e4c539458efa17a4ae92ab1c",
+      "originalPathSHA256": "06dd3ab2bf0a761752ae90e98dd0c52b9460892528b3f4dcd4111cd272f2906b",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "publication-history-v3-review.execution.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original actual outerSubprocessExecutionReceipt for publication-history-v3-primary; original failures and metadata count remain separate.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-terminal/main-review.public.json",
+      "bytes": 15271,
+      "sha256": "c613393427e1c387ed470e123bc4c9ac550d7509522d7813367e9704768d4050",
+      "originalBytes": 16151,
+      "originalSha256": "e7e2e5c9feddc1101c76d3556acdb2b59f7af7b7dff06391dcf14b0a71558421",
+      "originalPathSHA256": "96c7e14c329709d6fc49b4435492005e141ba4c5fff54ec010fe9d57580971ff",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "supplementary-validation-f3b-durable-full-cdp.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original actual bounded FULL/source/kernel metadata or explicit dated author-tool-only declaration; no productrerun or oldreceipt backfill.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-terminal/main-review.raw.public.log",
+      "bytes": 3301,
+      "sha256": "45921e41e6bb204f9a2da756b8e61e0baf31064184616ba25f82d3e179d16f6c",
+      "originalBytes": 3301,
+      "originalSha256": "45921e41e6bb204f9a2da756b8e61e0baf31064184616ba25f82d3e179d16f6c",
+      "originalPathSHA256": "f07f015e6a5044cf1a9d34f58a374640367740e5a2630ac923987140a7e559ed",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "supplementary-validation-f3b-durable-full-cdp.raw.log",
+      "publicProjection": false,
+      "byteIdenticalOriginal": true,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual bounded FULL/source/kernel metadata or explicit dated author-tool-only declaration; no productrerun or oldreceipt backfill.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-terminal/kernel-review.public.json",
+      "bytes": 5407,
+      "sha256": "570b3eed3f5812dbed432b9b1b12c185a14936326eb0e0742e67ff6b6b7eb976",
+      "originalBytes": 4966,
+      "originalSha256": "b1f872248cf5eaf1cfda3ebbd0e494006308a740fe4d90080396fa92148f55c8",
+      "originalPathSHA256": "6525365fa700a8ec2af6a7dde13039196c0656baaa2b92a26382098336b91b56",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "receipt.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original actual bounded FULL/source/kernel metadata or explicit dated author-tool-only declaration; no productrerun or oldreceipt backfill.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-terminal/kernel-review.raw.public.log",
+      "bytes": 903,
+      "sha256": "63f8815936442af0fca50c7a66e0dc358ed20714b4b5e5e98d767b384ec01081",
+      "originalBytes": 903,
+      "originalSha256": "63f8815936442af0fca50c7a66e0dc358ed20714b4b5e5e98d767b384ec01081",
+      "originalPathSHA256": "025c20312b7e6697b49d3d6521dabc7a03fe3a5210a473e9bc52275e1e5e5e21",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "review.raw.log",
+      "publicProjection": false,
+      "byteIdenticalOriginal": true,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual bounded FULL/source/kernel metadata or explicit dated author-tool-only declaration; no productrerun or oldreceipt backfill.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-terminal/controller.terminal.stat.raw",
+      "bytes": 191,
+      "sha256": "b49aa7aa2481848aebe4313d75b212f1c94a50e70f7c2443a38e573dcfc276d3",
+      "originalBytes": 191,
+      "originalSha256": "b49aa7aa2481848aebe4313d75b212f1c94a50e70f7c2443a38e573dcfc276d3",
+      "originalPathSHA256": "59d632c5ce47f3ad0c1978829088918b7d9b61ffa25199ecf3eb47a20f5439bf",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "controller.terminal.stat.raw",
+      "publicProjection": false,
+      "byteIdenticalOriginal": true,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual bounded FULL/source/kernel metadata or explicit dated author-tool-only declaration; no productrerun or oldreceipt backfill.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-terminal/source/validate_f3b_durable_integration.py",
+      "bytes": 16512,
+      "sha256": "944ced1a6c043c8a21c0d0fa3a49122b4a075854cc871bacfe375e417f1ca4c6",
+      "originalBytes": 16525,
+      "originalSha256": "d0916c681be83ead7aaf82f7a8ee790b7414ce472dda3e3755c800ac47133830",
+      "originalPathSHA256": "3411e8749098fb2597f27651e43554fd5638019dd3fa63b6a91969a7de96a726",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "validate_f3b_durable_integration.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual bounded FULL/source/kernel metadata or explicit dated author-tool-only declaration; no productrerun or oldreceipt backfill.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-terminal/source/review_f3b_durable_full_launch_kernel_v2.py",
+      "bytes": 7200,
+      "sha256": "11ce954652f58bc30d191e21abf5b558b46a90eff067ca782dc67520f95b4f83",
+      "originalBytes": 7213,
+      "originalSha256": "30545241fbbddf575bb995d76df148df2f2d3699c0d9f64737edf30273029aa9",
+      "originalPathSHA256": "ba934c2d66dd1ccd66d38ffad4e36629975672dc8017c183a2c38c5191402975",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "review_f3b_durable_full_launch_kernel_v2.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual bounded FULL/source/kernel metadata or explicit dated author-tool-only declaration; no productrerun or oldreceipt backfill.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "root-strict/geometry-root-strict-f3b-durable-full-public-v3-review.json",
+      "bytes": 1177,
+      "sha256": "9103921e1f50d77742d1d2e1552deef8e916a7bf6277624421468af7eca6985a",
+      "originalBytes": 1461,
+      "originalSha256": "0f4592c57c9a4ee657eed95cd0922ecf9535b8b4f341ba26951810876e158e5b",
+      "originalPathSHA256": "ac128b0487dabf439408549a8bfc48486a959173f1650a6da060810a9b9a82a0",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "geometry-root-strict-f3b-durable-full-public-v3-review.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original actual bounded FULL/source/kernel metadata or explicit dated author-tool-only declaration; no productrerun or oldreceipt backfill.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "publication-provenance/tool-return-declarations.public.json",
+      "bytes": 3440,
+      "sha256": "7d7b69d3d2d3f021cf7ae4004539ec787534acbb50545fa4fa5a9d62f6b78cf8",
+      "originalBytes": 3831,
+      "originalSha256": "a1fb3ae7680109294a4ea1e09b6cd0642d295f01788b20b7a046e67896818ac6",
+      "originalPathSHA256": "ec09cb4e81105ad446d749ec56bcd00e22dc584416c98f3f19137af2b054f12e",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "publication-tool-return-declarations-v1.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original actual bounded FULL/source/kernel metadata or explicit dated author-tool-only declaration; no productrerun or oldreceipt backfill.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "publication-provenance/source/seal_publication_tool_result_declarations_v1.py",
+      "bytes": 2911,
+      "sha256": "2fa3d3b3cd79280acde0dc63de2d43957ad48ed85a0ed43466bbcf5c861a7120",
+      "originalBytes": 3340,
+      "originalSha256": "ba9da927ce1ae23f0e5668f8e2f4dd73c5cadb5380a7b50bb783e21579761e58",
+      "originalPathSHA256": "2eb738064180fae66300e6537ae94d8ab417dfcc5bbc2aa14896761d6cd18503",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "seal_publication_tool_result_declarations_v1.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual bounded FULL/source/kernel metadata or explicit dated author-tool-only declaration; no productrerun or oldreceipt backfill.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    }
+  ],
+  "formalFullReviewIncluded": true,
+  "limits": [
+    "Do not add reviewer1152/3→132/0,629/1→21/0,SP14075/3→587/1→569/0,source43 437/4→445/0,Space1111/0＋64/0,prose1709/0,qualified2320/0,manager78/0 into product150/228/40/2207.",
+    "Original reporter reports/receipt/raw/source are retained. Initial false assumptions and genuine publication-role/non-tokenproseloss findings remain separate; no historical result is overwritten.",
+    "All generic detector prefix literals remain original code; only explicit actual bounded machine-path tokens are projected. JSON keys keep injective mapping and original value association.",
+    "Missing original /proc argv/PID/source snapshot/exit remains unknown; current sources only copied when original pin matches. ROOT strict receipt counts are syntax/hash evidence, not full non-token inverse by themselves.",
+    "No private queueDB/export/rootinventory, feedback/profile payload, native binaries or screenshots copied.",
+    "README.md is the preserved dated v3 cutoff; FULL-ADDENDUM.md and this fresh v4 metadata supersede its then-pending FULL statement. Original63files andv3manifest remain unchanged.",
+    "Newparent7360/0 andchild330/1→10/0 andhistory643/0 are metadata, not product2207; original actualfailed reviewer envelope assumption remains preserved.",
+    "The finalv3 original author tool0 is explicit tool-only provenance; original PID/proc exe/standalone processreceipt were not captured and stay unknown."
+  ],
+  "publicFiles": [
+    {
+      "path": "FULL-ADDENDUM.md",
+      "bytes": 1782,
+      "sha256": "97bfe9478cf4c376971326fe99c7ae5614f3690051cd77ad2a400781eda66b4d"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1785,
+      "sha256": "8188ab0bb0ba1b763879b5443ef736a68a797f2c60df58eb857934f3169b25eb"
+    },
+    {
+      "path": "formal-full-actor/actor-index.public.json",
+      "bytes": 10828,
+      "sha256": "ab8e5e7d6cc70afc90349da80f8e21919f7597749594daaa2448951d739fada2"
+    },
+    {
+      "path": "formal-full-actor/formal-full-v3-golden-envelope-supplement/executedReviewerSource/geometry-formal-full-v3-golden-envelope-supplement.py",
+      "bytes": 5844,
+      "sha256": "ff6e35096070de1fbebc39a93e4014477311eb1d7002dc638994f5ebbf62a69c"
+    },
+    {
+      "path": "formal-full-actor/formal-full-v3-golden-envelope-supplement/rawLog/command.raw.log",
+      "bytes": 588,
+      "sha256": "d9368bdbb33d7584b4cb9c78bb9628a2799ad93e12107029762e44749a552468"
+    },
+    {
+      "path": "formal-full-actor/formal-full-v3-golden-envelope-supplement/report/report.json",
+      "bytes": 2811,
+      "sha256": "75d50c9aadb001b18c9057d6170a755715eb3680c646472cea439535a8a20f04"
+    },
+    {
+      "path": "formal-full-actor/formal-full-v3-primary/executedReviewerSource/review_formal_full_packet_v3.py",
+      "bytes": 16496,
+      "sha256": "678878e2606d81912a9b7012cf29cad746e8b55ad9aeab0d8e7ffd1e0179ef1d"
+    },
+    {
+      "path": "formal-full-actor/formal-full-v3-primary/outerSubprocessExecutionReceipt/formal-full-v3-review.execution.json",
+      "bytes": 817,
+      "sha256": "dc3b574608d3cce7ce0d8d3414e426431e9a83652403f708060e95f01bd101f1"
+    },
+    {
+      "path": "formal-full-actor/formal-full-v3-primary/rawLog/formal-full-v3-review.raw.log",
+      "bytes": 204,
+      "sha256": "37427c5645e7ce0977b4029fea34dcb0c2986f70512b07d823faa669132fe878"
+    },
+    {
+      "path": "formal-full-actor/formal-full-v3-primary/report/report.json",
+      "bytes": 1439729,
+      "sha256": "1b11321fe0af06c104730e1cbc35e0842c613ff94e5cae294cf5d1a866d4a156"
+    },
+    {
+      "path": "formal-full-actor/formal-full-v3-source-actor-initial/executedReviewerSource/geometry-formal-full-v3-source-actor-closure-review.py",
+      "bytes": 19944,
+      "sha256": "ef3c80c149ba38e99c1fe9d07813e39a9b272a93073497d9c9a997cafcff98b1"
+    },
+    {
+      "path": "formal-full-actor/formal-full-v3-source-actor-initial/rawLog/command.raw.log",
+      "bytes": 26593,
+      "sha256": "45c06f2f30dd4cad50ab07cd76089e114ec91dee6e585f3365af5be98b70d79c"
+    },
+    {
+      "path": "formal-full-actor/formal-full-v3-source-actor-initial/report/report.json",
+      "bytes": 51569,
+      "sha256": "2638fd63ff9ebe0c61bf28ae69ad84f9d8e1d7af2f52259cb2b6c428b712db7d"
+    },
+    {
+      "path": "formal-full-actor/index-tool-response.raw.public.log",
+      "bytes": 213,
+      "sha256": "a3b13cbbf49159461faeab19b979724d525fce69e0932fe19ec340b2cc2b229b"
+    },
+    {
+      "path": "formal-full-actor/publication-history-v3-primary/executedReviewerSource/review_publication_history_v3.py",
+      "bytes": 11768,
+      "sha256": "e3a76b0bc73af83f11736a8db09c6ff4ea0c54fdfb5b4e844d66d175e857ba56"
+    },
+    {
+      "path": "formal-full-actor/publication-history-v3-primary/outerSubprocessExecutionReceipt/publication-history-v3-review.execution.json",
+      "bytes": 817,
+      "sha256": "4c2a1fb8972a81b2d9979a7ee7cc20e2bc69fc1ab6e87eaa6294dfd888ca15d9"
+    },
+    {
+      "path": "formal-full-actor/publication-history-v3-primary/rawLog/publication-history-v3-review.raw.log",
+      "bytes": 203,
+      "sha256": "005e97aa1a59b1e58e76a7c62c454370e4f3afdc7199f65f15c32febbb0c4652"
+    },
+    {
+      "path": "formal-full-actor/publication-history-v3-primary/report/report.json",
+      "bytes": 133513,
+      "sha256": "3ce49b59f8897fe474127fd0135dacdb7613c6de71c6e924d1fb309780108d52"
+    },
+    {
+      "path": "formal-full-actor/source/seal_formal_full_actor_addendum_v1.py",
+      "bytes": 7484,
+      "sha256": "7455e3ac4e9e11ee7670afcb63f3ea5cf954305d8ab0afce9ccd3c749dd483ae"
+    },
+    {
+      "path": "formal-full-terminal/controller.terminal.stat.raw",
+      "bytes": 191,
+      "sha256": "b49aa7aa2481848aebe4313d75b212f1c94a50e70f7c2443a38e573dcfc276d3"
+    },
+    {
+      "path": "formal-full-terminal/kernel-review.public.json",
+      "bytes": 5407,
+      "sha256": "570b3eed3f5812dbed432b9b1b12c185a14936326eb0e0742e67ff6b6b7eb976"
+    },
+    {
+      "path": "formal-full-terminal/kernel-review.raw.public.log",
+      "bytes": 903,
+      "sha256": "63f8815936442af0fca50c7a66e0dc358ed20714b4b5e5e98d767b384ec01081"
+    },
+    {
+      "path": "formal-full-terminal/main-review.public.json",
+      "bytes": 15271,
+      "sha256": "c613393427e1c387ed470e123bc4c9ac550d7509522d7813367e9704768d4050"
+    },
+    {
+      "path": "formal-full-terminal/main-review.raw.public.log",
+      "bytes": 3301,
+      "sha256": "45921e41e6bb204f9a2da756b8e61e0baf31064184616ba25f82d3e179d16f6c"
+    },
+    {
+      "path": "formal-full-terminal/source/review_f3b_durable_full_launch_kernel_v2.py",
+      "bytes": 7200,
+      "sha256": "11ce954652f58bc30d191e21abf5b558b46a90eff067ca782dc67520f95b4f83"
+    },
+    {
+      "path": "formal-full-terminal/source/validate_f3b_durable_integration.py",
+      "bytes": 16512,
+      "sha256": "944ced1a6c043c8a21c0d0fa3a49122b4a075854cc871bacfe375e417f1ca4c6"
+    },
+    {
+      "path": "publication-actor/actor-index.public.json",
+      "bytes": 23288,
+      "sha256": "8ceb82399f090755ffde618639f32167828b8691e142b846595ee33fd429561a"
+    },
+    {
+      "path": "publication-actor/asm-v4-first/command.raw.public.log",
+      "bytes": 137317,
+      "sha256": "ad46d111486416f6cb6b5f15dc79055f7aeb431e29df8fb826e4ff99c7c563c6"
+    },
+    {
+      "path": "publication-actor/asm-v4-first/report.public.json",
+      "bytes": 233769,
+      "sha256": "fffd26e320b7b3c53e89e3fb83be9da36fe55ef8ccc5c524ef2ad1cd63f775af"
+    },
+    {
+      "path": "publication-actor/asm-v4-projection-supplement/command.raw.public.log",
+      "bytes": 13572,
+      "sha256": "4203df9c57873db101aff1e631072e5d90308c84cfd4097fdc03e98818aee5c0"
+    },
+    {
+      "path": "publication-actor/asm-v4-projection-supplement/report.public.json",
+      "bytes": 25247,
+      "sha256": "b2d3e91a712983be712260012d96e01bdcaf16c46135cef5b0c232dbbbfe8a48"
+    },
+    {
+      "path": "publication-actor/asm-v5-first/command.raw.public.log",
+      "bytes": 81506,
+      "sha256": "978231b66353843f57becb9037900dbf80af791f5ebce085617832911dbab6d1"
+    },
+    {
+      "path": "publication-actor/asm-v5-first/report.public.json",
+      "bytes": 126934,
+      "sha256": "50710ccfeab3219e837cd9661f83f8f5047506a90b693b9085c492de0e1872ab"
+    },
+    {
+      "path": "publication-actor/asm-v5-time-supplement-final/command.raw.public.log",
+      "bytes": 1475,
+      "sha256": "f9f58f4e39fcc4ad1cd18f9932f2789b76bd6acc750f20aba437652bfb250eb5"
+    },
+    {
+      "path": "publication-actor/asm-v5-time-supplement-final/report.public.json",
+      "bytes": 4122,
+      "sha256": "754e6e1f2ca5cc550f5a9b7f454c76ecd61717ae52f98f0570aafaf1df21dc28"
+    },
+    {
+      "path": "publication-actor/index-command.raw.public.log",
+      "bytes": 182,
+      "sha256": "753f81bfaaf8b6c51e6ac437806e1fc1bffb4d25efea314d76549ebaf3ee97a5"
+    },
+    {
+      "path": "publication-actor/manager-availability-v3/command.raw.public.log",
+      "bytes": 5374,
+      "sha256": "9bb77621a1566df46f4bb4d08e2762c6081f9c621699112d5f8ddbe795a12dc2"
+    },
+    {
+      "path": "publication-actor/manager-availability-v3/report.public.json",
+      "bytes": 13035,
+      "sha256": "59054253214534ba702090015d5c79bab4fea58b4a7cf3aad8adda9b8c380cad"
+    },
+    {
+      "path": "publication-actor/prose-correction/command.raw.public.log",
+      "bytes": 303,
+      "sha256": "e0264e828238586d02bf3aa994ef18ed700e4a8d366a26c6340de70bd09641d8"
+    },
+    {
+      "path": "publication-actor/prose-correction/report.public.json",
+      "bytes": 289210,
+      "sha256": "dea4736a2914723db21c6cda9d5bad615836c4968a163bdbd6938d88c23eecad"
+    },
+    {
+      "path": "publication-actor/qualified-first-full/command.raw.public.log",
+      "bytes": 303,
+      "sha256": "2d7a33c67fc6021ad8b9b916f26043cea51a97b226c6d2f2077dfdcdefc8ac70"
+    },
+    {
+      "path": "publication-actor/qualified-first-full/report.public.json",
+      "bytes": 328873,
+      "sha256": "8f185c8e071a78091814aea9b78c1de695bd508f6328b63ab2533993cb806f39"
+    },
+    {
+      "path": "publication-actor/shell-annotation-mobile-supplement/command.raw.public.log",
+      "bytes": 372,
+      "sha256": "5b96796d523727413a74f0e15e5a606dfb0a637a4cc340ae32665890f0f59f06"
+    },
+    {
+      "path": "publication-actor/shell-annotation-mobile-supplement/report.public.json",
+      "bytes": 218274,
+      "sha256": "a73b750616eea0a8f2de6ca58a7ac2d495f48b532aa60c7f61f71f483cff7d7c"
+    },
+    {
+      "path": "publication-actor/shell-first/command.raw.public.log",
+      "bytes": 574,
+      "sha256": "71597cb775b9ddf7346a8e0a0813fa673d0e5d8842534ddb509f3037486dd7a4"
+    },
+    {
+      "path": "publication-actor/shell-first/report.public.json",
+      "bytes": 2622733,
+      "sha256": "19f9034a1a2f050535cb85063baa00c634fe2a6ad7314a720e81f2dc5ba23083"
+    },
+    {
+      "path": "publication-actor/shell-visible-create-final/command.raw.public.log",
+      "bytes": 315,
+      "sha256": "1a1981a34a96d9a895413539392b276d4206cc24d5de46342f3d3302f78bff78"
+    },
+    {
+      "path": "publication-actor/shell-visible-create-final/report.public.json",
+      "bytes": 219047,
+      "sha256": "1a81288445424297d7494923ad799b47d6279903b3718bfe54ff56a5bfa90b05"
+    },
+    {
+      "path": "publication-actor/source/seal_review_actor_index_v1.py",
+      "bytes": 8534,
+      "sha256": "8bc01adcea9eadc18905d4f8ed544fe1ef6154648c4dcfbda09066cdfde5964b"
+    },
+    {
+      "path": "publication-actor/space-v2/command.raw.public.log",
+      "bytes": 132827,
+      "sha256": "1ed8742e56ac4afea8e28716feed976f86e6e5f8bf2961a79a63bb812e868dcd"
+    },
+    {
+      "path": "publication-actor/space-v2/report.public.json",
+      "bytes": 224364,
+      "sha256": "a018b0d6a6678c41836a7f3cb1701ac8e4ea1f4a1c758636c07d9d118dd78b2c"
+    },
+    {
+      "path": "publication-actor/space-v2-source-bindings/command.raw.public.log",
+      "bytes": 6276,
+      "sha256": "5ca1119e033df1ae167c8dd10d14d25ca8cd86a70d2276b6fb8b0df35b5b2f0b"
+    },
+    {
+      "path": "publication-actor/space-v2-source-bindings/report.public.json",
+      "bytes": 10397,
+      "sha256": "b731aaf8dba3238d1b2da0a83bfd3e311985738641d08cecc58372de7cf03843"
+    },
+    {
+      "path": "publication-provenance/source/seal_publication_tool_result_declarations_v1.py",
+      "bytes": 2911,
+      "sha256": "2fa3d3b3cd79280acde0dc63de2d43957ad48ed85a0ed43466bbcf5c861a7120"
+    },
+    {
+      "path": "publication-provenance/tool-return-declarations.public.json",
+      "bytes": 3440,
+      "sha256": "7d7b69d3d2d3f021cf7ae4004539ec787534acbb50545fa4fa5a9d62f6b78cf8"
+    },
+    {
+      "path": "review-source-bytes/0c7d16eac138b21ec9a2d70235e5e8ba8b57336a5c449cea2e66aa6583f35e60/geometry-assembly-packet-review-v4-independent.py",
+      "bytes": 15954,
+      "sha256": "91ad67dfd72e61743409e3c4e4e6a15d782888442ee5ebd9ffbb8e67b9c6bc47"
+    },
+    {
+      "path": "review-source-bytes/1339d22392ebf04f9e72a5e1011cde02dbf548d8599355b0b78f811ab66923dc/geometry-space-packet-review-v2-source-bindings.py",
+      "bytes": 6626,
+      "sha256": "278b910766c2416202d6010e7810903b904f4b931c04be597a2ad2e0567094fc"
+    },
+    {
+      "path": "review-source-bytes/4788d9c675323d91729347a2b7fcd5906b5ee22e28f9b164e23920239ba3efc9/geometry-space-packet-review-v2-independent.py",
+      "bytes": 17721,
+      "sha256": "52d6f07d598af1da11ceae94f392ec59aecc3caa7cc0504ea828ff9a4a8856fb"
+    },
+    {
+      "path": "review-source-bytes/53afa8597fb279292b2a65bf6c25cac0a3ffb12586e06a7c82234c57f927cfb5/review_shell_packet_v1.py",
+      "bytes": 19446,
+      "sha256": "6d1b8aeb6898bc420e5321bac107b5dfb882fb27f374070e1df11967fe109d74"
+    },
+    {
+      "path": "review-source-bytes/5e717febfff2b032bf3524c7ab89107bc8baf04b18b69436fc770ef41d388159/geometry-assembly-packet-review-v5-independent.py",
+      "bytes": 11416,
+      "sha256": "a59fac2ab4972103ded51380076ffba1df9cbd555b337c8438c74abc45958d5c"
+    },
+    {
+      "path": "review-source-bytes/651f30a53a45033509924a572116c5cac2582902f0f19e11f27c99f105220cff/geometry-assembly-packet-review-v4-supplement.py",
+      "bytes": 7427,
+      "sha256": "c98b794cc0788fcd09e6acb8a7b1b8f5b817f102072bf76482737a8eefba0083"
+    },
+    {
+      "path": "review-source-bytes/6acca93de26c7db27f6e60fd4b87125d5b85070e5ddd55f6e247fb63b82b9aa9/review_shell_visible_create_resolution_v1.py",
+      "bytes": 4500,
+      "sha256": "17e899378c527a2e24fa9cecc4cf7301ed9e3581e3be9a02be72549f460cd6b6"
+    },
+    {
+      "path": "review-source-bytes/7e73d4ecdd0e7955b8b096b320542cae61b46012fb7829da94530e0f58fc07b0/review_prose_corrections_v1.py",
+      "bytes": 16605,
+      "sha256": "cdf993160688a7d10c15dce3688b27f3185dead07d411ed3c02e09c91f915330"
+    },
+    {
+      "path": "review-source-bytes/89e72ecfcb1b8e2f763606befb7df13aa8daa4ae150e7b87bafeca9c5fe05e03/geometry-assembly-packet-review-v5-time-supplement.py",
+      "bytes": 5390,
+      "sha256": "fed7b3a994fc011b5a73ba88bbb57e00e862361b5fe0d02eb01af8ff81a6cee8"
+    },
+    {
+      "path": "review-source-bytes/93fd08a591b46f7659ec7edaa7d80d3569bbf7b8a4ba0d924a1f8756b34b6a80/geometry-manager-availability-v3-independent-review.py",
+      "bytes": 14701,
+      "sha256": "195e64ab294550ef441ef37b6069552e694efc8e85dfff4e6c46b51f4f6dd880"
+    },
+    {
+      "path": "review-source-bytes/9a29f6d6e6fb525854feb1a42cb27a713b09be66c9350ca2a17c833069306c03/review_qualified_full_v1.py",
+      "bytes": 16926,
+      "sha256": "68f025cdcb328d69c10f2d13d08a57117021066e0a37a95fa0424c36760380db"
+    },
+    {
+      "path": "review-source-bytes/e1653e178ba2e4af65bd7b873abda2bfd725dca3304f7d9a70a52b78141e6862/review_shell_packet_v1_supplement.py",
+      "bytes": 8603,
+      "sha256": "86dc6733589eeaea4316b13f06e03acca15ccc94c0a5350e8e863755c57af42c"
+    },
+    {
+      "path": "root-strict/geometry-root-strict-9eb-caption-six-public-review.json",
+      "bytes": 1178,
+      "sha256": "a2af56897d875bb8b77e3b9a5b6060759280b4d25a9275fec1f61aeb6a8a0573"
+    },
+    {
+      "path": "root-strict/geometry-root-strict-9eb-recovered-full-failure-public-review.json",
+      "bytes": 1183,
+      "sha256": "d803419d32942d6aa49f78203e94c61c54f84349d0c5aa1654e5364c665aac79"
+    },
+    {
+      "path": "root-strict/geometry-root-strict-f3b-assembly-v5-source43-v4-review.json",
+      "bytes": 1497,
+      "sha256": "8e6381deec5308d3aaefc465bb79bf78f36a6aab1f5bc23d39cab68c5ccc1012"
+    },
+    {
+      "path": "root-strict/geometry-root-strict-f3b-assembly150-unreceipted2207-review.json",
+      "bytes": 1497,
+      "sha256": "394faadb84d6a2fe763e4a8ecb2385601540115420717e8fe0be583e5c7f6864"
+    },
+    {
+      "path": "root-strict/geometry-root-strict-f3b-durable-full-public-v3-review.json",
+      "bytes": 1177,
+      "sha256": "9103921e1f50d77742d1d2e1552deef8e916a7bf6277624421468af7eca6985a"
+    },
+    {
+      "path": "root-strict/geometry-root-strict-f3b-shell-manager-final-review.json",
+      "bytes": 1493,
+      "sha256": "061decd76846d70eacc6081aa04a88ee7584ab1a440e781c167085f4ab4e40cb"
+    },
+    {
+      "path": "root-strict/geometry-root-strict-f3b-space228-prose-corrections-review.json",
+      "bytes": 1495,
+      "sha256": "f81a7a90743bf1e263feb547689bdcdfe286a405aa0dd4a722d36a17d1a4e068"
+    },
+    {
+      "path": "root-strict/geometry-root-strict-f3b-space228-v2-review.json",
+      "bytes": 1177,
+      "sha256": "8033e7709da22c909a3b6c784d26efc3953286a1608abb5a6a3ebbfea449e128"
+    },
+    {
+      "path": "root-strict/geometry-root-strict-full-102ff-failure-public-review.json",
+      "bytes": 1261,
+      "sha256": "c50c1ea0c924fdea45c337ff6cdbe3be1af24e5bddeb327e5001814240e1887d"
+    },
+    {
+      "path": "root-strict/geometry-root-strict-nav-failures-public-review.json",
+      "bytes": 1178,
+      "sha256": "94b2300ff89ac7ae7a7d1be0aed60c4a652894f61151bff6b3599223f7830032"
+    },
+    {
+      "path": "root-strict/geometry-root-strict-no-receipt-environment-loss-review.json",
+      "bytes": 1175,
+      "sha256": "4796cb31e2f37e697026addff5827d2d636bfbb74c80c78e38ed7ed8c1b61c0c"
+    },
+    {
+      "path": "root-strict/source/geometry-root-strict-packet-review.py",
+      "bytes": 3534,
+      "sha256": "608fde85bc9d04937cc3348bc3816a0ae212d4adee35dacfb2d8cf76ae9cc0a7"
+    },
+    {
+      "path": "source43-inverse/execution-source-index.public.json",
+      "bytes": 6552,
+      "sha256": "e63dfda97f7977fca6a1ee36f8902a813217fb47879eb6910ff4d926ecb26298"
+    },
+    {
+      "path": "source43-inverse/role-raw/original-base-failed-before-receipt.raw.public.log",
+      "bytes": 44839,
+      "sha256": "59de3f75be4fb0a9fe59cef007ee9f4dbe8cdd9c798d3dde40982666b027683f"
+    },
+    {
+      "path": "source43-inverse/source/diagnose_source43_inverse_v3.py",
+      "bytes": 2383,
+      "sha256": "a7bb42e784c0d0ee97ba8a10507e1626d9a11369818de35852642e539b27b534"
+    },
+    {
+      "path": "source43-inverse/source/package_source43_inverse_execution_index.py",
+      "bytes": 3998,
+      "sha256": "29d4e7f784dfaa8472a569177b01dc76d713ea7677188da6d53087f8b8846411"
+    },
+    {
+      "path": "source43-inverse/source/review_source43_public_v3_inverse.py",
+      "bytes": 11755,
+      "sha256": "b8a0d0fcb587aa5b4285613f35697e995e3a3df78f7dd6024e8903c6171852d2"
+    },
+    {
+      "path": "source43-inverse/source/review_source43_public_v3_inverse_r2.py",
+      "bytes": 11769,
+      "sha256": "10c060ab59c297eaccf17aa76737c14cde638d9829c91372c04f673227775ee0"
+    },
+    {
+      "path": "source43-inverse/source/review_source43_public_v4_inverse.py",
+      "bytes": 11814,
+      "sha256": "1ad3fdca0f957ff8291ec72346d4f97ecbb4c02f0e973b8a945ec5b65a701672"
+    },
+    {
+      "path": "source43-inverse/source43-v3-failed/receipt.public.json",
+      "bytes": 6069573,
+      "sha256": "2f86a9708f4dd13dffe1f1c418571448b15ef3e2ad5746e8c5c21b75b923b482"
+    },
+    {
+      "path": "source43-inverse/source43-v3-failed/review.raw.log",
+      "bytes": 44839,
+      "sha256": "59de3f75be4fb0a9fe59cef007ee9f4dbe8cdd9c798d3dde40982666b027683f"
+    },
+    {
+      "path": "source43-inverse/source43-v4-accepted/receipt.public.json",
+      "bytes": 7815809,
+      "sha256": "c76cf66368e2aef00b38f425d72479c3b77556faf826de3f7ac93b5eb9e3376e"
+    },
+    {
+      "path": "source43-inverse/source43-v4-accepted/review.raw.log",
+      "bytes": 45160,
+      "sha256": "1cc38e9b5d64a1f5f417e7c31acb1077f83757772f49553ece9352e7f06a6351"
+    },
+    {
+      "path": "source43-inverse/v3-diagnostic.public.json",
+      "bytes": 14139,
+      "sha256": "3b38db4da9479d811025725a45a61a36752ff8b1dd769e2b65952318fc9d4669"
+    }
+  ],
+  "originalV3PublicationBuilderSHA256": "21b76be9a814fef20b90f48cd7e13234cd284bdbef4e4b859bd254096514d2e4",
+  "actualImportedBoundedProjectionFunctionSourceSHA256": "21b76be9a814fef20b90f48cd7e13234cd284bdbef4e4b859bd254096514d2e4",
+  "historicalGenerationRolePreviousV3": "v2 wrapper reads original v1 recipe, narrows scalar index and appends source43 immutable role index; complete reports/raw are unchanged separately.",
+  "publicationRecipeRole": "Fresh v4 direct source imports only bounded pure projection/load functions from direct materialized v3. Retained v1/v2 hashes are historical generation references; neither v1 nor v2 executes in this v4 or the original direct v3 publication.",
+  "supersededHistoricalV3ManifestSHA256": "0b448d857d76a02b0a7a464b4ec1574c34c85d8fc3311a834b4a4672b704c28c",
+  "prior63PublicFilesUnchanged": true,
+  "formalFullReviewOutcomes": [
+    {
+      "name": "formal-full-v3-primary",
+      "actor": "/root/publication_final_review",
+      "executedReviewerSource": {
+        "path": "<workspace-path>",
+        "sha256": "4c4fc022493c4b1f0ae01d79da6db5b5b457f2d1225d557fc7fc7328e09a3557",
+        "bytes": 16536
+      },
+      "report": {
+        "path": "<workspace-path>",
+        "sha256": "97e87dd32db1799e8dd2074fd1ae90860d644b9dd0bcc2c812f238c0cb25df1c",
+        "bytes": 1499667
+      },
+      "rawLog": {
+        "path": "<workspace-path>",
+        "sha256": "37427c5645e7ce0977b4029fea34dcb0c2986f70512b07d823faa669132fe878",
+        "bytes": 204
+      },
+      "actualCommand": [
+        "<execution-runtime-path>",
+        "-B",
+        "<workspace-path>",
+        "<workspace-path>"
+      ],
+      "actualReviewExitCode": 0,
+      "passedMetadataChecks": 7360,
+      "failedMetadataChecks": 0,
+      "countsAreProductAssertions": false,
+      "actualPython": "<execution-runtime-path>",
+      "actualPythonSHA256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+      "originalFindingsPreserved": [],
+      "originalPID": 310405,
+      "originalCmdlineHex": "707974686f6e002d42002f776f726b73706163652f736372617463682f67656f6d657472792d7075626c69636174696f6e2d66696e616c2d7265766965772d32303236313030392f7265766965775f666f726d616c5f66756c6c5f7061636b65745f76332e7079002f776f726b73706163652f736372617463682f67656f6d657472792d7075626c69636174696f6e2d66696e616c2d7265766965772d32303236313030392f666f726d616c2d66756c6c2d76332d72657669657700",
+      "outerSubprocessExecutionReceipt": {
+        "path": "<workspace-path>",
+        "sha256": "e010d6734625aaa3d74fbb9e9a95ae7a45a47693a344817bd4deda7b19508942",
+        "bytes": 1088
+      },
+      "exitProvenance": "Original independent outer subprocess.returncode, report and raw identity agreement."
+    },
+    {
+      "name": "formal-full-v3-source-actor-initial",
+      "actor": "/root/publication_final_review/assembly_packet_review",
+      "executedReviewerSource": {
+        "path": "<workspace-path>",
+        "sha256": "89b5c9cd1be2f1afc669e97ef07071916dcdb97926d53e3da636e7e1bcc1e4be",
+        "bytes": 19946
+      },
+      "report": {
+        "path": "<workspace-path>",
+        "sha256": "330767a7e17c98c8307c65c3cc6f4cac5ae319c3cba41f594cb51bf2fe92cc10",
+        "bytes": 51796
+      },
+      "rawLog": {
+        "path": "<workspace-path>",
+        "sha256": "45c06f2f30dd4cad50ab07cd76089e114ec91dee6e585f3365af5be98b70d79c",
+        "bytes": 26593
+      },
+      "actualCommand": [
+        "<execution-runtime-path>",
+        "-B",
+        "<workspace-path>"
+      ],
+      "actualReviewExitCode": 1,
+      "passedMetadataChecks": 330,
+      "failedMetadataChecks": 1,
+      "countsAreProductAssertions": false,
+      "actualPython": "<execution-runtime-path>",
+      "actualPythonSHA256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+      "originalFindingsPreserved": [
+        {
+          "name": "original frozen golden84 matched exact actualcanonicalsections",
+          "passed": false,
+          "details": null
+        }
+      ],
+      "originalPID": "unknown-not-originally-captured",
+      "originalCmdlineHex": "unknown-not-originally-captured",
+      "exitProvenance": "Original child executed tool return and independently sealed report/raw; no separate original outer PID/executable/exit receipt invented.",
+      "readonlyParserDependency": {
+        "path": "<workspace-path>",
+        "sha256": "0c7d16eac138b21ec9a2d70235e5e8ba8b57336a5c449cea2e66aa6583f35e60",
+        "bytes": 15967
+      }
+    },
+    {
+      "name": "formal-full-v3-golden-envelope-supplement",
+      "actor": "/root/publication_final_review/assembly_packet_review",
+      "executedReviewerSource": {
+        "path": "<workspace-path>",
+        "sha256": "9451541a4fc82ccdc676b054e83832948cf0a4e3ebd79f3d944c4a5f3c6b7589",
+        "bytes": 5857
+      },
+      "report": {
+        "path": "<workspace-path>",
+        "sha256": "6457e734c48b3578d9a7d46972f80fc8f79d7619db6e815ab772b96137f0b38b",
+        "bytes": 3102
+      },
+      "rawLog": {
+        "path": "<workspace-path>",
+        "sha256": "d9368bdbb33d7584b4cb9c78bb9628a2799ad93e12107029762e44749a552468",
+        "bytes": 588
+      },
+      "actualCommand": [
+        "<execution-runtime-path>",
+        "-B",
+        "<workspace-path>"
+      ],
+      "actualReviewExitCode": 0,
+      "passedMetadataChecks": 10,
+      "failedMetadataChecks": 0,
+      "countsAreProductAssertions": false,
+      "actualPython": "<execution-runtime-path>",
+      "actualPythonSHA256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+      "originalFindingsPreserved": [],
+      "originalPID": "unknown-not-originally-captured",
+      "originalCmdlineHex": "unknown-not-originally-captured",
+      "exitProvenance": "Original child executed tool return and independently sealed report/raw; no separate original outer PID/executable/exit receipt invented.",
+      "correctedReviewerAssumption": "Golden source is the original schema envelope {schema,mode,total,sections}; prior predicate erroneously compared canonical sections directly to the envelope. Exact original golden.sections matches84 actualcanonical sections totaling2207. Original source, golden, assertions, receipts and failed review remain unchanged.",
+      "originalFailedReviewRetained": {
+        "path": "<workspace-path>",
+        "sha256": "330767a7e17c98c8307c65c3cc6f4cac5ae319c3cba41f594cb51bf2fe92cc10",
+        "actualExitCode": 1,
+        "passedMetadataChecks": 330,
+        "failedMetadataChecks": 1
+      }
+    },
+    {
+      "name": "publication-history-v3-primary",
+      "actor": "/root/publication_final_review",
+      "executedReviewerSource": {
+        "path": "<workspace-path>",
+        "sha256": "cdda20f641c21e20aa52bec72c90cc6238d13783908bdb7432ce199382e1ea3f",
+        "bytes": 11808
+      },
+      "report": {
+        "path": "<workspace-path>",
+        "sha256": "23c160c1009b62e13461da9d000bf12438b6a8bf82b890b0666a3f3b0f48c361",
+        "bytes": 145812
+      },
+      "rawLog": {
+        "path": "<workspace-path>",
+        "sha256": "005e97aa1a59b1e58e76a7c62c454370e4f3afdc7199f65f15c32febbb0c4652",
+        "bytes": 203
+      },
+      "actualCommand": [
+        "<execution-runtime-path>",
+        "-B",
+        "<workspace-path>",
+        "<workspace-path>"
+      ],
+      "actualReviewExitCode": 0,
+      "passedMetadataChecks": 643,
+      "failedMetadataChecks": 0,
+      "countsAreProductAssertions": false,
+      "actualPython": "<execution-runtime-path>",
+      "actualPythonSHA256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+      "originalFindingsPreserved": [],
+      "originalPID": 310579,
+      "originalCmdlineHex": "707974686f6e002d42002f776f726b73706163652f736372617463682f67656f6d657472792d7075626c69636174696f6e2d66696e616c2d7265766965772d32303236313030392f7265766965775f7075626c69636174696f6e5f686973746f72795f76332e7079002f776f726b73706163652f736372617463682f67656f6d657472792d7075626c69636174696f6e2d66696e616c2d7265766965772d32303236313030392f7075626c69636174696f6e2d686973746f72792d76332d72657669657700",
+      "outerSubprocessExecutionReceipt": {
+        "path": "<workspace-path>",
+        "sha256": "605e771fe5a64d2c77247a56a5ea3851e04bdb84e4c539458efa17a4ae92ab1c",
+        "bytes": 1105
+      },
+      "exitProvenance": "Original independent outer subprocess.returncode, report and raw identity agreement."
+    }
+  ],
+  "newOriginalSourceAndArtifactReferences": [
+    {
+      "path": "formal-full-actor/actor-index.public.json",
+      "bytes": 10828,
+      "sha256": "ab8e5e7d6cc70afc90349da80f8e21919f7597749594daaa2448951d739fada2",
+      "originalBytes": 13298,
+      "originalSha256": "e07ca1e6973195ff2b87440e9e3a0066ca36aad52a10dfc0717cc2fe226ed235",
+      "originalPathSHA256": "8080ba34d230e2d36108c256fe32cf6513a72a09b4938b52ed507aee5f1c47a9",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "actor-index.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Actual different-actor FULL/history final index, metadata only; previous304f retained.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-actor/source/seal_formal_full_actor_addendum_v1.py",
+      "bytes": 7484,
+      "sha256": "7455e3ac4e9e11ee7670afcb63f3ea5cf954305d8ab0afce9ccd3c749dd483ae",
+      "originalBytes": 7531,
+      "originalSha256": "077dbf001fc96ad85d402f0d3155ff7dbac5e7491c5e278c8d8e901375aecf58",
+      "originalPathSHA256": "10efa6795f073d5e5db45d81125c1a862562e5ae84eced292f91f1323cc76818",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "seal_formal_full_actor_addendum_v1.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Actual index sealing source; not product runner.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-actor/index-tool-response.raw.public.log",
+      "bytes": 213,
+      "sha256": "a3b13cbbf49159461faeab19b979724d525fce69e0932fe19ec340b2cc2b229b",
+      "originalBytes": 311,
+      "originalSha256": "d6463aa19aded1c9ed327f17fd620dc32a214e16a999f3341404231cfb789ed9",
+      "originalPathSHA256": "9f9fcf22c2d9fbde14d694e9e008734867bdc56f61b5cd1c6b2b829680a2d91f",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "formal-full-actor-index-addendum-v1.tool-response.raw.log",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Exact original index toolresponse preserved later, not a captured original subprocessstderr/PIDreceipt.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-actor/formal-full-v3-primary/executedReviewerSource/review_formal_full_packet_v3.py",
+      "bytes": 16496,
+      "sha256": "678878e2606d81912a9b7012cf29cad746e8b55ad9aeab0d8e7ffd1e0179ef1d",
+      "originalBytes": 16536,
+      "originalSha256": "4c4fc022493c4b1f0ae01d79da6db5b5b457f2d1225d557fc7fc7328e09a3557",
+      "originalPathSHA256": "3fdf3d4419b65025d2ce7d93d49247a622fa1c57b07ceb6efe77f3ce636ac069",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "review_formal_full_packet_v3.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual executedReviewerSource for formal-full-v3-primary; original failures and metadata count remain separate.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-actor/formal-full-v3-primary/report/report.json",
+      "bytes": 1439729,
+      "sha256": "1b11321fe0af06c104730e1cbc35e0842c613ff94e5cae294cf5d1a866d4a156",
+      "originalBytes": 1499667,
+      "originalSha256": "97e87dd32db1799e8dd2074fd1ae90860d644b9dd0bcc2c812f238c0cb25df1c",
+      "originalPathSHA256": "384e76ecb21b6fbe40220b6c61659f2b6b5310ca93071600ffa60f18651df708",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "report.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original actual report for formal-full-v3-primary; original failures and metadata count remain separate.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-actor/formal-full-v3-primary/rawLog/formal-full-v3-review.raw.log",
+      "bytes": 204,
+      "sha256": "37427c5645e7ce0977b4029fea34dcb0c2986f70512b07d823faa669132fe878",
+      "originalBytes": 204,
+      "originalSha256": "37427c5645e7ce0977b4029fea34dcb0c2986f70512b07d823faa669132fe878",
+      "originalPathSHA256": "0d02050d2efc7cd857341aefea516a86238e5f0c7f372a7a186cca2a7159759b",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "formal-full-v3-review.raw.log",
+      "publicProjection": false,
+      "byteIdenticalOriginal": true,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual rawLog for formal-full-v3-primary; original failures and metadata count remain separate.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-actor/formal-full-v3-primary/outerSubprocessExecutionReceipt/formal-full-v3-review.execution.json",
+      "bytes": 817,
+      "sha256": "dc3b574608d3cce7ce0d8d3414e426431e9a83652403f708060e95f01bd101f1",
+      "originalBytes": 1088,
+      "originalSha256": "e010d6734625aaa3d74fbb9e9a95ae7a45a47693a344817bd4deda7b19508942",
+      "originalPathSHA256": "9f938da71513598650c4e2e3d3f53895a624e17effcfc673e3d77aec968d34e3",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "formal-full-v3-review.execution.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original actual outerSubprocessExecutionReceipt for formal-full-v3-primary; original failures and metadata count remain separate.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-actor/formal-full-v3-source-actor-initial/executedReviewerSource/geometry-formal-full-v3-source-actor-closure-review.py",
+      "bytes": 19944,
+      "sha256": "ef3c80c149ba38e99c1fe9d07813e39a9b272a93073497d9c9a997cafcff98b1",
+      "originalBytes": 19946,
+      "originalSha256": "89b5c9cd1be2f1afc669e97ef07071916dcdb97926d53e3da636e7e1bcc1e4be",
+      "originalPathSHA256": "a6ef0a6c3c51c06b2d7fa2441e4e718277718749ef2053ce2b1ba4fda0fa31c2",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "geometry-formal-full-v3-source-actor-closure-review.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual executedReviewerSource for formal-full-v3-source-actor-initial; original failures and metadata count remain separate.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-actor/formal-full-v3-source-actor-initial/report/report.json",
+      "bytes": 51569,
+      "sha256": "2638fd63ff9ebe0c61bf28ae69ad84f9d8e1d7af2f52259cb2b6c428b712db7d",
+      "originalBytes": 51796,
+      "originalSha256": "330767a7e17c98c8307c65c3cc6f4cac5ae319c3cba41f594cb51bf2fe92cc10",
+      "originalPathSHA256": "e5afe312444c1c4c85beb5f3115a5acd39e64c0ec2aaee17226a573bb6677c5b",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "report.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original actual report for formal-full-v3-source-actor-initial; original failures and metadata count remain separate.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-actor/formal-full-v3-source-actor-initial/rawLog/command.raw.log",
+      "bytes": 26593,
+      "sha256": "45c06f2f30dd4cad50ab07cd76089e114ec91dee6e585f3365af5be98b70d79c",
+      "originalBytes": 26593,
+      "originalSha256": "45c06f2f30dd4cad50ab07cd76089e114ec91dee6e585f3365af5be98b70d79c",
+      "originalPathSHA256": "648054a4cea5ddd1b9a02630ec7a3a2a44f94533ebdde28d218b7d65372d43a6",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "command.raw.log",
+      "publicProjection": false,
+      "byteIdenticalOriginal": true,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual rawLog for formal-full-v3-source-actor-initial; original failures and metadata count remain separate.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-actor/formal-full-v3-golden-envelope-supplement/executedReviewerSource/geometry-formal-full-v3-golden-envelope-supplement.py",
+      "bytes": 5844,
+      "sha256": "ff6e35096070de1fbebc39a93e4014477311eb1d7002dc638994f5ebbf62a69c",
+      "originalBytes": 5857,
+      "originalSha256": "9451541a4fc82ccdc676b054e83832948cf0a4e3ebd79f3d944c4a5f3c6b7589",
+      "originalPathSHA256": "e8408a6b6d4d0c94b62bc709cf08726ae7ddc22f0911834993f306142d5f6e83",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "geometry-formal-full-v3-golden-envelope-supplement.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual executedReviewerSource for formal-full-v3-golden-envelope-supplement; original failures and metadata count remain separate.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-actor/formal-full-v3-golden-envelope-supplement/report/report.json",
+      "bytes": 2811,
+      "sha256": "75d50c9aadb001b18c9057d6170a755715eb3680c646472cea439535a8a20f04",
+      "originalBytes": 3102,
+      "originalSha256": "6457e734c48b3578d9a7d46972f80fc8f79d7619db6e815ab772b96137f0b38b",
+      "originalPathSHA256": "390b8457b59fa9dbc3c7360857f09d19a254e0827f0de714ef4d3c2483ecd723",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "report.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original actual report for formal-full-v3-golden-envelope-supplement; original failures and metadata count remain separate.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-actor/formal-full-v3-golden-envelope-supplement/rawLog/command.raw.log",
+      "bytes": 588,
+      "sha256": "d9368bdbb33d7584b4cb9c78bb9628a2799ad93e12107029762e44749a552468",
+      "originalBytes": 588,
+      "originalSha256": "d9368bdbb33d7584b4cb9c78bb9628a2799ad93e12107029762e44749a552468",
+      "originalPathSHA256": "a5aafc025740dd68555449da7e0079955e9d79b6a0ef4e86aeb77d1448112c11",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "command.raw.log",
+      "publicProjection": false,
+      "byteIdenticalOriginal": true,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual rawLog for formal-full-v3-golden-envelope-supplement; original failures and metadata count remain separate.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-actor/publication-history-v3-primary/executedReviewerSource/review_publication_history_v3.py",
+      "bytes": 11768,
+      "sha256": "e3a76b0bc73af83f11736a8db09c6ff4ea0c54fdfb5b4e844d66d175e857ba56",
+      "originalBytes": 11808,
+      "originalSha256": "cdda20f641c21e20aa52bec72c90cc6238d13783908bdb7432ce199382e1ea3f",
+      "originalPathSHA256": "eea501a01ed3a90794b7906d0c5cd604e2832c2e20fe0432d06fafa8c3e0219e",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "review_publication_history_v3.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual executedReviewerSource for publication-history-v3-primary; original failures and metadata count remain separate.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-actor/publication-history-v3-primary/report/report.json",
+      "bytes": 133513,
+      "sha256": "3ce49b59f8897fe474127fd0135dacdb7613c6de71c6e924d1fb309780108d52",
+      "originalBytes": 145812,
+      "originalSha256": "23c160c1009b62e13461da9d000bf12438b6a8bf82b890b0666a3f3b0f48c361",
+      "originalPathSHA256": "b991ec9927c456f4ef790ad27bdc1c29e3c0ff2dba22dbc74d18fba53a85d0d6",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "report.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original actual report for publication-history-v3-primary; original failures and metadata count remain separate.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-actor/publication-history-v3-primary/rawLog/publication-history-v3-review.raw.log",
+      "bytes": 203,
+      "sha256": "005e97aa1a59b1e58e76a7c62c454370e4f3afdc7199f65f15c32febbb0c4652",
+      "originalBytes": 203,
+      "originalSha256": "005e97aa1a59b1e58e76a7c62c454370e4f3afdc7199f65f15c32febbb0c4652",
+      "originalPathSHA256": "5f74c4a285d87de32f258b50c134c4ad01504bf695b63d392a60bbcf855ce146",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "publication-history-v3-review.raw.log",
+      "publicProjection": false,
+      "byteIdenticalOriginal": true,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual rawLog for publication-history-v3-primary; original failures and metadata count remain separate.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-actor/publication-history-v3-primary/outerSubprocessExecutionReceipt/publication-history-v3-review.execution.json",
+      "bytes": 817,
+      "sha256": "4c2a1fb8972a81b2d9979a7ee7cc20e2bc69fc1ab6e87eaa6294dfd888ca15d9",
+      "originalBytes": 1105,
+      "originalSha256": "605e771fe5a64d2c77247a56a5ea3851e04bdb84e4c539458efa17a4ae92ab1c",
+      "originalPathSHA256": "06dd3ab2bf0a761752ae90e98dd0c52b9460892528b3f4dcd4111cd272f2906b",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "publication-history-v3-review.execution.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original actual outerSubprocessExecutionReceipt for publication-history-v3-primary; original failures and metadata count remain separate.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-terminal/main-review.public.json",
+      "bytes": 15271,
+      "sha256": "c613393427e1c387ed470e123bc4c9ac550d7509522d7813367e9704768d4050",
+      "originalBytes": 16151,
+      "originalSha256": "e7e2e5c9feddc1101c76d3556acdb2b59f7af7b7dff06391dcf14b0a71558421",
+      "originalPathSHA256": "96c7e14c329709d6fc49b4435492005e141ba4c5fff54ec010fe9d57580971ff",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "supplementary-validation-f3b-durable-full-cdp.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original actual bounded FULL/source/kernel metadata or explicit dated author-tool-only declaration; no productrerun or oldreceipt backfill.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-terminal/main-review.raw.public.log",
+      "bytes": 3301,
+      "sha256": "45921e41e6bb204f9a2da756b8e61e0baf31064184616ba25f82d3e179d16f6c",
+      "originalBytes": 3301,
+      "originalSha256": "45921e41e6bb204f9a2da756b8e61e0baf31064184616ba25f82d3e179d16f6c",
+      "originalPathSHA256": "f07f015e6a5044cf1a9d34f58a374640367740e5a2630ac923987140a7e559ed",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "supplementary-validation-f3b-durable-full-cdp.raw.log",
+      "publicProjection": false,
+      "byteIdenticalOriginal": true,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual bounded FULL/source/kernel metadata or explicit dated author-tool-only declaration; no productrerun or oldreceipt backfill.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-terminal/kernel-review.public.json",
+      "bytes": 5407,
+      "sha256": "570b3eed3f5812dbed432b9b1b12c185a14936326eb0e0742e67ff6b6b7eb976",
+      "originalBytes": 4966,
+      "originalSha256": "b1f872248cf5eaf1cfda3ebbd0e494006308a740fe4d90080396fa92148f55c8",
+      "originalPathSHA256": "6525365fa700a8ec2af6a7dde13039196c0656baaa2b92a26382098336b91b56",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "receipt.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original actual bounded FULL/source/kernel metadata or explicit dated author-tool-only declaration; no productrerun or oldreceipt backfill.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-terminal/kernel-review.raw.public.log",
+      "bytes": 903,
+      "sha256": "63f8815936442af0fca50c7a66e0dc358ed20714b4b5e5e98d767b384ec01081",
+      "originalBytes": 903,
+      "originalSha256": "63f8815936442af0fca50c7a66e0dc358ed20714b4b5e5e98d767b384ec01081",
+      "originalPathSHA256": "025c20312b7e6697b49d3d6521dabc7a03fe3a5210a473e9bc52275e1e5e5e21",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "review.raw.log",
+      "publicProjection": false,
+      "byteIdenticalOriginal": true,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual bounded FULL/source/kernel metadata or explicit dated author-tool-only declaration; no productrerun or oldreceipt backfill.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-terminal/controller.terminal.stat.raw",
+      "bytes": 191,
+      "sha256": "b49aa7aa2481848aebe4313d75b212f1c94a50e70f7c2443a38e573dcfc276d3",
+      "originalBytes": 191,
+      "originalSha256": "b49aa7aa2481848aebe4313d75b212f1c94a50e70f7c2443a38e573dcfc276d3",
+      "originalPathSHA256": "59d632c5ce47f3ad0c1978829088918b7d9b61ffa25199ecf3eb47a20f5439bf",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "controller.terminal.stat.raw",
+      "publicProjection": false,
+      "byteIdenticalOriginal": true,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual bounded FULL/source/kernel metadata or explicit dated author-tool-only declaration; no productrerun or oldreceipt backfill.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-terminal/source/validate_f3b_durable_integration.py",
+      "bytes": 16512,
+      "sha256": "944ced1a6c043c8a21c0d0fa3a49122b4a075854cc871bacfe375e417f1ca4c6",
+      "originalBytes": 16525,
+      "originalSha256": "d0916c681be83ead7aaf82f7a8ee790b7414ce472dda3e3755c800ac47133830",
+      "originalPathSHA256": "3411e8749098fb2597f27651e43554fd5638019dd3fa63b6a91969a7de96a726",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "validate_f3b_durable_integration.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual bounded FULL/source/kernel metadata or explicit dated author-tool-only declaration; no productrerun or oldreceipt backfill.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "formal-full-terminal/source/review_f3b_durable_full_launch_kernel_v2.py",
+      "bytes": 7200,
+      "sha256": "11ce954652f58bc30d191e21abf5b558b46a90eff067ca782dc67520f95b4f83",
+      "originalBytes": 7213,
+      "originalSha256": "30545241fbbddf575bb995d76df148df2f2d3699c0d9f64737edf30273029aa9",
+      "originalPathSHA256": "ba934c2d66dd1ccd66d38ffad4e36629975672dc8017c183a2c38c5191402975",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "review_f3b_durable_full_launch_kernel_v2.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual bounded FULL/source/kernel metadata or explicit dated author-tool-only declaration; no productrerun or oldreceipt backfill.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "root-strict/geometry-root-strict-f3b-durable-full-public-v3-review.json",
+      "bytes": 1177,
+      "sha256": "9103921e1f50d77742d1d2e1552deef8e916a7bf6277624421468af7eca6985a",
+      "originalBytes": 1461,
+      "originalSha256": "0f4592c57c9a4ee657eed95cd0922ecf9535b8b4f341ba26951810876e158e5b",
+      "originalPathSHA256": "ac128b0487dabf439408549a8bfc48486a959173f1650a6da060810a9b9a82a0",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "geometry-root-strict-f3b-durable-full-public-v3-review.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original actual bounded FULL/source/kernel metadata or explicit dated author-tool-only declaration; no productrerun or oldreceipt backfill.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "publication-provenance/tool-return-declarations.public.json",
+      "bytes": 3440,
+      "sha256": "7d7b69d3d2d3f021cf7ae4004539ec787534acbb50545fa4fa5a9d62f6b78cf8",
+      "originalBytes": 3831,
+      "originalSha256": "a1fb3ae7680109294a4ea1e09b6cd0642d295f01788b20b7a046e67896818ac6",
+      "originalPathSHA256": "ec09cb4e81105ad446d749ec56bcd00e22dc584416c98f3f19137af2b054f12e",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "publication-tool-return-declarations-v1.json",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "decodedJSONinjectivekeys",
+      "role": "Original actual bounded FULL/source/kernel metadata or explicit dated author-tool-only declaration; no productrerun or oldreceipt backfill.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    },
+    {
+      "path": "publication-provenance/source/seal_publication_tool_result_declarations_v1.py",
+      "bytes": 2911,
+      "sha256": "2fa3d3b3cd79280acde0dc63de2d43957ad48ed85a0ed43466bbcf5c861a7120",
+      "originalBytes": 3340,
+      "originalSha256": "ba9da927ce1ae23f0e5668f8e2f4dd73c5cadb5380a7b50bb783e21579761e58",
+      "originalPathSHA256": "2eb738064180fae66300e6537ae94d8ab417dfcc5bbc2aa14896761d6cd18503",
+      "originalPathLabel": "<workspace-path>",
+      "originalBasename": "seal_publication_tool_result_declarations_v1.py",
+      "publicProjection": true,
+      "byteIdenticalOriginal": false,
+      "projectionKind": "boundedASCIItexttokens",
+      "role": "Original actual bounded FULL/source/kernel metadata or explicit dated author-tool-only declaration; no productrerun or oldreceipt backfill.",
+      "publicSourceWasExecuted": false,
+      "genericDetectorPrefixLiteralsPreserved": true
+    }
+  ],
+  "formalFullAcceptedPacketManifestSHA256": "f33d0032d3bfd33cec02f9790a90104892e8a4bbd8803b8349105544571c7b93"
+}

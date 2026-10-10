@@ -1,0 +1,34 @@
+{
+  "schema": "geometry-contract-browser-reopen/1",
+  "started": "2026-10-08T16:51:14.388815+00:00",
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "/workspace/closure-evidence/contracts/browser_save_reopen_probe.py",
+    "--root",
+    "/workspace/geometry-axiom",
+    "--url",
+    "http://127.0.0.1:18971/",
+    "--out",
+    "/workspace/closure-evidence/contracts/browser-run-01"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "script_sha256": "9a744684466b34be866230943a2dc8af3c0534cb6d74727210cec59556f22a8c",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "playwright": "1.62.0",
+  "sandbox": true,
+  "launch_arguments_requested": [],
+  "accept_dirty": false,
+  "limits": [
+    "API fixture setup; no UI geometry authoring claim",
+    "Real download fallback and Playwright file chooser; no OS save dialog claim",
+    "Native World/reference/assembly fixtures only; no model, PDF, image or unpublished draft fixture",
+    "Viewport 390 is desktop Chromium emulation; no physical-device or IME claim",
+    "Successful reopen may advance native revision; all raw revisions are retained",
+    "Rejected owned delete must preserve raw dump and assembly-read including revision"
+  ],
+  "cases": [],
+  "exit_code": 1,
+  "error": "Traceback (most recent call last):\n  File \"/workspace/closure-evidence/contracts/browser_save_reopen_probe.py\", line 214, in main\n    receipt['before'] = identity('before')\n                        ^^^^^^^^^^^^^^^^^^\n  File \"/workspace/closure-evidence/contracts/browser_save_reopen_probe.py\", line 91, in identity\n    for child in children_path.read_text().split():\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py\", line 1027, in read_text\n    with self.open(mode='r', encoding=encoding, errors=errors) as f:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py\", line 1013, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/proc/138518/task/138518/children'\n",
+  "failed_phase": "preflight",
+  "finished": "2026-10-08T16:51:14.466022+00:00"
+}

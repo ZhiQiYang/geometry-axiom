@@ -1,0 +1,97 @@
+{
+  "checked_at": "2026-10-09T15:32:35.142383+00:00",
+  "commands": [
+    {
+      "command": [
+        "pwd"
+      ],
+      "stdout": "<workspace-path>\n",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "stdout": "0b37d8d8d4ee501fe6208e3e88440b3d078d7c0b\n",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD^{tree}"
+      ],
+      "stdout": "bca483696c4873c248a216a804c46576195eaaa3\n",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "origin/main"
+      ],
+      "stdout": "5cc1ffa1ee85120eca14258b86b715151cad274f\n",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "status",
+        "--short"
+      ],
+      "stdout": "",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--binary"
+      ],
+      "stdout": "",
+      "stderr": "",
+      "exit_code": 0
+    }
+  ],
+  "head": "0b37d8d8d4ee501fe6208e3e88440b3d078d7c0b",
+  "tree": "bca483696c4873c248a216a804c46576195eaaa3",
+  "status": "",
+  "dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "runtime": {
+    "schema": "geometry-runtime/1",
+    "version": "9a699d338e32ef81fd19567f33d8b81cf53613906309f9610f89640b6d394d44",
+    "fresh": true,
+    "root": "<workspace-path>",
+    "pid": 117550,
+    "session": "1d93793867da4b348ffaffed83a2e70d"
+  },
+  "bridge": {
+    "registry": {
+      "name": "bridge",
+      "state": "fresh",
+      "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T15:23:07+00:00）",
+      "path": "<isolated-test-directory>"
+    },
+    "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b",
+    "owned_direct_child": [
+      {
+        "pid": 117852,
+        "live_sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b"
+      }
+    ]
+  },
+  "sources": {
+    "geometry-web/app.css": "36fff1d84396a35d3221aad02c1ba673303e447c01229d9999a0ef1a8be1e355",
+    "geometry-web/app.js": "b70f8e428d49dcc5d7d83821ae32ebab1084251b7881d0f6cd503c4a05e84355",
+    "geometry-web/index.html": "5084ee2b214a1653bcdfd31105bbb05b786f1447d14f9eb177ecb3185d27a9a4",
+    "geometry-web/workspace-shell.js": "780a26eb4e061069f8161bedd44665d2ed4ece9f695cefeffef7a7d855ec3b4c",
+    "geometry-web/serve.py": "bacc291874f7191739236696cf6e1c231daee57008f827d96389a562f5f30fb6"
+  }
+}

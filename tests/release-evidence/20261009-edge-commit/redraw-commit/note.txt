@@ -1,0 +1,1 @@
+The NODE_EXIT 0 line in this log is not the node status. cmd.exe expanded %ERRORLEVEL% before node exited. EDGE_RESULT in the same log is passed 18, failed 8, completed false. The script sets process.exitCode to 1 when failed is not 0. That OS code was not captured.

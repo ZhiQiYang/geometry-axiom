@@ -1,0 +1,181 @@
+{
+  "schema": "geometry-executor-partial-index/1",
+  "indexedUtc": "2026-10-09T15:14:27.093727+00:00",
+  "reviewerRole": "same executing agent, not an independent reviewer",
+  "git": {
+    "root": "<workspace-path>",
+    "head": "640a81443b3d070dba3d8a0aa52adb2d64cebe0b",
+    "tree": "e814667a97eb1f00e6fb863901558880e7a48b43",
+    "status": ""
+  },
+  "command": [
+    "node",
+    "geometry-web/cdp_test.js"
+  ],
+  "environment": {
+    "GEOMETRY_GRID_SYSTEM_ONLY": "1",
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:19182/",
+    "GEOMETRY_TEST_BRIDGE": "<isolated-test-directory>",
+    "GEOMETRY_BRIDGE": "<isolated-test-directory>",
+    "GEOMETRY_MODEL_BASE": "<isolated-test-directory>",
+    "GEOMETRY_FEEDBACK_DIR": "<isolated-test-directory>",
+    "GEOMETRY_CHROME": "/usr/bin/chromium",
+    "GEOMETRY_CDP_PORT": "35363"
+  },
+  "execution": {
+    "started": "2026-10-09T15:02:28.610542+00:00",
+    "exitCode": 0,
+    "timedOut": false,
+    "interrupted": false,
+    "pid": 92873,
+    "finished": "2026-10-09T15:08:47.964291+00:00"
+  },
+  "result": {
+    "schema": "geometry-cdp-result/1",
+    "scope": {
+      "mode": "partial",
+      "filters": [
+        "GEOMETRY_GRID_SYSTEM_ONLY"
+      ],
+      "modifiers": [],
+      "url": "http://127.0.0.1:19182/",
+      "feedbackDirectory": "<isolated-test-directory>",
+      "browserProfile": "<isolated-test-directory>",
+      "cdpPort": 35363,
+      "browserPid": 92881
+    },
+    "completed": true,
+    "passedAssertions": 346,
+    "failedAssertions": 0,
+    "skipped": [],
+    "sections": {
+      "P70": 117,
+      "P71": 9,
+      "P78": 23,
+      "P87": 60,
+      "P88": 137
+    },
+    "goldenCompare": "not compared (partial mode)",
+    "uncaughtBrowserExceptions": 0,
+    "coverage": "Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts."
+  },
+  "rawLog": {
+    "path": "<original-evidence-root>/after-final-640a8144-grid-20261009/command.log",
+    "sha256": "5f39678e2f2c66a3e288fafff118c2951a8f60a3bcc25977269d0facde0a34b5",
+    "bytes": 41212
+  },
+  "receipt": {
+    "path": "<original-evidence-root>/after-final-640a8144-grid-20261009/receipt.json",
+    "sha256": "bb9e90e1d6ab6885f9882ea3ff47a557049b1df7be9dacc88ba5a2113e1740de",
+    "originalUnmodified": true
+  },
+  "executionIdentity": {
+    "liveBinding": {
+      "observedUtc": "2026-10-09T15:02:28.997990+00:00",
+      "scope": "Observed live during this command, not retrospectively bound to prior runs",
+      "cdpScope": {
+        "mode": "partial",
+        "filters": [
+          "GEOMETRY_GRID_SYSTEM_ONLY"
+        ],
+        "modifiers": [],
+        "url": "http://127.0.0.1:19182/",
+        "feedbackDirectory": "<isolated-test-directory>",
+        "browserProfile": "<isolated-test-directory>",
+        "cdpPort": 35363,
+        "browserPid": 92881
+      },
+      "processes": [
+        {
+          "role": "actual CDP_SCOPE browser",
+          "pid": 92881,
+          "exe": "/usr/bin/dash",
+          "sha256": "a6f559e00b69a4aa4d8cb607be18d9386c5aee55c509e2c075549dcf00e00fc7",
+          "cmdline": [
+            "/bin/sh",
+            "/usr/bin/chromium",
+            "--headless=new",
+            "--disable-gpu",
+            "--no-first-run",
+            "--remote-debugging-port=35363",
+            "--window-size=1400,900",
+            "--user-data-dir=<isolated-test-directory>",
+            "about:blank"
+          ],
+          "cwd": "<workspace-path>"
+        },
+        {
+          "role": "actual browser parent Node",
+          "pid": 92873,
+          "exe": "<node-runtime>/bin/node",
+          "sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12",
+          "cmdline": [
+            "node",
+            "geometry-web/cdp_test.js"
+          ],
+          "cwd": "<workspace-path>"
+        }
+      ]
+    },
+    "errors": []
+  },
+  "identityGap": {
+    "status": "actual Chromium executable bytes not received for this run",
+    "cause": "Observer sampled the owned browser PID during /usr/bin/dash launcher stage, before exec into Chromium.",
+    "qualification": "Original wrapper reports executionVerified:true, but this executor review does not accept complete interpreter/browser identity because the recorded browser image is dash.",
+    "confirmed": [
+      "canonical Node PID92873 live image/bytes",
+      "owned service/native bridge before and after",
+      "full clean tested source SHA and unchanged tree",
+      "actual completed partial run 346/0/0 and exit0"
+    ],
+    "notBackfilled": true,
+    "nextRunRepair": "Versioned scratch observer waits for actual main Chromium ELF, exact owned profile/CDP port and live canonical Node parent; reads no process environment; excludes launcher stages.",
+    "correctedFutureScratch": {
+      "cdp_execution_identity_v2.py": {
+        "path": "<original-evidence-root>/cdp_execution_identity_v2.py",
+        "sha256": "b34554e6f8e643d5f040d6f9b0b5e7bc1619a75b52d3d5d5bdb1f7dc9069a0cc"
+      },
+      "space_execution_identity.py": {
+        "path": "<original-evidence-root>/space_execution_identity.py",
+        "sha256": "cf842949ffc088fb170a94a8df2bc85046179b19ca44d227392ce5f767b7336b"
+      },
+      "run_full_cdp_identity.py": {
+        "path": "<original-evidence-root>/run_full_cdp_identity.py",
+        "sha256": "5ce8212de96e45d0b613b17888a053a7a679024dc1a230f4c734a6170cc5da89"
+      },
+      "run_full_space_identity.py": {
+        "path": "<original-evidence-root>/run_full_space_identity.py",
+        "sha256": "8b9729cb300347361b2f6bf507e08fd6fab662ec2bc9f0fca107fb2da02dadae"
+      }
+    },
+    "qa": {
+      "syntaxCompileExitCode": 0,
+      "staticRoleChecks": [
+        "actual main role accepted",
+        "dash launcher rejected",
+        "renderer rejected",
+        "other profile rejected",
+        "other CDP port rejected"
+      ],
+      "productOrBrowserRerunForMetadata": false
+    }
+  },
+  "browserRelease": {
+    "chromePid": 92881,
+    "state": "exited zombie",
+    "cdpPort": 35363,
+    "connectEx": 111
+  },
+  "scopeLimits": [
+    "partial GRID_SYSTEM_ONLY only; no golden compare",
+    "6 of 9 inline-discard callers exercised; uiux1 and ux-refinement2 require full CDP",
+    "compact Delete isolation remained an adopted UI repair at this SHA",
+    "full CDP and standalone Space not started",
+    "Windows raw originals remain unreceived"
+  ],
+  "historicalBindings": {
+    "complete2207Sha": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+    "windows173": "1692 passed / 2 failed, exit1, completed:false; never aggregated or rebound"
+  }
+}

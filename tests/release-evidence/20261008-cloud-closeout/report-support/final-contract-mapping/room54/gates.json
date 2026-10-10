@@ -1,0 +1,237 @@
+[
+  {
+    "gate": "room-acceptance",
+    "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+    "counts": {
+      "observed": 253,
+      "passed": 253,
+      "failed": 0,
+      "basis": "individual canonical result records"
+    },
+    "command": [
+      "node",
+      "tests/room_outline_acceptance_browser.js"
+    ],
+    "commandExitCode": 0,
+    "gateExitCode": 0,
+    "verdict": "bounded-pass",
+    "dirtyBefore": "",
+    "dirtyAfter": "",
+    "runtimeBefore": {
+      "schema": "geometry-runtime/1",
+      "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+      "fresh": true,
+      "root": "/workspace/geometry-axiom",
+      "pid": 174658,
+      "session": "86b719350c9d4e3b90536403b05f9dcc"
+    },
+    "runtimeAfter": {
+      "schema": "geometry-runtime/1",
+      "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+      "fresh": true,
+      "root": "/workspace/geometry-axiom",
+      "pid": 174658,
+      "session": "86b719350c9d4e3b90536403b05f9dcc"
+    },
+    "limitations": [
+      "Single-room authored fixtures, PDF/image calibration and save/reopen; not private missing attachment visual comparison.",
+      "Linux Chromium, not physical phone/IME/native OS picker certification.",
+      "The command.log combines child stdout/stderr; separate gate-wrapper stdout/stderr are preserved.",
+      "A native file hash alone is not proof of which live native process was loaded; consult separate live-service binding."
+    ]
+  },
+  {
+    "gate": "room-pan",
+    "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+    "counts": {
+      "observed": 32,
+      "passed": 32,
+      "failed": 0,
+      "basis": "individual canonical result records"
+    },
+    "command": [
+      "node",
+      "tests/room_outline_pan_browser.js"
+    ],
+    "commandExitCode": 0,
+    "gateExitCode": 0,
+    "verdict": "bounded-pass",
+    "dirtyBefore": "",
+    "dirtyAfter": "",
+    "runtimeBefore": {
+      "schema": "geometry-runtime/1",
+      "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+      "fresh": true,
+      "root": "/workspace/geometry-axiom",
+      "pid": 174658,
+      "session": "86b719350c9d4e3b90536403b05f9dcc"
+    },
+    "runtimeAfter": {
+      "schema": "geometry-runtime/1",
+      "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+      "fresh": true,
+      "root": "/workspace/geometry-axiom",
+      "pid": 174658,
+      "session": "86b719350c9d4e3b90536403b05f9dcc"
+    },
+    "limitations": [
+      "Gesture and exact native/state preservation on synthetic single-room fixture.",
+      "Linux Chromium, not physical phone/IME/native OS picker certification.",
+      "The command.log combines child stdout/stderr; separate gate-wrapper stdout/stderr are preserved.",
+      "A native file hash alone is not proof of which live native process was loaded; consult separate live-service binding."
+    ]
+  },
+  {
+    "gate": "room-worker",
+    "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+    "counts": {
+      "observed": 78,
+      "passed": 78,
+      "failed": 0,
+      "basis": "individual canonical result records"
+    },
+    "command": [
+      "node",
+      "tests/room_outline_worker_browser.js"
+    ],
+    "commandExitCode": 0,
+    "gateExitCode": 0,
+    "verdict": "bounded-pass",
+    "dirtyBefore": "",
+    "dirtyAfter": "",
+    "runtimeBefore": {
+      "schema": "geometry-runtime/1",
+      "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+      "fresh": true,
+      "root": "/workspace/geometry-axiom",
+      "pid": 174658,
+      "session": "86b719350c9d4e3b90536403b05f9dcc"
+    },
+    "runtimeAfter": {
+      "schema": "geometry-runtime/1",
+      "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+      "fresh": true,
+      "root": "/workspace/geometry-axiom",
+      "pid": 174658,
+      "session": "86b719350c9d4e3b90536403b05f9dcc"
+    },
+    "limitations": [
+      "Real Worker computation plus explicitly injected retained callback after genuine terminate; not an uninjected browser race claim.",
+      "Linux Chromium, not physical phone/IME/native OS picker certification.",
+      "The command.log combines child stdout/stderr; separate gate-wrapper stdout/stderr are preserved.",
+      "A native file hash alone is not proof of which live native process was loaded; consult separate live-service binding."
+    ]
+  },
+  {
+    "gate": "room-keyboard",
+    "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+    "counts": {
+      "observed": 373,
+      "passed": 372,
+      "failed": 1,
+      "basis": "individual canonical result records"
+    },
+    "command": [
+      "node",
+      "tests/room_outline_keyboard_browser.js"
+    ],
+    "commandExitCode": null,
+    "gateExitCode": null,
+    "verdict": "incomplete-service-disconnection-exit-unknown",
+    "dirtyBefore": null,
+    "dirtyAfter": null,
+    "runtimeBefore": null,
+    "runtimeAfter": null,
+    "limitations": [
+      "Interrupted/incomplete original run: service connection failures precede fatal checkbox click timeout. Missing release receipt means command and gate exit unknown; 373 observed assertions do not mean suite completion.",
+      "Linux Chromium, not physical phone/IME/native OS picker certification.",
+      "The command.log combines child stdout/stderr; separate gate-wrapper stdout/stderr are preserved.",
+      "A native file hash alone is not proof of which live native process was loaded; consult separate live-service binding."
+    ]
+  },
+  {
+    "gate": "room-keyboard-r2",
+    "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+    "counts": {
+      "observed": 396,
+      "passed": 396,
+      "failed": 0,
+      "basis": "individual canonical result records"
+    },
+    "command": [
+      "node",
+      "tests/room_outline_keyboard_browser.js"
+    ],
+    "commandExitCode": 0,
+    "gateExitCode": 0,
+    "verdict": "bounded-pass",
+    "dirtyBefore": "",
+    "dirtyAfter": "",
+    "runtimeBefore": {
+      "schema": "geometry-runtime/1",
+      "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+      "fresh": true,
+      "root": "/workspace/geometry-axiom",
+      "pid": 196578,
+      "session": "ca31be77efb542b89d45d5a88c3b1b45"
+    },
+    "runtimeAfter": {
+      "schema": "geometry-runtime/1",
+      "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+      "fresh": true,
+      "root": "/workspace/geometry-axiom",
+      "pid": 196578,
+      "session": "ca31be77efb542b89d45d5a88c3b1b45"
+    },
+    "limitations": [
+      "Only this named gate scope; no whole-product release conclusion.",
+      "Linux Chromium, not physical phone/IME/native OS picker certification.",
+      "The command.log combines child stdout/stderr; separate gate-wrapper stdout/stderr are preserved.",
+      "A native file hash alone is not proof of which live native process was loaded; consult separate live-service binding."
+    ]
+  },
+  {
+    "gate": "full-cdp-r3",
+    "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+    "counts": {
+      "passed": 2207,
+      "failed": 0,
+      "completed": true,
+      "skippedGroups": 0,
+      "sections": 84,
+      "uncaughtBrowserExceptions": 1,
+      "basis": "sole original CDP_RESULT line equals canonical release receipt; exact section floors and exception provenance reviewed separately"
+    },
+    "command": [
+      "node",
+      "geometry-web/cdp_test.js"
+    ],
+    "commandExitCode": 0,
+    "gateExitCode": 0,
+    "verdict": "bounded-pass",
+    "dirtyBefore": "",
+    "dirtyAfter": "",
+    "runtimeBefore": {
+      "schema": "geometry-runtime/1",
+      "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+      "fresh": true,
+      "root": "/workspace/geometry-axiom",
+      "pid": 196578,
+      "session": "ca31be77efb542b89d45d5a88c3b1b45"
+    },
+    "runtimeAfter": {
+      "schema": "geometry-runtime/1",
+      "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+      "fresh": true,
+      "root": "/workspace/geometry-axiom",
+      "pid": 196578,
+      "session": "ca31be77efb542b89d45d5a88c3b1b45"
+    },
+    "limitations": [
+      "Complete Linux CDP regression on clean 5174a8d: full mode, zero filters/modifiers/skips, 84 section floors matched. Exactly one intentionally injected P38 fb-auto-probe exception; not zero browser exceptions. Mixed trusted/DOM/native assertions do not replace independent race findings or Windows/physical-device acceptance.",
+      "Linux Chromium, not physical phone/IME/native OS picker certification.",
+      "The command.log combines child stdout/stderr; separate gate-wrapper stdout/stderr are preserved.",
+      "A native file hash alone is not proof of which live native process was loaded; consult separate live-service binding."
+    ]
+  }
+]

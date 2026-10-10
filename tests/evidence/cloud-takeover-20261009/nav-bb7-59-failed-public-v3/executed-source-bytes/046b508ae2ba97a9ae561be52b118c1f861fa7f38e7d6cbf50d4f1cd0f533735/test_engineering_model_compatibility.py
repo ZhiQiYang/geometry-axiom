@@ -1,0 +1,380 @@
+"""Engineering capability boundaries and exact known-axiom compatibility."""
+from copy import deepcopy
+import base64
+import json
+from pathlib import Path
+import sys
+from types import SimpleNamespace
+import unittest
+from unittest import mock
+import zipfile
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "geometry-core"))
+import modeling
+from modeling import ModelError, ModelWorld, build_package, verify_package
+from modeling.base import load_base
+from modeling.common import canonical_bytes, digest, scene_required_capabilities
+
+LEGACY_VERSION = ("494660068ceb884c1a96884a2b704e3bcf5d24ca", "bc01cf0db266f97255156e28e40fb235833031fb95f1f234ad6d90a9f08240f8")
+ENGINEERING_VERSION = ("5698f8501d539ed3a6f0644dab854e62e3bafb1a", "1843e3e9f6a3a6db07ceaa8f62fad693039296d519791af98c2a433554308bcf")
+FINITE_GRID_VERSION = ("b4fe75f7f03ed81b4bc9f85a044282f91bd27cb6", "2d31868524cb2776c2c405367fa69087b8f43371f320f12f3405fb14ce9fdf28")
+CASE = json.loads((ROOT / "geometry-core/modeling-cases.json").read_text())["cases"][0]
+
+
+class EngineeringAdapterProtocol(unittest.TestCase):
+    def snapshot(self, scene="", capabilities=None):
+        value = {"ok": True, "schema": "geometry-base-snapshot/1", "base_scene": scene,
+                 "specs": [], "placements": [], "solids": [], "unplaced_timbers": [], "dependencies": []}
+        if capabilities is not None:
+            value["required_capabilities"] = capabilities
+        return value
+
+    def adapter(self, source, snapshot):
+        output = SimpleNamespace(stdout=canonical_bytes(snapshot), returncode=0)
+        with mock.patch("modeling.base.subprocess.run", return_value=output):
+            return load_base(source, executable="test-only-adapter")
+
+    def test_old_snapshot_protocol_is_accepted_for_legacy_sources_only(self):
+        self.adapter("", self.snapshot())
+        with self.assertRaises(ModelError) as caught:
+            self.adapter("requires engineering-spec/1\n", self.snapshot())
+        self.assertEqual(caught.exception.code, "BASE_PROTOCOL")
+
+    def test_adapter_must_preserve_source_marker_and_required_capabilities(self):
+        source = "requires engineering-spec/1\nengineering material encoded-source\n"
+        self.adapter(source, self.snapshot(source, ["engineering-spec/1"]))
+        for snapshot in [self.snapshot(source), self.snapshot("", ["engineering-spec/1"]),
+                         self.snapshot(source, ["engineering-spec/2"]),
+                         self.snapshot(source, ["engineering-spec/1", "engineering-spec/1"])]:
+            with self.subTest(snapshot=snapshot), self.assertRaises(ModelError):
+                self.adapter(source, snapshot)
+
+    def test_unknown_required_schema_and_stripped_markers_never_hide_sources(self):
+        with self.assertRaises(ModelError) as caught:
+            load_base("requires engineering-spec/9\n", executable="never-executed")
+        self.assertEqual(caught.exception.code, "CAPABILITY")
+        self.assertEqual(scene_required_capabilities("# requires engineering-spec/9\n"), set())
+        self.assertEqual(scene_required_capabilities("engineering grid payload\n"), {"engineering-spec/1"})
+
+
+class EngineeringModelCompatibility(unittest.TestCase):
+    def build(self):
+        return build_package(deepcopy(CASE["definitions"]), deepcopy(CASE["request"]))
+
+    def test_legacy_definitions_do_not_gain_engineering_capability(self):
+        package = self.build()
+        self.assertNotIn("engineering-spec/1", package["manifest"]["capabilities"])
+        self.assertEqual(verify_package(package)["derived"], package["derived"])
+
+    def test_exact_known_legacy_revision_rebuilds_without_mutating_saved_package(self):
+        package = self.build()
+        package["manifest"]["axiom_revision"], package["manifest"]["axiom_sha256"] = LEGACY_VERSION
+        original = deepcopy(package)
+        rebuilt = verify_package(package)
+        self.assertEqual(package, original)
+        for key in ("definitions", "request", "derived"):
+            self.assertEqual(rebuilt[key], package[key])
+        self.assertIn(LEGACY_VERSION, modeling.LEGACY_AXIOM_VERSIONS)
+
+    def test_exact_pre_generation_revision_still_rebuilds_existing_package(self):
+        package=self.build();package['manifest']['axiom_revision'],package['manifest']['axiom_sha256']=next(iter(modeling.PRE_GENERATION_AXIOM_VERSIONS))
+        self.assertEqual(package['derived'],verify_package(package)['derived'])
+
+    def test_generation_sources_are_gated_before_unsupported_model_adapter_runs(self):
+        for scene in ['requires assembly-timber-generation/1\n','owned 1 1 timber 1 27 33 role primary\n']:
+            self.assertIn('assembly-timber-generation/1',scene_required_capabilities(scene))
+            with self.assertRaises(ModelError) as caught:load_base(scene,executable='must-not-execute')
+            self.assertEqual('CAPABILITY',caught.exception.code)
+
+    def test_unknown_revision_or_mixed_revision_hash_pair_is_rejected(self):
+        for version in [("0" * 40, LEGACY_VERSION[1]), (LEGACY_VERSION[0], "0" * 64),
+                        ("0" * 40, "0" * 64), (LEGACY_VERSION[0], modeling.AXIOM_SHA256),
+                        (modeling.AXIOM_REVISION, LEGACY_VERSION[1]),
+                        (ENGINEERING_VERSION[0], modeling.AXIOM_SHA256),
+                        (modeling.AXIOM_REVISION, ENGINEERING_VERSION[1]),
+                        (ENGINEERING_VERSION[0], LEGACY_VERSION[1])]:
+            package = self.build()
+            package["manifest"]["axiom_revision"], package["manifest"]["axiom_sha256"] = version
+            with self.subTest(version=version), self.assertRaises(ModelError) as caught:
+                verify_package(package)
+            self.assertEqual(caught.exception.code, "AXIOM_VERSION")
+
+    def test_exact_previous_engineering_package_retains_real_material_sources(self):
+        material = {"id": "panel-a", "version": 1, "kind": "panel", "name": "面材",
+                    "width": 915, "length": 1830, "thickness": "6.50", "notes": None}
+        record = {"value": material, "fingerprint": digest(material)}
+        definitions = deepcopy(CASE["definitions"])
+        definitions["base_scene"] += "requires engineering-spec/1\nengineering material " + base64.b64encode(canonical_bytes(record)).decode() + "\n"
+        package = build_package(definitions, deepcopy(CASE["request"]))
+        package["manifest"]["axiom_revision"], package["manifest"]["axiom_sha256"] = ENGINEERING_VERSION
+        original = deepcopy(package)
+        rebuilt = verify_package(package)
+        self.assertEqual(package, original)
+        self.assertIn(ENGINEERING_VERSION, modeling.ENGINEERING_AXIOM_VERSIONS)
+        self.assertNotIn(ENGINEERING_VERSION, modeling.LEGACY_AXIOM_VERSIONS)
+        self.assertIn("engineering-spec/1", rebuilt["manifest"]["capabilities"])
+        for key in ("definitions", "request", "derived"):
+            self.assertEqual(rebuilt[key], original[key])
+        package["manifest"]["axiom_revision"], package["manifest"]["axiom_sha256"] = LEGACY_VERSION
+        with self.assertRaises(ModelError) as caught:
+            verify_package(package)
+        self.assertEqual(caught.exception.code, "AXIOM_VERSION")
+
+    def test_finite_grid_sources_roundtrip_but_reject_pre_grid_axioms(self):
+        definitions = deepcopy(CASE["definitions"])
+        definitions["base_scene"] += ("grid-system 0 name-hex e585b1e794a8 main-along none u series 100 100 3 v none\n"
+                                      "grid 0 on 1 from-system 0 origin 0 0\n")
+        package = build_package(definitions, deepcopy(CASE["request"]))
+        rebuilt = verify_package(package)
+        self.assertEqual(rebuilt["definitions"], package["definitions"])
+        self.assertEqual(rebuilt["derived"], package["derived"])
+        self.assertIn("grid-system 0 name-hex", rebuilt["definitions"]["base_scene"])
+        self.assertIn("grid 0 on 1 from-system 0 origin 0 0", rebuilt["definitions"]["base_scene"])
+        previous = deepcopy(package)
+        previous["manifest"]["axiom_revision"], previous["manifest"]["axiom_sha256"] = FINITE_GRID_VERSION
+        original = deepcopy(previous)
+        old_rebuilt = verify_package(previous)
+        self.assertEqual(previous, original, "verification cannot silently upgrade a saved finite package")
+        self.assertEqual(old_rebuilt["definitions"], original["definitions"])
+        self.assertEqual(old_rebuilt["derived"], original["derived"])
+        self.assertIn("u series 100 100 3", old_rebuilt["definitions"]["base_scene"])
+        for version in (LEGACY_VERSION, ENGINEERING_VERSION):
+            old = deepcopy(package)
+            old["manifest"]["axiom_revision"], old["manifest"]["axiom_sha256"] = version
+            with self.subTest(version=version), self.assertRaises(ModelError) as caught:
+                verify_package(old)
+            self.assertEqual(caught.exception.code, "AXIOM_VERSION")
+
+    def test_old_revision_gate_cannot_hide_new_syntax_by_removing_definition(self):
+        package = self.build()
+        for version in (LEGACY_VERSION, ENGINEERING_VERSION):
+            for source in ("grid 0 on 1 from-system 0 origin 0 0\n",
+                           "\ufeffgrid-system 0 name-hex 61 main-along none u 0 v none\n",
+                           "canvas-pos grid-system 0 0 0\n"):
+                bad = deepcopy(package)
+                bad["manifest"]["axiom_revision"], bad["manifest"]["axiom_sha256"] = version
+                bad["definitions"]["base_scene"] = source + bad["definitions"]["base_scene"]
+                bad["manifest"]["source_sha256"] = digest(bad["definitions"])
+                with self.subTest(version=version, source=source), self.assertRaises(ModelError) as caught:
+                    verify_package(bad)
+                self.assertEqual(caught.exception.code, "AXIOM_VERSION")
+
+    def test_known_finite_revision_cannot_claim_any_infinite_or_vertex_key_syntax(self):
+        package = self.build()
+        syntaxes = [
+            "grid-system 0 name-hex 61 main-along none u repeat 0 600 v repeat 0 400\n",
+            "grid-system 0 name-hex 61 main-along none u repeat-panel 600 gap 3 from 0 v none\n",
+            "grid-binding 0 on-boundary 1 from-system 0 vertex-key 1 cell -2 1 anchor 0 1 0 1\n",
+            "boundary-keyed 1 geometry-hash " + "0" * 64 + " outline 1:0,0 2:100,0 3:100,100 4:0,100\n",
+            "boundary-vertex-keys 1 outer 1 2 3 4 next-key 5\n",
+            "grid 0 on 1 from-binding 0\n",
+            "subgrid 1 parent 0 lattice-cell -2 1 divisions u 2 v 2\n",
+            "canvas-pos grid-binding 0 10 20\n",
+        ]
+        for source in syntaxes:
+            bad = deepcopy(package)
+            bad["manifest"]["axiom_revision"], bad["manifest"]["axiom_sha256"] = FINITE_GRID_VERSION
+            bad["definitions"]["base_scene"] = source + bad["definitions"]["base_scene"]
+            bad["manifest"]["source_sha256"] = digest(bad["definitions"])
+            with self.subTest(source=source), self.assertRaises(ModelError) as caught:
+                verify_package(bad)
+            self.assertEqual(caught.exception.code, "AXIOM_VERSION")
+
+    def test_current_infinite_binding_package_keeps_signed_indices_and_vertex_keys(self):
+        definitions = deepcopy(CASE["definitions"])
+        definitions["base_scene"] += (
+            "boundary-vertex-keys 1 outer 1 2 3 4 hole 5 6 7 8 next-key 9\n"
+            "grid-system 0 name-hex e784a1e99990 main-along none u repeat 0 600 v repeat 0 400\n"
+            "grid-binding 0 on-boundary 1 from-system 0 vertex-key 1 cell -2 1 anchor 1 2 1 2\n"
+            "grid 0 on 1 from-binding 0\n"
+        )
+        package = build_package(definitions, deepcopy(CASE["request"]))
+        original = deepcopy(package)
+        rebuilt = verify_package(package)
+        self.assertEqual(original, package)
+        self.assertEqual(rebuilt["definitions"], original["definitions"])
+        self.assertEqual(rebuilt["derived"], original["derived"])
+        scene = rebuilt["definitions"]["base_scene"]
+        for text in ("next-key 9", "vertex-key 1 cell -2 1 anchor 1 2 1 2", "grid 0 on 1 from-binding 0"):
+            self.assertIn(text, scene)
+
+    def test_rehashed_legacy_snapshot_corruption_still_rebuilds_and_rejects(self):
+        package = self.build()
+        package["manifest"]["axiom_revision"], package["manifest"]["axiom_sha256"] = LEGACY_VERSION
+        package["derived"]["objects"][0]["vertices_mm"][0][0] += 1
+        package["manifest"]["geometry_sha256"] = digest(package["derived"])
+        with self.assertRaises(ModelError) as caught:
+            verify_package(package)
+        self.assertEqual(caught.exception.code, "SNAPSHOT_MISMATCH")
+
+    def test_engineering_sources_cannot_claim_the_known_legacy_axioms(self):
+        package = self.build()
+        package["manifest"]["axiom_revision"], package["manifest"]["axiom_sha256"] = LEGACY_VERSION
+        # Simulate a future additive current version while keeping this test valid
+        # during the synchronized SSOT transition. The old source cannot opt in.
+        with mock.patch.object(modeling, "AXIOM_REVISION", "1" * 40), mock.patch.object(modeling, "_axiom_hash", return_value="2" * 64):
+            for change in ("source", "capability"):
+                bad = deepcopy(package)
+                if change == "source":
+                    bad["definitions"]["base_scene"] = "requires engineering-spec/1\n" + bad["definitions"]["base_scene"]
+                    bad["manifest"]["source_sha256"] = digest(bad["definitions"])
+                else:
+                    bad["manifest"]["capabilities"].append("engineering-spec/1")
+                with self.subTest(change=change), self.assertRaises(ModelError) as caught:
+                    verify_package(bad)
+                self.assertEqual(caught.exception.code, "AXIOM_VERSION")
+
+    def test_base_required_capability_reaches_manifest_and_cannot_be_removed(self):
+        base = load_base(CASE["definitions"]["base_scene"])
+        base["base_scene"] = "requires engineering-spec/1\n" + base["base_scene"]
+        base["required_capabilities"] = ["engineering-spec/1"]
+        definitions = deepcopy(CASE["definitions"])
+        definitions["base_scene"] = base["base_scene"]
+        # Only adapter transport is substituted here; actual engineering source
+        # evaluation is covered by native core fixtures, not this boundary test.
+        with mock.patch("modeling.base.load_base", return_value=base):
+            package = build_package(definitions, CASE["request"])
+            self.assertIn("engineering-spec/1", package["manifest"]["capabilities"])
+            self.assertEqual(package["definitions"]["base_scene"], base["base_scene"])
+            with self.assertRaises(ModelError) as caught:
+                build_package(definitions, CASE["request"], capabilities=[c for c in modeling.CAPABILITIES if c != "engineering-spec/1"])
+            self.assertEqual(caught.exception.code, "CAPABILITY")
+
+
+class StaggerModelCompatibility(unittest.TestCase):
+    """Exercise the real native adapter before granting the D10b axiom version."""
+    def scene(self, delta="400", band=0):
+        # Move the carrier into the chosen unshifted u band. The v binding is
+        # anchored at an even band so its translation is independent of delta.
+        lo, hi = band * 2000, (band + 1) * 2000
+        stagger = "" if delta is None else " stagger " + delta
+        return (f"surface 1 origin 0 0 0 u +x v +y outline {lo},0 {hi},0 {hi},4000 {lo},4000\n"
+                "boundary-vertex-keys 1 outer 1 2 3 4 next-key 5\n"
+                f"grid-system 0 name-hex 61 main-along none u repeat 0 2000 v repeat 0 1830{stagger}\n"
+                f"grid-binding 0 on-boundary 1 from-system 0 vertex-key 1 cell {band} 0 anchor 0 1 0 1\n"
+                "grid 10 on 1 from-binding 0\n"
+                "timber 90 20 33 role boundary\nplace 90 on 1 at-face e3 +v +n\n"
+                "timber 91 20 33 role boundary\nplace 91 on 1 at-face e1 +v +n\n"
+                "timber 1 27 33 role primary\n"
+                f"place 1 on 1 at-line grid 10 v 1" + (f" band {band}" if delta is not None else "") + " +u +n\n")
+
+    def definitions(self, scene):
+        return {"base_scene": scene, "extensions": []}
+
+    def request(self):
+        return {"roots": [{"kind": "timber", "id": 1}], "role": "geometry", "target": "solid-set", "allow_partial": False}
+
+    def build(self, scene=None):
+        return build_package(self.definitions(scene or self.scene()), self.request())
+
+    def test_actual_adapter_preserves_stagger_band_and_exact_mesh_roundtrip(self):
+        for band in (-2, -1, 0, 1, 2):
+            with self.subTest(band=band):
+                package = self.build(self.scene(band=band))
+                source = package["definitions"]["base_scene"]
+                self.assertIn("v repeat 0 1830 stagger 400", source)
+                self.assertIn(f"at-line grid 10 v 1 band {band}", source)
+                # Binding follows the same odd-band offset, canceling it at
+                # the anchored boundary; the local line remains at v=1830.
+                obj = package["derived"]["objects"][0]
+                self.assertEqual(obj["volume_mm3"], str(1960 * 27 * 33))
+                self.assertEqual(sorted({p[1] for p in obj["vertices_mm"]}), [1817, 1844])
+                original = deepcopy(package)
+                rebuilt = verify_package(json.loads(json.dumps(package)))
+                self.assertEqual(package, original)
+                self.assertEqual(rebuilt, package)
+
+    def test_adapter_rejects_literal_zero_multiples_missing_extra_and_outside_band(self):
+        sources = [self.scene(delta=v) for v in ("0", "-0", "1830", "-3660")]
+        sources += [self.scene().replace(" band 0 +u", " +u"),
+                    self.scene(None).replace("v 1 +u", "v 1 band 0 +u"),
+                    self.scene().replace("band 0 +u", "band 1 +u"),
+                    self.scene() + "subgrid 11 parent 10 lattice-cell 0 0 divisions u 2 v 2\n"]
+        for source in sources:
+            with self.subTest(source=source), self.assertRaises(ModelError) as caught:
+                self.build(source)
+            self.assertEqual(caught.exception.status, "INVALID")
+
+    def test_blank_is_unset_and_negative_offset_stays_exact(self):
+        plain = self.build(self.scene(None))
+        self.assertNotIn("stagger", plain["definitions"]["base_scene"])
+        self.assertNotIn("band", plain["definitions"]["base_scene"])
+        negative = self.build(self.scene("-400"))
+        self.assertIn("stagger -400", verify_package(negative)["definitions"]["base_scene"])
+
+    def test_parameter_stagger_preserves_reference_and_rejects_evaluated_zero(self):
+        def record(kind, value):
+            return "parameters " + kind + " " + base64.b64encode(canonical_bytes(value)).decode() + "\n"
+        for value in ("400", "-400", "0", "1830"):
+            parameters = ("requires parameters/1\nparameters begin\n" +
+                          record("card", {"id": 1, "name": "Phase", "nextFieldId": 2}) +
+                          record("field", {"parameterId": 1, "id": 1, "name": "delta", "type": 0,
+                                           "expression": {"op": "literal", "num": value, "den": "1", "unit": "mm"}}) +
+                          "parameters end\n")
+            source = parameters + self.scene("param:1:1")
+            with self.subTest(value=value):
+                if value in ("0", "1830"):
+                    with self.assertRaises(ModelError) as caught:
+                        self.build(source)
+                    self.assertEqual(caught.exception.status, "INVALID")
+                else:
+                    package = self.build(source)
+                    self.assertIn("stagger param:1:1", package["definitions"]["base_scene"])
+                    self.assertIn("parameters/1", package["manifest"]["capabilities"])
+                    self.assertEqual(verify_package(package), package)
+
+    def test_engineering_example_space_preview_retains_all_seven_timbers(self):
+        sys.path.insert(0, str(ROOT / "geometry-web"))
+        from space_modeling import preview
+        with zipfile.ZipFile(ROOT / "geometry-web/examples/engineering-spec-v1.gcanvas") as archive:
+            manifest = json.loads(archive.read("manifest.json"))
+        model = manifest["models"][0]
+        source = deepcopy(model["input"])
+        result = preview(source)
+        self.assertEqual(source, model["input"])
+        self.assertEqual(result["summary"]["timber_volume_mm3"], "18494487")
+        self.assertEqual(len(result["timbers"]["derived"]["objects"]), 7)
+        for key in ("space", "volume", "clearance", "timbers"):
+            self.assertEqual(verify_package(result[key])["derived"], result[key]["derived"])
+            self.assertIn("engineering-spec/1", result[key]["manifest"]["capabilities"])
+
+    def test_known_pre_stagger_package_rebuilds_without_upgrading_input(self):
+        for version in modeling.PARAMETER_AXIOM_VERSIONS:
+            package = self.build(self.scene(None))
+            package["manifest"]["axiom_revision"], package["manifest"]["axiom_sha256"] = version
+            original = deepcopy(package)
+            rebuilt = verify_package(package)
+            self.assertEqual(package, original)
+            self.assertEqual(rebuilt["derived"], package["derived"])
+
+    def test_all_pre_stagger_versions_reject_stagger_and_band_before_replay(self):
+        versions = (modeling.LEGACY_AXIOM_VERSIONS | modeling.ENGINEERING_AXIOM_VERSIONS |
+                    modeling.FINITE_GRID_AXIOM_VERSIONS | modeling.INFINITE_GRID_AXIOM_VERSIONS |
+                    modeling.PARAMETER_AXIOM_VERSIONS)
+        for version in versions:
+            for scene in (self.scene(), self.scene().replace(" stagger 400", "")):
+                package = self.build()
+                package["definitions"]["base_scene"] = "\ufeff" + scene
+                package["manifest"]["source_sha256"] = digest(package["definitions"])
+                package["manifest"]["axiom_revision"], package["manifest"]["axiom_sha256"] = version
+                with self.subTest(version=version, scene=scene), self.assertRaises(ModelError) as caught:
+                    verify_package(package)
+                self.assertEqual(caught.exception.code, "AXIOM_VERSION")
+
+    def test_invalid_stagger_preview_rolls_back_model_world_and_pending_token(self):
+        world = ModelWorld(self.definitions(self.scene()), self.request())
+        original = world.package
+        pending = world.preview(self.definitions(self.scene("-400")))
+        with self.assertRaises(ModelError):
+            world.preview(self.definitions(self.scene("0")))
+        self.assertEqual(world.package, original)
+        with self.assertRaises(ModelError) as caught:
+            world.confirm(pending["token"])
+        self.assertEqual(caught.exception.code, "STALE_PREVIEW")
+        fresh = world.preview(self.definitions(self.scene("-400")))
+        self.assertIn("stagger -400", world.confirm(fresh["token"])["definitions"]["base_scene"])
+
+
+if __name__ == "__main__":
+    unittest.main()

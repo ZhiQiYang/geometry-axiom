@@ -211,5 +211,20 @@ class Generation(unittest.TestCase):
         self.apply([self.create()]);before=self.dump();r=self.command('line spec position2 500');self.assertFalse(r.get('ok') and not r.get('preview'),r)
         if r.get('preview'):self.assertFalse(r['preview']['valid']);self.assertFalse(self.command('line confirm '+str(r['preview']['token']))['ok'])
         self.assertEqual(before,self.dump())
+    def test_reopened_owned_member_refuses_direct_delete(self):
+        self.apply([self.create()]);tid=self.instance()['members'][0]['timberId'];scene=self.dump()
+        path=self.directory/'reopened-owned.scene';path.write_text(scene)
+        with BridgeSession(find_bridge(),cwd=self.directory) as fresh:
+            loaded=fresh.command('loadfile '+str(path));self.assertTrue(loaded['ok'],loaded)
+            self.assertEqual(scene,fresh.command('dump')['text'])
+            owned=fresh.command('assembly-read')
+            self.assertEqual(self.read()['state'],owned['state'])
+            refused=fresh.command('line delete timber '+str(tid))
+            self.assertFalse(refused['ok'],refused)
+            violations=(refused.get('preview') or {}).get('violations') or []
+            reason='\n'.join([str(refused.get('error') or '')]+[str(v.get('actual') or v.get('message') or '') for v in violations])
+            self.assertIn('I42: delete the owning assembly instance',reason)
+            self.assertEqual(scene,fresh.command('dump')['text'])
+            self.assertEqual(owned,fresh.command('assembly-read'))
 
 if __name__=='__main__':unittest.main()

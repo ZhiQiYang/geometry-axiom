@@ -1,0 +1,642 @@
+{
+  "schema": "geometry-executor-explicit-scratch-p75-validation-index/1",
+  "indexedUtc": "2026-10-09T16:25:36.457960+00:00",
+  "reviewerRole": "same executing agent, not independent reviewer",
+  "productGit": {
+    "root": "<workspace-path>",
+    "head": "243326b512896ace70e068f62c8f3d6397f6000d",
+    "tree": "3a94d684e90fc8ee77883ca929b7e6e9520e656f",
+    "status": ""
+  },
+  "command": [
+    "node",
+    "geometry-web/cdp_test.js"
+  ],
+  "environment": {
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:19190/",
+    "GEOMETRY_TEST_BRIDGE": "<isolated-test-directory>",
+    "GEOMETRY_BRIDGE": "<isolated-test-directory>",
+    "GEOMETRY_MODEL_BASE": "<isolated-test-directory>",
+    "GEOMETRY_FEEDBACK_DIR": "<isolated-test-directory>",
+    "GEOMETRY_CHROME": "/usr/bin/chromium",
+    "GEOMETRY_CDP_PORT": "58935",
+    "GEOMETRY_SELECTION_CURSOR_ONLY": "1"
+  },
+  "execution": {
+    "started": "2026-10-09T16:22:09.632118+00:00",
+    "exitCode": 1,
+    "timedOut": false,
+    "interrupted": false,
+    "pid": 177073,
+    "finished": "2026-10-09T16:22:17.321785+00:00"
+  },
+  "actualHarnessOverride": {
+    "originalRepositoryPath": "<workspace-path>",
+    "actualScratchModulePath": "<original-evidence-root>/p75-upper-right-positive-svg-v2-243326b5/geometry-web/selection_cursor_test.js",
+    "actualScratchModuleSha256": "e93deb4b42a82f3bdae6abbefa1cce366b868dcfb819d59829916295284b1ee8",
+    "scope": "Changed normal crossing route only; all original 37 predicates unchanged; no formal repository module acceptance claim"
+  },
+  "result": {
+    "schema": "geometry-cdp-result/1",
+    "scope": {
+      "mode": "partial",
+      "filters": [
+        "GEOMETRY_SELECTION_CURSOR_ONLY"
+      ],
+      "modifiers": [],
+      "url": "http://127.0.0.1:19190/",
+      "feedbackDirectory": "<isolated-test-directory>",
+      "browserProfile": "<isolated-test-directory>",
+      "cdpPort": 58935,
+      "browserPid": 177081
+    },
+    "completed": false,
+    "passedAssertions": 21,
+    "failedAssertions": 0,
+    "fatal": "P75 control unreachable [data-component-section=\"grid\"] .component-heading button {\"x\":0,\"y\":0,\"w\":0,\"h\":0,\"hit\":false,\"disabled\":false}",
+    "skipped": [],
+    "sections": {
+      "P75": 21
+    },
+    "currentSection": "P75",
+    "goldenCompare": "not compared (run did not complete)"
+  },
+  "receipt": {
+    "path": "<original-evidence-root>/validate-p75-positive-svg-v2-243326b5-20261009/receipt.json",
+    "sha256": "460385ce63153b2a3368c8711c77a8468565cbb1806f4265d821397188eded62",
+    "unchanged": true
+  },
+  "rawLog": {
+    "path": "<original-evidence-root>/validate-p75-positive-svg-v2-243326b5-20261009/command.log",
+    "sha256": "0d9daa2eba6f1b69552e02893db438c0817d646b7c381a06bcbdff9aeff19685"
+  },
+  "executionIdentity": {
+    "liveBinding": {
+      "observedUtc": "2026-10-09T16:22:10.074938+00:00",
+      "scope": "Observed the actual owned Chromium ELF and live canonical Node parent during this command; launcher stages excluded",
+      "cdpScope": {
+        "mode": "partial",
+        "filters": [
+          "GEOMETRY_SELECTION_CURSOR_ONLY"
+        ],
+        "modifiers": [],
+        "url": "http://127.0.0.1:19190/",
+        "feedbackDirectory": "<isolated-test-directory>",
+        "browserProfile": "<isolated-test-directory>",
+        "cdpPort": 58935,
+        "browserPid": 177081
+      },
+      "processes": [
+        {
+          "role": "actual CDP_SCOPE Chromium main process",
+          "pid": 177081,
+          "exe": "/usr/lib/chromium/chromium",
+          "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+          "executableMagicHex": "7f454c46",
+          "cmdline": [
+            "/usr/lib/chromium/chromium",
+            "--show-component-extension-options",
+            "--enable-gpu-rasterization",
+            "--no-default-browser-check",
+            "--disable-pings",
+            "--media-router=0",
+            "--enable-remote-extensions",
+            "--load-extension=",
+            "about:blank",
+            "--headless=new",
+            "--disable-gpu",
+            "--no-first-run",
+            "--remote-debugging-port=58935",
+            "--window-size=1400,900",
+            "--user-data-dir=<isolated-test-directory>"
+          ],
+          "cwd": "<workspace-path>"
+        },
+        {
+          "role": "actual browser parent Node",
+          "pid": 177073,
+          "exe": "<node-runtime>/bin/node",
+          "sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12",
+          "executableMagicHex": "7f454c46",
+          "cmdline": [
+            "node",
+            "geometry-web/cdp_test.js"
+          ],
+          "cwd": "<workspace-path>"
+        }
+      ]
+    },
+    "errors": [],
+    "excludedLauncherStages": []
+  },
+  "liveBridgeBefore": [
+    {
+      "pid": 176822,
+      "parent": 176794,
+      "exe": "<isolated-test-directory>",
+      "sha256": "888b0ae8a480aadfeb160bed62e25fa3af5d6774e3f68099c6508b66371170ba"
+    }
+  ],
+  "liveBridgeAfter": [
+    {
+      "pid": 176822,
+      "parent": 176794,
+      "exe": "<isolated-test-directory>",
+      "sha256": "888b0ae8a480aadfeb160bed62e25fa3af5d6774e3f68099c6508b66371170ba"
+    }
+  ],
+  "originalRepositorySources": "<original-evidence-root>/validate-p75-positive-svg-v2-243326b5-20261009/executed-harness-sources",
+  "actualExecutedOverrideAndWrapperSnapshots": [
+    {
+      "path": "<original-evidence-root>/validate-p75-positive-svg-v2-243326b5-20261009/executed-wrapper-and-override-sources/run_p75_crossing_route_validation_identity_v2.py",
+      "sha256": "78ac3f7e102b5c12bb69a834593826a67052634311fed354a2d4e7a5f47968bb",
+      "identityKey": "runnerSha256"
+    },
+    {
+      "path": "<original-evidence-root>/validate-p75-positive-svg-v2-243326b5-20261009/executed-wrapper-and-override-sources/selection_cursor_crossing_route_validation.cjs",
+      "sha256": "b0d369ef5f0f4b46a2ab9071df10c4327df1f4d924d7b1b05548ba6d2d313725",
+      "identityKey": "diagnosticPreloadSha256"
+    },
+    {
+      "path": "<original-evidence-root>/validate-p75-positive-svg-v2-243326b5-20261009/executed-wrapper-and-override-sources/cdp_execution_identity_v2.py",
+      "sha256": "b34554e6f8e643d5f040d6f9b0b5e7bc1619a75b52d3d5d5bdb1f7dc9069a0cc",
+      "identityKey": "identityObserverSha256"
+    },
+    {
+      "path": "<original-evidence-root>/validate-p75-positive-svg-v2-243326b5-20261009/executed-wrapper-and-override-sources/selection_cursor_test.js",
+      "sha256": "e93deb4b42a82f3bdae6abbefa1cce366b868dcfb819d59829916295284b1ee8",
+      "identityKey": "harnessOverrideSha256"
+    },
+    {
+      "path": "<original-evidence-root>/validate-p75-positive-svg-v2-243326b5-20261009/executed-wrapper-and-override-sources/full-launch-adapters/sandbox-launch.cjs",
+      "sha256": "c917611c821f63cea2e5ef3ed1c0ddde128dcf47fde65d1a7ace8ff24fba2b1e"
+    },
+    {
+      "path": "<original-evidence-root>/validate-p75-positive-svg-v2-243326b5-20261009/executed-wrapper-and-override-sources/full-launch-adapters/sitecustomize.py",
+      "sha256": "e49545951bb661db0169e3d466c96321ee67c5f8a39fac3f7f0ed6954c22a7be"
+    }
+  ],
+  "dragArtifacts": [
+    {
+      "path": "<original-evidence-root>/validate-p75-positive-svg-v2-243326b5-20261009/diagnostic-artifacts/drag-0-after.png",
+      "sha256": "84ef9864a24d7d3344d044e3acd5e0c77c3835b8551cbadf4941bfd34d0cbf89"
+    },
+    {
+      "path": "<original-evidence-root>/validate-p75-positive-svg-v2-243326b5-20261009/diagnostic-artifacts/drag-0-before.png",
+      "sha256": "ad08977b12aeb11a0430471dd28209d006064e1c56871c0e9d70001055bc1fe6"
+    },
+    {
+      "path": "<original-evidence-root>/validate-p75-positive-svg-v2-243326b5-20261009/diagnostic-artifacts/drag-0.json",
+      "sha256": "440a35690b46c804645d13c0dd71d7f3714e4a784d86b5e2f1d8f8d4977fe53b"
+    },
+    {
+      "path": "<original-evidence-root>/validate-p75-positive-svg-v2-243326b5-20261009/diagnostic-artifacts/drag-1-after.png",
+      "sha256": "af38cd7c1d688ab32d00c277508bddf4f26dfd16d691d57f3c4fdbd275e3ca4c"
+    },
+    {
+      "path": "<original-evidence-root>/validate-p75-positive-svg-v2-243326b5-20261009/diagnostic-artifacts/drag-1-before.png",
+      "sha256": "fe92089aba3222dab1ded83418c0333eb5fe282a702b0c5e38ff376ede32fc97"
+    },
+    {
+      "path": "<original-evidence-root>/validate-p75-positive-svg-v2-243326b5-20261009/diagnostic-artifacts/drag-1.json",
+      "sha256": "c21abe5ca30e9dfd3204415ab33d60bf9770991bc6f59150a871f37ddeb3c6b8"
+    }
+  ],
+  "crossingDrag": {
+    "index": 1,
+    "before": {
+      "coords": [
+        1040.05,
+        147.2,
+        281.95,
+        724.8
+      ],
+      "viewport": {
+        "left": 260,
+        "right": 1062,
+        "top": 56,
+        "bottom": 868,
+        "width": 802,
+        "height": 812
+      },
+      "camera": {
+        "panX": 40,
+        "panY": 109.25,
+        "zoom": 0.1805,
+        "viewportSize": {
+          "width": 802,
+          "height": 812,
+          "top": 40,
+          "bottom": 92
+        },
+        "fittedBounds": [
+          0,
+          0,
+          4000,
+          3000
+        ]
+      },
+      "insets": {
+        "top": 40,
+        "bottom": 92
+      },
+      "state": {
+        "tool": "select",
+        "selected": [],
+        "focus": {
+          "t": "face",
+          "id": 1
+        },
+        "edit": {
+          "bid": 1,
+          "contextId": "ce05830e-381e-4635-86a0-252c64258b70"
+        },
+        "contextId": "ce05830e-381e-4635-86a0-252c64258b70",
+        "marquee": null,
+        "lastPD": null,
+        "drag": null
+      },
+      "startHit": {
+        "tag": "svg",
+        "id": "faceEditorSvg",
+        "classes": "face-editor-svg",
+        "rect": {
+          "left": 260,
+          "right": 1062,
+          "top": 56,
+          "bottom": 868,
+          "width": 802,
+          "height": 812
+        }
+      },
+      "endHit": {
+        "tag": "svg",
+        "id": "faceEditorSvg",
+        "classes": "face-editor-svg",
+        "rect": {
+          "left": 260,
+          "right": 1062,
+          "top": 56,
+          "bottom": 868,
+          "width": 802,
+          "height": 812
+        }
+      },
+      "startInsideViewport": true,
+      "endInsideViewport": true,
+      "feedback": {
+        "tag": "BUTTON",
+        "id": "fbButton",
+        "classes": "",
+        "button": "fbButton",
+        "rect": {
+          "left": 999,
+          "right": 1046,
+          "top": 715.328125,
+          "bottom": 744,
+          "width": 47,
+          "height": 28.671875
+        }
+      },
+      "fit": {
+        "tag": "BUTTON",
+        "id": "feZoomFit",
+        "classes": "icon-button",
+        "button": "feZoomFit",
+        "rect": {
+          "left": 390,
+          "right": 420,
+          "top": 820,
+          "bottom": 850,
+          "width": 30,
+          "height": 30
+        }
+      },
+      "controls": {
+        "tag": "DIV",
+        "id": "",
+        "classes": "face-canvas-controls",
+        "rect": {
+          "left": 274,
+          "right": 616.375,
+          "top": 816,
+          "bottom": 854,
+          "width": 342.375,
+          "height": 38
+        }
+      }
+    },
+    "after": {
+      "state": {
+        "tool": "select",
+        "selected": [
+          10,
+          11
+        ],
+        "focus": {
+          "t": "face",
+          "id": 1
+        },
+        "edit": {
+          "bid": 1,
+          "contextId": "ce05830e-381e-4635-86a0-252c64258b70"
+        },
+        "contextId": "ce05830e-381e-4635-86a0-252c64258b70",
+        "marquee": null,
+        "lastPD": null,
+        "drag": null
+      },
+      "events": [
+        {
+          "stage": "capture",
+          "type": "pointerdown",
+          "eventTrusted": true,
+          "pointerId": 1,
+          "button": 0,
+          "clientX": 1040.050048828125,
+          "clientY": 147.1999969482422,
+          "target": {
+            "tag": "svg",
+            "id": "faceEditorSvg",
+            "classes": "face-editor-svg",
+            "rect": {
+              "left": 260,
+              "right": 1062,
+              "top": 56,
+              "bottom": 868,
+              "width": 802,
+              "height": 812
+            }
+          },
+          "viewportContainsTarget": true,
+          "state": {
+            "tool": "select",
+            "selected": [],
+            "focus": {
+              "t": "face",
+              "id": 1
+            },
+            "edit": {
+              "bid": 1,
+              "contextId": "ce05830e-381e-4635-86a0-252c64258b70"
+            },
+            "contextId": "ce05830e-381e-4635-86a0-252c64258b70",
+            "marquee": null,
+            "lastPD": null,
+            "drag": null
+          }
+        },
+        {
+          "stage": "after-event",
+          "type": "pointerdown",
+          "eventTrusted": true,
+          "pointerId": 1,
+          "button": 0,
+          "clientX": 1040.050048828125,
+          "clientY": 147.1999969482422,
+          "target": {
+            "tag": "svg",
+            "id": "faceEditorSvg",
+            "classes": "face-editor-svg",
+            "rect": {
+              "left": 260,
+              "right": 1062,
+              "top": 56,
+              "bottom": 868,
+              "width": 802,
+              "height": 812
+            }
+          },
+          "viewportContainsTarget": true,
+          "state": {
+            "tool": "select",
+            "selected": [],
+            "focus": {
+              "t": "face",
+              "id": 1
+            },
+            "edit": {
+              "bid": 1,
+              "contextId": "ce05830e-381e-4635-86a0-252c64258b70"
+            },
+            "contextId": "ce05830e-381e-4635-86a0-252c64258b70",
+            "marquee": null,
+            "lastPD": null,
+            "drag": null
+          }
+        },
+        {
+          "stage": "capture",
+          "type": "pointerup",
+          "eventTrusted": true,
+          "pointerId": 1,
+          "button": 0,
+          "clientX": 281.95001220703125,
+          "clientY": 724.7999877929688,
+          "target": {
+            "tag": "SECTION",
+            "id": "faceEditorViewport",
+            "classes": "face-editor-viewport tool-select cx-on",
+            "rect": {
+              "left": 260,
+              "right": 1062,
+              "top": 56,
+              "bottom": 868,
+              "width": 802,
+              "height": 812
+            }
+          },
+          "viewportContainsTarget": true,
+          "state": {
+            "tool": "select",
+            "selected": [],
+            "focus": {
+              "t": "face",
+              "id": 1
+            },
+            "edit": {
+              "bid": 1,
+              "contextId": "ce05830e-381e-4635-86a0-252c64258b70"
+            },
+            "contextId": "ce05830e-381e-4635-86a0-252c64258b70",
+            "marquee": {
+              "scope": "fe",
+              "cx": 1040.050048828125,
+              "cy": 147.1999969482422,
+              "point": {
+                "x": 4100.000270515928,
+                "y": -100.0000169072455
+              },
+              "end": {
+                "x": -99.999932371018,
+                "y": 3099.999932371018
+              },
+              "moved": true,
+              "pointerId": 1,
+              "candidateIds": [
+                10,
+                11
+              ]
+            },
+            "lastPD": null,
+            "drag": null
+          }
+        },
+        {
+          "stage": "after-event",
+          "type": "pointerup",
+          "eventTrusted": true,
+          "pointerId": 1,
+          "button": 0,
+          "clientX": 281.95001220703125,
+          "clientY": 724.7999877929688,
+          "target": {
+            "tag": "SECTION",
+            "id": "faceEditorViewport",
+            "classes": "face-editor-viewport tool-select cx-on",
+            "rect": {
+              "left": 260,
+              "right": 1062,
+              "top": 56,
+              "bottom": 868,
+              "width": 802,
+              "height": 812
+            }
+          },
+          "viewportContainsTarget": true,
+          "state": {
+            "tool": "select",
+            "selected": [],
+            "focus": {
+              "t": "face",
+              "id": 1
+            },
+            "edit": {
+              "bid": 1,
+              "contextId": "ce05830e-381e-4635-86a0-252c64258b70"
+            },
+            "contextId": "ce05830e-381e-4635-86a0-252c64258b70",
+            "marquee": {
+              "scope": "fe",
+              "cx": 1040.050048828125,
+              "cy": 147.1999969482422,
+              "point": {
+                "x": 4100.000270515928,
+                "y": -100.0000169072455
+              },
+              "end": {
+                "x": -99.999932371018,
+                "y": 3099.999932371018
+              },
+              "moved": true,
+              "pointerId": 1,
+              "candidateIds": [
+                10,
+                11
+              ]
+            },
+            "lastPD": null,
+            "drag": null
+          }
+        },
+        {
+          "stage": "capture",
+          "type": "lostpointercapture",
+          "eventTrusted": true,
+          "pointerId": 1,
+          "button": 0,
+          "clientX": 281.95001220703125,
+          "clientY": 724.7999877929688,
+          "target": {
+            "tag": "SECTION",
+            "id": "faceEditorViewport",
+            "classes": "face-editor-viewport tool-select cx-on",
+            "rect": {
+              "left": 260,
+              "right": 1062,
+              "top": 56,
+              "bottom": 868,
+              "width": 802,
+              "height": 812
+            }
+          },
+          "viewportContainsTarget": true,
+          "state": {
+            "tool": "select",
+            "selected": [
+              10,
+              11
+            ],
+            "focus": {
+              "t": "face",
+              "id": 1
+            },
+            "edit": {
+              "bid": 1,
+              "contextId": "ce05830e-381e-4635-86a0-252c64258b70"
+            },
+            "contextId": "ce05830e-381e-4635-86a0-252c64258b70",
+            "marquee": null,
+            "lastPD": null,
+            "drag": null
+          }
+        },
+        {
+          "stage": "after-event",
+          "type": "lostpointercapture",
+          "eventTrusted": true,
+          "pointerId": 1,
+          "button": 0,
+          "clientX": 281.95001220703125,
+          "clientY": 724.7999877929688,
+          "target": {
+            "tag": "SECTION",
+            "id": "faceEditorViewport",
+            "classes": "face-editor-viewport tool-select cx-on",
+            "rect": {
+              "left": 260,
+              "right": 1062,
+              "top": 56,
+              "bottom": 868,
+              "width": 802,
+              "height": 812
+            }
+          },
+          "viewportContainsTarget": true,
+          "state": {
+            "tool": "select",
+            "selected": [
+              10,
+              11
+            ],
+            "focus": {
+              "t": "face",
+              "id": 1
+            },
+            "edit": {
+              "bid": 1,
+              "contextId": "ce05830e-381e-4635-86a0-252c64258b70"
+            },
+            "contextId": "ce05830e-381e-4635-86a0-252c64258b70",
+            "marquee": null,
+            "lastPD": null,
+            "drag": null
+          }
+        }
+      ],
+      "activeElement": "faceEditorViewport",
+      "feedbackHidden": true
+    },
+    "nativeBefore": "boundary 1 outline 0,0 4000,0 4000,3000 0,3000\nplacement 1 on boundary 1 origin 0 0 2500 u +x v +y\nspec cursorGuide 2000\ngrid 1 on 1 main-along v u 500 1500 2500\ngrid 1 on 1 v 600 1200\ntimber 10 100 33 role boundary\ntimber 11 100 33 role boundary\nguide 1 1 v spec:cursorGuide\nplace 10 on 1 at-face e0 +u +n\n# R18 角材 10: onBoundary=true coversEdge=true boundaryEdge=0\nplace 11 on 1 at-face e2 +u +n\n# R18 角材 11: onBoundary=true coversEdge=true boundaryEdge=2\ncanvas-pos boundary 1 60 60\n",
+    "nativeAfter": "boundary 1 outline 0,0 4000,0 4000,3000 0,3000\nplacement 1 on boundary 1 origin 0 0 2500 u +x v +y\nspec cursorGuide 2000\ngrid 1 on 1 main-along v u 500 1500 2500\ngrid 1 on 1 v 600 1200\ntimber 10 100 33 role boundary\ntimber 11 100 33 role boundary\nguide 1 1 v spec:cursorGuide\nplace 10 on 1 at-face e0 +u +n\n# R18 角材 10: onBoundary=true coversEdge=true boundaryEdge=0\nplace 11 on 1 at-face e2 +u +n\n# R18 角材 11: onBoundary=true coversEdge=true boundaryEdge=2\ncanvas-pos boundary 1 60 60\n",
+    "nativeByteEqual": true
+  },
+  "scopeLimits": [
+    "Unchanged frozen 2433 product with an explicitly identified scratch P75 executable module override; NOT formal repository P75 acceptance",
+    "Original 37 predicates and native World/owner preserved; changed normal visible crossing origin/navigation recorded in scratch patch",
+    "No full/golden comparison claim",
+    "Original full/scoped failures remain unchanged; never rebound",
+    "No forced input, assertion relaxation, disabled feedback control or retry",
+    "Windows originals remain unreceived"
+  ]
+}

@@ -1,0 +1,18 @@
+--- prepared-e176-sr16_sr23_browser.py
++++ sr16_sr23_browser.py
+@@ -317,7 +317,14 @@
+                         except BaseException:row['failureCaptureError']=traceback.format_exc()
+                     raise
+                 finally:
+-                    row['errors']=list(errors);row['networkErrors']=list(network_errors);row['finished']=now();write(case_out/'result.json',row);close_browser()
++                    original_failure=sys.exc_info()[0] is not None;cleanup_failure=None
++                    try:close_browser()
++                    except BaseException:cleanup_failure=traceback.format_exc();row['cleanupError']=cleanup_failure
++                    row['errors']=list(errors);row['networkErrors']=list(network_errors)
++                    row['cleanupErrors']=list(receipt.get('cleanupErrors',[]))
++                    if errors or network_errors or cleanup_failure or row['cleanupErrors']:row['passed']=False
++                    row['finished']=now();write(case_out/'result.json',row)
++                    if not original_failure and not row['passed']:raise RuntimeError('Case failed including browser-close callbacks; see preserved result and cleanup errors')
+         assert len(receipt['cases'])==len(widths) and all(r['passed'] for r in receipt['cases']);receipt['exitCode']=0
+     except BaseException:receipt['error']=traceback.format_exc();receipt['failedPhase']=phase
+     finally:

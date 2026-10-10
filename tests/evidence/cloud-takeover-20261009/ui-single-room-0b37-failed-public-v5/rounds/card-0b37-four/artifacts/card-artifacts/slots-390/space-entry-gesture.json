@@ -1,0 +1,97 @@
+{
+  "downs": [
+    {
+      "type": "pointerdown",
+      "key": null,
+      "trusted": true,
+      "id": null,
+      "tag": "g",
+      "slot": null,
+      "card": "space",
+      "cardId": "1",
+      "detail": 0,
+      "button": 0,
+      "pointerId": 1,
+      "pointerType": "mouse",
+      "x": 192.1300048828125,
+      "y": 474.19000244140625,
+      "timeStamp": 1075.9000000003725,
+      "region": true,
+      "focus": null,
+      "selection": [],
+      "selected": null,
+      "context": "590d5ee7-1206-4e2c-a472-f5b371063015"
+    },
+    {
+      "type": "pointerdown",
+      "key": null,
+      "trusted": true,
+      "id": null,
+      "tag": "DIV",
+      "slot": null,
+      "card": null,
+      "cardId": null,
+      "detail": 0,
+      "button": 0,
+      "pointerId": 1,
+      "pointerType": "mouse",
+      "x": 192.1300048828125,
+      "y": 474.19000244140625,
+      "timeStamp": 1076,
+      "region": true,
+      "focus": null,
+      "selection": [
+        {
+          "kind": "space",
+          "id": 1
+        }
+      ],
+      "selected": {
+        "kind": "space",
+        "id": 1
+      },
+      "context": "590d5ee7-1206-4e2c-a472-f5b371063015"
+    }
+  ],
+  "dblclick": {
+    "type": "dblclick",
+    "key": null,
+    "trusted": true,
+    "id": null,
+    "tag": "BODY",
+    "slot": null,
+    "card": null,
+    "cardId": null,
+    "detail": 2,
+    "button": 0,
+    "pointerId": null,
+    "pointerType": null,
+    "x": 192,
+    "y": 474,
+    "timeStamp": 1094.2000000011176,
+    "region": false,
+    "focus": {
+      "t": "space",
+      "id": 1
+    },
+    "selection": [
+      {
+        "kind": "space",
+        "id": 1
+      }
+    ],
+    "selected": {
+      "kind": "space",
+      "id": 1
+    },
+    "context": "590d5ee7-1206-4e2c-a472-f5b371063015"
+  },
+  "reached": {
+    "focus": {
+      "t": "space",
+      "id": 1
+    },
+    "workspaceHidden": false
+  },
+  "interpretation": "Final click/dblclick target may be retargeted after second-pointerdown navigation; no target identity is inferred from that later event."
+}

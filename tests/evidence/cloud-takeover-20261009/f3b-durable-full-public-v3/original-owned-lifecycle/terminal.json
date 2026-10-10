@@ -1,0 +1,139 @@
+{
+  "schema": "geometry-root-owned-integration-lifecycle/1",
+  "startedUtc": "2026-10-09T19:29:13.265149+00:00",
+  "mode": "cdp",
+  "expectedFullSHA": "f3b8285729b42cd22451c98cba1e2ec4514517f3",
+  "dirtyBefore": "",
+  "serviceCommand": [
+    "<execution-runtime-path>",
+    "<workspace-path>",
+    "<workspace-path>",
+    "19182",
+    "<isolated-test-directory>"
+  ],
+  "testCommand": [
+    "<execution-runtime-path>",
+    "<workspace-path>",
+    "--root",
+    "<workspace-path>",
+    "--url",
+    "http://127.0.0.1:19182/",
+    "--output",
+    "<workspace-path>",
+    "--expected-head",
+    "f3b8285729b42cd22451c98cba1e2ec4514517f3",
+    "--bridge",
+    "<isolated-test-directory>",
+    "--model-base",
+    "<isolated-test-directory>",
+    "--feedback-dir",
+    "<isolated-test-directory>",
+    "--timeout",
+    "2400"
+  ],
+  "actualPython": "<execution-runtime-path>",
+  "actualPythonSHA256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+  "controllerSHA256": "5a33421c7b84919c212ebf3c444bed22a950177462cd87c073e4d99fdda0e5ae",
+  "runnerSHA256": "5ce8212de96e45d0b613b17888a053a7a679024dc1a230f4c734a6170cc5da89",
+  "launchSHA256": "d2dbdd3c30631874c63a3fdaac763868f9a5809588c085cf12baed61bed33631",
+  "reason": "Necessary original assembly partial and full CDP/standalone Space regression on frozen clean minimal shared-header repair; preserve prior incomplete failures and original assertions/golden.",
+  "gateProcessPID": 284560,
+  "actualGateExitCode": 0,
+  "serviceExitBeforeStop": null,
+  "stopCommand": [
+    "<execution-runtime-path>",
+    "<workspace-path>",
+    "<workspace-path>",
+    "<workspace-path>",
+    "19182",
+    "<workspace-path>",
+    "<workspace-path>"
+  ],
+  "stopExitCode": 0,
+  "actualServiceExitAfterStop": -15,
+  "finishedUtc": "2026-10-09T19:53:32.880117+00:00",
+  "headAfter": "f3b8285729b42cd22451c98cba1e2ec4514517f3",
+  "dirtyAfter": "",
+  "rawFiles": [
+    {
+      "path": "gate.stderr.raw.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "gate.stdout.raw.log",
+      "bytes": 1659,
+      "sha256": "7e21f57dbb7b593b89a7670882eac2ccfa26c63f73b1b93c0a6ea946322b3969"
+    },
+    {
+      "path": "owned-stop/identity.json",
+      "bytes": 413,
+      "sha256": "4d4ce1e8ef3d689ac6246792f2c173b662726556b510e2ef4fe20ddf93c1374d"
+    },
+    {
+      "path": "owned-stop/proc-284553.stat.raw",
+      "bytes": 199,
+      "sha256": "73a37289c698b3b6f026d53fa53e30e08f347984d42f544bcce612151744824c"
+    },
+    {
+      "path": "owned-stop/proc-284554.stat.raw",
+      "bytes": 169,
+      "sha256": "bf74821ad6387a4a8e0be82f4b145485d25bedcab28ee5b432202b67dd55d346"
+    },
+    {
+      "path": "owned-stop/proc-284692.stat.raw",
+      "bytes": 188,
+      "sha256": "bd08ed5afe53f6125be9a6737a1e6c9e69ed383369ed2830ca5477476c6645d5"
+    },
+    {
+      "path": "owned-stop/root-dump.raw.json",
+      "bytes": 935,
+      "sha256": "97693bb12c7749778582d596b099372d97f9afb539fcd99e256f74e5edef912b"
+    },
+    {
+      "path": "owned-stop/stop.stderr.raw.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "owned-stop/stop.stdout.raw.log",
+      "bytes": 65,
+      "sha256": "6cd181b84791c745fe37f00b41078f03e3ba140637d86fd4a0b785c4835e357a"
+    },
+    {
+      "path": "owned-stop/terminal-receipt.json",
+      "bytes": 3114,
+      "sha256": "38284304fece6decd0723392510d83a0f33005aba47ce6f6d2188a760d7b8885"
+    },
+    {
+      "path": "ready-runtime.json",
+      "bytes": 242,
+      "sha256": "33766057d316d5260df3d36920b70e094247d6d899188048bca4eae148f89752"
+    },
+    {
+      "path": "service.stderr.raw.log",
+      "bytes": 189279,
+      "sha256": "7d84155f602973875481be550c0e9ededc1ff36bbc7dba39505c4e46e13d5606"
+    },
+    {
+      "path": "service.stdout.raw.log",
+      "bytes": 419,
+      "sha256": "799844e36a9fd8029cd46fe6d9639dabaee20f79f6dbd6fd4130eac37816e83b"
+    },
+    {
+      "path": "started.json",
+      "bytes": 1791,
+      "sha256": "ced764115f1d9b19e5106f673480422f156358978683057955e3ea989ba955c1"
+    },
+    {
+      "path": "stop-controller.stderr.raw.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "stop-controller.stdout.raw.log",
+      "bytes": 2680,
+      "sha256": "5a725d6f44041eda726255b7fb73053155cf52a01a1b24ee31b15b9f6f3606a5"
+    }
+  ]
+}

@@ -463,6 +463,44 @@ class BridgeServerTests(unittest.TestCase):
         finally:
             mod.scenario_contexts.clear()
 
+    def test_editor_exact_resolve_is_read_only_and_never_recreates_or_retires(self):
+        import scenario_verify
+        mod=self.server_module;request_id=str(uuid.uuid4());context_id='a'*32
+        native=Mock();native.session=context_id;native.closed=False;native.bridge_failure=None;native.bridge.poll.return_value=None
+        mod.root_context.editor_sequence=7
+        mod.root_context.editor_creations[request_id]={'sequence':7,'context':context_id}
+        mod.scenario_contexts[context_id]=native
+        query={'action':'resolve','requestId':request_id,'sequence':7,'session':mod.root_context.session,'context':context_id}
+        import copy
+        before=(copy.deepcopy(mod.root_context.editor_creations),dict(mod.scenario_contexts),mod.root_context.editor_sequence)
+        with patch.object(scenario_verify,'_program',side_effect=AssertionError('resolve must not prepare a process')) as program, \
+             patch.object(mod,'NativeContext',side_effect=AssertionError('resolve must not allocate')) as factory, \
+             patch.object(mod,'ask_bridge',side_effect=AssertionError('resolve must not ask native')) as ask, \
+             patch.object(mod,'upload_scene',side_effect=AssertionError('resolve must not upload')) as upload:
+            def resolve(data):
+                handler=self.post_handler('/scenarios/editor',json.dumps(data).encode());handler.do_POST()
+                self.assertEqual((mod.root_context.editor_creations,mod.scenario_contexts,mod.root_context.editor_sequence),before)
+                native.close.assert_not_called()
+                return json.loads(handler._send.call_args.args[0])
+            active=resolve(query)
+            self.assertEqual(active,{'ok':True,'state':'active','requestId':request_id,'sequence':7,'session':mod.root_context.session,'context':context_id})
+            self.assertEqual(resolve(query),active)
+            for altered in [{**query,'sequence':6},{**query,'context':'b'*32},{**query,'session':'c'*32},
+                            {**query,'arbitrary':True},{k:v for k,v in query.items() if k!='context'},
+                            {**query,'context':True},{**query,'sequence':True}]:
+                with self.subTest(altered=altered):self.assertFalse(resolve(altered)['ok'])
+            unknown={**query,'requestId':str(uuid.uuid4())}
+            self.assertEqual(resolve(unknown)['state'],'absent')
+            self.assertTrue(resolve(unknown)['fenced'])
+            self.assertFalse(resolve({**unknown,'sequence':8})['fenced'])
+            native.bridge.poll.return_value=1
+            self.assertEqual(resolve(query)['state'],'unavailable')
+            native.bridge.poll.return_value=None;native.closed=True
+            self.assertEqual(resolve(query)['state'],'unavailable')
+            native.closed=False;native.bridge_failure='reader stopped'
+            self.assertEqual(resolve(query)['state'],'unavailable')
+            program.assert_not_called();factory.assert_not_called();ask.assert_not_called();upload.assert_not_called()
+
     def test_retired_editor_receipts_do_not_permanently_exhaust_normal_open_close(self):
         import scenario_verify
         mod=self.server_module

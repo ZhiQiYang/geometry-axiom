@@ -4,6 +4,16 @@
  */
 const cdp=require('./cdp_helpers.js');
 module.exports = async function gridSystemTests({send,eval_,sleep,click,drag,waitForUI,expectNativeDialog,exceptionCount}) {
+  // S2 keeps the same exact discard question inside the active workspace.
+  const discardDraft=async({message,accept})=>{
+    await ctl('#igDiscardDraft');
+    await waitForUI(`!!$('igDiscardConfirmation')&&$('igDiscardConfirmation').getAttribute('role')==='alertdialog'`,10000);
+    const actual=await eval_(`$('igDiscardQuestion').textContent`);
+    if(actual!==message)throw Error('Discard question changed: '+JSON.stringify({expected:message,actual}));
+    await ctl(accept?'#igDiscardConfirm':'#igDiscardCancel');
+    await waitForUI(`!$('igDiscardConfirmation')`,10000);
+  };
+
   console.log('=== P70. 無限格線、獨立邊界與 cell 對齊 ===');
   const fs=require('fs'),path=require('path'),os=require('os'),same=require('util').isDeepStrictEqual,exceptions=exceptionCount();
   const check=cdp.makeCheck({prefix:'P70 ',throwOnFail:true});
@@ -32,7 +42,7 @@ module.exports = async function gridSystemTests({send,eval_,sleep,click,drag,wai
     // This native-geometry suite explicitly abandons its raw test inputs.
     // The separate portable-draft browser gate verifies ordinary return/resume.
     if(discard||await read(`!!ReferenceWorkspace.readFeatureAttachment('grid-draft')`))
-      await expectNativeDialog(()=>ctl('#igDiscardDraft'),{message:'捨棄這份未發布的原始草稿？已保存到場景的網格保持不變。',accept:true});
+      await discardDraft({message:'捨棄這份未發布的原始草稿？已保存到場景的網格保持不變。',accept:true});
     else await ctl('#igClose');
   }};
   const open=async(kind,id)=>{await close();await ctl('#btnZoom');
@@ -72,8 +82,8 @@ module.exports = async function gridSystemTests({send,eval_,sleep,click,drag,wai
   check('1b 工具列顯示目前比例（格距 mm 與一格像素）',gv.zoom===`1 格 600×400 mm · ${Math.round(600*gv.scale)} px`,gv.zoom);
   check('1b 網格拉高填滿主區，下方不再留大片空白',gv.slack<4&&gv.size[1]>=400,{slack:gv.slack,size:gv.size});
   // 審查 3a 製圖桌：單列麵包屑、右側檢查器、分段主支方向、格資訊與格子縮圖
-  const l3=await read(`(()=>{const r=s=>document.querySelector(s).getBoundingClientRect(),h=r('.ig-header'),p=r('.workspace-project-header'),m=r('.ig-main'),a=r('.ig-inspector'),th=r('.ig-def-cell'),save=document.querySelector('#projectBar [data-project-action="save"]');return {h:[h.top,h.height],p:[p.top,p.height],mainRight:m.right,inspLeft:a.left,inspW:a.width,crumb:[...document.querySelectorAll('.ig-crumb > *')].map(e=>e.textContent),headerParagraph:!!document.querySelector('.ig-header p'),heading:!!document.querySelector('.ig-view-heading')||[...document.querySelectorAll('.ig-main h2')].some(e=>e.offsetParent),intro:[...document.querySelectorAll('.ig-settings p')].some(x=>/不需要總條數/.test(x.textContent)),footerInInspector:!!document.querySelector('.ig-inspector > .ig-footer #igSaveSource'),footerRow:!!document.querySelector('.ig-layout ~ .ig-footer, dialog > .ig-footer'),saveBg:getComputedStyle(save).backgroundColor,thumb:th.width/th.height,thumbLabels:['u','v'].map(a=>document.querySelector('[data-ig-chip="'+a+':step"]').textContent.replace(/\\D/g,'')),mode:document.querySelector('#igMainAlong').getAttribute('role')};})()`);
-  check('3a 專案列與工作區標題合併成單列麵包屑，返回在最前，只剩「預覽並建立」一個主動作',Math.abs(l3.h[0]-l3.p[0])<1&&l3.h[1]===56&&l3.p[1]===56&&l3.crumb.includes('無限網格')&&l3.crumb.includes('雙向 無限 <A & B>')&&!l3.headerParagraph&&l3.footerInInspector&&!l3.footerRow&&l3.saveBg==='rgb(255, 255, 255)',l3);
+  const l3=await read(`(()=>{const r=s=>document.querySelector(s).getBoundingClientRect(),h=r('.ig-header'),p=r('.workspace-project-header'),m=r('.ig-main'),a=r('.ig-inspector'),th=r('.ig-def-cell'),save=document.querySelector('#projectBar [data-project-action="save"]');return {h:[h.top,h.height],p:[p.top,p.height],mainRight:m.right,inspLeft:a.left,inspW:a.width,crumb:[...document.querySelectorAll('.ig-crumb > *')].map(e=>e.textContent),headerParagraph:!!document.querySelector('.ig-header p'),heading:!!document.querySelector('.ig-view-heading')||[...document.querySelectorAll('.ig-main h2')].some(e=>e.offsetParent),intro:[...document.querySelectorAll('.ig-settings p')].some(x=>/不需要總條數/.test(x.textContent)),footerInInspector:!!document.querySelector('.ig-inspector > .ig-footer #igSaveSource'),footerRow:!!document.querySelector('.ig-layout ~ .ig-footer, dialog > .ig-footer'),saveBg:getComputedStyle(save).backgroundColor,thumb:th.width/th.height,thumbLabels:['u','v'].map(a=>document.querySelector('[data-ig-chip="'+a+':step"]').textContent.replace(/\\D/g,'')),mode:document.querySelector('#igMainAlong').getAttribute('role'),footerOrder:[...document.querySelectorAll('.ig-footer-actions > button')].filter(b=>!b.hidden&&b.getBoundingClientRect().width>0).map(b=>b.id),footerActions:r('.ig-footer-actions').toJSON(),discard:r('#igDiscardDraft').toJSON(),primary:r('#igSaveSource').toJSON()};})()`);
+  check('3a 單列麵包屑與原返回，共用保存主色、建立仍經預覽確認',Math.abs(l3.h[0]-l3.p[0])<1&&l3.h[1]===56&&l3.p[1]===56&&l3.crumb.includes('無限網格')&&l3.crumb.includes('雙向 無限 <A & B>')&&!l3.headerParagraph&&l3.footerInInspector&&!l3.footerRow&&l3.saveBg==='rgb(78, 103, 232)'&&l3.footerOrder[0]==='igDiscardDraft'&&l3.footerOrder.at(-1)==='igSaveSource'&&l3.discard.left<=l3.primary.left&&Math.abs(l3.discard.left-l3.footerActions.left)<1&&Math.abs(l3.primary.right-l3.footerActions.right)<1,l3);
   check('3a 設定集中到右側 360px 檢查器，網格在左側成為畫面本體，沒有標題與說明卡',l3.inspLeft>=l3.mainRight-1&&l3.inspW===360&&!l3.heading&&!l3.intro,l3);
   check('2a 定義圖的格子維持 600:400 比例，尺寸標籤對應間距',Math.abs(l3.thumb-1.5)<.02&&l3.thumbLabels.join('/')==='600/400',l3);
   await ctl('#igMainAlong input[value="u"]');const seg=await read(`({value:$('igMainAlong').value,checked:document.querySelector('#igMainAlong input:checked')?.value,dirty:!$('igSaveSource').disabled})`);
@@ -125,7 +135,9 @@ module.exports = async function gridSystemTests({send,eval_,sleep,click,drag,wai
   await fixture(['boundary 301 outline 100,200 1300,200 1300,1000 100,1000','boundary 302 outline -1800,-1200 2400,-1200 2400,1600 -1800,1600 hole 100,200 100,400 300,400 300,200']);
   const leftTop=await binding(source,301,'outer:0','0,0',[1300,-200]),center=await binding(source,302,'hole:0:0','1,1',[1000,-400]);o=await objects();
   check('同來源組合兩個未放置邊界，孔頂點也有穩定身分',o.gridBindings.length===2&&o.gridBindings.every(b=>b.system===source&&b.vertexKey>0)&&(await query('surfaces')).surfaces.length===0&&same(o.gridBindings.find(b=>b.id===center).anchor,[{num:1,den:2},{num:1,den:2}]),o.gridBindings);
-  check('配置結果使用原生裁切查詢',await read(`$('igResultView').querySelectorAll('[data-ig-result-index]').length>0 && $('igResultView').dataset.queryMode==='sample'`));await shot('infinite-binding-hole');
+  const bindingUI=await read(`(()=>{const section=$('igBoundarySection'),summary=$('igVertexSummary'),buttons=[...document.querySelectorAll('[data-ig-anchor]')],positions=window.GridAnchorPositions?.positions||[],custom=[{num:1,den:3},{num:2,den:5}],before=JSON.stringify(custom),danger=$('igDeleteBinding'),details=danger?.closest('.ig-delete-section');return {nativeResult:$('igResultView').querySelectorAll('[data-ig-result-index]').length>0&&$('igResultView').dataset.queryMode==='sample',rightStep2:!!section.closest('.ig-inspector')&&!!section.closest('#igBindingForm')&&summary.nextElementSibling===section,anchors:buttons.map(b=>[b.dataset.igAnchor,b.textContent]),descriptors:positions.map(p=>[p.u+','+p.v,p.name]),fractions:positions.map(p=>GridAnchorPositions.fractions(p)),customNoSnap:positions.every(p=>!GridAnchorPositions.selected(p,custom))&&JSON.stringify(custom)===before,deleteIsolated:document.querySelectorAll('#igDeleteBinding').length===1&&!!details&&!details.open&&!!details.querySelector(':scope > summary')&&!danger.closest('.ig-footer')};})()`);
+  const anchorNames=['左上','上中','右上','左中','中心','右中','左下','下中','右下'],anchorDescriptors=anchorNames.map((name,index)=>[index%3+','+Math.floor(index/3),name]),anchorFractions=[0,1,2].flatMap(v=>[0,1,2].map(u=>[u,v].map(n=>n===0?{num:0,den:1}:n===1?{num:1,den:2}:{num:1,den:1})));
+  check('配置結果使用原生裁切查詢',bindingUI.nativeResult&&bindingUI.rightStep2&&same(bindingUI.anchors,anchorDescriptors)&&same(bindingUI.descriptors,anchorDescriptors)&&same(bindingUI.fractions,anchorFractions)&&bindingUI.customNoSnap&&bindingUI.deleteIsolated,bindingUI);await shot('infinite-binding-hole');
   const originalQuery=await query(`grid-query binding ${center} rect -1800 -1200 2400 1600 mode exact limit 64`);
   await ctl('#igKeyedEditor > summary');for(const edge of ['Left','Right','Top','Bottom'])await fill('#igGrow'+edge,1200);await ctl('#igGrowBoundary');const beforeGrow=await dump();await ctl('#igSaveBoundary');await impact();
   const boundaryImpact=await read(`document.querySelector('[data-impact-boundary="302"]')?.textContent || ''`);

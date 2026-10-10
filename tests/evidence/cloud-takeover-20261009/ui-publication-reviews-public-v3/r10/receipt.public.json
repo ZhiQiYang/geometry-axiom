@@ -1,0 +1,66 @@
+{
+  "schema": "geometry-public-evidence-review-receipt/1",
+  "actor": "/root/delivery_closeout/packet_readonly_qa",
+  "createdUtc": "2026-10-09T16:26:25.257543+00:00",
+  "command": [
+    "python3",
+    "<workspace-path>",
+    "<workspace-path>",
+    "<workspace-path>"
+  ],
+  "cwd": "<workspace-path>",
+  "exitCode": 1,
+  "kind": "Read-only publisher/evidence QA; no product tests executed",
+  "status": "reviewer-interrupted-schema-assumption-no-product-failure",
+  "executionIdentity": {
+    "actor": "/root/delivery_closeout/packet_readonly_qa",
+    "actualPythonExecutable": "<python-runtime>/bin/python3.12",
+    "actualPythonExecutableSha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+    "argv": [
+      "<workspace-path>",
+      "<workspace-path>",
+      "<workspace-path>"
+    ],
+    "cwd": "<workspace-path>",
+    "pid": 177861,
+    "pythonVersion": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "script": "<workspace-path>",
+    "scriptSha256": "b9e147704d307380cf074e1abe3d1b9e381a6dde150791ce488a350b0c59ac0e"
+  },
+  "before": "Original console observation: HEAD243326b512896ace70e068f62c8f3d6397f6000d; M BACKLOG.md, geometry-web/app.css, geometry-web/cdp_test.js; not product tested state",
+  "after": {
+    "head": "243326b512896ace70e068f62c8f3d6397f6000d",
+    "dirty": "M BACKLOG.md\n M geometry-web/app.css\n M geometry-web/cdp_test.js"
+  },
+  "manifestSha256": {
+    "ui-single-room-243-public-v2": "60379e618ef5863cfe661bf215584caa9a64f36dbe7ac35174ccf3b3686961c1"
+  },
+  "rawLog": {
+    "path": "<workspace-path>",
+    "bytes": 1268,
+    "sha256": "ead700d475015caf8e121825e4751f27acb109f435de77832516a92788f67255"
+  },
+  "report": {
+    "path": "<workspace-path>",
+    "bytes": 1948,
+    "sha256": "6e00f81df55a2ca84f702b4d0048362e71ff8e1326aa6810b8c181991aee4500"
+  },
+  "executedScriptSnapshot": {
+    "path": "<workspace-path>",
+    "bytes": 45967,
+    "sha256": "b9e147704d307380cf074e1abe3d1b9e381a6dde150791ce488a350b0c59ac0e"
+  },
+  "inputManifestMap": {
+    "path": "<workspace-path>",
+    "bytes": 105,
+    "sha256": "c64f47ba8e30190880a30f831a50805b086d2c00cdf7a56f640477af0f761444"
+  },
+  "checkCount": 0,
+  "failedCheckCount": 1,
+  "checkInventories": [],
+  "releaseApproved": false,
+  "limits": [
+    "Evidence checks are not added to product test totals.",
+    "No historical tested SHA, dirty state, unknown identity or result is rebound."
+  ]
+}

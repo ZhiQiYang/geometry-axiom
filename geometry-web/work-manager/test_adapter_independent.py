@@ -123,6 +123,44 @@ class AdapterIndependentTests(unittest.TestCase):
         third, _ = adapt_observation(self.store, observation(minutes=6), "synthetic-observation")
         self.assertEqual(third, second, "same observed input must reuse its source version too")
 
+    def test_new_pr_observation_is_idempotent_after_initial_import(self):
+        first, _ = self.ingest_observation(observation())
+        before = self.store.reconcile()
+        database = self.store.path.read_bytes()
+        second, report = adapt_observation(self.store, observation(), "synthetic-observation")
+        self.assertEqual(second, first,
+                         "creating the PR task cannot make an unchanged observation a new source version")
+        self.assertEqual(report["source_version"], 1)
+        self.store.import_snapshot(second)
+        self.assertEqual(self.store.path.read_bytes(), database)
+        after = self.store.reconcile()
+        self.assertEqual(after["state_hash"], before["state_hash"])
+        self.assertEqual(after["payload_hash"], before["payload_hash"])
+
+    def test_refresh_new_pr_reuses_original_event_without_copying_later_scope(self):
+        first, _ = self.ingest_observation(observation())
+        task_id = f"gh:pr:{NUMBER}"
+        self.store.import_snapshot({"schema_version": 1,
+            "source": {"id": "synthetic-independent-scope", "kind": "operator", "version": 1,
+                       "as_of": stamp(6), "status": "ok"},
+            "events": [{"event_id": "synthetic-adapter:later-scope", "task_id": task_id,
+                        "kind": "task", "version": 1, "occurred_at": stamp(6),
+                        "data": {"title": "Independently bounded task", "scope": "Reviewed synthetic scope",
+                                 "files": ["synthetic/bounded.py"],
+                                 "approval_constraints": [{"action": "publish", "status": "denied", "scope": "action"}]}}]})
+        before = self.task(task_id)
+        repeated, _ = self.ingest_observation(observation())
+        self.assertEqual(repeated, first)
+        refreshed, _ = self.ingest_observation(observation(minutes=7))
+        self.assertEqual(refreshed["events"], first["events"],
+                         "a later poll must retain the original immutable PR task event")
+        self.assertEqual(refreshed["source"]["version"], 2)
+        after = self.task(task_id)
+        for key in ("title", "scope", "files", "approval_constraints", "next_action_pin"):
+            self.assertEqual(after[key], before[key], key)
+        self.assertEqual(len({event["event_id"] for snapshot in self.store.export_snapshot()["snapshots"]
+                              for event in snapshot["events"]}), 3)
+
     def test_alias_preserves_owner_review_approval_and_scope(self):
         constraints = [{"action": "publish", "status": "denied", "scope": "action"}]
         self.seed(owner="synthetic-owner", constraints=constraints)

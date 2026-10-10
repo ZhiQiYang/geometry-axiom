@@ -1,0 +1,200 @@
+{
+  "schema": "geometry-release-command/1",
+  "created": "2026-10-09T13:05:07.670766+00:00",
+  "command": [
+    "node",
+    "geometry-web/edge_draft_redraw_test.js"
+  ],
+  "cwd": "<repository-root>",
+  "url": "http://127.0.0.1:19176/",
+  "timeoutSeconds": 900,
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "status": "command-failed",
+  "executionVerified": false,
+  "releaseApproved": false,
+  "problems": [],
+  "limitations": [
+    "Only this command is covered; independent delivery gates remain separate.",
+    "Native receipts attest configured files; /runtime does not attest the running native process.",
+    "Before/after identity checks do not prove absence of transient source changes."
+  ],
+  "environment": {
+    "GEOMETRY_TEST_BRIDGE": "<fresh-native-directory>/bridge",
+    "GEOMETRY_BRIDGE": "<fresh-native-directory>/bridge",
+    "GEOMETRY_MODEL_BASE": "<fresh-native-directory>/model-base",
+    "GEOMETRY_CHROME": "/usr/bin/chromium",
+    "GEOMETRY_FEEDBACK_DIR": "<isolated-feedback-directory>",
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:19176/"
+  },
+  "kind": "command",
+  "before": {
+    "at": "2026-10-09T13:05:07.671825+00:00",
+    "root": "<repository-root>",
+    "problems": [],
+    "git": {
+      "root": "<repository-root>",
+      "head": "bd6294ea2ea5bfe77c1611c479becbdff80c3372",
+      "tree": "af8e3caafaf660c1bbda64b4abaf44e0ce23612f",
+      "status": ""
+    },
+    "sourceVersion": "65ee9fa6edf37a7f8f8393839ce8195d87530490adf98b51f78d0fac7f1d39c7",
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "65ee9fa6edf37a7f8f8393839ce8195d87530490adf98b51f78d0fac7f1d39c7",
+      "fresh": true,
+      "root": "<repository-root>",
+      "pid": 7722,
+      "session": "99bcf112d2714f2681d60bd6e9bddbd7"
+    },
+    "native": {
+      "bridge": {
+        "name": "bridge",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T12:58:11+00:00）",
+        "path": "<fresh-native-directory>/bridge",
+        "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+        "sha256": "1a21545ff6654f213307fdddcd133777f8f8e7f7290f26c3dab36f4970175ce1",
+        "sidecarSha256": "36665f8fc23a130ce5c209b5cd6fcf2999ca8c677b3dded5ae370a3a768f5e59"
+      },
+      "model-base": {
+        "name": "model-base",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T12:58:15+00:00）",
+        "path": "<fresh-native-directory>/model-base",
+        "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+        "sha256": "83b23b56cac2fa02835bee479561af5059593c5b30f087657b7841a657219290",
+        "sidecarSha256": "2ed6da288501eeeac349908853e66459ddab890c188cc5f8e1609b6489419f1b"
+      }
+    }
+  },
+  "execution": {
+    "started": "2026-10-09T13:05:07.780969+00:00",
+    "finished": "2026-10-09T13:05:25.474719+00:00",
+    "exitCode": 1,
+    "timedOut": false,
+    "interrupted": false,
+    "pid": 10425,
+    "logReaderAlive": false
+  },
+  "after": {
+    "at": "2026-10-09T13:05:25.474819+00:00",
+    "root": "<repository-root>",
+    "problems": [],
+    "git": {
+      "root": "<repository-root>",
+      "head": "bd6294ea2ea5bfe77c1611c479becbdff80c3372",
+      "tree": "af8e3caafaf660c1bbda64b4abaf44e0ce23612f",
+      "status": ""
+    },
+    "sourceVersion": "65ee9fa6edf37a7f8f8393839ce8195d87530490adf98b51f78d0fac7f1d39c7",
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "65ee9fa6edf37a7f8f8393839ce8195d87530490adf98b51f78d0fac7f1d39c7",
+      "fresh": true,
+      "root": "<repository-root>",
+      "pid": 7722,
+      "session": "99bcf112d2714f2681d60bd6e9bddbd7"
+    },
+    "native": {
+      "bridge": {
+        "name": "bridge",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T12:58:11+00:00）",
+        "path": "<fresh-native-directory>/bridge",
+        "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+        "sha256": "1a21545ff6654f213307fdddcd133777f8f8e7f7290f26c3dab36f4970175ce1",
+        "sidecarSha256": "36665f8fc23a130ce5c209b5cd6fcf2999ca8c677b3dded5ae370a3a768f5e59"
+      },
+      "model-base": {
+        "name": "model-base",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T12:58:15+00:00）",
+        "path": "<fresh-native-directory>/model-base",
+        "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+        "sha256": "83b23b56cac2fa02835bee479561af5059593c5b30f087657b7841a657219290",
+        "sidecarSha256": "2ed6da288501eeeac349908853e66459ddab890c188cc5f8e1609b6489419f1b"
+      }
+    }
+  },
+  "log": {
+    "path": "<evidence-root>/after-edge-20261009/formal-edge-gate/command.log",
+    "bytes": 3793,
+    "sha256": "1f15be82265f8bb8cbd50c1cf09a701cb798143713fa25a0773da9f3dc8dc67c"
+  },
+  "finished": "2026-10-09T13:05:25.566155+00:00",
+  "gateExitCode": 1,
+  "testedHead": "bd6294ea2ea5bfe77c1611c479becbdff80c3372",
+  "formalHarnessSha256": "ad44ff567644391ecfd8bca20b21726d158bcf67f44197569f897227d706c775",
+  "runnerSha256": "ef9964d19f9490174538f7d280098e1d8ebc3053efe8a17de744aac2403d780e",
+  "sourceSha256": {
+    "geometry-web/app.js": "106654a6f355a54b206b7434706630603b2c4b09be686e191e637f28efd87049",
+    "geometry-web/space-workspace.js": "a735338f5cc14f3ae743578986750ace3c7389e0d73fd44c21773d82c2503868",
+    "geometry-web/edge_draft_redraw_test.js": "ad44ff567644391ecfd8bca20b21726d158bcf67f44197569f897227d706c775"
+  },
+  "literalPython": {
+    "path": "<python-directory>/python",
+    "version": "Python 3.12.14"
+  },
+  "ownedFormalServer": {
+    "pid": 10433,
+    "port": 38605,
+    "cdp": 44801,
+    "feedback": "<owned-formal-server-directory>/feedback"
+  },
+  "actualFormalNativeBindings": [
+    {
+      "checkedAt": "2026-10-09T13:05:08.194444+00:00",
+      "runtime": {
+        "schema": "geometry-runtime/1",
+        "version": "65ee9fa6edf37a7f8f8393839ce8195d87530490adf98b51f78d0fac7f1d39c7",
+        "fresh": true,
+        "root": "<repository-root>",
+        "pid": 10433,
+        "session": "92aea6ae179b491198cd3836801ef500"
+      },
+      "liveBridge": [
+        {
+          "pid": 10435,
+          "parent": 10433,
+          "exe": "<fresh-native-directory>/bridge",
+          "sha256": "1a21545ff6654f213307fdddcd133777f8f8e7f7290f26c3dab36f4970175ce1"
+        }
+      ]
+    }
+  ],
+  "stackBytes": 16777216,
+  "originalResult": {
+    "originalPath": "<owned-formal-server-directory>/result.json",
+    "copyPath": "<evidence-root>/after-edge-20261009/formal-edge-gate/original-result.json",
+    "sha256": "0e8a49d1538840475384d0aeac59c9d0276f59f6d4a98e98766b930bb2a8991c"
+  },
+  "formalResult": {
+    "canonical": [
+      {
+        "passed": 34,
+        "failed": 4,
+        "completed": false
+      }
+    ],
+    "assertionLines": 38,
+    "expectedChecks": 38,
+    "fatal": [],
+    "verified": false
+  },
+  "scope": "Unchanged EDGE draft/redraw harness; API/internal fixture navigation; real CDP field input; 1400/390 viewport; not full CDP or Windows acceptance",
+  "publicProjection": {
+    "originalReceiptSha256": "4cb0c584648d2e212318f5d77145a87a00c57d58532c06018469347f2f9a1976",
+    "originalReceiptBytes": 7443,
+    "originalRawLogSha256": "1f15be82265f8bb8cbd50c1cf09a701cb798143713fa25a0773da9f3dc8dc67c",
+    "originalRawLogBytes": 3793,
+    "originalsRetainedOutsideGit": true,
+    "reason": "Original receipts and full raw logs contain machine roots and private isolated feedback paths. Only these path values are redacted in public projections; raw assertion/result bytes are preserved separately.",
+    "publicLogPath": "formal/after-bd6294e/log.public.log",
+    "publicLogSha256": "928d0ca116b5d774be2999fe8da17ed86407a57ab13fc1838e9fa62053da58ba",
+    "rawAssertionPath": "formal/after-bd6294e/assertions.raw.log",
+    "rawAssertionSha256": "32d2c68f8ec9c65aeaf470676adb4ca5ddd0f3cb350ebf494faa3e4847accf92",
+    "rawResultPath": "formal/after-bd6294e/result.raw.json",
+    "rawResultSha256": "0e8a49d1538840475384d0aeac59c9d0276f59f6d4a98e98766b930bb2a8991c"
+  }
+}

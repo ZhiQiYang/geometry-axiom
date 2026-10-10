@@ -1,0 +1,1019 @@
+{
+  "schema": "geometry-scoped-census-actor-index/1",
+  "actor": "/root/race_review",
+  "at": "2026-10-09T15:44:52.218368+00:00",
+  "scope": "Separate actual0b scopes; do not add into fullCDP/fullWindows/golden. Same executor artifact index, not independent reviewer or new product tests.",
+  "rows": [
+    {
+      "scope": "replacement",
+      "fullSHA": "0b37d8d8d4ee501fe6208e3e88440b3d078d7c0b",
+      "dirtyBefore": "",
+      "dirtyAfter": "",
+      "exitCode": 0,
+      "pass": 16,
+      "fail": 0,
+      "completed": true,
+      "cases": [
+        {
+          "name": "edges-1400-main-same-input-new-value",
+          "ok": true,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "edges-1400-main-replacement-rejected-value",
+          "ok": true,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "edges-1400-main-replacement-new-value",
+          "ok": true,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "edges-1400-main-success-sibling",
+          "ok": true,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "edges-1400-face-same-input-new-value",
+          "ok": true,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "edges-1400-face-replacement-rejected-value",
+          "ok": true,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "edges-1400-face-replacement-new-value",
+          "ok": true,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "edges-1400-face-success-sibling",
+          "ok": true,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "edges-390-main-same-input-new-value",
+          "ok": true,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "edges-390-main-replacement-rejected-value",
+          "ok": true,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "edges-390-main-replacement-new-value",
+          "ok": true,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "edges-390-main-success-sibling",
+          "ok": true,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "edges-390-face-same-input-new-value",
+          "ok": true,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "edges-390-face-replacement-rejected-value",
+          "ok": true,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "edges-390-face-replacement-new-value",
+          "ok": true,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "edges-390-face-success-sibling",
+          "ok": true,
+          "harnessError": null,
+          "pageErrors": []
+        }
+      ],
+      "receipt": {
+        "path": "<workspace-path>",
+        "sha256": "ae8c7115048d2862bc8ad0d7cc0a90b5d3e0aa3e2e49e691ad109db7a116df88"
+      },
+      "innerOriginalGate": {
+        "path": "<workspace-path>",
+        "sha256": "6d1a3df947db4ddf48d8d37827d175da642713a5a1df5791d7149df9107e0987"
+      },
+      "rawObserverLog": {
+        "path": "<workspace-path>",
+        "sha256": "dcccb8915dd34c980711260a38541940bf1df0f8f4f184cdd843b03a4f090978"
+      },
+      "rawProbeLog": {
+        "path": "<workspace-path>",
+        "bytes": 1328,
+        "sha256": "aa1bcafd4c38da99b6ae3df4ca7d779d4f3bd8017e639b3e4caff2eff097e20f"
+      },
+      "probeResults": {
+        "path": "<workspace-path>",
+        "sha256": "6b87ca0d20aa645203f9558b03c10f6cbe1fd4b1abc7ac3f69e84ac6ce8108f5"
+      },
+      "actualSources": {
+        "<workspace-path>|basename=observer-r3-573f192f.py|originalKeySha256=8b574c7b9ed85e9fc026e59b7e4e45b32b7a9054eb553f869b5e61f07957e4f6": "573f192f8f71108ded270f7a9aecb40af93cad30c37cdfa682d3a7df2659c8b4",
+        "<original-evidence-root>/run_gate.py": "c467822e22f619cc4b46e31f318dce8ad5b5980a7e6350671f6b65e289c71a8c",
+        "<workspace-path>|basename=browser_probe.py|originalKeySha256=1ea33ace33b30eb10c31ea78e4188f070344a0e9765a40a9894b9cd88dbbe7df": "e21238785aa6e1a6250e4f363004e303377b8f026f367f542e4ff39cfff103c7",
+        "<workspace-path>|basename=run_browser.py|originalKeySha256=ff50c9baf171d5dfa8c8fc24da3fcaf44c31aefc2fdfb309a672f5c0267bdbbd": "099efe265f5e78ff1df051dba688240372899deddf5ad8c3ded5493d2fe2421f",
+        "<workspace-path>|basename=browser_instrumentation.js|originalKeySha256=f088c809887c1fe551ff6c72cb1504bc74055e7524282b559d3d3659c40596fd": "83e8f28a97b4d03339d27f7646756e8d6bedd4e7f7f9745984d51e1dee54fb44"
+      },
+      "sourceAndRuntimeChecks": {
+        "fullSHAAndDirtyStable": true,
+        "executionFilesStable": true,
+        "configuredExecutableBytesStable": true,
+        "exactRuntimeStable": true,
+        "nativePidBytesStable": true,
+        "actualProbePythonObserved": true,
+        "actualPlaywrightDriverNodeObserved": true,
+        "actualMainChromeObserved": true,
+        "innerOriginalGateVerified": true
+      },
+      "liveProbeBindings": {
+        "innerGateExecutionPid": 123444,
+        "probePython": [
+          {
+            "pid": 123444,
+            "parent": 123428,
+            "parentStartTicks": "996975",
+            "state": "R",
+            "startTicks": "996991",
+            "exe": "<python-runtime>/bin/python3.12",
+            "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+            "executableFileIdentity": {
+              "device": 27,
+              "inode": 9223372036854858618,
+              "size": 30894944,
+              "mtimeNs": 1788486252000000000,
+              "ctimeNs": 1788486252000000000
+            },
+            "argv": [
+              "<python-runtime>/bin/python",
+              "<workspace-path>",
+              "--url",
+              "http://127.0.0.1:19186/",
+              "--out",
+              "<workspace-path>",
+              "--only",
+              "edges"
+            ],
+            "cwd": "<workspace-path>",
+            "observedAt": "2026-10-09T15:27:40.430979+00:00"
+          }
+        ],
+        "ownedDriverNode": [
+          {
+            "pid": 123467,
+            "parent": 123444,
+            "parentStartTicks": "996991",
+            "state": "R",
+            "startTicks": "997001",
+            "exe": "<node-runtime>/bin/node",
+            "sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12",
+            "executableFileIdentity": {
+              "device": 27,
+              "inode": 9223372036854817388,
+              "size": 125989464,
+              "mtimeNs": 1788486252000000000,
+              "ctimeNs": 1788486252000000000
+            },
+            "argv": [
+              "<node-runtime>/bin/node",
+              "<python-runtime>/lib/python3.12/site-packages/playwright/driver/package/cli.js",
+              "run-driver"
+            ],
+            "cwd": "<workspace-path>",
+            "observedAt": "2026-10-09T15:27:40.604256+00:00"
+          }
+        ],
+        "ownedMainChrome": [
+          {
+            "pid": 123479,
+            "parent": 123467,
+            "parentStartTicks": "997001",
+            "state": "S",
+            "startTicks": "997020",
+            "exe": "/usr/lib/chromium/chromium",
+            "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+            "executableFileIdentity": {
+              "device": 27,
+              "inode": 9223372036855114370,
+              "size": 321686360,
+              "mtimeNs": 1787420757000000000,
+              "ctimeNs": 1787420757000000000
+            },
+            "argv": [
+              "/usr/lib/chromium/chromium",
+              "--show-component-extension-options",
+              "--enable-gpu-rasterization",
+              "--no-default-browser-check",
+              "--disable-pings",
+              "--media-router=0",
+              "--enable-remote-extensions",
+              "--load-extension=",
+              "--disable-field-trial-config",
+              "--disable-background-networking",
+              "--disable-background-timer-throttling",
+              "--disable-backgrounding-occluded-windows",
+              "--disable-back-forward-cache",
+              "--disable-breakpad",
+              "--disable-client-side-phishing-detection",
+              "--disable-component-extensions-with-background-pages",
+              "--disable-component-update",
+              "--no-default-browser-check",
+              "--disable-default-apps",
+              "--disable-dev-shm-usage",
+              "--disable-edgeupdater",
+              "--disable-extensions",
+              "--disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion",
+              "--enable-features=CDPScreenshotNewSurface",
+              "--allow-pre-commit-input",
+              "--disable-hang-monitor",
+              "--disable-ipc-flooding-protection",
+              "--disable-popup-blocking",
+              "--disable-prompt-on-repost",
+              "--disable-renderer-backgrounding",
+              "--disable-updater-scheduler",
+              "--force-color-profile=srgb",
+              "--metrics-recording-only",
+              "--no-first-run",
+              "--password-store=basic",
+              "--use-mock-keychain",
+              "--no-service-autorun",
+              "--export-tagged-pdf",
+              "--disable-search-engine-choice-screen",
+              "--unsafely-disable-devtools-self-xss-warnings",
+              "--edge-skip-compat-layer-relaunch",
+              "--disable-infobars",
+              "--disable-search-engine-choice-screen",
+              "--disable-sync",
+              "--enable-unsafe-swiftshader",
+              "--headless",
+              "--hide-scrollbars",
+              "--mute-audio",
+              "--blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4",
+              "--user-data-dir=<isolated-browser-profile>",
+              "--remote-debugging-pipe",
+              "--no-startup-window"
+            ],
+            "cwd": "<workspace-path>",
+            "observedAt": "2026-10-09T15:27:40.953953+00:00"
+          }
+        ],
+        "rule": "Exact inner execution pid and argv for probe Python; direct parent pid plus process startTicks bind Node to that Python and Chrome to that Node, observed live."
+      },
+      "serviceBindingsBefore": [
+        {
+          "pid": 117550,
+          "parent": 117536,
+          "parentStartTicks": "968598",
+          "state": "S",
+          "startTicks": "968600",
+          "exe": "<python-runtime>/bin/python3.12",
+          "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+          "executableFileIdentity": {
+            "device": 27,
+            "inode": 9223372036854858618,
+            "size": 30894944,
+            "mtimeNs": 1788486252000000000,
+            "ctimeNs": 1788486252000000000
+          },
+          "argv": [
+            "<python-runtime>/bin/python",
+            "-u",
+            "<workspace-path>",
+            "19186"
+          ],
+          "cwd": "<workspace-path>",
+          "observedAt": "2026-10-09T15:27:40.231813+00:00"
+        },
+        {
+          "pid": 117852,
+          "parent": 117550,
+          "parentStartTicks": "968600",
+          "state": "S",
+          "startTicks": "970123",
+          "exe": "<isolated-test-directory>",
+          "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b",
+          "executableFileIdentity": {
+            "device": 33,
+            "inode": 271008,
+            "size": 566448,
+            "mtimeNs": 1791559387025960567,
+            "ctimeNs": 1791559387025976370
+          },
+          "argv": [
+            "<isolated-test-directory>"
+          ],
+          "cwd": "<workspace-path>",
+          "observedAt": "2026-10-09T15:27:40.232760+00:00"
+        }
+      ],
+      "serviceBindingsAfter": [
+        {
+          "pid": 117550,
+          "parent": 117536,
+          "parentStartTicks": "968598",
+          "state": "S",
+          "startTicks": "968600",
+          "exe": "<python-runtime>/bin/python3.12",
+          "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+          "executableFileIdentity": {
+            "device": 27,
+            "inode": 9223372036854858618,
+            "size": 30894944,
+            "mtimeNs": 1788486252000000000,
+            "ctimeNs": 1788486252000000000
+          },
+          "argv": [
+            "<python-runtime>/bin/python",
+            "-u",
+            "<workspace-path>",
+            "19186"
+          ],
+          "cwd": "<workspace-path>",
+          "observedAt": "2026-10-09T15:28:03.742128+00:00"
+        },
+        {
+          "pid": 117852,
+          "parent": 117550,
+          "parentStartTicks": "968600",
+          "state": "S",
+          "startTicks": "970123",
+          "exe": "<isolated-test-directory>",
+          "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b",
+          "executableFileIdentity": {
+            "device": 33,
+            "inode": 271008,
+            "size": 566448,
+            "mtimeNs": 1791559387025960567,
+            "ctimeNs": 1791559387025976370
+          },
+          "argv": [
+            "<isolated-test-directory>"
+          ],
+          "cwd": "<workspace-path>",
+          "observedAt": "2026-10-09T15:28:03.742258+00:00"
+        }
+      ]
+    },
+    {
+      "scope": "cross-b",
+      "fullSHA": "0b37d8d8d4ee501fe6208e3e88440b3d078d7c0b",
+      "dirtyBefore": "",
+      "dirtyAfter": "",
+      "exitCode": 1,
+      "pass": 4,
+      "fail": 4,
+      "completed": false,
+      "cases": [
+        {
+          "name": "edge-transition-1400-main-success-control",
+          "ok": true,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "edge-transition-1400-main-held-success-to-B",
+          "ok": false,
+          "harnessError": "Locator.click: Timeout 7000ms exceeded.\nCall log:\n  - waiting for locator(\"#workSurf\")\n    - locator resolved to <select id=\"workSurf\">…</select>\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    13 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n",
+          "pageErrors": []
+        },
+        {
+          "name": "edge-transition-1400-face-success-control",
+          "ok": true,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "edge-transition-1400-face-held-success-to-B",
+          "ok": false,
+          "harnessError": "Locator.click: Timeout 7000ms exceeded.\nCall log:\n  - waiting for locator(\"#workSurf\")\n    - locator resolved to <select id=\"workSurf\">…</select>\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    13 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n",
+          "pageErrors": []
+        },
+        {
+          "name": "edge-transition-390-main-success-control",
+          "ok": true,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "edge-transition-390-main-held-success-to-B",
+          "ok": false,
+          "harnessError": "Locator.click: Timeout 7000ms exceeded.\nCall log:\n  - waiting for locator(\"#workSurf\")\n    - locator resolved to <select id=\"workSurf\">…</select>\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    13 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n",
+          "pageErrors": []
+        },
+        {
+          "name": "edge-transition-390-face-success-control",
+          "ok": true,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "edge-transition-390-face-held-success-to-B",
+          "ok": false,
+          "harnessError": "Locator.click: Timeout 7000ms exceeded.\nCall log:\n  - waiting for locator(\"#workSurf\")\n    - locator resolved to <select id=\"workSurf\">…</select>\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    13 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n",
+          "pageErrors": []
+        }
+      ],
+      "receipt": {
+        "path": "<workspace-path>",
+        "sha256": "28bddbd3f7a2a2ddd47b9b614a3503377bcc7f03b81e974917efa5016d2d99ec"
+      },
+      "innerOriginalGate": {
+        "path": "<workspace-path>",
+        "sha256": "c2370e49b0795c32aa443f7fbd925ed5a7c7165a9247c8262f85e507bac2254e"
+      },
+      "rawObserverLog": {
+        "path": "<workspace-path>",
+        "sha256": "6bd2a6c976a347ae325dc94c37f26b3e0eb18e2eb3911e548e32fde6ff990002"
+      },
+      "rawProbeLog": {
+        "path": "<workspace-path>",
+        "bytes": 3224,
+        "sha256": "09a5a72d288ba86015a7ccb2125d2b9b383bf4986cfc9b40191f7ec065c0c9bd"
+      },
+      "probeResults": {
+        "path": "<workspace-path>",
+        "sha256": "bd4747d5d8466c51fd61fd36f57dd7944281f49b022979a2cc7ad84d6ba38ed5"
+      },
+      "actualSources": {
+        "<workspace-path>|basename=observer-r3-573f192f.py|originalKeySha256=8b574c7b9ed85e9fc026e59b7e4e45b32b7a9054eb553f869b5e61f07957e4f6": "573f192f8f71108ded270f7a9aecb40af93cad30c37cdfa682d3a7df2659c8b4",
+        "<original-evidence-root>/run_gate.py": "c467822e22f619cc4b46e31f318dce8ad5b5980a7e6350671f6b65e289c71a8c",
+        "<workspace-path>|basename=edge_transition_probe.py|originalKeySha256=e7439eb42495ee4d00d970ba702365393e66243c6693eaaa6299fa1f638d2bae": "3c54aef8badd864bc10bbe8ef6ad8b567cf05f6070443237ef2a8f97ff78f24d",
+        "<workspace-path>|basename=edge_transition_instrumentation.js|originalKeySha256=46bf4eb39b3f3c1d09d17409ab86c6ba2ab705733e61eabfee41fb5059331ee9": "173e236c5aeac4786f5878495323398a249f1cc448f537908b9d4bcee9bc6d68",
+        "<workspace-path>|basename=run_edge_transition_probe.py|originalKeySha256=4d11199b81352d9950f9db6f8d15c92bd536a99649dafa924ea25ccca85d24eb": "7a78f7c691b8ed1eee1fbe9c208d93289efd21515b020a49bfa7c75c5f66ac6c"
+      },
+      "sourceAndRuntimeChecks": {
+        "fullSHAAndDirtyStable": true,
+        "executionFilesStable": true,
+        "configuredExecutableBytesStable": true,
+        "exactRuntimeStable": true,
+        "nativePidBytesStable": true,
+        "actualProbePythonObserved": true,
+        "actualPlaywrightDriverNodeObserved": true,
+        "actualMainChromeObserved": true,
+        "innerOriginalGateVerified": false
+      },
+      "liveProbeBindings": {
+        "innerGateExecutionPid": 125877,
+        "probePython": [
+          {
+            "pid": 125877,
+            "parent": 125861,
+            "parentStartTicks": "999352",
+            "state": "R",
+            "startTicks": "999368",
+            "exe": "<python-runtime>/bin/python3.12",
+            "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+            "executableFileIdentity": {
+              "device": 27,
+              "inode": 9223372036854858618,
+              "size": 30894944,
+              "mtimeNs": 1788486252000000000,
+              "ctimeNs": 1788486252000000000
+            },
+            "argv": [
+              "<python-runtime>/bin/python",
+              "<workspace-path>",
+              "--url",
+              "http://127.0.0.1:19186/",
+              "--out",
+              "<workspace-path>"
+            ],
+            "cwd": "<workspace-path>",
+            "observedAt": "2026-10-09T15:28:04.206177+00:00"
+          }
+        ],
+        "ownedDriverNode": [
+          {
+            "pid": 125901,
+            "parent": 125877,
+            "parentStartTicks": "999368",
+            "state": "R",
+            "startTicks": "999379",
+            "exe": "<node-runtime>/bin/node",
+            "sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12",
+            "executableFileIdentity": {
+              "device": 27,
+              "inode": 9223372036854817388,
+              "size": 125989464,
+              "mtimeNs": 1788486252000000000,
+              "ctimeNs": 1788486252000000000
+            },
+            "argv": [
+              "<node-runtime>/bin/node",
+              "<python-runtime>/lib/python3.12/site-packages/playwright/driver/package/cli.js",
+              "run-driver"
+            ],
+            "cwd": "<workspace-path>",
+            "observedAt": "2026-10-09T15:28:04.429826+00:00"
+          }
+        ],
+        "ownedMainChrome": [
+          {
+            "pid": 125913,
+            "parent": 125901,
+            "parentStartTicks": "999379",
+            "state": "R",
+            "startTicks": "999399",
+            "exe": "/usr/lib/chromium/chromium",
+            "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+            "executableFileIdentity": {
+              "device": 27,
+              "inode": 9223372036855114370,
+              "size": 321686360,
+              "mtimeNs": 1787420757000000000,
+              "ctimeNs": 1787420757000000000
+            },
+            "argv": [
+              "/usr/lib/chromium/chromium",
+              "--show-component-extension-options",
+              "--enable-gpu-rasterization",
+              "--no-default-browser-check",
+              "--disable-pings",
+              "--media-router=0",
+              "--enable-remote-extensions",
+              "--load-extension=",
+              "--disable-field-trial-config",
+              "--disable-background-networking",
+              "--disable-background-timer-throttling",
+              "--disable-backgrounding-occluded-windows",
+              "--disable-back-forward-cache",
+              "--disable-breakpad",
+              "--disable-client-side-phishing-detection",
+              "--disable-component-extensions-with-background-pages",
+              "--disable-component-update",
+              "--no-default-browser-check",
+              "--disable-default-apps",
+              "--disable-dev-shm-usage",
+              "--disable-edgeupdater",
+              "--disable-extensions",
+              "--disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion",
+              "--enable-features=CDPScreenshotNewSurface",
+              "--allow-pre-commit-input",
+              "--disable-hang-monitor",
+              "--disable-ipc-flooding-protection",
+              "--disable-popup-blocking",
+              "--disable-prompt-on-repost",
+              "--disable-renderer-backgrounding",
+              "--disable-updater-scheduler",
+              "--force-color-profile=srgb",
+              "--metrics-recording-only",
+              "--no-first-run",
+              "--password-store=basic",
+              "--use-mock-keychain",
+              "--no-service-autorun",
+              "--export-tagged-pdf",
+              "--disable-search-engine-choice-screen",
+              "--unsafely-disable-devtools-self-xss-warnings",
+              "--edge-skip-compat-layer-relaunch",
+              "--disable-infobars",
+              "--disable-search-engine-choice-screen",
+              "--disable-sync",
+              "--enable-unsafe-swiftshader",
+              "--headless",
+              "--hide-scrollbars",
+              "--mute-audio",
+              "--blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4",
+              "--user-data-dir=<isolated-browser-profile>",
+              "--remote-debugging-pipe",
+              "--no-startup-window"
+            ],
+            "cwd": "<workspace-path>",
+            "observedAt": "2026-10-09T15:28:04.715058+00:00"
+          }
+        ],
+        "rule": "Exact inner execution pid and argv for probe Python; direct parent pid plus process startTicks bind Node to that Python and Chrome to that Node, observed live."
+      },
+      "serviceBindingsBefore": [
+        {
+          "pid": 117550,
+          "parent": 117536,
+          "parentStartTicks": "968598",
+          "state": "S",
+          "startTicks": "968600",
+          "exe": "<python-runtime>/bin/python3.12",
+          "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+          "executableFileIdentity": {
+            "device": 27,
+            "inode": 9223372036854858618,
+            "size": 30894944,
+            "mtimeNs": 1788486252000000000,
+            "ctimeNs": 1788486252000000000
+          },
+          "argv": [
+            "<python-runtime>/bin/python",
+            "-u",
+            "<workspace-path>",
+            "19186"
+          ],
+          "cwd": "<workspace-path>",
+          "observedAt": "2026-10-09T15:28:04.016790+00:00"
+        },
+        {
+          "pid": 117852,
+          "parent": 117550,
+          "parentStartTicks": "968600",
+          "state": "S",
+          "startTicks": "970123",
+          "exe": "<isolated-test-directory>",
+          "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b",
+          "executableFileIdentity": {
+            "device": 33,
+            "inode": 271008,
+            "size": 566448,
+            "mtimeNs": 1791559387025960567,
+            "ctimeNs": 1791559387025976370
+          },
+          "argv": [
+            "<isolated-test-directory>"
+          ],
+          "cwd": "<workspace-path>",
+          "observedAt": "2026-10-09T15:28:04.017256+00:00"
+        }
+      ],
+      "serviceBindingsAfter": [
+        {
+          "pid": 117550,
+          "parent": 117536,
+          "parentStartTicks": "968598",
+          "state": "S",
+          "startTicks": "968600",
+          "exe": "<python-runtime>/bin/python3.12",
+          "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+          "executableFileIdentity": {
+            "device": 27,
+            "inode": 9223372036854858618,
+            "size": 30894944,
+            "mtimeNs": 1788486252000000000,
+            "ctimeNs": 1788486252000000000
+          },
+          "argv": [
+            "<python-runtime>/bin/python",
+            "-u",
+            "<workspace-path>",
+            "19186"
+          ],
+          "cwd": "<workspace-path>",
+          "observedAt": "2026-10-09T15:28:45.672936+00:00"
+        },
+        {
+          "pid": 117852,
+          "parent": 117550,
+          "parentStartTicks": "968600",
+          "state": "S",
+          "startTicks": "970123",
+          "exe": "<isolated-test-directory>",
+          "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b",
+          "executableFileIdentity": {
+            "device": 33,
+            "inode": 271008,
+            "size": 566448,
+            "mtimeNs": 1791559387025960567,
+            "ctimeNs": 1791559387025976370
+          },
+          "argv": [
+            "<isolated-test-directory>"
+          ],
+          "cwd": "<workspace-path>",
+          "observedAt": "2026-10-09T15:28:45.673061+00:00"
+        }
+      ]
+    },
+    {
+      "scope": "card",
+      "fullSHA": "0b37d8d8d4ee501fe6208e3e88440b3d078d7c0b",
+      "dirtyBefore": "",
+      "dirtyAfter": "",
+      "exitCode": 0,
+      "pass": 4,
+      "fail": 0,
+      "completed": true,
+      "cases": [
+        {
+          "name": "beam-1400",
+          "ok": true,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "slots-1400",
+          "ok": true,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "beam-390",
+          "ok": true,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "slots-390",
+          "ok": true,
+          "harnessError": null,
+          "pageErrors": []
+        }
+      ],
+      "receipt": {
+        "path": "<workspace-path>",
+        "sha256": "f21397c3d162f5185442e83f2493e3a0ffbdaf444bd78f0789b88017830713da"
+      },
+      "innerOriginalGate": {
+        "path": "<workspace-path>",
+        "sha256": "2a9a8b431fd9829106af212a7358acad55d2dac9ceebf0719ac50b392da9e86b"
+      },
+      "rawObserverLog": {
+        "path": "<workspace-path>",
+        "sha256": "3f9a7cf186369301ccbd909a5275b0bd6e46d0f5662eb0839ffb96e9114a49fe"
+      },
+      "rawProbeLog": {
+        "path": "<workspace-path>",
+        "bytes": 333,
+        "sha256": "8375b6bcb09692686f1d30f9493c2d2b7bcf9233e0e66cc7d8ca5def24a3573b"
+      },
+      "probeResults": {
+        "path": "<workspace-path>",
+        "sha256": "625560b0308c5fd9eddd0e2cddc1260368b7806fcac1348eb55bed5121a2e538"
+      },
+      "actualSources": {
+        "<workspace-path>": "573f192f8f71108ded270f7a9aecb40af93cad30c37cdfa682d3a7df2659c8b4",
+        "<original-evidence-root>/run_gate.py": "c467822e22f619cc4b46e31f318dce8ad5b5980a7e6350671f6b65e289c71a8c",
+        "<original-evidence-root>/portable/card390/script.py": "b81a9f25b08c581168e63f5d407a89c3afc386a160cb1dd1384dcd1cb1754a9c"
+      },
+      "sourceAndRuntimeChecks": {
+        "fullSHAAndDirtyStable": true,
+        "executionFilesStable": true,
+        "configuredExecutableBytesStable": true,
+        "exactRuntimeStable": true,
+        "nativePidBytesStable": true,
+        "actualProbePythonObserved": true,
+        "actualPlaywrightDriverNodeObserved": true,
+        "actualMainChromeObserved": true,
+        "innerOriginalGateVerified": true
+      },
+      "liveProbeBindings": {
+        "innerGateExecutionPid": 127624,
+        "probePython": [
+          {
+            "pid": 127624,
+            "parent": 127608,
+            "parentStartTicks": "1026437",
+            "state": "R",
+            "startTicks": "1026453",
+            "exe": "<python-runtime>/bin/python3.12",
+            "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+            "executableFileIdentity": {
+              "device": 27,
+              "inode": 9223372036854858618,
+              "size": 30894944,
+              "mtimeNs": 1788486252000000000,
+              "ctimeNs": 1788486252000000000
+            },
+            "argv": [
+              "<python-runtime>/bin/python",
+              "<original-evidence-root>/portable/card390/script.py",
+              "--url",
+              "http://127.0.0.1:19186/",
+              "--out",
+              "<workspace-path>",
+              "--root",
+              "<workspace-path>",
+              "--bridge",
+              "<isolated-test-directory>"
+            ],
+            "cwd": "<workspace-path>",
+            "observedAt": "2026-10-09T15:32:35.056974+00:00"
+          }
+        ],
+        "ownedDriverNode": [
+          {
+            "pid": 127649,
+            "parent": 127624,
+            "parentStartTicks": "1026453",
+            "state": "R",
+            "startTicks": "1026465",
+            "exe": "<node-runtime>/bin/node",
+            "sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12",
+            "executableFileIdentity": {
+              "device": 27,
+              "inode": 9223372036854817388,
+              "size": 125989464,
+              "mtimeNs": 1788486252000000000,
+              "ctimeNs": 1788486252000000000
+            },
+            "argv": [
+              "<node-runtime>/bin/node",
+              "<python-runtime>/lib/python3.12/site-packages/playwright/driver/package/cli.js",
+              "run-driver"
+            ],
+            "cwd": "<workspace-path>",
+            "observedAt": "2026-10-09T15:32:35.283680+00:00"
+          }
+        ],
+        "ownedMainChrome": [
+          {
+            "pid": 127661,
+            "parent": 127649,
+            "parentStartTicks": "1026465",
+            "state": "R",
+            "startTicks": "1026484",
+            "exe": "/usr/lib/chromium/chromium",
+            "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+            "executableFileIdentity": {
+              "device": 27,
+              "inode": 9223372036855114370,
+              "size": 321686360,
+              "mtimeNs": 1787420757000000000,
+              "ctimeNs": 1787420757000000000
+            },
+            "argv": [
+              "/usr/lib/chromium/chromium",
+              "--show-component-extension-options",
+              "--enable-gpu-rasterization",
+              "--no-default-browser-check",
+              "--disable-pings",
+              "--media-router=0",
+              "--enable-remote-extensions",
+              "--load-extension=",
+              "--disable-field-trial-config",
+              "--disable-background-networking",
+              "--disable-background-timer-throttling",
+              "--disable-backgrounding-occluded-windows",
+              "--disable-back-forward-cache",
+              "--disable-breakpad",
+              "--disable-client-side-phishing-detection",
+              "--disable-component-extensions-with-background-pages",
+              "--disable-component-update",
+              "--no-default-browser-check",
+              "--disable-default-apps",
+              "--disable-dev-shm-usage",
+              "--disable-edgeupdater",
+              "--disable-extensions",
+              "--disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion",
+              "--enable-features=CDPScreenshotNewSurface",
+              "--allow-pre-commit-input",
+              "--disable-hang-monitor",
+              "--disable-ipc-flooding-protection",
+              "--disable-popup-blocking",
+              "--disable-prompt-on-repost",
+              "--disable-renderer-backgrounding",
+              "--disable-updater-scheduler",
+              "--force-color-profile=srgb",
+              "--metrics-recording-only",
+              "--no-first-run",
+              "--password-store=basic",
+              "--use-mock-keychain",
+              "--no-service-autorun",
+              "--export-tagged-pdf",
+              "--disable-search-engine-choice-screen",
+              "--unsafely-disable-devtools-self-xss-warnings",
+              "--edge-skip-compat-layer-relaunch",
+              "--disable-infobars",
+              "--disable-search-engine-choice-screen",
+              "--disable-sync",
+              "--enable-unsafe-swiftshader",
+              "--headless",
+              "--hide-scrollbars",
+              "--mute-audio",
+              "--blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4",
+              "--user-data-dir=<isolated-browser-profile>",
+              "--remote-debugging-pipe",
+              "--no-startup-window"
+            ],
+            "cwd": "<workspace-path>",
+            "observedAt": "2026-10-09T15:32:35.570727+00:00"
+          }
+        ],
+        "rule": "Exact inner execution pid and argv for probe Python; direct parent pid plus process startTicks bind Node to that Python and Chrome to that Node, observed live."
+      },
+      "serviceBindingsBefore": [
+        {
+          "pid": 117550,
+          "parent": 117536,
+          "parentStartTicks": "968598",
+          "state": "S",
+          "startTicks": "968600",
+          "exe": "<python-runtime>/bin/python3.12",
+          "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+          "executableFileIdentity": {
+            "device": 27,
+            "inode": 9223372036854858618,
+            "size": 30894944,
+            "mtimeNs": 1788486252000000000,
+            "ctimeNs": 1788486252000000000
+          },
+          "argv": [
+            "<python-runtime>/bin/python",
+            "-u",
+            "<workspace-path>",
+            "19186"
+          ],
+          "cwd": "<workspace-path>",
+          "observedAt": "2026-10-09T15:32:34.865116+00:00"
+        },
+        {
+          "pid": 117852,
+          "parent": 117550,
+          "parentStartTicks": "968600",
+          "state": "S",
+          "startTicks": "970123",
+          "exe": "<isolated-test-directory>",
+          "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b",
+          "executableFileIdentity": {
+            "device": 33,
+            "inode": 271008,
+            "size": 566448,
+            "mtimeNs": 1791559387025960567,
+            "ctimeNs": 1791559387025976370
+          },
+          "argv": [
+            "<isolated-test-directory>"
+          ],
+          "cwd": "<workspace-path>",
+          "observedAt": "2026-10-09T15:32:34.865901+00:00"
+        }
+      ],
+      "serviceBindingsAfter": [
+        {
+          "pid": 117550,
+          "parent": 117536,
+          "parentStartTicks": "968598",
+          "state": "S",
+          "startTicks": "968600",
+          "exe": "<python-runtime>/bin/python3.12",
+          "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+          "executableFileIdentity": {
+            "device": 27,
+            "inode": 9223372036854858618,
+            "size": 30894944,
+            "mtimeNs": 1788486252000000000,
+            "ctimeNs": 1788486252000000000
+          },
+          "argv": [
+            "<python-runtime>/bin/python",
+            "-u",
+            "<workspace-path>",
+            "19186"
+          ],
+          "cwd": "<workspace-path>",
+          "observedAt": "2026-10-09T15:32:46.445991+00:00"
+        },
+        {
+          "pid": 117852,
+          "parent": 117550,
+          "parentStartTicks": "968600",
+          "state": "S",
+          "startTicks": "970123",
+          "exe": "<isolated-test-directory>",
+          "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b",
+          "executableFileIdentity": {
+            "device": 33,
+            "inode": 271008,
+            "size": 566448,
+            "mtimeNs": 1791559387025960567,
+            "ctimeNs": 1791559387025976370
+          },
+          "argv": [
+            "<isolated-test-directory>"
+          ],
+          "cwd": "<workspace-path>",
+          "observedAt": "2026-10-09T15:32:46.446107+00:00"
+        }
+      ]
+    }
+  ],
+  "unexecutedAt0b": [
+    "held-bhit2",
+    "held-proj2",
+    "formal-race20"
+  ],
+  "originalCrossBFinding": "All four success controls passed. Four held cases failed at invisible legacy workSurf UI click before race oracle. Retained as4pass/4harnessFail/completedfalse, not an ownership regression proof.",
+  "navigationFollowup": "Standalone scratch navigation adapters +CrossB observer-contract-v2 approved by ROOT exactdiff; not executed at0b. Future candidate has different receipt/source binding.",
+  "stopReceipt": {
+    "path": "<workspace-path>",
+    "sha256": "98dd474a148ab02d40dc630088a0aff3ce2e43b256418715c535dbfa7791ae1e"
+  }
+}

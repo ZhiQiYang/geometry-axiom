@@ -1,0 +1,41 @@
+{
+  "schema": "geometry-probe-navigation-observation-proposal/2",
+  "actor": "/root/race_review",
+  "at": "2026-10-09T15:42:45.996770+00:00",
+  "status": "unexecuted-pending-independent-root-review",
+  "rows": [
+    {
+      "original": {
+        "path": "<workspace-path>",
+        "sha256": "ef3a799180c4c01c35a17bd865dc18b7536aa34610b8955d0bbd8809d660aebb"
+      },
+      "adapted": {
+        "path": "<workspace-path>",
+        "sha256": "db697822181fcb0856805fe3baba678728007044dfe3eb02f06de14ecdb38cd5"
+      },
+      "patch": {
+        "path": "<workspace-path>",
+        "sha256": "136647a171d82a187544c1629ce8b3acbe80a55213a6d6b67d86994434253b58"
+      }
+    },
+    {
+      "original": {
+        "path": "<workspace-path>",
+        "sha256": "173e236c5aeac4786f5878495323398a249f1cc448f537908b9d4bcee9bc6d68"
+      },
+      "adapted": {
+        "path": "<workspace-path>",
+        "sha256": "ee97900618687c6fe3b5a2cfa57b408237101fb794d59afca2efd1f924fa2ed4"
+      },
+      "patch": {
+        "path": "<workspace-path>",
+        "sha256": "42afd66b0cd2a790d6da26a63b4fe802e899b082ce9594f0d3c2621fabba5d58"
+      }
+    }
+  ],
+  "scope": "Explicit navigation observation v2 only; trusted visible picker and exact internal synthetic consumer synchronization/order. All old owner/token/model/visible/native/World/gate race predicates and edge input trusted-change predicates unchanged. Original navigation-v1 and failing4/4 receipt retained. Real Home/ArrowDown/Enter action source unchanged. No product change, forced input or weakened race assertion.",
+  "relatedSourcesUnchanged": [
+    "source-plan.md",
+    "run_edge_transition_probe.py"
+  ]
+}

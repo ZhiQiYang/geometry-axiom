@@ -62,3 +62,8 @@ body.canvas-library-collapsed .project-library-entry { padding:8px; }
   .project-concepts summary { display:flex; align-items:center; }
   #projectInfoDetails { grid-template-columns:80px minmax(0,1fr); }
 }
+@media (min-width:561px) and (max-width:680px) {
+  body.canvas-composition .topbar > .top-actions > #projectBar .project-info-button { position:static; }
+  body.canvas-composition .topbar > .top-actions > #projectBar .project-bar-name { position:static;max-width:105px; }
+  body.canvas-composition .topbar > .top-actions > #projectBar .main-project-status { position:static;max-width:76px; }
+}

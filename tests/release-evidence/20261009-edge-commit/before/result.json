@@ -1,0 +1,136 @@
+{
+  "passed": 6,
+  "failed": 16,
+  "results": [
+    {
+      "name": "1400px a successful edge length stays after another redraw",
+      "ok": false,
+      "detail": {
+        "value": "500",
+        "width": 400
+      }
+    },
+    {
+      "name": "1400px redraw after success does not restore the old length",
+      "ok": false
+    },
+    {
+      "name": "1400px main a newer value typed during a successful commit stays, and the committed length is kept",
+      "ok": false,
+      "detail": {
+        "value": "500",
+        "width": 500
+      }
+    },
+    {
+      "name": "1400px main a newer value typed during rejection stays, and the rejected value is not applied",
+      "ok": false,
+      "detail": {
+        "value": "400",
+        "width": 400
+      }
+    },
+    {
+      "name": "1400px rejecting zero restores the model length and does not apply it",
+      "ok": true
+    },
+    {
+      "name": "1400px typing the same field again after rejection applies the new length",
+      "ok": false,
+      "detail": {
+        "value": "450",
+        "width": 400
+      }
+    },
+    {
+      "name": "1400px switching boundary does not carry the unsent length",
+      "ok": true
+    },
+    {
+      "name": "1400px returning to the first boundary does not revive the unsent length",
+      "ok": true
+    },
+    {
+      "name": "1400px a three-view round trip does not revive the rejected length",
+      "ok": true
+    },
+    {
+      "name": "1400px a three-view round trip does not revive an unsent length",
+      "ok": false,
+      "detail": {
+        "value": "777",
+        "width": 400
+      }
+    },
+    {
+      "name": "1400px face a newer value typed during a successful commit stays, and the committed length is kept",
+      "ok": false,
+      "detail": {
+        "value": "500",
+        "width": 500
+      }
+    },
+    {
+      "name": "1400px face a newer value typed during rejection stays, and the rejected value is not applied",
+      "ok": false,
+      "detail": {
+        "value": "400",
+        "width": 400
+      }
+    },
+    {
+      "name": "390px success apply",
+      "ok": false,
+      "detail": "Control is not usable: #toggleRight {\"x\":0,\"y\":0,\"w\":0,\"h\":0,\"hit\":false,\"tag\":\"HEADER\",\"id\":\"\"}"
+    },
+    {
+      "name": "390px main success hold",
+      "ok": false,
+      "detail": "Control is not usable: #toggleRight {\"x\":0,\"y\":0,\"w\":0,\"h\":0,\"hit\":false,\"tag\":\"HEADER\",\"id\":\"\"}"
+    },
+    {
+      "name": "390px main rejection hold",
+      "ok": false,
+      "detail": "Control is not usable: #toggleRight {\"x\":0,\"y\":0,\"w\":0,\"h\":0,\"hit\":false,\"tag\":\"HEADER\",\"id\":\"\"}"
+    },
+    {
+      "name": "390px plain reject and retype",
+      "ok": false,
+      "detail": "Control is not usable: #toggleRight {\"x\":0,\"y\":0,\"w\":0,\"h\":0,\"hit\":false,\"tag\":\"HEADER\",\"id\":\"\"}"
+    },
+    {
+      "name": "390px boundary switch",
+      "ok": false,
+      "detail": "Control is not usable: #toggleRight {\"x\":0,\"y\":0,\"w\":0,\"h\":0,\"hit\":false,\"tag\":\"HEADER\",\"id\":\"\"}"
+    },
+    {
+      "name": "390px three-view",
+      "ok": false,
+      "detail": "Control is not usable: #toggleRight {\"x\":0,\"y\":0,\"w\":0,\"h\":0,\"hit\":false,\"tag\":\"HEADER\",\"id\":\"\"}"
+    },
+    {
+      "name": "390px face a newer value typed during a successful commit stays, and the committed length is kept",
+      "ok": false,
+      "detail": {
+        "value": "500",
+        "width": 500
+      }
+    },
+    {
+      "name": "390px face a newer value typed during rejection stays, and the rejected value is not applied",
+      "ok": false,
+      "detail": {
+        "value": "400",
+        "width": 400
+      }
+    },
+    {
+      "name": "no uncaught browser exceptions",
+      "ok": true
+    },
+    {
+      "name": "no browser console errors",
+      "ok": true
+    }
+  ]
+}

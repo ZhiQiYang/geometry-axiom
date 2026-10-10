@@ -1,0 +1,68 @@
+{
+  "schema": "geometry-dated-publication-tool-return-provenance/1",
+  "sealedUtc": "2026-10-09T20:02:59.528295+00:00",
+  "actor": "/root/delivery_closeout",
+  "sourceOfOriginalExitAndOutput": "Exact original functions exec_command return in the task interaction, preserved here later. This declaration is not an original subprocess receipt, captured /proc attestation or reconstructed historical stream file.",
+  "records": [
+    {
+      "role": "fresh formal-full v3 fixture/source metadata finalizer",
+      "originalCommand": "python -B <workspace-path>",
+      "originalToolChunkID": "a4cf04",
+      "originalToolExitCode": 0,
+      "originalToolOutput": {
+        "packet": "<workspace-path>",
+        "manifestSHA256": "f33d0032d3bfd33cec02f9790a90104892e8a4bbd8803b8349105544571c7b93",
+        "listedFiles": 193,
+        "artifactsIncludingManifest": 194,
+        "bytes": 7697431
+      },
+      "sourceOriginalSHA256": "c138e53bd79fc289f7f421ff6e4f973dd3702d3f461082f7043d0886227181a8",
+      "originalPID": null,
+      "originalProcExecutableOrArgvCaptured": false,
+      "originalStandaloneProcessReceiptAvailable": false,
+      "originalRawStdoutOrStderrFileAvailable": false,
+      "toolReturnIsOriginalProcessReceipt": false
+    },
+    {
+      "role": "fresh QA history v3 direct recipe",
+      "originalCommand": "python -B <workspace-path>",
+      "originalToolChunkID": "1ad64a",
+      "originalToolExitCode": 0,
+      "originalToolOutput": {
+        "packet": "<workspace-path>",
+        "manifestSHA256": "0b448d857d76a02b0a7a464b4ec1574c34c85d8fc3311a834b4a4672b704c28c",
+        "listedFiles": 63,
+        "artifactsIncludingManifest": 64,
+        "bytes": 19057808
+      },
+      "sourceOriginalSHA256": "21b76be9a814fef20b90f48cd7e13234cd284bdbef4e4b859bd254096514d2e4",
+      "originalPID": null,
+      "originalProcExecutableOrArgvCaptured": false,
+      "originalStandaloneProcessReceiptAvailable": false,
+      "originalRawStdoutOrStderrFileAvailable": false,
+      "toolReturnIsOriginalProcessReceipt": false
+    },
+    {
+      "role": "manager v1 packaging schema-reader preflight",
+      "originalCommand": "python -B <workspace-path>",
+      "originalToolChunkID": "e619f8",
+      "originalToolExitCode": 1,
+      "originalToolError": "AttributeError: list object has no attribute values; initial checks-list schema reader before publication.",
+      "sourceOriginalSHA256": "08055a8327904b297176e9c89bccd780452fa626ca38447f1b63cdcb9d799e34",
+      "originalPID": null,
+      "originalProcExecutableOrArgvCaptured": false,
+      "originalStandaloneProcessReceiptAvailable": false,
+      "originalRawStdoutOrStderrFileAvailable": false,
+      "toolReturnIsOriginalProcessReceipt": false
+    }
+  ],
+  "newExecutionOccurred": false,
+  "productOrBrowserRepeated": false,
+  "originalPacketsOrSourcesChanged": false,
+  "sealerOriginalSHA256": "ba9da927ce1ae23f0e5668f8e2f4dd73c5cadb5380a7b50bb783e21579761e58",
+  "limits": [
+    "Original source self-hash is independently present in successful packet metadata; a current executable/PID/cwd is not backfilled to these earlier author-tool invocations.",
+    "Original merged tool outputs are cited as tool provenance only, not claimed independently captured original stdout/stderr or original raw process files.",
+    "Actual product runner/Node/Chrome/native/source/exit receipts remain their original sealed records, wholly separate from packaging status."
+  ]
+}

@@ -1,0 +1,213 @@
+{
+  "checked_at": "2026-10-08T17:03:48.557445+00:00",
+  "reviewer": "/root/remote_inventory",
+  "scope": "Read-only source/raw trace/state/identity/screenshot review; reviewer did not launch browser or mutate repo.",
+  "candidate": "458779f003e1f57fdc0f4420564a0b295227843e",
+  "main": "5cc1ffa1ee85120eca14258b86b715151cad274f",
+  "runtime": {
+    "schema": "geometry-runtime/1",
+    "version": "5f7efb63220523dd481660f8dc092ca9f40f35e896cbe172d7694e61f308eb66",
+    "fresh": true
+  },
+  "product_sources": {
+    "geometry-web/app.js": "698ec7948e8cad9b310290d559c1cbe58b9d04c44c05a3ec9db8883b9f588d8d",
+    "geometry-web/space-workspace.js": "a735338f5cc14f3ae743578986750ace3c7389e0d73fd44c21773d82c2503868"
+  },
+  "script_sources": {
+    "bhit_probe.py": "d5356561996121097fd2101473066d8937a7ae4aeefa00848b8875ac44a8ef1f",
+    "bhit_instrumentation.js": "2381dc71c645dba6a45c52cb0baf3d0b289d9903797e0b466c25b4cf3e47a64d"
+  },
+  "command": {
+    "utc": "2026-10-08T17:01:16.896026+00:00",
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "/workspace/closure-evidence/async-review/bhit_probe.py",
+      "--out",
+      "/workspace/closure-evidence/async-review/browser-bhit-integration-5083"
+    ],
+    "exitCode": 1
+  },
+  "before_after_identity_unchanged": true,
+  "cases": [
+    {
+      "width": 1400,
+      "raw_result": "/workspace/closure-evidence/async-review/browser-bhit-integration-5083/bhit-1400.json",
+      "raw_result_sha256": "77f718481114d44a20b34353165223b448e7a8a0a001add81b7dd473f7c1e598",
+      "before": {
+        "tool": "edit",
+        "editBid": 712,
+        "editToken": 5,
+        "editDrag": null,
+        "groups": 1,
+        "handles": 5
+      },
+      "after": {
+        "tool": "edit",
+        "editBid": 712,
+        "editToken": 5,
+        "editDrag": {
+          "loop": -1,
+          "index": 0,
+          "kind": "vertex",
+          "loops": [
+            {
+              "verts": [
+                [
+                  0,
+                  0
+                ],
+                [
+                  4000,
+                  0
+                ],
+                [
+                  4000,
+                  3000
+                ],
+                [
+                  0,
+                  3000
+                ]
+              ],
+              "fixity": [
+                1,
+                1,
+                1,
+                1
+              ]
+            }
+          ]
+        },
+        "groups": 1,
+        "handles": 0
+      },
+      "native_reply": {
+        "ok": true,
+        "kind": "vertex",
+        "loop": -1,
+        "index": 0
+      },
+      "trusted_pointer_down_up": true,
+      "raw_dump_comparison": [
+        {
+          "callId": "call@28",
+          "text": "boundary 711 outline 0,0 4000,0 4000,3000 0,3000\nboundary 712 outline 0,0 4000,0 4000,3000 0,3000\nplacement 711 on boundary 711 origin 0 0 2500 u +x v +y\nplacement 712 on boundary 712 origin 0 0 2500 u +x v +y\ncanvas-pos boundary 711 60 60\ncanvas-pos boundary 712 440 60\n",
+          "sha256": "1161c1f4a567165a8aa520425fbda9748121c5452f7a9d591ad21d62e0ecd405"
+        },
+        {
+          "callId": "call@72",
+          "text": "boundary 711 outline 0,0 4000,0 4000,3000 0,3000\nboundary 712 outline 0,0 4000,0 4000,3000 0,3000\nplacement 711 on boundary 711 origin 0 0 2500 u +x v +y\nplacement 712 on boundary 712 origin 0 0 2500 u +x v +y\ncanvas-pos boundary 711 60 60\ncanvas-pos boundary 712 440 60\n",
+          "sha256": "1161c1f4a567165a8aa520425fbda9748121c5452f7a9d591ad21d62e0ecd405"
+        }
+      ],
+      "trace_sha256": "549c79ee83f0b188c1409a8877c4fa8e268b0d28ddcedc1e00dcb04cad9fac7a",
+      "executed_source_bytes_verified": true,
+      "instrumentation_expression_bytes_verified": true,
+      "screenshots": {
+        "B-before": "fa0d185cb22c67eeace9203db650cb5407f969ee662c987e67615496f7f04283",
+        "after-A": "dde2bd32b5c59b3032147b3ca59b27e66699f11bcb9d0df1b6c9a7da996b9e5d"
+      }
+    },
+    {
+      "width": 390,
+      "raw_result": "/workspace/closure-evidence/async-review/browser-bhit-integration-5083/bhit-390.json",
+      "raw_result_sha256": "e527bb4c2f396f1b288774dcab59b96a39e62e8a0c70b0fe118a4bab3bd9ac82",
+      "before": {
+        "tool": "edit",
+        "editBid": 712,
+        "editToken": 5,
+        "editDrag": null,
+        "groups": 1,
+        "handles": 5
+      },
+      "after": {
+        "tool": "edit",
+        "editBid": 712,
+        "editToken": 5,
+        "editDrag": {
+          "loop": -1,
+          "index": 0,
+          "kind": "vertex",
+          "loops": [
+            {
+              "verts": [
+                [
+                  0,
+                  0
+                ],
+                [
+                  4000,
+                  0
+                ],
+                [
+                  4000,
+                  3000
+                ],
+                [
+                  0,
+                  3000
+                ]
+              ],
+              "fixity": [
+                1,
+                1,
+                1,
+                1
+              ]
+            }
+          ]
+        },
+        "groups": 1,
+        "handles": 0
+      },
+      "native_reply": {
+        "ok": true,
+        "kind": "vertex",
+        "loop": -1,
+        "index": 0
+      },
+      "trusted_pointer_down_up": true,
+      "raw_dump_comparison": [
+        {
+          "callId": "call@120",
+          "text": "boundary 711 outline 0,0 4000,0 4000,3000 0,3000\nboundary 712 outline 0,0 4000,0 4000,3000 0,3000\nplacement 711 on boundary 711 origin 0 0 2500 u +x v +y\nplacement 712 on boundary 712 origin 0 0 2500 u +x v +y\ncanvas-pos boundary 711 60 60\ncanvas-pos boundary 712 60 360\n",
+          "sha256": "58f70175e4fa933ee820f4a49c4097c4237d56cb3c8b2f8b6d799496012b070d"
+        },
+        {
+          "callId": "call@176",
+          "text": "boundary 711 outline 0,0 4000,0 4000,3000 0,3000\nboundary 712 outline 0,0 4000,0 4000,3000 0,3000\nplacement 711 on boundary 711 origin 0 0 2500 u +x v +y\nplacement 712 on boundary 712 origin 0 0 2500 u +x v +y\ncanvas-pos boundary 711 60 60\ncanvas-pos boundary 712 60 360\n",
+          "sha256": "58f70175e4fa933ee820f4a49c4097c4237d56cb3c8b2f8b6d799496012b070d"
+        }
+      ],
+      "trace_sha256": "7d7bd24c10315c53f3632a40cb37a2cb22fab73db1aa7e9dff2decf78c63f9d6",
+      "executed_source_bytes_verified": true,
+      "instrumentation_expression_bytes_verified": true,
+      "screenshots": {
+        "B-before": "a3e809629459e153620e5b98859920c837fd0b53c539ea73a93a476c4b8b04d9",
+        "after-A": "7ce0fb9ac154bee776fdbed4b8b8120db29f0753d5c0e63fb2e93420aa30aab7"
+      }
+    }
+  ],
+  "conclusion": "New browser-observed defect at integration candidate458779f: actual held A711 vertex bhit response resumes after trusted pointerup and B712 edit has completed; it resurrects editDrag and removes B handles at1400 and390. Native World dump remains byte-identical. This is independent of the now-passing held-proj cleanup case.",
+  "review_blockers": [],
+  "product_blocker": true,
+  "source_location": "geometry-web/app.js canvasDown: after await api(bhit...) assigns editDrag from live editLoops and globally clears preview without captured ownership/pointer-generation check.",
+  "limits": [
+    "Synthetic fixture seeding uses API; no UI authoring acceptance.",
+    "Normal select_option changes workSurf through browser selection; only pointerdown/up are explicitly isTrusted-asserted.",
+    "State oracle counts handles and captures tool/editBid/editToken/editDrag/groups; it does not compare full handle DOM coordinates or editLoops/affine cache. The observed5→0 loss and null→stale drag are unambiguous within that scope.",
+    "No World corruption observed; no post-release extra mouse movement or completion tested.",
+    "390 uses desktop viewport emulation, not physical mobile.",
+    "No browser reexecution or product patch performed by reviewer."
+  ],
+  "publicationDerivation": {
+    "originalPrivateFile": "bhit-independent-review.json",
+    "originalSha256": "7022f986362cdf3ce152e41a74032176f58aa3ac11174cd17c3fb07f8ee021ba",
+    "omittedFields": [
+      "runtime.session",
+      "runtime.pid",
+      "runtime.root"
+    ],
+    "note": "Derived extraction; not relabelled as byte-identical original."
+  }
+}

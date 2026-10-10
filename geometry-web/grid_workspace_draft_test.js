@@ -4,6 +4,16 @@
  */
 const cdp=require('./cdp_helpers.js');
 module.exports = async function gridWorkspaceDrafts({send,eval_,sleep,click,waitForUI,expectNativeDialog}) {
+  // S2 keeps the same exact discard question inside the active workspace.
+  const discardDraft=async({message,accept})=>{
+    await ctl('#igDiscardDraft');
+    await waitForUI(`!!$('igDiscardConfirmation')&&$('igDiscardConfirmation').getAttribute('role')==='alertdialog'`,10000);
+    const actual=await eval_(`$('igDiscardQuestion').textContent`);
+    if(actual!==message)throw Error('Discard question changed: '+JSON.stringify({expected:message,actual}));
+    await ctl(accept?'#igDiscardConfirm':'#igDiscardCancel');
+    await waitForUI(`!$('igDiscardConfirmation')`,10000);
+  };
+
   console.log('=== P73B. 網格延遲載入及切換邊界不吞草稿 ===');
   const check=cdp.makeCheck({prefix:'P73B ',throwOnFail:true});
   const wait=cdp.makeWait(waitForUI,20000);
@@ -37,7 +47,7 @@ module.exports = async function gridWorkspaceDrafts({send,eval_,sleep,click,wait
     await eval_('window.__gridDraftDelay.release();void 0');await wait(`!$('igCellI').disabled && !!$('igKeyedVertices').firstElementChild`);
     await fill('#igCellI','-3');
     check('原生回應到達後輸入確實進入可保存原始草稿',await eval_(`$('igCellI').value==='-3' && !document.querySelector('#projectBar [data-project-action="save"]').disabled && !$('igSaveBinding').disabled && ReferenceWorkspace.readFeatureAttachment('grid-draft').rawForm.igCellI==='-3'`)&&(await dump())===baseline);
-    await expectNativeDialog(()=>ctl('#igDiscardDraft'),{message:discardMessage,accept:false});
+    await discardDraft({message:discardMessage,accept:false});
     check('取消退出保留延遲期間的cell草稿',await eval_(`$('infiniteGridWorkspace').open && $('igCellI').value==='-3'`));
   } finally {
     await eval_(`(()=>{const gate=window.__gridDraftDelay;if(gate){if(gate.release&&!gate.released)gate.release();window.apiRequest=gate.original;delete window.__gridDraftDelay;}return true;})()`);
@@ -52,6 +62,6 @@ module.exports = async function gridWorkspaceDrafts({send,eval_,sleep,click,wait
   check('取消退出也完整保留兩類邊界草稿',await eval_(`$('infiniteGridWorkspace').open && $('igGrowLeft').value==='120' && document.querySelector(${JSON.stringify(vertexSelector)}).value==='90'`));
   await expectNativeDialog(()=>choose('#igBoundary','802'),{message:switchMessage,accept:true});await wait(`$('igVertex').options.length===5`);
   check('明示捨棄後新邊界不沿用舊頂點或擴大量且原始配置可保存',await eval_(`$('igBoundary').value==='802' && ['Left','Right','Top','Bottom'].every(a=>$('igGrow'+a).value==='0') && !document.querySelector(${JSON.stringify(vertexSelector)}) && !document.querySelector('#projectBar [data-project-action="save"]').disabled && ReferenceWorkspace.readFeatureAttachment('grid-draft').rawForm.igBoundary==='802'`)&&(await dump())===baseline);
-  await expectNativeDialog(()=>ctl('#igDiscardDraft'),{message:discardMessage,accept:true});
+  await discardDraft({message:discardMessage,accept:true});
   check('退出全部草稿後原生世界逐字未變',(await dump())===baseline);
 };

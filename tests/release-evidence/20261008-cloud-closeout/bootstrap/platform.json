@@ -1,0 +1,28 @@
+{
+  "started_utc": "2026-10-08T15:55:59.267899+00:00",
+  "cwd": "/workspace/geometry-axiom",
+  "command": [
+    "bash",
+    "-c",
+    "uname -a; gcc --version; node --version; python3 --version; chromium --version; git --version"
+  ],
+  "head": {
+    "stdout": "bdd1bf7812ba6126aab9ddffced43cd200ac977e\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  "status": {
+    "stdout": "?? tests/integration/assembly_ownership_probe.py\n?? tests/integration/grid_rule_reopen_probe.py\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  "main": {
+    "stdout": "5cc1ffa1ee85120eca14258b86b715151cad274f\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  "dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "input_hashes": {},
+  "exit_code": 0,
+  "finished_utc": "2026-10-08T15:55:59.331889+00:00"
+}

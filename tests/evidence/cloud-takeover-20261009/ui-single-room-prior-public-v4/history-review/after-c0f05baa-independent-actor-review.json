@@ -1,0 +1,488 @@
+{
+  "schema": "geometry-projection-followup-review/1",
+  "actor": "/root/race_review",
+  "reviewedAt": "2026-10-09T14:58:43.352090+00:00",
+  "role": "Separate product-review/execution actor from sole product writer. Authored supplemental projection/control probes, no independent oracle-authorship claim. Resume r4 source authored by another actor and verified unchanged hash.",
+  "scope": "Five distinct scoped runs reported separately, never added into full CDP, Windows or golden acceptance. No product/test repository edits. No force clicks, UI retry or native mock.",
+  "sets": [
+    {
+      "label": "original-ten-unchanged",
+      "fullSHA": "c0f05baade2424482fab94c72f0592f7b02326ae",
+      "dirty": "",
+      "beforeAfterSameSource": true,
+      "completed": true,
+      "exitCode": 1,
+      "pass": 8,
+      "fail": 2,
+      "receipt": {
+        "path": "<workspace-path>",
+        "sha256": "7675f17490bc14b470e1954f1e007cb06dc916ee6ab7ccbc1fac179fdd98283f"
+      },
+      "wrapper": {
+        "path": "<workspace-path>",
+        "sha256": "95cf049d7ce7aa2f7f2ad3bb6b1e13c8018c62ad8bca61b60da2a5cc7fe8500e"
+      },
+      "rawLog": {
+        "path": "<workspace-path>",
+        "sha256": "1353e00ee0f05acbebaebd78bb830cb8bfdbab5d7138c1d2ac7a4ecbd50f87c7"
+      },
+      "cases": [
+        {
+          "name": "normal-projection-1382",
+          "ok": true,
+          "error": null,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "held-A-B-vertex-1382",
+          "ok": true,
+          "error": null,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "held-A-B-hole-1382",
+          "ok": false,
+          "error": "B real completion differs from fixed exact geometry",
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "same-owner-multiselect-1382",
+          "ok": true,
+          "error": null,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "header-history-1382",
+          "ok": true,
+          "error": null,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "normal-projection-390",
+          "ok": true,
+          "error": null,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "held-A-B-vertex-390",
+          "ok": true,
+          "error": null,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "held-A-B-hole-390",
+          "ok": false,
+          "error": "B real completion differs from fixed exact geometry",
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "same-owner-multiselect-390",
+          "ok": true,
+          "error": null,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "header-history-390",
+          "ok": true,
+          "error": null,
+          "harnessError": null,
+          "pageErrors": []
+        }
+      ],
+      "artifactHashes": {
+        "<workspace-path>|basename=after-runtime.raw.json|originalKeySha256=cd570e4979d1b24179cd5dc58c63623d4a2ce78f140fcbdab5198e1c2c9a7f60": "cb64037045a97a1a8543f9d78a27be2aa7181ad33b539f964b99f60a5a1aa1c4",
+        "<workspace-path>|basename=after.json|originalKeySha256=859683c547d3078616c4d4a0441c37bddb68964bb5a4f7c5b6791a17e740a5af": "a7f5c55a73dd8458e196cea92ab31fd20f36acc19d560db5d41328e49c098ad6",
+        "<workspace-path>|basename=before-runtime.raw.json|originalKeySha256=d4dab659c7c3f7aa3de76160a9a265232729b0ddf0be7f9590f5b2cf5b68200d": "cb64037045a97a1a8543f9d78a27be2aa7181ad33b539f964b99f60a5a1aa1c4",
+        "<workspace-path>|basename=before.json|originalKeySha256=de365e2f9eced841fa1a386e7a1166a75c1f7f6d7e28ad8bbe160e069ef372c3": "23d95f6f8cde715a673007da20839e2988bb9e9b034dc93a8a046bf79fc30058",
+        "<workspace-path>|basename=browser.json|originalKeySha256=3e67c17e30524b1157fae4251a1d1f5df275c053efad68447ada08650a3b4f72": "61c7876f1476c74c731aecf03f8aa6139631daa41bb43e3f90f6cc480f9c7f93",
+        "<workspace-path>|basename=header-history-1382-layout.json|originalKeySha256=4d65399c60ac7aacbc87449263b71d642e9a8101fa09a119a089565fb4ac6645": "128f5bbce2a3f4a5d944f04285be29bd64d2ec7038707021cf8a49ba068cfd5c",
+        "<workspace-path>|basename=header-history-1382-trace.zip|originalKeySha256=62b681d6bd6fcf73a1e113e430c7980341bad17a0f4d1987fa32b890bc66fa4a": "8ba51b05decc25766f4ee9bf866984cf6d61a1b092227844803ef6fb94d73ddb",
+        "<workspace-path>|basename=header-history-1382-world-after.scene|originalKeySha256=5075351e7652ea23e473cd7f49f0b1add96cc77a185f2c1ab1d124e689203bb6": "1b292fbbac00dc11bf5f6b2d8f1b6f5bd40d8c5c6ef36c5f58ec24aa38e719a7",
+        "<workspace-path>|basename=header-history-1382-world-before.scene|originalKeySha256=70101877e09d8d9c90340a787e354fc70eb30951e95a2a333e480f613c8d22ee": "1b292fbbac00dc11bf5f6b2d8f1b6f5bd40d8c5c6ef36c5f58ec24aa38e719a7",
+        "<workspace-path>|basename=header-history-1382.json|originalKeySha256=5e8b5104c879149aa3989094d517b26caa38ff732b0abd9af4e4bdf290c2e52d": "89ed01dda8d22c869cbc69be834692b774856dcfb91d3244a83e645183305ea6",
+        "<workspace-path>|basename=header-history-390-layout.json|originalKeySha256=be50c6e54e2a90baecc3b1232150319ab19cf5fce184cf31d1b36ff6cb3f7aa5": "d7b3d7052c445df9afa8c4b28de424e421d98f5e39e17a54b23f126650bed17a",
+        "<workspace-path>|basename=header-history-390-trace.zip|originalKeySha256=c65d3f80b7ffa19445404e919f216d55f32014faa03f9c001de2183da63efba0": "a2ef036e6d71702fd7a17f1d2fbd521f1d710e9988d4f91542c8bdbf84d3d135",
+        "<workspace-path>|basename=header-history-390-world-after.scene|originalKeySha256=91ea548e524ac772518938056f28afdb8c9b895ca7292bb9468e403faa7fd04b": "7210702f95dff2b21afe0ee8ca9ff36f088fcd793a42fd960e759c7d4ddebc88",
+        "<workspace-path>|basename=header-history-390-world-before.scene|originalKeySha256=662e993b4fcf2bb1cf15c8e2dd82407ff2aad8fbd3f9c25b3bf6b5124ba47ba0": "7210702f95dff2b21afe0ee8ca9ff36f088fcd793a42fd960e759c7d4ddebc88",
+        "<workspace-path>|basename=header-history-390.json|originalKeySha256=e34cf57f138f6094bdeb22b90c47115ca906821819c1e6197a9f3e882c1baa15": "a008efaed89296fe88ba1e58012cc325115c3b8dfd152fe1189c7152647608bb",
+        "<workspace-path>|basename=held-A-B-hole-1382-B-live.png|originalKeySha256=f78da02e29b7ed4dc2328d59b53d3133bf805f244074d513361c8e96e6b39de2": "9c349c0090f00eb86a28d4af8cd4bc26d3af5d6387a78afdd1886842de45148f",
+        "<workspace-path>|basename=held-A-B-hole-1382-failed.png|originalKeySha256=db99a1a8c1242551ee8d8cb7ce322ebfb35683a5b6a39ccc37b0df2ccc044b80": "639c6b705d9a9afeb0175aed5f7e6369ba120c06000a950d2ad3427c731261d2",
+        "<workspace-path>|basename=held-A-B-hole-1382-owners.json|originalKeySha256=5f0b4abb72a6de10dd0d7f4f32faf30b7661c8bffe9676f946698d63db94d9ff": "64262ef8dbd2249f9e2a5cc621fc1cc2cbd998d886f12c7fb669c6e954210284",
+        "<workspace-path>|basename=held-A-B-hole-1382-trace.zip|originalKeySha256=a57ed21edafd5d8b43d9f20641fb85d863454dca3a48fe77178624a586325552": "cb5dba49dce831de5efaf5c20c9fe32f9b73a1b0c41499467721382141d1dd83",
+        "<workspace-path>|basename=held-A-B-hole-1382-world-A-expected.scene|originalKeySha256=9e8d67783d113a4689b63d6c02c81c499b5d45524afd0f71cae1cc59735ef482": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+        "<workspace-path>|basename=held-A-B-hole-1382-world-A-held.scene|originalKeySha256=80353cbbce0c717cf67dff1969171fc07416089de2003b22539ef25ee97af574": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+        "<workspace-path>|basename=held-A-B-hole-1382-world-A-released.scene|originalKeySha256=dc36a4d518bf541c0d995fef19f02cc1b7d5a77d371a4dec415e2aee052bc2ba": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+        "<workspace-path>|basename=held-A-B-hole-1382-world-B-expected.scene|originalKeySha256=4b1165777ce0444dd40af286cae57943d0b6c355903a5c692bff3f7c78b6ad05": "e7e9a6e90acf9401288d5222489b86a598a5d76300b65a2c8d063b8078455d06",
+        "<workspace-path>|basename=held-A-B-hole-1382-world-B-finished.scene|originalKeySha256=bc3ff13f687b6da53b8fd1070d4f75327975feb96b8b4e82b0681cffb50ff6a9": "aa17b68beeff178e8ee1c2b4242fcf20b774af93e77ec29651a52f34920c08e6",
+        "<workspace-path>|basename=held-A-B-hole-1382-world-B-live.scene|originalKeySha256=c71704bc2016bfb21ecb169ceeaa60efba14c6f5ce645bfda2cdf3dcf7e230fc": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+        "<workspace-path>|basename=held-A-B-hole-1382-world-B-preview.scene|originalKeySha256=91372deabc8f965ef2140dd30fe4109fd0dc1db4cfaa9391bf8f8a4f7fc2d819": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+        "<workspace-path>|basename=held-A-B-hole-1382-world-before.scene|originalKeySha256=ae21c94e6a02622491efa9f89d88c6982371f0b2d0aa634c0499d5995e567519": "1b292fbbac00dc11bf5f6b2d8f1b6f5bd40d8c5c6ef36c5f58ec24aa38e719a7",
+        "<workspace-path>|basename=held-A-B-hole-1382.json|originalKeySha256=c40b00d3408f2200b2f997eeb33ba6d5a7a763d71eebbe1ce6c3995aef534f4d": "d020fa876832b7cc722b0482d24235baaefa3c5f2d4647bf60477025f4d1fcff",
+        "<workspace-path>|basename=held-A-B-hole-390-B-live.png|originalKeySha256=6680c5b09b7604b12cf45ed65c4bdbd87379e7aeef5f0ee33062dda84ee43f5e": "7ffcf63beb5e7f88ee6baecd477e15059a474fca6ee410a0a696162cc0bf7831",
+        "<workspace-path>|basename=held-A-B-hole-390-failed.png|originalKeySha256=ea26809bfa7d6b72b627cf44e0ef4e43ab4101cf1594c615f78ee90c15b02375": "7b9660840559259627f7b33833ff957527453e3e5e58b172b34b70a5e0a3c9c9",
+        "<workspace-path>|basename=held-A-B-hole-390-owners.json|originalKeySha256=62cd6519056a157a1bba79121e532e620f8bcf7a74df3365ed8677afed0310ad": "7211c853f74ab8964bc430b818351a7c0fcac38e11f3f180c164f5e9b0159d75",
+        "<workspace-path>|basename=held-A-B-hole-390-trace.zip|originalKeySha256=5f91e06d44f265b59676830922462e4017ec035ea1405fc20e7eea95e8c7add5": "09a9e4646a9c822fb8ffb38a071e4d0b9a4cd7e29fb4f884647eef8b1a0ae4e3",
+        "<workspace-path>|basename=held-A-B-hole-390-world-A-expected.scene|originalKeySha256=c547b71754deb19ee4dae839d0b3c7cbe5c88fd8a4d2c7807273b3addc7f44a7": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+        "<workspace-path>|basename=held-A-B-hole-390-world-A-held.scene|originalKeySha256=6e414463774942b614c82eff605ce61505a19fe47b0ccfca69db25c4de9071fa": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+        "<workspace-path>|basename=held-A-B-hole-390-world-A-released.scene|originalKeySha256=44606d8b19dc1d648b532bb04723986189fb2eb7920be9d57b0bd03cd12caa35": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+        "<workspace-path>|basename=held-A-B-hole-390-world-B-expected.scene|originalKeySha256=cab75415d88310a140b584d82494af17dc817414b7b9f8069fd4c224ab0372cc": "c5c8732acfbad52a3b4acfd7e2f9b500834594d66f53aadae310b6ed93239c21",
+        "<workspace-path>|basename=held-A-B-hole-390-world-B-finished.scene|originalKeySha256=ac08018e170fca6aa096d8159e2ee946d0ce8ec6dd7e734a822ab26b5adeaf56": "6b0933495e918d567159857aba4554f010b363d6332aa107225fad62ce026c04",
+        "<workspace-path>|basename=held-A-B-hole-390-world-B-live.scene|originalKeySha256=d15dd92513663331f6bed2d04cc47dc452106bc9eb98818e0a0e90e0c36177c0": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+        "<workspace-path>|basename=held-A-B-hole-390-world-B-preview.scene|originalKeySha256=733d132397dac34442627adc57eff865af21cb0272a1ddecff23e0fb010d47cf": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+        "<workspace-path>|basename=held-A-B-hole-390-world-before.scene|originalKeySha256=e9df92519aad05f2a353ddfe90d00b5a532b71c547d2867c40d1dbd06a457f4d": "7210702f95dff2b21afe0ee8ca9ff36f088fcd793a42fd960e759c7d4ddebc88",
+        "<workspace-path>|basename=held-A-B-hole-390.json|originalKeySha256=ed106229068f3b546e42596184be552d009373ebc00422f195bdf3eafb6ba113": "e638e43b28fa69d449567379f58fb38e943a44537c658351370b4e3e753a448b",
+        "<workspace-path>|basename=held-A-B-vertex-1382-B-live.png|originalKeySha256=8766a2c6ee0072151b6fbad52449255532be1199e295ce76128e82e6748819c2": "5ad600f4c5467d0f8857f072f0fa75bb4e5c5f23e0c6caef30ca8ce4d0b4317b",
+        "<workspace-path>|basename=held-A-B-vertex-1382-owners.json|originalKeySha256=9357754066b5f8b1e80a55259ba9a3c1e3f9285cbe40c1fe760003ee57c2bec0": "b7bcc26031a488cf17e4242ed7aa55884d20a7c0064516a8fb138820ba4a621e",
+        "<workspace-path>|basename=held-A-B-vertex-1382-trace.zip|originalKeySha256=4b4b615ec4ea8cad08ffb3f920456d1e1d3d527d51b37c36095bf1ddaa2a317c": "50d0c5b42255d664cf20bbecf1cbbeffac15bdd5f5ecbfc13d8c542141db65a9",
+        "<workspace-path>|basename=held-A-B-vertex-1382-world-A-expected.scene|originalKeySha256=e55fe07b4d2cc940401b3da425c921e40b73d8ed16483b6d4ed661825c7b1a60": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+        "<workspace-path>|basename=held-A-B-vertex-1382-world-A-held.scene|originalKeySha256=8dc1393163b08bb869eb86197bcfa7f008e8f8fb632d6245238414ba623589ca": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+        "<workspace-path>|basename=held-A-B-vertex-1382-world-A-released.scene|originalKeySha256=ba53283c5815e4542bc0de310508404ca9775a4f95c1d7adc685866bab806e8a": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+        "<workspace-path>|basename=held-A-B-vertex-1382-world-B-expected.scene|originalKeySha256=00041c98d7af241055ee6fc71a072887a4b310b500047987614d73e4e945c126": "3032ab352287ffc043a0e5a06892bb4e7a41b3ab7e6d1c0ce6193f23de9f1f04",
+        "<workspace-path>|basename=held-A-B-vertex-1382-world-B-finished.scene|originalKeySha256=cca5e5bfa67430e8756d2a37a0d0d1b617cc8dc2c20f348f8b9f9617bbcae056": "3032ab352287ffc043a0e5a06892bb4e7a41b3ab7e6d1c0ce6193f23de9f1f04",
+        "<workspace-path>|basename=held-A-B-vertex-1382-world-B-live.scene|originalKeySha256=b856e74f2053be06f5b6db9495c254145f3798ea790054c9e04e97037c370629": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+        "<workspace-path>|basename=held-A-B-vertex-1382-world-B-preview.scene|originalKeySha256=0e98566769086466b06c870bdb04f32a1f8d3f598db1b0295f7ebe7bbcb64d3c": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+        "<workspace-path>|basename=held-A-B-vertex-1382-world-before.scene|originalKeySha256=eacb726106f2e18d416522414e5a7b3fc463f822875830195896acab691c0f33": "1b292fbbac00dc11bf5f6b2d8f1b6f5bd40d8c5c6ef36c5f58ec24aa38e719a7",
+        "<workspace-path>|basename=held-A-B-vertex-1382.json|originalKeySha256=f47b80a4995afb00d446fb45b2c34966ee93b3aab2f5f1e58e39f2a212f508cc": "72032e44974902f3f295013aad18eb6613703e1f167e2602c78d116d5f0a5f52",
+        "<workspace-path>|basename=held-A-B-vertex-390-B-live.png|originalKeySha256=2ba6a763e33f27647a1e976a76bc9afe21eebf4b7c21ebc15f1a0bd055f065ce": "4e63ddf08e1dcd6424e347864429eebb64367d1e47c59283bc0df2fcbb3e58ac",
+        "<workspace-path>|basename=held-A-B-vertex-390-owners.json|originalKeySha256=76dcc553cc383712a53e2b35ebda2c382725000cf90178ede541d233ce1767f7": "5294c2877f30a79dba17a7fd6f36659a379bcf65a38ab143a1a73845a940af8d",
+        "<workspace-path>|basename=held-A-B-vertex-390-trace.zip|originalKeySha256=7552f8bbf4d661f9eb7498d7ba12871cefacecc3e0fc47f3b44d1a4cda773513": "fef005f558cfa0f65a7cd1f067f656a0e79cb1b1ed354a646d3367d61cc6ad7d",
+        "<workspace-path>|basename=held-A-B-vertex-390-world-A-expected.scene|originalKeySha256=9320a6df7d5c65d1a97ef18faac1c3d3dcbc90fc9f53ce8028ff40f64defe1d7": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+        "<workspace-path>|basename=held-A-B-vertex-390-world-A-held.scene|originalKeySha256=2b8c1908628a80dd5886f6028c852104f26f6a62d391d0a6615132af36cc3f1e": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+        "<workspace-path>|basename=held-A-B-vertex-390-world-A-released.scene|originalKeySha256=ccb2c8c98e2f7b396b2d6c1d08b8dd0737320a1574f41f8e12d5e29951e749a7": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+        "<workspace-path>|basename=held-A-B-vertex-390-world-B-expected.scene|originalKeySha256=114e2c42c9e75673c075490ade59888cb41a3c2dde67c59d4a92310abebd8e2f": "c3fe9319995d1a815c2771e0007ae5902b86f0091cade98b881eded561993be1",
+        "<workspace-path>|basename=held-A-B-vertex-390-world-B-finished.scene|originalKeySha256=61c93124c915696d46e9ca10f53aea6fffb9e89e1a70d78b8ef3274396077601": "c3fe9319995d1a815c2771e0007ae5902b86f0091cade98b881eded561993be1",
+        "<workspace-path>|basename=held-A-B-vertex-390-world-B-live.scene|originalKeySha256=c8bb8ad601bebafb5389f691f7210c8655b221966546a6e87149446bfee250b2": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+        "<workspace-path>|basename=held-A-B-vertex-390-world-B-preview.scene|originalKeySha256=8d770284e440d098e50881dace15f47ee34b630aaf6d047fbcc8dd1d7301b576": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+        "<workspace-path>|basename=held-A-B-vertex-390-world-before.scene|originalKeySha256=46e8d5c2dee626587522dca12b5caa942cec3d6cd8d3e00057abf8466d121b28": "7210702f95dff2b21afe0ee8ca9ff36f088fcd793a42fd960e759c7d4ddebc88",
+        "<workspace-path>|basename=held-A-B-vertex-390.json|originalKeySha256=71825d81d11076cf06c69f9a820e033c92fd61272ecd7034ef850ddfa4a36859": "c7dac7bcc37e1024e8eac54549e62e272ff8fa3a0e5ce829c9bc985fc770e110",
+        "<workspace-path>|basename=normal-projection-1382-trace.zip|originalKeySha256=f514a233d390de42e578c87a318035180c5f708e3e5b641c63c79d6545c849c2": "51f878f3ba8cd1b220ff6d50d262c361fa54f3cb3f77034ec765d378678da6cc",
+        "<workspace-path>|basename=normal-projection-1382-world-A-expected.scene|originalKeySha256=74a97a17c9e912f6bbb5389caf60fbbc25c1653d70c48ddc2b885ddcd9cdf966": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+        "<workspace-path>|basename=normal-projection-1382-world-A-held.scene|originalKeySha256=d1bb0439adb130ae9d588601ee231ac351b82fe480121e11e165b40cb8f5cd14": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+        "<workspace-path>|basename=normal-projection-1382-world-after.scene|originalKeySha256=8af8912f5da7a404cdaf05821b6389ee7c38279bb968606285515cb480f46d92": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+        "<workspace-path>|basename=normal-projection-1382-world-before.scene|originalKeySha256=f161e28ac9ad4222253ba5613d8dc97824ed47bf7d370bcb3dfe90cedf215b61": "1b292fbbac00dc11bf5f6b2d8f1b6f5bd40d8c5c6ef36c5f58ec24aa38e719a7",
+        "<workspace-path>|basename=normal-projection-1382.json|originalKeySha256=7197cc390890e796f8a01f23b9a93ba5d2d172df38ce2f0cfb7981446d0a2b71": "35d7c66844ff5b0e0c197d9a1679751cbb51688771aa28062dad0058325bb9dc",
+        "<workspace-path>|basename=normal-projection-390-trace.zip|originalKeySha256=ffb88527459fbea6cf45662fdfa1439af61e4cd3cc57fe7a0dae5776c8c33a05": "e2cde5c51b1deb8a528beb5bca92a18c3a6dbf9d9e5fb876899cacc9fcfe89a5",
+        "<workspace-path>|basename=normal-projection-390-world-A-expected.scene|originalKeySha256=a80c796769530c00822d648cb064a9b167786ddbf137cade4f38633ec46d7cf4": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+        "<workspace-path>|basename=normal-projection-390-world-A-held.scene|originalKeySha256=927758d70badf35140e6d019d9c4c532cad34c761518bb134e9407e0e969da7d": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+        "<workspace-path>|basename=normal-projection-390-world-after.scene|originalKeySha256=3af1ccb64470261a4b1a8df99aa34d5d89d0747ba5e6ecb105080a6a1c6e716c": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+        "<workspace-path>|basename=normal-projection-390-world-before.scene|originalKeySha256=3b50db8cd051f12eb6407c158114b32d5d598697b535e07888be7498dcebfeca": "7210702f95dff2b21afe0ee8ca9ff36f088fcd793a42fd960e759c7d4ddebc88",
+        "<workspace-path>|basename=normal-projection-390.json|originalKeySha256=90fa567606c786b703086ae1dc6ca40bda4577a0faa18ffcd0451e8efe68f0e0": "e81c45011a5f4b729238c829197c4563de17f184341a10995576a4cb6f68eb46",
+        "<workspace-path>|basename=receipt.json|originalKeySha256=00671907dfeb0c40f88b40da1aeec82fceb5aa8d9e958f0acc352b94d58b0761": "7675f17490bc14b470e1954f1e007cb06dc916ee6ab7ccbc1fac179fdd98283f",
+        "<workspace-path>|basename=results.json|originalKeySha256=a69ff1be13b8f251507bbb614a65cb6443ef8a0e16dfc62e997a69abf032d878": "c9c1d905bf7844efacc11f700273f2d53af2dc75ecd723597ee551f7f0f713d8",
+        "<workspace-path>|basename=same-owner-multiselect-1382-forms.json|originalKeySha256=ef55414ce1b31eed8c18f093001a9c48d13fd42ee7e21bbcde29dbdc08a424d7": "e01830149aafd2ea0b423d94e6d9c9183f5376948bedf7fddf413bd2c7516b2f",
+        "<workspace-path>|basename=same-owner-multiselect-1382-trace.zip|originalKeySha256=3b76e4cce13ed31f5c92a34ecaaefe735afe5dfe0eb87ee0c34d67b73b7e1ec4": "421cf3139ab006bd14681e51ac558390847a2b3153f62c18677301723925e896",
+        "<workspace-path>|basename=same-owner-multiselect-1382-world-after.scene|originalKeySha256=474d9f0d52cb185875dfc3482341ed13d962e15a7a97e6510e2e81680ffd4d5b": "1b292fbbac00dc11bf5f6b2d8f1b6f5bd40d8c5c6ef36c5f58ec24aa38e719a7",
+        "<workspace-path>|basename=same-owner-multiselect-1382-world-before.scene|originalKeySha256=cab343e33becd60eb0498b02be10a767524728204b0e68fd64f91f1e3b129ff0": "1b292fbbac00dc11bf5f6b2d8f1b6f5bd40d8c5c6ef36c5f58ec24aa38e719a7",
+        "<workspace-path>|basename=same-owner-multiselect-1382.json|originalKeySha256=f2a6ff7ed74300520b659294bccded52a545aeea3a6b7b42b89bddb0e71a150f": "da2e39599842cbd3b0ce4f1e11161649f0a9b538f0179f57703310006d897bed",
+        "<workspace-path>|basename=same-owner-multiselect-390-forms.json|originalKeySha256=8be2eaf777a2bea4c883d5c84fc2e4110f37c46c824105f45dcd4271a898131d": "e01830149aafd2ea0b423d94e6d9c9183f5376948bedf7fddf413bd2c7516b2f",
+        "<workspace-path>|basename=same-owner-multiselect-390-trace.zip|originalKeySha256=f326682729aed379b03b0522559959b7be725e5f5bebac7091281e0285e864c5": "78fe5ab3ffaa05e7a6b3d3180f7c47675172dc3b03bbcea103259d8b0c7d1b96",
+        "<workspace-path>|basename=same-owner-multiselect-390-world-after.scene|originalKeySha256=ec15bf436eec32e7a7ab18d7dc24b68c1160daa99a3d032ad805956a294c3d86": "7210702f95dff2b21afe0ee8ca9ff36f088fcd793a42fd960e759c7d4ddebc88",
+        "<workspace-path>|basename=same-owner-multiselect-390-world-before.scene|originalKeySha256=3f218d1d2c46347c318e8549f6ef7f67d5f4c29080e1b69eb0cc22f067fca288": "7210702f95dff2b21afe0ee8ca9ff36f088fcd793a42fd960e759c7d4ddebc88",
+        "<workspace-path>|basename=same-owner-multiselect-390.json|originalKeySha256=68e417b0ede48405198801255c49504b134aa7c52a7d13e39dfaf712a7f0fd4e": "b03c558b226b1549bff2dedae78ba3ce71e26c40db92a3cdc4eec1ea571730c0"
+      }
+    },
+    {
+      "label": "same-owner-new-gesture-unchanged",
+      "fullSHA": "c0f05baade2424482fab94c72f0592f7b02326ae",
+      "dirty": "",
+      "beforeAfterSameSource": true,
+      "completed": true,
+      "exitCode": 0,
+      "pass": 2,
+      "fail": 0,
+      "receipt": {
+        "path": "<workspace-path>",
+        "sha256": "f46ea441f02978482f63327c1cd70e7b18b12803d6901958e1838df0ae849bd5"
+      },
+      "wrapper": {
+        "path": "<workspace-path>",
+        "sha256": "e1b4ad1a0a82169c645f8d177bd5f2ab4f13afaa2811a243a1d3e3581e35313d"
+      },
+      "rawLog": {
+        "path": "<workspace-path>",
+        "sha256": "81f0cf344c4c962197cde166590a137aed7993b19a25ba1f06ddf15de8574381"
+      },
+      "cases": [
+        {
+          "name": "held-A-same-hole-1382",
+          "ok": true,
+          "error": null,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "held-A-same-hole-390",
+          "ok": true,
+          "error": null,
+          "harnessError": null,
+          "pageErrors": []
+        }
+      ],
+      "artifactHashes": {
+        "<workspace-path>|basename=after-runtime.raw.json|originalKeySha256=1c08ba6e8aadf00589666aef2edda6b3c9c8aff736d67cfe513c157d651abc08": "cb64037045a97a1a8543f9d78a27be2aa7181ad33b539f964b99f60a5a1aa1c4",
+        "<workspace-path>|basename=after.json|originalKeySha256=aee441ecd4d80dacceb1f06c8c6d41b6066e1e43ff5f5288cec131d5f1edfc18": "1da722d6d252295ccb897b3874d2296d9ef8b4828cae38496173a6a7aa72aa17",
+        "<workspace-path>|basename=before-runtime.raw.json|originalKeySha256=f04d075343a8c76680a2a85b8aa4d95598d3d85cd816a13cb456529dc9101e7c": "cb64037045a97a1a8543f9d78a27be2aa7181ad33b539f964b99f60a5a1aa1c4",
+        "<workspace-path>|basename=before.json|originalKeySha256=c3b1589fb605212332a251a3eb83f32d63f08ff041eb5a1ff7bf7c072e6c733e": "30d8b442e2055f3e3d5d31cfc7f7347af9c4741bc2d7c2600472162c095a4734",
+        "<workspace-path>|basename=browser.json|originalKeySha256=94cf874f9b3de00de50b4912451742e404de6b9f98d9a5fe83d836ce35ef1242": "db1f4477cf4499aa562f33c7d2f7c4c4fae4f6d0ac58ca470d79fa8b55a93a2a",
+        "<workspace-path>|basename=held-A-same-hole-1382-new-A-live.png|originalKeySha256=87de00a1a0cdff1cd9d6c399310be75debefa5a7e267e5ba5b35fbdbdef2d79d": "08c741a33e1ad692a69504182ecf6288a09a15aad3e5ec4bb7f1b872ff465cdf",
+        "<workspace-path>|basename=held-A-same-hole-1382-owners.json|originalKeySha256=4a0e47f26508039db3b90e3fa36841fedab43b9586b0316ea0f2a03737f91363": "d37ebb489bfda458e6cc31596a39e33f602b20503cce91502245f293ed0b760c",
+        "<workspace-path>|basename=held-A-same-hole-1382-trace.zip|originalKeySha256=26f38caf0aeec1f8943783e1183d4d925eeb6d5f16ee941c653809e1bb7237fe": "43725e9d072cf34a989d6a2c53d84c4d1394ca08d7badc6062c80d29b4a03dea",
+        "<workspace-path>|basename=held-A-same-hole-1382-world-A-expected.scene|originalKeySha256=5c2065208b999e57ce8cbcab3b98b70366ea6f60fb936db8b3ffd89edd2904f5": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+        "<workspace-path>|basename=held-A-same-hole-1382-world-A-held.scene|originalKeySha256=aca03bdda0c1e66556df9dcc1fcdc8f55ae92ab6110e04f13589c6b971c275d3": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+        "<workspace-path>|basename=held-A-same-hole-1382-world-A-released.scene|originalKeySha256=8245f44dc3bcbc05931453d078cd8bf5325e1389885e223bb81515fca801f2f9": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+        "<workspace-path>|basename=held-A-same-hole-1382-world-before.scene|originalKeySha256=911b0a45ee39b2655972360d7680dbf224d68c9c6a69b7539d8b4ca9c5df893d": "1b292fbbac00dc11bf5f6b2d8f1b6f5bd40d8c5c6ef36c5f58ec24aa38e719a7",
+        "<workspace-path>|basename=held-A-same-hole-1382-world-new-A-live.scene|originalKeySha256=d6712da71c41ed4e075852eadaa48338d1c78493f1bb3ad2a548890defb44726": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+        "<workspace-path>|basename=held-A-same-hole-1382-world-new-A-zero-area-up.scene|originalKeySha256=ae0d64380067e9e11a3cb5fb1204bfd02357f863df3fcaffe8432bcc5043be9b": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+        "<workspace-path>|basename=held-A-same-hole-1382.json|originalKeySha256=84d8af9ee2322b9f6c725f7b5a07f47dd6b284a23eb257990c68b12fd468d11c": "fb90cc27f9346bc812310c9c5e52757e84721bb7baa2b1fcca2db38083e7a38e",
+        "<workspace-path>|basename=held-A-same-hole-390-new-A-live.png|originalKeySha256=7cf4ea0644484c587b30ae1d8a4966372fb8a86e987d64a0aaee8e85dc7d4526": "a4d1e2ac3d7f3a8cb02283fb819932182c76414bc860574c865a411c8e860a42",
+        "<workspace-path>|basename=held-A-same-hole-390-owners.json|originalKeySha256=1b7af565bf412bf535abe446ae39461fd30d8f21e1f118f5546c03853305c98d": "302e24f6c2cf3705648b11a4ab02efe68561e7f48073b958e3e8d8d415bd4132",
+        "<workspace-path>|basename=held-A-same-hole-390-trace.zip|originalKeySha256=7931cd6d15772779c50211b4f11938d7fdabad83cfb806005634624d3fcaedd9": "fcb0698fd9f7eada275cd1e486b84b4faf7a2c5fc453357d7472295fe191f730",
+        "<workspace-path>|basename=held-A-same-hole-390-world-A-expected.scene|originalKeySha256=4ca65db57ba57c9fedbe38d120aeea7e56044ec45ebf20634a1574478a71474e": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+        "<workspace-path>|basename=held-A-same-hole-390-world-A-held.scene|originalKeySha256=3ce5b1d838b21ceeb24734801cef42a9355d41cd659ebad06fc4e9dbfdbc4d07": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+        "<workspace-path>|basename=held-A-same-hole-390-world-A-released.scene|originalKeySha256=03077203e73d40279984bf87e387f92c46008d5eb5fd03d4ed69cafe6891f6d7": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+        "<workspace-path>|basename=held-A-same-hole-390-world-before.scene|originalKeySha256=79f70638f662f36289737b29566eb2a1fb8b461982fd1ec04ca5a0c1d90d3447": "7210702f95dff2b21afe0ee8ca9ff36f088fcd793a42fd960e759c7d4ddebc88",
+        "<workspace-path>|basename=held-A-same-hole-390-world-new-A-live.scene|originalKeySha256=2a255312f90fc67eabc56508845f0e626ecc5ea51a81711bf368627ac501c921": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+        "<workspace-path>|basename=held-A-same-hole-390-world-new-A-zero-area-up.scene|originalKeySha256=15a074d116691cb1000545bde8b4733ce473d09a34c5a2a673c46f28682584bd": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+        "<workspace-path>|basename=held-A-same-hole-390.json|originalKeySha256=0dc2b0b6c206c6b583cdf74295f082f4f506341fb8ade66571ef4c91f404f4bc": "77155df4e6d8a502a4313b455f98345697540911e2aa723e8e59f41a1868f0d5",
+        "<workspace-path>|basename=receipt.json|originalKeySha256=e0ed38fe236c8314efa1dee134cfbd4526fb6ca4bbe9dcb3b6a2948aef1d01d8": "f46ea441f02978482f63327c1cd70e7b18b12803d6901958e1838df0ae849bd5",
+        "<workspace-path>|basename=results.json|originalKeySha256=fa28cf4c1509816e6dd6dd550b0b56b5fe1d32da24600b9f861bc642eaced66d": "04dd08d938f976c076b96c121ff9d95302fb1078a26ce1da825b459b98d90f4f"
+      }
+    },
+    {
+      "label": "normal-hole-control-new",
+      "fullSHA": "c0f05baade2424482fab94c72f0592f7b02326ae",
+      "dirty": "",
+      "beforeAfterSameSource": true,
+      "completed": true,
+      "exitCode": 0,
+      "pass": 2,
+      "fail": 0,
+      "receipt": {
+        "path": "<workspace-path>",
+        "sha256": "410d04fadfe49797761bf27df29d36be2ff659d45bb17a3722eab4b698556e49"
+      },
+      "wrapper": {
+        "path": "<workspace-path>",
+        "sha256": "6b98bef276befd729849efd8cf01a794b214d8822bf37118fdb638f694bef564"
+      },
+      "rawLog": {
+        "path": "<workspace-path>",
+        "sha256": "40755c7a12b4ff9e068300c50d6fa9a20cac9f1f0118ebe8e75b1135cf468a35"
+      },
+      "cases": [
+        {
+          "name": "normal-hole-1382",
+          "ok": true,
+          "error": null,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "normal-hole-390",
+          "ok": true,
+          "error": null,
+          "harnessError": null,
+          "pageErrors": []
+        }
+      ],
+      "artifactHashes": {
+        "<workspace-path>|basename=after-runtime.raw.json|originalKeySha256=ee2f6c36a0723230fe8ed8cfdb17e610fe43c48b423d4d666bb9f4a638b8c015": "cb64037045a97a1a8543f9d78a27be2aa7181ad33b539f964b99f60a5a1aa1c4",
+        "<workspace-path>|basename=after.json|originalKeySha256=5183c7254b9c83c4a3fed7b3d4ea713b0ecc7c6cdfd2b9bc2e5dd67f145450c9": "6e3844695d1b1c49a2f3da1798f34fa0d193af72416a0672081a34a0d6af4e13",
+        "<workspace-path>|basename=before-runtime.raw.json|originalKeySha256=eb117de042c25b7c5bb92d18758b453d85a786fd335989917b0027df35363ebd": "cb64037045a97a1a8543f9d78a27be2aa7181ad33b539f964b99f60a5a1aa1c4",
+        "<workspace-path>|basename=before.json|originalKeySha256=80eef6cb0b41c33417a27e366d39c34095cf917fba849ed497d774bb8721b86c": "e74e1e9804878ea58029781366815c9bafcdeb22efb05f260f4e70963e2c7b8c",
+        "<workspace-path>|basename=browser.json|originalKeySha256=feaa2d820644f9e0058ec81aa87ea5aa43077b95b3dc8b5c6968fe7b03d285f8": "0166b0ef3458d973b90ca476d9f0fe54c5d709943838fa7cbc7f3afffd8f1ee0",
+        "<workspace-path>|basename=normal-hole-1382-trace.zip|originalKeySha256=1f1caccaffc34865d45b0efac21430daa4db976056665d2d1306552391778c6a": "f6c26ed64bee251497449c99e9833202cb6f23c194165b2142bbf684ea47e2fa",
+        "<workspace-path>|basename=normal-hole-1382-world-A-expected.scene|originalKeySha256=99ca4e8b5e3aed0a6754830aac92268817d9b84e3170159e904163059073d7da": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+        "<workspace-path>|basename=normal-hole-1382-world-B-expected.scene|originalKeySha256=b9d9e420f56907ef4805646df1f911bd283e09f653a9e128894072090f4c6621": "aa17b68beeff178e8ee1c2b4242fcf20b774af93e77ec29651a52f34920c08e6",
+        "<workspace-path>|basename=normal-hole-1382-world-B-finished.scene|originalKeySha256=15303dd33b10252687d77ada802746756860da688eda8b49fe081f2086a07fd1": "aa17b68beeff178e8ee1c2b4242fcf20b774af93e77ec29651a52f34920c08e6",
+        "<workspace-path>|basename=normal-hole-1382-world-B-preview.scene|originalKeySha256=bbe98eb05f43ac6bdc30c053b71b00be4970ec9ec1cd66c97e460c81504e89f2": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+        "<workspace-path>|basename=normal-hole-1382-world-before.scene|originalKeySha256=5fdd2d5e8a8aebd28a152de586e237550d5a7dde1e7a2af98b2f8be9f9aaf462": "1b292fbbac00dc11bf5f6b2d8f1b6f5bd40d8c5c6ef36c5f58ec24aa38e719a7",
+        "<workspace-path>|basename=normal-hole-1382-world-normal-A-applied.scene|originalKeySha256=0b85ff44170de2d25bf72de019c4df7a40e08096fabe5a2875b87f9b2e2bbd18": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+        "<workspace-path>|basename=normal-hole-1382-world-normal-B-live.scene|originalKeySha256=8a119a941c85872cb3cb1c94e9f8feb266bf4db3b7e2dec27e435aa598f45073": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+        "<workspace-path>|basename=normal-hole-1382.json|originalKeySha256=f5c6c15f21c7f9c8d5fd07be918946a878eab99324b32c6d9d243cfdc2582a1d": "1e3c7c52850c9ad4eb90e3e8a8190b13bc291bf2ce322f31f865fd0ba30ada1c",
+        "<workspace-path>|basename=normal-hole-390-trace.zip|originalKeySha256=5741e5790e558b2c55af6dd1b285276bdcf4c6dd04a981576665b97dcf0ba00e": "073fbce293173eed644bb33a995ba4e3670f4c919c461657a96c55bd58b2abb0",
+        "<workspace-path>|basename=normal-hole-390-world-A-expected.scene|originalKeySha256=7c22933527b7c5b78b395bbc654b43efca787c84027604fc6ab33e37b8e6d452": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+        "<workspace-path>|basename=normal-hole-390-world-B-expected.scene|originalKeySha256=83e3efc916db9c82a70db146b76eddfc070f7d935009d0e58a77e7635b733a4d": "6b0933495e918d567159857aba4554f010b363d6332aa107225fad62ce026c04",
+        "<workspace-path>|basename=normal-hole-390-world-B-finished.scene|originalKeySha256=92b8b6721e0daca38e0fc6c7444199a34d0cd83ec1f2e3bfeb9eb56d7f4b5f22": "6b0933495e918d567159857aba4554f010b363d6332aa107225fad62ce026c04",
+        "<workspace-path>|basename=normal-hole-390-world-B-preview.scene|originalKeySha256=9c9aa8ee9413fe2be8b9ccf6d047107d703664e92266585b20899ce463cab65a": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+        "<workspace-path>|basename=normal-hole-390-world-before.scene|originalKeySha256=009e925658959a23e36a7b0c35e4f14200de5493262f5279f43b103d95ee8540": "7210702f95dff2b21afe0ee8ca9ff36f088fcd793a42fd960e759c7d4ddebc88",
+        "<workspace-path>|basename=normal-hole-390-world-normal-A-applied.scene|originalKeySha256=546d2686ab7c92d7536e9d5579c9332dea8805255904d44c72c871f7aa6689e2": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+        "<workspace-path>|basename=normal-hole-390-world-normal-B-live.scene|originalKeySha256=968dd8a7c2c7e085e384b710f187415b199b9f68dda4ecef4d5b26aef0ed8a72": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+        "<workspace-path>|basename=normal-hole-390.json|originalKeySha256=42965c4faff8f1144c2af0441763bc190eff879a6ce0fa8b446c25ba4875071b": "a49e494e1c58abad5e3f24a15610f20a097a794c2bddfedd73a744d802518a2f",
+        "<workspace-path>|basename=receipt.json|originalKeySha256=eb7ab0e24f6b397878e5154cc8a418f8de8b912ff1aad2b118dc50fac6b61d05": "410d04fadfe49797761bf27df29d36be2ff659d45bb17a3722eab4b698556e49",
+        "<workspace-path>|basename=results.json|originalKeySha256=539973888549fb887df223537f6890e991e076c408f3536c1aafc0a24272b6dd": "7e6619181e4ba03170d7a77b2495c57fa07326d0ba08cb69baa5e386b0a85bf9"
+      }
+    },
+    {
+      "label": "normal-hole-control-historical",
+      "fullSHA": "f98078dc150c22960cbe2d212afb3ded61954bb9",
+      "dirty": "",
+      "beforeAfterSameSource": true,
+      "completed": true,
+      "exitCode": 0,
+      "pass": 2,
+      "fail": 0,
+      "receipt": {
+        "path": "<workspace-path>",
+        "sha256": "0619eaba3db96f715c924e5c773eef3cc393a4703331eb04bef110dba58d38d0"
+      },
+      "wrapper": {
+        "path": "<workspace-path>",
+        "sha256": "ed228586c303c58b564e29f86bd6eeacc9a15b0290a76a356d0e522cd222586c"
+      },
+      "rawLog": {
+        "path": "<workspace-path>",
+        "sha256": "be31e15431e73346782d99aaca6e17575ed583549e9e158ae555e6633af9b5e0"
+      },
+      "cases": [
+        {
+          "name": "normal-hole-1382",
+          "ok": true,
+          "error": null,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "normal-hole-390",
+          "ok": true,
+          "error": null,
+          "harnessError": null,
+          "pageErrors": []
+        }
+      ],
+      "artifactHashes": {
+        "<workspace-path>|basename=after-runtime.raw.json|originalKeySha256=dfe29f12122b6e5e1da7b1a68d18d880ee5af9c669ff358871f04fe9260875ee": "1f70df8720c40fcc6cff2a3a02c190e18764aa61b2aac78e7ba116cf9b1d440a",
+        "<workspace-path>|basename=after.json|originalKeySha256=eef113c6b895261c4d8525aae3501d64495457e8c181aca540a7e2d756a78e22": "2e19a611f3e3f441cbc8a6f664be2ac448e337874d3838c36393753d626d0db5",
+        "<workspace-path>|basename=before-runtime.raw.json|originalKeySha256=55661dc14c97ec5f3abad160eff4d9cbb673f1fc8503acd16f72f9c6ed81f8b6": "1f70df8720c40fcc6cff2a3a02c190e18764aa61b2aac78e7ba116cf9b1d440a",
+        "<workspace-path>|basename=before.json|originalKeySha256=905ac5cf56ad64bdb33a249d207d4ff37480939d69153702cf475ae5207380bf": "cfd6a47bed24519893d43cbf38f24b28feed2bece7b4228cb751e4c8274cb9fa",
+        "<workspace-path>|basename=browser.json|originalKeySha256=f8b6bc7f3c0e9da30c70a6e8cd38416fd941f06726b88eeeceeb6019f063c618": "4ffd13aded1dc6efb4998723748edc9c519c783afa9796fa6aca8884c58779f8",
+        "<workspace-path>|basename=normal-hole-1382-trace.zip|originalKeySha256=73b8aa502608347e467ba78711b183573b5e83ffdf16ab8e263cf630b30d99ed": "7d07455ad7d53465c9bf55e46c4a88565c7ec8e5d8d66e0bd69211570b9df767",
+        "<workspace-path>|basename=normal-hole-1382-world-A-expected.scene|originalKeySha256=3c4dfa4d28ae746466ccdb5bffd00a43b6629355eefa91d417093c1025f874ba": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+        "<workspace-path>|basename=normal-hole-1382-world-B-expected.scene|originalKeySha256=38ea02cd90e96c65c815c0065e780a6ced10aad45d1464ec34581f8e1410da4d": "aa17b68beeff178e8ee1c2b4242fcf20b774af93e77ec29651a52f34920c08e6",
+        "<workspace-path>|basename=normal-hole-1382-world-B-finished.scene|originalKeySha256=a1c9923f9c46bedb6f15af711bb7a94f438bbd92f4b8fc9785eb086d836b05cd": "aa17b68beeff178e8ee1c2b4242fcf20b774af93e77ec29651a52f34920c08e6",
+        "<workspace-path>|basename=normal-hole-1382-world-B-preview.scene|originalKeySha256=d164a5bd5eb586f151098dab79f819ce3585606cc961bd27f316e7136a2d7313": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+        "<workspace-path>|basename=normal-hole-1382-world-before.scene|originalKeySha256=7107e33218f3cf0714e2c427bd6575d66e9e23ad7ddf936fd24cc7aba70de432": "1b292fbbac00dc11bf5f6b2d8f1b6f5bd40d8c5c6ef36c5f58ec24aa38e719a7",
+        "<workspace-path>|basename=normal-hole-1382-world-normal-A-applied.scene|originalKeySha256=5046f80aa96f494592c449914663c5f5e4be98b83cfc9e083e3dfbe525410110": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+        "<workspace-path>|basename=normal-hole-1382-world-normal-B-live.scene|originalKeySha256=e214a24e77f21f22ae43a80d5eca57611da882d814d61b02102987ce7e2e19cb": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+        "<workspace-path>|basename=normal-hole-1382.json|originalKeySha256=27d5d4b678c167c44616446cbd11a6c4744b8e6a27d7d9d632cb29d4a6c44526": "06527ce9a1478142994c6b94ae3a92f99e8f79a3380cd2332ce2dccf3617006b",
+        "<workspace-path>|basename=normal-hole-390-trace.zip|originalKeySha256=3f3b9c507bf2446f400d449b372bcbc318320f9862962112f6d2955263c00656": "a2c93714571e94c68c006d17725aa9f9bb62bed0d761f6dc2beda03e4f4b56c8",
+        "<workspace-path>|basename=normal-hole-390-world-A-expected.scene|originalKeySha256=a57d80219e8d96817b9ef64c306622cad98d7244932c66d77eb91d5564902c64": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+        "<workspace-path>|basename=normal-hole-390-world-B-expected.scene|originalKeySha256=9661e2e001e1e60d0408dba4384625500a12174d2412c2161881e1f3bdd43fab": "6b0933495e918d567159857aba4554f010b363d6332aa107225fad62ce026c04",
+        "<workspace-path>|basename=normal-hole-390-world-B-finished.scene|originalKeySha256=65d20b6e948704bcc915133e80271fca88b5008f27457a05c66038fd2232099c": "6b0933495e918d567159857aba4554f010b363d6332aa107225fad62ce026c04",
+        "<workspace-path>|basename=normal-hole-390-world-B-preview.scene|originalKeySha256=55498a2a31a3f384df0277d6bda45255c91c44dd84d91dfeacbd1342a1b5d22d": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+        "<workspace-path>|basename=normal-hole-390-world-before.scene|originalKeySha256=db16a485a98e78ff0d91ecff78e137121c1cd1f9e89779e45df644473f2834cd": "7210702f95dff2b21afe0ee8ca9ff36f088fcd793a42fd960e759c7d4ddebc88",
+        "<workspace-path>|basename=normal-hole-390-world-normal-A-applied.scene|originalKeySha256=7e33145eba5c347542f9ce267a190ead0576a0daaff023237bffd408447cf0e9": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+        "<workspace-path>|basename=normal-hole-390-world-normal-B-live.scene|originalKeySha256=ebd21752033dc3405b132fd490443202db4e4b470190e26dc3e9c4f6285d16e4": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+        "<workspace-path>|basename=normal-hole-390.json|originalKeySha256=637ceaf6608a7924951a455bc627ef4c6b5e7b6f83b85ff629d34f1c71e6b6d3": "b56f4f1db51f01ddfc702752633039e1791baccf9330f7781bfe104d4ec95a08",
+        "<workspace-path>|basename=receipt.json|originalKeySha256=16f0cb600769700517ca545935256595511ee0acd6d27d2dad5f6a76777ec9c2": "0619eaba3db96f715c924e5c773eef3cc393a4703331eb04bef110dba58d38d0",
+        "<workspace-path>|basename=results.json|originalKeySha256=a82401668dac8d65fd9c9e4e2305b2ba1b3e888c0a62db429ac3a02fd9bb908c": "9b1e5b7aa852bd28ead027bb503dc653ded8962a5ca277b3ce2fbf9cafb4e1f8"
+      }
+    },
+    {
+      "label": "resume-r4-browser-unchanged",
+      "fullSHA": "c0f05baade2424482fab94c72f0592f7b02326ae",
+      "dirty": "",
+      "completed": true,
+      "gateExitCode": 0,
+      "probeVerified": true,
+      "pass": 4,
+      "fail": 0,
+      "cases": [
+        {
+          "name": "pause-resume-finish-1280",
+          "ok": true,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "pause-resume-cancel-1280",
+          "ok": true,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "pause-resume-finish-390",
+          "ok": true,
+          "harnessError": null,
+          "pageErrors": []
+        },
+        {
+          "name": "pause-resume-cancel-390",
+          "ok": true,
+          "harnessError": null,
+          "pageErrors": []
+        }
+      ],
+      "receipt": {
+        "path": "<workspace-path>",
+        "sha256": "7da8dfdddb122c1406a55304029e3abca6e8d87a47dc9dd1de23d0118da8b794"
+      },
+      "rawLog": {
+        "path": "<workspace-path>",
+        "sha256": "37d01718db7f74e541bb9e59911e44e966fa829c57dffef7ea91bdeb060ecca2"
+      },
+      "wrapper": {
+        "path": "<workspace-path>",
+        "sha256": "7a5392c07645e76e22c5958352b26183aca2fe6d7d787442c1be50eec2f2ac1c"
+      },
+      "artifactHashes": {
+        "<isolated-test-directory>|basename=identity.json|originalKeySha256=3782002c60fb1284714581cfafe13090dbc7761eda44602bb1bc95df9af5fd98": "7afd27e3e2c63b09af1bee85b3581cc3bd634ac80ef380421d5465443faadce8",
+        "<isolated-test-directory>|basename=pause-resume-cancel-1280-after-resume.gcanvas|originalKeySha256=8cbafdd965f306f46a9c47c11672e776f006ca068ab737b643f725b1b352c05c": "ce61f6c972530aa0b88e1e61a9a2d73638be6a69582b2f5163a802bdf6394967",
+        "<isolated-test-directory>|basename=pause-resume-cancel-1280-before-pause.gcanvas|originalKeySha256=97a6f473cdfff2679b85ab45a3bbcf259b8c3b77a4bc70354755ab47adf033c0": "ce61f6c972530aa0b88e1e61a9a2d73638be6a69582b2f5163a802bdf6394967",
+        "<isolated-test-directory>|basename=pause-resume-cancel-1280-later-edit.gcanvas|originalKeySha256=f3ecfc625982a1fd1d152942b09eb2c98496f94c67eb2cff725d025893eed832": "c47baebd81676950338723c8618a6121062a1b4ea9a95d50931ddb58536a143f",
+        "<isolated-test-directory>|basename=pause-resume-cancel-1280-state.json|originalKeySha256=814a0dd17f50420e4d5d4378caf22dec79376460a51dd1a26bad88d524b56cf9": "b0960809af66dfb9941ec60812bd95badcb70dc805a50fdab28458d124ae5dc5",
+        "<isolated-test-directory>|basename=pause-resume-cancel-390-after-resume.gcanvas|originalKeySha256=234bcf5970618a6a0fc599fa5a7e23d485f4dfae58ba3154b70017cd714b0126": "5b5275413988946b7ff77b1ce053391df43a27d4e23ee6a69ced14935bccb3b7",
+        "<isolated-test-directory>|basename=pause-resume-cancel-390-before-pause.gcanvas|originalKeySha256=8eeb00c43d91e34c4a40edcf9816b2cba1f9b49ae0e6fa85b3420e70892a6012": "5b5275413988946b7ff77b1ce053391df43a27d4e23ee6a69ced14935bccb3b7",
+        "<isolated-test-directory>|basename=pause-resume-cancel-390-later-edit.gcanvas|originalKeySha256=fac8d4fcfb2a7be6b5e8e249bd5478b2c11e9d973664d254e4deaa0e0ffca373": "99a8c9d91959c82a5aa7c0d73095498b03f6e890f56a55bcf9961d2f155c451a",
+        "<isolated-test-directory>|basename=pause-resume-cancel-390-state.json|originalKeySha256=1f03fbe33fafe3681226524df4cdac379d58f3718eb6fd66ffbfe9b1e8c2c56f": "6acd2effb6a82cb91fb3e8d1c74e6c0c28cac6965b05bd319533f76d752a1978",
+        "<isolated-test-directory>|basename=pause-resume-finish-1280-after-resume.gcanvas|originalKeySha256=dba1852a1421105d3c01eee4bf466e24d74805bab55397f7b47d9066b0f01ed9": "cf1e45b61736bdf3a7d17ea88cba5b25fa5bdd0234ece993080567f810f8dd2e",
+        "<isolated-test-directory>|basename=pause-resume-finish-1280-before-pause.gcanvas|originalKeySha256=c7390a7faf2a84d49fd2b5aa0d20d86c500d7fe519ad2a0a0c004a1e471d4aa7": "cf1e45b61736bdf3a7d17ea88cba5b25fa5bdd0234ece993080567f810f8dd2e",
+        "<isolated-test-directory>|basename=pause-resume-finish-1280-later-edit.gcanvas|originalKeySha256=6a9cb486878baf0b5826006a5add5f4a077659c00366b4d67ad6f8b65199a50e": "4f7b1912e0f3c637f9f364243f2b22b5c22aaa055909c4d87bad51801a39e818",
+        "<isolated-test-directory>|basename=pause-resume-finish-1280-state.json|originalKeySha256=d07d8b44ed74b8bdc4f6f53c7b5ba5829021862b086cf9fc834ae99f08db0d98": "2155deec7da6426230df2da9ce8e72bca6040763b2d9135462bf5345f7bf8835",
+        "<isolated-test-directory>|basename=pause-resume-finish-390-after-resume.gcanvas|originalKeySha256=5b264ec3ff19a0cec855f72c738b53dfaff3fcb29f63a3b68e265c8af3555f74": "840d5445a0b6d88fe179cfb6d87609f8c518e78cbbf52b6e696850b2ff2aaa31",
+        "<isolated-test-directory>|basename=pause-resume-finish-390-before-pause.gcanvas|originalKeySha256=b1393b60237fecfa73b4e45b0da2924d5f8ac4ee0368e54d0a50111bb49bbcac": "840d5445a0b6d88fe179cfb6d87609f8c518e78cbbf52b6e696850b2ff2aaa31",
+        "<isolated-test-directory>|basename=pause-resume-finish-390-later-edit.gcanvas|originalKeySha256=cddf4515855342fc01d1736898ee8567d7bb1013e84d666b940c0b15ef7cc8e1": "29a8b5c25213c85c8751ad120966e11a6299da859e945208f48f89e731382d98",
+        "<isolated-test-directory>|basename=pause-resume-finish-390-state.json|originalKeySha256=81786a39f6d80beb7011b25b9a8e7295b1ba92a45f08a4d5a5a28c3bb115deb9": "52251f171308d4a5eef00ede396fa026596641dc4ee504a7ca5fba23aa6398da",
+        "<isolated-test-directory>|basename=results.json|originalKeySha256=d532f5218971677e62d6abce0bf8f9f7ee3217a2b49c385388a76e313bc69438": "c91eea1d80979648ae063f8eb1eddee8ef39eaff6f91766977f79b3642b7a91f"
+      }
+    }
+  ],
+  "retainedOriginalTenFailureInterpretation": [
+    {
+      "name": "held-A-B-hole-1382",
+      "capturedFullOwnerStateUnchanged": true,
+      "finalWorldOnlyDifference": "Expected same winding loop beginning 500,500, actual historical loop beginning 800,800",
+      "noOtherWorldDifference": true
+    },
+    {
+      "name": "held-A-B-hole-390",
+      "capturedFullOwnerStateUnchanged": true,
+      "finalWorldOnlyDifference": "Expected same winding loop beginning 500,500, actual historical loop beginning 800,800",
+      "noOtherWorldDifference": true
+    }
+  ],
+  "historicalOrderProof": {
+    "path": "<workspace-path>",
+    "sha256": "6ac28348629fe725ddb37828a796c2a45031606d89ad1dc7e35d2270e9dd4dee"
+  },
+  "proposedExpectedOnlyPatch": {
+    "path": "<workspace-path>",
+    "sha256": "2e04d7aff94cfb44ee5ab446fef5ae37befc098680ceb33319b84165eeb44f9b",
+    "status": "review proposed; original executor untouched"
+  },
+  "notCovered": [
+    "Full CDP, full space_model",
+    "Windows originals or golden",
+    "Abrupt reload/cross-service Resume",
+    "Geometry commit from a same-owner older visible model after late native projection; same-owner supplement validates zero-area cancellation only"
+  ]
+}

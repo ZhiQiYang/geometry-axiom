@@ -15,6 +15,8 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { installConfirmationDumpGate } = require('./cdp_confirmation_gate.js');
+const { asyncReplyUiRegression } = require('./async_reply_ui_test.js');
+const { saveReopenGridRegression } = require('./save_reopen_synthetic_test.js');
 const { createRetainedEvaluator } = require('./cdp_evaluation.js');
 const { FULL_SPACE_GROUPS, createGroupCensus } = require('./space_test_floor.js');
 function installSourceDumpGate(scope, context) {
@@ -72,13 +74,13 @@ function spaceRunConfiguration(env = process.env) {
   if(!env.GEOMETRY_FEEDBACK_DIR||!path.isAbsolute(env.GEOMETRY_FEEDBACK_DIR))throw Error('GEOMETRY_FEEDBACK_DIR must name the isolated server feedback directory under TEMP');
   const relative=path.relative(os.tmpdir(),path.resolve(env.GEOMETRY_FEEDBACK_DIR));
   if(!relative||relative==='..'||relative.startsWith('..'+path.sep)||path.isAbsolute(relative))throw Error('GEOMETRY_FEEDBACK_DIR must be a dedicated directory under TEMP');
-  const names=['GEOMETRY_SPACE_FLOW_ONLY','GEOMETRY_TIMBER_ONLY','GEOMETRY_TIMBER_GUARDS_ONLY','GEOMETRY_SPACE_STYLE_ONLY','GEOMETRY_PROJECTION_PLACEMENT_ONLY'];
+  const names=['GEOMETRY_SPACE_FLOW_ONLY','GEOMETRY_TIMBER_ONLY','GEOMETRY_TIMBER_GUARDS_ONLY','GEOMETRY_SPACE_STYLE_ONLY','GEOMETRY_PROJECTION_PLACEMENT_ONLY','GEOMETRY_ASYNC_REPLY_ONLY','GEOMETRY_SAVE_REOPEN_ONLY'];
   const filters=names.filter(name=>env[name]);
   if([...filters,...(env.GEOMETRY_TIMBER_HISTORY_ONLY?['GEOMETRY_TIMBER_HISTORY_ONLY']:[])].some(name=>env[name]!=='1'))throw Error('Scope flags accept only 1; remove a flag to disable it');
   if(filters.length>1)throw Error('Choose only one primary space test filter; combined filters silently omit suites');
   if(env.GEOMETRY_TIMBER_HISTORY_ONLY&&!filters.some(name=>name==='GEOMETRY_TIMBER_ONLY'||name==='GEOMETRY_TIMBER_GUARDS_ONLY'))throw Error('GEOMETRY_TIMBER_HISTORY_ONLY requires TIMBER_ONLY or TIMBER_GUARDS_ONLY');
   const guard=env.GEOMETRY_TIMBER_HISTORY_ONLY?'timber-history-guard':'timber-source-guards';
-  const mapping={GEOMETRY_SPACE_FLOW_ONLY:['space-flow'],GEOMETRY_TIMBER_ONLY:['timber-material',guard,'font-layout'],GEOMETRY_TIMBER_GUARDS_ONLY:[guard],GEOMETRY_SPACE_STYLE_ONLY:['font-layout'],GEOMETRY_PROJECTION_PLACEMENT_ONLY:['projection-placement','font-layout']};
+  const mapping={GEOMETRY_SPACE_FLOW_ONLY:['space-flow'],GEOMETRY_TIMBER_ONLY:['timber-material',guard,'font-layout'],GEOMETRY_TIMBER_GUARDS_ONLY:[guard],GEOMETRY_SPACE_STYLE_ONLY:['font-layout'],GEOMETRY_PROJECTION_PLACEMENT_ONLY:['projection-placement','font-layout'],GEOMETRY_ASYNC_REPLY_ONLY:['async-reply-ui'],GEOMETRY_SAVE_REOPEN_ONLY:['save-reopen-grid']};
   const included=filters.length?mapping[filters[0]]:['space-height-library','projection-lifecycle','projection-placement','font-layout','space-flow'];
   const all=['space-height-library','projection-lifecycle','projection-placement','font-layout','space-flow','timber-material','timber-source-guards'];
   return {mode:filters.length?'partial':'full-space-suite',filters:[...filters,...(env.GEOMETRY_TIMBER_HISTORY_ONLY?['GEOMETRY_TIMBER_HISTORY_ONLY']:[])],included,omitted:all.filter(name=>!included.includes(name)),url:target.href,feedbackDirectory:path.resolve(env.GEOMETRY_FEEDBACK_DIR)};
@@ -146,14 +148,20 @@ async function point(selector) {
     for(const type of ['mousePressed','mouseReleased'])await send('Input.dispatchMouseEvent',{type,x:disclosure.x,y:disclosure.y,button:'left',clickCount:1});
     await settle();
   }
-  const p = await evaluate(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)throw Error('Missing '+${JSON.stringify(selector)});e.scrollIntoView({block:'nearest',inline:'nearest'});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,h=document.elementFromPoint(x,y);return {x,y,width:r.width,height:r.height,disabled:!!e.disabled,hit:!!h&&(h===e||e.contains(h)),hitTag:h?.tagName,hitId:h?.id};})()`);
-  if (!p.width || !p.height || !p.hit || p.disabled) throw Error('Control is not usable: ' + selector + ' ' + JSON.stringify(p));
-  return p;
+  let p;
+  for (let attempt = 0; attempt < 4; attempt++) {
+    p = await evaluate(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)throw Error('Missing '+${JSON.stringify(selector)});e.scrollIntoView({block:'nearest',inline:'nearest'});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,h=document.elementFromPoint(x,y);return {x,y,width:r.width,height:r.height,disabled:!!e.disabled,hit:!!h&&(h===e||e.contains(h)),hitTag:h?.tagName,hitId:h?.id};})()`);
+    if (p.width && p.height && p.hit && !p.disabled) return p;
+    const moved = await evaluate(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});const r=e?.getBoundingClientRect();const h=r&&document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);const sticky=h?.closest?.('.ig-footer');if(!sticky)return false;let scroller=sticky.parentElement;while(scroller&&scroller!==document.documentElement){const s=getComputedStyle(scroller);if(/(auto|scroll)/.test(s.overflowY))break;scroller=scroller.parentElement;}if(!scroller)return false;const top=sticky.getBoundingClientRect().top;if(!(r.bottom>top-8))return false;scroller.scrollTop+=r.bottom-(top-12);return true;})()`);
+    if (!moved) break;
+    await settle();
+  }
+  throw Error('Control is not usable: ' + selector + ' ' + JSON.stringify(p));
 }
 async function click(selector) {
   if(await evaluate(`document.querySelector(${JSON.stringify(selector)})?.closest('#exampleMenuPop')?.hidden===true`))await click('#exampleMenuBtn');
   if(await evaluate(`document.querySelector(${JSON.stringify(selector)})?.closest('#fileMenuPop')?.hidden===true`))await click('#fileMenuBtn');
-  if(await evaluate(`document.querySelector(${JSON.stringify(selector)})?.closest('#createObjectPop')?.hidden===true`))await click(await evaluate(`innerWidth<=900?'#mobileCreateObject':'#btnCreateObject'`));
+  if(await evaluate(`document.querySelector(${JSON.stringify(selector)})?.closest('#createObjectPop')?.hidden===true`))await click(await evaluate(`(()=>{const visible=['mobileCreateObject','btnCreateObject'].filter(id=>{const e=document.getElementById(id),r=e?.getBoundingClientRect();return r&&r.width>0&&r.height>0;});if(visible.length!==1)throw Error('Expected one visible create-object opener: '+visible.join(','));return '#'+visible[0];})()`));
   const p = await point(selector);
   for (const type of ['mousePressed', 'mouseReleased']) await send('Input.dispatchMouseEvent', { type, x: p.x, y: p.y, button: 'left', clickCount: 1 });
   await settle();
@@ -823,7 +831,7 @@ async function fontLayoutRegression() {
   for(const width of [1382,1160,900,680,600]){
     await viewport(width,804);
     const rows=await evaluate(`(()=>{const h=document.querySelector('.object-workspace-topbar').getBoundingClientRect(),s=document.querySelector('.object-workspace-statusbar').getBoundingClientRect(),t=document.querySelector('#faceWorkspaceTools').getBoundingClientRect(),a=document.querySelector('.object-workspace-actions').getBoundingClientRect(),title=document.querySelector('#workspaceTitle').getBoundingClientRect();return {header:h.height,status:s.height,actionsRight:a.right,toolsRight:t.right,actionsLeft:a.left,toolsTop:t.top,toolsBottom:t.bottom,actionsTop:a.top,actionsBottom:a.bottom,docWidth:document.documentElement.scrollWidth,titleWidth:title.width,width:innerWidth};})()`);
-    check('documented face header rows fit at '+width+'px',rows.header===(width<=720?122:116)&&rows.status===32&&rows.actionsRight<=rows.width&&rows.docWidth<=rows.width+1&&(rows.toolsRight<=rows.actionsLeft+1||rows.toolsTop>=rows.actionsBottom-1||rows.toolsBottom<=rows.actionsTop+1)&&rows.titleWidth>0,rows);
+    check('documented face header rows fit at '+width+'px',rows.header===(width<=560?96:56)&&rows.status===32&&rows.actionsRight<=rows.width&&rows.docWidth<=rows.width+1&&(rows.toolsRight<=rows.actionsLeft+1||rows.toolsTop>=rows.actionsBottom-1||rows.toolsBottom<=rows.actionsTop+1)&&rows.titleWidth>0,rows);
   }
   await viewport(1382,804);
   await evaluate(`(async()=>{await leaveFocus();await enterFocus('space',1);})()`); await settle();
@@ -1217,6 +1225,19 @@ async function run() {
   await send('Page.navigate', { url: URL });
   await wait(`typeof SpaceModelWorkspace==='object' && typeof api==='function' && connection.phase==='ready'`, 'application ready',90000);
   });
+  if (process.env.GEOMETRY_ASYNC_REPLY_ONLY) {
+    await runGroup('async-reply-ui', asyncReplyUiRegression({
+      check, evaluate, click, viewport, setup, wait, settle, key, send, select, closeWorkspace, openFlowFace, scene
+    }));
+    return;
+  }
+  if (process.env.GEOMETRY_SAVE_REOPEN_ONLY) {
+    await runGroup('save-reopen-grid', saveReopenGridRegression({
+      check, evaluate, click, viewport, wait, settle, key, send, select, input, scene,
+      downloadDir: path.join(RUN_DIR, 'downloads')
+    }));
+    return;
+  }
   if (process.env.GEOMETRY_SPACE_FLOW_ONLY) {
     await runGroup('space-flow', spaceFlowRegression);
     return;

@@ -1,0 +1,1455 @@
+{
+  "name": "cross-B-hole-390-face",
+  "width": 390,
+  "mode": "cross-B-hole",
+  "scope": "face",
+  "started": "2026-10-09T15:51:03.050785+00:00",
+  "ok": true,
+  "BWork": "hole",
+  "fixture": {
+    "commands": [
+      "surface 731 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+      "surface 732 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+      "canvas-pos boundary 731 30 30",
+      "canvas-pos boundary 732 310 30"
+    ],
+    "replies": [
+      {
+        "ok": true
+      },
+      {
+        "ok": true
+      },
+      {
+        "ok": true
+      },
+      {
+        "ok": true
+      },
+      {
+        "ok": true
+      }
+    ],
+    "setupIsApi": true
+  },
+  "heldNativeReply": {
+    "ok": true
+  },
+  "beforeB": {
+    "workSurf": "732",
+    "view3": true,
+    "tool": "hole",
+    "editBid": 0,
+    "editToken": 0,
+    "editLoops": null,
+    "editDrag": null,
+    "rectStart": {
+      "u": 100,
+      "v": 100
+    },
+    "ocOn": false,
+    "ocFocus": null,
+    "ocEdit": null,
+    "navigationSequence": 4,
+    "groups": [
+      "<g transform=\"translate(250,1930)\"><polygon points=\"100,100 100,100\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"100\" cy=\"100\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"100\" cy=\"100\" r=\"4\" fill=\"#c0392b\"></circle></g>"
+    ],
+    "handles": [
+      "<polygon points=\"100,100 100,100\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+      "<circle cx=\"100\" cy=\"100\" r=\"4\" fill=\"#c0392b\"></circle>",
+      "<circle cx=\"100\" cy=\"100\" r=\"4\" fill=\"#c0392b\"></circle>"
+    ],
+    "canvasVisible": true,
+    "workspaceHidden": true,
+    "inspectorHidden": true,
+    "context": "7af162dc-3264-4bd3-b5fd-b9ae68d6cdca"
+  },
+  "afterB": {
+    "workSurf": "732",
+    "view3": true,
+    "tool": "hole",
+    "editBid": 0,
+    "editToken": 0,
+    "editLoops": null,
+    "editDrag": null,
+    "rectStart": {
+      "u": 100,
+      "v": 100
+    },
+    "ocOn": false,
+    "ocFocus": null,
+    "ocEdit": null,
+    "navigationSequence": 4,
+    "groups": [
+      "<g transform=\"translate(250,1930)\"><polygon points=\"100,100 100,100\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"100\" cy=\"100\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"100\" cy=\"100\" r=\"4\" fill=\"#c0392b\"></circle></g>"
+    ],
+    "handles": [
+      "<polygon points=\"100,100 100,100\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+      "<circle cx=\"100\" cy=\"100\" r=\"4\" fill=\"#c0392b\"></circle>",
+      "<circle cx=\"100\" cy=\"100\" r=\"4\" fill=\"#c0392b\"></circle>"
+    ],
+    "canvasVisible": true,
+    "workspaceHidden": true,
+    "inspectorHidden": true,
+    "context": "7af162dc-3264-4bd3-b5fd-b9ae68d6cdca"
+  },
+  "BCompletion": {
+    "target": {
+      "x": 43.376473508775234,
+      "y": 468.2447390779853,
+      "native": {
+        "ok": true,
+        "x": 400,
+        "y": 400
+      },
+      "u": 400,
+      "v": 400,
+      "bid": 732
+    },
+    "draftState": {
+      "workSurf": "732",
+      "view3": true,
+      "tool": "hole",
+      "editBid": 0,
+      "editToken": 0,
+      "editLoops": null,
+      "editDrag": null,
+      "rectStart": {
+        "u": 100,
+        "v": 100
+      },
+      "ocOn": false,
+      "ocFocus": null,
+      "ocEdit": null,
+      "navigationSequence": 4,
+      "groups": [
+        "<g transform=\"translate(250,1930)\"><polygon points=\"100,100 400,100 400,400 100,400\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"100\" cy=\"100\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"400\" cy=\"100\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"400\" cy=\"400\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"100\" cy=\"400\" r=\"4\" fill=\"#c0392b\"></circle></g>"
+      ],
+      "handles": [
+        "<polygon points=\"100,100 400,100 400,400 100,400\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+        "<circle cx=\"100\" cy=\"100\" r=\"4\" fill=\"#c0392b\"></circle>",
+        "<circle cx=\"400\" cy=\"100\" r=\"4\" fill=\"#c0392b\"></circle>",
+        "<circle cx=\"400\" cy=\"400\" r=\"4\" fill=\"#c0392b\"></circle>",
+        "<circle cx=\"100\" cy=\"400\" r=\"4\" fill=\"#c0392b\"></circle>"
+      ],
+      "canvasVisible": true,
+      "workspaceHidden": true,
+      "inspectorHidden": true,
+      "context": "7af162dc-3264-4bd3-b5fd-b9ae68d6cdca"
+    },
+    "worldUnchangedUntilUp": true,
+    "exactBWorld": true
+  },
+  "exactAWorld": true,
+  "audit": {
+    "gate": {
+      "kind": "boundary",
+      "id": 731,
+      "phase": "released",
+      "release": null,
+      "promise": null,
+      "command": "line boundary 731 outline 0,0 4200,0 4200,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+      "stack": "Error\n    at window.fetch (eval at evaluate (:311:30), <anonymous>:21:19)\n    at apiRequest (http://127.0.0.1:19186/app.js:639:21)\n    at api (http://127.0.0.1:19186/app.js:691:24)\n    at emitLine (http://127.0.0.1:19186/app.js:1272:19)\n    at emitBoundary (http://127.0.0.1:19186/app.js:1316:10)\n    at commitEdgeLength (http://127.0.0.1:19186/app.js:1443:10)\n    at HTMLInputElement.<anonymous> (http://127.0.0.1:19186/app.js:8663:17)\n    at HTMLInputElement.wrapped (eval at evaluate (:311:30), <anonymous>:49:175)",
+      "nativeReply": {
+        "ok": true
+      }
+    },
+    "downs": [
+      {
+        "phase": "settled",
+        "trusted": true,
+        "pointerId": 1,
+        "buttons": 1,
+        "before": {
+          "workSurf": "732",
+          "view3": true,
+          "tool": "hole",
+          "editBid": 0,
+          "editToken": 0,
+          "editLoops": null,
+          "editDrag": null,
+          "rectStart": null,
+          "ocOn": false,
+          "ocFocus": null,
+          "ocEdit": null,
+          "navigationSequence": 4,
+          "groups": [],
+          "handles": [],
+          "canvasVisible": true,
+          "workspaceHidden": true,
+          "inspectorHidden": true,
+          "context": "7af162dc-3264-4bd3-b5fd-b9ae68d6cdca"
+        },
+        "after": {
+          "workSurf": "732",
+          "view3": true,
+          "tool": "hole",
+          "editBid": 0,
+          "editToken": 0,
+          "editLoops": null,
+          "editDrag": null,
+          "rectStart": {
+            "u": 100,
+            "v": 100
+          },
+          "ocOn": false,
+          "ocFocus": null,
+          "ocEdit": null,
+          "navigationSequence": 4,
+          "groups": [
+            "<g transform=\"translate(250,1930)\"><polygon points=\"100,100 100,100\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"100\" cy=\"100\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"100\" cy=\"100\" r=\"4\" fill=\"#c0392b\"></circle></g>"
+          ],
+          "handles": [
+            "<polygon points=\"100,100 100,100\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+            "<circle cx=\"100\" cy=\"100\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"100\" cy=\"100\" r=\"4\" fill=\"#c0392b\"></circle>"
+          ],
+          "canvasVisible": true,
+          "workspaceHidden": true,
+          "inspectorHidden": true,
+          "context": "7af162dc-3264-4bd3-b5fd-b9ae68d6cdca"
+        }
+      }
+    ],
+    "moves": [
+      {
+        "phase": "settled",
+        "trusted": true,
+        "pointerId": 1,
+        "buttons": 0,
+        "before": {
+          "workSurf": "732",
+          "view3": true,
+          "tool": "hole",
+          "editBid": 0,
+          "editToken": 0,
+          "editLoops": null,
+          "editDrag": null,
+          "rectStart": null,
+          "ocOn": false,
+          "ocFocus": null,
+          "ocEdit": null,
+          "navigationSequence": 4,
+          "groups": [],
+          "handles": [],
+          "canvasVisible": true,
+          "workspaceHidden": true,
+          "inspectorHidden": true,
+          "context": "7af162dc-3264-4bd3-b5fd-b9ae68d6cdca"
+        },
+        "after": {
+          "workSurf": "732",
+          "view3": true,
+          "tool": "hole",
+          "editBid": 0,
+          "editToken": 0,
+          "editLoops": null,
+          "editDrag": null,
+          "rectStart": null,
+          "ocOn": false,
+          "ocFocus": null,
+          "ocEdit": null,
+          "navigationSequence": 4,
+          "groups": [],
+          "handles": [],
+          "canvasVisible": true,
+          "workspaceHidden": true,
+          "inspectorHidden": true,
+          "context": "7af162dc-3264-4bd3-b5fd-b9ae68d6cdca"
+        }
+      },
+      {
+        "phase": "settled",
+        "trusted": true,
+        "pointerId": 1,
+        "buttons": 1,
+        "before": {
+          "workSurf": "732",
+          "view3": true,
+          "tool": "hole",
+          "editBid": 0,
+          "editToken": 0,
+          "editLoops": null,
+          "editDrag": null,
+          "rectStart": {
+            "u": 100,
+            "v": 100
+          },
+          "ocOn": false,
+          "ocFocus": null,
+          "ocEdit": null,
+          "navigationSequence": 4,
+          "groups": [
+            "<g transform=\"translate(250,1930)\"><polygon points=\"100,100 100,100\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"100\" cy=\"100\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"100\" cy=\"100\" r=\"4\" fill=\"#c0392b\"></circle></g>"
+          ],
+          "handles": [
+            "<polygon points=\"100,100 100,100\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+            "<circle cx=\"100\" cy=\"100\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"100\" cy=\"100\" r=\"4\" fill=\"#c0392b\"></circle>"
+          ],
+          "canvasVisible": true,
+          "workspaceHidden": true,
+          "inspectorHidden": true,
+          "context": "7af162dc-3264-4bd3-b5fd-b9ae68d6cdca"
+        },
+        "after": {
+          "workSurf": "732",
+          "view3": true,
+          "tool": "hole",
+          "editBid": 0,
+          "editToken": 0,
+          "editLoops": null,
+          "editDrag": null,
+          "rectStart": {
+            "u": 100,
+            "v": 100
+          },
+          "ocOn": false,
+          "ocFocus": null,
+          "ocEdit": null,
+          "navigationSequence": 4,
+          "groups": [
+            "<g transform=\"translate(250,1930)\"><polygon points=\"100,100 400,100 400,400 100,400\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"100\" cy=\"100\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"400\" cy=\"100\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"400\" cy=\"400\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"100\" cy=\"400\" r=\"4\" fill=\"#c0392b\"></circle></g>"
+          ],
+          "handles": [
+            "<polygon points=\"100,100 400,100 400,400 100,400\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+            "<circle cx=\"100\" cy=\"100\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"400\" cy=\"100\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"400\" cy=\"400\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"100\" cy=\"400\" r=\"4\" fill=\"#c0392b\"></circle>"
+          ],
+          "canvasVisible": true,
+          "workspaceHidden": true,
+          "inspectorHidden": true,
+          "context": "7af162dc-3264-4bd3-b5fd-b9ae68d6cdca"
+        }
+      }
+    ],
+    "ups": [
+      {
+        "phase": "settled",
+        "trusted": true,
+        "pointerId": 1,
+        "buttons": 0,
+        "before": {
+          "workSurf": "732",
+          "view3": true,
+          "tool": "hole",
+          "editBid": 0,
+          "editToken": 0,
+          "editLoops": null,
+          "editDrag": null,
+          "rectStart": {
+            "u": 100,
+            "v": 100
+          },
+          "ocOn": false,
+          "ocFocus": null,
+          "ocEdit": null,
+          "navigationSequence": 4,
+          "groups": [
+            "<g transform=\"translate(250,1930)\"><polygon points=\"100,100 400,100 400,400 100,400\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"100\" cy=\"100\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"400\" cy=\"100\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"400\" cy=\"400\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"100\" cy=\"400\" r=\"4\" fill=\"#c0392b\"></circle></g>"
+          ],
+          "handles": [
+            "<polygon points=\"100,100 400,100 400,400 100,400\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+            "<circle cx=\"100\" cy=\"100\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"400\" cy=\"100\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"400\" cy=\"400\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"100\" cy=\"400\" r=\"4\" fill=\"#c0392b\"></circle>"
+          ],
+          "canvasVisible": true,
+          "workspaceHidden": true,
+          "inspectorHidden": true,
+          "context": "7af162dc-3264-4bd3-b5fd-b9ae68d6cdca"
+        },
+        "after": {
+          "workSurf": "732",
+          "view3": true,
+          "tool": "hole",
+          "editBid": 0,
+          "editToken": 0,
+          "editLoops": null,
+          "editDrag": null,
+          "rectStart": null,
+          "ocOn": false,
+          "ocFocus": null,
+          "ocEdit": null,
+          "navigationSequence": 4,
+          "groups": [],
+          "handles": [],
+          "canvasVisible": true,
+          "workspaceHidden": true,
+          "inspectorHidden": true,
+          "context": "7af162dc-3264-4bd3-b5fd-b9ae68d6cdca"
+        }
+      }
+    ],
+    "draws": [],
+    "changes": [
+      {
+        "id": "edgeLength0",
+        "value": "4200",
+        "trusted": true,
+        "phase": "settled"
+      }
+    ],
+    "events": [
+      {
+        "type": "pointermove",
+        "trusted": true,
+        "id": "toggleLeft",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": -1,
+        "buttons": 0,
+        "x": 30,
+        "y": 70,
+        "value": null
+      },
+      {
+        "type": "pointerdown",
+        "trusted": true,
+        "id": "toggleLeft",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 1,
+        "x": 30,
+        "y": 70,
+        "value": null
+      },
+      {
+        "type": "pointerup",
+        "trusted": true,
+        "id": "toggleLeft",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 30,
+        "y": 70,
+        "value": null
+      },
+      {
+        "type": "click",
+        "trusted": true,
+        "id": "toggleLeft",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 30,
+        "y": 70,
+        "value": null
+      },
+      {
+        "type": "pointermove",
+        "trusted": true,
+        "id": null,
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": -1,
+        "buttons": 0,
+        "x": 138.5,
+        "y": 548.6400146484375,
+        "value": null
+      },
+      {
+        "type": "pointerdown",
+        "trusted": true,
+        "id": null,
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 1,
+        "x": 138.5,
+        "y": 548.6400146484375,
+        "value": null
+      },
+      {
+        "type": "pointerup",
+        "trusted": true,
+        "id": null,
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 138.5,
+        "y": 548.6400146484375,
+        "value": null
+      },
+      {
+        "type": "click",
+        "trusted": true,
+        "id": null,
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 138,
+        "y": 548,
+        "value": null
+      },
+      {
+        "type": "keydown",
+        "trusted": true,
+        "id": null,
+        "card": null,
+        "cardId": null,
+        "key": "Escape",
+        "pointerId": null,
+        "pointerType": null,
+        "button": null,
+        "buttons": null,
+        "x": null,
+        "y": null,
+        "value": null
+      },
+      {
+        "type": "pointermove",
+        "trusted": true,
+        "id": "inspEnter",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": -1,
+        "buttons": 0,
+        "x": 107.5,
+        "y": 617.0399780273438,
+        "value": null
+      },
+      {
+        "type": "pointerdown",
+        "trusted": true,
+        "id": "inspEnter",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 1,
+        "x": 107.5,
+        "y": 617.0399780273438,
+        "value": null
+      },
+      {
+        "type": "pointerup",
+        "trusted": true,
+        "id": "inspEnter",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 107.5,
+        "y": 617.0399780273438,
+        "value": null
+      },
+      {
+        "type": "click",
+        "trusted": true,
+        "id": "inspEnter",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 107,
+        "y": 617,
+        "value": null
+      },
+      {
+        "type": "pointermove",
+        "trusted": true,
+        "id": "workspaceToggleRight",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": -1,
+        "buttons": 0,
+        "x": 178,
+        "y": 28,
+        "value": null
+      },
+      {
+        "type": "pointerdown",
+        "trusted": true,
+        "id": "workspaceToggleRight",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 1,
+        "x": 178,
+        "y": 28,
+        "value": null
+      },
+      {
+        "type": "pointerup",
+        "trusted": true,
+        "id": "workspaceToggleRight",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 178,
+        "y": 28,
+        "value": null
+      },
+      {
+        "type": "click",
+        "trusted": true,
+        "id": "workspaceToggleRight",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 178,
+        "y": 28,
+        "value": null
+      },
+      {
+        "type": "pointermove",
+        "trusted": true,
+        "id": null,
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": -1,
+        "buttons": 0,
+        "x": 116.12000274658203,
+        "y": 184,
+        "value": null
+      },
+      {
+        "type": "pointerdown",
+        "trusted": true,
+        "id": null,
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 1,
+        "x": 116.12000274658203,
+        "y": 184,
+        "value": null
+      },
+      {
+        "type": "pointerup",
+        "trusted": true,
+        "id": null,
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 116.12000274658203,
+        "y": 184,
+        "value": null
+      },
+      {
+        "type": "click",
+        "trusted": true,
+        "id": null,
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 116,
+        "y": 184,
+        "value": null
+      },
+      {
+        "type": "pointermove",
+        "trusted": true,
+        "id": "edgeLength0",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": -1,
+        "buttons": 0,
+        "x": 187,
+        "y": 421.6000061035156,
+        "value": null
+      },
+      {
+        "type": "pointerdown",
+        "trusted": true,
+        "id": "edgeLength0",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 1,
+        "x": 187,
+        "y": 421.6000061035156,
+        "value": null
+      },
+      {
+        "type": "pointerup",
+        "trusted": true,
+        "id": "edgeLength0",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 187,
+        "y": 421.6000061035156,
+        "value": null
+      },
+      {
+        "type": "click",
+        "trusted": true,
+        "id": "edgeLength0",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 187,
+        "y": 421,
+        "value": null
+      },
+      {
+        "type": "keydown",
+        "trusted": true,
+        "id": "edgeLength0",
+        "card": null,
+        "cardId": null,
+        "key": "Control",
+        "pointerId": null,
+        "pointerType": null,
+        "button": null,
+        "buttons": null,
+        "x": null,
+        "y": null,
+        "value": null
+      },
+      {
+        "type": "keydown",
+        "trusted": true,
+        "id": "edgeLength0",
+        "card": null,
+        "cardId": null,
+        "key": "A",
+        "pointerId": null,
+        "pointerType": null,
+        "button": null,
+        "buttons": null,
+        "x": null,
+        "y": null,
+        "value": null
+      },
+      {
+        "type": "keydown",
+        "trusted": true,
+        "id": "edgeLength0",
+        "card": null,
+        "cardId": null,
+        "key": "Tab",
+        "pointerId": null,
+        "pointerType": null,
+        "button": null,
+        "buttons": null,
+        "x": null,
+        "y": null,
+        "value": null
+      },
+      {
+        "type": "change",
+        "trusted": true,
+        "id": "edgeLength0",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": null,
+        "pointerType": null,
+        "button": null,
+        "buttons": null,
+        "x": null,
+        "y": null,
+        "value": "4200"
+      },
+      {
+        "type": "keydown",
+        "trusted": true,
+        "id": "edgeFixed0",
+        "card": null,
+        "cardId": null,
+        "key": "Escape",
+        "pointerId": null,
+        "pointerType": null,
+        "button": null,
+        "buttons": null,
+        "x": null,
+        "y": null,
+        "value": null
+      },
+      {
+        "type": "pointermove",
+        "trusted": true,
+        "id": "workspaceBackButton",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": -1,
+        "buttons": 0,
+        "x": 30,
+        "y": 28,
+        "value": null
+      },
+      {
+        "type": "pointerdown",
+        "trusted": true,
+        "id": "workspaceBackButton",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 1,
+        "x": 30,
+        "y": 28,
+        "value": null
+      },
+      {
+        "type": "pointerup",
+        "trusted": true,
+        "id": "workspaceBackButton",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 30,
+        "y": 28,
+        "value": null
+      },
+      {
+        "type": "click",
+        "trusted": true,
+        "id": "workspaceBackButton",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 30,
+        "y": 28,
+        "value": null
+      },
+      {
+        "type": "pointermove",
+        "trusted": true,
+        "id": "btnObj",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": -1,
+        "buttons": 0,
+        "x": 243.7899932861328,
+        "y": 70,
+        "value": null
+      },
+      {
+        "type": "pointerdown",
+        "trusted": true,
+        "id": "btnObj",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 1,
+        "x": 243.7899932861328,
+        "y": 70,
+        "value": null
+      },
+      {
+        "type": "pointerup",
+        "trusted": true,
+        "id": "btnObj",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 243.7899932861328,
+        "y": 70,
+        "value": null
+      },
+      {
+        "type": "click",
+        "trusted": true,
+        "id": "btnObj",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 243,
+        "y": 70,
+        "value": null
+      },
+      {
+        "type": "pointermove",
+        "trusted": true,
+        "id": null,
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": -1,
+        "buttons": 0,
+        "x": 117.5199966430664,
+        "y": 120.69000244140625,
+        "value": null
+      },
+      {
+        "type": "pointerdown",
+        "trusted": true,
+        "id": null,
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 1,
+        "x": 117.5199966430664,
+        "y": 120.69000244140625,
+        "value": null
+      },
+      {
+        "type": "pointerup",
+        "trusted": true,
+        "id": null,
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 117.5199966430664,
+        "y": 120.69000244140625,
+        "value": null
+      },
+      {
+        "type": "click",
+        "trusted": true,
+        "id": null,
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 117,
+        "y": 120,
+        "value": null
+      },
+      {
+        "type": "pointermove",
+        "trusted": true,
+        "id": "v3ToolbarSurf",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": -1,
+        "buttons": 0,
+        "x": 319.489990234375,
+        "y": 120.68000030517578,
+        "value": null
+      },
+      {
+        "type": "pointerdown",
+        "trusted": true,
+        "id": "v3ToolbarSurf",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 1,
+        "x": 319.489990234375,
+        "y": 120.68000030517578,
+        "value": null
+      },
+      {
+        "type": "pointerup",
+        "trusted": true,
+        "id": "v3ToolbarSurf",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 319.489990234375,
+        "y": 120.68000030517578,
+        "value": null
+      },
+      {
+        "type": "click",
+        "trusted": true,
+        "id": "v3ToolbarSurf",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 319,
+        "y": 120,
+        "value": null
+      },
+      {
+        "type": "change",
+        "trusted": true,
+        "id": "v3ToolbarSurf",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": null,
+        "pointerType": null,
+        "button": null,
+        "buttons": null,
+        "x": null,
+        "y": null,
+        "value": "732"
+      },
+      {
+        "type": "change",
+        "trusted": false,
+        "id": "workSurf",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": null,
+        "pointerType": null,
+        "button": null,
+        "buttons": null,
+        "x": null,
+        "y": null,
+        "value": "732"
+      },
+      {
+        "type": "click",
+        "trusted": true,
+        "id": "v3ToolbarSurf",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 0,
+        "pointerType": "",
+        "button": -1,
+        "buttons": 0,
+        "x": 248,
+        "y": 105,
+        "value": null
+      },
+      {
+        "type": "pointermove",
+        "trusted": true,
+        "id": null,
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": -1,
+        "buttons": 0,
+        "x": 93.52999877929688,
+        "y": 120.69000244140625,
+        "value": null
+      },
+      {
+        "type": "pointerdown",
+        "trusted": true,
+        "id": null,
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 1,
+        "x": 93.52999877929688,
+        "y": 120.69000244140625,
+        "value": null
+      },
+      {
+        "type": "pointerup",
+        "trusted": true,
+        "id": null,
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 93.52999877929688,
+        "y": 120.69000244140625,
+        "value": null
+      },
+      {
+        "type": "click",
+        "trusted": true,
+        "id": null,
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 93,
+        "y": 120,
+        "value": null
+      },
+      {
+        "type": "pointermove",
+        "trusted": true,
+        "id": null,
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": -1,
+        "buttons": 0,
+        "x": 30.741178512573242,
+        "y": 455.60943603515625,
+        "value": null
+      },
+      {
+        "type": "pointerdown",
+        "trusted": true,
+        "id": null,
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 1,
+        "x": 30.741178512573242,
+        "y": 455.60943603515625,
+        "value": null
+      },
+      {
+        "type": "gotpointercapture",
+        "trusted": true,
+        "id": "cv",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": -1,
+        "buttons": 1,
+        "x": 30.741178512573242,
+        "y": 455.60943603515625,
+        "value": null
+      },
+      {
+        "type": "pointermove",
+        "trusted": true,
+        "id": "cv",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": -1,
+        "buttons": 1,
+        "x": 43.37647247314453,
+        "y": 468.2447509765625,
+        "value": null
+      },
+      {
+        "type": "pointerup",
+        "trusted": true,
+        "id": "cv",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 43.37647247314453,
+        "y": 468.2447509765625,
+        "value": null
+      },
+      {
+        "type": "lostpointercapture",
+        "trusted": true,
+        "id": "cv",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 43.37647247314453,
+        "y": 468.2447509765625,
+        "value": null
+      },
+      {
+        "type": "click",
+        "trusted": true,
+        "id": "cv",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 43,
+        "y": 468,
+        "value": null
+      }
+    ],
+    "fetches": [
+      {
+        "command": "reset",
+        "httpStatus": 200
+      },
+      {
+        "command": "section-profile-read",
+        "httpStatus": 200
+      },
+      {
+        "command": "line surface 731 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+        "httpStatus": 200
+      },
+      {
+        "command": "section-profile-read",
+        "httpStatus": 200
+      },
+      {
+        "command": "line surface 732 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+        "httpStatus": 200
+      },
+      {
+        "command": "section-profile-read",
+        "httpStatus": 200
+      },
+      {
+        "command": "line canvas-pos boundary 731 30 30",
+        "httpStatus": 200
+      },
+      {
+        "command": "line canvas-pos boundary 732 310 30",
+        "httpStatus": 200
+      },
+      {
+        "command": "objects",
+        "httpStatus": 200
+      },
+      {
+        "command": "surfaces",
+        "httpStatus": 200
+      },
+      {
+        "command": "boundary 731",
+        "httpStatus": 200
+      },
+      {
+        "command": "boundary 732",
+        "httpStatus": 200
+      },
+      {
+        "command": "boundary 731",
+        "httpStatus": 200
+      },
+      {
+        "command": "obstacles 731",
+        "httpStatus": 200
+      },
+      {
+        "command": "references",
+        "httpStatus": 200
+      },
+      {
+        "command": "dump",
+        "httpStatus": 200
+      },
+      {
+        "command": "source-inspect",
+        "httpStatus": 200
+      },
+      {
+        "command": "dump",
+        "httpStatus": 200
+      },
+      {
+        "command": "dump",
+        "httpStatus": 200
+      },
+      {
+        "command": "line boundary 731 outline 0,0 4200,0 4200,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+        "httpStatus": 200
+      },
+      {
+        "command": "dump",
+        "httpStatus": 200
+      },
+      {
+        "command": "render",
+        "httpStatus": 200
+      },
+      {
+        "command": "surfaces",
+        "httpStatus": 200
+      },
+      {
+        "command": "proj 2 100 100 732",
+        "httpStatus": 200
+      },
+      {
+        "command": "proj 2 0 0 732",
+        "httpStatus": 200
+      },
+      {
+        "command": "proj 2 1000 0 732",
+        "httpStatus": 200
+      },
+      {
+        "command": "proj 2 0 1000 732",
+        "httpStatus": 200
+      },
+      {
+        "command": "dump",
+        "httpStatus": 200
+      },
+      {
+        "command": "section-profile-read",
+        "httpStatus": 200
+      },
+      {
+        "command": "dump",
+        "httpStatus": 200
+      },
+      {
+        "command": "proj 2 400 400 732",
+        "httpStatus": 200
+      },
+      {
+        "command": "dump",
+        "httpStatus": 200
+      },
+      {
+        "command": "boundary 732",
+        "httpStatus": 200
+      },
+      {
+        "command": "line boundary 732 outline 0,0 4000,0 4000,3000 0,3000 hole 100,100 400,100 400,400 100,400",
+        "httpStatus": 200
+      },
+      {
+        "command": "render",
+        "httpStatus": 200
+      },
+      {
+        "command": "surfaces",
+        "httpStatus": 200
+      },
+      {
+        "command": "section-profile-read",
+        "httpStatus": 200
+      },
+      {
+        "command": "dump",
+        "httpStatus": 200
+      }
+    ]
+  },
+  "finished": "2026-10-09T15:51:05.921685+00:00",
+  "pageErrors": []
+}

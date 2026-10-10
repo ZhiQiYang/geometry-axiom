@@ -108,7 +108,7 @@ function makeFill({ ctl, key, send, sleep }, { afterMs = 0 } = {}) {
 function openCreateObjectMenu(read, ctl) {
   return async selector => {
     if (await read(`document.querySelector(${JSON.stringify(selector)})?.closest('#createObjectPop')?.hidden===true`)) {
-      await ctl(await read(`innerWidth<=900?'#mobileCreateObject':'#btnCreateObject'`));
+      await ctl(await read(`(()=>{const visible=['mobileCreateObject','btnCreateObject'].filter(id=>{const e=document.getElementById(id),r=e?.getBoundingClientRect();return r&&r.width>0&&r.height>0;});if(visible.length!==1)throw Error('Expected one visible create-object opener: '+visible.join(','));return '#'+visible[0];})()`));
     }
   };
 }

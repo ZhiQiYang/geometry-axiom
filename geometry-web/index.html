@@ -240,15 +240,15 @@
 
       <div id="viewToolbar" class="view-toolbar" hidden>
         <div class="v3-seg" role="group" aria-label="三視圖工具">
-          <button type="button" class="v3-seg-btn active" data-v3-tool="view" title="檢視／選取"><span data-icon="pointer"></span>檢視</button>
+          <button type="button" class="v3-seg-btn active" data-v3-tool="view" title="選取／檢視"><span data-icon="pointer"></span>選取</button>
           <button type="button" class="v3-seg-btn" data-v3-tool="rect" title="拉矩形建面"><span data-icon="rectangle"></span>矩形</button>
-          <button type="button" class="v3-seg-btn" data-v3-tool="hole" title="挖矩形孔"><span data-icon="hole"></span>挖孔</button>
+          <button type="button" class="v3-seg-btn" data-v3-tool="hole" title="矩形開口"><span data-icon="hole"></span>開口</button>
           <button type="button" class="v3-seg-btn" data-v3-tool="edit" title="編輯邊界"><span data-icon="edit"></span>編輯</button>
         </div>
         <select id="tool" class="v3-native-select" aria-hidden="true" tabindex="-1">
-          <option value="view">檢視／選取</option>
+          <option value="view">選取／檢視</option>
           <option value="rect">▭ 拉矩形建面</option>
-          <option value="hole">▨ 挖矩形孔</option>
+          <option value="hole">矩形開口</option>
           <option value="edit">✥ 編輯邊界</option>
         </select>
         <label id="v3PlaneControls" class="v3-plane-controls" hidden>工作面
@@ -260,7 +260,7 @@
       <div id="focusBar" class="focus-bar" hidden>
         <button id="btnBack" type="button"><span data-icon="arrowLeft"></span>返回</button>
         <span id="crumb"></span>
-        <button id="btnHole2" type="button"><span data-icon="hole"></span>挖孔</button>
+        <button id="btnHole2" type="button"><span data-icon="hole"></span>開口</button>
       </div>
 
       <div id="emptyState" class="empty-state" hidden>
@@ -381,7 +381,7 @@
         <div class="shape-tool-menu">
           <button id="shapeToolButton" type="button" class="workspace-tool" aria-expanded="false" aria-controls="shapeToolPop"><span data-icon="notch"></span><span>形狀 ▾</span></button>
           <div id="shapeToolPop" class="shape-tool-pop" hidden>
-            <button type="button" data-shape-action="notch">凹口</button><button type="button" data-shape-action="extend">外凸</button><button type="button" data-shape-action="push">推拉</button><button type="button" data-shape-action="corner">切角</button><button type="button" data-shape-action="hole">開口</button>
+            <button type="button" data-shape-action="notch">凹口</button><button type="button" data-shape-action="extend">外凸</button><button type="button" data-shape-action="push">推拉</button><button type="button" data-shape-action="corner">切角</button>
           </div>
         </div>
         <button type="button" class="workspace-tool" data-face-tool="guide" title="參考線 (l)"><span data-icon="guide"></span><span>參考線</span><kbd>L</kbd></button>
@@ -395,13 +395,13 @@
         <button id="spacePlaceBeam" class="workspace-tool" type="button" title="拖一段平面圖放樑"><span data-icon="beam"></span><span>拖放樑</span></button>
         <span id="spaceSizeTools" hidden></span>
       </nav>
+      </div>
+      <div class="object-workspace-actions">
       <div class="workspace-history-tools" role="group" aria-label="復原與視角">
         <button type="button" id="faceUndoButton" class="workspace-icon-button" title="復原 (Ctrl+Z)" aria-label="復原"><span data-icon="undo"></span></button>
         <button type="button" id="faceRedoButton" class="workspace-icon-button" title="重做 (Ctrl+Y)" aria-label="重做"><span data-icon="redo"></span></button>
         <button type="button" id="workspaceFitButton" class="workspace-icon-button" title="顯示全部 (f)" aria-label="顯示全部"><span data-icon="fit"></span></button>
       </div>
-      </div>
-      <div class="object-workspace-actions">
         <button id="workspaceToggleLeft" class="workspace-icon-button panel-toggle left-toggle" type="button" title="物件清單" aria-label="物件清單" aria-expanded="false"><span data-icon="layers"></span></button>
         <button id="workspaceToggleRight" class="workspace-icon-button panel-toggle right-toggle" type="button" title="檢查器" aria-label="檢查器" aria-expanded="false"><span data-icon="inspect"></span></button>
         <span id="workspaceProjectActions"></span>
@@ -661,7 +661,7 @@
   <p id="scenarioStatus" role="status"></p><div id="scenarioDifference"></div>
 </dialog>
 <dialog id="scenarioEditorDialog" class="scenario-editor-dialog" aria-labelledby="scenarioEditorTitle">
-  <header><h2 id="scenarioEditorTitle">隔離試改</h2><button id="scenarioCancelEdit" class="btn" type="button">取消試改</button><button id="scenarioFinishEdit" class="primary-button" type="button" disabled>保存試改</button></header>
+  <header><h2 id="scenarioEditorTitle">隔離試改</h2><button id="scenarioPauseEdit" class="btn" type="button" disabled>暫存並離開</button><button id="scenarioCancelEdit" class="btn" type="button">取消試改</button><button id="scenarioFinishEdit" class="primary-button" type="button" disabled>保存試改</button></header>
   <p id="scenarioEditorStatus" role="status"></p><iframe id="scenarioEditorFrame" title="獨立方案編輯畫布"></iframe>
 </dialog>
 <script src="native-transport.js"></script>
@@ -696,6 +696,7 @@
 <script src="face-menu-icons.js"></script>
 <script src="face-context-menu.js"></script>
 <script src="grid-trial.js"></script>
+<script src="grid-anchor-positions.js"></script>
 <script src="grid-system-workspace.js"></script>
 <script src="grid-inspector.js"></script>
 <script src="model-viewer.js"></script>

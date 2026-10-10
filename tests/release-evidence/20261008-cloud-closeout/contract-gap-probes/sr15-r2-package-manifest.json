@@ -1,0 +1,120 @@
+{
+  "schema": "geometry-contract-gap-public-package/1",
+  "files": [
+    {
+      "path": "sr15-probe/r2/result.json",
+      "sourcePath": "/workspace/closure-evidence/sr15-parameter-anchor-r2/result.json",
+      "sha256": "75de20df80e4c64d30bb2b3f61b9ce59bfd266b79b4a17b149db089a11cf5d25",
+      "bytes": 1195130
+    },
+    {
+      "path": "sr15-probe/r2/bridge.stderr",
+      "sourcePath": "/workspace/closure-evidence/sr15-parameter-anchor-r2/bridge.stderr",
+      "sha256": "e562f23ed546f7e1aa0e612dbd4bd0ade9ae84e6f9f9acb65f3fc19f3ede79f3",
+      "bytes": 14856
+    },
+    {
+      "path": "sr15-probe/r2/wire.jsonl",
+      "sourcePath": "/workspace/closure-evidence/sr15-parameter-anchor-r2/wire.jsonl",
+      "sha256": "2edfe151a445dd15be493ca50364d963bfdd154c77d78d3e8023e228349ffc4c",
+      "bytes": 1327377
+    },
+    {
+      "path": "sr15-probe/r2/requests/parameter-02.json",
+      "sourcePath": "/workspace/closure-evidence/sr15-parameter-anchor-r2/requests/parameter-02.json",
+      "sha256": "dbf524d1256a47afda5d9b5a4aab0d0075b76373742a7b483c27b0955d88a4d1",
+      "bytes": 226
+    },
+    {
+      "path": "sr15-probe/r2/requests/parameter-03.json",
+      "sourcePath": "/workspace/closure-evidence/sr15-parameter-anchor-r2/requests/parameter-03.json",
+      "sha256": "dbf524d1256a47afda5d9b5a4aab0d0075b76373742a7b483c27b0955d88a4d1",
+      "bytes": 226
+    },
+    {
+      "path": "sr15-probe/r2/requests/parameter-01.json",
+      "sourcePath": "/workspace/closure-evidence/sr15-parameter-anchor-r2/requests/parameter-01.json",
+      "sha256": "61d44e7a81e32af3562ee91747dd80bec5fc90a138a19bb07870ff29bcbbb699",
+      "bytes": 226
+    },
+    {
+      "path": "sr15-probe/r2/requests/parameter-04.json",
+      "sourcePath": "/workspace/closure-evidence/sr15-parameter-anchor-r2/requests/parameter-04.json",
+      "sha256": "9a19d8277178c20cbe95f071605e66ee9cea7f3cb38d65ba80a780daf3e95a82",
+      "bytes": 226
+    },
+    {
+      "path": "sr15-probe/r2/executed-probe.py",
+      "sourcePath": "/workspace/closure-evidence/inventory/final-contract-mapping/sr15-probe/sr15_probe.py",
+      "sha256": "29bc34b4dec9cb9b434a16e50553b2dd9197f5487a02d29cb49857cdb7356338",
+      "bytes": 20011
+    },
+    {
+      "path": "sr15-probe/r2-preparation/README.md",
+      "sourcePath": "/workspace/closure-evidence/inventory/final-contract-mapping/sr15-probe/README.md",
+      "sha256": "94748c813f0606549a4af52f6f5114fb789af66807c7d87837ace75468339889",
+      "bytes": 6157
+    },
+    {
+      "path": "sr15-probe/r2-preparation/r1-to-r2.patch",
+      "sourcePath": "/workspace/closure-evidence/inventory/final-contract-mapping/sr15-probe/r1-to-r2.patch",
+      "sha256": "57d0329125ebfa39f148d17ae01dd2111fb01c4d9af75ce7bdef6bf5639ea64d",
+      "bytes": 4732
+    },
+    {
+      "path": "sr15-probe/r2-preparation/manifest.json",
+      "sourcePath": "/workspace/closure-evidence/inventory/final-contract-mapping/sr15-probe/manifest.json",
+      "sha256": "0d032717102e1bca21aa77028e0a4ae9b876abf4d8b61aed2bcd03f2cf4bd055",
+      "bytes": 687
+    },
+    {
+      "path": "sr15-probe/r2-independent-review.json",
+      "sourcePath": "/workspace/closure-evidence/inventory/final-contract-mapping/sr15-r2-independent-review.json",
+      "sha256": "1c031141d11c6cea40ec5108a3b61bd8ea3f5bb2908859f544204f71241bc071",
+      "bytes": 6097
+    },
+    {
+      "path": "sr15-probe/review_sr15_r2.py",
+      "sourcePath": "/workspace/closure-evidence/inventory/final-contract-mapping/review_sr15_r2.py",
+      "sha256": "eba4360447dc910062c69cfc16e88e0d9a424ae7074d905d8cefd50c0e3fb47b",
+      "bytes": 8949
+    },
+    {
+      "path": "gate-receipts/sr15-parameter-anchor-r2/command.log",
+      "sourcePath": "/workspace/closure-evidence/gates/sr15-parameter-anchor-r2/command.log",
+      "sha256": "2d1aedac86869a6115ae63327deaf6aa8915cfc8323ceeb5ef50fa12c5b8d25e",
+      "bytes": 1312
+    },
+    {
+      "path": "gate-receipts/sr15-parameter-anchor-r2/receipt.json",
+      "sourcePath": "/workspace/closure-evidence/gates/sr15-parameter-anchor-r2/receipt.json",
+      "sha256": "c2ca9b92cbfd7bb68189aecc02d2a9e713fbd744007d7a38a8c823de5b4976cc",
+      "bytes": 5512
+    },
+    {
+      "path": "sr15-probe/r2-driver/sr15-native-driver-r2.json",
+      "sourcePath": "/workspace/closure-evidence/integration/sr15-native-driver-r2.json",
+      "sha256": "7775d9873412c4a9e7c9a34dd87214074b251ed079094f9959a7f3fbecd7ceac",
+      "bytes": 1525
+    },
+    {
+      "path": "sr15-probe/r2-driver/sr15-native-driver-r2.stdout",
+      "sourcePath": "/workspace/closure-evidence/integration/sr15-native-driver-r2.stdout",
+      "sha256": "6b0dae3fc8d39ca1057466079ed9c0f8d55542e9188fa3380e7854996a9bb7f9",
+      "bytes": 1348
+    },
+    {
+      "path": "sr15-probe/r2-driver/sr15-native-driver-r2.stderr",
+      "sourcePath": "/workspace/closure-evidence/integration/sr15-native-driver-r2.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "sr15-probe/r2-driver/sr15-native-driver-r2.diff",
+      "sourcePath": "/workspace/closure-evidence/integration/sr15-native-driver-r2.diff",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    }
+  ],
+  "excludedPrivate": []
+}

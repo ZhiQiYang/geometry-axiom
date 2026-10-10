@@ -1,0 +1,278 @@
+{
+  "schema": "geometry-ui123-harness-corrections-static-mock-review/1",
+  "at": "2026-10-09T14:25:11.298Z",
+  "sourceSHA": "2703e4738ae308b2a268096f666f326f1e9a9b2f",
+  "preparedOnly": true,
+  "browserExecuted": false,
+  "nativeExecuted": false,
+  "productOrFormalTestWrites": false,
+  "command": [
+    "<node-runtime>/bin/node",
+    "<workspace-path>"
+  ],
+  "node": {
+    "path": "<node-runtime>/bin/node",
+    "sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12",
+    "version": "v24.19.0"
+  },
+  "validator": {
+    "path": "<workspace-path>",
+    "sha256": "1b77f24a07fd19239aa7f91baf22d5ff469c313c80e704b062f3b52098d04360"
+  },
+  "inputs": [
+    {
+      "path": "<workspace-path>",
+      "sha256": "22540c6d714951c458dee720d65151c86571468b9fe509d1122a2af7eb4b3f7f"
+    },
+    {
+      "path": "<workspace-path>",
+      "sha256": "eb929c80410ac46ccfc434bf206fbe8e8e8505327cdb107164d0633cb1606471"
+    }
+  ],
+  "originalSHA256": "3689ea243ee6a454e73f36cc00168ef38220a4bcffe9c6991013c50f3cbf381a",
+  "checks": [
+    {
+      "name": "all original six group method bodies remain byte identical",
+      "ok": true
+    },
+    {
+      "name": "all original check call assertions remain byte identical",
+      "ok": true,
+      "detail": {
+        "original": 61,
+        "corrected": 61
+      }
+    },
+    {
+      "name": "unchanged original helper settle",
+      "ok": true
+    },
+    {
+      "name": "unchanged original helper disclose",
+      "ok": true
+    },
+    {
+      "name": "unchanged original helper click",
+      "ok": true
+    },
+    {
+      "name": "unchanged original helper fill",
+      "ok": true
+    },
+    {
+      "name": "unchanged original helper select",
+      "ok": true
+    },
+    {
+      "name": "unchanged original helper panel",
+      "ok": true
+    },
+    {
+      "name": "unchanged original helper tab",
+      "ok": true
+    },
+    {
+      "name": "unchanged original helper shot",
+      "ok": true
+    },
+    {
+      "name": "unchanged original helper focusByTab",
+      "ok": true
+    },
+    {
+      "name": "unchanged original helper expectedConfirm",
+      "ok": true
+    },
+    {
+      "name": "unchanged original helper newProject",
+      "ok": true
+    },
+    {
+      "name": "unchanged original helper setup",
+      "ok": true
+    },
+    {
+      "name": "unchanged original helper enterFace",
+      "ok": true
+    },
+    {
+      "name": "unchanged original helper modelEmpty",
+      "ok": true
+    },
+    {
+      "name": "unchanged original helper modelExample",
+      "ok": true
+    },
+    {
+      "name": "unchanged original helper archiveInput",
+      "ok": true
+    },
+    {
+      "name": "unchanged original helper freshContext",
+      "ok": true
+    },
+    {
+      "name": "unchanged original helper canvasFootprint",
+      "ok": true
+    },
+    {
+      "name": "unchanged original helper visibleModel",
+      "ok": true
+    },
+    {
+      "name": "unchanged original helper v3PointerPoint",
+      "ok": true
+    },
+    {
+      "name": "unchanged original helper runtime",
+      "ok": true
+    },
+    {
+      "name": "unchanged original helper nativeIdentity",
+      "ok": true
+    },
+    {
+      "name": "only one normal F action was added before narrow grid-card pointer entry",
+      "ok": true
+    },
+    {
+      "name": "mock DOM: normal control visible",
+      "ok": true,
+      "detail": {
+        "expected": true
+      }
+    },
+    {
+      "name": "mock DOM: missing target invisible",
+      "ok": true,
+      "detail": {
+        "expected": false
+      }
+    },
+    {
+      "name": "mock DOM: zero rectangle invisible",
+      "ok": true,
+      "detail": {
+        "expected": false
+      }
+    },
+    {
+      "name": "mock DOM: target own display:none invisible",
+      "ok": true,
+      "detail": {
+        "expected": false
+      }
+    },
+    {
+      "name": "mock DOM: display:none ancestor hides visible positive-rectangle child",
+      "ok": true,
+      "detail": {
+        "expected": false
+      }
+    },
+    {
+      "name": "mock DOM: content-visibility:hidden ancestor hides child",
+      "ok": true,
+      "detail": {
+        "expected": false
+      }
+    },
+    {
+      "name": "mock DOM: closed details ordinary content invisible despite positive mock rectangle",
+      "ok": true,
+      "detail": {
+        "expected": false
+      }
+    },
+    {
+      "name": "mock DOM: closed details first direct summary itself visible",
+      "ok": true,
+      "detail": {
+        "expected": true
+      }
+    },
+    {
+      "name": "mock DOM: closed details first summary descendant visible",
+      "ok": true,
+      "detail": {
+        "expected": true
+      }
+    },
+    {
+      "name": "mock DOM: closed details second summary invisible",
+      "ok": true,
+      "detail": {
+        "expected": false
+      }
+    },
+    {
+      "name": "mock DOM: closed details absent summary hides all content",
+      "ok": true,
+      "detail": {
+        "expected": false
+      }
+    },
+    {
+      "name": "mock DOM: open details ordinary content visible",
+      "ok": true,
+      "detail": {
+        "expected": true
+      }
+    },
+    {
+      "name": "mock DOM: open inner details still hidden by outer closed content",
+      "ok": true,
+      "detail": {
+        "expected": false
+      }
+    },
+    {
+      "name": "mock DOM: nested closed details first summaries visible",
+      "ok": true,
+      "detail": {
+        "expected": true
+      }
+    },
+    {
+      "name": "mock DOM: nested closed details nonsummary content remains hidden",
+      "ok": true,
+      "detail": {
+        "expected": false
+      }
+    },
+    {
+      "name": "mock DOM: ancestor visibility:hidden with explicit visible child can render",
+      "ok": true,
+      "detail": {
+        "expected": true
+      }
+    },
+    {
+      "name": "mock DOM: inherited visibility:hidden child remains hidden",
+      "ok": true,
+      "detail": {
+        "expected": false
+      }
+    },
+    {
+      "name": "mock DOM: hidden attribute overridden to computed display:block remains rendered",
+      "ok": true,
+      "detail": {
+        "expected": true
+      }
+    },
+    {
+      "name": "mock DOM: hidden attribute with computed display:none hides child",
+      "ok": true,
+      "detail": {
+        "expected": false
+      }
+    }
+  ],
+  "ok": true,
+  "limits": [
+    "Mock DOM tests validate source predicate branches, not actual browser paint, pointerability or product acceptance.",
+    "Target visibility:collapse retains original semantics and is not exercised by current UI.",
+    "A target element with content-visibility:hidden may still paint its own box; this control-visibility predicate intentionally excludes hidden content."
+  ]
+}

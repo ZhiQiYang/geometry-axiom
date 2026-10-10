@@ -1,0 +1,349 @@
+{
+  "schema": "independent-q38-restart-artifact-review/1",
+  "reviewedAt": "2026-10-08T18:53:40.490135+00:00",
+  "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+  "checks": [
+    {
+      "check": "driver/probe command and inner release exit0",
+      "passed": true
+    },
+    {
+      "check": "same clean tested head before/after driver",
+      "passed": true
+    },
+    {
+      "check": "producer original and copy exact: q38-full.gcanvas",
+      "passed": true
+    },
+    {
+      "check": "producer original and copy exact: original-model.json",
+      "passed": true
+    },
+    {
+      "check": "producer original and copy exact: manifest.json",
+      "passed": true
+    },
+    {
+      "check": "producer original and copy exact: run.json",
+      "passed": true
+    },
+    {
+      "check": "producer original and copy exact: result.json",
+      "passed": true
+    },
+    {
+      "check": "producer original and copy exact: release-receipt.json",
+      "passed": true
+    },
+    {
+      "check": "producer completed original18 with no failures",
+      "passed": true
+    },
+    {
+      "check": "restart completed original13, each oracle true",
+      "passed": true
+    },
+    {
+      "check": "different owned service processes and sessions on port18973",
+      "passed": true
+    },
+    {
+      "check": "before: SIGINT identity matches only owned process and start ticks",
+      "passed": true
+    },
+    {
+      "check": "before: intentional interrupt cleanup complete",
+      "passed": true
+    },
+    {
+      "check": "before: single actual native child hash recorded",
+      "passed": true
+    },
+    {
+      "check": "before: original stdout hash",
+      "passed": true
+    },
+    {
+      "check": "before: original stderr hash",
+      "passed": true
+    },
+    {
+      "check": "after: SIGINT identity matches only owned process and start ticks",
+      "passed": true
+    },
+    {
+      "check": "after: intentional interrupt cleanup complete",
+      "passed": true
+    },
+    {
+      "check": "after: single actual native child hash recorded",
+      "passed": true
+    },
+    {
+      "check": "after: original stdout hash",
+      "passed": true
+    },
+    {
+      "check": "after: original stderr hash",
+      "passed": true
+    },
+    {
+      "check": "inner gate probes restarted service, not outer shared18971",
+      "passed": true
+    },
+    {
+      "check": "recovered complete native archive bytes",
+      "passed": true
+    },
+    {
+      "check": "executed source hash run_q38_restart.py",
+      "passed": true
+    },
+    {
+      "check": "executed source hash q38_restart_probe.py",
+      "passed": true
+    }
+  ],
+  "services": [
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/geometry-axiom/geometry-web/serve.py",
+        "18973"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "url": "http://127.0.0.1:18973/",
+      "started": "2026-10-08T18:50:08.274207+00:00",
+      "signals": [
+        {
+          "signal": "SIGINT",
+          "at": "2026-10-08T18:50:08.786782+00:00",
+          "identity": {
+            "pid": 221101,
+            "ppid": 221093,
+            "pgid": 221101,
+            "startTicks": 1164603
+          }
+        }
+      ],
+      "environment": {
+        "PYTHON": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "GEOMETRY_TEST_BRIDGE": "/tmp/geometry-tests/bridge",
+        "GEOMETRY_BRIDGE": "/tmp/geometry-tests/bridge",
+        "GEOMETRY_BRIDGE_EXECUTABLE": "/tmp/geometry-tests/bridge",
+        "GEOMETRY_MODEL_UPDATE_BRIDGE": "/tmp/geometry-tests/bridge",
+        "GEOMETRY_SCENARIO_BRIDGE": "/tmp/geometry-tests/bridge",
+        "GEOMETRY_MODEL_BASE": "/tmp/geometry-tests/model-base",
+        "GEOMETRY_SCENARIO_BASE": "/tmp/geometry-tests/model-base",
+        "GEOMETRY_FEEDBACK_DIR": "/workspace/closure-evidence/q38-restart-r1/feedback",
+        "GEOMETRY_REQUIRE_CLEAN": "1",
+        "GEOMETRY_CHROME": "/usr/bin/chromium",
+        "GEOMETRY_VERIFY_ROOT": "/workspace/geometry-axiom",
+        "GEOMETRY_PYTHON": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3"
+      },
+      "process": {
+        "pid": 221101,
+        "ppid": 221093,
+        "pgid": 221101,
+        "startTicks": 1164603
+      },
+      "runtime": {
+        "schema": "geometry-runtime/1",
+        "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+        "fresh": true,
+        "root": "/workspace/geometry-axiom",
+        "pid": 221101,
+        "session": "44bd41d982e7430d8279e92e98c6a2cd"
+      },
+      "ready": "2026-10-08T18:50:08.631241+00:00",
+      "children": [
+        {
+          "pid": 221102,
+          "ppid": 221101,
+          "pgid": 221101,
+          "startTicks": 1164628,
+          "executable": "/tmp/geometry-tests/bridge",
+          "sha256": "b76a6da590512722d6eda64cfc946392ccc2636f82ab187ef822c1e1606d68b5"
+        }
+      ],
+      "exitCode": -2,
+      "originalChildrenRemaining": [],
+      "finished": "2026-10-08T18:50:08.850668+00:00",
+      "stdoutSha256": "66b7cbd5c901223e5c8d9aeba09571be468fd98310c9e23ae14eef38665aa5ef",
+      "stderrSha256": "73339a7a21711fe40e931cdc9149a38996ce5c1d3e38c901db2fdccbc7e37f16"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/geometry-axiom/geometry-web/serve.py",
+        "18973"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "url": "http://127.0.0.1:18973/",
+      "started": "2026-10-08T18:50:08.851234+00:00",
+      "signals": [
+        {
+          "signal": "SIGINT",
+          "at": "2026-10-08T18:50:12.846953+00:00",
+          "identity": {
+            "pid": 221122,
+            "ppid": 221093,
+            "pgid": 221122,
+            "startTicks": 1164661
+          }
+        }
+      ],
+      "environment": {
+        "PYTHON": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "GEOMETRY_TEST_BRIDGE": "/tmp/geometry-tests/bridge",
+        "GEOMETRY_BRIDGE": "/tmp/geometry-tests/bridge",
+        "GEOMETRY_BRIDGE_EXECUTABLE": "/tmp/geometry-tests/bridge",
+        "GEOMETRY_MODEL_UPDATE_BRIDGE": "/tmp/geometry-tests/bridge",
+        "GEOMETRY_SCENARIO_BRIDGE": "/tmp/geometry-tests/bridge",
+        "GEOMETRY_MODEL_BASE": "/tmp/geometry-tests/model-base",
+        "GEOMETRY_SCENARIO_BASE": "/tmp/geometry-tests/model-base",
+        "GEOMETRY_FEEDBACK_DIR": "/workspace/closure-evidence/q38-restart-r1/feedback",
+        "GEOMETRY_REQUIRE_CLEAN": "1",
+        "GEOMETRY_CHROME": "/usr/bin/chromium",
+        "GEOMETRY_VERIFY_ROOT": "/workspace/geometry-axiom",
+        "GEOMETRY_PYTHON": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3"
+      },
+      "process": {
+        "pid": 221122,
+        "ppid": 221093,
+        "pgid": 221122,
+        "startTicks": 1164661
+      },
+      "runtime": {
+        "schema": "geometry-runtime/1",
+        "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+        "fresh": true,
+        "root": "/workspace/geometry-axiom",
+        "pid": 221122,
+        "session": "21e670e3a32841caad25238d11463694"
+      },
+      "ready": "2026-10-08T18:50:09.210982+00:00",
+      "children": [
+        {
+          "pid": 221123,
+          "ppid": 221122,
+          "pgid": 221122,
+          "startTicks": 1164689,
+          "executable": "/tmp/geometry-tests/bridge",
+          "sha256": "b76a6da590512722d6eda64cfc946392ccc2636f82ab187ef822c1e1606d68b5"
+        }
+      ],
+      "exitCode": -2,
+      "originalChildrenRemaining": [],
+      "finished": "2026-10-08T18:50:12.910749+00:00",
+      "stdoutSha256": "66b7cbd5c901223e5c8d9aeba09571be468fd98310c9e23ae14eef38665aa5ef",
+      "stderrSha256": "73339a7a21711fe40e931cdc9149a38996ce5c1d3e38c901db2fdccbc7e37f16"
+    }
+  ],
+  "producerBinding": {
+    "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+    "tree": "1c0fb168f2854f37c10370f1c65d4a155a83620b",
+    "status": "",
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+      "fresh": true,
+      "root": "/workspace/geometry-axiom",
+      "pid": 196578,
+      "session": "ca31be77efb542b89d45d5a88c3b1b45"
+    },
+    "gate": "q38-fresh-save",
+    "artifactsSha256": {
+      "/workspace/closure-evidence/q38-restart-r1/producer/q38-full.gcanvas": "49e3e05519cd696665d113d18c9839a58f3f04a2ca14422558542f1f9cb3d22b",
+      "/workspace/closure-evidence/q38-restart-r1/producer/original-model.json": "9cb060c49b421aa37c6be360674190e639c0e8c26665cd7be8fa1243d1506ae7"
+    },
+    "recordedAt": "2026-10-08T18:50:08.235184+00:00",
+    "bindingOrigin": "current private wrapper after validating producer receipt/result; not inherited historical delivery",
+    "files": [
+      {
+        "originalPath": "/tmp/geometry-closeout-r2-gates/q38-save-roundtrip/q38-full.gcanvas",
+        "copy": "/workspace/closure-evidence/q38-restart-r1/producer/q38-full.gcanvas",
+        "sha256": "49e3e05519cd696665d113d18c9839a58f3f04a2ca14422558542f1f9cb3d22b",
+        "bytes": 2187
+      },
+      {
+        "originalPath": "/tmp/geometry-closeout-r2-gates/q38-save-roundtrip/original-model.json",
+        "copy": "/workspace/closure-evidence/q38-restart-r1/producer/original-model.json",
+        "sha256": "9cb060c49b421aa37c6be360674190e639c0e8c26665cd7be8fa1243d1506ae7",
+        "bytes": 178293
+      },
+      {
+        "originalPath": "/tmp/geometry-closeout-r2-gates/q38-save-roundtrip/manifest.json",
+        "copy": "/workspace/closure-evidence/q38-restart-r1/producer/manifest.json",
+        "sha256": "9bffd23ecd83bcdff52d60ceaaee0b691c38d8305b914c0386b84930f9ed373e",
+        "bytes": 334
+      },
+      {
+        "originalPath": "/tmp/geometry-closeout-r2-gates/q38-save-roundtrip/run.json",
+        "copy": "/workspace/closure-evidence/q38-restart-r1/producer/run.json",
+        "sha256": "0551d4313eccaf71de247c03b0ca895c4f928211b71a14850aca1005f58735a4",
+        "bytes": 2532
+      },
+      {
+        "originalPath": "/tmp/geometry-closeout-r2-gates/q38-save-roundtrip/result.json",
+        "copy": "/workspace/closure-evidence/q38-restart-r1/producer/result.json",
+        "sha256": "59892dcf46587175e08b80d3eb1a4d1f24cc9b234fc544aa82e96aaa6d001f74",
+        "bytes": 2154
+      },
+      {
+        "originalPath": "/workspace/closure-evidence/gates/q38-save-roundtrip/receipt.json",
+        "copy": "/workspace/closure-evidence/q38-restart-r1/producer/release-receipt.json",
+        "sha256": "960e365023ca4930e74432e071ed083b2098907a9a0d057c27470f0fc79427a0",
+        "bytes": 5219
+      }
+    ],
+    "sourceProducerGate": "/workspace/closure-evidence/gates/q38-save-roundtrip/receipt.json",
+    "producerGateSha256": "960e365023ca4930e74432e071ed083b2098907a9a0d057c27470f0fc79427a0"
+  },
+  "archives": [
+    {
+      "source": "/workspace/closure-evidence/q38-restart-r1/producer/q38-full.gcanvas",
+      "sha256": "49e3e05519cd696665d113d18c9839a58f3f04a2ca14422558542f1f9cb3d22b",
+      "members": [
+        {
+          "name": "world.scene",
+          "bytes": 1677,
+          "sha256": "95119c027059c75e3fc174756125e827b55c9d7d968bae04b83e3520a1eb2add"
+        },
+        {
+          "name": "manifest.json",
+          "bytes": 288,
+          "sha256": "6d38d13d05b013f372170e6ef6812abb61735fc826c0333dcc0762827f3dd161"
+        }
+      ],
+      "review": "Only generated formal World and manifest; no source assets, profiles, screenshots or credentials. Fixture origin pinned in execution receipt."
+    }
+  ],
+  "additionalPublicFiles": [
+    {
+      "source": "/workspace/closure-evidence/q38-restart-r1/producer/q38-full.gcanvas",
+      "public": "q38-service-restart/artifacts/producer/q38-full.gcanvas",
+      "bytes": 2187,
+      "sha256": "49e3e05519cd696665d113d18c9839a58f3f04a2ca14422558542f1f9cb3d22b"
+    },
+    {
+      "source": "/workspace/closure-evidence/ci-source-audit/save-reopen-gate-review/run_q38_restart.py",
+      "public": "q38-service-restart/sources/run_q38_restart.py",
+      "bytes": 17726,
+      "sha256": "bd0723e418fd2c1cec42dd8e4a64523aa0311b13b3b1bfa89bfda07a52ce52ba"
+    },
+    {
+      "source": "/workspace/closure-evidence/ci-source-audit/save-reopen-gate-review/q38_restart_probe.py",
+      "public": "q38-service-restart/sources/q38_restart_probe.py",
+      "bytes": 15852,
+      "sha256": "365673cf8f0793d5788f9b9f832b4f2725d7eb04416a9d1e81fa9b2b9f060fe4"
+    }
+  ],
+  "limits": [
+    "Read-only raw evidence review; no new service or browser launched.",
+    "Intentional service SIGINT exit -2 is recorded separately from successful product command/gate exits.",
+    "Only Q38 typed section-profile fixture, not full product interruption Resume or OS picker certification."
+  ]
+}

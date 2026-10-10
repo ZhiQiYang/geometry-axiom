@@ -1,0 +1,5149 @@
+{
+  "schema": "rule-case-workbench-data/1",
+  "definitions": [
+    {
+      "schema": "rule-case/1",
+      "caseId": "same-role-distinct-members",
+      "label": "同角色的不同構件分開引用",
+      "input": {
+        "setup": [],
+        "transaction": [
+          {
+            "op": "publish-rule",
+            "value": {
+              "id": 17,
+              "version": 1,
+              "name": "有限主副支接合",
+              "slots": [
+                {
+                  "id": 7,
+                  "name": "主支"
+                },
+                {
+                  "id": 13,
+                  "name": "副支"
+                }
+              ],
+              "members": [
+                {
+                  "id": 11,
+                  "slotId": 7
+                },
+                {
+                  "id": 37,
+                  "slotId": 7
+                },
+                {
+                  "id": 89,
+                  "slotId": 13
+                }
+              ],
+              "joints": [
+                {
+                  "id": 101,
+                  "kind": "end-to-side",
+                  "scope": "left",
+                  "terminatedMember": 89,
+                  "targetMember": 11,
+                  "end": "start",
+                  "side": "+u",
+                  "dir": "u"
+                },
+                {
+                  "id": 203,
+                  "kind": "end-to-side",
+                  "scope": "right",
+                  "terminatedMember": 89,
+                  "targetMember": 37,
+                  "end": "finish",
+                  "side": "-u",
+                  "dir": "u"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "sourcePins": [],
+      "requiredCapabilities": [
+        "assembly-rule-authoring/1"
+      ],
+      "expect": {
+        "outcome": "accepted",
+        "diagnostic": null
+      },
+      "assertions": [
+        {
+          "kind": "record_exists",
+          "ref": {
+            "kind": "rule",
+            "id": 17,
+            "version": 1
+          }
+        },
+        {
+          "kind": "member_slot",
+          "ref": {
+            "kind": "rule",
+            "id": 17,
+            "version": 1
+          },
+          "memberId": 11,
+          "slotId": 7
+        },
+        {
+          "kind": "member_slot",
+          "ref": {
+            "kind": "rule",
+            "id": 17,
+            "version": 1
+          },
+          "memberId": 37,
+          "slotId": 7
+        },
+        {
+          "kind": "member_slot",
+          "ref": {
+            "kind": "rule",
+            "id": 17,
+            "version": 1
+          },
+          "memberId": 89,
+          "slotId": 13
+        },
+        {
+          "kind": "joint_tuple",
+          "ref": {
+            "kind": "rule",
+            "id": 17,
+            "version": 1
+          },
+          "jointId": 101,
+          "value": {
+            "id": 101,
+            "kind": "end-to-side",
+            "scope": "left",
+            "terminatedMember": 89,
+            "targetMember": 11,
+            "end": "start",
+            "side": "+u",
+            "dir": "u"
+          }
+        },
+        {
+          "kind": "joint_tuple",
+          "ref": {
+            "kind": "rule",
+            "id": 17,
+            "version": 1
+          },
+          "jointId": 203,
+          "value": {
+            "id": 203,
+            "kind": "end-to-side",
+            "scope": "right",
+            "terminatedMember": 89,
+            "targetMember": 37,
+            "end": "finish",
+            "side": "-u",
+            "dir": "u"
+          }
+        }
+      ]
+    },
+    {
+      "schema": "rule-case/1",
+      "caseId": "one-local-joint-new-version",
+      "label": "新版本只改一處接合",
+      "input": {
+        "setup": [
+          {
+            "op": "publish-rule",
+            "value": {
+              "id": 17,
+              "version": 1,
+              "name": "有限主副支接合",
+              "slots": [
+                {
+                  "id": 7,
+                  "name": "主支"
+                },
+                {
+                  "id": 13,
+                  "name": "副支"
+                }
+              ],
+              "members": [
+                {
+                  "id": 11,
+                  "slotId": 7
+                },
+                {
+                  "id": 37,
+                  "slotId": 7
+                },
+                {
+                  "id": 89,
+                  "slotId": 13
+                }
+              ],
+              "joints": [
+                {
+                  "id": 101,
+                  "kind": "end-to-side",
+                  "scope": "left",
+                  "terminatedMember": 89,
+                  "targetMember": 11,
+                  "end": "start",
+                  "side": "+u",
+                  "dir": "u"
+                },
+                {
+                  "id": 203,
+                  "kind": "end-to-side",
+                  "scope": "right",
+                  "terminatedMember": 89,
+                  "targetMember": 37,
+                  "end": "finish",
+                  "side": "-u",
+                  "dir": "u"
+                }
+              ]
+            }
+          },
+          {
+            "op": "create-binding",
+            "value": {
+              "id": 29,
+              "name": "固定來源配置",
+              "rule": {
+                "id": 17,
+                "version": 1
+              },
+              "slots": [
+                {
+                  "slotId": 7,
+                  "A": {
+                    "kind": "literal",
+                    "value": 27
+                  },
+                  "B": {
+                    "kind": "literal",
+                    "value": 33
+                  },
+                  "contactFace": "A",
+                  "orientation": "B"
+                },
+                {
+                  "slotId": 13,
+                  "A": {
+                    "kind": "literal",
+                    "value": 27
+                  },
+                  "B": {
+                    "kind": "literal",
+                    "value": 33
+                  },
+                  "contactFace": "A",
+                  "orientation": "B"
+                }
+              ]
+            }
+          }
+        ],
+        "transaction": [
+          {
+            "op": "publish-rule",
+            "value": {
+              "id": 17,
+              "version": 2,
+              "name": "有限主副支接合",
+              "slots": [
+                {
+                  "id": 7,
+                  "name": "主支"
+                },
+                {
+                  "id": 13,
+                  "name": "副支"
+                }
+              ],
+              "members": [
+                {
+                  "id": 11,
+                  "slotId": 7
+                },
+                {
+                  "id": 37,
+                  "slotId": 7
+                },
+                {
+                  "id": 89,
+                  "slotId": 13
+                }
+              ],
+              "joints": [
+                {
+                  "id": 101,
+                  "kind": "end-to-side",
+                  "scope": "left",
+                  "terminatedMember": 89,
+                  "targetMember": 11,
+                  "end": "start",
+                  "side": "-u",
+                  "dir": "u"
+                },
+                {
+                  "id": 203,
+                  "kind": "end-to-side",
+                  "scope": "right",
+                  "terminatedMember": 89,
+                  "targetMember": 37,
+                  "end": "finish",
+                  "side": "-u",
+                  "dir": "u"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "sourcePins": [
+        {
+          "ref": {
+            "kind": "rule",
+            "id": 17,
+            "version": 1
+          },
+          "sha256": "b1d022f56fe3ab30670b539568d26dddf5c2d146533c77ae7f46abe3630910be"
+        },
+        {
+          "ref": {
+            "kind": "binding",
+            "id": 29
+          },
+          "sha256": "e47b34d70b40fec4148c4fc18f76a1e9a26cb210299f0d0062d2d47e4192c090"
+        }
+      ],
+      "requiredCapabilities": [
+        "assembly-rule-authoring/1"
+      ],
+      "expect": {
+        "outcome": "accepted",
+        "diagnostic": null
+      },
+      "assertions": [
+        {
+          "kind": "record_exists",
+          "ref": {
+            "kind": "rule",
+            "id": 17,
+            "version": 2
+          }
+        },
+        {
+          "kind": "record_pin_unchanged",
+          "ref": {
+            "kind": "rule",
+            "id": 17,
+            "version": 1
+          }
+        },
+        {
+          "kind": "record_pin_unchanged",
+          "ref": {
+            "kind": "binding",
+            "id": 29
+          }
+        },
+        {
+          "kind": "member_slot",
+          "ref": {
+            "kind": "rule",
+            "id": 17,
+            "version": 2
+          },
+          "memberId": 11,
+          "slotId": 7
+        },
+        {
+          "kind": "member_slot",
+          "ref": {
+            "kind": "rule",
+            "id": 17,
+            "version": 2
+          },
+          "memberId": 37,
+          "slotId": 7
+        },
+        {
+          "kind": "member_slot",
+          "ref": {
+            "kind": "rule",
+            "id": 17,
+            "version": 2
+          },
+          "memberId": 89,
+          "slotId": 13
+        },
+        {
+          "kind": "joint_tuple",
+          "ref": {
+            "kind": "rule",
+            "id": 17,
+            "version": 2
+          },
+          "jointId": 101,
+          "value": {
+            "id": 101,
+            "kind": "end-to-side",
+            "scope": "left",
+            "terminatedMember": 89,
+            "targetMember": 11,
+            "end": "start",
+            "side": "-u",
+            "dir": "u"
+          }
+        },
+        {
+          "kind": "joint_tuple_equal",
+          "before": {
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            },
+            "jointId": 203
+          },
+          "after": {
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 2
+            },
+            "jointId": 203
+          }
+        },
+        {
+          "kind": "joint_tuple",
+          "ref": {
+            "kind": "rule",
+            "id": 17,
+            "version": 2
+          },
+          "jointId": 203,
+          "value": {
+            "id": 203,
+            "kind": "end-to-side",
+            "scope": "right",
+            "terminatedMember": 89,
+            "targetMember": 37,
+            "end": "finish",
+            "side": "-u",
+            "dir": "u"
+          }
+        }
+      ]
+    },
+    {
+      "schema": "rule-case/1",
+      "caseId": "wrong-type-dimension-reference",
+      "label": "尺寸引用拒絕計數型別",
+      "input": {
+        "setup": [
+          {
+            "op": "publish-rule",
+            "value": {
+              "id": 17,
+              "version": 1,
+              "name": "有限主副支接合",
+              "slots": [
+                {
+                  "id": 7,
+                  "name": "主支"
+                },
+                {
+                  "id": 13,
+                  "name": "副支"
+                }
+              ],
+              "members": [
+                {
+                  "id": 11,
+                  "slotId": 7
+                },
+                {
+                  "id": 37,
+                  "slotId": 7
+                },
+                {
+                  "id": 89,
+                  "slotId": 13
+                }
+              ],
+              "joints": [
+                {
+                  "id": 101,
+                  "kind": "end-to-side",
+                  "scope": "left",
+                  "terminatedMember": 89,
+                  "targetMember": 11,
+                  "end": "start",
+                  "side": "+u",
+                  "dir": "u"
+                },
+                {
+                  "id": 203,
+                  "kind": "end-to-side",
+                  "scope": "right",
+                  "terminatedMember": 89,
+                  "targetMember": 37,
+                  "end": "finish",
+                  "side": "-u",
+                  "dir": "u"
+                }
+              ]
+            }
+          },
+          {
+            "op": "put-parameter",
+            "value": {
+              "id": 41,
+              "name": "接合案例尺寸",
+              "fields": [
+                {
+                  "id": 9,
+                  "name": "截面A",
+                  "type": "dimension",
+                  "input": "27"
+                }
+              ]
+            }
+          },
+          {
+            "op": "create-binding",
+            "value": {
+              "id": 29,
+              "name": "固定來源配置",
+              "rule": {
+                "id": 17,
+                "version": 1
+              },
+              "slots": [
+                {
+                  "slotId": 7,
+                  "A": {
+                    "kind": "parameter",
+                    "parameterId": 41,
+                    "fieldId": 9
+                  },
+                  "B": {
+                    "kind": "literal",
+                    "value": 33
+                  },
+                  "contactFace": "A",
+                  "orientation": "B"
+                },
+                {
+                  "slotId": 13,
+                  "A": {
+                    "kind": "literal",
+                    "value": 27
+                  },
+                  "B": {
+                    "kind": "literal",
+                    "value": 33
+                  },
+                  "contactFace": "A",
+                  "orientation": "B"
+                }
+              ]
+            }
+          }
+        ],
+        "transaction": [
+          {
+            "op": "put-parameter",
+            "value": {
+              "id": 41,
+              "name": "接合案例尺寸",
+              "fields": [
+                {
+                  "id": 9,
+                  "name": "截面A",
+                  "type": "count",
+                  "input": "27"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "sourcePins": [
+        {
+          "ref": {
+            "kind": "rule",
+            "id": 17,
+            "version": 1
+          },
+          "sha256": "b1d022f56fe3ab30670b539568d26dddf5c2d146533c77ae7f46abe3630910be"
+        },
+        {
+          "ref": {
+            "kind": "parameter",
+            "id": 41
+          },
+          "sha256": "74e4b8686efab02e54ed6f8a3e648a89bd7f1ac11b6957866f512c64e9c5b50e"
+        },
+        {
+          "ref": {
+            "kind": "binding",
+            "id": 29
+          },
+          "sha256": "6458d35209b429047ad2e2bdfc443b958a53ae8815f2981c6fa3c4ec17e10773"
+        }
+      ],
+      "requiredCapabilities": [
+        "assembly-rule-authoring/1",
+        "parameters/1",
+        "engineering-spec/1"
+      ],
+      "expect": {
+        "outcome": "rejected",
+        "diagnostic": {
+          "code": "DIMENSION_TYPE",
+          "clause": "D33",
+          "ref": {
+            "kind": "parameter",
+            "id": 41,
+            "fieldId": 9
+          }
+        }
+      },
+      "assertions": [
+        {
+          "kind": "rejection_world_unchanged"
+        },
+        {
+          "kind": "record_pin_unchanged",
+          "ref": {
+            "kind": "rule",
+            "id": 17,
+            "version": 1
+          }
+        },
+        {
+          "kind": "record_pin_unchanged",
+          "ref": {
+            "kind": "binding",
+            "id": 29
+          }
+        },
+        {
+          "kind": "exact_typed_ref",
+          "ref": {
+            "kind": "binding",
+            "id": 29
+          },
+          "slotId": 7,
+          "axis": "A",
+          "value": {
+            "kind": "parameter",
+            "parameterId": 41,
+            "fieldId": 9
+          }
+        }
+      ]
+    },
+    {
+      "schema": "rule-case/1",
+      "caseId": "legal-rule",
+      "label": "合法規則可獨立發布",
+      "input": {
+        "setup": [],
+        "transaction": [
+          {
+            "op": "publish-rule",
+            "value": {
+              "id": 17,
+              "version": 1,
+              "name": "有限主副支接合",
+              "slots": [
+                {
+                  "id": 7,
+                  "name": "主支"
+                },
+                {
+                  "id": 13,
+                  "name": "副支"
+                }
+              ],
+              "members": [
+                {
+                  "id": 11,
+                  "slotId": 7
+                },
+                {
+                  "id": 89,
+                  "slotId": 13
+                }
+              ],
+              "joints": [
+                {
+                  "id": 101,
+                  "kind": "end-to-side",
+                  "scope": "left",
+                  "terminatedMember": 89,
+                  "targetMember": 11,
+                  "end": "start",
+                  "side": "+u",
+                  "dir": "u"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "sourcePins": [],
+      "requiredCapabilities": [
+        "assembly-rule-authoring/1"
+      ],
+      "expect": {
+        "outcome": "accepted",
+        "diagnostic": null
+      },
+      "assertions": [
+        {
+          "kind": "record_exists",
+          "ref": {
+            "kind": "rule",
+            "id": 17,
+            "version": 1
+          }
+        },
+        {
+          "kind": "member_slot",
+          "ref": {
+            "kind": "rule",
+            "id": 17,
+            "version": 1
+          },
+          "memberId": 11,
+          "slotId": 7
+        },
+        {
+          "kind": "member_slot",
+          "ref": {
+            "kind": "rule",
+            "id": 17,
+            "version": 1
+          },
+          "memberId": 89,
+          "slotId": 13
+        },
+        {
+          "kind": "joint_tuple",
+          "ref": {
+            "kind": "rule",
+            "id": 17,
+            "version": 1
+          },
+          "jointId": 101,
+          "value": {
+            "id": 101,
+            "kind": "end-to-side",
+            "scope": "left",
+            "terminatedMember": 89,
+            "targetMember": 11,
+            "end": "start",
+            "side": "+u",
+            "dir": "u"
+          }
+        }
+      ]
+    },
+    {
+      "schema": "rule-case/1",
+      "caseId": "legal-incomplete-binding",
+      "label": "未選材料方向仍是合法未完成配置",
+      "input": {
+        "setup": [
+          {
+            "op": "publish-rule",
+            "value": {
+              "id": 17,
+              "version": 1,
+              "name": "有限主副支接合",
+              "slots": [
+                {
+                  "id": 7,
+                  "name": "主支"
+                },
+                {
+                  "id": 13,
+                  "name": "副支"
+                }
+              ],
+              "members": [
+                {
+                  "id": 11,
+                  "slotId": 7
+                },
+                {
+                  "id": 37,
+                  "slotId": 7
+                },
+                {
+                  "id": 89,
+                  "slotId": 13
+                }
+              ],
+              "joints": [
+                {
+                  "id": 101,
+                  "kind": "end-to-side",
+                  "scope": "left",
+                  "terminatedMember": 89,
+                  "targetMember": 11,
+                  "end": "start",
+                  "side": "+u",
+                  "dir": "u"
+                },
+                {
+                  "id": 203,
+                  "kind": "end-to-side",
+                  "scope": "right",
+                  "terminatedMember": 89,
+                  "targetMember": 37,
+                  "end": "finish",
+                  "side": "-u",
+                  "dir": "u"
+                }
+              ]
+            }
+          }
+        ],
+        "transaction": [
+          {
+            "op": "create-binding",
+            "value": {
+              "id": 29,
+              "name": "固定來源配置",
+              "rule": {
+                "id": 17,
+                "version": 1
+              },
+              "slots": [
+                {
+                  "slotId": 7,
+                  "A": {
+                    "kind": "literal",
+                    "value": 27
+                  },
+                  "B": {
+                    "kind": "literal",
+                    "value": 33
+                  },
+                  "contactFace": "A",
+                  "orientation": "B"
+                },
+                {
+                  "slotId": 13,
+                  "A": null,
+                  "B": null,
+                  "contactFace": null,
+                  "orientation": null
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "sourcePins": [
+        {
+          "ref": {
+            "kind": "rule",
+            "id": 17,
+            "version": 1
+          },
+          "sha256": "b1d022f56fe3ab30670b539568d26dddf5c2d146533c77ae7f46abe3630910be"
+        }
+      ],
+      "requiredCapabilities": [
+        "assembly-rule-authoring/1"
+      ],
+      "expect": {
+        "outcome": "accepted",
+        "diagnostic": null
+      },
+      "assertions": [
+        {
+          "kind": "record_exists",
+          "ref": {
+            "kind": "binding",
+            "id": 29
+          }
+        },
+        {
+          "kind": "record_pin_unchanged",
+          "ref": {
+            "kind": "rule",
+            "id": 17,
+            "version": 1
+          }
+        },
+        {
+          "kind": "complete_flag",
+          "ref": {
+            "kind": "binding",
+            "id": 29
+          },
+          "value": false
+        },
+        {
+          "kind": "exact_typed_ref",
+          "ref": {
+            "kind": "binding",
+            "id": 29
+          },
+          "slotId": 13,
+          "axis": "A",
+          "value": null
+        },
+        {
+          "kind": "exact_typed_ref",
+          "ref": {
+            "kind": "binding",
+            "id": 29
+          },
+          "slotId": 13,
+          "axis": "B",
+          "value": null
+        }
+      ]
+    },
+    {
+      "schema": "rule-case/1",
+      "caseId": "fixed-version-immutable",
+      "label": "改名重排不改固定版本與既有配置",
+      "input": {
+        "setup": [
+          {
+            "op": "publish-rule",
+            "value": {
+              "id": 17,
+              "version": 1,
+              "name": "有限主副支接合",
+              "slots": [
+                {
+                  "id": 7,
+                  "name": "主支"
+                },
+                {
+                  "id": 13,
+                  "name": "副支"
+                }
+              ],
+              "members": [
+                {
+                  "id": 11,
+                  "slotId": 7
+                },
+                {
+                  "id": 37,
+                  "slotId": 7
+                },
+                {
+                  "id": 89,
+                  "slotId": 13
+                }
+              ],
+              "joints": [
+                {
+                  "id": 101,
+                  "kind": "end-to-side",
+                  "scope": "left",
+                  "terminatedMember": 89,
+                  "targetMember": 11,
+                  "end": "start",
+                  "side": "+u",
+                  "dir": "u"
+                },
+                {
+                  "id": 203,
+                  "kind": "end-to-side",
+                  "scope": "right",
+                  "terminatedMember": 89,
+                  "targetMember": 37,
+                  "end": "finish",
+                  "side": "-u",
+                  "dir": "u"
+                }
+              ]
+            }
+          },
+          {
+            "op": "create-binding",
+            "value": {
+              "id": 29,
+              "name": "固定來源配置",
+              "rule": {
+                "id": 17,
+                "version": 1
+              },
+              "slots": [
+                {
+                  "slotId": 7,
+                  "A": {
+                    "kind": "literal",
+                    "value": 27
+                  },
+                  "B": {
+                    "kind": "literal",
+                    "value": 33
+                  },
+                  "contactFace": "A",
+                  "orientation": "B"
+                },
+                {
+                  "slotId": 13,
+                  "A": {
+                    "kind": "literal",
+                    "value": 27
+                  },
+                  "B": {
+                    "kind": "literal",
+                    "value": 33
+                  },
+                  "contactFace": "A",
+                  "orientation": "B"
+                }
+              ]
+            }
+          }
+        ],
+        "transaction": [
+          {
+            "op": "publish-rule",
+            "value": {
+              "id": 17,
+              "version": 1,
+              "name": "改名與重排不能覆寫固定版本",
+              "slots": [
+                {
+                  "id": 13,
+                  "name": "副支"
+                },
+                {
+                  "id": 7,
+                  "name": "主支"
+                }
+              ],
+              "members": [
+                {
+                  "id": 89,
+                  "slotId": 13
+                },
+                {
+                  "id": 37,
+                  "slotId": 7
+                },
+                {
+                  "id": 11,
+                  "slotId": 7
+                }
+              ],
+              "joints": [
+                {
+                  "id": 203,
+                  "kind": "end-to-side",
+                  "scope": "right",
+                  "terminatedMember": 89,
+                  "targetMember": 37,
+                  "end": "finish",
+                  "side": "-u",
+                  "dir": "u"
+                },
+                {
+                  "id": 101,
+                  "kind": "end-to-side",
+                  "scope": "left",
+                  "terminatedMember": 89,
+                  "targetMember": 11,
+                  "end": "start",
+                  "side": "+u",
+                  "dir": "u"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "sourcePins": [
+        {
+          "ref": {
+            "kind": "rule",
+            "id": 17,
+            "version": 1
+          },
+          "sha256": "b1d022f56fe3ab30670b539568d26dddf5c2d146533c77ae7f46abe3630910be"
+        },
+        {
+          "ref": {
+            "kind": "binding",
+            "id": 29
+          },
+          "sha256": "e47b34d70b40fec4148c4fc18f76a1e9a26cb210299f0d0062d2d47e4192c090"
+        }
+      ],
+      "requiredCapabilities": [
+        "assembly-rule-authoring/1"
+      ],
+      "expect": {
+        "outcome": "rejected",
+        "diagnostic": {
+          "code": "RULE_VERSION_IMMUTABLE",
+          "clause": "D32",
+          "ref": {
+            "kind": "rule",
+            "id": 17,
+            "version": 1
+          }
+        }
+      },
+      "assertions": [
+        {
+          "kind": "rejection_world_unchanged"
+        },
+        {
+          "kind": "record_pin_unchanged",
+          "ref": {
+            "kind": "rule",
+            "id": 17,
+            "version": 1
+          }
+        },
+        {
+          "kind": "record_pin_unchanged",
+          "ref": {
+            "kind": "binding",
+            "id": 29
+          }
+        },
+        {
+          "kind": "member_slot",
+          "ref": {
+            "kind": "rule",
+            "id": 17,
+            "version": 1
+          },
+          "memberId": 11,
+          "slotId": 7
+        },
+        {
+          "kind": "member_slot",
+          "ref": {
+            "kind": "rule",
+            "id": 17,
+            "version": 1
+          },
+          "memberId": 37,
+          "slotId": 7
+        },
+        {
+          "kind": "joint_tuple",
+          "ref": {
+            "kind": "rule",
+            "id": 17,
+            "version": 1
+          },
+          "jointId": 101,
+          "value": {
+            "id": 101,
+            "kind": "end-to-side",
+            "scope": "left",
+            "terminatedMember": 89,
+            "targetMember": 11,
+            "end": "start",
+            "side": "+u",
+            "dir": "u"
+          }
+        },
+        {
+          "kind": "joint_tuple",
+          "ref": {
+            "kind": "rule",
+            "id": 17,
+            "version": 1
+          },
+          "jointId": 203,
+          "value": {
+            "id": 203,
+            "kind": "end-to-side",
+            "scope": "right",
+            "terminatedMember": 89,
+            "targetMember": 37,
+            "end": "finish",
+            "side": "-u",
+            "dir": "u"
+          }
+        }
+      ]
+    }
+  ],
+  "receipts": [
+    {
+      "definition": {
+        "schema": "rule-case/1",
+        "caseId": "same-role-distinct-members",
+        "label": "同角色的不同構件分開引用",
+        "input": {
+          "setup": [],
+          "transaction": [
+            {
+              "op": "publish-rule",
+              "value": {
+                "id": 17,
+                "version": 1,
+                "name": "有限主副支接合",
+                "slots": [
+                  {
+                    "id": 7,
+                    "name": "主支"
+                  },
+                  {
+                    "id": 13,
+                    "name": "副支"
+                  }
+                ],
+                "members": [
+                  {
+                    "id": 11,
+                    "slotId": 7
+                  },
+                  {
+                    "id": 37,
+                    "slotId": 7
+                  },
+                  {
+                    "id": 89,
+                    "slotId": 13
+                  }
+                ],
+                "joints": [
+                  {
+                    "id": 101,
+                    "kind": "end-to-side",
+                    "scope": "left",
+                    "terminatedMember": 89,
+                    "targetMember": 11,
+                    "end": "start",
+                    "side": "+u",
+                    "dir": "u"
+                  },
+                  {
+                    "id": 203,
+                    "kind": "end-to-side",
+                    "scope": "right",
+                    "terminatedMember": 89,
+                    "targetMember": 37,
+                    "end": "finish",
+                    "side": "-u",
+                    "dir": "u"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "sourcePins": [],
+        "requiredCapabilities": [
+          "assembly-rule-authoring/1"
+        ],
+        "expect": {
+          "outcome": "accepted",
+          "diagnostic": null
+        },
+        "assertions": [
+          {
+            "kind": "record_exists",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            }
+          },
+          {
+            "kind": "member_slot",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            },
+            "memberId": 11,
+            "slotId": 7
+          },
+          {
+            "kind": "member_slot",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            },
+            "memberId": 37,
+            "slotId": 7
+          },
+          {
+            "kind": "member_slot",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            },
+            "memberId": 89,
+            "slotId": 13
+          },
+          {
+            "kind": "joint_tuple",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            },
+            "jointId": 101,
+            "value": {
+              "id": 101,
+              "kind": "end-to-side",
+              "scope": "left",
+              "terminatedMember": 89,
+              "targetMember": 11,
+              "end": "start",
+              "side": "+u",
+              "dir": "u"
+            }
+          },
+          {
+            "kind": "joint_tuple",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            },
+            "jointId": 203,
+            "value": {
+              "id": 203,
+              "kind": "end-to-side",
+              "scope": "right",
+              "terminatedMember": 89,
+              "targetMember": 37,
+              "end": "finish",
+              "side": "-u",
+              "dir": "u"
+            }
+          }
+        ]
+      },
+      "receipt": {
+        "caseId": "same-role-distinct-members",
+        "definitionHash": "275a5a5937e9502d15cf58d76f62ad05395acbdbd034150ae1e65b12f3782285",
+        "sourceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "executor": {
+          "known": true,
+          "nativeBinaryHash": "b76a6da590512722d6eda64cfc946392ccc2636f82ab187ef822c1e1606d68b5",
+          "nativeSourceHash": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+          "validatorVersion": "e0d783295b2900abc92fa37bbad1f8d9aaf075a7ab078b9f8a8538fa98706f38",
+          "axiomHash": "29ad0c657e53d364347862fddac23ba26a248a4fd8f83487d86f9e648bd1eaf2",
+          "assertionSchemaHash": "151cb13cb17add99d714d8d5b4480a7e6bc77dd54eb3122decea7c39040e8edd"
+        },
+        "context": {
+          "projectId": "2d9bb27f-6dfa-48a7-88e1-fe0db2d7def5",
+          "generation": 4
+        },
+        "status": "passed",
+        "authorExpected": {
+          "outcome": "accepted",
+          "diagnostic": null
+        },
+        "actualOutcome": "accepted",
+        "actualDiagnostics": [],
+        "assertionResults": [
+          {
+            "kind": "record_exists",
+            "passed": true,
+            "predicate": {
+              "kind": "record_exists",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 1
+              }
+            }
+          },
+          {
+            "kind": "member_slot",
+            "passed": true,
+            "predicate": {
+              "kind": "member_slot",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 1
+              },
+              "memberId": 11,
+              "slotId": 7
+            }
+          },
+          {
+            "kind": "member_slot",
+            "passed": true,
+            "predicate": {
+              "kind": "member_slot",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 1
+              },
+              "memberId": 37,
+              "slotId": 7
+            }
+          },
+          {
+            "kind": "member_slot",
+            "passed": true,
+            "predicate": {
+              "kind": "member_slot",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 1
+              },
+              "memberId": 89,
+              "slotId": 13
+            }
+          },
+          {
+            "kind": "joint_tuple",
+            "passed": true,
+            "predicate": {
+              "kind": "joint_tuple",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 1
+              },
+              "jointId": 101,
+              "value": {
+                "id": 101,
+                "kind": "end-to-side",
+                "scope": "left",
+                "terminatedMember": 89,
+                "targetMember": 11,
+                "end": "start",
+                "side": "+u",
+                "dir": "u"
+              }
+            }
+          },
+          {
+            "kind": "joint_tuple",
+            "passed": true,
+            "predicate": {
+              "kind": "joint_tuple",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 1
+              },
+              "jointId": 203,
+              "value": {
+                "id": 203,
+                "kind": "end-to-side",
+                "scope": "right",
+                "terminatedMember": 89,
+                "targetMember": 37,
+                "end": "finish",
+                "side": "-u",
+                "dir": "u"
+              }
+            }
+          }
+        ],
+        "conditions": {
+          "timeoutSeconds": 5,
+          "maxOutputBytes": 2097152,
+          "isolated": true,
+          "nativePid": 206986,
+          "privateDirectoryRemoved": true,
+          "capabilities": [
+            "engineering-spec/1",
+            "parameters/1",
+            "assembly-rule-authoring/1",
+            "assembly-timber-generation/1",
+            "grid-subdivision-rules/1",
+            "section-profile/1"
+          ],
+          "elapsedSeconds": 0.062305
+        },
+        "observations": {
+          "before": {
+            "capabilities": [
+              "assembly-rule-authoring/1",
+              "assembly-timber-generation/1"
+            ],
+            "rules": [],
+            "bindings": [],
+            "instances": []
+          },
+          "after": {
+            "capabilities": [
+              "assembly-rule-authoring/1",
+              "assembly-timber-generation/1"
+            ],
+            "rules": [
+              {
+                "value": {
+                  "id": 17,
+                  "joints": [
+                    {
+                      "dir": "u",
+                      "end": "start",
+                      "id": 101,
+                      "kind": "end-to-side",
+                      "scope": "left",
+                      "side": "+u",
+                      "targetMember": 11,
+                      "terminatedMember": 89
+                    },
+                    {
+                      "dir": "u",
+                      "end": "finish",
+                      "id": 203,
+                      "kind": "end-to-side",
+                      "scope": "right",
+                      "side": "-u",
+                      "targetMember": 37,
+                      "terminatedMember": 89
+                    }
+                  ],
+                  "members": [
+                    {
+                      "id": 11,
+                      "slotId": 7
+                    },
+                    {
+                      "id": 37,
+                      "slotId": 7
+                    },
+                    {
+                      "id": 89,
+                      "slotId": 13
+                    }
+                  ],
+                  "name": "有限主副支接合",
+                  "slots": [
+                    {
+                      "id": 7,
+                      "name": "主支"
+                    },
+                    {
+                      "id": 13,
+                      "name": "副支"
+                    }
+                  ],
+                  "version": 1
+                },
+                "fingerprint": "b1d022f56fe3ab30670b539568d26dddf5c2d146533c77ae7f46abe3630910be"
+              }
+            ],
+            "bindings": [],
+            "instances": []
+          },
+          "beforeRevision": 11,
+          "afterRevision": 12,
+          "beforeDumpHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "afterDumpHash": "707ecf42a361c71d01a8e7afc130f0aec32fea5884b28ea4653815db91150254"
+        }
+      }
+    },
+    {
+      "definition": {
+        "schema": "rule-case/1",
+        "caseId": "one-local-joint-new-version",
+        "label": "新版本只改一處接合",
+        "input": {
+          "setup": [
+            {
+              "op": "publish-rule",
+              "value": {
+                "id": 17,
+                "version": 1,
+                "name": "有限主副支接合",
+                "slots": [
+                  {
+                    "id": 7,
+                    "name": "主支"
+                  },
+                  {
+                    "id": 13,
+                    "name": "副支"
+                  }
+                ],
+                "members": [
+                  {
+                    "id": 11,
+                    "slotId": 7
+                  },
+                  {
+                    "id": 37,
+                    "slotId": 7
+                  },
+                  {
+                    "id": 89,
+                    "slotId": 13
+                  }
+                ],
+                "joints": [
+                  {
+                    "id": 101,
+                    "kind": "end-to-side",
+                    "scope": "left",
+                    "terminatedMember": 89,
+                    "targetMember": 11,
+                    "end": "start",
+                    "side": "+u",
+                    "dir": "u"
+                  },
+                  {
+                    "id": 203,
+                    "kind": "end-to-side",
+                    "scope": "right",
+                    "terminatedMember": 89,
+                    "targetMember": 37,
+                    "end": "finish",
+                    "side": "-u",
+                    "dir": "u"
+                  }
+                ]
+              }
+            },
+            {
+              "op": "create-binding",
+              "value": {
+                "id": 29,
+                "name": "固定來源配置",
+                "rule": {
+                  "id": 17,
+                  "version": 1
+                },
+                "slots": [
+                  {
+                    "slotId": 7,
+                    "A": {
+                      "kind": "literal",
+                      "value": 27
+                    },
+                    "B": {
+                      "kind": "literal",
+                      "value": 33
+                    },
+                    "contactFace": "A",
+                    "orientation": "B"
+                  },
+                  {
+                    "slotId": 13,
+                    "A": {
+                      "kind": "literal",
+                      "value": 27
+                    },
+                    "B": {
+                      "kind": "literal",
+                      "value": 33
+                    },
+                    "contactFace": "A",
+                    "orientation": "B"
+                  }
+                ]
+              }
+            }
+          ],
+          "transaction": [
+            {
+              "op": "publish-rule",
+              "value": {
+                "id": 17,
+                "version": 2,
+                "name": "有限主副支接合",
+                "slots": [
+                  {
+                    "id": 7,
+                    "name": "主支"
+                  },
+                  {
+                    "id": 13,
+                    "name": "副支"
+                  }
+                ],
+                "members": [
+                  {
+                    "id": 11,
+                    "slotId": 7
+                  },
+                  {
+                    "id": 37,
+                    "slotId": 7
+                  },
+                  {
+                    "id": 89,
+                    "slotId": 13
+                  }
+                ],
+                "joints": [
+                  {
+                    "id": 101,
+                    "kind": "end-to-side",
+                    "scope": "left",
+                    "terminatedMember": 89,
+                    "targetMember": 11,
+                    "end": "start",
+                    "side": "-u",
+                    "dir": "u"
+                  },
+                  {
+                    "id": 203,
+                    "kind": "end-to-side",
+                    "scope": "right",
+                    "terminatedMember": 89,
+                    "targetMember": 37,
+                    "end": "finish",
+                    "side": "-u",
+                    "dir": "u"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "sourcePins": [
+          {
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            },
+            "sha256": "b1d022f56fe3ab30670b539568d26dddf5c2d146533c77ae7f46abe3630910be"
+          },
+          {
+            "ref": {
+              "kind": "binding",
+              "id": 29
+            },
+            "sha256": "e47b34d70b40fec4148c4fc18f76a1e9a26cb210299f0d0062d2d47e4192c090"
+          }
+        ],
+        "requiredCapabilities": [
+          "assembly-rule-authoring/1"
+        ],
+        "expect": {
+          "outcome": "accepted",
+          "diagnostic": null
+        },
+        "assertions": [
+          {
+            "kind": "record_exists",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 2
+            }
+          },
+          {
+            "kind": "record_pin_unchanged",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            }
+          },
+          {
+            "kind": "record_pin_unchanged",
+            "ref": {
+              "kind": "binding",
+              "id": 29
+            }
+          },
+          {
+            "kind": "member_slot",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 2
+            },
+            "memberId": 11,
+            "slotId": 7
+          },
+          {
+            "kind": "member_slot",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 2
+            },
+            "memberId": 37,
+            "slotId": 7
+          },
+          {
+            "kind": "member_slot",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 2
+            },
+            "memberId": 89,
+            "slotId": 13
+          },
+          {
+            "kind": "joint_tuple",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 2
+            },
+            "jointId": 101,
+            "value": {
+              "id": 101,
+              "kind": "end-to-side",
+              "scope": "left",
+              "terminatedMember": 89,
+              "targetMember": 11,
+              "end": "start",
+              "side": "-u",
+              "dir": "u"
+            }
+          },
+          {
+            "kind": "joint_tuple_equal",
+            "before": {
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 1
+              },
+              "jointId": 203
+            },
+            "after": {
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 2
+              },
+              "jointId": 203
+            }
+          },
+          {
+            "kind": "joint_tuple",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 2
+            },
+            "jointId": 203,
+            "value": {
+              "id": 203,
+              "kind": "end-to-side",
+              "scope": "right",
+              "terminatedMember": 89,
+              "targetMember": 37,
+              "end": "finish",
+              "side": "-u",
+              "dir": "u"
+            }
+          }
+        ]
+      },
+      "receipt": {
+        "caseId": "one-local-joint-new-version",
+        "definitionHash": "393249b8247482ba8a186c7056e09ba73bd1a39aa1c4c9fc8a6d83f9d072f897",
+        "sourceHash": "0918bc349b11c37ef1f4e78cff5cef1dc9083d7e1d467032fcde67b7ea970d90",
+        "executor": {
+          "known": true,
+          "nativeBinaryHash": "b76a6da590512722d6eda64cfc946392ccc2636f82ab187ef822c1e1606d68b5",
+          "nativeSourceHash": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+          "validatorVersion": "e0d783295b2900abc92fa37bbad1f8d9aaf075a7ab078b9f8a8538fa98706f38",
+          "axiomHash": "29ad0c657e53d364347862fddac23ba26a248a4fd8f83487d86f9e648bd1eaf2",
+          "assertionSchemaHash": "151cb13cb17add99d714d8d5b4480a7e6bc77dd54eb3122decea7c39040e8edd"
+        },
+        "context": {
+          "projectId": "2d9bb27f-6dfa-48a7-88e1-fe0db2d7def5",
+          "generation": 4
+        },
+        "status": "passed",
+        "authorExpected": {
+          "outcome": "accepted",
+          "diagnostic": null
+        },
+        "actualOutcome": "accepted",
+        "actualDiagnostics": [],
+        "assertionResults": [
+          {
+            "kind": "record_exists",
+            "passed": true,
+            "predicate": {
+              "kind": "record_exists",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 2
+              }
+            }
+          },
+          {
+            "kind": "record_pin_unchanged",
+            "passed": true,
+            "predicate": {
+              "kind": "record_pin_unchanged",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 1
+              }
+            }
+          },
+          {
+            "kind": "record_pin_unchanged",
+            "passed": true,
+            "predicate": {
+              "kind": "record_pin_unchanged",
+              "ref": {
+                "kind": "binding",
+                "id": 29
+              }
+            }
+          },
+          {
+            "kind": "member_slot",
+            "passed": true,
+            "predicate": {
+              "kind": "member_slot",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 2
+              },
+              "memberId": 11,
+              "slotId": 7
+            }
+          },
+          {
+            "kind": "member_slot",
+            "passed": true,
+            "predicate": {
+              "kind": "member_slot",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 2
+              },
+              "memberId": 37,
+              "slotId": 7
+            }
+          },
+          {
+            "kind": "member_slot",
+            "passed": true,
+            "predicate": {
+              "kind": "member_slot",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 2
+              },
+              "memberId": 89,
+              "slotId": 13
+            }
+          },
+          {
+            "kind": "joint_tuple",
+            "passed": true,
+            "predicate": {
+              "kind": "joint_tuple",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 2
+              },
+              "jointId": 101,
+              "value": {
+                "id": 101,
+                "kind": "end-to-side",
+                "scope": "left",
+                "terminatedMember": 89,
+                "targetMember": 11,
+                "end": "start",
+                "side": "-u",
+                "dir": "u"
+              }
+            }
+          },
+          {
+            "kind": "joint_tuple_equal",
+            "passed": true,
+            "predicate": {
+              "kind": "joint_tuple_equal",
+              "before": {
+                "ref": {
+                  "kind": "rule",
+                  "id": 17,
+                  "version": 1
+                },
+                "jointId": 203
+              },
+              "after": {
+                "ref": {
+                  "kind": "rule",
+                  "id": 17,
+                  "version": 2
+                },
+                "jointId": 203
+              }
+            }
+          },
+          {
+            "kind": "joint_tuple",
+            "passed": true,
+            "predicate": {
+              "kind": "joint_tuple",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 2
+              },
+              "jointId": 203,
+              "value": {
+                "id": 203,
+                "kind": "end-to-side",
+                "scope": "right",
+                "terminatedMember": 89,
+                "targetMember": 37,
+                "end": "finish",
+                "side": "-u",
+                "dir": "u"
+              }
+            }
+          }
+        ],
+        "conditions": {
+          "timeoutSeconds": 5,
+          "maxOutputBytes": 2097152,
+          "isolated": true,
+          "nativePid": 206993,
+          "privateDirectoryRemoved": true,
+          "capabilities": [
+            "engineering-spec/1",
+            "parameters/1",
+            "assembly-rule-authoring/1",
+            "assembly-timber-generation/1",
+            "grid-subdivision-rules/1",
+            "section-profile/1"
+          ],
+          "elapsedSeconds": 0.082695
+        },
+        "observations": {
+          "before": {
+            "capabilities": [
+              "assembly-rule-authoring/1",
+              "assembly-timber-generation/1"
+            ],
+            "rules": [
+              {
+                "value": {
+                  "id": 17,
+                  "joints": [
+                    {
+                      "dir": "u",
+                      "end": "start",
+                      "id": 101,
+                      "kind": "end-to-side",
+                      "scope": "left",
+                      "side": "+u",
+                      "targetMember": 11,
+                      "terminatedMember": 89
+                    },
+                    {
+                      "dir": "u",
+                      "end": "finish",
+                      "id": 203,
+                      "kind": "end-to-side",
+                      "scope": "right",
+                      "side": "-u",
+                      "targetMember": 37,
+                      "terminatedMember": 89
+                    }
+                  ],
+                  "members": [
+                    {
+                      "id": 11,
+                      "slotId": 7
+                    },
+                    {
+                      "id": 37,
+                      "slotId": 7
+                    },
+                    {
+                      "id": 89,
+                      "slotId": 13
+                    }
+                  ],
+                  "name": "有限主副支接合",
+                  "slots": [
+                    {
+                      "id": 7,
+                      "name": "主支"
+                    },
+                    {
+                      "id": 13,
+                      "name": "副支"
+                    }
+                  ],
+                  "version": 1
+                },
+                "fingerprint": "b1d022f56fe3ab30670b539568d26dddf5c2d146533c77ae7f46abe3630910be"
+              }
+            ],
+            "bindings": [
+              {
+                "value": {
+                  "id": 29,
+                  "name": "固定來源配置",
+                  "rule": {
+                    "id": 17,
+                    "version": 1
+                  },
+                  "slots": [
+                    {
+                      "A": {
+                        "kind": "literal",
+                        "value": 27
+                      },
+                      "B": {
+                        "kind": "literal",
+                        "value": 33
+                      },
+                      "contactFace": "A",
+                      "orientation": "B",
+                      "slotId": 7
+                    },
+                    {
+                      "A": {
+                        "kind": "literal",
+                        "value": 27
+                      },
+                      "B": {
+                        "kind": "literal",
+                        "value": 33
+                      },
+                      "contactFace": "A",
+                      "orientation": "B",
+                      "slotId": 13
+                    }
+                  ]
+                },
+                "fingerprint": "e47b34d70b40fec4148c4fc18f76a1e9a26cb210299f0d0062d2d47e4192c090",
+                "complete": true,
+                "effective": [
+                  {
+                    "slotId": 7,
+                    "A": {
+                      "value": 27,
+                      "path": "explicit integer mm"
+                    },
+                    "B": {
+                      "value": 33,
+                      "path": "explicit integer mm"
+                    }
+                  },
+                  {
+                    "slotId": 13,
+                    "A": {
+                      "value": 27,
+                      "path": "explicit integer mm"
+                    },
+                    "B": {
+                      "value": 33,
+                      "path": "explicit integer mm"
+                    }
+                  }
+                ]
+              }
+            ],
+            "instances": []
+          },
+          "after": {
+            "capabilities": [
+              "assembly-rule-authoring/1",
+              "assembly-timber-generation/1"
+            ],
+            "rules": [
+              {
+                "value": {
+                  "id": 17,
+                  "joints": [
+                    {
+                      "dir": "u",
+                      "end": "start",
+                      "id": 101,
+                      "kind": "end-to-side",
+                      "scope": "left",
+                      "side": "+u",
+                      "targetMember": 11,
+                      "terminatedMember": 89
+                    },
+                    {
+                      "dir": "u",
+                      "end": "finish",
+                      "id": 203,
+                      "kind": "end-to-side",
+                      "scope": "right",
+                      "side": "-u",
+                      "targetMember": 37,
+                      "terminatedMember": 89
+                    }
+                  ],
+                  "members": [
+                    {
+                      "id": 11,
+                      "slotId": 7
+                    },
+                    {
+                      "id": 37,
+                      "slotId": 7
+                    },
+                    {
+                      "id": 89,
+                      "slotId": 13
+                    }
+                  ],
+                  "name": "有限主副支接合",
+                  "slots": [
+                    {
+                      "id": 7,
+                      "name": "主支"
+                    },
+                    {
+                      "id": 13,
+                      "name": "副支"
+                    }
+                  ],
+                  "version": 1
+                },
+                "fingerprint": "b1d022f56fe3ab30670b539568d26dddf5c2d146533c77ae7f46abe3630910be"
+              },
+              {
+                "value": {
+                  "id": 17,
+                  "joints": [
+                    {
+                      "dir": "u",
+                      "end": "start",
+                      "id": 101,
+                      "kind": "end-to-side",
+                      "scope": "left",
+                      "side": "-u",
+                      "targetMember": 11,
+                      "terminatedMember": 89
+                    },
+                    {
+                      "dir": "u",
+                      "end": "finish",
+                      "id": 203,
+                      "kind": "end-to-side",
+                      "scope": "right",
+                      "side": "-u",
+                      "targetMember": 37,
+                      "terminatedMember": 89
+                    }
+                  ],
+                  "members": [
+                    {
+                      "id": 11,
+                      "slotId": 7
+                    },
+                    {
+                      "id": 37,
+                      "slotId": 7
+                    },
+                    {
+                      "id": 89,
+                      "slotId": 13
+                    }
+                  ],
+                  "name": "有限主副支接合",
+                  "slots": [
+                    {
+                      "id": 7,
+                      "name": "主支"
+                    },
+                    {
+                      "id": 13,
+                      "name": "副支"
+                    }
+                  ],
+                  "version": 2
+                },
+                "fingerprint": "76eae4a33f33bff55439fdc6094e742af80122a5d726e540246616f0351c748b"
+              }
+            ],
+            "bindings": [
+              {
+                "value": {
+                  "id": 29,
+                  "name": "固定來源配置",
+                  "rule": {
+                    "id": 17,
+                    "version": 1
+                  },
+                  "slots": [
+                    {
+                      "A": {
+                        "kind": "literal",
+                        "value": 27
+                      },
+                      "B": {
+                        "kind": "literal",
+                        "value": 33
+                      },
+                      "contactFace": "A",
+                      "orientation": "B",
+                      "slotId": 7
+                    },
+                    {
+                      "A": {
+                        "kind": "literal",
+                        "value": 27
+                      },
+                      "B": {
+                        "kind": "literal",
+                        "value": 33
+                      },
+                      "contactFace": "A",
+                      "orientation": "B",
+                      "slotId": 13
+                    }
+                  ]
+                },
+                "fingerprint": "e47b34d70b40fec4148c4fc18f76a1e9a26cb210299f0d0062d2d47e4192c090",
+                "complete": true,
+                "effective": [
+                  {
+                    "slotId": 7,
+                    "A": {
+                      "value": 27,
+                      "path": "explicit integer mm"
+                    },
+                    "B": {
+                      "value": 33,
+                      "path": "explicit integer mm"
+                    }
+                  },
+                  {
+                    "slotId": 13,
+                    "A": {
+                      "value": 27,
+                      "path": "explicit integer mm"
+                    },
+                    "B": {
+                      "value": 33,
+                      "path": "explicit integer mm"
+                    }
+                  }
+                ]
+              }
+            ],
+            "instances": []
+          },
+          "beforeRevision": 12,
+          "afterRevision": 13,
+          "beforeDumpHash": "cec99d772dae0f83ba4307e9886a5e048d83b054ffacfa1852d576c39dc241e3",
+          "afterDumpHash": "1c3552df4c9fed64c156ca7a53e080e84d32febc7d7d5f6f5d8eb3eda2fcfa70"
+        }
+      }
+    },
+    {
+      "definition": {
+        "schema": "rule-case/1",
+        "caseId": "wrong-type-dimension-reference",
+        "label": "尺寸引用拒絕計數型別",
+        "input": {
+          "setup": [
+            {
+              "op": "publish-rule",
+              "value": {
+                "id": 17,
+                "version": 1,
+                "name": "有限主副支接合",
+                "slots": [
+                  {
+                    "id": 7,
+                    "name": "主支"
+                  },
+                  {
+                    "id": 13,
+                    "name": "副支"
+                  }
+                ],
+                "members": [
+                  {
+                    "id": 11,
+                    "slotId": 7
+                  },
+                  {
+                    "id": 37,
+                    "slotId": 7
+                  },
+                  {
+                    "id": 89,
+                    "slotId": 13
+                  }
+                ],
+                "joints": [
+                  {
+                    "id": 101,
+                    "kind": "end-to-side",
+                    "scope": "left",
+                    "terminatedMember": 89,
+                    "targetMember": 11,
+                    "end": "start",
+                    "side": "+u",
+                    "dir": "u"
+                  },
+                  {
+                    "id": 203,
+                    "kind": "end-to-side",
+                    "scope": "right",
+                    "terminatedMember": 89,
+                    "targetMember": 37,
+                    "end": "finish",
+                    "side": "-u",
+                    "dir": "u"
+                  }
+                ]
+              }
+            },
+            {
+              "op": "put-parameter",
+              "value": {
+                "id": 41,
+                "name": "接合案例尺寸",
+                "fields": [
+                  {
+                    "id": 9,
+                    "name": "截面A",
+                    "type": "dimension",
+                    "input": "27"
+                  }
+                ]
+              }
+            },
+            {
+              "op": "create-binding",
+              "value": {
+                "id": 29,
+                "name": "固定來源配置",
+                "rule": {
+                  "id": 17,
+                  "version": 1
+                },
+                "slots": [
+                  {
+                    "slotId": 7,
+                    "A": {
+                      "kind": "parameter",
+                      "parameterId": 41,
+                      "fieldId": 9
+                    },
+                    "B": {
+                      "kind": "literal",
+                      "value": 33
+                    },
+                    "contactFace": "A",
+                    "orientation": "B"
+                  },
+                  {
+                    "slotId": 13,
+                    "A": {
+                      "kind": "literal",
+                      "value": 27
+                    },
+                    "B": {
+                      "kind": "literal",
+                      "value": 33
+                    },
+                    "contactFace": "A",
+                    "orientation": "B"
+                  }
+                ]
+              }
+            }
+          ],
+          "transaction": [
+            {
+              "op": "put-parameter",
+              "value": {
+                "id": 41,
+                "name": "接合案例尺寸",
+                "fields": [
+                  {
+                    "id": 9,
+                    "name": "截面A",
+                    "type": "count",
+                    "input": "27"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "sourcePins": [
+          {
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            },
+            "sha256": "b1d022f56fe3ab30670b539568d26dddf5c2d146533c77ae7f46abe3630910be"
+          },
+          {
+            "ref": {
+              "kind": "parameter",
+              "id": 41
+            },
+            "sha256": "74e4b8686efab02e54ed6f8a3e648a89bd7f1ac11b6957866f512c64e9c5b50e"
+          },
+          {
+            "ref": {
+              "kind": "binding",
+              "id": 29
+            },
+            "sha256": "6458d35209b429047ad2e2bdfc443b958a53ae8815f2981c6fa3c4ec17e10773"
+          }
+        ],
+        "requiredCapabilities": [
+          "assembly-rule-authoring/1",
+          "parameters/1",
+          "engineering-spec/1"
+        ],
+        "expect": {
+          "outcome": "rejected",
+          "diagnostic": {
+            "code": "DIMENSION_TYPE",
+            "clause": "D33",
+            "ref": {
+              "kind": "parameter",
+              "id": 41,
+              "fieldId": 9
+            }
+          }
+        },
+        "assertions": [
+          {
+            "kind": "rejection_world_unchanged"
+          },
+          {
+            "kind": "record_pin_unchanged",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            }
+          },
+          {
+            "kind": "record_pin_unchanged",
+            "ref": {
+              "kind": "binding",
+              "id": 29
+            }
+          },
+          {
+            "kind": "exact_typed_ref",
+            "ref": {
+              "kind": "binding",
+              "id": 29
+            },
+            "slotId": 7,
+            "axis": "A",
+            "value": {
+              "kind": "parameter",
+              "parameterId": 41,
+              "fieldId": 9
+            }
+          }
+        ]
+      },
+      "receipt": {
+        "caseId": "wrong-type-dimension-reference",
+        "definitionHash": "06897fb4d345ca16d0b2421b9984748024514a7e6a777a64ff6c8af25a7744c3",
+        "sourceHash": "ef899c90655fb1ab30956ea4d4f1d30cd50520b94e778227c00d0da2f7ca72ec",
+        "executor": {
+          "known": true,
+          "nativeBinaryHash": "b76a6da590512722d6eda64cfc946392ccc2636f82ab187ef822c1e1606d68b5",
+          "nativeSourceHash": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+          "validatorVersion": "e0d783295b2900abc92fa37bbad1f8d9aaf075a7ab078b9f8a8538fa98706f38",
+          "axiomHash": "29ad0c657e53d364347862fddac23ba26a248a4fd8f83487d86f9e648bd1eaf2",
+          "assertionSchemaHash": "151cb13cb17add99d714d8d5b4480a7e6bc77dd54eb3122decea7c39040e8edd"
+        },
+        "context": {
+          "projectId": "2d9bb27f-6dfa-48a7-88e1-fe0db2d7def5",
+          "generation": 4
+        },
+        "status": "passed",
+        "authorExpected": {
+          "outcome": "rejected",
+          "diagnostic": {
+            "code": "DIMENSION_TYPE",
+            "clause": "D33",
+            "ref": {
+              "kind": "parameter",
+              "id": 41,
+              "fieldId": 9
+            }
+          }
+        },
+        "actualOutcome": "rejected",
+        "actualDiagnostics": [
+          {
+            "code": "DIMENSION_TYPE",
+            "clause": "D33",
+            "ref": {
+              "kind": "parameter",
+              "id": 41,
+              "fieldId": 9
+            },
+            "message": "I40: binding 29 slot 7.A: I38 UNIT: parameter 41 field 9 is not a dimension"
+          },
+          {
+            "timber": 0,
+            "clause": "I8",
+            "expected": "all world invariants pass",
+            "message": "candidate rejected"
+          }
+        ],
+        "assertionResults": [
+          {
+            "kind": "rejection_world_unchanged",
+            "passed": true,
+            "predicate": {
+              "kind": "rejection_world_unchanged"
+            }
+          },
+          {
+            "kind": "record_pin_unchanged",
+            "passed": true,
+            "predicate": {
+              "kind": "record_pin_unchanged",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 1
+              }
+            }
+          },
+          {
+            "kind": "record_pin_unchanged",
+            "passed": true,
+            "predicate": {
+              "kind": "record_pin_unchanged",
+              "ref": {
+                "kind": "binding",
+                "id": 29
+              }
+            }
+          },
+          {
+            "kind": "exact_typed_ref",
+            "passed": true,
+            "predicate": {
+              "kind": "exact_typed_ref",
+              "ref": {
+                "kind": "binding",
+                "id": 29
+              },
+              "slotId": 7,
+              "axis": "A",
+              "value": {
+                "kind": "parameter",
+                "parameterId": 41,
+                "fieldId": 9
+              }
+            }
+          }
+        ],
+        "conditions": {
+          "timeoutSeconds": 5,
+          "maxOutputBytes": 2097152,
+          "isolated": true,
+          "nativePid": 207005,
+          "privateDirectoryRemoved": true,
+          "capabilities": [
+            "engineering-spec/1",
+            "parameters/1",
+            "assembly-rule-authoring/1",
+            "assembly-timber-generation/1",
+            "grid-subdivision-rules/1",
+            "section-profile/1"
+          ],
+          "elapsedSeconds": 0.068954
+        },
+        "observations": {
+          "before": {
+            "capabilities": [
+              "assembly-rule-authoring/1",
+              "assembly-timber-generation/1"
+            ],
+            "rules": [
+              {
+                "value": {
+                  "id": 17,
+                  "joints": [
+                    {
+                      "dir": "u",
+                      "end": "start",
+                      "id": 101,
+                      "kind": "end-to-side",
+                      "scope": "left",
+                      "side": "+u",
+                      "targetMember": 11,
+                      "terminatedMember": 89
+                    },
+                    {
+                      "dir": "u",
+                      "end": "finish",
+                      "id": 203,
+                      "kind": "end-to-side",
+                      "scope": "right",
+                      "side": "-u",
+                      "targetMember": 37,
+                      "terminatedMember": 89
+                    }
+                  ],
+                  "members": [
+                    {
+                      "id": 11,
+                      "slotId": 7
+                    },
+                    {
+                      "id": 37,
+                      "slotId": 7
+                    },
+                    {
+                      "id": 89,
+                      "slotId": 13
+                    }
+                  ],
+                  "name": "有限主副支接合",
+                  "slots": [
+                    {
+                      "id": 7,
+                      "name": "主支"
+                    },
+                    {
+                      "id": 13,
+                      "name": "副支"
+                    }
+                  ],
+                  "version": 1
+                },
+                "fingerprint": "b1d022f56fe3ab30670b539568d26dddf5c2d146533c77ae7f46abe3630910be"
+              }
+            ],
+            "bindings": [
+              {
+                "value": {
+                  "id": 29,
+                  "name": "固定來源配置",
+                  "rule": {
+                    "id": 17,
+                    "version": 1
+                  },
+                  "slots": [
+                    {
+                      "A": {
+                        "fieldId": 9,
+                        "kind": "parameter",
+                        "parameterId": 41
+                      },
+                      "B": {
+                        "kind": "literal",
+                        "value": 33
+                      },
+                      "contactFace": "A",
+                      "orientation": "B",
+                      "slotId": 7
+                    },
+                    {
+                      "A": {
+                        "kind": "literal",
+                        "value": 27
+                      },
+                      "B": {
+                        "kind": "literal",
+                        "value": 33
+                      },
+                      "contactFace": "A",
+                      "orientation": "B",
+                      "slotId": 13
+                    }
+                  ]
+                },
+                "fingerprint": "6458d35209b429047ad2e2bdfc443b958a53ae8815f2981c6fa3c4ec17e10773",
+                "complete": true,
+                "effective": [
+                  {
+                    "slotId": 7,
+                    "A": {
+                      "value": 27,
+                      "path": "param:41:9"
+                    },
+                    "B": {
+                      "value": 33,
+                      "path": "explicit integer mm"
+                    }
+                  },
+                  {
+                    "slotId": 13,
+                    "A": {
+                      "value": 27,
+                      "path": "explicit integer mm"
+                    },
+                    "B": {
+                      "value": 33,
+                      "path": "explicit integer mm"
+                    }
+                  }
+                ]
+              }
+            ],
+            "instances": []
+          },
+          "after": {
+            "capabilities": [
+              "assembly-rule-authoring/1",
+              "assembly-timber-generation/1"
+            ],
+            "rules": [
+              {
+                "value": {
+                  "id": 17,
+                  "joints": [
+                    {
+                      "dir": "u",
+                      "end": "start",
+                      "id": 101,
+                      "kind": "end-to-side",
+                      "scope": "left",
+                      "side": "+u",
+                      "targetMember": 11,
+                      "terminatedMember": 89
+                    },
+                    {
+                      "dir": "u",
+                      "end": "finish",
+                      "id": 203,
+                      "kind": "end-to-side",
+                      "scope": "right",
+                      "side": "-u",
+                      "targetMember": 37,
+                      "terminatedMember": 89
+                    }
+                  ],
+                  "members": [
+                    {
+                      "id": 11,
+                      "slotId": 7
+                    },
+                    {
+                      "id": 37,
+                      "slotId": 7
+                    },
+                    {
+                      "id": 89,
+                      "slotId": 13
+                    }
+                  ],
+                  "name": "有限主副支接合",
+                  "slots": [
+                    {
+                      "id": 7,
+                      "name": "主支"
+                    },
+                    {
+                      "id": 13,
+                      "name": "副支"
+                    }
+                  ],
+                  "version": 1
+                },
+                "fingerprint": "b1d022f56fe3ab30670b539568d26dddf5c2d146533c77ae7f46abe3630910be"
+              }
+            ],
+            "bindings": [
+              {
+                "value": {
+                  "id": 29,
+                  "name": "固定來源配置",
+                  "rule": {
+                    "id": 17,
+                    "version": 1
+                  },
+                  "slots": [
+                    {
+                      "A": {
+                        "fieldId": 9,
+                        "kind": "parameter",
+                        "parameterId": 41
+                      },
+                      "B": {
+                        "kind": "literal",
+                        "value": 33
+                      },
+                      "contactFace": "A",
+                      "orientation": "B",
+                      "slotId": 7
+                    },
+                    {
+                      "A": {
+                        "kind": "literal",
+                        "value": 27
+                      },
+                      "B": {
+                        "kind": "literal",
+                        "value": 33
+                      },
+                      "contactFace": "A",
+                      "orientation": "B",
+                      "slotId": 13
+                    }
+                  ]
+                },
+                "fingerprint": "6458d35209b429047ad2e2bdfc443b958a53ae8815f2981c6fa3c4ec17e10773",
+                "complete": true,
+                "effective": [
+                  {
+                    "slotId": 7,
+                    "A": {
+                      "value": 27,
+                      "path": "param:41:9"
+                    },
+                    "B": {
+                      "value": 33,
+                      "path": "explicit integer mm"
+                    }
+                  },
+                  {
+                    "slotId": 13,
+                    "A": {
+                      "value": 27,
+                      "path": "explicit integer mm"
+                    },
+                    "B": {
+                      "value": 33,
+                      "path": "explicit integer mm"
+                    }
+                  }
+                ]
+              }
+            ],
+            "instances": []
+          },
+          "beforeRevision": 12,
+          "afterRevision": 12,
+          "beforeDumpHash": "a20cde14aa61b8cc11fe397e1fdcf472810b86a7e02074d89b7bc14e5e2e33c7",
+          "afterDumpHash": "a20cde14aa61b8cc11fe397e1fdcf472810b86a7e02074d89b7bc14e5e2e33c7"
+        }
+      }
+    },
+    {
+      "definition": {
+        "schema": "rule-case/1",
+        "caseId": "legal-rule",
+        "label": "合法規則可獨立發布",
+        "input": {
+          "setup": [],
+          "transaction": [
+            {
+              "op": "publish-rule",
+              "value": {
+                "id": 17,
+                "version": 1,
+                "name": "有限主副支接合",
+                "slots": [
+                  {
+                    "id": 7,
+                    "name": "主支"
+                  },
+                  {
+                    "id": 13,
+                    "name": "副支"
+                  }
+                ],
+                "members": [
+                  {
+                    "id": 11,
+                    "slotId": 7
+                  },
+                  {
+                    "id": 89,
+                    "slotId": 13
+                  }
+                ],
+                "joints": [
+                  {
+                    "id": 101,
+                    "kind": "end-to-side",
+                    "scope": "left",
+                    "terminatedMember": 89,
+                    "targetMember": 11,
+                    "end": "start",
+                    "side": "+u",
+                    "dir": "u"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "sourcePins": [],
+        "requiredCapabilities": [
+          "assembly-rule-authoring/1"
+        ],
+        "expect": {
+          "outcome": "accepted",
+          "diagnostic": null
+        },
+        "assertions": [
+          {
+            "kind": "record_exists",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            }
+          },
+          {
+            "kind": "member_slot",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            },
+            "memberId": 11,
+            "slotId": 7
+          },
+          {
+            "kind": "member_slot",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            },
+            "memberId": 89,
+            "slotId": 13
+          },
+          {
+            "kind": "joint_tuple",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            },
+            "jointId": 101,
+            "value": {
+              "id": 101,
+              "kind": "end-to-side",
+              "scope": "left",
+              "terminatedMember": 89,
+              "targetMember": 11,
+              "end": "start",
+              "side": "+u",
+              "dir": "u"
+            }
+          }
+        ]
+      },
+      "receipt": {
+        "caseId": "legal-rule",
+        "definitionHash": "a9d58da47eb30c2e033419e76404c155de424c6274e89d7ad88f5093149a2c36",
+        "sourceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "executor": {
+          "known": true,
+          "nativeBinaryHash": "b76a6da590512722d6eda64cfc946392ccc2636f82ab187ef822c1e1606d68b5",
+          "nativeSourceHash": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+          "validatorVersion": "e0d783295b2900abc92fa37bbad1f8d9aaf075a7ab078b9f8a8538fa98706f38",
+          "axiomHash": "29ad0c657e53d364347862fddac23ba26a248a4fd8f83487d86f9e648bd1eaf2",
+          "assertionSchemaHash": "151cb13cb17add99d714d8d5b4480a7e6bc77dd54eb3122decea7c39040e8edd"
+        },
+        "context": {
+          "projectId": "2d9bb27f-6dfa-48a7-88e1-fe0db2d7def5",
+          "generation": 4
+        },
+        "status": "passed",
+        "authorExpected": {
+          "outcome": "accepted",
+          "diagnostic": null
+        },
+        "actualOutcome": "accepted",
+        "actualDiagnostics": [],
+        "assertionResults": [
+          {
+            "kind": "record_exists",
+            "passed": true,
+            "predicate": {
+              "kind": "record_exists",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 1
+              }
+            }
+          },
+          {
+            "kind": "member_slot",
+            "passed": true,
+            "predicate": {
+              "kind": "member_slot",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 1
+              },
+              "memberId": 11,
+              "slotId": 7
+            }
+          },
+          {
+            "kind": "member_slot",
+            "passed": true,
+            "predicate": {
+              "kind": "member_slot",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 1
+              },
+              "memberId": 89,
+              "slotId": 13
+            }
+          },
+          {
+            "kind": "joint_tuple",
+            "passed": true,
+            "predicate": {
+              "kind": "joint_tuple",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 1
+              },
+              "jointId": 101,
+              "value": {
+                "id": 101,
+                "kind": "end-to-side",
+                "scope": "left",
+                "terminatedMember": 89,
+                "targetMember": 11,
+                "end": "start",
+                "side": "+u",
+                "dir": "u"
+              }
+            }
+          }
+        ],
+        "conditions": {
+          "timeoutSeconds": 5,
+          "maxOutputBytes": 2097152,
+          "isolated": true,
+          "nativePid": 207019,
+          "privateDirectoryRemoved": true,
+          "capabilities": [
+            "engineering-spec/1",
+            "parameters/1",
+            "assembly-rule-authoring/1",
+            "assembly-timber-generation/1",
+            "grid-subdivision-rules/1",
+            "section-profile/1"
+          ],
+          "elapsedSeconds": 0.062985
+        },
+        "observations": {
+          "before": {
+            "capabilities": [
+              "assembly-rule-authoring/1",
+              "assembly-timber-generation/1"
+            ],
+            "rules": [],
+            "bindings": [],
+            "instances": []
+          },
+          "after": {
+            "capabilities": [
+              "assembly-rule-authoring/1",
+              "assembly-timber-generation/1"
+            ],
+            "rules": [
+              {
+                "value": {
+                  "id": 17,
+                  "joints": [
+                    {
+                      "dir": "u",
+                      "end": "start",
+                      "id": 101,
+                      "kind": "end-to-side",
+                      "scope": "left",
+                      "side": "+u",
+                      "targetMember": 11,
+                      "terminatedMember": 89
+                    }
+                  ],
+                  "members": [
+                    {
+                      "id": 11,
+                      "slotId": 7
+                    },
+                    {
+                      "id": 89,
+                      "slotId": 13
+                    }
+                  ],
+                  "name": "有限主副支接合",
+                  "slots": [
+                    {
+                      "id": 7,
+                      "name": "主支"
+                    },
+                    {
+                      "id": 13,
+                      "name": "副支"
+                    }
+                  ],
+                  "version": 1
+                },
+                "fingerprint": "6dc4c94c902b22e5cb6d6b5035f4820cfc8f5daebee49de76cecd80935216a48"
+              }
+            ],
+            "bindings": [],
+            "instances": []
+          },
+          "beforeRevision": 11,
+          "afterRevision": 12,
+          "beforeDumpHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "afterDumpHash": "718ba84da67b0afa5c81318760a340bd86dcab5c40c5c35e6ece81c53479126b"
+        }
+      }
+    },
+    {
+      "definition": {
+        "schema": "rule-case/1",
+        "caseId": "legal-incomplete-binding",
+        "label": "未選材料方向仍是合法未完成配置",
+        "input": {
+          "setup": [
+            {
+              "op": "publish-rule",
+              "value": {
+                "id": 17,
+                "version": 1,
+                "name": "有限主副支接合",
+                "slots": [
+                  {
+                    "id": 7,
+                    "name": "主支"
+                  },
+                  {
+                    "id": 13,
+                    "name": "副支"
+                  }
+                ],
+                "members": [
+                  {
+                    "id": 11,
+                    "slotId": 7
+                  },
+                  {
+                    "id": 37,
+                    "slotId": 7
+                  },
+                  {
+                    "id": 89,
+                    "slotId": 13
+                  }
+                ],
+                "joints": [
+                  {
+                    "id": 101,
+                    "kind": "end-to-side",
+                    "scope": "left",
+                    "terminatedMember": 89,
+                    "targetMember": 11,
+                    "end": "start",
+                    "side": "+u",
+                    "dir": "u"
+                  },
+                  {
+                    "id": 203,
+                    "kind": "end-to-side",
+                    "scope": "right",
+                    "terminatedMember": 89,
+                    "targetMember": 37,
+                    "end": "finish",
+                    "side": "-u",
+                    "dir": "u"
+                  }
+                ]
+              }
+            }
+          ],
+          "transaction": [
+            {
+              "op": "create-binding",
+              "value": {
+                "id": 29,
+                "name": "固定來源配置",
+                "rule": {
+                  "id": 17,
+                  "version": 1
+                },
+                "slots": [
+                  {
+                    "slotId": 7,
+                    "A": {
+                      "kind": "literal",
+                      "value": 27
+                    },
+                    "B": {
+                      "kind": "literal",
+                      "value": 33
+                    },
+                    "contactFace": "A",
+                    "orientation": "B"
+                  },
+                  {
+                    "slotId": 13,
+                    "A": null,
+                    "B": null,
+                    "contactFace": null,
+                    "orientation": null
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "sourcePins": [
+          {
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            },
+            "sha256": "b1d022f56fe3ab30670b539568d26dddf5c2d146533c77ae7f46abe3630910be"
+          }
+        ],
+        "requiredCapabilities": [
+          "assembly-rule-authoring/1"
+        ],
+        "expect": {
+          "outcome": "accepted",
+          "diagnostic": null
+        },
+        "assertions": [
+          {
+            "kind": "record_exists",
+            "ref": {
+              "kind": "binding",
+              "id": 29
+            }
+          },
+          {
+            "kind": "record_pin_unchanged",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            }
+          },
+          {
+            "kind": "complete_flag",
+            "ref": {
+              "kind": "binding",
+              "id": 29
+            },
+            "value": false
+          },
+          {
+            "kind": "exact_typed_ref",
+            "ref": {
+              "kind": "binding",
+              "id": 29
+            },
+            "slotId": 13,
+            "axis": "A",
+            "value": null
+          },
+          {
+            "kind": "exact_typed_ref",
+            "ref": {
+              "kind": "binding",
+              "id": 29
+            },
+            "slotId": 13,
+            "axis": "B",
+            "value": null
+          }
+        ]
+      },
+      "receipt": {
+        "caseId": "legal-incomplete-binding",
+        "definitionHash": "be906629ca38d519d6258981a00156b46caafb5b3b16c983cedee7e87229ece2",
+        "sourceHash": "01e3a7f4426148325b8ff199f5224c7e9fda2629aa5b82a644a8c5716ed742d2",
+        "executor": {
+          "known": true,
+          "nativeBinaryHash": "b76a6da590512722d6eda64cfc946392ccc2636f82ab187ef822c1e1606d68b5",
+          "nativeSourceHash": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+          "validatorVersion": "e0d783295b2900abc92fa37bbad1f8d9aaf075a7ab078b9f8a8538fa98706f38",
+          "axiomHash": "29ad0c657e53d364347862fddac23ba26a248a4fd8f83487d86f9e648bd1eaf2",
+          "assertionSchemaHash": "151cb13cb17add99d714d8d5b4480a7e6bc77dd54eb3122decea7c39040e8edd"
+        },
+        "context": {
+          "projectId": "2d9bb27f-6dfa-48a7-88e1-fe0db2d7def5",
+          "generation": 4
+        },
+        "status": "passed",
+        "authorExpected": {
+          "outcome": "accepted",
+          "diagnostic": null
+        },
+        "actualOutcome": "accepted",
+        "actualDiagnostics": [],
+        "assertionResults": [
+          {
+            "kind": "record_exists",
+            "passed": true,
+            "predicate": {
+              "kind": "record_exists",
+              "ref": {
+                "kind": "binding",
+                "id": 29
+              }
+            }
+          },
+          {
+            "kind": "record_pin_unchanged",
+            "passed": true,
+            "predicate": {
+              "kind": "record_pin_unchanged",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 1
+              }
+            }
+          },
+          {
+            "kind": "complete_flag",
+            "passed": true,
+            "predicate": {
+              "kind": "complete_flag",
+              "ref": {
+                "kind": "binding",
+                "id": 29
+              },
+              "value": false
+            }
+          },
+          {
+            "kind": "exact_typed_ref",
+            "passed": true,
+            "predicate": {
+              "kind": "exact_typed_ref",
+              "ref": {
+                "kind": "binding",
+                "id": 29
+              },
+              "slotId": 13,
+              "axis": "A",
+              "value": null
+            }
+          },
+          {
+            "kind": "exact_typed_ref",
+            "passed": true,
+            "predicate": {
+              "kind": "exact_typed_ref",
+              "ref": {
+                "kind": "binding",
+                "id": 29
+              },
+              "slotId": 13,
+              "axis": "B",
+              "value": null
+            }
+          }
+        ],
+        "conditions": {
+          "timeoutSeconds": 5,
+          "maxOutputBytes": 2097152,
+          "isolated": true,
+          "nativePid": 207026,
+          "privateDirectoryRemoved": true,
+          "capabilities": [
+            "engineering-spec/1",
+            "parameters/1",
+            "assembly-rule-authoring/1",
+            "assembly-timber-generation/1",
+            "grid-subdivision-rules/1",
+            "section-profile/1"
+          ],
+          "elapsedSeconds": 0.073495
+        },
+        "observations": {
+          "before": {
+            "capabilities": [
+              "assembly-rule-authoring/1",
+              "assembly-timber-generation/1"
+            ],
+            "rules": [
+              {
+                "value": {
+                  "id": 17,
+                  "joints": [
+                    {
+                      "dir": "u",
+                      "end": "start",
+                      "id": 101,
+                      "kind": "end-to-side",
+                      "scope": "left",
+                      "side": "+u",
+                      "targetMember": 11,
+                      "terminatedMember": 89
+                    },
+                    {
+                      "dir": "u",
+                      "end": "finish",
+                      "id": 203,
+                      "kind": "end-to-side",
+                      "scope": "right",
+                      "side": "-u",
+                      "targetMember": 37,
+                      "terminatedMember": 89
+                    }
+                  ],
+                  "members": [
+                    {
+                      "id": 11,
+                      "slotId": 7
+                    },
+                    {
+                      "id": 37,
+                      "slotId": 7
+                    },
+                    {
+                      "id": 89,
+                      "slotId": 13
+                    }
+                  ],
+                  "name": "有限主副支接合",
+                  "slots": [
+                    {
+                      "id": 7,
+                      "name": "主支"
+                    },
+                    {
+                      "id": 13,
+                      "name": "副支"
+                    }
+                  ],
+                  "version": 1
+                },
+                "fingerprint": "b1d022f56fe3ab30670b539568d26dddf5c2d146533c77ae7f46abe3630910be"
+              }
+            ],
+            "bindings": [],
+            "instances": []
+          },
+          "after": {
+            "capabilities": [
+              "assembly-rule-authoring/1",
+              "assembly-timber-generation/1"
+            ],
+            "rules": [
+              {
+                "value": {
+                  "id": 17,
+                  "joints": [
+                    {
+                      "dir": "u",
+                      "end": "start",
+                      "id": 101,
+                      "kind": "end-to-side",
+                      "scope": "left",
+                      "side": "+u",
+                      "targetMember": 11,
+                      "terminatedMember": 89
+                    },
+                    {
+                      "dir": "u",
+                      "end": "finish",
+                      "id": 203,
+                      "kind": "end-to-side",
+                      "scope": "right",
+                      "side": "-u",
+                      "targetMember": 37,
+                      "terminatedMember": 89
+                    }
+                  ],
+                  "members": [
+                    {
+                      "id": 11,
+                      "slotId": 7
+                    },
+                    {
+                      "id": 37,
+                      "slotId": 7
+                    },
+                    {
+                      "id": 89,
+                      "slotId": 13
+                    }
+                  ],
+                  "name": "有限主副支接合",
+                  "slots": [
+                    {
+                      "id": 7,
+                      "name": "主支"
+                    },
+                    {
+                      "id": 13,
+                      "name": "副支"
+                    }
+                  ],
+                  "version": 1
+                },
+                "fingerprint": "b1d022f56fe3ab30670b539568d26dddf5c2d146533c77ae7f46abe3630910be"
+              }
+            ],
+            "bindings": [
+              {
+                "value": {
+                  "id": 29,
+                  "name": "固定來源配置",
+                  "rule": {
+                    "id": 17,
+                    "version": 1
+                  },
+                  "slots": [
+                    {
+                      "A": {
+                        "kind": "literal",
+                        "value": 27
+                      },
+                      "B": {
+                        "kind": "literal",
+                        "value": 33
+                      },
+                      "contactFace": "A",
+                      "orientation": "B",
+                      "slotId": 7
+                    },
+                    {
+                      "A": null,
+                      "B": null,
+                      "contactFace": null,
+                      "orientation": null,
+                      "slotId": 13
+                    }
+                  ]
+                },
+                "fingerprint": "d8f4a377a7d8a34df5dc8bd352294806c61e14aee33f02dc8b8bae99d31d9640",
+                "complete": false,
+                "effective": [
+                  {
+                    "slotId": 7,
+                    "A": {
+                      "value": 27,
+                      "path": "explicit integer mm"
+                    },
+                    "B": {
+                      "value": 33,
+                      "path": "explicit integer mm"
+                    }
+                  },
+                  {
+                    "slotId": 13,
+                    "A": null,
+                    "B": null
+                  }
+                ]
+              }
+            ],
+            "instances": []
+          },
+          "beforeRevision": 12,
+          "afterRevision": 13,
+          "beforeDumpHash": "707ecf42a361c71d01a8e7afc130f0aec32fea5884b28ea4653815db91150254",
+          "afterDumpHash": "afb9ab33e698d8a740a2aa4a35da0ccaef6701d84daa4836c2ce991f49600ddb"
+        }
+      }
+    },
+    {
+      "definition": {
+        "schema": "rule-case/1",
+        "caseId": "fixed-version-immutable",
+        "label": "改名重排不改固定版本與既有配置",
+        "input": {
+          "setup": [
+            {
+              "op": "publish-rule",
+              "value": {
+                "id": 17,
+                "version": 1,
+                "name": "有限主副支接合",
+                "slots": [
+                  {
+                    "id": 7,
+                    "name": "主支"
+                  },
+                  {
+                    "id": 13,
+                    "name": "副支"
+                  }
+                ],
+                "members": [
+                  {
+                    "id": 11,
+                    "slotId": 7
+                  },
+                  {
+                    "id": 37,
+                    "slotId": 7
+                  },
+                  {
+                    "id": 89,
+                    "slotId": 13
+                  }
+                ],
+                "joints": [
+                  {
+                    "id": 101,
+                    "kind": "end-to-side",
+                    "scope": "left",
+                    "terminatedMember": 89,
+                    "targetMember": 11,
+                    "end": "start",
+                    "side": "+u",
+                    "dir": "u"
+                  },
+                  {
+                    "id": 203,
+                    "kind": "end-to-side",
+                    "scope": "right",
+                    "terminatedMember": 89,
+                    "targetMember": 37,
+                    "end": "finish",
+                    "side": "-u",
+                    "dir": "u"
+                  }
+                ]
+              }
+            },
+            {
+              "op": "create-binding",
+              "value": {
+                "id": 29,
+                "name": "固定來源配置",
+                "rule": {
+                  "id": 17,
+                  "version": 1
+                },
+                "slots": [
+                  {
+                    "slotId": 7,
+                    "A": {
+                      "kind": "literal",
+                      "value": 27
+                    },
+                    "B": {
+                      "kind": "literal",
+                      "value": 33
+                    },
+                    "contactFace": "A",
+                    "orientation": "B"
+                  },
+                  {
+                    "slotId": 13,
+                    "A": {
+                      "kind": "literal",
+                      "value": 27
+                    },
+                    "B": {
+                      "kind": "literal",
+                      "value": 33
+                    },
+                    "contactFace": "A",
+                    "orientation": "B"
+                  }
+                ]
+              }
+            }
+          ],
+          "transaction": [
+            {
+              "op": "publish-rule",
+              "value": {
+                "id": 17,
+                "version": 1,
+                "name": "改名與重排不能覆寫固定版本",
+                "slots": [
+                  {
+                    "id": 13,
+                    "name": "副支"
+                  },
+                  {
+                    "id": 7,
+                    "name": "主支"
+                  }
+                ],
+                "members": [
+                  {
+                    "id": 89,
+                    "slotId": 13
+                  },
+                  {
+                    "id": 37,
+                    "slotId": 7
+                  },
+                  {
+                    "id": 11,
+                    "slotId": 7
+                  }
+                ],
+                "joints": [
+                  {
+                    "id": 203,
+                    "kind": "end-to-side",
+                    "scope": "right",
+                    "terminatedMember": 89,
+                    "targetMember": 37,
+                    "end": "finish",
+                    "side": "-u",
+                    "dir": "u"
+                  },
+                  {
+                    "id": 101,
+                    "kind": "end-to-side",
+                    "scope": "left",
+                    "terminatedMember": 89,
+                    "targetMember": 11,
+                    "end": "start",
+                    "side": "+u",
+                    "dir": "u"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "sourcePins": [
+          {
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            },
+            "sha256": "b1d022f56fe3ab30670b539568d26dddf5c2d146533c77ae7f46abe3630910be"
+          },
+          {
+            "ref": {
+              "kind": "binding",
+              "id": 29
+            },
+            "sha256": "e47b34d70b40fec4148c4fc18f76a1e9a26cb210299f0d0062d2d47e4192c090"
+          }
+        ],
+        "requiredCapabilities": [
+          "assembly-rule-authoring/1"
+        ],
+        "expect": {
+          "outcome": "rejected",
+          "diagnostic": {
+            "code": "RULE_VERSION_IMMUTABLE",
+            "clause": "D32",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            }
+          }
+        },
+        "assertions": [
+          {
+            "kind": "rejection_world_unchanged"
+          },
+          {
+            "kind": "record_pin_unchanged",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            }
+          },
+          {
+            "kind": "record_pin_unchanged",
+            "ref": {
+              "kind": "binding",
+              "id": 29
+            }
+          },
+          {
+            "kind": "member_slot",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            },
+            "memberId": 11,
+            "slotId": 7
+          },
+          {
+            "kind": "member_slot",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            },
+            "memberId": 37,
+            "slotId": 7
+          },
+          {
+            "kind": "joint_tuple",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            },
+            "jointId": 101,
+            "value": {
+              "id": 101,
+              "kind": "end-to-side",
+              "scope": "left",
+              "terminatedMember": 89,
+              "targetMember": 11,
+              "end": "start",
+              "side": "+u",
+              "dir": "u"
+            }
+          },
+          {
+            "kind": "joint_tuple",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            },
+            "jointId": 203,
+            "value": {
+              "id": 203,
+              "kind": "end-to-side",
+              "scope": "right",
+              "terminatedMember": 89,
+              "targetMember": 37,
+              "end": "finish",
+              "side": "-u",
+              "dir": "u"
+            }
+          }
+        ]
+      },
+      "receipt": {
+        "caseId": "fixed-version-immutable",
+        "definitionHash": "4d2596046a0d35f7f4f3e1faa2e570f52c335fdee8ef99f976688be12070c856",
+        "sourceHash": "0918bc349b11c37ef1f4e78cff5cef1dc9083d7e1d467032fcde67b7ea970d90",
+        "executor": {
+          "known": true,
+          "nativeBinaryHash": "b76a6da590512722d6eda64cfc946392ccc2636f82ab187ef822c1e1606d68b5",
+          "nativeSourceHash": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+          "validatorVersion": "e0d783295b2900abc92fa37bbad1f8d9aaf075a7ab078b9f8a8538fa98706f38",
+          "axiomHash": "29ad0c657e53d364347862fddac23ba26a248a4fd8f83487d86f9e648bd1eaf2",
+          "assertionSchemaHash": "151cb13cb17add99d714d8d5b4480a7e6bc77dd54eb3122decea7c39040e8edd"
+        },
+        "context": {
+          "projectId": "2d9bb27f-6dfa-48a7-88e1-fe0db2d7def5",
+          "generation": 4
+        },
+        "status": "passed",
+        "authorExpected": {
+          "outcome": "rejected",
+          "diagnostic": {
+            "code": "RULE_VERSION_IMMUTABLE",
+            "clause": "D32",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            }
+          }
+        },
+        "actualOutcome": "rejected",
+        "actualDiagnostics": [
+          {
+            "code": "RULE_VERSION_IMMUTABLE",
+            "clause": "D32",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            },
+            "message": "D32: published rule 17@1 is immutable"
+          },
+          {
+            "timber": 0,
+            "clause": "I8",
+            "expected": "all world invariants pass",
+            "message": "candidate rejected"
+          }
+        ],
+        "assertionResults": [
+          {
+            "kind": "rejection_world_unchanged",
+            "passed": true,
+            "predicate": {
+              "kind": "rejection_world_unchanged"
+            }
+          },
+          {
+            "kind": "record_pin_unchanged",
+            "passed": true,
+            "predicate": {
+              "kind": "record_pin_unchanged",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 1
+              }
+            }
+          },
+          {
+            "kind": "record_pin_unchanged",
+            "passed": true,
+            "predicate": {
+              "kind": "record_pin_unchanged",
+              "ref": {
+                "kind": "binding",
+                "id": 29
+              }
+            }
+          },
+          {
+            "kind": "member_slot",
+            "passed": true,
+            "predicate": {
+              "kind": "member_slot",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 1
+              },
+              "memberId": 11,
+              "slotId": 7
+            }
+          },
+          {
+            "kind": "member_slot",
+            "passed": true,
+            "predicate": {
+              "kind": "member_slot",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 1
+              },
+              "memberId": 37,
+              "slotId": 7
+            }
+          },
+          {
+            "kind": "joint_tuple",
+            "passed": true,
+            "predicate": {
+              "kind": "joint_tuple",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 1
+              },
+              "jointId": 101,
+              "value": {
+                "id": 101,
+                "kind": "end-to-side",
+                "scope": "left",
+                "terminatedMember": 89,
+                "targetMember": 11,
+                "end": "start",
+                "side": "+u",
+                "dir": "u"
+              }
+            }
+          },
+          {
+            "kind": "joint_tuple",
+            "passed": true,
+            "predicate": {
+              "kind": "joint_tuple",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 1
+              },
+              "jointId": 203,
+              "value": {
+                "id": 203,
+                "kind": "end-to-side",
+                "scope": "right",
+                "terminatedMember": 89,
+                "targetMember": 37,
+                "end": "finish",
+                "side": "-u",
+                "dir": "u"
+              }
+            }
+          }
+        ],
+        "conditions": {
+          "timeoutSeconds": 5,
+          "maxOutputBytes": 2097152,
+          "isolated": true,
+          "nativePid": 207033,
+          "privateDirectoryRemoved": true,
+          "capabilities": [
+            "engineering-spec/1",
+            "parameters/1",
+            "assembly-rule-authoring/1",
+            "assembly-timber-generation/1",
+            "grid-subdivision-rules/1",
+            "section-profile/1"
+          ],
+          "elapsedSeconds": 0.064159
+        },
+        "observations": {
+          "before": {
+            "capabilities": [
+              "assembly-rule-authoring/1",
+              "assembly-timber-generation/1"
+            ],
+            "rules": [
+              {
+                "value": {
+                  "id": 17,
+                  "joints": [
+                    {
+                      "dir": "u",
+                      "end": "start",
+                      "id": 101,
+                      "kind": "end-to-side",
+                      "scope": "left",
+                      "side": "+u",
+                      "targetMember": 11,
+                      "terminatedMember": 89
+                    },
+                    {
+                      "dir": "u",
+                      "end": "finish",
+                      "id": 203,
+                      "kind": "end-to-side",
+                      "scope": "right",
+                      "side": "-u",
+                      "targetMember": 37,
+                      "terminatedMember": 89
+                    }
+                  ],
+                  "members": [
+                    {
+                      "id": 11,
+                      "slotId": 7
+                    },
+                    {
+                      "id": 37,
+                      "slotId": 7
+                    },
+                    {
+                      "id": 89,
+                      "slotId": 13
+                    }
+                  ],
+                  "name": "有限主副支接合",
+                  "slots": [
+                    {
+                      "id": 7,
+                      "name": "主支"
+                    },
+                    {
+                      "id": 13,
+                      "name": "副支"
+                    }
+                  ],
+                  "version": 1
+                },
+                "fingerprint": "b1d022f56fe3ab30670b539568d26dddf5c2d146533c77ae7f46abe3630910be"
+              }
+            ],
+            "bindings": [
+              {
+                "value": {
+                  "id": 29,
+                  "name": "固定來源配置",
+                  "rule": {
+                    "id": 17,
+                    "version": 1
+                  },
+                  "slots": [
+                    {
+                      "A": {
+                        "kind": "literal",
+                        "value": 27
+                      },
+                      "B": {
+                        "kind": "literal",
+                        "value": 33
+                      },
+                      "contactFace": "A",
+                      "orientation": "B",
+                      "slotId": 7
+                    },
+                    {
+                      "A": {
+                        "kind": "literal",
+                        "value": 27
+                      },
+                      "B": {
+                        "kind": "literal",
+                        "value": 33
+                      },
+                      "contactFace": "A",
+                      "orientation": "B",
+                      "slotId": 13
+                    }
+                  ]
+                },
+                "fingerprint": "e47b34d70b40fec4148c4fc18f76a1e9a26cb210299f0d0062d2d47e4192c090",
+                "complete": true,
+                "effective": [
+                  {
+                    "slotId": 7,
+                    "A": {
+                      "value": 27,
+                      "path": "explicit integer mm"
+                    },
+                    "B": {
+                      "value": 33,
+                      "path": "explicit integer mm"
+                    }
+                  },
+                  {
+                    "slotId": 13,
+                    "A": {
+                      "value": 27,
+                      "path": "explicit integer mm"
+                    },
+                    "B": {
+                      "value": 33,
+                      "path": "explicit integer mm"
+                    }
+                  }
+                ]
+              }
+            ],
+            "instances": []
+          },
+          "after": {
+            "capabilities": [
+              "assembly-rule-authoring/1",
+              "assembly-timber-generation/1"
+            ],
+            "rules": [
+              {
+                "value": {
+                  "id": 17,
+                  "joints": [
+                    {
+                      "dir": "u",
+                      "end": "start",
+                      "id": 101,
+                      "kind": "end-to-side",
+                      "scope": "left",
+                      "side": "+u",
+                      "targetMember": 11,
+                      "terminatedMember": 89
+                    },
+                    {
+                      "dir": "u",
+                      "end": "finish",
+                      "id": 203,
+                      "kind": "end-to-side",
+                      "scope": "right",
+                      "side": "-u",
+                      "targetMember": 37,
+                      "terminatedMember": 89
+                    }
+                  ],
+                  "members": [
+                    {
+                      "id": 11,
+                      "slotId": 7
+                    },
+                    {
+                      "id": 37,
+                      "slotId": 7
+                    },
+                    {
+                      "id": 89,
+                      "slotId": 13
+                    }
+                  ],
+                  "name": "有限主副支接合",
+                  "slots": [
+                    {
+                      "id": 7,
+                      "name": "主支"
+                    },
+                    {
+                      "id": 13,
+                      "name": "副支"
+                    }
+                  ],
+                  "version": 1
+                },
+                "fingerprint": "b1d022f56fe3ab30670b539568d26dddf5c2d146533c77ae7f46abe3630910be"
+              }
+            ],
+            "bindings": [
+              {
+                "value": {
+                  "id": 29,
+                  "name": "固定來源配置",
+                  "rule": {
+                    "id": 17,
+                    "version": 1
+                  },
+                  "slots": [
+                    {
+                      "A": {
+                        "kind": "literal",
+                        "value": 27
+                      },
+                      "B": {
+                        "kind": "literal",
+                        "value": 33
+                      },
+                      "contactFace": "A",
+                      "orientation": "B",
+                      "slotId": 7
+                    },
+                    {
+                      "A": {
+                        "kind": "literal",
+                        "value": 27
+                      },
+                      "B": {
+                        "kind": "literal",
+                        "value": 33
+                      },
+                      "contactFace": "A",
+                      "orientation": "B",
+                      "slotId": 13
+                    }
+                  ]
+                },
+                "fingerprint": "e47b34d70b40fec4148c4fc18f76a1e9a26cb210299f0d0062d2d47e4192c090",
+                "complete": true,
+                "effective": [
+                  {
+                    "slotId": 7,
+                    "A": {
+                      "value": 27,
+                      "path": "explicit integer mm"
+                    },
+                    "B": {
+                      "value": 33,
+                      "path": "explicit integer mm"
+                    }
+                  },
+                  {
+                    "slotId": 13,
+                    "A": {
+                      "value": 27,
+                      "path": "explicit integer mm"
+                    },
+                    "B": {
+                      "value": 33,
+                      "path": "explicit integer mm"
+                    }
+                  }
+                ]
+              }
+            ],
+            "instances": []
+          },
+          "beforeRevision": 12,
+          "afterRevision": 12,
+          "beforeDumpHash": "cec99d772dae0f83ba4307e9886a5e048d83b054ffacfa1852d576c39dc241e3",
+          "afterDumpHash": "cec99d772dae0f83ba4307e9886a5e048d83b054ffacfa1852d576c39dc241e3"
+        }
+      }
+    },
+    {
+      "definition": {
+        "schema": "rule-case/1",
+        "caseId": "same-role-distinct-members",
+        "label": "同角色的不同構件分開引用",
+        "input": {
+          "setup": [],
+          "transaction": [
+            {
+              "op": "publish-rule",
+              "value": {
+                "id": 17,
+                "version": 1,
+                "name": "有限主副支接合",
+                "slots": [
+                  {
+                    "id": 7,
+                    "name": "主支"
+                  },
+                  {
+                    "id": 13,
+                    "name": "副支"
+                  }
+                ],
+                "members": [
+                  {
+                    "id": 11,
+                    "slotId": 7
+                  },
+                  {
+                    "id": 37,
+                    "slotId": 7
+                  },
+                  {
+                    "id": 89,
+                    "slotId": 13
+                  }
+                ],
+                "joints": [
+                  {
+                    "id": 101,
+                    "kind": "end-to-side",
+                    "scope": "left",
+                    "terminatedMember": 89,
+                    "targetMember": 11,
+                    "end": "start",
+                    "side": "-u",
+                    "dir": "u"
+                  },
+                  {
+                    "id": 203,
+                    "kind": "end-to-side",
+                    "scope": "right",
+                    "terminatedMember": 89,
+                    "targetMember": 37,
+                    "end": "finish",
+                    "side": "-u",
+                    "dir": "u"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "sourcePins": [],
+        "requiredCapabilities": [
+          "assembly-rule-authoring/1"
+        ],
+        "expect": {
+          "outcome": "accepted",
+          "diagnostic": null
+        },
+        "assertions": [
+          {
+            "kind": "record_exists",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            }
+          },
+          {
+            "kind": "member_slot",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            },
+            "memberId": 11,
+            "slotId": 7
+          },
+          {
+            "kind": "member_slot",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            },
+            "memberId": 37,
+            "slotId": 7
+          },
+          {
+            "kind": "member_slot",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            },
+            "memberId": 89,
+            "slotId": 13
+          },
+          {
+            "kind": "joint_tuple",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            },
+            "jointId": 101,
+            "value": {
+              "id": 101,
+              "kind": "end-to-side",
+              "scope": "left",
+              "terminatedMember": 89,
+              "targetMember": 11,
+              "end": "start",
+              "side": "+u",
+              "dir": "u"
+            }
+          },
+          {
+            "kind": "joint_tuple",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            },
+            "jointId": 203,
+            "value": {
+              "id": 203,
+              "kind": "end-to-side",
+              "scope": "right",
+              "terminatedMember": 89,
+              "targetMember": 37,
+              "end": "finish",
+              "side": "-u",
+              "dir": "u"
+            }
+          }
+        ]
+      },
+      "receipt": {
+        "caseId": "same-role-distinct-members",
+        "definitionHash": "1b4ebeeec0536b32d4b9d758abb58aa0928983a846e23353c107ff3ed1dd4830",
+        "sourceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "executor": {
+          "known": true,
+          "nativeBinaryHash": "b76a6da590512722d6eda64cfc946392ccc2636f82ab187ef822c1e1606d68b5",
+          "nativeSourceHash": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+          "validatorVersion": "e0d783295b2900abc92fa37bbad1f8d9aaf075a7ab078b9f8a8538fa98706f38",
+          "axiomHash": "29ad0c657e53d364347862fddac23ba26a248a4fd8f83487d86f9e648bd1eaf2",
+          "assertionSchemaHash": "151cb13cb17add99d714d8d5b4480a7e6bc77dd54eb3122decea7c39040e8edd"
+        },
+        "context": {
+          "projectId": "2d9bb27f-6dfa-48a7-88e1-fe0db2d7def5",
+          "generation": 4
+        },
+        "status": "failed",
+        "authorExpected": {
+          "outcome": "accepted",
+          "diagnostic": null
+        },
+        "actualOutcome": "accepted",
+        "actualDiagnostics": [],
+        "assertionResults": [
+          {
+            "kind": "record_exists",
+            "passed": true,
+            "predicate": {
+              "kind": "record_exists",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 1
+              }
+            }
+          },
+          {
+            "kind": "member_slot",
+            "passed": true,
+            "predicate": {
+              "kind": "member_slot",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 1
+              },
+              "memberId": 11,
+              "slotId": 7
+            }
+          },
+          {
+            "kind": "member_slot",
+            "passed": true,
+            "predicate": {
+              "kind": "member_slot",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 1
+              },
+              "memberId": 37,
+              "slotId": 7
+            }
+          },
+          {
+            "kind": "member_slot",
+            "passed": true,
+            "predicate": {
+              "kind": "member_slot",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 1
+              },
+              "memberId": 89,
+              "slotId": 13
+            }
+          },
+          {
+            "kind": "joint_tuple",
+            "passed": false,
+            "predicate": {
+              "kind": "joint_tuple",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 1
+              },
+              "jointId": 101,
+              "value": {
+                "id": 101,
+                "kind": "end-to-side",
+                "scope": "left",
+                "terminatedMember": 89,
+                "targetMember": 11,
+                "end": "start",
+                "side": "+u",
+                "dir": "u"
+              }
+            }
+          },
+          {
+            "kind": "joint_tuple",
+            "passed": true,
+            "predicate": {
+              "kind": "joint_tuple",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 1
+              },
+              "jointId": 203,
+              "value": {
+                "id": 203,
+                "kind": "end-to-side",
+                "scope": "right",
+                "terminatedMember": 89,
+                "targetMember": 37,
+                "end": "finish",
+                "side": "-u",
+                "dir": "u"
+              }
+            }
+          }
+        ],
+        "conditions": {
+          "timeoutSeconds": 5,
+          "maxOutputBytes": 2097152,
+          "isolated": true,
+          "nativePid": 207042,
+          "privateDirectoryRemoved": true,
+          "capabilities": [
+            "engineering-spec/1",
+            "parameters/1",
+            "assembly-rule-authoring/1",
+            "assembly-timber-generation/1",
+            "grid-subdivision-rules/1",
+            "section-profile/1"
+          ],
+          "elapsedSeconds": 0.062815
+        },
+        "observations": {
+          "before": {
+            "capabilities": [
+              "assembly-rule-authoring/1",
+              "assembly-timber-generation/1"
+            ],
+            "rules": [],
+            "bindings": [],
+            "instances": []
+          },
+          "after": {
+            "capabilities": [
+              "assembly-rule-authoring/1",
+              "assembly-timber-generation/1"
+            ],
+            "rules": [
+              {
+                "value": {
+                  "id": 17,
+                  "joints": [
+                    {
+                      "dir": "u",
+                      "end": "start",
+                      "id": 101,
+                      "kind": "end-to-side",
+                      "scope": "left",
+                      "side": "-u",
+                      "targetMember": 11,
+                      "terminatedMember": 89
+                    },
+                    {
+                      "dir": "u",
+                      "end": "finish",
+                      "id": 203,
+                      "kind": "end-to-side",
+                      "scope": "right",
+                      "side": "-u",
+                      "targetMember": 37,
+                      "terminatedMember": 89
+                    }
+                  ],
+                  "members": [
+                    {
+                      "id": 11,
+                      "slotId": 7
+                    },
+                    {
+                      "id": 37,
+                      "slotId": 7
+                    },
+                    {
+                      "id": 89,
+                      "slotId": 13
+                    }
+                  ],
+                  "name": "有限主副支接合",
+                  "slots": [
+                    {
+                      "id": 7,
+                      "name": "主支"
+                    },
+                    {
+                      "id": 13,
+                      "name": "副支"
+                    }
+                  ],
+                  "version": 1
+                },
+                "fingerprint": "9c3419fd7ed556f5bcce79dac36b1f0860e63e170939d406deffd46fe152b4dd"
+              }
+            ],
+            "bindings": [],
+            "instances": []
+          },
+          "beforeRevision": 11,
+          "afterRevision": 12,
+          "beforeDumpHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "afterDumpHash": "61118ba648936ab5ee8160d815efe9bb578f9ddeac64d4604b60f7a2931c3479"
+        },
+        "reason": "assertion-mismatch"
+      }
+    },
+    {
+      "definition": {
+        "schema": "rule-case/1",
+        "caseId": "same-role-distinct-members",
+        "label": "同角色的不同構件分開引用",
+        "input": {
+          "setup": [],
+          "transaction": [
+            {
+              "op": "publish-rule",
+              "value": {
+                "id": 17,
+                "version": 1,
+                "name": "有限主副支接合",
+                "slots": [
+                  {
+                    "id": 7,
+                    "name": "主支"
+                  },
+                  {
+                    "id": 13,
+                    "name": "副支"
+                  }
+                ],
+                "members": [
+                  {
+                    "id": 11,
+                    "slotId": 7
+                  },
+                  {
+                    "id": 37,
+                    "slotId": 7
+                  },
+                  {
+                    "id": 89,
+                    "slotId": 13
+                  }
+                ],
+                "joints": [
+                  {
+                    "id": 101,
+                    "kind": "end-to-side",
+                    "scope": "left",
+                    "terminatedMember": 89,
+                    "targetMember": 11,
+                    "end": "start",
+                    "side": "+u",
+                    "dir": "u"
+                  },
+                  {
+                    "id": 203,
+                    "kind": "end-to-side",
+                    "scope": "right",
+                    "terminatedMember": 89,
+                    "targetMember": 37,
+                    "end": "finish",
+                    "side": "-u",
+                    "dir": "u"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "sourcePins": [],
+        "requiredCapabilities": [
+          "assembly-rule-authoring/1"
+        ],
+        "expect": {
+          "outcome": "accepted",
+          "diagnostic": null
+        },
+        "assertions": [
+          {
+            "kind": "record_exists",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            }
+          },
+          {
+            "kind": "member_slot",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            },
+            "memberId": 11,
+            "slotId": 7
+          },
+          {
+            "kind": "member_slot",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            },
+            "memberId": 37,
+            "slotId": 7
+          },
+          {
+            "kind": "member_slot",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            },
+            "memberId": 89,
+            "slotId": 13
+          },
+          {
+            "kind": "joint_tuple",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            },
+            "jointId": 101,
+            "value": {
+              "id": 101,
+              "kind": "end-to-side",
+              "scope": "left",
+              "terminatedMember": 89,
+              "targetMember": 11,
+              "end": "start",
+              "side": "+u",
+              "dir": "u"
+            }
+          },
+          {
+            "kind": "joint_tuple",
+            "ref": {
+              "kind": "rule",
+              "id": 17,
+              "version": 1
+            },
+            "jointId": 203,
+            "value": {
+              "id": 203,
+              "kind": "end-to-side",
+              "scope": "right",
+              "terminatedMember": 89,
+              "targetMember": 37,
+              "end": "finish",
+              "side": "-u",
+              "dir": "u"
+            }
+          }
+        ]
+      },
+      "receipt": {
+        "caseId": "same-role-distinct-members",
+        "definitionHash": "275a5a5937e9502d15cf58d76f62ad05395acbdbd034150ae1e65b12f3782285",
+        "sourceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "executor": {
+          "known": true,
+          "nativeBinaryHash": "b76a6da590512722d6eda64cfc946392ccc2636f82ab187ef822c1e1606d68b5",
+          "nativeSourceHash": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+          "validatorVersion": "e0d783295b2900abc92fa37bbad1f8d9aaf075a7ab078b9f8a8538fa98706f38",
+          "axiomHash": "29ad0c657e53d364347862fddac23ba26a248a4fd8f83487d86f9e648bd1eaf2",
+          "assertionSchemaHash": "151cb13cb17add99d714d8d5b4480a7e6bc77dd54eb3122decea7c39040e8edd"
+        },
+        "context": {
+          "projectId": "2d9bb27f-6dfa-48a7-88e1-fe0db2d7def5",
+          "generation": 4
+        },
+        "status": "passed",
+        "authorExpected": {
+          "outcome": "accepted",
+          "diagnostic": null
+        },
+        "actualOutcome": "accepted",
+        "actualDiagnostics": [],
+        "assertionResults": [
+          {
+            "kind": "record_exists",
+            "passed": true,
+            "predicate": {
+              "kind": "record_exists",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 1
+              }
+            }
+          },
+          {
+            "kind": "member_slot",
+            "passed": true,
+            "predicate": {
+              "kind": "member_slot",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 1
+              },
+              "memberId": 11,
+              "slotId": 7
+            }
+          },
+          {
+            "kind": "member_slot",
+            "passed": true,
+            "predicate": {
+              "kind": "member_slot",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 1
+              },
+              "memberId": 37,
+              "slotId": 7
+            }
+          },
+          {
+            "kind": "member_slot",
+            "passed": true,
+            "predicate": {
+              "kind": "member_slot",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 1
+              },
+              "memberId": 89,
+              "slotId": 13
+            }
+          },
+          {
+            "kind": "joint_tuple",
+            "passed": true,
+            "predicate": {
+              "kind": "joint_tuple",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 1
+              },
+              "jointId": 101,
+              "value": {
+                "id": 101,
+                "kind": "end-to-side",
+                "scope": "left",
+                "terminatedMember": 89,
+                "targetMember": 11,
+                "end": "start",
+                "side": "+u",
+                "dir": "u"
+              }
+            }
+          },
+          {
+            "kind": "joint_tuple",
+            "passed": true,
+            "predicate": {
+              "kind": "joint_tuple",
+              "ref": {
+                "kind": "rule",
+                "id": 17,
+                "version": 1
+              },
+              "jointId": 203,
+              "value": {
+                "id": 203,
+                "kind": "end-to-side",
+                "scope": "right",
+                "terminatedMember": 89,
+                "targetMember": 37,
+                "end": "finish",
+                "side": "-u",
+                "dir": "u"
+              }
+            }
+          }
+        ],
+        "conditions": {
+          "timeoutSeconds": 5,
+          "maxOutputBytes": 2097152,
+          "isolated": true,
+          "nativePid": 207049,
+          "privateDirectoryRemoved": true,
+          "capabilities": [
+            "engineering-spec/1",
+            "parameters/1",
+            "assembly-rule-authoring/1",
+            "assembly-timber-generation/1",
+            "grid-subdivision-rules/1",
+            "section-profile/1"
+          ],
+          "elapsedSeconds": 0.064734
+        },
+        "observations": {
+          "before": {
+            "capabilities": [
+              "assembly-rule-authoring/1",
+              "assembly-timber-generation/1"
+            ],
+            "rules": [],
+            "bindings": [],
+            "instances": []
+          },
+          "after": {
+            "capabilities": [
+              "assembly-rule-authoring/1",
+              "assembly-timber-generation/1"
+            ],
+            "rules": [
+              {
+                "value": {
+                  "id": 17,
+                  "joints": [
+                    {
+                      "dir": "u",
+                      "end": "start",
+                      "id": 101,
+                      "kind": "end-to-side",
+                      "scope": "left",
+                      "side": "+u",
+                      "targetMember": 11,
+                      "terminatedMember": 89
+                    },
+                    {
+                      "dir": "u",
+                      "end": "finish",
+                      "id": 203,
+                      "kind": "end-to-side",
+                      "scope": "right",
+                      "side": "-u",
+                      "targetMember": 37,
+                      "terminatedMember": 89
+                    }
+                  ],
+                  "members": [
+                    {
+                      "id": 11,
+                      "slotId": 7
+                    },
+                    {
+                      "id": 37,
+                      "slotId": 7
+                    },
+                    {
+                      "id": 89,
+                      "slotId": 13
+                    }
+                  ],
+                  "name": "有限主副支接合",
+                  "slots": [
+                    {
+                      "id": 7,
+                      "name": "主支"
+                    },
+                    {
+                      "id": 13,
+                      "name": "副支"
+                    }
+                  ],
+                  "version": 1
+                },
+                "fingerprint": "b1d022f56fe3ab30670b539568d26dddf5c2d146533c77ae7f46abe3630910be"
+              }
+            ],
+            "bindings": [],
+            "instances": []
+          },
+          "beforeRevision": 11,
+          "afterRevision": 12,
+          "beforeDumpHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "afterDumpHash": "707ecf42a361c71d01a8e7afc130f0aec32fea5884b28ea4653815db91150254"
+        }
+      }
+    }
+  ]
+}

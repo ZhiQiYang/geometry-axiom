@@ -1,0 +1,255 @@
+{
+  "name": "edge-transition-1400-face-success-control",
+  "utc": "2026-10-09T15:49:48.431954+00:00",
+  "scope": "face",
+  "mode": "success-control",
+  "fixture": {
+    "commands": [
+      "surface 731 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+      "surface 732 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+      "canvas-pos boundary 731 30 30",
+      "canvas-pos boundary 732 310 30"
+    ],
+    "results": [
+      {
+        "ok": true
+      },
+      {
+        "ok": true
+      },
+      {
+        "ok": true
+      },
+      {
+        "ok": true
+      },
+      {
+        "ok": true
+      }
+    ],
+    "initialPresentation": {
+      "view3": false,
+      "ocOn": true,
+      "focus": null
+    }
+  },
+  "nativeReply": {
+    "ok": true
+  },
+  "inputAfter": {
+    "value": "4200",
+    "model": "4200",
+    "connected": true,
+    "visible": true
+  },
+  "stateAfter": {
+    "workSurf": "731",
+    "view3": false,
+    "tool": "view",
+    "editBid": 0,
+    "editToken": 0,
+    "editLoops": null,
+    "editDrag": null,
+    "groups": 0,
+    "handles": 0,
+    "handleShapes": [],
+    "groupShapes": [],
+    "ocOn": true,
+    "ocEdit": {
+      "bid": 731,
+      "contextId": "ec1a1e8f-0ba4-4186-b6c1-fabb5c98c572"
+    },
+    "ocFocus": {
+      "t": "face",
+      "id": 731
+    },
+    "navigationSequence": 2,
+    "bodyClass": "",
+    "canvasVisible": false,
+    "workspaceHidden": false,
+    "inspectorHidden": false,
+    "status": "✓ boundary 731 outline 0,0 4200,0 4200,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500"
+  },
+  "worldIsOnlyExpectedAChange": true,
+  "ok": true,
+  "audit": {
+    "gate": {
+      "id": 731,
+      "hold": false,
+      "phase": "returned",
+      "release": null,
+      "promise": null,
+      "command": "line boundary 731 outline 0,0 4200,0 4200,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+      "stack": "Error\n    at window.fetch (eval at evaluate (:311:30), <anonymous>:27:19)\n    at apiRequest (http://127.0.0.1:19186/app.js:639:21)\n    at api (http://127.0.0.1:19186/app.js:691:24)\n    at emitLine (http://127.0.0.1:19186/app.js:1272:19)\n    at emitBoundary (http://127.0.0.1:19186/app.js:1316:10)\n    at commitEdgeLength (http://127.0.0.1:19186/app.js:1443:10)\n    at HTMLInputElement.<anonymous> (http://127.0.0.1:19186/app.js:8663:17)\n    at HTMLInputElement.wrapped (eval at evaluate (:311:30), <anonymous>:70:37)",
+      "nativeReply": {
+        "ok": true
+      }
+    },
+    "draws": [],
+    "changes": [
+      {
+        "id": "edgeLength0",
+        "value": "4200",
+        "trusted": true,
+        "phase": "settled",
+        "after": {
+          "workSurf": "731",
+          "view3": false,
+          "tool": "view",
+          "editBid": 0,
+          "editToken": 0,
+          "editLoops": null,
+          "editDrag": null,
+          "groups": 0,
+          "handles": 0,
+          "handleShapes": [],
+          "groupShapes": [],
+          "ocOn": true,
+          "ocEdit": {
+            "bid": 731,
+            "contextId": "ec1a1e8f-0ba4-4186-b6c1-fabb5c98c572"
+          },
+          "ocFocus": {
+            "t": "face",
+            "id": 731
+          },
+          "navigationSequence": 2,
+          "bodyClass": "",
+          "canvasVisible": false,
+          "workspaceHidden": false,
+          "inspectorHidden": false,
+          "status": "✓ boundary 731 outline 0,0 4200,0 4200,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500"
+        }
+      }
+    ],
+    "navigation": [],
+    "fetches": [
+      {
+        "command": "reset",
+        "status": 200
+      },
+      {
+        "command": "section-profile-read",
+        "status": 200
+      },
+      {
+        "command": "line surface 731 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+        "status": 200
+      },
+      {
+        "command": "section-profile-read",
+        "status": 200
+      },
+      {
+        "command": "line surface 732 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+        "status": 200
+      },
+      {
+        "command": "section-profile-read",
+        "status": 200
+      },
+      {
+        "command": "line canvas-pos boundary 731 30 30",
+        "status": 200
+      },
+      {
+        "command": "line canvas-pos boundary 732 310 30",
+        "status": 200
+      },
+      {
+        "command": "objects",
+        "status": 200
+      },
+      {
+        "command": "surfaces",
+        "status": 200
+      },
+      {
+        "command": "boundary 731",
+        "status": 200
+      },
+      {
+        "command": "boundary 732",
+        "status": 200
+      },
+      {
+        "command": "boundary 731",
+        "status": 200
+      },
+      {
+        "command": "obstacles 731",
+        "status": 200
+      },
+      {
+        "command": "references",
+        "status": 200
+      },
+      {
+        "command": "dump",
+        "status": 200
+      },
+      {
+        "command": "source-inspect",
+        "status": 200
+      },
+      {
+        "command": "dump",
+        "status": 200
+      },
+      {
+        "command": "line boundary 731 outline 0,0 4200,0 4200,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+        "status": 200
+      },
+      {
+        "command": "objects",
+        "status": 200
+      },
+      {
+        "command": "surfaces",
+        "status": 200
+      },
+      {
+        "command": "boundary 731",
+        "status": 200
+      },
+      {
+        "command": "boundary 732",
+        "status": 200
+      },
+      {
+        "command": "boundary 731",
+        "status": 200
+      },
+      {
+        "command": "section-profile-read",
+        "status": 200
+      },
+      {
+        "command": "obstacles 731",
+        "status": 200
+      },
+      {
+        "command": "references",
+        "status": 200
+      },
+      {
+        "command": "dump",
+        "status": 200
+      },
+      {
+        "command": "source-inspect",
+        "status": 200
+      },
+      {
+        "command": "dump",
+        "status": 200
+      }
+    ]
+  },
+  "singleTrusted4200Change": true,
+  "exactNativeCommand": true,
+  "realNavigationRoute": true,
+  "visiblePickerConsumerSynchronization": true,
+  "navigationObservationContract": "trusted-visible-picker-synthetic-consumer-v2",
+  "pageErrors": []
+}

@@ -1,0 +1,12 @@
+usage: cli.py [-h] [--data-dir DATA_DIR]
+              {import-snapshot,record-assignment,record-result,export,restore,reconcile,list-alerts,coverage,list-ready,inspect,serve}
+              ...
+
+Geometry 工作管理：私有資料、證據與交付分離
+
+positional arguments:
+  {import-snapshot,record-assignment,record-result,export,restore,reconcile,list-alerts,coverage,list-ready,inspect,serve}
+
+options:
+  -h, --help            show this help message and exit
+  --data-dir DATA_DIR

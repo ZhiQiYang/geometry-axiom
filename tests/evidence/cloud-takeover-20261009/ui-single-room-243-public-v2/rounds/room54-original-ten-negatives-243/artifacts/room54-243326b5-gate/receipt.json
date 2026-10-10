@@ -1,0 +1,1860 @@
+{
+  "schema": "geometry-release-command/1",
+  "created": "2026-10-09T16:11:05.982035+00:00",
+  "command": [
+    "<node-runtime>/bin/node",
+    "<workspace-path>"
+  ],
+  "cwd": "<workspace-path>",
+  "url": "http://127.0.0.1:19180/",
+  "timeoutSeconds": 1800.0,
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "status": "execution-verified",
+  "executionVerified": true,
+  "releaseApproved": false,
+  "problems": [],
+  "limitations": [
+    "Only this command is covered; independent delivery gates remain separate.",
+    "Native receipts attest configured files; /runtime does not attest the running native process.",
+    "Before/after identity checks do not prove absence of transient source changes."
+  ],
+  "environment": {
+    "GEOMETRY_TEST_BRIDGE": "<isolated-test-directory>",
+    "GEOMETRY_BRIDGE": "<isolated-test-directory>",
+    "GEOMETRY_MODEL_BASE": "<isolated-test-directory>",
+    "GEOMETRY_FEEDBACK_DIR": "<isolated-test-directory>",
+    "GEOMETRY_CHROME": "/usr/bin/chromium",
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:19180/"
+  },
+  "kind": "command",
+  "before": {
+    "at": "2026-10-09T16:11:05.983131+00:00",
+    "root": "<workspace-path>",
+    "problems": [],
+    "git": {
+      "root": "<workspace-path>",
+      "head": "243326b512896ace70e068f62c8f3d6397f6000d",
+      "tree": "3a94d684e90fc8ee77883ca929b7e6e9520e656f",
+      "status": ""
+    },
+    "sourceVersion": "545f021b8cbb26b6afaabde19b73fa82d30a8a138b99d8c721a35fb54f73999b",
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "545f021b8cbb26b6afaabde19b73fa82d30a8a138b99d8c721a35fb54f73999b",
+      "fresh": true,
+      "root": "<workspace-path>",
+      "pid": 132256,
+      "session": "755d0e4171ce4fc8b5960e656a0ff714"
+    },
+    "native": {
+      "bridge": {
+        "name": "bridge",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T14:05:28+00:00）",
+        "path": "<isolated-test-directory>",
+        "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+        "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b",
+        "sidecarSha256": "7ec1254e3675a15ed09f95aae4048031a1684cc2e8eb2b366803a96deda8774e"
+      },
+      "model-base": {
+        "name": "model-base",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T14:05:32+00:00）",
+        "path": "<isolated-test-directory>",
+        "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+        "sha256": "576a0e04c7ddaeafee20a64e03f063f1d27cbebb9694c50f20fcc2b0508d7aeb",
+        "sidecarSha256": "8198d31eedae405127598a61a51fcc40b61a50a96aec47c8974a1c11d8678c75"
+      }
+    },
+    "executables": {
+      "node": {
+        "path": "<node-runtime>/bin/node",
+        "resolved": "<node-runtime>/bin/node",
+        "sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12",
+        "version": "v24.19.0"
+      },
+      "python": {
+        "path": "<python-runtime>/bin/python",
+        "resolved": "<python-runtime>/bin/python3.12",
+        "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+        "version": "Python 3.12.14"
+      },
+      "chrome-launcher": {
+        "path": "/usr/bin/chromium",
+        "resolved": "/usr/bin/chromium",
+        "sha256": "2c8d32d29dc6781c35ae196ea83299d507ac88fc339301abe74672feda299779",
+        "version": "Chromium 151.0.7922.173 built on Debian GNU/Linux 13 (trixie)"
+      },
+      "actual-chrome": {
+        "path": "/usr/lib/chromium/chromium",
+        "resolved": "/usr/lib/chromium/chromium",
+        "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723"
+      }
+    },
+    "sources": {
+      "geometry-web/app.css": "4e6dac9541329f9d17d33d66635f2dcc77e6d3c816cfbe719105b46e3b653432",
+      "geometry-web/app.js": "da0a2337cc986c79231c74fd66380178646a129e7ab577d2059acbd1160774de",
+      "geometry-web/assembly-workspace.css": "7a91095c3042de5b98e64d4a699df3ac2f3571b411f534f732aae721c528d644",
+      "geometry-web/assembly-workspace.js": "a2ff6c76c113506e7a66786ade2aa1e5393f7d567c72d318c90b2ce3cc5a2d27",
+      "geometry-web/assembly_binding_source_browser_check.js": "90dc577aeb06e05c61cf1608b7912bcaf6de2734e514ea7b2d4f76b0667164ea",
+      "geometry-web/assembly_candidate_impact_test.js": "7110fd3c71d901465d2697c09723ece7fa4f3e38133edadf995fc3e2cf975c37",
+      "geometry-web/assembly_context_entry_test.js": "a02e10d6b53dd2f63efba797333057bf18a029c680a1dfb905c42a6899fe7bc7",
+      "geometry-web/assembly_generation_test.js": "5889de038059b3e5d5e875c90246c1cf9dcb1399335f74fafb3fb79403a7905a",
+      "geometry-web/assembly_id_test.js": "6d7c8ebb721b0f697016a8eb12e1ba5b16e6298745a8f85acb259e8261b931ad",
+      "geometry-web/assembly_review_test.js": "52f153475b7a85c197f8850b4026a576ade9c5ef81d3579382753d54078df950",
+      "geometry-web/assembly_workflow_test.js": "be1eaf009660cf8e7d05a6a643040a62abc4af11fdd01ae665d96e48bab048a7",
+      "geometry-web/async_reply_ui_test.js": "152c23ab908bc4c205a22d1fb2064536e3af121d4bcd2dbc7e1edad60f3553aa",
+      "geometry-web/canvas-labels.css": "c13faf2fe464c5dc037b09d91064a2d8b02cfa30fef4eae7d5584a0f05410e53",
+      "geometry-web/canvas_test.js": "6d097c3031fe2e49ad5f324b08ef631aed6faa2e2333304b089c88cc19b4f569",
+      "geometry-web/cdp_confirmation_gate.js": "59a839da0785adc43b05c0c4234b714bbf6581306954d083b3007beafb85c851",
+      "geometry-web/cdp_evaluation.js": "ed20878b55f5c0b1c0209a9bd7731cc5dff99c6c9d1317b5bbfdce6dea9d3e7e",
+      "geometry-web/cdp_floor.js": "01a45d7881d583a7d328e579b457c959baa2b8d3570c3e3fbe66e8781c5f679e",
+      "geometry-web/cdp_helpers.js": "e7bb250379dd7c531ce85af436860568b473b5c11f67f0c1753f6e4316128667",
+      "geometry-web/cdp_navigation.js": "64be1d676aec784f275a27f621b17a5e5440fdb4f56a0c786036b2e3708692ae",
+      "geometry-web/cdp_test.js": "bb0c250c703999f73547bde480a814d101ec06be149cc7198f01ffe404c88c22",
+      "geometry-web/composition_canvas_test.js": "ef6e9c4a94e32e39099e939ba93f8b3e62abd869c695891f37003415f4969dea",
+      "geometry-web/context-operations.js": "36820d5dc246138c848198297a84e7927c64df349af17c04fd3508df594fd928",
+      "geometry-web/cursor-v2.js": "01ff058614dad70645499e0407f6782d8b5f6f3c2abd0c1234da8a0ef72f44be",
+      "geometry-web/document-cases.css": "bd302250e0f213beab47902e339ad72942a437507a744750fe32d3fe383eb01d",
+      "geometry-web/document-cases.js": "3a33c20ef40b333541040647ef10e74cba5875a054da7a9bbda8460309b074b9",
+      "geometry-web/document-format.js": "54e773f190772566a590c5a9eac75cde854be73e98231a021fd807ec92ee8ab4",
+      "geometry-web/documents.css": "33707fb3804d5ffb948280fac33c0793c81aa24c6b392d6589c335b37613e666",
+      "geometry-web/documents.js": "3dbe76e47d02389b44009f1d1ee5b6ca5d3a175d4de128776bf6668422a0e868",
+      "geometry-web/documents_browser_test.js": "0ab5cec0dd5f497e9501c68dce6970658f1d39c1f8a2c62183744b47b5826886",
+      "geometry-web/edge_draft_redraw_test.js": "ad44ff567644391ecfd8bca20b21726d158bcf67f44197569f897227d706c775",
+      "geometry-web/engineering-adapter.js": "5c88b486f2ff26a72ef31bc6b2aba475af3d7620fbccbd756765ddc25319c6be",
+      "geometry-web/engineering-workspace.css": "4c4cad9d69c9295a8a44a41d4509b2b821d7431b98ea18dc869120f3dedbf610",
+      "geometry-web/engineering-workspace.js": "d3c6898fc9c146e9db90ad1a279d4e3145b50398c33f6404031b3c56aa7acb02",
+      "geometry-web/engineering_transport.py": "43132eef6e5ab1515eae9deffa703a2a97aa3d3300a5da1adfe86ed32e913f86",
+      "geometry-web/engineering_workflow_test.js": "2ff9c6257b2a1c5ad8bffd5a6791c454c6d6e7ba717489697f6807bac9e834c6",
+      "geometry-web/evidence-links-app.js": "363fed50c6cc24ac7f5e7e6b6c84fbafc2d104f902cdcd98e842c1793c7db610",
+      "geometry-web/evidence-links-ui.js": "72060fa1b345cad9e8b073f27edf5e31cc793256a2b50a12248f23e29bf0ee73",
+      "geometry-web/evidence-links.js": "70345645f0b0b7ecc967a8b82270e29f16678c34cb4e012b331186ec15e43232",
+      "geometry-web/evidence_links_browser_check.js": "8cc311ec281c3d564739804ef1b4ea3bee5c628eed1b5ea972192fbf1803795d",
+      "geometry-web/evidence_links_integration_test.js": "244d6b583d77fb481d250cfc1ca5ded9e88d9819f0833743667ab64f9e9a2d00",
+      "geometry-web/face-context-menu.css": "7d1a7795afb4b6de802f7c7852cd0a41be024182b1b8ffb0db17d990aa75a08d",
+      "geometry-web/face-context-menu.js": "822e403ae57f03577bfa428afdae8eee23c14847ee37ce164e280b01afafcef6",
+      "geometry-web/face-menu-icons.js": "6a8354e604b49c48f5468317f54dbb4c79691199f6381df81272646a924bba5b",
+      "geometry-web/feature-attachments.js": "6313fc24471ff1529c5dbafa533ae77c3389ff3e378e25cfbd50f65aa4714d2b",
+      "geometry-web/feedback.js": "697d5491a66018e095de6941d2b3c0e0b53941734469f93bba1c1c4d8d5a86bc",
+      "geometry-web/feedback_cli.py": "bb5a671dfdbfab238ddf2449df8ef2dd59741ea8e63141a0b464f5e74dc50348",
+      "geometry-web/feedback_resize_observer_test.js": "4598612a3f2aaafab69e061b2f7179530024dab8f99d35c750c783b3336db0d5",
+      "geometry-web/feedback_store.py": "cb6370c17a0d9aab4979bdb79dd7a5ddd252a328c9305b746e687dc8601f520f",
+      "geometry-web/grid-anchor-positions.js": "2b3edbe49e67c7b50feeb718c59df5a50049955a3ba99b0798d61887abecd47c",
+      "geometry-web/grid-inspector.css": "c9abe1e1d0e1d861cf487b2b48117dd26c4b98bd33b8794e03dbf16b5d211345",
+      "geometry-web/grid-inspector.js": "be25941bdc50cc7e31453030471bbdbcf70e1b87945a7a7c28cb2b1c929d9902",
+      "geometry-web/grid-rule-lines.js": "0f554fc0f764e5092cb2681048bd74cb50d1c6870d706c4d68867a9b06d6bfda",
+      "geometry-web/grid-system-workspace.css": "958dca056995109a452a15cd72f00ff1da9e3192f02362e48c32c3f7f0cba08c",
+      "geometry-web/grid-system-workspace.js": "5ac46e013fd6e189510c024da5a72a7fa351ac9cf1fa17efe123ae76c5df4194",
+      "geometry-web/grid-trial.js": "42b1cb66cfd94976fa20366193f4a1ff3af82b777cfbca2e1ad7d88a245e7323",
+      "geometry-web/grid_definition_interaction_browser_test.py": "305deaa356c3e85f9ec4f5495273d4419a53009f04d0856702dfd1857e70fa76",
+      "geometry-web/grid_material_entry_test.js": "9b0c7ed79a8107601fbd894f3a9839901248ec25157fb7ddc00893ae7314a229",
+      "geometry-web/grid_portable_browser_test.py": "036da891b5c0c7cdb4b8653eb36efc22fa25ff9ada868ef35fb57e78308079dc",
+      "geometry-web/grid_raw_provenance_browser_test.py": "66ddf61b3770c42cd7f9323bf55c9a25f14a383f50063a718eb7218862190ef3",
+      "geometry-web/grid_rule_editor_test.js": "1b1ad6f2fd0cc5e2b65da0450943f6e2f3b87d2e0f4efc76d14d10e200cdbb81",
+      "geometry-web/grid_rule_lines_test.js": "73b229ef279006be9fe750a8f06d680c1277b50662f51248ba69fc10f788fb43",
+      "geometry-web/grid_system_test.js": "55ed51369d0962f72b7f4c22aa54ed8cf3fdcf9896b03ee6d1a0739524e4a799",
+      "geometry-web/grid_trial_test.js": "2493c5aeb2ca31168277a882538991b50707ac39aab9a91f70586c9901607139",
+      "geometry-web/grid_workspace_draft_test.js": "bd201511a75b5b7209abf8b10ec5d065841f02dda7b9f4d4d560b607f27f94c5",
+      "geometry-web/index.html": "5084ee2b214a1653bcdfd31105bbb05b786f1447d14f9eb177ecb3185d27a9a4",
+      "geometry-web/infinite_grid_face_test.js": "b41ab1cbb739ab8c827201c84ee6d881af61894dd8078200a2244e3829cd15bf",
+      "geometry-web/marquee_test.js": "4401f6384699a50646c5b81fba2bea2594f90724d4345a4fdb327dc76f578388",
+      "geometry-web/model-update-app.js": "9838ccf25ebddd622cbc1a28122deb8108e4e1d615122a3c754a3d8b0468d660",
+      "geometry-web/model-update.css": "75aec3df9cb306b572cbecfa89b6f2a6fe925d3d2643e0484131cb56527841dd",
+      "geometry-web/model-update.js": "613df0d67fa17c846515fb064b5a494a104085c465e261828cf69d663f3a3f80",
+      "geometry-web/model-viewer.js": "443d0a8d82f91b02ea2dd38ee9f32b39f0ff2287369aea5481768a29fe513d5a",
+      "geometry-web/model_snapshot_navigation_test.js": "891d0d6626130b1a0d26bbafa5233e3e80819df8542cfc0d8ab59f1b6d12989d",
+      "geometry-web/model_snapshot_schedule_test.js": "e071e23ce689eb2c23ce8cd829e0c5dbd982ce619464e78ea3569839d204a4a6",
+      "geometry-web/model_update.py": "c75454ebe398352a7d6c09d421fd6835b8c627ad9a08663cfb9c75103bb85ae6",
+      "geometry-web/model_update_browser_check.js": "2faca3017706b60b686e7a9beb9d1190ed161d162e8dd24eb16f6a2d18c20962",
+      "geometry-web/native-transport.js": "2ab37afad14e1af62607984a8b14eb1145d26c624d9a047fdc716b3b338e4640",
+      "geometry-web/native_context.py": "e7b30f06d4916664bceaa3adc25fc2cfeb0e72bd20150dea4977f05ca0ef18b1",
+      "geometry-web/native_reader_browser_test.py": "1fd5a3d836a0c433a6f7f60b76684e95169f3cad873410cc2cea3cb859705711",
+      "geometry-web/parameter_confirmation_test.js": "50a814d5abf0cb79506b6be33a64e53a07723bbc7fd911c3529f5d41db54910b",
+      "geometry-web/parameter_preview_ownership_test.js": "d0e3f70b51907d4f27126e362abbe1dcf0a73f913ebf75da71d9d890373baf63",
+      "geometry-web/parameter_workflow_test.js": "7c017128b7dbfb917305c8b56e3e9ca6ab0f8fd2afbd2b97b92cb71ce4edbdd8",
+      "geometry-web/parameters.css": "72b0238af5eaffdc3fa49b8a71a7a14af58ab9c7bbda026804899c2b2d0255b6",
+      "geometry-web/parameters.js": "764bb57697cba6a1e9a91aa7166f77d8f397b582a12c03c167ec4c90dfd93aa2",
+      "geometry-web/pdf_tracing_snap_test.js": "1aed4e91049e839612323f76fd76bbceebd6dda051b8c9e6fdb0f184020817d4",
+      "geometry-web/polydraft.js": "733265e26e9aee4bc1923733425c39fd382b28ca6ab3d210007cbb0b47077358",
+      "geometry-web/polydraft_test.js": "8e644cc40dc122959d4afbbbe992418cc55da5c0ce783126de6ee892946b4274",
+      "geometry-web/project-store.js": "d06dce17c7dd9e17c5a83045128bfc447b14b0b39c3902e27d338b6ef9d3c3a3",
+      "geometry-web/project-ui.css": "2f689462d3eb7fe4eabaecbd57e5fd55fdd48ce8deeed85aee36128fdb053875",
+      "geometry-web/project-ui.js": "ffdabf0aa037d3ae870f8e3dbaa8fa5f2a63ea252381ded53281534e8a34cdd9",
+      "geometry-web/project_audit_test.js": "23bcafd0cb111785abb6608cbe19ed31dce8ac4cf7933cd73078e3303fbbae67",
+      "geometry-web/project_import_final_objects_test.js": "7012ef97b6805cff348bf1c6e44945fcc72662bff1ef0c2cd800a42864595be1",
+      "geometry-web/reference-display.js": "6e584dcb09c9dddf1469a6fd50723b008c79c296cdd1ebeea69736d9133a2341",
+      "geometry-web/reference-ui.js": "fb6c97ede5111d611c25b7bfd36a084e807aa641b26b6c23cbb1392effc9c9a7",
+      "geometry-web/reference-workspace.js": "4637836fe46c016a4bb623e9f2337fda9a8e2aeac853bcca33e9d5fff55b7c62",
+      "geometry-web/room-collection-workspace.js": "db59521d040e48a6abeb7c8327f74e6e98e5732af4672a2f0e6106b2ad112ca2",
+      "geometry-web/room-collection.js": "652ec9ac5dce7a80b527b38eabd4bac5a6c542e951c62dd86a177c7255ab8251",
+      "geometry-web/room-outline-worker.js": "82767675eafa6a806849db8f9bd59d4cad0d5952b3d5eb19db19d9dfba5ad5c9",
+      "geometry-web/room-outline-workspace.js": "38b84914ba56308534ac69cb4b2b5fbe88d4668d437a30207381fb2cc0c9895d",
+      "geometry-web/room-outline.js": "7333c1031ba54a2f61a079fcdb009a2751fe1cc484a01944a32ffdd56490e403",
+      "geometry-web/room_outline_test.js": "a388f9a976b3c8af0fc217274c340b0ffe0d9bf2fccedd1533acf984196aba3a",
+      "geometry-web/rule-case-data.js": "ee0e81832fd10bcd3dc240c1c456ed0f9d31839ccbbef35ee50ad9663c9c8c3e",
+      "geometry-web/rule-case-host.js": "22e1b5895e8cd45f142c5cf8e8b825d98ce1878372afaed88d1cd08f72774673",
+      "geometry-web/rule-case-workbench.css": "0e7460cec3737f3967e828b65c40f965e4fb3c14c666ca38588668ce299759d4",
+      "geometry-web/rule-case-workbench.js": "991eb401ad19ffbd40d5956d7f4ff55854d4854c804c31292ff60b41bc4f52d7",
+      "geometry-web/rule_case_host.py": "a4ebe3589ceb71cb999001141338c32f6efc7056bea6219a14ce64a4454e7d82",
+      "geometry-web/rule_case_workbench_adapter.py": "52d77dd25b2cf87a0b4777c677430fdd9666902085a6cc57cb0bbb72046992be",
+      "geometry-web/rule_case_workbench_standalone.py": "80d8f21dda1a7cbc571710f30e3203fc77e81a35067f9a9ae0ff8b501698cdba",
+      "geometry-web/runtime_version.py": "f48624a2ed6528a01c36d6d7d44bde589ee11d5587da4681f052579c2cc7e955",
+      "geometry-web/save_reopen_synthetic_test.js": "2eda7db51ca8f44d15eddb94251dd57b904a27e924f455c39bd76400bf46b4c0",
+      "geometry-web/scenario-catalog.js": "013940df8c3e841a8803455ee1f7b894ac29f873a151cf4cf880b6dbec26dcf1",
+      "geometry-web/scenario-diff.js": "57f15d08e3ee003a15a2915fa919c78ccd75a3ed5d8c039648bdfa9b1903bcd9",
+      "geometry-web/scenario-integration.js": "7b35bcaa7599ad92ba46c5992136f0aec0ff96c94c7bf019b22fcc74898fe2fe",
+      "geometry-web/scenario-snapshots.js": "a4f4f1be350aa5d093ad1948b17c2f8e4bab01b8f280c9b853c81c99aa0bd598",
+      "geometry-web/scenario-workspace.css": "a37d14e893abc8bdd80019ca08f6a0885add78d004156546eb375db0ee7053c2",
+      "geometry-web/scenario-workspace.js": "1d391a00526d752487337e17c1d5aebf27f726595683cd2b64fa2b90326c8d47",
+      "geometry-web/scenario_verify.py": "abb9c2444730fa40bd0363dd0c88a9ee8e4aa577b9a9304993b1682fd4c151b1",
+      "geometry-web/section-profile-workspace.css": "b8b2221ca312757dbbbdf1af8f8e447788334030e58421976eaf549f8553c884",
+      "geometry-web/section-profile-workspace.js": "399f4c9736df5944092d04063146248859559e9c272b6b6edcf101b0f3c828e5",
+      "geometry-web/section_profile_transport.py": "e4fb890e0973be9c918df8ddfd776ca9d613e836c99dfee29b7c73fdb617e474",
+      "geometry-web/selection_cursor_test.js": "d9116def838f517b1ab75bf77682ce102229b788572af6ae8b780be2d092ab5e",
+      "geometry-web/serve.py": "bacc291874f7191739236696cf6e1c231daee57008f827d96389a562f5f30fb6",
+      "geometry-web/source-inspector-app.js": "4046869adfaeb5c0470fe7a281c6e5583c27bb3fbc84b84424679efebbfa07ec",
+      "geometry-web/source-inspector.css": "8d66640d2f0e8475fc6cead0a1abfc950612201220e92a89b6c3f10e3036cd07",
+      "geometry-web/source-inspector.js": "c5f4c783648a177b2a2de1801030cc00b3ecfe26faa5f5951629993f70d7ba81",
+      "geometry-web/source-plane.js": "caed8443df9fb3d7ab1caafc1952208bc839a2072c7126b529041eced19ca30b",
+      "geometry-web/source_inspector_browser_check.js": "154e9486ddfdedc6702c427924e2cd8762f044b8981dd51599c41eee823f131d",
+      "geometry-web/source_inspector_transport.py": "aaacece9eb47813e8a03a09ada9292c92ea42a69733929fe7e74f120d6d52779",
+      "geometry-web/source_navigation_test.js": "92b4b250a07d96878d665b6e710ff84410f69b3b11d3ce06b7408ba9a6e582a6",
+      "geometry-web/space-short-height-acceptance.cjs": "738f18ad380641f3e5cccb91c359a782f10594c4a4a14bc76685b8f974d44034",
+      "geometry-web/space-workspace.css": "6a9b12969c518609ede4d4c3354e43b40e783eb1055cd41863ebe68c983af6da",
+      "geometry-web/space-workspace.js": "88709be1ffab50a4c11dbca42466097bfaee2e435c41a14cda9be7cd05e0ad3e",
+      "geometry-web/space_model_test.js": "1afbe140d18d857a0a91ad38c375c4943e7dd65126d6394a35ce5a93fa5b9107",
+      "geometry-web/space_modeling.py": "fb0a4c000dd4e2460e260e8e7a778f5f52e596bcc0c0556a06bbafb224eccdc5",
+      "geometry-web/space_test_floor.js": "f2a9219851adff9450e05a5c9ec49613dba1a88fe8484a93a5c9499f2bad8d4d",
+      "geometry-web/start_local.py": "31137d9635da7c62d34a72d1f4cadcf60e2240f33aff418ddba28bea55c5ce29",
+      "geometry-web/timber-schedule.js": "764ec9fe3fa2b78b280d83dfbbf22ee95a79fbeb8d062e59e21cc16d5a54c0c5",
+      "geometry-web/timber-supports.js": "be4f4c0277e5827d6707ceb2bcf9af200d5a0ab13d338b67589a000e839debf2",
+      "geometry-web/timber_schedule_test.js": "59da427a64fa9057a230d56cafbb8fd35ac0004aab844165a1396666a2f9cfbc",
+      "geometry-web/timber_supports_browser_test.js": "b18a593c4c073768d77e2b4130fdeae451ce42ab7a1b0dc6c4759de28d99604e",
+      "geometry-web/uiux_review_test.js": "6ee9188b1fd05e7823a270e32ff57ef943e8f3db78a89a043486de84539a13e1",
+      "geometry-web/ux_refinement_test.js": "f9e6079819c9d95e09fe5e1e54aaee75928a51edbc6b1ac786086f9e365f6128",
+      "geometry-web/workspace-guidance.css": "ab777360ec80da6feb3fcb4d7b330104aae329ef262bca2899ce92827abb8986",
+      "geometry-web/workspace-guidance.js": "00412889311ba4f7625fd59ed7da07ccfb88bb06650e67a464e11b71aa67a51d",
+      "geometry-web/workspace-shell.css": "d67f212410bb6e94cd3db26d3ab7891a0331f2effe6c02365dd5bed5418171c2",
+      "geometry-web/workspace-shell.js": "780a26eb4e061069f8161bedd44665d2ed4ece9f695cefeffef7a7d855ec3b4c",
+      "tests/__init__.py": "02319f9494b104f0476594148d609710685ee440786c2e991bf114dfbc20d596",
+      "tests/_bridge.py": "bb34d61a288772f9defa9136a58f9102effe40e6f325338ef2abc01862508df9",
+      "tests/_timber_support_bridge.py": "836c3ca8a1a5ae1f31dd579d7ed8aea5a46282db1fead66f4f6193b76c7dfe46",
+      "tests/_unittest_runner.py": "f4e72e7a771f903094d6973874da8ccb2c98ddb4ff51571cb9179eabe284290e",
+      "tests/assembly_mutation_check.py": "08bdd4d4432c2e4348ce2a0258f7b14aec2880aca5bf5f2cb773813d2ce5fbf8",
+      "tests/binaries.py": "a211fd0d066b8a5138855c4773373f9f526717f26264de909c0f61f997ac9aba",
+      "tests/browser_race_ownership.py": "4094e1c01f598e8b5dee868f1555c2d315c7f7562c9d3ae44247bfd90be4cfd2",
+      "tests/browser_race_ownership_instrumentation.js": "64c51184301f28f88ef6b1113e842c98c9711ceea82b5d54d1702b0babd8819f",
+      "tests/build_assembly_example.py": "c25b3cb74c926258113865e9e4a5aca3a372960d87b004c1712ffc674b8904cf",
+      "tests/build_assembly_generation_example.py": "dc161686c2f59a37775f50b04e8c19bdbac09d2902a95c3ba5d3315eb9448ee5",
+      "tests/build_assembly_generation_witness.py": "66305eda9ee1bed6a222efd2eedf088b7a8d04be1cdf8cb7aefabf059e2afde7",
+      "tests/build_issue77_fixture.py": "73e22134e1f0dd62a91b85570ba01483752098e55020301f6afdeffa4edc268a",
+      "tests/fuzz_scene.py": "ec72c4ced01dfa998e9a8b950687ad82ade29308850e90905e87be998aa9986b",
+      "tests/issue123_adopted_slices_browser.cjs": "6efba5412916a31df431c557a7893019f186bf8adc3fa15aa059098367e272d1",
+      "tests/issue77_attachment_fixture.js": "651203ea2f8a75de281a6d4122df9d8ec519ca54ecce5b9f460df3d374c537ec",
+      "tests/mutate.py": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
+      "tests/reference_pdf_fixture.js": "e9a080dbb26ea4959e19d168012dbba484a9c18876dadf9c0bf882cb144a3740",
+      "tests/release_gate.py": "ad460ddbdd52c48995188079339bc224e7f39b3d01e3147091a858ba8f541389",
+      "tests/room_multi_candidate_browser.js": "dff1cfcdd4c491930e8fdb08be5977ef13187b42f86ef651b259ac034635d892",
+      "tests/room_outline_acceptance_browser.js": "77bc8e52d9ed812372e74b6e0922a44715c655fc59d5bf332e194d2546af471e",
+      "tests/room_outline_direct_rows_browser.js": "ac2a0cd540de60ec118afc9890d5d6f6037d7eda1eae8b51da3ade498ed82b31",
+      "tests/room_outline_fixture.js": "f6984e3e4f381995471aa8796c86518914cb3a546c23dfb6d068fe9780f73f46",
+      "tests/room_outline_keyboard_browser.js": "4513cbbf87a0ad1e8f9d27a2f721b390c9e9d311ce516a470b3dbd2435b10f3c",
+      "tests/room_outline_pan_browser.js": "41681f5da66565e91a8039c2e1ad6949072733e831678fc0bb14b5e5ad0e4bc7",
+      "tests/room_outline_worker_browser.js": "24fb8c85c80b1b69571656c79f340420e6a17db5dd4c70c5aee688de21148ac7",
+      "tests/rule-case-workbench-browser.cjs": "7960607a6a1685703c210544fb0d069f73421016eb572b32f7a05b114142be68",
+      "tests/rule-case-workbench-controller.cjs": "62474aafde713247652df74c4d9edb60564b360ed557e3afa2f5cefa0b2dfb81",
+      "tests/run_all.py": "2da3888b1345b534667a2dbf897aacfc472e397567cd99cc87b7dd8a222ef7ce",
+      "tests/run_tests.py": "d327e7ee1d770bf951dddb2afae33a2130ea62411b789124adc1574428da452d",
+      "tests/scenario_browser_check.cjs": "62a50f69ec367ac3bbbeb28092b2c74e8fb562a5160ae5baf9bdafa3b0726b7e",
+      "tests/space_group_counterexample.py": "569c32b3b7709a15c0464b8793fa0506f2791469e74df2ee921ad8320b19669d",
+      "tests/test_anchor_band_clip.js": "33b0611ed774bb3ce150b3098533137793f8a21e62dfa61dab9d7194afbadebc",
+      "tests/test_assembly_candidate_impact.py": "36bfb8ba40ffc7a10c9c81b6e8053a0e39e4205b5e9762625a20c3824f8ec83f",
+      "tests/test_assembly_capacity.py": "2d8d55779ae5d01d5fee43014fd70d5266a3bc7b176e4f3d1d08bf1aa06c3f4a",
+      "tests/test_assembly_generation.py": "f9f0f76190d94401ebbc0ce4b35efdd5f19c4f60cb42b232265908504961cf2a",
+      "tests/test_assembly_native_diagnostics.py": "ec4a3510fb271f2935766e4d44fc477c493d8f39e7a3469c3bb3a360414e9c2a",
+      "tests/test_assembly_parameter_refs.py": "53e35e27598763eba9e8192e0ec1da63049b1ac97fffa7344ca2b4abd3597ac2",
+      "tests/test_assembly_project_store.js": "7f6c833728f579ee23f32cc494a7e15dc3042a460a362ccd70010f50216de480",
+      "tests/test_assembly_rules.py": "bee2e6a07e4b03b5913445bb9f20f490097af300f03b7ed6aae51276a8d29fd4",
+      "tests/test_assembly_transport_context.js": "323957992b01f33d9ba24cd58409d79be53a8911e433026121a0071b676b0518",
+      "tests/test_assembly_workspace.js": "e8deb3a3899608812dc3b44cdd3a3e42cd76ef126b3ac98dadaf38bfa5e7e5c5",
+      "tests/test_axiom_reader.py": "111f113646dad5ecb08ce07baaa30f5e8d41c631b827fad1a2a84e05c9055375",
+      "tests/test_background_grid_viewport.js": "78f0ac0bb6fad75b6db5025581af912c188319b214a09116daab0c54d957f9b5",
+      "tests/test_binaries.py": "42e429eeba7af2bc2a43a476b164df346795ade3615cbbe70e5cc262e8a55b29",
+      "tests/test_bridge_integrity.py": "58e2536b657a77d0c1dbd5e3067e6e29bba4aa6007a42db7ae16096b08e34a1b",
+      "tests/test_cdp_card_position.js": "2929b04ac505e5118c6abaad6e8fd3ea1dee6b38164ebbb21f390e8670b6a3af",
+      "tests/test_cdp_confirmation_gate.js": "db7b64f578c765abf857bb8ce2a336dd28031346de429335901498c136e3ac91",
+      "tests/test_cdp_evaluation.js": "fc882ae41caba20b646ac3da7bceee68a1493764c23f0d76f20e163f606f3a53",
+      "tests/test_cdp_floor.js": "ae298653b9166c4fd4aac0942970d53c6ac0c35a56990cacc6087893e217a667",
+      "tests/test_cdp_navigation.js": "e305750a057dca812a4e3a38db7e848f1bd7ef5e9e204e635ff8c89eec5e19c9",
+      "tests/test_cli_args.py": "202cd289162f499efcfedb83f1b59b9a1e0b39f7f94aa2db95c1b3aa2ec10683",
+      "tests/test_context_operations.js": "3bcfb281a7445e0d3d2483a9def03b1c183cf8a378342ef1c75cd4554516b6d8",
+      "tests/test_datum_contract.py": "2f9c35d7e6ed67a106a8cd8f5f598b4ec9f72e432acdc7d47f14c4add179a0e1",
+      "tests/test_document_cases.js": "5cade9ae7e4680cde3a4fd4b8f99008d563808c176c89b53b1e3cacd4e574824",
+      "tests/test_document_format.js": "0ac299794be5626a163373f7d7394f836ffab3c7392f074c505f8e62f3f2552e",
+      "tests/test_engineering_core.py": "0f4b109d8fdc325cc70272f78eea4c8b59b8d1f017fff3b6df42abd9fd5393ab",
+      "tests/test_engineering_json.py": "52a49337054336011c4efbaa1ec15c8a2b71e4b05412b4f859cf190d816a9637",
+      "tests/test_engineering_model_compatibility.py": "046b508ae2ba97a9ae561be52b118c1f861fa7f38e7d6cbf50d4f1cd0f533735",
+      "tests/test_engineering_model_sources.py": "d3cbd4616dce1360010c7917e27d94d15b472ded3e2c4afa47ec76636efc229d",
+      "tests/test_engineering_project_store.js": "b907b6c095672f80799a66157fd7f982d67fbf8500b54d531af153a938cc2419",
+      "tests/test_engineering_transport.py": "2710e291b237411a1f21aa83c2e0b7617fcc444379fe6ca472abc9807ea78174",
+      "tests/test_evidence_link_native.py": "b10ab254b095412006662532ef46ec33d50d63c7a7ab2a7ed34793513bd9f434",
+      "tests/test_evidence_links.js": "a6837d8dcba6f3c58362dd21eba4e1586acd5cddfce31a8d54eaae30fe39efa9",
+      "tests/test_evidence_project_store.js": "827a56c677526c204545b6928b1e6d3be48929aff43b73a248b9eb6b741b54fa",
+      "tests/test_face_paint_scheduler.js": "34a07e58c7857220c11a706630ac334ed9a51056d3a7fd1ea32b8ff993dd7fd9",
+      "tests/test_face_projection_store.js": "e08ef8dfa3debfe65b037c5aaf6b035e2abb02247989b8c351e5a767fdb11ef1",
+      "tests/test_face_reference_settlement.js": "e19d87c5da736264dca496af89ce563f7a36d1dec67194958eb19111d8d62a11",
+      "tests/test_feedback_events.js": "fc52e9d8bc89d90ec0c878fa3d3f9b2cc1588f0ae53bbc65e0ef00e48f36c92a",
+      "tests/test_feedback_store.py": "5c690d4a296b014030a6e437a564b2737b0571d29ebf4c6d935af94753be154c",
+      "tests/test_gdi_contract.py": "6072c7ef887705dbcb2ca0eca13c18666e72bf740b6cad906517b91ec2c9a9e3",
+      "tests/test_grid_definition_diagram.js": "72d01b22cdf930a46b47fd289692ace6bd17370825383aa89ba476b49d955ea3",
+      "tests/test_grid_lesson_control_ownership.js": "4c36f2bff6f8421164b984e8ea95f6705d7306edd888f3504aa619f6cc9c3242",
+      "tests/test_grid_rule_draft.js": "42ebfcfede92a875940c6ad64724c4562f432fca50a85bbf451c546643330621",
+      "tests/test_grid_rule_lines.js": "657c1ba9463328b3c30e00791ff17ef5164a1ebca39159b4981dd0441bf42d4d",
+      "tests/test_grid_rule_reader_browser.js": "af712b31fcd27395a144de5271faac1889d61a05922024f2c7c8b38df014b34b",
+      "tests/test_grid_subdivision_oracle.py": "c4dc7efa339c8121463c1799ec66b7ff0459aae82dbf719ac34b95d0b4405777",
+      "tests/test_grid_system_contract.py": "45328466d048313464254a04ba1b6770549f1a3cc1f76468b96ae5357a4f5a75",
+      "tests/test_grid_trial_contract.py": "392f9532f0cd9891f34f96f929bededc7bc4e0b2322b9107454d91dfc4f8a739",
+      "tests/test_grid_trial_geometry.js": "50ffdd8a58c3f034575b0a73423f79a1e33de0e30b610589245a3a9adcf88ccc",
+      "tests/test_guide_panels.py": "a910ac074e0ec956c310739c9d97e5c553a9d27d6dc5d2fa46d71f657671fec4",
+      "tests/test_history_operation.js": "183b3a82c5779b5e64650f23972977eec9227dbd242375398d9314fc840bd1dd",
+      "tests/test_hover_pick_scheduler.js": "1d3efcd22bb87382e47609718ae902595385930b9e32793fc4e0ba3b3d7d04d7",
+      "tests/test_infinite_grid_contract.py": "cd7dfc2f629a60adae67dda374341a9341f7c73b43c913dc7ba9d67026ea9a0a",
+      "tests/test_issue116_browser.js": "b7a8563415d2572482970fbad1e02ada1e75dbd585da622589752fadf8c67a9f",
+      "tests/test_issue123_create_feedback_browser.py": "2383cff7d804747d599c43320c582c99a10b5587adcfe57aaebb61c702ebc337",
+      "tests/test_issue77_attachment.js": "b84bde66d225b2077a30ff356924b4040bd8e69e10e28ac4b4ccc7fcffb5af21",
+      "tests/test_issue77_browser.js": "10653053980d38667ee07aabff9c213c6872a89b8e9aa8eeda7aa0e384070527",
+      "tests/test_issue77_exit_browser.js": "87a21fa6ecb2043ea662a6b6fb0b79f1d067bbea6cf474a9877aea0df1d3b93b",
+      "tests/test_issue77_history.js": "c5e771a7a8281e25c197fbafb4851979cbb1a572038c34d174096888a48fa137",
+      "tests/test_issue77_recovery_browser.js": "9ee390efa240a354ceba95fea2b4b6a44dd1eb1cd5911a2983570a5efb7affaa",
+      "tests/test_issue77_remove_browser.js": "f89f7f96d6d7b6650bcab509e6d24756135f44aaada22ef3202fc21c3123baec",
+      "tests/test_issue77_workspace.js": "fc894a17defb71b7c5eabb7b03d6afac61ac779ab529fcd84e3809800bc81e01",
+      "tests/test_local_launcher.py": "c97a606cebe9e77a8975166935c69fa6558d04ad79178e623110502919f863e7",
+      "tests/test_model_snapshot_navigation.js": "784a3527ce2bd149ee3fce1d6527c4b3b8f8e6acd84292f81c11b81a003b20f3",
+      "tests/test_model_snapshot_schedule.js": "421737bd67444201b8a786c316f2b3c369b8b9f68603e88253b56714a395fca6",
+      "tests/test_model_update.js": "1623a6c8c505c9a56f08e5f07d7c36b4d9e48467ef978a8db879430129e4627c",
+      "tests/test_model_update.py": "06b445d8d07a871f17ee5ed38fc9c90087ba439bd2dc6454925198f5cb55fa99",
+      "tests/test_model_viewer.cjs": "ba9f91e5778f8161993d1f3bf50ebce648d4263da65ae58860337e335b09e3e1",
+      "tests/test_modeling_degenerate.py": "530ad46ba50c62bb28a6e2d0aa482c2cb6a3ff9fe3d5706cdb3055026c0dbf79",
+      "tests/test_modeling_runtime.py": "22724d8d1f5941f1c3c3200ce63314cd30a0bd1bbab9a33f0252799f1913c426",
+      "tests/test_modeling_transport.py": "f38334c4cab53c8d614ba881e7ec8788a9d788eec4fdcecf467c624fb8d69fd9",
+      "tests/test_mutation_freshness.py": "83dd22ee1462145bd62b59fd0ae1d270a2840fd8631fb86fcdbb19eaf89d9c26",
+      "tests/test_parameter_confirmation_settlement.js": "a332d557a511af526357a9d3e9d77b24f645c30583421e828eb7c42fd55ca747",
+      "tests/test_parameters_core.py": "5c4289815bc162d6993fb83c4ecc608eb4fd124903664e5248670c214620045d",
+      "tests/test_parameters_project_store.js": "5318a3ce6af26d02191c1a99f238ce61fa960d4ef0f658d8fcf8735f65702828",
+      "tests/test_project_store.js": "7e3798e0cf0623b7646c593a3d4f27f57924d05a42afeb79c13637b6c73e0448",
+      "tests/test_reference_contract.py": "582a8b241822552a864ea5bbca11ce4f705a8422524645886691cc62d739d4c5",
+      "tests/test_reference_workspace_races.js": "f2f737d179fa4e9b67196c04e1f4ca8e0515c8ecafa346bac77acb354c91e0da",
+      "tests/test_release_gate.py": "5373232181cb46b96ac9d2dbd0879653c774cbba2576ec3651ba4fc11591ad43",
+      "tests/test_room_collection.js": "945765efcc69ef7d368482db577f53a614aad374dc7bf73d2f0fbd982716c6f5",
+      "tests/test_room_multi_candidate.js": "42205c046ad1a599688a479d6a6013680837e685027f710e9e8571c128b5d658",
+      "tests/test_room_outline.js": "db1f016235b98296218a5c78838fd54d17b3a5b25071c6f39b17b90f940c9f99",
+      "tests/test_room_outline_closeout.js": "c53665033e6286c950f991356fd9fc281a07c7ce8fa7ec32a11b0784263aa539",
+      "tests/test_room_outline_worker.js": "ca5fc8aca2eeab43b3f0c7278144f9b8b8c62fe6f511e6f42c009f0db8120d59",
+      "tests/test_rule_case_app_browser.js": "8c2fe5fa410a554b346cbddd0a11e806d6de5186fe9298a8d4c10bc0a9c98af4",
+      "tests/test_rule_case_app_races.js": "8454dd1d4a0f51de9a4d131b62eed5e2f9b7e79b4f8ab5244807f006a4bf26e3",
+      "tests/test_rule_case_catalog.py": "917953cf9d00d3a3a8f072e619b1289b9318ad329df4fe2b7e95767a8036164f",
+      "tests/test_rule_case_definition.py": "4bf04478072741ba1b7e5da17a1e26a30654b30d81bb0d37c57178f00e0ab834",
+      "tests/test_rule_case_executor.py": "75d10bf4720bc5f7a45f1913e0b28a6781517e934408372d6329cfd234ec8727",
+      "tests/test_rule_case_host.py": "9ca2bb0667b463b27d3b282f1d371c2b5831e6649e89264eb3b92cbf85be51e9",
+      "tests/test_rule_case_project_store.js": "9148d9247934fbb50780228fedd4ecf83523e316a26bd12ba161702b4861a3fb",
+      "tests/test_rule_case_request.py": "a663e73dd58637d988cd946b6b35679af5f434bee9a35a69f008362db63585a6",
+      "tests/test_rule_case_workbench_http.py": "a5eae2c6cdadc80354503d858930a0a4d728d53eb63e528f150d42fa60c492bc",
+      "tests/test_runtime_version.py": "ea56953ea4f9687e2c87d3c68efb709e44a6c6c1a9991294030924cca4904de4",
+      "tests/test_scenario_diff.js": "68148fbf709d4adb11ceac41b633a4ec10d52920fb7f9b791228823407d0bfb0",
+      "tests/test_scenario_editor_tickets.js": "37c787606422a644f62b96094b439208250f9fe2ea92e6b7d44b4f7e033d0a9e",
+      "tests/test_scenario_grid_interface.js": "fea99a066b830fb1fe91801f64cd7fb80829f492c7d4894e63b4bf6b1452502e",
+      "tests/test_scenario_lifecycle_browser.js": "593279947d1ec8d71d0a0498c049752952a52f988d61c031d063a5db395c4c31",
+      "tests/test_scenario_project_store.js": "08b29eedfbfcb9f8d1f62dce9c21d453cb78b6000a1669b78347ad527e8bd150",
+      "tests/test_scenario_recovery_owner.js": "f1308fda837491b9b407811c254c1b9020c5ed449538916146e0dc4a5076420b",
+      "tests/test_scenario_resume_checkpoint.js": "4846bf11d03c2a2a2b685dbd88db6f7b1544ba3eecbd6a220fe948540308cff4",
+      "tests/test_scenario_review_native.js": "b926f7bdc188623ed3681cdddcb5b1692478e9926f7d8c27444e5ddfad71767e",
+      "tests/test_scenario_snapshots.js": "e8dbf9f3594d055962c6e94a5a1313f3fd8f85ce5a5ef7e199185fafe2d77e23",
+      "tests/test_scenario_verify.py": "66f2badbbcedebe9928b6e104b6b0dd81318a9f6b342bfdda5313334ee779c39",
+      "tests/test_scenario_workflow_browser.js": "470866555dda182f1bbc1561a86ad63f3d87be7ec05305602210ce1abb1d9456",
+      "tests/test_scene_import.py": "9acacd4c672584a837411ba340bc0d7bdc0987c848065d8f0e6a501ab0e78482",
+      "tests/test_section_profile_browser.js": "28116139bb91d421fbca7141d3212bcce43406d7abcb5c7fe8d5346ed48cb14b",
+      "tests/test_section_profile_compat.js": "2a11f8f5cc6ee8bc6c03964132ba8744930dd0fd6d1ba28d59900f626ce82ba1",
+      "tests/test_section_profile_modeling.py": "055403b9bb276e5c6b697177bca9397cc24c6cd02d17a51c4a687d9d79b5d29a",
+      "tests/test_section_profile_native.py": "9534387c015b4682323c669271f1a7c9f3da979a0daac09c881ab62aef359c60",
+      "tests/test_serve.py": "f63a818d10f05bef5ce035ee0e5cf2769130a27bca8a658cfe9051a12153df81",
+      "tests/test_shared_room_display.js": "13616a5f5c346ed338a55a8b11842286f9c59a70c8b7e3b4b7b9e9e7543deda5",
+      "tests/test_shared_room_display_browser.js": "82d03b8b534b2718371bae652c6dc48b1a9453a379a9d155e6439e0bbbd18cd0",
+      "tests/test_source_inspector.js": "dc291d7072f41551b102e960442792fd0562a504c5651f1ab96ad4b25b9def94",
+      "tests/test_source_inspector.py": "100bdfbc109f38509f2dba54d661c96bf31dc1243c1164e6dfd87c649f9191a1",
+      "tests/test_source_inspector_transport.py": "d534a172f4a9ad5655a0176be1293c7c51081bbef3f9b026cb8d7964ca4b3629",
+      "tests/test_space_model_store.js": "89fb8dbba60231e4082079b8050af936f0078b2ec0efa27f06d5f420728d74a4",
+      "tests/test_space_modeling.py": "04fe300baf5e71dee617bda68d2eb74592fedeb4af2d109a197f9d8ef68b2c93",
+      "tests/test_space_test_floor.js": "575f08b4317aca408c6a4fb7341388c735b427fbba647c4ed508761fb52f096a",
+      "tests/test_subdivision_project_store.js": "a455fe7029607a671b6408d5ca0020f3c7a3e951a1219cf074f781f52f77e64a",
+      "tests/test_subgrid_contract.py": "4bcda2199167bdafebf08ea7dea8abf31b858d630a79f2ce2adf14de97c6adaf",
+      "tests/test_timber_schedule.js": "bc08272d8a1e1a5b0c9f0d418d81e39b8e3d52a256f48d2ffb3255b9f7ca10de",
+      "tests/test_timber_support_projection.py": "1020b2d4d62b2765b4f226a67d10d5549cdc089d955ee714f13d345055b13d01",
+      "tests/test_timber_supports.js": "febb3a4a66a9a778caee021ae1163928cc6d1a2d584b9c8e260e84ae5e7bc8e7",
+      "tests/test_unittest_runner.py": "23938312dfedb4aa931fde8697e7edd5de58a9f42b4dbd180ce5ae4cbd4f80f1",
+      "tests/test_witness_diagnostics.py": "2bfeb103361a85a0e7b4a449cbae60d27f0d7c123f6f2ed4e9fbeda59bf06d9d",
+      "tests/test_witness_marks.py": "5607be3b45961bc4709726e569fb342ad4649d899aa84a13cdc54fa3593d0863",
+      "tests/test_workspace_shell_history.js": "879d7798f967da5d1e2065c1289bcb8701ef0a69daf71bc9281e70c837c4be8c"
+    },
+    "runnerSHA256": "94a30d7bd7b7f291e3913e5192f5640152ce27b9a80a7adaebe37e3f48b79f70",
+    "executionFiles": {
+      "<workspace-path>": "ac2a0cd540de60ec118afc9890d5d6f6037d7eda1eae8b51da3ade498ed82b31"
+    },
+    "configuredNativeCore": {
+      "path": "<isolated-test-directory>",
+      "sha256": "98d7354082697d194a1a14966f0b96545e7b86d826b0bd24eea0dff13a856ffe"
+    },
+    "liveBridge": [
+      {
+        "role": "actual service direct child bridge",
+        "pid": 132259,
+        "executable": "<isolated-test-directory>",
+        "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b",
+        "cwd": "<workspace-path>",
+        "cmdline": [
+          "<isolated-test-directory>"
+        ]
+      }
+    ]
+  },
+  "execution": {
+    "started": "2026-10-09T16:11:06.504859+00:00",
+    "exitCode": 0,
+    "timedOut": false,
+    "interrupted": false,
+    "pid": 168799,
+    "finished": "2026-10-09T16:12:56.076611+00:00"
+  },
+  "after": {
+    "at": "2026-10-09T16:12:56.076661+00:00",
+    "root": "<workspace-path>",
+    "problems": [],
+    "git": {
+      "root": "<workspace-path>",
+      "head": "243326b512896ace70e068f62c8f3d6397f6000d",
+      "tree": "3a94d684e90fc8ee77883ca929b7e6e9520e656f",
+      "status": ""
+    },
+    "sourceVersion": "545f021b8cbb26b6afaabde19b73fa82d30a8a138b99d8c721a35fb54f73999b",
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "545f021b8cbb26b6afaabde19b73fa82d30a8a138b99d8c721a35fb54f73999b",
+      "fresh": true,
+      "root": "<workspace-path>",
+      "pid": 132256,
+      "session": "755d0e4171ce4fc8b5960e656a0ff714"
+    },
+    "native": {
+      "bridge": {
+        "name": "bridge",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T14:05:28+00:00）",
+        "path": "<isolated-test-directory>",
+        "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+        "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b",
+        "sidecarSha256": "7ec1254e3675a15ed09f95aae4048031a1684cc2e8eb2b366803a96deda8774e"
+      },
+      "model-base": {
+        "name": "model-base",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T14:05:32+00:00）",
+        "path": "<isolated-test-directory>",
+        "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+        "sha256": "576a0e04c7ddaeafee20a64e03f063f1d27cbebb9694c50f20fcc2b0508d7aeb",
+        "sidecarSha256": "8198d31eedae405127598a61a51fcc40b61a50a96aec47c8974a1c11d8678c75"
+      }
+    },
+    "executables": {
+      "node": {
+        "path": "<node-runtime>/bin/node",
+        "resolved": "<node-runtime>/bin/node",
+        "sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12",
+        "version": "v24.19.0"
+      },
+      "python": {
+        "path": "<python-runtime>/bin/python",
+        "resolved": "<python-runtime>/bin/python3.12",
+        "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+        "version": "Python 3.12.14"
+      },
+      "chrome-launcher": {
+        "path": "/usr/bin/chromium",
+        "resolved": "/usr/bin/chromium",
+        "sha256": "2c8d32d29dc6781c35ae196ea83299d507ac88fc339301abe74672feda299779",
+        "version": "Chromium 151.0.7922.173 built on Debian GNU/Linux 13 (trixie)"
+      },
+      "actual-chrome": {
+        "path": "/usr/lib/chromium/chromium",
+        "resolved": "/usr/lib/chromium/chromium",
+        "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723"
+      }
+    },
+    "sources": {
+      "geometry-web/app.css": "4e6dac9541329f9d17d33d66635f2dcc77e6d3c816cfbe719105b46e3b653432",
+      "geometry-web/app.js": "da0a2337cc986c79231c74fd66380178646a129e7ab577d2059acbd1160774de",
+      "geometry-web/assembly-workspace.css": "7a91095c3042de5b98e64d4a699df3ac2f3571b411f534f732aae721c528d644",
+      "geometry-web/assembly-workspace.js": "a2ff6c76c113506e7a66786ade2aa1e5393f7d567c72d318c90b2ce3cc5a2d27",
+      "geometry-web/assembly_binding_source_browser_check.js": "90dc577aeb06e05c61cf1608b7912bcaf6de2734e514ea7b2d4f76b0667164ea",
+      "geometry-web/assembly_candidate_impact_test.js": "7110fd3c71d901465d2697c09723ece7fa4f3e38133edadf995fc3e2cf975c37",
+      "geometry-web/assembly_context_entry_test.js": "a02e10d6b53dd2f63efba797333057bf18a029c680a1dfb905c42a6899fe7bc7",
+      "geometry-web/assembly_generation_test.js": "5889de038059b3e5d5e875c90246c1cf9dcb1399335f74fafb3fb79403a7905a",
+      "geometry-web/assembly_id_test.js": "6d7c8ebb721b0f697016a8eb12e1ba5b16e6298745a8f85acb259e8261b931ad",
+      "geometry-web/assembly_review_test.js": "52f153475b7a85c197f8850b4026a576ade9c5ef81d3579382753d54078df950",
+      "geometry-web/assembly_workflow_test.js": "be1eaf009660cf8e7d05a6a643040a62abc4af11fdd01ae665d96e48bab048a7",
+      "geometry-web/async_reply_ui_test.js": "152c23ab908bc4c205a22d1fb2064536e3af121d4bcd2dbc7e1edad60f3553aa",
+      "geometry-web/canvas-labels.css": "c13faf2fe464c5dc037b09d91064a2d8b02cfa30fef4eae7d5584a0f05410e53",
+      "geometry-web/canvas_test.js": "6d097c3031fe2e49ad5f324b08ef631aed6faa2e2333304b089c88cc19b4f569",
+      "geometry-web/cdp_confirmation_gate.js": "59a839da0785adc43b05c0c4234b714bbf6581306954d083b3007beafb85c851",
+      "geometry-web/cdp_evaluation.js": "ed20878b55f5c0b1c0209a9bd7731cc5dff99c6c9d1317b5bbfdce6dea9d3e7e",
+      "geometry-web/cdp_floor.js": "01a45d7881d583a7d328e579b457c959baa2b8d3570c3e3fbe66e8781c5f679e",
+      "geometry-web/cdp_helpers.js": "e7bb250379dd7c531ce85af436860568b473b5c11f67f0c1753f6e4316128667",
+      "geometry-web/cdp_navigation.js": "64be1d676aec784f275a27f621b17a5e5440fdb4f56a0c786036b2e3708692ae",
+      "geometry-web/cdp_test.js": "bb0c250c703999f73547bde480a814d101ec06be149cc7198f01ffe404c88c22",
+      "geometry-web/composition_canvas_test.js": "ef6e9c4a94e32e39099e939ba93f8b3e62abd869c695891f37003415f4969dea",
+      "geometry-web/context-operations.js": "36820d5dc246138c848198297a84e7927c64df349af17c04fd3508df594fd928",
+      "geometry-web/cursor-v2.js": "01ff058614dad70645499e0407f6782d8b5f6f3c2abd0c1234da8a0ef72f44be",
+      "geometry-web/document-cases.css": "bd302250e0f213beab47902e339ad72942a437507a744750fe32d3fe383eb01d",
+      "geometry-web/document-cases.js": "3a33c20ef40b333541040647ef10e74cba5875a054da7a9bbda8460309b074b9",
+      "geometry-web/document-format.js": "54e773f190772566a590c5a9eac75cde854be73e98231a021fd807ec92ee8ab4",
+      "geometry-web/documents.css": "33707fb3804d5ffb948280fac33c0793c81aa24c6b392d6589c335b37613e666",
+      "geometry-web/documents.js": "3dbe76e47d02389b44009f1d1ee5b6ca5d3a175d4de128776bf6668422a0e868",
+      "geometry-web/documents_browser_test.js": "0ab5cec0dd5f497e9501c68dce6970658f1d39c1f8a2c62183744b47b5826886",
+      "geometry-web/edge_draft_redraw_test.js": "ad44ff567644391ecfd8bca20b21726d158bcf67f44197569f897227d706c775",
+      "geometry-web/engineering-adapter.js": "5c88b486f2ff26a72ef31bc6b2aba475af3d7620fbccbd756765ddc25319c6be",
+      "geometry-web/engineering-workspace.css": "4c4cad9d69c9295a8a44a41d4509b2b821d7431b98ea18dc869120f3dedbf610",
+      "geometry-web/engineering-workspace.js": "d3c6898fc9c146e9db90ad1a279d4e3145b50398c33f6404031b3c56aa7acb02",
+      "geometry-web/engineering_transport.py": "43132eef6e5ab1515eae9deffa703a2a97aa3d3300a5da1adfe86ed32e913f86",
+      "geometry-web/engineering_workflow_test.js": "2ff9c6257b2a1c5ad8bffd5a6791c454c6d6e7ba717489697f6807bac9e834c6",
+      "geometry-web/evidence-links-app.js": "363fed50c6cc24ac7f5e7e6b6c84fbafc2d104f902cdcd98e842c1793c7db610",
+      "geometry-web/evidence-links-ui.js": "72060fa1b345cad9e8b073f27edf5e31cc793256a2b50a12248f23e29bf0ee73",
+      "geometry-web/evidence-links.js": "70345645f0b0b7ecc967a8b82270e29f16678c34cb4e012b331186ec15e43232",
+      "geometry-web/evidence_links_browser_check.js": "8cc311ec281c3d564739804ef1b4ea3bee5c628eed1b5ea972192fbf1803795d",
+      "geometry-web/evidence_links_integration_test.js": "244d6b583d77fb481d250cfc1ca5ded9e88d9819f0833743667ab64f9e9a2d00",
+      "geometry-web/face-context-menu.css": "7d1a7795afb4b6de802f7c7852cd0a41be024182b1b8ffb0db17d990aa75a08d",
+      "geometry-web/face-context-menu.js": "822e403ae57f03577bfa428afdae8eee23c14847ee37ce164e280b01afafcef6",
+      "geometry-web/face-menu-icons.js": "6a8354e604b49c48f5468317f54dbb4c79691199f6381df81272646a924bba5b",
+      "geometry-web/feature-attachments.js": "6313fc24471ff1529c5dbafa533ae77c3389ff3e378e25cfbd50f65aa4714d2b",
+      "geometry-web/feedback.js": "697d5491a66018e095de6941d2b3c0e0b53941734469f93bba1c1c4d8d5a86bc",
+      "geometry-web/feedback_cli.py": "bb5a671dfdbfab238ddf2449df8ef2dd59741ea8e63141a0b464f5e74dc50348",
+      "geometry-web/feedback_resize_observer_test.js": "4598612a3f2aaafab69e061b2f7179530024dab8f99d35c750c783b3336db0d5",
+      "geometry-web/feedback_store.py": "cb6370c17a0d9aab4979bdb79dd7a5ddd252a328c9305b746e687dc8601f520f",
+      "geometry-web/grid-anchor-positions.js": "2b3edbe49e67c7b50feeb718c59df5a50049955a3ba99b0798d61887abecd47c",
+      "geometry-web/grid-inspector.css": "c9abe1e1d0e1d861cf487b2b48117dd26c4b98bd33b8794e03dbf16b5d211345",
+      "geometry-web/grid-inspector.js": "be25941bdc50cc7e31453030471bbdbcf70e1b87945a7a7c28cb2b1c929d9902",
+      "geometry-web/grid-rule-lines.js": "0f554fc0f764e5092cb2681048bd74cb50d1c6870d706c4d68867a9b06d6bfda",
+      "geometry-web/grid-system-workspace.css": "958dca056995109a452a15cd72f00ff1da9e3192f02362e48c32c3f7f0cba08c",
+      "geometry-web/grid-system-workspace.js": "5ac46e013fd6e189510c024da5a72a7fa351ac9cf1fa17efe123ae76c5df4194",
+      "geometry-web/grid-trial.js": "42b1cb66cfd94976fa20366193f4a1ff3af82b777cfbca2e1ad7d88a245e7323",
+      "geometry-web/grid_definition_interaction_browser_test.py": "305deaa356c3e85f9ec4f5495273d4419a53009f04d0856702dfd1857e70fa76",
+      "geometry-web/grid_material_entry_test.js": "9b0c7ed79a8107601fbd894f3a9839901248ec25157fb7ddc00893ae7314a229",
+      "geometry-web/grid_portable_browser_test.py": "036da891b5c0c7cdb4b8653eb36efc22fa25ff9ada868ef35fb57e78308079dc",
+      "geometry-web/grid_raw_provenance_browser_test.py": "66ddf61b3770c42cd7f9323bf55c9a25f14a383f50063a718eb7218862190ef3",
+      "geometry-web/grid_rule_editor_test.js": "1b1ad6f2fd0cc5e2b65da0450943f6e2f3b87d2e0f4efc76d14d10e200cdbb81",
+      "geometry-web/grid_rule_lines_test.js": "73b229ef279006be9fe750a8f06d680c1277b50662f51248ba69fc10f788fb43",
+      "geometry-web/grid_system_test.js": "55ed51369d0962f72b7f4c22aa54ed8cf3fdcf9896b03ee6d1a0739524e4a799",
+      "geometry-web/grid_trial_test.js": "2493c5aeb2ca31168277a882538991b50707ac39aab9a91f70586c9901607139",
+      "geometry-web/grid_workspace_draft_test.js": "bd201511a75b5b7209abf8b10ec5d065841f02dda7b9f4d4d560b607f27f94c5",
+      "geometry-web/index.html": "5084ee2b214a1653bcdfd31105bbb05b786f1447d14f9eb177ecb3185d27a9a4",
+      "geometry-web/infinite_grid_face_test.js": "b41ab1cbb739ab8c827201c84ee6d881af61894dd8078200a2244e3829cd15bf",
+      "geometry-web/marquee_test.js": "4401f6384699a50646c5b81fba2bea2594f90724d4345a4fdb327dc76f578388",
+      "geometry-web/model-update-app.js": "9838ccf25ebddd622cbc1a28122deb8108e4e1d615122a3c754a3d8b0468d660",
+      "geometry-web/model-update.css": "75aec3df9cb306b572cbecfa89b6f2a6fe925d3d2643e0484131cb56527841dd",
+      "geometry-web/model-update.js": "613df0d67fa17c846515fb064b5a494a104085c465e261828cf69d663f3a3f80",
+      "geometry-web/model-viewer.js": "443d0a8d82f91b02ea2dd38ee9f32b39f0ff2287369aea5481768a29fe513d5a",
+      "geometry-web/model_snapshot_navigation_test.js": "891d0d6626130b1a0d26bbafa5233e3e80819df8542cfc0d8ab59f1b6d12989d",
+      "geometry-web/model_snapshot_schedule_test.js": "e071e23ce689eb2c23ce8cd829e0c5dbd982ce619464e78ea3569839d204a4a6",
+      "geometry-web/model_update.py": "c75454ebe398352a7d6c09d421fd6835b8c627ad9a08663cfb9c75103bb85ae6",
+      "geometry-web/model_update_browser_check.js": "2faca3017706b60b686e7a9beb9d1190ed161d162e8dd24eb16f6a2d18c20962",
+      "geometry-web/native-transport.js": "2ab37afad14e1af62607984a8b14eb1145d26c624d9a047fdc716b3b338e4640",
+      "geometry-web/native_context.py": "e7b30f06d4916664bceaa3adc25fc2cfeb0e72bd20150dea4977f05ca0ef18b1",
+      "geometry-web/native_reader_browser_test.py": "1fd5a3d836a0c433a6f7f60b76684e95169f3cad873410cc2cea3cb859705711",
+      "geometry-web/parameter_confirmation_test.js": "50a814d5abf0cb79506b6be33a64e53a07723bbc7fd911c3529f5d41db54910b",
+      "geometry-web/parameter_preview_ownership_test.js": "d0e3f70b51907d4f27126e362abbe1dcf0a73f913ebf75da71d9d890373baf63",
+      "geometry-web/parameter_workflow_test.js": "7c017128b7dbfb917305c8b56e3e9ca6ab0f8fd2afbd2b97b92cb71ce4edbdd8",
+      "geometry-web/parameters.css": "72b0238af5eaffdc3fa49b8a71a7a14af58ab9c7bbda026804899c2b2d0255b6",
+      "geometry-web/parameters.js": "764bb57697cba6a1e9a91aa7166f77d8f397b582a12c03c167ec4c90dfd93aa2",
+      "geometry-web/pdf_tracing_snap_test.js": "1aed4e91049e839612323f76fd76bbceebd6dda051b8c9e6fdb0f184020817d4",
+      "geometry-web/polydraft.js": "733265e26e9aee4bc1923733425c39fd382b28ca6ab3d210007cbb0b47077358",
+      "geometry-web/polydraft_test.js": "8e644cc40dc122959d4afbbbe992418cc55da5c0ce783126de6ee892946b4274",
+      "geometry-web/project-store.js": "d06dce17c7dd9e17c5a83045128bfc447b14b0b39c3902e27d338b6ef9d3c3a3",
+      "geometry-web/project-ui.css": "2f689462d3eb7fe4eabaecbd57e5fd55fdd48ce8deeed85aee36128fdb053875",
+      "geometry-web/project-ui.js": "ffdabf0aa037d3ae870f8e3dbaa8fa5f2a63ea252381ded53281534e8a34cdd9",
+      "geometry-web/project_audit_test.js": "23bcafd0cb111785abb6608cbe19ed31dce8ac4cf7933cd73078e3303fbbae67",
+      "geometry-web/project_import_final_objects_test.js": "7012ef97b6805cff348bf1c6e44945fcc72662bff1ef0c2cd800a42864595be1",
+      "geometry-web/reference-display.js": "6e584dcb09c9dddf1469a6fd50723b008c79c296cdd1ebeea69736d9133a2341",
+      "geometry-web/reference-ui.js": "fb6c97ede5111d611c25b7bfd36a084e807aa641b26b6c23cbb1392effc9c9a7",
+      "geometry-web/reference-workspace.js": "4637836fe46c016a4bb623e9f2337fda9a8e2aeac853bcca33e9d5fff55b7c62",
+      "geometry-web/room-collection-workspace.js": "db59521d040e48a6abeb7c8327f74e6e98e5732af4672a2f0e6106b2ad112ca2",
+      "geometry-web/room-collection.js": "652ec9ac5dce7a80b527b38eabd4bac5a6c542e951c62dd86a177c7255ab8251",
+      "geometry-web/room-outline-worker.js": "82767675eafa6a806849db8f9bd59d4cad0d5952b3d5eb19db19d9dfba5ad5c9",
+      "geometry-web/room-outline-workspace.js": "38b84914ba56308534ac69cb4b2b5fbe88d4668d437a30207381fb2cc0c9895d",
+      "geometry-web/room-outline.js": "7333c1031ba54a2f61a079fcdb009a2751fe1cc484a01944a32ffdd56490e403",
+      "geometry-web/room_outline_test.js": "a388f9a976b3c8af0fc217274c340b0ffe0d9bf2fccedd1533acf984196aba3a",
+      "geometry-web/rule-case-data.js": "ee0e81832fd10bcd3dc240c1c456ed0f9d31839ccbbef35ee50ad9663c9c8c3e",
+      "geometry-web/rule-case-host.js": "22e1b5895e8cd45f142c5cf8e8b825d98ce1878372afaed88d1cd08f72774673",
+      "geometry-web/rule-case-workbench.css": "0e7460cec3737f3967e828b65c40f965e4fb3c14c666ca38588668ce299759d4",
+      "geometry-web/rule-case-workbench.js": "991eb401ad19ffbd40d5956d7f4ff55854d4854c804c31292ff60b41bc4f52d7",
+      "geometry-web/rule_case_host.py": "a4ebe3589ceb71cb999001141338c32f6efc7056bea6219a14ce64a4454e7d82",
+      "geometry-web/rule_case_workbench_adapter.py": "52d77dd25b2cf87a0b4777c677430fdd9666902085a6cc57cb0bbb72046992be",
+      "geometry-web/rule_case_workbench_standalone.py": "80d8f21dda1a7cbc571710f30e3203fc77e81a35067f9a9ae0ff8b501698cdba",
+      "geometry-web/runtime_version.py": "f48624a2ed6528a01c36d6d7d44bde589ee11d5587da4681f052579c2cc7e955",
+      "geometry-web/save_reopen_synthetic_test.js": "2eda7db51ca8f44d15eddb94251dd57b904a27e924f455c39bd76400bf46b4c0",
+      "geometry-web/scenario-catalog.js": "013940df8c3e841a8803455ee1f7b894ac29f873a151cf4cf880b6dbec26dcf1",
+      "geometry-web/scenario-diff.js": "57f15d08e3ee003a15a2915fa919c78ccd75a3ed5d8c039648bdfa9b1903bcd9",
+      "geometry-web/scenario-integration.js": "7b35bcaa7599ad92ba46c5992136f0aec0ff96c94c7bf019b22fcc74898fe2fe",
+      "geometry-web/scenario-snapshots.js": "a4f4f1be350aa5d093ad1948b17c2f8e4bab01b8f280c9b853c81c99aa0bd598",
+      "geometry-web/scenario-workspace.css": "a37d14e893abc8bdd80019ca08f6a0885add78d004156546eb375db0ee7053c2",
+      "geometry-web/scenario-workspace.js": "1d391a00526d752487337e17c1d5aebf27f726595683cd2b64fa2b90326c8d47",
+      "geometry-web/scenario_verify.py": "abb9c2444730fa40bd0363dd0c88a9ee8e4aa577b9a9304993b1682fd4c151b1",
+      "geometry-web/section-profile-workspace.css": "b8b2221ca312757dbbbdf1af8f8e447788334030e58421976eaf549f8553c884",
+      "geometry-web/section-profile-workspace.js": "399f4c9736df5944092d04063146248859559e9c272b6b6edcf101b0f3c828e5",
+      "geometry-web/section_profile_transport.py": "e4fb890e0973be9c918df8ddfd776ca9d613e836c99dfee29b7c73fdb617e474",
+      "geometry-web/selection_cursor_test.js": "d9116def838f517b1ab75bf77682ce102229b788572af6ae8b780be2d092ab5e",
+      "geometry-web/serve.py": "bacc291874f7191739236696cf6e1c231daee57008f827d96389a562f5f30fb6",
+      "geometry-web/source-inspector-app.js": "4046869adfaeb5c0470fe7a281c6e5583c27bb3fbc84b84424679efebbfa07ec",
+      "geometry-web/source-inspector.css": "8d66640d2f0e8475fc6cead0a1abfc950612201220e92a89b6c3f10e3036cd07",
+      "geometry-web/source-inspector.js": "c5f4c783648a177b2a2de1801030cc00b3ecfe26faa5f5951629993f70d7ba81",
+      "geometry-web/source-plane.js": "caed8443df9fb3d7ab1caafc1952208bc839a2072c7126b529041eced19ca30b",
+      "geometry-web/source_inspector_browser_check.js": "154e9486ddfdedc6702c427924e2cd8762f044b8981dd51599c41eee823f131d",
+      "geometry-web/source_inspector_transport.py": "aaacece9eb47813e8a03a09ada9292c92ea42a69733929fe7e74f120d6d52779",
+      "geometry-web/source_navigation_test.js": "92b4b250a07d96878d665b6e710ff84410f69b3b11d3ce06b7408ba9a6e582a6",
+      "geometry-web/space-short-height-acceptance.cjs": "738f18ad380641f3e5cccb91c359a782f10594c4a4a14bc76685b8f974d44034",
+      "geometry-web/space-workspace.css": "6a9b12969c518609ede4d4c3354e43b40e783eb1055cd41863ebe68c983af6da",
+      "geometry-web/space-workspace.js": "88709be1ffab50a4c11dbca42466097bfaee2e435c41a14cda9be7cd05e0ad3e",
+      "geometry-web/space_model_test.js": "1afbe140d18d857a0a91ad38c375c4943e7dd65126d6394a35ce5a93fa5b9107",
+      "geometry-web/space_modeling.py": "fb0a4c000dd4e2460e260e8e7a778f5f52e596bcc0c0556a06bbafb224eccdc5",
+      "geometry-web/space_test_floor.js": "f2a9219851adff9450e05a5c9ec49613dba1a88fe8484a93a5c9499f2bad8d4d",
+      "geometry-web/start_local.py": "31137d9635da7c62d34a72d1f4cadcf60e2240f33aff418ddba28bea55c5ce29",
+      "geometry-web/timber-schedule.js": "764ec9fe3fa2b78b280d83dfbbf22ee95a79fbeb8d062e59e21cc16d5a54c0c5",
+      "geometry-web/timber-supports.js": "be4f4c0277e5827d6707ceb2bcf9af200d5a0ab13d338b67589a000e839debf2",
+      "geometry-web/timber_schedule_test.js": "59da427a64fa9057a230d56cafbb8fd35ac0004aab844165a1396666a2f9cfbc",
+      "geometry-web/timber_supports_browser_test.js": "b18a593c4c073768d77e2b4130fdeae451ce42ab7a1b0dc6c4759de28d99604e",
+      "geometry-web/uiux_review_test.js": "6ee9188b1fd05e7823a270e32ff57ef943e8f3db78a89a043486de84539a13e1",
+      "geometry-web/ux_refinement_test.js": "f9e6079819c9d95e09fe5e1e54aaee75928a51edbc6b1ac786086f9e365f6128",
+      "geometry-web/workspace-guidance.css": "ab777360ec80da6feb3fcb4d7b330104aae329ef262bca2899ce92827abb8986",
+      "geometry-web/workspace-guidance.js": "00412889311ba4f7625fd59ed7da07ccfb88bb06650e67a464e11b71aa67a51d",
+      "geometry-web/workspace-shell.css": "d67f212410bb6e94cd3db26d3ab7891a0331f2effe6c02365dd5bed5418171c2",
+      "geometry-web/workspace-shell.js": "780a26eb4e061069f8161bedd44665d2ed4ece9f695cefeffef7a7d855ec3b4c",
+      "tests/__init__.py": "02319f9494b104f0476594148d609710685ee440786c2e991bf114dfbc20d596",
+      "tests/_bridge.py": "bb34d61a288772f9defa9136a58f9102effe40e6f325338ef2abc01862508df9",
+      "tests/_timber_support_bridge.py": "836c3ca8a1a5ae1f31dd579d7ed8aea5a46282db1fead66f4f6193b76c7dfe46",
+      "tests/_unittest_runner.py": "f4e72e7a771f903094d6973874da8ccb2c98ddb4ff51571cb9179eabe284290e",
+      "tests/assembly_mutation_check.py": "08bdd4d4432c2e4348ce2a0258f7b14aec2880aca5bf5f2cb773813d2ce5fbf8",
+      "tests/binaries.py": "a211fd0d066b8a5138855c4773373f9f526717f26264de909c0f61f997ac9aba",
+      "tests/browser_race_ownership.py": "4094e1c01f598e8b5dee868f1555c2d315c7f7562c9d3ae44247bfd90be4cfd2",
+      "tests/browser_race_ownership_instrumentation.js": "64c51184301f28f88ef6b1113e842c98c9711ceea82b5d54d1702b0babd8819f",
+      "tests/build_assembly_example.py": "c25b3cb74c926258113865e9e4a5aca3a372960d87b004c1712ffc674b8904cf",
+      "tests/build_assembly_generation_example.py": "dc161686c2f59a37775f50b04e8c19bdbac09d2902a95c3ba5d3315eb9448ee5",
+      "tests/build_assembly_generation_witness.py": "66305eda9ee1bed6a222efd2eedf088b7a8d04be1cdf8cb7aefabf059e2afde7",
+      "tests/build_issue77_fixture.py": "73e22134e1f0dd62a91b85570ba01483752098e55020301f6afdeffa4edc268a",
+      "tests/fuzz_scene.py": "ec72c4ced01dfa998e9a8b950687ad82ade29308850e90905e87be998aa9986b",
+      "tests/issue123_adopted_slices_browser.cjs": "6efba5412916a31df431c557a7893019f186bf8adc3fa15aa059098367e272d1",
+      "tests/issue77_attachment_fixture.js": "651203ea2f8a75de281a6d4122df9d8ec519ca54ecce5b9f460df3d374c537ec",
+      "tests/mutate.py": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
+      "tests/reference_pdf_fixture.js": "e9a080dbb26ea4959e19d168012dbba484a9c18876dadf9c0bf882cb144a3740",
+      "tests/release_gate.py": "ad460ddbdd52c48995188079339bc224e7f39b3d01e3147091a858ba8f541389",
+      "tests/room_multi_candidate_browser.js": "dff1cfcdd4c491930e8fdb08be5977ef13187b42f86ef651b259ac034635d892",
+      "tests/room_outline_acceptance_browser.js": "77bc8e52d9ed812372e74b6e0922a44715c655fc59d5bf332e194d2546af471e",
+      "tests/room_outline_direct_rows_browser.js": "ac2a0cd540de60ec118afc9890d5d6f6037d7eda1eae8b51da3ade498ed82b31",
+      "tests/room_outline_fixture.js": "f6984e3e4f381995471aa8796c86518914cb3a546c23dfb6d068fe9780f73f46",
+      "tests/room_outline_keyboard_browser.js": "4513cbbf87a0ad1e8f9d27a2f721b390c9e9d311ce516a470b3dbd2435b10f3c",
+      "tests/room_outline_pan_browser.js": "41681f5da66565e91a8039c2e1ad6949072733e831678fc0bb14b5e5ad0e4bc7",
+      "tests/room_outline_worker_browser.js": "24fb8c85c80b1b69571656c79f340420e6a17db5dd4c70c5aee688de21148ac7",
+      "tests/rule-case-workbench-browser.cjs": "7960607a6a1685703c210544fb0d069f73421016eb572b32f7a05b114142be68",
+      "tests/rule-case-workbench-controller.cjs": "62474aafde713247652df74c4d9edb60564b360ed557e3afa2f5cefa0b2dfb81",
+      "tests/run_all.py": "2da3888b1345b534667a2dbf897aacfc472e397567cd99cc87b7dd8a222ef7ce",
+      "tests/run_tests.py": "d327e7ee1d770bf951dddb2afae33a2130ea62411b789124adc1574428da452d",
+      "tests/scenario_browser_check.cjs": "62a50f69ec367ac3bbbeb28092b2c74e8fb562a5160ae5baf9bdafa3b0726b7e",
+      "tests/space_group_counterexample.py": "569c32b3b7709a15c0464b8793fa0506f2791469e74df2ee921ad8320b19669d",
+      "tests/test_anchor_band_clip.js": "33b0611ed774bb3ce150b3098533137793f8a21e62dfa61dab9d7194afbadebc",
+      "tests/test_assembly_candidate_impact.py": "36bfb8ba40ffc7a10c9c81b6e8053a0e39e4205b5e9762625a20c3824f8ec83f",
+      "tests/test_assembly_capacity.py": "2d8d55779ae5d01d5fee43014fd70d5266a3bc7b176e4f3d1d08bf1aa06c3f4a",
+      "tests/test_assembly_generation.py": "f9f0f76190d94401ebbc0ce4b35efdd5f19c4f60cb42b232265908504961cf2a",
+      "tests/test_assembly_native_diagnostics.py": "ec4a3510fb271f2935766e4d44fc477c493d8f39e7a3469c3bb3a360414e9c2a",
+      "tests/test_assembly_parameter_refs.py": "53e35e27598763eba9e8192e0ec1da63049b1ac97fffa7344ca2b4abd3597ac2",
+      "tests/test_assembly_project_store.js": "7f6c833728f579ee23f32cc494a7e15dc3042a460a362ccd70010f50216de480",
+      "tests/test_assembly_rules.py": "bee2e6a07e4b03b5913445bb9f20f490097af300f03b7ed6aae51276a8d29fd4",
+      "tests/test_assembly_transport_context.js": "323957992b01f33d9ba24cd58409d79be53a8911e433026121a0071b676b0518",
+      "tests/test_assembly_workspace.js": "e8deb3a3899608812dc3b44cdd3a3e42cd76ef126b3ac98dadaf38bfa5e7e5c5",
+      "tests/test_axiom_reader.py": "111f113646dad5ecb08ce07baaa30f5e8d41c631b827fad1a2a84e05c9055375",
+      "tests/test_background_grid_viewport.js": "78f0ac0bb6fad75b6db5025581af912c188319b214a09116daab0c54d957f9b5",
+      "tests/test_binaries.py": "42e429eeba7af2bc2a43a476b164df346795ade3615cbbe70e5cc262e8a55b29",
+      "tests/test_bridge_integrity.py": "58e2536b657a77d0c1dbd5e3067e6e29bba4aa6007a42db7ae16096b08e34a1b",
+      "tests/test_cdp_card_position.js": "2929b04ac505e5118c6abaad6e8fd3ea1dee6b38164ebbb21f390e8670b6a3af",
+      "tests/test_cdp_confirmation_gate.js": "db7b64f578c765abf857bb8ce2a336dd28031346de429335901498c136e3ac91",
+      "tests/test_cdp_evaluation.js": "fc882ae41caba20b646ac3da7bceee68a1493764c23f0d76f20e163f606f3a53",
+      "tests/test_cdp_floor.js": "ae298653b9166c4fd4aac0942970d53c6ac0c35a56990cacc6087893e217a667",
+      "tests/test_cdp_navigation.js": "e305750a057dca812a4e3a38db7e848f1bd7ef5e9e204e635ff8c89eec5e19c9",
+      "tests/test_cli_args.py": "202cd289162f499efcfedb83f1b59b9a1e0b39f7f94aa2db95c1b3aa2ec10683",
+      "tests/test_context_operations.js": "3bcfb281a7445e0d3d2483a9def03b1c183cf8a378342ef1c75cd4554516b6d8",
+      "tests/test_datum_contract.py": "2f9c35d7e6ed67a106a8cd8f5f598b4ec9f72e432acdc7d47f14c4add179a0e1",
+      "tests/test_document_cases.js": "5cade9ae7e4680cde3a4fd4b8f99008d563808c176c89b53b1e3cacd4e574824",
+      "tests/test_document_format.js": "0ac299794be5626a163373f7d7394f836ffab3c7392f074c505f8e62f3f2552e",
+      "tests/test_engineering_core.py": "0f4b109d8fdc325cc70272f78eea4c8b59b8d1f017fff3b6df42abd9fd5393ab",
+      "tests/test_engineering_json.py": "52a49337054336011c4efbaa1ec15c8a2b71e4b05412b4f859cf190d816a9637",
+      "tests/test_engineering_model_compatibility.py": "046b508ae2ba97a9ae561be52b118c1f861fa7f38e7d6cbf50d4f1cd0f533735",
+      "tests/test_engineering_model_sources.py": "d3cbd4616dce1360010c7917e27d94d15b472ded3e2c4afa47ec76636efc229d",
+      "tests/test_engineering_project_store.js": "b907b6c095672f80799a66157fd7f982d67fbf8500b54d531af153a938cc2419",
+      "tests/test_engineering_transport.py": "2710e291b237411a1f21aa83c2e0b7617fcc444379fe6ca472abc9807ea78174",
+      "tests/test_evidence_link_native.py": "b10ab254b095412006662532ef46ec33d50d63c7a7ab2a7ed34793513bd9f434",
+      "tests/test_evidence_links.js": "a6837d8dcba6f3c58362dd21eba4e1586acd5cddfce31a8d54eaae30fe39efa9",
+      "tests/test_evidence_project_store.js": "827a56c677526c204545b6928b1e6d3be48929aff43b73a248b9eb6b741b54fa",
+      "tests/test_face_paint_scheduler.js": "34a07e58c7857220c11a706630ac334ed9a51056d3a7fd1ea32b8ff993dd7fd9",
+      "tests/test_face_projection_store.js": "e08ef8dfa3debfe65b037c5aaf6b035e2abb02247989b8c351e5a767fdb11ef1",
+      "tests/test_face_reference_settlement.js": "e19d87c5da736264dca496af89ce563f7a36d1dec67194958eb19111d8d62a11",
+      "tests/test_feedback_events.js": "fc52e9d8bc89d90ec0c878fa3d3f9b2cc1588f0ae53bbc65e0ef00e48f36c92a",
+      "tests/test_feedback_store.py": "5c690d4a296b014030a6e437a564b2737b0571d29ebf4c6d935af94753be154c",
+      "tests/test_gdi_contract.py": "6072c7ef887705dbcb2ca0eca13c18666e72bf740b6cad906517b91ec2c9a9e3",
+      "tests/test_grid_definition_diagram.js": "72d01b22cdf930a46b47fd289692ace6bd17370825383aa89ba476b49d955ea3",
+      "tests/test_grid_lesson_control_ownership.js": "4c36f2bff6f8421164b984e8ea95f6705d7306edd888f3504aa619f6cc9c3242",
+      "tests/test_grid_rule_draft.js": "42ebfcfede92a875940c6ad64724c4562f432fca50a85bbf451c546643330621",
+      "tests/test_grid_rule_lines.js": "657c1ba9463328b3c30e00791ff17ef5164a1ebca39159b4981dd0441bf42d4d",
+      "tests/test_grid_rule_reader_browser.js": "af712b31fcd27395a144de5271faac1889d61a05922024f2c7c8b38df014b34b",
+      "tests/test_grid_subdivision_oracle.py": "c4dc7efa339c8121463c1799ec66b7ff0459aae82dbf719ac34b95d0b4405777",
+      "tests/test_grid_system_contract.py": "45328466d048313464254a04ba1b6770549f1a3cc1f76468b96ae5357a4f5a75",
+      "tests/test_grid_trial_contract.py": "392f9532f0cd9891f34f96f929bededc7bc4e0b2322b9107454d91dfc4f8a739",
+      "tests/test_grid_trial_geometry.js": "50ffdd8a58c3f034575b0a73423f79a1e33de0e30b610589245a3a9adcf88ccc",
+      "tests/test_guide_panels.py": "a910ac074e0ec956c310739c9d97e5c553a9d27d6dc5d2fa46d71f657671fec4",
+      "tests/test_history_operation.js": "183b3a82c5779b5e64650f23972977eec9227dbd242375398d9314fc840bd1dd",
+      "tests/test_hover_pick_scheduler.js": "1d3efcd22bb87382e47609718ae902595385930b9e32793fc4e0ba3b3d7d04d7",
+      "tests/test_infinite_grid_contract.py": "cd7dfc2f629a60adae67dda374341a9341f7c73b43c913dc7ba9d67026ea9a0a",
+      "tests/test_issue116_browser.js": "b7a8563415d2572482970fbad1e02ada1e75dbd585da622589752fadf8c67a9f",
+      "tests/test_issue123_create_feedback_browser.py": "2383cff7d804747d599c43320c582c99a10b5587adcfe57aaebb61c702ebc337",
+      "tests/test_issue77_attachment.js": "b84bde66d225b2077a30ff356924b4040bd8e69e10e28ac4b4ccc7fcffb5af21",
+      "tests/test_issue77_browser.js": "10653053980d38667ee07aabff9c213c6872a89b8e9aa8eeda7aa0e384070527",
+      "tests/test_issue77_exit_browser.js": "87a21fa6ecb2043ea662a6b6fb0b79f1d067bbea6cf474a9877aea0df1d3b93b",
+      "tests/test_issue77_history.js": "c5e771a7a8281e25c197fbafb4851979cbb1a572038c34d174096888a48fa137",
+      "tests/test_issue77_recovery_browser.js": "9ee390efa240a354ceba95fea2b4b6a44dd1eb1cd5911a2983570a5efb7affaa",
+      "tests/test_issue77_remove_browser.js": "f89f7f96d6d7b6650bcab509e6d24756135f44aaada22ef3202fc21c3123baec",
+      "tests/test_issue77_workspace.js": "fc894a17defb71b7c5eabb7b03d6afac61ac779ab529fcd84e3809800bc81e01",
+      "tests/test_local_launcher.py": "c97a606cebe9e77a8975166935c69fa6558d04ad79178e623110502919f863e7",
+      "tests/test_model_snapshot_navigation.js": "784a3527ce2bd149ee3fce1d6527c4b3b8f8e6acd84292f81c11b81a003b20f3",
+      "tests/test_model_snapshot_schedule.js": "421737bd67444201b8a786c316f2b3c369b8b9f68603e88253b56714a395fca6",
+      "tests/test_model_update.js": "1623a6c8c505c9a56f08e5f07d7c36b4d9e48467ef978a8db879430129e4627c",
+      "tests/test_model_update.py": "06b445d8d07a871f17ee5ed38fc9c90087ba439bd2dc6454925198f5cb55fa99",
+      "tests/test_model_viewer.cjs": "ba9f91e5778f8161993d1f3bf50ebce648d4263da65ae58860337e335b09e3e1",
+      "tests/test_modeling_degenerate.py": "530ad46ba50c62bb28a6e2d0aa482c2cb6a3ff9fe3d5706cdb3055026c0dbf79",
+      "tests/test_modeling_runtime.py": "22724d8d1f5941f1c3c3200ce63314cd30a0bd1bbab9a33f0252799f1913c426",
+      "tests/test_modeling_transport.py": "f38334c4cab53c8d614ba881e7ec8788a9d788eec4fdcecf467c624fb8d69fd9",
+      "tests/test_mutation_freshness.py": "83dd22ee1462145bd62b59fd0ae1d270a2840fd8631fb86fcdbb19eaf89d9c26",
+      "tests/test_parameter_confirmation_settlement.js": "a332d557a511af526357a9d3e9d77b24f645c30583421e828eb7c42fd55ca747",
+      "tests/test_parameters_core.py": "5c4289815bc162d6993fb83c4ecc608eb4fd124903664e5248670c214620045d",
+      "tests/test_parameters_project_store.js": "5318a3ce6af26d02191c1a99f238ce61fa960d4ef0f658d8fcf8735f65702828",
+      "tests/test_project_store.js": "7e3798e0cf0623b7646c593a3d4f27f57924d05a42afeb79c13637b6c73e0448",
+      "tests/test_reference_contract.py": "582a8b241822552a864ea5bbca11ce4f705a8422524645886691cc62d739d4c5",
+      "tests/test_reference_workspace_races.js": "f2f737d179fa4e9b67196c04e1f4ca8e0515c8ecafa346bac77acb354c91e0da",
+      "tests/test_release_gate.py": "5373232181cb46b96ac9d2dbd0879653c774cbba2576ec3651ba4fc11591ad43",
+      "tests/test_room_collection.js": "945765efcc69ef7d368482db577f53a614aad374dc7bf73d2f0fbd982716c6f5",
+      "tests/test_room_multi_candidate.js": "42205c046ad1a599688a479d6a6013680837e685027f710e9e8571c128b5d658",
+      "tests/test_room_outline.js": "db1f016235b98296218a5c78838fd54d17b3a5b25071c6f39b17b90f940c9f99",
+      "tests/test_room_outline_closeout.js": "c53665033e6286c950f991356fd9fc281a07c7ce8fa7ec32a11b0784263aa539",
+      "tests/test_room_outline_worker.js": "ca5fc8aca2eeab43b3f0c7278144f9b8b8c62fe6f511e6f42c009f0db8120d59",
+      "tests/test_rule_case_app_browser.js": "8c2fe5fa410a554b346cbddd0a11e806d6de5186fe9298a8d4c10bc0a9c98af4",
+      "tests/test_rule_case_app_races.js": "8454dd1d4a0f51de9a4d131b62eed5e2f9b7e79b4f8ab5244807f006a4bf26e3",
+      "tests/test_rule_case_catalog.py": "917953cf9d00d3a3a8f072e619b1289b9318ad329df4fe2b7e95767a8036164f",
+      "tests/test_rule_case_definition.py": "4bf04478072741ba1b7e5da17a1e26a30654b30d81bb0d37c57178f00e0ab834",
+      "tests/test_rule_case_executor.py": "75d10bf4720bc5f7a45f1913e0b28a6781517e934408372d6329cfd234ec8727",
+      "tests/test_rule_case_host.py": "9ca2bb0667b463b27d3b282f1d371c2b5831e6649e89264eb3b92cbf85be51e9",
+      "tests/test_rule_case_project_store.js": "9148d9247934fbb50780228fedd4ecf83523e316a26bd12ba161702b4861a3fb",
+      "tests/test_rule_case_request.py": "a663e73dd58637d988cd946b6b35679af5f434bee9a35a69f008362db63585a6",
+      "tests/test_rule_case_workbench_http.py": "a5eae2c6cdadc80354503d858930a0a4d728d53eb63e528f150d42fa60c492bc",
+      "tests/test_runtime_version.py": "ea56953ea4f9687e2c87d3c68efb709e44a6c6c1a9991294030924cca4904de4",
+      "tests/test_scenario_diff.js": "68148fbf709d4adb11ceac41b633a4ec10d52920fb7f9b791228823407d0bfb0",
+      "tests/test_scenario_editor_tickets.js": "37c787606422a644f62b96094b439208250f9fe2ea92e6b7d44b4f7e033d0a9e",
+      "tests/test_scenario_grid_interface.js": "fea99a066b830fb1fe91801f64cd7fb80829f492c7d4894e63b4bf6b1452502e",
+      "tests/test_scenario_lifecycle_browser.js": "593279947d1ec8d71d0a0498c049752952a52f988d61c031d063a5db395c4c31",
+      "tests/test_scenario_project_store.js": "08b29eedfbfcb9f8d1f62dce9c21d453cb78b6000a1669b78347ad527e8bd150",
+      "tests/test_scenario_recovery_owner.js": "f1308fda837491b9b407811c254c1b9020c5ed449538916146e0dc4a5076420b",
+      "tests/test_scenario_resume_checkpoint.js": "4846bf11d03c2a2a2b685dbd88db6f7b1544ba3eecbd6a220fe948540308cff4",
+      "tests/test_scenario_review_native.js": "b926f7bdc188623ed3681cdddcb5b1692478e9926f7d8c27444e5ddfad71767e",
+      "tests/test_scenario_snapshots.js": "e8dbf9f3594d055962c6e94a5a1313f3fd8f85ce5a5ef7e199185fafe2d77e23",
+      "tests/test_scenario_verify.py": "66f2badbbcedebe9928b6e104b6b0dd81318a9f6b342bfdda5313334ee779c39",
+      "tests/test_scenario_workflow_browser.js": "470866555dda182f1bbc1561a86ad63f3d87be7ec05305602210ce1abb1d9456",
+      "tests/test_scene_import.py": "9acacd4c672584a837411ba340bc0d7bdc0987c848065d8f0e6a501ab0e78482",
+      "tests/test_section_profile_browser.js": "28116139bb91d421fbca7141d3212bcce43406d7abcb5c7fe8d5346ed48cb14b",
+      "tests/test_section_profile_compat.js": "2a11f8f5cc6ee8bc6c03964132ba8744930dd0fd6d1ba28d59900f626ce82ba1",
+      "tests/test_section_profile_modeling.py": "055403b9bb276e5c6b697177bca9397cc24c6cd02d17a51c4a687d9d79b5d29a",
+      "tests/test_section_profile_native.py": "9534387c015b4682323c669271f1a7c9f3da979a0daac09c881ab62aef359c60",
+      "tests/test_serve.py": "f63a818d10f05bef5ce035ee0e5cf2769130a27bca8a658cfe9051a12153df81",
+      "tests/test_shared_room_display.js": "13616a5f5c346ed338a55a8b11842286f9c59a70c8b7e3b4b7b9e9e7543deda5",
+      "tests/test_shared_room_display_browser.js": "82d03b8b534b2718371bae652c6dc48b1a9453a379a9d155e6439e0bbbd18cd0",
+      "tests/test_source_inspector.js": "dc291d7072f41551b102e960442792fd0562a504c5651f1ab96ad4b25b9def94",
+      "tests/test_source_inspector.py": "100bdfbc109f38509f2dba54d661c96bf31dc1243c1164e6dfd87c649f9191a1",
+      "tests/test_source_inspector_transport.py": "d534a172f4a9ad5655a0176be1293c7c51081bbef3f9b026cb8d7964ca4b3629",
+      "tests/test_space_model_store.js": "89fb8dbba60231e4082079b8050af936f0078b2ec0efa27f06d5f420728d74a4",
+      "tests/test_space_modeling.py": "04fe300baf5e71dee617bda68d2eb74592fedeb4af2d109a197f9d8ef68b2c93",
+      "tests/test_space_test_floor.js": "575f08b4317aca408c6a4fb7341388c735b427fbba647c4ed508761fb52f096a",
+      "tests/test_subdivision_project_store.js": "a455fe7029607a671b6408d5ca0020f3c7a3e951a1219cf074f781f52f77e64a",
+      "tests/test_subgrid_contract.py": "4bcda2199167bdafebf08ea7dea8abf31b858d630a79f2ce2adf14de97c6adaf",
+      "tests/test_timber_schedule.js": "bc08272d8a1e1a5b0c9f0d418d81e39b8e3d52a256f48d2ffb3255b9f7ca10de",
+      "tests/test_timber_support_projection.py": "1020b2d4d62b2765b4f226a67d10d5549cdc089d955ee714f13d345055b13d01",
+      "tests/test_timber_supports.js": "febb3a4a66a9a778caee021ae1163928cc6d1a2d584b9c8e260e84ae5e7bc8e7",
+      "tests/test_unittest_runner.py": "23938312dfedb4aa931fde8697e7edd5de58a9f42b4dbd180ce5ae4cbd4f80f1",
+      "tests/test_witness_diagnostics.py": "2bfeb103361a85a0e7b4a449cbae60d27f0d7c123f6f2ed4e9fbeda59bf06d9d",
+      "tests/test_witness_marks.py": "5607be3b45961bc4709726e569fb342ad4649d899aa84a13cdc54fa3593d0863",
+      "tests/test_workspace_shell_history.js": "879d7798f967da5d1e2065c1289bcb8701ef0a69daf71bc9281e70c837c4be8c"
+    },
+    "runnerSHA256": "94a30d7bd7b7f291e3913e5192f5640152ce27b9a80a7adaebe37e3f48b79f70",
+    "executionFiles": {
+      "<workspace-path>": "ac2a0cd540de60ec118afc9890d5d6f6037d7eda1eae8b51da3ade498ed82b31"
+    },
+    "configuredNativeCore": {
+      "path": "<isolated-test-directory>",
+      "sha256": "98d7354082697d194a1a14966f0b96545e7b86d826b0bd24eea0dff13a856ffe"
+    },
+    "liveBridge": [
+      {
+        "role": "actual service direct child bridge",
+        "pid": 132259,
+        "executable": "<isolated-test-directory>",
+        "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b",
+        "cwd": "<workspace-path>",
+        "cmdline": [
+          "<isolated-test-directory>"
+        ]
+      }
+    ]
+  },
+  "evidence": {
+    "scope": "command-only",
+    "completionVerified": false,
+    "note": "Exit status recorded; no generic test-completion or release claim."
+  },
+  "log": {
+    "path": "<workspace-path>",
+    "bytes": 39878,
+    "sha256": "a05f9ea7c38bc467864a7ceddf4fdd7408328ff9c0ac554cd1f842c447fbd675"
+  },
+  "finished": "2026-10-09T16:12:56.628054+00:00",
+  "gateExitCode": 0,
+  "executionIdentity": {
+    "node": {
+      "role": "actual test Node process",
+      "pid": 168799,
+      "executable": "<node-runtime>/bin/node",
+      "sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12",
+      "cwd": "<workspace-path>",
+      "cmdline": [
+        "<node-runtime>/bin/node",
+        "<workspace-path>"
+      ]
+    },
+    "browser": {
+      "role": "actual sandboxed Chromium browser",
+      "pid": 168825,
+      "executable": "/usr/lib/chromium/chromium",
+      "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+      "cwd": "<workspace-path>",
+      "cmdline": [
+        "/usr/lib/chromium/chromium",
+        "--show-component-extension-options",
+        "--enable-gpu-rasterization",
+        "--no-default-browser-check",
+        "--disable-pings",
+        "--media-router=0",
+        "--enable-remote-extensions",
+        "--load-extension=",
+        "--disable-field-trial-config",
+        "--disable-background-networking",
+        "--disable-background-timer-throttling",
+        "--disable-backgrounding-occluded-windows",
+        "--disable-back-forward-cache",
+        "--disable-breakpad",
+        "--disable-client-side-phishing-detection",
+        "--disable-component-extensions-with-background-pages",
+        "--disable-component-update",
+        "--no-default-browser-check",
+        "--disable-default-apps",
+        "--disable-dev-shm-usage",
+        "--disable-edgeupdater",
+        "--disable-extensions",
+        "--disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion",
+        "--enable-features=CDPScreenshotNewSurface",
+        "--allow-pre-commit-input",
+        "--disable-hang-monitor",
+        "--disable-ipc-flooding-protection",
+        "--disable-popup-blocking",
+        "--disable-prompt-on-repost",
+        "--disable-renderer-backgrounding",
+        "--disable-updater-scheduler",
+        "--force-color-profile=srgb",
+        "--metrics-recording-only",
+        "--no-first-run",
+        "--password-store=basic",
+        "--use-mock-keychain",
+        "--no-service-autorun",
+        "--export-tagged-pdf",
+        "--disable-search-engine-choice-screen",
+        "--unsafely-disable-devtools-self-xss-warnings",
+        "--edge-skip-compat-layer-relaunch",
+        "--disable-infobars",
+        "--disable-search-engine-choice-screen",
+        "--disable-sync",
+        "--enable-unsafe-swiftshader",
+        "--headless",
+        "--hide-scrollbars",
+        "--mute-audio",
+        "--blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4",
+        "--no-proxy-server",
+        "--user-data-dir=<isolated-browser-profile>",
+        "--remote-debugging-pipe",
+        "--no-startup-window"
+      ],
+      "ownedProfile": "<isolated-browser-profile>",
+      "sandboxDisabledFlagsAbsent": true,
+      "observedUtc": "2026-10-09T16:11:07.070421+00:00"
+    },
+    "errors": []
+  },
+  "scopeEnvironment": {
+    "GEOMETRY_REPO": "<workspace-path>",
+    "GEOMETRY_EXPECTED_SHA": "243326b512896ace70e068f62c8f3d6397f6000d",
+    "GEOMETRY_ISOLATED_SERVICE": "1",
+    "GEOMETRY_TEST_BRIDGE": "<isolated-test-directory>",
+    "GEOMETRY_BRIDGE": "<isolated-test-directory>",
+    "GEOMETRY_MODEL_BASE": "<isolated-test-directory>",
+    "GEOMETRY_FEEDBACK_DIR": "<isolated-test-directory>",
+    "GEOMETRY_CHROME": "/usr/bin/chromium",
+    "GEOMETRY_ROOM_ACCEPTANCE_DIR": "<isolated-test-directory>"
+  },
+  "actualScope": "all ten original normal scenarios plus all original negative cases; six measured canonical cost cases",
+  "testSourceProvenance": {
+    "productFullSHA": "243326b512896ace70e068f62c8f3d6397f6000d",
+    "productDirtyBefore": "",
+    "executedProbe": "<workspace-path>",
+    "executedProbeSHA256": "ac2a0cd540de60ec118afc9890d5d6f6037d7eda1eae8b51da3ade498ed82b31",
+    "formalCandidateProbe": "<workspace-path>",
+    "formalCandidateProbeSHA256": "ac2a0cd540de60ec118afc9890d5d6f6037d7eda1eae8b51da3ade498ed82b31",
+    "sourceOverride": false,
+    "approvedOverrideExpectedSHA256": null,
+    "productBeforeAfterIdentityMatches": true,
+    "note": "An explicitly reviewed scratch oracle/supplement is separately identified; its result is never mislabeled as execution of different formal test bytes."
+  },
+  "stackBytes": 16777216,
+  "acceptanceResult": {
+    "completed": true,
+    "passed": 273,
+    "failed": 0,
+    "probePath": "<isolated-test-directory>",
+    "probeSHA256": "698cdaf47ecc43c1c39d4e395e2d2df418177b197137610faa31e61797f43b13",
+    "normalScenariosCompleted": [
+      "pdf-rectangle",
+      "pdf-l",
+      "pdf-notch",
+      "image-rectangle",
+      "image-l",
+      "image-notch",
+      "image-rectangle-box",
+      "pdf-l-mobile",
+      "image-notch-mobile",
+      "pdf-l-transform"
+    ],
+    "canonicalResults": [
+      {
+        "ok": true,
+        "checks": 273,
+        "failures": 0,
+        "out": "<isolated-test-directory>"
+      }
+    ],
+    "measurements": [
+      {
+        "scenario": "pdf-rectangle",
+        "candidate": {
+          "actions": 12,
+          "elapsedMs": 1817,
+          "start": {
+            "source": {
+              "sourceId": "f1d30a10eb1caa557fa083c051d09ada7b006c8e9012942c933e67a5d81b9677",
+              "page": 1,
+              "imgW": 280,
+              "imgH": 190,
+              "crop": [
+                0,
+                0,
+                280,
+                190
+              ],
+              "mmPerPx": 10.000000078250203,
+              "x": 0,
+              "y": 0,
+              "rot": 0,
+              "calibration": {
+                "points": [
+                  [
+                    30.000004695012016,
+                    29.999995304987987
+                  ],
+                  [
+                    230.00000313000797,
+                    29.999995304987987
+                  ]
+                ],
+                "distanceMm": 2000,
+                "inputValue": 2000,
+                "inputUnit": "mm"
+              }
+            },
+            "camera": [
+              0.27857142639160154,
+              40,
+              165.35714285714283
+            ],
+            "review": "unreviewed",
+            "tool": "select",
+            "tab": "underlay",
+            "snap": false,
+            "method": "auto",
+            "disclosures": [
+              [
+                "refAlignmentDetails",
+                false
+              ],
+              [
+                "refOutlineDetails",
+                true
+              ],
+              [
+                "缺口與連通房間：明確分隔後重取",
+                false
+              ],
+              [
+                "refSourceDetails",
+                false
+              ],
+              [
+                "refRecordDetails",
+                false
+              ]
+            ]
+          }
+        },
+        "manual": {
+          "actions": 16,
+          "elapsedMs": 1911,
+          "start": {
+            "source": {
+              "sourceId": "f1d30a10eb1caa557fa083c051d09ada7b006c8e9012942c933e67a5d81b9677",
+              "page": 1,
+              "imgW": 280,
+              "imgH": 190,
+              "crop": [
+                0,
+                0,
+                280,
+                190
+              ],
+              "mmPerPx": 10.000000078250203,
+              "x": 0,
+              "y": 0,
+              "rot": 0,
+              "calibration": {
+                "points": [
+                  [
+                    30.000004695012016,
+                    29.999995304987987
+                  ],
+                  [
+                    230.00000313000797,
+                    29.999995304987987
+                  ]
+                ],
+                "distanceMm": 2000,
+                "inputValue": 2000,
+                "inputUnit": "mm"
+              }
+            },
+            "camera": [
+              0.27857142639160154,
+              40,
+              165.35714285714283
+            ],
+            "review": "unreviewed",
+            "tool": "select",
+            "tab": "underlay",
+            "snap": false,
+            "method": "auto",
+            "disclosures": [
+              [
+                "refAlignmentDetails",
+                false
+              ],
+              [
+                "refOutlineDetails",
+                true
+              ],
+              [
+                "缺口與連通房間：明確分隔後重取",
+                false
+              ],
+              [
+                "refSourceDetails",
+                false
+              ],
+              [
+                "refRecordDetails",
+                false
+              ]
+            ]
+          }
+        },
+        "protocol": "room-direct-row-dimensions/1",
+        "definition": "Same calibrated source, camera, disclosures, snap, review state and original 4000 x 3000 scene; same ordered final vertices and confirmed state. Both include a genuine dimension correction and every edge dimension entry. Candidate dimensions use the new per-edge input/change operation, while the identical retained manual route uses official edge inputs. Clicks, drags, select choices and text replacements each count one action (Tab belongs to that replacement); tool/tab/disclosure navigation included. Import/calibration, Save/New/Open and automatic locator scrolling excluded. This newly executed UI protocol is distinct from the retained legacy select/fill/Apply protocol; historical action counts remain attached to their original artifacts. Machine wall time includes automation settling, not human reading or operation time. Snap disabled for both routes before measurement."
+      },
+      {
+        "scenario": "pdf-l",
+        "candidate": {
+          "actions": 14,
+          "elapsedMs": 2058,
+          "start": {
+            "source": {
+              "sourceId": "f1d30a10eb1caa557fa083c051d09ada7b006c8e9012942c933e67a5d81b9677",
+              "page": 2,
+              "imgW": 280,
+              "imgH": 190,
+              "crop": [
+                0,
+                0,
+                280,
+                190
+              ],
+              "mmPerPx": 10.000000078250203,
+              "x": 0,
+              "y": 0,
+              "rot": 0,
+              "calibration": {
+                "points": [
+                  [
+                    30.000004695012016,
+                    29.999995304987987
+                  ],
+                  [
+                    230.00000313000797,
+                    29.999995304987987
+                  ]
+                ],
+                "distanceMm": 2000,
+                "inputValue": 2000,
+                "inputUnit": "mm"
+              }
+            },
+            "camera": [
+              0.27857142639160154,
+              40,
+              165.35714285714283
+            ],
+            "review": "unreviewed",
+            "tool": "select",
+            "tab": "underlay",
+            "snap": false,
+            "method": "auto",
+            "disclosures": [
+              [
+                "refAlignmentDetails",
+                false
+              ],
+              [
+                "refOutlineDetails",
+                true
+              ],
+              [
+                "缺口與連通房間：明確分隔後重取",
+                false
+              ],
+              [
+                "refSourceDetails",
+                false
+              ],
+              [
+                "refRecordDetails",
+                false
+              ]
+            ]
+          }
+        },
+        "manual": {
+          "actions": 20,
+          "elapsedMs": 2120,
+          "start": {
+            "source": {
+              "sourceId": "f1d30a10eb1caa557fa083c051d09ada7b006c8e9012942c933e67a5d81b9677",
+              "page": 2,
+              "imgW": 280,
+              "imgH": 190,
+              "crop": [
+                0,
+                0,
+                280,
+                190
+              ],
+              "mmPerPx": 10.000000078250203,
+              "x": 0,
+              "y": 0,
+              "rot": 0,
+              "calibration": {
+                "points": [
+                  [
+                    30.000004695012016,
+                    29.999995304987987
+                  ],
+                  [
+                    230.00000313000797,
+                    29.999995304987987
+                  ]
+                ],
+                "distanceMm": 2000,
+                "inputValue": 2000,
+                "inputUnit": "mm"
+              }
+            },
+            "camera": [
+              0.27857142639160154,
+              40,
+              165.35714285714283
+            ],
+            "review": "unreviewed",
+            "tool": "select",
+            "tab": "underlay",
+            "snap": false,
+            "method": "auto",
+            "disclosures": [
+              [
+                "refAlignmentDetails",
+                false
+              ],
+              [
+                "refOutlineDetails",
+                true
+              ],
+              [
+                "缺口與連通房間：明確分隔後重取",
+                false
+              ],
+              [
+                "refSourceDetails",
+                false
+              ],
+              [
+                "refRecordDetails",
+                false
+              ]
+            ]
+          }
+        },
+        "protocol": "room-direct-row-dimensions/1",
+        "definition": "Same calibrated source, camera, disclosures, snap, review state and original 4000 x 3000 scene; same ordered final vertices and confirmed state. Both include a genuine dimension correction and every edge dimension entry. Candidate dimensions use the new per-edge input/change operation, while the identical retained manual route uses official edge inputs. Clicks, drags, select choices and text replacements each count one action (Tab belongs to that replacement); tool/tab/disclosure navigation included. Import/calibration, Save/New/Open and automatic locator scrolling excluded. This newly executed UI protocol is distinct from the retained legacy select/fill/Apply protocol; historical action counts remain attached to their original artifacts. Machine wall time includes automation settling, not human reading or operation time. Snap disabled for both routes before measurement."
+      },
+      {
+        "scenario": "pdf-notch",
+        "candidate": {
+          "actions": 16,
+          "elapsedMs": 2456,
+          "start": {
+            "source": {
+              "sourceId": "f1d30a10eb1caa557fa083c051d09ada7b006c8e9012942c933e67a5d81b9677",
+              "page": 3,
+              "imgW": 280,
+              "imgH": 190,
+              "crop": [
+                0,
+                0,
+                280,
+                190
+              ],
+              "mmPerPx": 10.000000078250203,
+              "x": 0,
+              "y": 0,
+              "rot": 0,
+              "calibration": {
+                "points": [
+                  [
+                    30.000004695012016,
+                    29.999995304987987
+                  ],
+                  [
+                    230.00000313000797,
+                    29.999995304987987
+                  ]
+                ],
+                "distanceMm": 2000,
+                "inputValue": 2000,
+                "inputUnit": "mm"
+              }
+            },
+            "camera": [
+              0.27857142639160154,
+              40,
+              165.35714285714283
+            ],
+            "review": "unreviewed",
+            "tool": "select",
+            "tab": "underlay",
+            "snap": false,
+            "method": "auto",
+            "disclosures": [
+              [
+                "refAlignmentDetails",
+                false
+              ],
+              [
+                "refOutlineDetails",
+                true
+              ],
+              [
+                "缺口與連通房間：明確分隔後重取",
+                false
+              ],
+              [
+                "refSourceDetails",
+                false
+              ],
+              [
+                "refRecordDetails",
+                false
+              ]
+            ]
+          }
+        },
+        "manual": {
+          "actions": 24,
+          "elapsedMs": 2388,
+          "start": {
+            "source": {
+              "sourceId": "f1d30a10eb1caa557fa083c051d09ada7b006c8e9012942c933e67a5d81b9677",
+              "page": 3,
+              "imgW": 280,
+              "imgH": 190,
+              "crop": [
+                0,
+                0,
+                280,
+                190
+              ],
+              "mmPerPx": 10.000000078250203,
+              "x": 0,
+              "y": 0,
+              "rot": 0,
+              "calibration": {
+                "points": [
+                  [
+                    30.000004695012016,
+                    29.999995304987987
+                  ],
+                  [
+                    230.00000313000797,
+                    29.999995304987987
+                  ]
+                ],
+                "distanceMm": 2000,
+                "inputValue": 2000,
+                "inputUnit": "mm"
+              }
+            },
+            "camera": [
+              0.27857142639160154,
+              40,
+              165.35714285714283
+            ],
+            "review": "unreviewed",
+            "tool": "select",
+            "tab": "underlay",
+            "snap": false,
+            "method": "auto",
+            "disclosures": [
+              [
+                "refAlignmentDetails",
+                false
+              ],
+              [
+                "refOutlineDetails",
+                true
+              ],
+              [
+                "缺口與連通房間：明確分隔後重取",
+                false
+              ],
+              [
+                "refSourceDetails",
+                false
+              ],
+              [
+                "refRecordDetails",
+                false
+              ]
+            ]
+          }
+        },
+        "protocol": "room-direct-row-dimensions/1",
+        "definition": "Same calibrated source, camera, disclosures, snap, review state and original 4000 x 3000 scene; same ordered final vertices and confirmed state. Both include a genuine dimension correction and every edge dimension entry. Candidate dimensions use the new per-edge input/change operation, while the identical retained manual route uses official edge inputs. Clicks, drags, select choices and text replacements each count one action (Tab belongs to that replacement); tool/tab/disclosure navigation included. Import/calibration, Save/New/Open and automatic locator scrolling excluded. This newly executed UI protocol is distinct from the retained legacy select/fill/Apply protocol; historical action counts remain attached to their original artifacts. Machine wall time includes automation settling, not human reading or operation time. Snap disabled for both routes before measurement."
+      },
+      {
+        "scenario": "image-rectangle",
+        "candidate": {
+          "actions": 12,
+          "elapsedMs": 1885,
+          "start": {
+            "source": {
+              "sourceId": "12eee7286181a61983a140d80644ccada83eb928166f020096f96008578f65c4",
+              "page": 1,
+              "imgW": 280,
+              "imgH": 190,
+              "crop": [
+                0,
+                0,
+                280,
+                190
+              ],
+              "mmPerPx": 10.000000078250203,
+              "x": 0,
+              "y": 0,
+              "rot": 0,
+              "calibration": {
+                "points": [
+                  [
+                    30.000004695012016,
+                    29.999995304987987
+                  ],
+                  [
+                    230.00000313000797,
+                    29.999995304987987
+                  ]
+                ],
+                "distanceMm": 2000,
+                "inputValue": 2000,
+                "inputUnit": "mm"
+              }
+            },
+            "camera": [
+              0.27857142639160154,
+              40,
+              165.35714285714283
+            ],
+            "review": "unreviewed",
+            "tool": "select",
+            "tab": "underlay",
+            "snap": false,
+            "method": "auto",
+            "disclosures": [
+              [
+                "refAlignmentDetails",
+                false
+              ],
+              [
+                "refOutlineDetails",
+                true
+              ],
+              [
+                "缺口與連通房間：明確分隔後重取",
+                false
+              ],
+              [
+                "refSourceDetails",
+                false
+              ],
+              [
+                "refRecordDetails",
+                false
+              ]
+            ]
+          }
+        },
+        "manual": {
+          "actions": 16,
+          "elapsedMs": 1849,
+          "start": {
+            "source": {
+              "sourceId": "12eee7286181a61983a140d80644ccada83eb928166f020096f96008578f65c4",
+              "page": 1,
+              "imgW": 280,
+              "imgH": 190,
+              "crop": [
+                0,
+                0,
+                280,
+                190
+              ],
+              "mmPerPx": 10.000000078250203,
+              "x": 0,
+              "y": 0,
+              "rot": 0,
+              "calibration": {
+                "points": [
+                  [
+                    30.000004695012016,
+                    29.999995304987987
+                  ],
+                  [
+                    230.00000313000797,
+                    29.999995304987987
+                  ]
+                ],
+                "distanceMm": 2000,
+                "inputValue": 2000,
+                "inputUnit": "mm"
+              }
+            },
+            "camera": [
+              0.27857142639160154,
+              40,
+              165.35714285714283
+            ],
+            "review": "unreviewed",
+            "tool": "select",
+            "tab": "underlay",
+            "snap": false,
+            "method": "auto",
+            "disclosures": [
+              [
+                "refAlignmentDetails",
+                false
+              ],
+              [
+                "refOutlineDetails",
+                true
+              ],
+              [
+                "缺口與連通房間：明確分隔後重取",
+                false
+              ],
+              [
+                "refSourceDetails",
+                false
+              ],
+              [
+                "refRecordDetails",
+                false
+              ]
+            ]
+          }
+        },
+        "protocol": "room-direct-row-dimensions/1",
+        "definition": "Same calibrated source, camera, disclosures, snap, review state and original 4000 x 3000 scene; same ordered final vertices and confirmed state. Both include a genuine dimension correction and every edge dimension entry. Candidate dimensions use the new per-edge input/change operation, while the identical retained manual route uses official edge inputs. Clicks, drags, select choices and text replacements each count one action (Tab belongs to that replacement); tool/tab/disclosure navigation included. Import/calibration, Save/New/Open and automatic locator scrolling excluded. This newly executed UI protocol is distinct from the retained legacy select/fill/Apply protocol; historical action counts remain attached to their original artifacts. Machine wall time includes automation settling, not human reading or operation time. Snap disabled for both routes before measurement."
+      },
+      {
+        "scenario": "image-l",
+        "candidate": {
+          "actions": 14,
+          "elapsedMs": 2023,
+          "start": {
+            "source": {
+              "sourceId": "927b84b1aac70e5e6966b10d4246e8c4cead2201a2be3fc5bf460de3f9d4e28c",
+              "page": 1,
+              "imgW": 280,
+              "imgH": 190,
+              "crop": [
+                0,
+                0,
+                280,
+                190
+              ],
+              "mmPerPx": 10.000000078250203,
+              "x": 0,
+              "y": 0,
+              "rot": 0,
+              "calibration": {
+                "points": [
+                  [
+                    30.000004695012016,
+                    29.999995304987987
+                  ],
+                  [
+                    230.00000313000797,
+                    29.999995304987987
+                  ]
+                ],
+                "distanceMm": 2000,
+                "inputValue": 2000,
+                "inputUnit": "mm"
+              }
+            },
+            "camera": [
+              0.27857142639160154,
+              40,
+              165.35714285714283
+            ],
+            "review": "unreviewed",
+            "tool": "select",
+            "tab": "underlay",
+            "snap": false,
+            "method": "auto",
+            "disclosures": [
+              [
+                "refAlignmentDetails",
+                false
+              ],
+              [
+                "refOutlineDetails",
+                true
+              ],
+              [
+                "缺口與連通房間：明確分隔後重取",
+                false
+              ],
+              [
+                "refSourceDetails",
+                false
+              ],
+              [
+                "refRecordDetails",
+                false
+              ]
+            ]
+          }
+        },
+        "manual": {
+          "actions": 20,
+          "elapsedMs": 2132,
+          "start": {
+            "source": {
+              "sourceId": "927b84b1aac70e5e6966b10d4246e8c4cead2201a2be3fc5bf460de3f9d4e28c",
+              "page": 1,
+              "imgW": 280,
+              "imgH": 190,
+              "crop": [
+                0,
+                0,
+                280,
+                190
+              ],
+              "mmPerPx": 10.000000078250203,
+              "x": 0,
+              "y": 0,
+              "rot": 0,
+              "calibration": {
+                "points": [
+                  [
+                    30.000004695012016,
+                    29.999995304987987
+                  ],
+                  [
+                    230.00000313000797,
+                    29.999995304987987
+                  ]
+                ],
+                "distanceMm": 2000,
+                "inputValue": 2000,
+                "inputUnit": "mm"
+              }
+            },
+            "camera": [
+              0.27857142639160154,
+              40,
+              165.35714285714283
+            ],
+            "review": "unreviewed",
+            "tool": "select",
+            "tab": "underlay",
+            "snap": false,
+            "method": "auto",
+            "disclosures": [
+              [
+                "refAlignmentDetails",
+                false
+              ],
+              [
+                "refOutlineDetails",
+                true
+              ],
+              [
+                "缺口與連通房間：明確分隔後重取",
+                false
+              ],
+              [
+                "refSourceDetails",
+                false
+              ],
+              [
+                "refRecordDetails",
+                false
+              ]
+            ]
+          }
+        },
+        "protocol": "room-direct-row-dimensions/1",
+        "definition": "Same calibrated source, camera, disclosures, snap, review state and original 4000 x 3000 scene; same ordered final vertices and confirmed state. Both include a genuine dimension correction and every edge dimension entry. Candidate dimensions use the new per-edge input/change operation, while the identical retained manual route uses official edge inputs. Clicks, drags, select choices and text replacements each count one action (Tab belongs to that replacement); tool/tab/disclosure navigation included. Import/calibration, Save/New/Open and automatic locator scrolling excluded. This newly executed UI protocol is distinct from the retained legacy select/fill/Apply protocol; historical action counts remain attached to their original artifacts. Machine wall time includes automation settling, not human reading or operation time. Snap disabled for both routes before measurement."
+      },
+      {
+        "scenario": "image-notch",
+        "candidate": {
+          "actions": 16,
+          "elapsedMs": 2266,
+          "start": {
+            "source": {
+              "sourceId": "e19c9fa5ea9af8d6b94d743fe72c6ab390f7e0c14e06abca11512507b28f5d59",
+              "page": 1,
+              "imgW": 280,
+              "imgH": 190,
+              "crop": [
+                0,
+                0,
+                280,
+                190
+              ],
+              "mmPerPx": 10.000000078250203,
+              "x": 0,
+              "y": 0,
+              "rot": 0,
+              "calibration": {
+                "points": [
+                  [
+                    30.000004695012016,
+                    29.999995304987987
+                  ],
+                  [
+                    230.00000313000797,
+                    29.999995304987987
+                  ]
+                ],
+                "distanceMm": 2000,
+                "inputValue": 2000,
+                "inputUnit": "mm"
+              }
+            },
+            "camera": [
+              0.27857142639160154,
+              40,
+              165.35714285714283
+            ],
+            "review": "unreviewed",
+            "tool": "select",
+            "tab": "underlay",
+            "snap": false,
+            "method": "auto",
+            "disclosures": [
+              [
+                "refAlignmentDetails",
+                false
+              ],
+              [
+                "refOutlineDetails",
+                true
+              ],
+              [
+                "缺口與連通房間：明確分隔後重取",
+                false
+              ],
+              [
+                "refSourceDetails",
+                false
+              ],
+              [
+                "refRecordDetails",
+                false
+              ]
+            ]
+          }
+        },
+        "manual": {
+          "actions": 24,
+          "elapsedMs": 2370,
+          "start": {
+            "source": {
+              "sourceId": "e19c9fa5ea9af8d6b94d743fe72c6ab390f7e0c14e06abca11512507b28f5d59",
+              "page": 1,
+              "imgW": 280,
+              "imgH": 190,
+              "crop": [
+                0,
+                0,
+                280,
+                190
+              ],
+              "mmPerPx": 10.000000078250203,
+              "x": 0,
+              "y": 0,
+              "rot": 0,
+              "calibration": {
+                "points": [
+                  [
+                    30.000004695012016,
+                    29.999995304987987
+                  ],
+                  [
+                    230.00000313000797,
+                    29.999995304987987
+                  ]
+                ],
+                "distanceMm": 2000,
+                "inputValue": 2000,
+                "inputUnit": "mm"
+              }
+            },
+            "camera": [
+              0.27857142639160154,
+              40,
+              165.35714285714283
+            ],
+            "review": "unreviewed",
+            "tool": "select",
+            "tab": "underlay",
+            "snap": false,
+            "method": "auto",
+            "disclosures": [
+              [
+                "refAlignmentDetails",
+                false
+              ],
+              [
+                "refOutlineDetails",
+                true
+              ],
+              [
+                "缺口與連通房間：明確分隔後重取",
+                false
+              ],
+              [
+                "refSourceDetails",
+                false
+              ],
+              [
+                "refRecordDetails",
+                false
+              ]
+            ]
+          }
+        },
+        "protocol": "room-direct-row-dimensions/1",
+        "definition": "Same calibrated source, camera, disclosures, snap, review state and original 4000 x 3000 scene; same ordered final vertices and confirmed state. Both include a genuine dimension correction and every edge dimension entry. Candidate dimensions use the new per-edge input/change operation, while the identical retained manual route uses official edge inputs. Clicks, drags, select choices and text replacements each count one action (Tab belongs to that replacement); tool/tab/disclosure navigation included. Import/calibration, Save/New/Open and automatic locator scrolling excluded. This newly executed UI protocol is distinct from the retained legacy select/fill/Apply protocol; historical action counts remain attached to their original artifacts. Machine wall time includes automation settling, not human reading or operation time. Snap disabled for both routes before measurement."
+      }
+    ],
+    "errors": [],
+    "independentCensus": {
+      "total": 273,
+      "agrees": true,
+      "negativeAssertions": [
+        {
+          "name": "image-open-doorway: explicit failure leaves original scene and no completion receipt",
+          "matches": 1,
+          "ok": true
+        },
+        {
+          "name": "image-neighbor: connected neighbor is disclosed instead of silently excluded",
+          "matches": 1,
+          "ok": true
+        },
+        {
+          "name": "image-neighbor: explicit search separator excludes neighbor without editing source geometry",
+          "matches": 1,
+          "ok": true
+        },
+        {
+          "name": "native-rejection-and-source-change: core rejects self-crossing orthogonal ring without changing original",
+          "matches": 1,
+          "ok": true
+        },
+        {
+          "name": "native-rejection-and-source-change: recalibration requires review and retains exact confirmed geometry",
+          "matches": 1,
+          "ok": true
+        },
+        {
+          "name": "native-rejection-and-source-change: source replacement retains exact geometry and becomes unreviewed",
+          "matches": 1,
+          "ok": true
+        }
+      ]
+    }
+  },
+  "probeVerified": true
+}

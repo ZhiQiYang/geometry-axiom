@@ -1,0 +1,18 @@
+boundary 1 outline 0,0 4000,0 4000,3000 0,3000
+boundary 2 outline 0,0 4000,0 4000,3000 0,3000
+placement 1 on boundary 1 origin 0 0 0 u +x v +y
+placement 2 on boundary 2 origin 0 0 0 u +x v +y
+grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u explicit 1200 2400 v explicit 1000
+grid 10 on 1 from-system 0 origin 0 0
+grid 20 on 2 from-system 0 origin 100 200
+subgrid 11 parent 10 cell u line:0 line:1 v min line:0 divisions u 2 v 1
+timber 90 20 33 role boundary
+timber 91 20 33 role boundary
+timber 1 27 33 role primary
+guide 1 1 v grid:10:u:0
+place 90 on 1 at-face e0 +u +n
+# R18 角材 90: onBoundary=true coversEdge=true boundaryEdge=0
+place 91 on 1 at-face e2 +u +n
+# R18 角材 91: onBoundary=true coversEdge=true boundaryEdge=2
+place 1 on 1 at-line guide 1 +v +n
+# R18 角材 1: onBoundary=false coversEdge=false boundaryEdge=-1

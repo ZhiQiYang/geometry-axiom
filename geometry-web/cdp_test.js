@@ -266,7 +266,7 @@ async function click(x, y) {
 async function clickControl(selector) {
   const menu=await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});return e?.closest('#exampleMenuPop')?.hidden?'examples':e?.closest('#fileMenuPop')?.hidden?'file':e?.closest('#createObjectPop')?.hidden?'create':e?.closest('#filterDisclosure')&&!e.matches('summary')&&!e.closest('#filterDisclosure').open?'filter':null;})()`);
   if(menu==='create'){
-    const trigger=await eval_(`innerWidth<=900?'#mobileCreateObject':'#btnCreateObject'`);
+    const trigger=await eval_(`(()=>{const visible=['mobileCreateObject','btnCreateObject'].filter(id=>{const e=document.getElementById(id),r=e?.getBoundingClientRect();return r&&r.width>0&&r.height>0;});if(visible.length!==1)throw Error('Expected one visible create-object opener: '+visible.join(','));return '#'+visible[0];})()`);
     await clickControl(trigger);
   }else if(menu==='examples')await clickControl('#exampleMenuBtn');
   else if(menu==='file')await clickControl('#fileMenuBtn');
@@ -397,7 +397,7 @@ async function main() {
     const kids=[app.querySelector(':scope > .topbar'),app.querySelector(':scope > .workspace'),app.querySelector(':scope > .statusbar')];return {n:kids.filter(Boolean).length,
       cls:kids.map(k=>k.className.split(" ")[0]).join(","),
       h:kids.map(k=>Math.round(k.getBoundingClientRect().height))}})()`);
-  console.log("app rows:", JSON.stringify(rows),explicitVerdict(rows.n === 3 && rows.h[0] === 60 && rows.h[2] === 28 ? "✓ 三列殼" : "✗"));
+  console.log("app rows:", JSON.stringify(rows),explicitVerdict(rows.n === 3 && rows.h[0] === 56 && rows.h[2] === 28 ? "✓ 三列殼" : "✗"));
   /* (b) 主畫布不再保留空白右欄，物件庫與畫布共用完整寬度。 */
   const cols = await eval_(`(()=>{const w=document.querySelector(".workspace");
     const l=w.querySelector('.sidebar-left').getBoundingClientRect(),c=$('canvasViewport').getBoundingClientRect();return {left:l.width,leftRight:l.right,canvasLeft:c.left,canvasRight:c.right,canvasWidth:c.width,iw:innerWidth,composition:document.body.classList.contains('canvas-composition'),hasInspector:document.body.classList.contains('canvas-has-inspector')};})()`);
@@ -548,13 +548,27 @@ async function main() {
   console.log("cards:", await eval_(`document.querySelectorAll(".ocard").length`));
 
   console.log("=== 5. 拖卡片（應寫 canvas-pos，不進入） ===");
+  // The earlier rectangle may overlap the first card. Keep the original target
+  // and require a real, unobstructed header hit before dispatching the gesture.
   const cardBox = await eval_(`(()=>{
-    const c = document.querySelector(".ocard");
-    if (!c) return null;
-    const r = c.getBoundingClientRect();
+    const c = document.querySelector('#ocv .ocard[data-kind="boundary"][data-id="1"]');
+    if (!c || c !== document.querySelector('#ocv .ocard')) throw Error('P5: original boundary:1 card missing');
     const local = ocFind(c.dataset.kind, +c.dataset.id);
-    return {x: r.left + r.width/2, y: r.top + 20, kind:c.dataset.kind, id:+c.dataset.id, cx:local?local.cx:null, cy:local?local.cy:null};
+    if (!local) throw Error('P5: original boundary:1 record missing');
+    const frame = c.querySelector('.ocard-frame').getBBox(), matrix = c.getScreenCTM();
+    const viewport = document.querySelector('#ocv').getBoundingClientRect(), attempts = [];
+    const interactive = 'button,a,input,select,textarea,summary,[role="button"],[role="link"],[contenteditable]:not([contenteditable="false"]),[data-insp-scroll],.card-enter';
+    for (const y of [20, 32, 42]) for (const fraction of [0.5, 0.625, 0.75, 0.85, 0.9]) {
+      const point = new DOMPoint(frame.x + frame.width * fraction, y).matrixTransform(matrix);
+      const hit = document.elementFromPoint(point.x, point.y), card = hit?.closest('.ocard');
+      const focusable = hit?.closest('[tabindex]');
+      const valid = point.x >= viewport.left && point.x < viewport.right && point.y >= viewport.top && point.y < viewport.bottom && card === c && !hit.closest(interactive) && !(focusable && c.contains(focusable) && focusable.tabIndex >= 0);
+      attempts.push({x:point.x,y:point.y,hitKind:card?.dataset.kind,hitId:card?.dataset.id,valid});
+      if (valid) return {x:point.x,y:point.y,kind:c.dataset.kind,id:+c.dataset.id,cx:local.cx,cy:local.cy,attempts};
+    }
+    throw Error('P5: original card has no reachable noninteractive header point: '+JSON.stringify(attempts));
   })()`);
+  console.log('P5 pointer precondition', JSON.stringify(cardBox));
   if (cardBox) {
     const posBefore = await eval_(`JSON.stringify(oc.faces.map(f=>[f.id,f.cx,f.cy]))`);
     await drag(cardBox.x, cardBox.y, cardBox.x + 120, cardBox.y + 60);
@@ -2347,8 +2361,8 @@ async function main() {
   for (let i = 0; i < 15; ++i) {
     await sleep(300);
     obUi = await eval_(`({
-      checks: document.querySelectorAll("#faceLayerList .fe-ob-check").length,
-      checked: document.querySelectorAll("#faceLayerList .fe-ob-check:checked").length,
+      checks: document.querySelectorAll("#faceProjectionEditor .fe-ob-check").length,
+      checked: document.querySelectorAll("#faceProjectionEditor .fe-ob-check:checked").length,
       btn: !!document.getElementById("feApplyProj"),
       cut: !!document.getElementById("feCutStrip"),
       btnTxt: document.getElementById("feApplyProj") &&
@@ -2369,7 +2383,7 @@ async function main() {
     ? "✓" : `✗ ${JSON.stringify(ap1)}`));
   /* 只勾樑(取消已套用的柱:重套=拒絕)+ 裁切條帶 → 套用 */
   await eval_(`(()=>{
-    for (const c of document.querySelectorAll("#faceLayerList .fe-ob-check")) {
+    for (const c of document.querySelectorAll("#faceProjectionEditor .fe-ob-check")) {
       c.checked = c.dataset.itemType === "beam";
       c.dispatchEvent(new Event("change"));
     }
@@ -3544,7 +3558,7 @@ async function main() {
   };
   const clickSelector = async sel => {
     const menu=await eval_(`document.querySelector(${JSON.stringify(sel)})?.closest('#createObjectPop')?.hidden===true`);
-    if(menu)await clickControl(await eval_(`innerWidth<=900?'#mobileCreateObject':'#btnCreateObject'`));
+    if(menu)await clickControl(await eval_(`(()=>{const visible=['mobileCreateObject','btnCreateObject'].filter(id=>{const e=document.getElementById(id),r=e?.getBoundingClientRect();return r&&r.width>0&&r.height>0;});if(visible.length!==1)throw Error('Expected one visible create-object opener: '+visible.join(','));return '#'+visible[0];})()`));
     const p = await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(sel)});if(!e)throw Error('Missing control '+${JSON.stringify(sel)}+' '+JSON.stringify({focus:oc.focus,connection:connection.phase,error:connection.error,status:$('status').textContent}));e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,hit=document.elementFromPoint(x,y);return {x,y,hit:e.contains(hit),target:hit?.outerHTML?.slice(0,200)}})()`);
     if (!p.hit) throw Error('Control is not reachable '+sel+' '+JSON.stringify(p));
     await click(p.x,p.y); await sleep(120); await waitIdle();
@@ -3744,7 +3758,7 @@ async function main() {
   check('F2 form drafts survive redraw',await eval_(`document.querySelector('#gridU').value==='100 200' && document.querySelector('#placeOX').value==='250'`));
   for (const width of [1382,1160,900,680,600]) {
     await send('Emulation.setDeviceMetricsOverride',{width,height:804,deviceScaleFactor:1,mobile:false});
-    check('T4 workspace identity and scrollable tools occupy separate usable rows @'+width,await eval_(`(()=>{const h=document.querySelector('.object-workspace-topbar').getBoundingClientRect(),s=document.querySelector('.object-workspace-statusbar').getBoundingClientRect(),t=document.querySelector('.workspace-tools-row').getBoundingClientRect(),a=document.querySelector('.object-workspace-actions').getBoundingClientRect(),title=document.querySelector('#workspaceTitle').getBoundingClientRect(),vp=$('faceEditorViewport').getBoundingClientRect();return h.height>=100 && h.height<=150 && s.height===32 && a.right<=innerWidth+1 && t.left>=0 && t.right<=innerWidth+1 && t.top>=a.bottom-1 && title.width>0 && vp.top>=h.bottom-1 && vp.height>300})()`));
+    check('T4 adopted 56/96 header, reachable tools and history in right actions @'+width,await eval_(`(()=>{const h=document.querySelector('.object-workspace-topbar').getBoundingClientRect(),s=document.querySelector('.object-workspace-statusbar').getBoundingClientRect(),t=document.querySelector('.workspace-tools-row').getBoundingClientRect(),a=document.querySelector('.object-workspace-actions').getBoundingClientRect(),title=document.querySelector('#workspaceTitle').getBoundingClientRect(),vp=$('faceEditorViewport').getBoundingClientRect();return h.height===(innerWidth<=560?96:56) && s.height===32 && a.right<=innerWidth+1 && t.left>=0 && t.right<=innerWidth+1 && (innerWidth<=560?t.top>=h.top+44:t.top>=h.top&&t.bottom<=h.bottom) && document.querySelector('.object-workspace-actions').contains(document.querySelector('.workspace-history-tools')) && title.width>0 && vp.top>=h.bottom-1 && vp.height>300})()`));
   }
   await clickSelector('#workspaceToggleRight');
   await eval_(`document.querySelector('#edgeLength0').scrollIntoView({block:'center',inline:'nearest'})`);
@@ -3798,7 +3812,7 @@ async function main() {
   await eval_(`renderFaceInspector()`);
   check('F9 both disclosures keep expanded state',await eval_(`document.querySelector('#placeDetails').open && document.querySelector('#projectionDetails').open`));
   await clickSelector('#workspaceBackButton');await clickSelector('#btnObj');
-  check('V1 V2 toolbar does not overlap drawing and empty inspector collapses',await eval_(`(()=>{const t=document.querySelector('#viewToolbar').getBoundingClientRect(),c=document.querySelector('#cv').getBoundingClientRect(),r=document.querySelector('.sidebar-right').getBoundingClientRect();return c.top>=t.bottom-1 && c.height>400 && r.width===0})()`));
+  check('V1 V2 toolbar does not overlap drawing and adopted empty inspector retains 240px',await eval_(`(()=>{const t=document.querySelector('#viewToolbar').getBoundingClientRect(),c=document.querySelector('#cv').getBoundingClientRect(),r=document.querySelector('.sidebar-right').getBoundingClientRect(),e=$('v3PickPanel'),b=e.getBoundingClientRect();return c.top>=t.bottom-1 && c.height>400 && r.width===240 && Math.abs(c.right-r.left)<=1 && r.right<=innerWidth && !oc.sel && !document.body.classList.contains('v3-picked') && !e.hidden && b.width>0 && b.height>0 && b.left>=r.left && b.right<=r.right && b.top>=r.top && b.bottom<=r.bottom && $('v3PickInfo').textContent.trim().length>0})()`));
   await clickSelector('#btnObj');
   check('V3 selecting three-view twice stays in three-view',await eval_(`!oc.on && document.querySelectorAll('#canvasDrawToolbar [data-tool]').length===2 && [...document.querySelectorAll('#canvasDrawToolbar [data-tool]')].every(b=>b.disabled)`));
   await remainingShot('ui-v2-three-view');
@@ -4682,7 +4696,7 @@ async function main() {
   const p43_7c = await eval_(`fe.timbers.some(t=>t.id===10)`);
   check('P43-7c Ctrl+Z → 角材回來', p43_7c === true, p43_7c);
   const p43FaceLayout=await eval_(`(()=>{const top=document.querySelector('.object-workspace-topbar').getBoundingClientRect(),vp=$('faceEditorViewport').getBoundingClientRect();return {focus:oc.focus,composition:document.body.classList.contains('canvas-composition'),topHeight:top.height,viewportTop:vp.top,viewportHeight:vp.height,topBottom:top.bottom};})()`);
-  check('P43-7d Undo 後仍是面內版面，沒有主畫布底部樣式殘留',p43FaceLayout.focus?.t==='face'&&!p43FaceLayout.composition&&p43FaceLayout.topHeight>=100&&p43FaceLayout.topHeight<=150&&p43FaceLayout.viewportHeight>300&&p43FaceLayout.viewportTop>=p43FaceLayout.topBottom,p43FaceLayout);
+  check('P43-7d Undo 後仍是面內版面，沒有主畫布底部樣式殘留',p43FaceLayout.focus?.t==='face'&&!p43FaceLayout.composition&&p43FaceLayout.topHeight===56&&p43FaceLayout.viewportHeight>300&&p43FaceLayout.viewportTop>=p43FaceLayout.topBottom,p43FaceLayout);
 
   /* (8) 切到重畫外環工具 e,在角材位置落點仍成功(角材不擋) */
   await eval_(`feSetTool('redraw')`);
@@ -6942,11 +6956,15 @@ async function main() {
         && ws.querySelector('.object-workspace-topbar .project-save')
         && !!ws.querySelector('.object-workspace-topbar [data-project-status]');})()`));
     await clickSelector('#shapeToolButton');
-    check('P64 F2 形狀選單公開五個操作',await eval_(`!$('shapeToolPop').hidden && ['notch','extend','push','corner','hole'].every(a=>$('shapeToolPop').querySelector('[data-shape-action="'+a+'"]'))`));
+    check('P64 F2 四個不同形狀操作與唯一 R 開口入口',await eval_(`!$('shapeToolPop').hidden && ['notch','extend','push','corner'].every(a=>$('shapeToolPop').querySelector('[data-shape-action="'+a+'"]')) && !$('shapeToolPop').querySelector('[data-shape-action="hole"]') && document.querySelectorAll('#faceWorkspaceTools [data-face-tool="hole"]').length===1 && document.querySelector('#faceWorkspaceTools [data-face-tool="hole"] kbd').textContent==='R'`));
     await clickSelector('[data-shape-action="notch"]');
     check('P64 F2 凹口等待選邊並可取消',await eval_(`fe.queuedShapeAction==='notch' && $('faceCanvasHint').textContent.includes('外環邊')`));
     for (const type of ['keyDown','keyUp']) await send('Input.dispatchKeyEvent',{type,key:'Escape',code:'Escape',windowsVirtualKeyCode:27});
-    check('P64 F2 Esc 取消形狀選擇',await eval_(`!fe.queuedShapeAction && !!oc.edit`));
+    const cancelledShape=await eval_(`!fe.queuedShapeAction && !!oc.edit`);
+    for (const type of ['keyDown','keyUp']) await send('Input.dispatchKeyEvent',{type,key:'r',code:'KeyR',windowsVirtualKeyCode:82});
+    const retainedHoleShortcut=await eval_(`fe.tool==='hole' && !!oc.edit && !fe.queuedShapeAction`);
+    for (const type of ['keyDown','keyUp']) await send('Input.dispatchKeyEvent',{type,key:'v',code:'KeyV',windowsVirtualKeyCode:86});
+    check('P64 F2 Esc 取消形狀選擇且 R 開口與 V 選取快捷鍵仍可用',cancelledShape&&retainedHoleShortcut&&await eval_(`!fe.queuedShapeAction && !!oc.edit && fe.tool==='select'`));
     check('P64 F3-F5 四頁、構件段與形狀庫',await eval_(`(()=>{
       const tabs=[...document.querySelectorAll('#faceInspectorTabs [data-fi-tab]')].map(e=>e.dataset.fiTab);
       fiShowTab('shape');const shape=$('faceInspectorContent').contains($('faceShapeButton'))&&!$('faceShapeButton').hidden;

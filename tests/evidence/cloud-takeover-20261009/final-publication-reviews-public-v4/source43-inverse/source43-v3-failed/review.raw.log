@@ -1,0 +1,441 @@
+PASS exact manifest immutable None
+PASS exact56 listed plus root manifest57 no extras None
+PASS safe listed path README.md
+PASS public byte hash size README.md
+PASS no actual private machine token or queue payload README.md
+PASS safe listed path dated-addenda/243-f2-f6-clarification.md
+PASS public byte hash size dated-addenda/243-f2-f6-clarification.md
+PASS no actual private machine token or queue payload dated-addenda/243-f2-f6-clarification.md
+PASS safe listed path dated-addenda/9eb-caption-actual329.md
+PASS public byte hash size dated-addenda/9eb-caption-actual329.md
+PASS no actual private machine token or queue payload dated-addenda/9eb-caption-actual329.md
+PASS safe listed path dated-addenda/bb7-portable43-decisions.md
+PASS public byte hash size dated-addenda/bb7-portable43-decisions.md
+PASS no actual private machine token or queue payload dated-addenda/bb7-portable43-decisions.md
+PASS safe listed path prose-token-projection-correction.json
+PASS public byte hash size prose-token-projection-correction.json
+PASS structured JSON duplicate-key rejected parse prose-token-projection-correction.json
+PASS no actual private machine token or queue payload prose-token-projection-correction.json
+PASS safe listed path source-authority-243/README.md
+PASS public byte hash size source-authority-243/README.md
+PASS no actual private machine token or queue payload source-authority-243/README.md
+PASS safe listed path source-authority-243/artifact-validation-first-attempt/validate_package.py
+PASS public byte hash size source-authority-243/artifact-validation-first-attempt/validate_package.py
+PASS no actual private machine token or queue payload source-authority-243/artifact-validation-first-attempt/validate_package.py
+PASS safe listed path source-authority-243/artifact-validation-first-attempt/validation-result.json
+PASS public byte hash size source-authority-243/artifact-validation-first-attempt/validation-result.json
+PASS structured JSON duplicate-key rejected parse source-authority-243/artifact-validation-first-attempt/validation-result.json
+PASS no actual private machine token or queue payload source-authority-243/artifact-validation-first-attempt/validation-result.json
+PASS safe listed path source-authority-243/artifact-validation-first-attempt/validation.execution.raw.log
+PASS public byte hash size source-authority-243/artifact-validation-first-attempt/validation.execution.raw.log
+PASS no actual private machine token or queue payload source-authority-243/artifact-validation-first-attempt/validation.execution.raw.log
+PASS safe listed path source-authority-243/authority/issue123-43-current640-source-audit.md
+PASS public byte hash size source-authority-243/authority/issue123-43-current640-source-audit.md
+PASS no actual private machine token or queue payload source-authority-243/authority/issue123-43-current640-source-audit.md
+PASS safe listed path source-authority-243/authority/issue123-original.json
+PASS public byte hash size source-authority-243/authority/issue123-original.json
+PASS structured JSON duplicate-key rejected parse source-authority-243/authority/issue123-original.json
+PASS no actual private machine token or queue payload source-authority-243/authority/issue123-original.json
+PASS safe listed path source-authority-243/delivery-receipt.json
+PASS public byte hash size source-authority-243/delivery-receipt.json
+PASS structured JSON duplicate-key rejected parse source-authority-243/delivery-receipt.json
+PASS no actual private machine token or queue payload source-authority-243/delivery-receipt.json
+PASS safe listed path source-authority-243/evidence/full-space-243/command.log
+PASS public byte hash size source-authority-243/evidence/full-space-243/command.log
+PASS no actual private machine token or queue payload source-authority-243/evidence/full-space-243/command.log
+PASS safe listed path source-authority-243/evidence/full-space-243/receipt.json
+PASS public byte hash size source-authority-243/evidence/full-space-243/receipt.json
+PASS structured JSON duplicate-key rejected parse source-authority-243/evidence/full-space-243/receipt.json
+PASS no actual private machine token or queue payload source-authority-243/evidence/full-space-243/receipt.json
+PASS safe listed path source-authority-243/evidence/full-space-243/space-artifacts/result.json
+PASS public byte hash size source-authority-243/evidence/full-space-243/space-artifacts/result.json
+PASS structured JSON duplicate-key rejected parse source-authority-243/evidence/full-space-243/space-artifacts/result.json
+PASS no actual private machine token or queue payload source-authority-243/evidence/full-space-243/space-artifacts/result.json
+PASS safe listed path source-authority-243/evidence/supplement-four-v4-original-probe.json
+PASS public byte hash size source-authority-243/evidence/supplement-four-v4-original-probe.json
+PASS structured JSON duplicate-key rejected parse source-authority-243/evidence/supplement-four-v4-original-probe.json
+PASS no actual private machine token or queue payload source-authority-243/evidence/supplement-four-v4-original-probe.json
+PASS safe listed path source-authority-243/evidence/supplementary-validation-243-supplement-v4.json
+PASS public byte hash size source-authority-243/evidence/supplementary-validation-243-supplement-v4.json
+PASS structured JSON duplicate-key rejected parse source-authority-243/evidence/supplementary-validation-243-supplement-v4.json
+PASS no actual private machine token or queue payload source-authority-243/evidence/supplementary-validation-243-supplement-v4.json
+PASS safe listed path source-authority-243/finalize-delivery.execution.raw.log
+PASS public byte hash size source-authority-243/finalize-delivery.execution.raw.log
+PASS no actual private machine token or queue payload source-authority-243/finalize-delivery.execution.raw.log
+PASS safe listed path source-authority-243/finalize_delivery.py
+PASS public byte hash size source-authority-243/finalize_delivery.py
+PASS no actual private machine token or queue payload source-authority-243/finalize_delivery.py
+PASS safe listed path source-authority-243/issue123-43-source-followup-243326.md
+PASS public byte hash size source-authority-243/issue123-43-source-followup-243326.md
+PASS no actual private machine token or queue payload source-authority-243/issue123-43-source-followup-243326.md
+PASS safe listed path source-authority-243/prepare-followup.execution.raw.log
+PASS public byte hash size source-authority-243/prepare-followup.execution.raw.log
+PASS no actual private machine token or queue payload source-authority-243/prepare-followup.execution.raw.log
+PASS safe listed path source-authority-243/prepare_followup.py
+PASS public byte hash size source-authority-243/prepare_followup.py
+PASS no actual private machine token or queue payload source-authority-243/prepare_followup.py
+PASS safe listed path source-authority-243/source/AGENTS.md
+PASS public byte hash size source-authority-243/source/AGENTS.md
+PASS no actual private machine token or queue payload source-authority-243/source/AGENTS.md
+PASS safe listed path source-authority-243/source/geometry-guide/PRODUCT-VISION.md
+PASS public byte hash size source-authority-243/source/geometry-guide/PRODUCT-VISION.md
+PASS no actual private machine token or queue payload source-authority-243/source/geometry-guide/PRODUCT-VISION.md
+PASS safe listed path source-authority-243/source/geometry-web/app.css
+PASS public byte hash size source-authority-243/source/geometry-web/app.css
+PASS no actual private machine token or queue payload source-authority-243/source/geometry-web/app.css
+PASS safe listed path source-authority-243/source/geometry-web/app.js
+PASS public byte hash size source-authority-243/source/geometry-web/app.js
+PASS no actual private machine token or queue payload source-authority-243/source/geometry-web/app.js
+PASS safe listed path source-authority-243/source/geometry-web/cdp_test.js
+PASS public byte hash size source-authority-243/source/geometry-web/cdp_test.js
+PASS no actual private machine token or queue payload source-authority-243/source/geometry-web/cdp_test.js
+PASS safe listed path source-authority-243/source/geometry-web/docs/DOM-CONTRACT.md
+PASS public byte hash size source-authority-243/source/geometry-web/docs/DOM-CONTRACT.md
+PASS no actual private machine token or queue payload source-authority-243/source/geometry-web/docs/DOM-CONTRACT.md
+PASS safe listed path source-authority-243/source/geometry-web/docs/issue123-handoff/A-43-map.md
+PASS public byte hash size source-authority-243/source/geometry-web/docs/issue123-handoff/A-43-map.md
+PASS no actual private machine token or queue payload source-authority-243/source/geometry-web/docs/issue123-handoff/A-43-map.md
+PASS safe listed path source-authority-243/source/geometry-web/docs/issue123-handoff/C-review.md
+PASS public byte hash size source-authority-243/source/geometry-web/docs/issue123-handoff/C-review.md
+PASS no actual private machine token or queue payload source-authority-243/source/geometry-web/docs/issue123-handoff/C-review.md
+PASS safe listed path source-authority-243/source/geometry-web/docs/issue123-handoff/README.md
+PASS public byte hash size source-authority-243/source/geometry-web/docs/issue123-handoff/README.md
+PASS no actual private machine token or queue payload source-authority-243/source/geometry-web/docs/issue123-handoff/README.md
+PASS safe listed path source-authority-243/source/geometry-web/grid-anchor-positions.js
+PASS public byte hash size source-authority-243/source/geometry-web/grid-anchor-positions.js
+PASS no actual private machine token or queue payload source-authority-243/source/geometry-web/grid-anchor-positions.js
+PASS safe listed path source-authority-243/source/geometry-web/grid-inspector.css
+PASS public byte hash size source-authority-243/source/geometry-web/grid-inspector.css
+PASS no actual private machine token or queue payload source-authority-243/source/geometry-web/grid-inspector.css
+PASS safe listed path source-authority-243/source/geometry-web/grid-inspector.js
+PASS public byte hash size source-authority-243/source/geometry-web/grid-inspector.js
+PASS no actual private machine token or queue payload source-authority-243/source/geometry-web/grid-inspector.js
+PASS safe listed path source-authority-243/source/geometry-web/grid-system-workspace.css
+PASS public byte hash size source-authority-243/source/geometry-web/grid-system-workspace.css
+PASS no actual private machine token or queue payload source-authority-243/source/geometry-web/grid-system-workspace.css
+PASS safe listed path source-authority-243/source/geometry-web/grid-system-workspace.js
+PASS public byte hash size source-authority-243/source/geometry-web/grid-system-workspace.js
+PASS no actual private machine token or queue payload source-authority-243/source/geometry-web/grid-system-workspace.js
+PASS safe listed path source-authority-243/source/geometry-web/grid_rule_editor_test.js
+PASS public byte hash size source-authority-243/source/geometry-web/grid_rule_editor_test.js
+PASS no actual private machine token or queue payload source-authority-243/source/geometry-web/grid_rule_editor_test.js
+PASS safe listed path source-authority-243/source/geometry-web/index.html
+PASS public byte hash size source-authority-243/source/geometry-web/index.html
+PASS no actual private machine token or queue payload source-authority-243/source/geometry-web/index.html
+PASS safe listed path source-authority-243/source/geometry-web/project-ui.css
+PASS public byte hash size source-authority-243/source/geometry-web/project-ui.css
+PASS no actual private machine token or queue payload source-authority-243/source/geometry-web/project-ui.css
+PASS safe listed path source-authority-243/source/geometry-web/reference-workspace.js
+PASS public byte hash size source-authority-243/source/geometry-web/reference-workspace.js
+PASS no actual private machine token or queue payload source-authority-243/source/geometry-web/reference-workspace.js
+PASS safe listed path source-authority-243/source/geometry-web/room-outline-workspace.js
+PASS public byte hash size source-authority-243/source/geometry-web/room-outline-workspace.js
+PASS no actual private machine token or queue payload source-authority-243/source/geometry-web/room-outline-workspace.js
+PASS safe listed path source-authority-243/source/geometry-web/room-outline.js
+PASS public byte hash size source-authority-243/source/geometry-web/room-outline.js
+PASS no actual private machine token or queue payload source-authority-243/source/geometry-web/room-outline.js
+PASS safe listed path source-authority-243/source/geometry-web/space-workspace.css
+PASS public byte hash size source-authority-243/source/geometry-web/space-workspace.css
+PASS no actual private machine token or queue payload source-authority-243/source/geometry-web/space-workspace.css
+PASS safe listed path source-authority-243/source/geometry-web/space-workspace.js
+PASS public byte hash size source-authority-243/source/geometry-web/space-workspace.js
+PASS no actual private machine token or queue payload source-authority-243/source/geometry-web/space-workspace.js
+PASS safe listed path source-authority-243/source/geometry-web/space_model_test.js
+PASS public byte hash size source-authority-243/source/geometry-web/space_model_test.js
+PASS no actual private machine token or queue payload source-authority-243/source/geometry-web/space_model_test.js
+PASS safe listed path source-authority-243/source/geometry-web/workspace-guidance.css
+PASS public byte hash size source-authority-243/source/geometry-web/workspace-guidance.css
+PASS no actual private machine token or queue payload source-authority-243/source/geometry-web/workspace-guidance.css
+PASS safe listed path source-authority-243/source/geometry-web/workspace-guidance.js
+PASS public byte hash size source-authority-243/source/geometry-web/workspace-guidance.js
+PASS no actual private machine token or queue payload source-authority-243/source/geometry-web/workspace-guidance.js
+PASS safe listed path source-authority-243/source/geometry-web/workspace-shell.css
+PASS public byte hash size source-authority-243/source/geometry-web/workspace-shell.css
+PASS no actual private machine token or queue payload source-authority-243/source/geometry-web/workspace-shell.css
+PASS safe listed path source-authority-243/source/geometry-web/workspace-shell.js
+PASS public byte hash size source-authority-243/source/geometry-web/workspace-shell.js
+PASS no actual private machine token or queue payload source-authority-243/source/geometry-web/workspace-shell.js
+PASS safe listed path source-authority-243/source/tests/INTEGRATION-GATES.md
+PASS public byte hash size source-authority-243/source/tests/INTEGRATION-GATES.md
+PASS no actual private machine token or queue payload source-authority-243/source/tests/INTEGRATION-GATES.md
+PASS safe listed path source-authority-243/source/公理層.md
+PASS public byte hash size source-authority-243/source/公理層.md
+PASS no actual private machine token or queue payload source-authority-243/source/公理層.md
+PASS safe listed path source-authority-243/source-followup.json
+PASS public byte hash size source-authority-243/source-followup.json
+PASS structured JSON duplicate-key rejected parse source-authority-243/source-followup.json
+PASS no actual private machine token or queue payload source-authority-243/source-followup.json
+PASS safe listed path source-authority-243/source-preparation-receipt.json
+PASS public byte hash size source-authority-243/source-preparation-receipt.json
+PASS structured JSON duplicate-key rejected parse source-authority-243/source-preparation-receipt.json
+PASS no actual private machine token or queue payload source-authority-243/source-preparation-receipt.json
+PASS safe listed path source-authority-243/validate_package.py
+PASS public byte hash size source-authority-243/validate_package.py
+PASS no actual private machine token or queue payload source-authority-243/validate_package.py
+PASS safe listed path source-authority-243/validation-result.json
+PASS public byte hash size source-authority-243/validation-result.json
+PASS structured JSON duplicate-key rejected parse source-authority-243/validation-result.json
+PASS no actual private machine token or queue payload source-authority-243/validation-result.json
+PASS safe listed path source-authority-243/validation.execution.raw.log
+PASS public byte hash size source-authority-243/validation.execution.raw.log
+PASS no actual private machine token or queue payload source-authority-243/validation.execution.raw.log
+PASS every public file accounted by explicit original or derived prose None
+PASS original hash resolves from exact original source roots source-authority-243/README.md
+PASS original and public declared hash size source-authority-243/README.md
+PASS projection and original-identity flags honest source-authority-243/README.md
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/README.md
+PASS original hash resolves from exact original source roots source-authority-243/artifact-validation-first-attempt/validate_package.py
+PASS original and public declared hash size source-authority-243/artifact-validation-first-attempt/validate_package.py
+PASS projection and original-identity flags honest source-authority-243/artifact-validation-first-attempt/validate_package.py
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/artifact-validation-first-attempt/validate_package.py
+PASS original hash resolves from exact original source roots source-authority-243/artifact-validation-first-attempt/validation-result.json
+PASS original and public declared hash size source-authority-243/artifact-validation-first-attempt/validation-result.json
+PASS projection and original-identity flags honest source-authority-243/artifact-validation-first-attempt/validation-result.json
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/artifact-validation-first-attempt/validation-result.json
+PASS original hash resolves from exact original source roots source-authority-243/artifact-validation-first-attempt/validation.execution.raw.log
+PASS original and public declared hash size source-authority-243/artifact-validation-first-attempt/validation.execution.raw.log
+PASS projection and original-identity flags honest source-authority-243/artifact-validation-first-attempt/validation.execution.raw.log
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/artifact-validation-first-attempt/validation.execution.raw.log
+PASS original hash resolves from exact original source roots source-authority-243/authority/issue123-43-current640-source-audit.md
+PASS original and public declared hash size source-authority-243/authority/issue123-43-current640-source-audit.md
+PASS projection and original-identity flags honest source-authority-243/authority/issue123-43-current640-source-audit.md
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/authority/issue123-43-current640-source-audit.md
+PASS original hash resolves from exact original source roots source-authority-243/authority/issue123-original.json
+PASS original and public declared hash size source-authority-243/authority/issue123-original.json
+PASS projection and original-identity flags honest source-authority-243/authority/issue123-original.json
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/authority/issue123-original.json
+PASS original hash resolves from exact original source roots source-authority-243/delivery-receipt.json
+PASS original and public declared hash size source-authority-243/delivery-receipt.json
+PASS projection and original-identity flags honest source-authority-243/delivery-receipt.json
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/delivery-receipt.json
+PASS original hash resolves from exact original source roots source-authority-243/evidence/full-space-243/command.log
+PASS original and public declared hash size source-authority-243/evidence/full-space-243/command.log
+PASS projection and original-identity flags honest source-authority-243/evidence/full-space-243/command.log
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/evidence/full-space-243/command.log
+PASS original hash resolves from exact original source roots source-authority-243/evidence/full-space-243/receipt.json
+PASS original and public declared hash size source-authority-243/evidence/full-space-243/receipt.json
+PASS projection and original-identity flags honest source-authority-243/evidence/full-space-243/receipt.json
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/evidence/full-space-243/receipt.json
+PASS original hash resolves from exact original source roots source-authority-243/evidence/full-space-243/space-artifacts/result.json
+PASS original and public declared hash size source-authority-243/evidence/full-space-243/space-artifacts/result.json
+PASS projection and original-identity flags honest source-authority-243/evidence/full-space-243/space-artifacts/result.json
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/evidence/full-space-243/space-artifacts/result.json
+PASS original hash resolves from exact original source roots source-authority-243/evidence/supplement-four-v4-original-probe.json
+PASS original and public declared hash size source-authority-243/evidence/supplement-four-v4-original-probe.json
+PASS projection and original-identity flags honest source-authority-243/evidence/supplement-four-v4-original-probe.json
+FAIL inverse preserves every non-token byte or decoded value and key association source-authority-243/evidence/supplement-four-v4-original-probe.json
+PASS original hash resolves from exact original source roots source-authority-243/evidence/supplementary-validation-243-supplement-v4.json
+PASS original and public declared hash size source-authority-243/evidence/supplementary-validation-243-supplement-v4.json
+PASS projection and original-identity flags honest source-authority-243/evidence/supplementary-validation-243-supplement-v4.json
+FAIL inverse preserves every non-token byte or decoded value and key association source-authority-243/evidence/supplementary-validation-243-supplement-v4.json
+PASS original hash resolves from exact original source roots source-authority-243/finalize-delivery.execution.raw.log
+PASS original and public declared hash size source-authority-243/finalize-delivery.execution.raw.log
+PASS projection and original-identity flags honest source-authority-243/finalize-delivery.execution.raw.log
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/finalize-delivery.execution.raw.log
+PASS original hash resolves from exact original source roots source-authority-243/finalize_delivery.py
+PASS original and public declared hash size source-authority-243/finalize_delivery.py
+PASS projection and original-identity flags honest source-authority-243/finalize_delivery.py
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/finalize_delivery.py
+PASS original hash resolves from exact original source roots source-authority-243/issue123-43-source-followup-243326.md
+PASS original and public declared hash size source-authority-243/issue123-43-source-followup-243326.md
+PASS projection and original-identity flags honest source-authority-243/issue123-43-source-followup-243326.md
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/issue123-43-source-followup-243326.md
+PASS original hash resolves from exact original source roots source-authority-243/prepare-followup.execution.raw.log
+PASS original and public declared hash size source-authority-243/prepare-followup.execution.raw.log
+PASS projection and original-identity flags honest source-authority-243/prepare-followup.execution.raw.log
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/prepare-followup.execution.raw.log
+PASS original hash resolves from exact original source roots source-authority-243/prepare_followup.py
+PASS original and public declared hash size source-authority-243/prepare_followup.py
+PASS projection and original-identity flags honest source-authority-243/prepare_followup.py
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/prepare_followup.py
+PASS original hash resolves from exact original source roots source-authority-243/source/AGENTS.md
+PASS original and public declared hash size source-authority-243/source/AGENTS.md
+PASS projection and original-identity flags honest source-authority-243/source/AGENTS.md
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/source/AGENTS.md
+PASS original hash resolves from exact original source roots source-authority-243/source/geometry-guide/PRODUCT-VISION.md
+PASS original and public declared hash size source-authority-243/source/geometry-guide/PRODUCT-VISION.md
+PASS projection and original-identity flags honest source-authority-243/source/geometry-guide/PRODUCT-VISION.md
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/source/geometry-guide/PRODUCT-VISION.md
+PASS original hash resolves from exact original source roots source-authority-243/source/geometry-web/app.css
+PASS original and public declared hash size source-authority-243/source/geometry-web/app.css
+PASS projection and original-identity flags honest source-authority-243/source/geometry-web/app.css
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/source/geometry-web/app.css
+PASS original hash resolves from exact original source roots source-authority-243/source/geometry-web/app.js
+PASS original and public declared hash size source-authority-243/source/geometry-web/app.js
+PASS projection and original-identity flags honest source-authority-243/source/geometry-web/app.js
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/source/geometry-web/app.js
+PASS original hash resolves from exact original source roots source-authority-243/source/geometry-web/cdp_test.js
+PASS original and public declared hash size source-authority-243/source/geometry-web/cdp_test.js
+PASS projection and original-identity flags honest source-authority-243/source/geometry-web/cdp_test.js
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/source/geometry-web/cdp_test.js
+PASS original hash resolves from exact original source roots source-authority-243/source/geometry-web/docs/DOM-CONTRACT.md
+PASS original and public declared hash size source-authority-243/source/geometry-web/docs/DOM-CONTRACT.md
+PASS projection and original-identity flags honest source-authority-243/source/geometry-web/docs/DOM-CONTRACT.md
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/source/geometry-web/docs/DOM-CONTRACT.md
+PASS original hash resolves from exact original source roots source-authority-243/source/geometry-web/docs/issue123-handoff/A-43-map.md
+PASS original and public declared hash size source-authority-243/source/geometry-web/docs/issue123-handoff/A-43-map.md
+PASS projection and original-identity flags honest source-authority-243/source/geometry-web/docs/issue123-handoff/A-43-map.md
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/source/geometry-web/docs/issue123-handoff/A-43-map.md
+PASS original hash resolves from exact original source roots source-authority-243/source/geometry-web/docs/issue123-handoff/C-review.md
+PASS original and public declared hash size source-authority-243/source/geometry-web/docs/issue123-handoff/C-review.md
+PASS projection and original-identity flags honest source-authority-243/source/geometry-web/docs/issue123-handoff/C-review.md
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/source/geometry-web/docs/issue123-handoff/C-review.md
+PASS original hash resolves from exact original source roots source-authority-243/source/geometry-web/docs/issue123-handoff/README.md
+PASS original and public declared hash size source-authority-243/source/geometry-web/docs/issue123-handoff/README.md
+PASS projection and original-identity flags honest source-authority-243/source/geometry-web/docs/issue123-handoff/README.md
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/source/geometry-web/docs/issue123-handoff/README.md
+PASS original hash resolves from exact original source roots source-authority-243/source/geometry-web/grid-anchor-positions.js
+PASS original and public declared hash size source-authority-243/source/geometry-web/grid-anchor-positions.js
+PASS projection and original-identity flags honest source-authority-243/source/geometry-web/grid-anchor-positions.js
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/source/geometry-web/grid-anchor-positions.js
+PASS original hash resolves from exact original source roots source-authority-243/source/geometry-web/grid-inspector.css
+PASS original and public declared hash size source-authority-243/source/geometry-web/grid-inspector.css
+PASS projection and original-identity flags honest source-authority-243/source/geometry-web/grid-inspector.css
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/source/geometry-web/grid-inspector.css
+PASS original hash resolves from exact original source roots source-authority-243/source/geometry-web/grid-inspector.js
+PASS original and public declared hash size source-authority-243/source/geometry-web/grid-inspector.js
+PASS projection and original-identity flags honest source-authority-243/source/geometry-web/grid-inspector.js
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/source/geometry-web/grid-inspector.js
+PASS original hash resolves from exact original source roots source-authority-243/source/geometry-web/grid-system-workspace.css
+PASS original and public declared hash size source-authority-243/source/geometry-web/grid-system-workspace.css
+PASS projection and original-identity flags honest source-authority-243/source/geometry-web/grid-system-workspace.css
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/source/geometry-web/grid-system-workspace.css
+PASS original hash resolves from exact original source roots source-authority-243/source/geometry-web/grid-system-workspace.js
+PASS original and public declared hash size source-authority-243/source/geometry-web/grid-system-workspace.js
+PASS projection and original-identity flags honest source-authority-243/source/geometry-web/grid-system-workspace.js
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/source/geometry-web/grid-system-workspace.js
+PASS original hash resolves from exact original source roots source-authority-243/source/geometry-web/grid_rule_editor_test.js
+PASS original and public declared hash size source-authority-243/source/geometry-web/grid_rule_editor_test.js
+PASS projection and original-identity flags honest source-authority-243/source/geometry-web/grid_rule_editor_test.js
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/source/geometry-web/grid_rule_editor_test.js
+PASS original hash resolves from exact original source roots source-authority-243/source/geometry-web/index.html
+PASS original and public declared hash size source-authority-243/source/geometry-web/index.html
+PASS projection and original-identity flags honest source-authority-243/source/geometry-web/index.html
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/source/geometry-web/index.html
+PASS original hash resolves from exact original source roots source-authority-243/source/geometry-web/project-ui.css
+PASS original and public declared hash size source-authority-243/source/geometry-web/project-ui.css
+PASS projection and original-identity flags honest source-authority-243/source/geometry-web/project-ui.css
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/source/geometry-web/project-ui.css
+PASS original hash resolves from exact original source roots source-authority-243/source/geometry-web/reference-workspace.js
+PASS original and public declared hash size source-authority-243/source/geometry-web/reference-workspace.js
+PASS projection and original-identity flags honest source-authority-243/source/geometry-web/reference-workspace.js
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/source/geometry-web/reference-workspace.js
+PASS original hash resolves from exact original source roots source-authority-243/source/geometry-web/room-outline-workspace.js
+PASS original and public declared hash size source-authority-243/source/geometry-web/room-outline-workspace.js
+PASS projection and original-identity flags honest source-authority-243/source/geometry-web/room-outline-workspace.js
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/source/geometry-web/room-outline-workspace.js
+PASS original hash resolves from exact original source roots source-authority-243/source/geometry-web/room-outline.js
+PASS original and public declared hash size source-authority-243/source/geometry-web/room-outline.js
+PASS projection and original-identity flags honest source-authority-243/source/geometry-web/room-outline.js
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/source/geometry-web/room-outline.js
+PASS original hash resolves from exact original source roots source-authority-243/source/geometry-web/space-workspace.css
+PASS original and public declared hash size source-authority-243/source/geometry-web/space-workspace.css
+PASS projection and original-identity flags honest source-authority-243/source/geometry-web/space-workspace.css
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/source/geometry-web/space-workspace.css
+PASS original hash resolves from exact original source roots source-authority-243/source/geometry-web/space-workspace.js
+PASS original and public declared hash size source-authority-243/source/geometry-web/space-workspace.js
+PASS projection and original-identity flags honest source-authority-243/source/geometry-web/space-workspace.js
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/source/geometry-web/space-workspace.js
+PASS original hash resolves from exact original source roots source-authority-243/source/geometry-web/space_model_test.js
+PASS original and public declared hash size source-authority-243/source/geometry-web/space_model_test.js
+PASS projection and original-identity flags honest source-authority-243/source/geometry-web/space_model_test.js
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/source/geometry-web/space_model_test.js
+PASS original hash resolves from exact original source roots source-authority-243/source/geometry-web/workspace-guidance.css
+PASS original and public declared hash size source-authority-243/source/geometry-web/workspace-guidance.css
+PASS projection and original-identity flags honest source-authority-243/source/geometry-web/workspace-guidance.css
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/source/geometry-web/workspace-guidance.css
+PASS original hash resolves from exact original source roots source-authority-243/source/geometry-web/workspace-guidance.js
+PASS original and public declared hash size source-authority-243/source/geometry-web/workspace-guidance.js
+PASS projection and original-identity flags honest source-authority-243/source/geometry-web/workspace-guidance.js
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/source/geometry-web/workspace-guidance.js
+PASS original hash resolves from exact original source roots source-authority-243/source/geometry-web/workspace-shell.css
+PASS original and public declared hash size source-authority-243/source/geometry-web/workspace-shell.css
+PASS projection and original-identity flags honest source-authority-243/source/geometry-web/workspace-shell.css
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/source/geometry-web/workspace-shell.css
+PASS original hash resolves from exact original source roots source-authority-243/source/geometry-web/workspace-shell.js
+PASS original and public declared hash size source-authority-243/source/geometry-web/workspace-shell.js
+PASS projection and original-identity flags honest source-authority-243/source/geometry-web/workspace-shell.js
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/source/geometry-web/workspace-shell.js
+PASS original hash resolves from exact original source roots source-authority-243/source/tests/INTEGRATION-GATES.md
+PASS original and public declared hash size source-authority-243/source/tests/INTEGRATION-GATES.md
+PASS projection and original-identity flags honest source-authority-243/source/tests/INTEGRATION-GATES.md
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/source/tests/INTEGRATION-GATES.md
+PASS original hash resolves from exact original source roots source-authority-243/source/公理層.md
+PASS original and public declared hash size source-authority-243/source/公理層.md
+PASS projection and original-identity flags honest source-authority-243/source/公理層.md
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/source/公理層.md
+PASS original hash resolves from exact original source roots source-authority-243/source-followup.json
+PASS original and public declared hash size source-authority-243/source-followup.json
+PASS projection and original-identity flags honest source-authority-243/source-followup.json
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/source-followup.json
+PASS original hash resolves from exact original source roots source-authority-243/source-preparation-receipt.json
+PASS original and public declared hash size source-authority-243/source-preparation-receipt.json
+PASS projection and original-identity flags honest source-authority-243/source-preparation-receipt.json
+FAIL inverse preserves every non-token byte or decoded value and key association source-authority-243/source-preparation-receipt.json
+PASS original hash resolves from exact original source roots source-authority-243/validate_package.py
+PASS original and public declared hash size source-authority-243/validate_package.py
+PASS projection and original-identity flags honest source-authority-243/validate_package.py
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/validate_package.py
+PASS original hash resolves from exact original source roots source-authority-243/validation-result.json
+PASS original and public declared hash size source-authority-243/validation-result.json
+PASS projection and original-identity flags honest source-authority-243/validation-result.json
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/validation-result.json
+PASS original hash resolves from exact original source roots source-authority-243/validation.execution.raw.log
+PASS original and public declared hash size source-authority-243/validation.execution.raw.log
+PASS projection and original-identity flags honest source-authority-243/validation.execution.raw.log
+PASS inverse preserves every non-token byte or decoded value and key association source-authority-243/validation.execution.raw.log
+PASS original hash resolves from exact original source roots dated-addenda/243-f2-f6-clarification.md
+PASS original and public declared hash size dated-addenda/243-f2-f6-clarification.md
+PASS projection and original-identity flags honest dated-addenda/243-f2-f6-clarification.md
+PASS inverse preserves every non-token byte or decoded value and key association dated-addenda/243-f2-f6-clarification.md
+PASS original hash resolves from exact original source roots dated-addenda/bb7-portable43-decisions.md
+PASS original and public declared hash size dated-addenda/bb7-portable43-decisions.md
+PASS projection and original-identity flags honest dated-addenda/bb7-portable43-decisions.md
+PASS inverse preserves every non-token byte or decoded value and key association dated-addenda/bb7-portable43-decisions.md
+PASS original hash resolves from exact original source roots dated-addenda/9eb-caption-actual329.md
+PASS original and public declared hash size dated-addenda/9eb-caption-actual329.md
+PASS projection and original-identity flags honest dated-addenda/9eb-caption-actual329.md
+FAIL inverse preserves every non-token byte or decoded value and key association dated-addenda/9eb-caption-actual329.md
+PASS 29 source identities exactly27 byteidentical and2 explicit doc projections None
+PASS exact historical243 Git source hash AGENTS.md
+PASS exact historical243 Git source hash geometry-guide/PRODUCT-VISION.md
+PASS exact historical243 Git source hash geometry-web/app.css
+PASS exact historical243 Git source hash geometry-web/app.js
+PASS exact historical243 Git source hash geometry-web/cdp_test.js
+PASS exact historical243 Git source hash geometry-web/docs/DOM-CONTRACT.md
+PASS doc public/original hash and non-token metadata geometry-web/docs/DOM-CONTRACT.md
+PASS exact historical243 Git source hash geometry-web/docs/issue123-handoff/A-43-map.md
+PASS exact historical243 Git source hash geometry-web/docs/issue123-handoff/C-review.md
+PASS exact historical243 Git source hash geometry-web/docs/issue123-handoff/README.md
+PASS exact historical243 Git source hash geometry-web/grid-anchor-positions.js
+PASS exact historical243 Git source hash geometry-web/grid-inspector.css
+PASS exact historical243 Git source hash geometry-web/grid-inspector.js
+PASS exact historical243 Git source hash geometry-web/grid-system-workspace.css
+PASS exact historical243 Git source hash geometry-web/grid-system-workspace.js
+PASS exact historical243 Git source hash geometry-web/grid_rule_editor_test.js
+PASS exact historical243 Git source hash geometry-web/index.html
+PASS exact historical243 Git source hash geometry-web/project-ui.css
+PASS exact historical243 Git source hash geometry-web/reference-workspace.js
+PASS exact historical243 Git source hash geometry-web/room-outline-workspace.js
+PASS exact historical243 Git source hash geometry-web/room-outline.js
+PASS exact historical243 Git source hash geometry-web/space-workspace.css
+PASS exact historical243 Git source hash geometry-web/space-workspace.js
+PASS exact historical243 Git source hash geometry-web/space_model_test.js
+PASS exact historical243 Git source hash geometry-web/workspace-guidance.css
+PASS exact historical243 Git source hash geometry-web/workspace-guidance.js
+PASS exact historical243 Git source hash geometry-web/workspace-shell.css
+PASS exact historical243 Git source hash geometry-web/workspace-shell.js
+PASS exact historical243 Git source hash tests/INTEGRATION-GATES.md
+PASS doc public/original hash and non-token metadata tests/INTEGRATION-GATES.md
+PASS exact historical243 Git source hash 公理層.md
+PASS 43 original unique IDs and every item not full accepted None
+PASS source-only authority and privateZIP qualification None
+PASS decision sources preserved no added policy None
+PASS inverse counterexample valid bounded Unicode prose None
+PASS inverse counterexample lost Unicode rejects None
+PASS inverse counterexample backtick retained None
+PASS inverse counterexample lost backtick rejects None
+PASS inverse counterexample code changed rejects None
+PASS collision key value swap rejects None
+PASS frozen repo unchanged and clean None
+PASS manifest bytes unchanged after reviewer None

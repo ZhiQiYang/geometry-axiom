@@ -1,0 +1,209 @@
+{
+  "schema": "geometry-release-command/1",
+  "created": "2026-10-08T16:44:27.637132+00:00",
+  "command": [
+    "node",
+    "geometry-web/space_model_test.js"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "url": "http://127.0.0.1:18971/",
+  "timeoutSeconds": 900.0,
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "status": "execution-verified",
+  "executionVerified": true,
+  "releaseApproved": false,
+  "problems": [],
+  "limitations": [
+    "Only this command is covered; independent delivery gates remain separate.",
+    "Native receipts attest configured files; /runtime does not attest the running native process.",
+    "Before/after identity checks do not prove absence of transient source changes."
+  ],
+  "environment": {
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:18971/",
+    "GEOMETRY_TEST_BRIDGE": "/tmp/geometry-tests/bridge",
+    "GEOMETRY_BRIDGE": "/tmp/geometry-tests/bridge",
+    "GEOMETRY_MODEL_BASE": "/tmp/geometry-tests/model-base",
+    "GEOMETRY_FEEDBACK_DIR": "/tmp/geometry-closeout-r2-feedback",
+    "GEOMETRY_CHROME": "/usr/bin/chromium",
+    "GEOMETRY_TIMBER_ONLY": "1"
+  },
+  "kind": "space",
+  "before": {
+    "at": "2026-10-08T16:44:27.638637+00:00",
+    "root": "/workspace/geometry-axiom",
+    "problems": [],
+    "git": {
+      "root": "/workspace/geometry-axiom",
+      "head": "9a4136da264249f76ba08258a7f14be926f96a95",
+      "tree": "4afdaf4b5624d585fb0eda4d8e1ed3892ce7761e",
+      "status": ""
+    },
+    "sourceVersion": "1ecfdb7abb9914d75b1b24144fc690d290dc856f6596918e0287842bd6d2371b",
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "1ecfdb7abb9914d75b1b24144fc690d290dc856f6596918e0287842bd6d2371b",
+      "fresh": true,
+      "root": "/workspace/geometry-axiom",
+      "pid": 101289,
+      "session": "9c7bf4c97e2f4af1816227fe35f2e4cc"
+    },
+    "native": {
+      "bridge": {
+        "name": "bridge",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T15:41:17+00:00）",
+        "path": "/tmp/geometry-tests/bridge",
+        "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+        "sha256": "b76a6da590512722d6eda64cfc946392ccc2636f82ab187ef822c1e1606d68b5",
+        "sidecarSha256": "557a324f01866a47f3123f08511b0bc46941c06c45ac804bc01447a65166eaaf"
+      },
+      "model-base": {
+        "name": "model-base",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T15:41:31+00:00）",
+        "path": "/tmp/geometry-tests/model-base",
+        "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+        "sha256": "1b350a7d54aac1d410e87f2a74010515739f3e2b8fc4b8c5216ff413b153662e",
+        "sidecarSha256": "e5dad713990793ed6c7b096bd4c2c6579ac3fbc527f7b9d545421be6550f6673"
+      }
+    }
+  },
+  "execution": {
+    "started": "2026-10-08T16:44:27.779918+00:00",
+    "exitCode": 0,
+    "timedOut": false,
+    "interrupted": false,
+    "pid": 136205,
+    "finished": "2026-10-08T16:45:28.034695+00:00"
+  },
+  "after": {
+    "at": "2026-10-08T16:45:28.034731+00:00",
+    "root": "/workspace/geometry-axiom",
+    "problems": [],
+    "git": {
+      "root": "/workspace/geometry-axiom",
+      "head": "9a4136da264249f76ba08258a7f14be926f96a95",
+      "tree": "4afdaf4b5624d585fb0eda4d8e1ed3892ce7761e",
+      "status": ""
+    },
+    "sourceVersion": "1ecfdb7abb9914d75b1b24144fc690d290dc856f6596918e0287842bd6d2371b",
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "1ecfdb7abb9914d75b1b24144fc690d290dc856f6596918e0287842bd6d2371b",
+      "fresh": true,
+      "root": "/workspace/geometry-axiom",
+      "pid": 101289,
+      "session": "9c7bf4c97e2f4af1816227fe35f2e4cc"
+    },
+    "native": {
+      "bridge": {
+        "name": "bridge",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T15:41:17+00:00）",
+        "path": "/tmp/geometry-tests/bridge",
+        "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+        "sha256": "b76a6da590512722d6eda64cfc946392ccc2636f82ab187ef822c1e1606d68b5",
+        "sidecarSha256": "557a324f01866a47f3123f08511b0bc46941c06c45ac804bc01447a65166eaaf"
+      },
+      "model-base": {
+        "name": "model-base",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T15:41:31+00:00）",
+        "path": "/tmp/geometry-tests/model-base",
+        "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+        "sha256": "1b350a7d54aac1d410e87f2a74010515739f3e2b8fc4b8c5216ff413b153662e",
+        "sidecarSha256": "e5dad713990793ed6c7b096bd4c2c6579ac3fbc527f7b9d545421be6550f6673"
+      }
+    }
+  },
+  "evidence": {
+    "scope": {
+      "mode": "partial",
+      "filters": [
+        "GEOMETRY_TIMBER_ONLY"
+      ],
+      "included": [
+        "timber-material",
+        "timber-source-guards",
+        "font-layout"
+      ],
+      "omitted": [
+        "space-height-library",
+        "projection-lifecycle",
+        "projection-placement",
+        "space-flow"
+      ],
+      "url": "http://127.0.0.1:18971/",
+      "feedbackDirectory": "/tmp/geometry-closeout-r2-feedback"
+    },
+    "completionVerified": true,
+    "canonicalResult": {
+      "schema": "geometry-space-result/1",
+      "scope": {
+        "mode": "partial",
+        "filters": [
+          "GEOMETRY_TIMBER_ONLY"
+        ],
+        "included": [
+          "timber-material",
+          "timber-source-guards",
+          "font-layout"
+        ],
+        "omitted": [
+          "space-height-library",
+          "projection-lifecycle",
+          "projection-placement",
+          "space-flow"
+        ],
+        "url": "http://127.0.0.1:18971/",
+        "feedbackDirectory": "/tmp/geometry-closeout-r2-feedback"
+      },
+      "completed": true,
+      "groups": {
+        "setup": {
+          "expected": 2,
+          "passed": 2,
+          "failed": 0,
+          "completed": true
+        },
+        "timber-material": {
+          "expected": 48,
+          "passed": 48,
+          "failed": 0,
+          "completed": true
+        },
+        "timber-source-guards": {
+          "expected": 8,
+          "passed": 8,
+          "failed": 0,
+          "completed": true
+        },
+        "font-layout": {
+          "expected": 19,
+          "passed": 19,
+          "failed": 0,
+          "completed": true
+        },
+        "browser-health": {
+          "expected": 2,
+          "passed": 2,
+          "failed": 0,
+          "completed": true
+        }
+      },
+      "completenessProblems": [],
+      "passed": 79,
+      "failed": 0,
+      "exceptions": [],
+      "consoleErrors": []
+    }
+  },
+  "log": {
+    "path": "/workspace/closure-evidence/gates/timber/command.log",
+    "bytes": 8201,
+    "sha256": "0fe26afc78f365391973ebea0a2b687c1ab004f5c212dcb24fa29926da6c99f8"
+  },
+  "finished": "2026-10-08T16:45:28.445572+00:00",
+  "gateExitCode": 0
+}

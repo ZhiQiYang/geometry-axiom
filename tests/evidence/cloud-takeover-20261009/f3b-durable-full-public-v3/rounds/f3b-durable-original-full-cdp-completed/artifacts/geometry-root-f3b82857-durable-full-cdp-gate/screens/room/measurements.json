@@ -1,0 +1,93 @@
+[
+  {
+    "source": "pdf-vector",
+    "shape": "rectangle",
+    "candidate": {
+      "actions": 8,
+      "elapsedMs": 961
+    },
+    "manual": {
+      "actions": 12,
+      "elapsedMs": 1432
+    },
+    "definition": "trusted pointer activations + text replacements; setup excluded; automated wall time includes harness settling, not human reading time; both enter the same known edge dimension and explicitly review all edges"
+  },
+  {
+    "source": "pdf-vector",
+    "shape": "l",
+    "candidate": {
+      "actions": 8,
+      "elapsedMs": 980
+    },
+    "manual": {
+      "actions": 14,
+      "elapsedMs": 1539
+    },
+    "definition": "trusted pointer activations + text replacements; setup excluded; automated wall time includes harness settling, not human reading time; both enter the same known edge dimension and explicitly review all edges"
+  },
+  {
+    "source": "pdf-vector",
+    "shape": "notch",
+    "candidate": {
+      "actions": 8,
+      "elapsedMs": 995
+    },
+    "manual": {
+      "actions": 16,
+      "elapsedMs": 1577
+    },
+    "definition": "trusted pointer activations + text replacements; setup excluded; automated wall time includes harness settling, not human reading time; both enter the same known edge dimension and explicitly review all edges"
+  },
+  {
+    "source": "image",
+    "shape": "rectangle",
+    "candidate": {
+      "actions": 8,
+      "elapsedMs": 987
+    },
+    "manual": {
+      "actions": 12,
+      "elapsedMs": 1405
+    },
+    "definition": "trusted pointer activations + text replacements; setup excluded; automated wall time includes harness settling, not human reading time; both enter the same known edge dimension and explicitly review all edges"
+  },
+  {
+    "source": "image",
+    "shape": "l",
+    "candidate": {
+      "actions": 8,
+      "elapsedMs": 992
+    },
+    "manual": {
+      "actions": 14,
+      "elapsedMs": 1490
+    },
+    "definition": "trusted pointer activations + text replacements; setup excluded; automated wall time includes harness settling, not human reading time; both enter the same known edge dimension and explicitly review all edges"
+  },
+  {
+    "source": "image",
+    "shape": "notch",
+    "candidate": {
+      "actions": 8,
+      "elapsedMs": 996
+    },
+    "manual": {
+      "actions": 16,
+      "elapsedMs": 1560
+    },
+    "definition": "trusted pointer activations + text replacements; setup excluded; automated wall time includes harness settling, not human reading time; both enter the same known edge dimension and explicitly review all edges"
+  },
+  {
+    "source": "image",
+    "shape": "rectangle-open-doorway",
+    "candidate": {
+      "actions": 14,
+      "elapsedMs": 1719
+    },
+    "manual": {
+      "actions": 12,
+      "elapsedMs": 1392
+    },
+    "definition": "new flow fails explicitly, then user manually defines the closed room scope; includes fallback, dimension entry and review; no improvement claimed"
+  }
+]

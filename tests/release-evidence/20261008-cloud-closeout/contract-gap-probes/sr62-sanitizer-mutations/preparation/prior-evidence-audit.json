@@ -1,0 +1,562 @@
+{
+  "knownSanitizerRawSha256": "00766856e9148ff432cf7826e4b9958f29c48d30f1cd9b7aad3a38b54bf0c430",
+  "tmpRawExists": false,
+  "archives": [
+    {
+      "path": "tests/release-evidence/20261007/evidence.tar.gz",
+      "sha256": "e06116c9c536e083256cb869c811c8bfbfa849841d4ed52177f52a57befc695e",
+      "membersHashed": 1464,
+      "matchingKnownSanitizerRaw": [],
+      "sanitizerNamedMembers": []
+    },
+    {
+      "path": "tests/release-evidence/20261008/geometry-full-cdp-evidence-459478e9.tar.gz",
+      "sha256": "30c623444e1bfb65187f9e3f9b482dcf4ff8716621bdb7dd0d6537d939212dd2",
+      "membersHashed": 170,
+      "matchingKnownSanitizerRaw": [],
+      "sanitizerNamedMembers": []
+    },
+    {
+      "path": "tests/release-evidence/20261008/geometry-main-evidence-459478e9.tar.gz",
+      "sha256": "3bd6f83ec9bcdc9cfc70e88091ba46db215e6ad374e261248e227d1eda9a9203",
+      "membersHashed": 1269,
+      "matchingKnownSanitizerRaw": [],
+      "sanitizerNamedMembers": []
+    },
+    {
+      "path": "tests/release-evidence/20261008/pr162-oracle-evidence.tar.gz",
+      "sha256": "d557783696db1112ae5636150b89929a36c8b2feee4f0029af045838b160c4be",
+      "membersHashed": 91,
+      "matchingKnownSanitizerRaw": [],
+      "sanitizerNamedMembers": []
+    },
+    {
+      "path": "tests/release-evidence/20261008-card-wait/geometry-card-wait-evidence-b822a9ff.tar.gz",
+      "sha256": "72fc05df87dd70ee74182b19bfcf56a66d0403c102116bcdc71bde30abeee53e",
+      "membersHashed": 235,
+      "matchingKnownSanitizerRaw": [],
+      "sanitizerNamedMembers": []
+    }
+  ],
+  "trackedMutationCount": 48,
+  "trackedMutationFileSha256": "3065fc03773c326b9256a7ffeb05cd602cd254dcab2d267626abc42101f38392",
+  "trackedMutationSummary": [
+    {
+      "id": "M01",
+      "description": "I5：邊上判定:含端點改嚴格(端點不在邊上)",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M02",
+      "description": "I5：射線半開區間 [v_min,v_max) 改 (v_min,v_max)",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M03",
+      "description": "I5：射線只數直立邊 -> 改數水平邊",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M04",
+      "description": "I5：奇偶判定反轉(內外互換)",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M05",
+      "description": "I5：直立邊在矩形邊界上也算穿入(<= 改 <)",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M06",
+      "description": "I5：水平邊在矩形邊界上也算穿入(<= 改 <)",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M07",
+      "description": "I5：直立邊 v 區間零長度接觸也算穿入(< 改 <=)",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M08",
+      "description": "I5：拿掉「環邊不得穿矩形內部」檢查",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M09",
+      "description": "I5：孔 bbox 邊界相接也當相交(<= 改 <)",
+      "verdict": "equivalent",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M10",
+      "description": "I5：孔頂點嚴格在矩形內 -> 含邊界(> 改 >=)",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M11",
+      "description": "I5：孔罩住矩形判定:inside==4 改 inside==0(罩住反而放行)",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M12",
+      "description": "I11：正面積重疊:端點相接也算重疊(> 改 >=)",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M13",
+      "description": "I11：碰撞只看同承載面 -> 看不同承載面(!= 改 ==)",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M14",
+      "description": "D11：只收垂直邊 -> 只收平行邊(along_v 分支)",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M15",
+      "description": "D11：角材側面涵蓋範圍用錯軸(u 範圍改成 v 範圍)",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M16",
+      "description": "D11：擋面涵蓋檢查:丟掉 hi 側檢查(半寬也算涵蓋)",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M17",
+      "description": "D11：擋面涵蓋檢查:邊界相等不算涵蓋(> 改 >=)",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M18",
+      "description": "D11：重驗擋面:FREE 邊也算合法(!= 改 ==)",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M19",
+      "description": "R6(c)：through 選段:邊界座標不算在區間內(<= 改 <)",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M20",
+      "description": "R6(d)：拿掉「起點必須有擋面」檢查(懸空端放行)",
+      "verdict": "crashed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M21",
+      "description": "R6(d)：拿掉「終點必須有擋面」檢查",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M22",
+      "description": "R6(d)：拿掉 FREE 擋面拒絕",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M23",
+      "description": "R6(d)：擋面歧義放行(hits>1 不拒絕)",
+      "verdict": "equivalent",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M24",
+      "description": "R6(c)：at-edge 接觸範圍:端點相接也算重疊(< 改 <=)",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M25",
+      "description": "R6(c)：跨距歧義放行:多區間自動選第一段",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M26",
+      "description": "I13：錨角選錯邊(min/max 對調)",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M27",
+      "description": "深度側反轉:角材往面下長",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M28",
+      "description": "I13：奇數寬多的 1mm 改放 -cross 側",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M29",
+      "description": "I13：外輪廓材料側反轉(footprint 長到面外)",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M30",
+      "description": "I13：孔邊材料側反轉(footprint 長進孔裡)",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M31",
+      "description": "I10：格線座標遞增改非嚴格(<= 改 <)",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M32",
+      "description": "I10：格線座標上下界改成嚴格(壓邊界的格線拒絕)",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M33",
+      "description": "I13：at-grid 軸向守門員反轉",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M34",
+      "description": "I13：at-edge 平行守門員反轉",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M35",
+      "description": "明寫長度允許 L=0(<= 改 <)",
+      "verdict": "retired",
+      "head": null,
+      "testCommand": null
+    },
+    {
+      "id": "M36",
+      "description": "R6(e)：重驗跳過端點擋面檢查",
+      "verdict": "equivalent",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M37",
+      "description": "I11：碰撞兩兩檢查變成自己也算(j=i+1 改 j=i)",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M38",
+      "description": "I13：at-edge 邊參照:孔索引 <0 也放行(hole<0 檢查拿掉)",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M39",
+      "description": "R6(a)：切點去重用 < 不去重(零長 cell 出現)",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M40",
+      "description": "R6(b)：有效 cell 判定拿掉碰撞(只查包含)",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M51",
+      "description": "I23：I23(a) 拿掉座標比對(移動已錨定的線也放行)",
+      "verdict": "retired",
+      "head": null,
+      "testCommand": null
+    },
+    {
+      "id": "M52",
+      "description": "I10：重宣告改成疊加而非整軸換掉",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M53",
+      "description": "D10a：縫中心線改成縫起點(少加 gap/2)",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M54",
+      "description": "D10a：產生條件由嚴格小於放寬成小於等於(多出尾端一條)",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M55",
+      "description": "D10a：縫寬奇數不再拒絕(改成只擋負數)",
+      "verdict": "retired",
+      "head": null,
+      "testCommand": null
+    },
+    {
+      "id": "M56",
+      "description": "I23：I23(b) 不再檢查被錨定的索引是否仍推導得出",
+      "verdict": "equivalent",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M57",
+      "description": "R21：between 的 FREE 邊檢查反轉(明寫就放行自由邊)",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    },
+    {
+      "id": "M58",
+      "description": "R21：between 不再要求跨距落在合法區間內(可穿過實體)",
+      "verdict": "killed",
+      "head": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+      "testCommand": [
+        "<python>",
+        "tests/run_tests.py",
+        "<binary>"
+      ]
+    }
+  ],
+  "boundary": "ordinary scene mutations do not certify the five SGR62 faults; absent raw remains unknown"
+}

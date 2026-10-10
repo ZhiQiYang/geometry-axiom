@@ -1,0 +1,172 @@
+{
+  "schema": "geometry-source43-inverse-execution-source-closure/1",
+  "preparedUTC": "2026-10-09T19:51:05.257976+00:00",
+  "actor": "/root/ui_tail_contract",
+  "actualIndexCommand": [
+    "python",
+    "-B",
+    "<workspace-path>"
+  ],
+  "actualIndexPython": "<execution-runtime-path>",
+  "actualIndexPythonSHA256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+  "indexMakerSourceSHA256": "a431fb87d5ef81627a4c6523d2a6d6fa2366ffedee66b18347411e03809e7916",
+  "roles": [
+    {
+      "role": "original-base-failed-before-receipt",
+      "actualExecutedSource": "<workspace-path>",
+      "sourceSHA256": "0b3627f784f6462f83bb7ea3e61b736235d01141f1c41b7216b58dc5be3ff4e9",
+      "sourceBytes": 12155,
+      "immutableCopy": "<workspace-path>",
+      "immutableCopySHA256": "0b3627f784f6462f83bb7ea3e61b736235d01141f1c41b7216b58dc5be3ff4e9",
+      "directImports": [
+        "datetime",
+        "hashlib",
+        "json",
+        "os",
+        "pathlib",
+        "re",
+        "subprocess",
+        "sys"
+      ],
+      "nonStdlibImportDependencies": [],
+      "actualToolReportedExitCode": 1,
+      "toolProvenance": "TypeError at review-log hash; tool cad899 exit1; no receipt fabricated.",
+      "originalRaw": {
+        "path": "<workspace-path>",
+        "sha256": "59de3f75be4fb0a9fe59cef007ee9f4dbe8cdd9c798d3dde40982666b027683f",
+        "bytes": 44839
+      },
+      "originalReceipt": null
+    },
+    {
+      "role": "direct-r2-executed-437-pass-4-fail",
+      "actualExecutedSource": "<workspace-path>",
+      "sourceSHA256": "8af42c3e6cfaa5e6dff74e6688ec9da745c15304b01e62057e057464817cbfd1",
+      "sourceBytes": 12172,
+      "immutableCopy": "<workspace-path>",
+      "immutableCopySHA256": "8af42c3e6cfaa5e6dff74e6688ec9da745c15304b01e62057e057464817cbfd1",
+      "directImports": [
+        "datetime",
+        "hashlib",
+        "json",
+        "os",
+        "pathlib",
+        "re",
+        "subprocess",
+        "sys"
+      ],
+      "nonStdlibImportDependencies": [],
+      "actualToolReportedExitCode": 1,
+      "toolProvenance": "Tool365d12 actualexit1; direct Python script, no helper dynamically executes this reviewer.",
+      "originalRaw": {
+        "path": "<workspace-path>",
+        "sha256": "59de3f75be4fb0a9fe59cef007ee9f4dbe8cdd9c798d3dde40982666b027683f",
+        "bytes": 44839
+      },
+      "originalReceipt": {
+        "path": "<workspace-path>",
+        "sha256": "74c7137bf5d743eea6b4afafb1ac60a9234bb857a0aa50d69e2ec9a38326bc8e",
+        "bytes": 6074723
+      },
+      "actualCommandRecorded": [
+        "python",
+        "-B",
+        "<workspace-path>"
+      ],
+      "originalRecordedPython": "<execution-runtime-path>",
+      "originalRecordedPythonSHA256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+      "originalRecordedSourceSHA256": "8af42c3e6cfaa5e6dff74e6688ec9da745c15304b01e62057e057464817cbfd1"
+    },
+    {
+      "role": "diagnostic-caller-executed",
+      "actualExecutedSource": "<workspace-path>",
+      "sourceSHA256": "654a7d23b2dc26ccd76050bf09796a1c8b369b66a675e0e59a7d8c6d282524b5",
+      "sourceBytes": 2600,
+      "immutableCopy": "<workspace-path>",
+      "immutableCopySHA256": "654a7d23b2dc26ccd76050bf09796a1c8b369b66a675e0e59a7d8c6d282524b5",
+      "directImports": [
+        "ast",
+        "datetime",
+        "difflib",
+        "hashlib",
+        "json",
+        "pathlib",
+        "sys"
+      ],
+      "nonStdlibImportDependencies": [],
+      "actualToolReportedExitCode": 0,
+      "toolProvenance": "Tool1c7799 actualexit0; caller selects only functions/constants/import AST nodes from immutable r2. sourceSHA256 in original diagnostic names the r2 helper, not the diagnostic caller.",
+      "originalRaw": null,
+      "originalReceipt": {
+        "path": "<workspace-path>",
+        "sha256": "a57b464f71c77c48c8450d12656212a03cb6b25ea2013953d85b600b3740987d",
+        "bytes": 15325
+      },
+      "actualCommandRecorded": [
+        "python",
+        "-B",
+        "<workspace-path>"
+      ],
+      "originalRecordedPython": null,
+      "originalRecordedPythonSHA256": null,
+      "originalRecordedSourceSHA256": "8af42c3e6cfaa5e6dff74e6688ec9da745c15304b01e62057e057464817cbfd1",
+      "dynamicPureFunctionHelper": {
+        "path": "<workspace-path>",
+        "sha256": "8af42c3e6cfaa5e6dff74e6688ec9da745c15304b01e62057e057464817cbfd1",
+        "role": "Original r2 AST functions/constants/imports only; no reviewer top-level or product run",
+        "statementTypes": [
+          "Import",
+          "ImportFrom",
+          "FunctionDef",
+          "limited Assign"
+        ]
+      }
+    },
+    {
+      "role": "direct-v4-executed-445-pass-0-fail",
+      "actualExecutedSource": "<workspace-path>",
+      "sourceSHA256": "c06e66f31c68d83f194b8ce4263e3d0fdad5a14f361b532441e6842b35bc9045",
+      "sourceBytes": 12214,
+      "immutableCopy": "<workspace-path>",
+      "immutableCopySHA256": "c06e66f31c68d83f194b8ce4263e3d0fdad5a14f361b532441e6842b35bc9045",
+      "directImports": [
+        "datetime",
+        "hashlib",
+        "json",
+        "os",
+        "pathlib",
+        "re",
+        "subprocess",
+        "sys"
+      ],
+      "nonStdlibImportDependencies": [],
+      "actualToolReportedExitCode": 0,
+      "toolProvenance": "Toolea9fee actualexit0; direct Python script, no dynamic external helper.",
+      "originalRaw": {
+        "path": "<workspace-path>",
+        "sha256": "1cc38e9b5d64a1f5f417e7c31acb1077f83757772f49553ece9352e7f06a6351",
+        "bytes": 45160
+      },
+      "originalReceipt": {
+        "path": "<workspace-path>",
+        "sha256": "66163a377d9784b9c9dae27d7f6b9b854587f67f6c13c6e104432f0883e42317",
+        "bytes": 7820956
+      },
+      "actualCommandRecorded": [
+        "python",
+        "-B",
+        "<workspace-path>"
+      ],
+      "originalRecordedPython": "<execution-runtime-path>",
+      "originalRecordedPythonSHA256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+      "originalRecordedSourceSHA256": "c06e66f31c68d83f194b8ce4263e3d0fdad5a14f361b532441e6842b35bc9045"
+    }
+  ],
+  "originalsModified": false,
+  "productRerun": false,
+  "limits": [
+    "Only source bytes/raw/receipt role index; no product/browser/native execution or original receipt changes.",
+    "Diagnostic original live Python exe/hash was not captured and remains unknown; current index Python does not fill that historic gap.",
+    "The original failed437/4 scope and v4 accepted445/0 scope stay separate; counts are publication metadata checks, not product assertions."
+  ]
+}

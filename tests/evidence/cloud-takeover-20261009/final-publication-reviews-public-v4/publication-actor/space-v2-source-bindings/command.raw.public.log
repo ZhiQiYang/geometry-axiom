@@ -1,0 +1,64 @@
+PASS exact14 scratchsource references and recorded hash-role pins
+PASS original role pin vs public source original identity run_full_space_identity.py
+PASS original role pin vs public source original identity space_execution_identity.py
+PASS original role pin vs public source original identity cdp_execution_identity_v2.py
+PASS original role pin vs public source original identity sandbox-launch.cjs
+PASS original role pin vs public source original identity sitecustomize.py
+PASS original role pin vs public source original identity geometry-stage-launch.py
+PASS original role pin vs public source original identity geometry-stage-stop.py
+PASS original role pin vs public source original identity geometry-owned-integration-lifecycle-f3b-v2.py
+PASS original role pin vs public source original identity geometry-stop-with-terminal-receipt-f3b.py
+PASS original role pin vs public source original identity geometry-launch-detached-owned-integration-f3b.py
+PASS original role pin vs public source original identity validate_f3b_full_integration.py
+PASS original role pin vs public source original identity validate_f3b_durable_integration.py
+PASS original role pin vs public source original identity prepare_durable_full_census.py
+PASS original role pin vs public source original identity review_durable_space_launch_and_census.py
+PASS exact original path hash and original byte association original-owned-lifecycle/owned-stop/proc-280656.stat.raw
+PASS exact original path hash and original byte association original-owned-lifecycle/owned-stop/proc-280657.stat.raw
+PASS exact original path hash and original byte association original-detached-launch/launched-controller.stat.raw
+PASS exact original path hash and original byte association independent-space-review/review.public.json
+PASS exact original path hash and original byte association independent-space-review/command.raw.public.log
+PASS exact original path hash and original byte association independent-launch-addendum/review.public.json
+PASS exact original path hash and original byte association independent-launch-addendum/command.raw.public.log
+PASS exact original path hash and original byte association executor-source-bytes/run_full_space_identity.py
+PASS exact original path hash and original byte association executor-source-bytes/space_execution_identity.py
+PASS exact original path hash and original byte association executor-source-bytes/cdp_execution_identity_v2.py
+PASS exact original path hash and original byte association executor-source-bytes/sandbox-launch.cjs
+PASS exact original path hash and original byte association executor-source-bytes/sitecustomize.py
+PASS exact original path hash and original byte association executor-source-bytes/geometry-stage-launch.py
+PASS exact original path hash and original byte association executor-source-bytes/geometry-stage-stop.py
+PASS exact original path hash and original byte association executor-source-bytes/geometry-owned-integration-lifecycle-f3b-v2.py
+PASS exact original path hash and original byte association executor-source-bytes/geometry-stop-with-terminal-receipt-f3b.py
+PASS exact original path hash and original byte association executor-source-bytes/geometry-launch-detached-owned-integration-f3b.py
+PASS exact original path hash and original byte association executor-source-bytes/validate_f3b_full_integration.py
+PASS exact original path hash and original byte association executor-source-bytes/validate_f3b_durable_integration.py
+PASS exact original path hash and original byte association executor-source-bytes/prepare_durable_full_census.py
+PASS exact original path hash and original byte association executor-source-bytes/review_durable_space_launch_and_census.py
+PASS exact original path hash and original byte association independent-launch-addendum/preparation-review.public.json
+PASS exact original path hash and original byte association independent-launch-addendum/census-derivation.patch
+PASS exact original path hash and original byte association committed-f3-source-reference/tests/release_gate.py
+PASS exact original path hash and original byte association committed-f3-source-reference/tests/binaries.py
+PASS exact original path hash and original byte association committed-f3-source-reference/geometry-web/start_local.py
+PASS exact original path hash and original byte association committed-f3-source-reference/geometry-web/serve.py
+PASS exact original path hash and original byte association committed-f3-source-reference/geometry-web/runtime_version.py
+PASS exact original path hash and original byte association committed-f3-source-reference/geometry-web/native_context.py
+PASS exact original path hash and original byte association committed-f3-source-reference/geometry-web/feedback_store.py
+PASS exact original path hash and original byte association committed-f3-source-reference/geometry-web/vendor/fflate/umd/index.js
+PASS exact original path hash and original byte association publication-source/space-v8-adapter.py
+PASS exact original path hash and original byte association publication-source/prepare_f3b_durable_space_packet_v2.py
+PASS exact original path hash and original byte association publication-source/execute_f3b_durable_space_packet_v2.py
+PASS first actual1111 metadata0 findings exit0 retained
+PASS original preparation package-v1 exit1 remains exit1
+PASS retained prior-v1 original identity f3b-durable-space-build.stdout.raw-v1.log
+PASS retained prior-v1 original identity f3b-durable-space-build.stderr.raw-v1.log
+PASS retained prior-v1 original identity f3b-durable-space-config-v1.json
+PASS retained prior-v1 original identity f3b-durable-space-extra-v1.json
+PASS retained prior-v1 original identity f3b-durable-space-metadata-v1.json
+PASS retained prior-v1 original identity f3b-durable-space-README-v1.md
+PASS retained prior-v1 original identity prepare_f3b_durable_space_packet_v1.py
+PASS retained prior-v1 original identity f3b-durable-space-adapter-v1.py
+PASS retained prior-v1 original identity prepare_ui_history_packet_v8.py
+PASS retained prior-v1 original identity prepare_resume_packet.py
+PASS retained prior-v1 original identity prepare_cdp_diagnosis.py
+PASS retained prior-v1 original identity execute_f3b_durable_space_packet_v1.py
+PASS manifest immutable exact final-ready Spacev2

@@ -1,0 +1,7 @@
+I8a preview 1: valid; confirm token to apply
+grid-system 0 name oracle 0 mode infinite main-along none u repeat 0 600 v repeat 0 400 rule-next 1 -> grid-system 0 name oracle 0 mode infinite main-along none u repeat 0 600 v repeat 0 400 rule-next 2 rule 1 name oracle rule selector all-cells divide 3 2
+input:3: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
+I8a preview 2: valid; confirm token to apply
+grid-system 0 name oracle 0 mode infinite main-along none u repeat 0 600 v repeat 0 400 rule-next 2 rule 1 name oracle rule selector all-cells divide 3 2 -> grid-system 0 name oracle 0 mode infinite main-along none u repeat 0 600 v repeat 0 400 rule-next 2 rule 1 name pending allocator capability guard selector all-cells divide 3 2
+input:5: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
+/tmp/grid-rule-oracle-emdbhqgn/default-highwater-without-required-capability.scene:2: I25a: source rule capability/highwater closure missing

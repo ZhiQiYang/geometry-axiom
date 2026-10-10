@@ -1,0 +1,13 @@
+SPACE_SCOPE {"mode":"partial","filters":["GEOMETRY_ASYNC_REPLY_ONLY"],"included":["async-reply-ui"],"omitted":["space-height-library","projection-lifecycle","projection-placement","font-layout","space-flow","timber-material","timber-source-guards"],"url":"http://127.0.0.1:8921/","feedbackDirectory":"<local-user>\\AppData\\Local\\Temp\\geometry-async-qa-20261008\\feedback"}
+PASS server serves the intended space-model release
+PASS current release explicitly supports timber preview and engineering sources
+PASS 1400px confirming projection without editing a field still moves focus to the empty wall bottom
+PASS 1400px a wall-height edit during projection confirmation keeps focus and the typed height
+PASS 1400px a view click during an edit boundary read leaves no edit handles and keeps view
+PASS 390px confirming projection without editing a field still moves focus to the empty wall bottom
+PASS 390px a wall-height edit during projection confirmation keeps focus and the typed height
+PASS 390px a view click during an edit boundary read leaves no edit handles and keeps view
+PASS no uncaught browser exceptions
+PASS no browser console errors
+SPACE_RESULT {"schema":"geometry-space-result/1","scope":{"mode":"partial","filters":["GEOMETRY_ASYNC_REPLY_ONLY"],"included":["async-reply-ui"],"omitted":["space-height-library","projection-lifecycle","projection-placement","font-layout","space-flow","timber-material","timber-source-guards"],"url":"http://127.0.0.1:8921/","feedbackDirectory":"<local-user>\\AppData\\Local\\Temp\\geometry-async-qa-20261008\\feedback"},"completed":true,"groups":{"setup":{"expected":2,"passed":2,"failed":0,"completed":true},"async-reply-ui":{"expected":6,"passed":6,"failed":0,"completed":true},"browser-health":{"expected":2,"passed":2,"failed":0,"completed":true}},"completenessProblems":[],"passed":10,"failed":0,"exceptions":[],"consoleErrors":[]}
+RESULT 10 passed / 0 failed; completed: true; scope: partial; omitted groups: space-height-library,projection-lifecycle,projection-placement,font-layout,space-flow,timber-material,timber-source-guards; artifacts: <local-user>\AppData\Local\Temp\geometry-async-qa-20261008\run-after

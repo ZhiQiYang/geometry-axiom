@@ -1,0 +1,20 @@
+[
+  {
+    "number": 155,
+    "html_url": "https://github.com/ZhiQiYang/geometry-axiom/pull/155",
+    "title": "feat: apply single-room dimensions with guarded Enter (#54)",
+    "updated_at": "2026-10-06T13:36:01Z",
+    "body": "## Current delivery\n\nDraft head f1e020cba5051a331dd150d567698060bf1642b1, tree c689127a44ce269caff185050d7b2f26ec2e0197. Dependency: PR153 349e2a590f98ab783b7d3eeb952e95151db8e39e. Original PR155 ancestry retained; not merged into main.\n\nSix changed paths retain the original PR155 bytes. Product scope remains the 13-line Enter current-identity guard for single-room candidates. The app pan/navigation source is inherited unchanged from the verified parent; no #87 multiroom expansion or unpublished clipping patch.\n\n## Exact-tree evidence\n\nComplete tree matches tested local cf17c49254db1ded445b3f7cad03f946b3176025. Its own 70-suite strict run: 2182 passed, 0 failed, 1 named Windows GDI platform skip, exit 0. Independent source/production Enter VM review covers 35 candidate cases plus one original-base negative control, including identity guards, click parity, invalid-value preservation, composition, repeat/modifiers and Escape boundaries.\n\n## Remaining acceptance\n\nCurrent-source browser keyboard gate (396), physical IME, private PDFs and real user-efficiency acceptance remain pending. Historical browser receipts are not transferred to this head. Hosted CI must be checked at this exact head; missing runners/steps cannot count as passing execution. No ready, main merge, deployment or fully completed #54 claim.\n\nRefs #54.",
+    "head": "f1e020cba5051a331dd150d567698060bf1642b1",
+    "base": "349e2a590f98ab783b7d3eeb952e95151db8e39e"
+  },
+  {
+    "number": 153,
+    "html_url": "https://github.com/ZhiQiYang/geometry-axiom/pull/153",
+    "title": "Fix room-outline pan routing and verify single-room workflow (#54)",
+    "updated_at": "2026-10-06T13:24:51Z",
+    "body": "## Current delivery\n\nDraft head 349e2a590f98ab783b7d3eeb952e95151db8e39e, tree 5fa9292be9eb5db2e41d1598c3a2f78ffb75c017. Preserves original PR153 and main 6562fa53 ancestry. Not merged into main.\n\nThe bounded single-room candidate closeout retains the original feMove/feUp pan-priority fix (+5/-3 product lines) with current navigation guards. No #87 multiroom expansion, scenario stack, PDF-cleanup branch, or unpublished PR134 clipping fix is included.\n\n## Exact-tree evidence\n\nComplete tree equals local 90e500eca6660632e0bf437c5809f3ab7c9baa4d. 70-suite strict aggregate: 2182 passed, 0 failed, 1 named Windows GDI platform skip; exit 0. Focused native/Node checks: 112 passed, zero skips. Independent production-handler VM review: 16 passed; original main has eight expected negative cases and move-only repair has three, demonstrating both routing changes are required.\n\nCurrent-source browser acceptance remains pending. Historical browser/keyboard/private-source evidence is not transferred to this head. Physical devices, private PDFs and real user-efficiency acceptance remain unverified; do not claim #54 fully complete or faster than manual work. Hosted CI status must be checked for this exact head; absent runners/steps are not passing tests.\n\nNo ready, merge, deployment or full-feature-completion claim. Refs #54.",
+    "head": "349e2a590f98ab783b7d3eeb952e95151db8e39e",
+    "base": "6562fa53d90de22b3e5492f2083199b26377a8c2"
+  }
+]
