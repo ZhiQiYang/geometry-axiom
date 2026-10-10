@@ -16,7 +16,7 @@ from .common import (ModelError, canonical_bytes, digest, strict_json_loads,
 
 # The source commit contains the adopted axiom bytes identified by this digest.
 # Update only after committing the corresponding SSOT change (MODELING-CONTRACT).
-AXIOM_REVISION = "3ad8012b6f01f9f46795a28a410ee444c5cce1a0"
+AXIOM_REVISION = "a93bb346253e321c909e36c30f2f02e11d33bf9c"
 AXIOM_SHA256 = "472db80108cf5338b4434189be0b9b71a5588b442852f69beeb2bd305e17832e"
 # D41-D45 / I52-I57 / R41-R46 only add panel-fill/1, which this executor does
 # not implement; packages built under the previous adopted text stay valid.
