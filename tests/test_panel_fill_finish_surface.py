@@ -154,6 +154,17 @@ class FinishSurfaceNative(unittest.TestCase):
         self.assertEqual("touch", rel["c8"][0], "inside the hole, touching its corner edges")
         self.assertEqual("interior", rel["c1"][0])
 
+    def test_gap_between_prongs_is_outside_f(self):
+        # U shape: one horizontal band crosses four vertical edges (u = 0, 1000, 2000, 3000); the middle pair
+        # bounds the gap u in [1000,2000], v in [1000,3000], which is outside F although inside its bbox.
+        self.load_text(BASE + "boundary 6 outline 0,0 3000,0 3000,3000 2000,3000 2000,1000 1000,1000 1000,3000 0,3000\n"
+                              "column 11 at 1200 2000 size 600 300 z 0 3000\n"
+                              "column 12 at 2400 2000 size 300 300 z 0 3000\n", "prongs.scene")
+        self.apply([put(surface(1, boundary=6, obstacles=["c11", "c12"]))])
+        rel = self.relations(self.surfaces()[1])
+        self.assertEqual(("separate", [1200, 2000, 1800, 2300]), rel["c11"][:2])
+        self.assertEqual(("interior", [2400, 2000, 2700, 2300]), rel["c12"][:2])
+
     # ---- I52 / D41 negatives --------------------------------------------------------------------------------
     def test_invalid_definitions_are_rejected_without_changing_world(self):
         cases = [
@@ -300,6 +311,9 @@ class FinishSurfaceNative(unittest.TestCase):
         self.load_fails(BASE + record, "I56")
         self.load_fails(BASE + "requires engineering-spec/1\nrequires panel-fill/1\n" + record, "I56")
         self.load_fails(BASE + "requires parameters/1\nrequires panel-fill/1\n", "I56")
+        # Declared only after the record: the record itself is refused, not rescued by the end-of-file check.
+        self.load_fails(BASE + "requires engineering-spec/1\nrequires panel-fill/1\n" + record + "requires parameters/1\n",
+                        "declared first")
         self.load_fails(BASE + head + record.replace("boundary 4", "boundary 44"), "I52")
         self.load_fails(BASE + head + record.replace("c1", "c11"), "c11")
         self.load_fails(BASE + head + record.replace("u +x v +y n +z", "u +x v +y n -z"), "I1")
