@@ -111,9 +111,14 @@ async function main(){
     // a2 -- two-level guard on the real menu: view-level items are not behind the write guard, world-level ones are.
     await fixture(page);await right(page,4000,1000);
     await page.evaluate(()=>{oc.busy=true;fe.fiTab='guide';});
-    await page.locator('#feCtxMenu .fcm-tile[data-fe-act="op:notch"]').click();
-    check(await page.evaluate(()=>[!$('feCtxMenu').hidden,fe.op,document.querySelector('.fcm-footer').textContent]),[true,null,'正在等待目前操作完成'],
-      'a2 WORLD ITEM RAN UNDER oc.busy: a world-level tile must be refused with the write-guard reason and keep the menu open');
+    // Fixity is a plain world item: when it runs, the adapter closes the menu BEFORE acting. (op:* items are not a usable probe:
+    // feStartOp refuses under oc.busy by itself and the menu re-renders in place.) So "menu still open + reason in the footer"
+    // can only mean the shell's write guard refused the item before the adapter was asked to run it.
+    cmds.length=0;
+    await page.locator('#feCtxMenu [data-fe-act="fixity"]').click();
+    check(await page.evaluate(()=>[!$('feCtxMenu').hidden,document.querySelector('.fcm-footer')?.textContent??null]),[true,'正在等待目前操作完成'],
+      'a2 WORLD ITEM RAN UNDER oc.busy: a world-level row must be refused with the write-guard reason and keep the menu open');
+    check(writes(),[],'a2 refused world item sent no command');
     await page.locator('#feCtxMenu [data-fe-act="props"]').click();
     check(await page.evaluate(()=>[$('feCtxMenu').hidden,fe.fiTab]),[true,'prop'],'a2 VIEW ITEM WAS BLOCKED BY THE WRITE GUARD: "edit in right panel" must still run while oc.busy');
     await page.evaluate(()=>{oc.busy=false;});
@@ -228,10 +233,10 @@ async function main(){
     check(await page.evaluate(()=>[window.__k4.a.ctx.log.slice(),window.__k4.a.shell.isOpen]),[['v1'],false],'b2 VIEW ITEM WAS GUARDED: a view-level item runs although both write guards refuse');
     await page.evaluate(()=>{const {a}=window.__k4;a.ctx.log.length=0;a.shell.open(300,200);});
     await clickItem('k4a','w1');
-    check(await page.evaluate(()=>[window.__k4.a.ctx.log.slice(),window.__k4.a.shell.isOpen,document.querySelector('#k4aMenu .fcm-footer').textContent]),[[],true,'W-REASON'],
+    check(await page.evaluate(()=>[window.__k4.a.ctx.log.slice(),window.__k4.a.shell.isOpen,document.querySelector('#k4aMenu .fcm-footer')?.textContent??null]),[[],true,'W-REASON'],
       'b2 WORLD ITEM RAN UNDER A REFUSING WRITE GUARD: refused, reason shown in the footer, menu stays open');
     await clickItem('k4a','n1');
-    check(await page.evaluate(()=>[window.__k4.a.ctx.log.slice(),document.querySelector('#k4aMenu .fcm-footer').textContent]),[[],'N-REASON'],'b2 nav-level item is refused by the nav guard, not the world guard');
+    check(await page.evaluate(()=>[window.__k4.a.ctx.log.slice(),document.querySelector('#k4aMenu .fcm-footer')?.textContent??null]),[[],'N-REASON'],'b2 nav-level item is refused by the nav guard, not the world guard');
     await page.evaluate(()=>{const {a}=window.__k4;a.ctx.worldReason='';});
     await clickItem('k4a','w1');
     check(await page.evaluate(()=>[window.__k4.a.ctx.log.slice(),window.__k4.a.shell.isOpen]),[['w1'],false],'b2 once the write guard allows, the world item runs and the adapter closes the menu');
