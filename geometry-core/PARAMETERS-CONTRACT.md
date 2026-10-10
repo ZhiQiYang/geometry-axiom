@@ -28,7 +28,7 @@
 | operation | 內容 |
 | --- | --- |
 | put-parameter | value 卡片，每欄提供 input 或 expression，二者擇一 |
-| delete-parameter | id；剩餘依賴失效時整筆拒絕 |
+| delete-parameter | id；刪除當下（依操作順序、看候選目前狀態）仍被任何定義引用即拒絕，訊息指名引用者；同一交易內須先解除／改綁再刪除。同一交易內已刪除的卡片身分不得再被 put-parameter 宣告，import-parameters 配新身分時也會略過（I38／I39）；之後另一筆交易可再使用 |
 | import-parameters | value 完整參數包，由核心配新卡片身分與改寫引用 |
 | set-source / set-override | 原有 grid/timber target，source/value 可為 `{kind:"parameter",parameterId,fieldId}` |
 | unbind-source | target；把有效尺寸寫成直接值，移除來源及覆寫 |

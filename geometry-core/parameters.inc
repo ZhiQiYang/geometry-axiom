@@ -248,9 +248,19 @@ static bool parameter_name(EngJson *j,int t,char out[PARAM_NAME_MAX])
 {
     if(!eng_json_string(j,t,out,PARAM_NAME_MAX)||!grid_system_name_valid((const unsigned char*)out,strlen(out)))return parameter_fail("I38 NAME: expected 1..96 UTF-8 bytes without control characters");return true;
 }
+/* I38/I39 identity: a card identity deleted earlier in the SAME candidate transaction is retired for the rest of it.
+ * Declaring it again (put-parameter) or letting an import allocate it would silently rebind every reference that
+ * still names the old card to the new card. batch_preview() clears the count before the first operation, so the
+ * rule is per candidate: a later, separate transaction may use the identity again (nothing can still point at it,
+ * because the committed World never holds a dangling reference). */
+static uint32_t g_parameter_retired[ENG_OPERATION_MAX];
+static size_t g_parameter_retired_count;
+static bool parameter_retired(uint32_t id)
+{for(size_t i=0;i<g_parameter_retired_count;++i)if(g_parameter_retired[i]==id)return true;return false;}
 static bool parameter_put(World *w,EngJson *j,int t)
 {
     uint32_t id;if(!eng_json_keys(j,t,"id,name,fields","nextFieldId")||!parameter_u32(j,eng_json_member(j,t,"id"),&id))return parameter_fail("I38 CARD: expected id, name and fields");
+    if(parameter_retired(id))return parameter_fail("I38 DUPLICATE: parameter %u was deleted earlier in this transaction; a deleted identity cannot be declared again",id);
     ParameterSet card={0};card.id=id;if(!parameter_name(j,eng_json_member(j,t,"name"),card.name))return false;
     int fields=eng_json_member(j,t,"fields");if(!eng_json_is_array(j,fields)||eng_json_size(j,fields)<1||eng_json_size(j,fields)>PARAM_FIELDS_PER_CARD)return parameter_fail("UNSUPPORTED/CAPACITY: card requires 1..16 fields");
     ParameterField *fresh=calloc(PARAM_FIELDS_PER_CARD,sizeof *fresh);if(!fresh)return parameter_fail("UNSUPPORTED/CAPACITY: parameter fields memory");
@@ -274,13 +284,95 @@ static bool parameter_put(World *w,EngJson *j,int t)
     if(ok){size_t n=0;for(size_t i=0;i<w->parameters.field_count;++i)if(w->parameters.fields[i].parameter_id!=id)w->parameters.fields[n++]=w->parameters.fields[i];for(size_t k=0;k<card.count;++k)w->parameters.fields[n++]=fresh[k];memset(w->parameters.fields+n,0,(PARAM_FIELD_MAX-n)*sizeof(ParameterField));w->parameters.field_count=n;w->parameters.cards[slot]=card;if(slot==w->parameters.card_count)++w->parameters.card_count;}
     free(fresh);return ok;
 }
+/* I38: who still references this card? Scans the candidate exactly as it is when the delete runs, so a transaction that
+ * first unbinds/repoints the referrers and then deletes passes, and the reverse order does not. Only the first
+ * PARAMETER_USES_SHOWN referrers are named; the count is exact. References from the card's own fields vanish with it. */
+#define PARAMETER_USES_SHOWN 3
+typedef struct {char text[256];size_t count;} ParameterUses;
+static void parameter_use(ParameterUses *u,const char *format,...)
+{
+    if(u->count++<PARAMETER_USES_SHOWN){
+        size_t n=strlen(u->text);if(n&&n+2<sizeof u->text){u->text[n++]=';';u->text[n++]=' ';u->text[n]=0;}
+        va_list a;va_start(a,format);if(n<sizeof u->text)vsnprintf(u->text+n,sizeof u->text-n,format,a);va_end(a);
+    }
+}
+static bool parameter_ast_uses(const EngJson *j,int t,uint32_t id,int depth)
+{
+    if(depth>32)return false;
+    char op[16];if(!eng_json_string(j,eng_json_member(j,t,"op"),op,sizeof op))return false;
+    if(!strcmp(op,"ref")){int64_t card=-1;return eng_json_integer(j,eng_json_member(j,t,"parameterId"),&card)&&card==(int64_t)id;}
+    int left=eng_json_member(j,t,"left"),right=eng_json_member(j,t,"right");
+    return (left>=0&&parameter_ast_uses(j,left,id,depth+1))||(right>=0&&parameter_ast_uses(j,right,id,depth+1));
+}
+/* Position expressions (guides, datums) carry `param:<card>:<field>` tokens. */
+static bool parameter_text_uses(const char *text,uint32_t id)
+{
+    for(const char *p=text;(p=strstr(p,"param:"))!=NULL;p+=6){
+        const char *q=p+6;uint64_t card=0;int digits=0;
+        while(*q>='0'&&*q<='9'&&digits<11){card=card*10+(uint64_t)(*q++-'0');++digits;}
+        if(digits&&digits<11&&*q==':'&&card==id)return true;
+    }
+    return false;
+}
+static size_t parameter_uses(const World *w,uint32_t id,ParameterUses *u)
+{
+    static const char *const axis_fields[6]={"phase","step","panel","gap","anchor","stagger"};
+    memset(u,0,sizeof *u);
+    for(size_t i=0;i<w->parameters.field_count;++i){const ParameterField *f=&w->parameters.fields[i];
+        if(f->parameter_id==id)continue;
+        EngJson j;bool hit=eng_json_parse_n(&j,f->expression,strlen(f->expression))&&parameter_ast_uses(&j,0,id,0);eng_json_free(&j);
+        if(hit)parameter_use(u,"parameter %u field %u",f->parameter_id,f->id);
+    }
+    for(size_t i=0;i<w->engineering.binding_count;++i){const EngBinding *b=&w->engineering.bindings[i];
+        for(int override=0;override<2;++override){const EngDimensionSource *s=override?&b->override_value:&b->source;
+            if((override&&!b->has_override)||s->kind!=ENG_PARAMETER||s->parameter.parameter_id!=id)continue;
+            if(b->target.kind)parameter_use(u,"timber %u %c%s",b->target.id,b->target.field?'B':'A',override?" override":"");
+            else parameter_use(u,"grid %u %c %s%s",b->target.id,b->target.axis?'v':'u',b->target.field?"gap":"panel",override?" override":"");
+        }
+    }
+    for(size_t i=0;i<w->assembly.binding_count;++i){const AsmBinding *b=&w->assembly.bindings[i];EngJson j;
+        if(eng_json_parse(&j,b->content)){int slots=eng_json_member(&j,0,"slots");
+            for(int k=0;k<eng_json_size(&j,slots);++k){int slot=eng_json_at(&j,slots,k);int64_t slot_id=0;
+                (void)eng_json_integer(&j,eng_json_member(&j,slot,"slotId"),&slot_id);
+                for(int axis=0;axis<2;++axis){int source=eng_json_member(&j,slot,axis?"B":"A");char kind[16];int64_t card=-1;
+                    if(eng_json_string(&j,eng_json_member(&j,source,"kind"),kind,sizeof kind)&&!strcmp(kind,"parameter")&&
+                       eng_json_integer(&j,eng_json_member(&j,source,"parameterId"),&card)&&card==(int64_t)id)
+                        parameter_use(u,"binding %u slot %lld.%c",b->id,(long long)slot_id,axis?'B':'A');
+                }
+            }
+        }
+        eng_json_free(&j);
+    }
+    for(size_t i=0;i<w->guide_count;++i)if(parameter_text_uses(w->guides[i].expression,id))parameter_use(u,"guide %u",w->guides[i].id);
+    for(size_t i=0;i<w->datum_count;++i)if(parameter_text_uses(w->datums[i].expression,id))parameter_use(u,"datum %u",w->datums[i].id);
+    for(size_t i=0;i<w->grid_system_count;++i)for(int axis=0;axis<2;++axis)for(int k=0;k<6;++k){const ParameterRef *r=&w->grid_systems[i].axis[axis].parameters[k];
+        if(r->set&&r->parameter_id==id)parameter_use(u,"grid-system %u %c %s",w->grid_systems[i].id,axis?'v':'u',axis_fields[k]);}
+    for(size_t i=0;i<w->grid_count;++i){const ReferenceGrid *g=&w->grids[i];if(g->from_system)continue;  /* system-derived copies are the system's own refs */
+        for(int axis=0;axis<2;++axis)for(int k=0;k<6;++k){const ParameterRef *r=&g->axis[axis].parameters[k];
+            if(r->set&&r->parameter_id==id)parameter_use(u,"grid %u %c %s",g->id,axis?'v':'u',axis_fields[k]);}}
+    for(size_t i=0;i<w->section_profiles.member_count;++i){const ProfileMember *m=&w->section_profiles.members[i];
+        if(m->a_source.kind==ENG_PARAMETER&&m->a_source.parameter.parameter_id==id)parameter_use(u,"section-profile member %u A",m->id);
+        if(m->b_source.kind==ENG_PARAMETER&&m->b_source.parameter.parameter_id==id)parameter_use(u,"section-profile member %u B",m->id);
+    }
+    for(size_t i=0;i<w->section_profiles.run_count;++i){const ProfileRun *r=&w->section_profiles.runs[i];
+        if(r->length_source.kind==ENG_PARAMETER&&r->length_source.parameter.parameter_id==id)parameter_use(u,"section-profile run %u length",r->id);
+    }
+    return u->count;
+}
 static bool parameter_remove(World *w,uint32_t id)
 {
     size_t k=0;while(k<w->parameters.card_count&&w->parameters.cards[k].id!=id)++k;
     if(k==w->parameters.card_count)return parameter_fail("I38 MISSING: parameter %u",id);
+    ParameterUses uses;
+    if(parameter_uses(w,id,&uses)){
+        char more[40]="";if(uses.count>PARAMETER_USES_SHOWN)snprintf(more,sizeof more," and %zu more",uses.count-PARAMETER_USES_SHOWN);
+        return parameter_fail("I38 MISSING: parameter %u is still referenced by %s%s; unbind or repoint %s in the same transaction before deleting it",id,uses.text,more,uses.count==1?"it":"them");
+    }
     memmove(w->parameters.cards+k,w->parameters.cards+k+1,(w->parameters.card_count-k-1)*sizeof(ParameterSet));memset(&w->parameters.cards[--w->parameters.card_count],0,sizeof(ParameterSet));
     size_t n=0;for(size_t i=0;i<w->parameters.field_count;++i)if(w->parameters.fields[i].parameter_id!=id)w->parameters.fields[n++]=w->parameters.fields[i];memset(w->parameters.fields+n,0,(PARAM_FIELD_MAX-n)*sizeof(ParameterField));w->parameters.field_count=n;
-    n=0;for(size_t i=0;i<w->canvas_pos_count;++i)if(w->canvas_pos[i].kind!=CANVAS_POS_PARAMETER||w->canvas_pos[i].id!=id)w->canvas_pos[n++]=w->canvas_pos[i];memset(w->canvas_pos+n,0,(w->canvas_pos_count-n)*sizeof(CanvasPos));w->canvas_pos_count=n;return true;
+    n=0;for(size_t i=0;i<w->canvas_pos_count;++i)if(w->canvas_pos[i].kind!=CANVAS_POS_PARAMETER||w->canvas_pos[i].id!=id)w->canvas_pos[n++]=w->canvas_pos[i];memset(w->canvas_pos+n,0,(w->canvas_pos_count-n)*sizeof(CanvasPos));w->canvas_pos_count=n;
+    if(g_parameter_retired_count<ENG_OPERATION_MAX)g_parameter_retired[g_parameter_retired_count++]=id;
+    return true;
 }
 /* Package imports allocate a complete independent identity map before copying.
  * References must remain inside the package; no accidental links to this world. */
@@ -311,7 +403,7 @@ static bool parameter_import(World *w,EngJson *j,int t)
     for(int k=0;k<n;++k){
         int c=eng_json_at(j,cards,k);if(!parameter_u32(j,eng_json_member(j,c,"id"),&old[k]))return false;
         for(int q=0;q<k;++q)if(old[q]==old[k])return parameter_fail("I39 PACKAGE: duplicate card identity");
-        while(parameter_find(w,candidate))++candidate;fresh[k]=candidate++;
+        while(parameter_find(w,candidate)||parameter_retired(candidate))++candidate;fresh[k]=candidate++;
     }
     char *buffer=malloc(PARAM_FIELDS_PER_CARD*(PARAM_EXPR_MAX+1000));if(!buffer)return parameter_fail("UNSUPPORTED/CAPACITY: package memory");bool ok=true;
     for(int k=0;k<n&&ok;++k){

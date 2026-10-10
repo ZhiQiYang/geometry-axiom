@@ -432,6 +432,17 @@ class AssemblyRules(unittest.TestCase):
             self.assertEqual(scene,fresh.command("dump")["text"])
             self.assertEqual(before,fresh.command("assembly-read")["state"])
 
+    def test_delete_parameter_is_refused_at_the_delete_step_naming_the_binding(self):
+        # GEO-258 / I38:被組構配置槽位引用的參數卡,刪除那一步就拒絕並指名槽位;同一交易內先改成直接值再刪就通過。
+        self.publish()
+        param = {"id": 1, "name": "截面", "fields": [{"id": 1, "name": "A", "type": "dimension", "input": "40"}]}
+        b = binding()
+        b["slots"][0]["A"] = {"kind": "parameter", "parameterId": 1, "fieldId": 1}
+        self.apply([{"op": "put-parameter", "value": param}, {"op": "put-binding", "value": b}])
+        self.reject([{"op": "delete-parameter", "id": 1}], "I38 MISSING: parameter 1 is still referenced by binding 1 slot 1.A")
+        self.apply([{"op": "put-binding", "value": binding()}, {"op": "delete-parameter", "id": 1}])
+        self.assertEqual([], self.command("engineering-read")["state"]["parameters"])
+
     def test_bad_dimension_sources_rejected_not_incomplete(self):
         self.publish()
         for source in [literal(0),literal(-1),{"kind":"material","id":"missing","version":1,"field":"A"},

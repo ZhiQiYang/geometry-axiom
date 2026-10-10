@@ -97,6 +97,7 @@ static void batch_preview(const char *path,const char *schema_name,const char *s
     int count=eng_json_size(&j,operations);if(count<1||count>ENG_OPERATION_MAX){eng_bridge_error("CAPACITY","Transaction needs 1..256 operations");eng_json_free(&j);free(text);return;}
     World *candidate=malloc(sizeof *candidate);if(!candidate){eng_bridge_error("MEMORY",memory_message);eng_json_free(&j);free(text);return;}*candidate=g_world;
     g_engineering_error[0]=0;g_scene_last_error[0]=0;g_reference_issue_count=0;bool ok=true;
+    g_parameter_retired_count=0;  /* I39: identities deleted in this candidate are retired for this candidate only */
     for(int i=0;i<count&&ok;++i){
         ok=operation(candidate,&j,eng_json_at(&j,operations,i));
         if(ok)ok=assembly_versions_immutable(&g_world,candidate);

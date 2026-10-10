@@ -224,6 +224,58 @@ class ParametersCore(unittest.TestCase):
         self.apply([{"op":"delete-parameter","id":1}])
         self.assertEqual(915,self.command("references")["datums"][0]["position"])
 
+    def test_delete_refuses_a_referenced_card_and_names_every_kind_of_referrer(self):
+        # GEO-258 / I38:被其他定義引用的卡片不得刪除。拒絕發生在 delete 那一步(看候選當下狀態),訊息指名引用者。
+        self.apply([card(1, "被卡引用", [field(1, "915")]), card(2, "被綁定引用", [field(1, "27"), field(2, "33")]),
+                    card(3, "被導線引用", [field(1, "500")]), card(4, "被格網引用", [field(1, "915")]),
+                    card(5, "被基準面引用", [field(1, "700")]), card(6, "引用者", [field(1, "=@1:1 + 1 mm")])])
+        self.apply_line("timber 1 27 33 role boundary")
+        self.apply_line("place 1 on 1 at-face e3 +v +n")
+        target = {"kind": "timber", "id": 1, "field": "A"}
+        self.apply([{"op": "set-source", "target": target, "source": {"kind": "parameter", "parameterId": 2, "fieldId": 1}}])
+        self.apply_line("guide 1 1 u param:3:1")
+        self.apply_line("grid-system 1 name-hex 47726964 main-along none u repeat 0 param:4:1 v none")
+        self.apply_line("datum 1 x param:5:1")
+        for card_id, referrer in [(1, "parameter 6 field 1"), (2, "timber 1 A"), (3, "guide 1"),
+                                  (4, "grid-system 1 u step"), (5, "datum 1")]:
+            with self.subTest(card=card_id):
+                self.rejected([{"op": "delete-parameter", "id": card_id}], "I38 MISSING: parameter %d is still referenced by %s" % (card_id, referrer))
+        # 順序有意義:先解除(或改綁)再刪,同一交易內通過;先刪再解除仍拒絕。
+        self.apply([card(6, "引用者", [field(1, "10")]), {"op": "delete-parameter", "id": 1}])
+        self.apply([{"op": "unbind-source", "target": target}, {"op": "delete-parameter", "id": 2}])
+        self.apply_line("spec detached 500")
+        self.apply_line("move 1 spec:detached")
+        self.apply([{"op": "delete-parameter", "id": 3}])
+        self.assertEqual([4, 5, 6], [c["id"] for c in self.read()["state"]["parameters"]])
+        # 多個引用者:只列前幾個,數量精確。
+        self.apply([card(7, "多引用", [field(1, "1")]), card(8, "甲", [field(1, "=@7:1")]), card(9, "乙", [field(1, "=@7:1")]),
+                    card(10, "丙", [field(1, "=@7:1")]), card(11, "丁", [field(1, "=@7:1")])])
+        self.rejected([{"op": "delete-parameter", "id": 7}],
+                      "parameter 8 field 1; parameter 9 field 1; parameter 10 field 1 and 1 more; unbind or repoint them")
+
+    def test_delete_then_import_or_redeclare_cannot_rebind_references(self):
+        # BACKLOG GEO-258 兩個反例:[delete 0, import P]、[delete 2, put-parameter{id:2}],World 內有引用指向被刪的卡。
+        self.apply([card(0, "來源", [field(1, "915")]), card(1, "引用者", [field(1, "=@0:1 + 1 mm")])])
+        package = {"schema": "geometry-parameters/1", "cards": [{"id": 7, "name": "外來", "fields": [
+            {"id": 1, "name": "寬", "type": "dimension", "expression": {"op": "literal", "num": "1", "den": "1", "unit": "mm"}}]}]}
+        before = self.values()
+        self.rejected([{"op": "delete-parameter", "id": 0}, {"op": "import-parameters", "value": package}],
+                      "parameter 0 is still referenced by parameter 1 field 1")
+        self.rejected([{"op": "delete-parameter", "id": 0}, card(0, "換人", [field(1, "1")])],
+                      "parameter 0 is still referenced by parameter 1 field 1")
+        self.assertEqual(before, self.values())
+        # 沒有任何引用時刪除本身合法;但同一交易內不得把剛刪的身分再宣告,匯入也必須拿到新身分。
+        self.apply([card(2, "獨立", [field(1, "5")])])
+        self.rejected([{"op": "delete-parameter", "id": 2}, card(2, "換人", [field(1, "1")])],
+                      "parameter 2 was deleted earlier in this transaction")
+        self.apply([{"op": "delete-parameter", "id": 2}, {"op": "import-parameters", "value": package}])
+        ids = [c["id"] for c in self.read()["state"]["parameters"]]
+        self.assertEqual([0, 1, 3], ids)  # 2 已退役,不得被匯入重用
+        # 「退役」只在那一筆候選內:之後另一筆交易可以重新宣告同一身分(沒有任何引用能指到它)。
+        self.apply([{"op": "delete-parameter", "id": 3}])
+        self.apply([card(3, "再宣告", [field(1, "1")])])
+        self.assertEqual([0, 1, 3], [c["id"] for c in self.read()["state"]["parameters"]])
+
     # ---- 驗收矩陣補列：對應 PARAMETERS-PROPOSAL.md「驗收矩陣」，逐列索引見 PARAMETERS-VALIDATION.md「驗收矩陣對應」 ----
     split_room = harness.EngineeringCore.split_room
 
