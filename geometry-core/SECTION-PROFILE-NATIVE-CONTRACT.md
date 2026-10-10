@@ -58,7 +58,7 @@ revision 必須取自當次 native read，不能假定為 0。preview 不改 Wor
 所有操作先修改候選，再重驗全 World；可同筆刪除 profile 與依賴者，不能留下孤兒，也不自動刪除依賴者。
 
 位置只收直接整数 `u0,v0`；timber 的方位是 `A-u`／`A-v`，panel 是 `thickness-v`／`thickness-u`。
-JSON 原生解析器拒絕浮點數；分數字串、布林、越界也不能當座標。凹形包含檢查重用完整矩形包含測試，不只检查四個角點；貼邊或貼點合法，正面積交集拒絕。
+JSON 原生解析器拒絕浮點數；分數字串、布林、越界也不能當座標。構件是否在輪廓內以精確整數面積判定：矩形與輪廓外部的正面積差集（`sp_outside_regions` 的水平帶分割，即回報的 `outsideRegions`）為空才合法；貼邊或貼點合法，正面積交集拒絕。不用「四角在內加沒有輪廓邊穿過內部」的近似，那會接受剛好填滿凹槽、整個落在輪廓外的矩形（見下方 I44 修正）。
 
 尺寸來源沿用既有具型別物件：
 
@@ -162,6 +162,49 @@ GEOMETRY_TEST_BRIDGE=/tmp/geometry-q38-complete-native/bridge python tests/test_
 永久測試核對固定數字、真核心負例、完整 dump／fresh-process roundtrip、零 id、固定來源、不同 token、取消與過期、undo/redo、容量、全項診斷、兩種宿主、96 個合法宿主／方向組合、互轉與來源圖。
 外部 oracle、aggregate／變異及最終 commit／binary 指紋另外記錄。
 早期 dirty tree 結果保留原 head／狀態；可用完整受驗來源雜湊等值綁定後續 commit，但不得把原收據改標成當時已在最終 clean commit 上執行。
+
+### I44 修正：剛好填滿凹槽的構件（2026-10-09）
+
+原先 `V_PROFILE_OUTSIDE` 呼叫 `poly_contains_rect`（四角在輪廓內或邊上，且沒有輪廓邊穿過矩形內部）。
+凹槽的兩條平行邊本身就落在矩形邊界線上時，四角都在邊上、也沒有邊穿過內部，整個落在 F 外的矩形被判成「在內」，
+例如輪廓 `[[0,0],[100,0],[100,100],[60,100],[60,40],[40,40],[40,100],[0,100]]` 上的 R = [40,60]×[50,70]（寬度剛好等於槽寬）。
+這與 D35「構件剖面必在 F 內」的面積條件矛盾。現在改用同一份診斷用的整數水平帶分割：差集非空即 `V_PROFILE_OUTSIDE`，
+`outsideRegions` 也與判定同源（`section_profile_validation.inc` 的 `sp_rebuild`）。永久測試涵蓋兩種繞向、三個填槽尺寸（含精確 `outsideRegions`）、
+槽開口向右的凹形，以及貼著槽緣、仍在材料側的構件仍合法。
+
+共用函式 `poly_contains_rect`（`current_geometry.c`，D7 角材的 I5 路徑經 `boundary_contains_rect` 使用）本身沒有改；
+同一弱點在那條路徑上的實測：承載面輪廓 `0,0 1000,0 1000,1000 510,1000 510,300 490,300 490,1000 0,1000`（槽寬 20）上，
+沿 u=500 的 20×20 主支角材在兩側邊界材到位後，R6 回報「跨距歧義： [20,280] [300,1000]」，第二段完全落在槽內；槽寬改成 22 時只有一段。
+那屬於 D7／I5，不在 Q38 範圍內，需另案處理。
+
+### AC16 故障注入閘門（`tests/section_profile_mutation_check.py`）
+
+提案 AC16 要求移除指定守門後，其列出的驗收案例（AC04–AC06、AC12、AC21、AC24；AC07、AC23；AC21）分別轉紅，且失敗訊息指得出是哪一條。本閘門目前證明的是較弱的事實：每個守門至少有一個指名殺手測試會轉紅，失敗訊息含該守門的條號或病因；這不是提案 AC16 逐條（AC04–AC06、AC12…全部轉紅）的對應；逐案例實際轉紅的 AC 清單待 `--explore` 執行後附上。
+`tests/mutate.py` 的既有清單只以 `current_geometry.c` 的場景裁判審核心，
+沒有對 Q38 的檢查注入過故障，所以另有此腳本（Linux/WSL；比照 `tests/assembly_mutation_check.py`，不編入 `run_all.py`，因為每個案例要編一支 bridge）：
+
+~~~sh
+ulimit -s 16384
+python3 tests/binaries.py build
+mkdir -p tests/release-evidence/<日期>-q38-i44
+python3 tests/section_profile_mutation_check.py --receipt tests/release-evidence/<日期>-q38-i44/q38-mutations.json --logs tests/release-evidence/<日期>-q38-i44/mutation-logs
+~~~
+
+在拋棄式複本中一次只改一處，共 42 個案例。native 37 個案例改 C 來源（拿掉 I43／I44／I45／I48／I49／I51 的守門、R36 的嚴格不等號、
+面材 w < 915 與 6 mm 板厚、R38 的符號與軸、D38 互轉條件、I47 的終端頂點與 D1、PROFILE_CONTACT_LOST、「板長 1830 當成 L 上限」等），
+重編 bridge 後跑 `tests/test_section_profile_native.py`；model 5 個案例改 Python 製模器（R37 的 L 形包絡、R39 包絡不計材料量、
+面材不依 1830 切段、構件矩形軸向、局部 run 不被世界網格切分），在複本上對未變異的原生轉接器跑 `tests/test_section_profile_modeling.py`。
+判為殺死須同時成立：指名的測試以斷言失敗轉紅（或錯誤訊息含該案例的 cause 字串）；失敗訊息含每一個 cause 字串（條號或病因）；
+變異後的 binary 與基準線不同。編譯失敗、無說明的錯誤、逾時與 skip 都不算偵測，基準線必須先零 skip 全過。
+結果（於開發樹量測，待 WSL 重驗後才可當收據引用）：41 killed、1 equivalent、0 survived。唯一等價的是 SPM24（D38 進階轉簡易的「V 對應合法的 up」）：進階框架只可能由 `surface_frame_is_valid`
+放行（單位座標軸、V ⟂ N），up = −V 恆合法，這個條件在實作上不可能不成立。
+2026-10-10 在開發樹上量測（native／model 基準線皆 exit 0、零 skip）：42 例 41 killed、1 equivalent、0 survived，exit 0（待 WSL 重驗；收據待存入 `tests/release-evidence/<日期>-q38-i44/`，目前尚無已存檔的收據）。
+同一次開發樹量測（待 WSL 重驗）：SPM41 把精確面積改回 `poly_contains_rect` 後，`test_concave_not_four_corners_and_winding` 轉紅，訊息是 expected rejection 'V_PROFILE_OUTSIDE' but the candidate was accepted。
+同一棵開發樹 `python3 tests/run_all.py --build` 量測：2592 pass、0 fail、1 skip（Linux 上的 Windows GDI），exit 0（待 WSL 重驗）。
+
+這輪故障注入先後逼出多處測試缺口（面材規格身分、兩種方位字串、D37 不收 D26 材料、簡易定位原點的 D1、I47 終端頂點、
+刪斷面時只剩成員或只剩 run 仍引用、已載入場景後的逐行注入）與上面的 I44 缺陷；缺口以加強既有測試方法補上，沒有新增測試方法，
+所以 `tests/run_all.expected.json` 的計數不變。`tests/mutants_results.json` 因核心來源變動依 `tests/mutate.py` 的規則整份重跑重生。
 
 ### 前一個有界切片的歷史驗證（非本版收據）
 

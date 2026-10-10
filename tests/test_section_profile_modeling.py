@@ -87,7 +87,7 @@ class SectionProfileModeling(unittest.TestCase):
     def mesh(self, obj, volume, bounds=None):
         self.assertEqual(obj["status"], "COMPLETE")
         self.assertEqual(obj["closure"], "closed")
-        self.assertEqual(obj["volume_mm3"], str(volume))
+        self.assertEqual(obj["volume_mm3"], str(volume), "R37: exact mesh volume of the %s object" % obj.get("section_profile", {}).get("kind"))
         self.assertEqual(signed_volume6(obj), 6 * volume)
         self.assertEqual(len(obj["boundary_shells"]), 1)
         self.assertEqual(obj["boundary_shells"][0]["role"], "outer")
@@ -102,7 +102,7 @@ class SectionProfileModeling(unittest.TestCase):
         if bounds is not None:
             actual = [[min(p[i] for p in obj["vertices_mm"]) for i in range(3)],
                       [max(p[i] for p in obj["vertices_mm"]) for i in range(3)]]
-            self.assertEqual(actual, bounds)
+            self.assertEqual(actual, bounds, "R36/R37: bounds of the %s object" % obj.get("section_profile", {}).get("kind"))
             self.assertEqual(obj["section_profile"]["bounds_mm"], bounds)
 
     def test_three_timber_members_and_actual_concave_reference_envelope(self):
@@ -121,7 +121,7 @@ class SectionProfileModeling(unittest.TestCase):
             if identifier is None:
                 self.mesh(obj, 84960000, [[0, 0, 0], [400, 250, 2400]])
                 self.assertEqual((obj["role"], obj["member_path"], details["kind"], details["material_volume_mm3"]),
-                                 ("reference", [], "envelope", "0"))
+                                 ("reference", [], "envelope", "0"), "R37/R39: the envelope is a reference object and carries no material volume")
                 self.assertIsNone(details["dimensions_mm"])
                 self.assertTrue(all(not (v[0] > 60 and v[1] > 60) for v in obj["vertices_mm"]))
             else:
