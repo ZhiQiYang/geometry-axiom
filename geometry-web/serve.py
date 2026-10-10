@@ -338,6 +338,11 @@ class Handler(http.server.BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def do_GET(self):
+        # Same Host rule as POST, before any dispatch: a DNS-rebinding page is same-origin with its
+        # own name, so only the Host header tells it apart from the real local UI.
+        if not self._host_allowed():
+            self.send_error(403)
+            return
         route = urlsplit(self.path)
         self.path = route.path
         query = parse_qs(route.query)
@@ -408,14 +413,18 @@ class Handler(http.server.BaseHTTPRequestHandler):
         else:
             self.send_error(404)
 
+    def _host_allowed(self) -> bool:
+        """GET 與 POST 共用的 Host 規則（防 DNS rebinding）：不帶 Host 放行，否則主機名須在 LOCAL_HOSTS。"""
+        host = self.headers.get("Host")
+        return host is None or host.rsplit(":", 1)[0] in LOCAL_HOSTS
+
     def _local_only(self) -> bool:
         """L3：跨站 POST 一律 403；回傳 True = 已拒絕。"""
         origin = self.headers.get("Origin")
         if origin is not None and origin not in LOCAL_ORIGINS:
             self.send_error(403)
             return True
-        host = self.headers.get("Host")
-        if host is not None and host.rsplit(":", 1)[0] not in LOCAL_HOSTS:
+        if not self._host_allowed():
             self.send_error(403)
             return True
         return False
