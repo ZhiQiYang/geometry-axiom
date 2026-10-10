@@ -1,0 +1,32 @@
+[
+  {
+    "line": "boundary 1 outline 0,0 4000,0 4000,3000 0,3000",
+    "response": {
+      "ok": true
+    }
+  },
+  {
+    "line": "placement 1 on boundary 1 origin 0 0 2500 u +x v +y",
+    "response": {
+      "ok": true
+    }
+  },
+  {
+    "line": "canvas-pos boundary 1 280 100",
+    "response": {
+      "ok": true
+    }
+  },
+  {
+    "line": "grid-system 1 name-hex 7461696c20736f75726365 main-along u u repeat 0 600 v repeat 0 400",
+    "response": {
+      "ok": true
+    }
+  },
+  {
+    "line": "canvas-pos grid-system 1 560 100",
+    "response": {
+      "ok": true
+    }
+  }
+]

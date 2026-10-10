@@ -1,0 +1,12 @@
+{
+  "case": "beam",
+  "width": 1400,
+  "started": "2026-10-08T17:42:46.652811+00:00",
+  "passed": false,
+  "error": "Traceback (most recent call last):\n  File \"/workspace/closure-evidence/contracts/remaining-product-scope-20261008/css_c2_c4_browser_probe.py\", line 321, in main\n    assert any(e['type']=='dblclick' and e['card']=='space' and e['cardId']=='1' and e['trusted'] for e in inputs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+  "failed_phase": "beam-1400",
+  "finished": "2026-10-08T17:42:50.402782+00:00",
+  "page_errors": [],
+  "network_capture_errors": [],
+  "cleanup_errors": []
+}

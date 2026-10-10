@@ -611,6 +611,25 @@ test('unknown attachment schema, excess data/capacity and wrong typed native ref
   assert.equal(f.controller.intent, null);
 });
 
+test('persisted views survive real native room edits/reassociation and metadata-only history',async t=>{
+  const f=await fixture(t),a=await f.add('A',f.A),b=await f.add('B',f.B);
+  f.owner.attachment=S.upgradeDisplay(f.owner.readAttachment());
+  const plane=f.owner.attachment.planes[0],view={crop:[10,20,580,360],opacity:.82,locked:true};
+  const before=await f.bridge.dump(),count=f.owner.undoEntries.length;
+  f.controller.sourceView(a.id,plane.calibration,plane.alignment,view);
+  assert.equal(f.owner.undoEntries.length,count+1);assert.equal(await f.bridge.dump(),before);
+  assert.deepEqual(f.owner.attachment.rooms.find(r=>r.id===b.id).display,S.defaultDisplay(plane));
+  f.controller.sourceView(a.id,plane.calibration,plane.alignment,view);assert.equal(f.owner.undoEntries.length,count+1,'no-op adds no history');
+  await f.owner.step('undo');assert.deepEqual(S.displayForRoom(f.owner.attachment,a.id),S.defaultDisplay(plane));
+  await f.owner.step('redo');assert.deepEqual(S.displayForRoom(f.owner.attachment,a.id),view);assert.equal(await f.bridge.dump(),before);
+  f.controller.beginEdit('shared-rooms',a.id);await f.controller.prepare(f.map([[50,50],[270,50],[270,200],[50,200]]),'A edited');await f.controller.confirm();
+  assert.deepEqual(S.displayForRoom(f.owner.attachment,a.id),view);
+  assert.deepEqual(S.displayForRoom(f.owner.attachment,b.id),S.defaultDisplay(plane));
+  f.owner.attachment=S.retireBoundary(f.owner.attachment,a.boundaryId);
+  await f.controller.associate('shared-rooms',a.boundaryId,'A reassociated',a.id);
+  assert.deepEqual(S.displayForRoom(f.owner.attachment,a.id),view);assert.equal(f.owner.attachment.rooms.find(r=>r.id===a.id).reviewState,'confirmed');
+});
+
 test('fresh native context loads canonical geometry with independently validated saved attachment and PDF bytes', async t => {
   const f = await fixture(t), first = await f.add('A', f.A), second = await f.add('B', f.B);
   f.controller.rename(first.id, 'A saved');

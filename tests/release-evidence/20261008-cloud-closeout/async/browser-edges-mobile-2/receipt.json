@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "/workspace/closure-evidence/async-review/browser_probe.py",
+    "--out",
+    "/workspace/closure-evidence/async-review/browser-edges-mobile-2",
+    "--only",
+    "edges",
+    "--width",
+    "390"
+  ],
+  "exitCode": 1,
+  "tests": 8,
+  "results": "results.json",
+  "original173ProbeRecovered": false,
+  "scope": "Real sandboxed Chromium; actual native replies delayed without altering payload; fixture setup uses api, replacement redraw explicitly injected via product renderer; not full product acceptance"
+}

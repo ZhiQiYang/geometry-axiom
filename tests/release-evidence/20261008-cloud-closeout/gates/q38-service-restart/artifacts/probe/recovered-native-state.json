@@ -1,0 +1,326 @@
+{
+  "profiles": [
+    {
+      "value": {
+        "id": 1,
+        "name": "保存凹形",
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            400,
+            0
+          ],
+          [
+            400,
+            60
+          ],
+          [
+            60,
+            60
+          ],
+          [
+            60,
+            250
+          ],
+          [
+            0,
+            250
+          ]
+        ]
+      }
+    },
+    {
+      "value": {
+        "id": 2,
+        "name": "零構件斷面",
+        "outline": [
+          [
+            -10,
+            -20
+          ],
+          [
+            10,
+            -20
+          ],
+          [
+            10,
+            20
+          ],
+          [
+            -10,
+            20
+          ]
+        ]
+      }
+    },
+    {
+      "value": {
+        "id": 3,
+        "name": "未使用空斷面",
+        "outline": [
+          [
+            0,
+            0
+          ],
+          [
+            10,
+            0
+          ],
+          [
+            10,
+            20
+          ],
+          [
+            0,
+            20
+          ]
+        ]
+      }
+    }
+  ],
+  "members": [
+    {
+      "value": {
+        "A": {
+          "kind": "literal",
+          "value": 27
+        },
+        "B": {
+          "kind": "literal",
+          "value": 33
+        },
+        "id": 7,
+        "kind": "timber",
+        "orientation": "A-v",
+        "profileId": 1,
+        "u0": 0,
+        "v0": 0
+      },
+      "rect": [
+        0,
+        0,
+        33,
+        27
+      ],
+      "dimensions": [
+        27,
+        33
+      ]
+    },
+    {
+      "value": {
+        "id": 8,
+        "kind": "panel",
+        "orientation": "thickness-v",
+        "panelSpec": "calcium-silicate-6",
+        "profileId": 1,
+        "u0": 33,
+        "v0": 0,
+        "width": 346
+      },
+      "rect": [
+        33,
+        0,
+        379,
+        6
+      ],
+      "dimensions": [
+        346,
+        6
+      ]
+    }
+  ],
+  "runs": [
+    {
+      "value": {
+        "id": 12,
+        "length": {
+          "kind": "literal",
+          "value": 2400
+        },
+        "placement": {
+          "dir": "+v",
+          "host": {
+            "frame": {
+              "N": "+Z",
+              "U": "+X",
+              "V": "+Y",
+              "origin": [
+                100,
+                200,
+                2700
+              ]
+            },
+            "kind": "space-wall-values",
+            "region": {
+              "holes": [
+                [
+                  [
+                    1000,
+                    1000
+                  ],
+                  [
+                    1100,
+                    1000
+                  ],
+                  [
+                    1100,
+                    1100
+                  ],
+                  [
+                    1000,
+                    1100
+                  ]
+                ]
+              ],
+              "outline": [
+                [
+                  0,
+                  0
+                ],
+                [
+                  5000,
+                  0
+                ],
+                [
+                  5000,
+                  4000
+                ],
+                [
+                  0,
+                  4000
+                ]
+              ]
+            },
+            "sourceDescription": "依已刪空間天花板取值，不隨空間變動"
+          },
+          "kind": "simple",
+          "p": 20,
+          "q": 30,
+          "up": "+Z"
+        },
+        "profileId": 1
+      },
+      "length": 2400,
+      "coordinateSpace": "world",
+      "frame": {
+        "origin": [
+          120,
+          230,
+          2700
+        ],
+        "U": [
+          1,
+          0,
+          0
+        ],
+        "V": [
+          0,
+          0,
+          -1
+        ],
+        "N": [
+          0,
+          1,
+          0
+        ]
+      },
+      "members": [
+        {
+          "memberId": 7,
+          "bounds": [
+            [
+              120,
+              230,
+              2673
+            ],
+            [
+              153,
+              2630,
+              2700
+            ]
+          ]
+        },
+        {
+          "memberId": 8,
+          "bounds": [
+            [
+              153,
+              230,
+              2694
+            ],
+            [
+              499,
+              2630,
+              2700
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "value": {
+        "id": 13,
+        "length": {
+          "kind": "literal",
+          "value": 2001
+        },
+        "placement": null,
+        "profileId": 1
+      },
+      "length": 2001,
+      "coordinateSpace": "local",
+      "frame": null,
+      "members": [
+        {
+          "memberId": 7,
+          "bounds": [
+            [
+              0,
+              0,
+              0
+            ],
+            [
+              33,
+              27,
+              2001
+            ]
+          ]
+        },
+        {
+          "memberId": 8,
+          "bounds": [
+            [
+              33,
+              0,
+              0
+            ],
+            [
+              379,
+              6,
+              2001
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "value": {
+        "id": 14,
+        "length": {
+          "kind": "literal",
+          "value": 50
+        },
+        "placement": null,
+        "profileId": 2
+      },
+      "length": 50,
+      "coordinateSpace": "local",
+      "frame": null,
+      "members": []
+    }
+  ]
+}

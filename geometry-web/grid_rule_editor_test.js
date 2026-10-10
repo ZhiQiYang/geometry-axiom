@@ -3,21 +3,36 @@
 'use strict';
 const cdp=require('./cdp_helpers.js');
 module.exports=async function ruleEditorTests({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount}){
+  // S2 keeps the same exact discard question inside the active workspace.
+  const discardDraft=async({message,accept})=>{
+    await ctl('#igDiscardDraft');
+    await waitForUI(`!!$('igDiscardConfirmation')&&$('igDiscardConfirmation').getAttribute('role')==='alertdialog'`,10000);
+    const actual=await eval_(`$('igDiscardQuestion').textContent`);
+    if(actual!==message)throw Error('Discard question changed: '+JSON.stringify({expected:message,actual}));
+    await ctl(accept?'#igDiscardConfirm':'#igDiscardCancel');
+    await waitForUI(`!$('igDiscardConfirmation')`,10000);
+  };
+
   console.log('=== P87. 來源規則 CRUD、typed baseline、原始草稿與正式 ZIP ===');
   const fs=require('fs'),path=require('path'),os=require('os'),P=require('./project-store.js'),zip=require('./vendor/fflate/umd/index.js');
   const read=cdp.makeRead(eval_),wait=cdp.makeWait(waitForUI,20000),check=cdp.makeCheck({prefix:'P87 ',throwOnFail:true}),startExceptions=exceptionCount();
   const ctl=cdp.makeCtl({eval_,sleep,click},{scroll:'center',attempts:12,pollMs:70,settleMs:100,missing:'Missing ',unreachable:(s,p)=>'Rule control unreachable '+s+' '+JSON.stringify(p)});
   const key=cdp.makeKey({send,sleep}),fill=cdp.makeFill({ctl,key,send,sleep},{afterMs:35});
+  const historyOracle=cdp.makeHistoryOracle(read,'P87');
   const query=cmd=>read(`apiRequest(${JSON.stringify(cmd)}).then(r=>{if(!r.ok)throw Error(JSON.stringify(r));return r;})`);
   const dump=async()=>(await query('dump')).text,objects=()=>query('objects'),raw=()=>read(`ReferenceWorkspace.readFeatureAttachment('grid-draft')`),history=()=>read('ReferenceWorkspace.history.undo.length');
   const settled=()=>wait('!oc.busy&&!ReferenceWorkspace.busy'),impact=()=>wait(`!!document.querySelector('.reference-impact[open]')`);
   const confirm=async()=>{await ctl('#impact-confirm');await wait(`!document.querySelector('.reference-impact[open]')`);await settled();};
   const cancel=async()=>{await ctl('.reference-impact .impact-actions button:first-child');await wait(`!document.querySelector('.reference-impact[open]')`);await settled();};
-  const discard=async()=>{await expectNativeDialog(()=>ctl('#igDiscardDraft'),{message:'捨棄這份未發布的原始草稿？已保存到場景的網格保持不變。',accept:true});};
+  const discard=async()=>{await discardDraft({message:'捨棄這份未發布的原始草稿？已保存到場景的網格保持不變。',accept:true});};
   const leave=async()=>{if(await read(`!!$('infiniteGridWorkspace')?.open`))await ctl('#igClose');};
   const newProject=async()=>{await leave();const warning=await read('ReferenceWorkspace.context().dirty');await ctl('#fileMenuBtn');
     await expectNativeDialog(()=>ctl('#btnNewProject'),{message:'建立一份空白新專案，切換為新的專案識別及「未命名專案」。'+(warning?'目前尚未保存的變更不會自動寫入檔案。':'')+'本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？',accept:true});await settled();};
-  const open=async(id,enabled=true)=>{await leave();await ctl(`.ocard[data-kind="grid-system"][data-id="${id}"]`);await wait(`!!$('gridObjectOpen')`);await ctl('#gridObjectOpen');await wait(`!!$('infiniteGridWorkspace')?.open&&!!$('igRuleAdd')${enabled?"&&!$('igRuleAdd').disabled":''}`);};
+  const open=async(id,enabled=true)=>{await leave();
+    // SVG cards do not scroll into view. Use the existing real F shortcut once
+    // before the unchanged hit test, so camera inherited from 390px can show all cards.
+    await key('f','KeyF',70);
+    await ctl(`.ocard[data-kind="grid-system"][data-id="${id}"]`);await wait(`!!$('gridObjectOpen')`);await ctl('#gridObjectOpen');await wait(`!!$('infiniteGridWorkspace')?.open&&!!$('igRuleAdd')${enabled?"&&!$('igRuleAdd').disabled":''}`);};
   const choose=async(selector,value)=>{const index=await read(`(()=>{const n=document.querySelector(${JSON.stringify(selector)});return [...n.options].findIndex(o=>o.value===${JSON.stringify(value)});})()`);if(index<0)throw Error('Missing rule option');await ctl(selector);await key('Home','Home',36);for(let i=0;i<index;i++)await key('ArrowDown','ArrowDown',40);await key('Enter','Enter',13);await wait(`document.querySelector(${JSON.stringify(selector)}).value===${JSON.stringify(value)}`);};
   const fixture=async line=>read(`(async()=>{let r=await apiRequest('line '+${JSON.stringify(line)});if(r.preview){if(!r.preview.valid)throw Error(JSON.stringify(r));r=await apiRequest('line confirm '+r.preview.token);}if(!r.ok)throw Error(JSON.stringify(r));await renderObjects();return true;})()`);
   const shot=cdp.makeShot(send,['GEOMETRY_GRID_RULE_SCREENSHOT_DIR']);
@@ -35,16 +50,16 @@ module.exports=async function ruleEditorTests({send,eval_,sleep,click,waitForUI,
   let source=(await objects()).gridSystems[0],sid=source.id;
   check('原有 2a 真 UI 建立雙 REPEAT 獨立來源',source.uDefinition.step===600&&source.vDefinition.step===400&&source.rules.length===0&&source.nextRuleKey===1);
   await ctl('#igRuleAdd');await fill('#igRuleName','All cells <authored>');
-  const before=await dump(),draft=await raw(),count=await history();await ctl('#igRulePreview');await impact();
+  const before=await dump(),draft=await raw(),count=await history(),historyPin=await historyOracle.capture();await ctl('#igRulePreview');await impact();
   check('建立草稿沒有保留正式 key/token，唯一主動作沿用固定頁尾',draft.schema===P.Features.GRID_RULE_SCHEMA&&draft.ruleDraft.ruleKey===null&&!Object.hasOwn(draft.ruleDraft,'token')&&await read(`$('igSaveSource').hidden&&$('igRulePreview').closest('.ig-footer')!==null`));
   const text=await read(`document.querySelector('.reference-impact').textContent`);
   check('native 候選原/新摘要含 source、rule、nextKey 與 200×200／6 小格',text.includes('下一 ruleKey 1')&&text.includes('下一 ruleKey 2')&&text.includes('rule 1')&&text.includes('200×200')&&text.includes('6 個'));
-  check('預覽沒有提前改 World 或歷史',(await dump())===before&&await history()===count);
+  check('預覽沒有提前改 World 或歷史',(await dump())===before&&await historyOracle.unchanged(historyPin));
   await shot('rule-editor-desktop-preview');await cancel();
-  check('取消保留逐字 World、raw 與歷史且不耗 ruleKey',(await dump())===before&&JSON.stringify(await raw())===JSON.stringify(draft)&&await history()===count&&(await objects()).gridSystems[0].nextRuleKey===1);
+  check('取消保留逐字 World、raw 與歷史且不耗 ruleKey',(await dump())===before&&JSON.stringify(await raw())===JSON.stringify(draft)&&await historyOracle.unchanged(historyPin)&&(await objects()).gridSystems[0].nextRuleKey===1);
   await ctl('#igRulePreview');await impact();await confirm();source=(await objects()).gridSystems[0];
   check('native 確認唯一新增 key1 並保留 all-cells 定義',source.rules.length===1&&source.rules[0].ruleKey===1&&source.rules[0].selector.kind==='all-cells'&&source.rules[0].divisions.join('/')==='3/2'&&source.nextRuleKey===2);
-  check('確認及清除對應 raw 同一 ContextHistory step',await history()===count+1&&await raw()===null);
+  check('確認及清除對應 raw 同一 ContextHistory step',await historyOracle.single(historyPin)&&await raw()===null,{beforeCount:count,limit:historyPin.limit});await historyOracle.release(historyPin);
   await leave();await ctl('#btnUndo');await settled();source=(await objects()).gridSystems[0];
   check('真復原同時恢復無規則 native 與確認前 raw',source.rules.length===0&&source.nextRuleKey===1&&JSON.stringify(await raw())===JSON.stringify(draft));
   await ctl('#btnRedo');await settled();check('真重做同時恢復規則及移除 raw',(await objects()).gridSystems[0].rules.length===1&&await raw()===null);
@@ -68,8 +83,12 @@ module.exports=async function ruleEditorTests({send,eval_,sleep,click,waitForUI,
   check('真點主格後明選使用目前主格，以 signed 原字串填規則欄位',await read(`$('igRuleCellI').value==='-2'&&$('igRuleCellJ').value==='1'&&ReferenceWorkspace.readFeatureAttachment('grid-draft').ruleDraft.rawForm.cellI==='-2'`));const conflict=await dump(),conflictCount=await history();await ctl('#igRulePreview');await impact();
   check('同來源重疊 cell 真 native 拒絕並停用確認',await read(`$('impact-confirm').disabled&&document.querySelector('.impact-violation')!==null`)&&(await dump())===conflict&&await history()===conflictCount);await cancel();await ctl('#igRuleCancel');
   for(const [u,v] of [['0','2'],['66','2'],['1','1'],['7','2']]){
-    await ctl('#igRuleAdd');await fill('#igRuleU',u);await fill('#igRuleV',v);const world=await dump(),n=await history();await ctl('#igRulePreview');await impact();
-    check(`native 拒絕 U${u}/V${v}，沒有部分寫入或歷史`,await read(`$('impact-confirm').disabled&&!!document.querySelector('.impact-violation')`)&&(await dump())===world&&await history()===n);await cancel();await ctl('#igRuleCancel');
+    await ctl('#igRuleAdd');await fill('#igRuleU',u);await fill('#igRuleV',v);const world=await dump(),n=await history(),draft=await raw();
+    await read(`window.__ruleRangeApi=apiRequest;window.__ruleRangeWrites=[];apiRequest=async function(cmd,...rest){if(cmd.startsWith('line '))__ruleRangeWrites.push(cmd);return __ruleRangeApi(cmd,...rest);};void 0`);
+    try{await ctl('#igRulePreview');if(u==='0'||u==='66'){
+      await settled();check(`inline 1–65 拒絕 U${u}/V${v}，焦點/raw/World/history 保留且零 native mutation`,await read(`!document.querySelector('.reference-impact[open]')&&$('igDraftNote').textContent.includes('1 至 65')&&document.activeElement.id==='igRuleU'&&__ruleRangeWrites.length===0`)&&(await dump())===world&&await history()===n&&JSON.stringify(await raw())===JSON.stringify(draft));
+    }else{await impact();check(`native 拒絕 U${u}/V${v}，raw/World/history 保留`,await read(`$('impact-confirm').disabled&&!!document.querySelector('.impact-violation')&&__ruleRangeWrites.some(cmd=>cmd.startsWith('line preview grid-source-rule '))`)&&(await dump())===world&&await history()===n&&JSON.stringify(await raw())===JSON.stringify(draft));await cancel();}
+    }finally{await read(`apiRequest=__ruleRangeApi;delete window.__ruleRangeApi;delete window.__ruleRangeWrites;void 0`);}await ctl('#igRuleCancel');
   }
   await ctl('#igRuleAdd');await choose('#igRuleSelector','cell');await fill('#igRuleCellI','9007199254740993');await fill('#igRuleCellJ','-9007199254740995');await ctl('#igRulePreview');await impact();await confirm();source=(await objects()).gridSystems[0];
   check('大於 2^53 的正負索引一路原字串抵達 native',JSON.stringify(source.rules[1].selector.cell)==='["9007199254740993","-9007199254740995"]'&&source.rules[1].ruleKey===3);
@@ -129,7 +148,7 @@ module.exports=async function ruleEditorTests({send,eval_,sleep,click,waitForUI,
     await newProject();await ctl('#emptyNewGridSystem');await wait(`!!$('igName')&&!$('igName').disabled`);await fill('#igName',`Orphan authored ${intent}`);await ctl('#igSaveSource');await impact();await confirm();
     await ctl('#igRuleAdd');await ctl('#igRulePreview');await impact();await confirm();
     await ctl(`[data-ig-rule-key="1"] [data-ig-rule-action="${intent}"]`);if(intent==='edit')await fill('#igRuleName','Pending orphan raw');const ownedRaw=await raw(),ownedId=ownedRaw.baseRef.id;
-    await leave();await ctl(`.ocard[data-kind="grid-system"][data-id="${ownedId}"]`);await ctl('#gridObjectDelete');await settled();
+    await leave();await ctl(`.ocard[data-kind="grid-system"][data-id="${ownedId}"]`);await ctl('.gi-delete-section > summary');await ctl('#gridObjectDelete');await settled();
     if(await read(`!!document.querySelector('.reference-impact[open]')`))await confirm();await wait('oc.gridSystems.length===0');
     const orphanScene=await dump(),orphanCount=await history();
     check(`${intent} 正式卡片刪除來源保留原始 rule 草稿`,JSON.stringify(await raw())===JSON.stringify(ownedRaw));

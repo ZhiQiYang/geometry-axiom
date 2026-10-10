@@ -1,0 +1,18 @@
+--- <workspace-path>
++++ <workspace-path>
+@@ -81,8 +81,13 @@
+       tool:target.dataset.v3Tool || null, trusted:event.isTrusted, before:state()});
+   }, true);
+   document.addEventListener('change', event => {
+-    if (event.target.id === 'workSurf') audit.navigation.push({type:'change', id:'workSurf',
+-      value:event.target.value, trusted:event.isTrusted, before:state()});
++    if (event.target.id === 'workSurf' || event.target.id === 'v3ToolbarSurf') {
++      audit.navigation.push({type:'change', id:event.target.id,
++        value:event.target.value, trusted:event.isTrusted,
++        sequence:audit.navigation.length, observedAt:performance.now(), eventTimeStamp:event.timeStamp,
++        pickerValue:document.querySelector('#v3ToolbarSurf').value,
++        consumerValue:document.querySelector('#workSurf').value, before:state()});
++    }
+   }, true);
+   document.addEventListener('keydown', event => {
+     if (event.key === 'Escape') audit.navigation.push({type:'keydown', key:'Escape',

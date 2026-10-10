@@ -1,6 +1,16 @@
 /* P78: real creator interaction; geometry checked against hand-sized cases. */
 const cdp=require('./cdp_helpers.js');
 module.exports=async function({send,eval_,sleep,click,drag,waitForUI,expectNativeDialog,exceptionCount}) {
+  // S2 keeps the same exact discard question inside the active workspace.
+  const discardDraft=async({message,accept})=>{
+    await ctl('#igDiscardDraft');
+    await waitForUI(`!!$('igDiscardConfirmation')&&$('igDiscardConfirmation').getAttribute('role')==='alertdialog'`,10000);
+    const actual=await eval_(`$('igDiscardQuestion').textContent`);
+    if(actual!==message)throw Error('Discard question changed: '+JSON.stringify({expected:message,actual}));
+    await ctl(accept?'#igDiscardConfirm':'#igDiscardCancel');
+    await waitForUI(`!$('igDiscardConfirmation')`,10000);
+  };
+
   console.log('=== P78. 建立前矩形與角材試擺（不改世界） ===');
   const check=cdp.makeCheck({prefix:'P78 ',throwOnFail:true}),read=cdp.makeRead(eval_),wait=cdp.makeWait(waitForUI,20000),initialExceptions=exceptionCount();
   const baseCtl=cdp.makeCtl({eval_,sleep,click},{scroll:'center',attempts:12,pollMs:80,settleMs:140});
@@ -52,9 +62,9 @@ module.exports=async function({send,eval_,sleep,click,drag,waitForUI,expectNativ
   check('縮放不改試擺尺寸',await read(`$('igTrialWidth').value==='1234' && $('igTrialHeight').value==='567'`));
   check('所有試擺與來源草稿均未寫入 World',(await dump())===before);
   await ctl('#igTrialEnabled');check('隱藏試擺不留角材或矩形',await read(`!document.querySelector('[data-ig-trial-ghost],[data-ig-trial-boundary]')`));
-  await expectNativeDialog(()=>ctl('#igDiscardDraft'),{message:'捨棄這份未發布的原始草稿？已保存到場景的網格保持不變。',accept:false});
+  await discardDraft({message:'捨棄這份未發布的原始草稿？已保存到場景的網格保持不變。',accept:false});
   check('取消明確捨棄仍保留試擺尺寸與原始草稿',await read(`$('infiniteGridWorkspace').open && $('igTrialWidth').value==='1234' && !!ReferenceWorkspace.readFeatureAttachment('grid-draft')`));
-  await expectNativeDialog(()=>ctl('#igDiscardDraft'),{message:'捨棄這份未發布的原始草稿？已保存到場景的網格保持不變。',accept:true});
+  await discardDraft({message:'捨棄這份未發布的原始草稿？已保存到場景的網格保持不變。',accept:true});
   await ctl('#btnNewGridSystem');await wait(`$('infiniteGridWorkspace').open`);
   check('新開建立不復活上次試擺',await read(`!$('igTrialEnabled').checked && $('igTrialWidth').value==='2400' && !document.querySelector('[data-ig-trial-ghost]')`));
   await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});await ctl('#igTrial summary');await ctl('#igTrialEnabled');await ready();await ctl('#igTrialFit');

@@ -1,0 +1,406 @@
+PASS startup: fresh service belongs to isolated worktree
+CLOSEOUT_BROWSER_LAUNCH {"sandbox":true,"args":[]}
+PASS startup: correct URL title and usable nonblank import UI
+PASS desktop-setup: imported authorized synthetic bytes
+PASS desktop-setup: formal calibration is ten mm per source unit
+PASS desktop-setup: UI acquired exact PDF candidate
+PASS desktop-setup: candidate acquisition preserved original
+PASS desktop-valid-click: formal geometry and calibrated source preserved
+PASS desktop-valid-click: click changes nonzero edge exactly
+PASS desktop-valid-click: successful click clears reviewed and disables Confirm
+PASS desktop-valid-click: UI acquired exact PDF candidate
+PASS desktop-valid-click: candidate acquisition preserved original
+PASS desktop-valid-enter-first: formal geometry and calibrated source preserved
+PASS desktop-valid-enter-first: click and Enter start with identical model, edge, value and focus
+PASS desktop-valid-enter-first: real Enter changes nonzero edge exactly
+PASS desktop-valid-enter-first: Enter equals existing click draft result
+PASS desktop-valid-enter-first: successful Enter clears reviewed and disables Confirm
+PASS desktop-valid-enter-first: input focus selected edge and entered value survive refresh
+PASS desktop-valid-enter-first: real Enter consumed before outer shortcut listeners
+PASS desktop-valid-enter-first: one existing apply action per Enter
+PASS desktop-valid-enter-second: formal geometry and calibrated source preserved
+PASS desktop-valid-enter-second: second independent Enter applies absolute size without drift
+PASS desktop-valid-enter-second: second Enter retains field focus and edge
+PASS desktop-valid-enter-second: second Enter invokes existing apply exactly once
+PASS desktop-valid-enter-second: two real Enter keydowns recorded as trusted events
+PASS desktop-same-value-click: formal geometry and calibrated source preserved
+PASS desktop-same-value-click: same-value click preserves coordinates but clears reviewed
+PASS desktop-same-value-enter-third: formal geometry and calibrated source preserved
+PASS desktop-same-value-enter-third: same-value independent Enter has exact coordinates with no drift
+PASS desktop-same-value-enter-third: same-value Enter equals click and deliberately clears reviewed
+PASS desktop-same-value-enter-third: same-value Enter is one apply, not zero or repeated apply
+PASS desktop-same-value-enter-third: UI acquired exact PDF candidate
+PASS desktop-same-value-enter-third: candidate acquisition preserved original
+PASS desktop-modified-Shift-Enter: formal geometry and calibrated source preserved
+PASS desktop-modified-Shift-Enter: does not apply or mutate draft/review/native
+PASS desktop-modified-Shift-Enter: no apply button invocation
+PASS desktop-modified-Shift-Enter: modified Enter was delivered as a trusted event with its modifier
+PASS desktop-modified-Shift-Enter: modified Enter does not reach outer shortcut listeners
+PASS desktop-modified-Shift-Enter: UI acquired exact PDF candidate
+PASS desktop-modified-Shift-Enter: candidate acquisition preserved original
+PASS desktop-modified-Control-Enter: formal geometry and calibrated source preserved
+PASS desktop-modified-Control-Enter: does not apply or mutate draft/review/native
+PASS desktop-modified-Control-Enter: no apply button invocation
+PASS desktop-modified-Control-Enter: modified Enter was delivered as a trusted event with its modifier
+PASS desktop-modified-Control-Enter: modified Enter does not reach outer shortcut listeners
+PASS desktop-modified-Control-Enter: UI acquired exact PDF candidate
+PASS desktop-modified-Control-Enter: candidate acquisition preserved original
+PASS desktop-modified-Alt-Enter: formal geometry and calibrated source preserved
+PASS desktop-modified-Alt-Enter: does not apply or mutate draft/review/native
+PASS desktop-modified-Alt-Enter: no apply button invocation
+PASS desktop-modified-Alt-Enter: modified Enter was delivered as a trusted event with its modifier
+PASS desktop-modified-Alt-Enter: modified Enter does not reach outer shortcut listeners
+PASS desktop-modified-Alt-Enter: UI acquired exact PDF candidate
+PASS desktop-modified-Alt-Enter: candidate acquisition preserved original
+PASS desktop-modified-Meta-Enter: formal geometry and calibrated source preserved
+PASS desktop-modified-Meta-Enter: does not apply or mutate draft/review/native
+PASS desktop-modified-Meta-Enter: no apply button invocation
+PASS desktop-modified-Meta-Enter: modified Enter was delivered as a trusted event with its modifier
+PASS desktop-modified-Meta-Enter: modified Enter does not reach outer shortcut listeners
+PASS desktop-modified-Meta-Enter: UI acquired exact PDF candidate
+PASS desktop-modified-Meta-Enter: candidate acquisition preserved original
+PASS desktop-composing: formal geometry and calibrated source preserved
+PASS desktop-composing: does not apply or mutate draft/review/native
+PASS desktop-composing: no apply button invocation
+PASS desktop-composing: fault injection delivered requested flags
+PASS desktop-composing: guarded Enter does not reach outer shortcut listeners
+PASS desktop-composing: IME event default remains uncancelled
+PASS desktop-composing: UI acquired exact PDF candidate
+PASS desktop-composing: candidate acquisition preserved original
+PASS desktop-ime-229: formal geometry and calibrated source preserved
+PASS desktop-ime-229: does not apply or mutate draft/review/native
+PASS desktop-ime-229: no apply button invocation
+PASS desktop-ime-229: fault injection delivered requested flags
+PASS desktop-ime-229: guarded Enter does not reach outer shortcut listeners
+PASS desktop-ime-229: IME event default remains uncancelled
+PASS desktop-ime-229: UI acquired exact PDF candidate
+PASS desktop-ime-229: candidate acquisition preserved original
+PASS desktop-repeat: formal geometry and calibrated source preserved
+PASS desktop-repeat: does not apply or mutate draft/review/native
+PASS desktop-repeat: no apply button invocation
+PASS desktop-repeat: fault injection delivered requested flags
+PASS desktop-repeat: guarded Enter does not reach outer shortcut listeners
+PASS desktop-repeat: UI acquired exact PDF candidate
+PASS desktop-repeat: candidate acquisition preserved original
+PASS desktop-default-prevented: formal geometry and calibrated source preserved
+PASS desktop-default-prevented: does not apply or mutate draft/review/native
+PASS desktop-default-prevented: no apply button invocation
+PASS desktop-default-prevented: fault injection delivered requested flags
+PASS desktop-default-prevented: guarded Enter does not reach outer shortcut listeners
+PASS desktop-default-prevented: already-prevented event remains prevented
+PASS desktop-default-prevented: UI acquired exact PDF candidate
+PASS desktop-default-prevented: candidate acquisition preserved original
+PASS desktop-trusted-repeat-keydown: formal geometry and calibrated source preserved
+PASS desktop-trusted-repeat-keydown: held Enter repeat does not apply again
+PASS desktop-trusted-repeat-keydown: repeat was an actual trusted repeated keydown
+PASS desktop-trusted-repeat-keydown: UI acquired exact PDF candidate
+PASS desktop-trusted-repeat-keydown: candidate acquisition preserved original
+PASS desktop-invalid-empty-click: formal geometry and calibrated source preserved
+PASS desktop-invalid-empty-click: existing click rejects without changing draft/review
+PASS desktop-invalid-empty-click: existing click reports positive integer rejection
+PASS desktop-invalid-empty-click: UI acquired exact PDF candidate
+PASS desktop-invalid-empty-click: candidate acquisition preserved original
+PASS desktop-invalid-empty-enter: formal geometry and calibrated source preserved
+PASS desktop-invalid-empty-enter: same invalid input and reviewed starting state
+PASS desktop-invalid-empty-enter: invalid Enter equals click rejection and review state
+PASS desktop-invalid-empty-enter: invalid Enter preserves full model
+PASS desktop-invalid-empty-enter: invalid Enter keeps input focus selected edge and actual DOM value
+PASS desktop-invalid-empty-enter: invalid Enter and click produce same post-refresh input validity
+PASS desktop-invalid-empty-enter: UI acquired exact PDF candidate
+PASS desktop-invalid-empty-enter: candidate acquisition preserved original
+PASS desktop-invalid-zero-click: formal geometry and calibrated source preserved
+PASS desktop-invalid-zero-click: existing click rejects without changing draft/review
+PASS desktop-invalid-zero-click: existing click reports positive integer rejection
+PASS desktop-invalid-zero-click: UI acquired exact PDF candidate
+PASS desktop-invalid-zero-click: candidate acquisition preserved original
+PASS desktop-invalid-zero-enter: formal geometry and calibrated source preserved
+PASS desktop-invalid-zero-enter: same invalid input and reviewed starting state
+PASS desktop-invalid-zero-enter: invalid Enter equals click rejection and review state
+PASS desktop-invalid-zero-enter: invalid Enter preserves full model
+PASS desktop-invalid-zero-enter: invalid Enter keeps input focus selected edge and actual DOM value
+PASS desktop-invalid-zero-enter: invalid Enter and click produce same post-refresh input validity
+PASS desktop-invalid-zero-enter: UI acquired exact PDF candidate
+PASS desktop-invalid-zero-enter: candidate acquisition preserved original
+PASS desktop-invalid-negative-click: formal geometry and calibrated source preserved
+PASS desktop-invalid-negative-click: existing click rejects without changing draft/review
+PASS desktop-invalid-negative-click: existing click reports positive integer rejection
+PASS desktop-invalid-negative-click: UI acquired exact PDF candidate
+PASS desktop-invalid-negative-click: candidate acquisition preserved original
+PASS desktop-invalid-negative-enter: formal geometry and calibrated source preserved
+PASS desktop-invalid-negative-enter: same invalid input and reviewed starting state
+PASS desktop-invalid-negative-enter: invalid Enter equals click rejection and review state
+PASS desktop-invalid-negative-enter: invalid Enter preserves full model
+PASS desktop-invalid-negative-enter: invalid Enter keeps input focus selected edge and actual DOM value
+PASS desktop-invalid-negative-enter: invalid Enter and click produce same post-refresh input validity
+PASS desktop-invalid-negative-enter: UI acquired exact PDF candidate
+PASS desktop-invalid-negative-enter: candidate acquisition preserved original
+PASS desktop-invalid-fraction-click: formal geometry and calibrated source preserved
+PASS desktop-invalid-fraction-click: existing click rejects without changing draft/review
+PASS desktop-invalid-fraction-click: existing click reports positive integer rejection
+PASS desktop-invalid-fraction-click: UI acquired exact PDF candidate
+PASS desktop-invalid-fraction-click: candidate acquisition preserved original
+PASS desktop-invalid-fraction-enter: formal geometry and calibrated source preserved
+PASS desktop-invalid-fraction-enter: same invalid input and reviewed starting state
+PASS desktop-invalid-fraction-enter: invalid Enter equals click rejection and review state
+PASS desktop-invalid-fraction-enter: invalid Enter preserves full model
+PASS desktop-invalid-fraction-enter: invalid Enter keeps input focus selected edge and actual DOM value
+PASS desktop-invalid-fraction-enter: invalid Enter and click produce same post-refresh input validity
+PASS desktop-invalid-fraction-enter: UI acquired exact PDF candidate
+PASS desktop-invalid-fraction-enter: candidate acquisition preserved original
+PASS desktop-invalid-nonfinite-overflow-click: formal geometry and calibrated source preserved
+PASS desktop-invalid-nonfinite-overflow-click: existing click rejects without changing draft/review
+PASS desktop-invalid-nonfinite-overflow-click: existing click reports positive integer rejection
+PASS desktop-invalid-nonfinite-overflow-click: UI acquired exact PDF candidate
+PASS desktop-invalid-nonfinite-overflow-click: candidate acquisition preserved original
+PASS desktop-invalid-nonfinite-overflow-enter: formal geometry and calibrated source preserved
+PASS desktop-invalid-nonfinite-overflow-enter: same invalid input and reviewed starting state
+PASS desktop-invalid-nonfinite-overflow-enter: invalid Enter equals click rejection and review state
+PASS desktop-invalid-nonfinite-overflow-enter: invalid Enter preserves full model
+PASS desktop-invalid-nonfinite-overflow-enter: invalid Enter keeps input focus selected edge and actual DOM value
+PASS desktop-invalid-nonfinite-overflow-enter: invalid Enter and click produce same post-refresh input validity
+PASS desktop-invalid-nonfinite-overflow-enter: overflow represented honestly as DOM numeric normalization
+PASS desktop-invalid-nonfinite-overflow-enter: UI acquired exact PDF candidate
+PASS desktop-invalid-nonfinite-overflow-enter: candidate acquisition preserved original
+PASS desktop-textarea-enter: formal geometry and calibrated source preserved
+PASS desktop-textarea-enter: does not apply or mutate draft/review/native
+PASS desktop-textarea-enter: no apply button invocation
+PASS desktop-textarea-enter: textarea retains ordinary input focus
+PASS desktop-other-number-field-enter: formal geometry and calibrated source preserved
+PASS desktop-other-number-field-enter: does not apply or mutate draft/review/native
+PASS desktop-other-number-field-enter: no apply button invocation
+PASS desktop-other-number-field-enter: UI acquired exact PDF candidate
+PASS desktop-other-number-field-enter: candidate acquisition preserved original
+PASS desktop-detached-after-cancel: formal geometry and calibrated source preserved
+PASS desktop-detached-after-cancel: does not apply or mutate draft/review/native
+PASS desktop-detached-after-cancel: no apply button invocation
+PASS desktop-detached-after-cancel: saved input is detached and candidate stays cancelled
+PASS desktop-detached-after-cancel: UI acquired exact PDF candidate
+PASS desktop-detached-after-cancel: candidate acquisition preserved original
+PASS desktop-detached-old-input-new-candidate: formal geometry and calibrated source preserved
+PASS desktop-detached-old-input-new-candidate: does not apply or mutate draft/review/native
+PASS desktop-detached-old-input-new-candidate: no apply button invocation
+PASS desktop-detached-old-input-new-candidate: old input still detached while new candidate exists
+PASS desktop-connected-stale-input-new-candidate: formal geometry and calibrated source preserved
+PASS desktop-connected-stale-input-new-candidate: does not apply or mutate draft/review/native
+PASS desktop-connected-stale-input-new-candidate: no apply button invocation
+PASS desktop-connected-stale-input-new-candidate: stale input is connected but is not current pane input
+PASS desktop-detached-after-successful-refresh: formal geometry and calibrated source preserved
+PASS desktop-detached-after-successful-refresh: does not apply or mutate draft/review/native
+PASS desktop-detached-after-successful-refresh: no apply button invocation
+PASS desktop-detached-after-successful-refresh: successful click replaced old input node
+PASS desktop-detached-after-successful-refresh: UI acquired exact PDF candidate
+PASS desktop-detached-after-successful-refresh: candidate acquisition preserved original
+PASS desktop-escape-from-input: formal geometry and calibrated source preserved
+PASS desktop-escape-from-input: does not apply or mutate draft/review/native
+PASS desktop-escape-from-input: no apply button invocation
+PASS desktop-escape-from-canvas: formal geometry and calibrated source preserved
+PASS desktop-escape-from-canvas: canvas Escape cancels draft without changing native
+PASS narrow-setup: imported authorized synthetic bytes
+PASS narrow-setup: formal calibration is ten mm per source unit
+PASS narrow-setup: UI acquired exact PDF candidate
+PASS narrow-setup: candidate acquisition preserved original
+PASS narrow-valid-click: formal geometry and calibrated source preserved
+PASS narrow-valid-click: click changes nonzero edge exactly
+PASS narrow-valid-click: successful click clears reviewed and disables Confirm
+PASS narrow-valid-click: UI acquired exact PDF candidate
+PASS narrow-valid-click: candidate acquisition preserved original
+PASS narrow-valid-enter-first: formal geometry and calibrated source preserved
+PASS narrow-valid-enter-first: click and Enter start with identical model, edge, value and focus
+PASS narrow-valid-enter-first: real Enter changes nonzero edge exactly
+PASS narrow-valid-enter-first: Enter equals existing click draft result
+PASS narrow-valid-enter-first: successful Enter clears reviewed and disables Confirm
+PASS narrow-valid-enter-first: input focus selected edge and entered value survive refresh
+PASS narrow-valid-enter-first: real Enter consumed before outer shortcut listeners
+PASS narrow-valid-enter-first: one existing apply action per Enter
+PASS narrow-valid-enter-first: narrow document fits viewport
+PASS narrow-valid-enter-second: formal geometry and calibrated source preserved
+PASS narrow-valid-enter-second: second independent Enter applies absolute size without drift
+PASS narrow-valid-enter-second: second Enter retains field focus and edge
+PASS narrow-valid-enter-second: second Enter invokes existing apply exactly once
+PASS narrow-valid-enter-second: two real Enter keydowns recorded as trusted events
+PASS narrow-same-value-click: formal geometry and calibrated source preserved
+PASS narrow-same-value-click: same-value click preserves coordinates but clears reviewed
+PASS narrow-same-value-enter-third: formal geometry and calibrated source preserved
+PASS narrow-same-value-enter-third: same-value independent Enter has exact coordinates with no drift
+PASS narrow-same-value-enter-third: same-value Enter equals click and deliberately clears reviewed
+PASS narrow-same-value-enter-third: same-value Enter is one apply, not zero or repeated apply
+PASS narrow-same-value-enter-third: UI acquired exact PDF candidate
+PASS narrow-same-value-enter-third: candidate acquisition preserved original
+PASS narrow-modified-Shift-Enter: formal geometry and calibrated source preserved
+PASS narrow-modified-Shift-Enter: does not apply or mutate draft/review/native
+PASS narrow-modified-Shift-Enter: no apply button invocation
+PASS narrow-modified-Shift-Enter: modified Enter was delivered as a trusted event with its modifier
+PASS narrow-modified-Shift-Enter: modified Enter does not reach outer shortcut listeners
+PASS narrow-modified-Shift-Enter: UI acquired exact PDF candidate
+PASS narrow-modified-Shift-Enter: candidate acquisition preserved original
+PASS narrow-modified-Control-Enter: formal geometry and calibrated source preserved
+PASS narrow-modified-Control-Enter: does not apply or mutate draft/review/native
+PASS narrow-modified-Control-Enter: no apply button invocation
+PASS narrow-modified-Control-Enter: modified Enter was delivered as a trusted event with its modifier
+PASS narrow-modified-Control-Enter: modified Enter does not reach outer shortcut listeners
+PASS narrow-modified-Control-Enter: UI acquired exact PDF candidate
+PASS narrow-modified-Control-Enter: candidate acquisition preserved original
+PASS narrow-modified-Alt-Enter: formal geometry and calibrated source preserved
+PASS narrow-modified-Alt-Enter: does not apply or mutate draft/review/native
+PASS narrow-modified-Alt-Enter: no apply button invocation
+PASS narrow-modified-Alt-Enter: modified Enter was delivered as a trusted event with its modifier
+PASS narrow-modified-Alt-Enter: modified Enter does not reach outer shortcut listeners
+PASS narrow-modified-Alt-Enter: UI acquired exact PDF candidate
+PASS narrow-modified-Alt-Enter: candidate acquisition preserved original
+PASS narrow-modified-Meta-Enter: formal geometry and calibrated source preserved
+PASS narrow-modified-Meta-Enter: does not apply or mutate draft/review/native
+PASS narrow-modified-Meta-Enter: no apply button invocation
+PASS narrow-modified-Meta-Enter: modified Enter was delivered as a trusted event with its modifier
+PASS narrow-modified-Meta-Enter: modified Enter does not reach outer shortcut listeners
+PASS narrow-modified-Meta-Enter: UI acquired exact PDF candidate
+PASS narrow-modified-Meta-Enter: candidate acquisition preserved original
+PASS narrow-composing: formal geometry and calibrated source preserved
+PASS narrow-composing: does not apply or mutate draft/review/native
+PASS narrow-composing: no apply button invocation
+PASS narrow-composing: fault injection delivered requested flags
+PASS narrow-composing: guarded Enter does not reach outer shortcut listeners
+PASS narrow-composing: IME event default remains uncancelled
+PASS narrow-composing: UI acquired exact PDF candidate
+PASS narrow-composing: candidate acquisition preserved original
+PASS narrow-ime-229: formal geometry and calibrated source preserved
+PASS narrow-ime-229: does not apply or mutate draft/review/native
+PASS narrow-ime-229: no apply button invocation
+PASS narrow-ime-229: fault injection delivered requested flags
+PASS narrow-ime-229: guarded Enter does not reach outer shortcut listeners
+PASS narrow-ime-229: IME event default remains uncancelled
+PASS narrow-ime-229: UI acquired exact PDF candidate
+PASS narrow-ime-229: candidate acquisition preserved original
+PASS narrow-repeat: formal geometry and calibrated source preserved
+PASS narrow-repeat: does not apply or mutate draft/review/native
+PASS narrow-repeat: no apply button invocation
+PASS narrow-repeat: fault injection delivered requested flags
+PASS narrow-repeat: guarded Enter does not reach outer shortcut listeners
+PASS narrow-repeat: UI acquired exact PDF candidate
+PASS narrow-repeat: candidate acquisition preserved original
+PASS narrow-default-prevented: formal geometry and calibrated source preserved
+PASS narrow-default-prevented: does not apply or mutate draft/review/native
+PASS narrow-default-prevented: no apply button invocation
+PASS narrow-default-prevented: fault injection delivered requested flags
+PASS narrow-default-prevented: guarded Enter does not reach outer shortcut listeners
+PASS narrow-default-prevented: already-prevented event remains prevented
+PASS narrow-default-prevented: UI acquired exact PDF candidate
+PASS narrow-default-prevented: candidate acquisition preserved original
+PASS narrow-trusted-repeat-keydown: formal geometry and calibrated source preserved
+PASS narrow-trusted-repeat-keydown: held Enter repeat does not apply again
+PASS narrow-trusted-repeat-keydown: repeat was an actual trusted repeated keydown
+PASS narrow-trusted-repeat-keydown: UI acquired exact PDF candidate
+PASS narrow-trusted-repeat-keydown: candidate acquisition preserved original
+PASS narrow-invalid-empty-click: formal geometry and calibrated source preserved
+PASS narrow-invalid-empty-click: existing click rejects without changing draft/review
+PASS narrow-invalid-empty-click: existing click reports positive integer rejection
+PASS narrow-invalid-empty-click: UI acquired exact PDF candidate
+PASS narrow-invalid-empty-click: candidate acquisition preserved original
+PASS narrow-invalid-empty-enter: formal geometry and calibrated source preserved
+PASS narrow-invalid-empty-enter: same invalid input and reviewed starting state
+PASS narrow-invalid-empty-enter: invalid Enter equals click rejection and review state
+PASS narrow-invalid-empty-enter: invalid Enter preserves full model
+PASS narrow-invalid-empty-enter: invalid Enter keeps input focus selected edge and actual DOM value
+PASS narrow-invalid-empty-enter: invalid Enter and click produce same post-refresh input validity
+PASS narrow-invalid-empty-enter: UI acquired exact PDF candidate
+PASS narrow-invalid-empty-enter: candidate acquisition preserved original
+PASS narrow-invalid-zero-click: formal geometry and calibrated source preserved
+PASS narrow-invalid-zero-click: existing click rejects without changing draft/review
+PASS narrow-invalid-zero-click: existing click reports positive integer rejection
+PASS narrow-invalid-zero-click: UI acquired exact PDF candidate
+PASS narrow-invalid-zero-click: candidate acquisition preserved original
+PASS narrow-invalid-zero-enter: formal geometry and calibrated source preserved
+PASS narrow-invalid-zero-enter: same invalid input and reviewed starting state
+PASS narrow-invalid-zero-enter: invalid Enter equals click rejection and review state
+PASS narrow-invalid-zero-enter: invalid Enter preserves full model
+PASS narrow-invalid-zero-enter: invalid Enter keeps input focus selected edge and actual DOM value
+PASS narrow-invalid-zero-enter: invalid Enter and click produce same post-refresh input validity
+PASS narrow-invalid-zero-enter: UI acquired exact PDF candidate
+PASS narrow-invalid-zero-enter: candidate acquisition preserved original
+PASS narrow-invalid-negative-click: formal geometry and calibrated source preserved
+PASS narrow-invalid-negative-click: existing click rejects without changing draft/review
+PASS narrow-invalid-negative-click: existing click reports positive integer rejection
+PASS narrow-invalid-negative-click: UI acquired exact PDF candidate
+PASS narrow-invalid-negative-click: candidate acquisition preserved original
+PASS narrow-invalid-negative-enter: formal geometry and calibrated source preserved
+PASS narrow-invalid-negative-enter: same invalid input and reviewed starting state
+PASS narrow-invalid-negative-enter: invalid Enter equals click rejection and review state
+PASS narrow-invalid-negative-enter: invalid Enter preserves full model
+PASS narrow-invalid-negative-enter: invalid Enter keeps input focus selected edge and actual DOM value
+PASS narrow-invalid-negative-enter: invalid Enter and click produce same post-refresh input validity
+PASS narrow-invalid-negative-enter: UI acquired exact PDF candidate
+PASS narrow-invalid-negative-enter: candidate acquisition preserved original
+PASS narrow-invalid-fraction-click: formal geometry and calibrated source preserved
+PASS narrow-invalid-fraction-click: existing click rejects without changing draft/review
+PASS narrow-invalid-fraction-click: existing click reports positive integer rejection
+PASS narrow-invalid-fraction-click: UI acquired exact PDF candidate
+PASS narrow-invalid-fraction-click: candidate acquisition preserved original
+PASS narrow-invalid-fraction-enter: formal geometry and calibrated source preserved
+PASS narrow-invalid-fraction-enter: same invalid input and reviewed starting state
+PASS narrow-invalid-fraction-enter: invalid Enter equals click rejection and review state
+PASS narrow-invalid-fraction-enter: invalid Enter preserves full model
+PASS narrow-invalid-fraction-enter: invalid Enter keeps input focus selected edge and actual DOM value
+PASS narrow-invalid-fraction-enter: invalid Enter and click produce same post-refresh input validity
+PASS narrow-invalid-fraction-enter: UI acquired exact PDF candidate
+PASS narrow-invalid-fraction-enter: candidate acquisition preserved original
+PASS narrow-invalid-nonfinite-overflow-click: formal geometry and calibrated source preserved
+PASS narrow-invalid-nonfinite-overflow-click: existing click rejects without changing draft/review
+PASS narrow-invalid-nonfinite-overflow-click: existing click reports positive integer rejection
+PASS narrow-invalid-nonfinite-overflow-click: UI acquired exact PDF candidate
+PASS narrow-invalid-nonfinite-overflow-click: candidate acquisition preserved original
+PASS narrow-invalid-nonfinite-overflow-enter: formal geometry and calibrated source preserved
+PASS narrow-invalid-nonfinite-overflow-enter: same invalid input and reviewed starting state
+PASS narrow-invalid-nonfinite-overflow-enter: invalid Enter equals click rejection and review state
+PASS narrow-invalid-nonfinite-overflow-enter: invalid Enter preserves full model
+PASS narrow-invalid-nonfinite-overflow-enter: invalid Enter keeps input focus selected edge and actual DOM value
+PASS narrow-invalid-nonfinite-overflow-enter: invalid Enter and click produce same post-refresh input validity
+PASS narrow-invalid-nonfinite-overflow-enter: overflow represented honestly as DOM numeric normalization
+PASS narrow-invalid-nonfinite-overflow-enter: UI acquired exact PDF candidate
+PASS narrow-invalid-nonfinite-overflow-enter: candidate acquisition preserved original
+PASS narrow-textarea-enter: formal geometry and calibrated source preserved
+PASS narrow-textarea-enter: does not apply or mutate draft/review/native
+PASS narrow-textarea-enter: no apply button invocation
+PASS narrow-textarea-enter: textarea retains ordinary input focus
+PASS narrow-other-number-field-enter: formal geometry and calibrated source preserved
+PASS narrow-other-number-field-enter: does not apply or mutate draft/review/native
+PASS narrow-other-number-field-enter: no apply button invocation
+PASS narrow-other-number-field-enter: UI acquired exact PDF candidate
+PASS narrow-other-number-field-enter: candidate acquisition preserved original
+PASS narrow-detached-after-cancel: formal geometry and calibrated source preserved
+PASS narrow-detached-after-cancel: does not apply or mutate draft/review/native
+PASS narrow-detached-after-cancel: no apply button invocation
+PASS narrow-detached-after-cancel: saved input is detached and candidate stays cancelled
+PASS narrow-detached-after-cancel: UI acquired exact PDF candidate
+PASS narrow-detached-after-cancel: candidate acquisition preserved original
+HARNESS_ERROR narrow-detached-after-cancel locator.click: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for locator('#refRoomReviewed')[22m
+[2m    - locator resolved to <input type="checkbox" id="refRoomReviewed"/>[22m
+[2m  - attempting click action[22m
+[2m    2 × waiting for element to be visible, enabled and stable[22m
+[2m      - element is visible, enabled and stable[22m
+[2m      - scrolling into view if needed[22m
+[2m      - done scrolling[22m
+[2m      - <body class="drawer-right-open connection-blocked">…</body> intercepts pointer events[22m
+[2m    - retrying click action[22m
+[2m    - waiting 20ms[22m
+[2m    2 × waiting for element to be visible, enabled and stable[22m
+[2m      - element is visible, enabled and stable[22m
+[2m      - scrolling into view if needed[22m
+[2m      - done scrolling[22m
+[2m      - <body class="drawer-right-open connection-blocked">…</body> intercepts pointer events[22m
+[2m    - retrying click action[22m
+[2m      - waiting 100ms[22m
+[2m    58 × waiting for element to be visible, enabled and stable[22m
+[2m       - element is visible, enabled and stable[22m
+[2m       - scrolling into view if needed[22m
+[2m       - done scrolling[22m
+[2m       - <body class="drawer-right-open connection-blocked">…</body> intercepts pointer events[22m
+[2m     - retrying click action[22m
+[2m       - waiting 500ms[22m
+
+    at ctl (/workspace/geometry-axiom/tests/room_outline_keyboard_browser.js:35:84)
+    at async fresh (/workspace/geometry-axiom/tests/room_outline_keyboard_browser.js:49:518)
+    at async staleAndEscape (/workspace/geometry-axiom/tests/room_outline_keyboard_browser.js:107:3)
+    at async main (/workspace/geometry-axiom/tests/room_outline_keyboard_browser.js:125:509)
+    at async /workspace/geometry-axiom/tests/room_outline_keyboard_browser.js:128:26
+KEYBOARD_RESULT {"checks":373,"failures":1,"goalFailures":0,"unexpectedFailures":1,"browserDisconnected":true,"fatal":true}

@@ -4,6 +4,8 @@
 
 本輪只改文件／工單，依現行[公理](../公理層.md)、既有契約與[工作包](CONTINUATION-WORK-PACKAGES-20261003.md)界線。#78–80已由parent品質執行者在9ebf52a真native／Chromium獨立重現；root已分配三位隔離產品owner：assembly-quality、import、navigation，均以draft供root審查，本worker不另派重做或競寫。既有#47雙向料單—模型定位已取消，QR3修復現行live來源locator，兩者範圍分開。PR76已由root合併a274cae，PDFsnap產品不接管。
 
+**2026-10-08 狀態註記**：上述與下方 20:54 的「本輪」是 2026-10-04 歷史，不是今日執行或排程結論。本次僅更新已核對的 QR8／#85；其他舊段落仍綁定各自 head。後續材料牆 #119 已由 [PR124](https://github.com/ZhiQiYang/geometry-axiom/pull/124) 合入 main `4bea91a`，見[修復與原驗收紀錄](../geometry-web/docs/ISSUE119-WALL-REQUEST-CONTRACT-20261004.md)。GitHub issue 編號與 BACKLOG 的 GEO 編號不是同一套編號。
+
 ## 20:54 品質證據更新
 
 已完整讀取品質獨立報告INDEPENDENT-REVIEW-THREE-9ebf52a.md（79行），報告與可重跑公開合成artifact均已留Library供root/修復owner使用。前三項狀態為**reproduced／修復中**，不是待重現，也不是fixed。使用新編bridge、真HTTP/Chrome圖片解碼/正式UI，非原作者VM或舊binary：P1正式預覽漏92、confirm1973→1960及x514→520；P2縮排誤拒、delete後附件接受且下一包sources0；P2來源真定位進10未選7，工程adapter對照進20選7。調查exit0表示成功重現，require-contract gate exit1表示缺陷仍在，不能算修復pass。
@@ -26,7 +28,7 @@
 |[QR5](#qr5)／[#82](https://github.com/ZhiQiYang/geometry-axiom/issues/82)|P3|閱讀器去除重複見證 handler，逐項退出已完成 UI 遷移|完整讀取報告＋工單；產品未改，本worker未獨立重現|
 |[QR6](#qr6)／[#83](https://github.com/ZhiQiYang/geometry-axiom/issues/83)|P3|閱讀器可見條文總數改由 clause-data 派生並納一致性檢查|完整讀取報告＋工單；產品未改，本worker未獨立重現|
 |[QR7](#qr7)／[#84](https://github.com/ZhiQiYang/geometry-axiom/issues/84)|P2|native binary freshness 核對內容雜湊，收斂到既有版本機制|完整讀取報告＋工單；產品未改，本worker未獨立重現|
-|[QR8](#qr8)／[#85](https://github.com/ZhiQiYang/geometry-axiom/issues/85)|P2|恢復現版 mutation inventory 與 freshness，接回既有驗收入口|完整讀取報告＋工單；產品未改，本worker未獨立重現|
+|[QR8](#qr8)／[#85](https://github.com/ZhiQiYang/geometry-axiom/issues/85)|P2|持續由既有 mutation:check 核對收據 freshness；來源改動時重跑受影響變異|PR98 已合 main `1075058`；10/08 唯讀 check 為 48 筆、0 stale／invalid／blocked，詳見下節；不是本輪重跑 48 個變異|
 |[QR9](#qr9)／[#86](https://github.com/ZhiQiYang/geometry-axiom/issues/86)|P3|獨立 space 瀏覽器驗收補逐群組數量基準，避免整段漏跑仍綠|完整讀取報告＋工單；產品未改，本worker未獨立重現|
 
 ## 共通交付契約
@@ -133,7 +135,7 @@
 <a id="qr8"></a>
 ## QR8 — P2 / #85 恢復現版 mutation inventory 與 freshness，接回既有驗收入口
 
-**報告反例**：報告mutate --check48筆：44stale、1invalid(M56 anchor缺)、3retired，有效killed/crashed/equivalent=0；現有正常CI/run_all沒呈現此缺口。
+**歷史報告反例（9ebf52a）**：當時報告 mutate --check 48 筆：44 stale、1 invalid（M56 anchor 缺）、3 retired，有效 killed／crashed／equivalent=0；當時正常 CI／run_all 沒呈現此缺口。此數字不再代表目前 main。
 
 **最小切片／刪除責任**：逐條核對當前公理/故障目的/anchor，明確更新或退役理由，重跑仍有效變異後由既有驗收入口檢查freshness。不能改結果分類湊green、借舊run、新增健康分数；與QR7共用binary identity。
 
@@ -141,7 +143,7 @@
 
 **完成oracle**：每項有現版source/binary/command/exit/oracle；assertion-red與compilefail/timeout/infra分開；invalid/stale不可算killed，無效變異透明退役；check對故意改source/binary/result必拒。
 
-**Readiness／未驗**：可依既有公理準備隔離反例與修復；沒有需要新增幾何公理的已知門檻。原報告結果未由本文件worker重跑，產品未修；詳細位置隨實作head再校正。過去套件pass不代表已涵蓋此反例，也不能反推所有舊結果是假通過。
+**2026-10-08 核對**：[PR98](https://github.com/ZhiQiYang/geometry-axiom/pull/98) 已於 2026-10-04 03:46 UTC 合併，head `847cb74` → main `1075058`；`tests/run_all.py` 已登錄 `mutation:check`。在本文件分支所含 main `5cc1ffa` 來源執行唯讀 `python -B tests/mutate.py --check`，exit 0：48 筆＝40 killed、1 crashed、4 equivalent、3 retired，0 stale／invalid／survived／blocked。這是既有變異收據與來源指紋核對，不是重新編譯或執行 48 個 mutants。#85 仍 open 不能反推修復尚未合併；後續來源或 oracle 變更仍須依 freshness 重驗。
 
 <a id="qr9"></a>
 ## QR9 — P3 / #86 獨立 space 瀏覽器驗收補逐群組數量基準，避免整段漏跑仍綠

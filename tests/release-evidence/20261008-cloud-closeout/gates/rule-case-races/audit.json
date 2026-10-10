@@ -1,0 +1,162 @@
+{
+  "gate": "rule-case-races",
+  "auditedAt": "2026-10-08T18:51:16.977577+00:00",
+  "verdict": "bounded-pass",
+  "counts": {
+    "observed": 30,
+    "passed": 30,
+    "failed": 0,
+    "basis": "individual canonical result records"
+  },
+  "commandExitCode": 0,
+  "gateExitCode": 0,
+  "controllerExitCode": 0,
+  "identityVerifiedByReceipt": true,
+  "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+  "mainAtAudit": "5cc1ffa1ee85120eca14258b86b715151cad274f",
+  "dirtyBefore": "",
+  "dirtyAfter": "",
+  "dirtyDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "runtimeBefore": {
+    "schema": "geometry-runtime/1",
+    "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 196578,
+    "session": "ca31be77efb542b89d45d5a88c3b1b45"
+  },
+  "runtimeAfter": {
+    "schema": "geometry-runtime/1",
+    "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 196578,
+    "session": "ca31be77efb542b89d45d5a88c3b1b45"
+  },
+  "nativeConfiguredFiles": {
+    "bridge": {
+      "name": "bridge",
+      "state": "fresh",
+      "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T15:41:17+00:00）",
+      "path": "/tmp/geometry-tests/bridge",
+      "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+      "sha256": "b76a6da590512722d6eda64cfc946392ccc2636f82ab187ef822c1e1606d68b5",
+      "sidecarSha256": "557a324f01866a47f3123f08511b0bc46941c06c45ac804bc01447a65166eaaf"
+    },
+    "model-base": {
+      "name": "model-base",
+      "state": "fresh",
+      "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T15:41:31+00:00）",
+      "path": "/tmp/geometry-tests/model-base",
+      "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+      "sha256": "1b350a7d54aac1d410e87f2a74010515739f3e2b8fc4b8c5216ff413b153662e",
+      "sidecarSha256": "e5dad713990793ed6c7b096bd4c2c6579ac3fbc527f7b9d545421be6550f6673"
+    }
+  },
+  "command": [
+    "node",
+    "tests/test_rule_case_app_races.js"
+  ],
+  "canonicalSource": "/tmp/geometry-closeout-r2-gates/rule-case-races/results.json",
+  "terminalLogRecord": {
+    "prefix": "",
+    "value": {
+      "passed": 30,
+      "failed": 0,
+      "errors": []
+    }
+  },
+  "limitations": [
+    "Held GET/late allocation/detached retain and retired B safety; no claim of full interrupted Resume.",
+    "Linux Chromium, not physical phone/IME/native OS picker certification.",
+    "The command.log combines child stdout/stderr; separate gate-wrapper stdout/stderr are preserved.",
+    "A native file hash alone is not proof of which live native process was loaded; consult separate live-service binding."
+  ],
+  "canonicalLimitations": null,
+  "rawFiles": [
+    {
+      "source": "/workspace/closure-evidence/gates/rule-case-races/command.log",
+      "public": "rule-case-races/command.log",
+      "bytes": 2269,
+      "sha256": "838904745bf927e9e72b9c6024f18dab86fb416deff2d6d83f187d01fb6ad1f9"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/rule-case-races/receipt.json",
+      "public": "rule-case-races/receipt.json",
+      "bytes": 5206,
+      "sha256": "fddc0c3967598388b70990d77275a159be105fdee224d87bdfbd91a9f1fb8781"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/rule-case-races.command.json",
+      "public": "rule-case-races.command.json",
+      "bytes": 1215,
+      "sha256": "06471a2d7c9ccce81a046424ce5f64602cb25ae68e6ac656336de07d5cfa2336"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/rule-case-races.stdout",
+      "public": "rule-case-races.stdout",
+      "bytes": 179,
+      "sha256": "51daf8f3cca235d23a889e98a3df740836cf7fdca1203b9dfd792307d9bc8c5d"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/rule-case-races.stderr",
+      "public": "rule-case-races.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "artifacts": [
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/rule-case-races/race-1280.png",
+      "relative": "race-1280.png",
+      "bytes": 91875,
+      "sha256": "e5615b8c5852e89efa750bd595f66be354983b03110e121d8d4cc080cafe0600",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/rule-case-races/race-390.png",
+      "relative": "race-390.png",
+      "bytes": 53424,
+      "sha256": "098af47eda345e69de8b46e74a31dbcaddbca5bba5db851d18b81e23e65d5a97",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/rule-case-races/results.json",
+      "relative": "results.json",
+      "bytes": 5212,
+      "sha256": "fe7c6c0c8fd9f645cea41aee7e71b7fa498661cbfc05b2125db1b9b61eb56485",
+      "public": "rule-case-races/artifacts/results.json"
+    }
+  ],
+  "sources": [
+    {
+      "source": "tests/test_rule_case_app_races.js",
+      "sha256": "8454dd1d4a0f51de9a4d131b62eed5e2f9b7e79b4f8ab5244807f006a4bf26e3",
+      "public": "rule-case-races/sources/tests/test_rule_case_app_races.js",
+      "binding": "git object at recorded head, copied after execution; clean before/after receipt binds checkout, cannot exclude transient edits"
+    },
+    {
+      "source": "/workspace/closure-evidence/sandbox-launch.cjs",
+      "public": "rule-case-races/sources/launch-adapters/sandbox-launch.cjs",
+      "bytes": 912,
+      "sha256": "c917611c821f63cea2e5ef3ed1c0ddde128dcf47fde65d1a7ace8ff24fba2b1e",
+      "binding": "post-run adapter copy; launch policy only, no action/oracle changes"
+    },
+    {
+      "source": "/workspace/closure-evidence/python-launch/sitecustomize.py",
+      "public": "rule-case-races/sources/launch-adapters/sitecustomize.py",
+      "bytes": 748,
+      "sha256": "e49545951bb661db0169e3d466c96321ee67c5f8a39fac3f7f0ed6954c22a7be",
+      "binding": "post-run adapter copy; launch policy only, no action/oracle changes"
+    },
+    {
+      "source": "/workspace/geometry-axiom/tests/release_gate.py",
+      "public": "rule-case-races/sources/tests/release_gate.py",
+      "bytes": 17583,
+      "sha256": "ad460ddbdd52c48995188079339bc224e7f39b3d01e3147091a858ba8f541389",
+      "binding": "post-run clean tested-head release identity wrapper"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+diff --git a/workspace/closure-evidence/contracts/remaining-product-scope-20261008/css_c2_c4_before_region_observation.py b/workspace/closure-evidence/contracts/remaining-product-scope-20261008/css_c2_c4_browser_probe.py
+index 3e6a6c3..6841495 100644
+--- a/workspace/closure-evidence/contracts/remaining-product-scope-20261008/css_c2_c4_before_region_observation.py
++++ b/workspace/closure-evidence/contracts/remaining-product-scope-20261008/css_c2_c4_browser_probe.py
+@@ -156,6 +156,7 @@ def main():
+             lesson.first.click()
+         assert page.locator('[data-guidance-dismiss]:visible').count() == 0, 'Unexpected number of tool lessons'
+         page.keyboard.press('f')
++        gesture_start = page.evaluate('window.__cssProbeInputs.length')
+         page.locator('.ocard[data-kind="space"][data-id="1"] .ocard-frame').dblclick(timeout=15000)
+         page.wait_for_function("oc.focus?.t==='space'&&oc.focus.id===1&&!document.querySelector('#spaceWorkspaceLayout').hidden", timeout=30000)
+         ready()
+@@ -163,9 +164,15 @@ def main():
+         # before the browser dispatches its final click/dblclick. Bind the real
+         # locator gesture to both matching trusted downs and the reached space.
+         inputs = page.evaluate('window.__cssProbeInputs')
+-        downs = [e for e in inputs if e['type']=='pointerdown' and e['card']=='space' and e['cardId']=='1']
++        downs = [e for e in inputs[gesture_start:] if e['type']=='pointerdown']
+         assert len(downs)==2 and all(e['trusted'] and e['button']==0 for e in downs), downs
+         first, second = downs
++        assert first['card']=='space' and first['cardId']=='1', first
++        assert second['region'] and second['focus'] is None, second
++        assert second['selection']==[{'kind':'space','id':1}] and second['selected']=={'kind':'space','id':1}, second
++        assert first['context']==second['context'] and first['context'], downs
++        if second['card'] is not None:
++            assert second['card']=='space' and second['cardId']=='1', second
+         assert 0<=second['timeStamp']-first['timeStamp']<=450, downs
+         assert all(abs(second[k]-first[k])<=6 for k in ('x','y')), downs
+         assert first['pointerId']==second['pointerId'] and first['pointerType']==second['pointerType']=='mouse', downs
+@@ -308,7 +315,12 @@ def main():
+                               tag:target.tagName,slot:target.dataset?.slotLabel||null,card:target.dataset?.kind||null,
+                               cardId:target.dataset?.id||null,detail:e.detail,button:e.button,
+                               pointerId:e.pointerId||null,pointerType:e.pointerType||null,
+-                              x:e.clientX,y:e.clientY,timeStamp:e.timeStamp});
++                              x:e.clientX,y:e.clientY,timeStamp:e.timeStamp,
++                              region:!!(e.target.closest?.('#ocv,#app .sidebar-right')||e.target===document.querySelector('#canvasViewport')),
++                              focus:typeof oc==='undefined'?null:oc.focus,
++                              selection:typeof oc==='undefined'?null:structuredClone(oc.selection),
++                              selected:typeof oc==='undefined'?null:structuredClone(oc.sel),
++                              context:typeof ReferenceWorkspace==='undefined'?null:ReferenceWorkspace.context().id});
+                           },true);''')
+                         context.tracing.start(screenshots=True, snapshots=True, sources=True)
+                         page = context.new_page()

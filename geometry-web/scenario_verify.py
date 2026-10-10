@@ -40,14 +40,15 @@ MAX_MODELS = 64
 BRIDGE_TIMEOUT = 20
 MODEL_TIMEOUT = 60
 NATIVE_CAPABILITIES = frozenset(("engineering-spec/1", "parameters/1",
-                               "assembly-rule-authoring/1", "assembly-timber-generation/1"))
-# PR107's current bridge offers this capability even for legacy scenes. Its
-# portable reader/model adapter is pending, so it is not a supported input pin.
+                               "assembly-rule-authoring/1", "assembly-timber-generation/1", "section-profile/1"))
+# Scene capture follows the current portable reader. Model producer input
+# retains its own narrower capability contract below.
 BRIDGE_CAPABILITIES = NATIVE_CAPABILITIES | {"grid-subdivision-rules/1"}
 OBJECT_KINDS = frozenset(("boundary", "placement", "space", "column", "beam", "spec", "parameter",
                           "datum", "guide", "grid-system", "grid-binding", "grid", "material", "method",
-                          "application", "timber", "assembly-rule", "assembly-binding", "assembly-instance"))
-STRING_ID_KINDS = frozenset(("spec", "material", "method", "application", "application-field"))
+                          "application", "timber", "assembly-rule", "assembly-binding", "assembly-instance",
+                          "section-profile", "profile-member", "profile-run", "panel-spec"))
+STRING_ID_KINDS = frozenset(("spec", "material", "method", "application", "application-field", "panel-spec"))
 FIELD_KINDS = frozenset(("parameter-field", "application-field", "assembly-member", "assembly-joint"))
 HASH = re.compile(r"[a-f0-9]{64}\Z")
 IDENTIFIER = re.compile(r"[A-Za-z0-9_-]{1,100}\Z")
@@ -520,9 +521,9 @@ def verify_project(data, *, bridge_executable=None, base_executable=None):
     scene_hash = hashlib.sha256(encoded).hexdigest()
     if "sceneHash" in manifest and manifest["sceneHash"] != scene_hash:
         _fail("SCENARIO_SCENE_HASH", "Manifest scene hash differs from the original scene bytes.")
-    required = _capabilities(manifest.get("requiredCapabilities", []), ("manifest", "requiredCapabilities"))
+    required = _capabilities(manifest.get("requiredCapabilities", []), ("manifest", "requiredCapabilities"), supported=BRIDGE_CAPABILITIES)
     scene_required = scene_required_capabilities(data["scene"])
-    if scene_required - NATIVE_CAPABILITIES or ("requiredCapabilities" in manifest and scene_required - required):
+    if scene_required - BRIDGE_CAPABILITIES or ("requiredCapabilities" in manifest and scene_required - required):
         _fail("SCENARIO_CAPABILITY", "Scene requires an unsupported or omitted native capability.", status="UNSUPPORTED")
     required.update(scene_required)
     records = manifest.get("models", [])
@@ -548,13 +549,16 @@ def verify_project(data, *, bridge_executable=None, base_executable=None):
         if receipt.get("ok") is not True:
             _fail("SCENARIO_SCENE_INVALID", "Native parser rejected the scene.")
         available = _capabilities(receipt.get("capabilities"), ("native", "capabilities"), supported=BRIDGE_CAPABILITIES)
-        native_required = _capabilities(receipt.get("required_capabilities"), ("native", "required_capabilities"))
+        native_required = _capabilities(receipt.get("required_capabilities"), ("native", "required_capabilities"), supported=BRIDGE_CAPABILITIES)
         # Native receipts report capabilities used by actual objects; an empty
         # scene may still explicitly require a supported capability. Preserve
         # that requirement from the original bytes without inventing objects.
         if required - available or native_required - scene_required:
             _fail("SCENARIO_CAPABILITY", "Native receipt does not support the original source requirements.", status="UNSUPPORTED")
         final = _final_objects(receipt.get("final_objects"))
+        final_scene = receipt.get("final_scene")
+        if type(final_scene) is not str or "\0" in final_scene or len(final_scene.encode("utf-8")) > MAX_OUTPUT_BYTES:
+            _fail("SCENARIO_NATIVE_PROTOCOL", "Native final definition receipt is missing or exceeds output capacity.", status="UNSUPPORTED")
         _object_refs(manifest, final)
         objects, inventory = _inventory(graph, final)
         if records:
@@ -577,7 +581,7 @@ def verify_project(data, *, bridge_executable=None, base_executable=None):
             pins != _validator_pins() or source_pins["bridge_source_sha256"] != _source_receipt(bridge) or
             (base and source_pins["base_source_sha256"] != _source_receipt(base, base=True))):
         _fail("SCENARIO_RUNTIME_CHANGED", "Executable, verifier or axiom changed during verification.", status="UNSUPPORTED")
-    return {"ok": True, "final_objects": deepcopy(final), "objects": objects, "inventory": inventory,
+    return {"ok": True, "final_objects": deepcopy(final), "final_scene": final_scene, "objects": objects, "inventory": inventory,
             "capabilities": sorted(available), "requiredCapabilities": sorted(required), "scene_sha256": scene_hash,
             "runtime": {"bridge_sha256": bridge_hash, "base_sha256": base_hash, **source_pins, **pins}}
 

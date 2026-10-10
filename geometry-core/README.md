@@ -87,7 +87,7 @@ bridge 的 `references` 回傳求值後幾何，`preview` 回傳 `timbers` 的 b
 
 ## 驗證方法與範圍
 
-建置與重現命令见 `tests/README.md`、`geometry-web/README.md`。
+建置與重現命令見 `tests/README.md`、`geometry-web/README.md`。
 檢查順序為：條文對照 → 實作／示例修正 → 核心與保存測試 → Chrome 實際操作 → 第二輪回歸。
 第二輪另找到並修正預覽後群組回滾、單擊誤記歷史、矩形承載面角色驗證、畫面扣孔裁切。
 

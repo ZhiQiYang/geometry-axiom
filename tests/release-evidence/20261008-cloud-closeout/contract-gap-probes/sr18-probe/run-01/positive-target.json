@@ -1,0 +1,42 @@
+{
+  "id": 9,
+  "role": "primary",
+  "geometry": {
+    "surface": 1,
+    "centerline": 300,
+    "length": 1560,
+    "u": 310,
+    "v": 220,
+    "dir": "+v",
+    "side": "+n",
+    "A": 20,
+    "B": 20,
+    "origin": [
+      310,
+      220,
+      0
+    ],
+    "axes": [
+      [
+        0,
+        1,
+        0
+      ],
+      [
+        -1,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        1
+      ]
+    ]
+  },
+  "definition": {
+    "anchor": "at-line rule 10 0 1 -2 1 u 0",
+    "selector": "between t81 t82",
+    "priority": 2
+  }
+}

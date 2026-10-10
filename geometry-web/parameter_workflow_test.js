@@ -18,7 +18,14 @@ module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
   console.log('=== P76 畫布參數卡 ===');
   await send('Emulation.setDeviceMetricsOverride',{width:1400,height:1000,deviceScaleFactor:1,mobile:false});
   await read(`(async()=>{ParameterUI.discard();InfiniteGridWorkspace.close(true);resetSceneFocus();await api('reset');await setView3(false);await renderObjects();})()`);
+  // Full-suite users may already have dismissed this lesson before a reload.
+  // Preserve that preference and first-visit auto-open, then use the real Open
+  // button to establish the same visible lesson for the content checks below.
+  const lessonSeen=await read(`(()=>{const token=ParamGridLesson.token();try{return localStorage.getItem(ParamGridLesson.storageKey)===token||(localStorage.getItem('geometry-param-grid-lesson-v1')==='1'&&token==='["param-grid","參數","寬","長","915","1830","1220","引用來源","select","u→","v↓","間距","4/3"]');}catch(_){return false;}})()`);
   await createCard();
+  const lessonEntry=await read(`(()=>{const n=$('paramGridLesson');return {parent:n?.parentElement?.id,open:n?.classList.contains('is-open'),collapsed:n?.classList.contains('is-collapsed'),stageHidden:$('paramGridLessonStage')?.hidden,openHidden:$('paramGridLessonOpen')?.hidden,openDisabled:$('paramGridLessonOpen')?.disabled};})()`);
+  check('首次圖解自動展開，已看過的使用者保持收合',lessonEntry.parent==='canvasViewport'&&lessonEntry.open===!lessonSeen&&lessonEntry.collapsed===lessonSeen&&lessonEntry.stageHidden===lessonSeen&&lessonEntry.openHidden===!lessonSeen&&lessonEntry.openDisabled===false,{seen:lessonSeen,...lessonEntry});
+  if(lessonSeen)await ctl('#paramGridLessonOpen');
   const lessonShown=await read(`(()=>{const n=$('paramGridLesson'),name=$('paramName'),facts=ParamGridLesson.facts(),nr=name.getBoundingClientRect(),hit=document.elementFromPoint(nr.left+nr.width/2,nr.top+nr.height/2);const buttons=[...n.querySelectorAll('button')].filter(b=>!b.hidden&&b.getClientRects().length);const lessons=FeatureLessons.check();return {parent:n?.parentElement?.id||'',open:!!n?.classList.contains('is-open'),canvas:!!n?.classList.contains('is-canvas'),text:n?.textContent||'',width:facts.width,length:facts.length,source:facts.sourceLabel,next:facts.nextWidth,nameHit:hit===name||!!name.contains(hit),small:buttons.filter(b=>b.getBoundingClientRect().height<44).map(b=>b.id),wide:document.documentElement.scrollWidth>innerWidth,lessons};})()`);
   check('第一次建立參數時畫布有圖解，名稱仍點得到',lessonShown.parent==='canvasViewport'&&lessonShown.open&&lessonShown.canvas&&lessonShown.lessons.some(item=>item.id==='param-grid'&&item.ok)&&lessonShown.lessons.every(item=>item.ok)&&lessonShown.text.includes(lessonShown.width)&&lessonShown.text.includes(lessonShown.length)&&lessonShown.text.includes(lessonShown.source)&&lessonShown.nameHit&&lessonShown.small.length===0&&!lessonShown.wide,lessonShown);
   await ctl('#paramGridLessonFrame2');

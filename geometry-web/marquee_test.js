@@ -384,7 +384,7 @@ module.exports = async function marqueeTests({send,eval_,sleep,click,dblclick,dr
   await key('Escape','Escape',27);
   check('S09 P 建立新面及 Esc 返回仍選取該卡',newFace.n===1&&newFace.verts===4&&newFace.tool==='redraw'&&newFace.sel?.kind==='boundary'&&newFace.sel.id===newFace.id&&same(await objectIds(),['boundary:'+newFace.id])&&await eval_(`oc.focus===null`),newFace);
   await reset(['surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000','timber 10 27 33 role boundary','place 10 on 1 at-face e0 +u +n']);
-  await eval_(`enterFocus('face',1)`);await sleep(220);await ctl(timber(10));await ctl('#faceInspectorTabs [data-fi-tab="components"]');
+  await eval_(`enterFocus('face',1)`);await sleep(220);await ctl(timber(10));await ctl('#faceInspectorTabs [data-fi-tab="components"]');await ctl('[data-component-tab="timber"]');
   await fill('#tbEditA',40);await fill('#tbEditB',60);
   await ctl('#tbEditSide');await key('End','End',35);await key('Enter','Enter',13);
   if(await eval_(`$('tbEditSide').value`)!=='-n')throw Error('Timber side keyboard selection did not choose -n.');
@@ -397,7 +397,7 @@ module.exports = async function marqueeTests({send,eval_,sleep,click,dblclick,dr
   await ctl('#impact-confirm');await waitForUI(`!oc.busy&&!document.querySelector('dialog.reference-impact[open]')`,10000);await sleep(300);
   if(!await eval_(`!oc.busy&&!document.querySelector('dialog.reference-impact[open]')`))throw Error('Timber edit did not complete after impact confirmation.');
   const edited=await eval_(`fe.timbers.length===1&&fe.timbers[0].A===40&&fe.timbers[0].B===60&&fe.timbers[0].side==='-n'&&fe.sel?.id===10`);
-  await key('z','KeyZ',90,2);await ctl('#faceInspectorTabs [data-fi-tab="components"]');
+  await key('z','KeyZ',90,2);await ctl('#faceInspectorTabs [data-fi-tab="components"]');await ctl('[data-component-tab="timber"]');
   const undoEditable=await eval_(`fe.timbers.length===1&&fe.timbers[0].A===27&&fe.timbers[0].B===33&&fe.sel?.id===10&&fe.timberSelection.has(10)&&!!$('tbEditA')`);
   const invalidBefore=await snapshot();await fill('#tbEditA',0);await ctl('#tbEditApply');
   const invalid=same(await snapshot(),invalidBefore)&&await eval_(`!document.querySelector('dialog.reference-impact[open]')&&$('tbEditA').classList.contains('invalid')&&/正整數/.test([...document.querySelectorAll('.toast')].map(e=>e.textContent).join(' '))`);

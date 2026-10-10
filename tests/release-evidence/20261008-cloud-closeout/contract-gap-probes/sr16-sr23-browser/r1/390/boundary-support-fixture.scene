@@ -1,0 +1,38 @@
+boundary 1 outline 100,200 2100,200 2100,1800 100,1800
+boundary 2 outline 100,200 2100,200 2100,1800 100,1800
+placement 1 on boundary 1 origin 0 0 0 u +x v +y
+placement 2 on boundary 2 origin 0 0 0 u +x v +y
+spec support_position_1 120
+spec support_position_2 380
+spec support_position_21 120
+spec support_position_22 680
+timber 81 20 20 role boundary
+timber 82 20 20 role boundary
+timber 1 20 20 role primary
+timber 2 20 20 role primary
+timber 101 20 20 role boundary
+timber 102 20 20 role boundary
+timber 21 20 20 role primary
+timber 22 20 20 role primary
+guide 1 1 v spec:support_position_1
+guide 2 1 v spec:support_position_2
+guide 21 2 v spec:support_position_21
+guide 22 2 v spec:support_position_22
+place 81 on 1 at-face e0 +u +n
+# R18 角材 81: onBoundary=true coversEdge=true boundaryEdge=0
+place 82 on 1 at-face e2 +u +n
+# R18 角材 82: onBoundary=true coversEdge=true boundaryEdge=2
+place 1 on 1 at-line guide 1 +v +n
+# R18 角材 1: onBoundary=false coversEdge=false boundaryEdge=-1
+place 2 on 1 at-line guide 2 +v +n
+# R18 角材 2: onBoundary=false coversEdge=false boundaryEdge=-1
+place 101 on 2 at-face e0 +u +n
+# R18 角材 101: onBoundary=true coversEdge=true boundaryEdge=0
+place 102 on 2 at-face e2 +u +n
+# R18 角材 102: onBoundary=true coversEdge=true boundaryEdge=2
+place 21 on 2 at-line guide 21 +v +n
+# R18 角材 21: onBoundary=false coversEdge=false boundaryEdge=-1
+place 22 on 2 at-line guide 22 +v +n
+# R18 角材 22: onBoundary=false coversEdge=false boundaryEdge=-1
+canvas-pos boundary 1 60 60
+canvas-pos boundary 2 60 360

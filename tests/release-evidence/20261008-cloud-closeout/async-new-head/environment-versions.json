@@ -1,0 +1,11 @@
+{
+  "scope": "Post-run read-only environment observation, not a pre-run package lock or original browser response.",
+  "command": ["python", "-c", "import sys,importlib.metadata,json; print(json.dumps({\"python\":sys.version,\"pythonExecutable\":sys.executable,\"playwright\":importlib.metadata.version(\"playwright\")}))"],
+  "exitCode": 0,
+  "stderr": "",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "pythonExecutable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+  "playwright": "1.62.0",
+  "browser": "151.0.7922.173",
+  "browserSource": "Original per-run browser.json files"
+}

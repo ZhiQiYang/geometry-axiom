@@ -1,0 +1,12 @@
+{
+  "id": 1,
+  "beforeDelete": "boundary 1 outline 0,0 4000,0 4000,3000 0,3000\nplacement 1 on boundary 1 origin 0 0 2500 u +x v +y\nspec 主支中線 500\ntimber 1 27 33 role boundary\nguide 1 1 v spec:主支中線\nplace 1 on 1 at-face e0 +u +n\n# R18 角材 1: onBoundary=true coversEdge=true boundaryEdge=0\ncanvas-pos boundary 1 60 60\n",
+  "preview": {
+    "count": 1,
+    "command": "delete timber 1",
+    "title": "確認連動變更",
+    "violations": 0,
+    "confirmEnabled": true,
+    "content": "確認連動變更目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。delete timber 1角材／面中線：原 → 新長度：原 → 新世界位置／方向1／面 113 → 無法推導4000 → 無法推導已刪除或無合法結果取消，保留原狀確認套用"
+  }
+}

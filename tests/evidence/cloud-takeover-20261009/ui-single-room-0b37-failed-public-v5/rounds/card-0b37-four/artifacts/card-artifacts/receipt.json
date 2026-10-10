@@ -1,0 +1,267 @@
+{
+  "schema": "geometry-issue123-c2-c4/1",
+  "started": "2026-10-09T15:32:35.085510+00:00",
+  "argv": [
+    "<python-runtime>/bin/python",
+    "<original-evidence-root>/portable/card390/script.py",
+    "--url",
+    "http://127.0.0.1:19186/",
+    "--out",
+    "<workspace-path>",
+    "--root",
+    "<workspace-path>",
+    "--bridge",
+    "<isolated-test-directory>"
+  ],
+  "script_sha256": "b81a9f25b08c581168e63f5d407a89c3afc386a160cb1dd1384dcd1cb1754a9c",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "playwright": "1.62.0",
+  "sandbox": true,
+  "launch_arguments_requested": [],
+  "cases": [
+    {
+      "case": "beam",
+      "width": 1400,
+      "started": "2026-10-09T15:32:35.494875+00:00",
+      "passed": true,
+      "finished": "2026-10-09T15:32:38.070818+00:00",
+      "page_errors": [],
+      "network_capture_errors": [],
+      "cleanup_errors": []
+    },
+    {
+      "case": "slots",
+      "width": 1400,
+      "started": "2026-10-09T15:32:38.071179+00:00",
+      "passed": true,
+      "finished": "2026-10-09T15:32:41.309802+00:00",
+      "page_errors": [],
+      "network_capture_errors": [],
+      "cleanup_errors": []
+    },
+    {
+      "case": "beam",
+      "width": 390,
+      "started": "2026-10-09T15:32:41.310322+00:00",
+      "passed": true,
+      "finished": "2026-10-09T15:32:43.690702+00:00",
+      "page_errors": [],
+      "network_capture_errors": [],
+      "cleanup_errors": []
+    },
+    {
+      "case": "slots",
+      "width": 390,
+      "started": "2026-10-09T15:32:43.691178+00:00",
+      "passed": true,
+      "finished": "2026-10-09T15:32:45.915015+00:00",
+      "page_errors": [],
+      "network_capture_errors": [],
+      "cleanup_errors": []
+    }
+  ],
+  "exit_code": 0,
+  "scope": [
+    "P12/P19 API fixture setup; no UI authoring claim",
+    "Actual pointer/double-click and Tab/Enter inputs",
+    "Beam token slice only; no column/grid/preview palette claim",
+    "Existing slot action discoverability and existing preset/navigation; no geometry placement submission",
+    "390 viewport, not physical-device or IME; no private ZIP visual comparison"
+  ],
+  "before": {
+    "checked_at": "2026-10-09T15:32:35.142383+00:00",
+    "commands": [
+      {
+        "command": [
+          "pwd"
+        ],
+        "stdout": "<workspace-path>\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "git",
+          "rev-parse",
+          "HEAD"
+        ],
+        "stdout": "0b37d8d8d4ee501fe6208e3e88440b3d078d7c0b\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "git",
+          "rev-parse",
+          "HEAD^{tree}"
+        ],
+        "stdout": "bca483696c4873c248a216a804c46576195eaaa3\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "git",
+          "rev-parse",
+          "origin/main"
+        ],
+        "stdout": "5cc1ffa1ee85120eca14258b86b715151cad274f\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "git",
+          "status",
+          "--short"
+        ],
+        "stdout": "",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "git",
+          "diff",
+          "--binary"
+        ],
+        "stdout": "",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "head": "0b37d8d8d4ee501fe6208e3e88440b3d078d7c0b",
+    "tree": "bca483696c4873c248a216a804c46576195eaaa3",
+    "status": "",
+    "dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "9a699d338e32ef81fd19567f33d8b81cf53613906309f9610f89640b6d394d44",
+      "fresh": true,
+      "root": "<workspace-path>",
+      "pid": 117550,
+      "session": "1d93793867da4b348ffaffed83a2e70d"
+    },
+    "bridge": {
+      "registry": {
+        "name": "bridge",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T15:23:07+00:00）",
+        "path": "<isolated-test-directory>"
+      },
+      "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b",
+      "owned_direct_child": [
+        {
+          "pid": 117852,
+          "live_sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b"
+        }
+      ]
+    },
+    "sources": {
+      "geometry-web/app.css": "36fff1d84396a35d3221aad02c1ba673303e447c01229d9999a0ef1a8be1e355",
+      "geometry-web/app.js": "b70f8e428d49dcc5d7d83821ae32ebab1084251b7881d0f6cd503c4a05e84355",
+      "geometry-web/index.html": "5084ee2b214a1653bcdfd31105bbb05b786f1447d14f9eb177ecb3185d27a9a4",
+      "geometry-web/workspace-shell.js": "780a26eb4e061069f8161bedd44665d2ed4ece9f695cefeffef7a7d855ec3b4c",
+      "geometry-web/serve.py": "bacc291874f7191739236696cf6e1c231daee57008f827d96389a562f5f30fb6"
+    }
+  },
+  "browser_version": "151.0.7922.173",
+  "after": {
+    "checked_at": "2026-10-09T15:32:46.047085+00:00",
+    "commands": [
+      {
+        "command": [
+          "pwd"
+        ],
+        "stdout": "<workspace-path>\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "git",
+          "rev-parse",
+          "HEAD"
+        ],
+        "stdout": "0b37d8d8d4ee501fe6208e3e88440b3d078d7c0b\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "git",
+          "rev-parse",
+          "HEAD^{tree}"
+        ],
+        "stdout": "bca483696c4873c248a216a804c46576195eaaa3\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "git",
+          "rev-parse",
+          "origin/main"
+        ],
+        "stdout": "5cc1ffa1ee85120eca14258b86b715151cad274f\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "git",
+          "status",
+          "--short"
+        ],
+        "stdout": "",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "git",
+          "diff",
+          "--binary"
+        ],
+        "stdout": "",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "head": "0b37d8d8d4ee501fe6208e3e88440b3d078d7c0b",
+    "tree": "bca483696c4873c248a216a804c46576195eaaa3",
+    "status": "",
+    "dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "9a699d338e32ef81fd19567f33d8b81cf53613906309f9610f89640b6d394d44",
+      "fresh": true,
+      "root": "<workspace-path>",
+      "pid": 117550,
+      "session": "1d93793867da4b348ffaffed83a2e70d"
+    },
+    "bridge": {
+      "registry": {
+        "name": "bridge",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T15:23:07+00:00）",
+        "path": "<isolated-test-directory>"
+      },
+      "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b",
+      "owned_direct_child": [
+        {
+          "pid": 117852,
+          "live_sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b"
+        }
+      ]
+    },
+    "sources": {
+      "geometry-web/app.css": "36fff1d84396a35d3221aad02c1ba673303e447c01229d9999a0ef1a8be1e355",
+      "geometry-web/app.js": "b70f8e428d49dcc5d7d83821ae32ebab1084251b7881d0f6cd503c4a05e84355",
+      "geometry-web/index.html": "5084ee2b214a1653bcdfd31105bbb05b786f1447d14f9eb177ecb3185d27a9a4",
+      "geometry-web/workspace-shell.js": "780a26eb4e061069f8161bedd44665d2ed4ece9f695cefeffef7a7d855ec3b4c",
+      "geometry-web/serve.py": "bacc291874f7191739236696cf6e1c231daee57008f827d96389a562f5f30fb6"
+    }
+  },
+  "finished": "2026-10-09T15:32:46.048056+00:00"
+}

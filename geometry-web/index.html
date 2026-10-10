@@ -19,9 +19,12 @@
 <link rel="stylesheet" href="project-ui.css">
 <link rel="stylesheet" href="workspace-shell.css">
 <link rel="stylesheet" href="assembly-workspace.css">
+<link rel="stylesheet" href="section-profile-workspace.css">
+<link rel="stylesheet" href="rule-case-workbench.css">
 <link rel="stylesheet" href="documents.css">
 <link rel="stylesheet" href="document-cases.css">
 <link rel="stylesheet" href="face-context-menu.css">
+<link rel="stylesheet" href="scenario-workspace.css">
 </head>
 <body class="connection-blocked">
 <section id="connectionNotice" class="connection-notice" role="status" aria-live="polite">
@@ -74,7 +77,7 @@
             <h3 class="file-section-label">工程與範例</h3>
             <button id="btnDatums" class="menu-item" type="button">共用基準</button>
             <button id="btnEngineeringSpecs" class="menu-item" type="button" data-engineering-open>工程規格 · 面材與角材</button>
-            <button id="btnModelLibraryMenu" class="menu-item" type="button">空間模型庫</button>
+            <button id="btnModelLibraryMenu" class="menu-item" type="button">3D 模型庫</button>
             <div id="exampleMenu" class="menu menu-nested">
               <button id="exampleMenuBtn" class="menu-item" type="button" aria-haspopup="menu">範例 <span aria-hidden="true">▸</span></button>
               <div id="exampleMenuPop" class="menu-pop" role="menu" hidden>
@@ -100,7 +103,7 @@
           <header><h2 id="projectInfoTitle">目前專案</h2><button type="button" class="text-button" popovertarget="projectInfoPanel" popovertargetaction="hide" aria-label="關閉專案資訊">關閉</button></header>
           <dl id="projectInfoDetails"></dl>
           <button id="projectRecoveryRetry" class="project-recovery-retry" type="button" hidden>重新連接此工作</button>
-          <details class="project-concepts"><summary>專案與場景有何不同？</summary><p><strong>專案 .gcanvas</strong> 包含場景、參考圖、工程草稿及已建立的空間模型。</p><p><strong>場景 .scene</strong> 包含幾何、放置與已發布工程定義。單獨匯出場景不會帶走完整專案。</p><p>本機暫存用於接續工作，不代表已保存到你的專案檔。</p></details>
+          <details class="project-concepts"><summary>完整專案與候選方案</summary><p><strong>專案 .gcanvas</strong> 包含場景、原圖、草稿、模型及完整候選方案；單獨的 .scene 只帶場景。本機暫存不代表已保存檔案。</p><button id="scenarioOpen" type="button" class="btn">保存、試改與比較方案</button></details>
         </section>
         <span class="main-project-status" data-project-status role="status">尚未保存</span>
         <button class="project-save" type="button" data-project-action="save" aria-label="保存專案" title="保存完整專案"><span data-icon="save"></span><span>保存</span></button>
@@ -130,7 +133,7 @@
       </section>
 
       <section class="sidebar-section project-library-entry" aria-label="專案資料庫">
-        <button id="btnSpaceModels" type="button" class="text-button"><span data-icon="space"></span>空間模型 <span id="spaceModelCount">0</span></button>
+        <button id="btnSpaceModels" type="button" class="text-button"><span data-icon="space"></span>3D 模型 <span id="spaceModelCount">0</span></button>
         <span class="space-model-release" hidden>正在確認建模服務版本…</span>
       </section>
 
@@ -237,15 +240,15 @@
 
       <div id="viewToolbar" class="view-toolbar" hidden>
         <div class="v3-seg" role="group" aria-label="三視圖工具">
-          <button type="button" class="v3-seg-btn active" data-v3-tool="view" title="檢視／選取"><span data-icon="pointer"></span>檢視</button>
+          <button type="button" class="v3-seg-btn active" data-v3-tool="view" title="選取／檢視"><span data-icon="pointer"></span>選取</button>
           <button type="button" class="v3-seg-btn" data-v3-tool="rect" title="拉矩形建面"><span data-icon="rectangle"></span>矩形</button>
-          <button type="button" class="v3-seg-btn" data-v3-tool="hole" title="挖矩形孔"><span data-icon="hole"></span>挖孔</button>
+          <button type="button" class="v3-seg-btn" data-v3-tool="hole" title="矩形開口"><span data-icon="hole"></span>開口</button>
           <button type="button" class="v3-seg-btn" data-v3-tool="edit" title="編輯邊界"><span data-icon="edit"></span>編輯</button>
         </div>
         <select id="tool" class="v3-native-select" aria-hidden="true" tabindex="-1">
-          <option value="view">檢視／選取</option>
+          <option value="view">選取／檢視</option>
           <option value="rect">▭ 拉矩形建面</option>
-          <option value="hole">▨ 挖矩形孔</option>
+          <option value="hole">矩形開口</option>
           <option value="edit">✥ 編輯邊界</option>
         </select>
         <label id="v3PlaneControls" class="v3-plane-controls" hidden>工作面
@@ -257,7 +260,7 @@
       <div id="focusBar" class="focus-bar" hidden>
         <button id="btnBack" type="button"><span data-icon="arrowLeft"></span>返回</button>
         <span id="crumb"></span>
-        <button id="btnHole2" type="button"><span data-icon="hole"></span>挖孔</button>
+        <button id="btnHole2" type="button"><span data-icon="hole"></span>開口</button>
       </div>
 
       <div id="emptyState" class="empty-state" hidden>
@@ -321,6 +324,7 @@
     <button id="btnCreatePoly" class="create-menu-entry menu-item" type="button" role="menuitem"><span class="type-icon face"><span data-icon="vertex"></span></span><span><strong>多邊形邊界</strong><small>逐點描繪輪廓</small></span></button>
     <button id="btnNewParameter" class="create-menu-entry menu-item" type="button" role="menuitem"><span class="type-icon">ƒ</span><span><strong>參數</strong><small>建立可重用的尺寸與算式</small></span></button>
     <button id="btnNewAssembly" class="create-menu-entry menu-item" type="button" role="menuitem"><span class="type-icon">⋈</span><span><strong>組構規則</strong><small>定義局部接合與材料配置</small></span></button>
+    <button id="btnNewSectionProfile" class="create-menu-entry menu-item" type="button" role="menuitem"><span class="type-icon">⌞</span><span><strong>斷面與拉伸</strong><small>編輯輪廓與構件，預覽直線拉伸</small></span></button>
           <button id="btnNewSpace" type="button" class="create-menu-entry menu-item" role="menuitem" title="＋空間:空容器">
             <span class="type-icon space"><span data-icon="space"></span></span>
             <span><strong>空間</strong><small>空容器</small></span>
@@ -377,7 +381,7 @@
         <div class="shape-tool-menu">
           <button id="shapeToolButton" type="button" class="workspace-tool" aria-expanded="false" aria-controls="shapeToolPop"><span data-icon="notch"></span><span>形狀 ▾</span></button>
           <div id="shapeToolPop" class="shape-tool-pop" hidden>
-            <button type="button" data-shape-action="notch">凹口</button><button type="button" data-shape-action="extend">外凸</button><button type="button" data-shape-action="push">推拉</button><button type="button" data-shape-action="corner">切角</button><button type="button" data-shape-action="hole">開口</button>
+            <button type="button" data-shape-action="notch">凹口</button><button type="button" data-shape-action="extend">外凸</button><button type="button" data-shape-action="push">推拉</button><button type="button" data-shape-action="corner">切角</button>
           </div>
         </div>
         <button type="button" class="workspace-tool" data-face-tool="guide" title="參考線 (l)"><span data-icon="guide"></span><span>參考線</span><kbd>L</kbd></button>
@@ -391,13 +395,13 @@
         <button id="spacePlaceBeam" class="workspace-tool" type="button" title="拖一段平面圖放樑"><span data-icon="beam"></span><span>拖放樑</span></button>
         <span id="spaceSizeTools" hidden></span>
       </nav>
+      </div>
+      <div class="object-workspace-actions">
       <div class="workspace-history-tools" role="group" aria-label="復原與視角">
         <button type="button" id="faceUndoButton" class="workspace-icon-button" title="復原 (Ctrl+Z)" aria-label="復原"><span data-icon="undo"></span></button>
         <button type="button" id="faceRedoButton" class="workspace-icon-button" title="重做 (Ctrl+Y)" aria-label="重做"><span data-icon="redo"></span></button>
         <button type="button" id="workspaceFitButton" class="workspace-icon-button" title="顯示全部 (f)" aria-label="顯示全部"><span data-icon="fit"></span></button>
       </div>
-      </div>
-      <div class="object-workspace-actions">
         <button id="workspaceToggleLeft" class="workspace-icon-button panel-toggle left-toggle" type="button" title="物件清單" aria-label="物件清單" aria-expanded="false"><span data-icon="layers"></span></button>
         <button id="workspaceToggleRight" class="workspace-icon-button panel-toggle right-toggle" type="button" title="檢查器" aria-label="檢查器" aria-expanded="false"><span data-icon="inspect"></span></button>
         <span id="workspaceProjectActions"></span>
@@ -647,18 +651,39 @@
   <nav id="refThumbnails" aria-label="附近圖頁"></nav>
   <footer><label>加入位置<select id="refTarget"></select></label><button id="refApply" type="button" class="primary-button" disabled>加入參考頁</button></footer>
 </dialog>
+<dialog id="scenarioDialog" class="scenario-dialog" aria-labelledby="scenarioTitle">
+  <header><h2 id="scenarioTitle">完整候選方案</h2><button type="button" class="btn" data-scenario-close>關閉</button></header>
+  <p>保存目前專案為基準，建立副本再隔離試改。每份方案的對位、草稿與模型各自保留。</p><p id="scenarioCount"></p>
+  <label>方案名稱 <input id="scenarioName" maxlength="200" value="方案 A"></label><button id="scenarioCapture" class="primary-button" type="button">保存目前為方案</button>
+  <label>複製基準 <select id="scenarioBase"></select></label><button id="scenarioFork" class="btn" type="button">建立獨立副本</button>
+  <div class="scenario-selectors"><label>左側方案 <select id="scenarioBefore"></select></label><label>右側方案 <select id="scenarioAfter"></select></label></div>
+  <div class="scenario-actions"><button id="scenarioEdit" class="btn" type="button">隔離試改右側方案</button><button id="scenarioCompare" class="btn" type="button">比較完整定義</button><button id="scenarioAdopt" class="primary-button" type="button" disabled>整體採用右側方案</button></div>
+  <p id="scenarioStatus" role="status"></p><div id="scenarioDifference"></div>
+</dialog>
+<dialog id="scenarioEditorDialog" class="scenario-editor-dialog" aria-labelledby="scenarioEditorTitle">
+  <header><h2 id="scenarioEditorTitle">隔離試改</h2><button id="scenarioPauseEdit" class="btn" type="button" disabled>暫存並離開</button><button id="scenarioCancelEdit" class="btn" type="button">取消試改</button><button id="scenarioFinishEdit" class="primary-button" type="button" disabled>保存試改</button></header>
+  <p id="scenarioEditorStatus" role="status"></p><iframe id="scenarioEditorFrame" title="獨立方案編輯畫布"></iframe>
+</dialog>
+<script src="native-transport.js"></script>
 <script src="vendor/fflate/umd/index.js"></script>
+<script src="reference-display.js"></script>
 <script src="source-plane.js"></script>
 <script src="evidence-links.js"></script>
 <script src="evidence-links-ui.js"></script>
+<script src="rule-case-data.js"></script>
 <script src="feature-attachments.js"></script>
+<script src="scenario-catalog.js"></script>
 <script src="project-store.js"></script>
+<script src="scenario-snapshots.js"></script>
+<script src="scenario-diff.js"></script>
+<script src="scenario-integration.js"></script>
 <script src="reference-workspace.js"></script>
 <script src="project-ui.js"></script>
 <script src="workspace-guidance.js"></script>
 <script src="workspace-shell.js"></script>
 <script src="feedback.js"></script>
 <script src="reference-ui.js"></script>
+<script src="grid-rule-lines.js"></script>
 <script src="polydraft.js"></script>
 <script src="timber-schedule.js"></script>
 <script src="timber-supports.js"></script>
@@ -671,6 +696,7 @@
 <script src="face-menu-icons.js"></script>
 <script src="face-context-menu.js"></script>
 <script src="grid-trial.js"></script>
+<script src="grid-anchor-positions.js"></script>
 <script src="grid-system-workspace.js"></script>
 <script src="grid-inspector.js"></script>
 <script src="model-viewer.js"></script>
@@ -679,12 +705,16 @@
 <script src="engineering-adapter.js"></script>
 <script src="parameters.js"></script>
 <script src="context-operations.js"></script>
+<script src="rule-case-workbench.js"></script>
+<script src="rule-case-host.js"></script>
 <script src="assembly-workspace.js"></script>
+<script src="section-profile-workspace.js"></script>
 <script src="source-inspector.js"></script>
 <script src="source-inspector-app.js"></script>
 <script src="evidence-links-app.js"></script>
 <script src="model-update.js"></script>
 <script src="model-update-app.js"></script>
+<script src="scenario-workspace.js"></script>
 <script src="document-format.js"></script>
 <script src="document-cases.js"></script>
 <script src="documents.js"></script>

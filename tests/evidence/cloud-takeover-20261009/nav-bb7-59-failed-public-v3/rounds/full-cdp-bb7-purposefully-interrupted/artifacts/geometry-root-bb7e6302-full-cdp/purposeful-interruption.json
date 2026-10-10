@@ -1,0 +1,30 @@
+{
+  "schema": "geometry-root-purposeful-test-interruption/1",
+  "checkedUtc": "2026-10-09T17:08:29.416036+00:00",
+  "pid": 206414,
+  "actualExecutable": "<python-runtime>/bin/python3.12",
+  "executableSHA256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+  "argv": [
+    "python",
+    "<original-evidence-root>/run_full_cdp_identity.py",
+    "--root",
+    "<workspace-path>",
+    "--url",
+    "http://127.0.0.1:19182/",
+    "--output",
+    "<workspace-path>",
+    "--expected-head",
+    "bb7e6302d4d909766521840ca564fbe1aaf57a27",
+    "--bridge",
+    "<isolated-test-directory>",
+    "--model-base",
+    "<isolated-test-directory>",
+    "--feedback-dir",
+    "<isolated-test-directory>",
+    "--timeout",
+    "2400"
+  ],
+  "signal": "SIGINT",
+  "reason": "Committed caption failed at600px because fixed reveal padding exceeds available nav width; a new product candidate is necessary, so stop this incomplete integration run before repeating it on repaired source.",
+  "productWrites": false
+}

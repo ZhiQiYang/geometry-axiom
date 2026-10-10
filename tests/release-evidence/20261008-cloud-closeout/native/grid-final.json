@@ -1,0 +1,34 @@
+{
+  "started_utc": "2026-10-08T15:56:43.826275+00:00",
+  "cwd": "/workspace/geometry-axiom",
+  "command": [
+    "python3",
+    "tests/integration/grid_rule_reopen_probe.py",
+    "--bridge",
+    "/tmp/geometry-tests/bridge",
+    "--out",
+    "/workspace/closure-evidence/contracts/grid-final"
+  ],
+  "head": {
+    "stdout": "3a48cf5bacb9a295e15046e5ca0cb021e50c54db\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  "status": {
+    "stdout": " M tests/integration/assembly_ownership_probe.py\n M tests/integration/grid_rule_reopen_probe.py\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  "main": {
+    "stdout": "5cc1ffa1ee85120eca14258b86b715151cad274f\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  "dirty_diff_sha256": "bfb7798690dace5871ffbfceb0b9dc72b49cf96220e6d984fa3ef87768962b8b",
+  "input_hashes": {
+    "tests/integration/grid_rule_reopen_probe.py": "f9065a83ee9371336c93fe73419f33e6895bf645cd507fcdb3bd41448f6c2e6d",
+    "/tmp/geometry-tests/bridge": "b76a6da590512722d6eda64cfc946392ccc2636f82ab187ef822c1e1606d68b5"
+  },
+  "exit_code": 0,
+  "finished_utc": "2026-10-08T15:56:44.229230+00:00"
+}

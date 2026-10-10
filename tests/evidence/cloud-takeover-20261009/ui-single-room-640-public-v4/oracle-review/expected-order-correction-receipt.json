@@ -1,0 +1,29 @@
+{
+  "actor": "/root/race_review",
+  "at": "2026-10-09T15:02:35.166791+00:00",
+  "authorization": "Root reviewed historical f980/c0 actual normal control and single-line fixed expected ordered-loop patch; approved separate corrected10 version, original untouched. Execution must wait for independent child proof acceptance.",
+  "originalExecutor": {
+    "path": "<workspace-path>",
+    "sha256": "8cf091d5e05c63e6e5695ea1a34d5a27fe02898a37672ccc5079ee646c1e8b63"
+  },
+  "newExecutor": {
+    "path": "<workspace-path>",
+    "sha256": "9594ab91fbddabc71ad43970d6dbe771ba5e450531c692e1918e573548ec937d"
+  },
+  "exactExpectedOnlyPatch": {
+    "path": "<workspace-path>",
+    "sha256": "2e04d7aff94cfb44ee5ab446fef5ae37befc098680ceb33319b84165eeb44f9b"
+  },
+  "historicalControlProof": {
+    "path": "<workspace-path>",
+    "sha256": "6ac28348629fe725ddb37828a796c2a45031606d89ad1dc7e35d2270e9dd4dee"
+  },
+  "assertionStatementsByteIdentical": true,
+  "instrumentationByteIdentical": true,
+  "fixtureByteIdentical": true,
+  "oldResultsPreserved": {
+    "originalBaseline": "3/7 completed true f980; same-owner separate 0/2",
+    "originalAfter": "8/2 completed true c0; same-owner separate 2/0; Resume separate4/0"
+  },
+  "scope": "new exact ten-case ordered completion oracle version, same native geometry, fixture, pointer inputs, full World string assertions and counts. No rotation tolerance."
+}

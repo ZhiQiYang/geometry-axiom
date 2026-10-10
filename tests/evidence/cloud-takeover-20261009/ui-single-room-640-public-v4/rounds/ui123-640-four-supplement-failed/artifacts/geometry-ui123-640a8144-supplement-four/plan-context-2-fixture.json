@@ -1,0 +1,98 @@
+[
+  {
+    "line": "boundary 1 outline 0,0 4000,0 4000,3000 0,3000",
+    "response": {
+      "ok": true
+    }
+  },
+  {
+    "line": "placement 1 on boundary 1 origin 0 0 2500 u +x v +y",
+    "response": {
+      "ok": true
+    }
+  },
+  {
+    "line": "boundary 2 outline 0,0 3000,0 3000,4000 0,4000",
+    "response": {
+      "ok": true
+    }
+  },
+  {
+    "line": "placement 2 on boundary 2 origin 0 0 0 u +y v +x",
+    "response": {
+      "ok": true
+    }
+  },
+  {
+    "line": "boundary 3 outline 0,0 4000,0 4000,2500 0,2500",
+    "response": {
+      "ok": true
+    }
+  },
+  {
+    "line": "placement 3 on boundary 3 origin 0 0 0 u +x v +z",
+    "response": {
+      "ok": true
+    }
+  },
+  {
+    "line": "boundary 4 outline 0,0 2500,0 2500,4000 0,4000",
+    "response": {
+      "ok": true
+    }
+  },
+  {
+    "line": "placement 4 on boundary 4 origin 0 3000 0 u +z v +x",
+    "response": {
+      "ok": true
+    }
+  },
+  {
+    "line": "boundary 5 outline 0,0 2500,0 2500,3000 0,3000",
+    "response": {
+      "ok": true
+    }
+  },
+  {
+    "line": "placement 5 on boundary 5 origin 0 0 0 u +z v +y",
+    "response": {
+      "ok": true
+    }
+  },
+  {
+    "line": "boundary 6 outline 0,0 3000,0 3000,2500 0,2500",
+    "response": {
+      "ok": true
+    }
+  },
+  {
+    "line": "placement 6 on boundary 6 origin 4000 0 0 u +y v +z",
+    "response": {
+      "ok": true
+    }
+  },
+  {
+    "line": "space 1 boundary 1 2 3 4 5 6",
+    "response": {
+      "ok": true
+    }
+  },
+  {
+    "line": "column 1 in 1 at 1000 1000 size 400 400",
+    "response": {
+      "ok": true
+    }
+  },
+  {
+    "line": "beam 1 in 1 along y from 0 to 3000 at 2000 width 300 depth 500",
+    "response": {
+      "ok": true
+    }
+  },
+  {
+    "line": "canvas-pos space 1 280 100",
+    "response": {
+      "ok": true
+    }
+  }
+]

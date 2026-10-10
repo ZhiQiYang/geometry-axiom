@@ -682,8 +682,16 @@ window.EngineeringWorkspace = (() => {
     const rows=[];
     for(const collection of ['materials','methods','applications','sources','bindings','grids','guides','timbers']){
       if(before?.[collection]==null&&after?.[collection]==null)continue;
+      const previousRecords=list(before?.[collection]),nextRecords=list(after?.[collection]);
+      // Failed native trials can retain an unresolved geometry slot as null.
+      // Keep that incomplete collection visible without inventing a deletion
+      // or treating an unresolved slot as an identified object.
+      if([...previousRecords,...nextRecords].some(record=>record==null)){
+        rows.push({label:`${uiLabels[collection]} · 候選資料尚未完整求值`,before:{[collection]:previousRecords},after:{[collection]:nextRecords},unresolved:true});
+        continue;
+      }
       const key=r=>r.target?JSON.stringify(r.target):JSON.stringify([r.id,r.version??null]);
-      const previous=new Map(list(before?.[collection]).map(r=>[key(r),r])),next=new Map(list(after?.[collection]).map(r=>[key(r),r]));
+      const previous=new Map(previousRecords.map(r=>[key(r),r])),next=new Map(nextRecords.map(r=>[key(r),r]));
       for(const identity of new Set([...previous.keys(),...next.keys()])){
         const old=previous.get(identity)??null,value=next.get(identity)??null;if(JSON.stringify(old)===JSON.stringify(value))continue;
         const record=value||old;
@@ -711,6 +719,7 @@ window.EngineeringWorkspace = (() => {
       if(result.ok===false)throw new Error(result.error||'核心未接受此預覽，工程保持不變。');
       const normalized=result.preview?{...result.preview,diagnostics:result.preview.violations??result.diagnostics}:result;
       if(!normalized.rows && (normalized.before||normalized.after))normalized.rows=diffSnapshots(normalized.before,normalized.after);
+      if(normalized.valid&&normalized.rows?.some(row=>row.unresolved))throw new Error('核心候選資料尚未完整求值，不能確認套用。');
       const selected=intent.action==='grid'?[intent.draft.placementId]:intent.action==='apply'?Object.values(intent.draft.targets).map(t=>t.placement_id):intent.action==='sources'?[intent.draft.placement_id]:null;
       if(selected)normalized.outsideScope=(normalized.rows||[]).filter(row=>row.placement_id!=null&&!selected.includes(row.placement_id)).map(row=>({name:row.label,placement_id:row.placement_id}));
       if(normalized.before&&normalized.after){
@@ -731,6 +740,7 @@ window.EngineeringWorkspace = (() => {
     const timbers=new Set(rows.flatMap(row=>row.collection==='timbers'?[row.after?.id??row.before?.id]:(row.after?.target??row.before?.target)?.kind==='timber'?[(row.after?.target??row.before?.target).id]:[]));
     $('ewReview').hidden=false;
     $('ewReview').innerHTML=`<h2>${result.valid?'核對這次變更':'無法套用'}</h2><div class="ew-review-scroll">${(result.diagnostics||[]).map(d=>`<p class="ew-diagnostic">${esc(typeof d==='string'?d:d.message||d.code)}${d.object?` <button type="button" data-ew-locate="${esc(JSON.stringify(d.object))}">定位問題物件</button>`:''}</p>`).join('')}${(result.rows||[]).map((row,i)=>`<article class="ew-diff"><h3>${esc(row.label||row.name||`變更 ${i+1}`)}</h3>${renderDiff(row)}${row.segments&&row.placement_id!=null?renderGeometry(list(state.snapshot.placements).find(p=>p.id===row.placement_id),row.segments):''}</article>`).join('')||'<p>核心未回傳變更列，請核對操作摘要。</p>'}${result.preservedOverrides?.length?`<details><summary>保留的覆寫 · ${result.preservedOverrides.length}</summary>${renderData(result.preservedOverrides)}</details>`:''}${result.outsideScope?.length?`<details open><summary>選取面以外的連帶影響 · ${result.outsideScope.length}</summary>${renderData(result.outsideScope)}</details>`:''}</div>${result.valid?'<label class="ew-checkbox ew-review-check"><input id="ewReviewed" type="checkbox">我已核對版本、目標、覆寫及連帶影響</label>':''}`;
+    appendSectionProfileImpact($('ewReview').querySelector('.ew-review-scroll'), result);
     $('ewReview').scrollIntoView({block:'nearest'});updateActions();
     $('ewReview').querySelector('h2').insertAdjacentHTML('afterend',`<p class="ew-impact-summary">${faces.size||grids.size||timbers.size?`核對 ${faces.size} 個面 · ${grids.size} 個網格 · ${timbers.size} 支角材`:`核對 ${rows.length} 項版本或定義變更`}。目前工程尚未改動。</p>`);
     const targetIds=state.intent?.action==='grid'?[state.intent.draft.placementId]:state.intent?.action==='apply'?Object.values(state.intent.draft.targets).map(target=>target.placement_id):state.intent?.action==='sources'?[state.intent.draft.placement_id]:[];

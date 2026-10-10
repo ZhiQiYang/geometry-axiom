@@ -71,16 +71,18 @@ jobs:
         run: |
           ulimit -s 16384
           test -x "$GEOMETRY_CHROME"
-          export GEOMETRY_BRIDGE="$PWD/.build/web_bridge"
-          export GEOMETRY_MODEL_BASE="$PWD/.build/model_base"
-          python3 -u geometry-web/serve.py 18839 > /tmp/geometry-integration-server.log 2>&1 &
+          python3 -u geometry-web/start_local.py --port 18839 > /tmp/geometry-integration-server.log 2>&1 &
           server=$!
           trap 'kill "$server" 2>/dev/null || true' EXIT
           for attempt in $(seq 1 30); do
-            if curl --fail --silent "$GEOMETRY_TEST_URL" > /dev/null; then break; fi
+            if ! kill -0 "$server" 2>/dev/null; then
+              cat /tmp/geometry-integration-server.log
+              exit 1
+            fi
+            if python3 geometry-web/runtime_version.py --probe 18839 > /dev/null 2>&1; then break; fi
             sleep 1
           done
-          curl --fail --silent "$GEOMETRY_TEST_URL" > /dev/null
+          python3 geometry-web/runtime_version.py --probe 18839
           # Independent matrix jobs expose each result promptly. They use
           # separate runners/servers and do not cancel siblings on failure.
           # The full canvas run retains its strict golden comparison.

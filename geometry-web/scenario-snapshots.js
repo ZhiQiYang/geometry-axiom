@@ -1,12 +1,11 @@
-/* #46 independent complete snapshots. This is a module archive, not a .gcanvas format. */
+/* #46 independent complete snapshots, shared with the formal root catalog. */
 (function (root, factory) {
-  const api = factory(typeof module === 'object' && module.exports ? require('./project-store.js') : root.GeometryProject);
+  const api = factory(typeof module === 'object' && module.exports ? require('./project-store.js') : root.GeometryProject, typeof module === 'object' && module.exports ? require('./scenario-catalog.js') : root.GeometryScenarioCatalog);
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.GeometryScenarioSnapshots = api;
-})(globalThis, function (defaultProject) {
+})(globalThis, function (defaultProject, Catalog) {
   'use strict';
-  // Candidate private module schema; shared owner alone registers product kinds/formats.
-  const SCHEMA = 'geometry-scenario-snapshots/1';
+  const SCHEMA = Catalog.SCHEMA;
   const MB = 1024 * 1024, encoder = new TextEncoder(), decoder = new TextDecoder('utf-8', {fatal:true});
   const LIMITS = Object.freeze({scenarios:8, assets:256, assetBytes:128*MB, manifestBytes:8*MB,
     sceneBytes:16*MB, descriptorBytes:8*MB, expandedBytes:512*MB, archiveBytes:256*MB,
@@ -15,7 +14,8 @@
   const identifier=v=>typeof v==='string'&&ID.test(v);
   const KINDS = new Set(['boundary','placement','space','column','beam','timber','grid','grid-system','grid-binding',
     'parameter','assembly-rule','assembly-binding','material','method','application','datum','model',
-    'engineering-draft','assembly-draft','reference-page','grid-draft','spec','guide','assembly-instance']);
+    'engineering-draft','assembly-draft','reference-page','grid-draft','spec','guide','assembly-instance',
+    'section-profile','profile-member','profile-run','panel-spec']);
   function fail(code, message) { throw Object.assign(new Error(message), {code}); }
   const exact = (v, required, optional=[]) => v && typeof v === 'object' && !Array.isArray(v) &&
     required.every(k => Object.hasOwn(v,k)) && Object.keys(v).every(k => required.includes(k)||optional.includes(k));
@@ -216,7 +216,7 @@
       // Reuse the reader's scene-dependent format selector without repacking:
       // pack() would upgrade the format and silently normalize the original data.
       // P.validate already checks registered formats and manifest-only requirements.
-      const formats=[P.FORMAT,P.MODEL_FORMAT,P.PROJECTION_FORMAT,P.TIMBER_FORMAT,P.ENGINEERING_FORMAT,
+      const formats=P.supportedFormats||[P.FORMAT,P.MODEL_FORMAT,P.PROJECTION_FORMAT,P.TIMBER_FORMAT,P.ENGINEERING_FORMAT,
         P.PARAMETER_FORMAT,P.ASSEMBLY_FORMAT,P.GENERATION_FORMAT,P.OUTLINE_FORMAT,P.FEATURE_FORMAT].filter(v=>v!==undefined);
       const minimum=P.projectFormat({...m,requiredCapabilities:[]},scene),actualRank=formats.indexOf(m.format),minimumRank=formats.indexOf(minimum);
       if(actualRank<0||minimumRank<0)fail('MISSING_CAPABILITY','Reader scene-dependent format ordering is unavailable.');
@@ -285,38 +285,8 @@
       return {...data,objects:[...unique.values()].sort((a,b)=>refKey(a).localeCompare(refKey(b)))};
     }
     function validateRecord(s,table) {
-      if(!exact(s,['scenarioId','label','basis','snapshot','originMapping','objects','requiredCapabilities','closureHash'])||
-        !identifier(s.scenarioId)||typeof s.label!=='string'||!s.label.trim()||s.label.length>200||!HASH.test(s.closureHash)||
-        !exact(s.snapshot,['projectManifest','worldScene','assetHashes'])||
-        !Array.isArray(s.snapshot.assetHashes)||s.snapshot.assetHashes.length>limits.assets||
-        new Set(s.snapshot.assetHashes).size!==s.snapshot.assetHashes.length||!s.snapshot.assetHashes.every(h=>HASH.test(h))||
-        !Array.isArray(s.originMapping)||s.originMapping.length>limits.origins||!Array.isArray(s.objects)||s.objects.length>limits.objects||
-        !s.objects.every(validObject)||new Set(s.objects.map(refKey)).size!==s.objects.length||
-        !Array.isArray(s.requiredCapabilities)||new Set(s.requiredCapabilities).size!==s.requiredCapabilities.length||
-        s.requiredCapabilities.some(c=>typeof c!=='string'||c.length>100))fail('SCENARIO','Invalid complete scenario record.');
       boundedJSON({...s,snapshot:{...s.snapshot,worldScene:''}},limits,limits.manifestBytes);
-      if(canonical(s.snapshot.assetHashes)!==canonical(s.snapshot.projectManifest.sources.map(v=>v.id).sort())||
-        canonical(s.requiredCapabilities)!==canonical([...(s.snapshot.projectManifest.requiredCapabilities||[])].sort()))
-        fail('ASSET_CLOSURE','Scenario assets/capabilities differ from the complete manifest.');
-      if(s.basis!==null&&(!exact(s.basis,['scenarioId','snapshotHash'])||!identifier(s.basis.scenarioId)||s.basis.scenarioId===s.scenarioId||!HASH.test(s.basis.snapshotHash)))
-        fail('ORIGIN','Invalid scenario copy basis.');
-      const from=new Set(),to=new Set(),ownObjects=new Set(s.objects.map(refKey));
-      const base=s.basis===null?null:table.get(s.basis.scenarioId),baseObjects=new Set((base?.objects||[]).map(refKey));
-      if(base&&s.snapshot.projectManifest.projectId!==base.snapshot.projectManifest.projectId)
-        fail('PROJECT_IDENTITY','A copy basis cannot cross project identities.');
-      if(s.originMapping.length&&(!base||canonical(s.snapshot)!==canonical(base.snapshot)))
-        fail('ORIGIN','Copy origins require an exact archived fork; replacement has no proven object continuity.');
-      for(const pair of s.originMapping) {
-        if(!exact(pair,['from','to','snapshotHash'])||!validRef(pair.from)||!validRef(pair.to)||
-          pair.to.scenarioId!==s.scenarioId||pair.from.scenarioId!==s.basis?.scenarioId||pair.snapshotHash!==s.basis?.snapshotHash||
-          pair.from.kind!==pair.to.kind||pair.from.id!==pair.to.id||pair.from.version!==pair.to.version||
-          !ownObjects.has(refKey(pair.to))||from.has(refKey(pair.from))||to.has(refKey(pair.to)))fail('ORIGIN','Invalid typed copy-origin pair.');
-        if(!base||base.closureHash!==pair.snapshotHash||!baseObjects.has(refKey(pair.from)))
-          fail('ORIGIN','Copy-origin basis is absent or changed.');
-        from.add(refKey(pair.from));to.add(refKey(pair.to));
-      }
-      if(s.basis!==null&&(!table.has(s.basis.scenarioId)||table.get(s.basis.scenarioId).closureHash!==s.basis.snapshotHash))
-        fail('ORIGIN','Scenario basis must remain retained at its captured hash.');
+      Catalog.validateRecord(s,table,limits);
     }
     async function seal(data,settings,op) {
       boundedJSON(settings,limits,limits.descriptorBytes);

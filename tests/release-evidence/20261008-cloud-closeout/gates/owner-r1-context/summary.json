@@ -1,0 +1,128 @@
+{
+  "started": "2026-10-08T18:50:21.266558+00:00",
+  "argv": [
+    "/workspace/closure-evidence/run_owner_gates.py",
+    "--run-id",
+    "owner-r1",
+    "--head",
+    "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+    "all"
+  ],
+  "driverSha256": "023d0047483a807f3b1bdde2111c8ffc8273c0b57d3690590573ef768a7decc1",
+  "expectedHead": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+  "selected": [
+    "scenario-grid-owner",
+    "scenario-module-browser",
+    "evidence-component-browser",
+    "rule-case-standalone-controller",
+    "rule-case-standalone-browser",
+    "create-feedback-ui"
+  ],
+  "results": [
+    {
+      "gate": "scenario-grid-owner",
+      "exitCode": 0,
+      "commandRecord": "/workspace/closure-evidence/owner-gates/owner-r1/scenario-grid-owner/command.json"
+    },
+    {
+      "gate": "scenario-module-browser",
+      "exitCode": 0,
+      "commandRecord": "/workspace/closure-evidence/owner-gates/owner-r1/scenario-module-browser/command.json"
+    },
+    {
+      "gate": "evidence-component-browser",
+      "exitCode": 0,
+      "commandRecord": "/workspace/closure-evidence/owner-gates/owner-r1/evidence-component-browser/command.json"
+    },
+    {
+      "gate": "rule-case-standalone-controller",
+      "exitCode": 0,
+      "commandRecord": "/workspace/closure-evidence/owner-gates/owner-r1/rule-case-standalone-controller/command.json"
+    },
+    {
+      "gate": "rule-case-standalone-browser",
+      "exitCode": 0,
+      "commandRecord": "/workspace/closure-evidence/owner-gates/owner-r1/rule-case-standalone-browser/command.json"
+    },
+    {
+      "gate": "create-feedback-ui",
+      "exitCode": 0,
+      "commandRecord": "/workspace/closure-evidence/owner-gates/owner-r1/create-feedback-ui/command.json"
+    }
+  ],
+  "limitations": [
+    "Run only after other browser suites are idle; this lock covers only this driver.",
+    "Formal runtime is an auxiliary source/native identity anchor for standalone/module gates.",
+    "Owner/component results do not imply formal ZIP/save acceptance.",
+    "Process cleanup is limited to the service/test children this driver starts.",
+    "Timed-out/interrupted detached native descendants require separate exact-PID review."
+  ],
+  "source": {
+    "head": {
+      "command": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "rev-parse",
+        "HEAD"
+      ],
+      "stdout": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4\n",
+      "stderr": "",
+      "exitCode": 0
+    },
+    "tree": {
+      "command": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "rev-parse",
+        "HEAD^{tree}"
+      ],
+      "stdout": "1c0fb168f2854f37c10370f1c65d4a155a83620b\n",
+      "stderr": "",
+      "exitCode": 0
+    },
+    "status": {
+      "command": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all"
+      ],
+      "stdout": "",
+      "stderr": "",
+      "exitCode": 0
+    },
+    "dirtyDiff": {
+      "command": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "diff",
+        "--binary",
+        "HEAD"
+      ],
+      "stdout": "",
+      "stderr": "",
+      "exitCode": 0
+    }
+  },
+  "adapterHashes": {
+    "/workspace/closure-evidence/sandbox-launch.cjs": "c917611c821f63cea2e5ef3ed1c0ddde128dcf47fde65d1a7ace8ff24fba2b1e",
+    "/workspace/closure-evidence/python-launch/sitecustomize.py": "e49545951bb661db0169e3d466c96321ee67c5f8a39fac3f7f0ed6954c22a7be"
+  },
+  "stackBytes": {
+    "before": [
+      16777216,
+      16777216
+    ],
+    "effective": [
+      16777216,
+      16777216
+    ]
+  },
+  "finished": "2026-10-08T18:52:10.029799+00:00",
+  "exitCode": 0
+}

@@ -1,0 +1,37 @@
+CLOSEOUT_BROWSER_LAUNCH {"sandbox": true, "args": []}
+PASS MH00 actual preview/confirmation produces a model over a nonempty native fixture
+PASS MH01-1382 fixture pins a distinct real native top history entry
+PASS MH01-1382 server Undo completed but frontend history is still pending
+PASS MH01-1382 Undo/Redo/remove/Save are disabled while native Undo is pending
+PASS MH01-1382 trusted reentry sends exactly one native Undo and creates no download
+PASS MH01-1382 released Undo restores exact World/models and consumes one fixed entry
+PASS MH01-1382 real Redo remains operable and restores exact pre-Undo native World
+PASS MH01-390 fixture pins a distinct real native top history entry
+PASS MH01-390 server Undo completed but frontend history is still pending
+PASS MH01-390 Undo/Redo/remove/Save are disabled while native Undo is pending
+PASS MH01-390 trusted reentry sends exactly one native Undo and creates no download
+PASS MH01-390 released Undo restores exact World/models and consumes one fixed entry
+PASS MH01-390 real Redo remains operable and restores exact pre-Undo native World
+PASS MH02 close/reopen is a new library owner while old delivery is held
+PASS MH02 late reply cannot renew reopened owner or remove saved models
+PASS MH02 an explicit fresh opening after completion restores history availability
+PASS MH03 real project switch is refused during pending Undo with no extra mutation
+PASS MH03-cross-project Undo New inside library restores the pinned nonempty World/models/context in exactly one step
+PASS MH03-cross-project retained library focus permits real Ctrl+Y back to the exact new project
+PASS MH04-context late native completion cannot renew or overwrite a foreign context owner
+PASS MH04-session late native completion cannot renew or overwrite a foreign session owner
+PASS MH04-source trusted source switch survives late native Undo without reviving the previous model view
+PASS MH05-zero-calibration blocked library history preserves raw draft and complete World/models/history
+PASS MH05-face-outline blocked library history preserves raw draft and complete World/models/history
+PASS MH05-parameter actual pending parameter editor retains raw values and unchanged project history
+PASS MH05-room actual pending room picker retains source calibration/raw draft and complete history
+PASS MH06 nested modal keeps native text Undo and leaves project history unchanged
+PASS MH06 Escape closes only the nested modal and preserves the library
+PASS MH07 second real tab has a genuine readonly editor lease under Web Locks contention
+PASS MH07 readonly fixture has meaningful nonempty Undo and Redo stacks
+PASS MH07 real readonly lease disables original Undo/Redo/remove but permits saved 3D entry
+PASS MH07 trusted shortcuts/clicks and direct mutation API all preserve readonly data
+PASS MH07 readonly opens the actual saved 3D mesh without modifying World or metadata
+PASS MH08 no unexpected downloads, console errors or uncaught browser exceptions
+PASS MH09 source, harness and fresh runtime identity are unchanged through the complete run
+MODEL_LIBRARY_HISTORY_RESULT {"schema": "geometry-model-library-history-browser/1", "expectedAssertions": 35, "completed": true, "passed": 35, "failed": 0, "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4", "development": false}

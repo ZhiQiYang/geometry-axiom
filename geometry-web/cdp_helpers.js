@@ -59,6 +59,23 @@ function makeWait(waitForUI, timeout) {
   return expression => waitForUI(expression, timeout);
 }
 
+/* Keep entry identities in the browser: JSON copies and stack lengths cannot
+ * prove one commit when bounded history is full. These pins are test-only. */
+function isSingleHistoryStep(before,after,limit) {
+  const retained=before.slice(Math.max(0,before.length+1-limit));
+  return after.length===Math.min(before.length+1,limit)&&after.length===retained.length+1&&
+    after.slice(0,-1).every((entry,i)=>entry===retained[i])&&!before.includes(after.at(-1));
+}
+function makeHistoryOracle(read,namespace) {
+  let serial=0;
+  return {
+    async capture(){const pin=namespace+':'+(++serial);return read(`(()=>{const h=ReferenceWorkspace.history;(window.__cdpHistoryPins ||= new Map()).set(${JSON.stringify(pin)},{undo:h.undo.slice(),redo:h.redo.slice(),limit:h.limit,frame:h.frame});return {pin:${JSON.stringify(pin)},undo:h.undo.length,redo:h.redo.length,limit:h.limit};})()`);},
+    unchanged:({pin})=>read(`(()=>{const h=ReferenceWorkspace.history,b=window.__cdpHistoryPins.get(${JSON.stringify(pin)}),same=(a,z)=>a.length===z.length&&a.every((entry,i)=>entry===z[i]);return h.limit===b.limit&&h.frame===b.frame&&same(h.undo,b.undo)&&same(h.redo,b.redo);})()`),
+    single:({pin})=>read(`(()=>{const h=ReferenceWorkspace.history,b=window.__cdpHistoryPins.get(${JSON.stringify(pin)});return h.limit===b.limit&&h.group===null&&h.redo.length===0&&(${isSingleHistoryStep.toString()})(b.undo,h.undo,h.limit);})()`),
+    release:({pin})=>read(`window.__cdpHistoryPins.delete(${JSON.stringify(pin)});void 0`),
+  };
+}
+
 /* ---- 輸入 ---------------------------------------------------------------- */
 
 /* 按鍵(keyDown+keyUp)。
@@ -91,7 +108,7 @@ function makeFill({ ctl, key, send, sleep }, { afterMs = 0 } = {}) {
 function openCreateObjectMenu(read, ctl) {
   return async selector => {
     if (await read(`document.querySelector(${JSON.stringify(selector)})?.closest('#createObjectPop')?.hidden===true`)) {
-      await ctl(await read(`innerWidth<=900?'#mobileCreateObject':'#btnCreateObject'`));
+      await ctl(await read(`(()=>{const visible=['mobileCreateObject','btnCreateObject'].filter(id=>{const e=document.getElementById(id),r=e?.getBoundingClientRect();return r&&r.width>0&&r.height>0;});if(visible.length!==1)throw Error('Expected one visible create-object opener: '+visible.join(','));return '#'+visible[0];})()`));
     }
   };
 }
@@ -153,4 +170,67 @@ function makeShot(send, envNames) {
   };
 }
 
-module.exports = { makeCheck, makeRead, makeWait, makeKey, makeFill, openCreateObjectMenu, makeCtl, makeShot };
+/* 卡片 pointerup 會先清掉 oc.card，而且在 await `line canvas-pos` 期間不設 oc.busy。
+ * settled() 因此立刻返回；短 sleep 會在原生座標寫入前讀到舊位置。
+ * 這裡輪詢 objects()，直到該卡片的原生 cx/cy 離開拖曳前的值，且頁面副本與原生一致。
+ * 逾時就帶回最後一次讀數，不另一次點擊、不改寫座標、也不把固定 sleep 加長當成通過。 */
+const CARD_NATIVE_LIST = {
+  'grid-binding': 'gridBindings',
+  'grid-system': 'gridSystems',
+  column: 'columns',
+  beam: 'beams',
+  space: 'spaces',
+  'assembly-rule': 'assemblyRules',
+  'assembly-binding': 'assemblyBindings',
+  parameter: 'parameters',
+};
+function waitCardCanvasPos(eval_, { kind, id, beforeCx, beforeCy, timeoutMs = 4000, pollMs = 50 } = {}) {
+  if (typeof eval_ !== 'function') throw new TypeError('waitCardCanvasPos: eval_ is required');
+  if (typeof kind !== 'string' || !Number.isInteger(id)) throw new TypeError('waitCardCanvasPos: kind and integer id are required');
+  if (![beforeCx, beforeCy].every(Number.isFinite)) throw new TypeError('waitCardCanvasPos: finite prior coordinates are required');
+  if (![timeoutMs, pollMs].every(n => Number.isFinite(n) && n >= 0)) throw new TypeError('waitCardCanvasPos: nonnegative finite timing is required');
+  const list = Object.prototype.hasOwnProperty.call(CARD_NATIVE_LIST, kind) ? CARD_NATIVE_LIST[kind] : null;
+  const expression = `(async()=>{
+    const r = await apiRequest('objects');
+    if (!r || r.ok !== true) return {readOK:false, error:r?.error || 'objects read failed'};
+    const records = ${list ? `r[${JSON.stringify(list)}]` : 'r.faces'};
+    const list = Array.isArray(records) ? records : [];
+    const native = list.find(o => o.id === ${id}${list ? '' : ` && o.kind === ${JSON.stringify(kind)}`}) || null;
+    const local = typeof ocFind === 'function' ? ocFind(${JSON.stringify(kind)}, ${id}) : null;
+    return {readOK:true, nativeExists:!!native, localExists:!!local,
+      nativeCx:native?.cx, nativeCy:native?.cy, hasPos:native?.hasPos === true,
+      localCx:local?.cx, localCy:local?.cy, localHasPos:local?.hasPos === true};
+  })()`;
+  const started = Date.now(), deadline = started + timeoutMs;
+  return (async () => {
+    let last = null;
+    const finish = (ok, reason) => ({...(last || {}), ok, reason, elapsedMs:Date.now()-started, kind, id, beforeCx, beforeCy});
+    for (;;) {
+      const remaining = deadline - Date.now();
+      if (remaining <= 0) return finish(false, 'timeout');
+      let timer, observation;
+      try {
+        // A read may itself hang or finish after the deadline. Never issue a
+        // second read while it is pending or let a late reply turn timeout green.
+        observation = await Promise.race([
+          Promise.resolve().then(() => eval_(expression)).then(value => ({value})),
+          new Promise(resolve => { timer = setTimeout(() => resolve(null), remaining); }),
+        ]);
+      } finally { clearTimeout(timer); }
+      if (observation === null) return finish(false, 'timeout');
+      last = observation.value;
+      if (Date.now() >= deadline) return finish(false, 'timeout');
+      if (!last || last.readOK !== true || last.nativeExists !== true || last.localExists !== true ||
+          ![last.nativeCx, last.nativeCy, last.localCx, last.localCy].every(Number.isFinite))
+        return finish(false, 'invalid-position-record');
+      const changed = last.nativeCx !== beforeCx || last.nativeCy !== beforeCy;
+      const localMatches = last.localCx === last.nativeCx && last.localCy === last.nativeCy;
+      // A first drag may be committing a card rendered without persisted
+      // placement. Existing finite records are pending until both flags settle.
+      if (last.hasPos === true && last.localHasPos === true && changed && localMatches) return finish(true, 'committed');
+      await new Promise(resolve => setTimeout(resolve, Math.min(pollMs, Math.max(0, deadline - Date.now()))));
+    }
+  })();
+}
+
+module.exports = { makeCheck, makeRead, makeWait, makeKey, makeFill, openCreateObjectMenu, makeCtl, makeShot, isSingleHistoryStep, makeHistoryOracle, waitCardCanvasPos };

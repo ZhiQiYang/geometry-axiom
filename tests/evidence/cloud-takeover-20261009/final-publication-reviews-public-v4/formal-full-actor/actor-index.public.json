@@ -1,0 +1,237 @@
+{
+  "schema": "geometry-formal-full-final-readonly-actor-index-addendum/1",
+  "actor": "/root/publication_final_review",
+  "sealedUTC": "2026-10-09T20:08:09.619591+00:00",
+  "actualIndexCommand": [
+    "<execution-runtime-path>",
+    "-B",
+    "<workspace-path>",
+    "<workspace-path>"
+  ],
+  "indexSourceSHA256": "077dbf001fc96ad85d402f0d3155ff7dbac5e7491c5e278c8d8e901375aecf58",
+  "actualIndexPID": 310598,
+  "actualPython": "<execution-runtime-path>",
+  "actualPythonSHA256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+  "indexDecisionExitCode": 0,
+  "productFullSHAForContext": "f3b8285729b42cd22451c98cba1e2ec4514517f3",
+  "priorActorIndexRetained": {
+    "path": "<workspace-path>",
+    "sha256": "304f7db805963db8a5b03b1603d4bd1cb52c75f05abc64493c0a67e3bb878eef",
+    "bytes": 29097
+  },
+  "reviews": [
+    {
+      "name": "formal-full-v3-primary",
+      "actor": "/root/publication_final_review",
+      "executedReviewerSource": {
+        "path": "<workspace-path>",
+        "sha256": "4c4fc022493c4b1f0ae01d79da6db5b5b457f2d1225d557fc7fc7328e09a3557",
+        "bytes": 16536
+      },
+      "report": {
+        "path": "<workspace-path>",
+        "sha256": "97e87dd32db1799e8dd2074fd1ae90860d644b9dd0bcc2c812f238c0cb25df1c",
+        "bytes": 1499667
+      },
+      "rawLog": {
+        "path": "<workspace-path>",
+        "sha256": "37427c5645e7ce0977b4029fea34dcb0c2986f70512b07d823faa669132fe878",
+        "bytes": 204
+      },
+      "actualCommand": [
+        "<execution-runtime-path>",
+        "-B",
+        "<workspace-path>",
+        "<workspace-path>"
+      ],
+      "actualReviewExitCode": 0,
+      "passedMetadataChecks": 7360,
+      "failedMetadataChecks": 0,
+      "countsAreProductAssertions": false,
+      "actualPython": "<execution-runtime-path>",
+      "actualPythonSHA256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+      "originalFindingsPreserved": [],
+      "originalPID": 310405,
+      "originalCmdlineHex": "707974686f6e002d42002f776f726b73706163652f736372617463682f67656f6d657472792d7075626c69636174696f6e2d66696e616c2d7265766965772d32303236313030392f7265766965775f666f726d616c5f66756c6c5f7061636b65745f76332e7079002f776f726b73706163652f736372617463682f67656f6d657472792d7075626c69636174696f6e2d66696e616c2d7265766965772d32303236313030392f666f726d616c2d66756c6c2d76332d72657669657700",
+      "outerSubprocessExecutionReceipt": {
+        "path": "<workspace-path>",
+        "sha256": "e010d6734625aaa3d74fbb9e9a95ae7a45a47693a344817bd4deda7b19508942",
+        "bytes": 1088
+      },
+      "exitProvenance": "Original independent outer subprocess.returncode, report and raw identity agreement."
+    },
+    {
+      "name": "formal-full-v3-source-actor-initial",
+      "actor": "/root/publication_final_review/assembly_packet_review",
+      "executedReviewerSource": {
+        "path": "<workspace-path>",
+        "sha256": "89b5c9cd1be2f1afc669e97ef07071916dcdb97926d53e3da636e7e1bcc1e4be",
+        "bytes": 19946
+      },
+      "report": {
+        "path": "<workspace-path>",
+        "sha256": "330767a7e17c98c8307c65c3cc6f4cac5ae319c3cba41f594cb51bf2fe92cc10",
+        "bytes": 51796
+      },
+      "rawLog": {
+        "path": "<workspace-path>",
+        "sha256": "45c06f2f30dd4cad50ab07cd76089e114ec91dee6e585f3365af5be98b70d79c",
+        "bytes": 26593
+      },
+      "actualCommand": [
+        "<execution-runtime-path>",
+        "-B",
+        "<workspace-path>"
+      ],
+      "actualReviewExitCode": 1,
+      "passedMetadataChecks": 330,
+      "failedMetadataChecks": 1,
+      "countsAreProductAssertions": false,
+      "actualPython": "<execution-runtime-path>",
+      "actualPythonSHA256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+      "originalFindingsPreserved": [
+        {
+          "name": "original frozen golden84 matched exact actualcanonicalsections",
+          "passed": false,
+          "details": null
+        }
+      ],
+      "originalPID": "unknown-not-originally-captured",
+      "originalCmdlineHex": "unknown-not-originally-captured",
+      "exitProvenance": "Original child executed tool return and independently sealed report/raw; no separate original outer PID/executable/exit receipt invented.",
+      "readonlyParserDependency": {
+        "path": "<workspace-path>",
+        "sha256": "0c7d16eac138b21ec9a2d70235e5e8ba8b57336a5c449cea2e66aa6583f35e60",
+        "bytes": 15967
+      }
+    },
+    {
+      "name": "formal-full-v3-golden-envelope-supplement",
+      "actor": "/root/publication_final_review/assembly_packet_review",
+      "executedReviewerSource": {
+        "path": "<workspace-path>",
+        "sha256": "9451541a4fc82ccdc676b054e83832948cf0a4e3ebd79f3d944c4a5f3c6b7589",
+        "bytes": 5857
+      },
+      "report": {
+        "path": "<workspace-path>",
+        "sha256": "6457e734c48b3578d9a7d46972f80fc8f79d7619db6e815ab772b96137f0b38b",
+        "bytes": 3102
+      },
+      "rawLog": {
+        "path": "<workspace-path>",
+        "sha256": "d9368bdbb33d7584b4cb9c78bb9628a2799ad93e12107029762e44749a552468",
+        "bytes": 588
+      },
+      "actualCommand": [
+        "<execution-runtime-path>",
+        "-B",
+        "<workspace-path>"
+      ],
+      "actualReviewExitCode": 0,
+      "passedMetadataChecks": 10,
+      "failedMetadataChecks": 0,
+      "countsAreProductAssertions": false,
+      "actualPython": "<execution-runtime-path>",
+      "actualPythonSHA256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+      "originalFindingsPreserved": [],
+      "originalPID": "unknown-not-originally-captured",
+      "originalCmdlineHex": "unknown-not-originally-captured",
+      "exitProvenance": "Original child executed tool return and independently sealed report/raw; no separate original outer PID/executable/exit receipt invented.",
+      "correctedReviewerAssumption": "Golden source is the original schema envelope {schema,mode,total,sections}; prior predicate erroneously compared canonical sections directly to the envelope. Exact original golden.sections matches84 actualcanonical sections totaling2207. Original source, golden, assertions, receipts and failed review remain unchanged.",
+      "originalFailedReviewRetained": {
+        "path": "<workspace-path>",
+        "sha256": "330767a7e17c98c8307c65c3cc6f4cac5ae319c3cba41f594cb51bf2fe92cc10",
+        "actualExitCode": 1,
+        "passedMetadataChecks": 330,
+        "failedMetadataChecks": 1
+      }
+    },
+    {
+      "name": "publication-history-v3-primary",
+      "actor": "/root/publication_final_review",
+      "executedReviewerSource": {
+        "path": "<workspace-path>",
+        "sha256": "cdda20f641c21e20aa52bec72c90cc6238d13783908bdb7432ce199382e1ea3f",
+        "bytes": 11808
+      },
+      "report": {
+        "path": "<workspace-path>",
+        "sha256": "23c160c1009b62e13461da9d000bf12438b6a8bf82b890b0666a3f3b0f48c361",
+        "bytes": 145812
+      },
+      "rawLog": {
+        "path": "<workspace-path>",
+        "sha256": "005e97aa1a59b1e58e76a7c62c454370e4f3afdc7199f65f15c32febbb0c4652",
+        "bytes": 203
+      },
+      "actualCommand": [
+        "<execution-runtime-path>",
+        "-B",
+        "<workspace-path>",
+        "<workspace-path>"
+      ],
+      "actualReviewExitCode": 0,
+      "passedMetadataChecks": 643,
+      "failedMetadataChecks": 0,
+      "countsAreProductAssertions": false,
+      "actualPython": "<execution-runtime-path>",
+      "actualPythonSHA256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+      "originalFindingsPreserved": [],
+      "originalPID": 310579,
+      "originalCmdlineHex": "707974686f6e002d42002f776f726b73706163652f736372617463682f67656f6d657472792d7075626c69636174696f6e2d66696e616c2d7265766965772d32303236313030392f7265766965775f7075626c69636174696f6e5f686973746f72795f76332e7079002f776f726b73706163652f736372617463682f67656f6d657472792d7075626c69636174696f6e2d66696e616c2d7265766965772d32303236313030392f7075626c69636174696f6e2d686973746f72792d76332d72657669657700",
+      "outerSubprocessExecutionReceipt": {
+        "path": "<workspace-path>",
+        "sha256": "605e771fe5a64d2c77247a56a5ea3851e04bdb84e4c539458efa17a4ae92ab1c",
+        "bytes": 1105
+      },
+      "exitProvenance": "Original independent outer subprocess.returncode, report and raw identity agreement."
+    }
+  ],
+  "packets": [
+    {
+      "name": "formal-full-v3",
+      "manifest": {
+        "path": "<workspace-path>",
+        "sha256": "f33d0032d3bfd33cec02f9790a90104892e8a4bbd8803b8349105544571c7b93",
+        "bytes": 276238
+      },
+      "actualPrimaryReadOnlyReviewExitCode": 0,
+      "productTestsExecutedByReview": false
+    },
+    {
+      "name": "publication-history-v3",
+      "manifest": {
+        "path": "<workspace-path>",
+        "sha256": "0b448d857d76a02b0a7a464b4ec1574c34c85d8fc3311a834b4a4672b704c28c",
+        "bytes": 83187
+      },
+      "actualPrimaryReadOnlyReviewExitCode": 0,
+      "productTestsExecutedByReview": false
+    }
+  ],
+  "publicationRoleClarification": {
+    "packet": "publication-history-v3",
+    "exactOriginalPhrase": "v2 wrapper reads original v1 recipe, narrows scalar index and appends source43 immutable role index; complete reports/raw are unchanged separately.",
+    "observedLimit": "This describes retired v2 generation history. Actual current v3 source is direct materialized21b76, and does not execute v1/v2. Top-level placement is ambiguous; producer confirmed freshv4 will clarify actual and historical roles. v3 original text remains unchanged.",
+    "requiresProductRetest": false
+  },
+  "formalFullFinalizerEvidenceLimit": {
+    "actualSourceSHA256": "c138e53bd79fc289f7f421ff6e4f973dd3702d3f461082f7043d0886227181a8",
+    "originalAuthorToolChunk": "a4cf04",
+    "originalAuthorToolReportedExitCode": 0,
+    "originalStandaloneSubprocessReceipt": "unknown-not-originally-captured",
+    "originalProcessPID": "unknown-not-originally-captured",
+    "originalProcessProcExe": "unknown-not-originally-captured",
+    "limit": "Original author tool return is distinct from an original independently captured process receipt; source/current process never used to backfill."
+  },
+  "limits": [
+    "No original reviewer or product/browser/service/native/GH/API rerun while sealing this index.",
+    "These reviewer metadata counts never product2207/150/228/40 assertions.",
+    "Original330/1 reader golden-envelope mistake stays retained; separate10/0 source-bound supplement resolves the exact predicate.",
+    "Previous304f actor-index-v1 and all historical reports/source/raw remain unchanged.",
+    "Original old unreceipted full actualactor/exits remain unknown; fresh formal result never retrofits old receipt.",
+    "Original launch null/pending remains; new dated originalsamePID/starttimekernel0 is distinct."
+  ],
+  "releaseApproved": false
+}

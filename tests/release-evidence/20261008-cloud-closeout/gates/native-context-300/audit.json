@@ -1,0 +1,149 @@
+{
+  "gate": "native-context-300",
+  "auditedAt": "2026-10-08T18:57:12.894559+00:00",
+  "verdict": "bounded-pass",
+  "counts": {
+    "observed": 9,
+    "passed": 9,
+    "failed": 0,
+    "basis": "individual canonical result records",
+    "cycles": 300
+  },
+  "commandExitCode": 0,
+  "gateExitCode": 0,
+  "controllerExitCode": 0,
+  "identityVerifiedByReceipt": true,
+  "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+  "mainAtAudit": "5cc1ffa1ee85120eca14258b86b715151cad274f",
+  "dirtyBefore": "",
+  "dirtyAfter": "",
+  "dirtyDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "runtimeBefore": {
+    "schema": "geometry-runtime/1",
+    "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 196578,
+    "session": "ca31be77efb542b89d45d5a88c3b1b45"
+  },
+  "runtimeAfter": {
+    "schema": "geometry-runtime/1",
+    "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 196578,
+    "session": "ca31be77efb542b89d45d5a88c3b1b45"
+  },
+  "nativeConfiguredFiles": {
+    "bridge": {
+      "name": "bridge",
+      "state": "fresh",
+      "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T15:41:17+00:00）",
+      "path": "/tmp/geometry-tests/bridge",
+      "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+      "sha256": "b76a6da590512722d6eda64cfc946392ccc2636f82ab187ef822c1e1606d68b5",
+      "sidecarSha256": "557a324f01866a47f3123f08511b0bc46941c06c45ac804bc01447a65166eaaf"
+    },
+    "model-base": {
+      "name": "model-base",
+      "state": "fresh",
+      "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T15:41:31+00:00）",
+      "path": "/tmp/geometry-tests/model-base",
+      "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+      "sha256": "1b350a7d54aac1d410e87f2a74010515739f3e2b8fc4b8c5216ff413b153662e",
+      "sidecarSha256": "e5dad713990793ed6c7b096bd4c2c6579ac3fbc527f7b9d545421be6550f6673"
+    }
+  },
+  "command": [
+    "python3",
+    "tests/integration/scenario_context_lifecycle.py"
+  ],
+  "canonicalSource": "/tmp/geometry-closeout-r2-gates/native-context-300/native-context-300-results.json",
+  "terminalLogRecord": {
+    "prefix": "NATIVE_CONTEXT_RESULT",
+    "value": {
+      "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+      "cycles": 300,
+      "passed": 9,
+      "failed": 0
+    }
+  },
+  "limitations": [
+    "300 distinct native context create/edit/retire cycles, summarized by nine named assertions. No browser flow or full interrupted Resume claim.",
+    "Linux Chromium, not physical phone/IME/native OS picker certification.",
+    "The command.log combines child stdout/stderr; separate gate-wrapper stdout/stderr are preserved.",
+    "A native file hash alone is not proof of which live native process was loaded; consult separate live-service binding."
+  ],
+  "canonicalLimitations": null,
+  "rawFiles": [
+    {
+      "source": "/workspace/closure-evidence/gates/native-context-300/command.log",
+      "public": "native-context-300/command.log",
+      "bytes": 643,
+      "sha256": "11b677338949d82465a182d41c7667a88d4b927a61144f06579dac9d96e16d36"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/native-context-300/receipt.json",
+      "public": "native-context-300/receipt.json",
+      "bytes": 5226,
+      "sha256": "58c0c6c1867aa0018cad15c287575bcdb970703bdb064954fa0450e0a3a60509"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/native-context-300.command.json",
+      "public": "native-context-300.command.json",
+      "bytes": 1236,
+      "sha256": "d58909ae077ae7be8c85ce1586d4eaa32202f8d00ccd442143ef1a3fe576f721"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/native-context-300.stdout",
+      "public": "native-context-300.stdout",
+      "bytes": 182,
+      "sha256": "b725bcdc8c2f454dd447d073b17dd8a5e5b78d2480027ea1d01fbbf99bac25f4"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/native-context-300.stderr",
+      "public": "native-context-300.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "artifacts": [
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/native-context-300/native-context-300-results.json",
+      "relative": "native-context-300-results.json",
+      "bytes": 13543,
+      "sha256": "76509d7e2d05bdd3ee1faffd7fb465b009ac0e8eadd94be3d1f7c834923884e8",
+      "public": "native-context-300/artifacts/native-context-300-results.json"
+    }
+  ],
+  "sources": [
+    {
+      "source": "tests/integration/scenario_context_lifecycle.py",
+      "sha256": "8ec0e7df87a1290dc4c7ddd7684c5b850f8a85d19f31545ef7980f494d0c7cf7",
+      "public": "native-context-300/sources/tests/integration/scenario_context_lifecycle.py",
+      "binding": "git object at recorded head, copied after execution; clean before/after receipt binds checkout, cannot exclude transient edits"
+    },
+    {
+      "source": "/workspace/closure-evidence/sandbox-launch.cjs",
+      "public": "native-context-300/sources/launch-adapters/sandbox-launch.cjs",
+      "bytes": 912,
+      "sha256": "c917611c821f63cea2e5ef3ed1c0ddde128dcf47fde65d1a7ace8ff24fba2b1e",
+      "binding": "post-run adapter copy; launch policy only, no action/oracle changes"
+    },
+    {
+      "source": "/workspace/closure-evidence/python-launch/sitecustomize.py",
+      "public": "native-context-300/sources/launch-adapters/sitecustomize.py",
+      "bytes": 748,
+      "sha256": "e49545951bb661db0169e3d466c96321ee67c5f8a39fac3f7f0ed6954c22a7be",
+      "binding": "post-run adapter copy; launch policy only, no action/oracle changes"
+    },
+    {
+      "source": "/workspace/geometry-axiom/tests/release_gate.py",
+      "public": "native-context-300/sources/tests/release_gate.py",
+      "bytes": 17583,
+      "sha256": "ad460ddbdd52c48995188079339bc224e7f39b3d01e3147091a858ba8f541389",
+      "binding": "post-run clean tested-head release identity wrapper"
+    }
+  ],
+  "category": "native-lifecycle"
+}

@@ -1,0 +1,2550 @@
+{
+  "started": "2026-10-08T15:56:43.907459+00:00",
+  "argv": [
+    "tests/integration/grid_rule_reopen_probe.py",
+    "--bridge",
+    "/tmp/geometry-tests/bridge",
+    "--out",
+    "/workspace/closure-evidence/contracts/grid-final"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "repo": "/workspace/geometry-axiom",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+  "probe_sha256": "f9065a83ee9371336c93fe73419f33e6895bf645cd507fcdb3bd41448f6c2e6d",
+  "recorder_sha256": "9e158b959975f796a16f40dbe785b9f18934b6a65b2edefa4edbd2c45f7a45fc",
+  "head": "3a48cf5bacb9a295e15046e5ca0cb021e50c54db",
+  "main": "5cc1ffa1ee85120eca14258b86b715151cad274f",
+  "pr171_head": "821618fdf96cd54b9452806bc3ab94f4da29854d",
+  "dirty_status": " M tests/integration/assembly_ownership_probe.py\n M tests/integration/grid_rule_reopen_probe.py\n",
+  "fixture_sha256": "9d7c52323d52c052d131094407e8487b6b9afbb2a02d5b2572ab16e3da3a4589",
+  "fixture_vectors_sha256": "df162e88544250a69e389b3a2fa1d7d22494cbb2bf4015c9f04a95dad37f26de",
+  "bridge_harness_sha256": "bb34d61a288772f9defa9136a58f9102effe40e6f325338ef2abc01862508df9",
+  "dirty_diff_sha256": "bfb7798690dace5871ffbfceb0b9dc72b49cf96220e6d984fa3ef87768962b8b",
+  "binary_registry": {
+    "name": "bridge",
+    "state": "fresh",
+    "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T15:41:17+00:00）",
+    "path": "/tmp/geometry-tests/bridge",
+    "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e"
+  },
+  "bridge_sha256": "b76a6da590512722d6eda64cfc946392ccc2636f82ab187ef822c1e1606d68b5",
+  "scene_sha256": "1ee0d9b49b37b29d00921c285201d18974c842c50446e39bb5982ee465ec14e8",
+  "snapshots": {
+    "empty": [
+      "",
+      {
+        "ok": true,
+        "faces": [],
+        "spaces": [],
+        "columns": [],
+        "beams": [],
+        "gridSystems": [],
+        "parameters": [],
+        "assemblyRules": [],
+        "assemblyBindings": [],
+        "parameterUses": [],
+        "gridBindings": [],
+        "timbers": []
+      },
+      {
+        "ok": true,
+        "sourceFingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "guides": [],
+        "grids": [],
+        "timbers": [],
+        "timberSupports": {
+          "schema": "native-timber-supports/1",
+          "sourceFingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "entries": []
+        },
+        "specs": [],
+        "datums": [],
+        "engineeringSources": [],
+        "assembly": {
+          "capabilities": [
+            "assembly-rule-authoring/1",
+            "assembly-timber-generation/1"
+          ],
+          "rules": [],
+          "bindings": [],
+          "instances": []
+        }
+      }
+    ],
+    "placed": [
+      "boundary 1 outline 100,200 2100,200 2100,1800 100,1800\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\nspec support_position_1 120\nspec support_position_2 680\nboundary-vertex-keys 1 outer 1 2 3 4 next-key 5\nrequires grid-subdivision-rules/1\ngrid-system 0 name-hex 6f7261636c652030 main-along none u repeat 0 600 v repeat 0 400\ngrid-source-rule 0 key 1 name-hex 6f7261636c652072756c65 selector all-cells divide 3 2\ngrid-source-rule-highwater 0 next 2\ngrid-binding 0 on-boundary 1 from-system 0 vertex-key 1 cell -2 1 anchor 0 1 0 1\ngrid 10 on 1 from-binding 0\ntimber 81 20 20 role boundary\ntimber 82 20 20 role boundary\ntimber 1 20 20 role primary\ntimber 2 20 20 role primary\ntimber 10 20 20 role secondary\nguide 1 1 v spec:support_position_1\nguide 2 1 v spec:support_position_2\nplace 81 on 1 at-face e0 +u +n\n# R18 角材 81: onBoundary=true coversEdge=true boundaryEdge=0\nplace 82 on 1 at-face e2 +u +n\n# R18 角材 82: onBoundary=true coversEdge=true boundaryEdge=2\nplace 1 on 1 at-line guide 1 +v +n\n# R18 角材 1: onBoundary=false coversEdge=false boundaryEdge=-1\nplace 2 on 1 at-line guide 2 +v +n\n# R18 角材 2: onBoundary=false coversEdge=false boundaryEdge=-1\nplace 10 on 1 at-line rule 10 0 1 -2 1 v 0 between t1 t2 +u +n\n# R18 角材 10: onBoundary=false coversEdge=false boundaryEdge=-1\n",
+      {
+        "ok": true,
+        "faces": [
+          {
+            "kind": "boundary",
+            "boundaryKind": "unspecified",
+            "id": 1,
+            "placed": true,
+            "bbox": [
+              100,
+              200,
+              2100,
+              1800
+            ],
+            "cx": 0,
+            "cy": 0,
+            "hasPos": false
+          }
+        ],
+        "spaces": [],
+        "columns": [],
+        "beams": [],
+        "gridSystems": [
+          {
+            "kind": "grid-system",
+            "id": 0,
+            "name": "oracle 0",
+            "mode": "infinite",
+            "mainAlong": null,
+            "uDefinition": {
+              "source": "repeat",
+              "phase": 0,
+              "step": 600
+            },
+            "vDefinition": {
+              "source": "repeat",
+              "phase": 0,
+              "step": 400
+            },
+            "nextRuleKey": 2,
+            "rules": [
+              {
+                "ruleKey": 1,
+                "name": "oracle rule",
+                "selector": {
+                  "kind": "all-cells"
+                },
+                "divisions": [
+                  3,
+                  2
+                ]
+              }
+            ],
+            "applications": [
+              {
+                "grid": 10,
+                "surface": 1
+              }
+            ],
+            "bindings": [
+              0
+            ],
+            "cx": 0,
+            "cy": 0,
+            "hasPos": false
+          }
+        ],
+        "parameters": [],
+        "assemblyRules": [],
+        "assemblyBindings": [],
+        "parameterUses": [],
+        "gridBindings": [
+          {
+            "kind": "grid-binding",
+            "id": 0,
+            "boundary": 1,
+            "system": 0,
+            "vertexKey": 1,
+            "cell": [
+              "-2",
+              "1"
+            ],
+            "anchor": [
+              {
+                "num": 0,
+                "den": 1
+              },
+              {
+                "num": 0,
+                "den": 1
+              }
+            ],
+            "translation": [
+              1300,
+              -200
+            ],
+            "translationExact": [
+              "1300",
+              "-200"
+            ],
+            "translationRepresentable": true,
+            "applications": [
+              {
+                "grid": 10,
+                "surface": 1
+              }
+            ],
+            "cx": 0,
+            "cy": 0,
+            "hasPos": false
+          }
+        ],
+        "timbers": [
+          {
+            "id": 81,
+            "surface": 1,
+            "role": "boundary",
+            "priority": 1,
+            "onBoundary": true,
+            "coversEdge": true,
+            "boundaryEdge": 0
+          },
+          {
+            "id": 82,
+            "surface": 1,
+            "role": "boundary",
+            "priority": 1,
+            "onBoundary": true,
+            "coversEdge": true,
+            "boundaryEdge": 2
+          },
+          {
+            "id": 1,
+            "surface": 1,
+            "role": "primary",
+            "priority": 2,
+            "onBoundary": false,
+            "coversEdge": false,
+            "boundaryEdge": -1
+          },
+          {
+            "id": 2,
+            "surface": 1,
+            "role": "primary",
+            "priority": 2,
+            "onBoundary": false,
+            "coversEdge": false,
+            "boundaryEdge": -1
+          },
+          {
+            "id": 10,
+            "surface": 1,
+            "role": "secondary",
+            "priority": 3,
+            "onBoundary": false,
+            "coversEdge": false,
+            "boundaryEdge": -1
+          }
+        ]
+      },
+      {
+        "ok": true,
+        "sourceFingerprint": "0f65c07fab8530297e8edcf7c41df5474fb49ba5580d0b8698cd7fcdb8edd20d",
+        "guides": [
+          {
+            "id": 1,
+            "surface": 1,
+            "source": "local",
+            "datum": 0,
+            "axis": "v",
+            "off": 120,
+            "expression": "spec:support_position_1",
+            "worldPoint": [
+              120,
+              0,
+              0
+            ],
+            "worldDirection": [
+              0,
+              1,
+              0
+            ],
+            "segments": [
+              [
+                [
+                  120,
+                  200
+                ],
+                [
+                  120,
+                  1800
+                ]
+              ]
+            ]
+          },
+          {
+            "id": 2,
+            "surface": 1,
+            "source": "local",
+            "datum": 0,
+            "axis": "v",
+            "off": 680,
+            "expression": "spec:support_position_2",
+            "worldPoint": [
+              680,
+              0,
+              0
+            ],
+            "worldDirection": [
+              0,
+              1,
+              0
+            ],
+            "segments": [
+              [
+                [
+                  680,
+                  200
+                ],
+                [
+                  680,
+                  1800
+                ]
+              ]
+            ]
+          }
+        ],
+        "grids": [
+          {
+            "id": 10,
+            "surface": 1,
+            "bindingId": 0,
+            "indexSpace": "lattice",
+            "sourceSystem": 0,
+            "origin": [
+              0,
+              0
+            ],
+            "kind": "main",
+            "parentId": null,
+            "cell": null,
+            "divisions": null,
+            "bounds": {
+              "u": [
+                100,
+                2100
+              ],
+              "v": [
+                200,
+                1800
+              ]
+            },
+            "mainAlong": null,
+            "geometryMode": "sample",
+            "geometryExact": false,
+            "query": {
+              "ok": true,
+              "mode": "sample",
+              "exact": false,
+              "rect": [
+                100,
+                200,
+                2100,
+                1800
+              ],
+              "axes": {
+                "u": {
+                  "defined": true,
+                  "firstIndex": "-2",
+                  "lastIndex": "1",
+                  "total": "4",
+                  "stride": "1",
+                  "lines": [
+                    {
+                      "index": "-2",
+                      "coordinate": 100,
+                      "segments": [
+                        {
+                          "a": [
+                            100,
+                            200
+                          ],
+                          "b": [
+                            100,
+                            1800
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "index": "-1",
+                      "coordinate": 700,
+                      "segments": [
+                        {
+                          "a": [
+                            700,
+                            200
+                          ],
+                          "b": [
+                            700,
+                            1800
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "index": "0",
+                      "coordinate": 1300,
+                      "segments": [
+                        {
+                          "a": [
+                            1300,
+                            200
+                          ],
+                          "b": [
+                            1300,
+                            1800
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "index": "1",
+                      "coordinate": 1900,
+                      "segments": [
+                        {
+                          "a": [
+                            1900,
+                            200
+                          ],
+                          "b": [
+                            1900,
+                            1800
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "v": {
+                  "defined": true,
+                  "firstIndex": "1",
+                  "lastIndex": "5",
+                  "total": "5",
+                  "stride": "1",
+                  "lines": [
+                    {
+                      "index": "1",
+                      "coordinate": 200,
+                      "segments": [
+                        {
+                          "a": [
+                            100,
+                            200
+                          ],
+                          "b": [
+                            2100,
+                            200
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "index": "2",
+                      "coordinate": 600,
+                      "segments": [
+                        {
+                          "a": [
+                            100,
+                            600
+                          ],
+                          "b": [
+                            2100,
+                            600
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "index": "3",
+                      "coordinate": 1000,
+                      "segments": [
+                        {
+                          "a": [
+                            100,
+                            1000
+                          ],
+                          "b": [
+                            2100,
+                            1000
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "index": "4",
+                      "coordinate": 1400,
+                      "segments": [
+                        {
+                          "a": [
+                            100,
+                            1400
+                          ],
+                          "b": [
+                            2100,
+                            1400
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "index": "5",
+                      "coordinate": 1800,
+                      "segments": []
+                    }
+                  ]
+                }
+              }
+            },
+            "u": [
+              100,
+              700,
+              1300,
+              1900
+            ],
+            "uDefinition": {
+              "source": "repeat",
+              "phase": 0,
+              "step": 600
+            },
+            "v": [
+              200,
+              600,
+              1000,
+              1400,
+              1800
+            ],
+            "vDefinition": {
+              "source": "repeat",
+              "phase": 0,
+              "step": 400
+            },
+            "indices": {
+              "u": [
+                "-2",
+                "-1",
+                "0",
+                "1"
+              ],
+              "v": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5"
+              ]
+            },
+            "lattice": {
+              "u": {
+                "defined": true,
+                "pitch": 600,
+                "baseIndex": "-2",
+                "baseCoordinate": 100
+              },
+              "v": {
+                "defined": true,
+                "pitch": 400,
+                "baseIndex": "1",
+                "baseCoordinate": 200
+              }
+            },
+            "lines": [
+              {
+                "axis": "u",
+                "index": "-2",
+                "coordinate": 100,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      100,
+                      200
+                    ],
+                    [
+                      100,
+                      1800
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "u",
+                "index": "-1",
+                "coordinate": 700,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      700,
+                      200
+                    ],
+                    [
+                      700,
+                      1800
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "u",
+                "index": "0",
+                "coordinate": 1300,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      1300,
+                      200
+                    ],
+                    [
+                      1300,
+                      1800
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "u",
+                "index": "1",
+                "coordinate": 1900,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      1900,
+                      200
+                    ],
+                    [
+                      1900,
+                      1800
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "v",
+                "index": "1",
+                "coordinate": 200,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      100,
+                      200
+                    ],
+                    [
+                      2100,
+                      200
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "v",
+                "index": "2",
+                "coordinate": 600,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      100,
+                      600
+                    ],
+                    [
+                      2100,
+                      600
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "v",
+                "index": "3",
+                "coordinate": 1000,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      100,
+                      1000
+                    ],
+                    [
+                      2100,
+                      1000
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "v",
+                "index": "4",
+                "coordinate": 1400,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      100,
+                      1400
+                    ],
+                    [
+                      2100,
+                      1400
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "v",
+                "index": "5",
+                "coordinate": 1800,
+                "role": null,
+                "priority": null,
+                "segments": []
+              }
+            ],
+            "dependencies": {
+              "children": [],
+              "guides": [],
+              "timbers": [
+                10
+              ]
+            }
+          }
+        ],
+        "timbers": [
+          {
+            "id": 81,
+            "role": "boundary",
+            "geometry": {
+              "surface": 1,
+              "centerline": 210,
+              "length": 2000,
+              "u": 100,
+              "v": 200,
+              "dir": "+u",
+              "side": "+n",
+              "A": 20,
+              "B": 20,
+              "origin": [
+                100,
+                200,
+                0
+              ],
+              "axes": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  1
+                ]
+              ]
+            },
+            "definition": {
+              "anchor": "at-face e0",
+              "selector": "",
+              "priority": 1
+            }
+          },
+          {
+            "id": 82,
+            "role": "boundary",
+            "geometry": {
+              "surface": 1,
+              "centerline": 1790,
+              "length": 2000,
+              "u": 100,
+              "v": 1780,
+              "dir": "+u",
+              "side": "+n",
+              "A": 20,
+              "B": 20,
+              "origin": [
+                100,
+                1780,
+                0
+              ],
+              "axes": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  1
+                ]
+              ]
+            },
+            "definition": {
+              "anchor": "at-face e2",
+              "selector": "",
+              "priority": 1
+            }
+          },
+          {
+            "id": 1,
+            "role": "primary",
+            "geometry": {
+              "surface": 1,
+              "centerline": 120,
+              "length": 1560,
+              "u": 130,
+              "v": 220,
+              "dir": "+v",
+              "side": "+n",
+              "A": 20,
+              "B": 20,
+              "origin": [
+                130,
+                220,
+                0
+              ],
+              "axes": [
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  -1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  1
+                ]
+              ]
+            },
+            "definition": {
+              "anchor": "at-line guide 1",
+              "selector": "",
+              "priority": 2
+            }
+          },
+          {
+            "id": 2,
+            "role": "primary",
+            "geometry": {
+              "surface": 1,
+              "centerline": 680,
+              "length": 1560,
+              "u": 690,
+              "v": 220,
+              "dir": "+v",
+              "side": "+n",
+              "A": 20,
+              "B": 20,
+              "origin": [
+                690,
+                220,
+                0
+              ],
+              "axes": [
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  -1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  1
+                ]
+              ]
+            },
+            "definition": {
+              "anchor": "at-line guide 2",
+              "selector": "",
+              "priority": 2
+            }
+          },
+          {
+            "id": 10,
+            "role": "secondary",
+            "geometry": {
+              "surface": 1,
+              "centerline": 400,
+              "length": 540,
+              "u": 130,
+              "v": 390,
+              "dir": "+u",
+              "side": "+n",
+              "A": 20,
+              "B": 20,
+              "origin": [
+                130,
+                390,
+                0
+              ],
+              "axes": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  1
+                ]
+              ]
+            },
+            "definition": {
+              "anchor": "at-line rule 10 0 1 -2 1 v 0",
+              "selector": "between t1 t2",
+              "priority": 3
+            }
+          }
+        ],
+        "timberSupports": {
+          "schema": "native-timber-supports/1",
+          "sourceFingerprint": "0f65c07fab8530297e8edcf7c41df5474fb49ba5580d0b8698cd7fcdb8edd20d",
+          "entries": [
+            {
+              "id": 81,
+              "surface": 1,
+              "owner": null,
+              "start": {
+                "status": "exact",
+                "at": 100,
+                "crossRange": [
+                  200,
+                  220
+                ],
+                "relation": {
+                  "kind": "outline-edge",
+                  "source": {
+                    "kind": "boundary",
+                    "id": 1
+                  },
+                  "edgeIndex": 3,
+                  "holeIndex": null,
+                  "localFace": null,
+                  "normalWorld": null,
+                  "owner": null,
+                  "surface": 1,
+                  "stop": {
+                    "axis": "u",
+                    "at": 100,
+                    "range": [
+                      200,
+                      1800
+                    ],
+                    "fixity": "fixed"
+                  }
+                }
+              },
+              "finish": {
+                "status": "exact",
+                "at": 2100,
+                "crossRange": [
+                  200,
+                  220
+                ],
+                "relation": {
+                  "kind": "outline-edge",
+                  "source": {
+                    "kind": "boundary",
+                    "id": 1
+                  },
+                  "edgeIndex": 1,
+                  "holeIndex": null,
+                  "localFace": null,
+                  "normalWorld": null,
+                  "owner": null,
+                  "surface": 1,
+                  "stop": {
+                    "axis": "u",
+                    "at": 2100,
+                    "range": [
+                      200,
+                      1800
+                    ],
+                    "fixity": "fixed"
+                  }
+                }
+              }
+            },
+            {
+              "id": 82,
+              "surface": 1,
+              "owner": null,
+              "start": {
+                "status": "exact",
+                "at": 100,
+                "crossRange": [
+                  1780,
+                  1800
+                ],
+                "relation": {
+                  "kind": "outline-edge",
+                  "source": {
+                    "kind": "boundary",
+                    "id": 1
+                  },
+                  "edgeIndex": 3,
+                  "holeIndex": null,
+                  "localFace": null,
+                  "normalWorld": null,
+                  "owner": null,
+                  "surface": 1,
+                  "stop": {
+                    "axis": "u",
+                    "at": 100,
+                    "range": [
+                      200,
+                      1800
+                    ],
+                    "fixity": "fixed"
+                  }
+                }
+              },
+              "finish": {
+                "status": "exact",
+                "at": 2100,
+                "crossRange": [
+                  1780,
+                  1800
+                ],
+                "relation": {
+                  "kind": "outline-edge",
+                  "source": {
+                    "kind": "boundary",
+                    "id": 1
+                  },
+                  "edgeIndex": 1,
+                  "holeIndex": null,
+                  "localFace": null,
+                  "normalWorld": null,
+                  "owner": null,
+                  "surface": 1,
+                  "stop": {
+                    "axis": "u",
+                    "at": 2100,
+                    "range": [
+                      200,
+                      1800
+                    ],
+                    "fixity": "fixed"
+                  }
+                }
+              }
+            },
+            {
+              "id": 1,
+              "surface": 1,
+              "owner": null,
+              "start": {
+                "status": "exact",
+                "at": 220,
+                "crossRange": [
+                  110,
+                  130
+                ],
+                "relation": {
+                  "kind": "timber-face",
+                  "source": {
+                    "kind": "timber",
+                    "id": 81
+                  },
+                  "localFace": "B1",
+                  "normalWorld": [
+                    0,
+                    1,
+                    0
+                  ],
+                  "owner": null,
+                  "surface": 1,
+                  "stop": {
+                    "axis": "v",
+                    "at": 220,
+                    "range": [
+                      100,
+                      2100
+                    ],
+                    "fixity": "fixed"
+                  }
+                }
+              },
+              "finish": {
+                "status": "exact",
+                "at": 1780,
+                "crossRange": [
+                  110,
+                  130
+                ],
+                "relation": {
+                  "kind": "timber-face",
+                  "source": {
+                    "kind": "timber",
+                    "id": 82
+                  },
+                  "localFace": "B0",
+                  "normalWorld": [
+                    0,
+                    -1,
+                    0
+                  ],
+                  "owner": null,
+                  "surface": 1,
+                  "stop": {
+                    "axis": "v",
+                    "at": 1780,
+                    "range": [
+                      100,
+                      2100
+                    ],
+                    "fixity": "fixed"
+                  }
+                }
+              }
+            },
+            {
+              "id": 2,
+              "surface": 1,
+              "owner": null,
+              "start": {
+                "status": "exact",
+                "at": 220,
+                "crossRange": [
+                  670,
+                  690
+                ],
+                "relation": {
+                  "kind": "timber-face",
+                  "source": {
+                    "kind": "timber",
+                    "id": 81
+                  },
+                  "localFace": "B1",
+                  "normalWorld": [
+                    0,
+                    1,
+                    0
+                  ],
+                  "owner": null,
+                  "surface": 1,
+                  "stop": {
+                    "axis": "v",
+                    "at": 220,
+                    "range": [
+                      100,
+                      2100
+                    ],
+                    "fixity": "fixed"
+                  }
+                }
+              },
+              "finish": {
+                "status": "exact",
+                "at": 1780,
+                "crossRange": [
+                  670,
+                  690
+                ],
+                "relation": {
+                  "kind": "timber-face",
+                  "source": {
+                    "kind": "timber",
+                    "id": 82
+                  },
+                  "localFace": "B0",
+                  "normalWorld": [
+                    0,
+                    -1,
+                    0
+                  ],
+                  "owner": null,
+                  "surface": 1,
+                  "stop": {
+                    "axis": "v",
+                    "at": 1780,
+                    "range": [
+                      100,
+                      2100
+                    ],
+                    "fixity": "fixed"
+                  }
+                }
+              }
+            },
+            {
+              "id": 10,
+              "surface": 1,
+              "owner": null,
+              "start": {
+                "status": "exact",
+                "at": 130,
+                "crossRange": [
+                  390,
+                  410
+                ],
+                "relation": {
+                  "kind": "timber-face",
+                  "source": {
+                    "kind": "timber",
+                    "id": 1
+                  },
+                  "localFace": "B0",
+                  "normalWorld": [
+                    1,
+                    0,
+                    0
+                  ],
+                  "owner": null,
+                  "surface": 1,
+                  "stop": {
+                    "axis": "u",
+                    "at": 130,
+                    "range": [
+                      220,
+                      1780
+                    ],
+                    "fixity": "fixed"
+                  }
+                }
+              },
+              "finish": {
+                "status": "exact",
+                "at": 670,
+                "crossRange": [
+                  390,
+                  410
+                ],
+                "relation": {
+                  "kind": "timber-face",
+                  "source": {
+                    "kind": "timber",
+                    "id": 2
+                  },
+                  "localFace": "B1",
+                  "normalWorld": [
+                    -1,
+                    0,
+                    0
+                  ],
+                  "owner": null,
+                  "surface": 1,
+                  "stop": {
+                    "axis": "u",
+                    "at": 670,
+                    "range": [
+                      220,
+                      1780
+                    ],
+                    "fixity": "fixed"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "specs": [
+          {
+            "name": "support_position_1",
+            "value": 120
+          },
+          {
+            "name": "support_position_2",
+            "value": 680
+          }
+        ],
+        "datums": [],
+        "engineeringSources": [],
+        "assembly": {
+          "capabilities": [
+            "assembly-rule-authoring/1",
+            "assembly-timber-generation/1"
+          ],
+          "rules": [],
+          "bindings": [],
+          "instances": []
+        }
+      }
+    ],
+    "modified": [
+      "boundary 1 outline 100,200 2100,200 2100,1800 100,1800\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\nspec support_position_1 120\nspec support_position_2 680\nboundary-vertex-keys 1 outer 1 2 3 4 next-key 5\nrequires grid-subdivision-rules/1\ngrid-system 0 name-hex 6f7261636c652030 main-along none u repeat 0 600 v repeat 0 600\ngrid-source-rule 0 key 1 name-hex 6f7261636c652072756c65 selector all-cells divide 3 2\ngrid-source-rule-highwater 0 next 2\ngrid-binding 0 on-boundary 1 from-system 0 vertex-key 1 cell -2 1 anchor 0 1 0 1\ngrid 10 on 1 from-binding 0\ntimber 81 20 20 role boundary\ntimber 82 20 20 role boundary\ntimber 1 20 20 role primary\ntimber 2 20 20 role primary\ntimber 10 20 20 role secondary\nguide 1 1 v spec:support_position_1\nguide 2 1 v spec:support_position_2\nplace 81 on 1 at-face e0 +u +n\n# R18 角材 81: onBoundary=true coversEdge=true boundaryEdge=0\nplace 82 on 1 at-face e2 +u +n\n# R18 角材 82: onBoundary=true coversEdge=true boundaryEdge=2\nplace 1 on 1 at-line guide 1 +v +n\n# R18 角材 1: onBoundary=false coversEdge=false boundaryEdge=-1\nplace 2 on 1 at-line guide 2 +v +n\n# R18 角材 2: onBoundary=false coversEdge=false boundaryEdge=-1\nplace 10 on 1 at-line rule 10 0 1 -2 1 v 0 between t1 t2 +u +n\n# R18 角材 10: onBoundary=false coversEdge=false boundaryEdge=-1\n",
+      {
+        "ok": true,
+        "faces": [
+          {
+            "kind": "boundary",
+            "boundaryKind": "unspecified",
+            "id": 1,
+            "placed": true,
+            "bbox": [
+              100,
+              200,
+              2100,
+              1800
+            ],
+            "cx": 0,
+            "cy": 0,
+            "hasPos": false
+          }
+        ],
+        "spaces": [],
+        "columns": [],
+        "beams": [],
+        "gridSystems": [
+          {
+            "kind": "grid-system",
+            "id": 0,
+            "name": "oracle 0",
+            "mode": "infinite",
+            "mainAlong": null,
+            "uDefinition": {
+              "source": "repeat",
+              "phase": 0,
+              "step": 600
+            },
+            "vDefinition": {
+              "source": "repeat",
+              "phase": 0,
+              "step": 600
+            },
+            "nextRuleKey": 2,
+            "rules": [
+              {
+                "ruleKey": 1,
+                "name": "oracle rule",
+                "selector": {
+                  "kind": "all-cells"
+                },
+                "divisions": [
+                  3,
+                  2
+                ]
+              }
+            ],
+            "applications": [
+              {
+                "grid": 10,
+                "surface": 1
+              }
+            ],
+            "bindings": [
+              0
+            ],
+            "cx": 0,
+            "cy": 0,
+            "hasPos": false
+          }
+        ],
+        "parameters": [],
+        "assemblyRules": [],
+        "assemblyBindings": [],
+        "parameterUses": [],
+        "gridBindings": [
+          {
+            "kind": "grid-binding",
+            "id": 0,
+            "boundary": 1,
+            "system": 0,
+            "vertexKey": 1,
+            "cell": [
+              "-2",
+              "1"
+            ],
+            "anchor": [
+              {
+                "num": 0,
+                "den": 1
+              },
+              {
+                "num": 0,
+                "den": 1
+              }
+            ],
+            "translation": [
+              1300,
+              -400
+            ],
+            "translationExact": [
+              "1300",
+              "-400"
+            ],
+            "translationRepresentable": true,
+            "applications": [
+              {
+                "grid": 10,
+                "surface": 1
+              }
+            ],
+            "cx": 0,
+            "cy": 0,
+            "hasPos": false
+          }
+        ],
+        "timbers": [
+          {
+            "id": 81,
+            "surface": 1,
+            "role": "boundary",
+            "priority": 1,
+            "onBoundary": true,
+            "coversEdge": true,
+            "boundaryEdge": 0
+          },
+          {
+            "id": 82,
+            "surface": 1,
+            "role": "boundary",
+            "priority": 1,
+            "onBoundary": true,
+            "coversEdge": true,
+            "boundaryEdge": 2
+          },
+          {
+            "id": 1,
+            "surface": 1,
+            "role": "primary",
+            "priority": 2,
+            "onBoundary": false,
+            "coversEdge": false,
+            "boundaryEdge": -1
+          },
+          {
+            "id": 2,
+            "surface": 1,
+            "role": "primary",
+            "priority": 2,
+            "onBoundary": false,
+            "coversEdge": false,
+            "boundaryEdge": -1
+          },
+          {
+            "id": 10,
+            "surface": 1,
+            "role": "secondary",
+            "priority": 3,
+            "onBoundary": false,
+            "coversEdge": false,
+            "boundaryEdge": -1
+          }
+        ]
+      },
+      {
+        "ok": true,
+        "sourceFingerprint": "1ee0d9b49b37b29d00921c285201d18974c842c50446e39bb5982ee465ec14e8",
+        "guides": [
+          {
+            "id": 1,
+            "surface": 1,
+            "source": "local",
+            "datum": 0,
+            "axis": "v",
+            "off": 120,
+            "expression": "spec:support_position_1",
+            "worldPoint": [
+              120,
+              0,
+              0
+            ],
+            "worldDirection": [
+              0,
+              1,
+              0
+            ],
+            "segments": [
+              [
+                [
+                  120,
+                  200
+                ],
+                [
+                  120,
+                  1800
+                ]
+              ]
+            ]
+          },
+          {
+            "id": 2,
+            "surface": 1,
+            "source": "local",
+            "datum": 0,
+            "axis": "v",
+            "off": 680,
+            "expression": "spec:support_position_2",
+            "worldPoint": [
+              680,
+              0,
+              0
+            ],
+            "worldDirection": [
+              0,
+              1,
+              0
+            ],
+            "segments": [
+              [
+                [
+                  680,
+                  200
+                ],
+                [
+                  680,
+                  1800
+                ]
+              ]
+            ]
+          }
+        ],
+        "grids": [
+          {
+            "id": 10,
+            "surface": 1,
+            "bindingId": 0,
+            "indexSpace": "lattice",
+            "sourceSystem": 0,
+            "origin": [
+              0,
+              0
+            ],
+            "kind": "main",
+            "parentId": null,
+            "cell": null,
+            "divisions": null,
+            "bounds": {
+              "u": [
+                100,
+                2100
+              ],
+              "v": [
+                200,
+                1800
+              ]
+            },
+            "mainAlong": null,
+            "geometryMode": "sample",
+            "geometryExact": false,
+            "query": {
+              "ok": true,
+              "mode": "sample",
+              "exact": false,
+              "rect": [
+                100,
+                200,
+                2100,
+                1800
+              ],
+              "axes": {
+                "u": {
+                  "defined": true,
+                  "firstIndex": "-2",
+                  "lastIndex": "1",
+                  "total": "4",
+                  "stride": "1",
+                  "lines": [
+                    {
+                      "index": "-2",
+                      "coordinate": 100,
+                      "segments": [
+                        {
+                          "a": [
+                            100,
+                            200
+                          ],
+                          "b": [
+                            100,
+                            1800
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "index": "-1",
+                      "coordinate": 700,
+                      "segments": [
+                        {
+                          "a": [
+                            700,
+                            200
+                          ],
+                          "b": [
+                            700,
+                            1800
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "index": "0",
+                      "coordinate": 1300,
+                      "segments": [
+                        {
+                          "a": [
+                            1300,
+                            200
+                          ],
+                          "b": [
+                            1300,
+                            1800
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "index": "1",
+                      "coordinate": 1900,
+                      "segments": [
+                        {
+                          "a": [
+                            1900,
+                            200
+                          ],
+                          "b": [
+                            1900,
+                            1800
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "v": {
+                  "defined": true,
+                  "firstIndex": "1",
+                  "lastIndex": "3",
+                  "total": "3",
+                  "stride": "1",
+                  "lines": [
+                    {
+                      "index": "1",
+                      "coordinate": 200,
+                      "segments": [
+                        {
+                          "a": [
+                            100,
+                            200
+                          ],
+                          "b": [
+                            2100,
+                            200
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "index": "2",
+                      "coordinate": 800,
+                      "segments": [
+                        {
+                          "a": [
+                            100,
+                            800
+                          ],
+                          "b": [
+                            2100,
+                            800
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "index": "3",
+                      "coordinate": 1400,
+                      "segments": [
+                        {
+                          "a": [
+                            100,
+                            1400
+                          ],
+                          "b": [
+                            2100,
+                            1400
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            "u": [
+              100,
+              700,
+              1300,
+              1900
+            ],
+            "uDefinition": {
+              "source": "repeat",
+              "phase": 0,
+              "step": 600
+            },
+            "v": [
+              200,
+              800,
+              1400
+            ],
+            "vDefinition": {
+              "source": "repeat",
+              "phase": 0,
+              "step": 600
+            },
+            "indices": {
+              "u": [
+                "-2",
+                "-1",
+                "0",
+                "1"
+              ],
+              "v": [
+                "1",
+                "2",
+                "3"
+              ]
+            },
+            "lattice": {
+              "u": {
+                "defined": true,
+                "pitch": 600,
+                "baseIndex": "-2",
+                "baseCoordinate": 100
+              },
+              "v": {
+                "defined": true,
+                "pitch": 600,
+                "baseIndex": "1",
+                "baseCoordinate": 200
+              }
+            },
+            "lines": [
+              {
+                "axis": "u",
+                "index": "-2",
+                "coordinate": 100,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      100,
+                      200
+                    ],
+                    [
+                      100,
+                      1800
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "u",
+                "index": "-1",
+                "coordinate": 700,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      700,
+                      200
+                    ],
+                    [
+                      700,
+                      1800
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "u",
+                "index": "0",
+                "coordinate": 1300,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      1300,
+                      200
+                    ],
+                    [
+                      1300,
+                      1800
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "u",
+                "index": "1",
+                "coordinate": 1900,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      1900,
+                      200
+                    ],
+                    [
+                      1900,
+                      1800
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "v",
+                "index": "1",
+                "coordinate": 200,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      100,
+                      200
+                    ],
+                    [
+                      2100,
+                      200
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "v",
+                "index": "2",
+                "coordinate": 800,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      100,
+                      800
+                    ],
+                    [
+                      2100,
+                      800
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "v",
+                "index": "3",
+                "coordinate": 1400,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      100,
+                      1400
+                    ],
+                    [
+                      2100,
+                      1400
+                    ]
+                  ]
+                ]
+              }
+            ],
+            "dependencies": {
+              "children": [],
+              "guides": [],
+              "timbers": [
+                10
+              ]
+            }
+          }
+        ],
+        "timbers": [
+          {
+            "id": 81,
+            "role": "boundary",
+            "geometry": {
+              "surface": 1,
+              "centerline": 210,
+              "length": 2000,
+              "u": 100,
+              "v": 200,
+              "dir": "+u",
+              "side": "+n",
+              "A": 20,
+              "B": 20,
+              "origin": [
+                100,
+                200,
+                0
+              ],
+              "axes": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  1
+                ]
+              ]
+            },
+            "definition": {
+              "anchor": "at-face e0",
+              "selector": "",
+              "priority": 1
+            }
+          },
+          {
+            "id": 82,
+            "role": "boundary",
+            "geometry": {
+              "surface": 1,
+              "centerline": 1790,
+              "length": 2000,
+              "u": 100,
+              "v": 1780,
+              "dir": "+u",
+              "side": "+n",
+              "A": 20,
+              "B": 20,
+              "origin": [
+                100,
+                1780,
+                0
+              ],
+              "axes": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  1
+                ]
+              ]
+            },
+            "definition": {
+              "anchor": "at-face e2",
+              "selector": "",
+              "priority": 1
+            }
+          },
+          {
+            "id": 1,
+            "role": "primary",
+            "geometry": {
+              "surface": 1,
+              "centerline": 120,
+              "length": 1560,
+              "u": 130,
+              "v": 220,
+              "dir": "+v",
+              "side": "+n",
+              "A": 20,
+              "B": 20,
+              "origin": [
+                130,
+                220,
+                0
+              ],
+              "axes": [
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  -1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  1
+                ]
+              ]
+            },
+            "definition": {
+              "anchor": "at-line guide 1",
+              "selector": "",
+              "priority": 2
+            }
+          },
+          {
+            "id": 2,
+            "role": "primary",
+            "geometry": {
+              "surface": 1,
+              "centerline": 680,
+              "length": 1560,
+              "u": 690,
+              "v": 220,
+              "dir": "+v",
+              "side": "+n",
+              "A": 20,
+              "B": 20,
+              "origin": [
+                690,
+                220,
+                0
+              ],
+              "axes": [
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  -1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  1
+                ]
+              ]
+            },
+            "definition": {
+              "anchor": "at-line guide 2",
+              "selector": "",
+              "priority": 2
+            }
+          },
+          {
+            "id": 10,
+            "role": "secondary",
+            "geometry": {
+              "surface": 1,
+              "centerline": 500,
+              "length": 540,
+              "u": 130,
+              "v": 490,
+              "dir": "+u",
+              "side": "+n",
+              "A": 20,
+              "B": 20,
+              "origin": [
+                130,
+                490,
+                0
+              ],
+              "axes": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  1
+                ]
+              ]
+            },
+            "definition": {
+              "anchor": "at-line rule 10 0 1 -2 1 v 0",
+              "selector": "between t1 t2",
+              "priority": 3
+            }
+          }
+        ],
+        "timberSupports": {
+          "schema": "native-timber-supports/1",
+          "sourceFingerprint": "1ee0d9b49b37b29d00921c285201d18974c842c50446e39bb5982ee465ec14e8",
+          "entries": [
+            {
+              "id": 81,
+              "surface": 1,
+              "owner": null,
+              "start": {
+                "status": "exact",
+                "at": 100,
+                "crossRange": [
+                  200,
+                  220
+                ],
+                "relation": {
+                  "kind": "outline-edge",
+                  "source": {
+                    "kind": "boundary",
+                    "id": 1
+                  },
+                  "edgeIndex": 3,
+                  "holeIndex": null,
+                  "localFace": null,
+                  "normalWorld": null,
+                  "owner": null,
+                  "surface": 1,
+                  "stop": {
+                    "axis": "u",
+                    "at": 100,
+                    "range": [
+                      200,
+                      1800
+                    ],
+                    "fixity": "fixed"
+                  }
+                }
+              },
+              "finish": {
+                "status": "exact",
+                "at": 2100,
+                "crossRange": [
+                  200,
+                  220
+                ],
+                "relation": {
+                  "kind": "outline-edge",
+                  "source": {
+                    "kind": "boundary",
+                    "id": 1
+                  },
+                  "edgeIndex": 1,
+                  "holeIndex": null,
+                  "localFace": null,
+                  "normalWorld": null,
+                  "owner": null,
+                  "surface": 1,
+                  "stop": {
+                    "axis": "u",
+                    "at": 2100,
+                    "range": [
+                      200,
+                      1800
+                    ],
+                    "fixity": "fixed"
+                  }
+                }
+              }
+            },
+            {
+              "id": 82,
+              "surface": 1,
+              "owner": null,
+              "start": {
+                "status": "exact",
+                "at": 100,
+                "crossRange": [
+                  1780,
+                  1800
+                ],
+                "relation": {
+                  "kind": "outline-edge",
+                  "source": {
+                    "kind": "boundary",
+                    "id": 1
+                  },
+                  "edgeIndex": 3,
+                  "holeIndex": null,
+                  "localFace": null,
+                  "normalWorld": null,
+                  "owner": null,
+                  "surface": 1,
+                  "stop": {
+                    "axis": "u",
+                    "at": 100,
+                    "range": [
+                      200,
+                      1800
+                    ],
+                    "fixity": "fixed"
+                  }
+                }
+              },
+              "finish": {
+                "status": "exact",
+                "at": 2100,
+                "crossRange": [
+                  1780,
+                  1800
+                ],
+                "relation": {
+                  "kind": "outline-edge",
+                  "source": {
+                    "kind": "boundary",
+                    "id": 1
+                  },
+                  "edgeIndex": 1,
+                  "holeIndex": null,
+                  "localFace": null,
+                  "normalWorld": null,
+                  "owner": null,
+                  "surface": 1,
+                  "stop": {
+                    "axis": "u",
+                    "at": 2100,
+                    "range": [
+                      200,
+                      1800
+                    ],
+                    "fixity": "fixed"
+                  }
+                }
+              }
+            },
+            {
+              "id": 1,
+              "surface": 1,
+              "owner": null,
+              "start": {
+                "status": "exact",
+                "at": 220,
+                "crossRange": [
+                  110,
+                  130
+                ],
+                "relation": {
+                  "kind": "timber-face",
+                  "source": {
+                    "kind": "timber",
+                    "id": 81
+                  },
+                  "localFace": "B1",
+                  "normalWorld": [
+                    0,
+                    1,
+                    0
+                  ],
+                  "owner": null,
+                  "surface": 1,
+                  "stop": {
+                    "axis": "v",
+                    "at": 220,
+                    "range": [
+                      100,
+                      2100
+                    ],
+                    "fixity": "fixed"
+                  }
+                }
+              },
+              "finish": {
+                "status": "exact",
+                "at": 1780,
+                "crossRange": [
+                  110,
+                  130
+                ],
+                "relation": {
+                  "kind": "timber-face",
+                  "source": {
+                    "kind": "timber",
+                    "id": 82
+                  },
+                  "localFace": "B0",
+                  "normalWorld": [
+                    0,
+                    -1,
+                    0
+                  ],
+                  "owner": null,
+                  "surface": 1,
+                  "stop": {
+                    "axis": "v",
+                    "at": 1780,
+                    "range": [
+                      100,
+                      2100
+                    ],
+                    "fixity": "fixed"
+                  }
+                }
+              }
+            },
+            {
+              "id": 2,
+              "surface": 1,
+              "owner": null,
+              "start": {
+                "status": "exact",
+                "at": 220,
+                "crossRange": [
+                  670,
+                  690
+                ],
+                "relation": {
+                  "kind": "timber-face",
+                  "source": {
+                    "kind": "timber",
+                    "id": 81
+                  },
+                  "localFace": "B1",
+                  "normalWorld": [
+                    0,
+                    1,
+                    0
+                  ],
+                  "owner": null,
+                  "surface": 1,
+                  "stop": {
+                    "axis": "v",
+                    "at": 220,
+                    "range": [
+                      100,
+                      2100
+                    ],
+                    "fixity": "fixed"
+                  }
+                }
+              },
+              "finish": {
+                "status": "exact",
+                "at": 1780,
+                "crossRange": [
+                  670,
+                  690
+                ],
+                "relation": {
+                  "kind": "timber-face",
+                  "source": {
+                    "kind": "timber",
+                    "id": 82
+                  },
+                  "localFace": "B0",
+                  "normalWorld": [
+                    0,
+                    -1,
+                    0
+                  ],
+                  "owner": null,
+                  "surface": 1,
+                  "stop": {
+                    "axis": "v",
+                    "at": 1780,
+                    "range": [
+                      100,
+                      2100
+                    ],
+                    "fixity": "fixed"
+                  }
+                }
+              }
+            },
+            {
+              "id": 10,
+              "surface": 1,
+              "owner": null,
+              "start": {
+                "status": "exact",
+                "at": 130,
+                "crossRange": [
+                  490,
+                  510
+                ],
+                "relation": {
+                  "kind": "timber-face",
+                  "source": {
+                    "kind": "timber",
+                    "id": 1
+                  },
+                  "localFace": "B0",
+                  "normalWorld": [
+                    1,
+                    0,
+                    0
+                  ],
+                  "owner": null,
+                  "surface": 1,
+                  "stop": {
+                    "axis": "u",
+                    "at": 130,
+                    "range": [
+                      220,
+                      1780
+                    ],
+                    "fixity": "fixed"
+                  }
+                }
+              },
+              "finish": {
+                "status": "exact",
+                "at": 670,
+                "crossRange": [
+                  490,
+                  510
+                ],
+                "relation": {
+                  "kind": "timber-face",
+                  "source": {
+                    "kind": "timber",
+                    "id": 2
+                  },
+                  "localFace": "B1",
+                  "normalWorld": [
+                    -1,
+                    0,
+                    0
+                  ],
+                  "owner": null,
+                  "surface": 1,
+                  "stop": {
+                    "axis": "u",
+                    "at": 670,
+                    "range": [
+                      220,
+                      1780
+                    ],
+                    "fixity": "fixed"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "specs": [
+          {
+            "name": "support_position_1",
+            "value": 120
+          },
+          {
+            "name": "support_position_2",
+            "value": 680
+          }
+        ],
+        "datums": [],
+        "engineeringSources": [],
+        "assembly": {
+          "capabilities": [
+            "assembly-rule-authoring/1",
+            "assembly-timber-generation/1"
+          ],
+          "rules": [],
+          "bindings": [],
+          "instances": []
+        }
+      }
+    ]
+  },
+  "no_op_load_control": {
+    "kind": "observer callback substitution; not product mutation",
+    "skipped_command": "loadfile /workspace/closure-evidence/contracts/grid-final/grid-rule-timber.scene",
+    "detected": true,
+    "failure": "Tuples differ: ('boundary 1 outline 100,200 2100,200 2100,[11376 chars][]}}) != ('', {'ok': True, 'faces': [], 'spaces': [][662 chars][]}})\n\nFirst differing element 0:\n'boundary 1 outline 100,200 2100,200 2100,[1264 chars]-1\\n'\n''\n\nDiff is 30912 characters long. Set self.maxDiff to None to see it. : Reopen lost definitions/references"
+  },
+  "passed": true,
+  "cleanup_errors": [],
+  "sessions": [
+    {
+      "index": 0,
+      "pid": 89809,
+      "bridge": "/tmp/geometry-tests/bridge",
+      "cwd": "None",
+      "exit_code": 0
+    }
+  ],
+  "head_after": "3a48cf5bacb9a295e15046e5ca0cb021e50c54db",
+  "finished": "2026-10-08T15:56:44.208425+00:00",
+  "exit_code": 0,
+  "git_commands": [
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit_code": 0,
+      "stdout": "git-00.stdout",
+      "stderr": "git-00.stderr"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "origin/main"
+      ],
+      "exit_code": 0,
+      "stdout": "git-01.stdout",
+      "stderr": "git-01.stderr"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "origin/docs/save-reopen-contract-20261008"
+      ],
+      "exit_code": 0,
+      "stdout": "git-02.stdout",
+      "stderr": "git-02.stderr"
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--short"
+      ],
+      "exit_code": 0,
+      "stdout": "git-03.stdout",
+      "stderr": "git-03.stderr"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--binary"
+      ],
+      "exit_code": 0,
+      "stdout": "git-04.stdout",
+      "stderr": "git-04.stderr"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit_code": 0,
+      "stdout": "git-05.stdout",
+      "stderr": "git-05.stderr"
+    }
+  ]
+}

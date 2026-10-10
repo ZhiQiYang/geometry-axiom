@@ -1,0 +1,66 @@
+{
+  "schema": "geometry-grid-system-170-regress/2",
+  "role": "第二輪焦點回歸。測試在離開面之後用既有的 #toggleLeft 關上 390 左側抽屜。產品 app.js 沒有再改。",
+  "head": "3574b47bd02e2c2f2b77bf5fe6d67ff328bfaa72",
+  "tree": "D:\\geometry-axiom-focus390",
+  "gitStatusAtStart": "M geometry-web/grid_rule_lines_test.js; ?? tests/release-evidence/20261008-focus390/",
+  "appJsMatchesCommit": true,
+  "appJsGitBlob": "f4e2cd0f7e07c948ebe10495e0850f79325cc2aa",
+  "notTheClean316Run": true,
+  "runtime": {
+    "version": "09fb8f1c4ebdd411a165677d73fbe22c977967e3692b80c98c74c7425aca5fdb",
+    "fresh": true,
+    "pid": 40080,
+    "session": "832bcec780e44015890cf8d00b825978",
+    "note": "與乾淨 316 輪的 38021bc5… 以及第一輪回歸的 dcc5ee0b… 都不同，因為 geometry-web 測試檔有改。"
+  },
+  "bridge": {
+    "sha256": "aa2cc6ae4fd47277c4620bf08bbc99ccae0ee48757c0728785528cfd1357736d",
+    "childPid": 22252,
+    "command": "same verified bridge.exe; C sources unchanged, not rebuilt"
+  },
+  "url": "http://127.0.0.1:8912/",
+  "cdpPort": 9512,
+  "browserPid": 43220,
+  "nodePid": 37648,
+  "nodeExit": 0,
+  "completed": true,
+  "passedAssertions": 328,
+  "failedAssertions": 0,
+  "sections": {
+    "P70": 117,
+    "P71": 9,
+    "P78": 23,
+    "P87": 60,
+    "P88": 119
+  },
+  "addedFocusAssertions": 12,
+  "widths": [
+    1280,
+    390
+  ],
+  "goldenCompare": "not compared (partial mode)",
+  "uncaughtBrowserExceptions": 0,
+  "scope": "GEOMETRY_GRID_SYSTEM_ONLY only. Not the full main UI and not the whole repository.",
+  "screenshots": [
+    "grid-trial-desktop.png",
+    "grid-trial-mobile-alignment.png",
+    "grid-trial-mobile-canvas.png",
+    "grid-trial-mobile-controls.png",
+    "infinite-binding-hole.png",
+    "infinite-grid-mobile.png",
+    "infinite-source-desktop.png",
+    "rule-editor-390-raw.png",
+    "rule-editor-390-reopened.png",
+    "rule-editor-desktop-preview.png",
+    "rule-editor-desktop-restored.png",
+    "rule-editor-orphan-delete.png",
+    "rule-editor-orphan-edit.png",
+    "rule-lines-1280-face-1.png",
+    "rule-lines-1280-face-2.png",
+    "rule-lines-1280-reopened.png",
+    "rule-lines-390-face-1.png",
+    "rule-lines-390-face-2.png",
+    "rule-lines-390-reopened.png"
+  ]
+}

@@ -1,0 +1,37 @@
+{"schema": "geometry-runtime/1", "version": "f2804c8068805409ccc06cddea3fac6219f768706f9276e981948f1142a286b2", "fresh": true, "root": "D:\\geometry-axiom-inspector-draft", "pid": 30184, "session": "10ecae1110974672866960d3c31047ab"}
+IDENTITY {"head":"d44ad7fea531a94f67401d5b403565cd891770ae","status":"","runtime":{"version":"f2804c8068805409ccc06cddea3fac6219f768706f9276e981948f1142a286b2","fresh":true,"pid":30184,"session":"10ecae1110974672866960d3c31047ab","root":"D:\\geometry-axiom-inspector-draft"},"modelBase":"C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\model-base.exe"}
+PASS 正式頁面標題
+PASS 命令建立 1200×800 面
+PASS 來源預覽尚未寫入世界
+PASS 已建立無限來源 [{"id":1,"name":"假格網甲","mode":"infinite"}]
+PASS 配置預覽尚未寫入世界
+PASS 配置保存 cell 0,0 與頂點 key [{"kind":"grid-binding","id":1,"boundary":1,"system":1,"vertexKey":1,"cell":["0","0"],"anchor":[{"num":0,"den":1},{"num":0,"den":1}],"translation":[0,0],"translationExact":["0","0"],"translationRepresentable":true,"applications":[],"cx":880,"cy":60,"hasPos":true}]
+PASS 套用預覽尚未寫入世界
+PASS 套用後主格引用同一配置與來源 [{"id":1,"surface":1,"bindingId":1,"sourceSystem":1}]
+PASS 復原套用後主格消失且配置仍在 {"grids":0}
+PASS 重做套用後幾何與引用回到原值
+PASS 保存走下載備援且檔案非空 {"size":867,"sha256":"a34cb207ad1106762097bd3e42c04390939a3cb6b885bfd8ad5f580ff8c3ae3d"}
+PASS 新專案清空網格與面
+PASS 重開後 dump、來源、配置與主格引用相同
+PASS 重開保留專案 id {"before":"d8d7b530-8cc9-4f1f-bd20-fd07cc2bea91","after":"d8d7b530-8cc9-4f1f-bd20-fd07cc2bea91"}
+PASS 390 保存控制可點且不橫向溢出 {"w":44,"h":44,"hit":true,"overflow":true}
+PASS 390 重開後引用不因縮放改變
+PASS 矩形範例預覽不改目前網格世界 {"bottom":0,"clearance_mm3":"36000000000","closed":true,"face_count":6,"generated_faces":[{"label":"外環第 1 邊","orientation":1,"placement_id":2,"purpose":"boundary"},{"label":"外環第 2 邊","orientation":1,"placement_id":3,"purpose":"boundary"},{"label":"外環第 3 邊","orientation":1,"placement_id":4,"purpose":"boundary"},{"label":"外環第 4 邊","orientation":1,"placement_id":5,"purpose":"boundary"},{"label":"底面","orientation":-1,"placement_id":6,"purpose":"boundary"},{"label":"頂面","orientation":1,"placement_id":7,"purpose":"boundary"}],"missing":[],"source_placement":1,"source_z":2500,"top":3000,"volume_mm3":"36000000000","wall_diagnostics":[],"wall_volume_mm3":"4320000000"}
+PASS 建立模型後原生場景仍是網格專案 {"id":"d8567423-c913-4f90-bc72-2de7edd12aaf","source":"4669f32c993154b7ed7a830274c03c8a235f16b1217f2f47218fe9b4c1e2cdd6"}
+PASS 刪除模型不改原生場景
+PASS 復原刪除恢復同一模型與來源摘要
+PASS 重做刪除再次移除模型
+PASS 切換新專案清空模型
+FAIL 復原新專案回到含模型的原專案
+PASS 模型專案重開保留場景、模型 id 與來源摘要 [{"id":"d8567423-c913-4f90-bc72-2de7edd12aaf","source":"4669f32c993154b7ed7a830274c03c8a235f16b1217f2f47218fe9b4c1e2cdd6"}]
+PASS 正式開啟既有組構範例 {"rules":1,"bindings":1,"instances":1}
+PASS 組構預覽尚未改已發布狀態
+PASS 確認後角材截面改為送出的 40×50 ["40x50","40x50","40x50"]
+PASS 復原組構確認回到改前實例
+PASS 重做組構確認恢復 40×50 與場景
+PASS 組構重開保留規則、實例、dump 與專案 id
+PASS 注入的保存取消不改目前專案
+PASS 注入的寫入失敗不改目前專案 {"writeError":"","aborted":true}
+PASS 壞檔匯入不改目前專案 {"status":"未能完成開啟專案：專案缺少清單或場景。"}
+PHASE3_SUMMARY {"passed":32,"failed":1}
+NODE_EXIT 1

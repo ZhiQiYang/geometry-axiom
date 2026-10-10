@@ -1,0 +1,1982 @@
+[
+  {
+    "index": 0,
+    "name": "startup: fresh service belongs to isolated worktree",
+    "ok": true
+  },
+  {
+    "index": 1,
+    "name": "startup: correct URL title and usable nonblank import UI",
+    "ok": true
+  },
+  {
+    "index": 2,
+    "name": "desktop-setup: imported authorized synthetic bytes",
+    "ok": true
+  },
+  {
+    "index": 3,
+    "name": "desktop-setup: formal calibration is ten mm per source unit",
+    "ok": true
+  },
+  {
+    "index": 4,
+    "name": "desktop-setup: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 5,
+    "name": "desktop-setup: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 6,
+    "name": "desktop-valid-click: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 7,
+    "name": "desktop-valid-click: click changes nonzero edge exactly",
+    "ok": true
+  },
+  {
+    "index": 8,
+    "name": "desktop-valid-click: successful click clears reviewed and disables Confirm",
+    "ok": true
+  },
+  {
+    "index": 9,
+    "name": "desktop-valid-click: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 10,
+    "name": "desktop-valid-click: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 11,
+    "name": "desktop-valid-enter-first: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 12,
+    "name": "desktop-valid-enter-first: click and Enter start with identical model, edge, value and focus",
+    "ok": true
+  },
+  {
+    "index": 13,
+    "name": "desktop-valid-enter-first: real Enter changes nonzero edge exactly",
+    "ok": true
+  },
+  {
+    "index": 14,
+    "name": "desktop-valid-enter-first: Enter equals existing click draft result",
+    "ok": true
+  },
+  {
+    "index": 15,
+    "name": "desktop-valid-enter-first: successful Enter clears reviewed and disables Confirm",
+    "ok": true
+  },
+  {
+    "index": 16,
+    "name": "desktop-valid-enter-first: input focus selected edge and entered value survive refresh",
+    "ok": true
+  },
+  {
+    "index": 17,
+    "name": "desktop-valid-enter-first: real Enter consumed before outer shortcut listeners",
+    "ok": true
+  },
+  {
+    "index": 18,
+    "name": "desktop-valid-enter-first: one existing apply action per Enter",
+    "ok": true
+  },
+  {
+    "index": 19,
+    "name": "desktop-valid-enter-second: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 20,
+    "name": "desktop-valid-enter-second: second independent Enter applies absolute size without drift",
+    "ok": true
+  },
+  {
+    "index": 21,
+    "name": "desktop-valid-enter-second: second Enter retains field focus and edge",
+    "ok": true
+  },
+  {
+    "index": 22,
+    "name": "desktop-valid-enter-second: second Enter invokes existing apply exactly once",
+    "ok": true
+  },
+  {
+    "index": 23,
+    "name": "desktop-valid-enter-second: two real Enter keydowns recorded as trusted events",
+    "ok": true
+  },
+  {
+    "index": 24,
+    "name": "desktop-same-value-click: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 25,
+    "name": "desktop-same-value-click: same-value click preserves coordinates but clears reviewed",
+    "ok": true
+  },
+  {
+    "index": 26,
+    "name": "desktop-same-value-enter-third: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 27,
+    "name": "desktop-same-value-enter-third: same-value independent Enter has exact coordinates with no drift",
+    "ok": true
+  },
+  {
+    "index": 28,
+    "name": "desktop-same-value-enter-third: same-value Enter equals click and deliberately clears reviewed",
+    "ok": true
+  },
+  {
+    "index": 29,
+    "name": "desktop-same-value-enter-third: same-value Enter is one apply, not zero or repeated apply",
+    "ok": true
+  },
+  {
+    "index": 30,
+    "name": "desktop-same-value-enter-third: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 31,
+    "name": "desktop-same-value-enter-third: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 32,
+    "name": "desktop-modified-Shift-Enter: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 33,
+    "name": "desktop-modified-Shift-Enter: does not apply or mutate draft/review/native",
+    "ok": true
+  },
+  {
+    "index": 34,
+    "name": "desktop-modified-Shift-Enter: no apply button invocation",
+    "ok": true
+  },
+  {
+    "index": 35,
+    "name": "desktop-modified-Shift-Enter: modified Enter was delivered as a trusted event with its modifier",
+    "ok": true
+  },
+  {
+    "index": 36,
+    "name": "desktop-modified-Shift-Enter: modified Enter does not reach outer shortcut listeners",
+    "ok": true
+  },
+  {
+    "index": 37,
+    "name": "desktop-modified-Shift-Enter: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 38,
+    "name": "desktop-modified-Shift-Enter: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 39,
+    "name": "desktop-modified-Control-Enter: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 40,
+    "name": "desktop-modified-Control-Enter: does not apply or mutate draft/review/native",
+    "ok": true
+  },
+  {
+    "index": 41,
+    "name": "desktop-modified-Control-Enter: no apply button invocation",
+    "ok": true
+  },
+  {
+    "index": 42,
+    "name": "desktop-modified-Control-Enter: modified Enter was delivered as a trusted event with its modifier",
+    "ok": true
+  },
+  {
+    "index": 43,
+    "name": "desktop-modified-Control-Enter: modified Enter does not reach outer shortcut listeners",
+    "ok": true
+  },
+  {
+    "index": 44,
+    "name": "desktop-modified-Control-Enter: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 45,
+    "name": "desktop-modified-Control-Enter: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 46,
+    "name": "desktop-modified-Alt-Enter: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 47,
+    "name": "desktop-modified-Alt-Enter: does not apply or mutate draft/review/native",
+    "ok": true
+  },
+  {
+    "index": 48,
+    "name": "desktop-modified-Alt-Enter: no apply button invocation",
+    "ok": true
+  },
+  {
+    "index": 49,
+    "name": "desktop-modified-Alt-Enter: modified Enter was delivered as a trusted event with its modifier",
+    "ok": true
+  },
+  {
+    "index": 50,
+    "name": "desktop-modified-Alt-Enter: modified Enter does not reach outer shortcut listeners",
+    "ok": true
+  },
+  {
+    "index": 51,
+    "name": "desktop-modified-Alt-Enter: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 52,
+    "name": "desktop-modified-Alt-Enter: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 53,
+    "name": "desktop-modified-Meta-Enter: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 54,
+    "name": "desktop-modified-Meta-Enter: does not apply or mutate draft/review/native",
+    "ok": true
+  },
+  {
+    "index": 55,
+    "name": "desktop-modified-Meta-Enter: no apply button invocation",
+    "ok": true
+  },
+  {
+    "index": 56,
+    "name": "desktop-modified-Meta-Enter: modified Enter was delivered as a trusted event with its modifier",
+    "ok": true
+  },
+  {
+    "index": 57,
+    "name": "desktop-modified-Meta-Enter: modified Enter does not reach outer shortcut listeners",
+    "ok": true
+  },
+  {
+    "index": 58,
+    "name": "desktop-modified-Meta-Enter: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 59,
+    "name": "desktop-modified-Meta-Enter: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 60,
+    "name": "desktop-composing: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 61,
+    "name": "desktop-composing: does not apply or mutate draft/review/native",
+    "ok": true
+  },
+  {
+    "index": 62,
+    "name": "desktop-composing: no apply button invocation",
+    "ok": true
+  },
+  {
+    "index": 63,
+    "name": "desktop-composing: fault injection delivered requested flags",
+    "ok": true
+  },
+  {
+    "index": 64,
+    "name": "desktop-composing: guarded Enter does not reach outer shortcut listeners",
+    "ok": true
+  },
+  {
+    "index": 65,
+    "name": "desktop-composing: IME event default remains uncancelled",
+    "ok": true
+  },
+  {
+    "index": 66,
+    "name": "desktop-composing: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 67,
+    "name": "desktop-composing: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 68,
+    "name": "desktop-ime-229: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 69,
+    "name": "desktop-ime-229: does not apply or mutate draft/review/native",
+    "ok": true
+  },
+  {
+    "index": 70,
+    "name": "desktop-ime-229: no apply button invocation",
+    "ok": true
+  },
+  {
+    "index": 71,
+    "name": "desktop-ime-229: fault injection delivered requested flags",
+    "ok": true
+  },
+  {
+    "index": 72,
+    "name": "desktop-ime-229: guarded Enter does not reach outer shortcut listeners",
+    "ok": true
+  },
+  {
+    "index": 73,
+    "name": "desktop-ime-229: IME event default remains uncancelled",
+    "ok": true
+  },
+  {
+    "index": 74,
+    "name": "desktop-ime-229: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 75,
+    "name": "desktop-ime-229: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 76,
+    "name": "desktop-repeat: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 77,
+    "name": "desktop-repeat: does not apply or mutate draft/review/native",
+    "ok": true
+  },
+  {
+    "index": 78,
+    "name": "desktop-repeat: no apply button invocation",
+    "ok": true
+  },
+  {
+    "index": 79,
+    "name": "desktop-repeat: fault injection delivered requested flags",
+    "ok": true
+  },
+  {
+    "index": 80,
+    "name": "desktop-repeat: guarded Enter does not reach outer shortcut listeners",
+    "ok": true
+  },
+  {
+    "index": 81,
+    "name": "desktop-repeat: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 82,
+    "name": "desktop-repeat: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 83,
+    "name": "desktop-default-prevented: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 84,
+    "name": "desktop-default-prevented: does not apply or mutate draft/review/native",
+    "ok": true
+  },
+  {
+    "index": 85,
+    "name": "desktop-default-prevented: no apply button invocation",
+    "ok": true
+  },
+  {
+    "index": 86,
+    "name": "desktop-default-prevented: fault injection delivered requested flags",
+    "ok": true
+  },
+  {
+    "index": 87,
+    "name": "desktop-default-prevented: guarded Enter does not reach outer shortcut listeners",
+    "ok": true
+  },
+  {
+    "index": 88,
+    "name": "desktop-default-prevented: already-prevented event remains prevented",
+    "ok": true
+  },
+  {
+    "index": 89,
+    "name": "desktop-default-prevented: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 90,
+    "name": "desktop-default-prevented: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 91,
+    "name": "desktop-trusted-repeat-keydown: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 92,
+    "name": "desktop-trusted-repeat-keydown: held Enter repeat does not apply again",
+    "ok": true
+  },
+  {
+    "index": 93,
+    "name": "desktop-trusted-repeat-keydown: repeat was an actual trusted repeated keydown",
+    "ok": true
+  },
+  {
+    "index": 94,
+    "name": "desktop-trusted-repeat-keydown: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 95,
+    "name": "desktop-trusted-repeat-keydown: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 96,
+    "name": "desktop-invalid-empty-click: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 97,
+    "name": "desktop-invalid-empty-click: existing click rejects without changing draft/review",
+    "ok": true
+  },
+  {
+    "index": 98,
+    "name": "desktop-invalid-empty-click: existing click reports positive integer rejection",
+    "ok": true
+  },
+  {
+    "index": 99,
+    "name": "desktop-invalid-empty-click: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 100,
+    "name": "desktop-invalid-empty-click: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 101,
+    "name": "desktop-invalid-empty-enter: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 102,
+    "name": "desktop-invalid-empty-enter: same invalid input and reviewed starting state",
+    "ok": true
+  },
+  {
+    "index": 103,
+    "name": "desktop-invalid-empty-enter: invalid Enter equals click rejection and review state",
+    "ok": true
+  },
+  {
+    "index": 104,
+    "name": "desktop-invalid-empty-enter: invalid Enter preserves full model",
+    "ok": true
+  },
+  {
+    "index": 105,
+    "name": "desktop-invalid-empty-enter: invalid Enter keeps input focus selected edge and actual DOM value",
+    "ok": true
+  },
+  {
+    "index": 106,
+    "name": "desktop-invalid-empty-enter: invalid Enter and click produce same post-refresh input validity",
+    "ok": true
+  },
+  {
+    "index": 107,
+    "name": "desktop-invalid-empty-enter: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 108,
+    "name": "desktop-invalid-empty-enter: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 109,
+    "name": "desktop-invalid-zero-click: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 110,
+    "name": "desktop-invalid-zero-click: existing click rejects without changing draft/review",
+    "ok": true
+  },
+  {
+    "index": 111,
+    "name": "desktop-invalid-zero-click: existing click reports positive integer rejection",
+    "ok": true
+  },
+  {
+    "index": 112,
+    "name": "desktop-invalid-zero-click: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 113,
+    "name": "desktop-invalid-zero-click: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 114,
+    "name": "desktop-invalid-zero-enter: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 115,
+    "name": "desktop-invalid-zero-enter: same invalid input and reviewed starting state",
+    "ok": true
+  },
+  {
+    "index": 116,
+    "name": "desktop-invalid-zero-enter: invalid Enter equals click rejection and review state",
+    "ok": true
+  },
+  {
+    "index": 117,
+    "name": "desktop-invalid-zero-enter: invalid Enter preserves full model",
+    "ok": true
+  },
+  {
+    "index": 118,
+    "name": "desktop-invalid-zero-enter: invalid Enter keeps input focus selected edge and actual DOM value",
+    "ok": true
+  },
+  {
+    "index": 119,
+    "name": "desktop-invalid-zero-enter: invalid Enter and click produce same post-refresh input validity",
+    "ok": true
+  },
+  {
+    "index": 120,
+    "name": "desktop-invalid-zero-enter: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 121,
+    "name": "desktop-invalid-zero-enter: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 122,
+    "name": "desktop-invalid-negative-click: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 123,
+    "name": "desktop-invalid-negative-click: existing click rejects without changing draft/review",
+    "ok": true
+  },
+  {
+    "index": 124,
+    "name": "desktop-invalid-negative-click: existing click reports positive integer rejection",
+    "ok": true
+  },
+  {
+    "index": 125,
+    "name": "desktop-invalid-negative-click: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 126,
+    "name": "desktop-invalid-negative-click: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 127,
+    "name": "desktop-invalid-negative-enter: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 128,
+    "name": "desktop-invalid-negative-enter: same invalid input and reviewed starting state",
+    "ok": true
+  },
+  {
+    "index": 129,
+    "name": "desktop-invalid-negative-enter: invalid Enter equals click rejection and review state",
+    "ok": true
+  },
+  {
+    "index": 130,
+    "name": "desktop-invalid-negative-enter: invalid Enter preserves full model",
+    "ok": true
+  },
+  {
+    "index": 131,
+    "name": "desktop-invalid-negative-enter: invalid Enter keeps input focus selected edge and actual DOM value",
+    "ok": true
+  },
+  {
+    "index": 132,
+    "name": "desktop-invalid-negative-enter: invalid Enter and click produce same post-refresh input validity",
+    "ok": true
+  },
+  {
+    "index": 133,
+    "name": "desktop-invalid-negative-enter: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 134,
+    "name": "desktop-invalid-negative-enter: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 135,
+    "name": "desktop-invalid-fraction-click: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 136,
+    "name": "desktop-invalid-fraction-click: existing click rejects without changing draft/review",
+    "ok": true
+  },
+  {
+    "index": 137,
+    "name": "desktop-invalid-fraction-click: existing click reports positive integer rejection",
+    "ok": true
+  },
+  {
+    "index": 138,
+    "name": "desktop-invalid-fraction-click: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 139,
+    "name": "desktop-invalid-fraction-click: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 140,
+    "name": "desktop-invalid-fraction-enter: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 141,
+    "name": "desktop-invalid-fraction-enter: same invalid input and reviewed starting state",
+    "ok": true
+  },
+  {
+    "index": 142,
+    "name": "desktop-invalid-fraction-enter: invalid Enter equals click rejection and review state",
+    "ok": true
+  },
+  {
+    "index": 143,
+    "name": "desktop-invalid-fraction-enter: invalid Enter preserves full model",
+    "ok": true
+  },
+  {
+    "index": 144,
+    "name": "desktop-invalid-fraction-enter: invalid Enter keeps input focus selected edge and actual DOM value",
+    "ok": true
+  },
+  {
+    "index": 145,
+    "name": "desktop-invalid-fraction-enter: invalid Enter and click produce same post-refresh input validity",
+    "ok": true
+  },
+  {
+    "index": 146,
+    "name": "desktop-invalid-fraction-enter: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 147,
+    "name": "desktop-invalid-fraction-enter: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 148,
+    "name": "desktop-invalid-nonfinite-overflow-click: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 149,
+    "name": "desktop-invalid-nonfinite-overflow-click: existing click rejects without changing draft/review",
+    "ok": true
+  },
+  {
+    "index": 150,
+    "name": "desktop-invalid-nonfinite-overflow-click: existing click reports positive integer rejection",
+    "ok": true
+  },
+  {
+    "index": 151,
+    "name": "desktop-invalid-nonfinite-overflow-click: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 152,
+    "name": "desktop-invalid-nonfinite-overflow-click: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 153,
+    "name": "desktop-invalid-nonfinite-overflow-enter: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 154,
+    "name": "desktop-invalid-nonfinite-overflow-enter: same invalid input and reviewed starting state",
+    "ok": true
+  },
+  {
+    "index": 155,
+    "name": "desktop-invalid-nonfinite-overflow-enter: invalid Enter equals click rejection and review state",
+    "ok": true
+  },
+  {
+    "index": 156,
+    "name": "desktop-invalid-nonfinite-overflow-enter: invalid Enter preserves full model",
+    "ok": true
+  },
+  {
+    "index": 157,
+    "name": "desktop-invalid-nonfinite-overflow-enter: invalid Enter keeps input focus selected edge and actual DOM value",
+    "ok": true
+  },
+  {
+    "index": 158,
+    "name": "desktop-invalid-nonfinite-overflow-enter: invalid Enter and click produce same post-refresh input validity",
+    "ok": true
+  },
+  {
+    "index": 159,
+    "name": "desktop-invalid-nonfinite-overflow-enter: overflow represented honestly as DOM numeric normalization",
+    "ok": true
+  },
+  {
+    "index": 160,
+    "name": "desktop-invalid-nonfinite-overflow-enter: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 161,
+    "name": "desktop-invalid-nonfinite-overflow-enter: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 162,
+    "name": "desktop-textarea-enter: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 163,
+    "name": "desktop-textarea-enter: does not apply or mutate draft/review/native",
+    "ok": true
+  },
+  {
+    "index": 164,
+    "name": "desktop-textarea-enter: no apply button invocation",
+    "ok": true
+  },
+  {
+    "index": 165,
+    "name": "desktop-textarea-enter: textarea retains ordinary input focus",
+    "ok": true
+  },
+  {
+    "index": 166,
+    "name": "desktop-other-number-field-enter: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 167,
+    "name": "desktop-other-number-field-enter: does not apply or mutate draft/review/native",
+    "ok": true
+  },
+  {
+    "index": 168,
+    "name": "desktop-other-number-field-enter: no apply button invocation",
+    "ok": true
+  },
+  {
+    "index": 169,
+    "name": "desktop-other-number-field-enter: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 170,
+    "name": "desktop-other-number-field-enter: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 171,
+    "name": "desktop-detached-after-cancel: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 172,
+    "name": "desktop-detached-after-cancel: does not apply or mutate draft/review/native",
+    "ok": true
+  },
+  {
+    "index": 173,
+    "name": "desktop-detached-after-cancel: no apply button invocation",
+    "ok": true
+  },
+  {
+    "index": 174,
+    "name": "desktop-detached-after-cancel: saved input is detached and candidate stays cancelled",
+    "ok": true
+  },
+  {
+    "index": 175,
+    "name": "desktop-detached-after-cancel: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 176,
+    "name": "desktop-detached-after-cancel: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 177,
+    "name": "desktop-detached-old-input-new-candidate: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 178,
+    "name": "desktop-detached-old-input-new-candidate: does not apply or mutate draft/review/native",
+    "ok": true
+  },
+  {
+    "index": 179,
+    "name": "desktop-detached-old-input-new-candidate: no apply button invocation",
+    "ok": true
+  },
+  {
+    "index": 180,
+    "name": "desktop-detached-old-input-new-candidate: old input still detached while new candidate exists",
+    "ok": true
+  },
+  {
+    "index": 181,
+    "name": "desktop-connected-stale-input-new-candidate: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 182,
+    "name": "desktop-connected-stale-input-new-candidate: does not apply or mutate draft/review/native",
+    "ok": true
+  },
+  {
+    "index": 183,
+    "name": "desktop-connected-stale-input-new-candidate: no apply button invocation",
+    "ok": true
+  },
+  {
+    "index": 184,
+    "name": "desktop-connected-stale-input-new-candidate: stale input is connected but is not current pane input",
+    "ok": true
+  },
+  {
+    "index": 185,
+    "name": "desktop-detached-after-successful-refresh: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 186,
+    "name": "desktop-detached-after-successful-refresh: does not apply or mutate draft/review/native",
+    "ok": true
+  },
+  {
+    "index": 187,
+    "name": "desktop-detached-after-successful-refresh: no apply button invocation",
+    "ok": true
+  },
+  {
+    "index": 188,
+    "name": "desktop-detached-after-successful-refresh: successful click replaced old input node",
+    "ok": true
+  },
+  {
+    "index": 189,
+    "name": "desktop-detached-after-successful-refresh: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 190,
+    "name": "desktop-detached-after-successful-refresh: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 191,
+    "name": "desktop-escape-from-input: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 192,
+    "name": "desktop-escape-from-input: does not apply or mutate draft/review/native",
+    "ok": true
+  },
+  {
+    "index": 193,
+    "name": "desktop-escape-from-input: no apply button invocation",
+    "ok": true
+  },
+  {
+    "index": 194,
+    "name": "desktop-escape-from-canvas: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 195,
+    "name": "desktop-escape-from-canvas: canvas Escape cancels draft without changing native",
+    "ok": true
+  },
+  {
+    "index": 196,
+    "name": "narrow-setup: imported authorized synthetic bytes",
+    "ok": true
+  },
+  {
+    "index": 197,
+    "name": "narrow-setup: formal calibration is ten mm per source unit",
+    "ok": true
+  },
+  {
+    "index": 198,
+    "name": "narrow-setup: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 199,
+    "name": "narrow-setup: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 200,
+    "name": "narrow-valid-click: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 201,
+    "name": "narrow-valid-click: click changes nonzero edge exactly",
+    "ok": true
+  },
+  {
+    "index": 202,
+    "name": "narrow-valid-click: successful click clears reviewed and disables Confirm",
+    "ok": true
+  },
+  {
+    "index": 203,
+    "name": "narrow-valid-click: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 204,
+    "name": "narrow-valid-click: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 205,
+    "name": "narrow-valid-enter-first: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 206,
+    "name": "narrow-valid-enter-first: click and Enter start with identical model, edge, value and focus",
+    "ok": true
+  },
+  {
+    "index": 207,
+    "name": "narrow-valid-enter-first: real Enter changes nonzero edge exactly",
+    "ok": true
+  },
+  {
+    "index": 208,
+    "name": "narrow-valid-enter-first: Enter equals existing click draft result",
+    "ok": true
+  },
+  {
+    "index": 209,
+    "name": "narrow-valid-enter-first: successful Enter clears reviewed and disables Confirm",
+    "ok": true
+  },
+  {
+    "index": 210,
+    "name": "narrow-valid-enter-first: input focus selected edge and entered value survive refresh",
+    "ok": true
+  },
+  {
+    "index": 211,
+    "name": "narrow-valid-enter-first: real Enter consumed before outer shortcut listeners",
+    "ok": true
+  },
+  {
+    "index": 212,
+    "name": "narrow-valid-enter-first: one existing apply action per Enter",
+    "ok": true
+  },
+  {
+    "index": 213,
+    "name": "narrow-valid-enter-first: narrow document fits viewport",
+    "ok": true
+  },
+  {
+    "index": 214,
+    "name": "narrow-valid-enter-second: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 215,
+    "name": "narrow-valid-enter-second: second independent Enter applies absolute size without drift",
+    "ok": true
+  },
+  {
+    "index": 216,
+    "name": "narrow-valid-enter-second: second Enter retains field focus and edge",
+    "ok": true
+  },
+  {
+    "index": 217,
+    "name": "narrow-valid-enter-second: second Enter invokes existing apply exactly once",
+    "ok": true
+  },
+  {
+    "index": 218,
+    "name": "narrow-valid-enter-second: two real Enter keydowns recorded as trusted events",
+    "ok": true
+  },
+  {
+    "index": 219,
+    "name": "narrow-same-value-click: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 220,
+    "name": "narrow-same-value-click: same-value click preserves coordinates but clears reviewed",
+    "ok": true
+  },
+  {
+    "index": 221,
+    "name": "narrow-same-value-enter-third: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 222,
+    "name": "narrow-same-value-enter-third: same-value independent Enter has exact coordinates with no drift",
+    "ok": true
+  },
+  {
+    "index": 223,
+    "name": "narrow-same-value-enter-third: same-value Enter equals click and deliberately clears reviewed",
+    "ok": true
+  },
+  {
+    "index": 224,
+    "name": "narrow-same-value-enter-third: same-value Enter is one apply, not zero or repeated apply",
+    "ok": true
+  },
+  {
+    "index": 225,
+    "name": "narrow-same-value-enter-third: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 226,
+    "name": "narrow-same-value-enter-third: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 227,
+    "name": "narrow-modified-Shift-Enter: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 228,
+    "name": "narrow-modified-Shift-Enter: does not apply or mutate draft/review/native",
+    "ok": true
+  },
+  {
+    "index": 229,
+    "name": "narrow-modified-Shift-Enter: no apply button invocation",
+    "ok": true
+  },
+  {
+    "index": 230,
+    "name": "narrow-modified-Shift-Enter: modified Enter was delivered as a trusted event with its modifier",
+    "ok": true
+  },
+  {
+    "index": 231,
+    "name": "narrow-modified-Shift-Enter: modified Enter does not reach outer shortcut listeners",
+    "ok": true
+  },
+  {
+    "index": 232,
+    "name": "narrow-modified-Shift-Enter: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 233,
+    "name": "narrow-modified-Shift-Enter: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 234,
+    "name": "narrow-modified-Control-Enter: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 235,
+    "name": "narrow-modified-Control-Enter: does not apply or mutate draft/review/native",
+    "ok": true
+  },
+  {
+    "index": 236,
+    "name": "narrow-modified-Control-Enter: no apply button invocation",
+    "ok": true
+  },
+  {
+    "index": 237,
+    "name": "narrow-modified-Control-Enter: modified Enter was delivered as a trusted event with its modifier",
+    "ok": true
+  },
+  {
+    "index": 238,
+    "name": "narrow-modified-Control-Enter: modified Enter does not reach outer shortcut listeners",
+    "ok": true
+  },
+  {
+    "index": 239,
+    "name": "narrow-modified-Control-Enter: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 240,
+    "name": "narrow-modified-Control-Enter: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 241,
+    "name": "narrow-modified-Alt-Enter: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 242,
+    "name": "narrow-modified-Alt-Enter: does not apply or mutate draft/review/native",
+    "ok": true
+  },
+  {
+    "index": 243,
+    "name": "narrow-modified-Alt-Enter: no apply button invocation",
+    "ok": true
+  },
+  {
+    "index": 244,
+    "name": "narrow-modified-Alt-Enter: modified Enter was delivered as a trusted event with its modifier",
+    "ok": true
+  },
+  {
+    "index": 245,
+    "name": "narrow-modified-Alt-Enter: modified Enter does not reach outer shortcut listeners",
+    "ok": true
+  },
+  {
+    "index": 246,
+    "name": "narrow-modified-Alt-Enter: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 247,
+    "name": "narrow-modified-Alt-Enter: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 248,
+    "name": "narrow-modified-Meta-Enter: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 249,
+    "name": "narrow-modified-Meta-Enter: does not apply or mutate draft/review/native",
+    "ok": true
+  },
+  {
+    "index": 250,
+    "name": "narrow-modified-Meta-Enter: no apply button invocation",
+    "ok": true
+  },
+  {
+    "index": 251,
+    "name": "narrow-modified-Meta-Enter: modified Enter was delivered as a trusted event with its modifier",
+    "ok": true
+  },
+  {
+    "index": 252,
+    "name": "narrow-modified-Meta-Enter: modified Enter does not reach outer shortcut listeners",
+    "ok": true
+  },
+  {
+    "index": 253,
+    "name": "narrow-modified-Meta-Enter: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 254,
+    "name": "narrow-modified-Meta-Enter: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 255,
+    "name": "narrow-composing: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 256,
+    "name": "narrow-composing: does not apply or mutate draft/review/native",
+    "ok": true
+  },
+  {
+    "index": 257,
+    "name": "narrow-composing: no apply button invocation",
+    "ok": true
+  },
+  {
+    "index": 258,
+    "name": "narrow-composing: fault injection delivered requested flags",
+    "ok": true
+  },
+  {
+    "index": 259,
+    "name": "narrow-composing: guarded Enter does not reach outer shortcut listeners",
+    "ok": true
+  },
+  {
+    "index": 260,
+    "name": "narrow-composing: IME event default remains uncancelled",
+    "ok": true
+  },
+  {
+    "index": 261,
+    "name": "narrow-composing: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 262,
+    "name": "narrow-composing: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 263,
+    "name": "narrow-ime-229: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 264,
+    "name": "narrow-ime-229: does not apply or mutate draft/review/native",
+    "ok": true
+  },
+  {
+    "index": 265,
+    "name": "narrow-ime-229: no apply button invocation",
+    "ok": true
+  },
+  {
+    "index": 266,
+    "name": "narrow-ime-229: fault injection delivered requested flags",
+    "ok": true
+  },
+  {
+    "index": 267,
+    "name": "narrow-ime-229: guarded Enter does not reach outer shortcut listeners",
+    "ok": true
+  },
+  {
+    "index": 268,
+    "name": "narrow-ime-229: IME event default remains uncancelled",
+    "ok": true
+  },
+  {
+    "index": 269,
+    "name": "narrow-ime-229: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 270,
+    "name": "narrow-ime-229: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 271,
+    "name": "narrow-repeat: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 272,
+    "name": "narrow-repeat: does not apply or mutate draft/review/native",
+    "ok": true
+  },
+  {
+    "index": 273,
+    "name": "narrow-repeat: no apply button invocation",
+    "ok": true
+  },
+  {
+    "index": 274,
+    "name": "narrow-repeat: fault injection delivered requested flags",
+    "ok": true
+  },
+  {
+    "index": 275,
+    "name": "narrow-repeat: guarded Enter does not reach outer shortcut listeners",
+    "ok": true
+  },
+  {
+    "index": 276,
+    "name": "narrow-repeat: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 277,
+    "name": "narrow-repeat: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 278,
+    "name": "narrow-default-prevented: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 279,
+    "name": "narrow-default-prevented: does not apply or mutate draft/review/native",
+    "ok": true
+  },
+  {
+    "index": 280,
+    "name": "narrow-default-prevented: no apply button invocation",
+    "ok": true
+  },
+  {
+    "index": 281,
+    "name": "narrow-default-prevented: fault injection delivered requested flags",
+    "ok": true
+  },
+  {
+    "index": 282,
+    "name": "narrow-default-prevented: guarded Enter does not reach outer shortcut listeners",
+    "ok": true
+  },
+  {
+    "index": 283,
+    "name": "narrow-default-prevented: already-prevented event remains prevented",
+    "ok": true
+  },
+  {
+    "index": 284,
+    "name": "narrow-default-prevented: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 285,
+    "name": "narrow-default-prevented: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 286,
+    "name": "narrow-trusted-repeat-keydown: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 287,
+    "name": "narrow-trusted-repeat-keydown: held Enter repeat does not apply again",
+    "ok": true
+  },
+  {
+    "index": 288,
+    "name": "narrow-trusted-repeat-keydown: repeat was an actual trusted repeated keydown",
+    "ok": true
+  },
+  {
+    "index": 289,
+    "name": "narrow-trusted-repeat-keydown: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 290,
+    "name": "narrow-trusted-repeat-keydown: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 291,
+    "name": "narrow-invalid-empty-click: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 292,
+    "name": "narrow-invalid-empty-click: existing click rejects without changing draft/review",
+    "ok": true
+  },
+  {
+    "index": 293,
+    "name": "narrow-invalid-empty-click: existing click reports positive integer rejection",
+    "ok": true
+  },
+  {
+    "index": 294,
+    "name": "narrow-invalid-empty-click: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 295,
+    "name": "narrow-invalid-empty-click: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 296,
+    "name": "narrow-invalid-empty-enter: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 297,
+    "name": "narrow-invalid-empty-enter: same invalid input and reviewed starting state",
+    "ok": true
+  },
+  {
+    "index": 298,
+    "name": "narrow-invalid-empty-enter: invalid Enter equals click rejection and review state",
+    "ok": true
+  },
+  {
+    "index": 299,
+    "name": "narrow-invalid-empty-enter: invalid Enter preserves full model",
+    "ok": true
+  },
+  {
+    "index": 300,
+    "name": "narrow-invalid-empty-enter: invalid Enter keeps input focus selected edge and actual DOM value",
+    "ok": true
+  },
+  {
+    "index": 301,
+    "name": "narrow-invalid-empty-enter: invalid Enter and click produce same post-refresh input validity",
+    "ok": true
+  },
+  {
+    "index": 302,
+    "name": "narrow-invalid-empty-enter: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 303,
+    "name": "narrow-invalid-empty-enter: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 304,
+    "name": "narrow-invalid-zero-click: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 305,
+    "name": "narrow-invalid-zero-click: existing click rejects without changing draft/review",
+    "ok": true
+  },
+  {
+    "index": 306,
+    "name": "narrow-invalid-zero-click: existing click reports positive integer rejection",
+    "ok": true
+  },
+  {
+    "index": 307,
+    "name": "narrow-invalid-zero-click: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 308,
+    "name": "narrow-invalid-zero-click: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 309,
+    "name": "narrow-invalid-zero-enter: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 310,
+    "name": "narrow-invalid-zero-enter: same invalid input and reviewed starting state",
+    "ok": true
+  },
+  {
+    "index": 311,
+    "name": "narrow-invalid-zero-enter: invalid Enter equals click rejection and review state",
+    "ok": true
+  },
+  {
+    "index": 312,
+    "name": "narrow-invalid-zero-enter: invalid Enter preserves full model",
+    "ok": true
+  },
+  {
+    "index": 313,
+    "name": "narrow-invalid-zero-enter: invalid Enter keeps input focus selected edge and actual DOM value",
+    "ok": true
+  },
+  {
+    "index": 314,
+    "name": "narrow-invalid-zero-enter: invalid Enter and click produce same post-refresh input validity",
+    "ok": true
+  },
+  {
+    "index": 315,
+    "name": "narrow-invalid-zero-enter: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 316,
+    "name": "narrow-invalid-zero-enter: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 317,
+    "name": "narrow-invalid-negative-click: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 318,
+    "name": "narrow-invalid-negative-click: existing click rejects without changing draft/review",
+    "ok": true
+  },
+  {
+    "index": 319,
+    "name": "narrow-invalid-negative-click: existing click reports positive integer rejection",
+    "ok": true
+  },
+  {
+    "index": 320,
+    "name": "narrow-invalid-negative-click: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 321,
+    "name": "narrow-invalid-negative-click: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 322,
+    "name": "narrow-invalid-negative-enter: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 323,
+    "name": "narrow-invalid-negative-enter: same invalid input and reviewed starting state",
+    "ok": true
+  },
+  {
+    "index": 324,
+    "name": "narrow-invalid-negative-enter: invalid Enter equals click rejection and review state",
+    "ok": true
+  },
+  {
+    "index": 325,
+    "name": "narrow-invalid-negative-enter: invalid Enter preserves full model",
+    "ok": true
+  },
+  {
+    "index": 326,
+    "name": "narrow-invalid-negative-enter: invalid Enter keeps input focus selected edge and actual DOM value",
+    "ok": true
+  },
+  {
+    "index": 327,
+    "name": "narrow-invalid-negative-enter: invalid Enter and click produce same post-refresh input validity",
+    "ok": true
+  },
+  {
+    "index": 328,
+    "name": "narrow-invalid-negative-enter: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 329,
+    "name": "narrow-invalid-negative-enter: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 330,
+    "name": "narrow-invalid-fraction-click: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 331,
+    "name": "narrow-invalid-fraction-click: existing click rejects without changing draft/review",
+    "ok": true
+  },
+  {
+    "index": 332,
+    "name": "narrow-invalid-fraction-click: existing click reports positive integer rejection",
+    "ok": true
+  },
+  {
+    "index": 333,
+    "name": "narrow-invalid-fraction-click: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 334,
+    "name": "narrow-invalid-fraction-click: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 335,
+    "name": "narrow-invalid-fraction-enter: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 336,
+    "name": "narrow-invalid-fraction-enter: same invalid input and reviewed starting state",
+    "ok": true
+  },
+  {
+    "index": 337,
+    "name": "narrow-invalid-fraction-enter: invalid Enter equals click rejection and review state",
+    "ok": true
+  },
+  {
+    "index": 338,
+    "name": "narrow-invalid-fraction-enter: invalid Enter preserves full model",
+    "ok": true
+  },
+  {
+    "index": 339,
+    "name": "narrow-invalid-fraction-enter: invalid Enter keeps input focus selected edge and actual DOM value",
+    "ok": true
+  },
+  {
+    "index": 340,
+    "name": "narrow-invalid-fraction-enter: invalid Enter and click produce same post-refresh input validity",
+    "ok": true
+  },
+  {
+    "index": 341,
+    "name": "narrow-invalid-fraction-enter: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 342,
+    "name": "narrow-invalid-fraction-enter: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 343,
+    "name": "narrow-invalid-nonfinite-overflow-click: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 344,
+    "name": "narrow-invalid-nonfinite-overflow-click: existing click rejects without changing draft/review",
+    "ok": true
+  },
+  {
+    "index": 345,
+    "name": "narrow-invalid-nonfinite-overflow-click: existing click reports positive integer rejection",
+    "ok": true
+  },
+  {
+    "index": 346,
+    "name": "narrow-invalid-nonfinite-overflow-click: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 347,
+    "name": "narrow-invalid-nonfinite-overflow-click: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 348,
+    "name": "narrow-invalid-nonfinite-overflow-enter: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 349,
+    "name": "narrow-invalid-nonfinite-overflow-enter: same invalid input and reviewed starting state",
+    "ok": true
+  },
+  {
+    "index": 350,
+    "name": "narrow-invalid-nonfinite-overflow-enter: invalid Enter equals click rejection and review state",
+    "ok": true
+  },
+  {
+    "index": 351,
+    "name": "narrow-invalid-nonfinite-overflow-enter: invalid Enter preserves full model",
+    "ok": true
+  },
+  {
+    "index": 352,
+    "name": "narrow-invalid-nonfinite-overflow-enter: invalid Enter keeps input focus selected edge and actual DOM value",
+    "ok": true
+  },
+  {
+    "index": 353,
+    "name": "narrow-invalid-nonfinite-overflow-enter: invalid Enter and click produce same post-refresh input validity",
+    "ok": true
+  },
+  {
+    "index": 354,
+    "name": "narrow-invalid-nonfinite-overflow-enter: overflow represented honestly as DOM numeric normalization",
+    "ok": true
+  },
+  {
+    "index": 355,
+    "name": "narrow-invalid-nonfinite-overflow-enter: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 356,
+    "name": "narrow-invalid-nonfinite-overflow-enter: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 357,
+    "name": "narrow-textarea-enter: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 358,
+    "name": "narrow-textarea-enter: does not apply or mutate draft/review/native",
+    "ok": true
+  },
+  {
+    "index": 359,
+    "name": "narrow-textarea-enter: no apply button invocation",
+    "ok": true
+  },
+  {
+    "index": 360,
+    "name": "narrow-textarea-enter: textarea retains ordinary input focus",
+    "ok": true
+  },
+  {
+    "index": 361,
+    "name": "narrow-other-number-field-enter: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 362,
+    "name": "narrow-other-number-field-enter: does not apply or mutate draft/review/native",
+    "ok": true
+  },
+  {
+    "index": 363,
+    "name": "narrow-other-number-field-enter: no apply button invocation",
+    "ok": true
+  },
+  {
+    "index": 364,
+    "name": "narrow-other-number-field-enter: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 365,
+    "name": "narrow-other-number-field-enter: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 366,
+    "name": "narrow-detached-after-cancel: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 367,
+    "name": "narrow-detached-after-cancel: does not apply or mutate draft/review/native",
+    "ok": true
+  },
+  {
+    "index": 368,
+    "name": "narrow-detached-after-cancel: no apply button invocation",
+    "ok": true
+  },
+  {
+    "index": 369,
+    "name": "narrow-detached-after-cancel: saved input is detached and candidate stays cancelled",
+    "ok": true
+  },
+  {
+    "index": 370,
+    "name": "narrow-detached-after-cancel: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 371,
+    "name": "narrow-detached-after-cancel: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 372,
+    "name": "narrow-detached-old-input-new-candidate: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 373,
+    "name": "narrow-detached-old-input-new-candidate: does not apply or mutate draft/review/native",
+    "ok": true
+  },
+  {
+    "index": 374,
+    "name": "narrow-detached-old-input-new-candidate: no apply button invocation",
+    "ok": true
+  },
+  {
+    "index": 375,
+    "name": "narrow-detached-old-input-new-candidate: old input still detached while new candidate exists",
+    "ok": true
+  },
+  {
+    "index": 376,
+    "name": "narrow-connected-stale-input-new-candidate: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 377,
+    "name": "narrow-connected-stale-input-new-candidate: does not apply or mutate draft/review/native",
+    "ok": true
+  },
+  {
+    "index": 378,
+    "name": "narrow-connected-stale-input-new-candidate: no apply button invocation",
+    "ok": true
+  },
+  {
+    "index": 379,
+    "name": "narrow-connected-stale-input-new-candidate: stale input is connected but is not current pane input",
+    "ok": true
+  },
+  {
+    "index": 380,
+    "name": "narrow-detached-after-successful-refresh: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 381,
+    "name": "narrow-detached-after-successful-refresh: does not apply or mutate draft/review/native",
+    "ok": true
+  },
+  {
+    "index": 382,
+    "name": "narrow-detached-after-successful-refresh: no apply button invocation",
+    "ok": true
+  },
+  {
+    "index": 383,
+    "name": "narrow-detached-after-successful-refresh: successful click replaced old input node",
+    "ok": true
+  },
+  {
+    "index": 384,
+    "name": "narrow-detached-after-successful-refresh: UI acquired exact PDF candidate",
+    "ok": true
+  },
+  {
+    "index": 385,
+    "name": "narrow-detached-after-successful-refresh: candidate acquisition preserved original",
+    "ok": true
+  },
+  {
+    "index": 386,
+    "name": "narrow-escape-from-input: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 387,
+    "name": "narrow-escape-from-input: does not apply or mutate draft/review/native",
+    "ok": true
+  },
+  {
+    "index": 388,
+    "name": "narrow-escape-from-input: no apply button invocation",
+    "ok": true
+  },
+  {
+    "index": 389,
+    "name": "narrow-escape-from-input: existing narrow Escape closes drawer without cancelling candidate",
+    "ok": true
+  },
+  {
+    "index": 390,
+    "name": "narrow-escape-from-canvas: formal geometry and calibrated source preserved",
+    "ok": true
+  },
+  {
+    "index": 391,
+    "name": "narrow-escape-from-canvas: canvas Escape cancels draft without changing native",
+    "ok": true
+  },
+  {
+    "index": 392,
+    "name": "completion: no console or page errors",
+    "ok": true
+  },
+  {
+    "index": 393,
+    "name": "completion: same fresh runtime after tests",
+    "ok": true
+  },
+  {
+    "index": 394,
+    "name": "completion: HEAD and working tree unchanged during run",
+    "ok": true
+  },
+  {
+    "index": 395,
+    "name": "completion: harness source unchanged during run",
+    "ok": true
+  }
+]

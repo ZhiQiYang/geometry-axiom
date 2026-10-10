@@ -1,0 +1,91 @@
+{
+  "schema": "geometry-unit-native-process-identity-review/1",
+  "reviewedAt": "2026-10-09T14:55:14.274256+00:00",
+  "originalReceiptSha256": "316ce124d5914c5bf2ca36781f62cd21d35fd2c61e10b7eb899f5b6bac224bf2",
+  "rawSpawnLogSha256": "ee95c008a9910c8b611d61900f143ceea8808200d382adb7988b9a501f92646b",
+  "originalReceiptPreserved": true,
+  "testsRerun": false,
+  "originalNodeExitCode": 0,
+  "originalWrapperExitCode": 1,
+  "wrapperFailureReason": "The added metadata matcher required the original registry path; the original case executor intentionally launches a byte-identical copy in a disposable private case directory. No test failed.",
+  "checks": [
+    {
+      "name": "Original receipt and exact raw process observation log preserved",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "Actual original four-file Node command completed successfully",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "Before and after source/candidate identity unchanged",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "Original registered isolated bridge and sidecar still fresh and unchanged",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "Exact executed source intentionally copies binary into a private case directory",
+      "ok": true,
+      "details": {
+        "source": "geometry-core/rule_cases/executor.py",
+        "sourceSha256": "247dc7d01ebf6e351e1d233dcf18629820aed984ff78a14a1b17a0acd4da8d0e"
+      }
+    },
+    {
+      "name": "One actual private case bridge process was observed",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "Actual /proc running executable bytes equal the trusted original bridge",
+      "ok": true,
+      "details": {
+        "nativePid": 90899,
+        "parentPythonPid": 90898,
+        "actualExecutable": "<isolated-test-directory>",
+        "actualExecutableSha256": "d19b7bc12cd155120be9cc05e2161e63cb6588ea3ea1c9ee278dbd1e54039843"
+      }
+    },
+    {
+      "name": "Spawn argument and observed executable identify the same native copy",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "Actual backend Python executable bytes equal recorded Python runtime",
+      "ok": true,
+      "details": null
+    },
+    {
+      "name": "Original required caller mutation native-backed unit passed",
+      "ok": true,
+      "details": null
+    }
+  ],
+  "processIdentityAccepted": true,
+  "nodePid": 90842,
+  "actualNativePids": [
+    90899
+  ],
+  "counts": {
+    "tests": 132,
+    "pass": 131,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 1,
+    "todo": 0
+  },
+  "candidateHead": "c0f05baade2424482fab94c72f0592f7b02326ae",
+  "queueMetadataClarification": "The original cliDefaultDirectoryPresentBeforeOrAfter boolean is a post-run existence read only, not a separately captured before/after queue snapshot. No Store or queue CLI was invoked; real queue remains unknown.",
+  "limits": [
+    "This metadata review reads exact original logs; no rerun or result relabeling.",
+    "One native-backed unit plus VM units does not establish full browser/native or Resume UI acceptance.",
+    "The existing real native HTTP ABA test retained its original named skip."
+  ]
+}

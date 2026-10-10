@@ -1,0 +1,276 @@
+{
+  "schema": "geometry-original-assembly-with-independent-stop-recovery-census/1",
+  "checkedUTC": "2026-10-09T18:46:26.816690+00:00",
+  "testedFullSHA": "f3b8285729b42cd22451c98cba1e2ec4514517f3",
+  "dirtyBeforeAfter": "",
+  "reviewExecutor": {
+    "command": [
+      "python",
+      "-B",
+      "<workspace-path>"
+    ],
+    "actualPython": "<execution-runtime-path>",
+    "actualPythonSHA256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+    "scriptSHA256": "c3c487879b0ed943ac6572d69073dfd5908b80f159c63dfaa6e934a833a63b51"
+  },
+  "exitCode": 0,
+  "checks": {
+    "actual partial completed with original150 positive assertions": true,
+    "original P77/P82 complete exact section census": true,
+    "explicit original partial soleflag with no golden claim": true,
+    "initial/canonical/live observed original scopes exactly agree": true,
+    "original Node and gate actual exit0 verified": true,
+    "original canonical command retained": true,
+    "exact tested candidate clean before/after": true,
+    "same original runtime fresh/same unique native session": true,
+    "sourceSha256 unchanged across actual scope": true,
+    "executables unchanged across actual scope": true,
+    "native unchanged across actual scope": true,
+    "liveBridge unchanged across actual scope": true,
+    "runnerSha256 unchanged across actual scope": true,
+    "identityObserverSha256 unchanged across actual scope": true,
+    "launchAdapterSha256 unchanged across actual scope": true,
+    "all original source snapshots and fullSHA Git bytes exact": true,
+    "actual source runner is declared7ab original explicitflag": true,
+    "original raw log exact digest and size": true,
+    "no timeout/interruption of actual productscope": true,
+    "actual Node/Chromium ELF actors are unique and exact": true,
+    "observed actual Chrome main profile/port binds explicit original scope": true,
+    "live actual actor observation timestamp inside scope": true,
+    "identity observer no errors": true,
+    "native actual files fresh and exact": true,
+    "direct native bridge belongs actual ready server": true,
+    "original lifecycle cleanup error retained after verified gate": true,
+    "original rejection stderr retains exact oldhead assertion": true,
+    "original executed controller bytes preserved": true,
+    "new recovered stop source binds exactcc505 candidate": true,
+    "recovered stop actual exit0 and same owned ready server": true,
+    "root preserved actual native dump before stop": true,
+    "recovery stop hashes all original raw observations": true,
+    "stop observations include exact actual actors/native": true,
+    "zombies truthfully remain recorded without absence claim": true,
+    "candidate still clean f3b and reviewer never changed source": true
+  },
+  "passedIntegrityChecks": 35,
+  "failedIntegrityChecks": 0,
+  "boundedAssemblyAcceptancePassed": true,
+  "originalCanonicalResult": {
+    "schema": "geometry-cdp-result/1",
+    "scope": {
+      "mode": "partial",
+      "filters": [
+        "GEOMETRY_ASSEMBLY_ONLY"
+      ],
+      "modifiers": [],
+      "url": "http://127.0.0.1:19182/",
+      "feedbackDirectory": "<isolated-test-directory>",
+      "browserProfile": "<isolated-test-directory>",
+      "cdpPort": 57193,
+      "browserPid": 252403
+    },
+    "completed": true,
+    "passedAssertions": 150,
+    "failedAssertions": 0,
+    "skipped": [],
+    "sections": {
+      "P77": 134,
+      "P82": 16
+    },
+    "goldenCompare": "not compared (partial mode)",
+    "uncaughtBrowserExceptions": 0,
+    "coverage": "Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts."
+  },
+  "originalActualExecution": {
+    "started": "2026-10-09T18:41:01.274995+00:00",
+    "exitCode": 0,
+    "timedOut": false,
+    "interrupted": false,
+    "pid": 252395,
+    "finished": "2026-10-09T18:43:14.446736+00:00"
+  },
+  "originalGateExitCode": 0,
+  "originalLifecycle": {
+    "controllerError": "AssertionError('Traceback (most recent call last):\\n  File \"<workspace-path>\", line 9, in <module>\\n    assert all(g[\\'before\\'][\\'git\\'][\\'head\\'] == \\'9eb670110379ec0d726914f3e5b2d8e7237f2b9c\\' for g in gates)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nAssertionError\\n')",
+    "postGateStopExitCode": 1,
+    "terminalMissing": true,
+    "actualControllerExitCodeFromOriginalFiles": "unknown; parent reports actual unifiedexec70298 exit1 separately"
+  },
+  "recoveredCleanup": {
+    "actualExitCode": 0,
+    "identity": {
+      "runtime": {
+        "schema": "geometry-runtime/1",
+        "version": "efbcfff4ca94d6a1844228ea59628ee5de24dcd5e337c62f9c0587f5a38c8a11",
+        "fresh": true,
+        "root": "<workspace-path>",
+        "pid": 252331,
+        "session": "f757d6e346434404a297ee434c3d2cae"
+      },
+      "server": 252331,
+      "children": [
+        252332
+      ],
+      "rootDumpSHA256": "cc0c66792d3c4e4889b5e8f9255f22534619a4d653c188078ffd4a0d37d669a0"
+    },
+    "processObservations": [
+      {
+        "pid": 252331,
+        "role": "owned server",
+        "exists": true,
+        "state": "Z",
+        "statSHA256": "d63658256db0b650075af4b90e705c52fac2fec42f59156e9f061557c629e703"
+      },
+      {
+        "pid": 252332,
+        "role": "owned direct native bridge",
+        "exists": true,
+        "state": "Z",
+        "statSHA256": "17376fdb5d04a70682ad96a48e539af11b3196d995b237bb1cdadefb3d3504bd"
+      },
+      {
+        "pid": 252403,
+        "role": "actual CDP_SCOPE Chromium main process",
+        "exists": true,
+        "state": "Z",
+        "statSHA256": "ff948e2ecd01715dd20a29b40c84b55ec985790d9ae9e9f7f5c1ed4f465c8379"
+      },
+      {
+        "pid": 252395,
+        "role": "actual browser parent Node",
+        "exists": false,
+        "state": "absent-at-observation"
+      }
+    ],
+    "portObservationAtStop": {
+      "accepting": false,
+      "rawError": "URLError(ConnectionRefusedError(111, 'Connection refused'))"
+    }
+  },
+  "actualObservedActors": {
+    "liveBinding": {
+      "observedUtc": "2026-10-09T18:41:01.775662+00:00",
+      "scope": "Observed the actual owned Chromium ELF and live canonical Node parent during this command; launcher stages excluded",
+      "cdpScope": {
+        "mode": "partial",
+        "filters": [
+          "GEOMETRY_ASSEMBLY_ONLY"
+        ],
+        "modifiers": [],
+        "url": "http://127.0.0.1:19182/",
+        "feedbackDirectory": "<isolated-test-directory>",
+        "browserProfile": "<isolated-test-directory>",
+        "cdpPort": 57193,
+        "browserPid": 252403
+      },
+      "processes": [
+        {
+          "role": "actual CDP_SCOPE Chromium main process",
+          "pid": 252403,
+          "exe": "/usr/lib/chromium/chromium",
+          "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+          "executableMagicHex": "7f454c46",
+          "cmdline": [
+            "/usr/lib/chromium/chromium",
+            "--show-component-extension-options",
+            "--enable-gpu-rasterization",
+            "--no-default-browser-check",
+            "--disable-pings",
+            "--media-router=0",
+            "--enable-remote-extensions",
+            "--load-extension=",
+            "about:blank",
+            "--headless=new",
+            "--disable-gpu",
+            "--no-first-run",
+            "--remote-debugging-port=57193",
+            "--window-size=1400,900",
+            "--user-data-dir=<isolated-test-directory>"
+          ],
+          "cwd": "<workspace-path>"
+        },
+        {
+          "role": "actual browser parent Node",
+          "pid": 252395,
+          "exe": "<execution-runtime-path>",
+          "sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12",
+          "executableMagicHex": "7f454c46",
+          "cmdline": [
+            "node",
+            "geometry-web/cdp_test.js"
+          ],
+          "cwd": "<workspace-path>"
+        }
+      ]
+    },
+    "errors": [],
+    "excludedLauncherStages": []
+  },
+  "sources": [
+    {
+      "path": "<workspace-path>",
+      "bytes": 40313,
+      "sha256": "ae2367243c447bb8e7c0b3ecd516e6853de3361e0589e1f32a73e941e4231a8f"
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 10096,
+      "sha256": "a595d95a177724819286554b5b1060148740640bac4352e66cfdd082abffd092"
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 1810,
+      "sha256": "f9042477280349f416e580df995dd851f8530e5bb01cd4d243cdf21ff6afddcb"
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 242,
+      "sha256": "d3e497e1e41124d4bdc6a4588ec1da7ab55de58dfd5c77c80b4e20370c882afa"
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 2850,
+      "sha256": "167eb2147c1d86ad0ed341f240b18dbacf506c00dd786209997665df4ff717fb"
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 349,
+      "sha256": "cae57cb6c3735a6e055f3b698e563d5cee17da03db2bfb30fba1cdfaa400f57f"
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 3110,
+      "sha256": "d89bbfbb4a4f4f173695fe061bc5062e513a7ecfde08fa0b885873d4001f9b05"
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 413,
+      "sha256": "050f3113fd985affb53ee856ddc1b198f852018be25551575effc8f420c3e038"
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 6617,
+      "sha256": "cc0c66792d3c4e4889b5e8f9255f22534619a4d653c188078ffd4a0d37d669a0"
+    }
+  ],
+  "rawReviewLog": {
+    "path": "<workspace-path>",
+    "bytes": 1922,
+    "sha256": "c1e650ab7f8c7c23782ac1cab8969d55f85076835b71feafed7d446be1ddd851"
+  },
+  "sourceSnapshotMismatches": [],
+  "browserExecuted": false,
+  "serviceStartedOrStopped": false,
+  "repoWritten": false,
+  "limits": [
+    "Product150/0/0 Node/gate0 and completed partial scope are distinct from post-gate original lifecycle rejection and subsequent exactowned stop0.",
+    "Original lifecycle70298 exit1 is parent-reported actual tool terminal; source receipt records stop1/error, not a controller process returncode. Do not manufacture missing lifecycle terminal.",
+    "Three observed zombies remain Z, not absent; no historical process state is reconstructed and no currently running fresh FULL service is queried/stopped.",
+    "Original explicit ASM scope is not fullCDP/golden, SP workspace, standaloneSpace, caption/SIX or all43 acceptance.",
+    "No product run or re-run was started for this review; full f3b terminal is still independent and pending."
+  ]
+}

@@ -1,0 +1,34 @@
+PASS runtime worktree is clean before fixture mutation
+PASS browser URL and title identify the actual nonblank product
+PASS native 4m x 3m source and persisted canvas position exactly match independent oracle
+PASS native geometry edit undo restores complete exact World
+PASS native geometry edit redo applies complete exact World
+PASS select #smProjectionView
+PASS independent preview volume equals 4m x 3m x 3m
+PASS created model has exact source projection
+PASS independent edited preview volume equals 38.4m3
+PASS model update leaves all native source bytes intact
+PASS model height undo returns exact 3000mm
+PASS model height undo preserves exact native World
+PASS model height redo restores full raw record and source
+PASS real Save downloads a nonempty complete project ZIP
+PASS download branch honestly reports completion still needs user confirmation
+PASS cancelled picker was invoked with active user activation
+PASS cancelled picker preserves full fixture, history owner and saved status
+PASS injected write failure aborts and keeps unsaved state
+PASS injected write failure preserves full fixture, history owner and saved status
+PASS New project clears models in a distinct context
+PASS New project Undo restores nonempty full World and full model/projection fixture manifest
+PASS New project Redo restores empty project
+PASS fresh browser profile starts with empty World
+PASS fresh browser profile has no model records
+PASS fresh session real chooser reopen restores exact native World, full fixture manifest and raw model/source bytes
+PASS reopened UI reports exact 3200mm model extent and 38.4m3
+PASS corrupt archive produces its own archive-specific visible failure
+PASS corrupt archive chooser consumed the intended file
+PASS failed archive import preserves full fixture snapshot and history
+PASS successful import Undo restores previous empty project with no models
+PASS successful import Redo restores nonempty World and full project payload
+PASS no uncaught page errors during complete flow
+PASS clean head tree and runtime source process/session stayed identical during acceptance
+SAVE_ROUNDTRIP_RESULT {"schema":"geometry-save-roundtrip-result/1","completed":true,"expected":33,"passed":33,"failed":0,"ok":true}

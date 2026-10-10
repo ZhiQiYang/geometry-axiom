@@ -105,9 +105,13 @@ function fixture({rejectConfirm = false, rejectMetadata = false, loseAbort = fal
     }
     ui.events.push(stage);
   };
+  // The real workspace now registers session invalidation / unload listeners.
+  // Supply the browser event interface rather than removing those guards from
+  // production. These manual-room fixtures have no active outline candidate.
+  const browserWindow = new EventTarget();
   const context = {GeometrySourcePlane:S,GeometryRoomCollection:R,ReferenceWorkspace:workspace,apiRequest,connection,
     connectionFailed:message => {connection.phase='error';connection.error=message;},
-    crypto:webcrypto,structuredClone,window:{},fe:ui,
+    crypto:webcrypto,structuredClone,window:browserWindow,fe:ui,RoomOutlineWorkspace:{hasWork:false},
     PolyDraft:{createState:()=>({pts:[]})},
     feSyncDraftMirror:()=>recordUI('draft-mirror'),feLenShow:()=>recordUI('length-ui'),
     drawFaceEditor:()=>recordUI('draw'),renderFaceInspector:()=>recordUI('inspector'),

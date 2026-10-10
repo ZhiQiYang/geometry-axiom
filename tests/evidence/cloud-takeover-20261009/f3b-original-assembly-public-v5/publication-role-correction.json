@@ -1,0 +1,29 @@
+{
+  "schema": "geometry-assembly-publication-role-correction/1",
+  "supersededV4ManifestSHA256": "bebeec6f3074b2c8cad4ab71c90d7decd3287db7b1b5dfa25444d83b6add9d64",
+  "oldField": {
+    "builderOriginalSHA256": "0209c3f9467a9b63d6c4ae3ca74e4d14cf48a3f51dd31e1ec1fa594f15a0f065",
+    "implementationSourceIncluded": false,
+    "role": "Scratch publication only, not product execution or independent QA; originals retained in scratch alongside build receipt/config/extras.",
+    "configurationPreparerOriginalSHA256": "103735521e97a3c4d4287b8cb9b738eb7c1deb91c3d4248c330955288abc35a8",
+    "supersededV2BuilderOriginalSHA256": "d73f3ef64b1e0a8163f3748e490015677ea5c5e3bb6431fc161fb6139923a68a",
+    "projection": "Explicit bounded ASCII machine-path tokens only; preserve every byte outside tokens, including Markdown/code delimiters and prose."
+  },
+  "correctedField": {
+    "actualFreshPacketReviserSHA256": "4969f91f34d924c5780bbe616c8db74e75215d9ccc4b9ce6846af6fd938bc669",
+    "finalProjectionEngineOriginalSHA256": "0209c3f9467a9b63d6c4ae3ca74e4d14cf48a3f51dd31e1ec1fa594f15a0f065",
+    "inheritedConfigurationGeneratorOriginalSHA256": "d73f3ef64b1e0a8163f3748e490015677ea5c5e3bb6431fc161fb6139923a68a",
+    "inheritedConfigurationGeneratorVersion": "prepare_f3b_original_assembly_packet_v2.py",
+    "inheritedGenericProjectionModuleOriginalSHA256": "103735521e97a3c4d4287b8cb9b738eb7c1deb91c3d4248c330955288abc35a8",
+    "inheritedGenericProjectionModuleRole": "Generic v7 imported by the v2 configuration generator and used for its first v2 publication; it did not generate the specific ASM config itself.",
+    "inheritedConfigurationSHA256": "8811860d77008e860147e7b34aa6bdd26902fb0827f7e0e0434b43197f4ee19b",
+    "inheritedExtrasSHA256": "9d3d1793a7e44e009aadb5fb750ba214603e0bdbf4e6a2be4785d76e550dd4e3",
+    "implementationSourceIncluded": false,
+    "role": "Scratch publication/configuration identity only. All original ASM execution sources, results and hashes remain unchanged; published copies were not executed."
+  },
+  "productExecuted": false,
+  "originalExecutedSourceOrResultChanged": false,
+  "oldV1ThroughV4Preserved": true,
+  "reason": "V4 named inherited generic v7 module as configurationPreparer; the actual specific configuration generator was d73f3 v2. Roles are explicit in v5.",
+  "priorQaRetained": "Initial independent1152 PASS/3FAIL and supplemental132/0 are retained outside this packet; neither result is a product assertion count."
+}

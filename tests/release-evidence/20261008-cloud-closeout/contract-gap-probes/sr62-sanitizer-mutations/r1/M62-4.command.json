@@ -1,0 +1,29 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "/workspace/closure-evidence/final-contract-probes/native-sanitizer-mutations/oracle_runner.py",
+    "--source",
+    "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source",
+    "--binary",
+    "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/active-bridge",
+    "--binary-sha256",
+    "b24e1ef828876644effd726e80a23fe367b7fb3fa96c99a013d898612f377e4d",
+    "--out",
+    "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/M62-4",
+    "--test",
+    "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_hole_clipping_preserves_line_identity_and_all_visible_segments"
+  ],
+  "cwd": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source",
+  "startedAt": "2026-10-08T20:02:45.169451+00:00",
+  "timeoutSeconds": 300,
+  "stackBytes": 67108864,
+  "environment": {
+    "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1:abort_on_error=1",
+    "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "exitCode": 1,
+  "elapsedSeconds": 0.26781490400026087,
+  "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderrSha256": "bce3a48aa256c5c27d9dc18cb9491e8fd48020dcd58678a99ad0490f3cea7a5f"
+}

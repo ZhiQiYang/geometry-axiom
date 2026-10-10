@@ -1,0 +1,14 @@
+test_new_allocator_input_syntax_requires_capability_even_when_final_state_is_default (tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_new_allocator_input_syntax_requires_capability_even_when_final_state_is_default) ... FAIL
+
+======================================================================
+FAIL: test_new_allocator_input_syntax_requires_capability_even_when_final_state_is_default (tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_new_allocator_input_syntax_requires_capability_even_when_final_state_is_default)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source/tests/test_grid_subdivision_oracle.py", line 955, in test_new_allocator_input_syntax_requires_capability_even_when_final_state_is_default
+    self.assertFalse(rejected["ok"], rejected)
+AssertionError: True is not false : {'ok': True, 'revision': 14, 'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule-authoring/1', 'assembly-timber-generation/1', 'grid-subdivision-rules/1', 'section-profile/1'], 'required_capabilities': [], 'native_capabilities': ['section-profile-native/1'], 'definition_sha256': 'c7a84e3e8cad953edf0f5e3d9c58472e1bc9fddea70a052a5e8cc9dec9eb226e'}
+
+----------------------------------------------------------------------
+Ran 1 test in 0.142s
+
+FAILED (failures=1)

@@ -1,0 +1,1293 @@
+{
+  "run": {
+    "schema": "geometry-issue123-adopted-slices/1",
+    "startedAt": "2026-10-09T14:10:47.731Z",
+    "command": [
+      "<node-runtime>/bin/node",
+      "<workspace-path>"
+    ],
+    "commandEnvironment": {
+      "GEOMETRY_REPO": "<workspace-path>",
+      "GEOMETRY_EXPECTED_SHA": "2703e4738ae308b2a268096f666f326f1e9a9b2f",
+      "GEOMETRY_ISOLATED_SERVICE": "1",
+      "GEOMETRY_TEST_URL": "http://127.0.0.1:19180/",
+      "GEOMETRY_TEST_BRIDGE": "<isolated-test-directory>",
+      "GEOMETRY_MODEL_BASE": "<isolated-test-directory>",
+      "GEOMETRY_CHROME": "/usr/bin/chromium",
+      "GEOMETRY_UI123_OUT": "<isolated-test-directory>",
+      "GEOMETRY_UI123_GROUPS": "colors,headers,components,v3,grid-mobile,model"
+    },
+    "node": {
+      "path": "<node-runtime>/bin/node",
+      "sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12",
+      "version": "v24.19.0"
+    },
+    "expectedSHA": "2703e4738ae308b2a268096f666f326f1e9a9b2f",
+    "head": "2703e4738ae308b2a268096f666f326f1e9a9b2f",
+    "dirty": "",
+    "pwd": "<workspace-path>",
+    "scriptSHA256": "3689ea243ee6a454e73f36cc00168ef38220a4bcffe9c6991013c50f3cbf381a",
+    "sources": {
+      "geometry-web/app.js": "4fcce1044e93e7a3e96e16f0e291b21bca9c3ed85e5313f569b00b21e1e92757",
+      "geometry-web/app.css": "6419b3147f5d10183de2331c61a9e8f28c727091fe110e627ef78ad97b707c01",
+      "geometry-web/index.html": "e8a6635073f46f4b6a824cea430d56d2feb4e3e024e285ef3e068751a968b00b",
+      "geometry-web/workspace-shell.js": "780a26eb4e061069f8161bedd44665d2ed4ece9f695cefeffef7a7d855ec3b4c",
+      "geometry-web/workspace-shell.css": "d67f212410bb6e94cd3db26d3ab7891a0331f2effe6c02365dd5bed5418171c2",
+      "geometry-web/space-workspace.js": "50a8cbf2515e15e3d793f9440dd4d4fa6ba14a0b0f553af6dba1a98d43ee65e3",
+      "geometry-web/space-workspace.css": "0a05d7351d9584682c93fba44d7be445c77d1b3e2974e11a6b0fbbd2108192bd",
+      "geometry-web/grid-system-workspace.js": "4ce581dcc35058244302a15e7d46592ce26876c430a3454f50b2f0d1274d32d0",
+      "geometry-web/grid-system-workspace.css": "e6488b9af6779d16a989f318ae0da6919d9bdf2825f0e2cf41d0429563ebb63b",
+      "geometry-web/grid-inspector.css": "811afcf6a861f0d45310e062c4250ee4de07b17805ab593ed30ce8f92868bfd4",
+      "geometry-web/room-outline-workspace.js": "6a7985ec31e6904236f55a1f0cf8ca952da517928d0c9b438a11a9d9918e2e1c",
+      "geometry-web/reference-workspace.js": "4637836fe46c016a4bb623e9f2337fda9a8e2aeac853bcca33e9d5fff55b7c62",
+      "geometry-web/model-viewer.js": "443d0a8d82f91b02ea2dd38ee9f32b39f0ff2287369aea5481768a29fe513d5a",
+      "tests/binaries.py": "a211fd0d066b8a5138855c4773373f9f526717f26264de909c0f61f997ac9aba"
+    },
+    "scope": {
+      "mode": "explicit-partial-adopted-ui-contract",
+      "included": [
+        "colors",
+        "headers",
+        "components",
+        "v3",
+        "grid-mobile",
+        "model"
+      ],
+      "omitted": [],
+      "fixture": "Synthetic native setup through API; no UI geometry-authoring claim; v3 uses one declared free column for actual ScenePick",
+      "input": "Trusted pointer/keyboard after fixture setup",
+      "notCovered": [
+        "full CDP or full space regression",
+        "physical phone/touch/IME",
+        "operating-system dialogs",
+        "private ZIP pixel/reference comparison",
+        "new snapping or nearby-object policies",
+        "all 43 checklist items"
+      ]
+    },
+    "sandbox": true,
+    "browserExecuted": true,
+    "nativeStandaloneSuiteExecuted": false,
+    "runtimeBefore": {
+      "schema": "geometry-runtime/1",
+      "version": "8646f9ada8c7bf6889b2c41335c2e27c55b6f40c5278c0ce321aacd78a7a3fff",
+      "fresh": true,
+      "root": "<workspace-path>",
+      "pid": 58863,
+      "session": "eca54ba410fa454698a9af49fa8bbebc"
+    },
+    "executables": {
+      "bridge": {
+        "path": "<isolated-test-directory>",
+        "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b"
+      },
+      "modelBase": {
+        "path": "<isolated-test-directory>",
+        "sha256": "576a0e04c7ddaeafee20a64e03f063f1d27cbebb9694c50f20fcc2b0508d7aeb"
+      },
+      "infos": [
+        {
+          "name": "bridge",
+          "state": "fresh",
+          "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T14:05:28+00:00）",
+          "path": "<isolated-test-directory>",
+          "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e"
+        },
+        {
+          "name": "model-base",
+          "state": "fresh",
+          "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T14:05:32+00:00）",
+          "path": "<isolated-test-directory>",
+          "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b"
+        }
+      ],
+      "liveDirectChildren": [
+        {
+          "pid": 58920,
+          "executable": "<isolated-test-directory>",
+          "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b",
+          "command": "<isolated-test-directory> "
+        }
+      ]
+    },
+    "browserVersion": "151.0.7922.173",
+    "browserLauncher": {
+      "path": "/usr/bin/chromium",
+      "realPath": "/usr/bin/chromium",
+      "sha256": "2c8d32d29dc6781c35ae196ea83299d507ac88fc339301abe74672feda299779",
+      "version": "151.0.7922.173",
+      "identityLimit": "Launcher bytes and browser reported version recorded; native bridge live executable bytes checked separately"
+    },
+    "runtimeAfter": {
+      "schema": "geometry-runtime/1",
+      "version": "8646f9ada8c7bf6889b2c41335c2e27c55b6f40c5278c0ce321aacd78a7a3fff",
+      "fresh": true,
+      "root": "<workspace-path>",
+      "pid": 58863,
+      "session": "eca54ba410fa454698a9af49fa8bbebc"
+    },
+    "headAfter": "2703e4738ae308b2a268096f666f326f1e9a9b2f",
+    "dirtyAfter": "",
+    "finishedAt": "2026-10-09T14:12:35.012Z",
+    "exitCode": 1,
+    "rawLogPath": "<isolated-test-directory>",
+    "rawLogSHA256": "c850581a311c4d942d2d62ccf07a073374e47bf5458ee6c550da9b9f56bf97f1"
+  },
+  "completed": true,
+  "passed": 85,
+  "failed": 5,
+  "results": [
+    {
+      "group": "preflight",
+      "name": "frozen checkout matches full SHA and is clean",
+      "ok": true,
+      "detail": {
+        "head": "2703e4738ae308b2a268096f666f326f1e9a9b2f",
+        "dirty": ""
+      }
+    },
+    {
+      "group": "preflight",
+      "name": "isolated runtime is fresh and belongs to exact checkout",
+      "ok": true,
+      "detail": {
+        "schema": "geometry-runtime/1",
+        "version": "8646f9ada8c7bf6889b2c41335c2e27c55b6f40c5278c0ce321aacd78a7a3fff",
+        "fresh": true,
+        "root": "<workspace-path>",
+        "pid": 58863,
+        "session": "eca54ba410fa454698a9af49fa8bbebc"
+      }
+    },
+    {
+      "group": "preflight",
+      "name": "native binary closure fingerprints are fresh",
+      "ok": true,
+      "detail": [
+        {
+          "name": "bridge",
+          "state": "fresh",
+          "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T14:05:28+00:00）",
+          "path": "<isolated-test-directory>",
+          "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e"
+        },
+        {
+          "name": "model-base",
+          "state": "fresh",
+          "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T14:05:32+00:00）",
+          "path": "<isolated-test-directory>",
+          "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b"
+        }
+      ]
+    },
+    {
+      "group": "preflight",
+      "name": "live direct-child bridge matches recorded native executable bytes",
+      "ok": true,
+      "detail": [
+        {
+          "pid": 58920,
+          "executable": "<isolated-test-directory>",
+          "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b",
+          "command": "<isolated-test-directory> "
+        }
+      ]
+    },
+    {
+      "group": "colors",
+      "name": "declared product confirmation appeared exactly once",
+      "ok": true
+    },
+    {
+      "group": "colors",
+      "name": "actual model primary is enabled before computed-color comparison",
+      "ok": true
+    },
+    {
+      "group": "colors",
+      "name": "four real view primary computed backgrounds agree at 1382",
+      "ok": true,
+      "detail": [
+        {
+          "view": "main",
+          "color": "rgb(78, 103, 232)"
+        },
+        {
+          "view": "face",
+          "color": "rgb(78, 103, 232)"
+        }
+      ]
+    },
+    {
+      "group": "colors",
+      "name": "color/view changes and independent example preview do not mutate native scene at 1382",
+      "ok": true
+    },
+    {
+      "group": "colors",
+      "name": "declared product confirmation appeared exactly once",
+      "ok": true
+    },
+    {
+      "group": "colors",
+      "name": "unexpected execution failure",
+      "ok": false,
+      "error": "locator.dblclick: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.ocard[data-kind=\"grid-system\"][data-id=\"1\"]')\u001b[22m\n\u001b[2m    - locator resolved to <g data-id=\"1\" cursor=\"pointer\" data-kind=\"grid-system\" class=\"ocard grid-system-card\" transform=\"translate(560,100)\">…</g>\u001b[22m\n\u001b[2m  - attempting dblclick action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - element is outside of the viewport\u001b[22m\n\u001b[2m    - retrying dblclick action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - element is outside of the viewport\u001b[22m\n\u001b[2m    - retrying dblclick action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    58 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is visible, enabled and stable\u001b[22m\n\u001b[2m       - scrolling into view if needed\u001b[22m\n\u001b[2m       - done scrolling\u001b[22m\n\u001b[2m       - element is outside of the viewport\u001b[22m\n\u001b[2m     - retrying dblclick action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n    at sourceGrid (<workspace-path>\n    at Object.colors (<workspace-path>\n    at async <workspace-path>"
+    },
+    {
+      "group": "headers",
+      "name": "declared product confirmation appeared exactly once",
+      "ok": true
+    },
+    {
+      "group": "headers",
+      "name": "main documented header single/double row at 1382",
+      "ok": true,
+      "detail": {
+        "x": 0,
+        "y": 0,
+        "left": 0,
+        "right": 1382,
+        "top": 0,
+        "bottom": 56,
+        "width": 1382,
+        "height": 56,
+        "display": "grid",
+        "visibility": "visible"
+      }
+    },
+    {
+      "group": "headers",
+      "name": "face documented header single/double row at 1382",
+      "ok": true,
+      "detail": {
+        "x": 0,
+        "y": 0,
+        "left": 0,
+        "right": 1382,
+        "top": 0,
+        "bottom": 56,
+        "width": 1382,
+        "height": 56,
+        "display": "grid",
+        "visibility": "visible"
+      }
+    },
+    {
+      "group": "headers",
+      "name": "face viewport meets adopted viewport-minus-88 minimum at 1382",
+      "ok": true,
+      "detail": {
+        "x": 260,
+        "y": 56,
+        "left": 260,
+        "right": 1062,
+        "top": 56,
+        "bottom": 772,
+        "width": 802,
+        "height": 716,
+        "display": "block",
+        "visibility": "visible"
+      }
+    },
+    {
+      "group": "headers",
+      "name": "one original file/save/history DOM remains",
+      "ok": true
+    },
+    {
+      "group": "headers",
+      "name": "real Tab reaches visible focus target #workspaceBackButton",
+      "ok": true,
+      "detail": [
+        {
+          "id": "workspaceBackButton",
+          "tag": "BUTTON",
+          "text": "← 物件畫布",
+          "target": true,
+          "visible": true,
+          "outline": "solid"
+        }
+      ]
+    },
+    {
+      "group": "headers",
+      "name": "grid project and return share adopted header row at 1382",
+      "ok": true,
+      "detail": {
+        "top": 0,
+        "bottom": 56,
+        "height": 56
+      }
+    },
+    {
+      "group": "headers",
+      "name": "model project and return share adopted header row at 1382",
+      "ok": true,
+      "detail": {
+        "top": 0,
+        "bottom": 56,
+        "height": 56
+      }
+    },
+    {
+      "group": "headers",
+      "name": "declared product confirmation appeared exactly once",
+      "ok": true
+    },
+    {
+      "group": "headers",
+      "name": "main documented header single/double row at 900",
+      "ok": true,
+      "detail": {
+        "x": 0,
+        "y": 0,
+        "left": 0,
+        "right": 900,
+        "top": 0,
+        "bottom": 56,
+        "width": 900,
+        "height": 56,
+        "display": "grid",
+        "visibility": "visible"
+      }
+    },
+    {
+      "group": "headers",
+      "name": "face documented header single/double row at 900",
+      "ok": true,
+      "detail": {
+        "x": 0,
+        "y": 0,
+        "left": 0,
+        "right": 900,
+        "top": 0,
+        "bottom": 56,
+        "width": 900,
+        "height": 56,
+        "display": "grid",
+        "visibility": "visible"
+      }
+    },
+    {
+      "group": "headers",
+      "name": "face viewport meets adopted viewport-minus-88 minimum at 900",
+      "ok": true,
+      "detail": {
+        "x": 0,
+        "y": 56,
+        "left": 0,
+        "right": 630,
+        "top": 56,
+        "bottom": 772,
+        "width": 630,
+        "height": 716,
+        "display": "block",
+        "visibility": "visible"
+      }
+    },
+    {
+      "group": "headers",
+      "name": "one original file/save/history DOM remains",
+      "ok": true
+    },
+    {
+      "group": "headers",
+      "name": "real Tab reaches visible focus target #workspaceBackButton",
+      "ok": true,
+      "detail": [
+        {
+          "id": "workspaceBackButton",
+          "tag": "BUTTON",
+          "text": "← 物件畫布",
+          "target": true,
+          "visible": true,
+          "outline": "solid"
+        }
+      ]
+    },
+    {
+      "group": "headers",
+      "name": "grid project and return share adopted header row at 900",
+      "ok": true,
+      "detail": {
+        "top": 0,
+        "bottom": 56,
+        "height": 56
+      }
+    },
+    {
+      "group": "headers",
+      "name": "model project and return share adopted header row at 900",
+      "ok": true,
+      "detail": {
+        "top": 0,
+        "bottom": 56,
+        "height": 56
+      }
+    },
+    {
+      "group": "headers",
+      "name": "unexpected execution failure",
+      "ok": false,
+      "error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#fileMenuBtn')\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" aria-label=\"檔案\" id=\"fileMenuBtn\" aria-haspopup=\"menu\" aria-expanded=\"false\" class=\"secondary-button\" aria-controls=\"fileMenuPop\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <svg aria-hidden=\"true\" viewBox=\"0 0 24 24\">…</svg> from <div id=\"projectBar\" aria-label=\"目前專案\" class=\"project-bar\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <svg aria-hidden=\"true\" viewBox=\"0 0 24 24\">…</svg> from <div id=\"projectBar\" aria-label=\"目前專案\" class=\"project-bar\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  2 × retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <circle r=\"9\" cx=\"12\" cy=\"12\"></circle> from <div id=\"projectBar\" aria-label=\"目前專案\" class=\"project-bar\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  14 × retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\u001b[2m       - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is visible, enabled and stable\u001b[22m\n\u001b[2m       - scrolling into view if needed\u001b[22m\n\u001b[2m       - done scrolling\u001b[22m\n\u001b[2m       - <svg aria-hidden=\"true\" viewBox=\"0 0 24 24\">…</svg> from <div id=\"projectBar\" aria-label=\"目前專案\" class=\"project-bar\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\u001b[2m       - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is visible, enabled and stable\u001b[22m\n\u001b[2m       - scrolling into view if needed\u001b[22m\n\u001b[2m       - done scrolling\u001b[22m\n\u001b[2m       - <svg aria-hidden=\"true\" viewBox=\"0 0 24 24\">…</svg> from <div id=\"projectBar\" aria-label=\"目前專案\" class=\"project-bar\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\u001b[2m       - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is visible, enabled and stable\u001b[22m\n\u001b[2m       - scrolling into view if needed\u001b[22m\n\u001b[2m       - done scrolling\u001b[22m\n\u001b[2m       - <circle r=\"9\" cx=\"12\" cy=\"12\"></circle> from <div id=\"projectBar\" aria-label=\"目前專案\" class=\"project-bar\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\u001b[2m       - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is visible, enabled and stable\u001b[22m\n\u001b[2m       - scrolling into view if needed\u001b[22m\n\u001b[2m       - done scrolling\u001b[22m\n\u001b[2m       - <circle r=\"9\" cx=\"12\" cy=\"12\"></circle> from <div id=\"projectBar\" aria-label=\"目前專案\" class=\"project-bar\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <svg aria-hidden=\"true\" viewBox=\"0 0 24 24\">…</svg> from <div id=\"projectBar\" aria-label=\"目前專案\" class=\"project-bar\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n\n    at click (<workspace-path>\n    at async newProject (<workspace-path>\n    at async setup (<workspace-path>\n    at async Object.headers (<workspace-path>\n    at async <workspace-path>"
+    },
+    {
+      "group": "components",
+      "name": "declared product confirmation appeared exactly once",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "adopted component switch retains three original roles",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "only guide form is visible",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "only timber form is visible",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "actual input contains typed raw value #tbA",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "actual input contains typed raw value #tbB",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "actual input contains typed raw value #tbSelector",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "only grid form is visible",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "actual input contains typed raw value #gridU",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "guide draft survives component navigation",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "timber draft survives component navigation",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "real Tab reaches visible focus target [data-component-tab=\"grid\"]",
+      "ok": true,
+      "detail": [
+        {
+          "id": "",
+          "tag": "BUTTON",
+          "text": "網格",
+          "target": true,
+          "visible": true,
+          "outline": "solid"
+        }
+      ]
+    },
+    {
+      "group": "components",
+      "name": "keyboard component switch selects only grid and retains grid draft",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "unsubmitted component drafts leave full native scene unchanged",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "declared product confirmation appeared exactly once",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "adopted component switch retains three original roles",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "only guide form is visible",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "only timber form is visible",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "actual input contains typed raw value #tbA",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "actual input contains typed raw value #tbB",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "actual input contains typed raw value #tbSelector",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "only grid form is visible",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "actual input contains typed raw value #gridU",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "guide draft survives component navigation",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "timber draft survives component navigation",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "real Tab reaches visible focus target [data-component-tab=\"grid\"]",
+      "ok": true,
+      "detail": [
+        {
+          "id": "",
+          "tag": "BUTTON",
+          "text": "網格",
+          "target": true,
+          "visible": true,
+          "outline": "solid"
+        }
+      ]
+    },
+    {
+      "group": "components",
+      "name": "keyboard component switch selects only grid and retains grid draft",
+      "ok": true
+    },
+    {
+      "group": "components",
+      "name": "unsubmitted component drafts leave full native scene unchanged",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "declared product confirmation appeared exactly once",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "desktop unselected three-view inspector is continuously 240px",
+      "ok": true,
+      "detail": {
+        "x": 1142,
+        "y": 56,
+        "left": 1142,
+        "right": 1382,
+        "top": 56,
+        "bottom": 772,
+        "width": 240,
+        "height": 716,
+        "display": "block",
+        "visibility": "visible"
+      }
+    },
+    {
+      "group": "v3",
+      "name": "existing empty-state readout is discoverable",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "seven original view/layer labels remain",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "normal full label pointer activates exact original view/layer #0",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "real Space returns original checked view/layer #0",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "normal full label pointer activates exact original view/layer #1",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "real Space returns original checked view/layer #1",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "normal full label pointer activates exact original view/layer #2",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "real Space returns original checked view/layer #2",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "normal full label pointer activates exact original view/layer #3",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "real Space returns original checked view/layer #3",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "normal full label pointer activates exact original view/layer #4",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "real Space returns original checked view/layer #4",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "normal full label pointer activates exact original view/layer #5",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "real Space returns original checked view/layer #5",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "normal full label pointer activates exact original view/layer #6",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "real Space returns original checked view/layer #6",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "one native hit point inside unobstructed three-view SVG is available",
+      "ok": true,
+      "detail": {
+        "point": {
+          "px": 474.1157328039408,
+          "py": 269.15889900922775,
+          "source": "rendered-shape-center",
+          "sv": {
+            "v": 0,
+            "x": 1700,
+            "y": -1250,
+            "r": 90
+          },
+          "response": {
+            "ok": true,
+            "none": false,
+            "desc": "柱1",
+            "guide": -1,
+            "timber": -1,
+            "face": 6,
+            "column": 0,
+            "beam": -1,
+            "hover": [
+              {
+                "op": "begin",
+                "tx": 250,
+                "ty": 2890
+              },
+              {
+                "op": "poly",
+                "p": [
+                  1500,
+                  -2500,
+                  1900,
+                  -2500,
+                  1900,
+                  0,
+                  1500,
+                  0
+                ],
+                "s": 12
+              },
+              {
+                "op": "end"
+              }
+            ]
+          }
+        },
+        "tried": [
+          {
+            "px": 500.9635878056288,
+            "py": 262.8943995088339,
+            "source": "rendered-shape-center",
+            "sv": {
+              "v": 0,
+              "x": 2000,
+              "y": -1320,
+              "r": 90
+            },
+            "response": {
+              "ok": true,
+              "none": true,
+              "desc": "",
+              "guide": -1,
+              "timber": -1,
+              "face": 6,
+              "column": -1,
+              "beam": -1,
+              "hover": []
+            }
+          },
+          {
+            "px": 474.1157328039408,
+            "py": 269.15889900922775,
+            "source": "rendered-shape-center",
+            "sv": {
+              "v": 0,
+              "x": 1700,
+              "y": -1250,
+              "r": 90
+            },
+            "response": {
+              "ok": true,
+              "none": false,
+              "desc": "柱1",
+              "guide": -1,
+              "timber": -1,
+              "face": 6,
+              "column": 0,
+              "beam": -1,
+              "hover": [
+                {
+                  "op": "begin",
+                  "tx": 250,
+                  "ty": 2890
+                },
+                {
+                  "op": "poly",
+                  "p": [
+                    1500,
+                    -2500,
+                    1900,
+                    -2500,
+                    1900,
+                    0,
+                    1500,
+                    0
+                  ],
+                  "s": 12
+                },
+                {
+                  "op": "end"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "group": "v3",
+      "name": "real pointer selects the exact independent native-picked object",
+      "ok": true,
+      "detail": {
+        "preflight": {
+          "px": 474.1157328039408,
+          "py": 269.15889900922775,
+          "source": "rendered-shape-center",
+          "sv": {
+            "v": 0,
+            "x": 1700,
+            "y": -1250,
+            "r": 90
+          },
+          "response": {
+            "ok": true,
+            "none": false,
+            "desc": "柱1",
+            "guide": -1,
+            "timber": -1,
+            "face": 6,
+            "column": 0,
+            "beam": -1,
+            "hover": [
+              {
+                "op": "begin",
+                "tx": 250,
+                "ty": 2890
+              },
+              {
+                "op": "poly",
+                "p": [
+                  1500,
+                  -2500,
+                  1900,
+                  -2500,
+                  1900,
+                  0,
+                  1500,
+                  0
+                ],
+                "s": 12
+              },
+              {
+                "op": "end"
+              }
+            ]
+          }
+        },
+        "actual": {
+          "ok": true,
+          "none": false,
+          "desc": "柱1",
+          "guide": -1,
+          "timber": -1,
+          "face": 6,
+          "column": 0,
+          "beam": -1,
+          "hover": [
+            {
+              "op": "begin",
+              "tx": 250,
+              "ty": 2890
+            },
+            {
+              "op": "poly",
+              "p": [
+                1500,
+                -2500,
+                1900,
+                -2500,
+                1900,
+                0,
+                1500,
+                0
+              ],
+              "s": 12
+            },
+            {
+              "op": "end"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "v3",
+      "name": "one native none point inside unobstructed three-view SVG is available",
+      "ok": true,
+      "detail": {
+        "point": {
+          "px": 500.96358580508473,
+          "py": 593.1230137711864,
+          "source": "declared-view-fraction",
+          "v": 2,
+          "sv": {
+            "v": 2,
+            "x": 2000,
+            "y": 1430,
+            "r": 90
+          },
+          "response": {
+            "ok": true,
+            "none": true,
+            "desc": "",
+            "guide": -1,
+            "timber": -1,
+            "face": 6,
+            "column": -1,
+            "beam": -1,
+            "hover": []
+          }
+        },
+        "tried": [
+          {
+            "px": 500.96358580508473,
+            "py": 593.1230137711864,
+            "source": "declared-view-fraction",
+            "v": 2,
+            "sv": {
+              "v": 2,
+              "x": 2000,
+              "y": 1430,
+              "r": 90
+            },
+            "response": {
+              "ok": true,
+              "none": true,
+              "desc": "",
+              "guide": -1,
+              "timber": -1,
+              "face": 6,
+              "column": -1,
+              "beam": -1,
+              "hover": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "group": "v3",
+      "name": "real pointer clears selection at the independent native-empty point",
+      "ok": true,
+      "detail": {
+        "preflight": {
+          "px": 500.96358580508473,
+          "py": 593.1230137711864,
+          "source": "declared-view-fraction",
+          "v": 2,
+          "sv": {
+            "v": 2,
+            "x": 2000,
+            "y": 1430,
+            "r": 90
+          },
+          "response": {
+            "ok": true,
+            "none": true,
+            "desc": "",
+            "guide": -1,
+            "timber": -1,
+            "face": 6,
+            "column": -1,
+            "beam": -1,
+            "hover": []
+          }
+        },
+        "actual": null
+      }
+    },
+    {
+      "group": "v3",
+      "name": "initial, selected and cleared three-view keep the same continuous canvas rectangle",
+      "ok": true,
+      "detail": {
+        "initial": {
+          "x": 200,
+          "y": 106.390625,
+          "left": 200,
+          "right": 1142,
+          "top": 106.390625,
+          "bottom": 772,
+          "width": 942,
+          "height": 665.609375,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "picked": {
+          "x": 200,
+          "y": 106.390625,
+          "left": 200,
+          "right": 1142,
+          "top": 106.390625,
+          "bottom": 772,
+          "width": 942,
+          "height": 665.609375,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "after": {
+          "x": 200,
+          "y": 106.390625,
+          "left": 200,
+          "right": 1142,
+          "top": 106.390625,
+          "bottom": 772,
+          "width": 942,
+          "height": 665.609375,
+          "display": "block",
+          "visibility": "visible"
+        }
+      }
+    },
+    {
+      "group": "v3",
+      "name": "view and layer gestures never change native geometry",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "declared product confirmation appeared exactly once",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "390 inspector opens through original drawer",
+      "ok": true
+    },
+    {
+      "group": "v3",
+      "name": "unexpected execution failure",
+      "ok": false,
+      "error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#app .sidebar-right [data-close-panel=\"right\"]')\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" aria-label=\"關閉檢查器\" data-close-panel=\"right\" class=\"drawer-close right-toggle\">關閉 ×</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    58 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n    at click (<workspace-path>\n    at async Object.v3 (<workspace-path>\n    at async <workspace-path>"
+    },
+    {
+      "group": "grid-mobile",
+      "name": "declared product confirmation appeared exactly once",
+      "ok": true
+    },
+    {
+      "group": "grid-mobile",
+      "name": "390 original zoom controls reachable before settings/scroll",
+      "ok": false,
+      "detail": {
+        "view": {
+          "x": 0,
+          "y": 157,
+          "left": 0,
+          "right": 390,
+          "top": 157,
+          "bottom": 497,
+          "width": 390,
+          "height": 340,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "zoom": {
+          "x": 35.265625,
+          "y": 429,
+          "left": 35.265625,
+          "right": 374,
+          "top": 429,
+          "bottom": 481,
+          "width": 338.734375,
+          "height": 52,
+          "display": "flex",
+          "visibility": "visible"
+        },
+        "settings": {
+          "x": 0,
+          "y": 497,
+          "left": 0,
+          "right": 390,
+          "top": 497,
+          "bottom": 2271.34375,
+          "width": 390,
+          "height": 1774.34375,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "hits": [
+          {
+            "id": "igZoomOut",
+            "width": 34,
+            "height": 44,
+            "top": 433,
+            "bottom": 477,
+            "hit": true
+          },
+          {
+            "id": "igZoomIn",
+            "width": 34,
+            "height": 44,
+            "top": 433,
+            "bottom": 477,
+            "hit": true
+          },
+          {
+            "id": "igFit",
+            "width": 68.015625,
+            "height": 44,
+            "top": 433,
+            "bottom": 477,
+            "hit": true
+          }
+        ]
+      }
+    },
+    {
+      "group": "model",
+      "name": "declared product confirmation appeared exactly once",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "empty build has one visible primary welcome trial",
+      "ok": true
+    },
+    {
+      "group": "model",
+      "name": "additional original trial is not a parallel welcome action smTryRectangle",
+      "ok": false
+    },
+    {
+      "group": "final",
+      "name": "runtime source/session fresh and unchanged after explicit scopes",
+      "ok": true,
+      "detail": {
+        "schema": "geometry-runtime/1",
+        "version": "8646f9ada8c7bf6889b2c41335c2e27c55b6f40c5278c0ce321aacd78a7a3fff",
+        "fresh": true,
+        "root": "<workspace-path>",
+        "pid": 58863,
+        "session": "eca54ba410fa454698a9af49fa8bbebc"
+      }
+    },
+    {
+      "group": "final",
+      "name": "all measured product and harness source identities remain frozen",
+      "ok": true
+    },
+    {
+      "group": "final",
+      "name": "no unexpected page errors or native dialogs",
+      "ok": true,
+      "detail": []
+    }
+  ],
+  "groupResults": [
+    {
+      "group": "colors",
+      "startedAt": "2026-10-09T14:10:48.104Z",
+      "finishedAt": "2026-10-09T14:11:21.984Z",
+      "ok": false,
+      "checks": 6
+    },
+    {
+      "group": "headers",
+      "startedAt": "2026-10-09T14:11:21.984Z",
+      "finishedAt": "2026-10-09T14:11:55.992Z",
+      "ok": false,
+      "checks": 17
+    },
+    {
+      "group": "components",
+      "startedAt": "2026-10-09T14:11:55.992Z",
+      "finishedAt": "2026-10-09T14:11:59.563Z",
+      "ok": true,
+      "checks": 28
+    },
+    {
+      "group": "v3",
+      "startedAt": "2026-10-09T14:11:59.563Z",
+      "finishedAt": "2026-10-09T14:12:32.357Z",
+      "ok": false,
+      "checks": 27
+    },
+    {
+      "group": "grid-mobile",
+      "startedAt": "2026-10-09T14:12:32.357Z",
+      "finishedAt": "2026-10-09T14:12:33.665Z",
+      "ok": false,
+      "checks": 2
+    },
+    {
+      "group": "model",
+      "startedAt": "2026-10-09T14:12:33.665Z",
+      "finishedAt": "2026-10-09T14:12:34.901Z",
+      "ok": false,
+      "checks": 3
+    }
+  ],
+  "errors": [],
+  "dialogs": [
+    {
+      "group": "colors",
+      "context": 1,
+      "type": "confirm",
+      "message": "建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+      "accepted": true
+    },
+    {
+      "group": "colors",
+      "context": 2,
+      "type": "confirm",
+      "message": "建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+      "accepted": true
+    },
+    {
+      "group": "headers",
+      "context": 3,
+      "type": "confirm",
+      "message": "建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+      "accepted": true
+    },
+    {
+      "group": "headers",
+      "context": 4,
+      "type": "confirm",
+      "message": "建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+      "accepted": true
+    },
+    {
+      "group": "components",
+      "context": 6,
+      "type": "confirm",
+      "message": "建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+      "accepted": true
+    },
+    {
+      "group": "components",
+      "context": 7,
+      "type": "confirm",
+      "message": "建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+      "accepted": true
+    },
+    {
+      "group": "v3",
+      "context": 8,
+      "type": "confirm",
+      "message": "建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+      "accepted": true
+    },
+    {
+      "group": "v3",
+      "context": 9,
+      "type": "confirm",
+      "message": "建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+      "accepted": true
+    },
+    {
+      "group": "grid-mobile",
+      "context": 10,
+      "type": "confirm",
+      "message": "建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+      "accepted": true
+    },
+    {
+      "group": "model",
+      "context": 11,
+      "type": "confirm",
+      "message": "建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+      "accepted": true
+    }
+  ],
+  "publicProjection": {
+    "originalSha256": "2bd2351c8ec3133629135b8dd41187c6249177f0572c5d98f3bfb45508993a19",
+    "originalBytes": 43946,
+    "originalPathLabel": "<isolated-test-directory>",
+    "originalRetainedOutsideGit": true,
+    "changes": "Machine/executable/isolated source, feedback and profile path labels; colliding absolute-path dictionary keys retain basename and original-key SHA256, preserving all entries. Result, full SHA, dirty, command, exit and original hashes remain.",
+    "dictionaryKeyAudit": []
+  }
+}

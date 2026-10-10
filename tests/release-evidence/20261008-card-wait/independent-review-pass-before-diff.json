@@ -1,0 +1,328 @@
+{
+  "schema": "geometry-card-wait-independent-review/1",
+  "phase": "packaging",
+  "started": "2026-10-08T12:05:05.832768+00:00",
+  "finished": "2026-10-08T12:05:06.104225+00:00",
+  "command": [
+    "/workspace/scratch/geometry-delivery-20261008-card-wait/review-card-wait-v2.py"
+  ],
+  "reviewerSha256": "05a4575e3dd00613b2dbb0e7e8368e74e29c18475601949e3eb91db777341fb1",
+  "freeze": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+  "before": {
+    "head": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+    "tree": "fb528657190ebdf39733a71bdaea6f908ff72a48",
+    "status": ""
+  },
+  "after": {
+    "head": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+    "tree": "fb528657190ebdf39733a71bdaea6f908ff72a48",
+    "status": ""
+  },
+  "archiveName": "geometry-card-wait-evidence-b822a9ff.tar.gz",
+  "archiveSha256": "72fc05df87dd70ee74182b19bfcf56a66d0403c102116bcdc71bde30abeee53e",
+  "manifestSha256": "0554de392131f7a40ac3192c5a28f2901262432146f7b0b03f0a79f9a19d30e3",
+  "filesReviewed": 234,
+  "passed": 27,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "Packaging review starts at exact clean freeze/tree",
+      "passed": true,
+      "detail": {
+        "head": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+        "tree": "fb528657190ebdf39733a71bdaea6f908ff72a48",
+        "status": ""
+      }
+    },
+    {
+      "name": "Manifest exact declared freeze/tree/archive",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Manifest and delivery declare only fixed scoped counts and limited historical Windows",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Delivery archive and manifest hashes/sizes match",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Delivery before/after record exact clean packaging freeze",
+      "passed": true,
+      "detail": {
+        "before": {
+          "head": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+          "tree": "fb528657190ebdf39733a71bdaea6f908ff72a48",
+          "status": ""
+        },
+        "after": {
+          "head": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+          "tree": "fb528657190ebdf39733a71bdaea6f908ff72a48",
+          "status": ""
+        }
+      }
+    },
+    {
+      "name": "Sidecars have exact expected safe local names and hashes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Original-artifact guard is unchanged pinned16-entry document",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "All original13 public files plus raw matrix/old delivery originals unchanged",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Manifest paths unique, traversal-free and nonprivate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Every selected original stays allowlisted, regular and byte-exact with scope",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Tar exact member multiset; no duplicates, extras, traversal or links",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Embedded manifest exactly equals external manifest bytes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Every tar member equals manifest and original source bytes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "No private WM, database, native executable, credentials or unsafe nested projects",
+      "passed": true,
+      "detail": {
+        "flagCount": 0,
+        "valuesOmitted": true,
+        "projectArchives": 15
+      }
+    },
+    {
+      "name": "Canonical partial grid-system exact fixed census and identity",
+      "passed": true,
+      "detail": {
+        "expected": 316,
+        "sections": {
+          "P70": 117,
+          "P71": 9,
+          "P78": 23,
+          "P87": 60,
+          "P88": 107
+        },
+        "scope": "partial only; never full2177"
+      }
+    },
+    {
+      "name": "Canonical partial assembly exact fixed census and identity",
+      "passed": true,
+      "detail": {
+        "expected": 150,
+        "sections": {
+          "P77": 134,
+          "P82": 16
+        },
+        "scope": "partial only; never full2177"
+      }
+    },
+    {
+      "name": "Canonical partial composition exact fixed census and identity",
+      "passed": true,
+      "detail": {
+        "expected": 52,
+        "sections": {
+          "P72": 52
+        },
+        "scope": "partial only; never full2177"
+      }
+    },
+    {
+      "name": "Focused Node30 exact census, distinct from aggregate",
+      "passed": true,
+      "detail": {
+        "observedCounts": {
+          "tests": 30,
+          "pass": 30,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        }
+      }
+    },
+    {
+      "name": "Real browser card-drag-b822 exact 20 controls",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Real browser first-position-b822 exact 5 controls",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Independent source closure23 binds exact freeze/tree",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Independent VM14 retains seven same-harness baseline counterexamples",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Followup matrix sealed without pending entries or release approval",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Original counterexamples retain real head and four contract failures",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Every new original hash remains unchanged after full audit",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Repository identity stable throughout this review",
+      "passed": true,
+      "detail": {
+        "before": {
+          "head": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+          "tree": "fb528657190ebdf39733a71bdaea6f908ff72a48",
+          "status": ""
+        },
+        "after": {
+          "head": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+          "tree": "fb528657190ebdf39733a71bdaea6f908ff72a48",
+          "status": ""
+        }
+      }
+    },
+    {
+      "name": "Packaging review ends exact clean freeze/tree",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "possibleSensitiveFlags": [],
+  "nestedProjectArchives": [
+    {
+      "path": "accepted/canonical/composition/artifacts/downloads/geometry-composition-save-uWtYIE/未命名專案.gcanvas",
+      "bytes": 971,
+      "members": 2,
+      "validZip": true
+    },
+    {
+      "path": "accepted/canonical/grid-system/artifacts/downloads/geometry-infinite-grid-download-Y6nNcI/未命名專案.gcanvas",
+      "bytes": 2741,
+      "members": 2,
+      "validZip": true
+    },
+    {
+      "path": "accepted/canonical/grid-system/artifacts/downloads/geometry-rule-editor-D3TUPs/未命名專案.gcanvas",
+      "bytes": 2083,
+      "members": 2,
+      "validZip": true
+    },
+    {
+      "path": "accepted/canonical/grid-system/artifacts/downloads/geometry-rule-editor-TXXMmD/未命名專案.gcanvas",
+      "bytes": 1923,
+      "members": 2,
+      "validZip": true
+    },
+    {
+      "path": "accepted/canonical/grid-system/artifacts/downloads/geometry-rule-editor-kqvN2T/未命名專案.gcanvas",
+      "bytes": 1594,
+      "members": 2,
+      "validZip": true
+    },
+    {
+      "path": "accepted/canonical/grid-system/artifacts/downloads/geometry-rule-editor-yIOAaP/未命名專案.gcanvas",
+      "bytes": 1596,
+      "members": 2,
+      "validZip": true
+    },
+    {
+      "path": "accepted/canonical/grid-system/artifacts/downloads/geometry-rule-lines-6dqvM1/未命名專案.gcanvas",
+      "bytes": 3362,
+      "members": 2,
+      "validZip": true
+    },
+    {
+      "path": "accepted/canonical/grid-system/artifacts/downloads/geometry-rule-lines-i9CVv2/未命名專案.gcanvas",
+      "bytes": 3343,
+      "members": 2,
+      "validZip": true
+    },
+    {
+      "path": "history/grid-candidate250/grid-system/artifacts/downloads/geometry-infinite-grid-download-TueuTU/未命名專案.gcanvas",
+      "bytes": 2741,
+      "members": 2,
+      "validZip": true
+    },
+    {
+      "path": "history/grid-candidate250/grid-system/artifacts/downloads/geometry-rule-editor-0tRokj/未命名專案.gcanvas",
+      "bytes": 1594,
+      "members": 2,
+      "validZip": true
+    },
+    {
+      "path": "history/grid-candidate250/grid-system/artifacts/downloads/geometry-rule-editor-Bl1Gzu/未命名專案.gcanvas",
+      "bytes": 1596,
+      "members": 2,
+      "validZip": true
+    },
+    {
+      "path": "history/grid-candidate250/grid-system/artifacts/downloads/geometry-rule-editor-ByPFx6/未命名專案.gcanvas",
+      "bytes": 1923,
+      "members": 2,
+      "validZip": true
+    },
+    {
+      "path": "history/grid-candidate250/grid-system/artifacts/downloads/geometry-rule-editor-ZYaNU5/未命名專案.gcanvas",
+      "bytes": 2083,
+      "members": 2,
+      "validZip": true
+    },
+    {
+      "path": "history/grid-candidate250/grid-system/artifacts/downloads/geometry-rule-lines-DVSqj8/未命名專案.gcanvas",
+      "bytes": 3362,
+      "members": 2,
+      "validZip": true
+    },
+    {
+      "path": "history/grid-candidate250/grid-system/artifacts/downloads/geometry-rule-lines-WJVjjf/未命名專案.gcanvas",
+      "bytes": 3343,
+      "members": 2,
+      "validZip": true
+    }
+  ],
+  "fatal": null,
+  "releaseApproved": false,
+  "scope": "Read-only artifact/census verification. Packaging is exact clean b822; publication is a separate explicit documentary-diff audit. No tests rerun or original evidence modified.",
+  "reviewerCorrection": {
+    "priorAttempt": "independent-review-attempt01.json",
+    "priorAttemptSha256": "10f566a306ec7eca4e189c0690933b02dfb13ddc1a5e5ae2742b16531a20eb49",
+    "originalEmbeddedReviewerSha256": "bc5331d3836786f50a23523c98834d7096e5f6fc02759157f35a8f4d99d95c95",
+    "reason": "The first review matched the archived checker regex declaration itself. The corrected predicate requires a concrete WM execution child path. No archive, manifest, delivery receipt, source artifact, census, or other check changed."
+  }
+}

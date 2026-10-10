@@ -1,0 +1,354 @@
+{
+  "note": "Every raw result, World and executed source was copied byte-for-byte from the original run. Paths are cloud provenance; no private drawing/credential/database is included.",
+  "files": [
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/executed-edge_transition_probe.py",
+      "destination": "edge_transition_probe.py",
+      "bytes": 18496,
+      "sha256": "ce47379abb5cc07a5bfc7c78482b9974a28f9ec6e8459d74bfde24dd9fed2c3b"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/executed-edge_transition_instrumentation.js",
+      "destination": "edge_transition_instrumentation.js",
+      "bytes": 4549,
+      "sha256": "173e236c5aeac4786f5878495323398a249f1cc448f537908b9d4bcee9bc6d68"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/executed-run_edge_transition_probe.py",
+      "destination": "run_edge_transition_probe.py",
+      "bytes": 1262,
+      "sha256": "7a78f7c691b8ed1eee1fbe9c208d93289efd21515b020a49bfa7c75c5f66ac6c"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/executed-source-plan.md",
+      "destination": "source-plan.md",
+      "bytes": 6371,
+      "sha256": "de993e429657fbb1bc25859e9e2d1b1d945831f7119434c7649d876f579c7c99"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/results.json",
+      "destination": "raw/results.json",
+      "bytes": 134240,
+      "sha256": "f67cc2e471ec024f09e47e576aecd3cc07dcb79b0ed8fe28f41d92f758ca7425"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/receipt.json",
+      "destination": "raw/receipt.json",
+      "bytes": 434,
+      "sha256": "26a491ef47a9e7a667e52726555ce03a82b84f52b74c4b5fbd55aabf03b26dc0"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/before.json",
+      "destination": "raw/before.json",
+      "bytes": 4250,
+      "sha256": "4338cccdcc1d924578922e73d4d9c45004ac34841b4473e0a4732300235117f1"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/after.json",
+      "destination": "raw/after.json",
+      "bytes": 4250,
+      "sha256": "ef9b19c2fa712958eb463866c9902a1c1fe7f7ccf186994b90b17fe1d5eeaa34"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/before-runtime.raw.json",
+      "destination": "raw/before-runtime.raw.json",
+      "bytes": 225,
+      "sha256": "495d867b8369a6178bc4b46eef7c4a7a887621bb615934198aa145ade33c13ba"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/after-runtime.raw.json",
+      "destination": "raw/after-runtime.raw.json",
+      "bytes": 225,
+      "sha256": "495d867b8369a6178bc4b46eef7c4a7a887621bb615934198aa145ade33c13ba"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/identity-comparison.json",
+      "destination": "raw/identity-comparison.json",
+      "bytes": 118,
+      "sha256": "e861bdef5e70de5677a687889352b53d5489a17315c1c8c7cfe9e7dce58a6df9"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/browser.json",
+      "destination": "raw/browser.json",
+      "bytes": 214,
+      "sha256": "3c063376e812b085217c9f26fad3a5c041be002769570e70a6a32f0ea44bbcd5"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-1400-face-held-success-to-B.json",
+      "destination": "raw/edge-transition-1400-face-held-success-to-B.json",
+      "bytes": 24687,
+      "sha256": "d5b9ab11ce7e2c1ea4d1f05b2cfa299bdb583b8aa378862512d6f668bbdca8cf"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-1400-face-success-control.json",
+      "destination": "raw/edge-transition-1400-face-success-control.json",
+      "bytes": 6261,
+      "sha256": "34cf9add576b22414ba8c43fe8d448b3729b1ff638ad0888fd2d1ba194742c9d"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-1400-main-held-success-to-B.json",
+      "destination": "raw/edge-transition-1400-main-held-success-to-B.json",
+      "bytes": 23372,
+      "sha256": "16e0e02cf17df15966c64bce5677dad20638cd27b436c39ded57ee1b85c732fa"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-1400-main-success-control.json",
+      "destination": "raw/edge-transition-1400-main-success-control.json",
+      "bytes": 5275,
+      "sha256": "ee4feb13b66538b4d9efd8cbada795782a8ce442f3e6734528582b45a4abfb86"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-390-face-held-success-to-B.json",
+      "destination": "raw/edge-transition-390-face-held-success-to-B.json",
+      "bytes": 27220,
+      "sha256": "d40fa61dc94f254f836385b88310ee6f2211b4c916b642ad124861db456ae067"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-390-face-success-control.json",
+      "destination": "raw/edge-transition-390-face-success-control.json",
+      "bytes": 7138,
+      "sha256": "17fefdba8f8673acdd7dfdb1ea5f820a5bf2e9b5e8af075f017a4102cd7568f0"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-390-main-held-success-to-B.json",
+      "destination": "raw/edge-transition-390-main-held-success-to-B.json",
+      "bytes": 25008,
+      "sha256": "14891c0b6e0c5fcc49a899b2344a0280a8db6994bec54c81008179125c359de6"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-390-main-success-control.json",
+      "destination": "raw/edge-transition-390-main-success-control.json",
+      "bytes": 6122,
+      "sha256": "24552b9b8d9d68e2205774b614f695b657613a4ba51415746d3e6fff18c65149"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-1400-face-held-success-to-B-world-B-ready.scene",
+      "destination": "raw/edge-transition-1400-face-held-success-to-B-world-B-ready.scene",
+      "bytes": 316,
+      "sha256": "caeb8097205dd5dc8f46bf56b5a654572100974f55c7bd7a8fe6a5c50d846e7b"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-1400-face-held-success-to-B-world-before.scene",
+      "destination": "raw/edge-transition-1400-face-held-success-to-B-world-before.scene",
+      "bytes": 316,
+      "sha256": "3d0ff020591a32614216119b5e7f9d5a641af0c5a4a515b886f8ae57cbb62d51"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-1400-face-held-success-to-B-world-expected.scene",
+      "destination": "raw/edge-transition-1400-face-held-success-to-B-world-expected.scene",
+      "bytes": 316,
+      "sha256": "caeb8097205dd5dc8f46bf56b5a654572100974f55c7bd7a8fe6a5c50d846e7b"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-1400-face-held-success-to-B-world-gate.scene",
+      "destination": "raw/edge-transition-1400-face-held-success-to-B-world-gate.scene",
+      "bytes": 316,
+      "sha256": "caeb8097205dd5dc8f46bf56b5a654572100974f55c7bd7a8fe6a5c50d846e7b"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-1400-face-held-success-to-B-world-released.scene",
+      "destination": "raw/edge-transition-1400-face-held-success-to-B-world-released.scene",
+      "bytes": 316,
+      "sha256": "caeb8097205dd5dc8f46bf56b5a654572100974f55c7bd7a8fe6a5c50d846e7b"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-1400-face-success-control-world-before.scene",
+      "destination": "raw/edge-transition-1400-face-success-control-world-before.scene",
+      "bytes": 316,
+      "sha256": "3d0ff020591a32614216119b5e7f9d5a641af0c5a4a515b886f8ae57cbb62d51"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-1400-face-success-control-world-completed.scene",
+      "destination": "raw/edge-transition-1400-face-success-control-world-completed.scene",
+      "bytes": 316,
+      "sha256": "caeb8097205dd5dc8f46bf56b5a654572100974f55c7bd7a8fe6a5c50d846e7b"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-1400-face-success-control-world-expected.scene",
+      "destination": "raw/edge-transition-1400-face-success-control-world-expected.scene",
+      "bytes": 316,
+      "sha256": "caeb8097205dd5dc8f46bf56b5a654572100974f55c7bd7a8fe6a5c50d846e7b"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-1400-main-held-success-to-B-world-B-ready.scene",
+      "destination": "raw/edge-transition-1400-main-held-success-to-B-world-B-ready.scene",
+      "bytes": 316,
+      "sha256": "caeb8097205dd5dc8f46bf56b5a654572100974f55c7bd7a8fe6a5c50d846e7b"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-1400-main-held-success-to-B-world-before.scene",
+      "destination": "raw/edge-transition-1400-main-held-success-to-B-world-before.scene",
+      "bytes": 316,
+      "sha256": "3d0ff020591a32614216119b5e7f9d5a641af0c5a4a515b886f8ae57cbb62d51"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-1400-main-held-success-to-B-world-expected.scene",
+      "destination": "raw/edge-transition-1400-main-held-success-to-B-world-expected.scene",
+      "bytes": 316,
+      "sha256": "caeb8097205dd5dc8f46bf56b5a654572100974f55c7bd7a8fe6a5c50d846e7b"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-1400-main-held-success-to-B-world-gate.scene",
+      "destination": "raw/edge-transition-1400-main-held-success-to-B-world-gate.scene",
+      "bytes": 316,
+      "sha256": "caeb8097205dd5dc8f46bf56b5a654572100974f55c7bd7a8fe6a5c50d846e7b"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-1400-main-held-success-to-B-world-released.scene",
+      "destination": "raw/edge-transition-1400-main-held-success-to-B-world-released.scene",
+      "bytes": 316,
+      "sha256": "caeb8097205dd5dc8f46bf56b5a654572100974f55c7bd7a8fe6a5c50d846e7b"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-1400-main-success-control-world-before.scene",
+      "destination": "raw/edge-transition-1400-main-success-control-world-before.scene",
+      "bytes": 316,
+      "sha256": "3d0ff020591a32614216119b5e7f9d5a641af0c5a4a515b886f8ae57cbb62d51"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-1400-main-success-control-world-completed.scene",
+      "destination": "raw/edge-transition-1400-main-success-control-world-completed.scene",
+      "bytes": 316,
+      "sha256": "caeb8097205dd5dc8f46bf56b5a654572100974f55c7bd7a8fe6a5c50d846e7b"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-1400-main-success-control-world-expected.scene",
+      "destination": "raw/edge-transition-1400-main-success-control-world-expected.scene",
+      "bytes": 316,
+      "sha256": "caeb8097205dd5dc8f46bf56b5a654572100974f55c7bd7a8fe6a5c50d846e7b"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-390-face-held-success-to-B-world-B-ready.scene",
+      "destination": "raw/edge-transition-390-face-held-success-to-B-world-B-ready.scene",
+      "bytes": 316,
+      "sha256": "caeb8097205dd5dc8f46bf56b5a654572100974f55c7bd7a8fe6a5c50d846e7b"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-390-face-held-success-to-B-world-before.scene",
+      "destination": "raw/edge-transition-390-face-held-success-to-B-world-before.scene",
+      "bytes": 316,
+      "sha256": "3d0ff020591a32614216119b5e7f9d5a641af0c5a4a515b886f8ae57cbb62d51"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-390-face-held-success-to-B-world-expected.scene",
+      "destination": "raw/edge-transition-390-face-held-success-to-B-world-expected.scene",
+      "bytes": 316,
+      "sha256": "caeb8097205dd5dc8f46bf56b5a654572100974f55c7bd7a8fe6a5c50d846e7b"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-390-face-held-success-to-B-world-gate.scene",
+      "destination": "raw/edge-transition-390-face-held-success-to-B-world-gate.scene",
+      "bytes": 316,
+      "sha256": "caeb8097205dd5dc8f46bf56b5a654572100974f55c7bd7a8fe6a5c50d846e7b"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-390-face-held-success-to-B-world-released.scene",
+      "destination": "raw/edge-transition-390-face-held-success-to-B-world-released.scene",
+      "bytes": 316,
+      "sha256": "caeb8097205dd5dc8f46bf56b5a654572100974f55c7bd7a8fe6a5c50d846e7b"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-390-face-success-control-world-before.scene",
+      "destination": "raw/edge-transition-390-face-success-control-world-before.scene",
+      "bytes": 316,
+      "sha256": "3d0ff020591a32614216119b5e7f9d5a641af0c5a4a515b886f8ae57cbb62d51"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-390-face-success-control-world-completed.scene",
+      "destination": "raw/edge-transition-390-face-success-control-world-completed.scene",
+      "bytes": 316,
+      "sha256": "caeb8097205dd5dc8f46bf56b5a654572100974f55c7bd7a8fe6a5c50d846e7b"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-390-face-success-control-world-expected.scene",
+      "destination": "raw/edge-transition-390-face-success-control-world-expected.scene",
+      "bytes": 316,
+      "sha256": "caeb8097205dd5dc8f46bf56b5a654572100974f55c7bd7a8fe6a5c50d846e7b"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-390-main-held-success-to-B-world-B-ready.scene",
+      "destination": "raw/edge-transition-390-main-held-success-to-B-world-B-ready.scene",
+      "bytes": 316,
+      "sha256": "caeb8097205dd5dc8f46bf56b5a654572100974f55c7bd7a8fe6a5c50d846e7b"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-390-main-held-success-to-B-world-before.scene",
+      "destination": "raw/edge-transition-390-main-held-success-to-B-world-before.scene",
+      "bytes": 316,
+      "sha256": "3d0ff020591a32614216119b5e7f9d5a641af0c5a4a515b886f8ae57cbb62d51"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-390-main-held-success-to-B-world-expected.scene",
+      "destination": "raw/edge-transition-390-main-held-success-to-B-world-expected.scene",
+      "bytes": 316,
+      "sha256": "caeb8097205dd5dc8f46bf56b5a654572100974f55c7bd7a8fe6a5c50d846e7b"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-390-main-held-success-to-B-world-gate.scene",
+      "destination": "raw/edge-transition-390-main-held-success-to-B-world-gate.scene",
+      "bytes": 316,
+      "sha256": "caeb8097205dd5dc8f46bf56b5a654572100974f55c7bd7a8fe6a5c50d846e7b"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-390-main-held-success-to-B-world-released.scene",
+      "destination": "raw/edge-transition-390-main-held-success-to-B-world-released.scene",
+      "bytes": 316,
+      "sha256": "caeb8097205dd5dc8f46bf56b5a654572100974f55c7bd7a8fe6a5c50d846e7b"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-390-main-success-control-world-before.scene",
+      "destination": "raw/edge-transition-390-main-success-control-world-before.scene",
+      "bytes": 316,
+      "sha256": "3d0ff020591a32614216119b5e7f9d5a641af0c5a4a515b886f8ae57cbb62d51"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-390-main-success-control-world-completed.scene",
+      "destination": "raw/edge-transition-390-main-success-control-world-completed.scene",
+      "bytes": 316,
+      "sha256": "caeb8097205dd5dc8f46bf56b5a654572100974f55c7bd7a8fe6a5c50d846e7b"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74/edge-transition-390-main-success-control-world-expected.scene",
+      "destination": "raw/edge-transition-390-main-success-control-world-expected.scene",
+      "bytes": 316,
+      "sha256": "caeb8097205dd5dc8f46bf56b5a654572100974f55c7bd7a8fe6a5c50d846e7b"
+    },
+    {
+      "source": "/workspace/closure-evidence/css-review/edge-transition-diagnosis.json",
+      "destination": "review/edge-transition-diagnosis.json",
+      "bytes": 30415,
+      "sha256": "5748a639f4ffa265745c5439f98c7f4a576fc9fab09e1ffb6e9e7e1d7c37c083"
+    },
+    {
+      "source": "/workspace/closure-evidence/css-review/review-identity.json",
+      "destination": "review/review-identity.json",
+      "bytes": 1541,
+      "sha256": "be64832443400f32f8112db277832d3278db2e41e24e04c713e8158ec9ffadf3"
+    },
+    {
+      "source": "/workspace/closure-evidence/css-review/analyze_saved_probes.py",
+      "destination": "review/analyze_saved_probes.py",
+      "bytes": 9070,
+      "sha256": "208fe0e2449dc50cd0e94a6c1b124fb640caa5ed63acd101a02ebe5fc14d9acc"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74.stdout",
+      "destination": "raw/runner.stdout",
+      "bytes": 712,
+      "sha256": "f6152034d524d1565be99c123ab3edc09459251c375dd7c76565060a771d1815"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74.stderr",
+      "destination": "raw/runner.stderr",
+      "bytes": 54,
+      "sha256": "3e18118ad54f049b6af8bc1b4a4e9711a9dab39f0abf1b9f789594fa87204654"
+    },
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-edge-transition-ce74.command.json",
+      "destination": "raw/runner-command.json",
+      "bytes": 423,
+      "sha256": "a1a99825f0822044877f7e4f5c826162a3a2a6d8ee667ce8003ff96b30064eb6"
+    }
+  ],
+  "packager_sha256": "d343f6aadc004075ea1917ba938a58be66a9f12efb84d3a974d25be6857be6c0"
+}

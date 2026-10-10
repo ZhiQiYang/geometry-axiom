@@ -1,0 +1,8 @@
+{
+  "originalReviewScriptSHA256": "a1a8f867a61eef42a41175761efc5f477ecae03d81879d412e285902eef2ceb3",
+  "originalFailedProofSHA256": "98410c73b1beb03bc7908e34f555b9de816218609fe010c42470eacd39fcf763",
+  "originalFailedLogSHA256": "d6e77a4e19ff63ac11af08dda94bcebc9be5cbf27122707c2b25ed0d00fe3adb",
+  "correctedReviewScriptSHA256": "fda58b92726e6a60c74fe4585eea133f76c8e0ebf01addc3ec11c7fd198dc7fc",
+  "reason": "Three synthetic reviewer expectations were wrong: counting const assignments as product writes, mobile right244 gives delta46, border4 left405.59375 gives delta-15.59375. Exact product helper, candidate, proposed patch, actual diagnostic and caption source remain unchanged.",
+  "productAcceptance": false
+}

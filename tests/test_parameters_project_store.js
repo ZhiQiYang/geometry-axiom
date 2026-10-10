@@ -1,9 +1,22 @@
 const {test}=require('node:test');
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
+const vm=require('node:vm');
 const P=require('../geometry-web/project-store.js');
 const zip=require('../geometry-web/vendor/fflate/umd/index.js');
 const scene='requires parameters/1\nparameters begin\nparameters end\n';
+test('read-only archived expressions use their own catalog and retain exact definitions',()=>{
+  const nodes=new Map(),scope={window:{addEventListener:()=>{}},ReferenceWorkspace:{escape:x=>x},oc:{parameters:[{card:{id:1,name:'Live A',fields:[{id:1,name:'Live field'}]}}]},document:{getElementById:id=>{if(id==='paramGridLesson')return null;if(!nodes.has(id))nodes.set(id,{addEventListener:()=>{}});return nodes.get(id);},addEventListener:()=>{}}};
+  // Execute the real ParameterUI module; independent lesson startup needs its
+  // complete application DOM and is exercised by the browser gates instead.
+  vm.runInNewContext(fs.readFileSync(require.resolve('../geometry-web/parameters.js'),'utf8').split('\n/* GEO-227')[0],scope);
+  const format=scope.window.ParameterUI.formatDefinition,catalog=[{id:1,name:'Archived B',fields:[{id:1,name:'Source ⟦name⟧'}]}];
+  const ref={op:'ref',parameterId:1,fieldId:1};
+  assert.equal(format(ref,catalog),'⟦Archived B.Source [name] · #1:1⟧');
+  assert.equal(format(ref),'⟦Live A.Live field · #1:1⟧');
+  assert.equal(format({op:'div',left:{op:'literal',num:'915',den:'2',unit:'mm'},right:{op:'neg',left:ref}},catalog),'((915 mm / 2) ÷ -(⟦Archived B.Source [name] · #1:1⟧))');
+  assert.equal(format({op:'literal',num:'9007199254740993',den:'1',unit:'mm'},catalog),'9007199254740993 mm');
+});
 const manifest=()=>({format:P.FORMAT,projectId:'parameters',name:'參數',sceneHash:'0'.repeat(64),sources:[],faces:[]});
 const pack=(text=scene,extra={})=>P.pack(text,{...manifest(),...extra},new Map(),zip);
 function rewrite(bytes,change){const entries=zip.unzipSync(bytes),m=JSON.parse(new TextDecoder().decode(entries['manifest.json']));change(m);entries['manifest.json']=new TextEncoder().encode(JSON.stringify(m));return zip.zipSync(entries);}

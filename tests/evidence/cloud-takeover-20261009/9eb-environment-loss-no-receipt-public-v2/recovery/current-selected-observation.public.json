@@ -1,0 +1,21 @@
+{
+  "schema": "geometry-current-recovery-selected-observation-public/1",
+  "originalSha256": "4b8fcc0b20aeb2a9018e3192d34e4494a4d282b60d1094c32809e62f8bf21c07",
+  "originalBytes": 9800,
+  "selectedOriginalFields": {
+    "observedUtc": "2026-10-09T18:10:06.361069+00:00",
+    "cgroupRaw": {
+      "/sys/fs/cgroup/memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\n",
+      "/sys/fs/cgroup/memory.max": "17179869184\n",
+      "/sys/fs/cgroup/memory.current": "7671390208\n"
+    },
+    "note": "Current observation only; original disappearing services/Unknown process id diagnosis was not sealed at event time. No OOM attribution or historical exits reconstructed."
+  },
+  "omittedOriginalFields": [
+    "activeProcessRaw",
+    "source",
+    "schema"
+  ],
+  "projectionReason": "Current diagnostic only; private execution environment control identifiers and unrelated background process/profile rows omitted. Does not recover event-time exits, observer, or cleanup cause.",
+  "sourceOrProductTestsExecutedByThisProjection": false
+}

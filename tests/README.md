@@ -130,7 +130,7 @@ python tests\test_bridge_integrity.py
 
 Windows 可用現有 `tests/_clw.bat` 編譯 C 測試；bridge 依 `geometry-web/build.bat` 使用 `/U_WIN32`。
 以環境變數 `GEOMETRY_TEST_BRIDGE` 指定剛編譯的 bridge，避免測到過時的 exe。
-上面兩段是手動流程，沒有任何新舊檢查（`geometry-web\web_bridge.exe` 是不在 `%TEMP%` 的舊習慣位置，也沒人驗它是不是最新）；
+上面兩段編譯指令本身不寫 sidecar。現行 `tests/_bridge.py` 對明示的 `GEOMETRY_TEST_BRIDGE` 仍要求 fresh sidecar；指到 `geometry-web\web_bridge.exe` 且沒有收據時會 SkipTest，不會把未核對的 exe 當成通過。
 日常請用最上面的一鍵入口。手動用 `_clw.bat` 編的 core 是含視窗程式碼的版本，在本機曾被 SAC 連擋多次，一鍵入口的 core 改用 `/U_WIN32` 版（與 `_cl.bat`、`mutate.py` 一致）。
 
 ## 新公理與保存格式
@@ -198,6 +198,8 @@ clean checkout 的 `--check` 核保存證據，不聲稱已核不存在的 TEMP 
 Windows 的 SAC 持續擋住新編 exe 時，可使用已安裝的 WSL/GCC 執行同一裁判：
 
 ```sh
+# 必須 cd 到這份 checkout 的 WSL 路徑。主工作樹 D:\geometry-axiom 才是 /mnt/d/geometry-axiom。
+# 其他工作樹照抄會跑到另一份來源。可用 wslpath -u 換算，不要假設每份樹都在同一路徑。
 cd /mnt/d/geometry-axiom
 ulimit -s 65536
 python3 tests/mutate.py

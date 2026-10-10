@@ -1,0 +1,21 @@
+{
+  "schema": "geometry-sgr62-original-oracle/1",
+  "tests": [
+    "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_native_save_requires_capability_and_load_failures_preserve_live_world"
+  ],
+  "testsRun": 1,
+  "failures": 0,
+  "errors": 0,
+  "skipped": [],
+  "unexpectedSuccesses": 0,
+  "expectedFailures": 0,
+  "details": [],
+  "sessions": 1,
+  "unhealthySessions": [],
+  "binary": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/active-bridge",
+  "binarySha256": "d7961d7878f701b1035c5542ce70fcd7a4c0e43282962c33ccb02434f2e51e7f",
+  "sanitizerEnvironment": {
+    "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1:abort_on_error=1",
+    "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+  }
+}

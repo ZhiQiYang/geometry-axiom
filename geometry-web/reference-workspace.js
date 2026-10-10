@@ -4,14 +4,14 @@ const ReferenceWorkspace = (() => {
   const P = GeometryProject, uuid = () => crypto.randomUUID();
   const escape = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
   const fresh = () => ({ id: uuid(), name: "未命名專案", sources: new Map(), groups: new Map(), models: [], modelsDirty: false,
-    reconstructionReviews: new Map(), faceProjections: new Map(), faceProjectionsDirty: false, engineeringDrafts: [], assemblyDrafts: [], featureAttachments: [], pending: new Set(), dirty: false,
+    reconstructionReviews: new Map(), faceProjections: new Map(), faceProjectionsDirty: false, engineeringDrafts: [], assemblyDrafts: [], featureAttachments: [], scenarioCatalog:null, pending: new Set(), dirty: false,
     provenance:{kind:"server",label:"服務目前保留的場景（來源未確認）",openedAt:null,lastSavedAt:null,lastDownloadAt:null} });
   const history = new P.ContextHistory(fresh);
   const revisions = new WeakMap(), selections = new WeakMap(), contextTokens = new WeakMap();
   const modelOperationIdentities = new WeakMap();
   let pdfLib, modal = null, busy = false, busyLabel = "", busyShort = "處理中", sequence = 0, pendingLoad = null;
   let importRenderingContext = null;
-  let assemblyConfirmation = null, preparingSceneLoad = false;
+  let assemblyConfirmation = null, preparingSceneLoad = false, sceneTransaction = null;
   let roomTransaction = null;
   const featureConfirmations=new Map();
   let presentedModelContext = null, presentedModels = null;
@@ -19,18 +19,22 @@ const ReferenceWorkspace = (() => {
   let presentedDraftContext = null, presentedDrafts = null;
   let recovery = {state:"pending",message:"尚未檢查本分頁的恢復資料。"};
   let recoveryKey = null, recoveryDB = null, recoveryTimer = null, recoveryWriting = false, recoveryAgain = false, recoveryReady = false;
+  let recoveryFinishReceipt = null;
   let releaseRecoveryLock = null, recoveryAttempted = false;
   let contextConflict = false, externalEpoch = 0;
   let editorLease = "unchecked", editorLeaseSession = null;
   let nativeRevision = null, nativeSession = null, nativePending = 0;
-  const E = P.Features.Evidence, preparedReferences = new WeakMap();
+  const scenarioContext = () => window.GeometryNativeContext?.scenario || null;
+  let scenarioBootstrap = "blocked", scenarioInitializationAttempted = false, scenarioInitializationPermit = null;
+  let scenarioFreeze = null, lastScenarioRelease = null;
+  const E = P.Features.Evidence, preparedReferences = new WeakMap(), preparedFeatures = new WeakMap(), caseCommitKey = Object.freeze({});
   function observeNativeRevision(result) {
     const session = connection.session || "";
     if (session !== nativeSession) {nativeSession = session; nativeRevision = null;}
     if (Number.isSafeInteger(result?.revision)) nativeRevision = Math.max(nativeRevision ?? 0, result.revision);
   }
   function beginNativeOperation(command) {
-    if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm )/.test(command)) return null;
+    if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(command)) return null;
     nativePending++;
     let ended = false;
     return () => {if (!ended) {ended = true; nativePending--;}};
@@ -62,9 +66,13 @@ const ReferenceWorkspace = (() => {
   function assertEditorLease(){
     if(editorLease==="readonly" || editorLease==="unavailable")throw new Error("另一個分頁正在編輯這份工作，或瀏覽器無法確認編輯權限。本分頁僅供查看；請關閉原編輯分頁，再從專案資訊重新連接。");
     if(editorLeaseSession && connection.session!==editorLeaseSession)throw new Error("服務工作階段已變更，請重新連接後再編輯。");
+    if(scenarioContext() && scenarioBootstrap!=="ready" && !scenarioInitializationPermit)
+      throw new Error("這份試改尚未取得可核對的完整資料，原生內容已保留；不能重新匯入舊方案覆蓋它。");
   }
   function assertWritableLease(){assertAssemblyIdle();assertEditorLease();}
-  function assertEditable(){assertWritableLease();if(contextConflict)throw new Error("另一個分頁已變更目前場景。請先開啟正確的 .gcanvas 專案或建立新專案，再編輯或保存。");}
+  function assertEditable(transactionOwner=null){assertWritableLease();if((sceneTransaction&&sceneTransaction!==transactionOwner)||preparingSceneLoad||pendingLoad)throw new Error("場景載入結果尚未確認，請先等候結果或重新連線，再編輯或復原。");if(contextConflict)throw new Error("另一個分頁已變更目前場景。請先開啟正確的 .gcanvas 專案或建立新專案，再編輯或保存。");}
+  function beginSceneTransaction(){assertWritableLease();if(sceneTransaction||preparingSceneLoad||pendingLoad)throw new Error("請先確認上一筆場景載入結果再開啟。");return sceneTransaction={};}
+  function finishSceneTransaction(owner){if(sceneTransaction===owner){sceneTransaction=null;schedulePresentation();}}
   const context = () => history.frame.context;
   // The native commit and its local history observation must finish before
   // another project or mutation can become the current history frame.
@@ -133,7 +141,7 @@ const ReferenceWorkspace = (() => {
   }
   function getModelOperationState() {
     const identity=value=>{if(!value)return null;if(!modelOperationIdentities.has(value))modelOperationIdentities.set(value,uuid());return modelOperationIdentities.get(value);};
-    let blocked=busy||!!oc.busy||preparingSceneLoad||!!pendingLoad||!!history.group;
+    let blocked=busy||!!oc.busy||!!sceneTransaction||preparingSceneLoad||!!pendingLoad||!!history.group;
     try{assertModelReady();}catch(_){blocked=true;}
     const project=getProjectState(),session=typeof connection==='undefined'?'':connection.session||'';
     // Only opaque scalar identities cross the model owner boundary. A caller
@@ -152,7 +160,7 @@ const ReferenceWorkspace = (() => {
       lastSavedAt:p.lastSavedAt || null,lastDownloadAt:p.lastDownloadAt || null,statusText:statusText(c),
       undoLabel:history.actionLabel("undo") || (history.undo.length ? "上一步模型修改" : null),
       historyNote:history.undo.length ? "可復原本頁已記錄的操作；開啟專案、新專案及清空內容也各算一步。" : "本頁尚無可確認的復原記錄；服務較早的幾何歷史不保證能恢復附件與工程草稿。",
-      recovery:{...recovery},editingBlocked:!!assemblyConfirmation || contextConflict || editorLease==="readonly" || editorLease==="unavailable"};
+      recovery:{...recovery},editingBlocked:!!assemblyConfirmation || contextConflict || editorLease==="readonly" || editorLease==="unavailable" || !!scenarioContext()&&scenarioBootstrap!=="ready"};
   }
   function markSceneSource(label,kind="scene") {
     assertWritableLease();
@@ -178,8 +186,11 @@ const ReferenceWorkspace = (() => {
   }
   async function persistSession() {
     if(!recoveryReady)return;
+    // A live B never qualifies a debounce record for Resume. Qualification is
+    // only the explicit frozen pause below; the whole editing epoch is disarmed.
+    if(scenarioContext())return;
     if(recoveryWriting){recoveryAgain=true;return;}
-    if(busy || oc.busy || history.group || pendingLoad || preparingSceneLoad || assemblyConfirmation){scheduleRecovery();return;}
+    if(busy || oc.busy || history.group || pendingLoad || preparingSceneLoad || assemblyConfirmation || sceneTransaction){scheduleRecovery();return;}
     if(fe.draft?.pts?.length || fe.ulCalib?.pts?.length || window.WorkspaceShell?.saveState().blocked){
       recoveryMessage("draft","本次外環、校準或工作區草稿尚未套用；恢復資料只保留上次完成的工作內容。");return;
     }
@@ -190,6 +201,7 @@ const ReferenceWorkspace = (() => {
       const {bytes,stamp,scene}=await exportSnapshot(),c=stamp.context;
       const record={version:1,session,sceneHash:await sceneFingerprint(scene),bytes,updatedAt:new Date().toISOString(),
         project:{dirty:!!c.dirty,dirtyReason:c.dirtyReason || "",saved:!!c.saved,downloaded:!!c.downloaded,provenance:{...c.provenance}}};
+      if(recoveryFinishReceipt?.session===session&&recoveryFinishReceipt.key===recoveryKey)record.finishReceipt=recoveryFinishReceipt.hash;
       assertSnapshot(stamp);
       if(!recoveryReady || connection.session!==session)throw new Error("服務或其他分頁已變更，未更新恢復資料。");
       await recoveryStore("readwrite",store=>store.put(record,recoveryKey));
@@ -210,6 +222,7 @@ const ReferenceWorkspace = (() => {
     let initial={context:context(),frame:history.frame,revision:revision(context())},epoch=externalEpoch;
     const assertInitial=()=>{if(externalEpoch!==epoch || !unchanged(initial))throw new Error("檢查恢復資料期間目前專案已變更，未套用舊資料。");};
     busy=true;busyLabel="正在檢查本分頁的恢復資料…";present();
+    let preparedContext=null;
     try {
       const serviceSession=typeof connection!=="undefined"?connection.session:null;
       if(!serviceSession)throw new Error("尚未確認服務工作階段，請重新連接。");
@@ -232,10 +245,15 @@ const ReferenceWorkspace = (() => {
         }
       }
       if(typeof indexedDB==="undefined"){recoveryMessage("unavailable","此瀏覽器無法保留本分頁的完整專案。重新整理前請保存 .gcanvas 檔案。");return {...recovery};}
-      const storageKey="geometry-canvas-recovery-tab-v1";
-      if(!window.sessionStorage)throw new Error("本分頁儲存空間不可用。");
-      recoveryKey=window.sessionStorage.getItem(storageKey);
-      if(!recoveryKey){recoveryKey=uuid();window.sessionStorage.setItem(storageKey,recoveryKey);}
+      const storageKey="geometry-canvas-recovery-tab-v1",scenario=scenarioContext();
+      if(scenario){
+        if(scenario!==serviceSession)throw new Error("試改來源與原生工作階段不符，未開啟恢復資料。");
+        recoveryKey="geometry-scenario-recovery-"+serviceSession;
+      }else{
+        if(!window.sessionStorage)throw new Error("本分頁儲存空間不可用。");
+        recoveryKey=window.sessionStorage.getItem(storageKey);
+        if(!recoveryKey){recoveryKey=uuid();window.sessionStorage.setItem(storageKey,recoveryKey);}
+      }
       const locked=await new Promise((resolve,reject)=>{
         navigator.locks.request("geometry-canvas-recovery-"+recoveryKey,{ifAvailable:true},async lock=>{
           if(!lock){resolve(false);return;}
@@ -248,7 +266,29 @@ const ReferenceWorkspace = (() => {
         request.onupgradeneeded=()=>request.result.createObjectStore("projects");
         request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error);request.onblocked=()=>reject(new Error("本機恢復資料庫被其他視窗占用。"));
       });
-      const record=await recoveryStore("readonly",store=>store.get(recoveryKey));assertInitial();
+      if(scenario){
+        // A surviving native B is not enough to prove its latest browser-only
+        // metadata. Bootstrap never restores or overwrites an old B checkpoint.
+        // Only the exact fresh initializing ticket can authorize first import.
+        recoveryReady=false;
+        recoveryMessage("scenario-blocked","試改原生內容與既有恢復資料已保留。中斷的試改尚不能證明完整恢復，請回原方案核對或明確捨棄。");
+        return {...recovery};
+      }
+      let record=await recoveryStore("readonly",store=>store.get(recoveryKey)),finishPin=null;assertInitial();
+      // A Finish can commit in storage before its local UI acknowledgement.
+      // Its immutable receipt takes precedence over an older debounce record,
+      // but only in the original parent recovery namespace and native session.
+      const ticket=await readStoredScenarioTicket(serviceSession);assertInitial();
+      if(ticket?.phase==="retiring"&&ticket.retirement.reason==="finish"&&ticket.retirement.checkpoint.parentKey===recoveryKey){
+        const pin=ticket.retirement.checkpoint;
+        const saved=await recoveryStore("readonly",store=>store.get(pin.key));assertInitial();
+        if(!saved||saved.session!==serviceSession||saved.sceneHash!==pin.sceneHash||await P.sha(saved.bytes)!==pin.packageHash)
+          throw new Error("試改完成收據不完整，未覆寫原方案或試改資料。");
+        // A successful restore/commit establishes a descendant epoch. Later
+        // acknowledged A edits must win over its older immutable Finish copy.
+        // An unknown-outcome writer still holding pre-Finish A has no marker.
+        if(record?.finishReceipt!==pin.packageHash){record=saved;finishPin=pin;}
+      }
       if(!record){recoveryReady=true;recoveryMessage("empty","本分頁尚無恢復資料。服務上的既有幾何來源未知，不能據此推定已保存專案。");return {...recovery};}
       const session=typeof connection!=="undefined"?connection.session:null,dump=await api("dump");assertInitial();
       if(record.version!==1 || !session || record.session!==session || !dump.ok || record.sceneHash!==await sceneFingerprint(dump.text)){
@@ -256,7 +296,10 @@ const ReferenceWorkspace = (() => {
       }
       const stage=label=>{busyLabel=label;present();};
       const {loaded,c,ids}=await readProjectContext(record.bytes,"本機恢復專案",stage,assertInitial,true);
+      preparedContext=c;
       if(await sceneFingerprint(loaded.scene)!==record.sceneHash)throw new Error("本機恢復資料的場景指紋不一致。");
+      if(finishPin&&(loaded.manifest.projectId!==finishPin.projectId||!loaded.manifest.scenarioCatalog?.scenarios.some(s=>s.scenarioId===ticket.scenarioId)))
+        throw new Error("試改完成收據與原方案身份不符，資料已保留。");
       const verify=await api("dump");assertInitial();
       if(!verify.ok || connection.session!==session || await sceneFingerprint(verify.text)!==record.sceneHash)throw new Error("恢復期間服務場景已變更，未恢復專案。");
       assertInitial();
@@ -264,13 +307,15 @@ const ReferenceWorkspace = (() => {
       if(!p || typeof p.provenance?.kind!=="string" || typeof p.provenance?.label!=="string")throw new Error("本機專案來源記錄不完整。");
       Object.assign(c,{dirty:!!p.dirty,dirtyReason:String(p.dirtyReason || ""),saved:!!p.saved,downloaded:!!p.downloaded,provenance:{...p.provenance}});
       history.frame={context:c,ids:new Map(ids)};history.undo=[];history.redo=[];history.group=null;history.blockCoreRedo=false;
+      if(record.finishReceipt&&/^[a-f0-9]{64}$/.test(record.finishReceipt))recoveryFinishReceipt={session,key:recoveryKey,hash:record.finishReceipt};
+      detachedPDFContexts.delete(c);
       recoveryReady=true;sync();
       recoveryMessage("restored","已核對同一服務及場景，恢復本分頁的專案、來源附件、空間模型與工程草稿。未套用的工具草稿及較早復原歷史無法恢復；檔案保存狀態維持原紀錄。");
       return {...recovery};
     } catch(error) {
       if(editorLease!=="owned")editorLease="unavailable";
       if(!contextConflict)recoveryMessage("unavailable","未恢復本機專案："+(error.message || "儲存空間不可用")+"目前場景未被覆寫，請開啟 .gcanvas 檔案。");return {...recovery};
-    } finally {busy=false;busyLabel="";present();if(recoveryReady)scheduleRecovery();}
+    } finally {await releaseDetachedPDFContext(preparedContext);busy=false;busyLabel="";present();if(recoveryReady)scheduleRecovery();}
   }
   async function retryRecovery() {
     if(busy)throw new Error("請先等目前操作完成。");
@@ -374,8 +419,8 @@ const ReferenceWorkspace = (() => {
     if (edited && active(+edited[1])?.calibration) active(+edited[1]).reviewRequired = true;
     if (result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))
       dirty(importRenderingContext === context() && /^line canvas-pos\s/.test(cmd) ? "畫布已自動排版 · 尚未保存" : "");
-    if(result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))notifySceneChange();
-    if (result.ok && /^(engineering-confirm|assembly-confirm) /.test(cmd) && result.history_changed !== false) dirty();
+    if(result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))notifySceneChange();
+    if (result.ok && /^(engineering-confirm|assembly-confirm|section-profile-confirm) /.test(cmd) && result.history_changed !== false) dirty();
     if (previousProjections !== context().faceProjections && context().faceProjectionsDirty) dirty();
     sync();
   }
@@ -397,8 +442,39 @@ const ReferenceWorkspace = (() => {
     assertMetadataCapacity({featureAttachments:next});
     return next;
   }
+  async function validateRuleCaseClosure(envelope, assertCurrent=()=>{}) {
+    for(const record of envelope?.records||[])if(record.kind===P.Features.CASE_KIND){
+      P.Features.Cases.validate(record.value);await P.Features.Cases.verifyHashes(record.value);assertCurrent();
+      const response=await fetch('/rule-cases/prepare',{method:'POST',headers:{'Content-Type':'application/json','X-Geometry-Version':pageRuntimeVersion},
+        body:JSON.stringify(record.value),signal:AbortSignal.timeout(30000)});assertCurrent();checkApiSession(response);
+      const result=await response.json();assertCurrent();
+      if(!response.ok||result.ok!==true||result.trust!=='historical-unverified'||!sameModelData(result.data,record.value))throw new Error(result.error||'規則案例尚未通過完整來源與結果驗證。');
+    }
+  }
+  async function prepareFeatureAttachment(kind,value,expectedContextToken,assertCurrent=()=>{}) {
+    assertEditable();assertCurrent();
+    const before=getModelOperationState(),original=getEvidenceState();
+    if(original.blocked||expectedContextToken!==original.contextToken)throw new Error('功能附件操作已過期。');
+    // One detached input owns admission, validation and the eventual commit.
+    // Validate caller data before cloning; never retain its aliases across await.
+    const admitted=value===null?null:structuredClone(P.Features.record(kind,value).value);
+    const proposal=featureProposal(kind,admitted);
+    const guard=()=>{assertCurrent();assertEditable();const next=getEvidenceState();
+      if(getModelOperationState().frame!==before.frame||next.blocked||!sameModelData(original,next))throw new Error('功能附件驗證結果晚到，未寫入。');};
+    await validateRuleCaseClosure({schema:P.Features.SCHEMA,records:proposal},guard);guard();
+    const handle=Object.freeze({});preparedFeatures.set(handle,{kind,value:admitted,expectedContextToken,guard});return handle;
+  }
+  function commitPreparedFeatureAttachment(handle,assertCurrent=()=>{}) {
+    const prepared=preparedFeatures.get(handle);if(!prepared)throw new Error('功能附件候選已取消或提交。');
+    prepared.guard();assertCurrent();const previous=readFeatureAttachment(prepared.kind);
+    // Recheck full root/leaf capacity synchronously immediately before history.
+    featureProposal(prepared.kind,prepared.value);prepared.guard();assertCurrent();
+    preparedFeatures.delete(handle);if(sameModelData(previous,prepared.value))return false;
+    setFeatureAttachment(prepared.kind,prepared.value,prepared.expectedContextToken,{caseAdmission:caseCommitKey});return true;
+  }
   function setFeatureAttachment(kind, value, expectedContextToken, options = {}) {
     P.Features.assertKind(kind);
+    if(kind===P.Features.CASE_KIND && options.caseAdmission!==caseCommitKey)throw new Error("規則案例必須先完成隔離資料驗證，再原子保留。");
     const groupedRoom = kind === P.Features.ROOM_KIND && options.recordHistory === false;
     if (groupedRoom) {
       assertRoomTransaction(options.roomLease);
@@ -412,7 +488,7 @@ const ReferenceWorkspace = (() => {
     const proposal = featureProposal(kind,value), previous = readFeatureAttachment(kind);
     if (sameModelData(previous, value)) return previous;
     const next = structuredClone(proposal);
-    if (!groupedRoom) history.push(history.snapshot(), "local", kind === E.KIND ? "編輯參數證據" : kind === P.Features.ROOM_KIND ? "編輯房間來源" : value === null ? "捨棄網格編輯草稿" : "編輯網格草稿");
+    if (!groupedRoom) history.push(history.snapshot(), "local", kind === P.Features.CASE_KIND ? "保留規則案例" : kind === E.KIND ? "編輯參數證據" : kind === P.Features.ROOM_KIND ? "編輯房間來源" : value === null ? "捨棄網格編輯草稿" : "編輯網格草稿");
     context().featureAttachments = next; dirty(); sync();
     if (kind === E.KIND) window.dispatchEvent(new CustomEvent("evidence-links-changed"));
     return readFeatureAttachment(kind);
@@ -447,11 +523,11 @@ const ReferenceWorkspace = (() => {
     const stamp = getModelOperationState(), original = readFeatureAttachment(P.Features.ROOM_KIND),
       incarnation = frame.ids.get(boundaryId);
     if (!sameModelData(GeometrySourcePlane.fromPage(page, source.meta.type, plane.id), plane)) throw new Error("共享來源基準與明選原頁不一致。");
-    const next = structuredClone(original || GeometrySourcePlane.empty());
+    const next = GeometrySourcePlane.upgradeDisplay(original || GeometrySourcePlane.empty());
     next.planes.push(structuredClone(plane)); next.collections.push({id:collectionId,planeId:plane.id,roomIds:[roomId]});
-    next.rooms.push({id:roomId,name,boundaryRef:{kind:"boundary",id:boundaryId,associationPin},acceptedBasisRevision:plane.basisRevision,reviewState:"confirmed"});
+    next.rooms.push({id:roomId,name,boundaryRef:{kind:"boundary",id:boundaryId,associationPin},acceptedBasisRevision:plane.basisRevision,reviewState:"confirmed",
+      display:{crop:structuredClone(page.crop),opacity:page.opacity,locked:page.locked}});
     if (page.records.length || originalReview !== null) {
-      next.schema = GeometrySourcePlane.HISTORY_SCHEMA;
       (next.legacyHistory ||= []).push({planeId:plane.id,boundaryId,pageId:page.id,records:page.records,reconstructionReview:originalReview});
     }
     // Validate the original JSON before taking detached snapshots; serialization
@@ -611,27 +687,60 @@ const ReferenceWorkspace = (() => {
     const hash = await P.sha(bytes);
     return { meta: { id: hash, hash, name: file.name || "參考圖片", type, size: bytes.length, path: "sources/" + hash }, bytes };
   }
+  const pdfLoads = new WeakMap(), pdfTaskCleanup = new WeakMap(), detachedPDFContexts = new WeakSet();
+  function destroyPDFTask(task) {
+    if (!task) return Promise.resolve();
+    if (!pdfTaskCleanup.has(task)) pdfTaskCleanup.set(task,Promise.resolve().then(()=>task.destroy()).catch(()=>{}));
+    return pdfTaskCleanup.get(task);
+  }
   async function documentFor(s, assertCurrent = () => {}) {
     if (s.meta.type !== "application/pdf") return null;
     if (s.cleanup) {await s.cleanup; assertCurrent();}
-    if (!s.doc) {
-      const lib = await library();
-      assertCurrent();
-      const task = lib.getDocument({ data: s.bytes.slice(), isEvalSupported: false,
-        cMapUrl: "/vendor/pdfjs-dist/cmaps/", cMapPacked: true,
-        standardFontDataUrl: "/vendor/pdfjs-dist/standard_fonts/", wasmUrl: "/vendor/pdfjs-dist/wasm/" });
-      s.loadingTask = task;
-      s.documentTask = task;
-      task.onPassword = () => { task.destroy().catch(()=>{}); };
-      try { s.doc = await task.promise; assertCurrent(); } catch (error) { await releasePDFSource(s);assertCurrent();throw new Error("無法讀取 PDF；請確認檔案完整且未加密。"); }
-      finally { if (s.loadingTask === task) s.loadingTask = null; }
-    }
-    return s.doc;
+    assertCurrent();
+    if (s.doc) return s.doc;
+    const reader = {assertCurrent};
+    let load = pdfLoads.get(s);
+    if (!load) {
+      load = {readers:new Set([reader]),task:null,cancelled:false};pdfLoads.set(s,load);
+      const assertOwned = () => {
+        if (!load.cancelled) for (const reader of load.readers) {
+          try {reader.assertCurrent();return;} catch (_) {}
+        }
+        throw new Error("PDF 讀取已取消。");
+      };
+      load.promise = (async()=>{
+        try {
+          const lib = await library();assertOwned();
+          const task = load.task = lib.getDocument({ data:s.bytes.slice(),isEvalSupported:false,
+            cMapUrl:"/vendor/pdfjs-dist/cmaps/",cMapPacked:true,
+            standardFontDataUrl:"/vendor/pdfjs-dist/standard_fonts/",wasmUrl:"/vendor/pdfjs-dist/wasm/" });
+          s.loadingTask=task;s.documentTask=task;
+          task.onPassword=()=>{destroyPDFTask(task);};
+          const doc=await task.promise;assertOwned();s.doc=doc;return doc;
+        } catch (error) {
+          if(pdfLoads.get(s)===load)pdfLoads.delete(s);
+          if(s.documentTask===load.task)s.documentTask=null;
+          if(s.doc?.loadingTask===load.task)s.doc=null;
+          await destroyPDFTask(load.task);
+          throw new Error("無法讀取 PDF；請確認檔案完整且未加密。");
+        } finally {if(s.loadingTask===load.task)s.loadingTask=null;}
+      })();
+    } else load.readers.add(reader);
+    try {
+      const doc=await load.promise;assertCurrent();return doc;
+    } catch (error) {assertCurrent();throw error;}
+    finally {load.readers.delete(reader);}
   }
   async function releasePDFSource(source) {
-    const task=source.loadingTask || source.documentTask || source.doc?.loadingTask;
+    const load=pdfLoads.get(source);if(load){load.cancelled=true;pdfLoads.delete(source);}
+    const task=load?.task || source.loadingTask || source.documentTask || source.doc?.loadingTask;
     source.doc=null;source.loadingTask=null;source.documentTask=null;
-    if(task)await task.destroy().catch(()=>{});
+    await destroyPDFTask(task);
+  }
+  async function releaseDetachedPDFContext(c) {
+    if (!c || !detachedPDFContexts.has(c) || pendingLoad?.context===c) return;
+    detachedPDFContexts.delete(c);
+    await Promise.all([...c.sources.values()].map(releasePDFSource));
   }
   // Runtime-only immutable source features: never added to history or saved
   // project metadata. A late extraction only fills its source/page cache.
@@ -832,7 +941,7 @@ const ReferenceWorkspace = (() => {
   }
   function changed(bid, recheck = false) {
     assertEditable(); const p = active(bid);
-    if (sharedRoom(bid)) return RoomCollectionWorkspace.changeBasis(bid, {x:p.x,y:p.y,rot:p.rot,mmPerPx:p.mmPerPx});
+    if (sharedRoom(bid)) return RoomCollectionWorkspace.changeView(bid, {crop:p.crop,opacity:p.opacity,locked:p.locked,x:p.x,y:p.y,rot:p.rot,mmPerPx:p.mmPerPx});
     if (p) assertPageCapacity(bid,{...p,reviewRequired:recheck ? true : p.reviewRequired});
     if (p && recheck) p.reviewRequired = true; dirty();
   }
@@ -968,6 +1077,7 @@ const ReferenceWorkspace = (() => {
   async function openSource(source, bid = null) {
     assertEditable(); assertRoomDraftIdle(); if (bid !== null && sharedRoom(bid)) bid = null;
     if (busy || oc.busy) throw new Error("操作進行中，請稍候。");
+    if (modal) closeSource();
     const dialog = document.getElementById("referenceDialog"), token = ++sequence;
     modal = { source, bid, context:context(), targets:new Map([...history.frame.ids].filter(([id]) => !sharedRoom(id))), page: 1, crop: null, width: 1, height: 1, token, zoom: "page", ready: false, drag: null };
     document.getElementById("refZoom").value = "page";
@@ -983,9 +1093,9 @@ const ReferenceWorkspace = (() => {
     target.innerHTML = `<option value="new">建立描繪用面（預設矩形）</option>` + oc.faces.filter(f=>f.kind==="boundary" && modal.targets.has(f.id)).map(f=>`<option value="${f.id}">套用至面 ${f.id}</option>`).join("");
     target.value = bid != null && modal.targets.has(bid) ? String(bid) : "new";
     if (!dialog.open) dialog.showModal();
+    const m=modal,assertCurrent=()=>{if(modal!==m || m.token!==token)throw new Error("PDF 讀取已取消。");assertContext(m.context);};
     try {
-      const doc = await documentFor(source); if (!modal || modal.token !== token) return;
-      assertContext(modal.context);
+      const doc = await documentFor(source,assertCurrent);assertCurrent();
       modal.count = doc?.numPages || 1;
       document.getElementById("refPageNumber").disabled = false;
       document.getElementById("refPageNumber").max = modal.count;
@@ -1101,7 +1211,9 @@ const ReferenceWorkspace = (() => {
     const envelope = {schema:P.Features.SCHEMA,records:c.featureAttachments || []};
     P.Features.sourceRooms(envelope,c.sources);P.Features.evidenceLinks(envelope,c.sources,c.id);
     for (const hash of P.Features.sourceIds(envelope)) used.add(hash);
+    for (const record of c.scenarioCatalog?.scenarios || []) for (const hash of record.snapshot.assetHashes) used.add(hash);
     const data = { ...(reconstructionReviews.length?{reconstructionReviews}:{}),projectId:c.id,name:c.name,sources:[...used].map(k=>c.sources.get(k).meta),faces,
+      ...(c.scenarioCatalog?{scenarioCatalog:c.scenarioCatalog}:{}),
       ...(c.models.length?{models:c.models}:{}),...(faceProjections.length?{faceProjections}:{}),
       ...(c.assemblyDrafts?.length?{assemblyDrafts:{schema:P.ASSEMBLY_DRAFT_SCHEMA,records:c.assemblyDrafts}}:{}),
       ...(c.featureAttachments?.length?{featureAttachments:{schema:P.Features.SCHEMA,records:c.featureAttachments}}:{}),
@@ -1111,7 +1223,7 @@ const ReferenceWorkspace = (() => {
   }
   function assertMetadataCapacity(overrides = {}, ids = history.frame.ids) {
     const c = {...context(),...overrides};
-    if (!c.featureAttachments?.some(record => record.kind === P.Features.ROOM_KIND || record.kind === E.KIND)) return;
+    if (!c.scenarioCatalog && !c.featureAttachments?.length) return;
     P.assertManifestCapacity(manifestData(c,ids));
   }
   function assertPageCapacity(bid,page,{append = false,replace = false,...overrides} = {}) {
@@ -1126,11 +1238,13 @@ const ReferenceWorkspace = (() => {
     const data = manifestData(c);P.assertManifestCapacity(data,scene);
     return JSON.parse(JSON.stringify(data));
   }
-  function assertSaveReady() {
+  function assertSaveReady(transactionOwner=null) {
+    if(nativePending>0)throw new Error("原生操作結果尚未取得，請等候完成後再保存或凍結試改。");
     if(window.RoomCollectionWorkspace?.hasWork)throw new Error("房間草稿尚未確認。請確認、取消或恢復結果，再保存專案。");
     if(window.RoomOutlineWorkspace?.hasWork)throw new Error("房間輪廓候選尚未確認。請確認或取消候選，再保存專案。");
     if(window.ParameterUI?.pending)throw new Error("參數草稿尚未套用。請先確認或捨棄草稿，再保存專案。");
-    assertEditable();
+    if(window.SectionProfileWorkspace?.hasWork)throw new Error("斷面修改尚未套用。請先確認或取消，再保存專案。");
+    assertEditable(transactionOwner);
     if (oc.busy || fe.ulDrag || history.group || pendingLoad) throw new Error("請先完成目前的操作再保存。");
     if (fe.draft?.pts?.length) throw new Error("外環草稿尚未套用。請先完成外環或放棄草稿，再保存專案。");
     if (fe.ulCalib?.pts?.length) throw new Error("校準尚未套用。請先套用比例尺或取消取點，再保存專案。");
@@ -1138,24 +1252,356 @@ const ReferenceWorkspace = (() => {
   function unchanged(stamp) {
     return context() === stamp.context && history.frame === stamp.frame && revision(stamp.context) === stamp.revision && !pendingLoad;
   }
-  function assertSnapshot(stamp) {
+  function assertSnapshot(stamp,transactionOwner=null) {
     if (!unchanged(stamp)) throw new Error("專案在保存準備期間已變更，請重新保存。");
-    assertSaveReady();
+    assertSaveReady(transactionOwner);
   }
-  async function exportSnapshot(c = context()) {
-    window.AssemblyWorkspace?.flush();
-    window.InfiniteGridWorkspace?.flush();
-    assertSaveReady(); await referencesReady(c); assertContext(c); assertSaveReady();
+  async function exportSnapshot(c = context(),includeCatalog = true,assertCurrent=()=>{},afterFlush=()=>{},transactionOwner=null,proposal=null) {
+    assertCurrent();
+    if(!transactionOwner){window.AssemblyWorkspace?.flush();window.InfiniteGridWorkspace?.flush();}
+    afterFlush();assertCurrent();
+    assertSaveReady(transactionOwner); await referencesReady(c); assertCurrent();assertContext(c); assertSaveReady(transactionOwner);
     const stamp = { context:c, frame:history.frame, revision:revision(c) };
     const r=await api("dump"); if (!r.ok) throw new Error(r.error||"無法讀取場景。");
-    assertSnapshot(stamp);
-    const m=await manifest(c,r.text); assertSnapshot(stamp);
-    await validateEvidenceClosure(c, m.featureAttachments, () => assertSnapshot(stamp)); assertSnapshot(stamp);
-    const data=new Map([...c.sources].map(([k,s])=>[k,s.bytes]));
-    const bytes=await P.pack(r.text,m,data,fflate); assertSnapshot(stamp);
-    return {bytes,stamp,scene:r.text};
+    assertCurrent();assertSnapshot(stamp,transactionOwner);
+    const snapshot=proposal||c,m=includeCatalog?proposal?manifestData(snapshot):await manifest(c,r.text):manifestData({...snapshot,scenarioCatalog:null});
+    P.assertManifestCapacity(m,r.text);assertCurrent();assertSnapshot(stamp,transactionOwner);
+    await validateRuleCaseClosure(m.featureAttachments,()=>{assertCurrent();assertSnapshot(stamp,transactionOwner);});assertCurrent();assertSnapshot(stamp,transactionOwner);
+    await validateEvidenceClosure(snapshot, m.featureAttachments, () => {assertCurrent();assertSnapshot(stamp,transactionOwner);}); assertCurrent();assertSnapshot(stamp,transactionOwner);
+    const data=new Map([...snapshot.sources].map(([k,s])=>[k,s.bytes]));
+    const bytes=await P.pack(r.text,m,data,fflate); assertCurrent();assertSnapshot(stamp,transactionOwner);
+    return {bytes,stamp,scene:r.text,nativeRevision:r.revision??null};
   }
   async function exportBytes() { return (await exportSnapshot()).bytes; }
+  async function readScenarioProject(assertCurrent=()=>{},afterFlush=()=>{}) {
+    const {bytes,stamp}=await exportSnapshot(context(),false,assertCurrent,afterFlush);assertCurrent();
+    const project=await P.unpack(bytes,fflate);assertCurrent();assertSnapshot(stamp);
+    return {project,assertCurrent:()=>assertSnapshot(stamp)};
+  }
+  function readScenarioCatalog() {
+    return {catalog:structuredClone(context().scenarioCatalog),sources:new Map([...context().sources].map(([h,s])=>[h,{meta:structuredClone(s.meta),bytes:s.bytes.slice()}]))};
+  }
+  function commitScenarioCatalog(catalog,sources,assertCurrent=()=>{},transactionOwner=null) {
+    assertSaveReady(transactionOwner);assertCurrent();P.ScenarioCatalog.validate(catalog);
+    const next=structuredClone(catalog),data=new Map(context().sources);
+    for(const [hash,source] of sources)data.set(hash,{meta:structuredClone(source.meta),bytes:source.bytes.slice()});
+    const c={...context(),scenarioCatalog:next,sources:data};P.assertManifestCapacity(manifestData(c));
+    if(JSON.stringify(context().scenarioCatalog)===JSON.stringify(next))return false;
+    assertCurrent();history.push(history.snapshot(),'local','保存候選方案');
+    context().scenarioCatalog=next;context().sources=data;dirty();sync();return true;
+  }
+  const scenarioTicketSchema="scenario-editor-ticket/1";
+  const scenarioTicketKey=session=>"geometry-scenario-editor-ticket-"+session;
+  const nativeSessionId=value=>typeof value==="string"&&/^[a-f0-9]{32}$/.test(value);
+  function storedScenarioTicket(value,count){
+    if(count===0)return null;
+    if(count!==1||value==null)throw new Error("試改恢復記錄已損壞，保留原資料且不配置新工作階段。");
+    return validateScenarioTicket(value);
+  }
+  async function readStoredScenarioTicket(session){
+    let count;const value=await recoveryStore("readonly",store=>{count=store.count(scenarioTicketKey(session));return store.get(scenarioTicketKey(session));});
+    return storedScenarioTicket(value,count.result);
+  }
+  function validateScenarioTicket(value) {
+    if(value==null)return null;
+    const keys="context,eligible,label,parentCheckpoint,phase,request,retirement,rootSession,scenarioId,schema";
+    if(typeof value!=="object"||Array.isArray(value)||Object.keys(value).sort().join(",")!==keys||
+       value.schema!==scenarioTicketSchema||!nativeSessionId(value.rootSession)||value.eligible!==false||
+       !["creating","initializing","active","retiring"].includes(value.phase)||
+       typeof value.scenarioId!=="string"||!value.scenarioId||value.scenarioId.length>4096||
+       typeof value.label!=="string"||!value.label||value.label.length>4096||
+       !(value.context===null||nativeSessionId(value.context)))throw new Error("試改恢復記錄不完整，原資料已保留。");
+    const pin=value.parentCheckpoint;
+    if(!pin||Object.keys(pin).sort().join(",")!=="key,packageHash,projectId,sceneHash"||
+       typeof pin.key!=="string"||!pin.key||typeof pin.projectId!=="string"||!pin.projectId||
+       !/^[a-f0-9]{64}$/.test(pin.sceneHash)||!/^[a-f0-9]{64}$/.test(pin.packageHash))
+      throw new Error("試改缺少原方案完整保存位置，未配置工作階段。");
+    const r=value.request;
+    if(!r||Object.keys(r).sort().join(",")!=="action,requestId,sequence,session"||r.action!=="create"||
+       typeof r.requestId!=="string"||!/^[a-f0-9-]{36}$/.test(r.requestId)||!Number.isSafeInteger(r.sequence)||r.sequence<1||
+       r.session!==value.rootSession)throw new Error("試改請求身分不完整，未建立或退休任何工作階段。");
+    if(value.phase==="creating"&&value.context!==null||["initializing","active"].includes(value.phase)&&!value.context)
+      throw new Error("試改階段與原生身分不符，原資料已保留。");
+    if(value.phase==="retiring"){
+      const retirement=value.retirement;
+      if(!retirement||!["cancel","finish"].includes(retirement.reason))throw new Error("試改沒有明確的結束記錄。");
+      if(retirement.reason==="cancel"){
+        if(Object.keys(retirement).join(",")!=="reason")throw new Error("試改捨棄記錄不完整。");
+      }else{
+        const p=retirement.checkpoint;
+        if(Object.keys(retirement).sort().join(",")!=="checkpoint,reason"||!p||
+           Object.keys(p).sort().join(",")!=="key,packageHash,parentKey,projectId,sceneHash"||
+           p.key!=="geometry-scenario-finish-receipt-"+value.rootSession||p.parentKey!==pin.key||p.projectId!==pin.projectId||!value.context||
+           !/^[a-f0-9]{64}$/.test(p.sceneHash)||!/^[a-f0-9]{64}$/.test(p.packageHash))
+          throw new Error("已完成試改缺少可恢復的原方案完整包，未退休B。");
+      }
+    }else if(value.retirement!==null)throw new Error("試改結束記錄與階段不符。");
+    return structuredClone(value);
+  }
+  function assertScenarioJournalReady() {
+    if(scenarioContext())throw new Error("試改記錄只能由原方案管理。");
+    assertEditorLease();
+    if(editorLease!=="owned"||editorLeaseSession!==connection.session||!nativeSessionId(connection.session)||!recoveryDB||!recoveryKey)
+      throw new Error("原方案的編輯權限或本機恢復儲存尚未就緒；未配置試改工作階段。");
+  }
+  async function readScenarioEditorTicket() {
+    assertScenarioJournalReady();const session=connection.session;
+    const ticket=await readStoredScenarioTicket(session);
+    assertScenarioJournalReady();if(connection.session!==session)throw new Error("服務已變更，試改記錄未轉移。");
+    return ticket;
+  }
+  function scenarioTicketTransaction(expected,next,checkpoint=null,transactionOwner=null) {
+    assertScenarioJournalReady();
+    const before=validateScenarioTicket(expected),after=validateScenarioTicket(next),session=connection.session;
+    if(sceneTransaction&&sceneTransaction!==transactionOwner)throw new Error("原方案資料保全尚未完成，請稍候再結束試改。");
+    if((before&&before.rootSession!==session)||(after&&after.rootSession!==session))throw new Error("試改屬於另一服務，未改綁原請求。");
+    const key=scenarioTicketKey(session);
+    return new Promise((resolve,reject)=>{
+      // Acknowledgement is transaction completion, with the strongest standard
+      // durability hint. Storage refusal must fail before native allocation.
+      const tx=recoveryDB.transaction("projects","readwrite",{durability:"strict"}),store=tx.objectStore("projects");let failure=null;
+      const abort=error=>{failure=error;try{tx.abort();}catch(_){reject(error);}};
+      tx.onabort=()=>reject(failure||tx.error||new Error("試改恢復記錄交易已中止。"));
+      tx.onerror=()=>{failure ||= tx.error||new Error("試改恢復記錄寫入失敗。");};
+      tx.oncomplete=()=>{try{assertScenarioJournalReady();if(connection.session!==session)throw new Error("服務已變更，保留原試改記錄。");resolve(after&&structuredClone(after));}catch(error){reject(error);}};
+      if(tx.durability!=="strict"){abort(new Error("此瀏覽器未確認嚴格儲存提交，未配置或退休試改工作階段。"));return;}
+      const count=store.count(key),request=store.get(key);
+      request.onsuccess=()=>{try{
+        assertScenarioJournalReady();if(connection.session!==session)throw new Error("服務已變更。");
+        const current=storedScenarioTicket(request.result,count.result);
+        if(JSON.stringify(current)!==JSON.stringify(before))throw new Error("試改記錄已變更；未覆寫較新的取消或完成決定。");
+        if(checkpoint){store.put(checkpoint.record,checkpoint.key);if(checkpoint.receiptKey)store.put(checkpoint.record,checkpoint.receiptKey);}
+        if(after)store.put(after,key);else store.delete(key);
+      }catch(error){abort(error);}};
+      request.onerror=()=>abort(request.error||new Error("無法核對試改恢復記錄。"));
+    });
+  }
+  async function createScenarioEditorTicket({request,scenarioId,label},assertCurrent=()=>{}) {
+    assertScenarioJournalReady();assertCurrent();assertSaveReady();
+    if(!recoveryReady)throw new Error("原方案完整恢復資料尚未核對，未建立試改。");
+    const owner=beginSceneTransaction(),session=connection.session,key=recoveryKey;busy=true;busyLabel="正在保全原方案，再開啟試改…";present();
+    try{
+      const snapshot=await exportSnapshot(context(),true,assertCurrent,()=>{},owner),c=snapshot.stamp.context;
+      const sceneHash=await sceneFingerprint(snapshot.scene),packageHash=await P.sha(snapshot.bytes);assertCurrent();assertSnapshot(snapshot.stamp,owner);
+      const record={version:1,session,sceneHash,bytes:snapshot.bytes,updatedAt:new Date().toISOString(),
+        project:{dirty:!!c.dirty,dirtyReason:c.dirtyReason||"",saved:!!c.saved,downloaded:!!c.downloaded,provenance:{...c.provenance}}};
+      const ticket=validateScenarioTicket({schema:scenarioTicketSchema,rootSession:request?.session,request:structuredClone(request),
+        scenarioId,label,parentCheckpoint:{key,sceneHash,packageHash,projectId:c.id},phase:"creating",context:null,eligible:false,retirement:null});
+      return await scenarioTicketTransaction(null,ticket,{key,record},owner);
+    }finally{finishSceneTransaction(owner);busy=false;busyLabel="";present();scheduleRecovery();}
+  }
+  async function updateScenarioEditorTicket(expected,patch) {
+    const ticket=validateScenarioTicket(expected);
+    if(!patch||Object.keys(patch).some(key=>!["phase","context"].includes(key))||
+       !(ticket?.phase==="creating"&&patch.phase==="initializing"||ticket?.phase==="initializing"&&patch.phase==="active"))
+      throw new Error("試改階段不可倒退或重開。");
+    if(ticket.context&&patch.context!==undefined&&patch.context!==ticket.context)throw new Error("不能把試改改綁另一原生工作階段。");
+    return scenarioTicketTransaction(ticket,{...ticket,...patch});
+  }
+  async function markScenarioEditorRetiring(expected,{reason}={}) {
+    if(reason!=="cancel")throw new Error("完成試改須先持久保存原方案完整包。");
+    const ticket=validateScenarioTicket(expected);
+    if(!ticket)throw new Error("沒有可核對的試改記錄。");
+    return scenarioTicketTransaction(ticket,{...ticket,phase:"retiring",retirement:{reason:"cancel"}});
+  }
+  async function verifyScenarioEditorRetirement(expected) {
+    const ticket=validateScenarioTicket(expected),current=await readScenarioEditorTicket();
+    if(!ticket||ticket.phase!=="retiring"||JSON.stringify(ticket)!==JSON.stringify(current))throw new Error("試改尚未取得相符的結束記錄。");
+    if(ticket.retirement.reason==="cancel")return true;
+    const pin=ticket.retirement.checkpoint;
+    if(pin.parentKey!==recoveryKey||context().id!==pin.projectId)throw new Error("請先核對原分頁的完整專案，B及恢復資料仍保留。");
+    const record=await recoveryStore("readonly",store=>store.get(pin.key));
+    if(!record||record.session!==ticket.rootSession||record.sceneHash!==pin.sceneHash||await P.sha(record.bytes)!==pin.packageHash)
+      throw new Error("原方案完整保存收據不符，未退休B。");
+    const project=await P.unpack(record.bytes,fflate),dump=await api("dump");
+    if(project.manifest.projectId!==pin.projectId||JSON.stringify(project.manifest.scenarioCatalog)!==JSON.stringify(context().scenarioCatalog)||
+       !dump.ok||await sceneFingerprint(dump.text)!==pin.sceneHash||connection.session!==ticket.rootSession)
+      throw new Error("原方案或服務已變更，B及完整保存收據仍保留。");
+    return true;
+  }
+  async function clearScenarioEditorTicket(expected) {
+    const ticket=validateScenarioTicket(expected);
+    if(!ticket||ticket.phase!=="retiring")throw new Error("不能清除尚未結束的試改身份。");
+    return scenarioTicketTransaction(ticket,null);
+  }
+  async function initializeScenarioProject(bytes,name,ticketValue) {
+    const ticket=validateScenarioTicket(ticketValue),native=scenarioContext();
+    if(!native||native!==connection.session||editorLease!=="owned"||!recoveryDB||scenarioInitializationAttempted||
+       ticket?.phase!=="initializing"||ticket.context!==native)throw new Error("試改初始化身份不符；未重新匯入舊方案。");
+    const stored=await readStoredScenarioTicket(ticket.rootSession);
+    if(JSON.stringify(stored)!==JSON.stringify(ticket))throw new Error("試改已取消或身份已更新；未匯入。");
+    scenarioInitializationAttempted=true;scenarioInitializationPermit={};
+    try{
+      await importBytes(bytes,name);
+      const current=await readStoredScenarioTicket(ticket.rootSession);
+      if(connection.session!==native||JSON.stringify(current)!==JSON.stringify(ticket))throw new Error("試改初始化終態不再屬於原請求，保留資料等待核對。");
+      scenarioBootstrap="ready";recoveryReady=true;scheduleRecovery();return {ok:true,context:native};
+    }finally{scenarioInitializationPermit=null;if(scenarioBootstrap!=="ready")recoveryReady=false;}
+  }
+  const scenarioResumeKey=native=>"geometry-scenario-resume-"+native;
+  const scenarioResumePackageKey=native=>"geometry-scenario-resume-package-"+native;
+  async function readScenarioResume(native,ticket){
+    let count;const value=await recoveryStore("readonly",store=>{count=store.count(scenarioResumeKey(native));return store.get(scenarioResumeKey(native));});
+    if(count.result===0)return null;
+    if(count.result!==1||value==null)throw new Error("試改續接記錄已損壞，原資料已保留。");
+    return validateScenarioResume(value,ticket);
+  }
+  function validateScenarioResume(value,ticket){
+    if(!value||Object.keys(value).sort().join(",")!=="context,eligible,epoch,metadataHash,packageHash,projectId,requestId,rootSession,sceneHash,schema,sequence"||
+       value.schema!=="scenario-resume/1"||typeof value.eligible!=="boolean"||typeof value.epoch!=="string"||!/^[a-f0-9-]{36}$/.test(value.epoch)||
+       value.rootSession!==ticket.rootSession||value.requestId!==ticket.request.requestId||value.sequence!==ticket.request.sequence||value.context!==ticket.context||
+       typeof value.projectId!=="string"||!value.projectId||!/^[a-f0-9]{64}$/.test(value.metadataHash)||!/^[a-f0-9]{64}$/.test(value.packageHash)||!/^[a-f0-9]{64}$/.test(value.sceneHash))
+      throw new Error("試改續接點不完整或不屬於這次試改；原資料已保留。");
+    return structuredClone(value);
+  }
+  function scenarioResumeTransaction(ticket,expected,next,record=null,assertCurrent=()=>{}){
+    const native=scenarioContext(),session=connection.session;
+    if(!native||native!==session||ticket.phase!=="active"||ticket.context!==native||editorLease!=="owned"||!recoveryDB)
+      throw new Error("試改續接儲存的編輯身份不符。");
+    const key=scenarioResumeKey(native);
+    return new Promise((resolve,reject)=>{
+      const tx=recoveryDB.transaction("projects","readwrite",{durability:"strict"}),store=tx.objectStore("projects");let failure=null;
+      const abort=error=>{failure=error;try{tx.abort();}catch(_){reject(error);}};
+      tx.onabort=()=>reject(failure||tx.error||new Error("試改續接儲存交易已中止。"));
+      tx.onerror=()=>{failure ||= tx.error;};
+      tx.oncomplete=()=>{try{assertCurrent();if(connection.session!==session)throw new Error("試改工作階段已變更。");resolve(next);}catch(error){reject(error);}};
+      if(tx.durability!=="strict"){abort(new Error("瀏覽器未確認嚴格儲存提交；試改仍保留但不能續接。"));return;}
+      const saved=store.get(scenarioTicketKey(ticket.rootSession));
+      saved.onsuccess=()=>{try{
+        assertCurrent();if(connection.session!==session||JSON.stringify(validateScenarioTicket(saved.result))!==JSON.stringify(ticket))throw new Error("試改已取消或完成，未覆寫新決定。");
+        const count=store.count(key),journal=store.get(key);journal.onsuccess=()=>{try{
+          assertCurrent();if(count.result!==(expected===null?0:1)||JSON.stringify(journal.result??null)!==JSON.stringify(expected))throw new Error("試改續接點已變更，未重用舊資格。");
+          if(record)store.put(record,scenarioResumePackageKey(native));store.put(next,key);
+        }catch(error){abort(error);}};
+        journal.onerror=()=>abort(journal.error);
+      }catch(error){abort(error);}};
+      saved.onerror=()=>abort(saved.error);
+    });
+  }
+  async function pauseScenarioProject(ticketValue){
+    const ticket=validateScenarioTicket(ticketValue),native=scenarioContext();
+    if(ticket?.phase!=="active"||ticket.context!==native||scenarioBootstrap!=="ready")throw new Error("只有目前完整試改可以暫存並離開。");
+    // Do not release this freeze on an unknown storage acknowledgement. An
+    // eligible checkpoint and an editable page must never coexist.
+    await freezeScenarioProject();const frozen=scenarioFreeze;
+    const check=()=>{if(scenarioFreeze!==frozen||connection.session!==native)throw new Error("試改保全身份已變更。");assertSnapshot(frozen.stamp,frozen.owner);};
+    const previous=await readScenarioResume(native,ticket);check();
+    if(previous&&validateScenarioResume(previous,ticket).eligible)throw new Error("已有未確認的暫存點；保持凍結，請重新核對。");
+    const c=frozen.stamp.context,packageHash=await P.sha(frozen.bytes);check();await assertScenarioFrozen(frozen.token);check();
+    const record={version:1,session:native,sceneHash:frozen.sceneHash,bytes:frozen.bytes,
+      project:{dirty:!!c.dirty,dirtyReason:c.dirtyReason||"",saved:!!c.saved,downloaded:!!c.downloaded,provenance:{...c.provenance}}};
+    const next={schema:"scenario-resume/1",rootSession:ticket.rootSession,requestId:ticket.request.requestId,sequence:ticket.request.sequence,
+      context:native,epoch:uuid(),eligible:true,packageHash,metadataHash:await P.sha(new TextEncoder().encode(JSON.stringify(record.project))),sceneHash:frozen.sceneHash,projectId:c.id};check();
+    await scenarioResumeTransaction(ticket,previous??null,next,record,check);await assertScenarioFrozen(frozen.token);check();
+    scenarioBootstrap="paused";recoveryReady=false;return {ok:true,epoch:next.epoch};
+  }
+  async function resumeScenarioProject(ticketValue){
+    const ticket=validateScenarioTicket(ticketValue),native=scenarioContext();
+    if(ticket?.phase!=="active"||ticket.context!==native||native!==connection.session||scenarioBootstrap!=="blocked"||editorLease!=="owned"||!recoveryDB)
+      throw new Error("試改續接身份不符，未匯入或重建舊方案。");
+    const initial={context:context(),frame:history.frame,revision:revision(context())};let prepared=null;
+    const check=()=>{if(connection.session!==native||scenarioBootstrap!=="blocked"||!unchanged(initial))throw new Error("試改續接期間身份已變更。");};
+    busy=true;busyLabel="正在核對完整試改暫存點…";present();
+    try{
+      const journal=validateScenarioResume(await readScenarioResume(native,ticket),ticket);check();
+      if(!journal.eligible)throw new Error("這次試改未在離開前完成明確暫存，不能以舊附件續接。");
+      const record=await recoveryStore("readonly",store=>store.get(scenarioResumePackageKey(native)));check();
+      if(!record||record.version!==1||record.session!==native||record.sceneHash!==journal.sceneHash||await P.sha(record.bytes)!==journal.packageHash)
+        throw new Error("試改完整包或指紋不符，未附回舊資料。");
+      const p=record.project;
+      if(!p||Object.keys(p).sort().join(',')!=="dirty,dirtyReason,downloaded,provenance,saved"||
+         !['dirty','saved','downloaded'].every(k=>typeof p[k]==='boolean')||typeof p.dirtyReason!=='string'||
+         !p.provenance||Array.isArray(p.provenance)||typeof p.provenance.kind!=='string'||typeof p.provenance.label!=='string'||
+         await P.sha(new TextEncoder().encode(JSON.stringify(p)))!==journal.metadataHash)
+        throw new Error("試改保存旗標或來源記錄指紋不符；未恢復舊資料。");check();
+      const dump=await api("dump");check();if(!dump.ok||await sceneFingerprint(dump.text)!==journal.sceneHash)throw new Error("試改原生內容與暫存點不符。");
+      const loaded=await readProjectContext(record.bytes,"試改續接點",label=>{busyLabel=label;present();},check,true);prepared=loaded.c;check();
+      if(loaded.loaded.manifest.projectId!==journal.projectId||await sceneFingerprint(loaded.loaded.scene)!==journal.sceneHash)throw new Error("試改完整包的專案身份不符。");
+      const disarmed={...journal,eligible:false};
+      await scenarioResumeTransaction(ticket,journal,disarmed,null,check);check();
+      const verify=await api("dump");check();
+      if(!verify.ok||await sceneFingerprint(verify.text)!==journal.sceneHash)throw new Error("撤銷續接資格期間原生内容已變更；未附回資料。");
+      // Recheck the terminal decision after every asynchronous preparation.
+      const current=await readStoredScenarioTicket(ticket.rootSession);check();
+      if(JSON.stringify(current)!==JSON.stringify(ticket))throw new Error("試改已取消或完成，未重新開啟。");
+      Object.assign(prepared,{dirty:!!p.dirty,dirtyReason:String(p.dirtyReason||""),saved:!!p.saved,downloaded:!!p.downloaded,provenance:{...p.provenance}});
+      history.frame={context:prepared,ids:new Map(loaded.ids)};history.undo=[];history.redo=[];history.group=null;history.blockCoreRedo=false;
+      detachedPDFContexts.delete(prepared);scenarioBootstrap="ready";recoveryReady=true;sync();
+      recoveryMessage("restored","已核對並續接明確暫存的完整試改；活躍編輯中斷及未套用工具草稿不會自動恢復。");return {ok:true,context:native};
+    }finally{await releaseDetachedPDFContext(prepared);busy=false;busyLabel="";present();}
+  }
+  async function freezeScenarioProject() {
+    if(!scenarioContext()||scenarioFreeze)throw new Error("試改尚未就緒或已在保全中。");
+    window.AssemblyWorkspace?.flush();window.InfiniteGridWorkspace?.flush();assertSaveReady();
+    const owner=beginSceneTransaction(),session=connection.session,token=uuid();busy=true;busyLabel="正在凍結完整試改資料…";present();
+    try{
+      const snapshot=await exportSnapshot(context(),true,()=>{if(connection.session!==session||sceneTransaction!==owner)throw new Error("試改工作階段已變更。");},()=>{},owner);
+      scenarioFreeze={owner,session,token,...snapshot,sceneHash:await sceneFingerprint(snapshot.scene)};
+      return {bytes:snapshot.bytes,freezeToken:token};
+    }catch(error){finishSceneTransaction(owner);busy=false;busyLabel="";present();throw error;}
+  }
+  async function assertScenarioFrozen(token) {
+    const frozen=scenarioFreeze;
+    if(!frozen||frozen.token!==token||frozen.owner!==sceneTransaction||frozen.session!==connection.session||!unchanged(frozen.stamp))throw new Error("試改保全已過期。");
+    const dump=await api("dump");
+    if(scenarioFreeze!==frozen||!dump.ok||!unchanged(frozen.stamp)||frozen.session!==connection.session||
+       await sceneFingerprint(dump.text)!==frozen.sceneHash||frozen.nativeRevision!==null&&dump.revision!==frozen.nativeRevision)
+      throw new Error("試改在保全期間已變更，未完成或退休它。");
+    return {ok:true};
+  }
+  function releaseScenarioProject(token) {
+    if(!scenarioFreeze){if(token===lastScenarioRelease)return {ok:true,state:"released"};throw new Error("試改保全身份不符。");}
+    if(scenarioFreeze.token!==token)throw new Error("不能解除另一筆試改保全。");
+    finishSceneTransaction(scenarioFreeze.owner);scenarioFreeze=null;lastScenarioRelease=token;busy=false;busyLabel="";present();scheduleRecovery();return {ok:true,state:"released"};
+  }
+  async function finishScenarioEditor(catalog,sources,expected,assertCurrent=()=>{}) {
+    assertScenarioJournalReady();assertCurrent();
+    window.AssemblyWorkspace?.flush();window.InfiniteGridWorkspace?.flush();assertCurrent.afterFlush?.();assertCurrent();assertSaveReady();
+    const ticket=validateScenarioTicket(expected);
+    if(ticket?.phase!=="active")throw new Error("試改尚未完整開啟，不能完成。");
+    P.ScenarioCatalog.validate(catalog);
+    if(!catalog.scenarios.some(s=>s.scenarioId===ticket.scenarioId)||context().id!==ticket.parentCheckpoint.projectId||recoveryKey!==ticket.parentCheckpoint.key)
+      throw new Error("試改與原方案保存身份不符，未變更或退休任何資料。");
+    const next=structuredClone(catalog),data=new Map(context().sources);
+    for(const [hash,source] of sources)data.set(hash,{meta:structuredClone(source.meta),bytes:source.bytes.slice()});
+    const proposal={...context(),scenarioCatalog:next,sources:data};P.assertManifestCapacity(manifestData(proposal));
+    const owner=beginSceneTransaction(),session=connection.session,key=recoveryKey;busy=true;busyLabel="正在持久保存原方案與試改…";present();
+    try{
+      const snapshot=await exportSnapshot(context(),true,assertCurrent,()=>{},owner,proposal),c=snapshot.stamp.context;
+      const sceneHash=await sceneFingerprint(snapshot.scene),packageHash=await P.sha(snapshot.bytes);assertCurrent();assertSnapshot(snapshot.stamp,owner);
+      const record={version:1,session,sceneHash,bytes:snapshot.bytes,updatedAt:new Date().toISOString(),
+        project:{dirty:true,dirtyReason:"保存候選方案",saved:!!c.saved,downloaded:false,provenance:{...c.provenance}}};
+      record.finishReceipt=packageHash;
+      // One bounded immutable Finish backup per root service session. Ordinary
+      // recovery never writes here. Replace it only with a later atomic Finish;
+      // retain the last backup after retirement instead of deleting user data.
+      const receiptKey="geometry-scenario-finish-receipt-"+session;
+      const retiring={...ticket,phase:"retiring",retirement:{reason:"finish",checkpoint:{key:receiptKey,parentKey:key,sceneHash,packageHash,projectId:c.id}}};
+      const persisted=await scenarioTicketTransaction(ticket,retiring,{key,record,receiptKey},owner);
+      // No async gap between the durable commit and the owned in-memory commit.
+      assertCurrent();assertSnapshot(snapshot.stamp,owner);
+      commitScenarioCatalog(next,data,assertCurrent,owner);
+      recoveryFinishReceipt={session,key,hash:packageHash};
+      return {ticket:persisted,checkpoint:structuredClone(persisted.retirement.checkpoint)};
+    }finally{finishSceneTransaction(owner);busy=false;busyLabel="";present();scheduleRecovery();}
+  }
+  async function adoptScenario(project,assertCurrent=()=>{}) {
+    assertSaveReady();assertCurrent();
+    const owner=beginSceneTransaction();busy=true;busyLabel='正在整體採用候選方案…';present();
+    let preparedContext=null;
+    try {
+    const root=readScenarioCatalog(),bytes=await P.pack(project.scene,project.manifest,project.sources,fflate);
+    assertCurrent();const {loaded,c,ids}=await readProjectContext(bytes,'候選方案',()=>{},assertCurrent,true);
+    preparedContext=c;
+    c.scenarioCatalog=root.catalog;
+    for(const [hash,source] of root.sources)if(!c.sources.has(hash))c.sources.set(hash,source);
+    c.dirty=true;c.saved=false;c.provenance={...context().provenance};
+    P.assertManifestCapacity(manifestData(c,new Map(ids)),loaded.scene);assertCurrent();
+    const r=await uploadScene(loaded.scene,{context:c,ids,manifest:loaded.manifest,action:'整體採用候選方案'},assertCurrent,owner);
+    if(!r.ok)throw new Error(r.error||'方案未採用。');
+    resetSceneFocus();sync();await refreshActive();return true;
+    }finally{await releaseDetachedPDFContext(preparedContext);if(pendingLoad?.transaction!==owner)finishSceneTransaction(owner);busy=false;busyLabel='';present();scheduleRecovery();}
+  }
   function download(bytes,name) {
     const url=URL.createObjectURL(new Blob([bytes],{type:"application/zip"})),a=document.createElement("a");
     a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);
@@ -1262,6 +1708,8 @@ const ReferenceWorkspace = (() => {
     loaded.manifest=structuredClone(loaded.manifest);
     loaded.sources=new Map([...loaded.sources].map(([hash,data])=>[hash,data.slice()]));
     const m=loaded.manifest,c=fresh();c.id=m.projectId;c.name=m.name||name;c.saved=true;
+    detachedPDFContexts.add(c);
+    try {
     assertCurrent();
     // Rebuild every embedded package before uploading anything. Stored definitions
     // are self-contained and do not depend on the current live source scene.
@@ -1274,6 +1722,19 @@ const ReferenceWorkspace = (() => {
     c.featureAttachments=JSON.parse(JSON.stringify(m.featureAttachments?.records||[]));
     c.engineeringDrafts=JSON.parse(JSON.stringify(m.engineeringDrafts?.records||[]));
     for(const meta of m.sources)c.sources.set(meta.id,{meta:structuredClone(meta),bytes:loaded.sources.get(meta.id).slice()});
+    if(m.scenarioCatalog){
+      stage('正在隔離驗證候選方案…','驗證中');
+      await ScenarioIntegration.read(m.scenarioCatalog,c.sources,assertCurrent);assertCurrent();
+      for(const record of m.scenarioCatalog.scenarios){
+        const project={manifest:record.snapshot.projectManifest,scene:record.snapshot.worldScene,
+          sources:new Map(record.snapshot.assetHashes.map(h=>[h,loaded.sources.get(h)]))};
+        const leafBytes=await P.pack(project.scene,project.manifest,project.sources,fflate);assertCurrent();
+        const child=await readProjectContext(leafBytes,record.label,stage,assertCurrent,false);
+        try {assertCurrent();} finally {await releaseDetachedPDFContext(child.c);}
+      }
+      c.scenarioCatalog=structuredClone(m.scenarioCatalog);
+    }
+    await validateRuleCaseClosure(m.featureAttachments,assertCurrent);assertCurrent();
     await validateEvidenceClosure(c,m.featureAttachments,assertCurrent); assertCurrent();
     async function verifySourcePage(sourceId, number, width, height) {
       const source = c.sources.get(sourceId);
@@ -1314,13 +1775,14 @@ const ReferenceWorkspace = (() => {
     }
     assertCurrent();
     if(verifyOnly){
-      const token=await prepareProjectScene(loaded.scene,m,assertCurrent);
-      await cancelProjectScene(token);assertCurrent();
+      await ScenarioIntegration.verifyProject(loaded,assertCurrent);assertCurrent();
     }
     return {loaded,c,ids};
+    } catch (error) {await releaseDetachedPDFContext(c);throw error;}
   }
   async function importProjectData(bytes,name,stage,assertCurrent,options={}) {
     const {loaded,c,ids}=await readProjectContext(bytes,name,stage,assertCurrent);
+    try {
     c.saved=options.source!=="example";
     c.provenance={kind:options.source==="example"?"example":"file",label:options.source==="example"?"內建範例「"+c.name+"」":"專案檔案「"+name+"」",openedAt:new Date().toISOString(),lastSavedAt:null,lastDownloadAt:null};
     assertCurrent();stage("正在載入專案場景…","載入中");
@@ -1332,6 +1794,7 @@ const ReferenceWorkspace = (() => {
     importRenderingContext=c;
     try {await refreshActive();} finally {importRenderingContext=null;}
     setStatus(c.dirtyReason ? "✓ 已開啟專案；畫布已自動排版，請保存以保留排列。" : "✓ 已開啟專案，場景、工程來源與草稿、參考資料及空間模型已還原");return loaded;
+    } finally {await releaseDetachedPDFContext(c);}
   }
   async function replaceWithEmpty(keepIdentity) {
     assertWritableLease(); assertRoomDraftIdle();
@@ -1388,15 +1851,16 @@ const ReferenceWorkspace = (() => {
       throw error;
     }
   }
-  function assertLoadContext(load) {
+  function assertLoadContext(load,result=null) {
     assertWritableLease();
-    if(context()!==load.guard.context || history.frame!==load.guard.frame || revision(context())!==load.guard.revision || contextConflict!==load.guard.conflict)
+    if(context()!==load.guard.context || history.frame!==load.guard.frame || revision(context())!==load.guard.revision || contextConflict!==load.guard.conflict || connection.session!==load.guard.session || result&&Number.isSafeInteger(result.revision)&&nativeRevision>result.revision)
       throw new Error("載入結果晚到，目前工程已有變更；未替換目前專案資料，請重新開啟。");
   }
-  async function uploadScene(text,replacement=null,assertCurrent=()=>{}) {
+  async function uploadScene(text,replacement=null,assertCurrent=()=>{},transaction=null) {
     assertWritableLease(); assertRoomDraftIdle();
     if(pendingLoad || preparingSceneLoad)throw new Error("請先確認上一筆場景載入結果再開啟。");
     assertCurrent();
+    const owner=transaction||beginSceneTransaction();if(sceneTransaction!==owner)throw new Error('場景載入交易已過期。');
     preparingSceneLoad=true;
     let nextLoad;
     try {
@@ -1404,14 +1868,15 @@ const ReferenceWorkspace = (() => {
       assertWritableLease();assertCurrent();
       if (!before.ok) throw new Error(before.error || "無法讀取載入前的場景。");
       nextLoad = { text, before: before.text, beforeRevision:before.revision, manifest:replacement?.manifest, context: replacement?.context || fresh(), ids: replacement?.ids, action:replacement?.action || null, isolateHistory:contextConflict,
-        guard:{context:context(),frame:history.frame,revision:revision(context()),conflict:contextConflict} };
-    } catch(error) {preparingSceneLoad=false;throw error;}
+        transaction:owner,guard:{context:context(),frame:history.frame,revision:revision(context()),conflict:contextConflict,session:connection.session} };
+    } catch(error) {preparingSceneLoad=false;finishSceneTransaction(owner);throw error;}
     let result,token=null;
     try {
       if(replacement?.manifest)token=await prepareProjectScene(text,replacement.manifest,assertCurrent);
       assertWritableLease();assertCurrent();nextLoad.token=token;pendingLoad=nextLoad;
     } catch(error) {
       if(token!==null)try{await cancelProjectScene(token);}catch(_){}
+      finishSceneTransaction(owner);
       throw error;
     } finally {preparingSceneLoad=false;}
     try {
@@ -1423,10 +1888,10 @@ const ReferenceWorkspace = (() => {
       connectionFailed("無法確認載入結果，已暫停編輯。請確認服務後重試。");
       throw e;
     }
-    try{assertLoadContext(nextLoad);}catch(error){pendingLoad=null;contextConflict=true;sync();throw error;}
+    try{assertLoadContext(nextLoad,result);}catch(error){pendingLoad=null;finishSceneTransaction(owner);contextConflict=true;sync();throw error;}
     observeNativeRevision(result);
     if(result.ok){adoptLoadedContext();notifySceneChange();}
-    pendingLoad=null;sync();
+    pendingLoad=null;finishSceneTransaction(owner);sync();
     return result;
   }
   function adoptLoadedContext() {
@@ -1437,6 +1902,7 @@ const ReferenceWorkspace = (() => {
       history.frame={context:fresh(),ids:new Map()};
     }
     history.replace(pendingLoad.context,pendingLoad.ids,pendingLoad.action);contextConflict=false;
+    detachedPDFContexts.delete(pendingLoad.context);
   }
   async function recoverLoad() {
     if (!pendingLoad) return true;
@@ -1484,10 +1950,12 @@ const ReferenceWorkspace = (() => {
       document.getElementById("sceneMenuLabel").textContent=sceneMenuDisplay(curScene.name);
       markSceneItem();
     }
-    pendingLoad=null;sync();return true;
+    pendingLoad=null;finishSceneTransaction(load.transaction);await releaseDetachedPDFContext(load.context);sync();return true;
   }
   function mayLeave() {
     if (window.RoomCollectionWorkspace?.hasWork) {toast("請先完成、取消或恢復目前房間草稿，再切換專案。"); return false;}
+    if (window.RoomCollectionWorkspace?.hasUnacceptedCandidates && !window.confirm("未接受的房間候選只留在本分頁，離開後無法恢復。要離開嗎？")) return false;
+    if (window.SectionProfileWorkspace?.hasWork) {toast("請先確認或取消斷面修改，再切換專案。"); return false;}
     if(window.DraftGate && !window.DraftGate.ask())return false;
     if (Object.values(fe.feats || {}).some(items => items.length) &&
       !window.confirm("目前有只能在本次工作階段修改數字的形狀特徵。切換場景後仍保留輪廓，但特徵參數會消失。要繼續嗎？")) return false;
@@ -1548,13 +2016,15 @@ const ReferenceWorkspace = (() => {
     reconstructionState,reconstructionStatusHTML,markReconstructionReviewed,documentFor,library,tracingFeatures,sourceFromFile,openSource,renderPage,preparePage,addPage,selectPage,chooseFile,fitReference,
     addSpaceModel,updateSpaceModel,removeSpaceModel,getSpaceModels,tryLocalHistory,
     getFaceProjection,getFaceProjections,setFaceProjection,
-    readFeatureAttachment,setFeatureAttachment,getRoomIntegration:()=>roomIntegration,
+    readFeatureAttachment,setFeatureAttachment,prepareFeatureAttachment,commitPreparedFeatureAttachment,validateRuleCaseClosure,getRoomIntegration:()=>roomIntegration,
     getAssemblyDrafts,setAssemblyDraft,removeAssemblyDraft,getEngineeringDrafts,setEngineeringDraft,removeEngineeringDraft,getProjectState,getModelOperationState,getProjectInfo,restoreSession,retryRecovery,persistSession,assertEditable,assertWritableLease,
     assertAssemblyIdle,beginAssemblyConfirmation,assemblyConfirmationCurrent,finishAssemblyConfirmation,
     prepareFeatureConfirmation,beginFeatureConfirmation,cancelFeatureConfirmation,hasFeatureConfirmation:token=>featureConfirmations.has(featureTokenKey(token)),
     featureConfirmationPending:()=>!!assemblyConfirmation?.featureCommand,
     newProject:()=>replaceWithEmpty(false),clearContents:()=>replaceWithEmpty(true),
     noteSceneSource:({name,kind="scene-file"})=>markSceneSource(name,kind),
-    manifest,exportBytes,importBytes,openProject,uploadScene,recoverLoad,mayLeave,sync,save,escape,
+    manifest,readScenarioProject,readScenarioCatalog,commitScenarioCatalog,adoptScenario,exportBytes,importBytes,openProject,uploadScene,recoverLoad,mayLeave,sync,save,escape,
+    readScenarioEditorTicket,createScenarioEditorTicket,updateScenarioEditorTicket,markScenarioEditorRetiring,verifyScenarioEditorRetirement,clearScenarioEditorTicket,
+    initializeScenarioProject,pauseScenarioProject,resumeScenarioProject,freezeScenarioProject,assertScenarioFrozen,releaseScenarioProject,finishScenarioEditor,
     historyActionLabel:op=>history.actionLabel(op),get busy(){return busy;} };
 })();

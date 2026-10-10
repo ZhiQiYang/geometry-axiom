@@ -1,0 +1,136 @@
+{
+  "scope": "Read-only comparison of tests/INTEGRATION-GATES.md, tests/README.md, current run_all.py registries and script entrypoints against /workspace/closure-evidence/run_gates.py. No browser or product tests executed.",
+  "head_reviewed": "3a48cf5bacb9a295e15046e5ca0cb021e50c54db",
+  "status_at_review": "The gates evidence directory did not yet exist. This report identifies omissions from the planned driver, not failures of gates already executed elsewhere.",
+  "common_preconditions": [
+    "Finish authorized edits and freeze a clean candidate; release_gate.py rejects any tracked or untracked dirt. Preserve the two owned probe modifications currently shown by git status.",
+    "Use verified bridge/model-base receipts, the caller-owned fresh isolated service, matching TEMP feedback, unique output directories and the approved current sandbox launch wrappers. Do not copy the obsolete --no-sandbox example from INTEGRATION-GATES.md.",
+    "Run native-heavy commands with the documented process-local 16 MiB stack. The full-native 8 MiB failure remains a retained failed round; rerun with 16 MiB without --allow-skip or --update-expected. Existing long-lived service children inherit their service's limits, not a later caller's ulimit.",
+    "Serialize browser/native-root gates. native-context-300 additionally requires the service to be idle with only its original root bridge child; do not kill someone else's children to satisfy it.",
+    "For gates targeting the formal app, use the driver's release_gate.py wrapper and inspect the script's own structured completion/census. release_gate proves generic execution identity, not automatic assertion completeness."
+  ],
+  "missing_formal_and_native_gates": [
+    {
+      "name": "section-profile-ui",
+      "command": ["node", "tests/test_section_profile_browser.js"],
+      "extra_environment": {"GEOMETRY_SECTION_EVIDENCE": "/tmp/geometry-closeout-r2-gates/section-profile-ui"},
+      "expected_scope": "Complete fixed 68 checks; desktop/390 Q38 authoring, keyboard, typed sources, 2D/3D, placement conversion, history and Save/Open.",
+      "basis": "INTEGRATION-GATES.md:566; REQUIRED_BROWSER_GATES",
+      "covered_elsewhere": "No. Full CDP/Space and Q38 native/model suites do not run this script."
+    },
+    {
+      "name": "q38-save-roundtrip",
+      "command": ["python", "tests/integration/q38_save_roundtrip.py"],
+      "extra_environment": {"GEOMETRY_Q38_SAVE_OUT": "/tmp/geometry-closeout-r2-gates/q38-save-roundtrip"},
+      "expected_scope": "Complete fixed 18 checks; /16 fixture, real download, new Chromium process/file chooser, full World, independent seven-mesh volume/bounds oracle and Undo/Redo.",
+      "basis": "INTEGRATION-GATES.md:581; REQUIRED_BROWSER_GATES",
+      "covered_elsewhere": "No. The old 35/33 model-history/save gates do not cover this Q38 closure."
+    },
+    {
+      "name": "shared-room-display",
+      "command": ["node", "tests/test_shared_room_display_browser.js"],
+      "extra_environment": {"GEOMETRY_ROOM_DISPLAY_OUT": "/tmp/geometry-closeout-r2-gates/shared-room-display"},
+      "expected_scope": "1280/390 T4 crop/opacity/locked, adopt, history, true Save/new-context Open, malformed/schema/capability/capacity rejection.",
+      "basis": "INTEGRATION-GATES.md:235; NODE_EXCLUDED marks required",
+      "covered_elsewhere": "No. Explicitly additional to all four #77 gates and full CDP/Space."
+    },
+    {
+      "name": "evidence-formal",
+      "command": ["node", "geometry-web/evidence_links_integration_test.js"],
+      "extra_environment": {"GEOMETRY_EVIDENCE_TEST_DIR": "/tmp/geometry-closeout-r2-gates/evidence-formal"},
+      "expected_scope": "Complete 110 formal app/store/native checks; PDF/manual selection, evidence-only bytes, shared-room source, staged navigation races, ZIP new-context Open and PDF resource lifecycle.",
+      "basis": "INTEGRATION-GATES.md:331; REQUIRED_BROWSER_GATES",
+      "covered_elsewhere": "No. Scenario workflow, rule reader and full CDP do not invoke this script or replace its declared scope."
+    },
+    {
+      "name": "grid-raw-provenance",
+      "command": ["python", "geometry-web/grid_raw_provenance_browser_test.py"],
+      "extra_environment": {"GEOMETRY_RAW_PIN_OUT": "/tmp/geometry-closeout-r2-gates/grid-raw-provenance", "GEOMETRY_VERIFY_ROOT": "/workspace/geometry-axiom"},
+      "expected_scope": "Complete 207 checks; raw unknown options and missing/mismatched/recreated source identity across formal Open, explicit reselection, history and reopen.",
+      "basis": "INTEGRATION-GATES.md:528; REQUIRED_BROWSER_GATES",
+      "covered_elsewhere": "No. Full CDP P87/P88 and reader34 have different oracles; the known same-version GRID346 receipt is not this gate."
+    },
+    {
+      "name": "feedback-resize-observer",
+      "command": ["node", "geometry-web/feedback_resize_observer_test.js", "--keep"],
+      "extra_environment": {"GEOMETRY_BRIDGE": "/tmp/geometry-tests/bridge", "GEOMETRY_PYTHON": "python3", "GEOMETRY_CHROME": "/usr/bin/chromium"},
+      "expected_scope": "Complete fixed 38 checks; actual browser ResizeObserver premise, genuine error preservation, runtime and served feedback.js identity.",
+      "basis": "INTEGRATION-GATES.md:131; REQUIRED_BROWSER_GATES",
+      "special_precondition": "Self-manages an ephemeral isolated service/profile/TEMP directory. Retain its own native/runtime identity and printed evidence directory; --keep preserves raw artifacts.",
+      "covered_elsewhere": "No. Node feedback_events41 and full CDP do not substitute for its trusted browser event gate."
+    },
+    {
+      "name": "native-context-300",
+      "command": ["python", "tests/integration/scenario_context_lifecycle.py"],
+      "extra_environment": {"GEOMETRY_SCENARIO_OUT": "/tmp/geometry-closeout-r2-gates/native-context-300"},
+      "expected_scope": "300 real create/edit/exact-retire cycles plus idempotence, old request, cap8/ninth refusal, child reaping and unchanged root dump/revision.",
+      "basis": "INTEGRATION-GATES.md:416; #49 section also explicitly requires native300",
+      "covered_elsewhere": "No browser needed, but run_all and scenario-lifecycle-browser do not execute it."
+    }
+  ],
+  "missing_declared_independent_component_gates": [
+    {
+      "name": "scenario-grid-owner",
+      "command": ["node", "--test", "tests/test_scenario_grid_interface.js"],
+      "extra_environment": {"GEOMETRY_SCENARIO_PROJECT_MODULE": "/workspace/geometry-axiom/geometry-web/project-store.js"},
+      "expected_scope": "One registered Node test with real current owner validator/native verifier, invalid raw GridDraft preservation, A/B and ZIP contracts.",
+      "covered_elsewhere": "Excluded from NODE_TEST_FILES, not run_all. Missing injection produces a skip; explicitly supply the current owner. Do not take the stale PR104-not-main comment as a current implementation blocker.",
+      "basis": "INTEGRATION-GATES.md:306; NODE_EXCLUDED"
+    },
+    {
+      "name": "scenario-module-browser",
+      "command": ["node", "tests/scenario_browser_check.cjs"],
+      "extra_environment": {"GEOMETRY_SCENARIO_TEST_DIR": "/tmp/geometry-closeout-r2-gates/scenario-module-browser"},
+      "expected_scope": "Standalone module 1280/390 ZIP download/file-input reopen, original bytes, independent copies, latecontext/tamper.",
+      "special_precondition": "Self-creates an ephemeral module HTTP server and invokes scenario_verify.py with receipt-backed bridge/model-base. Evidence is module-only; do not label it formal app adoption.",
+      "covered_elsewhere": "Explicitly excluded from aggregate and independently required; not called by formal scenario workflow/lifecycle.",
+      "basis": "INTEGRATION-GATES.md:290–304; NODE_EXCLUDED"
+    },
+    {
+      "name": "evidence-component-browser",
+      "command": ["node", "geometry-web/evidence_links_browser_check.js"],
+      "extra_environment": {"GEOMETRY_EVIDENCE_TEST_DIR": "/tmp/geometry-closeout-r2-gates/evidence-component"},
+      "expected_scope": "Independent adapter 67 checks. Memory-backend evidence is not formal save acceptance.",
+      "covered_elsewhere": "REQUIRED_BROWSER_GATES separately registers 67 and formal110; neither executes the other.",
+      "basis": "INTEGRATION-GATES.md:333; REQUIRED_BROWSER_GATES"
+    },
+    {
+      "name": "rule-case-standalone-controller",
+      "service_command": ["python", "geometry-web/rule_case_workbench_standalone.py", "--port", "18973"],
+      "command": ["node", "--test", "tests/rule-case-workbench-controller.cjs"],
+      "extra_environment": {"GEOMETRY_RULE_CASE_TEST_URL": "http://127.0.0.1:18973/"},
+      "expected_scope": "17 actual HTTP/native standalone owner controller tests; no browser needed.",
+      "special_precondition": "Verify port free and own only this new standalone server. Its endpoint is not formal serve.py and has no /runtime; do not point release_gate.py's runtime probe at this URL. Bind source/bridge receipt and record this server separately.",
+      "covered_elsewhere": "NODE_EXCLUDED, not aggregate. Formal app76/races30 do not run its standalone controller tests.",
+      "basis": "INTEGRATION-GATES.md:443–481; NODE_EXCLUDED"
+    },
+    {
+      "name": "rule-case-standalone-browser",
+      "command": ["node", "tests/rule-case-workbench-browser.cjs"],
+      "extra_environment": {"GEOMETRY_RULE_CASE_TEST_URL": "http://127.0.0.1:18973/", "GEOMETRY_RULE_CASE_BROWSER_EVIDENCE": "/tmp/geometry-closeout-r2-gates/rule-case-standalone"},
+      "expected_scope": "Complete 91 standalone owner/component checks, desktop45/390px46.",
+      "special_precondition": "Same separately owned standalone service as controller17, executed serially. Component memory retention does not certify formal ZIP save.",
+      "covered_elsewhere": "Explicit REQUIRED_BROWSER_GATES entry, separate from app76/races30.",
+      "basis": "INTEGRATION-GATES.md:467; REQUIRED_BROWSER_GATES"
+    },
+    {
+      "name": "create-feedback-ui",
+      "command": ["python", "tests/test_issue123_create_feedback_browser.py", "--url", "http://127.0.0.1:18971/", "--out", "/tmp/geometry-closeout-r2-gates/create-feedback-ui", "--chromium", "/usr/bin/chromium"],
+      "expected_scope": "Normal default mouse/touch first-center create-menu/feedback overlay gate at its default widths. Do not use --repro or --width for final complete scope.",
+      "covered_elsewhere": "PY_BROWSER_GATES deliberately excludes this from unittest aggregate; not called by full CDP/Space.",
+      "basis": "INTEGRATION-GATES.md:344; PY_BROWSER_GATES"
+    }
+  ],
+  "already_in_driver_or_aggregate_do_not_duplicate": [
+    "Full CDP, default Space, explicit timber and original async-only groups are already in the driver; Space default does not include timber or async-only.",
+    "Model-history35, save33, scenario workflow/lifecycle, #54 normal/pan/worker/keyboard, #116 B, #77 owner/four browser gates, rule-reader, formal rule cases/races and #87 multiroom are already in the driver.",
+    "Q38 native/model, room multi pure tests, workspace-shell history, feedback event VM, reference/grid/assembly contracts and other listed unit suites are covered by the strict full run_all; do not run them individually merely to enlarge reported totals.",
+    "Oracle observer controls16 are not in the driver, but all three oracle/harness files are unchanged from 8b9b6f8 to 3a48cf5 and the user explicitly confirms #162 ABC raw evidence was independently checked. Do not list controls16 as unowned or invent a same-source rerun requirement. Rerun only if the observers change or a concrete unresolved oracle concern warrants it.",
+    "Work-manager QA and the new assembly/grid save probes are separate owned workstreams with their own evidence; absence from run_gates.py alone is not evidence they were omitted."
+  ],
+  "bounds": "No new function, platform, mobile/IME/OS-dialog gate, full mutant rerun, arbitrary stress count or speculative test is added. These 13 omissions are existing documented/registered entrypoints within already integrated scope. Source/runtime equivalence may preserve previously verified narrow evidence where the user explicitly allowed it; full candidate regression cannot be obtained by summing older branch passes.",
+  "review_notes": [
+    "Some README counts, PR104 comments and historical AF_UNIX browser-block paragraphs are stale; actual registry/script and current environment determine execution. Their old prose is not a present environmental denial.",
+    "The driver contains names only; it does not automatically schedule any gate unless passed via argv. Final reporting must use actual generated receipts, not dictionary membership."
+  ]
+}

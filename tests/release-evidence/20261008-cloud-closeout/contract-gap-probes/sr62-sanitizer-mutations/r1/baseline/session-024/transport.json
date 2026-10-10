@@ -1,0 +1,4937 @@
+{
+  "test": "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_same_rule_key_in_another_source_cannot_rebind_an_existing_reference",
+  "binarySha256": "d7961d7878f701b1035c5542ce70fcd7a4c0e43282962c33ccb02434f2e51e7f",
+  "session": 24,
+  "commands": [
+    {
+      "command": "line reset",
+      "response": {
+        "ok": true
+      }
+    },
+    {
+      "command": "line grid-system 0 name-hex 6f7261636c652030 main-along none u repeat 0 600 v repeat 0 400",
+      "response": {
+        "ok": true
+      }
+    },
+    {
+      "command": "line grid-source-rule 0 create name-hex 6f7261636c652072756c65 selector all-cells divide 3 2",
+      "response": {
+        "ok": false,
+        "error": "line 3: I8a: impact preview required; inspect preview, then confirm token (World unchanged)",
+        "preview": {
+          "token": 1,
+          "valid": true,
+          "command": "grid-source-rule 0 create name-hex 6f7261636c652072756c65 selector all-cells divide 3 2",
+          "timbers": [],
+          "guides": [],
+          "grids": [],
+          "datums": [],
+          "gridSystems": [
+            {
+              "id": 0,
+              "before": {
+                "kind": "grid-system",
+                "id": 0,
+                "name": "oracle 0",
+                "mode": "infinite",
+                "mainAlong": null,
+                "uDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 600
+                },
+                "vDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 400
+                },
+                "nextRuleKey": 1,
+                "rules": [],
+                "applications": [],
+                "bindings": [],
+                "cx": 0,
+                "cy": 0,
+                "hasPos": false
+              },
+              "after": {
+                "kind": "grid-system",
+                "id": 0,
+                "name": "oracle 0",
+                "mode": "infinite",
+                "mainAlong": null,
+                "uDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 600
+                },
+                "vDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 400
+                },
+                "nextRuleKey": 2,
+                "rules": [
+                  {
+                    "ruleKey": 1,
+                    "name": "oracle rule",
+                    "selector": {
+                      "kind": "all-cells"
+                    },
+                    "divisions": [
+                      3,
+                      2
+                    ]
+                  }
+                ],
+                "applications": [],
+                "bindings": [],
+                "cx": 0,
+                "cy": 0,
+                "hasPos": false
+              }
+            }
+          ],
+          "gridBindings": [],
+          "boundaries": [],
+          "assembly": {
+            "before": {
+              "capabilities": [
+                "assembly-rule-authoring/1",
+                "assembly-timber-generation/1"
+              ],
+              "rules": [],
+              "bindings": [],
+              "instances": []
+            },
+            "after": {
+              "capabilities": [
+                "assembly-rule-authoring/1",
+                "assembly-timber-generation/1"
+              ],
+              "rules": [],
+              "bindings": [],
+              "instances": []
+            }
+          },
+          "sectionProfiles": {
+            "before": {
+              "profiles": [],
+              "members": [],
+              "runs": []
+            },
+            "after": {
+              "profiles": [],
+              "members": [],
+              "runs": []
+            },
+            "warnings": [],
+            "diagnosticsComplete": true,
+            "violations": []
+          },
+          "violations": []
+        }
+      }
+    },
+    {
+      "command": "line confirm 1",
+      "response": {
+        "ok": true
+      }
+    },
+    {
+      "command": "line grid-system 1 name-hex 6f7261636c652031 main-along none u repeat 0 600 v repeat 0 400",
+      "response": {
+        "ok": true
+      }
+    },
+    {
+      "command": "line grid-source-rule 1 create name-hex 6f7261636c652072756c65 selector all-cells divide 3 2",
+      "response": {
+        "ok": false,
+        "error": "line 6: I8a: impact preview required; inspect preview, then confirm token (World unchanged)",
+        "preview": {
+          "token": 2,
+          "valid": true,
+          "command": "grid-source-rule 1 create name-hex 6f7261636c652072756c65 selector all-cells divide 3 2",
+          "timbers": [],
+          "guides": [],
+          "grids": [],
+          "datums": [],
+          "gridSystems": [
+            {
+              "id": 0,
+              "before": {
+                "kind": "grid-system",
+                "id": 0,
+                "name": "oracle 0",
+                "mode": "infinite",
+                "mainAlong": null,
+                "uDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 600
+                },
+                "vDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 400
+                },
+                "nextRuleKey": 2,
+                "rules": [
+                  {
+                    "ruleKey": 1,
+                    "name": "oracle rule",
+                    "selector": {
+                      "kind": "all-cells"
+                    },
+                    "divisions": [
+                      3,
+                      2
+                    ]
+                  }
+                ],
+                "applications": [],
+                "bindings": [],
+                "cx": 0,
+                "cy": 0,
+                "hasPos": false
+              },
+              "after": {
+                "kind": "grid-system",
+                "id": 0,
+                "name": "oracle 0",
+                "mode": "infinite",
+                "mainAlong": null,
+                "uDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 600
+                },
+                "vDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 400
+                },
+                "nextRuleKey": 2,
+                "rules": [
+                  {
+                    "ruleKey": 1,
+                    "name": "oracle rule",
+                    "selector": {
+                      "kind": "all-cells"
+                    },
+                    "divisions": [
+                      3,
+                      2
+                    ]
+                  }
+                ],
+                "applications": [],
+                "bindings": [],
+                "cx": 0,
+                "cy": 0,
+                "hasPos": false
+              }
+            },
+            {
+              "id": 1,
+              "before": {
+                "kind": "grid-system",
+                "id": 1,
+                "name": "oracle 1",
+                "mode": "infinite",
+                "mainAlong": null,
+                "uDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 600
+                },
+                "vDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 400
+                },
+                "nextRuleKey": 1,
+                "rules": [],
+                "applications": [],
+                "bindings": [],
+                "cx": 0,
+                "cy": 0,
+                "hasPos": false
+              },
+              "after": {
+                "kind": "grid-system",
+                "id": 1,
+                "name": "oracle 1",
+                "mode": "infinite",
+                "mainAlong": null,
+                "uDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 600
+                },
+                "vDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 400
+                },
+                "nextRuleKey": 2,
+                "rules": [
+                  {
+                    "ruleKey": 1,
+                    "name": "oracle rule",
+                    "selector": {
+                      "kind": "all-cells"
+                    },
+                    "divisions": [
+                      3,
+                      2
+                    ]
+                  }
+                ],
+                "applications": [],
+                "bindings": [],
+                "cx": 0,
+                "cy": 0,
+                "hasPos": false
+              }
+            }
+          ],
+          "gridBindings": [],
+          "boundaries": [],
+          "assembly": {
+            "before": {
+              "capabilities": [
+                "assembly-rule-authoring/1",
+                "assembly-timber-generation/1"
+              ],
+              "rules": [],
+              "bindings": [],
+              "instances": []
+            },
+            "after": {
+              "capabilities": [
+                "assembly-rule-authoring/1",
+                "assembly-timber-generation/1"
+              ],
+              "rules": [],
+              "bindings": [],
+              "instances": []
+            }
+          },
+          "sectionProfiles": {
+            "before": {
+              "profiles": [],
+              "members": [],
+              "runs": []
+            },
+            "after": {
+              "profiles": [],
+              "members": [],
+              "runs": []
+            },
+            "warnings": [],
+            "diagnosticsComplete": true,
+            "violations": []
+          },
+          "violations": []
+        }
+      }
+    },
+    {
+      "command": "line confirm 2",
+      "response": {
+        "ok": true
+      }
+    },
+    {
+      "command": "line boundary 1 outline 100,200 2100,200 2100,1800 100,1800",
+      "response": {
+        "ok": true
+      }
+    },
+    {
+      "command": "boundary 1",
+      "response": {
+        "ok": true,
+        "id": 1,
+        "geometryFingerprint": "89cc7c66c46e592101d98301fa67b32a3b2b0dea688007e5b43360363ad6373e",
+        "kind": "unspecified",
+        "keysPersisted": false,
+        "loops": [
+          {
+            "loop": -1,
+            "verts": [
+              [
+                100,
+                200
+              ],
+              [
+                2100,
+                200
+              ],
+              [
+                2100,
+                1800
+              ],
+              [
+                100,
+                1800
+              ]
+            ],
+            "fixity": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "vertices": [
+              {
+                "index": 0,
+                "key": null,
+                "uv": [
+                  100,
+                  200
+                ]
+              },
+              {
+                "index": 1,
+                "key": null,
+                "uv": [
+                  2100,
+                  200
+                ]
+              },
+              {
+                "index": 2,
+                "key": null,
+                "uv": [
+                  2100,
+                  1800
+                ]
+              },
+              {
+                "index": 3,
+                "key": null,
+                "uv": [
+                  100,
+                  1800
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "command": "line grid-binding 0 on-boundary 1 from-system 0 vertex outer 0 geometry-hash 89cc7c66c46e592101d98301fa67b32a3b2b0dea688007e5b43360363ad6373e cell -2 1 anchor 0 1 0 1",
+      "response": {
+        "ok": false,
+        "error": "line 9: I8a: impact preview required; inspect preview, then confirm token (World unchanged)",
+        "preview": {
+          "token": 3,
+          "valid": true,
+          "command": "grid-binding 0 on-boundary 1 from-system 0 vertex outer 0 geometry-hash 89cc7c66c46e592101d98301fa67b32a3b2b0dea688007e5b43360363ad6373e cell -2 1 anchor 0 1 0 1",
+          "timbers": [],
+          "guides": [],
+          "grids": [],
+          "datums": [],
+          "gridSystems": [
+            {
+              "id": 0,
+              "before": {
+                "kind": "grid-system",
+                "id": 0,
+                "name": "oracle 0",
+                "mode": "infinite",
+                "mainAlong": null,
+                "uDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 600
+                },
+                "vDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 400
+                },
+                "nextRuleKey": 2,
+                "rules": [
+                  {
+                    "ruleKey": 1,
+                    "name": "oracle rule",
+                    "selector": {
+                      "kind": "all-cells"
+                    },
+                    "divisions": [
+                      3,
+                      2
+                    ]
+                  }
+                ],
+                "applications": [],
+                "bindings": [],
+                "cx": 0,
+                "cy": 0,
+                "hasPos": false
+              },
+              "after": {
+                "kind": "grid-system",
+                "id": 0,
+                "name": "oracle 0",
+                "mode": "infinite",
+                "mainAlong": null,
+                "uDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 600
+                },
+                "vDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 400
+                },
+                "nextRuleKey": 2,
+                "rules": [
+                  {
+                    "ruleKey": 1,
+                    "name": "oracle rule",
+                    "selector": {
+                      "kind": "all-cells"
+                    },
+                    "divisions": [
+                      3,
+                      2
+                    ]
+                  }
+                ],
+                "applications": [],
+                "bindings": [
+                  0
+                ],
+                "cx": 0,
+                "cy": 0,
+                "hasPos": false
+              }
+            },
+            {
+              "id": 1,
+              "before": {
+                "kind": "grid-system",
+                "id": 1,
+                "name": "oracle 1",
+                "mode": "infinite",
+                "mainAlong": null,
+                "uDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 600
+                },
+                "vDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 400
+                },
+                "nextRuleKey": 2,
+                "rules": [
+                  {
+                    "ruleKey": 1,
+                    "name": "oracle rule",
+                    "selector": {
+                      "kind": "all-cells"
+                    },
+                    "divisions": [
+                      3,
+                      2
+                    ]
+                  }
+                ],
+                "applications": [],
+                "bindings": [],
+                "cx": 0,
+                "cy": 0,
+                "hasPos": false
+              },
+              "after": {
+                "kind": "grid-system",
+                "id": 1,
+                "name": "oracle 1",
+                "mode": "infinite",
+                "mainAlong": null,
+                "uDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 600
+                },
+                "vDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 400
+                },
+                "nextRuleKey": 2,
+                "rules": [
+                  {
+                    "ruleKey": 1,
+                    "name": "oracle rule",
+                    "selector": {
+                      "kind": "all-cells"
+                    },
+                    "divisions": [
+                      3,
+                      2
+                    ]
+                  }
+                ],
+                "applications": [],
+                "bindings": [],
+                "cx": 0,
+                "cy": 0,
+                "hasPos": false
+              }
+            }
+          ],
+          "gridBindings": [
+            {
+              "id": 0,
+              "before": null,
+              "after": {
+                "kind": "grid-binding",
+                "id": 0,
+                "boundary": 1,
+                "system": 0,
+                "vertexKey": 1,
+                "cell": [
+                  "-2",
+                  "1"
+                ],
+                "anchor": [
+                  {
+                    "num": 0,
+                    "den": 1
+                  },
+                  {
+                    "num": 0,
+                    "den": 1
+                  }
+                ],
+                "translation": [
+                  1300,
+                  -200
+                ],
+                "translationExact": [
+                  "1300",
+                  "-200"
+                ],
+                "translationRepresentable": true,
+                "applications": [],
+                "cx": 0,
+                "cy": 0,
+                "hasPos": false,
+                "preview": {
+                  "ok": true,
+                  "mode": "sample",
+                  "exact": false,
+                  "rect": [
+                    100,
+                    200,
+                    2100,
+                    1800
+                  ],
+                  "axes": {
+                    "u": {
+                      "defined": true,
+                      "firstIndex": "-2",
+                      "lastIndex": "1",
+                      "total": "4",
+                      "stride": "1",
+                      "lines": [
+                        {
+                          "index": "-2",
+                          "coordinate": 100,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                200
+                              ],
+                              "b": [
+                                100,
+                                1800
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "-1",
+                          "coordinate": 700,
+                          "segments": [
+                            {
+                              "a": [
+                                700,
+                                200
+                              ],
+                              "b": [
+                                700,
+                                1800
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "0",
+                          "coordinate": 1300,
+                          "segments": [
+                            {
+                              "a": [
+                                1300,
+                                200
+                              ],
+                              "b": [
+                                1300,
+                                1800
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "1",
+                          "coordinate": 1900,
+                          "segments": [
+                            {
+                              "a": [
+                                1900,
+                                200
+                              ],
+                              "b": [
+                                1900,
+                                1800
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "v": {
+                      "defined": true,
+                      "firstIndex": "1",
+                      "lastIndex": "5",
+                      "total": "5",
+                      "stride": "1",
+                      "lines": [
+                        {
+                          "index": "1",
+                          "coordinate": 200,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                200
+                              ],
+                              "b": [
+                                2100,
+                                200
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "2",
+                          "coordinate": 600,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                600
+                              ],
+                              "b": [
+                                2100,
+                                600
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "3",
+                          "coordinate": 1000,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                1000
+                              ],
+                              "b": [
+                                2100,
+                                1000
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "4",
+                          "coordinate": 1400,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                1400
+                              ],
+                              "b": [
+                                2100,
+                                1400
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "5",
+                          "coordinate": 1800,
+                          "segments": []
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "boundaries": [
+            {
+              "id": 1,
+              "before": {
+                "id": 1,
+                "geometryFingerprint": "89cc7c66c46e592101d98301fa67b32a3b2b0dea688007e5b43360363ad6373e",
+                "kind": "unspecified",
+                "keysPersisted": false,
+                "loops": [
+                  {
+                    "loop": -1,
+                    "verts": [
+                      [
+                        100,
+                        200
+                      ],
+                      [
+                        2100,
+                        200
+                      ],
+                      [
+                        2100,
+                        1800
+                      ],
+                      [
+                        100,
+                        1800
+                      ]
+                    ],
+                    "fixity": [
+                      1,
+                      1,
+                      1,
+                      1
+                    ],
+                    "vertices": [
+                      {
+                        "index": 0,
+                        "key": null,
+                        "uv": [
+                          100,
+                          200
+                        ]
+                      },
+                      {
+                        "index": 1,
+                        "key": null,
+                        "uv": [
+                          2100,
+                          200
+                        ]
+                      },
+                      {
+                        "index": 2,
+                        "key": null,
+                        "uv": [
+                          2100,
+                          1800
+                        ]
+                      },
+                      {
+                        "index": 3,
+                        "key": null,
+                        "uv": [
+                          100,
+                          1800
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "id": 1,
+                "geometryFingerprint": "89cc7c66c46e592101d98301fa67b32a3b2b0dea688007e5b43360363ad6373e",
+                "kind": "unspecified",
+                "keysPersisted": true,
+                "loops": [
+                  {
+                    "loop": -1,
+                    "verts": [
+                      [
+                        100,
+                        200
+                      ],
+                      [
+                        2100,
+                        200
+                      ],
+                      [
+                        2100,
+                        1800
+                      ],
+                      [
+                        100,
+                        1800
+                      ]
+                    ],
+                    "fixity": [
+                      1,
+                      1,
+                      1,
+                      1
+                    ],
+                    "vertices": [
+                      {
+                        "index": 0,
+                        "key": 1,
+                        "uv": [
+                          100,
+                          200
+                        ]
+                      },
+                      {
+                        "index": 1,
+                        "key": 2,
+                        "uv": [
+                          2100,
+                          200
+                        ]
+                      },
+                      {
+                        "index": 2,
+                        "key": 3,
+                        "uv": [
+                          2100,
+                          1800
+                        ]
+                      },
+                      {
+                        "index": 3,
+                        "key": 4,
+                        "uv": [
+                          100,
+                          1800
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "assembly": {
+            "before": {
+              "capabilities": [
+                "assembly-rule-authoring/1",
+                "assembly-timber-generation/1"
+              ],
+              "rules": [],
+              "bindings": [],
+              "instances": []
+            },
+            "after": {
+              "capabilities": [
+                "assembly-rule-authoring/1",
+                "assembly-timber-generation/1"
+              ],
+              "rules": [],
+              "bindings": [],
+              "instances": []
+            }
+          },
+          "sectionProfiles": {
+            "before": {
+              "profiles": [],
+              "members": [],
+              "runs": []
+            },
+            "after": {
+              "profiles": [],
+              "members": [],
+              "runs": []
+            },
+            "warnings": [],
+            "diagnosticsComplete": true,
+            "violations": []
+          },
+          "violations": []
+        }
+      }
+    },
+    {
+      "command": "line confirm 3",
+      "response": {
+        "ok": true
+      }
+    },
+    {
+      "command": "line placement 1 on boundary 1 origin 0 0 0 u +x v +y",
+      "response": {
+        "ok": true
+      }
+    },
+    {
+      "command": "line grid 10 on 1 from-binding 0",
+      "response": {
+        "ok": false,
+        "error": "line 12: I8a: impact preview required; inspect preview, then confirm token (World unchanged)",
+        "preview": {
+          "token": 4,
+          "valid": true,
+          "command": "grid 10 on 1 from-binding 0",
+          "timbers": [],
+          "guides": [],
+          "grids": [
+            {
+              "id": 10,
+              "before": null,
+              "after": {
+                "id": 10,
+                "surface": 1,
+                "bindingId": 0,
+                "indexSpace": "lattice",
+                "sourceSystem": 0,
+                "origin": [
+                  0,
+                  0
+                ],
+                "kind": "main",
+                "parentId": null,
+                "cell": null,
+                "divisions": null,
+                "bounds": {
+                  "u": [
+                    100,
+                    2100
+                  ],
+                  "v": [
+                    200,
+                    1800
+                  ]
+                },
+                "mainAlong": null,
+                "geometryMode": "sample",
+                "geometryExact": false,
+                "query": {
+                  "ok": true,
+                  "mode": "sample",
+                  "exact": false,
+                  "rect": [
+                    100,
+                    200,
+                    2100,
+                    1800
+                  ],
+                  "axes": {
+                    "u": {
+                      "defined": true,
+                      "firstIndex": "-2",
+                      "lastIndex": "1",
+                      "total": "4",
+                      "stride": "1",
+                      "lines": [
+                        {
+                          "index": "-2",
+                          "coordinate": 100,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                200
+                              ],
+                              "b": [
+                                100,
+                                1800
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "-1",
+                          "coordinate": 700,
+                          "segments": [
+                            {
+                              "a": [
+                                700,
+                                200
+                              ],
+                              "b": [
+                                700,
+                                1800
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "0",
+                          "coordinate": 1300,
+                          "segments": [
+                            {
+                              "a": [
+                                1300,
+                                200
+                              ],
+                              "b": [
+                                1300,
+                                1800
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "1",
+                          "coordinate": 1900,
+                          "segments": [
+                            {
+                              "a": [
+                                1900,
+                                200
+                              ],
+                              "b": [
+                                1900,
+                                1800
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "v": {
+                      "defined": true,
+                      "firstIndex": "1",
+                      "lastIndex": "5",
+                      "total": "5",
+                      "stride": "1",
+                      "lines": [
+                        {
+                          "index": "1",
+                          "coordinate": 200,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                200
+                              ],
+                              "b": [
+                                2100,
+                                200
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "2",
+                          "coordinate": 600,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                600
+                              ],
+                              "b": [
+                                2100,
+                                600
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "3",
+                          "coordinate": 1000,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                1000
+                              ],
+                              "b": [
+                                2100,
+                                1000
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "4",
+                          "coordinate": 1400,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                1400
+                              ],
+                              "b": [
+                                2100,
+                                1400
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "5",
+                          "coordinate": 1800,
+                          "segments": []
+                        }
+                      ]
+                    }
+                  }
+                },
+                "u": [
+                  100,
+                  700,
+                  1300,
+                  1900
+                ],
+                "uDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 600
+                },
+                "v": [
+                  200,
+                  600,
+                  1000,
+                  1400,
+                  1800
+                ],
+                "vDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 400
+                },
+                "indices": {
+                  "u": [
+                    "-2",
+                    "-1",
+                    "0",
+                    "1"
+                  ],
+                  "v": [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                  ]
+                },
+                "lattice": {
+                  "u": {
+                    "defined": true,
+                    "pitch": 600,
+                    "baseIndex": "-2",
+                    "baseCoordinate": 100
+                  },
+                  "v": {
+                    "defined": true,
+                    "pitch": 400,
+                    "baseIndex": "1",
+                    "baseCoordinate": 200
+                  }
+                },
+                "lines": [
+                  {
+                    "axis": "u",
+                    "index": "-2",
+                    "coordinate": 100,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          100,
+                          200
+                        ],
+                        [
+                          100,
+                          1800
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "u",
+                    "index": "-1",
+                    "coordinate": 700,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          700,
+                          200
+                        ],
+                        [
+                          700,
+                          1800
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "u",
+                    "index": "0",
+                    "coordinate": 1300,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          1300,
+                          200
+                        ],
+                        [
+                          1300,
+                          1800
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "u",
+                    "index": "1",
+                    "coordinate": 1900,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          1900,
+                          200
+                        ],
+                        [
+                          1900,
+                          1800
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "v",
+                    "index": "1",
+                    "coordinate": 200,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          100,
+                          200
+                        ],
+                        [
+                          2100,
+                          200
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "v",
+                    "index": "2",
+                    "coordinate": 600,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          100,
+                          600
+                        ],
+                        [
+                          2100,
+                          600
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "v",
+                    "index": "3",
+                    "coordinate": 1000,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          100,
+                          1000
+                        ],
+                        [
+                          2100,
+                          1000
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "v",
+                    "index": "4",
+                    "coordinate": 1400,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          100,
+                          1400
+                        ],
+                        [
+                          2100,
+                          1400
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "v",
+                    "index": "5",
+                    "coordinate": 1800,
+                    "role": null,
+                    "priority": null,
+                    "segments": []
+                  }
+                ],
+                "dependencies": {
+                  "children": [],
+                  "guides": [],
+                  "timbers": []
+                }
+              }
+            }
+          ],
+          "datums": [],
+          "gridSystems": [
+            {
+              "id": 0,
+              "before": {
+                "kind": "grid-system",
+                "id": 0,
+                "name": "oracle 0",
+                "mode": "infinite",
+                "mainAlong": null,
+                "uDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 600
+                },
+                "vDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 400
+                },
+                "nextRuleKey": 2,
+                "rules": [
+                  {
+                    "ruleKey": 1,
+                    "name": "oracle rule",
+                    "selector": {
+                      "kind": "all-cells"
+                    },
+                    "divisions": [
+                      3,
+                      2
+                    ]
+                  }
+                ],
+                "applications": [],
+                "bindings": [
+                  0
+                ],
+                "cx": 0,
+                "cy": 0,
+                "hasPos": false
+              },
+              "after": {
+                "kind": "grid-system",
+                "id": 0,
+                "name": "oracle 0",
+                "mode": "infinite",
+                "mainAlong": null,
+                "uDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 600
+                },
+                "vDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 400
+                },
+                "nextRuleKey": 2,
+                "rules": [
+                  {
+                    "ruleKey": 1,
+                    "name": "oracle rule",
+                    "selector": {
+                      "kind": "all-cells"
+                    },
+                    "divisions": [
+                      3,
+                      2
+                    ]
+                  }
+                ],
+                "applications": [
+                  {
+                    "grid": 10,
+                    "surface": 1
+                  }
+                ],
+                "bindings": [
+                  0
+                ],
+                "cx": 0,
+                "cy": 0,
+                "hasPos": false
+              }
+            },
+            {
+              "id": 1,
+              "before": {
+                "kind": "grid-system",
+                "id": 1,
+                "name": "oracle 1",
+                "mode": "infinite",
+                "mainAlong": null,
+                "uDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 600
+                },
+                "vDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 400
+                },
+                "nextRuleKey": 2,
+                "rules": [
+                  {
+                    "ruleKey": 1,
+                    "name": "oracle rule",
+                    "selector": {
+                      "kind": "all-cells"
+                    },
+                    "divisions": [
+                      3,
+                      2
+                    ]
+                  }
+                ],
+                "applications": [],
+                "bindings": [],
+                "cx": 0,
+                "cy": 0,
+                "hasPos": false
+              },
+              "after": {
+                "kind": "grid-system",
+                "id": 1,
+                "name": "oracle 1",
+                "mode": "infinite",
+                "mainAlong": null,
+                "uDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 600
+                },
+                "vDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 400
+                },
+                "nextRuleKey": 2,
+                "rules": [
+                  {
+                    "ruleKey": 1,
+                    "name": "oracle rule",
+                    "selector": {
+                      "kind": "all-cells"
+                    },
+                    "divisions": [
+                      3,
+                      2
+                    ]
+                  }
+                ],
+                "applications": [],
+                "bindings": [],
+                "cx": 0,
+                "cy": 0,
+                "hasPos": false
+              }
+            }
+          ],
+          "gridBindings": [
+            {
+              "id": 0,
+              "before": {
+                "kind": "grid-binding",
+                "id": 0,
+                "boundary": 1,
+                "system": 0,
+                "vertexKey": 1,
+                "cell": [
+                  "-2",
+                  "1"
+                ],
+                "anchor": [
+                  {
+                    "num": 0,
+                    "den": 1
+                  },
+                  {
+                    "num": 0,
+                    "den": 1
+                  }
+                ],
+                "translation": [
+                  1300,
+                  -200
+                ],
+                "translationExact": [
+                  "1300",
+                  "-200"
+                ],
+                "translationRepresentable": true,
+                "applications": [],
+                "cx": 0,
+                "cy": 0,
+                "hasPos": false,
+                "preview": {
+                  "ok": true,
+                  "mode": "sample",
+                  "exact": false,
+                  "rect": [
+                    100,
+                    200,
+                    2100,
+                    1800
+                  ],
+                  "axes": {
+                    "u": {
+                      "defined": true,
+                      "firstIndex": "-2",
+                      "lastIndex": "1",
+                      "total": "4",
+                      "stride": "1",
+                      "lines": [
+                        {
+                          "index": "-2",
+                          "coordinate": 100,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                200
+                              ],
+                              "b": [
+                                100,
+                                1800
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "-1",
+                          "coordinate": 700,
+                          "segments": [
+                            {
+                              "a": [
+                                700,
+                                200
+                              ],
+                              "b": [
+                                700,
+                                1800
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "0",
+                          "coordinate": 1300,
+                          "segments": [
+                            {
+                              "a": [
+                                1300,
+                                200
+                              ],
+                              "b": [
+                                1300,
+                                1800
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "1",
+                          "coordinate": 1900,
+                          "segments": [
+                            {
+                              "a": [
+                                1900,
+                                200
+                              ],
+                              "b": [
+                                1900,
+                                1800
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "v": {
+                      "defined": true,
+                      "firstIndex": "1",
+                      "lastIndex": "5",
+                      "total": "5",
+                      "stride": "1",
+                      "lines": [
+                        {
+                          "index": "1",
+                          "coordinate": 200,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                200
+                              ],
+                              "b": [
+                                2100,
+                                200
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "2",
+                          "coordinate": 600,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                600
+                              ],
+                              "b": [
+                                2100,
+                                600
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "3",
+                          "coordinate": 1000,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                1000
+                              ],
+                              "b": [
+                                2100,
+                                1000
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "4",
+                          "coordinate": 1400,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                1400
+                              ],
+                              "b": [
+                                2100,
+                                1400
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "5",
+                          "coordinate": 1800,
+                          "segments": []
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              "after": {
+                "kind": "grid-binding",
+                "id": 0,
+                "boundary": 1,
+                "system": 0,
+                "vertexKey": 1,
+                "cell": [
+                  "-2",
+                  "1"
+                ],
+                "anchor": [
+                  {
+                    "num": 0,
+                    "den": 1
+                  },
+                  {
+                    "num": 0,
+                    "den": 1
+                  }
+                ],
+                "translation": [
+                  1300,
+                  -200
+                ],
+                "translationExact": [
+                  "1300",
+                  "-200"
+                ],
+                "translationRepresentable": true,
+                "applications": [
+                  {
+                    "grid": 10,
+                    "surface": 1
+                  }
+                ],
+                "cx": 0,
+                "cy": 0,
+                "hasPos": false,
+                "preview": {
+                  "ok": true,
+                  "mode": "sample",
+                  "exact": false,
+                  "rect": [
+                    100,
+                    200,
+                    2100,
+                    1800
+                  ],
+                  "axes": {
+                    "u": {
+                      "defined": true,
+                      "firstIndex": "-2",
+                      "lastIndex": "1",
+                      "total": "4",
+                      "stride": "1",
+                      "lines": [
+                        {
+                          "index": "-2",
+                          "coordinate": 100,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                200
+                              ],
+                              "b": [
+                                100,
+                                1800
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "-1",
+                          "coordinate": 700,
+                          "segments": [
+                            {
+                              "a": [
+                                700,
+                                200
+                              ],
+                              "b": [
+                                700,
+                                1800
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "0",
+                          "coordinate": 1300,
+                          "segments": [
+                            {
+                              "a": [
+                                1300,
+                                200
+                              ],
+                              "b": [
+                                1300,
+                                1800
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "1",
+                          "coordinate": 1900,
+                          "segments": [
+                            {
+                              "a": [
+                                1900,
+                                200
+                              ],
+                              "b": [
+                                1900,
+                                1800
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "v": {
+                      "defined": true,
+                      "firstIndex": "1",
+                      "lastIndex": "5",
+                      "total": "5",
+                      "stride": "1",
+                      "lines": [
+                        {
+                          "index": "1",
+                          "coordinate": 200,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                200
+                              ],
+                              "b": [
+                                2100,
+                                200
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "2",
+                          "coordinate": 600,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                600
+                              ],
+                              "b": [
+                                2100,
+                                600
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "3",
+                          "coordinate": 1000,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                1000
+                              ],
+                              "b": [
+                                2100,
+                                1000
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "4",
+                          "coordinate": 1400,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                1400
+                              ],
+                              "b": [
+                                2100,
+                                1400
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "5",
+                          "coordinate": 1800,
+                          "segments": []
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "boundaries": [],
+          "assembly": {
+            "before": {
+              "capabilities": [
+                "assembly-rule-authoring/1",
+                "assembly-timber-generation/1"
+              ],
+              "rules": [],
+              "bindings": [],
+              "instances": []
+            },
+            "after": {
+              "capabilities": [
+                "assembly-rule-authoring/1",
+                "assembly-timber-generation/1"
+              ],
+              "rules": [],
+              "bindings": [],
+              "instances": []
+            }
+          },
+          "sectionProfiles": {
+            "before": {
+              "profiles": [],
+              "members": [],
+              "runs": []
+            },
+            "after": {
+              "profiles": [],
+              "members": [],
+              "runs": []
+            },
+            "warnings": [],
+            "diagnosticsComplete": true,
+            "violations": []
+          },
+          "violations": []
+        }
+      }
+    },
+    {
+      "command": "line confirm 4",
+      "response": {
+        "ok": true
+      }
+    },
+    {
+      "command": "line guide 1 1 v gridrule:10:0:1:-2:1:u:0",
+      "response": {
+        "ok": true
+      }
+    },
+    {
+      "command": "boundary 1",
+      "response": {
+        "ok": true,
+        "id": 1,
+        "geometryFingerprint": "89cc7c66c46e592101d98301fa67b32a3b2b0dea688007e5b43360363ad6373e",
+        "kind": "unspecified",
+        "keysPersisted": true,
+        "loops": [
+          {
+            "loop": -1,
+            "verts": [
+              [
+                100,
+                200
+              ],
+              [
+                2100,
+                200
+              ],
+              [
+                2100,
+                1800
+              ],
+              [
+                100,
+                1800
+              ]
+            ],
+            "fixity": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "vertices": [
+              {
+                "index": 0,
+                "key": 1,
+                "uv": [
+                  100,
+                  200
+                ]
+              },
+              {
+                "index": 1,
+                "key": 2,
+                "uv": [
+                  2100,
+                  200
+                ]
+              },
+              {
+                "index": 2,
+                "key": 3,
+                "uv": [
+                  2100,
+                  1800
+                ]
+              },
+              {
+                "index": 3,
+                "key": 4,
+                "uv": [
+                  100,
+                  1800
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "command": "dump",
+      "response": {
+        "ok": true,
+        "text": "boundary 1 outline 100,200 2100,200 2100,1800 100,1800\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\nboundary-vertex-keys 1 outer 1 2 3 4 next-key 5\nrequires grid-subdivision-rules/1\ngrid-system 0 name-hex 6f7261636c652030 main-along none u repeat 0 600 v repeat 0 400\ngrid-source-rule 0 key 1 name-hex 6f7261636c652072756c65 selector all-cells divide 3 2\ngrid-source-rule-highwater 0 next 2\ngrid-system 1 name-hex 6f7261636c652031 main-along none u repeat 0 600 v repeat 0 400\ngrid-source-rule 1 key 1 name-hex 6f7261636c652072756c65 selector all-cells divide 3 2\ngrid-source-rule-highwater 1 next 2\ngrid-binding 0 on-boundary 1 from-system 0 vertex-key 1 cell -2 1 anchor 0 1 0 1\ngrid 10 on 1 from-binding 0\nguide 1 1 v gridrule:10:0:1:-2:1:u:0\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [
+          "grid-subdivision-rules/1"
+        ],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 20,
+        "definition_sha256": "490f94dcff145fce47cb935b17b8f958de40049a8f2ed4fcb47dfa65d117857b"
+      }
+    },
+    {
+      "command": "objects",
+      "response": {
+        "ok": true,
+        "faces": [
+          {
+            "kind": "boundary",
+            "boundaryKind": "unspecified",
+            "id": 1,
+            "placed": true,
+            "bbox": [
+              100,
+              200,
+              2100,
+              1800
+            ],
+            "cx": 0,
+            "cy": 0,
+            "hasPos": false
+          }
+        ],
+        "spaces": [],
+        "columns": [],
+        "beams": [],
+        "gridSystems": [
+          {
+            "kind": "grid-system",
+            "id": 0,
+            "name": "oracle 0",
+            "mode": "infinite",
+            "mainAlong": null,
+            "uDefinition": {
+              "source": "repeat",
+              "phase": 0,
+              "step": 600
+            },
+            "vDefinition": {
+              "source": "repeat",
+              "phase": 0,
+              "step": 400
+            },
+            "nextRuleKey": 2,
+            "rules": [
+              {
+                "ruleKey": 1,
+                "name": "oracle rule",
+                "selector": {
+                  "kind": "all-cells"
+                },
+                "divisions": [
+                  3,
+                  2
+                ]
+              }
+            ],
+            "applications": [
+              {
+                "grid": 10,
+                "surface": 1
+              }
+            ],
+            "bindings": [
+              0
+            ],
+            "cx": 0,
+            "cy": 0,
+            "hasPos": false
+          },
+          {
+            "kind": "grid-system",
+            "id": 1,
+            "name": "oracle 1",
+            "mode": "infinite",
+            "mainAlong": null,
+            "uDefinition": {
+              "source": "repeat",
+              "phase": 0,
+              "step": 600
+            },
+            "vDefinition": {
+              "source": "repeat",
+              "phase": 0,
+              "step": 400
+            },
+            "nextRuleKey": 2,
+            "rules": [
+              {
+                "ruleKey": 1,
+                "name": "oracle rule",
+                "selector": {
+                  "kind": "all-cells"
+                },
+                "divisions": [
+                  3,
+                  2
+                ]
+              }
+            ],
+            "applications": [],
+            "bindings": [],
+            "cx": 0,
+            "cy": 0,
+            "hasPos": false
+          }
+        ],
+        "parameters": [],
+        "assemblyRules": [],
+        "assemblyBindings": [],
+        "parameterUses": [],
+        "gridBindings": [
+          {
+            "kind": "grid-binding",
+            "id": 0,
+            "boundary": 1,
+            "system": 0,
+            "vertexKey": 1,
+            "cell": [
+              "-2",
+              "1"
+            ],
+            "anchor": [
+              {
+                "num": 0,
+                "den": 1
+              },
+              {
+                "num": 0,
+                "den": 1
+              }
+            ],
+            "translation": [
+              1300,
+              -200
+            ],
+            "translationExact": [
+              "1300",
+              "-200"
+            ],
+            "translationRepresentable": true,
+            "applications": [
+              {
+                "grid": 10,
+                "surface": 1
+              }
+            ],
+            "cx": 0,
+            "cy": 0,
+            "hasPos": false
+          }
+        ],
+        "timbers": []
+      }
+    },
+    {
+      "command": "references",
+      "response": {
+        "ok": true,
+        "sourceFingerprint": "490f94dcff145fce47cb935b17b8f958de40049a8f2ed4fcb47dfa65d117857b",
+        "guides": [
+          {
+            "id": 1,
+            "surface": 1,
+            "source": "local",
+            "datum": 0,
+            "axis": "v",
+            "off": 300,
+            "expression": "gridrule:10:0:1:-2:1:u:0",
+            "worldPoint": [
+              300,
+              0,
+              0
+            ],
+            "worldDirection": [
+              0,
+              1,
+              0
+            ],
+            "segments": [
+              [
+                [
+                  300,
+                  200
+                ],
+                [
+                  300,
+                  1800
+                ]
+              ]
+            ]
+          }
+        ],
+        "grids": [
+          {
+            "id": 10,
+            "surface": 1,
+            "bindingId": 0,
+            "indexSpace": "lattice",
+            "sourceSystem": 0,
+            "origin": [
+              0,
+              0
+            ],
+            "kind": "main",
+            "parentId": null,
+            "cell": null,
+            "divisions": null,
+            "bounds": {
+              "u": [
+                100,
+                2100
+              ],
+              "v": [
+                200,
+                1800
+              ]
+            },
+            "mainAlong": null,
+            "geometryMode": "sample",
+            "geometryExact": false,
+            "query": {
+              "ok": true,
+              "mode": "sample",
+              "exact": false,
+              "rect": [
+                100,
+                200,
+                2100,
+                1800
+              ],
+              "axes": {
+                "u": {
+                  "defined": true,
+                  "firstIndex": "-2",
+                  "lastIndex": "1",
+                  "total": "4",
+                  "stride": "1",
+                  "lines": [
+                    {
+                      "index": "-2",
+                      "coordinate": 100,
+                      "segments": [
+                        {
+                          "a": [
+                            100,
+                            200
+                          ],
+                          "b": [
+                            100,
+                            1800
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "index": "-1",
+                      "coordinate": 700,
+                      "segments": [
+                        {
+                          "a": [
+                            700,
+                            200
+                          ],
+                          "b": [
+                            700,
+                            1800
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "index": "0",
+                      "coordinate": 1300,
+                      "segments": [
+                        {
+                          "a": [
+                            1300,
+                            200
+                          ],
+                          "b": [
+                            1300,
+                            1800
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "index": "1",
+                      "coordinate": 1900,
+                      "segments": [
+                        {
+                          "a": [
+                            1900,
+                            200
+                          ],
+                          "b": [
+                            1900,
+                            1800
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "v": {
+                  "defined": true,
+                  "firstIndex": "1",
+                  "lastIndex": "5",
+                  "total": "5",
+                  "stride": "1",
+                  "lines": [
+                    {
+                      "index": "1",
+                      "coordinate": 200,
+                      "segments": [
+                        {
+                          "a": [
+                            100,
+                            200
+                          ],
+                          "b": [
+                            2100,
+                            200
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "index": "2",
+                      "coordinate": 600,
+                      "segments": [
+                        {
+                          "a": [
+                            100,
+                            600
+                          ],
+                          "b": [
+                            2100,
+                            600
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "index": "3",
+                      "coordinate": 1000,
+                      "segments": [
+                        {
+                          "a": [
+                            100,
+                            1000
+                          ],
+                          "b": [
+                            2100,
+                            1000
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "index": "4",
+                      "coordinate": 1400,
+                      "segments": [
+                        {
+                          "a": [
+                            100,
+                            1400
+                          ],
+                          "b": [
+                            2100,
+                            1400
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "index": "5",
+                      "coordinate": 1800,
+                      "segments": []
+                    }
+                  ]
+                }
+              }
+            },
+            "u": [
+              100,
+              700,
+              1300,
+              1900
+            ],
+            "uDefinition": {
+              "source": "repeat",
+              "phase": 0,
+              "step": 600
+            },
+            "v": [
+              200,
+              600,
+              1000,
+              1400,
+              1800
+            ],
+            "vDefinition": {
+              "source": "repeat",
+              "phase": 0,
+              "step": 400
+            },
+            "indices": {
+              "u": [
+                "-2",
+                "-1",
+                "0",
+                "1"
+              ],
+              "v": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5"
+              ]
+            },
+            "lattice": {
+              "u": {
+                "defined": true,
+                "pitch": 600,
+                "baseIndex": "-2",
+                "baseCoordinate": 100
+              },
+              "v": {
+                "defined": true,
+                "pitch": 400,
+                "baseIndex": "1",
+                "baseCoordinate": 200
+              }
+            },
+            "lines": [
+              {
+                "axis": "u",
+                "index": "-2",
+                "coordinate": 100,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      100,
+                      200
+                    ],
+                    [
+                      100,
+                      1800
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "u",
+                "index": "-1",
+                "coordinate": 700,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      700,
+                      200
+                    ],
+                    [
+                      700,
+                      1800
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "u",
+                "index": "0",
+                "coordinate": 1300,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      1300,
+                      200
+                    ],
+                    [
+                      1300,
+                      1800
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "u",
+                "index": "1",
+                "coordinate": 1900,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      1900,
+                      200
+                    ],
+                    [
+                      1900,
+                      1800
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "v",
+                "index": "1",
+                "coordinate": 200,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      100,
+                      200
+                    ],
+                    [
+                      2100,
+                      200
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "v",
+                "index": "2",
+                "coordinate": 600,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      100,
+                      600
+                    ],
+                    [
+                      2100,
+                      600
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "v",
+                "index": "3",
+                "coordinate": 1000,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      100,
+                      1000
+                    ],
+                    [
+                      2100,
+                      1000
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "v",
+                "index": "4",
+                "coordinate": 1400,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      100,
+                      1400
+                    ],
+                    [
+                      2100,
+                      1400
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "v",
+                "index": "5",
+                "coordinate": 1800,
+                "role": null,
+                "priority": null,
+                "segments": []
+              }
+            ],
+            "dependencies": {
+              "children": [],
+              "guides": [
+                1
+              ],
+              "timbers": []
+            }
+          }
+        ],
+        "timbers": [],
+        "timberSupports": {
+          "schema": "native-timber-supports/1",
+          "sourceFingerprint": "490f94dcff145fce47cb935b17b8f958de40049a8f2ed4fcb47dfa65d117857b",
+          "entries": []
+        },
+        "specs": [],
+        "datums": [],
+        "engineeringSources": [],
+        "assembly": {
+          "capabilities": [
+            "assembly-rule-authoring/1",
+            "assembly-timber-generation/1"
+          ],
+          "rules": [],
+          "bindings": [],
+          "instances": []
+        }
+      }
+    },
+    {
+      "command": "line grid-binding 0 on-boundary 1 from-system 1 vertex outer 0 geometry-hash 89cc7c66c46e592101d98301fa67b32a3b2b0dea688007e5b43360363ad6373e cell -2 1 anchor 0 1 0 1",
+      "response": {
+        "ok": false,
+        "error": "line 15: I8a: impact preview required; inspect preview, then confirm token (World unchanged)",
+        "preview": {
+          "token": 5,
+          "valid": false,
+          "command": "grid-binding 0 on-boundary 1 from-system 1 vertex outer 0 geometry-hash 89cc7c66c46e592101d98301fa67b32a3b2b0dea688007e5b43360363ad6373e cell -2 1 anchor 0 1 0 1",
+          "timbers": [],
+          "guides": [
+            {
+              "id": 1,
+              "before": {
+                "id": 1,
+                "surface": 1,
+                "source": "local",
+                "datum": 0,
+                "axis": "v",
+                "off": 300,
+                "expression": "gridrule:10:0:1:-2:1:u:0",
+                "worldPoint": [
+                  300,
+                  0,
+                  0
+                ],
+                "worldDirection": [
+                  0,
+                  1,
+                  0
+                ],
+                "segments": [
+                  [
+                    [
+                      300,
+                      200
+                    ],
+                    [
+                      300,
+                      1800
+                    ]
+                  ]
+                ]
+              },
+              "after": null
+            }
+          ],
+          "grids": [
+            {
+              "id": 10,
+              "before": {
+                "id": 10,
+                "surface": 1,
+                "bindingId": 0,
+                "indexSpace": "lattice",
+                "sourceSystem": 0,
+                "origin": [
+                  0,
+                  0
+                ],
+                "kind": "main",
+                "parentId": null,
+                "cell": null,
+                "divisions": null,
+                "bounds": {
+                  "u": [
+                    100,
+                    2100
+                  ],
+                  "v": [
+                    200,
+                    1800
+                  ]
+                },
+                "mainAlong": null,
+                "geometryMode": "sample",
+                "geometryExact": false,
+                "query": {
+                  "ok": true,
+                  "mode": "sample",
+                  "exact": false,
+                  "rect": [
+                    100,
+                    200,
+                    2100,
+                    1800
+                  ],
+                  "axes": {
+                    "u": {
+                      "defined": true,
+                      "firstIndex": "-2",
+                      "lastIndex": "1",
+                      "total": "4",
+                      "stride": "1",
+                      "lines": [
+                        {
+                          "index": "-2",
+                          "coordinate": 100,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                200
+                              ],
+                              "b": [
+                                100,
+                                1800
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "-1",
+                          "coordinate": 700,
+                          "segments": [
+                            {
+                              "a": [
+                                700,
+                                200
+                              ],
+                              "b": [
+                                700,
+                                1800
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "0",
+                          "coordinate": 1300,
+                          "segments": [
+                            {
+                              "a": [
+                                1300,
+                                200
+                              ],
+                              "b": [
+                                1300,
+                                1800
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "1",
+                          "coordinate": 1900,
+                          "segments": [
+                            {
+                              "a": [
+                                1900,
+                                200
+                              ],
+                              "b": [
+                                1900,
+                                1800
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "v": {
+                      "defined": true,
+                      "firstIndex": "1",
+                      "lastIndex": "5",
+                      "total": "5",
+                      "stride": "1",
+                      "lines": [
+                        {
+                          "index": "1",
+                          "coordinate": 200,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                200
+                              ],
+                              "b": [
+                                2100,
+                                200
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "2",
+                          "coordinate": 600,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                600
+                              ],
+                              "b": [
+                                2100,
+                                600
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "3",
+                          "coordinate": 1000,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                1000
+                              ],
+                              "b": [
+                                2100,
+                                1000
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "4",
+                          "coordinate": 1400,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                1400
+                              ],
+                              "b": [
+                                2100,
+                                1400
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "5",
+                          "coordinate": 1800,
+                          "segments": []
+                        }
+                      ]
+                    }
+                  }
+                },
+                "u": [
+                  100,
+                  700,
+                  1300,
+                  1900
+                ],
+                "uDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 600
+                },
+                "v": [
+                  200,
+                  600,
+                  1000,
+                  1400,
+                  1800
+                ],
+                "vDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 400
+                },
+                "indices": {
+                  "u": [
+                    "-2",
+                    "-1",
+                    "0",
+                    "1"
+                  ],
+                  "v": [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                  ]
+                },
+                "lattice": {
+                  "u": {
+                    "defined": true,
+                    "pitch": 600,
+                    "baseIndex": "-2",
+                    "baseCoordinate": 100
+                  },
+                  "v": {
+                    "defined": true,
+                    "pitch": 400,
+                    "baseIndex": "1",
+                    "baseCoordinate": 200
+                  }
+                },
+                "lines": [
+                  {
+                    "axis": "u",
+                    "index": "-2",
+                    "coordinate": 100,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          100,
+                          200
+                        ],
+                        [
+                          100,
+                          1800
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "u",
+                    "index": "-1",
+                    "coordinate": 700,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          700,
+                          200
+                        ],
+                        [
+                          700,
+                          1800
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "u",
+                    "index": "0",
+                    "coordinate": 1300,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          1300,
+                          200
+                        ],
+                        [
+                          1300,
+                          1800
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "u",
+                    "index": "1",
+                    "coordinate": 1900,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          1900,
+                          200
+                        ],
+                        [
+                          1900,
+                          1800
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "v",
+                    "index": "1",
+                    "coordinate": 200,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          100,
+                          200
+                        ],
+                        [
+                          2100,
+                          200
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "v",
+                    "index": "2",
+                    "coordinate": 600,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          100,
+                          600
+                        ],
+                        [
+                          2100,
+                          600
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "v",
+                    "index": "3",
+                    "coordinate": 1000,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          100,
+                          1000
+                        ],
+                        [
+                          2100,
+                          1000
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "v",
+                    "index": "4",
+                    "coordinate": 1400,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          100,
+                          1400
+                        ],
+                        [
+                          2100,
+                          1400
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "v",
+                    "index": "5",
+                    "coordinate": 1800,
+                    "role": null,
+                    "priority": null,
+                    "segments": []
+                  }
+                ],
+                "dependencies": {
+                  "children": [],
+                  "guides": [
+                    1
+                  ],
+                  "timbers": []
+                }
+              },
+              "after": {
+                "id": 10,
+                "surface": 1,
+                "bindingId": 0,
+                "indexSpace": "lattice",
+                "sourceSystem": 1,
+                "origin": [
+                  0,
+                  0
+                ],
+                "kind": "main",
+                "parentId": null,
+                "cell": null,
+                "divisions": null,
+                "bounds": {
+                  "u": [
+                    100,
+                    2100
+                  ],
+                  "v": [
+                    200,
+                    1800
+                  ]
+                },
+                "mainAlong": null,
+                "geometryMode": "sample",
+                "geometryExact": false,
+                "query": {
+                  "ok": true,
+                  "mode": "sample",
+                  "exact": false,
+                  "rect": [
+                    100,
+                    200,
+                    2100,
+                    1800
+                  ],
+                  "axes": {
+                    "u": {
+                      "defined": true,
+                      "firstIndex": "-2",
+                      "lastIndex": "1",
+                      "total": "4",
+                      "stride": "1",
+                      "lines": [
+                        {
+                          "index": "-2",
+                          "coordinate": 100,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                200
+                              ],
+                              "b": [
+                                100,
+                                1800
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "-1",
+                          "coordinate": 700,
+                          "segments": [
+                            {
+                              "a": [
+                                700,
+                                200
+                              ],
+                              "b": [
+                                700,
+                                1800
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "0",
+                          "coordinate": 1300,
+                          "segments": [
+                            {
+                              "a": [
+                                1300,
+                                200
+                              ],
+                              "b": [
+                                1300,
+                                1800
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "1",
+                          "coordinate": 1900,
+                          "segments": [
+                            {
+                              "a": [
+                                1900,
+                                200
+                              ],
+                              "b": [
+                                1900,
+                                1800
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "v": {
+                      "defined": true,
+                      "firstIndex": "1",
+                      "lastIndex": "5",
+                      "total": "5",
+                      "stride": "1",
+                      "lines": [
+                        {
+                          "index": "1",
+                          "coordinate": 200,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                200
+                              ],
+                              "b": [
+                                2100,
+                                200
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "2",
+                          "coordinate": 600,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                600
+                              ],
+                              "b": [
+                                2100,
+                                600
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "3",
+                          "coordinate": 1000,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                1000
+                              ],
+                              "b": [
+                                2100,
+                                1000
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "4",
+                          "coordinate": 1400,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                1400
+                              ],
+                              "b": [
+                                2100,
+                                1400
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "5",
+                          "coordinate": 1800,
+                          "segments": []
+                        }
+                      ]
+                    }
+                  }
+                },
+                "u": [
+                  100,
+                  700,
+                  1300,
+                  1900
+                ],
+                "uDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 600
+                },
+                "v": [
+                  200,
+                  600,
+                  1000,
+                  1400,
+                  1800
+                ],
+                "vDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 400
+                },
+                "indices": {
+                  "u": [
+                    "-2",
+                    "-1",
+                    "0",
+                    "1"
+                  ],
+                  "v": [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                  ]
+                },
+                "lattice": {
+                  "u": {
+                    "defined": true,
+                    "pitch": 600,
+                    "baseIndex": "-2",
+                    "baseCoordinate": 100
+                  },
+                  "v": {
+                    "defined": true,
+                    "pitch": 400,
+                    "baseIndex": "1",
+                    "baseCoordinate": 200
+                  }
+                },
+                "lines": [
+                  {
+                    "axis": "u",
+                    "index": "-2",
+                    "coordinate": 100,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          100,
+                          200
+                        ],
+                        [
+                          100,
+                          1800
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "u",
+                    "index": "-1",
+                    "coordinate": 700,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          700,
+                          200
+                        ],
+                        [
+                          700,
+                          1800
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "u",
+                    "index": "0",
+                    "coordinate": 1300,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          1300,
+                          200
+                        ],
+                        [
+                          1300,
+                          1800
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "u",
+                    "index": "1",
+                    "coordinate": 1900,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          1900,
+                          200
+                        ],
+                        [
+                          1900,
+                          1800
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "v",
+                    "index": "1",
+                    "coordinate": 200,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          100,
+                          200
+                        ],
+                        [
+                          2100,
+                          200
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "v",
+                    "index": "2",
+                    "coordinate": 600,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          100,
+                          600
+                        ],
+                        [
+                          2100,
+                          600
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "v",
+                    "index": "3",
+                    "coordinate": 1000,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          100,
+                          1000
+                        ],
+                        [
+                          2100,
+                          1000
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "v",
+                    "index": "4",
+                    "coordinate": 1400,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          100,
+                          1400
+                        ],
+                        [
+                          2100,
+                          1400
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "v",
+                    "index": "5",
+                    "coordinate": 1800,
+                    "role": null,
+                    "priority": null,
+                    "segments": []
+                  }
+                ],
+                "dependencies": {
+                  "children": [],
+                  "guides": [
+                    1
+                  ],
+                  "timbers": []
+                }
+              }
+            }
+          ],
+          "datums": [],
+          "gridSystems": [
+            {
+              "id": 0,
+              "before": {
+                "kind": "grid-system",
+                "id": 0,
+                "name": "oracle 0",
+                "mode": "infinite",
+                "mainAlong": null,
+                "uDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 600
+                },
+                "vDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 400
+                },
+                "nextRuleKey": 2,
+                "rules": [
+                  {
+                    "ruleKey": 1,
+                    "name": "oracle rule",
+                    "selector": {
+                      "kind": "all-cells"
+                    },
+                    "divisions": [
+                      3,
+                      2
+                    ]
+                  }
+                ],
+                "applications": [
+                  {
+                    "grid": 10,
+                    "surface": 1
+                  }
+                ],
+                "bindings": [
+                  0
+                ],
+                "cx": 0,
+                "cy": 0,
+                "hasPos": false
+              },
+              "after": {
+                "kind": "grid-system",
+                "id": 0,
+                "name": "oracle 0",
+                "mode": "infinite",
+                "mainAlong": null,
+                "uDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 600
+                },
+                "vDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 400
+                },
+                "nextRuleKey": 2,
+                "rules": [
+                  {
+                    "ruleKey": 1,
+                    "name": "oracle rule",
+                    "selector": {
+                      "kind": "all-cells"
+                    },
+                    "divisions": [
+                      3,
+                      2
+                    ]
+                  }
+                ],
+                "applications": [],
+                "bindings": [],
+                "cx": 0,
+                "cy": 0,
+                "hasPos": false
+              }
+            },
+            {
+              "id": 1,
+              "before": {
+                "kind": "grid-system",
+                "id": 1,
+                "name": "oracle 1",
+                "mode": "infinite",
+                "mainAlong": null,
+                "uDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 600
+                },
+                "vDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 400
+                },
+                "nextRuleKey": 2,
+                "rules": [
+                  {
+                    "ruleKey": 1,
+                    "name": "oracle rule",
+                    "selector": {
+                      "kind": "all-cells"
+                    },
+                    "divisions": [
+                      3,
+                      2
+                    ]
+                  }
+                ],
+                "applications": [],
+                "bindings": [],
+                "cx": 0,
+                "cy": 0,
+                "hasPos": false
+              },
+              "after": {
+                "kind": "grid-system",
+                "id": 1,
+                "name": "oracle 1",
+                "mode": "infinite",
+                "mainAlong": null,
+                "uDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 600
+                },
+                "vDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 400
+                },
+                "nextRuleKey": 2,
+                "rules": [
+                  {
+                    "ruleKey": 1,
+                    "name": "oracle rule",
+                    "selector": {
+                      "kind": "all-cells"
+                    },
+                    "divisions": [
+                      3,
+                      2
+                    ]
+                  }
+                ],
+                "applications": [
+                  {
+                    "grid": 10,
+                    "surface": 1
+                  }
+                ],
+                "bindings": [
+                  0
+                ],
+                "cx": 0,
+                "cy": 0,
+                "hasPos": false
+              }
+            }
+          ],
+          "gridBindings": [
+            {
+              "id": 0,
+              "before": {
+                "kind": "grid-binding",
+                "id": 0,
+                "boundary": 1,
+                "system": 0,
+                "vertexKey": 1,
+                "cell": [
+                  "-2",
+                  "1"
+                ],
+                "anchor": [
+                  {
+                    "num": 0,
+                    "den": 1
+                  },
+                  {
+                    "num": 0,
+                    "den": 1
+                  }
+                ],
+                "translation": [
+                  1300,
+                  -200
+                ],
+                "translationExact": [
+                  "1300",
+                  "-200"
+                ],
+                "translationRepresentable": true,
+                "applications": [
+                  {
+                    "grid": 10,
+                    "surface": 1
+                  }
+                ],
+                "cx": 0,
+                "cy": 0,
+                "hasPos": false,
+                "preview": {
+                  "ok": true,
+                  "mode": "sample",
+                  "exact": false,
+                  "rect": [
+                    100,
+                    200,
+                    2100,
+                    1800
+                  ],
+                  "axes": {
+                    "u": {
+                      "defined": true,
+                      "firstIndex": "-2",
+                      "lastIndex": "1",
+                      "total": "4",
+                      "stride": "1",
+                      "lines": [
+                        {
+                          "index": "-2",
+                          "coordinate": 100,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                200
+                              ],
+                              "b": [
+                                100,
+                                1800
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "-1",
+                          "coordinate": 700,
+                          "segments": [
+                            {
+                              "a": [
+                                700,
+                                200
+                              ],
+                              "b": [
+                                700,
+                                1800
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "0",
+                          "coordinate": 1300,
+                          "segments": [
+                            {
+                              "a": [
+                                1300,
+                                200
+                              ],
+                              "b": [
+                                1300,
+                                1800
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "1",
+                          "coordinate": 1900,
+                          "segments": [
+                            {
+                              "a": [
+                                1900,
+                                200
+                              ],
+                              "b": [
+                                1900,
+                                1800
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "v": {
+                      "defined": true,
+                      "firstIndex": "1",
+                      "lastIndex": "5",
+                      "total": "5",
+                      "stride": "1",
+                      "lines": [
+                        {
+                          "index": "1",
+                          "coordinate": 200,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                200
+                              ],
+                              "b": [
+                                2100,
+                                200
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "2",
+                          "coordinate": 600,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                600
+                              ],
+                              "b": [
+                                2100,
+                                600
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "3",
+                          "coordinate": 1000,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                1000
+                              ],
+                              "b": [
+                                2100,
+                                1000
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "4",
+                          "coordinate": 1400,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                1400
+                              ],
+                              "b": [
+                                2100,
+                                1400
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "5",
+                          "coordinate": 1800,
+                          "segments": []
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              "after": {
+                "kind": "grid-binding",
+                "id": 0,
+                "boundary": 1,
+                "system": 1,
+                "vertexKey": 1,
+                "cell": [
+                  "-2",
+                  "1"
+                ],
+                "anchor": [
+                  {
+                    "num": 0,
+                    "den": 1
+                  },
+                  {
+                    "num": 0,
+                    "den": 1
+                  }
+                ],
+                "translation": [
+                  1300,
+                  -200
+                ],
+                "translationExact": [
+                  "1300",
+                  "-200"
+                ],
+                "translationRepresentable": true,
+                "applications": [
+                  {
+                    "grid": 10,
+                    "surface": 1
+                  }
+                ],
+                "cx": 0,
+                "cy": 0,
+                "hasPos": false,
+                "preview": {
+                  "ok": true,
+                  "mode": "sample",
+                  "exact": false,
+                  "rect": [
+                    100,
+                    200,
+                    2100,
+                    1800
+                  ],
+                  "axes": {
+                    "u": {
+                      "defined": true,
+                      "firstIndex": "-2",
+                      "lastIndex": "1",
+                      "total": "4",
+                      "stride": "1",
+                      "lines": [
+                        {
+                          "index": "-2",
+                          "coordinate": 100,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                200
+                              ],
+                              "b": [
+                                100,
+                                1800
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "-1",
+                          "coordinate": 700,
+                          "segments": [
+                            {
+                              "a": [
+                                700,
+                                200
+                              ],
+                              "b": [
+                                700,
+                                1800
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "0",
+                          "coordinate": 1300,
+                          "segments": [
+                            {
+                              "a": [
+                                1300,
+                                200
+                              ],
+                              "b": [
+                                1300,
+                                1800
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "1",
+                          "coordinate": 1900,
+                          "segments": [
+                            {
+                              "a": [
+                                1900,
+                                200
+                              ],
+                              "b": [
+                                1900,
+                                1800
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "v": {
+                      "defined": true,
+                      "firstIndex": "1",
+                      "lastIndex": "5",
+                      "total": "5",
+                      "stride": "1",
+                      "lines": [
+                        {
+                          "index": "1",
+                          "coordinate": 200,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                200
+                              ],
+                              "b": [
+                                2100,
+                                200
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "2",
+                          "coordinate": 600,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                600
+                              ],
+                              "b": [
+                                2100,
+                                600
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "3",
+                          "coordinate": 1000,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                1000
+                              ],
+                              "b": [
+                                2100,
+                                1000
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "4",
+                          "coordinate": 1400,
+                          "segments": [
+                            {
+                              "a": [
+                                100,
+                                1400
+                              ],
+                              "b": [
+                                2100,
+                                1400
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "index": "5",
+                          "coordinate": 1800,
+                          "segments": []
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "boundaries": [],
+          "assembly": {
+            "before": {
+              "capabilities": [
+                "assembly-rule-authoring/1",
+                "assembly-timber-generation/1"
+              ],
+              "rules": [],
+              "bindings": [],
+              "instances": []
+            },
+            "after": {
+              "capabilities": [
+                "assembly-rule-authoring/1",
+                "assembly-timber-generation/1"
+              ],
+              "rules": [],
+              "bindings": [],
+              "instances": []
+            }
+          },
+          "sectionProfiles": {
+            "before": {
+              "profiles": [],
+              "members": [],
+              "runs": []
+            },
+            "after": {
+              "profiles": [],
+              "members": [],
+              "runs": []
+            },
+            "warnings": [],
+            "diagnosticsComplete": true,
+            "violations": [
+              {
+                "code": "SECTION_PROFILE_INVALID",
+                "clause": "I43-I49",
+                "message": "line 15: I8a: impact preview required; inspect preview, then confirm token (World unchanged)",
+                "expected": "valid atomic transaction",
+                "actual": "rejected input or upstream dependency"
+              }
+            ]
+          },
+          "violations": [
+            {
+              "timber": 0,
+              "clause": "D6a/I7/I9",
+              "expected": "existing same-surface/axis references; acyclic exact rational expression",
+              "actual": "guide 1: I25a: WRONG_SOURCE source 0 rule 1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "command": "line confirm 5",
+      "response": {
+        "ok": false,
+        "error": "line 16: I8a: missing/invalid preview token; cannot apply"
+      }
+    },
+    {
+      "command": "dump",
+      "response": {
+        "ok": true,
+        "text": "boundary 1 outline 100,200 2100,200 2100,1800 100,1800\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\nboundary-vertex-keys 1 outer 1 2 3 4 next-key 5\nrequires grid-subdivision-rules/1\ngrid-system 0 name-hex 6f7261636c652030 main-along none u repeat 0 600 v repeat 0 400\ngrid-source-rule 0 key 1 name-hex 6f7261636c652072756c65 selector all-cells divide 3 2\ngrid-source-rule-highwater 0 next 2\ngrid-system 1 name-hex 6f7261636c652031 main-along none u repeat 0 600 v repeat 0 400\ngrid-source-rule 1 key 1 name-hex 6f7261636c652072756c65 selector all-cells divide 3 2\ngrid-source-rule-highwater 1 next 2\ngrid-binding 0 on-boundary 1 from-system 0 vertex-key 1 cell -2 1 anchor 0 1 0 1\ngrid 10 on 1 from-binding 0\nguide 1 1 v gridrule:10:0:1:-2:1:u:0\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [
+          "grid-subdivision-rules/1"
+        ],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 20,
+        "definition_sha256": "490f94dcff145fce47cb935b17b8f958de40049a8f2ed4fcb47dfa65d117857b"
+      }
+    },
+    {
+      "command": "objects",
+      "response": {
+        "ok": true,
+        "faces": [
+          {
+            "kind": "boundary",
+            "boundaryKind": "unspecified",
+            "id": 1,
+            "placed": true,
+            "bbox": [
+              100,
+              200,
+              2100,
+              1800
+            ],
+            "cx": 0,
+            "cy": 0,
+            "hasPos": false
+          }
+        ],
+        "spaces": [],
+        "columns": [],
+        "beams": [],
+        "gridSystems": [
+          {
+            "kind": "grid-system",
+            "id": 0,
+            "name": "oracle 0",
+            "mode": "infinite",
+            "mainAlong": null,
+            "uDefinition": {
+              "source": "repeat",
+              "phase": 0,
+              "step": 600
+            },
+            "vDefinition": {
+              "source": "repeat",
+              "phase": 0,
+              "step": 400
+            },
+            "nextRuleKey": 2,
+            "rules": [
+              {
+                "ruleKey": 1,
+                "name": "oracle rule",
+                "selector": {
+                  "kind": "all-cells"
+                },
+                "divisions": [
+                  3,
+                  2
+                ]
+              }
+            ],
+            "applications": [
+              {
+                "grid": 10,
+                "surface": 1
+              }
+            ],
+            "bindings": [
+              0
+            ],
+            "cx": 0,
+            "cy": 0,
+            "hasPos": false
+          },
+          {
+            "kind": "grid-system",
+            "id": 1,
+            "name": "oracle 1",
+            "mode": "infinite",
+            "mainAlong": null,
+            "uDefinition": {
+              "source": "repeat",
+              "phase": 0,
+              "step": 600
+            },
+            "vDefinition": {
+              "source": "repeat",
+              "phase": 0,
+              "step": 400
+            },
+            "nextRuleKey": 2,
+            "rules": [
+              {
+                "ruleKey": 1,
+                "name": "oracle rule",
+                "selector": {
+                  "kind": "all-cells"
+                },
+                "divisions": [
+                  3,
+                  2
+                ]
+              }
+            ],
+            "applications": [],
+            "bindings": [],
+            "cx": 0,
+            "cy": 0,
+            "hasPos": false
+          }
+        ],
+        "parameters": [],
+        "assemblyRules": [],
+        "assemblyBindings": [],
+        "parameterUses": [],
+        "gridBindings": [
+          {
+            "kind": "grid-binding",
+            "id": 0,
+            "boundary": 1,
+            "system": 0,
+            "vertexKey": 1,
+            "cell": [
+              "-2",
+              "1"
+            ],
+            "anchor": [
+              {
+                "num": 0,
+                "den": 1
+              },
+              {
+                "num": 0,
+                "den": 1
+              }
+            ],
+            "translation": [
+              1300,
+              -200
+            ],
+            "translationExact": [
+              "1300",
+              "-200"
+            ],
+            "translationRepresentable": true,
+            "applications": [
+              {
+                "grid": 10,
+                "surface": 1
+              }
+            ],
+            "cx": 0,
+            "cy": 0,
+            "hasPos": false
+          }
+        ],
+        "timbers": []
+      }
+    },
+    {
+      "command": "references",
+      "response": {
+        "ok": true,
+        "sourceFingerprint": "490f94dcff145fce47cb935b17b8f958de40049a8f2ed4fcb47dfa65d117857b",
+        "guides": [
+          {
+            "id": 1,
+            "surface": 1,
+            "source": "local",
+            "datum": 0,
+            "axis": "v",
+            "off": 300,
+            "expression": "gridrule:10:0:1:-2:1:u:0",
+            "worldPoint": [
+              300,
+              0,
+              0
+            ],
+            "worldDirection": [
+              0,
+              1,
+              0
+            ],
+            "segments": [
+              [
+                [
+                  300,
+                  200
+                ],
+                [
+                  300,
+                  1800
+                ]
+              ]
+            ]
+          }
+        ],
+        "grids": [
+          {
+            "id": 10,
+            "surface": 1,
+            "bindingId": 0,
+            "indexSpace": "lattice",
+            "sourceSystem": 0,
+            "origin": [
+              0,
+              0
+            ],
+            "kind": "main",
+            "parentId": null,
+            "cell": null,
+            "divisions": null,
+            "bounds": {
+              "u": [
+                100,
+                2100
+              ],
+              "v": [
+                200,
+                1800
+              ]
+            },
+            "mainAlong": null,
+            "geometryMode": "sample",
+            "geometryExact": false,
+            "query": {
+              "ok": true,
+              "mode": "sample",
+              "exact": false,
+              "rect": [
+                100,
+                200,
+                2100,
+                1800
+              ],
+              "axes": {
+                "u": {
+                  "defined": true,
+                  "firstIndex": "-2",
+                  "lastIndex": "1",
+                  "total": "4",
+                  "stride": "1",
+                  "lines": [
+                    {
+                      "index": "-2",
+                      "coordinate": 100,
+                      "segments": [
+                        {
+                          "a": [
+                            100,
+                            200
+                          ],
+                          "b": [
+                            100,
+                            1800
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "index": "-1",
+                      "coordinate": 700,
+                      "segments": [
+                        {
+                          "a": [
+                            700,
+                            200
+                          ],
+                          "b": [
+                            700,
+                            1800
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "index": "0",
+                      "coordinate": 1300,
+                      "segments": [
+                        {
+                          "a": [
+                            1300,
+                            200
+                          ],
+                          "b": [
+                            1300,
+                            1800
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "index": "1",
+                      "coordinate": 1900,
+                      "segments": [
+                        {
+                          "a": [
+                            1900,
+                            200
+                          ],
+                          "b": [
+                            1900,
+                            1800
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "v": {
+                  "defined": true,
+                  "firstIndex": "1",
+                  "lastIndex": "5",
+                  "total": "5",
+                  "stride": "1",
+                  "lines": [
+                    {
+                      "index": "1",
+                      "coordinate": 200,
+                      "segments": [
+                        {
+                          "a": [
+                            100,
+                            200
+                          ],
+                          "b": [
+                            2100,
+                            200
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "index": "2",
+                      "coordinate": 600,
+                      "segments": [
+                        {
+                          "a": [
+                            100,
+                            600
+                          ],
+                          "b": [
+                            2100,
+                            600
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "index": "3",
+                      "coordinate": 1000,
+                      "segments": [
+                        {
+                          "a": [
+                            100,
+                            1000
+                          ],
+                          "b": [
+                            2100,
+                            1000
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "index": "4",
+                      "coordinate": 1400,
+                      "segments": [
+                        {
+                          "a": [
+                            100,
+                            1400
+                          ],
+                          "b": [
+                            2100,
+                            1400
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "index": "5",
+                      "coordinate": 1800,
+                      "segments": []
+                    }
+                  ]
+                }
+              }
+            },
+            "u": [
+              100,
+              700,
+              1300,
+              1900
+            ],
+            "uDefinition": {
+              "source": "repeat",
+              "phase": 0,
+              "step": 600
+            },
+            "v": [
+              200,
+              600,
+              1000,
+              1400,
+              1800
+            ],
+            "vDefinition": {
+              "source": "repeat",
+              "phase": 0,
+              "step": 400
+            },
+            "indices": {
+              "u": [
+                "-2",
+                "-1",
+                "0",
+                "1"
+              ],
+              "v": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5"
+              ]
+            },
+            "lattice": {
+              "u": {
+                "defined": true,
+                "pitch": 600,
+                "baseIndex": "-2",
+                "baseCoordinate": 100
+              },
+              "v": {
+                "defined": true,
+                "pitch": 400,
+                "baseIndex": "1",
+                "baseCoordinate": 200
+              }
+            },
+            "lines": [
+              {
+                "axis": "u",
+                "index": "-2",
+                "coordinate": 100,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      100,
+                      200
+                    ],
+                    [
+                      100,
+                      1800
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "u",
+                "index": "-1",
+                "coordinate": 700,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      700,
+                      200
+                    ],
+                    [
+                      700,
+                      1800
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "u",
+                "index": "0",
+                "coordinate": 1300,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      1300,
+                      200
+                    ],
+                    [
+                      1300,
+                      1800
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "u",
+                "index": "1",
+                "coordinate": 1900,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      1900,
+                      200
+                    ],
+                    [
+                      1900,
+                      1800
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "v",
+                "index": "1",
+                "coordinate": 200,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      100,
+                      200
+                    ],
+                    [
+                      2100,
+                      200
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "v",
+                "index": "2",
+                "coordinate": 600,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      100,
+                      600
+                    ],
+                    [
+                      2100,
+                      600
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "v",
+                "index": "3",
+                "coordinate": 1000,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      100,
+                      1000
+                    ],
+                    [
+                      2100,
+                      1000
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "v",
+                "index": "4",
+                "coordinate": 1400,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      100,
+                      1400
+                    ],
+                    [
+                      2100,
+                      1400
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "v",
+                "index": "5",
+                "coordinate": 1800,
+                "role": null,
+                "priority": null,
+                "segments": []
+              }
+            ],
+            "dependencies": {
+              "children": [],
+              "guides": [
+                1
+              ],
+              "timbers": []
+            }
+          }
+        ],
+        "timbers": [],
+        "timberSupports": {
+          "schema": "native-timber-supports/1",
+          "sourceFingerprint": "490f94dcff145fce47cb935b17b8f958de40049a8f2ed4fcb47dfa65d117857b",
+          "entries": []
+        },
+        "specs": [],
+        "datums": [],
+        "engineeringSources": [],
+        "assembly": {
+          "capabilities": [
+            "assembly-rule-authoring/1",
+            "assembly-timber-generation/1"
+          ],
+          "rules": [],
+          "bindings": [],
+          "instances": []
+        }
+      }
+    }
+  ],
+  "cleanupErrors": [],
+  "pid": 262492,
+  "exitCode": 0,
+  "stderrSha256": "aae2ab1179803f59b5769d8398ef4c954471415e2a3d85c6ddbcc92032486915",
+  "sanitizerDiagnostic": false,
+  "unexpectedStdoutTail": false
+}

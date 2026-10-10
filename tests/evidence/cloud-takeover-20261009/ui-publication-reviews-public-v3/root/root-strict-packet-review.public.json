@@ -1,0 +1,59 @@
+{
+  "schema": "geometry-root-strict-readonly-packet-review/1",
+  "reviewedUtc": "2026-10-09T16:21:02.535509+00:00",
+  "reviewer": "/root",
+  "repositoryWrites": false,
+  "productExecution": false,
+  "repositoryBefore": {
+    "root": "<workspace-path>",
+    "head": "243326b512896ace70e068f62c8f3d6397f6000d",
+    "dirty": " M BACKLOG.md\n M geometry-web/app.css\n M geometry-web/cdp_test.js\n"
+  },
+  "repositoryAfter": {
+    "root": "<workspace-path>",
+    "head": "243326b512896ace70e068f62c8f3d6397f6000d",
+    "dirty": " M BACKLOG.md\n M geometry-web/app.css\n M geometry-web/cdp_test.js\n"
+  },
+  "executionIdentity": {
+    "script": "<workspace-path>",
+    "scriptSHA256": "2c9d965f77f30f57a4331428547588f141a836bde19c3b123737d776fe4b1b2f",
+    "actualPythonExecutable": "<python-runtime>/bin/python3.12",
+    "actualPythonSHA256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+    "argv": [
+      "<workspace-path>",
+      "<delivery-closeout-root>/ui-single-room-prior-public-v4",
+      "<delivery-closeout-root>/ui-single-room-640-public-v4",
+      "<delivery-closeout-root>/ui-single-room-0b37-failed-public-v5"
+    ],
+    "cwd": "<workspace-path>"
+  },
+  "records": [
+    {
+      "folder": "<delivery-closeout-root>/ui-single-room-prior-public-v4",
+      "manifestSHA256": "3f2abb29f759de73c6e4c72323ead0c42aab763ca4e6391f63d41f9802ae8e9d",
+      "verifiedPublicFiles": 654,
+      "verifiedBytes": 70940016,
+      "strictJSONFiles": 243,
+      "strictJSONLRows": 2,
+      "strictTraceJSONRows": 17227
+    },
+    {
+      "folder": "<delivery-closeout-root>/ui-single-room-640-public-v4",
+      "manifestSHA256": "64a0d10728631d4e9ccdac5c4051f666a95e9104a6159e43eac72950884f0522",
+      "verifiedPublicFiles": 581,
+      "verifiedBytes": 35872182,
+      "strictJSONFiles": 128,
+      "strictJSONLRows": 0,
+      "strictTraceJSONRows": 7281
+    },
+    {
+      "folder": "<delivery-closeout-root>/ui-single-room-0b37-failed-public-v5",
+      "manifestSHA256": "389b1fdf3e0d8639bf192f2087f0d49de5a565799229598dc958132bdbcdaa97",
+      "verifiedPublicFiles": 754,
+      "verifiedBytes": 53084144,
+      "strictJSONFiles": 153,
+      "strictJSONLRows": 343,
+      "strictTraceJSONRows": 13159
+    }
+  ]
+}

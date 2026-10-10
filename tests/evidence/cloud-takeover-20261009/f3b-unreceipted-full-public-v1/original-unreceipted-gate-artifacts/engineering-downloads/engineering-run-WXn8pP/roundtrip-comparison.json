@@ -1,0 +1,397 @@
+{
+  "scene": {
+    "equal": true,
+    "differences": []
+  },
+  "state": {
+    "equal": true,
+    "differences": []
+  },
+  "references": {
+    "equal": true,
+    "differences": []
+  },
+  "drafts": {
+    "equal": true,
+    "differences": []
+  },
+  "rawReferenceDifferences": [
+    {
+      "path": "$.engineeringSources[10].effective",
+      "before": 1820,
+      "after": 29
+    },
+    {
+      "path": "$.engineeringSources[10].path",
+      "before": "application:application-3f273a9c-4209-4b75-b02c-dd25f9b501a5 -> method:method-d0022c34-e942-4d13-aa10-62f9506824f4@2 -> material:material-8e504cf3-4f6a-41c2-8a6f-84c6be5f0fb0@2.length",
+      "after": "spec:EngineeringWidth"
+    },
+    {
+      "path": "$.engineeringSources[10].source.field",
+      "beforePresent": true,
+      "afterPresent": false,
+      "before": "v.panel"
+    },
+    {
+      "path": "$.engineeringSources[10].source.id",
+      "beforePresent": true,
+      "afterPresent": false,
+      "before": "application-3f273a9c-4209-4b75-b02c-dd25f9b501a5"
+    },
+    {
+      "path": "$.engineeringSources[10].source.kind",
+      "before": "application",
+      "after": "spec"
+    },
+    {
+      "path": "$.engineeringSources[10].source.name",
+      "beforePresent": false,
+      "afterPresent": true,
+      "after": "EngineeringWidth"
+    },
+    {
+      "path": "$.engineeringSources[10].target.axis",
+      "beforePresent": true,
+      "afterPresent": false,
+      "before": "v"
+    },
+    {
+      "path": "$.engineeringSources[10].target.field",
+      "before": "panel",
+      "after": "A"
+    },
+    {
+      "path": "$.engineeringSources[10].target.id",
+      "before": 1,
+      "after": 2
+    },
+    {
+      "path": "$.engineeringSources[10].target.kind",
+      "before": "grid",
+      "after": "timber"
+    },
+    {
+      "path": "$.engineeringSources[11].effective",
+      "before": 4,
+      "after": 33
+    },
+    {
+      "path": "$.engineeringSources[11].path",
+      "before": "application:application-3f273a9c-4209-4b75-b02c-dd25f9b501a5 -> method:method-d0022c34-e942-4d13-aa10-62f9506824f4@2 -> explicit integer mm",
+      "after": "material:material-860c271d-57e5-421d-9746-1c94a7b0867d@1.B"
+    },
+    {
+      "path": "$.engineeringSources[11].source.field",
+      "before": "v.gap",
+      "after": "B"
+    },
+    {
+      "path": "$.engineeringSources[11].source.id",
+      "before": "application-3f273a9c-4209-4b75-b02c-dd25f9b501a5",
+      "after": "material-860c271d-57e5-421d-9746-1c94a7b0867d"
+    },
+    {
+      "path": "$.engineeringSources[11].source.kind",
+      "before": "application",
+      "after": "material"
+    },
+    {
+      "path": "$.engineeringSources[11].source.version",
+      "beforePresent": false,
+      "afterPresent": true,
+      "after": 1
+    },
+    {
+      "path": "$.engineeringSources[11].target.axis",
+      "beforePresent": true,
+      "afterPresent": false,
+      "before": "v"
+    },
+    {
+      "path": "$.engineeringSources[11].target.field",
+      "before": "gap",
+      "after": "B"
+    },
+    {
+      "path": "$.engineeringSources[11].target.id",
+      "before": 1,
+      "after": 2
+    },
+    {
+      "path": "$.engineeringSources[11].target.kind",
+      "before": "grid",
+      "after": "timber"
+    },
+    {
+      "path": "$.engineeringSources[4].effective",
+      "before": 27,
+      "after": 910
+    },
+    {
+      "path": "$.engineeringSources[4].path",
+      "before": "application:application-a32f91c2-6035-4b5d-bd61-96f9c8c119da -> method:method-d0022c34-e942-4d13-aa10-62f9506824f4@2 -> material:material-860c271d-57e5-421d-9746-1c94a7b0867d@1.A",
+      "after": "application:application-3f273a9c-4209-4b75-b02c-dd25f9b501a5 -> method:method-d0022c34-e942-4d13-aa10-62f9506824f4@2 -> material:material-8e504cf3-4f6a-41c2-8a6f-84c6be5f0fb0@2.width"
+    },
+    {
+      "path": "$.engineeringSources[4].source.field",
+      "before": "boundary.A",
+      "after": "u.panel"
+    },
+    {
+      "path": "$.engineeringSources[4].source.id",
+      "before": "application-a32f91c2-6035-4b5d-bd61-96f9c8c119da",
+      "after": "application-3f273a9c-4209-4b75-b02c-dd25f9b501a5"
+    },
+    {
+      "path": "$.engineeringSources[4].target.axis",
+      "beforePresent": false,
+      "afterPresent": true,
+      "after": "u"
+    },
+    {
+      "path": "$.engineeringSources[4].target.field",
+      "before": "A",
+      "after": "panel"
+    },
+    {
+      "path": "$.engineeringSources[4].target.id",
+      "before": 0,
+      "after": 1
+    },
+    {
+      "path": "$.engineeringSources[4].target.kind",
+      "before": "timber",
+      "after": "grid"
+    },
+    {
+      "path": "$.engineeringSources[5].effective",
+      "before": 33,
+      "after": 4
+    },
+    {
+      "path": "$.engineeringSources[5].path",
+      "before": "application:application-a32f91c2-6035-4b5d-bd61-96f9c8c119da -> method:method-d0022c34-e942-4d13-aa10-62f9506824f4@2 -> material:material-860c271d-57e5-421d-9746-1c94a7b0867d@1.B",
+      "after": "application:application-3f273a9c-4209-4b75-b02c-dd25f9b501a5 -> method:method-d0022c34-e942-4d13-aa10-62f9506824f4@2 -> explicit integer mm"
+    },
+    {
+      "path": "$.engineeringSources[5].source.field",
+      "before": "boundary.B",
+      "after": "u.gap"
+    },
+    {
+      "path": "$.engineeringSources[5].source.id",
+      "before": "application-a32f91c2-6035-4b5d-bd61-96f9c8c119da",
+      "after": "application-3f273a9c-4209-4b75-b02c-dd25f9b501a5"
+    },
+    {
+      "path": "$.engineeringSources[5].target.axis",
+      "beforePresent": false,
+      "afterPresent": true,
+      "after": "u"
+    },
+    {
+      "path": "$.engineeringSources[5].target.field",
+      "before": "B",
+      "after": "gap"
+    },
+    {
+      "path": "$.engineeringSources[5].target.id",
+      "before": 0,
+      "after": 1
+    },
+    {
+      "path": "$.engineeringSources[5].target.kind",
+      "before": "timber",
+      "after": "grid"
+    },
+    {
+      "path": "$.engineeringSources[6].effective",
+      "before": 29,
+      "after": 1820
+    },
+    {
+      "path": "$.engineeringSources[6].path",
+      "before": "spec:EngineeringWidth",
+      "after": "application:application-3f273a9c-4209-4b75-b02c-dd25f9b501a5 -> method:method-d0022c34-e942-4d13-aa10-62f9506824f4@2 -> material:material-8e504cf3-4f6a-41c2-8a6f-84c6be5f0fb0@2.length"
+    },
+    {
+      "path": "$.engineeringSources[6].source.field",
+      "beforePresent": false,
+      "afterPresent": true,
+      "after": "v.panel"
+    },
+    {
+      "path": "$.engineeringSources[6].source.id",
+      "beforePresent": false,
+      "afterPresent": true,
+      "after": "application-3f273a9c-4209-4b75-b02c-dd25f9b501a5"
+    },
+    {
+      "path": "$.engineeringSources[6].source.kind",
+      "before": "spec",
+      "after": "application"
+    },
+    {
+      "path": "$.engineeringSources[6].source.name",
+      "beforePresent": true,
+      "afterPresent": false,
+      "before": "EngineeringWidth"
+    },
+    {
+      "path": "$.engineeringSources[6].target.axis",
+      "beforePresent": false,
+      "afterPresent": true,
+      "after": "v"
+    },
+    {
+      "path": "$.engineeringSources[6].target.field",
+      "before": "A",
+      "after": "panel"
+    },
+    {
+      "path": "$.engineeringSources[6].target.id",
+      "before": 2,
+      "after": 1
+    },
+    {
+      "path": "$.engineeringSources[6].target.kind",
+      "before": "timber",
+      "after": "grid"
+    },
+    {
+      "path": "$.engineeringSources[7].effective",
+      "before": 33,
+      "after": 4
+    },
+    {
+      "path": "$.engineeringSources[7].path",
+      "before": "material:material-860c271d-57e5-421d-9746-1c94a7b0867d@1.B",
+      "after": "application:application-3f273a9c-4209-4b75-b02c-dd25f9b501a5 -> method:method-d0022c34-e942-4d13-aa10-62f9506824f4@2 -> explicit integer mm"
+    },
+    {
+      "path": "$.engineeringSources[7].source.field",
+      "before": "B",
+      "after": "v.gap"
+    },
+    {
+      "path": "$.engineeringSources[7].source.id",
+      "before": "material-860c271d-57e5-421d-9746-1c94a7b0867d",
+      "after": "application-3f273a9c-4209-4b75-b02c-dd25f9b501a5"
+    },
+    {
+      "path": "$.engineeringSources[7].source.kind",
+      "before": "material",
+      "after": "application"
+    },
+    {
+      "path": "$.engineeringSources[7].source.version",
+      "beforePresent": true,
+      "afterPresent": false,
+      "before": 1
+    },
+    {
+      "path": "$.engineeringSources[7].target.axis",
+      "beforePresent": false,
+      "afterPresent": true,
+      "after": "v"
+    },
+    {
+      "path": "$.engineeringSources[7].target.field",
+      "before": "B",
+      "after": "gap"
+    },
+    {
+      "path": "$.engineeringSources[7].target.id",
+      "before": 2,
+      "after": 1
+    },
+    {
+      "path": "$.engineeringSources[7].target.kind",
+      "before": "timber",
+      "after": "grid"
+    },
+    {
+      "path": "$.engineeringSources[8].effective",
+      "before": 910,
+      "after": 27
+    },
+    {
+      "path": "$.engineeringSources[8].path",
+      "before": "application:application-3f273a9c-4209-4b75-b02c-dd25f9b501a5 -> method:method-d0022c34-e942-4d13-aa10-62f9506824f4@2 -> material:material-8e504cf3-4f6a-41c2-8a6f-84c6be5f0fb0@2.width",
+      "after": "application:application-a32f91c2-6035-4b5d-bd61-96f9c8c119da -> method:method-d0022c34-e942-4d13-aa10-62f9506824f4@2 -> material:material-860c271d-57e5-421d-9746-1c94a7b0867d@1.A"
+    },
+    {
+      "path": "$.engineeringSources[8].source.field",
+      "before": "u.panel",
+      "after": "boundary.A"
+    },
+    {
+      "path": "$.engineeringSources[8].source.id",
+      "before": "application-3f273a9c-4209-4b75-b02c-dd25f9b501a5",
+      "after": "application-a32f91c2-6035-4b5d-bd61-96f9c8c119da"
+    },
+    {
+      "path": "$.engineeringSources[8].target.axis",
+      "beforePresent": true,
+      "afterPresent": false,
+      "before": "u"
+    },
+    {
+      "path": "$.engineeringSources[8].target.field",
+      "before": "panel",
+      "after": "A"
+    },
+    {
+      "path": "$.engineeringSources[8].target.id",
+      "before": 1,
+      "after": 0
+    },
+    {
+      "path": "$.engineeringSources[8].target.kind",
+      "before": "grid",
+      "after": "timber"
+    },
+    {
+      "path": "$.engineeringSources[9].effective",
+      "before": 4,
+      "after": 33
+    },
+    {
+      "path": "$.engineeringSources[9].path",
+      "before": "application:application-3f273a9c-4209-4b75-b02c-dd25f9b501a5 -> method:method-d0022c34-e942-4d13-aa10-62f9506824f4@2 -> explicit integer mm",
+      "after": "application:application-a32f91c2-6035-4b5d-bd61-96f9c8c119da -> method:method-d0022c34-e942-4d13-aa10-62f9506824f4@2 -> material:material-860c271d-57e5-421d-9746-1c94a7b0867d@1.B"
+    },
+    {
+      "path": "$.engineeringSources[9].source.field",
+      "before": "u.gap",
+      "after": "boundary.B"
+    },
+    {
+      "path": "$.engineeringSources[9].source.id",
+      "before": "application-3f273a9c-4209-4b75-b02c-dd25f9b501a5",
+      "after": "application-a32f91c2-6035-4b5d-bd61-96f9c8c119da"
+    },
+    {
+      "path": "$.engineeringSources[9].target.axis",
+      "beforePresent": true,
+      "afterPresent": false,
+      "before": "u"
+    },
+    {
+      "path": "$.engineeringSources[9].target.field",
+      "before": "gap",
+      "after": "B"
+    },
+    {
+      "path": "$.engineeringSources[9].target.id",
+      "before": 1,
+      "after": 0
+    },
+    {
+      "path": "$.engineeringSources[9].target.kind",
+      "before": "grid",
+      "after": "timber"
+    }
+  ],
+  "normalization": "Only references.engineeringSources collection order by unique (kind,id,axis,field); no field values or geometry arrays are omitted."
+}

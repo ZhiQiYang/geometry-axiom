@@ -1,0 +1,81 @@
+{
+  "checked_at": "2026-10-08T17:23:41.290740+00:00",
+  "reviewer": "/root/remote_inventory",
+  "scope": "Read-only CSS patch and existing selector/DOM/token source review; no patch applied, browser/native or product tests.",
+  "candidate": "458779f003e1f57fdc0f4420564a0b295227843e",
+  "patch": "/workspace/closure-evidence/contracts/remaining-product-scope-20261008/issue123-c2-c4-css.patch",
+  "patch_sha256": "b2ee8fe6f69487311001faa142f9d6a48d5e8558cf99898fee2706e791fd019e",
+  "commands": [
+    {
+      "argv": [
+        "pwd"
+      ],
+      "stdout": "/workspace/geometry-axiom\n",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--short"
+      ],
+      "stdout": "",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "stdout": "458779f003e1f57fdc0f4420564a0b295227843e\n",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "git",
+        "apply",
+        "--check",
+        "/workspace/closure-evidence/contracts/remaining-product-scope-20261008/issue123-c2-c4-css.patch"
+      ],
+      "stdout": "",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--",
+        "geometry-web/app.css"
+      ],
+      "stdout": "",
+      "stderr": "",
+      "exit_code": 0
+    }
+  ],
+  "source_findings": [
+    {
+      "item": "C2 bounded beam consistency",
+      "before": "space-plan-beam rect rendered at app.js3411 uses fixed #406ec9 andrgba64,110,201,.35 while list/face beam uses established--beam/--beam-soft.",
+      "after": "Patch points fill/stroke to existingroot tokens; no selector/geometry/preview/handler change. Root tokens exist atapp.css23-24; listmatches2001 andface2043.",
+      "verdict": "Source patch is bounded and consistent with existing type-color convention. It does not complete every #123C2 appearance or original attachment comparison."
+    },
+    {
+      "item": "C4 persistent empty-slot affordance",
+      "before": "Same native button has aria-label放置{label},data-slot-preset,label; idle未放置 visible by default and＋放置 onlyhover/focus-visible ondesktop.390already overrides actionvisible.",
+      "after": "Patch permanently displays existing＋放置 span andhidesidle; button,aria,data attributes,handlers andnative keyboard activation unchanged.",
+      "verdict": "Bounded visibility fix, no new behavior. Verify desktop default/nonhover plus Tab/Enter,390nooverflow,empty/occupied cases in actual candidate."
+    }
+  ],
+  "ownership": "Parent root remains only repository writer; contract_review created private patch. Existing latest ce74 #173 delta touches app.js/test/evidence, not app.css; no live Windows process access inferred.",
+  "blocking_findings": [],
+  "remaining_acceptance": [
+    "After root applies, bind real product evidence to newcandidate/runtime/CSShash, compare actual computed beam colors with listtypeicon and confirm visibleplacedbeam/label.",
+    "Use existing product slot flow: visibleempty＋放置 without hover, focus viaTabandactivateEnter, click; occupiedslot remains面N;1400and390 screenshots+nohorizontal overflow; nativegeometry unchanged by CSS.",
+    "Run latestAGENTS-required affected gates after integration. This source receipt is not browser acceptance."
+  ]
+}

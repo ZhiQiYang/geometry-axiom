@@ -42,11 +42,11 @@ static int model_error(const char *status, const char *code,
  * This also guards the legacy fgets/strlen reader against embedded NULs.
  * The core still validates every allowed command and every dependency.
  */
-static bool model_source_check(const char *path, bool *capacity, char *error, size_t cap)
+static bool model_source_check(const char *path, bool *capacity, bool *unsupported, char *error, size_t cap)
 {
     static const char *allowed[] = {
         "spec", "boundary", "placement", "surface", "space", "datum", "guide",
-        "grid", "grid-system", "grid-source-rule", "grid-source-rule-highwater", "grid-binding", "boundary-keyed", "boundary-vertex-keys", "subgrid", "timber", "place", "column", "beam", "canvas-pos", "requires", "engineering", "parameters", NULL
+        "grid", "grid-system", "grid-source-rule", "grid-source-rule-highwater", "grid-binding", "boundary-keyed", "boundary-vertex-keys", "subgrid", "timber", "place", "column", "beam", "canvas-pos", "requires", "engineering", "parameters", "section-profile", NULL
     };
     FILE *in = fopen(path, "rb");
     if (!in) { snprintf(error, cap, "Cannot read source scene."); return false; }
@@ -299,18 +299,72 @@ static void model_dependencies(const World *world)
         if (count++) putchar(',');
         model_dependency_record(world, "timber", world->timbers[i].id, &deps);
     }
+    for (size_t i = 0; i < world->section_profiles.run_count; ++i) {
+        const ProfileRun *run = &world->section_profiles.runs[i];
+        ModelDependencies deps = {0};
+        /* Source metadata only: the authoritative native core has already
+         * resolved placement. A live simple host contributes its real faces
+         * to R29; a sampled wall contributes no live Space dependency. */
+        EngJson j = {0};
+        if (eng_json_parse(&j, run->content)) {
+            int placement = eng_json_member(&j, 0, "placement");
+            int host = eng_json_member(&j, placement, "host");
+            char kind[32]; uint32_t id;
+            if (eng_json_string(&j, eng_json_member(&j, host, "kind"), kind, sizeof kind) &&
+                !strcmp(kind, "placement") && eng_u32(&j, eng_json_member(&j, host, "placementId"), &id, false))
+                model_dep_placement(world, &deps, id);
+        }
+        eng_json_free(&j);
+        if (count++) putchar(',');
+        model_dependency_record(world, "profile-run", run->id, &deps);
+    }
+}
+
+/* D35-D40 are validated and evaluated by the C World. Export exact evaluated
+ * rectangles/frame alongside the original canonical definitions; Python only
+ * triangulates these solids, never reinterprets dimensions or placement. */
+static void model_profile_runs(const World *world)
+{
+    const SectionProfileState *state = &world->section_profiles;
+    for (size_t i = 0; i < state->run_count; ++i) {
+        const ProfileRun *run = &state->runs[i];
+        const SectionProfile *profile = sp_profile((World *)world, run->profile_id);
+        SurfaceFrame frame = run->placed ? run->frame : (SurfaceFrame){
+            .origin = {0,0,0}, .axis_u = {1,0,0}, .axis_v = {0,1,0}, .normal = {0,0,1}};
+        printf("%s{\"id\":%u,\"profile_id\":%u,\"length\":%lld,\"coordinate_space\":\"%s\",\"definition\":%s,\"profile\":%s,\"origin\":",
+            i ? "," : "", run->id, profile->id, (long long)run->length,
+            run->placed ? "world" : "local", run->content, profile->content);
+        model_point(frame.origin);
+        fputs(",\"u\":", stdout); model_vector(frame.axis_u);
+        fputs(",\"v\":", stdout); model_vector(frame.axis_v);
+        fputs(",\"n\":", stdout); model_vector(frame.normal);
+        fputs(",\"outline\":", stdout); model_loop(&profile->outline);
+        fputs(",\"holes\":[],\"members\":[", stdout);
+        size_t count = 0;
+        for (size_t m = 0; m < state->member_count; ++m) {
+            const ProfileMember *member = &state->members[m];
+            if (member->profile_id != profile->id) continue;
+            printf("%s{\"id\":%u,\"kind\":\"%s\",\"definition\":%s,\"rect\":[%lld,%lld,%lld,%lld],\"dimensions_mm\":[%lld,%lld,%lld]}",
+                count++ ? "," : "", member->id, member->panel ? "panel" : "timber", member->content,
+                (long long)member->rect.min_u, (long long)member->rect.min_v,
+                (long long)member->rect.max_u, (long long)member->rect.max_v,
+                (long long)(member->panel ? member->b : member->a),
+                (long long)(member->panel ? member->a : member->b), (long long)run->length);
+        }
+        fputs("]}", stdout);
+    }
 }
 
 int main(int argc, char **argv)
 {
     if (argc != 2) return model_error("INVALID", "BASE_ARGUMENT", "D25", "Expected one scene file path.");
-    char error[512] = ""; bool capacity = false;
-    if (!model_source_check(argv[1], &capacity, error, sizeof error))
-        return model_error(capacity ? "UNSUPPORTED" : "INVALID", capacity ? "BASE_CAPACITY" : "BASE_SOURCE", capacity ? "I33" : "I9", error);
+    char error[512] = ""; bool capacity = false, unsupported = false;
+    if (!model_source_check(argv[1], &capacity, &unsupported, error, sizeof error))
+        return model_error(capacity||unsupported ? "UNSUPPORTED" : "INVALID", capacity ? "BASE_CAPACITY" : unsupported ? "CAPABILITY" : "BASE_SOURCE", capacity ? "I33" : unsupported ? "I32" : "I9", error);
     World world = {0};
     if (!parse_scene_file(argv[1], &world)) {
         const char *why = scene_last_error();
-        capacity = strstr(why, "超過上限") || strstr(why, "capacity exceeded");
+        capacity = strstr(why, "超過上限") || strstr(why, "capacity exceeded") || strstr(why, "CAPACITY");
         if (!why[0]) why = "Scene failed legacy validation, including required placement of every timber.";
         return model_error(capacity ? "UNSUPPORTED" : "INVALID", capacity ? "BASE_CAPACITY" : "BASE_INVALID", capacity ? "I33" : "I9", why);
     }
@@ -343,6 +397,7 @@ int main(int argc, char **argv)
     if(engineering_used(&world))model_string(stdout,"engineering-spec/1");
     if(world.parameters.card_count){if(engineering_used(&world))fputc(',',stdout);model_string(stdout,"parameters/1");}
     if(grid_subdivision_used(&world)){if(engineering_used(&world)||world.parameters.card_count)fputc(',',stdout);model_string(stdout,GRID_SUBDIVISION_CAPABILITY);}
+    if(sp_used(&world)){if(engineering_used(&world)||world.parameters.card_count||grid_subdivision_used(&world))fputc(',',stdout);model_string(stdout,SP_CAPABILITY);}
     fputs("],\"specs\":[", stdout);
     for (size_t i = 0; i < world.spec_count; ++i) {
         if (i) putchar(',');
@@ -389,6 +444,8 @@ int main(int argc, char **argv)
         }
         fputs("]}", stdout);
     }
+    fputs("],\"profile_runs\":[", stdout);
+    model_profile_runs(&world);
     fputs("],\"unplaced_timbers\":[],\"dependencies\":[", stdout);
     model_dependencies(&world);
     fputs("]}\n", stdout);

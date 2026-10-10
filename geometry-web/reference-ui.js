@@ -12,6 +12,7 @@ async function confirmReferenceImpact(preview) {
   const code = document.createElement('code'); code.textContent = preview.command;
   dialog.append(code);
   appendGridDefinitionImpact(dialog, preview);
+  appendSectionProfileImpact(dialog, preview);
   const assemblyChanges=document.createElement('ul');
   for(const binding of preview.assembly?.after?.bindings||[]){const before=preview.assembly.before.bindings.find(b=>b.value.id===binding.value.id);
     for(const slot of binding.effective)for(const axis of ['A','B']){const a=before?.effective.find(v=>v.slotId===slot.slotId)?.[axis]?.value,b=slot[axis]?.value;
@@ -107,6 +108,46 @@ async function confirmReferenceImpact(preview) {
     dialog.addEventListener('cancel', event => { event.preventDefault(); finish(false); });
     dialog.showModal(); cancel.focus();
   });
+}
+
+/* The same native candidate is shared by DSL, engineering and parameter edits.
+   Section diagnostics are nested for ordinary reference previews. */
+function appendSectionProfileImpact(container, preview) {
+  const impact = preview.sectionProfiles;
+  if (!impact) return;
+  const section = document.createElement('section');
+  section.className = 'impact-section-profiles';
+  const title = document.createElement('h3'); title.textContent = '斷面與拉伸的連動影響';
+  const list = document.createElement('ul');
+  const add = (text, key, id, error = false) => {
+    const row = document.createElement('li'); row.textContent = text;
+    if (key) row.setAttribute('data-impact-' + key, String(id));
+    if (error) row.className = 'impact-violation';
+    list.append(row);
+  };
+  for (const [kind, label] of [['profiles', '斷面'], ['members', '構件'], ['runs', '拉伸件']]) {
+    const before = impact.before?.[kind] || [], after = impact.after?.[kind] || [];
+    for (const id of new Set([...before, ...after].map(row => row.value.id))) {
+      const old = before.find(row => row.value.id === id), next = after.find(row => row.value.id === id);
+      if (JSON.stringify(old) === JSON.stringify(next)) continue;
+      const describe = row => !row ? '不存在或無合法結果' : kind === 'members'
+        ? `來源 ${JSON.stringify(row.value)}；矩形 ${JSON.stringify(row.rect)}`
+        : kind === 'runs' ? `L=${row.length} mm；${row.coordinateSpace === 'local' ? '局部' : '世界'}座標；框架 ${JSON.stringify(row.frame)}；構件範圍 ${JSON.stringify(row.members)}`
+        : `輪廓 ${JSON.stringify(row.value.outline)}`;
+      add(`${label} #${id}：${describe(old)} → ${describe(next)}`, 'profile-' + kind, id);
+    }
+  }
+  for (const issue of impact.violations || []) {
+    const ids = [['profileId', '斷面'], ['memberId', '構件'], ['otherMemberId', '另一構件'], ['runId', '拉伸件']]
+      .filter(([key]) => issue[key] !== undefined).map(([key, label]) => `${label} #${issue[key]}`).join(' · ');
+    const facts = [['field', '欄位'], ['originalRectangle', '原矩形'], ['rectangle', '候選矩形'], ['otherOriginalRectangle', '另一原矩形'], ['otherRectangle', '另一候選矩形'], ['outsideRegions', '超出區域'], ['intersection', '交集'], ['outsideVertices', '超出座標頂點'], ['expected', '預期'], ['actual', '實際']]
+      .filter(([key]) => issue[key] !== undefined).map(([key, label]) => `${label}：${JSON.stringify(issue[key])}`).join('；');
+    add(`${ids} · ${issue.clause || ''} ${issue.message || issue.code}；${facts}`, 'profile-violation', issue.code, true);
+  }
+  for (const warning of impact.warnings || []) {
+    add(`提醒：${warning.runId !== undefined ? '拉伸件 #' + warning.runId : '構件 #' + warning.memberId} · ${warning.message || warning.code}（${warning.clause || ''}）`, 'profile-warning', warning.code);
+  }
+  if (list.children.length) { section.append(title, list); container.append(section); }
 }
 
 /* D29/D30/I8a: independent sources and bindings must be reviewable even before
@@ -210,18 +251,33 @@ function appendGridDefinitionImpact(dialog, preview) {
   });
 }
 
+function referenceGuidePreparation(sid, guide = null) {
+  const edit=oc.edit,focus=oc.focus,state=ReferenceWorkspace.getEvidenceState();
+  if(!edit || focus?.t!=="face" || focus.id!==edit.bid || feSid(edit.bid)!==sid || state.blocked) return null;
+  const source=guide && JSON.stringify(guide);
+  return () => oc.edit===edit && oc.focus===focus && feSid(edit.bid)===sid &&
+    JSON.stringify(ReferenceWorkspace.getEvidenceState())===JSON.stringify(state) &&
+    (!guide || JSON.stringify(fe.guides.find(g=>g.id===guide.id))===source);
+}
 async function createReferenceGuide(sid, axis, off) {
+  const current=referenceGuidePreparation(sid);if(!current)return false;
   const snap = await api(`snap ${sid} ${axis} 0 ${off} ${Math.max(1, Math.round(12 / fe.zoom))}`);
+  if(!current())return false;
   if (!snap.ok) { toast(snap.error); return false; }
   const ids = await api('newid');
+  if(!current())return false;
+  if(!ids.ok || !Number.isInteger(ids.guide) || ids.guide<0 || ids.guide>4294967295){toast(ids.error || '無法取得參考線識別，未新增。');return false;}
   return emitLine(`guide ${ids.guide} ${sid} ${axis} ${snap.expression}`);
 }
 async function moveReferenceGuide(id, axis, off) {
-  if (fe.guides.find(g => g.id === id)?.source === 'datum') {
+  const guide=fe.guides.find(g=>g.id===id);
+  if (guide?.source === 'datum') {
     toast('這條線共用空間基準，請在「共用基準」修改來源'); return false;
   }
   const sid = oc.edit && feSid(oc.edit.bid);
+  const current=guide && referenceGuidePreparation(sid,guide);if(!current)return false;
   const snap = await api(`snap ${sid} ${axis} ${id} ${off} ${Math.max(1, Math.round(12 / fe.zoom))}`);
+  if(!current())return false;
   if (!snap.ok) { toast(snap.error); return false; }
   return emitLine(`move ${id} ${snap.expression}`);
 }
@@ -391,12 +447,13 @@ function referenceAnchorOptions(bid, surf) {
   const groups = new Map();
   for (const entry of [...free, ...busy]) {
     const match = /^at-line grid (\d+) ([uv]) (-?\d+)(?: band (-?\d+))?/.exec(entry.value);
+    const rule=GridRuleLines.parseAnchor(entry.value);
     const grid=match && fe.grids.find(g=>g.id===+match[1]);
     const group = (entry.occupied != null ? "已有角材 · " : "可用 · ") +
-      (match ? `${grid?.kind === 'subgrid' ? '子網格' : '主網格'} ${match[1]} · ${match[2]} 座標線` : entry.value.startsWith("at-line") ? "參考線" : entry.value.startsWith("at-face t") ? "角材側面" : "輪廓邊");
+      (rule ? `來源規則 ${rule.systemId}/${rule.ruleKey} · 套用 ${rule.appliedGridId}` : match ? `${grid?.kind === 'subgrid' ? '子網格' : '主網格'} ${match[1]} · ${match[2]} 座標線` : entry.value.startsWith("at-line") ? "參考線" : entry.value.startsWith("at-face t") ? "角材側面" : "輪廓邊");
     if (!groups.has(group)) groups.set(group, []);
     groups.get(group).push(entry);
   }
   return [...groups].map(([label, items]) => `<optgroup label="${label}">` + items.map(({value,label,occupied}) =>
-    `<option value="${value}">${label}${occupied != null ? `(已有角材 ${occupied})` : ""}</option>`).join('') + '</optgroup>').join('');
+    `<option value="${ReferenceWorkspace.escape(value)}">${ReferenceWorkspace.escape(label)}${occupied != null ? `(已有角材 ${occupied})` : ""}</option>`).join('') + '</optgroup>').join('');
 }

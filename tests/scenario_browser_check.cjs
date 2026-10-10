@@ -12,11 +12,11 @@ if(!output.startsWith('/tmp/'))throw Error('Use an isolated /tmp test output dir
 fs.mkdirSync(output,{recursive:true});
 let nativeCalls=0, forbiddenCalls=0;
 const pending=new Set();
+const harnessScripts=['/reference-display.js','/source-plane.js','/evidence-links.js','/rule-case-data.js','/feature-attachments.js',
+  '/scenario-catalog.js','/project-store.js','/scenario-snapshots.js','/scenario-diff.js','/vendor/fflate/umd/index.js'];
 const pageHTML=`<!doctype html><meta charset="utf-8"><title>Scenario archive acceptance harness</title>
 <button id="save">Save complete A/B archive</button><input id="open" type="file"><output id="status">ready</output>
-<script src="/source-plane.js"></script><script src="/feature-attachments.js"></script>
-<script src="/project-store.js"></script><script src="/scenario-snapshots.js"></script>
-<script src="/scenario-diff.js"></script><script src="/vendor/fflate/umd/index.js"></script>
+${harnessScripts.map(src=>`<script src="${src}"></script>`).join('\n')}
 <script>
 window.stamp={context:{},frame:{},contextToken:'fresh-context',revision:0,blocked:false};
 window.verify=async data=>{const r=await fetch('/verify',{method:'POST',body:JSON.stringify(data)});const receipt=await r.json();if(receipt.ok!==true)throw Error(JSON.stringify(receipt));
@@ -44,8 +44,7 @@ const server=http.createServer(async(req,res)=>{
     proc.stdin.end(Buffer.concat(chunks));return;
   }
   if(req.url==='/'){res.setHeader('Content-Type','text/html');res.end(pageHTML);return;}
-  const permitted=['/source-plane.js','/feature-attachments.js','/project-store.js','/scenario-snapshots.js','/scenario-diff.js','/vendor/fflate/umd/index.js'];
-  if(permitted.includes(req.url)){res.setHeader('Content-Type','application/javascript');res.end(fs.readFileSync(path.join(root,'geometry-web',req.url)));return;}
+  if(harnessScripts.includes(req.url)){res.setHeader('Content-Type','application/javascript');res.end(fs.readFileSync(path.join(root,'geometry-web',req.url)));return;}
   res.writeHead(404);res.end();
 });
 (async()=>{

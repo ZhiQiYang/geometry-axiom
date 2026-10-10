@@ -1,0 +1,66 @@
+I8a preview 2: valid; confirm token to apply
+grid-system 0 unavailable -> grid-system 0 name oracle 0 mode infinite main-along none u repeat 0 600 v repeat 0 400 rule-next 1
+input:2: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
+I8a preview 3: valid; confirm token to apply
+grid-system 0 name oracle 0 mode infinite main-along none u repeat 0 600 v repeat 0 400 rule-next 1 -> grid-system 0 name oracle 0 mode infinite main-along none u repeat 0 600 v repeat 0 400 rule-next 2 rule 1 name oracle rule selector all-cells divide 3 2
+input:4: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
+I8a preview 4: valid; confirm token to apply
+boundary 1 geometry-hash 89cc7c66c46e592101d98301fa67b32a3b2b0dea688007e5b43360363ad6373e kind 0 outer unkeyed:100,200/fixity=1 unkeyed:2100,200/fixity=1 unkeyed:2100,1800/fixity=1 unkeyed:100,1800/fixity=1 -> boundary 1 geometry-hash 89cc7c66c46e592101d98301fa67b32a3b2b0dea688007e5b43360363ad6373e kind 0 next-key 5 outer 1:100,200/fixity=1 2:2100,200/fixity=1 3:2100,1800/fixity=1 4:100,1800/fixity=1
+grid-binding 0 unavailable -> grid-binding 0 boundary 1 system 0 vertex-key 1 cell [-2,1] anchor [0/1,0/1] vertex [100,200] translation [1300,-200] geometry-hash 89cc7c66c46e592101d98301fa67b32a3b2b0dea688007e5b43360363ad6373e sample (not complete geometry) u stride 1 total 4: k=-2@100{[100,200]-[100,1800]} k=-1@700{[700,200]-[700,1800]} k=0@1300{[1300,200]-[1300,1800]} k=1@1900{[1900,200]-[1900,1800]} v stride 1 total 5: k=1@200{[100,200]-[2100,200]} k=2@600{[100,600]-[2100,600]} k=3@1000{[100,1000]-[2100,1000]} k=4@1400{[100,1400]-[2100,1400]} k=5@1800{}
+input:7: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
+I8a preview 5: valid; confirm token to apply
+grid 10 unavailable -> grid 10 on 1 from-binding 0 index-space lattice sample (not complete geometry) u stride 1 total 4: k=-2@100{[100,200]-[100,1800]} k=-1@700{[700,200]-[700,1800]} k=0@1300{[1300,200]-[1300,1800]} k=1@1900{[1900,200]-[1900,1800]} v stride 1 total 5: k=1@200{[100,200]-[2100,200]} k=2@600{[100,600]-[2100,600]} k=3@1000{[100,1000]-[2100,1000]} k=4@1400{[100,1400]-[2100,1400]} k=5@1800{}
+input:10: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
+I8a preview 6: valid; confirm token to apply
+boundary 2 geometry-hash 89cc7c66c46e592101d98301fa67b32a3b2b0dea688007e5b43360363ad6373e kind 0 outer unkeyed:100,200/fixity=1 unkeyed:2100,200/fixity=1 unkeyed:2100,1800/fixity=1 unkeyed:100,1800/fixity=1 -> boundary 2 geometry-hash 89cc7c66c46e592101d98301fa67b32a3b2b0dea688007e5b43360363ad6373e kind 0 next-key 5 outer 1:100,200/fixity=1 2:2100,200/fixity=1 3:2100,1800/fixity=1 4:100,1800/fixity=1
+grid-binding 1 unavailable -> grid-binding 1 boundary 2 system 0 vertex-key 1 cell [-2,1] anchor [1/2,1/2] vertex [100,200] translation [1000,-400] geometry-hash 89cc7c66c46e592101d98301fa67b32a3b2b0dea688007e5b43360363ad6373e sample (not complete geometry) u stride 1 total 3: k=-1@400{[400,200]-[400,1800]} k=0@1000{[1000,200]-[1000,1800]} k=1@1600{[1600,200]-[1600,1800]} v stride 1 total 4: k=2@400{[100,400]-[2100,400]} k=3@800{[100,800]-[2100,800]} k=4@1200{[100,1200]-[2100,1200]} k=5@1600{[100,1600]-[2100,1600]}
+ timber 81 center 210 -> 210 length 2000 -> 2000
+  surface 1 origin [100,200,0] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [100,200,0] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 82 center 1790 -> 1790 length 2000 -> 2000
+  surface 1 origin [100,1780,0] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [100,1780,0] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 1 center 120 -> 120 length 1560 -> 1560
+  surface 1 origin [130,220,0] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [130,220,0] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 2 center 680 -> 680 length 1560 -> 1560
+  surface 1 origin [690,220,0] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [690,220,0] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 3 center 400 -> 400 length 540 -> 540
+  surface 1 origin [130,390,0] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [130,390,0] axes [1,0,0]/[0,1,0]/[0,0,1]
+input:27: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
+I8a preview 7: valid; confirm token to apply
+grid 20 unavailable -> grid 20 on 2 from-binding 1 index-space lattice sample (not complete geometry) u stride 1 total 3: k=-1@400{[400,200]-[400,1800]} k=0@1000{[1000,200]-[1000,1800]} k=1@1600{[1600,200]-[1600,1800]} v stride 1 total 4: k=2@400{[100,400]-[2100,400]} k=3@800{[100,800]-[2100,800]} k=4@1200{[100,1200]-[2100,1200]} k=5@1600{[100,1600]-[2100,1600]}
+ timber 81 center 210 -> 210 length 2000 -> 2000
+  surface 1 origin [100,200,0] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [100,200,0] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 82 center 1790 -> 1790 length 2000 -> 2000
+  surface 1 origin [100,1780,0] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [100,1780,0] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 1 center 120 -> 120 length 1560 -> 1560
+  surface 1 origin [130,220,0] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [130,220,0] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 2 center 680 -> 680 length 1560 -> 1560
+  surface 1 origin [690,220,0] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [690,220,0] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 3 center 400 -> 400 length 540 -> 540
+  surface 1 origin [130,390,0] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [130,390,0] axes [1,0,0]/[0,1,0]/[0,0,1]
+input:30: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
+I8a preview 11: valid; confirm token to apply
+grid-binding 1 boundary 2 system 0 vertex-key 1 cell [-2,1] anchor [1/2,1/2] vertex [100,200] translation [1450,-400] geometry-hash 89cc7c66c46e592101d98301fa67b32a3b2b0dea688007e5b43360363ad6373e sample (not complete geometry) u stride 1 total 2: k=-1@550{[550,200]-[550,1800]} k=0@1450{[1450,200]-[1450,1800]} v stride 1 total 4: k=2@400{[100,400]-[2100,400]} k=3@800{[100,800]-[2100,800]} k=4@1200{[100,1200]-[2100,1200]} k=5@1600{[100,1600]-[2100,1600]} -> grid-binding 1 boundary 2 system 0 vertex-key 1 cell [-2,1] anchor [1/3,1/2] vertex [100,200] translation [1600,-400] geometry-hash 89cc7c66c46e592101d98301fa67b32a3b2b0dea688007e5b43360363ad6373e sample (not complete geometry) u stride 1 total 2: k=-1@700{[700,200]-[700,1800]} k=0@1600{[1600,200]-[1600,1800]} v stride 1 total 4: k=2@400{[100,400]-[2100,400]} k=3@800{[100,800]-[2100,800]} k=4@1200{[100,1200]-[2100,1200]} k=5@1600{[100,1600]-[2100,1600]}
+grid 20 on 2 from-binding 1 index-space lattice sample (not complete geometry) u stride 1 total 2: k=-1@550{[550,200]-[550,1800]} k=0@1450{[1450,200]-[1450,1800]} v stride 1 total 4: k=2@400{[100,400]-[2100,400]} k=3@800{[100,800]-[2100,800]} k=4@1200{[100,1200]-[2100,1200]} k=5@1600{[100,1600]-[2100,1600]} -> grid 20 on 2 from-binding 1 index-space lattice sample (not complete geometry) u stride 1 total 2: k=-1@700{[700,200]-[700,1800]} k=0@1600{[1600,200]-[1600,1800]} v stride 1 total 4: k=2@400{[100,400]-[2100,400]} k=3@800{[100,800]-[2100,800]} k=4@1200{[100,1200]-[2100,1200]} k=5@1600{[100,1600]-[2100,1600]}
+ timber 81 center 210 -> 210 length 2000 -> 2000
+  surface 1 origin [100,200,0] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [100,200,0] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 82 center 1790 -> 1790 length 2000 -> 2000
+  surface 1 origin [100,1780,0] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [100,1780,0] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 1 center 120 -> 120 length 1560 -> 1560
+  surface 1 origin [130,220,0] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [130,220,0] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 2 center 680 -> 680 length 1560 -> 1560
+  surface 1 origin [690,220,0] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [690,220,0] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 3 center 400 -> 400 length 540 -> 540
+  surface 1 origin [130,390,0] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [130,390,0] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 101 center 210 -> 210 length 2000 -> 2000
+  surface 2 origin [100,200,0] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 2 origin [100,200,0] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 102 center 1790 -> 1790 length 2000 -> 2000
+  surface 2 origin [100,1780,0] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 2 origin [100,1780,0] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 21 center 120 -> 120 length 1560 -> 1560
+  surface 2 origin [130,220,0] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 2 origin [130,220,0] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 22 center 380 -> 380 length 1560 -> 1560
+  surface 2 origin [390,220,0] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 2 origin [390,220,0] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 23 center 600 -> 600 length 240 -> 240
+  surface 2 origin [130,590,0] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 2 origin [130,590,0] axes [1,0,0]/[0,1,0]/[0,0,1]
+ guide 29: surface 2 u=250 world [250,0,0] direction [0,1,0] -> surface 2 u=400 world [400,0,0] direction [0,1,0]
+ visible: {[250,200]-[250,1800]} -> {[400,200]-[400,1800]}
+input:50: I8a: impact preview required; inspect preview, then confirm token (World unchanged)

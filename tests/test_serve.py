@@ -33,11 +33,31 @@ class BridgeServerTests(unittest.TestCase):
 
     def tearDown(self):
         self.responses.put(b"")
-        self.server_module.bridge_reader.join(timeout=2)
-        self.assertFalse(self.server_module.bridge_reader.is_alive())
+        self.server_module.root_context.reader.join(timeout=2)
+        self.assertFalse(self.server_module.root_context.reader.is_alive())
 
     def ask(self, cmd):
         return json.loads(self.server_module.ask_bridge(cmd))
+
+    def test_literal_bridge_path_is_not_split_and_takes_explicit_precedence(self):
+        literal = '/tmp/geometry runtime/"quoted" bridge'
+        command = self.server_module.bridge_command({
+            "GEOMETRY_BRIDGE_EXECUTABLE": literal,
+            "GEOMETRY_BRIDGE": "wsl.exe -d old -- /old/bridge"})
+        self.assertEqual(command, [literal])
+
+    def test_invalid_literal_bridge_never_falls_back_to_legacy_command(self):
+        for literal in ("", "\n", "bridge\rpath", "bridge\0path"):
+            with self.subTest(literal=literal), self.assertRaises(ValueError):
+                self.server_module.bridge_command({"GEOMETRY_BRIDGE_EXECUTABLE": literal,
+                                                   "GEOMETRY_BRIDGE": "wsl.exe -- /valid/bridge"})
+
+    def test_windows_wsl_command_transport_and_native_default_are_preserved(self):
+        self.assertEqual(self.server_module.bridge_command({"GEOMETRY_BRIDGE":
+            "wsl.exe -d Ubuntu-24.04 --user root -- /tmp/geometry-tests/web_bridge"}),
+            ["wsl.exe", "-d", "Ubuntu-24.04", "--user", "root", "--", "/tmp/geometry-tests/web_bridge"])
+        self.assertEqual(self.server_module.bridge_command({}),
+                         [str(self.server_module.HERE / "web_bridge.exe")])
 
     def post_handler(self, route, body=b"", length=None):
         handler = object.__new__(self.server_module.Handler)
@@ -153,7 +173,7 @@ class BridgeServerTests(unittest.TestCase):
     def test_busy_lock_has_bounded_wait(self):
         entered, release = threading.Event(), threading.Event()
         def hold_bridge():
-            with self.server_module.bridge_lock:
+            with self.server_module.root_context.bridge_lock:
                 entered.set()
                 release.wait(3)
         owner = threading.Thread(target=hold_bridge)
@@ -318,6 +338,7 @@ class BridgeServerTests(unittest.TestCase):
                 with self.subTest(route=route), patch.object(pathlib.Path, 'read_bytes',
                         side_effect=AssertionError('HTTP static request reread filesystem')):
                     handler = object.__new__(self.server_module.Handler)
+                    handler.headers = {}
                     handler.path = route
                     handler._send = Mock()
                     handler.send_error = Mock()
@@ -334,7 +355,185 @@ class BridgeServerTests(unittest.TestCase):
             handler.send_error.assert_called_once_with(404)
 
     def receipt_request(self, **fields):
-        return {"session": self.server_module.API_SESSION, **fields}
+        return {"session": self.server_module.root_context.session, **fields}
+
+    @contextlib.contextmanager
+    def isolated_context(self):
+        responses=queue.Queue();process=Mock();process.stdin=io.BytesIO()
+        process.stdout.readline.side_effect=responses.get
+        with patch('subprocess.Popen',return_value=process):
+            native=self.server_module.NativeContext(['isolated-test-bridge'])
+        try:
+            yield native,responses,process
+        finally:
+            self.server_module.request_context.native=self.server_module.root_context
+            responses.put(b'');native.reader.join(timeout=2)
+            self.assertFalse(native.reader.is_alive())
+            for path in native.upload_temps+([native.prepared_upload[1]] if native.prepared_upload else []):
+                pathlib.Path(path).unlink(missing_ok=True)
+
+    def test_unknown_or_retired_scenario_rejects_before_body_and_never_falls_back_to_live(self):
+        for key in ['unknown','a'*32]:
+            handler=self.post_handler('/api',b'{"cmd":"line reset"}')
+            handler.headers['X-Geometry-Scenario']=key
+            handler.do_POST();self.assertEqual(handler._send.call_args.kwargs,{'status':410})
+            handler.rfile.read.assert_not_called()
+        self.assertEqual(self.process.stdin.getvalue(),b'')
+
+    def test_isolated_bridge_and_receipts_do_not_acquire_or_overwrite_live_namespace(self):
+        mod=self.server_module;request_id=str(uuid.uuid4())
+        self.responses.put(b'{"ok":true,"marker":"A"}\n')
+        self.assertEqual(json.loads(mod.recorded_api(self.receipt_request(requestId=request_id,cmd='line reset')))['marker'],'A')
+        with self.isolated_context() as (native,responses,process):
+            mod.request_context.native=native
+            responses.put(b'{"ok":true,"marker":"B"}\n')
+            data={'session':native.session,'requestId':request_id,'cmd':'line reset'}
+            self.assertEqual(json.loads(mod.recorded_api(data))['marker'],'B')
+            self.assertFalse(json.loads(mod.recorded_api(self.receipt_request(receipt=request_id)))['ok'])
+            self.assertEqual(process.stdin.getvalue(),b'line reset\n')
+            mod.request_context.native=mod.root_context
+            recovered=json.loads(mod.recorded_api(self.receipt_request(receipt=request_id)))
+            self.assertEqual(recovered['result']['marker'],'A')
+            self.assertEqual(self.process.stdin.getvalue(),b'line reset\n')
+
+    def test_matching_numeric_upload_tokens_remain_owned_by_distinct_native_contexts(self):
+        mod=self.server_module
+        self.responses.put(b'{"ok":true,"token":1}\n')
+        self.assertTrue(json.loads(mod.upload_scene(b'root A','prepare'))['ok'])
+        root_candidate=mod.root_context.prepared_upload
+        try:
+            with self.isolated_context() as (native,responses,process):
+                mod.request_context.native=native;responses.put(b'{"ok":true,"token":1}\n')
+                self.assertTrue(json.loads(mod.upload_scene(b'isolated B','prepare'))['ok'])
+                self.assertNotEqual(native.prepared_upload[1],root_candidate[1])
+                responses.put(b'{"ok":true}\n')
+                self.assertEqual(json.loads(mod.upload_scene(b'1','cancel'))['state'],'cancelled')
+                self.assertEqual(mod.root_context.prepared_upload,root_candidate)
+                self.assertEqual(mod.root_context.upload_outcomes,{})
+                mod.request_context.native=mod.root_context
+                self.responses.put(b'{"ok":true,"revision":7}\n')
+                self.responses.put(b'{"ok":true,"text":"root A"}\n')
+                self.assertEqual(json.loads(mod.upload_scene(b'1','confirm'))['state'],'committed')
+                self.assertEqual(json.loads(native.upload_outcomes[1])['state'],'cancelled')
+                self.assertNotIn(b'load-confirm',process.stdin.getvalue())
+        finally:
+            for path in mod.root_context.upload_temps:pathlib.Path(path).unlink(missing_ok=True)
+            mod.root_context.upload_temps.clear()
+
+    def test_isolated_verification_route_never_calls_live_native_or_upload(self):
+        import scenario_verify
+        handler=self.post_handler('/scenarios/verify-native',b'{}')
+        with patch.object(scenario_verify,'verify_bytes',return_value={'ok':True}) as verify, \
+             patch.object(self.server_module,'ask_bridge',side_effect=AssertionError('live native')), \
+             patch.object(self.server_module,'upload_scene',side_effect=AssertionError('live upload')):
+            handler.do_POST()
+        verify.assert_called_once_with(b'{}',bridge_executable=self.server_module.BRIDGE_CMD[0])
+        self.assertEqual(json.loads(handler._send.call_args.args[0]),{'ok':True})
+
+    def test_editor_create_lost_response_retry_is_idempotent_and_retired_request_cannot_recreate(self):
+        import scenario_verify
+        mod=self.server_module;native=Mock();native.session='a'*32;native.closed=False
+        data={'action':'create','requestId':str(uuid.uuid4()),'sequence':1,'session':mod.root_context.session}
+        body=json.dumps(data).encode()
+        with patch.object(scenario_verify,'_program',return_value=('fresh-isolated-bridge','b'*64)), \
+             patch.object(mod,'NativeContext',return_value=native) as create, \
+             patch.object(mod,'ask_bridge',side_effect=AssertionError('live native')):
+            first=self.post_handler('/scenarios/editor',body);first.do_POST()
+            retry=self.post_handler('/scenarios/editor',body);retry.do_POST()
+            self.assertEqual(first._send.call_args,retry._send.call_args)
+            self.assertEqual(json.loads(first._send.call_args.args[0])['context'],native.session)
+            create.assert_called_once_with(['fresh-isolated-bridge'])
+            close=self.post_handler('/scenarios/editor',json.dumps({**data,'action':'close'}).encode());close.do_POST()
+            native.close.assert_called_once();self.assertNotIn(native.session,mod.scenario_contexts)
+            late=self.post_handler('/scenarios/editor',body);late.do_POST()
+            self.assertFalse(json.loads(late._send.call_args.args[0])['ok']);self.assertEqual(create.call_count,1)
+            retry_close=self.post_handler('/scenarios/editor',json.dumps({**data,'action':'close'}).encode());retry_close.do_POST()
+            self.assertEqual(close._send.call_args,retry_close._send.call_args)
+            native.close.assert_called_once();self.assertEqual(mod.root_context.editor_creations,{})
+
+    def test_editor_capacity_and_unknown_actions_reject_before_starting_any_new_native_process(self):
+        import scenario_verify
+        mod=self.server_module;mod.MAX_SCENARIO_EDITORS=1;mod.scenario_contexts['occupied']=Mock()
+        try:
+            valid={'action':'create','requestId':str(uuid.uuid4()),'sequence':1,'session':mod.root_context.session}
+            for data in [valid,{**valid,'requestId':'bad'},{**valid,'action':'unknown'},{'action':'close','context':{}},{**valid,'arbitrary':True},{**valid,'sequence':True},{**valid,'session':'old-session'}]:
+                with self.subTest(data=data),patch.object(scenario_verify,'_program',return_value=('fresh-isolated-bridge','b'*64)),patch.object(mod,'NativeContext') as create:
+                    handler=self.post_handler('/scenarios/editor',json.dumps(data).encode());handler.do_POST()
+                    self.assertFalse(json.loads(handler._send.call_args.args[0])['ok']);create.assert_not_called()
+        finally:
+            mod.scenario_contexts.clear()
+
+    def test_editor_exact_resolve_is_read_only_and_never_recreates_or_retires(self):
+        import scenario_verify
+        mod=self.server_module;request_id=str(uuid.uuid4());context_id='a'*32
+        native=Mock();native.session=context_id;native.closed=False;native.bridge_failure=None;native.bridge.poll.return_value=None
+        mod.root_context.editor_sequence=7
+        mod.root_context.editor_creations[request_id]={'sequence':7,'context':context_id}
+        mod.scenario_contexts[context_id]=native
+        query={'action':'resolve','requestId':request_id,'sequence':7,'session':mod.root_context.session,'context':context_id}
+        import copy
+        before=(copy.deepcopy(mod.root_context.editor_creations),dict(mod.scenario_contexts),mod.root_context.editor_sequence)
+        with patch.object(scenario_verify,'_program',side_effect=AssertionError('resolve must not prepare a process')) as program, \
+             patch.object(mod,'NativeContext',side_effect=AssertionError('resolve must not allocate')) as factory, \
+             patch.object(mod,'ask_bridge',side_effect=AssertionError('resolve must not ask native')) as ask, \
+             patch.object(mod,'upload_scene',side_effect=AssertionError('resolve must not upload')) as upload:
+            def resolve(data):
+                handler=self.post_handler('/scenarios/editor',json.dumps(data).encode());handler.do_POST()
+                self.assertEqual((mod.root_context.editor_creations,mod.scenario_contexts,mod.root_context.editor_sequence),before)
+                native.close.assert_not_called()
+                return json.loads(handler._send.call_args.args[0])
+            active=resolve(query)
+            self.assertEqual(active,{'ok':True,'state':'active','requestId':request_id,'sequence':7,'session':mod.root_context.session,'context':context_id})
+            self.assertEqual(resolve(query),active)
+            for altered in [{**query,'sequence':6},{**query,'context':'b'*32},{**query,'session':'c'*32},
+                            {**query,'arbitrary':True},{k:v for k,v in query.items() if k!='context'},
+                            {**query,'context':True},{**query,'sequence':True}]:
+                with self.subTest(altered=altered):self.assertFalse(resolve(altered)['ok'])
+            unknown={**query,'requestId':str(uuid.uuid4())}
+            self.assertEqual(resolve(unknown)['state'],'absent')
+            self.assertTrue(resolve(unknown)['fenced'])
+            self.assertFalse(resolve({**unknown,'sequence':8})['fenced'])
+            native.bridge.poll.return_value=1
+            self.assertEqual(resolve(query)['state'],'unavailable')
+            native.bridge.poll.return_value=None;native.closed=True
+            self.assertEqual(resolve(query)['state'],'unavailable')
+            native.closed=False;native.bridge_failure='reader stopped'
+            self.assertEqual(resolve(query)['state'],'unavailable')
+            program.assert_not_called();factory.assert_not_called();ask.assert_not_called();upload.assert_not_called()
+
+    def test_retired_editor_receipts_do_not_permanently_exhaust_normal_open_close(self):
+        import scenario_verify
+        mod=self.server_module
+        def context_factory(_):
+            native=Mock();native.session=uuid.uuid4().hex;native.closed=False;return native
+        with patch.object(scenario_verify,'_program',return_value=('fresh-isolated-bridge','b'*64)), \
+             patch.object(mod,'NativeContext',side_effect=context_factory):
+            for sequence in range(1,301):
+                data={'action':'create','requestId':str(uuid.uuid4()),'sequence':sequence,'session':mod.root_context.session}
+                handler=self.post_handler('/scenarios/editor',json.dumps(data).encode());handler.do_POST()
+                created=json.loads(handler._send.call_args.args[0])
+                self.assertTrue(created['ok'],f'normal edit {sequence}: {created}')
+                close=self.post_handler('/scenarios/editor',json.dumps({**data,'action':'close'}).encode());close.do_POST()
+                self.assertEqual(len(mod.scenario_contexts),0)
+                self.assertEqual(mod.root_context.editor_creations,{})
+                if sequence==1:first=data
+            late=self.post_handler('/scenarios/editor',json.dumps(first).encode());late.do_POST()
+            self.assertFalse(json.loads(late._send.call_args.args[0])['ok'])
+            terminal=self.post_handler('/scenarios/editor',json.dumps({**first,'action':'close'}).encode());terminal.do_POST()
+            self.assertEqual(json.loads(terminal._send.call_args.args[0]),{'ok':True,'state':'retired'})
+
+    def test_cancelled_create_cannot_arrive_late_or_change_another_active_editor(self):
+        import scenario_verify
+        mod=self.server_module
+        data={'action':'close','requestId':str(uuid.uuid4()),'sequence':1,'session':mod.root_context.session}
+        with patch.object(scenario_verify,'_program',return_value=('fresh-isolated-bridge','b'*64)),patch.object(mod,'NativeContext') as factory:
+            cancelled=self.post_handler('/scenarios/editor',json.dumps(data).encode());cancelled.do_POST()
+            self.assertEqual(json.loads(cancelled._send.call_args.args[0]),{'ok':True,'state':'retired'})
+            late=self.post_handler('/scenarios/editor',json.dumps({**data,'action':'create'}).encode());late.do_POST()
+            self.assertFalse(json.loads(late._send.call_args.args[0])['ok']);factory.assert_not_called()
+        with self.http_server() as base,urllib.request.urlopen(base+'/scenarios/editor') as response:
+            status=json.load(response)
+            self.assertEqual(status,{'ok':True,'sequence':2,'session':mod.root_context.session})
 
     def test_lost_api_response_is_recovered_without_repeating_command(self):
         request_id = str(uuid.uuid4())
@@ -343,7 +542,7 @@ class BridgeServerTests(unittest.TestCase):
                 request = urllib.request.Request(base + "/api", data=json.dumps(data).encode(),
                                                  headers={"Content-Type": "application/json"})
                 with urllib.request.urlopen(request, timeout=2) as response:
-                    self.assertEqual(response.headers["X-Geometry-Session"], self.server_module.API_SESSION)
+                    self.assertEqual(response.headers["X-Geometry-Session"], self.server_module.root_context.session)
                     return json.load(response)
             self.responses.put(b'{"ok":true}\n')
             command = self.receipt_request(requestId=request_id, cmd="line history-end")
@@ -377,8 +576,8 @@ class BridgeServerTests(unittest.TestCase):
         self.assertEqual(self.process.stdin.getvalue(), b"line invalid\n")
         self.responses.put(b'{"ok":true}\n')
         self.assertTrue(json.loads(self.server_module.recorded_api({**full, "ack": [first]}))["ok"])
-        self.assertNotIn(first, self.server_module.api_receipts)
-        self.assertEqual(len(self.server_module.api_receipts), 1)
+        self.assertNotIn(first, self.server_module.root_context.api_receipts)
+        self.assertEqual(len(self.server_module.root_context.api_receipts), 1)
 
     def test_wrong_server_session_cannot_execute_or_recover_operations(self):
         for key in ["requestId", "receipt"]:
@@ -434,7 +633,7 @@ class BridgeServerTests(unittest.TestCase):
         舊場景的來源檔必須活著,否則前端 curScene 指向一個已刪的路徑,
         「重新載入場景」從此壞掉。修好之前:舊暫存在新檔驗證前就被刪了。
         """
-        temps = self.server_module._upload_temps
+        temps = self.server_module.root_context.upload_temps
         with self.http_server() as base:
             good, first = self.upload(base, "spec 低 300\n", b'{"ok":true}\n')
             self.assertEqual(good["path"], first)
@@ -463,15 +662,15 @@ class BridgeServerTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             prior = pathlib.Path(directory) / 'prior.scene'
             prior.write_bytes(b'prior')
-            mod._upload_temps[:] = [str(prior)]
+            mod.root_context.upload_temps[:] = [str(prior)]
             for rejected in ['cancel', 'stale', 'success']:
-                mod._upload_outcomes.clear()
+                mod.root_context.upload_outcomes.clear()
                 self.responses.put(b'{"ok":true,"token":7,"final_objects":{"boundaries":[1],"placements":[]}}\n')
                 prepared = json.loads(mod.upload_scene(b'boundary 1 outline 0,0 80,0 80,70 0,70\n', 'prepare'))
                 self.assertEqual(prepared['token'], 7)
-                path = mod._prepared_upload[1]
+                path = mod.root_context.prepared_upload[1]
                 self.assertTrue(os.path.exists(path))
-                self.assertEqual(mod._upload_temps, [str(prior)])
+                self.assertEqual(mod.root_context.upload_temps, [str(prior)])
                 self.assertTrue(prior.exists())
                 self.assertFalse(json.loads(mod.upload_scene(b'8', 'confirm'))['ok'])
                 self.assertTrue(os.path.exists(path))
@@ -481,17 +680,17 @@ class BridgeServerTests(unittest.TestCase):
                 if rejected == 'success':
                     self.responses.put(b'{"ok":true,"text":"committed scene\\n"}\n')
                 result = json.loads(mod.upload_scene(b'7', phase))
-                self.assertIsNone(mod._prepared_upload)
+                self.assertIsNone(mod.root_context.prepared_upload)
                 if rejected == 'success':
-                    self.assertEqual(mod._upload_temps, [path])
+                    self.assertEqual(mod.root_context.upload_temps, [path])
                     self.assertEqual(result['path'], path)
                     self.assertFalse(prior.exists())
                     os.unlink(path)
                 else:
                     self.assertFalse(os.path.exists(path))
                     self.assertTrue(prior.exists())
-                    self.assertEqual(mod._upload_temps, [str(prior)])
-            mod._upload_temps.clear()
+                    self.assertEqual(mod.root_context.upload_temps, [str(prior)])
+            mod.root_context.upload_temps.clear()
 
     def test_terminal_cancel_blocks_a_confirm_that_arrives_after_retry(self):
         mod = self.server_module
@@ -504,7 +703,7 @@ class BridgeServerTests(unittest.TestCase):
         self.assertFalse(json.loads(mod.upload_scene(b'31', 'confirm'))['ok'])
         self.assertEqual(json.loads(mod.upload_scene(b'31', 'cancel')), cancelled)
         self.assertEqual(self.process.stdin.getvalue(), commands)
-        self.assertEqual(mod._upload_temps, [])
+        self.assertEqual(mod.root_context.upload_temps, [])
 
     def test_lost_confirm_is_recovered_as_committed_without_a_second_native_load(self):
         mod = self.server_module
@@ -519,9 +718,9 @@ class BridgeServerTests(unittest.TestCase):
         self.assertEqual(json.loads(mod.upload_scene(b'32', 'cancel')), committed)
         self.assertEqual(json.loads(mod.upload_scene(b'32', 'confirm')), committed)
         self.assertEqual(self.process.stdin.getvalue(), commands)
-        for source in mod._upload_temps:
+        for source in mod.root_context.upload_temps:
             os.unlink(source)
-        mod._upload_temps.clear()
+        mod.root_context.upload_temps.clear()
 
     def test_concurrent_uploads_preserve_load_and_source_retirement_order(self):
         for reject_second in [False, True]:
@@ -530,7 +729,7 @@ class BridgeServerTests(unittest.TestCase):
                 mod.BRIDGE_TIMEOUT = 2
                 prior = pathlib.Path(directory) / "prior.scene"
                 prior.write_bytes(b"prior")
-                mod._upload_temps[:] = [str(prior)]
+                mod.root_context.upload_temps[:] = [str(prior)]
                 cleanup_entered, release_cleanup, second_started, second_loaded = (threading.Event() for _ in range(4))
                 loaded, world, results, failures = {}, [], {}, []
                 original_temp = tempfile.NamedTemporaryFile
@@ -591,15 +790,15 @@ class BridgeServerTests(unittest.TestCase):
                 active = loaded[b"A" if reject_second else b"B"]
                 retired = loaded[b"B" if reject_second else b"A"]
                 self.assertEqual(world, [active])
-                self.assertEqual(mod._upload_temps, [str(active)])
+                self.assertEqual(mod.root_context.upload_temps, [str(active)])
                 self.assertTrue(active.exists())
                 self.assertFalse(retired.exists())
                 self.assertFalse(prior.exists())
-                mod._upload_temps.clear()
+                mod.root_context.upload_temps.clear()
 
     def test_upload_busy_lock_has_bounded_wait_and_creates_no_file(self):
         mod = self.server_module
-        mod.upload_lock.acquire()
+        mod.root_context.upload_lock.acquire()
         try:
             handler = self.post_handler("/upload", b"scene")
             with patch.object(mod.tempfile, "NamedTemporaryFile") as temporary, patch.object(mod, "ask_bridge") as bridge:
@@ -610,7 +809,7 @@ class BridgeServerTests(unittest.TestCase):
                 temporary.assert_not_called()
                 bridge.assert_not_called()
         finally:
-            mod.upload_lock.release()
+            mod.root_context.upload_lock.release()
 
     def test_api_reload_waits_until_upload_source_retirement_finishes(self):
         mod = self.server_module
@@ -618,7 +817,7 @@ class BridgeServerTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             prior = pathlib.Path(directory) / "prior.scene"
             prior.write_bytes(b"prior")
-            mod._upload_temps[:] = [str(prior)]
+            mod.root_context.upload_temps[:] = [str(prior)]
             cleanup_entered, release_cleanup, reload_started, reload_done = (threading.Event() for _ in range(4))
             results, failures = [], []
             original_temp, original_unlink = tempfile.NamedTemporaryFile, os.unlink
@@ -676,9 +875,9 @@ class BridgeServerTests(unittest.TestCase):
             result = json.loads(upload._send.call_args.args[0])
             self.assertTrue(result["ok"])
             self.assertTrue(pathlib.Path(result["path"]).exists())
-            self.assertEqual(mod._upload_temps, [result["path"]])
+            self.assertEqual(mod.root_context.upload_temps, [result["path"]])
             self.assertFalse(prior.exists())
-            mod._upload_temps.clear()
+            mod.root_context.upload_temps.clear()
 
     def test_failed_temp_write_removes_new_file_and_preserves_previous_source(self):
         mod = self.server_module
@@ -687,7 +886,7 @@ class BridgeServerTests(unittest.TestCase):
             prior.write_bytes(b"prior")
             created = pathlib.Path(directory) / "new.scene"
             created.touch()
-            mod._upload_temps[:] = [str(prior)]
+            mod.root_context.upload_temps[:] = [str(prior)]
             file = Mock(name=str(created))
             file.name = str(created)
             file.write.side_effect = OSError("disk full")
@@ -701,18 +900,18 @@ class BridgeServerTests(unittest.TestCase):
                 bridge.assert_not_called()
             self.assertFalse(created.exists())
             self.assertTrue(prior.exists())
-            self.assertEqual(mod._upload_temps, [str(prior)])
-            self.assertFalse(mod.upload_lock.locked())
-            mod._upload_temps.clear()
+            self.assertEqual(mod.root_context.upload_temps, [str(prior)])
+            self.assertFalse(mod.root_context.upload_lock.locked())
+            mod.root_context.upload_temps.clear()
 
     def test_upload_does_not_hold_lock_while_sending_response(self):
         mod = self.server_module
         handler = self.post_handler("/upload", b"invalid scene")
         def send(_):
-            acquired = mod.upload_lock.acquire(blocking=False)
+            acquired = mod.root_context.upload_lock.acquire(blocking=False)
             self.assertTrue(acquired)
             if acquired:
-                mod.upload_lock.release()
+                mod.root_context.upload_lock.release()
         handler._send.side_effect = send
         with patch.object(mod, "ask_bridge", return_value=b'{"ok":false,"error":"invalid scene"}'):
             handler.do_POST()

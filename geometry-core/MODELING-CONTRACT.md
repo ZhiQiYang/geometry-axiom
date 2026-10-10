@@ -1,8 +1,9 @@
 # GEO-129 正交 3D 建模交換契約
 
 規範來源：`公理層.md` 的 D20–D25、I26–I33、R24–R30。本檔定義其資料介面、確定性編碼及驗收。
+Q38 的 D35–D40／I43–I51／R36–R40 另以可宣告的 `section-profile/1` 延伸；完整欄位與座標語意見 [斷面模型介面](SECTION-PROFILE-MODELING.md)。
 版本：`orthogonal-model/1`。GEO-130 已提供 **C 舊場景驗證＋Python 精確參考執行器、CLI、HTTP 與 OBJ 輸出**。
-新增型別仍未放入舊 C World／DSL 或物件畫布 UI。使用方式與實測界線見 `MODELING-RUNTIME.md`、`MODELING-VALIDATION.md`。
+本節 GEO-129 的 extensions 型別不放入舊 C World／DSL；Q38 斷面三型別則由原生 World／DSL 求值。使用方式與實測界線見 `MODELING-RUNTIME.md`、`MODELING-VALIDATION.md`。
 不能把 JSON 範例可解析、閱讀器同步或文字審查說成 3D 幾何驗收通過。
 
 ## 1. 與既有資料的邊界
@@ -60,6 +61,7 @@ request 精確欄位為 `roots`（非空不重複型別引用陣列）、`role`�
 | composition: UNION / DIFFERENCE | geometry | 結果外表面與內腔面 | 全部體積分量或 EMPTY |
 | composite_space | enclosure | 已定的殼面，可開放；不宣稱已有 V | 殼水密且方向正確才输出 V；開放則 INCOMPLETE |
 | composite_space | clearance | 已定淨空的全部邊界面 | 已定淨空的全部體積分量 |
+| profile-run（section-profile/1） | geometry | INVALID：本能力只接受 solid-set | 各構件完整實體＋明標 reference 的凹形包絡；未定位時保留 local 座標 |
 
 未列出的根／角色配對 INVALID；boundary、未放置角材或 slot Space 不能被猜成 3D 建模根。
 open shell 作 geometry/surface-set 可以 COMPLETE，表示面本身已定，並仍記 `closure:"open"`。
@@ -87,7 +89,7 @@ capabilities 為有序能力字串集合：`extrusion/1`, `shell/1`, `composite-
 
 derived 必含 `status`, `objects`。objects 每項包含：
 
-- `root`：輸入根型別引用；`member_path`：KEEP 成員 0-based 索引路徑（非 KEEP 為空陣列）。
+- `root`：輸入根型別引用；`member_path`：KEEP 成員 0-based 索引路徑（一般非 KEEP 為空陣列）。`section-profile/1` 的材料構件另用 `[member_id]`，包絡為 `[]`；不是 KEEP 陣列位置。
 - `role`, `status`, `representation:"mesh"`, `closure:"open"|"closed"|"empty"`。
 - `component`：體積分量編號；面物件不適用時為 null。獨立面、單一殼及每個實體體積分量分別成 object 記錄。
 - `vertices_mm`：依 R29 排序的三維整數陣列；`triangles`：同向三個頂點索引的陣列，不含退化三角形。
@@ -116,7 +118,7 @@ surface 為 placement 的有效面，另追溯 boundary（如有）。布林保�
 並記沿 DIFFERENCE 工具路徑的 cut 角色；同平面不同來源不得只留一個。orientation 以輸出結果法向另記，不改來源。
 每個 face_sources 記錄固定欄位為 `origin:{kind,id}`, `feature`, `placement_id`, `boundary_id`,
 `loop_index`, `edge_index`, `operation_path`, `role`, `normal_sign`，不得自由增刪標準欄位。
-origin.kind 只用 placement / column / beam / timber / extrusion；布林與 KEEP 由 operation_path 記路徑，不冒充原始面。
+基礎 origin.kind 只用 placement / column / beam / timber / extrusion；布林與 KEEP 由 operation_path 記路徑，不冒充原始面。`section-profile/1` 另用 profile-run，來源路徑與 reference 角色見其延伸契約。
 feature 固定如下：placement 用 `surface`；extrusion 用 `bottom_cap`,`top_cap`,`outer_side`,`hole_side`；
 column/beam 用 `-X`,`+X`,`-Y`,`+Y`,`-Z`,`+Z`；timber 用 D7 的 `A0`,`A1`,`B0`,`B1`,`START`,`END`。
 placement_id 為該原始物件所引用的 carrier（placement 自指），沒有 carrier 的 column/beam 為 null；

@@ -1,0 +1,176 @@
+{
+  "actor": "/root/race_review",
+  "argv": [
+    "<python-runtime>/bin/python",
+    "<workspace-path>",
+    "--root",
+    "<workspace-path>",
+    "--url",
+    "http://127.0.0.1:19186/",
+    "--out",
+    "<workspace-path>",
+    "--expected-head",
+    "f98078dc150c22960cbe2d212afb3ded61954bb9"
+  ],
+  "exitCode": 1,
+  "completed": true,
+  "pass": 0,
+  "fail": 2,
+  "expected": 2,
+  "scope": "Supplemental actual native Shape projection ownership of a new zero-area hole gesture in the same oc.edit; not full CDP, Windows, golden or complete #123. Does not claim new-gesture native commit from an older visible model. API fixtures explicitly recorded, then normal trusted UI; no force click or UI retry.",
+  "before": {
+    "at": "2026-10-09T14:44:27.236880+00:00",
+    "pwd": "<workspace-path>",
+    "head": "f98078dc150c22960cbe2d212afb3ded61954bb9",
+    "dirty": "",
+    "tree": "4216a6bb9a62b2e3bf256aa30ab645b8671c9519",
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "1e681982fe5b0c8b812d938a690136d34f2abfa012d32983d4efb8ddf18bb41c",
+      "fresh": true,
+      "root": "<workspace-path>",
+      "pid": 77006,
+      "session": "876d145149024dce9ff80df11738120a"
+    },
+    "runtimeSHA256": "c8dfbc12f66e33d88713c0e78268cf1185cb66c72023a6845b2506e33af8eed6",
+    "sources": {
+      "geometry-web/app.js": "ec2738a447d06a5c92fc07ebd998be500f91c2696abcd95b191322d38b5e2d72",
+      "geometry-web/app.css": "20960506209d263ba1f7753d5fc4101392b0bcdc8af8e34be516cf05f561d5c2",
+      "geometry-web/index.html": "8ddff79f0e4dd9d94725ad4f57b7b0b50af74387490f8c42bde9dbcc2e93234e"
+    },
+    "scripts": {
+      "projection_supplement.py": "e7814c9a126a817fbb36e403ebf516b25856b1d82c0f1522f61b9ea0112579d1",
+      "projection_instrumentation.js": "599eceb5c6e329196070f037387e6f4500f3bba68db9ed40e61a6f49d2242979",
+      "fixture.json": "d8ca6fe097ccb673adbb76a41be1aefbf8cb7f59ba214231d4c9fb028ca267ef"
+    },
+    "executor": {
+      "path": "<python-runtime>/bin/python",
+      "resolved": "<python-runtime>/bin/python3.12",
+      "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+      "version": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+    },
+    "actualServiceProcesses": [
+      {
+        "pid": 77006,
+        "parent": 77003,
+        "exe": "<python-runtime>/bin/python3.12",
+        "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+        "argv": [
+          "<python-runtime>/bin/python",
+          "-u",
+          "<workspace-path>",
+          "19186"
+        ]
+      },
+      {
+        "pid": 77089,
+        "parent": 77006,
+        "exe": "<isolated-test-directory>",
+        "sha256": "3bff7b9a5e55c5bbceec375a4f369763b47717250e782204ab9cba13615c4cb3",
+        "argv": [
+          "<isolated-test-directory>"
+        ]
+      }
+    ],
+    "native": {
+      "bridge": {
+        "name": "bridge",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T14:35:54+00:00）",
+        "path": "<isolated-test-directory>",
+        "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+        "sha256": "3bff7b9a5e55c5bbceec375a4f369763b47717250e782204ab9cba13615c4cb3",
+        "sidecarSHA256": "fef93cf39479bc570cf94ad47401eecc5dcaba805fd2be69c00a6b1a0a72f732"
+      },
+      "model-base": {
+        "name": "model-base",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T14:35:59+00:00）",
+        "path": "<isolated-test-directory>",
+        "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+        "sha256": "c88bede35c4a2e1011a7f5b9e3e478bc188a7757560af2daf7b1952561dfad85",
+        "sidecarSHA256": "b22b21dde3c26364db9d47ad9fd93ed9973652bdedb7bcdc2d203f4f8ddb2442"
+      }
+    }
+  },
+  "after": {
+    "at": "2026-10-09T14:44:35.972969+00:00",
+    "pwd": "<workspace-path>",
+    "head": "f98078dc150c22960cbe2d212afb3ded61954bb9",
+    "dirty": "",
+    "tree": "4216a6bb9a62b2e3bf256aa30ab645b8671c9519",
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "1e681982fe5b0c8b812d938a690136d34f2abfa012d32983d4efb8ddf18bb41c",
+      "fresh": true,
+      "root": "<workspace-path>",
+      "pid": 77006,
+      "session": "876d145149024dce9ff80df11738120a"
+    },
+    "runtimeSHA256": "c8dfbc12f66e33d88713c0e78268cf1185cb66c72023a6845b2506e33af8eed6",
+    "sources": {
+      "geometry-web/app.js": "ec2738a447d06a5c92fc07ebd998be500f91c2696abcd95b191322d38b5e2d72",
+      "geometry-web/app.css": "20960506209d263ba1f7753d5fc4101392b0bcdc8af8e34be516cf05f561d5c2",
+      "geometry-web/index.html": "8ddff79f0e4dd9d94725ad4f57b7b0b50af74387490f8c42bde9dbcc2e93234e"
+    },
+    "scripts": {
+      "projection_supplement.py": "e7814c9a126a817fbb36e403ebf516b25856b1d82c0f1522f61b9ea0112579d1",
+      "projection_instrumentation.js": "599eceb5c6e329196070f037387e6f4500f3bba68db9ed40e61a6f49d2242979",
+      "fixture.json": "d8ca6fe097ccb673adbb76a41be1aefbf8cb7f59ba214231d4c9fb028ca267ef"
+    },
+    "executor": {
+      "path": "<python-runtime>/bin/python",
+      "resolved": "<python-runtime>/bin/python3.12",
+      "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+      "version": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+    },
+    "actualServiceProcesses": [
+      {
+        "pid": 77006,
+        "parent": 77003,
+        "exe": "<python-runtime>/bin/python3.12",
+        "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+        "argv": [
+          "<python-runtime>/bin/python",
+          "-u",
+          "<workspace-path>",
+          "19186"
+        ]
+      },
+      {
+        "pid": 77089,
+        "parent": 77006,
+        "exe": "<isolated-test-directory>",
+        "sha256": "3bff7b9a5e55c5bbceec375a4f369763b47717250e782204ab9cba13615c4cb3",
+        "argv": [
+          "<isolated-test-directory>"
+        ]
+      }
+    ],
+    "native": {
+      "bridge": {
+        "name": "bridge",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T14:35:54+00:00）",
+        "path": "<isolated-test-directory>",
+        "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+        "sha256": "3bff7b9a5e55c5bbceec375a4f369763b47717250e782204ab9cba13615c4cb3",
+        "sidecarSHA256": "fef93cf39479bc570cf94ad47401eecc5dcaba805fd2be69c00a6b1a0a72f732"
+      },
+      "model-base": {
+        "name": "model-base",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T14:35:59+00:00）",
+        "path": "<isolated-test-directory>",
+        "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+        "sha256": "c88bede35c4a2e1011a7f5b9e3e478bc188a7757560af2daf7b1952561dfad85",
+        "sidecarSHA256": "b22b21dde3c26364db9d47ad9fd93ed9973652bdedb7bcdc2d203f4f8ddb2442"
+      }
+    }
+  },
+  "fatal": null,
+  "caseNames": [
+    "held-A-same-hole-1382",
+    "held-A-same-hole-390"
+  ]
+}

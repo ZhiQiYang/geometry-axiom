@@ -52,12 +52,12 @@ test('raw rule capacity, hostile accessors and duplicate active editor records f
   const duplicate=envelope(draft());duplicate.records.push(copy(duplicate.records[0]));assert.throws(()=>F.validate(duplicate));
 });
 test('format and required-capability guards refuse every downgrade, false declaration and missing envelope',async()=>{
-  for(let version=1;version<=13;version++){
+  for(let version=1;version<=16;version++){
     const policy=P.formatPolicy(`geometry-canvas/${version}`);
     assert.deepEqual(policy,{modelCollections:version>=3,engineeringCandidate:version>=5,canonicalScene:version>=11});
     assert.ok(Object.isFrozen(policy));assert.throws(()=>{policy.canonicalScene=false;});
   }
-  for(const format of ['geometry-canvas/14','__proto__',null,13])assert.throws(()=>P.formatPolicy(format));
+  for(const format of ['geometry-canvas/17','geometry-canvas/999','__proto__',null,13])assert.throws(()=>P.formatPolicy(format));
   const bytes=await P.pack(scene,{...manifest(),featureAttachments:envelope(draft())},new Map(),zip);
   for(const change of [m=>m.requiredCapabilities=[],m=>m.requiredCapabilities=[F.GRID_RULE_SCHEMA,F.GRID_RULE_SCHEMA],
     m=>m.requiredCapabilities=['grid-editor-draft/3'],m=>delete m.featureAttachments,

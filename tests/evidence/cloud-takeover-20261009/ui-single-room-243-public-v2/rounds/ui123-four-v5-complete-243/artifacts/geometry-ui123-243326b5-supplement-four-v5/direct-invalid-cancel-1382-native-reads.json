@@ -1,0 +1,106 @@
+{
+  "beforeSHA256": "226f83ff57b70f7183b846a25a888feb81cfbb2d3fff623e4632c9b62a468272",
+  "afterSHA256": "226f83ff57b70f7183b846a25a888feb81cfbb2d3fff623e4632c9b62a468272",
+  "equal": true,
+  "requests": [
+    {
+      "url": "http://127.0.0.1:19180/api",
+      "postData": "{\"cmd\":\"source-inspect\"}",
+      "payload": {
+        "cmd": "source-inspect"
+      },
+      "cmd": "source-inspect",
+      "response": {
+        "status": 200,
+        "body": "{\"ok\":true,\"schema\":\"source-inspector/1\",\"revision\":155,\"live\":true,\"complete\":true,\"limits\":{\"nodes\":2048,\"edges\":8192},\"identityContinuity\":\"unknown\",\"supportStatus\":\"unknown\",\"nodes\":[{\"key\":\"boundary:1\",\"kind\":\"boundary\",\"id\":\"1\",\"label\":\"邊界\",\"version\":0,\"fieldId\":0,\"definitionFingerprint\":\"c4de8d09bfb80bd56ec031e183ca7339520e806c51b4103423f9deaee64f72a0\",\"valueFingerprint\":\"c4de8d09bfb80bd56ec031e183ca7339520e806c51b4103423f9deaee64f72a0\"}],\"edges\":[],\"sourceFingerprint\":\"4697e2b0c2ef6e7896591435c97eef0d0dc53164d8088be458cc09bbbeb99f2e\",\"timberSupports\":{\"schema\":\"native-timber-supports/1\",\"sourceFingerprint\":\"4697e2b0c2ef6e7896591435c97eef0d0dc53164d8088be458cc09bbbeb99f2e\",\"entries\":[]}}\n",
+        "bodySHA256": "be16f6a2ac219f1ad2166eb1d0a1dfcc6ffb395a6d29f8654ec469b0b1b354a5",
+        "json": {
+          "ok": true,
+          "schema": "source-inspector/1",
+          "revision": 155,
+          "live": true,
+          "complete": true,
+          "limits": {
+            "nodes": 2048,
+            "edges": 8192
+          },
+          "identityContinuity": "unknown",
+          "supportStatus": "unknown",
+          "nodes": [
+            {
+              "key": "boundary:1",
+              "kind": "boundary",
+              "id": "1",
+              "label": "邊界",
+              "version": 0,
+              "fieldId": 0,
+              "definitionFingerprint": "c4de8d09bfb80bd56ec031e183ca7339520e806c51b4103423f9deaee64f72a0",
+              "valueFingerprint": "c4de8d09bfb80bd56ec031e183ca7339520e806c51b4103423f9deaee64f72a0"
+            }
+          ],
+          "edges": [],
+          "sourceFingerprint": "4697e2b0c2ef6e7896591435c97eef0d0dc53164d8088be458cc09bbbeb99f2e",
+          "timberSupports": {
+            "schema": "native-timber-supports/1",
+            "sourceFingerprint": "4697e2b0c2ef6e7896591435c97eef0d0dc53164d8088be458cc09bbbeb99f2e",
+            "entries": []
+          }
+        }
+      },
+      "error": null
+    },
+    {
+      "url": "http://127.0.0.1:19180/api",
+      "postData": "{\"cmd\":\"engineering-read\"}",
+      "payload": {
+        "cmd": "engineering-read"
+      },
+      "cmd": "engineering-read",
+      "response": {
+        "status": 200,
+        "body": "{\"ok\":true,\"revision\":155,\"definition_sha256\":\"4697e2b0c2ef6e7896591435c97eef0d0dc53164d8088be458cc09bbbeb99f2e\",\"state\":{\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\"],\"required_capabilities\":[],\"native_capabilities\":[\"section-profile-native/1\"],\"specs\":[],\"materials\":[],\"methods\":[],\"applications\":[],\"sources\":[],\"parameters\":[],\"assembly\":{\"capabilities\":[\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\"],\"rules\":[],\"bindings\":[],\"instances\":[]},\"sectionProfiles\":{\"profiles\":[],\"members\":[],\"runs\":[]}}}\n",
+        "bodySHA256": "8048d8b55f5eb2c7cc114631e5dc92a92a405d5cd1f11988d56221d84fa7de74",
+        "json": {
+          "ok": true,
+          "revision": 155,
+          "definition_sha256": "4697e2b0c2ef6e7896591435c97eef0d0dc53164d8088be458cc09bbbeb99f2e",
+          "state": {
+            "capabilities": [
+              "engineering-spec/1",
+              "parameters/1",
+              "assembly-rule-authoring/1",
+              "assembly-timber-generation/1",
+              "grid-subdivision-rules/1",
+              "section-profile/1"
+            ],
+            "required_capabilities": [],
+            "native_capabilities": [
+              "section-profile-native/1"
+            ],
+            "specs": [],
+            "materials": [],
+            "methods": [],
+            "applications": [],
+            "sources": [],
+            "parameters": [],
+            "assembly": {
+              "capabilities": [
+                "assembly-rule-authoring/1",
+                "assembly-timber-generation/1"
+              ],
+              "rules": [],
+              "bindings": [],
+              "instances": []
+            },
+            "sectionProfiles": {
+              "profiles": [],
+              "members": [],
+              "runs": []
+            }
+          }
+        }
+      },
+      "error": null
+    }
+  ]
+}

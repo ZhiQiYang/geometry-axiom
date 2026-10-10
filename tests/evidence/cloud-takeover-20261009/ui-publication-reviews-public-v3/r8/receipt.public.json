@@ -1,0 +1,218 @@
+{
+  "schema": "geometry-public-evidence-review-receipt/1",
+  "actor": "/root/delivery_closeout/packet_readonly_qa",
+  "createdUtc": "2026-10-09T16:11:09.080115+00:00",
+  "command": [
+    "python3",
+    "<workspace-path>",
+    "<workspace-path>",
+    "<workspace-path>"
+  ],
+  "cwd": "<workspace-path>",
+  "exitCode": 1,
+  "kind": "Read-only publisher/evidence QA; no product tests executed",
+  "status": "Reviewer format assumption errors:68 ZIP .json resources and2 JSONL artifacts used structured projection but old byte-form matcher expected regex text. All strict JSON/JSONL, trace/network/stacks readability and original hashes/scopes passed. Preserve original QA failure; next reviewer compares decoded one-to-one values.",
+  "executionIdentity": {
+    "actor": "/root/delivery_closeout/packet_readonly_qa",
+    "pid": 164916,
+    "argv": [
+      "<workspace-path>",
+      "<workspace-path>",
+      "<workspace-path>"
+    ],
+    "cwd": "<workspace-path>",
+    "script": "<workspace-path>",
+    "scriptSha256": "60c0516a6313f33cf867f0fa8e2b39b926322527c174290806e6686d1cafe64c",
+    "actualPythonExecutable": "<python-runtime>/bin/python3.12",
+    "actualPythonExecutableSha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+    "pythonVersion": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+  },
+  "before": {
+    "head": "243326b512896ace70e068f62c8f3d6397f6000d",
+    "dirty": "",
+    "cwd": "<workspace-path>"
+  },
+  "after": {
+    "head": "243326b512896ace70e068f62c8f3d6397f6000d",
+    "dirty": "",
+    "cwd": "<workspace-path>"
+  },
+  "manifestSha256": {
+    "ui-single-room-prior-public-v4": "3f2abb29f759de73c6e4c72323ead0c42aab763ca4e6391f63d41f9802ae8e9d",
+    "ui-single-room-640-public-v4": "64a0d10728631d4e9ccdac5c4051f666a95e9104a6159e43eac72950884f0522",
+    "ui-single-room-0b37-failed-public-v5": "389b1fdf3e0d8639bf192f2087f0d49de5a565799229598dc958132bdbcdaa97"
+  },
+  "rawLog": {
+    "path": "<workspace-path>",
+    "bytes": 6163,
+    "sha256": "97e423fec6688256e6a63e6ae91ef0921350b5b2ae581ef028d3dfd91ef95abe"
+  },
+  "report": {
+    "path": "<workspace-path>",
+    "bytes": 48005,
+    "sha256": "dfb0d4a5d6b3826d2e32ae228a5e1fa84aabdad60b9052d865b4f33e0f5b5f17"
+  },
+  "executedScriptSnapshot": {
+    "path": "<workspace-path>",
+    "bytes": 39374,
+    "sha256": "60c0516a6313f33cf867f0fa8e2b39b926322527c174290806e6686d1cafe64c"
+  },
+  "inputManifestMap": {
+    "path": "<workspace-path>",
+    "bytes": 319,
+    "sha256": "5bdf99a108a29a3a684ecc349124063d01d8b79de38214607b7e3180966ffb92"
+  },
+  "checkCount": 46649,
+  "failedCheckCount": 70,
+  "checkInventories": [
+    {
+      "path": "<workspace-path>",
+      "bytes": 355858,
+      "sha256": "4c0a70f1e193964bc48c461561e071c0180136d250d607aafd3aa9ee75500636",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 341508,
+      "sha256": "f37a3a42a1d5327837eb706179b80a872e738b76a97dd86514627c5aa0c30a6b",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 372595,
+      "sha256": "e8438270b862e4bc52ae3d0456553d899ee307135d3ad11280cd999d2df341da",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 335154,
+      "sha256": "39e75ac47aec959dd7aa423e03ce413eadacda589aca423b7f78605ec6234148",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 321637,
+      "sha256": "085a3f0aac4c86b05df74aff859991f0db9029c7f87b2a745c51e7e2aa5861ee",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 357035,
+      "sha256": "cf47426b6370ca114b3e0652d4a3a18df545f4957ae1bb712dc245fcbee6e515",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 364394,
+      "sha256": "85b5ce35045221b624d7a5f87d325aba8773c65f8de9afe6319bb29bca705bee",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 342286,
+      "sha256": "b8f33c8158bdd63ef7c83f268c2a0343cca2e04c91f7c1399ad30113a0774976",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 431902,
+      "sha256": "66a3841f08e367431b1e87dee54c424af74510f014fb6891736ffe9b6bd6b8c2",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 466023,
+      "sha256": "ee76dc4be112defca7a1eea7f8e83dad6c2365ddd2546b8b05dddda89dbc0294",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 474830,
+      "sha256": "49cb2a135469f834c6779697a52dca7fd735976df1b9560fdee29d9b1a19f134",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 464609,
+      "sha256": "bf63f7c0d575a9024a3ca2a87d58bec072fd391c1a1baf3f8c4e1fbf5b8bcf26",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 471701,
+      "sha256": "63a101dacd425f3eaa3477f0ec9cf7acf6527d0dfd7e45874872697f711cb7e5",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 448647,
+      "sha256": "97503c039c2dda919af6f3403b538076275e63649c5cc00bf3c86e9299e5947e",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 438094,
+      "sha256": "36303051791136d1551f9afed75d9f09233c5f425bb6a7e7d013c11280a22507",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 472473,
+      "sha256": "1409aef28464fc3d9bc419dbf6a0fe223884c8cc03c1a4692581b2556c9b53e4",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 473289,
+      "sha256": "16e839de4006f719849c9abd21d038cd532d23525e7227df4ff5a90304af2701",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 479752,
+      "sha256": "ec761311794dc72d8ade46791693beed757a3c25ee408ffe6e4127883be3a0ae",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 470099,
+      "sha256": "deb01682275dd6d8b476e7d5f7ee30d03fa5f1bfb05e070e54a711dd4c1a48e1",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 511066,
+      "sha256": "fe50220702be8db4f671af559127d012faa571bba194a2c2d05953deba584217",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 502282,
+      "sha256": "3286215176cad560e211a0d91cce77ab54e8ffd1b5e22695e90aefd35e0bd53f",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 518315,
+      "sha256": "1c16239ffa873db24be43dea657f5eb1e0a7465d3e12fdd246f3bb37aa5f3e1b",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 436514,
+      "sha256": "878eadc036c2a7101e6c8666745327880b11514537a4b0ac2a7b6e700a356d18",
+      "entries": 2000
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 158822,
+      "sha256": "66929c3ba5437d9c1319f8f450904968ba95f05fa94ea8a303c1ae21dc241a86",
+      "entries": 649
+    }
+  ],
+  "releaseApproved": false,
+  "limits": [
+    "Evidence checks are not added to product test totals.",
+    "No historical tested SHA, dirty state, unknown identity or result is rebound."
+  ]
+}

@@ -73,9 +73,18 @@ window.EngineeringAdapter = (() => {
     let result;ownConfirmation=true;
     try { result=await command('engineering-confirm '+token(previewToken)); }
     finally { ownConfirmation=false; }
-    assertContext(expected);
-    if(oc.edit?.kind==='boundary' || oc.edit?.bid!=null)await feAfterChange();else await refreshActive();
-    assertContext(expected);
+    try {
+      assertContext(expected);
+      if(oc.edit?.kind==='boundary' || oc.edit?.bid!=null)await feAfterChange();else await refreshActive();
+      assertContext(expected);
+    } catch (cause) {
+      // Native confirmation already succeeded. Preserve that receipt even if
+      // refreshing its presentation fails or the project owner has retired.
+      // Native rejection remains outside this catch and has no such receipt.
+      const error=new Error(cause?.message || String(cause),{cause});
+      error.engineeringConfirmation=result;
+      throw error;
+    }
     return result;
   }
   async function cancel({token:previewToken}) { return command('engineering-cancel '+token(previewToken)); }

@@ -1,0 +1,1982 @@
+{
+  "actor": "/root/race_review/hole_order_oracle_review",
+  "independence": "Distinct reviewer; not original probe author or executor. Read-only inspection of preserved raw artifacts. No browser/service launched and no product, repository, test or executor modified.",
+  "at": "2026-10-09T15:05:26.726284+00:00",
+  "verdict": "fail",
+  "checksPassed": 146,
+  "checksFailed": 6,
+  "checks": [
+    {
+      "check": "original-executor-preserved",
+      "ok": true
+    },
+    {
+      "check": "patch-exact-one-removed-one-added-line",
+      "ok": true
+    },
+    {
+      "check": "patch-original-one-occurrence",
+      "ok": true
+    },
+    {
+      "check": "all-assertions-preserved",
+      "ok": true,
+      "details": {
+        "assertCount": 37
+      }
+    },
+    {
+      "check": "all-other-executable-AST-identical",
+      "ok": true
+    },
+    {
+      "check": "fixed-byte-comparison-retained",
+      "ok": true
+    },
+    {
+      "check": "actual-separate-corrected-copy-exact",
+      "ok": true
+    },
+    {
+      "check": "actual-separate-copy-unchanged:projection_instrumentation.js",
+      "ok": true
+    },
+    {
+      "check": "actual-separate-copy-unchanged:fixture.json",
+      "ok": true
+    },
+    {
+      "check": "version-ledger-actual-hashes",
+      "ok": true
+    },
+    {
+      "check": "baseline-f980-r1:geometry-ui-normal-hole-control:complete-result",
+      "ok": true
+    },
+    {
+      "check": "baseline-f980-r1:geometry-ui-normal-hole-control:exact-clean-source",
+      "ok": true
+    },
+    {
+      "check": "baseline-f980-r1:geometry-ui-normal-hole-control:identity-stable",
+      "ok": true
+    },
+    {
+      "check": "baseline-f980-r1:geometry-ui-normal-hole-control:runtime-fresh",
+      "ok": true
+    },
+    {
+      "check": "baseline-f980-r1:geometry-ui-normal-hole-control:executor-script-bound",
+      "ok": true
+    },
+    {
+      "check": "baseline-f980-r1:geometry-ui-normal-hole-control:wrapper-bound",
+      "ok": true
+    },
+    {
+      "check": "baseline-f980-r1:geometry-ui-normal-hole-control:raw-log-bound",
+      "ok": true
+    },
+    {
+      "check": "baseline-f980-r1:geometry-ui-normal-hole-control:actual-service-native-bound",
+      "ok": true
+    },
+    {
+      "check": "baseline-f980-r1:geometry-ui-normal-hole-control:actual-browser-chain",
+      "ok": true
+    },
+    {
+      "check": "baseline-f980-r1:geometry-ui-normal-hole-control:actual-executable-hashes-now",
+      "ok": true
+    },
+    {
+      "check": "baseline-f980-r1:geometry-ui-normal-hole-control:git-object-source:geometry-web/app.js",
+      "ok": true
+    },
+    {
+      "check": "baseline-f980-r1:geometry-ui-normal-hole-control:git-object-source:geometry-web/app.css",
+      "ok": true
+    },
+    {
+      "check": "baseline-f980-r1:geometry-ui-normal-hole-control:git-object-source:geometry-web/index.html",
+      "ok": true
+    },
+    {
+      "check": "baseline-normal:normal-hole-1382:one-exact-native-hole-command",
+      "ok": true
+    },
+    {
+      "check": "baseline-normal:normal-hole-1382:network-version",
+      "ok": true
+    },
+    {
+      "check": "baseline-normal:normal-hole-1382:served-source",
+      "ok": false
+    },
+    {
+      "check": "baseline-normal:normal-hole-1382:trusted-events",
+      "ok": true
+    },
+    {
+      "check": "baseline-normal:normal-hole-1382:terminal-functions",
+      "ok": true
+    },
+    {
+      "check": "baseline-normal:normal-hole-1382:normal-gesture-coordinates",
+      "ok": true
+    },
+    {
+      "check": "baseline-normal:normal-hole-1382:one-ordinary-trace-gesture",
+      "ok": true
+    },
+    {
+      "check": "baseline-normal:normal-hole-1382:no-page-or-harness-errors",
+      "ok": true
+    },
+    {
+      "check": "baseline-normal:normal-hole-1382:normal-control-no-gate",
+      "ok": true
+    },
+    {
+      "check": "baseline-normal:normal-hole-1382:A-consumed-before-B",
+      "ok": true
+    },
+    {
+      "check": "baseline-normal:normal-hole-1382:complete-world-exact-A-preview-B",
+      "ok": true
+    },
+    {
+      "check": "baseline-normal:normal-hole-1382:world-raw-network-bound",
+      "ok": true
+    },
+    {
+      "check": "baseline-normal:normal-hole-1382:world-chronology",
+      "ok": true
+    },
+    {
+      "check": "baseline-normal:normal-hole-1382:native-submit-after-mouse-up",
+      "ok": true,
+      "details": {
+        "commandWallMs": 1791557761330.0,
+        "mouseUpWallMs": 1791557761324.8381
+      }
+    },
+    {
+      "check": "baseline-normal:normal-hole-1382:expected-file-bound",
+      "ok": true
+    },
+    {
+      "check": "baseline-normal:normal-hole-390:one-exact-native-hole-command",
+      "ok": true
+    },
+    {
+      "check": "baseline-normal:normal-hole-390:network-version",
+      "ok": true
+    },
+    {
+      "check": "baseline-normal:normal-hole-390:served-source",
+      "ok": false
+    },
+    {
+      "check": "baseline-normal:normal-hole-390:trusted-events",
+      "ok": true
+    },
+    {
+      "check": "baseline-normal:normal-hole-390:terminal-functions",
+      "ok": true
+    },
+    {
+      "check": "baseline-normal:normal-hole-390:normal-gesture-coordinates",
+      "ok": true
+    },
+    {
+      "check": "baseline-normal:normal-hole-390:one-ordinary-trace-gesture",
+      "ok": true
+    },
+    {
+      "check": "baseline-normal:normal-hole-390:no-page-or-harness-errors",
+      "ok": true
+    },
+    {
+      "check": "baseline-normal:normal-hole-390:normal-control-no-gate",
+      "ok": true
+    },
+    {
+      "check": "baseline-normal:normal-hole-390:A-consumed-before-B",
+      "ok": true
+    },
+    {
+      "check": "baseline-normal:normal-hole-390:complete-world-exact-A-preview-B",
+      "ok": true
+    },
+    {
+      "check": "baseline-normal:normal-hole-390:world-raw-network-bound",
+      "ok": true
+    },
+    {
+      "check": "baseline-normal:normal-hole-390:world-chronology",
+      "ok": true
+    },
+    {
+      "check": "baseline-normal:normal-hole-390:native-submit-after-mouse-up",
+      "ok": true,
+      "details": {
+        "commandWallMs": 1791557764870.0,
+        "mouseUpWallMs": 1791557764865.0068
+      }
+    },
+    {
+      "check": "baseline-normal:normal-hole-390:expected-file-bound",
+      "ok": true
+    },
+    {
+      "check": "after-c0f05baa-r1:geometry-ui-normal-hole-control:complete-result",
+      "ok": true
+    },
+    {
+      "check": "after-c0f05baa-r1:geometry-ui-normal-hole-control:exact-clean-source",
+      "ok": true
+    },
+    {
+      "check": "after-c0f05baa-r1:geometry-ui-normal-hole-control:identity-stable",
+      "ok": true
+    },
+    {
+      "check": "after-c0f05baa-r1:geometry-ui-normal-hole-control:runtime-fresh",
+      "ok": true
+    },
+    {
+      "check": "after-c0f05baa-r1:geometry-ui-normal-hole-control:executor-script-bound",
+      "ok": true
+    },
+    {
+      "check": "after-c0f05baa-r1:geometry-ui-normal-hole-control:wrapper-bound",
+      "ok": true
+    },
+    {
+      "check": "after-c0f05baa-r1:geometry-ui-normal-hole-control:raw-log-bound",
+      "ok": true
+    },
+    {
+      "check": "after-c0f05baa-r1:geometry-ui-normal-hole-control:actual-service-native-bound",
+      "ok": true
+    },
+    {
+      "check": "after-c0f05baa-r1:geometry-ui-normal-hole-control:actual-browser-chain",
+      "ok": true
+    },
+    {
+      "check": "after-c0f05baa-r1:geometry-ui-normal-hole-control:actual-executable-hashes-now",
+      "ok": true
+    },
+    {
+      "check": "after-c0f05baa-r1:geometry-ui-normal-hole-control:git-object-source:geometry-web/app.js",
+      "ok": true
+    },
+    {
+      "check": "after-c0f05baa-r1:geometry-ui-normal-hole-control:git-object-source:geometry-web/app.css",
+      "ok": true
+    },
+    {
+      "check": "after-c0f05baa-r1:geometry-ui-normal-hole-control:git-object-source:geometry-web/index.html",
+      "ok": true
+    },
+    {
+      "check": "after-normal:normal-hole-1382:one-exact-native-hole-command",
+      "ok": true
+    },
+    {
+      "check": "after-normal:normal-hole-1382:network-version",
+      "ok": true
+    },
+    {
+      "check": "after-normal:normal-hole-1382:served-source",
+      "ok": false
+    },
+    {
+      "check": "after-normal:normal-hole-1382:trusted-events",
+      "ok": true
+    },
+    {
+      "check": "after-normal:normal-hole-1382:terminal-functions",
+      "ok": true
+    },
+    {
+      "check": "after-normal:normal-hole-1382:normal-gesture-coordinates",
+      "ok": true
+    },
+    {
+      "check": "after-normal:normal-hole-1382:one-ordinary-trace-gesture",
+      "ok": true
+    },
+    {
+      "check": "after-normal:normal-hole-1382:no-page-or-harness-errors",
+      "ok": true
+    },
+    {
+      "check": "after-normal:normal-hole-1382:normal-control-no-gate",
+      "ok": true
+    },
+    {
+      "check": "after-normal:normal-hole-1382:A-consumed-before-B",
+      "ok": true
+    },
+    {
+      "check": "after-normal:normal-hole-1382:complete-world-exact-A-preview-B",
+      "ok": true
+    },
+    {
+      "check": "after-normal:normal-hole-1382:world-raw-network-bound",
+      "ok": true
+    },
+    {
+      "check": "after-normal:normal-hole-1382:world-chronology",
+      "ok": true
+    },
+    {
+      "check": "after-normal:normal-hole-1382:native-submit-after-mouse-up",
+      "ok": true,
+      "details": {
+        "commandWallMs": 1791557675192.0,
+        "mouseUpWallMs": 1791557675185.739
+      }
+    },
+    {
+      "check": "after-normal:normal-hole-1382:expected-file-bound",
+      "ok": true
+    },
+    {
+      "check": "after-normal:normal-hole-390:one-exact-native-hole-command",
+      "ok": true
+    },
+    {
+      "check": "after-normal:normal-hole-390:network-version",
+      "ok": true
+    },
+    {
+      "check": "after-normal:normal-hole-390:served-source",
+      "ok": false
+    },
+    {
+      "check": "after-normal:normal-hole-390:trusted-events",
+      "ok": true
+    },
+    {
+      "check": "after-normal:normal-hole-390:terminal-functions",
+      "ok": true
+    },
+    {
+      "check": "after-normal:normal-hole-390:normal-gesture-coordinates",
+      "ok": true
+    },
+    {
+      "check": "after-normal:normal-hole-390:one-ordinary-trace-gesture",
+      "ok": true
+    },
+    {
+      "check": "after-normal:normal-hole-390:no-page-or-harness-errors",
+      "ok": true
+    },
+    {
+      "check": "after-normal:normal-hole-390:normal-control-no-gate",
+      "ok": true
+    },
+    {
+      "check": "after-normal:normal-hole-390:A-consumed-before-B",
+      "ok": true
+    },
+    {
+      "check": "after-normal:normal-hole-390:complete-world-exact-A-preview-B",
+      "ok": true
+    },
+    {
+      "check": "after-normal:normal-hole-390:world-raw-network-bound",
+      "ok": true
+    },
+    {
+      "check": "after-normal:normal-hole-390:world-chronology",
+      "ok": true
+    },
+    {
+      "check": "after-normal:normal-hole-390:native-submit-after-mouse-up",
+      "ok": true,
+      "details": {
+        "commandWallMs": 1791557678909.0,
+        "mouseUpWallMs": 1791557678903.372
+      }
+    },
+    {
+      "check": "after-normal:normal-hole-390:expected-file-bound",
+      "ok": true
+    },
+    {
+      "check": "after-c0f05baa-r1:geometry-ui-projection-supplement:complete-result",
+      "ok": true
+    },
+    {
+      "check": "after-c0f05baa-r1:geometry-ui-projection-supplement:exact-clean-source",
+      "ok": true
+    },
+    {
+      "check": "after-c0f05baa-r1:geometry-ui-projection-supplement:identity-stable",
+      "ok": true
+    },
+    {
+      "check": "after-c0f05baa-r1:geometry-ui-projection-supplement:runtime-fresh",
+      "ok": true
+    },
+    {
+      "check": "after-c0f05baa-r1:geometry-ui-projection-supplement:executor-script-bound",
+      "ok": true
+    },
+    {
+      "check": "after-c0f05baa-r1:geometry-ui-projection-supplement:wrapper-bound",
+      "ok": true
+    },
+    {
+      "check": "after-c0f05baa-r1:geometry-ui-projection-supplement:raw-log-bound",
+      "ok": true
+    },
+    {
+      "check": "after-c0f05baa-r1:geometry-ui-projection-supplement:actual-service-native-bound",
+      "ok": true
+    },
+    {
+      "check": "after-c0f05baa-r1:geometry-ui-projection-supplement:actual-browser-chain",
+      "ok": true
+    },
+    {
+      "check": "after-c0f05baa-r1:geometry-ui-projection-supplement:actual-executable-hashes-now",
+      "ok": true
+    },
+    {
+      "check": "after-c0f05baa-r1:geometry-ui-projection-supplement:git-object-source:geometry-web/app.js",
+      "ok": true
+    },
+    {
+      "check": "after-c0f05baa-r1:geometry-ui-projection-supplement:git-object-source:geometry-web/app.css",
+      "ok": true
+    },
+    {
+      "check": "after-c0f05baa-r1:geometry-ui-projection-supplement:git-object-source:geometry-web/index.html",
+      "ok": true
+    },
+    {
+      "check": "after-held-original:held-A-B-hole-1382:one-exact-native-hole-command",
+      "ok": true
+    },
+    {
+      "check": "after-held-original:held-A-B-hole-1382:network-version",
+      "ok": true
+    },
+    {
+      "check": "after-held-original:held-A-B-hole-1382:served-source",
+      "ok": false
+    },
+    {
+      "check": "after-held-original:held-A-B-hole-1382:trusted-events",
+      "ok": true
+    },
+    {
+      "check": "after-held-original:held-A-B-hole-1382:terminal-functions",
+      "ok": true
+    },
+    {
+      "check": "after-held-original:held-A-B-hole-1382:normal-gesture-coordinates",
+      "ok": true
+    },
+    {
+      "check": "after-held-original:held-A-B-hole-1382:one-ordinary-trace-gesture",
+      "ok": true
+    },
+    {
+      "check": "after-held-original:held-A-B-hole-1382:no-page-or-harness-errors",
+      "ok": true
+    },
+    {
+      "check": "after-held-original:held-A-B-hole-1382:original-failure-kept",
+      "ok": true
+    },
+    {
+      "check": "after-held-original:held-A-B-hole-1382:owner-preservation-actually-passed",
+      "ok": true
+    },
+    {
+      "check": "after-held-original:held-A-B-hole-1382:complete-world-exact-A-preview-B",
+      "ok": true
+    },
+    {
+      "check": "after-held-original:held-A-B-hole-1382:world-raw-network-bound",
+      "ok": true
+    },
+    {
+      "check": "after-held-original:held-A-B-hole-1382:world-chronology",
+      "ok": true
+    },
+    {
+      "check": "after-held-original:held-A-B-hole-1382:native-submit-after-mouse-up",
+      "ok": true,
+      "details": {
+        "commandWallMs": 1791557460510.0,
+        "mouseUpWallMs": 1791557460503.4768
+      }
+    },
+    {
+      "check": "after-held-original:held-A-B-hole-1382:expected-file-bound",
+      "ok": true
+    },
+    {
+      "check": "after-held-original:held-A-B-hole-390:one-exact-native-hole-command",
+      "ok": true
+    },
+    {
+      "check": "after-held-original:held-A-B-hole-390:network-version",
+      "ok": true
+    },
+    {
+      "check": "after-held-original:held-A-B-hole-390:served-source",
+      "ok": false
+    },
+    {
+      "check": "after-held-original:held-A-B-hole-390:trusted-events",
+      "ok": true
+    },
+    {
+      "check": "after-held-original:held-A-B-hole-390:terminal-functions",
+      "ok": true
+    },
+    {
+      "check": "after-held-original:held-A-B-hole-390:normal-gesture-coordinates",
+      "ok": true
+    },
+    {
+      "check": "after-held-original:held-A-B-hole-390:one-ordinary-trace-gesture",
+      "ok": true
+    },
+    {
+      "check": "after-held-original:held-A-B-hole-390:no-page-or-harness-errors",
+      "ok": true
+    },
+    {
+      "check": "after-held-original:held-A-B-hole-390:original-failure-kept",
+      "ok": true
+    },
+    {
+      "check": "after-held-original:held-A-B-hole-390:owner-preservation-actually-passed",
+      "ok": true
+    },
+    {
+      "check": "after-held-original:held-A-B-hole-390:complete-world-exact-A-preview-B",
+      "ok": true
+    },
+    {
+      "check": "after-held-original:held-A-B-hole-390:world-raw-network-bound",
+      "ok": true
+    },
+    {
+      "check": "after-held-original:held-A-B-hole-390:world-chronology",
+      "ok": true
+    },
+    {
+      "check": "after-held-original:held-A-B-hole-390:native-submit-after-mouse-up",
+      "ok": true,
+      "details": {
+        "commandWallMs": 1791557476624.0,
+        "mouseUpWallMs": 1791557476618.461
+      }
+    },
+    {
+      "check": "after-held-original:held-A-B-hole-390:expected-file-bound",
+      "ok": true
+    },
+    {
+      "check": "1382:historical-normal-and-held-full-world-match:before",
+      "ok": true
+    },
+    {
+      "check": "1382:historical-normal-and-held-full-world-match:B-preview",
+      "ok": true
+    },
+    {
+      "check": "1382:historical-normal-and-held-full-world-match:B-finished",
+      "ok": true
+    },
+    {
+      "check": "1382:normal-and-held-input-events-exact-match",
+      "ok": true
+    },
+    {
+      "check": "1382:normal-and-held-trace-pointer-params-exact-match",
+      "ok": true
+    },
+    {
+      "check": "1382:earlier-baseline-failed-before-hole-completion",
+      "ok": true
+    },
+    {
+      "check": "390:historical-normal-and-held-full-world-match:before",
+      "ok": true
+    },
+    {
+      "check": "390:historical-normal-and-held-full-world-match:B-preview",
+      "ok": true
+    },
+    {
+      "check": "390:historical-normal-and-held-full-world-match:B-finished",
+      "ok": true
+    },
+    {
+      "check": "390:normal-and-held-input-events-exact-match",
+      "ok": true
+    },
+    {
+      "check": "390:normal-and-held-trace-pointer-params-exact-match",
+      "ok": true
+    },
+    {
+      "check": "390:earlier-baseline-failed-before-hole-completion",
+      "ok": true
+    },
+    {
+      "check": "parent-proof-receipt-hashes-correct",
+      "ok": true
+    }
+  ],
+  "cases": [
+    {
+      "group": "baseline-normal",
+      "name": "normal-hole-1382",
+      "sourceSHA": "f98078dc150c22960cbe2d212afb3ded61954bb9",
+      "dirty": "",
+      "nativeCommand": "line boundary 7 outline 0,0 4000,0 4000,3000 0,3000 hole 800,800 500,800 500,500 800,500",
+      "nativeReply": {
+        "ok": true
+      },
+      "worlds": {
+        "before": "1b292fbbac00dc11bf5f6b2d8f1b6f5bd40d8c5c6ef36c5f58ec24aa38e719a7",
+        "normal-A-applied": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+        "B-preview": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+        "B-finished": "aa17b68beeff178e8ee1c2b4242fcf20b774af93e77ec29651a52f34920c08e6"
+      },
+      "pointerGestureEvents": [
+        {
+          "type": "pointermove",
+          "trusted": true,
+          "id": "faceEditorSvg",
+          "key": null,
+          "shift": false,
+          "button": -1,
+          "buttons": 0,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 390.25,
+          "y": 207.5
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "id": "faceEditorSvg",
+          "key": null,
+          "shift": false,
+          "button": 0,
+          "buttons": 1,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 390.25,
+          "y": 207.5
+        },
+        {
+          "type": "pointermove",
+          "trusted": true,
+          "id": "faceEditorViewport",
+          "key": null,
+          "shift": false,
+          "button": -1,
+          "buttons": 1,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 408.29998779296875,
+          "y": 225.5500030517578
+        },
+        {
+          "type": "pointermove",
+          "trusted": true,
+          "id": "faceEditorViewport",
+          "key": null,
+          "shift": false,
+          "button": -1,
+          "buttons": 1,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 426.3500061035156,
+          "y": 243.59999084472656
+        },
+        {
+          "type": "pointermove",
+          "trusted": true,
+          "id": "faceEditorViewport",
+          "key": null,
+          "shift": false,
+          "button": -1,
+          "buttons": 1,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 444.3999938964844,
+          "y": 261.6499938964844
+        },
+        {
+          "type": "pointerup",
+          "trusted": true,
+          "id": "faceEditorViewport",
+          "key": null,
+          "shift": false,
+          "button": 0,
+          "buttons": 0,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 444.3999938964844,
+          "y": 261.6499938964844
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "id": "faceEditorViewport",
+          "key": null,
+          "shift": false,
+          "button": 0,
+          "buttons": 0,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 444,
+          "y": 261
+        }
+      ],
+      "traceMouseCalls": [
+        {
+          "type": "before",
+          "callId": "call@76",
+          "startTime": 5006.305,
+          "class": "Page",
+          "method": "mouseMove",
+          "params": {
+            "x": 390.25,
+            "y": 207.5
+          },
+          "pageId": "page@260ddb787dd24cea5bef1da4ed9ae068"
+        },
+        {
+          "type": "before",
+          "callId": "call@78",
+          "startTime": 5024.455,
+          "class": "Page",
+          "method": "mouseDown",
+          "params": {},
+          "pageId": "page@260ddb787dd24cea5bef1da4ed9ae068"
+        },
+        {
+          "type": "before",
+          "callId": "call@88",
+          "startTime": 5102.006,
+          "class": "Page",
+          "method": "mouseMove",
+          "params": {
+            "x": 444.3999938964844,
+            "y": 261.6499938964844,
+            "steps": 3
+          },
+          "pageId": "page@260ddb787dd24cea5bef1da4ed9ae068"
+        },
+        {
+          "type": "before",
+          "callId": "call@96",
+          "startTime": 5191.569,
+          "class": "Page",
+          "method": "mouseUp",
+          "params": {},
+          "pageId": "page@260ddb787dd24cea5bef1da4ed9ae068"
+        }
+      ]
+    },
+    {
+      "group": "baseline-normal",
+      "name": "normal-hole-390",
+      "sourceSHA": "f98078dc150c22960cbe2d212afb3ded61954bb9",
+      "dirty": "",
+      "nativeCommand": "line boundary 7 outline 0,0 4000,0 4000,3000 0,3000 hole 800,800 500,800 500,500 800,500",
+      "nativeReply": {
+        "ok": true
+      },
+      "worlds": {
+        "before": "7210702f95dff2b21afe0ee8ca9ff36f088fcd793a42fd960e759c7d4ddebc88",
+        "normal-A-applied": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+        "B-preview": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+        "B-finished": "6b0933495e918d567159857aba4554f010b363d6332aa107225fad62ce026c04"
+      },
+      "pointerGestureEvents": [
+        {
+          "type": "pointermove",
+          "trusted": true,
+          "id": "faceEditorSvg",
+          "key": null,
+          "shift": false,
+          "button": -1,
+          "buttons": 0,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 78.75000762939453,
+          "y": 319.5
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "id": "faceEditorSvg",
+          "key": null,
+          "shift": false,
+          "button": 0,
+          "buttons": 1,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 78.75000762939453,
+          "y": 319.5
+        },
+        {
+          "type": "pointermove",
+          "trusted": true,
+          "id": "faceEditorViewport",
+          "key": null,
+          "shift": false,
+          "button": -1,
+          "buttons": 1,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 86.50000762939453,
+          "y": 327.25
+        },
+        {
+          "type": "pointermove",
+          "trusted": true,
+          "id": "faceEditorViewport",
+          "key": null,
+          "shift": false,
+          "button": -1,
+          "buttons": 1,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 94.25000762939453,
+          "y": 335
+        },
+        {
+          "type": "pointermove",
+          "trusted": true,
+          "id": "faceEditorViewport",
+          "key": null,
+          "shift": false,
+          "button": -1,
+          "buttons": 1,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 102.00000762939453,
+          "y": 342.75
+        },
+        {
+          "type": "pointerup",
+          "trusted": true,
+          "id": "faceEditorViewport",
+          "key": null,
+          "shift": false,
+          "button": 0,
+          "buttons": 0,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 102.00000762939453,
+          "y": 342.75
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "id": "faceEditorViewport",
+          "key": null,
+          "shift": false,
+          "button": 0,
+          "buttons": 0,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 102,
+          "y": 342
+        }
+      ],
+      "traceMouseCalls": [
+        {
+          "type": "before",
+          "callId": "call@222",
+          "startTime": 8554.93,
+          "class": "Page",
+          "method": "mouseMove",
+          "params": {
+            "x": 78.75000762939453,
+            "y": 319.5
+          },
+          "pageId": "page@22531a80f118c1c8d1416652f5bbb54d"
+        },
+        {
+          "type": "before",
+          "callId": "call@224",
+          "startTime": 8572.151,
+          "class": "Page",
+          "method": "mouseDown",
+          "params": {},
+          "pageId": "page@22531a80f118c1c8d1416652f5bbb54d"
+        },
+        {
+          "type": "before",
+          "callId": "call@234",
+          "startTime": 8636.149,
+          "class": "Page",
+          "method": "mouseMove",
+          "params": {
+            "x": 102.00000762939453,
+            "y": 342.75,
+            "steps": 3
+          },
+          "pageId": "page@22531a80f118c1c8d1416652f5bbb54d"
+        },
+        {
+          "type": "before",
+          "callId": "call@242",
+          "startTime": 8732.005,
+          "class": "Page",
+          "method": "mouseUp",
+          "params": {},
+          "pageId": "page@22531a80f118c1c8d1416652f5bbb54d"
+        }
+      ]
+    },
+    {
+      "group": "after-normal",
+      "name": "normal-hole-1382",
+      "sourceSHA": "c0f05baade2424482fab94c72f0592f7b02326ae",
+      "dirty": "",
+      "nativeCommand": "line boundary 7 outline 0,0 4000,0 4000,3000 0,3000 hole 800,800 500,800 500,500 800,500",
+      "nativeReply": {
+        "ok": true
+      },
+      "worlds": {
+        "before": "1b292fbbac00dc11bf5f6b2d8f1b6f5bd40d8c5c6ef36c5f58ec24aa38e719a7",
+        "normal-A-applied": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+        "B-preview": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+        "B-finished": "aa17b68beeff178e8ee1c2b4242fcf20b774af93e77ec29651a52f34920c08e6"
+      },
+      "pointerGestureEvents": [
+        {
+          "type": "pointermove",
+          "trusted": true,
+          "id": "faceEditorSvg",
+          "key": null,
+          "shift": false,
+          "button": -1,
+          "buttons": 0,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 390.25,
+          "y": 207.5
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "id": "faceEditorSvg",
+          "key": null,
+          "shift": false,
+          "button": 0,
+          "buttons": 1,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 390.25,
+          "y": 207.5
+        },
+        {
+          "type": "pointermove",
+          "trusted": true,
+          "id": "faceEditorViewport",
+          "key": null,
+          "shift": false,
+          "button": -1,
+          "buttons": 1,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 408.29998779296875,
+          "y": 225.5500030517578
+        },
+        {
+          "type": "pointermove",
+          "trusted": true,
+          "id": "faceEditorViewport",
+          "key": null,
+          "shift": false,
+          "button": -1,
+          "buttons": 1,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 426.3500061035156,
+          "y": 243.59999084472656
+        },
+        {
+          "type": "pointermove",
+          "trusted": true,
+          "id": "faceEditorViewport",
+          "key": null,
+          "shift": false,
+          "button": -1,
+          "buttons": 1,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 444.3999938964844,
+          "y": 261.6499938964844
+        },
+        {
+          "type": "pointerup",
+          "trusted": true,
+          "id": "faceEditorViewport",
+          "key": null,
+          "shift": false,
+          "button": 0,
+          "buttons": 0,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 444.3999938964844,
+          "y": 261.6499938964844
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "id": "faceEditorViewport",
+          "key": null,
+          "shift": false,
+          "button": 0,
+          "buttons": 0,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 444,
+          "y": 261
+        }
+      ],
+      "traceMouseCalls": [
+        {
+          "type": "before",
+          "callId": "call@76",
+          "startTime": 5069.662,
+          "class": "Page",
+          "method": "mouseMove",
+          "params": {
+            "x": 390.25,
+            "y": 207.5
+          },
+          "pageId": "page@d5a70faf7ba05e3dea9c2301f9828bf6"
+        },
+        {
+          "type": "before",
+          "callId": "call@78",
+          "startTime": 5089.2,
+          "class": "Page",
+          "method": "mouseDown",
+          "params": {},
+          "pageId": "page@d5a70faf7ba05e3dea9c2301f9828bf6"
+        },
+        {
+          "type": "before",
+          "callId": "call@88",
+          "startTime": 5171.073,
+          "class": "Page",
+          "method": "mouseMove",
+          "params": {
+            "x": 444.3999938964844,
+            "y": 261.6499938964844,
+            "steps": 3
+          },
+          "pageId": "page@d5a70faf7ba05e3dea9c2301f9828bf6"
+        },
+        {
+          "type": "before",
+          "callId": "call@96",
+          "startTime": 5267.018,
+          "class": "Page",
+          "method": "mouseUp",
+          "params": {},
+          "pageId": "page@d5a70faf7ba05e3dea9c2301f9828bf6"
+        }
+      ]
+    },
+    {
+      "group": "after-normal",
+      "name": "normal-hole-390",
+      "sourceSHA": "c0f05baade2424482fab94c72f0592f7b02326ae",
+      "dirty": "",
+      "nativeCommand": "line boundary 7 outline 0,0 4000,0 4000,3000 0,3000 hole 800,800 500,800 500,500 800,500",
+      "nativeReply": {
+        "ok": true
+      },
+      "worlds": {
+        "before": "7210702f95dff2b21afe0ee8ca9ff36f088fcd793a42fd960e759c7d4ddebc88",
+        "normal-A-applied": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+        "B-preview": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+        "B-finished": "6b0933495e918d567159857aba4554f010b363d6332aa107225fad62ce026c04"
+      },
+      "pointerGestureEvents": [
+        {
+          "type": "pointermove",
+          "trusted": true,
+          "id": "faceEditorSvg",
+          "key": null,
+          "shift": false,
+          "button": -1,
+          "buttons": 0,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 78.75000762939453,
+          "y": 319.5
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "id": "faceEditorSvg",
+          "key": null,
+          "shift": false,
+          "button": 0,
+          "buttons": 1,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 78.75000762939453,
+          "y": 319.5
+        },
+        {
+          "type": "pointermove",
+          "trusted": true,
+          "id": "faceEditorViewport",
+          "key": null,
+          "shift": false,
+          "button": -1,
+          "buttons": 1,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 86.50000762939453,
+          "y": 327.25
+        },
+        {
+          "type": "pointermove",
+          "trusted": true,
+          "id": "faceEditorViewport",
+          "key": null,
+          "shift": false,
+          "button": -1,
+          "buttons": 1,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 94.25000762939453,
+          "y": 335
+        },
+        {
+          "type": "pointermove",
+          "trusted": true,
+          "id": "faceEditorViewport",
+          "key": null,
+          "shift": false,
+          "button": -1,
+          "buttons": 1,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 102.00000762939453,
+          "y": 342.75
+        },
+        {
+          "type": "pointerup",
+          "trusted": true,
+          "id": "faceEditorViewport",
+          "key": null,
+          "shift": false,
+          "button": 0,
+          "buttons": 0,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 102.00000762939453,
+          "y": 342.75
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "id": "faceEditorViewport",
+          "key": null,
+          "shift": false,
+          "button": 0,
+          "buttons": 0,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 102,
+          "y": 342
+        }
+      ],
+      "traceMouseCalls": [
+        {
+          "type": "before",
+          "callId": "call@222",
+          "startTime": 8812.905,
+          "class": "Page",
+          "method": "mouseMove",
+          "params": {
+            "x": 78.75000762939453,
+            "y": 319.5
+          },
+          "pageId": "page@4b5dea89e0a3a7acde77a4baa4c21b79"
+        },
+        {
+          "type": "before",
+          "callId": "call@224",
+          "startTime": 8826.967,
+          "class": "Page",
+          "method": "mouseDown",
+          "params": {},
+          "pageId": "page@4b5dea89e0a3a7acde77a4baa4c21b79"
+        },
+        {
+          "type": "before",
+          "callId": "call@234",
+          "startTime": 8885.681,
+          "class": "Page",
+          "method": "mouseMove",
+          "params": {
+            "x": 102.00000762939453,
+            "y": 342.75,
+            "steps": 3
+          },
+          "pageId": "page@4b5dea89e0a3a7acde77a4baa4c21b79"
+        },
+        {
+          "type": "before",
+          "callId": "call@242",
+          "startTime": 8984.33,
+          "class": "Page",
+          "method": "mouseUp",
+          "params": {},
+          "pageId": "page@4b5dea89e0a3a7acde77a4baa4c21b79"
+        }
+      ]
+    },
+    {
+      "group": "after-held-original",
+      "name": "held-A-B-hole-1382",
+      "sourceSHA": "c0f05baade2424482fab94c72f0592f7b02326ae",
+      "dirty": "",
+      "nativeCommand": "line boundary 7 outline 0,0 4000,0 4000,3000 0,3000 hole 800,800 500,800 500,500 800,500",
+      "nativeReply": {
+        "ok": true
+      },
+      "worlds": {
+        "before": "1b292fbbac00dc11bf5f6b2d8f1b6f5bd40d8c5c6ef36c5f58ec24aa38e719a7",
+        "A-held": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+        "B-preview": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+        "B-finished": "aa17b68beeff178e8ee1c2b4242fcf20b774af93e77ec29651a52f34920c08e6"
+      },
+      "pointerGestureEvents": [
+        {
+          "type": "pointermove",
+          "trusted": true,
+          "id": "faceEditorSvg",
+          "key": null,
+          "shift": false,
+          "button": -1,
+          "buttons": 0,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 390.25,
+          "y": 207.5
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "id": "faceEditorSvg",
+          "key": null,
+          "shift": false,
+          "button": 0,
+          "buttons": 1,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 390.25,
+          "y": 207.5
+        },
+        {
+          "type": "pointermove",
+          "trusted": true,
+          "id": "faceEditorViewport",
+          "key": null,
+          "shift": false,
+          "button": -1,
+          "buttons": 1,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 408.29998779296875,
+          "y": 225.5500030517578
+        },
+        {
+          "type": "pointermove",
+          "trusted": true,
+          "id": "faceEditorViewport",
+          "key": null,
+          "shift": false,
+          "button": -1,
+          "buttons": 1,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 426.3500061035156,
+          "y": 243.59999084472656
+        },
+        {
+          "type": "pointermove",
+          "trusted": true,
+          "id": "faceEditorViewport",
+          "key": null,
+          "shift": false,
+          "button": -1,
+          "buttons": 1,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 444.3999938964844,
+          "y": 261.6499938964844
+        },
+        {
+          "type": "pointerup",
+          "trusted": true,
+          "id": "faceEditorViewport",
+          "key": null,
+          "shift": false,
+          "button": 0,
+          "buttons": 0,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 444.3999938964844,
+          "y": 261.6499938964844
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "id": "faceEditorViewport",
+          "key": null,
+          "shift": false,
+          "button": 0,
+          "buttons": 0,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 444,
+          "y": 261
+        }
+      ],
+      "traceMouseCalls": [
+        {
+          "type": "before",
+          "callId": "call@262",
+          "startTime": 11430.493,
+          "class": "Page",
+          "method": "mouseMove",
+          "params": {
+            "x": 390.25,
+            "y": 207.5
+          },
+          "pageId": "page@ddc109c3e63c9311dbe45281e9c8e26c"
+        },
+        {
+          "type": "before",
+          "callId": "call@264",
+          "startTime": 11453.66,
+          "class": "Page",
+          "method": "mouseDown",
+          "params": {},
+          "pageId": "page@ddc109c3e63c9311dbe45281e9c8e26c"
+        },
+        {
+          "type": "before",
+          "callId": "call@284",
+          "startTime": 11638.557,
+          "class": "Page",
+          "method": "mouseMove",
+          "params": {
+            "x": 444.3999938964844,
+            "y": 261.6499938964844,
+            "steps": 3
+          },
+          "pageId": "page@ddc109c3e63c9311dbe45281e9c8e26c"
+        },
+        {
+          "type": "before",
+          "callId": "call@292",
+          "startTime": 11744.899,
+          "class": "Page",
+          "method": "mouseUp",
+          "params": {},
+          "pageId": "page@ddc109c3e63c9311dbe45281e9c8e26c"
+        }
+      ]
+    },
+    {
+      "group": "after-held-original",
+      "name": "held-A-B-hole-390",
+      "sourceSHA": "c0f05baade2424482fab94c72f0592f7b02326ae",
+      "dirty": "",
+      "nativeCommand": "line boundary 7 outline 0,0 4000,0 4000,3000 0,3000 hole 800,800 500,800 500,500 800,500",
+      "nativeReply": {
+        "ok": true
+      },
+      "worlds": {
+        "before": "7210702f95dff2b21afe0ee8ca9ff36f088fcd793a42fd960e759c7d4ddebc88",
+        "A-held": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+        "B-preview": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+        "B-finished": "6b0933495e918d567159857aba4554f010b363d6332aa107225fad62ce026c04"
+      },
+      "pointerGestureEvents": [
+        {
+          "type": "pointermove",
+          "trusted": true,
+          "id": "faceEditorSvg",
+          "key": null,
+          "shift": false,
+          "button": -1,
+          "buttons": 0,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 78.75000762939453,
+          "y": 319.5
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "id": "faceEditorSvg",
+          "key": null,
+          "shift": false,
+          "button": 0,
+          "buttons": 1,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 78.75000762939453,
+          "y": 319.5
+        },
+        {
+          "type": "pointermove",
+          "trusted": true,
+          "id": "faceEditorViewport",
+          "key": null,
+          "shift": false,
+          "button": -1,
+          "buttons": 1,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 86.50000762939453,
+          "y": 327.25
+        },
+        {
+          "type": "pointermove",
+          "trusted": true,
+          "id": "faceEditorViewport",
+          "key": null,
+          "shift": false,
+          "button": -1,
+          "buttons": 1,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 94.25000762939453,
+          "y": 335
+        },
+        {
+          "type": "pointermove",
+          "trusted": true,
+          "id": "faceEditorViewport",
+          "key": null,
+          "shift": false,
+          "button": -1,
+          "buttons": 1,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 102.00000762939453,
+          "y": 342.75
+        },
+        {
+          "type": "pointerup",
+          "trusted": true,
+          "id": "faceEditorViewport",
+          "key": null,
+          "shift": false,
+          "button": 0,
+          "buttons": 0,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 102.00000762939453,
+          "y": 342.75
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "id": "faceEditorViewport",
+          "key": null,
+          "shift": false,
+          "button": 0,
+          "buttons": 0,
+          "pointerId": 1,
+          "timber": null,
+          "faceTool": null,
+          "itemType": null,
+          "itemId": null,
+          "x": 102,
+          "y": 342
+        }
+      ],
+      "traceMouseCalls": [
+        {
+          "type": "before",
+          "callId": "call@794",
+          "startTime": 27594.074,
+          "class": "Page",
+          "method": "mouseMove",
+          "params": {
+            "x": 78.75000762939453,
+            "y": 319.5
+          },
+          "pageId": "page@202362dba7d1750e2c14dc9c9516f515"
+        },
+        {
+          "type": "before",
+          "callId": "call@796",
+          "startTime": 27611.314,
+          "class": "Page",
+          "method": "mouseDown",
+          "params": {},
+          "pageId": "page@202362dba7d1750e2c14dc9c9516f515"
+        },
+        {
+          "type": "before",
+          "callId": "call@816",
+          "startTime": 27761.797,
+          "class": "Page",
+          "method": "mouseMove",
+          "params": {
+            "x": 102.00000762939453,
+            "y": 342.75,
+            "steps": 3
+          },
+          "pageId": "page@202362dba7d1750e2c14dc9c9516f515"
+        },
+        {
+          "type": "before",
+          "callId": "call@824",
+          "startTime": 27858.917,
+          "class": "Page",
+          "method": "mouseUp",
+          "params": {},
+          "pageId": "page@202362dba7d1750e2c14dc9c9516f515"
+        }
+      ]
+    }
+  ],
+  "artifacts": {
+    "<workspace-path>|basename=projection_supplement.py|originalKeySha256=2aef0fdb8cce43e444536376c052619f56ccfb70407bba521c97e20c8f5453eb": {
+      "sha256": "8cf091d5e05c63e6e5695ea1a34d5a27fe02898a37672ccc5079ee646c1e8b63",
+      "bytes": 18307
+    },
+    "<workspace-path>|basename=historical-hole-order-expected-only.patch|originalKeySha256=0318f1d777aed805016fdb6733ad66d8f0d861e4ff3e99eaab275995549bb75d": {
+      "sha256": "2e04d7aff94cfb44ee5ab446fef5ae37befc098680ceb33319b84165eeb44f9b",
+      "bytes": 548
+    },
+    "<workspace-path>|basename=projection_supplement.py|originalKeySha256=f937f9579c400d76fbca7180b0c95682d57539b7fcd5199441848b0027821ccc": {
+      "sha256": "8cf091d5e05c63e6e5695ea1a34d5a27fe02898a37672ccc5079ee646c1e8b63",
+      "bytes": 18307
+    },
+    "<workspace-path>|basename=projection_supplement.py|originalKeySha256=27800c71ba2c52590f2a4a1664f85a9e66d41b997f736141ff287bae68fd07b2": {
+      "sha256": "9594ab91fbddabc71ad43970d6dbe771ba5e450531c692e1918e573548ec937d",
+      "bytes": 18307
+    },
+    "<workspace-path>|basename=projection_instrumentation.js|originalKeySha256=91c2919f901e8d36cddb786d69a047fcef32d530c1af363b15604a5f3f773e5c": {
+      "sha256": "599eceb5c6e329196070f037387e6f4500f3bba68db9ed40e61a6f49d2242979",
+      "bytes": 3870
+    },
+    "<workspace-path>|basename=projection_instrumentation.js|originalKeySha256=c1adc110a6fc03be99588416659c3475a7a6f886b72c93ee083f1eb8745a623e": {
+      "sha256": "599eceb5c6e329196070f037387e6f4500f3bba68db9ed40e61a6f49d2242979",
+      "bytes": 3870
+    },
+    "<workspace-path>|basename=fixture.json|originalKeySha256=bcf924c0dbaba910519571e637da7b12cb1bf7eece278207c1f1018efdd2ed60": {
+      "sha256": "d8ca6fe097ccb673adbb76a41be1aefbf8cb7f59ba214231d4c9fb028ca267ef",
+      "bytes": 1081
+    },
+    "<workspace-path>|basename=fixture.json|originalKeySha256=8067dfb1f77dfc418fb122864a3a48661c09a946a44bf9b88e922f0932649015": {
+      "sha256": "d8ca6fe097ccb673adbb76a41be1aefbf8cb7f59ba214231d4c9fb028ca267ef",
+      "bytes": 1081
+    },
+    "<workspace-path>|basename=expected-order-correction-receipt.json|originalKeySha256=cb81a0dc3239273435958633ff0d0dfd93d1596e023524335a5c774617545a4b": {
+      "sha256": "102935b2423c419397db347ce961953be774e1eac7ab092211c43850b30b1d64",
+      "bytes": 1681
+    },
+    "<workspace-path>|basename=normal-hole-historical-order-proof.json|originalKeySha256=957eca2dce582ff5145f31fd46d5d10a784619ad7ad518d301993451f7b1d4bb": {
+      "sha256": "6ac28348629fe725ddb37828a796c2a45031606d89ad1dc7e35d2270e9dd4dee",
+      "bytes": 3445
+    },
+    "<workspace-path>|basename=receipt.json|originalKeySha256=16f0cb600769700517ca545935256595511ee0acd6d27d2dad5f6a76777ec9c2": {
+      "sha256": "0619eaba3db96f715c924e5c773eef3cc393a4703331eb04bef110dba58d38d0",
+      "bytes": 7888
+    },
+    "<workspace-path>|basename=baseline-f980-r1-wrapper-receipt.json|originalKeySha256=7e9548953f483a79c71539cc91a371e1a9ee1981a3dd534df0c0ccb8a0719a15": {
+      "sha256": "ed228586c303c58b564e29f86bd6eeacc9a15b0290a76a356d0e522cd222586c",
+      "bytes": 2041
+    },
+    "<workspace-path>|basename=projection_supplement.py|originalKeySha256=0eff32e98f03c1a18ca5baa17bdda75b67519bcd361fd2cd0d33bc8f01464bdc": {
+      "sha256": "83af4f9480f37d65787056e2ff300201a04d8c65dfada76b957c8c78ec5b2b38",
+      "bytes": 19331
+    },
+    "<workspace-path>|basename=baseline-f980-r1.log|originalKeySha256=2a75845614cd8b395d961cc053565416a7130fc8dfb2fe17326773ca975ee5eb": {
+      "sha256": "be31e15431e73346782d99aaca6e17575ed583549e9e158ae555e6633af9b5e0",
+      "bytes": 182
+    },
+    "<workspace-path>|basename=browser.json|originalKeySha256=f8b6bc7f3c0e9da30c70a6e8cd38416fd941f06726b88eeeceeb6019f063c618": {
+      "sha256": "4ffd13aded1dc6efb4998723748edc9c519c783afa9796fa6aca8884c58779f8",
+      "bytes": 9948
+    },
+    "<workspace-path>|basename=normal-hole-1382.json|originalKeySha256=27d5d4b678c167c44616446cbd11a6c4744b8e6a27d7d9d632cb29d4a6c44526": {
+      "sha256": "06527ce9a1478142994c6b94ae3a92f99e8f79a3380cd2332ce2dccf3617006b",
+      "bytes": 307016
+    },
+    "<workspace-path>|basename=normal-hole-1382-trace.zip|originalKeySha256=73b8aa502608347e467ba78711b183573b5e83ffdf16ab8e263cf630b30d99ed": {
+      "sha256": "7d07455ad7d53465c9bf55e46c4a88565c7ec8e5d8d66e0bd69211570b9df767",
+      "bytes": 3145321
+    },
+    "<workspace-path>|basename=normal-hole-1382-world-before.scene|originalKeySha256=7107e33218f3cf0714e2c427bd6575d66e9e23ad7ddf936fd24cc7aba70de432": {
+      "sha256": "1b292fbbac00dc11bf5f6b2d8f1b6f5bd40d8c5c6ef36c5f58ec24aa38e719a7",
+      "bytes": 1370
+    },
+    "<workspace-path>|basename=normal-hole-1382-world-normal-A-applied.scene|originalKeySha256=5046f80aa96f494592c449914663c5f5e4be98b83cfc9e083e3dfbe525410110": {
+      "sha256": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+      "bytes": 1415
+    },
+    "<workspace-path>|basename=normal-hole-1382-world-B-preview.scene|originalKeySha256=d164a5bd5eb586f151098dab79f819ce3585606cc961bd27f316e7136a2d7313": {
+      "sha256": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+      "bytes": 1415
+    },
+    "<workspace-path>|basename=normal-hole-1382-world-B-finished.scene|originalKeySha256=a1c9923f9c46bedb6f15af711bb7a94f438bbd92f4b8fc9785eb086d836b05cd": {
+      "sha256": "aa17b68beeff178e8ee1c2b4242fcf20b774af93e77ec29651a52f34920c08e6",
+      "bytes": 1452
+    },
+    "<workspace-path>|basename=normal-hole-1382-world-B-expected.scene|originalKeySha256=38ea02cd90e96c65c815c0065e780a6ced10aad45d1464ec34581f8e1410da4d": {
+      "sha256": "aa17b68beeff178e8ee1c2b4242fcf20b774af93e77ec29651a52f34920c08e6",
+      "bytes": 1452
+    },
+    "<workspace-path>|basename=normal-hole-390.json|originalKeySha256=637ceaf6608a7924951a455bc627ef4c6b5e7b6f83b85ff629d34f1c71e6b6d3": {
+      "sha256": "b56f4f1db51f01ddfc702752633039e1791baccf9330f7781bfe104d4ec95a08",
+      "bytes": 312685
+    },
+    "<workspace-path>|basename=normal-hole-390-trace.zip|originalKeySha256=3f3b9c507bf2446f400d449b372bcbc318320f9862962112f6d2955263c00656": {
+      "sha256": "a2c93714571e94c68c006d17725aa9f9bb62bed0d761f6dc2beda03e4f4b56c8",
+      "bytes": 2062840
+    },
+    "<workspace-path>|basename=normal-hole-390-world-before.scene|originalKeySha256=db16a485a98e78ff0d91ecff78e137121c1cd1f9e89779e45df644473f2834cd": {
+      "sha256": "7210702f95dff2b21afe0ee8ca9ff36f088fcd793a42fd960e759c7d4ddebc88",
+      "bytes": 1369
+    },
+    "<workspace-path>|basename=normal-hole-390-world-normal-A-applied.scene|originalKeySha256=7e33145eba5c347542f9ce267a190ead0576a0daaff023237bffd408447cf0e9": {
+      "sha256": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+      "bytes": 1414
+    },
+    "<workspace-path>|basename=normal-hole-390-world-B-preview.scene|originalKeySha256=55498a2a31a3f384df0277d6bda45255c91c44dd84d91dfeacbd1342a1b5d22d": {
+      "sha256": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+      "bytes": 1414
+    },
+    "<workspace-path>|basename=normal-hole-390-world-B-finished.scene|originalKeySha256=65d20b6e948704bcc915133e80271fca88b5008f27457a05c66038fd2232099c": {
+      "sha256": "6b0933495e918d567159857aba4554f010b363d6332aa107225fad62ce026c04",
+      "bytes": 1451
+    },
+    "<workspace-path>|basename=normal-hole-390-world-B-expected.scene|originalKeySha256=9661e2e001e1e60d0408dba4384625500a12174d2412c2161881e1f3bdd43fab": {
+      "sha256": "6b0933495e918d567159857aba4554f010b363d6332aa107225fad62ce026c04",
+      "bytes": 1451
+    },
+    "<workspace-path>|basename=receipt.json|originalKeySha256=eb7ab0e24f6b397878e5154cc8a418f8de8b912ff1aad2b118dc50fac6b61d05": {
+      "sha256": "410d04fadfe49797761bf27df29d36be2ff659d45bb17a3722eab4b698556e49",
+      "bytes": 7864
+    },
+    "<workspace-path>|basename=after-c0f05baa-r1-wrapper-receipt.json|originalKeySha256=020a1d8e9c267ce28b937b6fd882d0e9430c269f996927eecf51ed4973253676": {
+      "sha256": "6b98bef276befd729849efd8cf01a794b214d8822bf37118fdb638f694bef564",
+      "bytes": 1934
+    },
+    "<workspace-path>|basename=after-c0f05baa-r1.log|originalKeySha256=3a6202d051313674326275921b274fcf61320935f683ee1baec76ffc3e9bceb2": {
+      "sha256": "40755c7a12b4ff9e068300c50d6fa9a20cac9f1f0118ebe8e75b1135cf468a35",
+      "bytes": 183
+    },
+    "<workspace-path>|basename=browser.json|originalKeySha256=feaa2d820644f9e0058ec81aa87ea5aa43077b95b3dc8b5c6968fe7b03d285f8": {
+      "sha256": "0166b0ef3458d973b90ca476d9f0fe54c5d709943838fa7cbc7f3afffd8f1ee0",
+      "bytes": 9882
+    },
+    "<workspace-path>|basename=normal-hole-1382.json|originalKeySha256=f5c6c15f21c7f9c8d5fd07be918946a878eab99324b32c6d9d243cfdc2582a1d": {
+      "sha256": "1e3c7c52850c9ad4eb90e3e8a8190b13bc291bf2ce322f31f865fd0ba30ada1c",
+      "bytes": 307016
+    },
+    "<workspace-path>|basename=normal-hole-1382-trace.zip|originalKeySha256=1f1caccaffc34865d45b0efac21430daa4db976056665d2d1306552391778c6a": {
+      "sha256": "f6c26ed64bee251497449c99e9833202cb6f23c194165b2142bbf684ea47e2fa",
+      "bytes": 3152078
+    },
+    "<workspace-path>|basename=normal-hole-1382-world-before.scene|originalKeySha256=5fdd2d5e8a8aebd28a152de586e237550d5a7dde1e7a2af98b2f8be9f9aaf462": {
+      "sha256": "1b292fbbac00dc11bf5f6b2d8f1b6f5bd40d8c5c6ef36c5f58ec24aa38e719a7",
+      "bytes": 1370
+    },
+    "<workspace-path>|basename=normal-hole-1382-world-normal-A-applied.scene|originalKeySha256=0b85ff44170de2d25bf72de019c4df7a40e08096fabe5a2875b87f9b2e2bbd18": {
+      "sha256": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+      "bytes": 1415
+    },
+    "<workspace-path>|basename=normal-hole-1382-world-B-preview.scene|originalKeySha256=bbe98eb05f43ac6bdc30c053b71b00be4970ec9ec1cd66c97e460c81504e89f2": {
+      "sha256": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+      "bytes": 1415
+    },
+    "<workspace-path>|basename=normal-hole-1382-world-B-finished.scene|originalKeySha256=15303dd33b10252687d77ada802746756860da688eda8b49fe081f2086a07fd1": {
+      "sha256": "aa17b68beeff178e8ee1c2b4242fcf20b774af93e77ec29651a52f34920c08e6",
+      "bytes": 1452
+    },
+    "<workspace-path>|basename=normal-hole-1382-world-B-expected.scene|originalKeySha256=b9d9e420f56907ef4805646df1f911bd283e09f653a9e128894072090f4c6621": {
+      "sha256": "aa17b68beeff178e8ee1c2b4242fcf20b774af93e77ec29651a52f34920c08e6",
+      "bytes": 1452
+    },
+    "<workspace-path>|basename=normal-hole-390.json|originalKeySha256=42965c4faff8f1144c2af0441763bc190eff879a6ce0fa8b446c25ba4875071b": {
+      "sha256": "a49e494e1c58abad5e3f24a15610f20a097a794c2bddfedd73a744d802518a2f",
+      "bytes": 312682
+    },
+    "<workspace-path>|basename=normal-hole-390-trace.zip|originalKeySha256=5741e5790e558b2c55af6dd1b285276bdcf4c6dd04a981576665b97dcf0ba00e": {
+      "sha256": "073fbce293173eed644bb33a995ba4e3670f4c919c461657a96c55bd58b2abb0",
+      "bytes": 2066360
+    },
+    "<workspace-path>|basename=normal-hole-390-world-before.scene|originalKeySha256=009e925658959a23e36a7b0c35e4f14200de5493262f5279f43b103d95ee8540": {
+      "sha256": "7210702f95dff2b21afe0ee8ca9ff36f088fcd793a42fd960e759c7d4ddebc88",
+      "bytes": 1369
+    },
+    "<workspace-path>|basename=normal-hole-390-world-normal-A-applied.scene|originalKeySha256=546d2686ab7c92d7536e9d5579c9332dea8805255904d44c72c871f7aa6689e2": {
+      "sha256": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+      "bytes": 1414
+    },
+    "<workspace-path>|basename=normal-hole-390-world-B-preview.scene|originalKeySha256=9c9aa8ee9413fe2be8b9ccf6d047107d703664e92266585b20899ce463cab65a": {
+      "sha256": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+      "bytes": 1414
+    },
+    "<workspace-path>|basename=normal-hole-390-world-B-finished.scene|originalKeySha256=92b8b6721e0daca38e0fc6c7444199a34d0cd83ec1f2e3bfeb9eb56d7f4b5f22": {
+      "sha256": "6b0933495e918d567159857aba4554f010b363d6332aa107225fad62ce026c04",
+      "bytes": 1451
+    },
+    "<workspace-path>|basename=normal-hole-390-world-B-expected.scene|originalKeySha256=83e3efc916db9c82a70db146b76eddfc070f7d935009d0e58a77e7635b733a4d": {
+      "sha256": "6b0933495e918d567159857aba4554f010b363d6332aa107225fad62ce026c04",
+      "bytes": 1451
+    },
+    "<workspace-path>|basename=receipt.json|originalKeySha256=00671907dfeb0c40f88b40da1aeec82fceb5aa8d9e958f0acc352b94d58b0761": {
+      "sha256": "7675f17490bc14b470e1954f1e007cb06dc916ee6ab7ccbc1fac179fdd98283f",
+      "bytes": 8052
+    },
+    "<workspace-path>|basename=after-c0f05baa-r1-wrapper-receipt.json|originalKeySha256=5ce4e62ec8f89ec126960b899ae99c0229e6c6f86c1dce610770707df9dd00be": {
+      "sha256": "95cf049d7ce7aa2f7f2ad3bb6b1e13c8018c62ad8bca61b60da2a5cc7fe8500e",
+      "bytes": 2054
+    },
+    "<workspace-path>|basename=after-c0f05baa-r1.log|originalKeySha256=e5e5ffc79e231100fc05833f4ad87eda957a482d216f7b12b8e86da5f35c5df6": {
+      "sha256": "1353e00ee0f05acbebaebd78bb830cb8bfdbab5d7138c1d2ac7a4ecbd50f87c7",
+      "bytes": 409
+    },
+    "<workspace-path>|basename=browser.json|originalKeySha256=3e67c17e30524b1157fae4251a1d1f5df275c053efad68447ada08650a3b4f72": {
+      "sha256": "61c7876f1476c74c731aecf03f8aa6139631daa41bb43e3f90f6cc480f9c7f93",
+      "bytes": 9949
+    },
+    "<workspace-path>|basename=held-A-B-hole-1382.json|originalKeySha256=c40b00d3408f2200b2f997eeb33ba6d5a7a763d71eebbe1ce6c3995aef534f4d": {
+      "sha256": "d020fa876832b7cc722b0482d24235baaefa3c5f2d4647bf60477025f4d1fcff",
+      "bytes": 252246
+    },
+    "<workspace-path>|basename=held-A-B-hole-1382-trace.zip|originalKeySha256=a57ed21edafd5d8b43d9f20641fb85d863454dca3a48fe77178624a586325552": {
+      "sha256": "cb5dba49dce831de5efaf5c20c9fe32f9b73a1b0c41499467721382141d1dd83",
+      "bytes": 2955799
+    },
+    "<workspace-path>|basename=held-A-B-hole-1382-owners.json|originalKeySha256=5f0b4abb72a6de10dd0d7f4f32faf30b7661c8bffe9676f946698d63db94d9ff": {
+      "sha256": "64262ef8dbd2249f9e2a5cc621fc1cc2cbd998d886f12c7fb669c6e954210284",
+      "bytes": 20140
+    },
+    "<workspace-path>|basename=held-A-B-hole-1382-world-before.scene|originalKeySha256=ae21c94e6a02622491efa9f89d88c6982371f0b2d0aa634c0499d5995e567519": {
+      "sha256": "1b292fbbac00dc11bf5f6b2d8f1b6f5bd40d8c5c6ef36c5f58ec24aa38e719a7",
+      "bytes": 1370
+    },
+    "<workspace-path>|basename=held-A-B-hole-1382-world-A-held.scene|originalKeySha256=80353cbbce0c717cf67dff1969171fc07416089de2003b22539ef25ee97af574": {
+      "sha256": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+      "bytes": 1415
+    },
+    "<workspace-path>|basename=held-A-B-hole-1382-world-B-preview.scene|originalKeySha256=91372deabc8f965ef2140dd30fe4109fd0dc1db4cfaa9391bf8f8a4f7fc2d819": {
+      "sha256": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+      "bytes": 1415
+    },
+    "<workspace-path>|basename=held-A-B-hole-1382-world-B-finished.scene|originalKeySha256=bc3ff13f687b6da53b8fd1070d4f75327975feb96b8b4e82b0681cffb50ff6a9": {
+      "sha256": "aa17b68beeff178e8ee1c2b4242fcf20b774af93e77ec29651a52f34920c08e6",
+      "bytes": 1452
+    },
+    "<workspace-path>|basename=held-A-B-hole-1382-world-B-expected.scene|originalKeySha256=4b1165777ce0444dd40af286cae57943d0b6c355903a5c692bff3f7c78b6ad05": {
+      "sha256": "e7e9a6e90acf9401288d5222489b86a598a5d76300b65a2c8d063b8078455d06",
+      "bytes": 1452
+    },
+    "<workspace-path>|basename=held-A-B-hole-390.json|originalKeySha256=ed106229068f3b546e42596184be552d009373ebc00422f195bdf3eafb6ba113": {
+      "sha256": "e638e43b28fa69d449567379f58fb38e943a44537c658351370b4e3e753a448b",
+      "bytes": 257883
+    },
+    "<workspace-path>|basename=held-A-B-hole-390-trace.zip|originalKeySha256=5f91e06d44f265b59676830922462e4017ec035ea1405fc20e7eea95e8c7add5": {
+      "sha256": "09a9e4646a9c822fb8ffb38a071e4d0b9a4cd7e29fb4f884647eef8b1a0ae4e3",
+      "bytes": 1729779
+    },
+    "<workspace-path>|basename=held-A-B-hole-390-owners.json|originalKeySha256=62cd6519056a157a1bba79121e532e620f8bcf7a74df3365ed8677afed0310ad": {
+      "sha256": "7211c853f74ab8964bc430b818351a7c0fcac38e11f3f180c164f5e9b0159d75",
+      "bytes": 20176
+    },
+    "<workspace-path>|basename=held-A-B-hole-390-world-before.scene|originalKeySha256=e9df92519aad05f2a353ddfe90d00b5a532b71c547d2867c40d1dbd06a457f4d": {
+      "sha256": "7210702f95dff2b21afe0ee8ca9ff36f088fcd793a42fd960e759c7d4ddebc88",
+      "bytes": 1369
+    },
+    "<workspace-path>|basename=held-A-B-hole-390-world-A-held.scene|originalKeySha256=6e414463774942b614c82eff605ce61505a19fe47b0ccfca69db25c4de9071fa": {
+      "sha256": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+      "bytes": 1414
+    },
+    "<workspace-path>|basename=held-A-B-hole-390-world-B-preview.scene|originalKeySha256=733d132397dac34442627adc57eff865af21cb0272a1ddecff23e0fb010d47cf": {
+      "sha256": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+      "bytes": 1414
+    },
+    "<workspace-path>|basename=held-A-B-hole-390-world-B-finished.scene|originalKeySha256=ac08018e170fca6aa096d8159e2ee946d0ce8ec6dd7e734a822ab26b5adeaf56": {
+      "sha256": "6b0933495e918d567159857aba4554f010b363d6332aa107225fad62ce026c04",
+      "bytes": 1451
+    },
+    "<workspace-path>|basename=held-A-B-hole-390-world-B-expected.scene|originalKeySha256=cab75415d88310a140b584d82494af17dc817414b7b9f8069fd4c224ab0372cc": {
+      "sha256": "c5c8732acfbad52a3b4acfd7e2f9b500834594d66f53aadae310b6ed93239c21",
+      "bytes": 1451
+    },
+    "<workspace-path>|basename=held-A-B-hole-1382.json|originalKeySha256=cd2633f9ff05d5ac1eebb8cc2137f6b3f3f516acd0d5c7284a849de6b0d89c0f": {
+      "sha256": "834b6c71bcf379688d07777cb7abd35513cf9f90140a972e24b57e1fbeb5a9f5",
+      "bytes": 152595
+    },
+    "<workspace-path>|basename=held-A-B-hole-390.json|originalKeySha256=1413a435c80d20e3478dd746a7cbac8f2c962d15510db6164ff77d326d5d9c5c": {
+      "sha256": "e4e11f4d561dd7b9e3f813d669ec8623bf1f82a04da8ef53fcefb8ca427176aa",
+      "bytes": 158036
+    }
+  },
+  "conclusion": "Both clean versions and both viewport widths submit the same exact ordered native hole command and preserve identical complete World bytes before, during preview and after finish; original held after result reproduces that historical normal flow. One-line BH expected-only correction retains every assertion and all other executable AST. Original 8/2 after failure remains preserved. Proposed correction is not a new executed green result.",
+  "limits": [
+    "Artifact review, not a fresh browser run.",
+    "No Windows originals or golden comparison.",
+    "No aggregate full CDP or complete #123 acceptance.",
+    "No new public contract or product behavior approved."
+  ]
+}

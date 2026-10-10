@@ -1,0 +1,257 @@
+{
+  "schema": "geometry-executor-full-failure-index/1",
+  "indexedUtc": "2026-10-09T16:57:53.343569+00:00",
+  "reviewerRole": "same executing agent, not independent reviewer",
+  "git": {
+    "root": "<workspace-path>",
+    "head": "102ff28ecb005a85b42a8ae9cd7f22fdcf8cf01c",
+    "tree": "9807ff17d2b17eee23ea26d78235710c5e675a07",
+    "status": ""
+  },
+  "command": [
+    "node",
+    "geometry-web/cdp_test.js"
+  ],
+  "environment": {
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:19182/",
+    "GEOMETRY_TEST_BRIDGE": "<isolated-test-directory>",
+    "GEOMETRY_BRIDGE": "<isolated-test-directory>",
+    "GEOMETRY_MODEL_BASE": "<isolated-test-directory>",
+    "GEOMETRY_FEEDBACK_DIR": "<isolated-test-directory>",
+    "GEOMETRY_CHROME": "/usr/bin/chromium",
+    "GEOMETRY_CDP_PORT": "42651"
+  },
+  "execution": {
+    "started": "2026-10-09T16:37:51.857715+00:00",
+    "exitCode": 1,
+    "timedOut": false,
+    "interrupted": false,
+    "pid": 180276,
+    "finished": "2026-10-09T16:57:09.271329+00:00"
+  },
+  "originalWrapperVerdict": {
+    "status": "command-failed",
+    "executionVerified": false,
+    "canonicalResult": null,
+    "gateExitCode": 1
+  },
+  "result": {
+    "schema": "geometry-cdp-result/1",
+    "scope": {
+      "mode": "full",
+      "filters": [],
+      "modifiers": [],
+      "url": "http://127.0.0.1:19182/",
+      "feedbackDirectory": "<isolated-test-directory>",
+      "browserProfile": "<isolated-test-directory>",
+      "cdpPort": 42651,
+      "browserPid": 180284
+    },
+    "completed": false,
+    "passedAssertions": 1800,
+    "failedAssertions": 1,
+    "fatal": "P76 390px 參數編輯的底部面板放寬：欄位區可視 ≥240px、確認鈕在可視區、畫布仍可見；其他檢視器高度不變",
+    "skipped": [],
+    "sections": {
+      "1": 14,
+      "2": 3,
+      "3": 1,
+      "4": 1,
+      "5": 1,
+      "6": 1,
+      "7": 1,
+      "8": 0,
+      "9": 12,
+      "10": 0,
+      "Setup": 0,
+      "P3": 14,
+      "P4": 11,
+      "P5": 2,
+      "P6": 4,
+      "P7": 54,
+      "P8": 116,
+      "P9": 9,
+      "P10": 9,
+      "P11": 12,
+      "P12": 8,
+      "P13": 4,
+      "P14": 16,
+      "P15": 6,
+      "P16": 10,
+      "P17": 11,
+      "P18": 20,
+      "P19": 17,
+      "BF2": 5,
+      "BF3": 1,
+      "BF4": 9,
+      "P20": 10,
+      "P21": 4,
+      "P22": 45,
+      "P32": 34,
+      "P33": 9,
+      "P34": 7,
+      "P35": 14,
+      "P36": 2,
+      "P37": 19,
+      "P38": 13,
+      "P39": 8,
+      "P40": 4,
+      "P41": 3,
+      "P42": 12,
+      "P43": 12,
+      "P44": 19,
+      "P45": 2,
+      "P46": 7,
+      "P47": 9,
+      "P48": 14,
+      "P49": 17,
+      "P50": 33,
+      "P51": 13,
+      "P52": 43,
+      "P53": 28,
+      "P57": 56,
+      "P62": 38,
+      "P63": 18,
+      "P64": 24,
+      "P65": 5,
+      "P66": 4,
+      "P68": 36,
+      "P69": 160,
+      "P67": 96,
+      "P70": 117,
+      "P71": 9,
+      "P78": 23,
+      "P87": 60,
+      "P88": 137,
+      "P72": 52,
+      "P73": 69,
+      "P74": 52,
+      "P75": 37,
+      "P76": 54
+    },
+    "sectionsFailed": {
+      "P76": 1
+    },
+    "currentSection": "P76",
+    "goldenCompare": "not compared (run did not complete)"
+  },
+  "receipt": {
+    "path": "<original-evidence-root>/after-final-102ff28e-full-cdp-20261009/receipt.json",
+    "sha256": "87242c6e76cc75a305b43c0df4502af86f49897d3ebb09e1d10299b76e1f1f29",
+    "unchanged": true
+  },
+  "rawLog": {
+    "path": "<original-evidence-root>/after-final-102ff28e-full-cdp-20261009/command.log",
+    "sha256": "fd885211916b080bed5cf3c86573017dc8da62e57711b6d286ec3506dfb1ae6c",
+    "bytes": 186859
+  },
+  "executionIdentity": {
+    "liveBinding": {
+      "observedUtc": "2026-10-09T16:37:52.295252+00:00",
+      "scope": "Observed the actual owned Chromium ELF and live canonical Node parent during this command; launcher stages excluded",
+      "cdpScope": {
+        "mode": "full",
+        "filters": [],
+        "modifiers": [],
+        "url": "http://127.0.0.1:19182/",
+        "feedbackDirectory": "<isolated-test-directory>",
+        "browserProfile": "<isolated-test-directory>",
+        "cdpPort": 42651,
+        "browserPid": 180284
+      },
+      "processes": [
+        {
+          "role": "actual CDP_SCOPE Chromium main process",
+          "pid": 180284,
+          "exe": "/usr/lib/chromium/chromium",
+          "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+          "executableMagicHex": "7f454c46",
+          "cmdline": [
+            "/usr/lib/chromium/chromium",
+            "--show-component-extension-options",
+            "--enable-gpu-rasterization",
+            "--no-default-browser-check",
+            "--disable-pings",
+            "--media-router=0",
+            "--enable-remote-extensions",
+            "--load-extension=",
+            "about:blank",
+            "--headless=new",
+            "--disable-gpu",
+            "--no-first-run",
+            "--remote-debugging-port=42651",
+            "--window-size=1400,900",
+            "--user-data-dir=<isolated-test-directory>"
+          ],
+          "cwd": "<workspace-path>"
+        },
+        {
+          "role": "actual browser parent Node",
+          "pid": 180276,
+          "exe": "<node-runtime>/bin/node",
+          "sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12",
+          "executableMagicHex": "7f454c46",
+          "cmdline": [
+            "node",
+            "geometry-web/cdp_test.js"
+          ],
+          "cwd": "<workspace-path>"
+        }
+      ]
+    },
+    "errors": [],
+    "excludedLauncherStages": []
+  },
+  "liveBridgeBefore": [
+    {
+      "pid": 180179,
+      "parent": 180176,
+      "exe": "<isolated-test-directory>",
+      "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b"
+    }
+  ],
+  "liveBridgeAfter": [
+    {
+      "pid": 180179,
+      "parent": 180176,
+      "exe": "<isolated-test-directory>",
+      "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b"
+    }
+  ],
+  "sourceSnapshotDirectory": "<original-evidence-root>/after-final-102ff28e-full-cdp-20261009/executed-harness-sources",
+  "wrapperSnapshots": [
+    {
+      "path": "<original-evidence-root>/after-final-102ff28e-full-cdp-20261009/executed-wrapper-sources/run_full_cdp_identity.py",
+      "sha256": "5ce8212de96e45d0b613b17888a053a7a679024dc1a230f4c734a6170cc5da89"
+    },
+    {
+      "path": "<original-evidence-root>/after-final-102ff28e-full-cdp-20261009/executed-wrapper-sources/cdp_execution_identity_v2.py",
+      "sha256": "b34554e6f8e643d5f040d6f9b0b5e7bc1619a75b52d3d5d5bdb1f7dc9069a0cc"
+    },
+    {
+      "path": "<original-evidence-root>/after-final-102ff28e-full-cdp-20261009/executed-wrapper-sources/full-launch-adapters/sandbox-launch.cjs",
+      "sha256": "c917611c821f63cea2e5ef3ed1c0ddde128dcf47fde65d1a7ace8ff24fba2b1e"
+    },
+    {
+      "path": "<original-evidence-root>/after-final-102ff28e-full-cdp-20261009/executed-wrapper-sources/full-launch-adapters/sitecustomize.py",
+      "sha256": "e49545951bb661db0169e3d466c96321ee67c5f8a39fac3f7f0ed6954c22a7be"
+    },
+    {
+      "path": "<original-evidence-root>/after-final-102ff28e-full-cdp-20261009/executed-wrapper-sources/cdp_sections.golden.json",
+      "sha256": "e3e742ec3d731e701afc22149efa9bc11cf6506340715176175e594c94778bd9"
+    }
+  ],
+  "ownedBrowserPortConnectExAfter": 111,
+  "failureLines": [
+    "P76 390px 參數編輯的底部面板放寬：欄位區可視 ≥240px、確認鈕在可視區、畫布仍可見；其他檢視器高度不變 ✗ {\"sheet\":{\"fieldsVisible\":299,\"confirmVisible\":true,\"sheetHeight\":523,\"canvasHeight\":137,\"maxHeight\":\"523.28px\"},\"otherSheet\":{\"maxHeight\":\"310px\",\"height\":310}}",
+    "FATAL: P76 390px 參數編輯的底部面板放寬：欄位區可視 ≥240px、確認鈕在可視區、畫布仍可見；其他檢視器高度不變"
+  ],
+  "diagnosticLimits": [
+    "This run stopped at P76 mobile parameter-sheet bounds; the actual failure payload is preserved verbatim. Source-supported diagnosis is separate and does not replace this failure or prove later sections",
+    "The original wrapper status/executionVerified/canonicalResult are preserved as recorded; raw CDP_RESULT parsing is a supplemental executor index and does not rewrite receipt verdicts",
+    "No original receipt edit, force clicks, relaxed assertions, retries or golden update",
+    "This result is failed; completion and golden status are taken verbatim from actual CDP_RESULT",
+    "A corrected later SHA needs its own receipt; this receipt must not be rebound",
+    "Windows originals remain unreceived"
+  ]
+}

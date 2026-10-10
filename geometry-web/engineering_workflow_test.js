@@ -113,7 +113,7 @@ module.exports = async function engineeringWorkflow({send,eval_,sleep,click,wait
     check('取消子格草稿保留主格全部工程來源',same(await state(),before)&&(await dump())===scene);
     const timber=before.sources.find(b=>b.target.kind==='timber'&&b.source.kind==='application');
     if(!timber)throw Error('Bound-timber inspector fixture is missing');
-    await ctl('.face-layer-row[data-timber-id="'+timber.target.id+'"]');await ctl('[data-fi-tab="components"]');
+    await ctl('.face-layer-row[data-timber-id="'+timber.target.id+'"]');await ctl('[data-fi-tab="components"]');await ctl('[data-component-tab="timber"]');
     check('已綁角材檢查器顯示來源，精確定位收在詳細資料',await read(`!!$('tbSelected') && /工程|來源/.test($('tbSelected').textContent) && !!$('tbTechnicalDetails') && !$('tbTechnicalDetails').open && /at-face e0/.test($('tbTechnicalDetails').textContent) && !!$('tbSelected').querySelector('[data-engineering-open]') && !$('tbEditA')`));
     await shot('engineering-bound-timber-inspector');
     check('檢視已綁角材不改工程來源',same(await state(),before)&&(await dump())===scene);
@@ -270,7 +270,10 @@ module.exports = async function engineeringWorkflow({send,eval_,sleep,click,wait
   await read(`(async()=>{const r=await api('line spec EngineeringStale 100');if(!r.ok)throw Error(JSON.stringify(r));})()`);
   await wait(`$('ewReview').hidden && $('ewConfirm').disabled && !$('ewContent').inert`,'definition change invalidates review');
   await sleep(220);
-  check('預覽後定義變更，介面撤銷舊確認且工程來源未改',same(await state(),beforeStale));
+  // engineering-read now includes named specs. The deliberate invalidation
+  // above must add exactly this spec while preserving every other state field.
+  const expectedStale={...beforeStale,specs:[...beforeStale.specs,{name:'EngineeringStale',value:100}]};
+  check('預覽後定義變更，介面撤銷舊確認且工程來源未改',same(await state(),expectedStale));
 
   // Face 3 exceeds the axis line capacity. Face 2 must not partially succeed.
   await details('套用目標');await checked('[data-ew-target="2"]',true);

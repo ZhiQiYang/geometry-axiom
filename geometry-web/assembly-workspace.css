@@ -16,4 +16,7 @@
 .asm-body label{display:flex;flex-direction:column;gap:6px;margin:8px 0}.asm-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 16px}
 .asm-body fieldset{min-width:0;margin:14px 0;border:1px solid #b9c0ce;border-radius:8px;padding:12px}.asm-body pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}.asm-error{color:#b42e34}
 #asmDiagram{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}#asmDiagram figure{margin:0;min-width:0}#asmDiagram svg{display:block;width:100%;max-width:420px;height:auto;background:#fafbfe;border:1px solid #bbc1cd;border-radius:8px}#asmDiagram text{font:14px system-ui;fill:#26334a}#asmDiagram [role=button]{cursor:pointer}
+/* Preserve the case component's readable controls inside the assembly host. */
+#asmCasePanel .rule-case-workbench button,#asmCasePanel .rule-case-workbench input,#asmCasePanel .rule-case-workbench select{background:#252f43;color:#e8edf5;border-color:#70809b}
+#asmCasePanel .rule-case-workbench button[aria-current=true]{background:#304460;border:2px solid #8cbcff}
 @media(max-width:680px){#assemblyWorkspace{width:100vw;height:100dvh;border-radius:0;border:0}.asm-layout{display:block;overflow:auto}.asm-layout nav{border-right:0;border-bottom:1px solid #bbc1cd;max-height:180px}.asm-body{overflow:visible;padding:14px}.asm-grid{grid-template-columns:1fr}.asm-header{padding:10px 14px}#asmPreviewResult{padding:8px 14px 4px}#assemblyWorkspace>footer{padding:10px 14px max(14px,env(safe-area-inset-bottom))}}

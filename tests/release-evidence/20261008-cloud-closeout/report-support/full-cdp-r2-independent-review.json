@@ -1,0 +1,314 @@
+{
+  "reviewedAt": "2026-10-08T17:37:19.070858+00:00",
+  "result": "Verified full CDP gate only on clean 458779f; not the complete batch and not a pass on5174.",
+  "testedHead": "458779f003e1f57fdc0f4420564a0b295227843e",
+  "canonicalResult": {
+    "schema": "geometry-cdp-result/1",
+    "scope": {
+      "mode": "full",
+      "filters": [],
+      "modifiers": [],
+      "url": "http://127.0.0.1:18971/",
+      "feedbackDirectory": "/tmp/geometry-closeout-r2-feedback",
+      "browserProfile": "/tmp/geometry-cdp-YFHh1G",
+      "cdpPort": 9333,
+      "browserPid": 150862
+    },
+    "completed": true,
+    "passedAssertions": 2207,
+    "failedAssertions": 0,
+    "skipped": [],
+    "sections": {
+      "1": 14,
+      "2": 3,
+      "3": 1,
+      "4": 1,
+      "5": 1,
+      "6": 1,
+      "7": 1,
+      "8": 0,
+      "9": 12,
+      "10": 0,
+      "Setup": 0,
+      "P3": 14,
+      "P4": 11,
+      "P5": 2,
+      "P6": 4,
+      "P7": 54,
+      "P8": 116,
+      "P9": 9,
+      "P10": 9,
+      "P11": 12,
+      "P12": 8,
+      "P13": 4,
+      "P14": 16,
+      "P15": 6,
+      "P16": 10,
+      "P17": 11,
+      "P18": 20,
+      "P19": 17,
+      "BF2": 5,
+      "BF3": 1,
+      "BF4": 9,
+      "P20": 10,
+      "P21": 4,
+      "P22": 45,
+      "P32": 34,
+      "P33": 9,
+      "P34": 7,
+      "P35": 14,
+      "P36": 2,
+      "P37": 19,
+      "P38": 13,
+      "P39": 8,
+      "P40": 4,
+      "P41": 3,
+      "P42": 12,
+      "P43": 12,
+      "P44": 19,
+      "P45": 2,
+      "P46": 7,
+      "P47": 9,
+      "P48": 14,
+      "P49": 17,
+      "P50": 33,
+      "P51": 13,
+      "P52": 43,
+      "P53": 28,
+      "P57": 56,
+      "P62": 38,
+      "P63": 18,
+      "P64": 24,
+      "P65": 5,
+      "P66": 4,
+      "P68": 36,
+      "P69": 160,
+      "P67": 96,
+      "P70": 117,
+      "P71": 9,
+      "P78": 23,
+      "P87": 60,
+      "P88": 137,
+      "P72": 52,
+      "P73": 69,
+      "P74": 52,
+      "P75": 37,
+      "P76": 87,
+      "P77": 134,
+      "P82": 16,
+      "P80": 23,
+      "P81": 14,
+      "P85": 31,
+      "P79": 87,
+      "P84": 33,
+      "P83": 16,
+      "P86": 20
+    },
+    "goldenCompare": "matched",
+    "uncaughtBrowserExceptions": 1,
+    "coverage": "Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts."
+  },
+  "gateExitCode": 0,
+  "sourceVersion": "5f7efb63220523dd481660f8dc092ca9f40f35e896cbe172d7694e61f308eb66",
+  "runtime": {
+    "schema": "geometry-runtime/1",
+    "version": "5f7efb63220523dd481660f8dc092ca9f40f35e896cbe172d7694e61f308eb66",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 138518,
+    "session": "73f0ea92dd884bdb93c88379161ca93b"
+  },
+  "sourceScriptSha256": "c98e4b6a178922ea84071e6ec6572b33247b37ec987be46882a517f24f65c460",
+  "rawLogSha256": "00fefb5005ff4ed412b28db7b701d872958cdb5453a01f637cfd849733ca2a02",
+  "all84SectionsExactlyMatchGolden": true,
+  "floorChangesOnly": {
+    "P88": [
+      107,
+      137
+    ]
+  },
+  "totalChange": [
+    2177,
+    2207
+  ],
+  "p5": {
+    "rawPrecondition": {
+      "x": 613,
+      "y": 190,
+      "kind": "boundary",
+      "id": 1,
+      "cx": 60,
+      "cy": 60,
+      "attempts": [
+        {
+          "x": 548,
+          "y": 190,
+          "hitKind": "boundary",
+          "hitId": "2",
+          "valid": false
+        },
+        {
+          "x": 580.5,
+          "y": 190,
+          "hitKind": "boundary",
+          "hitId": "2",
+          "valid": false
+        },
+        {
+          "x": 613,
+          "y": 190,
+          "hitKind": "boundary",
+          "hitId": "1",
+          "valid": true
+        }
+      ]
+    },
+    "rawResult": "card pos: [[1,60,60],[2,-20,10]] -> [[1,180,120],[2,-20,10]] ✓ 拖卡片有效 {\"readOK\":true,\"nativeExists\":true,\"localExists\":true,\"nativeCx\":180,\"nativeCy\":120,\"hasPos\":true,\"localCx\":180,\"localCy\":120,\"localHasPos\":true,\"ok\":true,\"reason\":\"committed\",\"elapsedMs\":73,\"kind\":\"boundary\",\"id\":1,\"beforeCx\":60,\"beforeCy\":60}",
+    "conclusion": "Same boundary1 selected before gesture; first two candidate coordinates hit overlapping boundary2 and were rejected before any input. One ordinary +120/+60 drag commits boundary1; boundary2 unchanged. Wait and verdict unchanged."
+  },
+  "p88": {
+    "addedPasses": [
+      "P88 1280 檢查器外 已離開引用式 ✓ ",
+      "P88 1280 檢查器外 回覆未完成前不得判斷焦點 ✓ ",
+      "P88 1280 檢查器外 搶回引用式會被判失敗 ✓ ",
+      "P88 1280 檢查器外 處理結束時釋放後重建 376 ✓ ",
+      "P88 1280 檢查器外 舊查詢不搶回焦點 ✓ ",
+      "P88 1280 其他對話框 已離開引用式 ✓ ",
+      "P88 1280 其他對話框 回覆未完成前不得判斷焦點 ✓ ",
+      "P88 1280 其他對話框 搶回引用式會被判失敗 ✓ ",
+      "P88 1280 其他對話框 處理結束時沒有再重建檢查器 ✓ ",
+      "P88 1280 其他對話框 舊查詢不搶回焦點 ✓ ",
+      "P88 1280 切換選取並離開面 已離開引用式 ✓ ",
+      "P88 1280 切換選取並離開面 回覆未完成前不得判斷焦點 ✓ ",
+      "P88 1280 切換選取並離開面 搶回引用式會被判失敗 ✓ ",
+      "P88 1280 切換選取並離開面 處理結束時沒有再重建檢查器 ✓ ",
+      "P88 1280 切換選取並離開面 舊查詢不搶回焦點 ✓ ",
+      "P88 390 檢查器外 已離開引用式 ✓ ",
+      "P88 390 檢查器外 回覆未完成前不得判斷焦點 ✓ ",
+      "P88 390 檢查器外 搶回引用式會被判失敗 ✓ ",
+      "P88 390 檢查器外 處理結束時釋放後重建 476 ✓ ",
+      "P88 390 檢查器外 舊查詢不搶回焦點 ✓ ",
+      "P88 390 關閉抽屜 已離開引用式 ✓ ",
+      "P88 390 關閉抽屜 回覆未完成前不得判斷焦點 ✓ ",
+      "P88 390 關閉抽屜 搶回引用式會被判失敗 ✓ ",
+      "P88 390 關閉抽屜 處理結束時釋放後重建 481 ✓ ",
+      "P88 390 關閉抽屜 舊查詢不搶回焦點 ✓ ",
+      "P88 390 切換選取並離開面 已離開引用式 ✓ ",
+      "P88 390 切換選取並離開面 回覆未完成前不得判斷焦點 ✓ ",
+      "P88 390 切換選取並離開面 搶回引用式會被判失敗 ✓ ",
+      "P88 390 切換選取並離開面 處理結束時沒有再重建檢查器 ✓ ",
+      "P88 390 切換選取並離開面 舊查詢不搶回焦點 ✓ "
+    ],
+    "count": 30,
+    "legacy107PreservedSourceReview": "../p88-golden-review/review.json",
+    "predicateControlNote": "One of five checks per case is a predicate self-check, not a forced negative browser case."
+  },
+  "exception": {
+    "raw": [
+      "[EXPECTED EXCEPTION] Error: fb-auto-probe"
+    ],
+    "unexpected": [],
+    "source": "cdp_test.js expectedException guard + explicit P38 setTimeout(Error fb-auto-probe) and automatic-report assertion",
+    "conclusion": "The single uncaughtBrowserExceptions counter includes the intentionally armed P38 exception; no unexpected exception recorded."
+  },
+  "publicCopies": [
+    {
+      "path": "full-cdp-r2/receipt.json",
+      "privateSha256": "51d2296369859b88e6f15e627ccd2cbdc4362a5642fed727b50e253172013ed6",
+      "publicSha256": "51d2296369859b88e6f15e627ccd2cbdc4362a5642fed727b50e253172013ed6",
+      "equal": true
+    },
+    {
+      "path": "full-cdp-r2/command.log",
+      "privateSha256": "00fefb5005ff4ed412b28db7b701d872958cdb5453a01f637cfd849733ca2a02",
+      "publicSha256": "00fefb5005ff4ed412b28db7b701d872958cdb5453a01f637cfd849733ca2a02",
+      "equal": true
+    },
+    {
+      "path": "full-cdp-r2.stdout",
+      "privateSha256": "5ca7cdf09fe0853be0cf4506b90bf891032766bb6194dbcb8a25c6d81888fdeb",
+      "publicSha256": "5ca7cdf09fe0853be0cf4506b90bf891032766bb6194dbcb8a25c6d81888fdeb",
+      "equal": true
+    },
+    {
+      "path": "full-cdp-r2.stderr",
+      "privateSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "publicSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "equal": true
+    },
+    {
+      "path": "full-cdp/receipt.json",
+      "privateSha256": "267ab0f29358d3fe7418b91c9744ff85dfff9f346678ef4284cd04aeb3015ba8",
+      "publicSha256": "267ab0f29358d3fe7418b91c9744ff85dfff9f346678ef4284cd04aeb3015ba8",
+      "equal": true
+    },
+    {
+      "path": "full-cdp/command.log",
+      "privateSha256": "bfba9318e4b3230376000552f8f6959aad45747ba595a780c5f3623329afa097",
+      "publicSha256": "bfba9318e4b3230376000552f8f6959aad45747ba595a780c5f3623329afa097",
+      "equal": true
+    },
+    {
+      "path": "full-cdp.stdout",
+      "privateSha256": "a074796a503d53b312945977d47c11f0b932dcffa0513ae5db7db6c8396285d7",
+      "publicSha256": "a074796a503d53b312945977d47c11f0b932dcffa0513ae5db7db6c8396285d7",
+      "equal": true
+    },
+    {
+      "path": "full-cdp.stderr",
+      "privateSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "publicSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "equal": true
+    },
+    {
+      "path": "full-cdp.command.json",
+      "privateSha256": "f5ad5eb74bfd40ca0bbc32366b4ff92fb833516c2c46d38686e9e9829cb87ffc",
+      "publicSha256": "f5ad5eb74bfd40ca0bbc32366b4ff92fb833516c2c46d38686e9e9829cb87ffc",
+      "equal": true
+    }
+  ],
+  "bindingVerified": true,
+  "priorFailure": {
+    "head": "9a4136da264249f76ba08258a7f14be926f96a95",
+    "failedAssertions": 3,
+    "primaryFailure": {
+      "5": 1
+    },
+    "floorDifferences": [
+      "section5 expected1 actual0",
+      "P88 expected107 actual137"
+    ],
+    "rawPreserved": true,
+    "publicCopyEqual": true
+  },
+  "batch": {
+    "pause": {
+      "at": "2026-10-08T17:17:48.884411+00:00",
+      "pid": 150840,
+      "cmdline": "python3 /workspace/closure-evidence/run_gates.py full-cdp-r2 full-space-r2 timber-r2 async-original-r2 save-reopen-synthetic save-roundtrip model-history scenario-lifecycle scenario-workflow room-acceptance room-pan room-worker room-keyboard issue116 issue77-owner issue77-browser issue77-exit issue77-recovery issue77-remove rule-reader rule-cases rule-case-races multiroom section-profile-ui q38-save-roundtrip shared-room-display evidence-formal grid-raw-provenance feedback-resize-observer ",
+      "signal": "SIGSTOP",
+      "reason": "Pause only owned serial parent; in-flight release_gate/CDP keeps running to completion. New PR173 product delivery ce74dc949168b597e33ec00110ce57f26ae51ff8 requires subsequent gates on updated candidate.",
+      "active_gate_pid": 150843,
+      "active_cdp_pid": 150854
+    },
+    "closeout": {
+      "at": "2026-10-08T17:30:40.902289+00:00",
+      "ownedParentPid": 150840,
+      "signal": "SIGKILL",
+      "parentWasPaused": true,
+      "reason": "End only paused serial controller after in-flight gate completed; do not start remaining gates on obsolete product candidate.",
+      "completedGate": "full-cdp-r2",
+      "childGateExitCode": 0,
+      "childCommandExitCode": 0,
+      "remaining28Gates": "not started; rescheduled on updated candidate",
+      "notProductFailure": true
+    },
+    "sequenceVerified": true,
+    "childGateExitCode": 0,
+    "reportedControllerExitCode": 137,
+    "controllerExitProvenance": "Coordinator terminal report; saved closeout records SIGKILL but does not contain a wait-status/137 field. 128+SIGKILL is consistent.",
+    "remaining28": "not executed on458; rescheduled",
+    "batchPassed": false
+  },
+  "execution": "Read-only log/hash/source review. No browser/native/test execution."
+}

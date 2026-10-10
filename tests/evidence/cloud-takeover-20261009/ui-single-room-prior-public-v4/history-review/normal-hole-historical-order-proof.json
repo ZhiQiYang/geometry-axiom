@@ -1,0 +1,74 @@
+{
+  "actor": "/root/race_review",
+  "oldFullSHA": "f98078dc150c22960cbe2d212afb3ded61954bb9",
+  "newFullSHA": "c0f05baade2424482fab94c72f0592f7b02326ae",
+  "oldDirty": "",
+  "newDirty": "",
+  "scope": "Separate normal UI control, same pointer coordinates and complete World bytes, no late or held reply; original ten-case 8/2 after result preserved.",
+  "executorSHA256": "83af4f9480f37d65787056e2ff300201a04d8c65dfada76b957c8c78ec5b2b38",
+  "oldReceipt": {
+    "path": "<workspace-path>",
+    "sha256": "0619eaba3db96f715c924e5c773eef3cc393a4703331eb04bef110dba58d38d0"
+  },
+  "newReceipt": {
+    "path": "<workspace-path>",
+    "sha256": "410d04fadfe49797761bf27df29d36be2ff659d45bb17a3722eab4b698556e49"
+  },
+  "cases": [
+    {
+      "width": 1382,
+      "noHeldGate": true,
+      "exactNormalNativeCommand": "line boundary 7 outline 0,0 4000,0 4000,3000 0,3000 hole 800,800 500,800 500,500 800,500",
+      "worlds": {
+        "before": {
+          "old": "1b292fbbac00dc11bf5f6b2d8f1b6f5bd40d8c5c6ef36c5f58ec24aa38e719a7",
+          "new": "1b292fbbac00dc11bf5f6b2d8f1b6f5bd40d8c5c6ef36c5f58ec24aa38e719a7"
+        },
+        "normal-A-applied": {
+          "old": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+          "new": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7"
+        },
+        "B-preview": {
+          "old": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7",
+          "new": "e7ec2c52e854b51623859d9da7d9583094028f71138062ec755fed9aaefd31d7"
+        },
+        "B-finished": {
+          "old": "aa17b68beeff178e8ee1c2b4242fcf20b774af93e77ec29651a52f34920c08e6",
+          "new": "aa17b68beeff178e8ee1c2b4242fcf20b774af93e77ec29651a52f34920c08e6"
+        }
+      },
+      "oldPageErrors": [],
+      "newPageErrors": []
+    },
+    {
+      "width": 390,
+      "noHeldGate": true,
+      "exactNormalNativeCommand": "line boundary 7 outline 0,0 4000,0 4000,3000 0,3000 hole 800,800 500,800 500,500 800,500",
+      "worlds": {
+        "before": {
+          "old": "7210702f95dff2b21afe0ee8ca9ff36f088fcd793a42fd960e759c7d4ddebc88",
+          "new": "7210702f95dff2b21afe0ee8ca9ff36f088fcd793a42fd960e759c7d4ddebc88"
+        },
+        "normal-A-applied": {
+          "old": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+          "new": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de"
+        },
+        "B-preview": {
+          "old": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de",
+          "new": "40134121832af1d2e0ed8e0ad31a98b5fcd34cd1aab4fd5fbfa19328f8ec78de"
+        },
+        "B-finished": {
+          "old": "6b0933495e918d567159857aba4554f010b363d6332aa107225fad62ce026c04",
+          "new": "6b0933495e918d567159857aba4554f010b363d6332aa107225fad62ce026c04"
+        }
+      },
+      "oldPageErrors": [],
+      "newPageErrors": []
+    }
+  ],
+  "proposedExpectedOnlyCorrection": {
+    "old": "BH=B0+' hole 500,500 800,500 800,800 500,800'",
+    "new": "BH=B0+' hole 800,800 500,800 500,500 800,500'",
+    "reason": "Fixed exact ordered historical output was previously guessed at the polygon origin; baseline ownership failure never reached its completion assertion. Exact bytes remain required; no cyclic tolerance, no changed geometry or weakened assertion."
+  }
+}

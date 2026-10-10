@@ -82,6 +82,32 @@ def reject(page, label, before):
     check(label + ' explains explicit reselection', js(page, "return /重新選取/.test($('igDraftNote').textContent);"))
 
 
+def unknown_presentation(page, label, before):
+    """Read the actual restored UI before Save can add its rejection message."""
+    page.screenshot(path=str(out / (label.replace(' ', '-') + '.png')), full_page=True)
+    shown = js(page, """return {
+        text:document.querySelector('#infiniteGridWorkspace').innerText,
+        raw:Object.fromEntries(Object.keys(ReferenceWorkspace.readFeatureAttachment('grid-draft').rawForm).map(id=>[id,$(id).value])),
+        mainInvalid:$('igMainAlong').getAttribute('aria-invalid'),mainNote:$('igMainNote').textContent,
+        mainChecked:document.querySelectorAll('#igMainAlong input:checked').length,
+        tone:$('igStateLine').dataset.tone,state:$('igStateText').textContent,
+        axes:['u','v'].map(a=>{const c=document.querySelector(`.ig-axis[data-ig-axis="${a}"]`),r=c.querySelector('.ig-role'),g=$('ig'+a.toUpperCase()+'Source');return {a,summary:c.querySelector('.ig-axis-sum').textContent,invalid:g.getAttribute('aria-invalid'),checked:g.querySelectorAll('input:checked').length,roleHidden:r.hidden,role:r.textContent};})
+    };""")
+    (out / (label.replace(' ', '-') + '.json')).write_text(json.dumps(shown, ensure_ascii=False, indent=2))
+    unknown_axes = [x for x in shown['axes'] if before['raw']['rawForm']['ig' + x['a'].upper() + 'Source'] not in ('none', 'repeat', 'repeat-panel')]
+    main_unknown = before['raw']['rawForm']['igMainAlong'] not in ('none', 'u', 'v')
+    check(label + ' unknown choices request reselection without invented panel summary or undefined',
+          'undefined' not in shown['text'] and
+          all('重新選取' in x['summary'] and '排格' in x['summary'] and '面材' not in x['summary'] and
+              x['invalid'] == 'true' and x['checked'] == 0 for x in unknown_axes) and
+          (not main_unknown or (shown['mainInvalid'] == 'true' and shown['mainChecked'] == 0 and '重新選取' in shown['mainNote'])))
+    check(label + ' unknown definitions show correction state and never invent an axis role',
+          shown['tone'] == 'error' and '修正' in shown['state'] and
+          all(x['roleHidden'] and x['role'] == '' for x in (shown['axes'] if main_unknown else unknown_axes)))
+    check(label + ' passive unknown presentation preserves every raw character and native state',
+          shown['raw'] == before['raw']['rawForm'] and snapshot(page) == before)
+
+
 def parameter(page, operations):
     page.evaluate("""async operations=>{const r=await EngineeringAdapter.read();const p=await EngineeringAdapter.preview({expectedRevision:r.revision,operations});if(!p.valid)throw Error(JSON.stringify(p));const done=await apiRequest('engineering-confirm '+p.token);if(!done.ok)throw Error(JSON.stringify(done));await renderObjects();}""", operations)
 
@@ -100,8 +126,9 @@ try:
         browser = p.chromium.launch(executable_path=os.environ.get('GEOMETRY_CHROME', '/usr/bin/chromium'),
                                     headless=True, args=['--no-sandbox'])
         for width in (1280, 390):
-            for case in ('unknown-enum', 'missing-pin', 'wrong-pin', 'recreated-pin'):
+            for case in ('unknown-enum', 'empty-enum', 'unknown-main', 'missing-pin', 'wrong-pin', 'recreated-pin'):
                 label = f'{width} {case}'
+                unknown_case = case in ('unknown-enum', 'empty-enum', 'unknown-main')
                 context = browser.new_context(viewport={'width': width, 'height': 900}, accept_downloads=True)
                 page = context.new_page()
                 page.on('pageerror', lambda error: errors.append(str(error)))
@@ -113,14 +140,14 @@ try:
                 entry(page)
                 page.locator('#igClose').click()
                 saved_pin = None
-                if case != 'unknown-enum':
+                if not unknown_case:
                     parameter(page, [put(600)])
                     saved_pin = field_pin(page)
                     if case == 'recreated-pin':
                         parameter(page, [{'op': 'delete-parameter', 'id': 801}])
                         parameter(page, [put(700)])
                         check(label + ' native delete/recreate changes actual field evidence', field_pin(page) != saved_pin)
-                archive = page.evaluate("""async ({kind,pin})=>{const loaded=await GeometryProject.unpack(await ReferenceWorkspace.exportBytes(),fflate);const raw=loaded.manifest.featureAttachments.records[0].value;Object.assign(raw.rawForm,{igName:'原始來源',igUSource:kind==='unknown-enum'?'bogus':'repeat',igUStep:'600',igUPhase:'0',igUPanel:'600',igUGap:'0',igUAnchor:'0',igUStagger:'',igVStep:'400',igVPhase:'0'});if(kind!=='unknown-enum')raw.rawForm.igUStepSource='801:1';raw.inputRefs=kind==='wrong-pin'?[{...pin,fingerprint:'0'.repeat(64)}]:kind==='recreated-pin'?[pin]:[];return Array.from(await GeometryProject.pack(loaded.scene,loaded.manifest,loaded.sources,fflate));}""", {'kind': case, 'pin': saved_pin})
+                archive = page.evaluate("""async ({kind,pin})=>{const loaded=await GeometryProject.unpack(await ReferenceWorkspace.exportBytes(),fflate);const raw=loaded.manifest.featureAttachments.records[0].value;Object.assign(raw.rawForm,{igName:'原始來源',igUSource:kind==='unknown-enum'?'bogus':kind==='empty-enum'?'':'repeat',igUStep:'600',igUPhase:'0',igUPanel:'600',igUGap:'0',igUAnchor:'0',igUStagger:'',igVStep:'400',igVPhase:'0'});if(kind==='unknown-enum')raw.rawForm.igMainAlong='u';if(kind==='empty-enum'){raw.rawForm.igMainAlong='';raw.rawForm.igVSource='';}if(kind==='unknown-main')raw.rawForm.igMainAlong='  unknown direction  ';if(!['unknown-enum','empty-enum','unknown-main'].includes(kind))raw.rawForm.igUStepSource='801:1';raw.inputRefs=kind==='wrong-pin'?[{...pin,fingerprint:'0'.repeat(64)}]:kind==='recreated-pin'?[pin]:[];return Array.from(await GeometryProject.pack(loaded.scene,loaded.manifest,loaded.sources,fflate));}""", {'kind': case, 'pin': saved_pin})
                 file = out / f'{width}-{case}.gcanvas'
                 file.write_bytes(bytes(archive))
                 load(page, file)
@@ -128,6 +155,8 @@ try:
                 entry(page)
                 check(label + ' passive restore retains exact raw and provenance',
                       js(page, "return ReferenceWorkspace.readFeatureAttachment('grid-draft');") == before['raw'])
+                if unknown_case:
+                    unknown_presentation(page, label + ' restored', before)
                 watch(page)
                 reject(page, label, before)
                 page.evaluate('window.showSaveFilePicker=undefined')
@@ -153,10 +182,23 @@ try:
                 reopened = snapshot(page)
                 check(label + ' fresh browser formal ZIP reopen preserves raw and World',
                       reopened['raw'] == before['raw'] and reopened['world'] == before['world'])
+                if unknown_case:
+                    unknown_presentation(page, label + ' reopened', reopened)
                 watch(page)
                 reject(page, label + ' reopened', reopened)
-                if case == 'unknown-enum':
-                    page.locator('#igUSource input[value="repeat-panel"]').check()
+                if unknown_case:
+                    js(page, "window.__rawTrusted=[];document.addEventListener('change',event=>{if(event.isTrusted&&['igUSource','igVSource','igMainAlong'].includes(event.target.name))__rawTrusted.push(event.target.name);});")
+                    if case != 'unknown-main':
+                        page.locator('#igUSource input[value="repeat-panel"]').check()
+                    if case == 'empty-enum':
+                        page.locator('#igVSource input[value="repeat"]').check()
+                    if case in ('empty-enum', 'unknown-main'):
+                        page.locator('#igMainAlong input[value="none"]').check()
+                    recovered = js(page, "return {trusted:__rawTrusted,invalid:['igUSource','igVSource','igMainAlong'].some(id=>$(id).getAttribute('aria-invalid')==='true'),tone:$('igStateLine').dataset.tone,summary:document.querySelector('.ig-axis[data-ig-axis=u] .ig-axis-sum').textContent};")
+                    expected = ['igMainAlong'] if case == 'unknown-main' else ['igUSource','igVSource','igMainAlong'] if case == 'empty-enum' else ['igUSource']
+                    check(label + ' trusted explicit choices recover a valid presentation',
+                          recovered['trusted'] == expected and not recovered['invalid'] and recovered['tone'] != 'error' and
+                          recovered['summary'] == ('每 600 mm' if case == 'unknown-main' else '面材 600 ＋ 縫 0'))
                 else:
                     page.locator('#igUStepSource').select_option('')
                     page.locator('#igUStepSource').select_option('801:1')

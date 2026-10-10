@@ -1,0 +1,104 @@
+{
+  "utc": "2026-10-09T15:28:45.216069+00:00",
+  "commands": [
+    {
+      "argv": [
+        "pwd"
+      ],
+      "stdout": "<workspace-path>\n",
+      "stderr": "",
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--short"
+      ],
+      "stdout": "",
+      "stderr": "",
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "stdout": "0b37d8d8d4ee501fe6208e3e88440b3d078d7c0b\n",
+      "stderr": "",
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--binary"
+      ],
+      "stdout": "",
+      "stderr": "",
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--cached",
+        "--binary"
+      ],
+      "stdout": "",
+      "stderr": "",
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "origin/main"
+      ],
+      "stdout": "5cc1ffa1ee85120eca14258b86b715151cad274f\n",
+      "stderr": "",
+      "exitCode": 0
+    }
+  ],
+  "sourceSha256": {
+    "geometry-web/app.css": "36fff1d84396a35d3221aad02c1ba673303e447c01229d9999a0ef1a8be1e355",
+    "geometry-web/app.js": "b70f8e428d49dcc5d7d83821ae32ebab1084251b7881d0f6cd503c4a05e84355",
+    "geometry-web/assembly-workspace.css": "7a91095c3042de5b98e64d4a699df3ac2f3571b411f534f732aae721c528d644",
+    "geometry-web/canvas-labels.css": "c13faf2fe464c5dc037b09d91064a2d8b02cfa30fef4eae7d5584a0f05410e53",
+    "geometry-web/document-cases.css": "bd302250e0f213beab47902e339ad72942a437507a744750fe32d3fe383eb01d",
+    "geometry-web/documents.css": "33707fb3804d5ffb948280fac33c0793c81aa24c6b392d6589c335b37613e666",
+    "geometry-web/engineering-workspace.css": "4c4cad9d69c9295a8a44a41d4509b2b821d7431b98ea18dc869120f3dedbf610",
+    "geometry-web/face-context-menu.css": "7d1a7795afb4b6de802f7c7852cd0a41be024182b1b8ffb0db17d990aa75a08d",
+    "geometry-web/grid-inspector.css": "c9abe1e1d0e1d861cf487b2b48117dd26c4b98bd33b8794e03dbf16b5d211345",
+    "geometry-web/grid-system-workspace.css": "958dca056995109a452a15cd72f00ff1da9e3192f02362e48c32c3f7f0cba08c",
+    "geometry-web/index.html": "5084ee2b214a1653bcdfd31105bbb05b786f1447d14f9eb177ecb3185d27a9a4",
+    "geometry-web/model-update.css": "75aec3df9cb306b572cbecfa89b6f2a6fe925d3d2643e0484131cb56527841dd",
+    "geometry-web/parameters.css": "72b0238af5eaffdc3fa49b8a71a7a14af58ab9c7bbda026804899c2b2d0255b6",
+    "geometry-web/project-ui.css": "2f689462d3eb7fe4eabaecbd57e5fd55fdd48ce8deeed85aee36128fdb053875",
+    "geometry-web/rule-case-workbench.css": "0e7460cec3737f3967e828b65c40f965e4fb3c14c666ca38588668ce299759d4",
+    "geometry-web/scenario-workspace.css": "a37d14e893abc8bdd80019ca08f6a0885add78d004156546eb375db0ee7053c2",
+    "geometry-web/section-profile-workspace.css": "b8b2221ca312757dbbbdf1af8f8e447788334030e58421976eaf549f8553c884",
+    "geometry-web/source-inspector.css": "8d66640d2f0e8475fc6cead0a1abfc950612201220e92a89b6c3f10e3036cd07",
+    "geometry-web/space-workspace.css": "6a9b12969c518609ede4d4c3354e43b40e783eb1055cd41863ebe68c983af6da",
+    "geometry-web/space-workspace.js": "50a8cbf2515e15e3d793f9440dd4d4fa6ba14a0b0f553af6dba1a98d43ee65e3",
+    "geometry-web/workspace-guidance.css": "ab777360ec80da6feb3fcb4d7b330104aae329ef262bca2899ce92827abb8986",
+    "geometry-web/workspace-shell.css": "d67f212410bb6e94cd3db26d3ab7891a0331f2effe6c02365dd5bed5418171c2"
+  },
+  "scriptSha256": {
+    "edge_transition_probe.py": "3c54aef8badd864bc10bbe8ef6ad8b567cf05f6070443237ef2a8f97ff78f24d",
+    "edge_transition_instrumentation.js": "173e236c5aeac4786f5878495323398a249f1cc448f537908b9d4bcee9bc6d68",
+    "run_edge_transition_probe.py": "7a78f7c691b8ed1eee1fbe9c208d93289efd21515b020a49bfa7c75c5f66ac6c",
+    "source-plan.md": "de993e429657fbb1bc25859e9e2d1b1d945831f7119434c7649d876f579c7c99"
+  },
+  "runtime": {
+    "schema": "geometry-runtime/1",
+    "version": "9a699d338e32ef81fd19567f33d8b81cf53613906309f9610f89640b6d394d44",
+    "fresh": true,
+    "root": "<workspace-path>",
+    "pid": 117550,
+    "session": "1d93793867da4b348ffaffed83a2e70d"
+  },
+  "runtimeHttp": 200,
+  "runtimeBodySha256": "e4519209ebd551821d9a4ae346b448e7dec75851c9f8a66e57c38b0f544b85ff"
+}

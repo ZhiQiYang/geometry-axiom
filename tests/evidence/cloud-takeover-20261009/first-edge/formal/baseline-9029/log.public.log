@@ -1,0 +1,29 @@
+EDGE_SERVER {"pid":11441,"port":35435,"cdp":32965,"feedback":"<owned-formal-server-directory>/feedback"}
+EDGE_RUNTIME {"schema":"geometry-runtime/1","version":"82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200","fresh":true,"root":"<baseline-repository-root>","pid":11441,"session":"6d8fb3d0be974b989aec4d0cd26d276f"}
+PASS 1400px a successful edge length stays after another redraw
+PASS 1400px redraw after success does not restore the old length
+PASS 1400px main a newer value typed during a successful commit stays, and the committed length is kept
+PASS 1400px main a newer value typed during rejection stays, and the rejected value is not applied
+PASS 1400px rejecting zero restores the model length and does not apply it
+PASS 1400px typing the same field again after rejection applies the new length
+PASS 1400px switching boundary does not carry the unsent length
+PASS 1400px returning to the first boundary does not revive the unsent length
+PASS 1400px a three-view round trip does not revive the rejected length
+FAIL 1400px a three-view round trip keeps the unsent length and does not apply it {"value":"777","width":777}
+PASS 1400px face a newer value typed during a successful commit stays, and the committed length is kept
+PASS 1400px face a newer value typed during rejection stays, and the rejected value is not applied
+PASS 390px a successful edge length stays after another redraw
+PASS 390px redraw after success does not restore the old length
+PASS 390px main a newer value typed during a successful commit stays, and the committed length is kept
+PASS 390px main a newer value typed during rejection stays, and the rejected value is not applied
+PASS 390px rejecting zero restores the model length and does not apply it
+PASS 390px typing the same field again after rejection applies the new length
+PASS 390px switching boundary does not carry the unsent length
+PASS 390px returning to the first boundary does not revive the unsent length
+PASS 390px a three-view round trip does not revive the rejected length
+FAIL 390px a three-view round trip keeps the unsent length and does not apply it {"value":"777","width":777}
+PASS 390px face a newer value typed during a successful commit stays, and the committed length is kept
+PASS 390px face a newer value typed during rejection stays, and the rejected value is not applied
+PASS no uncaught browser exceptions
+PASS no browser console errors
+EDGE_RESULT {"passed":24,"failed":2,"completed":false}

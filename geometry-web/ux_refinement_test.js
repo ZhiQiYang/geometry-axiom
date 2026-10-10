@@ -5,6 +5,16 @@
  */
 const cdp=require('./cdp_helpers.js');
 module.exports = async function uxRefinement({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount}) {
+  // S2 keeps the same exact discard question inside the active workspace.
+  const discardDraft=async({message,accept})=>{
+    await ctl('#igDiscardDraft');
+    await waitForUI(`!!$('igDiscardConfirmation')&&$('igDiscardConfirmation').getAttribute('role')==='alertdialog'`,10000);
+    const actual=await eval_(`$('igDiscardQuestion').textContent`);
+    if(actual!==message)throw Error('Discard question changed: '+JSON.stringify({expected:message,actual}));
+    await ctl(accept?'#igDiscardConfirm':'#igDiscardCancel');
+    await waitForUI(`!$('igDiscardConfirmation')`,10000);
+  };
+
   console.log('=== P74. 標註、教學、屬性、選單、共用保存與專案恢復 ===');
   const fs=require('fs'),path=require('path'),os=require('os'),errors=exceptionCount();
   const check=cdp.makeCheck({prefix:'P74 ',throwOnFail:true});
@@ -107,7 +117,7 @@ module.exports = async function uxRefinement({send,eval_,sleep,click,waitForUI,e
   const timberHint='[data-guidance-key="face:timber"]';
   if(await read(`!document.querySelector(${JSON.stringify(timberHint)}).querySelector('[data-guidance-dismiss]').hidden`))await ctl(timberHint+' [data-guidance-dismiss]');
   check('關閉角材教學仍保留當前定位即時狀態與中文角色',await read(`!document.querySelector(${JSON.stringify(timberHint)}).hidden && !$('tbRole').selectedOptions[0].textContent.match(/primary|secondary/) && !!document.querySelector(${JSON.stringify(timberHint)}).textContent.trim()`));
-  await ctl('[data-face-tool="select"]');await ctl('.face-layer-row[data-timber-id="12"]');await ctl('[data-fi-tab="components"]');
+  await ctl('[data-face-tool="select"]');await ctl('.face-layer-row[data-timber-id="12"]');await ctl('[data-fi-tab="components"]');await ctl('[data-component-tab="timber"]');
   check('選取角材以中文角色作主標，完整引用預設收在詳細',await read(`!!$('tbTechnicalDetails')&&!$('tbTechnicalDetails').open&&!$('tbSelected').querySelector('.ib-title').textContent.match(/primary|secondary|u\\[0\\]/)`));
   await ctl('#tbTechnicalDetails > summary');check('角材詳細保留精確定位與角色代碼',await read(`$('tbTechnicalDetails').open&&/primary/.test($('tbTechnicalDetails').textContent)`));
   const secondTimber=await point('.face-layer-row[data-timber-id="13"]');for(const type of ['mousePressed','mouseReleased'])await send('Input.dispatchMouseEvent',{type,x:secondTimber.x,y:secondTimber.y,button:'left',clickCount:1,modifiers:8});await sleep(180);
@@ -131,7 +141,7 @@ module.exports = async function uxRefinement({send,eval_,sleep,click,waitForUI,e
   check('共用保存將完整網格原始草稿放入真ZIP，不丟草稿或修改世界',!gridSave.disabled&&await read(`(async()=>{const saved=await GeometryProject.unpack(Uint8Array.from(__p74GridWrite.bytes),fflate);return $('igName').value==='第二輪尚未套用草稿'&&$('infiniteGridWorkspace').open&&!WorkspaceShell.saveState().blocked&&JSON.stringify(saved.manifest.featureAttachments.records[0].value)===JSON.stringify(ReferenceWorkspace.readFeatureAttachment('grid-draft'))&&saved.scene===${JSON.stringify(gridBefore)};})()` )&&(await dump())===gridBefore);
   await read(`window.showSaveFilePicker=window.__p74GridPicker;delete window.__p74GridPicker;delete window.__p74GridWrite;void 0`);
   const gridLeave='捨棄這份未發布的原始草稿？已保存到場景的網格保持不變。';
-  await expectNativeDialog(()=>ctl('#igDiscardDraft'),{message:gridLeave,accept:false});check('取消明示捨棄仍保留未套用草稿',await read(`$('infiniteGridWorkspace').open&&$('igName').value==='第二輪尚未套用草稿'`));await expectNativeDialog(()=>ctl('#igDiscardDraft'),{message:gridLeave,accept:true});
+  await discardDraft({message:gridLeave,accept:false});check('取消明示捨棄仍保留未套用草稿',await read(`$('infiniteGridWorkspace').open&&$('igName').value==='第二輪尚未套用草稿'`));await discardDraft({message:gridLeave,accept:true});
   await ctl('#btnSpaceModelTrial');await wait(`$('smWorkspace')?.open&&SpaceModelWorkspace.snapshot().phase==='preview'&&SpaceModelWorkspace.snapshot().sourceKind==='example'&&!SpaceModelWorkspace.snapshot().stale`);
   check('空間範例入口確實完成來源與模型預覽',await read(`!!SpaceModelWorkspace.snapshot().resultSummary&&!!SpaceModelWorkspace.snapshot().viewer&&$('smResultBadge').dataset.state==='complete'`));await shell('#smWorkspace','#smClose','#smPreview');await ctl('#smClose');
 

@@ -266,7 +266,7 @@ async function click(x, y) {
 async function clickControl(selector) {
   const menu=await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});return e?.closest('#exampleMenuPop')?.hidden?'examples':e?.closest('#fileMenuPop')?.hidden?'file':e?.closest('#createObjectPop')?.hidden?'create':e?.closest('#filterDisclosure')&&!e.matches('summary')&&!e.closest('#filterDisclosure').open?'filter':null;})()`);
   if(menu==='create'){
-    const trigger=await eval_(`innerWidth<=900?'#mobileCreateObject':'#btnCreateObject'`);
+    const trigger=await eval_(`(()=>{const visible=['mobileCreateObject','btnCreateObject'].filter(id=>{const e=document.getElementById(id),r=e?.getBoundingClientRect();return r&&r.width>0&&r.height>0;});if(visible.length!==1)throw Error('Expected one visible create-object opener: '+visible.join(','));return '#'+visible[0];})()`);
     await clickControl(trigger);
   }else if(menu==='examples')await clickControl('#exampleMenuBtn');
   else if(menu==='file')await clickControl('#fileMenuBtn');
@@ -397,7 +397,7 @@ async function main() {
     const kids=[app.querySelector(':scope > .topbar'),app.querySelector(':scope > .workspace'),app.querySelector(':scope > .statusbar')];return {n:kids.filter(Boolean).length,
       cls:kids.map(k=>k.className.split(" ")[0]).join(","),
       h:kids.map(k=>Math.round(k.getBoundingClientRect().height))}})()`);
-  console.log("app rows:", JSON.stringify(rows),explicitVerdict(rows.n === 3 && rows.h[0] === 60 && rows.h[2] === 28 ? "✓ 三列殼" : "✗"));
+  console.log("app rows:", JSON.stringify(rows),explicitVerdict(rows.n === 3 && rows.h[0] === 56 && rows.h[2] === 28 ? "✓ 三列殼" : "✗"));
   /* (b) 主畫布不再保留空白右欄，物件庫與畫布共用完整寬度。 */
   const cols = await eval_(`(()=>{const w=document.querySelector(".workspace");
     const l=w.querySelector('.sidebar-left').getBoundingClientRect(),c=$('canvasViewport').getBoundingClientRect();return {left:l.width,leftRight:l.right,canvasLeft:c.left,canvasRight:c.right,canvasWidth:c.width,iw:innerWidth,composition:document.body.classList.contains('canvas-composition'),hasInspector:document.body.classList.contains('canvas-has-inspector')};})()`);
@@ -548,18 +548,33 @@ async function main() {
   console.log("cards:", await eval_(`document.querySelectorAll(".ocard").length`));
 
   console.log("=== 5. 拖卡片（應寫 canvas-pos，不進入） ===");
+  // The earlier rectangle may overlap the first card. Keep the original target
+  // and require a real, unobstructed header hit before dispatching the gesture.
   const cardBox = await eval_(`(()=>{
-    const c = document.querySelector(".ocard");
-    if (!c) return null;
-    const r = c.getBoundingClientRect();
-    return {x: r.left + r.width/2, y: r.top + 20};
+    const c = document.querySelector('#ocv .ocard[data-kind="boundary"][data-id="1"]');
+    if (!c || c !== document.querySelector('#ocv .ocard')) throw Error('P5: original boundary:1 card missing');
+    const local = ocFind(c.dataset.kind, +c.dataset.id);
+    if (!local) throw Error('P5: original boundary:1 record missing');
+    const frame = c.querySelector('.ocard-frame').getBBox(), matrix = c.getScreenCTM();
+    const viewport = document.querySelector('#ocv').getBoundingClientRect(), attempts = [];
+    const interactive = 'button,a,input,select,textarea,summary,[role="button"],[role="link"],[contenteditable]:not([contenteditable="false"]),[data-insp-scroll],.card-enter';
+    for (const y of [20, 32, 42]) for (const fraction of [0.5, 0.625, 0.75, 0.85, 0.9]) {
+      const point = new DOMPoint(frame.x + frame.width * fraction, y).matrixTransform(matrix);
+      const hit = document.elementFromPoint(point.x, point.y), card = hit?.closest('.ocard');
+      const focusable = hit?.closest('[tabindex]');
+      const valid = point.x >= viewport.left && point.x < viewport.right && point.y >= viewport.top && point.y < viewport.bottom && card === c && !hit.closest(interactive) && !(focusable && c.contains(focusable) && focusable.tabIndex >= 0);
+      attempts.push({x:point.x,y:point.y,hitKind:card?.dataset.kind,hitId:card?.dataset.id,valid});
+      if (valid) return {x:point.x,y:point.y,kind:c.dataset.kind,id:+c.dataset.id,cx:local.cx,cy:local.cy,attempts};
+    }
+    throw Error('P5: original card has no reachable noninteractive header point: '+JSON.stringify(attempts));
   })()`);
+  console.log('P5 pointer precondition', JSON.stringify(cardBox));
   if (cardBox) {
     const posBefore = await eval_(`JSON.stringify(oc.faces.map(f=>[f.id,f.cx,f.cy]))`);
     await drag(cardBox.x, cardBox.y, cardBox.x + 120, cardBox.y + 60);
-    await sleep(1200);
+    const commit = await cdp.waitCardCanvasPos(eval_, {kind:cardBox.kind, id:cardBox.id, beforeCx:cardBox.cx, beforeCy:cardBox.cy});
     const posAfter = await eval_(`JSON.stringify(oc.faces.map(f=>[f.id,f.cx,f.cy]))`);
-    console.log("card pos:", posBefore, "->", posAfter,explicitVerdict(posBefore !== posAfter ? "✓ 拖卡片有效" : "✗ 拖卡片無效"));
+    console.log("card pos:", posBefore, "->", posAfter,explicitVerdict(commit.ok && posBefore !== posAfter ? "✓ 拖卡片有效" : "✗ 拖卡片無效"), JSON.stringify(commit));
   }
 
   console.log("=== 6. 點卡=選取(檢視器);雙擊=進入面編輯 ===");
@@ -2138,14 +2153,15 @@ async function main() {
   console.log("柱卡片:",explicitVerdict(colCard ? "✓" : "✗"));
   /* 拖卡片 → canvas-pos 持久化 */
   if (colCard) {
+    const columnBefore = await eval_(`api("objects").then(r=>{const c=r.columns[0];return c?{id:c.id,cx:c.cx,cy:c.cy}:null;})`);
     await drag(colCard.x, colCard.y, colCard.x + 130, colCard.y + 80);
-    await sleep(800);
+    const commit = columnBefore ? await cdp.waitCardCanvasPos(eval_, {kind:'column', id:columnBefore.id, beforeCx:columnBefore.cx, beforeCy:columnBefore.cy}) : {ok:false};
     const dragR = await eval_(`api("objects").then(r=>({
       has: r.columns[0] && r.columns[0].hasPos }))`);
     const dumpPos = await eval_(
       `api("dump").then(d=>/canvas-pos column/.test(d.text))`);
-    console.log("拖卡片→canvas-pos:",explicitVerdict(dragR.has && dumpPos ? "✓" : "✗"),
-      "| dump 有記錄:", dumpPos);
+    console.log("拖卡片→canvas-pos:",explicitVerdict(commit.ok && dragR.has && dumpPos ? "✓" : "✗"),
+      "| dump 有記錄:", dumpPos, JSON.stringify(commit));
   }
   /* 空間→柱 障礙連線 */
   const rcEdgeLabels = await eval_(
@@ -2345,8 +2361,8 @@ async function main() {
   for (let i = 0; i < 15; ++i) {
     await sleep(300);
     obUi = await eval_(`({
-      checks: document.querySelectorAll("#faceLayerList .fe-ob-check").length,
-      checked: document.querySelectorAll("#faceLayerList .fe-ob-check:checked").length,
+      checks: document.querySelectorAll("#faceProjectionEditor .fe-ob-check").length,
+      checked: document.querySelectorAll("#faceProjectionEditor .fe-ob-check:checked").length,
       btn: !!document.getElementById("feApplyProj"),
       cut: !!document.getElementById("feCutStrip"),
       btnTxt: document.getElementById("feApplyProj") &&
@@ -2367,7 +2383,7 @@ async function main() {
     ? "✓" : `✗ ${JSON.stringify(ap1)}`));
   /* 只勾樑(取消已套用的柱:重套=拒絕)+ 裁切條帶 → 套用 */
   await eval_(`(()=>{
-    for (const c of document.querySelectorAll("#faceLayerList .fe-ob-check")) {
+    for (const c of document.querySelectorAll("#faceProjectionEditor .fe-ob-check")) {
       c.checked = c.dataset.itemType === "beam";
       c.dispatchEvent(new Event("change"));
     }
@@ -2420,6 +2436,9 @@ async function main() {
     "| 游標類",explicitVerdict(fbTool.cls.includes("tool-referenceLine") ? "✓" : "✗ " + fbTool.cls));
   /* (b) 參考線只點沒拖 → u/v 小選單 → 選 v → dump 出現 guide */
   await eval_(`(async()=>{const r=document.getElementById("faceEditorViewport").getBoundingClientRect();const p=feSnap(fePoint({clientX:r.left+r.width/2,clientY:r.top+r.height/2}));await api('line spec 點放定位 '+Math.round(p.x))})()`);
+  // Raw spec acknowledgements have no revision: synchronize this fixture before
+  // the gesture, so a later autosave dump cannot retire its prepared source stamp.
+  await eval_(`api('dump')`);
   await click(fbVp.cx, fbVp.cy);
   await sleep(400);
   const pkShown = await eval_(`!document.getElementById("feGuidePick").hidden`);
@@ -3539,7 +3558,7 @@ async function main() {
   };
   const clickSelector = async sel => {
     const menu=await eval_(`document.querySelector(${JSON.stringify(sel)})?.closest('#createObjectPop')?.hidden===true`);
-    if(menu)await clickControl(await eval_(`innerWidth<=900?'#mobileCreateObject':'#btnCreateObject'`));
+    if(menu)await clickControl(await eval_(`(()=>{const visible=['mobileCreateObject','btnCreateObject'].filter(id=>{const e=document.getElementById(id),r=e?.getBoundingClientRect();return r&&r.width>0&&r.height>0;});if(visible.length!==1)throw Error('Expected one visible create-object opener: '+visible.join(','));return '#'+visible[0];})()`));
     const p = await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(sel)});if(!e)throw Error('Missing control '+${JSON.stringify(sel)}+' '+JSON.stringify({focus:oc.focus,connection:connection.phase,error:connection.error,status:$('status').textContent}));e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,hit=document.elementFromPoint(x,y);return {x,y,hit:e.contains(hit),target:hit?.outerHTML?.slice(0,200)}})()`);
     if (!p.hit) throw Error('Control is not reachable '+sel+' '+JSON.stringify(p));
     await click(p.x,p.y); await sleep(120); await waitIdle();
@@ -3739,7 +3758,7 @@ async function main() {
   check('F2 form drafts survive redraw',await eval_(`document.querySelector('#gridU').value==='100 200' && document.querySelector('#placeOX').value==='250'`));
   for (const width of [1382,1160,900,680,600]) {
     await send('Emulation.setDeviceMetricsOverride',{width,height:804,deviceScaleFactor:1,mobile:false});
-    check('T4 workspace identity and scrollable tools occupy separate usable rows @'+width,await eval_(`(()=>{const h=document.querySelector('.object-workspace-topbar').getBoundingClientRect(),s=document.querySelector('.object-workspace-statusbar').getBoundingClientRect(),t=document.querySelector('.workspace-tools-row').getBoundingClientRect(),a=document.querySelector('.object-workspace-actions').getBoundingClientRect(),title=document.querySelector('#workspaceTitle').getBoundingClientRect(),vp=$('faceEditorViewport').getBoundingClientRect();return h.height>=100 && h.height<=150 && s.height===32 && a.right<=innerWidth+1 && t.left>=0 && t.right<=innerWidth+1 && t.top>=a.bottom-1 && title.width>0 && vp.top>=h.bottom-1 && vp.height>300})()`));
+    check('T4 adopted 56/96 header, reachable tools and history in right actions @'+width,await eval_(`(()=>{const h=document.querySelector('.object-workspace-topbar').getBoundingClientRect(),s=document.querySelector('.object-workspace-statusbar').getBoundingClientRect(),t=document.querySelector('.workspace-tools-row').getBoundingClientRect(),a=document.querySelector('.object-workspace-actions').getBoundingClientRect(),title=document.querySelector('#workspaceTitle').getBoundingClientRect(),vp=$('faceEditorViewport').getBoundingClientRect();return h.height===(innerWidth<=560?96:56) && s.height===32 && a.right<=innerWidth+1 && t.left>=0 && t.right<=innerWidth+1 && (innerWidth<=560?t.top>=h.top+44:t.top>=h.top&&t.bottom<=h.bottom) && document.querySelector('.object-workspace-actions').contains(document.querySelector('.workspace-history-tools')) && title.width>0 && vp.top>=h.bottom-1 && vp.height>300})()`));
   }
   await clickSelector('#workspaceToggleRight');
   await eval_(`document.querySelector('#edgeLength0').scrollIntoView({block:'center',inline:'nearest'})`);
@@ -3793,7 +3812,7 @@ async function main() {
   await eval_(`renderFaceInspector()`);
   check('F9 both disclosures keep expanded state',await eval_(`document.querySelector('#placeDetails').open && document.querySelector('#projectionDetails').open`));
   await clickSelector('#workspaceBackButton');await clickSelector('#btnObj');
-  check('V1 V2 toolbar does not overlap drawing and empty inspector collapses',await eval_(`(()=>{const t=document.querySelector('#viewToolbar').getBoundingClientRect(),c=document.querySelector('#cv').getBoundingClientRect(),r=document.querySelector('.sidebar-right').getBoundingClientRect();return c.top>=t.bottom-1 && c.height>400 && r.width===0})()`));
+  check('V1 V2 toolbar does not overlap drawing and adopted empty inspector retains 240px',await eval_(`(()=>{const t=document.querySelector('#viewToolbar').getBoundingClientRect(),c=document.querySelector('#cv').getBoundingClientRect(),r=document.querySelector('.sidebar-right').getBoundingClientRect(),e=$('v3PickPanel'),b=e.getBoundingClientRect();return c.top>=t.bottom-1 && c.height>400 && r.width===240 && Math.abs(c.right-r.left)<=1 && r.right<=innerWidth && !oc.sel && !document.body.classList.contains('v3-picked') && !e.hidden && b.width>0 && b.height>0 && b.left>=r.left && b.right<=r.right && b.top>=r.top && b.bottom<=r.bottom && $('v3PickInfo').textContent.trim().length>0})()`));
   await clickSelector('#btnObj');
   check('V3 selecting three-view twice stays in three-view',await eval_(`!oc.on && document.querySelectorAll('#canvasDrawToolbar [data-tool]').length===2 && [...document.querySelectorAll('#canvasDrawToolbar [data-tool]')].every(b=>b.disabled)`));
   await remainingShot('ui-v2-three-view');
@@ -4677,7 +4696,7 @@ async function main() {
   const p43_7c = await eval_(`fe.timbers.some(t=>t.id===10)`);
   check('P43-7c Ctrl+Z → 角材回來', p43_7c === true, p43_7c);
   const p43FaceLayout=await eval_(`(()=>{const top=document.querySelector('.object-workspace-topbar').getBoundingClientRect(),vp=$('faceEditorViewport').getBoundingClientRect();return {focus:oc.focus,composition:document.body.classList.contains('canvas-composition'),topHeight:top.height,viewportTop:vp.top,viewportHeight:vp.height,topBottom:top.bottom};})()`);
-  check('P43-7d Undo 後仍是面內版面，沒有主畫布底部樣式殘留',p43FaceLayout.focus?.t==='face'&&!p43FaceLayout.composition&&p43FaceLayout.topHeight>=100&&p43FaceLayout.topHeight<=150&&p43FaceLayout.viewportHeight>300&&p43FaceLayout.viewportTop>=p43FaceLayout.topBottom,p43FaceLayout);
+  check('P43-7d Undo 後仍是面內版面，沒有主畫布底部樣式殘留',p43FaceLayout.focus?.t==='face'&&!p43FaceLayout.composition&&p43FaceLayout.topHeight===56&&p43FaceLayout.viewportHeight>300&&p43FaceLayout.viewportTop>=p43FaceLayout.topBottom,p43FaceLayout);
 
   /* (8) 切到重畫外環工具 e,在角材位置落點仍成功(角材不擋) */
   await eval_(`feSetTool('redraw')`);
@@ -6356,11 +6375,61 @@ async function main() {
     check('P56-4 手選 custom 與截面深度在換邊、重繪後保留', await eval_(`$('tbRole').value==='custom' && $('tbPri').value==='7' && $('tbSide').value==='-n' && $('tbA').value==='31'`));
     await ctl('#tbUseSuggestion');
     check('P56-5 套用建議只改方向角色', await eval_(`$('tbRole').value==='boundary' && $('tbSide').value==='-n' && $('tbA').value==='31'`));
-    await field('tbRole','primary'); await ctl('#tbPlace'); await facePoint(2000,1500);
-    await until(`!oc.busy`);
-    check('P56-6 不合法手選仍交核心拒絕，不當作断線', await eval_(`fe.timbers.length===0 && $('tbRole').classList.contains('invalid') && connection.phase==='ready'`));
-    await facePoint(2000,0); await until(`fe.timbers.length===1`);
-    check('P56-7 改用點線成功後移除角色錯誤標示', await eval_(`$('tbRole').value==='boundary' && !$('tbRole').classList.contains('invalid')`));
+    // Hold only the real native snapshot returned after a rejected or committed
+    // transaction. Busy must cover that refresh, not merely the DSL response.
+    const holdTimberSettlement = async mode => eval_(`(()=>{
+      const nativeFetch=window.fetch;
+      const g=window.__g197Settlement={mode:${JSON.stringify(mode)},commands:[],events:[],settled:false,held:false};
+      const released=new Promise(resolve=>g.release=resolve);
+      const observe=e=>{if(e.type==='pointerdown'||e.key==='Enter')g.events.push({type:e.type,key:e.key,trusted:e.isTrusted,id:e.target.id,hit:e.target.closest?.('[data-face-hit]')?.dataset.faceHit});};
+      window.addEventListener('pointerdown',observe,true);window.addEventListener('keydown',observe,true);
+      g.cleanup=()=>{g.release();window.fetch=nativeFetch;window.removeEventListener('pointerdown',observe,true);window.removeEventListener('keydown',observe,true);};
+      window.fetch=async(input,init)=>{
+        const cmd=input==='/api'?JSON.parse(init.body).cmd:null;if(cmd)g.commands.push(cmd);
+        const response=await nativeFetch(input,init);if(!cmd)return response;
+        const result=await response.clone().json();
+        if(g.mode==='rejected'&&cmd.startsWith('line place ')&&!result.ok){g.settled=true;g.error=result.error;}
+        if(g.mode==='committed'&&cmd==='line history-end'&&result.ok)g.settled=true;
+        if(g.settled&&!g.held&&cmd==='source-inspect'){
+          g.held=true;g.native=result;g.raw=JSON.stringify(['tbA','tbB','tbAnchor','tbSelector','tbDir','tbSide','tbRole','tbPri'].map(id=>[id,$(id)?.value]));
+          g.requestsAtHold=g.commands.length;await released;
+        }
+        return response;
+      };
+    })()`);
+    const settlementState = () => eval_(`(()=>{const g=__g197Settlement;return {busy:oc.busy,held:g.held,mode:g.mode,native:g.native,error:g.error,referenceRevision:fe.referenceRevision,fingerprint:fe.timberReferenceData?.sourceFingerprint??null};})()`);
+    const attemptSettlementReentry = async () => {
+      await facePoint(2000,0);
+      await eval_(`$('tbPlace').focus()`);
+      await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Enter',code:'Enter',windowsVirtualKeyCode:13,text:'\r',unmodifiedText:'\r'});
+      await send('Input.dispatchKeyEvent',{type:'keyUp',key:'Enter',code:'Enter',windowsVirtualKeyCode:13});
+      await sleep(150);
+      return eval_(`(()=>{const g=__g197Settlement,raw=JSON.stringify(['tbA','tbB','tbAnchor','tbSelector','tbDir','tbSide','tbRole','tbPri'].map(id=>[id,$(id)?.value]));
+        const writes=g.commands.slice(g.requestsAtHold).filter(c=>/^(newid(?:\\s|$)|line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm )/.test(c));
+        return {busy:oc.busy,unchanged:raw===g.raw,writes,pointer:g.events.some(e=>e.type==='pointerdown'&&e.trusted&&e.hit==='e:0:0'),enter:g.events.some(e=>e.type==='keydown'&&e.trusted&&e.key==='Enter'&&e.id==='tbPlace')};})()`);
+    };
+    await field('tbRole','primary');await holdTimberSettlement('rejected');
+    try {
+      await ctl('#tbPlace');await until(`__g197Settlement.held`);
+      const held=await settlementState();
+      check('P56-6a 真拒絕後來源重讀尚未完成時維持 busy',held.busy&&held.held&&held.native?.ok===true&&held.fingerprint===null&&held.error.includes('V_CUT_PRIORITY'),held);
+      await facePoint(2000,1500);
+      const reentry=await attemptSettlementReentry();
+      check('P56-6b 拒絕後重讀期間真點線與 Enter 不再入或改輸入',reentry.busy&&reentry.unchanged&&reentry.writes.length===0&&reentry.pointer&&reentry.enter,reentry);
+      await eval_(`__g197Settlement.release()`);await until(`!oc.busy`);
+      check('P56-6c 解除 busy 前完成同一原生 revision 與 fingerprint 重讀',await eval_(`fe.referenceRevision===__g197Settlement.native.revision&&fe.timberReferenceData?.sourceFingerprint===__g197Settlement.native.sourceFingerprint`));
+      check('P56-6 不合法手選仍交核心拒絕，不當作断線',await eval_(`fe.timbers.length===0 && $('tbRole').classList.contains('invalid') && connection.phase==='ready'`));
+    } finally {await eval_(`__g197Settlement.cleanup()`);}
+    await holdTimberSettlement('committed');
+    try {
+      await facePoint(2000,0);await until(`__g197Settlement.held`);
+      const held=await settlementState();
+      check('P56-7a 真成功後來源重讀尚未完成時也維持 busy',held.busy&&held.held&&held.native?.ok===true&&held.fingerprint===null,held);
+      const reentry=await attemptSettlementReentry();
+      check('P56-7b 成功後重讀期間真點線與 Enter 不重複放置或改輸入',reentry.busy&&reentry.unchanged&&reentry.writes.length===0&&reentry.pointer&&reentry.enter,reentry);
+      await eval_(`__g197Settlement.release()`);await until(`!oc.busy&&fe.timbers.length===1`);
+      check('P56-7 改用點線成功後移除角色錯誤標示',await eval_(`$('tbRole').value==='boundary' && !$('tbRole').classList.contains('invalid')`));
+    } finally {await eval_(`__g197Settlement.cleanup()`);}
   }
 
   { // GEO-198: portable references, browser PDF rendering and context isolation.
@@ -6887,11 +6956,15 @@ async function main() {
         && ws.querySelector('.object-workspace-topbar .project-save')
         && !!ws.querySelector('.object-workspace-topbar [data-project-status]');})()`));
     await clickSelector('#shapeToolButton');
-    check('P64 F2 形狀選單公開五個操作',await eval_(`!$('shapeToolPop').hidden && ['notch','extend','push','corner','hole'].every(a=>$('shapeToolPop').querySelector('[data-shape-action="'+a+'"]'))`));
+    check('P64 F2 四個不同形狀操作與唯一 R 開口入口',await eval_(`!$('shapeToolPop').hidden && ['notch','extend','push','corner'].every(a=>$('shapeToolPop').querySelector('[data-shape-action="'+a+'"]')) && !$('shapeToolPop').querySelector('[data-shape-action="hole"]') && document.querySelectorAll('#faceWorkspaceTools [data-face-tool="hole"]').length===1 && document.querySelector('#faceWorkspaceTools [data-face-tool="hole"] kbd').textContent==='R'`));
     await clickSelector('[data-shape-action="notch"]');
     check('P64 F2 凹口等待選邊並可取消',await eval_(`fe.queuedShapeAction==='notch' && $('faceCanvasHint').textContent.includes('外環邊')`));
     for (const type of ['keyDown','keyUp']) await send('Input.dispatchKeyEvent',{type,key:'Escape',code:'Escape',windowsVirtualKeyCode:27});
-    check('P64 F2 Esc 取消形狀選擇',await eval_(`!fe.queuedShapeAction && !!oc.edit`));
+    const cancelledShape=await eval_(`!fe.queuedShapeAction && !!oc.edit`);
+    for (const type of ['keyDown','keyUp']) await send('Input.dispatchKeyEvent',{type,key:'r',code:'KeyR',windowsVirtualKeyCode:82});
+    const retainedHoleShortcut=await eval_(`fe.tool==='hole' && !!oc.edit && !fe.queuedShapeAction`);
+    for (const type of ['keyDown','keyUp']) await send('Input.dispatchKeyEvent',{type,key:'v',code:'KeyV',windowsVirtualKeyCode:86});
+    check('P64 F2 Esc 取消形狀選擇且 R 開口與 V 選取快捷鍵仍可用',cancelledShape&&retainedHoleShortcut&&await eval_(`!fe.queuedShapeAction && !!oc.edit && fe.tool==='select'`));
     check('P64 F3-F5 四頁、構件段與形狀庫',await eval_(`(()=>{
       const tabs=[...document.querySelectorAll('#faceInspectorTabs [data-fi-tab]')].map(e=>e.dataset.fiTab);
       fiShowTab('shape');const shape=$('faceInspectorContent').contains($('faceShapeButton'))&&!$('faceShapeButton').hidden;
@@ -6964,9 +7037,9 @@ async function main() {
     const check=bodyCheck();
     await eval_(`leaveFocus();setView3(false)`);await sleep(200);
     check('P65-1 正式版本載入建模模組並提供現成範例入口',await eval_(`typeof SpaceModelWorkspace==='object' && typeof SpaceModelWorkspace.openCurrentFace==='function' && !!$('btnSpaceModelTrial') && !!$('btnSpaceModels') && $('btnSpaceModelTrial').textContent.includes('現成範例')`));
-    /* 牙齒:入口存在但工作區點擊前必須是關的、入口標籤是真內容(空間模型 <n>),否則 P65-1 只證明 id 在。 */
+    /* 牙齒:入口存在但工作區點擊前必須是關的、入口標籤是真內容(3D 模型 <n>),否則 P65-1 只證明 id 在。 */
     const p65Entry=await eval_(`({open:document.getElementById('smWorkspace')?.open,count:document.getElementById('spaceModelCount')?.textContent,library:document.getElementById('btnSpaceModels')?.textContent})`);
-    check('P65-1b 點擊前建模工作區關閉,模型庫入口顯示「空間模型 <數量>」',p65Entry.open!==true && /^\d+$/.test(p65Entry.count||'') && /^空間模型\s*\d+$/.test((p65Entry.library||'').trim()),p65Entry);
+    check('P65-1b 點擊前建模工作區關閉,模型庫入口顯示「3D 模型 <數量>」',p65Entry.open!==true && /^\d+$/.test(p65Entry.count||'') && /^3D 模型\s*\d+$/.test((p65Entry.library||'').trim()),p65Entry);
     await clickControl('#btnSpaceModelTrial');await sleep(200);
     check('P65-2 三步操作、範例與明示高度欄位皆在正式工作區',await eval_(`$('smWorkspace').open && !!$('smTryRectangle') && !!$('smTryLShape') && !!$('smBottom') && !!$('smHeight') && !!$('smPreview') && !!$('smConfirmFaces') && !!$('smCreate')`));
     /* 牙齒:點「現成範例」的可觀察結果(DOM-CONTRACT:96-100)——載入矩形範例並自動預覽:來源 example、牆高預設 3000、
@@ -7009,6 +7082,8 @@ async function main() {
     await require('./grid_system_test.js')({send,eval_,sleep,click,drag,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
   if (scope.mode==='full' || process.env.GEOMETRY_GRID_SYSTEM_ONLY)
     await require('./grid_rule_editor_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
+  if (scope.mode==='full' || process.env.GEOMETRY_GRID_SYSTEM_ONLY)
+    await require('./grid_rule_lines_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
   if (process.env.GEOMETRY_INFINITE_FACE_ONLY)
     await require('./infinite_grid_face_test.js')({send,eval_,sleep,click,waitForUI});
   if (scope.mode==='full' || process.env.GEOMETRY_COMPOSITION_ONLY)

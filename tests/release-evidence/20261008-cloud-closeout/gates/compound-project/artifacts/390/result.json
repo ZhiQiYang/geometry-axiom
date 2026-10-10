@@ -1,0 +1,67 @@
+{
+  "width": 390,
+  "started": "2026-10-08T18:48:56.406152+00:00",
+  "checks": [
+    {
+      "name": "API fixture contains one exact model, one unpublished rule draft and three owned members",
+      "passed": true,
+      "at": "2026-10-08T18:48:59.524026+00:00"
+    },
+    {
+      "name": "real downloaded ZIP retains exact model/draft/native World and both native assembly capabilities",
+      "passed": true,
+      "at": "2026-10-08T18:49:00.053716+00:00"
+    },
+    {
+      "name": "Save preserves compound source and project payload",
+      "passed": true,
+      "at": "2026-10-08T18:49:00.054657+00:00"
+    },
+    {
+      "name": "trusted New clears native World, model, drafts, instances and changes project identity",
+      "passed": true,
+      "at": "2026-10-08T18:49:00.472382+00:00"
+    },
+    {
+      "name": "second browser process with fresh profile starts empty before Open",
+      "passed": true,
+      "at": "2026-10-08T18:49:01.767299+00:00"
+    },
+    {
+      "name": "fresh-profile formal chooser restores complete World, references, instances, model and draft bytes",
+      "passed": true,
+      "at": "2026-10-08T18:49:03.614337+00:00"
+    },
+    {
+      "name": "reopened instance ownership rejects direct member deletion with I42 and changes no full snapshot",
+      "passed": true,
+      "at": "2026-10-08T18:49:03.896962+00:00"
+    },
+    {
+      "name": "formal scene Export contains exact native World only",
+      "passed": true,
+      "at": "2026-10-08T18:49:04.172777+00:00"
+    },
+    {
+      "name": "scene Open predecessor has no residual project payload",
+      "passed": true,
+      "at": "2026-10-08T18:49:04.594291+00:00"
+    },
+    {
+      "name": "scene chooser restores full native instance closure without model or unpublished project draft",
+      "passed": true,
+      "at": "2026-10-08T18:49:05.038460+00:00"
+    },
+    {
+      "name": "no page or raw-network capture errors",
+      "passed": true,
+      "at": "2026-10-08T18:49:05.105918+00:00"
+    }
+  ],
+  "passed": true,
+  "archiveSha256": "2852d3230713af431dd8bd8e5020c2788fa4ba40000ec496a6c5ed7dbb329e60",
+  "sceneSha256": "ee99f44d8a1ee9518b8713eb63c42017c3d521e3837583d5e64e4984df1e3723",
+  "finished": "2026-10-08T18:49:05.461982+00:00",
+  "pageErrors": [],
+  "networkCaptureErrors": []
+}

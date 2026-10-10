@@ -1,0 +1,36 @@
+PASS runtime fresh before real native operations
+PASS runtime belongs to selected worktree
+PASS fixture is genuine /13 raw/native/evidence ZIP
+CLOSEOUT_BROWSER_LAUNCH {"sandbox":true,"args":[]}
+PASS missing-canonical real candidate prepared once
+PASS missing-canonical sends zero confirms and cancels owned candidate once
+PASS missing-canonical preserves native world byte for byte
+PASS missing-canonical preserves context identity and revision
+PASS missing-canonical preserves raw and history frame
+PASS missing-canonical uses canonical/evidence guard and reports rejection
+PASS capability-mismatch real candidate prepared once
+PASS capability-mismatch sends zero confirms and cancels owned candidate once
+PASS capability-mismatch preserves native world byte for byte
+PASS capability-mismatch preserves context identity and revision
+PASS capability-mismatch preserves raw and history frame
+PASS capability-mismatch uses canonical/evidence guard and reports rejection
+PASS incomplete-snapshot real candidate prepared once
+PASS incomplete-snapshot sends zero confirms and cancels owned candidate once
+PASS incomplete-snapshot preserves native world byte for byte
+PASS incomplete-snapshot preserves context identity and revision
+PASS incomplete-snapshot preserves raw and history frame
+PASS incomplete-snapshot uses canonical/evidence guard and reports rejection
+PASS invalid-pin real candidate prepared once
+PASS invalid-pin sends zero confirms and cancels owned candidate once
+PASS invalid-pin preserves native world byte for byte
+PASS invalid-pin preserves context identity and revision
+PASS invalid-pin preserves raw and history frame
+PASS invalid-pin uses canonical/evidence guard and reports rejection
+PASS valid /13 replaces a genuinely empty context
+PASS valid /13 executes real detached evidence snapshot
+PASS valid /13 preserves rule key and highwater
+PASS valid /13 preserves exact raw strings and pins
+PASS valid /13 preserves evidence and original source bytes
+PASS formal Save retains /13 model collections, raw/evidence/source closure and native
+PASS formal reader gate has zero browser exceptions
+RULE_READER_RESULT {"head":"5174a8dafd8c48329d7166abbd3d104e3c28c0c4","passed":34,"failed":0,"errors":[],"output":"/tmp/geometry-closeout-r2-gates/rule-reader"}

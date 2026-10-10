@@ -12,7 +12,7 @@ async function complete(census, name, count = EXPECTED[name]) {
 }
 async function finish(census, names) { for (const name of ['setup', ...names, 'browser-health']) await complete(census, name); }
 
-test('independent census is frozen; default full space totals 202 without optional timber', async () => {
+test('independent census is frozen; default full space totals 228 without optional timber', async () => {
   assert.ok(Object.isFrozen(EXPECTED));
   assert.ok(Object.isFrozen(FULL_SPACE_GROUPS));
   assert.deepEqual(FULL_SPACE_GROUPS, full);
@@ -21,7 +21,8 @@ test('independent census is frozen; default full space totals 202 without option
   await finish(census, full);
   const report = census.report(true);
   assert.equal(report.completed, true);
-  assert.equal(Object.values(report.groups).reduce((n, g) => n + g.passed, 0), 202);
+  assert.equal(EXPECTED['space-height-library'], 112);
+  assert.equal(Object.values(report.groups).reduce((n, g) => n + g.passed, 0), 228);
   assert.equal(Object.hasOwn(report.groups, 'timber-material'), false);
 });
 test('omitting a whole expected group fails even if every executed assertion passes', async () => {
@@ -105,6 +106,8 @@ test('real configuration declares full scope separately from every existing part
     ['GEOMETRY_PROJECTION_PLACEMENT_ONLY', ['projection-placement', 'font-layout']],
     ['GEOMETRY_TIMBER_ONLY', ['timber-material', 'timber-source-guards', 'font-layout']],
     ['GEOMETRY_TIMBER_GUARDS_ONLY', ['timber-source-guards']],
+    ['GEOMETRY_ASYNC_REPLY_ONLY', ['async-reply-ui']],
+    ['GEOMETRY_SAVE_REOPEN_ONLY', ['save-reopen-grid']],
   ]) {
     const scope = configuration({...env, [flag]: '1'});
     assert.equal(scope.mode, 'partial');

@@ -1,0 +1,66 @@
+{
+  "reviewer": "ci_source_audit (independent read-only review)",
+  "scope": "Existing raw artifacts, traces, native network payloads, source and probe hashes; no browser launch, product run, repository modification or GitHub message",
+  "target_head": "3a48cf5bacb9a295e15046e5ca0cb021e50c54db",
+  "browser_tested_head": "bdd1bf7812ba6126aab9ddffced43cd200ac977e",
+  "verdict": "Agree with the bounded browser defect findings for #174 and the two rejection/input-generation findings for #173. These remain product blockers on the unchanged relevant source in 3a48cf5, not external-only acceptance conditions.",
+  "source_identity": {
+    "app_js_sha256": "86c82675d0b7eb0dc76659705186273112f6d17c2712426f7a681e5fa48497d8",
+    "space_workspace_js_sha256": "a735338f5cc14f3ae743578986750ace3c7389e0d73fd44c21773d82c2503868",
+    "round_before_after_and_target_and_working_tree_match": true,
+    "scope_limit": "Source-equivalent findings transfer to 3a48cf5; this is not a claim that the browser scenarios or full regression were rerun at 3a48cf5."
+  },
+  "integrity": {
+    "manifest_entries_checked": 249,
+    "manifest_mismatches": [],
+    "native_network_payloads_match_recorded_gate_replies": true,
+    "scene_files_match_dump_returns_extracted_independently_from_traces": true,
+    "completed_promise_waits_recorded_after_release": true,
+    "executed_probe_source_hashes_recovered_from_each_trace": true,
+    "executed_instrumentation_matches_recorded_hash": true,
+    "served_javascript_limit": "Playwright traces omit app.js and space-workspace.js response bodies. Their HTTP 200 lengths, runtime version and session match the recorded fresh runtime and source files; independent historical GET-body hashing is unavailable. Do not claim it was performed."
+  },
+  "findings": [
+    {
+      "issue": 174,
+      "classification": "confirmed real-browser ownership defect",
+      "cases": ["browser-handles-3/handles-1400", "browser-handles-mobile-4/handles-390"],
+      "observation": "Actual native proj 0 0 0 711 reply was held at response.json; user controls switched edit→view→B edit. B 712 at token 5 had 5 handles in 1 group. After A release and settled A/B draw promises, B still had the same tool, id and token but 0 handles/groups. Full before/after dumps are byte-identical in each viewport.",
+      "cause_assessment": "Matches drawEditHandles' post-await stale-token branch calling global previewClear. The probe wraps the original function and waits for its entire promise; it does not manufacture projection data or erase handles."
+    },
+    {
+      "issue": 173,
+      "classification": "confirmed real-browser newer-input loss on native rejection",
+      "coverage": "main and face inspector, each at 1400px and 390px",
+      "observation": "Submitted 2000 gets the real native hole-outside-shortened-outline rejection. While pending, 5151 is typed in the original still-connected input. After the complete handler settles, value is 4000 and full World remains unchanged.",
+      "cause_assessment": "Matches resetting connected inp.value to inp.defaultValue without checking whether a newer edit happened. Native rejection is an intentional valid negative fixture, not a product defect itself."
+    },
+    {
+      "issue": 173,
+      "classification": "confirmed browser rejection-state defect under explicit renderer injection",
+      "coverage": "main and face inspector, each at 1400px and 390px",
+      "observation": "During the same real native rejection, the probe explicitly invokes the actual product renderer and verifies the original input disconnected. After release/settlement, rejected 2000 remains visible in its replacement while model/defaultValue stays 4000 and full World is unchanged.",
+      "limit": "The product renderer and DOM behavior are real. This evidence does not establish a particular normal user action that triggers that redraw; retain the explicit fault-injection label."
+    }
+  ],
+  "separate_controls": {
+    "replacement_new_value": "5151 survives visually but a second trusted change event sends an actual native boundary mutation and persists 5151. Full dump changes. This cannot certify an uncommitted draft was preserved.",
+    "success_sibling": "4200 commits successfully, but the supposedly unsent 4242 sibling also produces a second trusted change/native mutation and persists. The sibling-preservation assertion fails.",
+    "disposition": "Keep these as distinct observed extra-commit behaviors requiring event/ownership cause review. Do not count them as additional instances of the two rejection bugs, or claim the probe already established their exact root cause."
+  },
+  "preconditions_and_probe_revisions": {
+    "excluded_from_product_failures": ["initial missing bundled browser executable", "stale-runtime HTTP 409 round", "390px hidden drawer-close button", "390px already-inline inspector with hidden toggle"],
+    "reviewed_changes": "fresh-runtime/HTTP checks, width-only selection, normal Escape drawer close, and recognizing the visible inline inspector. Scenario fixtures and behavioral assertions were unchanged across the executed revisions.",
+    "probe_hashes": {
+      "browser-handles-2": "907674bb39b20893787c401b4c5999b127a8f59195d4f7c0ec1fdeb3080079c2",
+      "browser-handles-3": "4495cb5abfc8c6ac251fe236da8dfdccc2d26e81a938e0f3a1c183a40d1d799e",
+      "browser-handles-mobile-4_and_browser-edges-1": "72f260683323dbc35777d1c2ae477968d3507993adf95e2ffbdcfb66b30a4241",
+      "browser-edges-mobile-2_and_current_probe": "624db4fca454832bb9fbe3b0837571472ce6360baffef172486b2a27826e9dfd"
+    },
+    "instrumentation_sha256_all_rounds": "83e8f28a97b4d03339d27f7646756e8d6bedd4e7f7f9745984d51e1dee54fb44",
+    "hash_statement": "Probe revisions differ; each executed source matches its own receipt and trace. Do not call all rounds the current probe hash."
+  },
+  "next_action": "Existing single app.js owner fixes ownership of async writes/cleanup and input edit generations, then repeats the bounded probes and required candidate CDP/Space regressions. Source-only bhit/drag/uvMap-cache concerns remain unverified browser paths.",
+  "detail": "/workspace/closure-evidence/ci-source-audit/async-independent-detail.json",
+  "reproducer_of_this_read_only_review": "/workspace/closure-evidence/ci-source-audit/review_async.py"
+}
