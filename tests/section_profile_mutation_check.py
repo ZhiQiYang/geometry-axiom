@@ -31,9 +31,12 @@ The baseline of each group must pass with zero skips first.  A mutant counts as 
   * the mutant binary differs from the baseline binary.
 
 A case marked ``equivalent`` is compiled and run like the others but must NOT be killed; the reason has to be given.
-Exit 0 only if every case behaves as declared, 1 if a mutant survived / was mislabelled, 2 if a baseline failed or
-the environment is missing.  Not part of tests/run_all.py (it compiles one bridge per case), like
-tests/assembly_mutation_check.py.  Anything that survives is a hole in the tests: add the assertion, never delete the case.
+Exit 0 only if every case behaves as declared, 1 if a mutant survived / was mislabelled, 2 if a baseline failed,
+the environment is missing, or --only / --group select no case (an unknown --only id included: it is rejected before
+anything runs, because a run that selects nothing builds no baseline and would report success).
+Not part of tests/run_all.py (it compiles one bridge per case), like tests/assembly_mutation_check.py;
+only the selection guard is covered there, by tests/test_section_profile_mutation_check.py.
+Anything that survives is a hole in the tests: add the assertion, never delete the case.
 """
 from __future__ import annotations
 
@@ -433,6 +436,22 @@ def model_base_path():
     return str(info.path)
 
 
+def select_cases(only, groups):
+    """The cases --only / --group pick.  An unknown id or an empty selection is a ValueError: with no case there is no
+    baseline run and all([]) is True, so a mistyped id used to exit 0 without testing anything."""
+    known = [c['id'] for c in CASES]
+    unknown = sorted(set(only) - set(known))
+    if unknown:
+        raise ValueError('unknown --only case id(s): %s; valid ids: %s'
+                         % (', '.join(repr(item) for item in unknown), ', '.join(known)))
+    cases = [c for c in CASES if c['group'] in groups and (not only or c['id'] in only)]
+    if not cases:
+        where = ', '.join('%s is in group %s' % (c['id'], c['group']) for c in CASES if c['id'] in only)
+        raise ValueError('no case selected: --only %s with --group %s matches nothing (%s)'
+                         % (' '.join(only) or '(none)', ' '.join(groups), where or 'no case in these groups'))
+    return cases
+
+
 def main(argv=None):
     global LOG_DIR
     parser = argparse.ArgumentParser(description=__doc__.split('\n')[0])
@@ -449,7 +468,10 @@ def main(argv=None):
     for item in CASES:
         assert item['tests'] and (item['cause'] or item['equivalent']), (item['id'], 'a case needs killer tests and a cause')
     groups = args.group or ['native', 'model']
-    cases = [c for c in CASES if c['group'] in groups and (not args.only or c['id'] in args.only)]
+    try:
+        cases = select_cases(args.only, groups)
+    except ValueError as error:
+        parser.error(str(error))
     if args.list:
         for item in CASES:
             print(item['id'], item['group'], item['clause'], item['desc'])
