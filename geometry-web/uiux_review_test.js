@@ -187,7 +187,8 @@ module.exports = async function uiuxReview({send,eval_,sleep,click,waitForUI,cap
   } finally {await read('__parameterSettlementGate.cleanup();void 0');}
   await choose('#refGuideSource',parameterSource);await choose('#refGuideAxis','u');await ctl('#refGuideCreate');await wait(`!!$('impact-confirm')`);await ctl('#impact-confirm');await wait('!oc.busy');await sleep(180);
   check('共用參數入口建立引用，核心保存來源與軸向',await read(`apiRequest('references').then(r=>r.guides.some(g=>g.expression===${JSON.stringify(parameterSource)} && g.axis==='u' && g.off===1700))`));
-  await choose('#refGuideAxis','v');await choose('#refGuideSource','edge:e1:u');await choose('#refGuideRatio','1/2');await ctl('#refGuideCreate');await wait('!oc.busy');await sleep(180);
+  await choose('#refGuideAxis','v');await choose('#refGuideSource','edge:e1:u');await choose('#refGuideRatio','1/2');await ctl('#refGuideCreate');await wait('!oc.busy');
+  await wait(`(()=>{const g=(fe.guides||[]).find(g=>g.expression==='1/2*edge:e1:u'&&g.axis==='v'&&g.off===2000);return !!g&&!!document.querySelector('[data-edit-guide="'+g.id+'"]');})()`);
   check('選已知邊一半產生引用式，位置與走向用語一致',await read(`apiRequest('references').then(r=>{const g=r.guides.find(g=>g.expression==='1/2*edge:e1:u'&&g.axis==='v');if(!g||g.off!==2000)return false;const row=document.querySelector('[data-edit-guide="'+g.id+'"]');return /沿 v/.test($('faceInspectorContent').textContent)&&/u\\s*=\\s*2000/.test($('faceInspectorContent').textContent)&&!!row&&/沿 v/.test(row.textContent)&&/u\\s*=\\s*2000/.test(row.textContent);})`));
   await ctl('#workspaceBackButton');
   await viewport(900);
