@@ -39,7 +39,7 @@ static bool sp_resolve_dimension(World *w,const EngDimensionSource *source,const
 }
 static bool sp_rebuild(World *w,char *error,size_t capacity)
 {
-    SectionProfileState *s=&w->section_profiles;char first[256]={0};
+    SectionProfileState *s=&w->section_profiles;char first[256]={0};SurfaceRegion2 outside[SP_OUTSIDE_MAX];
     for(size_t i=0;i<s->member_count;++i){ProfileMember *m=&s->members[i];SectionProfile *p=sp_profile(w,m->profile_id);
         m->resolved=false;m->outside=false;m->range_error=false;m->missing_profile=!p;memset(m->source_error,0,sizeof m->source_error);
         if(!p){sp_error("I49: member %u references missing profile %u",m->id,m->profile_id);sp_first_error(first,sizeof first,g_engineering_error);}
@@ -53,7 +53,7 @@ static bool sp_rebuild(World *w,char *error,size_t capacity)
         m->rect=(SurfaceRegion2){m->u0,m->v0,m->u0+width,m->v0+height};m->resolved=true;
         m->range_error=!coord_in_range(m->rect.max_u)||!coord_in_range(m->rect.max_v);
         if(m->range_error){sp_error("I46/D1: member %u rectangle endpoint exceeds coordinate range",m->id);sp_first_error(first,sizeof first,g_engineering_error);}
-        if(p&&!poly_contains_rect(&p->outline,m->rect.min_u,m->rect.min_v,m->rect.max_u,m->rect.max_v)){
+        /* I44: exact area test. poly_contains_rect (corners on/in + no edge through the interior) also accepts a rectangle that exactly fills a notch. */ if(p&&sp_outside_regions(&p->outline,&m->rect,outside)){
             m->outside=true;sp_error("V_PROFILE_OUTSIDE I44: member %u profile %u rectangle is not contained",m->id,p->id);sp_first_error(first,sizeof first,g_engineering_error);}
     }
     for(size_t i=0;i<s->member_count;++i)for(size_t j=0;j<i;++j){SurfaceRegion2 overlap;if(sp_intersection(&s->members[i],&s->members[j],&overlap)){

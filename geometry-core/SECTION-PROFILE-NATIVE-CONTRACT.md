@@ -58,7 +58,7 @@ revision 必須取自當次 native read，不能假定為 0。preview 不改 Wor
 所有操作先修改候選，再重驗全 World；可同筆刪除 profile 與依賴者，不能留下孤兒，也不自動刪除依賴者。
 
 位置只收直接整数 `u0,v0`；timber 的方位是 `A-u`／`A-v`，panel 是 `thickness-v`／`thickness-u`。
-JSON 原生解析器拒絕浮點數；分數字串、布林、越界也不能當座標。凹形包含檢查重用完整矩形包含測試，不只检查四個角點；貼邊或貼點合法，正面積交集拒絕。
+JSON 原生解析器拒絕浮點數；分數字串、布林、越界也不能當座標。構件是否在輪廓內以精確整數面積判定：矩形與輪廓外部的正面積差集（`sp_outside_regions` 的水平帶分割，即回報的 `outsideRegions`）為空才合法；貼邊或貼點合法，正面積交集拒絕。不用「四角在內加沒有輪廓邊穿過內部」的近似，那會接受剛好填滿凹槽、整個落在輪廓外的矩形（見下方 I44 修正）。
 
 尺寸來源沿用既有具型別物件：
 
@@ -162,6 +162,119 @@ GEOMETRY_TEST_BRIDGE=/tmp/geometry-q38-complete-native/bridge python tests/test_
 永久測試核對固定數字、真核心負例、完整 dump／fresh-process roundtrip、零 id、固定來源、不同 token、取消與過期、undo/redo、容量、全項診斷、兩種宿主、96 個合法宿主／方向組合、互轉與來源圖。
 外部 oracle、aggregate／變異及最終 commit／binary 指紋另外記錄。
 早期 dirty tree 結果保留原 head／狀態；可用完整受驗來源雜湊等值綁定後續 commit，但不得把原收據改標成當時已在最終 clean commit 上執行。
+
+### I44 修正：剛好填滿凹槽的構件（2026-10-09）
+
+原先 `V_PROFILE_OUTSIDE` 呼叫 `poly_contains_rect`（四角在輪廓內或邊上，且沒有輪廓邊穿過矩形內部）。
+凹槽的兩條平行邊本身就落在矩形邊界線上時，四角都在邊上、也沒有邊穿過內部，整個落在 F 外的矩形被判成「在內」，
+例如輪廓 `[[0,0],[100,0],[100,100],[60,100],[60,40],[40,40],[40,100],[0,100]]` 上的 R = [40,60]×[50,70]（寬度剛好等於槽寬）。
+這與 D35「構件剖面必在 F 內」的面積條件矛盾。現在改用同一份診斷用的整數水平帶分割：差集非空即 `V_PROFILE_OUTSIDE`，
+`outsideRegions` 也與判定同源（`section_profile_validation.inc` 的 `sp_rebuild`）。永久測試涵蓋兩種繞向、三個填槽尺寸（含精確 `outsideRegions`）、
+槽開口向右的凹形，以及貼著槽緣、仍在材料側的構件仍合法。
+
+共用函式 `poly_contains_rect`（`current_geometry.c`，D7 角材的 I5 路徑經 `boundary_contains_rect` 使用）本身沒有改；
+同一弱點在那條路徑上的實測：承載面輪廓 `0,0 1000,0 1000,1000 510,1000 510,300 490,300 490,1000 0,1000`（槽寬 20）上，
+沿 u=500 的 20×20 主支角材在兩側邊界材到位後，R6 回報「跨距歧義： [20,280] [300,1000]」，第二段完全落在槽內；槽寬改成 22 時只有一段。
+那屬於 D7／I5，不在 Q38 範圍內，需另案處理。
+
+### AC16 故障注入閘門（`tests/section_profile_mutation_check.py`）
+
+提案 AC16 要求移除指定守門後，其列出的驗收案例（AC04–AC06、AC12、AC21、AC24；AC07、AC23；AC21）分別轉紅，且失敗訊息指得出是哪一條。本閘門目前證明的是較弱的事實：每個守門至少有一個指名殺手測試會轉紅，失敗訊息含該守門的條號或病因；這不是提案 AC16 逐條（AC04–AC06、AC12…全部轉紅）的對應；逐案例實際轉紅的測試與其對應的提案 AC 見下方「--explore 實測」。
+`tests/mutate.py` 的既有清單只以 `current_geometry.c` 的場景裁判審核心，
+沒有對 Q38 的檢查注入過故障，所以另有此腳本（Linux/WSL；比照 `tests/assembly_mutation_check.py`，不編入 `run_all.py`，因為每個案例要編一支 bridge）：
+
+~~~sh
+ulimit -s 16384
+python3 tests/binaries.py build
+mkdir -p tests/release-evidence/<日期>-q38-i44
+python3 tests/section_profile_mutation_check.py --receipt tests/release-evidence/<日期>-q38-i44/q38-mutations.json --logs tests/release-evidence/<日期>-q38-i44/mutation-logs
+~~~
+
+在拋棄式複本中一次只改一處，共 42 個案例。native 37 個案例改 C 來源（拿掉 I43／I44／I45／I48／I49／I51 的守門、R36 的嚴格不等號、
+面材 w < 915 與 6 mm 板厚、R38 的符號與軸、D38 互轉條件、I47 的終端頂點與 D1、PROFILE_CONTACT_LOST、「板長 1830 當成 L 上限」等），
+重編 bridge 後跑 `tests/test_section_profile_native.py`；model 5 個案例改 Python 製模器（R37 的 L 形包絡、R39 包絡不計材料量、
+面材不依 1830 切段、構件矩形軸向、局部 run 不被世界網格切分），在複本上對未變異的原生轉接器跑 `tests/test_section_profile_modeling.py`。
+判為殺死須同時成立：指名的測試以斷言失敗轉紅（或錯誤訊息含該案例的 cause 字串）；失敗訊息含每一個 cause 字串（條號或病因）；
+變異後的 binary 與基準線不同。編譯失敗、無說明的錯誤、逾時與 skip 都不算偵測，基準線必須先零 skip 全過。
+2026-10-10 在 WSL 乾淨 clone（`~/ga-q38c`，受驗提交 `f0c4c71291af5cab699f54de8ac852aa35fa378e`，基底 `c254e1f`，rebase 無衝突）實測。
+收據在 `tests/release-evidence/20261010-q38-i44/`（`README.md` 有指令、環境與檔案清單、`SHA256SUMS.txt` 有雜湊）：
+
+- `section_profile_mutation_check.py`：native 與 model 基準線皆 exit 0、零 skip；42 例 41 killed、1 equivalent、0 survived，exit 0（`q38-mutations.json`、`mutation-logs/`）。唯一等價的是 SPM24（D38 進階轉簡易的「V 對應合法的 up」）：進階框架只可能由 `surface_frame_is_valid` 放行（單位座標軸、V ⟂ N），U = V × N，up = −V 恆合法、`legal_up` 恆真，這個拒絕項在實作上不可能不成立，所以沒有任何測試能演示它。
+- SPM41 把精確面積改回 `poly_contains_rect` 後，`test_concave_not_four_corners_and_winding` 轉紅，訊息是 expected rejection 'V_PROFILE_OUTSIDE' but the candidate was accepted（`mutation-logs/SPM41.log`）。
+- `python3 tests/run_all.py --build`：83 個 suite、2611 測試，2610 pass、0 fail、1 skip（Linux 上的 Windows GDI，具名允許清單），exit 0（`run_all.log`）；`test_section_profile_native` 26／26、`test_section_profile_modeling` 19／19。總數比開發樹量到的 2592 多，是因為基底前進到 `c254e1f` 後主線新增了測試。
+- `python3 tests/mutate.py --check`：killed 40、crashed 1（M20，基底即有）、survived 0、equivalent 4、invalid 0、stale 0、blocked 0、retired 3，exit 0（`mutate-check.log`）；rebase 後帳本沒有過期，沒有重跑任何條目、沒有改動 `tests/mutants_results.json`。
+- 託管 CI 受帳號計費阻擋（Actions job 秒失敗，不是程式失敗），以上 WSL 收據代替；需要 Chrome 的瀏覽器層閘門沒有跑。
+
+#### --explore 實測：逐案例紅燈與提案 AC16 的差異
+
+`--explore` 對每個案例跑整個測試類別，收據是 `q38-mutations-explore.json`（日誌 `mutation-explore-logs.tgz`），逐案例的紅燈測試與失敗訊息在 `ac16-per-case-red-tests.md`。測試方法本身不帶提案 AC 編號，下表的 AC 欄是人工讀測試內容對應的結果，而且是方法層級：一個方法含多個 AC 場景，「含」不等於「該場景是導致轉紅的那一行」，失敗訊息才是實際斷言。
+
+提案 AC16 三組要求的實測：
+
+| 提案要求的突變 | 對應案例 | 提案列出的 AC | 實測轉紅 | 未被打紅 |
+|---|---|---|---|---|
+| 移除 P-I2（R ⊆ F） | SPM01 | AC04、AC05、AC12 | AC12 同場景（390 縮邊）；AC04、AC05 以相似場景轉紅（`all_violations`、`profile_geometry`、`concave`） | 無（AC04／AC05 非原始數字） |
+| 移除 P-I3（互不重疊） | SPM02 | AC06、AC24 | 相似場景：`touch_edges…`（u=26 重疊 1 mm、面材 w=30 於 u=20）、`maximum_pair…` | 無（AC06／AC24 非原始數字） |
+| 面材寬度 `w < 915` → `w <= 915` | SPM05 | AC21 | AC21 同場景（w=915 拒絕 `V_PANEL_WIDTH`） | 無 |
+| P-R1 `<` → `<=`（u 向、v 向） | SPM03、SPM04 | AC07、AC23 | AC07 同場景（u=27 貼齊必須接受）；SPM03 另使 `named_sources…` 轉紅 | **AC23** |
+
+與提案 AC16 逐條要求的差異：
+
+1. **AC23 沒有被任何突變打紅。** 面材 w=346 貼在 M1、M2 之間並被接受的場景，不在被計入的任何測試裡：唯一把 `panel()`（u=27、w=346）貼在角材旁的 `test_source_index_typed_closure_and_display_identity` 被本閘門排除（它要求帶來源與建置收據的 registry binary，拋棄式變異 binary 沒有），modeling 測試也沒有 w=346。所以 P-R1 的 `<` → `<=` 只由角材貼齊（AC07）打紅，面材貼齊沒有獨立的紅燈證據。
+2. **AC04、AC05、AC06、AC24 是相似場景轉紅，不是提案列的原始數字。** 提案用 (380,0)、27×27 於 (50,50)、(20,0)、w=346 於 (20,0)；測試用 u=26 的 1 mm 重疊、面材 w=30 於 u=20、凹槽輪廓上的 60×60 與填槽矩形。條文子句與診斷碼相同，但不是同一列的逐字場景。
+3. **沒有「整個移除面材寬度上限」的獨立案例。** SPM05 是上限比較的差一（`<` → `<=`）；整個移除推論上由同一個 w=915 斷言抓到，但沒有實測。
+4. 不在提案 AC16 列舉範圍、但本閘門另外證明有殺手測試的守門（I43、I46、I47／D1、I48、I49、I51、D36、D37、D38、D40、R37、R38、R39）見下表；其中 SPM11、SPM12、SPM28、SPM29 的紅燈測試沒有對應到任何提案 AC（它們守的是依賴交易與材料來源，提案 AC 表沒有列）。
+
+42 例逐案例（`紅燈測試數` 是 `--explore` 下整個測試類別中失敗的方法數）：
+
+| 案例 | 組 | 條號 | 突變 | 判定 | 紅燈測試數 | 紅燈測試所含的提案 AC（人工對應、方法層級、偏寬） |
+|---|---|---|---|---|---|---|
+| SPM01 | native | I44 | drop the member-in-profile containment check | killed | 4 | AC03, AC04~, AC05~, AC06~, AC12, AC13~, AC18, AC19~ |
+| SPM02 | native | I45 | drop the member-overlap check | killed | 3 | AC06~, AC07, AC24~ |
+| SPM03 | native | R36 | u overlap uses <= : edge-sharing members become overlapping | killed | 2 | AC06~, AC07, AC24~ |
+| SPM04 | native | R36 | v overlap uses <= : members touching along v become overlapping | killed | 1 | AC06~, AC07, AC24~ |
+| SPM05 | native | I46/D40 | panel width w < 915 becomes w <= 915 | killed | 1 | AC20, AC21, AC22, AC25~, AC26 |
+| SPM06 | native | I46 | panel width lower bound 1 becomes 0 | killed | 1 | AC20, AC21, AC22, AC25~, AC26 |
+| SPM07 | native | D40 | panel spec identity is no longer checked | killed | 1 | AC03, AC04~, AC13~, AC19~ |
+| SPM08 | native | D40 | spec thickness 6 becomes 7 | killed | 1 | AC20, AC21, AC22, AC25~, AC26 |
+| SPM09 | native | D40 | spec w_max 915 becomes 914 | killed | 1 | AC20, AC21, AC22, AC25~, AC26 |
+| SPM10 | native | I43 | drop the outline validity check | killed | 1 | AC03, AC04~, AC13~, AC19~ |
+| SPM11 | native | D37 | run length accepts a D26 material source | killed | 1 | （無對應提案 AC） |
+| SPM12 | native | D36 | material A/B field identity is no longer enforced | killed | 1 | （無對應提案 AC） |
+| SPM13 | native | I51 | scene records no longer need the section-profile/1 declaration | killed | 1 | AC14 |
+| SPM14 | native | I46 | timber orientation is not validated | killed | 1 | AC03, AC04~, AC13~, AC19~ |
+| SPM15 | native | I46 | panel orientation is not validated | killed | 1 | AC03, AC04~, AC13~, AC19~ |
+| SPM16 | native | R38 | V = +up instead of -up | killed | 3 | AC10=/~, AC14~ |
+| SPM17 | native | R38 | negative directions (-u,-v) lose their sign | killed | 1 | AC10~ |
+| SPM18 | native | R38 | dir +u/-u and +v/-v pick the wrong host axis | killed | 4 | AC10=/~, AC13~, AC14~ |
+| SPM19 | native | I48 | p,q may lie outside the host range | killed | 2 | AC13~ |
+| SPM20 | native | I48 | up need not be perpendicular to the run direction | killed | 1 | AC13~ |
+| SPM21 | native | I48/D1 | simple-placement origin is not range-checked | killed | 1 | AC13~ |
+| SPM22 | native | R38 | origin x component swaps p and q | killed | 3 | AC10=/~, AC14~ |
+| SPM23 | native | D38 | advanced->simple conversion ignores the host plane | killed | 1 | AC11 |
+| SPM24 | native | D38 | advanced->simple conversion accepts any V as up | equivalent | 0 | — |
+| SPM25 | native | D38 | advanced->simple conversion takes the last host direction regardless of N | killed | 3 | AC10~, AC11 |
+| SPM26 | native | I49 | PROFILE_CONTACT_LOST is never reported | killed | 1 | AC12, AC18 |
+| SPM27 | native | I44 | outside-region split drops the right-hand remainder | killed | 4 | AC03, AC04~, AC05~, AC06~, AC12, AC13~, AC18, AC19~ |
+| SPM28 | native | I49 | a member may reference a deleted profile | killed | 1 | （無對應提案 AC） |
+| SPM29 | native | I49 | a run may reference a deleted profile | killed | 1 | （無對應提案 AC） |
+| SPM30 | native | I47/D1 | generated run vertices are not range-checked | killed | 1 | AC09, AC13~ |
+| SPM31 | native | R36 | A-v / thickness-u swap width and height the wrong way round | killed | 15 | （廣：15 個測試，幾乎涵蓋整個類別；見 ac16-per-case-red-tests.md） |
+| SPM32 | native | D36 | panel orientation thickness-u is read as thickness-v | killed | 1 | AC20, AC21, AC22, AC25~, AC26 |
+| SPM33 | native | D40/R37 | the 1830 mm sheet length is misused as an upper bound for the run length | killed | 15 | （廣：15 個測試，幾乎涵蓋整個類別；見 ac16-per-case-red-tests.md） |
+| SPM34 | native | I51 | scene load accepts a duplicate profile id | killed | 1 | AC14 |
+| SPM35 | native | I49 | section-profile records may be injected line by line outside an atomic load | killed | 1 | AC14 |
+| SPM41 | native | I44 | back to poly_contains_rect: a rectangle exactly filling a notch counts as contained | killed | 1 | AC05~ |
+| SPM42 | native | I47/D1 | only the start vertex of a run is range-checked, not the far end | killed | 1 | AC09, AC13~ |
+| SPM36 | model | R37 | the reference envelope becomes the bounding rectangle of the outline (L shape lost) | killed | 2 | AC08~, AC14~ |
+| SPM37 | model | R39 | the reference envelope is counted as material volume | killed | 3 | AC08~, AC14~ |
+| SPM38 | model | R37/D40 | a panel is cut at the 1830 mm sheet length | killed | 1 | AC26 |
+| SPM39 | model | R36/R37 | member rectangles are read with u and v swapped | killed | 6 | AC08~, AC09, AC10~, AC26 |
+| SPM40 | model | D39 | an unplaced (local) run is cut by the world grid | killed | 11 | AC08~, AC14~, AC26 |
+
+這輪故障注入先後逼出多處測試缺口（面材規格身分、兩種方位字串、D37 不收 D26 材料、簡易定位原點的 D1、I47 終端頂點、
+刪斷面時只剩成員或只剩 run 仍引用、已載入場景後的逐行注入）與上面的 I44 缺陷；缺口以加強既有測試方法補上，沒有新增測試方法，
+所以 `tests/run_all.expected.json` 的計數不變。`tests/mutants_results.json` 因核心來源變動依 `tests/mutate.py` 的規則整份重跑重生。
 
 ### 前一個有界切片的歷史驗證（非本版收據）
 
