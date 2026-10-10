@@ -54,7 +54,8 @@ async function fixture(page,extra=[],placed=true){
 }
 async function at(page,u,v){return page.evaluate(([u,v])=>{const r=$('faceEditorSvg').getBoundingClientRect();return{x:r.left+fe.panX+u*fe.zoom,y:r.top+fe.panY+v*fe.zoom};},[u,v]);}
 async function right(page,u=4000,v=1000){const p=await at(page,u,v);await page.mouse.click(p.x,p.y,{button:'right'});await page.locator('#feCtxMenu').waitFor({state:'visible'});}
-async function close(page){await page.keyboard.press('Escape');await page.waitForFunction(()=>$('feCtxMenu').hidden);}
+// Esc ladder of the face menu: first Esc cancels an open parameter form, the next closes the menu.
+async function close(page){for(let i=0;i<3&&!(await page.evaluate(()=>$('feCtxMenu').hidden));i++){await page.keyboard.press('Escape');await new Promise(r=>setTimeout(r,60));}await page.waitForFunction(()=>$('feCtxMenu').hidden);}
 async function snapshot(page,label,store){
   store[label]=await page.evaluate(()=>{
     const rect=n=>{const r=n.getBoundingClientRect();return[r.left,r.top,r.width,r.height].map(v=>Math.round(v*100)/100);};
@@ -104,6 +105,7 @@ async function main(){
     await fixture(page);await right(page,4000,1000);const a1cBefore=await dump(page);cmds.length=0;
     await page.locator('#feCtxMenu [data-fe-act="fixity"]').click();
     check(await until(()=>writes().length>0),true,'a1c control: a live (not stale) Fixity click does send a world command');
+    await page.waitForFunction(()=>!oc.busy);await new Promise(r=>setTimeout(r,300));
     check((await dump(page))===a1cBefore,false,'a1c control: the live Fixity click really changed the world');
 
     // a2 -- two-level guard on the real menu: view-level items are not behind the write guard, world-level ones are.
@@ -139,7 +141,7 @@ async function main(){
     await page.locator('.fcm-search input').fill('線');await snapshot(page,'edge-outer+search-line',snapshots);
     await page.locator('.fcm-search input').fill('');
     await page.locator('#feCtxMenu [data-fe-act="op:notch"]').click();await page.locator('#feOpPanel').waitFor({state:'visible'});await snapshot(page,'edge-outer+notch-form',snapshots);
-    await close(page);await close(page);
+    await close(page);
     await fixture(page);await right(page,0,0);await snapshot(page,'corner-convex',snapshots);await close(page);
     await fixture(page,['line boundary 1 outline 0,0 4000,0 4000,900 3400,900 3400,2100 4000,2100 4000,3000 0,3000']);await right(page,3400,900);await snapshot(page,'corner-concave',snapshots);await close(page);
     await fixture(page,['line boundary 1 outline 0,0 4000,0 4000,3000 0,3000 hole 1200,1000 1200,1400 1600,1400 1600,1000']);await right(page,1600,1200);await snapshot(page,'edge-hole',snapshots);await close(page);
@@ -152,7 +154,7 @@ async function main(){
     {const p=await at(page,1000,50);await page.mouse.click(p.x,p.y);await page.keyboard.down('Shift');const q=await at(page,1000,2950);await page.mouse.click(q.x,q.y);await page.keyboard.up('Shift');}
     await right(page,1000,50);await snapshot(page,'timber-multi',snapshots);await close(page);
     await page.setViewportSize({width:390,height:844});await fixture(page);await right(page,4000,1000);await snapshot(page,'edge-outer@390',snapshots);
-    await page.locator('#feCtxMenu [data-fe-act="op:notch"]').click();await page.locator('#feOpPanel').waitFor({state:'visible'});await snapshot(page,'edge-outer+notch-form@390',snapshots);await close(page);await close(page);
+    await page.locator('#feCtxMenu [data-fe-act="op:notch"]').click();await page.locator('#feOpPanel').waitFor({state:'visible'});await snapshot(page,'edge-outer+notch-form@390',snapshots);await close(page);
     await page.setViewportSize({width:1440,height:900});
     const snapshotJson=JSON.stringify(snapshots,null,1);
     fs.writeFileSync(path.join(evidence,'menu-snapshots.json'),snapshotJson);
