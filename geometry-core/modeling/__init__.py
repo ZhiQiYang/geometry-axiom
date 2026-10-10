@@ -16,7 +16,7 @@ from .common import (ModelError, canonical_bytes, digest, strict_json_loads,
 
 # The source commit contains the adopted axiom bytes identified by this digest.
 # Update only after committing the corresponding SSOT change (MODELING-CONTRACT).
-AXIOM_REVISION = "7c5485bba1a1e0d9b95009bd80dfc4114af1d942"
+AXIOM_REVISION = "ee7c441749a5417008fc987e2992b4f20f2054ad"
 AXIOM_SHA256 = "74b1862b6e51883ff085b0835d53870fdc700dae497fc4ae443ecc8e506b38df"
 # The D48 label-format fix (P-044, 2026-10-11) replaced the c24ec08 and 2818289
 # texts before they reached main; those interim digests were never declared by a
