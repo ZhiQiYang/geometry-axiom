@@ -3,6 +3,7 @@
 Uses the authoritative C adapter and reconstructs every exported package.
 No source projection is mutated and no geometry is manufactured in the UI.
 """
+import base64
 from copy import deepcopy
 import hashlib
 import json
@@ -638,6 +639,244 @@ class HistoricalWallReplay(unittest.TestCase):
         with self.assertRaises(ModelError) as caught:
             sm.replay_stored(damaged["input"], damaged["result"])
         self.assertEqual(caught.exception.code, "AXIOM_VERSION")
+
+
+# ---------------------------------------------------------------------------
+# Q17 (Q38j 前置驗證):來源場景含斷面定義、但不納入拉伸件時的空間建模。
+#
+# 這條路在 Q38j 之前就存在(`space_modeling.preview` 對任何通過 C 解析器的來源場景
+# 都照單全收),但沒有任何測試涵蓋「base_scene 含 section-profile 定義」的空間建模
+# (tests/test_section_profile_modeling.py 只有一個經 model_update 的未定位單 run 間接案例,
+# 不看 schema、鍵集合、也不與無斷面對照)。這裡只釘「現況」,不改行為:
+#   - 照常建出 geometry-space-preview/1,鍵集合與沒有斷面的同設定完全相同;
+#   - 拉伸件(已定位或未定位)不進任何套件的幾何:四個套件的 derived/request/extensions
+#     與無斷面對照逐位元相同,沒有任何 profile-run 物件;
+#   - 斷面定義原樣搭便車留在每個套件的 definitions.base_scene,所以每個套件的
+#     manifest.capabilities 多宣告 section-profile/1,source_sha256 也因此不同於對照;
+#   - 這些套件仍可由 verify_package 重建、可由 replay_stored 核對,但(Q38 之前版本的)
+#     舊公理版本不能宣稱含斷面定義的套件(Q38j-0 的版本豁免必須繞過這一條)。
+# 失敗訊息一律以 "Q17" 開頭,指出是哪個現況被改動。
+# ---------------------------------------------------------------------------
+Q17_OUTLINE = [[0, 0], [400, 0], [400, 60], [60, 60], [60, 250], [0, 250]]
+Q17_PLAN = ("boundary 1 outline 0,0 4000,0 4000,5000 0,5000 kind room_plan\n"
+            "placement 1 on boundary 1 origin 0 0 0 u +x v +y\n")
+
+
+def _q17_literal(value):
+    return {"kind": "literal", "value": value}
+
+
+def _q17_line(kind, value):
+    encoded = base64.b64encode(json.dumps(value, ensure_ascii=False, sort_keys=True,
+                                          separators=(",", ":")).encode()).decode()
+    return f"section-profile {kind} {encoded}\n"
+
+
+def _q17_member(identifier, **values):
+    return {"id": identifier, "profileId": 1, "kind": "timber", "A": _q17_literal(27),
+            "B": _q17_literal(33), "orientation": "A-u", "u0": 0, "v0": 0, **values}
+
+
+def _q17_run(identifier, length, placement):
+    return {"id": identifier, "profileId": 1, "length": _q17_literal(length), "placement": placement}
+
+
+# F1 的四種拉伸件:R1 進階定位(世界座標)、R2 未定位(局部座標)、R0 編號 0、
+# R3 簡單定位且以來源面 #1 為即時宿主(對來源面有相依)。
+Q17_RUNS = {
+    1: _q17_run(1, 2400, {"kind": "advanced", "origin": [1000, 2000, 2700], "N": "+Y", "V": "-Z"}),
+    2: _q17_run(2, 1000, None),
+    0: _q17_run(0, 1500, {"kind": "advanced", "origin": [500, 500, 100], "N": "+Y", "V": "-Z"}),
+    3: _q17_run(3, 2400, {"kind": "simple", "host": {"kind": "placement", "placementId": 1},
+                          "dir": "+v", "p": 20, "q": 30, "up": "+Z"}),
+}
+
+
+def q17_scene(run_ids, plan=Q17_PLAN):
+    members = [_q17_member(1), _q17_member(2, u0=373), _q17_member(3, v0=223, orientation="A-v")]
+    return (plan + "requires section-profile/1\n"
+            + _q17_line("profile", {"id": 1, "name": "L / 原始斷面", "outline": deepcopy(Q17_OUTLINE)})
+            + "".join(_q17_line("member", m) for m in members)
+            + "".join(_q17_line("run", Q17_RUNS[i]) for i in run_ids))
+
+
+def q17_request(scene, *, walls=100):
+    return {"base_scene": scene, "mode": "plan", "placement_id": 1, "obstacles": [],
+            "settings": {"bottom": 0, "height": 2700, "edges": [0, 1, 2, 3], "floor": "boundary",
+                         "ceiling": "boundary", "holes": "none", "wall_thickness": walls}}
+
+
+class _Q17Failure(AssertionError):
+    """每個失敗訊息都冠上 Q17,讓紅燈一眼指到是哪個現況被改動。"""
+    def __init__(self, message=""):
+        super().__init__("Q17(含斷面定義的來源場景建空間模型,現況被改動)—— " + str(message))
+
+
+class SpaceModelWithSectionProfileSource(unittest.TestCase):
+    """Q17:World 含斷面定義(已定位與未定位的拉伸件)、不帶 profile_runs 的空間建模現況。"""
+    failureException = _Q17Failure
+    maxDiff = None
+    PACKAGES = ("space", "volume", "clearance", "walls")
+    SECTION = "section-profile/1"
+    RUN_SETS = ((1,), (2,), (1, 2, 0), (1, 2, 0, 3))
+
+    @classmethod
+    def setUpClass(cls):
+        cls.control_data = q17_request(Q17_PLAN)
+        cls.control = sm.preview(cls.control_data)
+
+    def build(self, run_ids, **kwargs):
+        data = q17_request(q17_scene(run_ids), **kwargs)
+        before = deepcopy(data)
+        try:
+            result = sm.preview(data)
+        except ModelError as exc:
+            self.fail("含斷面定義的來源場景(runs=%s)現況應照常建模,卻被拒絕:%s"
+                      % (list(run_ids), json.dumps(exc.as_dict(), ensure_ascii=False)))
+        self.assertEqual(data, before, "建模不得改動輸入")
+        return data, result
+
+    def test_q17_control_world_has_no_section_markers(self):
+        # 對照組本身必須乾淨,否則下面「含斷面」的斷言分不出差別。
+        for key in self.PACKAGES:
+            package = self.control[key]
+            self.assertNotIn(self.SECTION, package["manifest"]["capabilities"], key)
+            self.assertNotIn("section-profile", package["definitions"]["base_scene"], key)
+            self.assertNotIn("requires", package["definitions"]["base_scene"], key)
+        self.assertEqual(load_base(self.control_data["base_scene"]).get("profile_runs", []), [])
+
+    def test_q17_section_source_builds_plain_v1_space_model_for_every_run_mix(self):
+        for run_ids in self.RUN_SETS:
+            with self.subTest(runs=run_ids):
+                data, result = self.build(run_ids)
+                control = self.control
+                # 輸出形狀:沒有任何新鍵,仍是 /1。
+                self.assertEqual(result["schema"], "geometry-space-preview/1", "schema 必須維持 /1")
+                self.assertEqual(set(result), set(control), "頂層輸出鍵必須與無斷面的同設定相同")
+                self.assertEqual(set(result["summary"]), set(control["summary"]), "summary 鍵必須相同")
+                for absent in ("timbers", "profile_runs"):
+                    self.assertNotIn(absent, result, "未明選納入時不得出現 " + absent)
+                for absent in ("timber_count", "profile_run_count", "profile_member_count",
+                               "profile_material_volume_mm3", "profile_overlap_checked"):
+                    self.assertNotIn(absent, result["summary"], "summary 不得偷加 " + absent)
+                # 數值:手算,不讀對照組。
+                summary = result["summary"]
+                self.assertEqual((summary["face_count"], summary["closed"], summary["bottom"], summary["top"]),
+                                 (6, True, 0, 2700), "空間摘要")
+                self.assertEqual(summary["volume_mm3"], str(4000 * 5000 * 2700), "空間體積")
+                self.assertEqual(summary["clearance_mm3"], str(4000 * 5000 * 2700), "淨空")
+                self.assertEqual(summary["wall_volume_mm3"], str((4200 * 5200 - 4000 * 5000) * 2700), "牆體積")
+                # 生成的面編號與來源場景的拉伸件編號(1、2、0、3)分屬不同命名空間,不受影響。
+                self.assertEqual([f["placement_id"] for f in summary["generated_faces"]], [2, 3, 4, 5, 6, 7],
+                                 "拉伸件編號不得吃掉面編號")
+                self.assertEqual(result["summary"], control["summary"], "summary 必須與無斷面的同設定逐位元相同")
+                self.assertEqual(result["diagnostics"], control["diagnostics"], "diagnostics")
+                self.assertEqual(mesh_volume(result["volume"]), 4000 * 5000 * 2700)
+                self.assertEqual(mesh_volume(result["walls"]), (4200 * 5200 - 4000 * 5000) * 2700)
+                self.assertEqual(bounds(result["space"]), [[0, 0, 0], [4000, 5000, 2700]])
+                self.assertEqual(bounds(result["walls"]), [[-100, -100, 0], [4100, 5100, 2700]])
+                # 來源場景雜湊:跟著含斷面的來源,所以必然不同於對照。
+                canonical = load_base(data["base_scene"])["base_scene"]
+                self.assertEqual(result["source_sha256"], hashlib.sha256(canonical.encode("utf-8")).hexdigest())
+                self.assertNotEqual(result["source_sha256"], control["source_sha256"], "來源雜湊必須反映斷面定義")
+                self.assert_packages_carry_sections_without_geometry(data, result)
+                # 重放核對(開啟專案/匯入時的 I31)也照常通過。
+                self.assertEqual(sm.replay_stored(data, result), result, "replay_stored 必須通過")
+
+    def assert_packages_carry_sections_without_geometry(self, data, result):
+        source = load_base(data["base_scene"])
+        self.assertEqual(len(source["profile_runs"]), len(
+            [line for line in data["base_scene"].splitlines() if line.startswith("section-profile run ")]))
+        for key in self.PACKAGES:
+            package, control = result[key], self.control[key]
+            with self.subTest(package=key):
+                # 拉伸件不進幾何:與無斷面對照逐位元相同,根只有 composite_space。
+                self.assertEqual(package["derived"], control["derived"], "%s 的幾何必須與無斷面相同" % key)
+                self.assertEqual(package["request"], control["request"], "%s 的請求" % key)
+                self.assertEqual(package["definitions"]["extensions"], control["definitions"]["extensions"],
+                                 "%s 的延伸定義" % key)
+                self.assertEqual(package["manifest"]["geometry_sha256"], control["manifest"]["geometry_sha256"])
+                objects = package["derived"]["objects"]
+                self.assertTrue(objects)
+                kinds = {o["root"]["kind"] for o in objects}
+                self.assertNotIn("profile-run", kinds, "%s 不得出現 profile-run 物件" % key)
+                self.assertEqual(kinds, {o["root"]["kind"] for o in control["derived"]["objects"]},
+                                 "%s 的根種類必須與無斷面相同" % key)
+                self.assertTrue(all("section_profile" not in o for o in objects), "%s 不得帶 section_profile" % key)
+                # 斷面定義搭便車留在套件的來源場景裡(完整、含未定位者),所以能力宣告多一項。
+                carried = load_base(package["definitions"]["base_scene"])
+                self.assertEqual(carried["profile_runs"], source["profile_runs"],
+                                 "%s 的來源場景必須保留全部斷面定義(含未定位的拉伸件)" % key)
+                self.assertIn("requires " + self.SECTION, package["definitions"]["base_scene"].splitlines(), key)
+                self.assertIn(self.SECTION, package["manifest"]["capabilities"], "%s 須宣告 section-profile/1" % key)
+                self.assertNotEqual(package["manifest"]["source_sha256"], control["manifest"]["source_sha256"])
+                self.assertEqual(package["manifest"]["axiom_revision"], modeling.AXIOM_REVISION)
+                # 拿掉斷面行後就是對照組的候選場景:斷面以外沒有任何差異。
+                stripped = [line for line in package["definitions"]["base_scene"].splitlines()
+                            if not line.startswith(("section-profile ", "requires "))]
+                self.assertEqual(stripped, control["definitions"]["base_scene"].splitlines(),
+                                 "%s 除斷面行外必須與無斷面的候選場景相同" % key)
+                self.assertEqual(verify_package(package), package, "%s 必須可由 verify_package 重建" % key)
+
+    def test_q17_faces_mode_keeps_working_with_section_definitions(self):
+        vectors = json.loads((ROOT / "geometry-core/modeling-cases.json").read_text())
+        case = next(c for c in vectors["cases"] if c["id"] == "l_room_eight_faces")
+        definitions = case["definitions"]
+        uses = deepcopy(next(e for e in definitions["extensions"] if e["kind"] == "shell")["uses"])
+        plain = sm.preview({"base_scene": definitions["base_scene"], "mode": "faces", "uses": uses, "obstacles": []})
+        data = {"base_scene": q17_scene((1, 2), plan=definitions["base_scene"]), "mode": "faces",
+                "uses": uses, "obstacles": []}
+        before = deepcopy(data)
+        result = sm.preview(data)
+        self.assertEqual(data, before)
+        self.assertEqual(result["schema"], "geometry-space-preview/1", "faces 模式 schema")
+        self.assertEqual(set(result), set(plain), "faces 模式輸出鍵")
+        self.assertEqual(result["summary"], plain["summary"], "faces 模式 summary")
+        self.assertEqual(result["summary"]["volume_mm3"], "68040000000")
+        for key in ("space", "volume", "clearance"):
+            self.assertEqual(result[key]["derived"], plain[key]["derived"], "faces 模式 %s 幾何" % key)
+            self.assertIn(self.SECTION, result[key]["manifest"]["capabilities"], key)
+            self.assertNotIn(self.SECTION, plain[key]["manifest"]["capabilities"], key)
+            self.assertEqual(verify_package(result[key]), result[key])
+        self.assertEqual(sm.replay_stored(data, result), result)
+
+    def test_q17_explicit_timbers_and_section_definitions_coexist(self):
+        plain_data = timber_request()
+        plain = sm.preview(plain_data)
+        data = timber_request()
+        data["base_scene"] = q17_scene((1, 2), plan=data["base_scene"])
+        before = deepcopy(data)
+        result = sm.preview(data)
+        self.assertEqual(data, before)
+        self.assertEqual(result["schema"], "geometry-space-preview/2", "明選角材時維持 /2,不因斷面升級")
+        self.assertEqual(set(result), set(plain))
+        self.assertEqual(result["summary"], plain["summary"], "角材摘要與無斷面相同")
+        self.assertEqual(result["summary"]["timber_volume_mm3"], "3564000")
+        for key in ("space", "volume", "clearance", "walls", "timbers"):
+            package = result[key]
+            if package is None:
+                self.assertIsNone(plain[key], key)
+                continue
+            self.assertEqual(package["derived"], plain[key]["derived"], "%s 幾何必須與無斷面相同" % key)
+            self.assertIn(self.SECTION, package["manifest"]["capabilities"], "%s 須宣告 section-profile/1" % key)
+            self.assertEqual(verify_package(package), package, key)
+        self.assertEqual({o["root"]["kind"] for o in result["timbers"]["derived"]["objects"]}, {"timber"},
+                         "角材套件不得混入 profile-run 物件")
+        self.assertEqual(sm.replay_stored(data, result), result)
+
+    def test_q17_section_bearing_packages_still_require_the_adopted_axiom_revision(self):
+        # Q38j-0 換 AXIOM_REVISION 時,在現行版本下產生的這些 /1 套件(它們已經含斷面定義)
+        # 必須另加版本豁免才打得開;而 Q38 之前的舊版本永遠不得宣稱含斷面的套件。
+        _, result = self.build((1, 2))
+        legacy_revision, legacy_sha = next(iter(modeling.LEGACY_AXIOM_VERSIONS))
+        for key in self.PACKAGES:
+            with self.subTest(package=key):
+                package = deepcopy(result[key])
+                package["manifest"]["axiom_revision"], package["manifest"]["axiom_sha256"] = legacy_revision, legacy_sha
+                with self.assertRaises(ModelError) as caught:
+                    verify_package(package)
+                self.assertEqual(caught.exception.code, "AXIOM_VERSION", "舊版本不得宣稱含斷面定義的套件")
+                self.assertIn("Q38", caught.exception.message)
 
 
 if __name__ == "__main__":
