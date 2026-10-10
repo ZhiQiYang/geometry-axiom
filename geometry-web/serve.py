@@ -45,6 +45,7 @@ POST_MAX_BYTES = {
     "/model/update-preview": 8 * 1024 * 1024,
     "/assembly/preview": 1024 * 1024,
     "/section-profile/preview": 1024 * 1024,
+    "/panel-fill/preview": 1024 * 1024,
     "/section-profile/hosts": 16 * 1024 * 1024,
     "/assembly/generate-preview": 1024 * 1024,
     "/engineering/preview": 1024 * 1024,
@@ -119,7 +120,7 @@ def ask_bridge(cmd: str) -> bytes:
         return err_json("橋接指令不得為空")
     if any(c in cmd for c in "\r\n\0"):
         return err_json("指令不得含換行或 NUL")
-    for prefix in ("loadfile ", "load-prepare ", "engineering-preview ", "engineering-validate ", "assembly-preview ", "assembly-generation-preview ", "section-profile-preview ", "source-inspect-file "):
+    for prefix in ("loadfile ", "load-prepare ", "engineering-preview ", "engineering-validate ", "assembly-preview ", "assembly-generation-preview ", "section-profile-preview ", "panel-fill-preview ", "source-inspect-file "):
         if cmd.startswith(prefix):
             cmd = prefix + to_bridge_path(cmd[len(prefix):])
             break
@@ -579,10 +580,10 @@ class Handler(http.server.BaseHTTPRequestHandler):
             except ModelError as exc:
                 self._send(canonical_bytes(exc.as_dict()))
             return
-        if self.path in {"/section-profile/preview", "/assembly/preview", "/assembly/generate-preview", "/engineering/preview", "/engineering/validate-project"}:
+        if self.path in {"/section-profile/preview", "/panel-fill/preview", "/assembly/preview", "/assembly/generate-preview", "/engineering/preview", "/engineering/validate-project"}:
             from engineering_transport import file_request
             try:
-                self._send(file_request(body, ask_bridge, validate_scene=self.path.endswith('validate-project'), assembly=self.path == '/assembly/preview', generation=self.path == '/assembly/generate-preview', section_profile=self.path == '/section-profile/preview'))
+                self._send(file_request(body, ask_bridge, validate_scene=self.path.endswith('validate-project'), assembly=self.path == '/assembly/preview', generation=self.path == '/assembly/generate-preview', section_profile=self.path == '/section-profile/preview', panel_fill=self.path == '/panel-fill/preview'))
             except OSError:
                 self._send(err_json('無法建立工程資料暫存檔，場景未變更。'))
             return
