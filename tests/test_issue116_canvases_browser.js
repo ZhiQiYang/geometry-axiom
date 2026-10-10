@@ -178,7 +178,7 @@ async function main(){
       const mk=(id,opts={})=>{
         const vp=document.createElement('div');vp.id=id+'Viewport';vp.tabIndex=-1;
         vp.style.cssText='position:fixed;left:40px;top:40px;width:900px;height:600px;pointer-events:none';document.body.append(vp);
-        const menu=document.createElement('div');menu.id=id+'Menu';menu.setAttribute('role','menu');menu.hidden=true;menu.style.cssText='position:fixed;z-index:95;background:#fff';document.body.append(menu);
+        const menu=document.createElement('div');menu.id=id+'Menu';menu.setAttribute('role','menu');menu.hidden=true;menu.style.cssText='position:fixed;z-index:2147483000;background:#fff';document.body.append(menu);
         const ctx={n:1,navReason:'',worldReason:'',refuse:false,log:[],throwOn:null,shell:null};
         const it=(act,label,extra={})=>({act,label,iconName:null,reason:'',...extra});
         const tiles=[it('v1','檢視項',{level:'view'})],
@@ -211,7 +211,7 @@ async function main(){
     await fixture(page);
     check(await page.evaluate(()=>{FaceContextMenu.show(300,300);return[FaceContextMenu.open,window.__k4.b.shell.isOpen,window.__k4.b.menu.hidden,ContextMenuShell.active!==window.__k4.b.shell];}),
       [true,false,true,true],'b1 opening the real face menu closes another live shell instance (the face adapter is registered in the same single-instance registry)');
-    await page.evaluate(()=>FaceContextMenu.hide());
+    await page.evaluate(()=>{FaceContextMenu.hide();resetSceneFocus();});
     check(await page.evaluate(()=>ContextMenuShell.active),null,'b1 no instance is active once everything is closed');
 
     // b2 two-level guard (DP-33) + b3 pre-run current() re-check, on instance A.
