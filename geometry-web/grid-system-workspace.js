@@ -1012,7 +1012,7 @@
     if(!dialog.open)dialog.showModal();await render(state);if(!ownsEntry())return;
     const row=options.ruleKey!=null?dialog.querySelector(`[data-ig-rule-key="${options.ruleKey}"]`):null;
     if(row){row.classList.add('is-focus');row.querySelector('[data-ig-rule-action="edit"]').focus({preventScroll:true});row.scrollIntoView({block:'nearest'});}
-    else (state.mode==='binding'?$('igBoundary'):$('igName')).focus();return true;
+    else (state.mode==='binding'?$('igBoundary'):$('igName')).focus({preventScroll:true});return true;
   }
   function selectedOpen(options) {
     const binding=options.binding!=null?oc.gridBindings.find(row=>row.id===options.binding):null;
