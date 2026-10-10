@@ -17,7 +17,10 @@ from .common import (ModelError, canonical_bytes, digest, strict_json_loads,
 # The source commit contains the adopted axiom bytes identified by this digest.
 # Update only after committing the corresponding SSOT change (MODELING-CONTRACT).
 AXIOM_REVISION = "a93bb346253e321c909e36c30f2f02e11d33bf9c"
-AXIOM_SHA256 = "472db80108cf5338b4434189be0b9b71a5588b442852f69beeb2bd305e17832e"
+AXIOM_SHA256 = "d8a0b4a1c108197f4abb5c67d73fa22aa7fa4288769f605a5a9372fd93aa7b52"
+# The R43 amendment (PF-0 r2.1, 2026-10-11) replaced the a93bb34 text before it
+# reached main; that interim digest was never declared by a main executor, so it
+# is deliberately not listed as a compatible version.
 # D41-D45 / I52-I57 / R41-R46 only add panel-fill/1, which this executor does
 # not implement; packages built under the previous adopted text stay valid.
 PRE_PANEL_FILL_AXIOM_VERSIONS = frozenset({
