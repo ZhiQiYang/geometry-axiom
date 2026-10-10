@@ -53,6 +53,8 @@ TESTS = [{'scene': '_wit_d30_infinite_grid_binding.scene', 'expect': 'accept'},
  {'scene': '_ax_i5_notch_cell_corners_on_ring.scene', 'expect': 'reject', 'error': 'between 指名的兩端之間沒有合法跨距'},
  {'scene': '_ax_i5_notch_floor_flush_inside.scene', 'expect': 'accept', 'lengths': [100]},
  {'scene': '_ax_i5_notch_wall_flush_inside.scene', 'expect': 'accept', 'lengths': [100]},
+ # M08 殺手:四角在環上、中心在環內、但槽底邊穿過內部的 cell 只有「環邊穿入開內部」擋得下(合法跨距被槽切成兩段)。
+ {'scene': '_ax_i5_notch_edge_cuts_interior.scene', 'expect': 'reject', 'error': '跨距歧義'},
  {'scene': '_edge_dir_violation.scene', 'expect': 'reject', 'error': '平行'},
  {'scene': '_edge_free.scene', 'expect': 'reject', 'error': '自由邊'},
  {'scene': '_edge_freeze.scene', 'expect': 'reject', 'lengths': [1800], 'error': 'I8a'},
