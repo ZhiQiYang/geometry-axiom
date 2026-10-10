@@ -1,0 +1,114 @@
+{
+ "job": "canvas",
+ "sha": "798d838741d545f029f68dba69679f83d9cebc27",
+ "started": "2026-10-10T07:44:30+00:00",
+ "steps": [
+  {
+   "index": 0,
+   "name": "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+   "outcome": "replaced",
+   "note": "clean local clone at the SHA under test"
+  },
+  {
+   "index": 1,
+   "name": "Build current native executables",
+   "outcome": "success",
+   "exit_code": 0,
+   "seconds": 50.8,
+   "argv": [
+    "bash",
+    "-e"
+   ],
+   "private_tmp_namespace": true
+  },
+  {
+   "index": 2,
+   "name": "Install Chinese fonts for visual verification",
+   "outcome": "skipped-already-installed",
+   "packages": {
+    "fonts-noto-cjk": "install ok installed 1:20230817+repack1-3"
+   }
+  },
+  {
+   "index": 3,
+   "name": "Run actual browser regression group",
+   "outcome": "failure",
+   "exit_code": 1,
+   "seconds": 1795.2,
+   "argv": [
+    "bash",
+    "--noprofile",
+    "--norc",
+    "-eo",
+    "pipefail"
+   ],
+   "private_tmp_namespace": true
+  },
+  {
+   "index": 4,
+   "name": "Preserve assembly authoring screenshots",
+   "outcome": "skipped",
+   "note": "artifact upload not applicable outside GitHub"
+  },
+  {
+   "index": 5,
+   "name": "Preserve grid trial screenshots",
+   "outcome": "skipped",
+   "note": "artifact upload not applicable outside GitHub"
+  },
+  {
+   "index": 6,
+   "name": "Preserve document reader screenshots",
+   "outcome": "skipped",
+   "note": "artifact upload not applicable outside GitHub"
+  }
+ ],
+ "notes": [
+  "PATH has a per-job shim dir with python -> /usr/bin/python3 (GitHub's ubuntu image has python-is-python3, this WSL distro does not; tests spawn plain 'python')"
+ ],
+ "status": "completed",
+ "exit_code": 1,
+ "workflow_job_key": "browser",
+ "matrix": {
+  "suite": "canvas",
+  "timeout": 35
+ },
+ "ci_timeout_minutes": 35,
+ "env": {
+  "GEOMETRY_TEST_URL": "http://127.0.0.1:18844/",
+  "GEOMETRY_FEEDBACK_DIR": "/tmp/ga-ci/798d8387-20261010-154416/canvas/geometry-integration-feedback",
+  "GEOMETRY_CHROME": "/usr/bin/google-chrome",
+  "GEOMETRY_CHROME_FLAGS": "--no-sandbox",
+  "GEOMETRY_BROWSER_SUITE": "canvas",
+  "GEOMETRY_GRID_SYSTEM_SCREENSHOT_DIR": "/tmp/ga-ci/798d8387-20261010-154416/canvas/geometry-grid-screens",
+  "GEOMETRY_DOCUMENT_SCREENSHOT_DIR": "/tmp/ga-ci/798d8387-20261010-154416/canvas/geometry-document-screens"
+ },
+ "port_rewrite": [
+  "18839",
+  18844
+ ],
+ "seconds_first_run": 1846.4,
+ "leftover_processes_killed": [],
+ "seconds": 1846.4,
+ "ended": "2026-10-10T08:15:17+00:00",
+ "parsed": {
+  "kind": "cdp",
+  "passed": 1624,
+  "failed": 1,
+  "completed": false,
+  "skipped_groups": [],
+  "scope": "full",
+  "golden": "not compared (run did not complete)",
+  "uncaught_browser_exceptions": null,
+  "fatal": "P73 assertion failed: 選已知邊一半產生引用式，位置與走向用語一致 false",
+  "sections_failed": {
+   "P73": 1
+  },
+  "failed_assertion_lines": [
+   "P73 選已知邊一半產生引用式，位置與走向用語一致 ✗ false"
+  ]
+ },
+ "over_ci_timeout": false,
+ "ci_limit_ratio": 0.88,
+ "watchdog_factor": 3.0
+}

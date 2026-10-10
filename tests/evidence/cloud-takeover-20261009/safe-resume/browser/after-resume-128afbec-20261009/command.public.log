@@ -1,0 +1,20 @@
+locator.click: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for locator('#btnObj')[22m
+[2m    - locator resolved to <button id="btnObj" class="seg" title="三視圖" type="button" aria-label="三視圖" aria-pressed="false">…</button>[22m
+[2m  - attempting click action[22m
+[2m    2 × waiting for element to be visible, enabled and stable[22m
+[2m      - element is not visible[22m
+[2m    - retrying click action[22m
+[2m    - waiting 20ms[22m
+[2m    2 × waiting for element to be visible, enabled and stable[22m
+[2m      - element is not visible[22m
+[2m    - retrying click action[22m
+[2m      - waiting 100ms[22m
+[2m    58 × waiting for element to be visible, enabled and stable[22m
+[2m       - element is not visible[22m
+[2m     - retrying click action[22m
+[2m       - waiting 500ms[22m
+
+    at fresh (<original-evidence-root>/resume_pause_browser.cjs:60:32)
+    at async <original-evidence-root>/resume_pause_browser.cjs:75:21

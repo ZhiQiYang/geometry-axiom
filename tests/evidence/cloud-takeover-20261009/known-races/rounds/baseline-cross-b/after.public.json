@@ -1,0 +1,109 @@
+{
+  "utc": "2026-10-09T12:59:32.396761+00:00",
+  "commands": [
+    {
+      "argv": [
+        "pwd"
+      ],
+      "stdout": "<repository-root>\n",
+      "stderr": "",
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--short"
+      ],
+      "stdout": "",
+      "stderr": "",
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "stdout": "9029a8f6bc00a9ff8de1d2b0deb844f331e032e3\n",
+      "stderr": "",
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--binary"
+      ],
+      "stdout": "",
+      "stderr": "",
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--cached",
+        "--binary"
+      ],
+      "stdout": "",
+      "stderr": "",
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "origin/main"
+      ],
+      "stdout": "5cc1ffa1ee85120eca14258b86b715151cad274f\n",
+      "stderr": "",
+      "exitCode": 0
+    }
+  ],
+  "sourceSha256": {
+    "geometry-web/app.css": "b689b9356686d3c4e42a3dd8ff3ae2131f701228db2b640e1b95011afc14a5a6",
+    "geometry-web/app.js": "02f92b848407172f1b52e1d1903017886d095e75a37e969d1e838ffc4f4c545c",
+    "geometry-web/assembly-workspace.css": "7a91095c3042de5b98e64d4a699df3ac2f3571b411f534f732aae721c528d644",
+    "geometry-web/canvas-labels.css": "c13faf2fe464c5dc037b09d91064a2d8b02cfa30fef4eae7d5584a0f05410e53",
+    "geometry-web/document-cases.css": "bd302250e0f213beab47902e339ad72942a437507a744750fe32d3fe383eb01d",
+    "geometry-web/documents.css": "33707fb3804d5ffb948280fac33c0793c81aa24c6b392d6589c335b37613e666",
+    "geometry-web/engineering-workspace.css": "4c4cad9d69c9295a8a44a41d4509b2b821d7431b98ea18dc869120f3dedbf610",
+    "geometry-web/face-context-menu.css": "7d1a7795afb4b6de802f7c7852cd0a41be024182b1b8ffb0db17d990aa75a08d",
+    "geometry-web/grid-inspector.css": "811afcf6a861f0d45310e062c4250ee4de07b17805ab593ed30ce8f92868bfd4",
+    "geometry-web/grid-system-workspace.css": "9793df186c7679cf1e66f374768d63af15894361982c8a154f485bee13918ecc",
+    "geometry-web/index.html": "7dac589f14eec96735eeb233e78b1b1fa37084f56abaee18159a83adc168f36d",
+    "geometry-web/model-update.css": "75aec3df9cb306b572cbecfa89b6f2a6fe925d3d2643e0484131cb56527841dd",
+    "geometry-web/parameters.css": "72b0238af5eaffdc3fa49b8a71a7a14af58ab9c7bbda026804899c2b2d0255b6",
+    "geometry-web/project-ui.css": "1daef3e7c944ea07cd7fcc28fcb208f28346ff9ec31458461cfa65c480c0a8de",
+    "geometry-web/rule-case-workbench.css": "0e7460cec3737f3967e828b65c40f965e4fb3c14c666ca38588668ce299759d4",
+    "geometry-web/scenario-workspace.css": "a37d14e893abc8bdd80019ca08f6a0885add78d004156546eb375db0ee7053c2",
+    "geometry-web/section-profile-workspace.css": "b8b2221ca312757dbbbdf1af8f8e447788334030e58421976eaf549f8553c884",
+    "geometry-web/source-inspector.css": "8d66640d2f0e8475fc6cead0a1abfc950612201220e92a89b6c3f10e3036cd07",
+    "geometry-web/space-workspace.css": "36b9ca7a978e62959d2270ae5f36d62d1d76f26b0bef56565c46da344788a097",
+    "geometry-web/space-workspace.js": "a735338f5cc14f3ae743578986750ace3c7389e0d73fd44c21773d82c2503868",
+    "geometry-web/workspace-guidance.css": "ab777360ec80da6feb3fcb4d7b330104aae329ef262bca2899ce92827abb8986",
+    "geometry-web/workspace-shell.css": "10c3e2d1e360e918b084da8cb976b702946631c604a7357a8ca9118666912459"
+  },
+  "scriptSha256": {
+    "edge_transition_probe.py": "93320a9487cec71e04d69965fd253ed2b49920e58d76f1d3c519b9075beacd1c",
+    "edge_transition_instrumentation.js": "173e236c5aeac4786f5878495323398a249f1cc448f537908b9d4bcee9bc6d68",
+    "run_edge_transition_probe.py": "7a78f7c691b8ed1eee1fbe9c208d93289efd21515b020a49bfa7c75c5f66ac6c",
+    "source-plan.md": "de993e429657fbb1bc25859e9e2d1b1d945831f7119434c7649d876f579c7c99"
+  },
+  "runtime": {
+    "schema": "geometry-runtime/1",
+    "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+    "fresh": true,
+    "root": "<repository-root>",
+    "pid": 1834,
+    "session": "27ce30eb4c194e7b8eac1495a3a4b4d8"
+  },
+  "runtimeHttp": 200,
+  "runtimeBodySha256": "75ef3101965b058751b1a33fbc3e8852b699b12cd10d7da7b377a4d92d45864b",
+  "publicProjection": {
+    "originalSha256": "5366fcd8dc40d8eaf9f9912f12abffebe956b0a173a984871c55afb524922fc0",
+    "originalRetainedOutsideGit": true,
+    "reason": "Machine paths redacted."
+  }
+}
