@@ -626,3 +626,36 @@ source／history／Worker 晚到隔離及全新 profile 真 Open。晚回覆與�
 建立或 reload 後恢復未接受候選。既有 #77 owner／四 browser gates、shared-room display，
 以及 #54 pan／worker／keyboard 仍分別驗，不把新 34 項充作它們的替代。
 契約見[多房邊界](../geometry-guide/ROOM-MULTI-CANDIDATE-IMPLEMENTATION-BOUNDARY.md)。
+
+## 不進 aggregate 的 Playwright 探針
+
+下列檔案需要已安裝的 Playwright 與專屬隔離服務，CI 的 `node --test` 跑不了。
+它們只登記在 `NODE_EXCLUDED`，不是可執行 suite，也不計入 pass。
+`tests/browser_race_ownership_instrumentation.js` 更不是測試：它由
+`tests/browser_race_ownership.py` 注入頁面，單獨執行沒有斷言。
+
+```sh
+GEOMETRY_ISOLATED_SERVICE=1 \
+GEOMETRY_TEST_URL=http://127.0.0.1:18961/ \
+GEOMETRY_EXPECTED_SHA=<40-hex-full-sha> \
+GEOMETRY_UI123_OUT=/tmp/geometry-ui123-slices \
+  node tests/issue123_adopted_slices_browser.cjs
+
+GEOMETRY_ISOLATED_SERVICE=1 \
+GEOMETRY_TEST_URL=http://127.0.0.1:18962/ \
+GEOMETRY_EXPECTED_SHA=<40-hex-full-sha> \
+GEOMETRY_UI123_GROUPS=caption \
+GEOMETRY_UI123_OUT=/tmp/geometry-ui123-caption \
+  node tests/issue123_caption_browser.cjs
+
+GEOMETRY_TEST_URL=http://127.0.0.1:18963/ \
+GEOMETRY_ROOM_ACCEPTANCE_DIR=/tmp/geometry-room-direct-rows \
+  node tests/room_outline_direct_rows_browser.js
+
+python tests/browser_race_ownership.py --url http://127.0.0.1:18964/ \
+  --out /tmp/geometry-race-ownership --expected-head <40-hex-full-sha>
+```
+
+網址必須是 localhost 或 127.0.0.1、路徑 `/`，而且不能用 8765。
+輸出目錄要在 TEMP 底下、事先不存在。這三支探針與 race observer 都不取代
+full CDP、Space 或既有正式 browser gate。

@@ -137,6 +137,7 @@ NODE_TEST_FILES = [
     'tests/test_scenario_project_store.js',
     'tests/test_scenario_editor_tickets.js',
     'tests/test_scenario_recovery_owner.js',
+    'tests/test_scenario_resume_checkpoint.js',
     'tests/test_shared_room_display.js',
     'tests/test_rule_case_project_store.js',
     'tests/test_source_inspector.js',
@@ -198,6 +199,10 @@ NODE_EXCLUDED = {
     'tests/test_issue77_remove_browser.js': 'Required real app/native/Chromium room unlink/removal gate; formal owner exists, execute separately; see INTEGRATION-GATES.md',
     'tests/room_outline_fixture.js': 'Self-authored PDF/scan fixture generator; not a node test',
     'tests/reference_pdf_fixture.js': '夾具產生器，不是測試：node --test 會把它算成 1 個假的通過 test',
+    'tests/browser_race_ownership_instrumentation.js': 'Supplemental observer injected by tests/browser_race_ownership.py; registers no tests and is not a node suite',
+    'tests/issue123_adopted_slices_browser.cjs': 'Standalone Playwright probe; needs GEOMETRY_ISOLATED_SERVICE=1, a dedicated localhost GEOMETRY_TEST_URL and full GEOMETRY_EXPECTED_SHA. Not a CI suite; see INTEGRATION-GATES.md',
+    'tests/issue123_caption_browser.cjs': 'Standalone Playwright caption probe; same isolated service, URL and SHA requirements as the adopted-slices probe. Not a CI suite; see INTEGRATION-GATES.md',
+    'tests/room_outline_direct_rows_browser.js': 'Standalone Playwright direct-row harness; needs GEOMETRY_TEST_URL on an isolated service. Not a CI suite; see INTEGRATION-GATES.md',
 }
 REQUIRED_OWNER_GATES = {
     'tests/integration/issue77_attachment_owner.js': 5,
