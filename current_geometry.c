@@ -400,9 +400,53 @@ static bool segment2_crosses_rect_interior(
 }
 
 /*
- * 軸平行矩形 ⊆ 環（含邊界）。
- * 四角都在環內 + 無任何環邊穿過矩形內部 → 矩形全在環內。
- * （若矩形跨出環，必有環邊穿入矩形內部；四角在內只是必要條件。）
+ * 矩形中心是否在環內（射線法，與 poly_contains_point 同一套半開區間）。
+ * 中心座標是 (min+max)/2，可能是半整數，所以全部放大 2 倍後比較，保持純整數。
+ *
+ * 只對「中心不在任何環邊上」的情形給出可靠答案；poly_contains_rect 不需要這個前提：
+ * 中心在環邊上時，那條邊必穿入矩形內部（中心嚴格在矩形內部），
+ * 另一道檢查（segment2_crosses_rect_interior）本來就會拒絕。
+ */
+static bool poly_rect_center_inside(
+    const PolygonLoop2 *loop,
+    Coord min_u, Coord min_v, Coord max_u, Coord max_v
+)
+{
+    Coord cu2 = min_u + max_u;   /* 2 × 中心 u */
+    Coord cv2 = min_v + max_v;   /* 2 × 中心 v */
+    int crossings = 0;
+
+    for (size_t i = 0; i < loop->count; ++i) {
+        SurfacePoint2 a = loop->v[i];
+        SurfacePoint2 b = loop->v[(i + 1) % loop->count];
+
+        if (a.u == b.u) {   /* 只有直立邊會與水平射線交叉 */
+            Coord v_lo2 = 2 * coord_min(a.v, b.v);
+            Coord v_hi2 = 2 * coord_max(a.v, b.v);
+
+            if (cv2 >= v_lo2 && cv2 < v_hi2 && cu2 < 2 * a.u) {
+                ++crossings;
+            }
+        }
+    }
+
+    return (crossings & 1) != 0;
+}
+
+/*
+ * 軸平行矩形 ⊆ 環（含邊界）。GEO-257：
+ *
+ * 不變量：沒有任何環邊穿入矩形開內部（segment2_crosses_rect_interior）時，
+ * 矩形開內部不碰環的邊界，而開內部是連通的——所以它要嘛整個在環內，
+ * 要嘛整個在環外；任取其中一點（取中心）判內外即可定案。
+ * 反之，只要有環邊穿入矩形開內部，邊的兩側一內一外，矩形必跨出環。
+ * 所以：矩形 ⊆ 環 ⇔ 無環邊穿入開內部 且 中心在環內。
+ *
+ * 「四角都在環內」不是充分條件：矩形可以整個落在環外的凹槽裡，
+ * 四個角剛好都落在槽壁（環邊或環頂點）上、沒有任何環邊穿過內部
+ * （例：槽 x∈[40,60]、y∈[40,100] 內的矩形 [40,60]×[50,70]）。
+ * 四角檢查只留作便宜的快退（它是必要條件，不影響結果）；
+ * 這樣新判定只會比舊判定多拒絕、不會多接受。
  */
 static bool poly_contains_rect(
     const PolygonLoop2 *loop,
@@ -422,6 +466,12 @@ static bool poly_contains_rect(
         if (!poly_contains_point(loop, corners[i])) {
             return false;
         }
+    }
+
+    /* 開內部要嘛全在環內、要嘛全在環外；中心在外 → 整個矩形在環外。
+     * 與下面的「環邊穿入」檢查互相獨立，順序不影響結果。 */
+    if (!poly_rect_center_inside(loop, min_u, min_v, max_u, max_v)) {
+        return false;
     }
 
     for (size_t i = 0; i < loop->count; ++i) {

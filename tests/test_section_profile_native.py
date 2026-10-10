@@ -248,6 +248,22 @@ class SectionProfileNative(unittest.TestCase):
             self.apply([put("profile", profile(outline=vertices))])
             self.reject([put("member", member(u=20, v=20, A=literal(60), B=literal(60)))], "V_PROFILE_OUTSIDE")
 
+    def test_member_in_notch_with_corners_on_walls_is_outside_i44(self):
+        # GEO-257:槽 x∈[40,60]、y∈[40,100] 在輪廓外。成員矩形 [40,60]x[50,70] 四角都落在槽壁上、
+        # 沒有任何輪廓邊穿過內部,但整塊在槽裡 → I44 必須拒絕,且差集精確等於整個成員矩形。
+        outline = [[0, 0], [100, 0], [100, 100], [60, 100], [60, 40], [40, 40], [40, 100], [0, 100]]
+        for vertices in (outline, list(reversed(outline))):
+            self.apply([put("profile", profile(outline=vertices))])
+            preview = self.reject([put("member", member(u=40, v=50, A=literal(20), B=literal(20)))], "V_PROFILE_OUTSIDE")
+            outside = [v for v in preview["violations"] if v["code"] == "V_PROFILE_OUTSIDE"]
+            self.assertEqual([[[40, 50, 60, 70]]], [v["outsideRegions"] for v in outside])
+            # 對照組:同樣貼槽壁/槽底、但真的在輪廓內的成員必須接受。
+            accepted, _ = self.apply([put("member", member(1, 0, 50, A=literal(40), B=literal(20))),
+                                      put("member", member(2, 40, 0, A=literal(20), B=literal(40)))])
+            self.assertEqual([[0, 50, 40, 70], [40, 0, 60, 40]],
+                             [m["rect"] for m in accepted["sectionProfiles"]["after"]["members"]])
+            self.apply([{"op": "delete-member", "id": 1}, {"op": "delete-member", "id": 2}])
+
     def test_touch_edges_points_and_cross_kind_overlap(self):
         self.apply([put("profile", profile()), put("member", member())])
         self.apply([put("member", member(2, 27)), put("member", member(3, 27, 33, A=literal(1), B=literal(1)))])
