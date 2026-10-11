@@ -207,7 +207,13 @@ class FinishSurfaceNative(unittest.TestCase):
     def test_capacity_is_explicit(self):
         capacity = self.read()["capacity"]["finishSurfaces"]
         self.apply([put(surface(i, obstacles=[])) for i in range(1, capacity + 1)])
-        self.reject([put(surface(capacity + 1, obstacles=[]))], "CAPACITY")
+        preview = self.reject([put(surface(capacity + 1, obstacles=[]))], "CAPACITY")
+        violation = preview["violations"][0]
+        self.assertEqual("UNSUPPORTED", violation.get("status"), "I33: capacity is a capability limit, not invalid geometry")
+        self.assertEqual("CAPACITY", violation["code"])
+        invalid = self.reject([put(surface(boundary=99, obstacles=[]))], "I52")["violations"][0]
+        self.assertEqual("INVALID", invalid.get("status"), "a missing reference must not be relabelled as a capacity limit")
+        self.assertEqual("PANEL_FILL_INVALID", invalid["code"])
 
     # ---- I55: edit, delete, cancel, stale, history ------------------------------------------------------------
     def test_modify_cancel_stale_delete_and_history(self):
@@ -272,12 +278,14 @@ class FinishSurfaceNative(unittest.TestCase):
         # a perfectly valid parameter card would otherwise land in World behind an empty `changes` list.
         valid_card = {"op": "put-parameter", "value": {"id": 9, "name": "板材", "fields": [
             {"id": 1, "name": "寬", "type": "dimension", "input": "915"}]}}
-        for operations in ([valid_card], [put(surface()), valid_card],
-                           [{"op": "set-source", "target": {"kind": "grid", "id": 1, "axis": "u", "field": "gap"},
-                             "source": {"kind": "literal", "value": 3}}]):
+        cases = [([valid_card], []),
+                 ([put(surface()), valid_card], [{"id": 1, "change": "created"}]),
+                 ([{"op": "set-source", "target": {"kind": "grid", "id": 1, "axis": "u", "field": "gap"},
+                    "source": {"kind": "literal", "value": 3}}], [])]
+        for operations, candidate_changes in cases:
             with self.subTest(ops=[o["op"] for o in operations]):
                 preview = self.reject(operations, "only put-finish-surface and delete-finish-surface")
-                self.assertEqual([], preview["changes"])
+                self.assertEqual(candidate_changes, preview["changes"], "changes describe the rejected candidate, not a commit")
         self.assertEqual({}, self.surfaces())
         self.assertNotIn("parameters", self.command("dump")["text"])
 
@@ -382,6 +390,9 @@ class FinishSurfaceNative(unittest.TestCase):
         self.load_fails(BASE + head.replace("panel-fill/1", "panel-fill/2") + record, "I32")
 
     def test_scenes_without_finish_surfaces_keep_their_old_dump(self):
+        # Recorded once from the independent PF-0 commit, never regenerated from the bridge under test.
+        oracle = json.loads((ROOT / "tests/fixtures/pf1-legacy-dumps.json").read_text(encoding="utf-8"))
+        self.assertEqual("444a871c87d78f8a12fd40f8cd79c3e6621ff393", oracle["sourceCommit"])
         for name in ("ceiling-a.scene", "room_full.scene", "_wit_d31_parameters.scene",
                      "_wit_d28_engineering_sources.scene", "_ax_r08_snapshot.scene"):
             with self.subTest(scene=name):
@@ -390,6 +401,8 @@ class FinishSurfaceNative(unittest.TestCase):
                 self.assertTrue(result["ok"], result)
                 self.assertNotIn("panel-fill/1", result["required_capabilities"])
                 text = self.command("dump")["text"]
+                self.assertEqual(oracle["scenes"][name]["dump"].encode("utf-8"), text.encode("utf-8"),
+                                 name + ": dump bytes differ from the independent PF-0 fixture")
                 self.assertNotIn("panel-fill", text)
                 self.assertNotIn("finish-surface", text)
                 self.assertEqual([], self.read()["state"]["finishSurfaces"])

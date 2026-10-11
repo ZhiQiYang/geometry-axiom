@@ -5,8 +5,18 @@
  * n = s*N and the plane relation int(R_k) n int(F) are derived on every read and preview and are never
  * serialized (I56, R4).  The two-layer judgement of I53 needs a panel fill (t) and a derived placement (h),
  * which PF-1 does not have; callers report it as pending instead of guessing. */
+/* A diagnostic kind is carried separately from its human-readable message. */
+typedef enum { FS_DIAGNOSTIC_INVALID, FS_DIAGNOSTIC_CAPACITY } FsDiagnosticKind;
+static FsDiagnosticKind g_fs_diagnostic=FS_DIAGNOSTIC_INVALID;
 static bool fs_error(const char *format,...)
 {
+    g_fs_diagnostic=FS_DIAGNOSTIC_INVALID;
+    va_list args;va_start(args,format);vsnprintf(g_engineering_error,sizeof g_engineering_error,format,args);va_end(args);
+    utf8_trim_tail(g_engineering_error);return false;
+}
+static bool fs_capacity_error(const char *format,...)
+{
+    g_fs_diagnostic=FS_DIAGNOSTIC_CAPACITY;
     va_list args;va_start(args,format);vsnprintf(g_engineering_error,sizeof g_engineering_error,format,args);va_end(args);
     utf8_trim_tail(g_engineering_error);return false;
 }
@@ -110,9 +120,9 @@ static bool fs_obstacle_view(const World *w,const FinishSurface *f,const FinishO
     out->rect[0]=u[0];out->rect[1]=v[0];out->rect[2]=u[1];out->rect[3]=v[1];
     out->q[0]=f->side>0?n[0]:-n[1];out->q[1]=f->side>0?n[1]:-n[0];
     for(int i=0;i<4;++i)if(!coord_in_range(out->rect[i]))
-        return fs_error("I52/D1 CAPACITY: obstacle %s of finish surface %u has local coordinates outside D1 (I33)",text,(unsigned)f->id);
+        return fs_capacity_error("I52/D1 CAPACITY: obstacle %s of finish surface %u has local coordinates outside D1 (I33)",text,(unsigned)f->id);
     for(int i=0;i<2;++i)if(!coord_in_range(out->q[i]))
-        return fs_error("I52/D1 CAPACITY: obstacle %s of finish surface %u has local coordinates outside D1 (I33)",text,(unsigned)f->id);
+        return fs_capacity_error("I52/D1 CAPACITY: obstacle %s of finish surface %u has local coordinates outside D1 (I33)",text,(unsigned)f->id);
     const SpaceBoundarySurface *b=world_find_boundary(w,f->boundary_id);
     if(!b)return fs_error("I52: finish surface %u references missing boundary %u",(unsigned)f->id,(unsigned)f->boundary_id);
     out->relation=fs_relation(b,out->rect);return true;
@@ -129,7 +139,7 @@ static bool fs_check(const World *w,const FinishSurface *f)
     if(!surface_frame_is_valid(&f->frame))
         return fs_error("I52/I1: finish surface %u frame needs an origin in D1 and unit integer axes with U x V = N",(unsigned)f->id);
     if(f->side!=1&&f->side!=-1)return fs_error("D41: finish surface %u structureSide must be 1 or -1",(unsigned)f->id);
-    if(f->obstacle_count>FS_OBSTACLE_MAX)return fs_error("I33 CAPACITY: finish surface %u obstacle set is limited to %d",(unsigned)f->id,FS_OBSTACLE_MAX);
+    if(f->obstacle_count>FS_OBSTACLE_MAX)return fs_capacity_error("I33 CAPACITY: finish surface %u obstacle set is limited to %d",(unsigned)f->id,FS_OBSTACLE_MAX);
     for(uint32_t i=0;i<f->obstacle_count;++i){FsObstacleView view;
         if(i&&fs_obstacle_compare(&f->obstacles[i-1],&f->obstacles[i])>=0)
             return fs_error("D41: finish surface %u obstacle set must be unique and in R41 order",(unsigned)f->id);
@@ -141,7 +151,7 @@ static bool fs_check(const World *w,const FinishSurface *f)
 static bool fs_rebuild(World *w,char *error,size_t capacity)
 {
     const FinishSurfaceState *s=&w->finish_surfaces;
-    if(s->count>FS_MAX){snprintf(error,capacity,"I33 CAPACITY: finish surface limit is %d",FS_MAX);return false;}
+    if(s->count>FS_MAX){fs_capacity_error("I33 CAPACITY: finish surface limit is %d",FS_MAX);snprintf(error,capacity,"%s",g_engineering_error);return false;}
     for(uint64_t i=0;i<s->count;++i){
         for(uint64_t k=0;k<i;++k)if(s->items[k].id==s->items[i].id){snprintf(error,capacity,"D41: duplicate finish surface id %u",(unsigned)s->items[i].id);return false;}
         if(!fs_check(w,&s->items[i])){snprintf(error,capacity,"%s",g_engineering_error);utf8_trim_tail(error);return false;}
@@ -186,7 +196,7 @@ static bool fs_from_json(EngJson *j,int t,FinishSurface *f)
     f->side=(int32_t)side;
     if(!eng_json_is_array(j,obstacles))return fs_error("D41: finish surface %u obstacles must be an array of c<id> / b<id>",(unsigned)f->id);
     int count=eng_json_size(j,obstacles);
-    if(count>FS_OBSTACLE_MAX)return fs_error("I33 CAPACITY: finish surface %u obstacle set is limited to %d",(unsigned)f->id,FS_OBSTACLE_MAX);
+    if(count>FS_OBSTACLE_MAX)return fs_capacity_error("I33 CAPACITY: finish surface %u obstacle set is limited to %d",(unsigned)f->id,FS_OBSTACLE_MAX);
     for(int i=0;i<count;++i){char text[16];
         if(!eng_json_string(j,eng_json_at(j,obstacles,i),text,sizeof text)||!fs_obstacle_parse(text,&f->obstacles[i]))
             return fs_error("D41: finish surface %u obstacles must be typed references c<id> or b<id>",(unsigned)f->id);}
@@ -198,7 +208,7 @@ static bool fs_put(World *w,EngJson *j,int t)
     FinishSurface f;FinishSurfaceState *s=&w->finish_surfaces;
     if(!fs_from_json(j,t,&f)||!fs_check(w,&f))return false;
     int at=fs_index(w,f.id);
-    if(at<0){if(s->count>=FS_MAX)return fs_error("I33 CAPACITY: finish surface limit is %d",FS_MAX);at=(int)s->count++;}
+    if(at<0){if(s->count>=FS_MAX)return fs_capacity_error("I33 CAPACITY: finish surface limit is %d",FS_MAX);at=(int)s->count++;}
     memcpy(&s->items[at],&f,sizeof f);return true;
 }
 static bool fs_delete(World *w,uint32_t id)

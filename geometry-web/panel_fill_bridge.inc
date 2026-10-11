@@ -32,6 +32,7 @@ static void json_finish_surface(const World *w,const FinishSurface *f)
     fputs(",\"region\":{\"outline\":",stdout);fs_json_loop(&b->outline);fputs(",\"holes\":[",stdout);
     for(size_t h=0;h<b->hole_count;++h){if(h)putchar(',');fs_json_loop(&b->holes[h]);}
     fputs("]},\"obstacles\":[",stdout);
+    FsDiagnosticKind saved_kind=g_fs_diagnostic;
     char saved[sizeof g_engineering_error];snprintf(saved,sizeof saved,"%s",g_engineering_error);
     for(uint32_t i=0;i<f->obstacle_count;++i){char text[16];FsObstacleView v;fs_obstacle_text(&f->obstacles[i],text);
         if(i)putchar(',');fputs("{\"ref\":",stdout);js_string(text);
@@ -41,7 +42,7 @@ static void json_finish_surface(const World *w,const FinishSurface *f)
                 (long long)v.q[0],(long long)v.q[1],fs_relation_name(v.relation));
         else {fputs(",\"error\":",stdout);js_string(g_engineering_error);putchar('}');}
     }
-    snprintf(g_engineering_error,sizeof g_engineering_error,"%s",saved);
+    snprintf(g_engineering_error,sizeof g_engineering_error,"%s",saved);g_fs_diagnostic=saved_kind;
     fputs("]}}",stdout);
 }
 static void json_panel_fill_state(const World *w)
@@ -63,6 +64,8 @@ static void json_panel_fill_changes(const World *before,const World *after)
 }
 static void json_panel_fill_preview(void)
 {
+    /* Derived-state serialization must not replace the failed operation's classification. */
+    FsDiagnosticKind failure_kind=g_fs_diagnostic;
     char error[sizeof g_engineering_error];snprintf(error,sizeof error,"%s",g_engineering_error[0]?g_engineering_error:scene_last_error());
     printf("{\"token\":%u,\"valid\":%s,\"revision\":%llu,\"diagnosticsComplete\":true,\"layerJudgement\":",
         g_preview.token,g_preview.valid?"true":"false",(unsigned long long)g_preview.revision);
@@ -73,7 +76,9 @@ static void json_panel_fill_preview(void)
     fputs(",\"violations\":[",stdout);
     if(!g_preview.valid){
         size_t n=strcspn(error,": ");char clause[24];snprintf(clause,sizeof clause,"%.*s",(int)(n<sizeof clause-1?n:sizeof clause-1),error);
-        fputs("{\"code\":\"PANEL_FILL_INVALID\",\"clause\":",stdout);js_string(clause);fputs(",\"message\":",stdout);js_string(error);putchar('}');
+        fputs("{\"status\":",stdout);js_string(failure_kind==FS_DIAGNOSTIC_CAPACITY?"UNSUPPORTED":"INVALID");
+        fputs(",\"code\":",stdout);js_string(failure_kind==FS_DIAGNOSTIC_CAPACITY?"CAPACITY":"PANEL_FILL_INVALID");
+        fputs(",\"clause\":",stdout);js_string(clause);fputs(",\"message\":",stdout);js_string(error);putchar('}');
     }
     fputs("]}",stdout);
 }
@@ -88,6 +93,7 @@ static void cmd_panel_fill_read(void)
 }
 static void cmd_panel_fill_preview(const char *path)
 {
+    g_fs_diagnostic=FS_DIAGNOSTIC_INVALID;
     batch_preview(path,"panel-fill-transaction/1","Expected panel-fill-transaction/1, expectedRevision and operations",
         "Panel-fill definitions changed; read and preview again","Cannot allocate panel-fill candidate","panel-fill-transaction",3,
         fs_operation,json_panel_fill_preview);
