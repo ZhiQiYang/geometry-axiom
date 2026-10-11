@@ -72,8 +72,8 @@
 | GEO-254 | 介面擴充（#116 其餘） | 待契約提案 | 決策 K-4 |
 | GEO-255 | PF-1～PF-6 面材鋪滿實作 | 待 PF-0 寫入公理層 | 決策 F、issue #128 |
 | GEO-256 | Q38 斷面拉伸剩餘切片 | 進行中（#169 已隨 #180 進 main；I44 閘在 PR #182 draft；Q38j 定稿狀態為作者回報，待可核版本與公理寫入） | 決策佇列 Q38 |
-| GEO-257 | 核心矩形-環包含判定的註解宣稱錯誤 | 未開始 | 2026-10-10 Q38 對抗審查 |
-| GEO-258 | `parameter_remove` 不檢查引用，違反 I38／I39 | 未開始 | 2026-10-10 K3 提案第 3、4 輪對抗審查 |
+| GEO-257 | 核心矩形-環包含判定的註解宣稱錯誤 | 進行中（#192 draft；#182 為相關 I44 閘；未合併、最終驗收未完成） | 2026-10-10 Q38 對抗審查 |
+| GEO-258 | `parameter_remove` 不檢查引用，違反 I38／I39 | 進行中（#193 draft，疊 #192；未合併、最終驗收未完成） | 2026-10-10 K3 提案第 3、4 輪對抗審查 |
 | GEO-259 | Resume 剩餘範圍（當機／重載／跨 session） | 未開始 | 2026-10-10 合併 #180；決策佇列 2026-10-10 拍板 |
 
 ### GEO-246 — Q29 弱釘訊息具體化（2026-10-09，未開始）
@@ -102,8 +102,8 @@
 - **背景**：issue #59（SGR-02 C 核心細分）依決策 J 以採納範圍關單。採納範圍＝Q36／CONT-8 的六條來源子規則語義（IMPLEMENTATION-QUEUE-20261004.md「#58 六條採納映射」）：一層 source 所有權、兩軸無相位差 REPEAT、divisions 1…65 且至少一軸 >1、穩定 rule／來源／主格／innerline 引用、有 ref 鎖與重疊／manual 衝突拒絕、source 變更全驗任一失敗全拒、完整保存。已合併：PR #107（c0d3fba，one-level native REPEAT 規則核心，原生 oracle 40/40，2026-10-04T06:54Z）。
 - **不在採納範圍的 issue 驗收項**（issue #59「核心待執行驗收」十框中）：
   1. 「panel915＋gap2 的 pitch917 分 7 份為 131」——需 REPEAT_PANEL 來源軸，採納明確排除（PR #107、PR #133 皆註明不含 REPEAT_PANEL；缺軸／finite／stagger 轉換亦不在範圍，這些只需「拒絕」，拒絕在範圍內）。
-  2. exact／sample 雙模式的視窗查詢與查詢預算——已實作：bridge 指令 `grid-rule-query … rect U0 V0 U1 V1 mode exact|sample limit N`（GRID-SUBDIVISION-NATIVE-CONTRACT.md:20），C 實作見 grid_subdivision_query.inc:202–248（QUERY_CAPACITY／QUERY_OVERFLOW 拒絕）。REPEAT_PANEL 仍維持排除；採納與否另案確認。
-  3. 多層／巢狀、任意區域、面別覆寫（Q36 明列未採納；issue 驗收框沒有直接對應，列此備查）。
+  2. 多層／巢狀、任意區域、面別覆寫（Q36 明列未採納；issue 驗收框沒有直接對應，列此備查）。
+- **已採納且有實作，驗收另列**：依 I25a／I37／R32，exact／sample 雙模式視窗查詢、查詢預算與取樣身分已採納；既定 bridge 指令為 `grid-rule-query … rect U0 V0 U1 V1 mode exact|sample limit N`（GRID-SUBDIVISION-NATIVE-CONTRACT.md:20），C 實作見 grid_subdivision_query.inc:202–248（QUERY_CAPACITY／QUERY_OVERFLOW 拒絕）。驗收須綁精確版本與原收據，不把實作存在當作完整驗收；REPEAT_PANEL 來源子規則仍不在首版，Q36 尚未採納的其他額外 API／語義另列，不能混同此既定查詢。
 - **屬別線**：guide／direct 的 RuleLineRef UI 與跨面流程歸 #61 第二切片（PR #134／#160，已包含於 PR #169）；實機歸 GEO-250。
 - **視為已交付（推論）**：其餘框（600×400 U3/V2 精確值、signed 大索引、兩配置共源、重疊與手動子格衝突、不同 system 同號 ruleKey 不串用、新語法 dump／loadfile 等）依 PR #107 正文視為已交付，**未逐框重驗**。
 - **處置**：issue #59 以採納範圍關單；若要做 REPEAT_PANEL，須先有新公理決策（與 D10a／D10b 的關係），**不併入 K 的四群**，需另行拍板。
@@ -179,19 +179,19 @@
 - **明確不做（提案 §6，各需新決策）**：折線路徑、轉角斜接／交接、料長續接、面材板片數量／接縫位置／排板、矽酸鈣板以外的板材、完成面語意、料單、固定件、拉伸件與其他物件的碰撞、任意角度、斷面內孔。
 - **拿掉／合併（GEO-219）**：Q38j 若新增入口，開工時寫明減項；沿用既有「3D 模型庫」入口。
 
-### GEO-257 — 核心矩形-環包含判定的註解宣稱錯誤（2026-10-10，未開始）
+### GEO-257 — 核心矩形-環包含判定的註解宣稱錯誤（2026-10-10，進行中：#192 draft）
 
 - **缺陷**：`current_geometry.c:402-407`（`poly_contains_rect`）的註解寫「若矩形跨出環，必有環邊穿入矩形內部」，這個宣稱不成立。反例：輪廓 [0,0],[100,0],[100,100],[60,100],[60,40],[40,40],[40,100],[0,100]（槽 x∈[40,60]、y∈[40,100] 在環外）上的矩形 R=[40,60]×[50,70] 會被判為在內：四個角都落在環的邊上、沒有任何環邊穿過 R 的內部，但 R 整個在槽內，也就是在環外。
 - **影響**：D7／I5 走的路徑受影響；Q38 的 I44 路徑已改用精確差集（`sp_outside_regions`），不受影響。
 - **更正（2026-10-11，保留上列歷史原文）**：上列「I44 不受影響」是舊記錄，經原始碼核對不正確。此帳本基底 `e50e8d1` 的 `geometry-core/section_profile_validation.inc:56` 仍以 `poly_contains_rect` 判定；`sp_outside_regions` 是判定出界後的診斷計算。修正分別見 PR #182／#192，當時均未合併，不能把 draft 記為已修復。
-- **狀態**：未開始。
+- **狀態**：進行中（#192 draft；#182 為相關 I44 閘）；未合併、最終整合驗收未完成，不把 draft 當 main 已修復。
 - **來源**：2026-10-10 Q38 對抗審查。
-### GEO-258 — `parameter_remove` 不檢查引用（2026-10-10，未開始）
+### GEO-258 — `parameter_remove` 不檢查引用（2026-10-10，進行中：#193 draft）
 
 - **缺陷**：`geometry-core/parameters.inc:277-284` 的 `parameter_remove` 不檢查是否仍有引用。I38 要求「被其他定義引用的卡片或欄位不得刪除；先明確改綁／解除引用，或在同一候選內完成解除與刪除後整包驗證」，現行實作沒有這個前提檢查。
 - **連帶違反 I39**：同一批先刪卡再匯入、或同 id 重宣告時，World 內指向該卡的 ParameterRef 會被靜默改綁到新卡，違反 I39「參數包匯入由核心取得新卡片身分，改寫所有包內引用，建立與來源專案獨立的副本」。
 - **反例**：`[delete-parameter 0, import-parameters P]`；`[delete-parameter 2, put-parameter{id:2}]`。
-- **狀態**：未開始。
+- **狀態**：進行中（#193 draft，疊 #192）；未合併、最終整合驗收未完成，不把 draft 當 main 已修復。
 - **來源**：2026-10-10 K3 提案第 3、4 輪對抗審查。
 
 ### GEO-259 — Resume 剩餘範圍（2026-10-10，未開始）
