@@ -53,6 +53,8 @@ def main():
     p.add_argument('--native-timeout', type=int, default=1800,
                    help='Local wall-time allowance; CI native budget is 900s and any overrun is explicitly reported')
     args = p.parse_args()
+    started = time.monotonic()
+    ci_budget = 900 if args.job == 'native' else SUITES[args.job][2] * 60
     out = args.out.resolve()
     out.mkdir(parents=True, exist_ok=True)
     before = capture(ROOT)
@@ -74,6 +76,10 @@ def main():
                 timed_out = True
                 stop(proc)
                 code = 124
+            finally:
+                # Also reap this command's owned descendants after a failed
+                # harness exits; a separate user's process group is untouched.
+                stop(proc)
         record = {'name': name, 'argv': argv, 'exit_code': code,
                   'seconds': round(time.monotonic() - start, 3), 'timeout': timeout, 'timed_out': timed_out,
                   'log_sha256': sha((out / (name + '.log')).read_bytes())}
@@ -134,7 +140,9 @@ def main():
                 else:
                     raise RuntimeError('Owned runtime did not become fresh within 30 attempts')
                 (out / 'runtime.json').write_text(runtime, encoding='utf8')
-                code = run('browser', ['node', script], minutes * 60, env)
+                # Workflow timeouts cover build/startup as well as the browser.
+                remaining = max(1, int(ci_budget - (time.monotonic() - started)))
+                code = run('browser', ['node', script], remaining, env)
                 stop(server)
             # start_local's root-keyed runtime directory is deterministic within TMPDIR.
             from hashlib import sha256
@@ -151,13 +159,16 @@ def main():
     finally:
         for proc in procs:
             stop(proc)
+        seconds = round(time.monotonic() - started, 3)
         write(out / 'job.json', {'actor': 'Codex', 'job': args.job, 'head': before['head'], 'tree': before['tree'],
               'checkout': str(ROOT), 'exit_code': code, 'commands': commands,
               'workflow_sha256': sha((ROOT / '.github/workflows/integration-tests.yml').read_bytes()),
               'environment_differences': ['Owned free application/CDP ports and task-specific output paths',
                   'Existing installed Chrome/CJK fonts; no system package changes',
                   'Local native wall-time allowance is recorded; exceeding CI 900s is not a CI pass'],
-              'ci_native_timeout_exceeded': args.job == 'native' and any(c['seconds'] > 900 for c in commands),
+              'seconds': seconds, 'ci_job_budget_seconds': ci_budget,
+              'ci_timeout_exceeded': seconds > ci_budget,
+              'ci_native_timeout_exceeded': args.job == 'native' and seconds > ci_budget,
               'executor_error': failure,
               'approval': 'No independent WSL-reviewer or merge approval is implied.'})
     return code
