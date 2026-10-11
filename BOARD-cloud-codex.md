@@ -1,6 +1,6 @@
 # 雲端 Codex 任務看板(由 Claude 維護;你只讀,不要修改本分支)
 
-你是 geometry-axiom(repo ZhiQiYang/geometry-axiom)的實作 agent。每次被叫醒,**只做一件事**,照下列順序決定做什麼。全程繁體中文;commit 訊息英文;不要加 Claude 署名。
+你是 geometry-axiom(repo ZhiQiYang/geometry-axiom)的實作 agent。每次被叫醒,照下列順序**一件接一件做下去**:做完一件就回到步驟 A 重新判斷,直到步驟 A 沒有待處理意見、步驟 B 也沒有可領的任務,或你的單次工作時間用完為止。全程繁體中文;commit 訊息英文;不要加 Claude 署名。
 
 ## 步驟 A:先處理自己 PR 上的審查意見(優先)
 看下表「本線的 PR」。若某個 PR 上最新的「【dot】」或「【ChatGPT 審查】」留言,晚於該 PR 上最新的「【Codex】」留言,而且其中有「阻擋」或「須改」項目:就處理那個 PR(成立就修,測試先行+突變;不成立就附條號與證據回覆),在該 PR 留「【Codex】」逐項回覆後結束。一次只處理一個 PR。
