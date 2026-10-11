@@ -87,7 +87,7 @@ const {chromium}=require('playwright');
     // Existing legal /17 collection: load through the actual ZIP/native importer.
     const scene=(await call('dump')).text,m=await ReferenceWorkspace.manifest(),F=GeometryProject.Features;
     m.featureAttachments={schema:F.SCHEMA,records:[F.record(F.GRID_KIND,{schema:F.GRID_DRAFTS_SCHEMA,drafts,orphans:[]},true)]};
-    m.format='geometry-canvas/17';m.requiredCapabilities=[...new Set([...m.requiredCapabilities,F.GRID_DRAFTS_SCHEMA,F.GRID_RULE_SCHEMA])].sort();
+    m.format='geometry-canvas/17';m.requiredCapabilities=[...new Set([...(m.requiredCapabilities||[]),F.GRID_DRAFTS_SCHEMA,F.GRID_RULE_SCHEMA])].sort();
     const sources=new Map([...ReferenceWorkspace.context().sources].map(([id,s])=>[id,s.bytes]));
     await ReferenceWorkspace.importBytes(await GeometryProject.pack(scene,m,sources,fflate),'legacy-normal-collection.gcanvas');
    }
