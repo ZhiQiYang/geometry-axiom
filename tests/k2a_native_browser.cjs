@@ -13,15 +13,24 @@ const {chromium}=require('playwright');
   ReferenceWorkspace.prepareFeatureConfirmation(preview.preview.token,'grid-draft',a,ReferenceWorkspace.getProjectState().contextToken);
   await call('line confirm '+preview.preview.token);const confirmed=ReferenceWorkspace.readGridDrafts();
   await call('line undo');const undone=ReferenceWorkspace.readGridDrafts(),objects=await call('objects');
+  const oldPreview=await call('line preview grid-system 0 name-hex 736f75726365 main-along none u repeat 0 800 v repeat 0 400');
   const deletion=await call('line delete grid-system 0'),orphaned=ReferenceWorkspace.readGridDrafts();
-  await call('line undo');const restored=ReferenceWorkspace.readGridDrafts();
+  let lostPrepareRejected=false;try{ReferenceWorkspace.prepareFeatureConfirmation(oldPreview.preview.token,'grid-draft',orphaned.drafts.find(d=>d.draftId===b.draftId),ReferenceWorkspace.getProjectState().contextToken);}catch{lostPrepareRejected=true;}
+  const deletedDump=(await call('dump')).text,staleReply=await apiRequest('line confirm '+oldPreview.preview.token),staleUnchanged=deletedDump===(await call('dump')).text;
+  await call('line undo');await renderObjects();const restored=ReferenceWorkspace.readGridDrafts();
+  const validAgain=await call('line preview grid-system 0 name-hex 736f75726365 main-along none u repeat 0 800 v repeat 0 400');
+  ReferenceWorkspace.prepareFeatureConfirmation(validAgain.preview.token,'grid-draft',restored.drafts.find(d=>d.draftId===b.draftId),ReferenceWorkspace.getProjectState().contextToken);
+  await call('line cancel-preview');await call('line redo');await renderObjects();const redone=ReferenceWorkspace.readGridDrafts();
+  let redoPrepareRejected=false;try{ReferenceWorkspace.prepareFeatureConfirmation(validAgain.preview.token,'grid-draft',redone.drafts.find(d=>d.draftId===b.draftId),ReferenceWorkspace.getProjectState().contextToken);}catch{redoPrepareRejected=true;}
+  await call('line undo');
   await call('line delete grid-system 0');await call('line grid-system 0 name-hex 736f75726365 main-along none u repeat 0 600 v repeat 0 400');const recreated=ReferenceWorkspace.readGridDrafts();
   await renderObjects();await InfiniteGridWorkspace.openSystem(0);const reopenedStep=document.getElementById('igUStep').value;
-  return {recreated,reopenedStep,a,b,confirmed,undone,step:objects.gridSystems[0].uDefinition.step,deletion,orphaned,restored};
+  return {recreated,reopenedStep,a,b,confirmed,undone,step:objects.gridSystems[0].uDefinition.step,deletion,orphaned,restored,redone,lostPrepareRejected,redoPrepareRejected,staleReply,staleUnchanged,validAgain:validAgain.preview.valid};
  });
  assert.deepEqual(receipt.confirmed.drafts.map(d=>d.draftId),['other-raw']);assert.equal(receipt.undone.drafts.length,2);assert.equal(receipt.step,600);
  assert.ok(receipt.orphaned.orphans.includes(receipt.a.draftId));assert.deepEqual(receipt.restored.orphans,[]);assert.equal(receipt.restored.drafts.length,2);
  assert.ok(receipt.recreated.orphans.includes(receipt.a.draftId));assert.equal(receipt.recreated.drafts.find(d=>d.draftId==='other-raw').inputRefs[0].lost,true);assert.equal(receipt.reopenedStep,'600');
+ assert.equal(receipt.orphaned.drafts.find(d=>d.draftId==='other-raw').inputRefs[0].lost,true,'native deletion marks input lost');assert.ok(!receipt.restored.drafts.find(d=>d.draftId==='other-raw').inputRefs[0].lost,'native Undo and subsequent object scan preserve restored valid input');assert.equal(receipt.redone.drafts.find(d=>d.draftId==='other-raw').inputRefs[0].lost,true,'native Redo restores lost input');assert.equal(receipt.lostPrepareRejected,true);assert.equal(receipt.validAgain,true);assert.equal(receipt.redoPrepareRejected,true);assert.equal(receipt.staleReply.ok,false);assert.equal(receipt.staleUnchanged,true);
  console.log(JSON.stringify({M04:true,M06:true,M14:true,M14b:true,deletion:receipt.deletion.deletedObjects}));await page.close();
  const parameterPage=await browser.newPage();parameterPage.on('dialog',d=>d.accept());await parameterPage.goto(process.env.GEOMETRY_TEST_URL);await parameterPage.waitForFunction(()=>typeof InfiniteGridWorkspace!=='undefined'&&connection.phase==='ready');
  await parameterPage.evaluate(async()=>{
@@ -38,6 +47,11 @@ const {chromium}=require('playwright');
   const undo=await apiRequest('line undo');return {before,receipt,after,count,historyCount,undo,restored:ReferenceWorkspace.readGridDrafts(),sameWorld:dump===(await apiRequest('dump')).text};
  });
  assert.equal(parameter.receipt.history_changed,false);assert.deepEqual(parameter.receipt.deletedObjects,[{kind:'parameter-field',parameterId:1,fieldId:1}]);assert.equal(parameter.after.drafts[0].inputRefs[0].lost,true);assert.equal(parameter.historyCount,parameter.count+1);assert.equal(parameter.undo.local,true);assert.deepEqual(parameter.restored,parameter.before);assert.equal(parameter.sameWorld,true);
+ await parameterPage.evaluate(async()=>{const read=await apiRequest('engineering-read'),p=await EngineeringAdapter.preview({expectedRevision:read.revision,operations:[{op:'delete-parameter',id:1}]});const r=await apiRequest('engineering-confirm '+p.token);if(!r.ok)throw Error(r.error);await renderObjects();await InfiniteGridWorkspace.create();});await parameterPage.locator('#gridDraftChooser [data-draft-id]').first().click();
+ const lostBefore=await parameterPage.evaluate(()=>({drafts:ReferenceWorkspace.readGridDrafts(),history:ReferenceWorkspace.history.undo.length}));
+ await parameterPage.locator('#igUStepSource').selectOption('');
+ const lostAfter=await parameterPage.evaluate(()=>({drafts:ReferenceWorkspace.readGridDrafts(),history:ReferenceWorkspace.history.undo.length}));
+ assert.deepEqual(lostAfter,lostBefore,'M1 empty source selection must preserve lost reference, raw and history');assert.equal(await parameterPage.locator('#igUStepSource').inputValue(),'1:1');
  console.log(JSON.stringify({M14bParameter:true,intermediateDeletionObserved:true,identicalWorld:true,oneStepLocalUndo:true}));await gate.finish();await browser.close();
 })().catch(e=>{console.error(e);process.exit(1)});
 

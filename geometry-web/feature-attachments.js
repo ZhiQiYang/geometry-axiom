@@ -172,6 +172,22 @@
   function referenceKey(ref) {
     return ref.kind === "parameter-field" ? `${ref.kind}:${ref.parameterId}:${ref.fieldId}` : `${ref.kind}:${ref.id}`;
   }
+  const gridLostReserve=draft=>draft.inputRefs.reduce((bytes,ref)=>bytes+(ref.lost?0:12),0);
+  function gridCollectionReserve(value){
+    const missing=value.drafts.filter(draft=>draft.baseRef&&!value.orphans.includes(draft.draftId));
+    return value.drafts.reduce((bytes,draft)=>bytes+gridLostReserve(draft),0)+missing.reduce((bytes,draft)=>bytes+draft.draftId.length+2,0)+
+      (value.orphans.length?missing.length:Math.max(0,missing.length-1));
+  }
+  function gridLifecycleValue(value){
+    if(value===null)return null;
+    const next=gridDrafts(value);
+    for(const draft of next.drafts){if(draft.baseRef&&!next.orphans.includes(draft.draftId))next.orphans.push(draft.draftId);for(const ref of draft.inputRefs)ref.lost=true;}
+    return gridDraftValue(next.drafts,next.orphans);
+  }
+  function gridRecordReserve(record){
+    const value=gridLifecycleValue(record.value),projected={kind:GRID_KIND,schema:value.schema,value};
+    return jsonBytes(projected,MAX_ROOM_BYTES)-jsonBytes(record,MAX_ROOM_BYTES);
+  }
   function validateGridDraft(value, allowLost = false) {
     boundedJSON(value);
     const rules = value?.schema === GRID_RULE_SCHEMA;
@@ -202,6 +218,7 @@
     }
     // Empty, incorrect, inactive and whitespace-bearing fields are intentional.
     // The native preview validator alone decides whether they may be published.
+    jsonBytes(value,MAX_BYTES,gridLostReserve(value),"網格草稿未保留自動缺失補標容量。");
     return value;
   }
   function validateGridDrafts(value) {
@@ -222,6 +239,7 @@
       }
     }
     if (value.orphans.some(id=>!value.drafts.some(d=>d.draftId===id && d.intent==="edit"))) fail("孤兒必須指向集合內的編輯草稿。");
+    jsonBytes(value,MAX_GRID_DRAFTS_BYTES,gridCollectionReserve(value),"草稿集合未保留自動缺失補標容量。");
     return value;
   }
   function gridDrafts(value) {
@@ -239,8 +257,8 @@
     if (!keys(record, ["kind", "schema", "value"]))
       fail("功能附件種類或版本不支援。");
     if (record.kind === GRID_KIND && record.schema === GRID_DRAFTS_SCHEMA) {
-      jsonBytes(record,MAX_GRID_DRAFTS_BYTES);
       validateGridDrafts(record.value);
+      jsonBytes(record,MAX_GRID_DRAFTS_BYTES,gridCollectionReserve(record.value),"集合附件未保留自動缺失補標容量。");
     } else if (record.kind === GRID_KIND && [GRID_SCHEMA, GRID_RULE_SCHEMA].includes(record.schema)) {
       if (record.value?.schema !== record.schema) fail("網格草稿附件版本不一致。");
       boundedJSON(record); validateGridDraft(record.value);
@@ -267,7 +285,7 @@
       if (kinds.has(record.kind)) fail("功能附件種類重複。");
       kinds.add(record.kind);
     }
-    if (bytes + envelope.records.reduce((size,record) => size + (record.kind === ROOM_KIND ? lifecycleReserve(record.value) : 0),0) > MAX_ROOM_BYTES)
+    if (bytes + envelope.records.reduce((size,record) => size + (record.kind === ROOM_KIND ? lifecycleReserve(record.value) : record.kind===GRID_KIND?gridRecordReserve(record):0),0) > MAX_ROOM_BYTES)
       fail("功能附件未保留房間狀態更新所需容量。");
     return envelope;
   }
@@ -320,7 +338,7 @@
     validateSourceRecords:Rooms.validateSourceRecords, validateReconstructionReviews:Rooms.validateReconstructionReviews,
     sourceFields:Object.freeze(sourceFields), bindingFields:Object.freeze(bindingFields), ruleFields:Object.freeze(ruleFields),
     gridSourceDefinition, gridSourceKey, ruleAwareSource,
-    GRID_DRAFTS_SCHEMA, MAX_GRID_DRAFTS, MAX_GRID_DRAFTS_BYTES, validateGridDrafts, gridDrafts, gridDraftValue, referenceKey,
+    GRID_DRAFTS_SCHEMA, MAX_GRID_DRAFTS, MAX_GRID_DRAFTS_BYTES, validateGridDrafts, gridDrafts, gridDraftValue, gridLifecycleValue, referenceKey,
     validate, validateRecord, validateGridDraft, assertKind, record, capabilities, references, sourceRooms, validateNativeRefs, validateNativePins, jsonBytes, lifecycleReserve,
     retireRoomBoundary, changedRoomBoundary, unknownRoomHistory};
 });

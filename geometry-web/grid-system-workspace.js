@@ -43,6 +43,7 @@
   }
   const parameterSelections=form=>Object.entries(form).filter(([id,value])=>value&&id.endsWith('Source')&&!['igUSource','igVSource'].includes(id)).map(([id,value])=>[id,'parameter-field:'+value]);
   function approveInputReplacement(before,next) {
+    if(before?.lost&&!next){status('曾缺失來源只准改指另一個物件，不能改用空來源。',true);return false;}
     if(!before || !next || samePin(before,next))return true;
     if(!before.lost && pinKey(before)!==pinKey(next))return true;
     if(before.lost && (pinKey(before)===pinKey(next) || before.kind==='parameter-field' && next.kind==='parameter-field' && before.parameterId===next.parameterId)){
@@ -73,7 +74,7 @@
   function selectParameterPin(s,node){
     if(!canEdit(s)||!node.id.endsWith('Source')||['igUSource','igVSource'].includes(node.id))return;
     const before=s.referenceSelections.get(node.id),form=rawForm(s),key=node.value?'parameter-field:'+node.value:null;
-    if(key&&!approveInputReplacement(s.inputPins.get(before),s.pins.get(key))){node.value=before?.replace('parameter-field:','')||'';return;}
+    if(!approveInputReplacement(s.inputPins.get(before),key?s.pins.get(key):null)){node.value=before?.replace('parameter-field:','')||'';return;}
     s.referenceSelections.set(node.id,key);
     if(before&&!parameterSelections(form).some(([,selected])=>selected===before))s.inputPins.delete(before);
     if(key){const pin=s.pins.get(key);if(pin)s.inputPins.set(key,copy(pin));else s.inputPins.delete(key);}

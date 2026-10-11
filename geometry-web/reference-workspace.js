@@ -467,12 +467,24 @@ const ReferenceWorkspace = (() => {
         throw new Error("不得靜默更換草稿基底。");
       for(const ref of old?.inputRefs || [])if(ref.lost && value.inputRefs.some(next=>P.Features.referenceKey(next)===P.Features.referenceKey(ref) && !next.lost))
         throw new Error("不得抹除曾缺失來源旗標。");
+      const replacements=new Set();
+      for(const ref of old?.inputRefs || [])if(ref.lost&&!value.inputRefs.some(next=>P.Features.referenceKey(next)===P.Features.referenceKey(ref))){
+        const next=value.inputRefs.find(next=>!next.lost&&next.kind===ref.kind&&!replacements.has(P.Features.referenceKey(next))&&
+          !old.inputRefs.some(existing=>P.Features.referenceKey(existing)===P.Features.referenceKey(next))&&
+          (ref.kind!=='parameter-field'||next.parameterId!==ref.parameterId));
+        if(!next)throw new Error("曾缺失來源只准改指另一個物件，不得純移除。");
+        replacements.add(P.Features.referenceKey(next));
+      }
       for(const ref of old?.inputRefs || [])if(ref.lost && ref.kind==='parameter-field' && value.inputRefs.some(next=>next.kind==='parameter-field' && next.parameterId===ref.parameterId && !next.lost &&
         !old.inputRefs.some(existing=>P.Features.referenceKey(existing)===P.Features.referenceKey(next) && !existing.lost)))
         throw new Error("曾缺失的參數卡不得以另一欄位重新取得。");
     }
     const drafts=collection.drafts.filter(d=>d.draftId!==draftId);if(value!==null)drafts.push(value);
     const orphans=collection.orphans.filter(id=>value!==null || id!==draftId);
+    const projected=P.Features.gridLifecycleValue(P.Features.gridDraftValue(drafts,orphans));
+    const projectedRecords=(context().featureAttachments||[]).filter(record=>record.kind!==P.Features.GRID_KIND);
+    if(projected)projectedRecords.push(P.Features.record(P.Features.GRID_KIND,projected));
+    assertMetadataCapacity({featureAttachments:projectedRecords});
     setFeatureAttachment(P.Features.GRID_KIND,P.Features.gridDraftValue(drafts,orphans),expectedContextToken,{gridWrite:gridDraftWrite});
     return readGridDraft(draftId);
   }

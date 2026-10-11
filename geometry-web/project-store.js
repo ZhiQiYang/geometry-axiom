@@ -518,6 +518,11 @@
     // actually declared/used, so unused future syntax cannot shrink old files.
     const admitted = normalizedManifest(manifest,scene || "",manifest.sceneHash || "0".repeat(64),!!rooms);
     if (rooms && scene === null) admitted.requiredCapabilities = [...new Set([...admitted.requiredCapabilities,SUBDIVISION_CAPABILITY])].sort();
+    const records=admitted.featureAttachments?.records;
+    if(records?.some(record=>record.kind===Features.GRID_KIND)){
+      const projected={...admitted,featureAttachments:{...admitted.featureAttachments,records:records.map(record=>record.kind!==Features.GRID_KIND?record:Features.record(Features.GRID_KIND,Features.gridLifecycleValue(record.value)))}};
+      Features.jsonBytes(normalizedManifest(projected,scene||"",admitted.sceneHash,!!rooms),MAX_MANIFEST,reserve,"專案未保留網格來源缺失補標容量（上限 8 MB）。");
+    }
     Features.jsonBytes(admitted,MAX_MANIFEST,reserve,
       "專案清單未保留完整保存與房間狀態更新所需容量（上限 8 MB）。");
     return manifest;

@@ -118,6 +118,7 @@ NODE_TEST_FILES = [
     'tests/test_grid_trial_geometry.js',
     'tests/test_grid_rule_draft.js',
     'tests/test_grid_drafts_collection.js',
+    'tests/test_grid_drafts_lifecycle_capacity.js',
     'tests/test_grid_rule_lines.js',
     'tests/test_issue77_attachment.js',
     'tests/test_issue77_history.js',

@@ -75,6 +75,9 @@ test('K2a M12/M14b lost flags cannot be erased or repinned with the same identit
   const {w}=await fixture(),token=w.getProjectState().contextToken,a=k2aDraft('a');
   a.inputRefs=[{kind:'grid-system',id:2,fingerprint:'b'.repeat(64),lost:true}];w.setGridDraft('a',a,token);
   const clear=structuredClone(a);delete clear.inputRefs[0].lost;assert.throws(()=>w.setGridDraft('a',clear,token));
+  const removed=structuredClone(a);removed.inputRefs=[];const beforeRemove=JSON.stringify(w.readGridDrafts()),beforeHistory=w.history.undo.length;
+  assert.throws(()=>w.setGridDraft('a',removed,token),'M1 pure removal cannot erase a lost reference');
+  assert.equal(JSON.stringify(w.readGridDrafts()),beforeRemove);assert.equal(w.history.undo.length,beforeHistory);
   assert.throws(()=>w.setFeatureAttachment('grid-draft',null,token));
   assert.equal(w.readGridDrafts().drafts[0].inputRefs[0].lost,true);
   clear.inputRefs[0].id=3;w.setGridDraft('a',clear,token);assert.equal(w.readGridDrafts().drafts[0].inputRefs[0].lost,undefined);
