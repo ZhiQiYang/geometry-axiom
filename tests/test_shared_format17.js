@@ -12,13 +12,13 @@ const grid=()=>A.record(A.GRID_KIND,A.gridDraftValue(['a','b'].map(draftId=>({sc
 const cutting=()=>({kind:Cutting.KIND,schema:Cutting.SCHEMA,value:Cutting.empty()});
 async function roundtrip(records){return P.unpack(await P.pack('reset\n',{projectId:'shared17',name:'contract',sources:[],faces:[],featureAttachments:{schema:A.SCHEMA,records}},new Map(),zip),zip);}
 test('P-054 shared /17 accepts each registered feature alone and both without discarding attachments',async()=>{
- for(const records of [[grid()],[cutting()],[grid(),cutting()]]){const got=await roundtrip(records);assert.equal(got.manifest.format,'geometry-canvas/17');assert.deepEqual(JSON.parse(JSON.stringify(got.manifest.featureAttachments.records)),records);assert.equal(got.manifest.requiredCapabilities.includes(A.GRID_DRAFTS_SCHEMA),records.some(r=>r.kind===A.GRID_KIND));assert.equal(got.manifest.requiredCapabilities.includes(Cutting.CAPABILITY),records.some(r=>r.kind===Cutting.KIND));}
+ for(const records of [[grid()],[cutting()],[grid(),cutting()]]){let got;await assert.doesNotReject(async()=>{got=await roundtrip(records);},'P-054 registered family roundtrip remains accepted');assert.equal(got.manifest.format,'geometry-canvas/17');assert.deepEqual(JSON.parse(JSON.stringify(got.manifest.featureAttachments.records)),records);assert.equal(got.manifest.requiredCapabilities.includes(A.GRID_DRAFTS_SCHEMA),records.some(r=>r.kind===A.GRID_KIND));assert.equal(got.manifest.requiredCapabilities.includes(Cutting.CAPABILITY),records.some(r=>r.kind===Cutting.KIND));}
 });
 test('P-054 unsupported other-owner capability and stripped capability reject whole /17 archive',async()=>{
  const got=await roundtrip([cutting()]),files=zip.unzipSync(await P.pack(got.scene,got.manifest,got.sources,zip));
  await assert.rejects(require('../geometry-web/project-store.js').unpack(zip.zipSync(files),zip),/尚未支援|不支援/);
  const m=JSON.parse(new TextDecoder().decode(files['manifest.json']));m.requiredCapabilities=[];files['manifest.json']=new TextEncoder().encode(JSON.stringify(m));await assert.rejects(P.unpack(zip.zipSync(files),zip));
- const downgraded=JSON.parse(JSON.stringify(got.manifest));downgraded.format='geometry-canvas/16';files['manifest.json']=new TextEncoder().encode(JSON.stringify(downgraded));await assert.rejects(P.unpack(zip.zipSync(files),zip),'P-054 other-owner attachment cannot downgrade');
+ const downgraded=JSON.parse(JSON.stringify(got.manifest));downgraded.format='geometry-canvas/10';files['manifest.json']=new TextEncoder().encode(JSON.stringify(downgraded));await assert.rejects(P.unpack(zip.zipSync(files),zip),'P-054 other-owner attachment cannot downgrade');
 });
 test('P-054 nested scenario leaves retain each /17 family and reject stripped root capability',async()=>{
  const Snapshots=require('../geometry-web/scenario-snapshots.js');

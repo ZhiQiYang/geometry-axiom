@@ -8,6 +8,7 @@ original=root/'geometry-web/project-store.js'
 source=original.read_bytes()
 judge=root/'tests/test_shared_format17.js'
 cases=[
+ ('P054-other-owner-downgrade','manifest.format !== GRID_DRAFTS_FORMAT','false','P-054 unsupported other-owner capability and stripped capability reject whole /17 archive'),
  ('P054-own-format-only','if(projectCapabilities(manifest,scene).some(capability=>format17Capabilities.includes(capability)))', 'if(projectCapabilities(manifest,scene).includes(Features.GRID_DRAFTS_SCHEMA))', 'P-054 shared /17 accepts each registered feature alone and both without discarding attachments'),
  ('P054-drop-nested-capability','if(format17Capabilities.includes(capability))required.add(capability);','if(false)required.add(capability);','P-054 nested scenario leaves retain each /17 family and reject stripped root capability'),
 ]
