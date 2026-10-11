@@ -1122,7 +1122,7 @@
     setOcTool('select');oc.gridSystemCreating=false;oc.parameters=final.parameters||[];
     if(source&&source.mode!=='infinite'&&!restored){if(dialog.open)dialog.close();GridSystemEditor.open(source.id);return;}
     closePanels();
-    state?.trial?.dispose();
+    state?.selectionAbort?.abort();state?.trial?.dispose();
     const mode=restored?.kind||(binding?'binding':options.mode||'source');
     state={context,contextToken,source,binding,mode,pins,fullPins,draftSchema,orphaned:!!restored&&(collection.orphans.includes(restored.draftId)||restored.intent==='edit'&&(mode==='source'?!source:!binding)),ruleDraft:restored?.ruleDraft?copy(restored.ruleDraft):null,inputPins:new Map((restored?.inputRefs||[]).map(ref=>[pinKey(ref),copy(ref)])),rawOverrides:new Map(),restored:restored&&copy(restored),draftId:restored?.draftId||crypto.randomUUID(),
       baseRef:restored?copy(restored.baseRef):mode==='source'?(source?pins.get('grid-system:'+source.id):null):(binding?pins.get('grid-binding:'+binding.id):null),
@@ -1160,7 +1160,7 @@
       else if(event.key==='Tab'){const buttons=[...prompt.querySelectorAll('button')],index=buttons.indexOf(document.activeElement);event.preventDefault();buttons[(index+(event.shiftKey?-1:1)+buttons.length)%buttons.length].focus();}};
     prompt.querySelector('#igDiscardCancel').focus();
   }
-  function close(force=false,discard=false) { if(!force && (state?.busy || state?.initializing || state?.projectControls || !mayLeave(state)))return false;state?.discardCleanup?.();if(!discard&&!state?.heldControls)capture(state);state?.trial?.dispose();state=null;++serial;dialog.close();WorkspaceShell.detach(dialog);window.ParamGridLesson?.place();return true; }
+  function close(force=false,discard=false) { if(!force && (state?.busy || state?.initializing || state?.projectControls || !mayLeave(state)))return false;state?.discardCleanup?.();if(!discard&&!state?.heldControls)capture(state);state?.selectionAbort?.abort();state?.trial?.dispose();state=null;++serial;dialog.close();WorkspaceShell.detach(dialog);window.ParamGridLesson?.place();return true; }
   dialog.addEventListener('cancel',event=>{event.preventDefault();close();});
   window.addEventListener('face-projections-changed',()=>{if(state&&state.context!==ReferenceWorkspace.context())close(true);});
   window.addEventListener('project-info-changed',()=>{if(state&&!current(state))close(true,true);else if(state)void releaseHeldControls(state);});
