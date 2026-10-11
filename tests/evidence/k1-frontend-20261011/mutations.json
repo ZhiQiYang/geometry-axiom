@@ -1,0 +1,381 @@
+{
+  "schema": "k1-frontend-mutations/1",
+  "tests": {
+    "test_cutting_plan.js": "3d680d2187c4a22320803194c66bb49bdb61ba46595f23c3f3bb2f4b775727f1",
+    "test_cutting_project_store.js": "664ba7ed0dcef71ed4befed82128421c59df348b1f4067b39b83a25f7e7756bb",
+    "test_cutting_session.js": "a07446a160b01ac00e806fbd6e86c8641323d140ebc5e05dea4a56e4533f00af",
+    "test_cutting_owner.js": "dc571cd410bc7979de4c952118d15475eba442016628ec036633f30b01185c5c"
+  },
+  "baseline": "passed",
+  "results": [
+    {
+      "id": "between-kerf",
+      "status": "killed",
+      "detectedBy": "invariant",
+      "testPattern": "T1",
+      "exitCode": 1,
+      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "mutationHash": "c6850153841539cfc4dfb6e71744c58752497797ebf20ceb6bd354591d53af50"
+    },
+    {
+      "id": "original-end",
+      "status": "killed",
+      "detectedBy": "invariant",
+      "testPattern": "T2",
+      "exitCode": 1,
+      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "mutationHash": "4939e3fd09cf5ebdf530dca3b0bc0f6231796a3bbc313d83d5a3e841aae10327"
+    },
+    {
+      "id": "short-last-kerf",
+      "status": "killed",
+      "detectedBy": "invariant",
+      "testPattern": "T2",
+      "exitCode": 1,
+      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "mutationHash": "3605308590ac64bb6d52e070a43ac3f8d9deca7e9137254a51475ab137a4212f"
+    },
+    {
+      "id": "omit-last-cut",
+      "status": "killed",
+      "detectedBy": "invariant",
+      "testPattern": "T2",
+      "exitCode": 1,
+      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "mutationHash": "b1155885ae25a1fbb762a7a2f0404351c7ab504ed18d05ea6ec69156784c7874"
+    },
+    {
+      "id": "leftover-threshold",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "T4",
+      "exitCode": 1,
+      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "mutationHash": "b4282a971379953b23ea426c975e29e1565921db8e4b4af1ac2883f6b38661fe"
+    },
+    {
+      "id": "negative-usable",
+      "status": "killed",
+      "detectedBy": "invariant",
+      "testPattern": "T4",
+      "exitCode": 1,
+      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "mutationHash": "7288a6e3bfc4c3426f403a66a1fe90e8a98d6e4bd84b866f535795d86ad37528"
+    },
+    {
+      "id": "remnant-order",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "T5",
+      "exitCode": 1,
+      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "mutationHash": "53b25221cc30247c78f529e42d11de518d8330051f737e667e170b373edda62c"
+    },
+    {
+      "id": "dimension-dedupe",
+      "status": "killed",
+      "detectedBy": "invariant",
+      "testPattern": "T6",
+      "exitCode": 1,
+      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "mutationHash": "74296a2e7ec66bd60af84bd6a15e783010dddd7e71addb4711fef45775f3a04c"
+    },
+    {
+      "id": "world-kind",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "T7",
+      "exitCode": 1,
+      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "mutationHash": "9a3e67b9b32e4506fa2836f4378ea0f078807370c684455e07801e77748b6462"
+    },
+    {
+      "id": "scope-capacity",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "T7",
+      "exitCode": 1,
+      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "mutationHash": "be7b45e8dfe9b61e8bb41148986bc29892b4cc57b861c478d4430ab415b9318c"
+    },
+    {
+      "id": "demand-capacity",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "T7",
+      "exitCode": 1,
+      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "mutationHash": "14d273d04213a9fe232835541302d57bc02fbdc4aef8b3f3ab93f58d2769f84c"
+    },
+    {
+      "id": "stale-selection",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "T7",
+      "exitCode": 1,
+      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "mutationHash": "ffb4388c556d4fea1cba885ce6251ac00532700cd10388d5db95a16b8c23ff14"
+    },
+    {
+      "id": "empty-scope",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "T7",
+      "exitCode": 1,
+      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "mutationHash": "821fc7fe18e941ac265c8c4744ab5642e0419f7929acf8422684825b5370ad15"
+    },
+    {
+      "id": "unordered-section",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "T8",
+      "exitCode": 1,
+      "sourceHash": "23f44ae9717405bbc5bf95ca32f0cda47af0e25104972d0d984ed5b85d94e265",
+      "mutationHash": "0bff5390827d99870430040f27daa94ceb9ed75d1da739745a1a923ba1c8464e"
+    },
+    {
+      "id": "material-fingerprint",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "T26",
+      "exitCode": 1,
+      "sourceHash": "23f44ae9717405bbc5bf95ca32f0cda47af0e25104972d0d984ed5b85d94e265",
+      "mutationHash": "ea31e83387513510d98befe175a5ab8fd1c7f24b47c4f1c450d53edb916ce6a3"
+    },
+    {
+      "id": "null-terminal",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "T10",
+      "exitCode": 1,
+      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "mutationHash": "7fa96c63e3a06a821a6aad6ed19b8b7b31ac6af80fc67b7816ac1773ee8c3874"
+    },
+    {
+      "id": "missing-terminal",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "T10",
+      "exitCode": 1,
+      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "mutationHash": "c5ce7957e880aa2c3ed6c67373c865f8c7583c05a09f9f046ecb6f96485e76f8"
+    },
+    {
+      "id": "mixed-terminal",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "T10",
+      "exitCode": 1,
+      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "mutationHash": "b14be5a456cc3d1accb49256f8bc5ed0dc654d46f18c81ada239cedaf1649cf7"
+    },
+    {
+      "id": "allowance",
+      "status": "killed",
+      "detectedBy": "invariant",
+      "testPattern": "T4",
+      "exitCode": 1,
+      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "mutationHash": "b4825133369f5116ee6ac199602a2a96262af44ddab2886cc6cd7b8d532a2a7c"
+    },
+    {
+      "id": "tie-break",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "T1",
+      "exitCode": 1,
+      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "mutationHash": "fe692fa97be558e3e5e4ae07dd853124bdcbe5f84f425223f8c2977694a87cf2"
+    },
+    {
+      "id": "missing-setting",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "T19",
+      "exitCode": 1,
+      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "mutationHash": "c2eb36eed2ab677876ac496551d07f824a221538d3c38d9b7222f4b19492406f"
+    },
+    {
+      "id": "overlength-remnants",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "T23",
+      "exitCode": 1,
+      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "mutationHash": "504d5489d61622792ce95deddea4ce9db43f5b9cf969f39df01d93340bb84ab8"
+    },
+    {
+      "id": "exhaustion-code",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "T23",
+      "exitCode": 1,
+      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "mutationHash": "b48726ee581d4e6ddbcb72e37b74811acf4b5da0961465ddd133816d6e81bc54"
+    },
+    {
+      "id": "exhaustion-all-groups",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "R1.1",
+      "exitCode": 1,
+      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "mutationHash": "d2a3482aab541d5bb172c8cc60f677edb1a297f9b768f2e9bbe91c1aebee0d64"
+    },
+    {
+      "id": "conservation",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "E1",
+      "exitCode": 1,
+      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "mutationHash": "efdb7f486cf1125b4b09cabf0b1a0f9e54c707ae45a50aa34a04308e8c46c638"
+    },
+    {
+      "id": "typed-error",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "typed derive",
+      "exitCode": 1,
+      "sourceHash": "bb1558ff482591b2c4085a1f20c46e50999db7bfa2be748d74f131e85726bd9c",
+      "mutationHash": "467af8ddb2d3977df5f8621b237352445923729cb780b6e5bce08a46bb4db943"
+    },
+    {
+      "id": "legacy-csv",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "F4a",
+      "exitCode": 1,
+      "sourceHash": "bb1558ff482591b2c4085a1f20c46e50999db7bfa2be748d74f131e85726bd9c",
+      "mutationHash": "dfc8b060c80394c1a1d7f19cf8bbb906cffae559c34404a784066ac0fe358afd"
+    },
+    {
+      "id": "owned-terminal",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "F4a",
+      "exitCode": 1,
+      "sourceHash": "bb1558ff482591b2c4085a1f20c46e50999db7bfa2be748d74f131e85726bd9c",
+      "mutationHash": "1ca14fd78182c27fe828fd83a1427605967b73c9ea1f51e067d796bc5f204790"
+    },
+    {
+      "id": "integer-range",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "T12 strict",
+      "exitCode": 1,
+      "sourceHash": "23f44ae9717405bbc5bf95ca32f0cda47af0e25104972d0d984ed5b85d94e265",
+      "mutationHash": "6ec7c054f2180a3ffd1d0202d584b250056cb376976815c0bcc7fdee62d19a38"
+    },
+    {
+      "id": "stock-lock",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "T12b",
+      "exitCode": 1,
+      "sourceHash": "23f44ae9717405bbc5bf95ca32f0cda47af0e25104972d0d984ed5b85d94e265",
+      "mutationHash": "c881b5e73b59dce5af1a1caf526f396ee1d1dc31f0d1004d523769538ad4107c"
+    },
+    {
+      "id": "key-reuse",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "key allocation",
+      "exitCode": 1,
+      "sourceHash": "23f44ae9717405bbc5bf95ca32f0cda47af0e25104972d0d984ed5b85d94e265",
+      "mutationHash": "ea7cb15c8df54b79ce81c3fa21bab2e3955102536624a6628c6180ce3c840a60"
+    },
+    {
+      "id": "stock-capacity",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "T18 settings",
+      "exitCode": 1,
+      "sourceHash": "23f44ae9717405bbc5bf95ca32f0cda47af0e25104972d0d984ed5b85d94e265",
+      "mutationHash": "6980edd17690227740c8c491dc8163676ac89484ebd887f0bb5fb2b34ce100bc"
+    },
+    {
+      "id": "undo-highwater",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "P-047",
+      "exitCode": 1,
+      "sourceHash": "84dac07984a352a6c604decb9de6d2a30cc659340d410237b4c6ba63fc0c8123",
+      "mutationHash": "96a4008ed5c9c04c4d013806554330bb00fc3353fc03758c335b1009080711d7"
+    },
+    {
+      "id": "new-capability",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "T17 archive",
+      "exitCode": 1,
+      "sourceHash": "84dac07984a352a6c604decb9de6d2a30cc659340d410237b4c6ba63fc0c8123",
+      "mutationHash": "e4915dd29206c50506bef867b9a3f7c804fa87f8680e8f1e7f435b5f1906925c"
+    },
+    {
+      "id": "old-format",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "T17b",
+      "exitCode": 1,
+      "sourceHash": "84dac07984a352a6c604decb9de6d2a30cc659340d410237b4c6ba63fc0c8123",
+      "mutationHash": "432bb53b6ff92ab5a2f696f69fe56e6fd7682228c7fe815a840e641eaa02110e"
+    },
+    {
+      "id": "export-state",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "T16",
+      "exitCode": 1,
+      "sourceHash": "07fa8bfcaf7d903b27a46da2aa061f16db22498d50281b92cda37877f96a1eb5",
+      "mutationHash": "76f13d295c08caf270686a1a1ca869778e6c8418ed7e9de38bf23af83429ffa4"
+    },
+    {
+      "id": "export-world",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "T16 world",
+      "exitCode": 1,
+      "sourceHash": "07fa8bfcaf7d903b27a46da2aa061f16db22498d50281b92cda37877f96a1eb5",
+      "mutationHash": "89e1e4e86742f51837a6e1d53687a2b0b2bb955e5f6a8df2614fd90fc31ae29c"
+    },
+    {
+      "id": "export-reentry",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "T16 late",
+      "exitCode": 1,
+      "sourceHash": "07fa8bfcaf7d903b27a46da2aa061f16db22498d50281b92cda37877f96a1eb5",
+      "mutationHash": "a2883830f55fdce0575bc5309e2b2c7d6596bab6d490c243dbaced263ab37e5e"
+    },
+    {
+      "id": "context-clear",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "session scopes",
+      "exitCode": 1,
+      "sourceHash": "07fa8bfcaf7d903b27a46da2aa061f16db22498d50281b92cda37877f96a1eb5",
+      "mutationHash": "46551b806ad061837b6a568f93a8113873b270fd2410c4a2ada79a58076d17b9"
+    },
+    {
+      "id": "owner-stock-lock",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "actual owner rejects",
+      "exitCode": 1,
+      "sourceHash": "0242089c84b13c5045a65478b5cdf9e88d0944f6f06000e2a64623278e08cae0",
+      "mutationHash": "b96b581f025e120c680ec440702f28d4b51ed3d34c52b22f785b2e4149309d54"
+    },
+    {
+      "id": "owner-history-kind",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "actual owner P-047",
+      "exitCode": 1,
+      "sourceHash": "0242089c84b13c5045a65478b5cdf9e88d0944f6f06000e2a64623278e08cae0",
+      "mutationHash": "57ec5d822a5f31064df1e9bde245157431bfd740e6fe46ad6fce35e6c2273fdc"
+    }
+  ]
+}

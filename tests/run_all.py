@@ -154,6 +154,10 @@ NODE_DOCUMENT_SCRIPT_FILES = {
     'node:cdp_confirmation_gate': 'tests/test_cdp_confirmation_gate.js',
 }
 NODE_PURE_TEST_FILES = {
+    'node:cutting_plan':'tests/test_cutting_plan.js',
+    'node:cutting_project_store':'tests/test_cutting_project_store.js',
+    'node:cutting_session':'tests/test_cutting_session.js',
+    'node:cutting_owner':'tests/test_cutting_owner.js',
     'node:grid_lesson_control_ownership': 'tests/test_grid_lesson_control_ownership.js',
     'node:parameter_confirmation_settlement': 'tests/test_parameter_confirmation_settlement.js',
     'node:face_reference_settlement': 'tests/test_face_reference_settlement.js',

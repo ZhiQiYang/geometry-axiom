@@ -1,4 +1,5 @@
 :root {
+  --cutting-dialog-width: 1000px;
   --bg: #eef1f5;
   --panel: #ffffff;
   --panel-muted: #f7f8fa;
@@ -34,6 +35,25 @@
   color: var(--ink);
   background: var(--bg);
 }
+
+/* K1 uses the existing schedule control; the dialog carries its local forms. */
+.cutting-dialog { width: min(var(--cutting-dialog-width), calc(100vw - 24px)); max-height: calc(100dvh - 24px); box-sizing: border-box; padding: 0; border: 1px solid var(--border); border-radius: 14px; background: var(--panel); color: var(--ink); }
+.cutting-dialog::backdrop { background: rgba(19,27,43,.45); }
+.cutting-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 18px; margin: 0; border-bottom: 1px solid var(--border); }
+.cutting-heading h2 { margin: 0; font-size: 18px; }
+.cutting-body { padding: 16px 18px; overflow: auto; max-height: calc(100dvh - 100px); }
+.cutting-dialog section { margin-bottom: 20px; }
+.cutting-dialog fieldset,.cutting-fields,.cutting-actions { display: flex; flex-wrap: wrap; align-items: end; gap: 10px; margin-bottom: 12px; }
+.cutting-dialog fieldset { border: 1px solid var(--border); border-radius: 8px; padding: 12px; }
+.cutting-dialog label { display: flex; flex-direction: column; gap: 4px; font-size: 12px; }
+.cutting-dialog input,.cutting-dialog select { min-width: 0; width: 140px; padding: 7px; border: 1px solid var(--border); border-radius: 5px; color: var(--ink); background: var(--panel); }
+.cutting-dialog [aria-label="材料內容指紋"] { width: min(460px,60vw); }
+.cutting-dialog [hidden] { display: none; }
+.cutting-dialog table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.cutting-dialog th,.cutting-dialog td { text-align: left; padding: 7px 4px; border-bottom: 1px solid var(--border); }
+.cutting-dialog li { margin-bottom: 8px; }
+.cutting-dialog li button { margin-left: 10px; }
+@media(max-width:680px) { .cutting-body { padding: 12px; }.cutting-dialog input,.cutting-dialog select { width: 125px; }.cutting-dialog th,.cutting-dialog td { padding: 6px 2px; font-size: 10px; } }
 
 * { box-sizing: border-box; }
 
