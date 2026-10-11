@@ -800,10 +800,10 @@ class LanHTTPServer(PreviewHTTPServer):
             connection.close()
 
     def context_for(self, session):
-        """該 session 專屬的原生世界；第一次使用才啟動 bridge。區網模式已關閉時拒絕。"""
+        """該 session 專屬的原生世界；第一次使用才啟動 bridge。沒有 session 或區網模式已關閉時拒絕（→ 503）。"""
         with self.context_lock:
-            if self.stopped.is_set():
-                raise RuntimeError("區網測試模式已關閉")
+            if session is None or self.stopped.is_set():
+                raise RuntimeError("沒有已配對的 session，或區網測試模式已關閉")
             native = self.contexts.get(session)
             if native is None:
                 native = self.contexts[session] = self.context_factory()
@@ -872,8 +872,9 @@ class LanHandler(Handler):
             self.close_connection = True
             return False
         self.lan_route = route
-        if route == "app":   # 守門已確認恰有一個有效 cookie
-            self.lan_session = lan_guard.session_digest(lan_guard.cookie_values(self.headers)[0])
+        if route == "app":   # 守門已確認恰有一個有效 cookie；這裡再取一次，取不到就沒有世界可用（context_for 拒絕）
+            values = lan_guard.cookie_values(self.headers)
+            self.lan_session = lan_guard.session_digest(values[0]) if len(values) == 1 else None
         return True
 
     def _select_native(self, query_context=None):
