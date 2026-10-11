@@ -267,6 +267,63 @@ class FinishSurfaceNative(unittest.TestCase):
         self.assertIn("panel-fill-preview", result["error"])
         self.assertEqual(before, self.snapshot())
 
+    def test_out_of_scope_operations_are_refused_instead_of_hidden(self):
+        # The panel-fill preview only discloses finish surfaces, so it must not commit anything else (I8a/I55):
+        # a perfectly valid parameter card would otherwise land in World behind an empty `changes` list.
+        valid_card = {"op": "put-parameter", "value": {"id": 9, "name": "板材", "fields": [
+            {"id": 1, "name": "寬", "type": "dimension", "input": "915"}]}}
+        for operations in ([valid_card], [put(surface()), valid_card],
+                           [{"op": "set-source", "target": {"kind": "grid", "id": 1, "axis": "u", "field": "gap"},
+                             "source": {"kind": "literal", "value": 3}}]):
+            with self.subTest(ops=[o["op"] for o in operations]):
+                preview = self.reject(operations, "only put-finish-surface and delete-finish-surface")
+                self.assertEqual([], preview["changes"])
+        self.assertEqual({}, self.surfaces())
+        self.assertNotIn("parameters", self.command("dump")["text"])
+
+    def test_tokens_of_other_transaction_kinds_are_refused(self):
+        preview = self.preview([put(surface())])
+        before = self.snapshot()
+        for command in ("engineering-confirm", "section-profile-confirm", "assembly-confirm", "line confirm"):
+            with self.subTest(command=command):
+                self.assertFalse(self.command("%s %d" % (command, preview["token"]))["ok"])
+                self.assertEqual(before, self.snapshot())
+        self.assertFalse(self.command("engineering-cancel %d" % preview["token"])["cancelled"])
+        self.assertTrue(self.command("panel-fill-confirm %d" % preview["token"])["ok"], "own token still valid")
+        self.assertEqual(["c1", "c5", "b2"], self.surfaces()[1]["obstacles"])
+        path = self.directory / "engineering.json"
+        path.write_text(json.dumps({"schema": "engineering-transaction/1", "expectedRevision": self.read()["revision"],
+                                    "operations": [{"op": "put-parameter", "value": {"id": 9, "name": "板材", "fields": [
+                                        {"id": 1, "name": "寬", "type": "dimension", "input": "915"}]}}]},
+                                   ensure_ascii=False), encoding="utf-8")
+        engineering = self.command("engineering-preview " + str(path))["preview"]
+        self.assertTrue(engineering["valid"], engineering)
+        before = self.snapshot()
+        self.assertFalse(self.command("panel-fill-confirm %d" % engineering["token"])["ok"])
+        self.assertFalse(self.command("panel-fill-cancel %d" % engineering["token"])["cancelled"])
+        self.assertEqual(before, self.snapshot())
+        self.assertTrue(self.command("engineering-cancel %d" % engineering["token"])["cancelled"])
+
+    def test_mid_transaction_failure_commits_nothing(self):
+        before = self.snapshot()
+        self.reject([put(surface()), put(surface(2, boundary=99))], "I52")
+        self.assertEqual({}, self.surfaces(), "the valid first operation must not survive the failed second one")
+        self.assertEqual(before, self.snapshot())
+
+    def test_rejected_or_cancelled_previews_keep_redo(self):
+        self.apply([put(surface())])
+        self.apply([put(surface(origin=(0, 0, 2600)))])
+        self.assertTrue(self.command("line undo")["ok"])
+        after_undo = self.snapshot()
+        self.assertEqual([0, 0, 2480], self.surfaces()[1]["frame"]["origin"])
+        self.reject([put(surface(boundary=99))], "I52")
+        pending = self.preview([put(surface(obstacles=["b2"]))])
+        self.assertFalse(self.command("engineering-confirm %d" % pending["token"])["ok"])
+        self.assertTrue(self.command("panel-fill-cancel %d" % pending["token"])["cancelled"])
+        self.assertEqual(after_undo, self.snapshot())
+        self.assertTrue(self.command("line redo")["ok"], "redo must survive rejected, wrong-kind and cancelled previews")
+        self.assertEqual([0, 0, 2600], self.surfaces()[1]["frame"]["origin"])
+
     # ---- I56 / R4 / R46: save and reopen ----------------------------------------------------------------------
     def test_dump_reopen_round_trip_is_exact(self):
         self.apply([put(surface()), put(surface(2, boundary=3, origin=(0, 3000, 2400), side=-1, v="-Y", n="-Z",

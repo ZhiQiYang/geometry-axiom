@@ -220,7 +220,10 @@ static bool fs_operation(World *w,EngJson *j,int t)
         if(!eng_json_keys(j,t,"op,id","")||!eng_u32(j,eng_json_member(j,t,"id"),&id,true))return fs_error("I55: delete-finish-surface needs a positive id");
         return fs_delete(w,id);
     }
-    return eng_operation(w,j,t);
+    /* PF-1 scope (I8a/I55): the panel-fill preview discloses finish surfaces only, so a panel-fill transaction must
+     * not carry any other definition change (parameters, materials, sources) that confirm would commit unseen. */
+    return fs_error("PF-1 scope (I8a/I55): panel-fill transactions accept only put-finish-surface and delete-finish-surface; "
+                    "send %s through its own previewed transaction",op);
 }
 /* ---- scene records (I56 / R4) ---- */
 static const char *fs_axis_word(Vector3 axis)
