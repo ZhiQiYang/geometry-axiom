@@ -25,6 +25,14 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import test_serve_lan as base
 
 
+def certificate_utc(cert, field):
+    """Read the independent certificate oracle on cryptography 41 and 42+."""
+    value = getattr(cert, field + "_utc", None)
+    if value is None:
+        value = getattr(cert, field).replace(tzinfo=dt.timezone.utc)
+    return value
+
+
 class PureReview(base.LanCase):
     def test_ttl_and_idle_are_hard_maxima(self):
         def validate(*argv):
@@ -100,8 +108,8 @@ class PureReview(base.LanCase):
         from cryptography.hazmat.primitives import hashes
         builder = (x509.CertificateBuilder().subject_name(cert.subject).issuer_name(cert.issuer)
             .public_key(cert.public_key()).serial_number(cert.serial_number)
-            .not_valid_before(before or cert.not_valid_before_utc)
-            .not_valid_after(after or cert.not_valid_after_utc))
+            .not_valid_before(before or certificate_utc(cert, "not_valid_before"))
+            .not_valid_after(after or certificate_utc(cert, "not_valid_after")))
         replacements = {type(value): (value, critical) for value, critical in replacements}
         for ext in cert.extensions:
             if type(ext.value) not in omit:
@@ -172,7 +180,7 @@ class PureReview(base.LanCase):
         _, _, leaf, ca, _, _ = self.issued()
         for label, cert in (("CA", ca), ("leaf", leaf)):
             with self.subTest(cert=label):
-                self.assertLessEqual(cert.not_valid_after_utc - cert.not_valid_before_utc,
+                self.assertLessEqual(certificate_utc(cert, "not_valid_after") - certificate_utc(cert, "not_valid_before"),
                                      dt.timedelta(days=7), "certificate total validity exceeds seven days")
 
     @base.NEEDS_CRYPTOGRAPHY
