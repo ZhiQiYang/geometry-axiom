@@ -190,6 +190,9 @@ def _digest(token):
     return hashlib.sha256(token.encode("utf-8", "replace")).hexdigest()
 
 
+session_digest = _digest   # serve.py 以它對應「哪台裝置的獨立世界」；伺服器從不保存 cookie 原值
+
+
 def _printable(text, limit=120):
     return "".join(ch for ch in (text or "") if ch.isprintable())[:limit]
 

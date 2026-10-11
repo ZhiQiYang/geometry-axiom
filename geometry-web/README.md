@@ -174,13 +174,17 @@ python serve.py 8765       :: 啟動靜態檔 + /api 橋接服務
 配對碼全部過期且沒有任何裝置配對。終端機會印出每次配對成功／失敗的時間與對端 IP——**看到不是你的「已配對」行就立刻 Ctrl+C**。
 配對碼只印在終端機；輸出被導到檔案時改寫入 `%LOCALAPPDATA%\geometry-lan\<ip>-<埠>\pairing.txt`、只印路徑（agent 不讀此檔、不在對話中轉述配對碼；這只是規範，沒有技術強制）。
 
+**每台已配對裝置有自己獨立的世界**（各自一個 bridge 行程）：不與本機桌面 `http://localhost:<埠>/` 共用，也不與其他已配對裝置共用，
+所以手機上的編輯、復原、載入不會改到桌面或另一台手機。手機上不支援方案編輯分支（會回 410／「只能由主方案建立」）。
+手機的世界在區網模式關閉時一併結束；要保留成果請在手機上存成專案檔。註：Android 走 `adb reverse` 時連的是本機 loopback，**和桌面共用同一個世界**（loopback 行為不變），驗收時不要同時在桌面操作。
+
 ### 你要做的決定與動作（🔐＝你的安全決定，agent 不代決、不代按）
 
 | # | 動作 | 風險 | 用完如何移除 |
 |---|---|---|---|
 | U1 🔐 | 決定要不要開區網測試模式；只在你信任的家用／私人網路開 | 同網段裝置看得到這個埠（仍需配對碼） | Ctrl+C，或等自動關閉 |
 | U2 🔐 | **既有曝露，與本功能無關但現在就有效**：`python.exe` 已有兩條「公用」、全埠的輸入放行規則。唯讀檢查：`Get-NetFirewallApplicationFilter -Program 'C:\python314\python.exe' \| Get-NetFirewallRule \| Where-Object { $_.Direction -eq 'Inbound' -and $_.Enabled -eq 'True' } \| Select-Object DisplayName, Profile, Action` | 在公用網路上，任何綁所有介面的 python 工具（例如 `python -m http.server`）都會被同網段連到 | 要處理由你決定（系統管理員 PowerShell，可逆）：同一管線接 `Where-Object { $_.Profile -match 'Public' } \| Disable-NetFirewallRule`；恢復用 `Enable-NetFirewallRule` |
-| U3 🔐 | iOS 根憑證：把終端機印出路徑的 `ca.cer` 經**你信任的帶外通道**送到手機（寄給自己的信箱附件，或在 icloud.com 上傳到 iCloud 雲碟），在 iPhone 用「郵件」或「檔案」點開 → 設定 → 一般 → VPN 與裝置管理 → 安裝前點「更多詳細資料」核對 SHA-256 與終端機一致（至少頭尾各 16 字，建議全 64 字；不一致＝被調包，立刻刪除並停止）→ 安裝 → 設定 → 一般 → 關於本機 → 憑證信任設定 → 開啟此根的完全信任。不方便帶外時才用 `-LanServeCa` 從 `https://<ip>:<埠>/lan/ca.cer` 下載（風險較高，必須全比 64 字） | **裝到被調包的根：它沒有名稱約束，可攔截手機上全部 HTTPS，直到你移除描述檔。** 真的根有名稱約束（只許該 IP）、CA 私鑰簽完即毀、≤7 天失效 | 設定 → 一般 → VPN 與裝置管理 → 該描述檔 → 移除描述檔；寄過的信／雲碟檔可刪 |
+| U3 🔐 | iOS 根憑證：把終端機印出路徑的 `ca.cer` 經**你信任的帶外通道**送到手機（寄給自己的信箱附件，或在 icloud.com 上傳到 iCloud 雲碟），在 iPhone 用「郵件」或「檔案」點開 → 設定 → 一般 → VPN 與裝置管理 → 安裝前點「更多詳細資料」核對 SHA-256 與終端機一致（至少頭尾各 16 字，建議全 64 字；不一致＝被調包，立刻刪除並停止）→ 安裝 → 設定 → 一般 → 關於本機 → 憑證信任設定 → 開啟此根的完全信任。不方便帶外時才用 `-LanServeCa` 從 `https://<ip>:<埠>/lan/ca.cer` 下載（風險較高，必須全比 64 字） | **裝到被調包的根：它沒有名稱約束，可攔截手機上全部 HTTPS，直到你移除描述檔。** 真的根：CA 私鑰簽完即毀（之後簽不出任何憑證）、≤7 天失效；它的名稱約束只限制 **IP 位址**名稱（依 RFC 5280 不約束網域名稱），所以安全性靠的是私鑰已毀，不是名稱約束。iOS 是否遵守該約束未經實機驗證 | 設定 → 一般 → VPN 與裝置管理 → 該描述檔 → 移除描述檔；寄過的信／雲碟檔可刪 |
 | U4 | 手機開 `https://<ip>:<埠>/lan/pair`（在網址列輸入或貼上；從網頁連結點開會被 `Sec-Fetch-Site` 擋下）輸入配對碼。**若出現憑證警告就停**。配對後看四項自檢（`isSecureContext`、`crypto.randomUUID`、`crypto.subtle`、`navigator.locks`）；任一未通過，該平台的手機驗收標「未做」並回報 | 出現不是你的「已配對」行，或你配不上 → Ctrl+C 重來 | — |
 | U5 🔐 | Android：安裝 Android platform-tools、開發人員選項 → USB 偵錯、在手機核准電腦的 RSA 指紋，再 `adb reverse` | 已授權 USB 偵錯的電腦可完全操控手機；期間手機上任何 App 都能連 `localhost:<埠>`（這條路沒有配對碼，只放測試世界） | `adb reverse --remove-all`；關閉 USB 偵錯；開發人員選項 → 撤銷 USB 偵錯授權 |
 | U6 | 結束：Ctrl+C。要徹底清除伺服器憑證：`python geometry-web/lan_tls.py --forget`（或刪 `%LOCALAPPDATA%\geometry-lan\`） | 不刪則葉私鑰留在你的使用者目錄直到過期 | 同左 |

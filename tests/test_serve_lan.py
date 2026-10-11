@@ -116,19 +116,35 @@ class LanCase(unittest.TestCase):
         self.mod.BRIDGE_WSL = False
         self.guard = self.mod.lan_guard
         self.logs = []
+        self.RealNative = self.mod.NativeContext
+        self.lan_bridges = []     # (NativeContext, responses queue, mock process) per paired device's own world
 
     def tearDown(self):
         self.responses.put(b"")
+        for _, responses, _ in self.lan_bridges:
+            responses.put(b"")
         self.mod.root_context.reader.join(timeout=2)
 
     # -- helpers
-    def start_lan(self, clock=None, ssl_context=None, ca_der=None, **overrides):
+    def lan_context(self, *_):
+        """A paired device's own world, backed by a mock bridge process (never a real executable)."""
+        responses = queue.Queue()
+        process = Mock()
+        process.stdin = io.BytesIO()
+        process.stdout.readline.side_effect = responses.get
+        with patch("subprocess.Popen", return_value=process):
+            native = self.RealNative(["fake-lan-bridge"])
+        self.lan_bridges.append((native, responses, process))
+        return native
+
+    def start_lan(self, clock=None, ssl_context=None, ca_der=None, context_factory=None, **overrides):
         port = free_port()
         overrides.setdefault("poll", 0.05)
         config = self.guard.LanConfig(ip=LAN_IP, port=port, **overrides)
         kwargs = {"clock": clock} if clock is not None else {}
         gate = self.guard.LanGate(config, log=self.logs.append, **kwargs)
-        server = self.mod.LanHTTPServer(("127.0.0.1", port), gate, ssl_context, ca_der)
+        server = self.mod.LanHTTPServer(("127.0.0.1", port), gate, ssl_context, ca_der,
+                                        context_factory or self.lan_context)
         mode = self.mod.LanMode(gate, server, log=self.logs.append).start()
         self.addCleanup(mode.stop)
         return gate, server, mode
@@ -512,7 +528,9 @@ class GateLayer(LanCase):
         port, origin = gate.config.port, gate.config.origin
         cookie, _ = self.paired_cookie(gate)
         body = b'{"cmd":"dump"}'
-        self.responses.put(b'{"ok":true,"dump":"control"}\n')
+        self.assertEqual(self.send(port, "GET", "/app.js", cookie=cookie).status, 200)   # starts this device's world
+        lan_native, lan_responses, lan_process = self.lan_bridges[0]
+        lan_responses.put(b'{"ok":true,"dump":"control"}\n')
         reply = self.send(port, "POST", "/api", origin=origin, cookie=cookie, body=body)
         self.assertEqual((reply.status, json.loads(reply.body)["dump"]), (200, "control"))
         self.assertEqual(self.send(port, "POST", "/api", cookie=cookie, body=body).status, 403,
@@ -536,7 +554,8 @@ class GateLayer(LanCase):
         for site in ("same-origin", "none"):
             reply = self.send(port, "GET", "/runtime", cookie=cookie, headers=[("Sec-Fetch-Site", site)])
             self.assertEqual(reply.status, 200, f"Sec-Fetch-Site {site} 是同源／使用者直接輸入，應放行")
-        self.assertEqual(self.process.stdin.getvalue(), b"dump\n", "被拒絕的請求碰到了 bridge")
+        self.assertEqual(lan_process.stdin.getvalue(), b"dump\n", "被拒絕的請求碰到了 bridge")
+        self.assertEqual(self.process.stdin.getvalue(), b"", "區網請求碰到了本機桌面的世界")
 
     # §4-8 ------------------------------------------------------------------
     def test_08_correct_flow_cookie_attributes_and_security_headers(self):
@@ -569,10 +588,13 @@ class GateLayer(LanCase):
                          "區網 GET / 被擋：LanHandler 沒有覆寫 S9 的 loopback Host 檢查")
         runtime = self.send(port, "GET", "/runtime", cookie=cookie)
         self.assertEqual(runtime.status, 200)
-        self.assertEqual(json.loads(runtime.body)["session"], self.mod.root_context.session)
-        self.responses.put(b'{"ok":true,"dump":"lan"}\n')
+        lan_native, lan_responses, lan_process = self.lan_bridges[0]
+        self.assertEqual(json.loads(runtime.body)["session"], lan_native.session)
+        self.assertEqual(runtime.headers["x-geometry-session"], lan_native.session)
+        lan_responses.put(b'{"ok":true,"dump":"lan"}\n')
         api = self.send(port, "POST", "/api", origin=origin, cookie=cookie, body=b'{"cmd":"dump"}')
         self.assertEqual(json.loads(api.body), {"ok": True, "dump": "lan"})
+        self.assertEqual(lan_process.stdin.getvalue(), b"dump\n")
         denied = self.send(port, "GET", "/runtime")
         for response in (page, reply, home, runtime, api, denied):
             self.assertEqual((response.headers.get("referrer-policy"), response.headers.get("x-content-type-options"),
@@ -711,6 +733,61 @@ class GateLayer(LanCase):
         self.assertEqual(reply.status, 200)
         self.assertLess(time.monotonic() - started, 2.0)
 
+    # §4-10b with real TLS sockets ------------------------------------------
+    # wrap_socket detaches the accepted socket before handshaking, so a deadline/stop that still holds the old
+    # object cannot cut a stalled handshake.  A certificate-less server context stalls exactly the same way
+    # (it is waiting for the ClientHello), so these run without the optional cryptography package.
+    def stalled_tls_client(self, port):
+        client = socket.create_connection(("127.0.0.1", port), timeout=5)
+        self.addCleanup(client.close)
+        client.sendall(b"\x16\x03\x01")      # half a TLS record header: the server handshake waits for the rest
+        return client
+
+    def closed_within(self, client, seconds):
+        client.settimeout(seconds)
+        try:
+            return client.recv(1) == b""
+        except (socket.timeout, TimeoutError):
+            return False
+        except OSError:
+            return True
+
+    def wait_active(self, server, count, seconds=3.0):
+        deadline = time.monotonic() + seconds
+        while len(server.active) != count and time.monotonic() < deadline:
+            time.sleep(0.02)
+        return len(server.active)
+
+    def test_10c_stalled_tls_handshake_is_cut_at_the_total_deadline(self):
+        gate, server, mode = self.start_lan(ssl_context=ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER), header_deadline=0.6)
+        started = time.monotonic()
+        client = self.stalled_tls_client(gate.config.port)
+        self.assertTrue(self.closed_within(client, 4.0), "交握停滯的 TLS 連線沒有被標頭總期限切斷")
+        self.assertLess(time.monotonic() - started, 3.0, "交握停滯的 TLS 連線沒有被標頭總期限切斷")
+        self.assertEqual(self.wait_active(server, 0), 0, "交握停滯的 TLS 連線沒有釋出名額")
+
+    def test_10c_stop_cuts_a_stalled_tls_handshake(self):
+        gate, server, mode = self.start_lan(ssl_context=ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER), header_deadline=30.0)
+        client = self.stalled_tls_client(gate.config.port)
+        self.assertEqual(self.wait_active(server, 1), 1)
+        time.sleep(0.3)                       # the worker is now inside the handshake
+        mode.stop("測試")
+        self.assertTrue(self.closed_within(client, 3.0), "關閉區網模式切不斷交握中的 TLS 連線")
+
+    def test_10c_stalled_tls_handshakes_cannot_keep_the_slots(self):
+        gate, server, mode = self.start_lan(ssl_context=ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER),
+                                            header_deadline=0.8, max_connections=4)
+        clients = [self.stalled_tls_client(gate.config.port) for _ in range(4)]
+        self.assertEqual(self.wait_active(server, 4), 4)
+        extra = self.stalled_tls_client(gate.config.port)
+        self.assertTrue(self.closed_within(extra, 1.0), "名額滿時第 5 條連線應被立即關閉")
+        for client in clients:
+            self.assertTrue(self.closed_within(client, 4.0), "交握停滯的 TLS 連線佔住名額，期限到了沒被切斷")
+        self.assertEqual(self.wait_active(server, 0), 0, "交握停滯的 TLS 連線沒有釋出名額")
+        late = socket.create_connection(("127.0.0.1", gate.config.port), timeout=5)
+        self.addCleanup(late.close)
+        self.assertEqual(self.wait_active(server, 1), 1, "交握停滯的 TLS 連線被切斷後名額沒有回來")
+
     # §4-11 -----------------------------------------------------------------
     def test_11_secrets_stay_out_of_logs_banner_feedback_and_pair_page(self):
         gate, server, mode = self.start_lan(pair_interval=0.0, devices=2)
@@ -747,6 +824,75 @@ class GateLayer(LanCase):
         self.assertNotRegex(page, r"(?i)\bsrc\s*=|<link|@import|url\(|https?:|<iframe|<img|<object|<embed")
         self.assertEqual(re.findall(r'href="([^"]*)"', page), ["/"])
         self.assertIn("history.replaceState(null, '', '/lan/pair')", page.split("fetch(")[0])
+
+
+    # Single-writer isolation (provisional decision after the 【dot】 review of #194) ---------------------
+    def pair_cookies(self, gate, count):
+        cookies = []
+        for code in gate.display_codes()[:count]:
+            reply = self.pair(gate, code)
+            self.assertEqual(reply.status, 204)
+            name, token, _ = parse_set_cookie(reply.headers["set-cookie"])
+            cookies.append(f"{name}={token}")
+        return cookies
+
+    def test_12_desktop_and_each_paired_device_have_separate_worlds(self):
+        loopback = self.start_loopback()
+        gate, server, mode = self.start_lan(devices=2, pair_interval=0.0)
+        port, origin = gate.config.port, gate.config.origin
+        cookies = self.pair_cookies(gate, 2)
+        sessions = [json.loads(self.send(port, "GET", "/runtime", cookie=cookie).body)["session"] for cookie in cookies]
+        root = self.mod.root_context.session
+        self.assertNotIn(root, sessions, "區網裝置與本機桌面共用同一個世界（root_context）")
+        self.assertNotEqual(sessions[0], sessions[1], "兩台已配對裝置共用同一個世界")
+        self.assertEqual([native.session for native, _, _ in self.lan_bridges], sessions)
+        self.responses.put(b'{"ok":true,"who":"desktop"}\n')
+        for index, (_, responses, _) in enumerate(self.lan_bridges):
+            responses.put(('{"ok":true,"who":"phone%d"}\n' % index).encode())
+        desk = self.send(loopback, "POST", "/api", host=f"127.0.0.1:{loopback}", body=b'{"cmd":"dump"}')
+        phone0 = self.send(port, "POST", "/api", origin=origin, cookie=cookies[0], body=b'{"cmd":"objects"}')
+        phone1 = self.send(port, "POST", "/api", origin=origin, cookie=cookies[1], body=b'{"cmd":"surfaces"}')
+        self.assertEqual([json.loads(r.body)["who"] for r in (desk, phone0, phone1)], ["desktop", "phone0", "phone1"])
+        self.assertEqual(self.process.stdin.getvalue(), b"dump\n", "區網裝置的指令送進了本機桌面的世界")
+        self.assertEqual([process.stdin.getvalue() for _, _, process in self.lan_bridges], [b"objects\n", b"surfaces\n"],
+                         "兩台已配對裝置共用同一個世界")
+        # Receipts are per world too: a lookup from one device cannot recover another device's command.
+        self.assertEqual(phone0.headers["x-geometry-session"], sessions[0])
+        self.assertEqual(phone1.headers["x-geometry-session"], sessions[1])
+
+    def test_12b_lan_cannot_reach_scenario_branches_or_the_desktop_world(self):
+        gate, server, mode = self.start_lan(pair_interval=0.0)
+        port, origin = gate.config.port, gate.config.origin
+        cookie, = self.pair_cookies(gate, 1)
+        self.assertEqual(self.send(port, "GET", "/runtime?scenario=abc", cookie=cookie).status, 410)
+        self.assertEqual(self.send(port, "POST", "/api", origin=origin, cookie=cookie, body=b'{"cmd":"dump"}',
+                                   headers=[("X-Geometry-Scenario", "abc")]).status, 410)
+        editor = self.send(port, "GET", "/scenarios/editor", cookie=cookie)
+        self.assertFalse(json.loads(editor.body)["ok"], "區網裝置不得建立或讀取主方案的分支編輯")
+        create = self.send(port, "POST", "/scenarios/editor", origin=origin, cookie=cookie, body=json.dumps(
+            {"action": "create", "requestId": str(__import__("uuid").uuid4()), "sequence": 1,
+             "session": self.mod.root_context.session}).encode())
+        self.assertFalse(json.loads(create.body)["ok"])
+        self.assertEqual(self.mod.scenario_contexts, {})
+        self.assertEqual(self.process.stdin.getvalue(), b"", "區網請求碰到了本機桌面的世界")
+
+    def test_12c_lan_worlds_close_with_lan_mode_and_spawn_failure_is_refused(self):
+        gate, server, mode = self.start_lan(pair_interval=0.0)
+        cookie, = self.pair_cookies(gate, 1)
+        self.assertEqual(self.send(gate.config.port, "GET", "/runtime", cookie=cookie).status, 200)
+        native, _, process = self.lan_bridges[0]
+        mode.stop("測試")
+        self.assertTrue(native.closed, "關閉區網模式時沒有關掉裝置的獨立世界")
+        process.terminate.assert_called_once_with()
+        self.assertFalse(self.mod.root_context.closed, "關閉區網模式不得關掉本機桌面的世界")
+
+        def broken():
+            raise OSError("bridge missing")
+        gate2, server2, mode2 = self.start_lan(pair_interval=0.0, context_factory=broken)
+        cookie2, = self.pair_cookies(gate2, 1)
+        reply = self.send(gate2.config.port, "GET", "/runtime", cookie=cookie2)
+        self.assertEqual(reply.status, 503, "裝置世界啟動失敗時不得退回本機桌面的世界")
+        self.assertNotIn("x-geometry-session", reply.headers)
 
 
 class TlsLayer(LanCase):
@@ -902,6 +1048,7 @@ class TlsLayer(LanCase):
                 patch.object(self.guard, "validate", return_value=config), \
                 patch.object(self.mod, "LanHTTPServer", side_effect=loopback_lan_server), \
                 patch.object(self.mod, "lan_prepare", side_effect=prepare), \
+                patch.object(self.mod, "NativeContext", side_effect=self.lan_context), \
                 contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
             worker = threading.Thread(target=lambda: result.setdefault("code", self.mod.lan_main(
                 ["--lan", LAN_IP])), daemon=True)

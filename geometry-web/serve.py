@@ -729,10 +729,15 @@ class LanHTTPServer(PreviewHTTPServer):
     """區網監聽器：連線數非阻塞上限、標頭總期限巡檢、TLS 交握在工作執行緒（DESIGN §2.4）。"""
     block_on_close = False
 
-    def __init__(self, address, gate, ssl_context=None, ca_der=None):
+    def __init__(self, address, gate, ssl_context=None, ca_der=None, context_factory=None):
         self.gate = gate
         self.ssl_context = ssl_context
         self.ca_der = ca_der
+        # 每台已配對裝置一個獨立的原生世界（NativeContext）：不與本機桌面（root_context）或其他裝置共用，
+        # 所以多端不會互相改到對方的 World／undo／載入狀態（暫定裁決，見 IMPL-NOTES）。
+        self.context_factory = context_factory or (lambda: NativeContext(BRIDGE_CMD))
+        self.contexts = {}     # session 的 SHA-256 → NativeContext；第一個通過守門的應用請求才建立
+        self.context_lock = threading.Lock()
         self.slots = threading.BoundedSemaphore(gate.config.max_connections)
         self.pending = {}      # 原始連線 → [目前的 socket 物件, 標頭期限]；標頭（配對 POST 含 body）讀完即移出
         self.active = {}       # 原始連線 → 目前的 socket 物件；關閉區網模式時一併切斷
@@ -771,26 +776,44 @@ class LanHTTPServer(PreviewHTTPServer):
             self.slots.release()
 
     def finish_request(self, request, client_address):
-        connection = request
-        if self.ssl_context is not None:
-            # TLS 交握在工作執行緒，受標頭總期限約束；交握失敗就丟例外結束這條連線。
-            connection = self.ssl_context.wrap_socket(request, server_side=True)
+        if self.ssl_context is None:
+            self.RequestHandlerClass(request, client_address, self)
+            return
+        # wrap_socket 會先 detach 原 socket（fd 變 -1）。所以先包成「尚未交握」的 TLS socket（不做任何 I/O），
+        # 立刻換進期限表與連線表，巡檢與 stop() 才切得到交握中的 fd；再以剩餘期限為逾時交握
+        # （CPython 對整個 do_handshake 套用同一個期限，慢慢送位元組也延不了）。
+        connection = self.ssl_context.wrap_socket(request, server_side=True, do_handshake_on_connect=False)
+        try:
             with self.table_lock:
-                expired = request not in self.pending
-                if not expired:
-                    self.pending[request][0] = connection
+                entry = self.pending.get(request)
+                if entry is not None:
+                    entry[0] = connection
                 if request in self.active:
                     self.active[request] = connection
-            if expired:
-                _cut(connection)
-                connection.close()
-                return
-        try:
+            if entry is None or self.stopped.is_set():
+                return     # 期限已到或區網模式已關閉：不交握
+            connection.settimeout(max(0.01, entry[1] - time.monotonic()))
+            connection.do_handshake()
             self.RequestHandlerClass(connection, client_address, self)
         finally:
-            if connection is not request:
-                _cut(connection)
-                connection.close()
+            _cut(connection)
+            connection.close()
+
+    def context_for(self, session):
+        """該 session 專屬的原生世界；第一次使用才啟動 bridge。區網模式已關閉時拒絕。"""
+        with self.context_lock:
+            if self.stopped.is_set():
+                raise RuntimeError("區網測試模式已關閉")
+            native = self.contexts.get(session)
+            if native is None:
+                native = self.contexts[session] = self.context_factory()
+            return native
+
+    def close_contexts(self):
+        with self.context_lock:
+            contexts, self.contexts = list(self.contexts.values()), {}
+        for native in contexts:
+            native.close()
 
     def headers_complete(self):
         """移出標頭期限表；回傳 False 表示這條連線已被期限切斷。"""
@@ -825,6 +848,7 @@ class LanHandler(Handler):
     """區網請求：每個請求先經 LanGate.check()，通過才進既有 do_GET／do_POST。"""
     timeout = 60           # 標頭之後（只剩已驗證者）每次讀取的上限
     lan_route = None
+    lan_session = None
     lan_headers_done = False
     lan_linger = False     # 送出錯誤回應後要 lingering close
 
@@ -848,6 +872,21 @@ class LanHandler(Handler):
             self.close_connection = True
             return False
         self.lan_route = route
+        if route == "app":   # 守門已確認恰有一個有效 cookie
+            self.lan_session = lan_guard.session_digest(lan_guard.cookie_values(self.headers)[0])
+        return True
+
+    def _select_native(self, query_context=None):
+        # 區網裝置一律用自己的原生世界：不碰本機桌面的 root_context、不碰其他裝置，也不支援方案編輯分支
+        # （X-Geometry-Scenario／?scenario= 會指向 root 底下的分支世界）。
+        if self.headers.get("X-Geometry-Scenario") or query_context is not None:
+            self._lan_reply(410)
+            return False
+        try:
+            request_context.native = self.server.context_for(self.lan_session)
+        except Exception:
+            self._lan_reply(503)
+            return False
         return True
 
     def _lan_finish_headers(self):
@@ -956,6 +995,7 @@ class LanMode:
         self.server.stop()
         self.server.shutdown()
         self.server.server_close()
+        self.server.close_contexts()
         self.log(f"區網測試模式已關閉（{reason}）；本機 http://localhost:{self.gate.config.port}/ 照常")
         self.closed.set()
 

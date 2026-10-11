@@ -3,7 +3,8 @@
 
 `cryptography` 惰性載入：缺套件時 `--lan` 以 exit 2 拒絕，絕不退回 http（不新增 CI 相依）。
 CA：ECDSA P-256、critical BasicConstraints(ca, pathLen 0)、critical KeyUsage(keyCertSign, cRLSign)、
-critical NameConstraints(只許 <ip>/32)；CA 私鑰從不序列化，簽完葉憑證即解除參照。
+critical NameConstraints(permitted iPAddress <ip>/32——依 RFC 5280 只約束 IP 名稱、不約束 dNSName，
+是否再加 DNS 約束待安全裁決)；CA 私鑰從不序列化，簽完葉憑證即解除參照（真根的安全性靠這一點）。
 葉憑證：SAN 只有 IPAddress(<ip>)、EKU serverAuth、KeyUsage(digitalSignature)、ca=False，效期 ≤ CA（≤7 天）。
 存放 %LOCALAPPDATA%\\geometry-lan\\<ip>-<port>\\（不在 repository 內、不另動 ACL）。
 

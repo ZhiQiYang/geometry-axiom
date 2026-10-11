@@ -267,14 +267,24 @@ ALLOWED_SKIPS = [
      'reason': 'requires POSIX full device',
      'platforms': ('nt',),
      'why': '/dev/full 是 POSIX 裝置，Windows 上不存在'},
-] + [
     # W-B LAN test mode: the TLS layer needs the optional `cryptography` package, which is deliberately NOT a CI
-    # dependency (DESIGN r2 M6).  The gate layer of the same file always runs without it.
-    {'suite': 'py:test_serve_lan', 'test': 'test_serve_lan.TlsLayer.' + name,
-     'reason': 'requires cryptography', 'platforms': ('posix', 'nt'),
-     'why': 'cryptography 不是 CI 相依；缺套件時 TLS 層 expected-skip，守門層照跑；執行期缺套件則 --lan exit 2'}
-    for name in ('test_10a_tls_certificate_properties_and_storage', 'test_10a_tls_handshake_trust_and_protocol',
-                 'test_11b_lan_main_composition_never_prints_codes_or_cookies')
+    # dependency (DESIGN r2 M6); the gate layer of the same file always runs without it.  Keep these literal:
+    # external receipt tooling reads ALLOWED_SKIPS with ast.literal_eval.
+    {'suite': 'py:test_serve_lan',
+     'test': 'test_serve_lan.TlsLayer.test_10a_tls_certificate_properties_and_storage',
+     'reason': 'requires cryptography',
+     'platforms': ('posix', 'nt'),
+     'why': 'cryptography 不是 CI 相依；缺套件時 TLS 層 expected-skip，守門層照跑；執行期缺套件則 --lan exit 2'},
+    {'suite': 'py:test_serve_lan',
+     'test': 'test_serve_lan.TlsLayer.test_10a_tls_handshake_trust_and_protocol',
+     'reason': 'requires cryptography',
+     'platforms': ('posix', 'nt'),
+     'why': 'cryptography 不是 CI 相依；缺套件時 TLS 層 expected-skip，守門層照跑；執行期缺套件則 --lan exit 2'},
+    {'suite': 'py:test_serve_lan',
+     'test': 'test_serve_lan.TlsLayer.test_11b_lan_main_composition_never_prints_codes_or_cookies',
+     'reason': 'requires cryptography',
+     'platforms': ('posix', 'nt'),
+     'why': 'cryptography 不是 CI 相依；缺套件時 TLS 層 expected-skip，守門層照跑；執行期缺套件則 --lan exit 2'},
 ]
 SAC_FACES = ['橋接器連線中斷', 'WinError 4551', 'BASE_COMPILER', 'UNSUPPORTED', '應用程式控制原則', 'Smart App Control']
 UNIT = {'integrity': 'C 檢查點', 'run_tests': '場景', 'unittest': 'test', 'node-test': 'node test', 'node-canvas': '斷言'}
