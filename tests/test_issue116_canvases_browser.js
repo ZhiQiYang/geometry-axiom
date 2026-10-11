@@ -13,7 +13,17 @@
  * Requires an explicitly isolated service and TEMP feedback/evidence directories (same rules as
  * tests/test_issue116_browser.js). NODE_PATH may point to an existing Playwright install.
  * GEOMETRY_CHROME / GEOMETRY_CHROME_FLAGS select the browser. GEOMETRY_K4_KEEP_GOING=1 records every
- * failing check instead of stopping at the first one (used for mutation runs).
+ * failing BEHAVIOUR check instead of stopping at the first one (used for mutation runs); identity / isolation
+ * preconditions (runtime fresh, runtime root, page served by this runtime) are always fatal and run before any
+ * fixture or command. Both phases settle through settle(), so any recorded failure exits non-zero.
+ * GEOMETRY_K4_SELFTEST=fail-check|stale-runtime injects a deliberate failure to prove the exit-code and
+ * fail-fast paths (the runner asserts a non-zero exit).
+ *
+ * Scope of the stale-node claim: a1/b3 prove that, within ONE open, a context change makes the shell refuse to run
+ * a saved node (current() re-check before every item). They do NOT prove anything for a node saved from an EARLIER
+ * open of the same menu: its listener resolves against whatever state is current when it fires (inherited from the
+ * pre-extraction menu; the node is detached by hide() so no user path reaches it). Do not read this gate as a
+ * complete stale-node guarantee.
  */
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),os=require('node:os'),crypto=require('node:crypto');
@@ -26,15 +36,22 @@ fs.mkdirSync(evidence,{recursive:true});
 const characterizeOnly=process.env.GEOMETRY_K4_PHASE==='characterize', keepGoing=process.env.GEOMETRY_K4_KEEP_GOING==='1';
 let checks=0;const errors=[],records=[],failures=[];
 function show(v){try{return JSON.stringify(v)?.slice(0,400);}catch{return String(v);}}
-function check(actual,expected,label){
+const selftest=process.env.GEOMETRY_K4_SELFTEST||'';
+function check(actual,expected,label,opts={}){
   try{assert.deepEqual(actual,expected);}
   catch{
     const message='FAIL '+label+' | actual='+show(actual)+' expected='+show(expected);
     console.log(message);failures.push(message);
-    if(!keepGoing)throw Error(message);
+    if(!keepGoing||opts.fatal)throw Error(message);
     return;
   }
   checks++;console.log('PASS '+label);records.push(label);
+}
+// One settlement for every phase: writes the result file and throws if ANY check failed, so a keep-going run can never exit 0 with a recorded failure.
+function settle(phase,extra={}){
+  fs.writeFileSync(path.join(evidence,'result.json'),JSON.stringify({phase,status:failures.length?'failed':'passed',checks,failures,records,errors,selftest:selftest||null,commandsSent:cmds.length,...extra},null,2));
+  console.log(JSON.stringify({phase,checks,failures:failures.length,...extra}));
+  if(failures.length)throw Error(failures.length+' check(s) failed:\n'+failures.join('\n'));
 }
 const cmds=[];
 // The app's own definition of "this command can change the world" (apiRequest in app.js).
@@ -67,8 +84,9 @@ async function snapshot(page,label,store){
 }
 async function main(){
   const runtime=await fetch(new URL('/runtime',url)).then(r=>r.json());
-  check(runtime.fresh,true,'runtime fresh before the run');
-  check(path.resolve(runtime.root),path.resolve(__dirname,'..'),'runtime belongs to this worktree');
+  // Identity / isolation preconditions: fatal in every mode. Nothing below may reset or write a world before they hold.
+  check(runtime.fresh,true,'runtime fresh before the run',{fatal:true});
+  check(path.resolve(runtime.root),selftest==='stale-runtime'?path.resolve(os.tmpdir(),'k4-selftest-not-this-worktree'):path.resolve(__dirname,'..'),'runtime belongs to this worktree',{fatal:true});
   const executablePath=process.env.GEOMETRY_CHROME;
   const args=(process.env.GEOMETRY_CHROME_FLAGS||'').split(/\s+/).filter(Boolean);
   const browser=await chromium.launch({headless:true,...(executablePath?{executablePath}:{channel:'chrome'}),...(args.length?{args}:{})});
@@ -79,6 +97,8 @@ async function main(){
   page.on('request',r=>{if(r.method()==='POST'&&new URL(r.url()).pathname==='/api'){try{cmds.push(JSON.parse(r.postData()).cmd);}catch{}}});
   try{
     await page.goto(url);await page.waitForFunction(()=>window.FaceContextMenu && connection.phase==='ready');
+    check(await page.evaluate(()=>document.querySelector('meta[name="geometry-runtime-version"]')?.content||''),runtime.version,'the loaded page was served by this runtime (page meta version = /runtime version)',{fatal:true});
+    if(selftest==='fail-check')check(1,2,'selftest: deliberate failing check (must make the run exit non-zero in every phase)');
 
     // ---------------------------------------------------------------- Segment A: face menu characterization
     check(await page.evaluate(()=>Object.keys(Object.getOwnPropertyDescriptors(FaceContextMenu)).sort()),['current','hide','open','position','show','stamp','sync'],
@@ -170,8 +190,7 @@ async function main(){
 
     if(characterizeOnly){
       check(errors,[],'no app page or console errors (characterize phase)');
-      fs.writeFileSync(path.join(evidence,'result.json'),JSON.stringify({phase:'characterize',checks,records,failures,errors,snapshotHash,runtime:runtime.version},null,2));
-      console.log(JSON.stringify({phase:'characterize',checks,failures:failures.length,snapshotHash}));
+      settle('characterize',{snapshotHash,runtime:runtime.version});
       return;
     }
 
@@ -186,7 +205,7 @@ async function main(){
         const vp=document.createElement('div');vp.id=id+'Viewport';vp.tabIndex=-1;
         vp.style.cssText='position:fixed;left:40px;top:40px;width:900px;height:600px;pointer-events:none';document.body.append(vp);
         const menu=document.createElement('div');menu.id=id+'Menu';menu.setAttribute('role','menu');menu.hidden=true;menu.style.cssText='position:fixed;z-index:2147483000;background:#fff';document.body.append(menu);
-        const ctx={n:1,navReason:'',worldReason:'',refuse:false,log:[],throwOn:null,shell:null};
+        const ctx={n:1,navReason:'',worldReason:'',refuse:false,log:[],throwOn:null,shell:null,defer:false,pending:null};
         const it=(act,label,extra={})=>({act,label,iconName:null,reason:'',...extra});
         const tiles=[it('v1','檢視項',{level:'view'})],
           groups=[[it('n1','導覽項',{level:'nav'}),it('w1','寫入項')],[it('sub1','子選單',{sub:true})]],
@@ -198,7 +217,11 @@ async function main(){
           guards:{nav:()=>ctx.navReason,world:()=>ctx.worldReason},
           begin:(x,y)=>ctx.refuse?null:{x,y},
           // like the face adapter: the effect closes the menu itself (shell.hide) before it acts
-          execute:async a=>{if(ctx.throwOn===a.act)throw Error('boom '+a.act);ctx.log.push(a.act);ctx.shell.hide();},
+          execute:async a=>{
+            if(ctx.throwOn===a.act)throw Error('boom '+a.act);
+            if(ctx.defer){ctx.log.push('start:'+a.act);await new Promise((res,rej)=>{ctx.pending={res,rej};});ctx.log.push('end:'+a.act);return;}
+            ctx.log.push(a.act);ctx.shell.hide();
+          },
           related:node=>!!opts.related?.(node),outsidePointerClose:!!opts.outsidePointerClose,onError:e=>ctx.log.push('error:'+e.message),
         });
         ctx.shell=shell;
@@ -301,15 +324,59 @@ async function main(){
     check(await page.evaluate(()=>window.__k4.a.shell.isOpen),false,'b6 pointerdown outside closes a menu that opted in');
     check(await page.evaluate(()=>{const {b}=window.__k4;b.shell.open(300,200);document.body.dispatchEvent(new PointerEvent('pointerdown',{bubbles:true,cancelable:true}));return b.shell.isOpen;}),true,
       'b6 a menu that did not opt in ignores outside pointerdown (the face editor closes itself in app.js)');
-    // b7 destroy removes the shell's listeners.
+    // b7 destroy() closes the menu, releases the instance AND removes every listener it added. The listener part is checked by
+    // accounting: record each add/removeEventListener between create() and destroy(); a state-only check (isOpen=false) would pass
+    // even if no listener were ever removed.
     check(await page.evaluate(()=>{const {b}=window.__k4;b.shell.hide();b.shell.open(300,200);b.shell.destroy();
       document.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true}));return[b.shell.isOpen,ContextMenuShell.active];}),[false,null],'b7 destroy() closes the menu and releases the instance');
+    check(await page.evaluate(()=>{
+      const adds=[],removes=[],cap=o=>typeof o==='boolean'?o:!!(o&&o.capture);
+      const proto={};
+      for(const [name,target] of [['document',document],['window',window]]){
+        const a=target.addEventListener,r=target.removeEventListener;proto[name]={a,r};
+        target.addEventListener=function(type,fn,o){adds.push([name,type,fn,cap(o)]);return a.call(this,type,fn,o);};
+        target.removeEventListener=function(type,fn,o){removes.push([name,type,fn,cap(o)]);return r.call(this,type,fn,o);};
+      }
+      let probe;
+      try{
+        probe=window.__k4.mk('k4c',{outsidePointerClose:true});probe.shell.open(300,200);probe.shell.destroy();
+      }finally{
+        for(const [name,target] of [['document',document],['window',window]]){target.addEventListener=proto[name].a;target.removeEventListener=proto[name].r;}
+        for(const id of ['k4cViewport','k4cMenu'])document.getElementById(id)?.remove();
+      }
+      const same=(x,y)=>x[0]===y[0]&&x[1]===y[1]&&x[2]===y[2]&&x[3]===y[3];
+      const leaked=adds.filter(x=>!removes.some(y=>same(x,y))).map(x=>x[0]+':'+x[1]+(x[3]?'(capture)':''));
+      return{added:adds.map(x=>x[0]+':'+x[1]+(x[3]?'(capture)':'')).sort(),leaked};
+    }),{added:['document:focusin','document:keydown(capture)','document:pointerdown(capture)','window:resize'],leaked:[]},
+      'b7 destroy() removes every listener the shell added (accounting control: 4 added, 0 leaked; not vacuous)');
+
+    // b8 a late reply (resolve or reject of an adapter effect) after the menu was closed and reopened must not touch the new menu.
+    // The shell does nothing after the adapter's promise settles except route a rejection to onError.
+    await page.evaluate(()=>{window.__k4.a.shell.destroy();for(const id of ['k4aViewport','k4aMenu'])document.getElementById(id)?.remove();window.__k4.a=window.__k4.mk('k4a',{});});
+    for(const mode of ['resolve','reject']){
+      check(await page.evaluate(async mode=>{
+        const {a}=window.__k4;a.ctx.log.length=0;a.ctx.defer=true;a.shell.open(300,200);
+        document.querySelector('#k4aMenu [data-cm-act="w1"]').click();
+        await new Promise(r=>setTimeout(r,20));
+        const started=a.ctx.log.slice();
+        a.shell.hide();a.shell.open(300,200);const reopened=a.shell.state;
+        if(mode==='resolve')a.ctx.pending.res();else a.ctx.pending.rej(Error('late'));
+        await new Promise(r=>setTimeout(r,60));
+        const out={started,after:a.ctx.log.slice(),stillOpen:a.shell.isOpen,sameState:a.shell.state===reopened,menuHidden:a.menu.hidden};
+        a.ctx.defer=false;a.shell.hide();return out;
+      },mode),{started:['start:w1'],after:mode==='resolve'?['start:w1','end:w1']:['start:w1','error:late'],stillOpen:true,sameState:true,menuHidden:false},
+        `b8 LATE ${mode.toUpperCase()} TOUCHED THE REOPENED MENU: a pending effect settling after close/reopen must leave the new menu open and its state untouched`);
+    }
     await page.evaluate(()=>{for(const n of ['k4a','k4b']){document.getElementById(n+'Viewport')?.remove();document.getElementById(n+'Menu')?.remove();}try{window.__k4.a.shell.destroy();}catch{}delete window.__k4;});
 
     check(errors,[],'no app page or console errors during the shell gate');
-    fs.writeFileSync(path.join(evidence,'result.json'),JSON.stringify({phase:'full',checks,records,failures,errors,snapshotHash,runtime:runtime.version},null,2));
-    console.log(JSON.stringify({phase:'full',checks,failures:failures.length,snapshotHash}));
+    settle('full',{snapshotHash,runtime:runtime.version});
   }finally{await browser.close();}
-  if(failures.length)throw Error(failures.length+' check(s) failed:\n'+failures.join('\n'));
+  if(failures.length)throw Error(failures.length+' check(s) failed (post-settle guard)');
 }
-main().catch(error=>{console.error(error);process.exitCode=1;});
+main().catch(error=>{
+  console.error(error);
+  console.log('ABORT commandsSent='+cmds.length+' failures='+failures.length);
+  try{fs.writeFileSync(path.join(evidence,'result.json'),JSON.stringify({status:'aborted',error:String(error&&error.message||error).slice(0,2000),checks,failures,selftest:selftest||null,commandsSent:cmds.length},null,2));}catch{}
+  process.exitCode=1;
+});
