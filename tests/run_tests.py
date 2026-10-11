@@ -23,6 +23,12 @@ ROOT = HERE.parent
 
 # Revised acceptance oracle: 2026-09-18 D7/I8a/I12/R2/R4.
 TESTS = [
+ {'scene': '_ax_r7_rectangle_plus_line.scene', 'expect': 'reject', 'error': 'R7: 投影接觸非單一矩形'},
+ {'scene': '_ax_r7_strip_plus_line.scene', 'expect': 'reject', 'error': 'R7: 投影接觸非單一矩形'},
+ {'scene': '_ax_r7_rectangle_plus_point.scene', 'expect': 'reject', 'error': 'R7: 投影接觸非單一矩形'},
+ {'scene': '_ax_r12_uncut_complex_strip.scene', 'expect': 'accept'},
+ {'scene': '_ax_r15_uncut_strip_missing_item.scene', 'expect': 'reject', 'error': '不存在'},
+ {'scene': '_ax_r14_uncut_strip_multiple_pieces.scene', 'expect': 'reject', 'error': '橫跨拆分線'},
  {'scene': '_ax_r7_notch_disconnected.scene', 'expect': 'reject', 'error': 'R7: 投影接觸非單一矩形'},
  {'scene': '_ax_r7_ridge_crossing.scene', 'expect': 'accept',
   'contains': ['(60, 70)', '(40, 80)'], 'not_contains': ['孔 #0']},

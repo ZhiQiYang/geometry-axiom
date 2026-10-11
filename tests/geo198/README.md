@@ -55,7 +55,8 @@
 M61 忽略 slab 的多段交集，被 A 場景殺死；M62 恢復四角全在外快退，被 B 柱及樑場景殺死。
 完整帳本 52 筆：44 killed、1 crashed、4 equivalent、3 retired；survived/invalid/stale/blocked=0。
 crashed 沒有冒充 killed；每筆依既有工具保留 baseline／attempt／source／oracle／binary 身分。
-四個 worker 使用不同 cache、結果檔與不重疊 mutation id，全部真編譯、真執行，之後才合併帳本。
+該次四個 worker 使用不同 cache、結果檔與不重疊 mutation id；49 個非 retired mutant
+真編譯、真執行後合併，M35／M51／M55 的 3 筆退休紀錄只驗證理由，未編譯或執行。
 `initial-mutations/` 是混合案例收斂前的批次；合併裁判不得把它替代最終 `mutations/` 或 versioned 帳本。
 
 ## 重現（repo 根目錄；Linux，不是 WSL）
@@ -84,3 +85,26 @@ python3 tests/run_all.py --build
 本次用了 `--update-expected`，讓完整發現數確認新增檢查後才更新數量表；不削減斷言或豁免失敗。
 真瀏覽器／正式 owner 整合、Windows GDI、正式七 job WSL 收據均未驗。
 CI 受帳號計費阻擋;正式合併裁判由本機 WSL 收據提供。
+
+## 後續 B1／M1 審查修正
+
+以上數量與提交是歷史結果。最新收據另存 `../evidence/geo198/review-b1-m1/`。
+
+開 slab 找出正面積矩形後，還會逐一檢查原始足跡與閉合輪廓邊的接觸；
+矩形以外的孤立線或點一律判 R7。柱與 `cut-strip` 的整筆交易都保留 dump，
+包含先切分再遇到退化項的 rollback；新增 stepped polygon 釘住孤立點。
+獨立佔用格 oracle 也增加閉合集合的邊／點接觸檢查。
+舊 1 mm 釘點的寬足跡原來包含矩形以外的底邊接觸，保留原輸入並改驗 R7 拒絕；
+另加真正只有 `[0,1]×[0,1]` 的正例，兩種 winding 都驗，不刪舊輸入。
+
+R12 的未裁切 STRIP 只檢查閉合接觸是否存在，不要求接觸可表示成切削矩形。
+它仍須歸屬唯一面片（R14），也繼續處理後续合法或不存在項（R15），
+沒有整筆交易提早成功。`cut-strip` 繼續使用完整單矩形判定。
+新增 M63 去掉孤立接觸檢查、M64 恢復未裁切 strip 的過度拒絕、M65 提早成功跳過後續驗證。
+本次沒有範圍外產品改動，沒有新 UI 入口。
+
+原有 `review-dc4e929` 的 space 13 pass／2 fail 完整保留；其後未修改的原 harness
+在 `space-diagnosis-4ec0132` 為 228/228、所有群組完成、無 filter。
+該歷史 metadata 的 exit_code 由結果推定，僅支持「log／results 全綠，退出碼符合 runner 邏輯」，
+不當作獨立實際退出碼收據；本次 capture.py 直接保存子行程 returncode。
+這些 Linux 結果不豁免 reader 5 紅，也不替代正典 owner PR #192 整合後最終 head 的正式七 job。

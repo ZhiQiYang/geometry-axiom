@@ -299,6 +299,7 @@ static void test_poly_contains_rect_matches_cell_oracle(void)
 {
     long polygons[8] = {0}, wrong[8] = {0};
     long contact_cases[8] = {0}, wrong_contact[8] = {0};
+    long wrong_closed_contact[8] = {0};
     for (unsigned set = 1; set < (1u << (ORACLE_N * ORACLE_N)); ++set) {
         for (int variant = 0; variant < 8; ++variant) {
             PolygonLoop2 loop = {0};
@@ -332,6 +333,22 @@ static void test_poly_contains_rect_matches_cell_oracle(void)
                     (rectangle && (contact<=0 || a!=coord_max(l,xmin*ORACLE_SCALE) ||
                      b!=coord_max(bottom,ymin*ORACLE_SCALE) || c!=coord_min(r,(xmax+1)*ORACLE_SCALE) ||
                      d!=coord_min(top,(ymax+1)*ORACLE_SCALE)))) ++wrong_contact[variant];
+                /* Independent closed union of occupied cells, including cells
+                 * outside the query that meet it only at an edge or vertex. */
+                l=u0*ORACLE_SCALE; r=u1*ORACLE_SCALE;
+                bottom=v0*ORACLE_SCALE; top=v1*ORACLE_SCALE;
+                int closed=classify_rect_outline(&loop,l,bottom,r,top,&cls,&a,&b,&c,&d);
+                bool touches=false, extra=false;
+                for (int i=0; i<ORACLE_N; ++i) for (int j=0; j<ORACLE_N; ++j) {
+                    if (!oracle_cell(set,i,j)) continue;
+                    Coord x0=coord_max(l,i*ORACLE_SCALE), x1=coord_min(r,(i+1)*ORACLE_SCALE);
+                    Coord y0=coord_max(bottom,j*ORACLE_SCALE), y1=coord_min(top,(j+1)*ORACLE_SCALE);
+                    if (x0>x1 || y0>y1) continue;
+                    touches=true;
+                    if (closed>0 && (x0<a || x1>c || y0<b || y1>d)) extra=true;
+                }
+                if ((touches && closed==0) || (closed>0 && extra) ||
+                    (!touches && closed!=0)) ++wrong_closed_contact[variant];
             }
         }
     }
@@ -340,6 +357,7 @@ static void test_poly_contains_rect_matches_cell_oracle(void)
         CHECK(wrong[variant] == 0);
         CHECK(contact_cases[variant] > 100000);
         CHECK(wrong_contact[variant] == 0);
+        CHECK(wrong_closed_contact[variant] == 0);
     }
 }
 
@@ -381,13 +399,28 @@ static void test_rect_outline_counterexamples(void)
             SurfacePoint2 t=small.v[i]; small.v[i]=small.v[small.count-1-i];
             small.v[small.count-1-i]=t;
         }
+        /* The old wide footprint also touches the base at v=0 outside the
+         * ridge rectangle: it is another rectangle-plus-line case, not a
+         * valid positive control. Keep it as a rejection and add a true one. */
         CHECK(classify_rect_outline(&small, -1,0,2,1,
+            &cls, &u0,&v0,&u1,&v1) < 0);
+        CHECK(classify_rect_outline(&small, 0,0,1,1,
             &cls, &u0,&v0,&u1,&v1) > 0);
         CHECK(cls == OBSTACLE_SPLIT);
         CHECK(u0 == 0 && v0 == 0 && u1 == 1 && v1 == 1);
     }
     CHECK(classify_rect_outline(&notch, 100,100,110,110,
         &cls, &u0,&v0,&u1,&v1) < 0); /* R7: isolated point tangency. */
+    int rectangle_plus_isolated_line = classify_rect_outline(&notch, 30,50,60,80,
+        &cls, &u0,&v0,&u1,&v1);
+    CHECK(rectangle_plus_isolated_line < 0);
+    PolygonLoop2 stepped = { .count = 10, .v = {
+        {0,0},{100,0},{100,100},{60,100},{60,80},
+        {80,80},{80,40},{40,40},{40,100},{0,100}
+    }};
+    int rectangle_plus_isolated_point = classify_rect_outline(&stepped, 30,50,60,80,
+        &cls, &u0,&v0,&u1,&v1);
+    CHECK(rectangle_plus_isolated_point < 0);
 }
 
 int main(void)

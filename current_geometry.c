@@ -10525,6 +10525,21 @@ static void proj_sort_coords(Coord *values, size_t n)
     }
 }
 
+/* Closed contact suffices for R14 ownership of an R12 uncut strip. It need
+ * not be representable as a single cutting rectangle. */
+static bool proj_rect_outline_touches(const PolygonLoop2 *loop,
+    Coord u0, Coord v0, Coord u1, Coord v1)
+{
+    if (poly_contains_point(loop, (SurfacePoint2){u0,v0})) return true;
+    for (size_t i = 0; i < loop->count; ++i) {
+        SurfacePoint2 a = loop->v[i], b = loop->v[(i+1)%loop->count];
+        if (coord_max(coord_min(a.u,b.u),u0) <= coord_min(coord_max(a.u,b.u),u1) &&
+            coord_max(coord_min(a.v,b.v),v0) <= coord_min(coord_max(a.v,b.v),v1))
+            return true;
+    }
+    return false;
+}
+
 /* 0 = disjoint; 1 = exact single rectangular contact; -1 = R7 degeneration.
  * Every polygon vertex splits the v-axis into topology-constant open slabs.
  * Pairing sorted vertical-edge crossings gives the entire interior in a slab;
@@ -10585,6 +10600,18 @@ static int classify_rect_outline(
                 return -1;
         }
         return 0;
+    }
+
+    /* Open slabs omit zero-area components. Every closed edge contact with
+     * the original footprint must also lie in the positive-area rectangle. */
+    for (size_t i = 0; i < loop->count; ++i) {
+        SurfacePoint2 a = loop->v[i], b = loop->v[(i+1)%loop->count];
+        Coord l = coord_max(coord_min(a.u,b.u),in_u0);
+        Coord r = coord_min(coord_max(a.u,b.u),in_u1);
+        Coord bottom = coord_max(coord_min(a.v,b.v),in_v0);
+        Coord top = coord_min(coord_max(a.v,b.v),in_v1);
+        if (l <= r && bottom <= top &&
+                (l < u0 || r > u1 || bottom < v0 || top > v1)) return -1;
     }
 
     int flush = 0;
@@ -11598,10 +11625,18 @@ static bool apply_applyproj_line(
             for (size_t j = 0; j < np; ++j) {
                 ObstacleClass pc;
                 Coord t0, t1, t2, t3;
-                int contact = classify_rect_outline(&pb[j]->outline,
-                        items[i].u_lo, items[i].v_lo,
-                        items[i].u_hi, items[i].v_hi,
-                        &pc, &t0, &t1, &t2, &t3);
+                int contact;
+                if (items[i].cls == OBSTACLE_STRIP && !cut_strip) {
+                    /* R12 skips cutting, not R14 ownership or later R15 items. */
+                    contact = proj_rect_outline_touches(&pb[j]->outline,
+                            items[i].u_lo, items[i].v_lo,
+                            items[i].u_hi, items[i].v_hi) ? 1 : 0;
+                } else {
+                    contact = classify_rect_outline(&pb[j]->outline,
+                            items[i].u_lo, items[i].v_lo,
+                            items[i].u_hi, items[i].v_hi,
+                            &pc, &t0, &t1, &t2, &t3);
+                }
                 if (contact < 0) {
                     *world = backup;
                     scene_error(path, line_no, RECT_CONTACT_ERROR);

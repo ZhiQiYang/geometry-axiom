@@ -276,6 +276,15 @@ MUTANTS = [
     dict(id="M62", desc="R7/#198 B：恢復四角全在外就丟棄的錯誤快退",
          old="    Coord cuts[POLY_MAX_VERTICES + 2] = { in_v0, in_v1 };",
          new="    SurfacePoint2 legacy_corners[4] = {{in_u0,in_v0},{in_u1,in_v0},{in_u1,in_v1},{in_u0,in_v1}};\n    int legacy_inside = 0;\n    for (int i=0; i<4; ++i) legacy_inside += poly_contains_point(loop, legacy_corners[i]);\n    if (!legacy_inside) return 0;\n    Coord cuts[POLY_MAX_VERTICES + 2] = { in_v0, in_v1 };"),
+    dict(id="M63", desc="R7/#202：丟棄正面積矩形外的孤立線／點接觸",
+         old="                (l < u0 || r > u1 || bottom < v0 || top > v1)) return -1;",
+         new="                (l < u0 || r > u1 || bottom < v0 || top > v1)) { /* discard closed contact */ }"),
+    dict(id="M64", desc="R12/#202：未 cut-strip 仍要求單矩形切削分類",
+         old="                if (items[i].cls == OBSTACLE_STRIP && !cut_strip) {",
+         new="                if (false) {"),
+    dict(id="M65", desc="R14/R15/#202：未裁切 strip 提前成功、忽略其餘項及選片",
+         old="            matched = true;\n            /* 選片:矩形應只與一片接觸;橫跨拆分線=無法歸屬,拒絕。 */",
+         new="            matched = true;\n            if (items[i].cls == OBSTACLE_STRIP && !cut_strip) return true;\n            /* 選片:矩形應只與一片接觸;橫跨拆分線=無法歸屬,拒絕。 */"),
 ]
 
 

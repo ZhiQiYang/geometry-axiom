@@ -19,6 +19,90 @@ class ReferenceContract(unittest.TestCase):
         self.ok('surface 1 origin 0 0 0 u +x v +y outline ' + outline)
         self.ok('column 1 at ' + column + ' z 0 100')
 
+    def notch_projection_fixture(self):
+        self.ok('reset')
+        self.ok('surface 1 origin 0 0 100 u +x v +y outline '
+                '0,0 100,0 100,100 60,100 60,40 40,40 40,100 0,100')
+
+    def test_rect_outline_rectangle_plus_isolated_line_transaction(self):
+        self.notch_projection_fixture()
+        self.ok('column 1 at 45 0 size 10 40 z 0 100')
+        self.ok('column 2 at 30 50 size 30 30 z 0 100')
+        before = self.dump()
+        query = self.s.send('obstacles 1')
+        with self.subTest(phase='query'):
+            self.assertFalse(query['ok'], 'R7 must retain the isolated x=60 contact line')
+            self.assertIn('R7', query['error'])
+        result = self.line('apply-proj 1 c1 c2')
+        with self.subTest(phase='apply'):
+            self.assertFalse(result['ok'], 'c2 must not lose contact with the right split piece')
+        self.assertEqual(before, self.dump(), 'R8 must roll back the earlier c1 split too')
+
+    def test_rect_outline_strip_plus_isolated_line(self):
+        for prior_split in (False, True):
+            with self.subTest(prior_split=prior_split):
+                self.notch_projection_fixture()
+                self.ok('column 1 at 45 0 size 10 40 z 0 100')
+                self.ok('beam 2 along x from 30 to 60 at 65 width 30 depth 10 top 100')
+                before = self.dump()
+                command = 'apply-proj 1 ' + ('c1 ' if prior_split else '') + 'b2 cut-strip'
+                result = self.line(command)
+                self.assertFalse(result['ok'], 'STRIP must retain the isolated contact line')
+                self.assertIn('R7', result['error'])
+                self.assertEqual(before, self.dump(), 'all earlier cuts must roll back')
+
+    def test_rect_outline_rectangle_plus_isolated_point(self):
+        self.projection_fixture('0,0 100,0 100,100 60,100 60,80 80,80 '
+                                '80,40 40,40 40,100 0,100', '30 50 size 30 30')
+        before = self.dump()
+        result = self.line('apply-proj 1 c1')
+        self.assertFalse(result['ok'], 'rectangle plus the isolated point (60,80) is degenerate')
+        self.assertIn('R7', result['error'])
+        self.assertEqual(before, self.dump())
+
+    def test_rect_outline_uncut_complex_strip_is_noop(self):
+        self.notch_projection_fixture()
+        self.ok('beam 1 along x from 30 to 70 at 65 width 30 depth 10 top 100')
+        self.assertEqual('strip', self.s.send('obstacles 1')['items'][0]['cls'])
+        before = self.dump()
+        self.ok('apply-proj 1 b1')
+        self.assertEqual(before, self.dump(), 'R12 uncut strip does not alter geometry')
+
+    def test_rect_outline_uncut_strip_continues_with_later_valid_item(self):
+        self.notch_projection_fixture()
+        self.ok('beam 1 along x from 30 to 70 at 65 width 30 depth 10 top 100')
+        self.ok('column 2 at 10 10 size 10 10 z 0 100')
+        self.ok('apply-proj 1 b1 c2')
+        self.assertIn('hole ', self.dump(), 'an uncut strip must not return before applying c2')
+
+    def test_rect_outline_uncut_strip_still_validates_later_missing_id(self):
+        self.notch_projection_fixture()
+        self.ok('beam 1 along x from 30 to 70 at 65 width 30 depth 10 top 100')
+        before = self.dump()
+        result = self.line('apply-proj 1 b1 c99')
+        self.assertFalse(result['ok'])
+        self.assertIn('不存在', result['error'], 'R15 must validate the item after an uncut strip')
+        self.assertEqual(before, self.dump())
+
+    def test_rect_outline_uncut_strip_still_requires_unique_piece(self):
+        self.notch_projection_fixture()
+        self.ok('column 1 at 45 0 size 10 40 z 0 100')
+        self.ok('beam 1 along x from 30 to 70 at 65 width 30 depth 10 top 100')
+        before = self.dump()
+        result = self.line('apply-proj 1 c1 b1')
+        self.assertFalse(result['ok'])
+        self.assertIn('橫跨拆分線', result['error'], 'R14 applies even without cut-strip')
+        self.assertEqual(before, self.dump())
+
+    def test_rect_outline_uncut_strip_still_requires_contact(self):
+        self.notch_projection_fixture()
+        self.ok('beam 1 along x from 110 to 120 at 65 width 10 depth 10 top 100')
+        before = self.dump()
+        result = self.line('apply-proj 1 b1')
+        self.assertFalse(result['ok'])
+        self.assertIn('不與任何面片接觸', result['error'])
+        self.assertEqual(before, self.dump())
+
     def test_rect_outline_counterexample_A_rejects_disconnected_contact(self):
         self.projection_fixture('0,0 100,0 100,100 60,100 60,40 40,40 40,100 0,100',
                                 '30 50 size 40 30')

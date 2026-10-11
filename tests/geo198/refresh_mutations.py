@@ -47,7 +47,9 @@ def main():
     assert set(merged)==set(ids), (set(ids)-set(merged))
     mutate.save_records(ROOT/'tests/mutants_results.json',merged)
     (evidence/'workers.json').write_text(json.dumps([row for row,_ in rows],indent=2)+'\n')
-    print('Merged',len(merged),'independently executed mutation records.')
+    retired = sum(bool(m.get('retired')) for m in mutate.MUTANTS)
+    print('Merged', len(merged), 'inventory records;', len(merged)-retired,
+          'non-retired mutants refreshed;', retired, 'retirement records validated.')
     return subprocess.call([sys.executable,'tests/mutate.py','--check'],cwd=ROOT)
 
 
