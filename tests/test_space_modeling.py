@@ -650,12 +650,14 @@ class HistoricalWallReplay(unittest.TestCase):
 # 不看 schema、鍵集合、也不與無斷面對照)。這裡只釘「現況」,不改行為:
 #   - 照常建出 geometry-space-preview/1,鍵集合與沒有斷面的同設定完全相同;
 #   - 拉伸件(已定位或未定位)不進任何套件的幾何:四個套件的 derived/request/extensions
-#     與無斷面對照逐位元相同,沒有任何 profile-run 物件;
-#   - 斷面定義原樣搭便車留在每個套件的 definitions.base_scene,所以每個套件的
+#     與無斷面對照的資料結構及幾何雜湊相同,沒有任何 profile-run 物件;
+#   - 已測來源 run 的解析資料留在每個套件的 definitions.base_scene,所以每個套件的
 #     manifest.capabilities 多宣告 section-profile/1,source_sha256 也因此不同於對照;
 #   - 這些套件仍可由 verify_package 重建、可由 replay_stored 核對,但(Q38 之前版本的)
 #     舊公理版本不能宣稱含斷面定義的套件(Q38j-0 的版本豁免必須繞過這一條)。
 # 失敗訊息一律以 "Q17" 開頭,指出是哪個現況被改動。
+# 比較採 Python dict/list 相等,不保證序列化輸出 bytes 相同;夾具均含 run,
+# 未涵蓋只有 profile/member 而零 run,或額外未被 run 引用的斷面定義。
 # ---------------------------------------------------------------------------
 Q17_OUTLINE = [[0, 0], [400, 0], [400, 60], [60, 60], [60, 250], [0, 250]]
 Q17_PLAN = ("boundary 1 outline 0,0 4000,0 4000,5000 0,5000 kind room_plan\n"
@@ -769,7 +771,7 @@ class SpaceModelWithSectionProfileSource(unittest.TestCase):
                 # 生成的面編號與來源場景的拉伸件編號(1、2、0、3)分屬不同命名空間,不受影響。
                 self.assertEqual([f["placement_id"] for f in summary["generated_faces"]], [2, 3, 4, 5, 6, 7],
                                  "拉伸件編號不得吃掉面編號")
-                self.assertEqual(result["summary"], control["summary"], "summary 必須與無斷面的同設定逐位元相同")
+                self.assertEqual(result["summary"], control["summary"], "summary 資料結構必須與無斷面的同設定相同")
                 self.assertEqual(result["diagnostics"], control["diagnostics"], "diagnostics")
                 self.assertEqual(mesh_volume(result["volume"]), 4000 * 5000 * 2700)
                 self.assertEqual(mesh_volume(result["walls"]), (4200 * 5200 - 4000 * 5000) * 2700)
@@ -790,7 +792,7 @@ class SpaceModelWithSectionProfileSource(unittest.TestCase):
         for key in self.PACKAGES:
             package, control = result[key], self.control[key]
             with self.subTest(package=key):
-                # 拉伸件不進幾何:與無斷面對照逐位元相同,根只有 composite_space。
+                # 拉伸件不進幾何:與無斷面對照的資料結構及幾何雜湊相同,根只有 composite_space。
                 self.assertEqual(package["derived"], control["derived"], "%s 的幾何必須與無斷面相同" % key)
                 self.assertEqual(package["request"], control["request"], "%s 的請求" % key)
                 self.assertEqual(package["definitions"]["extensions"], control["definitions"]["extensions"],
@@ -803,10 +805,10 @@ class SpaceModelWithSectionProfileSource(unittest.TestCase):
                 self.assertEqual(kinds, {o["root"]["kind"] for o in control["derived"]["objects"]},
                                  "%s 的根種類必須與無斷面相同" % key)
                 self.assertTrue(all("section_profile" not in o for o in objects), "%s 不得帶 section_profile" % key)
-                # 斷面定義搭便車留在套件的來源場景裡(完整、含未定位者),所以能力宣告多一項。
+                # 已測 run 的解析資料(含未定位者)留在來源場景裡,所以能力宣告多一項。
                 carried = load_base(package["definitions"]["base_scene"])
                 self.assertEqual(carried["profile_runs"], source["profile_runs"],
-                                 "%s 的來源場景必須保留全部斷面定義(含未定位的拉伸件)" % key)
+                                 "%s 的來源場景必須保留已測拉伸件的解析資料(含未定位者)" % key)
                 self.assertIn("requires " + self.SECTION, package["definitions"]["base_scene"].splitlines(), key)
                 self.assertIn(self.SECTION, package["manifest"]["capabilities"], "%s 須宣告 section-profile/1" % key)
                 self.assertNotEqual(package["manifest"]["source_sha256"], control["manifest"]["source_sha256"])
