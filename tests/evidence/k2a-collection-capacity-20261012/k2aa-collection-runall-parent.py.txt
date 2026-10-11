@@ -1,0 +1,12 @@
+from pathlib import Path
+import hashlib,json,subprocess,sys
+root=Path('/workspace/geometry-k2aa-review');out=Path('/tmp/k2aa-collection-review')
+def identity():
+ def git(*args):return subprocess.check_output(['git',*args],cwd=root,text=True).strip()
+ names=['geometry-web/feature-attachments.js','geometry-web/project-store.js','geometry-web/reference-workspace.js','tests/test_grid_drafts_lifecycle_capacity.js','tests/test_reference_workspace_races.js','tests/k2a_zip_browser.cjs','tests/evidence/k2a-collection-capacity-20261012/legacy6a.gcanvas','tests/evidence/k2a-collection-capacity-20261012/legacy6a-with-scene.gcanvas','current_geometry.c','tests/mutants_results.json']
+ return {'head':git('rev-parse','HEAD'),'tree':git('rev-parse','HEAD^{tree}'),'status':git('status','--short'),'sources':{n:hashlib.sha256((root/n).read_bytes()).hexdigest() for n in names},'binaries':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in Path('/tmp/k2aa-final-binaries').iterdir() if p.is_file() and (p.name in ['core','bridge','integrity','model-base','engineering-json-test'] or p.name.endswith('.fingerprint.json'))}}
+before=identity()
+with (out/'nonbrowser.log').open('wb') as log:
+ p=subprocess.run([sys.executable,'-u','/tmp/k2aa-runall-isolated.py','--build','--update-expected'],cwd=root,stdout=log,stderr=subprocess.STDOUT)
+(out/'nonbrowser-parent.json').write_text(json.dumps({'returncode':p.returncode,'before':before,'after':identity(),'stdoutSHA256':hashlib.sha256((out/'nonbrowser.log').read_bytes()).hexdigest()},indent=2)+'\n')
+print('Aggregate returncode',p.returncode)
