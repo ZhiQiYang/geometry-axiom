@@ -38,8 +38,26 @@ CI 又受帳號計費阻擋，所以兩者的結果只在這裡與 PR 正文留�
 - 特徵測試對照：新 gate 的 A 段可對抽出前的程式跑。對 main 基線與 PR 各跑一次，16 組目標（邊／孔邊／凸角／凹角／面內點／面外空白／參考線／
   未放置／單選角材／多選角材／390px，含子選單、搜尋、表單開啟）的選單 DOM（`outerHTML`）與幾何（四捨五入到 0.01px）快照合併後 SHA-256 **相同**：
   `fd673e6801f2084985b1993baccaa96153925f24c34449a564bb08261520ff4d`。
-- 新 gate：A 段 18 項、完整 gate 55 項（head `148e85c`；後續只改測試探針，見 PR 正文的最終數字）。
-- 突變與 WSL 收據：見 PR 正文與下方路徑。
+- 新 gate（`4ec7279`，與 PR 程式碼相同）：A 段 19 項、完整 gate 56 項，全綠；特徵快照雜湊與 main 基線相同。
+- 突變（`4ec7279`，每個都在乾淨 clone 上改一處文字、斷言恰好命中一處、重建後跑完整 gate；log 在 `scratchpad/k4a/runs/s4-mut-*`）：
+
+  | 突變 | 變紅的檢查 |
+  |---|---|
+  | face adapter 的 `current()` 恆回 true（§10 PR-a (i)）＋外環邊→另一邊後點舊 Fixity 列 | a1「STALE MENU NODE SENT A WORLD COMMAND」（實際送出 `line boundary 1 … fixity F F F X`）、a1 dump 被改 |
+  | 殼執行前不再呼叫 `current()`（§10 PR-a (ii)） | 同 a1 兩項、b3「STALE NODE RAN」 |
+  | 檢視類項目放到寫入守門後 | a2「VIEW ITEM WAS BLOCKED」、b2「VIEW ITEM WAS GUARDED」 |
+  | 拿掉守門分級 | a2「WORLD ITEM RAN UNDER oc.busy」 |
+  | 拿掉單一實例 | b1 三項 |
+  | 拿掉 IME 組字守門 | a3 兩項、b4 |
+  | 拿掉焦點離開關閉 | a4 |
+  | 拿掉邊緣夾限 | b5 四個角（另牽連 a1c 對照組） |
+
+- **§10 PR-a (i) 的「87 項必紅」預期不成立**：face adapter 的 `current()` 恆回 true 時，87 項仍是 87/87 全綠
+  （`s4-mut-face-current-true/b87.log`）。87 項的過期情境（selection／frame／session／context）在 `current()` 失效後仍被
+  其他層擋住，原因我沒有深究；所以「`current()` 被拿掉」的牙齒只在新 gate 的 a1，不在 87 項。87 項的期望值依規則未動。
+- WSL CI 等價收據（`148e85c`，程式碼同上）：canvas 2207 通過／completed:true／golden 吻合 84 段（與 main 基線同）；
+  native 2609／2611 通過、1 失敗（`py:test_binaries … same_size_rewrite_restoring_mtime_is_not_published`，與本 PR 無關，隔離重跑通過，
+  但不在基線失敗清單所以 runner 判紅）。
 
 ### 暫定裁決（依授權 L，可逐列推翻）
 
