@@ -285,11 +285,82 @@ static void cmd_drag(int guide_idx, int v, Coord x, Coord y)
     cmd_reference_result(ok,token);
 }
 
+/* A batch may delete and recreate a field before its final World is compared.
+ * Keep only original field identities observed absent during that candidate;
+ * bind the receipt to its exact native token, never to another preview. */
+static struct { uint32_t parameter,field; } g_deleted_fields[PARAM_FIELD_MAX];
+static size_t g_deleted_field_count;
+static uint32_t g_deleted_fields_token;
+static bool receipt_field_deleted(uint32_t parameter,uint32_t field)
+{
+    for(size_t i=0;i<g_deleted_field_count;++i)
+        if(g_deleted_fields[i].parameter==parameter && g_deleted_fields[i].field==field)return true;
+    return false;
+}
+static void receipt_scan_candidate(const World *after)
+{
+    for(size_t i=0;i<g_world.parameters.field_count;++i){
+        const ParameterField *field=&g_world.parameters.fields[i];bool found=false;
+        for(size_t j=0;j<after->parameters.field_count;++j)
+            if(after->parameters.fields[j].parameter_id==field->parameter_id && after->parameters.fields[j].id==field->id){found=true;break;}
+        if(!found && !receipt_field_deleted(field->parameter_id,field->id)){
+            /* There are at most PARAM_FIELD_MAX original identities. */
+            g_deleted_fields[g_deleted_field_count].parameter=field->parameter_id;
+            g_deleted_fields[g_deleted_field_count++].field=field->id;
+        }
+    }
+}
+static void json_deleted_objects(const World *before,bool all)
+{
+    fputs(",\"deletedObjects\":[",stdout);bool first_deleted=true;
+    {
+#define REMOVED_ROWS(array,count,kind_name) \
+        for(size_t i=0;i<before->count;++i){bool found=false; \
+            for(size_t j=0;!all && j<g_world.count;++j)if(before->array[i].id==g_world.array[j].id){found=true;break;} \
+            if(!found){printf("%s{\"kind\":\"%s\",\"id\":%u}",first_deleted?"":",",kind_name,before->array[i].id);first_deleted=false;}}
+        REMOVED_ROWS(grid_systems,grid_system_count,"grid-system")
+        REMOVED_ROWS(grid_bindings,grid_binding_count,"grid-binding")
+        REMOVED_ROWS(boundaries,boundary_count,"boundary")
+#undef REMOVED_ROWS
+        for(size_t i=0;i<before->parameters.card_count;++i){const ParameterSet *card=&before->parameters.cards[i],*after=NULL;
+            for(size_t j=0;j<g_world.parameters.card_count;++j)if(g_world.parameters.cards[j].id==card->id){after=&g_world.parameters.cards[j];break;}
+            for(size_t f=0;f<card->count;++f){bool found=false;
+                if(after && !all)for(size_t j=0;j<after->count;++j)if(after->fields[j]==card->fields[f]){found=true;break;}
+                bool intermediate=before==&g_preview.before && g_preview.engineering_batch && g_deleted_fields_token==g_preview.token && receipt_field_deleted(card->id,card->fields[f]);
+                if(!found || intermediate){printf("%s{\"kind\":\"parameter-field\",\"parameterId\":%u,\"fieldId\":%u}",first_deleted?"":",",card->id,card->fields[f]);first_deleted=false;}}
+        }
+    }
+    putchar(']');
+}
+
 static void cmd_line(const char *text)
 {
     uint32_t token=g_preview.token;
+    World *before=malloc(sizeof *before);
+    if(!before){fputs("{\"ok\":false,\"error\":\"Candidate memory unavailable\"}\n",stdout);return;}
+    *before=g_world;
     bool ok=feed_line("input",++g_input_line_no,text,&g_world);
-    cmd_reference_result(ok,token);
+    printf("{\"ok\":%s",ok?"true":"false");
+    if(!ok){fputs(",\"error\":",stdout);js_string(scene_last_error());}
+    if(g_preview.ready && g_preview.token!=token){fputs(",\"preview\":",stdout);json_reference_preview();}
+    /* These are observed removals, not inferred identity from a fingerprint.
+       Grouped delete/recreate emits the removal on the delete operation. */
+    if(ok && !(g_preview.ready && g_preview.token!=token))json_deleted_objects(before,false);
+    else fputs(",\"deletedObjects\":[]",stdout);
+    fputs("}\n",stdout);free(before);
+}
+
+static void cmd_replace_world(bool use_default)
+{
+    World *before=malloc(sizeof *before);
+    if(!before){fputs("{\"ok\":false,\"error\":\"Candidate memory unavailable\"}\n",stdout);return;}
+    *before=g_world;bool ok=true;
+    if(use_default)ok=world_default(&g_world);
+    else{memset(&g_world,0,sizeof g_world);history_clear();++g_definition_revision;}
+    printf("{\"ok\":%s",ok?"true":"false");
+    if(ok)json_deleted_objects(before,true);
+    else fputs(",\"error\":\"內建場景失敗\"",stdout);
+    fputs("}\n",stdout);free(before);
 }
 
 static void cmd_loadfile(const char *path)
@@ -905,15 +976,9 @@ int main(void)
         if (strcmp(line, "render") == 0) {
             cmd_render();
         } else if (strcmp(line, "default") == 0) {
-            fputs(world_default(&g_world)
-                      ? "{\"ok\":true}\n"
-                      : "{\"ok\":false,\"error\":\"內建場景失敗\"}\n",
-                  stdout);
+            cmd_replace_world(true);
         } else if (strcmp(line, "reset") == 0) {
-            memset(&g_world, 0, sizeof g_world);
-            history_clear();
-            ++g_definition_revision;
-            fputs("{\"ok\":true}\n", stdout);
+            cmd_replace_world(false);
         } else if (strcmp(line, "line") == 0 && arg != NULL) {
             cmd_line(arg);
         } else if (strcmp(line,"section-profile-read")==0) {

@@ -36,7 +36,7 @@ async function fixture(options = {}) {
     document:{getElementById:element,querySelectorAll:()=>[],querySelector:()=>element('scroll'),addEventListener(){},
       createElement:tag=>tag==='canvas'?{getContext:()=>({}),toDataURL:()=> 'data:image/png;base64,rendered'}:element(tag)},
     oc:{busy:false,faces:[{id:1,kind:'boundary'}],bmap:{},edit:null},fe:{feats:{}},connection:{phase:'ready'},
-    api:async command=>{assert.equal(command,'dump');calls.push(command);return options.dumpGate ? options.dumpGate.promise : {ok:true,text:'boundary 1 outline 0,0 800,0 800,700 0,700\n'};},
+    api:async command=>{if(options.api)return options.api(command);assert.equal(command,'dump');calls.push(command);return options.dumpGate ? options.dumpGate.promise : {ok:true,text:'boundary 1 outline 0,0 800,0 800,700 0,700\n'};},
     setStatus:s=>statuses.push(s),toast:s=>statuses.push(s),drawFaceEditor(){},renderFaceInspector(){},
     innerWidth:1280,feUlImgToMm:(_p,x,y)=>[x,y],feFit(){}};
   // Only the PDF library provider is faked here; production validation/cleanup
@@ -59,6 +59,68 @@ async function fixture(options = {}) {
 
 const legacyPage=()=>({src:'data:image/png;base64,legacy',imgW:100,imgH:80,mmPerPx:10,x:0,y:0,rot:0,opacity:.5,locked:false});
 const legacyResponse=bytes=>({blob:async()=>new Blob([bytes],{type:'image/png'})});
+
+const k2aDraft=(id,edit=false)=>({schema:P.Features.GRID_SCHEMA,draftId:id,kind:'source',intent:edit?'edit':'create',baseRef:edit?{kind:'grid-system',id:1,fingerprint:'a'.repeat(64)}:null,inputRefs:[],rawForm:Object.fromEntries(P.Features.sourceFields.map(f=>[f,' 1e ']))});
+test('K2a M01/M03/M12 per-draft writes coexist, legacy replacement and late context flush cannot alter them',async()=>{
+  const {w}=await fixture(),token=w.getProjectState().contextToken;
+  w.setGridDraft('a',k2aDraft('a'),token);w.setGridDraft('b',k2aDraft('b'),token);
+  assert.deepEqual(Array.from(w.readGridDrafts().drafts,d=>d.draftId),['a','b']);
+  const a=k2aDraft('a');a.rawForm.igName='續開';w.setGridDraft('a',a,token);
+  assert.equal(w.readGridDrafts().drafts.find(d=>d.draftId==='a').rawForm.igName,'續開');
+  const before=JSON.stringify(w.readGridDrafts()),history=w.history.undo.length;
+  assert.throws(()=>w.setFeatureAttachment('grid-draft',a,token));assert.throws(()=>w.setGridDraft('a',a,'late-context'));
+  assert.equal(JSON.stringify(w.readGridDrafts()),before);assert.equal(w.history.undo.length,history);
+});
+test('K2a M12/M14b lost flags cannot be erased or repinned with the same identity',async()=>{
+  const {w}=await fixture(),token=w.getProjectState().contextToken,a=k2aDraft('a');
+  a.inputRefs=[{kind:'grid-system',id:2,fingerprint:'b'.repeat(64),lost:true}];w.setGridDraft('a',a,token);
+  const clear=structuredClone(a);delete clear.inputRefs[0].lost;assert.throws(()=>w.setGridDraft('a',clear,token));
+  assert.throws(()=>w.setFeatureAttachment('grid-draft',null,token));
+  assert.equal(w.readGridDrafts().drafts[0].inputRefs[0].lost,true);
+  clear.inputRefs[0].id=3;w.setGridDraft('a',clear,token);assert.equal(w.readGridDrafts().drafts[0].inputRefs[0].lost,undefined);
+  const parameter=structuredClone(clear);parameter.inputRefs=[{kind:'parameter-field',parameterId:2,fieldId:1,fingerprint:'b'.repeat(64),lost:true}];
+  w.setGridDraft('a',parameter,token);const sameCard=structuredClone(parameter);sameCard.inputRefs[0].fieldId=2;delete sameCard.inputRefs[0].lost;
+  assert.throws(()=>w.setGridDraft('a',sameCard,token),'a lost parameter card cannot be reacquired through another field');
+});
+test('K2a M04 removing one draft and local undo restores precisely that draft',async()=>{
+  const {w}=await fixture(),token=w.getProjectState().contextToken;
+  w.setGridDraft('a',k2aDraft('a'),token);w.setGridDraft('b',k2aDraft('b'),token);w.setGridDraft('a',null,token);
+  assert.deepEqual(Array.from(w.readGridDrafts().drafts,d=>d.draftId),['b']);w.tryLocalHistory('line undo');
+  assert.deepEqual(Array.from(w.readGridDrafts().drafts,d=>d.draftId),['a','b']);
+});
+test('K2a M04 native confirmation clears only its leased draft; failed confirmation preserves both',async()=>{
+  const {w}=await fixture(),token=w.getProjectState().contextToken,a=k2aDraft('a');
+  w.setGridDraft('a',a,token);w.setGridDraft('b',k2aDraft('b'),token);
+  w.prepareFeatureConfirmation(99,'grid-draft',a,token);const failed=w.beginFeatureConfirmation(99);
+  w.observe('line confirm 99',{ok:false});w.finishAssemblyConfirmation(failed);assert.equal(w.readGridDrafts().drafts.length,2);
+  w.prepareFeatureConfirmation(100,'grid-draft',a,token);w.beginFeatureConfirmation(100);w.observe('line confirm 100',{ok:true});
+  assert.deepEqual(Array.from(w.readGridDrafts().drafts,d=>d.draftId),['b']);
+});
+test('K2a M06/M14 deletion receipt marks orphans and lost even when identical ids still exist',async()=>{
+  const {w}=await fixture(),token=w.getProjectState().contextToken,a=k2aDraft('a',true);
+  a.inputRefs=[{kind:'grid-system',id:2,fingerprint:'b'.repeat(64)}];w.setGridDraft('a',a,token);
+  w.observe('line delete grid-system 1',{ok:true,deletedObjects:[{kind:'grid-system',id:1},{kind:'grid-system',id:2}]});
+  assert.deepEqual(Array.from(w.readGridDrafts().orphans),['a']);assert.equal(w.readGridDrafts().drafts[0].inputRefs[0].lost,true);
+  w.observe('objects',{ok:true,gridSystems:[{id:1},{id:2}],gridBindings:[],parameters:[],faces:[]});
+  assert.deepEqual(Array.from(w.readGridDrafts().orphans),['a']);assert.equal(w.readGridDrafts().drafts[0].inputRefs[0].lost,true);
+});
+test('K2a M14b identical native transaction gives deletion flags one reversible local history step',async()=>{
+  const {w}=await fixture(),token=w.getProjectState().contextToken,a=k2aDraft('a');
+  a.inputRefs=[{kind:'parameter-field',parameterId:1,fieldId:1,fingerprint:'b'.repeat(64)}];w.setGridDraft('a',a,token);
+  const count=w.history.undo.length;
+  w.observe('engineering-confirm 77',{ok:true,history_changed:false,deletedObjects:[{kind:'parameter-field',parameterId:1,fieldId:1}]});
+  assert.equal(w.history.undo.length,count+1);assert.equal(w.readGridDrafts().drafts[0].inputRefs[0].lost,true);
+  const undo=w.tryLocalHistory('line undo');assert.equal(undo.ok,true);assert.equal(undo.local,true);assert.equal(w.readGridDrafts().drafts.length,1);assert.equal(w.readGridDrafts().drafts[0].inputRefs[0].lost,undefined);
+});
+test('K2a M15 repin requires the reviewed current fingerprint and keeps raw and lost references intact',async()=>{
+  const row={id:1,mode:'infinite',name:'current',mainAlong:null,uDefinition:{source:'repeat',step:915,phase:0},vDefinition:{source:'none'},nextRuleKey:1,rules:[]};
+  const {w}=await fixture({api:async cmd=>{assert.equal(cmd,'objects');return {ok:true,gridSystems:[row]};}}),token=w.getProjectState().contextToken,a=k2aDraft('a',true);
+  a.inputRefs=[{kind:'grid-system',id:2,fingerprint:'b'.repeat(64),lost:true}];w.setGridDraft('a',a,token);
+  const hash=await P.sha(new TextEncoder().encode(JSON.stringify(P.Features.gridSourceKey(row,true))));
+  await assert.rejects(()=>w.repinGridDraft('a','c'.repeat(64),token));assert.equal(w.readGridDrafts().drafts[0].baseRef.fingerprint,'a'.repeat(64));
+  await w.repinGridDraft('a',hash,token);const actual=w.readGridDrafts().drafts[0];assert.equal(actual.baseRef.fingerprint,hash);
+  assert.equal(actual.inputRefs[0].lost,true);assert.deepEqual(JSON.parse(JSON.stringify(actual.rawForm)),a.rawForm);
+});
 
 test('registered evidence setter uses original source metadata, one history and synchronous native busy guard',async()=>{
   const f=await fixture(),E=P.Features.Evidence,p=f.w.active(1),token=f.w.getProjectState().contextToken;

@@ -24,7 +24,7 @@
   const workspaceControls=(selector='input,select,button')=>[...dialog.querySelectorAll(selector)].filter(node=>!node.closest('#paramGridLesson'));
   const F=GeometryProject.Features,rawKind='grid-draft',copy=value=>JSON.parse(JSON.stringify(value));
   const pinKey=ref=>ref.kind==='parameter-field'?`parameter-field:${ref.parameterId}:${ref.fieldId}`:`${ref.kind}:${ref.id}`;
-  const samePin=(a,b)=>!!a&&!!b&&pinKey(a)===pinKey(b)&&a.fingerprint===b.fingerprint&&a.vertexKeysFingerprint===b.vertexKeysFingerprint;
+  const samePin=(a,b)=>!!a&&!!b&&!a.lost&&!b.lost&&pinKey(a)===pinKey(b)&&a.fingerprint===b.fingerprint&&a.vertexKeysFingerprint===b.vertexKeysFingerprint;
   const rawField=(s,id)=>{const node=$(id),override=s?.rawOverrides?.get(id);return override&&node?.value===override.display?override.raw:node?.value??'';};
   const fingerprint=value=>GeometryProject.sha(new TextEncoder().encode(JSON.stringify(value)));
   async function catalogPins(objects,schema=F.GRID_SCHEMA){
@@ -42,9 +42,38 @@
     return Object.fromEntries(fields.map(id=>[id,id==='igSystem'?s.systemRaw:rawField(s,id)]));
   }
   const parameterSelections=form=>Object.entries(form).filter(([id,value])=>value&&id.endsWith('Source')&&!['igUSource','igVSource'].includes(id)).map(([id,value])=>[id,'parameter-field:'+value]);
+  function approveInputReplacement(before,next) {
+    if(!before || !next || samePin(before,next))return true;
+    if(!before.lost && pinKey(before)!==pinKey(next))return true;
+    if(before.lost && (pinKey(before)===pinKey(next) || before.kind==='parameter-field' && next.kind==='parameter-field' && before.parameterId===next.parameterId)){
+      status('此來源曾經缺失，不能重新取得同一物件；請選另一個物件。',true);return false;
+    }
+    return window.confirm('重新選取來源（舊 → 新）；原始輸入保留，仍須預覽與確認。\n'+JSON.stringify({before,after:next}));
+  }
+  async function selectBindingSource(s,node) {
+    if(!canEdit(s)||s.mode!=='binding'||!node.value)return;
+    const reset=()=>{if(current(s))node.value=s.systemRaw;};
+    try{
+      if(draftState(s).boundary||draftState(s).application)throw Error('請先處理尚未確認的邊界或承載面變更。');
+      flush(s);const raw=JSON.stringify(rawValue(s)),id=Number(node.value),objects=await apiRequest('objects');
+      if(!current(s))return;if(!objects.ok)throw Error('無法核對目前來源。');
+      const evidence=JSON.stringify(ReferenceWorkspace.getEvidenceState());
+      const row=objects.gridSystems.find(r=>r.id===id),pins=await catalogPins(objects,s.draftSchema),fullPins=await catalogPins(objects,F.GRID_RULE_SCHEMA);if(!current(s))return;
+      if(!row)throw Error('來源已遺失，請選另一個物件。');
+      const owned=ReferenceWorkspace.readGridDrafts().drafts.find(d=>d.draftId===s.draftId),before=owned?.inputRefs.find(r=>r.kind==='grid-system'),next=pins.get('grid-system:'+id);
+      if(JSON.stringify(rawValue(s))!==raw||JSON.stringify(ReferenceWorkspace.getEvidenceState())!==evidence)throw Error('選取期間草稿或現況已改變，請重新選取。');
+      if(!approveInputReplacement(before,next)){reset();return;}
+      for(const [key,pin] of s.inputPins)if(pin.kind==='grid-system')s.inputPins.delete(key);
+      s.inputPins.set(pinKey(next),copy(next));s.systemRaw=String(id);s.source=row;s.sources=objects.gridSystems;s.pins=pins;
+      s.fullPins=fullPins;
+      s.restored=rawValue(s);s.rawError=null;s.nativeChanged=false;flush(s);await render(s);
+      if(current(s))status('已明選來源；原始輸入保留，仍須預覽與確認。');
+    }catch(error){reset();if(current(s))status(error.message,true);}
+  }
   function selectParameterPin(s,node){
     if(!canEdit(s)||!node.id.endsWith('Source')||['igUSource','igVSource'].includes(node.id))return;
     const before=s.referenceSelections.get(node.id),form=rawForm(s),key=node.value?'parameter-field:'+node.value:null;
+    if(key&&!approveInputReplacement(s.inputPins.get(before),s.pins.get(key))){node.value=before?.replace('parameter-field:','')||'';return;}
     s.referenceSelections.set(node.id,key);
     if(before&&!parameterSelections(form).some(([,selected])=>selected===before))s.inputPins.delete(before);
     if(key){const pin=s.pins.get(key);if(pin)s.inputPins.set(key,copy(pin));else s.inputPins.delete(key);}
@@ -63,9 +92,11 @@
     // save() already captured the form before locking these controls. The
     // nested export must use that snapshot while ReferenceWorkspace is busy.
     if(s.projectControls)return;
-    const form=rawForm(s),hasDraft=!!ReferenceWorkspace.readFeatureAttachment(rawKind);
+    const owned=ReferenceWorkspace.readGridDrafts().drafts.find(d=>d.draftId===s.draftId);
+    for(const ref of owned?.inputRefs||[])if(ref.lost && s.inputPins.has(pinKey(ref)))s.inputPins.get(pinKey(ref)).lost=true;
+    const form=rawForm(s),hasDraft=!!owned;
     if(!hasDraft&&!s.ruleDraft&&JSON.stringify(form)===s.initialRaw&&!!(s.mode==='source'?s.source:s.binding))return;
-    const value=rawValue(s);ReferenceWorkspace.setFeatureAttachment(rawKind,value,s.contextToken);s.rawError=null;return value;
+    const value=rawValue(s);ReferenceWorkspace.setGridDraft(s.draftId,value,s.contextToken);s.rawError=null;return value;
   }
   function capture(s){if(!current(s)||s.initializing||s.busy)return;try{flush(s);}catch(error){s.rawError=error.message;}}
   function restoreRaw(s,form){
@@ -82,8 +113,9 @@
     d.intent==='edit'?options.binding===d.baseRef.id:options.mode==='binding'&&String(options.system)===d.rawForm.igSystem;}
   async function validateDraftPins(s){
     if(!current(s))throw Error('草稿上下文已切換。');if(s.rawError)throw Error(s.rawError);
-    const value=ReferenceWorkspace.readFeatureAttachment(rawKind);
+    const value=ReferenceWorkspace.readGridDrafts().drafts.find(d=>d.draftId===s.draftId);
     if(!value&&!s.ruleDraft&&JSON.stringify(rawForm(s))===s.initialRaw&&!!(s.mode==='source'?s.source:s.binding))return null;
+    if(value&&(ReferenceWorkspace.readGridDrafts().orphans.includes(value.draftId)||value.inputRefs.some(ref=>ref.lost)))throw Error('原物件或來源已刪除；保留草稿，或明選另一個來源。');
     if(!value||value.draftId!==s.draftId)throw Error('目前網格草稿已變更，請重新開啟。');
     const selectedPins=new Map(value.inputRefs.map(ref=>[pinKey(ref),ref]));
     const required=value.kind==='binding'?['grid-system:'+value.rawForm.igSystem,'boundary:'+value.rawForm.igBoundary]:parameterSelections(value.rawForm).map(([,key])=>key);
@@ -126,6 +158,59 @@
     if (n < -9223372036854775808n || n > 9223372036854775806n) throw Error(`${title}超出可建立 cell 的 signed 64 位元範圍。`);
     return n.toString();
   };
+  function overwriteFields(raw,normalized) {
+    const same=(id,value,actual)=>{
+      if(id==='igName')return value.trim()===actual.trim();
+      if(/(?:Step|Phase|Panel|Gap|Anchor|Stagger|CellI|CellJ|AnchorUN|AnchorUD|AnchorVN|AnchorVD)$/.test(id)){
+        const text=value.trim(),other=actual.trim();if(!text&&!other)return true;
+        if(!/^-?\d+$/.test(text)||!/^-?\d+$/.test(other))return false;
+        const number=BigInt(text);
+        if(id==='igCellI'||id==='igCellJ')return number>=-9223372036854775808n&&number<=9223372036854775806n&&number===BigInt(other);
+        const min=/(?:Step|Panel|AnchorUD|AnchorVD)$/.test(id)?1n:/Gap$/.test(id)?0n:-BigInt(LIMIT);
+        return number>=min&&number<=BigInt(LIMIT)&&number===BigInt(other);
+      }
+      return value===actual;
+    };
+    return Object.entries(raw).filter(([id,value])=>!same(id,value,normalized[id]??'')).map(([field,raw])=>({field,raw,current:normalized[field]??''}));
+  }
+  function normalizedSourceRaw(row) {
+    const result={igName:row.name,igMainAlong:row.mainAlong||'none'};
+    for(const a of axes){const p='ig'+a.toUpperCase(),d=row[a+'Definition'];result[p+'Source']=d.source;
+      for(const [key,fallback] of [['step',600],['phase',0],['panel',600],['gap',0],['anchor',0],['stagger','']]){
+        const id=p+FIELD[key][0],ref=d.parameterRefs?.[key];result[id]=String(d[key]??fallback);result[id+'Source']=ref?`${ref.parameterId}:${ref.fieldId}`:'';
+      }}
+    return result;
+  }
+  async function repin(s) {
+    if(!canEdit(s)||!s.baseRef)return;
+    if(draftState(s).boundary||draftState(s).application)throw Error('請先處理尚未確認的邊界或承載面變更。');
+    flush(s);const rawSnapshot=JSON.stringify(rawValue(s)),objects=await apiRequest('objects');if(!current(s)||!objects.ok)return;
+    const reviewedRevision=JSON.stringify(ReferenceWorkspace.getEvidenceState());
+    const row=s.mode==='source'?objects.gridSystems.find(r=>r.id===s.source?.id):objects.gridBindings.find(r=>r.id===s.binding?.id);
+    if(!row)throw Error('基底已遺失，不能重新取得。');
+    const pins=await catalogPins(objects,s.draftSchema);if(!current(s))return;
+    let normalized=s.mode==='source'?normalizedSourceRaw(row):s.normalizedRaw;
+    if(s.mode==='binding'){
+      const b=await apiRequest('boundary '+row.boundary);if(!current(s)||!b.ok)throw Error('無法讀取配置現況的頂點。');
+      const vertex=vertices(b).find(v=>v.key===row.vertexKey);
+      normalized={igSystem:String(row.system),igBoundary:String(row.boundary),igVertex:vertex?vertexId(vertex):'',igCellI:String(row.cell[0]),igCellJ:String(row.cell[1]),
+        igAnchorUN:String(row.anchor[0].num),igAnchorUD:String(row.anchor[0].den),igAnchorVN:String(row.anchor[1].num),igAnchorVD:String(row.anchor[1].den)};
+    }
+    const actual=pins.get(pinKey(s.baseRef)),fields=overwriteFields(rawForm(s),normalized),refs=[];
+    for(const r of [...s.inputPins.values()].filter(r=>!r.lost)){
+      let next=pins.get(pinKey(r));
+      if(r.kind==='boundary'){const b=await apiRequest('boundary '+r.id);if(!current(s)||!b.ok)throw Error('來源邊界已遺失。');next=await boundaryPin(r.id,b);}
+      if(!next)throw Error('來源已遺失，請改選另一個物件。');refs.push({before:r,after:next});
+    }
+    if(!current(s)||JSON.stringify(rawValue(s))!==rawSnapshot||JSON.stringify(ReferenceWorkspace.getEvidenceState())!==reviewedRevision)throw Error('覆蓋預覽期間草稿或現況已改變，請重新檢視。');
+    if(!window.confirm('重新取得基底；之後仍須預覽與確認。\n將覆蓋的欄位（草稿原文 → 現況）：\n'+fields.map(r=>`${r.field}: ${JSON.stringify(r.raw)} → ${JSON.stringify(r.current)}`).join('\n')+'\n來源引用（舊 → 新）：\n'+JSON.stringify(refs)))return;
+    if(JSON.stringify(ReferenceWorkspace.getEvidenceState())!==reviewedRevision)throw Error('現況已改變，請重新檢視覆蓋預覽。');
+    const next=await ReferenceWorkspace.repinGridDraft(s.draftId,actual.fingerprint,s.contextToken);if(!current(s))return;
+    s.baseRef=copy(next.baseRef);s.inputPins=new Map(next.inputRefs.map(r=>[pinKey(r),copy(r)]));s.restored=copy(next);
+    s.source=s.mode==='source'?row:objects.gridSystems.find(r=>r.id===row.system);if(s.mode==='binding')s.binding=row;
+    s.pins=pins;s.fullPins=await catalogPins(objects,F.GRID_RULE_SCHEMA);if(!current(s))return;s.nativeChanged=false;
+    await render(s);if(current(s))status('已重新取得基底；仍須預覽並確認才改場景。');
+  }
   const def = d => {
     if (!d || d.source === 'none') return null;
     const stagger = d.stagger ? Number(d.stagger) : 0;
@@ -151,10 +236,10 @@
   }
   function bindingEditorKey(s) {
     const vertex = s.vertex ? s.vertex.key != null ? 'key:' + s.vertex.key : vertexId(s.vertex) : s.restoringBoundary ? 'key:' + s.binding.vertexKey : '';
-    return JSON.stringify([$('igBoundary').value, vertex, ...['igCellI','igCellJ','igAnchorUN','igAnchorUD','igAnchorVN','igAnchorVD'].map(id => $(id).value.trim())]);
+    return JSON.stringify([s.systemRaw,$('igBoundary').value, vertex, ...['igCellI','igCellJ','igAnchorUN','igAnchorUD','igAnchorVN','igAnchorVD'].map(id => $(id).value.trim())]);
   }
   function savedBindingKey(binding) {
-    return JSON.stringify([String(binding.boundary), 'key:' + binding.vertexKey, ...binding.cell.map(String), ...binding.anchor.flatMap(a => [String(a.num),String(a.den)])]);
+    return JSON.stringify([String(binding.system),String(binding.boundary), 'key:' + binding.vertexKey, ...binding.cell.map(String), ...binding.anchor.flatMap(a => [String(a.num),String(a.den)])]);
   }
   function growthDraftKey() {
     return JSON.stringify(['Left','Right','Top','Bottom'].map(a => $('igGrow' + a).value));
@@ -180,11 +265,21 @@
     const rule=s.mode==='source'&&!!s.ruleDraft;
     return {source, rule, binding, boundary, application, changed:source || rule || binding || boundary || application, pending:fresh || source || rule || binding || boundary || application || !s.bindingReady, note};
   }
-  function syncDraftState(s) {
+  function syncDraftState(s,selectingSource=false) {
     if (!current(s)) return;
+    const collection=ReferenceWorkspace.readGridDrafts(),owned=collection.drafts.find(d=>d.draftId===s.draftId);
+    if(collection.orphans.includes(s.draftId))s.orphaned=true;
+    for(const ref of owned?.inputRefs||[])if(ref.lost && s.inputPins.has(pinKey(ref)))s.inputPins.get(pinKey(ref)).lost=true;
     capture(s);
     const draft = draftState(s);
     $('igDraftNote').textContent = s.rawError||((draft.boundary||draft.application)?draft.note:'來源／配置原始輸入會隨專案保存，未確認前不改場景。'+(s.restored?'已還原保存的草稿；來源仍须在發布前重新核對。':''));
+    const stale=!!owned && [...(owned.baseRef?[owned.baseRef]:[]),...owned.inputRefs.filter(ref=>!ref.lost)].some(ref=>!samePin(ref,ref.kind==='boundary'?s.boundaryPin:s.pins.get(pinKey(ref))));
+    const sourcePin=owned?.inputRefs.find(ref=>ref.kind==='grid-system');
+    if(!selectingSource&&s.mode==='binding'&&$('igSystem')&&sourcePin&&!samePin(sourcePin,s.pins.get(pinKey(sourcePin))))$('igSystem').value='';
+    if($('igRepinDraft'))$('igRepinDraft').hidden=!stale || s.orphaned;
+    if(owned?.inputRefs.some(ref=>ref.lost))$('igDraftNote').textContent='來源已刪除，需改選另一個物件；可保存草稿，不可預覽或提交。';
+    else if(stale)
+      $('igDraftNote').textContent='草稿已過期；原始輸入保留，請明選重新取得基底或來源後再預覽。';
     WorkspaceShell.refresh(dialog);
     syncDefinition(s);syncRuleEditor(s);
     if (s.mode === 'binding') $('igSaveBinding').disabled = s.busy || !s.bindingReady || (!!s.binding && bindingEditorKey(s) === s.initialBindingKey);
@@ -308,7 +403,7 @@
     // The project bar is shared DOM; return it before rebuilding this workspace.
     WorkspaceShell.detach(dialog);
     const source = s.source || {name: '無限網格', mainAlong: null, uDefinition: {source: 'repeat', phase: 0, step: 600}, vDefinition: {source: 'repeat', phase: 0, step: 400}};
-    dialog.innerHTML = `<header class="ig-header"><button id="igClose" type="button" class="btn ig-back">${icon('arrowLeft')} 返回畫布</button><span class="ig-sep" aria-hidden="true"></span><nav class="ig-crumb" aria-label="目前位置"><span class="ig-crumb-lead ig-crumb-project" data-project-name>${esc(projectName())}</span><span class="ig-crumb-lead" aria-hidden="true">/</span><span class="ig-crumb-lead">無限網格</span><span class="ig-crumb-lead" aria-hidden="true">/</span><h1 id="igTitle">${s.mode === 'binding' ? s.binding ? `網格配置 ${s.binding.id}` : '建立網格配置' : s.source ? esc(s.source.name) : '建立無限網格'}</h1></nav></header><div class="ig-layout"><main class="ig-main"><p id="igWorkspaceLesson" class="studio-first-lesson" hidden></p><div class="ig-canvas"><svg id="igGridView" viewBox="0 0 ${W} ${H}" role="img" aria-label="可平移縮放的無限網格，點選 cell"></svg><p id="igViewNote" class="ig-hint">拖曳平移 · 滾輪縮放 · 點格子選取</p><div class="ig-zoombar"><button id="igZoomOut" type="button" class="btn" aria-label="縮小網格">${icon('minus')}</button><span id="igZoom" class="ig-zoom"></span><button id="igZoomIn" type="button" class="btn" aria-label="放大網格">${icon('plus')}</button><span class="ig-zoom-sep"></span><button id="igFit" type="button" class="btn">回到基準</button></div></div><p id="igDensity" class="ig-density" role="status" hidden></p><section id="igBoundarySection"${s.mode === 'binding' ? '' : ' hidden'}><h2>邊界實際頂點 <small>u →　v ↓</small></h2><p>點圓點選擇外環或孔環頂點；橙色圓點是目前的對齊頂點。</p><svg id="igBoundaryView" viewBox="0 0 ${W} 360" role="img" aria-label="邊界外環及孔環的實際頂點"></svg></section><section id="igResultSection"${s.binding ? '' : ' hidden'}><h2>目前已保存的配置結果</h2><p id="igResultNote"></p><svg id="igResultView" viewBox="0 0 ${W} 360" role="img" aria-label="邊界內實際裁切的配置格線"></svg></section></main><aside class="ig-inspector"><div class="ig-settings"><section id="igSourceForm"${s.mode === 'binding' ? ' hidden' : ''}><div class="ig-src-head"><span id="igSourcePill" class="ig-pill" data-tone="idle"></span><span class="ig-src-kind">無限網格 · 來源</span></div><label class="ig-name">名稱<input id="igName" value="${esc(source.name)}" autocomplete="off" aria-describedby="igNameErr"><span class="ig-pf-err" id="igNameErr"></span></label><div id="paramGridLessonSlot"></div><div id="igDefinition" class="ig-def" role="group" aria-label="網格定義圖"><div id="igDefStage" class="ig-def-stage"></div><p class="ig-def-hint">點圖上的尺寸或卡片標題，對應的軸與欄位會反白。</p></div><div class="ig-axes">${axes.map(a => axisForm(a, source[a + 'Definition'])).join('')}</div><div class="ig-field"><span class="ig-field-title" id="igMainAlongTitle">主支方向</span><div id="igMainAlong" class="ig-segment" role="radiogroup" aria-labelledby="igMainAlongTitle">${[['none','不設定'],['u','沿 u'],['v','沿 v']].map(([v, l]) => `<label><input type="radio" name="igMainAlong" value="${v}"${(source.mainAlong || 'none') === v ? ' checked' : ''}><span>${l}</span></label>`).join('')}</div><p id="igMainNote" class="ig-note"></p></div><button id="igSaveSource" class="primary-button" type="button">${s.source ? '預覽來源變更' : '預覽並建立'}</button>${s.source ? `<button id="igNewBinding" class="btn" type="button">＋ 選邊界建立配置</button><section class="ig-related"><h3>使用此來源的配置</h3>${s.bindings.filter(b => b.system === s.source.id).map(b => `<button type="button" class="btn" data-ig-open-binding="${b.id}">配置 ${b.id} · 面 ${b.boundary}</button>`).join('') || '<p>尚未配置，可以先保存來源。</p>'}</section>` : ''}</section><section id="igBindingForm"${s.mode !== 'binding' ? ' hidden' : ''}><h2>對齊邊界與 cell</h2><p>來源：${esc(source.name)} <button type="button" id="igEditSource" class="grid-text-button">編輯來源</button></p><label>1 · 邊界<select id="igBoundary"><option value="">選擇已有邊界（可尚未放置）</option>${s.boundaries.map(b => `<option value="${b.id}"${s.binding?.boundary === b.id ? ' selected' : ''}>面 ${b.id}${b.placed ? ' · 已放置' : ' · 尚未放置'}</option>`).join('')}</select></label><p id="igVertexSummary">2 · 點選右側邊界的實際頂點。</p><label>頂點<select id="igVertex"><option value="">先選邊界</option></select></label><p>3 · 點選網格的一格，或填入精確索引。</p><div class="ig-pair"><label>cell i<input id="igCellI" type="text" inputmode="numeric" value="${esc(s.binding?.cell?.[0] ?? '0')}"></label><label>cell j<input id="igCellJ" type="text" inputmode="numeric" value="${esc(s.binding?.cell?.[1] ?? '0')}"></label></div><button id="igLocateCell" class="btn" type="button">定位這一格</button><p>4 · 格子裡的對齊位置</p><div class="ig-anchor" role="group" aria-label="格子內的對齊位置">${GridAnchorPositions.positions.map(({name:t,u,v})=>`<button type="button" data-ig-anchor="${u},${v}" aria-pressed="false">${t}</button>`).join('')}</div><details class="ig-rational"><summary>其他精確比例</summary><div class="ig-pair"><label>u 分子<input id="igAnchorUN" type="text" inputmode="numeric" maxlength="4096" value="0"></label><label>u 分母<input id="igAnchorUD" type="text" inputmode="numeric" maxlength="4096" value="1"></label><label>v 分子<input id="igAnchorVN" type="text" inputmode="numeric" maxlength="4096" value="0"></label><label>v 分母<input id="igAnchorVD" type="text" inputmode="numeric" maxlength="4096" value="1"></label></div></details><p id="igAlignmentSummary" class="ig-summary"></p><button id="igSaveBinding" class="primary-button" type="button">${s.binding ? '預覽配置變更' : '預覽並建立配置'}</button><section id="igApplicationSection"${s.binding ? '' : ' hidden'}><h3>套用到承載面</h3><label>承載面（僅列同一邊界）<select id="igSurface"></select></label><p id="igApplyNote"></p><button id="igApplyBinding" type="button" class="btn">預覽套用</button><div id="igApplications"></div></section><details id="igKeyedEditor"${s.binding ? '' : ' hidden'}><summary>以頂點身分修改邊界</summary><p>保留每個頂點的身分。修改會重新檢查此邊界的所有配置與構件。</p><div id="igKeyedVertices"></div><div class="ig-pair">${['Left','Right','Top','Bottom'].map((a,k)=>`<label>向${['左','右','上','下'][k]}擴大 mm<input id="igGrow${a}" type="number" step="1" min="0" value="0"></label>`).join('')}</div><button id="igGrowBoundary" type="button" class="btn">將四側擴大填入頂點草稿</button><button id="igSaveBoundary" type="button" class="primary-button">預覽邊界變更</button></details>${s.binding ? `<button id="igDeleteBinding" class="btn danger" type="button">刪除此配置</button>` : ''}</section><section id="igInfo" class="ig-info" aria-live="off"><div class="ig-info-head"><h3 id="igInfoTitle">格資訊</h3><span id="igInfoCell"></span></div><div id="igInfoRows"></div></section></div><footer class="ig-footer"><p id="igStatus" role="status" aria-live="polite">所有變更先預覽，確認後才保存到目前場景。</p></footer></aside></div>`;
+    dialog.innerHTML = `<header class="ig-header"><button id="igClose" type="button" class="btn ig-back">${icon('arrowLeft')} 返回畫布</button><span class="ig-sep" aria-hidden="true"></span><nav class="ig-crumb" aria-label="目前位置"><span class="ig-crumb-lead ig-crumb-project" data-project-name>${esc(projectName())}</span><span class="ig-crumb-lead" aria-hidden="true">/</span><span class="ig-crumb-lead">無限網格</span><span class="ig-crumb-lead" aria-hidden="true">/</span><h1 id="igTitle">${s.mode === 'binding' ? s.binding ? `網格配置 ${s.binding.id}` : '建立網格配置' : s.source ? esc(s.source.name) : '建立無限網格'}</h1></nav></header><div class="ig-layout"><main class="ig-main"><p id="igWorkspaceLesson" class="studio-first-lesson" hidden></p><div class="ig-canvas"><svg id="igGridView" viewBox="0 0 ${W} ${H}" role="img" aria-label="可平移縮放的無限網格，點選 cell"></svg><p id="igViewNote" class="ig-hint">拖曳平移 · 滾輪縮放 · 點格子選取</p><div class="ig-zoombar"><button id="igZoomOut" type="button" class="btn" aria-label="縮小網格">${icon('minus')}</button><span id="igZoom" class="ig-zoom"></span><button id="igZoomIn" type="button" class="btn" aria-label="放大網格">${icon('plus')}</button><span class="ig-zoom-sep"></span><button id="igFit" type="button" class="btn">回到基準</button></div></div><p id="igDensity" class="ig-density" role="status" hidden></p><section id="igBoundarySection"${s.mode === 'binding' ? '' : ' hidden'}><h2>邊界實際頂點 <small>u →　v ↓</small></h2><p>點圓點選擇外環或孔環頂點；橙色圓點是目前的對齊頂點。</p><svg id="igBoundaryView" viewBox="0 0 ${W} 360" role="img" aria-label="邊界外環及孔環的實際頂點"></svg></section><section id="igResultSection"${s.binding ? '' : ' hidden'}><h2>目前已保存的配置結果</h2><p id="igResultNote"></p><svg id="igResultView" viewBox="0 0 ${W} 360" role="img" aria-label="邊界內實際裁切的配置格線"></svg></section></main><aside class="ig-inspector"><div class="ig-settings"><section id="igSourceForm"${s.mode === 'binding' ? ' hidden' : ''}><div class="ig-src-head"><span id="igSourcePill" class="ig-pill" data-tone="idle"></span><span class="ig-src-kind">無限網格 · 來源</span></div><label class="ig-name">名稱<input id="igName" value="${esc(source.name)}" autocomplete="off" aria-describedby="igNameErr"><span class="ig-pf-err" id="igNameErr"></span></label><div id="paramGridLessonSlot"></div><div id="igDefinition" class="ig-def" role="group" aria-label="網格定義圖"><div id="igDefStage" class="ig-def-stage"></div><p class="ig-def-hint">點圖上的尺寸或卡片標題，對應的軸與欄位會反白。</p></div><div class="ig-axes">${axes.map(a => axisForm(a, source[a + 'Definition'])).join('')}</div><div class="ig-field"><span class="ig-field-title" id="igMainAlongTitle">主支方向</span><div id="igMainAlong" class="ig-segment" role="radiogroup" aria-labelledby="igMainAlongTitle">${[['none','不設定'],['u','沿 u'],['v','沿 v']].map(([v, l]) => `<label><input type="radio" name="igMainAlong" value="${v}"${(source.mainAlong || 'none') === v ? ' checked' : ''}><span>${l}</span></label>`).join('')}</div><p id="igMainNote" class="ig-note"></p></div><button id="igSaveSource" class="primary-button" type="button">${s.source ? '預覽來源變更' : '預覽並建立'}</button>${s.source ? `<button id="igNewBinding" class="btn" type="button">＋ 選邊界建立配置</button><section class="ig-related"><h3>使用此來源的配置</h3>${s.bindings.filter(b => b.system === s.source.id).map(b => `<button type="button" class="btn" data-ig-open-binding="${b.id}">配置 ${b.id} · 面 ${b.boundary}</button>`).join('') || '<p>尚未配置，可以先保存來源。</p>'}</section>` : ''}</section><section id="igBindingForm"${s.mode !== 'binding' ? ' hidden' : ''}><h2>對齊邊界與 cell</h2><label>來源<select id="igSystem" style="min-height:44px"><option value="">明選目前來源</option>${(s.sources||[]).map(row=>`<option value="${row.id}"${String(row.id)===s.systemRaw?' selected':''}>${esc(row.name)} · ${row.id}</option>`).join('')}</select></label><button type="button" id="igEditSource" class="grid-text-button">編輯來源</button><label>1 · 邊界<select id="igBoundary"><option value="">選擇已有邊界（可尚未放置）</option>${s.boundaries.map(b => `<option value="${b.id}"${s.binding?.boundary === b.id ? ' selected' : ''}>面 ${b.id}${b.placed ? ' · 已放置' : ' · 尚未放置'}</option>`).join('')}</select></label><p id="igVertexSummary">2 · 點選右側邊界的實際頂點。</p><label>頂點<select id="igVertex"><option value="">先選邊界</option></select></label><p>3 · 點選網格的一格，或填入精確索引。</p><div class="ig-pair"><label>cell i<input id="igCellI" type="text" inputmode="numeric" value="${esc(s.binding?.cell?.[0] ?? '0')}"></label><label>cell j<input id="igCellJ" type="text" inputmode="numeric" value="${esc(s.binding?.cell?.[1] ?? '0')}"></label></div><button id="igLocateCell" class="btn" type="button">定位這一格</button><p>4 · 格子裡的對齊位置</p><div class="ig-anchor" role="group" aria-label="格子內的對齊位置">${GridAnchorPositions.positions.map(({name:t,u,v})=>`<button type="button" data-ig-anchor="${u},${v}" aria-pressed="false">${t}</button>`).join('')}</div><details class="ig-rational"><summary>其他精確比例</summary><div class="ig-pair"><label>u 分子<input id="igAnchorUN" type="text" inputmode="numeric" maxlength="4096" value="0"></label><label>u 分母<input id="igAnchorUD" type="text" inputmode="numeric" maxlength="4096" value="1"></label><label>v 分子<input id="igAnchorVN" type="text" inputmode="numeric" maxlength="4096" value="0"></label><label>v 分母<input id="igAnchorVD" type="text" inputmode="numeric" maxlength="4096" value="1"></label></div></details><p id="igAlignmentSummary" class="ig-summary"></p><button id="igSaveBinding" class="primary-button" type="button">${s.binding ? '預覽配置變更' : '預覽並建立配置'}</button><section id="igApplicationSection"${s.binding ? '' : ' hidden'}><h3>套用到承載面</h3><label>承載面（僅列同一邊界）<select id="igSurface"></select></label><p id="igApplyNote"></p><button id="igApplyBinding" type="button" class="btn">預覽套用</button><div id="igApplications"></div></section><details id="igKeyedEditor"${s.binding ? '' : ' hidden'}><summary>以頂點身分修改邊界</summary><p>保留每個頂點的身分。修改會重新檢查此邊界的所有配置與構件。</p><div id="igKeyedVertices"></div><div class="ig-pair">${['Left','Right','Top','Bottom'].map((a,k)=>`<label>向${['左','右','上','下'][k]}擴大 mm<input id="igGrow${a}" type="number" step="1" min="0" value="0"></label>`).join('')}</div><button id="igGrowBoundary" type="button" class="btn">將四側擴大填入頂點草稿</button><button id="igSaveBoundary" type="button" class="primary-button">預覽邊界變更</button></details>${s.binding ? `<button id="igDeleteBinding" class="btn danger" type="button">刪除此配置</button>` : ''}</section><section id="igInfo" class="ig-info" aria-live="off"><div class="ig-info-head"><h3 id="igInfoTitle">格資訊</h3><span id="igInfoCell"></span></div><div id="igInfoRows"></div></section></div><footer class="ig-footer"><p id="igStatus" role="status" aria-live="polite">所有變更先預覽，確認後才保存到目前場景。</p></footer></aside></div>`;
     $('igVertexSummary').after($('igBoundarySection'));
     mountRuleEditor(s);
     placeStudioLesson(dialog.querySelector('#igWorkspaceLesson'), 'grid:infinite-first', '這裡定無限格線；要套到邊界時再建立配置。');
@@ -325,6 +420,7 @@
     for (const id of ['igSaveSource','igSaveBinding']) { $(id).hidden = id === 'igSaveSource' ? s.mode === 'binding' : s.mode !== 'binding'; actions.append($(id)); }
     const discard=document.createElement('button');discard.id='igDiscardDraft';discard.type='button';discard.className='btn';discard.textContent='捨棄原始草稿';
     discard.onclick=()=>confirmDiscard(s,discard);actions.prepend(discard);
+    if(s.baseRef&&!s.orphaned){const reacquire=document.createElement('button');reacquire.id='igRepinDraft';reacquire.hidden=true;reacquire.type='button';reacquire.className='btn';reacquire.textContent='重新取得基底';reacquire.onclick=()=>repin(s).catch(e=>status(e.message,true));actions.prepend(reacquire);}
     actions.append($('igRulePreview'));footer.replaceChildren(notes, actions);
     const deleteButton=$('igDeleteBinding');
     if(deleteButton){const danger=document.createElement('details');danger.className='ig-delete-section';const summary=document.createElement('summary');summary.textContent='刪除配置';danger.append(summary);deleteButton.replaceWith(danger);danger.append(deleteButton);}
@@ -359,15 +455,20 @@
     $('igNewBinding')?.addEventListener('click', () => open({system: s.source.id, mode: 'binding', expectedSource:sourceKey(s.source)}));
     $('igEditSource').disabled=!s.source;
     $('igEditSource').onclick = () => {if(s.source)return open({system: s.source.id, expectedSource:sourceKey(s.source)});};
+    $('igSystem').onchange=()=>selectBindingSource(s,$('igSystem'));
     for (const b of dialog.querySelectorAll('[data-ig-open-binding]')) b.onclick = () => {
       const binding=s.bindings.find(row=>row.id===Number(b.dataset.igOpenBinding));
       return open({binding:binding.id,expectedSource:sourceKey(s.source),expectedBinding:bindingKey(binding)});
     };
     for (const node of dialog.querySelectorAll('#igSourceForm input,#igSourceForm select')) node.addEventListener('input', () => { syncFields(); drawGrid(s); syncDefinition(s); });
-    $('igBoundary').onchange = () => {
+    $('igBoundary').onchange = async () => {
       if (boundaryDraftChanged(s) && !window.confirm('邊界有尚未套用的頂點草稿。切換邊界會捨棄這些草稿，確定切換？')) {
         $('igBoundary').value = s.boundaryId == null ? '' : String(s.boundaryId); syncDraftState(s); return;
       }
+      const previous=[...s.inputPins.values()].find(ref=>ref.kind==='boundary'),id=Number($('igBoundary').value);
+      if(previous&&$('igBoundary').value){const b=await apiRequest('boundary '+id);if(!current(s)||!b.ok)return;
+        const next=await boundaryPin(id,b);if(!current(s))return;
+        if(!approveInputReplacement(previous,next)){$('igBoundary').value=String(previous.id);return;}}
       loadBoundary(s, Number($('igBoundary').value), false, true);
     };
     $('igVertex').onchange = () => { s.vertex = s.vertices.find(v => vertexId(v) === $('igVertex').value) || null; drawBoundary(s); alignment(s); };
@@ -392,8 +493,8 @@
     setAnchor(a?.[0]?.num ?? 0, a?.[0]?.den ?? 1, a?.[1]?.num ?? 0, a?.[1]?.den ?? 1);
     s.restoringBoundary = !!s.binding;
     s.initialSourceKey = sourceEditorKey(); s.initialBindingKey = s.binding ? savedBindingKey(s.binding) : bindingEditorKey(s); s.bindingReady = !s.binding;
-    dialog.oninput = dialog.onchange = event => {s.rawOverrides.delete(event.target.id);selectParameterPin(s,event.target);syncDraftState(s);};
-    s.initialRaw=JSON.stringify(rawForm(s));
+    dialog.oninput = dialog.onchange = event => {s.rawOverrides.delete(event.target.id);selectParameterPin(s,event.target);syncDraftState(s,event.target.id==='igSystem');};
+    s.normalizedRaw=rawForm(s);s.initialRaw=JSON.stringify(s.normalizedRaw);
     if(s.restored)restoreRaw(s,s.restored.rawForm);
     s.referenceSelections=new Map(parameterSelections(rawForm(s)));
     if(!s.restored){
@@ -913,7 +1014,7 @@
     if(!result.preview)throw Error(result.error||'無法取得預覽。');
     if(expectNew&&result.preview[expectNew[0]]?.some(row=>row.id===expectNew[1]&&row.before!=null)){await apiRequest('line cancel-preview');throw Error('新編號已被其他操作使用，請重新預覽建立。');}
     try{if(clearDraft&&result.preview.valid){await validateDraftPins(s);await stillSame(s);
-      const draft=ReferenceWorkspace.readFeatureAttachment(rawKind);
+      const draft=ReferenceWorkspace.readGridDrafts().drafts.find(d=>d.draftId===s.draftId);
       if(draft)ReferenceWorkspace.prepareFeatureConfirmation(result.preview.token,rawKind,draft,s.contextToken);}}
     catch(error){if(!current(s))throw error;const cancelled=await apiRequest('line cancel-preview');
       if(!cancelled.ok)throw Error(error.message+' 預覽取消结果尚未確認，請重新連線。');throw error;}
@@ -936,7 +1037,7 @@
   async function releaseHeldControls(s){
     if(!current(s)||!s.heldControls||s.releasing||ReferenceWorkspace.featureConfirmationPending()||connection.phase!=='ready')return;
     s.releasing=true;const controls=s.heldControls;
-    try{if(s.publishTarget&&!ReferenceWorkspace.readFeatureAttachment(rawKind)){
+    try{if(s.publishTarget&&!ReferenceWorkspace.readGridDrafts().drafts.find(d=>d.draftId===s.draftId)){
       const target=s.publishTarget;await renderObjects();if(!current(s))return;
       reveal(target.kind,target.id);await open(target.kind==='grid-system'?{system:target.id}:{binding:target.id},true);
       status('已依同一操作回執確認套用場景，原始草稿已同一步收起；頂列保存完整專案。');
@@ -954,8 +1055,8 @@
     if(!committed&&ReferenceWorkspace.busy){toast('專案正在保存或讀取，完成後再開啟網格工作區。');return;}
     if(!committed && window.DraftGate && !window.DraftGate.ask())return;
     if (dialog.open && !committed && (state?.busy || state?.initializing || state?.heldControls || state?.projectControls || state?.releasing || !mayLeave(state))) return;
-    const saved=ReferenceWorkspace.readFeatureAttachment(rawKind),restored=options.draft||(!committed&&saved&&matchesDraft(saved,options)?saved:null);
-    if(!committed&&saved&&!restored&&!window.confirm('專案已保留一份原始網格草稿。改開另一個來源／配置將取代它；已發布場景保持不變。確定取代？'))return;
+    const collection=ReferenceWorkspace.readGridDrafts(),saved=collection.drafts;
+    const restored=options.draft||(!committed?saved.find(d=>d.intent==='edit'&&!collection.orphans.includes(d.draftId)&&matchesDraft(d,options)):null);
     const ticket=++serial,context=ReferenceWorkspace.context(),contextToken=ReferenceWorkspace.getProjectState().contextToken;
     const frame=ReferenceWorkspace.history.frame,nativeStamp=JSON.stringify(ReferenceWorkspace.getEvidenceState());let transferred=false;
     const ownsEntry=()=>ticket===serial&&context===ReferenceWorkspace.context()&&contextToken===ReferenceWorkspace.getProjectState().contextToken&&
@@ -1005,10 +1106,10 @@
     closePanels();
     state?.trial?.dispose();
     const mode=restored?.kind||(binding?'binding':options.mode||'source');
-    if(saved&&!restored&&!committed&&!(mode==='source'?!source:!binding))ReferenceWorkspace.setFeatureAttachment(rawKind,null,contextToken);
-    state={context,contextToken,source,binding,mode,pins,fullPins,draftSchema,orphaned:!!restored&&restored.intent==='edit'&&(mode==='source'?!source:!binding),ruleDraft:restored?.ruleDraft?copy(restored.ruleDraft):null,inputPins:new Map((restored?.inputRefs||[]).map(ref=>[pinKey(ref),copy(ref)])),rawOverrides:new Map(),restored:restored&&copy(restored),draftId:restored?.draftId||crypto.randomUUID(),
+    state={context,contextToken,source,binding,mode,pins,fullPins,draftSchema,orphaned:!!restored&&(collection.orphans.includes(restored.draftId)||restored.intent==='edit'&&(mode==='source'?!source:!binding)),ruleDraft:restored?.ruleDraft?copy(restored.ruleDraft):null,inputPins:new Map((restored?.inputRefs||[]).map(ref=>[pinKey(ref),copy(ref)])),rawOverrides:new Map(),restored:restored&&copy(restored),draftId:restored?.draftId||crypto.randomUUID(),
       baseRef:restored?copy(restored.baseRef):mode==='source'?(source?pins.get('grid-system:'+source.id):null):(binding?pins.get('grid-binding:'+binding.id):null),
-      systemRaw:restored?.rawForm.igSystem??String(source?.id??''),bindings:objects.gridBindings||[],boundaries:objects.faces.filter(b=>b.kind==='boundary'),surfaces:surfaces.surfaces,references,base:[0n,0n],camera:[-1800,-1200,2400,1600],vertices:[],boundarySerial:0,busy:false};
+      systemRaw:restored?.rawForm.igSystem??String(source?.id??''),sources:objects.gridSystems||[],bindings:objects.gridBindings||[],boundaries:objects.faces.filter(b=>b.kind==='boundary'),surfaces:surfaces.surfaces,references,base:[0n,0n],camera:[-1800,-1200,2400,1600],vertices:[],boundarySerial:0,busy:false};
+    dialog.dataset.draftId=state.draftId;
     if(!dialog.open)dialog.showModal();await render(state);if(!ownsEntry())return;
     const row=options.ruleKey!=null?dialog.querySelector(`[data-ig-rule-key="${options.ruleKey}"]`):null;
     if(row){row.classList.add('is-focus');row.querySelector('[data-ig-rule-action="edit"]').focus({preventScroll:true});row.scrollIntoView({block:'nearest'});}
@@ -1036,7 +1137,7 @@
     const cancel=()=>{cleanup();if(current(s)&&trigger.isConnected)trigger.focus();};
     prompt.querySelector('#igDiscardCancel').onclick=cancel;
     prompt.querySelector('#igDiscardConfirm').onclick=()=>{if(pending()){cancel();return;}
-      cleanup();ReferenceWorkspace.setFeatureAttachment(rawKind,null,s.contextToken);close(true,true);};
+      cleanup();ReferenceWorkspace.setGridDraft(s.draftId,null,s.contextToken);close(true,true);};
     prompt.onkeydown=event=>{if(event.key==='Escape'){event.preventDefault();event.stopPropagation();cancel();}
       else if(event.key==='Tab'){const buttons=[...prompt.querySelectorAll('button')],index=buttons.indexOf(document.activeElement);event.preventDefault();buttons[(index+(event.shiftKey?-1:1)+buttons.length)%buttons.length].focus();}};
     prompt.querySelector('#igDiscardCancel').focus();
@@ -1047,7 +1148,12 @@
   window.addEventListener('project-info-changed',()=>{if(state&&!current(state))close(true,true);else if(state)void releaseHeldControls(state);});
   // An equal definition after delete/recreate is still a different live edit.
   // This is an in-session revision guard, never a persistent identity ledger.
-  window.addEventListener('geometry-definition-changed',()=>{if(state)state.nativeChanged=true;});
+  window.addEventListener('geometry-definition-changed',async()=>{
+    const s=state;if(!current(s))return;s.nativeChanged=true;const ticket=s.pinRefresh=(s.pinRefresh||0)+1;
+    try{const objects=await apiRequest('objects');if(!current(s)||ticket!==s.pinRefresh||!objects.ok)return;
+      const pins=await catalogPins(objects,s.draftSchema);if(!current(s)||ticket!==s.pinRefresh)return;s.pins=pins;syncDraftState(s);
+    }catch(error){if(current(s))status(error.message,true);}
+  });
   const cardCache=new Map();let cardQueue=Promise.resolve();
   function cardBinding(o) {
     const width=OC_W,height=OC_H,header=48,footer=47;
@@ -1080,9 +1186,37 @@
   function lessonSurface() {
     return {axes: axes.map(a => ({id: a, heading: axisHeading(a)})), stepNoun, stepTitle: stepFieldTitle};
   }
-  function create(){const draft=ReferenceWorkspace.readFeatureAttachment(rawKind);if(!draft)return open();
-    return open({draft,...(draft.kind==='source'?(draft.intent==='edit'?{system:draft.baseRef.id}:{}):
-      draft.intent==='edit'?{binding:draft.baseRef.id}:{mode:'binding',system:/^\d+$/.test(draft.rawForm.igSystem)?Number(draft.rawForm.igSystem):null})});}
+  function create(){
+    const collection=ReferenceWorkspace.readGridDrafts();if(!collection.drafts.length)return open();
+    const contextToken=ReferenceWorkspace.getProjectState().contextToken;
+    const chooser=document.createElement('dialog');chooser.id='gridDraftChooser';
+    chooser.style.cssText='box-sizing:border-box;width:min(480px,calc(100vw - 24px));max-height:85vh;overflow:auto';
+    const title=document.createElement('h2');title.textContent=`繼續未完成草稿（${collection.drafts.length}）`;chooser.append(title);
+    const add=(text,run,draftId)=>{const button=document.createElement('button');button.type='button';button.textContent=text;if(draftId)button.dataset.draftId=draftId;
+      button.style.cssText='display:block;min-height:44px;width:100%;white-space:normal;margin:8px 0';button.onclick=()=>{chooser.close();chooser.remove();if(ReferenceWorkspace.getProjectState().contextToken!==contextToken)return;run();};chooser.append(button);};
+    for(const draft of collection.drafts){const orphan=collection.orphans.includes(draft.draftId),lost=draft.inputRefs.some(r=>r.lost);
+      add(`${draft.rawForm.igName||draft.draftId} · ${orphan?'原物件已刪除':lost?'來源已刪除，需改選':'未完成'}`,()=>{
+        const latest=ReferenceWorkspace.readGridDrafts().drafts.find(d=>d.draftId===draft.draftId);if(!latest)return;
+        return open({draft:latest,...(latest.kind==='source'?(latest.intent==='edit'?{system:latest.baseRef.id}:{}):latest.intent==='edit'?{binding:latest.baseRef.id}:{mode:'binding',system:/^\d+$/.test(latest.rawForm.igSystem)?Number(latest.rawForm.igSystem):null})});
+      },draft.draftId);
+    }
+    add('建立新來源',()=>open());add('取消',()=>{});chooser.addEventListener('cancel',()=>chooser.remove());document.body.append(chooser);chooser.showModal();
+    void (async()=>{
+      const objects=await apiRequest('objects');if(!objects.ok||!chooser.isConnected||ReferenceWorkspace.getProjectState().contextToken!==contextToken)return;
+      const legacy=await catalogPins(objects,F.GRID_SCHEMA),rules=await catalogPins(objects,F.GRID_RULE_SCHEMA),boundaries=new Map();
+      for(const id of new Set(collection.drafts.flatMap(d=>d.inputRefs.filter(ref=>ref.kind==='boundary').map(ref=>ref.id)))){
+        const b=await apiRequest('boundary '+id);if(b.ok)boundaries.set('boundary:'+id,await boundaryPin(id,b));
+      }
+      if(!chooser.isConnected||ReferenceWorkspace.getProjectState().contextToken!==contextToken)return;
+      const live=ReferenceWorkspace.readGridDrafts();
+      for(const button of chooser.querySelectorAll('[data-draft-id]')){
+        const d=live.drafts.find(d=>d.draftId===button.dataset.draftId);if(!d){button.remove();continue;}
+        const pins=d.schema===F.GRID_SCHEMA?legacy:rules,orphan=live.orphans.includes(d.draftId),lost=d.inputRefs.some(ref=>ref.lost);
+        const stale=[...(d.baseRef?[d.baseRef]:[]),...d.inputRefs.filter(ref=>!ref.lost)].some(ref=>!samePin(ref,(ref.kind==='boundary'?boundaries:pins).get(pinKey(ref))));
+        button.textContent=`${d.rawForm.igName||d.draftId} · ${orphan?'原物件已刪除':lost?'來源已刪除，需改選':stale?'已過期':'未完成'}`;
+      }
+    })().catch(error=>{if(chooser.isConnected)toast(error.message);});
+  }
   window.InfiniteGridWorkspace={openSystem:(id,options={})=>selectedOpen({...options,system:id}),openBinding:id=>selectedOpen({binding:id}),create,createBinding:id=>selectedOpen({system:id,mode:'binding'}),cardBinding,close,flush,setProjectBusy,lessonSurface,get isOpen(){return dialog.open;}};
   if(oc.gridBindings.length)drawObjects();
 })();

@@ -117,6 +117,7 @@ NODE_TEST_FILES = [
     'tests/test_face_projection_store.js',
     'tests/test_grid_trial_geometry.js',
     'tests/test_grid_rule_draft.js',
+    'tests/test_grid_drafts_collection.js',
     'tests/test_grid_rule_lines.js',
     'tests/test_issue77_attachment.js',
     'tests/test_issue77_history.js',
@@ -174,6 +175,10 @@ NODE_PURE_TEST_FILES = {
     'node:grid_definition_diagram': 'tests/test_grid_definition_diagram.js',
 }
 NODE_EXCLUDED = {
+    'tests/k2a_source_repin_browser.cjs': 'Required isolated K2a-A Chromium source repin/replacement gate: stale cancellation, same-ID lost refusal and reviewed different-ID selection',
+    'tests/k2a_zip_browser.cjs': 'Required K2a-A true ZIP save/import into another fresh isolated service; set GEOMETRY_FRESH_TEST_URL as well as GEOMETRY_TEST_URL',
+    'tests/k2a_native_browser.cjs': 'Required isolated K2a-A native confirm/Undo, deletion receipts, permanent orphans/lost and same-ID recreation through the actual browser owner',
+    'tests/k2a_drafts_browser.cjs': 'Required isolated K2a-A real Chromium 1280/390 draft collection/continuation gate; run with GEOMETRY_ISOLATED_SERVICE=1 and GEOMETRY_TEST_URL',
     'tests/room_multi_candidate_browser.js': 'Required isolated same-page candidate sessions through actual room owner, Worker/source invalidation, interrupted replies, history and fresh-context ZIP reopen',
     'tests/test_section_profile_browser.js': 'Required isolated Q38 native/UI model, desktop/390, keyboard, preview/cancel, placement and real project Save/new/Open gate; run separately, not a node unit suite',
     'tests/rule-case-workbench-controller.cjs': 'Required actual standalone HTTP/native controller lifecycle suite; needs explicit isolated GEOMETRY_RULE_CASE_TEST_URL; not a generic node fixture',

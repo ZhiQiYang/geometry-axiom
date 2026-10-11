@@ -318,6 +318,37 @@ class GridSystemContract(unittest.TestCase):
             self.assertEqual(before, self.snapshot(), "one invalid child/support/second surface must roll back every application")
         self.roundtrip()
 
+    def test_k2a_deletion_receipt_names_removed_source_and_not_recreated_identity(self):
+        self.commit(system())
+        receipt = self.commit("delete grid-system 0")
+        self.assertEqual([{"kind": "grid-system", "id": 0}], receipt.get("deletedObjects"))
+        recreated = self.commit(system())
+        self.assertEqual([], recreated["deletedObjects"])
+        reset = self.command("reset")
+        self.assertEqual([{"kind": "grid-system", "id": 0}], reset["deletedObjects"])
+
+    def test_k2a_parameter_confirmation_receipt_includes_intermediate_deletion(self):
+        card = {"id": 1, "name": "source card", "nextFieldId": 3, "fields": [
+            {"id": field, "name": "source " + str(field), "type": "dimension", "input": "600"}
+            for field in [1, 2]]}
+        def confirm(operations):
+            path = Path(self.directory.name) / "parameter-receipt.json"
+            path.write_text(json.dumps({"schema": "engineering-transaction/1",
+                "expectedRevision": self.command("engineering-read")["revision"], "operations": operations}))
+            result = self.command("engineering-preview " + native_path(path))
+            self.assertTrue(result.get("preview", {}).get("valid"), result)
+            result = self.command("engineering-confirm " + str(result["preview"]["token"]))
+            self.assertTrue(result["ok"], result)
+            return result
+        confirm([{"op": "put-parameter", "value": card}])
+        card["fields"] = card["fields"][:1]
+        receipt = confirm([{"op": "put-parameter", "value": card}])
+        self.assertEqual([{"kind": "parameter-field", "parameterId": 1, "fieldId": 2}], receipt.get("deletedObjects"))
+        before = self.command("dump")["text"]
+        receipt = confirm([{"op": "delete-parameter", "id": 1}, {"op": "put-parameter", "value": card}])
+        self.assertEqual(before, self.command("dump")["text"])
+        self.assertEqual([{"kind": "parameter-field", "parameterId": 1, "fieldId": 1}], receipt.get("deletedObjects"))
+
     def test_protected_source_deletion_and_ordinary_grid_edits(self):
         self.pair()
         self.reject("delete grid-system 0", ("I37", "still referenced by grid"))

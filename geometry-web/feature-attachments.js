@@ -10,6 +10,7 @@
   const SCHEMA = "geometry-feature-attachments/1";
   const CASE_KIND=Cases.KIND, CASE_SCHEMA=Cases.SCHEMA;
   const GRID_SCHEMA = "grid-editor-draft/1", GRID_RULE_SCHEMA = "grid-editor-draft/2", GRID_KIND = "grid-draft";
+  const GRID_DRAFTS_SCHEMA = "grid-editor-drafts/1", MAX_GRID_DRAFTS = 16, MAX_GRID_DRAFTS_BYTES = 1024 * 1024;
   const ROOM_KIND = "source-rooms", ROOM_SCHEMA = "source-rooms/1", ROOM_CAPABILITY = "source-room-collection/1";
   const ROOM_HISTORY_SCHEMA = "source-rooms/2", ROOM_HISTORY_CAPABILITY = "source-room-history/1";
   const ROOM_DISPLAY_SCHEMA = "source-rooms/3", ROOM_DISPLAY_CAPABILITY = "source-room-display/1";
@@ -153,13 +154,15 @@
     }
     visit(value, 0);return counter.bytes();
   }
-  function validateReference(ref) {
+  function validateReference(ref, allowLost = false) {
+    const lostKeys = allowLost ? ["lost"] : [];
+    if (Object.hasOwn(ref || {}, "lost") && (!allowLost || ref.lost !== true)) fail("曾缺失旗標只准為 true。");
     if (ref?.kind === "parameter-field") {
-      if (!keys(ref, ["kind", "parameterId", "fieldId", "fingerprint"]) ||
+      if (!keys(ref, ["kind", "parameterId", "fieldId", "fingerprint"], lostKeys) ||
           !uint(ref.parameterId) || !uint(ref.fieldId) || !hash(ref.fingerprint)) fail("網格草稿參數引用不合法。");
     } else {
       const boundary = ref?.kind === "boundary";
-      if (!keys(ref, ["kind", "id", "fingerprint"], boundary ? ["vertexKeysFingerprint"] : []) ||
+      if (!keys(ref, ["kind", "id", "fingerprint"], [...(boundary ? ["vertexKeysFingerprint"] : []), ...lostKeys]) ||
           !["grid-system", "grid-binding", "boundary"].includes(ref.kind) || !uint(ref.id) ||
           (boundary && (ref.id === 0 || !hash(ref.vertexKeysFingerprint))) || !hash(ref.fingerprint))
         fail("網格草稿的已發布引用不合法。");
@@ -169,7 +172,7 @@
   function referenceKey(ref) {
     return ref.kind === "parameter-field" ? `${ref.kind}:${ref.parameterId}:${ref.fieldId}` : `${ref.kind}:${ref.id}`;
   }
-  function validateGridDraft(value) {
+  function validateGridDraft(value, allowLost = false) {
     boundedJSON(value);
     const rules = value?.schema === GRID_RULE_SCHEMA;
     if (!keys(value, ["schema", "draftId", "kind", "intent", "baseRef", "inputRefs", "rawForm", ...(rules ? ["ruleDraft"] : [])]) ||
@@ -181,7 +184,7 @@
     if (!Array.isArray(value.inputRefs) || value.inputRefs.length > 20) fail("網格草稿來源清單不合法。");
     const seen = new Set();
     for (const ref of value.inputRefs) {
-      validateReference(ref);
+      validateReference(ref, allowLost);
       const key = referenceKey(ref);
       if (seen.has(key)) fail("網格草稿來源引用重複。");
       seen.add(key);
@@ -201,11 +204,44 @@
     // The native preview validator alone decides whether they may be published.
     return value;
   }
+  function validateGridDrafts(value) {
+    jsonBytes(value, MAX_GRID_DRAFTS_BYTES);
+    if (!keys(value,["schema","drafts","orphans"]) || value.schema !== GRID_DRAFTS_SCHEMA ||
+        !Array.isArray(value.drafts) || value.drafts.length < 1 || value.drafts.length > MAX_GRID_DRAFTS ||
+        !Array.isArray(value.orphans) || value.orphans.length > value.drafts.length || new Set(value.orphans).size !== value.orphans.length)
+      fail("網格草稿集合版本、份數或孤兒清單不合法。");
+    const ids = new Set(), targets = new Set();
+    for (const draft of value.drafts) {
+      validateGridDraft(draft,true);
+      if (ids.has(draft.draftId)) fail("網格草稿身分重複。");
+      ids.add(draft.draftId);
+      if (draft.intent === "edit" && !value.orphans.includes(draft.draftId)) {
+        const target = referenceKey(draft.baseRef);
+        if (targets.has(target)) fail("同目標已有非孤兒網格草稿。");
+        targets.add(target);
+      }
+    }
+    if (value.orphans.some(id=>!value.drafts.some(d=>d.draftId===id && d.intent==="edit"))) fail("孤兒必須指向集合內的編輯草稿。");
+    return value;
+  }
+  function gridDrafts(value) {
+    if (value === null) return {drafts:[],orphans:[]};
+    if (value.schema === GRID_DRAFTS_SCHEMA) {validateGridDrafts(value);return JSON.parse(JSON.stringify({drafts:value.drafts,orphans:value.orphans}));}
+    validateGridDraft(value);return {drafts:[JSON.parse(JSON.stringify(value))],orphans:[]};
+  }
+  function gridDraftValue(drafts, orphans = []) {
+    if (!drafts.length) return null;
+    if (drafts.length === 1 && !orphans.length && !drafts[0].inputRefs.some(ref=>ref.lost)) return validateGridDraft(drafts[0]);
+    return validateGridDrafts({schema:GRID_DRAFTS_SCHEMA,drafts:[...drafts].sort((a,b)=>a.draftId<b.draftId?-1:a.draftId>b.draftId?1:0),orphans:[...orphans].sort()});
+  }
   function validateRecord(record) {
     const bytes = boundedJSON(record, true);
     if (!keys(record, ["kind", "schema", "value"]))
       fail("功能附件種類或版本不支援。");
-    if (record.kind === GRID_KIND && [GRID_SCHEMA, GRID_RULE_SCHEMA].includes(record.schema)) {
+    if (record.kind === GRID_KIND && record.schema === GRID_DRAFTS_SCHEMA) {
+      jsonBytes(record,MAX_GRID_DRAFTS_BYTES);
+      validateGridDrafts(record.value);
+    } else if (record.kind === GRID_KIND && [GRID_SCHEMA, GRID_RULE_SCHEMA].includes(record.schema)) {
       if (record.value?.schema !== record.schema) fail("網格草稿附件版本不一致。");
       boundedJSON(record); validateGridDraft(record.value);
     } else if (record.kind === ROOM_KIND && [ROOM_SCHEMA,ROOM_HISTORY_SCHEMA,ROOM_DISPLAY_SCHEMA].includes(record.schema)) {
@@ -227,7 +263,7 @@
     const kinds = new Set();
     for (const record of envelope.records) {
       validateRecord(record);
-      if (record.kind === GRID_KIND) boundedJSON({schema:SCHEMA, records:[record]});
+      if (record.kind === GRID_KIND && record.schema !== GRID_DRAFTS_SCHEMA) boundedJSON({schema:SCHEMA, records:[record]});
       if (kinds.has(record.kind)) fail("功能附件種類重複。");
       kinds.add(record.kind);
     }
@@ -241,10 +277,11 @@
     const schema = value !== null && typeof value === "object" ? Object.getOwnPropertyDescriptor(value,"schema")?.value : undefined;
     return validateRecord({kind, schema, value});
   }
-  function capabilities(envelope) { validate(envelope); return envelope.records.flatMap(record => record.kind === GRID_KIND ? [record.schema] :
+  function capabilities(envelope) { validate(envelope); return [...new Set(envelope.records.flatMap(record => record.kind === GRID_KIND ?
+    (record.schema === GRID_DRAFTS_SCHEMA ? [GRID_DRAFTS_SCHEMA,...record.value.drafts.map(d=>d.schema)] : [record.schema]) :
     record.kind === Evidence.KIND ? [Evidence.SCHEMA] : record.kind === CASE_KIND ? [CASE_SCHEMA] :
     [ROOM_CAPABILITY,...(record.schema===ROOM_DISPLAY_SCHEMA?[ROOM_DISPLAY_CAPABILITY]:[]),
-      ...((record.schema===ROOM_HISTORY_SCHEMA||record.value.legacyHistory?.length)?[ROOM_HISTORY_CAPABILITY]:[])]).sort(); }
+      ...((record.schema===ROOM_HISTORY_SCHEMA||record.value.legacyHistory?.length)?[ROOM_HISTORY_CAPABILITY]:[])]))].sort(); }
   function evidenceLinks(envelope, sources, projectScope) {
     validate(envelope);
     const value = envelope.records.find(record => record.kind === Evidence.KIND)?.value || null;
@@ -283,6 +320,7 @@
     validateSourceRecords:Rooms.validateSourceRecords, validateReconstructionReviews:Rooms.validateReconstructionReviews,
     sourceFields:Object.freeze(sourceFields), bindingFields:Object.freeze(bindingFields), ruleFields:Object.freeze(ruleFields),
     gridSourceDefinition, gridSourceKey, ruleAwareSource,
+    GRID_DRAFTS_SCHEMA, MAX_GRID_DRAFTS, MAX_GRID_DRAFTS_BYTES, validateGridDrafts, gridDrafts, gridDraftValue, referenceKey,
     validate, validateRecord, validateGridDraft, assertKind, record, capabilities, references, sourceRooms, validateNativeRefs, validateNativePins, jsonBytes, lifecycleReserve,
     retireRoomBoundary, changedRoomBoundary, unknownRoomHistory};
 });

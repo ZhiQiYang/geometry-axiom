@@ -97,8 +97,10 @@ static void batch_preview(const char *path,const char *schema_name,const char *s
     int count=eng_json_size(&j,operations);if(count<1||count>ENG_OPERATION_MAX){eng_bridge_error("CAPACITY","Transaction needs 1..256 operations");eng_json_free(&j);free(text);return;}
     World *candidate=malloc(sizeof *candidate);if(!candidate){eng_bridge_error("MEMORY",memory_message);eng_json_free(&j);free(text);return;}*candidate=g_world;
     g_engineering_error[0]=0;g_scene_last_error[0]=0;g_reference_issue_count=0;bool ok=true;
+    g_deleted_field_count=0;g_deleted_fields_token=0;
     for(int i=0;i<count&&ok;++i){
         ok=operation(candidate,&j,eng_json_at(&j,operations,i));
+        if(ok)receipt_scan_candidate(candidate);
         if(ok)ok=assembly_versions_immutable(&g_world,candidate);
     }
     if(ok){const World *previous=g_subgrid_before;bool capturing=g_reference_capturing;g_reference_capturing=true;g_reference_trial=*candidate;
@@ -106,6 +108,7 @@ static void batch_preview(const char *path,const char *schema_name,const char *s
         if(!ok){*candidate=g_reference_trial;if(!g_engineering_error[0])eng_fail(g_revalidate_error[0]?g_revalidate_error:"I35: candidate geometry is invalid");}}
     for(size_t i=0;i<candidate->timber_count&&ok;++i)if(!candidate->timbers[i].placed){ok=eng_fail("I9: candidate still contains an unplaced timber");}
     char *stage_label=(char *)label;reference_stage(&g_world,candidate,&stage_label,1,ok);g_preview.engineering_batch=true;g_preview.assembly_batch=kind==1;g_preview.profile_batch=kind==2;
+    g_deleted_fields_token=g_preview.token;
     if(!ok)g_preview.assembly_diagnostic=g_asm_diagnostic;
     fputs("{\"ok\":true,\"preview\":",stdout);write_preview();fputs("}\n",stdout);
     free(candidate);eng_json_free(&j);free(text);
@@ -126,7 +129,7 @@ static void batch_confirm(const char *arg,int kind,const char *token_message,con
     if(changed){history_record(&g_world);history_restore_world(&g_world,&g_preview.after);++g_definition_revision;}
     g_preview.ready=false;char hash[65];bool hashed=eng_definition_hash(&g_world,hash);
     printf("{\"ok\":true,\"history_changed\":%s,\"revision\":%llu,\"before_revision\":%llu,\"transaction_id\":%u",changed?"true":"false",(unsigned long long)g_definition_revision,(unsigned long long)before,token);
-    if(hashed)printf(",\"definition_sha256\":\"%s\"",hash);fputs("}\n",stdout);
+    if(hashed)printf(",\"definition_sha256\":\"%s\"",hash);json_deleted_objects(&g_preview.before,false);fputs("}\n",stdout);
 }
 static void batch_cancel(const char *arg,int kind,const char *token_message)
 {
