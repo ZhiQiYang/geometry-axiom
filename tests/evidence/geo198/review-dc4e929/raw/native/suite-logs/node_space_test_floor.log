@@ -1,0 +1,18 @@
+✔ independent census is frozen; default full space totals 228 without optional timber (3.987925ms)
+✔ omitting a whole expected group fails even if every executed assertion passes (6.401467ms)
+✔ early return inside a group fails the fixed count after a resolved action (0.323943ms)
+✔ throwing after all assertions still leaves the group and run incomplete (0.540786ms)
+✔ unfinished outer run fails even with every expected group counted (0.261158ms)
+✔ failed assertions and additional assertions both reject exact counts (0.66945ms)
+✔ partial scopes require only their declared groups; timber and history counts remain distinct (3.51693ms)
+✔ unknown, repeated, out-of-scope and nested groups cannot inflate completion (0.582449ms)
+✔ real configuration declares full scope separately from every existing partial filter (2.925644ms)
+✔ real configuration keeps rejecting ambiguous filters, invalid flags and unscoped history (0.601135ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 190.84756

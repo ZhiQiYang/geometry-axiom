@@ -5,6 +5,10 @@
 後續證據／數量表提交不冒充 exact-head WSL 裁判。
 公理依據：R7、R8、R12、R14、R15；未改 SSOT、正典、白話、BACKLOG 或決策佇列。
 
+`dc4e929` 的後續審查 raw（native、完整 space 失敗、A/B Chromium、reader 診斷）
+另見 [可讀證據與原封包](../evidence/geo198/review-dc4e929/README.md)。
+補交只保留既有執行結果，不表示補交提交已受測或正式七 job 通過。
+
 ## 修改前後實跑
 
 | 精確輸入 | 修改前 | 修改後 |
