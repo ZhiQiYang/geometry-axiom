@@ -12,7 +12,7 @@
 
 `windows/`：六支皆已編譯，五支 fresh；integrity 的 SAC WinError 4551 在初次及後續重試後仍受阻，未寫 fresh sidecar。GDI 1/1 通過。沒有變更安全設定或停止使用者服務。
 
-所有 `.log.gz` 的解壓長度及 SHA-256 見 `log-archives.json`。來源身分區分 raw checkout／Git blob／CRLF→LF 正規化，詳見 audit identity 與首輪的 `legacy-newline-identity.json`。`current_geometry.c` 維持全部 CRLF。
+所有 `.gz` 的解壓長度及 SHA-256 見 `log-archives.json`；大型原始 batch JSON 同樣無損壓縮，避免重複數萬行既有變異 metadata。來源身分區分 raw checkout／Git blob／CRLF→LF 正規化，詳見 audit identity 與首輪的 `legacy-newline-identity.json`。`current_geometry.c` 維持全部 CRLF。
 
 本目錄是提交前的局部驗證；final-head 七個 workflow job 的收據另外綁定最後 HEAD/tree，於 PR【Codex】留言提供，不以本目錄冒充 final-head 全綠或另一位 agent 的【WSL 裁判】批准。正式獨立裁判仍待提供，#193 retired 取消 preview 的跨 DSL 污染仍是獨立阻擋。維持 stack／draft、不合併。
 
