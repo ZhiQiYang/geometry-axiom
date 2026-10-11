@@ -110,7 +110,7 @@ const {chromium}=require('playwright');
   const draft=capacity.largeDraft();draft.inputRefs=[];capacity.pad(draft,size);
   const result=await page.evaluate(async d=>{
    const W=ReferenceWorkspace,F=GeometryProject.Features,call=async cmd=>{const r=await apiRequest(cmd);if(!r.ok)throw Error(cmd+': '+r.error);return r;};
-   for(const old of W.readGridDrafts().drafts)W.setGridDraft(old.draftId,null,W.getProjectState().contextToken);
+   for(const old of W.readGridDrafts().drafts.sort((a,b)=>new TextEncoder().encode(JSON.stringify(b)).length-new TextEncoder().encode(JSON.stringify(a)).length))W.setGridDraft(old.draftId,null,W.getProjectState().contextToken);
    await call('reset');for(const id of [1,2])await call('line grid-system '+id+' name-hex 736f75726365 main-along none u repeat 0 600 v repeat 0 400');await renderObjects();
    await InfiniteGridWorkspace.openSystem(2);document.getElementById('igUStep').value='700';document.getElementById('igUStep').dispatchEvent(new Event('input',{bubbles:true}));InfiniteGridWorkspace.flush();InfiniteGridWorkspace.close(true);
    const other=W.readGridDrafts().drafts[0],row=(await call('objects')).gridSystems.find(row=>row.id===1);d.baseRef.fingerprint=await GeometryProject.sha(new TextEncoder().encode(F.gridSourceKey(row)));
