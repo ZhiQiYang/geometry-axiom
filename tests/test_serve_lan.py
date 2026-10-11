@@ -145,7 +145,8 @@ class LanCase(unittest.TestCase):
         gate = self.guard.LanGate(config, log=self.logs.append, **kwargs)
         server = self.mod.LanHTTPServer(("127.0.0.1", port), gate, ssl_context, ca_der,
                                         context_factory or self.lan_context)
-        mode = self.mod.LanMode(gate, server, log=self.logs.append).start()
+        mode = self.mod.LanMode(gate, server, log=self.logs.append,
+                                category_query=lambda ip: "Private").start()
         self.addCleanup(mode.stop)
         return gate, server, mode
 
@@ -161,7 +162,8 @@ class LanCase(unittest.TestCase):
         self.addCleanup(stop)
         return server.server_port
 
-    def send(self, port, method, target, *, host=_DEFAULT, origin=None, cookie=None, headers=(), body=b"",
+    def send(self, port, method, target, *, host=_DEFAULT, origin=None, cookie=None,
+             headers=(("Sec-Fetch-Site", "same-origin"),), body=b"",
              length=None, timeout=5):
         connection = http.client.HTTPConnection("127.0.0.1", port, timeout=timeout)
         try:
@@ -190,13 +192,18 @@ class LanCase(unittest.TestCase):
     def pair(self, gate, code=None, **kwargs):
         code = gate.display_codes()[0] if code is None else code
         kwargs.setdefault("origin", gate.config.origin)
+        headers = list(kwargs.pop("headers", ()))
+        if not any(name.lower() == "sec-fetch-site" for name, _ in headers):
+            headers.append(("Sec-Fetch-Site", "same-origin"))
+        kwargs["headers"] = headers
         return self.send(gate.config.port, "POST", "/lan/pair", body=code.encode("utf-8"), **kwargs)
 
     def paired_cookie(self, gate):
         reply = self.pair(gate)
         self.assertEqual(reply.status, 204, "配對流程本身失敗，後續守門測試沒有對照組")
         name, token, _ = parse_set_cookie(reply.headers["set-cookie"])
-        self.assertEqual(name, "__Host-geometry-lan")
+        self.assertEqual(name, gate.cookie_name)
+        self.assertTrue(name.startswith("__Host-geometry-lan-"))
         return f"{name}={token}", token
 
     def wait_closed(self, mode, limit):
@@ -406,9 +413,9 @@ class GateLayer(LanCase):
         self.assertLess(time.monotonic() - started, 2.0)
         cookie, token = self.paired_cookie(gate)
         other_name = "geometry-lan=" + token
-        for label, value in [("wrong value", "__Host-geometry-lan=bogus"), ("other name only", other_name),
-                             ("two cookies (same)", f"{cookie}; {cookie}"), ("valid + bogus", f"{cookie}; __Host-geometry-lan=x"),
-                             ("empty", "__Host-geometry-lan=")]:
+        for label, value in [("wrong value", f"{gate.cookie_name}=bogus"), ("other name only", other_name),
+                             ("two cookies (same)", f"{cookie}; {cookie}"), ("valid + bogus", f"{cookie}; {gate.cookie_name}=x"),
+                             ("empty", f"{gate.cookie_name}=")]:
             with self.subTest(cookie=label):
                 reply = self.send(port, "GET", "/runtime", cookie=value)
                 sent += 1
@@ -570,7 +577,8 @@ class GateLayer(LanCase):
         self.assertEqual(reply.status, 204)
         self.assertEqual(len(reply.all("Set-Cookie")), 1)
         name, token, attributes = parse_set_cookie(reply.headers["set-cookie"])
-        self.assertEqual(name, "__Host-geometry-lan")
+        self.assertEqual(name, gate.cookie_name)
+        self.assertTrue(name.startswith("__Host-geometry-lan-"))
         self.assertGreaterEqual(len(token), 40)
         for flag in ("secure", "httponly"):
             self.assertIn(flag, attributes)
@@ -935,14 +943,16 @@ class TlsLayer(LanCase):
         self.assertFalse(ca_ku.value.digital_signature)
         constraints = ca.extensions.get_extension_for_class(x509.NameConstraints)
         self.assertTrue(constraints.critical, "CA 的 NameConstraints 必須是 critical")
+        denied = [x509.DNSName("geometry-lan-names.invalid"), x509.RFC822Name("geometry-lan-names.invalid"),
+                  x509.UniformResourceIdentifier("geometry-lan-names.invalid")]
         self.assertEqual(constraints.value.permitted_subtrees,
-                         [x509.IPAddress(ipaddress.ip_network(f"{LAN_IP}/32"))])
-        self.assertIsNone(constraints.value.excluded_subtrees)
+                         [x509.IPAddress(ipaddress.ip_network(f"{LAN_IP}/32")), *denied])
+        self.assertEqual(constraints.value.excluded_subtrees, denied)
         for cert in (leaf, ca):
             before = getattr(cert, "not_valid_before_utc", None) or cert.not_valid_before.replace(
                 tzinfo=datetime.timezone.utc)
             after = lan_tls._not_after(cert)
-            self.assertLessEqual(after - before, datetime.timedelta(days=7, minutes=5))
+            self.assertLessEqual(after - before, datetime.timedelta(days=7))
         with self.assertRaises(self.guard.LanRefused):
             lan_tls.issue(LAN_IP, 8)
         stored = {path.name: path.read_bytes() for path in material.directory.iterdir()}
@@ -1046,6 +1056,7 @@ class TlsLayer(LanCase):
         result = {}
         with patch.dict(os.environ, {"LOCALAPPDATA": str(root)}), \
                 patch.object(self.guard, "validate", return_value=config), \
+                patch.object(self.guard, "query_network_category", return_value="Private"), \
                 patch.object(self.mod, "LanHTTPServer", side_effect=loopback_lan_server), \
                 patch.object(self.mod, "lan_prepare", side_effect=prepare), \
                 patch.object(self.mod, "NativeContext", side_effect=self.lan_context), \
@@ -1062,11 +1073,13 @@ class TlsLayer(LanCase):
             body = codes[0].encode()
             response = self.tls_request(lan_port, context, LAN_IP, (
                 f"POST /lan/pair HTTP/1.1\r\nHost: {LAN_IP}:{port}\r\nOrigin: https://{LAN_IP}:{port}\r\n"
-                f"Content-Length: {len(body)}\r\n\r\n").encode() + body)
+                f"Sec-Fetch-Site: same-origin\r\nContent-Length: {len(body)}\r\n\r\n").encode() + body)
             self.assertTrue(response.startswith(b"HTTP/1.0 204"), response[:120])
-            token = re.search(rb"__Host-geometry-lan=([^;]+);", response).group(1).decode()
+            cookie_name, token = [value.decode() for value in re.search(rb"Set-Cookie: ([^=;]+)=([^;]+);", response).groups()]
+            self.assertEqual(cookie_name, captured["runtime"].gate.cookie_name)
             runtime = self.tls_request(lan_port, context, LAN_IP, (
-                f"GET /runtime HTTP/1.1\r\nHost: {LAN_IP}:{port}\r\nCookie: __Host-geometry-lan={token}\r\n\r\n").encode())
+                f"GET /runtime HTTP/1.1\r\nHost: {LAN_IP}:{port}\r\nSec-Fetch-Site: same-origin\r\n"
+                f"Cookie: {cookie_name}={token}\r\n\r\n").encode())
             self.assertTrue(runtime.startswith(b"HTTP/1.0 200"), runtime[:120])
             loopback = self.send(port, "GET", "/runtime", host=f"127.0.0.1:{port}")
             self.assertEqual(loopback.status, 200, "區網模式下本機 loopback 應照常服務")

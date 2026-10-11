@@ -35,9 +35,17 @@ class NativeContext:
             if not response:
                 return
 
-    def close(self):
+    def close(self, *, interrupt=False):
         # Same ordering as a load transaction: no command or late confirm can
         # enter a retired context, and closing B never acquires A's locks.
+        if interrupt and not self.closed:
+            # LAN shutdown first cancels its own bridge. Waiting for a command
+            # lock before terminating would let a 30-second bridge timeout
+            # outlive the listener. Wake the queued read even if the reader is
+            # still finishing; cleanup below retains the normal lock ordering.
+            self.bridge_failure = "方案編輯已結束，請重新開啟方案。"
+            self.bridge.terminate()
+            self.bridge_responses.put(b"")
         if hasattr(self, "case_host"):
             self.case_host.close()
         with self.upload_lock, self.bridge_lock:
@@ -45,7 +53,8 @@ class NativeContext:
                 return
             self.closed = True
             self.bridge_failure = "方案編輯已結束，請重新開啟方案。"
-            self.bridge.terminate()
+            if not interrupt:
+                self.bridge.terminate()
             try:
                 self.bridge.wait(timeout=2)
             except subprocess.TimeoutExpired:

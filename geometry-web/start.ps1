@@ -3,7 +3,7 @@ param(
     [ValidatePattern('^[A-Za-z0-9._-]+$')][string]$Distro = 'Ubuntu-24.04',
     # 區網測試模式（手機實機驗收；預設關閉）。開啟、改網路設定檔、裝根憑證都是使用者的安全決定，見 README「區網測試模式」。
     [ValidatePattern('^\d{1,3}(\.\d{1,3}){3}$')][string]$LanIp = '',
-    [ValidateRange(1, 480)][int]$LanTtlMinutes = 120,
+    [ValidateRange(1, 120)][int]$LanTtlMinutes = 120,
     [ValidateRange(1, 3)][int]$LanDevices = 1,
     [switch]$LanServeCa
 )

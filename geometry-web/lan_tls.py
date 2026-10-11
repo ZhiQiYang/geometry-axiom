@@ -3,8 +3,8 @@
 
 `cryptography` 惰性載入：缺套件時 `--lan` 以 exit 2 拒絕，絕不退回 http（不新增 CI 相依）。
 CA：ECDSA P-256、critical BasicConstraints(ca, pathLen 0)、critical KeyUsage(keyCertSign, cRLSign)、
-critical NameConstraints(permitted iPAddress <ip>/32——依 RFC 5280 只約束 IP 名稱、不約束 dNSName，
-是否再加 DNS 約束待安全裁決)；CA 私鑰從不序列化，簽完葉憑證即解除參照（真根的安全性靠這一點）。
+critical NameConstraints：只允許指定 IP，DNS／email／URI 各以相同的 permitted＋excluded
+子樹構成空集合；CA 私鑰從不序列化，簽完葉憑證即解除參照。iOS 是否執行根的約束仍須實機驗證。
 葉憑證：SAN 只有 IPAddress(<ip>)、EKU serverAuth、KeyUsage(digitalSignature)、ca=False，效期 ≤ CA（≤7 天）。
 存放 %LOCALAPPDATA%\\geometry-lan\\<ip>-<port>\\（不在 repository 內、不另動 ACL）。
 
@@ -84,6 +84,79 @@ def _not_after(cert):
     return value if value is not None else cert.not_valid_after.replace(tzinfo=datetime.timezone.utc)
 
 
+def _not_before(cert):
+    value = getattr(cert, "not_valid_before_utc", None)
+    return value if value is not None else cert.not_valid_before.replace(tzinfo=datetime.timezone.utc)
+
+
+def _usage(**granted):
+    from cryptography import x509
+    names = ("digital_signature", "content_commitment", "key_encipherment", "data_encipherment",
+             "key_agreement", "key_cert_sign", "crl_sign", "encipher_only", "decipher_only")
+    return x509.KeyUsage(**{name: granted.get(name, False) for name in names})
+
+
+def _constraints(address):
+    from cryptography import x509
+    # RFC 5280 constraints are per name form. For these three forms, every
+    # matching name is excluded and every nonmatching name fails permitted.
+    # Unlike an empty excluded URI/email subtree, this works for both exact
+    # hosts and subordinate names without relying on wildcard interpretations.
+    denied = [x509.DNSName("geometry-lan-names.invalid"),
+              x509.RFC822Name("geometry-lan-names.invalid"),
+              x509.UniformResourceIdentifier("geometry-lan-names.invalid")]
+    return x509.NameConstraints(
+        permitted_subtrees=[x509.IPAddress(ipaddress.ip_network(f"{address}/32")), *denied],
+        excluded_subtrees=denied)
+
+
+def validate_material(ip, leaf, key, ca, now):
+    """One policy for new and saved material; failure never permits persistence/reuse."""
+    from cryptography import x509
+    from cryptography.hazmat.primitives.asymmetric import ec
+    from cryptography.x509.oid import ExtendedKeyUsageOID
+
+    def require(condition, detail):
+        if not condition:
+            raise LanRefused("伺服器憑證不符合政策：" + detail)
+
+    def extension(cert, kind, expected, critical=None):
+        ext = cert.extensions.get_extension_for_class(kind)
+        require(ext.value == expected and (critical is None or ext.critical == critical), kind.__name__)
+
+    try:
+        address = ipaddress.IPv4Address(ip)
+        ca.verify_directly_issued_by(ca)
+        leaf.verify_directly_issued_by(ca)
+        for cert in (ca, leaf):
+            before, after = _not_before(cert), _not_after(cert)
+            require(before <= now < after, "目前時間不在有效期間")
+            require(datetime.timedelta(0) < after - before <= datetime.timedelta(days=7), "總效期超過七天")
+            public = cert.public_key()
+            require(isinstance(public, ec.EllipticCurvePublicKey) and isinstance(public.curve, ec.SECP256R1),
+                    "必須使用 ECDSA P-256")
+        require(_not_before(ca) <= _not_before(leaf) and _not_after(leaf) <= _not_after(ca), "葉憑證超出 CA 效期")
+        require(isinstance(key, ec.EllipticCurvePrivateKey)
+                and key.public_key().public_numbers() == leaf.public_key().public_numbers(), "葉私鑰不符")
+        extension(ca, x509.NameConstraints, _constraints(address), True)
+        extension(ca, x509.BasicConstraints, x509.BasicConstraints(True, 0), True)
+        extension(ca, x509.KeyUsage, _usage(key_cert_sign=True, crl_sign=True), True)
+        try:
+            ca_eku = ca.extensions.get_extension_for_class(x509.ExtendedKeyUsage).value
+        except x509.ExtensionNotFound:
+            pass  # This CA template has no EKU; a saved CA may be narrower.
+        else:
+            require(list(ca_eku) == [ExtendedKeyUsageOID.SERVER_AUTH], "CA EKU 不允許伺服器驗證")
+        extension(leaf, x509.BasicConstraints, x509.BasicConstraints(False, None), True)
+        extension(leaf, x509.KeyUsage, _usage(digital_signature=True), True)
+        extension(leaf, x509.ExtendedKeyUsage, x509.ExtendedKeyUsage([ExtendedKeyUsageOID.SERVER_AUTH]))
+        extension(leaf, x509.SubjectAlternativeName, x509.SubjectAlternativeName([x509.IPAddress(address)]))
+    except LanRefused:
+        raise
+    except Exception as exc:
+        raise LanRefused("伺服器憑證不符合政策：" + type(exc).__name__) from None
+
+
 def issue(ip, days, now=None):
     """簽發 (葉憑證 PEM, 葉私鑰 PEM, 根憑證 DER)。CA 私鑰只存在於本函式的區域變數。"""
     from cryptography import x509
@@ -95,12 +168,8 @@ def issue(ip, days, now=None):
         raise LanRefused("憑證效期必須介於 1 與 7 天之間")
     address = ipaddress.IPv4Address(ip)
     now = now or datetime.datetime.now(datetime.timezone.utc)
-    start, end = now - datetime.timedelta(minutes=5), now + datetime.timedelta(days=int(days))
-
-    def usage(**granted):
-        names = ("digital_signature", "content_commitment", "key_encipherment", "data_encipherment",
-                 "key_agreement", "key_cert_sign", "crl_sign", "encipher_only", "decipher_only")
-        return x509.KeyUsage(**{name: granted.get(name, False) for name in names})
+    start = now - datetime.timedelta(minutes=5)
+    end = start + datetime.timedelta(days=int(days))
 
     ca_key = ec.generate_private_key(ec.SECP256R1())
     ca_name = x509.Name([x509.NameAttribute(NameOID.COMMON_NAME, f"{CA_CN} {address}")])
@@ -108,10 +177,8 @@ def issue(ip, days, now=None):
                .subject_name(ca_name).issuer_name(ca_name).public_key(ca_key.public_key())
                .serial_number(x509.random_serial_number()).not_valid_before(start).not_valid_after(end)
                .add_extension(x509.BasicConstraints(ca=True, path_length=0), critical=True)
-               .add_extension(usage(key_cert_sign=True, crl_sign=True), critical=True)
-               .add_extension(x509.NameConstraints(
-                   permitted_subtrees=[x509.IPAddress(ipaddress.ip_network(f"{address}/32"))],
-                   excluded_subtrees=None), critical=True)
+               .add_extension(_usage(key_cert_sign=True, crl_sign=True), critical=True)
+               .add_extension(_constraints(address), critical=True)
                .add_extension(x509.SubjectKeyIdentifier.from_public_key(ca_key.public_key()), critical=False)
                .sign(ca_key, hashes.SHA256()))
     leaf_key = ec.generate_private_key(ec.SECP256R1())
@@ -121,7 +188,7 @@ def issue(ip, days, now=None):
             .serial_number(x509.random_serial_number()).not_valid_before(start).not_valid_after(end)
             .add_extension(x509.SubjectAlternativeName([x509.IPAddress(address)]), critical=False)
             .add_extension(x509.ExtendedKeyUsage([ExtendedKeyUsageOID.SERVER_AUTH]), critical=False)
-            .add_extension(usage(digital_signature=True), critical=True)
+            .add_extension(_usage(digital_signature=True), critical=True)
             .add_extension(x509.BasicConstraints(ca=False, path_length=None), critical=True)
             .add_extension(x509.AuthorityKeyIdentifier.from_issuer_public_key(ca_key.public_key()), critical=False)
             .sign(ca_key, hashes.SHA256()))
@@ -150,11 +217,8 @@ def _reusable(ip, port, directory, now):
     ca_der = (directory / "ca.cer").read_bytes()
     ca = x509.load_der_x509_certificate(ca_der)
     key = serialization.load_pem_private_key((directory / "leaf.key").read_bytes(), password=None)
-    san = leaf.extensions.get_extension_for_class(x509.SubjectAlternativeName).value
-    leaf.verify_directly_issued_by(ca)
-    if (san.get_values_for_type(x509.IPAddress) != [ipaddress.IPv4Address(ip)] or len(list(san)) != 1
-            or key.public_key().public_numbers() != leaf.public_key().public_numbers()
-            or _not_after(leaf) - now < REUSE_MIN_REMAINING):
+    validate_material(ip, leaf, key, ca, now)
+    if _not_after(leaf) - now < REUSE_MIN_REMAINING:
         return None
     return ca_der, _not_after(leaf)
 
@@ -169,6 +233,11 @@ def load_or_issue(ip, port, days, directory, now=None):
         reused = None
     if reused is None:
         leaf_pem, key_pem, ca_der = issue(ip, days, now)
+        from cryptography import x509
+        from cryptography.hazmat.primitives import serialization
+        validate_material(ip, x509.load_pem_x509_certificate(leaf_pem),
+                          serialization.load_pem_private_key(key_pem, password=None),
+                          x509.load_der_x509_certificate(ca_der), now)
         try:
             directory.mkdir(parents=True, exist_ok=True)
             _write(directory / "leaf.key", key_pem, private=True)

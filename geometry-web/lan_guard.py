@@ -25,6 +25,7 @@ from dataclasses import dataclass
 RFC1918 = tuple(ipaddress.ip_network(n) for n in ("10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"))
 FORBIDDEN_PORT = 8765                  # 日常服務埠：區網模式一律另開
 COOKIE_NAME = "__Host-geometry-lan"
+PAIR_RATE_LIMITED = object()
 PAIR_PATH = "/lan/pair"
 CA_PATH = "/lan/ca.cer"
 PAIR_MAX_BYTES = 128
@@ -127,7 +128,7 @@ def validate(args, *, port, repo_root, platform=None, environ=None, category_que
                          "0.0.0.0、loopback、link-local、CGNAT 等一律拒絕")
     if port == FORBIDDEN_PORT:
         raise LanRefused(f"不得在日常埠 {FORBIDDEN_PORT} 開區網模式；請另選一個埠")
-    for name, value, low, high in (("--lan-ttl", args.lan_ttl, 1, 480), ("--lan-idle", args.lan_idle, 1, 480),
+    for name, value, low, high in (("--lan-ttl", args.lan_ttl, 1, 120), ("--lan-idle", args.lan_idle, 1, 30),
                                    ("--lan-devices", args.lan_devices, 1, 3),
                                    ("--lan-cert-days", args.lan_cert_days, 1, 7)):
         if not low <= value <= high:
@@ -176,12 +177,12 @@ def normalize_code(raw):
     return "".join(text.split()).replace("-", "").upper().translate(_CONFUSABLE)
 
 
-def cookie_values(headers):
+def cookie_values(headers, cookie_name=COOKIE_NAME):
     values = []
     for line in headers.get_all("Cookie") or []:
         for part in line.split(";"):
             name, sep, value = part.strip().partition("=")
-            if sep and name == COOKIE_NAME:
+            if sep and name == cookie_name:
                 values.append(value)
     return values
 
@@ -211,6 +212,10 @@ class LanGate:
 
     def __init__(self, config, *, clock=time.monotonic, log=None):
         self.config = config
+        # Cookies are scoped by host, not port. The suffix prevents one test
+        # listener/restart from replacing another listener's access token.
+        # It does not establish a security boundary between HTTPS ports.
+        self.cookie_name = f"{COOKIE_NAME}-{config.port}-{secrets.token_hex(8)}"
         self.clock = clock
         self.log = log or (lambda line: print(line, file=sys.stderr, flush=True))
         self.lock = threading.Lock()
@@ -257,7 +262,7 @@ class LanGate:
             return "pair-submit", None
         if config.serve_ca and method == "GET" and target == CA_PATH:
             return "ca", None
-        values = cookie_values(headers)
+        values = cookie_values(headers, self.cookie_name)
         if len(values) != 1 or _digest(values[0]) not in self.sessions:
             return None, "cookie"
         if method != "GET" and not origins:
@@ -268,22 +273,16 @@ class LanGate:
         return now >= self.started + self.config.ttl or now >= self.last_activity + self.config.idle
 
     # -- 配對（DESIGN §2.2）
-    def take_pair_slot(self):
-        """全域限速：距上一次「被評估」的嘗試未滿 pair_interval 就 False（429，不評估、不消耗）。"""
-        with self.lock:
-            now = self.clock()
-            if self.last_attempt is not None and now - self.last_attempt < self.config.pair_interval:
-                return False
-            self.last_attempt = now
-            return True
-
     def redeem(self, raw, *, peer, user_agent=""):
-        """比對配對碼；成功回傳 (token, max_age)，失敗回傳 None。stderr 只印時間與對端，不印嘗試內容。"""
+        """受限 body 讀完後限速並比對，同一把鎖下完成；限速回傳 PAIR_RATE_LIMITED。"""
         stamp = time.strftime("%H:%M:%S")
         with self.lock:
             now = self.clock()
             if self.closed or self._expired(now):
                 return None
+            if self.last_attempt is not None and now - self.last_attempt < self.config.pair_interval:
+                return PAIR_RATE_LIMITED
+            self.last_attempt = now
             attempt = normalize_code(raw)
             matched = None
             for entry in self.codes:

@@ -813,12 +813,16 @@ class LanHTTPServer(PreviewHTTPServer):
         with self.context_lock:
             contexts, self.contexts = list(self.contexts.values()), {}
         for native in contexts:
-            native.close()
+            native.close(interrupt=True)
 
     def headers_complete(self):
-        """移出標頭期限表；回傳 False 表示這條連線已被期限切斷。"""
+        """取出並檢查原期限；巡檢還沒輪到也不能讓逾時的標頭／配對 body 通過。"""
         with self.table_lock:
-            return self.pending.pop(getattr(self.worker, "request", None), None) is not None
+            entry = self.pending.pop(getattr(self.worker, "request", None), None)
+            on_time = entry is not None and time.monotonic() < entry[1]
+        if entry is not None and not on_time:
+            _cut(entry[0])
+        return on_time
 
     def _watch(self):
         while not self.stopped.wait(self.gate.config.poll):
@@ -859,7 +863,15 @@ class LanHandler(Handler):
 
     def send_error(self, code, message=None, explain=None):
         self.lan_linger = True
-        super().send_error(code, message, explain)
+        if self.lan_route != "app":
+            # The base parser can reject before gate.check or even before a
+            # usable HTTP version exists. Never expose its diagnostic HTML.
+            if getattr(self, "request_version", "HTTP/0.9") == "HTTP/0.9":
+                self.close_connection = True
+                return
+            self._lan_reply(403)
+        else:
+            super().send_error(code, message, explain)
 
     def parse_request(self):
         if not super().parse_request():
@@ -873,7 +885,7 @@ class LanHandler(Handler):
             return False
         self.lan_route = route
         if route == "app":   # 守門已確認恰有一個有效 cookie；這裡再取一次，取不到就沒有世界可用（context_for 拒絕）
-            values = lan_guard.cookie_values(self.headers)
+            values = lan_guard.cookie_values(self.headers, self.server.gate.cookie_name)
             self.lan_session = lan_guard.session_digest(values[0]) if len(values) == 1 else None
         return True
 
@@ -952,24 +964,25 @@ class LanHandler(Handler):
             return self._lan_reply(403)
         if not 0 <= length <= lan_guard.PAIR_MAX_BYTES:
             return self._lan_reply(403)
-        if not gate.take_pair_slot():
-            return self._lan_reply(429)
         body = self.rfile.read(length)
         if not self._lan_finish_headers():  # body 也在標頭總期限內讀完
             self.close_connection = True
             return
         result = gate.redeem(body, peer=self.client_address[0], user_agent=self.headers.get("User-Agent", ""))
+        if result is lan_guard.PAIR_RATE_LIMITED:
+            return self._lan_reply(429)
         if result is None:
             return self._lan_reply(403)
         token, max_age = result
-        self._lan_reply(204, extra=[("Set-Cookie", f"{lan_guard.COOKIE_NAME}={token}; Secure; HttpOnly; "
+        self._lan_reply(204, extra=[("Set-Cookie", f"{gate.cookie_name}={token}; Secure; HttpOnly; "
                                                    f"SameSite=Strict; Path=/; Max-Age={max_age}")])
 
 
 class LanMode:
     """跑一個 LanHTTPServer：服務執行緒 + 計時執行緒（TTL、閒置、配對碼過期且零裝置 → 關閉）。"""
 
-    def __init__(self, gate, server, log=None):
+    def __init__(self, gate, server, log=None, *, category_query=None, network_interval=60.0,
+                 network_timeout=lan_guard.CATEGORY_TIMEOUT):
         self.gate = gate
         self.server = server
         self.log = log or (lambda line: print(line, file=sys.stderr, flush=True))
@@ -977,6 +990,40 @@ class LanMode:
         self.closed = threading.Event()
         self.reason = None
         self.stop_reason = "服務結束"
+        self.category_query = category_query or lan_guard.query_network_category
+        self.network_interval = network_interval
+        self.network_timeout = network_timeout
+        self.network_pending = None
+
+    def _network_poll(self, now):
+        if self.network_pending is not None:
+            results, deadline = self.network_pending
+            try:
+                finished, category = results.get_nowait()
+            except queue.Empty:
+                if now >= deadline:
+                    return "網路設定檔查詢逾時"
+            else:
+                self.network_pending = None
+                if finished >= deadline:
+                    return "網路設定檔查詢逾時"
+                if category != "Private":
+                    return "網路設定檔不再是 Private、IP 消失或查詢失敗"
+                self.network_next = now + self.network_interval
+        elif now >= self.network_next:
+            results = queue.Queue(maxsize=1)
+            self.network_pending = results, now + self.network_timeout
+
+            def query():
+                try:
+                    category = self.category_query(self.gate.config.ip)
+                except Exception:
+                    category = None
+                results.put((time.monotonic(), category))
+            # The real query has a subprocess timeout too. Its worker never
+            # owns the TTL loop, so even a stuck injected query cannot delay it.
+            threading.Thread(target=query, name="lan-network-query", daemon=True).start()
+        return None
 
     def start(self):
         threading.Thread(target=self.server.serve_forever, kwargs={"poll_interval": 0.2},
@@ -986,12 +1033,17 @@ class LanMode:
 
     def _lifecycle(self):
         reason = None
+        self.network_next = time.monotonic() + self.network_interval
         while reason is None:
             if self.stop_request.wait(self.gate.config.poll):
                 reason = self.stop_reason
                 self.gate.close(reason)
                 break
             reason = self.gate.poll()
+            if reason is None:
+                reason = self._network_poll(time.monotonic())
+                if reason:
+                    self.gate.close(reason)
         self.reason = reason
         self.server.stop()
         self.server.shutdown()
@@ -1004,7 +1056,8 @@ class LanMode:
         if not self.closed.is_set():
             self.stop_reason = reason
             self.stop_request.set()
-        self.closed.wait(10)
+        if not self.closed.wait(10):
+            raise RuntimeError("區網連線已停用，但裝置世界回收尚未完成；服務不能宣稱已完全關閉")
 
 
 def bind_lan_listeners(config, gate, ssl_context, ca_der=None):
@@ -1070,10 +1123,12 @@ def lan_main(argv):
     except KeyboardInterrupt:
         pass
     finally:
-        runtime.mode.stop("服務結束")
-        runtime.loopback.shutdown()
-        runtime.loopback.server_close()
-        lan_tls.discard_pairing(runtime.material.directory)
+        try:
+            runtime.mode.stop("服務結束")
+        finally:
+            runtime.loopback.shutdown()
+            runtime.loopback.server_close()
+            lan_tls.discard_pairing(runtime.material.directory)
     return 0
 
 
