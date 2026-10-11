@@ -153,6 +153,43 @@ python serve.py 8765       :: 啟動靜態檔 + /api 橋接服務
 - POST 在讀取內容前檢查大小：`/api` 上限 64 KiB，`/upload` 與模型請求上限 16 MiB，工程請求上限 1 MiB，`/feedback` 上限 32 MiB；超限回 HTTP 413，未知路徑回 HTTP 404，不送進核心。
 - POST 跨站防護（L3）：`Origin` 存在且非 `http://127.0.0.1:<port>` / `http://localhost:<port>` → 403；`Host` 非本機 → 403；無 `Origin` 的 curl/測試腳本放行。**GET 同樣先驗 `Host`**（非本機 → 403，擋 DNS rebinding 讀 `/runtime`、`/scenes`、`/scenarios/editor` 等），規則與 POST 共用 `_host_allowed()`；不帶 `Host` 照舊放行。`cmd` 含 `\r`/`\n` 或超過 4094 bytes → 直接回 `{"ok":false}` 不送 bridge。
 
+## 區網測試模式（手機實機驗收；P-008，預設關閉）
+
+手機上的 app 需要 secure context（`crypto.randomUUID`、`crypto.subtle`、`navigator.locks`），純 http 區網一載入就壞，
+所以本模式只走 HTTPS。**不加旗標時什麼都沒變**：`serve.py` 只綁 `127.0.0.1`，`Handler` 與 Host／Origin 規則照舊。
+
+- **Android**：不用本模式。USB 接電腦後 `adb reverse tcp:8766 tcp:8766`，手機開 `http://localhost:8766/`（localhost 本來就是 secure context）。
+- **iOS**（或不便接 USB 的 Android）：`.\geometry-web\start.ps1 -Port 8766 -LanIp <電腦的區網 IPv4>`
+  （另有 `-LanTtlMinutes`（預設 120，上限 480）、`-LanDevices`（預設 1，上限 3）、`-LanServeCa`）。
+  直接呼叫：`python geometry-web/serve.py 8766 --lan <IPv4> [--lan-ttl 120] [--lan-idle 30] [--lan-devices 1] [--lan-cert-days 7] [--lan-serve-ca]`。
+
+`serve.py` 遇到下列任一情況都以 exit 2 拒絕，連本機 http 也不開：非 Windows；不是 RFC1918 私有位址（10/8、172.16/12、192.168/16）；
+該 IP 所屬網路的設定檔不是「私人」（`Public`、網域、查不到、逾時都拒絕——只做唯讀查詢）；埠 8765；
+未設 `GEOMETRY_FEEDBACK_DIR` 或它在 repository 內（`start.ps1` 會自動建 TEMP 下的專用目錄）；缺 Python 套件 `cryptography`（絕不退回 http）；
+無法綁定該 IP。`start.ps1` 另外拒絕「埠已有服務」，避免靜默沿用一個沒開區網的舊服務。
+
+開啟後：同一行程多一個**只綁該 IP** 的 HTTPS 監聽器。每個請求先過守門（Host 必須逐字等於 `<ip>:<埠>`；帶 Origin 必須相符、
+非 GET 必帶；`Sec-Fetch-Site` 只收 `same-origin`／`none`；除配對頁外一律要配對後的 `__Host-` cookie），不通過就是空白 403。
+每台裝置一組配對碼（128 位元、單次、10 分鐘；全域每秒最多試 1 次）。自動關閉：TTL 到期、閒置 30 分（只有已配對裝置的請求算活動）、
+配對碼全部過期且沒有任何裝置配對。終端機會印出每次配對成功／失敗的時間與對端 IP——**看到不是你的「已配對」行就立刻 Ctrl+C**。
+配對碼只印在終端機；輸出被導到檔案時改寫入 `%LOCALAPPDATA%\geometry-lan\<ip>-<埠>\pairing.txt`、只印路徑（agent 不讀此檔、不在對話中轉述配對碼；這只是規範，沒有技術強制）。
+
+### 你要做的決定與動作（🔐＝你的安全決定，agent 不代決、不代按）
+
+| # | 動作 | 風險 | 用完如何移除 |
+|---|---|---|---|
+| U1 🔐 | 決定要不要開區網測試模式；只在你信任的家用／私人網路開 | 同網段裝置看得到這個埠（仍需配對碼） | Ctrl+C，或等自動關閉 |
+| U2 🔐 | **既有曝露，與本功能無關但現在就有效**：`python.exe` 已有兩條「公用」、全埠的輸入放行規則。唯讀檢查：`Get-NetFirewallApplicationFilter -Program 'C:\python314\python.exe' \| Get-NetFirewallRule \| Where-Object { $_.Direction -eq 'Inbound' -and $_.Enabled -eq 'True' } \| Select-Object DisplayName, Profile, Action` | 在公用網路上，任何綁所有介面的 python 工具（例如 `python -m http.server`）都會被同網段連到 | 要處理由你決定（系統管理員 PowerShell，可逆）：同一管線接 `Where-Object { $_.Profile -match 'Public' } \| Disable-NetFirewallRule`；恢復用 `Enable-NetFirewallRule` |
+| U3 🔐 | iOS 根憑證：把終端機印出路徑的 `ca.cer` 經**你信任的帶外通道**送到手機（寄給自己的信箱附件，或在 icloud.com 上傳到 iCloud 雲碟），在 iPhone 用「郵件」或「檔案」點開 → 設定 → 一般 → VPN 與裝置管理 → 安裝前點「更多詳細資料」核對 SHA-256 與終端機一致（至少頭尾各 16 字，建議全 64 字；不一致＝被調包，立刻刪除並停止）→ 安裝 → 設定 → 一般 → 關於本機 → 憑證信任設定 → 開啟此根的完全信任。不方便帶外時才用 `-LanServeCa` 從 `https://<ip>:<埠>/lan/ca.cer` 下載（風險較高，必須全比 64 字） | **裝到被調包的根：它沒有名稱約束，可攔截手機上全部 HTTPS，直到你移除描述檔。** 真的根有名稱約束（只許該 IP）、CA 私鑰簽完即毀、≤7 天失效 | 設定 → 一般 → VPN 與裝置管理 → 該描述檔 → 移除描述檔；寄過的信／雲碟檔可刪 |
+| U4 | 手機開 `https://<ip>:<埠>/lan/pair`（在網址列輸入或貼上；從網頁連結點開會被 `Sec-Fetch-Site` 擋下）輸入配對碼。**若出現憑證警告就停**。配對後看四項自檢（`isSecureContext`、`crypto.randomUUID`、`crypto.subtle`、`navigator.locks`）；任一未通過，該平台的手機驗收標「未做」並回報 | 出現不是你的「已配對」行，或你配不上 → Ctrl+C 重來 | — |
+| U5 🔐 | Android：安裝 Android platform-tools、開發人員選項 → USB 偵錯、在手機核准電腦的 RSA 指紋，再 `adb reverse` | 已授權 USB 偵錯的電腦可完全操控手機；期間手機上任何 App 都能連 `localhost:<埠>`（這條路沒有配對碼，只放測試世界） | `adb reverse --remove-all`；關閉 USB 偵錯；開發人員選項 → 撤銷 USB 偵錯授權 |
+| U6 | 結束：Ctrl+C。要徹底清除伺服器憑證：`python geometry-web/lan_tls.py --forget`（或刪 `%LOCALAPPDATA%\geometry-lan\`） | 不刪則葉私鑰留在你的使用者目錄直到過期 | 同左 |
+| U7 🔐 | 目前 Wi-Fi 是「公用」，`--lan` 會拒絕（這是預期）。要不要改成「私人」由你決定：設定 → 網路和網際網路 → Wi-Fi → 該網路內容 → 網路設定檔類型。唯讀確認：`Get-NetConnectionProfile \| Select-Object InterfaceAlias, NetworkCategory` | 「私人」會放寬整台電腦在該網路的探索與共用 | 驗收完改回「公用」 |
+| U8 🔐 | 改成私人後第一次開區網，Windows 可能跳防火牆提示：只勾「私人網路」，或按「取消」 | 允許的規則對**整個 python.exe、所有埠**生效且持久（同 U2 的性質）；按「取消」則區網連不到（iOS 驗收標未做） | 同 U2 的檢查與停用方式，條件改 `'Private'` |
+
+其他：伺服器憑證存 `%LOCALAPPDATA%\geometry-lan\<ip>-<埠>\`（不在 repository），同 IP 且剩餘效期 ≥1 小時會沿用（重啟不必重裝描述檔）；
+IP 變了（DHCP）就會重發，手機要重裝。區網 session 過期後按 F8 回報會看到「伺服器只收本機網址」——那是 403 的通用訊息，重新配對即可。
+
 ## 回報收件匣（GEO-183）
 
 操作當下就把「哪裡怪」連同現場一起存下來，不必事後回憶，agent 也不必從口述猜是哪個功能。
