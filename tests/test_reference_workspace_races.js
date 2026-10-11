@@ -61,6 +61,40 @@ const legacyPage=()=>({src:'data:image/png;base64,legacy',imgW:100,imgH:80,mmPer
 const legacyResponse=bytes=>({blob:async()=>new Blob([bytes],{type:'image/png'})});
 
 const k2aDraft=(id,edit=false)=>({schema:P.Features.GRID_SCHEMA,draftId:id,kind:'source',intent:edit?'edit':'create',baseRef:edit?{kind:'grid-system',id:1,fingerprint:'a'.repeat(64)}:null,inputRefs:[],rawForm:Object.fromEntries(P.Features.sourceFields.map(f=>[f,' 1e ']))});
+test('K2a B1 collection two drafts orphan remove other manifest ZIP cold read preserves both single boundaries',async()=>{
+  const C=require('./test_grid_drafts_lifecycle_capacity.js');
+  for(const size of [130955,130956]){
+    const f=await fixture(),w=f.w,token=w.getProjectState().contextToken,d=C.largeDraft();d.inputRefs=[];C.pad(d,size);
+    const other=k2aDraft('other',true);other.baseRef.id=2;
+    w.setGridDraft(other.draftId,other,token);w.setGridDraft(d.draftId,d,token);
+    const sourceMap=new Map([[f.source.meta.id,f.source.bytes]]),initial=w.readGridDrafts();
+    const save=async()=>P.unpack(await P.pack('',await w.manifest(),sourceMap,zip),zip);
+    assert.deepEqual(P.Features.gridDrafts((await save()).manifest.featureAttachments.records.find(r=>r.kind===P.Features.GRID_KIND).value),initial);
+    w.observe('line delete grid-system 1',{ok:true,deletedObjects:[d.baseRef]});
+    const both=w.readGridDrafts();assert.deepEqual(Array.from(both.orphans),[d.draftId]);
+    assert.deepEqual(P.Features.gridDrafts((await save()).manifest.featureAttachments.records.find(r=>r.kind===P.Features.GRID_KIND).value),both);
+    assert.doesNotThrow(()=>w.setGridDraft('other',null,token));const remaining=w.readGridDrafts();
+    let opened;await assert.doesNotReject(async()=>{opened=await save();},/容量|上限/,'remaining orphan collection must save at its declared quota');
+    const value=opened.manifest.featureAttachments.records.find(r=>r.kind===P.Features.GRID_KIND).value;
+    assert.deepEqual(P.Features.gridDrafts(value),remaining,'real pack/unpack preserves raw/id/baseRef/refs/orphan');
+    assert.deepEqual(remaining.drafts[0],both.drafts.find(row=>row.draftId===d.draftId));
+    assert.equal(opened.manifest.format,P.GRID_DRAFTS_FORMAT);assert.ok(opened.manifest.requiredCapabilities.includes(P.Features.GRID_DRAFTS_SCHEMA));
+    assert.equal(C.bytes(remaining.drafts[0]),size);assert.equal(f.calls.length,0,'metadata-only save sequence sends no native API');
+  }
+});
+test('K2a B1 previous collection ZIP original import and save preserves raw refs orphan and full draft size',async()=>{
+  const pdf=countedPDF(),f=await openFixture({withPDF:true,pdfLibrary:pdf.library});
+  const fetch=f.env.fetch;f.env.fetch=async(url,request)=>{const response=await fetch(url,request);if(url!=='/upload/prepare')return response;const candidate=await response.json();return {...response,json:async()=>({...candidate,final_scene:request.body})};};
+  const bytes=fs.readFileSync(require('node:path').join(__dirname,'evidence/k2a-collection-capacity-20261012/legacy6a-with-scene.gcanvas'));
+  const original=JSON.parse(new TextDecoder().decode(zip.unzipSync(bytes)['manifest.json'])).featureAttachments;
+  await assert.doesNotReject(()=>f.w.importBytes(new Uint8Array(bytes),'legacy6a.gcanvas'),/容量|上限/);
+  const expected=P.Features.gridDrafts(original.records.find(r=>r.kind===P.Features.GRID_KIND).value);
+  assert.deepEqual(f.w.readGridDrafts(),expected);assert.equal(require('./test_grid_drafts_lifecycle_capacity.js').bytes(expected.drafts[0]),131072);
+  const sources=new Map([...f.w.context().sources].map(([id,source])=>[id,source.bytes])),manifest=await f.w.manifest();
+  const opened=await P.unpack(await P.pack('',manifest,sources,zip),zip);
+  assert.deepEqual(opened.manifest.featureAttachments,original);assert.equal(opened.manifest.format,P.GRID_DRAFTS_FORMAT);
+  assert.ok(f.requests.some(request=>request.url==='/upload/prepare'),'original import proceeds to native verifier seam after reading');
+});
 test('K2a B1 legacy missing-source scan preserves raw and unchanged flush; one byte edits still need admission',async()=>{
   const {w}=await fixture(),old=new Uint8Array(fs.readFileSync(require('node:path').join(__dirname,'evidence/k2a-boundary-review-20261012/legacy/base49-capacity.gcanvas'))),opened=await P.unpack(old,zip);
   w.context().featureAttachments=structuredClone(opened.manifest.featureAttachments.records);

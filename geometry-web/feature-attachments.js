@@ -189,7 +189,13 @@
   function gridUnmarkedEnvelope(envelope, collapse = false) {
     return {...envelope,records:envelope.records.map(record=>{
       if(record.kind!==GRID_KIND)return record;
-      const value=gridUnmarkedValue(record.value,collapse);return {...record,schema:value.schema,value};
+      let value=gridUnmarkedValue(record.value,collapse);
+      if(value.schema!==record.value.schema){
+        // Only a valid old single envelope can receive promotion byte credit.
+        try{boundedJSON({schema:SCHEMA,records:[{...record,schema:value.schema,value}]});}
+        catch{value=gridUnmarkedValue(record.value);}
+      }
+      return {...record,schema:value.schema,value};
     })};
   }
   function gridCollectionReserve(value){

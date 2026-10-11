@@ -73,5 +73,31 @@ const {chromium}=require('playwright');
  const legacySaved=await save(page);await cold.close();const legacyCold=await open(fresh);
  const legacyAgain=await legacyCold.evaluate(async bytes=>{await ReferenceWorkspace.importBytes(new Uint8Array(bytes),'marked-legacy.gcanvas');return {drafts:ReferenceWorkspace.readGridDrafts(),dump:(await apiRequest('dump')).text,manifest:(await GeometryProject.unpack(new Uint8Array(bytes),fflate)).manifest};},legacySaved);
  assert.deepEqual(legacyAgain.drafts,legacy.marked);assert.equal(legacyAgain.dump,legacy.dump);assert.equal(legacyAgain.manifest.format,'geometry-canvas/17');assert.ok(legacyAgain.manifest.requiredCapabilities.includes('grid-editor-drafts/1'));
- console.log(JSON.stringify({M01:true,M02:true,M04:true,M10:true,M11:true,M14b:true,M2Capacity:true,B1Legacy:true,trueZipBytes:bytes.length,lostZipBytes:lostBytes.length,capacityZipBytes:capacityBytes.length,legacyZipBytes:legacyBytes.length,markedLegacyZipBytes:legacySaved.length,rawUnchanged:true,sameIdPresent:true}));await freshGate.finish();await gate.finish();await browser.close();
+ const collectionZips=[];
+ for(const size of [130955,130956]){
+  const draft=capacity.largeDraft();draft.inputRefs=[];capacity.pad(draft,size);
+  const other=capacity.largeDraft('other',2);other.inputRefs=[];
+  const original=await page.evaluate(async drafts=>{
+   for(const row of ReferenceWorkspace.readGridDrafts().drafts)ReferenceWorkspace.setGridDraft(row.draftId,null,ReferenceWorkspace.getProjectState().contextToken);
+   const call=async cmd=>{let r=await apiRequest(cmd);if(r.preview?.valid)r=await apiRequest('line confirm '+r.preview.token);if(!r.ok)throw Error(cmd+': '+r.error);return r;};
+   await call('reset');for(const id of [1,2])await call('line grid-system '+id+' name-hex 736f75726365 main-along none u repeat 0 600 v repeat 0 400');
+   const objects=await call('objects');for(const d of drafts){const row=objects.gridSystems.find(row=>row.id===d.baseRef.id);d.baseRef.fingerprint=await GeometryProject.sha(new TextEncoder().encode(GeometryProject.Features.gridSourceKey(row)));ReferenceWorkspace.setGridDraft(d.draftId,d,ReferenceWorkspace.getProjectState().contextToken);}
+   return ReferenceWorkspace.readGridDrafts();
+  },[other,draft]);
+  const twoBytes=await save(page),two=await page.evaluate(async bytes=>{const m=(await GeometryProject.unpack(new Uint8Array(bytes),fflate)).manifest;return GeometryProject.Features.gridDrafts(m.featureAttachments.records.find(r=>r.kind===GeometryProject.Features.GRID_KIND).value);},twoBytes);
+  assert.deepEqual(two,original);
+  const both=await page.evaluate(async()=>{let r=await apiRequest('line delete grid-system 1');if(r.preview?.valid)r=await apiRequest('line confirm '+r.preview.token);if(!r.ok)throw Error(JSON.stringify(r));await renderObjects();return ReferenceWorkspace.readGridDrafts();});
+  const bothBytes=await save(page),bothSaved=await page.evaluate(async bytes=>{const m=(await GeometryProject.unpack(new Uint8Array(bytes),fflate)).manifest;return GeometryProject.Features.gridDrafts(m.featureAttachments.records.find(r=>r.kind===GeometryProject.Features.GRID_KIND).value);},bothBytes);
+  assert.deepEqual(bothSaved,both);assert.deepEqual(both.orphans,['capacity']);
+  const remaining=await page.evaluate(()=>{ReferenceWorkspace.setGridDraft('other',null,ReferenceWorkspace.getProjectState().contextToken);return ReferenceWorkspace.readGridDrafts();});
+  assert.deepEqual(remaining.drafts[0],both.drafts.find(d=>d.draftId==='capacity'));assert.equal(capacity.bytes(remaining.drafts[0]),size);
+  const singletonBytes=await save(page),dump=await page.evaluate(async()=>(await apiRequest('dump')).text),collectionCold=await open(fresh);
+  const opened=await collectionCold.evaluate(async bytes=>{await ReferenceWorkspace.importBytes(new Uint8Array(bytes),'orphan-collection.gcanvas');return {drafts:ReferenceWorkspace.readGridDrafts(),dump:(await apiRequest('dump')).text,manifest:(await GeometryProject.unpack(new Uint8Array(bytes),fflate)).manifest};},singletonBytes);
+  assert.deepEqual(opened.drafts,remaining);assert.equal(opened.dump,dump);assert.equal(opened.manifest.format,'geometry-canvas/17');assert.ok(opened.manifest.requiredCapabilities.includes('grid-editor-drafts/1'));
+  collectionZips.push({draftBytes:size,two:twoBytes.length,orphan:bothBytes.length,singleton:singletonBytes.length});await collectionCold.close();
+ }
+ const oldCollectionBytes=Array.from(require('node:fs').readFileSync(require('node:path').join(__dirname,'evidence/k2a-collection-capacity-20261012/legacy6a.gcanvas')));
+ const oldCollection=await page.evaluate(async bytes=>{const p=await GeometryProject.unpack(new Uint8Array(bytes),fflate),v=p.manifest.featureAttachments.records.find(r=>r.kind===GeometryProject.Features.GRID_KIND).value;const saved=await GeometryProject.pack(p.scene,p.manifest,p.sources,fflate),again=await GeometryProject.unpack(saved,fflate);return {value:v,again:again.manifest.featureAttachments.records.find(r=>r.kind===GeometryProject.Features.GRID_KIND).value,format:again.manifest.format};},oldCollectionBytes);
+ assert.equal(capacity.bytes(oldCollection.value.drafts[0]),131072);assert.deepEqual(oldCollection.again,oldCollection.value);assert.equal(oldCollection.format,'geometry-canvas/17');
+ console.log(JSON.stringify({M01:true,M02:true,M04:true,M10:true,M11:true,M14b:true,M2Capacity:true,B1Legacy:true,B1Collection:true,collectionZips,trueZipBytes:bytes.length,lostZipBytes:lostBytes.length,capacityZipBytes:capacityBytes.length,legacyZipBytes:legacyBytes.length,markedLegacyZipBytes:legacySaved.length,rawUnchanged:true,sameIdPresent:true}));await freshGate.finish();await gate.finish();await browser.close();
 })().catch(e=>{console.error(e);process.exit(1)});
