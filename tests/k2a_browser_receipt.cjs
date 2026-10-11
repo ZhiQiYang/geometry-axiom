@@ -16,6 +16,8 @@ exports.begin=async function(url){
   const bridge=children.find(r=>path.basename(r.exe).startsWith('bridge'));assert.ok(bridge,'live native child required');
   const inspect="import sys,json;from pathlib import Path;sys.path.insert(0,sys.argv[1]+'/tests');import binaries;i=binaries.inspect_one(binaries.BY_NAME['bridge'],path=Path(sys.argv[2]));print(json.dumps(i.as_dict()))";
   const native=JSON.parse(cp.execFileSync('python3',['-c',inspect,root,bridge.exe],{encoding:'utf8'}));assert.equal(native.state,'fresh');
+  const receiptBase=process.env.GEOMETRY_BROWSER_RECEIPT;if(!receiptBase||!path.resolve(receiptBase).startsWith('/tmp/'))throw Error('explicit TEMP receipt path required');
+  fs.writeFileSync(receiptBase+'.preflight.'+address.port+'.json',JSON.stringify({schema:'k2a-browser-preflight/1',startedAt:new Date().toISOString(),command:process.argv,url,before,runtime,native,liveBridge:bridge,instrumentation},null,2)+'\n');
   let count=0;const counted=new Proxy(assert,{get(target,key){const value=target[key];return typeof value==='function'?function(...args){count++;return value(...args);}:value;},apply(target,thisArg,args){count++;return Reflect.apply(target,thisArg,args);}});
   return {assert:counted,session:runtime.session,finish:async()=>{
     const after=snapshot(),end=await fetch(new URL('/runtime',url)).then(r=>r.json());assert.deepEqual(after,before,'source identities frozen through gate');assert.equal(end.fresh,true);assert.equal(end.version,runtime.version);assert.equal(end.session,runtime.session);assert.equal(hash(bridge.exe),bridge.sha256);
