@@ -13,13 +13,39 @@
 | 身分鍵類型 | 定義內容輸入 | 有效值內容輸入 |
 |---|---|---|
 | boundary | 邊界 kind、外輪廓與孔的頂點／fixity、穩定頂點 key | 沿用定義序列 |
-| placement | 邊界引用、frame；無邊界引用時另含內嵌輪廓 | 沿用定義序列 |
+| 一般 placement | 邊界引用、frame；無邊界引用時另含內嵌輪廓 | 沿用定義序列 |
+| D4 衍生 placement（尚未實作） | 變體、來源試排 id、h 的具型別來源；下節固定序列 | 精確 h、R41 frame 與有效分量／孔；不帶 h 的來源身分 |
 | column、beam | 空間引用與凍結範圍；beam 另含 axis | 沿用定義序列 |
 | parameter | `card<id>`；欄位另有節點與 member 關係 | 沿用定義序列；卡片單一指紋不宣稱涵蓋全部欄位值 |
 | parameter-field | 型別及核心保存的算式字串 | 精確 `num/den:unit` |
 | timber（不屬組構所有者） | 原生 role、priority、尺寸來源、anchor、引用、binding／override 等型別定義序列 | placed、有效截面與長度、origin、方向軸序列 |
 
 身分帳、記號及配號器不得加入以上序列。`geometry-hash`、`eng_definition_hash`、D25 `sourceFingerprint` 等各有既有領域，不拿其中一個代替兩個逐節點指紋；需要場景 bytes 的內容領域一律依 I72 改讀 `dump-deidentified`。本契約不擴張 D59 七種鍵，材料／做法／規則的固定版本指紋不因此取得記號。
+
+## PF 衍生 placement 的必要擴充（尚未實作）
+
+依 [跨線審查](https://github.com/ZhiQiYang/geometry-axiom/pull/200#issuecomment-6112380930)補齊 D4／D62 已要求的定義與值區別。上述固定基準的 `si_build` placement 分支只涵蓋一般 placement；它沒有讀取衍生來源或 h，不能直接宣稱涵蓋 PF。以下是 K3-L 與 PF 衍生承載面切片的共同實作驗收項 **K3-PF-FP-1**，本次只固定契約，沒有修改或驗收原生實作。
+
+衍生型定義序列為 UTF-8 `derived-placement/1;panel-fill:<id>;h:<source>;`，不加換行或 NUL；`<id>` 為來源 D42 試排 id 的十進位表示，無正號或前導零，0 保留為 `0`。`<source>` 原封使用固定基準 [engineering.inc 的 eng_source_json](https://github.com/ZhiQiYang/geometry-axiom/blob/4c6e8566f47a90f661e355129c26fb45e19479a2/geometry-core/engineering.inc#L372-L379) 的 bytes，不把求值結果代替來源，不另以 JS 或排序器重寫：
+
+| D4 的 h 來源 | `<source>` 的完整形狀 |
+|---|---|
+| 直接整數 | `{"kind":"literal","value":33}`（value 為核心合法整數 mm） |
+| D6b | `{"kind":"spec","name":<JSON 字串>}` |
+| D26 timber 的 B | `{"field":"B","id":<JSON 字串>,"kind":"material","version":<固定版本>}` |
+| D31 尺寸欄位 | `{"kind":"parameter","parameterId":<卡片 id>,"fieldId":<欄位 id>}` |
+
+字串轉義及數字格式沿用該 helper；所有欄位均必填，卡片／欄位 0 不省略，material 的 field 只能是 B，沒有 application 來源。來源種類、spec 名稱、固定材料 id／version／field、ParameterRef 的兩個 id 都是定義的一部分。由同一原生 World 建立試排來源邊及 h 的具型別依賴；不從顯示文字、求值後高度或 frame 猜引用。衍生 frame、輪廓與孔不加入定義序列；canvas-pos、記號、身分帳與配號器亦不加入。
+
+值序列為 `derived-placement-value/1;h:<精確整數>;`，接同一 World 按 R41 求得的 origin、U、V、N（逐一沿用 `si_point`／`si_vector` 的 `x,y,z;`），再接 `components:<數量>;`。各分量依 R42 正規順序寫外環，再寫 `holes:<數量>;` 與依 R42 排序的孔環；每環為 `loop<頂點數>:`，接每頂點 `u,v;`。頂點不另重複首點，不寫邊 key、fixity 或來源引用；零分量寫 `components:0;`。只有原生精確求值與全部分量都完整時才生成 `valueFingerprint`，不以定義指紋代替它。來源不完整、未知變體或容量不足仍須明示 `complete:false`，比較方不得回報完整內容一致；此守門與兩種指紋必須一起完成，才可宣稱支援該變體。
+
+實作驗收必須透過正式交易、同一原生 `source-inspect`／保存來源重播及實際 SHA-256，不能只對下列字串做單元測試：
+
+1. 固定同一衍生 placement 與來源試排，h 由 literal 33 明確重宣告為求值仍是 33 的 ParameterRef(0,0)：定義序列及 `definitionFingerprint` 必變，值序列、`valueFingerprint`、frame 與有效分量不變。沒有明示刪除，已啟用帳的 incarnation 不變，R57 仍 continuous，但必呈現定義改變。
+2. 改指另一個同值 ParameterRef，或更換同值 spec／固定材料版本：定義指紋必變；實際有效內容相同才可維持值指紋。拿掉來源 kind、任一 ref 欄位或把來源換成求值數字，對應反例必須失敗。
+3. 保持同一 ParameterRef，把其值由 33 改為另一合法值：衍生 placement 的定義序列不變，精確 h 與值指紋改變；依 R41 重算全部幾何。保存重開必得同樣兩組 bytes，純 canvas-pos 或身分帳啟用不能改動它們。
+
+K3-L／PF 整合 owner 須以 **K3-PF-FP-1** 回報上述三例及去除來源序列／不完整守門的反證。尚未交付前，不可把一般 placement 的來源檢查器測試當作衍生型通過；本文件不聲稱現在已發生或修好產品漏擋。
 
 ## 專案身分與確認
 
