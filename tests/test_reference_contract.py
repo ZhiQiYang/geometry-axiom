@@ -127,6 +127,74 @@ class ReferenceContract(unittest.TestCase):
         self.assertIn('boundary 2', dump)
         self.assertNotIn('hole ', dump)
 
+    def test_rect_outline_three_residual_components_rejects_and_rolls_back(self):
+        outline = ('0,10 10,10 10,0 20,0 20,10 30,10 30,0 '
+                   '40,0 40,20 20,20 20,30 10,30 10,20 0,20')
+        for strip in (False, True):
+            for prior_hole in (False, True):
+                with self.subTest(strip=strip, prior_hole=prior_hole):
+                    self.ok('reset')
+                    self.ok('surface 1 origin 0 0 0 u +x v +y outline ' + outline)
+                    if strip:
+                        self.ok('beam 1 along x from -10 to 50 at 15 width 10 depth 10 top 0')
+                    else:
+                        self.ok('column 1 at -10 10 size 60 10 z 0 100')
+                    if prior_hole:
+                        self.ok('column 2 at 12 2 size 4 4 z 0 100')
+                    before, refs = self.dump(), self.refs()
+                    command = 'apply-proj 1 ' + ('c2 ' if prior_hole else '')
+                    command += 'b1 cut-strip' if strip else 'c1'
+                    result = self.line(command)
+                    self.assertFalse(result['ok'], 'R3/R4: three residual components cannot become two rings')
+                    self.assertIn('拆分退化', result['error'])
+                    self.assertEqual(before, self.dump(), 'R8 must also roll back an earlier valid hole')
+                    self.assertEqual(refs, self.refs())
+                    self.ok('undo')
+                    self.ok('redo')
+                    self.assertEqual(before, self.dump(), 'failed apply must not leave a redo transaction')
+                    self.roundtrip()
+
+    def test_rect_outline_two_piece_difference_is_complete_after_redo_and_reopen(self):
+        fixtures = [
+            ('0,10 10,10 10,0 20,0 20,10 30,10 30,20 20,20 20,30 10,30 10,20 0,20',
+             '-10 10 size 60 10', (0,10,30,20), 200),
+            ('0,0 100,0 100,50 60,50 60,90 40,90 40,50 0,50',
+             '20 70 size 60 10', (40,70,60,80), 5600),
+        ]
+        def cells(verts):
+            l, b = min(x for x,y in verts), min(y for x,y in verts)
+            r, t = max(x for x,y in verts), max(y for x,y in verts)
+            def inside(x,y):
+                return sum(a[0] == e[0] and 2*min(a[1],e[1]) < 2*y+1 < 2*max(a[1],e[1])
+                           and 2*a[0] > 2*x+1 for a,e in zip(verts,verts[1:]+verts[:1])) % 2 == 1
+            return {(x,y) for x in range(l,r) for y in range(b,t) if inside(x,y)}
+        for outline, column, rect, area in fixtures:
+            with self.subTest(outline=outline):
+                self.projection_fixture(outline, column)
+                before = self.dump()
+                original = [list(map(int,p.split(','))) for p in outline.split()]
+                u0,v0,u1,v1 = rect
+                expected = cells(original) - {(x,y) for x in range(u0,u1) for y in range(v0,v1)}
+                self.assertEqual(area, len(expected))
+                def assert_difference():
+                    loops = [self.s.send('boundary '+str(i))['loops'][0]['verts'] for i in (1,2)]
+                    pieces = [cells(v) for v in loops]
+                    self.assertFalse(pieces[0] & pieces[1], 'split pieces must have disjoint interiors')
+                    self.assertEqual(expected, pieces[0] | pieces[1], 'full saved union must equal the exact difference')
+                    signed = [abs(sum(a[0]*e[1]-a[1]*e[0] for a,e in zip(v,v[1:]+v[:1]))) for v in loops]
+                    self.assertEqual(2*area, sum(signed), 'saved polygon area must equal the exact remainder')
+                    self.assertFalse(any(u0 <= x < u1 and v0 <= y < v1 for x,y in pieces[0] | pieces[1]))
+                self.ok('apply-proj 1 c1')
+                assert_difference()
+                after = self.dump()
+                self.ok('undo')
+                self.assertEqual(before, self.dump())
+                self.ok('redo')
+                self.assertEqual(after, self.dump())
+                assert_difference()
+                self.roundtrip()
+                assert_difference()
+
     def test_rect_outline_unselected_complex_column_does_not_block_valid_item(self):
         self.projection_fixture('0,0 100,0 100,100 60,100 60,40 40,40 40,100 0,100',
                                 '30 50 size 40 30')

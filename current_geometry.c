@@ -10946,6 +10946,7 @@ static bool proj_split_loop(
     (void)u1;
     PolygonLoop2 *pieces[2] = { p1, p2 };
     size_t pc = 0, n = loop->count;
+    size_t covered_runs = 0;
     bool in_run = false;
 
     p1->count = p2->count = 0;
@@ -10984,6 +10985,9 @@ static bool proj_split_loop(
         SurfacePoint2 ent = proj_pt_on_edge(a, e, s0);
         SurfacePoint2 ext = proj_pt_on_edge(a, e, s1);
         if (!in_run) {
+            /* A third covered arc separates a third residue. Cycling back
+             * to pieces[0] would reconnect it through the removed rectangle. */
+            if (++covered_runs > 2) return false;
             in_run = true;
             /* a 若在弧外先收進本片;進點是本片邊界的一部分 */
             if (ent.u != a.u || ent.v != a.v) {

@@ -423,8 +423,75 @@ static void test_rect_outline_counterexamples(void)
     CHECK(rectangle_plus_isolated_point < 0);
 }
 
+/* Integer orthogonal fixtures partition into whole 1 mm cells. Odd doubled
+ * centres enumerate their complete open interiors without engine predicates. */
+static bool split_oracle_cell(const PolygonLoop2 *loop, Coord u, Coord v)
+{
+    bool inside = false;
+    for (size_t i=0; i<loop->count; ++i) {
+        SurfacePoint2 a=loop->v[i], b=loop->v[(i+1)%loop->count];
+        if (a.u==b.u && 2*coord_min(a.v,b.v)<2*v+1 &&
+            2*v+1<2*coord_max(a.v,b.v) && 2*a.u>2*u+1) inside=!inside;
+    }
+    return inside;
+}
+
+static bool split_oracle_difference(const PolygonLoop2 *before,
+    const PolygonLoop2 *p1, const PolygonLoop2 *p2,
+    Coord u0, Coord v0, Coord u1, Coord v1, int *area)
+{
+    Coord l,b,r,t; poly_bbox(before,&l,&b,&r,&t);
+    bool exact=true; *area=0;
+    for (Coord u=l-1; u<=r; ++u) for (Coord v=b-1; v<=t; ++v) {
+        bool wanted=split_oracle_cell(before,u,v) && !(u>=u0 && u<u1 && v>=v0 && v<v1);
+        int actual=split_oracle_cell(p1,u,v)+split_oracle_cell(p2,u,v);
+        if (wanted) ++*area;
+        if (actual!=(int)wanted) exact=false; /* Also rejects overlap and extra cells. */
+    }
+    return exact;
+}
+
+static void test_projection_three_residual_components(void)
+{
+    const PolygonLoop2 fixtures[2] = {
+        {.count=14,.v={{0,10},{10,10},{10,0},{20,0},{20,10},{30,10},{30,0},
+                      {40,0},{40,20},{20,20},{20,30},{10,30},{10,20},{0,20}}},
+        {.count=12,.v={{0,10},{10,10},{10,0},{20,0},{20,10},{30,10},
+                      {30,20},{20,20},{20,30},{10,30},{10,20},{0,20}}}
+    };
+    for (int which=0; which<2; ++which) for (int variant=0; variant<8; ++variant) {
+        PolygonLoop2 loop=fixtures[which], p1={0}, p2={0};
+        size_t shift=(variant&4)?loop.count-1:0;
+        for (size_t i=0; i<loop.count; ++i) {
+            size_t at=(variant&1)?(shift+loop.count-i)%loop.count:(shift+i)%loop.count;
+            SurfacePoint2 a=fixtures[which].v[at];
+            loop.v[i]=(variant&2)?(SurfacePoint2){a.v-50,a.u-50}:(SurfacePoint2){a.u-50,a.v-50};
+            loop.fixity[i]=EDGE_FIXED;
+        }
+        CHECK(poly_loop_is_valid(&loop));
+        Coord u0=(variant&2)?-40:-60, v0=(variant&2)?-60:-40;
+        Coord u1=(variant&2)?-30:0, v1=(variant&2)?0:-30;
+        Coord a,b,c,d; ObstacleClass cls;
+        CHECK(classify_rect_outline(&loop,u0,v0,u1,v1,&cls,&a,&b,&c,&d)==1);
+        CHECK(cls==OBSTACLE_SPLIT);
+        bool flush[4]; for (int s=0;s<4;++s) flush[s]=side_flush_outline(&loop,s,a,b,c,d);
+        bool split=proj_split_loop(&loop,flush,a,b,c,d,&p1,&p2);
+        bool three_residual_components_rejected=(which==0)?!split:split;
+        CHECK(three_residual_components_rejected);
+        int area=0;
+        bool exact=split_oracle_difference(&loop,&p1,&p2,a,b,c,d,&area);
+        CHECK(area==(which==0?300:200));
+        bool saved_union_is_exact=!split||exact;
+        CHECK(saved_union_is_exact);
+        CHECK(!split||proj_loop_area2(&p1)+proj_loop_area2(&p2)==2*area);
+        SurfacePoint2 removed={-35,-35};
+        CHECK(!split||(!poly_contains_point(&p1,removed)&&!poly_contains_point(&p2,removed)));
+    }
+}
+
 int main(void)
 {
+    test_projection_three_residual_components();
     test_rect_outline_counterexamples();
     test_collinear_vertex_rect_corner();
     test_notch_rect_with_corners_on_ring_is_outside();

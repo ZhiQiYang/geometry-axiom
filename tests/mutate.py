@@ -285,6 +285,9 @@ MUTANTS = [
     dict(id="M65", desc="R14/R15/#202：未裁切 strip 提前成功、忽略其餘項及選片",
          old="            matched = true;\n            /* 選片:矩形應只與一片接觸;橫跨拆分線=無法歸屬,拒絕。 */",
          new="            matched = true;\n            if (items[i].cls == OBSTACLE_STRIP && !cut_strip) return true;\n            /* 選片:矩形應只與一片接觸;橫跨拆分線=無法歸屬,拒絕。 */"),
+    dict(id="M66", desc="R3/R4/R8/#202：第三段覆蓋弧循環接回第一片",
+         old="            if (++covered_runs > 2) return false;",
+         new="            ++covered_runs; /* incorrectly reconnect third residue */"),
 ]
 
 
