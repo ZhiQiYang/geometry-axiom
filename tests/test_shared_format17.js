@@ -6,7 +6,7 @@ const withoutCutting=e=>({...e,records:e.records.filter(r=>r.kind!==Cutting.KIND
 // This composed seam is not a claim that the two feature branches are merged.
 const Features={...A,Cutting,validate(e){A.validate(withoutCutting(e));for(const r of e.records.filter(r=>r.kind===Cutting.KIND)){assert.deepEqual(Object.keys(r).sort(),['kind','schema','value']);assert.equal(r.schema,Cutting.SCHEMA);Cutting.validate(r.value);}return e;},capabilities(e){this.validate(e);return [...A.capabilities(withoutCutting(e)),...(e.records.some(r=>r.kind===Cutting.KIND)?[Cutting.CAPABILITY]:[])];}};
 for(const name of ['sourceRooms','evidenceLinks','sourceIds','validateNativeRefs','validateNativePins'])Features[name]=(e,...args)=>A[name](withoutCutting(e),...args);
-const source=fs.readFileSync(path.join(__dirname,'../geometry-web/project-store.js'),'utf8'),sandbox={GeometryFeatureAttachments:Features,GeometryScenarioCatalog:S,TextEncoder,TextDecoder,Uint8Array,Map,Set,crypto:globalThis.crypto};
+const source=fs.readFileSync(process.env.GEOMETRY_PROJECT_STORE_SOURCE||path.join(__dirname,'../geometry-web/project-store.js'),'utf8'),sandbox={GeometryFeatureAttachments:Features,GeometryScenarioCatalog:S,TextEncoder,TextDecoder,Uint8Array,Map,Set,crypto:globalThis.crypto};
 vm.runInNewContext(source,sandbox);const P=sandbox.GeometryProject;
 const grid=()=>A.record(A.GRID_KIND,A.gridDraftValue(['a','b'].map(draftId=>({schema:A.GRID_SCHEMA,draftId,kind:'source',intent:'create',baseRef:null,inputRefs:[],rawForm:Object.fromEntries(A.sourceFields.map(k=>[k,'']))}))));
 const cutting=()=>({kind:Cutting.KIND,schema:Cutting.SCHEMA,value:Cutting.empty()});
