@@ -55,5 +55,23 @@ const {chromium}=require('playwright');
  const capacityBytes=await save(page);await lostPage.close();await reopened.close();
  const cold=await open(fresh),capacityReopened=await cold.evaluate(async bytes=>{await ReferenceWorkspace.importBytes(new Uint8Array(bytes),'capacity.gcanvas');return {drafts:ReferenceWorkspace.readGridDrafts(),dump:(await apiRequest('dump')).text,manifest:(await GeometryProject.unpack(new Uint8Array(bytes),fflate)).manifest};},capacityBytes);
  assert.deepEqual(capacityReopened.drafts,marked.after);assert.equal(capacityReopened.dump,marked.dump);assert.ok(capacityReopened.manifest.requiredCapabilities.includes('grid-editor-drafts/1'));
- console.log(JSON.stringify({M01:true,M02:true,M04:true,M10:true,M11:true,M14b:true,M2Capacity:true,trueZipBytes:bytes.length,lostZipBytes:lostBytes.length,capacityZipBytes:capacityBytes.length,rawUnchanged:true,sameIdPresent:true}));await freshGate.finish();await gate.finish();await browser.close();
+ // The immutable fixture was written/read by the exact pre-reserve base.
+ // Import uses the real native upload/objects path, not a injected workspace.
+ const legacyBytes=Array.from(require('node:fs').readFileSync(require('node:path').join(__dirname,'evidence/k2a-boundary-review-20261012/legacy/base49-capacity.gcanvas')));
+ const legacy=await page.evaluate(async bytes=>{
+  const original=await GeometryProject.unpack(new Uint8Array(bytes),fflate);
+  await ReferenceWorkspace.importBytes(new Uint8Array(bytes),'legacy-capacity.gcanvas');
+  const marked=ReferenceWorkspace.readGridDrafts(),state=ReferenceWorkspace.getProjectState(),history=ReferenceWorkspace.history.undo.length;
+  ReferenceWorkspace.setGridDraft(marked.drafts[0].draftId,structuredClone(marked.drafts[0]),state.contextToken);
+  const edited=structuredClone(marked.drafts[0]),form=edited.ruleDraft.rawForm;form[Object.keys(form).find(key=>form[key].length<4096)]+='x';
+  let rejection;try{ReferenceWorkspace.setGridDraft(edited.draftId,edited,state.contextToken);}catch(error){rejection=error.message;}
+  return {original:original.manifest.featureAttachments,marked,rejection,stateUnchanged:JSON.stringify(ReferenceWorkspace.getProjectState())===JSON.stringify(state),historyUnchanged:ReferenceWorkspace.history.undo.length===history,dump:(await apiRequest('dump')).text};
+ },legacyBytes);
+ assert.equal(capacity.bytes(legacy.original),131071);assert.equal(legacy.marked.drafts[0].inputRefs.filter(ref=>ref.lost).length,20);assert.deepEqual(legacy.marked.orphans,['capacity']);
+ assert.deepEqual(legacy.marked.drafts[0].rawForm,legacy.original.records[0].value.rawForm);assert.deepEqual(legacy.marked.drafts[0].ruleDraft,legacy.original.records[0].value.ruleDraft);
+ assert.match(legacy.rejection,/容量|上限/);assert.equal(legacy.stateUnchanged,true);assert.equal(legacy.historyUnchanged,true);
+ const legacySaved=await save(page);await cold.close();const legacyCold=await open(fresh);
+ const legacyAgain=await legacyCold.evaluate(async bytes=>{await ReferenceWorkspace.importBytes(new Uint8Array(bytes),'marked-legacy.gcanvas');return {drafts:ReferenceWorkspace.readGridDrafts(),dump:(await apiRequest('dump')).text,manifest:(await GeometryProject.unpack(new Uint8Array(bytes),fflate)).manifest};},legacySaved);
+ assert.deepEqual(legacyAgain.drafts,legacy.marked);assert.equal(legacyAgain.dump,legacy.dump);assert.equal(legacyAgain.manifest.format,'geometry-canvas/17');assert.ok(legacyAgain.manifest.requiredCapabilities.includes('grid-editor-drafts/1'));
+ console.log(JSON.stringify({M01:true,M02:true,M04:true,M10:true,M11:true,M14b:true,M2Capacity:true,B1Legacy:true,trueZipBytes:bytes.length,lostZipBytes:lostBytes.length,capacityZipBytes:capacityBytes.length,legacyZipBytes:legacyBytes.length,markedLegacyZipBytes:legacySaved.length,rawUnchanged:true,sameIdPresent:true}));await freshGate.finish();await gate.finish();await browser.close();
 })().catch(e=>{console.error(e);process.exit(1)});

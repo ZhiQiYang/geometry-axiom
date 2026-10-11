@@ -61,6 +61,20 @@ const legacyPage=()=>({src:'data:image/png;base64,legacy',imgW:100,imgH:80,mmPer
 const legacyResponse=bytes=>({blob:async()=>new Blob([bytes],{type:'image/png'})});
 
 const k2aDraft=(id,edit=false)=>({schema:P.Features.GRID_SCHEMA,draftId:id,kind:'source',intent:edit?'edit':'create',baseRef:edit?{kind:'grid-system',id:1,fingerprint:'a'.repeat(64)}:null,inputRefs:[],rawForm:Object.fromEntries(P.Features.sourceFields.map(f=>[f,' 1e ']))});
+test('K2a B1 legacy missing-source scan preserves raw and unchanged flush; one byte edits still need admission',async()=>{
+  const {w}=await fixture(),old=new Uint8Array(fs.readFileSync(require('node:path').join(__dirname,'evidence/k2a-boundary-review-20261012/legacy/base49-capacity.gcanvas'))),opened=await P.unpack(old,zip);
+  w.context().featureAttachments=structuredClone(opened.manifest.featureAttachments.records);
+  const original=w.readGridDrafts().drafts[0];
+  assert.doesNotThrow(()=>w.observe('line delete grid-system 1',{ok:true,deletedObjects:[original.baseRef,...original.inputRefs]}),/容量|上限/);
+  const marked=w.readGridDrafts(),state=w.getProjectState(),history=w.history.undo.length;
+  assert.deepEqual(Array.from(marked.orphans),[original.draftId]);assert.equal(marked.drafts[0].inputRefs.filter(ref=>ref.lost).length,20);assert.deepEqual(marked.drafts[0].rawForm,original.rawForm);
+  assert.doesNotThrow(()=>w.setGridDraft(original.draftId,structuredClone(marked.drafts[0]),state.contextToken));
+  const changed=structuredClone(marked.drafts[0]),form=changed.ruleDraft.rawForm;form[Object.keys(form).find(key=>form[key].length<4096)]+='x';
+  assert.throws(()=>w.setGridDraft(original.draftId,changed,state.contextToken),/容量|上限/);
+  assert.deepEqual(w.getProjectState(),state);assert.equal(w.history.undo.length,history);assert.deepEqual(w.readGridDrafts(),marked);
+  const saved=await P.pack('',await w.manifest(),new Map([[...w.context().sources][0]].map(([id,source])=>[id,source.bytes])),zip),again=await P.unpack(saved,zip);
+  assert.deepEqual(P.Features.gridDrafts(again.manifest.featureAttachments.records.find(r=>r.kind===P.Features.GRID_KIND).value),marked);
+});
 test('K2a review M1 original handler replaces lost P1 with already-used P2 without permitting pure removal',async()=>{
   const f=await fixture(),w=f.w,token=w.getProjectState().contextToken,d=k2aDraft('shared-pin');
   d.rawForm=Object.fromEntries(P.Features.sourceFields.map(k=>[k,'']));d.rawForm.igUStepSource='1:1';d.rawForm.igVStepSource='2:1';

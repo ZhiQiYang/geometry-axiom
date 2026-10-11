@@ -443,8 +443,8 @@ const ReferenceWorkspace = (() => {
   }
   function readGridDraft(draftId) {return readGridDrafts().drafts.find(d=>d.draftId===draftId) || null;}
   function replaceGridDrafts(drafts,orphans) {
-    const value=P.Features.gridDraftValue(drafts,orphans);
-    context().featureAttachments=featureProposal(P.Features.GRID_KIND,value);
+    const value=P.Features.gridDraftValue(drafts,orphans,true);
+    context().featureAttachments=featureProposal(P.Features.GRID_KIND,value,true);
   }
   function scanGridDrafts(deleted,objects=null,localDeletion=false) {
     const c=readGridDrafts();if(!c.drafts.length)return;
@@ -461,6 +461,9 @@ const ReferenceWorkspace = (() => {
   function setGridDraft(draftId,value,expectedContextToken) {
     const collection=readGridDrafts(expectedContextToken),old=collection.drafts.find(d=>d.draftId===draftId);
     if(value!==null) {
+      // Validate before comparing caller data; unchanged legacy flushes persist.
+      P.Features.validateGridDraft(value,true,true);
+      if(old&&sameModelData(old,value))return readGridDraft(draftId);
       P.Features.validateGridDraft(value,true);
       if(value.draftId!==draftId)throw new Error("網格草稿身分不符。");
       if(old && (old.kind!==value.kind || old.intent!==value.intent || !sameModelData(old.baseRef,value.baseRef)))
@@ -516,13 +519,14 @@ const ReferenceWorkspace = (() => {
     const collection=readGridDrafts();setFeatureAttachment(P.Features.GRID_KIND,P.Features.gridDraftValue(collection.drafts.map(d=>d.draftId===draftId?next:d),collection.orphans),expectedContextToken,{gridWrite:gridDraftWrite});
     return readGridDraft(draftId);
   }
-  function featureProposal(kind,value) {
-    const record = value === null ? null : P.Features.record(kind,value);
+  function featureProposal(kind,value,storedGrid = false) {
+    const record = value === null ? null : P.Features.record(kind,value,storedGrid);
     const next = (context().featureAttachments || []).filter(record => record.kind !== kind);
     if (record) next.push(record);
     P.Features.sourceRooms({schema:P.Features.SCHEMA,records:next},context().sources);
     P.Features.evidenceLinks({schema:P.Features.SCHEMA,records:next},context().sources,context().id);
-    assertMetadataCapacity({featureAttachments:next});
+    if(storedGrid)P.assertManifestCapacity(manifestData({...context(),featureAttachments:next}),"",true);
+    else assertMetadataCapacity({featureAttachments:next});
     return next;
   }
   async function validateRuleCaseClosure(envelope, assertCurrent=()=>{}) {
@@ -1324,7 +1328,7 @@ const ReferenceWorkspace = (() => {
   }
   async function manifest(c = context(), scene = null) {
     await referencesReady(c); assertContext(c);
-    const data = manifestData(c);P.assertManifestCapacity(data,scene);
+    const data = manifestData(c);P.assertManifestCapacity(data,scene,true);
     return JSON.parse(JSON.stringify(data));
   }
   function assertSaveReady(transactionOwner=null) {
@@ -1354,7 +1358,7 @@ const ReferenceWorkspace = (() => {
     const r=await api("dump"); if (!r.ok) throw new Error(r.error||"無法讀取場景。");
     assertCurrent();assertSnapshot(stamp,transactionOwner);
     const snapshot=proposal||c,m=includeCatalog?proposal?manifestData(snapshot):await manifest(c,r.text):manifestData({...snapshot,scenarioCatalog:null});
-    P.assertManifestCapacity(m,r.text);assertCurrent();assertSnapshot(stamp,transactionOwner);
+    P.assertManifestCapacity(m,r.text,true);assertCurrent();assertSnapshot(stamp,transactionOwner);
     await validateRuleCaseClosure(m.featureAttachments,()=>{assertCurrent();assertSnapshot(stamp,transactionOwner);});assertCurrent();assertSnapshot(stamp,transactionOwner);
     await validateEvidenceClosure(snapshot, m.featureAttachments, () => {assertCurrent();assertSnapshot(stamp,transactionOwner);}); assertCurrent();assertSnapshot(stamp,transactionOwner);
     const data=new Map([...snapshot.sources].map(([k,s])=>[k,s.bytes]));

@@ -178,7 +178,7 @@
     if (projectCapabilities(manifest, scene).includes(Features.GRID_RULE_SCHEMA)) return GRID_RULE_FORMAT;
     if (manifest.featureAttachments && Features.evidenceLinks(manifest.featureAttachments)) return EVIDENCE_FORMAT;
     if (projectCapabilities(manifest, scene).includes(SUBDIVISION_CAPABILITY)) return SUBDIVISION_FORMAT;
-    if (Object.hasOwn(manifest, "featureAttachments") && Features.validate(manifest.featureAttachments).records.length) return FEATURE_FORMAT;
+    if (Object.hasOwn(manifest, "featureAttachments") && Features.validate(manifest.featureAttachments,true).records.length) return FEATURE_FORMAT;
     if (manifest.reconstructionReviews?.length) return OUTLINE_FORMAT;
     if (projectCapabilities(manifest, scene).includes(GENERATION_CAPABILITY)) return GENERATION_FORMAT;
     if (projectCapabilities(manifest, scene).includes(ASSEMBLY_CAPABILITY)) return ASSEMBLY_FORMAT;
@@ -509,8 +509,16 @@
     else delete m.faceProjections;
     return m;
   }
-  function assertManifestCapacity(manifest, scene = null) {
-    Features.jsonBytes(manifest,MAX_MANIFEST,0,"專案清單超過 8 MB，請拆成較小的專案。");
+  function gridUnmarkedManifest(manifest,scene) {
+    if(!manifest.featureAttachments?.records.some(record=>record.kind===Features.GRID_KIND&&record.schema===Features.GRID_DRAFTS_SCHEMA&&
+        (record.value.orphans.length||record.value.drafts.some(draft=>draft.inputRefs.some(ref=>ref.lost)))))return manifest;
+    const featureAttachments=Features.gridUnmarkedEnvelope(manifest.featureAttachments);
+    const requiredCapabilities=(manifest.requiredCapabilities||[]).filter(cap=>cap!==Features.GRID_DRAFTS_SCHEMA);
+    return normalizedManifest({...manifest,featureAttachments,requiredCapabilities},scene||"",manifest.sceneHash);
+  }
+  function assertManifestCapacity(manifest, scene = null, stored = false) {
+    Features.jsonBytes(manifest,MAX_MANIFEST+(stored?Features.MAX_GRID_DRAFTS*(20*12+103)+512:0),0,"專案清單超過 8 MB，請拆成較小的專案。");
+    if(manifest.featureAttachments)Features.validate(manifest.featureAttachments,stored);
     const rooms = manifest.featureAttachments ? Features.sourceRooms(manifest.featureAttachments) : null;
     const reserve = rooms ? Features.lifecycleReserve(rooms) : 0;
     // New metadata edits reserve all native capabilities without a scene read.
@@ -519,24 +527,23 @@
     const admitted = normalizedManifest(manifest,scene || "",manifest.sceneHash || "0".repeat(64),!!rooms);
     if (rooms && scene === null) admitted.requiredCapabilities = [...new Set([...admitted.requiredCapabilities,SUBDIVISION_CAPABILITY])].sort();
     const records=admitted.featureAttachments?.records;
-    if(records?.some(record=>record.kind===Features.GRID_KIND)){
-      const projected={...admitted,featureAttachments:{...admitted.featureAttachments,records:records.map(record=>record.kind!==Features.GRID_KIND?record:Features.record(Features.GRID_KIND,Features.gridLifecycleValue(record.value)))}};
+    if(!stored&&records?.some(record=>record.kind===Features.GRID_KIND)){
+      const projected={...admitted,featureAttachments:{...admitted.featureAttachments,records:records.map(record=>record.kind!==Features.GRID_KIND?record:Features.record(Features.GRID_KIND,Features.gridLifecycleValue(record.value),true))}};
       Features.jsonBytes(normalizedManifest(projected,scene||"",admitted.sceneHash,!!rooms),MAX_MANIFEST,reserve,"專案未保留網格來源缺失補標容量（上限 8 MB）。");
     }
-    Features.jsonBytes(admitted,MAX_MANIFEST,reserve,
+    Features.jsonBytes(stored?gridUnmarkedManifest(admitted,scene):admitted,MAX_MANIFEST,reserve,
       "專案清單未保留完整保存與房間狀態更新所需容量（上限 8 MB）。");
     return manifest;
   }
   function validate(m) {
     if (!m || ![FORMAT, MODEL_FORMAT, PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT, PARAMETER_FORMAT, ASSEMBLY_FORMAT, GENERATION_FORMAT, OUTLINE_FORMAT, FEATURE_FORMAT, SUBDIVISION_FORMAT, EVIDENCE_FORMAT, GRID_RULE_FORMAT, SCENARIO_FORMAT, CASE_FORMAT, SECTION_FORMAT, GRID_DRAFTS_FORMAT].includes(m.format)) fail("專案版本不支援，請使用相容版本開啟。");
     if (Object.hasOwn(m, "featureAttachments") && ![FEATURE_FORMAT, SUBDIVISION_FORMAT, EVIDENCE_FORMAT, GRID_RULE_FORMAT, SCENARIO_FORMAT, CASE_FORMAT, SECTION_FORMAT, GRID_DRAFTS_FORMAT].includes(m.format)) fail("功能附件須使用第 10 版格式。");
-    Features.jsonBytes(m,MAX_MANIFEST,0,"專案清單超過 8 MB，請拆成較小的專案。");
-    assertManifestCapacity(m,"");
+    assertManifestCapacity(m,"",true);
     if ([ENGINEERING_FORMAT, PARAMETER_FORMAT, ASSEMBLY_FORMAT, GENERATION_FORMAT, OUTLINE_FORMAT, FEATURE_FORMAT, SUBDIVISION_FORMAT, EVIDENCE_FORMAT, GRID_RULE_FORMAT, SCENARIO_FORMAT, CASE_FORMAT, SECTION_FORMAT, GRID_DRAFTS_FORMAT].includes(m.format)) {
       if (!keys(m, ["format", "projectId", "name", "sceneHash", "sources", "faces", "models", "faceProjections", "requiredCapabilities"], ["reconstructionReviews", "engineeringDrafts", ...([ASSEMBLY_FORMAT, GENERATION_FORMAT, OUTLINE_FORMAT, FEATURE_FORMAT, SUBDIVISION_FORMAT, EVIDENCE_FORMAT, GRID_RULE_FORMAT, SCENARIO_FORMAT, CASE_FORMAT, SECTION_FORMAT, GRID_DRAFTS_FORMAT].includes(m.format) ? ["assemblyDrafts"] : []), ...([FEATURE_FORMAT, SUBDIVISION_FORMAT, EVIDENCE_FORMAT, GRID_RULE_FORMAT, SCENARIO_FORMAT, CASE_FORMAT, SECTION_FORMAT, GRID_DRAFTS_FORMAT].includes(m.format) ? ["featureAttachments"] : []), ...([SCENARIO_FORMAT,CASE_FORMAT, SECTION_FORMAT, GRID_DRAFTS_FORMAT].includes(m.format)?["scenarioCatalog"]:[])]))
         fail("第 5 版工程專案的欄位不完整或含未知定義。");
       validateManifestCapabilities(m.requiredCapabilities);
-      if (Object.hasOwn(m, "featureAttachments")) Features.validate(m.featureAttachments);
+      if (Object.hasOwn(m, "featureAttachments")) Features.validate(m.featureAttachments,true);
       if (Object.hasOwn(m, "assemblyDrafts")) validateAssemblyDrafts(m.assemblyDrafts);
       if (Object.hasOwn(m, "engineeringDrafts")) validateEngineeringDrafts(m.engineeringDrafts);
     } else if (Object.hasOwn(m, "assemblyDrafts") || Object.hasOwn(m, "requiredCapabilities") || Object.hasOwn(m, "engineeringDrafts"))
@@ -636,13 +643,13 @@
   }
   async function pack(scene, manifest, sources, zip) {
     const sceneBytes = new TextEncoder().encode(scene);
-    assertManifestCapacity(manifest,scene);
+    assertManifestCapacity(manifest,scene,true);
     for (const model of manifest.models || []) validateSpaceModel(model);
     if (Object.hasOwn(manifest, "faceProjections")) validateFaceProjectionList(manifest.faceProjections);
     if (Object.hasOwn(manifest, "requiredCapabilities")) validateManifestCapabilities(manifest.requiredCapabilities);
     if (Object.hasOwn(manifest, "assemblyDrafts")) validateAssemblyDrafts(manifest.assemblyDrafts);
     if (Object.hasOwn(manifest, "engineeringDrafts")) validateEngineeringDrafts(manifest.engineeringDrafts);
-    if (Object.hasOwn(manifest, "featureAttachments")) Features.validate(manifest.featureAttachments);
+    if (Object.hasOwn(manifest, "featureAttachments")) Features.validate(manifest.featureAttachments,true);
     // Freeze the admitted JSON before the asynchronous scene hash; late caller
     // changes cannot reach a whole-container copy beyond the admitted budget.
     const m = copy(normalizedManifest(manifest,scene));
@@ -661,7 +668,7 @@
     await validateScenarioHashes(m);
     await validateCaseHashes(m);
     const manifestBytes = new TextEncoder().encode(JSON.stringify(m));
-    if (manifestBytes.length > MAX_MANIFEST) fail("專案清單超過 8 MB，請拆成較小的專案。");
+    assertManifestCapacity(m,scene,true);
     const entries = { "world.scene": sceneBytes, "manifest.json": manifestBytes };
     for (const s of m.sources) {
       const bytes = admittedSources.get(s.id);
@@ -689,7 +696,7 @@
             !/^(manifest\.json|world\.scene|sources\/[a-f0-9]{64})$/.test(file.name)) return die(new Error("專案內含重複或不支援的檔案。"));
         entries[file.name] = null; pending++;
         let size = 0; const chunks = [];
-        const limit = file.name === "manifest.json" ? MAX_MANIFEST : file.name === "world.scene" ? 16 * 1024 * 1024 : MAX_SOURCE;
+        const limit = file.name === "manifest.json" ? MAX_MANIFEST+Features.MAX_GRID_DRAFTS*(20*12+103)+512 : file.name === "world.scene" ? 16 * 1024 * 1024 : MAX_SOURCE;
         file.ondata = (err, data, final) => {
           if (failed) { file.terminate?.(); return; }
           if (err) return die(err);
