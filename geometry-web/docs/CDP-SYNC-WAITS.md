@@ -1,0 +1,39 @@
+# 瀏覽器測試的同步等待
+
+PR #197 只調整測試與測試 helper；產品、既有斷言期望值與
+`cdp_sections.golden.json` 不變。
+
+## 期限契約
+
+依 2026-10-11 PR #197 的裁決，§7 頂點等待採 15 秒硬門檻。
+`makeSettle` 的條件等待與選用診斷共用一個截止時間：
+
+- 尚未完成的求值由 timer 截止；求值返回後仍核對時間，避免晚到的 true 被接受。
+- 診斷只能使用剩餘時間；截止後不新增診斷請求。無法取得時明寫 unavailable。
+- soft 只讓呼叫端繼續執行，仍回傳 `ok:false` 並印出站點。
+- §7 將 `ok` 納入原本唯一的頂點 verdict。逾時立即判紅，跳過補等與晚到讀值。
+- 如期成功仍保留原本的頂點比較、刷新收尾與單一 verdict。
+
+P80 / P88 的成功條件與原先匯出數量、指紋、hit-test 判斷保持不變。
+這個截止時間約束測試等待，不取消已送到瀏覽器的原生工作。
+
+## 可重跑的純 Node 回歸
+
+```text
+node --test tests/test_cdp_settle.js
+node --test tests/test_cdp_card_position.js tests/test_cdp_evaluation.js
+```
+
+新增的 10 個測試執行實際 helper；§7 案例擷取實際站點，僅替換其依賴，
+用假時鐘測如期成功、晚到、永久 pending、診斷 pending 與單一 verdict。
+它已登記為 `node:cdp_settle`，沒有調整既有 suite 數量或瀏覽器 golden。
+
+在修正前 `ade253ad0de61fe5d12e5053d162afffb95f901c` 的程式上，
+10 項中 6 項因上述缺口失敗；修正後 10/10，既有相關測試 30/30。
+逐一移除「§7 納入 ok」「返回後核時」「等待競速 timer」「診斷剩餘時間」
+四項保護，新增測試均因對應原因失敗；還原後 10/10。
+
+本機原始紀錄與移除修正的腳本在本次派工 scratchpad 的
+`board-local-codex/verify_pr197.py`、`pr197-unit-results.json` 及同名前綴 log。
+純 Node 結果不代表真實瀏覽器延遲注入、canvas×2、grid×1 或七 job 全量通過；
+那些結果必須另附待合併 head 的實跑收據。

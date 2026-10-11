@@ -616,15 +616,15 @@ async function main() {
     /* The drag only edits fe.work; oc.bmap changes once emitBoundary's native write is followed by emitLine's renderObjects
        (objects/surfaces/boundary reads, then the oc.bmap assignment) and feAfterChange's re-read.
        A fixed sleep(1200) read the old vertex whenever the native service was slower than that. Wait for the observable commit
-       (bounded; a timeout is logged by name and the ✗ verdict below still counts - soft, so the run is not aborted), then let the
-       rest of the refresh chain settle the way the old sleep(>=200) did. */
-    await cdp.makeSettle({waitForUI,eval_},{tag:'§7'})('拖曳外環頂點 0 後，oc.bmap 的頂點 0 離開拖曳前的值（emitBoundary → renderObjects／feAfterChange 的 boundary 讀回）',
+       before the 15-second deadline. A timeout enters the same single ✗ verdict and skips further settling/reads at this site.
+       Only timely success lets the rest of the refresh chain settle the way the old sleep(>=200) did. */
+    const vertexSettled = await cdp.makeSettle({waitForUI,eval_},{tag:'§7'})('拖曳外環頂點 0 後，oc.bmap 的頂點 0 離開拖曳前的值（emitBoundary → renderObjects／feAfterChange 的 boundary 讀回）',
       `(()=>{const l=oc.edit&&oc.bmap[oc.edit.bid];return !!(l&&l[0]&&l[0].verts[0])&&JSON.stringify(l[0].verts[0])!==${JSON.stringify(vBefore)};})()`,
       {timeoutMs:15000,soft:true,observe:`({edit:!!oc.edit,vert0:oc.edit?(oc.bmap[oc.edit.bid]?.[0]?.verts?.[0]??null):null,busy:oc.busy,status:document.getElementById("status").textContent})`});
-    await eval_('window.__cdpSettleUI?.(0)');
-    const vAfter = await eval_(`JSON.stringify(oc.bmap[oc.edit.bid][0].verts[0])`);
-    console.log("vert0:", vBefore, "->", vAfter,explicitVerdict(vBefore !== vAfter ? "✓ 頂點編輯有效" : "✗ 頂點編輯無效"));
-    console.log("status:", await eval_(`document.getElementById("status").textContent`));
+    if (vertexSettled.ok) await eval_('window.__cdpSettleUI?.(0)');
+    const vAfter = vertexSettled.ok ? await eval_(`JSON.stringify(oc.bmap[oc.edit.bid][0].verts[0])`) : '(等待逾時)';
+    console.log("vert0:", vBefore, "->", vAfter,explicitVerdict(vertexSettled.ok && vBefore !== vAfter ? "✓ 頂點編輯有效" : "✗ 頂點編輯無效"));
+    if (vertexSettled.ok) console.log("status:", await eval_(`document.getElementById("status").textContent`));
   } else console.log("沒進入面編輯，跳過");
 
   console.log("=== 8. Esc 返回世界 ===");

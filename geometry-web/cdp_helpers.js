@@ -172,19 +172,36 @@ function makeCtl({ eval_, sleep, click }, options = {}) {
  * defaults  { tag, timeoutMs }
  * settle(what, expression, { timeoutMs, observe, soft }) -> { ok, ms, observed? }
  *   expression  頁面端條件,=== true 才算成立(同 waitForUI)。
- *   observe     逾時時另外 eval 的頁面端診斷表達式,只用於訊息,不影響判定。 */
+ *   observe     診斷表達式只使用共同截止時間內的剩餘預算；到期後不再發出頁面請求。 */
 function makeSettle({ waitForUI, eval_, log = (...args) => console.log(...args) }, { tag = '', timeoutMs = 15000 } = {}) {
   return async function settle(what, expression, { timeoutMs: limit = timeoutMs, observe = null, soft = false } = {}) {
-    const t0 = Date.now();
+    if (!Number.isFinite(limit) || limit < 0) throw new TypeError('makeSettle: finite nonnegative timeout required');
+    const t0 = Date.now(), deadline = t0 + limit;
+    const expired = () => Error('UI condition timed out at shared deadline');
+    const withinDeadline = async action => {
+      const remaining = deadline - Date.now();
+      if (remaining <= 0) throw expired();
+      let timer;
+      try {
+        const value = await Promise.race([
+          Promise.resolve().then(action),
+          new Promise((_, reject) => { timer = setTimeout(() => reject(expired()), remaining); }),
+        ]);
+        // A late evaluation may resolve before the timer callback gets CPU time.
+        if (Date.now() >= deadline) throw expired();
+        return value;
+      } finally { clearTimeout(timer); }
+    };
     try {
-      await waitForUI(expression, limit);
+      await withinDeadline(() => waitForUI(expression, Math.max(0, deadline - Date.now())));
     } catch (error) {
       if (!/^UI condition timed out/.test(error.message)) throw error;
-      const ms = Date.now() - t0;
       let observed;
       if (observe) {
-        try { observed = await eval_(observe); } catch (inner) { observed = 'observe failed: ' + inner.message; }
+        try { observed = await withinDeadline(() => eval_(observe)); }
+        catch (inner) { observed = 'observe unavailable: ' + inner.message; }
       }
+      const ms = Date.now() - t0;
       const detail = { tag, what, ms, limitMs: limit, observed };
       if (soft) { log('SYNC_TIMEOUT ' + JSON.stringify(detail)); return { ok: false, ms, observed }; }
       throw Error((tag ? tag + ' ' : '') + '條件等待逾時 ' + ms + 'ms(上限 ' + limit + 'ms):' + what +
