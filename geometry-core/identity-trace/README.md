@@ -47,7 +47,7 @@ B1 接在 K1 的 D50 段後；B5 接在 K2b 能力段後；B6 接在 K2b 的 D54
 
 ## 版本與能力
 
-- 條文 commit / AXIOM_REVISION：待第二筆回填。
+- 條文 commit / AXIOM_REVISION：`d73d56fac2f69c7d97341c7f35880d163b672df7`。
 - AXIOM_SHA256（LF 正規化）：`6a05255820f5758e9cc9d21b2d7d1051f254d1572c20903451cd142a5fdf89a1`。
 - PRE_IDENTITY_TRACE_AXIOM_VERSIONS：`(209a7278d3acadfe89374714e821018dcba10adc, 5ccbbc0cd512acd60412427794cf16baf36af4e1ceed40730fb8144697f8ac1d)`。加入接受集合與六處既有豁免（含 section-profile），保留全部舊集合。
 - 不新增任何執行器 capability；`identity-ledger/1` 仍未實作。實作依序 K3-L → K3-48 → K3-44，無新可見 UI 入口。
