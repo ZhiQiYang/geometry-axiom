@@ -52,7 +52,7 @@
 再逐 byte 還原並要求三個 runner 均 exit 0。finally 保全原檔；勿與其他 build／服務同時執行。
 完整 argv、cwd、source/binary hash 與 raw log 在 `../evidence/geo198/remove-fix/`。
 
-M61 忽略 slab 的多段交集，被 A 場景殺死；M62 恢復四角全在外快退，被 B 柱及樑場景殺死。
+歷史 M61 忽略 slab 的多段交集，被 A 場景殺死；M62 恢復四角全在外快退，被 B 柱及樑場景殺死。
 完整帳本 52 筆：44 killed、1 crashed、4 equivalent、3 retired；survived/invalid/stale/blocked=0。
 crashed 沒有冒充 killed；每筆依既有工具保留 baseline／attempt／source／oracle／binary 身分。
 該次四個 worker 使用不同 cache、結果檔與不重疊 mutation id；49 個非 retired mutant
@@ -101,6 +101,9 @@ R12 的未裁切 STRIP 只檢查閉合接觸是否存在，不要求接觸可表
 它仍須歸屬唯一面片（R14），也繼續處理後续合法或不存在項（R15），
 沒有整筆交易提早成功。`cut-strip` 繼續使用完整單矩形判定。
 新增 M63 去掉孤立接觸檢查、M64 恢復未裁切 strip 的過度拒絕、M65 提早成功跳過後續驗證。
+新增閉合邊檢查後，首輪全量刷新實際發現舊 M61 survived：即使 slab 只留一段，
+另一段的閉合邊仍讓它正確拒絕，舊變異不再破壞行為。該失敗批次保留，不計通過。
+M61 因而改成把多段交集合為 bbox，實際破壞 A 的單矩形契約，再重新執行全帳本。
 本次沒有範圍外產品改動，沒有新 UI 入口。
 
 原有 `review-dc4e929` 的 space 13 pass／2 fail 完整保留；其後未修改的原 harness
