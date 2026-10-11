@@ -8,9 +8,9 @@ Node concurrency、case 選取或 expected counts。這是有插樁的 Linux 診
 | 原失敗案例（原檔行） | 歷史失敗 ms | 全 Node 探針 ms | 單檔探針 ms | 本次定位 |
 |---|---:|---:|---:|---|
 | detached prepare / Undo / Redo（948） | 5618.71 | 1400.01 | 647.79 | validate 117 次；commit 824.38 ms、prepare 460.47 ms；Undo/Redo 合計 0.92 ms |
-| cancellation / native / metadata（960） | 7706.50 | 1609.34 | 834.81 | 三次 catalog Python 合計 253.17 ms；三次 prepare 合計 1335.75 ms，其中 validate 123 次合計 1004.11 ms |
-| no-op / old prepared lease（968） | 6537.09 | 1380.16 | 1198.51 | 三次 prepare 合計 617.88 ms、三次 commit 合計 661.14 ms；validate 237 次合計 950.11 ms；Undo/Redo 合計 0.78 ms |
-| near-limit full manifest（976） | 6914.71 | 1872.39 | 1603.26 | 建立 33×250000 字元 drafts；三次容量檢查合計 999.39 ms、validate 29 次合計 545.21 ms；prepare 於 HTTP 前以原 8 MB 錯誤拒絕 |
+| cancellation / native / metadata（959） | 7706.50 | 1609.34 | 834.81 | 三次 catalog Python 合計 253.17 ms；三次 prepare 合計 1335.75 ms，其中 validate 123 次合計 1004.11 ms |
+| no-op / old prepared lease（967） | 6537.09 | 1380.16 | 1198.51 | 三次 prepare 合計 617.88 ms、三次 commit 合計 661.14 ms；validate 237 次合計 950.11 ms；Undo/Redo 合計 0.78 ms |
+| near-limit full manifest（975） | 6914.71 | 1872.39 | 1603.26 | 建立 33×250000 字元 drafts；三次容量檢查合計 999.39 ms、validate 29 次合計 545.21 ms；prepare 於 HTTP 前以原 8 MB 錯誤拒絕 |
 
 表內步驟包含巢狀呼叫，**不可相加當總耗時**。CPU usage 不包含 Python 子行程，
 探針本身也有成本。`case-timings.json` 保留各步驟 count / total / maximum，
