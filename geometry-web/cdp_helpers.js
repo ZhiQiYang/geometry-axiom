@@ -114,7 +114,7 @@ function openCreateObjectMenu(read, ctl) {
 }
 
 /* 點擊控制項:捲入視野 → 輪詢到「可見、未停用、中心點真的命中它」→ 真實滑鼠點擊 → 等待。
- * 只涵蓋「捲動→(睡→量測)×N→丟錯→點→睡」這一族寫法(project_audit、engineering_workflow、
+ * 只涵蓋「(捲動→睡→量測)×N→丟錯→點→睡」這一族寫法(捲動在每次量測前重做,見下;project_audit、engineering_workflow、
  * grid_system、composition_canvas、grid_workspace_draft、parameter_workflow)。
  *
  * options(各模組原本的差異,全部明示):
@@ -139,11 +139,15 @@ function makeCtl({ eval_, sleep, click }, options = {}) {
   const read = makeRead(eval_);
   const measure = probe || (selector => read(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)throw Error(${JSON.stringify(missing)}+${JSON.stringify(selector)});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,h=document.elementFromPoint(x,y);return {x,y,w:r.width,h:r.height,hit:e.contains(h),${hitElement ? "hitElement:h?.tagName+'#'+h?.id," : ''}disabled:!!e.disabled};})()`));
   const usable = ready || (p => !!(p && p.hit && !p.disabled && p.w && p.h));
+  /* 每次量測前都重新查詢元素並捲入視野。工作區常在點擊後以 innerHTML 整個換 DOM(捲動容器重建、
+   * scrollTop 歸 0,或內容隨後長高);只在迴圈外捲一次,換 DOM 後的每一次量測看到的都是視窗外的新節點。
+   * 第一次量測仍是「捲 → sleep(pollMs) → 量」,成功路徑與舊寫法逐步相同;只有第一次不可點後的重試才多捲。 */
+  const scrollIn = selector => read(`document.querySelector(${JSON.stringify(selector)})?.scrollIntoView({block:${JSON.stringify(scroll)},inline:'nearest'});void 0`);
   return async function ctl(selector) {
     if (before) await before(selector);
-    await read(`document.querySelector(${JSON.stringify(selector)})?.scrollIntoView({block:${JSON.stringify(scroll)},inline:'nearest'});void 0`);
     let p;
     for (let attempt = 0; attempt < attempts; attempt++) {
+      await scrollIn(selector);
       await sleep(pollMs);
       p = await measure(selector);
       if (usable(p)) break;
@@ -152,6 +156,43 @@ function makeCtl({ eval_, sleep, click }, options = {}) {
     await click(p.x, p.y);
     await sleep(settleMs);
     if (after) await after(selector);
+  };
+}
+
+/* ---- 條件等待(取代固定 sleep) ------------------------------------------
+ * 「點下去 → 非同步刷新鏈 → 讀狀態」之間不用固定 sleep 賭鏈跑得完,改等一個可觀察的完成條件
+ * (先例:P73 的 sleep(180) → 狀態等待,見 uiux_review_test.js)。與 waitForUI 的差別:
+ *   - 有指名:逾時訊息說明「在等什麼」,並附 observe 讀到的最後頁面狀態。
+ *   - 有上限:條件不成立就一定逾時;預設丟錯。soft:true 只回 {ok:false},給「失敗已由後續斷言計數」
+ *     的舊式段落(丟錯會讓整輪 FATAL、後面的段落全部沒跑)。
+ *   - 留紀錄:通過時印 `SYNC_WAIT {tag,what,ms}`,逾時印 `SYNC_TIMEOUT {...}`,實測耗時進 job.log。
+ * 它不放寬任何斷言:等待只決定「何時讀」,讀到的值照原本的期望值判定。
+ *
+ * deps  { waitForUI, eval_, log }  log 預設在呼叫時才取 console.log(harness 會替換它)。
+ * defaults  { tag, timeoutMs }
+ * settle(what, expression, { timeoutMs, observe, soft }) -> { ok, ms, observed? }
+ *   expression  頁面端條件,=== true 才算成立(同 waitForUI)。
+ *   observe     逾時時另外 eval 的頁面端診斷表達式,只用於訊息,不影響判定。 */
+function makeSettle({ waitForUI, eval_, log = (...args) => console.log(...args) }, { tag = '', timeoutMs = 15000 } = {}) {
+  return async function settle(what, expression, { timeoutMs: limit = timeoutMs, observe = null, soft = false } = {}) {
+    const t0 = Date.now();
+    try {
+      await waitForUI(expression, limit);
+    } catch (error) {
+      if (!/^UI condition timed out/.test(error.message)) throw error;
+      const ms = Date.now() - t0;
+      let observed;
+      if (observe) {
+        try { observed = await eval_(observe); } catch (inner) { observed = 'observe failed: ' + inner.message; }
+      }
+      const detail = { tag, what, ms, limitMs: limit, observed };
+      if (soft) { log('SYNC_TIMEOUT ' + JSON.stringify(detail)); return { ok: false, ms, observed }; }
+      throw Error((tag ? tag + ' ' : '') + '條件等待逾時 ' + ms + 'ms(上限 ' + limit + 'ms):' + what +
+        (observe ? ';最後觀測 ' + JSON.stringify(observed) : '') + ';' + error.message.slice(0, 300));
+    }
+    const ms = Date.now() - t0;
+    log('SYNC_WAIT ' + JSON.stringify({ tag, what, ms }));
+    return { ok: true, ms };
   };
 }
 
@@ -233,4 +274,4 @@ function waitCardCanvasPos(eval_, { kind, id, beforeCx, beforeCy, timeoutMs = 40
   })();
 }
 
-module.exports = { makeCheck, makeRead, makeWait, makeKey, makeFill, openCreateObjectMenu, makeCtl, makeShot, isSingleHistoryStep, makeHistoryOracle, waitCardCanvasPos };
+module.exports = { makeCheck, makeRead, makeWait, makeSettle, makeKey, makeFill, openCreateObjectMenu, makeCtl, makeShot, isSingleHistoryStep, makeHistoryOracle, waitCardCanvasPos };
