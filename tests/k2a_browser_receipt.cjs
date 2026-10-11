@@ -9,7 +9,8 @@ exports.begin=async function(url){
   assert.match(expected||'',/^[0-9a-f]{40}$/,'explicit full expected head required');
   const address=new URL(url);assert.ok(address.protocol==='http:'&&['localhost','127.0.0.1'].includes(address.hostname)&&address.port&&address.port!=='8765','dedicated localhost service required');
   const before=snapshot();assert.equal(before.head,expected);assert.equal(before.status,'','frozen clean checkout required');
-  const instrumentation=process.env.GEOMETRY_GRID_WORKSPACE_SOURCE?{path:process.env.GEOMETRY_GRID_WORKSPACE_SOURCE,sha256:hash(process.env.GEOMETRY_GRID_WORKSPACE_SOURCE)}:null;
+  const instrumentationPath=process.env.GEOMETRY_GRID_WORKSPACE_SOURCE||process.env.GEOMETRY_TEST_REFERENCE_WORKSPACE;
+  const instrumentation=instrumentationPath?{path:instrumentationPath,sha256:hash(instrumentationPath)}:null;
   const runtime=await fetch(new URL('/runtime',url)).then(r=>r.json());assert.equal(runtime.fresh,true);assert.equal(path.resolve(runtime.root),root);
   const objects=await fetch(new URL('/api',url),{method:'POST',headers:{'Content-Type':'application/json','X-Geometry-Version':runtime.version},body:JSON.stringify({cmd:'objects'})}).then(r=>r.json());assert.equal(objects.ok,true,'native readonly identity preflight');
   const children=cp.execFileSync('ps',['--ppid',String(runtime.pid),'-o','pid='],{encoding:'utf8'}).trim().split(/\s+/).filter(Boolean).flatMap(pid=>{try{const exe=fs.realpathSync('/proc/'+pid+'/exe');return [{pid:Number(pid),exe,sha256:hash(exe)}];}catch(error){const argv=fs.readFileSync('/proc/'+pid+'/cmdline').toString().split('\0');const exe=argv[0];return path.isAbsolute(exe)&&fs.existsSync(exe)?[{pid:Number(pid),exe,sha256:hash(exe),identityMethod:'proc-cmdline and launcher file hash; proc-exe read unavailable',procExeError:error.code}]:[];}});

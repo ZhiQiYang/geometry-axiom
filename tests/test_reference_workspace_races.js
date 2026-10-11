@@ -61,6 +61,15 @@ const legacyPage=()=>({src:'data:image/png;base64,legacy',imgW:100,imgH:80,mmPer
 const legacyResponse=bytes=>({blob:async()=>new Blob([bytes],{type:'image/png'})});
 
 const k2aDraft=(id,edit=false)=>({schema:P.Features.GRID_SCHEMA,draftId:id,kind:'source',intent:edit?'edit':'create',baseRef:edit?{kind:'grid-system',id:1,fingerprint:'a'.repeat(64)}:null,inputRefs:[],rawForm:Object.fromEntries(P.Features.sourceFields.map(f=>[f,' 1e ']))});
+test('K2a M2 near-limit draft admission rejects before native calls, history or dirty changes',async()=>{
+  const {w,calls}=await fixture(),C=require('./test_grid_drafts_lifecycle_capacity.js'),draft=C.pad(C.largeDraft(),128*1024-240);
+  const padding=C.nearManifest().engineeringDrafts.records; padding.at(-1).data.raw='';w.context().engineeringDrafts=padding;
+  const base=await w.manifest(),candidate={...base,sceneHash:'0'.repeat(64),format:P.GRID_RULE_FORMAT,requiredCapabilities:[P.Features.GRID_RULE_SCHEMA],featureAttachments:{schema:P.Features.SCHEMA,records:[C.record(draft)]}};
+  padding.at(-1).data.raw='x'.repeat(8*1024*1024-1-C.bytes(candidate));
+  P.assertManifestCapacity(await w.manifest(),'');const before=w.getProjectState(),history=w.history.undo.length,http=calls.length;
+  assert.throws(()=>w.setGridDraft(draft.draftId,draft,before.contextToken),/8 MB|容量/,'M2 rejected before draft can create an unsaveable deletion state');
+  assert.deepEqual(w.getProjectState(),before);assert.equal(w.history.undo.length,history);assert.equal(calls.length,http);assert.equal(w.readGridDrafts().drafts.length,0);
+});
 test('K2a M01/M03/M12 per-draft writes coexist, legacy replacement and late context flush cannot alter them',async()=>{
   const {w}=await fixture(),token=w.getProjectState().contextToken;
   w.setGridDraft('a',k2aDraft('a'),token);w.setGridDraft('b',k2aDraft('b'),token);
@@ -76,7 +85,7 @@ test('K2a M12/M14b lost flags cannot be erased or repinned with the same identit
   a.inputRefs=[{kind:'grid-system',id:2,fingerprint:'b'.repeat(64),lost:true}];w.setGridDraft('a',a,token);
   const clear=structuredClone(a);delete clear.inputRefs[0].lost;assert.throws(()=>w.setGridDraft('a',clear,token));
   const removed=structuredClone(a);removed.inputRefs=[];const beforeRemove=JSON.stringify(w.readGridDrafts()),beforeHistory=w.history.undo.length;
-  assert.throws(()=>w.setGridDraft('a',removed,token),'M1 pure removal cannot erase a lost reference');
+  assert.throws(()=>w.setGridDraft('a',removed,token),/不得純移除/,'M1 pure removal cannot erase a lost reference');
   assert.equal(JSON.stringify(w.readGridDrafts()),beforeRemove);assert.equal(w.history.undo.length,beforeHistory);
   assert.throws(()=>w.setFeatureAttachment('grid-draft',null,token));
   assert.equal(w.readGridDrafts().drafts[0].inputRefs[0].lost,true);
