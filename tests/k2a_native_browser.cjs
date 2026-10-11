@@ -1,6 +1,7 @@
 const {chromium}=require('playwright');
-const assert=require('node:assert/strict');
-(async()=>{if(!process.env.GEOMETRY_TEST_URL||process.env.GEOMETRY_ISOLATED_SERVICE!=='1')throw Error('Require an explicitly isolated GEOMETRY_TEST_URL and GEOMETRY_ISOLATED_SERVICE=1');const browser=await chromium.launch({executablePath:process.env.GEOMETRY_CHROME||'/usr/bin/chromium',headless:true,args:['--no-sandbox']}),page=await browser.newPage();page.on('dialog',d=>d.accept());
+
+(async()=>{
+ const gate=await require('./k2a_browser_receipt.cjs').begin(process.env.GEOMETRY_TEST_URL),assert=gate.assert;if(!process.env.GEOMETRY_TEST_URL||process.env.GEOMETRY_ISOLATED_SERVICE!=='1')throw Error('Require an explicitly isolated GEOMETRY_TEST_URL and GEOMETRY_ISOLATED_SERVICE=1');const browser=await chromium.launch({executablePath:process.env.GEOMETRY_CHROME||'/usr/bin/chromium',headless:true,args:['--no-sandbox']}),page=await browser.newPage();page.on('dialog',d=>d.accept());
  await page.goto(process.env.GEOMETRY_TEST_URL);await page.waitForFunction(()=>typeof InfiniteGridWorkspace!=='undefined'&&connection.phase==='ready');
  const receipt=await page.evaluate(async()=>{
   const call=async cmd=>{const r=await apiRequest(cmd);if(!r.ok)throw Error(cmd+': '+r.error);return r;};
@@ -37,6 +38,6 @@ const assert=require('node:assert/strict');
   const undo=await apiRequest('line undo');return {before,receipt,after,count,historyCount,undo,restored:ReferenceWorkspace.readGridDrafts(),sameWorld:dump===(await apiRequest('dump')).text};
  });
  assert.equal(parameter.receipt.history_changed,false);assert.deepEqual(parameter.receipt.deletedObjects,[{kind:'parameter-field',parameterId:1,fieldId:1}]);assert.equal(parameter.after.drafts[0].inputRefs[0].lost,true);assert.equal(parameter.historyCount,parameter.count+1);assert.equal(parameter.undo.local,true);assert.deepEqual(parameter.restored,parameter.before);assert.equal(parameter.sameWorld,true);
- console.log(JSON.stringify({M14bParameter:true,intermediateDeletionObserved:true,identicalWorld:true,oneStepLocalUndo:true}));await browser.close();
+ console.log(JSON.stringify({M14bParameter:true,intermediateDeletionObserved:true,identicalWorld:true,oneStepLocalUndo:true}));await gate.finish();await browser.close();
 })().catch(e=>{console.error(e);process.exit(1)});
 

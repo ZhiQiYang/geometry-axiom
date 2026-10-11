@@ -1,6 +1,7 @@
 const {chromium}=require('playwright');
-const assert=require('node:assert/strict');
+
 (async()=>{
+ const gate=await require('./k2a_browser_receipt.cjs').begin(process.env.GEOMETRY_TEST_URL),assert=gate.assert;
  if(!process.env.GEOMETRY_TEST_URL||process.env.GEOMETRY_ISOLATED_SERVICE!=='1')throw Error('Require an explicitly isolated GEOMETRY_TEST_URL');
  const browser=await chromium.launch({executablePath:process.env.GEOMETRY_CHROME||'/usr/bin/chromium',headless:true,args:['--no-sandbox']}),page=await browser.newPage();let accept=false;const questions=[];
  page.on('dialog',async d=>{questions.push(d.message());await (accept?d.accept():d.dismiss());});
@@ -18,5 +19,5 @@ const assert=require('node:assert/strict');
  accept=false;await selection('911');assert.deepEqual(await page.evaluate(()=>ReferenceWorkspace.readGridDrafts().drafts[0]),lost);
  accept=true;await selection('911');const replaced=await page.evaluate(()=>ReferenceWorkspace.readGridDrafts().drafts[0]);assert.equal(replaced.rawForm.igSystem,'911');assert.equal(replaced.rawForm.igCellJ,' 001 ');assert.ok(!replaced.inputRefs.some(r=>r.lost||r.id===910));assert.ok(replaced.inputRefs.some(r=>r.id===911));
  const manifest=await page.evaluate(async()=>GeometryProject.unpack(await ReferenceWorkspace.exportBytes(),fflate).then(p=>p.manifest));assert.notEqual(manifest.featureAttachments.records[0].value.schema,'grid-editor-drafts/1');assert.ok(!manifest.requiredCapabilities.includes('grid-editor-drafts/1'));
- console.log(JSON.stringify({M05:true,M14b:true,staleCancelUnchanged:true,sameIdLostRejected:true,differentIdReviewed:true,rawUnchanged:true}));await browser.close();
+ console.log(JSON.stringify({M05:true,M14b:true,staleCancelUnchanged:true,sameIdLostRejected:true,differentIdReviewed:true,rawUnchanged:true}));await gate.finish();await browser.close();
 })().catch(e=>{console.error(e);process.exit(1)});

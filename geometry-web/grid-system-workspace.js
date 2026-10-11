@@ -197,6 +197,12 @@
         igAnchorUN:String(row.anchor[0].num),igAnchorUD:String(row.anchor[0].den),igAnchorVN:String(row.anchor[1].num),igAnchorVD:String(row.anchor[1].den)};
     }
     const actual=pins.get(pinKey(s.baseRef)),fields=overwriteFields(rawForm(s),normalized),refs=[];
+    if(s.mode==='source'&&s.ruleDraft){
+      const rule=row.rules?.find(r=>r.ruleKey===s.ruleDraft.ruleKey);
+      const formal=rule?{name:rule.name,selector:rule.selector.kind,cellI:rule.selector.cell?.[0]||'0',cellJ:rule.selector.cell?.[1]||'0',divisionsU:String(rule.divisions[0]),divisionsV:String(rule.divisions[1])}:null;
+      const pending=ruleDraftValue(s);
+      for(const field of F.ruleFields)fields.push({field:'ruleDraft.'+field,raw:pending.rawForm[field],current:formal?.[field]??(pending.intent==='create'?'（尚未建立）':'（規則已遺失）')});
+    }
     for(const r of [...s.inputPins.values()].filter(r=>!r.lost)){
       let next=pins.get(pinKey(r));
       if(r.kind==='boundary'){const b=await apiRequest('boundary '+r.id);if(!current(s)||!b.ok)throw Error('來源邊界已遺失。');next=await boundaryPin(r.id,b);}
@@ -207,6 +213,7 @@
     if(JSON.stringify(ReferenceWorkspace.getEvidenceState())!==reviewedRevision)throw Error('現況已改變，請重新檢視覆蓋預覽。');
     const next=await ReferenceWorkspace.repinGridDraft(s.draftId,actual.fingerprint,s.contextToken);if(!current(s))return;
     s.baseRef=copy(next.baseRef);s.inputPins=new Map(next.inputRefs.map(r=>[pinKey(r),copy(r)]));s.restored=copy(next);
+    s.ruleDraft=next.ruleDraft?copy(next.ruleDraft):null;
     s.source=s.mode==='source'?row:objects.gridSystems.find(r=>r.id===row.system);if(s.mode==='binding')s.binding=row;
     s.pins=pins;s.fullPins=await catalogPins(objects,F.GRID_RULE_SCHEMA);if(!current(s))return;s.nativeChanged=false;
     await render(s);if(current(s))status('已重新取得基底；仍須預覽並確認才改場景。');

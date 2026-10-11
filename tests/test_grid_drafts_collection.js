@@ -13,7 +13,7 @@ test('M10 writer selects legacy only for one healthy draft, collection for orpha
 });
 test('M02 two raw drafts survive real ZIP with collection capability and canonical identity order',async()=>{
   const a=draft(),b=draft('b');b.schema=F.GRID_RULE_SCHEMA;b.ruleDraft=null;
-  const bytes=await P.pack('',{...manifest(),featureAttachments:envelope(collection([b,a]))},new Map(),zip);
+  const bytes=await P.pack('',{...manifest(),featureAttachments:envelope(F.gridDraftValue([b,a]))},new Map(),zip);
   const reopened=await P.unpack(bytes,zip),v=reopened.manifest.featureAttachments.records[0].value;
   assert.equal(reopened.manifest.format,'geometry-canvas/17');assert.deepEqual(v.drafts,[a,b]);
   assert.deepEqual(reopened.manifest.requiredCapabilities,[F.GRID_SCHEMA,F.GRID_RULE_SCHEMA,schema]);

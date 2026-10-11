@@ -1,8 +1,10 @@
 const {chromium}=require('playwright');
-const assert=require('node:assert/strict');
+
 (async()=>{
+ const gate=await require('./k2a_browser_receipt.cjs').begin(process.env.GEOMETRY_TEST_URL),assert=gate.assert;
  const origin=process.env.GEOMETRY_TEST_URL,fresh=process.env.GEOMETRY_FRESH_TEST_URL;
  if(!origin||!fresh||origin===fresh||process.env.GEOMETRY_ISOLATED_SERVICE!=='1')throw Error('Require two explicitly isolated services, including GEOMETRY_FRESH_TEST_URL');
+ const freshGate=await require('./k2a_browser_receipt.cjs').begin(fresh);assert.notEqual(freshGate.session,gate.session);
  const browser=await chromium.launch({executablePath:process.env.GEOMETRY_CHROME||'/usr/bin/chromium',headless:true,args:['--no-sandbox']});
  const open=async url=>{const page=await browser.newPage({viewport:{width:1280,height:900}});page.on('dialog',d=>d.accept());await page.goto(url);await page.waitForFunction(()=>typeof InfiniteGridWorkspace!=='undefined'&&connection.phase==='ready');return page;};
  const page=await open(origin);
@@ -37,5 +39,5 @@ const assert=require('node:assert/strict');
  const lostAfter=await lostPage.evaluate(async bytes=>{await ReferenceWorkspace.importBytes(new Uint8Array(bytes),'lost.gcanvas');return {drafts:ReferenceWorkspace.readGridDrafts(),objects:await apiRequest('objects'),manifest:(await GeometryProject.unpack(new Uint8Array(bytes),fflate)).manifest};},lostBytes);
  assert.deepEqual(lostAfter.drafts,lostBefore);assert.equal(lostAfter.objects.gridSystems.find(r=>r.id===2).uDefinition.step,600);assert.ok(lostAfter.manifest.requiredCapabilities.includes('grid-editor-drafts/1'));
  await lostPage.evaluate(()=>InfiniteGridWorkspace.create());await lostPage.getByRole('button',{name:/來源已刪除/}).click();await lostPage.locator('#igDraftNote').waitFor();assert.ok((await lostPage.locator('#igDraftNote').textContent()).includes('來源已刪除'));
- console.log(JSON.stringify({M01:true,M02:true,M04:true,M10:true,M11:true,M14b:true,trueZipBytes:bytes.length,lostZipBytes:lostBytes.length,rawUnchanged:true,sameIdPresent:true}));await browser.close();
+ console.log(JSON.stringify({M01:true,M02:true,M04:true,M10:true,M11:true,M14b:true,trueZipBytes:bytes.length,lostZipBytes:lostBytes.length,rawUnchanged:true,sameIdPresent:true}));await freshGate.finish();await gate.finish();await browser.close();
 })().catch(e=>{console.error(e);process.exit(1)});

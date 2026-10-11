@@ -1,8 +1,9 @@
 const {chromium}=require('playwright');
-const assert=require('node:assert/strict');
+
 const fs=require('node:fs');
 async function workspaceOverride(page){if(process.env.GEOMETRY_GRID_WORKSPACE_SOURCE)await page.route('**/grid-system-workspace.js',route=>route.fulfill({contentType:'application/javascript',body:fs.readFileSync(process.env.GEOMETRY_GRID_WORKSPACE_SOURCE,'utf8')}));}
 (async()=>{
+ const gate=await require('./k2a_browser_receipt.cjs').begin(process.env.GEOMETRY_TEST_URL),assert=gate.assert;
  if(!process.env.GEOMETRY_TEST_URL||process.env.GEOMETRY_ISOLATED_SERVICE!=='1')throw Error('Require an explicit isolated GEOMETRY_TEST_URL and GEOMETRY_ISOLATED_SERVICE=1');
  const browser=await chromium.launch({executablePath:process.env.GEOMETRY_CHROME||'/usr/bin/chromium',headless:true,args:['--no-sandbox']});
  for(const width of [1280,390]){
@@ -21,10 +22,10 @@ async function workspaceOverride(page){if(process.env.GEOMETRY_GRID_WORKSPACE_SO
   await page.evaluate(()=>InfiniteGridWorkspace.create());await page.locator('#gridDraftChooser').waitFor();
   assert.equal(await page.locator('#gridDraftChooser button').count(),4);
   const metrics=await page.locator('#gridDraftChooser').evaluate(e=>({width:e.getBoundingClientRect().width,buttons:[...e.querySelectorAll('button')].map(b=>b.getBoundingClientRect().height)}));
-  assert.ok(metrics.width<=width);assert.ok(metrics.buttons.every(h=>h>=44));
+  assert.ok(metrics.width<=width,'M13 chooser fits viewport');assert.ok(metrics.buttons.every(h=>h>=44),'M13 chooser touch targets remain at least 44px');
   await page.screenshot({path:`/tmp/k2a-chooser-${width}.png`});
   await page.getByRole('button',{name:/第一份原文/}).click();await page.locator('#infiniteGridWorkspace[open]').waitFor();await page.waitForFunction(()=>document.getElementById('igUStep')?.value==='1e');assert.equal(await page.locator('#igUStep').inputValue(),'1e');
-  await page.locator('#igClose').click();const resumed=await page.evaluate(()=>ReferenceWorkspace.readGridDrafts());assert.equal(resumed.drafts.length,2);assert.equal(resumed.drafts.find(d=>d.rawForm.igUStep==='1e').draftId,first.draftId);
+  await page.locator('#igClose').click();const resumed=await page.evaluate(()=>ReferenceWorkspace.readGridDrafts());assert.equal(resumed.drafts.length,2,'M03 continuation retains original draftId');assert.equal(resumed.drafts.find(d=>d.rawForm.igUStep==='1e').draftId,first.draftId,'M03 continuation retains original draftId');
   assert.deepEqual(errors,[]);assert.deepEqual(questions,[],'coexisting drafts never ask to replace another draft');console.log(JSON.stringify({width,drafts:2,continued:true,errors,metrics}));await page.close();
  }
  const page=await browser.newPage(),questions=[];let approve=false;await workspaceOverride(page);
@@ -38,7 +39,7 @@ async function workspaceOverride(page){if(process.env.GEOMETRY_GRID_WORKSPACE_SO
  await page.evaluate(()=>{const button=document.getElementById('igRepinDraft'),handler=button.onclick;button.onclick=function(...args){return window.__k2aRepinCompletion=handler.apply(this,args);};});
  await Promise.all([page.waitForEvent('dialog'),page.locator('#igRepinDraft').click()]);await page.evaluate(()=>window.__k2aRepinCompletion);
  assert.ok(questions.at(-1).includes('1830 '));assert.ok(questions.at(-1).includes('915'));
- assert.deepEqual(await page.evaluate(()=>ReferenceWorkspace.readGridDrafts().drafts[0]),before);
+ assert.deepEqual(await page.evaluate(()=>ReferenceWorkspace.readGridDrafts().drafts[0]),before,'M15 cancellation preserves complete draft');
  approve=true;await Promise.all([page.waitForEvent('dialog'),page.locator('#igRepinDraft').click()]);await page.evaluate(()=>window.__k2aRepinCompletion);await page.waitForFunction(hash=>ReferenceWorkspace.readGridDrafts().drafts[0].baseRef.fingerprint!==hash,before.baseRef.fingerprint);
  assert.equal((await page.evaluate(()=>ReferenceWorkspace.readGridDrafts().drafts[0])).rawForm.igUStep,'1830 ');
  assert.equal((await page.evaluate(()=>apiRequest('objects'))).gridSystems.find(r=>r.id===910).uDefinition.step,915);
@@ -50,6 +51,6 @@ async function workspaceOverride(page){if(process.env.GEOMETRY_GRID_WORKSPACE_SO
  const saved=await page.evaluate(async()=>{let bytes;window.showSaveFilePicker=async()=>({name:'k2a.gcanvas',createWritable:async()=>({write:async value=>{bytes=new Uint8Array(value);},close:async()=>{}})});
    await ReferenceWorkspace.save();return (await GeometryProject.unpack(bytes,fflate)).manifest.featureAttachments.records[0].value;});
  assert.equal(saved.schema,'grid-editor-drafts/1');assert.equal(saved.drafts.find(d=>d.kind==='binding').inputRefs.find(r=>r.id===910).lost,true);
- console.log(JSON.stringify({M14b:true,lostSaveWhileOpen:true}));await page.close();await browser.close();
+ console.log(JSON.stringify({M14b:true,lostSaveWhileOpen:true}));await page.close();await gate.finish();await browser.close();
 })().catch(e=>{console.error(e);process.exit(1)});
 
