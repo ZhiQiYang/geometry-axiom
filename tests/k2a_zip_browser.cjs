@@ -105,6 +105,32 @@ const {chromium}=require('playwright');
   assert.deepEqual(opened.drafts,remaining);assert.equal(opened.dump,dump);assert.equal(opened.manifest.format,'geometry-canvas/17');assert.ok(opened.manifest.requiredCapabilities.includes('grid-editor-drafts/1'));
   collectionZips.push({draftBytes:size,two:twoBytes.length,orphan:bothBytes.length,singleton:singletonBytes.length});await collectionCold.close();
  }
+ const normalConfirm=[];
+ for(const size of [130955,130956,131072]){
+  const draft=capacity.largeDraft();draft.inputRefs=[];capacity.pad(draft,size);
+  const result=await page.evaluate(async d=>{
+   const W=ReferenceWorkspace,F=GeometryProject.Features,call=async cmd=>{const r=await apiRequest(cmd);if(!r.ok)throw Error(cmd+': '+r.error);return r;};
+   for(const old of W.readGridDrafts().drafts)W.setGridDraft(old.draftId,null,W.getProjectState().contextToken);
+   await call('reset');for(const id of [1,2])await call('line grid-system '+id+' name-hex 736f75726365 main-along none u repeat 0 600 v repeat 0 400');await renderObjects();
+   await InfiniteGridWorkspace.openSystem(2);document.getElementById('igUStep').value='700';document.getElementById('igUStep').dispatchEvent(new Event('input',{bubbles:true}));InfiniteGridWorkspace.flush();InfiniteGridWorkspace.close(true);
+   const other=W.readGridDrafts().drafts[0],row=(await call('objects')).gridSystems.find(row=>row.id===1);d.baseRef.fingerprint=await GeometryProject.sha(new TextEncoder().encode(F.gridSourceKey(row)));
+   let admissionRejected=false;try{W.setGridDraft(d.draftId,d,W.getProjectState().contextToken);}catch(error){if(!/容量|上限/.test(error.message))throw error;admissionRejected=true;}
+   if(admissionRejected){const scene=(await call('dump')).text,m=await W.manifest();m.featureAttachments={schema:F.SCHEMA,records:[F.record(F.GRID_KIND,{schema:F.GRID_DRAFTS_SCHEMA,drafts:[d,other],orphans:[]},true)]};m.format='geometry-canvas/17';m.requiredCapabilities=[...new Set([...(m.requiredCapabilities||[]),F.GRID_DRAFTS_SCHEMA,F.GRID_RULE_SCHEMA])].sort();const sources=new Map([...W.context().sources].map(([id,s])=>[id,s.bytes]));await W.importBytes(await GeometryProject.pack(scene,m,sources,fflate),'legacy-normal-confirm.gcanvas');}
+   const state=async()=>({drafts:W.readGridDrafts(),dump:(await call('dump')).text}),before=await state(),history=W.history.undo.length;
+   const preview=await call('line preview grid-system 2 name-hex 736f75726365 main-along none u repeat 0 700 v repeat 0 400');if(!preview.preview?.valid)throw Error(JSON.stringify(preview));
+   let prepareRejected=false;try{W.prepareFeatureConfirmation(preview.preview.token,F.GRID_KIND,W.readGridDrafts().drafts.find(d=>d.draftId===other.draftId),W.getProjectState().contextToken);}catch(error){if(!/容量|上限/.test(error.message))throw error;prepareRejected=true;}
+   if(prepareRejected)return {admissionRejected,prepareRejected,before,after:await state(),historyBefore:history,historyAfter:W.history.undo.length,hasToken:W.hasFeatureConfirmation(preview.preview.token)};
+   await call('line confirm '+preview.preview.token);const after=await state();await call('line undo');const undone=await state();await call('line redo');const redone=await state();return {admissionRejected,prepareRejected,before,after,undone,redone};
+  },draft);
+  if(size===130955){
+   if(result.admissionRejected||result.prepareRejected)throw Error('positive normal confirmation rejected');
+   assert.deepEqual(result.after.drafts,{drafts:[result.before.drafts.drafts.find(d=>d.draftId==='capacity')],orphans:[]});assert.notEqual(result.after.dump,result.before.dump);assert.deepEqual(result.undone,result.before);assert.deepEqual(result.redone,result.after);
+   const normalBytes=await save(page),normalCold=await open(fresh),opened=await normalCold.evaluate(async bytes=>{await ReferenceWorkspace.importBytes(new Uint8Array(bytes),'normal-single.gcanvas');return {drafts:ReferenceWorkspace.readGridDrafts(),dump:(await apiRequest('dump')).text,format:(await GeometryProject.unpack(new Uint8Array(bytes),fflate)).manifest.format};},normalBytes);
+   assert.equal(opened.format,'geometry-canvas/13');assert.deepEqual({drafts:opened.drafts,dump:opened.dump},result.after);await normalCold.close();
+  }else{assert.equal(result.admissionRejected,true);assert.equal(result.prepareRejected,true);assert.deepEqual({state:result.after,history:result.historyAfter,hasToken:result.hasToken},{state:result.before,history:result.historyBefore,hasToken:false});}
+  normalConfirm.push({draftBytes:size,admissionRejected:result.admissionRejected,prepareRejected:result.prepareRejected});
+ }
+ console.log(JSON.stringify({normalConfirm}));
  const oldCollectionBytes=Array.from(require('node:fs').readFileSync(require('node:path').join(__dirname,'evidence/k2a-collection-capacity-20261012/legacy6a.gcanvas')));
  const oldCollection=await page.evaluate(async bytes=>{const p=await GeometryProject.unpack(new Uint8Array(bytes),fflate),v=p.manifest.featureAttachments.records.find(r=>r.kind===GeometryProject.Features.GRID_KIND).value;const saved=await GeometryProject.pack(p.scene,p.manifest,p.sources,fflate),again=await GeometryProject.unpack(saved,fflate);return {value:v,again:again.manifest.featureAttachments.records.find(r=>r.kind===GeometryProject.Features.GRID_KIND).value,format:again.manifest.format};},oldCollectionBytes);
  assert.equal(capacity.bytes(oldCollection.value.drafts[0]),131072);assert.deepEqual(oldCollection.again,oldCollection.value);assert.equal(oldCollection.format,'geometry-canvas/17');
