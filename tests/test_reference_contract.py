@@ -127,6 +127,46 @@ class ReferenceContract(unittest.TestCase):
         self.assertIn('boundary 2', dump)
         self.assertNotIn('hole ', dump)
 
+    def test_rect_outline_remote_flush_does_not_excuse_corner_tangency(self):
+        original = [(0,10),(10,10),(10,0),(20,0),(20,10),(30,10),
+                    (30,20),(20,20),(20,40),(10,40),(10,20),(0,20)]
+        for variant in range(16):
+            verts = original[::-1] if variant & 1 else original[:]
+            if variant & 4:
+                verts = verts[-1:] + verts[:-1]
+            offset = -50 if variant & 8 else 0
+            def point(x,y):
+                return ((y+offset,x+offset) if variant & 2 else (x+offset,y+offset))
+            outline = ' '.join('%d,%d' % point(x,y) for x,y in verts)
+            u0,v0 = point(10,10)
+            w,h = (20,10) if variant & 2 else (10,20)
+            hx,hy = point(12,2)
+            direction = 'x' if variant & 2 else 'y'
+            for strip in (False,True):
+                for prior_hole in (False,True):
+                    with self.subTest(variant=variant,strip=strip,prior_hole=prior_hole):
+                        self.ok('reset')
+                        self.ok('surface 1 origin 0 0 0 u +x v +y outline '+outline)
+                        if strip:
+                            self.ok(f'beam 1 along {direction} from {10+offset} to {30+offset} '
+                                    f'at {15+offset} width 10 depth 10 top 0')
+                        else:
+                            self.ok(f'column 1 at {u0} {v0} size {w} {h} z 0 100')
+                        if prior_hole:
+                            self.ok(f'column 2 at {hx} {hy} size 4 4 z 0 100')
+                        before,refs = self.dump(),self.refs()
+                        command = 'apply-proj 1 '+('c2 ' if prior_hole else '')
+                        command += 'b1 cut-strip' if strip else 'c1'
+                        result = self.line(command)
+                        self.assertFalse(result['ok'], 'R7: remote flush cannot excuse a point-only corner')
+                        self.assertIn('R7',result['error'])
+                        self.assertEqual(before,self.dump(), 'whole transaction, including prior hole, must roll back')
+                        self.assertEqual(refs,self.refs())
+                        self.ok('undo')
+                        self.ok('redo')
+                        self.assertEqual(before,self.dump(), 'rejected apply must not enter redo history')
+                        self.roundtrip()
+
     def test_rect_outline_three_residual_components_rejects_and_rolls_back(self):
         outline = ('0,10 10,10 10,0 20,0 20,10 30,10 30,0 '
                    '40,0 40,20 20,20 20,30 10,30 10,20 0,20')
@@ -156,6 +196,8 @@ class ReferenceContract(unittest.TestCase):
 
     def test_rect_outline_two_piece_difference_is_complete_after_redo_and_reopen(self):
         fixtures = [
+            ('0,10 10,10 10,0 20,0 20,10 30,10 30,20 20,20 20,40 10,40 10,20 0,20',
+             '10 20 size 10 10', (10,20,20,30), 500),
             ('0,10 10,10 10,0 20,0 20,10 30,10 30,20 20,20 20,30 10,30 10,20 0,20',
              '-10 10 size 60 10', (0,10,30,20), 200),
             ('0,0 100,0 100,50 60,50 60,90 40,90 40,50 0,50',

@@ -451,6 +451,41 @@ static bool split_oracle_difference(const PolygonLoop2 *before,
     return exact;
 }
 
+static void test_projection_corner_contact_is_local(void)
+{
+    const PolygonLoop2 original={.count=12,.v={{0,10},{10,10},{10,0},{20,0},{20,10},{30,10},
+        {30,20},{20,20},{20,40},{10,40},{10,20},{0,20}}};
+    for (int variant=0; variant<16; ++variant) {
+        PolygonLoop2 loop=original;
+        Coord offset=(variant&8)?-50:0;
+        size_t shift=(variant&4)?original.count-1:0;
+        for (size_t i=0;i<loop.count;++i) {
+            size_t at=(variant&1)?(shift+loop.count-i)%loop.count:(shift+i)%loop.count;
+            SurfacePoint2 p=original.v[at];
+            loop.v[i]=(variant&2)?(SurfacePoint2){p.v+offset,p.u+offset}:
+                                    (SurfacePoint2){p.u+offset,p.v+offset};
+            loop.fixity[i]=EDGE_FIXED;
+        }
+        CHECK(poly_loop_is_valid(&loop));
+        Coord a,b,c,d; ObstacleClass cls;
+        int corner_only_despite_remote_side_contact=classify_rect_outline(&loop,
+            10+offset,10+offset,(variant&2)?30+offset:20+offset,
+            (variant&2)?20+offset:30+offset,&cls,&a,&b,&c,&d);
+        CHECK(corner_only_despite_remote_side_contact<0); /* R7: the corner itself has no positive edge. */
+        Coord l=(variant&2)?20+offset:10+offset, bottom=(variant&2)?10+offset:20+offset;
+        Coord r=(variant&2)?30+offset:20+offset, top=(variant&2)?20+offset:30+offset;
+        CHECK(classify_rect_outline(&loop,l,bottom,r,top,&cls,&a,&b,&c,&d)>0);
+        CHECK(cls==OBSTACLE_SPLIT); /* Same remote edges, but now positive contact begins at all corners. */
+        bool flush[4]; for(int side=0;side<4;++side)flush[side]=side_flush_outline(&loop,side,a,b,c,d);
+        PolygonLoop2 p1={0},p2={0};
+        CHECK(proj_split_loop(&loop,flush,a,b,c,d,&p1,&p2));
+        int area=0;
+        CHECK(split_oracle_difference(&loop,&p1,&p2,a,b,c,d,&area));
+        CHECK(area==500);
+        CHECK(proj_loop_area2(&p1)+proj_loop_area2(&p2)==1000);
+    }
+}
+
 static void test_projection_three_residual_components(void)
 {
     const PolygonLoop2 fixtures[2] = {
@@ -491,6 +526,7 @@ static void test_projection_three_residual_components(void)
 
 int main(void)
 {
+    test_projection_corner_contact_is_local();
     test_projection_three_residual_components();
     test_rect_outline_counterexamples();
     test_collinear_vertex_rect_corner();

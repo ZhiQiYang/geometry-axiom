@@ -288,6 +288,9 @@ MUTANTS = [
     dict(id="M66", desc="R3/R4/R8/#202：第三段覆蓋弧循環接回第一片",
          old="            if (++covered_runs > 2) return false;",
          new="            ++covered_runs; /* incorrectly reconnect third residue */"),
+    dict(id="M67", desc="R7/#202：以同側遠處貼邊豁免純角點接觸",
+         old="        if (!local_flush && poly_point_on_edge(loop, corners[i])) return -1;",
+         new="        if (!f[(i==0||i==3)?0:1] && !f[i<2?2:3] && poly_point_on_edge(loop, corners[i])) return -1;"),
 ]
 
 
