@@ -5,6 +5,7 @@ import os
 import subprocess
 import tempfile
 import hashlib
+import re
 
 root = Path(__file__).resolve().parents[1]
 out = Path(tempfile.gettempdir()) / 'k2aa-browser-mutants-review'
@@ -35,7 +36,7 @@ for case in cases:
     name,before,after=case[:3]
     command=['node',str(root/'tests'/(case[3] if len(case)>3 else 'k2a_drafts_browser.cjs'))]
     expected=case[4] if len(case)>3 else messages[name]
-    baseline=subprocess.run(command,cwd=root,capture_output=True,text=True,timeout=180)
+    baseline=subprocess.run(command,cwd=root,env=dict(os.environ,GEOMETRY_BROWSER_RECEIPT=str(out/(name+'-baseline-identity'))),capture_output=True,text=True,timeout=180)
     (out/(name+'-baseline.log')).write_text(baseline.stdout+baseline.stderr)
     assert baseline.returncode==0,baseline.stdout+baseline.stderr
     assert source.count(before) == 1
@@ -44,13 +45,13 @@ for case in cases:
     build=subprocess.run(['node','--check',str(mutant)],capture_output=True,text=True)
     (out/(name+'-build.log')).write_text(build.stdout+build.stderr)
     assert build.returncode==0,build.stdout+build.stderr
-    env = dict(os.environ, GEOMETRY_GRID_WORKSPACE_SOURCE=str(mutant))
+    env = dict(os.environ, GEOMETRY_GRID_WORKSPACE_SOURCE=str(mutant),GEOMETRY_BROWSER_RECEIPT=str(out/(name+'-red-identity')))
     run = subprocess.run(command, cwd=root, env=env, capture_output=True, text=True, timeout=180)
     (out / (name + '.log')).write_text(run.stdout + run.stderr)
-    restored=subprocess.run(command,cwd=root,capture_output=True,text=True,timeout=180)
+    restored=subprocess.run(command,cwd=root,env=dict(os.environ,GEOMETRY_BROWSER_RECEIPT=str(out/(name+'-restored-identity'))),capture_output=True,text=True,timeout=180)
     (out/(name+'-restored.log')).write_text(restored.stdout+restored.stderr)
     assert restored.returncode==0,restored.stdout+restored.stderr
-    result = {'id': name, 'command':command,'expected_assertion':expected,'exit': run.returncode, 'detected': run.returncode != 0 and 'AssertionError' in run.stdout + run.stderr and expected in run.stdout+run.stderr,'restored_exit':restored.returncode,'source_sha256':hashlib.sha256(source.encode()).hexdigest(),'judge_sha256':hashlib.sha256(Path(command[1]).read_bytes()).hexdigest(),'build_exit':build.returncode,'raw_logs':{suffix:hashlib.sha256((out/(name+suffix+'.log')).read_bytes()).hexdigest() for suffix in ['-baseline','-build','','-restored']}}
+    result = {'id': name, 'command':command,'expected_assertion':expected,'exit': run.returncode, 'detected': run.returncode != 0 and bool(re.search(r'AssertionError \[ERR_ASSERTION\]: '+re.escape(expected)+r'(?:\n|$)',run.stdout+run.stderr)),'restored_exit':restored.returncode,'source_sha256':hashlib.sha256(source.encode()).hexdigest(),'judge_sha256':hashlib.sha256(Path(command[1]).read_bytes()).hexdigest(),'build_exit':build.returncode,'raw_logs':{suffix:hashlib.sha256((out/(name+suffix+'.log')).read_bytes()).hexdigest() for suffix in ['-baseline','-build','','-restored']}}
     results.append(result)
     print(json.dumps(result), flush=True)
 (out / 'results.json').write_text(json.dumps(results, indent=2) + '\n')
