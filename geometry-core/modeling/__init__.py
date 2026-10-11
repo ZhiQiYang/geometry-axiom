@@ -17,7 +17,7 @@ from .common import (ModelError, canonical_bytes, digest, strict_json_loads,
 # The source commit contains the adopted axiom bytes identified by this digest.
 # Update only after committing the corresponding SSOT change (MODELING-CONTRACT).
 AXIOM_REVISION = "6cd7c22680f37c95330ed8f9eac0427108bd0a61"
-AXIOM_SHA256 = "5f95dee8d901619a0098e269d2283f60c6b5d9aa7a00057cf24c4fd42fdba253"
+AXIOM_SHA256 = "2c20fd3d401e4246e59191f72f978c0a81a6ad34d3a297fe54abf4783e666c20"
 # The P-046 amendment (2026-10-11: I68 flag sentence aligned with R54's in-window undo)
 # replaced the ff18cb6 text before it reached main; that interim digest was never
 # declared by a main executor, so it is deliberately not listed as a compatible version.
@@ -27,21 +27,28 @@ AXIOM_SHA256 = "5f95dee8d901619a0098e269d2283f60c6b5d9aa7a00057cf24c4fd42fdba253
 # The D48 label-format fix (P-044, 2026-10-11) replaced the c24ec08 and 2818289
 # texts before they reached main; those interim digests were never declared by a
 # main executor, so they are deliberately not listed as compatible versions.
+# The K2b texts of ee7c441 (before the P-045 amendment) and a2f8c89 (before
+# following K1's P-047 fix) never reached main; those interim digests were never
+# declared by a main executor, so they are deliberately not listed as compatible versions.
+# The K1 fixes of 2026-10-11 (P-044 D48 label format; P-047 undo semantics) replaced
+# the c24ec08, 2818289 and 7c5485b texts before they reached main; those interim
+# digests were never declared by a main executor, so they are deliberately not
+# listed as compatible versions.
 # The R43 amendment (PF-0 r2.1, 2026-10-11) replaced the a93bb34 text before it
 # reached main; that interim digest was never declared by a main executor, so it
 # is deliberately not listed as a compatible version.
 # D56-D58 / I68-I69 / R54-R55 (K2a) only add editor drafts (grid-editor-drafts/1) and
 # repeated-bay assembly instances (assembly-bay-repeat/1), and amend D34 / I42 / R35 and the
 # first sentence of D53 for them; this executor implements neither capability, so packages
-# built under the previous adopted text (K2b incl. P-045) stay valid.
+# built under the previous adopted text (K2b incl. P-045 and K1's P-047) stay valid.
 PRE_DRAFTS_TOPOLOGY_AXIOM_VERSIONS = frozenset({
-    ("a2f8c89f74930cf9b88a6bb79e5897c9046f442c", "839250e3366b8019ae1aae5d3799f3f93c768820bf7e4856d571634d32ddff6a"),
+    ("d787146d501b98931cc66caccdbed0006c5ca25f", "2348373fa4182f984489c068b1762725f3d9eaa4087418b0ffb5182c763213e4"),
 })
 # D51-D55 / I63-I67 / R51-R53 (K2b) only add project-level data, room-candidate-drafts/1
 # and definition-import/1, which this executor does not implement; packages built
 # under the previous adopted text (K1) stay valid.
 PRE_ZERO_ROOM_AXIOM_VERSIONS = frozenset({
-    ("7c5485bba1a1e0d9b95009bd80dfc4114af1d942", "d9ccdd38e31219a4eea4c0f75dc09963a60504e6e3fd80fdf9ed4df1952f94a8"),
+    ("ca3790ce7e87e1a9190cb17fb63bbe42f501f7a5", "267a308698954ca610814d3956b5b837463ccaec8d4d074236de9f9df7f8a050"),
 })
 # D46-D50 / I58-I62 / R47-R50 only add cutting-plan/1, which this executor does
 # not implement; packages built under the previous adopted text stay valid.
