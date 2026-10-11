@@ -1,7 +1,7 @@
 {
   "schema": "k1-frontend-mutations/1",
   "tests": {
-    "test_cutting_plan.js": "3d680d2187c4a22320803194c66bb49bdb61ba46595f23c3f3bb2f4b775727f1",
+    "test_cutting_plan.js": "d7425ca54a357c20ac9de221f4dcdd5810547fbd3d2f99db923bbc1a6f765913",
     "test_cutting_project_store.js": "664ba7ed0dcef71ed4befed82128421c59df348b1f4067b39b83a25f7e7756bb",
     "test_cutting_session.js": "a07446a160b01ac00e806fbd6e86c8641323d140ebc5e05dea4a56e4533f00af",
     "test_cutting_owner.js": "dc571cd410bc7979de4c952118d15475eba442016628ec036633f30b01185c5c"
@@ -228,7 +228,7 @@
       "id": "conservation",
       "status": "killed",
       "detectedBy": "assertion",
-      "testPattern": "E1",
+      "testPattern": "conservation detects",
       "exitCode": 1,
       "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
       "mutationHash": "efdb7f486cf1125b4b09cabf0b1a0f9e54c707ae45a50aa34a04308e8c46c638"

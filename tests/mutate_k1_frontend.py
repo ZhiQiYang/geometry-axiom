@@ -36,7 +36,7 @@ CASES = [
  ('overlength-remnants','cutting-plan.js','...settings.remnants.filter(r=>r.stockType===stock.key).map(r=>r.length-r.headTrim-r.tailTrim)','0','T23'),
  ('exhaustion-code','cutting-plan.js',"diagnose('INCOMPLETE','REMNANT_EXHAUSTED'","diagnose('INVALID','OVER_LENGTH'",'T23'),
  ('exhaustion-all-groups','cutting-plan.js','if(failed)continue;','if(failed)break;','R1.1'),
- ('conservation','cutting-plan.js','function verify(plan,expectedIds=null){','function verify(plan,expectedIds=null){return true;','E1'),
+ ('conservation','cutting-plan.js','function verify(plan,expectedIds=null){','function verify(plan,expectedIds=null){return true;','conservation detects'),
  ('typed-error','timber-schedule.js',"failure('NOT_EVALUATED'","failure('REFERENCES_UNVERIFIED'",'typed derive'),
  ('legacy-csv','timber-schedule.js',"JSON.stringify(r.sources,(key,value)=>key==='terminal'?undefined:value)",'JSON.stringify(r.sources)','F4a'),
  ('owned-terminal','timber-schedule.js',"Object.hasOwn(effective[field],'terminal')",'false','F4a'),

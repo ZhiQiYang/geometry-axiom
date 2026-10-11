@@ -72,10 +72,18 @@ test('T26 T27 fingerprint mismatch precedes section mismatch; unnamed material i
 test('typed derive errors preserve old messages; no empty-scope second diagnosis',async()=>{
  const r=refs([100]);r.timbers[0].geometry.A=0;const p=await evaluate(r);diagnostic(p,'INCOMPLETE','ROW_NOT_READY:NOT_EVALUATED');assert.equal(p.diagnostics.length,1);
 });
-test('E1 conservation detects corrupted positions; E2 every demand placed once',async()=>{
+test('conservation detects corrupted positions and repeated demand identity',async()=>{
  const p=await evaluate(refs([2560,2560,890,890,890,876]));assert.equal(C.verify(p),true);
  const a=structuredClone(p);a.groups[0].stocks[0].pieces[0].end++;assert.throws(()=>C.verify(a),/CONSERVATION/);
  const b=structuredClone(p);b.groups[0].stocks[0].pieces[1].timberId=1;assert.throws(()=>C.verify(b),/DEMAND_IDENTITY/);
+});
+test('E1 E2 engineering proposal lengths produce overlength or six exact stocks',async()=>{
+ const r=refs([4000,4000,2946,2946,2946,1960,1959]);r.timbers.forEach((t,i)=>t.id=[10,11,12,13,20,30,31][i]);
+ for(const t of r.timbers)for(const field of ['A','B'])source(r,t.id,{kind:'material',...material},field);
+ const s=settings();s.stockTypes[0].material=material;const short=await evaluate(r,s);diagnostic(short,'INVALID','OVER_LENGTH');assert.deepEqual(short.diagnostics.map(d=>d.detail.timberId),[10,11]);
+ s.stockTypes[0].length=4200;const p=await evaluate(r,s),g=p.groups[0];assert.equal(p.status,'COMPLETE');assert.equal(g.newStockCount,6);
+ assert.deepEqual(g.stocks.map(s=>s.pieces.map(p=>[p.timberId,p.start,p.end])),[[[10,5,4005]],[[11,5,4005]],[[12,5,2951]],[[13,5,2951]],[[20,5,2951]],[[30,5,1965],[31,1968,3927]]]);
+ assert.deepEqual(g.stocks.map(s=>[s.leftover.length,s.leftover.usable,s.leftover.class]),[[192,187,'waste'],[192,187,'waste'],[1246,1241,'reusable'],[1246,1241,'reusable'],[1246,1241,'reusable'],[270,265,'waste']]);
 });
 test('CSV fixed 30 columns, empty end/piece cells, mm, escaping; all computation is read-only',async()=>{
  const r=refs([3626]),s=settings();s.stockTypes[0].name=' =HYPERLINK("x")\n木材';const before=JSON.stringify([r,s]);const p=await evaluate(r,s),csv=C.csv(p),lines=csv.trimEnd().split('\r\n');

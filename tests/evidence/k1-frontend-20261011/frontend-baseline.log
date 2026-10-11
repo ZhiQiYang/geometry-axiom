@@ -2,261 +2,267 @@ TAP version 13
 # Subtest: actual owner rejects invalid, referenced-stock and stale/busy edits before history or revision changes
 ok 1 - actual owner rejects invalid, referenced-stock and stale/busy edits before history or revision changes
   ---
-  duration_ms: 60.8811
+  duration_ms: 59.1158
   type: 'test'
   ...
 # Subtest: actual owner P-047 undo, redo and alternate edit allocate key 2 after key 1 was undone
 ok 2 - actual owner P-047 undo, redo and alternate edit allocate key 2 after key 1 was undone
   ---
-  duration_ms: 26.771
+  duration_ms: 28.5467
   type: 'test'
   ...
 # Subtest: actual owner no-op and unrelated history do not modify declarations; caller aliases are detached
 ok 3 - actual owner no-op and unrelated history do not modify declarations; caller aliases are detached
   ---
-  duration_ms: 22.3795
+  duration_ms: 12.1502
   type: 'test'
   ...
 # Subtest: T1 exact FFD coordinates, procurement, kerf and both leftover classes
 ok 4 - T1 exact FFD coordinates, procurement, kerf and both leftover classes
   ---
-  duration_ms: 44.4738
+  duration_ms: 50.3164
   type: 'test'
   ...
 # Subtest: T2 T3 T3b original end, shortened last kerf, and last-cut expectation
 ok 5 - T2 T3 T3b original end, shortened last kerf, and last-cut expectation
   ---
-  duration_ms: 5.7996
+  duration_ms: 5.4581
   type: 'test'
   ...
 # Subtest: T4 T11 T13 T25 finish trim, allowance, usable threshold and nonnegative usable
 ok 6 - T4 T11 T13 T25 finish trim, allowance, usable threshold and nonnegative usable
   ---
-  duration_ms: 3.3043
+  duration_ms: 4.6139
   type: 'test'
   ...
 # Subtest: T5 T5b smallest usable remnant first; unused remnants have no cuts or CSV rows
 ok 7 - T5 T5b smallest usable remnant first; unused remnants have no cuts or CSV rows
   ---
-  duration_ms: 4.4424
+  duration_ms: 6.2067
   type: 'test'
   ...
 # Subtest: T6 T6b union uses timber identity including zero, never dimensions
 ok 8 - T6 T6b union uses timber identity including zero, never dimensions
   ---
-  duration_ms: 3.7301
+  duration_ms: 3.1588
   type: 'test'
   ...
 # Subtest: T7 T18 T21 T22 request phases reject wrong world, capacities, stale selection, and empty scope
 ok 9 - T7 T18 T21 T22 request phases reject wrong world, capacities, stale selection, and empty scope
   ---
-  duration_ms: 38.2605
+  duration_ms: 31.2293
   type: 'test'
   ...
 # Subtest: T8 T8b T9 material triplets and unordered section determine stock, never path
 ok 10 - T8 T8b T9 material triplets and unordered section determine stock, never path
   ---
-  duration_ms: 5.0274
+  duration_ms: 5.2766
   type: 'test'
   ...
 # Subtest: T10 T10b T10c unresolved, mixed and missing terminal remain distinct
 ok 11 - T10 T10b T10c unresolved, mixed and missing terminal remain distinct
   ---
-  duration_ms: 4.1587
+  duration_ms: 3.5814
   type: 'test'
   ...
 # Subtest: T15 T15b canonical settings, candidate order and CSV ignore input/view ordering
 ok 12 - T15 T15b canonical settings, candidate order and CSV ignore input/view ordering
   ---
-  duration_ms: 13.0401
+  duration_ms: 15.2842
   type: 'test'
   ...
 # Subtest: T19 T28 missing settings follow overlength diagnostics and severity
 ok 13 - T19 T28 missing settings follow overlength diagnostics and severity
   ---
-  duration_ms: 5.2368
+  duration_ms: 4.6264
   type: 'test'
   ...
 # Subtest: T23 T23b exhaustion is per-group first failure, and overlength considers every remnant
 ok 14 - T23 T23b exhaustion is per-group first failure, and overlength considers every remnant
   ---
-  duration_ms: 5.9089
+  duration_ms: 5.5504
   type: 'test'
   ...
 # Subtest: T26 T27 fingerprint mismatch precedes section mismatch; unnamed material is not inferred
 ok 15 - T26 T27 fingerprint mismatch precedes section mismatch; unnamed material is not inferred
   ---
-  duration_ms: 2.6449
+  duration_ms: 3.2497
   type: 'test'
   ...
 # Subtest: typed derive errors preserve old messages; no empty-scope second diagnosis
 ok 16 - typed derive errors preserve old messages; no empty-scope second diagnosis
   ---
-  duration_ms: 2.1241
+  duration_ms: 1.8259
   type: 'test'
   ...
-# Subtest: E1 conservation detects corrupted positions; E2 every demand placed once
-ok 17 - E1 conservation detects corrupted positions; E2 every demand placed once
+# Subtest: conservation detects corrupted positions and repeated demand identity
+ok 17 - conservation detects corrupted positions and repeated demand identity
   ---
-  duration_ms: 3.0986
+  duration_ms: 2.9468
+  type: 'test'
+  ...
+# Subtest: E1 E2 engineering proposal lengths produce overlength or six exact stocks
+ok 18 - E1 E2 engineering proposal lengths produce overlength or six exact stocks
+  ---
+  duration_ms: 3.9221
   type: 'test'
   ...
 # Subtest: CSV fixed 30 columns, empty end/piece cells, mm, escaping; all computation is read-only
-ok 18 - CSV fixed 30 columns, empty end/piece cells, mm, escaping; all computation is read-only
+ok 19 - CSV fixed 30 columns, empty end/piece cells, mm, escaping; all computation is read-only
   ---
-  duration_ms: 2.929
+  duration_ms: 2.513
   type: 'test'
   ...
 # Subtest: F4a CSV byte equality removes terminal while owned rows retain the native slot terminal
-ok 19 - F4a CSV byte equality removes terminal while owned rows retain the native slot terminal
+ok 20 - F4a CSV byte equality removes terminal while owned rows retain the native slot terminal
   ---
-  duration_ms: 5.5277
+  duration_ms: 7.1136
   type: 'test'
   ...
 # Subtest: R1.1 each exhausted material group contributes its first unplaced demand
-ok 20 - R1.1 each exhausted material group contributes its first unplaced demand
+ok 21 - R1.1 each exhausted material group contributes its first unplaced demand
   ---
-  duration_ms: 2.6571
+  duration_ms: 2.3806
   type: 'test'
   ...
 # Subtest: T12 strict settings refuse values without rounding, clamping, ignored keys or defaults
-ok 21 - T12 strict settings refuse values without rounding, clamping, ignored keys or defaults
+ok 22 - T12 strict settings refuse values without rounding, clamping, ignored keys or defaults
   ---
-  duration_ms: 22.2177
+  duration_ms: 19.1654
   type: 'test'
   ...
 # Subtest: T12b referenced stock section/material locked, but name and new-stock trims editable
-ok 22 - T12b referenced stock section/material locked, but name and new-stock trims editable
+ok 23 - T12b referenced stock section/material locked, but name and new-stock trims editable
   ---
-  duration_ms: 2.7591
+  duration_ms: 3.7793
   type: 'test'
   ...
 # Subtest: T18 settings capacities reject edit rather than truncating
-ok 23 - T18 settings capacities reject edit rather than truncating
+ok 24 - T18 settings capacities reject edit rather than truncating
   ---
-  duration_ms: 9.6555
+  duration_ms: 6.2189
   type: 'test'
   ...
 # Subtest: T20 a referenced stock cannot be deleted alone; deleting its remnants atomically is allowed
-ok 24 - T20 a referenced stock cannot be deleted alone; deleting its remnants atomically is allowed
+ok 25 - T20 a referenced stock cannot be deleted alone; deleting its remnants atomically is allowed
   ---
-  duration_ms: 1.4785
+  duration_ms: 1.2129
   type: 'test'
   ...
 # Subtest: key allocation remains exhausted or monotonic; deleted keys cannot be reused
-ok 25 - key allocation remains exhausted or monotonic; deleted keys cannot be reused
+ok 26 - key allocation remains exhausted or monotonic; deleted keys cannot be reused
   ---
-  duration_ms: 2.1863
+  duration_ms: 2.0728
   type: 'test'
   ...
 # Subtest: P-047(a)(b) remnant undo/redo restore only the edit while counters never rewind
-ok 26 - P-047(a)(b) remnant undo/redo restore only the edit while counters never rewind
+ok 27 - P-047(a)(b) remnant undo/redo restore only the edit while counters never rewind
   ---
-  duration_ms: 6.0262
+  duration_ms: 6.3826
   type: 'test'
   ...
 # Subtest: P-047(c) unrelated local/core restoration does not change remnant declaration or highwater
-ok 27 - P-047(c) unrelated local/core restoration does not change remnant declaration or highwater
+ok 28 - P-047(c) unrelated local/core restoration does not change remnant declaration or highwater
   ---
-  duration_ms: 3.3482
+  duration_ms: 1.8266
   type: 'test'
   ...
 # Subtest: P-047 absent attachment undo preserves consumed keys, and different contexts remain independent
-ok 28 - P-047 absent attachment undo preserves consumed keys, and different contexts remain independent
+ok 29 - P-047 absent attachment undo preserves consumed keys, and different contexts remain independent
   ---
-  duration_ms: 1.8912
+  duration_ms: 1.6719
   type: 'test'
   ...
 # Subtest: T17 archive roundtrip retains settings and highwater but no plan, scope or World declaration
-ok 29 - T17 archive roundtrip retains settings and highwater but no plan, scope or World declaration
+ok 30 - T17 archive roundtrip retains settings and highwater but no plan, scope or World declaration
   ---
-  duration_ms: 66.0182
+  duration_ms: 64.1373
   type: 'test'
   ...
 # Subtest: T17b old project format, missing capability and unknown schema refuse import before changing project
-ok 30 - T17b old project format, missing capability and unknown schema refuse import before changing project
+ok 31 - T17b old project format, missing capability and unknown schema refuse import before changing project
   ---
-  duration_ms: 23.1609
+  duration_ms: 23.0743
   type: 'test'
   ...
 # Subtest: cutting record obeys existing finite plain JSON gate including getters and oversized escaped bytes
-ok 31 - cutting record obeys existing finite plain JSON gate including getters and oversized escaped bytes
+ok 32 - cutting record obeys existing finite plain JSON gate including getters and oversized escaped bytes
   ---
-  duration_ms: 1.4978
+  duration_ms: 1.9254
   type: 'test'
   ...
 # Subtest: cutting format keeps existing native section capability admission independently of project metadata
-ok 32 - cutting format keeps existing native section capability admission independently of project metadata
+ok 33 - cutting format keeps existing native section capability admission independently of project metadata
   ---
-  duration_ms: 10.8492
+  duration_ms: 12.5827
   type: 'test'
   ...
 # Subtest: T14 plan, display and export are read-only; a single references response determines all scopes
-ok 33 - T14 plan, display and export are read-only; a single references response determines all scopes
+ok 34 - T14 plan, display and export are read-only; a single references response determines all scopes
   ---
-  duration_ms: 42.4582
+  duration_ms: 33.8523
   type: 'test'
   ...
 # Subtest: T16 world invalidates export without producing a Blob
-ok 34 - T16 world invalidates export without producing a Blob
+ok 35 - T16 world invalidates export without producing a Blob
   ---
-  duration_ms: 5.9578
+  duration_ms: 6.5628
   type: 'test'
   ...
 # Subtest: T16 settings invalidates export without producing a Blob
-ok 35 - T16 settings invalidates export without producing a Blob
+ok 36 - T16 settings invalidates export without producing a Blob
   ---
-  duration_ms: 4.3945
+  duration_ms: 4.106
   type: 'test'
   ...
 # Subtest: T16 context invalidates export without producing a Blob
-ok 36 - T16 context invalidates export without producing a Blob
+ok 37 - T16 context invalidates export without producing a Blob
   ---
-  duration_ms: 3.6779
+  duration_ms: 4.3368
   type: 'test'
   ...
 # Subtest: T16 revision invalidates export without producing a Blob
-ok 37 - T16 revision invalidates export without producing a Blob
+ok 38 - T16 revision invalidates export without producing a Blob
   ---
-  duration_ms: 4.7589
+  duration_ms: 4.8924
   type: 'test'
   ...
 # Subtest: T16 scope invalidates export without producing a Blob
-ok 38 - T16 scope invalidates export without producing a Blob
+ok 39 - T16 scope invalidates export without producing a Blob
   ---
-  duration_ms: 3.6877
+  duration_ms: 3.2446
   type: 'test'
   ...
 # Subtest: T16 late references and repeated clicks produce zero or one download respectively
-ok 39 - T16 late references and repeated clicks produce zero or one download respectively
+ok 40 - T16 late references and repeated clicks produce zero or one download respectively
   ---
-  duration_ms: 7.0356
+  duration_ms: 8.0166
   type: 'test'
   ...
 # Subtest: session scopes clear at project context change and late calculation cannot install a plan
-ok 40 - session scopes clear at project context change and late calculation cannot install a plan
+ok 41 - session scopes clear at project context change and late calculation cannot install a plan
   ---
-  duration_ms: 2.8221
+  duration_ms: 3.6688
   type: 'test'
   ...
 # Subtest: invalid settings draft must be saved before calculation; no absent setting receives a default
-ok 41 - invalid settings draft must be saved before calculation; no absent setting receives a default
+ok 42 - invalid settings draft must be saved before calculation; no absent setting receives a default
   ---
-  duration_ms: 5.1362
+  duration_ms: 4.7453
   type: 'test'
   ...
 # Subtest: unrelated undo changes the frame receipt but keeps scopes in the same project context
-ok 42 - unrelated undo changes the frame receipt but keeps scopes in the same project context
+ok 43 - unrelated undo changes the frame receipt but keeps scopes in the same project context
   ---
-  duration_ms: 3.9753
+  duration_ms: 5.3571
   type: 'test'
   ...
-1..42
-# tests 42
+1..43
+# tests 43
 # suites 0
-# pass 42
+# pass 43
 # fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 497.3033
+# duration_ms 519.6523

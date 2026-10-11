@@ -1,8 +1,8 @@
-二進位輸出目錄：C:\Users\Yang\AppData\Local\Temp\geometry-tests\k1-frontend-final3
+二進位輸出目錄：C:\Users\Yang\AppData\Local\Temp\geometry-tests\k1-native
 [binaries]
 [環境] CC=未設定（繼承自外殼；僅影響 binaries.py 在非 Windows 的編譯）
 [環境] 已清除外殼繼承的 GEOMETRY_*：（無）
-[環境] run_all 設給子行程的 GEOMETRY_*：（無）
+[環境] run_all 設給子行程的 GEOMETRY_*：GEOMETRY_TEST_ENGINEERING_JSON
 [1/4] node:cutting_plan …
 [2/4] node:cutting_project_store …
 [3/4] node:cutting_session …
@@ -10,12 +10,12 @@
 
 suite                       測試數  pass  fail  skip   秒  備註
 -----------------------------------------------------------
-node:cutting_plan               17    17     0     0  0.6
-node:cutting_project_store      12    12     0     0  0.7
-node:cutting_session            10    10     0     0  0.5
+node:cutting_plan               18    18     0     0  0.6
+node:cutting_project_store      12    12     0     0  1.1
+node:cutting_session            10    10     0     0  0.6
 node:cutting_owner               3     3     0     0  0.5
 -----------------------------------------------------------
-合計(已執行、有計數者)          42    42     0     0  2.4
+合計(已執行、有計數者)          43    43     0     0  2.8
 未納入                           -     -     -     -    -  需 Chrome，另行執行：geometry-web/cdp_test.js、geometry-web/space_model_test.js
 必要 owner／browser 整合與模組驗證另驗（不計入上述 pass/skip）：
   tests/test_issue123_create_feedback_browser.py：Explicit isolated Playwright mouse/touch first-center gate from #131; run with --url/--out, not a unittest suite；獨立執行，本 aggregate 未驗。
