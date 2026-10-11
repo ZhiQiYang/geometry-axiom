@@ -127,6 +127,7 @@ NODE_TEST_FILES = [
     'tests/test_model_update.js',
     'tests/test_parameters_project_store.js',
     'tests/test_project_store.js',
+    'tests/test_shared_format17.js',
     'tests/test_subdivision_project_store.js',
     'tests/test_reference_workspace_races.js',
     'tests/test_room_outline.js',
@@ -175,6 +176,7 @@ NODE_PURE_TEST_FILES = {
     'node:grid_definition_diagram': 'tests/test_grid_definition_diagram.js',
 }
 NODE_EXCLUDED = {
+    'tests/fixtures/k1b-cutting-settings.cjs': 'Pinned K1-b validator fixture for the shared /17 owner-dispatch contract; not an executable test',
     'tests/k2a_browser_receipt.cjs': 'Shared browser receipt/identity helper; registers no tests',
     'tests/k2a_rule_repin_browser.cjs': 'Required actual source-rule raw preservation and two-way repin comparison gate',
     'tests/k2a_source_repin_browser.cjs': 'Required isolated K2a-A Chromium source repin/replacement gate: stale cancellation, same-ID lost refusal and reviewed different-ID selection',
