@@ -50,7 +50,10 @@ def main():
     with tempfile.TemporaryDirectory(prefix='geo246-message-') as temp:
         scratch = Path(temp)
         archive = scratch / 'source.tar'
-        archive.write_bytes(subprocess.check_output(['git', '-C', str(ROOT), 'archive', 'HEAD']))
+        # Compile the exact committed core/include sources without copying
+        # unrelated reader/media artifacts into every disposable mutation.
+        archive_paths = ['current_geometry.c', 'geometry-core', 'geometry-web/web_bridge.c']
+        archive.write_bytes(subprocess.check_output(['git', '-C', str(ROOT), 'archive', 'HEAD', *archive_paths]))
         work = scratch / 'source'
         work.mkdir()
         with tarfile.open(archive) as tf:
@@ -75,6 +78,7 @@ def main():
             command = ['cc', '-std=c11', '-O2', 'geometry-web/web_bridge.c', '-o', str(mutant), '-lm']
             write(out / 'compile-command.json', {'argv': command, 'cwd': str(work),
                   'archive_head': before['head'], 'archive_tree': before['tree'],
+                  'archive_paths': archive_paths,
                   'archive_sha256': sha(archive.read_bytes()), 'patch_sha256': sha(patch_path.read_bytes()),
                   'shell_display': shlex.join(command), 'replacements': records})
             subprocess.run(command, cwd=work, check=True)
