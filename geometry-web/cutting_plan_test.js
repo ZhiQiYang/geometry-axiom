@@ -1,9 +1,13 @@
 /* P89: registered by cdp_test.js; actual app and native references. */
-const cdp=require('./cdp_helpers.js');
+const cdp=require('./cdp_helpers.js'),fs=require('fs'),path=require('path'),os=require('os');
 module.exports=async function({send,eval_,sleep,click,waitForUI,exceptionCount}){
  console.log('=== P89. 裁切、宣告餘料與採購 ===');const check=cdp.makeCheck({prefix:'P89 '}),errors=exceptionCount();
- const ctl=async selector=>{const p=await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)throw Error('missing control');e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect();return{x:r.x+r.width/2,y:r.y+r.height/2};})()`);await click(p.x,p.y);await sleep(100);};
+ const ctl=async selector=>{const p=await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)throw Error('missing control');e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;return{x,y,hit:e.contains(document.elementFromPoint(x,y))};})()`);if(!p.hit)throw Error('Cutting control covered: '+selector);await click(p.x,p.y);await sleep(100);};
  const choose=async(id,value)=>eval_(`(()=>{const e=document.getElementById(${JSON.stringify(id)});e.value=${JSON.stringify(value)};e.dispatchEvent(new Event('change',{bubbles:true}));})()`);
+ const fill=async(selector,text)=>{await ctl(selector);await send('Input.dispatchKeyEvent',{type:'keyDown',key:'a',code:'KeyA',modifiers:2,windowsVirtualKeyCode:65});await send('Input.dispatchKeyEvent',{type:'keyUp',key:'a',code:'KeyA',modifiers:2,windowsVirtualKeyCode:65});await send('Input.insertText',{text});};
+ const stockForm=async()=>{for(const [label,text]of [['名稱','木材'],['截面 A mm','27'],['截面 B mm','33'],['新料長度 mm','6000'],['原廠端修整 mm','0']])await fill(`#cuttingStocks fieldset:first-child input[aria-label="${label}"]`,text);await eval_(`(()=>{const m=document.querySelector('#cuttingStocks fieldset select');m.value='unset';m.dispatchEvent(new Event('change',{bubbles:true}));})()`);for(const [field,text]of [['kerf','3'],['allowance','0'],['minRemnant','300']])await fill(`#cuttingGlobals [data-setting="${field}"]`,text);};
+ const screens=process.env.GEOMETRY_SCHEDULE_SCREENSHOT_DIR||path.join(os.tmpdir(),'geometry-k1-screens');fs.mkdirSync(screens,{recursive:true});
+ const screenshot=async name=>fs.writeFileSync(path.join(screens,name),Buffer.from((await send('Page.captureScreenshot',{format:'png'})).result.data,'base64'));
  await send('Emulation.setDeviceMetricsOverride',{width:1400,height:900,deviceScaleFactor:1,mobile:false});
  await eval_(`(async()=>{resetSceneFocus();await api('default');await renderObjects();await enterFocus('face',1);})()`);
  await ctl('[data-fi-tab="components"]');await ctl('[data-component-tab="timber"]');await waitForUI(`!!$('timberScheduleOrder')`);
@@ -11,7 +15,7 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,exceptionCount})
  await choose('timberScheduleOrder','cutting');await waitForUI(`!!$('cuttingDialog')`);
  check('未設定保持空白，沒有鋸縫或修整預設值',await eval_(`[...document.querySelectorAll('#cuttingGlobals input')].every(i=>i.value==='')&&$('cuttingStocks').children.length===0`));
  await ctl('#cuttingAddStock');
- await eval_(`(()=>{const row=document.querySelector('[data-stock-key]'),values={'名稱':'木材','截面 A mm':'27','截面 B mm':'33','新料長度 mm':'6000','原廠端修整 mm':'0'};for(const i of row.querySelectorAll('input')){i.value=values[i.getAttribute('aria-label')];i.dispatchEvent(new Event('input',{bubbles:true}));}const m=row.querySelector('select');m.value='unset';m.dispatchEvent(new Event('change',{bubbles:true}));for(const i of document.querySelectorAll('#cuttingGlobals input')){i.value=({kerf:'3',allowance:'0',minRemnant:'300'})[i.dataset.setting];i.dispatchEvent(new Event('input',{bubbles:true}));}})()`);
+ await stockForm();
  await ctl('#cuttingSave');
  check('表單明示保存一次設定與歷史',await eval_(`(()=>{const s=ReferenceWorkspace.readFeatureAttachment('cutting-settings');return s?.kerf===3&&s.stockTypes.length===1&&s.stockTypes[0].material===null&&ReferenceWorkspace.history.actionLabel('undo')==='裁切設定';})()`));
  const snapshot=()=>eval_(`(async()=>JSON.stringify({dump:(await api('dump')).text,revision:ReferenceWorkspace.getProjectState().revision,dirty:ReferenceWorkspace.context().dirty,undo:ReferenceWorkspace.history.undo.length,redo:ReferenceWorkspace.history.redo.length,settings:ReferenceWorkspace.readFeatureAttachment('cutting-settings')}))()`);
@@ -20,6 +24,7 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,exceptionCount})
  await choose('cuttingUnit','cm');await choose('cuttingOrder','length');await ctl('#cuttingExport');
  check('求方案、顯示與匯出不改 World、revision、dirty、history 或宣告',await snapshot()===before);
  check('顯示購料、下刀、區間、剩料分類與未使用餘料',await eval_(`$('cuttingPlan').textContent.includes('新料需購入')&&$('cuttingPlan').textContent.includes('下刀')&&$('cuttingPlan').textContent.includes('在料上的區間 cm')&&$('cuttingPlan').textContent.includes('未使用宣告餘料')`));
+ await screenshot('cutting-desktop.png');
  await ctl('#cuttingAddRemnant');await eval_(`(()=>{const row=document.querySelector('[data-remnant-key]');row.querySelector('select').value='1';row.querySelector('select').dispatchEvent(new Event('change'));for(const i of row.querySelectorAll('input')){i.value=i.getAttribute('aria-label')==='餘料實長 mm'?'1000':'0';i.dispatchEvent(new Event('input'));}})()`);await ctl('#cuttingSave');
  await eval_(`(async()=>{await api('line undo');})()`);
  check('P-047 復原餘料清單但 key 高水位不退',await eval_(`(()=>{const s=ReferenceWorkspace.readFeatureAttachment('cutting-settings');return s.remnants.length===0&&s.nextRemnantKey===2;})()`));
@@ -50,6 +55,9 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,exceptionCount})
  if(await eval_(`!document.body.classList.contains('drawer-right-open')`))await ctl('#workspaceToggleRight');
  await choose('timberScheduleOrder','cutting');await waitForUI(`!!$('cuttingDialog')`);
  check('手機對話框在可視區，表單與關閉入口可操作',await eval_(`(()=>{const d=$('cuttingDialog'),r=d.getBoundingClientRect();return r.x>=0&&r.right<=innerWidth&&r.y>=0&&r.bottom<=innerHeight&&!!d.querySelector('[aria-label="關閉裁切與採購"]');})()`));
+ await ctl('#cuttingAddStock');await stockForm();await ctl('#cuttingSave');const mobileBefore=await snapshot();await ctl('#cuttingCalculate');await waitForUI(`$('cuttingStatus').textContent.startsWith('COMPLETE')`);await ctl('#cuttingExport');
+ check('390px 真點按與鍵盤設定、求方案、匯出，來源與宣告保持唯讀',await snapshot()===mobileBefore&&await eval_(`$('cuttingPlan').textContent.includes('新料需購入')&&!$('cuttingExport').disabled&&ReferenceWorkspace.readFeatureAttachment('cutting-settings').stockTypes.length===1`));
+ await screenshot('cutting-mobile.png');
  await ctl('#cuttingDialog [aria-label="關閉裁切與採購"]');
  await send('Emulation.setDeviceMetricsOverride',{width:1400,height:900,deviceScaleFactor:1,mobile:false});
  check('裁切流程沒有新增 uncaught browser exception',exceptionCount()===errors);
