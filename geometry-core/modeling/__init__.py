@@ -16,7 +16,7 @@ from .common import (ModelError, canonical_bytes, digest, strict_json_loads,
 
 # The source commit contains the adopted axiom bytes identified by this digest.
 # Update only after committing the corresponding SSOT change (MODELING-CONTRACT).
-AXIOM_REVISION = "6cd7c22680f37c95330ed8f9eac0427108bd0a61"
+AXIOM_REVISION = "e04a63cb3e1280715cd6c24504a37f3522fa43c7"
 AXIOM_SHA256 = "2c20fd3d401e4246e59191f72f978c0a81a6ad34d3a297fe54abf4783e666c20"
 # The P-046 amendment (2026-10-11: I68 flag sentence aligned with R54's in-window undo)
 # replaced the ff18cb6 text before it reached main; that interim digest was never
