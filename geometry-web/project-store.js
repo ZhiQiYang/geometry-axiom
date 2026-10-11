@@ -323,7 +323,8 @@
       fail("證據連結須使用第 12 版格式並保留對應附件與能力。");
     const needed = projectCapabilities({...manifest, requiredCapabilities: []}, scene ?? "");
     if ((needed.includes(Features.GRID_DRAFTS_SCHEMA) || manifest.requiredCapabilities?.includes(Features.GRID_DRAFTS_SCHEMA)) &&
-        (manifest.format !== GRID_DRAFTS_FORMAT || !needed.includes(Features.GRID_DRAFTS_SCHEMA) || !manifest.requiredCapabilities?.includes(Features.GRID_DRAFTS_SCHEMA))) fail("草稿集合須使用第 17 版格式並保留集合附件及能力。");
+        (!needed.includes(Features.GRID_DRAFTS_SCHEMA) || !manifest.requiredCapabilities?.includes(Features.GRID_DRAFTS_SCHEMA))) fail("草稿集合須使用第 17 版格式並保留集合附件及能力。");
+    if((needed.some(capability=>format17Capabilities.includes(capability))||manifest.requiredCapabilities?.some(capability=>format17Capabilities.includes(capability)))&&manifest.format !== GRID_DRAFTS_FORMAT)fail("第 17 版附件不可降版。");
     if(manifest.format===GRID_DRAFTS_FORMAT&&!needed.some(capability=>format17Capabilities.includes(capability)))fail("第 17 版格式缺少對應附件及能力。");
     for(const capability of format17Capabilities)if(needed.includes(capability)!==!!manifest.requiredCapabilities?.includes(capability))fail("第 17 版附件與功能能力不一致。");
     const sections = scene === null ? manifest.requiredCapabilities?.includes(SECTION_CAPABILITY) : needed.includes(SECTION_CAPABILITY);

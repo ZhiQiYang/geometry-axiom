@@ -18,6 +18,7 @@ test('P-054 unsupported other-owner capability and stripped capability reject wh
  const got=await roundtrip([cutting()]),files=zip.unzipSync(await P.pack(got.scene,got.manifest,got.sources,zip));
  await assert.rejects(require('../geometry-web/project-store.js').unpack(zip.zipSync(files),zip),/尚未支援|不支援/);
  const m=JSON.parse(new TextDecoder().decode(files['manifest.json']));m.requiredCapabilities=[];files['manifest.json']=new TextEncoder().encode(JSON.stringify(m));await assert.rejects(P.unpack(zip.zipSync(files),zip));
+ const downgraded=JSON.parse(JSON.stringify(got.manifest));downgraded.format='geometry-canvas/16';files['manifest.json']=new TextEncoder().encode(JSON.stringify(downgraded));await assert.rejects(P.unpack(zip.zipSync(files),zip),'P-054 other-owner attachment cannot downgrade');
 });
 test('P-054 nested scenario leaves retain each /17 family and reject stripped root capability',async()=>{
  const Snapshots=require('../geometry-web/scenario-snapshots.js');
