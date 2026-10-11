@@ -1,6 +1,18 @@
 (function(root,factory){const api=factory(typeof module==='object'&&module.exports?require('./cutting-settings.js'):root.CuttingSettings,
  typeof module==='object'&&module.exports?require('./cutting-plan.js'):root.CuttingPlan);if(typeof module==='object'&&module.exports)module.exports=api;else root.CuttingWorkspace=api;})(typeof globalThis!=='undefined'?globalThis:this,(Settings,Plan)=>{
  'use strict';const copy=v=>JSON.parse(JSON.stringify(v));
+ const diagnosticNames={WORLD_KIND:'此世界種類不支援裁切',CAPACITY:'超過執行器容量',WORLD_UNREADABLE:'無法核對世界',SCOPE_STALE:'需求範圍已失效',SCOPE_EMPTY:'需求範圍沒有角材',NATIVE_CAPABILITY:'原生來源未提供材料末端',MATERIAL_UNRESOLVED:'材料末端未就緒',MATERIAL_MIXED:'兩軸的材料末端不一致',NO_STOCK:'缺少符合的原材種類',MATERIAL_FINGERPRINT_MISMATCH:'材料內容指紋不符',STOCK_SECTION_MISMATCH:'原材截面不符',OVER_LENGTH:'需求件超過全部可用料長',MISSING_SETTING:'裁切設定尚未完整',REMNANT_EXHAUSTED:'本次找到的方案無法排入'};
+ function diagnosticText(d){
+  let text=diagnosticNames[d.code]||'角材料單尚未就緒';
+  if(d.detail?.timberId!==undefined)text+='：構件 '+d.detail.timberId;
+  if(Array.isArray(d.detail?.section)){
+   const material=d.detail.material;
+   text+=`；所需 ${d.detail.section.join('×')} mm，${material?`${material.id}@${material.version}@${material.fingerprint}`:'材料未設定'}`;
+  }
+  if(d.code==='OVER_LENGTH')text+=`；加工長 ${d.detail.C} mm，最大可用 ${d.detail.maximum} mm`;
+  if(d.code==='MISSING_SETTING')text+='（'+d.detail.map(k=>({kerf:'鋸縫',allowance:'加工餘量',minRemnant:'留用下限'})[k]).join('、')+'）';
+  return text;
+ }
  function createSession(host){
   let identity=host.state().context??host.state().contextToken,scopes=[],plan=null,receipt=null,generation=0,exporting=false;
   function current(){const state=host.state(),context=state.context??state.contextToken;if(context!==identity){identity=context;scopes=[];plan=receipt=null;generation++;}return state;}
@@ -55,9 +67,8 @@
    }
   }
   function renderScopes(){$('cuttingScopes').replaceChildren();session.scopes.forEach((s,i)=>{const li=document.createElement('li'),remove=document.createElement('button');li.append(`承載面 ${s.surface}：${s.ids===null?'全部角材':'構件 '+s.ids.join('、')}`);remove.type='button';remove.className='btn';remove.textContent='移除此範圍';remove.onclick=()=>{session.removeScope(i);renderScopes();renderPlan();};li.append(remove);$('cuttingScopes').append(li);});}
-  const diagnosticNames={WORLD_KIND:'此世界種類不支援裁切',CAPACITY:'超過執行器容量',WORLD_UNREADABLE:'無法核對世界',SCOPE_STALE:'需求範圍已失效',SCOPE_EMPTY:'需求範圍沒有角材',NATIVE_CAPABILITY:'原生來源未提供材料末端',MATERIAL_UNRESOLVED:'材料末端未就緒',MATERIAL_MIXED:'兩軸的材料末端不一致',NO_STOCK:'缺少符合的原材種類',MATERIAL_FINGERPRINT_MISMATCH:'材料內容指紋不符',STOCK_SECTION_MISMATCH:'原材截面不符',OVER_LENGTH:'需求件超過全部可用料長',MISSING_SETTING:'裁切設定尚未完整',REMNANT_EXHAUSTED:'本次找到的方案無法排入'};
   function renderPlan(){const p=session.plan,area=$('cuttingPlan');area.replaceChildren();$('cuttingExport').disabled=edited||p?.status!=='COMPLETE';if(!p)return;
-   message(`${p.status} · ${p.label}`);for(const d of p.diagnostics){const text=document.createElement('p');text.textContent=`${diagnosticNames[d.code]||'角材料單尚未就緒'}${d.detail?.timberId!==undefined?'：構件 '+d.detail.timberId:''}${d.code==='MISSING_SETTING'?'（'+d.detail.join('、')+'）':''}`;area.append(text);}
+   message(`${p.status} · ${p.label}`);for(const d of p.diagnostics){const text=document.createElement('p');text.textContent=diagnosticText(d);area.append(text);}
    const unit=$('cuttingUnit').value,dimension=n=>unit==='cm'?String(n/10):String(n);
    for(const g of p.groups){const section=document.createElement('section'),h=document.createElement('h3');h.textContent=`${g.stockType.name} · 新料需購入 ${g.newStockCount} 支`;section.append(h);
     for(const s of g.stocks){const title=document.createElement('h4');title.textContent=`${s.label} · 實長 ${dimension(s.length)} ${unit} · 下刀 ${s.cuts} 次`;section.append(title);
@@ -77,5 +88,5 @@
   $('cuttingUnit').onchange=$('cuttingOrder').onchange=renderPlan;
   dialog.addEventListener('close',()=>{session.invalidate();dialog.remove();if(activeDialog===dialog)activeDialog=null;});document.body.append(dialog);renderSettings();renderScopes();renderPlan();dialog.showModal();return session;
  }
- return {createSession,open};
+ return {createSession,open,diagnosticText};
 });

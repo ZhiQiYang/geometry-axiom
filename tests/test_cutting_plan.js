@@ -56,6 +56,10 @@ test('T15 T15b canonical settings, candidate order and CSV ignore input/view ord
  r.timbers.reverse();q.scopes.reverse();q.scopes.forEach(s=>s.ids.reverse());const b=await evaluate(r,JSON.parse(JSON.stringify(s)),q);assert.deepEqual(a,b);assert.equal(C.csv(a,'length'),C.csv(b,'id'));
  const crypto=require('node:crypto');assert.equal(a.settingsFingerprint,crypto.createHash('sha256').update(S.canonical(s),'utf8').digest('hex'));
 });
+test('R1.1 R5 canonical fingerprints ignore both declaration array orders',async()=>{
+ const a=settings();a.stockTypes.push({...a.stockTypes[0],key:2,section:[28,33]});a.nextStockKey=3;a.remnants=[{key:1,stockType:1,length:1000,headTrim:0,tailTrim:5},{key:2,stockType:2,length:700,headTrim:0,tailTrim:0}];a.nextRemnantKey=3;
+ const b=structuredClone(a);b.stockTypes.reverse();b.remnants.reverse();assert.equal(S.canonical(a),S.canonical(b),'R5 declaration arrays must be emitted by ascending key');assert.equal(await S.fingerprint(a),await S.fingerprint(b),'R5 settings fingerprint must not depend on declaration array order');
+});
 test('T19 T28 missing settings follow overlength diagnostics and severity',async()=>{
  for(const field of ['kerf','allowance','minRemnant']){const s=settings();s[field]=null;const p=await evaluate(refs([3700]),s);diagnostic(p,'INVALID','OVER_LENGTH');assert.ok(p.diagnostics.some(d=>d.code==='MISSING_SETTING'));}
  const s=settings();s.allowance=null;diagnostic(await evaluate(refs([1000]),s),'INCOMPLETE','MISSING_SETTING');

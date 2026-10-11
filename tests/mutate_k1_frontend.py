@@ -32,6 +32,8 @@ CASES = [
  ('mixed-terminal','cutting-plan.js',"diagnose('INCOMPLETE','MATERIAL_MIXED'","diagnose('INCOMPLETE','NO_STOCK'",'T10'),
  ('allowance','cutting-plan.js','row.L+(settings.allowance??0)','row.L','T4'),
  ('tie-break','cutting-plan.js','b.C-a.C||a.timberId-b.timberId','b.C-a.C||b.timberId-a.timberId','T1'),
+ ('canonical-stocks','cutting-settings.js','n.stockTypes.sort((a,b)=>a.key-b.key);','', 'R1.1 R5'),
+ ('canonical-remnants','cutting-settings.js','n.remnants.sort((a,b)=>a.key-b.key);','', 'R1.1 R5'),
  ('missing-setting','cutting-plan.js',"filter(k=>settings[k]===null)","filter(k=>false)",'T19'),
  ('overlength-remnants','cutting-plan.js','...settings.remnants.filter(r=>r.stockType===stock.key).map(r=>r.length-r.headTrim-r.tailTrim)','0','T23'),
  ('exhaustion-code','cutting-plan.js',"diagnose('INCOMPLETE','REMNANT_EXHAUSTED'","diagnose('INVALID','OVER_LENGTH'",'T23'),
@@ -51,6 +53,7 @@ CASES = [
  ('export-world','cutting-workspace.js','latest.sourceFingerprint!==candidate.worldFingerprint','false','T16 world'),
  ('export-reentry','cutting-workspace.js','if(exporting)return false;','if(false)return false;','T16 late'),
  ('context-clear','cutting-workspace.js','identity=context;scopes=[];','identity=context;','session scopes'),
+ ('stock-diagnostic','cutting-workspace.js','if(Array.isArray(d.detail?.section))','if(false)', 'T8b diagnostics'),
  ('owner-stock-lock','reference-workspace.js','if(kind===P.Features.Cutting.KIND)P.Features.Cutting.transition(previous,value);','', 'actual owner rejects'),
  ('owner-history-kind','reference-workspace.js','kind === P.Features.Cutting.KIND ? "裁切設定" :','', 'actual owner P-047'),
 ]

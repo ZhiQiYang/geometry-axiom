@@ -55,8 +55,9 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,exceptionCount})
  if(await eval_(`!document.body.classList.contains('drawer-right-open')`))await ctl('#workspaceToggleRight');
  await choose('timberScheduleOrder','cutting');await waitForUI(`!!$('cuttingDialog')`);
  check('手機對話框在可視區，表單與關閉入口可操作',await eval_(`(()=>{const d=$('cuttingDialog'),r=d.getBoundingClientRect();return r.x>=0&&r.right<=innerWidth&&r.y>=0&&r.bottom<=innerHeight&&!!d.querySelector('[aria-label="關閉裁切與採購"]');})()`));
- await ctl('#cuttingAddStock');await stockForm();await ctl('#cuttingSave');const mobileBefore=await snapshot();await ctl('#cuttingCalculate');await waitForUI(`$('cuttingStatus').textContent.startsWith('COMPLETE')`);await ctl('#cuttingExport');
- check('390px 真點按與鍵盤設定、求方案、匯出，來源與宣告保持唯讀',await snapshot()===mobileBefore&&await eval_(`$('cuttingPlan').textContent.includes('新料需購入')&&!$('cuttingExport').disabled&&ReferenceWorkspace.readFeatureAttachment('cutting-settings').stockTypes.length===1`));
+ await ctl('#cuttingAddStock');await stockForm();await ctl('#cuttingSave');const mobileBefore=await snapshot();await ctl('#cuttingCalculate');await waitForUI(`$('cuttingStatus').textContent.startsWith('COMPLETE')`);
+ await eval_(`window.__k1MobileURL=URL.createObjectURL;window.__k1MobileBlob=null;URL.createObjectURL=b=>{window.__k1MobileBlob=b;return __k1MobileURL.call(URL,b);};`);
+ try{await ctl('#cuttingExport');check('390px 真點按與鍵盤設定、求方案、精確 CSV 匯出保持唯讀',await snapshot()===mobileBefore&&await eval_(`(async()=>{const r=await apiRequest('references'),s=ReferenceWorkspace.readFeatureAttachment('cutting-settings'),p=await CuttingPlan.evaluate(r,s,{world:{kind:'live'},scopes:[{surface:1,ids:null}]});return !!__k1MobileBlob&&new TextDecoder('utf-8',{ignoreBOM:true}).decode(await __k1MobileBlob.arrayBuffer())===CuttingPlan.csv(p)&&$('cuttingPlan').textContent.includes('新料需購入')&&!$('cuttingExport').disabled&&s.stockTypes.length===1;})()`));}finally{await eval_(`URL.createObjectURL=__k1MobileURL;void 0`);}
  await screenshot('cutting-mobile.png');
  await ctl('#cuttingDialog [aria-label="關閉裁切與採購"]');
  await send('Emulation.setDeviceMetricsOverride',{width:1400,height:900,deviceScaleFactor:1,mobile:false});

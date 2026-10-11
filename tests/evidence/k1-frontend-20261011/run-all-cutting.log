@@ -10,12 +10,12 @@
 
 suite                       測試數  pass  fail  skip   秒  備註
 -----------------------------------------------------------
-node:cutting_plan               18    18     0     0  0.6
-node:cutting_project_store      12    12     0     0  1.1
-node:cutting_session            10    10     0     0  0.6
-node:cutting_owner               3     3     0     0  0.5
+node:cutting_plan               19    19     0     0  1.8
+node:cutting_project_store      12    12     0     0  0.5
+node:cutting_session            11    11     0     0  0.4
+node:cutting_owner               3     3     0     0  0.4
 -----------------------------------------------------------
-合計(已執行、有計數者)          43    43     0     0  2.8
+合計(已執行、有計數者)          45    45     0     0  3.2
 未納入                           -     -     -     -    -  需 Chrome，另行執行：geometry-web/cdp_test.js、geometry-web/space_model_test.js
 必要 owner／browser 整合與模組驗證另驗（不計入上述 pass/skip）：
   tests/test_issue123_create_feedback_browser.py：Explicit isolated Playwright mouse/touch first-center gate from #131; run with --url/--out, not a unittest suite；獨立執行，本 aggregate 未驗。

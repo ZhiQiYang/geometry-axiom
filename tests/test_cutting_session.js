@@ -23,3 +23,9 @@ test('invalid settings draft must be saved before calculation; no absent setting
 test('unrelated undo changes the frame receipt but keeps scopes in the same project context',async()=>{
  const f=fixture({});await f.session.calculate();f.state.contextToken='new-frame';f.state.revision++;assert.deepEqual(f.session.scopes,[{surface:1,ids:null}]);await assert.rejects(()=>f.session.exportCSV(),/已變更/);assert.equal(f.downloads.length,0);
 });
+test('T8b diagnostics identify the required section and complete native material key',()=>{
+ assert.equal(typeof W.diagnosticText,'function','T8b UI must describe the missing stock dimensions and material key');
+ const fingerprint='b'.repeat(64),text=W.diagnosticText({code:'NO_STOCK',detail:{timberId:10,section:[27,33],material:{id:'wood',version:2,fingerprint}}});
+ for(const value of ['構件 10','27×33 mm','wood@2@'+fingerprint])assert.ok(text.includes(value),'T8b diagnostic omitted '+value);
+ assert.ok(W.diagnosticText({code:'NO_STOCK',detail:{timberId:0,section:[33,27],material:null}}).includes('材料未設定'));
+});
