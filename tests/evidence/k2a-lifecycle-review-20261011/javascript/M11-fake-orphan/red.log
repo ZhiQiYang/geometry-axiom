@@ -1,0 +1,28 @@
+TAP version 13
+# Subtest: M11 strict schema, orphan membership, lost placement and flag values reject
+not ok 1 - M11 strict schema, orphan membership, lost placement and flag values reject
+  ---
+  duration_ms: 5.373722
+  type: 'test'
+  location: '/tmp/k2aa-mutations-review/M11-fake-orphan/tests/test_grid_drafts_collection.js:41:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (/tmp/k2aa-mutations-review/M11-fake-orphan/tests/test_grid_drafts_collection.js:45:12)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.start (node:internal/test_runner/test:1242:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 86.045585
