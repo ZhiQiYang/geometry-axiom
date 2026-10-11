@@ -59,6 +59,27 @@ CI 又受帳號計費阻擋，所以兩者的結果只在這裡與 PR 正文留�
   native 2609／2611 通過、1 失敗（`py:test_binaries … same_size_rewrite_restoring_mtime_is_not_published`，與本 PR 無關，隔離重跑通過，
   但不在基線失敗清單所以 runner 判紅）。
 
+### 審查後的調整（`48d9be0`，只改測試）與證據界線
+
+PR #186 的審查（dot）指出新 gate 的四個缺口，`48d9be0` 已處理：
+
+1. 身分／隔離前置（`runtime.fresh`、`runtime.root` 屬本 worktree、頁面 meta 版本＝`/runtime` 版本）在任何模式下都是 fail-fast，先於任何 fixture 或命令；
+   `GEOMETRY_K4_KEEP_GOING=1` 只作用於行為斷言。`GEOMETRY_K4_SELFTEST=stale-runtime` 以錯的 root 驗證：必須非零結束、沒有 `PASS a0`、`commandsSent=0`。
+2. characterize 與完整兩個 phase 共用同一個結算 `settle()`，任何已記錄的失敗都非零結束。`GEOMETRY_K4_SELFTEST=fail-check` 在兩個 phase、`KEEP_GOING=1` 下注入刻意失敗，必須非零結束。
+3. `b7` 改為以 add／removeEventListener 記帳驗證 `destroy()`（新增 4 個、洩漏 0 個；不是只看 `state=null`），並新增突變 `no-destroy-cleanup`。
+4. 新增 `b8`：adapter 效果的延後 resolve／reject 發生在選單 close→reopen 之後，不得動到新選單（突變 `hide-after-execute`）。
+
+**證據界線（請照字面讀）**：
+- `4ec7279` 之前的 87 項／新 gate／突變／`148e85c` 的 canvas 2207 與 native 的收據，都不是 `48d9be0` 之後的最終 head 的證據。`/runtime` 指紋不含 `tests/`，
+  所以程式碼同版只能說明「產品程式沒變」，不能取代最終 head 的重跑。最終 head 的重跑已排進 WSL v3 佇列（`seq3.sh`），收據會綁：完整 head、測試檔雜湊、runtime 版本、
+  原生 binary 雜湊、每個指令與其 exit；在它出來之前，最終 head 沒有自己的收據。
+- 完整 7 job 的裁判由主迴圈跑；本 PR 不宣稱 CI 等價全綠。
+- native 首次（`148e85c`，環境互斥）是 2609 通過／1 失敗／1 skip，**維持紅**；失敗項是無關的 `py:test_binaries …same_size_rewrite_restoring_mtime_is_not_published`（隔離重跑通過）。
+  第二次 native（`4ec7279`，收據 `4ec7279e-k4a-native2`）有外來重度程序（`exclusivity.during_run` 為否）、另外兩個無關的逾時型失敗
+  （`py:test_rule_case_workbench_http … test_timeout_output_unknown_runtime_and_capability_are_nonpass`、`node:tests-js` 的 formal-cases 計時項），**不可當裁判**，只留作診斷。
+- **過期節點的保證範圍**：a1／b3 只證明「同一次開啟內，情境改變後殼拒絕執行已保存的節點」。更早一次開啟遺留的節點，其監聽器會對「當下」的狀態驗證（承襲自抽出前的行為；
+  節點已被 `hide()` 拔掉，沒有使用者路徑可達）。這一點沒有被測試覆蓋、也沒有改變，**不得宣稱完整的過期節點保證**。若要補，是在殼加「開啟世代」並讓各節點綁世代，屬行為變更，不在 PR-a（純重構）。
+
 ### 暫定裁決（依授權 L，可逐列推翻）
 
 | 題目 | 選項 | 採用 | 理由 | 如何推翻 |
