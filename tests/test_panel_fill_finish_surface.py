@@ -214,6 +214,114 @@ class FinishSurfaceNative(unittest.TestCase):
         invalid = self.reject([put(surface(boundary=99, obstacles=[]))], "I52")["violations"][0]
         self.assertEqual("INVALID", invalid.get("status"), "a missing reference must not be relabelled as a capacity limit")
         self.assertEqual("PANEL_FILL_INVALID", invalid["code"])
+        saved = self.command("dump")["text"]
+        record = next(line for line in saved.splitlines() if line.startswith("finish-surface 1 "))
+        path = self.directory / "seventeenth.scene"
+        path.write_bytes((saved + record.replace("finish-surface 1 ", "finish-surface %d " % (capacity + 1)) + "\n").encode("utf-8"))
+        before = self.snapshot()
+        result = self.command("loadfile " + str(path))
+        self.assertFalse(result["ok"], result)
+        self.assertEqual(("UNSUPPORTED", "CAPACITY"), (result.get("status"), result.get("code")))
+        self.assertEqual(before, self.snapshot())
+
+    def test_name_capacity_is_not_invalid_and_never_commits(self):
+        limit = self.read()["capacity"]["nameBytes"]
+        self.apply([put(surface(name="a" * limit))])
+        self.apply([put(surface(name="a" * limit, origin=(0, 0, 2600)))])
+        self.assertTrue(self.command("line undo")["ok"])
+        for name in ("a" * (limit + 1), "長" * (limit // 3 + 1), "a" * 1024):
+            with self.subTest(bytes=len(name.encode("utf-8"))):
+                violation = self.reject([put(surface(name=name))], "CAPACITY")["violations"][0]
+                self.assertEqual(("UNSUPPORTED", "CAPACITY"), (violation["status"], violation["code"]))
+        for name in ("", "a" * limit + "\n", "a" * limit + "\u0080"):
+            with self.subTest(invalid_name=repr(name)):
+                violation = self.reject([put(surface(name=name))], "name")["violations"][0]
+                self.assertEqual(("INVALID", "PANEL_FILL_INVALID"), (violation["status"], violation["code"]))
+        self.assertTrue(self.command("line redo")["ok"])
+        self.assertEqual([0, 0, 2600], self.surfaces()[1]["frame"]["origin"])
+
+    def test_scene_obstacle_capacity_is_structured_and_atomic(self):
+        limit = self.read()["capacity"]["obstacles"]
+        sources = "".join("column %d at %d 0 size 1 1 z 0 3000\n" % (i, i * 2)
+                          for i in range(1, 33))
+        sources += "".join("beam %d along x from 0 to 100 at %d width 1 depth 1 top 2800\n" % (i, i * 2)
+                           for i in range(1, 33))
+        head = BASE + sources + "requires engineering-spec/1\nrequires parameters/1\nrequires panel-fill/1\n"
+        prefix = "finish-surface 1 on boundary 4 origin 0 0 2480 u +x v +y n +z side +n obstacles "
+        all_refs = ["c%d" % i for i in range(1, 33)] + ["b%d" % i for i in range(1, 33)]
+        refs = all_refs[:limit]
+        record = lambda values: prefix + " ".join(values) + " name-hex 61\n"
+        self.load_text(head + record(refs), "at-limit.scene")
+        self.assertEqual(limit, len(self.surfaces()[1]["obstacles"]))
+        # Preserve an existing redo entry as well as committed definitions/revision on rejection.
+        self.apply([put(surface(origin=(0, 0, 2600), obstacles=refs))])
+        self.assertTrue(self.command("line undo")["ok"])
+        before = self.snapshot()
+        # Production has only 32 columns + 32 beams: a distinct 65th source cannot exist.
+        # A private lower-capacity build exercises the reachable, fully valid set overflow.
+        overflow = (all_refs[limit], "UNSUPPORTED", "CAPACITY") if limit < len(all_refs) else ("c33", "INVALID", "SCENE_INVALID")
+        cases = ((refs + [overflow[0]], overflow[1], overflow[2]),
+                 (refs + ["x1"], "INVALID", "SCENE_INVALID"),
+                 (refs + ["c1"], "INVALID", "SCENE_INVALID"),
+                 (refs[:-1] + ["c999"], "INVALID", "SCENE_INVALID"),
+                 (refs[:-1] + ["c1"], "INVALID", "SCENE_INVALID"))
+        for values, status, code in cases:
+            with self.subTest(tail=values[-1], count=len(values)):
+                path = self.directory / "over-limit.scene"
+                path.write_bytes((head + record(values)).encode("utf-8"))
+                result = self.command("loadfile " + str(path))
+                self.assertFalse(result["ok"], result)
+                self.assertEqual((status, code), (result.get("status"), result.get("code")))
+                self.assertEqual(before, self.snapshot())
+                if status == "UNSUPPORTED":
+                    path.write_bytes(b"not-a-scene-command\n")
+                    invalid = self.command("loadfile " + str(path))
+                    self.assertEqual(("INVALID", "SCENE_INVALID"), (invalid.get("status"), invalid.get("code")))
+                    self.assertEqual(before, self.snapshot())
+        # A previous CAPACITY must not contaminate an unrelated scene syntax error.
+        path.write_bytes(b"not-a-scene-command\n")
+        invalid = self.command("loadfile " + str(path))
+        self.assertEqual(("INVALID", "SCENE_INVALID"), (invalid.get("status"), invalid.get("code")))
+        self.assertTrue(self.command("line redo")["ok"])
+        self.assertEqual([0, 0, 2600], self.surfaces()[1]["frame"]["origin"])
+
+    def test_scene_name_capacity_preserves_invalid_format_and_world(self):
+        self.apply([put(surface())])
+        saved = self.command("dump")["text"]
+        original = "天花完成面".encode("utf-8").hex()
+        before = self.snapshot()
+        for name, status, code in (("a" * 97, "UNSUPPORTED", "CAPACITY"),
+                                   ("長" * 33, "UNSUPPORTED", "CAPACITY"),
+                                   ("a" * 1024, "UNSUPPORTED", "CAPACITY"),
+                                   ("a" * 96 + "\n", "INVALID", "SCENE_INVALID"),
+                                   ("a" * 96 + "\u0080", "INVALID", "SCENE_INVALID")):
+            with self.subTest(bytes=len(name.encode("utf-8")), status=status):
+                path = self.directory / "name.scene"
+                path.write_bytes(saved.replace(original, name.encode("utf-8").hex()).encode("utf-8"))
+                result = self.command("loadfile " + str(path))
+                self.assertFalse(result["ok"], result)
+                self.assertEqual((status, code), (result.get("status"), result.get("code")))
+                self.assertEqual(before, self.snapshot())
+                if status == "UNSUPPORTED":
+                    path.write_bytes(b"not-a-scene-command\n")
+                    invalid = self.command("loadfile " + str(path))
+                    self.assertEqual(("INVALID", "SCENE_INVALID"), (invalid.get("status"), invalid.get("code")))
+                    self.assertEqual(before, self.snapshot())
+        for hex_name in ("ff", "61" * 96 + "ff", "c0af", "ed a0 80".replace(" ", ""), "00", "", "zz"):
+            with self.subTest(invalid_hex=hex_name):
+                path.write_bytes(saved.replace(original, hex_name).encode("utf-8"))
+                result = self.command("loadfile " + str(path))
+                self.assertFalse(result["ok"], result)
+                self.assertEqual(("INVALID", "SCENE_INVALID"), (result.get("status"), result.get("code")))
+                self.assertEqual(before, self.snapshot())
+        transaction = json.dumps({"schema": "panel-fill-transaction/1", "expectedRevision": self.read()["revision"],
+                                  "operations": [put(surface(name="bad"))]}).encode("utf-8")
+        path = self.directory / "invalid-utf8.json"
+        path.write_bytes(transaction.replace(b'"bad"', b'"\xff"'))
+        result = self.command("panel-fill-preview " + str(path))
+        self.assertFalse(result["ok"], result)
+        self.assertIn("UTF-8", result["error"])
+        self.assertEqual(before, self.snapshot())
 
     # ---- I55: edit, delete, cancel, stale, history ------------------------------------------------------------
     def test_modify_cancel_stale_delete_and_history(self):

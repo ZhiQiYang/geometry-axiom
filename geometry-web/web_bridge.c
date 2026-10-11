@@ -321,6 +321,7 @@ static void cmd_loadfile(const char *path)
     if(!draft || !saved){free(draft);free(saved);fputs("{\"ok\":false,\"error\":\"Candidate memory unavailable\"}\n",stdout);return;}
     *saved=g_preview;uint32_t serial=g_preview_serial;uint64_t revision=g_definition_revision;
     const World *previous=g_subgrid_before;g_subgrid_before=NULL;
+    g_fs_diagnostic=FS_DIAGNOSTIC_INVALID;
     bool loaded=parse_scene_file(path,draft);
     g_preview=*saved;g_preview_serial=serial;g_definition_revision=revision;g_subgrid_before=previous;free(saved);
     if (loaded) {
@@ -334,6 +335,8 @@ static void cmd_loadfile(const char *path)
     } else {
         fputs("{\"ok\":false,\"error\":", stdout);
         js_string(scene_last_error());
+        fputs(",\"status\":",stdout);js_string(g_fs_diagnostic==FS_DIAGNOSTIC_CAPACITY?"UNSUPPORTED":"INVALID");
+        fputs(",\"code\":",stdout);js_string(g_fs_diagnostic==FS_DIAGNOSTIC_CAPACITY?"CAPACITY":"SCENE_INVALID");
         fputs("}\n", stdout);
     }
     free(draft);

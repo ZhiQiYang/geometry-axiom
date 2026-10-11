@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "cc",
+    "-std=c11",
+    "-O2",
+    "/tmp/geometry-tests/pr190-capacity/final-targeted-v2/shadow-invalid-reference-as-capacity/geometry-web/web_bridge.c",
+    "-lm",
+    "-o",
+    "/tmp/geometry-tests/pr190-capacity/final-targeted-v2/bridge-invalid-reference-as-capacity"
+  ],
+  "returncode": 0,
+  "duration_seconds": 45.76159977912903,
+  "origin": "subprocess.run"
+}

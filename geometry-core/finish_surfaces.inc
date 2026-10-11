@@ -20,6 +20,16 @@ static bool fs_capacity_error(const char *format,...)
     va_list args;va_start(args,format);vsnprintf(g_engineering_error,sizeof g_engineering_error,format,args);va_end(args);
     utf8_trim_tail(g_engineering_error);return false;
 }
+/* Validate the whole name before applying the storage limit; D41 has no 96-byte semantic limit. */
+static bool fs_name_check(const unsigned char *name,size_t n)
+{
+    if(!n)return fs_error("D41: finish surface name must be printable UTF-8");
+    for(size_t i=0;i<n;){size_t k=eng_utf8_scalar(name+i,n-i);
+        if(!k||name[i]<0x20||name[i]==0x7f||(k==2&&name[i]==0xc2&&name[i+1]<=0x9f))
+            return fs_error("D41: finish surface name must be printable UTF-8");i+=k;}
+    if(n>FS_NAME_MAX)return fs_capacity_error("I33 CAPACITY: finish surface name storage is limited to %d bytes",FS_NAME_MAX);
+    return true;
+}
 static bool fs_used(const World *w) { return w->finish_surfaces.count!=0; }
 static int fs_index(const World *w,uint32_t id)
 {
@@ -132,8 +142,7 @@ static bool fs_check(const World *w,const FinishSurface *f)
 {
     size_t n=0;while(n<sizeof f->name&&f->name[n])++n;
     if(!f->id)return fs_error("D41: finish surface id must be a positive integer");
-    if(n>FS_NAME_MAX||!grid_system_name_valid((const unsigned char*)f->name,n))
-        return fs_error("D41: finish surface %u name must be 1..%d bytes of printable UTF-8",(unsigned)f->id,FS_NAME_MAX);
+    if(!fs_name_check((const unsigned char*)f->name,n))return false;
     if(!world_find_boundary(w,f->boundary_id))
         return fs_error("I52: finish surface %u references missing boundary %u",(unsigned)f->id,(unsigned)f->boundary_id);
     if(!surface_frame_is_valid(&f->frame))
@@ -174,14 +183,14 @@ static uint32_t fs_reference_owner(const World *w,const char *kind,uint32_t id)
 static bool fs_from_json(EngJson *j,int t,FinishSurface *f)
 {
     int frame=eng_json_member(j,t,"frame"),origin,obstacles=eng_json_member(j,t,"obstacles");int64_t side,xyz[3];
-    char name[FS_NAME_MAX*4+8];
+    int name=eng_json_member(j,t,"name");
     memset(f,0,sizeof *f);
     if(!eng_json_keys(j,t,"id,name,boundaryId,frame,structureSide,obstacles","")||!eng_u32(j,eng_json_member(j,t,"id"),&f->id,true)||
        !eng_u32(j,eng_json_member(j,t,"boundaryId"),&f->boundary_id,true))
         return fs_error("D41: finish surface needs positive id and boundaryId, name, frame {origin,U,V,N}, structureSide and obstacles");
-    if(!eng_json_string(j,eng_json_member(j,t,"name"),name,sizeof name)||strlen(name)>FS_NAME_MAX)
-        return fs_error("D41: finish surface %u name must be 1..%d bytes of printable UTF-8",(unsigned)f->id,FS_NAME_MAX);
-    memcpy(f->name,name,strlen(name)+1);
+    if(!eng_json_valid_token(j,name)||j->tokens[name].type!=ENG_J_STRING)return fs_error("D41: finish surface name must be a string");
+    if(!fs_name_check((const unsigned char*)j->tokens[name].string,strlen(j->tokens[name].string)))return false;
+    memcpy(f->name,j->tokens[name].string,strlen(j->tokens[name].string)+1);
     if(!eng_json_is_object(j,frame)||!eng_json_keys(j,frame,"origin,U,V,N",""))
         return fs_error("I52/D2: finish surface %u frame needs origin, U, V and N",(unsigned)f->id);
     origin=eng_json_member(j,frame,"origin");
@@ -272,14 +281,23 @@ static bool apply_finish_surface_line(const char *path,int line_no,char **t,int 
     f.side=t[16][0]=='+'?1:-1;at=17;
     if(at<count&&!strcmp(t[at],"obstacles")){
         for(++at;at<count&&strcmp(t[at],"name-hex");++at){
-            if(f.obstacle_count==FS_OBSTACLE_MAX||!fs_obstacle_parse(t[at],&f.obstacles[f.obstacle_count]))goto invalid;
+            FinishObstacleRef ref;Coord lo[3],hi[3];
+            if(!fs_obstacle_parse(t[at],&ref))goto invalid;
+            if(!fs_obstacle_box(w,&ref,lo,hi)){fs_error("I52: finish surface obstacle %s does not exist",t[at]);scene_error(path,line_no,g_engineering_error);return false;}
+            for(uint32_t k=0;k<f.obstacle_count;++k)if(!fs_obstacle_compare(&ref,&f.obstacles[k]))goto invalid;
+            if(f.obstacle_count==FS_OBSTACLE_MAX){fs_capacity_error("I33 CAPACITY: finish surface obstacle set is limited to %d",FS_OBSTACLE_MAX);scene_error(path,line_no,g_engineering_error);return false;}
+            f.obstacles[f.obstacle_count]=ref;
             ++f.obstacle_count;}
         if(!f.obstacle_count)goto invalid;
     }
-    if(at+2!=count||strcmp(t[at],"name-hex")||!grid_system_read_name(t[at+1],f.name))goto invalid;
+    if(at+2!=count||strcmp(t[at],"name-hex"))goto invalid;
+    size_t bytes=strlen(t[at+1]);if(!bytes||bytes%2)goto invalid;
+    unsigned char *name=malloc(bytes/2);if(!name){fs_capacity_error("I33 CAPACITY: finish surface name memory unavailable");scene_error(path,line_no,g_engineering_error);return false;}
+    for(size_t k=0;k<bytes/2;++k){int a=grid_system_hex_digit(t[at+1][2*k]),b=grid_system_hex_digit(t[at+1][2*k+1]);if(a<0||b<0){free(name);goto invalid;}name[k]=(unsigned char)(a*16+b);}
+    bool named=fs_name_check(name,bytes/2);if(named){memcpy(f.name,name,bytes/2);f.name[bytes/2]=0;}free(name);if(!named){scene_error(path,line_no,g_engineering_error);return false;}
     if(fs_find(w,f.id)){scene_error(path,line_no,"I56: duplicate finish-surface record");return false;}
     if(!fs_obstacles_normalize(&f)||!fs_check(w,&f)){scene_error(path,line_no,g_engineering_error);return false;}
-    if(w->finish_surfaces.count>=FS_MAX){scene_error(path,line_no,"I33 CAPACITY: finish surface limit reached");return false;}
+    if(w->finish_surfaces.count>=FS_MAX){fs_capacity_error("I33 CAPACITY: finish surface limit reached");scene_error(path,line_no,g_engineering_error);return false;}
     memcpy(&w->finish_surfaces.items[w->finish_surfaces.count++],&f,sizeof f);return true;
 invalid:
     scene_error(path,line_no,"D41: finish-surface id on boundary B origin x y z u A v A n A side +n|-n [obstacles c<id>|b<id> ...] name-hex HEX");
