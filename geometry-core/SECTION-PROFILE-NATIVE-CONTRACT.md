@@ -194,7 +194,7 @@ python3 tests/section_profile_mutation_check.py --receipt tests/release-evidence
 面材 w < 915 與 6 mm 板厚、R38 的符號與軸、D38 互轉條件、I47 的終端頂點與 D1、PROFILE_CONTACT_LOST、「板長 1830 當成 L 上限」等），
 重編 bridge 後跑 `tests/test_section_profile_native.py`；model 5 個案例改 Python 製模器（R37 的 L 形包絡、R39 包絡不計材料量、
 面材不依 1830 切段、構件矩形軸向、局部 run 不被世界網格切分），在複本上對未變異的原生轉接器跑 `tests/test_section_profile_modeling.py`。
-判為殺死須同時成立：指名的測試以斷言失敗轉紅（或錯誤訊息含該案例的 cause 字串）；失敗訊息含每一個 cause 字串（條號或病因）；
+判為殺死須同時成立：指名方法的同一筆終端 AssertionError（或案例明列型別的錯誤）含每一個 cause 字串（條號或病因）；
 native 組另須重編 binary 與基準線不同；model 組只變異 Python 製模器，使用同一支 fresh、未變異原生 adapter，沒有變異 adapter 雜湊比較。編譯失敗、無說明的錯誤、逾時與 skip 都不算偵測，基準線必須先零 skip 全過。
 2026-10-10 在 WSL 乾淨 clone（`~/ga-q38c`，受驗提交 `f0c4c71291af5cab699f54de8ac852aa35fa378e`，基底 `c254e1f`，rebase 無衝突）實測。
 收據在 `tests/release-evidence/20261010-q38-i44/`（`README.md` 有指令、環境與檔案清單、`SHA256SUMS.txt` 有雜湊）：
@@ -208,6 +208,8 @@ native 組另須重編 binary 與基準線不同；model 組只變異 Python 製
 歷史 42 例的 killed 不是全為斷言 FAIL：39 例由 AssertionError 偵測，SPM38／SPM40 兩個 model 案例由含指定 cause 的 ModelError（ERROR）偵測；原始日誌保留。
 
 2026-10-11 審查後，SPM41 改為在 `sp_outside_regions` 的計數回傳丟掉恰一片正面積差集（`return n>1?n:0;`），保留 I44 具名反例及精確 outsideRegions 斷言。此單點故障不依賴 `poly_contains_rect` 是否已修正；新收據與來源閉包見 [雲端複核導讀](../tests/release-evidence/20261011-pr182-cloud-review/README.md)。舊 42 例收據不當成修改後全表已重跑。
+
+後續裁判複核發現整份 log 搜尋會借用 traceback 原碼或其他方法的 cause。現行 child runner 透過 unittest `addFailure`／`addError`／`addSubTest` 保存具名方法、子例身分、完整例外型別及 `str(exception)`；只匹配同一筆指定方法的終端例外。SPM38／SPM40 明列 `modeling.common.ModelError`，其他 ERROR 不算 killed。缺漏、重複、格式錯誤、與實際 exit／unittest 計數不符都受阻；原 traceback 另存，不能替代結構化例外。此更正不把舊 ERROR 改稱 FAIL，也不證明歷史整份 log 裁判的所有判定都有效。
 
 #### 歷史 --explore 實測：逐案例紅燈與提案 AC16 的差異
 

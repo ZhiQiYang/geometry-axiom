@@ -24,10 +24,11 @@ Two groups of single-point faults are injected into a disposable copy of the sou
 
 The baseline of each group must pass with zero skips first.  A mutant counts as KILLED only when ALL hold:
 
-  * at least one test the case names (``tests``) fails with an AssertionError, or errors with a message that contains
-    the case's ``cause`` (compiler errors, crashes without that message, timeouts and skips are not detection);
-  * the log contains every ``cause`` string, so the failure message itself names the clause that was broken
-    ("expected rejection 'V_PANEL_WIDTH' but the candidate was accepted", "R38: V must be -up", ...);
+  * a method the case names (``tests``) has one terminal AssertionError or explicitly allowed error type;
+  * that same exception's complete str(exception) contains every ``cause`` string, naming the broken clause
+    ("expected rejection 'V_PANEL_WIDTH' but the candidate was accepted", "R38: V must be -up", ...).
+    Printed stdout, traceback source, other methods and separate subtest exceptions cannot supply causes.
+    Missing/duplicate/malformed exception records or exit/count inconsistencies block detection;
   * for native cases only, the recompiled mutant binary differs from the baseline binary; model cases mutate
     Python source and use the same fresh, unmutated native adapter (there is no mutant-adapter hash comparison).
 
@@ -39,7 +40,7 @@ Exit 0 only if every case behaves as declared, 1 if a mutant survived / was misl
 the environment is missing, or --only / --group select no case (an unknown --only id included: it is rejected before
 anything runs, because a run that selects nothing builds no baseline and would report success).
 Not part of tests/run_all.py (it compiles one bridge per case), like tests/assembly_mutation_check.py;
-only the selection guard is covered there, by tests/test_section_profile_mutation_check.py.
+the selection and exception-evidence guards are covered by tests/test_section_profile_mutation_check.py.
 Anything that survives is a hole in the tests: add the assertion, never delete the case.
 """
 from __future__ import annotations
@@ -96,10 +97,11 @@ MLOCAL = 'test_local_runs_do_not_cut_other_local_or_world_mesh_grids'
 MADV = 'test_advanced_native_frame_controls_world_axes_and_bounds'
 
 
-def case(identifier, clause, desc, file, before, after, tests, cause, equivalent=None, group='native'):
-    """before must occur exactly once in file; tests: any one of them must catch it; cause: strings the log must show."""
+def case(identifier, clause, desc, file, before, after, tests, cause, equivalent=None, group='native', error_types=()):
+    """before occurs once; one named method's terminal exception must contain every cause string."""
     return {'group': group, 'id': identifier, 'clause': clause, 'desc': desc, 'file': file, 'before': before,
-            'after': after, 'tests': list(tests), 'cause': list(cause), 'equivalent': equivalent}
+            'after': after, 'tests': list(tests), 'cause': list(cause), 'equivalent': equivalent,
+            'error_types': list(error_types)}
 
 
 ACCEPT = 'expected the candidate to be accepted'
@@ -237,14 +239,16 @@ CASES = [
     case('SPM38', 'R37/D40', 'a panel is cut at the 1830 mm sheet length', MS,
          'geometry = geo.extrusion_geometry(placement, 0, run["length"], source)',
          'geometry = geo.extrusion_geometry(placement, 0, min(run["length"], 1830) if member["kind"] == "panel" else run["length"], source)',
-         [MLONG], ['Native dimensions and derived exact member volume disagree'], group='model'),
+         [MLONG], ['Native dimensions and derived exact member volume disagree'], group='model',
+         error_types=['modeling.common.ModelError']),
     case('SPM39', 'R36/R37', 'member rectangles are read with u and v swapped', MS,
          'u0, v0, u1, v1 = member["rect"]', 'v0, u0, v1, u1 = member["rect"]',
          [MADV], ['R36/R37: bounds of the'], group='model'),
     case('SPM40', 'D39', 'an unplaced (local) run is cut by the world grid', ME,
          'profile_grid = (grid if run["coordinate_space"] == "world" else',
          'profile_grid = (grid if True else',
-         [MLOCAL], ['A section-profile object must produce one complete solid'], group='model'),
+         [MLOCAL], ['A section-profile object must produce one complete solid'], group='model',
+         error_types=['modeling.common.ModelError']),
 ]
 
 
@@ -286,20 +290,18 @@ def sha256(path: Path) -> str:
 
 
 def compile_bridge(source: Path, exe: Path):
-    result = subprocess.run(['cc', '-std=c11', '-O2', str(source / 'geometry-web/web_bridge.c'), '-lm', '-o', str(exe)],
+    argv = ['cc', '-std=c11', '-O2', str(source / 'geometry-web/web_bridge.c'), '-lm', '-o', str(exe)]
+    result = subprocess.run(argv,
                             capture_output=True, text=True, timeout=600)
+    if LOG_DIR:
+        receipt = dict(argv=argv, exit=result.returncode, stdout=result.stdout, stderr=result.stderr,
+                       source_tree_sha256=tree_digest(source), binary_sha256=sha256(exe) if exe.exists() else None)
+        (LOG_DIR / (exe.name+'.compile.json')).write_text(json.dumps(receipt, indent=2), encoding='utf-8')
     if result.returncode != 0:
         raise RuntimeError('compile failed: ' + (result.stderr or result.stdout)[-1500:])
 
 
-NATIVE_CHILD = ('import sys, unittest\n'
-                'from unittest.mock import patch\n'
-                'import importlib\n'
-                'module = importlib.import_module(%r)\n'
-                'exe = sys.argv.pop(1)\n'
-                'with patch.object(module, "find_bridge", return_value=exe):\n'
-                '    unittest.main(module=None, argv=["x", "-v", *sys.argv[1:]])\n') % NATIVE_MODULE
-PLAIN_CHILD = 'import sys, unittest\nunittest.main(module=None, argv=["x", "-v", *sys.argv[1:]])\n'
+EXCEPTION_RUNNER = ROOT / 'tests' / 'section_profile_mutation_runner.py'
 ALL = {}
 LOG_DIR = None
 
@@ -318,31 +320,104 @@ def test_names(module_name, class_name, excluded, root):
             del sys.modules[key]
 
 
+def unique_object(pairs):
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError('duplicate JSON key: ' + key)
+        result[key] = value
+    return result
+
+
+def read_evidence(path, names):
+    raw = None
+    try:
+        raw = path.read_text(encoding='utf-8')
+        value = json.loads(raw, object_pairs_hook=unique_object)
+        if not isinstance(value, dict) or value.get('requested') != names:
+            raise ValueError('receipt requested methods differ from the actual child command')
+        return value
+    except (OSError, ValueError) as error:
+        return {'invalid_receipt': str(error), 'raw_receipt': raw}
+
+
+def run_child(names, cwd, env, bridge=None, timeout=900):
+    with tempfile.TemporaryDirectory(prefix='section-profile-exceptions-') as directory:
+        path = Path(directory) / 'exceptions.json'
+        argv = [sys.executable, str(EXCEPTION_RUNNER), '--receipt', str(path)]
+        if bridge is not None:
+            argv += ['--bridge', str(bridge)]
+        run = subprocess.run([*argv, *names], cwd=cwd, env=env,
+                             capture_output=True, text=True, timeout=timeout)
+        return run.returncode, run.stdout + run.stderr, read_evidence(path, names)
+
+
 def run_native(exe: Path, tests, timeout=900):
     names = ['%s.%s.%s' % (NATIVE_MODULE, NATIVE_CLASS, name) for name in (tests or ALL['native'])]
-    run = subprocess.run([sys.executable, '-c', NATIVE_CHILD, str(exe), *names], cwd=ROOT,
-                         env=dict(os.environ, PYTHONDONTWRITEBYTECODE='1'), capture_output=True, text=True, timeout=timeout)
-    return run.returncode, run.stdout + run.stderr
+    return run_child(names, ROOT, dict(os.environ, PYTHONDONTWRITEBYTECODE='1'), bridge=exe, timeout=timeout)
 
 
 def run_model(tree: Path, model_base: str, tests, timeout=900):
     names = ['%s.%s.%s' % (MODEL_MODULE, MODEL_CLASS, name) for name in (tests or ALL['model'])]
-    env = dict(os.environ, GEOMETRY_MODEL_BASE=model_base, PYTHONDONTWRITEBYTECODE='1')
-    run = subprocess.run([sys.executable, '-c', PLAIN_CHILD, *names], cwd=tree, env=env,
-                         capture_output=True, text=True, timeout=timeout)
-    return run.returncode, run.stdout + run.stderr
+    return run_child(names, tree, dict(os.environ, GEOMETRY_MODEL_BASE=model_base, PYTHONDONTWRITEBYTECODE='1'),
+                     timeout=timeout)
 
 
-FAILED = re.compile(r'^(FAIL|ERROR): (\w+) \(', re.M)
+def evidence_problem(code, evidence):
+    """Validate child completeness and real unittest counts before interpreting any cause."""
+    fields = {'schema', 'requested', 'executed', 'passed', 'tests_run', 'failures', 'errors',
+              'skipped', 'expected_failures', 'unexpected_successes', 'events'}
+    if not isinstance(evidence, dict) or set(evidence) != fields:
+        return 'missing or malformed exception receipt'
+    if evidence['schema'] != 'section-profile-exceptions/1':
+        return 'unknown exception receipt schema'
+    for key in ('requested', 'executed', 'passed'):
+        values = evidence[key]
+        if not isinstance(values, list) or not all(isinstance(x, str) and x for x in values) or len(set(values)) != len(values):
+            return 'missing, duplicate or malformed test identities'
+    if not evidence['requested'] or evidence['requested'] != evidence['executed']:
+        return 'requested and executed methods differ'
+    counts = ('tests_run', 'failures', 'errors', 'skipped', 'expected_failures', 'unexpected_successes')
+    if any(type(evidence[k]) is not int or evidence[k] < 0 for k in counts):
+        return 'malformed unittest counts'
+    if evidence['tests_run'] != len(evidence['executed']):
+        return 'executed method count differs'
+    if any(evidence[k] for k in ('skipped', 'expected_failures', 'unexpected_successes')):
+        return 'skips, expected failures and unexpected successes are not detection'
+    events = evidence['events']
+    if not isinstance(events, list):
+        return 'malformed exception records'
+    identities = set()
+    for event in events:
+        if not isinstance(event, dict) or set(event) != {'test_id', 'subtest_id', 'kind', 'exception_type', 'message'}:
+            return 'malformed exception record'
+        if not isinstance(event['test_id'], str) or event['test_id'] not in evidence['executed']:
+            return 'exception belongs to an unexecuted method'
+        subtest = event['subtest_id']
+        if subtest is not None and (not isinstance(subtest, str) or not subtest.startswith(event['test_id']+' ')):
+            return 'subtest does not belong to its method'
+        identity = (event['test_id'], subtest)
+        if identity in identities:
+            return 'duplicate terminal exception record'
+        identities.add(identity)
+        if event['kind'] not in ('failure', 'error') or not isinstance(event['message'], str):
+            return 'malformed exception kind or message'
+        if not isinstance(event['exception_type'], str) or not re.fullmatch(r'[\w]+(?:\.[\w]+)+', event['exception_type']):
+            return 'malformed exception type'
+    if any(evidence[k] != sum(e['kind']==kind for e in events) for k,kind in (('failures','failure'),('errors','error'))):
+        return 'terminal exceptions and unittest counts differ'
+    failed_ids = {e['test_id'] for e in events}
+    if set(evidence['passed']) != set(evidence['executed']) - failed_ids:
+        return 'passed and failed method identities differ'
+    if code != (1 if events else 0):
+        return 'actual child exit and unittest counts differ'
+    return None
 
 
-def failures(log):
-    return sorted({(kind, name) for kind, name in FAILED.findall(log)})
-
-
-def first_failure(log):
-    match = re.search(r'^(?:AssertionError|\w+Error): (.*)$', log, re.M)
-    return match.group(1)[:300] if match else None
+def save_log(identifier, log, evidence):
+    if LOG_DIR:
+        (LOG_DIR / (identifier + '.log')).write_text(log, encoding='utf-8')
+        (LOG_DIR / (identifier + '.exceptions.json')).write_text(json.dumps(evidence, ensure_ascii=False, indent=2), encoding='utf-8')
 
 
 def mutate_file(tree: Path, case):
@@ -368,30 +443,33 @@ def prepare_native(case, base_source: Path, work: Path):
     return exe, None
 
 
-def verdict(case, code, log):
-    found = failures(log)
-    record = {'exit': code, 'failed': ['%s %s' % item for item in found]}
-    if LOG_DIR:
-        (LOG_DIR / (case['id'] + '.log')).write_text(log, encoding='utf-8')
-    if code != 0:
-        record['first_failure'] = first_failure(log)
-    expected = set(case['tests'])
-    caused = all(text in log for text in case['cause'])
-    assertions = {name for kind, name in found if kind == 'FAIL'}
-    # An ERROR whose message names the cause (e.g. the producer's own ModelError) is detection; a bare error is not.
-    detected = assertions | ({name for kind, name in found if kind == 'ERROR'} if case['cause'] and caused else set())
-    if 'skipped=' in log:
-        record.update(verdict='blocked', note='skips are not detection')
-    elif code == 0:
-        record['verdict'] = 'equivalent' if case['equivalent'] else 'survived'
-    elif not detected:
-        record.update(verdict='crashed', note='only unexplained errors, no assertion failure')
-    elif not (expected & detected):
-        record.update(verdict='wrong-killer', note='failed %s, expected one of %s' % (sorted(detected), sorted(expected)))
-    elif not caused:
-        record.update(verdict='unlabelled', note='failure log lacks %s' % case['cause'])
+def verdict(case, code, log, evidence=None):
+    save_log(case['id'], log, evidence)
+    record = {'exit': code, 'exception_evidence': evidence, 'failed': []}
+    problem = evidence_problem(code, evidence)
+    if problem:
+        record.update(verdict='blocked', note=problem)
     else:
-        record['verdict'] = 'killed'
+        events = evidence['events']
+        record['failed'] = ['%s %s' % ('FAIL' if e['kind']=='failure' else 'ERROR', e['test_id']) for e in events]
+        if events:
+            record['first_failure'] = events[0]['message'][:300]  # Display only; full strings below drive the verdict.
+        module, cls = (NATIVE_MODULE, NATIVE_CLASS) if case['group']=='native' else (MODEL_MODULE, MODEL_CLASS)
+        expected = {module+'.'+cls+'.'+name for name in case['tests']}
+        detected = [e for e in events if (e['kind']=='failure' and e['exception_type']=='builtins.AssertionError') or
+                    (e['kind']=='error' and e['exception_type'] in case['error_types'])]
+        named = [e for e in detected if e['test_id'] in expected]
+        caused = any(all(text in e['message'] for text in case['cause']) for e in named)
+        if code == 0:
+            record['verdict'] = 'equivalent' if case['equivalent'] else 'survived'
+        elif not detected:
+            record.update(verdict='crashed', note='no AssertionError or case-declared error type')
+        elif not named:
+            record.update(verdict='wrong-killer', note='no terminal exception from a named method')
+        elif not caused:
+            record.update(verdict='unlabelled', note='no single named terminal exception contains all causes')
+        else:
+            record['verdict'] = 'killed'
     if case['equivalent'] and record['verdict'] != 'equivalent':
         record['verdict'] = 'not-equivalent'
     return record
@@ -407,11 +485,11 @@ def judge_native(case, exe, error, baseline_hash, explore):
         record.update(verdict='invalid', note='mutant binary equals baseline')
         return record
     try:
-        code, log = run_native(exe, None if explore else case['tests'])
+        code, log, evidence = run_native(exe, None if explore else case['tests'])
     except subprocess.TimeoutExpired:
         record.update(verdict='blocked', note='timeout')
         return record
-    record.update(verdict(case, code, log))
+    record.update(verdict(case, code, log, evidence))
     return record
 
 
@@ -421,13 +499,13 @@ def judge_model(case, model_tree: Path, model_base: str, work: Path, explore):
     shutil.copytree(model_tree, tree)
     try:
         mutate_file(tree, case)
-        code, log = run_model(tree, model_base, None if explore else case['tests'])
+        code, log, evidence = run_model(tree, model_base, None if explore else case['tests'])
     except subprocess.TimeoutExpired:
         record.update(verdict='blocked', note='timeout')
         return record
     finally:
         shutil.rmtree(tree, ignore_errors=True)
-    record.update(verdict(case, code, log))
+    record.update(verdict(case, code, log, evidence))
     return record
 
 
@@ -488,6 +566,7 @@ def main(argv=None):
     ALL['native'] = test_names(NATIVE_MODULE, NATIVE_CLASS, EXCLUDED, ROOT)
     ALL['model'] = test_names(MODEL_MODULE, MODEL_CLASS, set(), ROOT)
     records = []
+    baselines = {}
     problems = []
     with tempfile.TemporaryDirectory(prefix='section-profile-mutations-') as directory:
         work = Path(directory)
@@ -501,9 +580,12 @@ def main(argv=None):
             baseline = work / 'bridge-baseline'
             compile_bridge(base_source, baseline)
             baseline_hash = sha256(baseline)
-            code, log = run_native(baseline, None)
+            code, log, evidence = run_native(baseline, None)
+            baselines['native'] = dict(exit=code, source_tree_sha256=digest, binary_sha256=baseline_hash,
+                                       exception_evidence=evidence)
+            save_log('native-baseline', log, evidence)
             print('native baseline: exit', code, flush=True)
-            if code != 0 or 'skipped=' in log:
+            if code != 0 or evidence_problem(code, evidence) is not None:
                 print(log[-3000:])
                 problems.append('native baseline must pass with zero skips before any mutant is judged')
             else:
@@ -516,9 +598,12 @@ def main(argv=None):
             model_tree = work / 'model-tree'
             copy_sources(model_tree, python=True)
             digest = tree_digest(model_tree)
-            code, log = run_model(model_tree, model_base, None)
+            code, log, evidence = run_model(model_tree, model_base, None)
+            baselines['model'] = dict(exit=code, source_tree_sha256=digest, adapter_sha256=sha256(Path(model_base)),
+                                      exception_evidence=evidence)
+            save_log('model-baseline', log, evidence)
             print('model baseline: exit', code, flush=True)
-            if code != 0 or 'skipped=' in log:
+            if code != 0 or evidence_problem(code, evidence) is not None:
                 print(log[-3000:])
                 problems.append('model baseline must pass with zero skips before any mutant is judged')
             else:
@@ -530,7 +615,7 @@ def main(argv=None):
     for record in records:
         summary[record['verdict']] = summary.get(record['verdict'], 0) + 1
         print(json.dumps(record, ensure_ascii=False), flush=True)
-    result = {'schema': 'section-profile-mutations/1', 'summary': summary, 'results': records}
+    result = {'schema': 'section-profile-mutations/2', 'baselines': baselines, 'summary': summary, 'results': records}
     if args.receipt:
         Path(args.receipt).write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding='utf-8')
     print(json.dumps({'summary': summary}, ensure_ascii=False))
