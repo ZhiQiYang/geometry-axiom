@@ -41,7 +41,7 @@ R2 依 [模型快照料單契約](../../geometry-web/docs/MODEL-SNAPSHOT-SCHEDUL
 ## 來源身分與驗證
 
 - 前一採納版：`e04a63cb3e1280715cd6c24504a37f3522fa43c7`／`2c20fd3d401e4246e59191f72f978c0a81a6ad34d3a297fe54abf4783e666c20`；加入 `PRE_STACK_CLARIFY_AXIOM_VERSIONS` 與全部六道既有豁免閘（含斷面拉伸），既有集合保留。
-- 本次 `AXIOM_REVISION`：待條文 commit 後回填。
+- 本次 `AXIOM_REVISION`：`209a7278d3acadfe89374714e821018dcba10adc`（條文 commit；Git 內的 LF 公理內容與目前檔案雜湊相同）。
 - 本次 LF 正規化 `AXIOM_SHA256`：`5ccbbc0cd512acd60412427794cf16baf36af4e1ceed40730fb8144697f8ac1d`。
 - `python geometry-guide/sync_axiom_reader.py`：通過；191 條、788 blocks、5 筆批註、31 見證、63 例圖、84 patches；textRevision 34，五道 assert 與獨立 SSOT 對照均通過。
 - `python geometry-guide/sync_axiom_reader.py --check`：通過；此路徑不重建，patches 為 0。
