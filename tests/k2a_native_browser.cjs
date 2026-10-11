@@ -26,7 +26,7 @@ async function sourceOverride(page){for(const [env,file] of [['GEOMETRY_GRID_WOR
   await call('line undo');await renderObjects();const restored=ReferenceWorkspace.readGridDrafts();
   const undoneState={drafts:restored,world:(await call('objects')).gridSystems.map(row=>row.id),dirty:ReferenceWorkspace.getProjectState().dirty};
   const validAgain=await call('line preview grid-system 0 name-hex 736f75726365 main-along none u repeat 0 800 v repeat 0 400');
-  ReferenceWorkspace.prepareFeatureConfirmation(validAgain.preview.token,'grid-draft',restored.drafts.find(d=>d.draftId===b.draftId),ReferenceWorkspace.getProjectState().contextToken);
+  if(!restored.drafts.find(d=>d.draftId===b.draftId).inputRefs.some(ref=>ref.lost))ReferenceWorkspace.prepareFeatureConfirmation(validAgain.preview.token,'grid-draft',restored.drafts.find(d=>d.draftId===b.draftId),ReferenceWorkspace.getProjectState().contextToken);
   await call('line cancel-preview');await call('line redo');await renderObjects();const redone=ReferenceWorkspace.readGridDrafts();
   const redoneState={drafts:redone,world:(await call('objects')).gridSystems.map(row=>row.id),dirty:ReferenceWorkspace.getProjectState().dirty},redoneBytes=Array.from(await ReferenceWorkspace.exportBytes());
   let redoPrepareRejected=false;try{ReferenceWorkspace.prepareFeatureConfirmation(validAgain.preview.token,'grid-draft',redone.drafts.find(d=>d.draftId===b.draftId),ReferenceWorkspace.getProjectState().contextToken);}catch{redoPrepareRejected=true;}

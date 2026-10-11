@@ -39,15 +39,16 @@ const {chromium}=require('playwright');
  const lostAfter=await lostPage.evaluate(async bytes=>{await ReferenceWorkspace.importBytes(new Uint8Array(bytes),'lost.gcanvas');return {drafts:ReferenceWorkspace.readGridDrafts(),objects:await apiRequest('objects'),manifest:(await GeometryProject.unpack(new Uint8Array(bytes),fflate)).manifest};},lostBytes);
  assert.deepEqual(lostAfter.drafts,lostBefore);assert.equal(lostAfter.objects.gridSystems.find(r=>r.id===2).uDefinition.step,600);assert.ok(lostAfter.manifest.requiredCapabilities.includes('grid-editor-drafts/1'));
  await lostPage.evaluate(()=>InfiniteGridWorkspace.create());await lostPage.getByRole('button',{name:/來源已刪除/}).click();await lostPage.locator('#igDraftNote').waitFor();assert.ok((await lostPage.locator('#igDraftNote').textContent()).includes('來源已刪除'));
- const capacity=require('./test_grid_drafts_lifecycle_capacity.js'),large=capacity.pad(capacity.largeDraft(),128*1024-20*12);
+ const capacity=require('./test_grid_drafts_lifecycle_capacity.js'),large=capacity.largeDraft();large.inputRefs.forEach(ref=>ref.kind='grid-binding');capacity.pad(large,128*1024-20*12);
  const marked=await page.evaluate(async draft=>{
   for(const d of ReferenceWorkspace.readGridDrafts().drafts)ReferenceWorkspace.setGridDraft(d.draftId,null,ReferenceWorkspace.getProjectState().contextToken);
   const call=async cmd=>{const r=await apiRequest(cmd);if(!r.ok)throw Error(cmd+': '+r.error);return r;};await call('reset');
-  for(const id of [1,...Array.from({length:20},(_,i)=>11+i)])await call(`line grid-system ${id} name-hex 6361706163697479 main-along none u repeat 0 600 v repeat 0 400`);
+  await call('line boundary 2 outline 0,0 1000,0 1000,1000 0,1000');await call('line grid-system 1 name-hex 6361706163697479 main-along none u repeat 0 600 v repeat 0 400');const boundary=await call('boundary 2');
+  for(const id of Array.from({length:20},(_,i)=>11+i))await call(`line grid-binding ${id} on-boundary 2 from-system 1 vertex outer 0 geometry-hash ${boundary.geometryFingerprint} cell 0 0 anchor 0 1 0 1`);
   const objects=await call('objects'),F=GeometryProject.Features;
-  for(const ref of [draft.baseRef,...draft.inputRefs])ref.fingerprint=await GeometryProject.sha(new TextEncoder().encode(JSON.stringify(F.gridSourceKey(objects.gridSystems.find(row=>row.id===ref.id)))));
+  for(const ref of [draft.baseRef,...draft.inputRefs]){const row=(ref.kind==='grid-system'?objects.gridSystems:objects.gridBindings).find(row=>row.id===ref.id),key=ref.kind==='grid-system'?F.gridSourceKey(row):[row.id,row.system,row.boundary,row.vertexKey,row.cell,row.anchor];ref.fingerprint=await GeometryProject.sha(new TextEncoder().encode(JSON.stringify(key)));}
   ReferenceWorkspace.setGridDraft(draft.draftId,draft,ReferenceWorkspace.getProjectState().contextToken);
-  const before=ReferenceWorkspace.readGridDrafts();for(const ref of draft.inputRefs)await call('line delete grid-system '+ref.id);await call('line delete grid-system 1');
+  const before=ReferenceWorkspace.readGridDrafts();for(const ref of draft.inputRefs)await call('line delete grid-binding '+ref.id);await call('line delete grid-system 1');
   return {before,after:ReferenceWorkspace.readGridDrafts(),dump:(await call('dump')).text};
  },large);
  assert.equal(capacity.bytes(marked.before.drafts[0]),128*1024-240);assert.equal(capacity.bytes(marked.after.drafts[0]),128*1024);assert.equal(marked.after.drafts[0].inputRefs.filter(r=>r.lost).length,20);assert.deepEqual(marked.after.orphans,['capacity']);assert.deepEqual(marked.after.drafts[0].rawForm,marked.before.drafts[0].rawForm);
