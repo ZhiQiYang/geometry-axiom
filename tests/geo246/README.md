@@ -13,7 +13,7 @@ unshare --mount --propagation private bash "$wrapper" "$checkout" "$output" pyth
 
 `generic_messages.json` 是四個訊息出口的完整退化 patch。字串使用 LF 表示；apply 程式以二進位讀寫，依每個檔案的既有 LF／CRLF 精確替換，要求每個錨點只出現一次。突變只在 `git archive HEAD` 的 disposable source 內進行，原 checkout 不被 patch；四份 archive 來源也在執行 generic bridge 前逐位元組還原。compile argv/cwd、archive head/tree/SHA、patch SHA、binary 與原 checkout 前後身分全記入 audit。原 32 筆及新增 panel 7 筆分別驗 baseline／generic／restored。
 
-archive 只匯出 `current_geometry.c`、`geometry-core/` 與 `geometry-web/web_bridge.c` 的 exact-HEAD blob，編譯器會驗證 include 可完整解析；不複製無關的大型閱讀器及媒體。匯出路徑明記於 compile receipt。
+archive 匯出 `tests/binaries.py` 原生指紋列出的來源集合之 exact-HEAD blob（包含 bridge 的 `.inc`），編譯器會驗證 include 可完整解析；不複製無關的大型閱讀器及媒體。匯出路徑明記於 compile receipt。
 
 原生變異帳本使用原工具，分組只為避免結果檔互撞：
 

@@ -52,7 +52,7 @@ def main():
         archive = scratch / 'source.tar'
         # Compile the exact committed core/include sources without copying
         # unrelated reader/media artifacts into every disposable mutation.
-        archive_paths = ['current_geometry.c', 'geometry-core', 'geometry-web/web_bridge.c']
+        archive_paths = sorted(registry.compute_fingerprint(registry.BY_NAME['bridge'])[1])
         archive.write_bytes(subprocess.check_output(['git', '-C', str(ROOT), 'archive', 'HEAD', *archive_paths]))
         work = scratch / 'source'
         work.mkdir()
