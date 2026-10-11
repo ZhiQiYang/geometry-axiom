@@ -28,7 +28,11 @@ The baseline of each group must pass with zero skips first.  A mutant counts as 
     the case's ``cause`` (compiler errors, crashes without that message, timeouts and skips are not detection);
   * the log contains every ``cause`` string, so the failure message itself names the clause that was broken
     ("expected rejection 'V_PANEL_WIDTH' but the candidate was accepted", "R38: V must be -up", ...);
-  * the mutant binary differs from the baseline binary.
+  * for native cases only, the recompiled mutant binary differs from the baseline binary; model cases mutate
+    Python source and use the same fresh, unmutated native adapter (there is no mutant-adapter hash comparison).
+
+Historical f0c4c71 results: 39 cases detected by AssertionError (FAIL), two model cases SPM38/SPM40
+by cause-labelled ModelError (ERROR), plus one equivalent native case. Do not relabel the ERROR logs as FAIL.
 
 A case marked ``equivalent`` is compiled and run like the others but must NOT be killed; the reason has to be given.
 Exit 0 only if every case behaves as declared, 1 if a mutant survived / was mislabelled, 2 if a baseline failed,
@@ -210,9 +214,10 @@ CASES = [
     case('SPM35', 'I49', 'section-profile records may be injected line by line outside an atomic load', P,
          'if(!g_parsing_scene_file){scene_error(', 'if(0&&!g_parsing_scene_file){scene_error(',
          [DUMP], ['I49: section-profile records must not be injected line by line']),
-    case('SPM41', 'I44', 'back to poly_contains_rect: a rectangle exactly filling a notch counts as contained', V,
-         'if(p&&sp_outside_regions(&p->outline,&m->rect,outside)){',
-         'if(p&&!poly_contains_rect(&p->outline,m->rect.min_u,m->rect.min_v,m->rect.max_u,m->rect.max_v)){',
+    # Discard one positive-area outside region, independent of the shared poly_contains_rect implementation.
+    # The former substitution stopped being a fault after GEO-257 fixed that shared predicate.
+    case('SPM41', 'I44', 'a single positive-area outside region is incorrectly treated as contained', V,
+         'return n;', 'return n>1?n:0;',
          [CONCAVE], ["expected rejection 'V_PROFILE_OUTSIDE'"]),
     case('SPM42', 'I47/D1', 'only the start vertex of a run is range-checked, not the far end', V,
          'Point3 point=sp_point(r,p->outline.v[v].u,p->outline.v[v].v,end?r->length:0);',

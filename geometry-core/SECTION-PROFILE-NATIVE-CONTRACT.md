@@ -195,17 +195,21 @@ python3 tests/section_profile_mutation_check.py --receipt tests/release-evidence
 重編 bridge 後跑 `tests/test_section_profile_native.py`；model 5 個案例改 Python 製模器（R37 的 L 形包絡、R39 包絡不計材料量、
 面材不依 1830 切段、構件矩形軸向、局部 run 不被世界網格切分），在複本上對未變異的原生轉接器跑 `tests/test_section_profile_modeling.py`。
 判為殺死須同時成立：指名的測試以斷言失敗轉紅（或錯誤訊息含該案例的 cause 字串）；失敗訊息含每一個 cause 字串（條號或病因）；
-變異後的 binary 與基準線不同。編譯失敗、無說明的錯誤、逾時與 skip 都不算偵測，基準線必須先零 skip 全過。
+native 組另須重編 binary 與基準線不同；model 組只變異 Python 製模器，使用同一支 fresh、未變異原生 adapter，沒有變異 adapter 雜湊比較。編譯失敗、無說明的錯誤、逾時與 skip 都不算偵測，基準線必須先零 skip 全過。
 2026-10-10 在 WSL 乾淨 clone（`~/ga-q38c`，受驗提交 `f0c4c71291af5cab699f54de8ac852aa35fa378e`，基底 `c254e1f`，rebase 無衝突）實測。
 收據在 `tests/release-evidence/20261010-q38-i44/`（`README.md` 有指令、環境與檔案清單、`SHA256SUMS.txt` 有雜湊）：
 
 - `section_profile_mutation_check.py`：native 與 model 基準線皆 exit 0、零 skip；42 例 41 killed、1 equivalent、0 survived，exit 0（`q38-mutations.json`、`mutation-logs/`）。唯一等價的是 SPM24（D38 進階轉簡易的「V 對應合法的 up」）：進階框架只可能由 `surface_frame_is_valid` 放行（單位座標軸、V ⟂ N），U = V × N，up = −V 恆合法、`legal_up` 恆真，這個拒絕項在實作上不可能不成立，所以沒有任何測試能演示它。
-- SPM41 把精確面積改回 `poly_contains_rect` 後，`test_concave_not_four_corners_and_winding` 轉紅，訊息是 expected rejection 'V_PROFILE_OUTSIDE' but the candidate was accepted（`mutation-logs/SPM41.log`）。
+- 歷史 SPM41（f0c4c71）把精確面積改回 `poly_contains_rect` 後，`test_concave_not_four_corners_and_winding` 轉紅，訊息是 expected rejection 'V_PROFILE_OUTSIDE' but the candidate was accepted（`mutation-logs/SPM41.log`）。
 - `python3 tests/run_all.py --build`：83 個 suite、2611 測試，2610 pass、0 fail、1 skip（Linux 上的 Windows GDI，具名允許清單），exit 0（`run_all.log`）；`test_section_profile_native` 26／26、`test_section_profile_modeling` 19／19。總數比開發樹量到的 2592 多，是因為基底前進到 `c254e1f` 後主線新增了測試。
 - `python3 tests/mutate.py --check`：killed 40、crashed 1（M20，基底即有）、survived 0、equivalent 4、invalid 0、stale 0、blocked 0、retired 3，exit 0（`mutate-check.log`）；rebase 後帳本沒有過期，沒有重跑任何條目、沒有改動 `tests/mutants_results.json`。
 - 託管 CI 受帳號計費阻擋（Actions job 秒失敗，不是程式失敗），以上 WSL 收據代替；需要 Chrome 的瀏覽器層閘門沒有跑。
 
-#### --explore 實測：逐案例紅燈與提案 AC16 的差異
+歷史 42 例的 killed 不是全為斷言 FAIL：39 例由 AssertionError 偵測，SPM38／SPM40 兩個 model 案例由含指定 cause 的 ModelError（ERROR）偵測；原始日誌保留。
+
+2026-10-11 審查後，SPM41 改為在 `sp_outside_regions` 的計數回傳丟掉恰一片正面積差集（`return n>1?n:0;`），保留 I44 具名反例及精確 outsideRegions 斷言。此單點故障不依賴 `poly_contains_rect` 是否已修正；新收據與來源閉包見 [雲端複核導讀](../tests/release-evidence/20261011-pr182-cloud-review/README.md)。舊 42 例收據不當成修改後全表已重跑。
+
+#### 歷史 --explore 實測：逐案例紅燈與提案 AC16 的差異
 
 `--explore` 對每個案例跑整個測試類別，收據是 `q38-mutations-explore.json`（日誌 `mutation-explore-logs.tgz`），逐案例的紅燈測試與失敗訊息在 `ac16-per-case-red-tests.md`。測試方法本身不帶提案 AC 編號，下表的 AC 欄是人工讀測試內容對應的結果，而且是方法層級：一個方法含多個 AC 場景，「含」不等於「該場景是導致轉紅的那一行」，失敗訊息才是實際斷言。
 
@@ -273,8 +277,7 @@ python3 tests/section_profile_mutation_check.py --receipt tests/release-evidence
 | SPM40 | model | D39 | an unplaced (local) run is cut by the world grid | killed | 11 | AC08~, AC14~, AC26 |
 
 這輪故障注入先後逼出多處測試缺口（面材規格身分、兩種方位字串、D37 不收 D26 材料、簡易定位原點的 D1、I47 終端頂點、
-刪斷面時只剩成員或只剩 run 仍引用、已載入場景後的逐行注入）與上面的 I44 缺陷；缺口以加強既有測試方法補上，沒有新增測試方法，
-所以 `tests/run_all.expected.json` 的計數不變。`tests/mutants_results.json` 因核心來源變動依 `tests/mutate.py` 的規則整份重跑重生。
+刪斷面時只剩成員或只剩 run 仍引用、已載入場景後的逐行注入）與上面的 I44 缺陷；這段 f0c4c71 I44 歷史切片以加強既有測試方法補缺口，當時沒有新增方法或改 expected。後續 f3c87c21 新增 `test_section_profile_mutation_check.py` 九項及一個 suite，aa4067b 清冊為 84 suites／2620 項；既有 83 suites 期望未放寬。`tests/mutants_results.json` 因核心來源變動依 `tests/mutate.py` 的規則整份重跑重生。
 
 ### 前一個有界切片的歷史驗證（非本版收據）
 

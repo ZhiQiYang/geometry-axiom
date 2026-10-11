@@ -11,8 +11,10 @@
 | 基底（origin/main，PR #180 合併） | `c254e1f1d6b0980170f3ffc8b855cd696654bd46` |
 | 乾淨 clone | WSL `~/ga-q38c`（開跑前、跑完後 `git status --porcelain` 皆為 0 筆） |
 
-本收據與合約文字是後來才加進同一分支的（amend 成最終提交）。受驗的原始碼與測試就是 `f0c4c71` 的內容；amend 只新增本目錄、修改
-`geometry-core/SECTION-PROFILE-NATIVE-CONTRACT.md`，並更新 `tests/section_profile_mutation_check.py` 檔頭 docstring 的一段說明文字（不影響行為）；
+本節「最終提交」只指歷史 f752994；不涵蓋 f3c87c21／aa4067b 或後續修訂。aa4067b 已新增九項選集守門測試及一個 suite，清冊 84 suites／2620 項。已完成的 aa4067b WSL 七 job 為 6/7 綠、canvas 紅（`#igNewBinding` 不可達），不是「未跑」；[原始裁判](https://github.com/ZhiQiYang/geometry-axiom/pull/182#issuecomment-6102819500) 保留，不能以本目錄舊 native 綠解除。最新有界修正見 [2026-10-11 雲端複核](../20261011-pr182-cloud-review/README.md)。
+
+本收據與合約文字是後來才加進同一分支的（amend 成歷史 f752994 提交）。受驗的原始碼與測試就是 `f0c4c71` 的內容；amend 只新增本目錄、修改
+`geometry-core/SECTION-PROFILE-NATIVE-CONTRACT.md`，並更新 `tests/section_profile_mutation_check.py` 檔頭 docstring 的一段說明文字（不影響 f0c4c71→f752994 的行為）；
 沒有動 C 原始碼、Python 製模器、測試或 `tests/mutants_results.json`。最終提交的完整 SHA 見 PR 正文。
 
 clone 是從 `/mnt/d/geometry-axiom`（主 repo）做的，再 checkout 同名分支；`/mnt/d/geometry-axiom-q38` 是 Windows worktree，
@@ -38,22 +40,22 @@ WSL2 Ubuntu 24.04.5、kernel 6.6.114.1-microsoft-standard-WSL2、gcc 13.3.0、Py
 tally 與基底相同。M20 是基準線已通過、同一夾具連三次以存取違規（-11）結束的既有 `crashed`，不是這個分支造成的。
 
 run_all 的總數比先前在開發樹量到的 2592 多，是因為基底從 a7bff8f 前進到 c254e1f，主線新增了測試（`run_all.expected.json` 由主線更新，
-本分支沒有動它）。2592 那組數字不再適用。
+f0c4c71 歷史切片沒有動它；後續 f3c87c21 有新增 suite 登記）。2592 那組數字不再適用。
 
 ## 檔案
 
-- `q38-mutations.json`：第 2 項收據（`section-profile-mutations/1`），每例的 binary 雜湊、exit、失敗測試、判定。
+- `q38-mutations.json`：第 2 項收據（`section-profile-mutations/1`），每例的 exit、失敗測試、判定；僅 native 37 例記錄重編 binary 雜湊，model 5 例使用未變異 adapter。
 - `mutation-logs/SPMxx.log`：第 2 項每例的測試日誌（只跑該例指名的殺手測試）。
 - `mutation-enforced.console.log`：第 2 項的主控台輸出。
 - `q38-mutations-explore.json`、`mutation-explore.console.log`、`mutation-explore-logs.tgz`（第 3 項；日誌解開約 7 MB，所以壓縮）。
 - `ac16-per-case-red-tests.md`：由第 3 項收據產生的逐案例清單——每例實際轉紅的測試、失敗訊息、人工對到的提案 AC，
   以及與提案 AC16 逐條要求的差異。**AC 對應是人工讀測試內容得到的**，測試方法本身不帶 AC 編號。
 - `run_all.log`、`mutate-check.log`、`binaries-build.log`、`env.txt`、`exit-codes.txt`。
-- `SHA256SUMS.txt`：本目錄全部檔案的雜湊（不含它自己）。雜湊算的是 git 內儲存的 LF 位元組；Windows 以 `core.autocrlf=true` 簽出時文字檔會變 CRLF，雜湊就對不上，驗證請在 Linux 簽出或用 `git show <commit>:<path> | sha256sum`。
+- `SHA256SUMS.txt`：歷史 payload 的雜湊（不含它自己）；本次只更新 README 對應雜湊，所有舊 raw／JSON／tgz 保持原位元組。更新前 README 與清冊另以原位元組存於雲端複核目錄供對照。雜湊算的是 git 內儲存的 LF 位元組；Windows 以 `core.autocrlf=true` 簽出時文字檔會變 CRLF，雜湊就對不上，驗證請在 Linux 簽出或用 `git show <commit>:<path> | sha256sum`。
 
 ## 這份收據證明什麼、不證明什麼
 
-證明：在 `f0c4c71` 上，I44 精確包含修正通過全部非瀏覽器 native／模型測試；AC16 閘門 42 例中 41 例被指名測試以斷言轉紅且訊息含條號或病因，
+證明：在 `f0c4c71` 上，I44 精確包含修正通過全部非瀏覽器 native／模型測試；AC16 閘門 42 例中 39 例以 AssertionError（FAIL）轉紅，SPM38／SPM40 兩例以指定 cause 的 ModelError（ERROR）轉紅，共 41 killed；不把 ERROR 改寫為 FAIL，
 唯一未被殺死的 SPM24 是真等價（進階框架只可能由 `surface_frame_is_valid` 放行，up = -V 恆合法，D38 的「V 有合法 up」這一項在實作上不會不成立）。
 SPM41（把精確面積改回 `poly_contains_rect`）使 `test_concave_not_four_corners_and_winding` 以
 `expected rejection 'V_PROFILE_OUTSIDE' but the candidate was accepted` 轉紅（`mutation-logs/SPM41.log`）。
@@ -65,7 +67,7 @@ SPM41（把精確面積改回 `poly_contains_rect`）使 `test_concave_not_four_
 - 瀏覽器層：`geometry-web/cdp_test.js`、`geometry-web/space_model_test.js`、`tests/test_section_profile_browser.js`、
   `tests/integration/q38_save_roundtrip.py` 等需要 Chrome 的閘門沒有跑（`run_all` 輸出末尾列為「本 aggregate 未驗」）。
 - Windows／MSVC 路徑；託管 CI（帳號計費阻擋，Actions job 秒失敗，不是程式失敗）。
-- 最終提交本身沒有再整套重跑；它與 `f0c4c71` 的差異只有本目錄與合約文件。
+- 歷史 f752994 本身沒有再整套重跑；它與 f0c4c71 在本目錄外只差合約文件及 gate docstring。aa4067b 後續增加守門／九項測試／runner 登記，其七 job 結果另見上方原始裁判，不沿用這段同一性。
 - 核心 `current_geometry.c` 的 D7／I5 路徑（`poly_contains_rect` 的同一弱點）不在範圍內，已另開 GEO-257。
 
 ## 來源綁定（2026-10-11 補）
@@ -106,7 +108,7 @@ git diff        f0c4c71 f752994 -- . ':(exclude)tests/release-evidence'
 
 - 第 1–5 項指令（建置、AC16 閘門、`--explore`、`run_all.py --build`、`mutate.py --check`）都是在 `f0c4c71` 的乾淨 clone 上跑的。
 - 2026-10-11 的修補（下一節）之後，head 多了 `--only` 守門、新測試檔與 run_all 登記。那些**不在**上述完整測試的範圍內；它們另有下一節的驗證。
-- **最終 head 的 7 job 全量由主迴圈另跑，結果會貼在 PR 留言**；本目錄不含那份結果，不能拿本目錄的數字當成最終 head 全套已核。
+- **aa4067b 的 7 job 全量已交付於 PR 留言，6/7 綠、canvas 紅**；本目錄不含那份 raw，不能拿本目錄的數字當成 aa4067b 或後續 head 全套已核。
 
 ### WSL 時限條件（照實寫）
 
