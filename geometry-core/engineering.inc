@@ -219,8 +219,11 @@ static bool eng_target_context(const World *w,const EngTarget *t,uint32_t *pid,i
     }
     return true;
 }
-static bool eng_resolve(World *w,const EngDimensionSource *s,const EngTarget *target,uint32_t pid,int role,Coord *value,char *path,size_t cap)
+/* D49: optional read-only evidence of the leaf reached by the existing R31 chain. */
+typedef struct { bool valid; EngSourceKind kind; EngVersionRef material; char fingerprint[65]; } EngTerminal;
+static bool eng_resolve_terminal(World *w,const EngDimensionSource *s,const EngTarget *target,uint32_t pid,int role,Coord *value,char *path,size_t cap,EngTerminal *terminal)
 {
+    if (terminal) memset(terminal,0,sizeof *terminal);
     if (s->kind==ENG_LITERAL) { *value=s->value; if (path) snprintf(path,cap,"explicit integer mm"); }
     else if (s->kind==ENG_SPEC) {
         size_t i=0; while (i<w->spec_count&&strcmp(w->specs[i].name,s->ref)) ++i;
@@ -240,6 +243,7 @@ static bool eng_resolve(World *w,const EngDimensionSource *s,const EngTarget *ta
             *value=target->field?m->b:m->a;
         }
         if (path) snprintf(path,cap,"material:%s@%u.%s",s->ref,s->version,ENG_FIELDS[s->field]);
+        if (terminal) { snprintf(terminal->material.id,sizeof terminal->material.id,"%s",m->ref.id); terminal->material.version=m->ref.version; snprintf(terminal->fingerprint,sizeof terminal->fingerprint,"%s",m->fingerprint); }
     } else if (s->kind==ENG_APPLICATION) {
         EngApplication *a=eng_application(w,s->ref);
         const EngMethodVersion *m=a?eng_method(w,a->method.id,a->method.version):NULL;
@@ -263,14 +267,20 @@ static bool eng_resolve(World *w,const EngDimensionSource *s,const EngTarget *ta
             nested.kind=ENG_MATERIAL; nested.version=m->roles[r].version; snprintf(nested.ref,sizeof nested.ref,"%s",m->roles[r].id); nested.field=target->field?ENG_B:ENG_A;
         }
         if (override>=0 && a->overridden[override]) nested=a->overrides[override];
-        char tail[192]; if (!eng_resolve(w,&nested,target,pid,role,value,tail,sizeof tail)) return false;
+        char tail[192]; if (!eng_resolve_terminal(w,&nested,target,pid,role,value,tail,sizeof tail,terminal)) return false;
         if (path) snprintf(path,cap,"application:%s -> method:%s@%u -> %s%s",a->id,a->method.id,a->method.version,override>=0&&a->overridden[override]?"face override -> ":"",tail);
     } else return eng_fail("I35: invalid dimension source kind");
     if (*value<((!target->kind&&target->field)?0:1) || *value>COORD_LIMIT) return eng_fail("I35: effective dimension violates its positive/nonnegative integer mm range");
+    if (terminal && s->kind!=ENG_APPLICATION) { terminal->kind=s->kind; terminal->valid=true; }
     return true;
 }
-static bool eng_effective(World *w,const EngBinding *b,Coord *value,char *path,size_t cap)
+static bool eng_resolve(World *w,const EngDimensionSource *s,const EngTarget *target,uint32_t pid,int role,Coord *value,char *path,size_t cap)
 {
+    return eng_resolve_terminal(w,s,target,pid,role,value,path,cap,NULL);
+}
+static bool eng_effective_terminal(World *w,const EngBinding *b,Coord *value,char *path,size_t cap,EngTerminal *terminal)
+{
+    if (terminal) memset(terminal,0,sizeof *terminal);
     uint32_t pid; int role; if (!eng_target_context(w,&b->target,&pid,&role)) return false;
     /* During scene replay a timber declaration precedes its placement. Its role
      * is already known; final revalidation after place checks the actual face. */
@@ -287,7 +297,11 @@ static bool eng_effective(World *w,const EngBinding *b,Coord *value,char *path,s
         Coord ignored;
         if (!eng_resolve(w,&b->source,&b->target,pid,role,&ignored,NULL,0)) return false;
     }
-    return eng_resolve(w,b->has_override?&b->override_value:&b->source,&b->target,pid,role,value,path,cap);
+    return eng_resolve_terminal(w,b->has_override?&b->override_value:&b->source,&b->target,pid,role,value,path,cap,terminal);
+}
+static bool eng_effective(World *w,const EngBinding *b,Coord *value,char *path,size_t cap)
+{
+    return eng_effective_terminal(w,b,value,path,cap,NULL);
 }
 /* D28: these records belong to the deleted identity. This is deliberately not
  * a general orphan collector: malformed loaded references must still fail I35. */

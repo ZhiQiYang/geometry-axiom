@@ -17,6 +17,11 @@ CSV 匯出逐件相同資料，包含 typed timber/surface 身分、方向、定
 
 ## 資料與能力邊界
 
+K1-a（D49／I59(d)）在原生工程來源與 assembly slot 的有效 A/B 最後增加唯讀 `terminal`：
+材料末端包含 `(id, version, fingerprint)`，其餘末端為 literal／spec／parameter，無法求值為 null。
+它由核心既有 D28／R31 查找鏈提供；前端不可解析 path 或重做查找。做法 gap 的直接值仍標為 literal，
+不區分做法與物件直接整數。既有欄位、World dump、定義指紋與歷史不變；此切片尚未宣告 `cutting-plan/1`。
+
 - `references.sourceFingerprint` 由原生 `eng_definition_hash` 對正式定義計算，排除畫布擺位。
   目前讀取整個 World 定義指紋，無關來源變動也會保守要求重新核對。
 - 只計原生 placed Timber，每個 `timber:id` 一次。兩個同截面／同長的實際構件各自保留，Timber 0 亦是有效身分。
