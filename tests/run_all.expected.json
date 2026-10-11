@@ -3,12 +3,12 @@
  "suites": {
   "c:integrity": {
    "mode": "count",
-   "count": 304,
+   "count": 432,
    "unit": "C 檢查點"
   },
   "core:run_tests": {
    "mode": "count",
-   "count": 155,
+   "count": 157,
    "unit": "場景"
   },
   "mutation:check": {
@@ -171,7 +171,7 @@
   },
   "py:test_reference_contract": {
    "mode": "count",
-   "count": 50,
+   "count": 51,
    "unit": "test"
   },
   "py:test_release_gate": {
