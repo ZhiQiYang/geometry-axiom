@@ -65,6 +65,8 @@ R2 依 [模型快照料單契約](../../geometry-web/docs/MODEL-SNAPSHOT-SCHEDUL
 | 兩材料分片角接 | 兩塊材料只在一點相接 | 維持兩個分片 |
 | 拆環突變 | 拿掉重訪頂點的拆環步驟 | 第一例必須失敗；還原後回綠 |
 
-本次正典三段經 WSL v3 實跑通過：191 條、788 blocks、84 patches；五道 assert、獨立 SSOT、41/41 閱讀器測試與重建冪等通過，18 次取樣無外來程序。相對 P-049 只改 R42 及白話，其餘 190 條不變。來源 commit 及兩個版本常數於下一筆回填，原件在本次交接 `SP/board-local-codex/pr199-p058/`。上節只描述舊 P-049 採納版；舊 head 7ad9cef 的七 job 為六綠、一個 space 紅燈，原件保留，不能當成本次 head 的裁判。無新入口；未改產品演算法、能力或相容集合。
+本次正典三段經 WSL v3 實跑通過：191 條、788 blocks、84 patches；五道 assert、獨立 SSOT、41/41 閱讀器測試與重建冪等通過，18 次取樣無外來程序。相對 P-049 只改 R42 及白話，其餘 190 條不變。條文 commit／AXIOM_REVISION `6992607d0463bba8fae4c409af57a61066dafca2`；LF AXIOM_SHA256 `c878c355c0c233119686ee1ca2b0ddd2c2fbdb7eb2c8b88896a3a8a6d37cb6ad`，原件在本次交接 `SP/board-local-codex/pr199-p058/`。上節只描述舊 P-049 採納版；舊 head 7ad9cef 的七 job 為六綠、一個 space 紅燈，原件保留，不能當成本次 head 的裁判。無新入口；未改產品演算法、能力或相容集合。
 
 三段命令各 exit 0；原 WSL wrapper 在末尾搬移護欄因 Windows CRLF／Git LF 差異 exit 1，原收據與日誌保留。另以 Git 原件核對差異僅行尾、五份凍結輸入與受測 clone 完全相同後，搬移經測正典並再跑 --check 通過；搬移紀錄獨立保存，未將原 wrapper 改記成功。
+
+P-058 版本回填只改當前兩個常數，其他 Python AST、全部舊相容集合、六道豁免及 capabilities 不變。身分來源 3/3；R42 的拆環順序與外／孔分類各改一處均在 AXIOM_VERSION 轉紅，逐次還原回綠。原相容探針與七個去除突變通過；被取代的 P-049 `209a7278…`／`5ccbbc0c…` 明確在 AXIOM_VERSION 拒絕，沒有新加相容項。探針停於刻意無效的 generator，不代表原生重建已驗。決策佇列 74／BACKLOG 46 行內容及順序保留，改字／刪除／換序六個反例全拒絕。
