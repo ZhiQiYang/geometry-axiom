@@ -48,7 +48,7 @@ const {chromium}=require('playwright');
   const objects=await call('objects'),F=GeometryProject.Features;
   for(const ref of [draft.baseRef,...draft.inputRefs]){const row=(ref.kind==='grid-system'?objects.gridSystems:objects.gridBindings).find(row=>row.id===ref.id),key=ref.kind==='grid-system'?F.gridSourceKey(row):[row.id,row.system,row.boundary,row.vertexKey,row.cell,row.anchor];ref.fingerprint=await GeometryProject.sha(new TextEncoder().encode(JSON.stringify(key)));}
   ReferenceWorkspace.setGridDraft(draft.draftId,draft,ReferenceWorkspace.getProjectState().contextToken);
-  const before=ReferenceWorkspace.readGridDrafts();for(const ref of draft.inputRefs)await call('line delete grid-binding '+ref.id);await call('line delete grid-system 1');
+  const before=ReferenceWorkspace.readGridDrafts();for(const ref of draft.inputRefs)await call('line delete grid-binding '+ref.id);await call('line delete grid-system 1');await renderObjects();
   return {before,after:ReferenceWorkspace.readGridDrafts(),dump:(await call('dump')).text};
  },large);
  assert.equal(capacity.bytes(marked.before.drafts[0]),128*1024-240);assert.equal(capacity.bytes(marked.after.drafts[0]),128*1024);assert.equal(marked.after.drafts[0].inputRefs.filter(r=>r.lost).length,20);assert.deepEqual(marked.after.orphans,['capacity']);assert.deepEqual(marked.after.drafts[0].rawForm,marked.before.drafts[0].rawForm);
