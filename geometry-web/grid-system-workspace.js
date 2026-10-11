@@ -200,7 +200,7 @@
     const actual=pins.get(pinKey(s.baseRef)),fields=overwriteFields(rawForm(s),normalized),refs=[];
     if(s.mode==='source'&&s.ruleDraft){
       const rule=row.rules?.find(r=>r.ruleKey===s.ruleDraft.ruleKey);
-      const formal=rule?{name:rule.name,selector:rule.selector.kind,cellI:rule.selector.cell?.[0]||'0',cellJ:rule.selector.cell?.[1]||'0',divisionsU:String(rule.divisions[0]),divisionsV:String(rule.divisions[1])}:null;
+      const formal=rule?{name:rule.name,selector:rule.selector.kind,cellI:String(rule.selector.cell?.[0]??'0'),cellJ:String(rule.selector.cell?.[1]??'0'),divisionsU:String(rule.divisions[0]),divisionsV:String(rule.divisions[1])}:null;
       const pending=ruleDraftValue(s);
       if(formal){
         const mapped=value=>Object.fromEntries(F.ruleFields.map(field=>[ruleIds[field],value[field]]));
