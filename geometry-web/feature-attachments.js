@@ -175,19 +175,21 @@
   const gridLostReserve=draft=>draft.inputRefs.reduce((bytes,ref)=>bytes+(ref.lost?0:12),0);
   // Stored values receive only the measured growth of validated lifecycle
   // annotations. This projection is a byte oracle, never saved editor data.
-  function gridUnmarkedValue(value) {
+  // Draft/record limits retain the declared collection shape. Only the whole
+  // envelope/manifest oracle discounts the possible single-to-collection shell.
+  function gridUnmarkedValue(value, collapse = false) {
     const unmark = draft => ({...draft,inputRefs:draft.inputRefs.map(ref=>{
       const next={...ref};delete next.lost;return next;
     })});
     if(value.schema!==GRID_DRAFTS_SCHEMA)return unmark(value);
     const drafts=value.drafts.map(unmark);
-    if(drafts.length===1&&(value.orphans.length||value.drafts[0].inputRefs.some(ref=>ref.lost)))return drafts[0];
+    if(collapse&&drafts.length===1&&(value.orphans.length||value.drafts[0].inputRefs.some(ref=>ref.lost)))return drafts[0];
     return {...value,drafts,orphans:[]};
   }
-  function gridUnmarkedEnvelope(envelope) {
+  function gridUnmarkedEnvelope(envelope, collapse = false) {
     return {...envelope,records:envelope.records.map(record=>{
       if(record.kind!==GRID_KIND)return record;
-      const value=gridUnmarkedValue(record.value);return {...record,schema:value.schema,value};
+      const value=gridUnmarkedValue(record.value,collapse);return {...record,schema:value.schema,value};
     })};
   }
   function gridCollectionReserve(value){
@@ -278,7 +280,6 @@
       validateGridDrafts(record.value,stored);
       const original=stored?gridUnmarkedEnvelope({records:[record]}).records[0]:record;
       jsonBytes(original,MAX_GRID_DRAFTS_BYTES,stored?0:gridCollectionReserve(record.value),"集合附件未保留自動缺失補標容量。");
-      if(stored&&original.schema!==GRID_DRAFTS_SCHEMA)boundedJSON(original);
     } else if (record.kind === GRID_KIND && [GRID_SCHEMA, GRID_RULE_SCHEMA].includes(record.schema)) {
       if (record.value?.schema !== record.schema) fail("網格草稿附件版本不一致。");
       boundedJSON(record); validateGridDraft(record.value,false,stored);
@@ -305,8 +306,7 @@
       if (kinds.has(record.kind)) fail("功能附件種類重複。");
       kinds.add(record.kind);
     }
-    if(stored)for(const record of gridUnmarkedEnvelope(envelope).records)if(record.kind===GRID_KIND&&record.schema!==GRID_DRAFTS_SCHEMA)boundedJSON({schema:SCHEMA,records:[record]});
-    if ((stored?jsonBytes(gridUnmarkedEnvelope(envelope),MAX_ROOM_BYTES):bytes) + envelope.records.reduce((size,record) => size + (record.kind === ROOM_KIND ? lifecycleReserve(record.value) : record.kind===GRID_KIND&&!stored?gridRecordReserve(record):0),0) > MAX_ROOM_BYTES)
+    if ((stored?jsonBytes(gridUnmarkedEnvelope(envelope,true),MAX_ROOM_BYTES):bytes) + envelope.records.reduce((size,record) => size + (record.kind === ROOM_KIND ? lifecycleReserve(record.value) : record.kind===GRID_KIND&&!stored?gridRecordReserve(record):0),0) > MAX_ROOM_BYTES)
       fail("功能附件未保留房間狀態更新所需容量。");
     return envelope;
   }

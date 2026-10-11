@@ -512,7 +512,7 @@
   function gridUnmarkedManifest(manifest,scene) {
     if(!manifest.featureAttachments?.records.some(record=>record.kind===Features.GRID_KIND&&record.schema===Features.GRID_DRAFTS_SCHEMA&&
         (record.value.orphans.length||record.value.drafts.some(draft=>draft.inputRefs.some(ref=>ref.lost)))))return manifest;
-    const featureAttachments=Features.gridUnmarkedEnvelope(manifest.featureAttachments);
+    const featureAttachments=Features.gridUnmarkedEnvelope(manifest.featureAttachments,true);
     const requiredCapabilities=(manifest.requiredCapabilities||[]).filter(cap=>cap!==Features.GRID_DRAFTS_SCHEMA);
     return normalizedManifest({...manifest,featureAttachments,requiredCapabilities},scene||"",manifest.sceneHash);
   }
