@@ -14,6 +14,57 @@ from tests import _bridge  # noqa: E402
 
 
 class ReferenceContract(unittest.TestCase):
+    def projection_fixture(self, outline, column):
+        self.ok('reset')
+        self.ok('surface 1 origin 0 0 0 u +x v +y outline ' + outline)
+        self.ok('column 1 at ' + column + ' z 0 100')
+
+    def test_rect_outline_counterexample_A_rejects_disconnected_contact(self):
+        self.projection_fixture('0,0 100,0 100,100 60,100 60,40 40,40 40,100 0,100',
+                                '30 50 size 40 30')
+        before = self.dump()
+        result = self.s.send('obstacles 1')
+        self.assertFalse(result['ok'], 'counterexample A must not invent a hole across the notch')
+        self.assertIn('R7', result['error'])
+        self.assertIn('單一矩形', result['error'])
+        result = self.line('apply-proj 1 c1')
+        self.assertFalse(result['ok'])
+        self.assertIn('R7', result['error'])
+        self.assertEqual(before, self.dump(), 'counterexample A must roll back completely')
+
+    def test_rect_outline_counterexample_B_clips_ridge_and_applies_split(self):
+        self.projection_fixture('0,0 100,0 100,50 60,50 60,90 40,90 40,50 0,50',
+                                '20 70 size 60 10')
+        items = self.s.send('obstacles 1')['items']
+        self.assertEqual([{'id':1, 'type':'column', 'cls':'split', 'rect':[40,70,60,80]}],
+                         items, 'counterexample B must retain the positive-area ridge intersection')
+        self.ok('apply-proj 1 c1')
+        dump = self.dump()
+        self.assertIn('boundary 2', dump)
+        self.assertNotIn('hole ', dump)
+
+    def test_rect_outline_strip_reclassification_uses_exact_contact(self):
+        self.ok('reset')
+        self.ok('surface 1 origin 0 0 100 u +x v +y outline '
+                '0,0 100,0 100,50 60,50 60,90 40,90 40,50 0,50')
+        self.ok('beam 1 along x from 20 to 80 at 75 width 10 depth 10 top 100')
+        self.assertEqual('strip', self.s.send('obstacles 1')['items'][0]['cls'])
+        self.ok('apply-proj 1 b1 cut-strip')
+        self.assertIn('boundary 2', self.dump())
+
+    def test_rect_outline_real_hole_no_contact_and_notch_controls(self):
+        for column, expected in [('10 10 size 10 10', ('hole',[10,10,20,20])),
+                                 ('110 110 size 10 10', None),
+                                 ('-10 10 size 30 10', ('notch',[0,10,20,20]))]:
+            with self.subTest(column=column):
+                self.projection_fixture('0,0 100,0 100,100 0,100', column)
+                items = self.s.send('obstacles 1')['items']
+                if expected is None:
+                    self.assertEqual([], items)
+                else:
+                    self.assertEqual(expected, (items[0]['cls'], items[0]['rect']))
+                    self.ok('apply-proj 1 c1')
+
     def setUp(self):
         self.s = _bridge.BridgeSession()
         self.addCleanup(self.s.close)

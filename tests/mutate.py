@@ -270,6 +270,12 @@ MUTANTS = [
     dict(id="M40", desc="R6(b)：有效 cell 判定拿掉碰撞(只查包含)",
          old="        bool ok =\n            surface_contains_rect(\n                placement, boundary,\n                cell.min_u, cell.min_v, cell.max_u, cell.max_v) &&\n            !world_footprint_collides(world, placement, &cell, NULL);",
          new="        bool ok =\n            surface_contains_rect(\n                placement, boundary,\n                cell.min_u, cell.min_v, cell.max_u, cell.max_v);"),
+    dict(id="M61", desc="R7/#198 A：忽略單 slab 的多段交集，將凹口交集縮成一段",
+         old="            if (++intervals > 1) return -1;",
+         new="            ++intervals;"),
+    dict(id="M62", desc="R7/#198 B：恢復四角全在外就丟棄的錯誤快退",
+         old="    Coord cuts[POLY_MAX_VERTICES + 2] = { in_v0, in_v1 };",
+         new="    SurfacePoint2 legacy_corners[4] = {{in_u0,in_v0},{in_u1,in_v0},{in_u1,in_v1},{in_u0,in_v1}};\n    int legacy_inside = 0;\n    for (int i=0; i<4; ++i) legacy_inside += poly_contains_point(loop, legacy_corners[i]);\n    if (!legacy_inside) return 0;\n    Coord cuts[POLY_MAX_VERTICES + 2] = { in_v0, in_v1 };"),
 ]
 
 

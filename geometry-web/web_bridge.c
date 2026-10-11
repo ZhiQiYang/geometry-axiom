@@ -585,6 +585,10 @@ static void cmd_obstacles(uint32_t id)
         return;
     }
     size_t n = world_face_obstacles(&g_world, b, items, 64);
+    if (n == FACE_OBSTACLES_DEGENERATE) {
+        fputs("{\"ok\":false,\"error\":\"" RECT_CONTACT_ERROR "\"}\n", stdout);
+        return;
+    }
     if (n == SIZE_MAX) {
         fputs("{\"ok\":false,\"error\":\"面尚未放置，無法推導障礙物\"}\n",
               stdout);

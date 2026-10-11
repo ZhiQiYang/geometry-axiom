@@ -298,6 +298,7 @@ static bool oracle_loop(unsigned set, PolygonLoop2 *loop, bool merge_collinear, 
 static void test_poly_contains_rect_matches_cell_oracle(void)
 {
     long polygons[8] = {0}, wrong[8] = {0};
+    long contact_cases[8] = {0}, wrong_contact[8] = {0};
     for (unsigned set = 1; set < (1u << (ORACLE_N * ORACLE_N)); ++set) {
         for (int variant = 0; variant < 8; ++variant) {
             PolygonLoop2 loop = {0};
@@ -312,17 +313,86 @@ static void test_poly_contains_rect_matches_cell_oracle(void)
                         if (!oracle_cell(set, i, j)) { truth = false; break; }
                 if (poly_contains_rect(&loop, u0 * ORACLE_SCALE, v0 * ORACLE_SCALE, u1 * ORACLE_SCALE, v1 * ORACLE_SCALE) != truth)
                     ++wrong[variant];
+                /* Independent occupied-cell intersection oracle. Shrink by one mm
+                 * so rectangle corners cannot lie on polygon vertices/edges. */
+                int xmin=ORACLE_N, ymin=ORACLE_N, xmax=-1, ymax=-1, occupied=0;
+                for (int i=u0; i<u1; ++i) for (int j=v0; j<v1; ++j)
+                    if (oracle_cell(set,i,j)) {
+                        if (i<xmin) xmin=i; if (i>xmax) xmax=i;
+                        if (j<ymin) ymin=j; if (j>ymax) ymax=j;
+                        ++occupied;
+                    }
+                Coord l=u0*ORACLE_SCALE+1, r=u1*ORACLE_SCALE-1;
+                Coord bottom=v0*ORACLE_SCALE+1, top=v1*ORACLE_SCALE-1;
+                Coord a,b,c,d; ObstacleClass cls;
+                int contact=classify_rect_outline(&loop,l,bottom,r,top,&cls,&a,&b,&c,&d);
+                bool rectangle=occupied && occupied==(xmax-xmin+1)*(ymax-ymin+1);
+                ++contact_cases[variant];
+                if ((!occupied && contact!=0) || (occupied && !rectangle && contact>=0) ||
+                    (rectangle && (contact<=0 || a!=coord_max(l,xmin*ORACLE_SCALE) ||
+                     b!=coord_max(bottom,ymin*ORACLE_SCALE) || c!=coord_min(r,(xmax+1)*ORACLE_SCALE) ||
+                     d!=coord_min(top,(ymax+1)*ORACLE_SCALE)))) ++wrong_contact[variant];
             }
         }
     }
     for (int variant = 0; variant < 8; ++variant) {
         CHECK(polygons[variant] > 1000);   /* 真的測到了足夠多的多邊形(不是產生器默默什麼都沒產生) */
         CHECK(wrong[variant] == 0);
+        CHECK(contact_cases[variant] > 100000);
+        CHECK(wrong_contact[variant] == 0);
     }
+}
+
+/* #198: assertions name the two independently specified counterexamples. */
+static void test_rect_outline_counterexamples(void)
+{
+    PolygonLoop2 notch = { .count = 8, .v = {
+        {0,0},{100,0},{100,100},{60,100},{60,40},{40,40},{40,100},{0,100}
+    }};
+    PolygonLoop2 ridge = { .count = 8, .v = {
+        {0,0},{100,0},{100,50},{60,50},{60,90},{40,90},{40,50},{0,50}
+    }};
+    ObstacleClass cls;
+    Coord u0, v0, u1, v1;
+    int counterexample_A = classify_rect_outline(&notch, 30,50,70,80,
+        &cls, &u0,&v0,&u1,&v1);
+    CHECK(counterexample_A < 0); /* Two disconnected contacts cannot be one hole/rectangle. */
+    int counterexample_B = classify_rect_outline(&ridge, 20,70,80,80,
+        &cls, &u0,&v0,&u1,&v1);
+    CHECK(counterexample_B > 0);
+    CHECK(cls == OBSTACLE_SPLIT);
+    CHECK(u0 == 40 && v0 == 70 && u1 == 60 && v1 == 80);
+    CHECK(classify_rect_outline(&notch, 10,10,20,20,
+        &cls, &u0,&v0,&u1,&v1) > 0);
+    CHECK(cls == OBSTACLE_HOLE);
+    CHECK(u0 == 10 && v0 == 10 && u1 == 20 && v1 == 20);
+    CHECK(classify_rect_outline(&notch, 110,110,120,120,
+        &cls, &u0,&v0,&u1,&v1) == 0);
+    CHECK(classify_rect_outline(&notch, -10,10,20,20,
+        &cls, &u0,&v0,&u1,&v1) > 0);
+    CHECK(cls == OBSTACLE_NOTCH);
+    CHECK(u0 == 0 && v0 == 10 && u1 == 20 && v1 == 20);
+    /* Reverse winding, negative coordinates, one-mm slabs and collinear vertices. */
+    for (int reverse = 0; reverse < 2; ++reverse) {
+        PolygonLoop2 small = { .count = 9, .v = {
+            {-2,-2},{0,-2},{2,-2},{2,0},{1,0},{1,1},{0,1},{0,0},{-2,0}
+        }};
+        if (reverse) for (size_t i=0; i<small.count/2; ++i) {
+            SurfacePoint2 t=small.v[i]; small.v[i]=small.v[small.count-1-i];
+            small.v[small.count-1-i]=t;
+        }
+        CHECK(classify_rect_outline(&small, -1,0,2,1,
+            &cls, &u0,&v0,&u1,&v1) > 0);
+        CHECK(cls == OBSTACLE_SPLIT);
+        CHECK(u0 == 0 && v0 == 0 && u1 == 1 && v1 == 1);
+    }
+    CHECK(classify_rect_outline(&notch, 100,100,110,110,
+        &cls, &u0,&v0,&u1,&v1) < 0); /* R7: isolated point tangency. */
 }
 
 int main(void)
 {
+    test_rect_outline_counterexamples();
     test_collinear_vertex_rect_corner();
     test_notch_rect_with_corners_on_ring_is_outside();
     test_poly_contains_rect_matches_cell_oracle();

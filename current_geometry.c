@@ -10505,83 +10505,108 @@ static bool side_flush_outline(
     return false;
 }
 
-/* 矩形與輪廓的接觸分類：R 會先被輪廓邊界線裁切到內部
- * （直角切法，涵蓋孔/凹口/角/拆分全部案例）,再按貼邊數分類。
- * 回傳是否有正接觸；有時 out_* 為裁切後的 uv 矩形。 */
-static bool classify_rect_outline(
+/* R7: exact orthogonal intersection, not a corner/offset-point proxy.
+ * The obstacle contract carries one rectangle. A disconnected/nonrectangular
+ * intersection (or zero-area tangency) is reported explicitly, never replaced
+ * by a bounding rectangle or silently treated as a missing obstacle. */
+#define FACE_OBSTACLES_DEGENERATE (SIZE_MAX - 1)
+#define RECT_CONTACT_ERROR "R7: 投影接觸非單一矩形或僅相切（退化，不猜）"
+
+static void proj_sort_coords(Coord *values, size_t n)
+{
+    for (size_t i = 1; i < n; ++i) {
+        Coord value = values[i];
+        size_t j = i;
+        while (j > 0 && values[j - 1] > value) {
+            values[j] = values[j - 1];
+            --j;
+        }
+        values[j] = value;
+    }
+}
+
+/* 0 = disjoint; 1 = exact single rectangular contact; -1 = R7 degeneration.
+ * Every polygon vertex splits the v-axis into topology-constant open slabs.
+ * Pairing sorted vertical-edge crossings gives the entire interior in a slab;
+ * clipping those intervals is exact, including half-mm midlines. We accept a
+ * rectangle only if every nonempty slab has the same single u interval and the
+ * v intervals are consecutive. No area multiplication or geometric sampling. */
+static int classify_rect_outline(
     const PolygonLoop2 *loop,
     Coord in_u0, Coord in_v0, Coord in_u1, Coord in_v1,
     ObstacleClass *cls,
     Coord *out_u0, Coord *out_v0, Coord *out_u1, Coord *out_v1
 )
 {
-    Coord u0 = in_u0, v0 = in_v0, u1 = in_u1, v1 = in_v1;
-    size_t inside = 0;
+    if (loop == NULL || loop->count < 4 || loop->count > POLY_MAX_VERTICES ||
+            in_u0 >= in_u1 || in_v0 >= in_v1) return 0;
+    Coord cuts[POLY_MAX_VERTICES + 2] = { in_v0, in_v1 };
+    size_t nc = 2;
+    for (size_t i = 0; i < loop->count; ++i)
+        if (loop->v[i].v > in_v0 && loop->v[i].v < in_v1)
+            cuts[nc++] = loop->v[i].v;
+    proj_sort_coords(cuts, nc);
 
-    {
-        SurfacePoint2 corners[4] = {
-            { u0, v0 }, { u1, v0 }, { u1, v1 }, { u0, v1 }
-        };
-        for (int i = 0; i < 4; ++i) {
-            if (poly_contains_point(loop, corners[i])) ++inside;
-        }
-    }
-    if (inside == 0) return false;
-
-    if (inside < 4) {
-        /* 矩形跨出輪廓：每條切過 R 內部的輪廓邊把 R 裁向內側。 */
+    bool found = false;
+    Coord u0 = 0, v0 = 0, u1 = 0, v1 = 0;
+    for (size_t slab = 1; slab < nc; ++slab) {
+        Coord lo = cuts[slab - 1], hi = cuts[slab];
+        if (lo == hi) continue;
+        Coord mid2 = lo + hi;
+        Coord crossings[POLY_MAX_VERTICES];
+        size_t count = 0;
         for (size_t i = 0; i < loop->count; ++i) {
-            SurfacePoint2 a = loop->v[i];
-            SurfacePoint2 e = loop->v[(i + 1) % loop->count];
-            Coord lo, hi, mid;
-
-            if (a.u == e.u) {
-                lo = coord_min(a.v, e.v);
-                hi = coord_max(a.v, e.v);
-                if (coord_min(v1, hi) <= coord_max(v0, lo)) continue;
-                if (a.u <= u0 || a.u >= u1) continue;
-                mid = (lo + hi) / 2;
-                if (poly_contains_point(
-                        loop, (SurfacePoint2){ a.u + 1, mid }))
-                    u0 = a.u;
-                else
-                    u1 = a.u;
-            } else if (a.v == e.v) {
-                lo = coord_min(a.u, e.u);
-                hi = coord_max(a.u, e.u);
-                if (coord_min(u1, hi) <= coord_max(u0, lo)) continue;
-                if (a.v <= v0 || a.v >= v1) continue;
-                mid = (lo + hi) / 2;
-                if (poly_contains_point(
-                        loop, (SurfacePoint2){ mid, a.v + 1 }))
-                    v0 = a.v;
-                else
-                    v1 = a.v;
-            }
+            SurfacePoint2 a = loop->v[i], b = loop->v[(i + 1) % loop->count];
+            if (a.u == b.u && mid2 > 2 * coord_min(a.v,b.v) &&
+                    mid2 < 2 * coord_max(a.v,b.v)) crossings[count++] = a.u;
         }
-        if (u0 >= u1 || v0 >= v1) return false;
+        if (count % 2) return -1; /* Valid simple orthogonal loops have paired crossings. */
+        proj_sort_coords(crossings, count);
+        int intervals = 0;
+        Coord left = 0, right = 0;
+        for (size_t i = 0; i < count; i += 2) {
+            Coord l = coord_max(in_u0, crossings[i]);
+            Coord r = coord_min(in_u1, crossings[i + 1]);
+            if (l >= r) continue;
+            if (++intervals > 1) return -1;
+            left = l; right = r;
+        }
+        if (intervals == 0) continue;
+        if (found && (left != u0 || right != u1 || lo != v1)) return -1;
+        if (!found) { u0 = left; u1 = right; v0 = lo; found = true; }
+        v1 = hi;
+    }
+    if (!found) {
+        /* Distinguish closed boundary tangency from a genuinely absent item. */
+        for (size_t i = 0; i < loop->count; ++i) {
+            SurfacePoint2 a = loop->v[i], b = loop->v[(i+1)%loop->count];
+            if (coord_max(coord_min(a.u,b.u),in_u0) <= coord_min(coord_max(a.u,b.u),in_u1) &&
+                coord_max(coord_min(a.v,b.v),in_v0) <= coord_min(coord_max(a.v,b.v),in_v1))
+                return -1;
+        }
+        return 0;
     }
 
-    {
-        int flush = 0;
-        bool f[4];
-        for (int s = 0; s < 4; ++s) {
-            f[s] = side_flush_outline(loop, s, u0, v0, u1, v1);
-            if (f[s]) ++flush;
-        }
-        if (flush == 0) {
-            *cls = OBSTACLE_HOLE;
-        } else if (flush == 1) {
-            *cls = OBSTACLE_NOTCH;
-        } else if (flush == 2) {
-            bool opposite = (f[0] && f[1]) || (f[2] && f[3]);
-            *cls = opposite ? OBSTACLE_SPLIT : OBSTACLE_CORNER;
-        } else {
-            *cls = OBSTACLE_SPLIT;
-        }
+    int flush = 0;
+    bool f[4];
+    for (int side = 0; side < 4; ++side) {
+        f[side] = side_flush_outline(loop, side, u0, v0, u1, v1);
+        if (f[side]) ++flush;
     }
+    /* A point-only corner contact is not a hole (R7); do not guess a notch. */
+    SurfacePoint2 corners[4] = {{u0,v0},{u1,v0},{u1,v1},{u0,v1}};
+    const int adjacent[4][2] = {{0,2},{1,2},{1,3},{0,3}};
+    for (int i = 0; i < 4; ++i)
+        if (!f[adjacent[i][0]] && !f[adjacent[i][1]] &&
+                poly_point_on_edge(loop, corners[i])) return -1;
+
+    if (flush == 0) *cls = OBSTACLE_HOLE;
+    else if (flush == 1) *cls = OBSTACLE_NOTCH;
+    else if (flush == 2 && !((f[0] && f[1]) || (f[2] && f[3])))
+        *cls = OBSTACLE_CORNER;
+    else *cls = OBSTACLE_SPLIT;
     *out_u0 = u0; *out_v0 = v0; *out_u1 = u1; *out_v1 = v1;
-    return true;
+    return 1;
 }
 
 /* 面的所屬空間 id（非成員回 0，對應游離柱樑）。 */
@@ -10635,8 +10660,10 @@ static size_t world_face_obstacles(
             /* 平面面：柱足跡 vs 輪廓接觸 → hole/notch/corner/split */
             ObstacleClass cls;
             Coord cu0, cv0, cu1, cv1;
-            if (!classify_rect_outline(&b->outline, u0, v0, u1, v1,
-                    &cls, &cu0, &cv0, &cu1, &cv1)) continue;
+            int contact = classify_rect_outline(&b->outline, u0, v0, u1, v1,
+                    &cls, &cu0, &cv0, &cu1, &cv1);
+            if (contact < 0) return FACE_OBSTACLES_DEGENERATE;
+            if (contact == 0) continue;
             out[n++] = (FaceObstacle){
                 c->id, 0, cls, cu0, cv0, cu1, cv1
             };
@@ -11290,9 +11317,10 @@ static bool proj_apply_one(
         /* 條帶矩形自身再分類 → 依接觸切天花 */
         ObstacleClass sc;
         Coord cu0, cv0, cu1, cv1;
-        if (!classify_rect_outline(&b->outline, u0, v0, u1, v1,
-                &sc, &cu0, &cv0, &cu1, &cv1)) {
-            scene_error(path, line_no, "條帶不與輪廓接觸");
+        int contact = classify_rect_outline(&b->outline, u0, v0, u1, v1,
+                &sc, &cu0, &cv0, &cu1, &cv1);
+        if (contact <= 0) {
+            scene_error(path, line_no, contact < 0 ? RECT_CONTACT_ERROR : "條帶不與輪廓接觸");
             return false;
         }
         bool sf[4];
@@ -11536,6 +11564,10 @@ static bool apply_applyproj_line(
     World backup = *world;
     FaceObstacle items[64];
     size_t n = world_face_obstacles(world, b, items, 64);
+    if (n == FACE_OBSTACLES_DEGENERATE) {
+        scene_error(path, line_no, RECT_CONTACT_ERROR);
+        return false;
+    }
     if (n == SIZE_MAX) {
         scene_error(path, line_no, "面未放置，推不出障礙物");
         return false;
@@ -11561,10 +11593,16 @@ static bool apply_applyproj_line(
             for (size_t j = 0; j < np; ++j) {
                 ObstacleClass pc;
                 Coord t0, t1, t2, t3;
-                if (!classify_rect_outline(&pb[j]->outline,
+                int contact = classify_rect_outline(&pb[j]->outline,
                         items[i].u_lo, items[i].v_lo,
                         items[i].u_hi, items[i].v_hi,
-                        &pc, &t0, &t1, &t2, &t3)) continue;
+                        &pc, &t0, &t1, &t2, &t3);
+                if (contact < 0) {
+                    *world = backup;
+                    scene_error(path, line_no, RECT_CONTACT_ERROR);
+                    return false;
+                }
+                if (contact == 0) continue;
                 if (tb != NULL) {
                     *world = backup;
                     scene_error(path, line_no,
