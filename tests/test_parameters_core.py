@@ -1,4 +1,5 @@
 """Parameters are evaluated by the real native bridge, never by a test evaluator."""
+import base64
 import json
 import os
 from pathlib import Path
@@ -275,6 +276,32 @@ class ParametersCore(unittest.TestCase):
         self.apply([{"op": "delete-parameter", "id": 3}])
         self.apply([card(3, "再宣告", [field(1, "1")])])
         self.assertEqual([0, 1, 3], [c["id"] for c in self.read()["state"]["parameters"]])
+
+    def archive_line(self, operation):
+        """The DSL entry that dispatches an arbitrary engineering operation without engineering-preview."""
+        return "engineering archive " + base64.b64encode(json.dumps(operation, ensure_ascii=False).encode("utf-8")).decode("ascii")
+
+    def test_retired_identity_never_leaks_out_of_its_candidate(self):
+        # PR #193 審查:退役清單只屬於「那一筆候選」。取消、失敗的預覽,以及 DSL 入口(engineering archive)都不得殘留。
+        self.apply([card(0, "獨立", [field(1, "5")])])
+        preview = self.request([{"op": "delete-parameter", "id": 0}])["preview"]
+        self.assertTrue(preview["valid"], preview)
+        self.assertTrue(self.command("engineering-cancel %d" % preview["token"])["cancelled"])
+        self.apply_line(self.archive_line(card(0, "取消後以 DSL 修改", [field(1, "6")])))
+        self.assertEqual("6", self.values()[0, 1]["num"])
+        self.rejected([{"op": "delete-parameter", "id": 0}, card(5, "壞", [field(1, "=@9:9")])], "MISSING")
+        self.apply_line(self.archive_line(card(0, "失敗後以 DSL 修改", [field(1, "7")])))
+        self.apply([card(0, "失敗後以批次修改", [field(1, "8")])])
+        self.assertEqual("8", self.values()[0, 1]["num"])
+        # 成功的 DSL 刪除不會替下一行 DSL／下一筆批次留下退役;批次成功刪除也一樣。
+        self.apply_line(self.archive_line({"op": "delete-parameter", "id": 0}))
+        self.apply_line(self.archive_line(card(0, "DSL 刪後再宣告", [field(1, "9")])))
+        self.apply([{"op": "delete-parameter", "id": 0}])
+        self.apply([card(0, "批次刪後再宣告", [field(1, "10")])])
+        self.assertEqual([0], [c["id"] for c in self.read()["state"]["parameters"]])
+        # 同一筆候選內仍然禁止(範圍是候選,不是放寬)。
+        self.rejected([{"op": "delete-parameter", "id": 0}, card(0, "同候選再宣告", [field(1, "11")])],
+                      "parameter 0 was deleted earlier in this transaction")
 
     # ---- 驗收矩陣補列：對應 PARAMETERS-PROPOSAL.md「驗收矩陣」，逐列索引見 PARAMETERS-VALIDATION.md「驗收矩陣對應」 ----
     split_room = harness.EngineeringCore.split_room

@@ -159,7 +159,7 @@ static bool apply_engineering_line(const char *path,int line_no,char **tokens,in
     }else if(!strcmp(tokens[1],"application"))ok=eng_put_application(w,&j,0);
     else if(!strcmp(tokens[1],"grid"))ok=eng_restore_grid(w,&j,0);
     else if(!strcmp(tokens[1],"timber"))ok=eng_restore_timber(w,&j,0);
-    else if(!strcmp(tokens[1],"archive"))ok=eng_operation(w,&j,0);
+    else if(!strcmp(tokens[1],"archive")){ok=eng_operation(w,&j,0);w->parameters.retired_count=0;}
     if(!ok)scene_error(path,line_no,g_engineering_error[0]?g_engineering_error:"I36: invalid engineering record");
     eng_json_free(&j);return ok;
 }
