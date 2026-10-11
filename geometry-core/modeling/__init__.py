@@ -17,13 +17,14 @@ from .common import (ModelError, canonical_bytes, digest, strict_json_loads,
 # The source commit contains the adopted axiom bytes identified by this digest.
 # Update only after committing the corresponding SSOT change (MODELING-CONTRACT).
 AXIOM_REVISION = "a2f8c89f74930cf9b88a6bb79e5897c9046f442c"
-AXIOM_SHA256 = "839250e3366b8019ae1aae5d3799f3f93c768820bf7e4856d571634d32ddff6a"
-# The P-045 amendment (2026-10-11: D51 wording, D54 fail-closed sentence) replaced
-# the ee7c441 text before it reached main; that interim digest was never declared
-# by a main executor, so it is deliberately not listed as a compatible version.
-# The D48 label-format fix (P-044, 2026-10-11) replaced the c24ec08 and 2818289
-# texts before they reached main; those interim digests were never declared by a
-# main executor, so they are deliberately not listed as compatible versions.
+AXIOM_SHA256 = "2348373fa4182f984489c068b1762725f3d9eaa4087418b0ffb5182c763213e4"
+# The K2b texts of ee7c441 (before the P-045 amendment) and a2f8c89 (before
+# following K1's P-047 fix) never reached main; those interim digests were never
+# declared by a main executor, so they are deliberately not listed as compatible versions.
+# The K1 fixes of 2026-10-11 (P-044 D48 label format; P-047 undo semantics) replaced
+# the c24ec08, 2818289 and 7c5485b texts before they reached main; those interim
+# digests were never declared by a main executor, so they are deliberately not
+# listed as compatible versions.
 # The R43 amendment (PF-0 r2.1, 2026-10-11) replaced the a93bb34 text before it
 # reached main; that interim digest was never declared by a main executor, so it
 # is deliberately not listed as a compatible version.
@@ -31,7 +32,7 @@ AXIOM_SHA256 = "839250e3366b8019ae1aae5d3799f3f93c768820bf7e4856d571634d32ddff6a
 # and definition-import/1, which this executor does not implement; packages built
 # under the previous adopted text (K1) stay valid.
 PRE_ZERO_ROOM_AXIOM_VERSIONS = frozenset({
-    ("7c5485bba1a1e0d9b95009bd80dfc4114af1d942", "d9ccdd38e31219a4eea4c0f75dc09963a60504e6e3fd80fdf9ed4df1952f94a8"),
+    ("ca3790ce7e87e1a9190cb17fb63bbe42f501f7a5", "267a308698954ca610814d3956b5b837463ccaec8d4d074236de9f9df7f8a050"),
 })
 # D46-D50 / I58-I62 / R47-R50 only add cutting-plan/1, which this executor does
 # not implement; packages built under the previous adopted text stay valid.
