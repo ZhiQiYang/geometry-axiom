@@ -405,6 +405,30 @@ class GateLayer(LanCase):
         self.assertEqual(self.send(port, "GET", "/runtime", cookie=cookie).status, 200)
         self.assertEqual(self.process.stdin.getvalue(), b"", "未驗證的請求碰到了 bridge")
 
+    def test_04b_denied_request_whose_body_arrives_late_still_gets_its_403(self):
+        # The gate answers before the body is read.  Closing with the body still unread makes the OS send RST,
+        # and (on Windows) the client then loses the 403 it already received; a phone would see "network error".
+        gate, server, mode = self.start_lan()
+        port = gate.config.port
+        body = b'{"cmd":"dump"}'
+        with socket.create_connection(("127.0.0.1", port), timeout=5) as client:
+            client.sendall((f"POST /api HTTP/1.1\r\nHost: {LAN_IP}:{port}\r\nOrigin: {gate.config.origin}\r\n"
+                            f"Content-Length: {len(body)}\r\n\r\n").encode())
+            time.sleep(0.3)
+            client.sendall(body)
+            time.sleep(0.3)
+            data = b""
+            try:
+                while True:
+                    chunk = client.recv(65536)
+                    if not chunk:
+                        break
+                    data += chunk
+            except OSError as exc:
+                self.fail(f"拒絕後沒有 lingering close：已送出的 403 被 RST 吃掉（{type(exc).__name__}）")
+        self.assertTrue(data.startswith(b"HTTP/1.0 403"), data[:80])
+        self.assertEqual(self.process.stdin.getvalue(), b"", "被拒絕的 body 碰到了 bridge")
+
     # §4-5 ------------------------------------------------------------------
     def test_05_pairing_codes_are_single_use_rate_limited_and_never_logged(self):
         clock = FakeClock()

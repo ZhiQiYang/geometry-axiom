@@ -703,6 +703,28 @@ def _cut(sock):
         pass
 
 
+def _linger(sock, limit=65536, seconds=1.0):
+    """拒絕後的 lingering close：先送 FIN，再丟棄對端已送出的少量資料（≤64 KiB、≤1 秒）才關閉。
+
+    直接關閉時，未讀的 body 會讓 OS 送 RST，對端（Windows 尤其）連已收到的 403 一起丟掉，
+    看起來像「連不上」。丟棄的資料不解析、不轉交；這不是讀 body——回應早已送出。
+    """
+    try:
+        socket.socket.shutdown(sock, socket.SHUT_WR)
+        deadline = time.monotonic() + seconds
+        while limit > 0:
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                break
+            sock.settimeout(remaining)
+            chunk = socket.socket.recv(sock, min(limit, 8192))
+            if not chunk:
+                break
+            limit -= len(chunk)
+    except (OSError, ValueError):
+        pass
+
+
 class LanHTTPServer(PreviewHTTPServer):
     """區網監聽器：連線數非阻塞上限、標頭總期限巡檢、TLS 交握在工作執行緒（DESIGN §2.4）。"""
     block_on_close = False
@@ -804,6 +826,16 @@ class LanHandler(Handler):
     timeout = 60           # 標頭之後（只剩已驗證者）每次讀取的上限
     lan_route = None
     lan_headers_done = False
+    lan_linger = False     # 送出錯誤回應後要 lingering close
+
+    def finish(self):
+        super().finish()
+        if self.lan_linger:
+            _linger(self.connection)
+
+    def send_error(self, code, message=None, explain=None):
+        self.lan_linger = True
+        super().send_error(code, message, explain)
 
     def parse_request(self):
         if not super().parse_request():
@@ -840,6 +872,8 @@ class LanHandler(Handler):
 
     def _lan_reply(self, status, body=b"", ctype=None, extra=()):
         """區網專用回應：不帶 session／版本標頭，一律 Connection: close；拒絕是空白 403。"""
+        if status >= 400:
+            self.lan_linger = True
         self.send_response(status)
         if ctype:
             self.send_header("Content-Type", ctype)
