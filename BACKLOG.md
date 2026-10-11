@@ -71,7 +71,7 @@
 | GEO-253 | 識別與追溯擴充（#44／#48） | 待契約提案 | 決策 K-3 |
 | GEO-254 | 介面擴充（#116 其餘） | 待契約提案 | 決策 K-4 |
 | GEO-255 | PF-1～PF-6 面材鋪滿實作 | 待 PF-0 寫入公理層 | 決策 F、issue #128 |
-| GEO-256 | Q38 斷面拉伸剩餘切片 | 進行中（#169 已隨 #180 進 main；I44 閘在 PR #182 draft，Q38j 提案定稿待公理寫入） | 決策佇列 Q38 |
+| GEO-256 | Q38 斷面拉伸剩餘切片 | 進行中（#169 已隨 #180 進 main；I44 閘在 PR #182 draft；Q38j 定稿狀態為作者回報，待可核版本與公理寫入） | 決策佇列 Q38 |
 | GEO-257 | 核心矩形-環包含判定的註解宣稱錯誤 | 未開始 | 2026-10-10 Q38 對抗審查 |
 | GEO-258 | `parameter_remove` 不檢查引用，違反 I38／I39 | 未開始 | 2026-10-10 K3 提案第 3、4 輪對抗審查 |
 | GEO-259 | Resume 剩餘範圍（當機／重載／跨 session） | 未開始 | 2026-10-10 合併 #180；決策佇列 2026-10-10 拍板 |
@@ -112,7 +112,7 @@
 
 - **背景**：issue #60（SGR-03 完整保存來源／草稿、能力預驗、重開相容與復原重做）依決策 J 以採納範圍關單。採納範圍＝Q36 第六條「完整保存 rule／ref／capability，舊 reader 不足拒」。已合併：PR #126（8d134fc，已提交規則的 `geometry-canvas/11` 保存／reader／capability／preflight，2026-10-04T19:03Z）、PR #133（d6b4b45，`grid-editor-draft/2` 草稿隨 ZIP、單步 history、`/13`，2026-10-05T10:01Z）。
 - **不在採納範圍或未見逐項證據的 issue 驗收項**（十框中）：
-  1. 「一次多面來源更新整筆 undo／redo」——跨面完整流程 PR #133 明言不含，歸 #61 第二切片線（PR #134，已隨 #180 進 main）；逐項證據：SR16／SR23 真 UI 雙面更新含 Save/New/fresh-profile 重開後 Undo/Redo 閉環（tests/release-evidence/20261008-cloud-closeout/README.md、contract-gap-probes/gate-receipts/sr16-sr23-browser-r1）、P88 多面規則線驗收（geometry-web/docs/evidence/browser-acceptance-20261006/pr134/p88-rerun/）。（依 P-040 判定）
+  1. 「一次多面來源更新整筆 undo／redo」——跨面完整流程 PR #133 明言不含，歸 #61 第二切片線（PR #134，已隨 #180 進 main）。SR16／SR23 原始紀錄在 1400／390 各通過 75 項，涵蓋整筆來源更新 Undo／Redo、Save／New／fresh-profile Open；重開後 Undo 是撤銷 Open 回空專案，Redo 再開回，**不是保存並恢復重開前的編輯歷史**（[原始 log](tests/release-evidence/20261008-cloud-closeout/contract-gap-probes/gate-receipts/sr16-sr23-browser-r1/command.log)）。另有 **P88 重跑原始四輪有 2/4 間歇失敗**，不能合併宣稱全面通過（[限定結果](geometry-web/docs/evidence/browser-acceptance-20261006/pr134/p88-rerun/README.md)）。沿用 P-040 的限定判定。
   2. 「真重新整理、服務恢復／唯讀狀態、跨專案遲到回覆與重試」對來源規則與規則草稿的逐項證據——PR #126／#133 有 #77 的 recovery、late receipt 測試，但未見針對規則草稿的逐項證據（推論）；實機部分歸 GEO-250。
 - **issue 本文自述不在本期**：獨立跨專案規則分享包；舊 Python 模型 adapter 遇 rules 明確拒絕（PR #126，符合 Q36「不支持的 model producer 明示拒」，不是缺口）。
 - **視為已交付（推論）**：其餘框（正式 scene 往返、完整 .gcanvas 新上下文重開、草稿保存重開、失敗／取消保全、capability 移除或降版被拒、舊檔不暗遷移、規則 key 配號與高水位）依 PR #126／#133 正文視為已交付，**未逐框重驗**。
@@ -168,7 +168,7 @@
 - **依據**：issue #128；`geometry-core/PANEL-FILL-AXIOM-DIFF.md`（D41–D45／I52–I57／R41–R46、E1–E3）；決策佇列 2026-10-05 PANEL-FILL／STRUCT-FROM-FINISH（完成面首版範圍已改號 Q48）。
 - **切片（issue #128）**：PF-1 完成面（建立／編輯／保存）；PF-2 鋪滿與顯示（整片／裁切片、窄邊條、片數；縫位與 PANEL_LAYOUT 共用計算）；PF-3 承接比對（縫下有無角材，綠／紅，門檻為 D31 具名參數、初始 8 mm）；PF-4 網格對齊鋪排（引用、會重算、I8a 預覽）；PF-5 空間完成面（高度與方向、面材厚度方向、板背面、依 Q47 分層判斷樑）；PF-6 建議角材（預覽→確認→建立，只推板縫下貼板一層）。
 - **必守**：鋪排與 PANEL_LAYOUT／D10b 共用同一套排板／縫位計算，不另寫第二套；試排是推導結果，不進角材料單、不影響既有角材求值；既有場景行為不變。範圍外維持公理 §四（施工順序、載重撓度、主骨／吊筋／與樓板連接）。
-- **驗收**：PF-0 §6 的 PF01～PF13，加 r2 新增的 PF14～PF22 與 r2.1 修正新增的 PF23／PF24（geometry-core/panel-fill/amendment-r2.1-R43.md §5，該檔自註「PF23／PF24 尚未列入 GEO-255 的驗收表」；該檔在 PR #184，未合併）；新增測試加突變測試（拿掉實作必須轉紅，失敗訊息指得出病因）；動 `app.js` 加跑 `cdp_test.js`，動空間工作區加跑 `space_model_test.js`；WSL 七個 CI 等價 job 全綠。
+- **驗收**：PF-0 §6 的 PF01～PF13；PF14～PF22 來源為 PR #184 的 [AXIOM-DIFF-r2.md §6](https://github.com/ZhiQiYang/geometry-axiom/blob/444a871c87d78f8a12fd40f8cd79c3e6621ff393/geometry-core/panel-fill/AXIOM-DIFF-r2.md)，PF23／PF24 來源為同一版本的 [amendment-r2.1-R43.md §5](https://github.com/ZhiQiYang/geometry-axiom/blob/444a871c87d78f8a12fd40f8cd79c3e6621ff393/geometry-core/panel-fill/amendment-r2.1-R43.md)。**PF14～PF24 為驗收要求，尚未逐項實跑**；不得將提案表當作測試收據。新增測試加突變測試（拿掉實作必須轉紅，失敗訊息指得出病因）；動 `app.js` 加跑 `cdp_test.js`，動空間工作區加跑 `space_model_test.js`；WSL 七個 CI 等價 job 全綠。
 - **拿掉／合併（GEO-219）**：各切片新增可見入口時，在開工時寫明減項（目前未定；寫不出就先入決策佇列）。
 
 ### GEO-256 — Q38 斷面拉伸剩餘切片（2026-10-09；#169 已隨 #180 於 2026-10-10 進 main）
@@ -182,6 +182,7 @@
 
 - **缺陷**：`current_geometry.c:402-407`（`poly_contains_rect`）的註解寫「若矩形跨出環，必有環邊穿入矩形內部」，這個宣稱不成立。反例：輪廓 [0,0],[100,0],[100,100],[60,100],[60,40],[40,40],[40,100],[0,100]（槽 x∈[40,60]、y∈[40,100] 在環外）上的矩形 R=[40,60]×[50,70] 會被判為在內：四個角都落在環的邊上、沒有任何環邊穿過 R 的內部，但 R 整個在槽內，也就是在環外。
 - **影響**：D7／I5 走的路徑受影響；Q38 的 I44 路徑已改用精確差集（`sp_outside_regions`），不受影響。
+- **更正（2026-10-11，保留上列歷史原文）**：上列「I44 不受影響」是舊記錄，經原始碼核對不正確。此帳本基底 `e50e8d1` 的 `geometry-core/section_profile_validation.inc:56` 仍以 `poly_contains_rect` 判定；`sp_outside_regions` 是判定出界後的診斷計算。修正分別見 PR #182／#192，當時均未合併，不能把 draft 記為已修復。
 - **狀態**：未開始。
 - **來源**：2026-10-10 Q38 對抗審查。
 ### GEO-258 — `parameter_remove` 不檢查引用（2026-10-10，未開始）
