@@ -47,6 +47,9 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,expectNativeDial
     await ctl('#igNewBinding');
     await settle('配置模式已渲染：igSaveBinding 顯示，#igBoundary 可見且可用',`!!$('igSaveBinding')&&!$('igSaveBinding').hidden&&${usable('#igBoundary')}`,{observe:seen});
   };
+  // `fresh()`/`leave()` close the workspace but leave its old DOM (with a stale #igName) behind, so `!!$('igName')` is already true
+  // before the new source form exists; require the dialog to be open and #igName really rendered, visible and enabled.
+  const newSourceReady=async()=>{await newSource();await settle('新來源工作區已開啟：對話框 open 且 #igName 可見可用',`$('infiniteGridWorkspace').open&&${usable('#igName')}`,{observe:seen});};
   const fresh=async()=>{await leave();const dirty=await read('ReferenceWorkspace.context().dirty');await ctl('#fileMenuBtn');await expectNativeDialog(()=>ctl('#btnNewProject'),{message:'建立一份空白新專案，切換為新的專案識別及「未命名專案」。'+(dirty?'目前尚未保存的變更不會自動寫入檔案。':'')+'本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？',accept:true});await settled();};
   const openSource=async sid=>{await leave();await ctl(`#objectList .object-row[data-kind="grid-system"][data-id="${sid}"]`);await ctl('#gridObjectOpen');await wait(`$('infiniteGridWorkspace').open&&!$('igRuleAdd').disabled`);};
   const face=async bid=>{await leave();await ctl(`#objectList .object-row[data-kind="boundary"][data-id="${bid}"]`);await ctl('#inspEnter');await wait(`oc.edit?.bid===${bid}`);await wait(`GridRuleLines.entries().some(l=>l.segments.length)`);};
@@ -58,7 +61,7 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,expectNativeDial
     await send('Emulation.setDeviceMetricsOverride',{width,height:900,deviceScaleFactor:1,mobile:false});await fresh();
     const cells=[['-2','1'],['9007199254740993','-9007199254740995']];
     for(const bid of [1,2]){await fixture(`boundary ${bid} outline ${bid===1?'0,0 1200,0 1200,800 0,800':'0,0 1200,0 1200,800 800,800 800,600 0,600 hole 170,80 170,280 230,280 230,80'}`);await fixture(`placement ${bid} on boundary ${bid} origin 0 0 ${(bid-1)*2000} u +x v +y`);}
-    await newSource();await wait(`!!$('igName')&&!$('igName').disabled`);await fill('#igName',`Authored shared rule ${width}`);await ctl('#igSaveSource');await impact();await confirm();const sid=(await objects()).gridSystems[0].id;
+    await newSourceReady();await fill('#igName',`Authored shared rule ${width}`);await ctl('#igSaveSource');await impact();await confirm();const sid=(await objects()).gridSystems[0].id;
     await ctl('#igRuleAdd');await fill('#igRuleName','Native inner lines');await ctl('#igRulePreview');await impact();await confirm();
     await wait(`!!document.querySelector('[data-ig-source-rule="1"]')`);check(`${width} 来源原生子線顯示而 ref:null 未轉成 applied 引用`,await read(`document.querySelectorAll('[data-ig-source-rule]').length>0&&[...document.querySelectorAll('[data-ig-source-rule]')].every(n=>n.dataset.igRuleRef==='none')`));
     for(let index=0;index<2;index++){
@@ -221,7 +224,7 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,expectNativeDial
     // Cell selectors are a separate native scenario: all-cells and cell rules
     // cannot overlap within a source (I25a), so do not invent a UI exception.
     await fresh();await fixture('boundary 1 outline 0,0 1200,0 1200,800 800,800 800,600 0,600 hole 170,80 170,280 230,280 230,80');await fixture('placement 1 on boundary 1 origin 0 0 0 u +x v +y');
-    await newSource();await wait(`!!$('igName')&&!$('igName').disabled`);await fill('#igName',`Signed cell source ${width}`);await ctl('#igSaveSource');await impact();await confirm();const cellSid=(await objects()).gridSystems[0].id;
+    await newSourceReady();await fill('#igName',`Signed cell source ${width}`);await ctl('#igSaveSource');await impact();await confirm();const cellSid=(await objects()).gridSystems[0].id;
     await ctl('#igRuleAdd');await fill('#igRuleName','Signed cell only');await choose('#igRuleSelector','cell');await fill('#igRuleCellI',cells[1][0]);await fill('#igRuleCellJ',cells[1][1]);await ctl('#igRulePreview');await impact();await confirm();
     await bindingEntry(false);await choose('#igBoundary','1');await wait(`$('igVertex').options.length>1&&!$('igCellI').disabled`);await choose('#igVertex','outer:0');await fill('#igCellI',cells[1][0]);await fill('#igCellJ',cells[1][1]);await ctl('#igSaveBinding');await impact();await confirm();await choose('#igSurface','1');await ctl('#igApplyBinding');await impact();await confirm();
     const cellGrid=(await query('references')).grids[0].id;await face(1);await focusCell(cells[1]);const exact=await query(`grid-rule-query grid ${cellGrid} rule 1 cell ${cells[1].join(' ')}`);

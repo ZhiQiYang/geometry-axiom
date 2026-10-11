@@ -613,11 +613,12 @@ async function main() {
   if (vtx) {
     const vBefore = await eval_(`JSON.stringify(oc.bmap[oc.edit.bid][0].verts[0])`);
     await drag(vtx.x, vtx.y, vtx.x + 60, vtx.y + 40);
-    /* The drag only edits fe.work; oc.bmap changes once emitBoundary's native write is followed by feAfterChange's `boundary` read.
+    /* The drag only edits fe.work; oc.bmap changes once emitBoundary's native write is followed by emitLine's renderObjects
+       (objects/surfaces/boundary reads, then the oc.bmap assignment) and feAfterChange's re-read.
        A fixed sleep(1200) read the old vertex whenever the native service was slower than that. Wait for the observable commit
        (bounded; a timeout is logged by name and the ✗ verdict below still counts - soft, so the run is not aborted), then let the
        rest of the refresh chain settle the way the old sleep(>=200) did. */
-    await cdp.makeSettle({waitForUI,eval_},{tag:'§7'})('拖曳外環頂點 0 後，oc.bmap 的頂點 0 離開拖曳前的值（emitBoundary → feAfterChange 的 boundary 讀回）',
+    await cdp.makeSettle({waitForUI,eval_},{tag:'§7'})('拖曳外環頂點 0 後，oc.bmap 的頂點 0 離開拖曳前的值（emitBoundary → renderObjects／feAfterChange 的 boundary 讀回）',
       `(()=>{const l=oc.edit&&oc.bmap[oc.edit.bid];return !!(l&&l[0]&&l[0].verts[0])&&JSON.stringify(l[0].verts[0])!==${JSON.stringify(vBefore)};})()`,
       {timeoutMs:15000,soft:true,observe:`({edit:!!oc.edit,vert0:oc.edit?(oc.bmap[oc.edit.bid]?.[0]?.verts?.[0]??null):null,busy:oc.busy,status:document.getElementById("status").textContent})`});
     await eval_('window.__cdpSettleUI?.(0)');
