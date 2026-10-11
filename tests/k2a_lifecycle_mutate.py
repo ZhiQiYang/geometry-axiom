@@ -2,6 +2,7 @@ from pathlib import Path
 import shutil,subprocess,json,re,hashlib
 root=Path(__file__).resolve().parents[1];out=Path('/tmp/k2aa-lifecycle-mutants');out.mkdir(exist_ok=True)
 cases=[
+ ('M2-collection-projection','feature-attachments.js','if(value.schema===GRID_DRAFTS_SCHEMA)return validateGridDrafts','if(false && value.schema===GRID_DRAFTS_SCHEMA)return validateGridDrafts','test_grid_drafts_lifecycle_capacity.js','M2 healthy singleton collection never subtracts lifecycle capacity'),
  ('M1-pure-removal','reference-workspace.js','if(ref.lost&&!value.inputRefs.some','if(false && ref.lost&&!value.inputRefs.some','test_reference_workspace_races.js','K2a M12/M14b lost flags cannot be erased or repinned with the same identity'),
  ('M2-individual-reserve','feature-attachments.js','MAX_BYTES,gridLostReserve(value),','MAX_BYTES,0,','test_grid_drafts_lifecycle_capacity.js','M2 individual draft reserves every automatic lost flag before admission'),
  ('M2-collection-reserve','feature-attachments.js','MAX_GRID_DRAFTS_BYTES,gridCollectionReserve(value),','MAX_GRID_DRAFTS_BYTES,0,','test_grid_drafts_lifecycle_capacity.js','M2 collection value reserves all lost flags and orphan identifiers'),

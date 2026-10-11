@@ -182,6 +182,7 @@
     if(value===null)return null;
     const next=gridDrafts(value);
     for(const draft of next.drafts){if(draft.baseRef&&!next.orphans.includes(draft.draftId))next.orphans.push(draft.draftId);for(const ref of draft.inputRefs)ref.lost=true;}
+    if(value.schema===GRID_DRAFTS_SCHEMA)return validateGridDrafts({schema:GRID_DRAFTS_SCHEMA,drafts:next.drafts,orphans:next.orphans});
     return gridDraftValue(next.drafts,next.orphans);
   }
   function gridRecordReserve(record){
