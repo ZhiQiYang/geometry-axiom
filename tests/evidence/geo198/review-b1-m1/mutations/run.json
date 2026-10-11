@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "python3",
+    "tests/geo198/refresh_mutations.py",
+    "/tmp/geometry-198-review2/mutations/workers"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "returncode": 1,
+  "seconds": 406.26985789100036,
+  "stack_soft_limit_bytes": 16777216,
+  "log_sha256": "103531a364bd401407d6b925c1fc89a974e03e190bc3faa02cd0ac6b9915524f",
+  "receipt": "returncode comes directly from Popen.poll, not test result inference",
+  "sample_count": 381
+}

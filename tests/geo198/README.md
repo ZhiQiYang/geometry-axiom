@@ -98,7 +98,7 @@ CI 受帳號計費阻擋;正式合併裁判由本機 WSL 收據提供。
 另加真正只有 `[0,1]×[0,1]` 的正例，兩種 winding 都驗，不刪舊輸入。
 
 R12 的未裁切 STRIP 只檢查閉合接觸是否存在，不要求接觸可表示成切削矩形。
-它仍須歸屬唯一面片（R14），也繼續處理後续合法或不存在項（R15），
+它仍須歸屬唯一面片（R14），也繼續處理後續合法或不存在項（R15），
 沒有整筆交易提早成功。`cut-strip` 繼續使用完整單矩形判定。
 新增 M63 去掉孤立接觸檢查、M64 恢復未裁切 strip 的過度拒絕、M65 提早成功跳過後續驗證。
 新增閉合邊檢查後，首輪全量刷新實際發現舊 M61 survived：即使 slab 只留一段，
@@ -111,3 +111,11 @@ M61 因而改成把多段交集合為 bbox，實際破壞 A 的單矩形契約�
 該歷史 metadata 的 exit_code 由結果推定，僅支持「log／results 全綠，退出碼符合 runner 邏輯」，
 不當作獨立實際退出碼收據；本次 capture.py 直接保存子行程 returncode。
 這些 Linux 結果不豁免 reader 5 紅，也不替代正典 owner PR #192 整合後最終 head 的正式七 job。
+
+最新產品修正 `f32f574`；M61 定義 `865f543`；完整 native 執行 `82af4ab`（before 乾淨）。
+最新 native 176/176、reference 48/48、scene 153/153，原 143 規格及接受／拒絕變動 0。
+最新帳本 55 筆：47 killed、1 crashed、4 equivalent、3 retired；52 個重編重跑＋3 筆驗退休依據，stale=0。
+真 Chromium 33/33，原完整 space 228/228、七群 completed、無 filter、直接 returncode 0。
+完整非瀏覽器 `python3 tests/run_all.py --build --update-expected`：83 suite 全部執行，2731 個有計數項為 2721 pass、9 fail、1 個具名允許 Windows GDI skip，實際 returncode 1、784.51 秒。9 fail＝reader 5 紅＋原 Node workspace races 4 個 5 秒 test timeout（不是 suite 逾時）。數量表只增加 native 164→176、scene 147→153、reference 40→48；沒有刪除斷言或豁免失敗。其後以未修改原設定重跑整個 `node:tests-js`，651/651、0 skip、exit 0；另原 races 檔 fresh native 控制為 61/61、0 skip。補跑均為限定範圍，不能拼成 83 suite 全綠；原 4 個逾時未重現、成因未定，沒有 main 同案例失敗證據或正式豁免。
+新增記憶體追溯診斷為 R7／R12／R14／R15、相對親代 +753 字元；正典未寫入，owner #192 及正式七 job 仍待。
+本輪 service log 有 1 次 BrokenPipeError，未定位／未豁免；不以 console 空宣稱整體健康。

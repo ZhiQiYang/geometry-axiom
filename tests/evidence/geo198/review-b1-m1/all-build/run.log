@@ -1,0 +1,10 @@
+  model-base：重建（來源指紋不符（exe 建於 2026-10-11T15:10:31+00:00，指紋 8e9869c206… ≠ 現在 95e49ee6ee…）；變動：current_geometry.c）…
+  engjson：重建（來源指紋不符（exe 建於 2026-10-11T15:10:05+00:00，指紋 edcad6946e… ≠ 現在 4c61c52d3b…）；變動：current_geometry.c）…
+core       沿用             沿用（來源與 binary SHA-256 相符（建於 2026-10-11T17:46:03+00:00））
+bridge     沿用             沿用（來源與 binary SHA-256 相符（建於 2026-10-11T17:46:16+00:00））
+integrity  沿用             沿用（來源與 binary SHA-256 相符（建於 2026-10-11T17:47:15+00:00））
+gdi        略過             僅 Windows
+model-base 已建             建好 /tmp/geometry-tests/model-base
+engjson    已建             建好 /tmp/geometry-tests/engineering-json-test
+
+全部 fresh 或略過。
