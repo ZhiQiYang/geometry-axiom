@@ -160,12 +160,13 @@
   };
   function overwriteFields(raw,normalized) {
     const same=(id,value,actual)=>{
-      if(id==='igName')return value.trim()===actual.trim();
-      if(/(?:Step|Phase|Panel|Gap|Anchor|Stagger|CellI|CellJ|AnchorUN|AnchorUD|AnchorVN|AnchorVD)$/.test(id)){
+      if(id==='igName'||id==='igRuleName')return value.trim()===actual.trim();
+      if(/(?:Step|Phase|Panel|Gap|Anchor|Stagger|CellI|CellJ|AnchorUN|AnchorUD|AnchorVN|AnchorVD)$/.test(id)||/^igRule[UV]$/.test(id)){
         const text=value.trim(),other=actual.trim();if(!text&&!other)return true;
         if(!/^-?\d+$/.test(text)||!/^-?\d+$/.test(other))return false;
         const number=BigInt(text);
-        if(id==='igCellI'||id==='igCellJ')return number>=-9223372036854775808n&&number<=9223372036854775806n&&number===BigInt(other);
+        if(['igCellI','igCellJ','igRuleCellI','igRuleCellJ'].includes(id))return number>=-9223372036854775808n&&number<=9223372036854775806n&&number===BigInt(other);
+        if(/^igRule[UV]$/.test(id))return number>=1n&&number<=65n&&number===BigInt(other);
         const min=/(?:Step|Panel|AnchorUD|AnchorVD)$/.test(id)?1n:/Gap$/.test(id)?0n:-BigInt(LIMIT);
         return number>=min&&number<=BigInt(LIMIT)&&number===BigInt(other);
       }
@@ -201,7 +202,10 @@
       const rule=row.rules?.find(r=>r.ruleKey===s.ruleDraft.ruleKey);
       const formal=rule?{name:rule.name,selector:rule.selector.kind,cellI:rule.selector.cell?.[0]||'0',cellJ:rule.selector.cell?.[1]||'0',divisionsU:String(rule.divisions[0]),divisionsV:String(rule.divisions[1])}:null;
       const pending=ruleDraftValue(s);
-      for(const field of F.ruleFields)fields.push({field:'ruleDraft.'+field,raw:pending.rawForm[field],current:formal?.[field]??(pending.intent==='create'?'（尚未建立）':'（規則已遺失）')});
+      if(formal){
+        const mapped=value=>Object.fromEntries(F.ruleFields.map(field=>[ruleIds[field],value[field]]));
+        fields.push(...overwriteFields(mapped(pending.rawForm),mapped(formal)).map(value=>({...value,field:'ruleDraft.'+F.ruleFields.find(field=>ruleIds[field]===value.field)})));
+      }else for(const field of F.ruleFields)fields.push({field:'ruleDraft.'+field,raw:pending.rawForm[field],current:pending.intent==='create'?'（尚未建立）':'（規則已遺失）'});
     }
     for(const r of [...s.inputPins.values()].filter(r=>!r.lost)){
       let next=pins.get(pinKey(r));

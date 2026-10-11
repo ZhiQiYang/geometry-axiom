@@ -27,6 +27,7 @@ cases += [
     ('M13-overflow','width:min(480px,calc(100vw - 24px))','width:2000px;max-width:none','k2a_drafts_browser.cjs','M13 chooser fits viewport'),
     ('M15-rule-raw-redraw', 's.ruleDraft=next.ruleDraft?copy(next.ruleDraft):null;', '', 'k2a_rule_repin_browser.cjs', 'accepted repin redraw preserves latest rule raw'),
     ('M15-rule-comparison', "if(s.mode==='source'&&s.ruleDraft){", 'if(false){', 'k2a_rule_repin_browser.cjs', 'two-way comparison includes latest rule raw and current rule'),
+    ('M15-rule-literal-comparison', "if(/^igRule[UV]$/.test(id))return number>=1n&&number<=65n&&number===BigInt(other);", "if(/^igRule[UV]$/.test(id))return value===actual;", 'k2a_rule_repin_browser.cjs', 'M15 parsed-equivalent rule divisions are omitted'),
 ]
 messages={'M01-replacement-dialog':'coexisting drafts never ask to replace another draft','M03-fresh-continuation-id':'M03 continuation retains original draftId','M15-cancel-updates-pin':'M15 cancellation preserves complete draft'}
 results = []

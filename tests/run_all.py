@@ -220,7 +220,7 @@ REQUIRED_BROWSER_GATES = {
     'tests/k2a_native_browser.cjs': 16,
     'tests/k2a_source_repin_browser.cjs': 14,
     'tests/k2a_zip_browser.cjs': 17,
-    'tests/k2a_rule_repin_browser.cjs': 28,
+    'tests/k2a_rule_repin_browser.cjs': 35,
     'tests/room_multi_candidate_browser.js': 34,
     'tests/test_section_profile_browser.js': 68,
     'tests/integration/q38_save_roundtrip.py': 18,
