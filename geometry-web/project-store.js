@@ -514,11 +514,13 @@
         (record.value.orphans.length||record.value.drafts.some(draft=>draft.inputRefs.some(ref=>ref.lost)))))return manifest;
     const featureAttachments=Features.gridUnmarkedEnvelope(manifest.featureAttachments,true);
     const requiredCapabilities=(manifest.requiredCapabilities||[]).filter(cap=>cap!==Features.GRID_DRAFTS_SCHEMA);
-    return normalizedManifest({...manifest,featureAttachments,requiredCapabilities},scene||"",manifest.sceneHash);
+    const normalized=normalizedManifest({...manifest,featureAttachments,requiredCapabilities},scene||"",manifest.sceneHash);
+    return {...manifest,featureAttachments,format:normalized.format,requiredCapabilities:normalized.requiredCapabilities};
   }
   function assertManifestCapacity(manifest, scene = null, stored = false) {
     Features.jsonBytes(manifest,MAX_MANIFEST+(stored?Features.MAX_GRID_DRAFTS*(20*12+103)+512:0),0,"專案清單超過 8 MB，請拆成較小的專案。");
     if(manifest.featureAttachments)Features.validate(manifest.featureAttachments,stored);
+    if(stored)Features.jsonBytes(gridUnmarkedManifest(manifest,scene),MAX_MANIFEST,0,"專案清單超過 8 MB，請拆成較小的專案。");
     const rooms = manifest.featureAttachments ? Features.sourceRooms(manifest.featureAttachments) : null;
     const reserve = rooms ? Features.lifecycleReserve(rooms) : 0;
     // New metadata edits reserve all native capabilities without a scene read.
