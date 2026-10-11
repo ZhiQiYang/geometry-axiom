@@ -68,7 +68,72 @@ function completeReceipt(receipt, phase, status) {
   assert.ok(Object.hasOwn(receipt, 'runtime'), 'every outcome has a runtime field');
 }
 
+// Run the original main entry, including fetch and fatal runtime checks. Unlike
+// outcome(), this does not replace main or its entry call. No browser is needed
+// because a malformed runtime must abort before launch or any fixture command.
+async function missingRuntimeVersion(phase) {
+  const source = fs.readFileSync(gatePath, 'utf8');
+  const writes = [];
+  let launches = 0;
+  let fetches = 0;
+  const processDouble = {
+    env: {
+      GEOMETRY_TEST_URL: 'http://127.0.0.1:1/',
+      GEOMETRY_FEEDBACK_DIR: path.join(os.tmpdir(), 'k4-runtime-unit-feedback'),
+      GEOMETRY_K4_EVIDENCE: path.join(os.tmpdir(), 'k4-runtime-unit'),
+      GEOMETRY_K4_PHASE: phase,
+      GEOMETRY_K4_KEEP_GOING: '1',
+    },
+    exitCode: 0,
+  };
+  await new vm.Script(source, {filename: gatePath}).runInNewContext({
+    require(name) {
+      if (name === 'node:fs') return {
+        mkdirSync() {},
+        writeFileSync(file, data) {
+          assert.equal(path.basename(file), 'result.json');
+          writes.push(JSON.parse(data));
+        },
+      };
+      if (name === 'playwright') return {chromium: {launch() {
+        launches++;
+        throw Error('malformed runtime must abort before browser launch');
+      }}};
+      return require(name);
+    },
+    URL,
+    async fetch(url) {
+      assert.equal(url.pathname, '/runtime');
+      fetches++;
+      return {json: async () => ({error: 'Not Found'})};
+    },
+    __dirname,
+    process: processDouble,
+    console: {log() {}, error() {}},
+  });
+  return {writes, launches, fetches, exitCode: processDouble.exitCode};
+}
+
 for (const phase of ['characterize', 'full']) {
+  test(`${phase}: missing runtime version retains an explicit null through the real main entry`, async () => {
+    const {writes, launches, fetches, exitCode} = await missingRuntimeVersion(phase);
+    assert.equal(fetches, 1);
+    assert.equal(launches, 0, 'fatal runtime checks must precede browser launch');
+    assert.equal(exitCode, 1, 'KEEP_GOING cannot bypass a malformed runtime');
+    assert.equal(writes.length, 1);
+    const receipt = writes[0];
+    assert.equal(receipt.phase, phase);
+    assert.equal(receipt.status, 'aborted');
+    assert.equal(receipt.commandsSent, 0, 'no reset or fixture command before isolation succeeds');
+    assert.equal(receipt.snapshotHash, null);
+    assert.ok(Object.hasOwn(receipt, 'runtime'), 'missing version must not remove the runtime field');
+    assert.equal(receipt.runtime, null);
+    assert.deepEqual(receipt.records, []);
+    assert.deepEqual(receipt.errors, []);
+    assert.equal(receipt.failures.length, 1);
+    assert.match(receipt.error, /runtime fresh before the run/);
+  });
+
   test(`${phase}: failed settlement retains its complete receipt and exits nonzero`, async () => {
     const {writes, exitCode} = await outcome(phase, 'failed');
     assert.equal(exitCode, 1);

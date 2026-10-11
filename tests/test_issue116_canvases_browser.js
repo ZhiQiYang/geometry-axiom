@@ -92,7 +92,7 @@ async function snapshot(page,label,store){
 }
 async function main(){
   const runtime=await fetch(new URL('/runtime',url)).then(r=>r.json());
-  resultContext.runtime=runtime.version;
+  resultContext.runtime=runtime.version??null;
   // Identity / isolation preconditions: fatal in every mode. Nothing below may reset or write a world before they hold.
   check(runtime.fresh,true,'runtime fresh before the run',{fatal:true});
   check(path.resolve(runtime.root),selftest==='stale-runtime'?path.resolve(os.tmpdir(),'k4-selftest-not-this-worktree'):path.resolve(__dirname,'..'),'runtime belongs to this worktree',{fatal:true});

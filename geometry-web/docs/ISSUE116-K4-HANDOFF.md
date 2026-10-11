@@ -98,6 +98,19 @@ PR #186 的審查（dot）指出新 gate 的四個缺口，`48d9be0` 已處理�
 修後 head 的 87 項、完整新 gate、瀏覽器突變及 7 job 收據仍待 WSL；上述純 Node 結果不替代 B1，
 先前 native 首紅與外來程序污染紀錄維持原判定。
 
+### 2026-10-12：缺少 runtime version 的中止收據（PR #186 M2）
+
+`/runtime` 回覆 `{error:"Not Found"}` 時，原 main 會用 undefined 覆蓋初始 null，導致
+JSON 序列化省略 runtime 欄。現在以 `runtime.version ?? null` 保留明確的 null；fatal 隔離
+檢查仍在瀏覽器啟動及任何 fixture／reset 之前拒絕，不因 KEEP_GOING 放行。
+
+`test_k4_evidence.js` 新增 characterize／full 各一項，直接執行未替換的 main 入口，
+只模擬 fetch 回覆與外部依賴；斷言非零退出、零 launch、零命令、完整收據及 runtime:null。
+修前為 6 過／2 紅；修後 8/8；移除 null 預設的突變再次 6 過／2 紅，還原 8/8。
+純 Node 測試無 skip、不開埠、不啟動瀏覽器，aggregate 只因新增兩項由 657 調為 659。
+原始資料在 scratchpad `board-local-codex/pr186-m2-{before,after,remove-null-mutant,restored}.log`
+及 `pr186-m2-results.json`。舊 87 項及產品檔未改；新 head 的 B1 瀏覽器及七 job 驗收仍待完成。
+
 ### 暫定裁決（依授權 L，可逐列推翻）
 
 | 題目 | 選項 | 採用 | 理由 | 如何推翻 |
