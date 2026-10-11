@@ -80,6 +80,24 @@ PR #186 的審查（dot）指出新 gate 的四個缺口，`48d9be0` 已處理�
 - **過期節點的保證範圍**：a1／b3 只證明「同一次開啟內，情境改變後殼拒絕執行已保存的節點」。更早一次開啟遺留的節點，其監聽器會對「當下」的狀態驗證（承襲自抽出前的行為；
   節點已被 `hide()` 拔掉，沒有使用者路徑可達）。這一點沒有被測試覆蓋、也沒有改變，**不得宣稱完整的過期節點保證**。若要補，是在殼加「開啟世代」並讓各節點綁世代，屬行為變更，不在 PR-a（純重構）。
 
+### PR #186 M1：保留失敗結算收據（2026-10-11）
+
+新 gate 在 `settle()` 寫出完整 `failed` 收據並擲錯後，最外層 catch 原本會再寫入縮減的
+`aborted`，遺失 phase、records、errors、snapshotHash 與 runtime。現在成功、失敗與真正中止共用
+完整格式；已結算的失敗不重寫，真正中止保留已取得的 runtime／快照，尚未取得者明列 null。
+若檢查通過後瀏覽器清理失敗，最後仍寫 aborted 並非零退出，不留下假 passed 收據。
+
+`tests/test_k4_evidence.js` 直接執行 gate 的 check／settle／catch 原碼，只把 main 的瀏覽器工作
+替換成受控結束路徑：characterize／full 各驗失敗及提前中止，再驗成功與成功後清理失敗，共 6 項。
+修前 1 過／5 失敗；修後 6/6；移除 catch 的失敗保護後 4 過／2 失敗，兩個 phase 均指出
+「outer catch must not overwrite a settled failure」；還原 6/6。這些是純 Node 收據測試，沒有啟動瀏覽器。
+既有 87 項及 browser gate 的行為斷言未改，native 登記僅因新增 6 項而由 651 調成 657。
+
+原始日誌及雜湊：本次 scratchpad `board-local-codex/pr186-before.log`、`pr186-baseline.log`、
+`pr186-overwrite-mutant.log`、`pr186-restored.log`、`pr186-unit-results.json`。
+修後 head 的 87 項、完整新 gate、瀏覽器突變及 7 job 收據仍待 WSL；上述純 Node 結果不替代 B1，
+先前 native 首紅與外來程序污染紀錄維持原判定。
+
 ### 暫定裁決（依授權 L，可逐列推翻）
 
 | 題目 | 選項 | 採用 | 理由 | 如何推翻 |

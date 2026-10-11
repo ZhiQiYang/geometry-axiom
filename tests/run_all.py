@@ -121,6 +121,7 @@ NODE_TEST_FILES = [
     'tests/test_issue77_attachment.js',
     'tests/test_issue77_history.js',
     'tests/test_issue77_workspace.js',
+    'tests/test_k4_evidence.js',
     'tests/test_model_snapshot_schedule.js',
     'tests/test_model_snapshot_navigation.js',
     'tests/test_model_update.js',

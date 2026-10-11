@@ -35,6 +35,8 @@ if(!path.resolve(evidence).startsWith(os.tmpdir()+path.sep))throw Error('Evidenc
 fs.mkdirSync(evidence,{recursive:true});
 const characterizeOnly=process.env.GEOMETRY_K4_PHASE==='characterize', keepGoing=process.env.GEOMETRY_K4_KEEP_GOING==='1';
 let checks=0;const errors=[],records=[],failures=[];
+let finalResult=null;
+const resultContext={phase:characterizeOnly?'characterize':'full',snapshotHash:null,runtime:null};
 function show(v){try{return JSON.stringify(v)?.slice(0,400);}catch{return String(v);}}
 const selftest=process.env.GEOMETRY_K4_SELFTEST||'';
 function check(actual,expected,label,opts={}){
@@ -47,9 +49,15 @@ function check(actual,expected,label,opts={}){
   }
   checks++;console.log('PASS '+label);records.push(label);
 }
-// One settlement for every phase: writes the result file and throws if ANY check failed, so a keep-going run can never exit 0 with a recorded failure.
+function writeResult(status,extra={}){
+  const result={...resultContext,status,checks,failures,records,errors,selftest:selftest||null,commandsSent:cmds.length,...extra};
+  fs.writeFileSync(path.join(evidence,'result.json'),JSON.stringify(result,null,2));
+  finalResult=result;
+}
+// Every phase keeps its complete failure receipt when the non-zero exit reaches the outer catch.
 function settle(phase,extra={}){
-  fs.writeFileSync(path.join(evidence,'result.json'),JSON.stringify({phase,status:failures.length?'failed':'passed',checks,failures,records,errors,selftest:selftest||null,commandsSent:cmds.length,...extra},null,2));
+  Object.assign(resultContext,{phase},extra);
+  writeResult(failures.length?'failed':'passed');
   console.log(JSON.stringify({phase,checks,failures:failures.length,...extra}));
   if(failures.length)throw Error(failures.length+' check(s) failed:\n'+failures.join('\n'));
 }
@@ -84,6 +92,7 @@ async function snapshot(page,label,store){
 }
 async function main(){
   const runtime=await fetch(new URL('/runtime',url)).then(r=>r.json());
+  resultContext.runtime=runtime.version;
   // Identity / isolation preconditions: fatal in every mode. Nothing below may reset or write a world before they hold.
   check(runtime.fresh,true,'runtime fresh before the run',{fatal:true});
   check(path.resolve(runtime.root),selftest==='stale-runtime'?path.resolve(os.tmpdir(),'k4-selftest-not-this-worktree'):path.resolve(__dirname,'..'),'runtime belongs to this worktree',{fatal:true});
@@ -184,6 +193,7 @@ async function main(){
     const snapshotJson=JSON.stringify(snapshots,null,1);
     fs.writeFileSync(path.join(evidence,'menu-snapshots.json'),snapshotJson);
     const snapshotHash=crypto.createHash('sha256').update(snapshotJson).digest('hex');
+    resultContext.snapshotHash=snapshotHash;
     fs.writeFileSync(path.join(evidence,'menu-snapshots.sha256'),snapshotHash+'\n');
     console.log('MENU-SNAPSHOT-SHA256 '+snapshotHash+' ('+Object.keys(snapshots).length+' targets)');
     check(Object.keys(snapshots).length,16,'a5 all 16 menu snapshots were recorded');
@@ -377,6 +387,10 @@ async function main(){
 main().catch(error=>{
   console.error(error);
   console.log('ABORT commandsSent='+cmds.length+' failures='+failures.length);
-  try{fs.writeFileSync(path.join(evidence,'result.json'),JSON.stringify({status:'aborted',error:String(error&&error.message||error).slice(0,2000),checks,failures,selftest:selftest||null,commandsSent:cmds.length},null,2));}catch{}
+  // An intentional failed settlement already contains all evidence. A genuine abort
+  // (including cleanup failure after a pass) uses the same complete result format.
+  if(finalResult?.status!=='failed'){
+    try{writeResult('aborted',{error:String(error&&error.message||error).slice(0,2000)});}catch{}
+  }
   process.exitCode=1;
 });
