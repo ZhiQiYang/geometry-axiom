@@ -16,7 +16,7 @@ from .common import (ModelError, canonical_bytes, digest, strict_json_loads,
 
 # The source commit contains the adopted axiom bytes identified by this digest.
 # Update only after committing the corresponding SSOT change (MODELING-CONTRACT).
-AXIOM_REVISION = "7c5485bba1a1e0d9b95009bd80dfc4114af1d942"
+AXIOM_REVISION = "ca3790ce7e87e1a9190cb17fb63bbe42f501f7a5"
 AXIOM_SHA256 = "267a308698954ca610814d3956b5b837463ccaec8d4d074236de9f9df7f8a050"
 # The K1 fixes of 2026-10-11 (P-044 D48 label format; P-047 undo semantics) replaced
 # the c24ec08, 2818289 and 7c5485b texts before they reached main; those interim
