@@ -42,6 +42,7 @@ def main():
     parser.add_argument('--bridge', required=True, type=Path)
     parser.add_argument('--output', required=True, type=Path)
     parser.add_argument('--expect-generic', action='store_true')
+    parser.add_argument('--panel-only', action='store_true', help='Audit the seven supplemental dot P2 panel grammar pins')
     args = parser.parse_args()
     bridge = args.bridge.resolve(strict=True)
     records = []
@@ -72,16 +73,19 @@ def main():
         with patch.object(finite.GridSystemContract, 'reject', traced(finite.GridSystemContract.reject)), \
              patch.object(infinite.InfiniteGridContract, 'reject', traced(infinite.InfiniteGridContract.reject)), \
              patch.object(subgrid.SubgridContract, 'reject', traced(subgrid.SubgridContract.reject)):
-            suite = unittest.TestSuite(cls(method) for cls, method in CASES)
+            cases = [(finite.GridSystemContract, 'test_line_limit_applies_when_panel_system_gets_a_surface')] if args.panel_only else CASES
+            suite = unittest.TestSuite(cls(method) for cls, method in cases)
             result = unittest.TextTestRunner(verbosity=2).run(suite)
     failures = sum(row['outcome'] == 'reason-failure' for row in records)
     receipt = {'schema': 'geo246-weak-pin-probe/1', 'bridge_sha256': hashlib.sha256(bridge.read_bytes()).hexdigest(),
                'mode': 'generic-message-mutant' if args.expect_generic else 'baseline',
                'pins': len(records), 'reason_failures': failures, 'test_failures': len(result.failures),
-               'errors': len(result.errors), 'skips': len(result.skipped), 'records': records}
+               'errors': len(result.errors), 'skips': len(result.skipped), 'records': records,
+               'scope': 'panel-grammar' if args.panel_only else 'original-32'}
     args.output.write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-    expected_failures = 32 if args.expect_generic else 0
-    ok = (len(records) == 32 and failures == expected_failures
+    expected_pins = 7 if args.panel_only else 32
+    expected_failures = expected_pins if args.expect_generic else 0
+    ok = (len(records) == expected_pins and failures == expected_failures
           and len(result.failures) == expected_failures and not result.errors and not result.skipped)
     print(f'GEO-246 {receipt["mode"]}: pins={len(records)}, reason failures={failures}, audit={"PASS" if ok else "FAIL"}')
     return 0 if ok else 1

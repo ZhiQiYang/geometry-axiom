@@ -197,6 +197,19 @@ class GridSystemContract(unittest.TestCase):
         self.assertEqual(16, len(self.objects()["gridSystems"]))
 
     def test_line_limit_applies_when_panel_system_gets_a_surface(self):
+        # GEO-246 / dot P2: grammar failures name the actual field; a present
+        # `from` must never turn a misspelled `gap` into an anchor diagnosis.
+        for axis, why in [
+            ("panel 10 gaps 0 from 0", "u gap keyword must be gap (got gaps)"),
+            ("repeat-panel 10 gaps 0 from 0", "u gap keyword must be gap (got gaps)"),
+            ("panel 10 gap 0 origin 0", "u anchor requires explicit from"),
+            ("panel ten gap 0 from 0", "u panel length requires an integer in D1 range"),
+            ("panel 10 gap none from 0", "u gap requires an integer in D1 range"),
+            ("panel 10 gap 0 from none", "u anchor requires an integer in D1 range"),
+            ("panel 10", "u panel definition requires length, gap and from anchor"),
+        ]:
+            with self.subTest(panel_grammar=axis):
+                self.reject(system(u=axis, v="none"), ("D29/I37", why))
         self.surface(1)
         self.commit(system(u="series 0 1 64", v="none"))
         self.commit("grid 10 on 1 from-system 0 origin 0 0")

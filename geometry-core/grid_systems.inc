@@ -207,9 +207,14 @@ static bool grid_system_read_axis(char **t,int count,int *at,GridAxisDef *a,int 
         }
         a->source=GRID_SRC_SERIES; a->series_count=(size_t)n; i+=4;
     } else if (!strcmp(t[i],"panel") || !strcmp(t[i],"repeat-panel")) {
-        if (i+5>=count || strcmp(t[i+2],"gap") || strcmp(t[i+4],"from"))
-            return grid_axis_definition_error(axis,"anchor","requires explicit from after panel and gap");
-        if (!grid_parameter_token(t[i+1],&a->panel,&a->parameters[2],!strcmp(t[i],"repeat-panel"))) return grid_axis_definition_error(axis,"panel","requires an integer in D1 range");
+        if (i+5>=count) return grid_axis_definition_error(axis,"panel definition","requires length, gap and from anchor");
+        if (strcmp(t[i+2],"gap")) {
+            char detail[128];
+            snprintf(detail,sizeof detail,"must be gap (got %.64s)",t[i+2]);
+            return grid_axis_definition_error(axis,"gap keyword",detail);
+        }
+        if (strcmp(t[i+4],"from")) return grid_axis_definition_error(axis,"anchor","requires explicit from after panel and gap");
+        if (!grid_parameter_token(t[i+1],&a->panel,&a->parameters[2],!strcmp(t[i],"repeat-panel"))) return grid_axis_definition_error(axis,"panel length","requires an integer in D1 range");
         if (!grid_parameter_token(t[i+3],&a->gap,&a->parameters[3],!strcmp(t[i],"repeat-panel"))) return grid_axis_definition_error(axis,"gap","requires an integer in D1 range");
         if (!grid_parameter_token(t[i+5],&a->anchor,&a->parameters[4],!strcmp(t[i],"repeat-panel"))) return grid_axis_definition_error(axis,"anchor","requires an integer in D1 range");
         a->source=!strcmp(t[i],"panel")?GRID_SRC_PANEL:GRID_SRC_REPEAT_PANEL; a->anchor_explicit=true; i+=6;
