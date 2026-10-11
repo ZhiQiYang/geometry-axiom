@@ -61,6 +61,28 @@ const legacyPage=()=>({src:'data:image/png;base64,legacy',imgW:100,imgH:80,mmPer
 const legacyResponse=bytes=>({blob:async()=>new Blob([bytes],{type:'image/png'})});
 
 const k2aDraft=(id,edit=false)=>({schema:P.Features.GRID_SCHEMA,draftId:id,kind:'source',intent:edit?'edit':'create',baseRef:edit?{kind:'grid-system',id:1,fingerprint:'a'.repeat(64)}:null,inputRefs:[],rawForm:Object.fromEntries(P.Features.sourceFields.map(f=>[f,' 1e ']))});
+test('K2a review M1 original handler replaces lost P1 with already-used P2 without permitting pure removal',async()=>{
+  const f=await fixture(),w=f.w,token=w.getProjectState().contextToken,d=k2aDraft('shared-pin');
+  d.rawForm=Object.fromEntries(P.Features.sourceFields.map(k=>[k,'']));d.rawForm.igUStepSource='1:1';d.rawForm.igVStepSource='2:1';
+  const p1={kind:'parameter-field',parameterId:1,fieldId:1,fingerprint:'a'.repeat(64),lost:true},p2={kind:'parameter-field',parameterId:2,fieldId:1,fingerprint:'b'.repeat(64)};
+  d.inputRefs=[p1,p2];w.setGridDraft(d.draftId,d,token);
+  const removed=structuredClone(d);removed.inputRefs=[p2];const before=JSON.stringify(w.readGridDrafts()),count=w.history.undo.length;
+  assert.throws(()=>w.setGridDraft(d.draftId,removed,token),/不得純移除/,'unchanged raw cannot borrow existing P2');
+  assert.equal(JSON.stringify(w.readGridDrafts()),before);assert.equal(w.history.undo.length,count);
+  f.env.ReferenceWorkspace=w;f.env.document.body={append(){}};f.env.oc.gridBindings=[];
+  const source=fs.readFileSync(process.env.GEOMETRY_GRID_WORKSPACE_SOURCE||require.resolve('../geometry-web/grid-system-workspace.js'),'utf8').replace('window.InfiniteGridWorkspace={','window.InfiniteGridWorkspace={__replacementTest:{selectParameterPin,flush,setState:s=>{state=s;dialog.open=true;}},');
+  vm.runInNewContext(source,f.env);const seam=f.env.window.InfiniteGridWorkspace.__replacementTest;
+  for(const [key,value]of Object.entries(d.rawForm))f.element(key).value=value;
+  const key=r=>`parameter-field:${r.parameterId}:${r.fieldId}`,s={context:w.context(),contextToken:token,mode:'source',draftId:d.draftId,draftSchema:d.schema,baseRef:null,restored:d,rawOverrides:new Map(),inputPins:new Map([[key(p1),p1],[key(p2),p2]]),pins:new Map([[key(p2),p2]]),referenceSelections:new Map([['igUStepSource',key(p1)],['igVStepSource',key(p2)]])};
+  seam.setState(s);const node=f.element('igUStepSource');node.id='igUStepSource';node.value='2:1';f.env.window.confirm=()=>false;
+  assert.equal(seam.selectParameterPin(s,node),false);assert.equal(node.value,'1:1');assert.equal(JSON.stringify(w.readGridDrafts()),before);
+  node.value='2:1';f.env.window.confirm=()=>true;seam.selectParameterPin(s,node);
+  assert.doesNotThrow(()=>seam.flush(s),'confirmed field replacement may share V already-used P2');
+  const after=JSON.stringify(w.readGridDrafts());assert.equal(w.readGridDrafts().drafts.find(row=>row.draftId===d.draftId).inputRefs.length,1);assert.equal(w.readGridDrafts().drafts.find(row=>row.draftId===d.draftId).rawForm.igUStepSource,'2:1');
+  assert.equal(w.tryLocalHistory('line undo').ok,true);assert.equal(JSON.stringify(w.readGridDrafts()),before);assert.equal(w.tryLocalHistory('line redo').ok,true);assert.equal(JSON.stringify(w.readGridDrafts()),after);
+  const packed=await P.pack('',await w.manifest(),new Map([[f.source.meta.id,f.source.bytes]]),zip),opened=await P.unpack(packed,zip);
+  assert.deepEqual(JSON.parse(JSON.stringify(P.Features.gridDrafts(opened.manifest.featureAttachments.records.find(r=>r.kind===P.Features.GRID_KIND).value))),JSON.parse(after));
+});
 test('K2a M2 near-limit draft admission rejects before native calls, history or dirty changes',async()=>{
   const {w,calls}=await fixture(),C=require('./test_grid_drafts_lifecycle_capacity.js'),draft=C.pad(C.largeDraft(),128*1024-240);
   const padding=C.nearManifest().engineeringDrafts.records; padding.at(-1).data.raw='';w.context().engineeringDrafts=padding;

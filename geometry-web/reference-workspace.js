@@ -469,6 +469,12 @@ const ReferenceWorkspace = (() => {
         throw new Error("不得抹除曾缺失來源旗標。");
       const replacements=new Set();
       for(const ref of old?.inputRefs || [])if(ref.lost&&!value.inputRefs.some(next=>P.Features.referenceKey(next)===P.Features.referenceKey(ref))){
+        const fields=ref.kind==='parameter-field'?P.Features.sourceFields.filter(field=>field.endsWith('Source')&&!['igUSource','igVSource'].includes(field)&&old.rawForm[field]===`${ref.parameterId}:${ref.fieldId}`):[];
+        if(fields.length){
+          if(!fields.every(field=>value.inputRefs.some(next=>next.kind==='parameter-field'&&!next.lost&&next.parameterId!==ref.parameterId&&value.rawForm[field]===`${next.parameterId}:${next.fieldId}`)))
+            throw new Error("曾缺失來源只准逐欄改指另一個物件，不得純移除。");
+          continue;
+        }
         const next=value.inputRefs.find(next=>!next.lost&&next.kind===ref.kind&&!replacements.has(P.Features.referenceKey(next))&&
           !old.inputRefs.some(existing=>P.Features.referenceKey(existing)===P.Features.referenceKey(next))&&
           (ref.kind!=='parameter-field'||next.parameterId!==ref.parameterId));
