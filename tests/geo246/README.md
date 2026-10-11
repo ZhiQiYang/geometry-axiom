@@ -38,3 +38,9 @@ WSL 本機 native wall-time 預設容許 1800 秒，以便保留完整失敗收�
 `identity.py` 分開記錄 raw checkout bytes、Git blob bytes 與各自 CRLF→LF 正規化 SHA-256，並記錄 HEAD、tree、checkout、tracked diff、executor 與 binary fingerprint sidecar。raw hash 不直接冒充 Git blob hash；特別是 Windows 簽出的 `.inc` 可能為 CRLF，Git blob 為 LF。`current_geometry.c` 必須保持原本統一 CRLF。
 
 對親代閱讀器的比較只可聲稱實際收據所證明的範圍：例如失敗名稱相同。reader suite 不需要 native binary，身分收據必須明記此範圍；不得稱為全文逐位元組相同或完整 base/head 產品驗收。
+
+```bash
+python3 tests/geo246/parent_reader.py --checkout /tmp/geo246-parent --head 7b603b4dc34bbbf41731f0e7845d0519dd876c71 --out /tmp/geo246-parent-review
+```
+
+親代 checkout 必須是自己的 detached worktree；腳本會要求指定完整 HEAD、乾淨 tracked diff，記錄 tree、來源與執行器 SHA，並驗證執行前後身分相同。

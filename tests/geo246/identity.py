@@ -27,7 +27,8 @@ def capture(root, binary_paths=()):
     for relative in ['tests/geo246_weak_pin_probe.py', 'tests/geo246/identity.py',
                      'tests/geo246/message_mutation.py', 'tests/geo246/generic_messages.json',
                      'tests/geo246/isolated_wsl.sh', 'tests/geo246/refresh_mutants.py',
-                     'tests/geo246/ci_job.py', '.github/workflows/integration-tests.yml']:
+                     'tests/geo246/ci_job.py', 'tests/geo246/parent_reader.py',
+                     '.github/workflows/integration-tests.yml']:
         if (root / relative).is_file():
             source_names.append(relative)
     for name in source_names:

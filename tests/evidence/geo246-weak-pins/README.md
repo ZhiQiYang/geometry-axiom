@@ -1,3 +1,5 @@
+以下為首輪 e73ebcb／e9434a9 的歷史收據；不代表後續 head 的最終七 job。
+
 GEO-246 的本機驗證收據；32 筆輸入及新舊釘點見 [32-pins.md](32-pins.md)。
 
 `baseline.json`、`generic.json`、`restored.json` 記錄相同的實際輸入：原版 32 pass，四個訊息出口退回泛稱後 32 reason-failure，還原版 32 pass。`summary.json` 記錄四份來源逐位元組還原與來源雜湊。generic probe 的 exit 0 是稽核成功偵測 32 個真正的 unittest failure，不是產品通過。
@@ -34,3 +36,5 @@ probe 的可重跑入口是 `python3 tests/geo246_weak_pin_probe.py --bridge <fr
 所有已跑命令的 exit、耗時與 stdout、三個契約 suite 的 JSON、基底閱讀器對照及環境／binary SHA-256 皆已存入 `tests/evidence/geo246-weak-pins/`。收據對應實作 commit `e73ebcb3ae8d72de06ceb4df692404dad83f7d33`；後續 commit 只加入收據及重新生成的變異結果，不更改已測產品或斷言。
 
 較長的原始日誌使用標準 gzip 保存，解壓後逐位元組等於原輸出；`log-archives.json` 記錄原始 SHA-256 與長度。`run-all.log` 及命令／suite JSON 維持可直接讀取。
+
+首輪四份 C 來源的 raw hash／Git blob hash／LF 正規化 hash 分列於 `legacy-newline-identity.json`。三份 `.inc` 的歷史 raw hash 對應 Git LF blob 簽出成 CRLF；`current_geometry.c` 的 Git blob 本身已是 CRLF。不得無說明混比 raw hash。reader 舊收據只證明 5 個失敗名稱相同，未證明失敗訊息或重建 HTML 逐字相同，也不是完整 base/head 產品對照。新重現工具見 `tests/geo246/README.md`。
