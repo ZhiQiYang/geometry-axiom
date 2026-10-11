@@ -35,3 +35,5 @@
 正式七 job 仍由既定本機 owner 按 #184 等疊加順序凍結最終整合 SHA；本輪沒有排 WSL 全量，也沒有排他環境驗收或 Windows 原生編譯。PF11 真實瀏覽器及完整 `.gcanvas` 保存、I53 分層（仍 pending）、PF-2～PF-6 都未完成，不因本輪定向綠燈解除。#201 的工程橋接衝突仍由整合 owner 同時保留 finish_batch 與 deleted-fields，未合併或改寫其他 PR。
 
 全部 payload 的 bytes／SHA256 在 `manifest.json`。脚本中的 `/workspace`、`/tmp` 是本輪原始執行位置；重現時需要對應 checkout，私有編譯與所有二進位均寫 `/tmp/geometry-tests`。原件 diff 存為 JSON UTF-8 字串，保留原 bytes，避免 Git 把 patch context 行當成新文件 trailing whitespace。
+
+後續證據封裝提交把 27 份含行尾空白的 stdout／stderr 無損改存 `*.raw.json`；JSON 記原檔名、bytes、SHA256，`raw` 解碼精確相同，不修改或裁剪輸出。`python encode.py --decode /tmp/geometry-tests/pr190-decoded` 可還原這些原件。原產品、裁判、帳本、來源綁定及受測 bytes 不變，原封裝提交保留於歷史。
