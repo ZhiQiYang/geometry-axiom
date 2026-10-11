@@ -1,6 +1,6 @@
 'use strict';
 const {test}=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
-const A=require('../geometry-web/feature-attachments.js'),Cutting=require('./fixtures/k1b-cutting-settings.cjs'),S=require('../geometry-web/scenario-catalog.js'),zip=require('../geometry-web/vendor/fflate/umd/index.js');
+const A=require('../geometry-web/feature-attachments.js'),Cutting=require('./k1b_cutting_settings_fixture.cjs'),S=require('../geometry-web/scenario-catalog.js'),zip=require('../geometry-web/vendor/fflate/umd/index.js');
 const withoutCutting=e=>({...e,records:e.records.filter(r=>r.kind!==Cutting.KIND)});
 // Integration contract: each owner's real validator handles its own records.
 // This composed seam is not a claim that the two feature branches are merged.
