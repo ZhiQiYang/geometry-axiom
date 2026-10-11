@@ -1,0 +1,42 @@
+diff --git a/geometry-web/rule_case_workbench_adapter.py b/geometry-web/rule_case_workbench_adapter.py
+index 9ee6be93..a6cc1e3e 100644
+--- a/geometry-web/rule_case_workbench_adapter.py
++++ b/geometry-web/rule_case_workbench_adapter.py
+@@ -182,7 +182,14 @@ def _observed_state(value):
+                     for axis in ("A", "B"):
+                         effective = slot[axis]
+                         if effective is not None:
+-                            _shape(effective, ("value", "path"))
++                            _shape(effective, ("value", "path"), ("terminal",))
++                            if "terminal" in effective:
++                                terminal = effective["terminal"]
++                                _shape(terminal, ("kind", "id", "version", "fingerprint") if type(terminal) is dict and terminal.get("kind") == "material" else ("kind",))
++                                if terminal["kind"] not in ("literal", "spec", "parameter", "material"): raise AdapterError("RECEIPT", "Unknown native terminal kind")
++                                if terminal["kind"] == "material":
++                                    _text(terminal["id"], 63); _integer(terminal["version"], 4294967295); _hash(terminal["fingerprint"])
++                                    if not terminal["id"] or terminal["version"] == 0: raise AdapterError("RECEIPT", "Invalid material terminal")
+                             _number(effective["value"], -100000000, 100000000)
+                             # This is native source-description text, not an OS
+                             # path/assetref accepted at arbitrary receipt keys.
+diff --git a/tests/test_rule_case_workbench_http.py b/tests/test_rule_case_workbench_http.py
+index 271c4213..4d1b1ee3 100644
+--- a/tests/test_rule_case_workbench_http.py
++++ b/tests/test_rule_case_workbench_http.py
+@@ -262,6 +262,17 @@ class WorkbenchHTTP(unittest.TestCase):
+         _, result = self.post("import", sessionId=new, data=bundle)
+         self.assertIn("project-context", result["views"][0]["receipt"]["staleReasons"])
+ 
++    def test_native_terminal_observations_roundtrip_and_reject_malformed_terminals(self):
++        _, native = self.run_case("one-local-joint-new-version")
++        bundle = {"schema": DATA_SCHEMA, "definitions": cases(), "receipts": [{"definition": case("one-local-joint-new-version"), "receipt": native["receipt"]}]}
++        status, assessed = self.post("assess", sessionId=self.session, data=bundle)
++        self.assertEqual(status, 200, assessed)
++        for terminal in [{"kind": "unknown"}, {"kind": "literal", "extra": True}, {"kind": "material", "id": "wood", "version": 0, "fingerprint": "0" * 64}, {"kind": "material", "id": "wood", "version": True, "fingerprint": "0" * 64}, {"kind": "material", "id": "wood", "version": 1, "fingerprint": "X" * 64}]:
++            invalid = deepcopy(bundle); invalid["receipts"][0]["receipt"]["observations"]["before"]["bindings"][0]["effective"][0]["A"]["terminal"] = terminal
++            with self.assertRaises(sys.modules["rule_case_workbench_adapter"].AdapterError): sys.modules["rule_case_workbench_adapter"]._observed_state(invalid["receipts"][0]["receipt"]["observations"]["before"])
++            status, refused = self.post("assess", sessionId=self.session, data=invalid)
++            self.assertEqual(status, 400, refused); self.assertEqual(refused["code"], "RECEIPT")
++
+     def test_sessions_run_ids_and_expiry_are_bounded_without_permanent_open_close_leak(self):
+         for index in range(64):
+             self.assertEqual(self.post("cancel", sessionId=self.session, runId=f"retired-{index}")[0], 200)
