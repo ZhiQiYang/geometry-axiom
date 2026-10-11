@@ -8989,8 +8989,10 @@ static bool apply_boundary_line(
             if (!world_replace_object(
                     world, &world->boundaries[i],
                     &candidate, sizeof candidate)) {
-                scene_error(path, line_no,
-                    "重宣告後有物件失效（承載面/參考線/角材/空間沒全過）");
+                char detail[512];
+                snprintf(detail,sizeof detail,"重宣告後有物件失效（承載面/參考線/角材/空間沒全過）: boundary %u: %s",
+                    id,g_revalidate_error[0]?g_revalidate_error:"I8: dependent objects invalid");
+                scene_error(path, line_no, detail);
                 return false;
             }
             return true;
