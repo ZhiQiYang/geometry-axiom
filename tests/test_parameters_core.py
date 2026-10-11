@@ -303,6 +303,46 @@ class ParametersCore(unittest.TestCase):
         self.rejected([{"op": "delete-parameter", "id": 0}, card(0, "同候選再宣告", [field(1, "11")])],
                       "parameter 0 was deleted earlier in this transaction")
 
+    def test_archive_parameter_update_rebuilds_values_and_dependencies_before_confirm(self):
+        self.apply([card(0, "source", [field(1, "10")]),
+                    card(1, "dependent", [field(1, "=@0:1 + 1 mm")])])
+        self.apply_line("datum 1 x param:1:1")
+        before = self.command("dump")["text"]
+        preview = self.command("line preview " + self.archive_line(card(0, "source", [field(1, "20")])))
+        self.assertTrue(preview["ok"], preview)
+        self.assertTrue(preview["preview"]["valid"], preview)
+        self.assertEqual([21], [row["after"]["position"] for row in preview["preview"]["datums"]],
+                         "archive preview did not rebuild the parameter-dependent datum")
+        self.assertEqual(before, self.command("dump")["text"], "archive preview changed the live World")
+        self.assertEqual("10", self.values()[0, 1]["num"])
+        self.assertTrue(self.command("line confirm " + str(preview["preview"]["token"]))["ok"])
+        self.assertEqual("20", self.values()[0, 1]["num"], "archive confirm committed an unevaluated parameter")
+        self.assertEqual("21", self.values()[1, 1]["num"])
+        self.assertEqual(21, self.command("references")["datums"][0]["position"])
+        after = self.command("dump")["text"]
+        self.assertTrue(self.command("line undo")["ok"])
+        self.assertEqual(before, self.command("dump")["text"])
+        self.assertTrue(self.command("line redo")["ok"])
+        self.assertEqual(after, self.command("dump")["text"])
+        self.assertEqual("20", self.values()[0, 1]["num"])
+
+    def test_archive_parameter_invalid_candidates_are_rejected_without_changing_world(self):
+        self.apply([card(0, "source", [field(1, "10")])])
+        self.apply_line("datum 1 x param:0:1")
+        before = self.command("dump")["text"]
+        revision = self.read()["revision"]
+        for value, diagnostic in (("=@9:9", "MISSING"), ("=1 mm/0", "DIV_ZERO"), ("0.5", "I38 GEOMETRY")):
+            with self.subTest(value=value):
+                result = self.command("line preview " + self.archive_line(card(0, "invalid", [field(1, value)])))
+                self.assertTrue(result["ok"], result)
+                self.assertFalse(result["preview"]["valid"],
+                                 "archive candidate bypassed parameter or dependent geometry validation")
+                self.assertIn(diagnostic, json.dumps(result), "archive revalidation lost its precise diagnostic")
+                self.assertFalse(self.command("line confirm " + str(result["preview"]["token"]))["ok"])
+                self.assertEqual(before, self.command("dump")["text"])
+                self.assertEqual(revision, self.read()["revision"])
+                self.assertEqual("10", self.values()[0, 1]["num"])
+
     # ---- 驗收矩陣補列：對應 PARAMETERS-PROPOSAL.md「驗收矩陣」，逐列索引見 PARAMETERS-VALIDATION.md「驗收矩陣對應」 ----
     split_room = harness.EngineeringCore.split_room
 

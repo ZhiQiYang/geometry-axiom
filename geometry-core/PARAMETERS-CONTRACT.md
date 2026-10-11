@@ -52,3 +52,9 @@
 核心驗收：`tests/test_parameters_core.py`。專案與能力：`tests/test_parameters_project_store.js`。正式瀏覽器：`parameter_workflow_test.js` 已接入 `cdp_test.js`；局部開發可用 `GEOMETRY_PARAMETERS_ONLY=1`，完成仍須完整回歸。
 
 向量、座標轉換、組件嵌套、跨專案共用庫、拖線建立引用與板邊／縫中心切換不在本期。完整驗收見 [參數驗收紀錄](../geometry-web/docs/PARAMETERS-VALIDATION.md)。
+
+### 互動 archive 入口的完整重驗（PR #193 跟進）
+
+`engineering archive <base64 operation>` 每行是獨立候選。成功解析／執行 op 後，清除該候選的退役清單，並依 I8／I38 重算參數及完整幾何依賴，才可預覽有效或確認提交；不得把新欄位尚未求值的 0 當正式結果。缺失引用、除零或幾何使用處不接受分數時，候選無效，正式 World 與 revision 保留。場景檔載入仍在讀完全部紀錄後完整重驗，不把互動入口的時點套用到半份場景。
+
+本修正不裁決刪除與解除引用的操作先後政策；該項仍等候 Claude 裁決。
