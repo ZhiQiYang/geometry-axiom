@@ -256,6 +256,8 @@
     const ids = new Set(), targets = new Set();
     for (const draft of value.drafts) {
       validateGridDraft(draft,true,stored);
+      if (!stored && !value.orphans.includes(draft.draftId) && !draft.inputRefs.some(ref=>ref.lost))
+        boundedJSON({schema:SCHEMA,records:[{kind:GRID_KIND,schema:draft.schema,value:draft}]});
       if (ids.has(draft.draftId)) fail("網格草稿身分重複。");
       ids.add(draft.draftId);
       if (draft.intent === "edit" && !value.orphans.includes(draft.draftId)) {

@@ -97,6 +97,7 @@ const ReferenceWorkspace = (() => {
        busy||history.group||pendingLoad||preparingSceneLoad||!sameModelData(kind===P.Features.GRID_KIND?readGridDraft(value.draftId):readFeatureAttachment(kind),value) ||
        kind===P.Features.GRID_KIND && (readGridDrafts().orphans.includes(value.draftId) || value.inputRefs.some(r=>r.lost)))
       throw new Error("草稿或專案已變更，請重新預覽確認。");
+    preflightGridConfirmation(kind,value);
     featureConfirmations.clear();
     featureConfirmations.set(key,{context:context(),frame:history.frame,kind,value:JSON.parse(JSON.stringify(value)),
       revision:revision(context()),session:connection.session,nativeRevision});
@@ -107,7 +108,13 @@ const ReferenceWorkspace = (() => {
     if(busy||history.group||pendingLoad||preparingSceneLoad||!assemblyConfirmationCurrent(prepared)||
        prepared.revision!==revision(context())||prepared.session!==connection.session||prepared.nativeRevision!==nativeRevision||
        !sameModelData(prepared.kind===P.Features.GRID_KIND?readGridDraft(prepared.value.draftId):readFeatureAttachment(prepared.kind),prepared.value))throw new Error("草稿確認已過期，未套用。");
+    preflightGridConfirmation(prepared.kind,prepared.value);
     assemblyConfirmation={...prepared,featureCommand:"line confirm "+key};schedulePresentation();return assemblyConfirmation;
+  }
+  function preflightGridConfirmation(kind,value){
+    if(kind!==P.Features.GRID_KIND)return;
+    const c=readGridDrafts(),drafts=c.drafts.filter(d=>d.draftId!==value.draftId),orphans=c.orphans.filter(id=>id!==value.draftId);
+    featureProposal(kind,P.Features.gridDraftValue(drafts,orphans,true),true);
   }
   function cancelFeatureConfirmation(token){featureConfirmations.delete(featureTokenKey(token));}
   function finishAssemblyConfirmation(stamp){if(assemblyConfirmation===stamp){assemblyConfirmation=null;schedulePresentation();scheduleRecovery();}}

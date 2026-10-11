@@ -81,7 +81,16 @@ const {chromium}=require('playwright');
    for(const row of ReferenceWorkspace.readGridDrafts().drafts)ReferenceWorkspace.setGridDraft(row.draftId,null,ReferenceWorkspace.getProjectState().contextToken);
    const call=async cmd=>{let r=await apiRequest(cmd);if(r.preview?.valid)r=await apiRequest('line confirm '+r.preview.token);if(!r.ok)throw Error(cmd+': '+r.error);return r;};
    await call('reset');for(const id of [1,2])await call('line grid-system '+id+' name-hex 736f75726365 main-along none u repeat 0 600 v repeat 0 400');
-   const objects=await call('objects');for(const d of drafts){const row=objects.gridSystems.find(row=>row.id===d.baseRef.id);d.baseRef.fingerprint=await GeometryProject.sha(new TextEncoder().encode(GeometryProject.Features.gridSourceKey(row)));ReferenceWorkspace.setGridDraft(d.draftId,d,ReferenceWorkspace.getProjectState().contextToken);}
+   const objects=await call('objects');for(const d of drafts){const row=objects.gridSystems.find(row=>row.id===d.baseRef.id);d.baseRef.fingerprint=await GeometryProject.sha(new TextEncoder().encode(GeometryProject.Features.gridSourceKey(row)));}
+   if(new TextEncoder().encode(JSON.stringify(drafts[1])).length===130955){for(const d of drafts)ReferenceWorkspace.setGridDraft(d.draftId,d,ReferenceWorkspace.getProjectState().contextToken);}
+   else {
+    // Existing legal /17 collection: load through the actual ZIP/native importer.
+    const scene=(await call('dump')).text,m=await ReferenceWorkspace.manifest(),F=GeometryProject.Features;
+    m.featureAttachments={schema:F.SCHEMA,records:[F.record(F.GRID_KIND,{schema:F.GRID_DRAFTS_SCHEMA,drafts,orphans:[]},true)]};
+    m.format='geometry-canvas/17';m.requiredCapabilities=[...new Set([...m.requiredCapabilities,F.GRID_DRAFTS_SCHEMA,F.GRID_RULE_SCHEMA])].sort();
+    const sources=new Map([...ReferenceWorkspace.context().sources].map(([id,s])=>[id,s.bytes]));
+    await ReferenceWorkspace.importBytes(await GeometryProject.pack(scene,m,sources,fflate),'legacy-normal-collection.gcanvas');
+   }
    return ReferenceWorkspace.readGridDrafts();
   },[other,draft]);
   const twoBytes=await save(page),two=await page.evaluate(async bytes=>{const m=(await GeometryProject.unpack(new Uint8Array(bytes),fflate)).manifest;return GeometryProject.Features.gridDrafts(m.featureAttachments.records.find(r=>r.kind===GeometryProject.Features.GRID_KIND).value);},twoBytes);
