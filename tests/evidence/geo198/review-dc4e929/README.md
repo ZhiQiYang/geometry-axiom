@@ -42,7 +42,7 @@ python3 -c 'import hashlib,json,pathlib; r=pathlib.Path("raw"); m=json.loads((r/
 | native 命令、時間、exit | [job.json](raw/native/receipt/job.json) | 原 `run_all.py --build`，83 suites，2699 pass／5 reader fail／1 allowed skip，exit 1；691.549 秒，未逾原 CI 900 秒 |
 | native 原始斷言與數量 | [run-all.log](raw/native/receipt/run-all.log)、[逐套件日誌](raw/native/suite-logs/) | run-all log SHA-256 `c2365d1a577e566f0f87937c315d4008607749961b5e980e6bb568291ed95779`；沒有 update-expected |
 | 前後 head/tree/source | [before](raw/native/receipt/checkout-before.json)、[after](raw/native/receipt/checkout-after.json) | 同一乾淨 head/tree；binary 身分另見 [binary-state.json](raw/native/receipt/binary-state.json) |
-| A/B Chromium 局部驗收 | [result.json](raw/browser/targeted/result.json)、[driver log](raw/browser/targeted-driver.log)、[截圖](raw/browser/targeted/) | 29/29，1400×900／390×900；不是完整 space 或 WSL 裁判 |
+| A/B Chromium 局部驗收 | [result.json](raw/browser/targeted/result.json)、[driver log](raw/browser/targeted-driver.log)、[截圖](raw/browser/targeted/) | 5 組夾具共 29 個斷言，1400×900／390×900；B 柱／樑／手機走原按鈕，A 拒絕／rollback 與 mixed c2 是 API 直呼，不代表 A 可由清單選取 |
 | 完整 space 原始失敗 | [result.json](raw/browser/space/result.json)、[space.log](raw/browser/space.log)、[最終畫面](raw/browser/space/final-state.png) | 13 pass／2 fail，exit 1；projection definition closes 逾時、group completeness 未完成，其他群組未跑完 |
 | reader 記憶體診斷 | [result.json](raw/reader-diagnostic/result.json)、[trace diff](raw/reader-diagnostic/parent-vs-head-trace.diff) | 親代到 head 增加 R7／R15 追溯 238 字元；未寫 canonical，不等三道全綠 |
 | 正式 wrapper 實際阻擋 | [formal-wrapper-attempt.log](raw/formal-wrapper-attempt.log)、[documents job](raw/formal-documents/receipt/job.json) | unshare 拒絕；Chrome 路徑前置檢查失敗、commands=[]；均不算 job 通過 |
@@ -51,6 +51,9 @@ python3 -c 'import hashlib,json,pathlib; r=pathlib.Path("raw"); m=json.loads((r/
 `raw/browser/targeted-*` 的早期失敗是 harness 開發過程，不能混算最終 29/29。
 原 `ci_job.py` 的 environment_differences 是通用文字，不證明 Google Chrome 已就緒；
 實際安裝的是 Chromium 與 Noto CJK，documents 前置檢查仍失敗。
+targeted 頁面的 console／exceptions 空不等服務全程無錯：原 server.log 有六次
+BrokenPipeError，缺時間／請求關聯，不能證明它們與完整 space 逾時有因果關係。
+原件沒有全程 foreign-process census，unshare 亦被拒；不宣稱隔離已證，也不指控已污染。
 
 既有限制保持：退化項讓 obstacles 整份報錯；合法 c2 只保證直接 apply-proj；
 B 樑 cut-strip 後仍留既有 strip/bbox 鬼影。沒有所有障礙精確裁切或一般多區投影聲明。
