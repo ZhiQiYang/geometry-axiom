@@ -18,7 +18,7 @@ async function sourceOverride(page){for(const [env,file] of [['GEOMETRY_GRID_WOR
   const deletion=await call('line delete grid-system 0'),orphaned=ReferenceWorkspace.readGridDrafts();
   const deletedState={drafts:orphaned,world:(await call('objects')).gridSystems.map(row=>row.id),dirty:ReferenceWorkspace.getProjectState().dirty};
   InfiniteGridWorkspace.create();document.querySelector('[data-draft-id="other-raw"]').click();
-  for(let i=0;i<200&&(!document.getElementById('igSaveSource')||document.getElementById('igSaveSource').disabled);i++)await new Promise(resolve=>setTimeout(resolve,10));
+  for(let i=0;i<200&&(!InfiniteGridWorkspace.isOpen||document.getElementById('igName')?.value!=='other'||document.getElementById('igSaveSource')?.disabled);i++)await new Promise(resolve=>setTimeout(resolve,10));
   const originalFetch=window.fetch;let lostUiPreviewCalls=0;window.fetch=(input,init)=>{try{if(JSON.parse(init?.body||'{}').cmd?.startsWith('line preview'))lostUiPreviewCalls++;}catch{}return originalFetch(input,init);};
   await document.getElementById('igSaveSource').onclick();window.fetch=originalFetch;const lostUiMessage=document.getElementById('igDraftNote').textContent;InfiniteGridWorkspace.close(true);
   let lostPrepareRejected=false;try{ReferenceWorkspace.prepareFeatureConfirmation(oldPreview.preview.token,'grid-draft',orphaned.drafts.find(d=>d.draftId===b.draftId),ReferenceWorkspace.getProjectState().contextToken);}catch{lostPrepareRejected=true;}
