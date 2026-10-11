@@ -10426,7 +10426,8 @@ typedef enum {
     OBSTACLE_SPLIT,
     OBSTACLE_STRIP,
     OBSTACLE_TOP_NOTCH,
-    OBSTACLE_TOP_DROP
+    OBSTACLE_TOP_DROP,
+    OBSTACLE_DEGENERATE
 } ObstacleClass;
 
 typedef struct {
@@ -10509,7 +10510,6 @@ static bool side_flush_outline(
  * The obstacle contract carries one rectangle. A disconnected/nonrectangular
  * intersection (or zero-area tangency) is reported explicitly, never replaced
  * by a bounding rectangle or silently treated as a missing obstacle. */
-#define FACE_OBSTACLES_DEGENERATE (SIZE_MAX - 1)
 #define RECT_CONTACT_ERROR "R7: 投影接觸非單一矩形或僅相切（退化，不猜）"
 
 static void proj_sort_coords(Coord *values, size_t n)
@@ -10662,8 +10662,13 @@ static size_t world_face_obstacles(
             Coord cu0, cv0, cu1, cv1;
             int contact = classify_rect_outline(&b->outline, u0, v0, u1, v1,
                     &cls, &cu0, &cv0, &cu1, &cv1);
-            if (contact < 0) return FACE_OBSTACLES_DEGENERATE;
             if (contact == 0) continue;
+            if (contact < 0) {
+                /* Keep the identity for R15, but never claim a clipped rectangle.
+                 * Unselected invalid items must not block a valid explicit item. */
+                cls = OBSTACLE_DEGENERATE;
+                cu0 = u0; cv0 = v0; cu1 = u1; cv1 = v1;
+            }
             out[n++] = (FaceObstacle){
                 c->id, 0, cls, cu0, cv0, cu1, cv1
             };
@@ -11242,6 +11247,10 @@ static bool proj_apply_one(
 {
     Coord u0 = it->u_lo, v0 = it->v_lo, u1 = it->u_hi, v1 = it->v_hi;
     if (out_new_bid) *out_new_bid = 0;
+    if (it->cls == OBSTACLE_DEGENERATE) {
+        scene_error(path, line_no, RECT_CONTACT_ERROR);
+        return false;
+    }
 
     if (it->cls == OBSTACLE_HOLE) {
         if (b->hole_count >= POLY_MAX_HOLES) {
@@ -11564,10 +11573,6 @@ static bool apply_applyproj_line(
     World backup = *world;
     FaceObstacle items[64];
     size_t n = world_face_obstacles(world, b, items, 64);
-    if (n == FACE_OBSTACLES_DEGENERATE) {
-        scene_error(path, line_no, RECT_CONTACT_ERROR);
-        return false;
-    }
     if (n == SIZE_MAX) {
         scene_error(path, line_no, "面未放置，推不出障礙物");
         return false;

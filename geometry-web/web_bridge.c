@@ -570,6 +570,7 @@ static const char *obstacle_cls_name(ObstacleClass cls)
     case OBSTACLE_STRIP:     return "strip";
     case OBSTACLE_TOP_NOTCH: return "top_notch";
     case OBSTACLE_TOP_DROP:  return "top_drop";
+    case OBSTACLE_DEGENERATE: return "degenerate";
     }
     return "?";
 }
@@ -585,16 +586,20 @@ static void cmd_obstacles(uint32_t id)
         return;
     }
     size_t n = world_face_obstacles(&g_world, b, items, 64);
-    if (n == FACE_OBSTACLES_DEGENERATE) {
-        fputs("{\"ok\":false,\"error\":\"" RECT_CONTACT_ERROR "\"}\n", stdout);
-        return;
-    }
     if (n == SIZE_MAX) {
         fputs("{\"ok\":false,\"error\":\"面尚未放置，無法推導障礙物\"}\n",
               stdout);
         return;
     }
 
+    /* The current ghost contract has one rectangle per item. Report an
+     * unrepresentable contact explicitly; never draw its bounding box as a hole. */
+    for (size_t i = 0; i < n; ++i) {
+        if (items[i].cls == OBSTACLE_DEGENERATE) {
+            fputs("{\"ok\":false,\"error\":\"" RECT_CONTACT_ERROR "\"}\n", stdout);
+            return;
+        }
+    }
     int n_axis = 2;
     for (size_t p = 0; p < g_world.placement_count; ++p) {
         if (g_world.placements[p].boundary_id == b->id) {

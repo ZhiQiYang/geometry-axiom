@@ -21,7 +21,8 @@ TARGETS = ['tests.test_reference_contract.ReferenceContract.' + name for name in
     'test_rect_outline_counterexample_A_rejects_disconnected_contact',
     'test_rect_outline_counterexample_B_clips_ridge_and_applies_split',
     'test_rect_outline_strip_reclassification_uses_exact_contact',
-    'test_rect_outline_real_hole_no_contact_and_notch_controls')]
+    'test_rect_outline_real_hole_no_contact_and_notch_controls',
+    'test_rect_outline_unselected_complex_column_does_not_block_valid_item')]
 
 
 def main():
@@ -45,6 +46,8 @@ def main():
                         'bridge':[sys.executable,'-m','unittest',*TARGETS],
                         'scenes':[sys.executable,'tests/run_tests.py',str(binaries.BY_NAME['core'].path)]}
             results[phase] = {'source_sha256':{n:hashlib.sha256((ROOT/n).read_bytes()).hexdigest() for n in FILES},
+                              'binary_sha256':{n:hashlib.sha256(binaries.BY_NAME[n].path.read_bytes()).hexdigest()
+                                               for n in ('core','bridge','integrity')},
                               'base':BASE, 'runs':{}}
             for kind, cmd in commands.items():
                 proc = subprocess.run(cmd,cwd=ROOT,env=env,capture_output=True,text=True,timeout=300)

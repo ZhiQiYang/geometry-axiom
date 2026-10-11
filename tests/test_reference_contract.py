@@ -43,6 +43,13 @@ class ReferenceContract(unittest.TestCase):
         self.assertIn('boundary 2', dump)
         self.assertNotIn('hole ', dump)
 
+    def test_rect_outline_unselected_complex_column_does_not_block_valid_item(self):
+        self.projection_fixture('0,0 100,0 100,100 60,100 60,40 40,40 40,100 0,100',
+                                '30 50 size 40 30')
+        self.ok('column 2 at 10 10 size 10 10 z 0 100')
+        self.ok('apply-proj 1 c2')
+        self.assertIn('hole ', self.dump())
+
     def test_rect_outline_strip_reclassification_uses_exact_contact(self):
         self.ok('reset')
         self.ok('surface 1 origin 0 0 100 u +x v +y outline '
