@@ -16,7 +16,7 @@ from .common import (ModelError, canonical_bytes, digest, strict_json_loads,
 
 # The source commit contains the adopted axiom bytes identified by this digest.
 # Update only after committing the corresponding SSOT change (MODELING-CONTRACT).
-AXIOM_REVISION = "a2f8c89f74930cf9b88a6bb79e5897c9046f442c"
+AXIOM_REVISION = "d787146d501b98931cc66caccdbed0006c5ca25f"
 AXIOM_SHA256 = "2348373fa4182f984489c068b1762725f3d9eaa4087418b0ffb5182c763213e4"
 # The K2b texts of ee7c441 (before the P-045 amendment) and a2f8c89 (before
 # following K1's P-047 fix) never reached main; those interim digests were never
