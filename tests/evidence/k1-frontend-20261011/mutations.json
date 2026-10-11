@@ -1,7 +1,7 @@
 {
   "schema": "k1-frontend-mutations/1",
   "tests": {
-    "test_cutting_plan.js": "e98b7d2d2b8c73321440a00b54d91bc7567b11ef0db5a98a8e32eee4a0fce099",
+    "test_cutting_plan.js": "692f9d4e5384cc084b713f0cd23ba8b4ddd5edc2195718d5cc81b4d5701514c2",
     "test_cutting_project_store.js": "664ba7ed0dcef71ed4befed82128421c59df348b1f4067b39b83a25f7e7756bb",
     "test_cutting_session.js": "7c7485d29296470c36389f389488710abe06b86c0a54e33462083ada88ed3b45",
     "test_cutting_owner.js": "dc571cd410bc7979de4c952118d15475eba442016628ec036633f30b01185c5c"
@@ -14,7 +14,7 @@
       "detectedBy": "invariant",
       "testPattern": "T1",
       "exitCode": 1,
-      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "sourceHash": "d160c37d1c4b4b283082aa86d86df7c431f806f4104d2c6f3da96f42c6a51bf5",
       "mutationHash": "c6850153841539cfc4dfb6e71744c58752497797ebf20ceb6bd354591d53af50"
     },
     {
@@ -23,7 +23,7 @@
       "detectedBy": "invariant",
       "testPattern": "T2",
       "exitCode": 1,
-      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "sourceHash": "d160c37d1c4b4b283082aa86d86df7c431f806f4104d2c6f3da96f42c6a51bf5",
       "mutationHash": "4939e3fd09cf5ebdf530dca3b0bc0f6231796a3bbc313d83d5a3e841aae10327"
     },
     {
@@ -32,7 +32,7 @@
       "detectedBy": "invariant",
       "testPattern": "T2",
       "exitCode": 1,
-      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "sourceHash": "d160c37d1c4b4b283082aa86d86df7c431f806f4104d2c6f3da96f42c6a51bf5",
       "mutationHash": "3605308590ac64bb6d52e070a43ac3f8d9deca7e9137254a51475ab137a4212f"
     },
     {
@@ -41,7 +41,7 @@
       "detectedBy": "invariant",
       "testPattern": "T2",
       "exitCode": 1,
-      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "sourceHash": "d160c37d1c4b4b283082aa86d86df7c431f806f4104d2c6f3da96f42c6a51bf5",
       "mutationHash": "b1155885ae25a1fbb762a7a2f0404351c7ab504ed18d05ea6ec69156784c7874"
     },
     {
@@ -50,7 +50,7 @@
       "detectedBy": "assertion",
       "testPattern": "T4",
       "exitCode": 1,
-      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "sourceHash": "d160c37d1c4b4b283082aa86d86df7c431f806f4104d2c6f3da96f42c6a51bf5",
       "mutationHash": "b4282a971379953b23ea426c975e29e1565921db8e4b4af1ac2883f6b38661fe"
     },
     {
@@ -59,7 +59,7 @@
       "detectedBy": "invariant",
       "testPattern": "T4",
       "exitCode": 1,
-      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "sourceHash": "d160c37d1c4b4b283082aa86d86df7c431f806f4104d2c6f3da96f42c6a51bf5",
       "mutationHash": "7288a6e3bfc4c3426f403a66a1fe90e8a98d6e4bd84b866f535795d86ad37528"
     },
     {
@@ -68,7 +68,7 @@
       "detectedBy": "assertion",
       "testPattern": "T5",
       "exitCode": 1,
-      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "sourceHash": "d160c37d1c4b4b283082aa86d86df7c431f806f4104d2c6f3da96f42c6a51bf5",
       "mutationHash": "53b25221cc30247c78f529e42d11de518d8330051f737e667e170b373edda62c"
     },
     {
@@ -77,7 +77,7 @@
       "detectedBy": "invariant",
       "testPattern": "T6",
       "exitCode": 1,
-      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "sourceHash": "d160c37d1c4b4b283082aa86d86df7c431f806f4104d2c6f3da96f42c6a51bf5",
       "mutationHash": "74296a2e7ec66bd60af84bd6a15e783010dddd7e71addb4711fef45775f3a04c"
     },
     {
@@ -86,7 +86,7 @@
       "detectedBy": "assertion",
       "testPattern": "T7",
       "exitCode": 1,
-      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "sourceHash": "d160c37d1c4b4b283082aa86d86df7c431f806f4104d2c6f3da96f42c6a51bf5",
       "mutationHash": "9a3e67b9b32e4506fa2836f4378ea0f078807370c684455e07801e77748b6462"
     },
     {
@@ -95,7 +95,7 @@
       "detectedBy": "assertion",
       "testPattern": "T7",
       "exitCode": 1,
-      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "sourceHash": "d160c37d1c4b4b283082aa86d86df7c431f806f4104d2c6f3da96f42c6a51bf5",
       "mutationHash": "be7b45e8dfe9b61e8bb41148986bc29892b4cc57b861c478d4430ab415b9318c"
     },
     {
@@ -104,7 +104,7 @@
       "detectedBy": "assertion",
       "testPattern": "T7",
       "exitCode": 1,
-      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "sourceHash": "d160c37d1c4b4b283082aa86d86df7c431f806f4104d2c6f3da96f42c6a51bf5",
       "mutationHash": "14d273d04213a9fe232835541302d57bc02fbdc4aef8b3f3ab93f58d2769f84c"
     },
     {
@@ -113,7 +113,7 @@
       "detectedBy": "assertion",
       "testPattern": "T7",
       "exitCode": 1,
-      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "sourceHash": "d160c37d1c4b4b283082aa86d86df7c431f806f4104d2c6f3da96f42c6a51bf5",
       "mutationHash": "ffb4388c556d4fea1cba885ce6251ac00532700cd10388d5db95a16b8c23ff14"
     },
     {
@@ -122,7 +122,7 @@
       "detectedBy": "assertion",
       "testPattern": "T7",
       "exitCode": 1,
-      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "sourceHash": "d160c37d1c4b4b283082aa86d86df7c431f806f4104d2c6f3da96f42c6a51bf5",
       "mutationHash": "821fc7fe18e941ac265c8c4744ab5642e0419f7929acf8422684825b5370ad15"
     },
     {
@@ -149,7 +149,7 @@
       "detectedBy": "assertion",
       "testPattern": "T10",
       "exitCode": 1,
-      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "sourceHash": "d160c37d1c4b4b283082aa86d86df7c431f806f4104d2c6f3da96f42c6a51bf5",
       "mutationHash": "7fa96c63e3a06a821a6aad6ed19b8b7b31ac6af80fc67b7816ac1773ee8c3874"
     },
     {
@@ -158,7 +158,7 @@
       "detectedBy": "assertion",
       "testPattern": "T10",
       "exitCode": 1,
-      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "sourceHash": "d160c37d1c4b4b283082aa86d86df7c431f806f4104d2c6f3da96f42c6a51bf5",
       "mutationHash": "c5ce7957e880aa2c3ed6c67373c865f8c7583c05a09f9f046ecb6f96485e76f8"
     },
     {
@@ -167,7 +167,7 @@
       "detectedBy": "assertion",
       "testPattern": "T10",
       "exitCode": 1,
-      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "sourceHash": "d160c37d1c4b4b283082aa86d86df7c431f806f4104d2c6f3da96f42c6a51bf5",
       "mutationHash": "b14be5a456cc3d1accb49256f8bc5ed0dc654d46f18c81ada239cedaf1649cf7"
     },
     {
@@ -176,7 +176,7 @@
       "detectedBy": "invariant",
       "testPattern": "T4",
       "exitCode": 1,
-      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "sourceHash": "d160c37d1c4b4b283082aa86d86df7c431f806f4104d2c6f3da96f42c6a51bf5",
       "mutationHash": "b4825133369f5116ee6ac199602a2a96262af44ddab2886cc6cd7b8d532a2a7c"
     },
     {
@@ -185,7 +185,7 @@
       "detectedBy": "assertion",
       "testPattern": "T1",
       "exitCode": 1,
-      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "sourceHash": "d160c37d1c4b4b283082aa86d86df7c431f806f4104d2c6f3da96f42c6a51bf5",
       "mutationHash": "fe692fa97be558e3e5e4ae07dd853124bdcbe5f84f425223f8c2977694a87cf2"
     },
     {
@@ -212,8 +212,17 @@
       "detectedBy": "assertion",
       "testPattern": "T19",
       "exitCode": 1,
-      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "sourceHash": "d160c37d1c4b4b283082aa86d86df7c431f806f4104d2c6f3da96f42c6a51bf5",
       "mutationHash": "c2eb36eed2ab677876ac496551d07f824a221538d3c38d9b7222f4b19492406f"
+    },
+    {
+      "id": "phase-order",
+      "status": "killed",
+      "detectedBy": "assertion",
+      "testPattern": "R47 material",
+      "exitCode": 1,
+      "sourceHash": "d160c37d1c4b4b283082aa86d86df7c431f806f4104d2c6f3da96f42c6a51bf5",
+      "mutationHash": "b8eb614e5d4c38efb36f964d5fd1f5cd0e28019f65d3e18113ed22dd59a33c87"
     },
     {
       "id": "overlength-remnants",
@@ -221,7 +230,7 @@
       "detectedBy": "assertion",
       "testPattern": "T23",
       "exitCode": 1,
-      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "sourceHash": "d160c37d1c4b4b283082aa86d86df7c431f806f4104d2c6f3da96f42c6a51bf5",
       "mutationHash": "504d5489d61622792ce95deddea4ce9db43f5b9cf969f39df01d93340bb84ab8"
     },
     {
@@ -230,7 +239,7 @@
       "detectedBy": "assertion",
       "testPattern": "T23",
       "exitCode": 1,
-      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "sourceHash": "d160c37d1c4b4b283082aa86d86df7c431f806f4104d2c6f3da96f42c6a51bf5",
       "mutationHash": "b48726ee581d4e6ddbcb72e37b74811acf4b5da0961465ddd133816d6e81bc54"
     },
     {
@@ -239,7 +248,7 @@
       "detectedBy": "assertion",
       "testPattern": "R1.1",
       "exitCode": 1,
-      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "sourceHash": "d160c37d1c4b4b283082aa86d86df7c431f806f4104d2c6f3da96f42c6a51bf5",
       "mutationHash": "d2a3482aab541d5bb172c8cc60f677edb1a297f9b768f2e9bbe91c1aebee0d64"
     },
     {
@@ -248,7 +257,7 @@
       "detectedBy": "assertion",
       "testPattern": "conservation detects",
       "exitCode": 1,
-      "sourceHash": "a8c12b8c5e5b96d2f0d822cb54a198cae1548712794ecb199b0ea514119dbc5f",
+      "sourceHash": "d160c37d1c4b4b283082aa86d86df7c431f806f4104d2c6f3da96f42c6a51bf5",
       "mutationHash": "efdb7f486cf1125b4b09cabf0b1a0f9e54c707ae45a50aa34a04308e8c46c638"
     },
     {

@@ -64,6 +64,10 @@ test('T19 T28 missing settings follow overlength diagnostics and severity',async
  for(const field of ['kerf','allowance','minRemnant']){const s=settings();s[field]=null;const p=await evaluate(refs([3700]),s);diagnostic(p,'INVALID','OVER_LENGTH');assert.ok(p.diagnostics.some(d=>d.code==='MISSING_SETTING'));}
  const s=settings();s.allowance=null;diagnostic(await evaluate(refs([1000]),s),'INCOMPLETE','MISSING_SETTING');
 });
+test('R47 material diagnostics precede overlength and missing-setting phases',async()=>{
+ const r=refs([3700,100]);r.timbers[1].geometry.A=30;r.timbers[1].geometry.B=36;const s=settings();s.kerf=null;
+ const p=await evaluate(r,s);assert.equal(p.status,'INVALID');assert.deepEqual(p.diagnostics.map(d=>d.code),['NO_STOCK','OVER_LENGTH','MISSING_SETTING'],'R47 phase 2 material matching must finish before phase 3 overlength');assert.deepEqual(p.groups,[]);
+});
 test('T23 T23b exhaustion is per-group first failure, and overlength considers every remnant',async()=>{
  const s=settings(3000,5);s.remnants=[{key:1,stockType:1,length:3300,headTrim:0,tailTrim:5}];s.nextRemnantKey=2;
  const p=await evaluate(refs([3200,3100]),s);diagnostic(p,'INCOMPLETE','REMNANT_EXHAUSTED');assert.equal(p.diagnostics.length,1);assert.ok(!p.diagnostics.some(d=>d.code==='OVER_LENGTH'));

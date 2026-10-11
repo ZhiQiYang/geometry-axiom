@@ -26,7 +26,7 @@
    for(const row of snapshot.rows)rows.set(row.id,row);
    if(rows.size>4096){p.diagnostics=[];p.status='EMPTY';diagnose('UNSUPPORTED','CAPACITY','需求件至多 4096 支，不截斷。');return p;}
   }
-  const demands=new Map();
+  const demands=new Map(),overlength=[];
   for(const row of [...rows.values()].sort((a,b)=>a.id-b.id)){
    const terminals=[];let bad=false;
    for(const field of ['A','B']){const source=row.sources.find(s=>s.target?.field===field);
@@ -48,9 +48,10 @@
     else diagnose('INCOMPLETE','NO_STOCK',detail);continue;
    }
    const C=row.L+(settings.allowance??0),maximum=Math.max(stock.length-2*stock.endTrim,...settings.remnants.filter(r=>r.stockType===stock.key).map(r=>r.length-r.headTrim-r.tailTrim));
-   if(C>maximum)diagnose('INVALID','OVER_LENGTH',{timberId:row.id,C,maximum});
+   if(C>maximum)overlength.push({timberId:row.id,C,maximum});
    if(!demands.has(stock.key))demands.set(stock.key,[]);demands.get(stock.key).push({timberId:row.id,surface:row.surface,L:row.L,allowance:settings.allowance,C});
   }
+  for(const detail of overlength)diagnose('INVALID','OVER_LENGTH',detail);
   const missing=['kerf','allowance','minRemnant'].filter(k=>settings[k]===null);if(missing.length)diagnose('INCOMPLETE','MISSING_SETTING',missing);
   if(p.diagnostics.length)return p;
   for(const stockType of [...settings.stockTypes].sort((a,b)=>a.key-b.key)){

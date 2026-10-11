@@ -35,6 +35,7 @@ CASES = [
  ('canonical-stocks','cutting-settings.js','n.stockTypes.sort((a,b)=>a.key-b.key);','', 'R1.1 R5'),
  ('canonical-remnants','cutting-settings.js','n.remnants.sort((a,b)=>a.key-b.key);','', 'R1.1 R5'),
  ('missing-setting','cutting-plan.js',"filter(k=>settings[k]===null)","filter(k=>false)",'T19'),
+ ('phase-order','cutting-plan.js','overlength.push({timberId:row.id,C,maximum})',"diagnose('INVALID','OVER_LENGTH',{timberId:row.id,C,maximum})",'R47 material'),
  ('overlength-remnants','cutting-plan.js','...settings.remnants.filter(r=>r.stockType===stock.key).map(r=>r.length-r.headTrim-r.tailTrim)','0','T23'),
  ('exhaustion-code','cutting-plan.js',"diagnose('INCOMPLETE','REMNANT_EXHAUSTED'","diagnose('INVALID','OVER_LENGTH'",'T23'),
  ('exhaustion-all-groups','cutting-plan.js','if(failed)continue;','if(failed)break;','R1.1'),
