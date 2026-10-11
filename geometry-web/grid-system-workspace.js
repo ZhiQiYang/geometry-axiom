@@ -74,7 +74,7 @@
   function selectParameterPin(s,node){
     if(!canEdit(s)||!node.id.endsWith('Source')||['igUSource','igVSource'].includes(node.id))return;
     const before=s.referenceSelections.get(node.id),form=rawForm(s),key=node.value?'parameter-field:'+node.value:null;
-    if(!approveInputReplacement(s.inputPins.get(before),key?s.pins.get(key):null)){node.value=before?.replace('parameter-field:','')||'';return;}
+    if(!approveInputReplacement(s.inputPins.get(before),key?s.pins.get(key):null)){node.value=before?.replace('parameter-field:','')||'';return false;}
     s.referenceSelections.set(node.id,key);
     if(before&&!parameterSelections(form).some(([,selected])=>selected===before))s.inputPins.delete(before);
     if(key){const pin=s.pins.get(key);if(pin)s.inputPins.set(key,copy(pin));else s.inputPins.delete(key);}
@@ -505,7 +505,13 @@
     setAnchor(a?.[0]?.num ?? 0, a?.[0]?.den ?? 1, a?.[1]?.num ?? 0, a?.[1]?.den ?? 1);
     s.restoringBoundary = !!s.binding;
     s.initialSourceKey = sourceEditorKey(); s.initialBindingKey = s.binding ? savedBindingKey(s.binding) : bindingEditorKey(s); s.bindingReady = !s.binding;
-    dialog.oninput = dialog.onchange = event => {s.rawOverrides.delete(event.target.id);selectParameterPin(s,event.target);syncDraftState(s,event.target.id==='igSystem');};
+    // Reject lost selections before ParameterUI's target listener can clear
+    // the associated raw input or push a metadata history entry.
+    s.selectionAbort?.abort();s.selectionAbort=new AbortController();
+    const selectBeforeTarget=event=>{if(current(s)&&selectParameterPin(s,event.target)===false){event.preventDefault();event.stopImmediatePropagation();}};
+    dialog.addEventListener('input',selectBeforeTarget,{capture:true,signal:s.selectionAbort.signal});
+    dialog.addEventListener('change',selectBeforeTarget,{capture:true,signal:s.selectionAbort.signal});
+    dialog.oninput = dialog.onchange = event => {s.rawOverrides.delete(event.target.id);syncDraftState(s,event.target.id==='igSystem');};
     s.normalizedRaw=rawForm(s);s.initialRaw=JSON.stringify(s.normalizedRaw);
     if(s.restored)restoreRaw(s,s.restored.rawForm);
     s.referenceSelections=new Map(parameterSelections(rawForm(s)));
