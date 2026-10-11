@@ -37,3 +37,10 @@ node --test tests/test_cdp_card_position.js tests/test_cdp_evaluation.js
 `board-local-codex/verify_pr197.py`、`pr197-unit-results.json` 及同名前綴 log。
 純 Node 結果不代表真實瀏覽器延遲注入、canvas×2、grid×1 或七 job 全量通過；
 那些結果必須另附待合併 head 的實跑收據。
+
+真實瀏覽器注入腳本為 `tests/evidence/cdp_sync_proof.py`。它在全新 Linux
+暫存 clone 中保留原斷言，只限定執行段落；19 個情境分別涵蓋三站基線、
+舊測試延遲紅／新測試延遲綠、永久不更新、錯誤匯出與頂點超時晚到。
+所有產品變異僅存在暫存 clone；每案另存 patch、runtime、原始 log、耗時
+與退出碼，最後還原。發生非預期結果就停止，不能拿啟動失敗冒充突變命中。
+執行必須經 WSL 排隊鎖，`--runner-tools` 使用同一份 `wsl-ci` 隔離取樣器。
