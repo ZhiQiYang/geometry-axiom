@@ -103,10 +103,11 @@ class PureReview(base.LanCase):
             pem, key, der = lan_tls.issue(base.LAN_IP, 7, now)
         return lan_tls, now, x509.load_pem_x509_certificate(pem), x509.load_der_x509_certificate(der), ca_key, leaf_key
 
-    def rewrite(self, cert, signer, *, replacements=(), omit=(), before=None, after=None):
+    def rewrite(self, cert, signer, *, replacements=(), omit=(), before=None, after=None, subject=None, issuer=None):
         from cryptography import x509
         from cryptography.hazmat.primitives import hashes
-        builder = (x509.CertificateBuilder().subject_name(cert.subject).issuer_name(cert.issuer)
+        builder = (x509.CertificateBuilder().subject_name(cert.subject if subject is None else subject)
+            .issuer_name(cert.issuer if issuer is None else issuer)
             .public_key(cert.public_key()).serial_number(cert.serial_number)
             .not_valid_before(before or certificate_utc(cert, "not_valid_before"))
             .not_valid_after(after or certificate_utc(cert, "not_valid_after")))
@@ -119,8 +120,8 @@ class PureReview(base.LanCase):
             builder = builder.add_extension(value, critical)
         return builder.sign(signer, hashes.SHA256())
 
-    def chain_validates(self, ca, leaf, key):
-        """Actual OpenSSL chain validation via MemoryBIO; hostname matching is off.
+    def chain_validates(self, ca, leaf, key, *, hostname=None, common_name=True):
+        """Actual OpenSSL chain validation via MemoryBIO; hostname matching defaults off.
 
         All leaves use the same CA and key. A wrong-name failure therefore
         proves a chain constraint, not a mismatch against the normal IP SAN.
@@ -133,10 +134,11 @@ class PureReview(base.LanCase):
             server = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
             server.load_cert_chain(str(cert_path), str(key_path))
             client = ssl.create_default_context(cadata=ca.public_bytes(ser.Encoding.PEM).decode())
-            client.check_hostname = False
+            client.check_hostname = hostname is not None
+            client.hostname_checks_common_name = common_name
             incoming = [ssl.MemoryBIO(), ssl.MemoryBIO()]
             outgoing = [ssl.MemoryBIO(), ssl.MemoryBIO()]
-            peers = [client.wrap_bio(incoming[0], outgoing[0], server_hostname=base.LAN_IP),
+            peers = [client.wrap_bio(incoming[0], outgoing[0], server_hostname=hostname or base.LAN_IP),
                      server.wrap_bio(incoming[1], outgoing[1], server_side=True)]
             done = [False, False]
             for _ in range(30):
@@ -174,6 +176,79 @@ class PureReview(base.LanCase):
                 signed = self.rewrite(leaf, ca_key, replacements=[(x509.SubjectAlternativeName([name]), False)])
                 self.assertEqual(self.chain_validates(ca, signed, leaf_key), expected,
                                  f"CA accepted forbidden {label} leaf (hostname matching disabled)")
+
+    @base.NEEDS_CRYPTOGRAPHY
+    def test_subject_whitelist_rejects_cn_variants_before_reuse(self):
+        import json
+        from cryptography import x509
+        from cryptography.hazmat.primitives import serialization as ser
+        from cryptography.x509.oid import NameOID
+        tls, now, leaf, ca, ca_key, leaf_key = self.issued()
+        cn = lambda value: x509.NameAttribute(NameOID.COMMON_NAME, value)
+        subjects = {
+            "wildcard CN": x509.Name([cn("*.example.test")]),
+            "wrong single CN": x509.Name([cn("audit.example.test")]),
+            "normal plus wildcard CN": x509.Name([cn(tls.LEAF_CN), cn("*.example.test")]),
+            "repeated normal CN": x509.Name([cn(tls.LEAF_CN), cn(tls.LEAF_CN)]),
+            "extra subject attribute": x509.Name([cn(tls.LEAF_CN), x509.NameAttribute(NameOID.ORGANIZATION_NAME, "extra")]),
+            "empty subject": x509.Name([]),
+        }
+        cases = {label: (self.rewrite(leaf, ca_key, subject=subject), ca) for label, subject in subjects.items()}
+        bad_ca_name = x509.Name([*ca.subject, cn("*.example.test")])
+        bad_ca = self.rewrite(ca, ca_key, subject=bad_ca_name, issuer=bad_ca_name)
+        cases["CA extra CN"] = (self.rewrite(leaf, ca_key, issuer=bad_ca_name), bad_ca)
+        for label, (candidate, issuer) in {"valid control": (leaf, ca), **cases}.items():
+            with self.subTest(subject=label), tempfile.TemporaryDirectory(prefix="geometry-lan-cn-") as temp:
+                candidate.verify_directly_issued_by(issuer)
+                issuer.verify_directly_issued_by(issuer)
+                if label == "valid control":
+                    tls.validate_material(base.LAN_IP, candidate, leaf_key, issuer, now)
+                else:
+                    with self.subTest(stage="validate"):
+                        with self.assertRaisesRegex(self.guard.LanRefused, "subject", msg="non-whitelisted subject was accepted"):
+                            tls.validate_material(base.LAN_IP, candidate, leaf_key, issuer, now)
+                directory = pathlib.Path(temp)
+                (directory / "leaf.pem").write_bytes(candidate.public_bytes(ser.Encoding.PEM))
+                (directory / "leaf.key").write_bytes(leaf_key.private_bytes(ser.Encoding.PEM, ser.PrivateFormat.PKCS8, ser.NoEncryption()))
+                (directory / "ca.cer").write_bytes(issuer.public_bytes(ser.Encoding.DER))
+                (directory / "meta.json").write_text(json.dumps({"ip": base.LAN_IP, "port": 18766}), encoding="utf-8")
+                result = tls.load_or_issue(base.LAN_IP, 18766, 7, directory, now)
+                self.assertEqual(result.reused, label == "valid control", "non-whitelisted subject was reused")
+
+    @base.NEEDS_CRYPTOGRAPHY
+    def test_new_material_checks_subject_before_any_persistence(self):
+        from cryptography import x509
+        from cryptography.hazmat.primitives import serialization as ser
+        from cryptography.x509.oid import NameOID
+        tls, now, leaf, ca, ca_key, leaf_key = self.issued()
+        bad = self.rewrite(leaf, ca_key, subject=x509.Name([x509.NameAttribute(NameOID.COMMON_NAME, "*.example.test")]))
+        material = (bad.public_bytes(ser.Encoding.PEM),
+            leaf_key.private_bytes(ser.Encoding.PEM, ser.PrivateFormat.PKCS8, ser.NoEncryption()),
+            ca.public_bytes(ser.Encoding.DER))
+        with tempfile.TemporaryDirectory(prefix="geometry-lan-cn-issue-") as temp:
+            directory = pathlib.Path(temp) / "new"
+            with patch.object(tls, "issue", return_value=material):
+                with self.assertRaisesRegex(self.guard.LanRefused, "subject", msg="new malicious subject reached persistence"):
+                    tls.load_or_issue(base.LAN_IP, 18766, 7, directory, now)
+            self.assertFalse(directory.exists(), "refused material created a persistent directory")
+
+    @base.NEEDS_CRYPTOGRAPHY
+    def test_root_constraints_do_not_claim_to_disable_client_cn_fallback(self):
+        from cryptography import x509
+        from cryptography.x509.oid import NameOID
+        tls, _, leaf, ca, ca_key, leaf_key = self.issued()
+        cn = lambda value: x509.NameAttribute(NameOID.COMMON_NAME, value)
+        for label, subject in [("single wildcard", x509.Name([cn("*.example.test")])),
+                               ("extra wildcard", x509.Name([cn(tls.LEAF_CN), cn("*.example.test")]))]:
+            with self.subTest(subject=label):
+                signed = self.rewrite(leaf, ca_key, subject=subject)
+                # This signed but locally forbidden leaf demonstrates the trust-boundary limitation.
+                self.assertTrue(self.chain_validates(ca, signed, leaf_key, hostname="audit.example.test"),
+                                "OpenSSL CN-fallback control changed; reassess the documented platform boundary")
+                self.assertFalse(self.chain_validates(ca, signed, leaf_key, hostname="audit.example.test", common_name=False))
+                self.assertTrue(self.chain_validates(ca, signed, leaf_key, hostname=base.LAN_IP))
+        wrong_dns = self.rewrite(leaf, ca_key, replacements=[(x509.SubjectAlternativeName([x509.DNSName("audit.example.test")]), False)])
+        self.assertFalse(self.chain_validates(ca, wrong_dns, leaf_key, hostname="audit.example.test"))
 
     @base.NEEDS_CRYPTOGRAPHY
     def test_certificate_total_validity_never_exceeds_seven_days(self):
@@ -240,6 +315,40 @@ class PureReview(base.LanCase):
 
 
 class SocketReview(base.LanCase):
+    def test_denied_late_body_is_drained_after_response_before_socket_release(self):
+        gate, _, _ = self.start_lan()
+        body = b'{"cmd":"dump"}'
+        drained, received = threading.Event(), bytearray()
+        real_socket = self.mod.socket
+        def observe_recv(sock, limit):
+            chunk = real_socket.socket.recv(sock, limit)
+            received.extend(chunk)
+            if received == body:
+                drained.set()
+            return chunk
+        observed_socket = types.SimpleNamespace(socket=types.SimpleNamespace(
+            recv=observe_recv, shutdown=real_socket.socket.shutdown),
+            SHUT_WR=real_socket.SHUT_WR, SHUT_RDWR=real_socket.SHUT_RDWR)
+        with patch.object(self.mod, "socket", observed_socket):
+            with socket.create_connection(("127.0.0.1", gate.config.port), timeout=3) as client:
+                client.sendall((f"POST /api HTTP/1.1\r\nHost: {base.LAN_IP}:{gate.config.port}\r\n"
+                    f"Origin: {gate.config.origin}\r\nContent-Length: {len(body)}\r\n\r\n").encode())
+                header = b""
+                while b"\r\n\r\n" not in header:
+                    packet = client.recv(4096)
+                    self.assertTrue(packet, "denied connection closed before its response")
+                    header += packet
+                self.assertIn(b" 403 ", header.split(b"\r\n", 1)[0])
+                self.assertEqual(received, b"", "body was consumed before the refusal reached the client")
+                try:
+                    client.sendall(body)
+                    client.shutdown(socket.SHUT_WR)
+                except (BrokenPipeError, ConnectionResetError):
+                    pass  # The assertion below still rejects a prematurely released socket.
+                self.assertTrue(drained.wait(2), "refused late body was not drained after the response")
+                self.assertEqual(bytes(received), body)
+        self.assertEqual(self.process.stdin.getvalue(), b"", "rejected body reached the native bridge")
+
     def start_review_lan(self, category_query=lambda ip: "Private", **overrides):
         config = self.guard.LanConfig(ip=base.LAN_IP, port=base.free_port(), poll=0.02, **overrides)
         gate = self.guard.LanGate(config, log=self.logs.append)

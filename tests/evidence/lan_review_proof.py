@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Reproduce PR 194's loopback regressions and 47 targeted mutations.
+"""Reproduce PR 194's loopback regressions and 49 targeted mutations.
 
 Run under wsl_locked3.sh run, passing --head FULL_SHA --work NEW_DIRECTORY
 --out NEW_RECEIPT_DIRECTORY --runner-tools DIRECTORY_CONTAINING_ci_run.py.
 The supplied source repository is read only. Every mutation happens in a fresh
 private clone; no LAN listener, user certificate directory or network settings
-are used. Baseline 97 tests = existing LAN 30 + review 17 + loopback server 50.
+are used. Baseline 101 tests = existing LAN 30 + review 21 + loopback server 50.
 Each mutation runs its named tests, restores the exact bytes and reruns those
 tests. An unexpected result stops the run after restoration.
 """
@@ -73,7 +73,7 @@ def main():
                'seconds': round(time.monotonic()-started, 3), 'log': str(path), 'log_sha256': sha(path.read_bytes())}
         receipt['steps'].append(row)
         save()
-        if rc != expected or (needle and needle not in output) or (count is not None and found != [str(count)]):
+        if rc not in (expected if isinstance(expected, tuple) else (expected,)) or (needle and needle not in output) or (count is not None and found != [str(count)]):
             raise RuntimeError('unexpected result: ' + label)
         if count is not None and ('skipped=' in output or '\nERROR:' in output):
             raise RuntimeError('skip or unrelated test error: ' + label)
@@ -106,7 +106,39 @@ def main():
         receipt['source_hashes'] = {path: sha((root / path).read_bytes()) for path in sorted(paths)}
         unit = [sys.executable, '-m', 'unittest', '-v']
         baseline = ['tests.test_serve_lan', 'tests.test_lan_review', 'tests.test_serve']
-        run('baseline-before', unit + baseline, count=97)
+        run('baseline-before', unit + baseline, count=101)
+        # Preserve the old M19/M23 oracle observations; neither is used to judge
+        # the repaired mutation registrations below. Linux's late-body/RST
+        # outcome may differ by platform, so record 0 or an actual assertion 1.
+        receipt['prior_oracle_observations'] = []
+        by_id = {row['id']: row for row in registry['mutants']}
+        prior = [
+            ('M19', 'tests.test_serve_lan.GateLayer.test_09d_closing_cuts_open_connections_and_refuses_late_requests'),
+            ('M23', 'tests.test_serve_lan.GateLayer.test_04b_denied_request_whose_body_arrives_late_still_gets_its_403'),
+        ]
+        for identifier, test in prior:
+            row = by_id[identifier]
+            path = root / row['path']
+            original = path.read_bytes()
+            changed = original.decode('utf-8')
+            for old, new in row['edits']:
+                if changed.count(old) != 1:
+                    raise RuntimeError('prior observation anchor changed: ' + identifier)
+                changed = changed.replace(old, new)
+            try:
+                path.write_bytes(changed.encode('utf-8'))
+                output = run(identifier + '-prior-oracle', unit + [test], expected=(0, 1), count=1)
+                observed = receipt['steps'][-1]['exit']
+                if observed == 1 and ('FAIL:' not in output or 'FAILED (failures=' not in output):
+                    raise RuntimeError('prior oracle failed without an assertion: ' + identifier)
+                receipt['prior_oracle_observations'].append({'id':identifier, 'test':test, 'exit':observed,
+                    'meaning':'survived' if observed == 0 else 'detected in this environment'})
+            finally:
+                path.write_bytes(original)
+                if path.read_bytes() != original:
+                    raise RuntimeError('prior observation restore mismatch')
+            run(identifier + '-prior-restored', unit + [test], count=1)
+            save()
         for row in rows:
             path = root / row['path']
             original = path.read_bytes()
@@ -134,7 +166,7 @@ def main():
             run(row['id'] + '-restored', unit + row['tests'], count=len(row['tests']))
             record['restored_green'] = True
             save()
-        run('baseline-after', unit + baseline, count=97)
+        run('baseline-after', unit + baseline, count=101)
         receipt['status'] = 'passed'
     except BaseException as exc:
         receipt.update(status='blocked-unexpected-result', error=repr(exc))

@@ -288,7 +288,7 @@
       ],
       "needle": "守門第 1 條失效",
       "tests": [
-        "tests.test_serve_lan.GateLayer.test_09d_closing_cuts_open_connections_and_refuses_late_requests"
+        "tests.test_serve_lan.GateLayer.test_09a_ttl_closes_the_lan_listener_but_not_loopback"
       ]
     },
     {
@@ -338,7 +338,7 @@
     },
     {
       "id": "M23",
-      "label": "拒絕後不做 lingering close",
+      "label": "拒絕回應後沒有排空延後送出的 body（真實 socket 讀取觀測，不依平台 RST）",
       "path": "geometry-web/serve.py",
       "edits": [
         [
@@ -346,9 +346,9 @@
           "        if False:\n            _linger(self.connection)"
         ]
       ],
-      "needle": "沒有 lingering close",
+      "needle": "refused late body was not drained after the response",
       "tests": [
-        "tests.test_serve_lan.GateLayer.test_04b_denied_request_whose_body_arrives_late_still_gets_its_403"
+        "tests.test_lan_review.SocketReview.test_denied_late_body_is_drained_after_response_before_socket_release"
       ]
     },
     {
@@ -715,6 +715,36 @@
       "needle": "saved material bypassed policy: CA EKU excludes servers",
       "tests": [
         "tests.test_lan_review.PureReview.test_signed_noncompliant_saved_material_is_not_reused"
+      ]
+    },
+    {
+      "id": "M48",
+      "label": "拿掉完整 leaf subject 白名單",
+      "path": "geometry-web/lan_tls.py",
+      "edits": [
+        [
+          "        require(leaf.subject == leaf_subject, \"leaf subject 必須完整符合簽發白名單\")\n",
+          ""
+        ]
+      ],
+      "needle": "non-whitelisted subject was accepted",
+      "tests": [
+        "tests.test_lan_review.PureReview.test_subject_whitelist_rejects_cn_variants_before_reuse"
+      ]
+    },
+    {
+      "id": "M49",
+      "label": "拿掉完整 CA subject 白名單",
+      "path": "geometry-web/lan_tls.py",
+      "edits": [
+        [
+          "        require(ca.subject == ca_subject, \"CA subject 必須完整符合簽發白名單\")\n",
+          ""
+        ]
+      ],
+      "needle": "non-whitelisted subject was accepted",
+      "tests": [
+        "tests.test_lan_review.PureReview.test_subject_whitelist_rejects_cn_variants_before_reuse"
       ]
     }
   ]

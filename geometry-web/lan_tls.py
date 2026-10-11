@@ -4,7 +4,8 @@
 `cryptography` 惰性載入：缺套件時 `--lan` 以 exit 2 拒絕，絕不退回 http（不新增 CI 相依）。
 CA：ECDSA P-256、critical BasicConstraints(ca, pathLen 0)、critical KeyUsage(keyCertSign, cRLSign)、
 critical NameConstraints：只允許指定 IP，DNS／email／URI 各以相同的 permitted＋excluded
-子樹構成空集合；CA 私鑰從不序列化，簽完葉憑證即解除參照。iOS 是否執行根的約束仍須實機驗證。
+子樹構成空集合；完整 subject 白名單另拒絕額外／萬用 CN，但不保證外部客戶端停用 CN fallback。
+CA 私鑰從不序列化，簽完葉憑證即解除參照。iOS 根約束與 CN fallback 仍須實機驗證。
 葉憑證：SAN 只有 IPAddress(<ip>)、EKU serverAuth、KeyUsage(digitalSignature)、ca=False，效期 ≤ CA（≤7 天）。
 存放 %LOCALAPPDATA%\\geometry-lan\\<ip>-<port>\\（不在 repository 內、不另動 ACL）。
 
@@ -110,6 +111,14 @@ def _constraints(address):
         excluded_subtrees=denied)
 
 
+def _subject_names(address):
+    """The complete issued subjects; saved material must match them exactly."""
+    from cryptography import x509
+    from cryptography.x509.oid import NameOID
+    return (x509.Name([x509.NameAttribute(NameOID.COMMON_NAME, f"{CA_CN} {address}")]),
+            x509.Name([x509.NameAttribute(NameOID.COMMON_NAME, LEAF_CN)]))
+
+
 def validate_material(ip, leaf, key, ca, now):
     """One policy for new and saved material; failure never permits persistence/reuse."""
     from cryptography import x509
@@ -126,6 +135,9 @@ def validate_material(ip, leaf, key, ca, now):
 
     try:
         address = ipaddress.IPv4Address(ip)
+        ca_subject, leaf_subject = _subject_names(address)
+        require(ca.subject == ca_subject, "CA subject 必須完整符合簽發白名單")
+        require(leaf.subject == leaf_subject, "leaf subject 必須完整符合簽發白名單")
         ca.verify_directly_issued_by(ca)
         leaf.verify_directly_issued_by(ca)
         for cert in (ca, leaf):
@@ -162,7 +174,7 @@ def issue(ip, days, now=None):
     from cryptography import x509
     from cryptography.hazmat.primitives import hashes, serialization
     from cryptography.hazmat.primitives.asymmetric import ec
-    from cryptography.x509.oid import ExtendedKeyUsageOID, NameOID
+    from cryptography.x509.oid import ExtendedKeyUsageOID
 
     if not 1 <= int(days) <= 7:
         raise LanRefused("憑證效期必須介於 1 與 7 天之間")
@@ -172,7 +184,7 @@ def issue(ip, days, now=None):
     end = start + datetime.timedelta(days=int(days))
 
     ca_key = ec.generate_private_key(ec.SECP256R1())
-    ca_name = x509.Name([x509.NameAttribute(NameOID.COMMON_NAME, f"{CA_CN} {address}")])
+    ca_name, leaf_name = _subject_names(address)
     ca_cert = (x509.CertificateBuilder()
                .subject_name(ca_name).issuer_name(ca_name).public_key(ca_key.public_key())
                .serial_number(x509.random_serial_number()).not_valid_before(start).not_valid_after(end)
@@ -183,7 +195,7 @@ def issue(ip, days, now=None):
                .sign(ca_key, hashes.SHA256()))
     leaf_key = ec.generate_private_key(ec.SECP256R1())
     leaf = (x509.CertificateBuilder()
-            .subject_name(x509.Name([x509.NameAttribute(NameOID.COMMON_NAME, LEAF_CN)]))
+            .subject_name(leaf_name)
             .issuer_name(ca_name).public_key(leaf_key.public_key())
             .serial_number(x509.random_serial_number()).not_valid_before(start).not_valid_after(end)
             .add_extension(x509.SubjectAlternativeName([x509.IPAddress(address)]), critical=False)
