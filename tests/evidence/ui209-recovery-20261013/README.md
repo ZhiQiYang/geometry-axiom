@@ -18,6 +18,8 @@
 
 若 connector 無法讀取二進位原包，使用 [ASCII transport 索引與重建說明](transport/README.md)。80 個文字分段仍綁定 `52c34a6d6faef1d3cdaf52d52b6f8edb66eda012` 的原 archive；只補傳輸，不新增診斷執行。
 
+**原碼位點更正（#210 M1）：** 原插樁的 33 個 return 中有 27 個行號錯置。請合併閱讀 [來源／served SHA 校正表與更正摘要](return-locations/README.md)：八輪 42 筆實際返回中，objects 拒絕的 964 應為 963，成功返回的 1024 應為 1015。原 raw／summary 不覆寫；13 個 await 標籤、時間線與結果不變。本次只修文字轉換並做靜態回歸，沒有重跑產品。
+
 | 原件 | 核對結果 |
 |---|---|
 | [#195 首報](https://github.com/ZhiQiYang/geometry-axiom/pull/195#issuecomment-6131905102) 與公開 21 段 ZIP | 743481 bytes；SHA-256 `a8dfa45bebb1aad075b585325df323ee80390ed2d9aa5f214947efc22e20ddfe`；283 路徑／214 unique payload 全符 |
@@ -51,7 +53,7 @@ v1（undo 判準）、v2（Playwright 截圖）、v3（CDP 截圖）實際工具
 
 ## 時間線與反證
 
-詳細數字可由 [ui209_summarize.py](../../diagnostics/ui209_summarize.py) 從 raw 重算；[summary.json](summary.json) 提供逐 await／return／generation。
+詳細數字可由 [ui209_summarize.py](../../diagnostics/ui209_summarize.py) 從 raw 重算；[summary.json](summary.json) 保留原逐 await／return／generation。return 行號須依 [corrections.json](return-locations/corrections.json) 的六個 `summaryPatches` 與 42 筆 raw 對照校正；該重算器仍會重現原錯值，不能單獨當成已校正摘要。
 
 | 固定 viewport 案例 | request／open 代次 | server 前置／排隊 | 注入／native 回覆 | browser／UI |
 |---|---|---|---|---|

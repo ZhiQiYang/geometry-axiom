@@ -5,15 +5,20 @@ module.exports=function instrument(source){
   const begin=source.indexOf('  async function open(options={}, committed=false) {');
   const end=source.indexOf('  function selectedOpen(options)',begin);
   if(begin<0||end<0)throw Error('Missing open boundaries');
-  let part=source.slice(begin,end),awaits=0,returns=0;
+  let part=source.slice(begin,end);
   const line=offset=>source.slice(0,begin+offset).split('\n').length;
-  part=part.replace(/await (apiRequest\('[^']+'\)|setView3\(false\)|leaveFocus\(\)|catalogPins\(final,(?:draftSchema|F.GRID_RULE_SCHEMA)\)|render\(state\))/g,(whole,expr,offset)=>{
-    awaits++;return `await __ua(${JSON.stringify(expr+' @'+line(offset))},()=>${expr})`;
-  });
+  // Collect every site against the unmodified slice. Expanded await wrappers
+  // must never become offsets into the original source when labelling returns.
+  const waits=[...part.matchAll(/await (apiRequest\('[^']+'\)|setView3\(false\)|leaveFocus\(\)|catalogPins\(final,(?:draftSchema|F.GRID_RULE_SCHEMA)\)|render\(state\))/g)];
+  const exits=[...part.matchAll(/\breturn(?: (true|false))?;/g)];
+  const awaits=waits.length,returns=exits.length;
   if(awaits!==13||(part.match(/\bawait\b/g)||[]).length!==13)throw Error('Unexpected open await shape: '+awaits);
-  part=part.replace(/\breturn(?: (true|false))?;/g,(whole,value,offset)=>{
-    returns++;return `return window.__uiReturn(__uid,${line(offset)},${value||'undefined'},__us());`;
-  });
+  if(returns!==33||(part.match(/\breturn\b/g)||[]).length!==33)throw Error('Unexpected open return shape: '+returns);
+  const edits=[
+    ...waits.map(m=>({offset:m.index,length:m[0].length,text:`await __ua(${JSON.stringify(m[1]+' @'+line(m.index))},()=>${m[1]})`})),
+    ...exits.map(m=>({offset:m.index,length:m[0].length,text:`return window.__uiReturn(__uid,${line(m.index)},${m[1]||'undefined'},__us());`}))
+  ];
+  for(const edit of edits.sort((a,b)=>b.offset-a.offset))part=part.slice(0,edit.offset)+edit.text+part.slice(edit.offset+edit.length);
   const guard="const ownsEntry=()=>ticket===serial&&context===ReferenceWorkspace.context()&&contextToken===ReferenceWorkspace.getProjectState().contextToken&&\n      (options.ruleKey==null||frame===ReferenceWorkspace.history.frame&&nativeStamp===JSON.stringify(ReferenceWorkspace.getEvidenceState())&&(transferred||options.isCurrent?.()!==false));";
   if(!part.includes(guard))throw Error('Missing ownsEntry anchor');
   const expr=guard.slice('const ownsEntry=()=>'.length,-1);
