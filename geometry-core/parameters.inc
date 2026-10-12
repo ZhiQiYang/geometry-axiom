@@ -234,7 +234,10 @@ static bool parameter_eval_field(ParameterEval *e,int index)
     int own_depth=e->maxref+1;e->maxref=outer_maxref;
     if(ok&&own_depth>PARAM_DEPTH_MAX)ok=parameter_fail("UNSUPPORTED/CAPACITY: dependency depth exceeds 64");
     if(!ok){const ParameterSet *c=parameter_find(e->w,f->parameter_id);parameter_wrap_error(f->parameter_id,f->id,c?c->name:"?",f->name);return false;}
-    f->value=value;e->fdepth[index]=(unsigned char)own_depth;e->marks[index]=2;return true;
+    /* Keep cache padding deterministic: World definition comparison includes these bytes. */
+    memset(&f->value,0,sizeof f->value);
+    f->value.num=value.num;f->value.den=value.den;f->value.unit=value.unit;
+    e->fdepth[index]=(unsigned char)own_depth;e->marks[index]=2;return true;
 }
 static bool parameters_rebuild(World *w,char *error,size_t cap)
 {

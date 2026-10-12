@@ -101,7 +101,8 @@ static void batch_preview(const char *path,const char *schema_name,const char *s
         ok=operation(candidate,&j,eng_json_at(&j,operations,i));
         if(ok)ok=assembly_versions_immutable(&g_world,candidate);
     }
-    candidate->parameters.retired_count=0;  /* I39: retirement ends with the operation sequence; nothing leaks into the staged or committed World */
+    memset(candidate->parameters.retired,0,sizeof candidate->parameters.retired);
+    candidate->parameters.retired_count=0;  /* I39: candidate scratch never reaches comparison, staging, or committed snapshots */
     if(ok){const World *previous=g_subgrid_before;bool capturing=g_reference_capturing;g_reference_capturing=true;g_reference_trial=*candidate;
         g_subgrid_before=&g_world;ok=world_revalidate(candidate);g_subgrid_before=previous;g_reference_capturing=capturing;
         if(!ok){*candidate=g_reference_trial;if(!g_engineering_error[0])eng_fail(g_revalidate_error[0]?g_revalidate_error:"I35: candidate geometry is invalid");}}
