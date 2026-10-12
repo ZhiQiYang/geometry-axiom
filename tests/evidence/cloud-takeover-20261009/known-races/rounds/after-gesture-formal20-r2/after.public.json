@@ -1,0 +1,88 @@
+{
+  "utc": "2026-10-09T13:25:50.178584+00:00",
+  "commands": [
+    {
+      "argv": [
+        "pwd"
+      ],
+      "exitCode": 0,
+      "stdout": "<repository-root>\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--short"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exitCode": 0,
+      "stdout": "b9587960de2c5b29993e7433a51447015058e352\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD^{tree}"
+      ],
+      "exitCode": 0,
+      "stdout": "883b632ef19c36cd01f3f1ccd842df1e08746432\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--binary"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--cached",
+        "--binary"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "runtime": {
+    "schema": "geometry-runtime/1",
+    "version": "208d578affdc2e16002c216c8c50eb8077ecc0125c8b5594385afa24d761ce1b",
+    "fresh": true,
+    "root": "<repository-root>",
+    "pid": 22987,
+    "session": "96e0f8307c334f5dbc80fce959173312"
+  },
+  "runtimeBodySha256": "f5fd4f23a59d856fbdceece09ca4804c2a9a45097f7ab26b5cef6fc644cf7fc7",
+  "sourceSha256": {
+    "geometry-web/app.js": "ec284229af0c3de951941cb474d31dc452a99b32eeb1849f288889a57b4015d9",
+    "geometry-web/space-workspace.js": "a735338f5cc14f3ae743578986750ace3c7389e0d73fd44c21773d82c2503868",
+    "geometry-web/app.css": "b689b9356686d3c4e42a3dd8ff3ae2131f701228db2b640e1b95011afc14a5a6",
+    "geometry-web/index.html": "7dac589f14eec96735eeb233e78b1b1fa37084f56abaee18159a83adc168f36d"
+  },
+  "scriptSha256": {
+    "browser_race_ownership.py": "c7302e8259c0ea60ff46b29ccccba3897101f5198826355e90bd1b3a6ae412db",
+    "browser_race_ownership_instrumentation.js": "64c51184301f28f88ef6b1113e842c98c9711ceea82b5d54d1702b0babd8819f"
+  },
+  "publicProjection": {
+    "originalSha256": "46eecf25bb0c36925b6a0e3b9309895c6cf6c31d40b18893971531f00650dcdf",
+    "originalRetainedOutsideGit": true,
+    "reason": "Machine paths redacted."
+  }
+}

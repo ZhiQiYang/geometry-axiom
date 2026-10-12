@@ -1,0 +1,110 @@
+{
+ "job": "canvas",
+ "sha": "5bf5a6d5f647ab330a2ec783f30ac25eed96083d",
+ "started": "2026-10-10T10:48:44+00:00",
+ "steps": [
+  {
+   "index": 0,
+   "name": "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+   "outcome": "replaced",
+   "note": "clean local clone at the SHA under test"
+  },
+  {
+   "index": 1,
+   "name": "Build current native executables",
+   "outcome": "success",
+   "exit_code": 0,
+   "seconds": 56.2,
+   "argv": [
+    "bash",
+    "-e"
+   ],
+   "private_tmp_namespace": true
+  },
+  {
+   "index": 2,
+   "name": "Install Chinese fonts for visual verification",
+   "outcome": "skipped-already-installed",
+   "packages": {
+    "fonts-noto-cjk": "install ok installed 1:20230817+repack1-3"
+   }
+  },
+  {
+   "index": 3,
+   "name": "Run actual browser regression group",
+   "outcome": "success",
+   "exit_code": 0,
+   "seconds": 3246.1,
+   "argv": [
+    "bash",
+    "--noprofile",
+    "--norc",
+    "-eo",
+    "pipefail"
+   ],
+   "private_tmp_namespace": true
+  },
+  {
+   "index": 4,
+   "name": "Preserve assembly authoring screenshots",
+   "outcome": "skipped",
+   "note": "artifact upload not applicable outside GitHub"
+  },
+  {
+   "index": 5,
+   "name": "Preserve grid trial screenshots",
+   "outcome": "skipped",
+   "note": "artifact upload not applicable outside GitHub"
+  },
+  {
+   "index": 6,
+   "name": "Preserve document reader screenshots",
+   "outcome": "skipped",
+   "note": "artifact upload not applicable outside GitHub"
+  }
+ ],
+ "notes": [
+  "PATH has a per-job shim dir with python -> /usr/bin/python3 (GitHub's ubuntu image has python-is-python3, this WSL distro does not; tests spawn plain 'python')"
+ ],
+ "status": "completed",
+ "exit_code": 0,
+ "workflow_job_key": "browser",
+ "matrix": {
+  "suite": "canvas",
+  "timeout": 35
+ },
+ "ci_timeout_minutes": 35,
+ "env": {
+  "GEOMETRY_TEST_URL": "http://127.0.0.1:18844/",
+  "GEOMETRY_FEEDBACK_DIR": "/tmp/ga-ci/5bf5a6d5-20261010-184736/canvas/geometry-integration-feedback",
+  "GEOMETRY_CHROME": "/usr/bin/google-chrome",
+  "GEOMETRY_CHROME_FLAGS": "--no-sandbox",
+  "GEOMETRY_BROWSER_SUITE": "canvas",
+  "GEOMETRY_GRID_SYSTEM_SCREENSHOT_DIR": "/tmp/ga-ci/5bf5a6d5-20261010-184736/canvas/geometry-grid-screens",
+  "GEOMETRY_DOCUMENT_SCREENSHOT_DIR": "/tmp/ga-ci/5bf5a6d5-20261010-184736/canvas/geometry-document-screens"
+ },
+ "port_rewrite": [
+  "18839",
+  18844
+ ],
+ "seconds_first_run": 3302.8,
+ "leftover_processes_killed": [],
+ "seconds": 3302.8,
+ "ended": "2026-10-10T11:43:47+00:00",
+ "parsed": {
+  "kind": "cdp",
+  "passed": 2207,
+  "failed": 0,
+  "completed": true,
+  "skipped_groups": [],
+  "scope": "full",
+  "golden": "matched",
+  "uncaught_browser_exceptions": 1,
+  "fatal": null,
+  "sections_failed": null,
+  "failed_assertion_lines": []
+ },
+ "over_ci_timeout": true,
+ "ci_limit_ratio": 1.57,
+ "watchdog_factor": 3.0
+}
