@@ -1,0 +1,25 @@
+{
+  "time": "2026-10-09T13:50:43.329664+00:00",
+  "checkout": "<resume-repository-root>",
+  "head": "f5638ec4288eeec4e014c5618eed3fd1886080ea",
+  "dirty": "",
+  "sourceFiles": [
+    {
+      "path": "geometry-web/reference-workspace.js",
+      "sha256": "87392ad7bef4823e7f2dcfd497cc5d693ac06cfe41df6a1a723b1306c39ec929"
+    },
+    {
+      "path": "geometry-web/scenario-workspace.js",
+      "sha256": "cc31954c5afe9e91ed72b9b56ac62599751ffd3cb3b12cf3d9ae257acededfa9"
+    },
+    {
+      "path": "tests/test_scenario_recovery_owner.js",
+      "sha256": "f1308fda837491b9b407811c254c1b9020c5ed449538916146e0dc4a5076420b"
+    },
+    {
+      "path": "tests/test_reference_workspace_races.js",
+      "sha256": "f2f737d179fa4e9b67196c04e1f4ca8e0515c8ecafa346bac77acb354c91e0da"
+    }
+  ],
+  "scope": "real owner/ZIP/hash, controlled native/DOM/IDB unit; not browser/native acceptance"
+}
