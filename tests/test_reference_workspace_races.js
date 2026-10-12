@@ -8,12 +8,6 @@ const vm = require('node:vm');
 const P = require('../geometry-web/project-store.js');
 const nativeCapabilities = require('./fixtures/native_available_capabilities.json');
 const zip = require('../geometry-web/vendor/fflate/umd/index.js');
-// Cold native compilation belongs to suite setup, not a race's five-second budget.
-before(() => {
-  require('node:child_process').execFileSync('python', ['-c',
-    "import sys;sys.path[:0]=['geometry-web','geometry-core'];from tests._bridge import find_bridge;find_bridge()"],
-    {cwd:require('node:path').resolve(__dirname,'..'),timeout:180000,stdio:'pipe'});
-}, {timeout:180000});
 const deferred = () => { let resolve, reject; const promise = new Promise((a,b) => {resolve=a;reject=b;}); return {promise,resolve,reject}; };
 const turn = () => new Promise(resolve => setImmediate(resolve));
 const rawGridDraft=()=>({schema:P.Features.GRID_SCHEMA,draftId:'raw-grid',kind:'binding',intent:'create',baseRef:null,
@@ -994,17 +988,34 @@ test('case-only near-limit project rejects full manifest growth before HTTP, his
   await assert.rejects(W.prepareFeatureAttachment(P.Features.CASE_KIND,data,original.contextToken),/8 MB|容量/);
   assert.equal(http,0);assert.deepEqual(W.getProjectState(),original);assert.equal(W.history.undo.length,before);assert.equal(W.readFeatureAttachment(P.Features.CASE_KIND),null);
 });
-test('caller mutation during real hashes cannot replace the detached snapshot verified by the core',async()=>{
+let snapshotCaseFixture;
+// Catalog loading and generation of a known passing native receipt are setup,
+// not the caller-mutation race; keep the race itself on its original budget.
+before(() => {
   const definition=caseData().definitions[0],receipt=JSON.parse(require('node:child_process').execFileSync('python',['-c',
     "import sys,json;sys.path[:0]=['geometry-web','geometry-core'];from rule_cases.catalog import cases;from rule_cases.request import run_case_request;from tests._bridge import find_bridge;print(json.dumps(run_case_request(json.dumps(cases()[0]).encode(),project_id='snapshot-original',generation=1,binary=find_bridge())))"],
-    {cwd:require('node:path').resolve(__dirname,'..'),encoding:'utf8'}));
+    {cwd:require('node:path').resolve(__dirname,'..'),encoding:'utf8',timeout:180000}));
   assert.equal(receipt.status,'passed');const data=caseData();data.receipts=[{definition,receipt}];
+  assert.equal(prepareSnapshotCase(data).ok,true,'the unmodified native pass evidence must be accepted');
+  snapshotCaseFixture={definition,receipt,data};
+}, {timeout:180000});
+function prepareSnapshotCase(data){
+  return JSON.parse(require('node:child_process').execFileSync('python',['-c',
+    "import sys,json;sys.path.insert(0,'geometry-web');from rule_case_host import prepare_data;from rule_cases.executor import ReceiptValidationError\n"+
+    "try:\n result=prepare_data(sys.stdin.buffer.read())\n"+
+    "except ReceiptValidationError as error:\n"+
+    " if str(error)!='Passed receipt contains an invalid assertion': raise\n"+
+    " result={'ok':False,'error':'core rejected original native pass evidence','rejectionType':type(error).__name__}\n"+
+    "print(json.dumps(result))"],
+    {cwd:require('node:path').resolve(__dirname,'..'),input:typeof data==='string'?data:JSON.stringify(data),encoding:'utf8',stdio:['pipe','pipe','pipe'],timeout:180000}));
+}
+test('caller mutation during real hashes cannot replace the detached snapshot verified by the core',async()=>{
+  const {definition,receipt,data}=structuredClone(snapshotCaseFixture);
+  assert.equal(receipt.status,'passed');
   receipt.observations.after.rules[0].value.members[0].slotId=13;P.Features.Cases.validate(data);
   const reached=deferred(),gate=deferred(),f=await fixture({projectOverride:{Features:{...P.Features,Cases:{...P.Features.Cases,
     verifyHashes:async value=>{reached.resolve();await gate.promise;return P.Features.Cases.verifyHashes(value);}}}},
-    casePrepare:request=>{let result;try{result=JSON.parse(require('node:child_process').execFileSync('python',['-c',
-      "import sys,json;sys.path.insert(0,'geometry-web');from rule_case_host import prepare_data;print(json.dumps(prepare_data(sys.stdin.buffer.read())))"],
-      {cwd:require('node:path').resolve(__dirname,'..'),input:request.body,encoding:'utf8',stdio:['pipe','pipe','pipe']}));}catch(error){return {ok:false,json:async()=>({ok:false,error:'core rejected original native pass evidence'})};}return {ok:true,json:async()=>result};}});
+    casePrepare:request=>{const result=prepareSnapshotCase(request.body);return {ok:result.ok,json:async()=>result};}});
   const before=f.w.getProjectState(),undo=f.w.history.undo.length,pending=f.w.prepareFeatureAttachment(P.Features.CASE_KIND,data,before.contextToken),rejected=assert.rejects(pending,/core rejected/);
   await reached.promise;receipt.observations.after.rules[0].value.members[0].slotId=7;gate.resolve();await rejected;
   assert.equal(f.w.readFeatureAttachment(P.Features.CASE_KIND),null);assert.equal(f.w.history.undo.length,undo);assert.deepEqual(f.w.getProjectState(),before);
