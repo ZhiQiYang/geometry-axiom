@@ -943,9 +943,13 @@ test('review receipts undo with core changes and local review without inheriting
 });
 
 // Only HTTP timing is faked; these exercise the actual common metadata/history adapter.
-const caseData=()=>({schema:P.Features.CASE_SCHEMA,definitions:JSON.parse(require('node:child_process').execFileSync('python',['-c',"import sys,json;sys.path.insert(0,'geometry-core');from rule_cases.catalog import cases;print(json.dumps(cases()))"],{cwd:require('node:path').resolve(__dirname,'..'),encoding:'utf8'})),receipts:[]});
+// 2026-10-13 scope ruling: under ten CPU0 competitors these finite catalog /
+// JSON/hash cases took up to 14.2s (instrumented); 25s includes >50% margin.
+// The caller-mutation race below retains its original five-second budget.
+const caseTest=(name,fn)=>nodeTest(name,{timeout:25000},fn);
+const caseData=()=>({schema:P.Features.CASE_SCHEMA,definitions:JSON.parse(require('node:child_process').execFileSync('python',['-c',"import sys,json;sys.path.insert(0,'geometry-core');from rule_cases.catalog import cases;print(json.dumps(cases()))"],{cwd:require('node:path').resolve(__dirname,'..'),encoding:'utf8',timeout:20000})),receipts:[]});
 const caseResponse=data=>({ok:true,json:async()=>({ok:true,data,trust:'historical-unverified'})});
-test('formal cases detached prepare commits one common metadata history and true Undo/Redo',async()=>{
+caseTest('formal cases detached prepare commits one common metadata history and true Undo/Redo',async()=>{
   const data=caseData(),f=await fixture({casePrepare:()=>caseResponse(data)}),W=f.w,token=W.getProjectState().contextToken,before=W.history.undo.length;
   assert.throws(()=>W.setFeatureAttachment(P.Features.CASE_KIND,data,token),/隔離資料驗證/);
   const prepared=await W.prepareFeatureAttachment(P.Features.CASE_KIND,data,token);
@@ -956,7 +960,7 @@ test('formal cases detached prepare commits one common metadata history and true
   W.tryLocalHistory('line redo');assert.equal(JSON.stringify(W.readFeatureAttachment(P.Features.CASE_KIND)),JSON.stringify(data));
   assert.throws(()=>W.commitPreparedFeatureAttachment(prepared),/取消或提交/);
 });
-test('formal cases cancellation or native operation after detached response produces zero writes',async()=>{
+caseTest('formal cases cancellation or native operation after detached response produces zero writes',async()=>{
   for(const change of ['cancel','native','metadata']){const data=caseData(),gate=deferred(),reached=deferred(),f=await fixture({casePrepare:async()=>{reached.resolve();await gate.promise;return caseResponse(data);}}),W=f.w;
     let cancelled=false;const guard=()=>{if(cancelled)throw Error('cancelled');},before=W.history.undo.length;
     const pending=W.prepareFeatureAttachment(P.Features.CASE_KIND,data,W.getProjectState().contextToken,guard),rejected=assert.rejects(pending);await reached.promise;
@@ -964,7 +968,7 @@ test('formal cases cancellation or native operation after detached response prod
     gate.resolve();await rejected;release?.();assert.equal(W.history.undo.length,before);assert.equal(W.readFeatureAttachment(P.Features.CASE_KIND),null);
   }
 });
-test('formal cases no-op has zero history; equal data after Undo/Redo cannot revive an old prepared lease',async()=>{
+caseTest('formal cases no-op has zero history; equal data after Undo/Redo cannot revive an old prepared lease',async()=>{
   const data=caseData(),f=await fixture({casePrepare:()=>caseResponse(data)}),W=f.w,kind=P.Features.CASE_KIND;
   W.commitPreparedFeatureAttachment(await W.prepareFeatureAttachment(kind,data,W.getProjectState().contextToken));
   const unchanged=await W.prepareFeatureAttachment(kind,data,W.getProjectState().contextToken),before=W.history.undo.length;
@@ -972,7 +976,7 @@ test('formal cases no-op has zero history; equal data after Undo/Redo cannot rev
   const stale=await W.prepareFeatureAttachment(kind,data,W.getProjectState().contextToken);
   W.tryLocalHistory('line undo');W.tryLocalHistory('line redo');assert.throws(()=>W.commitPreparedFeatureAttachment(stale),/晚到/);assert.equal(W.history.undo.length,before);
 });
-test('case-only near-limit project rejects full manifest growth before HTTP, history or dirty changes',async()=>{
+caseTest('case-only near-limit project rejects full manifest growth before HTTP, history or dirty changes',async()=>{
   const data=caseData(),definition=data.definitions.find(d=>d.caseId==='legal-rule');
   const digest=async value=>P.sha(new TextEncoder().encode(P.Features.Cases.canonical(value)));
   const receipt={caseId:definition.caseId,definitionHash:await digest(definition),sourceHash:await digest(definition.sourcePins),
