@@ -1,0 +1,25 @@
+test_long_panel_is_one_exact_solid_in_both_orientations (tests.test_section_profile_modeling.SectionProfileModeling.test_long_panel_is_one_exact_solid_in_both_orientations) ... ERROR
+
+======================================================================
+ERROR: test_long_panel_is_one_exact_solid_in_both_orientations (tests.test_section_profile_modeling.SectionProfileModeling.test_long_panel_is_one_exact_solid_in_both_orientations)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/section-profile-mutations-hkup3cft/SPM38/tests/test_section_profile_modeling.py", line 147, in test_long_panel_is_one_exact_solid_in_both_orientations
+    package = self.build(scene(profiles=[profile(outline=[[0, 0], [1000, 0], [1000, 1000], [0, 1000]])],
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/section-profile-mutations-hkup3cft/SPM38/tests/test_section_profile_modeling.py", line 84, in build
+    return build_package({"base_scene": scene() if source is None else source, "extensions": []},
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/section-profile-mutations-hkup3cft/SPM38/geometry-core/modeling/__init__.py", line 131, in build_package
+    result = evaluate(copy.deepcopy(definitions), copy.deepcopy(request),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/section-profile-mutations-hkup3cft/SPM38/geometry-core/modeling/engine.py", line 480, in evaluate
+    _raise_errors([*errors, *incomplete])
+  File "/tmp/section-profile-mutations-hkup3cft/SPM38/geometry-core/modeling/engine.py", line 89, in _raise_errors
+    raise ModelError(strongest.status, strongest.code, strongest.clause,
+modeling.common.ModelError: Native dimensions and derived exact member volume disagree
+
+----------------------------------------------------------------------
+Ran 1 test in 0.086s
+
+FAILED (errors=1)
