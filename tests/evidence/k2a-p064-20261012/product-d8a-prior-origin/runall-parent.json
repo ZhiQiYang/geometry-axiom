@@ -1,0 +1,37 @@
+{
+  "command": [
+    "python",
+    "/tmp/k2aa-runall-isolated.py",
+    "--build",
+    "--update-expected"
+  ],
+  "exit": 0,
+  "wrapper_sha256": "1cc3d2de3e4967622a9dc5921135fed3622b1760d83209f928213d71b9648d60",
+  "stack_limit": [
+    33554432,
+    33554432
+  ],
+  "MUTATE_CACHE": "/tmp/k2aa-boundary-ledger-check",
+  "head_before": "d8a340f1d60dae7a94ed036753560f63ade762d0",
+  "head_after": "d8a340f1d60dae7a94ed036753560f63ade762d0",
+  "before": {
+    "geometry-web/feature-attachments.js": "d0ca96f93d8ab0ab49e49a8c369923754a8401d57a12392d20924abf7d3614d6",
+    "geometry-web/project-store.js": "2eca27664e1a5a6979ae9ceb667fdc5ab5b94aaa7988790d5fb87e479cf1a5e9",
+    "geometry-web/reference-workspace.js": "346efc7f266b836f3454ed993ccb30bd7ebdaee4fa844a22849108feecafcf49",
+    "tests/run_all.py": "15455f32f1889f995352f5c222e2bafac2dc3b3285d20aad34a427056342d50d",
+    "tests/test_grid_drafts_lifecycle_capacity.js": "663dd0912cef65d056bccf1d1c490ac03a1c018002c62c50ef3fb113fd9ad523",
+    "tests/test_reference_workspace_races.js": "b5ef27d72370be27fc1e7e2f7363e31a2bdc8feb878d13bfdabd93a4917cc466",
+    "current_geometry.c": "4130623fce97cefd03e3b8534636b9ddb8d8b109875262239f1726bdae6b4aa8",
+    "tests/mutants_results.json": "3065fc03773c326b9256a7ffeb05cd602cd254dcab2d267626abc42101f38392"
+  },
+  "after": {
+    "geometry-web/feature-attachments.js": "d0ca96f93d8ab0ab49e49a8c369923754a8401d57a12392d20924abf7d3614d6",
+    "geometry-web/project-store.js": "2eca27664e1a5a6979ae9ceb667fdc5ab5b94aaa7988790d5fb87e479cf1a5e9",
+    "geometry-web/reference-workspace.js": "346efc7f266b836f3454ed993ccb30bd7ebdaee4fa844a22849108feecafcf49",
+    "tests/run_all.py": "15455f32f1889f995352f5c222e2bafac2dc3b3285d20aad34a427056342d50d",
+    "tests/test_grid_drafts_lifecycle_capacity.js": "663dd0912cef65d056bccf1d1c490ac03a1c018002c62c50ef3fb113fd9ad523",
+    "tests/test_reference_workspace_races.js": "b5ef27d72370be27fc1e7e2f7363e31a2bdc8feb878d13bfdabd93a4917cc466",
+    "current_geometry.c": "4130623fce97cefd03e3b8534636b9ddb8d8b109875262239f1726bdae6b4aa8",
+    "tests/mutants_results.json": "3065fc03773c326b9256a7ffeb05cd602cd254dcab2d267626abc42101f38392"
+  }
+}

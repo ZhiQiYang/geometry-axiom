@@ -1,0 +1,31 @@
+✖ P064 save normalizes a shrunken healthy singleton but never orphan or lost (203.515662ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 279.61421
+
+✖ failing tests:
+
+test at tests/test_grid_drafts_lifecycle_capacity.js:11:2
+✖ P064 save normalizes a shrunken healthy singleton but never orphan or lost (203.515662ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'geometry-canvas/17'
+  - 'geometry-canvas/13'
+                      ^
+  
+      at TestContext.<anonymous> (/workspace/geometry-k2aa-review/tests/test_grid_drafts_lifecycle_capacity.js:11:725)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'geometry-canvas/17',
+    expected: 'geometry-canvas/13',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
