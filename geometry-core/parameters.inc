@@ -387,11 +387,51 @@ static bool parameter_retirements_valid(const World *w)
     }
     return true;
 }
+/* P-062: evaluate only the deleted card's fields and their current closures.
+ * A temporarily invalid field must not obstruct deletion of that whole definition.
+ * It also must not supply an older cached value to a later explicit unbind. */
+static bool parameter_capture_deleted_values(World *w,uint32_t id)
+{
+    ParameterState *p=&w->parameters;
+    ParameterEval *e=calloc(1,sizeof *e);
+    if(!e)return parameter_fail("UNSUPPORTED/CAPACITY: deleted parameter evaluation memory");
+    for(size_t i=0;i<p->field_count;++i){
+        ParameterField *f=&p->fields[i];if(f->parameter_id!=id)continue;
+        memset(e,0,sizeof *e);e->w=w;g_parameter_error[0]=0;
+        if(!parameter_eval_field(e,(int)i))continue;
+        if(p->deleted_value_count==PARAM_DELETED_VALUE_MAX){free(e);return parameter_fail("UNSUPPORTED/CAPACITY: deleted parameter values");}
+        DeletedParameterValue *saved=&p->deleted_values[p->deleted_value_count++];
+        memset(saved,0,sizeof *saved);saved->parameter_id=id;saved->field_id=f->id;saved->type=f->type;
+        saved->value.num=f->value.num;saved->value.den=f->value.den;saved->value.unit=f->value.unit;
+    }
+    free(e);g_parameter_error[0]=0;return true;
+}
+/* This lookup is intentionally absent from the ordinary parameter evaluator.
+ * Surviving sources and all final definitions still require live references. */
+static bool parameter_deleted_coord(const World *w,ParameterRef ref,Coord *out)
+{
+    if(!parameter_find(w,ref.parameter_id)&&parameter_retired(w,ref.parameter_id)){
+        for(size_t i=0;i<w->parameters.deleted_value_count;++i){
+            const DeletedParameterValue *saved=&w->parameters.deleted_values[i];
+            if(saved->parameter_id!=ref.parameter_id||saved->field_id!=ref.field_id)continue;
+            if(saved->type!=0)return parameter_fail("I38 UNIT: deleted parameter %u field %u is not a dimension",ref.parameter_id,ref.field_id);
+            if(saved->value.den!=1||!coord_in_range(saved->value.num))return parameter_fail("I38 GEOMETRY: deleted parameter %u field %u must resolve to integer mm in D1 range",ref.parameter_id,ref.field_id);
+            *out=saved->value.num;return true;
+        }
+    }
+    return parameter_fail("I38 MISSING: deleted parameter %u field %u has no valid value in this candidate",ref.parameter_id,ref.field_id);
+}
+static void parameters_clear_candidate_scratch(World *w)
+{
+    memset(w->parameters.retired,0,sizeof w->parameters.retired);w->parameters.retired_count=0;
+    memset(w->parameters.deleted_values,0,sizeof w->parameters.deleted_values);w->parameters.deleted_value_count=0;
+}
 static bool parameter_remove(World *w,uint32_t id)
 {
     size_t k=0;while(k<w->parameters.card_count&&w->parameters.cards[k].id!=id)++k;
     if(k==w->parameters.card_count)return parameter_fail("I38 MISSING: parameter %u",id);
     if(w->parameters.retired_count>=PARAM_RETIRED_MAX)return parameter_fail("UNSUPPORTED/CAPACITY: too many parameter identities deleted in one transaction");
+    if(!parameter_capture_deleted_values(w,id))return false;
     memmove(w->parameters.cards+k,w->parameters.cards+k+1,(w->parameters.card_count-k-1)*sizeof(ParameterSet));memset(&w->parameters.cards[--w->parameters.card_count],0,sizeof(ParameterSet));
     size_t n=0;for(size_t i=0;i<w->parameters.field_count;++i)if(w->parameters.fields[i].parameter_id!=id)w->parameters.fields[n++]=w->parameters.fields[i];memset(w->parameters.fields+n,0,(PARAM_FIELD_MAX-n)*sizeof(ParameterField));w->parameters.field_count=n;
     n=0;for(size_t i=0;i<w->canvas_pos_count;++i)if(w->canvas_pos[i].kind!=CANVAS_POS_PARAMETER||w->canvas_pos[i].id!=id)w->canvas_pos[n++]=w->canvas_pos[i];memset(w->canvas_pos+n,0,(w->canvas_pos_count-n)*sizeof(CanvasPos));w->canvas_pos_count=n;

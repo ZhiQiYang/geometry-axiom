@@ -31,7 +31,7 @@
 | delete-parameter | id；依 P-060／I38／R33，在整筆候選操作完成後檢查引用，最終仍被定義引用即拒絕並指名引用者；同候選刪除依賴卡或將引用欄改為直接值時，兩種刪除／修改順序皆合法。同一筆候選（一個 transaction，或一行 `engineering archive`）內已刪除的卡片身分不得再被 put-parameter 宣告，import-parameters 配新身分時也會略過（I38／I39）；名單屬於候選本身，取消、失敗的預覽與其他入口都不會殘留，之後另一筆交易可再使用 |
 | import-parameters | value 完整參數包，由核心配新卡片身分與改寫引用 |
 | set-source / set-override | 原有 grid/timber target，source/value 可為 `{kind:"parameter",parameterId,fieldId}` |
-| unbind-source | target；依當前候選重算原始來源、覆寫值及其必要參數依賴，把有效尺寸寫成直接值並移除來源及覆寫。無關欄位的中間狀態留到完整候選出口驗證 |
+| unbind-source | target；存活的原始來源與覆寫依當前候選重算必要參數依賴；同候選已刪參數卡的來源值依 P-062 取刪除前有效值，含先前修改。明確解除後才把有效尺寸寫成直接值並移除來源及覆寫；原始來源、幾何限制與完整候選驗證仍適用 |
 
 多個參數操作可含向前引用；全部放入候選後，依序驗參數、工程尺寸、網格、定位與角材。confirm 核對令牌、版本與完整定義，再重驗；成功一次 history 快照。卡片座標不影響令牌。
 
@@ -57,4 +57,6 @@
 
 `engineering archive <base64 operation>` 每行是獨立候選。成功解析／執行 op 後，先查該行最終候選是否仍引用已刪身分，再清除退役清單，並依 I8／I38 重算參數及完整幾何依賴，才可預覽有效或確認提交；不得把新欄位尚未求值的 0 當正式結果。缺失引用、除零或幾何使用處不接受分數時，候選無效，正式 World 與 revision 保留。場景檔載入仍在讀完全部紀錄後完整重驗，不把互動入口的時點套用到半份場景。
 
-P-060 已裁決引用合法性依完整最終候選判斷。卡片 delete/delete 與 delete/put-literal 的雙順序、最終懸空拒絕及身分不重用已完成；解除獨立來源時只重算該綁定所需的當前參數依賴，因此無關卡片的 delete → unbind → delete 與其餘兩種排列均可完成。原始來源即使有覆寫仍須有效；目標缺失、循環、單位與幾何整數限制，以及完整候選出口的全圖驗證維持。刪除被綁來源後才執行 `unbind-source` 時應保存哪個時點的有效尺寸，仍等候 Claude 裁決；現行 unbind 仍要求其來源可求值，沒有加入舊值暫存或自動凍結。
+P-060 已裁決引用合法性依完整最終候選判斷。卡片 delete/delete 與 delete/put-literal 的雙順序、最終懸空拒絕及身分不重用已完成；解除獨立來源時只重算該綁定所需的當前參數依賴，因此無關卡片的 delete → unbind → delete 與其餘兩種排列均可完成。原始來源即使有覆寫仍須有效；目標缺失、循環、單位與幾何整數限制，以及完整候選出口的全圖驗證維持。P-062 已裁決：同候選先刪被綁參數卡再明確 `unbind-source`，使用刪除前最後有效值，包含候選內先前修改；仍存活的來源／覆寫重新計算當下依賴。暫存只在候選內供明確 unbind 使用，候選出口清空整個暫存陣列及計數，不能進入 World 比較、序列化或 history；最終殘留引用仍整筆拒絕。
+
+多來源邊界待裁決：D=27、S=@D、目標綁S，先delete D再delete S再unbind目前因S刪除時已缺D而拒絕；若先把D改29亦相同。先unbind再刪兩張卡則能求得27／29。四組preview與cancel診斷已交 https://github.com/ZhiQiYang/geometry-axiom/pull/193#issuecomment-6124416895；是否保留上游刪除前S的最後有效值仍等候Claude裁決，未自行加入一般失效引用fallback。

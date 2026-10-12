@@ -16,10 +16,17 @@ static bool eng_operation(World *w,EngJson *j,int t)
         EngTarget target;Coord value;
         if(!eng_json_keys(j,t,"op,target","")||!eng_target_parse(j,eng_json_member(j,t,"target"),&target))return eng_fail("I38: invalid unbind target");
         EngBinding *b=eng_binding(w,&target);if(!b)return eng_fail("I38: target has no source binding");
-        ParameterRef refs[2];size_t ref_count=0;
-        if(b->source.kind==ENG_PARAMETER)refs[ref_count++]=b->source.parameter;
-        if(b->has_override&&b->override_value.kind==ENG_PARAMETER)refs[ref_count++]=b->override_value.parameter;
-        char error[512]="";if(!parameters_evaluate_refs(w,refs,ref_count,error,sizeof error))return eng_fail(error);if(!eng_effective(w,b,&value,NULL,0))return false;
+        EngBinding resolved=*b;ParameterRef refs[2];size_t ref_count=0;
+        EngDimensionSource *sources[2]={&resolved.source,&resolved.override_value};
+        for(size_t i=0;i<(b->has_override?2u:1u);++i){
+            EngDimensionSource *source=sources[i];if(source->kind!=ENG_PARAMETER)continue;
+            if(parameter_find(w,source->parameter.parameter_id))refs[ref_count++]=source->parameter;
+            else{
+                if(!parameter_deleted_coord(w,source->parameter,&source->value))return eng_fail(g_parameter_error);
+                source->kind=ENG_LITERAL;  /* local resolution only; never rewrite the formal binding */
+            }
+        }
+        char error[512]="";if(!parameters_evaluate_refs(w,refs,ref_count,error,sizeof error))return eng_fail(error);if(!eng_effective(w,&resolved,&value,NULL,0))return false;
         if(target.kind){int i=reference_timber_index(w,target.id);if(target.field)w->timbers[i].size_b=value;else w->timbers[i].size_a=value;}
         else {GridAxisDef *a=&world_find_grid_mut(w,target.id)->axis[target.axis];if(target.field)a->gap=value;else a->panel=value;}
         size_t k=(size_t)(b-w->engineering.bindings);memmove(b,b+1,(w->engineering.binding_count-k-1)*sizeof *b);memset(&w->engineering.bindings[--w->engineering.binding_count],0,sizeof *b);return true;
@@ -165,8 +172,7 @@ static bool apply_engineering_line(const char *path,int line_no,char **tokens,in
     else if(!strcmp(tokens[1],"archive")){
         ok=eng_operation(w,&j,0);
         if(ok&&!parameter_retirements_valid(w))ok=eng_fail(g_parameter_error);
-        memset(w->parameters.retired,0,sizeof w->parameters.retired);
-        w->parameters.retired_count=0;
+        parameters_clear_candidate_scratch(w);
         /* I8/I38: the interactive archive entry is one complete candidate.
          * Scene loading defers its complete rebuild until all records are read. */
         if(ok&&!g_parsing_scene_file&&!reference_checked(path,line_no,w)){

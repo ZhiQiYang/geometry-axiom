@@ -555,11 +555,17 @@ class ParametersCore(unittest.TestCase):
         self.apply([{"op": "set-source", "target": target, "source": {"kind": "parameter", "parameterId": 2, "fieldId": 1}}])
         self.rejected([{"op": "delete-parameter", "id": 2}], "MISSING")
         before = self.command("dump")["text"]
-        # P-060 card ordering is independent; delete-before-unbind still lacks a decided value-preservation policy.
+        # P-062 adopts both orders; deletion-time values are candidate-only and require explicit unbind.
+        revision = self.read()["revision"]
         r = self.request([{"op": "delete-parameter", "id": 2}, {"op": "unbind-source", "target": target}])
-        self.assertFalse(r["preview"]["valid"], r)
+        self.assertTrue(r["preview"]["valid"], r)
         self.assertEqual(before, self.command("dump")["text"])
+        self.assertEqual(revision, self.read()["revision"])
+        self.assertTrue(self.command("engineering-cancel " + str(r["preview"]["token"]))["cancelled"])
+        self.assertEqual(before, self.command("dump")["text"])
+        self.assertEqual(revision, self.read()["revision"])
         self.apply([{"op": "unbind-source", "target": target}, {"op": "delete-parameter", "id": 2}])
+        self.assertEqual(revision + 1, self.read()["revision"])
         after = self.command("dump")["text"]
         self.assertEqual([1], [c["id"] for c in self.read()["state"]["parameters"]])
         self.assertEqual([], self.read()["state"]["sources"])
@@ -567,6 +573,17 @@ class ParametersCore(unittest.TestCase):
         self.apply_line("undo")
         self.assertEqual(before, self.command("dump")["text"])
         self.assertEqual([(target, "parameter", None, 27)], self.sources())
+        self.apply_line("redo")
+        self.assertEqual(after, self.command("dump")["text"])
+
+        self.apply_line("undo")
+        self.assertEqual(before, self.command("dump")["text"])
+        revision = self.read()["revision"]
+        self.apply([{"op": "delete-parameter", "id": 2}, {"op": "unbind-source", "target": target}])
+        self.assertEqual(revision + 1, self.read()["revision"])
+        self.assertEqual(after.encode("utf-8"), self.command("dump")["text"].encode("utf-8"))
+        self.apply_line("undo")
+        self.assertEqual(before, self.command("dump")["text"])
         self.apply_line("redo")
         self.assertEqual(after, self.command("dump")["text"])
 
