@@ -107,7 +107,7 @@ P-060 裁決來源為 6113538272；net-zero B1 的既有 ce28fdb 範圍已由 61
 
 `parameters_evaluate_refs` 用全新 DFS 標記、沿用核心 `parameter_eval_field`，重新求值當前原始來源與覆寫的依賴；`eng_effective` 仍驗原始來源與實際尺寸。只把 unbind 的全圖求值換成兩個必要入口，未修改一般 `parameters_rebuild`、候選出口的完整重驗、引用列舉、退役身分不重用或清零。沒有讀舊快取、凍結來源或另建 writer。
 
-八題修後全過；10個相關模組134題、integrity130/130、核心場景143/143亦過。新正向案例各驗 preview不改dump/revision、cancel無變動、confirm一次history、完整Undo/Redo；負向案例各驗無效preview不能confirm、正式dump/revision不變且既有redo保留。依賴由27改29、覆寫由29改31後，解除綁定保存新整數值；原始來源仍為27。既有測試期望未改。
+八題修後全過；10個相關模組134題、integrity130/130、核心場景143/143亦過。新正向案例各驗 preview不改dump/revision、cancel無變動、confirm一次history、完整Undo/Redo；負向案例各驗無效preview不能confirm、正式dump/revision不變且既有redo保留。依賴由27改29、覆寫由29改31後，解除綁定保存新整數值；覆寫案例的原始來源仍為27。既有測試期望未改。
 
 | 定向步驟 | exit | 秒數 |
 |---|---|---|
