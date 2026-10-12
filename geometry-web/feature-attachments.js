@@ -256,8 +256,6 @@
     const ids = new Set(), targets = new Set();
     for (const draft of value.drafts) {
       validateGridDraft(draft,true,stored);
-      if (!stored && !value.orphans.includes(draft.draftId) && !draft.inputRefs.some(ref=>ref.lost))
-        boundedJSON({schema:SCHEMA,records:[{kind:GRID_KIND,schema:draft.schema,value:draft}]});
       if (ids.has(draft.draftId)) fail("網格草稿身分重複。");
       ids.add(draft.draftId);
       if (draft.intent === "edit" && !value.orphans.includes(draft.draftId)) {
@@ -277,7 +275,11 @@
   }
   function gridDraftValue(drafts, orphans = [], stored = false) {
     if (!drafts.length) return null;
-    if (drafts.length === 1 && !orphans.length && !drafts[0].inputRefs.some(ref=>ref.lost)) return validateGridDraft(drafts[0],false,stored);
+    if (drafts.length === 1 && !orphans.length && !drafts[0].inputRefs.some(ref=>ref.lost)) {
+      const draft=validateGridDraft(drafts[0],false,stored);
+      try {boundedJSON({schema:SCHEMA,records:[{kind:GRID_KIND,schema:draft.schema,value:draft}]});return draft;}
+      catch(error) {if(error.message!=="功能附件超過容量上限。")throw error;}
+    }
     return validateGridDrafts({schema:GRID_DRAFTS_SCHEMA,drafts:[...drafts].sort((a,b)=>a.draftId<b.draftId?-1:a.draftId>b.draftId?1:0),orphans:[...orphans].sort()},stored);
   }
   function validateRecord(record, stored = false) {

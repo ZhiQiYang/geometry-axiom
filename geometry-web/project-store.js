@@ -496,6 +496,12 @@
     return Array.from(new Uint8Array(await globalThis.crypto.subtle.digest("SHA-256", bytes)), b => b.toString(16).padStart(2, "0")).join("");
   }
   function normalizedManifest(manifest, scene = "", sceneHash = "0".repeat(64), reserveNative = false) {
+    const grid=manifest.featureAttachments?.records.find(r=>r.kind===Features.GRID_KIND&&r.schema===Features.GRID_DRAFTS_SCHEMA);
+    if(grid){
+      const value=Features.gridDraftValue(grid.value.drafts,grid.value.orphans,true);
+      if(value.schema!==grid.schema)manifest={...manifest,requiredCapabilities:(manifest.requiredCapabilities||[]).filter(c=>c!==Features.GRID_DRAFTS_SCHEMA),
+        featureAttachments:{...manifest.featureAttachments,records:manifest.featureAttachments.records.map(r=>r===grid?Features.record(Features.GRID_KIND,value,true):r)}};
+    }
     const m = {...manifest,format:projectFormat(manifest,scene),sceneHash};
     if ([ENGINEERING_FORMAT,PARAMETER_FORMAT,ASSEMBLY_FORMAT,GENERATION_FORMAT,OUTLINE_FORMAT,FEATURE_FORMAT,SUBDIVISION_FORMAT,EVIDENCE_FORMAT, GRID_RULE_FORMAT, SCENARIO_FORMAT, CASE_FORMAT, SECTION_FORMAT, GRID_DRAFTS_FORMAT].includes(m.format)) {
       m.requiredCapabilities = projectCapabilities(manifest,scene);

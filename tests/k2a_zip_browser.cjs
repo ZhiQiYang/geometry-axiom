@@ -117,17 +117,21 @@ const {chromium}=require('playwright');
    let admissionRejected=false;try{W.setGridDraft(d.draftId,d,W.getProjectState().contextToken);}catch(error){if(!/容量|上限/.test(error.message))throw error;admissionRejected=true;}
    if(admissionRejected){const scene=(await call('dump')).text,m=await W.manifest();m.featureAttachments={schema:F.SCHEMA,records:[F.record(F.GRID_KIND,{schema:F.GRID_DRAFTS_SCHEMA,drafts:[d,other],orphans:[]},true)]};m.format='geometry-canvas/17';m.requiredCapabilities=[...new Set([...(m.requiredCapabilities||[]),F.GRID_DRAFTS_SCHEMA,F.GRID_RULE_SCHEMA])].sort();const sources=new Map([...W.context().sources].map(([id,s])=>[id,s.bytes]));await W.importBytes(await GeometryProject.pack(scene,m,sources,fflate),'legacy-normal-confirm.gcanvas');}
    const state=async()=>({drafts:W.readGridDrafts(),dump:(await call('dump')).text}),before=await state(),history=W.history.undo.length;
+   W.setGridDraft(other.draftId,null,W.getProjectState().contextToken);const discarded=await state();await call('line undo');const localUndo=await state();await call('line redo');const localRedo=await state();await call('line undo');
    const preview=await call('line preview grid-system 2 name-hex 736f75726365 main-along none u repeat 0 700 v repeat 0 400');if(!preview.preview?.valid)throw Error(JSON.stringify(preview));
    let prepareRejected=false;try{W.prepareFeatureConfirmation(preview.preview.token,F.GRID_KIND,W.readGridDrafts().drafts.find(d=>d.draftId===other.draftId),W.getProjectState().contextToken);}catch(error){if(!/容量|上限/.test(error.message))throw error;prepareRejected=true;}
    if(prepareRejected)return {admissionRejected,prepareRejected,before,after:await state(),historyBefore:history,historyAfter:W.history.undo.length,hasToken:W.hasFeatureConfirmation(preview.preview.token)};
-   await call('line confirm '+preview.preview.token);const after=await state();await call('line undo');const undone=await state();await call('line redo');const redone=await state();return {admissionRejected,prepareRejected,before,after,undone,redone};
+   await call('line confirm '+preview.preview.token);const after=await state();await call('line undo');const undone=await state();await call('line redo');const redone=await state();return {admissionRejected,prepareRejected,before,after,undone,redone,discarded,localUndo,localRedo};
   },draft);
-  if(size===130955){
-   if(result.admissionRejected||result.prepareRejected)throw Error('positive normal confirmation rejected');
+  {
+   if(result.admissionRejected||result.prepareRejected)throw Error('P064 legal normal confirmation rejected');
+   assert.deepEqual(result.discarded,{drafts:result.after.drafts,dump:result.before.dump});assert.deepEqual(result.localUndo,result.before);assert.deepEqual(result.localRedo,result.discarded);
    assert.deepEqual(result.after.drafts,{drafts:[result.before.drafts.drafts.find(d=>d.draftId==='capacity')],orphans:[]});assert.notEqual(result.after.dump,result.before.dump);assert.deepEqual(result.undone,result.before);assert.deepEqual(result.redone,result.after);
    const normalBytes=await save(page),normalCold=await open(fresh),opened=await normalCold.evaluate(async bytes=>{await ReferenceWorkspace.importBytes(new Uint8Array(bytes),'normal-single.gcanvas');return {drafts:ReferenceWorkspace.readGridDrafts(),dump:(await apiRequest('dump')).text,format:(await GeometryProject.unpack(new Uint8Array(bytes),fflate)).manifest.format};},normalBytes);
-   assert.equal(opened.format,'geometry-canvas/13');assert.deepEqual({drafts:opened.drafts,dump:opened.dump},result.after);await normalCold.close();
-  }else{assert.equal(result.admissionRejected,true);assert.equal(result.prepareRejected,true);assert.deepEqual({state:result.after,history:result.historyAfter,hasToken:result.hasToken},{state:result.before,history:result.historyBefore,hasToken:false});}
+   assert.equal(opened.format,size===130955?'geometry-canvas/13':'geometry-canvas/17');assert.deepEqual({drafts:opened.drafts,dump:opened.dump},result.after);
+   if(size!==130955){const shrunk=await normalCold.evaluate(async()=>{const W=ReferenceWorkspace,d=W.readGridDrafts().drafts[0],bytes=v=>new TextEncoder().encode(JSON.stringify(v)).length;let remove=bytes(d)-130955;for(const form of [d.ruleDraft.rawForm,d.rawForm])for(const key of Object.keys(form)){const n=Math.min(remove,form[key].length);form[key]=form[key].slice(0,form[key].length-n);remove-=n;}if(remove||bytes(d)!==130955)throw Error('shrink fixture byte mismatch');W.setGridDraft(d.draftId,d,W.getProjectState().contextToken);return W.readGridDrafts();}),smallBytes=await save(normalCold),smallCold=await open(fresh),again=await smallCold.evaluate(async bytes=>{await ReferenceWorkspace.importBytes(new Uint8Array(bytes),'shrunk-normal.gcanvas');return {drafts:ReferenceWorkspace.readGridDrafts(),dump:(await apiRequest('dump')).text,format:(await GeometryProject.unpack(new Uint8Array(bytes),fflate)).manifest.format};},smallBytes);assert.equal(again.format,'geometry-canvas/13');assert.deepEqual({drafts:again.drafts,dump:again.dump},{drafts:shrunk,dump:result.after.dump});await smallCold.close();}
+   await normalCold.close();
+  }
   normalConfirm.push({draftBytes:size,admissionRejected:result.admissionRejected,prepareRejected:result.prepareRejected});
  }
  console.log(JSON.stringify({normalConfirm}));
