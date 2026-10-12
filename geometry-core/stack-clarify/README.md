@@ -70,3 +70,52 @@ R2 依 [模型快照料單契約](../../geometry-web/docs/MODEL-SNAPSHOT-SCHEDUL
 三段命令各 exit 0；原 WSL wrapper 在末尾搬移護欄因 Windows CRLF／Git LF 差異 exit 1，原收據與日誌保留。另以 Git 原件核對差異僅行尾、五份凍結輸入與受測 clone 完全相同後，搬移經測正典並再跑 --check 通過；搬移紀錄獨立保存，未將原 wrapper 改記成功。
 
 P-058 版本回填只改當前兩個常數，其他 Python AST、全部舊相容集合、六道豁免及 capabilities 不變。身分來源 3/3；R42 的拆環順序與外／孔分類各改一處均在 AXIOM_VERSION 轉紅，逐次還原回綠。原相容探針與七個去除突變通過；被取代的 P-049 `209a7278…`／`5ccbbc0c…` 明確在 AXIOM_VERSION 拒絕，沒有新加相容項。探針停於刻意無效的 generator，不代表原生重建已驗。決策佇列 74／BACKLOG 46 行內容及順序保留，改字／刪除／換序六個反例全拒絕。
+
+
+## P-063／P-064：匯入閉包與單份容量例外
+
+本節記錄最新採納；上面的 P-049／P-058 版本及測試數字保留為歷史證據。依 [P-063 寫手指派](https://github.com/ZhiQiYang/geometry-axiom/pull/187#issuecomment-6123283824)、[#187 原修文](https://github.com/ZhiQiYang/geometry-axiom/pull/187#issuecomment-6114893235) 與 [P-064 裁決](https://github.com/ZhiQiYang/geometry-axiom/pull/201#issuecomment-6123284265)，在本分支接續寫入：
+
+| 裁決 | 條文 | 修訂 |
+|---|---|---|
+| P-063 | D55、白話 D55 | 閉包白名單明列 D32 規則版本，限作為綁定的閉包依賴；根型別及其他白名單不變。 |
+| P-063 | 白話 D54(a) | 同一穩定身分／版本且內容指紋相同才共用；不同穩定 id 不因內容相同而合併。 |
+| P-064 | I68、白話 I68 | 集合縮成一份時，內層合法、僅舊單份外殼超限者保留一份集合；原字串、內層與集合容量上限不變，保留集合能力。縮小到單份可容納且無孤兒／曾缺失標記時，下次保存須轉回單份。 |
+
+D56 已委由 I68 規定保存格式，R54 的局部歷史、保存與旗標轉集合規則也無衝突，兩條及其白話均不再修訂。相對 `e837a9308642a54ba55d7d399eb66805e1d5984e`，191 個條號維持；正式只改 D55／I68，其餘 189 條逐字相同；白話只改 D54／D55／I68。BACKLOG、決策佇列、同步器及原 41 題測試全檔不變。
+
+| 檢查 | exit | 秒數 |
+|---|---|---|
+| sync | 0 | 23.73 |
+| check | 0 | 1.626 |
+| tests | 0 | 309.634 |
+
+三條原命令於擁有的 worktree 原位經 WSL v3 執行，外層 wrapper exit 0；22 次取樣無外來程序。正典 191 條／788 blocks／84 patches；五道 assert、獨立 SSOT、41/41 原測試、冪等與批註保留通過。正典 SHA-256：`dd965752eee3252df9fe45c289a812545f37202e477729807840b152ab7086e8`。沒有第二份閱讀器，HTML 只由同步器生成。
+
+文字契約修前 8 項缺漏，修後通過；五處各自撤回都能指出對應政策缺漏，還原通過。另有版本來源 3/3、兩個改字反證、七個既有相容集合／豁免反證、六個保護行反證；決策佇列 74、BACKLOG 46 個保護行的內容與次序不變。文字反證只證文件契約，相容探針停於刻意不合法的 generator，均不冒充產品執行結果。
+
+### 當前版本與相容表
+
+| 版本集合 | AXIOM_REVISION | LF AXIOM_SHA256 | 接受情況 |
+|---|---|---|---|
+| 本次採納 | `P063_P064_SOURCE_COMMIT_PENDING` | `b06ffecf4f3b7a907a50d329f2073799d9514daa26b9056380f62ad37e5725ee` | 當前來源，下一筆提交回填實際條文 commit |
+| `PRE_STACK_CLARIFY_AXIOM_VERSIONS` | `e04a63cb3e1280715cd6c24504a37f3522fa43c7` | `2c20fd3d401e4246e59191f72f978c0a81a6ad34d3a297fe54abf4783e666c20` | 保留既有接受條件 |
+| `PRE_DRAFTS_TOPOLOGY_AXIOM_VERSIONS` | `d787146d501b98931cc66caccdbed0006c5ca25f` | `2348373fa4182f984489c068b1762725f3d9eaa4087418b0ffb5182c763213e4` | 保留既有接受條件 |
+| `PRE_ZERO_ROOM_AXIOM_VERSIONS` | `ca3790ce7e87e1a9190cb17fb63bbe42f501f7a5` | `267a308698954ca610814d3956b5b837463ccaec8d4d074236de9f9df7f8a050` | 保留既有接受條件 |
+| `PRE_CUTTING_PLAN_AXIOM_VERSIONS` | `8a8b56424407bb758de0d16e66c94e21eb79aa41` | `d8a0b4a1c108197f4abb5c67d73fa22aa7fa4288769f605a5a9372fd93aa7b52` | 保留既有接受條件 |
+| `PRE_PANEL_FILL_AXIOM_VERSIONS` | `3ad8012b6f01f9f46795a28a410ee444c5cce1a0` | `29ad0c657e53d364347862fddac23ba26a248a4fd8f83487d86f9e648bd1eaf2` | 保留既有接受條件 |
+| `PRE_SECTION_PROFILE_AXIOM_VERSIONS` | `73b9ba1d417c1b6c9885951b24139b67f8550312` | `d4bd69cd3dcbcef10802dd401a66b293afdaa09abccc6853d7a39f478cefe29a` | 保留既有接受條件 |
+| `PRE_SUBDIVISION_AXIOM_VERSIONS` | `cc6adff4c9c783ce78bcbd849754b69254690cab` | `d5eb43d077e7408fb032ee09f552795215fbf5fb7b097b57f7ac7ef6f2ed08f7` | 保留既有接受條件 |
+| `PRE_GENERATION_AXIOM_VERSIONS` | `ccbec5fe9e4b056bcd5673fb9f69a54e888ea4e6` | `264d8c5d2fa4e513418fbd611f2ef6f8d597def51d89805a75e9e21d0d24e8fe` | 保留既有接受條件 |
+| `PARAMETER_AXIOM_VERSIONS` | `802f9bda1b1b8ab046f059e115dbf05a44da10df` | `b19009682ba5b3e7150341ae1b5190629cb03985d500d382aa918438fb548c0b` | 保留既有接受條件 |
+| `PARAMETER_AXIOM_VERSIONS` | `82074011fabdccb5918a580eef737aa227536d01` | `8b3afe498b0050a50b020a3a6fc3018abfecf9f9502fccf742a32e0bc499cc03` | 保留既有接受條件 |
+| `LEGACY_AXIOM_VERSIONS` | `494660068ceb884c1a96884a2b704e3bcf5d24ca` | `bc01cf0db266f97255156e28e40fb235833031fb95f1f234ad6d90a9f08240f8` | 保留既有接受條件 |
+| `ENGINEERING_AXIOM_VERSIONS` | `5698f8501d539ed3a6f0644dab854e62e3bafb1a` | `1843e3e9f6a3a6db07ceaa8f62fad693039296d519791af98c2a433554308bcf` | 保留既有接受條件 |
+| `FINITE_GRID_AXIOM_VERSIONS` | `b4fe75f7f03ed81b4bc9f85a044282f91bd27cb6` | `2d31868524cb2776c2c405367fa69087b8f43371f320f12f3405fb14ce9fdf28` | 保留既有接受條件 |
+| `INFINITE_GRID_AXIOM_VERSIONS` | `f34c0aeb56a4d2c639be924b289e3572756807d8` | `b2b3ebde32f693e3853ace3d39a8618e5717d42e437019510505b3453ae87c75` | 保留既有接受條件 |
+| 已取代 P-049 草稿 | `209a7278d3acadfe89374714e821018dcba10adc` | `5ccbbc0cd512acd60412427794cf16baf36af4e1ceed40730fb8144697f8ac1d` | AXIOM_VERSION 拒絕，未新增相容 |
+| 已取代 P-058 草稿 | `6992607d0463bba8fae4c409af57a61066dafca2` | `c878c355c0c233119686ee1ca2b0ddd2c2fbdb7eb2c8b88896a3a8a6d37cb6ad` | AXIOM_VERSION 拒絕，未新增相容 |
+
+當前兩常數以外的 Python AST、全部相容集合、六道既有豁免與 capabilities 均未變。上述接受是版本閘的結果，各版本既有能力限制仍適用。原件位於本次交接 `SP/board-local-codex/pr199-p063-p064/`。
+
+後續產品驗收由 #201／#191 實作線承接：內層 130956、131072 bytes 的大份在捨棄另一份後，保存為一份集合且冷讀 raw 不變；縮到 130955 bytes 或以下後再保存轉為單份；拿掉容量例外時捨棄須回到被拒。這些是裁決指定的待驗情境，本 PR 沒有執行該產品測試。#187 的匯入實作同樣須隨整條堆疊承接；本次未跑新 head 的正式七 job。CI 受帳號計費阻擋，以本機 WSL 收據代替；無新 UI 入口。
