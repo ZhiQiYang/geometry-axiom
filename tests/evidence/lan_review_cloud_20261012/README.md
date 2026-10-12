@@ -28,7 +28,7 @@
 - 原 allowlist（測試已含 M1 修正）：14 pass／7 skip，4 允許、3 未允許，exit **3**。
 - 還原新 allowlist：同樣14 pass／7 skip，全部具名允許，exit **0**；沒有 `--allow-skip`。
 
-這是原 aggregate 的**局部選定範圍**，不是完整 native／正式七 job。臨時還原原 allowlist 後以 finally 精確恢復新 bytes。首次用 parent `-S` 的 partial 執行，child 未繼承 `-S` 而有套件、21全過／exit0，driver 因期待3而真正 AssertionError；保留該原件，沒有把這次稱作無套件證據。
+這是原 aggregate 的**局部選定範圍**，不是完整 native／正式七 job。臨時還原原 allowlist 後以 finally 精確恢復新 bytes。首次用 parent `-S` 的 partial 執行，child 未繼承 `-S` 而有套件、21全過／exit0；已交付的只是該子程序 stdout／stderr、receipt 與 suite logs。當時外層 driver 的原 stdout／stderr、實際退出碼及原文未附，無法獨立核其歷史紅燈；不能拿後續 venv driver 或重跑代替，也不把首次執行稱作無套件證據。
 
 ## 原件、環境與仍待事項
 
