@@ -686,8 +686,456 @@ class Handler(http.server.BaseHTTPRequestHandler):
             self.send_error(404)
 
 
+# ------------------------------------------------------------------ 區網測試模式（P-008／P-041／P-043）
+# 預設關閉；只有 `serve.py <port> --lan <IPv4>` 明示才開（設計 W-B DESIGN r2）。上面的 loopback
+# 監聽器與 Handler 不變；區網守門全在 LanHandler.parse_request——早於任何 do_* 分派、
+# _select_native 與讀 body。沒有任何旗標能讓區網監聽器走 http 或綁 loopback。
+import socket  # noqa: E402
+import time  # noqa: E402
+import lan_guard  # noqa: E402
+
+
+def _cut(sock):
+    """從別的執行緒切斷連線（含 TLS 連線：直接對底層 fd 做 shutdown，不碰 SSL 物件）。"""
+    try:
+        socket.socket.shutdown(sock, socket.SHUT_RDWR)
+    except (OSError, ValueError):
+        pass
+
+
+def _linger(sock, limit=65536, seconds=1.0):
+    """拒絕後的 lingering close：先送 FIN，再丟棄對端已送出的少量資料（≤64 KiB、≤1 秒）才關閉。
+
+    直接關閉時，未讀的 body 會讓 OS 送 RST，對端（Windows 尤其）連已收到的 403 一起丟掉，
+    看起來像「連不上」。丟棄的資料不解析、不轉交；這不是讀 body——回應早已送出。
+    """
+    try:
+        socket.socket.shutdown(sock, socket.SHUT_WR)
+        deadline = time.monotonic() + seconds
+        while limit > 0:
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                break
+            sock.settimeout(remaining)
+            chunk = socket.socket.recv(sock, min(limit, 8192))
+            if not chunk:
+                break
+            limit -= len(chunk)
+    except (OSError, ValueError):
+        pass
+
+
+class LanHTTPServer(PreviewHTTPServer):
+    """區網監聽器：連線數非阻塞上限、標頭總期限巡檢、TLS 交握在工作執行緒（DESIGN §2.4）。"""
+    block_on_close = False
+
+    def __init__(self, address, gate, ssl_context=None, ca_der=None, context_factory=None):
+        self.gate = gate
+        self.ssl_context = ssl_context
+        self.ca_der = ca_der
+        # 每台已配對裝置一個獨立的原生世界（NativeContext）：不與本機桌面（root_context）或其他裝置共用，
+        # 所以多端不會互相改到對方的 World／undo／載入狀態（暫定裁決，見 IMPL-NOTES）。
+        self.context_factory = context_factory or (lambda: NativeContext(BRIDGE_CMD))
+        self.contexts = {}     # session 的 SHA-256 → NativeContext；第一個通過守門的應用請求才建立
+        self.context_lock = threading.Lock()
+        self.slots = threading.BoundedSemaphore(gate.config.max_connections)
+        self.pending = {}      # 原始連線 → [目前的 socket 物件, 標頭期限]；標頭（配對 POST 含 body）讀完即移出
+        self.active = {}       # 原始連線 → 目前的 socket 物件；關閉區網模式時一併切斷
+        self.table_lock = threading.Lock()
+        self.worker = threading.local()
+        self.stopped = threading.Event()
+        super().__init__(address, LanHandler)
+        threading.Thread(target=self._watch, name="lan-header-deadline", daemon=True).start()
+
+    def process_request(self, request, client_address):
+        # 在 accept 迴圈執行：拿不到名額就立即關閉這條連線，accept 迴圈從不阻塞。
+        if not self.slots.acquire(blocking=False):
+            self.shutdown_request(request)
+            return
+        with self.table_lock:
+            self.pending[request] = [request, time.monotonic() + self.gate.config.header_deadline]
+            self.active[request] = request
+        try:
+            super().process_request(request, client_address)
+        except BaseException:
+            self._release(request)
+            raise
+
+    def process_request_thread(self, request, client_address):
+        self.worker.request = request
+        try:
+            super().process_request_thread(request, client_address)
+        finally:
+            self._release(request)
+
+    def _release(self, request):
+        with self.table_lock:
+            self.pending.pop(request, None)
+            owned = self.active.pop(request, None) is not None
+        if owned:
+            self.slots.release()
+
+    def finish_request(self, request, client_address):
+        if self.ssl_context is None:
+            self.RequestHandlerClass(request, client_address, self)
+            return
+        # wrap_socket 會先 detach 原 socket（fd 變 -1）。所以先包成「尚未交握」的 TLS socket（不做任何 I/O），
+        # 立刻換進期限表與連線表，巡檢與 stop() 才切得到交握中的 fd；再以剩餘期限為逾時交握
+        # （CPython 對整個 do_handshake 套用同一個期限，慢慢送位元組也延不了）。
+        connection = self.ssl_context.wrap_socket(request, server_side=True, do_handshake_on_connect=False)
+        try:
+            with self.table_lock:
+                entry = self.pending.get(request)
+                if entry is not None:
+                    entry[0] = connection
+                if request in self.active:
+                    self.active[request] = connection
+            if entry is None or self.stopped.is_set():
+                return     # 期限已到或區網模式已關閉：不交握
+            connection.settimeout(max(0.01, entry[1] - time.monotonic()))
+            connection.do_handshake()
+            self.RequestHandlerClass(connection, client_address, self)
+        finally:
+            _cut(connection)
+            connection.close()
+
+    def context_for(self, session):
+        """該 session 專屬的原生世界；第一次使用才啟動 bridge。沒有 session 或區網模式已關閉時拒絕（→ 503）。"""
+        with self.context_lock:
+            if session is None or self.stopped.is_set():
+                raise RuntimeError("沒有已配對的 session，或區網測試模式已關閉")
+            native = self.contexts.get(session)
+            if native is None:
+                native = self.contexts[session] = self.context_factory()
+            return native
+
+    def close_contexts(self):
+        with self.context_lock:
+            contexts, self.contexts = list(self.contexts.values()), {}
+        for native in contexts:
+            native.close(interrupt=True)
+
+    def headers_complete(self):
+        """取出並檢查原期限；巡檢還沒輪到也不能讓逾時的標頭／配對 body 通過。"""
+        with self.table_lock:
+            entry = self.pending.pop(getattr(self.worker, "request", None), None)
+            on_time = entry is not None and time.monotonic() < entry[1]
+        if entry is not None and not on_time:
+            _cut(entry[0])
+        return on_time
+
+    def _watch(self):
+        while not self.stopped.wait(self.gate.config.poll):
+            now = time.monotonic()
+            with self.table_lock:
+                late = [request for request, (_, deadline) in self.pending.items() if deadline <= now]
+                cut = [self.pending.pop(request)[0] for request in late]
+            for sock in cut:
+                _cut(sock)
+
+    def stop(self):
+        """停止巡檢並切斷所有進行中的區網連線（listener 由呼叫端 shutdown／server_close）。"""
+        self.stopped.set()
+        with self.table_lock:
+            current = list(self.active.values())
+        for sock in current:
+            _cut(sock)
+
+    def handle_error(self, request, client_address):
+        error = sys.exc_info()[1]
+        if isinstance(error, OSError):  # 交握失敗、被期限切斷、對端中斷：預期中的，不印
+            return
+        print(f"區網連線處理錯誤（{client_address[0]}）：{type(error).__name__}", file=sys.stderr, flush=True)
+
+
+class LanHandler(Handler):
+    """區網請求：每個請求先經 LanGate.check()，通過才進既有 do_GET／do_POST。"""
+    timeout = 60           # 標頭之後（只剩已驗證者）每次讀取的上限
+    lan_route = None
+    lan_session = None
+    lan_headers_done = False
+    lan_linger = False     # 送出錯誤回應後要 lingering close
+
+    def finish(self):
+        super().finish()
+        if self.lan_linger:
+            _linger(self.connection)
+
+    def send_error(self, code, message=None, explain=None):
+        self.lan_linger = True
+        if self.lan_route != "app":
+            # The base parser can reject before gate.check or even before a
+            # usable HTTP version exists. Never expose its diagnostic HTML.
+            if getattr(self, "request_version", "HTTP/0.9") == "HTTP/0.9":
+                self.close_connection = True
+                return
+            self._lan_reply(403)
+        else:
+            super().send_error(code, message, explain)
+
+    def parse_request(self):
+        if not super().parse_request():
+            return False
+        route, _reason = self.server.gate.check(self.command, self.path, self.headers)
+        if route is None:
+            self._lan_reply(403)
+            return False
+        if route != "pair-submit" and not self._lan_finish_headers():
+            self.close_connection = True
+            return False
+        self.lan_route = route
+        if route == "app":   # 守門已確認恰有一個有效 cookie；這裡再取一次，取不到就沒有世界可用（context_for 拒絕）
+            values = lan_guard.cookie_values(self.headers, self.server.gate.cookie_name)
+            self.lan_session = lan_guard.session_digest(values[0]) if len(values) == 1 else None
+        return True
+
+    def _select_native(self, query_context=None):
+        # 區網裝置一律用自己的原生世界：不碰本機桌面的 root_context、不碰其他裝置，也不支援方案編輯分支
+        # （X-Geometry-Scenario／?scenario= 會指向 root 底下的分支世界）。
+        if self.headers.get("X-Geometry-Scenario") or query_context is not None:
+            self._lan_reply(410)
+            return False
+        try:
+            request_context.native = self.server.context_for(self.lan_session)
+        except Exception:
+            self._lan_reply(503)
+            return False
+        return True
+
+    def _lan_finish_headers(self):
+        if self.lan_headers_done:
+            return True
+        self.lan_headers_done = True
+        return self.server.headers_complete()
+
+    def _host_allowed(self) -> bool:
+        # S9 的 loopback Host 規則（只認 LOCAL_HOSTS）；區網的 Host 已在 parse_request 逐字比對 <ip>:<P>。
+        return True
+
+    def _local_only(self) -> bool:
+        # L3 的 loopback 來源規則；區網的 Origin／Fetch-Metadata 已在 parse_request 守門。
+        return False
+
+    def end_headers(self):
+        self.send_header("Referrer-Policy", "no-referrer")
+        self.send_header("X-Content-Type-Options", "nosniff")
+        self.send_header("X-Frame-Options", "SAMEORIGIN")
+        super().end_headers()
+
+    def _lan_reply(self, status, body=b"", ctype=None, extra=()):
+        """區網專用回應：不帶 session／版本標頭，一律 Connection: close；拒絕是空白 403。"""
+        if status >= 400:
+            self.lan_linger = True
+        self.send_response(status)
+        if ctype:
+            self.send_header("Content-Type", ctype)
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("Cache-Control", "no-store")
+        for name, value in extra:
+            self.send_header(name, value)
+        self.send_header("Connection", "close")
+        self.end_headers()
+        if body and self.command != "HEAD":
+            self.wfile.write(body)
+
+    def do_GET(self):
+        if self.lan_route == "pair-page":
+            self._lan_reply(200, lan_guard.PAIR_PAGE, "text/html; charset=utf-8",
+                            [("Content-Security-Policy", lan_guard.PAIR_PAGE_CSP)])
+        elif self.lan_route == "ca":
+            self._lan_reply(200, self.server.ca_der, "application/pkix-cert",
+                            [("Content-Disposition", 'attachment; filename="geometry-lan-ca.cer"')])
+        else:
+            super().do_GET()
+
+    def do_POST(self):
+        if self.lan_route == "pair-submit":
+            self._lan_pair()
+        else:
+            super().do_POST()
+
+    def _lan_pair(self):
+        gate = self.server.gate
+        if not self.headers.get_all("Origin"):  # 配對 POST 必帶 Origin（值已在守門逐字比對）
+            return self._lan_reply(403)
+        try:
+            length = int(self.headers.get("Content-Length", ""))
+        except ValueError:
+            return self._lan_reply(403)
+        if not 0 <= length <= lan_guard.PAIR_MAX_BYTES:
+            return self._lan_reply(403)
+        body = self.rfile.read(length)
+        if not self._lan_finish_headers():  # body 也在標頭總期限內讀完
+            self.close_connection = True
+            return
+        result = gate.redeem(body, peer=self.client_address[0], user_agent=self.headers.get("User-Agent", ""))
+        if result is lan_guard.PAIR_RATE_LIMITED:
+            return self._lan_reply(429)
+        if result is None:
+            return self._lan_reply(403)
+        token, max_age = result
+        self._lan_reply(204, extra=[("Set-Cookie", f"{gate.cookie_name}={token}; Secure; HttpOnly; "
+                                                   f"SameSite=Strict; Path=/; Max-Age={max_age}")])
+
+
+class LanMode:
+    """跑一個 LanHTTPServer：服務執行緒 + 計時執行緒（TTL、閒置、配對碼過期且零裝置 → 關閉）。"""
+
+    def __init__(self, gate, server, log=None, *, category_query=None, network_interval=60.0,
+                 network_timeout=lan_guard.CATEGORY_TIMEOUT):
+        self.gate = gate
+        self.server = server
+        self.log = log or (lambda line: print(line, file=sys.stderr, flush=True))
+        self.stop_request = threading.Event()
+        self.closed = threading.Event()
+        self.reason = None
+        self.stop_reason = "服務結束"
+        self.category_query = category_query or lan_guard.query_network_category
+        self.network_interval = network_interval
+        self.network_timeout = network_timeout
+        self.network_pending = None
+
+    def _network_poll(self, now):
+        if self.network_pending is not None:
+            results, deadline = self.network_pending
+            try:
+                finished, category = results.get_nowait()
+            except queue.Empty:
+                if now >= deadline:
+                    return "網路設定檔查詢逾時"
+            else:
+                self.network_pending = None
+                if finished >= deadline:
+                    return "網路設定檔查詢逾時"
+                if category != "Private":
+                    return "網路設定檔不再是 Private、IP 消失或查詢失敗"
+                self.network_next = now + self.network_interval
+        elif now >= self.network_next:
+            results = queue.Queue(maxsize=1)
+            self.network_pending = results, now + self.network_timeout
+
+            def query():
+                try:
+                    category = self.category_query(self.gate.config.ip)
+                except Exception:
+                    category = None
+                results.put((time.monotonic(), category))
+            # The real query has a subprocess timeout too. Its worker never
+            # owns the TTL loop, so even a stuck injected query cannot delay it.
+            threading.Thread(target=query, name="lan-network-query", daemon=True).start()
+        return None
+
+    def start(self):
+        threading.Thread(target=self.server.serve_forever, kwargs={"poll_interval": 0.2},
+                         name="lan-serve", daemon=True).start()
+        threading.Thread(target=self._lifecycle, name="lan-lifecycle", daemon=True).start()
+        return self
+
+    def _lifecycle(self):
+        reason = None
+        self.network_next = time.monotonic() + self.network_interval
+        while reason is None:
+            if self.stop_request.wait(self.gate.config.poll):
+                reason = self.stop_reason
+                self.gate.close(reason)
+                break
+            reason = self.gate.poll()
+            if reason is None:
+                reason = self._network_poll(time.monotonic())
+                if reason:
+                    self.gate.close(reason)
+        self.reason = reason
+        self.server.stop()
+        self.server.shutdown()
+        self.server.server_close()
+        self.server.close_contexts()
+        self.log(f"區網測試模式已關閉（{reason}）；本機 http://localhost:{self.gate.config.port}/ 照常")
+        self.closed.set()
+
+    def stop(self, reason="服務結束"):
+        if not self.closed.is_set():
+            self.stop_reason = reason
+            self.stop_request.set()
+        if not self.closed.wait(10):
+            raise RuntimeError("區網連線已停用，但裝置世界回收尚未完成；服務不能宣稱已完全關閉")
+
+
+def bind_lan_listeners(config, gate, ssl_context, ca_der=None):
+    """先綁區網介面（由 OS 證明該 IP 屬本機），再綁 127.0.0.1；任一失敗就全部關閉並拒絕。"""
+    try:
+        lan = LanHTTPServer((config.ip, config.port), gate, ssl_context, ca_der)
+    except OSError as exc:
+        raise lan_guard.LanRefused(f"無法綁定 {config.ip}:{config.port}（{exc.strerror or exc}）；"
+                                   "該 IP 可能不屬本機介面，或埠已被占用") from None
+    try:
+        loopback = PreviewHTTPServer(("127.0.0.1", config.port), Handler)
+    except OSError as exc:
+        lan.stop()
+        lan.server_close()
+        raise lan_guard.LanRefused(f"無法綁定 127.0.0.1:{config.port}（{exc.strerror or exc}）") from None
+    return lan, loopback
+
+
+class LanRuntime:
+    def __init__(self, config, gate, material, mode, loopback):
+        self.config, self.gate, self.material, self.mode, self.loopback = config, gate, material, mode, loopback
+
+
+def lan_prepare(argv, log):
+    """解析與驗證旗標、取得 TLS 材料、綁定兩個監聽器；任何拒絕都是 LanRefused 且不留任何監聽。"""
+    import lan_tls
+    args = lan_guard.parse_args(argv)
+    if args.lan_forget:
+        removed = lan_tls.forget()
+        log(f"已刪除 {removed}" if removed else "沒有保存的區網伺服器憑證")
+        return None
+    config = lan_guard.validate(args, port=PORT, repo_root=SCENE_DIR, crypto_check=lan_tls.require)
+    material = lan_tls.load_or_issue(config.ip, config.port, config.cert_days,
+                                     lan_tls.state_directory(config.ip, config.port))
+    gate = lan_guard.LanGate(config, log=log)
+    lan, loopback = bind_lan_listeners(config, gate, lan_tls.server_context(material),
+                                       material.ca_der if config.serve_ca else None)
+    return LanRuntime(config, gate, material, LanMode(gate, lan, log), loopback)
+
+
+def lan_main(argv):
+    """`serve.py <port> --lan <IPv4> …`；拒絕時回傳 2，區網與 loopback 都不開。"""
+    def log(line):
+        print(line, file=sys.stderr, flush=True)
+    try:
+        runtime = lan_prepare(argv, log)
+    except lan_guard.LanRefused as exc:
+        log(f"拒絕開啟區網測試模式：{exc}（未開任何監聽，含本機 http）")
+        return 2
+    if runtime is None:
+        return 0
+    import lan_tls
+    runtime.mode.start()
+    loopback = threading.Thread(target=runtime.loopback.serve_forever, name="loopback-serve", daemon=True)
+    loopback.start()
+    print(f"http://localhost:{PORT}  （Ctrl-C 結束；版本={RUNTIME.version[:12]}；bridge={BRIDGE_CMD[0]}）", flush=True)
+    try:
+        lan_guard.announce(runtime.config, runtime.gate, ca_path=runtime.material.ca_path,
+                           fingerprint=runtime.material.fingerprint, reused=runtime.material.reused,
+                           pairing_path=runtime.material.pairing_path, tty=sys.stderr.isatty(), log=log)
+        while loopback.is_alive():
+            loopback.join(0.5)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        try:
+            runtime.mode.stop("服務結束")
+        finally:
+            runtime.loopback.shutdown()
+            runtime.loopback.server_close()
+            lan_tls.discard_pairing(runtime.material.directory)
+    return 0
+
+
 if __name__ == "__main__":
     try:
+        if lan_guard.lan_requested(sys.argv[2:]):  # 區網測試模式只在明示 --lan 旗標時進入；無旗標路徑不變
+            sys.exit(lan_main(sys.argv[2:]))
         host = "0.0.0.0" if os.environ.get("GEOMETRY_MANAGED_PREVIEW") == "1" and PORT == 4173 else "127.0.0.1"
         server = PreviewHTTPServer((host, PORT), Handler)
         print(f"http://localhost:{PORT}  （Ctrl-C 結束；版本={RUNTIME.version[:12]}；bridge={BRIDGE_CMD[0]}）", flush=True)

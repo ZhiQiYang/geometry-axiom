@@ -1,0 +1,7 @@
+{
+  "original_filename": "before-socket-mutant.stdout",
+  "bytes": 945,
+  "sha256": "fc380a97a40d055ce62fffa034c1e53cd4b5857dfdcc6c426f0a2263274e48fa",
+  "encoding": "utf-8",
+  "raw": "{\"mode\": \"M23\", \"mutation_registry_id\": \"M23\", \"original_sha256\": \"8bdc8c18b21cbc4a93cc1edae48de35c36a79712216cd2b1f9cf897beeaacec9\", \"mutated_sha256\": \"551552e4b07e3eee17422648c7ba61e184541cc369f39ae1214b314e515e49d0\", \"path\": \"/tmp/geometry-tests/pr194-review/M23-serve.py\"}\n{\"mode\": \"M23\", \"tests\": 3, \"failures\": 0, \"errors\": 3, \"skips\": 0, \"events\": [{\"test\": \"tests.test_lan_review.SocketReview.test_denied_late_body_is_drained_after_response_before_socket_release\", \"type\": \"ModuleNotFoundError\", \"message\": \"No module named 'feedback_store'\"}, {\"test\": \"tests.test_lan_review.SocketReview.test_denied_late_body_is_drained_after_response_before_socket_release\", \"type\": \"ModuleNotFoundError\", \"message\": \"No module named 'feedback_store'\"}, {\"test\": \"tests.test_lan_review.SocketReview.test_denied_late_body_is_drained_after_response_before_socket_release\", \"type\": \"ModuleNotFoundError\", \"message\": \"No module named 'feedback_store'\"}]}\n"
+}

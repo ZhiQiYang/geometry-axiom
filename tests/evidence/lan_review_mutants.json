@@ -1,0 +1,751 @@
+{
+  "schema": "lan-review-mutations/1",
+  "mutants": [
+    {
+      "id": "M01",
+      "label": "拿掉 cookie 檢查",
+      "path": "geometry-web/lan_guard.py",
+      "edits": [
+        [
+          "        if len(values) != 1 or _digest(values[0]) not in self.sessions:\n            return None, \"cookie\"",
+          "        if False:\n            return None, \"cookie\""
+        ]
+      ],
+      "needle": "cookie 守門失效",
+      "tests": [
+        "tests.test_serve_lan.GateLayer.test_04_every_method_and_route_needs_exactly_one_valid_cookie"
+      ]
+    },
+    {
+      "id": "M02",
+      "label": "GET 不守門",
+      "path": "geometry-web/serve.py",
+      "edits": [
+        [
+          "        route, _reason = self.server.gate.check(self.command, self.path, self.headers)",
+          "        route, _reason = (\"app\", None) if self.command == \"GET\" else self.server.gate.check(self.command, self.path, self.headers)"
+        ]
+      ],
+      "needle": "守門失效",
+      "tests": [
+        "tests.test_serve_lan.GateLayer.test_06_wrong_host_is_refused_even_with_a_valid_cookie"
+      ]
+    },
+    {
+      "id": "M03",
+      "label": "放寬 Host（只比主機名、不比埠）",
+      "path": "geometry-web/lan_guard.py",
+      "edits": [
+        [
+          "        if len(hosts) != 1 or hosts[0] != config.host:",
+          "        if len(hosts) != 1 or hosts[0].rsplit(\":\", 1)[0] != config.ip:"
+        ]
+      ],
+      "needle": "Host 守門失效",
+      "tests": [
+        "tests.test_serve_lan.GateLayer.test_06_wrong_host_is_refused_even_with_a_valid_cookie"
+      ]
+    },
+    {
+      "id": "M04",
+      "label": "允許無 Origin 的非 GET",
+      "path": "geometry-web/lan_guard.py",
+      "edits": [
+        [
+          "        if method != \"GET\" and not origins:\n            return None, \"origin-required\"",
+          "        if False:\n            return None, \"origin-required\""
+        ]
+      ],
+      "needle": "無 Origin 的 POST 被放行",
+      "tests": [
+        "tests.test_serve_lan.GateLayer.test_07_wrong_origin_and_fetch_metadata_are_refused"
+      ]
+    },
+    {
+      "id": "M05",
+      "label": "拿掉 Sec-Fetch-Site 檢查",
+      "path": "geometry-web/lan_guard.py",
+      "edits": [
+        [
+          "        if len(sites) > 1 or (sites and sites[0] not in (\"same-origin\", \"none\")):",
+          "        if False:"
+        ]
+      ],
+      "needle": "Sec-Fetch-Site 守門失效",
+      "tests": [
+        "tests.test_serve_lan.GateLayer.test_07_wrong_origin_and_fetch_metadata_are_refused"
+      ]
+    },
+    {
+      "id": "M06",
+      "label": "配對碼用後不作廢",
+      "path": "geometry-web/lan_guard.py",
+      "edits": [
+        [
+          "            matched.used = True",
+          "            matched.used = False"
+        ]
+      ],
+      "needle": "用後沒有作廢",
+      "tests": [
+        "tests.test_serve_lan.GateLayer.test_05_pairing_codes_are_single_use_rate_limited_and_never_logged"
+      ]
+    },
+    {
+      "id": "M07",
+      "label": "拿掉配對限速",
+      "path": "geometry-web/lan_guard.py",
+      "edits": [
+        [
+          "            if self.last_attempt is not None and now - self.last_attempt < self.config.pair_interval:",
+          "            if False:"
+        ]
+      ],
+      "needle": "限速失效",
+      "tests": [
+        "tests.test_serve_lan.GateLayer.test_05_pairing_codes_are_single_use_rate_limited_and_never_logged",
+        "tests.test_lan_review.SocketReview.test_delayed_pair_bodies_do_not_stockpile_comparison_slots"
+      ]
+    },
+    {
+      "id": "M08",
+      "label": "無效請求也重設閒置",
+      "path": "geometry-web/lan_guard.py",
+      "edits": [
+        [
+          "            route, reason = self._check(method, target, headers)\n            if route is None:",
+          "            route, reason = self._check(method, target, headers)\n            self.last_activity = self.clock()\n            if route is None:"
+        ]
+      ],
+      "needle": "閒置計時被無效請求",
+      "tests": [
+        "tests.test_serve_lan.GateLayer.test_09b_idle_is_reset_only_by_valid_cookie_requests"
+      ]
+    },
+    {
+      "id": "M09",
+      "label": "配對碼過期且零裝置不關閉",
+      "path": "geometry-web/lan_guard.py",
+      "edits": [
+        [
+          "            elif self.paired == 0 and all(now >= entry.expires for entry in self.codes):",
+          "            elif False:"
+        ]
+      ],
+      "needle": "零裝置時沒有關閉",
+      "tests": [
+        "tests.test_serve_lan.GateLayer.test_09c_codes_expired_with_no_device_paired_closes_immediately"
+      ]
+    },
+    {
+      "id": "M10",
+      "label": "TTL 不關閉",
+      "path": "geometry-web/lan_guard.py",
+      "edits": [
+        [
+          "            if now >= self.started + self.config.ttl:\n                reason = \"TTL 到期\"",
+          "            if False:\n                reason = \"TTL 到期\""
+        ]
+      ],
+      "needle": "TTL 到期沒有關閉",
+      "tests": [
+        "tests.test_serve_lan.GateLayer.test_09a_ttl_closes_the_lan_listener_but_not_loopback"
+      ]
+    },
+    {
+      "id": "M11",
+      "label": "semaphore 改阻塞 acquire",
+      "path": "geometry-web/serve.py",
+      "edits": [
+        [
+          "        if not self.slots.acquire(blocking=False):",
+          "        if not self.slots.acquire():"
+        ]
+      ],
+      "needle": "semaphore 阻塞",
+      "tests": [
+        "tests.test_serve_lan.GateLayer.test_10b_connection_cap_is_non_blocking"
+      ]
+    },
+    {
+      "id": "M12",
+      "label": "拿掉標頭總期限",
+      "path": "geometry-web/serve.py",
+      "edits": [
+        [
+          "                late = [request for request, (_, deadline) in self.pending.items() if deadline <= now]",
+          "                late = []"
+        ]
+      ],
+      "needle": "標頭總期限沒有切斷",
+      "tests": [
+        "tests.test_serve_lan.GateLayer.test_10b_slow_headers_are_cut_at_the_total_deadline"
+      ]
+    },
+    {
+      "id": "M13",
+      "label": "CA 私鑰落地（併進 leaf.pem）",
+      "path": "geometry-web/lan_tls.py",
+      "edits": [
+        [
+          "    del ca_key  # CA 私鑰從不序列化；簽完即解除參照，之後只剩公開的根憑證",
+          "    leaked = ca_key.private_bytes(serialization.Encoding.PEM, serialization.PrivateFormat.PKCS8, serialization.NoEncryption())"
+        ],
+        [
+          "    return (leaf.public_bytes(serialization.Encoding.PEM),",
+          "    return (leaf.public_bytes(serialization.Encoding.PEM) + leaked,"
+        ]
+      ],
+      "needle": "CA 私鑰落地",
+      "tests": [
+        "tests.test_serve_lan.TlsLayer.test_10a_tls_certificate_properties_and_storage"
+      ]
+    },
+    {
+      "id": "M14",
+      "label": "LanHandler 不覆寫 S9 的 Host 檢查",
+      "path": "geometry-web/serve.py",
+      "edits": [
+        [
+          "    def _host_allowed(self) -> bool:\n        # S9 的 loopback Host 規則",
+          "    def _host_allowed_disabled(self) -> bool:\n        # S9 的 loopback Host 規則"
+        ]
+      ],
+      "needle": "沒有覆寫 S9",
+      "tests": [
+        "tests.test_serve_lan.GateLayer.test_08_correct_flow_cookie_attributes_and_security_headers"
+      ]
+    },
+    {
+      "id": "M15",
+      "label": "接受 absolute-form 請求列",
+      "path": "geometry-web/lan_guard.py",
+      "edits": [
+        [
+          "        if not target.startswith(\"/\"):\n            return None, \"target\"",
+          "        if False:\n            return None, \"target\""
+        ]
+      ],
+      "needle": "absolute-form",
+      "tests": [
+        "tests.test_serve_lan.GateLayer.test_06_wrong_host_is_refused_even_with_a_valid_cookie"
+      ]
+    },
+    {
+      "id": "M16",
+      "label": "Origin 只看有無、不比值",
+      "path": "geometry-web/lan_guard.py",
+      "edits": [
+        [
+          "        if len(origins) > 1 or (origins and origins[0] != config.origin):",
+          "        if len(origins) > 1:"
+        ]
+      ],
+      "needle": "Origin 守門失效",
+      "tests": [
+        "tests.test_serve_lan.GateLayer.test_07_wrong_origin_and_fetch_metadata_are_refused"
+      ]
+    },
+    {
+      "id": "M17",
+      "label": "配對 POST 不要求 Origin",
+      "path": "geometry-web/serve.py",
+      "edits": [
+        [
+          "        if not self.headers.get_all(\"Origin\"):  # 配對 POST 必帶 Origin",
+          "        if False:  # 配對 POST 必帶 Origin"
+        ]
+      ],
+      "needle": "配對 POST 未帶 Origin 卻被評估",
+      "tests": [
+        "tests.test_serve_lan.GateLayer.test_05b_expired_codes_are_refused"
+      ]
+    },
+    {
+      "id": "M18",
+      "label": "關閉時不切斷進行中的連線",
+      "path": "geometry-web/serve.py",
+      "edits": [
+        [
+          "        for sock in current:\n            _cut(sock)",
+          "        for sock in []:\n            _cut(sock)"
+        ]
+      ],
+      "needle": "沒有切斷進行中的連線",
+      "tests": [
+        "tests.test_serve_lan.GateLayer.test_09d_closing_cuts_open_connections_and_refuses_late_requests"
+      ]
+    },
+    {
+      "id": "M19",
+      "label": "已關閉仍放行（拿掉守門第 1 條）",
+      "path": "geometry-web/lan_guard.py",
+      "edits": [
+        [
+          "        if self.closed or self._expired(self.clock()):\n            return None, \"closed\"",
+          "        if False:\n            return None, \"closed\""
+        ]
+      ],
+      "needle": "守門第 1 條失效",
+      "tests": [
+        "tests.test_serve_lan.GateLayer.test_09a_ttl_closes_the_lan_listener_but_not_loopback"
+      ]
+    },
+    {
+      "id": "M20",
+      "label": "非 TTY 也印配對碼",
+      "path": "geometry-web/lan_guard.py",
+      "edits": [
+        [
+          "    if tty:\n        for index, code in enumerate(codes, 1):",
+          "    if True:\n        for index, code in enumerate(codes, 1):"
+        ]
+      ],
+      "needle": "非 TTY 時啟動提示印出了配對碼",
+      "tests": [
+        "tests.test_serve_lan.GateLayer.test_11_secrets_stay_out_of_logs_banner_feedback_and_pair_page"
+      ]
+    },
+    {
+      "id": "M21",
+      "label": "Public 設定檔也放行",
+      "path": "geometry-web/lan_guard.py",
+      "edits": [
+        [
+          "    if category != \"Private\":",
+          "    if category not in (\"Private\", \"Public\"):"
+        ]
+      ],
+      "needle": "應拒絕卻放行",
+      "tests": [
+        "tests.test_serve_lan.GateLayer.test_03_flag_validation_is_fail_closed"
+      ]
+    },
+    {
+      "id": "M22",
+      "label": "RFC1918 改用 ipaddress.is_private",
+      "path": "geometry-web/lan_guard.py",
+      "edits": [
+        [
+          "    if not any(address in network for network in RFC1918):",
+          "    if not address.is_private:"
+        ]
+      ],
+      "needle": "應拒絕卻放行",
+      "tests": [
+        "tests.test_serve_lan.GateLayer.test_03_flag_validation_is_fail_closed"
+      ]
+    },
+    {
+      "id": "M23",
+      "label": "拒絕回應後沒有排空延後送出的 body（真實 socket 讀取觀測，不依平台 RST）",
+      "path": "geometry-web/serve.py",
+      "edits": [
+        [
+          "        if self.lan_linger:\n            _linger(self.connection)",
+          "        if False:\n            _linger(self.connection)"
+        ]
+      ],
+      "needle": "refused late body was not drained after the response",
+      "tests": [
+        "tests.test_lan_review.SocketReview.test_denied_late_body_is_drained_after_response_before_socket_release"
+      ]
+    },
+    {
+      "id": "M24",
+      "label": "TLS 交握在換表之前（#194 【dot】第 1 項的原缺陷）",
+      "path": "geometry-web/serve.py",
+      "edits": [
+        [
+          "server_side=True, do_handshake_on_connect=False)",
+          "server_side=True, do_handshake_on_connect=True)"
+        ]
+      ],
+      "needle": "交握",
+      "tests": [
+        "tests.test_serve_lan.GateLayer.test_10c_stalled_tls_handshake_is_cut_at_the_total_deadline"
+      ]
+    },
+    {
+      "id": "M25",
+      "label": "區網裝置沿用本機桌面的世界",
+      "path": "geometry-web/serve.py",
+      "edits": [
+        [
+          "    def _select_native(self, query_context=None):\n        # 區網裝置一律用自己的原生世界",
+          "    def _select_native_disabled(self, query_context=None):\n        # 區網裝置一律用自己的原生世界"
+        ]
+      ],
+      "needle": "區網裝置與本機桌面共用同一個世界",
+      "tests": [
+        "tests.test_serve_lan.GateLayer.test_12_desktop_and_each_paired_device_have_separate_worlds"
+      ]
+    },
+    {
+      "id": "M26",
+      "label": "所有已配對裝置共用一個區網世界",
+      "path": "geometry-web/serve.py",
+      "edits": [
+        [
+          "            native = self.contexts.get(session)",
+          "            native = self.contexts.get(\"shared\")"
+        ],
+        [
+          "                native = self.contexts[session] = self.context_factory()",
+          "                native = self.contexts[\"shared\"] = self.context_factory()"
+        ]
+      ],
+      "needle": "兩台已配對裝置共用同一個世界",
+      "tests": [
+        "tests.test_serve_lan.GateLayer.test_12_desktop_and_each_paired_device_have_separate_worlds"
+      ]
+    },
+    {
+      "id": "M27",
+      "label": "Remove the DNS constraints",
+      "path": "geometry-web/lan_tls.py",
+      "edits": [
+        [
+          "denied = [x509.DNSName(\"geometry-lan-names.invalid\"),\n              x509.RFC822Name",
+          "denied = [x509.RFC822Name"
+        ]
+      ],
+      "needle": "CA accepted forbidden DNS",
+      "tests": [
+        "tests.test_lan_review.PureReview.test_same_ca_rejects_other_ip_dns_email_and_uri_leaves"
+      ]
+    },
+    {
+      "id": "M28",
+      "label": "Remove the email constraints",
+      "path": "geometry-web/lan_tls.py",
+      "edits": [
+        [
+          "              x509.RFC822Name(\"geometry-lan-names.invalid\"),\n",
+          ""
+        ]
+      ],
+      "needle": "CA accepted forbidden email",
+      "tests": [
+        "tests.test_lan_review.PureReview.test_same_ca_rejects_other_ip_dns_email_and_uri_leaves"
+      ]
+    },
+    {
+      "id": "M29",
+      "label": "Remove the URI constraints",
+      "path": "geometry-web/lan_tls.py",
+      "edits": [
+        [
+          ",\n              x509.UniformResourceIdentifier(\"geometry-lan-names.invalid\")",
+          ""
+        ]
+      ],
+      "needle": "CA accepted forbidden URI",
+      "tests": [
+        "tests.test_lan_review.PureReview.test_same_ca_rejects_other_ip_dns_email_and_uri_leaves"
+      ]
+    },
+    {
+      "id": "M30",
+      "label": "Leave the reserved names permitted by dropping exclusions",
+      "path": "geometry-web/lan_tls.py",
+      "edits": [
+        [
+          "excluded_subtrees=denied)",
+          "excluded_subtrees=None)"
+        ]
+      ],
+      "needle": "CA accepted forbidden excluded",
+      "tests": [
+        "tests.test_lan_review.PureReview.test_same_ca_rejects_other_ip_dns_email_and_uri_leaves"
+      ]
+    },
+    {
+      "id": "M31",
+      "label": "Skip saved certificate policy",
+      "path": "geometry-web/lan_tls.py",
+      "edits": [
+        [
+          "    validate_material(ip, leaf, key, ca, now)",
+          "    # mutation: accept saved material without policy"
+        ]
+      ],
+      "needle": "saved material bypassed policy",
+      "tests": [
+        "tests.test_lan_review.PureReview.test_signed_noncompliant_saved_material_is_not_reused"
+      ]
+    },
+    {
+      "id": "M32",
+      "label": "Skip freshly issued certificate policy",
+      "path": "geometry-web/lan_tls.py",
+      "edits": [
+        [
+          "        validate_material(ip, x509.load_pem_x509_certificate(leaf_pem),\n                          serialization.load_pem_private_key(key_pem, password=None),\n                          x509.load_der_x509_certificate(ca_der), now)",
+          "        # mutation: persist freshly issued material without policy"
+        ]
+      ],
+      "needle": "new material bypassed shared certificate policy",
+      "tests": [
+        "tests.test_lan_review.PureReview.test_new_material_is_validated_before_any_persistence"
+      ]
+    },
+    {
+      "id": "M33",
+      "label": "Restore the extra five minutes of certificate validity",
+      "path": "geometry-web/lan_tls.py",
+      "edits": [
+        [
+          "end = start + datetime.timedelta(days=int(days))",
+          "end = now + datetime.timedelta(days=int(days))"
+        ]
+      ],
+      "needle": "certificate total validity exceeds seven days",
+      "tests": [
+        "tests.test_lan_review.PureReview.test_certificate_total_validity_never_exceeds_seven_days"
+      ]
+    },
+    {
+      "id": "M34",
+      "label": "Allow an eight-hour TTL",
+      "path": "geometry-web/lan_guard.py",
+      "edits": [
+        [
+          "(\"--lan-ttl\", args.lan_ttl, 1, 120)",
+          "(\"--lan-ttl\", args.lan_ttl, 1, 480)"
+        ]
+      ],
+      "needle": "TTL/idle hard maximum bypassed",
+      "tests": [
+        "tests.test_lan_review.PureReview.test_ttl_and_idle_are_hard_maxima"
+      ]
+    },
+    {
+      "id": "M35",
+      "label": "Allow an eight-hour idle limit",
+      "path": "geometry-web/lan_guard.py",
+      "edits": [
+        [
+          "(\"--lan-idle\", args.lan_idle, 1, 30)",
+          "(\"--lan-idle\", args.lan_idle, 1, 480)"
+        ]
+      ],
+      "needle": "TTL/idle hard maximum bypassed",
+      "tests": [
+        "tests.test_lan_review.PureReview.test_ttl_and_idle_are_hard_maxima"
+      ]
+    },
+    {
+      "id": "M36",
+      "label": "Restore the PowerShell eight-hour TTL limit",
+      "path": "geometry-web/start.ps1",
+      "edits": [
+        [
+          "[ValidateRange(1, 120)][int]$LanTtlMinutes",
+          "[ValidateRange(1, 480)][int]$LanTtlMinutes"
+        ]
+      ],
+      "needle": "PowerShell TTL hard maximum is not 120 minutes",
+      "tests": [
+        "tests.test_lan_review.PureReview.test_powershell_ttl_matches_the_python_limit"
+      ]
+    },
+    {
+      "id": "M37",
+      "label": "Trust pending-table membership instead of the deadline",
+      "path": "geometry-web/serve.py",
+      "edits": [
+        [
+          "on_time = entry is not None and time.monotonic() < entry[1]",
+          "on_time = entry is not None"
+        ]
+      ],
+      "needle": "completed headers escaped their accept deadline",
+      "tests": [
+        "tests.test_lan_review.PureReview.test_finished_headers_check_deadline_without_waiting_for_watchdog",
+        "tests.test_lan_review.SocketReview.test_expired_pair_body_is_cut_before_watchdog_poll"
+      ]
+    },
+    {
+      "id": "M38",
+      "label": "Reject legacy Safari without Fetch Metadata",
+      "path": "geometry-web/lan_guard.py",
+      "edits": [
+        [
+          "if len(sites) > 1 or (sites and sites[0] not in (\"same-origin\", \"none\")):",
+          "if len(sites) != 1 or sites[0] not in (\"same-origin\", \"none\"):"
+        ]
+      ],
+      "needle": "Fetch Metadata policy failed: legacy Safari",
+      "tests": [
+        "tests.test_lan_review.SocketReview.test_missing_fetch_metadata_is_compatible_but_duplicates_are_refused"
+      ]
+    },
+    {
+      "id": "M39",
+      "label": "Accept duplicate Fetch Metadata",
+      "path": "geometry-web/lan_guard.py",
+      "edits": [
+        [
+          "if len(sites) > 1 or (sites and sites[0] not in (\"same-origin\", \"none\")):",
+          "if sites and sites[0] not in (\"same-origin\", \"none\"):"
+        ]
+      ],
+      "needle": "Fetch Metadata policy failed: duplicate",
+      "tests": [
+        "tests.test_lan_review.SocketReview.test_missing_fetch_metadata_is_compatible_but_duplicates_are_refused"
+      ]
+    },
+    {
+      "id": "M40",
+      "label": "Disable runtime network-profile checks",
+      "path": "geometry-web/serve.py",
+      "edits": [
+        [
+          "reason = self._network_poll(time.monotonic())",
+          "reason = None  # mutation: no network checks"
+        ]
+      ],
+      "needle": "network profile monitor did not close LAN",
+      "tests": [
+        "tests.test_lan_review.SocketReview.test_profile_changes_missing_ip_and_query_errors_close_lan"
+      ]
+    },
+    {
+      "id": "M41",
+      "label": "Ignore a stalled network-profile query deadline",
+      "path": "geometry-web/serve.py",
+      "edits": [
+        [
+          "                if now >= deadline:",
+          "                if False:"
+        ]
+      ],
+      "needle": "blocked network query prevented LAN shutdown",
+      "tests": [
+        "tests.test_lan_review.SocketReview.test_network_query_timeout_closes_lan_without_blocking_ttl"
+      ]
+    },
+    {
+      "id": "M42",
+      "label": "Run the network query on the TTL thread",
+      "path": "geometry-web/serve.py",
+      "edits": [
+        [
+          "threading.Thread(target=query, name=\"lan-network-query\", daemon=True).start()",
+          "query()"
+        ]
+      ],
+      "needle": "blocked network query prevented LAN shutdown",
+      "tests": [
+        "tests.test_lan_review.SocketReview.test_network_query_timeout_closes_lan_without_blocking_ttl"
+      ]
+    },
+    {
+      "id": "M43",
+      "label": "Share one cookie name across ports and restarts",
+      "path": "geometry-web/lan_guard.py",
+      "edits": [
+        [
+          "self.cookie_name = f\"{COOKIE_NAME}-{config.port}-{secrets.token_hex(8)}\"",
+          "self.cookie_name = COOKIE_NAME"
+        ]
+      ],
+      "needle": "second port overwrote the first port's cookie",
+      "tests": [
+        "tests.test_lan_review.PureReview.test_cookie_names_also_separate_restarts_on_the_same_port",
+        "tests.test_lan_review.SocketReview.test_two_ports_keep_their_cookies_sessions_and_worlds"
+      ]
+    },
+    {
+      "id": "M44",
+      "label": "Wait for busy command locks before cancelling the bridge",
+      "path": "geometry-web/serve.py",
+      "edits": [
+        [
+          "native.close(interrupt=True)",
+          "native.close()"
+        ]
+      ],
+      "needle": "busy bridge was not reclaimed before LAN shutdown",
+      "tests": [
+        "tests.test_lan_review.SocketReview.test_busy_bridge_shutdown_reaps_world_before_stop_returns"
+      ]
+    },
+    {
+      "id": "M45",
+      "label": "Return silently when shutdown is incomplete",
+      "path": "geometry-web/serve.py",
+      "edits": [
+        [
+          "        if not self.closed.wait(10):\n            raise RuntimeError(\"區網連線已停用，但裝置世界回收尚未完成；服務不能宣稱已完全關閉\")",
+          "        self.closed.wait(10)"
+        ]
+      ],
+      "needle": "incomplete LAN shutdown returned silently",
+      "tests": [
+        "tests.test_lan_review.PureReview.test_stop_reports_incomplete_cleanup_instead_of_returning_success"
+      ]
+    },
+    {
+      "id": "M46",
+      "label": "Expose base-parser diagnostics to unauthenticated requests",
+      "path": "geometry-web/serve.py",
+      "edits": [
+        [
+          "        if self.lan_route != \"app\":",
+          "        if False:"
+        ]
+      ],
+      "needle": "parser leaked a different unauthenticated response",
+      "tests": [
+        "tests.test_lan_review.SocketReview.test_parser_failures_are_blank_and_never_dispatch"
+      ]
+    },
+    {
+      "id": "M47",
+      "label": "Ignore a CA EKU that excludes server authentication",
+      "path": "geometry-web/lan_tls.py",
+      "edits": [
+        [
+          "require(list(ca_eku) == [ExtendedKeyUsageOID.SERVER_AUTH], \"CA EKU 不允許伺服器驗證\")",
+          "require(True, \"CA EKU 不允許伺服器驗證\")"
+        ]
+      ],
+      "needle": "saved material bypassed policy: CA EKU excludes servers",
+      "tests": [
+        "tests.test_lan_review.PureReview.test_signed_noncompliant_saved_material_is_not_reused"
+      ]
+    },
+    {
+      "id": "M48",
+      "label": "拿掉完整 leaf subject 白名單",
+      "path": "geometry-web/lan_tls.py",
+      "edits": [
+        [
+          "        require(leaf.subject == leaf_subject, \"leaf subject 必須完整符合簽發白名單\")\n",
+          ""
+        ]
+      ],
+      "needle": "non-whitelisted subject was accepted",
+      "tests": [
+        "tests.test_lan_review.PureReview.test_subject_whitelist_rejects_cn_variants_before_reuse"
+      ]
+    },
+    {
+      "id": "M49",
+      "label": "拿掉完整 CA subject 白名單",
+      "path": "geometry-web/lan_tls.py",
+      "edits": [
+        [
+          "        require(ca.subject == ca_subject, \"CA subject 必須完整符合簽發白名單\")\n",
+          ""
+        ]
+      ],
+      "needle": "non-whitelisted subject was accepted",
+      "tests": [
+        "tests.test_lan_review.PureReview.test_subject_whitelist_rejects_cn_variants_before_reuse"
+      ]
+    }
+  ]
+}
