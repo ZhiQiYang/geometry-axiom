@@ -1,7 +1,17 @@
 # 瀏覽器測試的同步等待
 
-PR #197 只調整測試與測試 helper；產品、既有斷言期望值與
-`cdp_sections.golden.json` 不變。
+PR #197 的 `0361df58` 等待修正切片只調整測試與測試 helper，該切片
+沒有改產品。整個 PR 另包含 `3837ceb1` 的 FaceProjection 產品修正：
+取消、Escape、保存後與離開流程同步結束當次 session，移除會在之後交付的
+全域 close 清理，避免舊視窗的 close 事件使新 session 失效。
+原 context、history、面身分、來源與保存守門仍保留；既有斷言期望值與
+`cdp_sections.golden.json` 未放寬。新增生命週期斷言另計，不下修舊群組。
+
+此產品修正已有 14 項純 Node 回歸、六個具名突變及各次還原結果；
+真 Chrome 的受控舊碼／M1 各為 15 過 4 敗，修正／還原各為 18/18。
+Chrome 收據僅涵蓋 partial/projection-close，含兩種舊 close 延後交付時序、
+普通取消與 Escape；不能代替最終 head 的七 job、完整 canvas 與 golden 驗收，
+也不回填歷史 401／678／387 首次失敗的根因。
 
 ## 期限契約
 
