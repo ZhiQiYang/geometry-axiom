@@ -7,8 +7,11 @@ const {test}=require('node:test'),assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path'),Module=require('node:module');
 const P=require('../geometry-web/project-store.js'),S=require('../geometry-web/scenario-snapshots.js'),zip=require('../geometry-web/vendor/fflate/umd/index.js');
 const file=require.resolve('./test_reference_workspace_races.js');
-const source=fs.readFileSync(file,'utf8').replace("const {test:nodeTest} = require('node:test');",'const nodeTest=()=>{};');
+const source=fs.readFileSync(file,'utf8');
 const loaded=new Module(file,module);loaded.filename=file;loaded.paths=Module._nodeModulePaths(path.dirname(file));
+// Fixture reuse must suppress both tests and setup hooks regardless of import formatting.
+const fixtureRequire=loaded.require.bind(loaded);
+loaded.require=name=>name==='node:test'?{test(){},before(){}}:fixtureRequire(name);
 loaded._compile(source+'\nmodule.exports={openFixture,countedPDF};',file);const {openFixture,countedPDF}=loaded.exports;
 const defer=()=>{let resolve;const promise=new Promise(r=>resolve=r);return {promise,resolve};};
 const ROOT='a'.repeat(32),B='b'.repeat(32),C='c'.repeat(32);
