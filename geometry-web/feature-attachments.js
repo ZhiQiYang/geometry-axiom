@@ -273,12 +273,12 @@
     if (value.schema === GRID_DRAFTS_SCHEMA) {validateGridDrafts(value,true);return JSON.parse(JSON.stringify({drafts:value.drafts,orphans:value.orphans}));}
     validateGridDraft(value,false,true);return {drafts:[JSON.parse(JSON.stringify(value))],orphans:[]};
   }
-  function gridDraftValue(drafts, orphans = [], stored = false) {
+  function gridDraftValue(drafts, orphans = [], stored = false, collectionOrigin = false) {
     if (!drafts.length) return null;
     if (drafts.length === 1 && !orphans.length && !drafts[0].inputRefs.some(ref=>ref.lost)) {
       const draft=validateGridDraft(drafts[0],false,stored);
       try {boundedJSON({schema:SCHEMA,records:[{kind:GRID_KIND,schema:draft.schema,value:draft}]});return draft;}
-      catch(error) {if(error.message!=="功能附件超過容量上限。")throw error;}
+      catch(error) {if(error.message!=="功能附件超過容量上限。"||!collectionOrigin)throw error;}
     }
     return validateGridDrafts({schema:GRID_DRAFTS_SCHEMA,drafts:[...drafts].sort((a,b)=>a.draftId<b.draftId?-1:a.draftId>b.draftId?1:0),orphans:[...orphans].sort()},stored);
   }

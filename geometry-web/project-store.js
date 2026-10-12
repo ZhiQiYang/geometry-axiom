@@ -498,7 +498,7 @@
   function normalizedManifest(manifest, scene = "", sceneHash = "0".repeat(64), reserveNative = false) {
     const grid=manifest.featureAttachments?.records.find(r=>r.kind===Features.GRID_KIND&&r.schema===Features.GRID_DRAFTS_SCHEMA);
     if(grid){
-      const value=Features.gridDraftValue(grid.value.drafts,grid.value.orphans,true);
+      const value=Features.gridDraftValue(grid.value.drafts,grid.value.orphans,true,true);
       if(value.schema!==grid.schema)manifest={...manifest,requiredCapabilities:(manifest.requiredCapabilities||[]).filter(c=>c!==Features.GRID_DRAFTS_SCHEMA),
         featureAttachments:{...manifest.featureAttachments,records:manifest.featureAttachments.records.map(r=>r===grid?Features.record(Features.GRID_KIND,value,true):r)}};
     }

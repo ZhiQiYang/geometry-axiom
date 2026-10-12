@@ -114,7 +114,7 @@ const ReferenceWorkspace = (() => {
   function preflightGridConfirmation(kind,value){
     if(kind!==P.Features.GRID_KIND)return;
     const c=readGridDrafts(),drafts=c.drafts.filter(d=>d.draftId!==value.draftId),orphans=c.orphans.filter(id=>id!==value.draftId);
-    featureProposal(kind,P.Features.gridDraftValue(drafts,orphans,true),true);
+    featureProposal(kind,P.Features.gridDraftValue(drafts,orphans,true,readFeatureAttachment(kind)?.schema===P.Features.GRID_DRAFTS_SCHEMA),true);
   }
   function cancelFeatureConfirmation(token){featureConfirmations.delete(featureTokenKey(token));}
   function finishAssemblyConfirmation(stamp){if(assemblyConfirmation===stamp){assemblyConfirmation=null;schedulePresentation();scheduleRecovery();}}
@@ -450,7 +450,7 @@ const ReferenceWorkspace = (() => {
   }
   function readGridDraft(draftId) {return readGridDrafts().drafts.find(d=>d.draftId===draftId) || null;}
   function replaceGridDrafts(drafts,orphans) {
-    const value=P.Features.gridDraftValue(drafts,orphans,true);
+    const value=P.Features.gridDraftValue(drafts,orphans,true,readFeatureAttachment(P.Features.GRID_KIND)?.schema===P.Features.GRID_DRAFTS_SCHEMA);
     context().featureAttachments=featureProposal(P.Features.GRID_KIND,value,true);
   }
   function scanGridDrafts(deleted,objects=null,localDeletion=false) {
@@ -497,11 +497,12 @@ const ReferenceWorkspace = (() => {
     }
     const drafts=collection.drafts.filter(d=>d.draftId!==draftId);if(value!==null)drafts.push(value);
     const orphans=collection.orphans.filter(id=>value!==null || id!==draftId);
-    const projected=P.Features.gridLifecycleValue(P.Features.gridDraftValue(drafts,orphans));
+    const valueNext=P.Features.gridDraftValue(drafts,orphans,false,readFeatureAttachment(P.Features.GRID_KIND)?.schema===P.Features.GRID_DRAFTS_SCHEMA);
+    const projected=P.Features.gridLifecycleValue(valueNext);
     const projectedRecords=(context().featureAttachments||[]).filter(record=>record.kind!==P.Features.GRID_KIND);
     if(projected)projectedRecords.push(P.Features.record(P.Features.GRID_KIND,projected));
     assertMetadataCapacity({featureAttachments:projectedRecords});
-    setFeatureAttachment(P.Features.GRID_KIND,P.Features.gridDraftValue(drafts,orphans),expectedContextToken,{gridWrite:gridDraftWrite});
+    setFeatureAttachment(P.Features.GRID_KIND,valueNext,expectedContextToken,{gridWrite:gridDraftWrite});
     return readGridDraft(draftId);
   }
   async function repinGridDraft(draftId,expectedBaseFingerprint,expectedContextToken) {
@@ -523,7 +524,7 @@ const ReferenceWorkspace = (() => {
     const next=structuredClone(draft);next.baseRef=await pin(draft.baseRef);check();
     if(next.baseRef.fingerprint!==expectedBaseFingerprint)throw new Error("基底已變更，請重新檢視兩方覆蓋預覽。");
     for(let i=0;i<next.inputRefs.length;i++)if(!next.inputRefs[i].lost){next.inputRefs[i]=await pin(next.inputRefs[i]);check();}
-    const collection=readGridDrafts();setFeatureAttachment(P.Features.GRID_KIND,P.Features.gridDraftValue(collection.drafts.map(d=>d.draftId===draftId?next:d),collection.orphans),expectedContextToken,{gridWrite:gridDraftWrite});
+    const collection=readGridDrafts();setFeatureAttachment(P.Features.GRID_KIND,P.Features.gridDraftValue(collection.drafts.map(d=>d.draftId===draftId?next:d),collection.orphans,false,readFeatureAttachment(P.Features.GRID_KIND)?.schema===P.Features.GRID_DRAFTS_SCHEMA),expectedContextToken,{gridWrite:gridDraftWrite});
     return readGridDraft(draftId);
   }
   function featureProposal(kind,value,storedGrid = false) {
