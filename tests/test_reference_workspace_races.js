@@ -1,6 +1,6 @@
 /* Node VM scheduling contract; DOM, picker and PDF rendering are fakes, not E2E.
    Packing/source hashes and the workspace implementation are real. */
-const {test:nodeTest} = require('node:test');
+const {test:nodeTest, before} = require('node:test');
 const test = (name, fn) => nodeTest(name, {timeout:5000}, fn);
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -8,6 +8,12 @@ const vm = require('node:vm');
 const P = require('../geometry-web/project-store.js');
 const nativeCapabilities = require('./fixtures/native_available_capabilities.json');
 const zip = require('../geometry-web/vendor/fflate/umd/index.js');
+// Cold native compilation belongs to suite setup, not a race's five-second budget.
+before(() => {
+  require('node:child_process').execFileSync('python', ['-c',
+    "import sys;sys.path[:0]=['geometry-web','geometry-core'];from tests._bridge import find_bridge;find_bridge()"],
+    {cwd:require('node:path').resolve(__dirname,'..'),timeout:180000,stdio:'pipe'});
+}, {timeout:180000});
 const deferred = () => { let resolve, reject; const promise = new Promise((a,b) => {resolve=a;reject=b;}); return {promise,resolve,reject}; };
 const turn = () => new Promise(resolve => setImmediate(resolve));
 const rawGridDraft=()=>({schema:P.Features.GRID_SCHEMA,draftId:'raw-grid',kind:'binding',intent:'create',baseRef:null,
