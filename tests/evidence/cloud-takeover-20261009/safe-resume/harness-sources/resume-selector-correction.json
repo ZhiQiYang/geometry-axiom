@@ -1,0 +1,8 @@
+{
+  "originalScript": "<original-evidence-root>/originals/resume-pause-browser-v1.cjs",
+  "originalSha256": "71e7d5369a907e3902b64b408b15d970d949960274b8ada95fbe67d43787409e",
+  "correctedScript": "<original-evidence-root>/resume_pause_browser.cjs",
+  "correctedSha256": "848c80af56d4a1634a590e97eeadc3ea88cd6c74bd7a8caa6c11e7d156ddebd6",
+  "correction": "Replace hidden three-view #btnObj with shipped #workspaceBackButton -> leaveFocus in fixture preparation only; semantic assertions unchanged",
+  "historicalReceipt": "<original-evidence-root>/after-resume-128afbec-20261009/receipt.json"
+}
