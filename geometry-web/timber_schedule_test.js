@@ -2,7 +2,7 @@
 const cdp=require('./cdp_helpers.js'),fs=require('fs'),path=require('path');
 module.exports=async function({send,eval_,sleep,click,waitForUI,exceptionCount}){
  console.log('=== P80. 原生角材完成尺寸料單 ===');
- const check=cdp.makeCheck({prefix:'P80 '}),errors=exceptionCount();
+ const check=cdp.makeCheck({prefix:'P80 '}),settle=cdp.makeSettle({waitForUI,eval_},{tag:'P80'}),errors=exceptionCount();
  const ctl=async selector=>{
   const p=await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)throw Error('missing '+${JSON.stringify(selector)});e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;return {x,y,hit:e.contains(document.elementFromPoint(x,y))};})()`);
   if(!p.hit)throw Error('Schedule control covered: '+selector);await click(p.x,p.y);await sleep(150);
@@ -40,8 +40,16 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,exceptionCount})
  check('CSV 導出同一排序與精確 mm、來源指紋',await eval_(`(async()=>{const csv=await __s47Blob.text(),s=feTimberScheduleSnapshot();return csv.includes('"2946"')&&csv.includes(s.sourceFingerprint)&&csv.split('\\r\\n')[1].startsWith('"timber","3","1"');})()`));
  check('選取、排序、顯示單位與匯出均不改 World 或歷史',JSON.stringify(immutable)===JSON.stringify(await snapshot()));
  await eval_(`api('line spec schedule_stale 99')`);
+ // The fingerprint of the one accepted export: the refreshed list must move away from it.
+ const exportedFingerprint=(await eval_(`(async()=>{const csv=await __s47Blob.text();return csv.match(/[a-f0-9]{64}/)?.[0]??null;})()`));
  await ctl('#timberScheduleCSV');
- check('來源改動先更新且拒絕匯出過期料單',await eval_(`(async()=>__s47Exports===1&&fe.timberReferenceData.sourceFingerprint===(await apiRequest('references')).sourceFingerprint&&feTimberScheduleSnapshot().sourceFingerprint!==${JSON.stringify(await eval_(`(async()=>{const csv=await __s47Blob.text();return csv.match(/[a-f0-9]{64}/)?.[0];})()`))})()`));
+ // ctl only sleeps 150ms, but the click starts references -> (stale) feLoadGuides: obstacles -> references -> dump -> source-inspect,
+ // and fe.timberReferenceData is null/old until feLoadGuides assigns it (app.js feLoadGuides). Wait for that observable end of the
+ // refresh chain (or for a wrong second export, which the check below then fails on) instead of racing it with a fixed sleep.
+ await settle('點匯出後偵測到來源改動並刷新完成：fe.timberReferenceData 取得與首次匯出不同的來源指紋',
+  `window.__s47Exports>1||(!!fe.timberReferenceData&&fe.timberReferenceData.sourceFingerprint!==${JSON.stringify(exportedFingerprint)})`,
+  {observe:`({exports:window.__s47Exports,hasReferenceData:!!fe.timberReferenceData,referenceFingerprint:fe.timberReferenceData?.sourceFingerprint?.slice(0,12)??null,exportedFingerprint:${JSON.stringify(exportedFingerprint?.slice(0,12)??null)},guidesLoadSeq:fe.guidesLoadSeq,toasts:[...document.querySelectorAll('#toastRegion .toast')].map(t=>t.textContent)})`});
+ check('來源改動先更新且拒絕匯出過期料單',await eval_(`(async()=>__s47Exports===1&&fe.timberReferenceData.sourceFingerprint===(await apiRequest('references')).sourceFingerprint&&feTimberScheduleSnapshot().sourceFingerprint!==${JSON.stringify(exportedFingerprint)})()`));
  await eval_(`(async()=>{URL.createObjectURL=__s47URL;window.__s47Saved=await ReferenceWorkspace.exportBytes();window.__s47Rows=JSON.stringify(feTimberScheduleSnapshot().rows);await ReferenceWorkspace.importBytes(__s47Saved,'schedule.gcanvas');await renderObjects();await enterFocus('face',1);})()`);await timberPane();
  check('正式保存重開後可重新導出相同逐件料單',await eval_(`JSON.stringify(feTimberScheduleSnapshot().rows)===__s47Rows`));
  await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});

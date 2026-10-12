@@ -1,0 +1,364 @@
+{
+ "schema": "wsl-ci-receipt/1",
+ "head_sha": "345fabb5d5bd37245ed2c73184cee3f6c8322aa3",
+ "label": "teeth",
+ "generated_at": "2026-10-10T05:05:28+08:00",
+ "source_repo": "/root/ga-ci/teeth-src",
+ "runner_dir": "/mnt/c/Users/Yang/AppData/Local/Temp/claude/D--geometry-axiom/f46787ac-6918-4891-81a1-b3d8a9aa653c/scratchpad/wsl-ci",
+ "runroot": "/root/ga-ci/runs/345fabb5-20261010-045226",
+ "workflow_sha256": "eaf3a2dc4a3b5bebadd9c98ebe058403959a62593916bef99d888c0970e20f9d",
+ "workflow_jobs": [
+  "native",
+  "assembly",
+  "documents",
+  "grid",
+  "canvas",
+  "space",
+  "timber"
+ ],
+ "max_parallel": 2,
+ "tools": {
+  "chrome": "Google Chrome 153.0.8010.47",
+  "node": "v24.21.0",
+  "npm": "11.19.0",
+  "python": "Python 3.12.3",
+  "gcc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "git": "git version 2.43.0",
+  "os": "Ubuntu 24.04.5 LTS",
+  "kernel": "6.6.114.1-microsoft-standard-WSL2",
+  "cpus": 12,
+  "mem_mb": 7559,
+  "cjk_fonts": "30"
+ },
+ "environment_quiesce": {
+  "waited_seconds": 0.0,
+  "exclusive_at_start": true,
+  "still_busy_system": [],
+  "still_busy_foreign": [],
+  "foreign_activity_seen": [],
+  "loadavg": [
+   "1.48",
+   "1.55",
+   "1.16"
+  ],
+  "vm_uptime_seconds": 1140
+ },
+ "warm_up": {
+  "chrome_1": {
+   "rc": 0,
+   "seconds": 1.1
+  },
+  "chrome_2": {
+   "rc": 0,
+   "seconds": 1.0
+  },
+  "gcc": {
+   "rc": 0,
+   "seconds": 0.1
+  },
+  "node": {
+   "rc": 0,
+   "seconds": 0.1
+  }
+ },
+ "exclusivity": {
+  "at_start": {
+   "waited_seconds": 0.0,
+   "exclusive_at_start": true,
+   "still_busy_system": [],
+   "still_busy_foreign": [],
+   "foreign_activity_seen": [],
+   "loadavg": [
+    "1.48",
+    "1.55",
+    "1.16"
+   ],
+   "vm_uptime_seconds": 1140
+  },
+  "during_run": {
+   "samples": 50,
+   "foreign_processes_seen_during_run": {},
+   "exclusive_during_run": true,
+   "max_loadavg_1min_sampled": 3.67
+  }
+ },
+ "rules": {
+  "timeout": "hard watchdog = yml timeout-minutes x 3.0; exceeding the CI limit is flagged, not red; hitting the watchdog (exit 124) is red",
+  "flaky": "native only: failing suites re-run alone in the same clone, max 2 attempts; excused only if a re-run passes AND every failed test id also failed in a MAIN baseline receipt",
+  "exclusive": "wait (bounded) for compile/test processes of other sessions before starting; sample every 15 s during the run; both recorded"
+ },
+ "rule2_baseline_sources": [
+  "/mnt/c/Users/Yang/AppData/Local/Temp/claude/D--geometry-axiom/f46787ac-6918-4891-81a1-b3d8a9aa653c/scratchpad/wsl-ci/5cc1ffa1-attempt3-red-1-flaky-test",
+  "/mnt/c/Users/Yang/AppData/Local/Temp/claude/D--geometry-axiom/f46787ac-6918-4891-81a1-b3d8a9aa653c/scratchpad/wsl-ci/5cc1ffa1"
+ ],
+ "rule2_baseline_notes": [],
+ "verdict": "PARTIAL (1 of 7 jobs run: native): green=[] red=['native'] undetermined=[]",
+ "jobs": {
+  "native": {
+   "verdict": "red",
+   "why": [
+    "exit code 1",
+    "rule 2 (flaky re-run) did not excuse: not excused: ['py:test_cli_args', 'py:test_feedback_store']"
+   ],
+   "exit_code": 1,
+   "status": "completed",
+   "seconds": 778.7,
+   "counts": {
+    "total": 2159,
+    "passed": 2155,
+    "failed": 3,
+    "skipped": 1
+   },
+   "ci_timeout_minutes": 15,
+   "over_ci_timeout": false,
+   "seconds_first_run": 763.2,
+   "ci_limit_ratio": 0.85,
+   "watchdog_factor": 3.0,
+   "steps": [
+    {
+     "name": "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+     "outcome": "replaced",
+     "exit_code": null,
+     "seconds": null,
+     "note": "clean local clone at the SHA under test"
+    },
+    {
+     "name": "Build and run non-browser suites",
+     "outcome": "failure",
+     "exit_code": 1,
+     "seconds": 763.1,
+     "note": null
+    }
+   ],
+   "notes": [
+    "PATH has a per-job shim dir with python -> /usr/bin/python3 (GitHub's ubuntu image has python-is-python3, this WSL distro does not; tests spawn plain 'python')"
+   ],
+   "leftover_processes_killed": [],
+   "log": "/mnt/c/Users/Yang/AppData/Local/Temp/claude/D--geometry-axiom/f46787ac-6918-4891-81a1-b3d8a9aa653c/scratchpad/wsl-ci/345fabb5-teeth/native/job.log",
+   "result_json": "/mnt/c/Users/Yang/AppData/Local/Temp/claude/D--geometry-axiom/f46787ac-6918-4891-81a1-b3d8a9aa653c/scratchpad/wsl-ci/345fabb5-teeth/native/result.json",
+   "run_all_exit": 1,
+   "run_all_meaning": "有 fail／逾時／預期數不符／未登記檔",
+   "failed_suites": [
+    "py:test_cli_args",
+    "py:test_feedback_store",
+    "py:test_rule_case_executor"
+   ],
+   "failure_details": [
+    "  py:test_cli_args",
+    "    - test_cli_args.CliArgs.test_unknown_option [failure] AssertionError: TEETH-ONLY M2: fails on the first execution only",
+    "  py:test_feedback_store",
+    "    - test_feedback_store.FeedbackStore.test_ids_increment_per_day [failure] ?                                                  ^^^",
+    "  py:test_rule_case_executor",
+    "    - test_rule_case_executor.SyntheticNativeFailureBoundaries.test_exited_leader_cannot_leave_descendants_or_unbounded_pipe_cleanup [error] ProcessLookupError: [Errno 3] No such process"
+   ],
+   "unittest_fail_lines": [],
+   "expected_comparison": {
+    "available": true,
+    "expected_suites": 69,
+    "expected_items": 2159,
+    "ran_suites": 69,
+    "mismatches": [],
+    "missing_in_log": [],
+    "extra_in_log": [],
+    "equal": true
+   },
+   "skips": [
+    {
+     "suite": "py:test_gdi_contract",
+     "skipped": "1",
+     "note": "skip：requires compiled Windows GDI contract harness ×1（其中 1 個在具名允許清單，平台固有，不計入 exit 3）；日誌 /tmp/geometry-tests/run_all-logs/py_test_gdi_contract.log",
+     "allowed": true,
+     "allowed_entries": [
+      "test_gdi_contract.GdiContract.test_confirmed_failures_release_real_resources"
+     ]
+    }
+   ],
+   "allowed_skips_in_sha": [
+    {
+     "suite": "py:test_gdi_contract",
+     "test": "test_gdi_contract.GdiContract.test_confirmed_failures_release_real_resources",
+     "platforms": [
+      "posix"
+     ]
+    },
+    {
+     "suite": "py:test_cli_args",
+     "test": "test_cli_args.CliArgs.test_svg_write_failure_is_reported_without_unlinking_device",
+     "platforms": [
+      "nt"
+     ]
+    }
+   ],
+   "flaky": {
+    "rerun_max": 2,
+    "baseline_sources": [
+     "/mnt/c/Users/Yang/AppData/Local/Temp/claude/D--geometry-axiom/f46787ac-6918-4891-81a1-b3d8a9aa653c/scratchpad/wsl-ci/5cc1ffa1-attempt3-red-1-flaky-test",
+     "/mnt/c/Users/Yang/AppData/Local/Temp/claude/D--geometry-axiom/f46787ac-6918-4891-81a1-b3d8a9aa653c/scratchpad/wsl-ci/5cc1ffa1"
+    ],
+    "suites": [
+     {
+      "suite": "py:test_cli_args",
+      "failed_ids": [
+       "py:test_cli_args::test_cli_args.CliArgs.test_unknown_option"
+      ],
+      "eligible_by_baseline": false,
+      "first_run": {
+       "failed": "1",
+       "total": "6",
+       "note": "日誌 /tmp/geometry-tests/run_all-logs/py_test_cli_args.log",
+       "tests": [
+        {
+         "id": "test_cli_args.CliArgs.test_unknown_option",
+         "kind": "failure",
+         "message": "AssertionError: TEETH-ONLY M2: fails on the first execution only"
+        }
+       ]
+      },
+      "baseline": {
+       "py:test_cli_args::test_cli_args.CliArgs.test_unknown_option": null
+      },
+      "reruns": [
+       {
+        "attempt": 1,
+        "passed": true,
+        "exit_code": 0,
+        "seconds": 1.7,
+        "why": [],
+        "log": "/mnt/c/Users/Yang/AppData/Local/Temp/claude/D--geometry-axiom/f46787ac-6918-4891-81a1-b3d8a9aa653c/scratchpad/wsl-ci/345fabb5-teeth/native/reruns/py_test_cli_args.attempt1.log",
+        "row": {
+         "total": "6",
+         "passed": "6",
+         "failed": "0",
+         "skipped": "0"
+        }
+       }
+      ],
+      "excused": false,
+      "rerun_passed": true,
+      "why_not_excused": "failed test(s) NOT failing in any main baseline receipt: ['py:test_cli_args::test_cli_args.CliArgs.test_unknown_option']"
+     },
+     {
+      "suite": "py:test_feedback_store",
+      "failed_ids": [
+       "py:test_feedback_store::test_feedback_store.FeedbackStore.test_ids_increment_per_day"
+      ],
+      "eligible_by_baseline": false,
+      "first_run": {
+       "failed": "1",
+       "total": "11",
+       "note": "日誌 /tmp/geometry-tests/run_all-logs/py_test_feedback_store.log",
+       "tests": [
+        {
+         "id": "test_feedback_store.FeedbackStore.test_ids_increment_per_day",
+         "kind": "failure",
+         "message": "?                                                  ^^^"
+        }
+       ]
+      },
+      "baseline": {
+       "py:test_feedback_store::test_feedback_store.FeedbackStore.test_ids_increment_per_day": null
+      },
+      "reruns": [
+       {
+        "attempt": 1,
+        "passed": false,
+        "exit_code": 1,
+        "seconds": 1.0,
+        "why": [
+         "re-run exit 1 (run_all: 有 fail／預期數不符／未登記檔)",
+         "suite row not clean: failed=1 note=日誌 /tmp/geometry-tests/run_all-logs/py_test_feedback_store.log",
+         "json: failed=1 total=11 (first run total 11)"
+        ],
+        "log": "/mnt/c/Users/Yang/AppData/Local/Temp/claude/D--geometry-axiom/f46787ac-6918-4891-81a1-b3d8a9aa653c/scratchpad/wsl-ci/345fabb5-teeth/native/reruns/py_test_feedback_store.attempt1.log",
+        "row": {
+         "total": "11",
+         "passed": "10",
+         "failed": "1",
+         "skipped": "0"
+        }
+       },
+       {
+        "attempt": 2,
+        "passed": false,
+        "exit_code": 1,
+        "seconds": 1.0,
+        "why": [
+         "re-run exit 1 (run_all: 有 fail／預期數不符／未登記檔)",
+         "suite row not clean: failed=1 note=日誌 /tmp/geometry-tests/run_all-logs/py_test_feedback_store.log",
+         "json: failed=1 total=11 (first run total 11)"
+        ],
+        "log": "/mnt/c/Users/Yang/AppData/Local/Temp/claude/D--geometry-axiom/f46787ac-6918-4891-81a1-b3d8a9aa653c/scratchpad/wsl-ci/345fabb5-teeth/native/reruns/py_test_feedback_store.attempt2.log",
+        "row": {
+         "total": "11",
+         "passed": "10",
+         "failed": "1",
+         "skipped": "0"
+        }
+       }
+      ],
+      "excused": false,
+      "rerun_passed": false,
+      "why_not_excused": "failed test(s) NOT failing in any main baseline receipt: ['py:test_feedback_store::test_feedback_store.FeedbackStore.test_ids_increment_per_day']"
+     },
+     {
+      "suite": "py:test_rule_case_executor",
+      "failed_ids": [
+       "py:test_rule_case_executor::test_rule_case_executor.SyntheticNativeFailureBoundaries.test_exited_leader_cannot_leave_descendants_or_unbounded_pipe_cleanup"
+      ],
+      "eligible_by_baseline": true,
+      "first_run": {
+       "failed": "1",
+       "total": "40",
+       "note": "日誌 /tmp/geometry-tests/run_all-logs/py_test_rule_case_executor.log",
+       "tests": [
+        {
+         "id": "test_rule_case_executor.SyntheticNativeFailureBoundaries.test_exited_leader_cannot_leave_descendants_or_unbounded_pipe_cleanup",
+         "kind": "error",
+         "message": "ProcessLookupError: [Errno 3] No such process"
+        }
+       ]
+      },
+      "baseline": {
+       "py:test_rule_case_executor::test_rule_case_executor.SyntheticNativeFailureBoundaries.test_exited_leader_cannot_leave_descendants_or_unbounded_pipe_cleanup": {
+        "occurrences": 1,
+        "first": {
+         "receipt": "5cc1ffa1-attempt3-red-1-flaky-test",
+         "sha": "5cc1ffa1ee85120eca14258b86b715151cad274f",
+         "file": "native/run_all-logs/py_test_rule_case_executor.json",
+         "message": "ProcessLookupError: [Errno 3] No such process"
+        }
+       }
+      },
+      "reruns": [
+       {
+        "attempt": 1,
+        "passed": true,
+        "exit_code": 0,
+        "seconds": 4.6,
+        "why": [],
+        "log": "/mnt/c/Users/Yang/AppData/Local/Temp/claude/D--geometry-axiom/f46787ac-6918-4891-81a1-b3d8a9aa653c/scratchpad/wsl-ci/345fabb5-teeth/native/reruns/py_test_rule_case_executor.attempt1.log",
+        "row": {
+         "total": "40",
+         "passed": "40",
+         "failed": "0",
+         "skipped": "0"
+        }
+       }
+      ],
+      "excused": true,
+      "rerun_passed": true
+     }
+    ],
+    "qualifies": false,
+    "reasons": [
+     "not excused: ['py:test_cli_args', 'py:test_feedback_store']"
+    ],
+    "other_problems": [],
+    "totals_consistent": true
+   },
+   "counts_note": "from run_all.py table row \"合計\"; browser gates are separate jobs"
+  }
+ },
+ "note": "TEETH RUN, not a CI result: main 5cc1ffa1 plus ONE WSL-only commit 345fabb5d5bd37245ed2c73184cee3f6c8322aa3 (never pushed) - M1 test_feedback_store assertion always wrong; M2 test_cli_args fails on first execution only; M3 test_rule_case_executor known flake injected on first execution only. Expected: native red naming M1 and M2; M3 excused as flaky-rerun-pass.",
+ "wall_seconds_this_invocation": 780.5
+}
