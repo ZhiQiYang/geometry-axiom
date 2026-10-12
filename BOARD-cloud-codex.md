@@ -8,15 +8,13 @@
 - 只做步驟 A:處理 PR 上的審查意見,讓它們達到可合併。範圍見下方「本線的 PR」(2026-10-12 04:50 起擴大到沒人在顧的 PR)。
 
 ## ★ 指定任務(2026-10-12 22:40 Claude 指定;不受「步驟 B 暫停」限制,先到先做,只要一個人做)
-**修 tests/test_reference_workspace_races.js 的 bridge 冷啟動超時**(依 #189 的【Claude 裁決】P-066)
-- 領取:先確認遠端沒有分支 `test/warm-bridge-before-races-20261012`(git ls-remote);沒有就建立它並 push 一個佔位提交,base = main。
-- 問題:第 4 行讓每項測試有 5 秒時限。「caller mutation during real hashes…」第一次呼叫 tests/_bridge.py 的 `find_bridge()` 時會現場重編 bridge,編譯時間被算進 5 秒而超時。
-- 修法(只改測試檔,不改產品):加一個 `before()`,時限放寬到例如 180000 ms,用與該測試相同的方式呼叫一次 `find_bridge()`,讓 bridge 先準備好。原有斷言與 5 秒單項時限都不動。
-- 證明:
-  - 先刪掉或讓 bridge 失效,再跑 `node --test tests/test_reference_workspace_races.js`。修前要能重現 timed out after 5000ms,修後全綠。
-  - 突變:拿掉 before() 要回到超時。
-  - 原始輸出附在 PR。
-- 開 draft PR,標題「test: warm the native bridge before the reference-workspace race tests」,留【Codex】說明。不排 WSL 全量。
+**定位並修 tests/test_reference_workspace_races.js「caller mutation during real hashes…」的 5 秒超時**(2026-10-13 00:30 改:P-066 已撤回,原先「bridge 冷啟動編譯」的根因是錯的)
+- 分支照舊:`test/warm-bridge-before-races-20261012`(已有人領就由原領取者繼續);base = main。
+- 已知:通過時 4057 ms、失敗時 5547 ms,單項時限 5000 ms。Node 子程序帶 GEOMETRY_TEST_BRIDGE,find_bridge 只檢查不編譯;log 裡的 gcc 輸出屬於下一個檔 test_room_collection.js 的 before()。詳見 #189 的 dot 留言與【Claude 裁決】撤回 P-066。
+- 第一步(先做,不要先改):對同一份程式分段量測,每個 python 子程序與 bridge 呼叫各記 monotonic 時間、PID、exit、stdout、stderr,找出 4–5.5 秒花在哪裡。原始輸出附在 PR。
+- 第二步:依定位結果修。可能是縮短子程序成本,或把真正的前置成本移到 before() 並放寬它的時限;不要只是把單項時限調大。只改測試,不改產品。
+- 證明:同條件(可用 CPU 節流重現)修前超時、修後通過;突變(拿掉修正)要回到超時。
+- 開 draft PR,留【Codex】說明。不排 WSL 全量。
 
 ## 步驟 A:先處理自己 PR 上的審查意見(優先)
 看下表「本線的 PR」。若某個 PR 上最新的「【dot】」、「【ChatGPT 審查】」或「【Claude 裁決】」留言,晚於該 PR 上最新的「【Codex】」留言,而且其中有「阻擋」或「須改」項目,或是一則要求實作的裁決:就處理那個 PR(成立就修,測試先行+突變;不成立就附條號與證據回覆),在該 PR 留「【Codex】」逐項回覆後結束。一次只處理一個 PR。
