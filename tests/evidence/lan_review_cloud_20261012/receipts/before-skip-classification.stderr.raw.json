@@ -1,0 +1,7 @@
+{
+  "original_filename": "before-skip-classification.stderr",
+  "bytes": 319,
+  "sha256": "1d0c5bf0c334670b25730dd0e7ddfa559411e785e9db0135aa98d27522fe20c3",
+  "encoding": "utf-8",
+  "raw": "Traceback (most recent call last):\n  File \"/tmp/geometry-194-skips.py\", line 11, in <module>\n    assert all(r['allowed']==7 for r in results),results\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: [{'platform': 'posix', 'allowed': 4, 'unallowed': 3}, {'platform': 'nt', 'allowed': 4, 'unallowed': 3}]\n"
+}

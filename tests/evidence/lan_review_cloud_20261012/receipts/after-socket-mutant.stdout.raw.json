@@ -1,0 +1,7 @@
+{
+  "original_filename": "after-socket-mutant.stdout",
+  "bytes": 1070,
+  "sha256": "f53a1e69f8f6bf4fb9902a19e3afa13e91383ed2dfae6b7842ce2e3e6239413b",
+  "encoding": "utf-8",
+  "raw": "{\"mode\": \"M23\", \"mutation_registry_id\": \"M23\", \"original_sha256\": \"8bdc8c18b21cbc4a93cc1edae48de35c36a79712216cd2b1f9cf897beeaacec9\", \"mutated_sha256\": \"551552e4b07e3eee17422648c7ba61e184541cc369f39ae1214b314e515e49d0\", \"path\": \"/tmp/geometry-tests/pr194-review/M23-source/geometry-web/serve.py\"}\n{\"mode\": \"M23\", \"tests\": 3, \"failures\": 3, \"errors\": 0, \"skips\": 0, \"events\": [{\"test\": \"tests.test_lan_review.SocketReview.test_denied_late_body_is_drained_after_response_before_socket_release\", \"type\": \"AssertionError\", \"message\": \"False is not true : refused late body was not drained after the response\"}, {\"test\": \"tests.test_lan_review.SocketReview.test_denied_late_body_is_drained_after_response_before_socket_release\", \"type\": \"AssertionError\", \"message\": \"False is not true : refused late body was not drained after the response\"}, {\"test\": \"tests.test_lan_review.SocketReview.test_denied_late_body_is_drained_after_response_before_socket_release\", \"type\": \"AssertionError\", \"message\": \"False is not true : refused late body was not drained after the response\"}]}\n"
+}

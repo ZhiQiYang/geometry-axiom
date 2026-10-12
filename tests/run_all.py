@@ -302,6 +302,18 @@ ALLOWED_SKIPS = [
      'test': 'test_lan_review.PureReview.test_new_material_is_validated_before_any_persistence',
      'reason': 'requires cryptography', 'platforms': ('posix', 'nt'),
      'why': '合成憑證的簽發政策驗證需要 cryptography；其餘守門測試照跑'},
+    {'suite': 'py:test_lan_review',
+     'test': 'test_lan_review.PureReview.test_subject_whitelist_rejects_cn_variants_before_reuse',
+     'reason': 'requires cryptography', 'platforms': ('posix', 'nt'),
+     'why': '合成憑證的 subject 重用驗證需要 cryptography；其餘守門測試照跑'},
+    {'suite': 'py:test_lan_review',
+     'test': 'test_lan_review.PureReview.test_new_material_checks_subject_before_any_persistence',
+     'reason': 'requires cryptography', 'platforms': ('posix', 'nt'),
+     'why': '合成憑證的 subject 持久化驗證需要 cryptography；其餘守門測試照跑'},
+    {'suite': 'py:test_lan_review',
+     'test': 'test_lan_review.PureReview.test_root_constraints_do_not_claim_to_disable_client_cn_fallback',
+     'reason': 'requires cryptography', 'platforms': ('posix', 'nt'),
+     'why': '合成憑證的 CN fallback 界線驗證需要 cryptography；其餘守門測試照跑'},
 ]
 SAC_FACES = ['橋接器連線中斷', 'WinError 4551', 'BASE_COMPILER', 'UNSUPPORTED', '應用程式控制原則', 'Smart App Control']
 UNIT = {'integrity': 'C 檢查點', 'run_tests': '場景', 'unittest': 'test', 'node-test': 'node test', 'node-canvas': '斷言'}

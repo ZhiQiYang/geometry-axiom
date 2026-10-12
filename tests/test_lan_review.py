@@ -5,6 +5,7 @@ real HTTP handler with the existing mock native bridge, never a LAN interface.
 """
 import datetime as dt
 import email.message
+import errno
 import http.cookiejar
 import http.client
 import io
@@ -345,6 +346,9 @@ class SocketReview(base.LanCase):
                     client.shutdown(socket.SHUT_WR)
                 except (BrokenPipeError, ConnectionResetError):
                     pass  # The assertion below still rejects a prematurely released socket.
+                except OSError as error:
+                    if error.errno != errno.ENOTCONN:
+                        raise
                 self.assertTrue(drained.wait(2), "refused late body was not drained after the response")
                 self.assertEqual(bytes(received), body)
         self.assertEqual(self.process.stdin.getvalue(), b"", "rejected body reached the native bridge")

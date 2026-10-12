@@ -1,0 +1,31 @@
+{
+  "argv": [
+    "python",
+    "/tmp/geometry-194-socket.py",
+    "RESTORED"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "head_at_start": "5d7b044beb43f34e01bb56bf3cde70484aee377d",
+  "returncode": 0,
+  "origin": "subprocess.run",
+  "seconds": 1.5085806846618652,
+  "sources_before": {
+    "tests/test_lan_review.py": "c5cbfb75d93fd927680e1ad1e8cdfcba1db18d710a6fd8a637fca42e86036219",
+    "tests/run_all.py": "2786c67c6765f5790c1be3150e9aea59a24b4b80557a35cb6c92d8f21616e6ea",
+    "tests/_unittest_runner.py": "f4e72e7a771f903094d6973874da8ccb2c98ddb4ff51571cb9179eabe284290e",
+    "geometry-web/serve.py": "8bdc8c18b21cbc4a93cc1edae48de35c36a79712216cd2b1f9cf897beeaacec9",
+    "geometry-web/lan_guard.py": "87bba4272a1d361e93b56e5d1a142d55b6fa48e49d5f50284642080e4ee83d1d",
+    "geometry-web/lan_tls.py": "4046bc5159880719ac6022abbe9b352b16794b67cfba1f9dba3ecb3295c7378e",
+    "tests/evidence/lan_review_mutants.json": "40b4b6209000da1cd7c7cd30c43429b99c67c7788e5af5537e3575ade2f08e13"
+  },
+  "sources_after": {
+    "tests/test_lan_review.py": "c5cbfb75d93fd927680e1ad1e8cdfcba1db18d710a6fd8a637fca42e86036219",
+    "tests/run_all.py": "2786c67c6765f5790c1be3150e9aea59a24b4b80557a35cb6c92d8f21616e6ea",
+    "tests/_unittest_runner.py": "f4e72e7a771f903094d6973874da8ccb2c98ddb4ff51571cb9179eabe284290e",
+    "geometry-web/serve.py": "8bdc8c18b21cbc4a93cc1edae48de35c36a79712216cd2b1f9cf897beeaacec9",
+    "geometry-web/lan_guard.py": "87bba4272a1d361e93b56e5d1a142d55b6fa48e49d5f50284642080e4ee83d1d",
+    "geometry-web/lan_tls.py": "4046bc5159880719ac6022abbe9b352b16794b67cfba1f9dba3ecb3295c7378e",
+    "tests/evidence/lan_review_mutants.json": "40b4b6209000da1cd7c7cd30c43429b99c67c7788e5af5537e3575ade2f08e13"
+  },
+  "sources_unchanged": true
+}

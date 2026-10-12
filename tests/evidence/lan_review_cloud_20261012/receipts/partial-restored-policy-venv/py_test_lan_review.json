@@ -1,0 +1,71 @@
+{
+ "file": "tests/test_lan_review.py",
+ "total": 21,
+ "run": 21,
+ "passed": 14,
+ "failed": 0,
+ "skipped": 7,
+ "explicit_skipped": 7,
+ "unrun_skipped": 0,
+ "blocked_by_error": 0,
+ "expected_failed": 0,
+ "expected_failures": [],
+ "failures": [],
+ "skip_reasons": {
+  "requires cryptography (TLS layer; the gate layer still runs)": 7
+ },
+ "skip_items": [
+  {
+   "test": "test_lan_review.PureReview.test_certificate_total_validity_never_exceeds_seven_days",
+   "reason": "requires cryptography (TLS layer; the gate layer still runs)",
+   "scope": "test",
+   "count": 1,
+   "parent_test": "test_lan_review.PureReview.test_certificate_total_validity_never_exceeds_seven_days"
+  },
+  {
+   "test": "test_lan_review.PureReview.test_new_material_checks_subject_before_any_persistence",
+   "reason": "requires cryptography (TLS layer; the gate layer still runs)",
+   "scope": "test",
+   "count": 1,
+   "parent_test": "test_lan_review.PureReview.test_new_material_checks_subject_before_any_persistence"
+  },
+  {
+   "test": "test_lan_review.PureReview.test_new_material_is_validated_before_any_persistence",
+   "reason": "requires cryptography (TLS layer; the gate layer still runs)",
+   "scope": "test",
+   "count": 1,
+   "parent_test": "test_lan_review.PureReview.test_new_material_is_validated_before_any_persistence"
+  },
+  {
+   "test": "test_lan_review.PureReview.test_root_constraints_do_not_claim_to_disable_client_cn_fallback",
+   "reason": "requires cryptography (TLS layer; the gate layer still runs)",
+   "scope": "test",
+   "count": 1,
+   "parent_test": "test_lan_review.PureReview.test_root_constraints_do_not_claim_to_disable_client_cn_fallback"
+  },
+  {
+   "test": "test_lan_review.PureReview.test_same_ca_rejects_other_ip_dns_email_and_uri_leaves",
+   "reason": "requires cryptography (TLS layer; the gate layer still runs)",
+   "scope": "test",
+   "count": 1,
+   "parent_test": "test_lan_review.PureReview.test_same_ca_rejects_other_ip_dns_email_and_uri_leaves"
+  },
+  {
+   "test": "test_lan_review.PureReview.test_signed_noncompliant_saved_material_is_not_reused",
+   "reason": "requires cryptography (TLS layer; the gate layer still runs)",
+   "scope": "test",
+   "count": 1,
+   "parent_test": "test_lan_review.PureReview.test_signed_noncompliant_saved_material_is_not_reused"
+  },
+  {
+   "test": "test_lan_review.PureReview.test_subject_whitelist_rejects_cn_variants_before_reuse",
+   "reason": "requires cryptography (TLS layer; the gate layer still runs)",
+   "scope": "test",
+   "count": 1,
+   "parent_test": "test_lan_review.PureReview.test_subject_whitelist_rejects_cn_variants_before_reuse"
+  }
+ ],
+ "import_error": null,
+ "extra_errors": 0,
+ "seconds": 6.92
+}
