@@ -1,5 +1,9 @@
 # GEO-258 候選退役狀態與 archive 重驗
 
+最新狀態（2026-10-12）：P-060 的卡片 delete/delete 與 delete/put-literal 雙順序已完成，產品／測試提交為 `3c24988517fbc3c3890fb87a77b2c77e1a960b89`；同候選身分不重用、最終懸空原子拒絕與 net-zero 行為均保留。delete 後 unbind-source 的取值政策、跨線正典整合與最終七 job 仍待完成。最新來源、紅綠及突變證據見文末「P-060：卡片引用依完整候選檢查」。
+
+以下各批次保留當時的來源與結果；較早段落中的「本次」僅指該批次。
+
 受測來源 commit `b7d2f8d5a5097f8f7d9f90054228b896945e8f0c`；本次證據提交只補本紀錄及新突變結果，不更動受測產品或測試來源。2026-10-12 經 WSL v3 排隊鎖執行，保留全部子命令、退出碼、耗時、來源／二進位指紋、失敗與還原日誌。
 
 ## B1 修正
@@ -57,3 +61,39 @@ R5 實際 v3 外層 exit 0；33 個完整子命令日誌逐檔核對 SHA-256，2
 提交產品後另從 `d8111e795c23bcfe7feb59e309a1fee0e6e0c6b4` 乾淨 clone 重編 core／integrity／bridge／model-base，4 題 net-zero 先過；更新全部 50 筆變異帳本，得到 42 killed、1 crashed、4 equivalent、3 retired，`mutate.py --check` exit 0。其後 parameters 25、retirement 6、net-zero 4，共 35 題再次通過。四支執行檔的實算 SHA、sidecar 與 fresh 狀態在工作前後一致，來源未改，70 次程序採樣 foreign 為空。這一輪實際外層 exit 0；原件在 `board-local-codex/pr193-netzero-final-native/`，帳本 SHA-256 `43dd741cad076518be38599df6ff669066c624bf4ce59cefd0dc7f8fd673c531`。
 
 這是 WSL 定向驗證及核心全表變異，沒有新增七 job 收據。P-060 的最終候選引用檢查尚未實作，明示 unbind 取值仍等候 Claude 裁決；正典跨線整合與最終七項仍須後續驗收。GEO-219：無新入口。CI 受帳號計費阻擋，以本機 WSL 收據代替。
+
+
+## P-060：卡片引用依完整候選檢查（2026-10-12）
+
+P-060 裁決來源為 6113538272；net-zero B1 的既有 ce28fdb 範圍已由 6119590300 限定核收。以下是新的卡片順序修正，沒有把舊 R5 或舊帳本當成新來源通過。
+
+舊碼 `ce28fdb550f7630b8e54b45ffcddd808af28a873` 在真 bridge 上先跑同一份四案例：刪來源再刪依賴卡、刪來源再把依賴卡改直接值兩例失敗；反向刪除與最終懸空拒絕兩例通過。工作6939實際外層exit0，4次取樣foreign空。反向刪除是原先就綠的對照，未宣稱它在逐步守門下會紅。
+
+`parameter_remove` 只刪定義並退休身分；完整 batch 及單行 archive 在清除退休暫存前檢查最終引用。保留同候選不能再宣告退休身分、匯入配號略過退休身分、完整幾何重驗與原子提交。四新案例驗雙順序、preview不改正式World/revision、一次history、Undo/Redo、最終懸空保留redo、兩種重用反例。
+
+受測開始head為 `ce28fdb550f7630b8e54b45ffcddd808af28a873`，另套七個凍結產品／測試路徑；實跑時並非乾淨提交狀態。產品提交 `3c24988517fbc3c3890fb87a77b2c77e1a960b89` 的七路徑經 Git 讀回逐份 LF SHA 核對，與原收據的固定輸入全部一致；契約文案另更新。未把提交後的原碼同一性核對寫成另一次產品實跑。實際工具終態為exit0；收據 SHA-256 `7257187a341d3cc28d52f0ccdad29e9ba1947034ed2db328833cd9e92c30ae68`。
+
+四個新案例、以及9個相關模組的130題全過，另有130/130 integrity及143/143核心場景。既有測試只改一處診斷期望：delete後put同一身分由退休身分守門先拒絕，不能再期待逐步刪除診斷；原子拒絕與dump/值不變斷言保留。既有unbind案例只更正文意註解，合法性期望未改。
+
+| 定向步驟 | exit | 秒數 |
+|---|---|---|
+| fixed-four-green | 0 | 1.128 |
+| fixed-test_parameters_core | 0 | 5.887 |
+| fixed-test_parameter_retirement_scope | 0 | 1.123 |
+| fixed-test_parameter_netzero | 0 | 0.922 |
+| fixed-test_section_profile_native | 0 | 13.068 |
+| fixed-test_assembly_rules | 0 | 6.499 |
+| fixed-test_evidence_link_native | 0 | 5.0 |
+| fixed-test_engineering_core | 0 | 4.032 |
+| fixed-test_assembly_parameter_refs | 0 | 1.325 |
+| fixed-test_engineering_model_sources | 0 | 2.029 |
+| full-mutation | 0 | 887.641 |
+| final-four-green | 0 | 0.974 |
+
+四項具名突變均命中指定斷言，每項還原、重編bridge後完整四題回綠：M1恢復每步引用守門→兩個delete-first案例紅，反向刪除仍綠；M2移除最終引用列舉→既定訊息格式斷言紅，但一般完整重驗仍拒絕懸空，且以 `[2:1 dependent.1] -> I38 MISSING: parameter 1 field 1` 指出路徑，僅列為診斷格式反證，不宣稱合法性或引用路徑消失；M3取消put退休限制→重宣告被接受而紅；M4匯入配到退休id後命中put守門，合法匯入preview被錯拒絕而紅，訊息指名parameter 1退休。不把M2宣稱為非法World已提交，也不把M4寫成已提交錯誤id。
+
+變更原生來源後重跑全表50筆：42 killed、1 crashed、4 equivalent、3 retired；無stale、survived、blocked。`mutate.py --check` 在WSL與Windows均通過；帳本 SHA-256 `c02073b6e010a5bbf54ed5cbe357198434254c08219a22e83cc378ba4d6977ed`。其後四新案例、parameters25、retirement6、net-zero4，共39題再過。四支二進位的實算SHA前後一致且sidecar檢查fresh；每次重編時間各自保留。全輪78次取樣foreign空。完整原件在scratchpad `board-local-codex/pr193-p060-before/`與`pr193-p060-after-r2/`。
+
+首輪工作13066的M4產品測試確實失敗，但驗證腳本誤以為會走到配號清單比對，要求不存在的「Lists differ」，因此整輪exit1，未跑帳本。來源已逐位元還原；原始收據、日誌與腳本完整保留在 `pr193-p060-after/`。修正的是突變驗證器的定位：必須同時命中具名測試、independent_import的有效preview斷言及具名退休錯誤。產品、四題測試與斷言未改，第二輪從乾淨目錄重新跑本段全部步驟，未沿用首輪失敗作全輪成功。
+
+界線：delete後才unbind-source應保留何時的尺寸仍等候Claude裁決；本次不實作取值暫存或自動凍結，不宣稱全部P-060完成。正典跨線整合與最終七job未做。上述舊段落各自屬於其註明來源；本段才是此次卡片流程交付。GEO-219無新入口；CI受帳號計費阻擋，以本機WSL收據代替。
