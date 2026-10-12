@@ -13,6 +13,6 @@
 落地案例3：保留新正常接納130956/131072拒、130955正例；依裁決精確界線寫+1真內容/UTF-8跳脫負例，其他附件/完整manifest上限不得因遷移獲一般豁免。
 落地案例4：原/13、原6a/17、孤兒/永久lost保存冷讀、同id不復活、純移除lost拒、未知schema/剝能力/降版負例全部回歸；遷移不得改這些既定語意。
 指定變異：移除政策的精確邊界/歷史適用條件、改raw、錯能力/表示、只改World不清指定草稿、漏Undo/Redo附件、去prepare或begin預驗；逐個編譯/語法過後由具名斷言驗紅、還原驗綠，錯誤/skip/timeout不算killed。
-交付收據：凍結產品與測試來源/完整SHA，原命令、父exit、raw輸出、runtime/session/live binary/sidecar及前後hash；新測試登記runner，expected由原流程產生；改C才重產核心ledger，未改C寫mutate無新覆蓋。
+交付收據：凍結產品與測試來源/完整SHA，原命令、父exit、raw輸出、runtime/session/live binary/sidecar及前後hash；新測試登記runner，expected由原流程產生；核心ledger依來源、include閉包、變異、裁判（run_tests.py及TESTS引用夾具）四組指紋判斷，任一變動須重跑mutate.py更新受影響結果；四組皆同且帳本有效才可沿用，--check只驗新鮮度、不算重跑。本次純文件修正無新增核心變異覆蓋。
 本線可準備/實作已定政策的非受保護區段；公理/白話/唯一閱讀器仍由原writer修文、sync→check→原41、來源revision/LF hash/相容閘同批交付，未取得承接與裁決前不另開競寫。
 GEO-219：無新入口；#201 base維持axiom/adopt-drafts-topology-k2a-20261011，B2最終整合/full CDP/正式七job仍未驗。CI 受帳號計費阻擋,正式合併裁判由本機 WSL 收據提供。未跑WSL，不合併、不force push、不關PR。
