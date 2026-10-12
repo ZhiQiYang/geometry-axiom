@@ -16,6 +16,8 @@
 
 [raw.tar.xz](raw.tar.xz) 內含兩份原公開 ZIP、取件留言 URL／更新時間／body hash、#195 manifest，以及本次全部 8 次局部執行。每個 raw member 的 bytes／SHA-256 見 [manifest.json](manifest.json)；archive 身分與 source 對照見 [verification.json](verification.json)。
 
+若 connector 無法讀取二進位原包，使用 [ASCII transport 索引與重建說明](transport/README.md)。80 個文字分段仍綁定 `52c34a6d6faef1d3cdaf52d52b6f8edb66eda012` 的原 archive；只補傳輸，不新增診斷執行。
+
 | 原件 | 核對結果 |
 |---|---|
 | [#195 首報](https://github.com/ZhiQiYang/geometry-axiom/pull/195#issuecomment-6131905102) 與公開 21 段 ZIP | 743481 bytes；SHA-256 `a8dfa45bebb1aad075b585325df323ee80390ed2d9aa5f214947efc22e20ddfe`；283 路徑／214 unique payload 全符 |
@@ -63,7 +65,9 @@ open() 13 個 await 位點與所有 return 有觀測；每筆帶 options、seria
 
 hold3 固定手機案例的首紅只有 hidden 表單；不需要 abort 就能重現。await 完成後在同一次 open 選到 301，反證「零尺寸必定表示永久不可恢復」。abort18 後 mode 仍 source、connection error；真 `igClose`／`connectionRetry` click 的 `isTrusted=true`。retry 後 phase=ready（error 字串仍保留舊訊息），但原 canvas `.ocard[data-kind="grid-system"][data-id="1"]` 中心 hit=false；未試其他入口、Tab、再次關閉 drawer 或手機頁面 reload，未判定所有路徑都不可恢复。此案例沒到後置 dump/history 比較，不能借桌面案例宣称手機 World/history 相同。
 
-P88 的替換前及後按鈕皆已在視窗外，node 身分改變；兩個新舊 inspector 的觀測 scrollTop 都為 0，**未量到「從非零重設為零」**。恢復時同一按鈕中心 y：1218.828 → 818.828 → 418.828；第一次 400px 後雖進 viewport，hit 仍是 `SPAN#igDraftNote`；第二次 400px 後才 hit=true，接著真點擊開始下一代 open。不能把「在 viewport 內」當成「可點」。
+P88 固定 1280×900 的 `p88-wheel-02`，raw `runs/ui209-p88-wheel-02/replacement.json` 與 summary 一致：**替換前按鈕在視窗內且 hit=true，受控 openSystem 重建後的新按鈕在視窗外且 hit=false**。替換前 button node107 的 top/bottom 為 394.828125/432.828125；替換後 node126 為 1199.828125/1237.828125。實際捲動容器 `.ig-settings` 也被替換：原 node112 scrollTop=805，新 node131 scrollTop=0；這是不同 DOM 節點的前後量測，不能說成同一節點被設回 0。`.ig-inspector` 本身的 0→0 不能代替其內 `.ig-settings` 的數據。這條證據支持**明示重建使原本可點的控制變成視窗外新節點，而舊 helper 沒有再捲動**的受控路徑，不回推歷史 WSL 的唯一根因。
+
+前後皆已在視窗外、`.ig-settings` 皆為 0 的是較早 `p88-wheel-01`；該輪恢復段另受截圖後 viewport 變更影響，不能混用為 `-02` 的替換前狀態。`-02` 恢復時同一新按鈕中心 y：1218.828 → 818.828 → 418.828；第一次 400px 後雖進 viewport，hit 仍是 `SPAN#igDraftNote`；第二次 400px 後才 hit=true，接著真點擊開始下一代 open。不能把「在 viewport 內」當成「可點」。本段是對原文字的更正，原 raw／summary 值未改。
 
 baseline-02、hold3-02 與 p88-wheel-02 的前後 dump 都驗 `ok===true` 且 `typeof text==='string'` 後逐字比較，全相同；redo entry 身分、frame、limit、context/token 全同。undo entry 全等為 **false**：P70 4→7，P88 19→20。產品 `setFeatureAttachment()` 會為網格草稿記 local history；本資料只報實測差異，不把原生 dump 相同擴張成完整 history 零寫入。沒做產品 red/green/revert 或全量回歸。
 
@@ -107,6 +111,8 @@ python3 tests/diagnostics/ui209_run.py --case p88-wheel --out /tmp/ui209-new-p88
 
 P88 需本地已有 b40620c Git object；runner 不從網路更新分支。沿用 binary 時可加 `--bridge /tmp/.../bridge`，必須另核來源閉包。此次各自編譯 c93／b406 的命令皆是 `gcc -std=c11 -O2 geometry-web/web_bridge.c -o <TEMP>/bridge -lm`，編譯 exit 0；兩次產物 SHA-256 同為 `133f374ea6575febe2c474053b2507d280eed07cc4fe6e83bf14387870779924`。完整 42 項 compiler include 閉包已保存。Chromium 154.0.8037.57、Node 24.19.0、gcc 14.2、Python 3.12.14；wrapper 與 Chromium ELF 分開算 hash，版本原文在各 run。
 
-重算封存摘要：解壓 raw.tar.xz 到新的 TEMP 目錄，再 `python3 tests/diagnostics/ui209_summarize.py <解壓目錄>`。驗證每個 raw member 的 length/hash 與 manifest.json；來源／binary 前後一致性、八次實際 exit、兩份歷史 ZIP／payload 都由該工具檢查。源碼定位 snapshot、完整工具版本、原 executed-prefix、served JS、server adaptation、request/bridge logs、截圖都在 raw。
+重算封存摘要：解壓 raw.tar.xz 到新的 TEMP 目錄，再 `python3 tests/diagnostics/ui209_summarize.py <解壓目錄>`。該工具檢查各 run 的 exit 收據一致、sources-before/after **記錄的 map** 相同、identity 中 **宣告的 binary 前後 hash** 相同，以及兩份歷史 ZIP／payload 的實際 bytes/hash；**不讀外層 manifest，也不逐項驗證 328 個 raw member 或封存 binary bytes**。原 verification.json 的全包核驗是當時額外純檔案核驗的收據，不是 summarize 的能力。
+
+可重做的全包核驗命令是 `python3 tests/evidence/ui209-recovery-20261013/transport/reconstruct.py /tmp/ui209-52c34a6.raw.tar.xz`（輸出檔須尚不存在）。它讀 80 段 ASCII，逐段驗順序／checksum，還原原 archive 並核 bytes/hash，再依原 manifest 精確核對 328 個成員的集合、長度與 SHA-256，包含封存 binary 的實際 bytes；只讀檔並寫出重建 archive，不解壓或執行任何 payload。詳見 [transport 說明](transport/README.md)。原 summary、manifest、verification、archive 皆保持 52c34a6 的內容。
 
 工具觀測有額外 Promise、stack 與 snapshot 成本，未校準 instrumentation overhead；fresh cloud profile、單一 bridge、人工 hold 和歷史 WSL 不同。只收錄本線啟停的服務；結束 census 沒有仍活動的本線 server／bridge／browser，Chromium 的 PID1 zombie 另列，不冒充活動 runner 或全主機隔離證明。
