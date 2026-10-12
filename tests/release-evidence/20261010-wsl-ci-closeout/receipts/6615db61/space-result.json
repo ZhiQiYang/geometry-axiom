@@ -1,0 +1,111 @@
+{
+ "job": "space",
+ "sha": "6615db613a75fbad43116d85251782b5083479df",
+ "started": "2026-10-10T09:57:14+00:00",
+ "steps": [
+  {
+   "index": 0,
+   "name": "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+   "outcome": "replaced",
+   "note": "clean local clone at the SHA under test"
+  },
+  {
+   "index": 1,
+   "name": "Build current native executables",
+   "outcome": "success",
+   "exit_code": 0,
+   "seconds": 47.9,
+   "argv": [
+    "bash",
+    "-e"
+   ],
+   "private_tmp_namespace": true
+  },
+  {
+   "index": 2,
+   "name": "Install Chinese fonts for visual verification",
+   "outcome": "skipped-already-installed",
+   "packages": {
+    "fonts-noto-cjk": "install ok installed 1:20230817+repack1-3"
+   }
+  },
+  {
+   "index": 3,
+   "name": "Run actual browser regression group",
+   "outcome": "success",
+   "exit_code": 0,
+   "seconds": 253.1,
+   "argv": [
+    "bash",
+    "--noprofile",
+    "--norc",
+    "-eo",
+    "pipefail"
+   ],
+   "private_tmp_namespace": true
+  },
+  {
+   "index": 4,
+   "name": "Preserve assembly authoring screenshots",
+   "outcome": "skipped",
+   "note": "artifact upload not applicable outside GitHub"
+  },
+  {
+   "index": 5,
+   "name": "Preserve grid trial screenshots",
+   "outcome": "skipped",
+   "note": "artifact upload not applicable outside GitHub"
+  },
+  {
+   "index": 6,
+   "name": "Preserve document reader screenshots",
+   "outcome": "skipped",
+   "note": "artifact upload not applicable outside GitHub"
+  }
+ ],
+ "notes": [
+  "PATH has a per-job shim dir with python -> /usr/bin/python3 (GitHub's ubuntu image has python-is-python3, this WSL distro does not; tests spawn plain 'python')"
+ ],
+ "status": "completed",
+ "exit_code": 0,
+ "workflow_job_key": "browser",
+ "matrix": {
+  "suite": "space",
+  "timeout": 15
+ },
+ "ci_timeout_minutes": 15,
+ "env": {
+  "GEOMETRY_TEST_URL": "http://127.0.0.1:18845/",
+  "GEOMETRY_FEEDBACK_DIR": "/tmp/ga-ci/6615db61-20261010-175532/space/geometry-integration-feedback",
+  "GEOMETRY_CHROME": "/usr/bin/google-chrome",
+  "GEOMETRY_CHROME_FLAGS": "--no-sandbox",
+  "GEOMETRY_BROWSER_SUITE": "space",
+  "GEOMETRY_GRID_SYSTEM_SCREENSHOT_DIR": "/tmp/ga-ci/6615db61-20261010-175532/space/geometry-grid-screens",
+  "GEOMETRY_DOCUMENT_SCREENSHOT_DIR": "/tmp/ga-ci/6615db61-20261010-175532/space/geometry-document-screens"
+ },
+ "port_rewrite": [
+  "18839",
+  18845
+ ],
+ "seconds_first_run": 301.3,
+ "leftover_processes_killed": [],
+ "seconds": 301.4,
+ "ended": "2026-10-10T10:02:15+00:00",
+ "parsed": {
+  "kind": "space",
+  "passed": 228,
+  "failed": 0,
+  "completed": true,
+  "scope": "full-space-suite",
+  "skipped_groups": [
+   "timber-material",
+   "timber-source-guards"
+  ],
+  "exceptions": [],
+  "console_errors": [],
+  "failed_assertion_lines": []
+ },
+ "over_ci_timeout": false,
+ "ci_limit_ratio": 0.33,
+ "watchdog_factor": 3.0
+}
