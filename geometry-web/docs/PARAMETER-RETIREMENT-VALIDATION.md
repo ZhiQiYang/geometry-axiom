@@ -1,6 +1,6 @@
 # GEO-258 候選退役狀態與 archive 重驗
 
-最新狀態（2026-10-12）：P-060 的卡片 delete/delete 與 delete/put-literal 雙順序已完成，產品／測試提交為 `3c24988517fbc3c3890fb87a77b2c77e1a960b89`；同候選身分不重用、最終懸空原子拒絕與 net-zero 行為均保留。delete 後 unbind-source 的取值政策、跨線正典整合與最終七 job 仍待完成。最新來源、紅綠及突變證據見文末「P-060：卡片引用依完整候選檢查」。
+最新狀態（2026-10-12）：獨立來源的 unbind 已改為重算其必要的當前參數依賴，產品／測試提交 `426629ff8050b2ee6eb7444f70554d47f729b8b4`；無關卡片 delete/unbind/delete 三排列、取新值、覆寫與原子拒絕均有真 bridge 證據，詳見文末「P-060：獨立來源解除綁定」。先前卡片雙順序與 net-zero 核收保留。刪除被綁來源後的取值政策、跨線正典整合與最終七 job 仍待完成。
 
 以下各批次保留當時的來源與結果；較早段落中的「本次」僅指該批次。
 
@@ -97,3 +97,38 @@ P-060 裁決來源為 6113538272；net-zero B1 的既有 ce28fdb 範圍已由 61
 首輪工作13066的M4產品測試確實失敗，但驗證腳本誤以為會走到配號清單比對，要求不存在的「Lists differ」，因此整輪exit1，未跑帳本。來源已逐位元還原；原始收據、日誌與腳本完整保留在 `pr193-p060-after/`。修正的是突變驗證器的定位：必須同時命中具名測試、independent_import的有效preview斷言及具名退休錯誤。產品、四題測試與斷言未改，第二輪從乾淨目錄重新跑本段全部步驟，未沿用首輪失敗作全輪成功。
 
 界線：delete後才unbind-source應保留何時的尺寸仍等候Claude裁決；本次不實作取值暫存或自動凍結，不宣稱全部P-060完成。正典跨線整合與最終七job未做。上述舊段落各自屬於其註明來源；本段才是此次卡片流程交付。GEO-219無新入口；CI受帳號計費阻擋，以本機WSL收據代替。
+
+
+## P-060：獨立來源解除綁定（2026-10-12）
+
+本輪處理審查 6120703937、6120894945 的獨立反例：card1=10、card2=@1:1、card3=27，timber1.A 綁 card3；delete1 → unbind → delete2 最終有效，但舊碼在 unbind 全圖重算時被 card2 的中間缺引用擋住。card3 從未刪除，因此不需要裁決「來源已刪後取哪個值」。
+
+先在未修改產品的 `cbe7ca51ec8680dd0c5aef306f63714a5f35be29` 執行同一份八題：中間 unbind、先改依賴再 unbind、先改覆寫來源再 unbind 三題失敗；另外兩個排列、目標缺引用、目標循環、最終無關循環五題原先就通過。前測工作29628實際外層exit0，4次取樣foreign空；三紅均是無關 card2 → card1 導致，不把五個對照寫成修前紅。
+
+`parameters_evaluate_refs` 用全新 DFS 標記、沿用核心 `parameter_eval_field`，重新求值當前原始來源與覆寫的依賴；`eng_effective` 仍驗原始來源與實際尺寸。只把 unbind 的全圖求值換成兩個必要入口，未修改一般 `parameters_rebuild`、候選出口的完整重驗、引用列舉、退役身分不重用或清零。沒有讀舊快取、凍結來源或另建 writer。
+
+八題修後全過；10個相關模組134題、integrity130/130、核心場景143/143亦過。新正向案例各驗 preview不改dump/revision、cancel無變動、confirm一次history、完整Undo/Redo；負向案例各驗無效preview不能confirm、正式dump/revision不變且既有redo保留。依賴由27改29、覆寫由29改31後，解除綁定保存新整數值；原始來源仍為27。既有測試期望未改。
+
+| 定向步驟 | exit | 秒數 |
+|---|---|---|
+| fixed-eight-green | 0 | 1.825 |
+| fixed-test_parameters_core | 0 | 6.042 |
+| fixed-test_parameter_retirement_scope | 0 | 1.274 |
+| fixed-test_parameter_netzero | 0 | 1.076 |
+| fixed-test_parameters_final_candidate | 0 | 0.973 |
+| fixed-test_section_profile_native | 0 | 12.567 |
+| fixed-test_assembly_rules | 0 | 6.439 |
+| fixed-test_evidence_link_native | 0 | 4.435 |
+| fixed-test_engineering_core | 0 | 4.034 |
+| fixed-test_assembly_parameter_refs | 0 | 1.324 |
+| fixed-test_engineering_model_sources | 0 | 1.978 |
+| full-mutation | 0 | 865.155 |
+| final-eight-green | 0 | 1.674 |
+
+四個行為突變命中指定斷言，逐一還原重編後八題回綠：M1恢復全圖中間求值→三個混合正向案例被錯拒，另外兩個排列仍綠；M2跳過必要依賴求值→錯存舊值27而非新值29；M3移除完整候選world_revalidate→無關循環preview被錯標有效；M4不重算覆寫參數→合法覆寫解除遭幾何整數檢查錯拒。M3與M4均在preview斷言停下，未宣稱它們已提交錯誤World或尺寸。
+
+原生來源閉包已改，重新執行全部50筆突變帳本：42 killed、1 crashed、4 equivalent、3 retired，沒有stale、survived或blocked；WSL及Windows的`mutate.py --check`皆通過。帳本SHA-256 `b6c5bb0b67acb50fffa8015b02bd17e48d42919eea5d281d7697b803b510b55e`。帳本後新八題、parameters25、retirement6、net-zero4、卡片順序4，共47題再通過。
+
+受測輸入是 `cbe7ca51ec8680dd0c5aef306f63714a5f35be29` 加五個凍結路徑；實跑時不是乾淨提交。產品提交 `426629ff8050b2ee6eb7444f70554d47f729b8b4` 的五路徑由Git逐份讀回、LF SHA全部等於受測來源；契約文案另更新，沒有把提交後同一性核對寫成另一輪產品實跑。四支二進位實算SHA前後一致且fresh，全輪77次取樣foreign空。實際外層exit0，收據SHA-256 `1019b8f1c163953db4d089dc01bb695b16950b446303f43b34c7b4da22b0d4ff`。完整原件位於scratchpad `board-local-codex/pr193-unbind-before/`及`pr193-unbind-after/`。
+
+尚待：被綁來源本身先刪除時的取值政策仍等Claude裁決，B3跨線正典／產品整合與B4最終七job未做；本輪是定向驗證及核心全表突變。GEO-219無新入口；CI受帳號計費阻擋，以本機WSL收據代替。
