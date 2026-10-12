@@ -997,10 +997,15 @@ before(() => {
     {cwd:require('node:path').resolve(__dirname,'..'),encoding:'utf8',timeout:180000}));
   assert.equal(receipt.status,'passed');const data=caseData();data.receipts=[{definition,receipt}];
   assert.equal(prepareSnapshotCase(data).ok,true,'the unmodified native pass evidence must be accepted');
+  assert.throws(()=>prepareSnapshotCase(data,(file,args,options)=>
+    require('node:child_process').execFileSync(file,[args[0],"import sys;sys.exit(3)\n"+args[1]],options)),
+    error=>error.message==='Native case preparation infrastructure failed' && error.cause?.status===3 &&
+      /core rejected/.test(error.cause.message),'command text must not turn an infrastructure exit into a semantic rejection');
   snapshotCaseFixture={definition,receipt,data};
 }, {timeout:180000});
-function prepareSnapshotCase(data){
-  return JSON.parse(require('node:child_process').execFileSync('python',['-c',
+function prepareSnapshotCase(data,runPython=require('node:child_process').execFileSync){
+  try {
+  const result=JSON.parse(runPython('python',['-c',
     "import sys,json;sys.path.insert(0,'geometry-web');from rule_case_host import prepare_data;from rule_cases.executor import ReceiptValidationError\n"+
     "try:\n result=prepare_data(sys.stdin.buffer.read())\n"+
     "except ReceiptValidationError as error:\n"+
@@ -1008,6 +1013,12 @@ function prepareSnapshotCase(data){
     " result={'ok':False,'error':'core rejected original native pass evidence','rejectionType':type(error).__name__}\n"+
     "print(json.dumps(result))"],
     {cwd:require('node:path').resolve(__dirname,'..'),input:typeof data==='string'?data:JSON.stringify(data),encoding:'utf8',stdio:['pipe','pipe','pipe'],timeout:180000}));
+  if(result?.ok!==true && !(result?.ok===false && result.rejectionType==='ReceiptValidationError' &&
+    result.error==='core rejected original native pass evidence'))throw new Error('Invalid native case preparation result');
+  return result;
+  } catch(cause) {
+    throw new Error('Native case preparation infrastructure failed',{cause});
+  }
 }
 test('caller mutation during real hashes cannot replace the detached snapshot verified by the core',async()=>{
   const {definition,receipt,data}=structuredClone(snapshotCaseFixture);
