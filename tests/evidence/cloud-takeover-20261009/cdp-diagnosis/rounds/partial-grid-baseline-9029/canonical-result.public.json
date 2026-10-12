@@ -1,0 +1,34 @@
+{
+  "origin": "Exact CDP_RESULT JSON payload parsed from the retained raw command log; paths projected only.",
+  "originalLogSha256": "f1de63ae330a5388ddcd178fac19ba11aadbba6b08c20cc9fcc53299afb0f489",
+  "originalLogBytes": 42156,
+  "canonicalResult": {
+    "schema": "geometry-cdp-result/1",
+    "scope": {
+      "mode": "partial",
+      "filters": [
+        "GEOMETRY_GRID_SYSTEM_ONLY"
+      ],
+      "modifiers": [],
+      "url": "http://127.0.0.1:19188/",
+      "feedbackDirectory": "<isolated-test-directory>",
+      "browserProfile": "<isolated-test-directory>",
+      "cdpPort": 54945,
+      "browserPid": 49985
+    },
+    "completed": true,
+    "passedAssertions": 346,
+    "failedAssertions": 0,
+    "skipped": [],
+    "sections": {
+      "P70": 117,
+      "P71": 9,
+      "P78": 23,
+      "P87": 60,
+      "P88": 137
+    },
+    "goldenCompare": "not compared (partial mode)",
+    "uncaughtBrowserExceptions": 0,
+    "coverage": "Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts."
+  }
+}

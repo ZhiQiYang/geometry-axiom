@@ -1,0 +1,72 @@
+✖ explicit pause stores the complete latest metadata/source package and resume attaches it once without native upload/create/close (36.350905ms)
+✔ held strict Resume disarm cannot attach metadata or enable editing before transaction completion (23.664865ms)
+✔ Resume disarm quota abort retains eligible checkpoint but never attaches old metadata (13.641284ms)
+✔ unsupported strict durability never disarms or attaches the saved B package (19.314004ms)
+✔ durably committed disarm with lost local owner acknowledgement leaves no attach and a fresh owner cannot reuse eligibility (20.688778ms)
+✔ ordinary active B debounce never creates Resume qualification and an abrupt reload rejects it (14.336847ms)
+✔ metadata-only edit after Resume keeps identical native fingerprint but old suspend metadata is ineligible on reload (12.498695ms)
+✔ Suspend transaction abort preserves current B metadata and leaves its freeze authoritative (7.318387ms)
+✔ Cancel during package validation wins over an older Resume and preserves checkpoint without attaching it (10.842754ms)
+✔ Finish during package validation wins and an old Resume cannot reopen the retired decision (28.549449ms)
+✔ native fingerprint mismatch rejects before disarm and leaves all stored records unchanged (11.56083ms)
+✔ corrupted complete package rejects without disarm, import or metadata attachment (10.912287ms)
+✔ a second editing epoch can explicitly suspend its new complete metadata before the next Resume (18.782945ms)
+✖ present malformed reserved Resume journals are not treated as absent and overwritten by Suspend (8.96326ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 12
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 289.939391
+
+✖ failing tests:
+
+test at ../scratch/geometry-resume-owner-supplement.cjs:18:23
+✖ explicit pause stores the complete latest metadata/source package and resume attaches it once without native upload/create/close (36.350905ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      assemblyDrafts: {
+        records: [
+          {
+            base_ref: null,
+  ...
+      projectId: 'opened',
+  -   requiredCapabilities: [
+  -     'assembly-rule-authoring/1'
+  -   ],
+  -   sceneHash: 'cd4b997fac19810a87e7b82332b5b57216122e3b42b234bd81c099763161d6d4',
+      sources: [
+        {
+          hash: '6211e46550e0234482e9b12f88c605246eddc1364f9e87f2dfe27fd9739f6895',
+          id: '6211e46550e0234482e9b12f88c605246eddc1364f9e87f2dfe27fd9739f6895',
+          name: '圖.pdf',
+  
+      at TestContext.<anonymous> (<workspace-path>
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { projectId: 'opened', name: '最新 B1', sources: [ [Object] ], faces: [ [Object] ], assemblyDrafts: { schema: 'assembly-drafts/1', records: [Array] }, engineeringDrafts: { schema: 'engineering-drafts/1', records: [Array] }, format: 'geometry-canvas/7', models: [], faceProjections: [] },
+    expected: { projectId: 'opened', name: '最新 B1', sources: [ [Object] ], faces: [ [Object] ], assemblyDrafts: { schema: 'assembly-drafts/1', records: [Array] }, engineeringDrafts: { schema: 'engineering-drafts/1', records: [Array] }, format: 'geometry-canvas/7', models: [], faceProjections: [], sceneHash: 'cd4b997fac19810a87e7b82332b5b57216122e3b42b234bd81c099763161d6d4', requiredCapabilities: [ 'assembly-rule-authoring/1' ] },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at ../scratch/geometry-resume-owner-supplement.cjs:18:23
+✖ present malformed reserved Resume journals are not treated as absent and overwritten by Suspend (8.96326ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (<workspace-path>
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /續接點|損壞|記錄/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
