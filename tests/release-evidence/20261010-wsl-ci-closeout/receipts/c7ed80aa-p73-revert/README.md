@@ -1,0 +1,55 @@
+# WSL CI-equivalent receipt for c7ed80aa07010cc326a702afff81ef73db4c4ce8
+
+Generated 2026-10-10T20:28:29+08:00.  **Verdict: PARTIAL (1 of 7 jobs run: canvas): green=[] red=['canvas'] undetermined=[]**
+
+Note: VERIFY RUN, not a CI result: 6615db6 + WSL-only commits reverting P73 to sleep(180) (never pushed). Expected: P73 red.
+
+## How it was run
+
+Command (from Windows):
+
+    wsl -d Ubuntu-24.04 -- bash /mnt/c/Users/Yang/AppData/Local/Temp/claude/D--geometry-axiom/f46787ac-6918-4891-81a1-b3d8a9aa653c/scratchpad/wsl-ci/wsl_ci.sh c7ed80aa07010cc326a702afff81ef73db4c4ce8 canvas
+
+Environment overrides used: WSL_CI_REPO=/root/p73-verify/src WSL_CI_LABEL=p73-revert
+
+Method: the jobs, env, matrix and `run:` scripts are read from the SHA's own `.github/workflows/integration-tests.yml` (sha256 faddb699f3be004b)
+and executed verbatim in an ext4 clean clone (one clone per job, `core.autocrlf=false`, detached at the SHA).  Deviations from GitHub:
+
+- actions/checkout replaced by the local clone; actions/upload-artifact skipped (nothing to upload to).
+- `sudo apt-get` steps skipped only when every package is already installed (recorded per job); otherwise the job is BLOCKED, never run with sudo.
+- `/tmp/` paths and the service port are rewritten per job and TMPDIR is set per job so that two jobs run side by side; CDP ports are the yml's own.
+- CI=true, GITHUB_ACTIONS=true, RUNNER_OS=Linux set to mirror the runner; PATH limited to Linux dirs with /opt/node/bin first.
+- A per-job PATH shim `python -> /usr/bin/python3` (GitHub's ubuntu image ships python-is-python3; this WSL distro does not and 11 node tests spawn plain `python`).
+- Every step runs in a private mount namespace (`unshare -m`) where `/tmp/geometry-tests` (hardcoded by tests/binaries.py) is a per-job dir, because other sessions share this WSL distro and hold `/tmp/geometry-tests/run_all.lock`.
+- Before jobs start: wait (bounded) for boot housekeeping / foreign sessions' test load to end, and prime Chrome/gcc/node page caches (recorded in receipt.json `environment_quiesce`, `warm_up`).
+- Up to 2 jobs run concurrently on one 12-core WSL VM (the workflow's own max-parallel is 2, but on separate runners).
+- Tool versions differ from GitHub's ubuntu-latest image: see receipt.json `tools`.
+
+## Referee rules (decided by the main loop; applied mechanically by this runner)
+
+1. **Timeout**: each job's hard watchdog = the SHA's yml `timeout-minutes` x 3.0 (WSL is slower than a CI runner; the CI limit is an infrastructure limit, not a correctness referee).
+   Elapsed time is recorded as measured; exceeding the CI limit is flagged "over CI limit (WSL)" and is NOT red by itself.  Hitting the watchdog (exit 124) is red.
+2. **Flaky tests** (native job only): when `run_all.py` ends with failing suites, each failing suite is re-run ALONE in the same clone (`run_all.py --only <suite>`, up to 2 attempts).
+   Verdict green ("flaky-rerun-pass") only if a re-run passes AND every failed test id of that suite also failed in a MAIN baseline receipt (`rule2_baseline_sources` in receipt.json); everything else stays red.
+   Browser jobs have no per-test identity and are never excused (any failure = red).  The first run's numbers are never rewritten: the receipt keeps exit code and counts of the first run and lists the re-runs separately.
+3. **Exclusive**: before starting, wait (bounded) until no other session's compile/test processes are running in this WSL VM; sample for them every 15 s during the run.  Both are recorded in `exclusivity`.
+
+## Rule 1/2/3 evidence
+
+- baseline sources used by rule 2: ['/mnt/c/Users/Yang/AppData/Local/Temp/claude/D--geometry-axiom/f46787ac-6918-4891-81a1-b3d8a9aa653c/scratchpad/wsl-ci/5cc1ffa1-attempt3-red-1-flaky-test', '/mnt/c/Users/Yang/AppData/Local/Temp/claude/D--geometry-axiom/f46787ac-6918-4891-81a1-b3d8a9aa653c/scratchpad/wsl-ci/5cc1ffa1'] 
+- exclusivity at start: YES (waited 0.0s; still busy foreign=[] system=[]; seen while waiting=[])
+- exclusivity during the run: YES (128 samples; foreign processes seen={}; max sampled 1-min loadavg=3.62)
+
+## Per-job results (exit code and counts are those of the FIRST full run of each job)
+
+| job | verdict | exit | passed | failed | skipped | seconds | CI limit (min) / watchdog (min) | vs CI limit |
+|---|---|---|---|---|---|---|---|---|
+| canvas | red | 1 | 1624 | 1 | n/a | 1999.4 | 35 / 105 | within (x0.95) |
+
+### canvas: red
+
+- exit code 1
+- failed_assertion_lines:
+    - P73 選已知邊一半產生引用式，位置與走向用語一致 ✗ false
+
+Logs: `<job>/job.log`; per-job structured data: `<job>/result.json`; aggregate: `receipt.json`.

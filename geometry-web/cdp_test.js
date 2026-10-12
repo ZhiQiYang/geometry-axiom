@@ -613,10 +613,18 @@ async function main() {
   if (vtx) {
     const vBefore = await eval_(`JSON.stringify(oc.bmap[oc.edit.bid][0].verts[0])`);
     await drag(vtx.x, vtx.y, vtx.x + 60, vtx.y + 40);
-    await sleep(1200);
-    const vAfter = await eval_(`JSON.stringify(oc.bmap[oc.edit.bid][0].verts[0])`);
-    console.log("vert0:", vBefore, "->", vAfter,explicitVerdict(vBefore !== vAfter ? "✓ 頂點編輯有效" : "✗ 頂點編輯無效"));
-    console.log("status:", await eval_(`document.getElementById("status").textContent`));
+    /* The drag only edits fe.work; oc.bmap changes once emitBoundary's native write is followed by emitLine's renderObjects
+       (objects/surfaces/boundary reads, then the oc.bmap assignment) and feAfterChange's re-read.
+       A fixed sleep(1200) read the old vertex whenever the native service was slower than that. Wait for the observable commit
+       before the 15-second deadline. A timeout enters the same single ✗ verdict and skips further settling/reads at this site.
+       Only timely success lets the rest of the refresh chain settle the way the old sleep(>=200) did. */
+    const vertexSettled = await cdp.makeSettle({waitForUI,eval_},{tag:'§7'})('拖曳外環頂點 0 後，oc.bmap 的頂點 0 離開拖曳前的值（emitBoundary → renderObjects／feAfterChange 的 boundary 讀回）',
+      `(()=>{const l=oc.edit&&oc.bmap[oc.edit.bid];return !!(l&&l[0]&&l[0].verts[0])&&JSON.stringify(l[0].verts[0])!==${JSON.stringify(vBefore)};})()`,
+      {timeoutMs:15000,soft:true,observe:`({edit:!!oc.edit,vert0:oc.edit?(oc.bmap[oc.edit.bid]?.[0]?.verts?.[0]??null):null,busy:oc.busy,status:document.getElementById("status").textContent})`});
+    if (vertexSettled.ok) await eval_('window.__cdpSettleUI?.(0)');
+    const vAfter = vertexSettled.ok ? await eval_(`JSON.stringify(oc.bmap[oc.edit.bid][0].verts[0])`) : '(等待逾時)';
+    console.log("vert0:", vBefore, "->", vAfter,explicitVerdict(vertexSettled.ok && vBefore !== vAfter ? "✓ 頂點編輯有效" : "✗ 頂點編輯無效"));
+    if (vertexSettled.ok) console.log("status:", await eval_(`document.getElementById("status").textContent`));
   } else console.log("沒進入面編輯，跳過");
 
   console.log("=== 8. Esc 返回世界 ===");
@@ -2144,12 +2152,16 @@ async function main() {
   console.log("柱建立:",explicitVerdict(colObj.length === 1 && colObj[0].space === 1
     ? `✓ id=${colObj[0].id} z=${colObj[0].box[2]}~${colObj[0].box[5]}`
     : "✗ " + JSON.stringify(colObj)));
-  const colCard = await eval_(`(()=>{
+  const columnCardSettled = await cdp.makeSettle({waitForUI,eval_},{tag:'P11'})(
+    'RC column creation reaches the object canvas after the native commit',
+    `!!document.querySelector('.ocard[data-kind="column"]')`,
+    {timeoutMs:15000,soft:true,observe:`({dialogHidden:$('rcDialog').hidden,busy:oc.busy,columns:oc.columns.map(c=>c.id),draws:ocDrawCount,refresh:ocSeq})`});
+  const colCard = columnCardSettled.ok ? await eval_(`(()=>{
     const c = document.querySelector('.ocard[data-kind="column"]');
     if (!c) return null;
     const r = c.getBoundingClientRect();
     return {x: r.left + r.width/2, y: r.top + r.height/2};
-  })()`);
+  })()`) : null;
   console.log("柱卡片:",explicitVerdict(colCard ? "✓" : "✗"));
   /* 拖卡片 → canvas-pos 持久化 */
   if (colCard) {
@@ -2181,8 +2193,12 @@ async function main() {
   const beamObj = await eval_(`api("objects").then(r=>r.beams)`);
   console.log("樑建立:",explicitVerdict(beamObj.length === 1 && beamObj[0].box[5] === 2500
     ? `✓ top=${beamObj[0].box[5]}` : "✗ " + JSON.stringify(beamObj)));
-  console.log("樑卡片:",explicitVerdict(await eval_(
-    `!!document.querySelector('.ocard[data-kind="beam"]') ? "✓" : "✗"`)));
+  const beamCardSettled = await cdp.makeSettle({waitForUI,eval_},{tag:'P11'})(
+    'RC beam creation reaches the object canvas after the native commit',
+    `!!document.querySelector('.ocard[data-kind="beam"]')`,
+    {timeoutMs:15000,soft:true,observe:`({dialogHidden:$('rcDialog').hidden,busy:oc.busy,beams:oc.beams.map(b=>b.id),draws:ocDrawCount,refresh:ocSeq})`});
+  console.log("樑卡片:",explicitVerdict(beamCardSettled.ok ? await eval_(
+    `!!document.querySelector('.ocard[data-kind="beam"]') ? "✓" : "✗"`) : "✗"));
   /* 搜尋「柱」命中柱卡 */
   await eval_(`(()=>{ const s=document.getElementById("searchInput");
     s.value="柱"; s.dispatchEvent(new Event("input")); })()`);
