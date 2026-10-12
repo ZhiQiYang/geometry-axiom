@@ -101,6 +101,7 @@ static void batch_preview(const char *path,const char *schema_name,const char *s
         ok=operation(candidate,&j,eng_json_at(&j,operations,i));
         if(ok)ok=assembly_versions_immutable(&g_world,candidate);
     }
+    if(ok&&!parameter_retirements_valid(candidate))ok=eng_fail(g_parameter_error);
     memset(candidate->parameters.retired,0,sizeof candidate->parameters.retired);
     candidate->parameters.retired_count=0;  /* I39: candidate scratch never reaches comparison, staging, or committed snapshots */
     if(ok){const World *previous=g_subgrid_before;bool capturing=g_reference_capturing;g_reference_capturing=true;g_reference_trial=*candidate;

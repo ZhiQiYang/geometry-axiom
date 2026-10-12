@@ -82,6 +82,7 @@ PY_NEEDS = {
     'test_parameters_core': ['bridge', 'model-base'],
     'test_parameter_retirement_scope': ['bridge'],
     'test_parameter_netzero': ['bridge'],
+    'test_parameters_final_candidate': ['bridge'],
     'test_reference_contract': ['bridge'],
     'test_release_gate': [],
     'test_local_launcher': ['core', 'bridge', 'model-base'],

@@ -286,8 +286,7 @@ static bool parameter_put(World *w,EngJson *j,int t)
     if(ok){size_t n=0;for(size_t i=0;i<w->parameters.field_count;++i)if(w->parameters.fields[i].parameter_id!=id)w->parameters.fields[n++]=w->parameters.fields[i];for(size_t k=0;k<card.count;++k)w->parameters.fields[n++]=fresh[k];memset(w->parameters.fields+n,0,(PARAM_FIELD_MAX-n)*sizeof(ParameterField));w->parameters.field_count=n;w->parameters.cards[slot]=card;if(slot==w->parameters.card_count)++w->parameters.card_count;}
     free(fresh);return ok;
 }
-/* I38: who still references this card? Scans the candidate exactly as it is when the delete runs, so a transaction that
- * first unbinds/repoints the referrers and then deletes passes, and the reverse order does not. Only the first
+/* I38: enumerate actual references in a complete candidate. Only the first
  * PARAMETER_USES_SHOWN referrers are named; the count is exact. References from the card's own fields vanish with it. */
 #define PARAMETER_USES_SHOWN 3
 typedef struct {char text[256];size_t count;} ParameterUses;
@@ -361,16 +360,23 @@ static size_t parameter_uses(const World *w,uint32_t id,ParameterUses *u)
     }
     return u->count;
 }
+/* I38/R33: inspect retired identities only after the complete candidate is defined. */
+static bool parameter_retirements_valid(const World *w)
+{
+    for(size_t i=0;i<w->parameters.retired_count;++i){
+        uint32_t id=w->parameters.retired[i];ParameterUses uses;
+        if(parameter_uses(w,id,&uses)){
+            char more[40]="";if(uses.count>PARAMETER_USES_SHOWN)snprintf(more,sizeof more," and %zu more",uses.count-PARAMETER_USES_SHOWN);
+            return parameter_fail("I38 MISSING: parameter %u is still referenced by %s%s; unbind or repoint %s in the same complete candidate",id,uses.text,more,uses.count==1?"it":"them");
+        }
+    }
+    return true;
+}
 static bool parameter_remove(World *w,uint32_t id)
 {
     size_t k=0;while(k<w->parameters.card_count&&w->parameters.cards[k].id!=id)++k;
     if(k==w->parameters.card_count)return parameter_fail("I38 MISSING: parameter %u",id);
     if(w->parameters.retired_count>=PARAM_RETIRED_MAX)return parameter_fail("UNSUPPORTED/CAPACITY: too many parameter identities deleted in one transaction");
-    ParameterUses uses;
-    if(parameter_uses(w,id,&uses)){
-        char more[40]="";if(uses.count>PARAMETER_USES_SHOWN)snprintf(more,sizeof more," and %zu more",uses.count-PARAMETER_USES_SHOWN);
-        return parameter_fail("I38 MISSING: parameter %u is still referenced by %s%s; unbind or repoint %s in the same transaction before deleting it",id,uses.text,more,uses.count==1?"it":"them");
-    }
     memmove(w->parameters.cards+k,w->parameters.cards+k+1,(w->parameters.card_count-k-1)*sizeof(ParameterSet));memset(&w->parameters.cards[--w->parameters.card_count],0,sizeof(ParameterSet));
     size_t n=0;for(size_t i=0;i<w->parameters.field_count;++i)if(w->parameters.fields[i].parameter_id!=id)w->parameters.fields[n++]=w->parameters.fields[i];memset(w->parameters.fields+n,0,(PARAM_FIELD_MAX-n)*sizeof(ParameterField));w->parameters.field_count=n;
     n=0;for(size_t i=0;i<w->canvas_pos_count;++i)if(w->canvas_pos[i].kind!=CANVAS_POS_PARAMETER||w->canvas_pos[i].id!=id)w->canvas_pos[n++]=w->canvas_pos[i];memset(w->canvas_pos+n,0,(w->canvas_pos_count-n)*sizeof(CanvasPos));w->canvas_pos_count=n;

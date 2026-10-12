@@ -262,8 +262,9 @@ class ParametersCore(unittest.TestCase):
         before = self.values()
         self.rejected([{"op": "delete-parameter", "id": 0}, {"op": "import-parameters", "value": package}],
                       "parameter 0 is still referenced by parameter 1 field 1")
+        # P-060: identity reuse is rejected before the complete-candidate reference check.
         self.rejected([{"op": "delete-parameter", "id": 0}, card(0, "換人", [field(1, "1")])],
-                      "parameter 0 is still referenced by parameter 1 field 1")
+                      "parameter 0 was deleted earlier in this transaction")
         self.assertEqual(before, self.values())
         # 沒有任何引用時刪除本身合法;但同一交易內不得把剛刪的身分再宣告,匯入也必須拿到新身分。
         self.apply([card(2, "獨立", [field(1, "5")])])
@@ -554,7 +555,7 @@ class ParametersCore(unittest.TestCase):
         self.apply([{"op": "set-source", "target": target, "source": {"kind": "parameter", "parameterId": 2, "fieldId": 1}}])
         self.rejected([{"op": "delete-parameter", "id": 2}], "MISSING")
         before = self.command("dump")["text"]
-        # 先刪後解除仍是「刪被引用欄位」，整筆拒絕；必須在同一交易內先解除再刪除
+        # P-060 card ordering is independent; delete-before-unbind still lacks a decided value-preservation policy.
         r = self.request([{"op": "delete-parameter", "id": 2}, {"op": "unbind-source", "target": target}])
         self.assertFalse(r["preview"]["valid"], r)
         self.assertEqual(before, self.command("dump")["text"])

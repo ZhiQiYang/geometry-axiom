@@ -161,6 +161,7 @@ static bool apply_engineering_line(const char *path,int line_no,char **tokens,in
     else if(!strcmp(tokens[1],"timber"))ok=eng_restore_timber(w,&j,0);
     else if(!strcmp(tokens[1],"archive")){
         ok=eng_operation(w,&j,0);
+        if(ok&&!parameter_retirements_valid(w))ok=eng_fail(g_parameter_error);
         memset(w->parameters.retired,0,sizeof w->parameters.retired);
         w->parameters.retired_count=0;
         /* I8/I38: the interactive archive entry is one complete candidate.
