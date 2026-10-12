@@ -54,3 +54,21 @@ node --test tests/test_cdp_card_position.js tests/test_cdp_evaluation.js
 所有產品變異僅存在暫存 clone；每案另存 patch、runtime、原始 log、耗時
 與退出碼，最後還原。發生非預期結果就停止，不能拿啟動失敗冒充突變命中。
 執行必須經 WSL 排隊鎖，`--runner-tools` 使用同一份 `wsl-ci` 隔離取樣器。
+
+## P11 RC creation response
+
+P11 的建立指令完成後，原生 `objects` 已包含新柱／樑，但 `renderObjects`
+可能仍在等它自己的回應及畫布刷新。柱與樑卡片讀取各加 15 秒、有期限的
+條件等待；逾時納入原有 verdict，不能接受晚到值。原有建立、拖曳、連線、
+搜尋與檢視器斷言不變，golden 仍要求 P11 的 12 項通過斷言。
+
+以真實 native 回應延後 4 秒交付的六案 Chrome 對照：舊碼無延遲 12/0；
+舊碼延遲 8/3（柱卡片、障礙連線、樑卡片）；修正 12/0；移除柱等待 9/2；
+移除樑等待 11/1；還原 12/0。每案獨立服務與 profile，原生三支 binary
+前後 SHA／sidecar／freshness 相同。只延後已收到的真實 JSON，未改 payload、
+補送 HTTP 或改既有斷言；觀測原 `renderObjects` promise 並原樣回傳。
+
+此為 partial/P11-native-response-delay-probe，未比較 golden，不能替代新
+head 的完整 canvas。原 a389de37 一次完整觀測實際 2204/3、golden mismatch，
+P11 的兩項失敗及斷言數不足原件保留。該輪 P69 成功也不解釋先前的 P69
+逾時；本修正只處理六案所證明的 RC 卡片讀取等待缺口。

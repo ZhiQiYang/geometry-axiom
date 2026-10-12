@@ -2152,12 +2152,16 @@ async function main() {
   console.log("柱建立:",explicitVerdict(colObj.length === 1 && colObj[0].space === 1
     ? `✓ id=${colObj[0].id} z=${colObj[0].box[2]}~${colObj[0].box[5]}`
     : "✗ " + JSON.stringify(colObj)));
-  const colCard = await eval_(`(()=>{
+  const columnCardSettled = await cdp.makeSettle({waitForUI,eval_},{tag:'P11'})(
+    'RC column creation reaches the object canvas after the native commit',
+    `!!document.querySelector('.ocard[data-kind="column"]')`,
+    {timeoutMs:15000,soft:true,observe:`({dialogHidden:$('rcDialog').hidden,busy:oc.busy,columns:oc.columns.map(c=>c.id),draws:ocDrawCount,refresh:ocSeq})`});
+  const colCard = columnCardSettled.ok ? await eval_(`(()=>{
     const c = document.querySelector('.ocard[data-kind="column"]');
     if (!c) return null;
     const r = c.getBoundingClientRect();
     return {x: r.left + r.width/2, y: r.top + r.height/2};
-  })()`);
+  })()`) : null;
   console.log("柱卡片:",explicitVerdict(colCard ? "✓" : "✗"));
   /* 拖卡片 → canvas-pos 持久化 */
   if (colCard) {
@@ -2189,8 +2193,12 @@ async function main() {
   const beamObj = await eval_(`api("objects").then(r=>r.beams)`);
   console.log("樑建立:",explicitVerdict(beamObj.length === 1 && beamObj[0].box[5] === 2500
     ? `✓ top=${beamObj[0].box[5]}` : "✗ " + JSON.stringify(beamObj)));
-  console.log("樑卡片:",explicitVerdict(await eval_(
-    `!!document.querySelector('.ocard[data-kind="beam"]') ? "✓" : "✗"`)));
+  const beamCardSettled = await cdp.makeSettle({waitForUI,eval_},{tag:'P11'})(
+    'RC beam creation reaches the object canvas after the native commit',
+    `!!document.querySelector('.ocard[data-kind="beam"]')`,
+    {timeoutMs:15000,soft:true,observe:`({dialogHidden:$('rcDialog').hidden,busy:oc.busy,beams:oc.beams.map(b=>b.id),draws:ocDrawCount,refresh:ocSeq})`});
+  console.log("樑卡片:",explicitVerdict(beamCardSettled.ok ? await eval_(
+    `!!document.querySelector('.ocard[data-kind="beam"]') ? "✓" : "✗"`) : "✗"));
   /* 搜尋「柱」命中柱卡 */
   await eval_(`(()=>{ const s=document.getElementById("searchInput");
     s.value="柱"; s.dispatchEvent(new Event("input")); })()`);
