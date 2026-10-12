@@ -1000,7 +1000,17 @@ before(() => {
     "import sys,json;sys.path[:0]=['geometry-web','geometry-core'];from rule_cases.catalog import cases;from rule_cases.request import run_case_request;from tests._bridge import find_bridge;print(json.dumps(run_case_request(json.dumps(cases()[0]).encode(),project_id='snapshot-original',generation=1,binary=find_bridge())))"],
     {cwd:require('node:path').resolve(__dirname,'..'),encoding:'utf8',timeout:180000}));
   assert.equal(receipt.status,'passed');const data=caseData();data.receipts=[{definition,receipt}];
-  assert.equal(prepareSnapshotCase(data).ok,true,'the unmodified native pass evidence must be accepted');
+  assert.deepEqual(prepareSnapshotCase(data),{ok:true,data,trust:'historical-unverified'},
+    'the unmodified native pass evidence must be accepted with unchanged data and trust');
+  for(const malformed of [
+    {ok:true,error:'core rejected original native pass evidence'},
+    {ok:true,data},
+    {ok:true,data:[],trust:'historical-unverified'},
+    {ok:true,data:{},trust:'historical-unverified'},
+    {ok:true,data,trust:'historical-unverified',error:'core rejected original native pass evidence'},
+    {ok:true,data,trust:'historical-unverified',rejectionType:'ReceiptValidationError'},
+  ])assert.throws(()=>prepareSnapshotCase(data,()=>JSON.stringify(malformed)),
+    /Native case preparation infrastructure failed/,'malformed success must not masquerade as semantic rejection');
   assert.throws(()=>prepareSnapshotCase(data,(file,args,options)=>
     require('node:child_process').execFileSync(file,[args[0],"import sys;sys.exit(3)\n"+args[1]],options)),
     error=>error.message==='Native case preparation infrastructure failed' && error.cause?.status===3 &&
@@ -1017,7 +1027,12 @@ function prepareSnapshotCase(data,runPython=require('node:child_process').execFi
     " result={'ok':False,'error':'core rejected original native pass evidence','rejectionType':type(error).__name__}\n"+
     "print(json.dumps(result))"],
     {cwd:require('node:path').resolve(__dirname,'..'),input:typeof data==='string'?data:JSON.stringify(data),encoding:'utf8',stdio:['pipe','pipe','pipe'],timeout:180000}));
-  if(result?.ok!==true && !(result?.ok===false && result.rejectionType==='ReceiptValidationError' &&
+  if(result?.ok===true){
+    const input=typeof data==='string'?JSON.parse(data):JSON.parse(JSON.stringify(data));
+    assert.ok(result.data && typeof result.data==='object' && !Array.isArray(result.data));
+    assert.deepEqual(result,{ok:true,data:input,trust:'historical-unverified'},
+      'Successful native preparation must preserve the complete input and trust');
+  } else if(!(result?.ok===false && result.rejectionType==='ReceiptValidationError' &&
     result.error==='core rejected original native pass evidence'))throw new Error('Invalid native case preparation result');
   return result;
   } catch(cause) {
