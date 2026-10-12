@@ -16,7 +16,10 @@ static bool eng_operation(World *w,EngJson *j,int t)
         EngTarget target;Coord value;
         if(!eng_json_keys(j,t,"op,target","")||!eng_target_parse(j,eng_json_member(j,t,"target"),&target))return eng_fail("I38: invalid unbind target");
         EngBinding *b=eng_binding(w,&target);if(!b)return eng_fail("I38: target has no source binding");
-        char error[512]="";if(!parameters_rebuild(w,error,sizeof error))return eng_fail(error);if(!eng_effective(w,b,&value,NULL,0))return false;
+        ParameterRef refs[2];size_t ref_count=0;
+        if(b->source.kind==ENG_PARAMETER)refs[ref_count++]=b->source.parameter;
+        if(b->has_override&&b->override_value.kind==ENG_PARAMETER)refs[ref_count++]=b->override_value.parameter;
+        char error[512]="";if(!parameters_evaluate_refs(w,refs,ref_count,error,sizeof error))return eng_fail(error);if(!eng_effective(w,b,&value,NULL,0))return false;
         if(target.kind){int i=reference_timber_index(w,target.id);if(target.field)w->timbers[i].size_b=value;else w->timbers[i].size_a=value;}
         else {GridAxisDef *a=&world_find_grid_mut(w,target.id)->axis[target.axis];if(target.field)a->gap=value;else a->panel=value;}
         size_t k=(size_t)(b-w->engineering.bindings);memmove(b,b+1,(w->engineering.binding_count-k-1)*sizeof *b);memset(&w->engineering.bindings[--w->engineering.binding_count],0,sizeof *b);return true;

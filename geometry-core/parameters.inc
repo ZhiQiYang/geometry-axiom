@@ -247,6 +247,21 @@ static bool parameters_rebuild(World *w,char *error,size_t cap)
     for(size_t i=0;i<w->parameters.field_count&&ok;++i)ok=parameter_eval_field(e,(int)i);
     free(e);if(!ok)snprintf(error,cap,"%s",g_parameter_error);return ok;
 }
+/* I38/R33: an intermediate unbind needs its current source closure, not unrelated fields.
+ * Use fresh marks so values changed earlier in this candidate are never read from an old cache.
+ * The complete candidate still goes through parameters_rebuild at transaction validation. */
+static bool parameters_evaluate_refs(World *w,const ParameterRef *refs,size_t count,char *error,size_t cap)
+{
+    g_parameter_error[0]=0;ParameterEval *e=calloc(1,sizeof *e);if(!e){snprintf(error,cap,"UNSUPPORTED/CAPACITY: parameter evaluation memory");return false;}e->w=w;
+    bool ok=!w->parameters.loading;
+    if(!ok)parameter_fail("I39: unterminated parameter block");
+    for(size_t i=0;i<count&&ok;++i){
+        int index=parameter_field_index(w,refs[i].parameter_id,refs[i].field_id);
+        if(index<0)ok=parameter_fail("I38 MISSING: parameter %u field %u",refs[i].parameter_id,refs[i].field_id);
+        else ok=parameter_eval_field(e,index);
+    }
+    free(e);if(!ok)snprintf(error,cap,"%s",g_parameter_error);return ok;
+}
 static bool parameter_name(EngJson *j,int t,char out[PARAM_NAME_MAX])
 {
     if(!eng_json_string(j,t,out,PARAM_NAME_MAX)||!grid_system_name_valid((const unsigned char*)out,strlen(out)))return parameter_fail("I38 NAME: expected 1..96 UTF-8 bytes without control characters");return true;
