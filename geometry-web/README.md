@@ -151,7 +151,7 @@ python serve.py 8765       :: 啟動靜態檔 + /api 橋接服務
 - `POST /upload` → 把 scene 內容寫成系統暫存目錄（`tempfile.gettempdir()`，Windows 為 `%TEMP%`）下的暫存檔並 `loadfile`；回應帶 `path` 欄位，前端 `curScene` 指到它，「重新載入場景」才會載回剛上傳的內容。
 - `POST /feedback` → 回報收件匣（GEO-183，見下節），寫進 repo 的 `feedback/<id>/`；`GEOMETRY_FEEDBACK_DIR` 可改落點（測試用）。
 - POST 在讀取內容前檢查大小：`/api` 上限 64 KiB，`/upload` 與模型請求上限 16 MiB，工程請求上限 1 MiB，`/feedback` 上限 32 MiB；超限回 HTTP 413，未知路徑回 HTTP 404，不送進核心。
-- POST 跨站防護（L3）：`Origin` 存在且非 `http://127.0.0.1:<port>` / `http://localhost:<port>` → 403；`Host` 非本機 → 403；無 `Origin` 的 curl/測試腳本放行。`cmd` 含 `\r`/`\n` 或超過 4094 bytes → 直接回 `{"ok":false}` 不送 bridge。
+- POST 跨站防護（L3）：`Origin` 存在且非 `http://127.0.0.1:<port>` / `http://localhost:<port>` → 403；`Host` 非本機 → 403；無 `Origin` 的 curl/測試腳本放行。**GET 同樣先驗 `Host`**（非本機 → 403，擋 DNS rebinding 讀 `/runtime`、`/scenes`、`/scenarios/editor` 等），規則與 POST 共用 `_host_allowed()`；不帶 `Host` 照舊放行。`cmd` 含 `\r`/`\n` 或超過 4094 bytes → 直接回 `{"ok":false}` 不送 bridge。
 
 ## 回報收件匣（GEO-183）
 
