@@ -1,0 +1,18 @@
+{
+  "raw_stdout": "",
+  "raw_stderr": "Command '['/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python', '-c', \"import sys,time;print('partial stdout',flush=True);print('partial stderr',file=sys.stderr,flush=True);time.sleep(30)\"]' timed out after 0.5 seconds",
+  "rows": [
+    {
+      "name": "timeout",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-c",
+        "import sys,time;print('partial stdout',flush=True);print('partial stderr',file=sys.stderr,flush=True);time.sleep(30)"
+      ],
+      "exit": 2,
+      "seconds": 0.5033775730007619,
+      "timed_out": false,
+      "error": "Command '['/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python', '-c', \"import sys,time;print('partial stdout',flush=True);print('partial stderr',file=sys.stderr,flush=True);time.sleep(30)\"]' timed out after 0.5 seconds"
+    }
+  ]
+}
