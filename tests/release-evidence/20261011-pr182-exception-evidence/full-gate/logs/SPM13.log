@@ -1,0 +1,14 @@
+test_exact_dump_load_zero_ids_empty_profile_and_fail_closed (tests.test_section_profile_native.SectionProfileNative.test_exact_dump_load_zero_ids_empty_profile_and_fail_closed) ... FAIL
+
+======================================================================
+FAIL: test_exact_dump_load_zero_ids_empty_profile_and_fail_closed (tests.test_section_profile_native.SectionProfileNative.test_exact_dump_load_zero_ids_empty_profile_and_fail_closed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_section_profile_native.py", line 427, in test_exact_dump_load_zero_ids_empty_profile_and_fail_closed
+    self.assertFalse(self.command("loadfile " + str(path))["ok"], "I51: a scene with a %s must be rejected" % label)
+AssertionError: True is not false : I51: a scene with a missing requires section-profile/1 marker must be rejected
+
+----------------------------------------------------------------------
+Ran 1 test in 0.095s
+
+FAILED (failures=1)

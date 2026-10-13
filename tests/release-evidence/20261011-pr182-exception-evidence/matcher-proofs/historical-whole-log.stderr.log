@@ -1,0 +1,127 @@
+test_case_declared_modelerror_is_detection (tests.test_section_profile_mutation_check.ExceptionEvidence.test_case_declared_modelerror_is_detection) ... ok
+test_causes_must_all_belong_to_one_exception_including_subtests (tests.test_section_profile_mutation_check.ExceptionEvidence.test_causes_must_all_belong_to_one_exception_including_subtests) ... FAIL
+test_duplicate_terminal_records_are_blocked (tests.test_section_profile_mutation_check.ExceptionEvidence.test_duplicate_terminal_records_are_blocked) ... FAIL
+test_error_type_requires_explicit_case_allowlist (tests.test_section_profile_mutation_check.ExceptionEvidence.test_error_type_requires_explicit_case_allowlist) ... FAIL
+test_exit_and_exception_counts_must_agree (tests.test_section_profile_mutation_check.ExceptionEvidence.test_exit_and_exception_counts_must_agree) ... FAIL
+test_keyerror_cannot_borrow_cause_from_traceback_source (tests.test_section_profile_mutation_check.ExceptionEvidence.test_keyerror_cannot_borrow_cause_from_traceback_source) ... FAIL
+test_malformed_record_is_blocked (tests.test_section_profile_mutation_check.ExceptionEvidence.test_malformed_record_is_blocked) ... FAIL
+test_missing_evidence_is_blocked (tests.test_section_profile_mutation_check.ExceptionEvidence.test_missing_evidence_is_blocked) ... FAIL
+test_missing_or_duplicate_executed_method_is_blocked (tests.test_section_profile_mutation_check.ExceptionEvidence.test_missing_or_duplicate_executed_method_is_blocked) ... 
+  test_missing_or_duplicate_executed_method_is_blocked (tests.test_section_profile_mutation_check.ExceptionEvidence.test_missing_or_duplicate_executed_method_is_blocked) (names=[]) ... FAIL
+  test_missing_or_duplicate_executed_method_is_blocked (tests.test_section_profile_mutation_check.ExceptionEvidence.test_missing_or_duplicate_executed_method_is_blocked) (names=['tests.test_section_profile_native.SectionProfileNative.test_panel_strict_width_fixed_spec_and_long_run', 'tests.test_section_profile_native.SectionProfileNative.test_panel_strict_width_fixed_spec_and_long_run']) ... FAIL
+test_multiline_assertion_keeps_cause_after_three_hundred_characters (tests.test_section_profile_mutation_check.ExceptionEvidence.test_multiline_assertion_keeps_cause_after_three_hundred_characters) ... ok
+test_other_method_cannot_supply_cause_to_expected_method (tests.test_section_profile_mutation_check.ExceptionEvidence.test_other_method_cannot_supply_cause_to_expected_method) ... FAIL
+test_same_method_name_from_another_module_is_not_the_killer (tests.test_section_profile_mutation_check.ExceptionEvidence.test_same_method_name_from_another_module_is_not_the_killer) ... FAIL
+test_skips_cannot_be_detection (tests.test_section_profile_mutation_check.ExceptionEvidence.test_skips_cannot_be_detection) ... FAIL
+test_spm41_named_assertion_still_detects (tests.test_section_profile_mutation_check.ExceptionEvidence.test_spm41_named_assertion_still_detects) ... ok
+test_stdout_cannot_supply_missing_exception_cause (tests.test_section_profile_mutation_check.ExceptionEvidence.test_stdout_cannot_supply_missing_exception_cause) ... FAIL
+test_wrong_method_with_cause_is_not_the_killer (tests.test_section_profile_mutation_check.ExceptionEvidence.test_wrong_method_with_cause_is_not_the_killer) ... ok
+
+======================================================================
+FAIL: test_causes_must_all_belong_to_one_exception_including_subtests (tests.test_section_profile_mutation_check.ExceptionEvidence.test_causes_must_all_belong_to_one_exception_including_subtests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_section_profile_mutation_check.py", line 135, in test_causes_must_all_belong_to_one_exception_including_subtests
+    self.assertNotEqual(self.judge(events)['verdict'], 'killed')
+AssertionError: 'killed' == 'killed'
+
+======================================================================
+FAIL: test_duplicate_terminal_records_are_blocked (tests.test_section_profile_mutation_check.ExceptionEvidence.test_duplicate_terminal_records_are_blocked)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_section_profile_mutation_check.py", line 146, in test_duplicate_terminal_records_are_blocked
+    self.assertNotEqual(self.judge([e, deepcopy(e)])['verdict'], 'killed')
+AssertionError: 'killed' == 'killed'
+
+======================================================================
+FAIL: test_error_type_requires_explicit_case_allowlist (tests.test_section_profile_mutation_check.ExceptionEvidence.test_error_type_requires_explicit_case_allowlist)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_section_profile_mutation_check.py", line 138, in test_error_type_requires_explicit_case_allowlist
+    self.assertNotEqual(self.judge([self.event(self.cause, 'error', 'builtins.ValueError')])['verdict'], 'killed')
+AssertionError: 'killed' == 'killed'
+
+======================================================================
+FAIL: test_exit_and_exception_counts_must_agree (tests.test_section_profile_mutation_check.ExceptionEvidence.test_exit_and_exception_counts_must_agree)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_section_profile_mutation_check.py", line 156, in test_exit_and_exception_counts_must_agree
+    self.assertNotEqual(self.judge([e], receipt=evidence)['verdict'], 'killed')
+AssertionError: 'killed' == 'killed'
+
+======================================================================
+FAIL: test_keyerror_cannot_borrow_cause_from_traceback_source (tests.test_section_profile_mutation_check.ExceptionEvidence.test_keyerror_cannot_borrow_cause_from_traceback_source)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_section_profile_mutation_check.py", line 120, in test_keyerror_cannot_borrow_cause_from_traceback_source
+    self.assertNotEqual(self.judge([event], log)['verdict'], 'killed')
+AssertionError: 'killed' == 'killed'
+
+======================================================================
+FAIL: test_malformed_record_is_blocked (tests.test_section_profile_mutation_check.ExceptionEvidence.test_malformed_record_is_blocked)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_section_profile_mutation_check.py", line 150, in test_malformed_record_is_blocked
+    self.assertNotEqual(self.judge([e], log='FAIL: %s (fixture)\n%s\n' % (gate.PANEL,self.cause))['verdict'], 'killed')
+AssertionError: 'killed' == 'killed'
+
+======================================================================
+FAIL: test_missing_evidence_is_blocked (tests.test_section_profile_mutation_check.ExceptionEvidence.test_missing_evidence_is_blocked)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_section_profile_mutation_check.py", line 142, in test_missing_evidence_is_blocked
+    self.assertNotEqual(gate.verdict(self.case, 1, log)['verdict'], 'killed')
+AssertionError: 'killed' == 'killed'
+
+======================================================================
+FAIL: test_missing_or_duplicate_executed_method_is_blocked (tests.test_section_profile_mutation_check.ExceptionEvidence.test_missing_or_duplicate_executed_method_is_blocked) (names=[])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_section_profile_mutation_check.py", line 163, in test_missing_or_duplicate_executed_method_is_blocked
+    self.assertNotEqual(self.judge([e], receipt=evidence)['verdict'], 'killed')
+AssertionError: 'killed' == 'killed'
+
+======================================================================
+FAIL: test_missing_or_duplicate_executed_method_is_blocked (tests.test_section_profile_mutation_check.ExceptionEvidence.test_missing_or_duplicate_executed_method_is_blocked) (names=['tests.test_section_profile_native.SectionProfileNative.test_panel_strict_width_fixed_spec_and_long_run', 'tests.test_section_profile_native.SectionProfileNative.test_panel_strict_width_fixed_spec_and_long_run'])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_section_profile_mutation_check.py", line 163, in test_missing_or_duplicate_executed_method_is_blocked
+    self.assertNotEqual(self.judge([e], receipt=evidence)['verdict'], 'killed')
+AssertionError: 'killed' == 'killed'
+
+======================================================================
+FAIL: test_other_method_cannot_supply_cause_to_expected_method (tests.test_section_profile_mutation_check.ExceptionEvidence.test_other_method_cannot_supply_cause_to_expected_method)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_section_profile_mutation_check.py", line 129, in test_other_method_cannot_supply_cause_to_expected_method
+    self.assertNotEqual(self.judge(events)['verdict'], 'killed')
+AssertionError: 'killed' == 'killed'
+
+======================================================================
+FAIL: test_same_method_name_from_another_module_is_not_the_killer (tests.test_section_profile_mutation_check.ExceptionEvidence.test_same_method_name_from_another_module_is_not_the_killer)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_section_profile_mutation_check.py", line 178, in test_same_method_name_from_another_module_is_not_the_killer
+    self.assertNotEqual(self.judge([self.event(self.cause, name='other.Fixture.'+gate.PANEL)])['verdict'], 'killed')
+AssertionError: 'killed' == 'killed'
+
+======================================================================
+FAIL: test_skips_cannot_be_detection (tests.test_section_profile_mutation_check.ExceptionEvidence.test_skips_cannot_be_detection)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_section_profile_mutation_check.py", line 187, in test_skips_cannot_be_detection
+    self.assertNotEqual(self.judge([e], receipt=evidence)['verdict'], 'killed')
+AssertionError: 'killed' == 'killed'
+
+======================================================================
+FAIL: test_stdout_cannot_supply_missing_exception_cause (tests.test_section_profile_mutation_check.ExceptionEvidence.test_stdout_cannot_supply_missing_exception_cause)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_section_profile_mutation_check.py", line 125, in test_stdout_cannot_supply_missing_exception_cause
+    self.assertNotEqual(self.judge([event], log)['verdict'], 'killed')
+AssertionError: 'killed' == 'killed'
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.006s
+
+FAILED (failures=13)

@@ -1,4 +1,5 @@
 import contextlib
+import http.client
 import http.server
 import importlib.util
 import io
@@ -332,6 +333,88 @@ class BridgeServerTests(unittest.TestCase):
                     urllib.request.urlopen(base + route)
                 self.assertEqual(result.exception.code, 404)
                 result.exception.close()
+
+    # --- GET Host gate (S9): a DNS-rebinding page sends its own name in Host -----------------
+    GATED_GET_ROUTES = ["/runtime", "/scenes", "/scenarios/editor", "/", "/index.html", "/app.js",
+                        "/axioms", "/model/capabilities", "/model/space-examples",
+                        "/rule-cases/binding", "/runtime?scenario=nope", "/no-such-route"]
+
+    def exchange(self, base, method, route, host):
+        """One request with an exact Host header (host=None sends no Host at all).
+
+        urllib always sends the real address, so a spoofed Host needs http.client."""
+        connection = http.client.HTTPConnection("127.0.0.1", int(base.rsplit(":", 1)[1]), timeout=5)
+        try:
+            connection.putrequest(method, route, skip_host=True, skip_accept_encoding=True)
+            if host is not None:
+                connection.putheader("Host", host)
+            if method == "POST":
+                connection.putheader("Content-Length", "0")
+            connection.endheaders()
+            response = connection.getresponse()
+            headers = {name.lower(): value for name, value in response.getheaders()}
+            return response.status, headers, response.read().decode("utf-8", "replace")
+        finally:
+            connection.close()
+
+    def test_foreign_host_cannot_read_any_get_route(self):
+        mod = self.server_module
+        secrets = {"scene directory": str(mod.SCENE_DIR),
+                   "scene directory (JSON-escaped)": json.dumps(str(mod.SCENE_DIR))[1:-1],
+                   "session id": mod.root_context.session,
+                   "runtime version": mod.RUNTIME.version,
+                   "runtime schema": "geometry-runtime/1"}
+        with self.http_server() as base:
+            port = base.rsplit(":", 1)[1]
+            for host in ["evil.example", f"evil.example:{port}", f"127.0.0.1.evil.example:{port}",
+                         f"localhost.evil.example:{port}", f"10.0.0.5:{port}"]:
+                for route in self.GATED_GET_ROUTES:
+                    with self.subTest(host=host, route=route):
+                        status, headers, body = self.exchange(base, "GET", route, host)
+                        leaked = [name for name, needle in secrets.items() if needle in body]
+                        leaked += [f"{name} header" for name in ("x-geometry-session", "x-geometry-version")
+                                   if name in headers]
+                        self.assertEqual((status, leaked), (403, []),
+                                         f"GET {route} with Host {host!r} was served (HTTP {status}); leaked: {leaked or 'nothing identifiable'}")
+        self.assertEqual(self.process.stdin.getvalue(), b"")
+
+    def test_loopback_host_and_missing_host_still_read_state_routes(self):
+        mod = self.server_module
+        with self.http_server() as base:
+            port = base.rsplit(":", 1)[1]
+            for host in [f"127.0.0.1:{port}", f"localhost:{port}", "127.0.0.1", None]:
+                for route in ["/runtime", "/scenes", "/scenarios/editor", "/app.js"]:
+                    with self.subTest(host=host, route=route):
+                        status, headers, body = self.exchange(base, "GET", route, host)
+                        self.assertEqual(status, 200, f"GET {route} with Host {host!r} was refused (HTTP {status})")
+                        self.assertEqual(headers["x-geometry-session"], mod.root_context.session)
+                        if route == "/runtime":
+                            self.assertEqual(json.loads(body)["session"], mod.root_context.session)
+                        elif route == "/scenes":
+                            self.assertIsInstance(json.loads(body), list)
+                        elif route == "/scenarios/editor":
+                            self.assertTrue(json.loads(body)["ok"])
+
+    def test_managed_preview_host_is_allowed_only_when_the_server_opted_in(self):
+        with self.http_server() as base:
+            with self.subTest(opted_in=False):
+                self.assertEqual(self.exchange(base, "GET", "/runtime", "terminal.local:4173")[0], 403)
+            opted_in = {"127.0.0.1", "localhost", "terminal.local"}
+            with self.subTest(opted_in=True), patch.object(self.server_module, "LOCAL_HOSTS", opted_in):
+                self.assertEqual(self.exchange(base, "GET", "/runtime", "terminal.local:4173")[0], 200)
+                self.assertEqual(self.exchange(base, "GET", "/runtime", "evil.example:4173")[0], 403)
+
+    def test_get_and_post_apply_the_same_host_rule(self):
+        # POST /no-such-route is 404 once the Host passes and 403 when it does not, and never reads a body.
+        with self.http_server() as base:
+            port = base.rsplit(":", 1)[1]
+            for host in ["evil.example", f"evil.example:{port}", f"127.0.0.1:{port}", f"localhost:{port}",
+                         "127.0.0.1", "localhost", f"127.0.0.1.evil.example:{port}", "", None]:
+                with self.subTest(host=host):
+                    get_refused = self.exchange(base, "GET", "/runtime", host)[0] == 403
+                    post_status = self.exchange(base, "POST", "/no-such-route", host)[0]
+                    self.assertEqual(post_status, 403 if get_refused else 404,
+                                     f"Host {host!r}: GET refused={get_refused} but POST answered {post_status}")
 
     def test_catalog_and_vendor_get_use_the_same_captured_bytes_and_routes(self):
         from runtime_version import RuntimeSnapshot, static_catalog

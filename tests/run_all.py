@@ -56,6 +56,7 @@ PY_NEEDS = {
     'test_section_profile_native': ['bridge', 'model-base'],
     'test_panel_fill_finish_surface': ['bridge'],
     'test_section_profile_modeling': ['bridge', 'model-base'],
+    'test_section_profile_mutation_check': [],
     'test_assembly_generation': ['bridge'],
     'test_axiom_reader': [],
     'test_binaries': [],
