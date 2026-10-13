@@ -1,0 +1,756 @@
+{
+  "kind": "static-source-location-correction-only",
+  "productExecution": false,
+  "archivedPayloadExecution": false,
+  "originalDeliveryCommit": "52c34a6d6faef1d3cdaf52d52b6f8edb66eda012",
+  "archiveSha256": "89a7ea908a7fb3d0957d1103d45f00b11c5de55d2a305b589b5a5bfcf7d6f5ba",
+  "manifestSha256": "317572989637967e5b0ba7974b1dc5d396976ace00886dcef4f919846158ccb8",
+  "verifiedMembers": 328,
+  "originalSummarySha256": "4750214a24efd8daf4fd58dc10bdb599370e2f694ee10d38206153150f586d29",
+  "sourceFile": "geometry-web/grid-system-workspace.js",
+  "sourceMembers": [
+    "source-snapshots/p70-vs-195/geometry-web/grid-system-workspace.js",
+    "source-snapshots/p88-vs-b406/geometry-web/grid-system-workspace.js"
+  ],
+  "sourceSha256": "ce0c48d2d2c3d0102f05a45c58ac1568da991c28cc55e2461c1a4644f2e7cf01",
+  "servedSha256": "19b834a3f5b4c40e1f7a69a63b9ffca31d3fdb07c77ab54b0a5213a6c0be29f4",
+  "fixedInstrumentSha256": "27f37137d84bf5757de899413ef3ae24bf96265c8216f14cda23c995a8dd9f52",
+  "fixedServedSha256": "f7bcf745cae7b14ed1f14cc02c0729c58fea5b198638fb448e4373469048f10e",
+  "onlyReturnLabelsChanged": true,
+  "unchangedAwaitLabels": [
+    "apiRequest('objects') @963",
+    "apiRequest('surfaces') @971",
+    "apiRequest('references') @972",
+    "apiRequest('objects') @973",
+    "setView3(false) @978",
+    "leaveFocus() @979",
+    "apiRequest('objects') @980",
+    "catalogPins(final,draftSchema) @986",
+    "catalogPins(final,F.GRID_RULE_SCHEMA) @987",
+    "apiRequest('objects') @988",
+    "apiRequest('source-inspect') @992",
+    "apiRequest('source-inspect') @996",
+    "render(state) @1012"
+  ],
+  "returnSites": [
+    {
+      "ordinal": 1,
+      "recordedLine": 952,
+      "correctedLine": 952,
+      "sourceColumnCodePoints": 7,
+      "value": "undefined",
+      "sourceLineText": "      return;"
+    },
+    {
+      "ordinal": 2,
+      "recordedLine": 954,
+      "correctedLine": 954,
+      "sourceColumnCodePoints": 77,
+      "value": "undefined",
+      "sourceLineText": "    if(!committed&&ReferenceWorkspace.busy){toast('專案正在保存或讀取，完成後再開啟網格工作區。');return;}"
+    },
+    {
+      "ordinal": 3,
+      "recordedLine": 955,
+      "correctedLine": 955,
+      "sourceColumnCodePoints": 66,
+      "value": "undefined",
+      "sourceLineText": "    if(!committed && window.DraftGate && !window.DraftGate.ask())return;"
+    },
+    {
+      "ordinal": 4,
+      "recordedLine": 956,
+      "correctedLine": 956,
+      "sourceColumnCodePoints": 165,
+      "value": "undefined",
+      "sourceLineText": "    if (dialog.open && !committed && (state?.busy || state?.initializing || state?.heldControls || state?.projectControls || state?.releasing || !mayLeave(state))) return;"
+    },
+    {
+      "ordinal": 5,
+      "recordedLine": 958,
+      "correctedLine": 958,
+      "sourceColumnCodePoints": 102,
+      "value": "undefined",
+      "sourceLineText": "    if(!committed&&saved&&!restored&&!window.confirm('專案已保留一份原始網格草稿。改開另一個來源／配置將取代它；已發布場景保持不變。確定取代？'))return;"
+    },
+    {
+      "ordinal": 6,
+      "recordedLine": 963,
+      "correctedLine": 963,
+      "sourceColumnCodePoints": 63,
+      "value": "undefined",
+      "sourceLineText": "    const objects=await apiRequest('objects');if(!ownsEntry())return;if(!objects.ok){toast(objects.error||'無法讀取網格。');return;}"
+    },
+    {
+      "ordinal": 7,
+      "recordedLine": 964,
+      "correctedLine": 963,
+      "sourceColumnCodePoints": 118,
+      "value": "undefined",
+      "sourceLineText": "    const objects=await apiRequest('objects');if(!ownsEntry())return;if(!objects.ok){toast(objects.error||'無法讀取網格。');return;}"
+    },
+    {
+      "ordinal": 8,
+      "recordedLine": 967,
+      "correctedLine": 966,
+      "sourceColumnCodePoints": 99,
+      "value": "undefined",
+      "sourceLineText": "    if(!restored&&(options.binding!=null&&!binding||system!=null&&!source)){toast('網格來源或配置已不存在。');return;}"
+    },
+    {
+      "ordinal": 9,
+      "recordedLine": 971,
+      "correctedLine": 969,
+      "sourceColumnCodePoints": 55,
+      "value": "undefined",
+      "sourceLineText": "      toast('所選網格來源或配置已變更。請更新畫布後重新選取，不會自動改用同編號的新內容。');return;"
+    },
+    {
+      "ordinal": 10,
+      "recordedLine": 972,
+      "correctedLine": 971,
+      "sourceColumnCodePoints": 65,
+      "value": "undefined",
+      "sourceLineText": "    const surfaces=await apiRequest('surfaces');if(!ownsEntry())return;if(!surfaces.ok){toast(surfaces.error||'無法讀取承載面。');return;}"
+    },
+    {
+      "ordinal": 11,
+      "recordedLine": 972,
+      "correctedLine": 971,
+      "sourceColumnCodePoints": 123,
+      "value": "undefined",
+      "sourceLineText": "    const surfaces=await apiRequest('surfaces');if(!ownsEntry())return;if(!surfaces.ok){toast(surfaces.error||'無法讀取承載面。');return;}"
+    },
+    {
+      "ordinal": 12,
+      "recordedLine": 973,
+      "correctedLine": 972,
+      "sourceColumnCodePoints": 69,
+      "value": "undefined",
+      "sourceLineText": "    const references=await apiRequest('references');if(!ownsEntry())return;if(!references.ok){toast(references.error||'無法讀取引用資料。');return;}"
+    },
+    {
+      "ordinal": 13,
+      "recordedLine": 973,
+      "correctedLine": 972,
+      "sourceColumnCodePoints": 132,
+      "value": "undefined",
+      "sourceLineText": "    const references=await apiRequest('references');if(!ownsEntry())return;if(!references.ok){toast(references.error||'無法讀取引用資料。');return;}"
+    },
+    {
+      "ordinal": 14,
+      "recordedLine": 975,
+      "correctedLine": 973,
+      "sourceColumnCodePoints": 62,
+      "value": "undefined",
+      "sourceLineText": "    const latest=await apiRequest('objects');if(!ownsEntry())return;if(!latest.ok){toast(latest.error||'無法複核所選網格。');return;}"
+    },
+    {
+      "ordinal": 15,
+      "recordedLine": 975,
+      "correctedLine": 973,
+      "sourceColumnCodePoints": 117,
+      "value": "undefined",
+      "sourceLineText": "    const latest=await apiRequest('objects');if(!ownsEntry())return;if(!latest.ok){toast(latest.error||'無法複核所選網格。');return;}"
+    },
+    {
+      "ordinal": 16,
+      "recordedLine": 979,
+      "correctedLine": 976,
+      "sourceColumnCodePoints": 40,
+      "value": "undefined",
+      "sourceLineText": "      toast('讀取期間所選網格已變更。請更新畫布後重新選取。');return;"
+    },
+    {
+      "ordinal": 17,
+      "recordedLine": 980,
+      "correctedLine": 978,
+      "sourceColumnCodePoints": 78,
+      "value": "undefined",
+      "sourceLineText": "    if(options.ruleKey==null){if(view3)await setView3(false);if(!ownsEntry())return;"
+    },
+    {
+      "ordinal": 18,
+      "recordedLine": 981,
+      "correctedLine": 979,
+      "sourceColumnCodePoints": 68,
+      "value": "undefined",
+      "sourceLineText": "      if(oc.focus){oc.stack=[];await leaveFocus();}if(!ownsEntry())return;}"
+    },
+    {
+      "ordinal": 19,
+      "recordedLine": 983,
+      "correctedLine": 980,
+      "sourceColumnCodePoints": 61,
+      "value": "undefined",
+      "sourceLineText": "    const final=await apiRequest('objects');if(!ownsEntry())return;if(!final.ok){toast(final.error||'無法完成網格複核。');return;}"
+    },
+    {
+      "ordinal": 20,
+      "recordedLine": 985,
+      "correctedLine": 980,
+      "sourceColumnCodePoints": 114,
+      "value": "undefined",
+      "sourceLineText": "    const final=await apiRequest('objects');if(!ownsEntry())return;if(!final.ok){toast(final.error||'無法完成網格複核。');return;}"
+    },
+    {
+      "ordinal": 21,
+      "recordedLine": 987,
+      "correctedLine": 983,
+      "sourceColumnCodePoints": 43,
+      "value": "undefined",
+      "sourceLineText": "      toast('切換工作區期間所選網格已變更。請更新畫布後重新選取。');return;"
+    },
+    {
+      "ordinal": 22,
+      "recordedLine": 989,
+      "correctedLine": 986,
+      "sourceColumnCodePoints": 69,
+      "value": "undefined",
+      "sourceLineText": "    const pins=await catalogPins(final,draftSchema);if(!ownsEntry())return;"
+    },
+    {
+      "ordinal": 23,
+      "recordedLine": 991,
+      "correctedLine": 987,
+      "sourceColumnCodePoints": 118,
+      "value": "undefined",
+      "sourceLineText": "    const fullPins=draftSchema===F.GRID_RULE_SCHEMA?pins:await catalogPins(final,F.GRID_RULE_SCHEMA);if(!ownsEntry())return;"
+    },
+    {
+      "ordinal": 24,
+      "recordedLine": 992,
+      "correctedLine": 988,
+      "sourceColumnCodePoints": 76,
+      "value": "undefined",
+      "sourceLineText": "    const checked=await apiRequest('objects');if(!ownsEntry()||!checked.ok)return;"
+    },
+    {
+      "ordinal": 25,
+      "recordedLine": 996,
+      "correctedLine": 991,
+      "sourceColumnCodePoints": 111,
+      "value": "undefined",
+      "sourceLineText": "       JSON.stringify(final.parameters)!==JSON.stringify(checked.parameters)){toast('所選來源或參數在開啟期間已變更。請重新選取。');return;}"
+    },
+    {
+      "ordinal": 26,
+      "recordedLine": 997,
+      "correctedLine": 992,
+      "sourceColumnCodePoints": 105,
+      "value": "undefined",
+      "sourceLineText": "    if(options.ruleKey==null){const graph=await apiRequest('source-inspect');if(!ownsEntry()||!graph.ok)return;"
+    },
+    {
+      "ordinal": 27,
+      "recordedLine": 998,
+      "correctedLine": 993,
+      "sourceColumnCodePoints": 93,
+      "value": "undefined",
+      "sourceLineText": "      if(graph.sourceFingerprint!==references.sourceFingerprint){toast('來源在讀取期間已變更，請重新開啟。');return;}}"
+    },
+    {
+      "ordinal": 28,
+      "recordedLine": 1000,
+      "correctedLine": 995,
+      "sourceColumnCodePoints": 77,
+      "value": "false",
+      "sourceLineText": "      if(!source?.rules?.some(r=>r.ruleKey===options.ruleKey)||!ownsEntry())return false;"
+    },
+    {
+      "ordinal": 29,
+      "recordedLine": 1003,
+      "correctedLine": 996,
+      "sourceColumnCodePoints": 81,
+      "value": "false",
+      "sourceLineText": "      const graph=await apiRequest('source-inspect');if(!ownsEntry()||!graph.ok)return false;"
+    },
+    {
+      "ordinal": 30,
+      "recordedLine": 1008,
+      "correctedLine": 999,
+      "sourceColumnCodePoints": 60,
+      "value": "false",
+      "sourceLineText": "      if(options.beginNavigation?.()===false||!ownsEntry())return false;"
+    },
+    {
+      "ordinal": 31,
+      "recordedLine": 1009,
+      "correctedLine": 1004,
+      "sourceColumnCodePoints": 116,
+      "value": "undefined",
+      "sourceLineText": "    if(source&&source.mode!=='infinite'&&!restored){if(dialog.open)dialog.close();GridSystemEditor.open(source.id);return;}"
+    },
+    {
+      "ordinal": 32,
+      "recordedLine": 1019,
+      "correctedLine": 1012,
+      "sourceColumnCodePoints": 76,
+      "value": "undefined",
+      "sourceLineText": "    if(!dialog.open)dialog.showModal();await render(state);if(!ownsEntry())return;"
+    },
+    {
+      "ordinal": 33,
+      "recordedLine": 1024,
+      "correctedLine": 1015,
+      "sourceColumnCodePoints": 91,
+      "value": "true",
+      "sourceLineText": "    else (state.mode==='binding'?$('igBoundary'):$('igName')).focus({preventScroll:true});return true;"
+    }
+  ],
+  "runs": {
+    "ui209-p70-abort18-01": {
+      "sourceRef": "c93cfca9bb1af0d82d32878e2a4a1eb1399148f8",
+      "sourceSha256": "ce0c48d2d2c3d0102f05a45c58ac1568da991c28cc55e2461c1a4644f2e7cf01",
+      "servedSha256": "19b834a3f5b4c40e1f7a69a63b9ffca31d3fdb07c77ab54b0a5213a6c0be29f4",
+      "originalInstrumentSha256": "850033fd7369cade85c5d364ebb285046a5b36083f57866b9339925637d2e817",
+      "browserJsonlSha256": "9ef31ff3a2f58121f5e730ef9f6288894a9edeedd6d1ff60f304c0f6c1b97097",
+      "events": [
+        {
+          "browserJsonlLine": 190,
+          "openId": 1,
+          "browserMs": 3763.100000000559,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        },
+        {
+          "browserJsonlLine": 405,
+          "openId": 2,
+          "browserMs": 7438.100000000559,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        },
+        {
+          "browserJsonlLine": 496,
+          "openId": 3,
+          "browserMs": 22960.799999999814,
+          "recordedLine": 964,
+          "correctedLine": 963,
+          "siteOrdinal": 7
+        },
+        {
+          "browserJsonlLine": 624,
+          "openId": 4,
+          "browserMs": 27232.60000000056,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        },
+        {
+          "browserJsonlLine": 709,
+          "openId": 5,
+          "browserMs": 27750.299999999814,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        }
+      ]
+    },
+    "ui209-p70-abort18-02": {
+      "sourceRef": "c93cfca9bb1af0d82d32878e2a4a1eb1399148f8",
+      "sourceSha256": "ce0c48d2d2c3d0102f05a45c58ac1568da991c28cc55e2461c1a4644f2e7cf01",
+      "servedSha256": "19b834a3f5b4c40e1f7a69a63b9ffca31d3fdb07c77ab54b0a5213a6c0be29f4",
+      "originalInstrumentSha256": "850033fd7369cade85c5d364ebb285046a5b36083f57866b9339925637d2e817",
+      "browserJsonlSha256": "972d2202511453a5b91c344d6315a255fcc59843ae337ed27fcc0be4f0774c0c",
+      "events": [
+        {
+          "browserJsonlLine": 190,
+          "openId": 1,
+          "browserMs": 2546.4000000003725,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        },
+        {
+          "browserJsonlLine": 405,
+          "openId": 2,
+          "browserMs": 5691.5999999996275,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        },
+        {
+          "browserJsonlLine": 495,
+          "openId": 3,
+          "browserMs": 21180.700000000186,
+          "recordedLine": 964,
+          "correctedLine": 963,
+          "siteOrdinal": 7
+        }
+      ]
+    },
+    "ui209-p70-baseline-01": {
+      "sourceRef": "c93cfca9bb1af0d82d32878e2a4a1eb1399148f8",
+      "sourceSha256": "ce0c48d2d2c3d0102f05a45c58ac1568da991c28cc55e2461c1a4644f2e7cf01",
+      "servedSha256": "19b834a3f5b4c40e1f7a69a63b9ffca31d3fdb07c77ab54b0a5213a6c0be29f4",
+      "originalInstrumentSha256": "850033fd7369cade85c5d364ebb285046a5b36083f57866b9339925637d2e817",
+      "browserJsonlSha256": "6f1db6dd2d58dde670a1a77c40a662968d575fd2a6d9efff34fe3afeb57c6fda",
+      "events": [
+        {
+          "browserJsonlLine": 190,
+          "openId": 1,
+          "browserMs": 2222,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        },
+        {
+          "browserJsonlLine": 405,
+          "openId": 2,
+          "browserMs": 5351,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        },
+        {
+          "browserJsonlLine": 503,
+          "openId": 3,
+          "browserMs": 5792.0999999996275,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        }
+      ]
+    },
+    "ui209-p70-baseline-02": {
+      "sourceRef": "c93cfca9bb1af0d82d32878e2a4a1eb1399148f8",
+      "sourceSha256": "ce0c48d2d2c3d0102f05a45c58ac1568da991c28cc55e2461c1a4644f2e7cf01",
+      "servedSha256": "19b834a3f5b4c40e1f7a69a63b9ffca31d3fdb07c77ab54b0a5213a6c0be29f4",
+      "originalInstrumentSha256": "850033fd7369cade85c5d364ebb285046a5b36083f57866b9339925637d2e817",
+      "browserJsonlSha256": "54a19aa052fe98a5b731f0ad9dc10890bb244a0b0e6ed502a5b4367c7d27f00d",
+      "events": [
+        {
+          "browserJsonlLine": 190,
+          "openId": 1,
+          "browserMs": 2413.0999999996275,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        },
+        {
+          "browserJsonlLine": 405,
+          "openId": 2,
+          "browserMs": 5617.5,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        },
+        {
+          "browserJsonlLine": 509,
+          "openId": 3,
+          "browserMs": 6334.799999999814,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        }
+      ]
+    },
+    "ui209-p70-hold3-01": {
+      "sourceRef": "c93cfca9bb1af0d82d32878e2a4a1eb1399148f8",
+      "sourceSha256": "ce0c48d2d2c3d0102f05a45c58ac1568da991c28cc55e2461c1a4644f2e7cf01",
+      "servedSha256": "19b834a3f5b4c40e1f7a69a63b9ffca31d3fdb07c77ab54b0a5213a6c0be29f4",
+      "originalInstrumentSha256": "850033fd7369cade85c5d364ebb285046a5b36083f57866b9339925637d2e817",
+      "browserJsonlSha256": "e1f1c9f0b0122bf32373e1c8a5858884a8435130836ca5c6c7823313f3f4c178",
+      "events": [
+        {
+          "browserJsonlLine": 190,
+          "openId": 1,
+          "browserMs": 3150.5,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        },
+        {
+          "browserJsonlLine": 405,
+          "openId": 2,
+          "browserMs": 6632.100000000559,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        },
+        {
+          "browserJsonlLine": 513,
+          "openId": 3,
+          "browserMs": 10258.799999999814,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        }
+      ]
+    },
+    "ui209-p70-hold3-02": {
+      "sourceRef": "c93cfca9bb1af0d82d32878e2a4a1eb1399148f8",
+      "sourceSha256": "ce0c48d2d2c3d0102f05a45c58ac1568da991c28cc55e2461c1a4644f2e7cf01",
+      "servedSha256": "19b834a3f5b4c40e1f7a69a63b9ffca31d3fdb07c77ab54b0a5213a6c0be29f4",
+      "originalInstrumentSha256": "850033fd7369cade85c5d364ebb285046a5b36083f57866b9339925637d2e817",
+      "browserJsonlSha256": "e995dd629279f4e6c0fc6fca8fff8f7a4990bc3e80f326ed491eecd7f27101d4",
+      "events": [
+        {
+          "browserJsonlLine": 190,
+          "openId": 1,
+          "browserMs": 2843.7999999998137,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        },
+        {
+          "browserJsonlLine": 405,
+          "openId": 2,
+          "browserMs": 6018.5999999996275,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        },
+        {
+          "browserJsonlLine": 512,
+          "openId": 3,
+          "browserMs": 9742.299999999814,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        }
+      ]
+    },
+    "ui209-p88-wheel-01": {
+      "sourceRef": "b40620cd433ae36c6a3905c4293313dfd6e7f745",
+      "sourceSha256": "ce0c48d2d2c3d0102f05a45c58ac1568da991c28cc55e2461c1a4644f2e7cf01",
+      "servedSha256": "19b834a3f5b4c40e1f7a69a63b9ffca31d3fdb07c77ab54b0a5213a6c0be29f4",
+      "originalInstrumentSha256": "850033fd7369cade85c5d364ebb285046a5b36083f57866b9339925637d2e817",
+      "browserJsonlSha256": "13fd96e34df7b35b1efc7caaf136f4567d1010e0fc07307c0abbfecf2aebc5e5",
+      "events": [
+        {
+          "browserJsonlLine": 293,
+          "openId": 1,
+          "browserMs": 3694.4000000003725,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        },
+        {
+          "browserJsonlLine": 465,
+          "openId": 2,
+          "browserMs": 5342.700000000186,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        },
+        {
+          "browserJsonlLine": 635,
+          "openId": 3,
+          "browserMs": 7079.5,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        },
+        {
+          "browserJsonlLine": 744,
+          "openId": 4,
+          "browserMs": 7788.4000000003725,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        },
+        {
+          "browserJsonlLine": 999,
+          "openId": 5,
+          "browserMs": 10668.600000000559,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        },
+        {
+          "browserJsonlLine": 1208,
+          "openId": 6,
+          "browserMs": 12789.700000000186,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        },
+        {
+          "browserJsonlLine": 1301,
+          "openId": 7,
+          "browserMs": 13257.100000000559,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        },
+        {
+          "browserJsonlLine": 1397,
+          "openId": 8,
+          "browserMs": 13808.600000000559,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        },
+        {
+          "browserJsonlLine": 1523,
+          "openId": 9,
+          "browserMs": 15456.400000000373,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        },
+        {
+          "browserJsonlLine": 1831,
+          "openId": 10,
+          "browserMs": 18841.900000000373,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        },
+        {
+          "browserJsonlLine": 2061,
+          "openId": 11,
+          "browserMs": 20517.900000000373,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        }
+      ]
+    },
+    "ui209-p88-wheel-02": {
+      "sourceRef": "b40620cd433ae36c6a3905c4293313dfd6e7f745",
+      "sourceSha256": "ce0c48d2d2c3d0102f05a45c58ac1568da991c28cc55e2461c1a4644f2e7cf01",
+      "servedSha256": "19b834a3f5b4c40e1f7a69a63b9ffca31d3fdb07c77ab54b0a5213a6c0be29f4",
+      "originalInstrumentSha256": "850033fd7369cade85c5d364ebb285046a5b36083f57866b9339925637d2e817",
+      "browserJsonlSha256": "6b4b61afa532261f9414c1dc27f000ef9a2aa6ebe0854a9a39f8b0ed291c60f7",
+      "events": [
+        {
+          "browserJsonlLine": 287,
+          "openId": 1,
+          "browserMs": 2020.5,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        },
+        {
+          "browserJsonlLine": 459,
+          "openId": 2,
+          "browserMs": 2928.5,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        },
+        {
+          "browserJsonlLine": 630,
+          "openId": 3,
+          "browserMs": 3927.4000000003725,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        },
+        {
+          "browserJsonlLine": 733,
+          "openId": 4,
+          "browserMs": 4305.799999999814,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        },
+        {
+          "browserJsonlLine": 988,
+          "openId": 5,
+          "browserMs": 6069.5,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        },
+        {
+          "browserJsonlLine": 1191,
+          "openId": 6,
+          "browserMs": 6941.5,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        },
+        {
+          "browserJsonlLine": 1272,
+          "openId": 7,
+          "browserMs": 7122.5,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        },
+        {
+          "browserJsonlLine": 1381,
+          "openId": 8,
+          "browserMs": 7310.200000000186,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        },
+        {
+          "browserJsonlLine": 1492,
+          "openId": 9,
+          "browserMs": 8627.5,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        },
+        {
+          "browserJsonlLine": 1760,
+          "openId": 10,
+          "browserMs": 10445.400000000373,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        },
+        {
+          "browserJsonlLine": 1969,
+          "openId": 11,
+          "browserMs": 11361.299999999814,
+          "recordedLine": 1024,
+          "correctedLine": 1015,
+          "siteOrdinal": 33
+        }
+      ]
+    }
+  },
+  "summaryPatches": [
+    {
+      "pointer": "/runs/ui209-p70-abort18-01/target/returns/0/line",
+      "recorded": 964,
+      "corrected": 963,
+      "browserJsonlMember": "runs/ui209-p70-abort18-01/browser.jsonl",
+      "browserJsonlLine": 496
+    },
+    {
+      "pointer": "/runs/ui209-p70-abort18-02/target/returns/0/line",
+      "recorded": 964,
+      "corrected": 963,
+      "browserJsonlMember": "runs/ui209-p70-abort18-02/browser.jsonl",
+      "browserJsonlLine": 495
+    },
+    {
+      "pointer": "/runs/ui209-p70-baseline-01/target/returns/0/line",
+      "recorded": 1024,
+      "corrected": 1015,
+      "browserJsonlMember": "runs/ui209-p70-baseline-01/browser.jsonl",
+      "browserJsonlLine": 503
+    },
+    {
+      "pointer": "/runs/ui209-p70-baseline-02/target/returns/0/line",
+      "recorded": 1024,
+      "corrected": 1015,
+      "browserJsonlMember": "runs/ui209-p70-baseline-02/browser.jsonl",
+      "browserJsonlLine": 509
+    },
+    {
+      "pointer": "/runs/ui209-p70-hold3-01/target/returns/0/line",
+      "recorded": 1024,
+      "corrected": 1015,
+      "browserJsonlMember": "runs/ui209-p70-hold3-01/browser.jsonl",
+      "browserJsonlLine": 513
+    },
+    {
+      "pointer": "/runs/ui209-p70-hold3-02/target/returns/0/line",
+      "recorded": 1024,
+      "corrected": 1015,
+      "browserJsonlMember": "runs/ui209-p70-hold3-02/browser.jsonl",
+      "browserJsonlLine": 512
+    }
+  ],
+  "limits": "Historical raw/summary remain unchanged. Ambiguous old labels fail closed; unobserved exits are only a static map. No new UI recovery, timing, or WSL evidence."
+}

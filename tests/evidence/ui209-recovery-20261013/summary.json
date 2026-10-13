@@ -1,0 +1,1803 @@
+{
+  "historicalWSLRootCause": "unknown",
+  "fullRunner": false,
+  "runs": {
+    "ui209-p70-abort18-01": {
+      "sourceRef": "c93cfca9bb1af0d82d32878e2a4a1eb1399148f8",
+      "exit": 1,
+      "seconds": 29.97532477799996,
+      "originalChecks": 2,
+      "originalFailures": 0,
+      "harnessError": null,
+      "exceptions": [],
+      "firstRed": "Grid control unreachable #igBoundary {\"x\":0,\"y\":0,\"w\":0,\"h\":0,\"hit\":false,\"disabled\":false}",
+      "firstRedConnection": "ready",
+      "firstRedBindingHidden": true,
+      "firstRedViewport": {
+        "width": 390,
+        "height": 844,
+        "visual": {
+          "width": 390,
+          "height": 844,
+          "scale": 1,
+          "offsetTop": 0
+        }
+      },
+      "finalViewport": {
+        "width": 1400,
+        "height": 1000,
+        "visual": {
+          "width": 1400,
+          "height": 1000,
+          "scale": 1,
+          "offsetTop": 0
+        }
+      },
+      "postScreenshotViewport": null,
+      "recovery": {
+        "route": "Return canvas -> connection retry -> original source -> new binding",
+        "reachable": true
+      },
+      "prefixCompleted": true,
+      "dumpSame": true,
+      "historyBefore": 4,
+      "historyAfter": {
+        "undoSame": false,
+        "redoSame": true,
+        "frameSame": true,
+        "limitSame": true,
+        "contextSame": true,
+        "tokenSame": true,
+        "undo": 7,
+        "redo": 0
+      },
+      "sourcesUnchanged": true,
+      "bridgeSha256": "133f374ea6575febe2c474053b2507d280eed07cc4fe6e83bf14387870779924",
+      "ownedServerExit": 0,
+      "ownsEntryFalseCount": 0,
+      "openGenerations": [
+        {
+          "id": 1,
+          "options": {
+            "committed": false
+          }
+        },
+        {
+          "id": 2,
+          "options": {
+            "system": 1,
+            "committed": true
+          }
+        },
+        {
+          "id": 3,
+          "options": {
+            "system": 1,
+            "mode": "binding",
+            "committed": false
+          }
+        },
+        {
+          "id": 4,
+          "options": {
+            "system": 1,
+            "committed": false
+          }
+        },
+        {
+          "id": 5,
+          "options": {
+            "system": 1,
+            "mode": "binding",
+            "committed": false
+          }
+        }
+      ],
+      "target": {
+        "requestId": "ui209-50",
+        "call": {
+          "id": 3,
+          "label": "apiRequest('objects') @963",
+          "mode": "binding"
+        },
+        "serverBeforeQueueMs": 0.304355,
+        "queueMs": 0.019885,
+        "injectedHoldMs": 18000.131343,
+        "nativeResponseMs": 0.27494,
+        "fetchRejectMs": 15000.4,
+        "signalAbortMs": 15000.1,
+        "abortReason": {
+          "name": "TimeoutError",
+          "message": "signal timed out"
+        },
+        "abortWasAfterFetchSettled": false,
+        "reject": {
+          "name": "TimeoutError",
+          "message": "signal timed out"
+        },
+        "serverDisconnected": true,
+        "openDurationMs": 15014.6,
+        "openEndState": {
+          "mode": "source",
+          "busy": false,
+          "initializing": false,
+          "heldControls": false,
+          "projectControls": false,
+          "releasing": false,
+          "serial": 3,
+          "projectBusy": false
+        },
+        "awaits": [
+          {
+            "label": "apiRequest('objects') @963",
+            "event": "open.await.begin",
+            "browserMs": 7957.9000000003725,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "apiRequest('objects') @963",
+            "event": "open.await.end",
+            "browserMs": 22960.10000000056,
+            "ok": false,
+            "error": "服務未在 15 秒內回應，請稍後重試。"
+          }
+        ],
+        "returns": [
+          {
+            "line": 964,
+            "value": null,
+            "state": {
+              "mode": "source",
+              "busy": false,
+              "initializing": false,
+              "heldControls": false,
+              "projectControls": false,
+              "releasing": false,
+              "serial": 3,
+              "projectBusy": false
+            }
+          }
+        ]
+      }
+    },
+    "ui209-p70-abort18-02": {
+      "sourceRef": "c93cfca9bb1af0d82d32878e2a4a1eb1399148f8",
+      "exit": 2,
+      "seconds": 27.41131292600039,
+      "originalChecks": 2,
+      "originalFailures": 0,
+      "harnessError": "Error: Grid control unreachable .ocard[data-kind=\"grid-system\"][data-id=\"1\"] {\"x\":195.00001525878906,\"y\":577.899169921875,\"w\":213.02523803710938,\"h\":180.2520751953125,\"hit\":false,\"disabled\":false}\n    at ctl (/workspace/geometry-axiom/geometry-web/cdp_helpers.js:155:27)\n    at async open (/workspace/geometry-axiom/geometry-web/grid_system_test.js:52:5)\n    at async p70 (/workspace/geometry-axiom/tests/diagnostics/ui209_browser.cjs:97:9)\n    at async Module.gridSystemTests [as exports] (/workspace/geometry-axiom/geometry-web/grid_system_test.js:74:3)\n    at async main (/workspace/geometry-axiom/tests/diagnostics/ui209_browser.cjs:158:5)",
+      "exceptions": [],
+      "firstRed": "Grid control unreachable #igBoundary {\"x\":0,\"y\":0,\"w\":0,\"h\":0,\"hit\":false,\"disabled\":false}",
+      "firstRedConnection": "ready",
+      "firstRedBindingHidden": true,
+      "firstRedViewport": {
+        "width": 390,
+        "height": 844,
+        "visual": {
+          "width": 390,
+          "height": 844,
+          "scale": 1,
+          "offsetTop": 0
+        }
+      },
+      "finalViewport": {
+        "width": 390,
+        "height": 844,
+        "visual": {
+          "width": 390,
+          "height": 844,
+          "scale": 1,
+          "offsetTop": 0
+        }
+      },
+      "postScreenshotViewport": null,
+      "recovery": null,
+      "prefixCompleted": false,
+      "dumpSame": null,
+      "historyBefore": null,
+      "historyAfter": null,
+      "sourcesUnchanged": true,
+      "bridgeSha256": "133f374ea6575febe2c474053b2507d280eed07cc4fe6e83bf14387870779924",
+      "ownedServerExit": 0,
+      "ownsEntryFalseCount": 0,
+      "openGenerations": [
+        {
+          "id": 1,
+          "options": {
+            "committed": false
+          }
+        },
+        {
+          "id": 2,
+          "options": {
+            "system": 1,
+            "committed": true
+          }
+        },
+        {
+          "id": 3,
+          "options": {
+            "system": 1,
+            "mode": "binding",
+            "committed": false
+          }
+        }
+      ],
+      "target": {
+        "requestId": "ui209-50",
+        "call": {
+          "id": 3,
+          "label": "apiRequest('objects') @963",
+          "mode": "binding"
+        },
+        "serverBeforeQueueMs": 0.076155,
+        "queueMs": 0.010674,
+        "injectedHoldMs": 18000.208456,
+        "nativeResponseMs": 0.745263,
+        "fetchRejectMs": 14999.5,
+        "signalAbortMs": 14998.8,
+        "abortReason": {
+          "name": "TimeoutError",
+          "message": "signal timed out"
+        },
+        "abortWasAfterFetchSettled": false,
+        "reject": {
+          "name": "TimeoutError",
+          "message": "signal timed out"
+        },
+        "serverDisconnected": true,
+        "openDurationMs": 15028.8,
+        "openEndState": {
+          "mode": "source",
+          "busy": false,
+          "initializing": false,
+          "heldControls": false,
+          "projectControls": false,
+          "releasing": false,
+          "serial": 3,
+          "projectBusy": false
+        },
+        "awaits": [
+          {
+            "label": "apiRequest('objects') @963",
+            "event": "open.await.begin",
+            "browserMs": 6170.0999999996275,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "apiRequest('objects') @963",
+            "event": "open.await.end",
+            "browserMs": 21177.799999999814,
+            "ok": false,
+            "error": "服務未在 15 秒內回應，請稍後重試。"
+          }
+        ],
+        "returns": [
+          {
+            "line": 964,
+            "value": null,
+            "state": {
+              "mode": "source",
+              "busy": false,
+              "initializing": false,
+              "heldControls": false,
+              "projectControls": false,
+              "releasing": false,
+              "serial": 3,
+              "projectBusy": false
+            }
+          }
+        ]
+      }
+    },
+    "ui209-p70-baseline-01": {
+      "sourceRef": "c93cfca9bb1af0d82d32878e2a4a1eb1399148f8",
+      "exit": 2,
+      "seconds": 7.959316659999786,
+      "originalChecks": 2,
+      "originalFailures": 0,
+      "harnessError": "Error: Recovery changed checked World/history/context\n    at compare (/workspace/geometry-axiom/tests/diagnostics/ui209_browser.cjs:72:116)\n    at async p70 (/workspace/geometry-axiom/tests/diagnostics/ui209_browser.cjs:101:23)\n    at async Module.gridSystemTests [as exports] (/workspace/geometry-axiom/geometry-web/grid_system_test.js:74:3)\n    at async main (/workspace/geometry-axiom/tests/diagnostics/ui209_browser.cjs:153:5)",
+      "exceptions": [],
+      "firstRed": null,
+      "firstRedConnection": null,
+      "firstRedBindingHidden": null,
+      "firstRedViewport": null,
+      "finalViewport": {
+        "width": 390,
+        "height": 844,
+        "visual": {
+          "width": 390,
+          "height": 844,
+          "scale": 1,
+          "offsetTop": 0
+        }
+      },
+      "postScreenshotViewport": null,
+      "recovery": null,
+      "prefixCompleted": false,
+      "dumpSame": null,
+      "historyBefore": null,
+      "historyAfter": null,
+      "sourcesUnchanged": true,
+      "bridgeSha256": "133f374ea6575febe2c474053b2507d280eed07cc4fe6e83bf14387870779924",
+      "ownedServerExit": 0,
+      "ownsEntryFalseCount": 0,
+      "openGenerations": [
+        {
+          "id": 1,
+          "options": {
+            "committed": false
+          }
+        },
+        {
+          "id": 2,
+          "options": {
+            "system": 1,
+            "committed": true
+          }
+        },
+        {
+          "id": 3,
+          "options": {
+            "system": 1,
+            "mode": "binding",
+            "committed": false
+          }
+        }
+      ],
+      "target": {
+        "requestId": "ui209-49",
+        "call": {
+          "id": 3,
+          "label": "apiRequest('objects') @963",
+          "mode": "binding"
+        },
+        "serverBeforeQueueMs": 0.108976,
+        "queueMs": 0.284126,
+        "injectedHoldMs": null,
+        "nativeResponseMs": 0.152776,
+        "fetchRejectMs": null,
+        "signalAbortMs": null,
+        "abortReason": null,
+        "abortWasAfterFetchSettled": null,
+        "reject": null,
+        "serverDisconnected": false,
+        "openDurationMs": 80.4,
+        "openEndState": {
+          "mode": "binding",
+          "busy": false,
+          "initializing": false,
+          "heldControls": false,
+          "projectControls": false,
+          "releasing": false,
+          "serial": 3,
+          "projectBusy": false
+        },
+        "awaits": [
+          {
+            "label": "apiRequest('objects') @963",
+            "event": "open.await.begin",
+            "browserMs": 5712.5999999996275,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "apiRequest('objects') @963",
+            "event": "open.await.end",
+            "browserMs": 5725.799999999814,
+            "ok": true,
+            "error": null
+          },
+          {
+            "label": "apiRequest('surfaces') @971",
+            "event": "open.await.begin",
+            "browserMs": 5725.899999999441,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "apiRequest('surfaces') @971",
+            "event": "open.await.end",
+            "browserMs": 5731.799999999814,
+            "ok": true,
+            "error": null
+          },
+          {
+            "label": "apiRequest('references') @972",
+            "event": "open.await.begin",
+            "browserMs": 5731.899999999441,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "apiRequest('references') @972",
+            "event": "open.await.end",
+            "browserMs": 5737.5,
+            "ok": true,
+            "error": null
+          },
+          {
+            "label": "apiRequest('objects') @973",
+            "event": "open.await.begin",
+            "browserMs": 5737.5999999996275,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "apiRequest('objects') @973",
+            "event": "open.await.end",
+            "browserMs": 5743.799999999814,
+            "ok": true,
+            "error": null
+          },
+          {
+            "label": "apiRequest('objects') @980",
+            "event": "open.await.begin",
+            "browserMs": 5744.0999999996275,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "apiRequest('objects') @980",
+            "event": "open.await.end",
+            "browserMs": 5749.799999999814,
+            "ok": true,
+            "error": null
+          },
+          {
+            "label": "catalogPins(final,draftSchema) @986",
+            "event": "open.await.begin",
+            "browserMs": 5749.899999999441,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "catalogPins(final,draftSchema) @986",
+            "event": "open.await.end",
+            "browserMs": 5750,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "catalogPins(final,F.GRID_RULE_SCHEMA) @987",
+            "event": "open.await.begin",
+            "browserMs": 5750.0999999996275,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "catalogPins(final,F.GRID_RULE_SCHEMA) @987",
+            "event": "open.await.end",
+            "browserMs": 5750.0999999996275,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "apiRequest('objects') @988",
+            "event": "open.await.begin",
+            "browserMs": 5750.199999999255,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "apiRequest('objects') @988",
+            "event": "open.await.end",
+            "browserMs": 5760.0999999996275,
+            "ok": true,
+            "error": null
+          },
+          {
+            "label": "apiRequest('source-inspect') @992",
+            "event": "open.await.begin",
+            "browserMs": 5760.199999999255,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "apiRequest('source-inspect') @992",
+            "event": "open.await.end",
+            "browserMs": 5767.5,
+            "ok": true,
+            "error": null
+          },
+          {
+            "label": "render(state) @1012",
+            "event": "open.await.begin",
+            "browserMs": 5769.299999999814,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "render(state) @1012",
+            "event": "open.await.end",
+            "browserMs": 5789.799999999814,
+            "ok": null,
+            "error": null
+          }
+        ],
+        "returns": [
+          {
+            "line": 1024,
+            "value": true,
+            "state": {
+              "mode": "binding",
+              "busy": false,
+              "initializing": false,
+              "heldControls": false,
+              "projectControls": false,
+              "releasing": false,
+              "serial": 3,
+              "projectBusy": false
+            }
+          }
+        ]
+      }
+    },
+    "ui209-p70-baseline-02": {
+      "sourceRef": "c93cfca9bb1af0d82d32878e2a4a1eb1399148f8",
+      "exit": 0,
+      "seconds": 8.836166570999922,
+      "originalChecks": 2,
+      "originalFailures": 0,
+      "harnessError": null,
+      "exceptions": [],
+      "firstRed": null,
+      "firstRedConnection": null,
+      "firstRedBindingHidden": null,
+      "firstRedViewport": null,
+      "finalViewport": {
+        "width": 390,
+        "height": 844,
+        "visual": {
+          "width": 390,
+          "height": 844,
+          "scale": 1,
+          "offsetTop": 0
+        }
+      },
+      "postScreenshotViewport": null,
+      "recovery": null,
+      "prefixCompleted": true,
+      "dumpSame": true,
+      "historyBefore": 4,
+      "historyAfter": {
+        "undoSame": false,
+        "redoSame": true,
+        "frameSame": true,
+        "limitSame": true,
+        "contextSame": true,
+        "tokenSame": true,
+        "undo": 7,
+        "redo": 0
+      },
+      "sourcesUnchanged": true,
+      "bridgeSha256": "133f374ea6575febe2c474053b2507d280eed07cc4fe6e83bf14387870779924",
+      "ownedServerExit": 0,
+      "ownsEntryFalseCount": 0,
+      "openGenerations": [
+        {
+          "id": 1,
+          "options": {
+            "committed": false
+          }
+        },
+        {
+          "id": 2,
+          "options": {
+            "system": 1,
+            "committed": true
+          }
+        },
+        {
+          "id": 3,
+          "options": {
+            "system": 1,
+            "mode": "binding",
+            "committed": false
+          }
+        }
+      ],
+      "target": {
+        "requestId": "ui209-50",
+        "call": {
+          "id": 3,
+          "label": "apiRequest('objects') @963",
+          "mode": "binding"
+        },
+        "serverBeforeQueueMs": 0.059923,
+        "queueMs": 0.009456,
+        "injectedHoldMs": null,
+        "nativeResponseMs": 23.47966,
+        "fetchRejectMs": null,
+        "signalAbortMs": null,
+        "abortReason": null,
+        "abortWasAfterFetchSettled": null,
+        "reject": null,
+        "serverDisconnected": false,
+        "openDurationMs": 269.5,
+        "openEndState": {
+          "mode": "binding",
+          "busy": false,
+          "initializing": false,
+          "heldControls": false,
+          "projectControls": false,
+          "releasing": false,
+          "serial": 3,
+          "projectBusy": false
+        },
+        "awaits": [
+          {
+            "label": "apiRequest('objects') @963",
+            "event": "open.await.begin",
+            "browserMs": 6066.700000000186,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "apiRequest('objects') @963",
+            "event": "open.await.end",
+            "browserMs": 6118.799999999814,
+            "ok": true,
+            "error": null
+          },
+          {
+            "label": "apiRequest('surfaces') @971",
+            "event": "open.await.begin",
+            "browserMs": 6119.0999999996275,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "apiRequest('surfaces') @971",
+            "event": "open.await.end",
+            "browserMs": 6148.5999999996275,
+            "ok": true,
+            "error": null
+          },
+          {
+            "label": "apiRequest('references') @972",
+            "event": "open.await.begin",
+            "browserMs": 6148.700000000186,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "apiRequest('references') @972",
+            "event": "open.await.end",
+            "browserMs": 6155.5999999996275,
+            "ok": true,
+            "error": null
+          },
+          {
+            "label": "apiRequest('objects') @973",
+            "event": "open.await.begin",
+            "browserMs": 6155.700000000186,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "apiRequest('objects') @973",
+            "event": "open.await.end",
+            "browserMs": 6178.5,
+            "ok": true,
+            "error": null
+          },
+          {
+            "label": "apiRequest('objects') @980",
+            "event": "open.await.begin",
+            "browserMs": 6178.700000000186,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "apiRequest('objects') @980",
+            "event": "open.await.end",
+            "browserMs": 6203.399999999441,
+            "ok": true,
+            "error": null
+          },
+          {
+            "label": "catalogPins(final,draftSchema) @986",
+            "event": "open.await.begin",
+            "browserMs": 6203.5,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "catalogPins(final,draftSchema) @986",
+            "event": "open.await.end",
+            "browserMs": 6203.799999999814,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "catalogPins(final,F.GRID_RULE_SCHEMA) @987",
+            "event": "open.await.begin",
+            "browserMs": 6204,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "catalogPins(final,F.GRID_RULE_SCHEMA) @987",
+            "event": "open.await.end",
+            "browserMs": 6204.200000000186,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "apiRequest('objects') @988",
+            "event": "open.await.begin",
+            "browserMs": 6204.200000000186,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "apiRequest('objects') @988",
+            "event": "open.await.end",
+            "browserMs": 6240,
+            "ok": true,
+            "error": null
+          },
+          {
+            "label": "apiRequest('source-inspect') @992",
+            "event": "open.await.begin",
+            "browserMs": 6240.0999999996275,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "apiRequest('source-inspect') @992",
+            "event": "open.await.end",
+            "browserMs": 6266.5999999996275,
+            "ok": true,
+            "error": null
+          },
+          {
+            "label": "render(state) @1012",
+            "event": "open.await.begin",
+            "browserMs": 6267.899999999441,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "render(state) @1012",
+            "event": "open.await.end",
+            "browserMs": 6324.899999999441,
+            "ok": null,
+            "error": null
+          }
+        ],
+        "returns": [
+          {
+            "line": 1024,
+            "value": true,
+            "state": {
+              "mode": "binding",
+              "busy": false,
+              "initializing": false,
+              "heldControls": false,
+              "projectControls": false,
+              "releasing": false,
+              "serial": 3,
+              "projectBusy": false
+            }
+          }
+        ]
+      }
+    },
+    "ui209-p70-hold3-01": {
+      "sourceRef": "c93cfca9bb1af0d82d32878e2a4a1eb1399148f8",
+      "exit": 1,
+      "seconds": 11.78661115199975,
+      "originalChecks": 2,
+      "originalFailures": 0,
+      "harnessError": null,
+      "exceptions": [],
+      "firstRed": "Grid control unreachable #igBoundary {\"x\":0,\"y\":0,\"w\":0,\"h\":0,\"hit\":false,\"disabled\":false}",
+      "firstRedConnection": "ready",
+      "firstRedBindingHidden": true,
+      "firstRedViewport": {
+        "width": 390,
+        "height": 844,
+        "visual": {
+          "width": 390,
+          "height": 844,
+          "scale": 1,
+          "offsetTop": 0
+        }
+      },
+      "finalViewport": {
+        "width": 1400,
+        "height": 1000,
+        "visual": {
+          "width": 1400,
+          "height": 1000,
+          "scale": 1,
+          "offsetTop": 0
+        }
+      },
+      "postScreenshotViewport": null,
+      "recovery": {
+        "route": "existing open completed; real select interaction",
+        "reachable": true
+      },
+      "prefixCompleted": true,
+      "dumpSame": true,
+      "historyBefore": 4,
+      "historyAfter": {
+        "undoSame": false,
+        "redoSame": true,
+        "frameSame": true,
+        "limitSame": true,
+        "contextSame": true,
+        "tokenSame": true,
+        "undo": 7,
+        "redo": 0
+      },
+      "sourcesUnchanged": true,
+      "bridgeSha256": "133f374ea6575febe2c474053b2507d280eed07cc4fe6e83bf14387870779924",
+      "ownedServerExit": 0,
+      "ownsEntryFalseCount": 0,
+      "openGenerations": [
+        {
+          "id": 1,
+          "options": {
+            "committed": false
+          }
+        },
+        {
+          "id": 2,
+          "options": {
+            "system": 1,
+            "committed": true
+          }
+        },
+        {
+          "id": 3,
+          "options": {
+            "system": 1,
+            "mode": "binding",
+            "committed": false
+          }
+        }
+      ],
+      "target": {
+        "requestId": "ui209-49",
+        "call": {
+          "id": 3,
+          "label": "apiRequest('objects') @963",
+          "mode": "binding"
+        },
+        "serverBeforeQueueMs": 0.079429,
+        "queueMs": 0.017003,
+        "injectedHoldMs": 3000.177793,
+        "nativeResponseMs": 0.140897,
+        "fetchRejectMs": null,
+        "signalAbortMs": null,
+        "abortReason": null,
+        "abortWasAfterFetchSettled": null,
+        "reject": null,
+        "serverDisconnected": false,
+        "openDurationMs": 3214.5,
+        "openEndState": {
+          "mode": "binding",
+          "busy": false,
+          "initializing": false,
+          "heldControls": false,
+          "projectControls": false,
+          "releasing": false,
+          "serial": 3,
+          "projectBusy": false
+        },
+        "awaits": [
+          {
+            "label": "apiRequest('objects') @963",
+            "event": "open.await.begin",
+            "browserMs": 7046,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "apiRequest('objects') @963",
+            "event": "open.await.end",
+            "browserMs": 10059.100000000559,
+            "ok": true,
+            "error": null
+          },
+          {
+            "label": "apiRequest('surfaces') @971",
+            "event": "open.await.begin",
+            "browserMs": 10059.299999999814,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "apiRequest('surfaces') @971",
+            "event": "open.await.end",
+            "browserMs": 10084.900000000373,
+            "ok": true,
+            "error": null
+          },
+          {
+            "label": "apiRequest('references') @972",
+            "event": "open.await.begin",
+            "browserMs": 10084.900000000373,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "apiRequest('references') @972",
+            "event": "open.await.end",
+            "browserMs": 10106.5,
+            "ok": true,
+            "error": null
+          },
+          {
+            "label": "apiRequest('objects') @973",
+            "event": "open.await.begin",
+            "browserMs": 10106.600000000559,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "apiRequest('objects') @973",
+            "event": "open.await.end",
+            "browserMs": 10124.5,
+            "ok": true,
+            "error": null
+          },
+          {
+            "label": "apiRequest('objects') @980",
+            "event": "open.await.begin",
+            "browserMs": 10124.700000000186,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "apiRequest('objects') @980",
+            "event": "open.await.end",
+            "browserMs": 10139.600000000559,
+            "ok": true,
+            "error": null
+          },
+          {
+            "label": "catalogPins(final,draftSchema) @986",
+            "event": "open.await.begin",
+            "browserMs": 10139.799999999814,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "catalogPins(final,draftSchema) @986",
+            "event": "open.await.end",
+            "browserMs": 10140.299999999814,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "catalogPins(final,F.GRID_RULE_SCHEMA) @987",
+            "event": "open.await.begin",
+            "browserMs": 10140.400000000373,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "catalogPins(final,F.GRID_RULE_SCHEMA) @987",
+            "event": "open.await.end",
+            "browserMs": 10140.5,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "apiRequest('objects') @988",
+            "event": "open.await.begin",
+            "browserMs": 10140.600000000559,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "apiRequest('objects') @988",
+            "event": "open.await.end",
+            "browserMs": 10157.5,
+            "ok": true,
+            "error": null
+          },
+          {
+            "label": "apiRequest('source-inspect') @992",
+            "event": "open.await.begin",
+            "browserMs": 10157.5,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "apiRequest('source-inspect') @992",
+            "event": "open.await.end",
+            "browserMs": 10188.5,
+            "ok": true,
+            "error": null
+          },
+          {
+            "label": "render(state) @1012",
+            "event": "open.await.begin",
+            "browserMs": 10190.799999999814,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "render(state) @1012",
+            "event": "open.await.end",
+            "browserMs": 10252.400000000373,
+            "ok": null,
+            "error": null
+          }
+        ],
+        "returns": [
+          {
+            "line": 1024,
+            "value": true,
+            "state": {
+              "mode": "binding",
+              "busy": false,
+              "initializing": false,
+              "heldControls": false,
+              "projectControls": false,
+              "releasing": false,
+              "serial": 3,
+              "projectBusy": false
+            }
+          }
+        ]
+      }
+    },
+    "ui209-p70-hold3-02": {
+      "sourceRef": "c93cfca9bb1af0d82d32878e2a4a1eb1399148f8",
+      "exit": 1,
+      "seconds": 12.640421387999595,
+      "originalChecks": 2,
+      "originalFailures": 0,
+      "harnessError": null,
+      "exceptions": [],
+      "firstRed": "Grid control unreachable #igBoundary {\"x\":0,\"y\":0,\"w\":0,\"h\":0,\"hit\":false,\"disabled\":false}",
+      "firstRedConnection": "ready",
+      "firstRedBindingHidden": true,
+      "firstRedViewport": {
+        "width": 390,
+        "height": 844,
+        "visual": {
+          "width": 390,
+          "height": 844,
+          "scale": 1,
+          "offsetTop": 0
+        }
+      },
+      "finalViewport": {
+        "width": 390,
+        "height": 844,
+        "visual": {
+          "width": 390,
+          "height": 844,
+          "scale": 1,
+          "offsetTop": 0
+        }
+      },
+      "postScreenshotViewport": {
+        "width": 390,
+        "height": 844
+      },
+      "recovery": {
+        "route": "existing open completed; real select interaction",
+        "reachable": true
+      },
+      "prefixCompleted": true,
+      "dumpSame": true,
+      "historyBefore": 4,
+      "historyAfter": {
+        "undoSame": false,
+        "redoSame": true,
+        "frameSame": true,
+        "limitSame": true,
+        "contextSame": true,
+        "tokenSame": true,
+        "undo": 7,
+        "redo": 0
+      },
+      "sourcesUnchanged": true,
+      "bridgeSha256": "133f374ea6575febe2c474053b2507d280eed07cc4fe6e83bf14387870779924",
+      "ownedServerExit": 0,
+      "ownsEntryFalseCount": 0,
+      "openGenerations": [
+        {
+          "id": 1,
+          "options": {
+            "committed": false
+          }
+        },
+        {
+          "id": 2,
+          "options": {
+            "system": 1,
+            "committed": true
+          }
+        },
+        {
+          "id": 3,
+          "options": {
+            "system": 1,
+            "mode": "binding",
+            "committed": false
+          }
+        }
+      ],
+      "target": {
+        "requestId": "ui209-49",
+        "call": {
+          "id": 3,
+          "label": "apiRequest('objects') @963",
+          "mode": "binding"
+        },
+        "serverBeforeQueueMs": 0.081764,
+        "queueMs": 0.152592,
+        "injectedHoldMs": 3000.133233,
+        "nativeResponseMs": 2.956263,
+        "fetchRejectMs": null,
+        "signalAbortMs": null,
+        "abortReason": null,
+        "abortWasAfterFetchSettled": null,
+        "reject": null,
+        "serverDisconnected": false,
+        "openDurationMs": 3281.9,
+        "openEndState": {
+          "mode": "binding",
+          "busy": false,
+          "initializing": false,
+          "heldControls": false,
+          "projectControls": false,
+          "releasing": false,
+          "serial": 3,
+          "projectBusy": false
+        },
+        "awaits": [
+          {
+            "label": "apiRequest('objects') @963",
+            "event": "open.await.begin",
+            "browserMs": 6461.5,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "apiRequest('objects') @963",
+            "event": "open.await.end",
+            "browserMs": 9493,
+            "ok": true,
+            "error": null
+          },
+          {
+            "label": "apiRequest('surfaces') @971",
+            "event": "open.await.begin",
+            "browserMs": 9493,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "apiRequest('surfaces') @971",
+            "event": "open.await.end",
+            "browserMs": 9530.700000000186,
+            "ok": true,
+            "error": null
+          },
+          {
+            "label": "apiRequest('references') @972",
+            "event": "open.await.begin",
+            "browserMs": 9530.799999999814,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "apiRequest('references') @972",
+            "event": "open.await.end",
+            "browserMs": 9567.200000000186,
+            "ok": true,
+            "error": null
+          },
+          {
+            "label": "apiRequest('objects') @973",
+            "event": "open.await.begin",
+            "browserMs": 9567.299999999814,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "apiRequest('objects') @973",
+            "event": "open.await.end",
+            "browserMs": 9595.200000000186,
+            "ok": true,
+            "error": null
+          },
+          {
+            "label": "apiRequest('objects') @980",
+            "event": "open.await.begin",
+            "browserMs": 9595.400000000373,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "apiRequest('objects') @980",
+            "event": "open.await.end",
+            "browserMs": 9621.099999999627,
+            "ok": true,
+            "error": null
+          },
+          {
+            "label": "catalogPins(final,draftSchema) @986",
+            "event": "open.await.begin",
+            "browserMs": 9621.200000000186,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "catalogPins(final,draftSchema) @986",
+            "event": "open.await.end",
+            "browserMs": 9621.299999999814,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "catalogPins(final,F.GRID_RULE_SCHEMA) @987",
+            "event": "open.await.begin",
+            "browserMs": 9621.5,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "catalogPins(final,F.GRID_RULE_SCHEMA) @987",
+            "event": "open.await.end",
+            "browserMs": 9621.700000000186,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "apiRequest('objects') @988",
+            "event": "open.await.begin",
+            "browserMs": 9621.799999999814,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "apiRequest('objects') @988",
+            "event": "open.await.end",
+            "browserMs": 9655.200000000186,
+            "ok": true,
+            "error": null
+          },
+          {
+            "label": "apiRequest('source-inspect') @992",
+            "event": "open.await.begin",
+            "browserMs": 9655.299999999814,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "apiRequest('source-inspect') @992",
+            "event": "open.await.end",
+            "browserMs": 9681.400000000373,
+            "ok": true,
+            "error": null
+          },
+          {
+            "label": "render(state) @1012",
+            "event": "open.await.begin",
+            "browserMs": 9691.200000000186,
+            "ok": null,
+            "error": null
+          },
+          {
+            "label": "render(state) @1012",
+            "event": "open.await.end",
+            "browserMs": 9739.599999999627,
+            "ok": null,
+            "error": null
+          }
+        ],
+        "returns": [
+          {
+            "line": 1024,
+            "value": true,
+            "state": {
+              "mode": "binding",
+              "busy": false,
+              "initializing": false,
+              "heldControls": false,
+              "projectControls": false,
+              "releasing": false,
+              "serial": 3,
+              "projectBusy": false
+            }
+          }
+        ]
+      }
+    },
+    "ui209-p88-wheel-01": {
+      "sourceRef": "b40620cd433ae36c6a3905c4293313dfd6e7f745",
+      "exit": 1,
+      "seconds": 22.41795707500023,
+      "originalChecks": 3,
+      "originalFailures": 0,
+      "harnessError": null,
+      "exceptions": [],
+      "firstRed": "Rule line control unreachable #igNewBinding {\"x\":1100.5,\"y\":1218.828125,\"w\":319,\"h\":38,\"hit\":false,\"hitElement\":\"undefined#undefined\",\"disabled\":false}",
+      "firstRedConnection": "ready",
+      "firstRedBindingHidden": true,
+      "firstRedViewport": {
+        "width": 1280,
+        "height": 900,
+        "visual": {
+          "width": 1280,
+          "height": 900,
+          "scale": 1,
+          "offsetTop": 0
+        }
+      },
+      "finalViewport": {
+        "width": 1400,
+        "height": 1000,
+        "visual": {
+          "width": 1400,
+          "height": 1000,
+          "scale": 1,
+          "offsetTop": 0
+        }
+      },
+      "postScreenshotViewport": null,
+      "recovery": {
+        "route": "trusted wheel -> current button hit-tested pointer -> binding form",
+        "reachable": true
+      },
+      "prefixCompleted": true,
+      "dumpSame": true,
+      "historyBefore": 19,
+      "historyAfter": {
+        "undoSame": false,
+        "redoSame": true,
+        "frameSame": true,
+        "limitSame": true,
+        "contextSame": true,
+        "tokenSame": true,
+        "undo": 20,
+        "redo": 0
+      },
+      "sourcesUnchanged": true,
+      "bridgeSha256": "133f374ea6575febe2c474053b2507d280eed07cc4fe6e83bf14387870779924",
+      "ownedServerExit": 0,
+      "ownsEntryFalseCount": 0,
+      "openGenerations": [
+        {
+          "id": 1,
+          "options": {
+            "committed": false
+          }
+        },
+        {
+          "id": 2,
+          "options": {
+            "system": 1,
+            "committed": true
+          }
+        },
+        {
+          "id": 3,
+          "options": {
+            "system": 1,
+            "mode": "source",
+            "committed": true
+          }
+        },
+        {
+          "id": 4,
+          "options": {
+            "system": 1,
+            "mode": "binding",
+            "committed": false
+          }
+        },
+        {
+          "id": 5,
+          "options": {
+            "binding": 1,
+            "committed": true
+          }
+        },
+        {
+          "id": 6,
+          "options": {
+            "system": 1,
+            "mode": "binding",
+            "binding": 1,
+            "committed": true
+          }
+        },
+        {
+          "id": 7,
+          "options": {
+            "system": 1,
+            "committed": false
+          }
+        },
+        {
+          "id": 8,
+          "options": {
+            "system": 1,
+            "committed": false
+          }
+        },
+        {
+          "id": 9,
+          "options": {
+            "system": 1,
+            "mode": "binding",
+            "committed": false
+          }
+        },
+        {
+          "id": 10,
+          "options": {
+            "binding": 2,
+            "committed": true
+          }
+        },
+        {
+          "id": 11,
+          "options": {
+            "system": 1,
+            "mode": "binding",
+            "binding": 2,
+            "committed": true
+          }
+        }
+      ],
+      "replacement": {
+        "nodeReplaced": true,
+        "before": {
+          "node": 107,
+          "tag": "BUTTON",
+          "id": "igNewBinding",
+          "class": "btn",
+          "rect": {
+            "x": 941,
+            "y": 1199.828125,
+            "width": 319,
+            "height": 38,
+            "top": 1199.828125,
+            "right": 1260,
+            "bottom": 1237.828125,
+            "left": 941
+          },
+          "hidden": false,
+          "display": "inline-flex",
+          "visibility": "visible",
+          "disabled": false,
+          "hit": false,
+          "hitElement": null,
+          "scrollTop": 0,
+          "scrollLeft": 0,
+          "scrollHeight": 36,
+          "clientHeight": 36
+        },
+        "after": {
+          "node": 124,
+          "tag": "BUTTON",
+          "id": "igNewBinding",
+          "class": "btn",
+          "rect": {
+            "x": 941,
+            "y": 1199.828125,
+            "width": 319,
+            "height": 38,
+            "top": 1199.828125,
+            "right": 1260,
+            "bottom": 1237.828125,
+            "left": 941
+          },
+          "hidden": false,
+          "display": "inline-flex",
+          "visibility": "visible",
+          "disabled": false,
+          "hit": false,
+          "hitElement": null,
+          "scrollTop": 0,
+          "scrollLeft": 0,
+          "scrollHeight": 36,
+          "clientHeight": 36
+        }
+      },
+      "wheel": [
+        {
+          "attempt": 0,
+          "position": {
+            "x": 1220.5,
+            "y": 1218.828125,
+            "hit": false,
+            "disabled": false,
+            "w": 319,
+            "h": 38,
+            "wheelX": 1220,
+            "wheelY": 528
+          }
+        },
+        {
+          "attempt": 1,
+          "position": {
+            "x": 1220.5,
+            "y": 818.828125,
+            "hit": true,
+            "disabled": false,
+            "w": 319,
+            "h": 38,
+            "wheelX": 1220,
+            "wheelY": 528
+          }
+        }
+      ]
+    },
+    "ui209-p88-wheel-02": {
+      "sourceRef": "b40620cd433ae36c6a3905c4293313dfd6e7f745",
+      "exit": 1,
+      "seconds": 12.215839091999442,
+      "originalChecks": 3,
+      "originalFailures": 0,
+      "harnessError": null,
+      "exceptions": [],
+      "firstRed": "Rule line control unreachable #igNewBinding {\"x\":1100.5,\"y\":1218.828125,\"w\":319,\"h\":38,\"hit\":false,\"hitElement\":\"undefined#undefined\",\"disabled\":false}",
+      "firstRedConnection": "ready",
+      "firstRedBindingHidden": true,
+      "firstRedViewport": {
+        "width": 1280,
+        "height": 900,
+        "visual": {
+          "width": 1280,
+          "height": 900,
+          "scale": 1,
+          "offsetTop": 0
+        }
+      },
+      "finalViewport": {
+        "width": 1280,
+        "height": 900,
+        "visual": {
+          "width": 1280,
+          "height": 900,
+          "scale": 1,
+          "offsetTop": 0
+        }
+      },
+      "postScreenshotViewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "recovery": {
+        "route": "trusted wheel -> current button hit-tested pointer -> binding form",
+        "reachable": true
+      },
+      "prefixCompleted": true,
+      "dumpSame": true,
+      "historyBefore": 19,
+      "historyAfter": {
+        "undoSame": false,
+        "redoSame": true,
+        "frameSame": true,
+        "limitSame": true,
+        "contextSame": true,
+        "tokenSame": true,
+        "undo": 20,
+        "redo": 0
+      },
+      "sourcesUnchanged": true,
+      "bridgeSha256": "133f374ea6575febe2c474053b2507d280eed07cc4fe6e83bf14387870779924",
+      "ownedServerExit": 0,
+      "ownsEntryFalseCount": 0,
+      "openGenerations": [
+        {
+          "id": 1,
+          "options": {
+            "committed": false
+          }
+        },
+        {
+          "id": 2,
+          "options": {
+            "system": 1,
+            "committed": true
+          }
+        },
+        {
+          "id": 3,
+          "options": {
+            "system": 1,
+            "mode": "source",
+            "committed": true
+          }
+        },
+        {
+          "id": 4,
+          "options": {
+            "system": 1,
+            "mode": "binding",
+            "committed": false
+          }
+        },
+        {
+          "id": 5,
+          "options": {
+            "binding": 1,
+            "committed": true
+          }
+        },
+        {
+          "id": 6,
+          "options": {
+            "system": 1,
+            "mode": "binding",
+            "binding": 1,
+            "committed": true
+          }
+        },
+        {
+          "id": 7,
+          "options": {
+            "system": 1,
+            "committed": false
+          }
+        },
+        {
+          "id": 8,
+          "options": {
+            "system": 1,
+            "committed": false
+          }
+        },
+        {
+          "id": 9,
+          "options": {
+            "system": 1,
+            "mode": "binding",
+            "committed": false
+          }
+        },
+        {
+          "id": 10,
+          "options": {
+            "binding": 2,
+            "committed": true
+          }
+        },
+        {
+          "id": 11,
+          "options": {
+            "system": 1,
+            "mode": "binding",
+            "binding": 2,
+            "committed": true
+          }
+        }
+      ],
+      "replacement": {
+        "nodeReplaced": true,
+        "before": {
+          "node": 107,
+          "tag": "BUTTON",
+          "id": "igNewBinding",
+          "class": "btn",
+          "rect": {
+            "x": 941,
+            "y": 394.828125,
+            "width": 319,
+            "height": 38,
+            "top": 394.828125,
+            "right": 1260,
+            "bottom": 432.828125,
+            "left": 941
+          },
+          "hidden": false,
+          "display": "inline-flex",
+          "visibility": "visible",
+          "disabled": false,
+          "hit": true,
+          "hitElement": {
+            "node": 107,
+            "tag": "BUTTON",
+            "id": "igNewBinding",
+            "class": "btn"
+          },
+          "scrollTop": 0,
+          "scrollLeft": 0,
+          "scrollHeight": 36,
+          "clientHeight": 36
+        },
+        "after": {
+          "node": 126,
+          "tag": "BUTTON",
+          "id": "igNewBinding",
+          "class": "btn",
+          "rect": {
+            "x": 941,
+            "y": 1199.828125,
+            "width": 319,
+            "height": 38,
+            "top": 1199.828125,
+            "right": 1260,
+            "bottom": 1237.828125,
+            "left": 941
+          },
+          "hidden": false,
+          "display": "inline-flex",
+          "visibility": "visible",
+          "disabled": false,
+          "hit": false,
+          "hitElement": null,
+          "scrollTop": 0,
+          "scrollLeft": 0,
+          "scrollHeight": 36,
+          "clientHeight": 36
+        }
+      },
+      "wheel": [
+        {
+          "attempt": 0,
+          "position": {
+            "x": 1100.5,
+            "y": 1218.828125,
+            "hit": false,
+            "disabled": false,
+            "w": 319,
+            "h": 38,
+            "wheelX": 1100,
+            "wheelY": 478
+          }
+        },
+        {
+          "attempt": 1,
+          "position": {
+            "x": 1100.5,
+            "y": 818.828125,
+            "hit": false,
+            "disabled": false,
+            "w": 319,
+            "h": 38,
+            "wheelX": 1100,
+            "wheelY": 478
+          }
+        },
+        {
+          "attempt": 2,
+          "position": {
+            "x": 1100.5,
+            "y": 418.828125,
+            "hit": true,
+            "disabled": false,
+            "w": 319,
+            "h": 38,
+            "wheelX": 1100,
+            "wheelY": 478
+          }
+        }
+      ]
+    }
+  },
+  "originals": {
+    "195": {
+      "sha256": "a8dfa45bebb1aad075b585325df323ee80390ed2d9aa5f214947efc22e20ddfe",
+      "bytes": 743481,
+      "selectedPaths": 283,
+      "uniquePayloads": 214,
+      "manifestSha256": "5f5aff29f74bcb09a66a7059cb69f46c1baa4f16816b7feeca6403dc272cfebb"
+    },
+    "189": {
+      "sha256": "3b8be9cc3961f58c7324d9076944f08a63b5c88cd971864014a54b1677a44993",
+      "bytes": 222289,
+      "selectedPaths": 32,
+      "uniquePayloads": 32
+    }
+  }
+}
