@@ -1,0 +1,344 @@
+{
+  "schema": "geometry-release-command/1",
+  "created": "2026-10-09T13:25:09.598946+00:00",
+  "command": [
+    "python3",
+    "tests/browser_race_ownership.py",
+    "--root",
+    "<repository-root>",
+    "--url",
+    "http://127.0.0.1:19176/",
+    "--out",
+    "<evidence-root>/after-gesture-b958796-20261009/formal-race-ownership-artifacts",
+    "--expected-head",
+    "b9587960de2c5b29993e7433a51447015058e352"
+  ],
+  "cwd": "<repository-root>",
+  "url": "http://127.0.0.1:19176/",
+  "timeoutSeconds": 900,
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "status": "execution-verified",
+  "executionVerified": true,
+  "releaseApproved": false,
+  "problems": [],
+  "limitations": [
+    "Only this command is covered; independent delivery gates remain separate.",
+    "Native receipts attest configured files; /runtime does not attest the running native process.",
+    "Before/after identity checks do not prove absence of transient source changes."
+  ],
+  "environment": {
+    "GEOMETRY_TEST_BRIDGE": "<fresh-native-directory>/bridge",
+    "GEOMETRY_BRIDGE": "<fresh-native-directory>/bridge",
+    "GEOMETRY_MODEL_BASE": "<fresh-native-directory>/model-base",
+    "GEOMETRY_FEEDBACK_DIR": "<isolated-feedback-directory>",
+    "GEOMETRY_CHROME": "/usr/bin/chromium",
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:19176/"
+  },
+  "kind": "command",
+  "before": {
+    "at": "2026-10-09T13:25:09.599959+00:00",
+    "root": "<repository-root>",
+    "problems": [],
+    "git": {
+      "root": "<repository-root>",
+      "head": "b9587960de2c5b29993e7433a51447015058e352",
+      "tree": "883b632ef19c36cd01f3f1ccd842df1e08746432",
+      "status": ""
+    },
+    "sourceVersion": "208d578affdc2e16002c216c8c50eb8077ecc0125c8b5594385afa24d761ce1b",
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "208d578affdc2e16002c216c8c50eb8077ecc0125c8b5594385afa24d761ce1b",
+      "fresh": true,
+      "root": "<repository-root>",
+      "pid": 22987,
+      "session": "96e0f8307c334f5dbc80fce959173312"
+    },
+    "native": {
+      "bridge": {
+        "name": "bridge",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T12:58:11+00:00）",
+        "path": "<fresh-native-directory>/bridge",
+        "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+        "sha256": "1a21545ff6654f213307fdddcd133777f8f8e7f7290f26c3dab36f4970175ce1",
+        "sidecarSha256": "36665f8fc23a130ce5c209b5cd6fcf2999ca8c677b3dded5ae370a3a768f5e59"
+      },
+      "model-base": {
+        "name": "model-base",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T12:58:15+00:00）",
+        "path": "<fresh-native-directory>/model-base",
+        "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+        "sha256": "83b23b56cac2fa02835bee479561af5059593c5b30f087657b7841a657219290",
+        "sidecarSha256": "2ed6da288501eeeac349908853e66459ddab890c188cc5f8e1609b6489419f1b"
+      }
+    },
+    "sources": {
+      "geometry-web/app.js": "ec284229af0c3de951941cb474d31dc452a99b32eeb1849f288889a57b4015d9",
+      "geometry-web/space-workspace.js": "a735338f5cc14f3ae743578986750ace3c7389e0d73fd44c21773d82c2503868",
+      "geometry-web/app.css": "b689b9356686d3c4e42a3dd8ff3ae2131f701228db2b640e1b95011afc14a5a6",
+      "geometry-web/index.html": "7dac589f14eec96735eeb233e78b1b1fa37084f56abaee18159a83adc168f36d",
+      "geometry-web/serve.py": "3769e7bf84f9c61928487a61874c6eca4d1363d4de3b4a0a7ecd1048557f405c",
+      "tests/release_gate.py": "ad460ddbdd52c48995188079339bc224e7f39b3d01e3147091a858ba8f541389",
+      "tests/binaries.py": "a211fd0d066b8a5138855c4773373f9f526717f26264de909c0f61f997ac9aba"
+    },
+    "executionFiles": {
+      "<evidence-root>/run_gate.py": "c467822e22f619cc4b46e31f318dce8ad5b5980a7e6350671f6b65e289c71a8c",
+      "<repository-root>/tests/browser_race_ownership.py": "c7302e8259c0ea60ff46b29ccccba3897101f5198826355e90bd1b3a6ae412db"
+    },
+    "liveBridge": [
+      {
+        "pid": 23000,
+        "parent": 22987,
+        "exe": "<fresh-native-directory>/bridge",
+        "sha256": "1a21545ff6654f213307fdddcd133777f8f8e7f7290f26c3dab36f4970175ce1"
+      }
+    ]
+  },
+  "execution": {
+    "started": "2026-10-09T13:25:09.700242+00:00",
+    "exitCode": 0,
+    "timedOut": false,
+    "interrupted": false,
+    "pid": 23064,
+    "finished": "2026-10-09T13:25:50.241697+00:00"
+  },
+  "after": {
+    "at": "2026-10-09T13:25:50.241730+00:00",
+    "root": "<repository-root>",
+    "problems": [],
+    "git": {
+      "root": "<repository-root>",
+      "head": "b9587960de2c5b29993e7433a51447015058e352",
+      "tree": "883b632ef19c36cd01f3f1ccd842df1e08746432",
+      "status": ""
+    },
+    "sourceVersion": "208d578affdc2e16002c216c8c50eb8077ecc0125c8b5594385afa24d761ce1b",
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "208d578affdc2e16002c216c8c50eb8077ecc0125c8b5594385afa24d761ce1b",
+      "fresh": true,
+      "root": "<repository-root>",
+      "pid": 22987,
+      "session": "96e0f8307c334f5dbc80fce959173312"
+    },
+    "native": {
+      "bridge": {
+        "name": "bridge",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T12:58:11+00:00）",
+        "path": "<fresh-native-directory>/bridge",
+        "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+        "sha256": "1a21545ff6654f213307fdddcd133777f8f8e7f7290f26c3dab36f4970175ce1",
+        "sidecarSha256": "36665f8fc23a130ce5c209b5cd6fcf2999ca8c677b3dded5ae370a3a768f5e59"
+      },
+      "model-base": {
+        "name": "model-base",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T12:58:15+00:00）",
+        "path": "<fresh-native-directory>/model-base",
+        "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+        "sha256": "83b23b56cac2fa02835bee479561af5059593c5b30f087657b7841a657219290",
+        "sidecarSha256": "2ed6da288501eeeac349908853e66459ddab890c188cc5f8e1609b6489419f1b"
+      }
+    },
+    "sources": {
+      "geometry-web/app.js": "ec284229af0c3de951941cb474d31dc452a99b32eeb1849f288889a57b4015d9",
+      "geometry-web/space-workspace.js": "a735338f5cc14f3ae743578986750ace3c7389e0d73fd44c21773d82c2503868",
+      "geometry-web/app.css": "b689b9356686d3c4e42a3dd8ff3ae2131f701228db2b640e1b95011afc14a5a6",
+      "geometry-web/index.html": "7dac589f14eec96735eeb233e78b1b1fa37084f56abaee18159a83adc168f36d",
+      "geometry-web/serve.py": "3769e7bf84f9c61928487a61874c6eca4d1363d4de3b4a0a7ecd1048557f405c",
+      "tests/release_gate.py": "ad460ddbdd52c48995188079339bc224e7f39b3d01e3147091a858ba8f541389",
+      "tests/binaries.py": "a211fd0d066b8a5138855c4773373f9f526717f26264de909c0f61f997ac9aba"
+    },
+    "executionFiles": {
+      "<evidence-root>/run_gate.py": "c467822e22f619cc4b46e31f318dce8ad5b5980a7e6350671f6b65e289c71a8c",
+      "<repository-root>/tests/browser_race_ownership.py": "c7302e8259c0ea60ff46b29ccccba3897101f5198826355e90bd1b3a6ae412db"
+    },
+    "liveBridge": [
+      {
+        "pid": 23000,
+        "parent": 22987,
+        "exe": "<fresh-native-directory>/bridge",
+        "sha256": "1a21545ff6654f213307fdddcd133777f8f8e7f7290f26c3dab36f4970175ce1"
+      }
+    ]
+  },
+  "evidence": {
+    "scope": "command-only",
+    "completionVerified": false,
+    "note": "Exit status recorded; no generic test-completion or release claim."
+  },
+  "log": {
+    "path": "<evidence-root>/after-gesture-b958796-20261009/formal-race-ownership-gate/command.log",
+    "bytes": 1168,
+    "sha256": "4d97e2e11d8af72b8c8a33f8f685e35d0428b2d85a51e1ae6bbca779a6f26584"
+  },
+  "finished": "2026-10-09T13:25:50.343719+00:00",
+  "gateExitCode": 0,
+  "harnessScope": "Scoped unchanged probe, synthetic fixtures; not full product acceptance",
+  "stackBytes": 16777216,
+  "runnerSha256": "c467822e22f619cc4b46e31f318dce8ad5b5980a7e6350671f6b65e289c71a8c",
+  "probeCensus": {
+    "resultsPath": "<evidence-root>/after-gesture-b958796-20261009/formal-race-ownership-artifacts/results.json",
+    "resultsSha256": "1069fa5f76bdcc983135f1e573759d65fc550c72ff80cae89a8cd40494b6dc30",
+    "expectedCases": 20,
+    "actualCases": 20,
+    "pass": 20,
+    "fail": 0,
+    "completed": true,
+    "cases": [
+      {
+        "name": "same-edit-up-1400",
+        "ok": true,
+        "harnessError": null,
+        "pageErrors": []
+      },
+      {
+        "name": "bhit-active-B-1400",
+        "ok": true,
+        "harnessError": null,
+        "pageErrors": []
+      },
+      {
+        "name": "cross-B-drag-1400-main",
+        "ok": true,
+        "harnessError": null,
+        "pageErrors": []
+      },
+      {
+        "name": "cross-B-drag-1400-face",
+        "ok": true,
+        "harnessError": null,
+        "pageErrors": []
+      },
+      {
+        "name": "cross-B-hole-1400-main",
+        "ok": true,
+        "harnessError": null,
+        "pageErrors": []
+      },
+      {
+        "name": "cross-B-hole-1400-face",
+        "ok": true,
+        "harnessError": null,
+        "pageErrors": []
+      },
+      {
+        "name": "zoom-1400",
+        "ok": true,
+        "harnessError": null,
+        "pageErrors": []
+      },
+      {
+        "name": "pointercancel-1400",
+        "ok": true,
+        "harnessError": null,
+        "pageErrors": []
+      },
+      {
+        "name": "lostcapture-1400",
+        "ok": true,
+        "harnessError": null,
+        "pageErrors": []
+      },
+      {
+        "name": "old-up-new-gesture-1400",
+        "ok": true,
+        "harnessError": null,
+        "pageErrors": []
+      },
+      {
+        "name": "same-edit-up-390",
+        "ok": true,
+        "harnessError": null,
+        "pageErrors": []
+      },
+      {
+        "name": "bhit-active-B-390",
+        "ok": true,
+        "harnessError": null,
+        "pageErrors": []
+      },
+      {
+        "name": "cross-B-drag-390-main",
+        "ok": true,
+        "harnessError": null,
+        "pageErrors": []
+      },
+      {
+        "name": "cross-B-drag-390-face",
+        "ok": true,
+        "harnessError": null,
+        "pageErrors": []
+      },
+      {
+        "name": "cross-B-hole-390-main",
+        "ok": true,
+        "harnessError": null,
+        "pageErrors": []
+      },
+      {
+        "name": "cross-B-hole-390-face",
+        "ok": true,
+        "harnessError": null,
+        "pageErrors": []
+      },
+      {
+        "name": "zoom-390",
+        "ok": true,
+        "harnessError": null,
+        "pageErrors": []
+      },
+      {
+        "name": "pointercancel-390",
+        "ok": true,
+        "harnessError": null,
+        "pageErrors": []
+      },
+      {
+        "name": "lostcapture-390",
+        "ok": true,
+        "harnessError": null,
+        "pageErrors": []
+      },
+      {
+        "name": "old-up-new-gesture-390",
+        "ok": true,
+        "harnessError": null,
+        "pageErrors": []
+      }
+    ]
+  },
+  "probeVerified": true,
+  "publicProjection": {
+    "originalReceiptSha256": "fe68b483a3cfb19862e20ea05c626b5108f15e906a23bfa7c864afa37933faec",
+    "originalReceiptBytes": 11409,
+    "originalRetainedOutsideGit": true,
+    "reason": "Machine root, interpreter and isolated feedback paths redacted; full SHA/dirty/source/runtime/native identity, times, command, exit, original hashes and outcomes preserved.",
+    "publicFiles": {
+      "log": {
+        "path": "rounds/after-gesture-formal20-r2/log.raw.log",
+        "sha256": "4d97e2e11d8af72b8c8a33f8f685e35d0428b2d85a51e1ae6bbca779a6f26584",
+        "bytes": 1168,
+        "originalSha256": "4d97e2e11d8af72b8c8a33f8f685e35d0428b2d85a51e1ae6bbca779a6f26584",
+        "originalBytes": 1168,
+        "byteIdenticalOriginal": true,
+        "pathProjection": false,
+        "originalRetainedOutsideGit": true
+      },
+      "result": {
+        "path": "rounds/after-gesture-formal20-r2/result.raw.json",
+        "sha256": "1069fa5f76bdcc983135f1e573759d65fc550c72ff80cae89a8cd40494b6dc30",
+        "bytes": 1072566,
+        "originalSha256": "1069fa5f76bdcc983135f1e573759d65fc550c72ff80cae89a8cd40494b6dc30",
+        "originalBytes": 1072566,
+        "byteIdenticalOriginal": true,
+        "pathProjection": false,
+        "originalRetainedOutsideGit": true
+      }
+    }
+  }
+}

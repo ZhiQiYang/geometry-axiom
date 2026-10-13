@@ -53,8 +53,11 @@ window.FaceProjection = (() => {
       `<p id="fpMessage" role="status" aria-live="polite"></p></div>` +
       `<footer class="fp-footer"><button type="button" id="fpCancel">取消</button><button type="button" id="fpApply">套用定義</button><button type="button" id="fpApplyBuild" class="fp-primary">保存定義並建立空間</button></footer>`;
     document.body.appendChild(dialog);
-    $("fpClose").onclick = $("fpCancel").onclick = () => dialog.close();
-    dialog.addEventListener("close", () => { session = null; serial++; });
+    $("fpClose").onclick = $("fpCancel").onclick = () => closeSession();
+    dialog.addEventListener("cancel", event => {
+      event.preventDefault();
+      closeSession();
+    });
     $("fpPlacement").onchange = () => {
       if (session && formSignature() !== session.formSignature) {
         $("fpPlacement").value=String(session.surface?.id ?? "");
@@ -65,6 +68,14 @@ window.FaceProjection = (() => {
     $("fpPurpose").onchange = $("fpView").onchange = $("fpInterior").onchange = () => {update();if(session&&!session.invalid)message("這些修改尚未套用。按「套用定義」後，再保存專案；取消會捨棄修改。");};
     $("fpApply").onclick = () => apply(false); $("fpApplyBuild").onclick = () => apply(true);
     $("fpGoPlace").onclick = goPlace;
+  }
+  function closeSession(current = session) {
+    if (session !== current) return;
+    session = null;
+    if (current && serial === current.generation) serial++;
+    // Retire this session synchronously. The native close notification is
+    // queued and may arrive after another open has started or become visible.
+    if (dialog?.open) dialog.close();
   }
   function signature(s, loops) { return JSON.stringify([s ? [s.id,s.boundary,s.origin,s.u,s.v] : null, loops]); }
   function formSignature() { return JSON.stringify([$("fpPurpose").value,$("fpView").value,$("fpInterior").checked]); }
@@ -79,7 +90,7 @@ window.FaceProjection = (() => {
     try {
       const source = await readSource(Number(bid));
       if (seq !== serial || ReferenceWorkspace.context().id !== contextId) return;
-      session = {bid:Number(bid),contextId,source,options,invalid:false,
+      session = {bid:Number(bid),contextId,source,options,invalid:false,generation:seq,
         frame:ReferenceWorkspace.history.frame,historyTop:ReferenceWorkspace.history.undo.at(-1),
         faceKey:ReferenceWorkspace.history.frame.ids.get(Number(bid))};
       $("fpTitle").textContent = `面 ${bid} · 平面投影定義`;
@@ -140,7 +151,7 @@ window.FaceProjection = (() => {
           signature(s,fresh.loops) !== current.signature || JSON.stringify(get(current.bid,current.surface.id)) !== JSON.stringify(current.original)) throw new Error("來源面、放置或定義已變更。請關閉並重新開啟設定，確認最新內容。");
       ReferenceWorkspace.setFaceProjection(current.bid,current.surface.id,definition);
       const payload = {boundary_id:current.bid,placement_id:current.surface.id,definition:clone(definition),build};
-      dialog.close();
+      closeSession(current);
       if (current.options.onApplied) await current.options.onApplied(payload);
       else if (build) await window.SpaceModelWorkspace?.openCurrentFace(current.surface.id);
       else if (typeof toast === "function") toast(definition ? "已套用平面投影定義，請保存專案。" : "已恢復為一般面，請保存專案。");
@@ -150,7 +161,7 @@ window.FaceProjection = (() => {
   async function goPlace() {
     if (!session) return;
     if(formSignature() !== session.formSignature) {message("請先套用投影定義，或取消本次修改，再編輯圖面放置。",true);return;}
-    const bid=session.bid, pid=session.surface?.id; dialog.close();
+    const bid=session.bid, pid=session.surface?.id; closeSession();
     window.SpaceModelWorkspace?.close();
     // Expose the existing placement form; no placement or geometry is changed here.
     if (oc.focus?.t !== "face" || oc.focus.id !== bid) await enterFocus("face",bid);

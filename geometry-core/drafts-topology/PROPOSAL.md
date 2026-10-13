@@ -1,5 +1,7 @@
 # K2a 提案 r3.1：#45 多份網格草稿 ＋ #25 重複開間生成（含主格線定位）
 
+> **採納後契約修正（2026-10-12，PR #191 審查 6110832306）**：下列 A4／A6 修正優先於起草時的 r3.1 說明；SSOT 仍以 `公理層.md` 為準。#191→#199 必須同批整合，帶入已採納 P-049 的 D57／R54「新建無基底免檢查」與 R55「唯一相向側面、不能唯一即拒絕」，在最終整合 head 同步白話、唯一正典與來源雜湊；本 head 尚未包含 #199，不能單獨宣稱已修上述條文。容量歷史相容依 [P-059](https://github.com/ZhiQiYang/geometry-axiom/pull/201#issuecomment-6113440823) 與[必要集合升版授權更正](https://github.com/ZhiQiYang/geometry-axiom/pull/201#issuecomment-6113762903)，由 #201 交付，不另選政策。
+
 > 狀態：**r3.1（定稿），暫定(依 2026-10-09 授權 L)**。r3.1 只補正 r3 核對的一個 PARTIAL（第 6 項）與三處小瑕疵，見下「r3.1 補正」。r2 經第 3 輪 fresh-context 核對（`review-round3-findings.md`）：S2–S6 與僅記錄項全 PASS，只剩 S1 一個缺口（「曾缺失」標記沒有保存形式）與數處措辭，本版依裁決以最小修改補上。r1→r2 見 `review-round2-findings.md`（S1–S6），r0→r1 見 `review.md`。各岔路見 `decisions-provisional.md`。
 > **不改 SSOT、不改 repo**。公理差異見 `AXIOM-DIFF.md`，條號、能力名、格式號一律佔位。
 > 事實基準：`a7bff8f4c7a0d61a3133b6e42d0d513dfe96367e`（`公理層.md` LF 行號）。原生見證：WSL `~/ga-k2a`（同一 SHA）自建 `core`，只跑 native，腳本與場景在 `wsl/`。
@@ -131,10 +133,12 @@
 - **`lost` 旗標**（r3 S1；草稿狀態仍只有有效／過期／孤兒三態，`lost` 與狀態並行）：
   - 設定：來源引用的對象一旦在提交紀錄中被觀察到缺失（任何操作使它不存在，或結果中它不存在），該引用的 `lost` 設為 `true`，永久。保存時隨該引用寫入集合格式；含任一 `lost` 引用的草稿因此不能寫回單份格式——單份格式沒有欄位，寫回會讓旗標遺失，之後同 id 同內容的新物件又會對上 pin。
   - 效果：任一引用 `lost` 的草稿不得預覽或提交，不論其狀態是有效或過期；仍可保存、重開、捨棄、把該引用改指向另一個物件。`lost` 引用保留最後記錄的 `fingerprint`，不參與過期比較。目標唯一性只看是否孤兒，與 `lost` 無關。
-  - 不可清除（自行補充，旗標才站得住）：同一 `draftId` 的 `setGridDraft` 新值中，凡與既有 `lost` 引用同 `(kind,id)`（參數欄位為 `(parameterId,fieldId)`）的引用必須仍帶 `lost:true`，否則拒；`repinGridDraft` 只更新尚未 `lost` 的引用。旗標只在該引用被移除、或改指向另一個物件（新引用不帶 `lost`，須先列出新舊並確認，M14b）時隨舊引用離開。
+  - 不可清除（依 D57／I68／R54）：同一 `draftId` 的 `setGridDraft` 新值中，既有 `lost` 引用必須原樣保留，或明選另一物件並確認替換；純移除引用、清空 `inputRefs`、保留同 `(kind,id)` 卻去掉旗標均拒絕，參數來源亦核 `(parameterId,fieldId)` 與對應 raw 欄位，不准只保留另一個既有引用來掩蓋純移除。`repinGridDraft` 只更新尚未 `lost` 的引用。只有改指另一物件時旗標隨舊引用離開（M14b）；整份草稿的明示捨棄另依 R54，不是同一草稿純刪引用。
   - 對象不存在而未帶旗標（舊版客戶端存檔、手改檔案）：validator 不因此拒絕專案，匯入後首次載入的掃描補標（見下「孤兒與 `lost` 掃描」）。
 - 依 `draftId` 字典序正規化保存；陣列位置與顯示順序不是身分。
 - 約束：`draftId` 唯一；同一 `(baseRef.kind, baseRef.id)` 的**非孤兒**編輯草稿至多一份（不論其引用是否 `lost`）；`lost` 只能是 `true` 且只出現在 `inputRefs` 項目；≤16 份；每份 ≤128 KiB；本 record ≤1 MiB；信封仍 ≤8 MiB（份數／位元組為工程暫定值）。
+- 新增或內容變更的接納，須先計算最壞自動補標後的 UTF-8 JSON bytes：每個 `inputRefs` 全部補 `lost:true`、每個有編輯基底的 draftId 全列入 `orphans`，包含單份→集合的 record／外殼、實際格式／能力與完整 manifest；逐層核每份 128 KiB、record 1 MiB、信封 8 MiB，計入 draftId 的實際編碼與跳脫，不只算 raw 或固定常數。超出在接納前原子拒絕，不等 World 刪除／保存時才失敗。
+- 已保存合法內容沿 P-059 只放行自動 lost／orphan／必要集合升版的精確增量；扣除後仍須符原適用上限，raw／ruleDraft／身分逐字保留，不授予一般 payload 信用或新增可信歷史旗標。重存同內容保留例外，新增真實內容回新接納預留；既有集合不可強折成配額較小的單份。讀取補標、World 刪除、保存與冷重開均不能因此阻擋或丟資料（M17／M18）；#201 的已裁決實作須隨交付核收，不稱本 head 已有 runtime。
 - `requiredCapabilities`：`grid-editor-drafts/1`＋各元素實際用到的 `grid-editor-draft/1`／`/2`。現行 `:283-284` 拒絕同時宣告 `/1` 與 `/2`，本 PR 須放行（見 A7）。
 - **專案格式號**：`geometry-canvas/1`–`/16` 已全數占用（`project-store.js:8-19`：/13 GRID_RULE、/14 SCENARIO、/15 CASE、/16 SECTION 等）。本提案用佔位 `geometry-canvas/⟨K2a-F1⟩`，寫入時由共用格式 owner 配號，並加入 `project-store.js` 各格式允許清單（約 `:310-337`）。
 - **格式號逐版向上相容**（A、B 共用）：較新的讀取端必須接受較舊格式號裡已經合法的內容。A、B 分兩個 PR，誰先合併未定。後合併的一份必須接受先合併那一份的新內容（新格式號、新能力、新附件形狀），不得只認自己這次加的格式。兩邊平行開發時若都想佔下一個號，後合併者要在自己的格式上讀得開先合併者已經寫入的內容。
@@ -145,7 +149,7 @@ readGridDrafts() -> { drafts: deep copy[], orphans: draftId[] }（單份格式�
 setGridDraft(draftId, value | null, expectedContextToken) -> 一筆 local history
 repinGridDraft(draftId, expectedBaseFingerprint, expectedContextToken) -> 一筆 local history（只在使用者看過覆蓋預覽後呼叫）
 ```
-- 只替換／刪除指定 `draftId` 那份；新值 `draftId` 須等於參數；若為編輯草稿且已有另一份**非孤兒**草稿指向同目標 → 拒；新值若抹去既有 `lost` 引用的旗標 → 拒（見上「`lost` 旗標」）。`repinGridDraft` 只更新基底與尚未 `lost` 的來源引用的指紋，絕不清除 `lost`。
+- 只替換／捨棄指定 `draftId` 那份；新值 `draftId` 須等於參數；若為編輯草稿且已有另一份**非孤兒**草稿指向同目標 → 拒；新值若抹去旗標或純移除既有 `lost` 引用 → 拒（見上「`lost` 旗標」）。`repinGridDraft` 只更新基底與尚未 `lost` 的來源引用的指紋，絕不清除 `lost`。
 - **舊介面 `setFeatureAttachment("grid-draft", v, token)`**（`tests/test_reference_workspace_races.js:148-156` 仍直接呼叫）：只在「目前無草稿」或「恰一份、**且該份不是孤兒、且沒有任何 `lost` 引用**、且 v 為 null 或 v.draftId 與它相同」時接受；其餘（≥2 份、恰一份孤兒、恰一份含 `lost` 引用、或會換掉另一 draftId）一律拒絕，不改 history/dirty。`reference-workspace.js:433-437` 的 `featureProposal` 與 `:485-489` 的 `setFeatureAttachment` 會用單份 value 換掉整個 kind，`orphans` 與 `lost` 都會丟；恰一份孤兒或恰一份含 `lost` 因此不接受。現有該測試只寫同一 draftId、不是孤兒、也沒有 `lost`，維持通過。
 - 孤兒與 `lost` 掃描：所有已提交交易（核心確認回執、復原／重做、匯入後首次載入）在**同一歷史步驟**中執行；需要核心回執列出本交易刪除的 `(kind,id)`（若現行回執沒有，本 PR 補上）。提交中任何操作使基底不存在（即明示刪除），或結果中基底不存在，則標孤兒；來源引用的對象同樣被刪、或結果中不存在，則寫入該引用的 `lost:true`（永久）。這一步若使原本恰一份的單份格式草稿多了 `lost` 引用，同一步驟把保存形式改寫成集合格式（單份格式放不下旗標）。匯入後首次載入時，對象不存在而未帶旗標的引用同樣補標。由共用 owner 在 ReferenceWorkspace 提交路徑實作，不靠網格工作區開著。前端歷史窗外的核心復原不解除這些標記（A2-4）。
 - 確認流程 `prepareFeatureConfirmation` 以 `draftId` 定位；native confirm 成功時在同一歷史步驟移除該份。
@@ -180,6 +184,9 @@ repinGridDraft(draftId, expectedBaseFingerprint, expectedContextToken) -> 一筆
 | **M14b** | 配置草稿 G 的來源引用指向系統 2（當時最大 id）→ 刪除系統 2（同一歷史步驟，G 的該引用標 `lost`）→ 新建系統，核心配到 id 2 且內容與舊系統完全相同 → 以 id 2 重新取得該來源；另試參數卡為最大 id 時的同一過程。**G 是唯一一份草稿且基底沒被刪（非孤兒）：保存 → 全新服務重開 → 再試以 id 2 重新取得** | 同一 id 重新取得被拒；該引用仍是 `lost`，G 不得預覽。**保存的 record 必為集合格式（`drafts` 長度 1），該引用帶 `lost:true`；重開後旗標仍在、G 仍不得預覽，id 2 的同內容新物件也不使 pin 重新對上。**明選另一個 id 的物件來替換，先列出新舊引用並確認後，才可以再預覽；替換後新引用不帶 `lost`，再保存才可退回舊單份格式。參數卡 id 同此，不能用同一個參數卡 id 重新取得 | 只比 id＋指紋而讓同一 id 重新對上；保存退回舊單份格式（旗標遺失，重開後 pin 重新對上） |
 | **M15** | 編輯草稿 F（pin 配置 3 舊內容）；另一路把配置 3 的 cell 改掉 → F 過期 → 按「重新取得基底」。另備一欄草稿原文 `"1830 "`、現況 `1830`，以及一欄 `"1830 "`、現況 `915` | 只做兩方（草稿原始字串對現況正規化值），不與舊基底做第三方。`"1830 "` 依 `int` 解析為 `1830`：現況同值則不列入；現況 `915` 才列入，並列出現況 `915` 與原文 `"1830 "`。cell 走 `signed`。取消則 F 與 pin 不變；確認後 pin 更新為現況（一筆 local history），仍須再預覽／確認才改 World | 字面不同就列入／直接改 pin／直接提交 |
 | M13 | 1280／390px 真 Chromium | 「繼續未完成草稿」可達、44px、無溢出、無新常駐工具列；console 零未預期例外 | — |
+| M16 | 來源 2 只被草稿 G 引用、未被正式配置使用；先取得預覽令牌並記完整 World／附件→刪來源 2→前端窗內 Undo→Redo | 刪除成功、lost 有／新預覽拒；Undo 完整恢復 World／全部附件、lost 無／可重新預覽，恢復後掃描不得誤補標；Redo 完整恢復刪除後世界、lost 有／新預覽拒。各階段 raw／其他草稿不變；舊預覽令牌始終不得復活 | Undo／Redo 掃描誤補標；只恢復 World；恢復舊令牌 |
+| M17 | 單份 raw 草稿恰 131072 bytes、引用已存在且字串各≤4096；九份集合 record 恰 1048576 bytes；另各備最壞補標後恰上限／上限+1 bytes 的新增候選 | 未預留者在新接納前原子拒，最壞補標含外殼／能力／manifest 全在界內者接受、+1 拒；已接納者刪未被正式配置使用的來源／編輯基底→保存→新 session 冷重開，全部 lost／orphans、raw、其他附件與 World 相等，不阻擋刪除、不截斷 | 只驗原始 bytes／只留每份而漏 record／漏單份升版／保存丟旗標 |
+| M18 | 原合法 /13 近限舊 ZIP（131071-byte envelope）與原合法 /17 集合讀取補 lost／orphan→同內容重存→冷開；另增加 1 byte 真內容，含單份投影131072／131073邊界 | 依 P-059 保存精確自動標記／必要集合增量，raw／id／refs／flags 不變；去標內容仍符適用舊上限，集合不強降單份；+1 真內容走新接納原子拒、API／history／附件不變 | 移除有界例外（容量訊息真紅）；強制折單份；額外信用放行真內容 |
 
 回歸：`test_project_store.js`、`test_reference_workspace_races.js`、`grid_workspace_draft_test.js`、`grid_portable_browser_test.py`（原 113/0）、P70=106、P78=23。
 **CDP golden 不宣稱不變**：`cdp_test.js:3481` 從 P22 起把 `window.confirm` 全域改成回傳 true 且不還原；之後的網格流程以前會自動取代草稿，改後會累積成集合。實作 PR 必須實跑完整 CDP；若 golden 段因此改變，由 golden 唯一 owner 逐段核對、說明原因後更新 expected，不得沿用舊數字宣稱不變。

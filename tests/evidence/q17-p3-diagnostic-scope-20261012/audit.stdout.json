@@ -1,0 +1,49 @@
+{
+  "original_payloads_verified": 26,
+  "observations": [
+    {
+      "name": "natural",
+      "counts": [
+        36,
+        0
+      ],
+      "exit": 0,
+      "target": "DIV#",
+      "eligible": true,
+      "observed_interval_ms": 42.899999998509884,
+      "browser_pid": 203525,
+      "profile": "/tmp/geometry-188-prefix-natural/chrome-profile"
+    },
+    {
+      "name": "cpu20",
+      "counts": [
+        34,
+        2
+      ],
+      "exit": 1,
+      "target": "DIV#",
+      "eligible": true,
+      "observed_interval_ms": 2020.8000000044703,
+      "browser_pid": 203906,
+      "profile": "/tmp/geometry-188-prefix-cpu20/chrome-profile"
+    },
+    {
+      "name": "restored",
+      "counts": [
+        36,
+        0
+      ],
+      "exit": 0,
+      "target": "DIV#",
+      "eligible": true,
+      "observed_interval_ms": 33.600000001490116,
+      "browser_pid": 204305,
+      "profile": "/tmp/geometry-188-prefix-restored/chrome-profile"
+    }
+  ],
+  "all_guard_context_viewport_excluded": false,
+  "second_target_proven_inspector": false,
+  "same_chrome_fault_recovery_verified": false,
+  "historical_unique_root_cause_proven": false,
+  "new_product_tests": 0
+}

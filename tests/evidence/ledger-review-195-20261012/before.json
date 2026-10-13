@@ -1,0 +1,71 @@
+{
+  "mode": "before",
+  "scope": "Ledger/source/remote-state audit only; no product or seven-job execution",
+  "source_head": "ef719904913a50803c20fe632d93c0954042ea2e",
+  "facts": [
+    {
+      "issue": 257,
+      "pr": 192,
+      "head": "e37c06826d3ed5503117a47d6e3699908e2804b6",
+      "location": "table",
+      "text": "| GEO-257 | 核心矩形-環包含判定的註解宣稱錯誤 | 未開始 | 2026-10-10 Q38 對抗審查 |",
+      "consistent": false
+    },
+    {
+      "issue": 257,
+      "pr": 192,
+      "head": "e37c06826d3ed5503117a47d6e3699908e2804b6",
+      "location": "heading",
+      "text": "### GEO-257 — 核心矩形-環包含判定的註解宣稱錯誤（2026-10-10，未開始）",
+      "consistent": false
+    },
+    {
+      "issue": 257,
+      "pr": 192,
+      "head": "e37c06826d3ed5503117a47d6e3699908e2804b6",
+      "location": "state",
+      "text": "- **狀態**：未開始。",
+      "consistent": false
+    },
+    {
+      "issue": 258,
+      "pr": 193,
+      "head": "95871beaba2e6cf2a2aa8f21b74105775fada464",
+      "location": "table",
+      "text": "| GEO-258 | `parameter_remove` 不檢查引用，違反 I38／I39 | 未開始 | 2026-10-10 K3 提案第 3、4 輪對抗審查 |",
+      "consistent": false
+    },
+    {
+      "issue": 258,
+      "pr": 193,
+      "head": "95871beaba2e6cf2a2aa8f21b74105775fada464",
+      "location": "heading",
+      "text": "### GEO-258 — `parameter_remove` 不檢查引用（2026-10-10，未開始）",
+      "consistent": false
+    },
+    {
+      "issue": 258,
+      "pr": 193,
+      "head": "95871beaba2e6cf2a2aa8f21b74105775fada464",
+      "location": "state",
+      "text": "- **狀態**：未開始。",
+      "consistent": false
+    }
+  ],
+  "query_line": "  2. exact／sample 雙模式的視窗查詢與查詢預算——已實作：bridge 指令 `grid-rule-query … rect U0 V0 U1 V1 mode exact|sample limit N`（GRID-SUBDIVISION-NATIVE-CONTRACT.md:20），C 實作見 grid_subdivision_query.inc:202–248（QUERY_CAPACITY／QUERY_OVERFLOW 拒絕）。REPEAT_PANEL 仍維持排除；採納與否另案確認。",
+  "lock_lines": 45,
+  "user_mention_lines": 208,
+  "protected_union_lines": 247,
+  "protected_equal": true,
+  "issues": [
+    "GEO-257 table: active PR #192 is not recorded as in-progress draft",
+    "GEO-257 heading: active PR #192 is not recorded as in-progress draft",
+    "GEO-257 state: active PR #192 is not recorded as in-progress draft",
+    "GEO-258 table: active PR #193 is not recorded as in-progress draft",
+    "GEO-258 heading: active PR #193 is not recorded as in-progress draft",
+    "GEO-258 state: active PR #193 is not recorded as in-progress draft",
+    "exact/sample query already adopted by I25a/I37/R32 is still labelled outside adoption"
+  ],
+  "protected_original_sha256": "8604e63485abb7cce83787e3b5859411b3a8ad9cf9aeeab70e2a230cf636a429",
+  "protected_current_sha256": "8604e63485abb7cce83787e3b5859411b3a8ad9cf9aeeab70e2a230cf636a429"
+}

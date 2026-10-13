@@ -229,6 +229,11 @@
    "count": 19,
    "unit": "test"
   },
+  "py:test_section_profile_mutation_check": {
+   "mode": "count",
+   "count": 29,
+   "unit": "test"
+  },
   "py:test_section_profile_native": {
    "mode": "count",
    "count": 26,
@@ -236,7 +241,7 @@
   },
   "py:test_serve": {
    "mode": "count",
-   "count": 46,
+   "count": 50,
    "unit": "test"
   },
   "py:test_source_inspector": {
@@ -251,7 +256,7 @@
   },
   "py:test_space_modeling": {
    "mode": "count",
-   "count": 35,
+   "count": 40,
    "unit": "test"
   },
   "py:test_subgrid_contract": {
@@ -281,7 +286,7 @@
   },
   "node:tests-js": {
    "mode": "count",
-   "count": 651,
+   "count": 659,
    "unit": "node test"
   },
   "node:model_viewer": {
@@ -324,6 +329,11 @@
    "count": 18,
    "unit": "node test"
   },
+  "node:face_projection_lifecycle": {
+   "mode": "count",
+   "count": 14,
+   "unit": "node test"
+  },
   "node:workspace_shell_history": {
    "mode": "count",
    "count": 28,
@@ -352,6 +362,11 @@
   "node:cdp_card_position": {
    "mode": "count",
    "count": 21,
+   "unit": "node test"
+  },
+  "node:cdp_settle": {
+   "mode": "count",
+   "count": 10,
    "unit": "node test"
   },
   "node:cdp_evaluation": {

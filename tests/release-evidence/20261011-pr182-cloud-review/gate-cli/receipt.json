@@ -1,0 +1,20 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "tests/section_profile_mutation_check.py",
+    "--only",
+    "SPM41",
+    "--group",
+    "native",
+    "--receipt",
+    "/tmp/geometry-pr182-review/gate-cli/mutations.json",
+    "--logs",
+    "/tmp/geometry-pr182-review/gate-cli/logs"
+  ],
+  "exit": 0,
+  "seconds": 34.805160443000204,
+  "head": "aa4067b3a4343329a5fba261453c9032bb60290a",
+  "status": " M geometry-core/SECTION-PROFILE-NATIVE-CONTRACT.md\n M tests/release-evidence/20261010-q38-i44/README.md\n M tests/release-evidence/20261010-q38-i44/SHA256SUMS.txt\n M tests/section_profile_mutation_check.py\n?? tests/release-evidence/20261011-pr182-cloud-review/\n",
+  "gate_sha256": "b4ac6fab6d6bf811a204f062c310aa7f3188a710d381e87d5fcf59c21087b6ff",
+  "console_sha256": "eed05d5a482abb9158d86c3ce147db88b8dbede7bec97c2a4067ea597222d45b"
+}

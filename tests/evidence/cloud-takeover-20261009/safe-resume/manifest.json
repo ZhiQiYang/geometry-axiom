@@ -1,0 +1,2244 @@
+{
+  "schema": "geometry-safe-resume-public/1",
+  "preparedUtc": "2026-10-09T14:23:23.904072+00:00",
+  "preparerActor": "/root/delivery_closeout",
+  "testedProductHead": "128afbec9240f36ae149682830e6b3a96ea02101",
+  "dirty": false,
+  "scope": "Complete four-file Node unit command plus four synthetic same-parent/same-native-session explicit Pause/Resume Finish/Cancel browser lifecycles at 1280 and 390px. Historical failures retained separately; no full CDP or general crash recovery claim.",
+  "units": [
+    {
+      "name": "resolve-05e59392",
+      "testedHead": "05e59392e7c933c16268c711b450c5970aef7270",
+      "dirty": false,
+      "command": [
+        "<python-runtime>/bin/python3",
+        "tests/test_serve.py",
+        "-v"
+      ],
+      "scope": "Complete tests/test_serve.py unittest file only",
+      "result": {
+        "completed": true,
+        "tests": 46,
+        "unittestSummary": "OK",
+        "passed": true
+      },
+      "exitCode": 0,
+      "originalReceiptSha256": "3fc4be647efd7ab645b83477558aed37ee2997be0e4064d16bf15d7cae3f81be",
+      "receiptPath": "units/resolve-05e59392/receipt.public.json",
+      "logs": [
+        {
+          "path": "units/resolve-05e59392/stdout.public.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "originalPathLabel": "<unit-evidence-root>/serve-unit-05e59392/stdout.log",
+          "originalBytes": 0,
+          "originalSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "byteIdenticalOriginal": true,
+          "publicProjection": false,
+          "projectionChanges": [],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Actual complete unit command stream; originals and separate results preserved."
+        },
+        {
+          "path": "units/resolve-05e59392/stderr.public.log",
+          "bytes": 7629,
+          "sha256": "94d17f414af8a958fc0eea8fb58b68f4a55a2c8836086ba338b83560e4ceb66c",
+          "originalPathLabel": "<unit-evidence-root>/serve-unit-05e59392/stderr.log",
+          "originalBytes": 7629,
+          "originalSha256": "94d17f414af8a958fc0eea8fb58b68f4a55a2c8836086ba338b83560e4ceb66c",
+          "byteIdenticalOriginal": true,
+          "publicProjection": false,
+          "projectionChanges": [],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Actual complete unit command stream; originals and separate results preserved."
+        }
+      ],
+      "sources": [
+        {
+          "path": "units/resolve-05e59392/source/tests/test_serve.py",
+          "bytes": 54988,
+          "sha256": "469c068debd39ca22586a2a5dd31c6ba1601a4aa3038e60c709c3115f336fe02",
+          "originalPathLabel": "<delivery-closeout-root>/retained-unit-source-snapshots/05e59392e7c933c16268c711b450c5970aef7270/tests/test_serve.py",
+          "originalBytes": 54998,
+          "originalSha256": "6ea0ca3673947ef29bdd1fefb64e3a774dc95fd170ff6923a6dd15529c848c5d",
+          "byteIdenticalOriginal": false,
+          "publicProjection": true,
+          "projectionChanges": [
+            "Machine/executable/isolated feedback/profile path labels only."
+          ],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Executed committed source; explicit publication path projection where needed. Published copy was not executed.",
+          "repositoryPath": "tests/test_serve.py",
+          "sourceHead": "05e59392e7c933c16268c711b450c5970aef7270",
+          "publishedCopyWasExecuted": false
+        }
+      ],
+      "nativeMeaning": [
+        "Native subprocess.Popen is mocked by the original unit tests.",
+        "Internal ephemeral loopback HTTPServer fixtures exercise Python Handler code; no product service or browser is launched.",
+        "This is not native binary, browser, integration, Windows, Resume UI or CDP acceptance."
+      ],
+      "releaseApproved": false
+    },
+    {
+      "name": "resolve-f5638ec4",
+      "testedHead": "f5638ec4288eeec4e014c5618eed3fd1886080ea",
+      "dirty": false,
+      "command": [
+        "<python-runtime>/bin/python3",
+        "tests/test_serve.py",
+        "-v"
+      ],
+      "scope": "Complete tests/test_serve.py unittest file only",
+      "result": {
+        "completed": true,
+        "tests": 46,
+        "unittestSummary": "OK",
+        "passed": true
+      },
+      "exitCode": 0,
+      "originalReceiptSha256": "c07d94247bcacd597aa339ba972d34176894822052ee2e7357c54c5c7a0a8339",
+      "receiptPath": "units/resolve-f5638ec4/receipt.public.json",
+      "logs": [
+        {
+          "path": "units/resolve-f5638ec4/stdout.public.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "originalPathLabel": "<unit-evidence-root>/serve-unit-f5638ec4/stdout.log",
+          "originalBytes": 0,
+          "originalSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "byteIdenticalOriginal": true,
+          "publicProjection": false,
+          "projectionChanges": [],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Actual complete unit command stream; originals and separate results preserved."
+        },
+        {
+          "path": "units/resolve-f5638ec4/stderr.public.log",
+          "bytes": 7629,
+          "sha256": "a5e07803589f3a4599c845158ed0128295a455a5b90b42562650a578ef0e3d07",
+          "originalPathLabel": "<unit-evidence-root>/serve-unit-f5638ec4/stderr.log",
+          "originalBytes": 7629,
+          "originalSha256": "a5e07803589f3a4599c845158ed0128295a455a5b90b42562650a578ef0e3d07",
+          "byteIdenticalOriginal": true,
+          "publicProjection": false,
+          "projectionChanges": [],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Actual complete unit command stream; originals and separate results preserved."
+        }
+      ],
+      "sources": [
+        {
+          "path": "units/resolve-f5638ec4/source/tests/test_serve.py",
+          "bytes": 55017,
+          "sha256": "ce2e5382ba96d4a836822e27e10f68f4d70547d6cb38bdd2dec398a8f498ead7",
+          "originalPathLabel": "<delivery-closeout-root>/retained-unit-source-snapshots/f5638ec4288eeec4e014c5618eed3fd1886080ea/tests/test_serve.py",
+          "originalBytes": 55027,
+          "originalSha256": "f63a818d10f05bef5ce035ee0e5cf2769130a27bca8a658cfe9051a12153df81",
+          "byteIdenticalOriginal": false,
+          "publicProjection": true,
+          "projectionChanges": [
+            "Machine/executable/isolated feedback/profile path labels only."
+          ],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Executed committed source; explicit publication path projection where needed. Published copy was not executed.",
+          "repositoryPath": "tests/test_serve.py",
+          "sourceHead": "f5638ec4288eeec4e014c5618eed3fd1886080ea",
+          "publishedCopyWasExecuted": false
+        }
+      ],
+      "nativeMeaning": [
+        "Native subprocess.Popen is mocked by the original unit tests.",
+        "Internal ephemeral loopback HTTPServer fixtures exercise Python Handler code; no product service or browser is launched.",
+        "This is not native binary, browser, integration, Windows, Resume UI or CDP acceptance."
+      ],
+      "releaseApproved": false
+    },
+    {
+      "name": "scenario-f5638ec4-original-three",
+      "testedHead": "f5638ec4288eeec4e014c5618eed3fd1886080ea",
+      "dirty": false,
+      "command": [
+        "<node-runtime>/bin/node",
+        "--test",
+        "tests/test_scenario_editor_tickets.js",
+        "tests/test_scenario_recovery_owner.js",
+        "tests/test_reference_workspace_races.js"
+      ],
+      "scope": "Three original Node unit files, including the original required native backend for the caller-mutation test",
+      "result": {
+        "completed": true,
+        "counts": {
+          "tests": 117,
+          "pass": 113,
+          "fail": 3,
+          "cancelled": 0,
+          "skipped": 1,
+          "todo": 0
+        },
+        "passed": false
+      },
+      "exitCode": 1,
+      "originalReceiptSha256": "dac776be65ae3f31797dc072a7efd1c877161835504d8f222a1ba3a4be35cf6d",
+      "receiptPath": "units/scenario-f5638ec4-original-three/receipt.public.json",
+      "logs": [
+        {
+          "path": "units/scenario-f5638ec4-original-three/stdout.public.log",
+          "bytes": 15320,
+          "sha256": "0927a8a0cdd754657402a70084f388b29cf058d55c5b74db0b03f57a415bb4b3",
+          "originalPathLabel": "<unit-evidence-root>/scenario-units-f5638ec4/stdout.log",
+          "originalBytes": 15320,
+          "originalSha256": "963655897a41cfaff9983ef476ae597689c23a3b648328f89d8d2752e18e02ec",
+          "byteIdenticalOriginal": false,
+          "publicProjection": true,
+          "projectionChanges": [
+            "Machine/executable/isolated feedback/profile path labels only."
+          ],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Actual complete unit command stream; originals and separate results preserved."
+        },
+        {
+          "path": "units/scenario-f5638ec4-original-three/stderr.public.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "originalPathLabel": "<unit-evidence-root>/scenario-units-f5638ec4/stderr.log",
+          "originalBytes": 0,
+          "originalSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "byteIdenticalOriginal": true,
+          "publicProjection": false,
+          "projectionChanges": [],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Actual complete unit command stream; originals and separate results preserved."
+        }
+      ],
+      "sources": [
+        {
+          "path": "units/scenario-f5638ec4-original-three/source/tests/test_scenario_editor_tickets.js",
+          "bytes": 28576,
+          "sha256": "b3e7e44cc2cdb19fa0d7b2558a69be0561a177ea988a84704493009e93591f55",
+          "originalPathLabel": "<delivery-closeout-root>/retained-unit-source-snapshots/f5638ec4288eeec4e014c5618eed3fd1886080ea/tests/test_scenario_editor_tickets.js",
+          "originalBytes": 28576,
+          "originalSha256": "b3e7e44cc2cdb19fa0d7b2558a69be0561a177ea988a84704493009e93591f55",
+          "byteIdenticalOriginal": true,
+          "publicProjection": false,
+          "projectionChanges": [],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Executed committed source; explicit publication path projection where needed. Published copy was not executed.",
+          "repositoryPath": "tests/test_scenario_editor_tickets.js",
+          "sourceHead": "f5638ec4288eeec4e014c5618eed3fd1886080ea",
+          "publishedCopyWasExecuted": false
+        },
+        {
+          "path": "units/scenario-f5638ec4-original-three/source/tests/test_scenario_recovery_owner.js",
+          "bytes": 22450,
+          "sha256": "f1308fda837491b9b407811c254c1b9020c5ed449538916146e0dc4a5076420b",
+          "originalPathLabel": "<delivery-closeout-root>/retained-unit-source-snapshots/f5638ec4288eeec4e014c5618eed3fd1886080ea/tests/test_scenario_recovery_owner.js",
+          "originalBytes": 22450,
+          "originalSha256": "f1308fda837491b9b407811c254c1b9020c5ed449538916146e0dc4a5076420b",
+          "byteIdenticalOriginal": true,
+          "publicProjection": false,
+          "projectionChanges": [],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Executed committed source; explicit publication path projection where needed. Published copy was not executed.",
+          "repositoryPath": "tests/test_scenario_recovery_owner.js",
+          "sourceHead": "f5638ec4288eeec4e014c5618eed3fd1886080ea",
+          "publishedCopyWasExecuted": false
+        },
+        {
+          "path": "units/scenario-f5638ec4-original-three/source/tests/test_reference_workspace_races.js",
+          "bytes": 78950,
+          "sha256": "f2f737d179fa4e9b67196c04e1f4ca8e0515c8ecafa346bac77acb354c91e0da",
+          "originalPathLabel": "<delivery-closeout-root>/retained-unit-source-snapshots/f5638ec4288eeec4e014c5618eed3fd1886080ea/tests/test_reference_workspace_races.js",
+          "originalBytes": 78950,
+          "originalSha256": "f2f737d179fa4e9b67196c04e1f4ca8e0515c8ecafa346bac77acb354c91e0da",
+          "byteIdenticalOriginal": true,
+          "publicProjection": false,
+          "projectionChanges": [],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Executed committed source; explicit publication path projection where needed. Published copy was not executed.",
+          "repositoryPath": "tests/test_reference_workspace_races.js",
+          "sourceHead": "f5638ec4288eeec4e014c5618eed3fd1886080ea",
+          "publishedCopyWasExecuted": false
+        }
+      ],
+      "nativeMeaning": [
+        "Memory DOM/VM unit fixtures are not browser acceptance.",
+        "The existing real native HTTP committed ABA test retains its original named skip when GEOMETRY_TEST_BRIDGE is unset.",
+        "Required native unit backend does not establish full native, integration, Windows, Resume UI or CDP acceptance."
+      ],
+      "releaseApproved": false
+    },
+    {
+      "name": "scenario-128afbec-formal-four",
+      "testedHead": "128afbec9240f36ae149682830e6b3a96ea02101",
+      "dirty": false,
+      "command": [
+        "<node-runtime>/bin/node",
+        "--test",
+        "tests/test_scenario_editor_tickets.js",
+        "tests/test_scenario_recovery_owner.js",
+        "tests/test_reference_workspace_races.js",
+        "tests/test_scenario_resume_checkpoint.js"
+      ],
+      "scope": "Four original Node unit files including new Resume checkpoint controls and the original required native backend for the caller-mutation test",
+      "result": {
+        "completed": true,
+        "counts": {
+          "tests": 132,
+          "pass": 131,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 1,
+          "todo": 0
+        },
+        "passed": true
+      },
+      "exitCode": 0,
+      "originalReceiptSha256": "dbe8d6e81157f34d3ceec1eee176fb6cf08fc6bded3e94bb79351dee5540e459",
+      "receiptPath": "units/scenario-128afbec-formal-four/receipt.public.json",
+      "logs": [
+        {
+          "path": "units/scenario-128afbec-formal-four/stdout.public.log",
+          "bytes": 14234,
+          "sha256": "524922f2382a8e0f1a11ff31e48bc74ed459b2245cf1bd39fee81400a05eef2e",
+          "originalPathLabel": "<unit-evidence-root>/scenario-units-128afbec/stdout.log",
+          "originalBytes": 14234,
+          "originalSha256": "524922f2382a8e0f1a11ff31e48bc74ed459b2245cf1bd39fee81400a05eef2e",
+          "byteIdenticalOriginal": true,
+          "publicProjection": false,
+          "projectionChanges": [],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Actual complete unit command stream; originals and separate results preserved."
+        },
+        {
+          "path": "units/scenario-128afbec-formal-four/stderr.public.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "originalPathLabel": "<unit-evidence-root>/scenario-units-128afbec/stderr.log",
+          "originalBytes": 0,
+          "originalSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "byteIdenticalOriginal": true,
+          "publicProjection": false,
+          "projectionChanges": [],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Actual complete unit command stream; originals and separate results preserved."
+        }
+      ],
+      "sources": [
+        {
+          "path": "units/scenario-128afbec-formal-four/source/tests/test_scenario_editor_tickets.js",
+          "bytes": 30032,
+          "sha256": "37c787606422a644f62b96094b439208250f9fe2ea92e6b7d44b4f7e033d0a9e",
+          "originalPathLabel": "<delivery-closeout-root>/retained-unit-source-snapshots/128afbec9240f36ae149682830e6b3a96ea02101/tests/test_scenario_editor_tickets.js",
+          "originalBytes": 30032,
+          "originalSha256": "37c787606422a644f62b96094b439208250f9fe2ea92e6b7d44b4f7e033d0a9e",
+          "byteIdenticalOriginal": true,
+          "publicProjection": false,
+          "projectionChanges": [],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Executed committed source; explicit publication path projection where needed. Published copy was not executed.",
+          "repositoryPath": "tests/test_scenario_editor_tickets.js",
+          "sourceHead": "128afbec9240f36ae149682830e6b3a96ea02101",
+          "publishedCopyWasExecuted": false
+        },
+        {
+          "path": "units/scenario-128afbec-formal-four/source/tests/test_scenario_recovery_owner.js",
+          "bytes": 22450,
+          "sha256": "f1308fda837491b9b407811c254c1b9020c5ed449538916146e0dc4a5076420b",
+          "originalPathLabel": "<delivery-closeout-root>/retained-unit-source-snapshots/128afbec9240f36ae149682830e6b3a96ea02101/tests/test_scenario_recovery_owner.js",
+          "originalBytes": 22450,
+          "originalSha256": "f1308fda837491b9b407811c254c1b9020c5ed449538916146e0dc4a5076420b",
+          "byteIdenticalOriginal": true,
+          "publicProjection": false,
+          "projectionChanges": [],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Executed committed source; explicit publication path projection where needed. Published copy was not executed.",
+          "repositoryPath": "tests/test_scenario_recovery_owner.js",
+          "sourceHead": "128afbec9240f36ae149682830e6b3a96ea02101",
+          "publishedCopyWasExecuted": false
+        },
+        {
+          "path": "units/scenario-128afbec-formal-four/source/tests/test_reference_workspace_races.js",
+          "bytes": 78950,
+          "sha256": "f2f737d179fa4e9b67196c04e1f4ca8e0515c8ecafa346bac77acb354c91e0da",
+          "originalPathLabel": "<delivery-closeout-root>/retained-unit-source-snapshots/128afbec9240f36ae149682830e6b3a96ea02101/tests/test_reference_workspace_races.js",
+          "originalBytes": 78950,
+          "originalSha256": "f2f737d179fa4e9b67196c04e1f4ca8e0515c8ecafa346bac77acb354c91e0da",
+          "byteIdenticalOriginal": true,
+          "publicProjection": false,
+          "projectionChanges": [],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Executed committed source; explicit publication path projection where needed. Published copy was not executed.",
+          "repositoryPath": "tests/test_reference_workspace_races.js",
+          "sourceHead": "128afbec9240f36ae149682830e6b3a96ea02101",
+          "publishedCopyWasExecuted": false
+        },
+        {
+          "path": "units/scenario-128afbec-formal-four/source/tests/test_scenario_resume_checkpoint.js",
+          "bytes": 13967,
+          "sha256": "4846bf11d03c2a2a2b685dbd88db6f7b1544ba3eecbd6a220fe948540308cff4",
+          "originalPathLabel": "<delivery-closeout-root>/retained-unit-source-snapshots/128afbec9240f36ae149682830e6b3a96ea02101/tests/test_scenario_resume_checkpoint.js",
+          "originalBytes": 13967,
+          "originalSha256": "4846bf11d03c2a2a2b685dbd88db6f7b1544ba3eecbd6a220fe948540308cff4",
+          "byteIdenticalOriginal": true,
+          "publicProjection": false,
+          "projectionChanges": [],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Executed committed source; explicit publication path projection where needed. Published copy was not executed.",
+          "repositoryPath": "tests/test_scenario_resume_checkpoint.js",
+          "sourceHead": "128afbec9240f36ae149682830e6b3a96ea02101",
+          "publishedCopyWasExecuted": false
+        }
+      ],
+      "nativeMeaning": [
+        "Memory DOM/VM unit fixtures are not browser acceptance.",
+        "The existing real native HTTP committed ABA test retains its original named skip when GEOMETRY_TEST_BRIDGE is unset.",
+        "Required native unit backend does not establish full native, integration, Windows, Resume UI or CDP acceptance."
+      ],
+      "releaseApproved": false
+    }
+  ],
+  "historicalControlledOverrides": [
+    {
+      "name": "original-driver",
+      "testedProductSourceHead": "f5638ec4288eeec4e014c5618eed3fd1886080ea",
+      "dirtyAtProductSourceCapture": false,
+      "executionCheckoutDirty": "unknown",
+      "executionCheckoutDirtyMeaning": "not captured at each individual execution; immutable production override source captured clean and verified unchanged",
+      "sourceOverride": "<old-unit-evidence-root>/geometry-web/reference-workspace.js",
+      "productSourceSha256": "87392ad7bef4823e7f2dcfd497cc5d693ac06cfe41df6a1a723b1306c39ec929",
+      "tests": 14,
+      "pass": 0,
+      "fail": 14,
+      "skip": 0,
+      "completed": true,
+      "exitCode": 1,
+      "note": "All tests fail in fixture setup because a required rule ID/version was missing. Not a product result.",
+      "originalReceiptSha256": "dd0b0f2f67dc660b1016e50b3111952a04908c446035900a751cc18680e4be62",
+      "receiptPath": "override-units/original-driver/receipt.public.json",
+      "logs": [
+        {
+          "path": "override-units/original-driver/command.public.log",
+          "bytes": 12032,
+          "sha256": "f3483f172dc8ffeb4985662afd881fbb941a6bbd7f72bc23b06532ebbbdb4611",
+          "originalPathLabel": "<old-unit-evidence-root>/original-command.log",
+          "originalBytes": 13829,
+          "originalSha256": "521148c63ebcf1433305a5d8b2d20f721ccc3135af1280953e9a6c0c8d41fba5",
+          "byteIdenticalOriginal": false,
+          "publicProjection": true,
+          "projectionChanges": [
+            "Machine/executable/isolated feedback/profile path labels only."
+          ],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Original source-override controlled unit result, not clean formal checkout execution."
+        }
+      ],
+      "driverSources": [
+        {
+          "path": "override-units/original-driver/driver.public.cjs",
+          "bytes": 13145,
+          "sha256": "846ae1067388bacc5974869e6330a5aa0835696a1b2cf0d845b35527faff007d",
+          "originalPathLabel": "<old-unit-evidence-root>/original-driver.cjs",
+          "originalBytes": 13145,
+          "originalSha256": "c904b44a57245d4a40df5422c7c9cf673fcf939a21e9d42e2fa1248b4bd583f4",
+          "byteIdenticalOriginal": false,
+          "publicProjection": true,
+          "projectionChanges": [
+            "Machine/executable/isolated feedback/profile path labels only."
+          ],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Exact retained driver snapshot; reconstructed historical versions explicitly labeled in original receipt, not substituted for actual product source."
+        }
+      ],
+      "releaseApproved": false
+    },
+    {
+      "name": "corrected-fixture-driver",
+      "testedProductSourceHead": "f5638ec4288eeec4e014c5618eed3fd1886080ea",
+      "dirtyAtProductSourceCapture": false,
+      "executionCheckoutDirty": "unknown",
+      "executionCheckoutDirtyMeaning": "not captured at each individual execution; immutable production override source captured clean and verified unchanged",
+      "sourceOverride": "<old-unit-evidence-root>/geometry-web/reference-workspace.js",
+      "productSourceSha256": "87392ad7bef4823e7f2dcfd497cc5d693ac06cfe41df6a1a723b1306c39ec929",
+      "tests": 14,
+      "pass": 12,
+      "fail": 2,
+      "skip": 0,
+      "completed": true,
+      "exitCode": 1,
+      "note": "One packaging oracle error plus one real reserved-null journal failure. Do not merge into later results.",
+      "originalReceiptSha256": "73ba026c78b58dbbf8c1bc9e2b071c2ea5e926fd90f38dce30c1fb3ad3552b1e",
+      "receiptPath": "override-units/corrected-fixture-driver/receipt.public.json",
+      "logs": [
+        {
+          "path": "override-units/corrected-fixture-driver/command.public.log",
+          "bytes": 4254,
+          "sha256": "c7aafa6f74269635b4343a61dafcc4f547bb1a622865a909987bc8cf4c022484",
+          "originalPathLabel": "<old-unit-evidence-root>/corrected-fixture-command.log",
+          "originalBytes": 4346,
+          "originalSha256": "b6a992a7a77d8d696cce929e780bffcf8fc2f65f0d48d011948c583691596f98",
+          "byteIdenticalOriginal": false,
+          "publicProjection": true,
+          "projectionChanges": [
+            "Machine/executable/isolated feedback/profile path labels only."
+          ],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Original source-override controlled unit result, not clean formal checkout execution."
+        }
+      ],
+      "driverSources": [
+        {
+          "path": "override-units/corrected-fixture-driver/driver.public.cjs",
+          "bytes": 13160,
+          "sha256": "89e3d6f965b276da0716f1c6554a3fef7a78617a6f437b2bb736d76d7aeef569",
+          "originalPathLabel": "<old-unit-evidence-root>/corrected-fixture-driver.cjs",
+          "originalBytes": 13160,
+          "originalSha256": "90557c28e5338e8733b3c650316f15818e489a551d440677bb4cb9d631c0aca6",
+          "byteIdenticalOriginal": false,
+          "publicProjection": true,
+          "projectionChanges": [
+            "Machine/executable/isolated feedback/profile path labels only."
+          ],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Exact retained driver snapshot; reconstructed historical versions explicitly labeled in original receipt, not substituted for actual product source."
+        }
+      ],
+      "releaseApproved": false
+    },
+    {
+      "name": "corrected-package-oracle-driver",
+      "testedProductSourceHead": "f5638ec4288eeec4e014c5618eed3fd1886080ea",
+      "dirtyAtProductSourceCapture": false,
+      "executionCheckoutDirty": "unknown",
+      "executionCheckoutDirtyMeaning": "not captured at each individual execution; immutable production override source captured clean and verified unchanged",
+      "sourceOverride": "<old-unit-evidence-root>/geometry-web/reference-workspace.js",
+      "productSourceSha256": "87392ad7bef4823e7f2dcfd497cc5d693ac06cfe41df6a1a723b1306c39ec929",
+      "tests": 14,
+      "pass": 13,
+      "fail": 1,
+      "skip": 0,
+      "completed": true,
+      "exitCode": 1,
+      "note": "Full re-export/unpack package comparison fixed; reserved-null journal still fails in f563 production code.",
+      "originalReceiptSha256": "e36ac8f994d82cfa4085dcc283f7f244f3394b0e43c3484a0852dbb2e8fd22f8",
+      "receiptPath": "override-units/corrected-package-oracle-driver/receipt.public.json",
+      "logs": [
+        {
+          "path": "override-units/corrected-package-oracle-driver/command.public.log",
+          "bytes": 2368,
+          "sha256": "d13885538b520513c37fde4fb197b36b809407c4411a76c8e9ce668e5e4732de",
+          "originalPathLabel": "<old-unit-evidence-root>/corrected-package-oracle-command.log",
+          "originalBytes": 2414,
+          "originalSha256": "bb9197c62c397bf7b278813e2ae2cf8d7394fa0b73d2f5a730cc174c726b3438",
+          "byteIdenticalOriginal": false,
+          "publicProjection": true,
+          "projectionChanges": [
+            "Machine/executable/isolated feedback/profile path labels only."
+          ],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Original source-override controlled unit result, not clean formal checkout execution."
+        }
+      ],
+      "driverSources": [
+        {
+          "path": "override-units/corrected-package-oracle-driver/driver.public.cjs",
+          "bytes": 13259,
+          "sha256": "91ad7644a75b590e2dc35583ec2117b9abab0e9d89c711edd25b5d63f0c98b67",
+          "originalPathLabel": "<old-unit-evidence-root>/corrected-package-oracle-driver.cjs",
+          "originalBytes": 13259,
+          "originalSha256": "91ad7644a75b590e2dc35583ec2117b9abab0e9d89c711edd25b5d63f0c98b67",
+          "byteIdenticalOriginal": true,
+          "publicProjection": false,
+          "projectionChanges": [],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Exact retained driver snapshot; reconstructed historical versions explicitly labeled in original receipt, not substituted for actual product source."
+        }
+      ],
+      "releaseApproved": false
+    },
+    {
+      "name": "metadata-negative-control",
+      "testedProductSourceHead": "f5638ec4288eeec4e014c5618eed3fd1886080ea",
+      "dirtyAtProductSourceCapture": false,
+      "executionCheckoutDirty": "unknown",
+      "executionCheckoutDirtyMeaning": "not captured at each individual execution; immutable production override source captured clean and verified unchanged",
+      "sourceOverride": "<old-unit-evidence-root>/geometry-web/reference-workspace.js",
+      "productSourceSha256": "87392ad7bef4823e7f2dcfd497cc5d693ac06cfe41df6a1a723b1306c39ec929",
+      "tests": 15,
+      "pass": 13,
+      "fail": 2,
+      "skip": 0,
+      "completed": true,
+      "exitCode": 1,
+      "note": "15-test extension retains reserved-null failure and adds observed complete-project flags/provenance corruption acceptance failure on immutable f563 source. Earlier 14-test attempts preserved separately.",
+      "originalReceiptSha256": "c739aeff47bb0acbf654a7b8fa5dc5ede5f716f4d5770f328bf747ce044f2667",
+      "receiptPath": "override-units/metadata-negative-control/receipt.public.json",
+      "logs": [
+        {
+          "path": "override-units/metadata-negative-control/command.public.log",
+          "bytes": 3127,
+          "sha256": "c9a3aca6001724237d3cf1c415a0094c5d76dff3831f92d5333415fc6e561d5a",
+          "originalPathLabel": "<old-unit-evidence-root>/metadata-negative-control-command.log",
+          "originalBytes": 3219,
+          "originalSha256": "84eb0f2fdc3308770d4f950c4d8a8da017b52c7791999ab4792788105c4ae262",
+          "byteIdenticalOriginal": false,
+          "publicProjection": true,
+          "projectionChanges": [
+            "Machine/executable/isolated feedback/profile path labels only."
+          ],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Original source-override controlled unit result, not clean formal checkout execution."
+        }
+      ],
+      "driverSources": [
+        {
+          "path": "override-units/metadata-negative-control/driver.public.cjs",
+          "bytes": 13967,
+          "sha256": "4846bf11d03c2a2a2b685dbd88db6f7b1544ba3eecbd6a220fe948540308cff4",
+          "originalPathLabel": "<old-unit-evidence-root>/metadata-negative-control-driver.cjs",
+          "originalBytes": 13967,
+          "originalSha256": "4846bf11d03c2a2a2b685dbd88db6f7b1544ba3eecbd6a220fe948540308cff4",
+          "byteIdenticalOriginal": true,
+          "publicProjection": false,
+          "projectionChanges": [],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Exact retained driver snapshot; reconstructed historical versions explicitly labeled in original receipt, not substituted for actual product source."
+        }
+      ],
+      "releaseApproved": false
+    }
+  ],
+  "overrideSourceClosure": [
+    {
+      "path": "override-units/retained-source-closure/geometry-web/reference-workspace.js",
+      "bytes": 153437,
+      "sha256": "87392ad7bef4823e7f2dcfd497cc5d693ac06cfe41df6a1a723b1306c39ec929",
+      "originalPathLabel": "<old-unit-evidence-root>/geometry-web/reference-workspace.js",
+      "originalBytes": 153437,
+      "originalSha256": "87392ad7bef4823e7f2dcfd497cc5d693ac06cfe41df6a1a723b1306c39ec929",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Original captured f563 product override / controlled fixture closure; original hashes retained."
+    },
+    {
+      "path": "override-units/retained-source-closure/geometry-web/scenario-workspace.js",
+      "bytes": 25164,
+      "sha256": "cc31954c5afe9e91ed72b9b56ac62599751ffd3cb3b12cf3d9ae257acededfa9",
+      "originalPathLabel": "<old-unit-evidence-root>/geometry-web/scenario-workspace.js",
+      "originalBytes": 25164,
+      "originalSha256": "cc31954c5afe9e91ed72b9b56ac62599751ffd3cb3b12cf3d9ae257acededfa9",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Original captured f563 product override / controlled fixture closure; original hashes retained."
+    },
+    {
+      "path": "override-units/retained-source-closure/fixture-closure/geometry-web/project-store.js",
+      "bytes": 76205,
+      "sha256": "d06dce17c7dd9e17c5a83045128bfc447b14b0b39c3902e27d338b6ef9d3c3a3",
+      "originalPathLabel": "<old-unit-evidence-root>/fixture-closure/geometry-web/project-store.js",
+      "originalBytes": 76205,
+      "originalSha256": "d06dce17c7dd9e17c5a83045128bfc447b14b0b39c3902e27d338b6ef9d3c3a3",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Original captured f563 product override / controlled fixture closure; original hashes retained."
+    },
+    {
+      "path": "override-units/retained-source-closure/fixture-closure/geometry-web/scenario-integration.js",
+      "bytes": 4116,
+      "sha256": "7b35bcaa7599ad92ba46c5992136f0aec0ff96c94c7bf019b22fcc74898fe2fe",
+      "originalPathLabel": "<old-unit-evidence-root>/fixture-closure/geometry-web/scenario-integration.js",
+      "originalBytes": 4116,
+      "originalSha256": "7b35bcaa7599ad92ba46c5992136f0aec0ff96c94c7bf019b22fcc74898fe2fe",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Original captured f563 product override / controlled fixture closure; original hashes retained."
+    },
+    {
+      "path": "override-units/retained-source-closure/fixture-closure/geometry-web/scenario-snapshots.js",
+      "bytes": 34485,
+      "sha256": "a4f4f1be350aa5d093ad1948b17c2f8e4bab01b8f280c9b853c81c99aa0bd598",
+      "originalPathLabel": "<old-unit-evidence-root>/fixture-closure/geometry-web/scenario-snapshots.js",
+      "originalBytes": 34485,
+      "originalSha256": "a4f4f1be350aa5d093ad1948b17c2f8e4bab01b8f280c9b853c81c99aa0bd598",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Original captured f563 product override / controlled fixture closure; original hashes retained."
+    },
+    {
+      "path": "override-units/retained-source-closure/fixture-closure/geometry-web/vendor/fflate/umd/index.js",
+      "bytes": 33044,
+      "sha256": "462ef8041fc970e3615a20a9dd2b2e3047a073b2da729ef4f02b634bba8b7b83",
+      "originalPathLabel": "<old-unit-evidence-root>/fixture-closure/geometry-web/vendor/fflate/umd/index.js",
+      "originalBytes": 33044,
+      "originalSha256": "462ef8041fc970e3615a20a9dd2b2e3047a073b2da729ef4f02b634bba8b7b83",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Original captured f563 product override / controlled fixture closure; original hashes retained."
+    },
+    {
+      "path": "override-units/retained-source-closure/fixture-closure/tests/fixtures/native_available_capabilities.json",
+      "bytes": 140,
+      "sha256": "f1f9e8c4a16d6164198b3276e32516a7919a294eac4a69a937f38362fcf491e4",
+      "originalPathLabel": "<old-unit-evidence-root>/fixture-closure/tests/fixtures/native_available_capabilities.json",
+      "originalBytes": 140,
+      "originalSha256": "f1f9e8c4a16d6164198b3276e32516a7919a294eac4a69a937f38362fcf491e4",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Original captured f563 product override / controlled fixture closure; original hashes retained."
+    },
+    {
+      "path": "override-units/retained-source-closure/fixture-closure/tests/test_reference_workspace_races.js",
+      "bytes": 78950,
+      "sha256": "f2f737d179fa4e9b67196c04e1f4ca8e0515c8ecafa346bac77acb354c91e0da",
+      "originalPathLabel": "<old-unit-evidence-root>/fixture-closure/tests/test_reference_workspace_races.js",
+      "originalBytes": 78950,
+      "originalSha256": "f2f737d179fa4e9b67196c04e1f4ca8e0515c8ecafa346bac77acb354c91e0da",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Original captured f563 product override / controlled fixture closure; original hashes retained."
+    },
+    {
+      "path": "override-units/retained-source-closure/fixture-closure/tests/test_scenario_recovery_owner.js",
+      "bytes": 22450,
+      "sha256": "f1308fda837491b9b407811c254c1b9020c5ed449538916146e0dc4a5076420b",
+      "originalPathLabel": "<old-unit-evidence-root>/fixture-closure/tests/test_scenario_recovery_owner.js",
+      "originalBytes": 22450,
+      "originalSha256": "f1308fda837491b9b407811c254c1b9020c5ed449538916146e0dc4a5076420b",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Original captured f563 product override / controlled fixture closure; original hashes retained."
+    },
+    {
+      "path": "override-units/source-identity.public.json",
+      "bytes": 880,
+      "sha256": "19b9ea40d34f2d915990efdcd1881ef4e5374490ea20794390317737879fc78d",
+      "originalPathLabel": "<old-unit-evidence-root>/source-identity.json",
+      "originalBytes": 880,
+      "originalSha256": "073feed692db3a66729bcb51fdb56315d8edda95a1f41dce52f1462a28d7174f",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Product source clean capture receipt; each execution checkout dirty remains unknown."
+    }
+  ],
+  "formalResume15": {
+    "enclosingRun": "scenario-128afbec-formal-four",
+    "names": [
+      "explicit pause stores the complete latest metadata/source package and resume attaches it once without native upload/create/close",
+      "held strict Resume disarm cannot attach metadata or enable editing before transaction completion",
+      "Resume disarm quota abort retains eligible checkpoint but never attaches old metadata",
+      "unsupported strict durability never disarms or attaches the saved B package",
+      "durably committed disarm with lost local owner acknowledgement leaves no attach and a fresh owner cannot reuse eligibility",
+      "ordinary active B debounce never creates Resume qualification and an abrupt reload rejects it",
+      "metadata-only edit after Resume keeps identical native fingerprint but old suspend metadata is ineligible on reload",
+      "Suspend transaction abort preserves current B metadata and leaves its freeze authoritative",
+      "Cancel during package validation wins over an older Resume and preserves checkpoint without attaching it",
+      "Finish during package validation wins and an old Resume cannot reopen the retired decision",
+      "native fingerprint mismatch rejects before disarm and leaves all stored records unchanged",
+      "corrupted complete package rejects without disarm, import or metadata attachment",
+      "a second editing epoch can explicitly suspend its new complete metadata before the next Resume",
+      "present malformed reserved Resume journals are not treated as absent and overwritten by Suspend",
+      "corrupted saved/dirty/provenance metadata outside ZIP cannot be accepted as the complete suspend checkpoint"
+    ],
+    "pass": 15,
+    "fail": 0,
+    "separateCommandExecuted": false,
+    "meaning": "Subset of the actual 132-test complete command; never added to 131 passes."
+  },
+  "browserAttempts": [
+    {
+      "name": "after-resume-128afbec-20261009",
+      "testedHead": "128afbec9240f36ae149682830e6b3a96ea02101",
+      "dirty": false,
+      "status": "command-failed",
+      "executionExitCode": 1,
+      "gateExitCode": 1,
+      "probeCensus": {
+        "resultsPath": "<isolated-test-directory>",
+        "resultsSha256": "590cc7e5ae55643e943b53673465dfac3bc0e26eba11284072daa130854e16e4",
+        "expectedCases": 4,
+        "actualCases": 1,
+        "pass": 0,
+        "fail": 1,
+        "completed": false,
+        "cases": [
+          {
+            "name": "pause-resume-finish-1280",
+            "ok": false,
+            "harnessError": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#btnObj')\u001b[22m\n\u001b[2m    - locator resolved to <button id=\"btnObj\" class=\"seg\" title=\"三視圖\" type=\"button\" aria-label=\"三視圖\" aria-pressed=\"false\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    58 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n",
+            "pageErrors": []
+          }
+        ]
+      },
+      "identityProblems": [],
+      "actualBrowserExecutionIdentity": {
+        "head": "128afbec9240f36ae149682830e6b3a96ea02101",
+        "tree": "a61ddb7ded0f18996c96b2f3f2c2416703e73bde",
+        "dirty": false,
+        "runtime": {
+          "schema": "geometry-runtime/1",
+          "version": "04efb282c3c88028a4d5e276f0bd10d9c2c5d585da699ac8850178935fe5176f",
+          "fresh": true,
+          "root": "<resume-repository-root>",
+          "pid": 58008,
+          "session": "dd441b41a3574c98bea61a8d19daaf00"
+        },
+        "browserIdentity": {
+          "node": {
+            "pid": 58464,
+            "exe": "<node-runtime>/bin/node",
+            "version": "v24.19.0",
+            "sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12"
+          },
+          "browser": {
+            "pid": 58488,
+            "exe": "/usr/lib/chromium/chromium",
+            "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+            "cmdline": "/usr/lib/chromium/chromium --show-component-extension-options --enable-gpu-rasterization --no-default-browser-check --disable-pings --media-router=0 --enable-remote-extensions --load-extension= --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --user-data-dir=<isolated-browser-profile> --remote-debugging-pipe --no-startup-window"
+          }
+        },
+        "script": {
+          "path": "<original-evidence-root>/resume_pause_browser.cjs",
+          "sha256": "71e7d5369a907e3902b64b408b15d970d949960274b8ada95fbe67d43787409e"
+        },
+        "scope": "Four synthetic browser lifecycles; not full CDP, physical mobile, abrupt reload or cross-service Resume"
+      },
+      "originalReceiptSha256": "9320a3fdcbf44009c5c3e33a0558fffec8789ed953e8ab6cf72bad96ee1e8ddc",
+      "receiptPath": "browser/after-resume-128afbec-20261009/receipt.public.json",
+      "logs": [
+        {
+          "path": "browser/after-resume-128afbec-20261009/command.public.log",
+          "bytes": 970,
+          "sha256": "34055db7197de974e179e68db3e030cf8c0f9974df9e40c96be0c7498b93f751",
+          "originalPathLabel": "<original-evidence-root>/after-resume-128afbec-20261009/command.log",
+          "originalBytes": 1028,
+          "originalSha256": "e213ddc23b64378d99cf07e4f29bb3c7ea9759b36f42dc485fbe33ae8b2b6c44",
+          "byteIdenticalOriginal": false,
+          "publicProjection": true,
+          "projectionChanges": [
+            "Machine/executable/isolated feedback/profile path labels only."
+          ],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Actual command log; r3 is empty because preflight rejected before execution."
+        }
+      ],
+      "syntheticArtifacts": [
+        {
+          "path": "browser/after-resume-128afbec-20261009/synthetic-artifacts/identity.json",
+          "bytes": 2940,
+          "sha256": "72d0ae3e7566cbbb0373f5e309ca18bbfa17d9a124cb328e5d16b389ef1c411f",
+          "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/after-resume-128afbec-20261009/original-temp-artifacts/identity.json",
+          "originalBytes": 3030,
+          "originalSha256": "1cb462fddf90e9202671049bdcb6acf2bcd1e7271431288f3abd0e47904f8aa4",
+          "byteIdenticalOriginal": false,
+          "publicProjection": true,
+          "projectionChanges": [
+            "Machine/executable/isolated feedback/profile path labels only."
+          ],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Synthetic browser state/network/results or actual run executable identity; no private user state."
+        },
+        {
+          "path": "browser/after-resume-128afbec-20261009/synthetic-artifacts/results.json",
+          "bytes": 2369,
+          "sha256": "c5efa21196aa5319d8800fc550baef22370480da81e9d93cf3e8a9fb3bca327a",
+          "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/after-resume-128afbec-20261009/original-temp-artifacts/results.json",
+          "originalBytes": 2427,
+          "originalSha256": "590cc7e5ae55643e943b53673465dfac3bc0e26eba11284072daa130854e16e4",
+          "byteIdenticalOriginal": false,
+          "publicProjection": true,
+          "projectionChanges": [
+            "Machine/executable/isolated feedback/profile path labels only."
+          ],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Synthetic browser state/network/results or actual run executable identity; no private user state."
+        }
+      ],
+      "releaseApproved": false
+    },
+    {
+      "name": "after-resume-128afbec-r2-20261009",
+      "testedHead": "128afbec9240f36ae149682830e6b3a96ea02101",
+      "dirty": false,
+      "status": "command-failed",
+      "executionExitCode": 1,
+      "gateExitCode": 1,
+      "probeCensus": {
+        "resultsPath": "<isolated-test-directory>",
+        "resultsSha256": "2494669b2270e03d4e21e4cec201d0ec3f8e39d6a592707310ffc01122d826b1",
+        "expectedCases": 4,
+        "actualCases": 1,
+        "pass": 0,
+        "fail": 1,
+        "completed": false,
+        "cases": [
+          {
+            "name": "pause-resume-finish-1280",
+            "ok": false,
+            "harnessError": "frame.evaluate: Error: 校準紀錄與比例不一致。\n    at fail (http://127.0.0.1:19178/project-store.js:39:35)\n    at validate (http://127.0.0.1:19178/project-store.js:577:95)\n    at Object.pack (http://127.0.0.1:19178/project-store.js:641:5)\n    at async exportSnapshot (http://127.0.0.1:19178/reference-workspace.js:1272:17)\n    at async Object.exportBytes (http://127.0.0.1:19178/reference-workspace.js:1275:42)\n    at async eval (eval at evaluate (:311:30), <anonymous>:1:19)\n    at async <anonymous>:337:30",
+            "pageErrors": []
+          }
+        ]
+      },
+      "identityProblems": [
+        "live direct-child bridge: [{'pid': 58071, 'parent': 58008, 'exe': '<isolated-test-directory>', 'sha256': 'd19b7bc12cd155120be9cc05e2161e63cb6588ea3ea1c9ee278dbd1e54039843'}, {'pid': 59316, 'parent': 58008, 'exe': '<isolated-test-directory>', 'sha256': 'd19b7bc12cd155120be9cc05e2161e63cb6588ea3ea1c9ee278dbd1e54039843'}]",
+        "liveBridge changed during scoped probe"
+      ],
+      "actualBrowserExecutionIdentity": {
+        "head": "128afbec9240f36ae149682830e6b3a96ea02101",
+        "tree": "a61ddb7ded0f18996c96b2f3f2c2416703e73bde",
+        "dirty": false,
+        "runtime": {
+          "schema": "geometry-runtime/1",
+          "version": "04efb282c3c88028a4d5e276f0bd10d9c2c5d585da699ac8850178935fe5176f",
+          "fresh": true,
+          "root": "<resume-repository-root>",
+          "pid": 58008,
+          "session": "dd441b41a3574c98bea61a8d19daaf00"
+        },
+        "browserIdentity": {
+          "node": {
+            "pid": 58995,
+            "exe": "<node-runtime>/bin/node",
+            "version": "v24.19.0",
+            "sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12"
+          },
+          "browser": {
+            "pid": 59019,
+            "exe": "/usr/lib/chromium/chromium",
+            "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+            "cmdline": "/usr/lib/chromium/chromium --show-component-extension-options --enable-gpu-rasterization --no-default-browser-check --disable-pings --media-router=0 --enable-remote-extensions --load-extension= --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --user-data-dir=<isolated-browser-profile> --remote-debugging-pipe --no-startup-window"
+          }
+        },
+        "script": {
+          "path": "<original-evidence-root>/resume_pause_browser.cjs",
+          "sha256": "848c80af56d4a1634a590e97eeadc3ea88cd6c74bd7a8caa6c11e7d156ddebd6"
+        },
+        "scope": "Four synthetic browser lifecycles; not full CDP, physical mobile, abrupt reload or cross-service Resume"
+      },
+      "originalReceiptSha256": "df859a9f4cf53d32a5f5d6b99c26792de3bd1937e116291bb0df77e4c4d6d5a1",
+      "receiptPath": "browser/after-resume-128afbec-r2-20261009/receipt.public.json",
+      "logs": [
+        {
+          "path": "browser/after-resume-128afbec-r2-20261009/command.public.log",
+          "bytes": 657,
+          "sha256": "2cda22e44b142ffec968360f4be72301f93f4bb46c931658006c6c09eed34286",
+          "originalPathLabel": "<original-evidence-root>/after-resume-128afbec-r2-20261009/command.log",
+          "originalBytes": 715,
+          "originalSha256": "a083d8bab026a81c102995503a27ceac280c77ff5556f64b020d188bfd17a18c",
+          "byteIdenticalOriginal": false,
+          "publicProjection": true,
+          "projectionChanges": [
+            "Machine/executable/isolated feedback/profile path labels only."
+          ],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Actual command log; r3 is empty because preflight rejected before execution."
+        }
+      ],
+      "syntheticArtifacts": [
+        {
+          "path": "browser/after-resume-128afbec-r2-20261009/synthetic-artifacts/identity.json",
+          "bytes": 2940,
+          "sha256": "8f739ff4bae5682f3b8c37b9ecd98d8e7e20c057ecd732508b6b8a4d732cf6da",
+          "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/after-resume-128afbec-r2-20261009/original-temp-artifacts/identity.json",
+          "originalBytes": 3030,
+          "originalSha256": "24682ec5fce3524ca8392c86b6897b52e345229084eb36a7f3d9905e06750074",
+          "byteIdenticalOriginal": false,
+          "publicProjection": true,
+          "projectionChanges": [
+            "Machine/executable/isolated feedback/profile path labels only."
+          ],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Synthetic browser state/network/results or actual run executable identity; no private user state."
+        },
+        {
+          "path": "browser/after-resume-128afbec-r2-20261009/synthetic-artifacts/results.json",
+          "bytes": 1400,
+          "sha256": "0fd369273f83095a59fffd89da61138ad09b9b1565ac007a79cd2bc2594d18cf",
+          "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/after-resume-128afbec-r2-20261009/original-temp-artifacts/results.json",
+          "originalBytes": 1458,
+          "originalSha256": "2494669b2270e03d4e21e4cec201d0ec3f8e39d6a592707310ffc01122d826b1",
+          "byteIdenticalOriginal": false,
+          "publicProjection": true,
+          "projectionChanges": [
+            "Machine/executable/isolated feedback/profile path labels only."
+          ],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Synthetic browser state/network/results or actual run executable identity; no private user state."
+        }
+      ],
+      "releaseApproved": false
+    },
+    {
+      "name": "after-resume-128afbec-r3-20261009",
+      "testedHead": "128afbec9240f36ae149682830e6b3a96ea02101",
+      "dirty": false,
+      "status": "rejected",
+      "executionExitCode": null,
+      "gateExitCode": 2,
+      "probeCensus": {
+        "resultsPath": "<isolated-test-directory>",
+        "resultsSha256": null,
+        "expectedCases": 4,
+        "actualCases": 0,
+        "pass": 0,
+        "fail": 0,
+        "completed": false,
+        "cases": []
+      },
+      "identityProblems": [
+        "live direct-child bridge: [{'pid': 58071, 'parent': 58008, 'exe': '<isolated-test-directory>', 'sha256': 'd19b7bc12cd155120be9cc05e2161e63cb6588ea3ea1c9ee278dbd1e54039843'}, {'pid': 59316, 'parent': 58008, 'exe': '<isolated-test-directory>', 'sha256': 'd19b7bc12cd155120be9cc05e2161e63cb6588ea3ea1c9ee278dbd1e54039843'}]"
+      ],
+      "actualBrowserExecutionIdentity": null,
+      "originalReceiptSha256": "c56c18e207f223f2c71141a9c14a679b546089ee90748cf85bc11fa488f2b9d7",
+      "receiptPath": "browser/after-resume-128afbec-r3-20261009/receipt.public.json",
+      "logs": [
+        {
+          "path": "browser/after-resume-128afbec-r3-20261009/command.public.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "originalPathLabel": "<original-evidence-root>/after-resume-128afbec-r3-20261009/command.log",
+          "originalBytes": 0,
+          "originalSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "byteIdenticalOriginal": true,
+          "publicProjection": false,
+          "projectionChanges": [],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Actual command log; r3 is empty because preflight rejected before execution."
+        }
+      ],
+      "syntheticArtifacts": [],
+      "releaseApproved": false
+    },
+    {
+      "name": "after-resume-128afbec-r4-20261009",
+      "testedHead": "128afbec9240f36ae149682830e6b3a96ea02101",
+      "dirty": false,
+      "status": "execution-verified",
+      "executionExitCode": 0,
+      "gateExitCode": 0,
+      "probeCensus": {
+        "resultsPath": "<isolated-test-directory>",
+        "resultsSha256": "70f6f8c5c35eed22634513877edf9e05b637a0c8589e6afa6a5d19f5f969c08a",
+        "expectedCases": 4,
+        "actualCases": 4,
+        "pass": 4,
+        "fail": 0,
+        "completed": true,
+        "cases": [
+          {
+            "name": "pause-resume-finish-1280",
+            "ok": true,
+            "harnessError": null,
+            "pageErrors": []
+          },
+          {
+            "name": "pause-resume-cancel-1280",
+            "ok": true,
+            "harnessError": null,
+            "pageErrors": []
+          },
+          {
+            "name": "pause-resume-finish-390",
+            "ok": true,
+            "harnessError": null,
+            "pageErrors": []
+          },
+          {
+            "name": "pause-resume-cancel-390",
+            "ok": true,
+            "harnessError": null,
+            "pageErrors": []
+          }
+        ]
+      },
+      "identityProblems": [],
+      "actualBrowserExecutionIdentity": {
+        "head": "128afbec9240f36ae149682830e6b3a96ea02101",
+        "tree": "a61ddb7ded0f18996c96b2f3f2c2416703e73bde",
+        "dirty": false,
+        "runtime": {
+          "schema": "geometry-runtime/1",
+          "version": "04efb282c3c88028a4d5e276f0bd10d9c2c5d585da699ac8850178935fe5176f",
+          "fresh": true,
+          "root": "<resume-repository-root>",
+          "pid": 58008,
+          "session": "dd441b41a3574c98bea61a8d19daaf00"
+        },
+        "browserIdentity": {
+          "node": {
+            "pid": 60045,
+            "exe": "<node-runtime>/bin/node",
+            "version": "v24.19.0",
+            "sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12"
+          },
+          "browser": {
+            "pid": 60069,
+            "exe": "/usr/lib/chromium/chromium",
+            "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+            "cmdline": "/usr/lib/chromium/chromium --show-component-extension-options --enable-gpu-rasterization --no-default-browser-check --disable-pings --media-router=0 --enable-remote-extensions --load-extension= --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --user-data-dir=<isolated-browser-profile> --remote-debugging-pipe --no-startup-window"
+          }
+        },
+        "script": {
+          "path": "<original-evidence-root>/resume_pause_browser.cjs",
+          "sha256": "e7de480a528ee9f02e75971c7ed409fcdb86129c5b629899efa3a1764d195ce4"
+        },
+        "scope": "Four synthetic browser lifecycles; not full CDP, physical mobile, abrupt reload or cross-service Resume"
+      },
+      "originalReceiptSha256": "3d6006a984ed09599debcc2bdf9601523488c558c28453fa2e0c90c9f45227cd",
+      "receiptPath": "browser/after-resume-128afbec-r4-20261009/receipt.public.json",
+      "logs": [
+        {
+          "path": "browser/after-resume-128afbec-r4-20261009/command.public.log",
+          "bytes": 5915,
+          "sha256": "5dff7a4fcc68e71f986ab001ac9ae569bbb95994524f7e97ac5a5c7ef3afe288",
+          "originalPathLabel": "<original-evidence-root>/after-resume-128afbec-r4-20261009/command.log",
+          "originalBytes": 5915,
+          "originalSha256": "5dff7a4fcc68e71f986ab001ac9ae569bbb95994524f7e97ac5a5c7ef3afe288",
+          "byteIdenticalOriginal": true,
+          "publicProjection": false,
+          "projectionChanges": [],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Actual command log; r3 is empty because preflight rejected before execution."
+        }
+      ],
+      "syntheticArtifacts": [
+        {
+          "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/identity.json",
+          "bytes": 2940,
+          "sha256": "cd15bc2b2f6d5435ccc15324afb0ef089628c9b08ffee0b80103722e344e0421",
+          "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/after-resume-128afbec-r4-20261009/original-temp-artifacts/identity.json",
+          "originalBytes": 3030,
+          "originalSha256": "3c043d739f44f2b4f10cc0ff980ae49538e1f7158f67561544049acc833d8f03",
+          "byteIdenticalOriginal": false,
+          "publicProjection": true,
+          "projectionChanges": [
+            "Machine/executable/isolated feedback/profile path labels only."
+          ],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Synthetic browser state/network/results or actual run executable identity; no private user state."
+        },
+        {
+          "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/pause-resume-cancel-1280-after-resume.gcanvas",
+          "originalBytes": 4130,
+          "sha256": "2e92e091dc386427c45ee302cbe9901f264808bd89cf54396526e000a06cd410",
+          "originalSha256": "2e92e091dc386427c45ee302cbe9901f264808bd89cf54396526e000a06cd410",
+          "byteIdenticalOriginal": true,
+          "scope": "Full synthetic package with generated resume-synthetic.pdf source; no user document."
+        },
+        {
+          "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/pause-resume-cancel-1280-before-pause.gcanvas",
+          "originalBytes": 4130,
+          "sha256": "2e92e091dc386427c45ee302cbe9901f264808bd89cf54396526e000a06cd410",
+          "originalSha256": "2e92e091dc386427c45ee302cbe9901f264808bd89cf54396526e000a06cd410",
+          "byteIdenticalOriginal": true,
+          "scope": "Full synthetic package with generated resume-synthetic.pdf source; no user document."
+        },
+        {
+          "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/pause-resume-cancel-1280-later-edit.gcanvas",
+          "originalBytes": 4130,
+          "sha256": "a04bf236e3a8b2465fa9fd48e3a68f153f0909827c03295e6c808f12296c43eb",
+          "originalSha256": "a04bf236e3a8b2465fa9fd48e3a68f153f0909827c03295e6c808f12296c43eb",
+          "byteIdenticalOriginal": true,
+          "scope": "Full synthetic package with generated resume-synthetic.pdf source; no user document."
+        },
+        {
+          "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/pause-resume-cancel-1280-state.json",
+          "bytes": 56540,
+          "sha256": "7bb9d1125c539da121c7d64bf6452236825f5c68afea744570925d8e6a8b71f5",
+          "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/after-resume-128afbec-r4-20261009/original-temp-artifacts/pause-resume-cancel-1280-state.json",
+          "originalBytes": 56540,
+          "originalSha256": "7bb9d1125c539da121c7d64bf6452236825f5c68afea744570925d8e6a8b71f5",
+          "byteIdenticalOriginal": true,
+          "publicProjection": false,
+          "projectionChanges": [],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Synthetic browser state/network/results or actual run executable identity; no private user state."
+        },
+        {
+          "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/pause-resume-cancel-390-after-resume.gcanvas",
+          "originalBytes": 4126,
+          "sha256": "a403a828cb61c1991894f857579cd7cc5628ee5d44d7a523101aa68ffa8429b6",
+          "originalSha256": "a403a828cb61c1991894f857579cd7cc5628ee5d44d7a523101aa68ffa8429b6",
+          "byteIdenticalOriginal": true,
+          "scope": "Full synthetic package with generated resume-synthetic.pdf source; no user document."
+        },
+        {
+          "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/pause-resume-cancel-390-before-pause.gcanvas",
+          "originalBytes": 4126,
+          "sha256": "a403a828cb61c1991894f857579cd7cc5628ee5d44d7a523101aa68ffa8429b6",
+          "originalSha256": "a403a828cb61c1991894f857579cd7cc5628ee5d44d7a523101aa68ffa8429b6",
+          "byteIdenticalOriginal": true,
+          "scope": "Full synthetic package with generated resume-synthetic.pdf source; no user document."
+        },
+        {
+          "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/pause-resume-cancel-390-later-edit.gcanvas",
+          "originalBytes": 4126,
+          "sha256": "52b6e5b7050f9e85d6a70b180c10617c1086272e21e3d83a6b8b26006702277f",
+          "originalSha256": "52b6e5b7050f9e85d6a70b180c10617c1086272e21e3d83a6b8b26006702277f",
+          "byteIdenticalOriginal": true,
+          "scope": "Full synthetic package with generated resume-synthetic.pdf source; no user document."
+        },
+        {
+          "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/pause-resume-cancel-390-state.json",
+          "bytes": 56506,
+          "sha256": "f839d0b279c408688f0bc89f96fa259416678ec0a9622a4d86f162da59ba5988",
+          "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/after-resume-128afbec-r4-20261009/original-temp-artifacts/pause-resume-cancel-390-state.json",
+          "originalBytes": 56506,
+          "originalSha256": "f839d0b279c408688f0bc89f96fa259416678ec0a9622a4d86f162da59ba5988",
+          "byteIdenticalOriginal": true,
+          "publicProjection": false,
+          "projectionChanges": [],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Synthetic browser state/network/results or actual run executable identity; no private user state."
+        },
+        {
+          "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/pause-resume-finish-1280-after-resume.gcanvas",
+          "originalBytes": 4130,
+          "sha256": "7f40160be271f2dcb4c3c1278a8e126329a9874b8b031c0b760956195c1b7313",
+          "originalSha256": "7f40160be271f2dcb4c3c1278a8e126329a9874b8b031c0b760956195c1b7313",
+          "byteIdenticalOriginal": true,
+          "scope": "Full synthetic package with generated resume-synthetic.pdf source; no user document."
+        },
+        {
+          "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/pause-resume-finish-1280-before-pause.gcanvas",
+          "originalBytes": 4130,
+          "sha256": "ed13cdb32330bc134880a6fa921084e094b0be68345aa1a14bbc6908e329f113",
+          "originalSha256": "ed13cdb32330bc134880a6fa921084e094b0be68345aa1a14bbc6908e329f113",
+          "byteIdenticalOriginal": true,
+          "scope": "Full synthetic package with generated resume-synthetic.pdf source; no user document."
+        },
+        {
+          "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/pause-resume-finish-1280-later-edit.gcanvas",
+          "originalBytes": 4130,
+          "sha256": "df0fba244553311449230cc3e5f1541778484eaa7f564987fc86607e5c49cbb2",
+          "originalSha256": "df0fba244553311449230cc3e5f1541778484eaa7f564987fc86607e5c49cbb2",
+          "byteIdenticalOriginal": true,
+          "scope": "Full synthetic package with generated resume-synthetic.pdf source; no user document."
+        },
+        {
+          "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/pause-resume-finish-1280-state.json",
+          "bytes": 65952,
+          "sha256": "3045211b1836ef602d79e39295aedf6e4b4d7b3ce3b3fd381eeac951586af856",
+          "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/after-resume-128afbec-r4-20261009/original-temp-artifacts/pause-resume-finish-1280-state.json",
+          "originalBytes": 65952,
+          "originalSha256": "3045211b1836ef602d79e39295aedf6e4b4d7b3ce3b3fd381eeac951586af856",
+          "byteIdenticalOriginal": true,
+          "publicProjection": false,
+          "projectionChanges": [],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Synthetic browser state/network/results or actual run executable identity; no private user state."
+        },
+        {
+          "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/pause-resume-finish-390-after-resume.gcanvas",
+          "originalBytes": 4126,
+          "sha256": "02a8dd662703152fbd1804c135749dac8ec0d6da9983fefa403d1dc3b7fe34da",
+          "originalSha256": "02a8dd662703152fbd1804c135749dac8ec0d6da9983fefa403d1dc3b7fe34da",
+          "byteIdenticalOriginal": true,
+          "scope": "Full synthetic package with generated resume-synthetic.pdf source; no user document."
+        },
+        {
+          "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/pause-resume-finish-390-before-pause.gcanvas",
+          "originalBytes": 4126,
+          "sha256": "6ab1154e2b5f3bcf15342d3df53633a63290312382561efdf7f66d9c0fbbb161",
+          "originalSha256": "6ab1154e2b5f3bcf15342d3df53633a63290312382561efdf7f66d9c0fbbb161",
+          "byteIdenticalOriginal": true,
+          "scope": "Full synthetic package with generated resume-synthetic.pdf source; no user document."
+        },
+        {
+          "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/pause-resume-finish-390-later-edit.gcanvas",
+          "originalBytes": 4126,
+          "sha256": "958658119ee4ef0ec7b76d09fc3d87fe362efe9b3ed571d1ede46e7bb8512365",
+          "originalSha256": "958658119ee4ef0ec7b76d09fc3d87fe362efe9b3ed571d1ede46e7bb8512365",
+          "byteIdenticalOriginal": true,
+          "scope": "Full synthetic package with generated resume-synthetic.pdf source; no user document."
+        },
+        {
+          "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/pause-resume-finish-390-state.json",
+          "bytes": 65909,
+          "sha256": "6744bc002d471cca62f926e2d5ac6225392f69c76b56c49db799e999e69e59d3",
+          "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/after-resume-128afbec-r4-20261009/original-temp-artifacts/pause-resume-finish-390-state.json",
+          "originalBytes": 65909,
+          "originalSha256": "6744bc002d471cca62f926e2d5ac6225392f69c76b56c49db799e999e69e59d3",
+          "byteIdenticalOriginal": true,
+          "publicProjection": false,
+          "projectionChanges": [],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Synthetic browser state/network/results or actual run executable identity; no private user state."
+        },
+        {
+          "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/results.json",
+          "bytes": 114172,
+          "sha256": "70f6f8c5c35eed22634513877edf9e05b637a0c8589e6afa6a5d19f5f969c08a",
+          "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/after-resume-128afbec-r4-20261009/original-temp-artifacts/results.json",
+          "originalBytes": 114172,
+          "originalSha256": "70f6f8c5c35eed22634513877edf9e05b637a0c8589e6afa6a5d19f5f969c08a",
+          "byteIdenticalOriginal": true,
+          "publicProjection": false,
+          "projectionChanges": [],
+          "originalRetainedOutsideGit": true,
+          "purpose": "Synthetic browser state/network/results or actual run executable identity; no private user state."
+        }
+      ],
+      "releaseApproved": false
+    }
+  ],
+  "executedSourceAndHarnessCopies": [
+    {
+      "path": "executed-source-closure/geometry-web/app.js",
+      "bytes": 620877,
+      "sha256": "ec284229af0c3de951941cb474d31dc452a99b32eeb1849f288889a57b4015d9",
+      "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/executed-source-closure/geometry-web/app.js",
+      "originalBytes": 620877,
+      "originalSha256": "ec284229af0c3de951941cb474d31dc452a99b32eeb1849f288889a57b4015d9",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Byte/hash-bound executed 128afbec committed source closure; paths projected only where needed."
+    },
+    {
+      "path": "executed-source-closure/geometry-web/space-workspace.js",
+      "bytes": 95770,
+      "sha256": "a735338f5cc14f3ae743578986750ace3c7389e0d73fd44c21773d82c2503868",
+      "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/executed-source-closure/geometry-web/space-workspace.js",
+      "originalBytes": 95770,
+      "originalSha256": "a735338f5cc14f3ae743578986750ace3c7389e0d73fd44c21773d82c2503868",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Byte/hash-bound executed 128afbec committed source closure; paths projected only where needed."
+    },
+    {
+      "path": "executed-source-closure/geometry-web/app.css",
+      "bytes": 188192,
+      "sha256": "ca597aff139aab7b8209206d0c65d54ed79b913268c46e57ab79de7bed6db793",
+      "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/executed-source-closure/geometry-web/app.css",
+      "originalBytes": 188192,
+      "originalSha256": "ca597aff139aab7b8209206d0c65d54ed79b913268c46e57ab79de7bed6db793",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Byte/hash-bound executed 128afbec committed source closure; paths projected only where needed."
+    },
+    {
+      "path": "executed-source-closure/geometry-web/index.html",
+      "bytes": 52139,
+      "sha256": "e8a6635073f46f4b6a824cea430d56d2feb4e3e024e285ef3e068751a968b00b",
+      "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/executed-source-closure/geometry-web/index.html",
+      "originalBytes": 52139,
+      "originalSha256": "e8a6635073f46f4b6a824cea430d56d2feb4e3e024e285ef3e068751a968b00b",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Byte/hash-bound executed 128afbec committed source closure; paths projected only where needed."
+    },
+    {
+      "path": "executed-source-closure/geometry-web/serve.py",
+      "bytes": 35514,
+      "sha256": "bacc291874f7191739236696cf6e1c231daee57008f827d96389a562f5f30fb6",
+      "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/executed-source-closure/geometry-web/serve.py",
+      "originalBytes": 35514,
+      "originalSha256": "bacc291874f7191739236696cf6e1c231daee57008f827d96389a562f5f30fb6",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Byte/hash-bound executed 128afbec committed source closure; paths projected only where needed."
+    },
+    {
+      "path": "executed-source-closure/tests/release_gate.py",
+      "bytes": 17583,
+      "sha256": "ad460ddbdd52c48995188079339bc224e7f39b3d01e3147091a858ba8f541389",
+      "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/executed-source-closure/tests/release_gate.py",
+      "originalBytes": 17583,
+      "originalSha256": "ad460ddbdd52c48995188079339bc224e7f39b3d01e3147091a858ba8f541389",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Byte/hash-bound executed 128afbec committed source closure; paths projected only where needed."
+    },
+    {
+      "path": "executed-source-closure/tests/binaries.py",
+      "bytes": 32130,
+      "sha256": "beb6b6549b92e323ad29a1ccff72c41f4b4a9b698a3380af7a077ca03836fadd",
+      "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/executed-source-closure/tests/binaries.py",
+      "originalBytes": 32121,
+      "originalSha256": "a211fd0d066b8a5138855c4773373f9f526717f26264de909c0f61f997ac9aba",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Byte/hash-bound executed 128afbec committed source closure; paths projected only where needed."
+    },
+    {
+      "path": "executed-source-closure/geometry-web/reference-workspace.js",
+      "bytes": 154382,
+      "sha256": "4637836fe46c016a4bb623e9f2337fda9a8e2aeac853bcca33e9d5fff55b7c62",
+      "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/executed-source-closure/geometry-web/reference-workspace.js",
+      "originalBytes": 154382,
+      "originalSha256": "4637836fe46c016a4bb623e9f2337fda9a8e2aeac853bcca33e9d5fff55b7c62",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Byte/hash-bound executed 128afbec committed source closure; paths projected only where needed."
+    },
+    {
+      "path": "executed-source-closure/geometry-web/scenario-workspace.js",
+      "bytes": 25164,
+      "sha256": "cc31954c5afe9e91ed72b9b56ac62599751ffd3cb3b12cf3d9ae257acededfa9",
+      "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/executed-source-closure/geometry-web/scenario-workspace.js",
+      "originalBytes": 25164,
+      "originalSha256": "cc31954c5afe9e91ed72b9b56ac62599751ffd3cb3b12cf3d9ae257acededfa9",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Byte/hash-bound executed 128afbec committed source closure; paths projected only where needed."
+    },
+    {
+      "path": "executed-source-closure/geometry-web/scenario-integration.js",
+      "bytes": 4116,
+      "sha256": "7b35bcaa7599ad92ba46c5992136f0aec0ff96c94c7bf019b22fcc74898fe2fe",
+      "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/executed-source-closure/geometry-web/scenario-integration.js",
+      "originalBytes": 4116,
+      "originalSha256": "7b35bcaa7599ad92ba46c5992136f0aec0ff96c94c7bf019b22fcc74898fe2fe",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Byte/hash-bound executed 128afbec committed source closure; paths projected only where needed."
+    },
+    {
+      "path": "executed-source-closure/geometry-web/scenario-catalog.js",
+      "bytes": 7752,
+      "sha256": "013940df8c3e841a8803455ee1f7b894ac29f873a151cf4cf880b6dbec26dcf1",
+      "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/executed-source-closure/geometry-web/scenario-catalog.js",
+      "originalBytes": 7752,
+      "originalSha256": "013940df8c3e841a8803455ee1f7b894ac29f873a151cf4cf880b6dbec26dcf1",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Byte/hash-bound executed 128afbec committed source closure; paths projected only where needed."
+    },
+    {
+      "path": "executed-source-closure/geometry-web/scenario-snapshots.js",
+      "bytes": 34485,
+      "sha256": "a4f4f1be350aa5d093ad1948b17c2f8e4bab01b8f280c9b853c81c99aa0bd598",
+      "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/executed-source-closure/geometry-web/scenario-snapshots.js",
+      "originalBytes": 34485,
+      "originalSha256": "a4f4f1be350aa5d093ad1948b17c2f8e4bab01b8f280c9b853c81c99aa0bd598",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Byte/hash-bound executed 128afbec committed source closure; paths projected only where needed."
+    },
+    {
+      "path": "executed-source-closure/geometry-web/project-store.js",
+      "bytes": 76205,
+      "sha256": "d06dce17c7dd9e17c5a83045128bfc447b14b0b39c3902e27d338b6ef9d3c3a3",
+      "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/executed-source-closure/geometry-web/project-store.js",
+      "originalBytes": 76205,
+      "originalSha256": "d06dce17c7dd9e17c5a83045128bfc447b14b0b39c3902e27d338b6ef9d3c3a3",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Byte/hash-bound executed 128afbec committed source closure; paths projected only where needed."
+    },
+    {
+      "path": "executed-source-closure/geometry-web/vendor/fflate/umd/index.js",
+      "bytes": 33044,
+      "sha256": "462ef8041fc970e3615a20a9dd2b2e3047a073b2da729ef4f02b634bba8b7b83",
+      "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/executed-source-closure/geometry-web/vendor/fflate/umd/index.js",
+      "originalBytes": 33044,
+      "originalSha256": "462ef8041fc970e3615a20a9dd2b2e3047a073b2da729ef4f02b634bba8b7b83",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Byte/hash-bound executed 128afbec committed source closure; paths projected only where needed."
+    },
+    {
+      "path": "executed-source-closure/tests/fixtures/evidence_pdf.cjs",
+      "bytes": 1151,
+      "sha256": "897fe2f7f59611f7a9df6b5d563901f4b33aee527eb8e1b7ffbb9f0f47139904",
+      "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/executed-source-closure/tests/fixtures/evidence_pdf.cjs",
+      "originalBytes": 1151,
+      "originalSha256": "897fe2f7f59611f7a9df6b5d563901f4b33aee527eb8e1b7ffbb9f0f47139904",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Byte/hash-bound executed 128afbec committed source closure; paths projected only where needed."
+    },
+    {
+      "path": "harness-sources/run_resume_gate_identity.py",
+      "bytes": 7181,
+      "sha256": "1a17463e0500ee26d3775dda8e94f5ad5d04e6731cb43d1a2b9ff491e88417bb",
+      "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/harness-sources/run_resume_gate_identity.py",
+      "originalBytes": 7183,
+      "originalSha256": "57816b11e135887ef2f995434dcf2e54c818356d936cf4a46555e64c44d8d25b",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Actually executed scratch probe/runner snapshots or explicit correction metadata; publication copies not executed."
+    },
+    {
+      "path": "harness-sources/run_resume_gate_identity_v2.py",
+      "bytes": 7924,
+      "sha256": "3535a953ff6946d4a0b9c54ec579f8457f6b92f8a6970edd4ea0358e0590c5fc",
+      "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/harness-sources/run_resume_gate_identity_v2.py",
+      "originalBytes": 7926,
+      "originalSha256": "3499daea009964acb47fa145db92a2c72979a4c96fac4c5868829fdc735d5412",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Actually executed scratch probe/runner snapshots or explicit correction metadata; publication copies not executed."
+    },
+    {
+      "path": "harness-sources/cdp_execution_identity.py",
+      "bytes": 2582,
+      "sha256": "94104ef119419939d2fca47e8c12fc5af935bde2fd56faa00e88ecb7c4a53c29",
+      "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/harness-sources/cdp_execution_identity.py",
+      "originalBytes": 2582,
+      "originalSha256": "94104ef119419939d2fca47e8c12fc5af935bde2fd56faa00e88ecb7c4a53c29",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Actually executed scratch probe/runner snapshots or explicit correction metadata; publication copies not executed."
+    },
+    {
+      "path": "harness-sources/resume_pause_browser.cjs",
+      "bytes": 17735,
+      "sha256": "4653a1df929eb1a85166196c1405aea69c1239820fbee9452ca5b8c74b5efb8f",
+      "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/harness-sources/resume_pause_browser.cjs",
+      "originalBytes": 17735,
+      "originalSha256": "e7de480a528ee9f02e75971c7ed409fcdb86129c5b629899efa3a1764d195ce4",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Actually executed scratch probe/runner snapshots or explicit correction metadata; publication copies not executed."
+    },
+    {
+      "path": "harness-sources/resume-pause-browser-v1.cjs",
+      "bytes": 17654,
+      "sha256": "479b6938ad27574f0e1693802444301e5a537f7862fadf837c80db76f1cf802e",
+      "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/harness-sources/resume-pause-browser-v1.cjs",
+      "originalBytes": 17654,
+      "originalSha256": "71e7d5369a907e3902b64b408b15d970d949960274b8ada95fbe67d43787409e",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Actually executed scratch probe/runner snapshots or explicit correction metadata; publication copies not executed."
+    },
+    {
+      "path": "harness-sources/resume-pause-browser-v2.cjs",
+      "bytes": 17667,
+      "sha256": "795a5221008406b55045ce2cfd7882e0807f1ae9fd7aefe5695daec46dd758a9",
+      "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/harness-sources/resume-pause-browser-v2.cjs",
+      "originalBytes": 17667,
+      "originalSha256": "848c80af56d4a1634a590e97eeadc3ea88cd6c74bd7a8caa6c11e7d156ddebd6",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Actually executed scratch probe/runner snapshots or explicit correction metadata; publication copies not executed."
+    },
+    {
+      "path": "harness-sources/resume-pause-browser-v3-preflight-rejected.cjs",
+      "bytes": 17680,
+      "sha256": "8887033686247eca33691a99a3174939d98a0649c494ac10ee9cb18fb2c4e812",
+      "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/harness-sources/resume-pause-browser-v3-preflight-rejected.cjs",
+      "originalBytes": 17680,
+      "originalSha256": "c06876390e00d68e37b7abe6613312f1dd0ded3a9571ccd83daeaffed267baba",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Actually executed scratch probe/runner snapshots or explicit correction metadata; publication copies not executed."
+    },
+    {
+      "path": "harness-sources/resume-selector-correction.json",
+      "bytes": 595,
+      "sha256": "6d4432af6cfe385ef4af31c23f436fb376c0b233b14c0ef2108cf10a95b0fc6c",
+      "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/harness-sources/resume-selector-correction.json",
+      "originalBytes": 682,
+      "originalSha256": "aac8116e649370c2ee6497db909bdf22a5f335df416e044182e36ad8cc4da2c6",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Actually executed scratch probe/runner snapshots or explicit correction metadata; publication copies not executed."
+    },
+    {
+      "path": "harness-sources/resume-calibration-fixture-correction.json",
+      "bytes": 624,
+      "sha256": "99b721a54f48fe15ae0dd8426e1d3230fb6a6af17a23e657c623cf140c7739eb",
+      "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/harness-sources/resume-calibration-fixture-correction.json",
+      "originalBytes": 711,
+      "originalSha256": "97748fee3e68f20bf2535954eeca180fce8b0b3f16634fae23d01a905edab0d0",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Actually executed scratch probe/runner snapshots or explicit correction metadata; publication copies not executed."
+    },
+    {
+      "path": "harness-sources/resume-native-context-identity-correction.json",
+      "bytes": 699,
+      "sha256": "b31e09768658d672615a88ec21eaab8db700a8a7da80b11dc2cfc9638e166c0a",
+      "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/harness-sources/resume-native-context-identity-correction.json",
+      "originalBytes": 786,
+      "originalSha256": "6b3d956eeeae8051fba8f1adfd5d50e187b63a86b69f8a893882ff3435e8c792",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Actually executed scratch probe/runner snapshots or explicit correction metadata; publication copies not executed."
+    },
+    {
+      "path": "harness-sources/resume-early-request-log-correction.json",
+      "bytes": 560,
+      "sha256": "9393d27a1f084d479ede0debf80faae3c614ababe2da4a687d968f17b77bfb76",
+      "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/harness-sources/resume-early-request-log-correction.json",
+      "originalBytes": 618,
+      "originalSha256": "204188ae40fde483127ecdc6c5c806a6ae41f77b42a73a58f97a86ff0608fd81",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Actually executed scratch probe/runner snapshots or explicit correction metadata; publication copies not executed."
+    },
+    {
+      "path": "harness-sources/package_resume_evidence.py",
+      "bytes": 4885,
+      "sha256": "b2bf8497d11fe311121331870485a2aa6f22512d32584e37444c544552fa4491",
+      "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/harness-sources/package_resume_evidence.py",
+      "originalBytes": 4914,
+      "originalSha256": "6eeb9fb747c5f61b8bea5ed9588f29dc4f11f6244f54117f65adaeb63be13109",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Actually executed scratch probe/runner snapshots or explicit correction metadata; publication copies not executed."
+    },
+    {
+      "path": "executor-byte-review.public.json",
+      "bytes": 83692,
+      "sha256": "4837385e816e6d946ad1ad69fe31f96ad8f623f68b0dbbf9ad280f14be3b5437",
+      "originalPathLabel": "<original-evidence-root>/resume-128afbec-evidence-packet/executor-review.json",
+      "originalBytes": 90366,
+      "originalSha256": "b3a63d692a60fd64ef16feb9ed4013438cb1e035ae10c0bccd0d618a7b8c6d85",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Same executor consistency review; not independent actor acceptance."
+    }
+  ],
+  "historicalFullCdp": {
+    "testedHead": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+    "pass": 2207,
+    "fail": 0,
+    "skip": 0,
+    "rebound": false
+  },
+  "windows173": {
+    "pass": 1692,
+    "fail": 2,
+    "exitCode": 1,
+    "completed": false,
+    "rawReceivedInCloud": false,
+    "partialResultsAggregated": false,
+    "goldenComparedByThisTask": false
+  },
+  "limitations": [
+    "Confirmed metadata calibration/draft setters are synthetic fixture preparation; no physical calibration, IME or device claim.",
+    "Four same-parent same-native-session explicit Pause/Resume lifecycles only; not abrupt reload, restart, cross-profile/origin recovery, old Undo transport or full CDP.",
+    "Unconfirmed transient tools are not promised restored.",
+    "Unit counts/partial passes are not added into full acceptance.",
+    "Override execution checkout dirty state not captured; unknown despite clean immutable product source capture.",
+    "No abrupt reload/crash, service restart, cross-session/profile/origin, physical device/IME/OS chooser or full CDP/Space/golden acceptance.",
+    "Private queue v6 missing: preserve historical v5, current unknown; no empty DB created.",
+    "Original identity gaps never rebound to current executable."
+  ],
+  "omissions": [
+    "Private feedback/user documents",
+    "Browser traces/profiles/screenshots",
+    "Native binary/sidecar bytes",
+    "Private work-manager DB/events/owner thread"
+  ],
+  "releaseApproved": false,
+  "publicFiles": [
+    {
+      "path": "README.md",
+      "bytes": 5721,
+      "sha256": "233eb784c7d5161af750042ef830d4b03c6839353701e177b0f7f6e41e30137f"
+    },
+    {
+      "path": "browser/after-resume-128afbec-20261009/command.public.log",
+      "bytes": 970,
+      "sha256": "34055db7197de974e179e68db3e030cf8c0f9974df9e40c96be0c7498b93f751"
+    },
+    {
+      "path": "browser/after-resume-128afbec-20261009/receipt.public.json",
+      "bytes": 16356,
+      "sha256": "6a9526d560635d96207a89be7e9a1c53f87b6f51bd9417a84a3a00c78c6d914d"
+    },
+    {
+      "path": "browser/after-resume-128afbec-20261009/synthetic-artifacts/identity.json",
+      "bytes": 2940,
+      "sha256": "72d0ae3e7566cbbb0373f5e309ca18bbfa17d9a124cb328e5d16b389ef1c411f"
+    },
+    {
+      "path": "browser/after-resume-128afbec-20261009/synthetic-artifacts/results.json",
+      "bytes": 2369,
+      "sha256": "c5efa21196aa5319d8800fc550baef22370480da81e9d93cf3e8a9fb3bca327a"
+    },
+    {
+      "path": "browser/after-resume-128afbec-r2-20261009/command.public.log",
+      "bytes": 657,
+      "sha256": "2cda22e44b142ffec968360f4be72301f93f4bb46c931658006c6c09eed34286"
+    },
+    {
+      "path": "browser/after-resume-128afbec-r2-20261009/receipt.public.json",
+      "bytes": 16780,
+      "sha256": "ad6efb06cb8ce050e3255cddba713fcdd0404a9a0bfda74f7fbaa5c2311378a4"
+    },
+    {
+      "path": "browser/after-resume-128afbec-r2-20261009/synthetic-artifacts/identity.json",
+      "bytes": 2940,
+      "sha256": "8f739ff4bae5682f3b8c37b9ecd98d8e7e20c057ecd732508b6b8a4d732cf6da"
+    },
+    {
+      "path": "browser/after-resume-128afbec-r2-20261009/synthetic-artifacts/results.json",
+      "bytes": 1400,
+      "sha256": "0fd369273f83095a59fffd89da61138ad09b9b1565ac007a79cd2bc2594d18cf"
+    },
+    {
+      "path": "browser/after-resume-128afbec-r3-20261009/command.public.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "browser/after-resume-128afbec-r3-20261009/receipt.public.json",
+      "bytes": 7919,
+      "sha256": "2ab39274f94addbaf8806b90dc2256f1d16d77603fb32f2926054c59c54060c4"
+    },
+    {
+      "path": "browser/after-resume-128afbec-r4-20261009/command.public.log",
+      "bytes": 5915,
+      "sha256": "5dff7a4fcc68e71f986ab001ac9ae569bbb95994524f7e97ac5a5c7ef3afe288"
+    },
+    {
+      "path": "browser/after-resume-128afbec-r4-20261009/receipt.public.json",
+      "bytes": 16749,
+      "sha256": "73b6dbae39f9dc69c7f4f82c1f76053e1b698fff4d147496821fa3f4f26cc03f"
+    },
+    {
+      "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/identity.json",
+      "bytes": 2940,
+      "sha256": "cd15bc2b2f6d5435ccc15324afb0ef089628c9b08ffee0b80103722e344e0421"
+    },
+    {
+      "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/pause-resume-cancel-1280-after-resume.gcanvas",
+      "bytes": 4130,
+      "sha256": "2e92e091dc386427c45ee302cbe9901f264808bd89cf54396526e000a06cd410"
+    },
+    {
+      "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/pause-resume-cancel-1280-before-pause.gcanvas",
+      "bytes": 4130,
+      "sha256": "2e92e091dc386427c45ee302cbe9901f264808bd89cf54396526e000a06cd410"
+    },
+    {
+      "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/pause-resume-cancel-1280-later-edit.gcanvas",
+      "bytes": 4130,
+      "sha256": "a04bf236e3a8b2465fa9fd48e3a68f153f0909827c03295e6c808f12296c43eb"
+    },
+    {
+      "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/pause-resume-cancel-1280-state.json",
+      "bytes": 56540,
+      "sha256": "7bb9d1125c539da121c7d64bf6452236825f5c68afea744570925d8e6a8b71f5"
+    },
+    {
+      "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/pause-resume-cancel-390-after-resume.gcanvas",
+      "bytes": 4126,
+      "sha256": "a403a828cb61c1991894f857579cd7cc5628ee5d44d7a523101aa68ffa8429b6"
+    },
+    {
+      "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/pause-resume-cancel-390-before-pause.gcanvas",
+      "bytes": 4126,
+      "sha256": "a403a828cb61c1991894f857579cd7cc5628ee5d44d7a523101aa68ffa8429b6"
+    },
+    {
+      "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/pause-resume-cancel-390-later-edit.gcanvas",
+      "bytes": 4126,
+      "sha256": "52b6e5b7050f9e85d6a70b180c10617c1086272e21e3d83a6b8b26006702277f"
+    },
+    {
+      "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/pause-resume-cancel-390-state.json",
+      "bytes": 56506,
+      "sha256": "f839d0b279c408688f0bc89f96fa259416678ec0a9622a4d86f162da59ba5988"
+    },
+    {
+      "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/pause-resume-finish-1280-after-resume.gcanvas",
+      "bytes": 4130,
+      "sha256": "7f40160be271f2dcb4c3c1278a8e126329a9874b8b031c0b760956195c1b7313"
+    },
+    {
+      "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/pause-resume-finish-1280-before-pause.gcanvas",
+      "bytes": 4130,
+      "sha256": "ed13cdb32330bc134880a6fa921084e094b0be68345aa1a14bbc6908e329f113"
+    },
+    {
+      "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/pause-resume-finish-1280-later-edit.gcanvas",
+      "bytes": 4130,
+      "sha256": "df0fba244553311449230cc3e5f1541778484eaa7f564987fc86607e5c49cbb2"
+    },
+    {
+      "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/pause-resume-finish-1280-state.json",
+      "bytes": 65952,
+      "sha256": "3045211b1836ef602d79e39295aedf6e4b4d7b3ce3b3fd381eeac951586af856"
+    },
+    {
+      "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/pause-resume-finish-390-after-resume.gcanvas",
+      "bytes": 4126,
+      "sha256": "02a8dd662703152fbd1804c135749dac8ec0d6da9983fefa403d1dc3b7fe34da"
+    },
+    {
+      "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/pause-resume-finish-390-before-pause.gcanvas",
+      "bytes": 4126,
+      "sha256": "6ab1154e2b5f3bcf15342d3df53633a63290312382561efdf7f66d9c0fbbb161"
+    },
+    {
+      "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/pause-resume-finish-390-later-edit.gcanvas",
+      "bytes": 4126,
+      "sha256": "958658119ee4ef0ec7b76d09fc3d87fe362efe9b3ed571d1ede46e7bb8512365"
+    },
+    {
+      "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/pause-resume-finish-390-state.json",
+      "bytes": 65909,
+      "sha256": "6744bc002d471cca62f926e2d5ac6225392f69c76b56c49db799e999e69e59d3"
+    },
+    {
+      "path": "browser/after-resume-128afbec-r4-20261009/synthetic-artifacts/results.json",
+      "bytes": 114172,
+      "sha256": "70f6f8c5c35eed22634513877edf9e05b637a0c8589e6afa6a5d19f5f969c08a"
+    },
+    {
+      "path": "executed-source-closure/geometry-web/app.css",
+      "bytes": 188192,
+      "sha256": "ca597aff139aab7b8209206d0c65d54ed79b913268c46e57ab79de7bed6db793"
+    },
+    {
+      "path": "executed-source-closure/geometry-web/app.js",
+      "bytes": 620877,
+      "sha256": "ec284229af0c3de951941cb474d31dc452a99b32eeb1849f288889a57b4015d9"
+    },
+    {
+      "path": "executed-source-closure/geometry-web/index.html",
+      "bytes": 52139,
+      "sha256": "e8a6635073f46f4b6a824cea430d56d2feb4e3e024e285ef3e068751a968b00b"
+    },
+    {
+      "path": "executed-source-closure/geometry-web/project-store.js",
+      "bytes": 76205,
+      "sha256": "d06dce17c7dd9e17c5a83045128bfc447b14b0b39c3902e27d338b6ef9d3c3a3"
+    },
+    {
+      "path": "executed-source-closure/geometry-web/reference-workspace.js",
+      "bytes": 154382,
+      "sha256": "4637836fe46c016a4bb623e9f2337fda9a8e2aeac853bcca33e9d5fff55b7c62"
+    },
+    {
+      "path": "executed-source-closure/geometry-web/scenario-catalog.js",
+      "bytes": 7752,
+      "sha256": "013940df8c3e841a8803455ee1f7b894ac29f873a151cf4cf880b6dbec26dcf1"
+    },
+    {
+      "path": "executed-source-closure/geometry-web/scenario-integration.js",
+      "bytes": 4116,
+      "sha256": "7b35bcaa7599ad92ba46c5992136f0aec0ff96c94c7bf019b22fcc74898fe2fe"
+    },
+    {
+      "path": "executed-source-closure/geometry-web/scenario-snapshots.js",
+      "bytes": 34485,
+      "sha256": "a4f4f1be350aa5d093ad1948b17c2f8e4bab01b8f280c9b853c81c99aa0bd598"
+    },
+    {
+      "path": "executed-source-closure/geometry-web/scenario-workspace.js",
+      "bytes": 25164,
+      "sha256": "cc31954c5afe9e91ed72b9b56ac62599751ffd3cb3b12cf3d9ae257acededfa9"
+    },
+    {
+      "path": "executed-source-closure/geometry-web/serve.py",
+      "bytes": 35514,
+      "sha256": "bacc291874f7191739236696cf6e1c231daee57008f827d96389a562f5f30fb6"
+    },
+    {
+      "path": "executed-source-closure/geometry-web/space-workspace.js",
+      "bytes": 95770,
+      "sha256": "a735338f5cc14f3ae743578986750ace3c7389e0d73fd44c21773d82c2503868"
+    },
+    {
+      "path": "executed-source-closure/geometry-web/vendor/fflate/umd/index.js",
+      "bytes": 33044,
+      "sha256": "462ef8041fc970e3615a20a9dd2b2e3047a073b2da729ef4f02b634bba8b7b83"
+    },
+    {
+      "path": "executed-source-closure/tests/binaries.py",
+      "bytes": 32130,
+      "sha256": "beb6b6549b92e323ad29a1ccff72c41f4b4a9b698a3380af7a077ca03836fadd"
+    },
+    {
+      "path": "executed-source-closure/tests/fixtures/evidence_pdf.cjs",
+      "bytes": 1151,
+      "sha256": "897fe2f7f59611f7a9df6b5d563901f4b33aee527eb8e1b7ffbb9f0f47139904"
+    },
+    {
+      "path": "executed-source-closure/tests/release_gate.py",
+      "bytes": 17583,
+      "sha256": "ad460ddbdd52c48995188079339bc224e7f39b3d01e3147091a858ba8f541389"
+    },
+    {
+      "path": "executor-byte-review.public.json",
+      "bytes": 83692,
+      "sha256": "4837385e816e6d946ad1ad69fe31f96ad8f623f68b0dbbf9ad280f14be3b5437"
+    },
+    {
+      "path": "harness-sources/cdp_execution_identity.py",
+      "bytes": 2582,
+      "sha256": "94104ef119419939d2fca47e8c12fc5af935bde2fd56faa00e88ecb7c4a53c29"
+    },
+    {
+      "path": "harness-sources/package_resume_evidence.py",
+      "bytes": 4885,
+      "sha256": "b2bf8497d11fe311121331870485a2aa6f22512d32584e37444c544552fa4491"
+    },
+    {
+      "path": "harness-sources/resume-calibration-fixture-correction.json",
+      "bytes": 624,
+      "sha256": "99b721a54f48fe15ae0dd8426e1d3230fb6a6af17a23e657c623cf140c7739eb"
+    },
+    {
+      "path": "harness-sources/resume-early-request-log-correction.json",
+      "bytes": 560,
+      "sha256": "9393d27a1f084d479ede0debf80faae3c614ababe2da4a687d968f17b77bfb76"
+    },
+    {
+      "path": "harness-sources/resume-native-context-identity-correction.json",
+      "bytes": 699,
+      "sha256": "b31e09768658d672615a88ec21eaab8db700a8a7da80b11dc2cfc9638e166c0a"
+    },
+    {
+      "path": "harness-sources/resume-pause-browser-v1.cjs",
+      "bytes": 17654,
+      "sha256": "479b6938ad27574f0e1693802444301e5a537f7862fadf837c80db76f1cf802e"
+    },
+    {
+      "path": "harness-sources/resume-pause-browser-v2.cjs",
+      "bytes": 17667,
+      "sha256": "795a5221008406b55045ce2cfd7882e0807f1ae9fd7aefe5695daec46dd758a9"
+    },
+    {
+      "path": "harness-sources/resume-pause-browser-v3-preflight-rejected.cjs",
+      "bytes": 17680,
+      "sha256": "8887033686247eca33691a99a3174939d98a0649c494ac10ee9cb18fb2c4e812"
+    },
+    {
+      "path": "harness-sources/resume-selector-correction.json",
+      "bytes": 595,
+      "sha256": "6d4432af6cfe385ef4af31c23f436fb376c0b233b14c0ef2108cf10a95b0fc6c"
+    },
+    {
+      "path": "harness-sources/resume_pause_browser.cjs",
+      "bytes": 17735,
+      "sha256": "4653a1df929eb1a85166196c1405aea69c1239820fbee9452ca5b8c74b5efb8f"
+    },
+    {
+      "path": "harness-sources/run_resume_gate_identity.py",
+      "bytes": 7181,
+      "sha256": "1a17463e0500ee26d3775dda8e94f5ad5d04e6731cb43d1a2b9ff491e88417bb"
+    },
+    {
+      "path": "harness-sources/run_resume_gate_identity_v2.py",
+      "bytes": 7924,
+      "sha256": "3535a953ff6946d4a0b9c54ec579f8457f6b92f8a6970edd4ea0358e0590c5fc"
+    },
+    {
+      "path": "override-units/corrected-fixture-driver/command.public.log",
+      "bytes": 4254,
+      "sha256": "c7aafa6f74269635b4343a61dafcc4f547bb1a622865a909987bc8cf4c022484"
+    },
+    {
+      "path": "override-units/corrected-fixture-driver/driver.public.cjs",
+      "bytes": 13160,
+      "sha256": "89e3d6f965b276da0716f1c6554a3fef7a78617a6f437b2bb736d76d7aeef569"
+    },
+    {
+      "path": "override-units/corrected-fixture-driver/receipt.public.json",
+      "bytes": 4382,
+      "sha256": "c76f2ad9419a46851a392a882cccb6f4fbae97dfb85aba231114c65e51066593"
+    },
+    {
+      "path": "override-units/corrected-package-oracle-driver/command.public.log",
+      "bytes": 2368,
+      "sha256": "d13885538b520513c37fde4fb197b36b809407c4411a76c8e9ce668e5e4732de"
+    },
+    {
+      "path": "override-units/corrected-package-oracle-driver/driver.public.cjs",
+      "bytes": 13259,
+      "sha256": "91ad7644a75b590e2dc35583ec2117b9abab0e9d89c711edd25b5d63f0c98b67"
+    },
+    {
+      "path": "override-units/corrected-package-oracle-driver/receipt.public.json",
+      "bytes": 4405,
+      "sha256": "9b71ca88b7fe397048809dcb3188a994e673987b242cd31cd131651203608f53"
+    },
+    {
+      "path": "override-units/metadata-negative-control/command.public.log",
+      "bytes": 3127,
+      "sha256": "c9a3aca6001724237d3cf1c415a0094c5d76dff3831f92d5333415fc6e561d5a"
+    },
+    {
+      "path": "override-units/metadata-negative-control/driver.public.cjs",
+      "bytes": 13967,
+      "sha256": "4846bf11d03c2a2a2b685dbd88db6f7b1544ba3eecbd6a220fe948540308cff4"
+    },
+    {
+      "path": "override-units/metadata-negative-control/receipt.public.json",
+      "bytes": 4696,
+      "sha256": "02a15456e96e2734eecafdde887e02c9a8b0f007a1699effb62a2309ab6475d0"
+    },
+    {
+      "path": "override-units/original-driver/command.public.log",
+      "bytes": 12032,
+      "sha256": "f3483f172dc8ffeb4985662afd881fbb941a6bbd7f72bc23b06532ebbbdb4611"
+    },
+    {
+      "path": "override-units/original-driver/driver.public.cjs",
+      "bytes": 13145,
+      "sha256": "846ae1067388bacc5974869e6330a5aa0835696a1b2cf0d845b35527faff007d"
+    },
+    {
+      "path": "override-units/original-driver/receipt.public.json",
+      "bytes": 4352,
+      "sha256": "376233df4cd8eda3bb7e68e437aab4c47358bd2000fb0898227e741782bf6317"
+    },
+    {
+      "path": "override-units/retained-source-closure/fixture-closure/geometry-web/project-store.js",
+      "bytes": 76205,
+      "sha256": "d06dce17c7dd9e17c5a83045128bfc447b14b0b39c3902e27d338b6ef9d3c3a3"
+    },
+    {
+      "path": "override-units/retained-source-closure/fixture-closure/geometry-web/scenario-integration.js",
+      "bytes": 4116,
+      "sha256": "7b35bcaa7599ad92ba46c5992136f0aec0ff96c94c7bf019b22fcc74898fe2fe"
+    },
+    {
+      "path": "override-units/retained-source-closure/fixture-closure/geometry-web/scenario-snapshots.js",
+      "bytes": 34485,
+      "sha256": "a4f4f1be350aa5d093ad1948b17c2f8e4bab01b8f280c9b853c81c99aa0bd598"
+    },
+    {
+      "path": "override-units/retained-source-closure/fixture-closure/geometry-web/vendor/fflate/umd/index.js",
+      "bytes": 33044,
+      "sha256": "462ef8041fc970e3615a20a9dd2b2e3047a073b2da729ef4f02b634bba8b7b83"
+    },
+    {
+      "path": "override-units/retained-source-closure/fixture-closure/tests/fixtures/native_available_capabilities.json",
+      "bytes": 140,
+      "sha256": "f1f9e8c4a16d6164198b3276e32516a7919a294eac4a69a937f38362fcf491e4"
+    },
+    {
+      "path": "override-units/retained-source-closure/fixture-closure/tests/test_reference_workspace_races.js",
+      "bytes": 78950,
+      "sha256": "f2f737d179fa4e9b67196c04e1f4ca8e0515c8ecafa346bac77acb354c91e0da"
+    },
+    {
+      "path": "override-units/retained-source-closure/fixture-closure/tests/test_scenario_recovery_owner.js",
+      "bytes": 22450,
+      "sha256": "f1308fda837491b9b407811c254c1b9020c5ed449538916146e0dc4a5076420b"
+    },
+    {
+      "path": "override-units/retained-source-closure/geometry-web/reference-workspace.js",
+      "bytes": 153437,
+      "sha256": "87392ad7bef4823e7f2dcfd497cc5d693ac06cfe41df6a1a723b1306c39ec929"
+    },
+    {
+      "path": "override-units/retained-source-closure/geometry-web/scenario-workspace.js",
+      "bytes": 25164,
+      "sha256": "cc31954c5afe9e91ed72b9b56ac62599751ffd3cb3b12cf3d9ae257acededfa9"
+    },
+    {
+      "path": "override-units/source-identity.public.json",
+      "bytes": 880,
+      "sha256": "19b9ea40d34f2d915990efdcd1881ef4e5374490ea20794390317737879fc78d"
+    },
+    {
+      "path": "units/resolve-05e59392/receipt.public.json",
+      "bytes": 24133,
+      "sha256": "27ed01e50357de56bb2523afb18a698724b58696762a86cd2dfdfb38625eda3c"
+    },
+    {
+      "path": "units/resolve-05e59392/source/tests/test_serve.py",
+      "bytes": 54988,
+      "sha256": "469c068debd39ca22586a2a5dd31c6ba1601a4aa3038e60c709c3115f336fe02"
+    },
+    {
+      "path": "units/resolve-05e59392/stderr.public.log",
+      "bytes": 7629,
+      "sha256": "94d17f414af8a958fc0eea8fb58b68f4a55a2c8836086ba338b83560e4ceb66c"
+    },
+    {
+      "path": "units/resolve-05e59392/stdout.public.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "units/resolve-f5638ec4/receipt.public.json",
+      "bytes": 24133,
+      "sha256": "079fa634b8bd6c04e5d7c7712a509293e8ce5f9621d0ec57bc3f24cf81105ce9"
+    },
+    {
+      "path": "units/resolve-f5638ec4/source/tests/test_serve.py",
+      "bytes": 55017,
+      "sha256": "ce2e5382ba96d4a836822e27e10f68f4d70547d6cb38bdd2dec398a8f498ead7"
+    },
+    {
+      "path": "units/resolve-f5638ec4/stderr.public.log",
+      "bytes": 7629,
+      "sha256": "a5e07803589f3a4599c845158ed0128295a455a5b90b42562650a578ef0e3d07"
+    },
+    {
+      "path": "units/resolve-f5638ec4/stdout.public.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "units/scenario-128afbec-formal-four/receipt.public.json",
+      "bytes": 115077,
+      "sha256": "5388d31ea52c830439886c90626412ee637533e225653d89e68eb6b2153503e9"
+    },
+    {
+      "path": "units/scenario-128afbec-formal-four/source/tests/test_reference_workspace_races.js",
+      "bytes": 78950,
+      "sha256": "f2f737d179fa4e9b67196c04e1f4ca8e0515c8ecafa346bac77acb354c91e0da"
+    },
+    {
+      "path": "units/scenario-128afbec-formal-four/source/tests/test_scenario_editor_tickets.js",
+      "bytes": 30032,
+      "sha256": "37c787606422a644f62b96094b439208250f9fe2ea92e6b7d44b4f7e033d0a9e"
+    },
+    {
+      "path": "units/scenario-128afbec-formal-four/source/tests/test_scenario_recovery_owner.js",
+      "bytes": 22450,
+      "sha256": "f1308fda837491b9b407811c254c1b9020c5ed449538916146e0dc4a5076420b"
+    },
+    {
+      "path": "units/scenario-128afbec-formal-four/source/tests/test_scenario_resume_checkpoint.js",
+      "bytes": 13967,
+      "sha256": "4846bf11d03c2a2a2b685dbd88db6f7b1544ba3eecbd6a220fe948540308cff4"
+    },
+    {
+      "path": "units/scenario-128afbec-formal-four/stderr.public.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "units/scenario-128afbec-formal-four/stdout.public.log",
+      "bytes": 14234,
+      "sha256": "524922f2382a8e0f1a11ff31e48bc74ed459b2245cf1bd39fee81400a05eef2e"
+    },
+    {
+      "path": "units/scenario-f5638ec4-original-three/receipt.public.json",
+      "bytes": 114710,
+      "sha256": "ad7d2dbe535d52e28f98b1520c6320a256225adb4da48c22fcd39f47191d79cb"
+    },
+    {
+      "path": "units/scenario-f5638ec4-original-three/source/tests/test_reference_workspace_races.js",
+      "bytes": 78950,
+      "sha256": "f2f737d179fa4e9b67196c04e1f4ca8e0515c8ecafa346bac77acb354c91e0da"
+    },
+    {
+      "path": "units/scenario-f5638ec4-original-three/source/tests/test_scenario_editor_tickets.js",
+      "bytes": 28576,
+      "sha256": "b3e7e44cc2cdb19fa0d7b2558a69be0561a177ea988a84704493009e93591f55"
+    },
+    {
+      "path": "units/scenario-f5638ec4-original-three/source/tests/test_scenario_recovery_owner.js",
+      "bytes": 22450,
+      "sha256": "f1308fda837491b9b407811c254c1b9020c5ed449538916146e0dc4a5076420b"
+    },
+    {
+      "path": "units/scenario-f5638ec4-original-three/stderr.public.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "units/scenario-f5638ec4-original-three/stdout.public.log",
+      "bytes": 15320,
+      "sha256": "0927a8a0cdd754657402a70084f388b29cf058d55c5b74db0b03f57a415bb4b3"
+    }
+  ]
+}
