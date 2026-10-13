@@ -1,0 +1,888 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>下角材模式 Demo</title>
+<style>
+:root{--bg:#f6f5f2;--panel:#fff;--ink:#1d1d1b;--muted:#6b6a66;--line:#d9d6cf;--wallfill:#5b5853;--floor:#fbfaf6;--selface:#ffe9a8;--board:#e6dcc4;--cut:#f2b8a2;--seam:#b07b2e;--mark:#1d1d1b;--wall:#7a4b1f;--pri:#c0392b;--sec:#2f6fb4;--l2:#2e8b57;--l3:#8e44ad;--pfboard:#f4b6b6;--pfrib:#f39200;--pflong:#7a3e10;--ok:#2e7d32;--bad:#c62828;--sel:#f4b400;--accent:#1f6feb}
+@media (prefers-color-scheme:dark){:root{--bg:#1b1b1a;--panel:#252523;--ink:#ecebe7;--muted:#a8a69f;--line:#3a3935;--wallfill:#8d8a83;--floor:#2b2a27;--selface:#4a3f1f;--board:#3d382c;--cut:#6b3a2c;--seam:#d9a24f;--mark:#f2f1ec;--wall:#c98a4f;--pri:#ef6b61;--sec:#6aa6ef;--l2:#5cc48a;--l3:#c08ad6;--pfboard:#d98c8c;--pfrib:#f0a030;--pflong:#a0623a;--ok:#66bb6a;--bad:#ef5350;--accent:#58a6ff}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 "Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif}
+header{padding:12px 18px;border-bottom:1px solid var(--line)}
+header h1{margin:0 0 3px;font-size:18px}
+header p{margin:0;color:var(--muted);font-size:13px}
+.wrap{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:12px;padding:12px}.wrap>div{min-width:0}.tblwrap{overflow-x:auto}.tblwrap th,.tblwrap td{white-space:nowrap}
+@media (max-width:1000px){.wrap{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px}
+.card h2{font-size:14px;margin:0 0 8px}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px}
+button{font:inherit;padding:6px 12px;border-radius:7px;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+button:disabled{opacity:.45;cursor:not-allowed}
+select,input[type=number]{font:inherit;padding:3px 6px;background:var(--floor);color:var(--ink);border:1px solid var(--line);border-radius:6px}
+input[type=number]{width:84px}
+label{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:5px 0;font-size:13px}
+#plan{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:6px}
+svg{width:100%;height:auto;display:block;user-select:none}
+.hint{font-size:12.5px;color:var(--muted);margin-top:6px}
+.tag{display:inline-block;font-size:11px;padding:1px 6px;border-radius:9px;margin-left:4px}
+.core{background:#e3effa;color:#1e4e7a}.tpl{background:#f6e7d3;color:#7a4b1f}.conf{background:#fbe0de;color:#8a1f17}
+@media (prefers-color-scheme:dark){.core{background:#1e3346;color:#9cc7ef}.tpl{background:#3e2f1d;color:#e8bb84}.conf{background:#46201d;color:#f2a49c}}
+.chk{display:flex;gap:6px;margin:4px 0}.chk b{min-width:16px}
+.okc{color:var(--ok)}.badc{color:var(--bad)}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+td,th{padding:3px 4px;border-bottom:1px solid var(--line);text-align:left}
+#info{font-size:12.5px;white-space:pre-line;min-height:40px}
+.small{font-size:12px;color:var(--muted)}
+.steps{display:flex;gap:4px;flex-wrap:wrap;margin:6px 0}
+.steps span{font-size:11.5px;padding:2px 7px;border-radius:10px;background:var(--floor);border:1px solid var(--line);color:var(--muted)}
+.steps span.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.legend span{display:inline-flex;align-items:center;gap:4px;margin-right:10px;font-size:12px}
+.sw{width:14px;height:6px;display:inline-block;border-radius:2px}
+ul.src{margin:4px 0 0;padding-left:18px;font-size:12.5px}ul.src li{margin:2px 0}
+</style>
+</head>
+<body>
+<header>
+  <h1>下角材模式 Demo:在既有平面圖上指定一個封閉面,套用模式</h1>
+  <p>點選某間房的天花面 → 按「下角材」。板從起鋪角的兩面牆開始整片鋪,裁切只留在對面的牆;牆和柱子四周先放沿邊料;板的長邊縫下放主支;固定好的主支上以模數畫記號(間距上限 450 → 一個完整格 1830 + 2 = 1832 分 5 段,約 366),副支照記號接,間距都在上限以內。每支角材的端面都頂在角材上,不直接頂 RC。</p>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="toolbar">
+        <span>模式</span>
+        <select id="mode">
+          <option value="flat">平釘天花板(木工模板)</option>
+          <option disabled>輕鋼架天花板(未來的模板)</option>
+          <option disabled>木地板骨架(未來的模板)</option>
+        </select>
+        <button id="apply" class="primary" disabled>下角材</button>
+        <button id="clear" disabled>移除這一面的角材</button>
+        <button id="applyAll">全部房間都下</button>
+        <span id="selname" class="small">尚未指定封閉面:請點平面圖上的任一房間</span>
+      </div>
+      <div class="steps" id="steps"></div>
+      <div id="plan"></div>
+      <div class="legend" style="margin-top:6px">
+        <span><i class="sw" style="background:var(--board)"></i>整片板 915×1830</span>
+        <span><i class="sw" style="background:var(--cut)"></i>裁切板(只在對牆)</span>
+        <span><i class="sw" style="background:var(--seam)"></i>板縫</span>
+        <span><i class="sw" style="background:var(--wall)"></i>沿邊料(牆+柱)</span>
+        <span><i class="sw" style="background:var(--pri)"></i>主支</span>
+        <span><i class="sw" style="background:var(--mark)"></i>記號</span>
+        <span><i class="sw" style="background:var(--sec)"></i>副支</span>
+        <span><i class="sw" style="background:transparent;border:1.5px dashed var(--ink)"></i>RC 樑</span>
+      </div>
+      <div class="hint">操作:點房間 = 指定封閉面 ・ 點房間角落的圓點 = 換起鋪角 ・ 按 R = 板長方向轉 90°(主支跟著轉) ・ 點角材 = 看它由哪條規則產生、兩端頂在什麼上 ・ Esc = 取消指定。參數裡可以關掉「柱子四周放沿邊料」,看端面直接頂 RC 會被檢查擋下。角材按實際寬度 27 mm 繪製。</div>
+    </div>
+    <div class="card" style="margin-top:12px" id="pfCard">
+      <h2>斷面設計:給定完成面,規劃結構 <span class="tag core">斷面 D35–D37</span> <span class="small">(跟上面平面圖的房間無關)</span></h2>
+      <div class="toolbar">
+        <span>範例完成面</span><button data-pfpre="cove">間接照明槽</button><button data-pfpre="drop">降板(L 形)</button>
+        <button id="pfDraw">畫新的完成面</button><button id="pfDone" disabled>完成繪製</button><button id="pfFlip">結構換邊</button>
+        <button id="pf3d" class="primary">看拉伸後的 3D</button>
+      </div>
+      <div class="toolbar small">
+        <label style="margin:0">面材厚 <input type="number" id="pf_t" value="6" style="width:56px"></label>
+        <label style="margin:0">角材 <input type="number" id="pf_a" value="27" style="width:52px"> × <input type="number" id="pf_b" value="33" style="width:52px"></label>
+        <button id="pfRot">角材轉 90°</button>
+        <label style="margin:0">拉伸長度 L <input type="number" id="pf_L" value="2400" style="width:68px"></label>
+        <label style="margin:0">橫撐間距上限 <input type="number" id="pf_cap" value="450" style="width:60px"></label>
+      </div>
+      <div id="pfEditor"></div>
+      <div class="legend" style="margin-top:6px">
+        <span><i class="sw" style="background:var(--ink)"></i>完成面(給定)</span>
+        <span><i class="sw" style="background:var(--pfboard)"></i>面材</span>
+        <span><i class="sw" style="background:var(--pflong)"></i>縱向料(被斷面切到,沿 L 連續)</span>
+        <span><i class="sw" style="background:var(--pfrib)"></i>橫撐(在斷面內,沿 L 每隔一段一支)</span>
+        <span><i class="sw" style="background:var(--wallfill)"></i>RC 樓板/牆</span>
+      </div>
+      <div class="hint" id="pfHint">拖曳黑點 = 改完成面形狀(保持水平/垂直,10 mm 對齊)・「畫新的完成面」:在圖上依序點,每段自動取水平或垂直,雙擊或按「完成繪製」結束,Esc 取消。結構依完成面自動長出:每段完成面內側貼面材;每個轉角與兩端放一支縱向料;每段面材後方放橫撐接在縱向料之間。</div>
+      <div id="pfChecks" class="small" style="margin-top:6px"></div>
+    </div>
+    <div class="card" style="margin-top:12px">
+      <h2>3D 模型:空間 + 結構 + 面材</h2>
+      <div class="toolbar" id="v3bar">
+        <label style="margin:0"><input type="checkbox" data-s="wall" checked> 牆與柱</label>
+        <label style="margin:0"><input type="checkbox" data-s="slab"> 樓板</label>
+        <label style="margin:0"><input type="checkbox" data-s="frame" checked> 結構(角材)</label>
+        <label style="margin:0"><input type="checkbox" data-s="board" checked> 面材</label>
+        <label style="margin:0"><input type="checkbox" id="v3only"> 只看選取的房間</label>
+        <label style="margin:0">顯示 <select id="v3src"><option value="plan">平面模型</option><option value="profile">斷面拉伸</option></select></label>
+      </div>
+      <div class="toolbar">
+        <button data-view="iso">斜角</button><button data-view="top">俯視(看骨架)</button><button data-view="bottom">仰視(看天花)</button>
+        <label style="margin:0;gap:6px">面材往下拉開 <input type="range" id="v3drop" min="0" max="800" step="10" value="0" style="width:140px"> <span id="v3dropv" class="small">0 mm</span></label>
+      </div>
+      <canvas id="cv3" style="width:100%;height:460px;display:block;border:1px solid var(--line);border-radius:10px;background:var(--floor);touch-action:none;cursor:grab"></canvas>
+      <div class="hint" id="v3msg">拖曳 = 旋轉 ・ 滾輪 = 縮放 ・ Shift + 拖曳(或右鍵拖曳)= 平移。高度:樓板底 2800、天花完成面 2500、板厚 6、角材 27 × 33 立放(平釘模板預設值)。只顯示已「下角材」的房間的結構與面材;選取的角材在 3D 裡以黃色標示。從下往上看時,牆只畫天花附近一圈,不擋住天花;要看板背後的骨架,把「面材」關掉或用斜角配合「往下拉開」。</div>
+    </div>
+    <div class="card" style="margin-top:12px">
+      <h2>規則來源</h2>
+      <div class="small"><span class="tag core">規格已有</span>公理層裡已定義、demo 照做的</div>
+      <ul class="src">
+        <li><b>D14 RC 樑</b>:沿 x 或 y 的長方塊,底 = 頂 − 深。PF-0 的 R41:樑伸進哪一層(面材層 / 角材層)那層就被裁切,否則從下方通過。</li>
+        <li><b>D10a 面材排法</b>:從起算點一片接一片排,縫中心線就是格線;末端放不下整片就是裁切片。→ 起鋪牆整片、裁切在對牆。</li>
+        <li><b>I19/I20/I21 角色</b>:與主支垂直的外牆放邊界材(主支端頭坐在它上面),與主支平行的外牆放邊界主支;副支頂在主支側面。</li>
+      </ul>
+      <div class="small" style="margin-top:6px"><span class="tag conf">與規格衝突</span>木工做法和現行條文不同,要回頭處理條文</div>
+      <ul class="src">
+        <li><b>柱子四周要有沿邊料</b>:角材端面要頂到角材才能固定,不能直接頂 RC。I19 卻寫「孔邊與柱面不在此限」,允許任何角材端面直接頂柱面,理由是「端面不提供固定」;PF-0 的建議規則(R45)也寫明孔環上的邊不產生邊料。</li>
+      </ul>
+      <div class="small" style="margin-top:6px"><span class="tag tpl">木工模板提案</span>規格目前沒有,這個 demo 依木工做法補上</div>
+      <ul class="src">
+        <li><b>主支上等距記號(模數)</b>:真正的規則是「副支中心距 ≤ 間距上限」(防垂上限 450)。一個完整格 = 板 1830 + 縫 2 = 1832,⌈1832 ÷ 450⌉ = 5 段、中間 4 支,模數 ≈ 366。記號從縫中心線起算、取整數 mm(366 / 367 交錯,差 1 mm 不影響,都在上限內),每支主支同一組,副支照記號接;每第 5 個記號正好落在板端縫上,不累積偏移。規格的 D19 是每格 n 等分、n 要人填,沒有「由上限推等分數」也沒有「模數延續到裁切格」。</li>
+        <li><b>斷面設計(給定完成面 → 結構)</b>:斷面輪廓、構件剖面在輪廓內、不重疊、沿 L 直線拉伸,是規格 D35–D37 已有的。「由完成面自動長出結構」(面材貼內側、轉角與端點放縱向料、橫撐接在縱向料之間)與「橫撐沿 L 每隔一段重複」是依你的 SketchUp 圖整理的模板規則,規格沒有;D37 的拉伸件是整支連續,不會沿 L 重複。</li>
+        <li><b>完成面降到樑下</b>:完成面取最低限制(樑底)再往下扣板厚與角材高,讓骨架從樑下整片通過、主支不被樑切斷。規格(R41)允許樑切斷角材層,木工不允許;包樑(樑側、樑底另作完成面)這裡沒做。</li>
+        <li><b>主支不可斷開</b>:主支線碰到獨立柱就是排板衝突,要改起鋪角、板長方向或偏移(同開口:位置給定、不可切骨,反推起鋪)。規格允許主支端面直接頂柱面,不會擋。</li>
+        <li><b>一鍵產生整面骨架</b>。規格:子網格不自動產生角材;PF-0 只產生候選,要人逐支選,不補板中間的支撐。</li>
+        <li><b>收邊太窄時往內挪</b>:最後一道縫或最後一個記號離對牆不到 40.5,就挪到距對牆 40.5。</li>
+      </ul>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <h2>這一面的參數 <span class="tag tpl">木工模板提供預設值</span></h2>
+      <div id="params" class="small">先指定封閉面並按「下角材」。</div>
+    </div>
+    <div class="card" style="margin-top:12px">
+      <h2>規則檢查(這一面)</h2>
+      <div id="checks" class="small">—</div>
+    </div>
+    <div class="card" style="margin-top:12px">
+      <h2>點選的角材</h2>
+      <div id="info" class="small">(尚未點選)</div>
+    </div>
+    <div class="card" style="margin-top:12px">
+      <h2>實例化結果</h2>
+      <table id="summary"></table>
+    </div>
+  </div>
+</div>
+
+<script>
+// ---- 既有平面圖(俯視,mm;x 向右、y 向下)。每間房的輪廓 = 它的天花封閉面 ----
+const BUILDING=[0,0,9000,7000];
+const FACES=[
+  {id:'F1',name:'客廳',rings:[[[0,0],[5000,0],[5000,3000],[3200,3000],[3200,4800],[0,4800]],[[2300,1300],[2700,1300],[2700,1700],[2300,1700]]]},
+  {id:'F2',name:'主臥',rings:[[[5120,0],[9000,0],[9000,1500],[8700,1500],[8700,1900],[9000,1900],[9000,3600],[5120,3600]]]},
+  {id:'F3',name:'次臥',rings:[[[5120,3720],[9000,3720],[9000,7000],[5120,7000]]]},
+  {id:'F4',name:'走道',rings:[[[3320,3120],[5000,3120],[5000,7000],[3320,7000]]]},
+  {id:'F5',name:'廚房',rings:[[[0,4920],[3200,4920],[3200,7000],[0,7000]],[[1400,5800],[1700,5800],[1700,6100],[1400,6100]]]}
+];
+// pw×pl = 板寬×板長;longY = 板長沿 Y;corner = 起鋪角;cap = 副支間距上限;tw = 角材實寬;bear = 板端承接門檻;colEdge = 柱子四周放沿邊料
+// RC 樑(D14):走向 x 或 y,中線 c、寬 w、從 from 到 to;頂 = 樓板底 2800,底 = 頂 − 深
+const BEAMS=[
+  {id:'B1',axis:'x',c:1500,w:300,from:0,to:5000,depth:400},     // 客廳:跨過獨立柱,樑底 2400,低於骨架
+  {id:'B2',axis:'y',c:7000,w:300,from:0,to:3600,depth:200}      // 主臥:樑底 2600,骨架可從下方通過
+];
+// 高度(平釘模板預設):樓板底 2800、板厚 6、角材高 33(27 × 33 立放)
+const ZD={slab:2800,bt:6,md:33,ceil:2500};
+const beamRect=b=>b.axis==='x'?[b.from,b.c-b.w/2,b.to,b.c+b.w/2]:[b.c-b.w/2,b.from,b.c+b.w/2,b.to];
+const beamBottom=b=>ZD.slab-b.depth;
+function beamsOn(f){return BEAMS.filter(b=>{const r=beamRect(b);let hit=false;clipCells(f.rings,r[0],r[1],r[2],r[3],()=>{hit=true;});return hit;});}
+// 完成面 = 最低限制(樑底)再往下扣板厚與角材高;沒有低樑時用 2500。要再多扣多少由現場定
+function ceilLimit(f){return Math.min(ZD.ceil,...beamsOn(f).map(b=>beamBottom(b)-ZD.bt-ZD.md));}
+const DEFAULTS={pw:915,pl:1830,gap:2,longY:true,corner:'tl',cap:450,tw:27,bear:8,colEdge:true,ceil:ZD.ceil};
+const CORNERS={tl:'左上',tr:'右上',bl:'左下',br:'右下'};
+const STEP_NAMES=['封閉面','排板(起鋪牆整片)','沿邊料(牆+柱)','主支(壓長邊縫)','記號(主支上等距)','副支(照記號接)'];
+const $=id=>document.getElementById(id);
+const r1=v=>Math.round(v*10)/10, EPS=0.01;
+let selected=null, selMember=null;
+for(const f of FACES){f.applied=false;f.step=5;const[x0,y0,x1,y1]=bbox(f.rings);
+  // 預設:板長(=主支走向)沿房間較短的那一向
+  f.p={...DEFAULTS,longY:(y1-y0)<=(x1-x0)};f.p.ceil=ceilLimit(f);f.mode='flat';f.stack=null;}
+
+// ---- 幾何:軸向直線與正交多邊形(可含孔)的面內區間 ----
+function crossings(rings,axis,c){const xs=[];for(const r of rings)for(let i=0;i<r.length;i++){const a=r[i],b=r[(i+1)%r.length];
+  if(axis==='h'){if(a[0]===b[0]){const y0=Math.min(a[1],b[1]),y1=Math.max(a[1],b[1]);if(c>y0&&c<y1)xs.push(a[0]);}}
+  else{if(a[1]===b[1]){const x0=Math.min(a[0],b[0]),x1=Math.max(a[0],b[0]);if(c>x0&&c<x1)xs.push(a[1]);}}}
+  xs.sort((p,q)=>p-q);const iv=[];for(let i=0;i+1<xs.length;i+=2)iv.push([xs[i],xs[i+1]]);return iv;}
+function intersectIv(A,B){const o=[];let i=0,j=0;while(i<A.length&&j<B.length){const lo=Math.max(A[i][0],B[j][0]),hi=Math.min(A[i][1],B[j][1]);if(hi-lo>1e-6)o.push([lo,hi]);if(A[i][1]<B[j][1])i++;else j++;}return o;}
+function interior(rings,axis,c){return intersectIv(crossings(rings,axis,c-EPS),crossings(rings,axis,c+EPS));}
+function inside(rings,x,y){let k=0;for(const r of rings)for(let i=0,j=r.length-1;i<r.length;j=i++){const[xi,yi]=r[i],[xj,yj]=r[j];if(((yi>y)!==(yj>y))&&(x<(xj-xi)*(y-yi)/(yj-yi)+xi))k^=1;}return k===1;}
+function bbox(rings){let a=[1e9,1e9,-1e9,-1e9];for(const r of rings)for(const[x,y]of r){a[0]=Math.min(a[0],x);a[1]=Math.min(a[1],y);a[2]=Math.max(a[2],x);a[3]=Math.max(a[3],y);}return a;}
+function areaOf(rings){let A=0;for(const r of rings){let s=0;for(let i=0;i<r.length;i++){const a=r[i],b=r[(i+1)%r.length];s+=a[0]*b[1]-b[0]*a[1];}A+=Math.abs(s)/2*(r===rings[0]?1:-1);}return A;}
+
+// ---- 一個軸向的排板(D10a):t = 距起鋪牆的距離,D = 到對牆的距離 ----
+// 第 k 片板佔 [kT, kT+P),縫中心 c_k = kT + P + ⌊gap/2⌋,條件 (k+1)T < D;末端是裁切片。
+// 模板提案:最後一道縫若讓角材撞進對牆沿邊料(c > D − 1.5·tw),挪到 D − 1.5·tw。
+function panelAxis(D,P,gap,tw){
+  const T=P+gap,g0=Math.floor(gap/2),g1=gap-g0,seams=[];
+  for(let k=0;(k+1)*T<D-1e-9;k++)seams.push(k*T+P+g0);
+  let moved=null;const lim=Math.floor(D-1.5*tw);
+  if(seams.length&&seams[seams.length-1]>lim+1e-9){moved={from:seams[seams.length-1],to:lim};seams[seams.length-1]=lim;}
+  const boards=[];let t0=0;
+  for(const s of seams){boards.push([t0,s-g0]);t0=s+g1;}
+  boards.push([t0,Math.min(D,t0+P)]);
+  const full=boards.map(([a,b])=>b-a>=P-0.5);
+  return{D,P,T,seams,boards,full,moved};
+}
+
+// ---- 模式「平釘天花板」:封閉面 → 排板 → 沿邊料 → 主支 → 記號 → 副支 ----
+function build(f){
+  if(f.mode==='stack'){buildStack(f);return;}
+  const p=f.p,rings=f.rings,[minx,miny,maxx,maxy]=bbox(rings);
+  const A=p.longY?'x':'y', B=p.longY?'y':'x';          // A = 板寬 915 向(主支間距向),B = 板長 1830 向(主支走向)
+  const sx=(p.corner==='tl'||p.corner==='bl')?1:-1, sy=(p.corner==='tl'||p.corner==='tr')?1:-1;
+  const W=(ax,t)=>ax==='x'?(sx>0?minx+t:maxx-t):(sy>0?miny+t:maxy-t);
+  const span=ax=>ax==='x'?maxx-minx:maxy-miny;
+  const LA=panelAxis(span(A),p.pw,p.gap,p.tw), LB=panelAxis(span(B),p.pl,p.gap,p.tw);
+  const pO=A==='x'?'v':'h', sO=A==='x'?'h':'v', tw=p.tw, members=[];let iw=0,ip=0,is=0;
+  // 1) 沿邊料:外牆每條邊;柱子四周(可關掉,看端面直接頂 RC 會被擋)
+  for(const [ri,r] of rings.entries()){if(ri>0&&!p.colEdge)continue;
+    for(let i=0;i<r.length;i++){const a=r[i],b=r[(i+1)%r.length],len=Math.hypot(b[0]-a[0],b[1]-a[1]);
+      const mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2,nx=(b[1]-a[1])/len,ny=-(b[0]-a[0])/len,sg=inside(rings,mx+nx*tw,my+ny*tw)?1:-1;
+      const eo=a[1]===b[1]?'h':'v', par=eo===pO;
+      members.push({id:f.id+'-E'+(++iw),role:'wall',ri,ei:i,eo,par,a,b,off:[nx*sg*tw/2,ny*sg*tw/2],len,
+        label:ri>0?'柱邊料(角色須宣告 primary 或 secondary,I21)':par?'邊界主支(primary;與主支平行的外邊,I21)':'邊界材(boundary;與主支垂直的外邊,I20)',
+        src:ri===0?'板被牆切斷的邊要有支撐;其他角材的端面也要頂在它上面,不能直接頂 RC 牆':'柱子四周要有沿邊料:主支、副支的端面要頂到角材才能固定,不能直接頂 RC 柱',
+        ends:'沿邊界'});}}
+  // 2) 主支:壓在板長邊縫上,整支連續、不可斷開。主支線若穿過獨立柱(含柱邊料)= 排板衝突,
+  //    要改起鋪角、板長方向或偏移(同開口:位置給定、不可切骨,反推起鋪)。
+  const pri=[], clash=primaryClashes(f,p);
+  LA.seams.forEach((c,k)=>{const pos=W(A,c),cl=clash.includes(k);
+    for(const[lo,hi]of interior(rings,pO,pos)){
+      const m={id:f.id+'-P'+(++ip),role:'pri',pos,orient:pO,s0:lo,s1:hi,len:hi-lo,clash:cl,
+        src:`[D10a] 第 ${k+1} 道板長邊縫(距起鋪牆 ${r1(c)})下要有支撐 → 主支壓在縫上,整支連續、不可斷開`+(LA.moved&&k===LA.seams.length-1?';收邊太窄,這道縫已往內挪(模板提案)':'')+
+          (cl?'\n⚠ 這道縫上的主支會碰到獨立柱或柱邊料:主支不能斷開,這個排板不成立 → 改起鋪角、板長方向或偏移':''),
+        ends:cl?'⚠ 碰到獨立柱或柱邊料(不允許)':'兩端坐在牆邊的邊界材上'};
+      members.push(m);pri.push(m);}});
+  // 3) 記號(模板提案):真正的規則是「副支中心距 ≤ 間距上限」。等分數 n = ⌈完整格(板 + 縫)÷ 上限⌉,
+  //    模數 = 完整格 ÷ n;記號從縫中心線起算、取整數 mm(比照 D10a 取下界),每支主支用同一組記號。
+  //    每第 n 個記號正好落在板端縫上,不累積偏移;取整造成的 1 mm 差異都在上限以內。
+  const nFull=Math.max(1,Math.ceil(LB.T/p.cap-1e-9)), mod=LB.T/nFull, base=p.pl+Math.floor(p.gap/2)-LB.T, lines=[];
+  for(let m=1;base+m*mod<LB.D-1e-6;m++){const t=Math.floor(base+m*mod+1e-6);if(t<=0)continue;
+    lines.push({t,kind:'mark',src:`[模板] 間距上限 ${p.cap} → 一個完整格(${p.pl} + ${p.gap} = ${LB.T})分 ${nFull} 段,模數 ${r1(mod)};主支上從縫中心線起取整數 mm 畫記號,這支副支照第 ${m} 個記號接`+(m%nFull===0?`(正好落在第 ${m/nFull} 道板端縫)`:'')});}
+  let markMoved=null;
+  if(lines.length){const L=lines[lines.length-1],lim=Math.floor(LB.D-1.5*tw);if(L.t>lim+1e-9){markMoved={from:L.t,to:lim};L.t=lim;L.src+=`;離對牆太近,這個記號往內挪到距對牆 ${1.5*tw}`;}}
+  // 4) 板端縫要落在某支副支上,兩側承接都 ≥ 門檻;不夠就在縫下另加一支
+  const g0=Math.floor(p.gap/2),g1=p.gap-g0, seamInfo=[];
+  LB.seams.forEach((s,j)=>{
+    const bearOf=t=>Math.min((s-g0)-(t-tw/2),(t+tw/2)-(s+g1));
+    let best=null;for(const L of lines){const b=bearOf(L.t);if(!best||b>best.b)best={t:L.t,b};}
+    if(best&&best.b>=p.bear-1e-9)seamInfo.push({j,s,drift:best.t-s,b:best.b,extra:false});
+    else{for(let i=lines.length-1;i>=0;i--)if(Math.abs(lines[i].t-s)<tw-1e-9)lines.splice(i,1);
+      lines.push({t:s,kind:'seam',src:`[模板] 第 ${j+1} 道板端縫沒落在記號的副支上(承接不足 ${p.bear} mm),縫下另加一支`});
+      seamInfo.push({j,s,drift:0,b:tw/2-Math.max(g0,g1),extra:true,best});}
+  });
+  lines.sort((a,b)=>a.t-b.t);
+  // 5) 副支:照記號接,夾在主支(或沿邊料)之間分段
+  for(const L of lines){const pos=W(B,L.t);
+    for(const[lo,hi]of interior(rings,sO,pos)){
+      const sup=[...new Set(pri.filter(q=>pos>q.s0+1e-6&&pos<q.s1-1e-6&&q.pos>lo+1e-6&&q.pos<hi-1e-6).map(q=>q.pos))].sort((a,b)=>a-b);
+      const cuts=[lo,...sup,hi];
+      for(let k=0;k+1<cuts.length;k++){const s0=cuts[k],s1=cuts[k+1],nm=v=>(Math.abs(v-lo)<1e-6||Math.abs(v-hi)<1e-6)?'沿邊料':'主支側面';
+        members.push({id:f.id+'-S'+(++is),role:'sec',kind:L.kind,pos,orient:sO,s0,s1,len:s1-s0,src:L.src,ends:nm(s0)+' → '+nm(s1)});}}}
+  f.g={bb:[minx,miny,maxx,maxy],A,B,W,LA,LB,nFull,mod,lines,markMoved,seamInfo,pO,sO,members};
+}
+
+// ---- 主支穿柱檢查:回傳會穿過獨立柱(含柱邊料佔的寬度)的縫索引 ----
+function primaryClashes(f,p){
+  const[minx,miny,maxx,maxy]=bbox(f.rings),A=p.longY?'x':'y',sx=(p.corner==='tl'||p.corner==='bl')?1:-1,sy=(p.corner==='tl'||p.corner==='tr')?1:-1;
+  const D=A==='x'?maxx-minx:maxy-miny,L=panelAxis(D,p.pw,p.gap,p.tw),out=[],e=p.colEdge?p.tw:0;
+  const W=t=>A==='x'?(sx>0?minx+t:maxx-t):(sy>0?miny+t:maxy-t);
+  L.seams.forEach((c,k)=>{const pos=W(c);
+    for(const h of f.rings.slice(1)){const[hx0,hy0,hx1,hy1]=bbox([h]),lo=(A==='x'?hx0:hy0)-e,hi=(A==='x'?hx1:hy1)+e;
+      if(pos+p.tw/2>lo+1e-6&&pos-p.tw/2<hi-1e-6){out.push(k);break;}}});
+  return out;
+}
+function clashFreeOptions(f){
+  const ok=[];for(const ly of[true,false])for(const k of Object.keys(CORNERS)){const q={...f.p,longY:ly,corner:k};if(!primaryClashes(f,q).length)ok.push(`${CORNERS[k]}起鋪・板長沿 ${ly?'Y':'X'}`);}
+  return ok;
+}
+
+// ---- 端面檢查:主支、副支的每個端面要頂在角材上(主支側面或沿邊料),不能直接頂 RC ----
+function endFaces(f){
+  const g=f.g,bad=[],walls=new Set(g.members.filter(m=>m.role==='wall').map(m=>m.ri+':'+m.ei)),pri=g.members.filter(m=>m.role==='pri');
+  for(const m of g.members){if(m.role==='wall')continue;
+    for(const e of[m.s0,m.s1]){
+      if(m.role==='sec'&&pri.some(q=>Math.abs(q.pos-e)<1e-6&&m.pos>q.s0-1e-6&&m.pos<q.s1+1e-6))continue;
+      let hit=null;
+      f.rings.forEach((r,ri)=>r.forEach((a,i)=>{const b=r[(i+1)%r.length];if(hit)return;
+        if(m.orient==='h'){if(a[0]===b[0]&&Math.abs(a[0]-e)<1e-6&&m.pos>=Math.min(a[1],b[1])-1e-6&&m.pos<=Math.max(a[1],b[1])+1e-6)hit=[ri,i];}
+        else{if(a[1]===b[1]&&Math.abs(a[1]-e)<1e-6&&m.pos>=Math.min(a[0],b[0])-1e-6&&m.pos<=Math.max(a[0],b[0])+1e-6)hit=[ri,i];}}));
+      if(!hit||!walls.has(hit[0]+':'+hit[1]))bad.push({m,e,col:hit&&hit[0]>0});}}
+  return bad;
+}
+
+// ---- 規則檢查 ----
+function check(f){
+  if(f.mode==='stack')return checkStack(f);
+  const g=f.g,p=f.p,out=[],LA=g.LA,LB=g.LB,tw=p.tw;
+  const startFull=L=>L.full.slice(0,L.boards.length-1-(L.moved?1:0)).every(Boolean);
+  const rem=L=>{const b=L.boards[L.boards.length-1];return L.full[L.full.length-1]?'剛好整片':`對牆收邊 ${r1(b[1]-b[0])} mm`;};
+  out.push([startFull(LA)&&startFull(LB),'起鋪牆那側全是整片板,裁切只在對牆',
+    `915 向:整片 ${LA.full.filter(Boolean).length} 排,${rem(LA)}\n1830 向:整片 ${LB.full.filter(Boolean).length} 片,${rem(LB)}`]);
+  const bad=endFaces(f);
+  out.push([bad.length===0,'每個端面都頂在角材上,不直接頂 RC',bad.length===0?'副支頂主支側面或沿邊料;主支兩端坐在牆邊的邊界材上':
+    `${bad.length} 個端面直接頂到 RC${bad.some(x=>x.col)?'柱':'牆'}:${[...new Set(bad.map(x=>x.m.id))].slice(0,6).join('、')}${bad.length>6?' …':''}`]);
+  const tB=g.lines.map(l=>l.t);
+  const fullCnt=LB.boards.map(([b0,b1],j)=>LB.full[j]?tB.filter(t=>t>b0+tw/2&&t<b1-tw/2).length:null).filter(v=>v!==null);
+  out.push([fullCnt.every(c=>c===g.nFull-1),`每個完整格(板+縫 ${LB.T}):中間 ${g.nFull-1} 支,${g.nFull} 段`,`等分數 = ⌈${LB.T} ÷ 上限 ${p.cap}⌉ = ${g.nFull};模數 ${r1(g.mod)},記號取整數 mm\n各整片板中間:${fullCnt.join('、')||'(無整片)'} 支`]);
+  const sup=[tw/2,...tB,LB.D-tw/2];let worst=0;for(let i=0;i+1<sup.length;i++)worst=Math.max(worst,sup[i+1]-sup[i]);
+  const inner=[...new Set(tB.slice(1).map((t,i)=>r1(t-tB[i])))].sort((a,b)=>a-b).slice(0,4);
+  out.push([worst<=p.cap+1e-6,`1830 向副支中心距 ≤ 間距上限 ${p.cap}`,`最大 ${r1(worst)} mm;記號之間 ${inner.join(' / ')||'—'} mm`+(worst<=p.cap+1e-6?'(取整差 1 mm,都在上限內)':'')]);
+  const sOk=g.seamInfo.every(x=>x.b>=p.bear-1e-9);
+  out.push([sOk,`板端縫落在副支上,兩側承接 ≥ ${p.bear} mm`,g.seamInfo.length?g.seamInfo.map(x=>`第 ${x.j+1} 道:`+(x.extra?`記號的副支承接不足,縫下另加一支(承接 ${r1(x.b)})`:`記號與縫中心差 ${r1(Math.abs(x.drift))} mm,承接 ${r1(x.b)} mm`)).join('\n'):'沒有板端縫(1830 向只有一片)']);
+  const cl=[...new Set(g.members.filter(m=>m.role==='pri'&&m.clash).map(m=>m.pos))];
+  out.push([cl.length===0,'主支整支連續、不可斷開(不碰獨立柱)',cl.length===0?'每支主支從牆邊連續到對牆;副支裁成段,夾在主支之間':
+    `${cl.length} 道主支線會碰到獨立柱或柱邊料,這個排板不成立。\n不衝突的選擇:${clashFreeOptions(f).join('、')||'(沒有,需要偏移排板)'}`]);
+  const bs=beamsOn(f),top=p.ceil+ZD.bt+ZD.md,hitB=bs.filter(b=>beamBottom(b)<top-1e-6);
+  out.push([hitB.length===0,'骨架不碰 RC 樑(主支不可切)',bs.length===0?'這一面上方沒有樑':
+    bs.map(b=>`${b.id}:樑底 ${beamBottom(b)}、骨架頂 ${top} → `+(beamBottom(b)>=top-1e-6?'骨架從樑下通過':`樑會切斷骨架,完成面要降到 ≤ ${beamBottom(b)-ZD.bt-ZD.md}(貼樑底),或改包樑另作`)).join('\n')]);
+  const mv=[LA.moved&&'915 向最後一道縫',LB.moved&&'1830 向最後一道縫',g.markMoved&&'最後一個記號'].filter(Boolean);
+  out.push([true,'收邊太窄時往內挪',mv.length?`${mv.join('、')}離對牆不到 40.5,往內挪到距對牆 40.5`:'收邊寬度足夠,不需要挪']);
+  return out;
+}
+
+// ---- 畫圖 ----
+const NM={wall:'沿邊料',pri:'主支',sec:'副支'};
+function ringD(rings){return rings.map(r=>'M'+r.map(q=>q.join(' ')).join(' L')+' Z').join(' ');}
+function rectAB(g,ta,tb){
+  const a0=g.W(g.A,ta[0]),a1=g.W(g.A,ta[1]),b0=g.W(g.B,tb[0]),b1=g.W(g.B,tb[1]);
+  const[xa,xb]=g.A==='x'?[a0,a1]:[b0,b1],[ya,yb]=g.A==='x'?[b0,b1]:[a0,a1];
+  return[Math.min(xa,xb),Math.min(ya,yb),Math.abs(xb-xa),Math.abs(yb-ya)];}
+function draw(){
+  const M=400,[X0,Y0,X1,Y1]=BUILDING,vb=[X0-M,Y0-M,X1-X0+2*M,Y1-Y0+2*M];
+  let s=`<svg id="svg" viewBox="${vb.join(' ')}" xmlns="http://www.w3.org/2000/svg">`;
+  s+=`<path d="M${X0-120} ${Y0-120} H${X1+120} V${Y1+120} H${X0-120} Z ${FACES.map(f=>ringD([f.rings[0]])).join(' ')}" fill="var(--wallfill)" fill-rule="evenodd"/>`;
+  for(const f of FACES){
+    const isSel=selected===f;
+    s+=`<path class="face" data-face="${f.id}" d="${ringD(f.rings)}" fill-rule="evenodd" fill="${isSel?'var(--selface)':'var(--floor)'}" stroke="${isSel?'var(--accent)':'none'}" stroke-width="${isSel?30:0}" style="cursor:pointer"/>`;
+    for(const h of f.rings.slice(1))s+=`<path d="${ringD([h])}" fill="var(--wallfill)"/>`;
+    if(f.applied){
+      const g=f.g,st=f.step,clip='cp'+f.id;
+      s+=`<defs><clipPath id="${clip}"><path d="${ringD(f.rings)}" clip-rule="evenodd"/></clipPath></defs>`;
+      if(st>=1){
+        s+=`<g clip-path="url(#${clip})" pointer-events="none">`;
+        g.LA.boards.forEach((ta,i)=>g.LB.boards.forEach((tb,j)=>{const r=rectAB(g,ta,tb),full=g.LA.full[i]&&g.LB.full[j];
+          s+=`<rect x="${r[0]}" y="${r[1]}" width="${r[2]}" height="${r[3]}" fill="var(${full?'--board':'--cut'})" opacity=".8"/>`;}));
+        s+=`</g>`;
+        const seg=(o,pos)=>interior(f.rings,o,pos).map(([a,b])=>o==='h'?`<line x1="${a}" y1="${pos}" x2="${b}" y2="${pos}"/>`:`<line x1="${pos}" y1="${a}" x2="${pos}" y2="${b}"/>`).join('');
+        const seams=g.LA.seams.map(c=>seg(g.pO,g.W(g.A,c))).join('')+g.LB.seams.map(c=>seg(g.sO,g.W(g.B,c))).join('');
+        s+=`<g stroke="var(--seam)" stroke-width="2" vector-effect="non-scaling-stroke" stroke-dasharray="60 30" pointer-events="none">${seams}</g>`;}
+      const w=f.p.tw;
+      const mem=m=>{const w=m.w||f.p.tw,col=m.cv?'var('+m.cv+')':m.role==='wall'?'var(--wall)':m.role==='pri'?'var(--pri)':'var(--sec)',isHl=m.id===selMember;
+        let r;if(m.role==='wall'){const[a,b]=[m.a,m.b],o=m.off,x0=Math.min(a[0],b[0])+o[0],x1=Math.max(a[0],b[0])+o[0],y0=Math.min(a[1],b[1])+o[1],y1=Math.max(a[1],b[1])+o[1];r=a[1]===b[1]?[x0,y0-w/2,x1-x0,w]:[x0-w/2,y0,w,y1-y0];}
+        else r=m.orient==='h'?[m.s0,m.pos-w/2,m.len,w]:[m.pos-w/2,m.s0,w,m.len];
+        return `<rect class="mem" data-mem="${m.id}" x="${r[0]}" y="${r[1]}" width="${r[2]}" height="${r[3]}" fill="${col}" stroke="${isHl?'var(--sel)':m.clash?'var(--bad)':col}" stroke-width="${isHl?4:m.clash?3:0.6}"${m.clash?' stroke-dasharray="6 4"':''} vector-effect="non-scaling-stroke" style="cursor:pointer"/>`;};
+      if(st>=5)s+=g.members.filter(m=>m.role==='sec').map(mem).join('');
+      if(st>=3)s+=g.members.filter(m=>m.role==='pri').map(mem).join('');
+      if(st>=2)s+=g.members.filter(m=>m.role==='wall').map(mem).join('');
+      if(st>=4){ // 記號:畫在主支與平行於主支的沿邊料上
+        const rails=[...g.members.filter(m=>m.role==='pri').map(m=>({pos:m.pos,s0:m.s0,s1:m.s1})),
+          ...g.members.filter(m=>m.role==='wall'&&m.par).map(m=>{const v=m.eo==='v',c=v?m.a[0]+m.off[0]:m.a[1]+m.off[1],u0=v?m.a[1]:m.a[0],u1=v?m.b[1]:m.b[0];return{pos:c,s0:Math.min(u0,u1),s1:Math.max(u0,u1)};})];
+        let t='';const h=80;
+        for(const L of g.lines){const q=g.W(g.B,L.t);for(const r of rails){if(q<r.s0-1e-6||q>r.s1+1e-6)continue;
+          t+=g.pO==='v'?`<line x1="${r.pos-h}" y1="${q}" x2="${r.pos+h}" y2="${q}"/>`:`<line x1="${q}" y1="${r.pos-h}" x2="${q}" y2="${r.pos+h}"/>`;}}
+        s+=`<g stroke="var(--mark)" stroke-width="2" vector-effect="non-scaling-stroke" pointer-events="none">${t}</g>`;}
+      if(isSel){const[minx,miny,maxx,maxy]=g.bb,I=220;
+        for(const[k,cx,cy]of[['tl',minx+I,miny+I],['tr',maxx-I,miny+I],['bl',minx+I,maxy-I],['br',maxx-I,maxy-I]]){const on=f.p.corner===k;
+          s+=`<circle data-corner="${k}" cx="${cx}" cy="${cy}" r="${on?110:80}" fill="${on?'var(--accent)':'var(--panel)'}" stroke="var(--accent)" stroke-width="3" vector-effect="non-scaling-stroke" style="cursor:pointer"><title>${on?'目前的起鋪角':'改從這個角起鋪'}(${CORNERS[k]})</title></circle>`;}}
+    }
+    const[minx,miny,maxx,maxy]=bbox(f.rings);
+    s+=`<text x="${(minx+maxx)/2}" y="${(miny+maxy)/2}" text-anchor="middle" font-size="230" font-weight="700" fill="var(--ink)" opacity="${f.applied?0.35:0.75}" pointer-events="none">${f.name}</text>`;
+    s+=`<text x="${(minx+maxx)/2}" y="${(miny+maxy)/2+260}" text-anchor="middle" font-size="150" fill="var(--muted)" opacity="${f.applied?0.4:0.9}" pointer-events="none">${maxx-minx}×${maxy-miny}</text>`;
+  }
+  for(const b of BEAMS){const r=beamRect(b),low=FACES.some(f=>beamsOn(f).includes(b)&&beamBottom(b)<ZD.ceil+ZD.bt+ZD.md);
+    s+=`<rect x="${r[0]}" y="${r[1]}" width="${r[2]-r[0]}" height="${r[3]-r[1]}" fill="var(--ink)" fill-opacity=".08" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="10 6" vector-effect="non-scaling-stroke" pointer-events="none"/>`;
+    const tx=b.axis==='x'?(r[0]+r[2])/2+900:r[2]+60,ty=b.axis==='x'?r[1]-50:(r[1]+r[3])/2;
+    s+=`<text x="${tx}" y="${ty}" font-size="130" fill="var(--ink)" pointer-events="none">${b.id} 樑底 ${beamBottom(b)}${low?'(低於 2500 骨架)':''}</text>`;}
+  s+='</svg>';$('plan').innerHTML=s;wire();rebuild3D();
+}
+
+// ---- 互動 ----
+function wire(){
+  $('svg').addEventListener('pointerdown',e=>{
+    const t=e.target;
+    if(t.dataset&&t.dataset.corner&&selected){selected.p.corner=t.dataset.corner;refresh();return;}
+    if(t.classList.contains('mem')){selMember=t.dataset.mem;showMember();draw();return;}
+    const fid=t.dataset&&t.dataset.face;
+    if(fid){selectFace(FACES.find(f=>f.id===fid));return;}
+  });
+}
+function selectFace(f){selected=f;selMember=null;refresh();if($('v3only').checked)focus3D();}
+function refresh(){
+  for(const f of FACES)if(f.applied)build(f);
+  $('apply').disabled=!selected;$('clear').disabled=!(selected&&selected.applied);
+  $('selname').textContent=selected?`已指定封閉面:${selected.name}(${selected.id},面積 ${r1(areaOf(selected.rings)/1e6)} m²${selected.rings.length>1?',含柱':''})`:'尚未指定封閉面:請點平面圖上的任一房間';
+  const st=selected&&selected.applied?selected.step:-1;
+  $('steps').innerHTML=STEP_NAMES.map((n,i)=>`<span class="${i<=st?'on':''}">${i}. ${n}</span>`).join('');
+  $('mode').value=selected?selected.mode:'flat';
+  renderParams();renderChecks();renderSummary();draw();showMember();
+}
+function renderParams(){
+  const f=selected;if(!f||!f.applied){$('params').innerHTML='<span class="small">先指定封閉面並按「下角材」。</span>';return;}
+  const p=f.p,g=f.g;
+  $('params').innerHTML=`
+  <label>板寬 × 板長 (mm) <span><input type="number" data-k="pw" value="${p.pw}" style="width:62px"> × <input type="number" data-k="pl" value="${p.pl}" style="width:66px"></span></label>
+  <label>縫寬 (mm) <input type="number" data-k="gap" value="${p.gap}"></label>
+  <label>板長方向(R 切換) <select data-k="longY"><option value="1"${p.longY?' selected':''}>沿 Y(上下)</option><option value="0"${!p.longY?' selected':''}>沿 X(左右)</option></select></label>
+  <label>起鋪角 <select data-k="corner">${Object.entries(CORNERS).map(([k,v])=>`<option value="${k}"${p.corner===k?' selected':''}>${v}</option>`).join('')}</select></label>
+  <label>副支間距上限(防垂)(mm) <input type="number" data-k="cap" value="${p.cap}"></label>
+  <label>天花完成面高度 (mm) <input type="number" data-k="ceil" value="${p.ceil}"></label>
+  <div class="small">樑底限制:≤ ${ceilLimit(f)}(最低樑底 − 板厚 6 − 角材高 33;要再往下扣多少由現場定)</div>
+  <label>角材實寬 (mm) <input type="number" data-k="tw" value="${p.tw}"></label>
+  <label>板端承接門檻 (mm) <input type="number" data-k="bear" value="${p.bear}"></label>
+  <label>柱子四周放沿邊料 <select data-k="colEdge"><option value="1"${p.colEdge?' selected':''}>放</option><option value="0"${!p.colEdge?' selected':''}>不放(看會怎樣)</option></select></label>
+  <div class="small" style="margin-top:6px">${f.mode==='stack'?stackSummary(f):`組合結果:主支壓在板長邊縫上,${g.LA.seams.length} 支,間距 ${r1(g.LA.T)};間距上限 ${p.cap} → 一個完整格 (${p.pl}+${p.gap}) 分 ${g.nFull} 段,模數 ${r1(g.mod)};主支上從縫中心線起取整數 mm 畫記號,共 ${g.lines.filter(l=>l.kind==='mark').length} 個,副支照記號接 → 每片整板中間 ${g.nFull-1} 支,每第 ${g.nFull} 個記號正好是板端縫。`}</div>
+  <div class="small"><span class="tag core">核心</span>封閉面、排板網格、角色與端面規則、實例身分 <span class="tag tpl">木工模板</span>板材尺寸、記號間距、截面、承接門檻、起鋪與收邊做法、柱邊料</div>`;
+  $('params').querySelectorAll('[data-k]').forEach(el=>el.addEventListener(el.tagName==='SELECT'?'change':'input',()=>{
+    const k=el.dataset.k;let v=el.value;
+    if(k==='longY'||k==='colEdge')v=v==='1';else if(k!=='corner')v=Math.max(k==='gap'||k==='bear'?0:1,parseFloat(v)||0);
+    p[k]=v;build(f);renderChecks();renderSummary();draw();
+    if(el.tagName==='SELECT')renderParams();}));
+}
+function renderChecks(){
+  const f=selected;if(!f||!f.applied){$('checks').innerHTML='—';return;}
+  $('checks').innerHTML=check(f).map(([ok,t,d])=>`<div class="chk"><b class="${ok?'okc':'badc'}">${ok?'✓':'✗'}</b><div>${t}<div class="small" style="white-space:pre-line">${d}</div></div></div>`).join('');
+}
+function renderSummary(){
+  let rows='<tr><th>面</th><th>沿邊料</th><th>主支</th><th>副支</th><th>總長 m</th></tr>',tot=[0,0,0,0];
+  for(const f of FACES){if(!f.applied)continue;const c={wall:0,pri:0,sec:0};let L=0;for(const m of f.g.members){c[m.role]++;L+=m.len;}
+    rows+=`<tr><td>${f.name}</td><td>${c.wall}</td><td>${c.pri}</td><td>${c.sec}</td><td>${r1(L/1000)}</td></tr>`;tot[0]+=c.wall;tot[1]+=c.pri;tot[2]+=c.sec;tot[3]+=L;}
+  rows+=`<tr><th>合計</th><th>${tot[0]}</th><th>${tot[1]}</th><th>${tot[2]}</th><th>${r1(tot[3]/1000)}</th></tr>`;
+  $('summary').innerHTML=rows;
+}
+function showMember(){
+  if(!selMember){$('info').textContent='(尚未點選)';return;}
+  let m=null,f=null;for(const ff of FACES)if(ff.applied){const x=ff.g.members.find(q=>q.id===selMember);if(x){m=x;f=ff;}}
+  if(!m){$('info').textContent='(尚未點選)';return;}
+  $('info').textContent=`身分:${m.id}(${f.name} 的${m.label||NM[m.role]})\n由哪條規則產生:${m.src}\n長度:${r1(m.len)} mm\n兩端:${m.ends}`;
+}
+function applyTo(f,animate){
+  f.applied=true;build(f);
+  if(!animate){f.step=5;return;}
+  f.step=0;clearInterval(f.timer);
+  f.timer=setInterval(()=>{f.step++;refresh();if(f.step>=5)clearInterval(f.timer);},550);
+}
+$('apply').addEventListener('click',()=>{if(selected){applyTo(selected,true);refresh();}});
+$('clear').addEventListener('click',()=>{if(selected){selected.applied=false;selMember=null;refresh();}});
+$('applyAll').addEventListener('click',()=>{for(const f of FACES)applyTo(f,false);refresh();});
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT')return;
+  if((e.key==='r'||e.key==='R')&&selected&&selected.applied){selected.p.longY=!selected.p.longY;refresh();}
+  if(e.key==='Escape'){selected=null;selMember=null;refresh();}
+});
+
+// ===================== 自訂疊法(斷面拉伸)=====================
+// 每一層 = 一個斷面(profile)沿走向拉伸到整個完成面(D35–D37 的想法)。由下往上:第 1 層貼板。
+// dir:B = 順板長邊(放在長邊縫的方向上排),A = 順板短邊;sec:v = 27×33 立放,h = 33×27 平放;
+// place:seam 只在板縫下、seamcap 板縫下 + 依間距上限等分(模數從縫中心線起算)、fixed 固定間距 s;
+// cop:與下面那層同平面,在那層的料之間分段(平釘)。最上面一層不同平面的料 = 主支,用吊筋吊到樓板。
+const SEC={v:[27,33],h:[33,27]};
+const STACK_PRESETS={
+  flat:{edge:true,layers:[{dir:'B',sec:'v',place:'seam',s:600},{dir:'A',sec:'v',place:'seamcap',s:600,cop:true}]},
+  double:{edge:true,layers:[{dir:'A',sec:'v',place:'seamcap',s:600},{dir:'B',sec:'v',place:'seam',s:600}]},
+  nog:{edge:true,layers:[{dir:'A',sec:'v',place:'seamcap',s:600},{dir:'B',sec:'v',place:'seam',s:600,cop:true},{dir:'B',sec:'v',place:'seam',s:600}]}
+};
+function clonePreset(k){return JSON.parse(JSON.stringify(STACK_PRESETS[k]));}
+const DIRTXT={B:'順板長邊',A:'順板短邊'},SECTXT={v:'27×33 立放',h:'33×27 平放'},PLACETXT={seam:'只在板縫下',seamcap:'板縫下 + 上限等分',fixed:'固定間距'};
+function buildStack(f){
+  if(!f.stack)f.stack=clonePreset('flat');
+  const p=f.p,rings=f.rings,[minx,miny,maxx,maxy]=bbox(rings);
+  const A=p.longY?'x':'y',B=p.longY?'y':'x';
+  const sx=(p.corner==='tl'||p.corner==='bl')?1:-1,sy=(p.corner==='tl'||p.corner==='tr')?1:-1;
+  const W=(ax,t)=>ax==='x'?(sx>0?minx+t:maxx-t):(sy>0?miny+t:maxy-t);
+  const span=ax=>ax==='x'?maxx-minx:maxy-miny;
+  const LA=panelAxis(span(A),p.pw,p.gap,p.tw),LB=panelAxis(span(B),p.pl,p.gap,p.tw);
+  const pO=A==='x'?'v':'h',sO=A==='x'?'h':'v',layers=f.stack.layers,zb=p.ceil+ZD.bt;
+  // 各層高度:同平面的層與下面那層同底;其他層疊在目前最高的頂上
+  const zr=[];let top=zb;
+  layers.forEach((L,k)=>{const h=SEC[L.sec][1],z0=(L.cop&&k>0)?zr[k-1][0]:top;zr.push([z0,z0+h]);top=Math.max(top,z0+h);});
+  let hung=0;layers.forEach((L,k)=>{if(!(L.cop&&k>0))hung=k;});
+  const ew=SEC[layers[0].sec][0],eh=SEC[layers[0].sec][1],holes=rings.slice(1).map(h=>bbox([h]));
+  const atHole=(ori,pos,v)=>holes.some(([hx0,hy0,hx1,hy1])=>ori==='h'?((Math.abs(v-hx0)<1e-6||Math.abs(v-hx1)<1e-6)&&pos>=hy0-1e-6&&pos<=hy1+1e-6):((Math.abs(v-hy0)<1e-6||Math.abs(v-hy1)<1e-6)&&pos>=hx0-1e-6&&pos<=hx1+1e-6));
+  const members=[],layerMembers=[];let iw=0,im=0;
+  // 牆邊沿邊料(外牆;柱邊依「柱子四周放沿邊料」),用最下層斷面
+  for(const[ri,r]of rings.entries()){if(ri===0?!f.stack.edge:!p.colEdge)continue;
+    for(let i=0;i<r.length;i++){const a=r[i],b=r[(i+1)%r.length],len=Math.hypot(b[0]-a[0],b[1]-a[1]);
+      const mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2,nx=(b[1]-a[1])/len,ny=-(b[0]-a[0])/len,sg=inside(rings,mx+nx*ew,my+ny*ew)?1:-1;
+      members.push({id:f.id+'-E'+(++iw),role:'wall',ri,ei:i,eo:a[1]===b[1]?'h':'v',par:false,a,b,off:[nx*sg*ew/2,ny*sg*ew/2],len,w:ew,z0:zb,z1:zb+eh,
+        src:ri===0?'牆邊沿邊料:板靠牆的邊要有支撐,貼板那層的料端面也頂在它上面':'柱邊料:柱子四周的板邊要有支撐,料的端面頂在它上面',ends:'沿邊界'});}}
+  const pal=['--sec','--l2','--l3'];let pi=0;
+  layers.forEach((L,k)=>{
+    const[w,h]=SEC[L.sec],[z0,z1]=zr[k],across=L.dir==='B'?A:B,LX=L.dir==='B'?LA:LB,P=L.dir==='B'?p.pw:p.pl;
+    const ori=(L.dir==='B'?B:A)==='x'?'h':'v',bottom=Math.abs(z0-zb)<1e-6,role=k===hung?'pri':'sec',cv=k===hung?'--pri':pal[(pi++)%3];
+    // 線位置(距起鋪牆):先放板縫,再補等分或固定間距;相距不到一支寬的不重複;離對牆太近的往內挪
+    const g0=Math.floor(p.gap/2),ts=[],lim=Math.floor(LX.D-1.5*ew),add=v=>{v=Math.min(v,lim);if(v>0&&!ts.some(u=>Math.abs(u-v)<w))ts.push(v);};
+    if(L.place==='seam'||L.place==='seamcap')LX.seams.forEach(add);
+    if(L.place==='seamcap'){const n=Math.max(1,Math.ceil(LX.T/p.cap-1e-9)),mod=LX.T/n,base=P+g0-LX.T;
+      for(let m=1;base+m*mod<LX.D-1e-6;m++)add(Math.floor(base+m*mod+1e-6));}
+    if(L.place==='fixed'){const s=Math.max(50,+L.s||600);for(let v=s;v<LX.D-1e-6;v+=s)add(v);}
+    ts.sort((a,b)=>a-b);
+    const arr=[],trimEdge=(v,pos)=>bottom?((atHole(ori,pos,v)?p.colEdge:f.stack.edge)?ew:0):0;
+    const desc=`[疊法] 第 ${k+1} 層・${DIRTXT[L.dir]}・${SECTXT[L.sec]}・${PLACETXT[L.place]}${L.place==='fixed'?' '+L.s:''}`+(L.cop&&k>0?'・與下面那層同平面,在那層的料之間分段':'')+(k===hung?'・主支(用吊筋吊到樓板)':'');
+    for(const tt of ts){const pos=W(across,tt);
+      let clash=false;
+      if(k===hung)for(const[hx0,hy0,hx1,hy1]of holes){  // 只有主支(吊住、整支連續)不可斷開;下層料可在柱邊斷開、頂柱邊料
+       const e=(bottom&&p.colEdge)?ew:0,lo=(across==='x'?hx0:hy0)-e,hi=(across==='x'?hx1:hy1)+e;if(pos+w/2>lo+1e-6&&pos-w/2<hi-1e-6)clash=true;}
+      for(const[lo,hi]of interior(rings,ori,pos)){
+        if(L.cop&&k>0){
+          const prev=layerMembers[k-1].filter(q=>pos>q.s0+1e-6&&pos<q.s1-1e-6&&q.pos>lo+1e-6&&q.pos<hi-1e-6),hp=prev.length?prev[0].w/2:0;
+          const pts=[lo,...[...new Set(prev.map(q=>q.pos))].sort((a,b)=>a-b),hi];
+          for(let i=0;i+1<pts.length;i++){const s0=pts[i],s1=pts[i+1],e0=i===0,e1=i===pts.length-2;
+            arr.push({id:f.id+'-L'+(k+1)+'-'+(++im),role,cv,layer:k,pos,orient:ori,s0,s1,len:s1-s0,w,h,z0,z1,t0:e0?trimEdge(s0,pos):hp,t1:e1?trimEdge(s1,pos):hp,
+              e0:e0?'edge':'mem',e1:e1?'edge':'mem',bottom,src:desc,ends:(e0?'牆邊':'下面那層料的側面')+' → '+(e1?'牆邊':'下面那層料的側面')});}}
+        else arr.push({id:f.id+'-L'+(k+1)+'-'+(++im),role,cv,layer:k,pos,orient:ori,s0:lo,s1:hi,len:hi-lo,w,h,z0,z1,t0:trimEdge(lo,pos),t1:trimEdge(hi,pos),
+              e0:'edge',e1:'edge',bottom,clash,src:desc+(clash?'\n⚠ 這支會碰到獨立柱:整支連續的料不能斷開':''),ends:bottom?'兩端到牆邊(頂沿邊料)':'兩端到牆邊(吊住,不靠端面)'});}}
+    layerMembers.push(arr);members.push(...arr);});
+  f.g={bb:[minx,miny,maxx,maxy],A,B,W,LA,LB,pO,sO,members,lines:[],seamInfo:[],layers:layers.map((L,k)=>({...L,z0:zr[k][0],z1:zr[k][1]})),layerMembers,hung,top,zb,ew};
+}
+function stackSummary(f){const g=f.g;
+  return `疊法:${g.layers.length} 層(由下往上 ${g.layers.map((L,k)=>(k+1)+'.'+DIRTXT[L.dir]+(L.cop&&k>0?'(同平面)':'')).join('、')});完成面 ${f.p.ceil},骨架頂 ${g.top},總厚 ${g.top-f.p.ceil} mm。`;}
+function checkStack(f){
+  const g=f.g,p=f.p,out=[],LA=g.LA,LB=g.LB,X=p.bear,h0=p.gap/2;
+  const startFull=L=>L.full.slice(0,L.boards.length-1-(L.moved?1:0)).every(Boolean);
+  const rem=L=>{const b=L.boards[L.boards.length-1];return L.full[L.full.length-1]?'剛好整片':`對牆收邊 ${r1(b[1]-b[0])} mm`;};
+  out.push([startFull(LA)&&startFull(LB),'起鋪牆那側全是整片板,裁切只在對牆',`915 向:整片 ${LA.full.filter(Boolean).length} 排,${rem(LA)}\n1830 向:整片 ${LB.full.filter(Boolean).length} 片,${rem(LB)}`]);
+  // 貼板的料:最下層與跟它同平面的層
+  const contact=g.members.filter(m=>m.role!=='wall'&&m.bottom);
+  const sup=(seams,ax,ori)=>seams.map(s=>{const pos=g.W(ax,s);let best=-1e9;for(const m of contact)if(m.orient===ori)best=Math.max(best,Math.min((pos-h0)-(m.pos-m.w/2),(m.pos+m.w/2)-(pos+h0)));return best;});
+  const bl=sup(LA.seams,g.A,g.pO),bs=sup(LB.seams,g.B,g.sO),okN=a=>a.filter(b=>b>=X-1e-9).length;
+  const okAll=okN(bl)===bl.length&&okN(bs)===bs.length&&f.stack.edge;
+  out.push([okAll,`板的每條縫與牆邊下都有順著它的料托住(承接 ≥ ${X})`,
+    `長邊縫 ${okN(bl)}/${bl.length} 道、短邊縫 ${okN(bs)}/${bs.length} 道有順縫的料`+(okAll?'':'\n缺的縫下沒有順縫的料,最多只有跟它交叉的點狀支撐')+`\n牆邊:${f.stack.edge?'有沿邊料':'沒有沿邊料,板靠牆的邊懸空'}`]);
+  // 板下支撐格:貼板的料在兩個方向的最大間距
+  const spac=(ax,ori,D)=>{const base=g.W(ax,0),ts=[...new Set(contact.filter(m=>m.orient===ori).map(m=>Math.abs(m.pos-base)))];
+    if(f.stack.edge)ts.push(g.ew/2,D-g.ew/2);else ts.push(0,D);ts.sort((a,b)=>a-b);let mx=0;for(let i=0;i+1<ts.length;i++)mx=Math.max(mx,ts[i+1]-ts[i]);return mx;};
+  const sA=spac(g.A,g.pO,LA.D),sB=spac(g.B,g.sO,LB.D),sh=Math.min(sA,sB);
+  out.push([sh<=p.cap+1e-6,`板下支撐格的短邊 ≤ 間距上限 ${p.cap}`,`最大支撐格約 ${r1(sA)} × ${r1(sB)} mm,短邊 ${r1(sh)}`]);
+  // 層與層:下層每支料至少要有兩個支點(跨過上一層至少兩支料,釘在交叉點)
+  const nc=g.layers.map((L,k)=>({L,k})).filter(x=>!(x.L.cop&&x.k>0));
+  for(let i=0;i+1<nc.length;i++){const lo=g.layerMembers[nc[i].k],up=g.layerMembers[nc[i+1].k];let mn=Infinity;
+    for(const m of lo){let c=0;for(const q of up)if(q.orient!==m.orient&&q.pos>m.s0&&q.pos<m.s1&&m.pos>q.s0&&m.pos<q.s1)c++;mn=Math.min(mn,c);}
+    out.push([!lo.length||mn>=2,`第 ${nc[i].k+1} 層的每支料至少有兩個支點(跨過第 ${nc[i+1].k+1} 層至少兩支)`,lo.length?`最少只跨過 ${mn} 支`+(mn===0?'(兩層同方向,沒有交叉)':''):'(這層沒有料)']);}
+  out.push([true,`第 ${g.hung+1} 層是主支,用吊筋吊到樓板`,'吊筋未建模']);
+  // 端面:貼板那層的料端到牆邊,要有沿邊料可頂
+  let badEnd=0;for(const m of contact){if(m.e0==='edge'&&m.t0===0)badEnd++;if(m.e1==='edge'&&m.t1===0)badEnd++;}
+  out.push([badEnd===0,'貼板那層的端面都頂在角材上,不直接頂 RC',badEnd?`${badEnd} 個端面直接頂到牆或柱`:'端面頂在沿邊料或下面那層料的側面']);
+  // 連續料不碰獨立柱
+  const cl=g.members.filter(m=>m.clash);
+  out.push([cl.length===0,'主支不碰獨立柱(不可斷開)',cl.length?`${new Set(cl.map(m=>m.pos)).size} 條線會碰到柱子或柱邊料`:'沒有']);
+  // 樑
+  const bsm=beamsOn(f),hit=bsm.filter(b=>beamBottom(b)<g.top-1e-6);
+  out.push([hit.length===0,'骨架不碰 RC 樑',bsm.length===0?'這一面上方沒有樑':bsm.map(b=>`${b.id}:樑底 ${beamBottom(b)}、骨架頂 ${g.top} → `+(beamBottom(b)>=g.top-1e-6?'從樑下通過':`完成面要降到 ≤ ${p.ceil-(g.top-beamBottom(b))}`)).join('\n')]);
+  // 同層不重疊(D36)
+  const ov=g.layers.map((L,k)=>{const ps=[...new Set(g.layerMembers[k].map(m=>m.pos))].sort((a,b)=>a-b);let mn=Infinity;for(let i=0;i+1<ps.length;i++)mn=Math.min(mn,ps[i+1]-ps[i]);return mn<SEC[L.sec][0]-1e-6?k+1:0;}).filter(Boolean);
+  out.push([ov.length===0,'同一層的料不重疊(D36)',ov.length?`第 ${ov.join('、')} 層有料重疊`:'沒有']);
+  return out;
+}
+function renderStack(){
+  const f=selected,box=$('stackEd');
+  if(!f){box.innerHTML='先在平面圖上點選一個房間(完成面邊界)。';return;}
+  if(!f.stack)f.stack=clonePreset('flat');
+  if(f.mode!=='stack'){box.innerHTML='在上方「模式」選「自訂疊法(斷面拉伸)」,就能在這裡配置角材怎麼疊、即時看支撐夠不夠。';return;}
+  const L=f.stack.layers,hung=f.g?f.g.hung:-1,sel=(k,v,o)=>`<option value="${v}"${k===v?' selected':''}>${o}</option>`;
+  box.innerHTML=`<div class="toolbar"><span>預設疊法</span><button data-pre="flat">平釘(同平面)</button><button data-pre="double">雙層交叉</button><button data-pre="nog">雙層 + 縫下補料</button></div>
+  <div class="tblwrap"><table><tr><th>層</th><th>走向</th><th>斷面</th><th>位置</th><th>間距</th><th>與下面那層同平面</th><th></th></tr>
+  ${L.map((x,k)=>`<tr data-k="${k}"><td>${k+1}${k===0?' 貼板':''}${k===hung?' ・主支':''}</td>
+    <td><select data-f="dir">${sel(x.dir,'B','順板長邊')}${sel(x.dir,'A','順板短邊')}</select></td>
+    <td><select data-f="sec">${sel(x.sec,'v','27×33 立放')}${sel(x.sec,'h','33×27 平放')}</select></td>
+    <td><select data-f="place">${sel(x.place,'seam','只在板縫下')}${sel(x.place,'seamcap','板縫下 + 上限等分')}${sel(x.place,'fixed','固定間距')}</select></td>
+    <td><input type="number" data-f="s" value="${x.s||600}" style="width:64px"${x.place==='fixed'?'':' disabled'}></td>
+    <td>${k>0?`<input type="checkbox" data-f="cop"${x.cop?' checked':''}>`:'—'}</td>
+    <td><button data-del="${k}"${L.length<=1?' disabled':''}>刪除</button></td></tr>`).join('')}</table></div>
+  <div class="toolbar" style="margin-top:6px"><button id="addLayer">新增一層(疊在最上面)</button>
+    <label style="margin:0"><input type="checkbox" id="stEdge"${f.stack.edge?' checked':''}> 牆邊放沿邊料(用貼板那層的斷面)</label></div>
+  <div class="small">每一層 = 一個斷面沿走向拉伸到整個完成面。勾「同平面」的那層,會在下面那層的料之間分段,端面頂在料上(平釘就是第 2 層勾同平面)。最上面一層不同平面的料當主支,用吊筋吊到樓板。改了就即時重算,右邊「規則檢查」看支撐夠不夠。</div>`;
+  const upd=()=>{build(f);renderStack();renderParams();renderChecks();renderSummary();draw();showMember();renderSection();};
+  box.querySelectorAll('[data-pre]').forEach(b=>b.addEventListener('click',()=>{f.stack=clonePreset(b.dataset.pre);upd();}));
+  box.querySelectorAll('tr[data-k]').forEach(tr=>{const k=+tr.dataset.k;
+    tr.querySelectorAll('[data-f]').forEach(el=>el.addEventListener('change',()=>{const fl=el.dataset.f;L[k][fl]=fl==='cop'?el.checked:fl==='s'?Math.max(50,+el.value||600):el.value;upd();}));});
+  box.querySelectorAll('[data-del]').forEach(b=>b.addEventListener('click',()=>{L.splice(+b.dataset.del,1);if(L[0])L[0].cop=false;upd();}));
+  $('addLayer').addEventListener('click',()=>{const last=L[L.length-1];L.push({dir:last&&last.dir==='A'?'B':'A',sec:'v',place:'seam',s:600});upd();});
+  $('stEdge').addEventListener('change',e=>{f.stack.edge=e.target.checked;upd();});
+}
+function renderSection(){
+  const f=selected,el=$('sectionView');
+  if(!f||!f.applied){el.innerHTML='指定封閉面並按「下角材」後,這裡顯示兩個方向的剖面。';return;}
+  el.innerHTML=sectionSVG(f,'x')+sectionSVG(f,'y');
+}
+function sectionSVG(f,cutAx){
+  const g=f.g,p=f.p,hAx=cutAx==='x'?'y':'x',oriCut=cutAx==='x'?'h':'v',EX=3,WP=720;
+  const base=g.W(hAx,0),Dh=hAx==='x'?g.bb[2]-g.bb[0]:g.bb[3]-g.bb[1],win=Math.min(2400,Dh),c=g.W(cutAx,200),dc=Math.sign(g.W(cutAx,1)-g.W(cutAx,0));
+  const T=v=>Math.abs(v-base),zOf=m=>m.z0!==undefined?[m.z0,m.z1]:[p.ceil+ZD.bt,p.ceil+ZD.bt+ZD.md],wOf=m=>m.w||p.tw;
+  const zTop=Math.max(p.ceil+ZD.bt+ZD.md,...g.members.map(m=>zOf(m)[1])),zMin=p.ceil-10,zMax=zTop+12;
+  const kx=WP/(win+60),ky=kx*EX,X=t=>(t+40)*kx,Y=z=>(zMax-z)*ky+22,Hh=Y(zMin)+20;
+  const colOf=m=>m.cv?`var(${m.cv})`:m.role==='wall'?'var(--wall)':m.role==='pri'?'var(--pri)':'var(--sec)';
+  let back='',cutS='',brd='';const cuts=[];
+  for(const m of g.members){const w=wOf(m),[z0,z1]=zOf(m);
+    if(m.role==='wall'){const r=memRect(m,w),along=cutAx==='x'?[r[0],r[2]]:[r[1],r[3]],acr=cutAx==='x'?[r[1],r[3]]:[r[0],r[2]];
+      if(c>=along[0]-1e-6&&c<=along[1]+1e-6){const a0=Math.min(T(acr[0]),T(acr[1])),a1=Math.max(T(acr[0]),T(acr[1]));if(a1>0&&a0<win)cutS+=`<rect x="${X(a0)}" y="${Y(z1)}" width="${(a1-a0)*kx}" height="${(z1-z0)*ky}" fill="${colOf(m)}" stroke="var(--ink)" stroke-width=".6"><title>${m.id}</title></rect>`;}
+      continue;}
+    if(m.orient===oriCut){if(c>=m.s0-1e-6&&c<=m.s1+1e-6){const tc=T(m.pos);if(tc>-w&&tc<win+w){cutS+=`<rect x="${X(tc-w/2)}" y="${Y(z1)}" width="${w*kx}" height="${(z1-z0)*ky}" fill="${colOf(m)}" stroke="var(--ink)" stroke-width=".6"><title>${m.id}</title></rect>`;cuts.push({t:tc,z0,m});}}}
+    else{const d=(m.pos-c)*dc,on=Math.abs(m.pos-c)<=w/2;
+      if(on||(d>0&&d<1000)){const a0=Math.max(0,Math.min(T(m.s0),T(m.s1))),a1=Math.min(win,Math.max(T(m.s0),T(m.s1)));
+        if(a1>a0)back+=`<rect x="${X(a0)}" y="${Y(z1)}" width="${(a1-a0)*kx}" height="${(z1-z0)*ky}" fill="${colOf(m)}" opacity="${on?0.9:0.28}"/>`;}}}
+  const LX=hAx===g.A?g.LA:g.LB,iv=interior(f.rings,cutAx==='x'?'v':'h',c).map(([a,b])=>[Math.min(T(a),T(b)),Math.max(T(a),T(b))]);
+  for(const[b0,b1]of LX.boards)for(const[i0,i1]of iv){const a0=Math.max(b0,i0,0),a1=Math.min(b1,i1,win);if(a1>a0)brd+=`<rect x="${X(a0)}" y="${Y(p.ceil+ZD.bt)}" width="${(a1-a0)*kx}" height="${ZD.bt*ky}" fill="var(--board)" stroke="var(--seam)" stroke-width=".6"/>`;}
+  // 尺寸:最下面那層被切斷的料,相鄰中心距
+  let dims='';const zlow=Math.min(...cuts.map(q=>q.z0)),row=cuts.filter(q=>Math.abs(q.z0-zlow)<1e-6).map(q=>q.t).sort((a,b)=>a-b);
+  for(let i=0;i+1<row.length;i++){const a=row[i],b=row[i+1];if(b>win)break;dims+=`<line x1="${X(a)}" y1="12" x2="${X(b)}" y2="12" stroke="var(--muted)" stroke-width=".8"/><text x="${(X(a)+X(b))/2}" y="10" font-size="10" text-anchor="middle" fill="var(--muted)">${r1(b-a)}</text>`;}
+  const wall=`<rect x="0" y="${Y(zMax)}" width="${X(0)}" height="${Y(zMin)-Y(zMax)}" fill="var(--wallfill)"/><text x="${X(0)+4}" y="${Hh-4}" font-size="10" fill="var(--muted)">起鋪牆</text>`;
+  const zt=`<text x="${WP-4}" y="${Y(p.ceil)+12}" font-size="10" text-anchor="end" fill="var(--muted)">完成面 ${p.ceil}</text><text x="${WP-4}" y="${Y(zTop)-3}" font-size="10" text-anchor="end" fill="var(--muted)">骨架頂 ${zTop}</text>`;
+  return `<div style="margin:6px 0 2px"><b>剖面 ${cutAx==='x'?'1':'2'}</b>:垂直 ${cutAx.toUpperCase()} 方向切開(距起鋪牆 200),水平軸 = ${hAx.toUpperCase()}(距起鋪牆量,看前 ${win} mm);被切斷的料實色、切面後方的料淡色;垂直放大 ${EX} 倍</div>
+  <svg viewBox="0 0 ${WP} ${Hh}" style="width:100%;height:auto;background:var(--floor);border:1px solid var(--line);border-radius:8px">${wall}${back}${brd}${cutS}${dims}${zt}</svg>`;
+}
+$('mode').addEventListener('change',e=>{if(!selected){e.target.value='flat';return;}selected.mode=e.target.value;if(selected.applied)build(selected);refresh();});
+
+
+// ===================== 斷面設計:給定完成面 → 規劃結構 =====================
+// 斷面座標(D35):u 向右、v 向下,mm。v=0 是 RC 樓板底(上方是樓板),u=0 是 RC 牆面(左邊是牆)。
+// 完成面 = 一條水平/垂直的折線。結構長在折線的「內側」(折線沿樓板/牆封回起點所圍的區域 F)。
+// 依你的 SketchUp 範例長出結構:
+//   面材:每段完成面內側貼一塊,厚 t;凸角處前一塊做到角、後一塊讓一個板厚;凹角處前一塊多伸 t + 角材,後一塊頂在它面上。
+//   縱向料(被斷面切到、沿 L 連續):兩端各一支;凸角一支(同時托兩塊板);凹角兩支(各托一段)。
+//   橫撐(在斷面內):每段面材後方,接在該段兩端的縱向料之間;沿 L 每隔一段一支。
+const PF_PRESETS={cove:[[467,0],[467,148],[743,148],[743,351],[0,351]],drop:[[600,0],[600,300],[0,300]]};
+const PF={pts:PF_PRESETS.cove.map(q=>q.slice()),flip:false,t:6,a:27,b:33,L:2400,cap:450,draft:null,drag:-1,M:null};
+function pfRing(P){const a=P[0],z=P[P.length-1],ring=P.map(q=>q.slice()),onW=q=>Math.abs(q[0])<1e-6,onS=q=>Math.abs(q[1])<1e-6;
+  if((onW(z)&&onS(a))||(onS(z)&&onW(a)))ring.push([0,0]);return ring;}
+function pfModel(){
+  const P=PF.pts,t=PF.t,ring=pfRing(P),M={boards:[],longs:[],ribs:[],segs:[],ring,err:[]};
+  if(P.length<2)return M;
+  const sz=d=>d[0]?PF.a:PF.b; // 角材沿某軸的尺寸:u 向 a、v 向 b
+  for(let i=0;i+1<P.length;i++){const p=P[i],q=P[i+1],du=Math.sign(q[0]-p[0]),dv=Math.sign(q[1]-p[1]);
+    if(du&&dv){M.err.push(`第 ${i+1} 段不是水平或垂直`);continue;}if(!du&&!dv)continue;
+    const len=Math.abs(q[0]-p[0])+Math.abs(q[1]-p[1]),mid=[(p[0]+q[0])/2,(p[1]+q[1])/2];let n=[-dv,du];
+    if(!inside([ring],mid[0]+n[0]*2,mid[1]+n[1]*2))n=[dv,-du];if(PF.flip)n=[-n[0],-n[1]];
+    M.segs.push({p,q,d:[du,dv],n,len});}
+  const S=M.segs,N=S.length;if(!N)return M;
+  const R=(B,d,s0,s1,n,c0,c1)=>{const us=[],vs=[];for(const s of[s0,s1])for(const c of[c0,c1]){us.push(B[0]+d[0]*s+n[0]*c);vs.push(B[1]+d[1]*s+n[1]*c);}return[Math.min(...us),Math.min(...vs),Math.max(...us),Math.max(...vs)];};
+  const corner=k=>{const A=S[k-1],B=S[k];if(B.d[0]===A.n[0]&&B.d[1]===A.n[1])return'convex';if(B.d[0]===-A.n[0]&&B.d[1]===-A.n[1])return'reflex';return'straight';};
+  const mem=(X,s0,s1)=>R(X.p,X.d,s0,s1,X.n,t,t+sz(X.n));
+  // 面材
+  S.forEach((X,k)=>{let s0=0,s1=X.len;if(k>0&&corner(k)==='convex')s0=t;if(k<N-1&&corner(k+1)==='reflex')s1=X.len+t+sz(X.d);
+    M.boards.push({seg:k,r:R(X.p,X.d,s0,s1,X.n,0,t),src:`第 ${k+1} 段完成面的面材(厚 ${t})`});});
+  // 縱向料
+  M.longs.push({r:mem(S[0],0,sz(S[0].d)),src:'起點:完成面接到 RC 的那一端'});
+  for(let k=1;k<N;k++){const A=S[k-1],B=S[k],c=corner(k);
+    if(c==='convex'){const P0=B.p,cu=P0[0]+t*(A.n[0]+B.n[0]),cv=P0[1]+t*(A.n[1]+B.n[1]),nu=A.n[0]||B.n[0],nv=A.n[1]||B.n[1];
+      M.longs.push({r:[nu>0?cu:cu-PF.a,nv>0?cv:cv-PF.b,nu>0?cu+PF.a:cu,nv>0?cv+PF.b:cv],src:`第 ${k} 個轉角(凸角):一支同時托兩塊面材`});}
+    else if(c==='reflex'){M.longs.push({r:mem(A,A.len+t,A.len+t+sz(A.d)),src:`第 ${k} 個轉角(凹角):托前一段面材的端部`});
+      M.longs.push({r:mem(B,0,sz(B.d)),src:`第 ${k} 個轉角(凹角):托後一段面材的起點`});}}
+  M.longs.push({r:mem(S[N-1],S[N-1].len-sz(S[N-1].d),S[N-1].len),src:'終點:完成面接到 RC 的那一端'});
+  // 橫撐:每段兩端縱向料之間
+  S.forEach((X,k)=>{const s0=k===0?sz(X.d):(corner(k)==='convex'?t+sz(X.d):(corner(k)==='reflex'?sz(X.d):0));
+    const s1=k===N-1?X.len-sz(X.d):(corner(k+1)==='convex'?X.len-t-sz(X.d):(corner(k+1)==='reflex'?X.len+t:X.len));
+    if(s1-s0>0.5)M.ribs.push({seg:k,r:mem(X,s0,s1),src:`第 ${k+1} 段的橫撐:接在兩端縱向料之間,托面材`});});
+  return M;
+}
+function pfInside(r,ring){const e=0.5,pts=[[r[0]+e,r[1]+e],[r[2]-e,r[1]+e],[r[0]+e,r[3]-e],[r[2]-e,r[3]-e],[(r[0]+r[2])/2,(r[1]+r[3])/2]];return pts.every(q=>inside([ring],q[0],q[1]));}
+function pfChecks(M){
+  const out=[],P=PF.pts,onRC=q=>Math.abs(q[0])<1e-6||Math.abs(q[1])<1e-6,where=q=>Math.abs(q[1])<1e-6?'在樓板上':Math.abs(q[0])<1e-6?'在牆上':'懸空';
+  out.push([M.err.length===0&&M.segs.length>0,'完成面每段都是水平或垂直(D35 正交)',M.err.join('\n')||`${M.segs.length} 段`]);
+  out.push([onRC(P[0])&&onRC(P[P.length-1]),'完成面兩端接到 RC,骨架有東西可固定',`起點${where(P[0])}、終點${where(P[P.length-1])}`]);
+  out.push([true,'每段完成面內側都有面材',`${M.boards.length} 塊,厚 ${PF.t}`]);
+  out.push([true,'每個轉角與兩端都有縱向料托住板邊',`${M.longs.length} 支,沿 L 連續`]);
+  const n=Math.max(1,Math.ceil(PF.L/PF.cap-1e-9)),sp=PF.L/n;
+  out.push([sp<=PF.cap+1e-6,`橫撐沿 L 的間距 ≤ ${PF.cap}`,`L ${PF.L} 分 ${n} 段,間距 ${r1(sp)};每個位置 ${M.ribs.length} 支,共 ${M.ribs.length*(n+1)} 支`]);
+  const all=[...M.boards.map(x=>({...x,k:'面材'})),...M.longs.map(x=>({...x,k:'縱向料'})),...M.ribs.map(x=>({...x,k:'橫撐'}))];
+  const outside=all.filter(x=>!pfInside(x.r,M.ring));
+  out.push([outside.length===0,'構件都在斷面輪廓內(D35)',outside.length?`${outside.length} 件超出:`+[...new Set(outside.map(x=>x.k))].join('、')+'(某段太短或結構換錯邊)':'是']);
+  const ov=[];for(let i=0;i<all.length;i++)for(let j=i+1;j<all.length;j++){const a=all[i].r,b=all[j].r;
+    if(Math.min(a[2],b[2])-Math.max(a[0],b[0])>0.5&&Math.min(a[3],b[3])-Math.max(a[1],b[1])>0.5)ov.push(all[i].k+'/'+all[j].k);}
+  out.push([ov.length===0,'構件互不重疊(D36)',ov.length?`${ov.length} 處:`+ov.slice(0,3).join('、')+(ov.length>3?' …':'')+'(某段比兩端的料還短)':'是']);
+  const short=M.segs.map((X,k)=>({k,len:X.len})).filter(x=>x.len<2*Math.max(PF.a,PF.b)+2*PF.t);
+  if(short.length)out.push([true,'很短的段',short.map(x=>`第 ${x.k+1} 段只有 ${x.len} mm,兩端的料幾乎接在一起,不需要橫撐`).join('\n')]);
+  return out;
+}
+function pfSnap(v){return Math.round(v/10)*10;}
+function pfRender(){
+  const M=pfModel();PF.M=M;
+  const allP=[...PF.pts,...(PF.draft||[])],us=allP.map(q=>q[0]),vs=allP.map(q=>q[1]);
+  const U0=-220,V0=-200,U1=Math.max(600,...us)+260,V1=Math.max(400,...vs)+220;
+  const rc=(r,c,title)=>`<rect x="${r[0]}" y="${r[1]}" width="${r[2]-r[0]}" height="${r[3]-r[1]}" fill="${c}" stroke="var(--ink)" stroke-width=".8" vector-effect="non-scaling-stroke"><title>${title}</title></rect>`;
+  let s=`<svg id="pfsvg" viewBox="${U0} ${V0} ${U1-U0} ${V1-V0}" style="width:100%;height:auto;max-height:560px;background:var(--panel);border:1px solid var(--line);border-radius:8px;touch-action:none;cursor:${PF.draft?'crosshair':'default'}">`;
+  s+=`<rect x="${U0}" y="${V0}" width="${U1-U0}" height="${-V0}" fill="var(--wallfill)" opacity=".6"/><rect x="${U0}" y="0" width="${-U0}" height="${V1}" fill="var(--wallfill)" opacity=".6"/>`;
+  s+=`<text x="${U1-30}" y="-60" font-size="34" text-anchor="end" fill="var(--panel)">RC 樓板(v = 0)</text><text x="-110" y="${V1-60}" font-size="34" text-anchor="middle" fill="var(--panel)" transform="rotate(-90 -110 ${V1-60})">RC 牆(u = 0)</text>`;
+  if(!PF.draft&&M.segs.length)s+=`<path d="M${M.ring.map(q=>q.join(' ')).join(' L')} Z" fill="var(--floor)" stroke="none"/>`;
+  if(!PF.draft){for(const x of M.ribs)s+=rc(x.r,'var(--pfrib)',x.src);for(const x of M.boards)s+=rc(x.r,'var(--pfboard)',x.src);for(const x of M.longs)s+=rc(x.r,'var(--pflong)',x.src);}
+  const line=PF.draft||PF.pts;
+  if(line.length)s+=`<polyline points="${line.map(q=>q.join(',')).join(' ')}" fill="none" stroke="var(--ink)" stroke-width="2.5" vector-effect="non-scaling-stroke"/>`;
+  if(!PF.draft)for(const X of M.segs){const mx=(X.p[0]+X.q[0])/2-X.n[0]*45,my=(X.p[1]+X.q[1])/2-X.n[1]*45+12;s+=`<text x="${mx}" y="${my}" font-size="30" text-anchor="middle" fill="var(--muted)">${X.len}</text>`;}
+  if(PF.draft&&PF.hover&&PF.draft.length)s+=`<line x1="${PF.draft[PF.draft.length-1][0]}" y1="${PF.draft[PF.draft.length-1][1]}" x2="${PF.hover[0]}" y2="${PF.hover[1]}" stroke="var(--accent)" stroke-width="2" stroke-dasharray="6 4" vector-effect="non-scaling-stroke"/>`;
+  (PF.draft||PF.pts).forEach((q,i)=>s+=`<circle class="pfh" data-i="${i}" cx="${q[0]}" cy="${q[1]}" r="13" fill="var(--ink)" stroke="var(--panel)" stroke-width="2" vector-effect="non-scaling-stroke" style="cursor:${PF.draft?'crosshair':'move'}"/>`);
+  s+='</svg>';$('pfEditor').innerHTML=s;
+  $('pfChecks').innerHTML=PF.draft?'繪製中:在圖上依序點完成面的轉折點(每段自動取水平或垂直),雙擊或按「完成繪製」結束。':
+    pfChecks(M).map(([ok,tt,d])=>`<div class="chk"><b class="${ok?'okc':'badc'}">${ok?'✓':'✗'}</b><div>${tt}<div class="small" style="white-space:pre-line">${d}</div></div></div>`).join('');
+  $('pfDone').disabled=!PF.draft;$('pfDraw').disabled=!!PF.draft;
+  pfWire();if(v3.src==='profile')rebuild3D();
+}
+function pfPt(e){const svg=$('pfsvg'),pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;const q=pt.matrixTransform(svg.getScreenCTM().inverse());return[pfSnap(q.x),pfSnap(q.y)];}
+function pfOrtho(prev,q){return Math.abs(q[0]-prev[0])>=Math.abs(q[1]-prev[1])?[q[0],prev[1]]:[prev[0],q[1]];}
+function pfClean(P){const o=[];for(const q of P){if(o.length&&o[o.length-1][0]===q[0]&&o[o.length-1][1]===q[1])continue;o.push(q);}
+  for(let i=1;i+1<o.length;){const a=o[i-1],b=o[i],c=o[i+1];if((a[0]===b[0]&&b[0]===c[0])||(a[1]===b[1]&&b[1]===c[1]))o.splice(i,1);else i++;}return o;}
+function pfWire(){
+  const svg=$('pfsvg');
+  svg.addEventListener('pointerdown',e=>{
+    if(PF.draft){let q=pfPt(e);if(PF.draft.length)q=pfOrtho(PF.draft[PF.draft.length-1],q);else{if(Math.abs(q[0])<=40)q[0]=0;if(Math.abs(q[1])<=40)q[1]=0;}PF.draft.push(q);pfRender();return;}
+    const tg=e.target;if(tg.classList.contains('pfh')){const i=+tg.dataset.i,P=PF.pts;
+      PF.drag=i;PF.dragOri=[i>0?(P[i-1][0]===P[i][0]?'v':'h'):null,i+1<P.length?(P[i+1][0]===P[i][0]?'v':'h'):null];svg.setPointerCapture(e.pointerId);e.preventDefault();}
+  });
+  svg.addEventListener('pointermove',e=>{
+    if(PF.draft){if(!PF.draft.length)return;PF.hover=pfOrtho(PF.draft[PF.draft.length-1],pfPt(e));
+      const ln=svg.querySelector('line');const L=PF.draft[PF.draft.length-1];
+      if(ln){ln.setAttribute('x2',PF.hover[0]);ln.setAttribute('y2',PF.hover[1]);}else pfRender();return;}
+    if(PF.drag<0)return;const i=PF.drag,P=PF.pts;let q=pfPt(e);
+    if(i===0||i===P.length-1){if(Math.abs(q[0])<=30)q[0]=0;if(Math.abs(q[1])<=30)q[1]=0;}
+    P[i]=q;const[o0,o1]=PF.dragOri;
+    if(o0)(o0==='v'?P[i-1][0]=q[0]:P[i-1][1]=q[1]);if(o1)(o1==='v'?P[i+1][0]=q[0]:P[i+1][1]=q[1]);
+    pfRender();
+  });
+  const up=()=>{if(PF.drag>=0){PF.drag=-1;PF.pts=pfClean(PF.pts);pfRender();}};
+  svg.addEventListener('pointerup',up);svg.addEventListener('pointercancel',up);
+  svg.addEventListener('dblclick',()=>{if(PF.draft)pfFinish();});
+}
+function pfFinish(){const P=pfClean(PF.draft||[]);PF.draft=null;PF.hover=null;if(P.length>=2)PF.pts=P;pfRender();if(v3.src==='profile')focus3D();}
+function pfInit(){
+  document.querySelectorAll('[data-pfpre]').forEach(b=>b.addEventListener('click',()=>{PF.draft=null;PF.flip=false;PF.pts=PF_PRESETS[b.dataset.pfpre].map(q=>q.slice());pfRender();if(v3.src==='profile')focus3D();}));
+  $('pfDraw').addEventListener('click',()=>{PF.draft=[];PF.hover=null;pfRender();});
+  $('pfDone').addEventListener('click',pfFinish);
+  $('pfFlip').addEventListener('click',()=>{PF.flip=!PF.flip;pfRender();});
+  $('pfRot').addEventListener('click',()=>{[PF.a,PF.b]=[PF.b,PF.a];$('pf_a').value=PF.a;$('pf_b').value=PF.b;pfRender();});
+  for(const k of['t','a','b','L','cap'])$('pf_'+k).addEventListener('input',e=>{const v=parseFloat(e.target.value);if(v>0){PF[k]=v;pfRender();}});
+  $('pf3d').addEventListener('click',()=>{v3.src='profile';$('v3src').value='profile';focus3D();$('cv3').scrollIntoView({behavior:'smooth',block:'center'});});
+  document.addEventListener('keydown',e=>{if(!PF.draft)return;if(e.key==='Escape'){PF.draft=null;PF.hover=null;pfRender();}if(e.key==='Enter')pfFinish();});
+  pfRender();
+}
+function pf3D(a){
+  const M=PF.M||pfModel(),Z=ZD.slab,L=PF.L,put=(r,w0,w1,c)=>box3(a,r[0],-w1,r[2],-w0,Z-r[3],Z-r[1],c);
+  for(const x of M.boards)put(x.r,0,L,rgb('--pfboard'));
+  for(const x of M.longs)put(x.r,0,L,rgb('--pflong'));
+  const n=Math.max(1,Math.ceil(L/PF.cap-1e-9)),wa=Math.min(PF.a,PF.b),cr=rgb('--pfrib');
+  for(let j=0;j<=n;j++){const w0=Math.max(0,Math.min(L-wa,j*L/n-wa/2));for(const x of M.ribs)put(x.r,w0,w0+wa,cr);}
+  if(v3.show.wall){const us=PF.pts.map(q=>q[0]),vs=PF.pts.map(q=>q[1]),U1=Math.max(...us)+300,V1=Math.max(...vs)+300,cw=rgb('--wallfill');
+    box3(a,-150,-L,U1,0,Z,Z+150,cw);box3(a,-150,-L,0,0,Z-V1,Z,cw);}
+}
+
+// ===================== 3D(WebGL,零外部引用)=====================
+// 高度為平釘模板預設:樓板底 2800、天花完成面 2500、板厚 6、角材 27 × 33 立放(底面共平面,平釘)
+const H3={slab:ZD.slab,slabT:150,ceil:ZD.ceil,bt:ZD.bt,md:ZD.md,wallOut:120};
+const v3={src:'plan',yaw:-Math.PI/2+0.6,pitch:0.75,dist:15000,t:[4500,-3500,2200],show:{wall:true,slab:false,frame:true,board:true},drop:0,gl:null,prog:null,buf:null,n:0};
+const vsub=(a,b)=>[a[0]-b[0],a[1]-b[1],a[2]-b[2]],vcross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]],
+  vdot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2],vnorm=a=>{const l=Math.hypot(a[0],a[1],a[2])||1;return[a[0]/l,a[1]/l,a[2]/l];};
+function persp(fy,as,n,f){const t=1/Math.tan(fy/2);return[t/as,0,0,0, 0,t,0,0, 0,0,(f+n)/(n-f),-1, 0,0,2*f*n/(n-f),0];}
+function lookAt(e,c,up){const z=vnorm(vsub(e,c)),x=vnorm(vcross(up,z)),y=vcross(z,x);return[x[0],y[0],z[0],0, x[1],y[1],z[1],0, x[2],y[2],z[2],0, -vdot(x,e),-vdot(y,e),-vdot(z,e),1];}
+function mul4(a,b){const o=new Array(16).fill(0);for(let c=0;c<4;c++)for(let r=0;r<4;r++)for(let k=0;k<4;k++)o[c*4+r]+=a[k*4+r]*b[c*4+k];return o;}
+function rgb(name){const s=getComputedStyle(document.documentElement).getPropertyValue(name).trim(),m=/^#([0-9a-f]{6})$/i.exec(s);if(!m)return[.6,.6,.6];const v=parseInt(m[1],16);return[(v>>16&255)/255,(v>>8&255)/255,(v&255)/255];}
+const BOX6=[[[0,1,2,3],[0,0,-1]],[[4,5,6,7],[0,0,1]],[[0,1,5,4],[0,-1,0]],[[2,3,7,6],[0,1,0]],[[1,2,6,5],[1,0,0]],[[3,0,4,7],[-1,0,0]]];
+function box3(a,x0,y0,x1,y1,z0,z1,c){ // 平面座標(x 右、y 下)→ 世界座標(x, −y, z)
+  if(x1-x0<=0.01||y1-y0<=0.01||z1-z0<=0.01)return;
+  const X0=x0,X1=x1,Y0=-y1,Y1=-y0,P=[[X0,Y0,z0],[X1,Y0,z0],[X1,Y1,z0],[X0,Y1,z0],[X0,Y0,z1],[X1,Y0,z1],[X1,Y1,z1],[X0,Y1,z1]];
+  for(const[q,n]of BOX6)for(const i of[0,1,2,0,2,3])a.push(...P[q[i]],...n,...c);
+}
+function clipCells(rings,x0,y0,x1,y1,fn){ // 矩形 ∩ 正交多邊形,切成小矩形(逐列合併)
+  const xs=[x0,x1],ys=[y0,y1];for(const r of rings)for(const[x,y]of r){if(x>x0&&x<x1)xs.push(x);if(y>y0&&y<y1)ys.push(y);}
+  const X=[...new Set(xs)].sort((a,b)=>a-b),Y=[...new Set(ys)].sort((a,b)=>a-b);
+  for(let j=0;j+1<Y.length;j++){let run=null;
+    for(let i=0;i+1<X.length;i++){const inn=inside(rings,(X[i]+X[i+1])/2,(Y[j]+Y[j+1])/2);
+      if(inn){if(run===null)run=X[i];}else if(run!==null){fn(run,Y[j],X[i],Y[j+1]);run=null;}}
+    if(run!==null)fn(run,Y[j],X[X.length-1],Y[j+1]);}
+}
+function spaceBoxes(a){ // 牆 = 建物外框(含外牆厚)扣掉各房間;獨立柱 = 孔環。從下方看時只畫天花附近一圈,不擋視線
+  const zb=v3.pitch<0?Math.min(...FACES.map(f=>f.p.ceil))-300:0,[X0,Y0,X1,Y1]=BUILDING,o=H3.wallOut,outer=FACES.map(f=>[f.rings[0]]);
+  const xs=[X0-o,X1+o],ys=[Y0-o,Y1+o];for(const f of FACES)for(const[x,y]of f.rings[0]){xs.push(x);ys.push(y);}
+  const X=[...new Set(xs)].sort((a,b)=>a-b),Y=[...new Set(ys)].sort((a,b)=>a-b),cw=rgb('--wallfill'),cc=cw.map(v=>v*0.78);
+  for(let j=0;j+1<Y.length;j++)for(let i=0;i+1<X.length;i++){const cx=(X[i]+X[i+1])/2,cy=(Y[j]+Y[j+1])/2;
+    if(!outer.some(r=>inside(r,cx,cy)))box3(a,X[i],Y[j],X[i+1],Y[j+1],zb,H3.slab,cw);}
+  for(const f of FACES)for(const h of f.rings.slice(1)){const[a0,b0,a1,b1]=bbox([h]);box3(a,a0,b0,a1,b1,zb,H3.slab,cc);}
+  const cbm=cw.map(v=>Math.min(1,v*1.18));
+  for(const b of BEAMS){const r=beamRect(b),cuts=[];  // 樑在柱位讓開(柱頂與樑頂同高,避免重疊面)
+    for(const f of FACES)for(const h of f.rings.slice(1)){const[a0,b0,a1,b1]=bbox([h]);
+      if(b.axis==='x'&&b0<r[3]&&b1>r[1])cuts.push([a0,a1]);if(b.axis==='y'&&a0<r[2]&&a1>r[0])cuts.push([b0,b1]);}
+    let s0=b.from;for(const[c0,c1]of cuts.sort((p,q)=>p[0]-q[0])){if(c1<=s0||c0>=b.to)continue;
+      if(c0>s0)(b.axis==='x'?box3(a,s0,r[1],c0,r[3],beamBottom(b),H3.slab,cbm):box3(a,r[0],s0,r[2],c0,beamBottom(b),H3.slab,cbm));s0=Math.max(s0,c1);}
+    if(b.to>s0)(b.axis==='x'?box3(a,s0,r[1],b.to,r[3],beamBottom(b),H3.slab,cbm):box3(a,r[0],s0,r[2],b.to,beamBottom(b),H3.slab,cbm));}
+}
+function memRect(m,w){ // 與 2D 相同的平面矩形 [x0,y0,x1,y1]
+  if(m.role==='wall'){const[a,b]=[m.a,m.b],o=m.off,x0=Math.min(a[0],b[0])+o[0],x1=Math.max(a[0],b[0])+o[0],y0=Math.min(a[1],b[1])+o[1],y1=Math.max(a[1],b[1])+o[1];
+    return a[1]===b[1]?[x0,y0-w/2,x1,y0+w/2]:[x0-w/2,y0,x0+w/2,y1];}
+  return m.orient==='h'?[m.s0,m.pos-w/2,m.s1,m.pos+w/2]:[m.pos-w/2,m.s0,m.pos+w/2,m.s1];
+}
+function wallRect3D(m,tw){ // 外牆:與主支平行的邊界主支被兩端邊界材讓一個寬(R19(c));柱邊:平行那兩支伸出蓋住轉角
+  const r=memRect(m,tw),d=m.ri===0?(m.par?-tw:0):(m.par?tw:0);
+  if(m.eo==='h'){r[0]-=d;r[2]+=d;}else{r[1]-=d;r[3]+=d;}return r;
+}
+function endTrim(f,m,v,tw){ // 端部讓位:頂主支側面讓半寬;頂沿邊料讓一個寬;柱邊料關掉時直接頂柱面不讓
+  if(m.role==='sec'&&f.g.members.some(q=>q.role==='pri'&&Math.abs(q.pos-v)<1e-6&&m.pos>q.s0-1e-6&&m.pos<q.s1+1e-6))return tw/2;
+  for(const h of f.rings.slice(1)){const[hx0,hy0,hx1,hy1]=bbox([h]);
+    const on=m.orient==='h'?((Math.abs(v-hx0)<1e-6||Math.abs(v-hx1)<1e-6)&&m.pos>=hy0-1e-6&&m.pos<=hy1+1e-6)
+                           :((Math.abs(v-hy0)<1e-6||Math.abs(v-hy1)<1e-6)&&m.pos>=hx0-1e-6&&m.pos<=hx1+1e-6);
+    if(on)return f.p.colEdge?tw:0;}
+  return tw;
+}
+function rebuild3D(){const gl=v3.gl;if(!gl)return;const a=[];
+  if(v3.src==='profile'){pf3D(a);gl.bindBuffer(gl.ARRAY_BUFFER,v3.buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(a),gl.DYNAMIC_DRAW);v3.n=a.length/9;draw3D();return;}
+  if(v3.show.wall)spaceBoxes(a);
+  if(v3.show.slab){const[X0,Y0,X1,Y1]=BUILDING,o=H3.wallOut;box3(a,X0-o,Y0-o,X1+o,Y1+o,H3.slab,H3.slab+H3.slabT,rgb('--line'));}
+  const only=$('v3only').checked&&selected;
+  for(const f of FACES){if(!f.applied||(only&&f!==selected))continue;
+    const g=f.g,st=f.step,tw=f.p.tw,z0=f.p.ceil+H3.bt,z1=z0+H3.md;
+    if(v3.show.board&&st>=1){const cb=rgb('--board'),cc=rgb('--cut'),zb0=f.p.ceil-v3.drop,zb1=zb0+H3.bt;
+      g.LA.boards.forEach((ta,i)=>g.LB.boards.forEach((tb,j)=>{const r=rectAB(g,ta,tb),full=g.LA.full[i]&&g.LB.full[j];
+        clipCells(f.rings,r[0],r[1],r[0]+r[2],r[1]+r[3],(x0,y0,x1,y1)=>box3(a,x0,y0,x1,y1,zb0,zb1,full?cb:cc));}));}
+    if(v3.show.frame){const col={wall:rgb('--wall'),pri:rgb('--pri'),sec:rgb('--sec')},hl=rgb('--sel'),bad=rgb('--bad');
+      for(const m of g.members){
+        if((m.role==='wall'&&st<2)||(m.role==='pri'&&st<3)||(m.role==='sec'&&st<5))continue;
+        let r,zz0=z0,zz1=z1;
+        if(m.z0!==undefined){r=memRect(m,m.w||tw);if(m.role!=='wall'){if(m.orient==='h'){r[0]+=m.t0;r[2]-=m.t1;}else{r[1]+=m.t0;r[3]-=m.t1;}}zz0=m.z0;zz1=m.z1;}
+        else if(m.role==='wall')r=wallRect3D(m,tw);
+        else{r=memRect(m,tw);const t0=endTrim(f,m,m.s0,tw),t1=endTrim(f,m,m.s1,tw);if(m.orient==='h'){r[0]+=t0;r[2]-=t1;}else{r[1]+=t0;r[3]-=t1;}}
+        box3(a,r[0],r[1],r[2],r[3],zz0,zz1,m.id===selMember?hl:m.clash?bad:(m.cv?rgb(m.cv):col[m.role]));}}}
+  gl.bindBuffer(gl.ARRAY_BUFFER,v3.buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(a),gl.DYNAMIC_DRAW);v3.n=a.length/9;draw3D();
+}
+function camEye(){const cp=Math.cos(v3.pitch);return[v3.t[0]+v3.dist*cp*Math.cos(v3.yaw),v3.t[1]+v3.dist*cp*Math.sin(v3.yaw),v3.t[2]+v3.dist*Math.sin(v3.pitch)];}
+function draw3D(){const gl=v3.gl;if(!gl)return;const cv=gl.canvas,dpr=window.devicePixelRatio||1,w=Math.max(1,Math.round(cv.clientWidth*dpr)),h=Math.max(1,Math.round(cv.clientHeight*dpr));
+  if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h;}
+  gl.viewport(0,0,w,h);const bg=rgb('--floor');gl.clearColor(bg[0],bg[1],bg[2],1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+  if(!v3.n)return;
+  gl.uniformMatrix4fv(gl.getUniformLocation(v3.prog,'M'),false,new Float32Array(mul4(persp(0.8,w/h,20,200000),lookAt(camEye(),v3.t,[0,0,1]))));
+  gl.uniform3fv(gl.getUniformLocation(v3.prog,'L'),vnorm([0.35,0.5,0.8]));
+  gl.drawArrays(gl.TRIANGLES,0,v3.n);
+}
+function focus3D(){
+  if(v3.src==='profile'){const us=PF.pts.map(p=>p[0]),vs=PF.pts.map(p=>p[1]),W=Math.max(...us),H=Math.max(...vs);
+    v3.t=[W/2,PF.L/2,ZD.slab-H/2];v3.dist=Math.max(W,H,PF.L)*1.9+600;rebuild3D();return;}
+  if($('v3only').checked&&selected){const[x0,y0,x1,y1]=bbox(selected.rings);v3.t=[(x0+x1)/2,-(y0+y1)/2,2200];v3.dist=Math.max(x1-x0,y1-y0)*1.8+2000;}
+  else{v3.t=[4500,-3500,2200];v3.dist=15000;}
+  rebuild3D();
+}
+function init3D(){
+  const cv=$('cv3'),gl=cv.getContext('webgl',{antialias:true});
+  if(!gl){$('v3msg').textContent='這個瀏覽器無法使用 WebGL,3D 檢視停用。';return;}
+  const sh=(t,src)=>{const s=gl.createShader(t);gl.shaderSource(s,src);gl.compileShader(s);return s;},pr=gl.createProgram();
+  gl.attachShader(pr,sh(gl.VERTEX_SHADER,'attribute vec3 p;attribute vec3 n;attribute vec3 c;uniform mat4 M;varying vec3 vc;varying vec3 vn;void main(){gl_Position=M*vec4(p,1.0);vc=c;vn=n;}'));
+  gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,'precision mediump float;varying vec3 vc;varying vec3 vn;uniform vec3 L;void main(){float d=abs(dot(normalize(vn),L));gl_FragColor=vec4(vc*(0.5+0.5*d),1.0);}'));
+  gl.linkProgram(pr);gl.useProgram(pr);
+  v3.gl=gl;v3.prog=pr;v3.buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,v3.buf);
+  for(const[nm,off]of[['p',0],['n',12],['c',24]]){const l=gl.getAttribLocation(pr,nm);gl.enableVertexAttribArray(l);gl.vertexAttribPointer(l,3,gl.FLOAT,false,36,off);}
+  gl.enable(gl.DEPTH_TEST);
+  let drag=null;
+  cv.addEventListener('contextmenu',e=>e.preventDefault());
+  cv.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY,pan:e.shiftKey||e.button===2};cv.setPointerCapture(e.pointerId);cv.style.cursor='grabbing';});
+  cv.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;drag.x=e.clientX;drag.y=e.clientY;
+    if(drag.pan){const z=vnorm(vsub(camEye(),v3.t)),r=vnorm(vcross([0,0,1],z)),u=vcross(z,r),k=v3.dist*0.0015;for(let i=0;i<3;i++)v3.t[i]+=-dx*k*r[i]+dy*k*u[i];}
+    else{const was=v3.pitch<0;v3.yaw-=dx*0.008;v3.pitch=Math.max(-1.55,Math.min(1.55,v3.pitch+dy*0.008));if(was!==(v3.pitch<0)){rebuild3D();return;}}
+    draw3D();});
+  const up=()=>{drag=null;cv.style.cursor='grab';};cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
+  cv.addEventListener('wheel',e=>{e.preventDefault();v3.dist=Math.max(1500,Math.min(60000,v3.dist*Math.exp(e.deltaY*0.001)));draw3D();},{passive:false});
+  document.querySelectorAll('#v3bar [data-s]').forEach(el=>el.addEventListener('change',()=>{v3.show[el.dataset.s]=el.checked;rebuild3D();}));
+  $('v3only').addEventListener('change',focus3D);
+  $('v3src').addEventListener('change',e=>{v3.src=e.target.value;focus3D();});
+  $('v3drop').addEventListener('input',e=>{v3.drop=+e.target.value;$('v3dropv').textContent=v3.drop+' mm';rebuild3D();});
+  document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{const k=b.dataset.view;
+    v3.yaw=-Math.PI/2+(k==='iso'?0.6:0);v3.pitch=k==='top'?1.52:k==='bottom'?-0.9:0.75;rebuild3D();}));
+  window.addEventListener('resize',draw3D);
+  try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',rebuild3D);}catch(e){}
+}
+init3D();
+refresh();
+pfInit();
+</script>
+</body>
+</html>
