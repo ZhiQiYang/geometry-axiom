@@ -1,12 +1,11 @@
-# PF-2 progress, cloud native only
+# PF-2 雲端原生驗收
 
-Base `2004c6c8bebe1bbff2df142630b630e1ee5115b8`, claim `bea36ea4`.
-No UI, SSOT, whitepaper, canonical reader or timber definitions are changed.
+base `2004c6c8bebe1bbff2df142630b630e1ee5115b8`，領取提交 `bea36ea4`。
+未改 UI、SSOT、白話、正典或角材定義。
 
-All commands: `ulimit -s 16384; python3 -m unittest ...`, actual exits below.
-The first baseline imported the PF-1 test class directly, so unittest also discovered
-its original 22 tests. Later the harness is imported as a module, avoiding accidental
-duplicate registration in the standalone PF-2 suite. The baseline raw is retained.
+命令皆為 `ulimit -s 16384; python3 -m unittest ...`，下表保留實際 exit。
+首次 baseline 直接匯入 PF-1 test class，因此額外發現原 22 題；後改為匯入 harness module，
+避免 standalone PF-2 重複登錄。首次原文仍保留。
 
 | Run | Suites | Actual exit | Result |
 |---|---|---:|---|
@@ -16,9 +15,8 @@ duplicate registration in the standalone PF-2 suite. The baseline raw is retaine
 | fixed-3 | layout + PF-1 | 1 | 36 tests; touching holes emitted a figure-eight |
 | fixed-4 | layout + PF-1 | 0 | 36/36; right-branch traversal splits touching holes into simple rings |
 
-The undo test was corrected to use the documented `line undo`/`line redo` bridge protocol;
-the old invalid-record assertion now expects the registered command's arity error.
-No original assertion or fixture was removed. Full native and mutation receipts follow.
+Undo 測試改用既有 `line undo`／`line redo` 協定；原非法 record 斷言改驗新增指令的 arity error。
+原斷言或夾具未刪除。以下另列完整 native 與突變收據。
 
 第二份產品提交 `026a58a5`：縫 band 完整求值與 D1／容量檢查移入核心，
 工程參數預覽包含新舊試排；新增參數下游重算驗收，layout suite 為 15 項。
@@ -60,5 +58,20 @@ M53 只把同一語意的變異靶點移到共用公式；由原 `_test_grid_pan
 本輪每支 binary 都在獨立 cache 實際重編並執行，沒有借用舊閉包的 killed。
 極值空板列兩個診斷也都完整以 CAPACITY 拒絕，沒有先輸出截短列表；stdout 原文保留。
 
-This is not a WSL or browser receipt. PF-3 effective seams/support, PF-5 derived placement
-and timber layer, PF-4 grids, PF-6 timber suggestions and browser project reopening remain pending.
+完整 native 受測 head `4ab052dbda9ab1f814954bb2124bfab0eb541c1e`：
+`ulimit -s 16384; python3 -u tests/run_all.py --build`，88 suites，
+**2719 pass／0 fail／1 allowed GDI skip，實際 exit 0**，897.933 秒。
+台北時間 2026-10-13 21:55:04.994175～22:10:08.763643。
+PF-2 15/15、PF-1 22/22、Node 659/659、reader 41/41、test_binaries 32/32。
+before/after 全部 tracked bytes 相同；受測工作樹 clean。
+原完整 stdout/stderr、各指定 suite JSON、source manifest SHA、實際 binary/sidecar SHA
+见 `native-summary.json` 及 `native-binary-identities.json`。
+完整逐檔 source manifests、全部 suite logs 與 binary 原件仍在
+`/tmp/geometry-wake20/native/`；未將大型可執行檔貼成 base64。
+
+PF13 補充原生命令驗收（不併入 runner 計數）：1024 片完整成功、1025 片 CAPACITY 拒絕且 World 不變；
+t=0 在 D26 發布前被拒。`supplementary_acceptance.py.txt` 為原腳本，stdout／exit 原件保留。
+
+這不是 WSL 或瀏覽器收據。PF-3 effective seams/support、PF-5 衍生宿主與角材層、
+PF-4 網格、PF-6 建議及真瀏覽器完整專案重開仍 pending；正式產品七項由合併列車驗證。
+最後只補證據的提交不改受測產品、測試、runner、expected 或核心帳本；不把新 delivery head 冒稱受測 head。
