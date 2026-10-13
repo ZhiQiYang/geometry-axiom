@@ -11,6 +11,8 @@
  *   pick <view> <x> <y> <r>      → 命中描述 + hover 高亮 ops（r = 拾取半徑，視圖內 mm）
  *   drag <guide_idx> <view> <x> <y> → 拖曳參考線：反解 uv、reference_snap、組 move 走 feed_line
  *   grid-preview grid|subgrid ... → 在 World 副本上驗證並推導格線，不寫入場景或 undo
+ *   panel-fill-read              → D41 完成面定義＋每次重算的 R_k／q／平面關係（推導值不存檔）
+ *   panel-fill-preview <json檔>  → panel-fill-transaction/1 候選預覽；panel-fill-confirm|cancel <token>
  *
  * ops 串流就是 DrawTarget 回呼的逐字序列化：begin/rect/poly/line/text/end。
  * 幾何本體在 current_geometry.c；本檔只做 stdin/JSON 橋。
@@ -319,6 +321,7 @@ static void cmd_loadfile(const char *path)
     if(!draft || !saved){free(draft);free(saved);fputs("{\"ok\":false,\"error\":\"Candidate memory unavailable\"}\n",stdout);return;}
     *saved=g_preview;uint32_t serial=g_preview_serial;uint64_t revision=g_definition_revision;
     const World *previous=g_subgrid_before;g_subgrid_before=NULL;
+    g_fs_diagnostic=FS_DIAGNOSTIC_INVALID;
     bool loaded=parse_scene_file(path,draft);
     g_preview=*saved;g_preview_serial=serial;g_definition_revision=revision;g_subgrid_before=previous;free(saved);
     if (loaded) {
@@ -332,6 +335,8 @@ static void cmd_loadfile(const char *path)
     } else {
         fputs("{\"ok\":false,\"error\":", stdout);
         js_string(scene_last_error());
+        fputs(",\"status\":",stdout);js_string(g_fs_diagnostic==FS_DIAGNOSTIC_CAPACITY?"UNSUPPORTED":"INVALID");
+        fputs(",\"code\":",stdout);js_string(g_fs_diagnostic==FS_DIAGNOSTIC_CAPACITY?"CAPACITY":"SCENE_INVALID");
         fputs("}\n", stdout);
     }
     free(draft);
@@ -860,6 +865,7 @@ static void cmd_dump(void)
 
 #include "engineering_bridge.inc"
 #include "section_profile_bridge.inc"
+#include "panel_fill_bridge.inc"
 #include "scene-import-bridge.inc"
 #include "assembly_bridge.inc"
 #include "source-inspector-bridge.inc"
@@ -916,6 +922,14 @@ int main(void)
             fputs("{\"ok\":true}\n", stdout);
         } else if (strcmp(line, "line") == 0 && arg != NULL) {
             cmd_line(arg);
+        } else if (strcmp(line,"panel-fill-read")==0 && !arg) {
+            cmd_panel_fill_read();
+        } else if (strcmp(line,"panel-fill-preview")==0 && arg) {
+            cmd_panel_fill_preview(arg);
+        } else if (strcmp(line,"panel-fill-confirm")==0) {
+            cmd_panel_fill_confirm(arg);
+        } else if (strcmp(line,"panel-fill-cancel")==0) {
+            cmd_panel_fill_cancel(arg);
         } else if (strcmp(line,"section-profile-read")==0) {
             cmd_section_profile_read();
         } else if (strcmp(line,"section-profile-preview")==0 && arg) {

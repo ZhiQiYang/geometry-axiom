@@ -1,0 +1,1755 @@
+{
+ "M01": {
+  "desc": "I5：邊上判定:含端點改嚴格(端點不在邊上)",
+  "verdict": "killed",
+  "why": "_ax_i5_collinear_vertex_rect_corner.scene: FAIL 應接受但拒絕: <repo>/_ax_i5_collinear_vertex_rect_corner.scene:7: R6/I5/I6 timber 1: 有合法跨距但都不接觸引用的邊",
+  "killed_by": [
+   "_ax_i5_collinear_vertex_rect_corner.scene"
+  ],
+  "date": "2026-10-11",
+  "source_file": "current_geometry.c",
+  "source_sha256": "800760335b4d31969f3e992a3239e807632eb8bde77631e8f54734836ba4d8c5",
+  "closure_sha256": "44cc38b6b377d8b1672713fd7ce4c1257286e18e230908fdcdee015a861cfc3d",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
+  "mutant_sha256": "ae55a07300ae815dcdc0ec9a43b1c21fb548027626f3215662975b04ccea9186",
+  "execution": {
+   "schema": "geometry-mutation-execution/1",
+   "head": "26a7c443b9bd10ae036b0956bd99233f594b5395",
+   "platform": "posix",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
+   "compile_exit_code": 0,
+   "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
+   "compile_command": [
+    "cc",
+    "-std=c11",
+    "-O2",
+    "<source>",
+    "-o",
+    "<output>",
+    "-lm"
+   ],
+   "test_command": [
+    "<python>",
+    "tests/run_tests.py",
+    "<binary>"
+   ],
+   "exe_sha256": "ed214e6399eb4d11c161ff3aecdae4fd27f38533eba5d48ece9657c96f306aac",
+   "baseline_exe_sha256": "dc26ea09512fd0a6eabfaef1ba25c7f5aa2181c306b9466923596e4d3c3998cb",
+   "baseline": {
+    "exit_code": 0,
+    "result": {
+     "schema": "geometry-native-tests/1",
+     "total": 139,
+     "counts": {
+      "pass": 139,
+      "fail": 0,
+      "infrastructure": 0
+     },
+     "oracle_counts": {
+      "acceptance-and-absence": 1,
+      "acceptance-only": 8,
+      "geometry-output": 50,
+      "rejection-diagnostic": 80
+     },
+     "cases": [
+      {
+       "scene": "_wit_d30_infinite_grid_binding.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "acceptance-only"
+      },
+      {
+       "scene": "_wit_d29_grid_system.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "acceptance-only"
+      },
+      {
+       "scene": "_wit_i37_grid_system_missing.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "subgrid-local.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "ceiling-a.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "demo-two-timbers.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "room_a.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "room_box.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "room_full.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_test_fixed.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_test_free.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_test_hole.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_test_tx.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_test_tx2.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_test_grid.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_test_lshape.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_test_hole_auto.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_test_ambiguous.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_test_collide.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_demo_ceiling.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_edge_axis_violation.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_edge_dir_violation.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_edge_free.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_edge_freeze.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_edge_i8a_confirm.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_edge_grid_at_border.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_edge_grid_overflow.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_edge_grid_twoline.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_test_grid_series.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_edge_grid_series_step0.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_edge_grid_series_count0.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_edge_grid_series_out.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_test_grid_redeclare.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_test_grid_redeclare_series.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_edge_grid_locked_other_axis.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_edge_grid_locked.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_edge_grid_locked_shrink.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_test_grid_panel.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_edge_grid_panel_from.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_edge_grid_panel_empty.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_edge_grid_panel_index8.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_edge_grid_panel_empty_place.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_edge_grid_panel_odd_gap.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_edge_grid_panel_overflow.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_mut_grid_panel_edge.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_edge_grid_panel_shrink.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_edge_hole_anchor.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_edge_hole_bottom.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_edge_rect_only.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_edge_rect_stops.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_edge_stop_ambiguous.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_test_between.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_edge_between_free.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_edge_between_blocked.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_edge_between_conflict.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_edge_between_badref.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_role_between_priority.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_edge_straddle.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_edge_two_holes.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_edge_upper_seg.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_mut_notch_straddle.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_mut_reval_free_hole.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_mut_through_boundary.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_mut_free_hole_end.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_mut_edge_touch_only.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_mut_grid_dup.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_mut_zero_len.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_mut_neg_hole_ref.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_role_axis_second_primary.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_role_axis_boundary_first.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_role_axis_fallback.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_role_priority_convex.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_role_priority_ext_primary.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_role_priority_mutant.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_role_rc_boundary_ok.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_role_rc_custom_reject.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_role_priority_primary_rc.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_role_priority_secondary_rc.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_role_priority_primary_secondary.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_role_priority_ext_custom.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_role_cover_short.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_role_ext_stop_primary.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_mut_col_overlap.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_mut_col_outside.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_mut_beam_diag.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_mut_col_noz.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_rc_col_free.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "acceptance-only"
+      },
+      {
+       "scene": "_rc_col_wall.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "acceptance-only"
+      },
+      {
+       "scene": "_rc_col_corner.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_rc_beam_cross.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "acceptance-only"
+      },
+      {
+       "scene": "_rc_beam_edge.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "acceptance-only"
+      },
+      {
+       "scene": "_ax_i18_norole.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_ax_i18_nopriority.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_ax_i18_priority_misuse.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_ax_i12_auto_with_at.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_ax_i12_explicit_with_atgrid.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_ax_i9_orphan_timber.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_ax_i9_forward_ref.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_ax_i1_frame_degenerate.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_ax_i4_empty_space.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i7_guide_out_of_range.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "acceptance-only"
+      },
+      {
+       "scene": "_ax_i16_beam_outside.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_ax_i17_delete_space.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "acceptance-only"
+      },
+      {
+       "scene": "_ax_r20_delete_cascade.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_ax_d12_i14_canvas.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i14_canvas_missing.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_ax_r08_snapshot.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_r09_unplaced.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_ax_r10_hole_straddles_cut.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_ax_r10_hole_follows_piece.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_r12_prefix_col.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_r12_prefix_beam.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "acceptance-and-absence"
+      },
+      {
+       "scene": "_ax_r13_anchor_lost.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_ax_r13_anchor_follows.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_r14_straddles_cut.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_ax_r15_missing_item.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_ax_r16_top_drop.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_r16_not_full_span.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_ax_r17_wall_column_face.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_edge_gridref_wrong_face.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_edge_gridref_wrong_axis.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_edge_gridref_midline.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_edge_gridref_no_support.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_edge_place_through_short.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_edge_i19_place_order.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_wit_d2_wall_frame.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_wit_d6_guide_segments.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_wit_d6c_datum_shared.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_wit_i13_odd_width.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_wit_r6_span_cells.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_wit_r19_edge_primary_2560.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i4_missing_boundary.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_ax_i4_duplicate_boundary.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_ax_i4_no_carrier.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_ax_i5_hole_vertex_touches_rect_edge.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_edge_straddle_hi.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      },
+      {
+       "scene": "_edge_face_touch_only.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "rejection-diagnostic"
+      }
+     ]
+    },
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "attempts": [
+    {
+     "exit_code": 1,
+     "result": {
+      "schema": "geometry-native-tests/1",
+      "total": 139,
+      "counts": {
+       "pass": 138,
+       "fail": 1,
+       "infrastructure": 0
+      },
+      "oracle_counts": {
+       "acceptance-and-absence": 1,
+       "acceptance-only": 8,
+       "geometry-output": 50,
+       "rejection-diagnostic": 80
+      },
+      "cases": [
+       {
+        "scene": "_wit_d30_infinite_grid_binding.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "acceptance-only"
+       },
+       {
+        "scene": "_wit_d29_grid_system.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "acceptance-only"
+       },
+       {
+        "scene": "_wit_i37_grid_system_missing.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "subgrid-local.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "ceiling-a.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "demo-two-timbers.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "room_a.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "room_box.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "room_full.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_test_fixed.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_test_free.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_test_hole.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_test_tx.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_test_tx2.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_test_grid.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_test_lshape.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_test_hole_auto.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_test_ambiguous.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_test_collide.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_demo_ceiling.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_edge_axis_violation.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_edge_concave.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
+        "status": "fail",
+        "detail": "FAIL 應接受但拒絕: <repo>/_ax_i5_collinear_vertex_rect_corner.scene:7: R6/I5/I6 timber 1: 有合法跨距但都不接觸引用的邊",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_edge_dir_violation.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_edge_free.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_edge_freeze.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_edge_i8a_confirm.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_edge_grid_at_border.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_edge_grid_overflow.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_edge_grid_twoline.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_test_grid_series.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_edge_grid_series_step0.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_edge_grid_series_count0.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_edge_grid_series_out.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_test_grid_redeclare.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_test_grid_redeclare_series.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_edge_grid_locked_other_axis.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_edge_grid_locked.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_edge_grid_locked_shrink.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_test_grid_panel.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_edge_grid_panel_from.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_edge_grid_panel_empty.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_edge_grid_panel_index8.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_edge_grid_panel_empty_place.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_edge_grid_panel_odd_gap.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_edge_grid_panel_overflow.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_mut_grid_panel_edge.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_edge_grid_panel_shrink.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_edge_hole_anchor.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_edge_hole_bottom.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_edge_rect_only.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_edge_rect_stops.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_edge_stop_ambiguous.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_test_between.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_edge_between_free.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_edge_between_blocked.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_edge_between_conflict.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_edge_between_badref.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_role_between_priority.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_edge_straddle.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_edge_two_holes.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_edge_upper_seg.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_mut_notch_straddle.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_mut_reval_free_hole.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_mut_through_boundary.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_mut_free_hole_end.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_mut_edge_touch_only.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_mut_grid_dup.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_mut_zero_len.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_mut_neg_hole_ref.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_role_axis_second_primary.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_role_axis_boundary_first.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_role_axis_fallback.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_role_priority_convex.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_role_priority_ext_primary.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_role_priority_mutant.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_role_rc_boundary_ok.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_role_rc_custom_reject.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_role_priority_primary_rc.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_role_priority_secondary_rc.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_role_priority_primary_secondary.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_role_priority_ext_custom.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_role_cover_short.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_role_ext_stop_primary.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_mut_col_overlap.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_mut_col_outside.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_mut_beam_diag.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_mut_col_noz.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_rc_col_free.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "acceptance-only"
+       },
+       {
+        "scene": "_rc_col_wall.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "acceptance-only"
+       },
+       {
+        "scene": "_rc_col_corner.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_rc_beam_cross.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "acceptance-only"
+       },
+       {
+        "scene": "_rc_beam_edge.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "acceptance-only"
+       },
+       {
+        "scene": "_ax_i18_norole.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_ax_i18_nopriority.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_ax_i18_priority_misuse.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_ax_i12_auto_with_at.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_ax_i12_explicit_with_atgrid.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_ax_i9_orphan_timber.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_ax_i9_forward_ref.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_ax_i1_frame_degenerate.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_ax_i4_empty_space.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i7_guide_out_of_range.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "acceptance-only"
+       },
+       {
+        "scene": "_ax_i16_beam_outside.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_ax_i17_delete_space.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "acceptance-only"
+       },
+       {
+        "scene": "_ax_r20_delete_cascade.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_ax_d12_i14_canvas.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i14_canvas_missing.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_ax_r08_snapshot.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_r09_unplaced.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_ax_r10_hole_straddles_cut.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_ax_r10_hole_follows_piece.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_r12_prefix_col.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_r12_prefix_beam.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "acceptance-and-absence"
+       },
+       {
+        "scene": "_ax_r13_anchor_lost.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_ax_r13_anchor_follows.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_r14_straddles_cut.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_ax_r15_missing_item.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_ax_r16_top_drop.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_r16_not_full_span.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_ax_r17_wall_column_face.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_edge_gridref_wrong_face.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_edge_gridref_wrong_axis.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_edge_gridref_midline.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_edge_gridref_no_support.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_edge_place_through_short.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_edge_i19_place_order.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_wit_d2_wall_frame.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_wit_d6_guide_segments.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_wit_d6c_datum_shared.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_wit_i13_odd_width.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_wit_r6_span_cells.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_wit_r19_edge_primary_2560.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i4_missing_boundary.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_ax_i4_duplicate_boundary.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_ax_i4_no_carrier.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_ax_i5_hole_vertex_touches_rect_edge.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_edge_straddle_hi.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       },
+       {
+        "scene": "_edge_face_touch_only.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+       }
+      ]
+     },
+     "stdout_sha256": "f11139b7610cd2a5ee291b4930d97cf21d036115f80919f189903806ec772955",
+     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+   ]
+  },
+  "record_sha256": "0aa5309e4858d380798af6e030efef1c0d88ff1b8b18b2150f9d05276945ebb5"
+ }
+}
