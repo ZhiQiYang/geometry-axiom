@@ -1,0 +1,52 @@
+[
+  {
+    "case": "before",
+    "diagnostic_oracle_pass": false,
+    "exit": 1,
+    "error": "Second-tab control unreachable #target"
+  },
+  {
+    "case": "after",
+    "diagnostic_oracle_pass": true,
+    "exit": 0,
+    "error": "Second-tab control unreachable #target {\"control\":{\"x\":72.0078125,\"y\":18.5,\"usable\":false,\"rect\":{\"x\":45.484375,\"y\":8,\"width\":53.046875,\"height\":21,\"top\":8,\"right\":98.53125,\"bottom\":29,\"left\":45.484375},\"disabled\":true,\"hit\":\"<button id=\\\"target\\\" disabled=\\\"\\\">Target</button>\",\"menu\":{\"display\":\"none\",\"visibility\":\"hidden\",\"hidden\":false},\"fileMenuExpanded\":\"false\"},\"state\":{\"connection\":{\"phase\":\"ready\"},\"busy\":false}}"
+  },
+  {
+    "case": "removed-fix",
+    "diagnostic_oracle_pass": false,
+    "exit": 1,
+    "error": "Second-tab control unreachable #target"
+  },
+  {
+    "case": "restored",
+    "diagnostic_oracle_pass": true,
+    "exit": 0,
+    "error": "Second-tab control unreachable #target {\"control\":{\"x\":72.0078125,\"y\":18.5,\"usable\":false,\"rect\":{\"x\":45.484375,\"y\":8,\"width\":53.046875,\"height\":21,\"top\":8,\"right\":98.53125,\"bottom\":29,\"left\":45.484375},\"disabled\":true,\"hit\":\"<button id=\\\"target\\\" disabled=\\\"\\\">Target</button>\",\"menu\":{\"display\":\"none\",\"visibility\":\"hidden\",\"hidden\":false},\"fileMenuExpanded\":\"false\"},\"state\":{\"connection\":{\"phase\":\"ready\"},\"busy\":false}}"
+  },
+  {
+    "case": "success-unchanged",
+    "exit": 0,
+    "calls": [
+      {
+        "method": "Input.dispatchMouseEvent",
+        "params": {
+          "type": "mousePressed",
+          "x": 72.0078125,
+          "y": 18.5,
+          "button": "left",
+          "clickCount": 1
+        }
+      },
+      {
+        "method": "Input.dispatchMouseEvent",
+        "params": {
+          "type": "mouseReleased",
+          "x": 72.0078125,
+          "y": 18.5,
+          "button": "left",
+          "clickCount": 1
+        }
+      }
+    ]
+  }
+]
