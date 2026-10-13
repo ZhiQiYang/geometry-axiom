@@ -1,0 +1,21 @@
+test_PF04_hole_loops_and_disconnected_fragments (tests.test_panel_fill_layout.PanelFillLayout.test_PF04_hole_loops_and_disconnected_fragments) ... FAIL
+
+======================================================================
+FAIL: test_PF04_hole_loops_and_disconnected_fragments (tests.test_panel_fill_layout.PanelFillLayout.test_PF04_hole_loops_and_disconnected_fragments)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_panel_fill_layout.py", line 99, in test_PF04_hole_loops_and_disconnected_fragments
+    self.assertEqual([[[50,50],[50,100],[100,100],[100,50]]], f["holes"])
+AssertionError: Lists differ: [[[50, 50], [50, 100], [100, 100], [100, 50]]] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+[[50, 50], [50, 100], [100, 100], [100, 50]]
+
+- [[[50, 50], [50, 100], [100, 100], [100, 50]]]
++ []
+
+----------------------------------------------------------------------
+Ran 1 test in 0.116s
+
+FAILED (failures=1)

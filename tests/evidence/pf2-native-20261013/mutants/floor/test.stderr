@@ -1,0 +1,25 @@
+test_PF02_centers_are_integer_and_share_panel_lattice (tests.test_panel_fill_layout.PanelFillLayout.test_PF02_centers_are_integer_and_share_panel_lattice) ... FAIL
+
+======================================================================
+FAIL: test_PF02_centers_are_integer_and_share_panel_lattice (tests.test_panel_fill_layout.PanelFillLayout.test_PF02_centers_are_integer_and_share_panel_lattice)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_panel_fill_layout.py", line 54, in test_PF02_centers_are_integer_and_share_panel_lattice
+    self.assertEqual([101, 204], [s["coordinate"] for s in d["seamLines"] if s["axis"] == "u"], "PF02: g=3 must floor in finish frame")
+AssertionError: Lists differ: [101, 204] != [0, 103, 206]
+
+First differing element 0:
+101
+0
+
+Second list contains 1 additional elements.
+First extra element 2:
+206
+
+- [101, 204]
++ [0, 103, 206] : PF02: g=3 must floor in finish frame
+
+----------------------------------------------------------------------
+Ran 1 test in 0.111s
+
+FAILED (failures=1)
