@@ -1,0 +1,164 @@
+{
+  "setup": [
+    {
+      "line": "boundary 1 outline 100,200 2500,200 2500,1800 100,1800",
+      "ok": true,
+      "error": "",
+      "preview": false
+    },
+    {
+      "line": "boundary-vertex-keys 1 outer 1 2 3 4 next-key 5",
+      "ok": true,
+      "error": "",
+      "preview": false
+    },
+    {
+      "line": "grid-system 7 name-hex 36303078343030 main-along none u repeat 0 600 v repeat 0 400",
+      "ok": true,
+      "error": "",
+      "preview": false
+    },
+    {
+      "line": "grid-binding 3 on-boundary 1 from-system 7 vertex-key 1 cell -2 1 anchor 0 1 0 1",
+      "ok": true,
+      "error": "",
+      "preview": false
+    },
+    {
+      "line": "canvas-pos grid-system 7 120 80",
+      "ok": true,
+      "error": "",
+      "preview": false
+    },
+    {
+      "line": "canvas-pos grid-binding 3 450 80",
+      "ok": true,
+      "error": "",
+      "preview": false
+    },
+    {
+      "line": "canvas-pos boundary 1 700 80",
+      "ok": true,
+      "error": "",
+      "preview": false
+    }
+  ],
+  "binding": {
+    "kind": "grid-binding",
+    "id": 3,
+    "point": {
+      "x": 815.599365234375,
+      "y": 438.1770324707031
+    },
+    "zoom": 0.8711180124223602,
+    "snap": true,
+    "scroll": {
+      "x": 0,
+      "y": 0
+    },
+    "hit": {
+      "tag": "text",
+      "cls": "",
+      "id": "",
+      "isButton": false
+    },
+    "stack": [
+      "text.#",
+      "g.ocard grid-binding-card#",
+      "g.#cardLayer",
+      "g.#oroot",
+      "svg.#ocv",
+      "SECTION.canvas-viewport show-grid#canvasViewport"
+    ],
+    "before": {
+      "cx": 450,
+      "cy": 80,
+      "cell": [
+        "-2",
+        "1"
+      ],
+      "translation": [
+        1300,
+        -200
+      ],
+      "hasPos": true
+    },
+    "commit": {
+      "ok": true,
+      "elapsedMs": 340,
+      "kind": "grid-binding",
+      "id": 3,
+      "beforeCx": 450,
+      "beforeCy": 80,
+      "nativeCx": 540,
+      "nativeCy": 120,
+      "hasPos": true,
+      "localCx": 540,
+      "localCy": 120
+    },
+    "after": {
+      "cx": 540,
+      "cy": 120,
+      "cell": [
+        "-2",
+        "1"
+      ],
+      "translation": [
+        1300,
+        -200
+      ],
+      "hasPos": true
+    }
+  },
+  "boundary": {
+    "kind": "boundary",
+    "id": 1,
+    "point": {
+      "x": 1033.37890625,
+      "y": 438.1770324707031
+    },
+    "zoom": 0.8711180124223602,
+    "snap": true,
+    "scroll": {
+      "x": 0,
+      "y": 0
+    },
+    "hit": {
+      "tag": "rect",
+      "cls": "ocard-frame",
+      "id": "",
+      "isButton": false
+    },
+    "stack": [
+      "rect.ocard-frame#",
+      "g.ocard#",
+      "g.#cardLayer",
+      "g.#oroot",
+      "svg.#ocv",
+      "SECTION.canvas-viewport show-grid cx-on#canvasViewport"
+    ],
+    "before": {
+      "cx": 700,
+      "cy": 80,
+      "hasPos": true
+    },
+    "commit": {
+      "ok": true,
+      "elapsedMs": 287,
+      "kind": "boundary",
+      "id": 1,
+      "beforeCx": 700,
+      "beforeCy": 80,
+      "nativeCx": 780,
+      "nativeCy": 120,
+      "hasPos": true,
+      "localCx": 780,
+      "localCy": 120
+    },
+    "after": {
+      "cx": 780,
+      "cy": 120,
+      "hasPos": true
+    }
+  }
+}

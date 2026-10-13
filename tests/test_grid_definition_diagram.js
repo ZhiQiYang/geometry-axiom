@@ -84,3 +84,83 @@ test('both shifted axes still cut segments at the other axis unshifted band boun
   close(segments(result,false),[[72.21333333333314,76,100],[157.546666666668,76,100],
     [72,100,228],[157.33333333333331,100,228],[72.21333333333314,228,320],[157.546666666668,228,320]]);
 });
+
+// The shipped readAxes/syncDefinition/drawDefinition bodies render accepted
+// raw draft strings through finite DOM ports. No native validation is replaced.
+const F=require('../geometry-web/feature-attachments.js');
+function presentation(rawOverrides={}) {
+  const raw=Object.fromEntries(F.sourceFields.map(id=>[id,'']));
+  Object.assign(raw,{igName:'Authored raw',igMainAlong:'u'});
+  for(const a of ['U','V'])Object.assign(raw,{['ig'+a+'Source']:'repeat',['ig'+a+'Step']:'600',['ig'+a+'Phase']:'0',
+    ['ig'+a+'Panel']:'400',['ig'+a+'Gap']:'5',['ig'+a+'Anchor']:'-100'});
+  Object.assign(raw,rawOverrides);
+  const draft={schema:F.GRID_SCHEMA,draftId:'authored-raw-modes',kind:'source',intent:'create',baseRef:null,inputRefs:[],rawForm:raw};
+  assert.equal(F.validateGridDraft(draft),draft,'formal raw contract accepts the fixture without normalization');
+  const make=(tag='div')=>{const classes=new Set();return {tag,value:'',textContent:'',hidden:false,dataset:{},attrs:{},
+    setAttribute(key,value){this.attrs[key]=String(value);},
+    classList:{toggle:(key,on)=>on?classes.add(key):classes.delete(key)},querySelectorAll:()=>[]};};
+  const nodes=new Map(Object.entries(raw).map(([id,value])=>{const n=make();n.value=value;return [id,n];}));
+  for(const id of ['igNameErr','igStateLine','igStateText','igStateDetail','igMainNote','igSourcePill'])nodes.set(id,make());
+  const stage=node('div','');stage.querySelectorAll=()=>[];nodes.set('igDefStage',stage);
+  const cards=Object.fromEntries(['u','v'].map(a=>{
+    const summary=make(),role=make(),card=make();card.querySelector=selector=>selector==='.ig-axis-sum'?summary:selector==='.ig-role'?role:null;
+    return [a,{card,summary,role}];
+  }));
+  const state={mode:'source',source:{id:0},sourceDirty:false,defFocus:{a:'u',key:''},staggerOpen:{u:false,v:false}};
+  const context=vm.createContext({TextEncoder,axes:['u','v'],LIMIT:100000000,mk:node,$:id=>nodes.get(id),
+    rawField:(_s,id)=>nodes.get(id).value,current:s=>s===state,bindingName:()=>null,
+    dialog:{querySelector:selector=>cards[/data-ig-axis="([uv])"/.exec(selector)[1]].card},focusField(){}});
+  const cuts=[['  const stepNoun =','  const MODE_LABEL ='],['  const intProblem =','  const bindingName ='],
+    ['  function drawDefinition(s, data) {','  // Presentation only:'],['  function syncDefinition(s) {','  function sourceDraft(s) {']];
+  for(const [begin,finish] of cuts){const from=source.indexOf(begin),to=source.indexOf(finish,from);assert.ok(from>=0&&to>from);vm.runInContext(source.slice(from,to),context);}
+  const flatten=n=>[n,...(n.children||[]).flatMap(flatten)];
+  return {raw,draft,nodes,cards,state,read:()=>context.readAxes(state),sync:()=>context.syncDefinition(state),
+    rawNow:()=>Object.fromEntries(F.sourceFields.map(id=>[id,nodes.get(id).value])),drawing:()=>flatten(stage)};
+}
+
+test('accepted unknown axis raw requires explicit reselection without invented geometry or prototype lookup failures',()=>{
+  for(const mode of ['', 'future-mode', ' repeat ', '__proto__', 'constructor'])for(const axis of ['u','v']){
+    const h=presentation({['ig'+axis.toUpperCase()+'Source']:mode}),before=structuredClone(h.raw),data=h.read(),x=data.find(x=>x.a===axis);
+    assert.equal(x.mode,mode);assert.equal(x.ok,false,axis+': unknown raw is not a valid axis');assert.equal(x.shape,null);
+    assert.ok(x.errors.some(error=>/重新選取/.test(error)),'the preserved mode has an actionable presentation error');
+    h.sync();assert.match(h.cards[axis].summary.textContent,/重新選取/);assert.doesNotMatch(h.cards[axis].summary.textContent,/undefined|面材/);
+    assert.equal(h.cards[axis].role.hidden,true);assert.equal(h.cards[axis].role.textContent,'');
+    assert.equal(h.nodes.get('ig'+axis.toUpperCase()+'Source').attrs['aria-invalid'],'true');
+    assert.equal(h.nodes.get('igStateLine').dataset.tone,'error');assert.deepEqual(h.rawNow(),before);
+    assert.ok(h.drawing().filter(n=>n.attrs?.['data-ig-chip']).every(n=>!n.attrs['data-ig-chip'].startsWith(axis+':')),'unknown axis cannot expose invented dimension chips');
+  }
+});
+
+test('all-empty recoverable raw reports mode and direction errors instead of an unset-axis or valid-definition message',()=>{
+  const h=presentation(Object.fromEntries(F.sourceFields.map(id=>[id,'']))),before=structuredClone(h.raw);h.sync();
+  assert.deepEqual(h.rawNow(),before);assert.equal(h.nodes.get('igStateText').textContent,'4 個欄位需要修正');
+  assert.match(h.nodes.get('igMainNote').textContent,/重新選取/);
+  for(const axis of ['u','v']){assert.match(h.cards[axis].summary.textContent,/重新選取/);assert.equal(h.cards[axis].role.hidden,true);}
+  const empty=h.drawing().find(n=>n.cls==='ig-def-empty');assert.match(empty.text,/需要修正/);assert.doesNotMatch(empty.text,/至少設定一軸/);
+  assert.equal(h.nodes.get('igStateDetail').hidden,true,'unknown axes are distinct from explicit none/none');
+});
+
+test('unknown main direction cannot label otherwise valid axes as main or secondary',()=>{
+  for(const direction of ['', 'future-direction', '__proto__']){
+    const h=presentation({igMainAlong:direction}),before=structuredClone(h.raw);h.sync();
+    assert.ok(h.read().every(x=>x.shape&&x.ok),'valid axis geometry is still readable');
+    for(const axis of ['u','v']){assert.equal(h.cards[axis].role.hidden,true);assert.equal(h.cards[axis].role.textContent,'');}
+    assert.equal(h.nodes.get('igMainAlong').attrs['aria-invalid'],'true');assert.match(h.nodes.get('igMainNote').textContent,/重新選取/);
+    assert.equal(h.nodes.get('igStateLine').dataset.tone,'error');assert.deepEqual(h.rawNow(),before);
+  }
+});
+
+test('explicit mode reselection restores existing repeat panel and none presentation without normalizing other raw fields',()=>{
+  for(const [mode,summary,pitch] of [['repeat','每 00600 mm',600],['repeat-panel','面材 400 ＋ 縫 5',405],['none','不設此軸',null]]){
+    const h=presentation({igUSource:'future-mode',igUStep:' 00600 ',igVSource:'none'});h.sync();
+    h.nodes.get('igUSource').value=mode;h.sync();const u=h.read()[0];
+    assert.equal(u.ok,true);assert.deepEqual(Array.from(u.errors),[]);assert.equal(u.shape?.pitch??null,pitch);
+    assert.equal(h.cards.u.summary.textContent,summary);assert.equal(h.cards.u.role.hidden,mode==='none');
+    assert.equal(h.nodes.get('igUSource').attrs['aria-invalid'],'false');assert.deepEqual(h.rawNow(),{...h.raw,igUSource:mode});
+    if(mode==='none'){assert.equal(h.nodes.get('igStateDetail').textContent,'至少設定一軸。');assert.equal(h.nodes.get('igStateDetail').hidden,false);}
+    else {assert.equal(h.cards.u.role.textContent,'副支線');assert.equal(h.nodes.get('igStateLine').dataset.tone,'ok');}
+  }
+  const invalidNumber=presentation({igUStep:'bad'});invalidNumber.sync();
+  assert.equal(invalidNumber.cards.u.role.hidden,false,'known mode/direction keeps its established role even while a number needs correction');
+  assert.equal(invalidNumber.cards.u.role.textContent,'副支線');
+});

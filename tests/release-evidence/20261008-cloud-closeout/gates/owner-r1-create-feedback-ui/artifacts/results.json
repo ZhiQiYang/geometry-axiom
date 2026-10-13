@@ -1,0 +1,6007 @@
+{
+  "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+  "url": "http://127.0.0.1:18971/",
+  "runtime": {
+    "schema": "geometry-runtime/1",
+    "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 196578,
+    "session": "ca31be77efb542b89d45d5a88c3b1b45"
+  },
+  "browserPath": "Browser plugin not available; existing Playwright/Chromium",
+  "coverage": "Synthetic isolated reset; real mouse/touch/keyboard UI; no physical-phone claim",
+  "records": [
+    {
+      "label": "390-mouse page identity / meaningful shell / no framework overlay",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-mouse parameter field active immediately before Create",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-mouse menu owns its actual overlap with collapsed feedback",
+      "pass": true,
+      "detail": {
+        "overlap": true,
+        "ok": true,
+        "point": [
+          357.5,
+          131.3359375
+        ],
+        "hit": "btnQuickGrid"
+      }
+    },
+    {
+      "label": "390-mouse first center pointer and click each reach grid exactly once",
+      "pass": true,
+      "detail": {
+        "body": "canvas-composition canvas-has-inspector parameter-editing",
+        "grid": {
+          "rect": {
+            "x": 131,
+            "y": 101.390625,
+            "width": 242,
+            "height": 56.890625
+          },
+          "style": {
+            "left": "auto",
+            "right": "auto",
+            "top": "auto",
+            "bottom": "auto",
+            "zIndex": "auto"
+          },
+          "hit": "btnQuickGrid",
+          "stack": [
+            "SPAN",
+            "btnQuickGrid",
+            "createObjectPop",
+            "ocSelectionSummaryHelp",
+            "canvasDrawToolbar",
+            "rect",
+            "ocv",
+            "canvasViewport",
+            "MAIN",
+            "app",
+            "BODY",
+            "HTML"
+          ]
+        },
+        "feedback": {
+          "rect": {
+            "x": 334,
+            "y": 117,
+            "width": 47,
+            "height": 28.671875
+          },
+          "style": {
+            "left": "334px",
+            "right": "9px",
+            "top": "117px",
+            "bottom": "698.328px",
+            "zIndex": "84"
+          },
+          "hit": "btnQuickGrid",
+          "stack": [
+            "btnQuickGrid",
+            "createObjectPop",
+            "fbButton",
+            "ocv",
+            "canvasViewport",
+            "MAIN",
+            "app",
+            "BODY",
+            "HTML"
+          ]
+        },
+        "menu": {
+          "rect": {
+            "x": 122,
+            "y": 58,
+            "width": 260,
+            "height": 639.296875
+          },
+          "style": {
+            "left": "122px",
+            "right": "8px",
+            "top": "58px",
+            "bottom": "146.703px",
+            "zIndex": "85"
+          },
+          "hit": "btnNewAssembly",
+          "stack": [
+            "SMALL",
+            "SPAN",
+            "btnNewAssembly",
+            "createObjectPop",
+            "HEADER",
+            "parameterEditor",
+            "inspectorContent",
+            "ASIDE",
+            "MAIN",
+            "app",
+            "BODY",
+            "HTML"
+          ]
+        },
+        "events": [
+          {
+            "type": "pointerdown",
+            "id": "btnQuickGrid",
+            "pointerType": "mouse",
+            "trusted": true
+          },
+          {
+            "type": "click",
+            "id": "btnQuickGrid",
+            "pointerType": "mouse",
+            "trusted": true
+          },
+          {
+            "type": "click",
+            "id": "btnNewGridSystem",
+            "pointerType": "",
+            "trusted": false
+          }
+        ],
+        "gridOpen": true
+      }
+    },
+    {
+      "label": "390-mouse native unchanged; only the existing initial raw-draft history entry allowed",
+      "pass": true,
+      "detail": {
+        "before": {
+          "native": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6Iklzc3VlMTIzIGVkaXRlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6NH0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ncanvas-pos parameter 1 60 60\n",
+          "history": {
+            "context": "2a4cb421-7756-45b8-af47-aba544567692",
+            "frame": "d7a86eda-c1d9-4426-849f-b3921ac666b8",
+            "undo": "0f641580-8969-4d9a-bc87-b150b92a7472",
+            "redo": null,
+            "undoLength": 2,
+            "redoLength": 0,
+            "entries": [
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "core",
+                "action": null
+              }
+            ]
+          }
+        },
+        "after": {
+          "native": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6Iklzc3VlMTIzIGVkaXRlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6NH0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ncanvas-pos parameter 1 60 60\n",
+          "history": {
+            "context": "2a4cb421-7756-45b8-af47-aba544567692",
+            "frame": "d7a86eda-c1d9-4426-849f-b3921ac666b8",
+            "undo": "022d3028-a549-4067-a6cd-ff39a9aa7f44",
+            "redo": null,
+            "undoLength": 3,
+            "redoLength": 0,
+            "entries": [
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "label": "390-mouse actual left drawer state",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-mouse left all menu centers unobscured",
+      "pass": true,
+      "detail": [
+        {
+          "id": "btnQuickGrid",
+          "hit": "btnQuickGrid",
+          "ok": true
+        },
+        {
+          "id": "btnCreateRect",
+          "hit": "btnCreateRect",
+          "ok": true
+        },
+        {
+          "id": "btnCreatePoly",
+          "hit": "btnCreatePoly",
+          "ok": true
+        },
+        {
+          "id": "btnNewParameter",
+          "hit": "btnNewParameter",
+          "ok": true
+        },
+        {
+          "id": "btnNewAssembly",
+          "hit": "btnNewAssembly",
+          "ok": true
+        },
+        {
+          "id": "btnNewSectionProfile",
+          "hit": "btnNewSectionProfile",
+          "ok": true
+        },
+        {
+          "id": "btnNewSpace",
+          "hit": "btnNewSpace",
+          "ok": true
+        },
+        {
+          "id": "btnNewColumn",
+          "hit": "btnNewColumn",
+          "ok": true
+        },
+        {
+          "id": "btnNewBeam",
+          "hit": "btnNewBeam",
+          "ok": true
+        },
+        {
+          "id": "btnBox6",
+          "hit": "btnBox6",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "label": "390-mouse left Escape closes menu and restores trigger",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-mouse left reopen first center opens grid without native/history write",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-mouse actual right drawer state",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-mouse right all menu centers unobscured",
+      "pass": true,
+      "detail": [
+        {
+          "id": "btnQuickGrid",
+          "hit": "btnQuickGrid",
+          "ok": true
+        },
+        {
+          "id": "btnCreateRect",
+          "hit": "btnCreateRect",
+          "ok": true
+        },
+        {
+          "id": "btnCreatePoly",
+          "hit": "btnCreatePoly",
+          "ok": true
+        },
+        {
+          "id": "btnNewParameter",
+          "hit": "btnNewParameter",
+          "ok": true
+        },
+        {
+          "id": "btnNewAssembly",
+          "hit": "btnNewAssembly",
+          "ok": true
+        },
+        {
+          "id": "btnNewSectionProfile",
+          "hit": "btnNewSectionProfile",
+          "ok": true
+        },
+        {
+          "id": "btnNewSpace",
+          "hit": "btnNewSpace",
+          "ok": true
+        },
+        {
+          "id": "btnNewColumn",
+          "hit": "btnNewColumn",
+          "ok": true
+        },
+        {
+          "id": "btnNewBeam",
+          "hit": "btnNewBeam",
+          "ok": true
+        },
+        {
+          "id": "btnBox6",
+          "hit": "btnBox6",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "label": "390-mouse right Escape closes menu and restores trigger",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-mouse right reopen first center opens grid without native/history write",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-mouse actual closed drawer state",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-mouse closed all menu centers unobscured",
+      "pass": true,
+      "detail": [
+        {
+          "id": "btnQuickGrid",
+          "hit": "btnQuickGrid",
+          "ok": true
+        },
+        {
+          "id": "btnCreateRect",
+          "hit": "btnCreateRect",
+          "ok": true
+        },
+        {
+          "id": "btnCreatePoly",
+          "hit": "btnCreatePoly",
+          "ok": true
+        },
+        {
+          "id": "btnNewParameter",
+          "hit": "btnNewParameter",
+          "ok": true
+        },
+        {
+          "id": "btnNewAssembly",
+          "hit": "btnNewAssembly",
+          "ok": true
+        },
+        {
+          "id": "btnNewSectionProfile",
+          "hit": "btnNewSectionProfile",
+          "ok": true
+        },
+        {
+          "id": "btnNewSpace",
+          "hit": "btnNewSpace",
+          "ok": true
+        },
+        {
+          "id": "btnNewColumn",
+          "hit": "btnNewColumn",
+          "ok": true
+        },
+        {
+          "id": "btnNewBeam",
+          "hit": "btnNewBeam",
+          "ok": true
+        },
+        {
+          "id": "btnBox6",
+          "hit": "btnBox6",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "label": "390-mouse closed Escape closes menu and restores trigger",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-mouse closed reopen first center opens grid without native/history write",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-mouse feedback note survives menu Escape and parameter draft survives overlay",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-mouse feedback button/F8/Esc preserve dirty parameter and native/history",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-mouse feedback retains raw grid draft and native/history",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-mouse first center reopen restores exact grid inputs",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-mouse grid preview preserves native/history",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-mouse grid preview cancel preserves draft/native/history",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-mouse confirm writes exactly one grid and one history transaction",
+      "pass": true,
+      "detail": {
+        "before": {
+          "native": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6Iklzc3VlMTIzIGVkaXRlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6NH0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ncanvas-pos parameter 1 60 60\n",
+          "history": {
+            "context": "2a4cb421-7756-45b8-af47-aba544567692",
+            "frame": "d7a86eda-c1d9-4426-849f-b3921ac666b8",
+            "undo": "3dadbf50-8e89-457e-b4da-e079e14d58e8",
+            "redo": null,
+            "undoLength": 6,
+            "redoLength": 0,
+            "entries": [
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              }
+            ]
+          }
+        },
+        "after": {
+          "native": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6Iklzc3VlMTIzIGVkaXRlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6NH0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ngrid-system 1 name-hex 49737375653132332067726964206472616674 main-along none u repeat 0 915 v repeat 0 1830\ncanvas-pos parameter 1 60 60\ncanvas-pos grid-system 1 55 396\n",
+          "history": {
+            "context": "2a4cb421-7756-45b8-af47-aba544567692",
+            "frame": "d7a86eda-c1d9-4426-849f-b3921ac666b8",
+            "undo": "5e5ecddf-7d9a-44b8-babf-1030e0f1f69f",
+            "redo": null,
+            "undoLength": 7,
+            "redoLength": 0,
+            "entries": [
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "core",
+                "action": null
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "label": "390-mouse grid undo restores exact pre-confirm native",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-mouse grid redo restores exact confirmed native",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-touch page identity / meaningful shell / no framework overlay",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-touch parameter field active immediately before Create",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-touch menu owns its actual overlap with collapsed feedback",
+      "pass": true,
+      "detail": {
+        "overlap": true,
+        "ok": true,
+        "point": [
+          357.5,
+          131.3359375
+        ],
+        "hit": "btnQuickGrid"
+      }
+    },
+    {
+      "label": "390-touch first center pointer and click each reach grid exactly once",
+      "pass": true,
+      "detail": {
+        "body": "canvas-composition canvas-has-inspector parameter-editing",
+        "grid": {
+          "rect": {
+            "x": 131,
+            "y": 101.390625,
+            "width": 242,
+            "height": 56.890625
+          },
+          "style": {
+            "left": "auto",
+            "right": "auto",
+            "top": "auto",
+            "bottom": "auto",
+            "zIndex": "auto"
+          },
+          "hit": "btnQuickGrid",
+          "stack": [
+            "SPAN",
+            "btnQuickGrid",
+            "createObjectPop",
+            "ocSelectionSummaryHelp",
+            "canvasDrawToolbar",
+            "rect",
+            "ocv",
+            "canvasViewport",
+            "MAIN",
+            "app",
+            "BODY",
+            "HTML"
+          ]
+        },
+        "feedback": {
+          "rect": {
+            "x": 334,
+            "y": 117,
+            "width": 47,
+            "height": 28.671875
+          },
+          "style": {
+            "left": "334px",
+            "right": "9px",
+            "top": "117px",
+            "bottom": "698.328px",
+            "zIndex": "84"
+          },
+          "hit": "btnQuickGrid",
+          "stack": [
+            "btnQuickGrid",
+            "createObjectPop",
+            "fbButton",
+            "ocv",
+            "canvasViewport",
+            "MAIN",
+            "app",
+            "BODY",
+            "HTML"
+          ]
+        },
+        "menu": {
+          "rect": {
+            "x": 122,
+            "y": 58,
+            "width": 260,
+            "height": 639.296875
+          },
+          "style": {
+            "left": "122px",
+            "right": "8px",
+            "top": "58px",
+            "bottom": "146.703px",
+            "zIndex": "85"
+          },
+          "hit": "btnNewAssembly",
+          "stack": [
+            "SMALL",
+            "SPAN",
+            "btnNewAssembly",
+            "createObjectPop",
+            "HEADER",
+            "parameterEditor",
+            "inspectorContent",
+            "ASIDE",
+            "MAIN",
+            "app",
+            "BODY",
+            "HTML"
+          ]
+        },
+        "events": [
+          {
+            "type": "pointerdown",
+            "id": "btnQuickGrid",
+            "pointerType": "touch",
+            "trusted": true
+          },
+          {
+            "type": "click",
+            "id": "btnQuickGrid",
+            "pointerType": "touch",
+            "trusted": true
+          },
+          {
+            "type": "click",
+            "id": "btnNewGridSystem",
+            "pointerType": "",
+            "trusted": false
+          }
+        ],
+        "gridOpen": true
+      }
+    },
+    {
+      "label": "390-touch native unchanged; only the existing initial raw-draft history entry allowed",
+      "pass": true,
+      "detail": {
+        "before": {
+          "native": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6Iklzc3VlMTIzIGVkaXRlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6NH0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ncanvas-pos parameter 1 60 60\n",
+          "history": {
+            "context": "e54675cc-eaeb-4013-815d-02e371f91302",
+            "frame": "5512133d-1210-4451-9db0-78de8a8f76d6",
+            "undo": "efc5242f-c138-4a07-a0e7-fa2d8447c157",
+            "redo": null,
+            "undoLength": 2,
+            "redoLength": 0,
+            "entries": [
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "core",
+                "action": null
+              }
+            ]
+          }
+        },
+        "after": {
+          "native": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6Iklzc3VlMTIzIGVkaXRlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6NH0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ncanvas-pos parameter 1 60 60\n",
+          "history": {
+            "context": "e54675cc-eaeb-4013-815d-02e371f91302",
+            "frame": "5512133d-1210-4451-9db0-78de8a8f76d6",
+            "undo": "834a9f44-6653-4050-b435-88a64ab0818f",
+            "redo": null,
+            "undoLength": 3,
+            "redoLength": 0,
+            "entries": [
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "label": "390-touch actual left drawer state",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-touch left all menu centers unobscured",
+      "pass": true,
+      "detail": [
+        {
+          "id": "btnQuickGrid",
+          "hit": "btnQuickGrid",
+          "ok": true
+        },
+        {
+          "id": "btnCreateRect",
+          "hit": "btnCreateRect",
+          "ok": true
+        },
+        {
+          "id": "btnCreatePoly",
+          "hit": "btnCreatePoly",
+          "ok": true
+        },
+        {
+          "id": "btnNewParameter",
+          "hit": "btnNewParameter",
+          "ok": true
+        },
+        {
+          "id": "btnNewAssembly",
+          "hit": "btnNewAssembly",
+          "ok": true
+        },
+        {
+          "id": "btnNewSectionProfile",
+          "hit": "btnNewSectionProfile",
+          "ok": true
+        },
+        {
+          "id": "btnNewSpace",
+          "hit": "btnNewSpace",
+          "ok": true
+        },
+        {
+          "id": "btnNewColumn",
+          "hit": "btnNewColumn",
+          "ok": true
+        },
+        {
+          "id": "btnNewBeam",
+          "hit": "btnNewBeam",
+          "ok": true
+        },
+        {
+          "id": "btnBox6",
+          "hit": "btnBox6",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "label": "390-touch left Escape closes menu and restores trigger",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-touch left reopen first center opens grid without native/history write",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-touch actual right drawer state",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-touch right all menu centers unobscured",
+      "pass": true,
+      "detail": [
+        {
+          "id": "btnQuickGrid",
+          "hit": "btnQuickGrid",
+          "ok": true
+        },
+        {
+          "id": "btnCreateRect",
+          "hit": "btnCreateRect",
+          "ok": true
+        },
+        {
+          "id": "btnCreatePoly",
+          "hit": "btnCreatePoly",
+          "ok": true
+        },
+        {
+          "id": "btnNewParameter",
+          "hit": "btnNewParameter",
+          "ok": true
+        },
+        {
+          "id": "btnNewAssembly",
+          "hit": "btnNewAssembly",
+          "ok": true
+        },
+        {
+          "id": "btnNewSectionProfile",
+          "hit": "btnNewSectionProfile",
+          "ok": true
+        },
+        {
+          "id": "btnNewSpace",
+          "hit": "btnNewSpace",
+          "ok": true
+        },
+        {
+          "id": "btnNewColumn",
+          "hit": "btnNewColumn",
+          "ok": true
+        },
+        {
+          "id": "btnNewBeam",
+          "hit": "btnNewBeam",
+          "ok": true
+        },
+        {
+          "id": "btnBox6",
+          "hit": "btnBox6",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "label": "390-touch right Escape closes menu and restores trigger",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-touch right reopen first center opens grid without native/history write",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-touch actual closed drawer state",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-touch closed all menu centers unobscured",
+      "pass": true,
+      "detail": [
+        {
+          "id": "btnQuickGrid",
+          "hit": "btnQuickGrid",
+          "ok": true
+        },
+        {
+          "id": "btnCreateRect",
+          "hit": "btnCreateRect",
+          "ok": true
+        },
+        {
+          "id": "btnCreatePoly",
+          "hit": "btnCreatePoly",
+          "ok": true
+        },
+        {
+          "id": "btnNewParameter",
+          "hit": "btnNewParameter",
+          "ok": true
+        },
+        {
+          "id": "btnNewAssembly",
+          "hit": "btnNewAssembly",
+          "ok": true
+        },
+        {
+          "id": "btnNewSectionProfile",
+          "hit": "btnNewSectionProfile",
+          "ok": true
+        },
+        {
+          "id": "btnNewSpace",
+          "hit": "btnNewSpace",
+          "ok": true
+        },
+        {
+          "id": "btnNewColumn",
+          "hit": "btnNewColumn",
+          "ok": true
+        },
+        {
+          "id": "btnNewBeam",
+          "hit": "btnNewBeam",
+          "ok": true
+        },
+        {
+          "id": "btnBox6",
+          "hit": "btnBox6",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "label": "390-touch closed Escape closes menu and restores trigger",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-touch closed reopen first center opens grid without native/history write",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-touch feedback note survives menu Escape and parameter draft survives overlay",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-touch feedback button/F8/Esc preserve dirty parameter and native/history",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-touch feedback retains raw grid draft and native/history",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-touch first center reopen restores exact grid inputs",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-touch grid preview preserves native/history",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-touch grid preview cancel preserves draft/native/history",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-touch confirm writes exactly one grid and one history transaction",
+      "pass": true,
+      "detail": {
+        "before": {
+          "native": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6Iklzc3VlMTIzIGVkaXRlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6NH0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ncanvas-pos parameter 1 60 60\n",
+          "history": {
+            "context": "e54675cc-eaeb-4013-815d-02e371f91302",
+            "frame": "5512133d-1210-4451-9db0-78de8a8f76d6",
+            "undo": "e8369fa2-d09c-47f2-9bda-84036925da38",
+            "redo": null,
+            "undoLength": 6,
+            "redoLength": 0,
+            "entries": [
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              }
+            ]
+          }
+        },
+        "after": {
+          "native": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6Iklzc3VlMTIzIGVkaXRlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6NH0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ngrid-system 1 name-hex 49737375653132332067726964206472616674 main-along none u repeat 0 915 v repeat 0 1830\ncanvas-pos parameter 1 60 60\ncanvas-pos grid-system 1 55 396\n",
+          "history": {
+            "context": "e54675cc-eaeb-4013-815d-02e371f91302",
+            "frame": "5512133d-1210-4451-9db0-78de8a8f76d6",
+            "undo": "8f66b1bf-9b6a-4e09-9b45-9f51eea4e3af",
+            "redo": null,
+            "undoLength": 7,
+            "redoLength": 0,
+            "entries": [
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "core",
+                "action": null
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "label": "390-touch grid undo restores exact pre-confirm native",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-touch grid redo restores exact confirmed native",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-mouse page identity / meaningful shell / no framework overlay",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-mouse parameter field active immediately before Create",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-mouse menu owns its actual overlap with collapsed feedback",
+      "pass": true,
+      "detail": {
+        "overlap": false,
+        "ok": true
+      }
+    },
+    {
+      "label": "900-mouse first center pointer and click each reach grid exactly once",
+      "pass": true,
+      "detail": {
+        "body": "canvas-composition canvas-has-inspector parameter-editing",
+        "grid": {
+          "rect": {
+            "x": 204.203125,
+            "y": 98.890625,
+            "width": 242,
+            "height": 56.890625
+          },
+          "style": {
+            "left": "auto",
+            "right": "auto",
+            "top": "auto",
+            "bottom": "auto",
+            "zIndex": "auto"
+          },
+          "hit": "btnQuickGrid",
+          "stack": [
+            "SPAN",
+            "btnQuickGrid",
+            "createObjectPop",
+            "rect",
+            "ocv",
+            "canvasViewport",
+            "MAIN",
+            "app",
+            "BODY",
+            "HTML"
+          ]
+        },
+        "feedback": {
+          "rect": {
+            "x": 835,
+            "y": 78,
+            "width": 47,
+            "height": 28.671875
+          },
+          "style": {
+            "left": "835px",
+            "right": "18px",
+            "top": "78px",
+            "bottom": "793.328px",
+            "zIndex": "84"
+          },
+          "hit": "fbButton",
+          "stack": [
+            "fbButton",
+            "ocv",
+            "canvasViewport",
+            "MAIN",
+            "app",
+            "BODY",
+            "HTML"
+          ]
+        },
+        "menu": {
+          "rect": {
+            "x": 195.203125,
+            "y": 55.5,
+            "width": 260,
+            "height": 639.296875
+          },
+          "style": {
+            "left": "195.203px",
+            "right": "444.797px",
+            "top": "55.5px",
+            "bottom": "205.203px",
+            "zIndex": "85"
+          },
+          "hit": "btnNewAssembly",
+          "stack": [
+            "SMALL",
+            "SPAN",
+            "btnNewAssembly",
+            "createObjectPop",
+            "paramName",
+            "HEADER",
+            "parameterEditor",
+            "inspectorContent",
+            "ASIDE",
+            "MAIN",
+            "app",
+            "BODY",
+            "HTML"
+          ]
+        },
+        "events": [
+          {
+            "type": "pointerdown",
+            "id": "btnQuickGrid",
+            "pointerType": "mouse",
+            "trusted": true
+          },
+          {
+            "type": "click",
+            "id": "btnQuickGrid",
+            "pointerType": "mouse",
+            "trusted": true
+          },
+          {
+            "type": "click",
+            "id": "btnNewGridSystem",
+            "pointerType": "",
+            "trusted": false
+          }
+        ],
+        "gridOpen": true
+      }
+    },
+    {
+      "label": "900-mouse native unchanged; only the existing initial raw-draft history entry allowed",
+      "pass": true,
+      "detail": {
+        "before": {
+          "native": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6Iklzc3VlMTIzIGVkaXRlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6NH0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ncanvas-pos parameter 1 60 60\n",
+          "history": {
+            "context": "52792f4a-2995-48cc-8d15-ea33f92e3b01",
+            "frame": "c9d73395-26ff-498a-acfd-f2afbc2a5d82",
+            "undo": "b9499a0f-5ff9-4959-b5fb-9f8314474366",
+            "redo": null,
+            "undoLength": 2,
+            "redoLength": 0,
+            "entries": [
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "core",
+                "action": null
+              }
+            ]
+          }
+        },
+        "after": {
+          "native": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6Iklzc3VlMTIzIGVkaXRlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6NH0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ncanvas-pos parameter 1 60 60\n",
+          "history": {
+            "context": "52792f4a-2995-48cc-8d15-ea33f92e3b01",
+            "frame": "c9d73395-26ff-498a-acfd-f2afbc2a5d82",
+            "undo": "d54a1bf8-be82-4950-a82c-110569b9205c",
+            "redo": null,
+            "undoLength": 3,
+            "redoLength": 0,
+            "entries": [
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "label": "900-mouse actual left drawer state",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-mouse left all menu centers unobscured",
+      "pass": true,
+      "detail": [
+        {
+          "id": "btnQuickGrid",
+          "hit": "btnQuickGrid",
+          "ok": true
+        },
+        {
+          "id": "btnCreateRect",
+          "hit": "btnCreateRect",
+          "ok": true
+        },
+        {
+          "id": "btnCreatePoly",
+          "hit": "btnCreatePoly",
+          "ok": true
+        },
+        {
+          "id": "btnNewParameter",
+          "hit": "btnNewParameter",
+          "ok": true
+        },
+        {
+          "id": "btnNewAssembly",
+          "hit": "btnNewAssembly",
+          "ok": true
+        },
+        {
+          "id": "btnNewSectionProfile",
+          "hit": "btnNewSectionProfile",
+          "ok": true
+        },
+        {
+          "id": "btnNewSpace",
+          "hit": "btnNewSpace",
+          "ok": true
+        },
+        {
+          "id": "btnNewColumn",
+          "hit": "btnNewColumn",
+          "ok": true
+        },
+        {
+          "id": "btnNewBeam",
+          "hit": "btnNewBeam",
+          "ok": true
+        },
+        {
+          "id": "btnBox6",
+          "hit": "btnBox6",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "label": "900-mouse left Escape closes menu and restores trigger",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-mouse left reopen first center opens grid without native/history write",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-mouse actual right drawer state",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-mouse right all menu centers unobscured",
+      "pass": true,
+      "detail": [
+        {
+          "id": "btnQuickGrid",
+          "hit": "btnQuickGrid",
+          "ok": true
+        },
+        {
+          "id": "btnCreateRect",
+          "hit": "btnCreateRect",
+          "ok": true
+        },
+        {
+          "id": "btnCreatePoly",
+          "hit": "btnCreatePoly",
+          "ok": true
+        },
+        {
+          "id": "btnNewParameter",
+          "hit": "btnNewParameter",
+          "ok": true
+        },
+        {
+          "id": "btnNewAssembly",
+          "hit": "btnNewAssembly",
+          "ok": true
+        },
+        {
+          "id": "btnNewSectionProfile",
+          "hit": "btnNewSectionProfile",
+          "ok": true
+        },
+        {
+          "id": "btnNewSpace",
+          "hit": "btnNewSpace",
+          "ok": true
+        },
+        {
+          "id": "btnNewColumn",
+          "hit": "btnNewColumn",
+          "ok": true
+        },
+        {
+          "id": "btnNewBeam",
+          "hit": "btnNewBeam",
+          "ok": true
+        },
+        {
+          "id": "btnBox6",
+          "hit": "btnBox6",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "label": "900-mouse right Escape closes menu and restores trigger",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-mouse right reopen first center opens grid without native/history write",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-mouse actual closed drawer state",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-mouse closed all menu centers unobscured",
+      "pass": true,
+      "detail": [
+        {
+          "id": "btnQuickGrid",
+          "hit": "btnQuickGrid",
+          "ok": true
+        },
+        {
+          "id": "btnCreateRect",
+          "hit": "btnCreateRect",
+          "ok": true
+        },
+        {
+          "id": "btnCreatePoly",
+          "hit": "btnCreatePoly",
+          "ok": true
+        },
+        {
+          "id": "btnNewParameter",
+          "hit": "btnNewParameter",
+          "ok": true
+        },
+        {
+          "id": "btnNewAssembly",
+          "hit": "btnNewAssembly",
+          "ok": true
+        },
+        {
+          "id": "btnNewSectionProfile",
+          "hit": "btnNewSectionProfile",
+          "ok": true
+        },
+        {
+          "id": "btnNewSpace",
+          "hit": "btnNewSpace",
+          "ok": true
+        },
+        {
+          "id": "btnNewColumn",
+          "hit": "btnNewColumn",
+          "ok": true
+        },
+        {
+          "id": "btnNewBeam",
+          "hit": "btnNewBeam",
+          "ok": true
+        },
+        {
+          "id": "btnBox6",
+          "hit": "btnBox6",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "label": "900-mouse closed Escape closes menu and restores trigger",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-mouse closed reopen first center opens grid without native/history write",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-mouse feedback note survives menu Escape and parameter draft survives overlay",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-mouse feedback button/F8/Esc preserve dirty parameter and native/history",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-mouse feedback retains raw grid draft and native/history",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-mouse first center reopen restores exact grid inputs",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-mouse grid preview preserves native/history",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-mouse grid preview cancel preserves draft/native/history",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-mouse confirm writes exactly one grid and one history transaction",
+      "pass": true,
+      "detail": {
+        "before": {
+          "native": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6Iklzc3VlMTIzIGVkaXRlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6NH0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ncanvas-pos parameter 1 60 60\n",
+          "history": {
+            "context": "52792f4a-2995-48cc-8d15-ea33f92e3b01",
+            "frame": "c9d73395-26ff-498a-acfd-f2afbc2a5d82",
+            "undo": "a5f4ac99-8e8c-4a7f-bb0d-55201cff42d0",
+            "redo": null,
+            "undoLength": 6,
+            "redoLength": 0,
+            "entries": [
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              }
+            ]
+          }
+        },
+        "after": {
+          "native": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6Iklzc3VlMTIzIGVkaXRlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6NH0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ngrid-system 1 name-hex 49737375653132332067726964206472616674 main-along none u repeat 0 915 v repeat 0 1830\ncanvas-pos parameter 1 60 60\ncanvas-pos grid-system 1 -200 396\n",
+          "history": {
+            "context": "52792f4a-2995-48cc-8d15-ea33f92e3b01",
+            "frame": "c9d73395-26ff-498a-acfd-f2afbc2a5d82",
+            "undo": "b5eaf9b6-0bcd-49b5-b701-dc17ce844b4f",
+            "redo": null,
+            "undoLength": 7,
+            "redoLength": 0,
+            "entries": [
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "core",
+                "action": null
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "label": "900-mouse grid undo restores exact pre-confirm native",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-mouse grid redo restores exact confirmed native",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-touch page identity / meaningful shell / no framework overlay",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-touch parameter field active immediately before Create",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-touch menu owns its actual overlap with collapsed feedback",
+      "pass": true,
+      "detail": {
+        "overlap": false,
+        "ok": true
+      }
+    },
+    {
+      "label": "900-touch first center pointer and click each reach grid exactly once",
+      "pass": true,
+      "detail": {
+        "body": "canvas-composition canvas-has-inspector parameter-editing",
+        "grid": {
+          "rect": {
+            "x": 204.203125,
+            "y": 98.890625,
+            "width": 242,
+            "height": 56.890625
+          },
+          "style": {
+            "left": "auto",
+            "right": "auto",
+            "top": "auto",
+            "bottom": "auto",
+            "zIndex": "auto"
+          },
+          "hit": "btnQuickGrid",
+          "stack": [
+            "SPAN",
+            "btnQuickGrid",
+            "createObjectPop",
+            "canvasDrawToolbar",
+            "rect",
+            "ocv",
+            "canvasViewport",
+            "MAIN",
+            "app",
+            "BODY",
+            "HTML"
+          ]
+        },
+        "feedback": {
+          "rect": {
+            "x": 835,
+            "y": 78,
+            "width": 47,
+            "height": 28.671875
+          },
+          "style": {
+            "left": "835px",
+            "right": "18px",
+            "top": "78px",
+            "bottom": "793.328px",
+            "zIndex": "84"
+          },
+          "hit": "fbButton",
+          "stack": [
+            "fbButton",
+            "ocv",
+            "canvasViewport",
+            "MAIN",
+            "app",
+            "BODY",
+            "HTML"
+          ]
+        },
+        "menu": {
+          "rect": {
+            "x": 195.203125,
+            "y": 55.5,
+            "width": 260,
+            "height": 639.296875
+          },
+          "style": {
+            "left": "195.203px",
+            "right": "444.797px",
+            "top": "55.5px",
+            "bottom": "205.203px",
+            "zIndex": "85"
+          },
+          "hit": "btnNewAssembly",
+          "stack": [
+            "SMALL",
+            "SPAN",
+            "btnNewAssembly",
+            "createObjectPop",
+            "paramName",
+            "HEADER",
+            "parameterEditor",
+            "inspectorContent",
+            "ASIDE",
+            "MAIN",
+            "app",
+            "BODY",
+            "HTML"
+          ]
+        },
+        "events": [
+          {
+            "type": "pointerdown",
+            "id": "btnQuickGrid",
+            "pointerType": "touch",
+            "trusted": true
+          },
+          {
+            "type": "click",
+            "id": "btnQuickGrid",
+            "pointerType": "touch",
+            "trusted": true
+          },
+          {
+            "type": "click",
+            "id": "btnNewGridSystem",
+            "pointerType": "",
+            "trusted": false
+          }
+        ],
+        "gridOpen": true
+      }
+    },
+    {
+      "label": "900-touch native unchanged; only the existing initial raw-draft history entry allowed",
+      "pass": true,
+      "detail": {
+        "before": {
+          "native": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6Iklzc3VlMTIzIGVkaXRlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6NH0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ncanvas-pos parameter 1 60 60\n",
+          "history": {
+            "context": "23cf370d-e412-4eee-b471-245f1ea0bbba",
+            "frame": "171e1aca-d603-4dfe-ba55-18cd532386a0",
+            "undo": "93d7c054-7a00-4568-8d24-d8709395163b",
+            "redo": null,
+            "undoLength": 2,
+            "redoLength": 0,
+            "entries": [
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "core",
+                "action": null
+              }
+            ]
+          }
+        },
+        "after": {
+          "native": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6Iklzc3VlMTIzIGVkaXRlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6NH0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ncanvas-pos parameter 1 60 60\n",
+          "history": {
+            "context": "23cf370d-e412-4eee-b471-245f1ea0bbba",
+            "frame": "171e1aca-d603-4dfe-ba55-18cd532386a0",
+            "undo": "9005a37f-0eba-4de2-b05f-b1190476a43f",
+            "redo": null,
+            "undoLength": 3,
+            "redoLength": 0,
+            "entries": [
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "label": "900-touch actual left drawer state",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-touch left all menu centers unobscured",
+      "pass": true,
+      "detail": [
+        {
+          "id": "btnQuickGrid",
+          "hit": "btnQuickGrid",
+          "ok": true
+        },
+        {
+          "id": "btnCreateRect",
+          "hit": "btnCreateRect",
+          "ok": true
+        },
+        {
+          "id": "btnCreatePoly",
+          "hit": "btnCreatePoly",
+          "ok": true
+        },
+        {
+          "id": "btnNewParameter",
+          "hit": "btnNewParameter",
+          "ok": true
+        },
+        {
+          "id": "btnNewAssembly",
+          "hit": "btnNewAssembly",
+          "ok": true
+        },
+        {
+          "id": "btnNewSectionProfile",
+          "hit": "btnNewSectionProfile",
+          "ok": true
+        },
+        {
+          "id": "btnNewSpace",
+          "hit": "btnNewSpace",
+          "ok": true
+        },
+        {
+          "id": "btnNewColumn",
+          "hit": "btnNewColumn",
+          "ok": true
+        },
+        {
+          "id": "btnNewBeam",
+          "hit": "btnNewBeam",
+          "ok": true
+        },
+        {
+          "id": "btnBox6",
+          "hit": "btnBox6",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "label": "900-touch left Escape closes menu and restores trigger",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-touch left reopen first center opens grid without native/history write",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-touch actual right drawer state",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-touch right all menu centers unobscured",
+      "pass": true,
+      "detail": [
+        {
+          "id": "btnQuickGrid",
+          "hit": "btnQuickGrid",
+          "ok": true
+        },
+        {
+          "id": "btnCreateRect",
+          "hit": "btnCreateRect",
+          "ok": true
+        },
+        {
+          "id": "btnCreatePoly",
+          "hit": "btnCreatePoly",
+          "ok": true
+        },
+        {
+          "id": "btnNewParameter",
+          "hit": "btnNewParameter",
+          "ok": true
+        },
+        {
+          "id": "btnNewAssembly",
+          "hit": "btnNewAssembly",
+          "ok": true
+        },
+        {
+          "id": "btnNewSectionProfile",
+          "hit": "btnNewSectionProfile",
+          "ok": true
+        },
+        {
+          "id": "btnNewSpace",
+          "hit": "btnNewSpace",
+          "ok": true
+        },
+        {
+          "id": "btnNewColumn",
+          "hit": "btnNewColumn",
+          "ok": true
+        },
+        {
+          "id": "btnNewBeam",
+          "hit": "btnNewBeam",
+          "ok": true
+        },
+        {
+          "id": "btnBox6",
+          "hit": "btnBox6",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "label": "900-touch right Escape closes menu and restores trigger",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-touch right reopen first center opens grid without native/history write",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-touch actual closed drawer state",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-touch closed all menu centers unobscured",
+      "pass": true,
+      "detail": [
+        {
+          "id": "btnQuickGrid",
+          "hit": "btnQuickGrid",
+          "ok": true
+        },
+        {
+          "id": "btnCreateRect",
+          "hit": "btnCreateRect",
+          "ok": true
+        },
+        {
+          "id": "btnCreatePoly",
+          "hit": "btnCreatePoly",
+          "ok": true
+        },
+        {
+          "id": "btnNewParameter",
+          "hit": "btnNewParameter",
+          "ok": true
+        },
+        {
+          "id": "btnNewAssembly",
+          "hit": "btnNewAssembly",
+          "ok": true
+        },
+        {
+          "id": "btnNewSectionProfile",
+          "hit": "btnNewSectionProfile",
+          "ok": true
+        },
+        {
+          "id": "btnNewSpace",
+          "hit": "btnNewSpace",
+          "ok": true
+        },
+        {
+          "id": "btnNewColumn",
+          "hit": "btnNewColumn",
+          "ok": true
+        },
+        {
+          "id": "btnNewBeam",
+          "hit": "btnNewBeam",
+          "ok": true
+        },
+        {
+          "id": "btnBox6",
+          "hit": "btnBox6",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "label": "900-touch closed Escape closes menu and restores trigger",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-touch closed reopen first center opens grid without native/history write",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-touch feedback note survives menu Escape and parameter draft survives overlay",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-touch feedback button/F8/Esc preserve dirty parameter and native/history",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-touch feedback retains raw grid draft and native/history",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-touch first center reopen restores exact grid inputs",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-touch grid preview preserves native/history",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-touch grid preview cancel preserves draft/native/history",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-touch confirm writes exactly one grid and one history transaction",
+      "pass": true,
+      "detail": {
+        "before": {
+          "native": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6Iklzc3VlMTIzIGVkaXRlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6NH0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ncanvas-pos parameter 1 60 60\n",
+          "history": {
+            "context": "23cf370d-e412-4eee-b471-245f1ea0bbba",
+            "frame": "171e1aca-d603-4dfe-ba55-18cd532386a0",
+            "undo": "d38487d3-7e98-4de7-9537-4c85476af63b",
+            "redo": null,
+            "undoLength": 6,
+            "redoLength": 0,
+            "entries": [
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              }
+            ]
+          }
+        },
+        "after": {
+          "native": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6Iklzc3VlMTIzIGVkaXRlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6NH0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ngrid-system 1 name-hex 49737375653132332067726964206472616674 main-along none u repeat 0 915 v repeat 0 1830\ncanvas-pos parameter 1 60 60\ncanvas-pos grid-system 1 -200 396\n",
+          "history": {
+            "context": "23cf370d-e412-4eee-b471-245f1ea0bbba",
+            "frame": "171e1aca-d603-4dfe-ba55-18cd532386a0",
+            "undo": "d7ba94bb-c9d4-463b-8b3f-4d7de4608a15",
+            "redo": null,
+            "undoLength": 7,
+            "redoLength": 0,
+            "entries": [
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "core",
+                "action": null
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "label": "900-touch grid undo restores exact pre-confirm native",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "900-touch grid redo restores exact confirmed native",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "1400-mouse page identity / meaningful shell / no framework overlay",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "1400-mouse parameter field active immediately before Create",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "1400-mouse menu owns its actual overlap with collapsed feedback",
+      "pass": true,
+      "detail": {
+        "overlap": false,
+        "ok": true
+      }
+    },
+    {
+      "label": "1400-mouse first center pointer and click each reach grid exactly once",
+      "pass": true,
+      "detail": {
+        "body": "canvas-composition canvas-has-inspector parameter-editing",
+        "grid": {
+          "rect": {
+            "x": 25,
+            "y": 175.390625,
+            "width": 242,
+            "height": 56.890625
+          },
+          "style": {
+            "left": "auto",
+            "right": "auto",
+            "top": "auto",
+            "bottom": "auto",
+            "zIndex": "auto"
+          },
+          "hit": "btnQuickGrid",
+          "stack": [
+            "SPAN",
+            "btnQuickGrid",
+            "createObjectPop",
+            "btnNewGridSystem",
+            "DIV",
+            "SECTION",
+            "ASIDE",
+            "MAIN",
+            "app",
+            "BODY",
+            "HTML"
+          ]
+        },
+        "feedback": {
+          "rect": {
+            "x": 915,
+            "y": 78,
+            "width": 47,
+            "height": 28.671875
+          },
+          "style": {
+            "left": "915px",
+            "right": "438px",
+            "top": "78px",
+            "bottom": "893.328px",
+            "zIndex": "84"
+          },
+          "hit": "fbButton",
+          "stack": [
+            "fbButton",
+            "ocv",
+            "canvasViewport",
+            "MAIN",
+            "app",
+            "BODY",
+            "HTML"
+          ]
+        },
+        "menu": {
+          "rect": {
+            "x": 16,
+            "y": 132,
+            "width": 260,
+            "height": 639.296875
+          },
+          "style": {
+            "left": "16px",
+            "right": "1124px",
+            "top": "132px",
+            "bottom": "228.703px",
+            "zIndex": "85"
+          },
+          "hit": "btnNewAssembly",
+          "stack": [
+            "SMALL",
+            "SPAN",
+            "btnNewAssembly",
+            "createObjectPop",
+            "DIV",
+            "SECTION",
+            "objectList",
+            "SECTION",
+            "ASIDE",
+            "MAIN",
+            "app",
+            "BODY",
+            "HTML"
+          ]
+        },
+        "events": [
+          {
+            "type": "pointerdown",
+            "id": "btnQuickGrid",
+            "pointerType": "mouse",
+            "trusted": true
+          },
+          {
+            "type": "click",
+            "id": "btnQuickGrid",
+            "pointerType": "mouse",
+            "trusted": true
+          },
+          {
+            "type": "click",
+            "id": "btnNewGridSystem",
+            "pointerType": "",
+            "trusted": false
+          }
+        ],
+        "gridOpen": true
+      }
+    },
+    {
+      "label": "1400-mouse native unchanged; only the existing initial raw-draft history entry allowed",
+      "pass": true,
+      "detail": {
+        "before": {
+          "native": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6Iklzc3VlMTIzIGVkaXRlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6NH0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ncanvas-pos parameter 1 60 60\n",
+          "history": {
+            "context": "046dd421-e33a-4a1d-b56e-897070143f87",
+            "frame": "faeb0f60-c1fd-43a6-adcd-45fc54339d11",
+            "undo": "cc9d2dc9-5903-4de5-b03f-89376231972f",
+            "redo": null,
+            "undoLength": 2,
+            "redoLength": 0,
+            "entries": [
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "core",
+                "action": null
+              }
+            ]
+          }
+        },
+        "after": {
+          "native": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6Iklzc3VlMTIzIGVkaXRlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6NH0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ncanvas-pos parameter 1 60 60\n",
+          "history": {
+            "context": "046dd421-e33a-4a1d-b56e-897070143f87",
+            "frame": "faeb0f60-c1fd-43a6-adcd-45fc54339d11",
+            "undo": "f42e85b2-c438-4077-b648-181b380b30cf",
+            "redo": null,
+            "undoLength": 3,
+            "redoLength": 0,
+            "entries": [
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "label": "1400-mouse desktop all menu centers unobscured",
+      "pass": true,
+      "detail": [
+        {
+          "id": "btnQuickGrid",
+          "hit": "btnQuickGrid",
+          "ok": true
+        },
+        {
+          "id": "btnCreateRect",
+          "hit": "btnCreateRect",
+          "ok": true
+        },
+        {
+          "id": "btnCreatePoly",
+          "hit": "btnCreatePoly",
+          "ok": true
+        },
+        {
+          "id": "btnNewParameter",
+          "hit": "btnNewParameter",
+          "ok": true
+        },
+        {
+          "id": "btnNewAssembly",
+          "hit": "btnNewAssembly",
+          "ok": true
+        },
+        {
+          "id": "btnNewSectionProfile",
+          "hit": "btnNewSectionProfile",
+          "ok": true
+        },
+        {
+          "id": "btnNewSpace",
+          "hit": "btnNewSpace",
+          "ok": true
+        },
+        {
+          "id": "btnNewColumn",
+          "hit": "btnNewColumn",
+          "ok": true
+        },
+        {
+          "id": "btnNewBeam",
+          "hit": "btnNewBeam",
+          "ok": true
+        },
+        {
+          "id": "btnBox6",
+          "hit": "btnBox6",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "label": "1400-mouse desktop Escape closes menu and restores trigger",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "1400-mouse desktop reopen first center opens grid without native/history write",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "1400-mouse feedback note survives menu Escape and parameter draft survives overlay",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "1400-mouse feedback button/F8/Esc preserve dirty parameter and native/history",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "1400-mouse feedback retains raw grid draft and native/history",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "1400-mouse first center reopen restores exact grid inputs",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "1400-mouse grid preview preserves native/history",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "1400-mouse grid preview cancel preserves draft/native/history",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "1400-mouse confirm writes exactly one grid and one history transaction",
+      "pass": true,
+      "detail": {
+        "before": {
+          "native": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6Iklzc3VlMTIzIGVkaXRlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6NH0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ncanvas-pos parameter 1 60 60\n",
+          "history": {
+            "context": "046dd421-e33a-4a1d-b56e-897070143f87",
+            "frame": "faeb0f60-c1fd-43a6-adcd-45fc54339d11",
+            "undo": "c216c6c1-de00-4c2d-9c4a-086d38e57271",
+            "redo": null,
+            "undoLength": 6,
+            "redoLength": 0,
+            "entries": [
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              }
+            ]
+          }
+        },
+        "after": {
+          "native": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6Iklzc3VlMTIzIGVkaXRlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6NH0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ngrid-system 1 name-hex 49737375653132332067726964206472616674 main-along none u repeat 0 915 v repeat 0 1830\ncanvas-pos parameter 1 60 60\ncanvas-pos grid-system 1 -101 -226\n",
+          "history": {
+            "context": "046dd421-e33a-4a1d-b56e-897070143f87",
+            "frame": "faeb0f60-c1fd-43a6-adcd-45fc54339d11",
+            "undo": "8a216b69-f2ba-4979-92ac-2473e627c5b5",
+            "redo": null,
+            "undoLength": 7,
+            "redoLength": 0,
+            "entries": [
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "core",
+                "action": null
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "label": "1400-mouse grid undo restores exact pre-confirm native",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "1400-mouse grid redo restores exact confirmed native",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "1400-touch page identity / meaningful shell / no framework overlay",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "1400-touch parameter field active immediately before Create",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "1400-touch menu owns its actual overlap with collapsed feedback",
+      "pass": true,
+      "detail": {
+        "overlap": false,
+        "ok": true
+      }
+    },
+    {
+      "label": "1400-touch first center pointer and click each reach grid exactly once",
+      "pass": true,
+      "detail": {
+        "body": "canvas-composition canvas-has-inspector parameter-editing",
+        "grid": {
+          "rect": {
+            "x": 25,
+            "y": 175.390625,
+            "width": 242,
+            "height": 56.890625
+          },
+          "style": {
+            "left": "auto",
+            "right": "auto",
+            "top": "auto",
+            "bottom": "auto",
+            "zIndex": "auto"
+          },
+          "hit": "btnQuickGrid",
+          "stack": [
+            "SPAN",
+            "btnQuickGrid",
+            "createObjectPop",
+            "btnNewGridSystem",
+            "DIV",
+            "SECTION",
+            "ASIDE",
+            "MAIN",
+            "app",
+            "BODY",
+            "HTML"
+          ]
+        },
+        "feedback": {
+          "rect": {
+            "x": 915,
+            "y": 78,
+            "width": 47,
+            "height": 28.671875
+          },
+          "style": {
+            "left": "915px",
+            "right": "438px",
+            "top": "78px",
+            "bottom": "893.328px",
+            "zIndex": "84"
+          },
+          "hit": "fbButton",
+          "stack": [
+            "fbButton",
+            "ocv",
+            "canvasViewport",
+            "MAIN",
+            "app",
+            "BODY",
+            "HTML"
+          ]
+        },
+        "menu": {
+          "rect": {
+            "x": 16,
+            "y": 132,
+            "width": 260,
+            "height": 639.296875
+          },
+          "style": {
+            "left": "16px",
+            "right": "1124px",
+            "top": "132px",
+            "bottom": "228.703px",
+            "zIndex": "85"
+          },
+          "hit": "btnNewAssembly",
+          "stack": [
+            "SMALL",
+            "SPAN",
+            "btnNewAssembly",
+            "createObjectPop",
+            "DIV",
+            "SECTION",
+            "objectList",
+            "SECTION",
+            "ASIDE",
+            "MAIN",
+            "app",
+            "BODY",
+            "HTML"
+          ]
+        },
+        "events": [
+          {
+            "type": "pointerdown",
+            "id": "btnQuickGrid",
+            "pointerType": "touch",
+            "trusted": true
+          },
+          {
+            "type": "click",
+            "id": "btnQuickGrid",
+            "pointerType": "touch",
+            "trusted": true
+          },
+          {
+            "type": "click",
+            "id": "btnNewGridSystem",
+            "pointerType": "",
+            "trusted": false
+          }
+        ],
+        "gridOpen": true
+      }
+    },
+    {
+      "label": "1400-touch native unchanged; only the existing initial raw-draft history entry allowed",
+      "pass": true,
+      "detail": {
+        "before": {
+          "native": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6Iklzc3VlMTIzIGVkaXRlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6NH0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ncanvas-pos parameter 1 60 60\n",
+          "history": {
+            "context": "3411b119-72aa-4292-b142-36eddacaa987",
+            "frame": "a8634f4d-f79c-43c1-b18f-f2e6d0c2bf8e",
+            "undo": "6ec02352-935a-40f9-bb34-1fda339d9058",
+            "redo": null,
+            "undoLength": 2,
+            "redoLength": 0,
+            "entries": [
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "core",
+                "action": null
+              }
+            ]
+          }
+        },
+        "after": {
+          "native": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6Iklzc3VlMTIzIGVkaXRlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6NH0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ncanvas-pos parameter 1 60 60\n",
+          "history": {
+            "context": "3411b119-72aa-4292-b142-36eddacaa987",
+            "frame": "a8634f4d-f79c-43c1-b18f-f2e6d0c2bf8e",
+            "undo": "52d46be4-7491-41b1-ae4d-265e285b3c5a",
+            "redo": null,
+            "undoLength": 3,
+            "redoLength": 0,
+            "entries": [
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "label": "1400-touch desktop all menu centers unobscured",
+      "pass": true,
+      "detail": [
+        {
+          "id": "btnQuickGrid",
+          "hit": "btnQuickGrid",
+          "ok": true
+        },
+        {
+          "id": "btnCreateRect",
+          "hit": "btnCreateRect",
+          "ok": true
+        },
+        {
+          "id": "btnCreatePoly",
+          "hit": "btnCreatePoly",
+          "ok": true
+        },
+        {
+          "id": "btnNewParameter",
+          "hit": "btnNewParameter",
+          "ok": true
+        },
+        {
+          "id": "btnNewAssembly",
+          "hit": "btnNewAssembly",
+          "ok": true
+        },
+        {
+          "id": "btnNewSectionProfile",
+          "hit": "btnNewSectionProfile",
+          "ok": true
+        },
+        {
+          "id": "btnNewSpace",
+          "hit": "btnNewSpace",
+          "ok": true
+        },
+        {
+          "id": "btnNewColumn",
+          "hit": "btnNewColumn",
+          "ok": true
+        },
+        {
+          "id": "btnNewBeam",
+          "hit": "btnNewBeam",
+          "ok": true
+        },
+        {
+          "id": "btnBox6",
+          "hit": "btnBox6",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "label": "1400-touch desktop Escape closes menu and restores trigger",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "1400-touch desktop reopen first center opens grid without native/history write",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "1400-touch feedback note survives menu Escape and parameter draft survives overlay",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "1400-touch feedback button/F8/Esc preserve dirty parameter and native/history",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "1400-touch feedback retains raw grid draft and native/history",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "1400-touch first center reopen restores exact grid inputs",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "1400-touch grid preview preserves native/history",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "1400-touch grid preview cancel preserves draft/native/history",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "1400-touch confirm writes exactly one grid and one history transaction",
+      "pass": true,
+      "detail": {
+        "before": {
+          "native": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6Iklzc3VlMTIzIGVkaXRlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6NH0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ncanvas-pos parameter 1 60 60\n",
+          "history": {
+            "context": "3411b119-72aa-4292-b142-36eddacaa987",
+            "frame": "a8634f4d-f79c-43c1-b18f-f2e6d0c2bf8e",
+            "undo": "2735b2f4-2f9c-4b76-9353-ac361089c52e",
+            "redo": null,
+            "undoLength": 6,
+            "redoLength": 0,
+            "entries": [
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              }
+            ]
+          }
+        },
+        "after": {
+          "native": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6Iklzc3VlMTIzIGVkaXRlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6NH0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ngrid-system 1 name-hex 49737375653132332067726964206472616674 main-along none u repeat 0 915 v repeat 0 1830\ncanvas-pos parameter 1 60 60\ncanvas-pos grid-system 1 -101 -226\n",
+          "history": {
+            "context": "3411b119-72aa-4292-b142-36eddacaa987",
+            "frame": "a8634f4d-f79c-43c1-b18f-f2e6d0c2bf8e",
+            "undo": "425d6f5f-d20a-4b3f-ae1f-98a08419ce82",
+            "redo": null,
+            "undoLength": 7,
+            "redoLength": 0,
+            "entries": [
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "local",
+                "action": "編輯網格草稿"
+              },
+              {
+                "kind": "core",
+                "action": null
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "label": "1400-touch grid undo restores exact pre-confirm native",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "1400-touch grid redo restores exact confirmed native",
+      "pass": true,
+      "detail": null
+    }
+  ],
+  "errors": [],
+  "console": [],
+  "requests": [
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"reset\",\"requestId\":\"7c471a50-5c5a-455b-9d26-2d32ac23be7b\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"newid\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/engineering/preview",
+      "body": "{\"schema\":\"engineering-transaction/1\",\"expectedRevision\":460,\"operations\":[{\"op\":\"put-parameter\",\"value\":{\"id\":1,\"name\":\"Issue123 parameter\",\"nextFieldId\":4,\"fields\":[{\"id\":2,\"name\":\"寬\",\"type\":\"dimension\",\"input\":\"915\"},{\"id\":3,\"name\":\"長\",\"type\":\"dimension\",\"input\":\"1830\"}]}}]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-confirm 99\",\"requestId\":\"cf122c88-55d4-465a-b0d9-a8eeb1858f45\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"7c471a50-5c5a-455b-9d26-2d32ac23be7b\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line canvas-pos parameter 1 60 96\",\"requestId\":\"6f730aa5-da7f-4193-a977-bad6111fe75b\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"cf122c88-55d4-465a-b0d9-a8eeb1858f45\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line canvas-pos parameter 1 60 60\",\"requestId\":\"22b9bfb0-faa0-40fa-88e0-eb2ae4b4b410\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"6f730aa5-da7f-4193-a977-bad6111fe75b\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/engineering/preview",
+      "body": "{\"schema\":\"engineering-transaction/1\",\"expectedRevision\":461,\"operations\":[{\"op\":\"put-parameter\",\"value\":{\"id\":1,\"name\":\"Issue123 edited parameter\",\"nextFieldId\":4,\"fields\":[{\"id\":2,\"name\":\"寬\",\"type\":\"dimension\",\"input\":\"915\"},{\"id\":3,\"name\":\"長\",\"type\":\"dimension\",\"input\":\"1830\"}]}}]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-confirm 100\",\"requestId\":\"bc392257-7ac0-4920-8a0c-1fc5a6bc8aed\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"22b9bfb0-faa0-40fa-88e0-eb2ae4b4b410\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/engineering/preview",
+      "body": "{\"schema\":\"engineering-transaction/1\",\"expectedRevision\":462,\"operations\":[{\"op\":\"put-parameter\",\"value\":{\"id\":1,\"name\":\"Uncommitted parameter draft\",\"nextFieldId\":4,\"fields\":[{\"id\":2,\"name\":\"寬\",\"type\":\"dimension\",\"input\":\"915\"},{\"id\":3,\"name\":\"長\",\"type\":\"dimension\",\"input\":\"1830\"}]}}]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-cancel 101\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"newid\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line preview grid-system 1 name-hex 49737375653132332067726964206472616674 main-along none u repeat 0 915 v repeat 0 1830\",\"requestId\":\"c4b58314-de99-42b2-a70c-8e1aa42b1f33\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"bc392257-7ac0-4920-8a0c-1fc5a6bc8aed\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line cancel-preview\",\"requestId\":\"88ff3be8-0edb-4e07-90a6-dce68ff675a4\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"c4b58314-de99-42b2-a70c-8e1aa42b1f33\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"newid\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line preview grid-system 1 name-hex 49737375653132332067726964206472616674 main-along none u repeat 0 915 v repeat 0 1830\",\"requestId\":\"56e189fc-906a-46c7-a008-d0286b13d82f\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"88ff3be8-0edb-4e07-90a6-dce68ff675a4\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line confirm 103\",\"requestId\":\"fcbd1a5a-2d2a-4b3e-8570-fe2b9936f6b7\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"56e189fc-906a-46c7-a008-d0286b13d82f\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line canvas-pos grid-system 1 55 396\",\"requestId\":\"31604935-b20c-4400-be88-b1febaddf6a7\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"fcbd1a5a-2d2a-4b3e-8570-fe2b9936f6b7\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line undo\",\"requestId\":\"4cc21b1f-40c2-4183-a4f7-75aa1f49837a\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"31604935-b20c-4400-be88-b1febaddf6a7\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line redo\",\"requestId\":\"e90bb27e-9010-4ef5-bd14-1df4b278eefd\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"4cc21b1f-40c2-4183-a4f7-75aa1f49837a\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"reset\",\"requestId\":\"1dc0d09c-e94c-4455-944e-e13204a17bd0\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"newid\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/engineering/preview",
+      "body": "{\"schema\":\"engineering-transaction/1\",\"expectedRevision\":466,\"operations\":[{\"op\":\"put-parameter\",\"value\":{\"id\":1,\"name\":\"Issue123 parameter\",\"nextFieldId\":4,\"fields\":[{\"id\":2,\"name\":\"寬\",\"type\":\"dimension\",\"input\":\"915\"},{\"id\":3,\"name\":\"長\",\"type\":\"dimension\",\"input\":\"1830\"}]}}]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-confirm 104\",\"requestId\":\"235e64eb-1fff-4167-a2b7-4353d83145fc\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"1dc0d09c-e94c-4455-944e-e13204a17bd0\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line canvas-pos parameter 1 60 96\",\"requestId\":\"fd3f0182-befb-4fbb-b438-6b280f684945\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"235e64eb-1fff-4167-a2b7-4353d83145fc\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line canvas-pos parameter 1 60 60\",\"requestId\":\"2170528b-3c31-4ef5-bb98-238d6b3ebcbc\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"fd3f0182-befb-4fbb-b438-6b280f684945\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/engineering/preview",
+      "body": "{\"schema\":\"engineering-transaction/1\",\"expectedRevision\":467,\"operations\":[{\"op\":\"put-parameter\",\"value\":{\"id\":1,\"name\":\"Issue123 edited parameter\",\"nextFieldId\":4,\"fields\":[{\"id\":2,\"name\":\"寬\",\"type\":\"dimension\",\"input\":\"915\"},{\"id\":3,\"name\":\"長\",\"type\":\"dimension\",\"input\":\"1830\"}]}}]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-confirm 105\",\"requestId\":\"75dc8075-4d8d-40f5-ab88-cbb47fbfd632\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"2170528b-3c31-4ef5-bb98-238d6b3ebcbc\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/engineering/preview",
+      "body": "{\"schema\":\"engineering-transaction/1\",\"expectedRevision\":468,\"operations\":[{\"op\":\"put-parameter\",\"value\":{\"id\":1,\"name\":\"Uncommitted parameter draft\",\"nextFieldId\":4,\"fields\":[{\"id\":2,\"name\":\"寬\",\"type\":\"dimension\",\"input\":\"915\"},{\"id\":3,\"name\":\"長\",\"type\":\"dimension\",\"input\":\"1830\"}]}}]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-cancel 106\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"newid\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line preview grid-system 1 name-hex 49737375653132332067726964206472616674 main-along none u repeat 0 915 v repeat 0 1830\",\"requestId\":\"f41f3d03-b048-46da-a0e1-f2bec97b4fda\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"75dc8075-4d8d-40f5-ab88-cbb47fbfd632\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line cancel-preview\",\"requestId\":\"52e5887a-feb0-4ff7-8859-899994220f13\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"f41f3d03-b048-46da-a0e1-f2bec97b4fda\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"newid\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line preview grid-system 1 name-hex 49737375653132332067726964206472616674 main-along none u repeat 0 915 v repeat 0 1830\",\"requestId\":\"289e44d7-232d-4951-af3b-2759765490f1\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"52e5887a-feb0-4ff7-8859-899994220f13\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line confirm 108\",\"requestId\":\"eec68cb0-64aa-4740-ae98-6019b79dbe02\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"289e44d7-232d-4951-af3b-2759765490f1\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line canvas-pos grid-system 1 55 396\",\"requestId\":\"d91f4f3f-7b20-49e4-80e2-b940c3d51da4\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"eec68cb0-64aa-4740-ae98-6019b79dbe02\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line undo\",\"requestId\":\"6731d4b5-ccc6-47b5-a228-32633e992c2d\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"d91f4f3f-7b20-49e4-80e2-b940c3d51da4\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line redo\",\"requestId\":\"30b2a663-756c-4572-88a1-d75e3051bd8d\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"6731d4b5-ccc6-47b5-a228-32633e992c2d\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"reset\",\"requestId\":\"1455d464-77dd-41b7-bc4e-9a18856ed96b\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"newid\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/engineering/preview",
+      "body": "{\"schema\":\"engineering-transaction/1\",\"expectedRevision\":472,\"operations\":[{\"op\":\"put-parameter\",\"value\":{\"id\":1,\"name\":\"Issue123 parameter\",\"nextFieldId\":4,\"fields\":[{\"id\":2,\"name\":\"寬\",\"type\":\"dimension\",\"input\":\"915\"},{\"id\":3,\"name\":\"長\",\"type\":\"dimension\",\"input\":\"1830\"}]}}]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-confirm 109\",\"requestId\":\"37cd7af0-091b-4cb2-8684-12d82b550f06\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"1455d464-77dd-41b7-bc4e-9a18856ed96b\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line canvas-pos parameter 1 60 96\",\"requestId\":\"be73fc37-7d74-4a97-b4a6-669be3ce1442\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"37cd7af0-091b-4cb2-8684-12d82b550f06\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line canvas-pos parameter 1 60 60\",\"requestId\":\"294bedc5-8d93-4bfa-b948-22dc7b5223ea\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"be73fc37-7d74-4a97-b4a6-669be3ce1442\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/engineering/preview",
+      "body": "{\"schema\":\"engineering-transaction/1\",\"expectedRevision\":473,\"operations\":[{\"op\":\"put-parameter\",\"value\":{\"id\":1,\"name\":\"Issue123 edited parameter\",\"nextFieldId\":4,\"fields\":[{\"id\":2,\"name\":\"寬\",\"type\":\"dimension\",\"input\":\"915\"},{\"id\":3,\"name\":\"長\",\"type\":\"dimension\",\"input\":\"1830\"}]}}]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-confirm 110\",\"requestId\":\"6f9abaf4-b242-4e9d-9ad8-0bc5252d9f58\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"294bedc5-8d93-4bfa-b948-22dc7b5223ea\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/engineering/preview",
+      "body": "{\"schema\":\"engineering-transaction/1\",\"expectedRevision\":474,\"operations\":[{\"op\":\"put-parameter\",\"value\":{\"id\":1,\"name\":\"Uncommitted parameter draft\",\"nextFieldId\":4,\"fields\":[{\"id\":2,\"name\":\"寬\",\"type\":\"dimension\",\"input\":\"915\"},{\"id\":3,\"name\":\"長\",\"type\":\"dimension\",\"input\":\"1830\"}]}}]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-cancel 111\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"newid\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line preview grid-system 1 name-hex 49737375653132332067726964206472616674 main-along none u repeat 0 915 v repeat 0 1830\",\"requestId\":\"dfb6f122-f415-4422-8ed4-154984bc6277\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"6f9abaf4-b242-4e9d-9ad8-0bc5252d9f58\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line cancel-preview\",\"requestId\":\"10e22d9b-59a7-4106-af8e-ecd58bdb9812\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"dfb6f122-f415-4422-8ed4-154984bc6277\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"newid\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line preview grid-system 1 name-hex 49737375653132332067726964206472616674 main-along none u repeat 0 915 v repeat 0 1830\",\"requestId\":\"d31067cd-1c42-4ecd-8622-cf65121635f4\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"10e22d9b-59a7-4106-af8e-ecd58bdb9812\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line confirm 113\",\"requestId\":\"90f64463-8782-41bb-916a-d69129c21bc1\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"d31067cd-1c42-4ecd-8622-cf65121635f4\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line canvas-pos grid-system 1 -200 396\",\"requestId\":\"15c72d2e-1086-4807-ae74-a56af24351f2\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"90f64463-8782-41bb-916a-d69129c21bc1\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line undo\",\"requestId\":\"1375904b-1b5c-4a70-9849-aabf46e6a120\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"15c72d2e-1086-4807-ae74-a56af24351f2\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line redo\",\"requestId\":\"39a452ef-4984-4444-9001-4d0d22f48c07\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"1375904b-1b5c-4a70-9849-aabf46e6a120\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"reset\",\"requestId\":\"a896a67b-67d0-4fd5-bce0-ca842962f0d7\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"newid\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/engineering/preview",
+      "body": "{\"schema\":\"engineering-transaction/1\",\"expectedRevision\":478,\"operations\":[{\"op\":\"put-parameter\",\"value\":{\"id\":1,\"name\":\"Issue123 parameter\",\"nextFieldId\":4,\"fields\":[{\"id\":2,\"name\":\"寬\",\"type\":\"dimension\",\"input\":\"915\"},{\"id\":3,\"name\":\"長\",\"type\":\"dimension\",\"input\":\"1830\"}]}}]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-confirm 114\",\"requestId\":\"aa6402a4-b5cb-4a87-bd8f-53ccb0752dd0\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"a896a67b-67d0-4fd5-bce0-ca842962f0d7\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line canvas-pos parameter 1 60 96\",\"requestId\":\"f1d67eeb-e480-4e72-a17f-d283a1bae61c\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"aa6402a4-b5cb-4a87-bd8f-53ccb0752dd0\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line canvas-pos parameter 1 60 60\",\"requestId\":\"db59df13-5f5c-41d9-97dc-7d21866f4f58\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"f1d67eeb-e480-4e72-a17f-d283a1bae61c\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/engineering/preview",
+      "body": "{\"schema\":\"engineering-transaction/1\",\"expectedRevision\":479,\"operations\":[{\"op\":\"put-parameter\",\"value\":{\"id\":1,\"name\":\"Issue123 edited parameter\",\"nextFieldId\":4,\"fields\":[{\"id\":2,\"name\":\"寬\",\"type\":\"dimension\",\"input\":\"915\"},{\"id\":3,\"name\":\"長\",\"type\":\"dimension\",\"input\":\"1830\"}]}}]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-confirm 115\",\"requestId\":\"96e51197-6dcd-4ff6-ae6a-a3160e72a8d9\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"db59df13-5f5c-41d9-97dc-7d21866f4f58\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/engineering/preview",
+      "body": "{\"schema\":\"engineering-transaction/1\",\"expectedRevision\":480,\"operations\":[{\"op\":\"put-parameter\",\"value\":{\"id\":1,\"name\":\"Uncommitted parameter draft\",\"nextFieldId\":4,\"fields\":[{\"id\":2,\"name\":\"寬\",\"type\":\"dimension\",\"input\":\"915\"},{\"id\":3,\"name\":\"長\",\"type\":\"dimension\",\"input\":\"1830\"}]}}]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-cancel 116\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"newid\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line preview grid-system 1 name-hex 49737375653132332067726964206472616674 main-along none u repeat 0 915 v repeat 0 1830\",\"requestId\":\"25f20157-5b5c-45eb-9f4d-b84af768a2db\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"96e51197-6dcd-4ff6-ae6a-a3160e72a8d9\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line cancel-preview\",\"requestId\":\"265265e9-f00a-4d2b-bb8a-1df2d79d4eae\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"25f20157-5b5c-45eb-9f4d-b84af768a2db\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"newid\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line preview grid-system 1 name-hex 49737375653132332067726964206472616674 main-along none u repeat 0 915 v repeat 0 1830\",\"requestId\":\"734b60da-f8e5-4536-9c75-0136bf523a58\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"265265e9-f00a-4d2b-bb8a-1df2d79d4eae\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line confirm 118\",\"requestId\":\"f87da9e8-2362-4725-8c85-19bd96776b79\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"734b60da-f8e5-4536-9c75-0136bf523a58\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line canvas-pos grid-system 1 -200 396\",\"requestId\":\"ffa0c010-5d98-4ea8-89b9-50abe478c6bf\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"f87da9e8-2362-4725-8c85-19bd96776b79\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line undo\",\"requestId\":\"093a1abb-878b-4bbb-a46d-b16a939f87dd\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"ffa0c010-5d98-4ea8-89b9-50abe478c6bf\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line redo\",\"requestId\":\"31b7ac56-b4e4-4f75-a181-7bb5aa10e289\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"093a1abb-878b-4bbb-a46d-b16a939f87dd\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"reset\",\"requestId\":\"aa11cebe-2d96-4705-99c1-26ffb2e1b576\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"newid\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/engineering/preview",
+      "body": "{\"schema\":\"engineering-transaction/1\",\"expectedRevision\":484,\"operations\":[{\"op\":\"put-parameter\",\"value\":{\"id\":1,\"name\":\"Issue123 parameter\",\"nextFieldId\":4,\"fields\":[{\"id\":2,\"name\":\"寬\",\"type\":\"dimension\",\"input\":\"915\"},{\"id\":3,\"name\":\"長\",\"type\":\"dimension\",\"input\":\"1830\"}]}}]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-confirm 119\",\"requestId\":\"816106d4-5b98-4a6b-9675-d4afefb4e0d9\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"aa11cebe-2d96-4705-99c1-26ffb2e1b576\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line canvas-pos parameter 1 60 40\",\"requestId\":\"84f2eccd-2908-46d3-8d86-2e71c6847367\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"816106d4-5b98-4a6b-9675-d4afefb4e0d9\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line canvas-pos parameter 1 60 60\",\"requestId\":\"66f75a5b-b742-40bc-a25c-3c79e0f17baf\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"84f2eccd-2908-46d3-8d86-2e71c6847367\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/engineering/preview",
+      "body": "{\"schema\":\"engineering-transaction/1\",\"expectedRevision\":485,\"operations\":[{\"op\":\"put-parameter\",\"value\":{\"id\":1,\"name\":\"Issue123 edited parameter\",\"nextFieldId\":4,\"fields\":[{\"id\":2,\"name\":\"寬\",\"type\":\"dimension\",\"input\":\"915\"},{\"id\":3,\"name\":\"長\",\"type\":\"dimension\",\"input\":\"1830\"}]}}]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-confirm 120\",\"requestId\":\"4afad5b1-1a6b-4c79-89b3-26b725458d79\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"66f75a5b-b742-40bc-a25c-3c79e0f17baf\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/engineering/preview",
+      "body": "{\"schema\":\"engineering-transaction/1\",\"expectedRevision\":486,\"operations\":[{\"op\":\"put-parameter\",\"value\":{\"id\":1,\"name\":\"Uncommitted parameter draft\",\"nextFieldId\":4,\"fields\":[{\"id\":2,\"name\":\"寬\",\"type\":\"dimension\",\"input\":\"915\"},{\"id\":3,\"name\":\"長\",\"type\":\"dimension\",\"input\":\"1830\"}]}}]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-cancel 121\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"newid\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line preview grid-system 1 name-hex 49737375653132332067726964206472616674 main-along none u repeat 0 915 v repeat 0 1830\",\"requestId\":\"7d6b9a0d-e1d4-4443-8222-47d3de4a0b94\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"4afad5b1-1a6b-4c79-89b3-26b725458d79\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line cancel-preview\",\"requestId\":\"e61e6151-f85f-4f72-a4f6-9ab451bf1cdd\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"7d6b9a0d-e1d4-4443-8222-47d3de4a0b94\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"newid\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line preview grid-system 1 name-hex 49737375653132332067726964206472616674 main-along none u repeat 0 915 v repeat 0 1830\",\"requestId\":\"1dbc47dd-fcca-430e-8709-e6ec0da7c5c5\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"e61e6151-f85f-4f72-a4f6-9ab451bf1cdd\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line confirm 123\",\"requestId\":\"54959da7-a7da-4bca-b3a4-dba131fc6e0c\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"1dbc47dd-fcca-430e-8709-e6ec0da7c5c5\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line canvas-pos grid-system 1 -101 -226\",\"requestId\":\"11f2c29c-7e03-43fe-9f3c-c9e14dab41c8\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"54959da7-a7da-4bca-b3a4-dba131fc6e0c\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line undo\",\"requestId\":\"d9fe6ff3-82d0-456e-8254-7bdd99c006bc\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"11f2c29c-7e03-43fe-9f3c-c9e14dab41c8\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line redo\",\"requestId\":\"3c09268c-b4a0-4b2c-a102-979df0b66a39\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"d9fe6ff3-82d0-456e-8254-7bdd99c006bc\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"reset\",\"requestId\":\"e078e246-8386-4663-b59f-382194251138\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"newid\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/engineering/preview",
+      "body": "{\"schema\":\"engineering-transaction/1\",\"expectedRevision\":490,\"operations\":[{\"op\":\"put-parameter\",\"value\":{\"id\":1,\"name\":\"Issue123 parameter\",\"nextFieldId\":4,\"fields\":[{\"id\":2,\"name\":\"寬\",\"type\":\"dimension\",\"input\":\"915\"},{\"id\":3,\"name\":\"長\",\"type\":\"dimension\",\"input\":\"1830\"}]}}]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-confirm 124\",\"requestId\":\"0b46d144-fd51-40d7-aad0-211240e81937\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"e078e246-8386-4663-b59f-382194251138\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line canvas-pos parameter 1 60 40\",\"requestId\":\"31745985-ba3d-4d7d-a2a3-a6ae6405cda7\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"0b46d144-fd51-40d7-aad0-211240e81937\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line canvas-pos parameter 1 60 60\",\"requestId\":\"0d116169-8a31-4753-be7c-3508bb3d7a5a\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"31745985-ba3d-4d7d-a2a3-a6ae6405cda7\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/engineering/preview",
+      "body": "{\"schema\":\"engineering-transaction/1\",\"expectedRevision\":491,\"operations\":[{\"op\":\"put-parameter\",\"value\":{\"id\":1,\"name\":\"Issue123 edited parameter\",\"nextFieldId\":4,\"fields\":[{\"id\":2,\"name\":\"寬\",\"type\":\"dimension\",\"input\":\"915\"},{\"id\":3,\"name\":\"長\",\"type\":\"dimension\",\"input\":\"1830\"}]}}]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-confirm 125\",\"requestId\":\"cfc7ea54-e91a-459d-8c5b-fb3ec87da344\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"0d116169-8a31-4753-be7c-3508bb3d7a5a\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/engineering/preview",
+      "body": "{\"schema\":\"engineering-transaction/1\",\"expectedRevision\":492,\"operations\":[{\"op\":\"put-parameter\",\"value\":{\"id\":1,\"name\":\"Uncommitted parameter draft\",\"nextFieldId\":4,\"fields\":[{\"id\":2,\"name\":\"寬\",\"type\":\"dimension\",\"input\":\"915\"},{\"id\":3,\"name\":\"長\",\"type\":\"dimension\",\"input\":\"1830\"}]}}]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"engineering-cancel 126\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"newid\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line preview grid-system 1 name-hex 49737375653132332067726964206472616674 main-along none u repeat 0 915 v repeat 0 1830\",\"requestId\":\"83ddd43f-39a5-473d-83db-3e8e6ae92561\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"cfc7ea54-e91a-459d-8c5b-fb3ec87da344\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line cancel-preview\",\"requestId\":\"742f139a-0fae-4990-a948-f54af4f1ff05\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"83ddd43f-39a5-473d-83db-3e8e6ae92561\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"newid\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line preview grid-system 1 name-hex 49737375653132332067726964206472616674 main-along none u repeat 0 915 v repeat 0 1830\",\"requestId\":\"7c49597b-21fe-463a-a4ba-aacecad0d918\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"742f139a-0fae-4990-a948-f54af4f1ff05\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line confirm 128\",\"requestId\":\"8cdb10dd-da99-42c1-bdc2-6fa774491aa2\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"7c49597b-21fe-463a-a4ba-aacecad0d918\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line canvas-pos grid-system 1 -101 -226\",\"requestId\":\"4267666b-9021-444b-a055-47a226ea5958\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"8cdb10dd-da99-42c1-bdc2-6fa774491aa2\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"source-inspect\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line undo\",\"requestId\":\"5dd5b397-b0bd-46cb-ba11-1842cbf88974\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"4267666b-9021-444b-a055-47a226ea5958\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"line redo\",\"requestId\":\"8d9f193d-40db-410c-b1dc-4e729e912f7e\",\"session\":\"ca31be77efb542b89d45d5a88c3b1b45\",\"ack\":[\"5dd5b397-b0bd-46cb-ba11-1842cbf88974\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"section-profile-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:18971/api",
+      "body": "{\"cmd\":\"dump\"}"
+    }
+  ],
+  "completed": true,
+  "browserVersion": "151.0.7922.173",
+  "passed": 138,
+  "failed": 0
+}

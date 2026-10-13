@@ -1,0 +1,24 @@
+test_sr15 (__main__.SR15.test_sr15) ... PASS parameter600-after-readonly-queries: entire live state and revision unchanged
+PASS parameter600: exact two-binding coordinates, two guides and two direct refs
+PASS parameter900-preview-live: entire live state and revision unchanged
+PASS parameter900-cancel: entire live state and revision unchanged
+PASS parameter900-after-readonly-queries: entire live state and revision unchanged
+PASS parameter900: exact two-binding coordinates, two guides and two direct refs
+PASS parameter-update: Undo/Redo restore complete World while revision advances
+PASS nondivisible-parameter-refused: entire live state and revision unchanged
+FAIL
+
+======================================================================
+FAIL: test_sr15 (__main__.SR15.test_sr15)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/closure-evidence/inventory/final-contract-mapping/sr15-probe/sr15_probe.py", line 243, in test_sr15
+    self.assertEqual({1}, {r['id'] for r in pv['gridBindings']})
+AssertionError: Items in the second set but not the first:
+0
+
+----------------------------------------------------------------------
+Ran 1 test in 0.465s
+
+FAILED (failures=1)
+{"successful": false, "out": "/workspace/closure-evidence/sr15-parameter-anchor-r1", "testsRun": 1}

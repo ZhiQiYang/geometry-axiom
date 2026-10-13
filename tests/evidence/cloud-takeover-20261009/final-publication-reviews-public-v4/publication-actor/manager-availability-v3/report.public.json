@@ -1,0 +1,446 @@
+{
+  "schema": "geometry-manager-availability-v3-independent-review/1",
+  "actor": "/root/publication_final_review/assembly_packet_review",
+  "at": "2026-10-09T19:47:17.370506+00:00",
+  "command": [
+    "<execution-runtime-path>",
+    "-B",
+    "<workspace-path>"
+  ],
+  "actualPython": "<execution-runtime-path>",
+  "actualPythonSHA256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+  "reviewSourceSHA256": "93fd08a591b46f7659ec7edaa7d80d3569bbf7b8a4ba0d924a1f8756b34b6a80",
+  "parserHelperSourceSHA256": "0c7d16eac138b21ec9a2d70235e5e8ba8b57336a5c449cea2e66aa6583f35e60",
+  "actualExitCode": 0,
+  "passedMetadataChecks": 78,
+  "failedMetadataChecks": 0,
+  "countsAreProductTests": false,
+  "productOrBrowserOrServiceOrCLIOrAPIExecuted": false,
+  "privateReceiptOrDatabaseOrExportOrRootInventoryInspected": false,
+  "selectedFullPrivateReceiptVerified": false,
+  "repositoryOrGitHubWritten": false,
+  "packetOrOriginalsChanged": false,
+  "manifestSHA256": "151c1fd14b5d1e85566871911c5f4e9e348d6b75a94a055577feea7e80935de0",
+  "originalV1PreflightExitHistory": {
+    "claimedActualExitCode": 1,
+    "producerReportedOriginalToolChunk": "e619f8",
+    "producerReportedOriginalError": "AttributeError list.values before packet/material inputs created",
+    "originalSeparateTerminalReceiptSeen": false,
+    "originalIndependentRawErrorFileSeen": false,
+    "basis": "Original tool-only failure reported by producer in this thread; immutable v1 list-schema bug remains in source and corrected dynamically by v2. This reviewer does not fabricate/reproduce a missing original terminal or error file."
+  },
+  "producerReportedLaterToolResults": {
+    "v2Packaging": {
+      "toolChunk": "59d25f",
+      "exitCode": 0,
+      "basis": "Producer declaration; original subprocess build-v2 receipt verified separately"
+    },
+    "v3MetadataFinalizer": {
+      "toolChunk": "c38f44",
+      "exitCode": 0,
+      "basis": "Producer declaration only; source/hash closure and final artifact bytes verified separately"
+    }
+  },
+  "currentRealQueueStatus": "unknown",
+  "reconcile": "NOT_EXECUTED",
+  "listReady": "NOT_EXECUTED",
+  "listAlerts": "NOT_EXECUTED",
+  "rawLog": {
+    "path": "<workspace-path>",
+    "bytes": 5374,
+    "sha256": "9bb77621a1566df46f4bb4d08e2762c6081f9c621699112d5f8ddbe795a12dc2"
+  },
+  "findings": [],
+  "checks": [
+    {
+      "name": "final-ready exact manifest SHA256",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact8listed + manifest9 files no omitted extras",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "safe public path README.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "public bytes/hash exact README.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "safe public path availability.public.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "public bytes/hash exact availability.public.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "unique structured JSON keys availability.public.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "safe public path cli-help/existing-cli-help-only.command.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "public bytes/hash exact cli-help/existing-cli-help-only.command.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "unique structured JSON keys cli-help/existing-cli-help-only.command.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "safe public path cli-help/existing-cli-help-only.stderr.log",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "public bytes/hash exact cli-help/existing-cli-help-only.stderr.log",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "safe public path cli-help/existing-cli-help-only.stdout.log",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "public bytes/hash exact cli-help/existing-cli-help-only.stdout.log",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "safe public path selected-execution.public.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "public bytes/hash exact selected-execution.public.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "unique structured JSON keys selected-execution.public.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "safe public path source/geometry-check-final-manager-availability-f3b.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "public bytes/hash exact source/geometry-check-final-manager-availability-f3b.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "safe public path source/geometry-prepare-final-manager-availability-f3b.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "public bytes/hash exact source/geometry-prepare-final-manager-availability-f3b.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "retained original identity availability.public.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all nonpath-token text/value associations exact availability.public.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "original/public projection flags accurate availability.public.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "retained original identity selected-execution.public.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all nonpath-token text/value associations exact selected-execution.public.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "original/public projection flags accurate selected-execution.public.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "retained original identity cli-help/existing-cli-help-only.command.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all nonpath-token text/value associations exact cli-help/existing-cli-help-only.command.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "original/public projection flags accurate cli-help/existing-cli-help-only.command.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "retained original identity cli-help/existing-cli-help-only.stdout.log",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all nonpath-token text/value associations exact cli-help/existing-cli-help-only.stdout.log",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "original/public projection flags accurate cli-help/existing-cli-help-only.stdout.log",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "retained original identity cli-help/existing-cli-help-only.stderr.log",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all nonpath-token text/value associations exact cli-help/existing-cli-help-only.stderr.log",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "original/public projection flags accurate cli-help/existing-cli-help-only.stderr.log",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "retained original identity source/geometry-check-final-manager-availability-f3b.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all nonpath-token text/value associations exact source/geometry-check-final-manager-availability-f3b.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "original/public projection flags accurate source/geometry-check-final-manager-availability-f3b.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "retained original identity source/geometry-prepare-final-manager-availability-f3b.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all nonpath-token text/value associations exact source/geometry-prepare-final-manager-availability-f3b.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "original/public projection flags accurate source/geometry-prepare-final-manager-availability-f3b.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact public summary source SHA f13f",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "original19:31:13 clean fullf3 beforeafter",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "current real queue unknown no real ledger accessible",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "reconcile/list-ready/list-alerts NOT_EXECUTED honest",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "no emptyDB Store/import/owner/approval mutation",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "incremental199roots84DB not new exhaustive fullscan",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "historical synthetic14empty1exports8 not recovery",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "historicalv5 ready59/0write alerts374 not current",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "explicit selected document not full private receipt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "original private receipt is hash reference only and omitted file",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "original missing PID/proc/live exe limit remains honest",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "original availability tool0 is ROOT-reported distinctprovenance",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "actual existing CLI command solely --help exit0",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "actual --help original raw stdout/stderr bindings stdout",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "actual --help original raw stdout/stderr bindings stderr",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "actual help stdout retained490bytes stderr0",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "checker original sourceeadcc matches selectedexecutoridentity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "preparer original source61e reference not fabricatedreceipt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "publication source role identity exact finalMetadataReviserSHA256",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "publication source role identity exact actualPackagingWrapperOriginalSHA256",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "publication source role identity exact dynamicInputBuilderOriginalSHA256",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "publication source role identity exact projectionEngineOriginalSHA256",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "publication input/receipt SHA exact configurationSHA256",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "publication input/receipt SHA exact extrasSHA256",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "publication input/receipt SHA exact metadataSHA256",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "publication input/receipt SHA exact originalBuildReceiptSHA256",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "immutablev1 dynamicinput dependency actually explicit inwrapper",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v2 corrects original preflight list schema without touchingoriginal",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "actual packaging0 sourcev2 wrapper vs child boundedv8 command clear",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "actual package buildstdout names immutablev2 SHA",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "freshv3 metadata time valid later than v2",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all original summary/selection/help/source files unchanged fromv2",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all original metadata unchanged exceptfresh roles/time/census",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "README original prose remains unchanged explicitv1/v2history",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "no product acceptance release approval or testcounts invented",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "manifest and parser source immutable throughout",
+      "passed": true,
+      "detail": null
+    }
+  ]
+}

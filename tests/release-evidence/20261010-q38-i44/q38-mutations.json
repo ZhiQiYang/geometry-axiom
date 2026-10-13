@@ -1,0 +1,550 @@
+{
+  "schema": "section-profile-mutations/1",
+  "summary": {
+    "killed": 41,
+    "equivalent": 1
+  },
+  "results": [
+    {
+      "id": "SPM01",
+      "group": "native",
+      "clause": "I44",
+      "desc": "drop the member-in-profile containment check",
+      "binary_sha256": "06220f809fac8f867451640047820ed5bdb30a51071604e9ba85f36a0aca8a43",
+      "exit": 1,
+      "failed": [
+        "FAIL test_concave_not_four_corners_and_winding",
+        "FAIL test_profile_geometry_and_coordinate_rejections"
+      ],
+      "first_failure": "True is not false : expected rejection 'V_PROFILE_OUTSIDE' but the candidate was accepted: {'token': 2, 'valid': True, 'revision': 12, 'diagnosticsComplete': True, 'validationStrategy': 'all-section-profile-violations', 'before': {'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM02",
+      "group": "native",
+      "clause": "I45",
+      "desc": "drop the member-overlap check",
+      "binary_sha256": "c70d43c761ca5c52b21e92e6ab44fcc706ace010b886f317d5c8bdae24cc5390",
+      "exit": 1,
+      "failed": [
+        "FAIL test_named_sources_rebuild_and_explicit_dependency_transaction",
+        "FAIL test_touch_edges_points_and_cross_kind_overlap"
+      ],
+      "first_failure": "True is not false : expected rejection 'V_PROFILE_OVERLAP' but the candidate was accepted: {'token': 3, 'valid': True, 'revision': 13, 'diagnosticsComplete': True, 'validationStrategy': 'all-section-profile-violations', 'before': {'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM03",
+      "group": "native",
+      "clause": "R36",
+      "desc": "u overlap uses <= : edge-sharing members become overlapping",
+      "binary_sha256": "212a64aba0cfbe1bcf0f01eb777887e30b8a63906a205dcf1cb926372430c8d1",
+      "exit": 1,
+      "failed": [
+        "FAIL test_touch_edges_points_and_cross_kind_overlap"
+      ],
+      "first_failure": "False is not true : expected the candidate to be accepted: {'token': 2, 'valid': False, 'revision': 12, 'diagnosticsComplete': True, 'validationStrategy': 'all-section-profile-violations', 'before': {'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule-authoring/1', 'assembly-timber",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM04",
+      "group": "native",
+      "clause": "R36",
+      "desc": "v overlap uses <= : members touching along v become overlapping",
+      "binary_sha256": "7f703cbf2984ee34325f45c1db8f736dc1f9d4ccb3a53f7d66b8eca3881bbdc6",
+      "exit": 1,
+      "failed": [
+        "FAIL test_touch_edges_points_and_cross_kind_overlap"
+      ],
+      "first_failure": "False is not true : expected the candidate to be accepted: {'token': 2, 'valid': False, 'revision': 12, 'diagnosticsComplete': True, 'validationStrategy': 'all-section-profile-violations', 'before': {'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule-authoring/1', 'assembly-timber",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM05",
+      "group": "native",
+      "clause": "I46/D40",
+      "desc": "panel width w < 915 becomes w <= 915",
+      "binary_sha256": "1460c201945433ca9037045919eb2e7c10160b7eb11a39bc9756d4ff8df4b2ca",
+      "exit": 1,
+      "failed": [
+        "FAIL test_panel_strict_width_fixed_spec_and_long_run"
+      ],
+      "first_failure": "True is not false : expected rejection 'V_PANEL_WIDTH' but the candidate was accepted: {'token': 3, 'valid': True, 'revision': 12, 'diagnosticsComplete': True, 'validationStrategy': 'all-section-profile-violations', 'before': {'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule-aut",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM06",
+      "group": "native",
+      "clause": "I46",
+      "desc": "panel width lower bound 1 becomes 0",
+      "binary_sha256": "339f61c139f3ff3f544b9d01554f4b3596897f72069aaf64655208df710b0755",
+      "exit": 1,
+      "failed": [
+        "FAIL test_panel_strict_width_fixed_spec_and_long_run"
+      ],
+      "first_failure": "True is not false : expected rejection 'V_PANEL_WIDTH' but the candidate was accepted: {'token': 2, 'valid': True, 'revision': 12, 'diagnosticsComplete': True, 'validationStrategy': 'all-section-profile-violations', 'before': {'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule-aut",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM07",
+      "group": "native",
+      "clause": "D40",
+      "desc": "panel spec identity is no longer checked",
+      "binary_sha256": "6dada11a8dc46ccfcea70fc56306cf8e1d1233f9fc329b75a52f527df5de823f",
+      "exit": 1,
+      "failed": [
+        "FAIL test_profile_geometry_and_coordinate_rejections"
+      ],
+      "first_failure": "True is not false : expected rejection 'panel requires calcium-silicate-6' but the candidate was accepted: {'token': 13, 'valid': True, 'revision': 12, 'diagnosticsComplete': True, 'validationStrategy': 'all-section-profile-violations', 'before': {'capabilities': ['engineering-spec/1', 'parameters/1",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM08",
+      "group": "native",
+      "clause": "D40",
+      "desc": "spec thickness 6 becomes 7",
+      "binary_sha256": "f9deb79e970630352360221647f67f0133e8e848359c31ea7bd7bdadb3a6dfba",
+      "exit": 1,
+      "failed": [
+        "FAIL test_panel_strict_width_fixed_spec_and_long_run"
+      ],
+      "first_failure": "Lists differ: [0, 0, 914, 6] != [0, 0, 914, 7]",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM09",
+      "group": "native",
+      "clause": "D40",
+      "desc": "spec w_max 915 becomes 914",
+      "binary_sha256": "895d953f38fe41c9401f8b08ac1d8e2911f1732b63fb31076a590832b4faa1fc",
+      "exit": 1,
+      "failed": [
+        "FAIL test_panel_strict_width_fixed_spec_and_long_run"
+      ],
+      "first_failure": "False is not true : expected the candidate to be accepted: {'token': 1, 'valid': False, 'revision': 11, 'diagnosticsComplete': True, 'validationStrategy': 'all-section-profile-violations', 'before': {'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule-authoring/1', 'assembly-timber",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM10",
+      "group": "native",
+      "clause": "I43",
+      "desc": "drop the outline validity check",
+      "binary_sha256": "16d4623665399c4ed330d1438ffeabf138638a23e38c8680071b3ff07fbc40aa",
+      "exit": 1,
+      "failed": [
+        "FAIL test_profile_geometry_and_coordinate_rejections"
+      ],
+      "first_failure": "True is not false : expected rejection 'I43' but the candidate was accepted: {'token': 3, 'valid': True, 'revision': 12, 'diagnosticsComplete': True, 'validationStrategy': 'all-section-profile-violations', 'before': {'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule-authoring/1',",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM11",
+      "group": "native",
+      "clause": "D37",
+      "desc": "run length accepts a D26 material source",
+      "binary_sha256": "7e1fbd6af9cd3f8d156d9fde6bd0e2eb8986581976df365e82a0630c0d43d749",
+      "exit": 1,
+      "failed": [
+        "FAIL test_parameter_zero_ids_types_and_fixed_material_sources_roundtrip"
+      ],
+      "first_failure": "True is not false : expected rejection 'unsupported dimension source' but the candidate was accepted: {'token': 4, 'valid': True, 'revision': 14, 'diagnosticsComplete': True, 'validationStrategy': 'all-section-profile-violations', 'before': {'capabilities': ['engineering-spec/1', 'parameters/1', 'as",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM12",
+      "group": "native",
+      "clause": "D36",
+      "desc": "material A/B field identity is no longer enforced",
+      "binary_sha256": "dd83c6ab9805ec2750e8460c58f8938a8d78babad00bbe75e759e20865b5fc11",
+      "exit": 1,
+      "failed": [
+        "FAIL test_parameter_zero_ids_types_and_fixed_material_sources_roundtrip"
+      ],
+      "first_failure": "'D36' not found in '{\"token\": 3, \"valid\": false, \"revision\": 14, \"diagnosticsComplete\": true, \"validationStrategy\": \"all-section-profile-violations\", \"before\": {\"capabilities\": [\"engineering-spec/1\", \"parameters/1\", \"assembly-rule-authoring/1\", \"assembly-timber-generation/1\", \"grid-subdivision-rules",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM13",
+      "group": "native",
+      "clause": "I51",
+      "desc": "scene records no longer need the section-profile/1 declaration",
+      "binary_sha256": "cad15fcaabe414f20e4fe2808c6247cb7c1771d38dd9663d906edb5e87dfaadd",
+      "exit": 1,
+      "failed": [
+        "FAIL test_exact_dump_load_zero_ids_empty_profile_and_fail_closed"
+      ],
+      "first_failure": "True is not false : I51: a scene with a missing requires section-profile/1 marker must be rejected",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM14",
+      "group": "native",
+      "clause": "I46",
+      "desc": "timber orientation is not validated",
+      "binary_sha256": "0d2919538f001ef54d60c13c67c44bf71ffd77f2b4bceae08ee6aa12b84df00b",
+      "exit": 1,
+      "failed": [
+        "FAIL test_profile_geometry_and_coordinate_rejections"
+      ],
+      "first_failure": "True is not false : expected rejection 'timber orientation must be A-u or A-v' but the candidate was accepted: {'token': 11, 'valid': True, 'revision': 12, 'diagnosticsComplete': True, 'validationStrategy': 'all-section-profile-violations', 'before': {'capabilities': ['engineering-spec/1', 'paramete",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM15",
+      "group": "native",
+      "clause": "I46",
+      "desc": "panel orientation is not validated",
+      "binary_sha256": "069bcc0cd242138737df0c1b4e916de0c5b608a464823dbee8473e80d598c2f2",
+      "exit": 1,
+      "failed": [
+        "FAIL test_profile_geometry_and_coordinate_rejections"
+      ],
+      "first_failure": "True is not false : expected rejection 'panel orientation must be thickness-v or thickness-u' but the candidate was accepted: {'token': 12, 'valid': True, 'revision': 12, 'diagnosticsComplete': True, 'validationStrategy': 'all-section-profile-violations', 'before': {'capabilities': ['engineering-spe",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM16",
+      "group": "native",
+      "clause": "R38",
+      "desc": "V = +up instead of -up",
+      "binary_sha256": "a98092f580f9dec62a396e7024a04bd188deb5dbba74ee55e27458b38392c0c6",
+      "exit": 1,
+      "failed": [
+        "FAIL test_all_cardinal_frames_and_four_host_directions_are_exact"
+      ],
+      "first_failure": "Lists differ: [0, 0, -1] != [0, 0, 1]",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM17",
+      "group": "native",
+      "clause": "R38",
+      "desc": "negative directions (-u,-v) lose their sign",
+      "binary_sha256": "21f61357f1eb62e177bdb7a5ce0bb45ddb0301614a8319eb0945051d3620d420",
+      "exit": 1,
+      "failed": [
+        "FAIL test_all_cardinal_frames_and_four_host_directions_are_exact"
+      ],
+      "first_failure": "Lists differ: [-1, 0, 0] != [1, 0, 0]",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM18",
+      "group": "native",
+      "clause": "R38",
+      "desc": "dir +u/-u and +v/-v pick the wrong host axis",
+      "binary_sha256": "12af6b2183a1c5f0b778cea96b4e83042a8fa81dfd59324456583dd3efa213d2",
+      "exit": 1,
+      "failed": [
+        "FAIL test_all_cardinal_frames_and_four_host_directions_are_exact"
+      ],
+      "first_failure": "Lists differ: [1, 0, 0] != [0, 1, 0]",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM19",
+      "group": "native",
+      "clause": "I48",
+      "desc": "p,q may lie outside the host range",
+      "binary_sha256": "e7d831d35d77ca158cd5e0d2d1817ea18a3f5fdfda2d6d4491654e60e7b1ee98",
+      "exit": 1,
+      "failed": [
+        "FAIL test_simple_holes_closed_boundary_vertical_direction_and_invalid_up"
+      ],
+      "first_failure": "True is not false : expected rejection 'outside closed host range' but the candidate was accepted: {'token': 2, 'valid': True, 'revision': 12, 'diagnosticsComplete': True, 'validationStrategy': 'all-section-profile-violations', 'before': {'capabilities': ['engineering-spec/1', 'parameters/1', 'assem",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM20",
+      "group": "native",
+      "clause": "I48",
+      "desc": "up need not be perpendicular to the run direction",
+      "binary_sha256": "3b7cfb7ca1d4b577569953430c095540052f9fad26073fb14e097b9634087d94",
+      "exit": 1,
+      "failed": [
+        "FAIL test_simple_holes_closed_boundary_vertical_direction_and_invalid_up"
+      ],
+      "first_failure": "True is not false : expected rejection 'perpendicular' but the candidate was accepted: {'token': 4, 'valid': True, 'revision': 13, 'diagnosticsComplete': True, 'validationStrategy': 'all-section-profile-violations', 'before': {'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule-aut",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM21",
+      "group": "native",
+      "clause": "I48/D1",
+      "desc": "simple-placement origin is not range-checked",
+      "binary_sha256": "faea40c68bc3c70923f626727dcd5d5fce03410fb00dfdfedbe83db782e53e11",
+      "exit": 1,
+      "failed": [
+        "FAIL test_simple_holes_closed_boundary_vertical_direction_and_invalid_up"
+      ],
+      "first_failure": "'origin exceeds D1' not found in '{\"token\": 7, \"valid\": false, \"revision\": 14, \"diagnosticsComplete\": true, \"validationStrategy\": \"all-section-profile-violations\", \"before\": {\"capabilities\": [\"engineering-spec/1\", \"parameters/1\", \"assembly-rule-authoring/1\", \"assembly-timber-generation/1\", \"grid-sub",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM22",
+      "group": "native",
+      "clause": "R38",
+      "desc": "origin x component swaps p and q",
+      "binary_sha256": "bc8511a2b0e3e231186dbb00cc1b00a6504c0f1c1295663a5529aeba626fbfa4",
+      "exit": 1,
+      "failed": [
+        "FAIL test_live_host_follow_detach_conversion_and_atomic_delete"
+      ],
+      "first_failure": "Lists differ: [1000, 2000, 2800] != [2000, 2000, 2800]",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM23",
+      "group": "native",
+      "clause": "D38",
+      "desc": "advanced->simple conversion ignores the host plane",
+      "binary_sha256": "c868a11d8f3f9eea3fe2763be25486ff6cdd9c742cdd65559dc1d2cd5a1b0dd8",
+      "exit": 1,
+      "failed": [
+        "FAIL test_conversion_reports_all_unsatisfied_conditions_and_zero_writes"
+      ],
+      "first_failure": "'origin not in host plane' not found in '{\"token\": 2, \"valid\": false, \"revision\": 12, \"diagnosticsComplete\": true, \"validationStrategy\": \"all-section-profile-violations\", \"before\": {\"capabilities\": [\"engineering-spec/1\", \"parameters/1\", \"assembly-rule-authoring/1\", \"assembly-timber-generation/1\", \"g",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM24",
+      "group": "native",
+      "clause": "D38",
+      "desc": "advanced->simple conversion accepts any V as up",
+      "binary_sha256": "be8b0f3b872cd85f1c7bca35d0d78934d42b3d4625472bb62884acf0794d76f4",
+      "exit": 0,
+      "failed": [],
+      "verdict": "equivalent"
+    },
+    {
+      "id": "SPM25",
+      "group": "native",
+      "clause": "D38",
+      "desc": "advanced->simple conversion takes the last host direction regardless of N",
+      "binary_sha256": "8a5b68dd56bfaba9d74e76e060d6b6c1476bfb08969a1a6870ac440b74acc2a2",
+      "exit": 1,
+      "failed": [
+        "FAIL test_all_cardinal_frames_and_four_host_directions_are_exact"
+      ],
+      "first_failure": "{'val[78 chars]r': '+u', 'host': {'frame': {'N': '+Z', 'U': '[388 chars]: []} != {'val[78 chars]r': '-v', 'host': {'frame': {'N': '+Z', 'U': '[389 chars]: []}",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM26",
+      "group": "native",
+      "clause": "I49",
+      "desc": "PROFILE_CONTACT_LOST is never reported",
+      "binary_sha256": "c0a61b8121bbff3d5da275babfcf6a65f8736f39e13ed892215a4b8e1144a1e8",
+      "exit": 1,
+      "failed": [
+        "FAIL test_shrink_reject_and_expand_loses_right_contact"
+      ],
+      "first_failure": "{'code': 'PROFILE_CONTACT_LOST', 'clause': 'I49', 'memberId': 2, 'profileId': 1} not found in []",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM27",
+      "group": "native",
+      "clause": "I44",
+      "desc": "outside-region split drops the right-hand remainder",
+      "binary_sha256": "5b43840d6a3c52521000e8a9ac801faa6592e0d93c44c184567fc5566f28d618",
+      "exit": 1,
+      "failed": [
+        "FAIL test_concave_not_four_corners_and_winding"
+      ],
+      "first_failure": "True is not false : expected rejection 'V_PROFILE_OUTSIDE' but the candidate was accepted: {'token': 3, 'valid': True, 'revision': 12, 'diagnosticsComplete': True, 'validationStrategy': 'all-section-profile-violations', 'before': {'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM28",
+      "group": "native",
+      "clause": "I49",
+      "desc": "a member may reference a deleted profile",
+      "binary_sha256": "e58d81e48be0a8478f8225409b6dccd8adc85522ce47037dbcc3c7e666ea0f0d",
+      "exit": 1,
+      "failed": [
+        "FAIL test_named_sources_rebuild_and_explicit_dependency_transaction"
+      ],
+      "first_failure": "True is not false : expected rejection 'I49' but the candidate was accepted: {'token': 6, 'valid': True, 'revision': 12, 'diagnosticsComplete': True, 'validationStrategy': 'all-section-profile-violations', 'before': {'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule-authoring/1',",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM29",
+      "group": "native",
+      "clause": "I49",
+      "desc": "a run may reference a deleted profile",
+      "binary_sha256": "646bce54ad15f1464e2cb7c346bfee54315e1d6a480ff88839426d075bc73971",
+      "exit": 1,
+      "failed": [
+        "FAIL test_named_sources_rebuild_and_explicit_dependency_transaction"
+      ],
+      "first_failure": "True is not false : expected rejection 'I49' but the candidate was accepted: {'token': 5, 'valid': True, 'revision': 12, 'diagnosticsComplete': True, 'validationStrategy': 'all-section-profile-violations', 'before': {'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule-authoring/1',",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM30",
+      "group": "native",
+      "clause": "I47/D1",
+      "desc": "generated run vertices are not range-checked",
+      "binary_sha256": "e28a12f2b9b8163e709dbaa1c6ed38513e29c7cfd67224cc3f0619690408363c",
+      "exit": 1,
+      "failed": [
+        "FAIL test_ac09_advanced_axes_and_vertex_range"
+      ],
+      "first_failure": "True is not false : expected rejection 'I47/I48/D1' but the candidate was accepted: {'token': 4, 'valid': True, 'revision': 13, 'diagnosticsComplete': True, 'validationStrategy': 'all-section-profile-violations', 'before': {'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule-author",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM31",
+      "group": "native",
+      "clause": "R36",
+      "desc": "A-v / thickness-u swap width and height the wrong way round",
+      "binary_sha256": "9d023ab5d58df448dd55918086be3786dab4d182b5d1a43bda57cf8c8b2aa380",
+      "exit": 1,
+      "failed": [
+        "FAIL test_ac01_03_08_independent_rectangles_volumes_and_scope",
+        "FAIL test_ac09_advanced_axes_and_vertex_range"
+      ],
+      "first_failure": "False is not true : expected the candidate to be accepted: {'token': 1, 'valid': False, 'revision': 11, 'diagnosticsComplete': True, 'validationStrategy': 'all-section-profile-violations', 'before': {'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule-authoring/1', 'assembly-timber",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM32",
+      "group": "native",
+      "clause": "D36",
+      "desc": "panel orientation thickness-u is read as thickness-v",
+      "binary_sha256": "afca6c199748684e51a980c0b484bcee034abab1ae9857ae2fd2d8910ce0fc05",
+      "exit": 1,
+      "failed": [
+        "FAIL test_panel_strict_width_fixed_spec_and_long_run"
+      ],
+      "first_failure": "False is not true : expected the candidate to be accepted: {'token': 1, 'valid': False, 'revision': 11, 'diagnosticsComplete': True, 'validationStrategy': 'all-section-profile-violations', 'before': {'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule-authoring/1', 'assembly-timber",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM33",
+      "group": "native",
+      "clause": "D40/R37",
+      "desc": "the 1830 mm sheet length is misused as an upper bound for the run length",
+      "binary_sha256": "0340da576cb874bf68d8a33064e28ad69bbb94b7ca90d2c04b510f7a9ae97316",
+      "exit": 1,
+      "failed": [
+        "FAIL test_panel_strict_width_fixed_spec_and_long_run"
+      ],
+      "first_failure": "False is not true : expected the candidate to be accepted: {'token': 1, 'valid': False, 'revision': 11, 'diagnosticsComplete': True, 'validationStrategy': 'all-section-profile-violations', 'before': {'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule-authoring/1', 'assembly-timber",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM34",
+      "group": "native",
+      "clause": "I51",
+      "desc": "scene load accepts a duplicate profile id",
+      "binary_sha256": "1b045882dfb25a7e3fbd75d907a65cbbf58a5f5bb4a75f550df030b87a2708b3",
+      "exit": 1,
+      "failed": [
+        "FAIL test_exact_dump_load_zero_ids_empty_profile_and_fail_closed"
+      ],
+      "first_failure": "True is not false : I51: a scene with a duplicate profile id record must be rejected",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM35",
+      "group": "native",
+      "clause": "I49",
+      "desc": "section-profile records may be injected line by line outside an atomic load",
+      "binary_sha256": "8e76e24895d2eb9f24aff03cae2a7347342c42478cc580b97eb0325cb70c9196",
+      "exit": 1,
+      "failed": [
+        "FAIL test_exact_dump_load_zero_ids_empty_profile_and_fail_closed"
+      ],
+      "first_failure": "'preview' unexpectedly found in {'ok': False, 'error': 'line 1: I8a: impact preview required; inspect preview, then confirm token (World unchanged)', 'preview': {'token': 1, 'valid': True, 'command': 'section-profile profile eyJpZCI6NywibmFtZSI6ImxhdGUiLCJvdXRsaW5lIjpbWzAsMF0sWzEwLDBdLFsxMCwxMF0sWzA",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM41",
+      "group": "native",
+      "clause": "I44",
+      "desc": "back to poly_contains_rect: a rectangle exactly filling a notch counts as contained",
+      "binary_sha256": "40e671fc2a1492a4157f0b6056fb51e04660f906da8407fb6ed28c051aaa61e3",
+      "exit": 1,
+      "failed": [
+        "FAIL test_concave_not_four_corners_and_winding"
+      ],
+      "first_failure": "True is not false : expected rejection 'V_PROFILE_OUTSIDE' but the candidate was accepted: {'token': 3, 'valid': True, 'revision': 12, 'diagnosticsComplete': True, 'validationStrategy': 'all-section-profile-violations', 'before': {'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM42",
+      "group": "native",
+      "clause": "I47/D1",
+      "desc": "only the start vertex of a run is range-checked, not the far end",
+      "binary_sha256": "1125cb83137b3bbaf90f8e8dfcecdf262bc88965b154f2f9b7c888d01b12d1b4",
+      "exit": 1,
+      "failed": [
+        "FAIL test_ac09_advanced_axes_and_vertex_range"
+      ],
+      "first_failure": "True is not false : expected rejection 'I47/I48/D1' but the candidate was accepted: {'token': 10, 'valid': True, 'revision': 14, 'diagnosticsComplete': True, 'validationStrategy': 'all-section-profile-violations', 'before': {'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule-autho",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM36",
+      "group": "model",
+      "clause": "R37",
+      "desc": "the reference envelope becomes the bounding rectangle of the outline (L shape lost)",
+      "exit": 1,
+      "failed": [
+        "FAIL test_three_timber_members_and_actual_concave_reference_envelope"
+      ],
+      "first_failure": "'240000000' != '84960000'",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM37",
+      "group": "model",
+      "clause": "R39",
+      "desc": "the reference envelope is counted as material volume",
+      "exit": 1,
+      "failed": [
+        "FAIL test_three_timber_members_and_actual_concave_reference_envelope"
+      ],
+      "first_failure": "Tuples differ: ('reference', [], 'envelope', '84960000') != ('reference', [], 'envelope', '0')",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM38",
+      "group": "model",
+      "clause": "R37/D40",
+      "desc": "a panel is cut at the 1830 mm sheet length",
+      "exit": 1,
+      "failed": [
+        "ERROR test_long_panel_is_one_exact_solid_in_both_orientations"
+      ],
+      "first_failure": null,
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM39",
+      "group": "model",
+      "clause": "R36/R37",
+      "desc": "member rectangles are read with u and v swapped",
+      "exit": 1,
+      "failed": [
+        "FAIL test_advanced_native_frame_controls_world_axes_and_bounds"
+      ],
+      "first_failure": "Lists differ: [[1000, 2000, 2673], [1033, 4400, 2700]] != [[1000, 2000, 2667], [1027, 4400, 2700]]",
+      "verdict": "killed"
+    },
+    {
+      "id": "SPM40",
+      "group": "model",
+      "clause": "D39",
+      "desc": "an unplaced (local) run is cut by the world grid",
+      "exit": 1,
+      "failed": [
+        "ERROR test_local_runs_do_not_cut_other_local_or_world_mesh_grids"
+      ],
+      "first_failure": null,
+      "verdict": "killed"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "assemblySameProject": {
+    "result": "not-executed",
+    "settled": "Same-project .gcanvas reopen of published rule id/version, binding fingerprint, and member-to-timber ownership is settled in 公理層.md.",
+    "whyNotRun": "This browser pass finished only the grid-and-face scenario. assembly_id_test.js exportBytes/importBytes and the assembly-generation example were not used as a substitute."
+  },
+  "assemblyCrossProject": {
+    "result": "cannot-test",
+    "why": "公理層 only states that reopening a complete project keeps its identity. Parameter-pack import rewrites ids (公理層.md around line 821). Assembly import has no equivalent sentence. ruleKey does not gain a cross-project permanent identity (公理層.md around line 279). A15 same-package reopen is not that contract."
+  },
+  "modelLibraryMerge": {
+    "result": "cannot-test",
+    "why": "公理層 has no model-library type. Whether copying one model from project A into non-empty project B reissues the model id and source hash is unsettled. MH03 undo-back-to-previous-project and the boundary 311 / 4000x3000 oracle are not that merge. Historical 10/155 receipts stay missing."
+  }
+}

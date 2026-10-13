@@ -1,0 +1,78 @@
+{
+  "schema": "geometry-space-result/1",
+  "scope": {
+    "mode": "full-space-suite",
+    "filters": [],
+    "included": [
+      "space-height-library",
+      "projection-lifecycle",
+      "projection-placement",
+      "font-layout",
+      "space-flow"
+    ],
+    "omitted": [
+      "timber-material",
+      "timber-source-guards"
+    ],
+    "url": "http://127.0.0.1:19180/",
+    "feedbackDirectory": "<isolated-test-directory>"
+  },
+  "completed": false,
+  "groups": {
+    "setup": {
+      "expected": 2,
+      "passed": 2,
+      "failed": 0,
+      "completed": true
+    },
+    "space-height-library": {
+      "expected": 112,
+      "passed": 112,
+      "failed": 0,
+      "completed": true
+    },
+    "projection-lifecycle": {
+      "expected": 18,
+      "passed": 18,
+      "failed": 0,
+      "completed": true
+    },
+    "projection-placement": {
+      "expected": 36,
+      "passed": 36,
+      "failed": 0,
+      "completed": true
+    },
+    "font-layout": {
+      "expected": 19,
+      "passed": 0,
+      "failed": 0,
+      "completed": false
+    },
+    "space-flow": {
+      "expected": 39,
+      "passed": 0,
+      "failed": 0,
+      "completed": false
+    },
+    "browser-health": {
+      "expected": 2,
+      "passed": 0,
+      "failed": 0,
+      "completed": false
+    }
+  },
+  "completenessProblems": [
+    "Space run did not finish",
+    "Group font-layout did not complete",
+    "Group font-layout: expected 19 passed assertions, got 0 passed / 0 failed",
+    "Group space-flow did not complete",
+    "Group space-flow: expected 39 passed assertions, got 0 passed / 0 failed",
+    "Group browser-health did not complete",
+    "Group browser-health: expected 2 passed assertions, got 0 passed / 0 failed"
+  ],
+  "passed": 168,
+  "failed": 2,
+  "exceptions": [],
+  "consoleErrors": []
+}

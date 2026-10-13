@@ -1,0 +1,2285 @@
+{
+  "schema": "geometry-final-native-aggregate/1",
+  "createdAt": "2026-10-08T09:37:08.506160+00:00",
+  "scope": "Complete registered native and non-browser aggregate. Standalone browser gates are separately required.",
+  "execution": {
+    "schema": "geometry-full-aggregate-execution/1",
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/workspace/scratch/geometry-all-closeout/run_final_native.py",
+      "--build",
+      "--update-expected"
+    ],
+    "cwd": "/workspace/geometry-final",
+    "started": "2026-10-08T09:30:36.296510+00:00",
+    "ended": "2026-10-08T09:34:29.021541+00:00",
+    "durationSeconds": 232.7250388600005,
+    "exitCode": 0,
+    "executionHead": "07bca2991ec7984b18b11792bbdbd2e7616dc0c1",
+    "headAfter": "07bca2991ec7984b18b11792bbdbd2e7616dc0c1",
+    "fullScope": true,
+    "filters": [],
+    "allowSkip": false,
+    "trackedChanges": {
+      "tests/run_all.expected.json": {
+        "before": "a866d5fe73a17e8b60e2697771971128d4a86e9e9161b4ff1b8527e37b7a0c4a",
+        "after": "22abbe962f92465e908a0640c96943e1e22335128c3a1920519f365099669c46"
+      }
+    },
+    "binarySourcesUnchanged": true,
+    "mutationClosureUnchanged": true,
+    "mutationOracleUnchanged": true,
+    "driverUnchanged": true,
+    "logSha256": "0f9a042eff68ab3f1ba3eef5ede397cf8cd4a7da32c47b1acbbd054bdfa85e26",
+    "expectedBeforeSha256": "a866d5fe73a17e8b60e2697771971128d4a86e9e9161b4ff1b8527e37b7a0c4a",
+    "expectedAfterSha256": "22abbe962f92465e908a0640c96943e1e22335128c3a1920519f365099669c46",
+    "registryCount": 82,
+    "registryErrors": [],
+    "note": "Actual run_all.py executed unchanged through supplied binary-directory/stack wrapper; counts audited separately from raw logs."
+  },
+  "runtimeSourceFingerprint": "cef147968bf1f869086317708fbc99bf24dbbbee3275f6448a23cc2cc82f95e1",
+  "census": {
+    "suiteCount": 82,
+    "total": 2572,
+    "passed": 2571,
+    "failed": 0,
+    "skipped": 1,
+    "exitCodeOnlySuites": 6
+  },
+  "floorReview": {
+    "all81PreviousSuitesRetained": true,
+    "noCountReduced": true,
+    "expectedTransitions": {
+      "py:test_modeling_transport": {
+        "baseline": {
+          "mode": "count",
+          "count": 2,
+          "unit": "test"
+        },
+        "freeze": {
+          "mode": "count",
+          "count": 2,
+          "unit": "test"
+        },
+        "final": {
+          "mode": "count",
+          "count": 3,
+          "unit": "test"
+        }
+      },
+      "py:test_section_profile_modeling": {
+        "baseline": null,
+        "freeze": null,
+        "final": {
+          "mode": "count",
+          "count": 19,
+          "unit": "test"
+        }
+      },
+      "py:test_section_profile_native": {
+        "baseline": {
+          "mode": "count",
+          "count": 13,
+          "unit": "test"
+        },
+        "freeze": {
+          "mode": "count",
+          "count": 16,
+          "unit": "test"
+        },
+        "final": {
+          "mode": "count",
+          "count": 26,
+          "unit": "test"
+        }
+      },
+      "node:tests-js": {
+        "baseline": {
+          "mode": "count",
+          "count": 621,
+          "unit": "node test"
+        },
+        "freeze": {
+          "mode": "count",
+          "count": 621,
+          "unit": "node test"
+        },
+        "final": {
+          "mode": "count",
+          "count": 636,
+          "unit": "node test"
+        }
+      }
+    },
+    "exactExpectedSha256": "22abbe962f92465e908a0640c96943e1e22335128c3a1920519f365099669c46"
+  },
+  "rows": [
+    {
+      "name": "c:integrity",
+      "total": 88,
+      "passed": 88,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.1,
+      "note": "C 檢查點數（非 test 級）",
+      "line": 110
+    },
+    {
+      "name": "core:run_tests",
+      "total": 139,
+      "passed": 139,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1.3,
+      "note": "",
+      "line": 111
+    },
+    {
+      "name": "mutation:check",
+      "total": "-",
+      "passed": "-",
+      "failed": "-",
+      "skipped": "-",
+      "seconds": 0.1,
+      "note": "mutation inventory freshness (not test assertions); exit 0",
+      "line": 112
+    },
+    {
+      "name": "py:test_assembly_candidate_impact",
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.4,
+      "note": "",
+      "line": 113
+    },
+    {
+      "name": "py:test_assembly_capacity",
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.8,
+      "note": "",
+      "line": 114
+    },
+    {
+      "name": "py:test_assembly_generation",
+      "total": 21,
+      "passed": 21,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1.5,
+      "note": "",
+      "line": 115
+    },
+    {
+      "name": "py:test_assembly_native_diagnostics",
+      "total": 8,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.3,
+      "note": "",
+      "line": 116
+    },
+    {
+      "name": "py:test_assembly_parameter_refs",
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.3,
+      "note": "",
+      "line": 117
+    },
+    {
+      "name": "py:test_assembly_rules",
+      "total": 35,
+      "passed": 35,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1.2,
+      "note": "",
+      "line": 118
+    },
+    {
+      "name": "py:test_axiom_reader",
+      "total": 41,
+      "passed": 41,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 52.0,
+      "note": "",
+      "line": 119
+    },
+    {
+      "name": "py:test_binaries",
+      "total": 32,
+      "passed": 32,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.2,
+      "note": "",
+      "line": 120
+    },
+    {
+      "name": "py:test_bridge_integrity",
+      "total": 24,
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 7.1,
+      "note": "",
+      "line": 121
+    },
+    {
+      "name": "py:test_cli_args",
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.3,
+      "note": "",
+      "line": 122
+    },
+    {
+      "name": "py:test_datum_contract",
+      "total": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 2.0,
+      "note": "",
+      "line": 123
+    },
+    {
+      "name": "py:test_engineering_core",
+      "total": 18,
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.8,
+      "note": "",
+      "line": 124
+    },
+    {
+      "name": "py:test_engineering_json",
+      "total": 7,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.2,
+      "note": "",
+      "line": 125
+    },
+    {
+      "name": "py:test_engineering_model_compatibility",
+      "total": 24,
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1.3,
+      "note": "",
+      "line": 126
+    },
+    {
+      "name": "py:test_engineering_model_sources",
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.5,
+      "note": "",
+      "line": 127
+    },
+    {
+      "name": "py:test_engineering_transport",
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.1,
+      "note": "",
+      "line": 128
+    },
+    {
+      "name": "py:test_evidence_link_native",
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.3,
+      "note": "",
+      "line": 129
+    },
+    {
+      "name": "py:test_feedback_store",
+      "total": 11,
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.2,
+      "note": "",
+      "line": 130
+    },
+    {
+      "name": "py:test_gdi_contract",
+      "total": 1,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 1,
+      "seconds": 0.1,
+      "note": "skip：requires compiled Windows GDI contract harness ×1（其中 1 個在具名允許清單，平台固有，不計入 exit 3）；日誌 /tmp/geometry-final-native/run_all-logs/py_test_gdi_contract.log",
+      "line": 131
+    },
+    {
+      "name": "py:test_grid_subdivision_oracle",
+      "total": 40,
+      "passed": 40,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 2.4,
+      "note": "",
+      "line": 132
+    },
+    {
+      "name": "py:test_grid_system_contract",
+      "total": 13,
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.7,
+      "note": "",
+      "line": 133
+    },
+    {
+      "name": "py:test_grid_trial_contract",
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.2,
+      "note": "",
+      "line": 134
+    },
+    {
+      "name": "py:test_guide_panels",
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.1,
+      "note": "",
+      "line": 135
+    },
+    {
+      "name": "py:test_infinite_grid_contract",
+      "total": 25,
+      "passed": 25,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1.3,
+      "note": "",
+      "line": 136
+    },
+    {
+      "name": "py:test_local_launcher",
+      "total": 17,
+      "passed": 17,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.9,
+      "note": "",
+      "line": 137
+    },
+    {
+      "name": "py:test_model_update",
+      "total": 26,
+      "passed": 26,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 32.3,
+      "note": "",
+      "line": 138
+    },
+    {
+      "name": "py:test_modeling_degenerate",
+      "total": 24,
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.4,
+      "note": "",
+      "line": 139
+    },
+    {
+      "name": "py:test_modeling_runtime",
+      "total": 46,
+      "passed": 46,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1.1,
+      "note": "",
+      "line": 140
+    },
+    {
+      "name": "py:test_modeling_transport",
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1.1,
+      "note": "",
+      "line": 141
+    },
+    {
+      "name": "py:test_mutation_freshness",
+      "total": 24,
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.3,
+      "note": "",
+      "line": 142
+    },
+    {
+      "name": "py:test_parameters_core",
+      "total": 20,
+      "passed": 20,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.9,
+      "note": "",
+      "line": 143
+    },
+    {
+      "name": "py:test_reference_contract",
+      "total": 35,
+      "passed": 35,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1.5,
+      "note": "",
+      "line": 144
+    },
+    {
+      "name": "py:test_release_gate",
+      "total": 21,
+      "passed": 21,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.4,
+      "note": "",
+      "line": 145
+    },
+    {
+      "name": "py:test_rule_case_catalog",
+      "total": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.5,
+      "note": "",
+      "line": 146
+    },
+    {
+      "name": "py:test_rule_case_definition",
+      "total": 27,
+      "passed": 27,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.1,
+      "note": "",
+      "line": 147
+    },
+    {
+      "name": "py:test_rule_case_executor",
+      "total": 40,
+      "passed": 40,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1.4,
+      "note": "",
+      "line": 148
+    },
+    {
+      "name": "py:test_rule_case_host",
+      "total": 13,
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.3,
+      "note": "",
+      "line": 149
+    },
+    {
+      "name": "py:test_rule_case_request",
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.4,
+      "note": "",
+      "line": 150
+    },
+    {
+      "name": "py:test_rule_case_workbench_http",
+      "total": 19,
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 15.3,
+      "note": "",
+      "line": 151
+    },
+    {
+      "name": "py:test_runtime_version",
+      "total": 24,
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.3,
+      "note": "",
+      "line": 152
+    },
+    {
+      "name": "py:test_scenario_verify",
+      "total": 37,
+      "passed": 37,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 11.4,
+      "note": "",
+      "line": 153
+    },
+    {
+      "name": "py:test_scene_import",
+      "total": 10,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.7,
+      "note": "",
+      "line": 154
+    },
+    {
+      "name": "py:test_section_profile_modeling",
+      "total": 19,
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1.1,
+      "note": "",
+      "line": 155
+    },
+    {
+      "name": "py:test_section_profile_native",
+      "total": 26,
+      "passed": 26,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.0,
+      "note": "",
+      "line": 156
+    },
+    {
+      "name": "py:test_serve",
+      "total": 45,
+      "passed": 45,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 25.6,
+      "note": "",
+      "line": 157
+    },
+    {
+      "name": "py:test_source_inspector",
+      "total": 18,
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1.0,
+      "note": "",
+      "line": 158
+    },
+    {
+      "name": "py:test_source_inspector_transport",
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.1,
+      "note": "",
+      "line": 159
+    },
+    {
+      "name": "py:test_space_modeling",
+      "total": 35,
+      "passed": 35,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 11.5,
+      "note": "",
+      "line": 160
+    },
+    {
+      "name": "py:test_subgrid_contract",
+      "total": 31,
+      "passed": 31,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1.5,
+      "note": "",
+      "line": 161
+    },
+    {
+      "name": "py:test_timber_support_projection",
+      "total": 13,
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 6.4,
+      "note": "",
+      "line": 162
+    },
+    {
+      "name": "py:test_unittest_runner",
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1.7,
+      "note": "",
+      "line": 163
+    },
+    {
+      "name": "py:test_witness_diagnostics",
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.1,
+      "note": "",
+      "line": 164
+    },
+    {
+      "name": "py:test_witness_marks",
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.2,
+      "note": "",
+      "line": 165
+    },
+    {
+      "name": "node:tests-js",
+      "total": 636,
+      "passed": 636,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 26.9,
+      "note": "",
+      "line": 166
+    },
+    {
+      "name": "node:model_viewer",
+      "total": "-",
+      "passed": "ok",
+      "failed": "-",
+      "skipped": "-",
+      "seconds": 0.1,
+      "note": "僅結束碼：腳本式，無 test 級計數，以 exit code 判定",
+      "line": 167
+    },
+    {
+      "name": "node:polydraft",
+      "total": 75,
+      "passed": 75,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.5,
+      "note": "",
+      "line": 168
+    },
+    {
+      "name": "node:canvas_direct",
+      "total": 408,
+      "passed": 408,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1.4,
+      "note": "斷言數；preload 已把 web_bridge.exe 的 spawn 轉向 /tmp/geometry-final-native/bridge（標記檔 1 筆為證）",
+      "line": 169
+    },
+    {
+      "name": "node:document_format",
+      "total": "-",
+      "passed": "ok",
+      "failed": "-",
+      "skipped": "-",
+      "seconds": 0.1,
+      "note": "僅結束碼：腳本式，無 test 級計數，以 exit code 判定",
+      "line": 170
+    },
+    {
+      "name": "node:document_cases",
+      "total": "-",
+      "passed": "ok",
+      "failed": "-",
+      "skipped": "-",
+      "seconds": 1.1,
+      "note": "僅結束碼：腳本式，無 test 級計數，以 exit code 判定",
+      "line": 171
+    },
+    {
+      "name": "node:cdp_navigation",
+      "total": "-",
+      "passed": "ok",
+      "failed": "-",
+      "skipped": "-",
+      "seconds": 0.1,
+      "note": "僅結束碼：腳本式，無 test 級計數，以 exit code 判定",
+      "line": 172
+    },
+    {
+      "name": "node:cdp_confirmation_gate",
+      "total": "-",
+      "passed": "ok",
+      "failed": "-",
+      "skipped": "-",
+      "seconds": 0.0,
+      "note": "僅結束碼：腳本式，無 test 級計數，以 exit code 判定",
+      "line": 173
+    },
+    {
+      "name": "node:grid_lesson_control_ownership",
+      "total": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.1,
+      "note": "",
+      "line": 174
+    },
+    {
+      "name": "node:parameter_confirmation_settlement",
+      "total": 16,
+      "passed": 16,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.1,
+      "note": "",
+      "line": 175
+    },
+    {
+      "name": "node:face_reference_settlement",
+      "total": 18,
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.2,
+      "note": "",
+      "line": 176
+    },
+    {
+      "name": "node:workspace_shell_history",
+      "total": 28,
+      "passed": 28,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.1,
+      "note": "",
+      "line": 177
+    },
+    {
+      "name": "node:feedback_events",
+      "total": 41,
+      "passed": 41,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.1,
+      "note": "",
+      "line": 178
+    },
+    {
+      "name": "node:space_test_floor",
+      "total": 10,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.1,
+      "note": "",
+      "line": 179
+    },
+    {
+      "name": "node:history_operation",
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.1,
+      "note": "",
+      "line": 180
+    },
+    {
+      "name": "node:context_operations",
+      "total": 12,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.1,
+      "note": "",
+      "line": 181
+    },
+    {
+      "name": "node:cdp_evaluation",
+      "total": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.1,
+      "note": "",
+      "line": 182
+    },
+    {
+      "name": "node:background_grid_viewport",
+      "total": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.1,
+      "note": "",
+      "line": 183
+    },
+    {
+      "name": "node:anchor_band_clip",
+      "total": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.1,
+      "note": "",
+      "line": 184
+    },
+    {
+      "name": "node:hover_pick_scheduler",
+      "total": 19,
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.1,
+      "note": "",
+      "line": 185
+    },
+    {
+      "name": "node:face_paint_scheduler",
+      "total": 7,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.1,
+      "note": "",
+      "line": 186
+    },
+    {
+      "name": "node:room_outline_worker",
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.1,
+      "note": "",
+      "line": 187
+    },
+    {
+      "name": "node:room_outline_closeout",
+      "total": 24,
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.2,
+      "note": "",
+      "line": 188
+    },
+    {
+      "name": "node:evidence_links",
+      "total": 29,
+      "passed": 29,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.1,
+      "note": "",
+      "line": 189
+    },
+    {
+      "name": "node:evidence_project_store",
+      "total": 7,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.1,
+      "note": "",
+      "line": 190
+    },
+    {
+      "name": "node:grid_definition_diagram",
+      "total": 12,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.1,
+      "note": "",
+      "line": 191
+    }
+  ],
+  "independentAudit": {
+    "checks": [
+      {
+        "name": "82 unique rows equal registry",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "name": "82 progress entries in full registry order",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "name": "all prior 81 suites retained",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "name": "no decreases or changed count modes",
+        "pass": true,
+        "detail": []
+      },
+      {
+        "name": "only expected four scope changes",
+        "pass": true,
+        "detail": {
+          "py:test_modeling_transport": {
+            "baseline": {
+              "mode": "count",
+              "count": 2,
+              "unit": "test"
+            },
+            "freeze": {
+              "mode": "count",
+              "count": 2,
+              "unit": "test"
+            },
+            "final": {
+              "mode": "count",
+              "count": 3,
+              "unit": "test"
+            }
+          },
+          "py:test_section_profile_modeling": {
+            "baseline": null,
+            "freeze": null,
+            "final": {
+              "mode": "count",
+              "count": 19,
+              "unit": "test"
+            }
+          },
+          "py:test_section_profile_native": {
+            "baseline": {
+              "mode": "count",
+              "count": 13,
+              "unit": "test"
+            },
+            "freeze": {
+              "mode": "count",
+              "count": 16,
+              "unit": "test"
+            },
+            "final": {
+              "mode": "count",
+              "count": 26,
+              "unit": "test"
+            }
+          },
+          "node:tests-js": {
+            "baseline": {
+              "mode": "count",
+              "count": 621,
+              "unit": "node test"
+            },
+            "freeze": {
+              "mode": "count",
+              "count": 621,
+              "unit": "node test"
+            },
+            "final": {
+              "mode": "count",
+              "count": 636,
+              "unit": "node test"
+            }
+          }
+        }
+      },
+      {
+        "name": "only new modeling suite",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "name": "every row equals expected with six exit-only cases",
+        "pass": true,
+        "detail": []
+      },
+      {
+        "name": "independent summed totals match print",
+        "pass": true,
+        "detail": {
+          "total": 2572,
+          "passed": 2571,
+          "failed": 0,
+          "skipped": 1
+        }
+      },
+      {
+        "name": "all row arithmetic complete and no failures",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "name": "one exact named Windows GDI skip",
+        "pass": true,
+        "detail": [
+          {
+            "test": "test_gdi_contract.GdiContract.test_confirmed_failures_release_real_resources",
+            "reason": "requires compiled Windows GDI contract harness",
+            "scope": "test",
+            "count": 1,
+            "parent_test": "test_gdi_contract.GdiContract.test_confirmed_failures_release_real_resources"
+          }
+        ]
+      },
+      {
+        "name": "all unittest raw structured counts agree independently",
+        "pass": true,
+        "detail": []
+      },
+      {
+        "name": "real process exit zero and strict complete terminal",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "name": "exact clean head stable",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "name": "only expected artifact changed during run",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "name": "all binary source closures unchanged",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "name": "mutation source and oracle unchanged",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "name": "aggregate and wrappers unchanged",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "name": "no filters/allow-skip/registry errors",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "name": "16MiB stack inherited",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "name": "raw log checksum intact",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "name": "all applicable binary identities fresh",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "name": "formal expected identical to discovery bytes",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "name": "mutation formal check complete and fresh",
+        "pass": true,
+        "detail": null
+      }
+    ],
+    "overallPassed": true,
+    "auditSha256": "c8ea82767366024bdcd9a31aefdf0ddfaf1ece3607c1158101eb5a0b48dbaa2a"
+  },
+  "nativeBinarySourceClosures": {
+    "core": {
+      "fingerprint": "3e88ec20dbda911da9c2502ac7ed0d6fe6bf25eb9f418189270e7fddefcdeabb",
+      "files": [
+        "current_geometry.c",
+        "geometry-core/assembly.inc",
+        "geometry-core/assembly_generation.inc",
+        "geometry-core/assembly_types.h",
+        "geometry-core/boundary_vertex_keys.inc",
+        "geometry-core/engineering.inc",
+        "geometry-core/engineering_commands.inc",
+        "geometry-core/engineering_json.inc",
+        "geometry-core/engineering_types.h",
+        "geometry-core/grid_bindings.inc",
+        "geometry-core/grid_lattice.inc",
+        "geometry-core/grid_subdivision.inc",
+        "geometry-core/grid_subdivision_query.inc",
+        "geometry-core/grid_systems.inc",
+        "geometry-core/model_base.c",
+        "geometry-core/parameter_types.h",
+        "geometry-core/parameters.inc",
+        "geometry-core/reference_types.h",
+        "geometry-core/references.inc",
+        "geometry-core/section_profile_conversion.inc",
+        "geometry-core/section_profile_placement.inc",
+        "geometry-core/section_profile_types.h",
+        "geometry-core/section_profile_validation.inc",
+        "geometry-core/section_profiles.inc",
+        "geometry-core/subgrid_commands.inc",
+        "geometry-core/subgrid_rebind.inc",
+        "geometry-core/subgrid_world.inc",
+        "geometry-core/subgrids.inc",
+        "geometry-core/transactions.inc",
+        "geometry-web/assembly_bridge.inc",
+        "geometry-web/docs/evidence/wp60-a-20261004/completed-seams/wp60-receipt-io.c",
+        "geometry-web/engineering_bridge.inc",
+        "geometry-web/grid_binding_bridge.inc",
+        "geometry-web/grid_subdivision_bridge.inc",
+        "geometry-web/grid_system_bridge.inc",
+        "geometry-web/parameter_bridge.inc",
+        "geometry-web/reference_bridge.inc",
+        "geometry-web/scene-import-bridge.inc",
+        "geometry-web/section_profile_bridge.inc",
+        "geometry-web/section_profile_diagnostics.inc",
+        "geometry-web/section_profile_source_index.inc",
+        "geometry-web/source-inspector-bridge.inc",
+        "geometry-web/timber_support_projection.inc",
+        "geometry-web/web_bridge.c"
+      ],
+      "compileCommand": "cc -std=c11 -O2 current_geometry.c -lm -> core"
+    },
+    "bridge": {
+      "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+      "files": [
+        "current_geometry.c",
+        "geometry-core/assembly.inc",
+        "geometry-core/assembly_generation.inc",
+        "geometry-core/assembly_types.h",
+        "geometry-core/boundary_vertex_keys.inc",
+        "geometry-core/engineering.inc",
+        "geometry-core/engineering_commands.inc",
+        "geometry-core/engineering_json.inc",
+        "geometry-core/engineering_types.h",
+        "geometry-core/grid_bindings.inc",
+        "geometry-core/grid_lattice.inc",
+        "geometry-core/grid_subdivision.inc",
+        "geometry-core/grid_subdivision_query.inc",
+        "geometry-core/grid_systems.inc",
+        "geometry-core/model_base.c",
+        "geometry-core/parameter_types.h",
+        "geometry-core/parameters.inc",
+        "geometry-core/reference_types.h",
+        "geometry-core/references.inc",
+        "geometry-core/section_profile_conversion.inc",
+        "geometry-core/section_profile_placement.inc",
+        "geometry-core/section_profile_types.h",
+        "geometry-core/section_profile_validation.inc",
+        "geometry-core/section_profiles.inc",
+        "geometry-core/subgrid_commands.inc",
+        "geometry-core/subgrid_rebind.inc",
+        "geometry-core/subgrid_world.inc",
+        "geometry-core/subgrids.inc",
+        "geometry-core/transactions.inc",
+        "geometry-web/assembly_bridge.inc",
+        "geometry-web/docs/evidence/wp60-a-20261004/completed-seams/wp60-receipt-io.c",
+        "geometry-web/engineering_bridge.inc",
+        "geometry-web/grid_binding_bridge.inc",
+        "geometry-web/grid_subdivision_bridge.inc",
+        "geometry-web/grid_system_bridge.inc",
+        "geometry-web/parameter_bridge.inc",
+        "geometry-web/reference_bridge.inc",
+        "geometry-web/scene-import-bridge.inc",
+        "geometry-web/section_profile_bridge.inc",
+        "geometry-web/section_profile_diagnostics.inc",
+        "geometry-web/section_profile_source_index.inc",
+        "geometry-web/source-inspector-bridge.inc",
+        "geometry-web/timber_support_projection.inc",
+        "geometry-web/web_bridge.c"
+      ],
+      "compileCommand": "cc -std=c11 -O2 geometry-web/web_bridge.c -lm -> bridge"
+    },
+    "integrity": {
+      "fingerprint": "698f41f0ff95e76dfd790f71e16c260156685ad08d7ae670460e980de2b495cf",
+      "files": [
+        "current_geometry.c",
+        "geometry-core/assembly.inc",
+        "geometry-core/assembly_generation.inc",
+        "geometry-core/assembly_types.h",
+        "geometry-core/boundary_vertex_keys.inc",
+        "geometry-core/engineering.inc",
+        "geometry-core/engineering_commands.inc",
+        "geometry-core/engineering_json.inc",
+        "geometry-core/engineering_types.h",
+        "geometry-core/grid_bindings.inc",
+        "geometry-core/grid_lattice.inc",
+        "geometry-core/grid_subdivision.inc",
+        "geometry-core/grid_subdivision_query.inc",
+        "geometry-core/grid_systems.inc",
+        "geometry-core/model_base.c",
+        "geometry-core/parameter_types.h",
+        "geometry-core/parameters.inc",
+        "geometry-core/reference_types.h",
+        "geometry-core/references.inc",
+        "geometry-core/section_profile_conversion.inc",
+        "geometry-core/section_profile_placement.inc",
+        "geometry-core/section_profile_types.h",
+        "geometry-core/section_profile_validation.inc",
+        "geometry-core/section_profiles.inc",
+        "geometry-core/subgrid_commands.inc",
+        "geometry-core/subgrid_rebind.inc",
+        "geometry-core/subgrid_world.inc",
+        "geometry-core/subgrids.inc",
+        "geometry-core/transactions.inc",
+        "geometry-web/assembly_bridge.inc",
+        "geometry-web/docs/evidence/wp60-a-20261004/completed-seams/wp60-receipt-io.c",
+        "geometry-web/engineering_bridge.inc",
+        "geometry-web/grid_binding_bridge.inc",
+        "geometry-web/grid_subdivision_bridge.inc",
+        "geometry-web/grid_system_bridge.inc",
+        "geometry-web/parameter_bridge.inc",
+        "geometry-web/reference_bridge.inc",
+        "geometry-web/scene-import-bridge.inc",
+        "geometry-web/section_profile_bridge.inc",
+        "geometry-web/section_profile_diagnostics.inc",
+        "geometry-web/section_profile_source_index.inc",
+        "geometry-web/source-inspector-bridge.inc",
+        "geometry-web/timber_support_projection.inc",
+        "geometry-web/web_bridge.c",
+        "tests/test_core_integrity.c"
+      ],
+      "compileCommand": "cc -std=c11 -O2 tests/test_core_integrity.c -lm -> integrity"
+    },
+    "model-base": {
+      "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+      "files": [
+        "current_geometry.c",
+        "geometry-core/assembly.inc",
+        "geometry-core/assembly_generation.inc",
+        "geometry-core/assembly_types.h",
+        "geometry-core/boundary_vertex_keys.inc",
+        "geometry-core/engineering.inc",
+        "geometry-core/engineering_commands.inc",
+        "geometry-core/engineering_json.inc",
+        "geometry-core/engineering_types.h",
+        "geometry-core/grid_bindings.inc",
+        "geometry-core/grid_lattice.inc",
+        "geometry-core/grid_subdivision.inc",
+        "geometry-core/grid_subdivision_query.inc",
+        "geometry-core/grid_systems.inc",
+        "geometry-core/model_base.c",
+        "geometry-core/parameter_types.h",
+        "geometry-core/parameters.inc",
+        "geometry-core/reference_types.h",
+        "geometry-core/references.inc",
+        "geometry-core/section_profile_conversion.inc",
+        "geometry-core/section_profile_placement.inc",
+        "geometry-core/section_profile_types.h",
+        "geometry-core/section_profile_validation.inc",
+        "geometry-core/section_profiles.inc",
+        "geometry-core/subgrid_commands.inc",
+        "geometry-core/subgrid_rebind.inc",
+        "geometry-core/subgrid_world.inc",
+        "geometry-core/subgrids.inc",
+        "geometry-core/transactions.inc",
+        "geometry-web/assembly_bridge.inc",
+        "geometry-web/docs/evidence/wp60-a-20261004/completed-seams/wp60-receipt-io.c",
+        "geometry-web/engineering_bridge.inc",
+        "geometry-web/grid_binding_bridge.inc",
+        "geometry-web/grid_subdivision_bridge.inc",
+        "geometry-web/grid_system_bridge.inc",
+        "geometry-web/parameter_bridge.inc",
+        "geometry-web/reference_bridge.inc",
+        "geometry-web/scene-import-bridge.inc",
+        "geometry-web/section_profile_bridge.inc",
+        "geometry-web/section_profile_diagnostics.inc",
+        "geometry-web/section_profile_source_index.inc",
+        "geometry-web/source-inspector-bridge.inc",
+        "geometry-web/timber_support_projection.inc",
+        "geometry-web/web_bridge.c"
+      ],
+      "compileCommand": "cc -std=c11 -O2 geometry-core/model_base.c -lm -> model-base"
+    },
+    "engjson": {
+      "fingerprint": "3901437bfc9ca6776c1e94fe1828e960c9d640dbd55417c4d7941b3d6cb2415f",
+      "files": [
+        "current_geometry.c",
+        "geometry-core/assembly.inc",
+        "geometry-core/assembly_generation.inc",
+        "geometry-core/assembly_types.h",
+        "geometry-core/boundary_vertex_keys.inc",
+        "geometry-core/engineering.inc",
+        "geometry-core/engineering_commands.inc",
+        "geometry-core/engineering_json.inc",
+        "geometry-core/engineering_types.h",
+        "geometry-core/grid_bindings.inc",
+        "geometry-core/grid_lattice.inc",
+        "geometry-core/grid_subdivision.inc",
+        "geometry-core/grid_subdivision_query.inc",
+        "geometry-core/grid_systems.inc",
+        "geometry-core/model_base.c",
+        "geometry-core/parameter_types.h",
+        "geometry-core/parameters.inc",
+        "geometry-core/reference_types.h",
+        "geometry-core/references.inc",
+        "geometry-core/section_profile_conversion.inc",
+        "geometry-core/section_profile_placement.inc",
+        "geometry-core/section_profile_types.h",
+        "geometry-core/section_profile_validation.inc",
+        "geometry-core/section_profiles.inc",
+        "geometry-core/subgrid_commands.inc",
+        "geometry-core/subgrid_rebind.inc",
+        "geometry-core/subgrid_world.inc",
+        "geometry-core/subgrids.inc",
+        "geometry-core/transactions.inc",
+        "geometry-web/assembly_bridge.inc",
+        "geometry-web/docs/evidence/wp60-a-20261004/completed-seams/wp60-receipt-io.c",
+        "geometry-web/engineering_bridge.inc",
+        "geometry-web/grid_binding_bridge.inc",
+        "geometry-web/grid_subdivision_bridge.inc",
+        "geometry-web/grid_system_bridge.inc",
+        "geometry-web/parameter_bridge.inc",
+        "geometry-web/reference_bridge.inc",
+        "geometry-web/scene-import-bridge.inc",
+        "geometry-web/section_profile_bridge.inc",
+        "geometry-web/section_profile_diagnostics.inc",
+        "geometry-web/section_profile_source_index.inc",
+        "geometry-web/source-inspector-bridge.inc",
+        "geometry-web/timber_support_projection.inc",
+        "geometry-web/web_bridge.c",
+        "tests/test_engineering_json.py#HARNESS"
+      ],
+      "compileCommand": "cc -std=c11 -O2 -Wall -Wextra -Wno-unused-function -I geometry-core <generated:tests/test_engineering_json.py#HARNESS> -> engineering-json-test"
+    }
+  },
+  "nativeSourceFilesNormalizedSha256": {
+    "current_geometry.c": "efc14dfc97f45d67724a220e2d5669ceff6e933170758ffc35ff37626299baef",
+    "geometry-core/model_base.c": "d8842c087a03ee32a573d74ceb2c8bc3b6769d2dc8afed0516a0ab2d63b1a486",
+    "geometry-core/assembly_types.h": "952ce67924055a3dc74eceb70bd154ea20876881887481b2b08216ca90b5ac2d",
+    "geometry-core/engineering_types.h": "1c80317f00fb6b51426deb35324ce52ea1155bb8097ee7faa208a3957d90a63b",
+    "geometry-core/reference_types.h": "897fb363686547f9d520783ad3aa0aa73f5cca93b2cf9c53022e256a178b6675",
+    "geometry-core/parameter_types.h": "b7e2576fa43f6cc0c25742b239bc75ebec112ddb84a59e984d018ddb516edd09",
+    "geometry-core/section_profile_types.h": "5afdbed8e568a866130c9f78d9b6c108472466ff082836703461d07ca8c9792d",
+    "geometry-core/section_profile_conversion.inc": "0eb378cb94dc4e2197bc4acd35cf1fa33c7caacc0534526b60aa81b2aff4110d",
+    "geometry-core/subgrid_rebind.inc": "a50f2e79516806148bbee14e018b51cc26fe6788f9abf1d1ac2686aee6292d25",
+    "geometry-core/section_profiles.inc": "c0f72d950b0f7e2aff5ec3cebe75e5bb9e4610ceb7ccb19a338641b5e41b0c78",
+    "geometry-core/grid_subdivision_query.inc": "d0d860a6bc9e3f19bad52fd548a229a967ff124c1a70fdd6050012e5fa221b87",
+    "geometry-core/grid_systems.inc": "7ab68b6fb039b4a0fb251835a92dde66e34fe2d2999ef16d5d824656570c2832",
+    "geometry-core/engineering_commands.inc": "4c8dd5b71a7135db94d2b8ae2f4d2efbf5bb519d8b053804987409ec46a9c0c2",
+    "geometry-core/grid_lattice.inc": "163b836712f18c74b86e27c49ce473d0c271dd142c109e2081d662855eb2f598",
+    "geometry-core/boundary_vertex_keys.inc": "8d95a6e6ebb783eddd6f21abb6ffd37d27462a9cd36f69e6b90cf5818e5b9772",
+    "geometry-core/transactions.inc": "f959d4d571c7bbb9295f91bc24a689de6848c9ff59f7c411b61d61d203b4cb43",
+    "geometry-core/grid_bindings.inc": "ff67705a311770c7388ac6a30e46d3fd2a8d0b89eb79af905f53e153bd4c56f0",
+    "geometry-core/section_profile_validation.inc": "a5d1cc23265d94de9881dca4df563b5e072126d5d69d5b92a0f35e8dc7c0bb49",
+    "geometry-core/grid_subdivision.inc": "a1d37f00bdcf0532c574127ad12d4ec3ec911e8ed00355f51cb3b30801e19a6b",
+    "geometry-core/parameters.inc": "e56646470644f9a52fff2f9a2ae4725f90168c8f5ec0705916df48d0589d28ba",
+    "geometry-core/section_profile_placement.inc": "47ea510d9aee18796b187021086ba88588d8b1f472decfb531567762356561b3",
+    "geometry-core/subgrids.inc": "b20907d2b50b147491ae22cd7f2383e357df42be453773267570498177ee4436",
+    "geometry-core/references.inc": "06e80fe7d4f3869eb343eb27741a6b056c95ead679b90032cc1ce3453fe473ce",
+    "geometry-core/assembly_generation.inc": "e58acee135f27c799aab83d9410ec6ce97f8b053d830ac28abed92aedd29b48e",
+    "geometry-core/subgrid_commands.inc": "c4a8763c429d39cbe86e067b7b4e49d077ac42061f8e774459b70dc0ff7d3d4e",
+    "geometry-core/engineering_json.inc": "78a75f77cfde2fffd12722d7c302ee6aef22496f1c518e59902e80a4e7ecec3b",
+    "geometry-core/subgrid_world.inc": "3dbf7322d756629599b54553fcee72716096e14b1b2d828bc7dd3776637c642f",
+    "geometry-core/engineering.inc": "477f737de0335b217ae65b4de3eb8244338f1400d04be8d0fd0834c2047cbd4a",
+    "geometry-core/assembly.inc": "429bbfaf178ce1be9b4eec73131c761de8dcad89f307958b3bb98990cbd3684f",
+    "geometry-web/web_bridge.c": "9e97e08542e5dda12a662a446a020cc85c436a7af534adfac7774a0570e4411d",
+    "geometry-web/docs/evidence/wp60-a-20261004/completed-seams/wp60-receipt-io.c": "e796808d125a6d683d9d5ebb6c0d3c74c929fed9e7ed2a7cf4eb3f683688ee51",
+    "geometry-web/grid_subdivision_bridge.inc": "1cfe0f48668a51f20f4d71f547923caae6f10dbc5d3c9f146b6a01dcaa6c1d2b",
+    "geometry-web/parameter_bridge.inc": "1646a4b5f13b11293a73682241ac8574430d5e56fad42cae62f4e1a840d539c2",
+    "geometry-web/engineering_bridge.inc": "1f9f8972d935c4951d6ce6c70221d9ca504c32136a40d960facc474a1d09e1cd",
+    "geometry-web/section_profile_source_index.inc": "ff316024b12606f7ec7c291527602a87bcf2e67a9f91a5ed8e2a822459b35912",
+    "geometry-web/assembly_bridge.inc": "25289581f4d2f3d563f77ea4bd9b66915797feb8b21a5b54b5b777a4a02c9f3f",
+    "geometry-web/section_profile_diagnostics.inc": "edb80cd7fce7784c7201d10376428f2fe26b771058f353845b6c2b1cf083931d",
+    "geometry-web/timber_support_projection.inc": "f5f20fa285f6bf47d9e4e807acb38349bbef86b01705263a7d62f99ad0a2845c",
+    "geometry-web/section_profile_bridge.inc": "8989ea42b0861b0fa09c4862032671fdf7873f2fdf62e61b09d1778bdef9ac0d",
+    "geometry-web/scene-import-bridge.inc": "baeb2cbb08c470cd891751cad132b5c0e27fb652afd0ce0cbb9991d334f8b53f",
+    "geometry-web/reference_bridge.inc": "dab2b87f0dd868c9202fa178086ba522224e24451f73f5b93da5b1e407303e76",
+    "geometry-web/grid_system_bridge.inc": "8c123b6ec7720642758a61b3adfdd4cbe11c156527acb97a463b56fb734ee339",
+    "geometry-web/source-inspector-bridge.inc": "4f7d035689920ee26c471b8e21d796958ec6878a0cfc6c21ec14fff6ae97ba46",
+    "geometry-web/grid_binding_bridge.inc": "c28c35ea3d49da56d4b1b69ba78da1be6449f18196a801562a07d760cfb476bd",
+    "tests/test_core_integrity.c": "b040c378702426be9bc15ec765537f8dd828f4694a61a914e4685c3cfe737d80",
+    "tests/test_engineering_json.py#HARNESS": "5c8277132a8dc65993c00259d4a7c763f7e761197f945f22db4d3494123e31b0"
+  },
+  "mutation": {
+    "actualFullExecutionHead": "9357d0b9d601c78bd4b811cfbad633006e3e5c77",
+    "resultsCommit": "100d363fdb6a798645f6fdb3de145bdb204e5808",
+    "resultsSha256": "3065fc03773c326b9256a7ffeb05cd602cd254dcab2d267626abc42101f38392",
+    "aggregateFreshnessCheckExitCode": 0,
+    "fullMutationWasNotRerunForUnchangedSource": true,
+    "counts": {
+      "killed": 40,
+      "crashed": 1,
+      "equivalent": 4,
+      "retired": 3,
+      "survived": 0,
+      "invalid": 0,
+      "stale": 0,
+      "blocked": 0,
+      "unrun": 0
+    }
+  },
+  "precedingFailedAttempt": {
+    "head": "bb93953dba391cd0c3f05dd61dea7626f6f94755",
+    "exitCode": 1,
+    "totals": {
+      "total": 2572,
+      "passed": 2563,
+      "failed": 8,
+      "skipped": 1
+    },
+    "finding": "Eight pre-existing workspace VM fixtures lacked the newly used browser event interface. The original failure and receipts are retained; this successful attempt does not relabel them.",
+    "fixtureFixCommit": "df9aa47ea2e4d6cdc4abdb16c8d9768fbf1f37e4",
+    "independentReviewSha256": "8c3e8a1011e79092b341e38c8ec4d31fd4bd927b94df4d70427d4d7eb3f5fc80"
+  },
+  "rawEvidence": {
+    "bundleSubdirectory": "final-native-retry",
+    "files": {
+      "aggregate-after-identity.json": {
+        "bytes": 301389,
+        "sha256": "a40b0dc3d908490ac15bb2005fde2497c5282fc0b65303c0309df7efa5250c98"
+      },
+      "aggregate-before-identity.json": {
+        "bytes": 301360,
+        "sha256": "e158d8f2cb996e1567afd1ec82475f6e0cc831078e9689a6aecf02f02952eab2"
+      },
+      "aggregate-binaries-after.json": {
+        "bytes": 1163,
+        "sha256": "b19023347170b4075fe637de523bf8cf45938b22bf971f9c31d6f4ac417474c6"
+      },
+      "aggregate-binary-fingerprints.json": {
+        "bytes": 27618,
+        "sha256": "8d9a21b8f271c734cd33c94c5e5e35d05b004c3b21da23fbd6e1f363968cc510"
+      },
+      "aggregate-execution.json": {
+        "bytes": 1460,
+        "sha256": "8bf7fde1b646b4d886a937c0838cb9570811e68f4ce493511a52c4e221442122"
+      },
+      "aggregate-expected-after.json": {
+        "bytes": 7757,
+        "sha256": "22abbe962f92465e908a0640c96943e1e22335128c3a1920519f365099669c46"
+      },
+      "aggregate-expected-before.json": {
+        "bytes": 7658,
+        "sha256": "a866d5fe73a17e8b60e2697771971128d4a86e9e9161b4ff1b8527e37b7a0c4a"
+      },
+      "aggregate-full.exit": {
+        "bytes": 2,
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "aggregate-full.log": {
+        "bytes": 17129,
+        "sha256": "0f9a042eff68ab3f1ba3eef5ede397cf8cd4a7da32c47b1acbbd054bdfa85e26"
+      },
+      "aggregate-independent-review.json": {
+        "bytes": 22862,
+        "sha256": "c8ea82767366024bdcd9a31aefdf0ddfaf1ece3607c1158101eb5a0b48dbaa2a"
+      },
+      "aggregate-process.json": {
+        "bytes": 471,
+        "sha256": "ed50617ecf7d9afca1c78d181907a78e22d329ee9d83f60336de1c38ce7246a8"
+      },
+      "aggregate-suite-logs/c_integrity.log": {
+        "bytes": 5757,
+        "sha256": "47504e3d782576b4c9c9012ce0c6772af3d18b272e3e3f4df4b358fdf9077fd2"
+      },
+      "aggregate-suite-logs/canvas_shim.marker": {
+        "bytes": 43,
+        "sha256": "b2b8adfc09507f82c2dc910ecbcc77198543cec888b3909bf1bfde2a5d0b42f6"
+      },
+      "aggregate-suite-logs/core_run_tests.log": {
+        "bytes": 20766,
+        "sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1"
+      },
+      "aggregate-suite-logs/mutation_check.log": {
+        "bytes": 532,
+        "sha256": "57b1f8e56eb565a373ed6c73f7e56eb1148bbe4fb470f28c851de7d1c90ae762"
+      },
+      "aggregate-suite-logs/node_anchor_band_clip.log": {
+        "bytes": 1293,
+        "sha256": "eaf81e49c903a15eb205276b21d81e396567e4c3bd2566b11bba2f41127b181e"
+      },
+      "aggregate-suite-logs/node_background_grid_viewport.log": {
+        "bytes": 816,
+        "sha256": "dfbec64fe9de6d70874702a68ec02f126f72ab9c0619fa390f6c7e6d71987a24"
+      },
+      "aggregate-suite-logs/node_canvas_direct.log": {
+        "bytes": 11529,
+        "sha256": "9903abfc91c5c4b7a1ae9cda5dd2626d9981db6e1799393b8124ca4cd8ee16f0"
+      },
+      "aggregate-suite-logs/node_cdp_confirmation_gate.log": {
+        "bytes": 107,
+        "sha256": "853ca1715c18dfe8550f6dea91218a6665ae1385c84fc4b99593c54154a56114"
+      },
+      "aggregate-suite-logs/node_cdp_evaluation.log": {
+        "bytes": 902,
+        "sha256": "547a8f8003f207affff48a60d7059e944825acf6e12d458f6effddc9fe06ecb2"
+      },
+      "aggregate-suite-logs/node_cdp_navigation.log": {
+        "bytes": 63,
+        "sha256": "7ddbfbd95acaa2e9b6a82dc42854ee57b1d346d955140ce4b7266d9e2b1962d1"
+      },
+      "aggregate-suite-logs/node_context_operations.log": {
+        "bytes": 1377,
+        "sha256": "80c17bdbdd678be5897b0402d9870a166c4a0f44165238fa444d97dfae58f220"
+      },
+      "aggregate-suite-logs/node_document_cases.log": {
+        "bytes": 329,
+        "sha256": "67de34061d16797b612dcadd3245650d92e2ae695ba7abac842b0cb1d88757d6"
+      },
+      "aggregate-suite-logs/node_document_format.log": {
+        "bytes": 86,
+        "sha256": "6e51ba76e038240a59db0561ac137b7616bba19fc2714e8457175fc5098ecfba"
+      },
+      "aggregate-suite-logs/node_evidence_links.log": {
+        "bytes": 2748,
+        "sha256": "839631df78a25efab342aea2ec1d9ed1364185ef63e68dc4f21127f457c35f2d"
+      },
+      "aggregate-suite-logs/node_evidence_project_store.log": {
+        "bytes": 874,
+        "sha256": "666fd1cb51831cb10961fdba2e957b4b1ce1aa2b497a19cef98dc765b8185e4c"
+      },
+      "aggregate-suite-logs/node_face_paint_scheduler.log": {
+        "bytes": 718,
+        "sha256": "8eb22ed155c910d64ad59631895564b63b522d91b1dbfa380057b51fecea18a5"
+      },
+      "aggregate-suite-logs/node_face_reference_settlement.log": {
+        "bytes": 1932,
+        "sha256": "6253a2d5670572afb731564e8b313a172f376e58c67e183222311ccde67e9201"
+      },
+      "aggregate-suite-logs/node_feedback_events.log": {
+        "bytes": 3085,
+        "sha256": "536de4d9f1915c7c937641b5a913f1b2bb9db800bf7bc69661f5ce72fe1c5aad"
+      },
+      "aggregate-suite-logs/node_grid_definition_diagram.log": {
+        "bytes": 1272,
+        "sha256": "67a21502976b3afb04fe3ef4b508911c054105bca988ae56b398bf4a54933da6"
+      },
+      "aggregate-suite-logs/node_grid_lesson_control_ownership.log": {
+        "bytes": 1117,
+        "sha256": "29e822780c4487f4d42abe71be988f04f57a9400e8f5eb148b48d9145b171b03"
+      },
+      "aggregate-suite-logs/node_history_operation.log": {
+        "bytes": 424,
+        "sha256": "7989589040ca348022545c035ec73c4519020a4a18b78d326d89f280c098f3e9"
+      },
+      "aggregate-suite-logs/node_hover_pick_scheduler.log": {
+        "bytes": 1684,
+        "sha256": "f377cf38561d6c0dc312cdee84002d27112857bc78f556fcfc902f7d0901344c"
+      },
+      "aggregate-suite-logs/node_model_viewer.log": {
+        "bytes": 147,
+        "sha256": "19db3e52065be25b070156bd2766d4081675149a87c87f3afccec70ee36cd048"
+      },
+      "aggregate-suite-logs/node_parameter_confirmation_settlement.log": {
+        "bytes": 1805,
+        "sha256": "cda2712a4603dcb7933db8f11173c280f3b4caa728f2a2539389dd2dc5d0a0bb"
+      },
+      "aggregate-suite-logs/node_polydraft.log": {
+        "bytes": 9919,
+        "sha256": "a0e7a7cde8808d2804329b13fd31ae49dec630be345311d32d9531f57918c091"
+      },
+      "aggregate-suite-logs/node_room_outline_closeout.log": {
+        "bytes": 2402,
+        "sha256": "6528445a055251eb534af8a72c13ff8492aa9a9f316398cbff3d08f3770d18d0"
+      },
+      "aggregate-suite-logs/node_room_outline_worker.log": {
+        "bytes": 698,
+        "sha256": "0e642f0bf99e717a7d675ee73032410e65067f69ec49721d770738a771183dc0"
+      },
+      "aggregate-suite-logs/node_space_test_floor.log": {
+        "bytes": 1072,
+        "sha256": "2e8caadbf2c10e46f71fc1580c58f69d9a417443af2364f446c4d7ce638e40d1"
+      },
+      "aggregate-suite-logs/node_tests-js.log": {
+        "bytes": 66126,
+        "sha256": "5114d79bc0d6c9f9312e6f1e5ea686e07cc1bb8c6bf248f1481e9f1ad986223c"
+      },
+      "aggregate-suite-logs/node_workspace_shell_history.log": {
+        "bytes": 3022,
+        "sha256": "8e392df1d43c0a5bbe58704653c634517676397aefbf92fa84d4848c71ef86f8"
+      },
+      "aggregate-suite-logs/py_test_assembly_candidate_impact.json": {
+        "bytes": 357,
+        "sha256": "46d8af24a35b7eaeba9cebf8d2b6edbb526449788a8b191faebbac350383458c"
+      },
+      "aggregate-suite-logs/py_test_assembly_candidate_impact.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_assembly_candidate_impact.unittest.log": {
+        "bytes": 102,
+        "sha256": "68898eef54d446b0db72cf52d92cedf4303d9e9cd2de712d10df9e4c98740008"
+      },
+      "aggregate-suite-logs/py_test_assembly_capacity.json": {
+        "bytes": 349,
+        "sha256": "d51e251611fa8966204aa404ab1cebc38bf5b8fd030fbf6188d184b0de577aa2"
+      },
+      "aggregate-suite-logs/py_test_assembly_capacity.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_assembly_capacity.unittest.log": {
+        "bytes": 103,
+        "sha256": "b600099b0e2bd2ec35aad4c631a299a3c2734d412ea9f70ffdea355985ab6149"
+      },
+      "aggregate-suite-logs/py_test_assembly_generation.json": {
+        "bytes": 354,
+        "sha256": "fe2c9751e8cc9f0f6f32c917d74023c4e5d1e42ef739abd72b505e3d6ebbc7dc"
+      },
+      "aggregate-suite-logs/py_test_assembly_generation.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_assembly_generation.unittest.log": {
+        "bytes": 120,
+        "sha256": "630639a7709b9798dab9f2425fa2f0a140886f9dd3abb66a1c423f2b9a1c4e86"
+      },
+      "aggregate-suite-logs/py_test_assembly_native_diagnostics.json": {
+        "bytes": 359,
+        "sha256": "b6df38eebe78e27edfc1227f82f7744bb95fb4d3e12ef67f1f16b4bd23d7e7af"
+      },
+      "aggregate-suite-logs/py_test_assembly_native_diagnostics.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_assembly_native_diagnostics.unittest.log": {
+        "bytes": 106,
+        "sha256": "0c70627102d4b0050a7706b415168be6b021f22b01f3ea48d194cc87ff955206"
+      },
+      "aggregate-suite-logs/py_test_assembly_parameter_refs.json": {
+        "bytes": 355,
+        "sha256": "9bad57ca1563a01712856bffbcc57b13c571e2b1915717af9466654ce6b731a9"
+      },
+      "aggregate-suite-logs/py_test_assembly_parameter_refs.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_assembly_parameter_refs.unittest.log": {
+        "bytes": 101,
+        "sha256": "0f3ec46010b326c9ce290ae992a873b5223c5d14431afb856a87360ed6b61de8"
+      },
+      "aggregate-suite-logs/py_test_assembly_rules.json": {
+        "bytes": 349,
+        "sha256": "be34a9404b80f4e6003db3c8e5386dc6a4323a7f1270b6176dda744c00eaf632"
+      },
+      "aggregate-suite-logs/py_test_assembly_rules.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_assembly_rules.unittest.log": {
+        "bytes": 134,
+        "sha256": "ec2e0adad7909d599b862c1564b56c804882451f40024d78435a91fd27d2afe5"
+      },
+      "aggregate-suite-logs/py_test_axiom_reader.json": {
+        "bytes": 348,
+        "sha256": "1c6e301cf2a5672aadcec4c66fedbaa9065d538856680f6cab9f3694c5703cab"
+      },
+      "aggregate-suite-logs/py_test_axiom_reader.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_axiom_reader.unittest.log": {
+        "bytes": 141,
+        "sha256": "fcc62ed6a101551a6d4da719facdf148f4b6df899183ba113632b8f51f05e215"
+      },
+      "aggregate-suite-logs/py_test_binaries.json": {
+        "bytes": 343,
+        "sha256": "11add852a7306ae62061aa7b84b0e56de61b0a67559755a2586ae984dd003766"
+      },
+      "aggregate-suite-logs/py_test_binaries.log": {
+        "bytes": 990,
+        "sha256": "de45554a573401e15b3038be8c9eee67d56fc6abb0866181880b785f14c2c8be"
+      },
+      "aggregate-suite-logs/py_test_binaries.unittest.log": {
+        "bytes": 131,
+        "sha256": "7e2b7db98d8032970ad231b573a1d31a016fb426623566525d1e16cf58e345ad"
+      },
+      "aggregate-suite-logs/py_test_bridge_integrity.json": {
+        "bytes": 351,
+        "sha256": "bbcb12bc1162db1e9373e3d8dd8dfd4ad3474cad329992505432625a581adc06"
+      },
+      "aggregate-suite-logs/py_test_bridge_integrity.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_bridge_integrity.unittest.log": {
+        "bytes": 123,
+        "sha256": "e90fe0e3b2663e94bf1773d5e0a24f161054a73813b23c70dffabec5a746bab5"
+      },
+      "aggregate-suite-logs/py_test_cli_args.json": {
+        "bytes": 339,
+        "sha256": "a31da0e0abe511f1b37d5e56e37b73bdb3a5aebc8cd9f7434f91699b9532d0f3"
+      },
+      "aggregate-suite-logs/py_test_cli_args.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_cli_args.unittest.log": {
+        "bytes": 104,
+        "sha256": "f7984587660d832b9fef9e08b5c41c6f6ed674bb151622f963d5a43af9af53db"
+      },
+      "aggregate-suite-logs/py_test_datum_contract.json": {
+        "bytes": 346,
+        "sha256": "c751c2071a95dc109c0029f80a2348fb99591968e881e59e7dbcb0e201125802"
+      },
+      "aggregate-suite-logs/py_test_datum_contract.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_datum_contract.unittest.log": {
+        "bytes": 107,
+        "sha256": "fd667a898c317d006f795294ca3427c0385eae09ca6df895c0faa4ba1cc0aa38"
+      },
+      "aggregate-suite-logs/py_test_engineering_core.json": {
+        "bytes": 351,
+        "sha256": "4a93c1280665dafe83c13a00fc4f10bfe526199f97baa4ff24f9c52deaad871b"
+      },
+      "aggregate-suite-logs/py_test_engineering_core.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_engineering_core.unittest.log": {
+        "bytes": 117,
+        "sha256": "40ab08398c0e998eb61718e4f2f7af5cb36242bc7b29b571dd12e1c0638d96f9"
+      },
+      "aggregate-suite-logs/py_test_engineering_json.json": {
+        "bytes": 348,
+        "sha256": "4bc88f50f64555da97f4eade37ba17fe05ff99cebb310ff9015d0a8353e03ea4"
+      },
+      "aggregate-suite-logs/py_test_engineering_json.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_engineering_json.unittest.log": {
+        "bytes": 105,
+        "sha256": "ec83b3c456c77fbfd941032cee006c132ed17c1cb01117189f1e28836e31cb7b"
+      },
+      "aggregate-suite-logs/py_test_engineering_model_compatibility.json": {
+        "bytes": 366,
+        "sha256": "4b7c91fd42e90ff7ca3bc43c7bb2ad1f46c6eaf1e40d23b1f3fe79549ca3b539"
+      },
+      "aggregate-suite-logs/py_test_engineering_model_compatibility.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_engineering_model_compatibility.unittest.log": {
+        "bytes": 123,
+        "sha256": "67793107dcf68f749fa3d8ccdb21fb6a381c4b1930efb08a94bffb1033bbc4e7"
+      },
+      "aggregate-suite-logs/py_test_engineering_model_sources.json": {
+        "bytes": 357,
+        "sha256": "cb2bf3b31024778c8057e4c1f481ae336a55b4ee218ff00bac45da5794198366"
+      },
+      "aggregate-suite-logs/py_test_engineering_model_sources.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_engineering_model_sources.unittest.log": {
+        "bytes": 102,
+        "sha256": "668e58a4656dcf24596bc472da7436c884d57430d2cac55bc3008a29f6c681f0"
+      },
+      "aggregate-suite-logs/py_test_engineering_transport.json": {
+        "bytes": 353,
+        "sha256": "0f85006228599b9987f40eb5500a1143801af67e579d59c9c4c3048bbf8561c0"
+      },
+      "aggregate-suite-logs/py_test_engineering_transport.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_engineering_transport.unittest.log": {
+        "bytes": 104,
+        "sha256": "c6b9b1f09add0403cc07e90bfdf272129b1ddfa2f8f7675ea8218862f2516371"
+      },
+      "aggregate-suite-logs/py_test_evidence_link_native.json": {
+        "bytes": 351,
+        "sha256": "1b869ce62dee5dc3db1b978cda373d19434cdb19e00e426c74b66a84c61d5039"
+      },
+      "aggregate-suite-logs/py_test_evidence_link_native.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_evidence_link_native.unittest.log": {
+        "bytes": 104,
+        "sha256": "b953be2f9491b456165fa8c1ef92df17a68462daaf0bd61aa7765b4b05656fa4"
+      },
+      "aggregate-suite-logs/py_test_feedback_store.json": {
+        "bytes": 349,
+        "sha256": "7574121458cb0643993404d236a1a8849d2d1406702a678e4733df4f8ec03ef4"
+      },
+      "aggregate-suite-logs/py_test_feedback_store.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_feedback_store.unittest.log": {
+        "bytes": 110,
+        "sha256": "2f391a658d1ea88299e6eb1e9cec6856632952a06773579be580d7c4828bc131"
+      },
+      "aggregate-suite-logs/py_test_gdi_contract.json": {
+        "bytes": 696,
+        "sha256": "023f94a2519c855c7c7a9139ae2e8d9046167a0176cf3b55dcc4082a42f1ffb4"
+      },
+      "aggregate-suite-logs/py_test_gdi_contract.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_gdi_contract.unittest.log": {
+        "bytes": 110,
+        "sha256": "16ba752c32957f3b2943ad473825fe6f0c70e1f1be428ad10b951d3af1a90efe"
+      },
+      "aggregate-suite-logs/py_test_grid_subdivision_oracle.json": {
+        "bytes": 358,
+        "sha256": "c191c57a4c2345f2ab17b5eae85a89b3f08f3b05c3b833fc7d03e0b86ec4d0e0"
+      },
+      "aggregate-suite-logs/py_test_grid_subdivision_oracle.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_grid_subdivision_oracle.unittest.log": {
+        "bytes": 139,
+        "sha256": "dce99f98620c8af6f05146cf83ea82db66df8f7c0bedf631352e34cdca0a26be"
+      },
+      "aggregate-suite-logs/py_test_grid_system_contract.json": {
+        "bytes": 355,
+        "sha256": "d58175807e34b0f14215c91a852b05d18abad7b4766191385a608a83ef24b4cd"
+      },
+      "aggregate-suite-logs/py_test_grid_system_contract.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_grid_system_contract.unittest.log": {
+        "bytes": 112,
+        "sha256": "aeec45a36b6a55e25c8df4f2f590e136f466904139169cf6725d182220384e8c"
+      },
+      "aggregate-suite-logs/py_test_grid_trial_contract.json": {
+        "bytes": 351,
+        "sha256": "cfb84630813c25b71821930df989c51b9f867f537e0907db956298bdfbf00982"
+      },
+      "aggregate-suite-logs/py_test_grid_trial_contract.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_grid_trial_contract.unittest.log": {
+        "bytes": 103,
+        "sha256": "6340868bcb6fdb67e5f34c1b3013c8762c3a51faa85adab5e9daf2e9eb1b45ff"
+      },
+      "aggregate-suite-logs/py_test_guide_panels.json": {
+        "bytes": 344,
+        "sha256": "08bdd98bd29fef47707741228e1ae92050af5066708606b947cdbd42947bd91a"
+      },
+      "aggregate-suite-logs/py_test_guide_panels.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_guide_panels.unittest.log": {
+        "bytes": 98,
+        "sha256": "439b00f50e409b8ea6ff578f1c945904d9aa00f5e4759fcb4e71d9f1615c4084"
+      },
+      "aggregate-suite-logs/py_test_infinite_grid_contract.json": {
+        "bytes": 356,
+        "sha256": "e31ab982f207648992bc4720aa290f9a8c431931b2a095cb4ef6e02c5b882a22"
+      },
+      "aggregate-suite-logs/py_test_infinite_grid_contract.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_infinite_grid_contract.unittest.log": {
+        "bytes": 124,
+        "sha256": "1705709d793395c5d9ad414da08f0f39fd0abaacf6a9f88367465b897835fd58"
+      },
+      "aggregate-suite-logs/py_test_local_launcher.json": {
+        "bytes": 349,
+        "sha256": "974a3ededed0fee77bcc57875a8ca2168d487a4f7354f064da14297bb85757f6"
+      },
+      "aggregate-suite-logs/py_test_local_launcher.log": {
+        "bytes": 854,
+        "sha256": "8c0543d463ca53386d8360e1aa624d7cd2217b3e11fc58a9f9b506391ddfd48b"
+      },
+      "aggregate-suite-logs/py_test_local_launcher.unittest.log": {
+        "bytes": 116,
+        "sha256": "d8c93582ed82ec971b0c29a0d4113584d5c29c6d2d7e42f9d018dc4464829479"
+      },
+      "aggregate-suite-logs/py_test_model_update.json": {
+        "bytes": 348,
+        "sha256": "6f070aa46990eb69bf41978e5c4ddc70e945282d9f907740b98df5cb7dbad669"
+      },
+      "aggregate-suite-logs/py_test_model_update.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_model_update.unittest.log": {
+        "bytes": 126,
+        "sha256": "af183d84652f10da5dcf5096ce0d73e2f9b12492f31b45ec3b00e153032c980f"
+      },
+      "aggregate-suite-logs/py_test_modeling_degenerate.json": {
+        "bytes": 354,
+        "sha256": "7254f9ef04af1409494b3753fb522908f8b2f7a7326760ec466af2473346f157"
+      },
+      "aggregate-suite-logs/py_test_modeling_degenerate.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_modeling_degenerate.unittest.log": {
+        "bytes": 123,
+        "sha256": "22dfd51d4833fe739b2a6266b038097fb0118814c11de7f4df2f4f86adb03e94"
+      },
+      "aggregate-suite-logs/py_test_modeling_runtime.json": {
+        "bytes": 351,
+        "sha256": "2f34a54ea486258017e1a2022a2cd287c92408cd10e5c7a2a24058bd16420dd8"
+      },
+      "aggregate-suite-logs/py_test_modeling_runtime.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_modeling_runtime.unittest.log": {
+        "bytes": 145,
+        "sha256": "8f3afb33625ba6fb319c28cdb7459ea7fefc3cf77ff61b552cd3205fa0ab167f"
+      },
+      "aggregate-suite-logs/py_test_modeling_transport.json": {
+        "bytes": 350,
+        "sha256": "978cfb16fb2db40b5930247cc8c7e8577d22dee9d418b2ee2dbc405f8bc36206"
+      },
+      "aggregate-suite-logs/py_test_modeling_transport.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_modeling_transport.unittest.log": {
+        "bytes": 101,
+        "sha256": "348f4541c564d33396d931781dca1072d52312b0253e658c69965c5b0d10a4bc"
+      },
+      "aggregate-suite-logs/py_test_mutation_freshness.json": {
+        "bytes": 353,
+        "sha256": "dd56e0da65f3f41d07ef825981382c075c3dd96bcf332fa2e403fc9c791c4d68"
+      },
+      "aggregate-suite-logs/py_test_mutation_freshness.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_mutation_freshness.unittest.log": {
+        "bytes": 123,
+        "sha256": "808554bd53fcbc4ed78a87c914fbc30bae03841299f1643216f4f0b8d5ba2fd8"
+      },
+      "aggregate-suite-logs/py_test_parameters_core.json": {
+        "bytes": 349,
+        "sha256": "7afb3ee1e9d3e9987279f162307c2eccb02cc6347b5ce61415a7b0057c24bff7"
+      },
+      "aggregate-suite-logs/py_test_parameters_core.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_parameters_core.unittest.log": {
+        "bytes": 119,
+        "sha256": "e2dd28384033966a19666c88bd463f40910758e9caa3aaae965ee9bd076ab4fa"
+      },
+      "aggregate-suite-logs/py_test_reference_contract.json": {
+        "bytes": 353,
+        "sha256": "415efc1da9bb9443d3f3075f607e566851d6c6f9f4618323cb75167dfe2b9a7b"
+      },
+      "aggregate-suite-logs/py_test_reference_contract.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_reference_contract.unittest.log": {
+        "bytes": 134,
+        "sha256": "21571acfc940c56fb97a0c8d177001825185d284a8603cf27406546ca7413421"
+      },
+      "aggregate-suite-logs/py_test_release_gate.json": {
+        "bytes": 347,
+        "sha256": "d6f8805cdb9326683286ad01511b164267da4fc9218302cb72401c0e415ac775"
+      },
+      "aggregate-suite-logs/py_test_release_gate.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_release_gate.unittest.log": {
+        "bytes": 120,
+        "sha256": "de4f0f2ed8303ef65f27506b22c16ad5ef2be2b2cd9b4d3f9e7a24f9be7e3514"
+      },
+      "aggregate-suite-logs/py_test_rule_case_catalog.json": {
+        "bytes": 352,
+        "sha256": "18cb678daa869748caae3b12f80a0c528f734e0bfb41149656efe3342936ccbe"
+      },
+      "aggregate-suite-logs/py_test_rule_case_catalog.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_rule_case_catalog.unittest.log": {
+        "bytes": 113,
+        "sha256": "d7da68d73539621c36518c8cbe0987d5fa6060c0c357392052016eeb1c623597"
+      },
+      "aggregate-suite-logs/py_test_rule_case_definition.json": {
+        "bytes": 355,
+        "sha256": "0f9e5cf1b0eef3da6c5e1364a98ec2ae086f47bea43392ba5663527589079da6"
+      },
+      "aggregate-suite-logs/py_test_rule_case_definition.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_rule_case_definition.unittest.log": {
+        "bytes": 126,
+        "sha256": "98045e4923f7c33a54e334afebf091341c01fe5b4001cf2fd46b883f5bf5516e"
+      },
+      "aggregate-suite-logs/py_test_rule_case_executor.json": {
+        "bytes": 352,
+        "sha256": "c7b82a7557d7ad25465ac2fd5a191664f17a3ed8894af8887ca6ee617769e660"
+      },
+      "aggregate-suite-logs/py_test_rule_case_executor.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_rule_case_executor.unittest.log": {
+        "bytes": 139,
+        "sha256": "f569a47c48f437df322e1058a9055208affbb59cd35c35d4432c3abce8aef876"
+      },
+      "aggregate-suite-logs/py_test_rule_case_host.json": {
+        "bytes": 349,
+        "sha256": "7235f38e244867838132255b24fd9ad5de16ece90dd65d0719de3d5822bb5c37"
+      },
+      "aggregate-suite-logs/py_test_rule_case_host.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_rule_case_host.unittest.log": {
+        "bytes": 112,
+        "sha256": "f2c331ce6aa98688a6256cf9e0f0dda42d5443b96a051179aa30b5c50e1c8f56"
+      },
+      "aggregate-suite-logs/py_test_rule_case_request.json": {
+        "bytes": 348,
+        "sha256": "2bf628bee18299cada222d41186524938b36ec03e123a5eb996c85cc3b5e2527"
+      },
+      "aggregate-suite-logs/py_test_rule_case_request.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_rule_case_request.unittest.log": {
+        "bytes": 103,
+        "sha256": "6e59c5d29c2c30c239f35b3332df60a366306a6b90d3ae5afcd965490e0f2ece"
+      },
+      "aggregate-suite-logs/py_test_rule_case_workbench_http.json": {
+        "bytes": 360,
+        "sha256": "42be75b17f6a74fab0cb63fb841ce501efb474ecaf6b20ed80b32099aa49bdc6"
+      },
+      "aggregate-suite-logs/py_test_rule_case_workbench_http.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_rule_case_workbench_http.unittest.log": {
+        "bytes": 119,
+        "sha256": "fabb21bd56f4537fc44d1561679b0ea25ec8c0e5e6a782f6fd62d9579476c310"
+      },
+      "aggregate-suite-logs/py_test_runtime_version.json": {
+        "bytes": 350,
+        "sha256": "4cb6e0b97b14fa0de249365057a47e9c891620c47126c3e4e27379d50cb7d59d"
+      },
+      "aggregate-suite-logs/py_test_runtime_version.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_runtime_version.unittest.log": {
+        "bytes": 123,
+        "sha256": "2dba248378a21e9ad2206219574a928873585de3920bc92c1b743ddbca231077"
+      },
+      "aggregate-suite-logs/py_test_scenario_verify.json": {
+        "bytes": 351,
+        "sha256": "a2e22e23fc631639e4223af7ade05619283343ad4c26e9dbcdbc0ec977090ebb"
+      },
+      "aggregate-suite-logs/py_test_scenario_verify.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_scenario_verify.unittest.log": {
+        "bytes": 137,
+        "sha256": "0fc6f060e157d0a1dfd239f5d07cca4854458d92f1921387f4c9f640f2a548ca"
+      },
+      "aggregate-suite-logs/py_test_scene_import.json": {
+        "bytes": 347,
+        "sha256": "3f295c92a0676aac0bae7ac3a26ed345f424c5c40c600d762f7bc4c1438f8942"
+      },
+      "aggregate-suite-logs/py_test_scene_import.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_scene_import.unittest.log": {
+        "bytes": 109,
+        "sha256": "caf5f50fc640d54f4d9999879d8250913bc59c6edb76b4127e63e04b7dded712"
+      },
+      "aggregate-suite-logs/py_test_section_profile_modeling.json": {
+        "bytes": 359,
+        "sha256": "34d07e11a88651c7c1c668d88613e99836019b7969836c7cbc0ea1f29573a0f9"
+      },
+      "aggregate-suite-logs/py_test_section_profile_modeling.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_section_profile_modeling.unittest.log": {
+        "bytes": 118,
+        "sha256": "16238ae9373bcd1e16fa12cf8c2a734d74ff98cd054b925d4a1f2753fefbe3a4"
+      },
+      "aggregate-suite-logs/py_test_section_profile_native.json": {
+        "bytes": 357,
+        "sha256": "ce61b61afb0a6efb250984d69dc318645eedf8e97c457f3715c18d104eb0ced6"
+      },
+      "aggregate-suite-logs/py_test_section_profile_native.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_section_profile_native.unittest.log": {
+        "bytes": 125,
+        "sha256": "74cc99a200506c49ab133a741c242f9e6e9a255cf23c73e6f19f9f02f1ca71e4"
+      },
+      "aggregate-suite-logs/py_test_serve.json": {
+        "bytes": 341,
+        "sha256": "9bc2ceb47df828af251ffbec08f30606fcf8154188ec5b1ae2992705ad332388"
+      },
+      "aggregate-suite-logs/py_test_serve.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_serve.unittest.log": {
+        "bytes": 145,
+        "sha256": "3aaf087aa4a5c4a3862f61c8fe6bd526948f44737c32ebefb1b5d76ea4c3792e"
+      },
+      "aggregate-suite-logs/py_test_source_inspector.json": {
+        "bytes": 351,
+        "sha256": "52012fe0c2ea1ac409f27003d3862cf1b31fa16d293af42ead7a87eb38837f74"
+      },
+      "aggregate-suite-logs/py_test_source_inspector.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_source_inspector.unittest.log": {
+        "bytes": 117,
+        "sha256": "7909d2eaef4ed1b2a37183125cb3492f78664b94cafa54feacfaa00d0ce46a38"
+      },
+      "aggregate-suite-logs/py_test_source_inspector_transport.json": {
+        "bytes": 358,
+        "sha256": "f8647623bfa8bca6429e42b148fa1621b7e773ada5aefca5a87072da58e2500f"
+      },
+      "aggregate-suite-logs/py_test_source_inspector_transport.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_source_inspector_transport.unittest.log": {
+        "bytes": 100,
+        "sha256": "fe008aab760eb03ccac7578e2b84665b1b50b0d7f855b17a0c7a8d039435b658"
+      },
+      "aggregate-suite-logs/py_test_space_modeling.json": {
+        "bytes": 350,
+        "sha256": "7c79a31049f522abfae6847105038bbdb83ab55eb8a9581eadd0ef98777aad7b"
+      },
+      "aggregate-suite-logs/py_test_space_modeling.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_space_modeling.unittest.log": {
+        "bytes": 135,
+        "sha256": "36a14802324930de61e9aa0305230cd301c4ebb7d324ef7a2162804dbcd78d48"
+      },
+      "aggregate-suite-logs/py_test_subgrid_contract.json": {
+        "bytes": 351,
+        "sha256": "5599517790976b88074905201fcf4109b7f2854d382025b258338dd1247b27d9"
+      },
+      "aggregate-suite-logs/py_test_subgrid_contract.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_subgrid_contract.unittest.log": {
+        "bytes": 130,
+        "sha256": "2c7303fc1592c069448eac3721e22310a0829b53301c1a790d7f24e6d6cfc945"
+      },
+      "aggregate-suite-logs/py_test_timber_support_projection.json": {
+        "bytes": 360,
+        "sha256": "357254cdb44813e7a963b471022c7d0201bb97b020944673e48235976aaa282d"
+      },
+      "aggregate-suite-logs/py_test_timber_support_projection.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_timber_support_projection.unittest.log": {
+        "bytes": 112,
+        "sha256": "661a4765058b25dde64bb979147c732343f795cbade5b6a5a03b0071621c215a"
+      },
+      "aggregate-suite-logs/py_test_unittest_runner.json": {
+        "bytes": 347,
+        "sha256": "b06d73ed040c787a780b8c258b6350c16901a90d9f273d38999363c3b6c19a96"
+      },
+      "aggregate-suite-logs/py_test_unittest_runner.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_unittest_runner.unittest.log": {
+        "bytes": 98,
+        "sha256": "5efced5567a8d45766a33e3020e6e6cf8b8ce3e57f4ccc1cb61df64b90388bd5"
+      },
+      "aggregate-suite-logs/py_test_witness_diagnostics.json": {
+        "bytes": 351,
+        "sha256": "8ba24aabae55a9353af3c6330d72e3b7e6c21232eceecd74e8823b4aef46d536"
+      },
+      "aggregate-suite-logs/py_test_witness_diagnostics.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_witness_diagnostics.unittest.log": {
+        "bytes": 100,
+        "sha256": "fe008aab760eb03ccac7578e2b84665b1b50b0d7f855b17a0c7a8d039435b658"
+      },
+      "aggregate-suite-logs/py_test_witness_marks.json": {
+        "bytes": 345,
+        "sha256": "a441af2589f782cbe4d6843af4bddf1eec89d4eaa77c456696d4b3f533026b7f"
+      },
+      "aggregate-suite-logs/py_test_witness_marks.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "aggregate-suite-logs/py_test_witness_marks.unittest.log": {
+        "bytes": 104,
+        "sha256": "c12abb957788e842f87142f815213f78a6f57b24be35c4a42b175e42410f4eb8"
+      },
+      "audit_aggregate.py": {
+        "bytes": 7025,
+        "sha256": "013bfce604e443bc85134940dce5a3c0baf8af55fcb1f0033d37dca0732a25a1"
+      },
+      "run_aggregate.py": {
+        "bytes": 5110,
+        "sha256": "aa0a2355ba065e9c9cb7b08a77e2039055e945b7e7af587486cd343e1d3b319e"
+      }
+    }
+  },
+  "limitations": [
+    "The counted total combines scene, test, native-check and assertion units; six exit-code-only suites are additional.",
+    "One POSIX-inherent Windows GDI skip is named explicitly; this does not verify Windows hardware.",
+    "No standalone browser, phone, IME or OS picker acceptance is implied.",
+    "Execution head is the actual pre-metadata-commit source head; it has not been rewritten to a later commit."
+  ]
+}

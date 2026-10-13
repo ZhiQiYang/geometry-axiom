@@ -1,0 +1,57 @@
+{
+  "schema": "geometry-source43-artifact-projection-correction/1",
+  "supersededUnpublishedV3ManifestSHA256": "d00a9335f86367d71df62132e6674c5ce0280340997225847500b5e9a5f80d46",
+  "supersededV2AndV3Retained": true,
+  "oldV3InverseReview": "437 metadata PASS/4 failures preserved separately. Four decoded-string/text inverse failures were real non-token loss.",
+  "originalInverseDiagnosticSHA256": "a57b464f71c77c48c8450d12656212a03cb6b25ea2013953d85b600b3740987d",
+  "files": [
+    {
+      "publicPath": "source-authority-243/evidence/supplement-four-v4-original-probe.json",
+      "originalSHA256": "1d2126a9cc62bc50015de3aa409f23a1cbb60d903b8edc756cc33593d33061b1",
+      "originalBytes": 177239,
+      "supersededV3PublicSHA256": "afc082b778c86fff0029edaec8f0a4549130fca21afd9b6eb475f1fa459611a7",
+      "correctedPublicSHA256": "0fa3e55781dc0a62e3cdee88ce6c24d5e2358aedc4c3be3fd85e22f0b4035ede",
+      "correctedPublicBytes": 176280,
+      "publicProjection": true,
+      "allNonTokenCharactersIntendedRetained": true,
+      "originalPathLabel": "<workspace-path>"
+    },
+    {
+      "publicPath": "source-authority-243/evidence/supplementary-validation-243-supplement-v4.json",
+      "originalSHA256": "72314c2a9ff61d77cd6e7f1073e5cd1f5da94b7c1b0613ebeb4b67dfbbfb4074",
+      "originalBytes": 122504,
+      "supersededV3PublicSHA256": "f6d99517dee7c6854377e74dd3be546f6d06c18fea12d911ebc88a026191356a",
+      "correctedPublicSHA256": "6fee6770478003f1a40333d048fb055f27b56ee6f87e401ee7aab7bcdde6ab8c",
+      "correctedPublicBytes": 90107,
+      "publicProjection": true,
+      "allNonTokenCharactersIntendedRetained": true,
+      "originalPathLabel": "<workspace-path>"
+    },
+    {
+      "publicPath": "source-authority-243/source-preparation-receipt.json",
+      "originalSHA256": "61f389d5bbff4e17df4900636b8397722523f607000d6ccede589d2cddf6dbed",
+      "originalBytes": 17213,
+      "supersededV3PublicSHA256": "bbd6c0e0f18a5e214fb529578258b21f8dbbbcd203c4a1e5c3c3fcf26cb9c105",
+      "correctedPublicSHA256": "e001007650cf5d04a3c5f00e4fb4bdb0a287301596a4fc1463ec74ff9cc89863",
+      "correctedPublicBytes": 12808,
+      "publicProjection": true,
+      "allNonTokenCharactersIntendedRetained": true,
+      "originalPathLabel": "<workspace-path>"
+    },
+    {
+      "publicPath": "dated-addenda/9eb-caption-actual329.md",
+      "originalSHA256": "75f1ab38a78386e3a0cc3664a62a891705c9f883a5a110585d9443646d6e5b84",
+      "originalBytes": 2823,
+      "supersededV3PublicSHA256": "6b2b6d3ce60e14360a1e79d05a32d1573161f28a33ba659fc535cbe6abbed66e",
+      "correctedPublicSHA256": "c92d0a9d78f8d59dee73327b427314f0fb3f5c3c447cd63af87dc280c1290cde",
+      "correctedPublicBytes": 2650,
+      "publicProjection": true,
+      "allNonTokenCharactersIntendedRetained": true,
+      "originalPathLabel": "<workspace-path>"
+    }
+  ],
+  "scope": "Only four historical authority packet artifact projections are recreated from originals; the already-correct29source identities27byte-exact/2document-projected stay unchanged.",
+  "productExecuted": false,
+  "all43ProductAccepted": false,
+  "differentActorInverseQaRequired": true
+}

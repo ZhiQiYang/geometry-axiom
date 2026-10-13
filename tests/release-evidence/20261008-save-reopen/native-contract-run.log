@@ -1,0 +1,18 @@
+BRIDGE_STATE fresh
+BRIDGE_REASON 來源與 binary SHA-256 相符（建於 2026-10-08T23:20:38+08:00）
+BRIDGE_FINGERPRINT 0c1e19603546dab1c18a887debbc25298eb4c57b0e694525fb1777c14658baed
+EXE_SHA256 507ae331edea9f530b3b22af5f8d46eee8d6d26a95f947f742ed96144ebada1b
+EXE_SIZE 783872
+SIDECAR_FINGERPRINT 0c1e19603546dab1c18a887debbc25298eb4c57b0e694525fb1777c14658baed
+SIDECAR_BUILT_AT 2026-10-08T23:20:38+08:00
+SIDECAR_COMMAND cl /nologo /utf-8 /O2 /W3 /U_WIN32 geometry-web/web_bridge.c /link /STACK:16777216 -> bridge.exe
+SIDECAR_EXE_SHA256 507ae331edea9f530b3b22af5f8d46eee8d6d26a95f947f742ed96144ebada1b
+UNITTEST_EXIT 0
+--- STDOUT ---
+
+--- STDERR ---
+..
+----------------------------------------------------------------------
+Ran 2 tests in 1.087s
+
+OK

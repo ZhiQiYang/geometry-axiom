@@ -1,0 +1,92 @@
+{
+  "schema": "geometry-root-owned-stop-terminal/1",
+  "startedUtc": "2026-10-09T18:43:40.533675+00:00",
+  "observedUtc": "2026-10-09T18:43:40.611890+00:00",
+  "command": [
+    "<execution-runtime-path>",
+    "<workspace-path>",
+    "<workspace-path>",
+    "19182",
+    "<workspace-path>"
+  ],
+  "exitCode": 0,
+  "helperSHA256": "08fc4d561116583129b0faab25d2ad12d2685443ba4ff5f4f3c299cf9f83a3d5",
+  "actualPython": "<execution-runtime-path>",
+  "actualPythonSHA256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+  "wrapperSHA256": "cc505b94c1011bed31d350a8670422808ded123e6b058e54e3c7853ff79286a2",
+  "receiptSources": [
+    "<workspace-path>"
+  ],
+  "processObservations": [
+    {
+      "pid": 252331,
+      "role": "owned server",
+      "exists": true,
+      "state": "Z",
+      "statSHA256": "d63658256db0b650075af4b90e705c52fac2fec42f59156e9f061557c629e703"
+    },
+    {
+      "pid": 252332,
+      "role": "owned direct native bridge",
+      "exists": true,
+      "state": "Z",
+      "statSHA256": "17376fdb5d04a70682ad96a48e539af11b3196d995b237bb1cdadefb3d3504bd"
+    },
+    {
+      "pid": 252403,
+      "role": "actual CDP_SCOPE Chromium main process",
+      "exists": true,
+      "state": "Z",
+      "statSHA256": "ff948e2ecd01715dd20a29b40c84b55ec985790d9ae9e9f7f5c1ed4f465c8379"
+    },
+    {
+      "pid": 252395,
+      "role": "actual browser parent Node",
+      "exists": false,
+      "state": "absent-at-observation"
+    }
+  ],
+  "portObservation": {
+    "accepting": false,
+    "rawError": "URLError(ConnectionRefusedError(111, 'Connection refused'))"
+  },
+  "rawFiles": [
+    {
+      "path": "identity.json",
+      "bytes": 413,
+      "sha256": "050f3113fd985affb53ee856ddc1b198f852018be25551575effc8f420c3e038"
+    },
+    {
+      "path": "proc-252331.stat.raw",
+      "bytes": 181,
+      "sha256": "d63658256db0b650075af4b90e705c52fac2fec42f59156e9f061557c629e703"
+    },
+    {
+      "path": "proc-252332.stat.raw",
+      "bytes": 167,
+      "sha256": "17376fdb5d04a70682ad96a48e539af11b3196d995b237bb1cdadefb3d3504bd"
+    },
+    {
+      "path": "proc-252403.stat.raw",
+      "bytes": 186,
+      "sha256": "ff948e2ecd01715dd20a29b40c84b55ec985790d9ae9e9f7f5c1ed4f465c8379"
+    },
+    {
+      "path": "root-dump.raw.json",
+      "bytes": 6617,
+      "sha256": "cc0c66792d3c4e4889b5e8f9255f22534619a4d653c188078ffd4a0d37d669a0"
+    },
+    {
+      "path": "stop.stderr.raw.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "stop.stdout.raw.log",
+      "bytes": 65,
+      "sha256": "f35040ed143895eeade7285221e298e67a382b52eaefe7fa0fc5ab1c7e4338fa"
+    }
+  ],
+  "productTestExecution": false,
+  "note": "Exact owned helper signal and immediate process observations; zombie is not absent. No historical process state is reconstructed."
+}

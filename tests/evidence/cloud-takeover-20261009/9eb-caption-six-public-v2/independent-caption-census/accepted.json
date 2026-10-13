@@ -1,0 +1,336 @@
+{
+  "schema": "geometry-committed-caption-independent-census/1",
+  "checkedUTC": "2026-10-09T17:25:36.403511+00:00",
+  "sourceFullSHA": "9eb670110379ec0d726914f3e5b2d8e7237f2b9c",
+  "expectedExecutedProbeSHA256": "7ee40cb53fb1f561d0e7d33282b641bc3a4850f8cbdc9fa6105994bd3d43d765",
+  "sourceDirty": "",
+  "readOnlyExistingEvidence": true,
+  "executor": {
+    "path": "<python-runtime>/bin/python",
+    "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+    "command": [
+      "python",
+      "-B",
+      "<workspace-path>",
+      "--expected-sha",
+      "9eb670110379ec0d726914f3e5b2d8e7237f2b9c",
+      "--expected-probe-sha256",
+      "7ee40cb53fb1f561d0e7d33282b641bc3a4850f8cbdc9fa6105994bd3d43d765",
+      "--gate",
+      "<workspace-path>",
+      "--probe",
+      "<isolated-test-directory>",
+      "--output",
+      "<workspace-path>"
+    ],
+    "scriptSHA256": "bb465f14d39177bed789ac4a2d440b1dd38801ae5c2b106642a8ed0d4d52c1a9"
+  },
+  "checks": [
+    {
+      "name": "full original sourceSHA clean before/after exactly bound",
+      "ok": true
+    },
+    {
+      "name": "runtime fresh same source/session/root/pid throughout actual command",
+      "ok": true
+    },
+    {
+      "name": "actual Node executable bytes command cwd and childpid exact",
+      "ok": true
+    },
+    {
+      "name": "actual sandboxed Chromium ELF bytes owned profile exact",
+      "ok": true
+    },
+    {
+      "name": "captured source/runner/executables/native/livebridge unchanged",
+      "ok": true
+    },
+    {
+      "name": "actual terminal command no timeout/interruption/identity problems",
+      "ok": true
+    },
+    {
+      "name": "original rawlogs and probeJSON match declared immutable SHA",
+      "ok": true
+    },
+    {
+      "name": "one original UI123_RESULT canonical record",
+      "ok": true
+    },
+    {
+      "name": "all positive total/pass/fail census agrees exactly",
+      "ok": true,
+      "detail": {
+        "passed": 329,
+        "failed": 0,
+        "total": 329,
+        "groups": {
+          "preflight": 4,
+          "caption": 322,
+          "final": 3
+        }
+      }
+    },
+    {
+      "name": "sole caption scope preserved; original six explicitly omitted",
+      "ok": true
+    },
+    {
+      "name": "all exact positive group counts/results preserved",
+      "ok": true
+    },
+    {
+      "name": "attempt completion and acceptance remain correctly distinct",
+      "ok": true
+    },
+    {
+      "name": "actual explicitly pinned committed caption executes without source override",
+      "ok": true
+    },
+    {
+      "name": "actual64b31 formal runner identity exact",
+      "ok": true
+    },
+    {
+      "name": "probe critical product and native source bytes agree",
+      "ok": true
+    },
+    {
+      "name": "original seven widths/fixture/source policy unchanged",
+      "ok": true
+    },
+    {
+      "name": "width1382 completeness correctly limited by actual receipt",
+      "ok": true,
+      "detail": {
+        "width": 1382,
+        "completeOriginalNormalContract": true,
+        "requiredOriginalNames": 39,
+        "reached": 39,
+        "nativeUnchangedPassed": true
+      }
+    },
+    {
+      "name": "actual archived trusted normal inputs 1382",
+      "ok": true
+    },
+    {
+      "name": "width1160 completeness correctly limited by actual receipt",
+      "ok": true,
+      "detail": {
+        "width": 1160,
+        "completeOriginalNormalContract": true,
+        "requiredOriginalNames": 39,
+        "reached": 39,
+        "nativeUnchangedPassed": true
+      }
+    },
+    {
+      "name": "actual archived trusted normal inputs 1160",
+      "ok": true
+    },
+    {
+      "name": "width900 completeness correctly limited by actual receipt",
+      "ok": true,
+      "detail": {
+        "width": 900,
+        "completeOriginalNormalContract": true,
+        "requiredOriginalNames": 39,
+        "reached": 39,
+        "nativeUnchangedPassed": true
+      }
+    },
+    {
+      "name": "actual archived trusted normal inputs 900",
+      "ok": true
+    },
+    {
+      "name": "width680 completeness correctly limited by actual receipt",
+      "ok": true,
+      "detail": {
+        "width": 680,
+        "completeOriginalNormalContract": true,
+        "requiredOriginalNames": 39,
+        "reached": 39,
+        "nativeUnchangedPassed": true
+      }
+    },
+    {
+      "name": "actual archived trusted normal inputs 680",
+      "ok": true
+    },
+    {
+      "name": "width600 completeness correctly limited by actual receipt",
+      "ok": true,
+      "detail": {
+        "width": 600,
+        "completeOriginalNormalContract": true,
+        "requiredOriginalNames": 39,
+        "reached": 39,
+        "nativeUnchangedPassed": true
+      }
+    },
+    {
+      "name": "actual archived trusted normal inputs 600",
+      "ok": true
+    },
+    {
+      "name": "width560 completeness correctly limited by actual receipt",
+      "ok": true,
+      "detail": {
+        "width": 560,
+        "completeOriginalNormalContract": true,
+        "requiredOriginalNames": 39,
+        "reached": 39,
+        "nativeUnchangedPassed": true
+      }
+    },
+    {
+      "name": "actual archived trusted normal inputs 560",
+      "ok": true
+    },
+    {
+      "name": "width390 completeness correctly limited by actual receipt",
+      "ok": true,
+      "detail": {
+        "width": 390,
+        "completeOriginalNormalContract": true,
+        "requiredOriginalNames": 39,
+        "reached": 39,
+        "nativeUnchangedPassed": true
+      }
+    },
+    {
+      "name": "actual archived trusted normal inputs 390",
+      "ok": true
+    },
+    {
+      "name": "success implies every originalwidth complete; failure remains uncompleted",
+      "ok": true
+    },
+    {
+      "name": "normal first-use premise paired positivity exactly preserved when executed",
+      "ok": true,
+      "detail": {
+        "counts": {
+          "initial canvas lesson has one normal reachable dismissal": 7,
+          "normal first-use dismissal hides lesson and preserves exact native source": 7
+        }
+      }
+    },
+    {
+      "name": "actual executed source archive present",
+      "ok": true
+    },
+    {
+      "name": "all archived frozen beforeSource bytes exact",
+      "ok": true
+    },
+    {
+      "name": "all manifest entries/receiptSHA/fullSHA provenance exact",
+      "ok": true
+    },
+    {
+      "name": "committedcaption originalbytes and actualrunner archived exact",
+      "ok": true
+    }
+  ],
+  "integrityVerified": true,
+  "passedIntegrityChecks": 36,
+  "totalIntegrityChecks": 36,
+  "recordedAcceptance": {
+    "passed": 329,
+    "failed": 0,
+    "exitCode": 0,
+    "attemptCompleted": true,
+    "acceptanceCompleted": true,
+    "scope": [
+      "caption"
+    ],
+    "widthCoverage": [
+      {
+        "width": 1382,
+        "completeOriginalNormalContract": true,
+        "requiredOriginalNames": 39,
+        "reached": 39,
+        "nativeUnchangedPassed": true
+      },
+      {
+        "width": 1160,
+        "completeOriginalNormalContract": true,
+        "requiredOriginalNames": 39,
+        "reached": 39,
+        "nativeUnchangedPassed": true
+      },
+      {
+        "width": 900,
+        "completeOriginalNormalContract": true,
+        "requiredOriginalNames": 39,
+        "reached": 39,
+        "nativeUnchangedPassed": true
+      },
+      {
+        "width": 680,
+        "completeOriginalNormalContract": true,
+        "requiredOriginalNames": 39,
+        "reached": 39,
+        "nativeUnchangedPassed": true
+      },
+      {
+        "width": 600,
+        "completeOriginalNormalContract": true,
+        "requiredOriginalNames": 39,
+        "reached": 39,
+        "nativeUnchangedPassed": true
+      },
+      {
+        "width": 560,
+        "completeOriginalNormalContract": true,
+        "requiredOriginalNames": 39,
+        "reached": 39,
+        "nativeUnchangedPassed": true
+      },
+      {
+        "width": 390,
+        "completeOriginalNormalContract": true,
+        "requiredOriginalNames": 39,
+        "reached": 39,
+        "nativeUnchangedPassed": true
+      }
+    ],
+    "originalFailures": []
+  },
+  "artifacts": [
+    {
+      "path": "<workspace-path>",
+      "sha256": "4a9d69717adb48a2eb1fb5aff89667aed5417525853f6642c9a8ed478ac29e21"
+    },
+    {
+      "path": "<isolated-test-directory>",
+      "sha256": "d01b270fedd4abd9bc1dc034f6389048f983f2009c33cc63e109806d252bf8e0"
+    },
+    {
+      "path": "<workspace-path>",
+      "sha256": "7dbe6736265985fdea1786d7b1fd78156fc8222cf11f64bbd8567786abe5ba63"
+    },
+    {
+      "path": "<isolated-test-directory>",
+      "sha256": "7dbe6736265985fdea1786d7b1fd78156fc8222cf11f64bbd8567786abe5ba63"
+    },
+    {
+      "path": "<workspace-path>",
+      "sha256": "cef1c40b6413dce8c646420e98b5f9547f5945bdfb3a6a186336e76b7b404b10"
+    }
+  ],
+  "browserExecuted": false,
+  "nativeExecuted": false,
+  "repoModified": false,
+  "limits": [
+    "Expected execution source is explicitly pinned and original strong seven-width assertions/fixture remain separately reviewed; first-use normal entry premise is separately identified",
+    "A sole caption group attempt ending is not all sevenwidth acceptance; actual perwidth full normal inputs/native endpoint only claimed where original names all passed",
+    "No formalSIX/fullCDP/fullSpace/all43/privateZIP/golden/physicalmobile/IME/OS-picker claim",
+    "Failure details are original getter fields only; no absent bbox/clientLeft is invented",
+    "Historical102ff27/1 and bb7 failures are kept independently; no aggregation or SHA rebinding"
+  ]
+}

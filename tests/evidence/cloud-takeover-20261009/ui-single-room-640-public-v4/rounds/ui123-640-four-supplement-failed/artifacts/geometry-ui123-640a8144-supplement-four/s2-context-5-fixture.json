@@ -1,0 +1,26 @@
+[
+  {
+    "line": "boundary 901 outline -1800,-1200 2400,-1200 2400,1600 -1800,1600 hole 100,200 100,600 700,600 700,200",
+    "response": {
+      "ok": true
+    }
+  },
+  {
+    "line": "grid-system 901 name-hex 533220636f6e7472616374 main-along none u repeat 0 600 v repeat 0 400",
+    "response": {
+      "ok": true
+    }
+  },
+  {
+    "line": "canvas-pos boundary 901 200 100",
+    "response": {
+      "ok": true
+    }
+  },
+  {
+    "line": "canvas-pos grid-system 901 500 100",
+    "response": {
+      "ok": true
+    }
+  }
+]

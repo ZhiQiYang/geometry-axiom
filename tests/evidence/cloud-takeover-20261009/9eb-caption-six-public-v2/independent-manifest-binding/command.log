@@ -1,0 +1,18 @@
+PASS caption: measured manifest exact fullSHA and original receipt bytes
+PASS caption: measured manifest exact original provenance
+PASS caption: no duplicate manifest source entries
+PASS caption: every actual archived entry matches immutable hash and size
+PASS caption: all304 source snapshots exactly bound; plus one actual runner
+PASS caption: source snapshots may include caption but executed test identified separately
+PASS caption: actual runner bytes separately match receipt identity
+PASS caption: original independent census acceptance references same gate and fullSHA
+PASS caption: no original receipt/probe/census/manifest bytes changed
+PASS six: measured manifest exact fullSHA and original receipt bytes
+PASS six: measured manifest exact original provenance
+PASS six: no duplicate manifest source entries
+PASS six: every actual archived entry matches immutable hash and size
+PASS six: all304 source snapshots exactly bound; plus one actual runner
+PASS six: source snapshots may include caption but executed test identified separately
+PASS six: actual runner bytes separately match receipt identity
+PASS six: original independent census acceptance references same gate and fullSHA
+PASS six: no original receipt/probe/census/manifest bytes changed

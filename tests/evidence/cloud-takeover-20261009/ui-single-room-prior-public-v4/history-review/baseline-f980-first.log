@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "<workspace-path>", line 230, in <module>
+    if __name__=='__main__':sys.exit(main())
+                                     ^^^^^^
+  File "<workspace-path>", line 192, in main
+    before=identity('before');assert before['head']==args.expected_head and before['dirty']=='',before
+           ^^^^^^^^^^^^^^^^^^
+  File "<workspace-path>", line 77, in identity
+    'native':{name:binaries.check(name,pathlib.Path(os.environ[variable])).as_dict()for name,variable in [('bridge','GEOMETRY_TEST_BRIDGE'),('model-base','GEOMETRY_MODEL_BASE')]}}
+                   ^^^^^^^^^^^^^^
+AttributeError: module 'binaries' has no attribute 'check'

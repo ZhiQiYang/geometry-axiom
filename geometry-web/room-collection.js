@@ -121,7 +121,8 @@
         const attachmentForPin = pin => {
           const next = copy(intent.state), collection = next.collections.find(c => c.id === intent.collectionId),
             room = {id:roomId,name:preview.name,boundaryRef:{kind:"boundary",id:preview.id,associationPin:pin},
-              acceptedBasisRevision:intent.plane.basisRevision,reviewState:"confirmed"};
+              acceptedBasisRevision:intent.plane.basisRevision,reviewState:"confirmed",
+              ...(next.schema===S.DISPLAY_SCHEMA?{display:intent.room?copy(intent.room.display):S.defaultDisplay(intent.plane)}:{})};
           if (intent.room) next.rooms[next.rooms.findIndex(r=>r.id === roomId)] = room;
           else {next.rooms.push(room);collection.roomIds.push(roomId);}
           return S.validate(next);
@@ -176,12 +177,18 @@
       if (!same(stamp, this.a.readProjectStamp()) || !same(before, this.a.readAttachment()) || incarnation !== this.a.boundaryIncarnation(boundaryId)) fail("房間關聯結果晚到，請重新操作。");
       const room = {id: roomId || this.a.uuid(), name: typeof name === "string" ? name.trim() : name,
         boundaryRef: {kind: "boundary", id: boundaryId, associationPin: pin}, acceptedBasisRevision: S.planeForRoom(next, roomId)?.basisRevision || next.planes.find(p => p.id === collection.planeId).basisRevision,
-        reviewState: "confirmed"};
+        reviewState: "confirmed",
+        ...(next.schema===S.DISPLAY_SCHEMA?{display:old?copy(old.display):S.defaultDisplay(next.planes.find(p=>p.id===collection.planeId))}:{})};
       if (old) next.rooms[next.rooms.findIndex(r => r.id === old.id)] = room;
       else { next.rooms.push(room); collection.roomIds.push(room.id); }
       return this.change(next, old ? "明選重新關聯房間" : "明選關聯既有房間");
     }
     basis(planeId, calibration, alignment) { return this.change(S.changeBasis(this.state(), planeId, calibration, alignment), "調整共享來源基準"); }
+    sourceView(roomId,calibration,alignment,display) {
+      const before=this.state(),plane=S.planeForRoom(before,roomId);if(!plane)fail('房間來源不存在。');
+      const next=S.changeDisplay(S.changeBasis(before,plane.id,calibration,alignment),roomId,display);
+      return this.change(next,JSON.stringify([plane.calibration,plane.alignment])===JSON.stringify([calibration,alignment])?'調整房間顯示':'調整共享來源基準');
+    }
     rename(roomId, name) {
       const next = this.state(), room = next.rooms.find(r => r.id === roomId); if (!room) fail("房間不存在。");
       room.name = typeof name === "string" ? name.trim() : name; return this.change(next, "重新命名房間");

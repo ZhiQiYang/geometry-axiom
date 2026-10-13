@@ -22,12 +22,12 @@ window.ParameterUI = (() => {
     const c=catalog.find(c=>c.id===ref.parameterId),f=c?.fields.find(f=>f.id===ref.fieldId);
     return `${c?.name || '遺失卡片'}.${f?.name || '遺失欄位'} · #${ref.parameterId}:${ref.fieldId}`;
   }
-  const refToken = ref => `⟦${sourceLabel(ref,state?.card?.fields?[...cards().filter(c=>c.id!==state.card.id),state.card]:cards()).replaceAll('⟦','[').replaceAll('⟧',']')}⟧`;
-  function expression(a) {
-    if(a.op==='ref')return refToken(a);
+  const refToken = (ref,catalog=state?.card?.fields?[...cards().filter(c=>c.id!==state.card.id),state.card]:cards()) => `⟦${sourceLabel(ref,catalog).replaceAll('⟦','[').replaceAll('⟧',']')}⟧`;
+  function expression(a,catalog) {
+    if(a.op==='ref')return refToken(a,catalog);
     if(a.op==='literal')return a.den==='1'?a.num+(a.unit==='mm'?' mm':''):`(${a.num}${a.unit==='mm'?' mm':''} / ${a.den})`;
-    if(a.op==='neg')return `-(${expression(a.left)})`;
-    return `(${expression(a.left)} ${{add:'+',sub:'−',mul:'×',div:'÷'}[a.op]} ${expression(a.right)})`;
+    if(a.op==='neg')return `-(${expression(a.left,catalog)})`;
+    return `(${expression(a.left,catalog)} ${{add:'+',sub:'−',mul:'×',div:'÷'}[a.op]} ${expression(a.right,catalog)})`;
   }
   const inputText = f => f.expression?.op==='literal' ? `${f.expression.num}${f.expression.den==='1'?'':'/'+f.expression.den}` : '='+expression(f.expression);
   const coreText = text => text.replaceAll('＝','=').replaceAll('−','-').replaceAll('×','*').replaceAll('÷','/').replace(/⟦[^⟦⟧]*#(\d+):(\d+)⟧/g,'@$1:$2');
@@ -500,6 +500,7 @@ window.ParameterUI = (() => {
     paintResults(s);
     $('paramResult').removeAttribute('data-stale');
     $('paramResult').innerHTML = impactHtml(s, p);
+    appendSectionProfileImpact($('paramResult'), p);
     $('paramConfirm').disabled = !p.valid;
     if (p.valid) status(s.previewKind !== 'put' ? '試算完成，確認後整筆套用。' : s.fresh ? '全部欄位有效，可建立卡片' : '全部欄位有效，可套用', false, 'ok');
     else status(s.failure?.fieldId != null ? '請修正標紅的欄位' : '未套用：請修正欄位或引用。', true, 'error');
@@ -570,31 +571,62 @@ window.ParameterUI = (() => {
     clearTimeout(timer);
     lockConfirmation(s);
     const p = s.preview;
+    const navigation = oc.navigationSequence;
+    const ownsPresentation = () => current(s) && navigation === oc.navigationSequence;
+    let committed = false;
     status('正在套用…');
     try {
-      const id = s.card.id, context = s.context;
+      const id = s.card.id;
       await EngineeringAdapter.confirm({token: p.token});
-      if (state !== s || context !== ReferenceWorkspace.context()) return;
+      committed = true;
+      // The native token has been consumed. A later presentation failure must
+      // not leave it available for a second confirmation.
+      s.preview = null;
+      if (!ownsPresentation()) return;
       /* 真卡落在草稿卡的位置（同一份座標，不受確認前平移或欄寬變化影響）。 */
       if (s.fresh && s.draftPos) await api(`line canvas-pos parameter ${id} ${s.draftPos.cx} ${s.draftPos.cy}`);
+      if (!ownsPresentation()) return;
+      // Keep pending/mayLeave locked through the final refresh. Clearing state
+      // earlier lets a new face navigation race the late parameter selection.
+      const refreshed = await renderObjects();
+      if (!ownsPresentation()) return;
+      if (refreshed !== true) throw new Error('未能重新讀取畫布。');
       state = null;
       oc.parameterCreating = false;
       clearTimeout(timer);
-      await renderObjects();
       if (ocFind('parameter', id)) {
         selectObject('parameter', id);
         centerOnNode('parameter', id);
       } else renderInspector();
       toast('參數與引用物件已整筆更新，可復原。', 'success');
     } catch (e) {
+      if (e.engineeringConfirmation?.ok === true) committed = true;
       if (current(s)) {
         s.preview = null;
-        status(e.message, true);
-        $('paramConfirm').disabled = true;
+        if (committed && ownsPresentation()) {
+          const message = '參數已套用，但畫面更新未完成，請重新選取參數卡。' + e.message;
+          status(message, true);
+          toast(message, 'error');
+        } else if (!committed && ownsPresentation()) {
+          status(e.message, true);
+          if ($('paramConfirm')) $('paramConfirm').disabled = true;
+        }
       }
     } finally {
+      const retireState = committed && current(s);
+      const retiredRoot = retireState ? s.confirmRoot : null;
+      if (retireState) {
+        state = null;
+        oc.parameterCreating = false;
+        clearTimeout(timer);
+      }
       s.busy = false;
       unlockConfirmation(s);
+      // A failed refresh can leave the retired editor in the DOM. Its status
+      // explains the committed result; do not accept input into ownerless raw.
+      if (retiredRoot && !state && retiredRoot === $('parameterEditor')) {
+        for (const control of retiredRoot.querySelectorAll('button,input,select,textarea')) control.disabled = true;
+      }
       if (current(s) && $('paramConfirm')) $('paramConfirm').disabled = !s.preview?.valid;
     }
   }
@@ -892,11 +924,12 @@ window.ParameterUI = (() => {
   $('btnNewParameter').onclick=()=>{ $('createObjectPop').hidden=true;create(); };
   window.DraftGate?.register(intent => {
     if (!state) return true;
+    if (state.busy) return false;
     const only = intent?.selection;
     if (only?.length === 1 && only[0].kind === "parameter" && only[0].id === state.card?.id) return true;
     return mayLeave();
   });
-  return {value,errorText,errorCodes:ERROR_TEXT,explainFailure,failureMarkup,drawDraft,sourceLabel,options,sourceControl,sourceRef,bindSource,card:svgCard,render,create,openLegacy,jump,usage,relations,mayLeave,discard,exportPackage,panelTemplate,quickSample,get previewing(){return state?.previewRequest != null;},get pending(){return !!state&&(state.changed||state.busy||state.previewRequest != null);},get editingId(){return state?.card.id;}};
+  return {value,formatDefinition:expression,errorText,errorCodes:ERROR_TEXT,explainFailure,failureMarkup,drawDraft,sourceLabel,options,sourceControl,sourceRef,bindSource,card:svgCard,render,create,openLegacy,jump,usage,relations,mayLeave,discard,exportPackage,panelTemplate,quickSample,get previewing(){return state?.previewRequest != null;},get pending(){return !!state&&(state.changed||state.busy||state.previewRequest != null);},get editingId(){return state?.card.id;}};
 })();
 
 /* GEO-227：每張圖向 FeatureLessons 登記。檢查比對圖與功能當時的事實，失敗時帶教學 id。 */

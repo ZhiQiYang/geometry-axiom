@@ -1,16 +1,24 @@
 # geometry-web — 幾何模型 Web 介面
 
-## 核心概念：把定義組合成具體構件
+交付候選的整合範圍、完整驗收矩陣與未驗平台見
+[交付候選紀錄](docs/RELEASE-CANDIDATE.md)。保存或搬移完整工作請使用 `.gcanvas`；
+它包含原生場景及目前功能要求的來源、模型、草稿與方案資料，`.scene` 只含原生幾何。
+
+## 核心概念：把定義組成配置或構件
 
 可以把這個產品理解為：**把可重用的定義（規則、材料、網格）明確組合起來，指定材料、位置與相互關係；通過檢查並確認後，形成配置，或實例化成有身分的角材。** 目前只支援下列已有契約的組合，不是任何概念都能自由嵌套或任意組合生成。括號內是 [公理層](../公理層.md) 的條目編號，名詞以該處定義為準；這裡的叫法與公理名稱不同時，一併附上公理名稱。
 
-- **組構規則＋截面尺寸來源 → 材料配置 → 組構實例**：組構規則（D32 構件分件與接合規則版本）描述角色槽位與各構件，以及哪支的端面頂到哪支的側面。材料配置（D33 組構綁定）替各角色槽位指定截面尺寸來源（固定版本材料、具名規格、參數或數值）、接觸面與截面擺向，同一槽位的構件共用這些設定；未選完可先保存，配置本身不生成角材。生成組構實例（D34）時依接合關係對應主支與副支，再指定承載面（D4）、各構件的定位線（D6 參考線），以及兩支主支各自的兩端支撐（同面既有的邊界角材）；預覽通過並確認後，才寫入有身分的角材，完成料長由幾何推導。目前只生成兩支同向主支加一支端接副支，接觸面與截面擺向須符合首版限制。見 [組構規則](../geometry-core/ASSEMBLY-RULES-CONTRACT.md) 與 [角材生成](docs/ASSEMBLY-GENERATION.md)。
-- **網格來源＋邊界 → 網格配置 → 套用到承載面**：網格來源（D29 獨立網格系統）定義間距，或面材尺寸與縫寬；網格配置（D30）決定哪個格子（cell）內的角、邊中點或中心等位置對齊邊界的哪個頂點，再套用到使用同一邊界的承載面。同一網格來源可有多份網格配置。這一步建立定位依據，不自動放入角材。見 [網格系統](docs/GRID-SYSTEM.md)。
-- **網格格線可當排板基準，不等於鋪好面材**：以面材尺寸與縫寬定義的網格套用到面後，格線可作為排板與板縫的基準；但目前不會產生一片片施工面材。施工面材實體、完成面與完成面高程仍屬未來的層。
+- **組構規則＋截面尺寸來源 → 材料配置 → 組構實例**：組構規則（D32 構件分件與接合規則版本）描述角色槽位與各構件。端面可以抵在指定側面，也可以是一支連續、另一支分成兩段；分成兩段的規則可以保存，目前的生成器不產生它的角材。材料配置（D33 組構綁定）替各角色槽位指定截面尺寸來源（固定版本材料、具名規格、參數或數值）、接觸面與截面擺向，同一槽位的構件共用這些設定；未選完可先保存，配置本身不生成角材。生成組構實例（D34）時依接合關係對應主支與副支，再指定承載面（D4）、各構件的定位線（D6 參考線），以及兩支主支各自的兩端支撐（同面既有的邊界角材）；預覽通過並確認後，才寫入有身分的角材，完成料長由幾何推導。目前只生成兩支沿 +v 的主支，加一支沿 +u、兩端向內端接的副支；接觸面須為 A，截面 A 沿面內橫向、B 沿深度（+n）。其他合法規則或選項回報不支援，不改原規則、角色或材料配置。見 [組構規則](../geometry-core/ASSEMBLY-RULES-CONTRACT.md) 與 [角材生成](docs/ASSEMBLY-GENERATION.md)。
+- **網格來源＋邊界 → 網格配置；之後才套到承載面**：網格來源（D29 獨立網格系統）定義等距軸的基準與間距，或面材尺寸、縫寬與起算點。網格配置（D30）指定哪個帶符號格子的格內有理位置對齊哪個邊界頂點；快捷位置是角、邊中點與中心，也可輸入其他格內有理比例。配置可以先獨立存在，邊界不必已有承載面。之後才可明示套到已使用同一邊界的承載面。同一網格來源可有多份網格配置。這一步建立定位依據，不自動放入角材。見 [網格系統](docs/GRID-SYSTEM.md)。
+- **網格格線可當排板基準，不等於鋪好面材**：以面材尺寸、縫寬與起算點定義的網格套用到面後，格線是縫的中心線，可作為排板與板縫的基準，不是板邊，也不會產生一片片施工面材。施工面材實體、完成面與完成面高程仍屬未來的層。
 
-網格配置與組構實例保存的是來源、身分及引用關係。修改被引用的間距、尺寸或定位線時，會重新推導引用它們的結果，先預覽影響，通過檢查並確認後才套用。材料配置引用固定版本的規則，選用材料時也引用固定版本的材料；組構實例引用固定版本的規則與所選的材料配置。發布新版規則或材料不會自動換掉既有引用，升級要明選並預覽。完整保存使用 `.gcanvas`，不能只留下失去來源的線段或角材外形。
+網格配置保存來源、邊界、穩定頂點、帶符號格子與格內比例，不另存平移。組構實例保存規則指紋、材料配置、構件配置，以及 member 到原生角材的所有權；這些角材不能當普通料獨立修改或刪除。修改被引用的間距、尺寸或定位線時，會重新推導引用它們的結果，先預覽影響，通過檢查並確認後才套用。材料配置引用固定版本的規則，選用材料時也引用固定版本的材料；組構實例引用固定版本的規則與所選的材料配置。發布新版規則或材料不會自動換掉既有引用，升級要明選並預覽。完整保存使用 `.gcanvas`，不能只留下失去來源的線段或角材外形。
 
 碰撞、範圍、支撐及引用條件仍須成立；這些是幾何與資料檢查，不代表施工工序或載重已驗證。這段是現行設計的白話入口，行為與能力界線仍以 [公理層](../公理層.md) 及各功能契約為準。
+
+## 斷面與直線拉伸（Q38）
+
+「建立 → 斷面」另提供 D35–D40 的斷面工作區：正交輪廓、角材／固定規格面材、具型別尺寸來源及直線拉伸。2D 可直接輸入位置並預覽；3D 沿用原模型檢視器，材料與參考包絡可分別顯示，包絡不計材料量。簡易定位可引用現行承載面，或明選已保存空間的牆／頂面取值；後者保存當下框架、有效範圍與來源說明，不隨原空間改動。含斷面的完整專案保存成 `/16`，支援正常重開與 Undo／Redo。已定位拉伸件與空間共用「3D 模型庫」入口；未定位拉伸件留在斷面工作區，使用局部座標。詳見[原生契約](../geometry-core/SECTION-PROFILE-NATIVE-CONTRACT.md)、[模型契約](../geometry-core/SECTION-PROFILE-MODELING.md)及[必要驗收](../tests/INTEGRATION-GATES.md#q38-斷面模型與完整專案)。
 
 ## 畫布參數卡（GEO-223）
 
@@ -36,7 +44,7 @@
 
 左欄「從面建立 3D 空間」提供矩形、L 形現成範例與介面內三步引導；自己的面可從面工作區「建立空間」進入。牆高預設 **3000 mm**，明確指定牆底與邊界後預覽，再核對建立；圖面 z 不代替牆高。材料牆預設 100 mm 向外加厚，可修改或不建立。
 
-模型保存於 `.gcanvas` 專案的「已建立空間」，可透過「修改牆高 → 更新預覽 → 更新空間」調整已建平面模型，更新同一模型，支援重開及復原／重做。舊模型保留原高度；組合既有面的模式沒有單一牆高編輯。來源日後修改不會自動更新已建立模型。操作、格式及限制見 [第一版操作說明](docs/SPACE-MODELING.md)。
+模型保存於 `.gcanvas` 專案的「3D 模型庫」，可透過「修改牆高 → 更新預覽 → 更新空間」調整已建平面模型，更新同一模型，支援重開及復原／重做。舊模型保留原高度；組合既有面的模式沒有單一牆高編輯。來源日後修改不會自動更新已建立模型。操作、格式及限制見 [第一版操作說明](docs/SPACE-MODELING.md)。
 
 Windows 已安裝 WSL／GCC／Python 時，可用 `powershell -File .\geometry-web\start-space-model.ps1 -Port 18841` 從 repo 根啟動；入口為 `http://127.0.0.1:18841/#engineering-spec-v1`。選用空閒連接埠；啟動器不停止其他服務，會核對新服務工程能力及 z=2500～2533 骨架幾何。左欄空間建模仍提供 7 支角材的現成範例。
 
@@ -62,9 +70,25 @@ guide 2 2 datum 1
 
 ## Linux 雲端開發基線
 
-需要 gcc、Python 3；managed preview 的啟動器另需 npm，不需下載套件。
-`npm run build` 編譯當前 core 與 bridge 到忽略的 `.build/`。
-本機可直接執行 `GEOMETRY_BRIDGE=.build/web_bridge python3 geometry-web/serve.py 8765`。
+需要 gcc／cc、Python 3；npm 指令和 managed preview 另需 npm，不需下載套件。
+從 repository 根目錄啟動完整本機服務：
+
+```sh
+python3 geometry-web/start_local.py --port 8765
+```
+
+入口自動設定至少 16 MiB stack，使用 `tests/binaries.py` 的建置鎖、來源與二進位收據，
+只編譯過期／缺少的 core、bridge、model-base。產物放在 TEMP 下按 checkout 路徑隔離的
+`geometry-runtime/<root-hash>/`，不覆寫其他 checkout 的執行檔；可用
+`--binary-dir /tmp/geometry-my-runtime` 指定專用目錄。輸出 `LOCAL_RUNTIME` 列出實際路徑。
+畫布、模型更新與 A/B 方案驗證使用同組已核對的執行檔，不能只用無收據的 `.build/`
+產物：含 A/B 的完整專案必須核對來源與二進位身分，缺收據會拒絕開啟。
+啟動器以 `GEOMETRY_BRIDGE_EXECUTABLE` 傳遞單一原生路徑，TEMP 或 `--binary-dir`
+含空白也不會被拆成指令參數；既有 Windows／WSL 的 `GEOMETRY_BRIDGE` 指令字串介面保留。
+
+連接埠已有服務時會拒絕啟動，不會停止其他程序。另在同一 repository 執行
+`python3 geometry-web/runtime_version.py --probe 8765` 核對版本；Ctrl+C 結束本次服務。
+`npm run build` 與 `python3 geometry-web/start_local.py --build-only` 使用同一入口，只建置及驗證。
 受管開發環境從 repo 根執行 `sites-preview start "$PWD"`；它使用 `npm run dev`。
 受管模式只在環境變數 `GEOMETRY_MANAGED_PREVIEW=1` 且埠為 4173 時
 額外接受 `terminal.local` 並綁定開發環境入口。預設仍只接受 localhost，沒有公開部署。
@@ -80,10 +104,12 @@ guide 2 2 datum 1
 會影響已放角材時，畫面列出新舊中線、長度與違規；按「確認套用」才改場景。
 有違規或取消都保留原狀。詳見 [語法與驗收紀錄](../geometry-core/README.md)。
 
-Windows 如被 Smart App Control 擋住未簽章程式，使用已安裝的 WSL：
+Windows 如被 Smart App Control 擋住未簽章程式，使用已安裝的 WSL。
+從 repository 根目錄執行；`start.ps1` 在 `geometry-web\`，根目錄沒有這支腳本。
+`start_local.py` 只接受 Linux，不能拿來代替這條。
 
 ```powershell
-powershell -File .\start.ps1 -Port 8765
+powershell -NoProfile -File .\geometry-web\start.ps1 -Port 8765
 ```
 
 此啟動器重新編譯目前原始碼，在 WSL 跑核心、Windows 跑網頁服務；不更動系統安全設定。
@@ -148,25 +174,32 @@ agent 端：
 python geometry-web/feedback_cli.py list              # 未處理
 python geometry-web/feedback_cli.py show <id>         # 摘要 + 最後 40 筆操作
 python geometry-web/feedback_cli.py events <id> -n 300
-python geometry-web/feedback_cli.py replay <id>       # 列出改世界的指令,並用 core.exe 載回當下世界
+python geometry-web/feedback_cli.py replay <id>       # 列出改世界的指令；core 看 GEOMETRY_CORE，預設 %TEMP%\geometry-tests\core.exe（不是 GEOMETRY_TEST_CORE）
 python geometry-web/feedback_cli.py close <id> "已修 <commit>"   # 或 --status wontfix / cannot-reproduce
 ```
 
 ## 測試
 
 測試分別驗證核心、前端整合與實際輸入；通過斷言數不等於獨立的端到端情境數。必須記錄實際執行範圍，略過或環境阻擋不算通過。
+啟動與測試命令的工作目錄、TEMP 與尚未執行的項目見 [命令索引](../tests/release-evidence/20261008-command-index/README.md)。那份索引不是產品說明，也不表示命令已跑過。
 
 ```bat
+:: 工作目錄是 geometry-web。這三支腳本不在 repository 根目錄。
+cd geometry-web
+
 :: 1) 橋接器／幾何測試（不執行畫布 DOM）
+:: direct 會 spawn 同目錄 web_bridge.exe，不讀 GEOMETRY_TEST_BRIDGE，也不檢查 fresh。
 node canvas_test.js direct
 
-:: 2) headless Chrome 混合整合測試（先用相同 feedback 目錄啟動獨立測試服務）
+:: 2) headless Chrome 混合整合測試
+:: 先在別的終端、用同一個 GEOMETRY_FEEDBACK_DIR 啟動獨立埠。不要沿用正在使用的服務。
 set GEOMETRY_TEST_URL=http://127.0.0.1:8799/
 set GEOMETRY_FEEDBACK_DIR=%TEMP%\geometry-tests\fb-cdp
 node cdp_test.js
 
-:: reference_smoke.js 已退役(GEO-225)：過期夾具及預設重置 8765 的入口已移除；由 cdp_test.js 驗證引用流程。
-:: 未設 GEOMETRY_TEST_URL 時它會連 8765 並重置場景——那是你正在用的服務。
+:: reference_smoke.js 已不在工作區（GEO-225 退役）。
+:: 現行 cdp_test.js 未設 GEOMETRY_TEST_URL 或 TEMP 下的 GEOMETRY_FEEDBACK_DIR 時，
+:: 在開啟瀏覽器前拒絕，不會連到 8765，也不會重置場景。
 
 :: 3) 伺服器輸入與故障處理（不需要真實 bridge 或瀏覽器）
 python -B -m unittest discover -s ../tests -p test_serve.py -v
@@ -191,7 +224,7 @@ Smart App Control 強制模式會封鎖新編譯的未簽章執行檔，`web_bri
 sudo apt-get install -y gcc
 # Node 官方 tarball 解到 /opt/node；Chrome 用 dl.google.com 的 .deb
 
-# 每次：建置 Linux 版 bridge，起 server，跑測試
+# 每次：工作目錄是 geometry-web。/opt/geometry 須已存在；這段沒有 mkdir。
 gcc -O2 -o /opt/geometry/web_bridge web_bridge.c -lm
 GEOMETRY_BRIDGE=/opt/geometry/web_bridge GEOMETRY_FEEDBACK_DIR=/tmp/geometry-tests/fb-cdp python3 serve.py 8799 &
 
@@ -308,6 +341,10 @@ update bridge 與 model-base，預設 WSL transport 未支援這個更新流程�
 - 舊的「凹口」工具（點邊開對話框、`i` 快捷鍵、`#notchDialog`）已移除，凹口只走上面的流程；「外環」重畫與形狀庫保留。
 
 ## 面內底圖臨摹（GEO-190）
+
+以下是 GEO-190 當時的記憶體底圖實作紀錄；現行正式參考來源透過
+`ReferenceWorkspace` 隨完整 `.gcanvas` 保存，並有同服務、同場景的本機恢復核對。
+不能把本節早期「重新整理就消失」的描述套用到所有現行來源；未保存工作也不保證能在任意中斷後恢復。
 
 檢視器右欄第 6 分頁「底圖」：放一張掃描/照片平面圖在面內底下，照著描外環。**只存在本次瀏覽器工作階段的記憶體**（`oc.underlays[bid]`）——不寫進 `.scene`、不寫 `localStorage`；離開這片面再進來仍在，重新整理瀏覽器就沒了。核心（`web_bridge.c`、`.scene` 格式）不動，純前端功能。
 

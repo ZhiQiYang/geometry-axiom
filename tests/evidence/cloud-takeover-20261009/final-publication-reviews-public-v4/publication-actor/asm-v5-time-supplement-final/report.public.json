@@ -1,0 +1,123 @@
+{
+  "schema": "geometry-assembly-v5-independent-time-supplement/1",
+  "actor": "/root/publication_final_review/assembly_packet_review",
+  "at": "2026-10-09T19:43:00.912735+00:00",
+  "command": [
+    "<execution-runtime-path>",
+    "-B",
+    "<workspace-path>"
+  ],
+  "actualPython": "<execution-runtime-path>",
+  "actualPythonSHA256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+  "reviewSourceSHA256": "89e72ecfcb1b8e2f763606befb7df13aa8daa4ae150e7b87bafeca9c5fe05e03",
+  "actualExitCode": 0,
+  "passedMetadataChecks": 21,
+  "failedMetadataChecks": 0,
+  "countsAreProductTests": false,
+  "productOrBrowserOrServiceExecuted": false,
+  "repositoryOrGitHubWritten": false,
+  "packetOrOriginalsChanged": false,
+  "manifestSHA256": "a8254cb4fab9151008f2c65ed37e01646e1542c828a8c59f2f9bc1532d8688a6",
+  "finalPacketAcceptance": true,
+  "priorResult": {
+    "report": "<workspace-path>",
+    "sha256": "95e80baf19eff575ba0ec14545b1b5aa6af8d982cb2763c32e14e8dd18b28dab",
+    "actualExitCode": 1,
+    "passedMetadataChecks": 629,
+    "failedMetadataChecks": 1
+  },
+  "correctedValidatorAssumption": "Prior equality predicate included preparedUtc as historical execution metadata. Fresh publication preparedUtc legitimately changed from18:59:36 to19:39:00. Every original execution/byte-association field and198 retained non-README files are unchanged; real v4 generic/config-generator role finding is fixed in freshv5.",
+  "priorV4FailedAndSupplementalReviewsPreserved": true,
+  "rawLog": {
+    "path": "<workspace-path>",
+    "sha256": "f9f58f4e39fcc4ad1cd18f9932f2789b76bd6acc750f20aba437652bfb250eb5",
+    "bytes": 1475
+  },
+  "findings": [],
+  "checks": [
+    {
+      "name": "prioractual629/1 exit1 preserved",
+      "passed": true
+    },
+    {
+      "name": "prioractualsource/raw hashes preserved",
+      "passed": true
+    },
+    {
+      "name": "sole difference outside role metadata/census is fresh preparedUtc",
+      "passed": true
+    },
+    {
+      "name": "new preparedUtc is later valid UTC preparation time",
+      "passed": true
+    },
+    {
+      "name": "exact historical execution/byte associations unchanged rounds",
+      "passed": true
+    },
+    {
+      "name": "exact historical execution/byte associations unchanged historyReviewsAndExecutorSources",
+      "passed": true
+    },
+    {
+      "name": "exact historical execution/byte associations unchanged fullTestedCommitSourceCopies",
+      "passed": true
+    },
+    {
+      "name": "exact historical execution/byte associations unchanged testedProductHead",
+      "passed": true
+    },
+    {
+      "name": "exact historical execution/byte associations unchanged productGate",
+      "passed": true
+    },
+    {
+      "name": "exact historical execution/byte associations unchanged originalLifecycle",
+      "passed": true
+    },
+    {
+      "name": "exact historical execution/byte associations unchanged separateStopRecovery",
+      "passed": true
+    },
+    {
+      "name": "exact historical execution/byte associations unchanged independentMetadataReview",
+      "passed": true
+    },
+    {
+      "name": "exact historical execution/byte associations unchanged sourceClosure",
+      "passed": true
+    },
+    {
+      "name": "exact historical execution/byte associations unchanged sourceAndArtifactByteBindings",
+      "passed": true
+    },
+    {
+      "name": "exact historical execution/byte associations unchanged limits",
+      "passed": true
+    },
+    {
+      "name": "exact historical execution/byte associations unchanged omissions",
+      "passed": true
+    },
+    {
+      "name": "exact historical execution/byte associations unchanged independentOtherScopes",
+      "passed": true
+    },
+    {
+      "name": "fresh metadata time never changes original testedfullSHA",
+      "passed": true
+    },
+    {
+      "name": "actual metadata-role correction remains specificgenerator vs genericdep",
+      "passed": true
+    },
+    {
+      "name": "v5 immutable final-ready manifest identity",
+      "passed": true
+    },
+    {
+      "name": "v4 withdrawn mother immutable exact identity",
+      "passed": true
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "dump": {
+    "ok": true,
+    "text": "",
+    "capabilities": [
+      "engineering-spec/1",
+      "parameters/1",
+      "assembly-rule-authoring/1",
+      "assembly-timber-generation/1",
+      "grid-subdivision-rules/1",
+      "section-profile/1"
+    ],
+    "required_capabilities": [],
+    "native_capabilities": [
+      "section-profile-native/1"
+    ],
+    "revision": 423,
+    "definition_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "objects": {
+    "ok": true,
+    "faces": [],
+    "spaces": [],
+    "columns": [],
+    "beams": [],
+    "gridSystems": [],
+    "parameters": [],
+    "assemblyRules": [],
+    "assemblyBindings": [],
+    "parameterUses": [],
+    "gridBindings": [],
+    "timbers": []
+  },
+  "references": {
+    "ok": true,
+    "sourceFingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "guides": [],
+    "grids": [],
+    "timbers": [],
+    "timberSupports": {
+      "schema": "native-timber-supports/1",
+      "sourceFingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "entries": []
+    },
+    "specs": [],
+    "datums": [],
+    "engineeringSources": [],
+    "assembly": {
+      "capabilities": [
+        "assembly-rule-authoring/1",
+        "assembly-timber-generation/1"
+      ],
+      "rules": [],
+      "bindings": [],
+      "instances": []
+    }
+  },
+  "assembly-read": {
+    "ok": true,
+    "revision": 423,
+    "definition_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "state": {
+      "capabilities": [
+        "assembly-rule-authoring/1",
+        "assembly-timber-generation/1"
+      ],
+      "rules": [],
+      "bindings": [],
+      "instances": []
+    }
+  },
+  "project": {
+    "id": "9d6f7c19-1af8-42cb-8fcc-e4fb98e3f4b1",
+    "name": "未命名專案",
+    "manifest": {
+      "projectId": "9d6f7c19-1af8-42cb-8fcc-e4fb98e3f4b1",
+      "name": "未命名專案",
+      "sources": [],
+      "faces": [],
+      "format": "geometry-canvas/1"
+    },
+    "sources": [],
+    "models": [],
+    "assemblyDrafts": [],
+    "engineeringDrafts": [],
+    "dirty": false,
+    "saved": null,
+    "downloaded": null
+  },
+  "canvasCards": []
+}

@@ -1,0 +1,86 @@
+[
+  {
+    "scenario": "pdf-rectangle",
+    "candidate": {
+      "actions": 21,
+      "elapsedMs": 3469
+    },
+    "manual": {
+      "actions": 16,
+      "elapsedMs": 2175
+    },
+    "candidate_minus_manual_actions": 5,
+    "identical_recorded_start": true,
+    "definition": "Same calibrated source, camera, disclosures, snap, review state and original 4000 x 3000 scene; same ordered final vertices and confirmed state. Both include a genuine dimension correction and every edge dimension entry. Clicks, drags, select choices and text replacements each count one action (Tab belongs to that replacement); tool/tab/disclosure navigation included. Import/calibration, Save/New/Open and automatic locator scrolling excluded. Machine wall time includes automation settling, not human reading or operation time. Snap disabled for both routes before measurement."
+  },
+  {
+    "scenario": "pdf-l",
+    "candidate": {
+      "actions": 27,
+      "elapsedMs": 4353
+    },
+    "manual": {
+      "actions": 20,
+      "elapsedMs": 2442
+    },
+    "candidate_minus_manual_actions": 7,
+    "identical_recorded_start": true,
+    "definition": "Same calibrated source, camera, disclosures, snap, review state and original 4000 x 3000 scene; same ordered final vertices and confirmed state. Both include a genuine dimension correction and every edge dimension entry. Clicks, drags, select choices and text replacements each count one action (Tab belongs to that replacement); tool/tab/disclosure navigation included. Import/calibration, Save/New/Open and automatic locator scrolling excluded. Machine wall time includes automation settling, not human reading or operation time. Snap disabled for both routes before measurement."
+  },
+  {
+    "scenario": "pdf-notch",
+    "candidate": {
+      "actions": 33,
+      "elapsedMs": 5193
+    },
+    "manual": {
+      "actions": 24,
+      "elapsedMs": 2662
+    },
+    "candidate_minus_manual_actions": 9,
+    "identical_recorded_start": true,
+    "definition": "Same calibrated source, camera, disclosures, snap, review state and original 4000 x 3000 scene; same ordered final vertices and confirmed state. Both include a genuine dimension correction and every edge dimension entry. Clicks, drags, select choices and text replacements each count one action (Tab belongs to that replacement); tool/tab/disclosure navigation included. Import/calibration, Save/New/Open and automatic locator scrolling excluded. Machine wall time includes automation settling, not human reading or operation time. Snap disabled for both routes before measurement."
+  },
+  {
+    "scenario": "image-rectangle",
+    "candidate": {
+      "actions": 21,
+      "elapsedMs": 3228
+    },
+    "manual": {
+      "actions": 16,
+      "elapsedMs": 2033
+    },
+    "candidate_minus_manual_actions": 5,
+    "identical_recorded_start": true,
+    "definition": "Same calibrated source, camera, disclosures, snap, review state and original 4000 x 3000 scene; same ordered final vertices and confirmed state. Both include a genuine dimension correction and every edge dimension entry. Clicks, drags, select choices and text replacements each count one action (Tab belongs to that replacement); tool/tab/disclosure navigation included. Import/calibration, Save/New/Open and automatic locator scrolling excluded. Machine wall time includes automation settling, not human reading or operation time. Snap disabled for both routes before measurement."
+  },
+  {
+    "scenario": "image-l",
+    "candidate": {
+      "actions": 27,
+      "elapsedMs": 4250
+    },
+    "manual": {
+      "actions": 20,
+      "elapsedMs": 2381
+    },
+    "candidate_minus_manual_actions": 7,
+    "identical_recorded_start": true,
+    "definition": "Same calibrated source, camera, disclosures, snap, review state and original 4000 x 3000 scene; same ordered final vertices and confirmed state. Both include a genuine dimension correction and every edge dimension entry. Clicks, drags, select choices and text replacements each count one action (Tab belongs to that replacement); tool/tab/disclosure navigation included. Import/calibration, Save/New/Open and automatic locator scrolling excluded. Machine wall time includes automation settling, not human reading or operation time. Snap disabled for both routes before measurement."
+  },
+  {
+    "scenario": "image-notch",
+    "candidate": {
+      "actions": 33,
+      "elapsedMs": 5297
+    },
+    "manual": {
+      "actions": 24,
+      "elapsedMs": 2714
+    },
+    "candidate_minus_manual_actions": 9,
+    "identical_recorded_start": true,
+    "definition": "Same calibrated source, camera, disclosures, snap, review state and original 4000 x 3000 scene; same ordered final vertices and confirmed state. Both include a genuine dimension correction and every edge dimension entry. Clicks, drags, select choices and text replacements each count one action (Tab belongs to that replacement); tool/tab/disclosure navigation included. Import/calibration, Save/New/Open and automatic locator scrolling excluded. Machine wall time includes automation settling, not human reading or operation time. Snap disabled for both routes before measurement."
+  }
+]

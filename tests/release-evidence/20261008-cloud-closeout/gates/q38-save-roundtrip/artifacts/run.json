@@ -1,0 +1,67 @@
+{
+  "schema": "geometry-q38-save-roundtrip/1",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "tests/integration/q38_save_roundtrip.py"
+  ],
+  "harnessSha256": "2d4236255ffe22089c5b7c5639b2e905153a190d74a1cf1903154a0ef6973855",
+  "environment": {
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:18971/",
+    "GEOMETRY_Q38_SAVE_OUT": "/tmp/geometry-closeout-r2-gates/q38-save-roundtrip",
+    "GEOMETRY_CHROME": "/usr/bin/chromium"
+  },
+  "limitations": [
+    "Native public preview/confirm APIs create the fixture; UI authoring belongs to the separate Q38 browser gate.",
+    "showSaveFilePicker is explicitly disabled before page load to select the product download fallback; real Chromium download and file chooser are exercised, with no native OS save picker, physical mobile or IME claim.",
+    "All native Q38 definitions are covered; reference image/PDF attachments and draft payloads are outside this fixture."
+  ],
+  "before": {
+    "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+    "tree": "1c0fb168f2854f37c10370f1c65d4a155a83620b",
+    "status": "",
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+      "fresh": true,
+      "root": "/workspace/geometry-axiom",
+      "pid": 196578,
+      "session": "ca31be77efb542b89d45d5a88c3b1b45"
+    }
+  },
+  "browserLaunches": [
+    {
+      "version": "151.0.7922.173",
+      "executable": "/usr/bin/chromium",
+      "profile": "new Playwright-owned temporary browser profile; no persisted user context",
+      "savePicker": {
+        "originalType": "function",
+        "testType": "undefined",
+        "mode": "explicit-download-fallback"
+      }
+    },
+    {
+      "version": "151.0.7922.173",
+      "executable": "/usr/bin/chromium",
+      "profile": "new Playwright-owned temporary browser profile; no persisted user context",
+      "savePicker": {
+        "originalType": "function",
+        "testType": "undefined",
+        "mode": "explicit-download-fallback"
+      }
+    }
+  ],
+  "after": {
+    "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+    "tree": "1c0fb168f2854f37c10370f1c65d4a155a83620b",
+    "status": "",
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+      "fresh": true,
+      "root": "/workspace/geometry-axiom",
+      "pid": 196578,
+      "session": "ca31be77efb542b89d45d5a88c3b1b45"
+    }
+  },
+  "exitCode": 0
+}

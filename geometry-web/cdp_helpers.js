@@ -59,6 +59,23 @@ function makeWait(waitForUI, timeout) {
   return expression => waitForUI(expression, timeout);
 }
 
+/* Keep entry identities in the browser: JSON copies and stack lengths cannot
+ * prove one commit when bounded history is full. These pins are test-only. */
+function isSingleHistoryStep(before,after,limit) {
+  const retained=before.slice(Math.max(0,before.length+1-limit));
+  return after.length===Math.min(before.length+1,limit)&&after.length===retained.length+1&&
+    after.slice(0,-1).every((entry,i)=>entry===retained[i])&&!before.includes(after.at(-1));
+}
+function makeHistoryOracle(read,namespace) {
+  let serial=0;
+  return {
+    async capture(){const pin=namespace+':'+(++serial);return read(`(()=>{const h=ReferenceWorkspace.history;(window.__cdpHistoryPins ||= new Map()).set(${JSON.stringify(pin)},{undo:h.undo.slice(),redo:h.redo.slice(),limit:h.limit,frame:h.frame});return {pin:${JSON.stringify(pin)},undo:h.undo.length,redo:h.redo.length,limit:h.limit};})()`);},
+    unchanged:({pin})=>read(`(()=>{const h=ReferenceWorkspace.history,b=window.__cdpHistoryPins.get(${JSON.stringify(pin)}),same=(a,z)=>a.length===z.length&&a.every((entry,i)=>entry===z[i]);return h.limit===b.limit&&h.frame===b.frame&&same(h.undo,b.undo)&&same(h.redo,b.redo);})()`),
+    single:({pin})=>read(`(()=>{const h=ReferenceWorkspace.history,b=window.__cdpHistoryPins.get(${JSON.stringify(pin)});return h.limit===b.limit&&h.group===null&&h.redo.length===0&&(${isSingleHistoryStep.toString()})(b.undo,h.undo,h.limit);})()`),
+    release:({pin})=>read(`window.__cdpHistoryPins.delete(${JSON.stringify(pin)});void 0`),
+  };
+}
+
 /* ---- 輸入 ---------------------------------------------------------------- */
 
 /* 按鍵(keyDown+keyUp)。
@@ -91,13 +108,13 @@ function makeFill({ ctl, key, send, sleep }, { afterMs = 0 } = {}) {
 function openCreateObjectMenu(read, ctl) {
   return async selector => {
     if (await read(`document.querySelector(${JSON.stringify(selector)})?.closest('#createObjectPop')?.hidden===true`)) {
-      await ctl(await read(`innerWidth<=900?'#mobileCreateObject':'#btnCreateObject'`));
+      await ctl(await read(`(()=>{const visible=['mobileCreateObject','btnCreateObject'].filter(id=>{const e=document.getElementById(id),r=e?.getBoundingClientRect();return r&&r.width>0&&r.height>0;});if(visible.length!==1)throw Error('Expected one visible create-object opener: '+visible.join(','));return '#'+visible[0];})()`));
     }
   };
 }
 
 /* 點擊控制項:捲入視野 → 輪詢到「可見、未停用、中心點真的命中它」→ 真實滑鼠點擊 → 等待。
- * 只涵蓋「捲動→(睡→量測)×N→丟錯→點→睡」這一族寫法(project_audit、engineering_workflow、
+ * 只涵蓋「(捲動→睡→量測)×N→丟錯→點→睡」這一族寫法(捲動在每次量測前重做,見下;project_audit、engineering_workflow、
  * grid_system、composition_canvas、grid_workspace_draft、parameter_workflow)。
  *
  * options(各模組原本的差異,全部明示):
@@ -122,11 +139,15 @@ function makeCtl({ eval_, sleep, click }, options = {}) {
   const read = makeRead(eval_);
   const measure = probe || (selector => read(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)throw Error(${JSON.stringify(missing)}+${JSON.stringify(selector)});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,h=document.elementFromPoint(x,y);return {x,y,w:r.width,h:r.height,hit:e.contains(h),${hitElement ? "hitElement:h?.tagName+'#'+h?.id," : ''}disabled:!!e.disabled};})()`));
   const usable = ready || (p => !!(p && p.hit && !p.disabled && p.w && p.h));
+  /* 每次量測前都重新查詢元素並捲入視野。工作區常在點擊後以 innerHTML 整個換 DOM(捲動容器重建、
+   * scrollTop 歸 0,或內容隨後長高);只在迴圈外捲一次,換 DOM 後的每一次量測看到的都是視窗外的新節點。
+   * 第一次量測仍是「捲 → sleep(pollMs) → 量」,成功路徑與舊寫法逐步相同;只有第一次不可點後的重試才多捲。 */
+  const scrollIn = selector => read(`document.querySelector(${JSON.stringify(selector)})?.scrollIntoView({block:${JSON.stringify(scroll)},inline:'nearest'});void 0`);
   return async function ctl(selector) {
     if (before) await before(selector);
-    await read(`document.querySelector(${JSON.stringify(selector)})?.scrollIntoView({block:${JSON.stringify(scroll)},inline:'nearest'});void 0`);
     let p;
     for (let attempt = 0; attempt < attempts; attempt++) {
+      await scrollIn(selector);
       await sleep(pollMs);
       p = await measure(selector);
       if (usable(p)) break;
@@ -135,6 +156,60 @@ function makeCtl({ eval_, sleep, click }, options = {}) {
     await click(p.x, p.y);
     await sleep(settleMs);
     if (after) await after(selector);
+  };
+}
+
+/* ---- 條件等待(取代固定 sleep) ------------------------------------------
+ * 「點下去 → 非同步刷新鏈 → 讀狀態」之間不用固定 sleep 賭鏈跑得完,改等一個可觀察的完成條件
+ * (先例:P73 的 sleep(180) → 狀態等待,見 uiux_review_test.js)。與 waitForUI 的差別:
+ *   - 有指名:逾時訊息說明「在等什麼」,並附 observe 讀到的最後頁面狀態。
+ *   - 有上限:條件不成立就一定逾時;預設丟錯。soft:true 只回 {ok:false},給「失敗已由後續斷言計數」
+ *     的舊式段落(丟錯會讓整輪 FATAL、後面的段落全部沒跑)。
+ *   - 留紀錄:通過時印 `SYNC_WAIT {tag,what,ms}`,逾時印 `SYNC_TIMEOUT {...}`,實測耗時進 job.log。
+ * 它不放寬任何斷言:等待只決定「何時讀」,讀到的值照原本的期望值判定。
+ *
+ * deps  { waitForUI, eval_, log }  log 預設在呼叫時才取 console.log(harness 會替換它)。
+ * defaults  { tag, timeoutMs }
+ * settle(what, expression, { timeoutMs, observe, soft }) -> { ok, ms, observed? }
+ *   expression  頁面端條件,=== true 才算成立(同 waitForUI)。
+ *   observe     診斷表達式只使用共同截止時間內的剩餘預算；到期後不再發出頁面請求。 */
+function makeSettle({ waitForUI, eval_, log = (...args) => console.log(...args) }, { tag = '', timeoutMs = 15000 } = {}) {
+  return async function settle(what, expression, { timeoutMs: limit = timeoutMs, observe = null, soft = false } = {}) {
+    if (!Number.isFinite(limit) || limit < 0) throw new TypeError('makeSettle: finite nonnegative timeout required');
+    const t0 = Date.now(), deadline = t0 + limit;
+    const expired = () => Error('UI condition timed out at shared deadline');
+    const withinDeadline = async action => {
+      const remaining = deadline - Date.now();
+      if (remaining <= 0) throw expired();
+      let timer;
+      try {
+        const value = await Promise.race([
+          Promise.resolve().then(action),
+          new Promise((_, reject) => { timer = setTimeout(() => reject(expired()), remaining); }),
+        ]);
+        // A late evaluation may resolve before the timer callback gets CPU time.
+        if (Date.now() >= deadline) throw expired();
+        return value;
+      } finally { clearTimeout(timer); }
+    };
+    try {
+      await withinDeadline(() => waitForUI(expression, Math.max(0, deadline - Date.now())));
+    } catch (error) {
+      if (!/^UI condition timed out/.test(error.message)) throw error;
+      let observed;
+      if (observe) {
+        try { observed = await withinDeadline(() => eval_(observe)); }
+        catch (inner) { observed = 'observe unavailable: ' + inner.message; }
+      }
+      const ms = Date.now() - t0;
+      const detail = { tag, what, ms, limitMs: limit, observed };
+      if (soft) { log('SYNC_TIMEOUT ' + JSON.stringify(detail)); return { ok: false, ms, observed }; }
+      throw Error((tag ? tag + ' ' : '') + '條件等待逾時 ' + ms + 'ms(上限 ' + limit + 'ms):' + what +
+        (observe ? ';最後觀測 ' + JSON.stringify(observed) : '') + ';' + error.message.slice(0, 300));
+    }
+    const ms = Date.now() - t0;
+    log('SYNC_WAIT ' + JSON.stringify({ tag, what, ms }));
+    return { ok: true, ms };
   };
 }
 
@@ -153,4 +228,67 @@ function makeShot(send, envNames) {
   };
 }
 
-module.exports = { makeCheck, makeRead, makeWait, makeKey, makeFill, openCreateObjectMenu, makeCtl, makeShot };
+/* 卡片 pointerup 會先清掉 oc.card，而且在 await `line canvas-pos` 期間不設 oc.busy。
+ * settled() 因此立刻返回；短 sleep 會在原生座標寫入前讀到舊位置。
+ * 這裡輪詢 objects()，直到該卡片的原生 cx/cy 離開拖曳前的值，且頁面副本與原生一致。
+ * 逾時就帶回最後一次讀數，不另一次點擊、不改寫座標、也不把固定 sleep 加長當成通過。 */
+const CARD_NATIVE_LIST = {
+  'grid-binding': 'gridBindings',
+  'grid-system': 'gridSystems',
+  column: 'columns',
+  beam: 'beams',
+  space: 'spaces',
+  'assembly-rule': 'assemblyRules',
+  'assembly-binding': 'assemblyBindings',
+  parameter: 'parameters',
+};
+function waitCardCanvasPos(eval_, { kind, id, beforeCx, beforeCy, timeoutMs = 4000, pollMs = 50 } = {}) {
+  if (typeof eval_ !== 'function') throw new TypeError('waitCardCanvasPos: eval_ is required');
+  if (typeof kind !== 'string' || !Number.isInteger(id)) throw new TypeError('waitCardCanvasPos: kind and integer id are required');
+  if (![beforeCx, beforeCy].every(Number.isFinite)) throw new TypeError('waitCardCanvasPos: finite prior coordinates are required');
+  if (![timeoutMs, pollMs].every(n => Number.isFinite(n) && n >= 0)) throw new TypeError('waitCardCanvasPos: nonnegative finite timing is required');
+  const list = Object.prototype.hasOwnProperty.call(CARD_NATIVE_LIST, kind) ? CARD_NATIVE_LIST[kind] : null;
+  const expression = `(async()=>{
+    const r = await apiRequest('objects');
+    if (!r || r.ok !== true) return {readOK:false, error:r?.error || 'objects read failed'};
+    const records = ${list ? `r[${JSON.stringify(list)}]` : 'r.faces'};
+    const list = Array.isArray(records) ? records : [];
+    const native = list.find(o => o.id === ${id}${list ? '' : ` && o.kind === ${JSON.stringify(kind)}`}) || null;
+    const local = typeof ocFind === 'function' ? ocFind(${JSON.stringify(kind)}, ${id}) : null;
+    return {readOK:true, nativeExists:!!native, localExists:!!local,
+      nativeCx:native?.cx, nativeCy:native?.cy, hasPos:native?.hasPos === true,
+      localCx:local?.cx, localCy:local?.cy, localHasPos:local?.hasPos === true};
+  })()`;
+  const started = Date.now(), deadline = started + timeoutMs;
+  return (async () => {
+    let last = null;
+    const finish = (ok, reason) => ({...(last || {}), ok, reason, elapsedMs:Date.now()-started, kind, id, beforeCx, beforeCy});
+    for (;;) {
+      const remaining = deadline - Date.now();
+      if (remaining <= 0) return finish(false, 'timeout');
+      let timer, observation;
+      try {
+        // A read may itself hang or finish after the deadline. Never issue a
+        // second read while it is pending or let a late reply turn timeout green.
+        observation = await Promise.race([
+          Promise.resolve().then(() => eval_(expression)).then(value => ({value})),
+          new Promise(resolve => { timer = setTimeout(() => resolve(null), remaining); }),
+        ]);
+      } finally { clearTimeout(timer); }
+      if (observation === null) return finish(false, 'timeout');
+      last = observation.value;
+      if (Date.now() >= deadline) return finish(false, 'timeout');
+      if (!last || last.readOK !== true || last.nativeExists !== true || last.localExists !== true ||
+          ![last.nativeCx, last.nativeCy, last.localCx, last.localCy].every(Number.isFinite))
+        return finish(false, 'invalid-position-record');
+      const changed = last.nativeCx !== beforeCx || last.nativeCy !== beforeCy;
+      const localMatches = last.localCx === last.nativeCx && last.localCy === last.nativeCy;
+      // A first drag may be committing a card rendered without persisted
+      // placement. Existing finite records are pending until both flags settle.
+      if (last.hasPos === true && last.localHasPos === true && changed && localMatches) return finish(true, 'committed');
+      await new Promise(resolve => setTimeout(resolve, Math.min(pollMs, Math.max(0, deadline - Date.now()))));
+    }
+  })();
+}
+
+module.exports = { makeCheck, makeRead, makeWait, makeSettle, makeKey, makeFill, openCreateObjectMenu, makeCtl, makeShot, isSingleHistoryStep, makeHistoryOracle, waitCardCanvasPos };

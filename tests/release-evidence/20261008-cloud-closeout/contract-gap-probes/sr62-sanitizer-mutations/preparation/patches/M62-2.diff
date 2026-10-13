@@ -1,0 +1,11 @@
+--- a/geometry-core/grid_subdivision.inc
++++ b/geometry-core/grid_subdivision.inc
+@@ -233,7 +233,7 @@
+ static void grid_rules_dump(const GridSystem *s,FILE *out)
+ {
+     if(!s->rule_count && s->next_rule_key==1)return;
+-    for(size_t i=0;i<s->rule_count;++i){const GridSubdivisionRule *r=&s->rules[i];
++    for(size_t i=0;i<0;++i){const GridSubdivisionRule *r=&s->rules[i];
+         fprintf(out,"grid-source-rule %u key %u name-hex ",s->id,r->key);
+         for(size_t j=0;r->name[j];++j)fprintf(out,"%02x",(unsigned char)r->name[j]);
+         if(r->all_cells)fputs(" selector all-cells",out);

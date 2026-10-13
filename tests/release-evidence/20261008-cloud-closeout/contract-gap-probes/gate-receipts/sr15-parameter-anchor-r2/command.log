@@ -1,0 +1,21 @@
+test_sr15 (__main__.SR15.test_sr15) ... PASS parameter600-after-readonly-queries: entire live state and revision unchanged
+PASS parameter600: exact two-binding coordinates, two guides and two direct refs
+PASS parameter900-preview-live: entire live state and revision unchanged
+PASS parameter900-cancel: entire live state and revision unchanged
+PASS parameter900-after-readonly-queries: entire live state and revision unchanged
+PASS parameter900: exact two-binding coordinates, two guides and two direct refs
+PASS parameter-update: Undo/Redo restore complete World while revision advances
+PASS nondivisible-parameter-refused: entire live state and revision unchanged
+PASS anchor-preview-live: entire live state and revision unchanged
+PASS anchor-cancel: entire live state and revision unchanged
+PASS anchor-third-after-readonly-queries: entire live state and revision unchanged
+PASS anchor-third: exact two-binding coordinates, two guides and two direct refs
+PASS binding-anchor-update: Undo/Redo restore complete World while revision advances
+PASS invalid-anchor-refused: entire live state and revision unchanged
+ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.489s
+
+OK
+{"successful": true, "out": "/workspace/closure-evidence/sr15-parameter-anchor-r2", "testsRun": 1}

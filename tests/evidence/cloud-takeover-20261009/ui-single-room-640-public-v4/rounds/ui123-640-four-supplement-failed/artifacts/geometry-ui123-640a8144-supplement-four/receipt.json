@@ -1,0 +1,3109 @@
+{
+  "run": {
+    "schema": "geometry-issue123-adopted-slices/1",
+    "startedAt": "2026-10-09T15:08:37.276Z",
+    "command": [
+      "<node-runtime>/bin/node",
+      "<workspace-path>"
+    ],
+    "commandEnvironment": {
+      "GEOMETRY_REPO": "<workspace-path>",
+      "GEOMETRY_EXPECTED_SHA": "640a81443b3d070dba3d8a0aa52adb2d64cebe0b",
+      "GEOMETRY_ISOLATED_SERVICE": "1",
+      "GEOMETRY_TEST_URL": "http://127.0.0.1:19180/",
+      "GEOMETRY_TEST_BRIDGE": "<isolated-test-directory>",
+      "GEOMETRY_MODEL_BASE": "<isolated-test-directory>",
+      "GEOMETRY_CHROME": "/usr/bin/chromium",
+      "GEOMETRY_UI123_OUT": "<isolated-test-directory>",
+      "GEOMETRY_UI123_GROUPS": "plan,bom,row-blur,s2"
+    },
+    "node": {
+      "path": "<node-runtime>/bin/node",
+      "sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12",
+      "version": "v24.19.0"
+    },
+    "expectedSHA": "640a81443b3d070dba3d8a0aa52adb2d64cebe0b",
+    "head": "640a81443b3d070dba3d8a0aa52adb2d64cebe0b",
+    "dirty": "",
+    "pwd": "<workspace-path>",
+    "scriptSHA256": "43a3d2b6adf011dec05f85af71c14d0de110e24071b69b5bd636dcf30d0e72ca",
+    "sources": {
+      "geometry-web/app.js": "b70f8e428d49dcc5d7d83821ae32ebab1084251b7881d0f6cd503c4a05e84355",
+      "geometry-web/app.css": "36fff1d84396a35d3221aad02c1ba673303e447c01229d9999a0ef1a8be1e355",
+      "geometry-web/index.html": "65c849abc850814f3a33740f74979eaf769a987188730ebdddb9d9df0f8da244",
+      "geometry-web/workspace-shell.js": "780a26eb4e061069f8161bedd44665d2ed4ece9f695cefeffef7a7d855ec3b4c",
+      "geometry-web/workspace-shell.css": "d67f212410bb6e94cd3db26d3ab7891a0331f2effe6c02365dd5bed5418171c2",
+      "geometry-web/space-workspace.js": "50a8cbf2515e15e3d793f9440dd4d4fa6ba14a0b0f553af6dba1a98d43ee65e3",
+      "geometry-web/space-workspace.css": "6a9b12969c518609ede4d4c3354e43b40e783eb1055cd41863ebe68c983af6da",
+      "geometry-web/grid-system-workspace.js": "d3885121b0aa179afe7c15749049cf5c5a90e66be237cb4d0079ab8ac3168710",
+      "geometry-web/grid-system-workspace.css": "35c29494471a6c1d4e65dbdc4e7775c36998faae86eb03774249161409ec1231",
+      "geometry-web/grid-inspector.css": "811afcf6a861f0d45310e062c4250ee4de07b17805ab593ed30ce8f92868bfd4",
+      "geometry-web/room-outline-workspace.js": "6a7985ec31e6904236f55a1f0cf8ca952da517928d0c9b438a11a9d9918e2e1c",
+      "geometry-web/reference-workspace.js": "4637836fe46c016a4bb623e9f2337fda9a8e2aeac853bcca33e9d5fff55b7c62",
+      "geometry-web/model-viewer.js": "443d0a8d82f91b02ea2dd38ee9f32b39f0ff2287369aea5481768a29fe513d5a",
+      "tests/binaries.py": "a211fd0d066b8a5138855c4773373f9f526717f26264de909c0f61f997ac9aba",
+      "tests/room_outline_fixture.js": "f6984e3e4f381995471aa8796c86518914cb3a546c23dfb6d068fe9780f73f46",
+      "geometry-web/room-outline.js": "7333c1031ba54a2f61a079fcdb009a2751fe1cc484a01944a32ffdd56490e403",
+      "geometry-web/timber-schedule.js": "764ec9fe3fa2b78b280d83dfbbf22ee95a79fbeb8d062e59e21cc16d5a54c0c5",
+      "geometry-web/grid-inspector.js": "1a256225ce289d886a14810a45861fc8bb51932bc9a8191bff1b641d572d9486",
+      "geometry-web/grid-anchor-positions.js": "2b3edbe49e67c7b50feeb718c59df5a50049955a3ba99b0798d61887abecd47c"
+    },
+    "scope": {
+      "mode": "explicit-partial-adopted-ui-contract",
+      "included": [
+        "plan",
+        "bom",
+        "row-blur",
+        "s2"
+      ],
+      "omitted": [
+        "colors",
+        "headers",
+        "components",
+        "v3",
+        "grid-mobile",
+        "model"
+      ],
+      "fixture": "Original six scopes retained unchanged; C1 uses disclosed original CDP P12 scene lines; BOM uses disclosed native default; row-blur uses actual self-authored PDF import, calibration and room proposal, without candidate injection; S2 uses disclosed native outer/hole custom-rational binding and actual export/import same-ID owner interruption, plus scheduling-only unchanged retired callback delivery",
+      "input": "Trusted pointer/keyboard after fixture setup",
+      "notCovered": [
+        "full CDP or full space regression",
+        "physical phone/touch/IME",
+        "operating-system dialogs",
+        "private ZIP pixel/reference comparison",
+        "new snapping or nearby-object policies",
+        "all 43 checklist items"
+      ]
+    },
+    "sandbox": true,
+    "browserExecuted": true,
+    "nativeStandaloneSuiteExecuted": false,
+    "runtimeBefore": {
+      "schema": "geometry-runtime/1",
+      "version": "ef68eb1ca2ed0985a83a986da6640e695fdc44c607bdde18aecbe82b8b88fb1e",
+      "fresh": true,
+      "root": "<workspace-path>",
+      "pid": 92781,
+      "session": "0cef2fea942845808a7740e163a375b6"
+    },
+    "executables": {
+      "bridge": {
+        "path": "<isolated-test-directory>",
+        "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b"
+      },
+      "modelBase": {
+        "path": "<isolated-test-directory>",
+        "sha256": "576a0e04c7ddaeafee20a64e03f063f1d27cbebb9694c50f20fcc2b0508d7aeb"
+      },
+      "infos": [
+        {
+          "name": "bridge",
+          "state": "fresh",
+          "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T14:05:28+00:00）",
+          "path": "<isolated-test-directory>",
+          "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e"
+        },
+        {
+          "name": "model-base",
+          "state": "fresh",
+          "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T14:05:32+00:00）",
+          "path": "<isolated-test-directory>",
+          "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b"
+        }
+      ],
+      "liveDirectChildren": [
+        {
+          "pid": 92787,
+          "executable": "<isolated-test-directory>",
+          "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b",
+          "command": "<isolated-test-directory> "
+        }
+      ]
+    },
+    "browserVersion": "151.0.7922.173",
+    "browserLauncher": {
+      "path": "/usr/bin/chromium",
+      "realPath": "/usr/bin/chromium",
+      "sha256": "2c8d32d29dc6781c35ae196ea83299d507ac88fc339301abe74672feda299779",
+      "version": "151.0.7922.173",
+      "identityLimit": "Launcher bytes and browser reported version recorded; native bridge live executable bytes checked separately"
+    },
+    "runtimeAfter": {
+      "schema": "geometry-runtime/1",
+      "version": "ef68eb1ca2ed0985a83a986da6640e695fdc44c607bdde18aecbe82b8b88fb1e",
+      "fresh": true,
+      "root": "<workspace-path>",
+      "pid": 92781,
+      "session": "0cef2fea942845808a7740e163a375b6"
+    },
+    "headAfter": "640a81443b3d070dba3d8a0aa52adb2d64cebe0b",
+    "dirtyAfter": "",
+    "finishedAt": "2026-10-09T15:10:11.889Z",
+    "exitCode": 1,
+    "rawLogPath": "<isolated-test-directory>",
+    "rawLogSHA256": "4899949ac78cb4f04878fc2b882d0ec58dd5c855df3de7815975f71414330876"
+  },
+  "completed": true,
+  "passed": 108,
+  "failed": 3,
+  "results": [
+    {
+      "group": "preflight",
+      "name": "frozen checkout matches full SHA and is clean",
+      "ok": true,
+      "detail": {
+        "head": "640a81443b3d070dba3d8a0aa52adb2d64cebe0b",
+        "dirty": ""
+      }
+    },
+    {
+      "group": "preflight",
+      "name": "isolated runtime is fresh and belongs to exact checkout",
+      "ok": true,
+      "detail": {
+        "schema": "geometry-runtime/1",
+        "version": "ef68eb1ca2ed0985a83a986da6640e695fdc44c607bdde18aecbe82b8b88fb1e",
+        "fresh": true,
+        "root": "<workspace-path>",
+        "pid": 92781,
+        "session": "0cef2fea942845808a7740e163a375b6"
+      }
+    },
+    {
+      "group": "preflight",
+      "name": "native binary closure fingerprints are fresh",
+      "ok": true,
+      "detail": [
+        {
+          "name": "bridge",
+          "state": "fresh",
+          "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T14:05:28+00:00）",
+          "path": "<isolated-test-directory>",
+          "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e"
+        },
+        {
+          "name": "model-base",
+          "state": "fresh",
+          "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T14:05:32+00:00）",
+          "path": "<isolated-test-directory>",
+          "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b"
+        }
+      ]
+    },
+    {
+      "group": "preflight",
+      "name": "live direct-child bridge matches recorded native executable bytes",
+      "ok": true,
+      "detail": [
+        {
+          "pid": 92787,
+          "executable": "<isolated-test-directory>",
+          "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b",
+          "command": "<isolated-test-directory> "
+        }
+      ]
+    },
+    {
+      "group": "plan",
+      "name": "declared product confirmation appeared exactly once",
+      "ok": true
+    },
+    {
+      "group": "plan",
+      "name": "real C1 labels retain native dimensions and readable screen text on 1382",
+      "ok": true,
+      "detail": {
+        "labels": [
+          {
+            "text": "柱1 400×400",
+            "pixels": 12.000003816535028
+          },
+          {
+            "text": "樑1 300×3000",
+            "pixels": 12.000003816535028
+          }
+        ],
+        "step": 100,
+        "patternWidth": 100,
+        "patternHeight": 100,
+        "gridPointer": "none",
+        "metrics": "x -320…4320 · y -320…3320 mm · 格距 100 mm",
+        "docWidth": 1382,
+        "viewport": 1382
+      }
+    },
+    {
+      "group": "plan",
+      "name": "C1 grid has consistent mm units and cannot intercept pointer input",
+      "ok": true,
+      "detail": {
+        "labels": [
+          {
+            "text": "柱1 400×400",
+            "pixels": 12.000003816535028
+          },
+          {
+            "text": "樑1 300×3000",
+            "pixels": 12.000003816535028
+          }
+        ],
+        "step": 100,
+        "patternWidth": 100,
+        "patternHeight": 100,
+        "gridPointer": "none",
+        "metrics": "x -320…4320 · y -320…3320 mm · 格距 100 mm",
+        "docWidth": 1382,
+        "viewport": 1382
+      }
+    },
+    {
+      "group": "plan",
+      "name": "C1 room readout follows actual trusted pointer coordinate",
+      "ok": true,
+      "detail": [
+        {
+          "type": "pointermove",
+          "trusted": true,
+          "clientX": 615.2183227539062,
+          "clientY": 503.7789306640625,
+          "id": "",
+          "tag": "polygon"
+        }
+      ]
+    },
+    {
+      "group": "plan",
+      "name": "C1 actual metric coordinate matches independent inverse screen transform",
+      "ok": true,
+      "detail": {
+        "state": {
+          "labels": [
+            {
+              "text": "柱1 400×400",
+              "pixels": 12.000003816535028
+            },
+            {
+              "text": "樑1 300×3000",
+              "pixels": 12.000003816535028
+            }
+          ],
+          "step": 100,
+          "patternWidth": 100,
+          "patternHeight": 100,
+          "gridPointer": "none",
+          "metrics": "x 1700 · y 1700 mm · 格距 100 mm",
+          "docWidth": 1382,
+          "viewport": 1382
+        },
+        "wx": 1700.000013185283,
+        "wy": 1699.999991209811,
+        "last": {
+          "type": "pointermove",
+          "trusted": true,
+          "clientX": 615.2183227539062,
+          "clientY": 503.7789306640625,
+          "id": "",
+          "tag": "polygon"
+        }
+      }
+    },
+    {
+      "group": "plan",
+      "name": "projection keeps the plan placement controls guarded",
+      "ok": true
+    },
+    {
+      "group": "plan",
+      "name": "real plan return retains readable dimensional labels",
+      "ok": true,
+      "detail": {
+        "labels": [
+          {
+            "text": "柱1 400×400",
+            "pixels": 12.000003816535028
+          },
+          {
+            "text": "樑1 300×3000",
+            "pixels": 12.000003816535028
+          }
+        ],
+        "step": 100,
+        "patternWidth": 100,
+        "patternHeight": 100,
+        "gridPointer": "none",
+        "metrics": "x -320…4320 · y -320…3320 mm · 格距 100 mm",
+        "docWidth": 1382,
+        "viewport": 1382
+      }
+    },
+    {
+      "group": "plan",
+      "name": "C1 display and pointer observations preserve full native geometry",
+      "ok": true
+    },
+    {
+      "group": "plan",
+      "name": "declared product confirmation appeared exactly once",
+      "ok": true
+    },
+    {
+      "group": "plan",
+      "name": "real C1 labels retain native dimensions and readable screen text on 390",
+      "ok": true,
+      "detail": {
+        "labels": [
+          {
+            "text": "柱1 400×400",
+            "pixels": 11.999972413793104
+          },
+          {
+            "text": "樑1 300×3000",
+            "pixels": 11.999972413793104
+          }
+        ],
+        "step": 1000,
+        "patternWidth": 1000,
+        "patternHeight": 1000,
+        "gridPointer": "none",
+        "metrics": "x -320…4320 · y -320…3320 mm · 格距 1000 mm",
+        "docWidth": 390,
+        "viewport": 390
+      }
+    },
+    {
+      "group": "plan",
+      "name": "C1 grid has consistent mm units and cannot intercept pointer input",
+      "ok": true,
+      "detail": {
+        "labels": [
+          {
+            "text": "柱1 400×400",
+            "pixels": 11.999972413793104
+          },
+          {
+            "text": "樑1 300×3000",
+            "pixels": 11.999972413793104
+          }
+        ],
+        "step": 1000,
+        "patternWidth": 1000,
+        "patternHeight": 1000,
+        "gridPointer": "none",
+        "metrics": "x -320…4320 · y -320…3320 mm · 格距 1000 mm",
+        "docWidth": 390,
+        "viewport": 390
+      }
+    },
+    {
+      "group": "plan",
+      "name": "C1 room readout follows actual trusted pointer coordinate",
+      "ok": true,
+      "detail": [
+        {
+          "type": "pointermove",
+          "trusted": true,
+          "clientX": 171.20689392089844,
+          "clientY": 539.057373046875,
+          "id": "",
+          "tag": "polygon"
+        }
+      ]
+    },
+    {
+      "group": "plan",
+      "name": "C1 actual metric coordinate matches independent inverse screen transform",
+      "ok": true,
+      "detail": {
+        "state": {
+          "labels": [
+            {
+              "text": "柱1 400×400",
+              "pixels": 11.999972413793104
+            },
+            {
+              "text": "樑1 300×3000",
+              "pixels": 11.999972413793104
+            }
+          ],
+          "step": 1000,
+          "patternWidth": 1000,
+          "patternHeight": 1000,
+          "gridPointer": "none",
+          "metrics": "x 1700 · y 1700 mm · 格距 1000 mm",
+          "docWidth": 390,
+          "viewport": 390
+        },
+        "wx": 1699.9999668287194,
+        "wy": 1699.999893851902,
+        "last": {
+          "type": "pointermove",
+          "trusted": true,
+          "clientX": 171.20689392089844,
+          "clientY": 539.057373046875,
+          "id": "",
+          "tag": "polygon"
+        }
+      }
+    },
+    {
+      "group": "plan",
+      "name": "projection keeps the plan placement controls guarded",
+      "ok": true
+    },
+    {
+      "group": "plan",
+      "name": "real plan return retains readable dimensional labels",
+      "ok": true,
+      "detail": {
+        "labels": [
+          {
+            "text": "柱1 400×400",
+            "pixels": 11.999972413793104
+          },
+          {
+            "text": "樑1 300×3000",
+            "pixels": 11.999972413793104
+          }
+        ],
+        "step": 1000,
+        "patternWidth": 1000,
+        "patternHeight": 1000,
+        "gridPointer": "none",
+        "metrics": "x -320…4320 · y -320…3320 mm · 格距 1000 mm",
+        "docWidth": 390,
+        "viewport": 390
+      }
+    },
+    {
+      "group": "plan",
+      "name": "C1 display and pointer observations preserve full native geometry",
+      "ok": true
+    },
+    {
+      "group": "bom",
+      "name": "declared product confirmation appeared exactly once",
+      "ok": true
+    },
+    {
+      "group": "bom",
+      "name": "native default is the original three placed timber source",
+      "ok": true,
+      "detail": {
+        "ok": true,
+        "sourceFingerprint": "7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385",
+        "guides": [
+          {
+            "id": 1,
+            "surface": 1,
+            "source": "local",
+            "datum": 0,
+            "axis": "v",
+            "off": 500,
+            "expression": "spec:主支中線",
+            "worldPoint": [
+              500,
+              0,
+              2500
+            ],
+            "worldDirection": [
+              0,
+              1,
+              0
+            ],
+            "segments": [
+              [
+                [
+                  500,
+                  0
+                ],
+                [
+                  500,
+                  3000
+                ]
+              ]
+            ]
+          }
+        ],
+        "grids": [],
+        "timbers": [
+          {
+            "id": 1,
+            "role": "boundary",
+            "geometry": {
+              "surface": 1,
+              "centerline": 13,
+              "length": 4000,
+              "u": 0,
+              "v": 0,
+              "dir": "+u",
+              "side": "+n",
+              "A": 27,
+              "B": 33,
+              "origin": [
+                0,
+                0,
+                2500
+              ],
+              "axes": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  1
+                ]
+              ]
+            },
+            "definition": {
+              "anchor": "at-face e0",
+              "selector": "",
+              "priority": 1
+            }
+          },
+          {
+            "id": 2,
+            "role": "boundary",
+            "geometry": {
+              "surface": 1,
+              "centerline": 2986,
+              "length": 4000,
+              "u": 0,
+              "v": 2973,
+              "dir": "+u",
+              "side": "+n",
+              "A": 27,
+              "B": 33,
+              "origin": [
+                0,
+                2973,
+                2500
+              ],
+              "axes": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  1
+                ]
+              ]
+            },
+            "definition": {
+              "anchor": "at-face e2",
+              "selector": "",
+              "priority": 1
+            }
+          },
+          {
+            "id": 3,
+            "role": "primary",
+            "geometry": {
+              "surface": 1,
+              "centerline": 500,
+              "length": 2946,
+              "u": 514,
+              "v": 27,
+              "dir": "+v",
+              "side": "+n",
+              "A": 27,
+              "B": 33,
+              "origin": [
+                514,
+                27,
+                2500
+              ],
+              "axes": [
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  -1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  1
+                ]
+              ]
+            },
+            "definition": {
+              "anchor": "at-line guide 1",
+              "selector": "",
+              "priority": 2
+            }
+          }
+        ],
+        "timberSupports": {
+          "schema": "native-timber-supports/1",
+          "sourceFingerprint": "7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385",
+          "entries": [
+            {
+              "id": 1,
+              "surface": 1,
+              "owner": null,
+              "start": {
+                "status": "exact",
+                "at": 0,
+                "crossRange": [
+                  0,
+                  27
+                ],
+                "relation": {
+                  "kind": "outline-edge",
+                  "source": {
+                    "kind": "boundary",
+                    "id": 1
+                  },
+                  "edgeIndex": 3,
+                  "holeIndex": null,
+                  "localFace": null,
+                  "normalWorld": null,
+                  "owner": null,
+                  "surface": 1,
+                  "stop": {
+                    "axis": "u",
+                    "at": 0,
+                    "range": [
+                      0,
+                      3000
+                    ],
+                    "fixity": "fixed"
+                  }
+                }
+              },
+              "finish": {
+                "status": "exact",
+                "at": 4000,
+                "crossRange": [
+                  0,
+                  27
+                ],
+                "relation": {
+                  "kind": "outline-edge",
+                  "source": {
+                    "kind": "boundary",
+                    "id": 1
+                  },
+                  "edgeIndex": 1,
+                  "holeIndex": null,
+                  "localFace": null,
+                  "normalWorld": null,
+                  "owner": null,
+                  "surface": 1,
+                  "stop": {
+                    "axis": "u",
+                    "at": 4000,
+                    "range": [
+                      0,
+                      3000
+                    ],
+                    "fixity": "fixed"
+                  }
+                }
+              }
+            },
+            {
+              "id": 2,
+              "surface": 1,
+              "owner": null,
+              "start": {
+                "status": "exact",
+                "at": 0,
+                "crossRange": [
+                  2973,
+                  3000
+                ],
+                "relation": {
+                  "kind": "outline-edge",
+                  "source": {
+                    "kind": "boundary",
+                    "id": 1
+                  },
+                  "edgeIndex": 3,
+                  "holeIndex": null,
+                  "localFace": null,
+                  "normalWorld": null,
+                  "owner": null,
+                  "surface": 1,
+                  "stop": {
+                    "axis": "u",
+                    "at": 0,
+                    "range": [
+                      0,
+                      3000
+                    ],
+                    "fixity": "fixed"
+                  }
+                }
+              },
+              "finish": {
+                "status": "exact",
+                "at": 4000,
+                "crossRange": [
+                  2973,
+                  3000
+                ],
+                "relation": {
+                  "kind": "outline-edge",
+                  "source": {
+                    "kind": "boundary",
+                    "id": 1
+                  },
+                  "edgeIndex": 1,
+                  "holeIndex": null,
+                  "localFace": null,
+                  "normalWorld": null,
+                  "owner": null,
+                  "surface": 1,
+                  "stop": {
+                    "axis": "u",
+                    "at": 4000,
+                    "range": [
+                      0,
+                      3000
+                    ],
+                    "fixity": "fixed"
+                  }
+                }
+              }
+            },
+            {
+              "id": 3,
+              "surface": 1,
+              "owner": null,
+              "start": {
+                "status": "exact",
+                "at": 27,
+                "crossRange": [
+                  487,
+                  514
+                ],
+                "relation": {
+                  "kind": "timber-face",
+                  "source": {
+                    "kind": "timber",
+                    "id": 1
+                  },
+                  "localFace": "B1",
+                  "normalWorld": [
+                    0,
+                    1,
+                    0
+                  ],
+                  "owner": null,
+                  "surface": 1,
+                  "stop": {
+                    "axis": "v",
+                    "at": 27,
+                    "range": [
+                      0,
+                      4000
+                    ],
+                    "fixity": "fixed"
+                  }
+                }
+              },
+              "finish": {
+                "status": "exact",
+                "at": 2973,
+                "crossRange": [
+                  487,
+                  514
+                ],
+                "relation": {
+                  "kind": "timber-face",
+                  "source": {
+                    "kind": "timber",
+                    "id": 2
+                  },
+                  "localFace": "B0",
+                  "normalWorld": [
+                    0,
+                    -1,
+                    0
+                  ],
+                  "owner": null,
+                  "surface": 1,
+                  "stop": {
+                    "axis": "v",
+                    "at": 2973,
+                    "range": [
+                      0,
+                      4000
+                    ],
+                    "fixity": "fixed"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "specs": [
+          {
+            "name": "主支中線",
+            "value": 500
+          }
+        ],
+        "datums": [],
+        "engineeringSources": [],
+        "assembly": {
+          "capabilities": [
+            "assembly-rule-authoring/1",
+            "assembly-timber-generation/1"
+          ],
+          "rules": [],
+          "bindings": [],
+          "instances": []
+        }
+      }
+    },
+    {
+      "group": "bom",
+      "name": "BOM dimensions and world endpoints equal independent native geometry in mm",
+      "ok": true,
+      "detail": {
+        "actual": [
+          {
+            "id": 1,
+            "dimensions": "完成 L 4000 × A 27 × B 33 mm · +u+n",
+            "source": "直接尺寸；材料未設定；起端：邊界 1／e3；末端：邊界 1／e1。定位：at-face e0。跨距：依 R6 自動推導。起端世界 mm [0,0,2500]；末端 [4000,0,2500]。材料／加工：未知或未設定。來源指紋 7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385"
+          },
+          {
+            "id": 2,
+            "dimensions": "完成 L 4000 × A 27 × B 33 mm · +u+n",
+            "source": "直接尺寸；材料未設定；起端：邊界 1／e3；末端：邊界 1／e1。定位：at-face e2。跨距：依 R6 自動推導。起端世界 mm [0,2973,2500]；末端 [4000,2973,2500]。材料／加工：未知或未設定。來源指紋 7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385"
+          },
+          {
+            "id": 3,
+            "dimensions": "完成 L 2946 × A 27 × B 33 mm · +v+n",
+            "source": "直接尺寸；材料未設定；起端：角材 1／B1；末端：角材 2／B0。定位：at-line guide 1。跨距：依 R6 自動推導。起端世界 mm [514,27,2500]；末端 [514,2973,2500]。材料／加工：未知或未設定。來源指紋 7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385"
+          }
+        ],
+        "expected": [
+          {
+            "id": 1,
+            "role": "boundary",
+            "A": 27,
+            "B": 33,
+            "L": 4000,
+            "dir": "+u",
+            "side": "+n",
+            "origin": [
+              0,
+              0,
+              2500
+            ],
+            "finish": [
+              4000,
+              0,
+              2500
+            ],
+            "fingerprint": "7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385",
+            "sources": []
+          },
+          {
+            "id": 2,
+            "role": "boundary",
+            "A": 27,
+            "B": 33,
+            "L": 4000,
+            "dir": "+u",
+            "side": "+n",
+            "origin": [
+              0,
+              2973,
+              2500
+            ],
+            "finish": [
+              4000,
+              2973,
+              2500
+            ],
+            "fingerprint": "7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385",
+            "sources": []
+          },
+          {
+            "id": 3,
+            "role": "primary",
+            "A": 27,
+            "B": 33,
+            "L": 2946,
+            "dir": "+v",
+            "side": "+n",
+            "origin": [
+              514,
+              27,
+              2500
+            ],
+            "finish": [
+              514,
+              2973,
+              2500
+            ],
+            "fingerprint": "7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385",
+            "sources": []
+          }
+        ],
+        "unit": "mm"
+      }
+    },
+    {
+      "group": "bom",
+      "name": "BOM controls appear once on right and left timber rows stay pure locating/removal",
+      "ok": true
+    },
+    {
+      "group": "bom",
+      "name": "trusted left-row action preserves original timber selection",
+      "ok": true
+    },
+    {
+      "group": "bom",
+      "name": "BOM dimensions and world endpoints equal independent native geometry in mm",
+      "ok": true,
+      "detail": {
+        "actual": [
+          {
+            "id": 3,
+            "dimensions": "完成 L 2946 × A 27 × B 33 mm · +v+n",
+            "source": "直接尺寸；材料未設定；起端：角材 1／B1；末端：角材 2／B0。定位：at-line guide 1。跨距：依 R6 自動推導。起端世界 mm [514,27,2500]；末端 [514,2973,2500]。材料／加工：未知或未設定。來源指紋 7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385"
+          }
+        ],
+        "expected": [
+          {
+            "id": 3,
+            "role": "primary",
+            "A": 27,
+            "B": 33,
+            "L": 2946,
+            "dir": "+v",
+            "side": "+n",
+            "origin": [
+              514,
+              27,
+              2500
+            ],
+            "finish": [
+              514,
+              2973,
+              2500
+            ],
+            "fingerprint": "7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385",
+            "sources": []
+          }
+        ],
+        "unit": "mm"
+      }
+    },
+    {
+      "group": "bom",
+      "name": "selection-only BOM does not hide other left layer rows",
+      "ok": true
+    },
+    {
+      "group": "bom",
+      "name": "BOM dimensions and world endpoints equal independent native geometry in cm",
+      "ok": true,
+      "detail": {
+        "actual": [
+          {
+            "id": 3,
+            "dimensions": "完成 L 294.6 × A 2.7 × B 3.3 cm · +v+n",
+            "source": "直接尺寸；材料未設定；起端：角材 1／B1；末端：角材 2／B0。定位：at-line guide 1。跨距：依 R6 自動推導。起端世界 mm [514,27,2500]；末端 [514,2973,2500]。材料／加工：未知或未設定。來源指紋 7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385"
+          }
+        ],
+        "expected": [
+          {
+            "id": 3,
+            "role": "primary",
+            "A": 27,
+            "B": 33,
+            "L": 2946,
+            "dir": "+v",
+            "side": "+n",
+            "origin": [
+              514,
+              27,
+              2500
+            ],
+            "finish": [
+              514,
+              2973,
+              2500
+            ],
+            "fingerprint": "7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385",
+            "sources": []
+          }
+        ],
+        "unit": "cm"
+      }
+    },
+    {
+      "group": "bom",
+      "name": "BOM dimensions and world endpoints equal independent native geometry in cm",
+      "ok": true,
+      "detail": {
+        "actual": [
+          {
+            "id": 3,
+            "dimensions": "完成 L 294.6 × A 2.7 × B 3.3 cm · +v+n",
+            "source": "直接尺寸；材料未設定；起端：角材 1／B1；末端：角材 2／B0。定位：at-line guide 1。跨距：依 R6 自動推導。起端世界 mm [514,27,2500]；末端 [514,2973,2500]。材料／加工：未知或未設定。來源指紋 7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385"
+          },
+          {
+            "id": 1,
+            "dimensions": "完成 L 400 × A 2.7 × B 3.3 cm · +u+n",
+            "source": "直接尺寸；材料未設定；起端：邊界 1／e3；末端：邊界 1／e1。定位：at-face e0。跨距：依 R6 自動推導。起端世界 mm [0,0,2500]；末端 [4000,0,2500]。材料／加工：未知或未設定。來源指紋 7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385"
+          },
+          {
+            "id": 2,
+            "dimensions": "完成 L 400 × A 2.7 × B 3.3 cm · +u+n",
+            "source": "直接尺寸；材料未設定；起端：邊界 1／e3；末端：邊界 1／e1。定位：at-face e2。跨距：依 R6 自動推導。起端世界 mm [0,2973,2500]；末端 [4000,2973,2500]。材料／加工：未知或未設定。來源指紋 7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385"
+          }
+        ],
+        "expected": [
+          {
+            "id": 3,
+            "role": "primary",
+            "A": 27,
+            "B": 33,
+            "L": 2946,
+            "dir": "+v",
+            "side": "+n",
+            "origin": [
+              514,
+              27,
+              2500
+            ],
+            "finish": [
+              514,
+              2973,
+              2500
+            ],
+            "fingerprint": "7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385",
+            "sources": []
+          },
+          {
+            "id": 1,
+            "role": "boundary",
+            "A": 27,
+            "B": 33,
+            "L": 4000,
+            "dir": "+u",
+            "side": "+n",
+            "origin": [
+              0,
+              0,
+              2500
+            ],
+            "finish": [
+              4000,
+              0,
+              2500
+            ],
+            "fingerprint": "7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385",
+            "sources": []
+          },
+          {
+            "id": 2,
+            "role": "boundary",
+            "A": 27,
+            "B": 33,
+            "L": 4000,
+            "dir": "+u",
+            "side": "+n",
+            "origin": [
+              0,
+              2973,
+              2500
+            ],
+            "finish": [
+              4000,
+              2973,
+              2500
+            ],
+            "fingerprint": "7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385",
+            "sources": []
+          }
+        ],
+        "unit": "cm"
+      }
+    },
+    {
+      "group": "bom",
+      "name": "real CSV contains exact mm values, identity, native world endpoints and unknown materials",
+      "ok": true,
+      "detail": {
+        "file": "<isolated-test-directory>",
+        "sha256": "3037c37349cb28f2c7bc4ed2418ec91b7fd3f8d8a5a8e24bc227f4761ace5a54",
+        "header": [
+          "kind",
+          "timber_id",
+          "surface_id",
+          "role",
+          "A_mm",
+          "B_mm",
+          "finished_length_mm",
+          "direction",
+          "depth_side",
+          "dimension_source",
+          "anchor",
+          "span_selector",
+          "start_world_mm",
+          "finish_world_mm",
+          "source_fingerprint",
+          "material",
+          "machining",
+          "dimension_source_definitions",
+          "assembly_instance_id",
+          "assembly_member_id",
+          "binding_id",
+          "rule_id",
+          "rule_version",
+          "rule_fingerprint",
+          "binding_fingerprint",
+          "support_source_fingerprint",
+          "start_support_provenance",
+          "finish_support_provenance"
+        ],
+        "csv": [
+          [
+            "timber",
+            "3",
+            "1",
+            "primary",
+            "27",
+            "33",
+            "2946",
+            "'+v",
+            "'+n",
+            "直接尺寸；材料未設定",
+            "at-line guide 1",
+            "依 R6 自動推導",
+            "[514,27,2500]",
+            "[514,2973,2500]",
+            "7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385",
+            "未知／未設定",
+            "未知／未設定",
+            "[]",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385",
+            "{\"status\":\"exact\",\"at\":27,\"crossRange\":[487,514],\"relation\":{\"kind\":\"timber-face\",\"source\":{\"kind\":\"timber\",\"id\":1},\"localFace\":\"B1\",\"normalWorld\":[0,1,0],\"owner\":null,\"surface\":1,\"stop\":{\"axis\":\"v\",\"at\":27,\"range\":[0,4000],\"fixity\":\"fixed\"}}}",
+            "{\"status\":\"exact\",\"at\":2973,\"crossRange\":[487,514],\"relation\":{\"kind\":\"timber-face\",\"source\":{\"kind\":\"timber\",\"id\":2},\"localFace\":\"B0\",\"normalWorld\":[0,-1,0],\"owner\":null,\"surface\":1,\"stop\":{\"axis\":\"v\",\"at\":2973,\"range\":[0,4000],\"fixity\":\"fixed\"}}}"
+          ],
+          [
+            "timber",
+            "1",
+            "1",
+            "boundary",
+            "27",
+            "33",
+            "4000",
+            "'+u",
+            "'+n",
+            "直接尺寸；材料未設定",
+            "at-face e0",
+            "依 R6 自動推導",
+            "[0,0,2500]",
+            "[4000,0,2500]",
+            "7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385",
+            "未知／未設定",
+            "未知／未設定",
+            "[]",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385",
+            "{\"status\":\"exact\",\"at\":0,\"crossRange\":[0,27],\"relation\":{\"kind\":\"outline-edge\",\"source\":{\"kind\":\"boundary\",\"id\":1},\"edgeIndex\":3,\"holeIndex\":null,\"localFace\":null,\"normalWorld\":null,\"owner\":null,\"surface\":1,\"stop\":{\"axis\":\"u\",\"at\":0,\"range\":[0,3000],\"fixity\":\"fixed\"}}}",
+            "{\"status\":\"exact\",\"at\":4000,\"crossRange\":[0,27],\"relation\":{\"kind\":\"outline-edge\",\"source\":{\"kind\":\"boundary\",\"id\":1},\"edgeIndex\":1,\"holeIndex\":null,\"localFace\":null,\"normalWorld\":null,\"owner\":null,\"surface\":1,\"stop\":{\"axis\":\"u\",\"at\":4000,\"range\":[0,3000],\"fixity\":\"fixed\"}}}"
+          ],
+          [
+            "timber",
+            "2",
+            "1",
+            "boundary",
+            "27",
+            "33",
+            "4000",
+            "'+u",
+            "'+n",
+            "直接尺寸；材料未設定",
+            "at-face e2",
+            "依 R6 自動推導",
+            "[0,2973,2500]",
+            "[4000,2973,2500]",
+            "7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385",
+            "未知／未設定",
+            "未知／未設定",
+            "[]",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385",
+            "{\"status\":\"exact\",\"at\":0,\"crossRange\":[2973,3000],\"relation\":{\"kind\":\"outline-edge\",\"source\":{\"kind\":\"boundary\",\"id\":1},\"edgeIndex\":3,\"holeIndex\":null,\"localFace\":null,\"normalWorld\":null,\"owner\":null,\"surface\":1,\"stop\":{\"axis\":\"u\",\"at\":0,\"range\":[0,3000],\"fixity\":\"fixed\"}}}",
+            "{\"status\":\"exact\",\"at\":4000,\"crossRange\":[2973,3000],\"relation\":{\"kind\":\"outline-edge\",\"source\":{\"kind\":\"boundary\",\"id\":1},\"edgeIndex\":1,\"holeIndex\":null,\"localFace\":null,\"normalWorld\":null,\"owner\":null,\"surface\":1,\"stop\":{\"axis\":\"u\",\"at\":4000,\"range\":[0,3000],\"fixity\":\"fixed\"}}}"
+          ]
+        ]
+      }
+    },
+    {
+      "group": "bom",
+      "name": "BOM sorting, scope, unit and real export preserve full native scene",
+      "ok": true
+    },
+    {
+      "group": "bom",
+      "name": "unexpected execution failure",
+      "ok": false,
+      "error": "page.waitForFunction: Timeout 20000ms exceeded.\n    at wait (<workspace-path>\n    at Object.bom (<workspace-path>\n    at async <workspace-path>"
+    },
+    {
+      "group": "row-blur",
+      "name": "declared product confirmation appeared exactly once",
+      "ok": true
+    },
+    {
+      "group": "row-blur",
+      "name": "real public PDF import preserves exact original file bytes",
+      "ok": true
+    },
+    {
+      "group": "row-blur",
+      "name": "uncalibrated real PDF cannot propose a room",
+      "ok": true
+    },
+    {
+      "group": "row-blur",
+      "name": "actual input contains typed raw value #ulCalibDist",
+      "ok": true
+    },
+    {
+      "group": "row-blur",
+      "name": "real calibration is independently known 10 mm per source unit",
+      "ok": true,
+      "detail": {
+        "points": [
+          [
+            30.000001690724545,
+            29.99999830927544
+          ],
+          [
+            229.9999932371018,
+            29.99999830927544
+          ]
+        ],
+        "distanceMm": 2000,
+        "inputValue": 2000,
+        "inputUnit": "mm"
+      }
+    },
+    {
+      "group": "row-blur",
+      "name": "source-normal PDF candidate equals independently authored painted inner rectangle",
+      "ok": true,
+      "detail": {
+        "bid": 1,
+        "contextToken": "6b4e3c59-9e13-4465-838e-7b9d55aedf66",
+        "incarnation": "323c22c1-52e2-4b50-84e3-961327ca33f2",
+        "pageId": "f5ff092f-c567-4a71-bd02-640754e4647f",
+        "basis": "[\"f1d30a10eb1caa557fa083c051d09ada7b006c8e9012942c933e67a5d81b9677\",\"f5ff092f-c567-4a71-bd02-640754e4647f\",1,280,190,[0,0,280,190],10.000000422681154,0,0,0,{\"points\":[[30.000001690724545,29.99999830927544],[229.9999932371018,29.99999830927544]],\"distanceMm\":2000,\"inputValue\":2000,\"inputUnit\":\"mm\"}]",
+        "baseGeometry": "[[[[0,0],[4000,0],[4000,3000],[0,3000]],[1,1,1,1]]]",
+        "mode": "room",
+        "down": [
+          700.0000738160566,
+          699.9999853593048
+        ],
+        "move": [
+          700.0000738160566,
+          699.9999853593048
+        ],
+        "schema": "room-outline-candidate/1",
+        "method": "pdf-vector",
+        "sourcePoints": [
+          [
+            32,
+            32
+          ],
+          [
+            228,
+            32
+          ],
+          [
+            228,
+            148
+          ],
+          [
+            32,
+            148
+          ]
+        ],
+        "estimated": [
+          [
+            320.00001352579693,
+            320.00001352579693
+          ],
+          [
+            2280.0000963713032,
+            320.00001352579693
+          ],
+          [
+            2280.0000963713032,
+            1480.000062556811
+          ],
+          [
+            320.00001352579693,
+            1480.000062556811
+          ]
+        ],
+        "deviation": 9.637130324335885e-05,
+        "warnings": [
+          "已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。",
+          "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+        ],
+        "seed": [
+          70.00000442283739,
+          69.9999955771626
+        ],
+        "crop": [
+          0,
+          0,
+          280,
+          190
+        ],
+        "reviewed": false,
+        "dimensions": [],
+        "committing": false,
+        "points": [
+          [
+            320,
+            320
+          ],
+          [
+            2280,
+            320
+          ],
+          [
+            2280,
+            1480
+          ],
+          [
+            320,
+            1480
+          ]
+        ]
+      }
+    },
+    {
+      "group": "row-blur",
+      "name": "candidate requires explicit review before confirmation",
+      "ok": true
+    },
+    {
+      "group": "row-blur",
+      "name": "real proposal leaves the entire original native scene unchanged",
+      "ok": true
+    },
+    {
+      "group": "row-blur",
+      "name": "raw input retained before real focus transition [data-room-edge-length=\"0\"]",
+      "ok": true
+    },
+    {
+      "group": "row-blur",
+      "name": "new row input immediately clears explicit review",
+      "ok": true
+    },
+    {
+      "group": "row-blur",
+      "name": "direct pointer review after blur commits only independently expected rectangle edit",
+      "ok": true,
+      "detail": {
+        "bid": 1,
+        "contextToken": "6b4e3c59-9e13-4465-838e-7b9d55aedf66",
+        "incarnation": "323c22c1-52e2-4b50-84e3-961327ca33f2",
+        "pageId": "f5ff092f-c567-4a71-bd02-640754e4647f",
+        "basis": "[\"f1d30a10eb1caa557fa083c051d09ada7b006c8e9012942c933e67a5d81b9677\",\"f5ff092f-c567-4a71-bd02-640754e4647f\",1,280,190,[0,0,280,190],10.000000422681154,0,0,0,{\"points\":[[30.000001690724545,29.99999830927544],[229.9999932371018,29.99999830927544]],\"distanceMm\":2000,\"inputValue\":2000,\"inputUnit\":\"mm\"}]",
+        "baseGeometry": "[[[[0,0],[4000,0],[4000,3000],[0,3000]],[1,1,1,1]]]",
+        "mode": "room",
+        "down": [
+          700.0000738160566,
+          699.9999853593048
+        ],
+        "move": [
+          700.0000738160566,
+          699.9999853593048
+        ],
+        "schema": "room-outline-candidate/1",
+        "method": "pdf-vector",
+        "sourcePoints": [
+          [
+            32,
+            32
+          ],
+          [
+            228,
+            32
+          ],
+          [
+            228,
+            148
+          ],
+          [
+            32,
+            148
+          ]
+        ],
+        "estimated": [
+          [
+            320.00001352579693,
+            320.00001352579693
+          ],
+          [
+            2280.0000963713032,
+            320.00001352579693
+          ],
+          [
+            2280.0000963713032,
+            1480.000062556811
+          ],
+          [
+            320.00001352579693,
+            1480.000062556811
+          ]
+        ],
+        "deviation": 9.637130324335885e-05,
+        "warnings": [
+          "已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。",
+          "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+        ],
+        "seed": [
+          70.00000442283739,
+          69.9999955771626
+        ],
+        "crop": [
+          0,
+          0,
+          280,
+          190
+        ],
+        "reviewed": true,
+        "dimensions": [
+          {
+            "edge": 0,
+            "length": 2000,
+            "kind": "user-confirmed-mm"
+          }
+        ],
+        "committing": false,
+        "revision": 1,
+        "rawInputs": {
+          "refRoomVertices": "320,320\n2320,320\n2320,1480\n320,1480"
+        },
+        "points": [
+          [
+            320,
+            320
+          ],
+          [
+            2320,
+            320
+          ],
+          [
+            2320,
+            1480
+          ],
+          [
+            320,
+            1480
+          ]
+        ]
+      }
+    },
+    {
+      "group": "row-blur",
+      "name": "real blur preserves the pointer target row node instead of replacing the pane",
+      "ok": true
+    },
+    {
+      "group": "row-blur",
+      "name": "row edit and review preserve full native geometry",
+      "ok": true
+    },
+    {
+      "group": "row-blur",
+      "name": "bare focus and blur retain reviewed candidate and revision",
+      "ok": true
+    },
+    {
+      "group": "row-blur",
+      "name": "raw input retained before real focus transition [data-room-edge-length=\"0\"]",
+      "ok": true
+    },
+    {
+      "group": "row-blur",
+      "name": "real Tab lands on the same next row after one geometric edit",
+      "ok": true,
+      "detail": {
+        "bid": 1,
+        "contextToken": "6b4e3c59-9e13-4465-838e-7b9d55aedf66",
+        "incarnation": "323c22c1-52e2-4b50-84e3-961327ca33f2",
+        "pageId": "f5ff092f-c567-4a71-bd02-640754e4647f",
+        "basis": "[\"f1d30a10eb1caa557fa083c051d09ada7b006c8e9012942c933e67a5d81b9677\",\"f5ff092f-c567-4a71-bd02-640754e4647f\",1,280,190,[0,0,280,190],10.000000422681154,0,0,0,{\"points\":[[30.000001690724545,29.99999830927544],[229.9999932371018,29.99999830927544]],\"distanceMm\":2000,\"inputValue\":2000,\"inputUnit\":\"mm\"}]",
+        "baseGeometry": "[[[[0,0],[4000,0],[4000,3000],[0,3000]],[1,1,1,1]]]",
+        "mode": "room",
+        "down": [
+          700.0000738160566,
+          699.9999853593048
+        ],
+        "move": [
+          700.0000738160566,
+          699.9999853593048
+        ],
+        "schema": "room-outline-candidate/1",
+        "method": "pdf-vector",
+        "sourcePoints": [
+          [
+            32,
+            32
+          ],
+          [
+            228,
+            32
+          ],
+          [
+            228,
+            148
+          ],
+          [
+            32,
+            148
+          ]
+        ],
+        "estimated": [
+          [
+            320.00001352579693,
+            320.00001352579693
+          ],
+          [
+            2280.0000963713032,
+            320.00001352579693
+          ],
+          [
+            2280.0000963713032,
+            1480.000062556811
+          ],
+          [
+            320.00001352579693,
+            1480.000062556811
+          ]
+        ],
+        "deviation": 9.637130324335885e-05,
+        "warnings": [
+          "已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。",
+          "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+        ],
+        "seed": [
+          70.00000442283739,
+          69.9999955771626
+        ],
+        "crop": [
+          0,
+          0,
+          280,
+          190
+        ],
+        "reviewed": false,
+        "dimensions": [
+          {
+            "edge": 0,
+            "length": 2020,
+            "kind": "user-confirmed-mm"
+          }
+        ],
+        "committing": false,
+        "revision": 2,
+        "rawInputs": {
+          "refRoomVertices": "320,320\n2340,320\n2340,1480\n320,1480"
+        },
+        "points": [
+          [
+            320,
+            320
+          ],
+          [
+            2340,
+            320
+          ],
+          [
+            2340,
+            1480
+          ],
+          [
+            320,
+            1480
+          ]
+        ]
+      }
+    },
+    {
+      "group": "row-blur",
+      "name": "raw input retained before real focus transition [data-room-edge-length=\"1\"]",
+      "ok": true
+    },
+    {
+      "group": "row-blur",
+      "name": "real Enter applies exactly one pending row edit and retains field focus",
+      "ok": true,
+      "detail": {
+        "bid": 1,
+        "contextToken": "6b4e3c59-9e13-4465-838e-7b9d55aedf66",
+        "incarnation": "323c22c1-52e2-4b50-84e3-961327ca33f2",
+        "pageId": "f5ff092f-c567-4a71-bd02-640754e4647f",
+        "basis": "[\"f1d30a10eb1caa557fa083c051d09ada7b006c8e9012942c933e67a5d81b9677\",\"f5ff092f-c567-4a71-bd02-640754e4647f\",1,280,190,[0,0,280,190],10.000000422681154,0,0,0,{\"points\":[[30.000001690724545,29.99999830927544],[229.9999932371018,29.99999830927544]],\"distanceMm\":2000,\"inputValue\":2000,\"inputUnit\":\"mm\"}]",
+        "baseGeometry": "[[[[0,0],[4000,0],[4000,3000],[0,3000]],[1,1,1,1]]]",
+        "mode": "room",
+        "down": [
+          700.0000738160566,
+          699.9999853593048
+        ],
+        "move": [
+          700.0000738160566,
+          699.9999853593048
+        ],
+        "schema": "room-outline-candidate/1",
+        "method": "pdf-vector",
+        "sourcePoints": [
+          [
+            32,
+            32
+          ],
+          [
+            228,
+            32
+          ],
+          [
+            228,
+            148
+          ],
+          [
+            32,
+            148
+          ]
+        ],
+        "estimated": [
+          [
+            320.00001352579693,
+            320.00001352579693
+          ],
+          [
+            2280.0000963713032,
+            320.00001352579693
+          ],
+          [
+            2280.0000963713032,
+            1480.000062556811
+          ],
+          [
+            320.00001352579693,
+            1480.000062556811
+          ]
+        ],
+        "deviation": 9.637130324335885e-05,
+        "warnings": [
+          "已排除曲線／門扇弧；若曲線是牆，請取消並人工處理，不可改成直角。",
+          "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+        ],
+        "seed": [
+          70.00000442283739,
+          69.9999955771626
+        ],
+        "crop": [
+          0,
+          0,
+          280,
+          190
+        ],
+        "reviewed": false,
+        "dimensions": [
+          {
+            "edge": 1,
+            "length": 1170,
+            "kind": "user-confirmed-mm"
+          }
+        ],
+        "committing": false,
+        "revision": 3,
+        "rawInputs": {
+          "refRoomVertices": "320,320\n2340,320\n2340,1490\n320,1490"
+        },
+        "points": [
+          [
+            320,
+            320
+          ],
+          [
+            2340,
+            320
+          ],
+          [
+            2340,
+            1490
+          ],
+          [
+            320,
+            1490
+          ]
+        ]
+      }
+    },
+    {
+      "group": "row-blur",
+      "name": "raw input retained before real focus transition [data-room-edge-length=\"0\"]",
+      "ok": true
+    },
+    {
+      "group": "row-blur",
+      "name": "unexpected execution failure",
+      "ok": false,
+      "error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#refRoomConfirm')\u001b[22m\n\u001b[2m    - locator resolved to <button disabled type=\"button\" id=\"refRoomConfirm\" class=\"btn primary\">確認替換外環，交核心驗證</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    58 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not enabled\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n    at click (<workspace-path>\n    at async row-blur (<workspace-path>\n    at async <workspace-path>"
+    },
+    {
+      "group": "s2",
+      "name": "declared product confirmation appeared exactly once",
+      "ok": true
+    },
+    {
+      "group": "s2",
+      "name": "S2 disclosed canonical fixture has outer and hole keys and custom rational anchor 1382",
+      "ok": true,
+      "detail": {
+        "boundaryBefore": {
+          "ok": true,
+          "id": 901,
+          "geometryFingerprint": "7b9e92507f743f03cb426225ba31b3afc6de8222f84bc1c14305436f445022ed",
+          "kind": "unspecified",
+          "keysPersisted": false,
+          "loops": [
+            {
+              "loop": -1,
+              "verts": [
+                [
+                  -1800,
+                  -1200
+                ],
+                [
+                  2400,
+                  -1200
+                ],
+                [
+                  2400,
+                  1600
+                ],
+                [
+                  -1800,
+                  1600
+                ]
+              ],
+              "fixity": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "vertices": [
+                {
+                  "index": 0,
+                  "key": null,
+                  "uv": [
+                    -1800,
+                    -1200
+                  ]
+                },
+                {
+                  "index": 1,
+                  "key": null,
+                  "uv": [
+                    2400,
+                    -1200
+                  ]
+                },
+                {
+                  "index": 2,
+                  "key": null,
+                  "uv": [
+                    2400,
+                    1600
+                  ]
+                },
+                {
+                  "index": 3,
+                  "key": null,
+                  "uv": [
+                    -1800,
+                    1600
+                  ]
+                }
+              ]
+            },
+            {
+              "loop": 0,
+              "verts": [
+                [
+                  100,
+                  200
+                ],
+                [
+                  100,
+                  600
+                ],
+                [
+                  700,
+                  600
+                ],
+                [
+                  700,
+                  200
+                ]
+              ],
+              "fixity": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "vertices": [
+                {
+                  "index": 0,
+                  "key": null,
+                  "uv": [
+                    100,
+                    200
+                  ]
+                },
+                {
+                  "index": 1,
+                  "key": null,
+                  "uv": [
+                    100,
+                    600
+                  ]
+                },
+                {
+                  "index": 2,
+                  "key": null,
+                  "uv": [
+                    700,
+                    600
+                  ]
+                },
+                {
+                  "index": 3,
+                  "key": null,
+                  "uv": [
+                    700,
+                    200
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "boundary": {
+          "ok": true,
+          "id": 901,
+          "geometryFingerprint": "7b9e92507f743f03cb426225ba31b3afc6de8222f84bc1c14305436f445022ed",
+          "kind": "unspecified",
+          "keysPersisted": true,
+          "loops": [
+            {
+              "loop": -1,
+              "verts": [
+                [
+                  -1800,
+                  -1200
+                ],
+                [
+                  2400,
+                  -1200
+                ],
+                [
+                  2400,
+                  1600
+                ],
+                [
+                  -1800,
+                  1600
+                ]
+              ],
+              "fixity": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "vertices": [
+                {
+                  "index": 0,
+                  "key": 1,
+                  "uv": [
+                    -1800,
+                    -1200
+                  ]
+                },
+                {
+                  "index": 1,
+                  "key": 2,
+                  "uv": [
+                    2400,
+                    -1200
+                  ]
+                },
+                {
+                  "index": 2,
+                  "key": 3,
+                  "uv": [
+                    2400,
+                    1600
+                  ]
+                },
+                {
+                  "index": 3,
+                  "key": 4,
+                  "uv": [
+                    -1800,
+                    1600
+                  ]
+                }
+              ]
+            },
+            {
+              "loop": 0,
+              "verts": [
+                [
+                  100,
+                  200
+                ],
+                [
+                  100,
+                  600
+                ],
+                [
+                  700,
+                  600
+                ],
+                [
+                  700,
+                  200
+                ]
+              ],
+              "fixity": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "vertices": [
+                {
+                  "index": 0,
+                  "key": 5,
+                  "uv": [
+                    100,
+                    200
+                  ]
+                },
+                {
+                  "index": 1,
+                  "key": 6,
+                  "uv": [
+                    100,
+                    600
+                  ]
+                },
+                {
+                  "index": 2,
+                  "key": 7,
+                  "uv": [
+                    700,
+                    600
+                  ]
+                },
+                {
+                  "index": 3,
+                  "key": 8,
+                  "uv": [
+                    700,
+                    200
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "createdLine": "grid-binding 901 on-boundary 901 from-system 901 vertex outer 0 geometry-hash 7b9e92507f743f03cb426225ba31b3afc6de8222f84bc1c14305436f445022ed cell -2 1 anchor 1 3 1 2",
+        "response": {
+          "ok": true
+        },
+        "positioned": {
+          "ok": true
+        },
+        "objects": {
+          "ok": true,
+          "faces": [
+            {
+              "kind": "boundary",
+              "boundaryKind": "unspecified",
+              "id": 901,
+              "placed": false,
+              "bbox": [
+                -1800,
+                -1200,
+                2400,
+                1600
+              ],
+              "cx": 200,
+              "cy": 100,
+              "hasPos": true
+            }
+          ],
+          "spaces": [],
+          "columns": [],
+          "beams": [],
+          "gridSystems": [
+            {
+              "kind": "grid-system",
+              "id": 901,
+              "name": "S2 contract",
+              "mode": "infinite",
+              "mainAlong": null,
+              "uDefinition": {
+                "source": "repeat",
+                "phase": 0,
+                "step": 600
+              },
+              "vDefinition": {
+                "source": "repeat",
+                "phase": 0,
+                "step": 400
+              },
+              "nextRuleKey": 1,
+              "rules": [],
+              "applications": [],
+              "bindings": [
+                901
+              ],
+              "cx": 500,
+              "cy": 100,
+              "hasPos": true
+            }
+          ],
+          "parameters": [],
+          "assemblyRules": [],
+          "assemblyBindings": [],
+          "parameterUses": [],
+          "gridBindings": [
+            {
+              "kind": "grid-binding",
+              "id": 901,
+              "boundary": 901,
+              "system": 901,
+              "vertexKey": 1,
+              "cell": [
+                "-2",
+                "1"
+              ],
+              "anchor": [
+                {
+                  "num": 1,
+                  "den": 3
+                },
+                {
+                  "num": 1,
+                  "den": 2
+                }
+              ],
+              "translation": [
+                -800,
+                -1800
+              ],
+              "translationExact": [
+                "-800",
+                "-1800"
+              ],
+              "translationRepresentable": true,
+              "applications": [],
+              "cx": 800,
+              "cy": 100,
+              "hasPos": true
+            }
+          ],
+          "timbers": []
+        }
+      }
+    },
+    {
+      "group": "s2",
+      "name": "S2 one existing real vertex diagram is in right binding step2 1382",
+      "ok": true,
+      "detail": {
+        "inRight": true,
+        "stepNext": true,
+        "inForm": true,
+        "diagramCount": 1,
+        "sectionCount": 1,
+        "parentWidth": 275,
+        "svgWidth": 275
+      }
+    },
+    {
+      "group": "s2",
+      "name": "S2 reopening custom one-third does not select a nearest nine-point preset 1382",
+      "ok": true
+    },
+    {
+      "group": "s2",
+      "name": "S2 full-workspace nine names retain original shared vocabulary 1382",
+      "ok": true,
+      "detail": [
+        "左上",
+        "上中",
+        "右上",
+        "左中",
+        "中心",
+        "右中",
+        "左下",
+        "下中",
+        "右下"
+      ]
+    },
+    {
+      "group": "s2",
+      "name": "S2 one unobstructed actual SVG pointer target #igBoundaryView [data-ig-vertex=\"outer:1\"]",
+      "ok": true,
+      "detail": {
+        "x": 1282.125,
+        "y": 387.2447916666667,
+        "width": 5.308349609375,
+        "height": 5.308319091796875,
+        "hit": true,
+        "target": "outer:1",
+        "hitTag": "circle",
+        "hitId": ""
+      }
+    },
+    {
+      "group": "s2",
+      "name": "S2 normal SVG pointer and dropdown share exact native vertex identity outer:1 1382",
+      "ok": true,
+      "detail": {
+        "value": "outer:1",
+        "key": "2",
+        "label": "外環・頂點 2 (2400, -1200)",
+        "summary": "2 · 已選 外環・頂點 2 (2400, -1200)。"
+      }
+    },
+    {
+      "group": "s2",
+      "name": "S2 one unobstructed actual SVG pointer target #igBoundaryView [data-ig-vertex=\"hole:0:0\"]",
+      "ok": true,
+      "detail": {
+        "x": 1194.9166666666667,
+        "y": 440.328125,
+        "width": 5.308349609375,
+        "height": 5.308349609375,
+        "hit": true,
+        "target": "hole:0:0",
+        "hitTag": "circle",
+        "hitId": ""
+      }
+    },
+    {
+      "group": "s2",
+      "name": "S2 normal SVG pointer and dropdown share exact native vertex identity hole:0:0 1382",
+      "ok": true,
+      "detail": {
+        "value": "hole:0:0",
+        "key": "5",
+        "label": "孔洞 1・頂點 1 (100, 200)",
+        "summary": "2 · 已選 孔洞 1・頂點 1 (100, 200)。"
+      }
+    },
+    {
+      "group": "s2",
+      "name": "S2 real Tab reaches visible keyboard target #igBoundaryView [data-ig-vertex=\"outer:2\"]",
+      "ok": true,
+      "detail": [
+        {
+          "target": false,
+          "id": "",
+          "vertex": "hole:0:1",
+          "focusVisible": true,
+          "outline": "none",
+          "stroke": "rgb(78, 103, 232)",
+          "strokeWidth": "5px"
+        },
+        {
+          "target": false,
+          "id": "",
+          "vertex": "hole:0:2",
+          "focusVisible": true,
+          "outline": "none",
+          "stroke": "rgb(78, 103, 232)",
+          "strokeWidth": "5px"
+        },
+        {
+          "target": false,
+          "id": "",
+          "vertex": "hole:0:3",
+          "focusVisible": true,
+          "outline": "none",
+          "stroke": "rgb(78, 103, 232)",
+          "strokeWidth": "5px"
+        },
+        {
+          "target": false,
+          "id": "igVertex",
+          "focusVisible": true,
+          "outline": "solid",
+          "stroke": "none",
+          "strokeWidth": "1px"
+        },
+        {
+          "target": false,
+          "id": "igCellI",
+          "focusVisible": true,
+          "outline": "solid",
+          "stroke": "none",
+          "strokeWidth": "1px"
+        },
+        {
+          "target": false,
+          "id": "igCellJ",
+          "focusVisible": true,
+          "outline": "solid",
+          "stroke": "none",
+          "strokeWidth": "1px"
+        },
+        {
+          "target": false,
+          "id": "igLocateCell",
+          "focusVisible": true,
+          "outline": "solid",
+          "stroke": "none",
+          "strokeWidth": "1px"
+        },
+        {
+          "target": false,
+          "id": "",
+          "focusVisible": true,
+          "outline": "solid",
+          "stroke": "none",
+          "strokeWidth": "1px"
+        },
+        {
+          "target": false,
+          "id": "",
+          "focusVisible": true,
+          "outline": "solid",
+          "stroke": "none",
+          "strokeWidth": "1px"
+        },
+        {
+          "target": false,
+          "id": "",
+          "focusVisible": true,
+          "outline": "solid",
+          "stroke": "none",
+          "strokeWidth": "1px"
+        },
+        {
+          "target": false,
+          "id": "",
+          "focusVisible": true,
+          "outline": "solid",
+          "stroke": "none",
+          "strokeWidth": "1px"
+        },
+        {
+          "target": false,
+          "id": "",
+          "focusVisible": true,
+          "outline": "solid",
+          "stroke": "none",
+          "strokeWidth": "1px"
+        },
+        {
+          "target": false,
+          "id": "",
+          "focusVisible": true,
+          "outline": "solid",
+          "stroke": "none",
+          "strokeWidth": "1px"
+        },
+        {
+          "target": false,
+          "id": "",
+          "focusVisible": true,
+          "outline": "solid",
+          "stroke": "none",
+          "strokeWidth": "1px"
+        },
+        {
+          "target": false,
+          "id": "",
+          "focusVisible": true,
+          "outline": "solid",
+          "stroke": "none",
+          "strokeWidth": "1px"
+        },
+        {
+          "target": false,
+          "id": "",
+          "focusVisible": true,
+          "outline": "solid",
+          "stroke": "none",
+          "strokeWidth": "1px"
+        },
+        {
+          "target": false,
+          "id": "",
+          "focusVisible": true,
+          "outline": "auto",
+          "stroke": "none",
+          "strokeWidth": "1px"
+        },
+        {
+          "target": false,
+          "id": "igSurface",
+          "focusVisible": true,
+          "outline": "solid",
+          "stroke": "none",
+          "strokeWidth": "1px"
+        },
+        {
+          "target": false,
+          "id": "igApplyBinding",
+          "focusVisible": true,
+          "outline": "solid",
+          "stroke": "none",
+          "strokeWidth": "1px"
+        },
+        {
+          "target": false,
+          "id": "",
+          "focusVisible": true,
+          "outline": "auto",
+          "stroke": "none",
+          "strokeWidth": "1px"
+        },
+        {
+          "target": false,
+          "id": "",
+          "focusVisible": true,
+          "outline": "auto",
+          "stroke": "none",
+          "strokeWidth": "1px"
+        },
+        {
+          "target": false,
+          "id": "igDiscardDraft",
+          "focusVisible": true,
+          "outline": "solid",
+          "stroke": "none",
+          "strokeWidth": "1px"
+        },
+        {
+          "target": false,
+          "id": "igSaveBinding",
+          "focusVisible": true,
+          "outline": "solid",
+          "stroke": "none",
+          "strokeWidth": "1px"
+        },
+        {
+          "target": false,
+          "id": "",
+          "focusVisible": false,
+          "outline": "none",
+          "stroke": "none",
+          "strokeWidth": "1px"
+        },
+        {
+          "target": false,
+          "id": "igClose",
+          "focusVisible": true,
+          "outline": "solid",
+          "stroke": "none",
+          "strokeWidth": "1px"
+        },
+        {
+          "target": false,
+          "id": "projectInfoButton",
+          "focusVisible": true,
+          "outline": "solid",
+          "stroke": "none",
+          "strokeWidth": "1px"
+        },
+        {
+          "target": false,
+          "id": "",
+          "focusVisible": true,
+          "outline": "solid",
+          "stroke": "none",
+          "strokeWidth": "1px"
+        },
+        {
+          "target": false,
+          "id": "",
+          "focusVisible": true,
+          "outline": "solid",
+          "stroke": "none",
+          "strokeWidth": "1px"
+        },
+        {
+          "target": false,
+          "id": "igZoomOut",
+          "focusVisible": true,
+          "outline": "solid",
+          "stroke": "none",
+          "strokeWidth": "1px"
+        },
+        {
+          "target": false,
+          "id": "igZoomIn",
+          "focusVisible": true,
+          "outline": "solid",
+          "stroke": "none",
+          "strokeWidth": "1px"
+        },
+        {
+          "target": false,
+          "id": "igFit",
+          "focusVisible": true,
+          "outline": "solid",
+          "stroke": "none",
+          "strokeWidth": "1px"
+        },
+        {
+          "target": false,
+          "id": "igEditSource",
+          "focusVisible": true,
+          "outline": "solid",
+          "stroke": "none",
+          "strokeWidth": "1px"
+        },
+        {
+          "target": false,
+          "id": "igBoundary",
+          "focusVisible": true,
+          "outline": "solid",
+          "stroke": "none",
+          "strokeWidth": "1px"
+        },
+        {
+          "target": false,
+          "id": "",
+          "vertex": "outer:0",
+          "focusVisible": true,
+          "outline": "none",
+          "stroke": "rgb(78, 103, 232)",
+          "strokeWidth": "5px"
+        },
+        {
+          "target": false,
+          "id": "",
+          "vertex": "outer:1",
+          "focusVisible": true,
+          "outline": "none",
+          "stroke": "rgb(78, 103, 232)",
+          "strokeWidth": "5px"
+        },
+        {
+          "target": true,
+          "id": "",
+          "vertex": "outer:2",
+          "focusVisible": true,
+          "outline": "none",
+          "stroke": "rgb(78, 103, 232)",
+          "strokeWidth": "5px"
+        }
+      ]
+    },
+    {
+      "group": "s2",
+      "name": "S2 real Enter selects intended outer or hole vertex outer:2 1382",
+      "ok": true,
+      "detail": {
+        "value": "outer:2",
+        "summary": "2 · 已選 外環・頂點 3 (2400, 1600)。"
+      }
+    },
+    {
+      "group": "s2",
+      "name": "S2 real Tab reaches visible keyboard target #igBoundaryView [data-ig-vertex=\"hole:0:2\"]",
+      "ok": true,
+      "detail": [
+        {
+          "target": false,
+          "id": "",
+          "vertex": "outer:3",
+          "focusVisible": true,
+          "outline": "none",
+          "stroke": "rgb(78, 103, 232)",
+          "strokeWidth": "5px"
+        },
+        {
+          "target": false,
+          "id": "",
+          "vertex": "hole:0:0",
+          "focusVisible": true,
+          "outline": "none",
+          "stroke": "rgb(78, 103, 232)",
+          "strokeWidth": "5px"
+        },
+        {
+          "target": false,
+          "id": "",
+          "vertex": "hole:0:1",
+          "focusVisible": true,
+          "outline": "none",
+          "stroke": "rgb(78, 103, 232)",
+          "strokeWidth": "5px"
+        },
+        {
+          "target": true,
+          "id": "",
+          "vertex": "hole:0:2",
+          "focusVisible": true,
+          "outline": "none",
+          "stroke": "rgb(78, 103, 232)",
+          "strokeWidth": "5px"
+        }
+      ]
+    },
+    {
+      "group": "s2",
+      "name": "S2 real Space selects intended outer or hole vertex hole:0:2 1382",
+      "ok": true,
+      "detail": {
+        "value": "hole:0:2",
+        "summary": "2 · 已選 孔洞 1・頂點 3 (700, 600)。"
+      }
+    },
+    {
+      "group": "s2",
+      "name": "S2 actual outer dropdown option exists 1382",
+      "ok": true
+    },
+    {
+      "group": "s2",
+      "name": "S2 actual dropdown redraws same real vertex and preserves exact custom anchor 1382",
+      "ok": true
+    },
+    {
+      "group": "s2",
+      "name": "S2 full nine-point preset uses exact existing half fractions 0 1382",
+      "ok": true,
+      "detail": [
+        0,
+        2,
+        0,
+        2
+      ]
+    },
+    {
+      "group": "s2",
+      "name": "S2 full nine-point preset uses exact existing half fractions 1 1382",
+      "ok": true,
+      "detail": [
+        1,
+        2,
+        0,
+        2
+      ]
+    },
+    {
+      "group": "s2",
+      "name": "S2 full nine-point preset uses exact existing half fractions 2 1382",
+      "ok": true,
+      "detail": [
+        2,
+        2,
+        0,
+        2
+      ]
+    },
+    {
+      "group": "s2",
+      "name": "S2 full nine-point preset uses exact existing half fractions 3 1382",
+      "ok": true,
+      "detail": [
+        0,
+        2,
+        1,
+        2
+      ]
+    },
+    {
+      "group": "s2",
+      "name": "S2 full nine-point preset uses exact existing half fractions 4 1382",
+      "ok": true,
+      "detail": [
+        1,
+        2,
+        1,
+        2
+      ]
+    },
+    {
+      "group": "s2",
+      "name": "S2 full nine-point preset uses exact existing half fractions 5 1382",
+      "ok": true,
+      "detail": [
+        2,
+        2,
+        1,
+        2
+      ]
+    },
+    {
+      "group": "s2",
+      "name": "S2 full nine-point preset uses exact existing half fractions 6 1382",
+      "ok": true,
+      "detail": [
+        0,
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "group": "s2",
+      "name": "S2 full nine-point preset uses exact existing half fractions 7 1382",
+      "ok": true,
+      "detail": [
+        1,
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "group": "s2",
+      "name": "S2 full nine-point preset uses exact existing half fractions 8 1382",
+      "ok": true,
+      "detail": [
+        2,
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "group": "s2",
+      "name": "actual input contains typed raw value #igAnchorUN",
+      "ok": true
+    },
+    {
+      "group": "s2",
+      "name": "actual input contains typed raw value #igAnchorUD",
+      "ok": true
+    },
+    {
+      "group": "s2",
+      "name": "actual input contains typed raw value #igAnchorVN",
+      "ok": true
+    },
+    {
+      "group": "s2",
+      "name": "actual input contains typed raw value #igAnchorVD",
+      "ok": true
+    },
+    {
+      "group": "s2",
+      "name": "S2 discard sits left of active right primary operation 1382",
+      "ok": true,
+      "detail": {
+        "first": "igDiscardDraft",
+        "last": "igSaveBinding",
+        "discard": {
+          "x": 1043,
+          "y": 746,
+          "width": 156.5,
+          "height": 42,
+          "top": 746,
+          "right": 1199.5,
+          "bottom": 788,
+          "left": 1043
+        },
+        "primary": {
+          "x": 1207.5,
+          "y": 746,
+          "width": 154.5,
+          "height": 42,
+          "top": 746,
+          "right": 1362,
+          "bottom": 788,
+          "left": 1207.5
+        }
+      }
+    },
+    {
+      "group": "s2",
+      "name": "S2 inline discard retains original question",
+      "ok": true
+    },
+    {
+      "group": "s2",
+      "name": "S2 normal Cancel returns exact raw draft native scene and focus 1382",
+      "ok": true
+    },
+    {
+      "group": "s2",
+      "name": "S2 real Escape dismisses only inline question and preserves raw native owner 1382",
+      "ok": true
+    },
+    {
+      "group": "s2",
+      "name": "S2 inline discard retains original question",
+      "ok": true
+    },
+    {
+      "group": "s2",
+      "name": "S2 explicit inline discard clears only raw feature and closes workspace 1382",
+      "ok": true
+    },
+    {
+      "group": "s2",
+      "name": "S2 inline inspector keeps custom one-third untouched and identical nine terminology 1382",
+      "ok": true
+    },
+    {
+      "group": "s2",
+      "name": "S2 one unobstructed actual SVG pointer target [data-gi-anchor=\"0,0\"]",
+      "ok": true,
+      "detail": {
+        "x": 991.836875,
+        "y": 570.2275,
+        "width": 22.3599853515625,
+        "height": 22.3599853515625,
+        "hit": true,
+        "target": "0,0",
+        "hitTag": "circle",
+        "hitId": ""
+      }
+    },
+    {
+      "group": "s2",
+      "name": "S2 compact nine-point pointer retains exact same native preset 0 1382",
+      "ok": true
+    },
+    {
+      "group": "s2",
+      "name": "S2 one unobstructed actual SVG pointer target [data-gi-anchor=\"1,0\"]",
+      "ok": true,
+      "detail": {
+        "x": 1022.796875,
+        "y": 570.2275,
+        "width": 22.36004638671875,
+        "height": 22.3599853515625,
+        "hit": true,
+        "target": "1,0",
+        "hitTag": "circle",
+        "hitId": ""
+      }
+    },
+    {
+      "group": "s2",
+      "name": "S2 compact nine-point pointer retains exact same native preset 1 1382",
+      "ok": true
+    },
+    {
+      "group": "s2",
+      "name": "S2 one unobstructed actual SVG pointer target [data-gi-anchor=\"2,0\"]",
+      "ok": true,
+      "detail": {
+        "x": 1053.756875,
+        "y": 570.2275,
+        "width": 22.3599853515625,
+        "height": 22.3599853515625,
+        "hit": true,
+        "target": "2,0",
+        "hitTag": "circle",
+        "hitId": ""
+      }
+    },
+    {
+      "group": "s2",
+      "name": "S2 compact nine-point pointer retains exact same native preset 2 1382",
+      "ok": true
+    },
+    {
+      "group": "s2",
+      "name": "S2 one unobstructed actual SVG pointer target [data-gi-anchor=\"0,1\"]",
+      "ok": true,
+      "detail": {
+        "x": 991.836875,
+        "y": 601.1875,
+        "width": 22.3599853515625,
+        "height": 22.3599853515625,
+        "hit": true,
+        "target": "0,1",
+        "hitTag": "circle",
+        "hitId": ""
+      }
+    },
+    {
+      "group": "s2",
+      "name": "S2 compact nine-point pointer retains exact same native preset 3 1382",
+      "ok": true
+    },
+    {
+      "group": "s2",
+      "name": "S2 one unobstructed actual SVG pointer target [data-gi-anchor=\"1,1\"]",
+      "ok": true,
+      "detail": {
+        "x": 1022.796875,
+        "y": 601.1875,
+        "width": 22.36004638671875,
+        "height": 22.3599853515625,
+        "hit": true,
+        "target": "1,1",
+        "hitTag": "circle",
+        "hitId": ""
+      }
+    },
+    {
+      "group": "s2",
+      "name": "S2 compact nine-point pointer retains exact same native preset 4 1382",
+      "ok": true
+    },
+    {
+      "group": "s2",
+      "name": "S2 one unobstructed actual SVG pointer target [data-gi-anchor=\"2,1\"]",
+      "ok": true,
+      "detail": {
+        "x": 1053.756875,
+        "y": 601.1875,
+        "width": 22.3599853515625,
+        "height": 22.3599853515625,
+        "hit": true,
+        "target": "2,1",
+        "hitTag": "circle",
+        "hitId": ""
+      }
+    },
+    {
+      "group": "s2",
+      "name": "S2 compact nine-point pointer retains exact same native preset 5 1382",
+      "ok": true
+    },
+    {
+      "group": "s2",
+      "name": "S2 one unobstructed actual SVG pointer target [data-gi-anchor=\"0,2\"]",
+      "ok": true,
+      "detail": {
+        "x": 991.836875,
+        "y": 632.1475,
+        "width": 22.3599853515625,
+        "height": 22.3599853515625,
+        "hit": true,
+        "target": "0,2",
+        "hitTag": "circle",
+        "hitId": ""
+      }
+    },
+    {
+      "group": "s2",
+      "name": "S2 compact nine-point pointer retains exact same native preset 6 1382",
+      "ok": true
+    },
+    {
+      "group": "s2",
+      "name": "S2 one unobstructed actual SVG pointer target [data-gi-anchor=\"1,2\"]",
+      "ok": true,
+      "detail": {
+        "x": 1022.796875,
+        "y": 632.1475,
+        "width": 22.36004638671875,
+        "height": 22.3599853515625,
+        "hit": true,
+        "target": "1,2",
+        "hitTag": "circle",
+        "hitId": ""
+      }
+    },
+    {
+      "group": "s2",
+      "name": "S2 compact nine-point pointer retains exact same native preset 7 1382",
+      "ok": true
+    },
+    {
+      "group": "s2",
+      "name": "S2 one unobstructed actual SVG pointer target [data-gi-anchor=\"2,2\"]",
+      "ok": true,
+      "detail": {
+        "x": 1053.756875,
+        "y": 632.1475,
+        "width": 22.3599853515625,
+        "height": 22.3599853515625,
+        "hit": true,
+        "target": "2,2",
+        "hitTag": "circle",
+        "hitId": ""
+      }
+    },
+    {
+      "group": "s2",
+      "name": "S2 compact nine-point pointer retains exact same native preset 8 1382",
+      "ok": true
+    },
+    {
+      "group": "s2",
+      "name": "S2 full open restores saved custom fraction after compact-only choices 1382",
+      "ok": true
+    },
+    {
+      "group": "s2",
+      "name": "S2 original binding-delete action is isolated in its own closed disclosure 1382",
+      "ok": true,
+      "detail": {
+        "separate": true,
+        "closed": true,
+        "text": "刪除配置",
+        "locatedInBinding": true,
+        "buttonId": "igDeleteBinding"
+      }
+    },
+    {
+      "group": "s2",
+      "name": "unexpected execution failure",
+      "ok": false,
+      "error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#igDeleteBinding')\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" class=\"btn danger\" id=\"igDeleteBinding\">刪除此配置</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    58 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n    at Object.s2 (<workspace-path>\n    at async <workspace-path>"
+    },
+    {
+      "group": "final",
+      "name": "runtime source/session fresh and unchanged after explicit scopes",
+      "ok": true,
+      "detail": {
+        "schema": "geometry-runtime/1",
+        "version": "ef68eb1ca2ed0985a83a986da6640e695fdc44c607bdde18aecbe82b8b88fb1e",
+        "fresh": true,
+        "root": "<workspace-path>",
+        "pid": 92781,
+        "session": "0cef2fea942845808a7740e163a375b6"
+      }
+    },
+    {
+      "group": "final",
+      "name": "all measured product and harness source identities remain frozen",
+      "ok": true
+    },
+    {
+      "group": "final",
+      "name": "no unexpected page errors or native dialogs",
+      "ok": true,
+      "detail": []
+    }
+  ],
+  "groupResults": [
+    {
+      "group": "plan",
+      "startedAt": "2026-10-09T15:08:37.683Z",
+      "finishedAt": "2026-10-09T15:08:42.787Z",
+      "ok": true,
+      "checks": 16
+    },
+    {
+      "group": "bom",
+      "startedAt": "2026-10-09T15:08:42.787Z",
+      "finishedAt": "2026-10-09T15:09:04.700Z",
+      "ok": false,
+      "checks": 12
+    },
+    {
+      "group": "row-blur",
+      "startedAt": "2026-10-09T15:09:04.700Z",
+      "finishedAt": "2026-10-09T15:09:37.115Z",
+      "ok": false,
+      "checks": 20
+    },
+    {
+      "group": "s2",
+      "startedAt": "2026-10-09T15:09:37.115Z",
+      "finishedAt": "2026-10-09T15:10:11.743Z",
+      "ok": false,
+      "checks": 56
+    }
+  ],
+  "errors": [],
+  "dialogs": [
+    {
+      "group": "plan",
+      "context": 1,
+      "type": "confirm",
+      "message": "建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+      "accepted": true
+    },
+    {
+      "group": "plan",
+      "context": 2,
+      "type": "confirm",
+      "message": "建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+      "accepted": true
+    },
+    {
+      "group": "bom",
+      "context": 3,
+      "type": "confirm",
+      "message": "建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+      "accepted": true
+    },
+    {
+      "group": "row-blur",
+      "context": 4,
+      "type": "confirm",
+      "message": "建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+      "accepted": true
+    },
+    {
+      "group": "s2",
+      "context": 5,
+      "type": "confirm",
+      "message": "建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+      "accepted": true
+    }
+  ]
+}

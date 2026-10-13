@@ -1,0 +1,209 @@
+{
+  "schema": "geometry-executor-full-semantic-index/1",
+  "indexedUtc": "2026-10-09T15:54:11.216978+00:00",
+  "reviewerRole": "same executing agent, not independent reviewer",
+  "git": {
+    "root": "<workspace-path>",
+    "head": "243326b512896ace70e068f62c8f3d6397f6000d",
+    "tree": "3a94d684e90fc8ee77883ca929b7e6e9520e656f",
+    "status": ""
+  },
+  "remoteBranch": "codex/adopted-ui-single-room-closeout-20261009",
+  "remoteFullShaAtIndex": "243326b512896ace70e068f62c8f3d6397f6000d",
+  "command": [
+    "node",
+    "geometry-web/space_model_test.js"
+  ],
+  "environment": {
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:19184/",
+    "GEOMETRY_TEST_BRIDGE": "<isolated-test-directory>",
+    "GEOMETRY_BRIDGE": "<isolated-test-directory>",
+    "GEOMETRY_MODEL_BASE": "<isolated-test-directory>",
+    "GEOMETRY_FEEDBACK_DIR": "<isolated-test-directory>",
+    "GEOMETRY_CHROME": "/usr/bin/chromium",
+    "GEOMETRY_CDP_PORT": "40515"
+  },
+  "execution": {
+    "started": "2026-10-09T15:50:26.608806+00:00",
+    "exitCode": 0,
+    "timedOut": false,
+    "interrupted": false,
+    "pid": 139319,
+    "finished": "2026-10-09T15:52:34.720905+00:00"
+  },
+  "result": {
+    "schema": "geometry-space-result/1",
+    "scope": {
+      "mode": "full-space-suite",
+      "filters": [],
+      "included": [
+        "space-height-library",
+        "projection-lifecycle",
+        "projection-placement",
+        "font-layout",
+        "space-flow"
+      ],
+      "omitted": [
+        "timber-material",
+        "timber-source-guards"
+      ],
+      "url": "http://127.0.0.1:19184/",
+      "feedbackDirectory": "<isolated-test-directory>"
+    },
+    "completed": true,
+    "groups": {
+      "setup": {
+        "expected": 2,
+        "passed": 2,
+        "failed": 0,
+        "completed": true
+      },
+      "space-height-library": {
+        "expected": 112,
+        "passed": 112,
+        "failed": 0,
+        "completed": true
+      },
+      "projection-lifecycle": {
+        "expected": 18,
+        "passed": 18,
+        "failed": 0,
+        "completed": true
+      },
+      "projection-placement": {
+        "expected": 36,
+        "passed": 36,
+        "failed": 0,
+        "completed": true
+      },
+      "font-layout": {
+        "expected": 19,
+        "passed": 19,
+        "failed": 0,
+        "completed": true
+      },
+      "space-flow": {
+        "expected": 39,
+        "passed": 39,
+        "failed": 0,
+        "completed": true
+      },
+      "browser-health": {
+        "expected": 2,
+        "passed": 2,
+        "failed": 0,
+        "completed": true
+      }
+    },
+    "completenessProblems": [],
+    "passed": 228,
+    "failed": 0,
+    "exceptions": [],
+    "consoleErrors": []
+  },
+  "receipt": {
+    "path": "<original-evidence-root>/after-final-243326b5-full-space-20261009/receipt.json",
+    "sha256": "2f4f712f2caf1adc775cde1e11d6104c969c8f2e17abd446b9d505c87928e3c1",
+    "unchanged": true
+  },
+  "rawLog": {
+    "path": "<original-evidence-root>/after-final-243326b5-full-space-20261009/command.log",
+    "sha256": "81dfd5af1fc439332c8d428ffc55c3358adb95ac9c38314b4c342e94f4b86972",
+    "bytes": 23485
+  },
+  "executionIdentity": {
+    "liveBinding": {
+      "observedUtc": "2026-10-09T15:50:27.198372+00:00",
+      "scope": "Observed actual owned Space Chromium ELF and its live canonical Node parent; launcher stages excluded",
+      "processes": [
+        {
+          "role": "actual owned Space browser",
+          "pid": 139337,
+          "exe": "/usr/lib/chromium/chromium",
+          "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+          "executableMagicHex": "7f454c46",
+          "cmdline": [
+            "/usr/lib/chromium/chromium",
+            "--show-component-extension-options",
+            "--enable-gpu-rasterization",
+            "--no-default-browser-check",
+            "--disable-pings",
+            "--media-router=0",
+            "--enable-remote-extensions",
+            "--load-extension=",
+            "about:blank",
+            "--headless=new",
+            "--disable-gpu",
+            "--no-first-run",
+            "--no-default-browser-check",
+            "--remote-debugging-port=40515",
+            "--window-size=1400,900",
+            "--user-data-dir=<isolated-test-directory>"
+          ],
+          "cwd": "<workspace-path>"
+        },
+        {
+          "role": "actual browser parent Node",
+          "pid": 139319,
+          "exe": "<node-runtime>/bin/node",
+          "sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12",
+          "executableMagicHex": "7f454c46",
+          "cmdline": [
+            "node",
+            "geometry-web/space_model_test.js"
+          ],
+          "cwd": "<workspace-path>"
+        }
+      ]
+    },
+    "errors": [],
+    "excludedLauncherStages": []
+  },
+  "liveBridgeBefore": [
+    {
+      "pid": 136687,
+      "parent": 135341,
+      "exe": "<isolated-test-directory>",
+      "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b"
+    }
+  ],
+  "liveBridgeAfter": [
+    {
+      "pid": 136687,
+      "parent": 135341,
+      "exe": "<isolated-test-directory>",
+      "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b"
+    }
+  ],
+  "sourceSnapshotDirectory": "<original-evidence-root>/after-final-243326b5-full-space-20261009/executed-harness-sources",
+  "wrapperSnapshots": [
+    {
+      "path": "<original-evidence-root>/after-final-243326b5-full-space-20261009/executed-wrapper-sources/run_full_space_identity.py",
+      "sha256": "8b9729cb300347361b2f6bf507e08fd6fab662ec2bc9f0fca107fb2da02dadae"
+    },
+    {
+      "path": "<original-evidence-root>/after-final-243326b5-full-space-20261009/executed-wrapper-sources/space_execution_identity.py",
+      "sha256": "cf842949ffc088fb170a94a8df2bc85046179b19ca44d227392ce5f767b7336b"
+    },
+    {
+      "path": "<original-evidence-root>/after-final-243326b5-full-space-20261009/executed-wrapper-sources/cdp_execution_identity_v2.py",
+      "sha256": "b34554e6f8e643d5f040d6f9b0b5e7bc1619a75b52d3d5d5bdb1f7dc9069a0cc"
+    },
+    {
+      "path": "<original-evidence-root>/after-final-243326b5-full-space-20261009/executed-wrapper-sources/full-launch-adapters/sandbox-launch.cjs",
+      "sha256": "c917611c821f63cea2e5ef3ed1c0ddde128dcf47fde65d1a7ace8ff24fba2b1e"
+    },
+    {
+      "path": "<original-evidence-root>/after-final-243326b5-full-space-20261009/executed-wrapper-sources/full-launch-adapters/sitecustomize.py",
+      "sha256": "e49545951bb661db0169e3d466c96321ee67c5f8a39fac3f7f0ed6954c22a7be"
+    }
+  ],
+  "ownedBrowserPortConnectExAfter": 111,
+  "scopeLimits": [
+    "Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts",
+    "Windows originals remain unreceived",
+    "No force clicks, relaxed assertions, retries or golden updates",
+    "Same executing agent index; not an independent review",
+    "Existing five declared full Space groups only; optional timber-material and timber-source-guards omitted. Standalone Space compares committed group census and makes no CDP golden claim."
+  ]
+}

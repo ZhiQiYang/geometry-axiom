@@ -1,0 +1,71 @@
+--- <workspace-path>
++++ <workspace-path>
+@@ -200,6 +200,26 @@
+     }
+     check('S2 real Tab reaches visible keyboard target '+selector,false,seen);
+   }
++
++  async function compactTabTo(selector) {
++    const seen=[];
++    for(let count=0;count<80;count++) {
++      await page.keyboard.press('Tab');
++      const row=await read(`(()=>{const target=document.querySelector(${JSON.stringify(selector)}),e=document.activeElement,s=e&&getComputedStyle(e),dot=e?.querySelector('.gi-vertex-dot,.gi-anchor-dot'),ds=dot&&getComputedStyle(dot);return {target:e===target,focusVisible:e?.matches(':focus-visible'),outline:s?.outlineStyle,strokeWidth:ds?.strokeWidth,vertex:e?.dataset.giVertex,anchor:e?.dataset.giAnchor};})()`);seen.push(row);
++      if(row.target){check('S2 compact real Tab reaches visible original SVG button '+selector,row.focusVisible&&(row.outline!=='none'||parseFloat(row.strokeWidth)>=3),seen);return;}
++    }
++    check('S2 compact real Tab reaches visible original SVG button '+selector,false,seen);
++  }
++  async function compactKeyboardPair(kind,first,next,key) {
++    const attr=kind==='vertex'?'data-gi-vertex':'data-gi-anchor',selector='['+attr+'="'+first+'"]',nextSelector='['+attr+'="'+next+'"]';
++    await compactTabTo(selector);await page.keyboard.press(key);await settle();
++    check('S2 compact '+kind+' '+key+' keeps focus on replacement matching exact identity',await read(`document.activeElement===document.querySelector(${JSON.stringify(selector)})&&document.activeElement.isConnected&&document.activeElement.getAttribute('aria-pressed')==='true'`));
++    await page.keyboard.press('Tab');
++    check('S2 compact '+kind+' next real Tab continues at exact following native button',await read(`document.activeElement===document.querySelector(${JSON.stringify(nextSelector)})&&document.activeElement.matches(':focus-visible')`));
++    await page.keyboard.press(key==='Enter'?' ':'Enter');await settle();
++    check('S2 compact '+kind+' alternate Enter/Space keeps next exact replacement focused',await read(`document.activeElement===document.querySelector(${JSON.stringify(nextSelector)})&&document.activeElement.getAttribute('aria-pressed')==='true'`));
++  }
++
+   async function pointerSvg(selector) {
+     await disclose(selector);await page.locator(selector).scrollIntoViewIfNeeded();
+     await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(resolve)));
+@@ -300,6 +320,26 @@
+       const summary=titleNames[index]+' · '+expected[0]+'/'+expected[1]+', '+expected[2]+'/'+expected[3];
+       check('S2 compact nine-point pointer retains exact same native preset '+index+' '+width,await read(`document.querySelector(${JSON.stringify(selector)}).getAttribute('aria-pressed')==='true'&&$('giAnchorSummary').textContent===${JSON.stringify(summary)}`)&&(await dump())===baseline);
+     }
++
++    // Added coverage for the adopted compact controls. Source expected to retain
++    // exact real focused vertex/anchor after redraw, matching the full contract.
++    const compactNativeAnchor=structuredClone(created.objects.gridBindings.find(b=>b.id===901).anchor);
++    await compactKeyboardPair('vertex','outer:0','outer:1','Enter');
++    check('S2 compact keyboard outer vertex agrees with exact original dropdown '+width,await read(`$('giVertex').value==='outer:1'`)&&(await dump())===baseline);
++    await compactKeyboardPair('vertex','hole:0:0','hole:0:1',' ');
++    check('S2 compact keyboard hole vertex agrees with exact original dropdown '+width,await read(`$('giVertex').value==='hole:0:1'`)&&(await dump())===baseline);
++    await compactKeyboardPair('anchor','0,0','1,0','Enter');
++    check('S2 compact keyboard anchor changes only draft to same native nine-point fractions '+width,await read(`$('giAnchorSummary').textContent==='上中 · 1/2, 0/1'`)&&equal(await read(`oc.gridBindings.find(b=>b.id===901).anchor`),compactNativeAnchor)&&(await dump())===baseline);
++    const compactDeletion=await read(`(()=>{const button=$('gridObjectDelete'),disclosure=button.closest('details');return {closed:!disclosure?.open,isolated:!!disclosure?.classList.contains('gi-delete-section'),footer:!!disclosure?.closest('.gi-footer'),inActions:!!button.closest('.gi-actions'),nodeCount:document.querySelectorAll('#gridObjectDelete').length};})()`);
++    check('S2 compact original delete node is unique and isolated in closed footer disclosure '+width,compactDeletion.closed&&compactDeletion.isolated&&compactDeletion.footer&&!compactDeletion.inActions&&compactDeletion.nodeCount===1,compactDeletion);
++    await read(`(()=>{const node=$('gridObjectDelete');window.__s2RetiredCompactDelete={node,callback:node.onclick};return true;})()`);
++    const compactDeleteRaw=await raw(),compactDeleteProject=await project();
++    await click('.gi-delete-section > summary');await page.locator('#gridObjectDelete').click();
++    await wait(`!!document.querySelector('dialog.reference-impact[open]')`);
++    check('S2 compact delete uses exactly existing native delete preview before mutation '+width,(await dump())===baseline&&await read(`(()=>{const ds=[...document.querySelectorAll('dialog.reference-impact[open]')];return ds.length===1&&ds[0].querySelector('code')?.textContent.trim()==='delete grid-binding 901'&&!ds[0].querySelector('#impact-confirm').disabled;})()`));
++    await click('dialog.reference-impact[open] .impact-actions button:first-child');await settle();
++    check('S2 compact normal delete preview Cancel preserves exact native project raw and original binding '+width,(await dump())===baseline&&equal(await raw(),compactDeleteRaw)&&equal(await project(),compactDeleteProject)&&equal(await read(`oc.gridBindings.find(b=>b.id===901).anchor`),compactNativeAnchor)&&await read(`!document.querySelector('dialog.reference-impact[open]')&&$('gridObjectDelete').isConnected`));
++
+     // Full workspace opens the saved binding, not the abandoned compact draft.
+     await click('#gridObjectOpen');await wait(`$('infiniteGridWorkspace').open&&$('igVertex').value==='outer:0'`);
+     check('S2 full open restores saved custom fraction after compact-only choices '+width,equal(await fullAnchor(),custom)&&(await dump())===baseline);
+@@ -321,6 +361,14 @@
+     const interrupt=await read(`(async()=>{await ReferenceWorkspace.importBytes(__s2OwnerBBytes,'s2-same-id-owner-b.gcanvas');await renderObjects();return {state:ReferenceWorkspace.getProjectState(),oldConnected:__s2RetiredDiscard.node.isConnected,oldWorkspaceOpen:$('infiniteGridWorkspace').open};})()`);
+     check('S2 real same-ID project import retires old workspace confirmation owner '+width,interrupt.state.id===ownerA.id&&interrupt.state.contextToken!==ownerA.contextToken&&!interrupt.oldConnected&&!interrupt.oldWorkspaceOpen,interrupt);
+     await openBinding();await fill('#igCellI','-5');const bRaw=await raw(),bState=await project(),bWorld=await dump();
++
++    const compactLateRequests=[];const compactLateCapture=request=>{if(request.method()==='POST'&&new globalThis.URL(request.url()).pathname==='/api')compactLateRequests.push(request.postData());};
++    page.on('request',compactLateCapture);
++    const compactLate=await read(`(()=>{const old=__s2RetiredCompactDelete;old.callback.call(old.node);return {oldConnected:old.node.isConnected,newOpen:$('infiniteGridWorkspace').open,newRaw:$('igCellI')?.value,impact:!!document.querySelector('dialog.reference-impact[open]')};})()`);
++    await settle();page.off('request',compactLateCapture);
++    check('S2 retired compact delete original current guard submits zero native API requests '+width,!compactLate.oldConnected&&compactLate.newOpen&&compactLate.newRaw==='-5'&&!compactLate.impact&&compactLateRequests.length===0,compactLateRequests);
++    check('S2 retired compact delete callback leaves exact B project raw and native world untouched '+width,equal(await raw(),bRaw)&&equal(await project(),bState)&&(await dump())===bWorld);
++
+     const stale=await read(`(()=>{const old=__s2RetiredDiscard;old.callback.call(old.node);return {newOpen:$('infiniteGridWorkspace').open,value:$('igCellI')?.value,oldConnected:old.node.isConnected,prompt:!!$('igDiscardConfirmation')};})()`);
+     check('S2 retired real confirmation callback cannot clear new owner raw or close B '+width,stale.newOpen&&stale.value==='-5'&&!stale.oldConnected&&!stale.prompt&&equal(await raw(),bRaw)&&equal(await project(),bState)&&(await dump())===bWorld,stale);
+     await discard(true);check('S2 B remains normally discardable after rejected stale callback '+width,(await raw())===null&&(await dump())===bWorld);

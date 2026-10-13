@@ -1,0 +1,258 @@
+{
+  "gate": "shared-room-display",
+  "auditedAt": "2026-10-08T18:51:17.009269+00:00",
+  "verdict": "bounded-pass",
+  "counts": {
+    "observed": 89,
+    "passed": 89,
+    "failed": 0,
+    "basis": "individual canonical result records"
+  },
+  "commandExitCode": 0,
+  "gateExitCode": 0,
+  "controllerExitCode": 0,
+  "identityVerifiedByReceipt": true,
+  "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+  "mainAtAudit": "5cc1ffa1ee85120eca14258b86b715151cad274f",
+  "dirtyBefore": "",
+  "dirtyAfter": "",
+  "dirtyDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "runtimeBefore": {
+    "schema": "geometry-runtime/1",
+    "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 196578,
+    "session": "ca31be77efb542b89d45d5a88c3b1b45"
+  },
+  "runtimeAfter": {
+    "schema": "geometry-runtime/1",
+    "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 196578,
+    "session": "ca31be77efb542b89d45d5a88c3b1b45"
+  },
+  "nativeConfiguredFiles": {
+    "bridge": {
+      "name": "bridge",
+      "state": "fresh",
+      "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T15:41:17+00:00）",
+      "path": "/tmp/geometry-tests/bridge",
+      "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+      "sha256": "b76a6da590512722d6eda64cfc946392ccc2636f82ab187ef822c1e1606d68b5",
+      "sidecarSha256": "557a324f01866a47f3123f08511b0bc46941c06c45ac804bc01447a65166eaaf"
+    },
+    "model-base": {
+      "name": "model-base",
+      "state": "fresh",
+      "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T15:41:31+00:00）",
+      "path": "/tmp/geometry-tests/model-base",
+      "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+      "sha256": "1b350a7d54aac1d410e87f2a74010515739f3e2b8fc4b8c5216ff413b153662e",
+      "sidecarSha256": "e5dad713990793ed6c7b096bd4c2c6579ac3fbc527f7b9d545421be6550f6673"
+    }
+  },
+  "command": [
+    "node",
+    "tests/test_shared_room_display_browser.js"
+  ],
+  "canonicalSource": "/tmp/geometry-closeout-r2-gates/shared-room-display/results.json",
+  "terminalLogRecord": {
+    "prefix": "",
+    "value": {
+      "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+      "passed": 89,
+      "errors": []
+    }
+  },
+  "limitations": [
+    "Separate per-room crop/opacity/lock with shared source basis; exact /14 root/A/B payload and negative schema/capability/capacity cases.",
+    "Linux Chromium, not physical phone/IME/native OS picker certification.",
+    "The command.log combines child stdout/stderr; separate gate-wrapper stdout/stderr are preserved.",
+    "A native file hash alone is not proof of which live native process was loaded; consult separate live-service binding."
+  ],
+  "canonicalLimitations": null,
+  "rawFiles": [
+    {
+      "source": "/workspace/closure-evidence/gates/shared-room-display/command.log",
+      "public": "shared-room-display/command.log",
+      "bytes": 4483,
+      "sha256": "8415bae473f9e500dd6dba5427249b2598c6368561e5630d840b0964acf067ed"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/shared-room-display/receipt.json",
+      "public": "shared-room-display/receipt.json",
+      "bytes": 5219,
+      "sha256": "803c44534d114e8862afeffd4527a8dd33b3594ae42096b2b3bbb6817dd87789"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/shared-room-display.command.json",
+      "public": "shared-room-display.command.json",
+      "bytes": 1234,
+      "sha256": "b5c717faa8c3ecf7fdf5bb58573e48c93aa4e3eb09619bed1965b96aad43034e"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/shared-room-display.stdout",
+      "public": "shared-room-display.stdout",
+      "bytes": 183,
+      "sha256": "018a20db6be3715067b9bf60a5fc9ce860c796362a5d9afddef88995bac78a3e"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/shared-room-display.stderr",
+      "public": "shared-room-display.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "artifacts": [
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/shared-room-display/before-display-1280.gcanvas",
+      "relative": "before-display-1280.gcanvas",
+      "bytes": 3733,
+      "sha256": "abc0133c2fcad2d6b2f40e0a518c6b4a5fca8541eedcaf66e8be1cb0ff1519b4",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/shared-room-display/before-display-390.gcanvas",
+      "relative": "before-display-390.gcanvas",
+      "bytes": 3733,
+      "sha256": "065f59ccb1b4b6ef1253d8ab0edae62737b0503034e202d8cd0bb9b9c071db0f",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/shared-room-display/capacity-1280.gcanvas",
+      "relative": "capacity-1280.gcanvas",
+      "bytes": 11668,
+      "sha256": "41a0fde2dc310e420f244d077a52e1636729e0c2ae95b8672e3fd60212421b53",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/shared-room-display/capacity-390.gcanvas",
+      "relative": "capacity-390.gcanvas",
+      "bytes": 11674,
+      "sha256": "deb0e19545d977000ea7021658929c28434215cbdd9490da7ef80a5d0253be53",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/shared-room-display/final-display-1280.gcanvas",
+      "relative": "final-display-1280.gcanvas",
+      "bytes": 10585,
+      "sha256": "ff4b98ab8e99624df2d20b3ba56699aed739e7cba539ef0fe43bfb5faa44b53a",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/shared-room-display/final-display-390.gcanvas",
+      "relative": "final-display-390.gcanvas",
+      "bytes": 10585,
+      "sha256": "46c6c4622093cef7b43c8609d57c77eec06033c70536055ad8626471ed4d397c",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/shared-room-display/invalid-display-1280.gcanvas",
+      "relative": "invalid-display-1280.gcanvas",
+      "bytes": 2527,
+      "sha256": "2d524f0a80cb89f70efb47a050e23fc1b17c19563684a4be7bf9018c44c54b42",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/shared-room-display/invalid-display-390.gcanvas",
+      "relative": "invalid-display-390.gcanvas",
+      "bytes": 2535,
+      "sha256": "98101a5b0c356911e74114aac639742211c6fdd837e31b45d578b860ce0012ba",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/shared-room-display/missing-capability-1280.gcanvas",
+      "relative": "missing-capability-1280.gcanvas",
+      "bytes": 2530,
+      "sha256": "e5012b97960db4792757f436f28f4b39c144c004e507ba774bc86c3becc8038b",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/shared-room-display/missing-capability-390.gcanvas",
+      "relative": "missing-capability-390.gcanvas",
+      "bytes": 2533,
+      "sha256": "92989736485de0ffaed61a78b07ba9b6edfa2b6a3b058ea241a8980840d8d81f",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/shared-room-display/results.json",
+      "relative": "results.json",
+      "bytes": 8734,
+      "sha256": "f2a38865c0388fb5209fdcf167b8bf45ac7106856e869fc9ca15cd9f20d590a2",
+      "public": "shared-room-display/artifacts/results.json"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/shared-room-display/room-display-1280.png",
+      "relative": "room-display-1280.png",
+      "bytes": 146571,
+      "sha256": "194311b83616c4546f00f8f641240a863addbff584689d2de7826239a08023b7",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/shared-room-display/room-display-390.png",
+      "relative": "room-display-390.png",
+      "bytes": 73980,
+      "sha256": "8f578bb365191ed0b276219789642207f331d9356776020b248cd2ede664661f",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/shared-room-display/unknown-schema-1280.gcanvas",
+      "relative": "unknown-schema-1280.gcanvas",
+      "bytes": 2533,
+      "sha256": "5ffa9ccb79c8bb9def79419e2c29323a8ad5881885b246f2e212ed851e45a7b8",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/shared-room-display/unknown-schema-390.gcanvas",
+      "relative": "unknown-schema-390.gcanvas",
+      "bytes": 2536,
+      "sha256": "4dd510f31afceff4eac363776593438d1bf477576617d2417aaa5a73e609bc90",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    }
+  ],
+  "sources": [
+    {
+      "source": "tests/test_shared_room_display_browser.js",
+      "sha256": "82d03b8b534b2718371bae652c6dc48b1a9453a379a9d155e6439e0bbbd18cd0",
+      "public": "shared-room-display/sources/tests/test_shared_room_display_browser.js",
+      "binding": "git object at recorded head, copied after execution; clean before/after receipt binds checkout, cannot exclude transient edits"
+    },
+    {
+      "source": "/workspace/closure-evidence/sandbox-launch.cjs",
+      "public": "shared-room-display/sources/launch-adapters/sandbox-launch.cjs",
+      "bytes": 912,
+      "sha256": "c917611c821f63cea2e5ef3ed1c0ddde128dcf47fde65d1a7ace8ff24fba2b1e",
+      "binding": "post-run adapter copy; launch policy only, no action/oracle changes"
+    },
+    {
+      "source": "/workspace/closure-evidence/python-launch/sitecustomize.py",
+      "public": "shared-room-display/sources/launch-adapters/sitecustomize.py",
+      "bytes": 748,
+      "sha256": "e49545951bb661db0169e3d466c96321ee67c5f8a39fac3f7f0ed6954c22a7be",
+      "binding": "post-run adapter copy; launch policy only, no action/oracle changes"
+    },
+    {
+      "source": "/workspace/geometry-axiom/tests/release_gate.py",
+      "public": "shared-room-display/sources/tests/release_gate.py",
+      "bytes": 17583,
+      "sha256": "ad460ddbdd52c48995188079339bc224e7f39b3d01e3147091a858ba8f541389",
+      "binding": "post-run clean tested-head release identity wrapper"
+    }
+  ]
+}

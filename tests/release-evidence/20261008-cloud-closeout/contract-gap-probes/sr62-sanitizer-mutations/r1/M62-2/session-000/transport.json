@@ -1,0 +1,254 @@
+{
+  "test": "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_native_save_requires_capability_and_load_failures_preserve_live_world",
+  "binarySha256": "273da63982b7bcb382406318046982ef0204eb1ffb840dd76920da34857834dd",
+  "session": 0,
+  "commands": [
+    {
+      "command": "line reset",
+      "response": {
+        "ok": true
+      }
+    },
+    {
+      "command": "line grid-system 0 name-hex 6f7261636c652030 main-along none u repeat 0 600 v repeat 0 400",
+      "response": {
+        "ok": true
+      }
+    },
+    {
+      "command": "line grid-source-rule 0 create name-hex 6f7261636c652072756c65 selector all-cells divide 3 2",
+      "response": {
+        "ok": false,
+        "error": "line 3: I8a: impact preview required; inspect preview, then confirm token (World unchanged)",
+        "preview": {
+          "token": 1,
+          "valid": true,
+          "command": "grid-source-rule 0 create name-hex 6f7261636c652072756c65 selector all-cells divide 3 2",
+          "timbers": [],
+          "guides": [],
+          "grids": [],
+          "datums": [],
+          "gridSystems": [
+            {
+              "id": 0,
+              "before": {
+                "kind": "grid-system",
+                "id": 0,
+                "name": "oracle 0",
+                "mode": "infinite",
+                "mainAlong": null,
+                "uDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 600
+                },
+                "vDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 400
+                },
+                "nextRuleKey": 1,
+                "rules": [],
+                "applications": [],
+                "bindings": [],
+                "cx": 0,
+                "cy": 0,
+                "hasPos": false
+              },
+              "after": {
+                "kind": "grid-system",
+                "id": 0,
+                "name": "oracle 0",
+                "mode": "infinite",
+                "mainAlong": null,
+                "uDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 600
+                },
+                "vDefinition": {
+                  "source": "repeat",
+                  "phase": 0,
+                  "step": 400
+                },
+                "nextRuleKey": 2,
+                "rules": [
+                  {
+                    "ruleKey": 1,
+                    "name": "oracle rule",
+                    "selector": {
+                      "kind": "all-cells"
+                    },
+                    "divisions": [
+                      3,
+                      2
+                    ]
+                  }
+                ],
+                "applications": [],
+                "bindings": [],
+                "cx": 0,
+                "cy": 0,
+                "hasPos": false
+              }
+            }
+          ],
+          "gridBindings": [],
+          "boundaries": [],
+          "assembly": {
+            "before": {
+              "capabilities": [
+                "assembly-rule-authoring/1",
+                "assembly-timber-generation/1"
+              ],
+              "rules": [],
+              "bindings": [],
+              "instances": []
+            },
+            "after": {
+              "capabilities": [
+                "assembly-rule-authoring/1",
+                "assembly-timber-generation/1"
+              ],
+              "rules": [],
+              "bindings": [],
+              "instances": []
+            }
+          },
+          "sectionProfiles": {
+            "before": {
+              "profiles": [],
+              "members": [],
+              "runs": []
+            },
+            "after": {
+              "profiles": [],
+              "members": [],
+              "runs": []
+            },
+            "warnings": [],
+            "diagnosticsComplete": true,
+            "violations": []
+          },
+          "violations": []
+        }
+      }
+    },
+    {
+      "command": "line confirm 1",
+      "response": {
+        "ok": true
+      }
+    },
+    {
+      "command": "dump",
+      "response": {
+        "ok": true,
+        "text": "requires grid-subdivision-rules/1\ngrid-system 0 name-hex 6f7261636c652030 main-along none u repeat 0 600 v repeat 0 400\ngrid-source-rule-highwater 0 next 2\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [
+          "grid-subdivision-rules/1"
+        ],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 13,
+        "definition_sha256": "a0fbe49bd07942c761a965f6265210e71b3a530cb6070bcce613fb956bbf4fdd"
+      }
+    },
+    {
+      "command": "objects",
+      "response": {
+        "ok": true,
+        "faces": [],
+        "spaces": [],
+        "columns": [],
+        "beams": [],
+        "gridSystems": [
+          {
+            "kind": "grid-system",
+            "id": 0,
+            "name": "oracle 0",
+            "mode": "infinite",
+            "mainAlong": null,
+            "uDefinition": {
+              "source": "repeat",
+              "phase": 0,
+              "step": 600
+            },
+            "vDefinition": {
+              "source": "repeat",
+              "phase": 0,
+              "step": 400
+            },
+            "nextRuleKey": 2,
+            "rules": [
+              {
+                "ruleKey": 1,
+                "name": "oracle rule",
+                "selector": {
+                  "kind": "all-cells"
+                },
+                "divisions": [
+                  3,
+                  2
+                ]
+              }
+            ],
+            "applications": [],
+            "bindings": [],
+            "cx": 0,
+            "cy": 0,
+            "hasPos": false
+          }
+        ],
+        "parameters": [],
+        "assemblyRules": [],
+        "assemblyBindings": [],
+        "parameterUses": [],
+        "gridBindings": [],
+        "timbers": []
+      }
+    },
+    {
+      "command": "references",
+      "response": {
+        "ok": true,
+        "sourceFingerprint": "a0fbe49bd07942c761a965f6265210e71b3a530cb6070bcce613fb956bbf4fdd",
+        "guides": [],
+        "grids": [],
+        "timbers": [],
+        "timberSupports": {
+          "schema": "native-timber-supports/1",
+          "sourceFingerprint": "a0fbe49bd07942c761a965f6265210e71b3a530cb6070bcce613fb956bbf4fdd",
+          "entries": []
+        },
+        "specs": [],
+        "datums": [],
+        "engineeringSources": [],
+        "assembly": {
+          "capabilities": [
+            "assembly-rule-authoring/1",
+            "assembly-timber-generation/1"
+          ],
+          "rules": [],
+          "bindings": [],
+          "instances": []
+        }
+      }
+    }
+  ],
+  "cleanupErrors": [],
+  "pid": 262618,
+  "exitCode": 0,
+  "stderrSha256": "87d6dbbd64b29aee9eef26b3fcce67b7c660e3e23d271ae344173125140e69f7",
+  "sanitizerDiagnostic": false,
+  "unexpectedStdoutTail": false
+}

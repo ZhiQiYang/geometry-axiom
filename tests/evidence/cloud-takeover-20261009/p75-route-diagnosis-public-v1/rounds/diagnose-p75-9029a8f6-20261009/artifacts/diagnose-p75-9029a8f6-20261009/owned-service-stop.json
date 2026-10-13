@@ -1,0 +1,28 @@
+{
+  "atUtc": "2026-10-09T16:18:29.491085+00:00",
+  "ownedPort": 19191,
+  "before": [
+    {
+      "pid": 175405,
+      "exe": "<isolated-test-directory>",
+      "sha256": "922f55b20f8bf8c4b362df4eb1c2432da744e1eb4e3eba64b6ea8d7c90c39e3b",
+      "cmdline": [
+        "<isolated-test-directory>"
+      ]
+    },
+    {
+      "pid": 175043,
+      "exe": "<python-runtime>/bin/python3.12",
+      "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+      "cmdline": [
+        "<python-runtime>/bin/python3",
+        "-u",
+        "<baseline-repository-root>/geometry-web/serve.py",
+        "19191"
+      ]
+    }
+  ],
+  "signal": "SIGTERM",
+  "afterPortConnectEx": 111,
+  "otherServicesTouched": false
+}

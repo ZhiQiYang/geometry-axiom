@@ -1,14 +1,15 @@
 /* #77: one current drawing basis per source plane; approved original receipts
  * remain historical evidence, never editable geometry or current acceptance. */
 (function (root, factory) {
-  const api = factory();
+  const api = factory(typeof module === 'object' && module.exports ? require('./reference-display.js') : root.GeometryReferenceDisplay);
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.GeometrySourcePlane = api;
-})(typeof globalThis !== "undefined" ? globalThis : this, function () {
+})(typeof globalThis !== "undefined" ? globalThis : this, function (Display) {
   "use strict";
   const MAX_PLANES = 256, MAX_ROOMS = 10000;
   const SCHEMA = "source-rooms/1", CAPABILITY = "source-room-collection/1";
   const HISTORY_SCHEMA = "source-rooms/2", HISTORY_CAPABILITY = "source-room-history/1", MAX_HISTORY = 10000;
+  const DISPLAY_SCHEMA = "source-rooms/3", DISPLAY_CAPABILITY = "source-room-display/1";
   const copy = value => structuredClone(value);
   const fail = message => { throw new Error(message); };
   const object = value => !!value && typeof value === "object" && !Array.isArray(value);
@@ -44,8 +45,9 @@
     return p;
   }
   function validate(state, sources) {
-    const history = state?.schema === HISTORY_SCHEMA;
-    if (!keys(state, ["schema", "planes", "collections", "rooms", ...(history ? ["legacyHistory"] : [])]) || ![SCHEMA,HISTORY_SCHEMA].includes(state.schema) ||
+    const display = state?.schema === DISPLAY_SCHEMA;
+    const history = state?.schema === HISTORY_SCHEMA || display && Object.hasOwn(state,'legacyHistory');
+    if (!keys(state, ["schema", "planes", "collections", "rooms", ...(history ? ["legacyHistory"] : [])]) || ![SCHEMA,HISTORY_SCHEMA,DISPLAY_SCHEMA].includes(state.schema) ||
         !Array.isArray(state.planes) || state.planes.length > MAX_PLANES || !Array.isArray(state.collections) ||
         state.collections.length > MAX_PLANES || !Array.isArray(state.rooms) || state.rooms.length > MAX_ROOMS) fail("房間來源附件版本或容量不支援。");
     const planes = new Map(), sourcePages = new Set(), collections = new Set(), rooms = new Set(), refs = new Set(), memberships = new Set();
@@ -73,17 +75,18 @@
     }
     for (const room of state.rooms) {
       const ref = room.boundaryRef;
-      if (!keys(room, ["id", "name", "boundaryRef", "acceptedBasisRevision", "reviewState"]) || !id(room.id) || rooms.has(room.id) ||
+      if (!keys(room, ["id", "name", "boundaryRef", "acceptedBasisRevision", "reviewState", ...(display ? ['display'] : [])]) || !id(room.id) || rooms.has(room.id) ||
           typeof room.name !== "string" || !room.name.trim() || room.name.length > 200 ||
           !keys(ref, ["kind", "id", "associationPin"]) || ref.kind !== "boundary" || !uint(ref.id) || ref.id === 0 || !hash(ref.associationPin) ||
           !Number.isSafeInteger(room.acceptedBasisRevision) || room.acceptedBasisRevision < 1 ||
           !["confirmed", "needs-review", "needs-reassociation"].includes(room.reviewState) || !memberships.has(room.id) || refs.has(ref.id)) fail("房間名稱或原生邊界關聯不合法。");
       const collection = state.collections.find(c => c.roomIds.includes(room.id)), plane = planes.get(collection.planeId);
+      if (display) Display.validate(room.display,plane.pageSize);
       if (room.acceptedBasisRevision > plane.basisRevision || (room.reviewState === "confirmed" && room.acceptedBasisRevision !== plane.basisRevision)) fail("房間核對基準不一致。");
       rooms.add(room.id); refs.add(ref.id);
     }
     if ([...memberships].some(rid => !rooms.has(rid))) fail("房間集合引用不存在的房間。");
-    if (history) validateLegacyHistory(state.legacyHistory, planes);
+    if (history) {validateLegacyHistory(state.legacyHistory, planes);if(display && !state.legacyHistory.length)fail('空的來源歷史欄位須省略。');}
     return state;
   }
   function validateSourceRecords(records) {
@@ -168,11 +171,32 @@
     return copy(validatePlane(p));
   }
   // Derived renderer data is disposable, and is never serialized as a second basis.
-  function materialize(plane, view = {}) {
+  function defaultDisplay(plane) {return {crop:[0,0,...plane.pageSize],opacity:.5,locked:false};}
+  function displayForRoom(state,roomId) {
+    const room=state.rooms.find(r=>r.id===roomId),plane=planeForRoom(state,roomId);
+    if(!room||!plane)fail('房間來源不存在。');
+    return copy(Display.validate(state.schema===DISPLAY_SCHEMA?room.display:defaultDisplay(plane),plane.pageSize));
+  }
+  function upgradeDisplay(state) {
+    const next=copy(validate(state));if(next.schema===DISPLAY_SCHEMA)return next;
+    const planes=new Map(next.planes.map(p=>[p.id,p])),membership=new Map();
+    for(const c of next.collections)for(const id of c.roomIds)membership.set(id,planes.get(c.planeId));
+    for(const room of next.rooms)room.display=defaultDisplay(membership.get(room.id));
+    next.schema=DISPLAY_SCHEMA;if(next.legacyHistory?.length===0)delete next.legacyHistory;
+    return validate(next);
+  }
+  function changeDisplay(state,roomId,display) {
+    validate(state);const plane=planeForRoom(state,roomId);if(!plane)fail('房間來源不存在。');
+    Display.validate(display,plane.pageSize);
+    if(JSON.stringify(displayForRoom(state,roomId))===JSON.stringify(display))return copy(state);
+    const next=upgradeDisplay(state);next.rooms.find(r=>r.id===roomId).display=copy(display);return validate(next);
+  }
+  function materialize(plane, view = {}, display = defaultDisplay(plane)) {
     validatePlane(plane);
+    Display.validate(display,plane.pageSize);
     return {id: "plane-" + plane.id, sourceId: plane.sourceId, page: plane.page, imgW: plane.pageSize[0], imgH: plane.pageSize[1],
-      crop: [0, 0, ...plane.pageSize], x: plane.alignment.x, y: plane.alignment.y, mmPerPx: plane.alignment.mmPerPx,
-      rot: plane.alignment.rotation, calibration: copy(plane.calibration), reviewRequired: false, records: [], opacity: .5, locked: false,
+      ...copy(display), x: plane.alignment.x, y: plane.alignment.y, mmPerPx: plane.alignment.mmPerPx,
+      rot: plane.alignment.rotation, calibration: copy(plane.calibration), reviewRequired: false, records: [],
       ...(view.src ? {src: view.src} : {})};
   }
   function changeBasis(state, planeId, calibration, alignment) {
@@ -205,5 +229,5 @@
     validate(state);
     return {sourceIds: sourceIds(state), boundaries: state.rooms.map(room => ({...copy(room.boundaryRef), reviewState: room.reviewState}))};
   }
-  return {SCHEMA, CAPABILITY, HISTORY_SCHEMA, HISTORY_CAPABILITY, MAX_HISTORY, validateSourceRecords, validateReconstructionReviews, MAX_PLANES, MAX_ROOMS, empty, validatePlane, validate, validateNativeRefs, validateNativePins, references, fromPage, materialize, changeBasis, planeForRoom, retireBoundary, boundaryChanged, unknownHistory, sourceIds};
+  return {Display,SCHEMA, CAPABILITY, HISTORY_SCHEMA, HISTORY_CAPABILITY, DISPLAY_SCHEMA, DISPLAY_CAPABILITY,defaultDisplay,displayForRoom,upgradeDisplay,changeDisplay, MAX_HISTORY, validateSourceRecords, validateReconstructionReviews, MAX_PLANES, MAX_ROOMS, empty, validatePlane, validate, validateNativeRefs, validateNativePins, references, fromPage, materialize, changeBasis, planeForRoom, retireBoundary, boundaryChanged, unknownHistory, sourceIds};
 });

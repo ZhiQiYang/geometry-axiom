@@ -1,0 +1,55 @@
+{
+  "schema": "geometry-committed-source-binding/1",
+  "checkedUTC": "2026-10-09T17:06:18.941681+00:00",
+  "executor": {
+    "path": "<python-runtime>/bin/python",
+    "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+    "command": [
+      "python",
+      "-B",
+      "<workspace-path>"
+    ],
+    "scriptSHA256": "16784f5f4e0cbabed13e2e3280aff87ee914d358a0308471b055c75288376140"
+  },
+  "before": {
+    "head": "bb7e6302d4d909766521840ca564fbe1aaf57a27",
+    "dirty": ""
+  },
+  "after": {
+    "head": "bb7e6302d4d909766521840ca564fbe1aaf57a27",
+    "dirty": ""
+  },
+  "checks": {
+    "cleanFullSHA": true,
+    "appExactReviewedCandidate": true,
+    "captionExactCommentOnlyCopy": true,
+    "formalSixOriginalBytes": true,
+    "goldenOriginalBytes": true,
+    "floorOriginalBytes": true,
+    "unchangedBeforeAfter": true
+  },
+  "passed": 7,
+  "failed": 0,
+  "sources": {
+    "geometry-web/app.js": "1199a8e6524e679ca7fb35da88fbff3f9e90bb8acc095b296300202d826d8fbd",
+    "geometry-web/app.css": "028c423c50a766f740144d1c883a16b997be5f00ef9a3d35548a5f59f1ec82fc",
+    "geometry-web/parameters.css": "425756b84d24302a26709ada8c09bdf0e2c1fe6975c0b03a0d5de96e717c5e2a",
+    "tests/issue123_caption_browser.cjs": "01355f60d7a7a817f99a58ab088cf1a4609c020d94ba93fc0c325392b6754252",
+    "tests/issue123_adopted_slices_browser.cjs": "6efba5412916a31df431c557a7893019f186bf8adc3fa15aa059098367e272d1",
+    "geometry-web/cdp_sections.golden.json": "e3e742ec3d731e701afc22149efa9bc11cf6506340715176175e594c94778bd9",
+    "geometry-web/cdp_floor.js": "01a45d7881d583a7d328e579b457c959baa2b8d3570c3e3fbe66e8781c5f679e"
+  },
+  "rawLog": "<workspace-path>",
+  "rawLogSHA256": "feceac47726184c4acbbbe5320de2072998f7258d3eb521b14eb00afa58cca93",
+  "staticProof": {
+    "path": "<workspace-path>",
+    "sha256": "fa58395655c554a3b8339d857a7d658dd31b07dbfae2937e2fb7626b47fa4057"
+  },
+  "acceptanceClaim": false,
+  "browserExecuted": false,
+  "productModified": false,
+  "limits": [
+    "Only source identity is verified; future actual caption/full/SIX receipts must remain separately bound to bb7",
+    "102ff historical failures and old198/0 results are not rebound"
+  ]
+}

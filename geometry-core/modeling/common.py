@@ -7,6 +7,7 @@ import json
 ENGINEERING_CAPABILITY = "engineering-spec/1"
 PARAMETER_CAPABILITY = "parameters/1"
 GRID_SUBDIVISION_CAPABILITY = "grid-subdivision-rules/1"
+SECTION_PROFILE_CAPABILITY = "section-profile/1"
 
 
 def scene_required_capabilities(scene):
@@ -32,6 +33,8 @@ def scene_required_capabilities(scene):
             result.add("assembly-timber-generation/1")
         if tokens[0] == "assembly":
             result.add("assembly-rule-authoring/1")
+        if tokens[0] == "section-profile":
+            result.add(SECTION_PROFILE_CAPABILITY)
         if tokens[0] == "parameters" or "param:" in " ".join(tokens):
             result.add(PARAMETER_CAPABILITY)
     return result

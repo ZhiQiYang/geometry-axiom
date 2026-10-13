@@ -29,11 +29,24 @@ def atomic_write(path, data):
 
 def obj_bytes(package):
     """Exact integer XYZ geometry in millimetres; the JSON package retains semantics."""
-    lines = ["# geometry-axiom orthogonal-model/1", "# units: millimetres; right handed; up: +Z",
+    objects = package["derived"]["objects"]
+    spaces = set()
+    for item in objects:
+        profile = item.get("section_profile", {})
+        spaces.add(("local", profile["run_id"]) if profile.get("coordinate_space") == "local" else ("world",))
+    if len(spaces) > 1:
+        raise ModelError("UNSUPPORTED", "OBJ_COORDINATE_SPACE", "I48", "OBJ cannot combine independent local and world frames; export the JSON package or select one frame")
+    coordinate = ("# coordinates: local (u,v,w) of profile-run " + str(next(iter(spaces))[1]) + "; no world position or world up"
+                  if spaces and next(iter(spaces))[0] == "local" else "# coordinates: world XYZ; up: +Z")
+    lines = ["# geometry-axiom orthogonal-model/1", "# units: millimetres; right handed", coordinate,
              "# Definitions, references and partial status are in the companion JSON package.",
              "# status: " + package["derived"]["status"]]
     offset = 1
-    for index, item in enumerate(package["derived"]["objects"]):
+    for index, item in enumerate(objects):
+        if "section_profile" in item:
+            profile = item["section_profile"]
+            lines.append("# profile-run %s; member %s; kind %s; material-volume-mm3 %s" %
+                         (profile["run_id"], profile["member_id"], profile["kind"], profile["material_volume_mm3"]))
         lines.append("o model_" + str(index))
         for xyz in item["vertices_mm"]:
             lines.append("v " + " ".join(str(n) for n in xyz))

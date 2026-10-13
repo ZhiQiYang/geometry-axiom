@@ -1,16 +1,336 @@
 # BACKLOG — current_geometry.c 工單庫
 
+## 2026-10-09 帳本對齊與收尾拆單（GEO-245～GEO-259）
+
+- **性質**：本節與下列各處「2026-10-09 狀態註記」由帳本對齊工作加入，基底為 PR #169 head `a7bff8f`。BACKLOG 自 2026-10-05 起沒有進帳；其間 PR #129～#179 的狀態、GEO-242 重號、舊工單統計與 2026-09-20 稽核表都與 git／GitHub 實況脫節。**原歷史文字一律保留**，只在原處加註或修正標題的狀態標記；每條狀態修正都標 PR 編號與 `gh pr view` 查得的 mergedAt（2026-10-09 查）；標「推論」者沒有直接證據。
+- **實況摘要**：main = `5cc1ffa`。整合候選鏈 #162 ⊂ #169 ⊂ #176（#176 的 base 是 `codex/final-release-closeout-20261008`），其後 Codex 雲端 agent 另有 #177、#178、#179。GitHub Actions 自 2026-10-03 起被帳號計費阻擋（七個 job 零步驟即失敗，不是產品測試失敗）；依決策佇列 2026-10-09 決策 B，以本機 WSL 七個 CI 等價 job 全綠作合併裁判。#169 與其祖先 PR（#134 #136 #137 #143 #144 #146 #147 #148 #152 #153 #154 #155 #156 #158 #159 #160 #161 #162 #165 #167 #168）的 head 皆為 `a7bff8f` 的祖先；#129、#141、#157、#170～#179 不是。
+- **決策**：2026-10-09 收尾拍板 A–L(L 為休息期間授權)見 決策佇列.md「已拍板」區最上方；本節各新工單的依據都在那裡。
+
+### 狀態修正一覽（PR → mergedAt）
+
+| 工單／段落 | 原標記 | 2026-10-09 現況 | 依據 |
+|---|---|---|---|
+| Issue #54 單房輪廓候選 | PR #63 待審；PR #72 草稿、未合併 | 已合併 | PR #63 c87be11（2026-10-03T09:44Z）、PR #72 0f3c1a6（2026-10-03T18:38Z） |
+| #77 saved-cloud owner 接續 | WIP | PR #114 已合併 | PR #114 861b65e（2026-10-04T15:15Z）、PR #102 d1a161f（2026-10-04T05:20Z）、PR #115 e09d78d（2026-10-04T11:08Z） |
+| #24 整合驗收（本段「#24 PR97待root審查」） | PR97 待 root 審查 | PR #97 已合併 | PR #97 8d08f1a（2026-10-04T04:14Z）；#85 的 PR #98 1075058（2026-10-04T03:46Z） |
+| F4a 保存模型雙向定位（#47） | 交 draft PR，由 root 獨立驗收後決定合併 | PR #96 已合併 | PR #96 1c83b5e（2026-10-04T03:04Z） |
+| GEO-242 底圖畫布與選房間性能 | 空白鍵平移「尚未修」；整合版「未重跑無 filter full Chromium」 | 性能修正已進 main；空白鍵平移守門修復在 PR #153（尚未進 main）；之後已有全綠完整 CDP | bf10b82、7263b83 皆為 origin/main 祖先（7263b83 屬 PR #74，92c1ce5，2026-10-03T20:01Z）；PR #153 head 為 PR #169 的祖先（git merge-base --is-ancestor，2026-10-09）；PR #133 d6b4b45（2026-10-05T10:01Z）正文記錄完整 CDP 2054 項／0 失敗／83 段 golden 相符 |
+| GEO-241 單一保存模型角材快照料單（#47） | 實作中；Draft PR70 | PR #70 已合併 | PR #70 d5ea531（2026-10-03T17:40Z） |
+| GEO-239 固定規則來源守門 | 精確結果另附 PR | PR #68 已合併 | PR #68 f52ed1d（2026-10-03T13:58Z） |
+| GEO-237 Runtime 公開靜態來源閉包 | 最終整合 head 完整驗證另附 PR | PR #66 已合併 | PR #66 9e252ae（2026-10-03T12:12Z） |
+| GEO-233 確認期間參數輸入保全 | 內文「PR56尚未合併」（標題寫已合併 PR56） | PR #56 已合併，標題正確；內文為撰寫當時 | PR #56 693a1c8（2026-10-03T11:21Z） |
+| GEO-235 全量 CDP Promise 保全 | 另回填 PR，未完成不得宣稱 | 修正 c1bc566 已隨 PR #56 進 main | c1bc566 為 origin/main 祖先；PR #56 693a1c8（2026-10-03T11:21Z） |
+| #116 面內游標 v2 與 B 右鍵選單 | 草稿 PR #125 交 dot；合併 gate 受阻 | PR #125 已合併 | PR #125 a4caf16（2026-10-04T23:51Z） |
+| GEO-232 畫布繪圖、hover 與版本檢查效能 | 完整畫布回歸仍未取得全綠 | PR #64 已合併；之後的整合版已有全綠完整 CDP | PR #64 d40dee0（2026-10-03T10:33Z）；本檔 GEO-233 記錄 b064646 無 filter Chromium 1809／0／0 略過、76 段 golden 全等 |
+| ISSUE-45 單一網格原始輸入保存／續編 | 實作驗證中 | PR #104／#111 已合併 | PR #104 b0031a0（2026-10-04T08:30Z）、PR #111 f1b9f9d（2026-10-04T08:53Z） |
+| ISSUE-77 來源歷史保全與多房間共享基準 | 接線驗證中 | PR #114 已合併 | PR #114 861b65e（2026-10-04T15:15Z）、PR #102 d1a161f（2026-10-04T05:20Z） |
+| ISSUE-44 明選現行來源更新同一模型 | 接線驗證中 | PR #99／#113 已合併 | PR #99 170f8f5（2026-10-04T05:19Z）、PR #113 b972daf（2026-10-04T10:10Z） |
+| GEO-243 一般啟動入口補齊空間預覽元件 | 驗證中 | PR #121 已合併 | PR #121 07d5dde（2026-10-04T13:51Z） |
+| GEO-244 描面畫布與空間俯視方向 | `cdp_test.js` 全量止於 P73：1407 過、1 失敗，原因「尚未判定」 | 已被後續完整 CDP 取代 | PR #121 07d5dde（2026-10-04T13:51Z）已合併；PR #133 d6b4b45（2026-10-05T10:01Z）正文記錄完整 CDP 2054 項／0 失敗／83 段 golden 相符 |
+| #61 第一正式來源規則 UI 切片 | PR133，開發中 | PR #133 已合併 | PR #133 d6b4b45（2026-10-05T10:01Z） |
+| #61 第二正式來源規則 UI 切片 | 開發中 | 程式在 PR #134（slice 2）與 PR #160（焦點），兩者 head 皆為 PR #169 的祖先，#169 合併後才進 main | git merge-base --is-ancestor（2026-10-09 查）；二者皆仍是 draft |
+| CONT-20261003 的「Q31–Q36 全部待採納」 | 全部待採納 | 2026-10-04 已採納八項明寫建議（非整包） | 決策佇列.md 的 CONT-8；geometry-guide/IMPLEMENTATION-QUEUE-20261004.md |
+
+### 舊工單 GEO-001～083 現況（對照 2026-09-20 稽核表）
+
+| 工單 | 稽核表（2026-09-20） | 2026-10-09 現況 | 依據 |
+|---|---|---|---|
+| GEO-014、020、041、043 | 未完成 | 已做 | commit a3d5a69（2026-09-21「GEO-014／020／041／043：四張舊工單」；origin/main 祖先） |
+| GEO-015 | 未完成 | 已做 | `main()` 對未知參數報「不認得的參數」（`current_geometry.c` 約 :12779） |
+| GEO-016 | 未完成 | 已做 | `--bench` 以 `strtol` 驗 1..1000000（約 :12762） |
+| GEO-031 | 未完成 | 已做 | `gdi_color` 驗 `#` 與 6 位十六進位（約 :4194） |
+| GEO-032 | 未完成 | 已做 | `bench_paint` 各失敗路徑釋放 DC／位圖（約 :6036 起） |
+| GEO-036 | 未完成 | 已做 | `gdi_move_control` 將負值夾為 0（約 :4936） |
+| GEO-053 | 未完成 | 已做 | 檔頭「目前整合版」清單已更新（`current_geometry.c` 第 15 行起） |
+| GEO-062 | 未完成 | 已做 | `ferror` 檢查（約 :3562） |
+| GEO-081 | 未完成 | 已做 | `tests/fuzz_scene.py` 存在（GEO-169） |
+| GEO-024 | 未完成 | 實質作廢 | 見 GEO-024 處註記；`ANCHOR_AT_GUIDES` 死碼殘留未清 |
+| GEO-090～093、095、097～101 | 無完成標記 | 已做 | 見各標題；功能在原始碼 |
+| GEO-094 | — | 未做（M41～M50 未建立；R20 重驗是否另有追蹤未查） | `tests/mutants_results.json` 只有 M01～M40、M51～M58（2026-10-09 以該檔核對） |
+| GEO-033、042、063、074、076、077、082、083、103、104（另 GEO-034 無法判定） | 未完成 | 仍未開始（推論） | 盤點時 `g_edit_orig_proc` 仍為全域、`StyleSpec.text_mm` 仍在、無 `include` 指令等；GEO-103／104 另見 GEO-229 的明列不實作 |
+
+上表除最後一列外，皆於 2026-10-09 以 git／grep／讀檔抽驗，未逐張重跑測試；最後一列（含 GEO-103／104）依盤點，屬推論，未重核。
+
+### 重號說明（GEO-242）
+
+同檔曾有兩張 GEO-242：「底圖畫布與選房間的操作性能」（2026-10-04）與「PDF 人工描繪原始線段吸附」（2026-10-03）。保留第一張，第二張改為 GEO-245（見該標題處註記）。`git grep GEO-242`（2026-10-09，基底 `a7bff8f`）在 BACKLOG 以外有 5 個檔含此字串，其中只有 `geometry-web/docs/evidence/qa-acceptance-d6b4b45-20261005/findings/known-issues.md` 的第 83 行（「GEO-242 吸附」）與第 135 行（「GEO-242(PDF 人工描繪吸附)」）指的是第二張；DOM-CONTRACT.md、PROJECT-REVIEW-QUEUE-20261004.md、同目錄 README.md／T3-report.md 及 known-issues.md 其餘各行指性能工單。**這兩行未改**（本次只准改兩本帳），需要時另案對到 GEO-245。
+
+### 新增工單（GEO 號自現有最大號 GEO-244 之後連續配發；2026-10-09 查過所有本地／遠端分支，沒有任何分支使用 GEO-245 以上）
+
+| 工單 | 內容 | 狀態 | 依據 |
+|---|---|---|---|
+| GEO-245 | PDF 人工描繪原始線段吸附（改號，非新工作） | 已完成（PR #74／#76） | 本節「重號說明」 |
+| GEO-246 | Q29 弱釘訊息具體化 | 未開始 | 決策佇列 Q29 尾註 |
+| GEO-247 | #48 不在採納範圍的驗收項 | 未開始；關 #48 後追蹤 | 決策 J |
+| GEO-248 | #59 不在採納範圍的驗收項 | 未開始；關 #59 後追蹤 | 決策 J |
+| GEO-249 | #60 不在採納範圍／未見證據的驗收項 | 未開始；關 #60 後追蹤 | 決策 J |
+| GEO-250 | 實機驗收清單（只有使用者能做） | 待使用者 | 決策 B、G；各工單的 A24／SR24 尾巴 |
+| GEO-251 | #47 F4b 裁切／餘料／採購＋料單去重 | 待契約提案 | 決策 K-1 |
+| GEO-252 | 組合擴充（#45／#25／#87／非空專案匯入 ID 碰撞） | 待契約提案 | 決策 K-2 |
+| GEO-253 | 識別與追溯擴充（#44／#48） | 待契約提案 | 決策 K-3 |
+| GEO-254 | 介面擴充（#116 其餘） | 待契約提案 | 決策 K-4 |
+| GEO-255 | PF-1～PF-6 面材鋪滿實作 | 待 PF-0 寫入公理層 | 決策 F、issue #128 |
+| GEO-256 | Q38 斷面拉伸剩餘切片 | 待 #169 合併；剩餘項見內文 | 決策佇列 Q38 |
+| GEO-257 | 核心矩形-環包含判定的註解宣稱錯誤 | 未開始 | 2026-10-10 Q38 對抗審查 |
+| GEO-258 | `parameter_remove` 不檢查引用，違反 I38／I39 | 未開始 | 2026-10-10 K3 提案第 3、4 輪對抗審查 |
+| GEO-259 | Resume 剩餘範圍（當機／重載／跨 session） | 未開始 | 2026-10-10 合併 #180；決策佇列 2026-10-10 拍板 |
+
+### GEO-246 — Q29 弱釘訊息具體化（2026-10-09，未開始）
+
+- **來源**：決策佇列 Q29（GEO-225）尾註——三個 grid 契約測試的 `reject()` 有 32 處「弱釘」：bridge 對同一測試的多個成因只回同一句，測試只能釘到那一句；要提高辨識度，需產品碼讓拒絕訊息帶具體欄位。當時註明「屬後續工單，非本次決定」，現開單。
+- **範圍**：`current_geometry.c`（拒絕理由字串的產生處）與對應 bridge 回傳；讓每個拒絕訊息指名具體欄位／參數與所違反的條號，再把 32 處弱釘改釘具體成因。**不改**任何接受／拒絕的判定、公理或其他輸出格式。
+- **代價與守門**：動 `current_geometry.c` 會讓全部原生二進位指紋失效，須整批重編一次（Windows 的 Smart App Control 可能擋新編 exe，改在 WSL 驗，不改安全設定），變異測試結果也要重跑；`current_geometry.c` 是統一 CRLF，一律以二進位模式讀寫。
+- **驗收（草案）**：32 處各自釘到具體欄位訊息；把訊息改回泛稱必須使對應測試轉紅（突變測試，失敗訊息指得出病因）；`tests/run_all.py` 全綠、`tests/mutate.py --check` stale=0。
+- **時序**：等 PR #169 合併後以 main 為基底再動 C，避免與 PR #167 的原生核心衝突（推論）；不在 Codex 鏈的「不碰區」內。
+- **拿掉／合併（GEO-219）**：無新增可見 UI。
+
+### GEO-247 — #48 不在採納範圍的驗收項（2026-10-09，未開始；決策 J）
+
+- **背景**：issue #48（F5 圖面—模型證據關聯）依決策 J 以採納範圍關單。採納範圍＝2026-10-04 CONT-8／Q34（geometry-guide/IMPLEMENTATION-QUEUE-20261004.md 表中 #48 列）：PDF 區域連指定參數欄位；圖面標值／量測／正式值分存；核對不直接改幾何；換圖或身分不明需再核對；連結與原圖可攜。已合併：PR #106（d919ae8，validator＋既有來源界面 adapter）、PR #132（97f0b0e，正式 app／ZIP／歷史接線，2026-10-05）。
+- **不在採納範圍的 issue 驗收項**（issue #48「待執行驗收」九框中；實作須經 GEO-253 的契約提案）：
+  1. 證據連到「既有欄位／物件」中的**邊界、構件等非參數欄位目標**（全物件 kind 未採納；採納的只有指定參數欄位）。
+  2. **採用值**：由證據直接採用模型值，經正式來源預覽／確認並保留差異與復原（「核對直接採用模型值」未採納；「新增證據不改幾何」本身在範圍內）。
+  3. 目標被刪除重建或跨方案移動時，以可靠沿革判定並標「待重新關聯」（durable target ledger 未採納；目前身分不明時只要求再核對）。
+- **實機**：九框中「桌面／390px 真操作可用，實體手機鍵盤與系統選檔另列」的實機部分歸 GEO-250。
+- **視為已交付（推論）**：完全落在採納範圍內的五框——保存後新上下文重開、同名／重排頁碼／換圖／缺檔不錯配、圖面值與量測值衝突並存、超容量／未知附件版本拒絕、匯出只帶明選資產——依 PR #106／#132 正文視為已交付，**未逐框重驗**；框 1／5／6／9 各有一部分在上列範圍外。
+- **處置**：issue #48 以採納範圍關單（留言附 PR #106／#132 與本工單）；未做項不再掛在 #48。OCR、自動辨識尺寸、其他 target kind 本來就不在 issue 第一版範圍。
+
+### GEO-248 — #59 不在採納範圍的驗收項（2026-10-09，未開始；決策 J）
+
+- **背景**：issue #59（SGR-02 C 核心細分）依決策 J 以採納範圍關單。採納範圍＝Q36／CONT-8 的六條來源子規則語義（IMPLEMENTATION-QUEUE-20261004.md「#58 六條採納映射」）：一層 source 所有權、兩軸無相位差 REPEAT、divisions 1…65 且至少一軸 >1、穩定 rule／來源／主格／innerline 引用、有 ref 鎖與重疊／manual 衝突拒絕、source 變更全驗任一失敗全拒、完整保存。已合併：PR #107（c0d3fba，one-level native REPEAT 規則核心，原生 oracle 40/40，2026-10-04T06:54Z）。
+- **不在採納範圍的 issue 驗收項**（issue #59「核心待執行驗收」十框中）：
+  1. 「panel915＋gap2 的 pitch917 分 7 份為 131」——需 REPEAT_PANEL 來源軸，採納明確排除（PR #107、PR #133 皆註明不含 REPEAT_PANEL；缺軸／finite／stagger 轉換亦不在範圍，這些只需「拒絕」，拒絕在範圍內）。
+  2. exact／sample 雙模式的視窗查詢與查詢預算（Q36 未採納「額外 query API」；PR #107 僅有 QUERY_CAPACITY 終止行為）——是否構成缺口需契約提案確認（推論）。
+  3. 多層／巢狀、任意區域、面別覆寫（Q36 明列未採納；issue 驗收框沒有直接對應，列此備查）。
+- **屬別線**：guide／direct 的 RuleLineRef UI 與跨面流程歸 #61 第二切片（PR #134／#160，已包含於 PR #169）；實機歸 GEO-250。
+- **視為已交付（推論）**：其餘框（600×400 U3/V2 精確值、signed 大索引、兩配置共源、重疊與手動子格衝突、不同 system 同號 ruleKey 不串用、新語法 dump／loadfile 等）依 PR #107 正文視為已交付，**未逐框重驗**。
+- **處置**：issue #59 以採納範圍關單；若要做 REPEAT_PANEL，須先有新公理決策（與 D10a／D10b 的關係），**不併入 K 的四群**，需另行拍板。
+
+### GEO-249 — #60 不在採納範圍／未見逐項證據的驗收項（2026-10-09，未開始；決策 J）
+
+- **背景**：issue #60（SGR-03 完整保存來源／草稿、能力預驗、重開相容與復原重做）依決策 J 以採納範圍關單。採納範圍＝Q36 第六條「完整保存 rule／ref／capability，舊 reader 不足拒」。已合併：PR #126（8d134fc，已提交規則的 `geometry-canvas/11` 保存／reader／capability／preflight，2026-10-04T19:03Z）、PR #133（d6b4b45，`grid-editor-draft/2` 草稿隨 ZIP、單步 history、`/13`，2026-10-05T10:01Z）。
+- **不在採納範圍或未見逐項證據的 issue 驗收項**（十框中）：
+  1. 「一次多面來源更新整筆 undo／redo」——跨面完整流程 PR #133 明言不含，歸 #61 第二切片線（PR #134 已包含於 PR #169）；另有逐項證據則未見（推論）。
+  2. 「真重新整理、服務恢復／唯讀狀態、跨專案遲到回覆與重試」對來源規則與規則草稿的逐項證據——PR #126／#133 有 #77 的 recovery、late receipt 測試，但未見針對規則草稿的逐項證據（推論）；實機部分歸 GEO-250。
+- **issue 本文自述不在本期**：獨立跨專案規則分享包；舊 Python 模型 adapter 遇 rules 明確拒絕（PR #126，符合 Q36「不支持的 model producer 明示拒」，不是缺口）。
+- **視為已交付（推論）**：其餘框（正式 scene 往返、完整 .gcanvas 新上下文重開、草稿保存重開、失敗／取消保全、capability 移除或降版被拒、舊檔不暗遷移、規則 key 配號與高水位）依 PR #126／#133 正文視為已交付，**未逐框重驗**。
+- **處置**：issue #60 以採納範圍關單。
+
+### GEO-250 — 實機驗收清單（2026-10-09，待使用者；Linux／390px／合成 PDF 不能替代）
+
+只有使用者在實機或 Windows 現場能做的驗收；未驗不得冒稱通過。逐項操作步驟由協調 agent 另行產出（不收進本工單）。
+
+1. **A24／SR24 實體手機**（iOS／Android）：鍵盤輸入、OS 檔案選擇器、下載提示、IME。保留 #19／#24 open；GEO-223（Q23-b：實體手機鍵盤與 OS 下載提示通過後，才把 GEO-223 改「已交付」）、GEO-226／AR06 的 A24、#45／#47／#61 的尾巴同此。
+2. **REAL-PDF-01／REAL-PDF-02**（私人 PDF，留 Library，不入 repo）：CaseA 新 head 的 snap／人工分區／整屋／重跑；CaseB 各階段。
+3. **#54 單房**：私人 PDF 實測、實體 IME；機器操作次數已有（見決策 H），真人操作時間未驗。
+4. **Windows 現場**：完整 `geometry-web/cdp_test.js` 與 GDI（GEO-225／226；SAC 擋新編 exe 時不改安全設定）；#176 鏈的 Windows QA。
+5. **#116** 的實體裝置 gate；**#123** 的真手機、IME、OS 選檔／列印。
+6. 非實機、但只有使用者能做：修 GitHub Actions 計費（見決策 B）；補 #123 原附件 ZIP 與歷史件（#176 正文列為原持有者要補）。
+
+### GEO-251 — #47 F4b 裁切／餘料／採購＋料單跨表示去重（2026-10-09，待契約提案；決策 K-1）
+
+- **狀態**：**待契約提案**——先寫契約／公理差異給使用者審，通過才實作（紅燈，不得先實作成既成事實）。
+- **現況（已合併）**：F4a 原生角材料單與雙向定位（PR #56／#65／#70／#96；契約見 geometry-web/docs/MODEL-SNAPSHOT-SCHEDULE.md）。F4a 明示不做 F4b 加工／裁切／餘料／採購、跨表示去重與 durable incarnation（後者歸 GEO-253）；目前「同尺寸不同 placement 保留各件；不以 UUID／範本／尺寸／World hash 捏造實物去重」（GEO-241）。
+- **提案須含**：① F4b 的物理／施工理由（例如餘料取決於定尺料長與切點；無實體基準的數值屬紅燈，由使用者給，不由 agent 猜）；② 「同一實物」在 live World／保存模型／assembly-owned 之間的判定依據（不得以 UUID／範本／尺寸／hash 猜）；③ 對現有 F4a 輸出 bytes 的相容性；④ 若觸及公理 §四〈明確不在本層〉，逐條公理差異。提案先經獨立對抗審查，再集中交使用者審。
+- **驗收**：待提案定案；承襲 #47 issue 驗收與突變測試要求（拿掉實作必須轉紅，失敗訊息指得出病因）。
+- **拿掉／合併（GEO-219）**：若新增料單入口，提案須寫明減項；沿用 F4a「把既有列升為料單」的做法為先例。
+
+### GEO-252 — 組合擴充（2026-10-09，待契約提案；決策 K-2）
+
+- **狀態**：**待契約提案**——先提案給使用者審，通過才實作。
+- **範圍**：(a) #45：多份 draft、draft 互引用、複雜多選、F2b 擴大生成（Q31 未採納欄）；(b) #25：任意拓樸、相反組法、巢狀、assembly-owned 保存模型（AR06 只做「兩 primary＋一 secondary」的 D34／I42／R35，G09 實機未驗）；(c) #87：零房起步、跨 reload 保存未接受候選（決策 I 已不採納 PR #157 文件，須另寫提案）；(d) 非空專案匯入的 ID 碰撞、引用重寫與歸屬政策（PR #176 正文列為「留到決策後」）。
+- **既有先例**：參數包匯入重新配號、完整專案保留身分（決策佇列 Q22）；AR06 有限生成；Q37 同 PDF 共享基準、新增不覆蓋；D6 禁止來歷不明的數字。
+- **提案須含**：每個子項的物理／施工理由與既有先例對照；哪些需新公理（逐條 diff）、哪些只是契約；ID 碰撞政策須說明與 Q22「參數包重新配號」的異同。提案先經獨立對抗審查，再交使用者審。
+- **拿掉／合併（GEO-219）**：任何新增入口須寫明減項。
+
+### GEO-253 — 識別與追溯擴充（2026-10-09，待契約提案；決策 K-3）
+
+- **狀態**：**待契約提案**——先提案給使用者審，通過才實作。
+- **範圍**：(a) #44：durable incarnation ledger 與多載體（任意多 carrier）、owned／faces+timbers producer、自動同名／同號重關聯（IMPLEMENTATION-QUEUE-20261004.md 未採納欄）；(b) #48：證據連到邊界與構件（全物件 kind）、核對後直接採用模型值、durable target ledger（即 GEO-247 的三項）。
+- **既有先例與約束**：F1a 來源延續性目前為 unknown，不猜；#48 要求「連上證據或勾選已核對不改幾何，採用值須另經 native preview／confirm 並保留差異與復原」；物件刪除重建後數字 ID 可能被重用，無可靠沿革時只能標「待重新關聯」（與 #24 的身分生命週期協調）。
+- **提案須含**：身分沿革的物理／語意理由（什麼叫「同一個東西」）、與 D6 的關係、保存格式與 capability、舊資料遷移。提案先經獨立對抗審查，再交使用者審。
+
+### GEO-254 — 介面擴充（2026-10-09，待契約提案；決策 K-4）
+
+- **狀態**：**待契約提案**——先提案給使用者審，通過才實作。
+- **範圍**：#116 B 的其餘——物件畫布、空間平面圖與三視圖的游標 v2／右鍵選單；複製／貼上／重複與多選批改；觸控長按、偏移準星、雙指（PR #125 明示未做）。
+- **GEO-219 🔒 減項要求**：**新增入口須寫明減項**——每個子項若新增可見入口、按鈕或常駐說明，提案與工單都必須寫明本次拿掉或合併了什麼；寫不出減項就先入決策佇列，不得只加不減；每個工作畫面常駐操作說明不超過 3 塊（AGENTS.md「UI 減重紀律」，Q21）。先例：PR #125 以 B 動作卡取代原右鍵純動作清單，右鍵開啟時收起重複浮動操作列，停用理由併入選單既有 footer。
+- **驗收**：待提案定案；實體裝置（觸控）歸 GEO-250。
+
+### GEO-255 — PF-1～PF-6 面材鋪滿實作（2026-10-09，待 PF-0 寫入公理層；決策 F）
+
+- **狀態**：**等待 PF-0 寫入 `公理層.md`**（決策 F 已授權，axiom PR 另行進行，寫入並同步正典後回填決策佇列）；寫入前不得實作（條文先行）。
+- **依據**：issue #128；`geometry-core/PANEL-FILL-AXIOM-DIFF.md`（D41–D45／I52–I57／R41–R46、E1–E3）；決策佇列 2026-10-05 PANEL-FILL／STRUCT-FROM-FINISH（完成面首版範圍已改號 Q48）。
+- **切片（issue #128）**：PF-1 完成面（建立／編輯／保存）；PF-2 鋪滿與顯示（整片／裁切片、窄邊條、片數；縫位與 PANEL_LAYOUT 共用計算）；PF-3 承接比對（縫下有無角材，綠／紅，門檻為 D31 具名參數、初始 8 mm）；PF-4 網格對齊鋪排（引用、會重算、I8a 預覽）；PF-5 空間完成面（高度與方向、面材厚度方向、板背面、依 Q47 分層判斷樑）；PF-6 建議角材（預覽→確認→建立，只推板縫下貼板一層）。
+- **必守**：鋪排與 PANEL_LAYOUT／D10b 共用同一套排板／縫位計算，不另寫第二套；試排是推導結果，不進角材料單、不影響既有角材求值；既有場景行為不變。範圍外維持公理 §四（施工順序、載重撓度、主骨／吊筋／與樓板連接）。
+- **驗收**：PF-0 §6 的 PF01～PF13；新增測試加突變測試（拿掉實作必須轉紅，失敗訊息指得出病因）；動 `app.js` 加跑 `cdp_test.js`，動空間工作區加跑 `space_model_test.js`；WSL 七個 CI 等價 job 全綠。
+- **拿掉／合併（GEO-219）**：各切片新增可見入口時，在開工時寫明減項（目前未定；寫不出就先入決策佇列）。
+
+### GEO-256 — Q38 斷面拉伸剩餘切片（2026-10-09，待 PR #169 合併）
+
+- **已做到哪（均包含於 PR #169，#169 合併後才進 main）**：原生核心 1A（PR #167：World POD、原子 preview／confirm、scene 保存、容量 16 profiles／128 members／32 runs）；1B 兩種簡易定位宿主與互轉、typed 來源圖、診斷（`simplePlacementSupported:true`）；模型產生器與完整來源保存；2D／3D 工作區、共用模型庫、完整專案 `geometry-canvas/16`、late response／history 保護（RELEASE-CANDIDATE.md：原生 26／模型 19／UI 68／fresh-browser 完整保存 18）。本檔頂部〈Q38 斷面拉伸完整產品接線〉仍標「驗收中」。
+- **剩餘切片**：① **Q38j 併入空間模型**：以「明選納入」比照 GEO-208；提案 §4（Q38j）指出空間模型是快照、拉伸件是即時定義，合併前須先定義快照語意，**可能需要公理差異**（推論），先確認再實作；② 合併後的同源真瀏覽器驗收（native／modeler／UI 合併後，不以 native-only 收據當完整產品完成）；③ 實機歸 GEO-250。
+- **明確不做（提案 §6，各需新決策）**：折線路徑、轉角斜接／交接、料長續接、面材板片數量／接縫位置／排板、矽酸鈣板以外的板材、完成面語意、料單、固定件、拉伸件與其他物件的碰撞、任意角度、斷面內孔。
+- **拿掉／合併（GEO-219）**：Q38j 若新增入口，開工時寫明減項；沿用既有「3D 模型庫」入口。
+
+### GEO-257 — 核心矩形-環包含判定的註解宣稱錯誤（2026-10-10，未開始）
+
+- **缺陷**：`current_geometry.c:402-407`（`poly_contains_rect`）的註解寫「若矩形跨出環，必有環邊穿入矩形內部」，這個宣稱不成立。反例：輪廓 [0,0],[100,0],[100,100],[60,100],[60,40],[40,40],[40,100],[0,100]（槽 x∈[40,60]、y∈[40,100] 在環外）上的矩形 R=[40,60]×[50,70] 會被判為在內：四個角都落在環的邊上、沒有任何環邊穿過 R 的內部，但 R 整個在槽內，也就是在環外。
+- **影響**：D7／I5 走的路徑受影響；Q38 的 I44 路徑已改用精確差集（`sp_outside_regions`），不受影響。
+- **狀態**：未開始。
+- **來源**：2026-10-10 Q38 對抗審查。
+### GEO-258 — `parameter_remove` 不檢查引用（2026-10-10，未開始）
+
+- **缺陷**：`geometry-core/parameters.inc:277-284` 的 `parameter_remove` 不檢查是否仍有引用。I38 要求「被其他定義引用的卡片或欄位不得刪除；先明確改綁／解除引用，或在同一候選內完成解除與刪除後整包驗證」，現行實作沒有這個前提檢查。
+- **連帶違反 I39**：同一批先刪卡再匯入、或同 id 重宣告時，World 內指向該卡的 ParameterRef 會被靜默改綁到新卡，違反 I39「參數包匯入由核心取得新卡片身分，改寫所有包內引用，建立與來源專案獨立的副本」。
+- **反例**：`[delete-parameter 0, import-parameters P]`；`[delete-parameter 2, put-parameter{id:2}]`。
+- **狀態**：未開始。
+- **來源**：2026-10-10 K3 提案第 3、4 輪對抗審查。
+
+### GEO-259 — Resume 剩餘範圍（2026-10-10，未開始）
+
+- **背景**：#176 阻塞表④「完整安全 Resume」以 bounded 版本合入（同 parent、同 native session 的明確 Pause／Resume）；使用者於 2026-10-10 合併 #180 時，該判定經確認（決策佇列「2026-10-10 使用者後續拍板」，暫定依授權 L）。
+- **未涵蓋**：abrupt reload（頁面重載）、crash（瀏覽器或 bridge 當機）、服務重啟、跨 session／profile／origin 的 Resume。
+- **狀態**：未開始。
+- **來源**：2026-10-10 合併 #180。
+
+## 2026-10-09 收尾核收更新（各 scope 分列）
+
+完整候選 SHA f3b8285729b42cd22451c98cba1e2ec4514517f3，核對時 clean；各 scope 的受測版本、執行身分及原始證據見[收尾總索引](tests/evidence/cloud-takeover-20261009/UI-CLOSEOUT.md)。
+
+- 本候選縮窄三個 compact project-row selectors；不新增入口／常駐說明（GEO-219），不改保存／返回 handlers、state、56／96px或Grid契約。原 Assembly150／0／0及Standalone Space228／0已核收；Space兩 timber groups仍 omitted。
+- 9eb原七寬 caption329／0與六組198／0各自完整，caption保留原73 checksites，另加正常首次教學bbox／hit與hidden／native same兩個正前提（不僅註解）；原102ff／bb7／59失敗、9eb1842／0未完成及兩份noReceipt中斷按具名版本保留在總索引。
+- 本候選原完整 CDP2207／0／0、completed:true、84段golden matched已核收；實際Node／gate／controller0、stop0、全部source／native／live actor及clean前後吻合。前次同版無收據／actual actor未知仍分列，不相加或補造舊exits。同版四案正常返回40／0、Node／gate／controller0、completed:true、有界probeVerified已核收；原16／1保留。P38原EXPECTED fb-auto-probe1不另造零例外門檻。
+- 既有243四UI327／0與#54完整273／0、640投影十案10／0及同owner兩案2／0、128 Resume四案4／0（56 assertions）均保原SHA與範圍；單房direct12／14／16對manual16／20／24為同起點／精確同終點。
+- 43來源盤點保持source-only；B8／C5／C6／C7／G1／G2私人稿件、未採納或政策需原決策來源，沒有自造規格。工作管理原ledger／export仍unknown，reconcile／list-ready／list-alerts未執行；Windows原件未核收，不要求已停止作者重做。
+
+
+## #123 正常鍵盤可達與 390px 參數畫布保全（2026-10-09，待新候選實跑）
+
+- 保留原 Tab／Shift+Tab 順序、焦點及工具 handlers；當既有面工具取得真焦點卻被 nav 裁切，只同步捲動該 nav 以露出整顆按鈕。邊距依 nav 與按鈕的剩餘寬度計算，最寬按鈕不額外佔用所需寬度。不接管鍵盤或焦點、不捲祖先、不觸發原生幾何。原 102ff caption 27／1、單次只讀診斷與 bb7 的 600px 199／1 失敗各自保留；同一強 oracle 留為 `tests/issue123_caption_browser.cjs`，只有首行註解更新。
+- 390px 參數面板沿既有固定 Inspector／畫布控制列位置，增加既有 150px 可見畫布的高度預算；原 44px 控制、56／96px 頂列、欄位至少 240px、確認鈕可見與其他 Inspector 310px 上限均保留。102ff 完整 CDP 的 1800／1、exit 1、completed:false、P76 畫布 137px 原失敗與未比 golden 保留。
+- **拿掉／合併（GEO-219）**：沒有新可見入口、常駐說明、工作區或幾何路徑；露出既有工具，縮減同一參數覆層的多餘高度。新乾淨候選須實跑原七寬度 caption、正式六組及必要完整 CDP，靜態／VM 核對不當產品驗收。
+
+## #123 最後採納減項與鍵盤一致性（2026-10-09，實跑版本另按收據核收）
+
+- G3 將原 `#gridObjectDelete` 從完整工作區／建立配置旁移入 footer 獨立 disclosure；原 owner／busy／核心連動預覽與 Undo 不變，不另加確認。
+- B7 形狀選單只留凹口／外凸／推拉／切角四個不同操作，重複 `feSetTool('hole')` 合併到原開口按鈕及 R；三視圖的選取／開口詞彙與面內一致，原工具值與 handlers 保留。
+- 網格返回／縮放重用原 `icon('arrowLeft'|'minus'|'plus')`，原精確格距／pixel 讀數保留。簡式頂點／九點在重繪後保留原鍵盤焦點身分，與完整工作區一致，沒有新吸附或導航政策。
+- **拿掉／合併（GEO-219）**：移走常駐刪除按鈕、刪除一個同命令的開口選單項、合併分立文字圖示；沒有新增工作區、常駐說明或幾何提交路徑。P64 的舊五項選單斷言依本輪 S3 採納去重契約改驗四項＋唯一 R 入口，並增加真 R／V 行為；原凹口 Escape 取消與原生孔洞回歸保留，不替尚未起草的開口發明另一種 Escape 行為，斷言數與 golden 不改。
+- 共用標題的 eyebrow 沿用 11px 字級，和原 13px title 一樣使用單行省略；避免 600／680／900px 的逐字換行超出原 56px 頂列。原手機 96px、44px 控制及正常導航保留，待新乾淨候選真實 bounds／pointer／Tab 與正式六組驗收。
+- 243 的完整 CDP 原件為 1713／6、exit 1、completed:false，未比 golden。P32 誤驗隱藏的 canvas empty host，改验現行 `v3PickPanel` 並保留 240px／canvas 界線；P64 保留原凹口 Escape，新的 R 未起草後改用原 V 返回選取，不改產品 Escape 階梯。
+- P75 的舊 lower-right 拖框起點在 56px 頂列下實際命中回報鈕，沒有建立 marquee；改從 upper-right 到 lower-left，保原 crossing 方向、完全相同矩形與全部 37 原斷言，新增正向 SVG 空白命中前提。子格後段先正常選現有 grid 分段再點原 heading；沒有禁用回報、強制點擊或改幾何／golden。243 產品配明示 scratch module 的目的驗證已 37／0，正式完整結果須綁新的乾淨提交。
+- `640a81443b3d070dba3d8a0aa52adb2d64cebe0b` 已有正式六組 198／0、完整單房 273／0、EDGE 38／0；GRID partial 346／0 的實測保留，但 Chrome ELF 身分未核收，不能當完整有效執行身分證明。四組補充原108／3與後續0b37的138／3均保留為未完成驗收；後者已釘到非法raw pending marker與舊確認節點退休問題，BOM則依既有length排序核對oracle，修正後另以新候選重驗；以上都不改綁本次提交。完整 CDP／Space 待必要實跑。
+
+### #123 S2 接續來源修正（2026-10-09；同版驗收待下列新收據）
+
+原 `#igBoundarySection` 移至右側 `#igBindingForm` 第 2 步，保持原頂點身分與 SVG／選單事件；原 footer 捨棄在左，主動作在右。`#igDiscardDraft` 改用工作區內臨時確認，保留／Escape 不改原始輸入或 World，確認沿原附件清除與關閉；owner、busy、初始化、待確認回執、專案保存及 release 中均不消費另一操作，孤兒草稿仍可明確捨棄。原配置刪除收進獨立 disclosure，仍走原核心預覽。原保存提示分清「套用目前場景」及「頂列保存完整專案」。兩個既有編輯器共用 `GridAnchorPositions` 的九點詞彙與精確分數，自訂比例不吸附、不取整。
+
+GEO-219 減項：移動原頂點圖、捨棄／刪除操作，工作區確認取代同一動作的瀏覽器 confirm；九點描述合併，提示改原狀態列文字。未新增第二個編輯器、native 来源或提交路徑。此段只記源碼接線，新的同版正常指標／鍵盤、取消／確認、raw／owner、native、保存重開與完整 CDP／Space 依後續實跑收據核收；不借用 f980 的六組或成本局部結果。
+
+## 2026-10-09 現有工作收尾：#123 切片、#54 單房與明確 Resume（來源對照，待同版驗收）
+
+- 已按本輪交接由唯一產品修正者接手；原本地作者停止寫入的交接已解除，不再列為等待條件。f980 僅作歷史文件基底，後續產品已提交；640 與0b37的完整受測版本、成功／失敗 scope 及 source archive 另列，後續修正不借用歷史結果，後續實跑須記完整受測 SHA、dirty、執行器／來源、命令、exit 及原始 log／hash。
+- #123 已接有界 UI 切片：桌面 56px／≤560px 96px 共用頂列與原 projectBar、共用主要 accent、構件子分段一次一表單、料單移右側角材、空間平面工具／尺寸與呈現標註、三視圖桌面固定 240px／手機抽屜、workSurf 隱藏相容掛點及唯一工具列入口、390px 網格先預覽、3D 單主要歡迎範例與按需其他範例、無結果收起視角／顯示／指標、返回在左及去重編號。契約與 source／未驗界線見 `geometry-web/docs/DOM-CONTRACT.md`。
+- **拿掉／合併（GEO-219，#123／#54）**：撤掉桌面第二條專案／工作區標頭；主畫布及 3D 的分立主要 accent 併入共用 token；三段常顯示表單收為唯一子分段；左欄料單移入既有構件→角材，沒有第二份料單；左 workSurf 可見入口收掉、原 ID 留相容掛點；原三個常顯示範例收進既有來源列 disclosure，節標重複編號移除；#54 原選邊／輸入／Apply 常顯示組移入進階 disclosure，逐邊入值併入原尺寸清單。未增加第二工作區、幾何來源或提交路徑。
+- #123 後續 source 已接線：原歷史群右置 actions；柱樑投影勾選／cut／Apply 唯一表單移入右 Shape，左列只呈現圖層／開啟編輯，本輪已提交 source 以 `faceProjectionDrafts` WeakMap 按 edit／typed item 保全，且在多選提前分支之前擷取；`feApplyProj` 遲到回覆核對 presentation owner、原 work／drag／panHold 及 tool／draft 身分，載入後再次守門，不能清掉新 work 或手勢。這些新 source 接線須新同版 raw／owner 回歸，不能借用乾淨 f980 的 pass。source 接線不是 browser 通過聲明；明確 S3 去重及 S2 接線見目前契約，43 個既有 ID 已按可攜原 issue／README／C-review 與 source 完整盤點，但私人 ZIP 原件／稿件衝突／像素對照未核收。C1 的固定螢幕標註、可見格線及座標只屬呈現，不改原生幾何，也不實作未採納的新吸附。
+- #54 僅推進既有單房：逐邊欄位保持真 Tab／指標目標連線，沿原 orthogonal／resize／review／核心 Confirm；原單邊進階 Enter 契約及人工／來源／校準／World 比對保留。新逐列 protocol 在 f980 六份具名同起終點成本之外，640 已完成原十個正常案例、六個具名負例與完整保存重開／history 回歸（如下）；後續 source 仍須新同版收據，不改綁或相加 P79 與原完整比較，不擴張為 #87 同頁多房候選。
+- 安全 Resume 只接受明確 Pause 持久提交的最新完整包與 metadata、原 active ticket／native B、全包／scene／metadata hashes 及同 epoch 未消耗資格；strict 撤銷 eligible 後才附回。活躍期突斷／reload／自動備份不自動取得資格，未知保持凍結／保留；Resolver 只讀不 create／upload／close，取消／完成不重開。**拿掉／合併（GEO-219，Resume）**：刪除同一試改狀態段落的新建 ready／Resume-ready 重複永久說明，抵 `#scenarioPauseEdit` 入口；loading／error／unknown／retiring 狀態保留。它是兩分支的一個說明區塊，不虛增減項數；畫面占位、真 pointer／Tab及owner／epoch回歸待新同版收據。
+- 驗收來源不重綁：歷史完整 CDP 2207／0／0 仍只屬乾淨 `5174a8dafd8c48329d7166abbd3d104e3c28c0c4`，`9029a8f6bc00a9ff8de1d2b0deb844f331e032e3` 是後續文件／證據提交。#173 歷史完整 Windows 1692／2、exit 1、completed:false 與未比對 golden 保留；局部通過不能相加成 full。歷史 EPERM／AF_UNIX 的未執行只限定原環境與原 scope，現有 5174 receipts 依各自受測版本／範圍核收，不等於本輪 Resume／#123 全部通過。Windows 原件、BFCache、跨 profile、實體手機／IME、原生 Save picker及本輪 full gates 的狀態依新收據，未取得者明示 unknown／未驗。
+- 後續：上述 f980／640／0b37 各自歷史與後續 source 分列；640 正式六組與#54已實跑，新 owner／非法 raw 修正與必要完整整合仍待後續同版收據，繼續處理剩餘採納項並以 exact candidate 跑桌面／390px 正常指標鍵盤、raw／焦點／新 owner／新 epoch、真預覽建立與完整保存重開；app.js 及 3D 行為另依 AGENTS 執行必要完整 CDP／Space。工具或 Windows 原件不可讀時保留舊資料／unknown，不要求已停止作者重新釋放；不 merge、deploy或改安全／帳務。
+
+
+本輪已核收的具名歷史執行：乾淨 `f98078dc150c22960cbe2d212afb3ded61954bb9` 的原六組（colors／headers／components／v3／grid-mobile／model）完整 194 通過／0 失敗、exit 0；範圍只是六組，不能冒稱全部 43 項、完整 CDP 或完整 Space。原始收據／log：`/workspace/scratch/geometry-ui-verification/ui123-f98078dc-gate/receipt.json`、`command.log`（SHA256 `abc33da78fce6c0f5356f7ddd3f0d7c47076d2404f1441e73d45057ef5f0381f`）。同版 #54 是 208 通過／1 失敗、exit 1、completed:false：第九個 `image-notch-mobile` 的正常 New 被抽屜 close 攔截，後段負例未到，不能稱完整 #54。其原 log 在 `room54-f98078dc-gate/command.log`（SHA256 `50780d76645fc18ad070a8aaa95daeaecb4f4ed446e16e8996110b186ed0e483`）。六份 `room-direct-row-dimensions/1` 測量的 PDF／image 矩形、L、缺口均為候選 12／14／16 對原手動 16／20／24 操作；各同校準來源、camera、disclosures、snap、review／起始場景與精確終點，成本定義排除匯入／校準及 Save/New/Open，不把機器等待當人類工時，且不替代未完成的後段驗收。
+
+本輪後續已提交 source 修正：頂列 relative positioning；正常 `fileMenuPop` 開啟先 `closePanels()` 並以 fixed viewport 定位，640 正式#54已完成含390px New／Open的原正常路徑；投影 WeakMap／presentation owner 守門如上，額外 raw／新手勢範圍依其具名收據。P70 保存 oracle 按原採納共用 accent 核對，其餘交易條件保留。完整 CDP 2207／0／0 仍只綁乾淨 `5174a8dafd8c48329d7166abbd3d104e3c28c0c4`；9029 是後續文件／證據提交。#173 Windows 完整模式 1692／2、exit 1、completed:false、未比對 golden 的歷史保留，後續局部結果不得相加。
+
+同版已核收歷史補充：乾淨 `640a81443b3d070dba3d8a0aa52adb2d64cebe0b` 的正式六組完整 198／0、exit 0、completed:true；原 log `/workspace/scratch/geometry-ui-verification/ui123-640a8144-gate/command.log`（SHA256 `fcbab6fa164acb71ae61d79cf63a40ab6ce3d2bb0fc633e341f34df9185dfda8`），gate `/workspace/scratch/geometry-ui-verification/ui123-640a8144-gate/receipt.json`。同版正式 #54 原十個正常案例、六個具名負例與六份同起點／精確同終點成本測量完整 273／0、exit 0、completed:true；原 log `/workspace/scratch/geometry-ui-verification/room54-640a8144-gate/command.log`（SHA256 `1eaa848705d9a893dd4d6f9a63858a4ff2c84fcd06efba01ec8a34b0fa0858d6`），gate `/workspace/scratch/geometry-ui-verification/room54-640a8144-gate/receipt.json`。PDF／image 矩形、L、缺口 direct-row 為 12／14／16，原手動 16／20／24；原 legacy select／fill／Apply 的 21／27／33 與 P79 仍各自綁原 protocol，不相加、不改綁，也不把 elapsedMs 宣稱人類工時。原房間 harness 的一般 JavaScript dialog 自動接受政策保留為限制，本次未聲稱 OS dialog／實體觸控／IME／golden／私人 ZIP 視覺核收。
+
+640 的獨立四組補充原件為 108／3、exit 1、acceptance completed:false，四組均嘗試並不等於驗收通過：BOM 未先確認既有 native 刪除 preview、停用 Confirm 的 locator.click 不代表實際使用者負例、S2 helper 先打開同一 summary 再點而重新關上。原 log `/workspace/scratch/geometry-ui-verification/supplement-640a8144-gate/command.log`（SHA256 `4899949ac78cb4f04878fc2b882d0ec58dd5c855df3de7815975f71414330876`），gate `/workspace/scratch/geometry-ui-verification/supplement-640a8144-gate/receipt.json`。這些操作前置修正另存 v2 source，没有覆蓋原件。乾淨 `0b37d8d8d4ee501fe6208e3e88440b3d078d7c0b` 用明示 reviewed sourceOverride `8dbf04fe3af69a7656fbe38445afe190f520dac660b6046555595d386a08c5a9` 跑四組是 138／3、exit 1、acceptance completed:false：BOM 恢復後實際保留 length 排序 [3,1,2]，舊 cm oracle 卻按 [1,2,3]；非法 0 的 raw 還在但 row pending marker 在重繪後遺失；同 ID import 已關工作區卻留舊確認節點。桌面簡式真鍵盤續接與 delete preview／Cancel 已走到並通過，後段新 owner／390px 未完成部分不當通過。原 log `/workspace/scratch/geometry-ui-verification/supplement-0b37d8d8-gate/command.log`（SHA256 `30f80eaf5cc0f8acb2f15126b6dad33795afde0daf7d63cb4b6f703d333163c6`），gate `/workspace/scratch/geometry-ui-verification/supplement-0b37d8d8-gate/receipt.json`。後續產品與 oracle 修正必须取得新的完整 SHA／clean／actual Node、Chrome、native／命令／exit／原 log hash 收據；這兩次失敗原件均保留，既有成功數字不綁後續 source。
+
+上述三份640與一份0b37收據已有獨立唯讀 census、actual 執行身分與 source archive／hash 複核，詳 `supplementary-validation-640-ui123.json`、`supplementary-validation-640-room54.json`、`supplementary-validation-640-supplement.json`、`supplementary-validation-0b37-supplement.json`（同 gate scratch 目錄）。這只是各份具名 scope，不能冒稱全部43、完整 CDP／Space、安全 Resume 或 Windows 驗收。
+
+## Q38 斷面拉伸完整產品接線（2026-10-08，驗收中）
+
+- 將已採納 D35–D40／I43–I51／R36–R40 接入唯一正式應用：斷面與構件的 2D 直接座標編輯、來源引用、原生影響預覽／確認／取消、共用歷史、拉伸定位與既有 3D 檢視器。完整專案使用新 `geometry-canvas/16`；舊格式拒絕新資料，讀取需原生服務實際提供 `section-profile/1`。
+- **拿掉／合併（GEO-219）**：既有「空間模型庫」改為「3D 模型庫」，已定位拉伸件併入同一入口與清單；斷面入口放既有「建立」選單，沒有第二工具列。保存與復原／重做重用移入工作區的原按鈕；操作说明只用可關閉並記住的首次教學卡。
+- 未定位拉伸件留在斷面工作區作局部預覽；不併入任何空間的世界結果。核對清單區分參考包絡與材料量，不宣稱拉伸件間碰撞、施工接縫或板片數量已驗。
+- 本項仍須 native／modeler／UI 合併後的同源真瀏覽器驗收，不能以 native-only 收據當完整產品完成。
+
+## #87 同頁房間候選接線（2026-10-08，驗收中）
+
+- **拿掉／合併（GEO-219）**：把既有「新增房間」合併為人工／同頁候選方式控制，重用唯一尺寸／頂點核對表單，不新增常駐工具列。未接受候選只留在分頁；離開前明確告知無法恢復，已接受房間沿正式專案保存。
+
+## 交付候選整合與反覆驗收（2026-10-07，進行中）
+
+- 依使用者本輪授權自主規劃、實作及重複功能／使用者流程審查，以正式交付可運作為目標。已批准來源、必要閘門與未驗平台集中於 `geometry-web/docs/RELEASE-CANDIDATE.md`；獨立候選分支保留原 PR ancestry，不改公理或原生幾何。
+- 第一輪獨立交叉審查找到 #137＋#154 的 PDF ownership 整合缺口：A/B leaf 驗證後遺留 reader；adopt 讀取完成後取消／拒絕也未釋放 detached reader。先用兩條正式 reader VM 回歸釘紅，再以真 PDF／真 capture＋fork／新 profile filechooser Open 重現 created 3、terminated 0，只有一個 reader 有 live owner。
+- 修正僅釋放成功驗證後即丟棄的 leaf context，以及未被 live/history/pending native load 接管的 adopt context；未知 native 結果仍保留候選等待原 terminal receipt，已採用及原 A 的 reader 保持可讀。真瀏覽器修正後 created 3、terminated 2、live 1；VM完整 61/61，新增兩項涵蓋拒絕／遲到取消／未知後取消或提交／同 ID Undo/Redo。未變更 PDF bytes、保存格式或幾何行為。
+- 新增 `tests/release_gate.py`，對既有命令記錄 clean head/tree、runtime/root/source、native freshness、完整 log及exit；失敗／中斷同樣保留收據，CDP／Space另核既有完整 census，partial不冒充full。21項負例與真子行程自測登錄；其餘原floor不降低。
+- 第一輪完整 CDP 在 P53 部分執行後停住，未計為通過。真 held-response 重現：角材交易已解鎖、來源快取仍刷新時，下一次點擊或 Enter 讀到半套 snapshot。`mutate` 現在持有輸入鎖直到 success/rejection 的來源刷新結束；回呼例外必定釋鎖且不回滾已提交交易，退休畫面與新 raw 不受遲到重畫影響。新增 18 項 production-closure 測試，正式 P53 增加 5 項真 pointer/Enter assertions，原有 floor 保留。
+- 第二輪完整使用流程的視覺複審發現參考線建立／移動後右側仍顯示舊摘要。三個既有入口共用帶 context/frame/session 所有權的刷新，更新現有檢視器並沿用 raw 保存；晚回覆不得刷新已替換畫面。未新增 UI 控制項。
+- 交付全新 checkout 檢查發現舊 Linux 配方缺少 native build receipts，首頁正常卻拒絕含 A/B 的完整專案。統一正式 Linux 建置與啟動入口，使用專用 TEMP、版本收據、16 MiB stack 與一致 native transports；既有服務占用連接埠時直接拒絕，不接管或停止它。
+- 第二次完整 CDP 走過角材修正後，在 P73 的快速返回面編輯中再重現參數確認競態：`pending` 在最後畫布刷新前提前解除，晚到的參數選取取消新的面導航。真卡片點擊＋兩筆真原生回覆的 held-response 已釘紅；確認現在保留原 busy state 到刷新終態，沿 context/navigation 所有權更新畫面，已消耗 token 不因呈現失敗再次提交。沒有新增可見入口或幾何語義。
+- 獨立提交邊界複審再發現 adapter 內部刷新例外會掩蓋已成功的原生確認，讓新參數留在草稿。adapter 保留明確的成功收據，參數介面據此結束舊草稿並告知已套用；原生拒絕仍保留 raw，新 context／草稿不受晚例外影響。
+- 參數專項又釘到確認期間對停用欄位按 Ctrl+A 會落到畫布同卡選取例外，兩次增加導航序號，成功回覆後留下沒有 owner 的舊編輯器，後續 99 看似可填卻沒有提交。忙碌時先拒絕所有選取，再處理非忙碌同卡例外；保留原 P76 真鍵盤／二次編輯 oracle。提交後刷新失敗亦明示結果並停用已退休的原表單，不接受無法保存的新輸入。
+- 第四輪完整 CDP 再於 P73 發現跨流程缺陷：正常建立網格後，舊操作把共用教學按鈕一起停用；成功換 editor 後原 finally 已退休，按鈕搬到參數畫布仍無法操作。網格的操作、專案保存、初次載入及遺失目標四處鎖定統一排除純呈現教學按鈕；草稿欄位、提交按鈕及過期 owner 守門不變，不以舊回呼無條件解鎖新畫面。原失敗完整保留，新增正式連續操作及控制項所有權回歸。
+- 第五輪保存／重開的截圖複審又發現合法保留的未知排格 raw 被摘要當作面材模式，顯示 `undefined` 及不成立的主支標籤。未知值仍須逐字保存並要求使用者明選；只修正既有摘要、錯誤狀態與示意圖的呈現，不清空 raw、不猜排格方式、不改原生驗證或專案格式。既有未知值 ZIP 重開流程增加可見提示與恢復編輯回歸，原數值／幾何 oracle 保留。
+- 正式 launcher 的全新 checkout 審查也重現 CI 仍指向已不產生的 `.build/web_bridge`，首頁服務直接啟動失敗。瀏覽器 matrix 改走同一 `start_local.py` 與官方 runtime probe；舊配方實測失敗，新配方的實際 native 子行程、16 MiB stack、版本收據及含模型／PDF／A/B 的隔離載入 15/15 通過。保留原 matrix、權限、timeout 與 artifacts，不借本地配方結果宣稱遠端 CI 通過。
+- 驗收夾具另修兩個取樣缺口：Space 的泛用 `dump` gate 會誤攔自動备份而非來源載入，現精確辨識 owner 並驗證 loading/context/single hold，原五項條件及 228 floor 保留；TEMP 模型庫流程的初始 World 改在原生卡片位置與畫面一致後取樣，仍逐字核對全部 World，不忽略位置差異。原紅、因果反例與修正後收據均保留。
+- 連續 P73 真關閉教學後重整再進 P76，產品正確記得已讀，舊 P76 卻一律期待首次自動展開。新增依先前已讀狀態核對的斷言，已讀時真點既有圖解按鈕，再執行原全部內容與互動 oracle；不清 localStorage、不削弱首次自動展開條件，P76 86→87。
+- 本次拿掉／合併（GEO-219）：無新增產品入口、按鈕或常駐說明；整合各分支既有控制項，交付說明與歷史驗收文件明確區分。完整候選流程仍須依同版收據驗收，不借舊 PR 數字宣稱完成。
+
+## CONT-46-20261005 — 完整候選方案正式整合（進行中）
+
+- 授權依 #46／Q33；完整 A/B、原圖內容定址去重、隔離試改、比較後整體採用可復原。沒有逐物件 merge、搬舊 undo 或新的物件沿革公理。
+- UI 減項（GEO-219）：將原「專案與場景有何不同？」三段常駐說明合為既有專案資訊內的一段「完整專案與候選方案」，A/B 操作收在此 disclosure 及按需 dialog，不新增畫布常駐工具列。方案 dialog 一段用途說明；試改 dialog 一段狀態，均不超過三塊。
+- 共用模型：正式 root catalog／能力 geometry-scenario-snapshots/1 與空出的 geometry-canvas/14。leaf project 不可含目錄；projectId 與 scenarioId 分離，#48 的 target projectScope 保留原 projectId。每份完整 manifest、scene、固定基準與 typed origins 都驗；原圖只按 hash 儲存一份。完整 root manifest 沿用 8 MiB、ZIP 256 MiB、展開 512 MiB 上限，最多 8 方案／256 資產。
+- B 使用同一正式 app 的獨立 native context；共同 transport、receipt、upload 路徑綁 context，失效識別不回退至 live A。只讀驗證每次 disposable process；整體採用沿共用原子載入及一筆 ContextHistory，catalog／原圖／草稿／模型隨同一步 undo/redo。無部署或實體手機完成聲明。
+- 尚在實作與驗收，不宣稱 #46 完成；#134 產品凍結及 16 檔證據發布 hold 分別保留。
+
+## #134 — 完整定位查詢保留鍵盤焦點（2026-10-07，候選驗證完成）
+
+- 在隔離 Chromium 的 390px 真 Enter 操作重現：`data-rule-exact` 按鈕被 disabled 時先失焦，原生只讀回應重建檢查器後焦點仍停在 BODY。單加 DOM id 不足以修復。
+- 沿用既有完整定位入口，增加穩定 `gridRuleExact` id；查詢發起時保存焦點意圖，僅在 editor／request／raw tuple 仍新鮮且使用者未另行操作時還原，不搶回其他欄位或畫面的焦點。查詢保持只讀，不改核心、公理、保存格式或歷史。
+- 本次拿掉／合併（GEO-219）：沒有新增可見入口或常駐說明；合併到原完整定位按鈕與其既有忙碌流程。
+- P88 新增桌面與 390px 真 Tab／Enter 回歸，先確認舊 receipt 清空及實際焦點，再用含 Enter 字元事件的可信輸入觸發新原生查詢，避免預設值或舊結果掩蓋誤點。現有 reachability 與回歸門檻保留。
+- 修正版完整 CDP：2161／0、零略過、84 段；golden 僅 P88 105→107、total 2159→2161。P38 有一筆預期 `fb-auto-probe`，非預期例外零。另跑網格 partial 312／0、P88 107／0、零瀏覽器例外；兩者分開記錄。runtime 前後 fresh，產品及 harness 來源 hash 不變。
+- 嚴格完整非瀏覽器登錄回歸：70 suites，69 成功、1 Windows GDI 專用在 Linux 具名略過、零失敗、exit 0。`node:tests-js` 533／0／0，expected 僅 513→533；其中 production exact handler 23 tests 及 8 種 guard removal 反例通過。
+- 獨立 Playwright：1280×900／390×900 六個原生 rule／面外 guide 預覽與下載 Save／選檔 Open 流程，188／188；World／history／非空 raw 保持不變，console／pageerror 零。另驗真 Enter 與延遲回應改欄位、點空白、離面不搶焦點。面外 guide 空交集未冒充舊普通 grid v0 精確 fixture，未驗實體手機或 OS Save picker。
+- Windows #158 的偶發 `Rule line control unreachable` 本輪 Linux 尚未重現，未將焦點修補當作其根因已查明；仍保留待查。基底 `b88545e0` partial 310／0 及兩次未完成全量保留為診斷紀錄，不併入最終完整結果。
+## #159 模型庫歷史的瀏覽器收尾（2026-10-07）
+
+- 真瀏覽器先重現三個缺陷：Undo 按鈕停用後失焦到 BODY，使下一個 Ctrl+Y 無反應；Undo 新建專案回到舊 context 後 view lease 永久拒絕；已失效的 scene builder cache 被當成有效草稿鎖庫。
+- 修正只在同 owner／同工作區、無等待中移焦或另行操作時，以 preventScroll 還原原歷史按鈕焦點；最後一步可移至可用的反向按鈕。只有事前固定的目標 entry 精確一步轉移、新 frame、同 session／UI lease 才續租，支援合法跨專案 Undo/Redo；過期 scene cache 不再守門，但不清除 raw/source，真正有效草稿仍阻擋。
+- UI 減項（GEO-219）：延續 #159 將背景原 Undo/Redo 搬入同一專案列的合併方案；沒有新增可見入口、history、工具列或常駐說明。產品只改 `workspace-shell.js`／`space-workspace.js`，公理、核心、app.js、ReferenceWorkspace 與專案格式不變。
+- 回歸：正式 shell／ContextHistory unit 28/28（原 15 + 新增 13，含失效及 guard-removal oracle）；正式 Space 新增 26 個獨立斷言，height/library 86→112、full Space 202→228，其他 floor 不變。Full Space 228/0、獨立 timber-only 79/0 均 exit 0、completed true，browser exceptions／console errors 0。完整 CDP 的原 2054／83 段 golden 維持，最終結果記於後續 PR 收據。
+- 嚴格非瀏覽器 registry 70 suites 全執行：69 成功、0 失敗、1 既定 Windows GDI 平台 skip，exit 0；Node aggregate 510/510，raw mixed-unit census 2186 pass／0 fail／1 skip。只提高 `workspace_shell_history` expected 15→28，沒有使用 update-expected 代替 compare_expected。
+- 獨立 Playwright／Chromium 四 viewport（1382×804、390×844、1280×900、390×900）283/283：真 Tab/Enter／Ctrl+Z/Y/Shift+Z、44px hit／inert／焦點、原 DOM 與 Save 還原、8 次真下載保存及 4 次 filechooser 重開的完整模型／World 比對。另有 10 項完整重跑的 guards、有效／過期 builder 與跨專案專項，均 exit 0。Readonly 使用真 navigator.locks lease＋明列正式 metadata fixture；nested source modal 有正式 API setup，不冒充自然匯入流程。
+- 最終執行來源 runtime `87c07563c038d049e5398eea432bf74184ece6da99fb827a321e20ad2ae91ac6`；原紅例、修正後證據及中途 harness oracle/setup 失敗保留於 `/tmp/geometry-159/`，不混算。首次 recover 的展示座標不持久化；非空 World QA 先真 UI 切換完成合法 layout，再固定事前 oracle，不忽略 `canvas-pos` 差異。
+- 限制：390 是 Linux Chromium viewport，實體手機／IME／Windows 或 macOS 原生 Save picker 未驗；真保存採 download fallback。Hosted CI 依後續 PR 的 exact head 另記，保持 draft，不關閉 #123 的其他工單，也不 merge／deploy。
+
+## #123 S1 — 模型庫的既有歷史入口（2026-10-06 歷史；後續瀏覽器收尾見 #159）
+
+- 有界範圍：閒置3D模型庫中的 Undo/Redo 可見入口與同路徑快捷鍵；沿用唯一 `ContextHistory`、原 `doUndoRedo` 與原DOM按鈕，不改核心、公理、app.js或ReferenceWorkspace。
+- UI減項（GEO-219）：把原本留在modal背景、不可操作的主Undo/Redo控制搬入同一專案列，退出即還原；不新增第二份控制、history、工具列或常駐教學。模型庫移除後不必先退出才到達同一復原操作。
+- 保全：readonly／busy／native pending／草稿／巢狀modal／owner換代拒絕；保存節點與原生手勢不變，readonly仍可查看既有3D。參見 [DOM契約](geometry-web/docs/DOM-CONTRACT.md) 與 [待驗gate](tests/INTEGRATION-GATES.md)。
+- 非瀏覽器有獨立正式registry，不降低既有floor／golden；手機可達、真保存重開、native/browser owner races仍待exact-tree驗收，不宣稱#123或S1全部完成。
+
 ## CONT-20261004 — 八項採納與單writer整合
 
 - 使用者已明示接受八項建議，並授權自行安排順序／並行／批次；[目前接口／owner／採納範圍](geometry-guide/IMPLEMENTATION-QUEUE-20261004.md)。舊準備階段的「全部待採納」保留為歷史，不擴大未明寫條文，也不拿來阻塞已批准工作。
 - 第一波#85/#24收尾、#45單份rawdraft/來源→邊界、#44受控ordinary模型、#77人工多房與#49隔離案例準備；第二波#46/#48與案例保存；#58先六條精確差異/oracle後native→保存→UI。共用project-store/history/app及nativeWorld各單writer，root決定逐stage合併。
 
-## #77 saved-cloud owner 接續 — 共享來源與明選重新關聯（2026-10-04，WIP）
+## #77 saved-cloud owner 接續 — 共享來源與明選重新關聯（2026-10-04，PR #114 已合併 861b65e；原標 WIP）
 
 - 沿 PR114 保存實作接線，不另造 PDF app／module／native parent。共享來源在既有專案資訊顯示；全房 unlink 或原生刪除後仍能明選 source collection／既有 boundary／房間、逐邊核對後重新關聯，不建 placeholder geometry。原圖 asset 與來源集合保留。
 - **本次拿掉／合併（GEO-219）**：共享房間的舊獨立參考頁選單、移除底圖與自動辨識入口合併為同來源房間操作；來源概覽合入既有專案資訊，不新增工具列／常駐教學／工作區。普通面原功能保留。
 - native candidate 指紋與 selected legacy records／receipt 無損遷移仍待 root／sole native owner 協調；拒絕保全不等於成功遷移，draft 不代表 #77 完成。同 head native、browser、ZIP／歷史及必要 full gates 結果回填交接文件與 PR114。
 - #85 PR98已合併main1075058；#24 PR97待root審查，A24實機保留。具體測試／exact head另以各stage真實證據回填，不宣稱採納等於功能完成。
+
+> （2026-10-09 狀態註記：#77 saved-cloud owner 接續原標「WIP」，現況：PR #114 已合併；依據：PR #114 861b65e（2026-10-04T15:15Z）、PR #102 d1a161f（2026-10-04T05:20Z）、PR #115 e09d78d（2026-10-04T11:08Z）。內文「native candidate 指紋與 legacy records／receipt 無損遷移仍待 root／sole native owner 協調」未核對最新狀態（PR #115 標題為 expose detached candidate pins，推論原生端指紋已提供，遷移是否完成未核對）；#77 issue 仍 open，PR #143 另修已合併功能的顯示保留缺陷（head 為 PR #169 祖先，尚未進 main）。各段內「待審／草稿／未合併」等字樣是撰寫當時的歷史，保留不改。）
+
+> （2026-10-09 狀態註記：#24 整合驗收（本段「#24 PR97待root審查」）原標「PR97 待 root 審查」，現況：PR #97 已合併；依據：PR #97 8d08f1a（2026-10-04T04:14Z）；#85 的 PR #98 1075058（2026-10-04T03:46Z）。#24 issue 仍 open（A24 實機未驗，見 GEO-250）。各段內「待審／草稿／未合併」等字樣是撰寫當時的歷史，保留不改。）
 
 ## F4a 保存模型雙向定位 — #47 恢復的有限切片（2026-10-04）
 
@@ -18,6 +338,8 @@
 - 同一保存 record 的既有 native 快照料單與唯一 typed timber root mesh 對照；料單列定位／高亮該模型構件，3D 點選回選該料單列。沒有 live World 同 ID 回退、尺寸猜測、F1b、新公理或保存格式。
 - **本次拿掉／合併（GEO-219）**：readonly 3D 原有重複 ID／世界 z 列合併為既有快照料單的同一呈現；將既有列升為選取操作，沿用已有視角／置中及角材顯示開關，沒有新增工具列或工作區。未保存預覽的核對列保留。
 - 必驗同尺寸 root 0／4 的分別選取、實際三角形命中與遮擋、拖曳／縮放不誤點、record／context／close／late 失效、幾何逐位元不變、保存重開及桌面／手機視口。A24 實體 iOS／OS 檔案對話框仍未驗；不宣稱整張 #47 完成。
+
+> （2026-10-09 狀態註記：F4a 保存模型雙向定位（#47）原標「交 draft PR，由 root 獨立驗收後決定合併」，現況：PR #96 已合併；依據：PR #96 1c83b5e（2026-10-04T03:04Z）。A24 實機、F4b 裁切／餘料／採購、durable identity 仍未完成，#47 issue 仍 open（見 GEO-250、GEO-251）。各段內「待審／草稿／未合併」等字樣是撰寫當時的歷史，保留不改。）
 
 ## GEO-242 — 底圖畫布與選房間的操作性能（2026-10-04）
 
@@ -35,6 +357,8 @@
 
 - 整合來源 `bf10b82` 另完成完整非瀏覽器 50 suites：1551 通過、0 失敗、1 具名 Windows GDI 略過，所有 frozen expected 相符。最後納入 PR74 可見性排除 `7263b83` 及 PR75 規格提案 `f742463`，Node 32/32 再次通過；沒有把提案採納或實作。這兩筆後沒有重跑 full Chromium／全庫，不宣稱最後 main 的全量 exact-head 驗收。
 
+> （2026-10-09 狀態註記：GEO-242 底圖畫布與選房間性能原標「空白鍵平移「尚未修」；整合版「未重跑無 filter full Chromium」」，現況：性能修正已進 main；空白鍵平移守門修復在 PR #153（尚未進 main）；之後已有全綠完整 CDP；依據：bf10b82、7263b83 皆為 origin/main 祖先（7263b83 屬 PR #74，92c1ce5，2026-10-03T20:01Z）；PR #153 head 為 PR #169 的祖先（git merge-base --is-ancestor，2026-10-09）；PR #133 d6b4b45（2026-10-05T10:01Z）正文記錄完整 CDP 2054 項／0 失敗／83 段 golden 相符。「辨識中空草稿輸入互斥」的現況未核對（推論仍待驗）。本檔另一張原誤編為 GEO-242 的 PDF 吸附工單已改號 GEO-245。各段內「待審／草稿／未合併」等字樣是撰寫當時的歷史，保留不改。）
+
 ## PR70 補驗 follow-up — 復原／重做保持忙碌直到操作完成（2026-10-04）
 
 - PR70 已由外部流程合併為 `d5ea531`；原切片、原生快照及保存契約不重做。此 follow-up 基底是包含 PR71／72 的 main `0f3c1a6`。
@@ -46,6 +370,9 @@
 
 - 使用者 2026-10-03 19:47 指定 #45、#44、#46、#48、#49、#57–62、#24：整理最小切片、依賴、驗收、落點、並行與 readiness，加入佇列並提交 draft 文件 PR。初始基底 `0f3c1a6fdd88bbcce4484a256d45900bd1d92313`，後續文件基底 `9ebf52a1b6519356e9ff677e55b9cf167c47b70d`；不改公理或產品契約。
 - 集中入口：[可接續工作包](geometry-guide/CONTINUATION-WORK-PACKAGES-20261003.md)；[決策包](geometry-guide/CONTINUATION-DECISIONS-20261003.md) 的 Q31–Q36 全部待採納。規格 ready 不代表產品已授權／已實作／已驗收。
+
+> （2026-10-09 狀態註記：CONT-20261003 的「Q31–Q36 全部待採納」原標「全部待採納」，現況：2026-10-04 已採納八項明寫建議（非整包）；依據：決策佇列.md 的 CONT-8；geometry-guide/IMPLEMENTATION-QUEUE-20261004.md。各段內「待審／草稿／未合併」等字樣是撰寫當時的歷史，保留不改。）
+
 - 20:23使用者專案檢視報告已完整讀取，去重建立#78–86：[九項優先缺陷／驗證收斂包](geometry-guide/PROJECT-REVIEW-QUEUE-20261004.md)，排在一般新功能之前。20:54完整讀取品質獨立報告，前三項在9ebf52a真native/Chromium已reproduced，root分派assembly-quality/import/navigation三owner修復中，不再只是排隊；新a274尚未重跑這三反例、本worker未改產品。P2最小檔案/交易/typedlocator分工界線已備，禁止另派重做。
 - 已取消的 #47 雙向定位不排入本佇列；PR73 undo/redo 與 PR74 PDF snap 已由原 owner 交付並外部合併，本文件分支不改其產品碼／驗收。保存與共用 app.js 接線另指定一個整合 owner，不競寫。
 - **UI 減項（本輪）**：沒有新增產品 UI／常駐說明；未來 WP45 合併來源配置說明，WP61 沿用來源工作區合併手動／來源細分說明。各 slice 必須寫明具體移除／合併項，否則依 GEO-219 先進決策佇列。
@@ -64,7 +391,7 @@
 
 > 2026-10-03 cloud 事實校正：PR52 已合併 `1805bb5`；PR55 合併至 PR53，PR53 的有限 D34/I42/R35 生成已合併 `68c4ac1`。其他 owner 的 PR63/#54 已合併 `c87be11`、PR64 已合併 `d40dee0`。以下較早工單內「未實作／未合併」保留當時歷史，不能作目前事實。A24 實體手機未驗。
 
-## GEO-241 — 單一保存模型的原生角材快照料單（2026-10-03，#47 bounded 切片，實作中）
+## GEO-241 — 單一保存模型的原生角材快照料單（2026-10-03，#47 bounded 切片，PR #70 已合併 d5ea531；原標「實作中」）
 
 - 隔離分支起於 main f52，已整合 main899（PR69）；只計一個合法保存模型明選 `input.timbers`。同尺寸不同 placement 保留各件；不加入未選根、現行 World 或另一模型，不以 UUID／範本／尺寸／World hash 捏造實物去重。
 - 既有 snapshot 路由在同一 candidate World 追加既有原生 `timberReferences`，重用 pure serializer；尺寸、原點、typed 工程來源及精確支撐不借 live。live 輸出 bytes 保持不變，無新 command／route／保存 schema／公理。
@@ -72,6 +399,8 @@
 - 減項（GEO-219）：模型既有來源 disclosure 內，一對一將「重新檢查」升為「核對並匯出快照 CSV」；普通來源入口不變，無新工具列／工作區／永久說明或幾何附件。匯出前核對同模型 owner、context／history／revision、取消／遲到與連點。
 - Draft PR70：整合 main899 後完整47suites1530pass／0fail／1具名GDI，production121／121及ASan/UBSan121／121；獨立review APPROVE。JS63／63＋21實際native／lifecycle反證，五個新native案例在 immutable f52 baseline都assertion-red，wrong-World mutant3／5 assertion-red，兩World九種live回覆byte-identical。真P83桌面／390px、gcanvas重開、逐bytes下載、changed／missing歷史尺寸、model／context／close／late／repeat守門16／0；只新增P83=16，原1839段計數保留，最後無filter full與exact-head結果以PR70最新正文為準，不宣稱整張#47完成。
 - 既有 model engine 拒絕 assembly-owned snapshot（capability／definition whitelist）；不剝來源或製造保存正例。跨表示去重、模型內完整雙向定位、F4b加工／裁切、durable identity 與 A24實機仍分開。契約見 `geometry-web/docs/MODEL-SNAPSHOT-SCHEDULE.md`。
+
+> （2026-10-09 狀態註記：GEO-241 單一保存模型角材快照料單（#47）原標「實作中；Draft PR70」，現況：PR #70 已合併；依據：PR #70 d5ea531（2026-10-03T17:40Z）。跨表示去重、模型內完整雙向定位、F4b、durable identity 與 A24 仍分開（GEO-251、GEO-253、GEO-250）。各段內「待審／草稿／未合併」等字樣是撰寫當時的歷史，保留不改。）
 
 ## GEO-239 — 現有材料配置的固定規則來源守門（2026-10-03，#45 既有流程修復）
 
@@ -81,6 +410,8 @@
 - 減項：合併進現有 asmBind／材料配置編輯／preview，沒有新 context 入口、操作 registry、工作區、保存格式、公理或原生生成能力；不得稱 #45 F2a 完成。
 - 以真 native 同 tuple／不同語義反例、Node assert-red baseline、正式 Chromium 控制／保存重開／零 preview POST負例與完整整合測試驗證，精確結果另附 PR。A24、F2a 新入口／網格附件契約仍分開追蹤。
 
+> （2026-10-09 狀態註記：GEO-239 固定規則來源守門原標「精確結果另附 PR」，現況：PR #68 已合併；依據：PR #68 f52ed1d（2026-10-03T13:58Z）。各段內「待審／草稿／未合併」等字樣是撰寫當時的歷史，保留不改。）
+
 ## GEO-237 — Runtime 公開靜態來源閉包與精確位元版本（2026-10-03）
 
 - 獨立審查證實既有205個vendor中195個未參與版本，公開documents／正典reader／examples仍live讀；同version可提供不同bytes且fresh仍true。
@@ -89,6 +420,8 @@
 - 啟動缺檔／競態拒絕，增刪檔及同尺寸同時間戳改動仍拒絕fresh；沿用現行保全dump與過期拒絕策略。
 - 減項：合併server與runtime兩份vendor路由枚舉；不新增UI入口、常駐說明、公理、保存或安全設定。
 - 隔離四檔修正44592ec由另一agent獨立審查，55/55 tests及兩個assertion-red故障注入；282static／205vendor路由集合不變。最終整合head完整驗證另附PR，未部署或觸碰用戶服務。
+
+> （2026-10-09 狀態註記：GEO-237 Runtime 公開靜態來源閉包原標「最終整合 head 完整驗證另附 PR」，現況：PR #66 已合併；依據：PR #66 9e252ae（2026-10-03T12:12Z）。各段內「待審／草稿／未合併」等字樣是撰寫當時的歷史，保留不改。）
 
 ## GEO-236 — 原生角材支撐來源正式接線與 CSV 核對（2026-10-03，#47 F4a）
 
@@ -108,6 +441,8 @@
 - PR63已由其他owner合併main `c87be11`；本分支整合其format9、房間P79=72並保留料單P80=23。完整整合驗證與最終exact head待回填；GitHub Actions帳務阻塞不冒稱綠，未改billing。
 - 整合候選 `a5e9d6e` 完整非瀏覽器1349/0/1具名GDI略過、真Chromium1805/0/0skip且76段golden matched，獨立space183/0、ASan/UBSan56/56。但獨立審查另抓到 `loadLegacy` 遲到插入三個enabled控制；真瀏覽器已反證確認途中可輸入99。因此不能因全量綠就停止修復。
 - 補鎖遲到控制只增補既有Map，不重捕已disabled舊控制；成功／拒絕恢復新增控制的原狀，legacy handlers亦守busy。修正 b064646 已push且獨立review無P0/P1/P2；同head完整native1349/0/1具名GDI、P76focused72/0/raw0、space183/0、完整無filterChromium1809/0/0skip且76段golden全等（首次CDP中斷及重跑紀錄另保留）。PR56尚未合併；發現最新main d40又增PR64，因此整合新main并驗GEO235測試基礎設施修正後再合併。Actions included minutes已2000/2000、11月1日重置；七CI jobs未執行，不冒称綠，未重跑相同CI、改billing／policy或付費。
+
+> （2026-10-09 狀態註記：GEO-233 確認期間參數輸入保全原標「內文「PR56尚未合併」（標題寫已合併 PR56）」，現況：PR #56 已合併，標題正確；內文為撰寫當時；依據：PR #56 693a1c8（2026-10-03T11:21Z）。各段內「待審／草稿／未合併」等字樣是撰寫當時的歷史，保留不改。）
 
 ## GEO-234 — 原生角材完成尺寸料單（2026-10-03，#47 F4a，原 GEO-232 編號避重）
 
@@ -129,7 +464,26 @@
 - 9個登記純Node回歸驗global lexical／statement、pending／並行持有、拒絕／syntax清理、協定失敗單次mutation、錯誤保存與更換document不污染。真Chromium強制GC正反例／独立review／最終同head完整CDP另回填PR，未完成不得宣稱。
 - 不改產品功能、公理、正常native核心、保存格式或UI；不新增可見入口／常駐說明。GEO-234料單改號避免與另一執行者已合併的GEO-232效能工單重號，原歷史證據仍按exact head保留。
 
-## Issue #54 — 來源房間輪廓候選（2026-10-03，PR #63 待審）
+> （2026-10-09 狀態註記：GEO-235 全量 CDP Promise 保全原標「另回填 PR，未完成不得宣稱」，現況：修正 c1bc566 已隨 PR #56 進 main；依據：c1bc566 為 origin/main 祖先；PR #56 693a1c8（2026-10-03T11:21Z）。各段內「待審／草稿／未合併」等字樣是撰寫當時的歷史，保留不改。）
+
+## Issue #54 — 來源房間輪廓候選（2026-10-03，PR #63 已合併 c87be11；原標「PR #63 待審」）
+
+> （2026-10-09 狀態註記：Issue #54 單房輪廓候選原標「PR #63 待審；PR #72 草稿、未合併」，現況：已合併；依據：PR #63 c87be11（2026-10-03T09:44Z）、PR #72 0f3c1a6（2026-10-03T18:38Z）。單房收尾 PR #153（平移路由）、PR #155（單房尺寸 Enter）的 head 皆為 PR #169 的祖先，#169 合併後才進 main；#54 issue 仍 open（單房效率見決策佇列 2026-10-09 決策 H）。各段內「待審／草稿／未合併」等字樣是撰寫當時的歷史，保留不改。）
+
+### 單房流程收尾（2026-10-06）
+
+- 本輪基準 main `5e0e92b850209e9e2895612148694c1d1e1e4815`。PR63／64／76 與後續熱修已有實作，舊工單敘述不是現況；逐條補驗原六項驗收，不擴大到 #87 多候選或新持久候選格式。
+- 真 Chromium 在選房中及待確認候選時，Space 拖曳 `(80,45)` 均被房間 pointermove 路由攔截，相機位移 `(0,0)`；H 平移同操作為 `(80,45)`，正式幾何不變。取得 root 的 PR151 窄窗口授權後，僅在 `feMove`／`feUp` 讓已開始的 pan 優先，含注入取消選房後舊起點誤吃 pan 放開的反例；不改導航、選取焦點或 PDF 資源。
+- 候選仍為當次 `room-outline-candidate/1` 草稿，確認收據沿用既有格式。補充 ordered cyclic-ring／連通 oracle、正式 UI Save → 新空白 Open、來源失效與 Worker 晚回覆證據；不改核心、公理、floor 或 golden。逐條映射、重現命令與證據限制見 [本輪驗收](geometry-web/docs/issue54-closeout-20261006.md)，最終 exact-SHA 結果記在本分支 PR。
+- GEO-219：沒有新增或搬動可見入口、說明或工作區；只修既有 Space 平移行為並補獨立回歸。
+- 私人來源已走本環境現行 Library consumer，取得 bytes 受阻：`hosted apps tools/list request failed: network`（helper exit 1），未猜 URL 或繞權限。合成證據不能替代實圖；實體手機、IME、OS picker 及真人操作時間保持未驗，機器操作次數／時間另列。
+
+### 單房尺寸鍵盤套用（2026-10-06，PR153 後續獨立切片）
+
+- 原版真键盤在候選第 2 邊輸入 1200 後按 Enter 不套用，按既有按鈕則正常。只在 `refRoomLength` 加 Enter 等價入口，沿用 click validator 與草稿更新；不改逐邊 review、正式 Confirm、核心或保存契約。
+- 同步檢查連線節點、現行 inspector pane 及現行 input，拒絕取消／重繪後的舊節點晚事件。組字不 preventDefault；repeat／修飾鍵不套用；Escape 保持原路由。
+- GEO-219：沿用同一尺寸欄與套用按鈕，沒有新增可見入口、常駐說明或工作區。只減少此步必須移到按鈕的需要，不宣稱整體效率已改善。
+- 正常與反例由獨立 `room_outline_keyboard_browser.js` 驗，完整命令／限制見 `tests/INTEGRATION-GATES.md`；精確最終 SHA 與實跑數據由此切片的 draft PR 記錄。PR153 的 pan head 保持凍結，實體 IME／手機未驗。
 
 ### 校準後輪廓入口熱修（2026-10-03）
 
@@ -287,6 +641,9 @@
 - **相依**：無。**估時 1h**。
 
 ### GEO-024 place at-guides 的 guides 必須屬於同一面——補明確錯誤
+
+> （2026-10-09 狀態註記：實質作廢。`guide_line_intersection` 已自 `current_geometry.c` 消失（grep 0 筆），`at-guides` 語法已由 GEO-123 廢除；但 `ANCHOR_AT_GUIDES` 列舉與報告文字「參考線交點」仍殘留兩處（約 :3632、:12914），2026-09-20 稽核缺口 3 未結案——殘留死碼的清理另案，本單不做。）
+
 - **內容**：現在靠 `guide_line_intersection` 的 surface_id 檢查間接拒絕；在 `apply_place_line` 先分別檢查 `guide_a->surface_id == surface_id` 給出「參考線不在指定面上」的明確訊息。
 - **驗收**：跨面 guide 組合報新訊息；同面同方向仍報舊訊息。
 - **檔案**：~L3828。
@@ -577,7 +934,7 @@
 
 ## 工單統計
 
-- 總數：**46 張**（GEO-001~004、010~018、020~026、030~036、040~043、050~053、060~063、070~078、080~083）
+- 總數：**52 張**（原誤記為 46 張；2026-10-09 逐一數 `### GEO-0xx` 標題為 52，與下列範圍 4+9+7+7+4+4+4+9+4 加總一致）（GEO-001~004、010~018、020~026、030~036、040~043、050~053、060~063、070~078、080~083）
 - 估時 30min：GEO-003、014、015、016、017、030、031、050、052(標記)、053、060、061、063
 - 估時 45min~1h：GEO-001、004、010、012、013、020、021、022、023、024、026、032、033、034、035、036、040、043、062、075、076、083
 - 估時 1.5h~3h：GEO-002、011、018、025、041、042、051、052(重產)、070、071、072、073、074、077、078、080、081、082
@@ -658,28 +1015,40 @@
 > 來源：TimberScript Core Charter §2a 與拍板清單，形式化為「層級是段的性質」（D16）。
 > 工單順序即依賴順序；每張都以公理層條文為驗收基準，條文與實作不一致時**改實作**。
 
-### GEO-090 ⚡ `timber` 加 `role` 子句 + 場景檔遷移
+### GEO-090 ✅ 已做(2026-10-09 盤點確認，完成日未記) ⚡ `timber` 加 `role` 子句 + 場景檔遷移
+
+> （2026-10-09 狀態註記：原標題無完成標記；現況依據：角材 `role` 子句已在 `current_geometry.c` 解析（約 :9410）。）
+
 - **內容**：`apply_timber_line` 解析 `role boundary|primary|secondary|custom [priority N]`（D15）；`Timber` 加 `role`/`cut_priority` 欄位；`world_dump_dsl` 輸出；沒 role / custom 沒 priority / priority 配非 custom → 拒絕（I18）。所有 `*.scene` 夾具與 web 六面盒模板、canvas_test/cdp_test 內嵌的 `timber` 行全部補角色。
 - **驗收**：舊夾具不補角色時 parse 拒絕且訊息指名行號；補完後 dump→loadfile→dump 逐字相同；`newid`/`objects`/`delete` 不受影響。
 - **檔案**：`current_geometry.c`（apply_timber_line 7640、dump 8316 附近）、`geometry-web/web_bridge.c`、`*.scene`、`geometry-web/app.js` 角材表單。
 - **測試**：canvas_test 加「無 role 拒絕」「custom 無 priority 拒絕」「dump round-trip」。
 - **相依**：無。**估時 2h**。
 
-### GEO-091 主支軸一致（D17、I21）
+### GEO-091 ✅ 已做(2026-10-09 盤點確認，完成日未記) 主支軸一致（D17、I21）
+
+> （2026-10-09 狀態註記：原標題無完成標記；現況依據：`V_PRIMARY_AXIS` 診斷存在（約 :8218）。）
+
 - **內容**：`world_revalidate` 與 `apply_place_line` 內推導承載面主支軸（全部 primary 長度軸唯一；無 primary 時取 boundary 的垂直方向）；boundary/secondary 與主支軸平行 → `V_PRIMARY_AXIS`。
 - **驗收**：同面第二支 primary 換軸 → 拒絕；先放 boundary 再放與它平行的 primary → 拒絕；刪掉唯一 primary 後軸由 boundary 推得。
 - **檔案**：`current_geometry.c`。
 - **測試**：夾具 `_role_axis_*.scene` 三個 + canvas_test。
 - **相依**：GEO-090。**估時 1.5h**。
 
-### GEO-092 端面優先序與延伸段（I19、I22）
+### GEO-092 ✅ 已做(2026-10-09 盤點確認，完成日未記) 端面優先序與延伸段（I19、I22）
+
+> （2026-10-09 狀態註記：原標題無完成標記；現況依據：`V_CUT_PRIORITY` 診斷存在（約 :7680）。）
+
 - **內容**：`resolve_auto_span`（6436）與明寫放置的端面檢查：每個端面所頂擋面的擁有者優先級必須 < 自己（外輪廓/孔邊/柱面 = 0；轉角兩支 boundary 互頂例外）；違反 → `V_CUT_PRIORITY`。boundary 的固定段/延伸段切分（D16）：延伸段端面豁免 I19；延伸段側面作擋面時以優先級 2 計；非 boundary 角材不得有超出定位邊的段。
 - **驗收**：主支端面頂 RC → 拒絕；副支端面頂 RC → 拒絕；主支端面頂副支側面 → 拒絕；L 形內邊 boundary 延伸過凹角停在長主支側面 → 接受且長主支 footprint 不變；同一支延伸段被主支端面頂 → 拒絕、被副支頂 → 接受；凸角處延伸 → 因 I5 出界拒絕（不需新錯誤碼）。
 - **檔案**：`current_geometry.c`（collect_stop_faces 6244、resolve_auto_span 6436、apply_place_line 7979）。
 - **測試**：夾具 `_role_priority_*.scene` 六個（對應上列驗收）+ 變異殺手（把 boundary 改 primary 必須被拒）。
 - **相依**：GEO-090、GEO-091。**估時 3h**。
 
-### GEO-093 邊界材整條覆蓋 + 角色衍生屬性（I20、R18）
+### GEO-093 ✅ 已做(2026-10-09 盤點確認，完成日未記) 邊界材整條覆蓋 + 角色衍生屬性（I20、R18）
+
+> （2026-10-09 狀態註記：原標題無完成標記；現況依據：`timber_role_props`、`V_BOUNDARY_ROLE` 存在（約 :7502）。）
+
 - **內容**：R18 的 `onBoundary` / `coversEdge` / `boundaryEdge` 純幾何推導（只看外輪廓、不看孔邊、不看錨法）；I20：boundary 的固定段 ⊇ 邊區間、邊為 FIXED 外輪廓邊且 ⊥ 主支軸，否則 `V_BOUNDARY_ROLE`（訊息含料件、邊索引、覆蓋長度/邊長）；secondary 必 onBoundary=false。bridge `objects` 的 timbers 與 `dump` 註解一併輸出三個屬性。
 - **驗收**：用 `through` 貼齊邊的料 onBoundary=true；at-edge 放卻被裁短的料 coversEdge=false 且若宣告 boundary → 拒絕；孔邊上的料 onBoundary=false；`objects` 回傳欄位存在。
 - **檔案**：`current_geometry.c`、`web_bridge.c`。
@@ -693,7 +1062,10 @@
 - **測試**：如上。
 - **相依**：GEO-093。**估時 2h**。
 
-### GEO-095 web UI：角色與層級可見
+### GEO-095 ✅ 已做(2026-10-09 盤點確認，完成日未記) web UI：角色與層級可見
+
+> （2026-10-09 狀態註記：原標題無完成標記；現況依據：角色 UI 見 GEO-195／GEO-196（✅ 2026-09-26）。）
+
 - **內容**：面內「角材」分頁的表單加角色選單（預設 primary；custom 顯示 priority 欄）；面內圖層列與卡片顯示角色徽章與 onBoundary/coversEdge；`V_CUT_PRIORITY`/`V_BOUNDARY_ROLE`/`V_PRIMARY_AXIS` 的 toast 原文顯示並高亮相關兩支料；DOM-CONTRACT 補新 id。
 - **驗收**：cdp_test 新段：放 boundary→primary→secondary 各一支成功；放與主支軸平行的 boundary → toast 且畫面高亮；L 形延伸案例在 UI 內可完成。
 - **檔案**：`geometry-web/app.js`、`app.css`、`index.html`、`cdp_test.js`、`docs/DOM-CONTRACT.md`。
@@ -717,7 +1089,10 @@
 > **收流關卡**：本流全部完成後必須跑一次完整 40+ 個變異（`python tests/mutate.py` 不帶參數），
 > 因為只跑子集會覆寫 `tests/mutants_results.json`；GEO-097 當下是先跑 M31–M33，再把結果併回備份 `tests/mutants_results.json.bak-geo097`。
 
-### GEO-097 ⚡ `ReferenceGrid` 來源化重構（純重構，行為不變）
+### GEO-097 ✅ 已做(2026-09-16，2026-10-09 補標) ⚡ `ReferenceGrid` 來源化重構（純重構，行為不變）
+
+> （2026-10-09 狀態註記：GEO-097～101 各有「完成紀錄（2026-09-16，尚未 commit）」卻從未補 ✅；其功能（`series` 來源、PANEL_LAYOUT、grid 來源化等）現已在 `current_geometry.c`，「尚未 commit」是 2026-09-16 當時狀態。GEO-099 的 I23 網格引用鎖後來由 GEO-123 解除。）
+
 - **內容**：`ReferenceGrid` 改成 `GridAxisDef axis[2]`（1285），新增 `GridSource` 列舉（NONE / EXPLICIT / SERIES / PANEL）；`GRID_MAX_LINES` 32→64；新增唯一展開入口 `grid_axis_lines` 與薄包裝 `grid_line_coord`，本票只實作 EXPLICIT 分支；`grid_is_valid`（1306）改成迴圈跑兩軸、外接區間檢查移進 `grid_axis_lines`；`apply_grid_line`（8486）、`apply_place_line` 的 at-grid 分支（8800）、`world_dump_dsl`（11121）改用新欄位；死程式碼 `world_find_grid`（8384）復活並補 `world_find_grid_mut`，取代 8526／8802／10820 三處 inline 迴圈。
 - **驗收**：`python _run_tests_cmd.py` 全綠且**輸出逐字不變**；`python tests/mutate.py M31 M32 M33` 仍 killed；dump→loadfile→dump 逐字相同；明寫 65 條座標 → reject「超過單軸上限」（現況 33 條的拒絕路徑無測試，本票補上）。
 - **檔案**：`current_geometry.c`（1270-1348、8384-8393、8486-8643、8800-8838、10820、11121-11140）。
@@ -741,7 +1116,7 @@
 > (2) 全檔無 `World` 的 `fwrite/fread` 或固定位元組序列化假設，歷史快照與 memmove 都用
 >     `sizeof(World)` 動態算，容量放大不會打到任何序列化契約。
 
-### GEO-098 `series` 來源（等差簡寫）
+### GEO-098 ✅ 已做(2026-09-16，2026-10-09 補標) `series` 來源（等差簡寫）
 - **內容**：`apply_grid_line` 軸段解析加分派——`u`／`v` 後第一個 token 是 `series` 則吃 `start step count`（座標一定過 `parse_i64`、`series` 過不了，故無歧義）；`grid_axis_lines` 的 SERIES 分支（第 k 條 = start + k·step）；`step ≤ 0`／`count == 0`／任一條出界 → 拒絕；`world_dump_dsl` 輸出 `u series <start> <step> <count>`；`SCENE_COMMANDS` 的 grid 列（11390）usage 更新。
 - **驗收**：`grid 1 on 1 u series 1000 2000 2` 與 `grid 1 on 1 u 1000 3000` 推出相同格線、相同角材長度（`lengths` 逐一相同）；dump 輸出 series 形式且重放逐字相同；`step 0`／`count 0`／尾端出界三種 reject 且訊息可辨。
 - **檔案**：`current_geometry.c`。
@@ -754,7 +1129,7 @@
 > dump 輸出的是來源形式 `grid 1 on 1 u series 1000 2000 2`（不是展開座標），往返逐字相同;
 > `check_panels.py` unresolved: none。
 
-### GEO-099 ⚡ grid 交易化 + I23 網格引用鎖
+### GEO-099 ✅ 已做(2026-09-16，2026-10-09 補標) ⚡ grid 交易化 + I23 網格引用鎖
 - **內容**：`apply_grid_line` 回寫路徑改走交易——既有槽位用 `world_replace_object`（7258），新增槽位用 `World backup` + `world_revalidate`；移除 8584-8591 的「同軸一律不可重宣告」，改成 I23(a) 守門：對每個 `anchors[i].ref_grid == id && ref_grid_axis == axis` 的已放角材，用**舊定義**與**候選定義**各推一次該索引座標，不相等或候選推不出來 → `V_GRID_LOCKED`；`world_revalidate` 的角材迴圈加 I23(b)；`delete grid` 守門（10827）訊息統一成 `V_GRID_LOCKED`。
 - **驗收**：往既有明寫軸追加格線 → accept；改動已錨定索引的座標 → reject `V_GRID_LOCKED`；錨在 u 軸後仍可補 v 軸 → accept；重宣告使某條被錨定的線消失 → 整筆回滾且 `dump` 與先前逐字相同；`_edge_grid_twoline.scene` 仍 accept 且 lengths 不變。
 - **檔案**：`current_geometry.c`（8486-8643、7286-7330、10817-10837）。
@@ -775,7 +1150,7 @@
 > **驗證環境警告**：跑變異時務必確認死因不是「例外 [WinError 4551]」——
 > 那是 SAC 擋掉 `_mut.exe` 的假死，見 GEO-108。
 
-### GEO-100 面材推導 PANEL_LAYOUT 對縫（D10a）
+### GEO-100 ✅ 已做(2026-09-16，2026-10-09 補標) 面材推導 PANEL_LAYOUT 對縫（D10a）
 - **內容**：`GridAxisDef` 的 panel／gap／anchor 三欄；解析 `panel <p> gap <g> [from <c>]`，**anchor 宣告當下具體化**（未寫 `from` 取當下 `placement_local_bounds` 的該軸下界）並寫進定義；`grid_axis_lines` 的 PANEL 分支照 D10a 直譯（`c_k = a + k·T + panel + gap/2`，產生條件 `a+(k+1)·T < hi`）；gap 奇數／panel ≤ 0／gap < 0／anchor 出界／超上限各自的人話訊息；dump 輸出 `u panel P gap G [from A]`（`from` 只在 `anchor_explicit` 時輸出）；**`geometry-web/app.js:2252-2256` 的 `^grid` regex 收緊成只吃純數字串**，認不得的來源型式忽略不畫（停損，見流末）。
 - **驗收**：3600×3000 面、`u panel 400 gap 20` → **恰 8 條線：410 / 830 / 1250 / 1670 / 2090 / 2510 / 2930 / 3350**；在 index 0 與 index 7 放 auto 主支，長度與明寫等價場景一致；`gap 21` → reject「縫寬必須為偶數」；`panel 1 gap 0` 於 4000 面 → reject「超過單軸上限」；面寬 300 小於 panel 400 → accept 且該軸零條線，此時 at-grid index 0 → reject「本軸共 0 條」；dump 重放逐字相同；web 面內編輯器載入 PANEL 場景不畫出錯誤格線。
 - **檔案**：`current_geometry.c`、`geometry-web/app.js`（一行 regex）。
@@ -805,7 +1180,7 @@
 > `_edge_grid_panel_shrink.scene` 保留為「縮面整筆回滾」的回歸測試，但它擋的是邊界材出界。
 > 若 GEO-109 放寬「只有 boundary 可頂 RC」，這個殺手就做得出來。
 
-### GEO-101 ⚡ `between(face, face)` 明寫兩端（D18、R21）
+### GEO-101 ✅ 已做(2026-09-16，2026-10-09 補標) ⚡ `between(face, face)` 明寫兩端（D18、R21）
 - **內容**：`StopFaceRef` 型別與解析（**重用 `parse_edge_ref` 8399**，只多一個 `t<id>` 分支）；`apply_place_line` 選擇器區（8886）加 `between` 分支，與 `through` 互斥；`resolve_auto_span`（6895）加 `const StopFaceRef *between` 參數，在選區間（7050）與兩端擋面檢查（7083）插入 R21(b)(c)(d) 的指名路徑——改用 `pick_stop` 的**條件**去驗被指名的那一面，而不是數有幾面；`SpanStatus`（6864）尾端追加 `SPAN_BETWEEN_BLOCKED`、`SPAN_BETWEEN_AMBIGUOUS`；`SCENE_COMMANDS` 的 `place` max_fields 12→**13**（11401）。
 - **⚠ 連動**：`geometry-guide/make_guide.py:574` 的 callout `"place", 8, 12, true,` 必須同步改 13，否則 `check_panels.py` 會 unresolved（已實測確認）。
 - **驗收**：`_edge_stop_ambiguous.scene` 的歧義場景改用 between → accept 且長度等於明寫值；between 指到 FREE 邊 → reject；兩端之間被已放角材擋住 → reject；`between t5 t9` 有兩組合法配對 → reject 並列舉全部候選；through 與 between 同寫 → reject；I19 違規的 between（主支端面頂 RC 邊）仍 reject `V_CUT_PRIORITY`；`check_panels.py` exit 0。
@@ -877,6 +1252,9 @@
 
 ### GEO-107 ✅ 已完成(2026-09-16) 定位邊改成純幾何推導,不再讀 anchor_kind
 - **狀態**：2026-09-16 於 GEO-097 的往返驗證中發現，**既有缺陷**（改版前後同樣重現，與網格來源化無關）。尚未修，需先拍板修法。
+
+> （2026-10-09 狀態註記：本行「尚未修，需先拍板修法」與下方「修法待拍板」是 2026-09-16 發現當時的歷史；標題 ✅ 與下方〈GEO-107 完成紀錄〉為現況——原案改採「把實作改回條文」（`boundary_edge_interval` 取代讀 `anchor_kind` 的 `anchor_edge_interval`）。）
+
 - **現象**：`_role_ext_stop_primary.scene` 可正常載入，但 `dump` 出來的結果無法重放——
   `place 4 on 1 at-edge e2 +u +n` 被 dump 成 `place 4 on 1 at 1014 1000 +u +n`，
   重放時回報 `V_CUT_PRIORITY：角材 4（優先級 1）端面頂到角材 3（優先級 2）側面`。
@@ -1454,6 +1832,8 @@
   **現在跑測試必紅,原因是條文比實作新,不是程式壞了。**
   上一個 commit(c8a387a)的 grid-ref / span-auto 實作也被本批作廢。
 
+> （2026-10-09 狀態註記：上段「實作尚未跟上」「現在跑測試必紅」是 2026-09-18 條文剛入層時的狀態，已被 GEO-125（✅ 已修 2026-09-18）與 GEO-127（122/122 全過）取代。）
+
 ### GEO-124 ✅ 已修(2026-09-18) 清掉 GEO-123 留下的新舊條文矛盾
 - **起因**:使用者請另一個 agent 檢查閱讀器,指出「同一條文裡出現互相相反的要求」。
   逐條驗證後**屬實,且是 GEO-123 造成的**——改條文時只更新了 `body`,
@@ -1939,6 +2319,8 @@
 
 ## 第 0～8 流稽核結果(2026-09-20,fresh-context agent 唯讀盤點)
 
+> **已過期（2026-10-09）**：本稽核表是 2026-09-20 的快照，現況見本檔頂端「2026-10-09 帳本對齊與收尾拆單」節的「舊工單現況」對照與各工單處的 2026-10-09 註記。表內「未完成」的 GEO-014、015、016、020、031、032、036、041、043、053、062、081 現在都已做；GEO-024 實質作廢；統計數字（已完成 19／未完成 24／已不適用 8／無法判定 1）與「建議施工優先序」同樣已不成立。為保留當時判斷，下文不刪改。
+
 舊工單(GEO-001～083,實際 52 張;BACKLOG 開頭自稱 46 張是錯的)立於 2026-09-12,
 從未標過完成狀態。2026-09-20 派 agent 以 repo 實況逐張核對(唯讀,未編譯未跑測試),
 判準只採客觀證據(檔案存在與否、`current_geometry.c` 的函式/字串、`run_tests.py` 的 TESTS、夾具檔)。
@@ -1946,6 +2328,8 @@
 **統計:已完成 19、未完成 24、已不適用 8、無法判定 1。**
 
 ### 仍值得做(依價值排序,agent 判斷)
+
+> （2026-10-09：本清單已過期，其中 GEO-014、020、030、035、041、043、053、081 等已做，見頂端對照；僅留作 2026-09-20 的判斷紀錄。）
 
 1. **GEO-075** 下料清單加總同規格數量——離「能拿去現場用」最近的一步
 2. **GEO-043** Space 尺寸/體積報告(W×D×H)——六面封閉都判得出來,卻不印房間淨尺寸
@@ -2084,6 +2468,8 @@ GEO-018「scene 格式文件」已由 `公理層.md`(SSOT)承載。
 
 ## 統計
 
+> （2026-10-09：以下統計已過期，勿引用；請以頂端「舊工單現況」為準。）
+
 - 已完成：19（002,003,010,011,012,013,017,021,025,026,040,050,051,060,061,071,073,078,080）
 - 未完成：24（014,015,016,020,024,030,031,032,033,035,036,041,042,043,053,062,063,074,075,076,077,081,082,083）
 - 已不適用：8（001,004,018,022,023,052,070,072）
@@ -2091,6 +2477,8 @@ GEO-018「scene 格式文件」已由 `公理層.md`(SSOT)承載。
 - 合計：52（BACKLOG 自稱 46，數字有誤）
 
 ## 建議施工優先序（真的還沒做、現在仍值得做）
+
+> （2026-10-09：本優先序已過期，所列十項多數已完成，勿據此排程。）
 
 1. **GEO-075** 下料清單加總——專案的實際用途是木作施工，逐支列印座標但不加總同規格數量，是離「能拿去現場用」最近的一步。
 2. **GEO-043** Space 尺寸/體積報告——六面封閉都判出來了卻不印房間淨尺寸 W×D×H，基本實用資訊缺口。
@@ -2803,6 +3191,8 @@ apply_place_line 的四個(`if (timber->placed) {`、`world_find_placement(world
 **為什麼這輪不做**:第 5 流(文件與導讀同步)的工作,要逐面板重讀程式,不是順手能收的;
 GEO-100 記過「改 C 要同步 make_guide.py 的 callout」但沒有守門測試,所以一路飄到現在——
 建議做的時候順手把 `check_panels.py` 加進 tests 的固定清單,讓它以後會紅。
+
+> （2026-10-09 狀態註記：上段「為什麼這輪不做」是立項當時的取捨；GEO-182 標題已是 ✅ 已做（2026-09-25），現況以標題為準。）
 
 ### GEO-180 ✅ 已做(2026-09-22)P1:「面·多邊形——逐點閉合(正交)」設計澄清落地(主畫布 P + 面內 e 共用狀態機)
 
@@ -4129,7 +4519,10 @@ Refs GitHub #19–#24。第一階段整合原生固定版本規則、局部型�
   修正 P5 隱藏分頁測試與 P3 進入表單的等待；更新後 P3 局部 48 項、其中 P3 全部
   14 項通過。最後的整輪重跑因收斂本次驗證範圍而停止，不宣稱整輪通過。
 - 不改公理、核心幾何、保存語意或正典閱讀器；不重置使用者服務。
-## ISSUE-45 — 單一網格原始輸入保存／續編（2026-10-04，實作驗證中）
+
+> （2026-10-09 狀態註記：GEO-232 畫布繪圖、hover 與版本檢查效能原標「完整畫布回歸仍未取得全綠」，現況：PR #64 已合併；之後的整合版已有全綠完整 CDP；依據：PR #64 d40dee0（2026-10-03T10:33Z）；本檔 GEO-233 記錄 b064646 無 filter Chromium 1809／0／0 略過、76 段 golden 全等。各段內「待審／草稿／未合併」等字樣是撰寫當時的歷史，保留不改。）
+
+## ISSUE-45 — 單一網格原始輸入保存／續編（2026-10-04，PR #104／#111 已合併；原標「實作驗證中」）
 
 - 已核准範圍：一個專案至多一份來源或配置 raw form；空白、錯誤、非作用中欄位與前後空白可保存、重開原值，未確認前不改 World。只有真 native 預覽及使用者確認才能發布；同一步保存 native 變更並收起對應草稿，undo/redo 一起恢復／收起。來源、參數、邊界與頂點身分在發布前核對，不用同編號的新值替換舊草稿。
 - 接線：既有無限網格建立入口續編保存的草稿；輸入事件與保存前 flush 擷取原字串；載入期间原始欄位鎖定且保存拒絕；遲到回覆不重寫整份 raw form。未知確認結果保留原稿及回執租約，暫停編輯，返回畫布後按同一 request receipt 恢復，不重送 mutation。
@@ -4137,28 +4530,36 @@ Refs GitHub #19–#24。第一階段整合原生固定版本規則、局部型�
 - 證據仍須真 desktop／390px app、完整 ZIP 保存重開、載入／晚回覆負例、native 取消／確認與一步 undo/redo、未知結果 receipt recovery；CLI／VM 模擬不代替真瀏覽器，A24 實機 IME／chooser／下載另留未驗。
 - restored raw 解讀／來源回歸：未知排格 enum 原字串可保存，解讀時明拒；保存與被動重開不補目前 catalog 的 pin，明選才建立證據。`grid_raw_provenance_browser_test.py` 必須跑真 v10 檔案入口、缺／錯 pin、native 刪除重建、真 ZIP 保存與 fresh browser 重開、明選正例、取消／確認及一步 undo/redo；local raw 編輯依既有 metadata history 記錄，不能冒稱 native 變更。
 
-## ISSUE-77 — 來源歷史保全與多房間共享基準（2026-10-04，接線驗證中）
+> （2026-10-09 狀態註記：ISSUE-45 單一網格原始輸入保存／續編原標「實作驗證中」，現況：PR #104／#111 已合併；依據：PR #104 b0031a0（2026-10-04T08:30Z）、PR #111 f1b9f9d（2026-10-04T08:53Z）。F2b 擴大生成、多份 draft、A24 實機仍分開，#45 issue 仍 open（GEO-252、GEO-250）。各段內「待審／草稿／未合併」等字樣是撰寫當時的歷史，保留不改。）
+
+## ISSUE-77 — 來源歷史保全與多房間共享基準（2026-10-04，PR #114 已合併；原標「接線驗證中」）
 
 - 經使用者批准，含紀錄或原核對收據的明選原頁轉入 `source-rooms/2` 有界歷史附件；原紀錄未知 JSON 欄位、待補 null 與完整原收據保留。`source-room-history/1` 能力標記使不支援的閱讀器明拒，無歷史的既有 `source-rooms/1` 維持原格式。來源原檔隨歷史平面閉包保存；歷史邊界號不推定仍是現行原生物件。
 - 減項（GEO-219）：原頁的可編輯紀錄與舊核對狀態合併到既有房間來源區／專案資訊的按需唯讀歷史，不增工具列或工作區。一次顯示所選原頁，舊收據不確認目前房間；共享基準改變只標記現行房間需複核。
 - 明選 adoption 先驗原始 JSON 並凍結原頁、收據與附件，原生指紋回覆後再守住上下文；一筆 local undo 同時恢復原頁、紀錄、原收據與附件。解除房間列表保留歷史及原生幾何；含歷史的平面拒絕移除，避免默刪原檔或證據。
 - 驗證須包含真 owner/browser 明選、完整 ZIP／fresh-context 原檔與原資料全等、一步 undo/redo、basis-change、stale/cancel/未知回執、新 ID 拒覆蓋與版本／容量拒絕保全；native 候選指紋由獨立 native owner 提供，同版 consumer 與完整 gates 通過前保持 draft。
 
-## ISSUE-44 — 明選現行來源更新同一模型（2026-10-04，接線驗證中）
+> （2026-10-09 狀態註記：ISSUE-77 來源歷史保全與多房間共享基準原標「接線驗證中」，現況：PR #114 已合併；依據：PR #114 861b65e（2026-10-04T15:15Z）、PR #102 d1a161f（2026-10-04T05:20Z）。各段內「待審／草稿／未合併」等字樣是撰寫當時的歷史，保留不改。）
+
+## ISSUE-44 — 明選現行來源更新同一模型（2026-10-04，PR #99／#113 已合併；原標「接線驗證中」）
 
 - 既有模型修改入口保留保存來源的牆高修改，另明選現行放置面、外環邊、角材／柱樑及投影用途；準備與差異候選不寫模型。確認前重讀來源、重跑完整 producer，最後 guard 後同步 `updateSpaceModel` 替換同 record，一筆 local undo 保存完整舊來源／input／全部結果包。
 - `ReferenceWorkspace.getModelOperationState()` 提供凍結的操作快照與 opaque scalar 身分；模型 UI 不再讀 context/history 內部。保存／載入／group／未知確認／連線／編輯權限等拒絕由 owner 判定；服務 session 變更使候選失效。候選、明選及 pin 只在對話框內，取消丟棄，不增保存 schema 或 F 附件。
 - 減項（GEO-219）：沿用「修改模型」與原牆高區；原高度摘要和獨立常駐說明合併，兩種來源差異在同摘要說明，移除重複 help 段，不另加模型列表或常駐更新提示。
 - 必要驗證：真 owner 入口、fresh runtime／exact head、真 producer 全部交換包、新舊差異、cancel/stale／late reply 零寫、明選及 one undo/redo、完整 ZIP 重開。空間／投影／牆高專用瀏覽器回歸另外執行，A24 實機界線保持。
 
-## GEO-242 — PDF 人工描繪原始線段吸附（2026-10-03）
+> （2026-10-09 狀態註記：ISSUE-44 明選現行來源更新同一模型原標「接線驗證中」，現況：PR #99／#113 已合併；依據：PR #99 170f8f5（2026-10-04T05:19Z）、PR #113 b972daf（2026-10-04T10:10Z）。durable incarnation ledger、owned／faces+timbers producer 未採納（GEO-253）；#44 issue 仍 open。各段內「待審／草稿／未合併」等字樣是撰寫當時的歷史，保留不改。）
+
+## GEO-245 — PDF 人工描繪原始線段吸附（2026-10-03；原誤編為 GEO-242，2026-10-09 改號）
 
 - main `0f3c1a6` 真 Chromium 重現：人工描繪只吸網格／草稿頂點；9% 描繪實用 500 mm，工具列仍顯示 50 mm。原 main 在獨立來源端點 oracle 出現 assertion failure。
 - 已校準 PDF 接原始直線端點与保守閉合線段交點，8 px 螢幕容差先於網格；明示來源頁與線段，取整 mm 且不投影成不存在的正交角。文字／曲線／虛線／裁切／影像不提供特徵，開放尺寸線交叉不提供交點；不宣稱牆角辨識或內緣。
 - 減項：合併到既有描繪預览與座標列；格距欄取代誤導的手選值顯示，不加入口、常駐說明、保存格式或第二份正式幾何。公理、核心與房間候選推估未修改。
 - 來源特徵僅執行期快取，遲到擷取不重放落點、不改 geometry/history；頁切換／對位改變後不顯示舊目標。私人 PDF 不上傳；public fixture 以真輸入驗證旋轉／校準／取消／undo／snap off／raster，完整與 exact-head 結果附 draft PR。
 
-## GEO-243 — 一般啟動入口補齊空間預覽元件（2026-10-04，驗證中）
+> （2026-10-09 狀態註記：本工單原誤編為 GEO-242，與同檔「GEO-242 — 底圖畫布與選房間的操作性能（2026-10-04）」重號；保留第一張的 GEO-242，本張改配 GEO-245。狀態：PR #74 已合併 92c1ce5（2026-10-03T20:01Z）、PR #76 已合併 a274cae（2026-10-03T20:46Z）。其他檔對「GEO-242」的引用見頂端對照節的重號說明。）
+
+## GEO-243 — 一般啟動入口補齊空間預覽元件（2026-10-04，PR #121 已合併 07d5dde；原標「驗證中」）
 
 - 使用者已選面 #2、牆底 0／牆高 3000，畫面卻顯示「預覽回應缺少空間或摘要」。實際 HTTP 回應是 `UNSUPPORTED / BASE_COMPILER / I32`，預覽前後核心 dump 相同；一般入口只編畫布 bridge，未準備建模 adapter。
 - `start.ps1` 同時編譯並實際驗證 WSL 建模 adapter。Windows Python 明示使用該 adapter，經獨立 argv 與路徑轉換呼叫；明確指定的原生執行檔仍優先。每次啟動使用獨立暫存執行目錄，避免測試或其他 port 重編使用者正在執行的二進位。
@@ -4168,7 +4569,9 @@ Refs GitHub #19–#24。第一階段整合原生固定版本規則、局部型�
 - 完整 `run_all.py --build --update-expected` 受 Windows `Path.stat()`／`os.fstat()` ctime 不一致阻擋，原生執行檔註冊失敗，不能視為全套通過；工具拒絕更新數量清單，新增測試的 census 更新仍待完成。未降低門檻或繞過執行檔來源驗證。
 - 使用者後續画面已能預覽，8765 runtime 為目前來源的 `fresh:true`，面 #2 原 dump 保留；另一個方向一致性問題另記 GEO-244，本項測試不等於原圖方向驗收。
 
-## #116 — 面內游標 v2 與 B 右鍵選單（2026-10-05，草稿 PR #125 交 dot；合併 gate 受阻）
+> （2026-10-09 狀態註記：GEO-243 一般啟動入口補齊空間預覽元件原標「驗證中」，現況：PR #121 已合併；依據：PR #121 07d5dde（2026-10-04T13:51Z）。內文「`run_all.py --build --update-expected` 受 Windows ctime 阻擋」的修正在 PR #136（head 為 PR #169 祖先，尚未進 main）。各段內「待審／草稿／未合併」等字樣是撰寫當時的歷史，保留不改。）
+
+## #116 — 面內游標 v2 與 B 右鍵選單（2026-10-05，PR #125 已合併 a4caf16；原標「草稿 PR #125 交 dot；合併 gate 受阻」）
 
 - 採使用者提供圖片的 B／1b：272px 動作卡＋搜尋精簡清單、296px 側接參數表單，邊緣翻轉；資料與提交使用原有操作、預覽、影響確認、取消及歷史，不另建命令來源。
 - 減項（GEO-219）：取代原右鍵純動作清單；右鍵開啟時收起重複浮動操作列，關閉再還原。停用理由合併至選單既有 footer，未增加常駐教學；側接表單重用唯一 `feOpPanel`。
@@ -4183,6 +4586,8 @@ Refs GitHub #19–#24。第一階段整合原生固定版本規則、局部型�
 
 - 最後同步 #126／main `8d134fc`，普通merge `1a21b5d`；共用保存／載入owner檔逐字保留，bridge依新include重編。最新來源B87/87、共用＋formal store106/106（0skip）通過；凍結b38來源的full／SPACE收據另列checkpoint，不冒稱為最新head完整回歸。最新combined full／SPACE及CI／owner交dot，草稿不自行合main；8817已關閉，原檔／備份保留。
 
+> （2026-10-09 狀態註記：#116 面內游標 v2 與 B 右鍵選單原標「草稿 PR #125 交 dot；合併 gate 受阻」，現況：PR #125 已合併；依據：PR #125 a4caf16（2026-10-04T23:51Z）。標題「合併 gate 受阻」與內文「完整 CDP 止於 P73／P76」已被後續完整 CDP 取代（PR #133：2054 項／0 失敗／83 段 golden 相符）；物件畫布／空間平面圖／三視圖、複製貼上、多選批改、觸控長按等未做項轉 GEO-254；#116 issue 仍 open。各段內「待審／草稿／未合併」等字樣是撰寫當時的歷史，保留不改。）
+
 ## GEO-244 — 描面畫布與空間俯視方向不一致（2026-10-04，方向修正驗收通過；全量驗證限制見下）
 
 - 使用者面 #2 的 191×913 mm 凸角在輪廓編輯圖左下，3D 俯視顯示在左上。編輯圖沿局部 u→／v↓，承載面卻是 U=+X／V=+Y，而世界俯視是 +X→／+Y↑。既有 GEO-207 的局部編輯圖／世界投影區分確實產生相反的上下畫面方向。
@@ -4196,10 +4601,32 @@ Refs GitHub #19–#24。第一階段整合原生固定版本規則、局部型�
 - 另存完整方向修正版並保留原檔，除場景指紋與 placement 外，清單、底圖 bytes、校準及投影定義全部一致。修正版已經正式專案匯入／重新匯出與真 Chrome 實際預覽驗證，來源 bytes 與面關聯保留、體積精確、俯視左下凸角像素成立，無例外／console error。私人 PDF、專案及截圖均留在使用者本機，不進 git。
 - 最終工作區測試 helper 同步後，以一般入口重新啟動使用者 8765，`/runtime` 指紋符合目前 repository、`fresh:true`；載回修正後核心場景並逐字核對。完整修正版為本機 `D:\未命名專案-方向修正.gcanvas`，原檔未覆寫。Edge 擴充功能無本機檔案存取權，先前完整專案由使用者手動開啟；最終重啟後已請使用者手動載回修正版，尚未收到完成回覆，不宣稱最後這次瀏覽器已恢復 PDF。隔離測試服務已停止，使用者服務與分頁保留。
 
-## #61 第一正式來源規則 UI 切片（2026-10-05，PR133，開發中）
+> （2026-10-09 狀態註記：GEO-244 描面畫布與空間俯視方向原標「`cdp_test.js` 全量止於 P73：1407 過、1 失敗，原因「尚未判定」」，現況：已被後續完整 CDP 取代；依據：PR #121 07d5dde（2026-10-04T13:51Z）已合併；PR #133 d6b4b45（2026-10-05T10:01Z）正文記錄完整 CDP 2054 項／0 失敗／83 段 golden 相符。該單項失敗的根因未單獨查明，只知後續完整 CDP 為全綠（推論）。各段內「待審／草稿／未合併」等字樣是撰寫當時的歷史，保留不改。）
+
+## #61 第一正式來源規則 UI 切片（2026-10-05，PR133 已合併 d6b4b45；原標「開發中」）
 
 採納範圍為兩軸無相位差 REPEAT 的 all-cells／單 signed cell 規則 CRUD，真 native 預覽／確認／取消、typed source baseline、單步 ContextHistory，以及有限原始規則草稿隨正式 ZIP 保存／新空白 context 重開。沿同一 2a 來源表單，不另造規則管理器或幾何求解器；raw `/2` 和格式 `/13` 保留舊 `/1` 讀取。
 
 UI 減項（GEO-219）：規則預覽併入原固定頁尾，規則輸入期間收起來源預覽，維持單一主確認動作；等分說明收斂為情境式輸入區一行，不增加常駐教學卡或全域工具列。來源規則和本面手動子格仍依正式契約分開。
 
 未宣稱完成：已確認子線 display/pick、RuleLineRef、guide/direct、跨面正常完整流程，SR24 實體手機仍人工待驗。不关闭 #61/#62。實測與精確 head 會回填 [切片驗收紀錄](geometry-web/docs/ISSUE61-SLICE1-20261005.md)。
+
+> （2026-10-09 狀態註記：#61 第一正式來源規則 UI 切片原標「PR133，開發中」，現況：PR #133 已合併；依據：PR #133 d6b4b45（2026-10-05T10:01Z）。其「未宣稱完成」清單（子線 display／pick、RuleLineRef、guide／direct、跨面完整流程）仍有效；#61／#62 issue 仍 open。各段內「待審／草稿／未合併」等字樣是撰寫當時的歷史，保留不改。）
+
+## #61 第二正式來源規則 UI 切片（2026-10-05，開發中）
+
+main d6b4b45 與 PR133 審查 tree 完全一致；接續原生規則子線顯示／命中／標籤、完整 RuleLineRef 來源→配置→套用追溯、同一來源規則編輯器定位，以及既有 guide／direct 引用。查詢只讀、過期回應零寫入，裁切與合法性由原生決定。跨面共用來源沿既有影響確認與 ContextHistory，不增加幾何求解或保存格式。
+
+UI 減項（GEO-219）：規則線資訊併入既有 GridEditor 的來源／局部等分區；共用既有定位引用、guide 來源清單及來源規則編輯器。主格、来源規則子線、本面手動子格以既有區域內的文字／線型辨識，不新增工具列或獨立規則管理器。pending footer 合併提示已確認來源與未確認規則輸入；等分錯誤直接使用 1–65 的產品範圍。
+
+先釘住 main 缺口：同一 synthetic native cell 回傳 3 條子線，正式畫布、角材選項及 guide 來源均為 0。SR24 實體手機仍保留人工 gate；#61/#62 不關閉，尚未驗收範圍不能以顯示完成冒稱。
+
+> （2026-10-09 狀態註記：#61 第二正式來源規則 UI 切片原標「開發中」，現況：程式在 PR #134（slice 2）與 PR #160（焦點），兩者 head 皆為 PR #169 的祖先，#169 合併後才進 main；依據：git merge-base --is-ancestor（2026-10-09 查）；二者皆仍是 draft。#61／#62 issue 仍 open；SR24 實體手機待驗（GEO-250）。各段內「待審／草稿／未合併」等字樣是撰寫當時的歷史，保留不改。）
+
+
+## #49 正式案例接線 — shared integration checkpoint（2026-10-05）
+
+- 六個有限案例沿用 PR141 元件、HTTP adapter 與既有真 C executor；在組構工作區按需開啟。共同附件註冊 `rule-cases` / `rule-case-workbench-data/1`，核對未占用後新增 `geometry-canvas/15`，既有 /1–14 行為保留。原 definition / receipt 分存；匯入及保留後重掛載只顯示歷史未核信。
+- 以原始 ReferenceWorkspace stamp / frame / native revision / runtime 接短命 immutable binding；每 native context 獨立有限高水位与 late cancel tombstone，不能改 A/B editor allocator。關閉案例只撤銷其 adapter；不關 live native 或 AssemblyWorkspace 候選。保存沿共同 detached prepare 與同步 guarded metadata commit，完整 root/A/B manifest 容量與房間 lifecycle 預留均先驗；no-op 零 history，取消／晚到零寫入。
+- **拿掉／合併（GEO-219）**：移除預設組構內容重複的「新增規則後，依序建立槽位、構件與局部接合」常駐說明，沿用既有工作區首課；案例輸入、作者預期、實際結果與歷史明細合併同一按需面板，沒有新增頂層工作區。
+- 這是實作 checkpoint，完整 current-head aggregate／桌面及390px terminal 尚待完成；不宣稱 #49 完成，不借用 #137／#143 的舊 full receipts。產品／測試 source 可獨立審查，原始公開證據拒絕包維持 hold。

@@ -1,0 +1,1070 @@
+{
+  "schema": "geometry-sr16-sr23-browser/1",
+  "started": "2026-10-08T19:58:38.740084+00:00",
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "/workspace/closure-evidence/final-contract-probes/browser/sr16_sr23_browser.py",
+    "--url",
+    "http://127.0.0.1:18971/",
+    "--head",
+    "d8642b2e684038cbb8e24aba057c44e7aac1b231",
+    "--out",
+    "/workspace/closure-evidence/sr16-sr23-browser-r1"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "scriptSha256": "b694cd73cdd53d50dff49eb907a3faea1a96834772f6a1b4cb891690512eda8c",
+  "expectedHead": "d8642b2e684038cbb8e24aba057c44e7aac1b231",
+  "sandbox": true,
+  "cases": [
+    {
+      "width": 1400,
+      "started": "2026-10-08T19:58:39.452268+00:00",
+      "checks": [
+        {
+          "name": "face1 guide and direct reference exist before the next source/binding operation",
+          "passed": true,
+          "at": "2026-10-08T19:58:58.672113+00:00",
+          "phase": "ui-face1-guide-direct-before-next-binding"
+        },
+        {
+          "name": "face2 guide and direct reference exist before the next source/binding operation",
+          "passed": true,
+          "at": "2026-10-08T19:59:11.398172+00:00",
+          "phase": "ui-face2-guide-direct-before-next-binding"
+        },
+        {
+          "name": "before-source-edit source pitch and rule identity",
+          "passed": true,
+          "at": "2026-10-08T19:59:12.125346+00:00",
+          "phase": "baseline-complete"
+        },
+        {
+          "name": "before-source-edit face1 binding/applied ownership",
+          "passed": true,
+          "at": "2026-10-08T19:59:12.125507+00:00",
+          "phase": "baseline-complete"
+        },
+        {
+          "name": "before-source-edit face1 exact complete rule-line arithmetic",
+          "passed": true,
+          "at": "2026-10-08T19:59:12.180862+00:00",
+          "phase": "baseline-complete"
+        },
+        {
+          "name": "before-source-edit face1 existing guide follows u0",
+          "passed": true,
+          "at": "2026-10-08T19:59:12.181032+00:00",
+          "phase": "baseline-complete"
+        },
+        {
+          "name": "before-source-edit face1 existing direct v0 timber follows exact legal supports",
+          "passed": true,
+          "at": "2026-10-08T19:59:12.181740+00:00",
+          "phase": "baseline-complete"
+        },
+        {
+          "name": "before-source-edit face2 binding/applied ownership",
+          "passed": true,
+          "at": "2026-10-08T19:59:12.181928+00:00",
+          "phase": "baseline-complete"
+        },
+        {
+          "name": "before-source-edit face2 exact complete rule-line arithmetic",
+          "passed": true,
+          "at": "2026-10-08T19:59:12.242082+00:00",
+          "phase": "baseline-complete"
+        },
+        {
+          "name": "before-source-edit face2 existing guide follows u0",
+          "passed": true,
+          "at": "2026-10-08T19:59:12.242254+00:00",
+          "phase": "baseline-complete"
+        },
+        {
+          "name": "before-source-edit face2 existing direct v0 timber follows exact legal supports",
+          "passed": true,
+          "at": "2026-10-08T19:59:12.242736+00:00",
+          "phase": "baseline-complete"
+        },
+        {
+          "name": "SR16 both native and rendered impact contain the two actual bindings",
+          "passed": true,
+          "at": "2026-10-08T19:59:13.884615+00:00",
+          "phase": "SR16-invalid-source"
+        },
+        {
+          "name": "SR16 only second physical component violates and Confirm is disabled",
+          "passed": true,
+          "at": "2026-10-08T19:59:13.884903+00:00",
+          "phase": "SR16-invalid-source"
+        },
+        {
+          "name": "SR16 preview preserves full raw native World and history",
+          "passed": true,
+          "at": "2026-10-08T19:59:14.162158+00:00",
+          "phase": "SR16-invalid-source"
+        },
+        {
+          "name": "SR16 Cancel preserves raw World references ownership and exact history entries",
+          "passed": true,
+          "at": "2026-10-08T19:59:14.679588+00:00",
+          "phase": "SR16-invalid-source"
+        },
+        {
+          "name": "SR23 legal preview contains both bindings and both preexisting guide updates",
+          "passed": true,
+          "at": "2026-10-08T19:59:16.019275+00:00",
+          "phase": "SR23-positive-cancel-confirm"
+        },
+        {
+          "name": "SR23 positive Cancel preserves full raw native snapshots and history",
+          "passed": true,
+          "at": "2026-10-08T19:59:16.546164+00:00",
+          "phase": "SR23-positive-cancel-confirm"
+        },
+        {
+          "name": "SR23 one common history transaction updates source and descendants",
+          "passed": true,
+          "at": "2026-10-08T19:59:17.433093+00:00",
+          "phase": "SR23-positive-cancel-confirm"
+        },
+        {
+          "name": "after-source-edit source pitch and rule identity",
+          "passed": true,
+          "at": "2026-10-08T19:59:17.869042+00:00",
+          "phase": "SR23-positive-cancel-confirm"
+        },
+        {
+          "name": "after-source-edit face1 binding/applied ownership",
+          "passed": true,
+          "at": "2026-10-08T19:59:17.869263+00:00",
+          "phase": "SR23-positive-cancel-confirm"
+        },
+        {
+          "name": "after-source-edit face1 exact complete rule-line arithmetic",
+          "passed": true,
+          "at": "2026-10-08T19:59:17.934611+00:00",
+          "phase": "SR23-positive-cancel-confirm"
+        },
+        {
+          "name": "after-source-edit face1 existing guide follows u0",
+          "passed": true,
+          "at": "2026-10-08T19:59:17.934849+00:00",
+          "phase": "SR23-positive-cancel-confirm"
+        },
+        {
+          "name": "after-source-edit face1 existing direct v0 timber follows exact legal supports",
+          "passed": true,
+          "at": "2026-10-08T19:59:17.935142+00:00",
+          "phase": "SR23-positive-cancel-confirm"
+        },
+        {
+          "name": "after-source-edit face2 binding/applied ownership",
+          "passed": true,
+          "at": "2026-10-08T19:59:17.935322+00:00",
+          "phase": "SR23-positive-cancel-confirm"
+        },
+        {
+          "name": "after-source-edit face2 exact complete rule-line arithmetic",
+          "passed": true,
+          "at": "2026-10-08T19:59:17.994051+00:00",
+          "phase": "SR23-positive-cancel-confirm"
+        },
+        {
+          "name": "after-source-edit face2 existing guide follows u0",
+          "passed": true,
+          "at": "2026-10-08T19:59:17.994289+00:00",
+          "phase": "SR23-positive-cancel-confirm"
+        },
+        {
+          "name": "after-source-edit face2 existing direct v0 timber follows exact legal supports",
+          "passed": true,
+          "at": "2026-10-08T19:59:17.994628+00:00",
+          "phase": "SR23-positive-cancel-confirm"
+        },
+        {
+          "name": "SR23 serialized World changes only the existing source pitches",
+          "passed": true,
+          "at": "2026-10-08T19:59:17.994857+00:00",
+          "phase": "SR23-positive-cancel-confirm"
+        },
+        {
+          "name": "SR23 face1 actual exact-cell display reflects current native rule segments",
+          "passed": true,
+          "at": "2026-10-08T19:59:19.782306+00:00",
+          "phase": "SR23-face1-rendered-updated-lines"
+        },
+        {
+          "name": "SR23 face2 actual exact-cell display reflects current native rule segments",
+          "passed": true,
+          "at": "2026-10-08T19:59:21.694329+00:00",
+          "phase": "SR23-face2-rendered-updated-lines"
+        },
+        {
+          "name": "undone source pitch and rule identity",
+          "passed": true,
+          "at": "2026-10-08T19:59:22.409200+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "undone face1 binding/applied ownership",
+          "passed": true,
+          "at": "2026-10-08T19:59:22.409468+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "undone face1 exact complete rule-line arithmetic",
+          "passed": true,
+          "at": "2026-10-08T19:59:22.466856+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "undone face1 existing guide follows u0",
+          "passed": true,
+          "at": "2026-10-08T19:59:22.467224+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "undone face1 existing direct v0 timber follows exact legal supports",
+          "passed": true,
+          "at": "2026-10-08T19:59:22.467602+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "undone face2 binding/applied ownership",
+          "passed": true,
+          "at": "2026-10-08T19:59:22.467810+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "undone face2 exact complete rule-line arithmetic",
+          "passed": true,
+          "at": "2026-10-08T19:59:22.526973+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "undone face2 existing guide follows u0",
+          "passed": true,
+          "at": "2026-10-08T19:59:22.527476+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "undone face2 existing direct v0 timber follows exact legal supports",
+          "passed": true,
+          "at": "2026-10-08T19:59:22.527785+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "SR23 one UI Undo restores complete World and all references",
+          "passed": true,
+          "at": "2026-10-08T19:59:22.530206+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "redone source pitch and rule identity",
+          "passed": true,
+          "at": "2026-10-08T19:59:23.058695+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "redone face1 binding/applied ownership",
+          "passed": true,
+          "at": "2026-10-08T19:59:23.058991+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "redone face1 exact complete rule-line arithmetic",
+          "passed": true,
+          "at": "2026-10-08T19:59:23.118245+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "redone face1 existing guide follows u0",
+          "passed": true,
+          "at": "2026-10-08T19:59:23.118564+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "redone face1 existing direct v0 timber follows exact legal supports",
+          "passed": true,
+          "at": "2026-10-08T19:59:23.118904+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "redone face2 binding/applied ownership",
+          "passed": true,
+          "at": "2026-10-08T19:59:23.119134+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "redone face2 exact complete rule-line arithmetic",
+          "passed": true,
+          "at": "2026-10-08T19:59:23.184350+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "redone face2 existing guide follows u0",
+          "passed": true,
+          "at": "2026-10-08T19:59:23.184723+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "redone face2 existing direct v0 timber follows exact legal supports",
+          "passed": true,
+          "at": "2026-10-08T19:59:23.184978+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "SR23 one UI Redo restores complete changed World and all references",
+          "passed": true,
+          "at": "2026-10-08T19:59:23.187147+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "SR23 real Save preserves native World and saves complete versioned manifest contract",
+          "passed": true,
+          "at": "2026-10-08T19:59:23.898535+00:00",
+          "phase": "SR23-save"
+        },
+        {
+          "name": "SR23 New truly clears all grids references timbers and project payload",
+          "passed": true,
+          "at": "2026-10-08T19:59:24.521113+00:00",
+          "phase": "SR23-clear"
+        },
+        {
+          "name": "SR23 fresh browser starts from genuinely empty native World",
+          "passed": true,
+          "at": "2026-10-08T19:59:27.465183+00:00",
+          "phase": "SR23-fresh-browser"
+        },
+        {
+          "name": "project-reopened source pitch and rule identity",
+          "passed": true,
+          "at": "2026-10-08T19:59:28.151920+00:00",
+          "phase": "SR23-formal-open"
+        },
+        {
+          "name": "project-reopened face1 binding/applied ownership",
+          "passed": true,
+          "at": "2026-10-08T19:59:28.152255+00:00",
+          "phase": "SR23-formal-open"
+        },
+        {
+          "name": "project-reopened face1 exact complete rule-line arithmetic",
+          "passed": true,
+          "at": "2026-10-08T19:59:28.206027+00:00",
+          "phase": "SR23-formal-open"
+        },
+        {
+          "name": "project-reopened face1 existing guide follows u0",
+          "passed": true,
+          "at": "2026-10-08T19:59:28.206398+00:00",
+          "phase": "SR23-formal-open"
+        },
+        {
+          "name": "project-reopened face1 existing direct v0 timber follows exact legal supports",
+          "passed": true,
+          "at": "2026-10-08T19:59:28.206791+00:00",
+          "phase": "SR23-formal-open"
+        },
+        {
+          "name": "project-reopened face2 binding/applied ownership",
+          "passed": true,
+          "at": "2026-10-08T19:59:28.207705+00:00",
+          "phase": "SR23-formal-open"
+        },
+        {
+          "name": "project-reopened face2 exact complete rule-line arithmetic",
+          "passed": true,
+          "at": "2026-10-08T19:59:28.261402+00:00",
+          "phase": "SR23-formal-open"
+        },
+        {
+          "name": "project-reopened face2 existing guide follows u0",
+          "passed": true,
+          "at": "2026-10-08T19:59:28.261866+00:00",
+          "phase": "SR23-formal-open"
+        },
+        {
+          "name": "project-reopened face2 existing direct v0 timber follows exact legal supports",
+          "passed": true,
+          "at": "2026-10-08T19:59:28.262163+00:00",
+          "phase": "SR23-formal-open"
+        },
+        {
+          "name": "SR23 formal chooser Open restores full World references and full project payload",
+          "passed": true,
+          "at": "2026-10-08T19:59:28.265286+00:00",
+          "phase": "SR23-formal-open"
+        },
+        {
+          "name": "SR23 one UI Undo after fresh Open restores original fresh empty context and all data",
+          "passed": true,
+          "at": "2026-10-08T19:59:28.614800+00:00",
+          "phase": "SR23-open-history"
+        },
+        {
+          "name": "open-redone source pitch and rule identity",
+          "passed": true,
+          "at": "2026-10-08T19:59:29.061267+00:00",
+          "phase": "SR23-open-history"
+        },
+        {
+          "name": "open-redone face1 binding/applied ownership",
+          "passed": true,
+          "at": "2026-10-08T19:59:29.061741+00:00",
+          "phase": "SR23-open-history"
+        },
+        {
+          "name": "open-redone face1 exact complete rule-line arithmetic",
+          "passed": true,
+          "at": "2026-10-08T19:59:29.114600+00:00",
+          "phase": "SR23-open-history"
+        },
+        {
+          "name": "open-redone face1 existing guide follows u0",
+          "passed": true,
+          "at": "2026-10-08T19:59:29.115037+00:00",
+          "phase": "SR23-open-history"
+        },
+        {
+          "name": "open-redone face1 existing direct v0 timber follows exact legal supports",
+          "passed": true,
+          "at": "2026-10-08T19:59:29.115387+00:00",
+          "phase": "SR23-open-history"
+        },
+        {
+          "name": "open-redone face2 binding/applied ownership",
+          "passed": true,
+          "at": "2026-10-08T19:59:29.115747+00:00",
+          "phase": "SR23-open-history"
+        },
+        {
+          "name": "open-redone face2 exact complete rule-line arithmetic",
+          "passed": true,
+          "at": "2026-10-08T19:59:29.166554+00:00",
+          "phase": "SR23-open-history"
+        },
+        {
+          "name": "open-redone face2 existing guide follows u0",
+          "passed": true,
+          "at": "2026-10-08T19:59:29.166997+00:00",
+          "phase": "SR23-open-history"
+        },
+        {
+          "name": "open-redone face2 existing direct v0 timber follows exact legal supports",
+          "passed": true,
+          "at": "2026-10-08T19:59:29.167593+00:00",
+          "phase": "SR23-open-history"
+        },
+        {
+          "name": "SR23 one UI Redo after fresh Open restores the complete reopened World and project",
+          "passed": true,
+          "at": "2026-10-08T19:59:29.170170+00:00",
+          "phase": "SR23-open-history"
+        },
+        {
+          "name": "No uncaught console or raw network-capture errors",
+          "passed": true,
+          "at": "2026-10-08T19:59:29.170478+00:00",
+          "phase": "SR23-open-history"
+        }
+      ],
+      "passed": true,
+      "archiveSha256": "52820b48969ec0eefc20eaba67ea42a1a1708604e0f13f68480a7b6743ef9ddf",
+      "errors": [],
+      "networkErrors": [],
+      "cleanupErrors": [],
+      "finished": "2026-10-08T19:59:29.426241+00:00"
+    },
+    {
+      "width": 390,
+      "started": "2026-10-08T19:59:29.427122+00:00",
+      "checks": [
+        {
+          "name": "face1 guide and direct reference exist before the next source/binding operation",
+          "passed": true,
+          "at": "2026-10-08T19:59:48.724735+00:00",
+          "phase": "ui-face1-guide-direct-before-next-binding"
+        },
+        {
+          "name": "face2 guide and direct reference exist before the next source/binding operation",
+          "passed": true,
+          "at": "2026-10-08T20:00:03.319343+00:00",
+          "phase": "ui-face2-guide-direct-before-next-binding"
+        },
+        {
+          "name": "before-source-edit source pitch and rule identity",
+          "passed": true,
+          "at": "2026-10-08T20:00:04.066970+00:00",
+          "phase": "baseline-complete"
+        },
+        {
+          "name": "before-source-edit face1 binding/applied ownership",
+          "passed": true,
+          "at": "2026-10-08T20:00:04.067135+00:00",
+          "phase": "baseline-complete"
+        },
+        {
+          "name": "before-source-edit face1 exact complete rule-line arithmetic",
+          "passed": true,
+          "at": "2026-10-08T20:00:04.129233+00:00",
+          "phase": "baseline-complete"
+        },
+        {
+          "name": "before-source-edit face1 existing guide follows u0",
+          "passed": true,
+          "at": "2026-10-08T20:00:04.129403+00:00",
+          "phase": "baseline-complete"
+        },
+        {
+          "name": "before-source-edit face1 existing direct v0 timber follows exact legal supports",
+          "passed": true,
+          "at": "2026-10-08T20:00:04.129705+00:00",
+          "phase": "baseline-complete"
+        },
+        {
+          "name": "before-source-edit face2 binding/applied ownership",
+          "passed": true,
+          "at": "2026-10-08T20:00:04.129921+00:00",
+          "phase": "baseline-complete"
+        },
+        {
+          "name": "before-source-edit face2 exact complete rule-line arithmetic",
+          "passed": true,
+          "at": "2026-10-08T20:00:04.190120+00:00",
+          "phase": "baseline-complete"
+        },
+        {
+          "name": "before-source-edit face2 existing guide follows u0",
+          "passed": true,
+          "at": "2026-10-08T20:00:04.190301+00:00",
+          "phase": "baseline-complete"
+        },
+        {
+          "name": "before-source-edit face2 existing direct v0 timber follows exact legal supports",
+          "passed": true,
+          "at": "2026-10-08T20:00:04.190563+00:00",
+          "phase": "baseline-complete"
+        },
+        {
+          "name": "SR16 both native and rendered impact contain the two actual bindings",
+          "passed": true,
+          "at": "2026-10-08T20:00:05.801077+00:00",
+          "phase": "SR16-invalid-source"
+        },
+        {
+          "name": "SR16 only second physical component violates and Confirm is disabled",
+          "passed": true,
+          "at": "2026-10-08T20:00:05.801431+00:00",
+          "phase": "SR16-invalid-source"
+        },
+        {
+          "name": "SR16 preview preserves full raw native World and history",
+          "passed": true,
+          "at": "2026-10-08T20:00:06.123570+00:00",
+          "phase": "SR16-invalid-source"
+        },
+        {
+          "name": "SR16 Cancel preserves raw World references ownership and exact history entries",
+          "passed": true,
+          "at": "2026-10-08T20:00:06.560867+00:00",
+          "phase": "SR16-invalid-source"
+        },
+        {
+          "name": "SR23 legal preview contains both bindings and both preexisting guide updates",
+          "passed": true,
+          "at": "2026-10-08T20:00:07.741836+00:00",
+          "phase": "SR23-positive-cancel-confirm"
+        },
+        {
+          "name": "SR23 positive Cancel preserves full raw native snapshots and history",
+          "passed": true,
+          "at": "2026-10-08T20:00:08.157411+00:00",
+          "phase": "SR23-positive-cancel-confirm"
+        },
+        {
+          "name": "SR23 one common history transaction updates source and descendants",
+          "passed": true,
+          "at": "2026-10-08T20:00:08.971105+00:00",
+          "phase": "SR23-positive-cancel-confirm"
+        },
+        {
+          "name": "after-source-edit source pitch and rule identity",
+          "passed": true,
+          "at": "2026-10-08T20:00:09.477367+00:00",
+          "phase": "SR23-positive-cancel-confirm"
+        },
+        {
+          "name": "after-source-edit face1 binding/applied ownership",
+          "passed": true,
+          "at": "2026-10-08T20:00:09.477640+00:00",
+          "phase": "SR23-positive-cancel-confirm"
+        },
+        {
+          "name": "after-source-edit face1 exact complete rule-line arithmetic",
+          "passed": true,
+          "at": "2026-10-08T20:00:09.539642+00:00",
+          "phase": "SR23-positive-cancel-confirm"
+        },
+        {
+          "name": "after-source-edit face1 existing guide follows u0",
+          "passed": true,
+          "at": "2026-10-08T20:00:09.539896+00:00",
+          "phase": "SR23-positive-cancel-confirm"
+        },
+        {
+          "name": "after-source-edit face1 existing direct v0 timber follows exact legal supports",
+          "passed": true,
+          "at": "2026-10-08T20:00:09.540185+00:00",
+          "phase": "SR23-positive-cancel-confirm"
+        },
+        {
+          "name": "after-source-edit face2 binding/applied ownership",
+          "passed": true,
+          "at": "2026-10-08T20:00:09.540725+00:00",
+          "phase": "SR23-positive-cancel-confirm"
+        },
+        {
+          "name": "after-source-edit face2 exact complete rule-line arithmetic",
+          "passed": true,
+          "at": "2026-10-08T20:00:09.602849+00:00",
+          "phase": "SR23-positive-cancel-confirm"
+        },
+        {
+          "name": "after-source-edit face2 existing guide follows u0",
+          "passed": true,
+          "at": "2026-10-08T20:00:09.603120+00:00",
+          "phase": "SR23-positive-cancel-confirm"
+        },
+        {
+          "name": "after-source-edit face2 existing direct v0 timber follows exact legal supports",
+          "passed": true,
+          "at": "2026-10-08T20:00:09.603385+00:00",
+          "phase": "SR23-positive-cancel-confirm"
+        },
+        {
+          "name": "SR23 serialized World changes only the existing source pitches",
+          "passed": true,
+          "at": "2026-10-08T20:00:09.603605+00:00",
+          "phase": "SR23-positive-cancel-confirm"
+        },
+        {
+          "name": "SR23 face1 actual exact-cell display reflects current native rule segments",
+          "passed": true,
+          "at": "2026-10-08T20:00:12.022753+00:00",
+          "phase": "SR23-face1-rendered-updated-lines"
+        },
+        {
+          "name": "SR23 face2 actual exact-cell display reflects current native rule segments",
+          "passed": true,
+          "at": "2026-10-08T20:00:14.556916+00:00",
+          "phase": "SR23-face2-rendered-updated-lines"
+        },
+        {
+          "name": "undone source pitch and rule identity",
+          "passed": true,
+          "at": "2026-10-08T20:00:15.523758+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "undone face1 binding/applied ownership",
+          "passed": true,
+          "at": "2026-10-08T20:00:15.524036+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "undone face1 exact complete rule-line arithmetic",
+          "passed": true,
+          "at": "2026-10-08T20:00:15.598234+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "undone face1 existing guide follows u0",
+          "passed": true,
+          "at": "2026-10-08T20:00:15.600657+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "undone face1 existing direct v0 timber follows exact legal supports",
+          "passed": true,
+          "at": "2026-10-08T20:00:15.600906+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "undone face2 binding/applied ownership",
+          "passed": true,
+          "at": "2026-10-08T20:00:15.601118+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "undone face2 exact complete rule-line arithmetic",
+          "passed": true,
+          "at": "2026-10-08T20:00:15.677941+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "undone face2 existing guide follows u0",
+          "passed": true,
+          "at": "2026-10-08T20:00:15.678317+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "undone face2 existing direct v0 timber follows exact legal supports",
+          "passed": true,
+          "at": "2026-10-08T20:00:15.678614+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "SR23 one UI Undo restores complete World and all references",
+          "passed": true,
+          "at": "2026-10-08T20:00:15.681461+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "redone source pitch and rule identity",
+          "passed": true,
+          "at": "2026-10-08T20:00:16.215603+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "redone face1 binding/applied ownership",
+          "passed": true,
+          "at": "2026-10-08T20:00:16.215913+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "redone face1 exact complete rule-line arithmetic",
+          "passed": true,
+          "at": "2026-10-08T20:00:16.275247+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "redone face1 existing guide follows u0",
+          "passed": true,
+          "at": "2026-10-08T20:00:16.275575+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "redone face1 existing direct v0 timber follows exact legal supports",
+          "passed": true,
+          "at": "2026-10-08T20:00:16.275862+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "redone face2 binding/applied ownership",
+          "passed": true,
+          "at": "2026-10-08T20:00:16.276098+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "redone face2 exact complete rule-line arithmetic",
+          "passed": true,
+          "at": "2026-10-08T20:00:16.337636+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "redone face2 existing guide follows u0",
+          "passed": true,
+          "at": "2026-10-08T20:00:16.337976+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "redone face2 existing direct v0 timber follows exact legal supports",
+          "passed": true,
+          "at": "2026-10-08T20:00:16.338350+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "SR23 one UI Redo restores complete changed World and all references",
+          "passed": true,
+          "at": "2026-10-08T20:00:16.341202+00:00",
+          "phase": "SR23-history"
+        },
+        {
+          "name": "SR23 real Save preserves native World and saves complete versioned manifest contract",
+          "passed": true,
+          "at": "2026-10-08T20:00:17.111925+00:00",
+          "phase": "SR23-save"
+        },
+        {
+          "name": "SR23 New truly clears all grids references timbers and project payload",
+          "passed": true,
+          "at": "2026-10-08T20:00:17.690408+00:00",
+          "phase": "SR23-clear"
+        },
+        {
+          "name": "SR23 fresh browser starts from genuinely empty native World",
+          "passed": true,
+          "at": "2026-10-08T20:00:20.098276+00:00",
+          "phase": "SR23-fresh-browser"
+        },
+        {
+          "name": "project-reopened source pitch and rule identity",
+          "passed": true,
+          "at": "2026-10-08T20:00:20.714608+00:00",
+          "phase": "SR23-formal-open"
+        },
+        {
+          "name": "project-reopened face1 binding/applied ownership",
+          "passed": true,
+          "at": "2026-10-08T20:00:20.714968+00:00",
+          "phase": "SR23-formal-open"
+        },
+        {
+          "name": "project-reopened face1 exact complete rule-line arithmetic",
+          "passed": true,
+          "at": "2026-10-08T20:00:20.764082+00:00",
+          "phase": "SR23-formal-open"
+        },
+        {
+          "name": "project-reopened face1 existing guide follows u0",
+          "passed": true,
+          "at": "2026-10-08T20:00:20.764463+00:00",
+          "phase": "SR23-formal-open"
+        },
+        {
+          "name": "project-reopened face1 existing direct v0 timber follows exact legal supports",
+          "passed": true,
+          "at": "2026-10-08T20:00:20.764823+00:00",
+          "phase": "SR23-formal-open"
+        },
+        {
+          "name": "project-reopened face2 binding/applied ownership",
+          "passed": true,
+          "at": "2026-10-08T20:00:20.765169+00:00",
+          "phase": "SR23-formal-open"
+        },
+        {
+          "name": "project-reopened face2 exact complete rule-line arithmetic",
+          "passed": true,
+          "at": "2026-10-08T20:00:20.813314+00:00",
+          "phase": "SR23-formal-open"
+        },
+        {
+          "name": "project-reopened face2 existing guide follows u0",
+          "passed": true,
+          "at": "2026-10-08T20:00:20.813738+00:00",
+          "phase": "SR23-formal-open"
+        },
+        {
+          "name": "project-reopened face2 existing direct v0 timber follows exact legal supports",
+          "passed": true,
+          "at": "2026-10-08T20:00:20.814057+00:00",
+          "phase": "SR23-formal-open"
+        },
+        {
+          "name": "SR23 formal chooser Open restores full World references and full project payload",
+          "passed": true,
+          "at": "2026-10-08T20:00:20.817343+00:00",
+          "phase": "SR23-formal-open"
+        },
+        {
+          "name": "SR23 one UI Undo after fresh Open restores original fresh empty context and all data",
+          "passed": true,
+          "at": "2026-10-08T20:00:21.140295+00:00",
+          "phase": "SR23-open-history"
+        },
+        {
+          "name": "open-redone source pitch and rule identity",
+          "passed": true,
+          "at": "2026-10-08T20:00:21.603675+00:00",
+          "phase": "SR23-open-history"
+        },
+        {
+          "name": "open-redone face1 binding/applied ownership",
+          "passed": true,
+          "at": "2026-10-08T20:00:21.604089+00:00",
+          "phase": "SR23-open-history"
+        },
+        {
+          "name": "open-redone face1 exact complete rule-line arithmetic",
+          "passed": true,
+          "at": "2026-10-08T20:00:21.655770+00:00",
+          "phase": "SR23-open-history"
+        },
+        {
+          "name": "open-redone face1 existing guide follows u0",
+          "passed": true,
+          "at": "2026-10-08T20:00:21.656220+00:00",
+          "phase": "SR23-open-history"
+        },
+        {
+          "name": "open-redone face1 existing direct v0 timber follows exact legal supports",
+          "passed": true,
+          "at": "2026-10-08T20:00:21.656555+00:00",
+          "phase": "SR23-open-history"
+        },
+        {
+          "name": "open-redone face2 binding/applied ownership",
+          "passed": true,
+          "at": "2026-10-08T20:00:21.656946+00:00",
+          "phase": "SR23-open-history"
+        },
+        {
+          "name": "open-redone face2 exact complete rule-line arithmetic",
+          "passed": true,
+          "at": "2026-10-08T20:00:21.704810+00:00",
+          "phase": "SR23-open-history"
+        },
+        {
+          "name": "open-redone face2 existing guide follows u0",
+          "passed": true,
+          "at": "2026-10-08T20:00:21.705264+00:00",
+          "phase": "SR23-open-history"
+        },
+        {
+          "name": "open-redone face2 existing direct v0 timber follows exact legal supports",
+          "passed": true,
+          "at": "2026-10-08T20:00:21.705607+00:00",
+          "phase": "SR23-open-history"
+        },
+        {
+          "name": "SR23 one UI Redo after fresh Open restores the complete reopened World and project",
+          "passed": true,
+          "at": "2026-10-08T20:00:21.707747+00:00",
+          "phase": "SR23-open-history"
+        },
+        {
+          "name": "No uncaught console or raw network-capture errors",
+          "passed": true,
+          "at": "2026-10-08T20:00:21.708040+00:00",
+          "phase": "SR23-open-history"
+        }
+      ],
+      "passed": true,
+      "archiveSha256": "54204c3736d6284944a095da324c8d9ccb2f71f1e60da392f3f4648c8bedc827",
+      "errors": [],
+      "networkErrors": [],
+      "cleanupErrors": [],
+      "finished": "2026-10-08T20:00:21.946388+00:00"
+    }
+  ],
+  "exitCode": 0,
+  "limits": [
+    "Only API-authored boundary/placement/physical support prerequisites; all source/rule/binding/downstream-reference operations use existing UI.",
+    "Actual trusted Chromium input and download/file chooser; not physical phone, IME or native OS save picker.",
+    "World successful Undo/Redo/reopen comparisons exclude only top-level native transaction revision; cancellation compares full raw native responses.",
+    "Source pitch edit changes U600→900 and V400→600 together so guide u0 and direct timber v0 both move.",
+    "Fresh browser/profile after actual New; no service restart or full CDP rerun claim."
+  ],
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "playwright": "1.62.0",
+  "before": {
+    "at": "2026-10-08T19:58:38.765414+00:00",
+    "root": "/workspace/geometry-axiom",
+    "problems": [],
+    "git": {
+      "root": "/workspace/geometry-axiom",
+      "head": "d8642b2e684038cbb8e24aba057c44e7aac1b231",
+      "tree": "8cda25b2bc7eb59c3e579ca7af0b79b0f2c48a18",
+      "status": ""
+    },
+    "sourceVersion": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+      "fresh": true,
+      "root": "/workspace/geometry-axiom",
+      "pid": 196578,
+      "session": "ca31be77efb542b89d45d5a88c3b1b45"
+    },
+    "native": {
+      "bridge": {
+        "name": "bridge",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T15:41:17+00:00）",
+        "path": "/tmp/geometry-tests/bridge",
+        "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+        "sha256": "b76a6da590512722d6eda64cfc946392ccc2636f82ab187ef822c1e1606d68b5",
+        "sidecarSha256": "557a324f01866a47f3123f08511b0bc46941c06c45ac804bc01447a65166eaaf"
+      },
+      "model-base": {
+        "name": "model-base",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T15:41:31+00:00）",
+        "path": "/tmp/geometry-tests/model-base",
+        "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+        "sha256": "1b350a7d54aac1d410e87f2a74010515739f3e2b8fc4b8c5216ff413b153662e",
+        "sidecarSha256": "e5dad713990793ed6c7b096bd4c2c6579ac3fbc527f7b9d545421be6550f6673"
+      }
+    }
+  },
+  "launches": [
+    {
+      "index": 1,
+      "width": 1400,
+      "version": "151.0.7922.173",
+      "sandbox": true,
+      "profile": "new Playwright-owned browser process/profile",
+      "savePicker": "explicit download fallback"
+    },
+    {
+      "index": 2,
+      "width": 1400,
+      "version": "151.0.7922.173",
+      "sandbox": true,
+      "profile": "new Playwright-owned browser process/profile",
+      "savePicker": "explicit download fallback"
+    },
+    {
+      "index": 3,
+      "width": 390,
+      "version": "151.0.7922.173",
+      "sandbox": true,
+      "profile": "new Playwright-owned browser process/profile",
+      "savePicker": "explicit download fallback"
+    },
+    {
+      "index": 4,
+      "width": 390,
+      "version": "151.0.7922.173",
+      "sandbox": true,
+      "profile": "new Playwright-owned browser process/profile",
+      "savePicker": "explicit download fallback"
+    }
+  ],
+  "after": {
+    "at": "2026-10-08T20:00:21.991651+00:00",
+    "root": "/workspace/geometry-axiom",
+    "problems": [],
+    "git": {
+      "root": "/workspace/geometry-axiom",
+      "head": "d8642b2e684038cbb8e24aba057c44e7aac1b231",
+      "tree": "8cda25b2bc7eb59c3e579ca7af0b79b0f2c48a18",
+      "status": ""
+    },
+    "sourceVersion": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+      "fresh": true,
+      "root": "/workspace/geometry-axiom",
+      "pid": 196578,
+      "session": "ca31be77efb542b89d45d5a88c3b1b45"
+    },
+    "native": {
+      "bridge": {
+        "name": "bridge",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T15:41:17+00:00）",
+        "path": "/tmp/geometry-tests/bridge",
+        "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+        "sha256": "b76a6da590512722d6eda64cfc946392ccc2636f82ab187ef822c1e1606d68b5",
+        "sidecarSha256": "557a324f01866a47f3123f08511b0bc46941c06c45ac804bc01447a65166eaaf"
+      },
+      "model-base": {
+        "name": "model-base",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T15:41:31+00:00）",
+        "path": "/tmp/geometry-tests/model-base",
+        "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+        "sha256": "1b350a7d54aac1d410e87f2a74010515739f3e2b8fc4b8c5216ff413b153662e",
+        "sidecarSha256": "e5dad713990793ed6c7b096bd4c2c6579ac3fbc527f7b9d545421be6550f6673"
+      }
+    }
+  },
+  "identityDifferences": [],
+  "finished": "2026-10-08T20:00:22.136775+00:00"
+}

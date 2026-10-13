@@ -1,0 +1,47 @@
+[start] serve.py PID=217786 port=39897 feedback=/tmp/geometry-fb-ro-lxCwqK/feedback
+[identity:start] {"head":"5174a8dafd8c48329d7166abbd3d104e3c28c0c4","root":"/workspace/geometry-axiom","version":"82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200","feedback":"697d5491a66018e095de6941d2b3c0e0b53941734469f93bba1c1c4d8d5a86bc","harness":"4598612a3f2aaafab69e061b2f7179530024dab8f99d35c750c783b3336db0d5","runtime":{"schema":"geometry-runtime/1","version":"82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200","fresh":true,"root":"/workspace/geometry-axiom","pid":217786,"session":"6f56234f501f4fdcbcd5faccbeedffaf"},"native":{"path":"/tmp/geometry-tests/bridge","state":"fresh","source_fingerprint":"74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e"}}
+[start] chrome PID=217804 cdp=44621
+=== G1. ResizeObserver 良性通知 vs 真錯 ===
+✓ a0 前提:真實匯入對話框確實產生 isTrusted 的 RO 通知
+✓ a1 RO 通知沒有顯示「程式錯誤」toast(RO 通知被 autoReport 了)
+✓ a2 RO 通知沒有產生伺服器回報(RO 通知被 autoReport 了)
+✓ a3 黑盒子有可辨識的良性記錄(k:notice, benign:resize-observer, 逐字訊息)
+✓ a4 良性記錄次數合計 = 瀏覽器實際派發的 RO 通知數(合併不丟次數)
+✓ a5 良性記錄不算錯誤:黑盒子沒有 k:error
+✓ a6 不吃掉事件:註冊在 feedback.js 之後的監聽仍收到每個 RO 事件,且未被 preventDefault
+✓ b1 真實 throw 產生 1 筆伺服器回報
+✓ b2 回報原因是該例外
+✓ b3 顯示「已自動記錄程式錯誤」toast
+✓ b4 黑盒子記為 k:error
+✓ c1 程式 throw 同字串 Error 仍回報(isTrusted 為 true 但 error 非 null)
+✓ c2 該筆記為 k:error 而非 notice
+✓ d1 unhandledrejection(同字串)仍回報
+✓ e1 合成 ErrorEvent 派發(isTrusted=false)仍回報
+✓ e2 帶前綴的近似字串仍回報
+✓ e3a 前提:真實 throw null 派發 isTrusted:true、error:null
+✓ e3b error==null 的真例外(throw null)被當良性吞掉了?應照常 toast + 回報
+✓ e4 前提:找得到可從另一個 origin(127.0.0.1)載入、且執行時會 throw 的腳本
+✓ e4a 前提:真實跨來源錯誤派發 isTrusted:true、error:null、message "Script error."
+✓ e4b error==null 的真例外(Script error.)被當良性吞掉了?應照常 toast + 回報
+✓ f0 前提:已發生真實 RO 通知
+✓ f1 RO 之後的真錯仍回報(RO 沒有占用 20 秒節流)
+✓ f2 沒有任何回報的原因是 RO 訊息
+✓ g0 前提:反覆開關期間確實有真實 RO 通知
+✓ g1 開關 6 次後 window 的 error/unhandledrejection 監聽數與首輪相同(且 feedback.js 確實掛了)
+    [info] 其他 window 監聽數差異(非本修正範圍,僅記錄):無
+✓ g2 反覆開關沒有產生任何回報
+✓ g3 之後一次真錯恰好產生 1 筆回報
+✓ g4 良性記錄次數合計 = 實際 RO 通知數(跨 6 次開關)
+✓ h1 F8 開啟回報面板且焦點在說明欄
+✓ h2 手動送出寫出 1 筆且面板關閉
+✓ h3 meta 欄位集合與修前相同
+✓ h4 meta 內容:kind=bug、note、auto_reason 為空、context 欄位集合不變
+✓ h5 附件集合不變(events/meta/page/report/world)
+✓ h6 report.md 版型不變:標題、操作節、無「錯誤」節(良性記錄不算錯誤)
+✓ h7 良性記錄隨回報帶出(events.jsonl 與 report.md 可追溯,且標為 notice)
+✓ h8 其他事件種類不變(click/api/key 仍有紀錄)
+✓ h9 右下「回報」鈕仍可開面板
+[identity:end] {"head":"5174a8dafd8c48329d7166abbd3d104e3c28c0c4","root":"/workspace/geometry-axiom","version":"82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200","feedback":"697d5491a66018e095de6941d2b3c0e0b53941734469f93bba1c1c4d8d5a86bc","harness":"4598612a3f2aaafab69e061b2f7179530024dab8f99d35c750c783b3336db0d5","runtime":{"schema":"geometry-runtime/1","version":"82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200","fresh":true,"root":"/workspace/geometry-axiom","pid":217786,"session":"6f56234f501f4fdcbcd5faccbeedffaf"}}
+[keep] /tmp/geometry-fb-ro-lxCwqK
+
+G1 38/38 通過

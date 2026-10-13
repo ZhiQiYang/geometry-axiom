@@ -1,0 +1,580 @@
+{
+  "gate": "feedback-resize-observer",
+  "auditedAt": "2026-10-08T18:53:40.636306+00:00",
+  "verdict": "bounded-pass",
+  "counts": {
+    "expected": 38,
+    "passed": 38,
+    "failed": 0,
+    "checkmarkLines": 38,
+    "basis": "original terminal G1 floor and each executed assertion line"
+  },
+  "commandExitCode": 0,
+  "gateExitCode": 0,
+  "controllerExitCode": 0,
+  "identityVerifiedByReceipt": true,
+  "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+  "mainAtAudit": "5cc1ffa1ee85120eca14258b86b715151cad274f",
+  "dirtyBefore": "",
+  "dirtyAfter": "",
+  "dirtyDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "runtimeBefore": {
+    "schema": "geometry-runtime/1",
+    "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 196578,
+    "session": "ca31be77efb542b89d45d5a88c3b1b45"
+  },
+  "runtimeAfter": {
+    "schema": "geometry-runtime/1",
+    "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 196578,
+    "session": "ca31be77efb542b89d45d5a88c3b1b45"
+  },
+  "nativeConfiguredFiles": {
+    "bridge": {
+      "name": "bridge",
+      "state": "fresh",
+      "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T15:41:17+00:00）",
+      "path": "/tmp/geometry-tests/bridge",
+      "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+      "sha256": "b76a6da590512722d6eda64cfc946392ccc2636f82ab187ef822c1e1606d68b5",
+      "sidecarSha256": "557a324f01866a47f3123f08511b0bc46941c06c45ac804bc01447a65166eaaf"
+    },
+    "model-base": {
+      "name": "model-base",
+      "state": "fresh",
+      "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T15:41:31+00:00）",
+      "path": "/tmp/geometry-tests/model-base",
+      "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+      "sha256": "1b350a7d54aac1d410e87f2a74010515739f3e2b8fc4b8c5216ff413b153662e",
+      "sidecarSha256": "e5dad713990793ed6c7b096bd4c2c6579ac3fbc527f7b9d545421be6550f6673"
+    }
+  },
+  "command": [
+    "node",
+    "geometry-web/feedback_resize_observer_test.js",
+    "--keep"
+  ],
+  "canonicalSource": null,
+  "terminalLogRecord": null,
+  "limitations": [
+    "G1 real trusted ResizeObserver notifications versus deliberately injected genuine errors and manual F8 feedback; own isolated service/profile, not the outer shared service.",
+    "Linux Chromium, not physical phone/IME/native OS picker certification.",
+    "The command.log combines child stdout/stderr; separate gate-wrapper stdout/stderr are preserved.",
+    "A native file hash alone is not proof of which live native process was loaded; consult separate live-service binding.",
+    "Outer release wrapper probes shared 18971; original G1 owns separate service PID217786 port39897/session6f56234f501f4fdcbcd5faccbeedffaf and Chromium PID217804. Start/end identity records are retained from the original log, not conflated with the wrapper runtime."
+  ],
+  "canonicalLimitations": null,
+  "rawFiles": [
+    {
+      "source": "/workspace/closure-evidence/gates/feedback-resize-observer/command.log",
+      "public": "feedback-resize-observer/command.log",
+      "bytes": 4085,
+      "sha256": "5d977f970760188485fdf4d2e03e79d0403ad77c041e7cfe79b60839d94ea855"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/feedback-resize-observer/receipt.json",
+      "public": "feedback-resize-observer/receipt.json",
+      "bytes": 5242,
+      "sha256": "2000d7eb3b5889b898ae96a7d378625cbcf4ea61e0b182da9269263368fafad4"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/feedback-resize-observer.command.json",
+      "public": "feedback-resize-observer.command.json",
+      "bytes": 1108,
+      "sha256": "cefda79a8aead1f0bf187d085441c6de12f57875ebce34df62e6981fa9b9c3c2"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/feedback-resize-observer.stdout",
+      "public": "feedback-resize-observer.stdout",
+      "bytes": 188,
+      "sha256": "e9f1e8dc03b9c007e5f265c262c3c10867bf83e1d83775e8ee45a7758d3355fe"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/feedback-resize-observer.stderr",
+      "public": "feedback-resize-observer.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "artifacts": [
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-001/events.jsonl",
+      "relative": "feedback/F-20261008-001/events.jsonl",
+      "bytes": 875,
+      "sha256": "2f45d2f51ef8ee7ebef0d0de4532cc2d73657592c7f7a224845fdee36866f5e5",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-001/meta.json",
+      "relative": "feedback/F-20261008-001/meta.json",
+      "bytes": 1098,
+      "sha256": "55e2d5338accb0b4bb63c42612ce6f20f08e93cca5574e0675127364379a9726",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-001/page.html",
+      "relative": "feedback/F-20261008-001/page.html",
+      "bytes": 303685,
+      "sha256": "1aefbbfb560211cff10cdcc56eea6133586bcf431b0ab32888c96922f8b3c7b7",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-001/report.md",
+      "relative": "feedback/F-20261008-001/report.md",
+      "bytes": 1410,
+      "sha256": "cf30f5ea02361cb81c7371357ef195b765dd7af586b43f58a0f52d01c91435e2",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-001/world.scene",
+      "relative": "feedback/F-20261008-001/world.scene",
+      "bytes": 524,
+      "sha256": "7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-002/events.jsonl",
+      "relative": "feedback/F-20261008-002/events.jsonl",
+      "bytes": 953,
+      "sha256": "27dccf2f2750e88df4627a5f9a39412a9c7b25715b4084464a9eb99786fcdb70",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-002/meta.json",
+      "relative": "feedback/F-20261008-002/meta.json",
+      "bytes": 1137,
+      "sha256": "d4bcf11cfce1149c6f579c79089dee2445184a4e38bf286aa768e6cf71e0e7e1",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-002/page.html",
+      "relative": "feedback/F-20261008-002/page.html",
+      "bytes": 303685,
+      "sha256": "1aefbbfb560211cff10cdcc56eea6133586bcf431b0ab32888c96922f8b3c7b7",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-002/report.md",
+      "relative": "feedback/F-20261008-002/report.md",
+      "bytes": 1527,
+      "sha256": "b63377588c9a34ffda0d9089aeadf211dc6e901bf5b20ad165673cf9ae6efa7c",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-002/world.scene",
+      "relative": "feedback/F-20261008-002/world.scene",
+      "bytes": 524,
+      "sha256": "7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-003/events.jsonl",
+      "relative": "feedback/F-20261008-003/events.jsonl",
+      "bytes": 965,
+      "sha256": "e90ddff35e1a4710b6ecb6e6909d699867208d2e9d764cd0f29d2bdbf23ba511",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-003/meta.json",
+      "relative": "feedback/F-20261008-003/meta.json",
+      "bytes": 1139,
+      "sha256": "b4c02a1cb2b619f1f435f958b4c009161fde0c7f353aac5c450ecc8c339270e3",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-003/page.html",
+      "relative": "feedback/F-20261008-003/page.html",
+      "bytes": 303685,
+      "sha256": "1aefbbfb560211cff10cdcc56eea6133586bcf431b0ab32888c96922f8b3c7b7",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-003/report.md",
+      "relative": "feedback/F-20261008-003/report.md",
+      "bytes": 1551,
+      "sha256": "ca3d80806a568fd761927e12efbbb4606645d7f30ca4b7c9e81ccf7d060ac76d",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-003/world.scene",
+      "relative": "feedback/F-20261008-003/world.scene",
+      "bytes": 524,
+      "sha256": "7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-004/events.jsonl",
+      "relative": "feedback/F-20261008-004/events.jsonl",
+      "bytes": 847,
+      "sha256": "e1843d01835ae459ff2d34d70efb086dd66a0496d404264c50e33a79b37aa90b",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-004/meta.json",
+      "relative": "feedback/F-20261008-004/meta.json",
+      "bytes": 1121,
+      "sha256": "63a9188b2d02ad624699fbc8d3cadd55f86e2f641c6375b4960aa599b365f4e8",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-004/page.html",
+      "relative": "feedback/F-20261008-004/page.html",
+      "bytes": 303685,
+      "sha256": "1aefbbfb560211cff10cdcc56eea6133586bcf431b0ab32888c96922f8b3c7b7",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-004/report.md",
+      "relative": "feedback/F-20261008-004/report.md",
+      "bytes": 1407,
+      "sha256": "d48e401f5ebc87b4facc6c60b10ada6d11716d04ff43b9db7b018d8b25858147",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-004/world.scene",
+      "relative": "feedback/F-20261008-004/world.scene",
+      "bytes": 524,
+      "sha256": "7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-005/events.jsonl",
+      "relative": "feedback/F-20261008-005/events.jsonl",
+      "bytes": 863,
+      "sha256": "700e96e922a195112c1f0809f4b57f3545694c85d4040b8cd32a26de9720288d",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-005/meta.json",
+      "relative": "feedback/F-20261008-005/meta.json",
+      "bytes": 1137,
+      "sha256": "a1534d8719a67c24a78e8567e22632f1fede0af12b40ea66747f0fd0359d1cc6",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-005/page.html",
+      "relative": "feedback/F-20261008-005/page.html",
+      "bytes": 303685,
+      "sha256": "1aefbbfb560211cff10cdcc56eea6133586bcf431b0ab32888c96922f8b3c7b7",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-005/report.md",
+      "relative": "feedback/F-20261008-005/report.md",
+      "bytes": 1439,
+      "sha256": "422f4001f287c4d61369c959b515141415aa2df38877617b14f224d380708a6b",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-005/world.scene",
+      "relative": "feedback/F-20261008-005/world.scene",
+      "bytes": 524,
+      "sha256": "7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-006/events.jsonl",
+      "relative": "feedback/F-20261008-006/events.jsonl",
+      "bytes": 800,
+      "sha256": "8bccefae29d3ca6cbc5ba9267ea7b057ebf586f849054a7f87067cced802670b",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-006/meta.json",
+      "relative": "feedback/F-20261008-006/meta.json",
+      "bytes": 1073,
+      "sha256": "83e231a98d478335e88ae12633b59a6693c788f30a960616e299e12c4fad1a48",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-006/page.html",
+      "relative": "feedback/F-20261008-006/page.html",
+      "bytes": 303685,
+      "sha256": "1aefbbfb560211cff10cdcc56eea6133586bcf431b0ab32888c96922f8b3c7b7",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-006/report.md",
+      "relative": "feedback/F-20261008-006/report.md",
+      "bytes": 1312,
+      "sha256": "49ddc8d02bc3418830ea038cf87fa1a820db3cc4b89a08a80bed355b0bb5998f",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-006/world.scene",
+      "relative": "feedback/F-20261008-006/world.scene",
+      "bytes": 524,
+      "sha256": "7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-007/events.jsonl",
+      "relative": "feedback/F-20261008-007/events.jsonl",
+      "bytes": 799,
+      "sha256": "d6f0330be2cd65538dcad5119cd438a1cece691e433012a4e6e7fa7b874dfc7a",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-007/meta.json",
+      "relative": "feedback/F-20261008-007/meta.json",
+      "bytes": 1073,
+      "sha256": "63cf707128e0211c4bd8cc8946065afa6521d3378e908f0d9b736ee6a716fd46",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-007/page.html",
+      "relative": "feedback/F-20261008-007/page.html",
+      "bytes": 303685,
+      "sha256": "1aefbbfb560211cff10cdcc56eea6133586bcf431b0ab32888c96922f8b3c7b7",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-007/report.md",
+      "relative": "feedback/F-20261008-007/report.md",
+      "bytes": 1311,
+      "sha256": "1c7047b1eba718fafa613fd81e112b495b56b0aabdef90cb014c62d9545b89a0",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-007/world.scene",
+      "relative": "feedback/F-20261008-007/world.scene",
+      "bytes": 524,
+      "sha256": "7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-008/events.jsonl",
+      "relative": "feedback/F-20261008-008/events.jsonl",
+      "bytes": 1445,
+      "sha256": "afa777bc46797768b0a6bee657a38e27dafc614f30cf9cfb996f094f5811d841",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-008/meta.json",
+      "relative": "feedback/F-20261008-008/meta.json",
+      "bytes": 1117,
+      "sha256": "d6c292d17f39a1dd33829ca6b2591eba08cfbf1661ca0da5b41f1b62e399ed4e",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-008/page.html",
+      "relative": "feedback/F-20261008-008/page.html",
+      "bytes": 393470,
+      "sha256": "ea28e988e5e82fd8c60ad9d03e76e83ce684a31aecb8236a28b92b1e1d0d1988",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-008/report.md",
+      "relative": "feedback/F-20261008-008/report.md",
+      "bytes": 1792,
+      "sha256": "0e08eb409ac452f64e32c8453722918be02a2e6044203033d61e88812464166a",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-008/world.scene",
+      "relative": "feedback/F-20261008-008/world.scene",
+      "bytes": 524,
+      "sha256": "7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-009/events.jsonl",
+      "relative": "feedback/F-20261008-009/events.jsonl",
+      "bytes": 4943,
+      "sha256": "644a43a383c4428c063ba892bedfce94bb9057b7f427e1d8f96978eeb1178212",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-009/meta.json",
+      "relative": "feedback/F-20261008-009/meta.json",
+      "bytes": 1095,
+      "sha256": "353601a6f97efdedaf423e3833e2b257e23e4522acbe370dc04bebf798775506",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-009/page.html",
+      "relative": "feedback/F-20261008-009/page.html",
+      "bytes": 393462,
+      "sha256": "25f5d275f435907ea28447f77728ab43c9da0b7c520222a8943e0e4d694d42c1",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-009/report.md",
+      "relative": "feedback/F-20261008-009/report.md",
+      "bytes": 3807,
+      "sha256": "58c721003d5638e1e2cb39c3b558f94b2ec8c0bfafc5ffecb1ee67d4b5fc411a",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-009/world.scene",
+      "relative": "feedback/F-20261008-009/world.scene",
+      "bytes": 524,
+      "sha256": "7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-010/events.jsonl",
+      "relative": "feedback/F-20261008-010/events.jsonl",
+      "bytes": 1405,
+      "sha256": "f5e97d0374abdef75ea31a18cfb25ecc365dbefd3cfc1d207692f44fa8db3800",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-010/meta.json",
+      "relative": "feedback/F-20261008-010/meta.json",
+      "bytes": 1064,
+      "sha256": "bf8b868c53d87c3eb96aa1da8647b4b4524ccc0c61f607cf44123e47e06fbe3b",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-010/page.html",
+      "relative": "feedback/F-20261008-010/page.html",
+      "bytes": 393462,
+      "sha256": "25f5d275f435907ea28447f77728ab43c9da0b7c520222a8943e0e4d694d42c1",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-010/report.md",
+      "relative": "feedback/F-20261008-010/report.md",
+      "bytes": 1587,
+      "sha256": "2ace70cb48397a3addbf65a8399ca61d6fe9fe103367a6e572d21b82303c51de",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/F-20261008-010/world.scene",
+      "relative": "feedback/F-20261008-010/world.scene",
+      "bytes": 524,
+      "sha256": "7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-fb-ro-lxCwqK/feedback/INBOX.md",
+      "relative": "feedback/INBOX.md",
+      "bytes": 1331,
+      "sha256": "509c10f0d1be8a60d48f0997f670caae152e7b812fe39a3c56eb41405cff0453",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    }
+  ],
+  "sources": [
+    {
+      "source": "geometry-web/feedback_resize_observer_test.js",
+      "sha256": "4598612a3f2aaafab69e061b2f7179530024dab8f99d35c750c783b3336db0d5",
+      "public": "feedback-resize-observer/sources/geometry-web/feedback_resize_observer_test.js",
+      "binding": "git object at recorded head, copied after execution; clean before/after receipt binds checkout, cannot exclude transient edits"
+    },
+    {
+      "source": "/workspace/closure-evidence/sandbox-launch.cjs",
+      "public": "feedback-resize-observer/sources/launch-adapters/sandbox-launch.cjs",
+      "bytes": 912,
+      "sha256": "c917611c821f63cea2e5ef3ed1c0ddde128dcf47fde65d1a7ace8ff24fba2b1e",
+      "binding": "post-run adapter copy; launch policy only, no action/oracle changes"
+    },
+    {
+      "source": "/workspace/closure-evidence/python-launch/sitecustomize.py",
+      "public": "feedback-resize-observer/sources/launch-adapters/sitecustomize.py",
+      "bytes": 748,
+      "sha256": "e49545951bb661db0169e3d466c96321ee67c5f8a39fac3f7f0ed6954c22a7be",
+      "binding": "post-run adapter copy; launch policy only, no action/oracle changes"
+    },
+    {
+      "source": "/workspace/geometry-axiom/tests/release_gate.py",
+      "public": "feedback-resize-observer/sources/tests/release_gate.py",
+      "bytes": 17583,
+      "sha256": "ad460ddbdd52c48995188079339bc224e7f39b3d01e3147091a858ba8f541389",
+      "binding": "post-run clean tested-head release identity wrapper"
+    }
+  ],
+  "innerServiceIdentity": {
+    "start": {
+      "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+      "root": "/workspace/geometry-axiom",
+      "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+      "feedback": "697d5491a66018e095de6941d2b3c0e0b53941734469f93bba1c1c4d8d5a86bc",
+      "harness": "4598612a3f2aaafab69e061b2f7179530024dab8f99d35c750c783b3336db0d5",
+      "runtime": {
+        "schema": "geometry-runtime/1",
+        "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+        "fresh": true,
+        "root": "/workspace/geometry-axiom",
+        "pid": 217786,
+        "session": "6f56234f501f4fdcbcd5faccbeedffaf"
+      },
+      "native": {
+        "path": "/tmp/geometry-tests/bridge",
+        "state": "fresh",
+        "source_fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e"
+      }
+    },
+    "end": {
+      "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+      "root": "/workspace/geometry-axiom",
+      "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+      "feedback": "697d5491a66018e095de6941d2b3c0e0b53941734469f93bba1c1c4d8d5a86bc",
+      "harness": "4598612a3f2aaafab69e061b2f7179530024dab8f99d35c750c783b3336db0d5",
+      "runtime": {
+        "schema": "geometry-runtime/1",
+        "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+        "fresh": true,
+        "root": "/workspace/geometry-axiom",
+        "pid": 217786,
+        "session": "6f56234f501f4fdcbcd5faccbeedffaf"
+      }
+    }
+  }
+}

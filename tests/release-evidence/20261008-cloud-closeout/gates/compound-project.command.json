@@ -1,0 +1,38 @@
+{
+  "gate": "compound-project",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "tests/release_gate.py",
+    "--url",
+    "http://127.0.0.1:18971/",
+    "--output",
+    "/workspace/closure-evidence/gates/compound-project",
+    "--timeout",
+    "1200",
+    "--",
+    "python3",
+    "-B",
+    "/workspace/closure-evidence/ci-source-audit/save-reopen-gate-review/compound_project_probe.py",
+    "--url",
+    "http://127.0.0.1:18971/",
+    "--head",
+    "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+    "--out",
+    "/workspace/closure-evidence/compound-r1"
+  ],
+  "environment": {
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:18971/",
+    "GEOMETRY_TEST_BRIDGE": "/tmp/geometry-tests/bridge",
+    "GEOMETRY_BRIDGE": "/tmp/geometry-tests/bridge",
+    "GEOMETRY_MODEL_BASE": "/tmp/geometry-tests/model-base",
+    "GEOMETRY_FEEDBACK_DIR": "/tmp/geometry-closeout-r2-feedback",
+    "GEOMETRY_CHROME": "/usr/bin/chromium",
+    "GEOMETRY_REQUIRE_CLEAN": "1",
+    "GEOMETRY_VERIFY_ROOT": "/workspace/geometry-axiom",
+    "GEOMETRY_PYTHON": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "PYTHONPATH": "/workspace/closure-evidence/python-launch",
+    "NODE_OPTIONS": "--require=/workspace/closure-evidence/sandbox-launch.cjs"
+  },
+  "exit_code": 0,
+  "finished": "2026-10-08T18:49:05.891061+00:00"
+}

@@ -11,14 +11,23 @@ from pathlib import Path
 import secrets
 
 from .common import (ModelError, canonical_bytes, digest, strict_json_loads,
-                     ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, scene_required_capabilities)
+                     ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, SECTION_PROFILE_CAPABILITY,
+                     scene_required_capabilities)
 
 # The source commit contains the adopted axiom bytes identified by this digest.
 # Update only after committing the corresponding SSOT change (MODELING-CONTRACT).
-AXIOM_REVISION = "3ad8012b6f01f9f46795a28a410ee444c5cce1a0"
-AXIOM_SHA256 = "29ad0c657e53d364347862fddac23ba26a248a4fd8f83487d86f9e648bd1eaf2"
-# D35-D40 / I43-I51 / R36-R40 only add section-profile/1, which this executor
-# does not implement; packages built under the previous adopted text stay valid.
+AXIOM_REVISION = "8a8b56424407bb758de0d16e66c94e21eb79aa41"
+AXIOM_SHA256 = "d8a0b4a1c108197f4abb5c67d73fa22aa7fa4288769f605a5a9372fd93aa7b52"
+# The R43 amendment (PF-0 r2.1, 2026-10-11) replaced the a93bb34 text before it
+# reached main; that interim digest was never declared by a main executor, so it
+# is deliberately not listed as a compatible version.
+# D41-D45 / I52-I57 / R41-R46 only add panel-fill/1, which this executor does
+# not implement; packages built under the previous adopted text stay valid.
+PRE_PANEL_FILL_AXIOM_VERSIONS = frozenset({
+    ("3ad8012b6f01f9f46795a28a410ee444c5cce1a0", "29ad0c657e53d364347862fddac23ba26a248a4fd8f83487d86f9e648bd1eaf2"),
+})
+# The Q38 extension is additive; packages under the prior text remain supported
+# only when they do not claim or contain section-profile/1 definitions.
 PRE_SECTION_PROFILE_AXIOM_VERSIONS = frozenset({
     ("73b9ba1d417c1b6c9885951b24139b67f8550312", "d4bd69cd3dcbcef10802dd401a66b293afdaa09abccc6853d7a39f478cefe29a"),
 })
@@ -50,9 +59,10 @@ INFINITE_GRID_AXIOM_VERSIONS = frozenset({
 })
 SCHEMA = "geometry-model-package/1"
 PROFILE = "orthogonal-model/1"
-GENERATOR = {"name": "geometry-axiom-reference", "version": "1.3.3"}
+GENERATOR = {"name": "geometry-axiom-reference", "version": "1.4.0"}
 CAPABILITIES = ("extrusion/1", "shell/1", "composite-space/1",
-                "solid-composition/1", "model-export/1", ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY)
+                "solid-composition/1", "model-export/1", ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY,
+                SECTION_PROFILE_CAPABILITY)
 _AXIOM_PATH = Path(__file__).resolve().parents[2] / "公理層.md"
 
 
@@ -131,7 +141,7 @@ def build_package(definitions, request, *, capabilities=None, max_cells=200000,
                       base_executable=base_executable)
     # evaluate checks known definition contradictions before capability errors.
     active = [c for c in CAPABILITIES if c in available and
-              (c not in (ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY) or c in result["required_capabilities"])]
+              (c not in (ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, SECTION_PROFILE_CAPABILITY) or c in result["required_capabilities"])]
     package = {
         "manifest": {"schema": SCHEMA, "profile": PROFILE,
                      "axiom_revision": AXIOM_REVISION,
@@ -169,21 +179,25 @@ def verify_package(package, *, max_cells=200000, base_executable=None):
     if not all(type(part) is str for part in supplied_version) or supplied_version not in {
             current_version, *LEGACY_AXIOM_VERSIONS, *ENGINEERING_AXIOM_VERSIONS,
             *FINITE_GRID_AXIOM_VERSIONS, *INFINITE_GRID_AXIOM_VERSIONS, *PARAMETER_AXIOM_VERSIONS, *PRE_GENERATION_AXIOM_VERSIONS, *PRE_SUBDIVISION_AXIOM_VERSIONS,
-            *PRE_SECTION_PROFILE_AXIOM_VERSIONS}:
+            *PRE_SECTION_PROFILE_AXIOM_VERSIONS, *PRE_PANEL_FILL_AXIOM_VERSIONS}:
         raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "This executor does not implement the supplied axiom revision")
     if supplied_version != current_version:
         definitions = package["definitions"]
         if (not isinstance(definitions, dict) or type(definitions.get("base_scene")) is not str):
             raise ModelError("INVALID", "PACKAGE_SCHEMA", "D25", "Expected complete source definitions")
-        if supplied_version not in PRE_SECTION_PROFILE_AXIOM_VERSIONS and "grid-subdivision-rules/1" in scene_required_capabilities(definitions["base_scene"]):
+        if supplied_version not in PRE_PANEL_FILL_AXIOM_VERSIONS and (
+                SECTION_PROFILE_CAPABILITY in scene_required_capabilities(definitions["base_scene"]) or
+                isinstance(manifest["capabilities"], list) and SECTION_PROFILE_CAPABILITY in manifest["capabilities"]):
+            raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "Section profiles require the adopted Q38 axiom revision")
+        if supplied_version not in PRE_SECTION_PROFILE_AXIOM_VERSIONS | PRE_PANEL_FILL_AXIOM_VERSIONS and "grid-subdivision-rules/1" in scene_required_capabilities(definitions["base_scene"]):
             raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "Source subdivision requires its adopted axiom revision")
-        if supplied_version not in PRE_GENERATION_AXIOM_VERSIONS | PRE_SUBDIVISION_AXIOM_VERSIONS | PRE_SECTION_PROFILE_AXIOM_VERSIONS and _scene_uses_stagger(definitions["base_scene"]):
+        if supplied_version not in PRE_GENERATION_AXIOM_VERSIONS | PRE_SUBDIVISION_AXIOM_VERSIONS | PRE_SECTION_PROFILE_AXIOM_VERSIONS | PRE_PANEL_FILL_AXIOM_VERSIONS and _scene_uses_stagger(definitions["base_scene"]):
             raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "Stagger sources and band anchors require the stagger axiom revision")
-        if supplied_version not in PARAMETER_AXIOM_VERSIONS | PRE_GENERATION_AXIOM_VERSIONS | PRE_SUBDIVISION_AXIOM_VERSIONS | PRE_SECTION_PROFILE_AXIOM_VERSIONS and (PARAMETER_CAPABILITY in scene_required_capabilities(definitions["base_scene"]) or PARAMETER_CAPABILITY in manifest["capabilities"]):
+        if supplied_version not in PARAMETER_AXIOM_VERSIONS | PRE_GENERATION_AXIOM_VERSIONS | PRE_SUBDIVISION_AXIOM_VERSIONS | PRE_SECTION_PROFILE_AXIOM_VERSIONS | PRE_PANEL_FILL_AXIOM_VERSIONS and (PARAMETER_CAPABILITY in scene_required_capabilities(definitions["base_scene"]) or PARAMETER_CAPABILITY in manifest["capabilities"]):
             raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "Parameter sources require the parameter axiom revision")
-        if supplied_version not in INFINITE_GRID_AXIOM_VERSIONS | PARAMETER_AXIOM_VERSIONS | PRE_GENERATION_AXIOM_VERSIONS | PRE_SUBDIVISION_AXIOM_VERSIONS | PRE_SECTION_PROFILE_AXIOM_VERSIONS and _scene_uses_infinite_grid(definitions["base_scene"]):
+        if supplied_version not in INFINITE_GRID_AXIOM_VERSIONS | PARAMETER_AXIOM_VERSIONS | PRE_GENERATION_AXIOM_VERSIONS | PRE_SUBDIVISION_AXIOM_VERSIONS | PRE_SECTION_PROFILE_AXIOM_VERSIONS | PRE_PANEL_FILL_AXIOM_VERSIONS and _scene_uses_infinite_grid(definitions["base_scene"]):
             raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "Infinite-grid sources require the infinite-grid axiom revision")
-        if supplied_version not in FINITE_GRID_AXIOM_VERSIONS | INFINITE_GRID_AXIOM_VERSIONS | PARAMETER_AXIOM_VERSIONS | PRE_GENERATION_AXIOM_VERSIONS | PRE_SUBDIVISION_AXIOM_VERSIONS | PRE_SECTION_PROFILE_AXIOM_VERSIONS and _scene_uses_grid_system(definitions["base_scene"]):
+        if supplied_version not in FINITE_GRID_AXIOM_VERSIONS | INFINITE_GRID_AXIOM_VERSIONS | PARAMETER_AXIOM_VERSIONS | PRE_GENERATION_AXIOM_VERSIONS | PRE_SUBDIVISION_AXIOM_VERSIONS | PRE_SECTION_PROFILE_AXIOM_VERSIONS | PRE_PANEL_FILL_AXIOM_VERSIONS and _scene_uses_grid_system(definitions["base_scene"]):
             raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "Grid-system sources require the grid-system axiom revision")
         if supplied_version in LEGACY_AXIOM_VERSIONS and (
                 scene_required_capabilities(definitions["base_scene"]) or

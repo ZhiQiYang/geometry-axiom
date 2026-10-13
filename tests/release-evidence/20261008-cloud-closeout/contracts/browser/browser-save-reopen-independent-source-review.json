@@ -1,0 +1,132 @@
+{
+  "checked_at": "2026-10-08T16:31:32.002260+00:00",
+  "reviewer": "/root/remote_inventory",
+  "reviewed_path": "/workspace/closure-evidence/contracts/browser_save_reopen_probe.py",
+  "reviewed_sha256": "9a744684466b34be866230943a2dc8af3c0534cb6d74727210cec59556f22a8c",
+  "functions": {
+    "sha": 23,
+    "write": 27,
+    "stamp": 31,
+    "main": 35,
+    "identity": 70,
+    "ready": 112,
+    "native": 115,
+    "snapshot": 121,
+    "world_semantic": 135,
+    "project_semantic": 143,
+    "menu": 146,
+    "response_matches": 150,
+    "new_project": 153,
+    "open_file": 174,
+    "reject_owned": 193,
+    "dialog_handler": 246,
+    "capture_request": 259
+  },
+  "commands": [
+    {
+      "argv": [
+        "pwd"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "stdout": "/workspace/geometry-axiom\n",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--short"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "stdout": "",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "stdout": "9a4136da264249f76ba08258a7f14be926f96a95\n",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "origin/main"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "stdout": "5cc1ffa1ee85120eca14258b86b715151cad274f\n",
+      "stderr": "",
+      "exit_code": 0
+    }
+  ],
+  "verdict": "No blocking source/oracle finding in the explicitly bounded probe. Ready for the root-assigned browser slot; no product pass is asserted.",
+  "review_scope": "Read source, contract and prior fixture receipts only; parsed AST without importing/executing probe; no browser/native/test service launched.",
+  "default_execution_scope": "Two verified native fixtures (grid, assembly) at 1400x1000 and 390x844; each UI scene export -> UI New empty -> UI scene chooser reopen -> UI project download save -> UI New empty -> UI project chooser reopen.",
+  "accepted_oracles": [
+    "Fixture input bytes are pinned to prior native pass receipts and copied to a fresh evidence directory. Initial setup uses apiRequest loadfile + awaited renderObjects and is explicitly labeled API setup, not UI authoring.",
+    "New uses actual file menu command and known confirmation; requires exact /upload reset response, new project id, draw count/status completion, dump empty, object collections empty, assembly instances empty and rendered cards empty. Later clears compare complete native semantic responses to initial empty state.",
+    "Scene reopen goes through actual #btnOpen -> #file chooser/change -> uploadScene; project reopen goes #btnOpenProject -> #projectFile -> prepare/confirm. No internal load function substitutes for either reopen.",
+    "Reopen waits for HTTP success, drawing, terminal status, cleared input and expected full card-key set before full snapshots. Empty before reopen plus nonempty baseline and exact comparison would reject a no-op load.",
+    "world_semantic excludes only top-level dump.revision and assembly-read.revision on successful reopen; all other native fields, definitions, capabilities, hashes, full references and ownership mapping remain compared. Every raw revision remains saved.",
+    "Project save obtains real download ZIP, compares full world.scene, project identity and name, explicitly requires fixture capabilities in native dump, then all native required capabilities in archive manifest. Missing keys fail; no empty-default vacuity.",
+    "Project reopen additionally compares original id/name/manifest/source byte arrays. These fixtures intentionally have no nonempty models/assets/drafts; their absent data is not validation of those product cases.",
+    "After assembly reopen, delete of all three member timbers must be invalid preview with I42 owning-assembly reason; full dump/assembly-read including revision plus objects/references remain equal. API refusal probe is not claimed as a UI delete path.",
+    "Runtime/clean Git/native fingerprint pinning is checked before/after. Linux process descendants must include exactly one expected live bridge whose /proc executable hash matches the registry-fresh binary and sidecar. This avoids treating configuration alone as runtime identity.",
+    "Normal Playwright clicks/download/file chooser and condition waits; no forced clicks, sleeps, arbitrary retries or policy bypass. Chromium sandbox requested true; a launch exception terminates action with recorded failure.",
+    "Only known New/dirty-leave confirms are accepted; unexpected dialogs are dismissed and recorded as failure. Trace stop and context close are independently attempted with preserved errors, and browser close is in a finally inside live Playwright context. Cleanup failure cannot yield top-level exit 0."
+  ],
+  "review_iterations": [
+    {
+      "sha256": "9cae2d75dc01ca2edeb6a015275e89ba530963482f1038df2be12403cff7754b",
+      "observations": "Original source: bounded main oracle acceptable; recommended independent archive capability check, known-confirm restriction, independent trace/context cleanup and browser-finally."
+    },
+    {
+      "sha256": "5c915ac9263ea1c5e11a5606a5f2f26df334bb009c4958b47ca92f23b2e048be",
+      "observations": "Capability/confirm/case cleanup strengthened; browser cleanup remained success-only."
+    },
+    {
+      "sha256": "9a744684466b34be866230943a2dc8af3c0534cb6d74727210cec59556f22a8c",
+      "observations": "Browser close finally now preserves original exception and records close error; all source review observations addressed."
+    }
+  ],
+  "execution_boundaries": [
+    "Root must grant the single browser resource slot and supply its isolated service/feedback directory; the probe does not establish service ownership merely from loopback port number.",
+    "Explicit showSaveFilePicker removal selects an existing product download fallback. This is not OS Save dialog acceptance.",
+    "No full keyboard matrix, asynchronous interruption matrix, physical mobile, IME, UI fixture authoring, UI delete, nonempty models/assets/drafts or nonempty-project merge policy is covered.",
+    "Successful source review is not a browser outcome. Preserve first failing executions and identify precondition/oracle changes by script hash if the first real run exposes fixture assumptions.",
+    "Preflight markdown retains the initial submitted hash deliberately; this final receipt names the actual reviewed version and must accompany execution evidence."
+  ],
+  "fixtures": {
+    "grid": {
+      "path": "/workspace/closure-evidence/contracts/grid-final/grid-rule-timber.scene",
+      "sha256": "1ee0d9b49b37b29d00921c285201d18974c842c50446e39bb5982ee465ec14e8",
+      "native_receipt": "/workspace/closure-evidence/contracts/grid-final/result.json",
+      "native_receipt_sha256": "6acb1b6d066bac9b6dd71d2e6fc20718bbbfd89cca9aa6b683516bccf0cbb284",
+      "native_receipt_head": "3a48cf5bacb9a295e15046e5ca0cb021e50c54db"
+    },
+    "assembly": {
+      "path": "/workspace/closure-evidence/contracts/assembly-final/reopened-owned.scene",
+      "sha256": "d96abc77b028e805b5cb68b4ba648cc60ac89f46320c1143f1cc911d8168c54f",
+      "native_receipt": "/workspace/closure-evidence/contracts/assembly-final/result.json",
+      "native_receipt_sha256": "9d1259d1c354516065df33507c91dc965644186965fbc11d084f6005973ba373",
+      "native_receipt_head": "3a48cf5bacb9a295e15046e5ca0cb021e50c54db"
+    }
+  },
+  "source_sha256": {
+    "geometry-web/app.js": "86c82675d0b7eb0dc76659705186273112f6d17c2712426f7a681e5fa48497d8",
+    "geometry-web/reference-workspace.js": "8ecb3673c92339b57e411d7f105400bec1a37b86f8468089a942d6f50c59ee53",
+    "geometry-web/project-store.js": "d06dce17c7dd9e17c5a83045128bfc447b14b0b39c3902e27d338b6ef9d3c3a3",
+    "geometry-web/serve.py": "3769e7bf84f9c61928487a61874c6eca4d1363d4de3b4a0a7ecd1048557f405c",
+    "tests/binaries.py": "a211fd0d066b8a5138855c4773373f9f526717f26264de909c0f61f997ac9aba",
+    "tests/test_assembly_generation.py": "ceb798ad71af520646ec4ac1ed4a39ec430f279a2c142b7028a41c2104903565",
+    "tests/test_grid_subdivision_oracle.py": "9d7c52323d52c052d131094407e8487b6b9afbb2a02d5b2572ab16e3da3a4589"
+  },
+  "findings": []
+}

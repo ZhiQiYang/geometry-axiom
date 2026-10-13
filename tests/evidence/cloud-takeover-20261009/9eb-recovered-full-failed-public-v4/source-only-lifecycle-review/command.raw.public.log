@@ -1,0 +1,38 @@
+PASS all eight scripts parse without execution
+PASS current tracked candidate clean and exact
+PASS run_full_cdp_identity.py original runner exact bytes
+PASS run_full_space_identity.py original runner exact bytes
+PASS stop v2 delta only records liveBinding process observations
+PASS stop v2 adds no signal or broadened helper call
+PASS controller launches no filtered or override suite
+PASS original CDP and Space canonical commands retained
+PASS launch retains service PID through execve and checks port twice
+PASS exact owned ready runtime accepted in VM
+PASS ready guard rejects missing
+PASS ready guard rejects wrong PID
+PASS ready guard rejects wrong root
+PASS ready guard rejects stale
+PASS ready guard rejects wrong version
+PASS before source guard rejects wrong HEAD
+PASS before source guard rejects dirty
+PASS runner hash guard rejects changed wrapper
+PASS receipt required before invoking any stop helper
+PASS actual gate exit propagated rather than invented
+PASS readiness and original gate bounds retained
+PASS controller writes actual error rather than green terminal on missing receipt
+PASS stop observation census old node/browser
+PASS stop observation census new nested binding
+PASS stop observation census absent and null
+PASS stop observation census mixed duplicate/missing PID
+PASS geometry-owned-full-stage-stop.py validates root/cwd/serve identity before signals
+PASS geometry-owned-full-stage-stop.py signals only validated direct-child native and server
+PASS geometry-owned-full-stage-stop.py preserves genuine native dump before termination
+PASS geometry-stage-stop.py validates root/cwd/serve identity before signals
+PASS geometry-stage-stop.py signals only validated direct-child native and server
+PASS geometry-stage-stop.py preserves genuine native dump before termination
+PASS actual started record binds controller/launch/runner bytes
+PASS actual recorded interpreter hash matches file
+PASS actual recorded command has correct CDP root/SHA/native/url and no filters
+PASS actual ready record binds unique owned service
+PASS actual current service exe/cwd/cmdline match ready owned identity
+PASS tracked source untouched by independent review

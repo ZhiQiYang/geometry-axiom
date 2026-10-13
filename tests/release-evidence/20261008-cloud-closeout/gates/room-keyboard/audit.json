@@ -1,0 +1,159 @@
+{
+  "gate": "room-keyboard",
+  "auditedAt": "2026-10-08T18:42:28.171466+00:00",
+  "verdict": "incomplete-service-disconnection-exit-unknown",
+  "counts": {
+    "observed": 373,
+    "passed": 372,
+    "failed": 1,
+    "basis": "individual canonical result records"
+  },
+  "commandExitCode": null,
+  "gateExitCode": null,
+  "controllerExitCode": null,
+  "identityVerifiedByReceipt": true,
+  "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+  "mainAtAudit": "5cc1ffa1ee85120eca14258b86b715151cad274f",
+  "dirtyBefore": null,
+  "dirtyAfter": null,
+  "runtimeBefore": null,
+  "runtimeAfter": null,
+  "nativeConfiguredFiles": null,
+  "command": [
+    "node",
+    "tests/room_outline_keyboard_browser.js"
+  ],
+  "canonicalSource": "/tmp/geometry-closeout-r2-gates/room-keyboard/results.json",
+  "terminalLogRecord": {
+    "prefix": "KEYBOARD_RESULT",
+    "value": {
+      "checks": 373,
+      "failures": 1,
+      "goalFailures": 0,
+      "unexpectedFailures": 1,
+      "browserDisconnected": true,
+      "fatal": true
+    }
+  },
+  "limitations": [
+    "Interrupted/incomplete original run: service connection failures precede fatal checkbox click timeout. Missing release receipt means command and gate exit unknown; 373 observed assertions do not mean suite completion.",
+    "Linux Chromium, not physical phone/IME/native OS picker certification.",
+    "The command.log combines child stdout/stderr; separate gate-wrapper stdout/stderr are preserved.",
+    "A native file hash alone is not proof of which live native process was loaded; consult separate live-service binding."
+  ],
+  "canonicalLimitations": [
+    "No physical phone or physical IME",
+    "Fault-injection KeyboardEvents are explicitly untrusted",
+    "Retained stale input temporarily reattached in hidden fixture container, removed in finally",
+    "No performance claim",
+    "No application state setters or mutating commands through evaluate; evaluation reads state, records events, dispatches labelled fault events or manages that isolated DOM fixture"
+  ],
+  "rawFiles": [
+    {
+      "source": "/workspace/closure-evidence/gates/room-keyboard/command.log",
+      "public": "room-keyboard/command.log",
+      "bytes": 31177,
+      "sha256": "15046486db167839f6a08d3b216714d147efebf6ed5c0f488ca9fa04ac7f6a54"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/room-keyboard.stdout",
+      "public": "room-keyboard.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/room-keyboard.stderr",
+      "public": "room-keyboard.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "artifacts": [
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-keyboard/desktop-enter-first.png",
+      "relative": "desktop-enter-first.png",
+      "bytes": 229885,
+      "sha256": "ee285b17f50ed5cecfb6339952d15567bb3b085fe8881d67c527977d8e65f5f2",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-keyboard/failure.png",
+      "relative": "failure.png",
+      "bytes": 105847,
+      "sha256": "db11d4f05658a9df0ec3a46703579f0c8ebc90d8f3f4cec15398783b16884abd",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-keyboard/keyboard-rooms.pdf",
+      "relative": "keyboard-rooms.pdf",
+      "bytes": 5081,
+      "sha256": "f1d30a10eb1caa557fa083c051d09ada7b006c8e9012942c933e67a5d81b9677",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-keyboard/narrow-enter-first.png",
+      "relative": "narrow-enter-first.png",
+      "bytes": 105915,
+      "sha256": "91116ad60bcdd430a565a8c33208d5c1e0b13132704fee2add4d761cc5349956",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-keyboard/results.json",
+      "relative": "results.json",
+      "bytes": 1219978,
+      "sha256": "148a457023d91f63c1b4ba5fcc45644628186ade5686a7c29e1e2b541c4ea64b",
+      "public": "room-keyboard/artifacts/results.json"
+    }
+  ],
+  "sources": [
+    {
+      "source": "tests/room_outline_keyboard_browser.js",
+      "sha256": "4513cbbf87a0ad1e8f9d27a2f721b390c9e9d311ce516a470b3dbd2435b10f3c",
+      "public": "room-keyboard/sources/tests/room_outline_keyboard_browser.js",
+      "binding": "git object at recorded head, copied after execution; clean before/after receipt binds checkout, cannot exclude transient edits"
+    },
+    {
+      "source": "/workspace/closure-evidence/sandbox-launch.cjs",
+      "public": "room-keyboard/sources/launch-adapters/sandbox-launch.cjs",
+      "bytes": 912,
+      "sha256": "c917611c821f63cea2e5ef3ed1c0ddde128dcf47fde65d1a7ace8ff24fba2b1e",
+      "binding": "post-run adapter copy; launch policy only, no action/oracle changes"
+    },
+    {
+      "source": "/workspace/closure-evidence/python-launch/sitecustomize.py",
+      "public": "room-keyboard/sources/launch-adapters/sitecustomize.py",
+      "bytes": 748,
+      "sha256": "e49545951bb661db0169e3d466c96321ee67c5f8a39fac3f7f0ed6954c22a7be",
+      "binding": "post-run adapter copy; launch policy only, no action/oracle changes"
+    },
+    {
+      "source": "/workspace/geometry-axiom/tests/release_gate.py",
+      "public": "room-keyboard/sources/tests/release_gate.py",
+      "bytes": 17583,
+      "sha256": "ad460ddbdd52c48995188079339bc224e7f39b3d01e3147091a858ba8f541389",
+      "binding": "post-run clean tested-head release identity wrapper"
+    }
+  ],
+  "knownErrors": [
+    {
+      "case": "narrow-detached-after-cancel",
+      "console": "Failed to load resource: net::ERR_EMPTY_RESPONSE"
+    },
+    {
+      "case": "narrow-detached-after-cancel",
+      "console": "Failed to load resource: net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "case": "narrow-detached-after-cancel",
+      "console": "Failed to load resource: net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "case": "narrow-detached-after-cancel",
+      "console": "Failed to load resource: net::ERR_CONNECTION_REFUSED"
+    }
+  ]
+}

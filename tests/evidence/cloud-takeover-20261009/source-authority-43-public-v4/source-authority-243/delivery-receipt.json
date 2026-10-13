@@ -1,0 +1,216 @@
+{
+  "schema": "geometry-issue123-43-source-followup-delivery/1",
+  "at": "2026-10-09T16:12:49.394911+00:00",
+  "frozenSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d",
+  "observedHeadAtDelivery": "243326b512896ace70e068f62c8f3d6397f6000d",
+  "observedDirtyAtDelivery": "",
+  "sourceIdentity": "29 immutable git show full243 files, not a rebinding to later source",
+  "itemCount": 43,
+  "nativeDOMNamesChecked": true,
+  "sourceAnchorsMissing": 0,
+  "historicalAuthoritiesPreserved": {
+    "<workspace-path>|basename=issue123-43-current640-source-audit.md|originalKeySha256=b9a030c8bed42356f84492cc8a1222084464a5d8aa123a2ffcac3ff74534c761": true,
+    "<workspace-path>|basename=issue123-original.json|originalKeySha256=27936026a8631c60aa4f3e36a808d218450b855b1e419f76fcf62689f387b36a": true
+  },
+  "originalAMapEdited": false,
+  "commands": [
+    {
+      "purpose": "immutable full-SHA source read and scratch documentation preparation",
+      "argv": [
+        "<python-runtime>/bin/python3",
+        "<workspace-path>"
+      ],
+      "shellCommand": "python3 prepare_followup.py > prepare-followup.execution.raw.log 2>&1",
+      "cwd": "<workspace-path>",
+      "exitCode": 0,
+      "executionFile": {
+        "path": "<python-runtime>/bin/python3.12",
+        "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+        "version": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+      },
+      "sourceScript": {
+        "path": "<workspace-path>",
+        "bytes": 34488,
+        "sha256": "661a185c286b49c8957324489b0f4079b6a817fc947a07abee586b7028df0a0c"
+      },
+      "rawLog": {
+        "path": "<workspace-path>",
+        "bytes": 405,
+        "sha256": "b5fdc023dfa4a6f07ccc122ef451e7d4f736e60010676123a9fac989664dc171"
+      }
+    },
+    {
+      "purpose": "source/artifact-only validation; not a product test",
+      "argv": [
+        "<python-runtime>/bin/python3",
+        "<workspace-path>"
+      ],
+      "shellCommand": "python3 validate_package.py > validation.execution.raw.log 2>&1",
+      "cwd": "<workspace-path>",
+      "exitCode": 0,
+      "executionFile": {
+        "path": "<python-runtime>/bin/python3.12",
+        "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+        "version": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+      },
+      "sourceScript": {
+        "path": "<workspace-path>",
+        "bytes": 6942,
+        "sha256": "0b7a1104d9f4cae6343fd64cd8db912b86a85353e940c6127c6368f3c042f106"
+      },
+      "rawLog": {
+        "path": "<workspace-path>",
+        "bytes": 406,
+        "sha256": "26a428b98d38ec1735cec641a2fb579311763190cf63012bfa1cd35d0de4ed0f"
+      },
+      "result": {
+        "path": "<workspace-path>",
+        "bytes": 6125,
+        "sha256": "bb1f7b6311e43f2937a6b3ef8f26b6390e68690321dfff4167bf7d6a329b8500"
+      },
+      "passed": 56,
+      "failed": 0
+    },
+    {
+      "purpose": "preserved first artifact-check attempt, with two checker bookkeeping errors corrected; not a product failure",
+      "argv": [
+        "<python-runtime>/bin/python3",
+        "<workspace-path>"
+      ],
+      "originalExecutionPath": "<workspace-path>",
+      "cwd": "<workspace-path>",
+      "exitCode": 1,
+      "executionFile": {
+        "path": "<python-runtime>/bin/python3.12",
+        "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+        "version": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+      },
+      "sourceScript": {
+        "path": "<workspace-path>",
+        "bytes": 6793,
+        "sha256": "03f5d5478bccedc88349d10ef648eb8ca522b709f1a3ed03f1974d0d05cdb10d"
+      },
+      "rawLog": {
+        "path": "<workspace-path>",
+        "bytes": 558,
+        "sha256": "c5df6963ab1026147129a2ee930d7c5eba8e66b0e5a48de58085dd2154c37a37"
+      },
+      "result": {
+        "path": "<workspace-path>",
+        "bytes": 6112,
+        "sha256": "68151a78fbf896346c825e257dc39fd5a0def32993d9dc194db20ea415a95ec5"
+      },
+      "passed": 54,
+      "failed": 2,
+      "corrections": [
+        "Validate actual token names only in current follow-up, retaining historical old names unchanged.",
+        "Count the four scope rows plus the original four preflight and three final checks:185/2=187."
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "<workspace-path>",
+      "bytes": 2493,
+      "sha256": "c26d599bc041c4fbd917b59a210139726e597e317fe5cdf67486aa96c5655c23"
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 42552,
+      "sha256": "a9d5b7c9ae4f6e5148be49e8c89dcc5c484239916ffba2f1ada2a8db6d8cbe86"
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 93585,
+      "sha256": "108cd82c771c8c0f1a422317bd9bd6beeffd5bf302f11340ef6b182fb47232e9"
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 17213,
+      "sha256": "61f389d5bbff4e17df4900636b8397722523f607000d6ccede589d2cddf6dbed"
+    },
+    {
+      "path": "<workspace-path>",
+      "bytes": 6125,
+      "sha256": "bb1f7b6311e43f2937a6b3ef8f26b6390e68690321dfff4167bf7d6a329b8500"
+    }
+  ],
+  "sourcePreparationReceipt": {
+    "path": "<workspace-path>",
+    "bytes": 17213,
+    "sha256": "61f389d5bbff4e17df4900636b8397722523f607000d6ccede589d2cddf6dbed"
+  },
+  "originalEvidenceRead": [
+    {
+      "path": "<workspace-path>",
+      "sha256": "72314c2a9ff61d77cd6e7f1073e5cd1f5da94b7c1b0613ebeb4b67dfbbfb4074",
+      "retainedPath": "<workspace-path>"
+    },
+    {
+      "path": "<isolated-test-directory>",
+      "sha256": "1d2126a9cc62bc50015de3aa409f23a1cbb60d903b8edc756cc33593d33061b1",
+      "retainedPath": "<workspace-path>"
+    },
+    {
+      "path": "<original-evidence-root>/after-final-243326b5-full-space-20261009/receipt.json",
+      "sha256": "2f4f712f2caf1adc775cde1e11d6104c969c8f2e17abd446b9d505c87928e3c1",
+      "bytes": 41139,
+      "retainedPath": "<workspace-path>"
+    },
+    {
+      "path": "<original-evidence-root>/after-final-243326b5-full-space-20261009/space-artifacts/result.json",
+      "sha256": "687c82739d8dc3f7a74cadca37e50dff076d8684aa3987362640984133e64fe8",
+      "bytes": 36476,
+      "retainedPath": "<workspace-path>"
+    },
+    {
+      "path": "<original-evidence-root>/after-final-243326b5-full-space-20261009/command.log",
+      "sha256": "81dfd5af1fc439332c8d428ffc55c3358adb95ac9c38314b4c342e94f4b86972",
+      "bytes": 23485,
+      "retainedPath": "<workspace-path>"
+    }
+  ],
+  "bounded243Evidence": {
+    "supplement": "185/2 exit1 acceptance:false, all four groups attempted; plan16/0 and BOM44/0 desktop/390 complete, row32/1 blocked downstream and390, S2 desktop84/0 plus mobile2/1 setup only",
+    "fullSpace": "228/0 exit0 completed:true, explicit two timber omissions, oldfont/titleWidth oracle only"
+  },
+  "sourcePending": [
+    "X2/B1 title vertical bounds; root planned future nowrap/hidden/ellipsis, not implemented or accepted at frozen243"
+  ],
+  "unknown": [
+    "Original0b37 title diagnostic JSON/path unreceived by this subtask; measurements are parent-reported.",
+    "Private ZIP and pixel targets, unadopted removals and policy remain decisions/unknown.",
+    "Same-version formal #54 full ten/six-negative/six-cost, latest formal six, fullCDP and item-wide all43 acceptance are not established by this package."
+  ],
+  "browserExecuted": false,
+  "nativeExecuted": false,
+  "serviceExecuted": false,
+  "repoWritten": false,
+  "formalTestsWritten": false,
+  "gitWritten": false,
+  "all43Accepted": false,
+  "publicCopyNeedsRootReview": true,
+  "generator": {
+    "script": {
+      "path": "<workspace-path>",
+      "bytes": 5136,
+      "sha256": "fd2a8bfaa54cbb98b460a30c426af19df2e3f4d253a8e5098d04fd2c7ac90041"
+    },
+    "argv": [
+      "<python-runtime>/bin/python3",
+      "<workspace-path>"
+    ],
+    "cwd": "<workspace-path>",
+    "executionFile": {
+      "path": "<python-runtime>/bin/python3.12",
+      "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+      "version": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+    },
+    "exitCode": 0,
+    "rawLog": {
+      "path": "<workspace-path>",
+      "bytes": 339,
+      "sha256": "e7dfd4145ed9c9f951058f307dd2fcedf56e077700b5bf25e71ff9c451073146"
+    }
+  }
+}

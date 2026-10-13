@@ -6,13 +6,13 @@ const os = require('node:os');
 const path = require('node:path');
 const vm = require('node:vm');
 const {EXPECTED, FULL_SPACE_GROUPS, createGroupCensus} = require('../geometry-web/space_test_floor.js');
-const full = ['space-height-library', 'projection-lifecycle', 'projection-placement', 'font-layout', 'space-flow'];
+const full = ['space-height-library', 'projection-lifecycle', 'projection-placement', 'font-layout', 'space-flow', 'projection-close'];
 async function complete(census, name, count = EXPECTED[name]) {
   await census.run(name, async () => { for (let i = 0; i < count; i++) census.record(true); });
 }
 async function finish(census, names) { for (const name of ['setup', ...names, 'browser-health']) await complete(census, name); }
 
-test('independent census is frozen; default full space totals 202 without optional timber', async () => {
+test('independent census is frozen; default full space totals 242 without optional timber', async () => {
   assert.ok(Object.isFrozen(EXPECTED));
   assert.ok(Object.isFrozen(FULL_SPACE_GROUPS));
   assert.deepEqual(FULL_SPACE_GROUPS, full);
@@ -21,7 +21,9 @@ test('independent census is frozen; default full space totals 202 without option
   await finish(census, full);
   const report = census.report(true);
   assert.equal(report.completed, true);
-  assert.equal(Object.values(report.groups).reduce((n, g) => n + g.passed, 0), 202);
+  assert.equal(EXPECTED['space-height-library'], 112);
+  assert.equal(EXPECTED['projection-close'], 14);
+  assert.equal(Object.values(report.groups).reduce((n, g) => n + g.passed, 0), 242);
   assert.equal(Object.hasOwn(report.groups, 'timber-material'), false);
 });
 test('omitting a whole expected group fails even if every executed assertion passes', async () => {
@@ -103,8 +105,11 @@ test('real configuration declares full scope separately from every existing part
     ['GEOMETRY_SPACE_FLOW_ONLY', ['space-flow']],
     ['GEOMETRY_SPACE_STYLE_ONLY', ['font-layout']],
     ['GEOMETRY_PROJECTION_PLACEMENT_ONLY', ['projection-placement', 'font-layout']],
+    ['GEOMETRY_PROJECTION_CLOSE_ONLY', ['projection-close']],
     ['GEOMETRY_TIMBER_ONLY', ['timber-material', 'timber-source-guards', 'font-layout']],
     ['GEOMETRY_TIMBER_GUARDS_ONLY', ['timber-source-guards']],
+    ['GEOMETRY_ASYNC_REPLY_ONLY', ['async-reply-ui']],
+    ['GEOMETRY_SAVE_REOPEN_ONLY', ['save-reopen-grid']],
   ]) {
     const scope = configuration({...env, [flag]: '1'});
     assert.equal(scope.mode, 'partial');

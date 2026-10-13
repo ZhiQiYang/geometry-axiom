@@ -1,0 +1,46 @@
+{
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+    "/workspace/geometry-axiom/tests/integration/save_roundtrip_acceptance.cjs"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "expectedRuntimeRoot": "/workspace/geometry-axiom",
+  "environment": {
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:18971/",
+    "GEOMETRY_FEEDBACK_DIR": "/tmp/geometry-closeout-r2-feedback",
+    "GEOMETRY_SAVE_EVIDENCE": "/tmp/geometry-closeout-r2-gates/save-roundtrip",
+    "GEOMETRY_CHROME": "/usr/bin/chromium",
+    "GEOMETRY_CDP_PORT": "9422"
+  },
+  "harnessSha256": "303380e8bdf5649a915debeb041f31bae94f3e92438da5ec0fd25250cc19bcbe",
+  "helperSha256": "243df590b3dfb14cf0bb5784e589cf1b09d1d14c565b0e8900c0187e6aab4812",
+  "before": {
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+      "fresh": true,
+      "root": "/workspace/geometry-axiom",
+      "pid": 174658,
+      "session": "86b719350c9d4e3b90536403b05f9dcc"
+    },
+    "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+    "tree": "1c0fb168f2854f37c10370f1c65d4a155a83620b",
+    "status": ""
+  },
+  "startedAt": "2026-10-08T17:40:33.203Z",
+  "after": {
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+      "fresh": true,
+      "root": "/workspace/geometry-axiom",
+      "pid": 174658,
+      "session": "86b719350c9d4e3b90536403b05f9dcc"
+    },
+    "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+    "tree": "1c0fb168f2854f37c10370f1c65d4a155a83620b",
+    "status": ""
+  },
+  "finishedAt": "2026-10-08T17:40:58.700Z",
+  "exitCode": 0
+}

@@ -1,0 +1,55 @@
+{
+  "schema": "geometry-sgr62-original-oracle/1",
+  "tests": [
+    "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_new_allocator_input_syntax_requires_capability_even_when_final_state_is_default"
+  ],
+  "testsRun": 1,
+  "failures": 1,
+  "errors": 0,
+  "skipped": [],
+  "unexpectedSuccesses": 0,
+  "expectedFailures": 0,
+  "details": [
+    {
+      "kind": "failure",
+      "test": "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_new_allocator_input_syntax_requires_capability_even_when_final_state_is_default",
+      "exception": "AssertionError",
+      "frames": [
+        {
+          "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+          "line": 58,
+          "function": "testPartExecutor"
+        },
+        {
+          "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+          "line": 634,
+          "function": "run"
+        },
+        {
+          "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+          "line": 589,
+          "function": "_callTestMethod"
+        },
+        {
+          "file": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source/tests/test_grid_subdivision_oracle.py",
+          "line": 955,
+          "function": "test_new_allocator_input_syntax_requires_capability_even_when_final_state_is_default"
+        },
+        {
+          "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+          "line": 721,
+          "function": "assertFalse"
+        }
+      ],
+      "traceback": "Traceback (most recent call last):\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 58, in testPartExecutor\n    yield\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 634, in run\n    self._callTestMethod(testMethod)\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 589, in _callTestMethod\n    if method() is not None:\n       ^^^^^^^^\n  File \"/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source/tests/test_grid_subdivision_oracle.py\", line 955, in test_new_allocator_input_syntax_requires_capability_even_when_final_state_is_default\n    self.assertFalse(rejected[\"ok\"], rejected)\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 721, in assertFalse\n    raise self.failureException(msg)\nAssertionError: True is not false : {'ok': True, 'revision': 14, 'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule-authoring/1', 'assembly-timber-generation/1', 'grid-subdivision-rules/1', 'section-profile/1'], 'required_capabilities': [], 'native_capabilities': ['section-profile-native/1'], 'definition_sha256': 'c7a84e3e8cad953edf0f5e3d9c58472e1bc9fddea70a052a5e8cc9dec9eb226e'}\n"
+    }
+  ],
+  "sessions": 1,
+  "unhealthySessions": [],
+  "binary": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/active-bridge",
+  "binarySha256": "a55cc70bcc1f5f4ae5ea5359319807978a40152773c103f008662a9da6cbe8ae",
+  "sanitizerEnvironment": {
+    "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1:abort_on_error=1",
+    "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+  }
+}

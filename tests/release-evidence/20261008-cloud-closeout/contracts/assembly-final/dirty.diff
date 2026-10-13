@@ -1,0 +1,41 @@
+diff --git a/tests/integration/assembly_ownership_probe.py b/tests/integration/assembly_ownership_probe.py
+index 50055fa..effa66c 100644
+--- a/tests/integration/assembly_ownership_probe.py
++++ b/tests/integration/assembly_ownership_probe.py
+@@ -189,9 +189,13 @@ def main():
+                 cleanup_errors.append('fixture.doCleanups() returned False without an exception traceback')
+         metadata['cleanup_errors'] = cleanup_errors
+         for session in sessions:
+-            session.stop()
++            try:
++                session.stop()
++            except BaseException:
++                cleanup_errors.append(traceback.format_exc())
++                metadata['passed'] = False
+         metadata['sessions'] = [s.details for s in sessions]
+-        if any(s.details['exit_code'] != 0 for s in sessions):
++        if any(s.details.get('exit_code') != 0 for s in sessions):
+             metadata['passed'] = False
+         metadata['errors'] = errors
+         metadata['finished'] = datetime.now(timezone.utc).isoformat()
+diff --git a/tests/integration/grid_rule_reopen_probe.py b/tests/integration/grid_rule_reopen_probe.py
+index 00e2d82..355ed59 100644
+--- a/tests/integration/grid_rule_reopen_probe.py
++++ b/tests/integration/grid_rule_reopen_probe.py
+@@ -140,10 +140,14 @@ def main():
+                 cleanup_errors.append('fixture.doCleanups() returned False without an exception traceback')
+         metadata['cleanup_errors'] = cleanup_errors
+         for session in sessions:
+-            session.stop()
++            try:
++                session.stop()
++            except BaseException:
++                cleanup_errors.append(traceback.format_exc())
++                metadata['passed'] = False
+         _bridge.BridgeSession = original_session
+         metadata['sessions'] = [s.details for s in sessions]
+-        if any(s.details['exit_code'] != 0 for s in sessions):
++        if any(s.details.get('exit_code') != 0 for s in sessions):
+             metadata['passed'] = False
+         metadata['head_after'] = git('rev-parse', 'HEAD').strip()
+         if metadata['head_after'] != metadata['head']:

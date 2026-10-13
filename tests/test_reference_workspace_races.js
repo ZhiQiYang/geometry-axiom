@@ -29,7 +29,8 @@ async function fixture(options = {}) {
     close:async()=>{closes++;closing.resolve();await options.closeGate?.promise;},abort:async()=>{aborts++;}})};
   const env = {GeometryProject:{...P,...options.projectOverride,...(options.packGate?{pack:async(...args)=>{await options.packGate.promise;return P.pack(...args);}}:{})},fflate:zip,crypto,structuredClone,JSON,TextEncoder,TextDecoder,Uint8Array,Map,Set,WeakMap,console,AbortSignal,BroadcastChannel:options.BroadcastChannel,
     requestAnimationFrame:()=>1,CustomEvent:class {},ResizeObserver:class {observe(){}},File,Blob,
-    fetch:async url=>{assert.equal(url,'data:image/png;base64,legacy');fetchReached.resolve();
+    pageRuntimeVersion:"vm-runtime",checkApiSession(){},
+    fetch:async (url,request)=>{if(url==="/rule-cases/prepare"&&options.casePrepare)return options.casePrepare(request);assert.equal(url,'data:image/png;base64,legacy');fetchReached.resolve();
       assert.ok(options.legacyGate,'Unexpected fetch: '+url);return options.legacyGate.promise;},
     window:{dispatchEvent(){},addEventListener(){},showSaveFilePicker:()=>options.pickerGate?.promise || Promise.resolve(handle),confirm:()=>false},
     document:{getElementById:element,querySelectorAll:()=>[],querySelector:()=>element('scroll'),addEventListener(){},
@@ -88,8 +89,8 @@ test('production synchronous reader commit rejects unleased or forged prepared p
 function countedPDF({gate=null,fail=false,width=100}={}){
   const count={created:0,destroyed:0};
   return {count,library:{getDocument(){count.created++;let dead=false;
-    const task={destroy:async()=>{if(!dead){dead=true;count.destroyed++;}}};
-    const doc={numPages:3,loadingTask:task,getPage:async()=>({getViewport:()=>({width,height:80})})};
+    const task={destroy:async()=>{dead=true;count.destroyed++;}};
+    const doc={numPages:3,loadingTask:task,getPage:async()=>{assert.equal(dead,false,'retained reader is usable');return {getViewport:()=>({width,height:80}),render:()=>({promise:Promise.resolve()})};}};
     task.promise=(async()=>{if(gate)await gate.promise;if(fail)throw Error('authored load failure');return doc;})();return task;
   }}};
 }
@@ -109,6 +110,35 @@ test('cancelled and failed PDF loads release temporary validation tasks exactly 
     const pending=f.w.validateEvidenceClosure(f.w.context(),evidenceEnvelope(f),()=>{if(cancelled)throw Error('cancelled');}),rejection=assert.rejects(pending,fail?/無法讀取/:/cancelled/);
     while(!pdf.count.created)await new Promise(r=>setImmediate(r));cancelled=!fail;gate.resolve();await rejection;
     assert.deepEqual(pdf.count,{created:1,destroyed:1});assert.equal(f.source.doc,live);
+  }
+  const libraryGate=deferred(),late=countedPDF(),closed=await fixture({pdfLibrary:libraryGate.promise});closed.w.init();
+  delete closed.source.doc;closed.w.context().sources.delete(closed.source.meta.id);
+  const opening=closed.w.openSource(closed.source,1);await turn();closed.element('refClose').onclick();
+  libraryGate.resolve(late.library);await opening;
+  assert.deepEqual(late.count,{created:0,destroyed:0},'closing before the library arrives never starts an ownerless task');
+  assert.equal(closed.source.doc,null);assert.equal(closed.element('referenceDialog').open,false);
+  const pdf=countedPDF(),f=await fixture({pdfLibrary:pdf.library}),old=f.w.context(),requests=[];
+  const page=P.reference(f.w.active(1)),bytes=await P.pack('boundary 1 outline 0,0 800,0 800,700 0,700\n',
+    {projectId:'detached-import',name:'authored rejected PDF',sources:[f.source.meta],faces:[{bid:1,pages:[page],activePageId:page.id}]},new Map([[f.source.meta.id,f.source.bytes]]),zip);
+  f.env.fetch=async url=>{requests.push(url);return {ok:true,json:async()=>(url==='/upload/prepare'?{ok:true,token:1,capabilities:nativeCapabilities,required_capabilities:[],final_objects:{boundaries:[],placements:[]}}:{ok:true,state:'cancelled'})};};
+  for(let i=0;i<3;i++)await assert.rejects(f.w.importBytes(bytes),/來源關聯的面不存在/);
+  assert.deepEqual(pdf.count,{created:3,destroyed:3},'every rejected detached candidate releases its PDF');
+  assert.equal(f.w.context(),old);assert.equal(f.w.history.undo.length,0);
+  assert.deepEqual(requests,['/upload/prepare','/upload/cancel','/upload/prepare','/upload/cancel','/upload/prepare','/upload/cancel']);
+  for(const at of ['library','task']){
+    const gate=deferred(),shared=countedPDF({gate:at==='task'?gate:null}),g=await fixture({pdfLibrary:at==='library'?gate.promise:shared.library});
+    delete g.source.doc;let cancelled=false;
+    const first=g.w.documentFor(g.source,()=>{if(cancelled)throw Error('own cancellation');}),rejected=assert.rejects(first,/own cancellation/);
+    const sibling=g.w.documentFor(g.source);await turn();cancelled=true;gate.resolve(at==='library'?shared.library:undefined);
+    await rejected;assert.equal(await sibling,g.source.doc);await g.source.doc.getPage(1);
+    assert.deepEqual(shared.count,{created:1,destroyed:0},'a cancelled reader never destroys its valid sibling');
+    const reopenGate=deferred(),reopen=countedPDF({gate:at==='task'?reopenGate:null}),h=await fixture({pdfLibrary:at==='library'?reopenGate.promise:reopen.library});
+    h.w.init();delete h.source.doc;h.w.context().sources.delete(h.source.meta.id);
+    const earlier=h.w.openSource(h.source,1);await turn();h.element('refClose').onclick();
+    const newer=h.w.openSource(h.source,1);await turn();reopenGate.resolve(at==='library'?reopen.library:undefined);await Promise.all([earlier,newer]);
+    assert.equal(h.element('referenceDialog').open,true);assert.equal(h.element('refApply').disabled,false);await h.source.doc.getPage(1);
+    assert.deepEqual(reopen.count,at==='library'?{created:1,destroyed:0}:{created:2,destroyed:1});
+    h.element('refClose').onclick();await turn();assert.equal(reopen.count.destroyed,reopen.count.created,'old completion cannot clear the reopened document or destroy twice');
   }
 });
 
@@ -308,9 +338,10 @@ test('edits while obtaining the scene or packing prevent a mixed snapshot from r
 
 async function openFixture(options={}) {
   const f=await fixture(options),requests=[],refreshed=deferred();
-  const scene='boundary 8 outline 0,0 800,0 800,700 0,700\n';
-  const bytes=await P.pack(scene,{format:P.FORMAT,projectId:'opened',name:'試用工程',sources:[],faces:[],
-    ...(options.featureDraft?{featureAttachments:{schema:P.Features.SCHEMA,records:[P.Features.record('grid-draft',options.featureDraft)]}}:{})},new Map(),zip);
+  const scene='boundary '+(options.withPDF?1:8)+' outline 0,0 800,0 800,700 0,700\n';
+  const bytes=await P.pack(scene,{format:P.FORMAT,projectId:'opened',name:'試用工程',sources:options.withPDF?[f.source.meta]:[],
+    faces:options.withPDF?[{bid:1,pages:[P.reference(f.w.active(1))],activePageId:'page-1'}]:[],
+    ...(options.featureDraft?{featureAttachments:{schema:P.Features.SCHEMA,records:[P.Features.record('grid-draft',options.featureDraft)]}}:{})},new Map(options.withPDF?[[f.source.meta.id,f.source.bytes]]:[]),zip);
   f.env.curScene={};f.env.resetSceneFocus=()=>{};f.env.markSceneItem=()=>{};f.env.sceneMenuDisplay=name=>name;
   f.env.refreshActive=async()=>{
     if(options.autoLayout)f.w.observe('line canvas-pos boundary 8 60 60',{ok:true});
@@ -318,11 +349,116 @@ async function openFixture(options={}) {
     await options.refreshGate?.promise;
   };
   f.env.fetch=async(url,request)=>{
-    requests.push({url,request});assert.ok(['/upload','/upload/prepare','/upload/confirm','/upload/cancel'].includes(url));
-    return {ok:true,json:async()=>(url==='/upload/prepare'?{ok:true,token:1,capabilities:nativeCapabilities,required_capabilities:[],final_objects:{boundaries:[8],placements:[]}}:{ok:true,path:'opened.scene'})};
+    requests.push({url,request});assert.ok(['/upload','/upload/prepare','/upload/confirm','/upload/cancel','/scenarios/verify-native'].includes(url));
+    return {ok:true,json:async()=>(url==='/upload/prepare'?{ok:true,token:1,capabilities:nativeCapabilities,required_capabilities:[],final_objects:{boundaries:[options.withPDF?1:8],placements:[]}}:{ok:true,path:'opened.scene'})};
   };
+  // Execute the formal disposable-verifier adapter. Only this VM transport's
+  // native reply is fake; actual native/PDF/UI proof lives in the browser gates.
+  f.env.GeometryScenarioSnapshots=require('../geometry-web/scenario-snapshots.js');
+  vm.runInNewContext(fs.readFileSync(require.resolve('../geometry-web/scenario-integration.js'),'utf8')+'\nglobalThis.ScenarioIntegration=window.ScenarioIntegration;',f.env);
   return {...f,bytes,requests,refreshed};
 }
+
+// Cross-PR ownership: the scenario reader validates complete leaf projects,
+// creating disposable PDF tasks even though it keeps only their saved bytes.
+// Execute production archive/reader/transaction code; only native/PDF transports
+// remain the explicitly fake VM seams used by this suite.
+async function scenarioPDFFixture() {
+  const pdf=countedPDF(),f=await openFixture({withPDF:true,pdfLibrary:pdf.library});
+  const originalFetch=f.env.fetch,project=await P.unpack(f.bytes,zip);
+  f.env.fetch=async(url,request)=>{
+    if(url==='/scenarios/verify-native'){
+      const candidate=JSON.parse(request.body);
+      return {ok:true,json:async()=>({ok:true,capabilities:nativeCapabilities,
+        final_objects:{boundaries:[1],placements:[]},objects:[],
+        final_scene:candidate.scene,scene_sha256:candidate.manifest.sceneHash})};
+    }
+    if(url==='/upload/prepare'){
+      const response=await originalFetch(url,request),value=await response.json();
+      return {ok:response.ok,json:async()=>({...value,final_scene:request.body})};
+    }
+    return originalFetch(url,request);
+  };
+  return {...f,pdf,project};
+}
+
+test('scenario catalog validation releases disposable PDF leaves without releasing adopted history readers',async()=>{
+  for(const rejected of [false,true]){
+    const f=await scenarioPDFFixture(),old=f.w.context(),live=f.source.doc;
+    const archive=f.env.ScenarioIntegration.create();
+    await archive.capture(f.project,{scenarioId:'A',label:'A'});
+    await archive.fork('A',{scenarioId:'B',label:'B'});
+    const scenarioCatalog=f.env.ScenarioIntegration.exportCatalog(archive);
+    const bytes=await P.pack(f.project.scene,{...f.project.manifest,scenarioCatalog},f.project.sources,zip);
+    if(rejected){const fetch=f.env.fetch;f.env.fetch=async(url,request)=>{
+      if(url==='/upload/prepare')return {ok:true,json:async()=>({ok:false,error:'authored catalog native rejection'})};
+      return fetch(url,request);
+    };}
+    for(let i=1;i<=2;i++){
+      if(rejected)await assert.rejects(f.w.importBytes(bytes),/authored catalog native rejection/);
+      else await f.w.importBytes(bytes);
+      assert.deepEqual(f.pdf.count,{created:3*i,destroyed:(rejected?3:2)*i},
+        'each A/B validation task is released; only adopted outer project tasks remain history-owned');
+      assert.equal(f.source.doc,live);await live.getPage(1);
+    }
+    if(rejected){assert.equal(f.w.context(),old);assert.equal(f.w.history.undo.length,0);}
+    else{
+      const adopted=f.w.context(),source=adopted.sources.get(f.source.meta.id);
+      await source.doc.getPage(1);f.w.observe('line undo',{ok:true});
+      await f.w.context().sources.get(f.source.meta.id).doc.getPage(1);
+      f.w.observe('line redo',{ok:true});assert.equal(f.w.context(),adopted);await source.doc.getPage(1);
+      assert.deepEqual(f.pdf.count,{created:6,destroyed:4});
+    }
+  }
+});
+
+test('scenario adoption releases rejected PDF candidates and preserves live and uncertain owners',async()=>{
+  for(const outcome of ['late-cancel','rejected','success','cancelled-recovery','committed-recovery']){
+    const f=await scenarioPDFFixture(),old=f.w.context(),live=f.source.doc,original=f.env.fetch;
+    const extraBytes=new TextEncoder().encode('live A source that is absent from candidate'),extraHash=await P.sha(extraBytes),extraPDF=countedPDF();
+    const task=extraPDF.library.getDocument(),extraDoc=await task.promise;
+    const extra={meta:{id:extraHash,hash:extraHash,name:'only-A.pdf',type:'application/pdf',size:extraBytes.length,path:'sources/'+extraHash},bytes:extraBytes,doc:extraDoc,documentTask:task};
+    old.sources.set(extraHash,extra);
+    let verified=false,verifiedChecks=0,terminal=false;
+    const verify=f.env.ScenarioIntegration.verifyProject;
+    f.env.ScenarioIntegration.verifyProject=async(...args)=>{const result=await verify(...args);verified=true;return result;};
+    f.env.fetch=async(url,request)=>{
+      if(url==='/upload/confirm'){
+        if(outcome==='rejected')return {ok:true,json:async()=>({ok:false,error:'authored adoption rejection'})};
+        if(outcome.endsWith('-recovery'))throw Error('authored lost adoption reply');
+      }
+      if(url==='/upload/cancel'&&outcome.endsWith('-recovery')){
+        if(!terminal)return {ok:false};
+        return {ok:true,json:async()=>outcome==='cancelled-recovery'?{ok:true,state:'cancelled'}:
+          {ok:true,state:'committed',revision:7,path:'adopted.scene',scene_sha256:f.project.manifest.sceneHash}};
+      }
+      return original(url,request);
+    };
+    f.env.connectionFailed=()=>{};
+    const adopting=f.w.adoptScenario(f.project,()=>{
+      // The first post-verifier check is still inside readProjectContext; the
+      // second is the adoption caller after it received the detached context.
+      if(outcome==='late-cancel'&&verified&&++verifiedChecks===2)throw Error('authored late adoption cancellation');
+    });
+    if(outcome==='success')await adopting;
+    else await assert.rejects(adopting,/authored (?:late adoption cancellation|adoption rejection|lost adoption reply)/);
+    if(outcome.endsWith('-recovery')){
+      assert.deepEqual(f.pdf.count,{created:1,destroyed:0},'unknown native result retains detached candidate');
+      await assert.rejects(f.w.recoverLoad(),/仍無法確認/);
+      assert.deepEqual(f.pdf.count,{created:1,destroyed:0});terminal=true;
+      if(outcome==='committed-recovery')f.env.api=async()=>({ok:true,text:f.project.scene,revision:7});
+      await f.w.recoverLoad();
+    }
+    const adopted=outcome==='success'||outcome==='committed-recovery';
+    assert.deepEqual(f.pdf.count,{created:1,destroyed:adopted?0:1},outcome);
+    assert.equal(old.sources.get(extraHash),extra);assert.equal(extra.doc,extraDoc);await extraDoc.getPage(1);
+    assert.deepEqual(extraPDF.count,{created:1,destroyed:0},'candidate cleanup cannot destroy the original A reader');
+    assert.deepEqual(extra.bytes,extraBytes);assert.equal(f.source.doc,live);await live.getPage(1);
+    if(adopted){assert.notEqual(f.w.context(),old);await f.w.context().sources.get(f.source.meta.id).doc.getPage(1);assert.equal(f.w.history.undo.length,1);}
+    else{assert.equal(f.w.context(),old);assert.equal(f.w.history.undo.length,0);}
+    assert.equal(f.w.busy,false);assert.doesNotThrow(()=>f.w.assertEditable());
+  }
+});
 
 test('opening owns the busy state from first byte read through rendering and refuses reentry',async()=>{
   const readGate=deferred(),refreshGate=deferred(),afterGate=deferred(),f=await openFixture({refreshGate});
@@ -353,6 +489,11 @@ test('opening owns the busy state from first byte read through rendering and ref
   assert.throws(()=>g.w.setFeatureAttachment('grid-draft',null,oldToken),/上下文/);
   assert.equal(JSON.stringify(g.w.getProjectState()),returnedState);assert.equal(g.w.history.undo.length,returnedUndo);
   g.w.observe('line redo',{ok:true});assert.equal(JSON.stringify(g.w.readFeatureAttachment('grid-draft')),JSON.stringify(rawGridDraft()));
+  const pdf=countedPDF(),h=await openFixture({withPDF:true,pdfLibrary:pdf.library}),before=h.w.context();await h.w.importBytes(h.bytes);
+  const adopted=h.w.context(),source=adopted.sources.get(h.source.meta.id);await source.doc.getPage(1);
+  h.w.observe('line undo',{ok:true});assert.equal(h.w.context(),before);assert.equal(before.sources.get(h.source.meta.id),h.source);
+  h.w.observe('line redo',{ok:true});assert.equal(h.w.context(),adopted);await source.doc.getPage(1);
+  assert.deepEqual(pdf.count,{created:1,destroyed:0},'adopted and history-owned documents must survive import finally');
 });
 
 test('changes during project reading or its pre-upload dump prevent replacement without swallowing edits',async()=>{
@@ -368,9 +509,10 @@ test('changes during project reading or its pre-upload dump prevent replacement 
   }
 });
 
-test('late native candidate is cancelled before commit after a context or metadata change',async()=>{
+test('late native candidate blocks local metadata edits and cancels after external context or revision change',async()=>{
   for(const switchContext of [false,true]) {
-    const f=await openFixture(),gate=deferred(),reached=deferred(),old=f.w.context(),fetch=f.env.fetch;
+    let channel;const f=await openFixture({BroadcastChannel:class{constructor(){channel=this;}postMessage(){}}}),gate=deferred(),reached=deferred(),old=f.w.context(),fetch=f.env.fetch;
+    f.env.connection.session='service-one';
     f.env.fetch=async(url,request)=>{
       const response=await fetch(url,request);
       if(url==='/upload/prepare'){reached.resolve();await gate.promise;}
@@ -379,12 +521,12 @@ test('late native candidate is cancelled before commit after a context or metada
     const opening=f.w.importBytes(f.bytes),rejected=assert.rejects(opening,/目前工程已有變更/);
     await reached.promise;
     if(switchContext)f.w.observe('line reset',{ok:true});
-    else f.w.calibrated(1,[[0,0],[10,0]],100);
+    else {assert.throws(()=>f.w.calibrated(1,[[0,0],[10,0]],100),/載入結果尚未確認/);channel.onmessage({data:{peer:'external-editor',session:'service-one'}});}
     const current=f.w.context(),history=f.w.history.undo.length;
     gate.resolve();await rejected;
     assert.equal(f.w.context(),current);assert.equal(f.w.history.undo.length,history);
     assert.deepEqual(f.requests.map(r=>r.url),['/upload/prepare','/upload/cancel']);
-    if(!switchContext){assert.equal(current,old);assert.equal(current.sources.size,1);assert.equal(f.w.active(1).calibration.distanceMm,100);}
+    if(!switchContext){assert.equal(current,old);assert.equal(current.sources.size,1);assert.equal(f.w.active(1).calibration,null);}
     assert.equal(f.w.busy,false);
   }
 });
@@ -405,19 +547,21 @@ test('missing final native targets cancel without losing source bytes, metadata 
   assert.deepEqual(f.requests.map(r=>r.url),['/upload/prepare','/upload/cancel']);
 });
 
-test('late confirm preserves the newer context and metadata without appending import history',async()=>{
-  const f=await openFixture(),gate=deferred(),entered=deferred(),fetch=f.env.fetch;
+test('late confirm rejects local metadata edits and preserves externally invalidated context without import history',async()=>{
+  let channel;const f=await openFixture({BroadcastChannel:class{constructor(){channel=this;}postMessage(){}}}),gate=deferred(),entered=deferred(),fetch=f.env.fetch;
+  f.env.connection.session='service-one';
   f.env.fetch=async(url,request)=>{
     const response=await fetch(url,request);
     if(url==='/upload/confirm'){entered.resolve();await gate.promise;}
     return response;
   };
   const opening=f.w.importBytes(f.bytes),rejected=assert.rejects(opening,/載入結果晚到/);
-  await entered.promise;f.w.calibrated(1,[[0,0],[10,0]],100);
+  await entered.promise;assert.throws(()=>f.w.calibrated(1,[[0,0],[10,0]],100),/載入結果尚未確認/);
+  channel.onmessage({data:{peer:'external-editor',session:'service-one'}});
   const current=f.w.context(),count=f.w.history.undo.length;
   gate.resolve();await rejected;
   assert.equal(f.w.context(),current);assert.equal(f.w.history.undo.length,count);
-  assert.equal(f.w.active(1).calibration.distanceMm,100);
+  assert.equal(f.w.active(1).calibration,null);
 });
 
 test('native prepare blocks direct scene upload reentry until its commit finishes',async()=>{
@@ -452,6 +596,15 @@ test('retry cancels the token before a delayed confirm can mutate old or identic
     assert.equal(f.w.context(),old);assert.equal(JSON.stringify(f.w.history),before);
     assert.equal(f.w.context().sources.get(f.source.meta.id),f.source);
   }
+  const pdf=countedPDF(),f=await openFixture({withPDF:true,pdfLibrary:pdf.library}),old=f.w.context(),original=f.env.fetch;let unavailable=true;
+  f.env.connectionFailed=()=>{};f.env.fetch=async(url,request)=>{
+    if(url==='/upload/confirm')throw Error('lost PDF commit reply');
+    if(url==='/upload/cancel')return unavailable?{ok:false}:{ok:true,json:async()=>({ok:true,state:'cancelled'})};
+    return original(url,request);
+  };
+  await assert.rejects(f.w.importBytes(f.bytes),/lost PDF commit reply/);assert.deepEqual(pdf.count,{created:1,destroyed:0});
+  await assert.rejects(f.w.recoverLoad(),/仍無法確認/);assert.deepEqual(pdf.count,{created:1,destroyed:0},'unknown native outcome retains its candidate');
+  unavailable=false;await f.w.recoverLoad();assert.equal(f.w.context(),old);assert.deepEqual(pdf.count,{created:1,destroyed:1});await f.source.doc.getPage(1);
 });
 
 test('retry uses the committed receipt for lost replies and refuses a later different World',async()=>{
@@ -468,6 +621,16 @@ test('retry uses the committed receipt for lost replies and refuses a later diff
     if(changed){await assert.rejects(()=>f.w.recoverLoad(),/已有其他變更/);assert.equal(f.w.context(),old);}
     else{await f.w.recoverLoad();assert.equal(f.w.context().id,'opened');assert.equal(f.w.history.undo.length,1);}
   }
+  const pdf=countedPDF(),f=await openFixture({withPDF:true,pdfLibrary:pdf.library}),original=f.env.fetch;
+  const scene=(await P.unpack(f.bytes,zip)).scene,hash=await P.sha(new TextEncoder().encode(scene));f.env.connectionFailed=()=>{};
+  f.env.fetch=async(url,request)=>{
+    if(url==='/upload/confirm'){f.env.api=async()=>({ok:true,text:scene,revision:7});throw Error('lost committed PDF reply');}
+    if(url==='/upload/cancel')return {ok:true,json:async()=>({ok:true,state:'committed',revision:7,path:'committed.scene',scene_sha256:hash})};
+    return original(url,request);
+  };
+  await assert.rejects(f.w.importBytes(f.bytes),/lost committed PDF reply/);await f.w.recoverLoad();
+  assert.equal(f.w.context().id,'opened');assert.equal(f.w.history.undo.length,1);await f.w.context().sources.get(f.source.meta.id).doc.getPage(1);
+  assert.deepEqual(pdf.count,{created:1,destroyed:0},'committed recovery transfers PDF ownership before candidate cleanup');
 });
 
 nodeTest('real native HTTP committed ABA keeps the old project bytes references and undo',{
@@ -594,7 +757,7 @@ test('undoing clear restores saved content and timestamps but expires the prior 
 });
 
 function recoveryEnvironment(f,{records=new Map(),tab='tab-one',locked=true,writeError=false}={}) {
-  const store={get:key=>{const request={result:records.get(key)};return request;},put:(value,key)=>{if(writeError)throw new Error('quota exceeded');records.set(key,structuredClone(value));return {};}};
+  const store={count:key=>({result:records.has(key)?1:0}),get:key=>{const request={result:records.get(key)};return request;},put:(value,key)=>{if(writeError)throw new Error('quota exceeded');records.set(key,structuredClone(value));return {};}};
   const db={transaction(){const tx={objectStore:()=>store};setImmediate(()=>tx.oncomplete?.());return tx;}};
   f.env.indexedDB={open(){const request={result:db};setImmediate(()=>request.onsuccess());return request;}};
   f.env.navigator={locks:{request:async(name,_options,callback)=>callback((typeof locked==='function'?locked(name):locked)?{}:null)}};
@@ -611,12 +774,21 @@ async function recoveryRecord(f,scene) {
 test('matching reload restores complete project context without uploading or inventing undo',async()=>{
   const f=await openFixture(),loaded=await P.unpack(f.bytes,zip),record=await recoveryRecord(f,loaded.scene);
   const records=recoveryEnvironment(f,{records:new Map([['tab-one',record]])});f.env.api=async()=>({ok:true,text:loaded.scene});
-  assert.equal((await f.w.restoreSession()).state,'restored');assert.deepEqual(f.requests.map(r=>r.url),['/upload/prepare','/upload/cancel']);
+  assert.equal((await f.w.restoreSession()).state,'restored');assert.deepEqual(f.requests.map(r=>r.url),['/scenarios/verify-native']);
   assert.equal(f.w.context().id,'opened');assert.equal(f.w.context().name,'試用工程');assert.equal(f.w.context().dirty,true);
   assert.equal(f.w.getProjectInfo().sourceKind,'example');assert.equal(f.w.getProjectInfo().undoLabel,null);
   assert.match(f.w.getProjectInfo().historyNote,/較早/);
   await f.w.persistSession();assert.equal(records.get('tab-one').sceneHash,record.sceneHash);
   assert.equal((await P.unpack(records.get('tab-one').bytes,zip)).manifest.projectId,'opened');
+  for(const invalidProvenance of [false,true]){
+    const pdf=countedPDF(),g=await openFixture({withPDF:true,pdfLibrary:pdf.library}),old=g.w.context(),scene=(await P.unpack(g.bytes,zip)).scene;
+    const record=await recoveryRecord(g,scene);if(invalidProvenance)record.project.provenance={kind:'unrecognized'};
+    recoveryEnvironment(g,{records:new Map([['tab-one',record]])});g.env.api=async()=>({ok:true,text:scene});
+    assert.equal((await g.w.restoreSession()).state,invalidProvenance?'unavailable':'restored');
+    assert.deepEqual(pdf.count,{created:1,destroyed:invalidProvenance?1:0});
+    if(invalidProvenance){assert.equal(g.w.context(),old);await g.source.doc.getPage(1);}
+    else{assert.equal(g.w.context().id,'opened');await g.w.context().sources.get(g.source.meta.id).doc.getPage(1);assert.equal(g.w.history.undo.length,0);}
+  }
 });
 
 test('reload refuses different server or geometry and preserves the original backup',async()=>{
@@ -661,7 +833,7 @@ test('external mutation during final reload fingerprint cannot commit the earlie
   recoveryEnvironment(f,{records:new Map([['tab-one',record]])});f.env.api=async()=>({ok:true,text:loaded.scene});
   const restoring=f.w.restoreSession();await reached.promise;
   channel.onmessage({data:{peer:'other-tab',session:'service-one'}});gate.resolve();
-  assert.equal((await restoring).state,'external');assert.equal(f.w.context(),before);assert.deepEqual(f.requests.map(r=>r.url),['/upload/prepare','/upload/cancel']);
+  assert.equal((await restoring).state,'external');assert.equal(f.w.context(),before);assert.deepEqual(f.requests.map(r=>r.url),['/scenarios/verify-native']);
   assert.equal(f.w.getProjectInfo().editingBlocked,true);
 });
 
@@ -768,4 +940,66 @@ test('review receipts undo with core changes and local review without inheriting
   f.w.observe('line redo',{ok:true});assert.equal(f.w.context().reconstructionReviews.values().next().value.method,'pdf-vector');
   f.w.observe('line delete boundary 1',{ok:true});f.w.observe('line boundary 1 outline 0,0 800,0 800,700 0,700',{ok:true});
   assert.equal(f.w.reconstructionState(1),'unreviewed');
+});
+
+// Only HTTP timing is faked; these exercise the actual common metadata/history adapter.
+const caseData=()=>({schema:P.Features.CASE_SCHEMA,definitions:JSON.parse(require('node:child_process').execFileSync('python',['-c',"import sys,json;sys.path.insert(0,'geometry-core');from rule_cases.catalog import cases;print(json.dumps(cases()))"],{cwd:require('node:path').resolve(__dirname,'..'),encoding:'utf8'})),receipts:[]});
+const caseResponse=data=>({ok:true,json:async()=>({ok:true,data,trust:'historical-unverified'})});
+test('formal cases detached prepare commits one common metadata history and true Undo/Redo',async()=>{
+  const data=caseData(),f=await fixture({casePrepare:()=>caseResponse(data)}),W=f.w,token=W.getProjectState().contextToken,before=W.history.undo.length;
+  assert.throws(()=>W.setFeatureAttachment(P.Features.CASE_KIND,data,token),/隔離資料驗證/);
+  const prepared=await W.prepareFeatureAttachment(P.Features.CASE_KIND,data,token);
+  assert.equal(W.history.undo.length,before);assert.equal(W.readFeatureAttachment(P.Features.CASE_KIND),null);
+  assert.equal(W.commitPreparedFeatureAttachment(prepared),true);assert.equal(W.history.undo.length,before+1);assert.equal(W.getProjectState().dirty,true);
+  assert.match(W.history.actionLabel('undo'),/規則案例/);assert.equal(f.calls.length,0);
+  W.tryLocalHistory('line undo');assert.equal(W.readFeatureAttachment(P.Features.CASE_KIND),null);
+  W.tryLocalHistory('line redo');assert.equal(JSON.stringify(W.readFeatureAttachment(P.Features.CASE_KIND)),JSON.stringify(data));
+  assert.throws(()=>W.commitPreparedFeatureAttachment(prepared),/取消或提交/);
+});
+test('formal cases cancellation or native operation after detached response produces zero writes',async()=>{
+  for(const change of ['cancel','native','metadata']){const data=caseData(),gate=deferred(),reached=deferred(),f=await fixture({casePrepare:async()=>{reached.resolve();await gate.promise;return caseResponse(data);}}),W=f.w;
+    let cancelled=false;const guard=()=>{if(cancelled)throw Error('cancelled');},before=W.history.undo.length;
+    const pending=W.prepareFeatureAttachment(P.Features.CASE_KIND,data,W.getProjectState().contextToken,guard),rejected=assert.rejects(pending);await reached.promise;
+    let release;if(change==='cancel')cancelled=true;if(change==='native')release=W.beginNativeOperation('reset');if(change==='metadata')W.changed(1);
+    gate.resolve();await rejected;release?.();assert.equal(W.history.undo.length,before);assert.equal(W.readFeatureAttachment(P.Features.CASE_KIND),null);
+  }
+});
+test('formal cases no-op has zero history; equal data after Undo/Redo cannot revive an old prepared lease',async()=>{
+  const data=caseData(),f=await fixture({casePrepare:()=>caseResponse(data)}),W=f.w,kind=P.Features.CASE_KIND;
+  W.commitPreparedFeatureAttachment(await W.prepareFeatureAttachment(kind,data,W.getProjectState().contextToken));
+  const unchanged=await W.prepareFeatureAttachment(kind,data,W.getProjectState().contextToken),before=W.history.undo.length;
+  assert.equal(W.commitPreparedFeatureAttachment(unchanged),false);assert.equal(W.history.undo.length,before);
+  const stale=await W.prepareFeatureAttachment(kind,data,W.getProjectState().contextToken);
+  W.tryLocalHistory('line undo');W.tryLocalHistory('line redo');assert.throws(()=>W.commitPreparedFeatureAttachment(stale),/晚到/);assert.equal(W.history.undo.length,before);
+});
+test('case-only near-limit project rejects full manifest growth before HTTP, history or dirty changes',async()=>{
+  const data=caseData(),definition=data.definitions.find(d=>d.caseId==='legal-rule');
+  const digest=async value=>P.sha(new TextEncoder().encode(P.Features.Cases.canonical(value)));
+  const receipt={caseId:definition.caseId,definitionHash:await digest(definition),sourceHash:await digest(definition.sourcePins),
+    executor:{known:false,reason:'Synthetic nonpass capacity fixture'},context:{projectId:'capacity-fixture',generation:0},status:'not-run',
+    authorExpected:structuredClone(definition.expect),actualOutcome:null,actualDiagnostics:[],assertionResults:[],detail:'x'.repeat(4096),
+    conditions:{timeoutSeconds:5,maxOutputBytes:1048576,isolated:true,nativePid:null,privateDirectoryRemoved:true}};
+  data.receipts=Array.from({length:24},()=>({definition:structuredClone(definition),receipt:structuredClone(receipt)}));
+  P.Features.Cases.validate(data);await P.Features.Cases.verifyHashes(data);
+  let http=0;const f=await fixture({casePrepare:()=>{http++;return caseResponse(data);}}),W=f.w;
+  W.context().engineeringDrafts=Array.from({length:33},(_,i)=>({id:'capacity-'+i,kind:'material',base_ref:null,data:{raw:'x'.repeat(250000)},updated_at:'2026-10-05T00:00:00Z'}));
+  const base=await W.manifest();P.assertManifestCapacity(base,'boundary 1 outline 0,0 800,0 800,700 0,700\n');
+  const original=W.getProjectState(),before=W.history.undo.length;
+  await assert.rejects(W.prepareFeatureAttachment(P.Features.CASE_KIND,data,original.contextToken),/8 MB|容量/);
+  assert.equal(http,0);assert.deepEqual(W.getProjectState(),original);assert.equal(W.history.undo.length,before);assert.equal(W.readFeatureAttachment(P.Features.CASE_KIND),null);
+});
+test('caller mutation during real hashes cannot replace the detached snapshot verified by the core',async()=>{
+  const definition=caseData().definitions[0],receipt=JSON.parse(require('node:child_process').execFileSync('python',['-c',
+    "import sys,json;sys.path[:0]=['geometry-web','geometry-core'];from rule_cases.catalog import cases;from rule_cases.request import run_case_request;from tests._bridge import find_bridge;print(json.dumps(run_case_request(json.dumps(cases()[0]).encode(),project_id='snapshot-original',generation=1,binary=find_bridge())))"],
+    {cwd:require('node:path').resolve(__dirname,'..'),encoding:'utf8'}));
+  assert.equal(receipt.status,'passed');const data=caseData();data.receipts=[{definition,receipt}];
+  receipt.observations.after.rules[0].value.members[0].slotId=13;P.Features.Cases.validate(data);
+  const reached=deferred(),gate=deferred(),f=await fixture({projectOverride:{Features:{...P.Features,Cases:{...P.Features.Cases,
+    verifyHashes:async value=>{reached.resolve();await gate.promise;return P.Features.Cases.verifyHashes(value);}}}},
+    casePrepare:request=>{let result;try{result=JSON.parse(require('node:child_process').execFileSync('python',['-c',
+      "import sys,json;sys.path.insert(0,'geometry-web');from rule_case_host import prepare_data;print(json.dumps(prepare_data(sys.stdin.buffer.read())))"],
+      {cwd:require('node:path').resolve(__dirname,'..'),input:request.body,encoding:'utf8',stdio:['pipe','pipe','pipe']}));}catch(error){return {ok:false,json:async()=>({ok:false,error:'core rejected original native pass evidence'})};}return {ok:true,json:async()=>result};}});
+  const before=f.w.getProjectState(),undo=f.w.history.undo.length,pending=f.w.prepareFeatureAttachment(P.Features.CASE_KIND,data,before.contextToken),rejected=assert.rejects(pending,/core rejected/);
+  await reached.promise;receipt.observations.after.rules[0].value.members[0].slotId=7;gate.resolve();await rejected;
+  assert.equal(f.w.readFeatureAttachment(P.Features.CASE_KIND),null);assert.equal(f.w.history.undo.length,undo);assert.deepEqual(f.w.getProjectState(),before);
 });

@@ -180,20 +180,52 @@ def _normalized_sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
 
 
+def _identity_signature(st):
+    """Fields ``stat`` and ``fstat`` can both report for one unchanged file.
+
+    Device, inode, size and mtime catch replacement and an ordinary write.
+    The last field has to be the same clock on both calls. On Windows, CPython
+    reports creation time in ``stat().st_ctime`` and a different time in
+    ``fstat().st_ctime``. ``st_birthtime_ns`` (Python 3.12+) matches across
+    those calls when the runtime provides it; otherwise Windows keeps
+    ``st_ctime``. Other platforms always keep ``st_ctime``, which still moves
+    on a metadata update.
+    """
+    if os.name == 'nt':
+        birth = getattr(st, 'st_birthtime_ns', None)
+        stamp = birth if isinstance(birth, int) else st.st_ctime_ns
+    else:
+        stamp = st.st_ctime_ns
+    return st.st_dev, st.st_ino, st.st_size, st.st_mtime_ns, stamp
+
+
+def _observed_signature(st):
+    """Fields from one stat API, compared only with another result of that API.
+
+    ``fstat().st_ctime`` moves on an in-place same-size write even after mtime
+    is restored. Birth time and ``stat().st_ctime`` do not. Comparing this
+    snapshot with a later ``fstat`` keeps that change-time check without
+    requiring ``stat().st_ctime == fstat().st_ctime``.
+    """
+    return (st.st_dev, st.st_ino, st.st_size, st.st_mtime_ns, st.st_ctime_ns,
+            getattr(st, 'st_birthtime_ns', None))
+
+
 def _binary_identity(path: Path):
     """Hash raw bytes (same domain as mutate.py), rejecting a changing file."""
-    def signature(st):
-        return st.st_dev, st.st_ino, st.st_size, st.st_mtime_ns, st.st_ctime_ns
     before = path.stat()
+    before_sig = _identity_signature(before)
     h = hashlib.sha256()
     with path.open('rb') as fh:
-        if signature(os.fstat(fh.fileno())) != signature(before):
+        opened = os.fstat(fh.fileno())
+        if _identity_signature(opened) != before_sig:
             raise OSError('binary changed before hashing')
+        opened_obs = _observed_signature(opened)
         for chunk in iter(lambda: fh.read(1 << 20), b''):
             h.update(chunk)
-        if signature(os.fstat(fh.fileno())) != signature(before):
+        if _observed_signature(os.fstat(fh.fileno())) != opened_obs:
             raise OSError('binary changed during hashing')
-    if signature(path.stat()) != signature(before):
+    if _identity_signature(path.stat()) != before_sig:
         raise OSError('binary replaced during hashing')
     return {'exe_size': before.st_size, 'exe_mtime_ns': before.st_mtime_ns,
             'exe_sha256': h.hexdigest()}

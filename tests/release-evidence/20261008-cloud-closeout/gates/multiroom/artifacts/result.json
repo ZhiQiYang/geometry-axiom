@@ -1,0 +1,1043 @@
+{
+  "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+  "startedAt": "2026-10-08T18:44:35.455Z",
+  "trackedChanges": "",
+  "sourceSHA256": {
+    "harness": "dff1cfcdd4c491930e8fdb08be5977ef13187b42f86ef651b259ac034635d892",
+    "collection": "db59521d040e48a6abeb7c8327f74e6e98e5732af4672a2f0e6106b2ad112ca2",
+    "worker": "82767675eafa6a806849db8f9bd59d4cad0d5952b3d5eb19db19d9dfba5ad5c9",
+    "app": "02f92b848407172f1b52e1d1903017886d095e75a37e969d1e838ffc4f4c545c",
+    "workspace": "a00d95d60771e5152f78933b98250f235927ecf024c4f0275df8658f0b80e2a8",
+    "extractor": "7333c1031ba54a2f61a079fcdb009a2751fe1cc484a01944a32ffdd56490e403"
+  },
+  "browser": "Browser plugin not available",
+  "runtimeBefore": {
+    "schema": "geometry-runtime/1",
+    "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 196578,
+    "session": "ca31be77efb542b89d45d5a88c3b1b45"
+  },
+  "runtimeAfter": {
+    "schema": "geometry-runtime/1",
+    "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 196578,
+    "session": "ca31be77efb542b89d45d5a88c3b1b45"
+  },
+  "sourceAfter": {
+    "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+    "hashes": {
+      "geometry-web/room-collection-workspace.js": "db59521d040e48a6abeb7c8327f74e6e98e5732af4672a2f0e6106b2ad112ca2",
+      "geometry-web/room-outline-workspace.js": "a00d95d60771e5152f78933b98250f235927ecf024c4f0275df8658f0b80e2a8",
+      "geometry-web/room-outline.js": "7333c1031ba54a2f61a079fcdb009a2751fe1cc484a01944a32ffdd56490e403",
+      "geometry-web/room-outline-worker.js": "82767675eafa6a806849db8f9bd59d4cad0d5952b3d5eb19db19d9dfba5ad5c9"
+    }
+  },
+  "results": [
+    {
+      "name": "fresh isolated exact checkout",
+      "ok": true
+    },
+    {
+      "name": "page title",
+      "ok": true
+    },
+    {
+      "name": "setup: imported source is the selected file bytes",
+      "ok": true
+    },
+    {
+      "name": "three independent candidate regions, A exact duplicate suppressed",
+      "ok": true,
+      "detail": {
+        "bid": 1,
+        "stamp": {
+          "owner": {
+            "context": "e0232fe1-e9dc-4314-9482-345019b923dd",
+            "frame": "8099ecb3-f42b-42a0-b157-736dbb7883da",
+            "revision": 7,
+            "contextToken": "04dc7a7a-b0b4-4eff-8ee6-b42330754b5f:ca31be77efb542b89d45d5a88c3b1b45",
+            "undo": "6f862591-c8d6-49ee-a5e2-7b36b5859e0f",
+            "redo": null
+          },
+          "collectionId": "e26c1720-bb63-4de7-a583-15d5ba09aef2",
+          "plane": {
+            "id": "1e36d7fc-51d0-4370-a30e-2e78695e767c",
+            "sourceId": "29b26979a148b9cfea27c353c510fa0726c164794002dcc1a0ac2b5647789279",
+            "page": 1,
+            "coordinateSpace": "pdf-page-viewport/1",
+            "pageSize": [
+              600,
+              400
+            ],
+            "calibration": {
+              "points": [
+                [
+                  30,
+                  30.000000000000032
+                ],
+                [
+                  229.99999999999997,
+                  30.000000000000032
+                ]
+              ],
+              "distanceMm": 4000,
+              "inputValue": 4000,
+              "inputUnit": "mm"
+            },
+            "alignment": {
+              "x": 0,
+              "y": 0,
+              "mmPerPx": 20.000000000000004,
+              "rotation": 0
+            },
+            "basisRevision": 1
+          },
+          "crop": [
+            0,
+            0,
+            600,
+            400
+          ],
+          "rooms": [
+            {
+              "id": "1a74d4ca-ae9e-4113-9274-f3a0ff327390",
+              "name": "Room 2",
+              "boundaryRef": {
+                "kind": "boundary",
+                "id": 1,
+                "associationPin": "0b50d7f464eb7ab70c57c2291a76581fd0972e4f23afd491503cacda7f784192"
+              },
+              "acceptedBasisRevision": 1,
+              "reviewState": "confirmed",
+              "display": {
+                "crop": [
+                  0,
+                  0,
+                  600,
+                  400
+                ],
+                "opacity": 0.5,
+                "locked": false
+              }
+            }
+          ],
+          "collections": [
+            {
+              "id": "e26c1720-bb63-4de7-a583-15d5ba09aef2",
+              "planeId": "1e36d7fc-51d0-4370-a30e-2e78695e767c",
+              "roomIds": [
+                "1a74d4ca-ae9e-4113-9274-f3a0ff327390"
+              ]
+            }
+          ],
+          "geometry": [
+            [
+              1,
+              "9361576b-2cb2-4f69-aa08-56923f6b72d0",
+              [
+                {
+                  "loop": -1,
+                  "verts": [
+                    [
+                      4560,
+                      640
+                    ],
+                    [
+                      4560,
+                      3360
+                    ],
+                    [
+                      640,
+                      3360
+                    ],
+                    [
+                      640,
+                      640
+                    ]
+                  ],
+                  "fixity": [
+                    1,
+                    1,
+                    1,
+                    1
+                  ],
+                  "vertices": [
+                    {
+                      "index": 0,
+                      "key": null,
+                      "uv": [
+                        4560,
+                        640
+                      ]
+                    },
+                    {
+                      "index": 1,
+                      "key": null,
+                      "uv": [
+                        4560,
+                        3360
+                      ]
+                    },
+                    {
+                      "index": 2,
+                      "key": null,
+                      "uv": [
+                        640,
+                        3360
+                      ]
+                    },
+                    {
+                      "index": 3,
+                      "key": null,
+                      "uv": [
+                        640,
+                        640
+                      ]
+                    }
+                  ]
+                }
+              ]
+            ]
+          ]
+        },
+        "request": {
+          "mode": "auto",
+          "minWidth": 1,
+          "minLength": 8,
+          "multiple": true,
+          "barriers": [],
+          "warnings": []
+        },
+        "runId": "bff6a9ee-c4bb-46db-83a4-a873b7ee80ff",
+        "generation": 1,
+        "candidates": [
+          {
+            "id": "bff6a9ee-c4bb-46db-83a4-a873b7ee80ff:[[228,168],[228,32],[32,32],[32,168]]",
+            "sourcePoints": [
+              [
+                32,
+                32
+              ],
+              [
+                228,
+                32
+              ],
+              [
+                228,
+                168
+              ],
+              [
+                32,
+                168
+              ]
+            ],
+            "points": [
+              [
+                640,
+                640
+              ],
+              [
+                4560,
+                640
+              ],
+              [
+                4560,
+                3360
+              ],
+              [
+                640,
+                3360
+              ]
+            ],
+            "deviation": 9.094947017729282e-13,
+            "method": "pdf-vector",
+            "warnings": [
+              "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+            ],
+            "dimensions": [],
+            "rawInputs": {
+              "refRoomVertices": "640,640\n4560,640\n4560,3360\n640,3360",
+              "refRoomLength": "",
+              "refRoomEdge": "0"
+            },
+            "reviewed": false,
+            "revision": 0,
+            "status": "accepted",
+            "existing": true
+          },
+          {
+            "id": "bff6a9ee-c4bb-46db-83a4-a873b7ee80ff:[[282,168],[282,32],[538,32],[538,88],[438,88],[438,168]]",
+            "sourcePoints": [
+              [
+                282,
+                32
+              ],
+              [
+                538,
+                32
+              ],
+              [
+                538,
+                88
+              ],
+              [
+                438,
+                88
+              ],
+              [
+                438,
+                168
+              ],
+              [
+                282,
+                168
+              ]
+            ],
+            "points": [
+              [
+                5640,
+                640
+              ],
+              [
+                10760,
+                640
+              ],
+              [
+                10760,
+                1760
+              ],
+              [
+                8760,
+                1760
+              ],
+              [
+                8760,
+                3360
+              ],
+              [
+                5640,
+                3360
+              ]
+            ],
+            "deviation": 1.8189894035458565e-12,
+            "method": "pdf-vector",
+            "warnings": [
+              "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+            ],
+            "dimensions": [],
+            "rawInputs": {
+              "refRoomVertices": "5640,640\n10760,640\n10760,1760\n8760,1760\n8760,3360\n5640,3360",
+              "refRoomLength": "",
+              "refRoomEdge": "0"
+            },
+            "reviewed": false,
+            "revision": 0,
+            "status": "pending",
+            "existing": false
+          },
+          {
+            "id": "bff6a9ee-c4bb-46db-83a4-a873b7ee80ff:[[248,222],[248,368],[52,368],[52,222]]",
+            "sourcePoints": [
+              [
+                52,
+                222
+              ],
+              [
+                248,
+                222
+              ],
+              [
+                248,
+                368
+              ],
+              [
+                52,
+                368
+              ]
+            ],
+            "points": [
+              [
+                1040,
+                4440
+              ],
+              [
+                4960,
+                4440
+              ],
+              [
+                4960,
+                7360
+              ],
+              [
+                1040,
+                7360
+              ]
+            ],
+            "deviation": 9.094947017729282e-13,
+            "method": "pdf-vector",
+            "warnings": [
+              "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+            ],
+            "dimensions": [],
+            "rawInputs": {
+              "refRoomVertices": "1040,4440\n4960,4440\n4960,7360\n1040,7360",
+              "refRoomLength": "",
+              "refRoomEdge": "0"
+            },
+            "reviewed": false,
+            "revision": 0,
+            "status": "pending",
+            "existing": false
+          }
+        ],
+        "total": 3,
+        "complete": true,
+        "ignoredNested": 0,
+        "active": null,
+        "parked": false,
+        "stale": false,
+        "committing": false
+      }
+    },
+    {
+      "name": "all ordered candidate millimetres match independent PDF/calibration oracle",
+      "ok": true
+    },
+    {
+      "name": "B uses new-room intent and cannot accept without reviewed",
+      "ok": true
+    },
+    {
+      "name": "cancelled room naming retires the real intent and preserves pending candidate",
+      "ok": true
+    },
+    {
+      "name": "fault-injected detached B input/click cannot modify C",
+      "ok": true
+    },
+    {
+      "name": "switch keeps B raw separate from C",
+      "ok": true
+    },
+    {
+      "name": "park releases true editor owners, keeps raw and native",
+      "ok": true
+    },
+    {
+      "name": "candidate-B: uses real download capability",
+      "ok": true
+    },
+    {
+      "name": "candidate-B: real gcanvas file downloaded",
+      "ok": true
+    },
+    {
+      "name": "save leaves parked raw",
+      "ok": true
+    },
+    {
+      "name": "picker cancel preserves parked raw and formal state",
+      "ok": true
+    },
+    {
+      "name": "picker write preserves parked raw and formal state",
+      "ok": true
+    },
+    {
+      "name": "cancelled native preview leaves A and pending B intact",
+      "ok": true
+    },
+    {
+      "name": "lost executed preview keeps real lease and prevents unsafe parking",
+      "ok": true
+    },
+    {
+      "name": "receipt recovery retires stale batch without replacing original room",
+      "ok": true
+    },
+    {
+      "name": "recovery reads original receipt and never resends executed preview",
+      "ok": true
+    },
+    {
+      "name": "B accepted, A preserved, C still available",
+      "ok": true,
+      "detail": {
+        "bid": 1,
+        "stamp": {
+          "owner": {
+            "context": "e0232fe1-e9dc-4314-9482-345019b923dd",
+            "frame": "8099ecb3-f42b-42a0-b157-736dbb7883da",
+            "revision": 10,
+            "contextToken": "04dc7a7a-b0b4-4eff-8ee6-b42330754b5f:ca31be77efb542b89d45d5a88c3b1b45",
+            "undo": "06f5dc02-e9c0-4c3f-9e22-09bcaaeacfc0",
+            "redo": null
+          },
+          "collectionId": "e26c1720-bb63-4de7-a583-15d5ba09aef2",
+          "plane": {
+            "id": "1e36d7fc-51d0-4370-a30e-2e78695e767c",
+            "sourceId": "29b26979a148b9cfea27c353c510fa0726c164794002dcc1a0ac2b5647789279",
+            "page": 1,
+            "coordinateSpace": "pdf-page-viewport/1",
+            "pageSize": [
+              600,
+              400
+            ],
+            "calibration": {
+              "points": [
+                [
+                  30,
+                  30.000000000000032
+                ],
+                [
+                  229.99999999999997,
+                  30.000000000000032
+                ]
+              ],
+              "distanceMm": 4000,
+              "inputValue": 4000,
+              "inputUnit": "mm"
+            },
+            "alignment": {
+              "x": 0,
+              "y": 0,
+              "mmPerPx": 20.000000000000004,
+              "rotation": 0
+            },
+            "basisRevision": 1
+          },
+          "crop": [
+            0,
+            0,
+            600,
+            400
+          ],
+          "rooms": [
+            {
+              "id": "1a74d4ca-ae9e-4113-9274-f3a0ff327390",
+              "name": "Room 2",
+              "boundaryRef": {
+                "kind": "boundary",
+                "id": 1,
+                "associationPin": "0b50d7f464eb7ab70c57c2291a76581fd0972e4f23afd491503cacda7f784192"
+              },
+              "acceptedBasisRevision": 1,
+              "reviewState": "confirmed",
+              "display": {
+                "crop": [
+                  0,
+                  0,
+                  600,
+                  400
+                ],
+                "opacity": 0.5,
+                "locked": false
+              }
+            },
+            {
+              "id": "c3ed69a0-80ed-4140-afbb-077697d78ddd",
+              "name": "Room 6",
+              "boundaryRef": {
+                "kind": "boundary",
+                "id": 2,
+                "associationPin": "2b878d4bc86bab100604f8867011792d3a2bd6f299128abde5f16d41172d51d3"
+              },
+              "acceptedBasisRevision": 1,
+              "reviewState": "confirmed",
+              "display": {
+                "crop": [
+                  0,
+                  0,
+                  600,
+                  400
+                ],
+                "opacity": 0.5,
+                "locked": false
+              }
+            }
+          ],
+          "collections": [
+            {
+              "id": "e26c1720-bb63-4de7-a583-15d5ba09aef2",
+              "planeId": "1e36d7fc-51d0-4370-a30e-2e78695e767c",
+              "roomIds": [
+                "1a74d4ca-ae9e-4113-9274-f3a0ff327390",
+                "c3ed69a0-80ed-4140-afbb-077697d78ddd"
+              ]
+            }
+          ],
+          "geometry": [
+            [
+              1,
+              "9361576b-2cb2-4f69-aa08-56923f6b72d0",
+              [
+                {
+                  "loop": -1,
+                  "verts": [
+                    [
+                      4560,
+                      640
+                    ],
+                    [
+                      4560,
+                      3360
+                    ],
+                    [
+                      640,
+                      3360
+                    ],
+                    [
+                      640,
+                      640
+                    ]
+                  ],
+                  "fixity": [
+                    1,
+                    1,
+                    1,
+                    1
+                  ],
+                  "vertices": [
+                    {
+                      "index": 0,
+                      "key": null,
+                      "uv": [
+                        4560,
+                        640
+                      ]
+                    },
+                    {
+                      "index": 1,
+                      "key": null,
+                      "uv": [
+                        4560,
+                        3360
+                      ]
+                    },
+                    {
+                      "index": 2,
+                      "key": null,
+                      "uv": [
+                        640,
+                        3360
+                      ]
+                    },
+                    {
+                      "index": 3,
+                      "key": null,
+                      "uv": [
+                        640,
+                        640
+                      ]
+                    }
+                  ]
+                }
+              ]
+            ],
+            [
+              2,
+              "cc7b22de-ec48-4c86-bf75-5fa079c11095",
+              [
+                {
+                  "loop": -1,
+                  "verts": [
+                    [
+                      5640,
+                      640
+                    ],
+                    [
+                      10760,
+                      640
+                    ],
+                    [
+                      10760,
+                      1760
+                    ],
+                    [
+                      8760,
+                      1760
+                    ],
+                    [
+                      8760,
+                      3360
+                    ],
+                    [
+                      5640,
+                      3360
+                    ]
+                  ],
+                  "fixity": [
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1
+                  ],
+                  "vertices": [
+                    {
+                      "index": 0,
+                      "key": null,
+                      "uv": [
+                        5640,
+                        640
+                      ]
+                    },
+                    {
+                      "index": 1,
+                      "key": null,
+                      "uv": [
+                        10760,
+                        640
+                      ]
+                    },
+                    {
+                      "index": 2,
+                      "key": null,
+                      "uv": [
+                        10760,
+                        1760
+                      ]
+                    },
+                    {
+                      "index": 3,
+                      "key": null,
+                      "uv": [
+                        8760,
+                        1760
+                      ]
+                    },
+                    {
+                      "index": 4,
+                      "key": null,
+                      "uv": [
+                        8760,
+                        3360
+                      ]
+                    },
+                    {
+                      "index": 5,
+                      "key": null,
+                      "uv": [
+                        5640,
+                        3360
+                      ]
+                    }
+                  ]
+                }
+              ]
+            ]
+          ]
+        },
+        "request": {
+          "mode": "auto",
+          "minWidth": 1,
+          "minLength": 8,
+          "multiple": true,
+          "barriers": [],
+          "warnings": []
+        },
+        "runId": "bd9d4667-a024-47fa-85d3-dd9e8dc2afc4",
+        "generation": 14,
+        "candidates": [
+          {
+            "id": "bd9d4667-a024-47fa-85d3-dd9e8dc2afc4:[[228,168],[228,32],[32,32],[32,168]]",
+            "sourcePoints": [
+              [
+                32,
+                32
+              ],
+              [
+                228,
+                32
+              ],
+              [
+                228,
+                168
+              ],
+              [
+                32,
+                168
+              ]
+            ],
+            "points": [
+              [
+                640,
+                640
+              ],
+              [
+                4560,
+                640
+              ],
+              [
+                4560,
+                3360
+              ],
+              [
+                640,
+                3360
+              ]
+            ],
+            "deviation": 9.094947017729282e-13,
+            "method": "pdf-vector",
+            "warnings": [
+              "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+            ],
+            "dimensions": [],
+            "rawInputs": {
+              "refRoomVertices": "640,640\n4560,640\n4560,3360\n640,3360",
+              "refRoomLength": "",
+              "refRoomEdge": "0"
+            },
+            "reviewed": false,
+            "revision": 0,
+            "status": "accepted",
+            "existing": true
+          },
+          {
+            "id": "bd9d4667-a024-47fa-85d3-dd9e8dc2afc4:[[282,168],[282,32],[538,32],[538,88],[438,88],[438,168]]",
+            "sourcePoints": [
+              [
+                282,
+                32
+              ],
+              [
+                538,
+                32
+              ],
+              [
+                538,
+                88
+              ],
+              [
+                438,
+                88
+              ],
+              [
+                438,
+                168
+              ],
+              [
+                282,
+                168
+              ]
+            ],
+            "points": [
+              [
+                5640,
+                640
+              ],
+              [
+                10760,
+                640
+              ],
+              [
+                10760,
+                1760
+              ],
+              [
+                8760,
+                1760
+              ],
+              [
+                8760,
+                3360
+              ],
+              [
+                5640,
+                3360
+              ]
+            ],
+            "deviation": 1.8189894035458565e-12,
+            "method": "pdf-vector",
+            "warnings": [
+              "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+            ],
+            "dimensions": [],
+            "rawInputs": {
+              "refRoomVertices": "5640,640\n10760,640\n10760,1760\n8760,1760\n8760,3360\n5640,3360",
+              "refRoomLength": "",
+              "refRoomEdge": "0"
+            },
+            "reviewed": false,
+            "revision": 1,
+            "status": "accepted",
+            "existing": false,
+            "roomId": "c3ed69a0-80ed-4140-afbb-077697d78ddd"
+          },
+          {
+            "id": "bd9d4667-a024-47fa-85d3-dd9e8dc2afc4:[[248,222],[248,368],[52,368],[52,222]]",
+            "sourcePoints": [
+              [
+                52,
+                222
+              ],
+              [
+                248,
+                222
+              ],
+              [
+                248,
+                368
+              ],
+              [
+                52,
+                368
+              ]
+            ],
+            "points": [
+              [
+                1040,
+                4440
+              ],
+              [
+                4960,
+                4440
+              ],
+              [
+                4960,
+                7360
+              ],
+              [
+                1040,
+                7360
+              ]
+            ],
+            "deviation": 9.094947017729282e-13,
+            "method": "pdf-vector",
+            "warnings": [
+              "此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"
+            ],
+            "dimensions": [],
+            "rawInputs": {
+              "refRoomVertices": "1040,4440\n4960,4440\n4960,7360\n1040,7360",
+              "refRoomLength": "",
+              "refRoomEdge": "0"
+            },
+            "reviewed": false,
+            "revision": 0,
+            "status": "pending",
+            "existing": false
+          }
+        ],
+        "total": 3,
+        "complete": true,
+        "ignoredNested": 0,
+        "active": null,
+        "parked": false,
+        "stale": false,
+        "committing": false
+      }
+    },
+    {
+      "name": "keyboard applies dimension without accepting",
+      "ok": true
+    },
+    {
+      "name": "mobile-C: uses real download capability",
+      "ok": true
+    },
+    {
+      "name": "mobile-C: real gcanvas file downloaded",
+      "ok": true
+    },
+    {
+      "name": "ZIP contains exact accepted rooms only, one original source and no candidate session",
+      "ok": true
+    },
+    {
+      "name": "undo invalidates parked session and atomically removes B",
+      "ok": true
+    },
+    {
+      "name": "redo restores B with stale candidate list",
+      "ok": true
+    },
+    {
+      "name": "late cancelled real Worker cannot clear new batch consumer",
+      "ok": true
+    },
+    {
+      "name": "new batch survives late predecessor and uses actual native Worker result",
+      "ok": true
+    },
+    {
+      "name": "changed source display/history refuses old batch result and keeps native rooms",
+      "ok": true
+    },
+    {
+      "name": "accepting C after B creates a third independent room",
+      "ok": true
+    },
+    {
+      "name": "accept-C: uses real download capability",
+      "ok": true
+    },
+    {
+      "name": "accept-C: real gcanvas file downloaded",
+      "ok": true
+    },
+    {
+      "name": "fresh profile UI Open restores exact native and typed room attachment",
+      "ok": true
+    },
+    {
+      "name": "no page errors",
+      "ok": true,
+      "detail": []
+    }
+  ],
+  "errors": [],
+  "dialogs": [
+    {
+      "step": "setup",
+      "type": "confirm",
+      "message": "建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+    },
+    {
+      "step": "setup",
+      "type": "prompt",
+      "message": "目前房間名稱"
+    },
+    {
+      "step": "candidate-B",
+      "type": "prompt",
+      "message": "新房間名稱"
+    },
+    {
+      "step": "candidate-B",
+      "type": "prompt",
+      "message": "新房間名稱"
+    },
+    {
+      "step": "candidate-B",
+      "type": "prompt",
+      "message": "新房間名稱"
+    },
+    {
+      "step": "candidate-B",
+      "type": "prompt",
+      "message": "新房間名稱"
+    },
+    {
+      "step": "mobile-C",
+      "type": "confirm",
+      "message": "重新分析會放棄本分頁尚未接受的候選與修正；已接受房間保留。繼續嗎？"
+    },
+    {
+      "step": "accept-C",
+      "type": "prompt",
+      "message": "新房間名稱"
+    },
+    {
+      "step": "accept-C",
+      "type": "confirm",
+      "message": "建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+    }
+  ],
+  "finishedAt": "2026-10-08T18:44:53.651Z"
+}

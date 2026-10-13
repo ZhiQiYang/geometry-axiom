@@ -1,0 +1,423 @@
+{
+  "schema": "geometry-recovered-full-independent-census/1",
+  "checkedUTC": "2026-10-09T19:54:34.717470+00:00",
+  "mode": "cdp",
+  "testedFullSHA": "f3b8285729b42cd22451c98cba1e2ec4514517f3",
+  "currentCandidate": {
+    "head": "f3b8285729b42cd22451c98cba1e2ec4514517f3",
+    "dirty": ""
+  },
+  "reviewExecutor": {
+    "command": [
+      "python",
+      "-B",
+      "<workspace-path>",
+      "--mode",
+      "cdp",
+      "--gate",
+      "<workspace-path>",
+      "--lifecycle",
+      "<workspace-path>",
+      "--output",
+      "<workspace-path>"
+    ],
+    "actualPython": "<execution-runtime-path>",
+    "actualPythonSHA256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+    "scriptSHA256": "d0916c681be83ead7aaf82f7a8ee790b7414ce472dda3e3755c800ac47133830"
+  },
+  "exitCode": 0,
+  "sources": {
+    "<workspace-path>|basename=receipt.json|originalKeySha256=cbba61d8d4d175fc4663e5923f95c2f46ce06cb5153d9e96985d959fa6f430bd": {
+      "path": "<workspace-path>",
+      "bytes": 42010,
+      "sha256": "38bda376c1aed0faf20b02d611747b145eaf594f0d77d037dba9e598ef3d2d35"
+    },
+    "<workspace-path>|basename=command.log|originalKeySha256=3cd03cfc812d2c43ddb43cbbe52f93e67e5b47f904e2deb1546ebe129301549f": {
+      "path": "<workspace-path>",
+      "bytes": 215810,
+      "sha256": "b7ef0a651079a2ac51f211929d3e625bf83aff6018249de1477900f1c4b104d3"
+    },
+    "<workspace-path>|basename=started.json|originalKeySha256=71f6e272b3455027ab94162b75da1e16e66aaeaa4a8eb00bf40ce8805771ca51": {
+      "path": "<workspace-path>",
+      "bytes": 1791,
+      "sha256": "ced764115f1d9b19e5106f673480422f156358978683057955e3ea989ba955c1"
+    },
+    "<workspace-path>|basename=ready-runtime.json|originalKeySha256=7ac46b0728947967715cfca9fb65dd9f181cc06c7bdde8ccd43916e7df441ae3": {
+      "path": "<workspace-path>",
+      "bytes": 242,
+      "sha256": "33766057d316d5260df3d36920b70e094247d6d899188048bca4eae148f89752"
+    },
+    "<workspace-path>|basename=terminal.json|originalKeySha256=f35224640874c9dbaf608892a8f0cfe6ece0315481dddde36ac256803aaccd51": {
+      "path": "<workspace-path>",
+      "bytes": 5085,
+      "sha256": "abc6b1aaec7d14b32f6995a989b78aa82152e18cec554820936a5654cd505cd0"
+    },
+    "<workspace-path>|basename=terminal-receipt.json|originalKeySha256=56b51b339a175c67884c6f2430ace046e3f79eb88677a06f167448591d5b9fc2": {
+      "path": "<workspace-path>",
+      "bytes": 3114,
+      "sha256": "38284304fece6decd0723392510d83a0f33005aba47ce6f6d2188a760d7b8885"
+    },
+    "<workspace-path>|basename=identity.json|originalKeySha256=2533f6904bdaca3a3381317cfd3b138fa4695e67019cf3588a65d1414b3d2655": {
+      "path": "<workspace-path>",
+      "bytes": 413,
+      "sha256": "4d4ce1e8ef3d689ac6246792f2c173b662726556b510e2ef4fe20ddf93c1374d"
+    }
+  },
+  "rawReviewLog": {
+    "path": "<workspace-path>",
+    "bytes": 3301,
+    "sha256": "45921e41e6bb204f9a2da756b8e61e0baf31064184616ba25f82d3e179d16f6c"
+  },
+  "integrityChecks": {
+    "canonical protocol unique and correct schema": true,
+    "original canonical command exactly retained": true,
+    "one same clean tested fullSHA before/after": true,
+    "all product source hashes unchanged across actual execution": true,
+    "every frozen Git source and immutable executed-source snapshot matches": true,
+    "runnerSha256 unchanged before/after": true,
+    "identityObserverSha256 unchanged before/after": true,
+    "launchAdapterSha256 unchanged before/after": true,
+    "executables unchanged before/after": true,
+    "native unchanged before/after": true,
+    "liveBridge unchanged before/after": true,
+    "actual runner is immutable original": true,
+    "available sealed wrapper snapshots match execution": true,
+    "before runtime fresh exact owned source": true,
+    "after runtime fresh exact owned source": true,
+    "actual original log hash and size match sealed receipt": true,
+    "original execution not timed out or interrupted": true,
+    "lifecycle original gate exit agrees receipt": true,
+    "lifecycle source command SHA matches actual clean candidate": true,
+    "lifecycle started/terminal records same original command": true,
+    "lifecycle controller and Python actual hashes match source": true,
+    "sealed actual lifecycle raw files match recorded hashes": true,
+    "actual native binary files fresh and hash-bound": true,
+    "one actual native child belongs to unique owned server": true,
+    "exact one actual Node and one Chromium ELF observed": true,
+    "actual observed Node matches canonical process/argv/cwd/configured hash": true,
+    "actual observed main Chromium owned profile/debuggingport/cwd": true,
+    "actual observed ELF executable files match hashes": true,
+    "actual live observation occurred during canonical execution": true,
+    "identity observer errors absent": true,
+    "root stopped same exact ready server/native session after preserving dump": true,
+    "actual owned stop exited successfully and service terminated": true,
+    "new stop collector includes actual complete gate process IDs": true,
+    "all observed stopped processes absent or explicitly zombie": true,
+    "original golden unchanged from historical5174 bytes": true,
+    "current committed golden section sum internally consistent": true,
+    "actual initial/terminal/live observed CDP scopes equal": true,
+    "browser PID corresponds to actual canonical scope": true,
+    "canonical pass/fail census agrees complete section maps": true,
+    "exception census classified by unchanged original P38 expectation": true,
+    "full accepted evidence itself agrees raw result": true,
+    "full accepted evidence completed verified": true,
+    "candidate still frozen clean after readonly census": true
+  },
+  "integrityVerified": true,
+  "acceptanceChecks": {
+    "canonical completed": true,
+    "actual gate and Node exit zero": true,
+    "receipt execution verified with no release approval": true,
+    "scope full without filters": true,
+    "zero failures and no skips under original gate contract": true,
+    "complete per-section census exactly matches original golden": true,
+    "raw canonical complete-golden confirmation present": true
+  },
+  "boundedAcceptancePassed": true,
+  "originalCanonicalResult": {
+    "schema": "geometry-cdp-result/1",
+    "scope": {
+      "mode": "full",
+      "filters": [],
+      "modifiers": [],
+      "url": "http://127.0.0.1:19182/",
+      "feedbackDirectory": "<isolated-test-directory>",
+      "browserProfile": "<isolated-test-directory>",
+      "cdpPort": 58849,
+      "browserPid": 284692
+    },
+    "completed": true,
+    "passedAssertions": 2207,
+    "failedAssertions": 0,
+    "skipped": [],
+    "sections": {
+      "1": 14,
+      "2": 3,
+      "3": 1,
+      "4": 1,
+      "5": 1,
+      "6": 1,
+      "7": 1,
+      "8": 0,
+      "9": 12,
+      "10": 0,
+      "Setup": 0,
+      "P3": 14,
+      "P4": 11,
+      "P5": 2,
+      "P6": 4,
+      "P7": 54,
+      "P8": 116,
+      "P9": 9,
+      "P10": 9,
+      "P11": 12,
+      "P12": 8,
+      "P13": 4,
+      "P14": 16,
+      "P15": 6,
+      "P16": 10,
+      "P17": 11,
+      "P18": 20,
+      "P19": 17,
+      "BF2": 5,
+      "BF3": 1,
+      "BF4": 9,
+      "P20": 10,
+      "P21": 4,
+      "P22": 45,
+      "P32": 34,
+      "P33": 9,
+      "P34": 7,
+      "P35": 14,
+      "P36": 2,
+      "P37": 19,
+      "P38": 13,
+      "P39": 8,
+      "P40": 4,
+      "P41": 3,
+      "P42": 12,
+      "P43": 12,
+      "P44": 19,
+      "P45": 2,
+      "P46": 7,
+      "P47": 9,
+      "P48": 14,
+      "P49": 17,
+      "P50": 33,
+      "P51": 13,
+      "P52": 43,
+      "P53": 28,
+      "P57": 56,
+      "P62": 38,
+      "P63": 18,
+      "P64": 24,
+      "P65": 5,
+      "P66": 4,
+      "P68": 36,
+      "P69": 160,
+      "P67": 96,
+      "P70": 117,
+      "P71": 9,
+      "P78": 23,
+      "P87": 60,
+      "P88": 137,
+      "P72": 52,
+      "P73": 69,
+      "P74": 52,
+      "P75": 37,
+      "P76": 87,
+      "P77": 134,
+      "P82": 16,
+      "P80": 23,
+      "P81": 14,
+      "P85": 31,
+      "P79": 87,
+      "P84": 33,
+      "P83": 16,
+      "P86": 20
+    },
+    "goldenCompare": "matched",
+    "uncaughtBrowserExceptions": 1,
+    "coverage": "Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts."
+  },
+  "actualExecution": {
+    "started": "2026-10-09T19:29:13.982035+00:00",
+    "exitCode": 0,
+    "timedOut": false,
+    "interrupted": false,
+    "pid": 284641,
+    "finished": "2026-10-09T19:53:32.252597+00:00"
+  },
+  "actualGateExitCode": 0,
+  "actualObservedExecutionIdentity": {
+    "liveBinding": {
+      "observedUtc": "2026-10-09T19:29:14.496074+00:00",
+      "scope": "Observed the actual owned Chromium ELF and live canonical Node parent during this command; launcher stages excluded",
+      "cdpScope": {
+        "mode": "full",
+        "filters": [],
+        "modifiers": [],
+        "url": "http://127.0.0.1:19182/",
+        "feedbackDirectory": "<isolated-test-directory>",
+        "browserProfile": "<isolated-test-directory>",
+        "cdpPort": 58849,
+        "browserPid": 284692
+      },
+      "processes": [
+        {
+          "role": "actual CDP_SCOPE Chromium main process",
+          "pid": 284692,
+          "exe": "/usr/lib/chromium/chromium",
+          "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+          "executableMagicHex": "7f454c46",
+          "cmdline": [
+            "/usr/lib/chromium/chromium",
+            "--show-component-extension-options",
+            "--enable-gpu-rasterization",
+            "--no-default-browser-check",
+            "--disable-pings",
+            "--media-router=0",
+            "--enable-remote-extensions",
+            "--load-extension=",
+            "about:blank",
+            "--headless=new",
+            "--disable-gpu",
+            "--no-first-run",
+            "--remote-debugging-port=58849",
+            "--window-size=1400,900",
+            "--user-data-dir=<isolated-test-directory>"
+          ],
+          "cwd": "<workspace-path>"
+        },
+        {
+          "role": "actual browser parent Node",
+          "pid": 284641,
+          "exe": "<execution-runtime-path>",
+          "sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12",
+          "executableMagicHex": "7f454c46",
+          "cmdline": [
+            "node",
+            "geometry-web/cdp_test.js"
+          ],
+          "cwd": "<workspace-path>"
+        }
+      ]
+    },
+    "errors": [],
+    "excludedLauncherStages": [
+      {
+        "pid": 284692,
+        "exe": "/usr/bin/dash",
+        "cmdline": [
+          "/bin/sh",
+          "/usr/bin/chromium",
+          "--headless=new",
+          "--disable-gpu",
+          "--no-first-run",
+          "--remote-debugging-port=58849",
+          "--window-size=1400,900",
+          "--user-data-dir=<isolated-test-directory>",
+          "about:blank"
+        ]
+      }
+    ]
+  },
+  "nativeBeforeAfter": [
+    {
+      "bridge": {
+        "name": "bridge",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T17:05:21+00:00）",
+        "path": "<isolated-test-directory>",
+        "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+        "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b",
+        "sidecarSha256": "e43a3436fe0ca2572e088ed5ee103e709346a06df35552d0f7e4b2b65d53559f"
+      },
+      "model-base": {
+        "name": "model-base",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T17:05:25+00:00）",
+        "path": "<isolated-test-directory>",
+        "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+        "sha256": "576a0e04c7ddaeafee20a64e03f063f1d27cbebb9694c50f20fcc2b0508d7aeb",
+        "sidecarSha256": "6509937d9a42cfb6d0a42abc6d6d64fa3f1e3d8405d6ccc2102fefe108bc41e2"
+      }
+    },
+    {
+      "bridge": {
+        "name": "bridge",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T17:05:21+00:00）",
+        "path": "<isolated-test-directory>",
+        "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+        "sha256": "7098a0bb238176722f6b632c609a88e9600488765fd820d6d5bf637daed6c49b",
+        "sidecarSha256": "e43a3436fe0ca2572e088ed5ee103e709346a06df35552d0f7e4b2b65d53559f"
+      },
+      "model-base": {
+        "name": "model-base",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T17:05:25+00:00）",
+        "path": "<isolated-test-directory>",
+        "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+        "sha256": "576a0e04c7ddaeafee20a64e03f063f1d27cbebb9694c50f20fcc2b0508d7aeb",
+        "sidecarSha256": "6509937d9a42cfb6d0a42abc6d6d64fa3f1e3d8405d6ccc2102fefe108bc41e2"
+      }
+    }
+  ],
+  "runtimeBeforeAfter": [
+    {
+      "schema": "geometry-runtime/1",
+      "version": "efbcfff4ca94d6a1844228ea59628ee5de24dcd5e337c62f9c0587f5a38c8a11",
+      "fresh": true,
+      "root": "<workspace-path>",
+      "pid": 284553,
+      "session": "faae7bd13ec941589f3c4d3d4ef71f51"
+    },
+    {
+      "schema": "geometry-runtime/1",
+      "version": "efbcfff4ca94d6a1844228ea59628ee5de24dcd5e337c62f9c0587f5a38c8a11",
+      "fresh": true,
+      "root": "<workspace-path>",
+      "pid": 284553,
+      "session": "faae7bd13ec941589f3c4d3d4ef71f51"
+    }
+  ],
+  "sourceSnapshotMismatches": [],
+  "availableWrapperSnapshotChecks": {},
+  "scopeDetails": {
+    "goldenSHA256": "e3e742ec3d731e701afc22149efa9bc11cf6506340715176175e594c94778bd9",
+    "goldenSections": 84,
+    "goldenTotal": 2207,
+    "goldenCompared": "matched",
+    "unreachedGoldenSections": {}
+  },
+  "serviceStopObservations": [
+    {
+      "pid": 284553,
+      "role": "owned server",
+      "exists": true,
+      "state": "Z",
+      "statSHA256": "73a37289c698b3b6f026d53fa53e30e08f347984d42f544bcce612151744824c"
+    },
+    {
+      "pid": 284554,
+      "role": "owned direct native bridge",
+      "exists": true,
+      "state": "Z",
+      "statSHA256": "bf74821ad6387a4a8e0be82f4b145485d25bedcab28ee5b432202b67dd55d346"
+    },
+    {
+      "pid": 284692,
+      "role": "actual CDP_SCOPE Chromium main process",
+      "exists": true,
+      "state": "Z",
+      "statSHA256": "bd08ed5afe53f6125be9a6737a1e6c9e69ed383369ed2830ca5477476c6645d5"
+    },
+    {
+      "pid": 284641,
+      "role": "actual browser parent Node",
+      "exists": false,
+      "state": "absent-at-observation"
+    }
+  ],
+  "browserStarted": false,
+  "servicesStartedOrStopped": false,
+  "repoWritten": false,
+  "limits": [
+    "Metadata/log/source census only; no independent product/browser/native execution.",
+    "This recovered actual command is separate from old noReceipt CDP742/0false and Space168/2false; no aggregation or invented old exits.",
+    "Current bound scope does not substitute for caption/SIX, #54, Resume, races, projection or all43/privateZIP acceptance.",
+    "Historical 2207/0/0 remains attached to clean5174; any new equal count is established by this new actual receipt, never rebound.",
+    "Original Windows logs remain unreceived; cloud results do not establish Windows full or golden acceptance."
+  ]
+}

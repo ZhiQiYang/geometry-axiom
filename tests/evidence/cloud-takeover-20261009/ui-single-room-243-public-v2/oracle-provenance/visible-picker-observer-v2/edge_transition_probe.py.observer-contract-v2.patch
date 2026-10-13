@@ -1,0 +1,39 @@
+--- <workspace-path>
++++ <workspace-path>
+@@ -238,16 +238,31 @@
+     single_trusted_change = len(changes) == 1 and changes[0]['trusted'] is True and changes[0]['id'] == selector[1:] and changes[0]['value'] == '4200' and changes[0]['phase'] == 'settled'
+     expected_command = observed['gate']['command'] == 'line '+A_EXPECTED
+     nav = observed['navigation']
+-    required = [('click', 'btnObj'), ('change', 'workSurf'), ('click', None)]
++    required = [('click', 'btnObj'), ('change', 'v3ToolbarSurf'), ('click', None)]
+     if scope == 'face':
+         required.insert(0, ('click', 'workspaceBackButton'))
+-    route = [item for item in nav if item.get('id') in ['workspaceBackButton', 'btnObj', 'workSurf'] or item.get('tool') == 'edit']
++    route = [item for item in nav if item.get('id') in ['workspaceBackButton', 'btnObj', 'v3ToolbarSurf'] or item.get('tool') == 'edit']
+     route_ok = not held or ([(item['type'], item.get('id')) for item in route] == required and
+                            all(item['trusted'] for item in route) and
+-                           next(item for item in route if item.get('id') == 'workSurf')['value'] == '732')
++                           next(item for item in route if item.get('id') == 'v3ToolbarSurf')['value'] == '732')
++    picker_changes = [item for item in nav if item['type'] == 'change' and item.get('id') == 'v3ToolbarSurf']
++    consumer_changes = [item for item in nav if item['type'] == 'change' and item.get('id') == 'workSurf']
++    consumer_sync_ok = not held or (
++        len(picker_changes) == 1 and len(consumer_changes) == 1 and
++        picker_changes[0]['trusted'] is True and consumer_changes[0]['trusted'] is False and
++        picker_changes[0]['value'] == picker_changes[0]['pickerValue'] == '732' and
++        picker_changes[0]['consumerValue'] == picker_changes[0]['before']['workSurf'] == '731' and
++        consumer_changes[0]['value'] == consumer_changes[0]['pickerValue'] ==
++        consumer_changes[0]['consumerValue'] == consumer_changes[0]['before']['workSurf'] == '732' and
++        consumer_changes[0]['sequence'] == picker_changes[0]['sequence'] + 1 and
++        consumer_changes[0]['observedAt'] >= picker_changes[0]['observedAt'] and
++        consumer_changes[0]['eventTimeStamp'] >= picker_changes[0]['eventTimeStamp'] and
++        nav.index(consumer_changes[0]) < nav.index(route[-1]))
+     result.update(audit=observed, singleTrusted4200Change=single_trusted_change,
+-                  exactNativeCommand=expected_command, realNavigationRoute=route_ok)
+-    result['ok'] = result['ok'] and single_trusted_change and expected_command and route_ok
++                  exactNativeCommand=expected_command, realNavigationRoute=route_ok,
++                  visiblePickerConsumerSynchronization=consumer_sync_ok,
++                  navigationObservationContract='trusted-visible-picker-synthetic-consumer-v2')
++    result['ok'] = result['ok'] and single_trusted_change and expected_command and route_ok and consumer_sync_ok
+     return result
+ 
+ 

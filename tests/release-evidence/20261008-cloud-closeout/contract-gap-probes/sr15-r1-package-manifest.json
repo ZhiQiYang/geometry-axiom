@@ -1,0 +1,92 @@
+{
+  "schema": "geometry-contract-gap-public-package/1",
+  "scope": "SR15 failed r1 preserved. Not a product-pass or product-defect conclusion.",
+  "result": "probe assertion failed: expected preview bindings {1}, received full {0,1}; root reports binding0 before==after and binding1 changes correctly; correction pending source review",
+  "executedScriptSHA256": "618b878d96a3121d55c650ae4a42167ca3951da5be1cb6c4ae145a7f3c7c1af2",
+  "files": [
+    {
+      "path": "sr15-probe/r1/bridge.stderr",
+      "sourcePath": "/workspace/closure-evidence/sr15-parameter-anchor-r1/bridge.stderr",
+      "sha256": "7522a103e58964e1d1a6fbc805bda1d8a7105021bd9a1163a94d801130db7bfb",
+      "bytes": 9151
+    },
+    {
+      "path": "sr15-probe/r1/executed-probe.py",
+      "sourcePath": "/workspace/closure-evidence/sr15-parameter-anchor-r1/executed-probe.py",
+      "sha256": "618b878d96a3121d55c650ae4a42167ca3951da5be1cb6c4ae145a7f3c7c1af2",
+      "bytes": 17121
+    },
+    {
+      "path": "sr15-probe/r1/requests/parameter-01.json",
+      "sourcePath": "/workspace/closure-evidence/sr15-parameter-anchor-r1/requests/parameter-01.json",
+      "sha256": "61d44e7a81e32af3562ee91747dd80bec5fc90a138a19bb07870ff29bcbbb699",
+      "bytes": 226
+    },
+    {
+      "path": "sr15-probe/r1/requests/parameter-02.json",
+      "sourcePath": "/workspace/closure-evidence/sr15-parameter-anchor-r1/requests/parameter-02.json",
+      "sha256": "dbf524d1256a47afda5d9b5a4aab0d0075b76373742a7b483c27b0955d88a4d1",
+      "bytes": 226
+    },
+    {
+      "path": "sr15-probe/r1/requests/parameter-03.json",
+      "sourcePath": "/workspace/closure-evidence/sr15-parameter-anchor-r1/requests/parameter-03.json",
+      "sha256": "dbf524d1256a47afda5d9b5a4aab0d0075b76373742a7b483c27b0955d88a4d1",
+      "bytes": 226
+    },
+    {
+      "path": "sr15-probe/r1/requests/parameter-04.json",
+      "sourcePath": "/workspace/closure-evidence/sr15-parameter-anchor-r1/requests/parameter-04.json",
+      "sha256": "9a19d8277178c20cbe95f071605e66ee9cea7f3cb38d65ba80a780daf3e95a82",
+      "bytes": 226
+    },
+    {
+      "path": "sr15-probe/r1/result.json",
+      "sourcePath": "/workspace/closure-evidence/sr15-parameter-anchor-r1/result.json",
+      "sha256": "e18ba77fe0eeec9f0ece3e84fbff9f22ec03fcc831dfe87d65eab1ee74beae46",
+      "bytes": 708468
+    },
+    {
+      "path": "sr15-probe/r1/wire.jsonl",
+      "sourcePath": "/workspace/closure-evidence/sr15-parameter-anchor-r1/wire.jsonl",
+      "sha256": "b994854383e6b8c9087c9bc91879ea8ab7fcd2c15babc7273182b01f6e3ba5da",
+      "bytes": 852914
+    },
+    {
+      "path": "gate-receipts/sr15-parameter-anchor-r1/command.log",
+      "sourcePath": "/workspace/closure-evidence/gates/sr15-parameter-anchor-r1/command.log",
+      "sha256": "3d7499623d93f0a3f647af6910b76f2737a00719c4b17cb3dfb7a37c866eba11",
+      "bytes": 1350
+    },
+    {
+      "path": "gate-receipts/sr15-parameter-anchor-r1/receipt.json",
+      "sourcePath": "/workspace/closure-evidence/gates/sr15-parameter-anchor-r1/receipt.json",
+      "sha256": "cae807057b8d8227bf829f63dfb2d5a0cd67b8d049d023364b80197a22c69732",
+      "bytes": 5298
+    },
+    {
+      "path": "sr15-probe/r1-driver/sr15-native-driver-r1.json",
+      "sourcePath": "/workspace/closure-evidence/integration/sr15-native-driver-r1.json",
+      "sha256": "1f5870b138f82528954b422c18d31ebb73109d0f2c6831fb376ba0299decf3c7",
+      "bytes": 1478
+    },
+    {
+      "path": "sr15-probe/r1-driver/sr15-native-driver-r1.stdout",
+      "sourcePath": "/workspace/closure-evidence/integration/sr15-native-driver-r1.stdout",
+      "sha256": "107c21ae58a7531197a85b35f447da351e3a25cf15e8e328a20e73e19c2edd1a",
+      "bytes": 1309
+    },
+    {
+      "path": "sr15-probe/r1-driver/sr15-native-driver-r1.stderr",
+      "sourcePath": "/workspace/closure-evidence/integration/sr15-native-driver-r1.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "sr15-probe/r1-driver/sr15-native-driver-r1.diff",
+      "sourcePath": "/workspace/closure-evidence/integration/sr15-native-driver-r1.diff",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    }
+  ]
+}

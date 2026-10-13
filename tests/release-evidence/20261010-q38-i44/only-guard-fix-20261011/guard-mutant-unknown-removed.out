@@ -1,0 +1,20 @@
+FAIL: test_unknown_id_and_empty_selection_raise (__main__.SelectCases.test_unknown_id_and_empty_selection_raise) (only=['SPM3'], groups=['native', 'model'])
+AssertionError: 'unknown --only case id' not found in 'no case selected: --only SPM3 with --group native model matches nothing (no case in these groups)'
+FAIL: test_unknown_id_and_empty_selection_raise (__main__.SelectCases.test_unknown_id_and_empty_selection_raise) (only=['SPM03', 'nope'], groups=['native'])
+AssertionError: ValueError not raised
+FAIL: test_mistyped_id_exits_2_and_lists_the_valid_ids (__main__.SelectionGuardCli.test_mistyped_id_exits_2_and_lists_the_valid_ids) (only='SPM3')
+AssertionError: 'unknown --only case id' not found in 'usage: section_profile_mutation_check.py [-h] [--list] [--explore]\n                                         [--only ONLY]\n                                         [--group {native,model}]\n                                         [--jobs JOBS] [--receipt RECEIPT]\n        
+FAIL: test_mistyped_id_exits_2_and_lists_the_valid_ids (__main__.SelectionGuardCli.test_mistyped_id_exits_2_and_lists_the_valid_ids) (only='spm03')
+AssertionError: 'unknown --only case id' not found in 'usage: section_profile_mutation_check.py [-h] [--list] [--explore]\n                                         [--only ONLY]\n                                         [--group {native,model}]\n                                         [--jobs JOBS] [--receipt RECEIPT]\n        
+FAIL: test_mistyped_id_exits_2_and_lists_the_valid_ids (__main__.SelectionGuardCli.test_mistyped_id_exits_2_and_lists_the_valid_ids) (only='SPM99')
+AssertionError: 'unknown --only case id' not found in 'usage: section_profile_mutation_check.py [-h] [--list] [--explore]\n                                         [--only ONLY]\n                                         [--group {native,model}]\n                                         [--jobs JOBS] [--receipt RECEIPT]\n        
+FAIL: test_mistyped_id_exits_2_and_lists_the_valid_ids (__main__.SelectionGuardCli.test_mistyped_id_exits_2_and_lists_the_valid_ids) (only='SPM003')
+AssertionError: 'unknown --only case id' not found in 'usage: section_profile_mutation_check.py [-h] [--list] [--explore]\n                                         [--only ONLY]\n                                         [--group {native,model}]\n                                         [--jobs JOBS] [--receipt RECEIPT]\n        
+FAIL: test_mistyped_id_exits_2_and_lists_the_valid_ids (__main__.SelectionGuardCli.test_mistyped_id_exits_2_and_lists_the_valid_ids) (only='')
+AssertionError: 'unknown --only case id' not found in 'usage: section_profile_mutation_check.py [-h] [--list] [--explore]\n                                         [--only ONLY]\n                                         [--group {native,model}]\n                                         [--jobs JOBS] [--receipt RECEIPT]\n        
+FAIL: test_one_mistyped_id_among_legal_ones_rejects_the_whole_run (__main__.SelectionGuardCli.test_one_mistyped_id_among_legal_ones_rejects_the_whole_run)
+AssertionError: 0 != 2 : exit 0 means the mistyped selection was taken as a success: no case was selected, so no baseline ran and all([]) reported success; stdout='ngle of the outline (L shape lost)\nSPM37 model R39 the reference envelope is counted as material volume\nSPM38 model R37/D40 a panel is cut at the 1830 mm sheet leng
+FAIL: test_the_guard_also_applies_to_list (__main__.SelectionGuardCli.test_the_guard_also_applies_to_list)
+AssertionError: "'SPM3'" not found in 'usage: section_profile_mutation_check.py [-h] [--list] [--explore]\n                                         [--only ONLY]\n                                         [--group {native,model}]\n                                         [--jobs JOBS] [--receipt RECEIPT]\n                        
+Ran 9 tests in 2.097s
+FAILED (failures=9)

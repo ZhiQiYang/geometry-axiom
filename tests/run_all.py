@@ -53,6 +53,9 @@ PY_NEEDS = {
     'test_assembly_parameter_refs': ['bridge'],
     'test_assembly_native_diagnostics': ['bridge'],
     'test_assembly_rules': ['bridge'],
+    'test_section_profile_native': ['bridge', 'model-base'],
+    'test_section_profile_modeling': ['bridge', 'model-base'],
+    'test_section_profile_mutation_check': [],
     'test_assembly_generation': ['bridge'],
     'test_axiom_reader': [],
     'test_binaries': [],
@@ -79,6 +82,10 @@ PY_NEEDS = {
     'test_mutation_freshness': [],
     'test_parameters_core': ['bridge', 'model-base'],
     'test_reference_contract': ['bridge'],
+    'test_release_gate': [],
+    'test_local_launcher': ['core', 'bridge', 'model-base'],
+    'test_rule_case_workbench_http': ['bridge'],
+    'test_rule_case_host': ['bridge'],
     'test_rule_case_catalog': ['bridge'],
     'test_rule_case_definition': [],
     'test_rule_case_executor': ['bridge'],
@@ -102,6 +109,7 @@ PY_BROWSER_GATES = {
     'test_issue123_create_feedback_browser': 'Explicit isolated Playwright mouse/touch first-center gate from #131; run with --url/--out, not a unittest suite',
 }
 NODE_TEST_FILES = [
+    'tests/test_section_profile_compat.js',
     'tests/test_assembly_project_store.js',
     'tests/test_assembly_transport_context.js',
     'tests/test_assembly_workspace.js',
@@ -110,6 +118,7 @@ NODE_TEST_FILES = [
     'tests/test_face_projection_store.js',
     'tests/test_grid_trial_geometry.js',
     'tests/test_grid_rule_draft.js',
+    'tests/test_grid_rule_lines.js',
     'tests/test_issue77_attachment.js',
     'tests/test_issue77_history.js',
     'tests/test_issue77_workspace.js',
@@ -121,10 +130,17 @@ NODE_TEST_FILES = [
     'tests/test_subdivision_project_store.js',
     'tests/test_reference_workspace_races.js',
     'tests/test_room_outline.js',
+    'tests/test_room_multi_candidate.js',
     'tests/test_room_collection.js',
     'tests/test_scenario_diff.js',
     'tests/test_scenario_review_native.js',
     'tests/test_scenario_snapshots.js',
+    'tests/test_scenario_project_store.js',
+    'tests/test_scenario_editor_tickets.js',
+    'tests/test_scenario_recovery_owner.js',
+    'tests/test_scenario_resume_checkpoint.js',
+    'tests/test_shared_room_display.js',
+    'tests/test_rule_case_project_store.js',
     'tests/test_source_inspector.js',
     'tests/test_space_model_store.js',
     'tests/test_timber_schedule.js',
@@ -138,40 +154,107 @@ NODE_DOCUMENT_SCRIPT_FILES = {
     'node:cdp_confirmation_gate': 'tests/test_cdp_confirmation_gate.js',
 }
 NODE_PURE_TEST_FILES = {
+    'node:grid_lesson_control_ownership': 'tests/test_grid_lesson_control_ownership.js',
+    'node:parameter_confirmation_settlement': 'tests/test_parameter_confirmation_settlement.js',
+    'node:face_reference_settlement': 'tests/test_face_reference_settlement.js',
+    'node:face_projection_lifecycle': 'tests/test_face_projection_lifecycle.js',
+    'node:workspace_shell_history': 'tests/test_workspace_shell_history.js',
+    'node:feedback_events': 'tests/test_feedback_events.js',
     'node:space_test_floor': 'tests/test_space_test_floor.js',
     'node:history_operation': 'tests/test_history_operation.js',
     'node:context_operations': 'tests/test_context_operations.js',
     'node:cdp_evaluation': 'tests/test_cdp_evaluation.js',
+    'node:cdp_settle': 'tests/test_cdp_settle.js',
+    'node:cdp_card_position': 'tests/test_cdp_card_position.js',
     'node:background_grid_viewport': 'tests/test_background_grid_viewport.js',
+    'node:anchor_band_clip': 'tests/test_anchor_band_clip.js',
     'node:hover_pick_scheduler': 'tests/test_hover_pick_scheduler.js',
     'node:face_paint_scheduler': 'tests/test_face_paint_scheduler.js',
     'node:room_outline_worker': 'tests/test_room_outline_worker.js',
+    'node:room_outline_closeout': 'tests/test_room_outline_closeout.js',
     'node:evidence_links': 'tests/test_evidence_links.js',
     'node:evidence_project_store': 'tests/test_evidence_project_store.js',
     'node:grid_definition_diagram': 'tests/test_grid_definition_diagram.js',
 }
 NODE_EXCLUDED = {
+    'tests/room_multi_candidate_browser.js': 'Required isolated same-page candidate sessions through actual room owner, Worker/source invalidation, interrupted replies, history and fresh-context ZIP reopen',
+    'tests/test_section_profile_browser.js': 'Required isolated Q38 native/UI model, desktop/390, keyboard, preview/cancel, placement and real project Save/new/Open gate; run separately, not a node unit suite',
+    'tests/rule-case-workbench-controller.cjs': 'Required actual standalone HTTP/native controller lifecycle suite; needs explicit isolated GEOMETRY_RULE_CASE_TEST_URL; not a generic node fixture',
+    'tests/rule-case-workbench-browser.cjs': 'Required real standalone component browser gate at 1280/390 over native HTTP; formal ZIP flow is separate',
+    'tests/test_rule_case_app_races.js': 'Required formal original GET/create/retention/history/native/B-context races and live assembly candidate preservation; explicit isolated service/TEMP fixtures; see INTEGRATION-GATES.md',
+    'tests/test_rule_case_app_browser.js': 'Required formal app/native six cases, races, metadata Undo/Redo, A/B closure and ZIP Save/blank-context reopen at 1280/390; see INTEGRATION-GATES.md',
+
+    'tests/test_shared_room_display_browser.js': 'Required isolated shared-room view adoption, per-room dirty/history/basis, true Undo/Redo and real ZIP Save/new-context Open at 1280/390; see INTEGRATION-GATES.md',
+    'tests/test_scenario_workflow_browser.js': 'Required isolated formal A/B editing, compare/adopt, undo/redo, real ZIP Save/new-context reopen at 1280/390px; see INTEGRATION-GATES.md',
+    'tests/test_scenario_lifecycle_browser.js': 'Required isolated formal scenario/native lifecycle gate: held Cancel/Capture/confirm, unknown terminal recovery, lost create/close; see INTEGRATION-GATES.md',
+    'tests/room_outline_keyboard_browser.js': 'Required isolated real keyboard/click-equivalence gate with formal PDF import/calibration and exact candidate/native checks; composition and stale DOM delivery are explicit fault injection; see INTEGRATION-GATES.md',
+    'tests/room_outline_acceptance_browser.js': 'Required isolated formal app/native PDF-image UI, actual Save/new-context Open and model continuation; installed Playwright/Chromium and dedicated service, default full scenarios; see INTEGRATION-GATES.md',
+    'tests/room_outline_pan_browser.js': 'Required isolated real keyboard/mouse pan and cancellation gate with native dump preservation; API-authored initial fixture and explicit pointercancel injection; see INTEGRATION-GATES.md',
+    'tests/room_outline_worker_browser.js': 'Required isolated native Worker computation and UI invalidation gate; API-authored setup and explicit late-consumer delivery injection; see INTEGRATION-GATES.md',
     'tests/test_grid_rule_reader_browser.js': 'Required isolated /13 formal reader UI/native gate: canonical candidate, evidence snapshot, zero-confirm rejection and actual ZIP Save; see INTEGRATION-GATES.md',
     'tests/test_issue116_browser.js': 'Required isolated native/browser B-menu gate, full Save/reopen and visual evidence; see INTEGRATION-GATES.md',
     'tests/scenario_browser_check.cjs': 'Required isolated scenario-module Chromium/ZIP harness; fresh receipt-backed native adapters and Playwright; run separately (INTEGRATION-GATES.md)',
     'tests/test_scenario_grid_interface.js': 'Required real GridDraft owner-validator compatibility; PR104 is not on main; execute with actual owner validator, never count missing-injection skip as pass (INTEGRATION-GATES.md)',
     'tests/issue77_attachment_fixture.js': 'Shared self-authored PDF/payload fixture; registers no tests',
-    'tests/test_issue77_browser.js': 'Required real app/native/Chromium room acceptance; formal owner interfaces pending; see INTEGRATION-GATES.md',
-    'tests/test_issue77_exit_browser.js': 'Required real app/native/Chromium room draft-exit gate; formal owner interfaces pending; see INTEGRATION-GATES.md',
-    'tests/test_issue77_recovery_browser.js': 'Required real app/native/Chromium room recovery gate; formal owner interfaces pending; see INTEGRATION-GATES.md',
-    'tests/test_issue77_remove_browser.js': 'Required real app/native/Chromium room unlink/removal gate; formal owner interfaces pending; see INTEGRATION-GATES.md',
+    'tests/test_issue77_browser.js': 'Required real app/native/Chromium room acceptance; formal owner exists, execute separately; see INTEGRATION-GATES.md',
+    'tests/test_issue77_exit_browser.js': 'Required real app/native/Chromium room draft-exit gate; formal owner exists, execute separately; see INTEGRATION-GATES.md',
+    'tests/test_issue77_recovery_browser.js': 'Required real app/native/Chromium room recovery gate; formal owner exists, execute separately; see INTEGRATION-GATES.md',
+    'tests/test_issue77_remove_browser.js': 'Required real app/native/Chromium room unlink/removal gate; formal owner exists, execute separately; see INTEGRATION-GATES.md',
     'tests/room_outline_fixture.js': 'Self-authored PDF/scan fixture generator; not a node test',
     'tests/reference_pdf_fixture.js': '夾具產生器，不是測試：node --test 會把它算成 1 個假的通過 test',
+    'tests/browser_race_ownership_instrumentation.js': 'Supplemental observer injected by tests/browser_race_ownership.py; registers no tests and is not a node suite',
+    'tests/issue123_adopted_slices_browser.cjs': 'Standalone Playwright probe; needs GEOMETRY_ISOLATED_SERVICE=1, a dedicated localhost GEOMETRY_TEST_URL and full GEOMETRY_EXPECTED_SHA. Not a CI suite; see INTEGRATION-GATES.md',
+    'tests/issue123_caption_browser.cjs': 'Standalone Playwright caption probe; same isolated service, URL and SHA requirements as the adopted-slices probe. Not a CI suite; see INTEGRATION-GATES.md',
+    'tests/room_outline_direct_rows_browser.js': 'Standalone Playwright direct-row harness; needs GEOMETRY_TEST_URL on an isolated service. Not a CI suite; see INTEGRATION-GATES.md',
 }
 REQUIRED_OWNER_GATES = {
     'tests/integration/issue77_attachment_owner.js': 5,
 }
 # Runtime adapter checks, separate from non-browser source suites and formal owner completion.
 REQUIRED_BROWSER_GATES = {
+    'tests/room_multi_candidate_browser.js': 34,
+    'tests/test_section_profile_browser.js': 68,
+    'tests/integration/q38_save_roundtrip.py': 18,
+    'tests/integration/model_library_history_browser.py': 35,
+    'tests/integration/save_roundtrip_acceptance.cjs': 33,
+    'tests/rule-case-workbench-browser.cjs': 91,
+    'tests/test_rule_case_app_browser.js': 76,
+    'tests/test_rule_case_app_races.js': 30,
+    'tests/room_outline_keyboard_browser.js': 396,
+    'tests/room_outline_acceptance_browser.js': 253,
+    'tests/room_outline_pan_browser.js': 32,
+    'tests/room_outline_worker_browser.js': 78,
+    'geometry-web/feedback_resize_observer_test.js': 38,
     'tests/test_grid_rule_reader_browser.js': 34,
     'geometry-web/evidence_links_browser_check.js': 67,
     'geometry-web/evidence_links_integration_test.js': 110,
+    'geometry-web/grid_raw_provenance_browser_test.py': 207,
 }
+BROWSER_GATE_SCOPES = {
+    'tests/room_multi_candidate_browser.js': 'real same-page multiroom import/calibration/select/review/accept/park/save/new/Open; explicit late Worker and lost-response injections',
+    'tests/test_section_profile_browser.js': 'real desktop/390 Q38 authoring, typed sources, exact models, source impact/cancel, placement conversion, shared history and /16 Save/Open',
+    'tests/integration/q38_save_roundtrip.py': 'native-authored complete section fixture; real download/fresh-browser chooser, full World and exact mesh oracle; explicit download fallback, not OS picker',
+    'tests/integration/model_library_history_browser.py': 'real model-library/native Undo, Web Locks, drafts and explicit late-owner injections',
+    'tests/integration/save_roundtrip_acceptance.cjs': 'real form/native/model/download/file-chooser roundtrip and explicit save-failure injection',
+    'tests/rule-case-workbench-browser.cjs': 'standalone component/native',
+    'tests/test_rule_case_app_browser.js': 'formal app/native/ZIP/history',
+    'tests/test_rule_case_app_races.js': 'formal app/native/context races',
+    'tests/test_grid_rule_reader_browser.js': 'formal app/native/grid/ZIP',
+    'geometry-web/evidence_links_browser_check.js': 'independent injected-backend adapter',
+    'geometry-web/evidence_links_integration_test.js': 'formal app/PDF/ZIP/history',
+    'geometry-web/grid_raw_provenance_browser_test.py': 'formal raw enum/pin provenance, ZIP cold reopen, explicit correction and native Undo/Redo',
+}
+
+BROWSER_GATE_SCOPES.update({
+    'tests/room_outline_keyboard_browser.js': 'real keyboard/click parity; synthetic composition and stale DOM guards',
+    'tests/room_outline_acceptance_browser.js': 'formal room app/PDF-image/UI/ZIP/model',
+    'tests/room_outline_pan_browser.js': 'real input/native preservation; API fixture and injected pointercancel',
+    'tests/room_outline_worker_browser.js': 'native Worker/UI invalidation with injected late-consumer delivery',
+})
+
+BROWSER_GATE_SCOPES.update({
+    'geometry-web/feedback_resize_observer_test.js': 'real ResizeObserver/error/manual-report events; owned fresh/root/source/runtime identity required',
+})
 
 # Platform-inherent skips: exempt only when suite + exact test id + reason substring + platform ALL match.
 # Any other skip (even one whose reason mentions POSIX) stays a skip.
@@ -731,7 +814,7 @@ def print_table(rows):
         if rel.startswith('tests/test_issue77_') or rel in ('tests/scenario_browser_check.cjs', 'tests/test_scenario_grid_interface.js'):
             print('  %s：%s；獨立執行，本 aggregate 未驗。' % (rel, NODE_EXCLUDED[rel]))
     for rel, count in REQUIRED_BROWSER_GATES.items():
-        scope = 'formal app/PDF/ZIP/history' if rel.endswith('integration_test.js') else 'independent injected-backend adapter'
+        scope = BROWSER_GATE_SCOPES[rel]
         print('  %s：%d %s checks required；本 aggregate 未驗。' % (rel, count, scope))
 
 
@@ -784,7 +867,7 @@ def main(argv=None):
         print('必要正式整合入口：tests/integration/issue77_attachment_owner.js（5項；未實作時 exit3）')
         print('另外4個 #77 真瀏覽器入口：見 tests/INTEGRATION-GATES.md；本命令未驗。')
         for rel, count in REQUIRED_BROWSER_GATES.items():
-            scope = 'formal app/PDF/ZIP/history' if rel.endswith('integration_test.js') else 'independent injected-backend adapter'
+            scope = BROWSER_GATE_SCOPES[rel]
             print('  %s：%d %s checks required；本 aggregate 未驗。' % (rel, count, scope))
         for p in registry_errors:
             print('登記問題：%s' % p)

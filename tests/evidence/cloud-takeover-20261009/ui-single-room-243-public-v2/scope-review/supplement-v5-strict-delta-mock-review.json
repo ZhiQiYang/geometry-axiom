@@ -1,0 +1,777 @@
+{
+  "at": "2026-10-09T16:09:16.723Z",
+  "base": {
+    "path": "<workspace-path>",
+    "sha256": "a62999473b6ff6076e414a48d5950135998f49f653fbcfbc70c20b25aa61bd24"
+  },
+  "candidate": {
+    "path": "<workspace-path>",
+    "sha256": "69f30662c7eac4588b21a318cd8983ec8b85cc21a95b7cc99c7b7aab2bb77798"
+  },
+  "tool": {
+    "path": "<workspace-path>",
+    "sha256": "9c6fe170ec50efb2abd8e8d4da383bae2a1c5b5598eead0a719706f3621d5741",
+    "node": "<node-runtime>/bin/node",
+    "nodeSHA256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12",
+    "command": [
+      "<node-runtime>/bin/node",
+      "<workspace-path>"
+    ]
+  },
+  "checks": [
+    {
+      "name": "exact immutable executed v4 and new strict reviewed v5 hashes",
+      "ok": true
+    },
+    {
+      "name": "every original assertion except explicitly reconciled all-API-zero is retained with multiplicity",
+      "ok": true,
+      "detail": {
+        "old": 151,
+        "new": 153,
+        "reconciled": [
+          "check('direct invalid-to-Cancel sends zero native API requests '+width,requests.length===0,requests)"
+        ]
+      }
+    },
+    {
+      "name": "only two authorized helper bodies differ, every other executable source byte is unchanged",
+      "ok": true
+    },
+    {
+      "name": "original direct Cancel exact one trusted pointer and original retirement/native/new candidate checks remain unchanged",
+      "ok": true
+    },
+    {
+      "name": "zero-write reconcile separately requires exact full before/after native scene equality",
+      "ok": true
+    },
+    {
+      "name": "actual request and response bytes status parsed payload and body hashes are retained",
+      "ok": true
+    },
+    {
+      "name": "native passive capture has no intercept fake activation mutation API or retries",
+      "ok": true
+    },
+    {
+      "name": "all embedded original and new page expressions parse",
+      "ok": true,
+      "detail": {
+        "count": 156,
+        "failed": []
+      }
+    },
+    {
+      "name": "accept exact existing successful native read source-inspect",
+      "ok": true,
+      "detail": {
+        "captured": 1,
+        "permitted": true,
+        "record": {
+          "url": "http://127.0.0.1:19180/api",
+          "postData": "{\"cmd\":\"source-inspect\"}",
+          "payload": {
+            "cmd": "source-inspect"
+          },
+          "cmd": "source-inspect",
+          "response": {
+            "status": 200,
+            "body": "{\"ok\":true}",
+            "bodySHA256": "4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93",
+            "json": {
+              "ok": true
+            }
+          },
+          "error": null
+        },
+        "hashCorrect": true
+      }
+    },
+    {
+      "name": "accept exact existing successful native read engineering-read",
+      "ok": true,
+      "detail": {
+        "captured": 1,
+        "permitted": true,
+        "record": {
+          "url": "http://127.0.0.1:19180/api",
+          "postData": "{\"cmd\":\"engineering-read\"}",
+          "payload": {
+            "cmd": "engineering-read"
+          },
+          "cmd": "engineering-read",
+          "response": {
+            "status": 200,
+            "body": "{\"ok\":true}",
+            "bodySHA256": "4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93",
+            "json": {
+              "ok": true
+            }
+          },
+          "error": null
+        },
+        "hashCorrect": true
+      }
+    },
+    {
+      "name": "reject native evidence write cmd",
+      "ok": true,
+      "detail": {
+        "captured": 1,
+        "permitted": false,
+        "record": {
+          "url": "http://127.0.0.1:19180/api",
+          "postData": "{\"cmd\":\"line boundary 1\"}",
+          "payload": {
+            "cmd": "line boundary 1"
+          },
+          "cmd": "line boundary 1",
+          "response": {
+            "status": 200,
+            "body": "{\"ok\":true}",
+            "bodySHA256": "4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93",
+            "json": {
+              "ok": true
+            }
+          },
+          "error": null
+        },
+        "hashCorrect": true
+      }
+    },
+    {
+      "name": "reject native evidence unknown cmd",
+      "ok": true,
+      "detail": {
+        "captured": 1,
+        "permitted": false,
+        "record": {
+          "url": "http://127.0.0.1:19180/api",
+          "postData": "{\"cmd\":\"future-read\"}",
+          "payload": {
+            "cmd": "future-read"
+          },
+          "cmd": "future-read",
+          "response": {
+            "status": 200,
+            "body": "{\"ok\":true}",
+            "bodySHA256": "4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93",
+            "json": {
+              "ok": true
+            }
+          },
+          "error": null
+        },
+        "hashCorrect": true
+      }
+    },
+    {
+      "name": "reject native evidence extra payload key",
+      "ok": true,
+      "detail": {
+        "captured": 1,
+        "permitted": false,
+        "record": {
+          "url": "http://127.0.0.1:19180/api",
+          "postData": "{\"cmd\":\"source-inspect\",\"scene\":\"other\"}",
+          "payload": {
+            "cmd": "source-inspect",
+            "scene": "other"
+          },
+          "cmd": "source-inspect",
+          "response": {
+            "status": 200,
+            "body": "{\"ok\":true}",
+            "bodySHA256": "4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93",
+            "json": {
+              "ok": true
+            }
+          },
+          "error": null
+        },
+        "hashCorrect": true
+      }
+    },
+    {
+      "name": "reject native evidence null payload",
+      "ok": true,
+      "detail": {
+        "captured": 1,
+        "permitted": false,
+        "record": {
+          "url": "http://127.0.0.1:19180/api",
+          "postData": "null",
+          "payload": null,
+          "cmd": null,
+          "response": {
+            "status": 200,
+            "body": "{\"ok\":true}",
+            "bodySHA256": "4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93",
+            "json": {
+              "ok": true
+            }
+          },
+          "error": null
+        },
+        "hashCorrect": true
+      }
+    },
+    {
+      "name": "reject native evidence array payload",
+      "ok": true,
+      "detail": {
+        "captured": 1,
+        "permitted": false,
+        "record": {
+          "url": "http://127.0.0.1:19180/api",
+          "postData": "[\"source-inspect\"]",
+          "payload": [
+            "source-inspect"
+          ],
+          "cmd": null,
+          "response": {
+            "status": 200,
+            "body": "{\"ok\":true}",
+            "bodySHA256": "4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93",
+            "json": {
+              "ok": true
+            }
+          },
+          "error": null
+        },
+        "hashCorrect": true
+      }
+    },
+    {
+      "name": "reject native evidence numeric payload",
+      "ok": true,
+      "detail": {
+        "captured": 1,
+        "permitted": false,
+        "record": {
+          "url": "http://127.0.0.1:19180/api",
+          "postData": "3",
+          "payload": 3,
+          "cmd": null,
+          "response": {
+            "status": 200,
+            "body": "{\"ok\":true}",
+            "bodySHA256": "4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93",
+            "json": {
+              "ok": true
+            }
+          },
+          "error": null
+        },
+        "hashCorrect": true
+      }
+    },
+    {
+      "name": "reject native evidence malformed JSON",
+      "ok": true,
+      "detail": {
+        "captured": 1,
+        "permitted": false,
+        "record": {
+          "url": "http://127.0.0.1:19180/api",
+          "postData": "{oops",
+          "payload": null,
+          "cmd": null,
+          "response": {
+            "status": 200,
+            "body": "{\"ok\":true}",
+            "bodySHA256": "4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93",
+            "json": {
+              "ok": true
+            }
+          },
+          "error": "Expected property name or '}' in JSON at position 1 (line 1 column 2)"
+        },
+        "hashCorrect": true
+      }
+    },
+    {
+      "name": "reject native evidence missing cmd",
+      "ok": true,
+      "detail": {
+        "captured": 1,
+        "permitted": false,
+        "record": {
+          "url": "http://127.0.0.1:19180/api",
+          "postData": "{}",
+          "payload": {},
+          "cmd": null,
+          "response": {
+            "status": 200,
+            "body": "{\"ok\":true}",
+            "bodySHA256": "4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93",
+            "json": {
+              "ok": true
+            }
+          },
+          "error": null
+        },
+        "hashCorrect": true
+      }
+    },
+    {
+      "name": "reject native evidence cmd not string",
+      "ok": true,
+      "detail": {
+        "captured": 1,
+        "permitted": false,
+        "record": {
+          "url": "http://127.0.0.1:19180/api",
+          "postData": "{\"cmd\":5}",
+          "payload": {
+            "cmd": 5
+          },
+          "cmd": null,
+          "response": {
+            "status": 200,
+            "body": "{\"ok\":true}",
+            "bodySHA256": "4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93",
+            "json": {
+              "ok": true
+            }
+          },
+          "error": null
+        },
+        "hashCorrect": true
+      }
+    },
+    {
+      "name": "reject native evidence missing actual response",
+      "ok": true,
+      "detail": {
+        "captured": 1,
+        "permitted": false,
+        "record": {
+          "url": "http://127.0.0.1:19180/api",
+          "postData": "{\"cmd\":\"source-inspect\"}",
+          "payload": {
+            "cmd": "source-inspect"
+          },
+          "cmd": "source-inspect",
+          "response": null,
+          "error": "No actual API response"
+        },
+        "hashCorrect": false
+      }
+    },
+    {
+      "name": "reject native evidence actual response failure",
+      "ok": true,
+      "detail": {
+        "captured": 1,
+        "permitted": false,
+        "record": {
+          "url": "http://127.0.0.1:19180/api",
+          "postData": "{\"cmd\":\"source-inspect\"}",
+          "payload": {
+            "cmd": "source-inspect"
+          },
+          "cmd": "source-inspect",
+          "response": null,
+          "error": "actual response failed"
+        },
+        "hashCorrect": false
+      }
+    },
+    {
+      "name": "reject native evidence status0",
+      "ok": true,
+      "detail": {
+        "captured": 1,
+        "permitted": false,
+        "record": {
+          "url": "http://127.0.0.1:19180/api",
+          "postData": "{\"cmd\":\"source-inspect\"}",
+          "payload": {
+            "cmd": "source-inspect"
+          },
+          "cmd": "source-inspect",
+          "response": {
+            "status": 0,
+            "body": "{\"ok\":true}",
+            "bodySHA256": "4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93",
+            "json": {
+              "ok": true
+            }
+          },
+          "error": null
+        },
+        "hashCorrect": true
+      }
+    },
+    {
+      "name": "reject native evidence non200",
+      "ok": true,
+      "detail": {
+        "captured": 1,
+        "permitted": false,
+        "record": {
+          "url": "http://127.0.0.1:19180/api",
+          "postData": "{\"cmd\":\"source-inspect\"}",
+          "payload": {
+            "cmd": "source-inspect"
+          },
+          "cmd": "source-inspect",
+          "response": {
+            "status": 500,
+            "body": "{\"ok\":true}",
+            "bodySHA256": "4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93",
+            "json": {
+              "ok": true
+            }
+          },
+          "error": null
+        },
+        "hashCorrect": true
+      }
+    },
+    {
+      "name": "reject native evidence not ok response",
+      "ok": true,
+      "detail": {
+        "captured": 1,
+        "permitted": false,
+        "record": {
+          "url": "http://127.0.0.1:19180/api",
+          "postData": "{\"cmd\":\"source-inspect\"}",
+          "payload": {
+            "cmd": "source-inspect"
+          },
+          "cmd": "source-inspect",
+          "response": {
+            "status": 200,
+            "body": "{\"ok\":false}",
+            "bodySHA256": "38667e60226bf99701916900a2a265233dcc014e1206c173ade921d608824b53",
+            "json": {
+              "ok": false
+            }
+          },
+          "error": null
+        },
+        "hashCorrect": true
+      }
+    },
+    {
+      "name": "reject native evidence invalid response JSON",
+      "ok": true,
+      "detail": {
+        "captured": 1,
+        "permitted": false,
+        "record": {
+          "url": "http://127.0.0.1:19180/api",
+          "postData": "{\"cmd\":\"source-inspect\"}",
+          "payload": {
+            "cmd": "source-inspect"
+          },
+          "cmd": "source-inspect",
+          "response": null,
+          "error": "Expected property name or '}' in JSON at position 1 (line 1 column 2)"
+        },
+        "hashCorrect": false
+      }
+    },
+    {
+      "name": "reject native evidence changed complete native scene",
+      "ok": true,
+      "detail": {
+        "captured": 1,
+        "permitted": false,
+        "record": {
+          "url": "http://127.0.0.1:19180/api",
+          "postData": "{\"cmd\":\"source-inspect\"}",
+          "payload": {
+            "cmd": "source-inspect"
+          },
+          "cmd": "source-inspect",
+          "response": {
+            "status": 200,
+            "body": "{\"ok\":true}",
+            "bodySHA256": "4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93",
+            "json": {
+              "ok": true
+            }
+          },
+          "error": null
+        },
+        "hashCorrect": true
+      }
+    },
+    {
+      "name": "existing selected fixed composition inspector passes normal positive route without touching hidden toggle",
+      "ok": true,
+      "detail": {
+        "ok": true,
+        "clicked": [],
+        "observed": [
+          {
+            "name": "S2 selected composition already exposes real fixed inspector and reachable original full-workspace action",
+            "ok": true,
+            "detail": {
+              "width": 390,
+              "selected": true,
+              "panel": {
+                "ok": true,
+                "position": "fixed",
+                "left": 8,
+                "right": 382,
+                "top": 447,
+                "bottom": 756,
+                "width": 374,
+                "height": 309,
+                "hit": true
+              },
+              "target": {
+                "ok": true,
+                "position": "static",
+                "left": 266,
+                "right": 366,
+                "top": 458,
+                "bottom": 501,
+                "width": 100,
+                "height": 43,
+                "hit": true
+              },
+              "targetInsidePanel": true
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "desktop original inspector route verifies real existing target without unnecessary drawer input",
+      "ok": true,
+      "detail": {
+        "ok": true,
+        "clicked": [],
+        "observed": [
+          {
+            "name": "S2 original inspector full-workspace action is painted inside panel and hit-testable after ordinary opening",
+            "ok": true,
+            "detail": {
+              "width": 1382,
+              "selected": true,
+              "panel": {
+                "ok": true,
+                "position": "relative",
+                "left": 8,
+                "right": 1374,
+                "top": 447,
+                "bottom": 756,
+                "width": 1366,
+                "height": 309,
+                "hit": true
+              },
+              "target": {
+                "ok": true,
+                "position": "static",
+                "left": 266,
+                "right": 366,
+                "top": 458,
+                "bottom": 501,
+                "width": 100,
+                "height": 43,
+                "hit": true
+              },
+              "targetInsidePanel": true
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "other layout retains one normal ordinary drawer click then actual painted target check",
+      "ok": true,
+      "detail": {
+        "ok": true,
+        "clicked": [
+          "#toggleRight"
+        ],
+        "observed": [
+          {
+            "name": "S2 original inspector full-workspace action is painted inside panel and hit-testable after ordinary opening",
+            "ok": true,
+            "detail": {
+              "width": 390,
+              "selected": false,
+              "panel": {
+                "ok": true,
+                "position": "fixed",
+                "left": 8,
+                "right": 382,
+                "top": 447,
+                "bottom": 756,
+                "width": 374,
+                "height": 309,
+                "hit": true
+              },
+              "target": {
+                "ok": true,
+                "position": "static",
+                "left": 266,
+                "right": 366,
+                "top": 458,
+                "bottom": 501,
+                "width": 100,
+                "height": 43,
+                "hit": true
+              },
+              "targetInsidePanel": true
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "bad mobile composition cannot silently skip normal opening: bad panel hit",
+      "ok": true,
+      "detail": {
+        "ok": false,
+        "clicked": [
+          "#toggleRight"
+        ],
+        "observed": [],
+        "error": "normal toggle is hidden"
+      }
+    },
+    {
+      "name": "bad mobile composition cannot silently skip normal opening: zero panel",
+      "ok": true,
+      "detail": {
+        "ok": false,
+        "clicked": [
+          "#toggleRight"
+        ],
+        "observed": [],
+        "error": "normal toggle is hidden"
+      }
+    },
+    {
+      "name": "bad mobile composition cannot silently skip normal opening: hidden panel",
+      "ok": true,
+      "detail": {
+        "ok": false,
+        "clicked": [
+          "#toggleRight"
+        ],
+        "observed": [],
+        "error": "normal toggle is hidden"
+      }
+    },
+    {
+      "name": "bad mobile composition cannot silently skip normal opening: panel outside viewport",
+      "ok": true,
+      "detail": {
+        "ok": false,
+        "clicked": [
+          "#toggleRight"
+        ],
+        "observed": [],
+        "error": "normal toggle is hidden"
+      }
+    },
+    {
+      "name": "bad mobile composition cannot silently skip normal opening: zero target",
+      "ok": true,
+      "detail": {
+        "ok": false,
+        "clicked": [
+          "#toggleRight"
+        ],
+        "observed": [],
+        "error": "normal toggle is hidden"
+      }
+    },
+    {
+      "name": "bad mobile composition cannot silently skip normal opening: target outside panel",
+      "ok": true,
+      "detail": {
+        "ok": false,
+        "clicked": [
+          "#toggleRight"
+        ],
+        "observed": [],
+        "error": "normal toggle is hidden"
+      }
+    },
+    {
+      "name": "bad mobile composition cannot silently skip normal opening: target hidden",
+      "ok": true,
+      "detail": {
+        "ok": false,
+        "clicked": [
+          "#toggleRight"
+        ],
+        "observed": [],
+        "error": "normal toggle is hidden"
+      }
+    },
+    {
+      "name": "bad mobile composition cannot silently skip normal opening: missing full workspace target",
+      "ok": true,
+      "detail": {
+        "ok": false,
+        "clicked": [
+          "#toggleRight"
+        ],
+        "observed": [],
+        "error": "normal toggle is hidden"
+      }
+    },
+    {
+      "name": "bad mobile composition cannot silently skip normal opening: unselected composition",
+      "ok": true,
+      "detail": {
+        "ok": false,
+        "clicked": [
+          "#toggleRight"
+        ],
+        "observed": [],
+        "error": "normal toggle is hidden"
+      }
+    },
+    {
+      "name": "bad mobile composition cannot silently skip normal opening: nonfixed composition",
+      "ok": true,
+      "detail": {
+        "ok": false,
+        "clicked": [
+          "#toggleRight"
+        ],
+        "observed": [],
+        "error": "normal toggle is hidden"
+      }
+    },
+    {
+      "name": "bad mobile composition cannot silently skip normal opening: missing inline host",
+      "ok": true,
+      "detail": {
+        "ok": false,
+        "clicked": [
+          "#toggleRight"
+        ],
+        "observed": [],
+        "error": "normal toggle is hidden"
+      }
+    },
+    {
+      "name": "strict sandbox retained without force or disabled-sandbox flags",
+      "ok": true
+    }
+  ],
+  "ok": true,
+  "browserExecuted": false,
+  "nativeExecuted": false,
+  "servicesStarted": false,
+  "repoWritten": false,
+  "limits": [
+    "Read-only source/AST/mock review only; the approved candidate still requires an actual frozen browser/native run.",
+    "Original v4 185/2 log and receipt stay unchanged. The all-API-zero assertion is explicitly reconciled to exact two read-command schemas plus full native before/after equality, not retrospectively labeled passed.",
+    "The new already-visible inspector route requires positive selected/fixed/painted/inside/hit conditions; it never forces a hidden toggle or injects DOM state."
+  ]
+}

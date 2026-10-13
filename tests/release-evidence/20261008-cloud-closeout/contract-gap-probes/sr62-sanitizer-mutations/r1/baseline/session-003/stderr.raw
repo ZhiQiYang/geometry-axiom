@@ -1,0 +1,17 @@
+I8a preview 1: valid; confirm token to apply
+grid-system 0 name oracle 0 mode infinite main-along none u repeat 0 600 v repeat 0 400 rule-next 1 -> grid-system 0 name oracle 0 mode infinite main-along none u repeat 0 600 v repeat 0 400 rule-next 2 rule 1 name oracle rule selector all-cells divide 3 2
+input:3: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
+input:5: I25a: RULE_MISSING
+I8a preview 2: invalid; cannot apply
+ timber 0 I8 expected: all world invariants pass; actual: line 5: I25a: RULE_MISSING
+input:5: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
+input:6: I8a: missing/invalid preview token; cannot apply
+input:7: I25a: HIGHWATER replay-only declaration
+I8a preview 3: valid; confirm token to apply
+grid-system 0 name oracle 0 mode infinite main-along none u repeat 0 600 v repeat 0 400 rule-next 2 rule 1 name oracle rule selector all-cells divide 3 2 -> grid-system 0 name oracle 0 mode infinite main-along none u repeat 0 600 v repeat 0 400 rule-next 2
+input:8: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
+input:10: I25a: RULE_MISSING
+I8a preview 4: invalid; cannot apply
+ timber 0 I8 expected: all world invariants pass; actual: line 10: I25a: RULE_MISSING
+input:10: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
+input:11: I8a: missing/invalid preview token; cannot apply

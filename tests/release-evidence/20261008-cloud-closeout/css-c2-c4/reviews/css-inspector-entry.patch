@@ -1,0 +1,39 @@
+diff --git a/workspace/closure-evidence/contracts/remaining-product-scope-20261008/css_c2_c4_before_inspector_entry.py b/workspace/closure-evidence/contracts/remaining-product-scope-20261008/css_c2_c4_browser_probe.py
+index 6841495..f6ccd8b 100644
+--- a/workspace/closure-evidence/contracts/remaining-product-scope-20261008/css_c2_c4_before_inspector_entry.py
++++ b/workspace/closure-evidence/contracts/remaining-product-scope-20261008/css_c2_c4_browser_probe.py
+@@ -65,6 +65,7 @@ def main():
+     parser.add_argument('--chrome', default='/usr/bin/chromium')
+     parser.add_argument('--width', choices=(1400, 390), type=int, action='append')
+     parser.add_argument('--only', choices=('all', 'beam', 'slots'), default='all')
++    parser.add_argument('--entry', choices=('dblclick', 'inspector'), default='dblclick')
+     args = parser.parse_args()
+     root, out = args.root.resolve(), args.out.resolve()
+     address = urlsplit(args.url)
+@@ -157,6 +158,26 @@ def main():
+         assert page.locator('[data-guidance-dismiss]:visible').count() == 0, 'Unexpected number of tool lessons'
+         page.keyboard.press('f')
+         gesture_start = page.evaluate('window.__cssProbeInputs.length')
++        if args.entry == 'inspector':
++            # Separate, established product route. It does not turn the failed
++            # mobile double-click route into a pass or bypass its handler.
++            page.locator('.ocard[data-kind="space"][data-id="1"] .ocard-frame').click(timeout=15000)
++            page.wait_for_function("oc.sel?.kind==='space'&&oc.sel.id===1&&oc.selection.length===1", timeout=15000)
++            if not page.locator('#inspEnter').is_visible():
++                page.locator('#toggleRight').click(timeout=15000)
++            page.locator('#inspEnter').click(timeout=15000)
++            page.wait_for_function("oc.focus?.t==='space'&&oc.focus.id===1&&!document.querySelector('#spaceWorkspaceLayout').hidden", timeout=30000)
++            ready()
++            inputs = page.evaluate('window.__cssProbeInputs')[gesture_start:]
++            downs = [e for e in inputs if e['type']=='pointerdown']
++            assert downs and downs[0]['card']=='space' and downs[0]['cardId']=='1' and downs[0]['trusted'], downs
++            enters = [e for e in inputs if e['type']=='click' and e['id']=='inspEnter']
++            assert len(enters)==1 and enters[0]['trusted'], enters
++            reached = page.evaluate("({focus:oc.focus,workspaceHidden:document.querySelector('#spaceWorkspaceLayout').hidden})")
++            assert reached['focus']=={'t':'space','id':1} and reached['workspaceHidden'] is False, reached
++            write(case_out/'space-entry-gesture.json', {'route':'single card click then visible inspector Enter button', 'events':inputs, 'reached':reached,
++                  'limitation':'Separate CSS/slot checks only; the failed double-click route remains unresolved.'})
++            return
+         page.locator('.ocard[data-kind="space"][data-id="1"] .ocard-frame').dblclick(timeout=15000)
+         page.wait_for_function("oc.focus?.t==='space'&&oc.focus.id===1&&!document.querySelector('#spaceWorkspaceLayout').hidden", timeout=30000)
+         ready()

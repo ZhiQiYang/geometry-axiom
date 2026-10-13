@@ -1,0 +1,511 @@
+{
+  "schema": "geometry-executor-bounded-p75-diagnostic-index/1",
+  "indexedUtc": "2026-10-09T16:18:28.633140+00:00",
+  "reviewerRole": "same executing agent, not independent reviewer",
+  "git": {
+    "root": "<workspace-path>",
+    "head": "243326b512896ace70e068f62c8f3d6397f6000d",
+    "tree": "3a94d684e90fc8ee77883ca929b7e6e9520e656f",
+    "status": ""
+  },
+  "command": [
+    "node",
+    "geometry-web/cdp_test.js"
+  ],
+  "environment": {
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:19190/",
+    "GEOMETRY_TEST_BRIDGE": "<isolated-test-directory>",
+    "GEOMETRY_BRIDGE": "<isolated-test-directory>",
+    "GEOMETRY_MODEL_BASE": "<isolated-test-directory>",
+    "GEOMETRY_FEEDBACK_DIR": "<isolated-test-directory>",
+    "GEOMETRY_CHROME": "/usr/bin/chromium",
+    "GEOMETRY_CDP_PORT": "52323",
+    "GEOMETRY_SELECTION_CURSOR_ONLY": "1"
+  },
+  "execution": {
+    "started": "2026-10-09T16:15:24.098914+00:00",
+    "exitCode": 1,
+    "timedOut": false,
+    "interrupted": false,
+    "pid": 175650,
+    "finished": "2026-10-09T16:15:28.858233+00:00"
+  },
+  "result": {
+    "schema": "geometry-cdp-result/1",
+    "scope": {
+      "mode": "partial",
+      "filters": [
+        "GEOMETRY_SELECTION_CURSOR_ONLY"
+      ],
+      "modifiers": [],
+      "url": "http://127.0.0.1:19190/",
+      "feedbackDirectory": "<isolated-test-directory>",
+      "browserProfile": "<isolated-test-directory>",
+      "cdpPort": 52323,
+      "browserPid": 175674
+    },
+    "completed": false,
+    "passedAssertions": 9,
+    "failedAssertions": 1,
+    "fatal": "P75 退出網格後真拖框可選本面兩支角材 []",
+    "skipped": [],
+    "sections": {
+      "P75": 9
+    },
+    "sectionsFailed": {
+      "P75": 1
+    },
+    "currentSection": "P75",
+    "goldenCompare": "not compared (run did not complete)"
+  },
+  "receipt": {
+    "path": "<original-evidence-root>/diagnose-p75-243326b5-20261009/receipt.json",
+    "sha256": "eda5b46bb1efce2df2f7767967f56e5d94f009728f97ed2a0efefac3eeff893b",
+    "unchanged": true
+  },
+  "rawLog": {
+    "path": "<original-evidence-root>/diagnose-p75-243326b5-20261009/command.log",
+    "sha256": "960c9bd361038616ee19222c741447a3d895c793c2321ae655cef8c08fac4884",
+    "bytes": 10590
+  },
+  "executionIdentity": {
+    "liveBinding": {
+      "observedUtc": "2026-10-09T16:15:24.629983+00:00",
+      "scope": "Observed the actual owned Chromium ELF and live canonical Node parent during this command; launcher stages excluded",
+      "cdpScope": {
+        "mode": "partial",
+        "filters": [
+          "GEOMETRY_SELECTION_CURSOR_ONLY"
+        ],
+        "modifiers": [],
+        "url": "http://127.0.0.1:19190/",
+        "feedbackDirectory": "<isolated-test-directory>",
+        "browserProfile": "<isolated-test-directory>",
+        "cdpPort": 52323,
+        "browserPid": 175674
+      },
+      "processes": [
+        {
+          "role": "actual CDP_SCOPE Chromium main process",
+          "pid": 175674,
+          "exe": "/usr/lib/chromium/chromium",
+          "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+          "executableMagicHex": "7f454c46",
+          "cmdline": [
+            "/usr/lib/chromium/chromium",
+            "--show-component-extension-options",
+            "--enable-gpu-rasterization",
+            "--no-default-browser-check",
+            "--disable-pings",
+            "--media-router=0",
+            "--enable-remote-extensions",
+            "--load-extension=",
+            "about:blank",
+            "--headless=new",
+            "--disable-gpu",
+            "--no-first-run",
+            "--remote-debugging-port=52323",
+            "--window-size=1400,900",
+            "--user-data-dir=<isolated-test-directory>"
+          ],
+          "cwd": "<workspace-path>"
+        },
+        {
+          "role": "actual browser parent Node",
+          "pid": 175650,
+          "exe": "<node-runtime>/bin/node",
+          "sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12",
+          "executableMagicHex": "7f454c46",
+          "cmdline": [
+            "node",
+            "geometry-web/cdp_test.js"
+          ],
+          "cwd": "<workspace-path>"
+        }
+      ]
+    },
+    "errors": [],
+    "excludedLauncherStages": []
+  },
+  "liveBridgeBefore": [
+    {
+      "pid": 175407,
+      "parent": 175042,
+      "exe": "<isolated-test-directory>",
+      "sha256": "888b0ae8a480aadfeb160bed62e25fa3af5d6774e3f68099c6508b66371170ba"
+    }
+  ],
+  "liveBridgeAfter": [
+    {
+      "pid": 175407,
+      "parent": 175042,
+      "exe": "<isolated-test-directory>",
+      "sha256": "888b0ae8a480aadfeb160bed62e25fa3af5d6774e3f68099c6508b66371170ba"
+    }
+  ],
+  "sourceSnapshotDirectory": "<original-evidence-root>/diagnose-p75-243326b5-20261009/executed-harness-sources",
+  "wrapperSnapshots": [
+    {
+      "path": "<original-evidence-root>/diagnose-p75-243326b5-20261009/executed-wrapper-sources/run_p75_diagnostic_identity.py",
+      "sha256": "f7b2b2adda3a2d8bc5284c65fb8f8c8793006fa71cbf70bc8ddfafda6aa8b317"
+    },
+    {
+      "path": "<original-evidence-root>/diagnose-p75-243326b5-20261009/executed-wrapper-sources/cdp_execution_identity_v2.py",
+      "sha256": "b34554e6f8e643d5f040d6f9b0b5e7bc1619a75b52d3d5d5bdb1f7dc9069a0cc"
+    },
+    {
+      "path": "<original-evidence-root>/diagnose-p75-243326b5-20261009/executed-wrapper-sources/selection_cursor_drag_diagnostic.cjs",
+      "sha256": "d6d8ec1f1b0cc5175954b6435e70d169f45bdad2be4b09de90c92fbd719341e5"
+    },
+    {
+      "path": "<original-evidence-root>/diagnose-p75-243326b5-20261009/executed-wrapper-sources/full-launch-adapters/sandbox-launch.cjs",
+      "sha256": "c917611c821f63cea2e5ef3ed1c0ddde128dcf47fde65d1a7ace8ff24fba2b1e"
+    },
+    {
+      "path": "<original-evidence-root>/diagnose-p75-243326b5-20261009/executed-wrapper-sources/full-launch-adapters/sitecustomize.py",
+      "sha256": "e49545951bb661db0169e3d466c96321ee67c5f8a39fac3f7f0ed6954c22a7be"
+    }
+  ],
+  "dragArtifacts": [
+    {
+      "path": "<original-evidence-root>/diagnose-p75-243326b5-20261009/diagnostic-artifacts/drag-0-after.png",
+      "sha256": "366702109a4f2714fc034eac25185be05127e364b7de4bb9135b48edd87c3121"
+    },
+    {
+      "path": "<original-evidence-root>/diagnose-p75-243326b5-20261009/diagnostic-artifacts/drag-0-before.png",
+      "sha256": "ad08977b12aeb11a0430471dd28209d006064e1c56871c0e9d70001055bc1fe6"
+    },
+    {
+      "path": "<original-evidence-root>/diagnose-p75-243326b5-20261009/diagnostic-artifacts/drag-0.json",
+      "sha256": "7b3eb288b468aa4f3d6b073802a10d9e567058dba8df9b68008c3bc9c74e569a"
+    },
+    {
+      "path": "<original-evidence-root>/diagnose-p75-243326b5-20261009/diagnostic-artifacts/drag-1-after.png",
+      "sha256": "28270ed74bd6c075ac262e53708b5e4474b4e2ee97f4edbcb83a910d8e837f08"
+    },
+    {
+      "path": "<original-evidence-root>/diagnose-p75-243326b5-20261009/diagnostic-artifacts/drag-1-before.png",
+      "sha256": "fe92089aba3222dab1ded83418c0333eb5fe282a702b0c5e38ff376ede32fc97"
+    },
+    {
+      "path": "<original-evidence-root>/diagnose-p75-243326b5-20261009/diagnostic-artifacts/drag-1.json",
+      "sha256": "7cb667e46222b690507f39a7aa5680d1b1caad3bc181ed062d9fbb2ee81f158a"
+    }
+  ],
+  "observedMarquee": {
+    "index": 1,
+    "before": {
+      "coords": [
+        1040.05,
+        724.8,
+        281.95,
+        147.2
+      ],
+      "viewport": {
+        "left": 260,
+        "right": 1062,
+        "top": 56,
+        "bottom": 868,
+        "width": 802,
+        "height": 812
+      },
+      "camera": {
+        "panX": 40,
+        "panY": 109.25,
+        "zoom": 0.1805,
+        "viewportSize": {
+          "width": 802,
+          "height": 812,
+          "top": 40,
+          "bottom": 92
+        },
+        "fittedBounds": [
+          0,
+          0,
+          4000,
+          3000
+        ]
+      },
+      "insets": {
+        "top": 40,
+        "bottom": 92
+      },
+      "state": {
+        "tool": "select",
+        "selected": [],
+        "focus": {
+          "t": "face",
+          "id": 1
+        },
+        "edit": {
+          "bid": 1,
+          "contextId": "12d62723-e4ac-401c-87d1-39e7e78b35e9"
+        },
+        "contextId": "12d62723-e4ac-401c-87d1-39e7e78b35e9",
+        "marquee": null,
+        "lastPD": null,
+        "drag": null
+      },
+      "startHit": {
+        "tag": "BUTTON",
+        "id": "fbButton",
+        "classes": "",
+        "button": "fbButton",
+        "rect": {
+          "left": 999,
+          "right": 1046,
+          "top": 715.328125,
+          "bottom": 744,
+          "width": 47,
+          "height": 28.671875
+        }
+      },
+      "endHit": {
+        "tag": "svg",
+        "id": "faceEditorSvg",
+        "classes": "face-editor-svg",
+        "rect": {
+          "left": 260,
+          "right": 1062,
+          "top": 56,
+          "bottom": 868,
+          "width": 802,
+          "height": 812
+        }
+      },
+      "startInsideViewport": true,
+      "endInsideViewport": true,
+      "feedback": {
+        "tag": "BUTTON",
+        "id": "fbButton",
+        "classes": "",
+        "button": "fbButton",
+        "rect": {
+          "left": 999,
+          "right": 1046,
+          "top": 715.328125,
+          "bottom": 744,
+          "width": 47,
+          "height": 28.671875
+        }
+      },
+      "fit": {
+        "tag": "BUTTON",
+        "id": "feZoomFit",
+        "classes": "icon-button",
+        "button": "feZoomFit",
+        "rect": {
+          "left": 390,
+          "right": 420,
+          "top": 820,
+          "bottom": 850,
+          "width": 30,
+          "height": 30
+        }
+      },
+      "controls": {
+        "tag": "DIV",
+        "id": "",
+        "classes": "face-canvas-controls",
+        "rect": {
+          "left": 274,
+          "right": 616.375,
+          "top": 816,
+          "bottom": 854,
+          "width": 342.375,
+          "height": 38
+        }
+      }
+    },
+    "after": {
+      "state": {
+        "tool": "select",
+        "selected": [],
+        "focus": {
+          "t": "face",
+          "id": 1
+        },
+        "edit": {
+          "bid": 1,
+          "contextId": "12d62723-e4ac-401c-87d1-39e7e78b35e9"
+        },
+        "contextId": "12d62723-e4ac-401c-87d1-39e7e78b35e9",
+        "marquee": null,
+        "lastPD": null,
+        "drag": null
+      },
+      "events": [
+        {
+          "stage": "capture",
+          "type": "pointerdown",
+          "eventTrusted": true,
+          "pointerId": 1,
+          "button": 0,
+          "clientX": 1040.050048828125,
+          "clientY": 724.7999877929688,
+          "target": {
+            "tag": "BUTTON",
+            "id": "fbButton",
+            "classes": "",
+            "button": "fbButton",
+            "rect": {
+              "left": 999,
+              "right": 1046,
+              "top": 715.328125,
+              "bottom": 744,
+              "width": 47,
+              "height": 28.671875
+            }
+          },
+          "viewportContainsTarget": false,
+          "state": {
+            "tool": "select",
+            "selected": [],
+            "focus": {
+              "t": "face",
+              "id": 1
+            },
+            "edit": {
+              "bid": 1,
+              "contextId": "12d62723-e4ac-401c-87d1-39e7e78b35e9"
+            },
+            "contextId": "12d62723-e4ac-401c-87d1-39e7e78b35e9",
+            "marquee": null,
+            "lastPD": null,
+            "drag": null
+          }
+        },
+        {
+          "stage": "after-event",
+          "type": "pointerdown",
+          "eventTrusted": true,
+          "pointerId": 1,
+          "button": 0,
+          "clientX": 1040.050048828125,
+          "clientY": 724.7999877929688,
+          "target": {
+            "tag": "BUTTON",
+            "id": "fbButton",
+            "classes": "",
+            "button": "fbButton",
+            "rect": {
+              "left": 999,
+              "right": 1046,
+              "top": 715.328125,
+              "bottom": 744,
+              "width": 47,
+              "height": 28.671875
+            }
+          },
+          "viewportContainsTarget": false,
+          "state": {
+            "tool": "select",
+            "selected": [],
+            "focus": {
+              "t": "face",
+              "id": 1
+            },
+            "edit": {
+              "bid": 1,
+              "contextId": "12d62723-e4ac-401c-87d1-39e7e78b35e9"
+            },
+            "contextId": "12d62723-e4ac-401c-87d1-39e7e78b35e9",
+            "marquee": null,
+            "lastPD": null,
+            "drag": null
+          }
+        },
+        {
+          "stage": "capture",
+          "type": "pointerup",
+          "eventTrusted": true,
+          "pointerId": 1,
+          "button": 0,
+          "clientX": 281.95001220703125,
+          "clientY": 147.1999969482422,
+          "target": {
+            "tag": "svg",
+            "id": "faceEditorSvg",
+            "classes": "face-editor-svg",
+            "rect": {
+              "left": 260,
+              "right": 1062,
+              "top": 56,
+              "bottom": 868,
+              "width": 802,
+              "height": 812
+            }
+          },
+          "viewportContainsTarget": true,
+          "state": {
+            "tool": "select",
+            "selected": [],
+            "focus": {
+              "t": "face",
+              "id": 1
+            },
+            "edit": {
+              "bid": 1,
+              "contextId": "12d62723-e4ac-401c-87d1-39e7e78b35e9"
+            },
+            "contextId": "12d62723-e4ac-401c-87d1-39e7e78b35e9",
+            "marquee": null,
+            "lastPD": null,
+            "drag": null
+          }
+        },
+        {
+          "stage": "after-event",
+          "type": "pointerup",
+          "eventTrusted": true,
+          "pointerId": 1,
+          "button": 0,
+          "clientX": 281.95001220703125,
+          "clientY": 147.1999969482422,
+          "target": {
+            "tag": "svg",
+            "id": "faceEditorSvg",
+            "classes": "face-editor-svg",
+            "rect": {
+              "left": 260,
+              "right": 1062,
+              "top": 56,
+              "bottom": 868,
+              "width": 802,
+              "height": 812
+            }
+          },
+          "viewportContainsTarget": true,
+          "state": {
+            "tool": "select",
+            "selected": [],
+            "focus": {
+              "t": "face",
+              "id": 1
+            },
+            "edit": {
+              "bid": 1,
+              "contextId": "12d62723-e4ac-401c-87d1-39e7e78b35e9"
+            },
+            "contextId": "12d62723-e4ac-401c-87d1-39e7e78b35e9",
+            "marquee": null,
+            "lastPD": null,
+            "drag": null
+          }
+        }
+      ],
+      "activeElement": "fbButton",
+      "feedbackHidden": true
+    },
+    "nativeBefore": "boundary 1 outline 0,0 4000,0 4000,3000 0,3000\nplacement 1 on boundary 1 origin 0 0 2500 u +x v +y\nspec cursorGuide 2000\ngrid 1 on 1 main-along v u 500 1500 2500\ngrid 1 on 1 v 600 1200\ntimber 10 100 33 role boundary\ntimber 11 100 33 role boundary\nguide 1 1 v spec:cursorGuide\nplace 10 on 1 at-face e0 +u +n\n# R18 角材 10: onBoundary=true coversEdge=true boundaryEdge=0\nplace 11 on 1 at-face e2 +u +n\n# R18 角材 11: onBoundary=true coversEdge=true boundaryEdge=2\ncanvas-pos boundary 1 60 60\n",
+    "nativeAfter": "boundary 1 outline 0,0 4000,0 4000,3000 0,3000\nplacement 1 on boundary 1 origin 0 0 2500 u +x v +y\nspec cursorGuide 2000\ngrid 1 on 1 main-along v u 500 1500 2500\ngrid 1 on 1 v 600 1200\ntimber 10 100 33 role boundary\ntimber 11 100 33 role boundary\nguide 1 1 v spec:cursorGuide\nplace 10 on 1 at-face e0 +u +n\n# R18 角材 10: onBoundary=true coversEdge=true boundaryEdge=0\nplace 11 on 1 at-face e2 +u +n\n# R18 角材 11: onBoundary=true coversEdge=true boundaryEdge=2\ncanvas-pos boundary 1 60 60\n",
+    "nativeByteEqual": true
+  },
+  "scopeLimits": [
+    "Exact canonical selection-only scope with original P75 assertions and unchanged drag actions/coordinates; scratch preload only reads DOM/trusted pointer and native dump",
+    "No full/golden acceptance claim",
+    "No force, assertion relaxation or retry",
+    "Diagnostic original failed result is never rebound to a corrected source",
+    "Windows originals remain unreceived"
+  ]
+}

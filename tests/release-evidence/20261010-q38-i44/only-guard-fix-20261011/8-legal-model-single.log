@@ -1,0 +1,3 @@
+model baseline: exit 0
+{"id": "SPM36", "group": "model", "clause": "R37", "desc": "the reference envelope becomes the bounding rectangle of the outline (L shape lost)", "exit": 1, "failed": ["FAIL test_three_timber_members_and_actual_concave_reference_envelope"], "first_failure": "'240000000' != '84960000'", "verdict": "killed"}
+{"summary": {"killed": 1}}

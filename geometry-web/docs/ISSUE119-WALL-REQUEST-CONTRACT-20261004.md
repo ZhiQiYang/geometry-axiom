@@ -1,6 +1,6 @@
 # #119：材料牆要求、容量與歷史重播
 
-本項在獨立分支 `fix/space-wall-completeness-119-20261004` 處理，draft PR124 交 root 審查，未合併、未部署。起點 main `06086aba3ab9b243ded53b1953cdc295723ffa35`；其後正常 merge `861b65e9e2281192dd41a068fdd87866617b638d`（PR114/#77）並取得有限歷史 verification 呼叫的移交。產品 executable source 為 `b22c4fd1f124000a86be3ac82c73a485507aeed9`；root 另授權 P79 測試契約修正，exact `2dda7dbe529f5a3ca7209e987040b13e6ec43329` 獲獨審 source approve。最後完整 CDP 在此凍結 source 完成，才記錄 golden。
+本項原在獨立分支 `fix/space-wall-completeness-119-20261004` 處理；[PR124](https://github.com/ZhiQiYang/geometry-axiom/pull/124) 已於 2026-10-04 17:13 UTC 合併（head `37e3470`，merge `4bea91a`），目前 main `5cc1ffa` 含此修復。以下是原交付的來源與驗收紀錄，不是 2026-10-08 文件同步重新執行的測試，也不代表部署或 GitHub #119 全範圍結案。起點 main `06086aba3ab9b243ded53b1953cdc295723ffa35`；其後正常 merge `861b65e9e2281192dd41a068fdd87866617b638d`（PR114/#77）並取得有限歷史 verification 呼叫的移交。產品 executable source 為 `b22c4fd1f124000a86be3ac82c73a485507aeed9`；root 另授權 P79 測試契約修正，exact `2dda7dbe529f5a3ca7209e987040b13e6ec43329` 獲獨審 source approve。最後完整 CDP 在此凍結 source 完成，才記錄 golden。
 
 ## 重現及共同根因
 
@@ -52,7 +52,7 @@ root 因此只授權 `room_outline_test.js` 的最小 fixture 流程修正，不
 
 ## 限制及審查狀態
 
-歷史重播兩個 P1（舊缺牆檔不能重開、合法舊 package provenance 被過度拒絕）已按 root 移交範圍修復；root 獨審對 exact product source b22c4fd1 與 P79 fixture 2dda7dbe 給 source approve；執行結果以上述 terminal logs 為準。PR 仍 draft，由 root 審查合併。
+歷史重播兩個 P1（舊缺牆檔不能重開、合法舊 package provenance 被過度拒絕）已按 root 移交範圍修復；root 獨審對 exact product source b22c4fd1 與 P79 fixture 2dda7dbe 給 source approve；執行結果以上述 terminal logs 為準。PR124 的 draft／待合併敘述屬原交付時狀態，已由上述 merge `4bea91a` 取代；未把歷史測試改標為目前 main 重跑。
 
 Hosted b22 run [37213856344](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/37213856344) 與 2dda run [37217044846](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/37217044846) 的七個 jobs 均 failure、steps=[]（各自逐一查證），不是 CI green；[2dda讀取證據](evidence/issue119-20261004/hosted-ci-2dda.json)。沒有改 CI 權限／付費或手動重跑。原私人 PDF、Windows/WSL 啟動器、真手機多點觸控未測；本次完整 CDP 既有 P83/P86 等 owner cases 確有執行，但沒有宣稱未包含的其他獨立 gates 通過。使用者 PC、#54 product、PR114 原工作樹沒有動；`project-store.js` 留給 #60 owner，本項沒有新增其接點。
 

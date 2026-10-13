@@ -1,0 +1,3019 @@
+{
+  "test": "tests.test_grid_system_contract.GridSystemContract.test_read_only_rebinding_preview_respects_subgrid_topology_lock",
+  "binarySha256": "d7961d7878f701b1035c5542ce70fcd7a4c0e43282962c33ccb02434f2e51e7f",
+  "session": 41,
+  "commands": [
+    {
+      "command": "reset",
+      "response": {
+        "ok": true
+      }
+    },
+    {
+      "command": "line surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+      "response": {
+        "ok": true
+      }
+    },
+    {
+      "command": "line grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u explicit 500 1000 1500 v explicit 1000 2000",
+      "response": {
+        "ok": true
+      }
+    },
+    {
+      "command": "line grid-system 1 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u explicit 500 1000 1500 2000 v explicit 1000 2000",
+      "response": {
+        "ok": true
+      }
+    },
+    {
+      "command": "line grid 10 on 1 from-system 0 origin 0 0",
+      "response": {
+        "ok": false,
+        "error": "line 4: I8a: impact preview required; inspect preview, then confirm token (World unchanged)",
+        "preview": {
+          "token": 1,
+          "valid": true,
+          "command": "grid 10 on 1 from-system 0 origin 0 0",
+          "timbers": [],
+          "guides": [],
+          "grids": [
+            {
+              "id": 10,
+              "before": null,
+              "after": {
+                "id": 10,
+                "surface": 1,
+                "bindingId": null,
+                "indexSpace": "ordinal",
+                "sourceSystem": 0,
+                "origin": [
+                  0,
+                  0
+                ],
+                "kind": "main",
+                "parentId": null,
+                "cell": null,
+                "divisions": null,
+                "bounds": {
+                  "u": [
+                    0,
+                    4000
+                  ],
+                  "v": [
+                    0,
+                    3000
+                  ]
+                },
+                "mainAlong": null,
+                "geometryMode": "exact",
+                "geometryExact": true,
+                "u": [
+                  500,
+                  1000,
+                  1500
+                ],
+                "uDefinition": {
+                  "source": "explicit",
+                  "coordinates": [
+                    500,
+                    1000,
+                    1500
+                  ]
+                },
+                "v": [
+                  1000,
+                  2000
+                ],
+                "vDefinition": {
+                  "source": "explicit",
+                  "coordinates": [
+                    1000,
+                    2000
+                  ]
+                },
+                "lines": [
+                  {
+                    "axis": "u",
+                    "index": 0,
+                    "coordinate": 500,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          500,
+                          0
+                        ],
+                        [
+                          500,
+                          3000
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "u",
+                    "index": 1,
+                    "coordinate": 1000,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          1000,
+                          0
+                        ],
+                        [
+                          1000,
+                          3000
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "u",
+                    "index": 2,
+                    "coordinate": 1500,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          1500,
+                          0
+                        ],
+                        [
+                          1500,
+                          3000
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "v",
+                    "index": 0,
+                    "coordinate": 1000,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          0,
+                          1000
+                        ],
+                        [
+                          4000,
+                          1000
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "v",
+                    "index": 1,
+                    "coordinate": 2000,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          0,
+                          2000
+                        ],
+                        [
+                          4000,
+                          2000
+                        ]
+                      ]
+                    ]
+                  }
+                ],
+                "dependencies": {
+                  "children": [],
+                  "guides": [],
+                  "timbers": []
+                }
+              }
+            }
+          ],
+          "datums": [],
+          "gridSystems": [
+            {
+              "id": 0,
+              "before": {
+                "kind": "grid-system",
+                "id": 0,
+                "name": "天花 網格 A",
+                "mode": "legacy-finite",
+                "mainAlong": null,
+                "uDefinition": {
+                  "source": "explicit",
+                  "coordinates": [
+                    500,
+                    1000,
+                    1500
+                  ]
+                },
+                "vDefinition": {
+                  "source": "explicit",
+                  "coordinates": [
+                    1000,
+                    2000
+                  ]
+                },
+                "nextRuleKey": 1,
+                "rules": [],
+                "applications": [],
+                "bindings": [],
+                "cx": 0,
+                "cy": 0,
+                "hasPos": false
+              },
+              "after": {
+                "kind": "grid-system",
+                "id": 0,
+                "name": "天花 網格 A",
+                "mode": "legacy-finite",
+                "mainAlong": null,
+                "uDefinition": {
+                  "source": "explicit",
+                  "coordinates": [
+                    500,
+                    1000,
+                    1500
+                  ]
+                },
+                "vDefinition": {
+                  "source": "explicit",
+                  "coordinates": [
+                    1000,
+                    2000
+                  ]
+                },
+                "nextRuleKey": 1,
+                "rules": [],
+                "applications": [
+                  {
+                    "grid": 10,
+                    "surface": 1
+                  }
+                ],
+                "bindings": [],
+                "cx": 0,
+                "cy": 0,
+                "hasPos": false
+              }
+            },
+            {
+              "id": 1,
+              "before": {
+                "kind": "grid-system",
+                "id": 1,
+                "name": "天花 網格 A",
+                "mode": "legacy-finite",
+                "mainAlong": null,
+                "uDefinition": {
+                  "source": "explicit",
+                  "coordinates": [
+                    500,
+                    1000,
+                    1500,
+                    2000
+                  ]
+                },
+                "vDefinition": {
+                  "source": "explicit",
+                  "coordinates": [
+                    1000,
+                    2000
+                  ]
+                },
+                "nextRuleKey": 1,
+                "rules": [],
+                "applications": [],
+                "bindings": [],
+                "cx": 0,
+                "cy": 0,
+                "hasPos": false
+              },
+              "after": {
+                "kind": "grid-system",
+                "id": 1,
+                "name": "天花 網格 A",
+                "mode": "legacy-finite",
+                "mainAlong": null,
+                "uDefinition": {
+                  "source": "explicit",
+                  "coordinates": [
+                    500,
+                    1000,
+                    1500,
+                    2000
+                  ]
+                },
+                "vDefinition": {
+                  "source": "explicit",
+                  "coordinates": [
+                    1000,
+                    2000
+                  ]
+                },
+                "nextRuleKey": 1,
+                "rules": [],
+                "applications": [],
+                "bindings": [],
+                "cx": 0,
+                "cy": 0,
+                "hasPos": false
+              }
+            }
+          ],
+          "gridBindings": [],
+          "boundaries": [],
+          "assembly": {
+            "before": {
+              "capabilities": [
+                "assembly-rule-authoring/1",
+                "assembly-timber-generation/1"
+              ],
+              "rules": [],
+              "bindings": [],
+              "instances": []
+            },
+            "after": {
+              "capabilities": [
+                "assembly-rule-authoring/1",
+                "assembly-timber-generation/1"
+              ],
+              "rules": [],
+              "bindings": [],
+              "instances": []
+            }
+          },
+          "sectionProfiles": {
+            "before": {
+              "profiles": [],
+              "members": [],
+              "runs": []
+            },
+            "after": {
+              "profiles": [],
+              "members": [],
+              "runs": []
+            },
+            "warnings": [],
+            "diagnosticsComplete": true,
+            "violations": []
+          },
+          "violations": []
+        }
+      }
+    },
+    {
+      "command": "line confirm 1",
+      "response": {
+        "ok": true
+      }
+    },
+    {
+      "command": "line subgrid 11 parent 10 cell u line:0 line:1 v min line:0 divisions u 2 v 1",
+      "response": {
+        "ok": true
+      }
+    },
+    {
+      "command": "dump",
+      "response": {
+        "ok": true,
+        "text": "boundary 1 outline 0,0 4000,0 4000,3000 0,3000\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\ngrid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u explicit 500 1000 1500 v explicit 1000 2000\ngrid-system 1 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u explicit 500 1000 1500 2000 v explicit 1000 2000\ngrid 10 on 1 from-system 0 origin 0 0\nsubgrid 11 parent 10 cell u line:0 line:1 v min line:0 divisions u 2 v 1\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 16,
+        "definition_sha256": "f0172a53edc4cdd6aa22350537ebc51b66b062679d2f8db8f06f464a4fc0f510"
+      }
+    },
+    {
+      "command": "references",
+      "response": {
+        "ok": true,
+        "sourceFingerprint": "f0172a53edc4cdd6aa22350537ebc51b66b062679d2f8db8f06f464a4fc0f510",
+        "guides": [],
+        "grids": [
+          {
+            "id": 10,
+            "surface": 1,
+            "bindingId": null,
+            "indexSpace": "ordinal",
+            "sourceSystem": 0,
+            "origin": [
+              0,
+              0
+            ],
+            "kind": "main",
+            "parentId": null,
+            "cell": null,
+            "divisions": null,
+            "bounds": {
+              "u": [
+                0,
+                4000
+              ],
+              "v": [
+                0,
+                3000
+              ]
+            },
+            "mainAlong": null,
+            "geometryMode": "exact",
+            "geometryExact": true,
+            "u": [
+              500,
+              1000,
+              1500
+            ],
+            "uDefinition": {
+              "source": "explicit",
+              "coordinates": [
+                500,
+                1000,
+                1500
+              ]
+            },
+            "v": [
+              1000,
+              2000
+            ],
+            "vDefinition": {
+              "source": "explicit",
+              "coordinates": [
+                1000,
+                2000
+              ]
+            },
+            "lines": [
+              {
+                "axis": "u",
+                "index": 0,
+                "coordinate": 500,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      500,
+                      0
+                    ],
+                    [
+                      500,
+                      3000
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "u",
+                "index": 1,
+                "coordinate": 1000,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      1000,
+                      0
+                    ],
+                    [
+                      1000,
+                      3000
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "u",
+                "index": 2,
+                "coordinate": 1500,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      1500,
+                      0
+                    ],
+                    [
+                      1500,
+                      3000
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "v",
+                "index": 0,
+                "coordinate": 1000,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      0,
+                      1000
+                    ],
+                    [
+                      4000,
+                      1000
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "v",
+                "index": 1,
+                "coordinate": 2000,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      0,
+                      2000
+                    ],
+                    [
+                      4000,
+                      2000
+                    ]
+                  ]
+                ]
+              }
+            ],
+            "dependencies": {
+              "children": [
+                11
+              ],
+              "guides": [],
+              "timbers": []
+            }
+          },
+          {
+            "id": 11,
+            "surface": 1,
+            "bindingId": null,
+            "indexSpace": "ordinal",
+            "sourceSystem": null,
+            "origin": [
+              0,
+              0
+            ],
+            "kind": "subgrid",
+            "parentId": 10,
+            "latticeCell": null,
+            "cellMode": "ordinal",
+            "cell": {
+              "u": [
+                "line:0",
+                "line:1"
+              ],
+              "v": [
+                "min",
+                "line:0"
+              ]
+            },
+            "divisions": {
+              "u": 2,
+              "v": 1
+            },
+            "bounds": {
+              "u": [
+                500,
+                1000
+              ],
+              "v": [
+                0,
+                1000
+              ]
+            },
+            "mainAlong": null,
+            "geometryMode": "exact",
+            "geometryExact": true,
+            "u": [
+              750
+            ],
+            "uDefinition": {
+              "source": "subgrid",
+              "divisions": 2
+            },
+            "v": [],
+            "vDefinition": {
+              "source": "subgrid",
+              "divisions": 1
+            },
+            "lines": [
+              {
+                "axis": "u",
+                "index": 0,
+                "coordinate": 750,
+                "role": "secondary",
+                "priority": 3,
+                "segments": [
+                  [
+                    [
+                      750,
+                      0
+                    ],
+                    [
+                      750,
+                      1000
+                    ]
+                  ]
+                ]
+              }
+            ],
+            "dependencies": {
+              "children": [],
+              "guides": [],
+              "timbers": []
+            }
+          }
+        ],
+        "timbers": [],
+        "timberSupports": {
+          "schema": "native-timber-supports/1",
+          "sourceFingerprint": "f0172a53edc4cdd6aa22350537ebc51b66b062679d2f8db8f06f464a4fc0f510",
+          "entries": []
+        },
+        "specs": [],
+        "datums": [],
+        "engineeringSources": [],
+        "assembly": {
+          "capabilities": [
+            "assembly-rule-authoring/1",
+            "assembly-timber-generation/1"
+          ],
+          "rules": [],
+          "bindings": [],
+          "instances": []
+        }
+      }
+    },
+    {
+      "command": "objects",
+      "response": {
+        "ok": true,
+        "faces": [
+          {
+            "kind": "boundary",
+            "boundaryKind": "unspecified",
+            "id": 1,
+            "placed": true,
+            "bbox": [
+              0,
+              0,
+              4000,
+              3000
+            ],
+            "cx": 0,
+            "cy": 0,
+            "hasPos": false
+          }
+        ],
+        "spaces": [],
+        "columns": [],
+        "beams": [],
+        "gridSystems": [
+          {
+            "kind": "grid-system",
+            "id": 0,
+            "name": "天花 網格 A",
+            "mode": "legacy-finite",
+            "mainAlong": null,
+            "uDefinition": {
+              "source": "explicit",
+              "coordinates": [
+                500,
+                1000,
+                1500
+              ]
+            },
+            "vDefinition": {
+              "source": "explicit",
+              "coordinates": [
+                1000,
+                2000
+              ]
+            },
+            "nextRuleKey": 1,
+            "rules": [],
+            "applications": [
+              {
+                "grid": 10,
+                "surface": 1
+              }
+            ],
+            "bindings": [],
+            "cx": 0,
+            "cy": 0,
+            "hasPos": false
+          },
+          {
+            "kind": "grid-system",
+            "id": 1,
+            "name": "天花 網格 A",
+            "mode": "legacy-finite",
+            "mainAlong": null,
+            "uDefinition": {
+              "source": "explicit",
+              "coordinates": [
+                500,
+                1000,
+                1500,
+                2000
+              ]
+            },
+            "vDefinition": {
+              "source": "explicit",
+              "coordinates": [
+                1000,
+                2000
+              ]
+            },
+            "nextRuleKey": 1,
+            "rules": [],
+            "applications": [],
+            "bindings": [],
+            "cx": 0,
+            "cy": 0,
+            "hasPos": false
+          }
+        ],
+        "parameters": [],
+        "assemblyRules": [],
+        "assemblyBindings": [],
+        "parameterUses": [],
+        "gridBindings": [],
+        "timbers": []
+      }
+    },
+    {
+      "command": "grid-preview grid 10 on 1 from-system 1 origin 0 0",
+      "response": {
+        "ok": false,
+        "error": "line 0: I23：父網格 10 仍有子格，u 軸線數不可從 3 改成 4；請先處理子格與引用"
+      }
+    },
+    {
+      "command": "dump",
+      "response": {
+        "ok": true,
+        "text": "boundary 1 outline 0,0 4000,0 4000,3000 0,3000\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\ngrid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u explicit 500 1000 1500 v explicit 1000 2000\ngrid-system 1 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u explicit 500 1000 1500 2000 v explicit 1000 2000\ngrid 10 on 1 from-system 0 origin 0 0\nsubgrid 11 parent 10 cell u line:0 line:1 v min line:0 divisions u 2 v 1\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 16,
+        "definition_sha256": "f0172a53edc4cdd6aa22350537ebc51b66b062679d2f8db8f06f464a4fc0f510"
+      }
+    },
+    {
+      "command": "references",
+      "response": {
+        "ok": true,
+        "sourceFingerprint": "f0172a53edc4cdd6aa22350537ebc51b66b062679d2f8db8f06f464a4fc0f510",
+        "guides": [],
+        "grids": [
+          {
+            "id": 10,
+            "surface": 1,
+            "bindingId": null,
+            "indexSpace": "ordinal",
+            "sourceSystem": 0,
+            "origin": [
+              0,
+              0
+            ],
+            "kind": "main",
+            "parentId": null,
+            "cell": null,
+            "divisions": null,
+            "bounds": {
+              "u": [
+                0,
+                4000
+              ],
+              "v": [
+                0,
+                3000
+              ]
+            },
+            "mainAlong": null,
+            "geometryMode": "exact",
+            "geometryExact": true,
+            "u": [
+              500,
+              1000,
+              1500
+            ],
+            "uDefinition": {
+              "source": "explicit",
+              "coordinates": [
+                500,
+                1000,
+                1500
+              ]
+            },
+            "v": [
+              1000,
+              2000
+            ],
+            "vDefinition": {
+              "source": "explicit",
+              "coordinates": [
+                1000,
+                2000
+              ]
+            },
+            "lines": [
+              {
+                "axis": "u",
+                "index": 0,
+                "coordinate": 500,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      500,
+                      0
+                    ],
+                    [
+                      500,
+                      3000
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "u",
+                "index": 1,
+                "coordinate": 1000,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      1000,
+                      0
+                    ],
+                    [
+                      1000,
+                      3000
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "u",
+                "index": 2,
+                "coordinate": 1500,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      1500,
+                      0
+                    ],
+                    [
+                      1500,
+                      3000
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "v",
+                "index": 0,
+                "coordinate": 1000,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      0,
+                      1000
+                    ],
+                    [
+                      4000,
+                      1000
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "v",
+                "index": 1,
+                "coordinate": 2000,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      0,
+                      2000
+                    ],
+                    [
+                      4000,
+                      2000
+                    ]
+                  ]
+                ]
+              }
+            ],
+            "dependencies": {
+              "children": [
+                11
+              ],
+              "guides": [],
+              "timbers": []
+            }
+          },
+          {
+            "id": 11,
+            "surface": 1,
+            "bindingId": null,
+            "indexSpace": "ordinal",
+            "sourceSystem": null,
+            "origin": [
+              0,
+              0
+            ],
+            "kind": "subgrid",
+            "parentId": 10,
+            "latticeCell": null,
+            "cellMode": "ordinal",
+            "cell": {
+              "u": [
+                "line:0",
+                "line:1"
+              ],
+              "v": [
+                "min",
+                "line:0"
+              ]
+            },
+            "divisions": {
+              "u": 2,
+              "v": 1
+            },
+            "bounds": {
+              "u": [
+                500,
+                1000
+              ],
+              "v": [
+                0,
+                1000
+              ]
+            },
+            "mainAlong": null,
+            "geometryMode": "exact",
+            "geometryExact": true,
+            "u": [
+              750
+            ],
+            "uDefinition": {
+              "source": "subgrid",
+              "divisions": 2
+            },
+            "v": [],
+            "vDefinition": {
+              "source": "subgrid",
+              "divisions": 1
+            },
+            "lines": [
+              {
+                "axis": "u",
+                "index": 0,
+                "coordinate": 750,
+                "role": "secondary",
+                "priority": 3,
+                "segments": [
+                  [
+                    [
+                      750,
+                      0
+                    ],
+                    [
+                      750,
+                      1000
+                    ]
+                  ]
+                ]
+              }
+            ],
+            "dependencies": {
+              "children": [],
+              "guides": [],
+              "timbers": []
+            }
+          }
+        ],
+        "timbers": [],
+        "timberSupports": {
+          "schema": "native-timber-supports/1",
+          "sourceFingerprint": "f0172a53edc4cdd6aa22350537ebc51b66b062679d2f8db8f06f464a4fc0f510",
+          "entries": []
+        },
+        "specs": [],
+        "datums": [],
+        "engineeringSources": [],
+        "assembly": {
+          "capabilities": [
+            "assembly-rule-authoring/1",
+            "assembly-timber-generation/1"
+          ],
+          "rules": [],
+          "bindings": [],
+          "instances": []
+        }
+      }
+    },
+    {
+      "command": "objects",
+      "response": {
+        "ok": true,
+        "faces": [
+          {
+            "kind": "boundary",
+            "boundaryKind": "unspecified",
+            "id": 1,
+            "placed": true,
+            "bbox": [
+              0,
+              0,
+              4000,
+              3000
+            ],
+            "cx": 0,
+            "cy": 0,
+            "hasPos": false
+          }
+        ],
+        "spaces": [],
+        "columns": [],
+        "beams": [],
+        "gridSystems": [
+          {
+            "kind": "grid-system",
+            "id": 0,
+            "name": "天花 網格 A",
+            "mode": "legacy-finite",
+            "mainAlong": null,
+            "uDefinition": {
+              "source": "explicit",
+              "coordinates": [
+                500,
+                1000,
+                1500
+              ]
+            },
+            "vDefinition": {
+              "source": "explicit",
+              "coordinates": [
+                1000,
+                2000
+              ]
+            },
+            "nextRuleKey": 1,
+            "rules": [],
+            "applications": [
+              {
+                "grid": 10,
+                "surface": 1
+              }
+            ],
+            "bindings": [],
+            "cx": 0,
+            "cy": 0,
+            "hasPos": false
+          },
+          {
+            "kind": "grid-system",
+            "id": 1,
+            "name": "天花 網格 A",
+            "mode": "legacy-finite",
+            "mainAlong": null,
+            "uDefinition": {
+              "source": "explicit",
+              "coordinates": [
+                500,
+                1000,
+                1500,
+                2000
+              ]
+            },
+            "vDefinition": {
+              "source": "explicit",
+              "coordinates": [
+                1000,
+                2000
+              ]
+            },
+            "nextRuleKey": 1,
+            "rules": [],
+            "applications": [],
+            "bindings": [],
+            "cx": 0,
+            "cy": 0,
+            "hasPos": false
+          }
+        ],
+        "parameters": [],
+        "assemblyRules": [],
+        "assemblyBindings": [],
+        "parameterUses": [],
+        "gridBindings": [],
+        "timbers": []
+      }
+    },
+    {
+      "command": "dump",
+      "response": {
+        "ok": true,
+        "text": "boundary 1 outline 0,0 4000,0 4000,3000 0,3000\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\ngrid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u explicit 500 1000 1500 v explicit 1000 2000\ngrid-system 1 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u explicit 500 1000 1500 2000 v explicit 1000 2000\ngrid 10 on 1 from-system 0 origin 0 0\nsubgrid 11 parent 10 cell u line:0 line:1 v min line:0 divisions u 2 v 1\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 16,
+        "definition_sha256": "f0172a53edc4cdd6aa22350537ebc51b66b062679d2f8db8f06f464a4fc0f510"
+      }
+    },
+    {
+      "command": "references",
+      "response": {
+        "ok": true,
+        "sourceFingerprint": "f0172a53edc4cdd6aa22350537ebc51b66b062679d2f8db8f06f464a4fc0f510",
+        "guides": [],
+        "grids": [
+          {
+            "id": 10,
+            "surface": 1,
+            "bindingId": null,
+            "indexSpace": "ordinal",
+            "sourceSystem": 0,
+            "origin": [
+              0,
+              0
+            ],
+            "kind": "main",
+            "parentId": null,
+            "cell": null,
+            "divisions": null,
+            "bounds": {
+              "u": [
+                0,
+                4000
+              ],
+              "v": [
+                0,
+                3000
+              ]
+            },
+            "mainAlong": null,
+            "geometryMode": "exact",
+            "geometryExact": true,
+            "u": [
+              500,
+              1000,
+              1500
+            ],
+            "uDefinition": {
+              "source": "explicit",
+              "coordinates": [
+                500,
+                1000,
+                1500
+              ]
+            },
+            "v": [
+              1000,
+              2000
+            ],
+            "vDefinition": {
+              "source": "explicit",
+              "coordinates": [
+                1000,
+                2000
+              ]
+            },
+            "lines": [
+              {
+                "axis": "u",
+                "index": 0,
+                "coordinate": 500,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      500,
+                      0
+                    ],
+                    [
+                      500,
+                      3000
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "u",
+                "index": 1,
+                "coordinate": 1000,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      1000,
+                      0
+                    ],
+                    [
+                      1000,
+                      3000
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "u",
+                "index": 2,
+                "coordinate": 1500,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      1500,
+                      0
+                    ],
+                    [
+                      1500,
+                      3000
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "v",
+                "index": 0,
+                "coordinate": 1000,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      0,
+                      1000
+                    ],
+                    [
+                      4000,
+                      1000
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "v",
+                "index": 1,
+                "coordinate": 2000,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      0,
+                      2000
+                    ],
+                    [
+                      4000,
+                      2000
+                    ]
+                  ]
+                ]
+              }
+            ],
+            "dependencies": {
+              "children": [
+                11
+              ],
+              "guides": [],
+              "timbers": []
+            }
+          },
+          {
+            "id": 11,
+            "surface": 1,
+            "bindingId": null,
+            "indexSpace": "ordinal",
+            "sourceSystem": null,
+            "origin": [
+              0,
+              0
+            ],
+            "kind": "subgrid",
+            "parentId": 10,
+            "latticeCell": null,
+            "cellMode": "ordinal",
+            "cell": {
+              "u": [
+                "line:0",
+                "line:1"
+              ],
+              "v": [
+                "min",
+                "line:0"
+              ]
+            },
+            "divisions": {
+              "u": 2,
+              "v": 1
+            },
+            "bounds": {
+              "u": [
+                500,
+                1000
+              ],
+              "v": [
+                0,
+                1000
+              ]
+            },
+            "mainAlong": null,
+            "geometryMode": "exact",
+            "geometryExact": true,
+            "u": [
+              750
+            ],
+            "uDefinition": {
+              "source": "subgrid",
+              "divisions": 2
+            },
+            "v": [],
+            "vDefinition": {
+              "source": "subgrid",
+              "divisions": 1
+            },
+            "lines": [
+              {
+                "axis": "u",
+                "index": 0,
+                "coordinate": 750,
+                "role": "secondary",
+                "priority": 3,
+                "segments": [
+                  [
+                    [
+                      750,
+                      0
+                    ],
+                    [
+                      750,
+                      1000
+                    ]
+                  ]
+                ]
+              }
+            ],
+            "dependencies": {
+              "children": [],
+              "guides": [],
+              "timbers": []
+            }
+          }
+        ],
+        "timbers": [],
+        "timberSupports": {
+          "schema": "native-timber-supports/1",
+          "sourceFingerprint": "f0172a53edc4cdd6aa22350537ebc51b66b062679d2f8db8f06f464a4fc0f510",
+          "entries": []
+        },
+        "specs": [],
+        "datums": [],
+        "engineeringSources": [],
+        "assembly": {
+          "capabilities": [
+            "assembly-rule-authoring/1",
+            "assembly-timber-generation/1"
+          ],
+          "rules": [],
+          "bindings": [],
+          "instances": []
+        }
+      }
+    },
+    {
+      "command": "objects",
+      "response": {
+        "ok": true,
+        "faces": [
+          {
+            "kind": "boundary",
+            "boundaryKind": "unspecified",
+            "id": 1,
+            "placed": true,
+            "bbox": [
+              0,
+              0,
+              4000,
+              3000
+            ],
+            "cx": 0,
+            "cy": 0,
+            "hasPos": false
+          }
+        ],
+        "spaces": [],
+        "columns": [],
+        "beams": [],
+        "gridSystems": [
+          {
+            "kind": "grid-system",
+            "id": 0,
+            "name": "天花 網格 A",
+            "mode": "legacy-finite",
+            "mainAlong": null,
+            "uDefinition": {
+              "source": "explicit",
+              "coordinates": [
+                500,
+                1000,
+                1500
+              ]
+            },
+            "vDefinition": {
+              "source": "explicit",
+              "coordinates": [
+                1000,
+                2000
+              ]
+            },
+            "nextRuleKey": 1,
+            "rules": [],
+            "applications": [
+              {
+                "grid": 10,
+                "surface": 1
+              }
+            ],
+            "bindings": [],
+            "cx": 0,
+            "cy": 0,
+            "hasPos": false
+          },
+          {
+            "kind": "grid-system",
+            "id": 1,
+            "name": "天花 網格 A",
+            "mode": "legacy-finite",
+            "mainAlong": null,
+            "uDefinition": {
+              "source": "explicit",
+              "coordinates": [
+                500,
+                1000,
+                1500,
+                2000
+              ]
+            },
+            "vDefinition": {
+              "source": "explicit",
+              "coordinates": [
+                1000,
+                2000
+              ]
+            },
+            "nextRuleKey": 1,
+            "rules": [],
+            "applications": [],
+            "bindings": [],
+            "cx": 0,
+            "cy": 0,
+            "hasPos": false
+          }
+        ],
+        "parameters": [],
+        "assemblyRules": [],
+        "assemblyBindings": [],
+        "parameterUses": [],
+        "gridBindings": [],
+        "timbers": []
+      }
+    },
+    {
+      "command": "line preview grid 10 on 1 from-system 1 origin 0 0",
+      "response": {
+        "ok": true,
+        "preview": {
+          "token": 2,
+          "valid": false,
+          "command": "grid 10 on 1 from-system 1 origin 0 0",
+          "timbers": [],
+          "guides": [],
+          "grids": [
+            {
+              "id": 10,
+              "before": {
+                "id": 10,
+                "surface": 1,
+                "bindingId": null,
+                "indexSpace": "ordinal",
+                "sourceSystem": 0,
+                "origin": [
+                  0,
+                  0
+                ],
+                "kind": "main",
+                "parentId": null,
+                "cell": null,
+                "divisions": null,
+                "bounds": {
+                  "u": [
+                    0,
+                    4000
+                  ],
+                  "v": [
+                    0,
+                    3000
+                  ]
+                },
+                "mainAlong": null,
+                "geometryMode": "exact",
+                "geometryExact": true,
+                "u": [
+                  500,
+                  1000,
+                  1500
+                ],
+                "uDefinition": {
+                  "source": "explicit",
+                  "coordinates": [
+                    500,
+                    1000,
+                    1500
+                  ]
+                },
+                "v": [
+                  1000,
+                  2000
+                ],
+                "vDefinition": {
+                  "source": "explicit",
+                  "coordinates": [
+                    1000,
+                    2000
+                  ]
+                },
+                "lines": [
+                  {
+                    "axis": "u",
+                    "index": 0,
+                    "coordinate": 500,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          500,
+                          0
+                        ],
+                        [
+                          500,
+                          3000
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "u",
+                    "index": 1,
+                    "coordinate": 1000,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          1000,
+                          0
+                        ],
+                        [
+                          1000,
+                          3000
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "u",
+                    "index": 2,
+                    "coordinate": 1500,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          1500,
+                          0
+                        ],
+                        [
+                          1500,
+                          3000
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "v",
+                    "index": 0,
+                    "coordinate": 1000,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          0,
+                          1000
+                        ],
+                        [
+                          4000,
+                          1000
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "v",
+                    "index": 1,
+                    "coordinate": 2000,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          0,
+                          2000
+                        ],
+                        [
+                          4000,
+                          2000
+                        ]
+                      ]
+                    ]
+                  }
+                ],
+                "dependencies": {
+                  "children": [
+                    11
+                  ],
+                  "guides": [],
+                  "timbers": []
+                }
+              },
+              "after": {
+                "id": 10,
+                "surface": 1,
+                "bindingId": null,
+                "indexSpace": "ordinal",
+                "sourceSystem": 1,
+                "origin": [
+                  0,
+                  0
+                ],
+                "kind": "main",
+                "parentId": null,
+                "cell": null,
+                "divisions": null,
+                "bounds": {
+                  "u": [
+                    0,
+                    4000
+                  ],
+                  "v": [
+                    0,
+                    3000
+                  ]
+                },
+                "mainAlong": null,
+                "geometryMode": "exact",
+                "geometryExact": true,
+                "u": [
+                  500,
+                  1000,
+                  1500,
+                  2000
+                ],
+                "uDefinition": {
+                  "source": "explicit",
+                  "coordinates": [
+                    500,
+                    1000,
+                    1500,
+                    2000
+                  ]
+                },
+                "v": [
+                  1000,
+                  2000
+                ],
+                "vDefinition": {
+                  "source": "explicit",
+                  "coordinates": [
+                    1000,
+                    2000
+                  ]
+                },
+                "lines": [
+                  {
+                    "axis": "u",
+                    "index": 0,
+                    "coordinate": 500,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          500,
+                          0
+                        ],
+                        [
+                          500,
+                          3000
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "u",
+                    "index": 1,
+                    "coordinate": 1000,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          1000,
+                          0
+                        ],
+                        [
+                          1000,
+                          3000
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "u",
+                    "index": 2,
+                    "coordinate": 1500,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          1500,
+                          0
+                        ],
+                        [
+                          1500,
+                          3000
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "u",
+                    "index": 3,
+                    "coordinate": 2000,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          2000,
+                          0
+                        ],
+                        [
+                          2000,
+                          3000
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "v",
+                    "index": 0,
+                    "coordinate": 1000,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          0,
+                          1000
+                        ],
+                        [
+                          4000,
+                          1000
+                        ]
+                      ]
+                    ]
+                  },
+                  {
+                    "axis": "v",
+                    "index": 1,
+                    "coordinate": 2000,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          0,
+                          2000
+                        ],
+                        [
+                          4000,
+                          2000
+                        ]
+                      ]
+                    ]
+                  }
+                ],
+                "dependencies": {
+                  "children": [
+                    11
+                  ],
+                  "guides": [],
+                  "timbers": []
+                }
+              }
+            },
+            {
+              "id": 11,
+              "before": {
+                "id": 11,
+                "surface": 1,
+                "bindingId": null,
+                "indexSpace": "ordinal",
+                "sourceSystem": null,
+                "origin": [
+                  0,
+                  0
+                ],
+                "kind": "subgrid",
+                "parentId": 10,
+                "latticeCell": null,
+                "cellMode": "ordinal",
+                "cell": {
+                  "u": [
+                    "line:0",
+                    "line:1"
+                  ],
+                  "v": [
+                    "min",
+                    "line:0"
+                  ]
+                },
+                "divisions": {
+                  "u": 2,
+                  "v": 1
+                },
+                "bounds": {
+                  "u": [
+                    500,
+                    1000
+                  ],
+                  "v": [
+                    0,
+                    1000
+                  ]
+                },
+                "mainAlong": null,
+                "geometryMode": "exact",
+                "geometryExact": true,
+                "u": [
+                  750
+                ],
+                "uDefinition": {
+                  "source": "subgrid",
+                  "divisions": 2
+                },
+                "v": [],
+                "vDefinition": {
+                  "source": "subgrid",
+                  "divisions": 1
+                },
+                "lines": [
+                  {
+                    "axis": "u",
+                    "index": 0,
+                    "coordinate": 750,
+                    "role": "secondary",
+                    "priority": 3,
+                    "segments": [
+                      [
+                        [
+                          750,
+                          0
+                        ],
+                        [
+                          750,
+                          1000
+                        ]
+                      ]
+                    ]
+                  }
+                ],
+                "dependencies": {
+                  "children": [],
+                  "guides": [],
+                  "timbers": []
+                }
+              },
+              "after": {
+                "id": 11,
+                "surface": 1,
+                "bindingId": null,
+                "indexSpace": "ordinal",
+                "sourceSystem": null,
+                "origin": [
+                  0,
+                  0
+                ],
+                "kind": "subgrid",
+                "parentId": 10,
+                "latticeCell": null,
+                "cellMode": "ordinal",
+                "cell": {
+                  "u": [
+                    "line:0",
+                    "line:1"
+                  ],
+                  "v": [
+                    "min",
+                    "line:0"
+                  ]
+                },
+                "divisions": {
+                  "u": 2,
+                  "v": 1
+                },
+                "bounds": {
+                  "u": [
+                    500,
+                    1000
+                  ],
+                  "v": [
+                    0,
+                    1000
+                  ]
+                },
+                "mainAlong": null,
+                "geometryMode": "exact",
+                "geometryExact": true,
+                "u": [
+                  750
+                ],
+                "uDefinition": {
+                  "source": "subgrid",
+                  "divisions": 2
+                },
+                "v": [],
+                "vDefinition": {
+                  "source": "subgrid",
+                  "divisions": 1
+                },
+                "lines": [
+                  {
+                    "axis": "u",
+                    "index": 0,
+                    "coordinate": 750,
+                    "role": "secondary",
+                    "priority": 3,
+                    "segments": [
+                      [
+                        [
+                          750,
+                          0
+                        ],
+                        [
+                          750,
+                          1000
+                        ]
+                      ]
+                    ]
+                  }
+                ],
+                "dependencies": {
+                  "children": [],
+                  "guides": [],
+                  "timbers": []
+                }
+              }
+            }
+          ],
+          "datums": [],
+          "gridSystems": [
+            {
+              "id": 0,
+              "before": {
+                "kind": "grid-system",
+                "id": 0,
+                "name": "天花 網格 A",
+                "mode": "legacy-finite",
+                "mainAlong": null,
+                "uDefinition": {
+                  "source": "explicit",
+                  "coordinates": [
+                    500,
+                    1000,
+                    1500
+                  ]
+                },
+                "vDefinition": {
+                  "source": "explicit",
+                  "coordinates": [
+                    1000,
+                    2000
+                  ]
+                },
+                "nextRuleKey": 1,
+                "rules": [],
+                "applications": [
+                  {
+                    "grid": 10,
+                    "surface": 1
+                  }
+                ],
+                "bindings": [],
+                "cx": 0,
+                "cy": 0,
+                "hasPos": false
+              },
+              "after": {
+                "kind": "grid-system",
+                "id": 0,
+                "name": "天花 網格 A",
+                "mode": "legacy-finite",
+                "mainAlong": null,
+                "uDefinition": {
+                  "source": "explicit",
+                  "coordinates": [
+                    500,
+                    1000,
+                    1500
+                  ]
+                },
+                "vDefinition": {
+                  "source": "explicit",
+                  "coordinates": [
+                    1000,
+                    2000
+                  ]
+                },
+                "nextRuleKey": 1,
+                "rules": [],
+                "applications": [],
+                "bindings": [],
+                "cx": 0,
+                "cy": 0,
+                "hasPos": false
+              }
+            },
+            {
+              "id": 1,
+              "before": {
+                "kind": "grid-system",
+                "id": 1,
+                "name": "天花 網格 A",
+                "mode": "legacy-finite",
+                "mainAlong": null,
+                "uDefinition": {
+                  "source": "explicit",
+                  "coordinates": [
+                    500,
+                    1000,
+                    1500,
+                    2000
+                  ]
+                },
+                "vDefinition": {
+                  "source": "explicit",
+                  "coordinates": [
+                    1000,
+                    2000
+                  ]
+                },
+                "nextRuleKey": 1,
+                "rules": [],
+                "applications": [],
+                "bindings": [],
+                "cx": 0,
+                "cy": 0,
+                "hasPos": false
+              },
+              "after": {
+                "kind": "grid-system",
+                "id": 1,
+                "name": "天花 網格 A",
+                "mode": "legacy-finite",
+                "mainAlong": null,
+                "uDefinition": {
+                  "source": "explicit",
+                  "coordinates": [
+                    500,
+                    1000,
+                    1500,
+                    2000
+                  ]
+                },
+                "vDefinition": {
+                  "source": "explicit",
+                  "coordinates": [
+                    1000,
+                    2000
+                  ]
+                },
+                "nextRuleKey": 1,
+                "rules": [],
+                "applications": [
+                  {
+                    "grid": 10,
+                    "surface": 1
+                  }
+                ],
+                "bindings": [],
+                "cx": 0,
+                "cy": 0,
+                "hasPos": false
+              }
+            }
+          ],
+          "gridBindings": [],
+          "boundaries": [],
+          "assembly": {
+            "before": {
+              "capabilities": [
+                "assembly-rule-authoring/1",
+                "assembly-timber-generation/1"
+              ],
+              "rules": [],
+              "bindings": [],
+              "instances": []
+            },
+            "after": {
+              "capabilities": [
+                "assembly-rule-authoring/1",
+                "assembly-timber-generation/1"
+              ],
+              "rules": [],
+              "bindings": [],
+              "instances": []
+            }
+          },
+          "sectionProfiles": {
+            "before": {
+              "profiles": [],
+              "members": [],
+              "runs": []
+            },
+            "after": {
+              "profiles": [],
+              "members": [],
+              "runs": []
+            },
+            "warnings": [],
+            "diagnosticsComplete": true,
+            "violations": [
+              {
+                "code": "SECTION_PROFILE_INVALID",
+                "clause": "I43-I49",
+                "message": "line 7: I23：父網格 10 仍有子格，u 軸線數不可從 3 改成 4；請先處理子格與引用",
+                "expected": "valid atomic transaction",
+                "actual": "rejected input or upstream dependency"
+              }
+            ]
+          },
+          "violations": [
+            {
+              "timber": 0,
+              "clause": "I8",
+              "expected": "all world invariants pass",
+              "actual": "line 7: I23：父網格 10 仍有子格，u 軸線數不可從 3 改成 4；請先處理子格與引用"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "command": "dump",
+      "response": {
+        "ok": true,
+        "text": "boundary 1 outline 0,0 4000,0 4000,3000 0,3000\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\ngrid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u explicit 500 1000 1500 v explicit 1000 2000\ngrid-system 1 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u explicit 500 1000 1500 2000 v explicit 1000 2000\ngrid 10 on 1 from-system 0 origin 0 0\nsubgrid 11 parent 10 cell u line:0 line:1 v min line:0 divisions u 2 v 1\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 16,
+        "definition_sha256": "f0172a53edc4cdd6aa22350537ebc51b66b062679d2f8db8f06f464a4fc0f510"
+      }
+    },
+    {
+      "command": "references",
+      "response": {
+        "ok": true,
+        "sourceFingerprint": "f0172a53edc4cdd6aa22350537ebc51b66b062679d2f8db8f06f464a4fc0f510",
+        "guides": [],
+        "grids": [
+          {
+            "id": 10,
+            "surface": 1,
+            "bindingId": null,
+            "indexSpace": "ordinal",
+            "sourceSystem": 0,
+            "origin": [
+              0,
+              0
+            ],
+            "kind": "main",
+            "parentId": null,
+            "cell": null,
+            "divisions": null,
+            "bounds": {
+              "u": [
+                0,
+                4000
+              ],
+              "v": [
+                0,
+                3000
+              ]
+            },
+            "mainAlong": null,
+            "geometryMode": "exact",
+            "geometryExact": true,
+            "u": [
+              500,
+              1000,
+              1500
+            ],
+            "uDefinition": {
+              "source": "explicit",
+              "coordinates": [
+                500,
+                1000,
+                1500
+              ]
+            },
+            "v": [
+              1000,
+              2000
+            ],
+            "vDefinition": {
+              "source": "explicit",
+              "coordinates": [
+                1000,
+                2000
+              ]
+            },
+            "lines": [
+              {
+                "axis": "u",
+                "index": 0,
+                "coordinate": 500,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      500,
+                      0
+                    ],
+                    [
+                      500,
+                      3000
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "u",
+                "index": 1,
+                "coordinate": 1000,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      1000,
+                      0
+                    ],
+                    [
+                      1000,
+                      3000
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "u",
+                "index": 2,
+                "coordinate": 1500,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      1500,
+                      0
+                    ],
+                    [
+                      1500,
+                      3000
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "v",
+                "index": 0,
+                "coordinate": 1000,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      0,
+                      1000
+                    ],
+                    [
+                      4000,
+                      1000
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "v",
+                "index": 1,
+                "coordinate": 2000,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      0,
+                      2000
+                    ],
+                    [
+                      4000,
+                      2000
+                    ]
+                  ]
+                ]
+              }
+            ],
+            "dependencies": {
+              "children": [
+                11
+              ],
+              "guides": [],
+              "timbers": []
+            }
+          },
+          {
+            "id": 11,
+            "surface": 1,
+            "bindingId": null,
+            "indexSpace": "ordinal",
+            "sourceSystem": null,
+            "origin": [
+              0,
+              0
+            ],
+            "kind": "subgrid",
+            "parentId": 10,
+            "latticeCell": null,
+            "cellMode": "ordinal",
+            "cell": {
+              "u": [
+                "line:0",
+                "line:1"
+              ],
+              "v": [
+                "min",
+                "line:0"
+              ]
+            },
+            "divisions": {
+              "u": 2,
+              "v": 1
+            },
+            "bounds": {
+              "u": [
+                500,
+                1000
+              ],
+              "v": [
+                0,
+                1000
+              ]
+            },
+            "mainAlong": null,
+            "geometryMode": "exact",
+            "geometryExact": true,
+            "u": [
+              750
+            ],
+            "uDefinition": {
+              "source": "subgrid",
+              "divisions": 2
+            },
+            "v": [],
+            "vDefinition": {
+              "source": "subgrid",
+              "divisions": 1
+            },
+            "lines": [
+              {
+                "axis": "u",
+                "index": 0,
+                "coordinate": 750,
+                "role": "secondary",
+                "priority": 3,
+                "segments": [
+                  [
+                    [
+                      750,
+                      0
+                    ],
+                    [
+                      750,
+                      1000
+                    ]
+                  ]
+                ]
+              }
+            ],
+            "dependencies": {
+              "children": [],
+              "guides": [],
+              "timbers": []
+            }
+          }
+        ],
+        "timbers": [],
+        "timberSupports": {
+          "schema": "native-timber-supports/1",
+          "sourceFingerprint": "f0172a53edc4cdd6aa22350537ebc51b66b062679d2f8db8f06f464a4fc0f510",
+          "entries": []
+        },
+        "specs": [],
+        "datums": [],
+        "engineeringSources": [],
+        "assembly": {
+          "capabilities": [
+            "assembly-rule-authoring/1",
+            "assembly-timber-generation/1"
+          ],
+          "rules": [],
+          "bindings": [],
+          "instances": []
+        }
+      }
+    },
+    {
+      "command": "objects",
+      "response": {
+        "ok": true,
+        "faces": [
+          {
+            "kind": "boundary",
+            "boundaryKind": "unspecified",
+            "id": 1,
+            "placed": true,
+            "bbox": [
+              0,
+              0,
+              4000,
+              3000
+            ],
+            "cx": 0,
+            "cy": 0,
+            "hasPos": false
+          }
+        ],
+        "spaces": [],
+        "columns": [],
+        "beams": [],
+        "gridSystems": [
+          {
+            "kind": "grid-system",
+            "id": 0,
+            "name": "天花 網格 A",
+            "mode": "legacy-finite",
+            "mainAlong": null,
+            "uDefinition": {
+              "source": "explicit",
+              "coordinates": [
+                500,
+                1000,
+                1500
+              ]
+            },
+            "vDefinition": {
+              "source": "explicit",
+              "coordinates": [
+                1000,
+                2000
+              ]
+            },
+            "nextRuleKey": 1,
+            "rules": [],
+            "applications": [
+              {
+                "grid": 10,
+                "surface": 1
+              }
+            ],
+            "bindings": [],
+            "cx": 0,
+            "cy": 0,
+            "hasPos": false
+          },
+          {
+            "kind": "grid-system",
+            "id": 1,
+            "name": "天花 網格 A",
+            "mode": "legacy-finite",
+            "mainAlong": null,
+            "uDefinition": {
+              "source": "explicit",
+              "coordinates": [
+                500,
+                1000,
+                1500,
+                2000
+              ]
+            },
+            "vDefinition": {
+              "source": "explicit",
+              "coordinates": [
+                1000,
+                2000
+              ]
+            },
+            "nextRuleKey": 1,
+            "rules": [],
+            "applications": [],
+            "bindings": [],
+            "cx": 0,
+            "cy": 0,
+            "hasPos": false
+          }
+        ],
+        "parameters": [],
+        "assemblyRules": [],
+        "assemblyBindings": [],
+        "parameterUses": [],
+        "gridBindings": [],
+        "timbers": []
+      }
+    },
+    {
+      "command": "dump",
+      "response": {
+        "ok": true,
+        "text": "boundary 1 outline 0,0 4000,0 4000,3000 0,3000\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\ngrid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u explicit 500 1000 1500 v explicit 1000 2000\ngrid-system 1 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u explicit 500 1000 1500 2000 v explicit 1000 2000\ngrid 10 on 1 from-system 0 origin 0 0\nsubgrid 11 parent 10 cell u line:0 line:1 v min line:0 divisions u 2 v 1\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 16,
+        "definition_sha256": "f0172a53edc4cdd6aa22350537ebc51b66b062679d2f8db8f06f464a4fc0f510"
+      }
+    },
+    {
+      "command": "references",
+      "response": {
+        "ok": true,
+        "sourceFingerprint": "f0172a53edc4cdd6aa22350537ebc51b66b062679d2f8db8f06f464a4fc0f510",
+        "guides": [],
+        "grids": [
+          {
+            "id": 10,
+            "surface": 1,
+            "bindingId": null,
+            "indexSpace": "ordinal",
+            "sourceSystem": 0,
+            "origin": [
+              0,
+              0
+            ],
+            "kind": "main",
+            "parentId": null,
+            "cell": null,
+            "divisions": null,
+            "bounds": {
+              "u": [
+                0,
+                4000
+              ],
+              "v": [
+                0,
+                3000
+              ]
+            },
+            "mainAlong": null,
+            "geometryMode": "exact",
+            "geometryExact": true,
+            "u": [
+              500,
+              1000,
+              1500
+            ],
+            "uDefinition": {
+              "source": "explicit",
+              "coordinates": [
+                500,
+                1000,
+                1500
+              ]
+            },
+            "v": [
+              1000,
+              2000
+            ],
+            "vDefinition": {
+              "source": "explicit",
+              "coordinates": [
+                1000,
+                2000
+              ]
+            },
+            "lines": [
+              {
+                "axis": "u",
+                "index": 0,
+                "coordinate": 500,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      500,
+                      0
+                    ],
+                    [
+                      500,
+                      3000
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "u",
+                "index": 1,
+                "coordinate": 1000,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      1000,
+                      0
+                    ],
+                    [
+                      1000,
+                      3000
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "u",
+                "index": 2,
+                "coordinate": 1500,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      1500,
+                      0
+                    ],
+                    [
+                      1500,
+                      3000
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "v",
+                "index": 0,
+                "coordinate": 1000,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      0,
+                      1000
+                    ],
+                    [
+                      4000,
+                      1000
+                    ]
+                  ]
+                ]
+              },
+              {
+                "axis": "v",
+                "index": 1,
+                "coordinate": 2000,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      0,
+                      2000
+                    ],
+                    [
+                      4000,
+                      2000
+                    ]
+                  ]
+                ]
+              }
+            ],
+            "dependencies": {
+              "children": [
+                11
+              ],
+              "guides": [],
+              "timbers": []
+            }
+          },
+          {
+            "id": 11,
+            "surface": 1,
+            "bindingId": null,
+            "indexSpace": "ordinal",
+            "sourceSystem": null,
+            "origin": [
+              0,
+              0
+            ],
+            "kind": "subgrid",
+            "parentId": 10,
+            "latticeCell": null,
+            "cellMode": "ordinal",
+            "cell": {
+              "u": [
+                "line:0",
+                "line:1"
+              ],
+              "v": [
+                "min",
+                "line:0"
+              ]
+            },
+            "divisions": {
+              "u": 2,
+              "v": 1
+            },
+            "bounds": {
+              "u": [
+                500,
+                1000
+              ],
+              "v": [
+                0,
+                1000
+              ]
+            },
+            "mainAlong": null,
+            "geometryMode": "exact",
+            "geometryExact": true,
+            "u": [
+              750
+            ],
+            "uDefinition": {
+              "source": "subgrid",
+              "divisions": 2
+            },
+            "v": [],
+            "vDefinition": {
+              "source": "subgrid",
+              "divisions": 1
+            },
+            "lines": [
+              {
+                "axis": "u",
+                "index": 0,
+                "coordinate": 750,
+                "role": "secondary",
+                "priority": 3,
+                "segments": [
+                  [
+                    [
+                      750,
+                      0
+                    ],
+                    [
+                      750,
+                      1000
+                    ]
+                  ]
+                ]
+              }
+            ],
+            "dependencies": {
+              "children": [],
+              "guides": [],
+              "timbers": []
+            }
+          }
+        ],
+        "timbers": [],
+        "timberSupports": {
+          "schema": "native-timber-supports/1",
+          "sourceFingerprint": "f0172a53edc4cdd6aa22350537ebc51b66b062679d2f8db8f06f464a4fc0f510",
+          "entries": []
+        },
+        "specs": [],
+        "datums": [],
+        "engineeringSources": [],
+        "assembly": {
+          "capabilities": [
+            "assembly-rule-authoring/1",
+            "assembly-timber-generation/1"
+          ],
+          "rules": [],
+          "bindings": [],
+          "instances": []
+        }
+      }
+    },
+    {
+      "command": "objects",
+      "response": {
+        "ok": true,
+        "faces": [
+          {
+            "kind": "boundary",
+            "boundaryKind": "unspecified",
+            "id": 1,
+            "placed": true,
+            "bbox": [
+              0,
+              0,
+              4000,
+              3000
+            ],
+            "cx": 0,
+            "cy": 0,
+            "hasPos": false
+          }
+        ],
+        "spaces": [],
+        "columns": [],
+        "beams": [],
+        "gridSystems": [
+          {
+            "kind": "grid-system",
+            "id": 0,
+            "name": "天花 網格 A",
+            "mode": "legacy-finite",
+            "mainAlong": null,
+            "uDefinition": {
+              "source": "explicit",
+              "coordinates": [
+                500,
+                1000,
+                1500
+              ]
+            },
+            "vDefinition": {
+              "source": "explicit",
+              "coordinates": [
+                1000,
+                2000
+              ]
+            },
+            "nextRuleKey": 1,
+            "rules": [],
+            "applications": [
+              {
+                "grid": 10,
+                "surface": 1
+              }
+            ],
+            "bindings": [],
+            "cx": 0,
+            "cy": 0,
+            "hasPos": false
+          },
+          {
+            "kind": "grid-system",
+            "id": 1,
+            "name": "天花 網格 A",
+            "mode": "legacy-finite",
+            "mainAlong": null,
+            "uDefinition": {
+              "source": "explicit",
+              "coordinates": [
+                500,
+                1000,
+                1500,
+                2000
+              ]
+            },
+            "vDefinition": {
+              "source": "explicit",
+              "coordinates": [
+                1000,
+                2000
+              ]
+            },
+            "nextRuleKey": 1,
+            "rules": [],
+            "applications": [],
+            "bindings": [],
+            "cx": 0,
+            "cy": 0,
+            "hasPos": false
+          }
+        ],
+        "parameters": [],
+        "assemblyRules": [],
+        "assemblyBindings": [],
+        "parameterUses": [],
+        "gridBindings": [],
+        "timbers": []
+      }
+    }
+  ],
+  "cleanupErrors": [],
+  "pid": 262530,
+  "exitCode": 0,
+  "stderrSha256": "e0a4bf0ba26d31b3454b437d4944d41de5c49beb4a474f4e87cff8a8625f46b2",
+  "sanitizerDiagnostic": false,
+  "unexpectedStdoutTail": false
+}

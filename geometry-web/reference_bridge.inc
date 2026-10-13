@@ -124,6 +124,7 @@ static void json_reference_preview(void)
     json_boundary_preview();
     fputs(",\"assembly\":{\"before\":",stdout);json_assembly_state(&g_preview.before,false);
     fputs(",\"after\":",stdout);json_assembly_state(&g_preview.after,false);putchar('}');
+    json_section_profile_impact(&g_preview.before,&g_preview.after);
     fputs(",\"violations\":[",stdout);
     for (size_t i=0;i<g_preview.issue_count;++i) {
         const ReferenceIssue *e=&g_preview.issues[i];

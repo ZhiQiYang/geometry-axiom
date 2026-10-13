@@ -53,8 +53,11 @@ window.FaceProjection = (() => {
       `<p id="fpMessage" role="status" aria-live="polite"></p></div>` +
       `<footer class="fp-footer"><button type="button" id="fpCancel">取消</button><button type="button" id="fpApply">套用定義</button><button type="button" id="fpApplyBuild" class="fp-primary">保存定義並建立空間</button></footer>`;
     document.body.appendChild(dialog);
-    $("fpClose").onclick = $("fpCancel").onclick = () => dialog.close();
-    dialog.addEventListener("close", () => { session = null; serial++; });
+    $("fpClose").onclick = $("fpCancel").onclick = () => closeSession();
+    dialog.addEventListener("cancel", event => {
+      event.preventDefault();
+      closeSession();
+    });
     $("fpPlacement").onchange = () => {
       if (session && formSignature() !== session.formSignature) {
         $("fpPlacement").value=String(session.surface?.id ?? "");
@@ -65,6 +68,14 @@ window.FaceProjection = (() => {
     $("fpPurpose").onchange = $("fpView").onchange = $("fpInterior").onchange = () => {update();if(session&&!session.invalid)message("這些修改尚未套用。按「套用定義」後，再保存專案；取消會捨棄修改。");};
     $("fpApply").onclick = () => apply(false); $("fpApplyBuild").onclick = () => apply(true);
     $("fpGoPlace").onclick = goPlace;
+  }
+  function closeSession(current = session) {
+    if (session !== current) return;
+    session = null;
+    if (current && serial === current.generation) serial++;
+    // Retire this session synchronously. The native close notification is
+    // queued and may arrive after another open has started or become visible.
+    if (dialog?.open) dialog.close();
   }
   function signature(s, loops) { return JSON.stringify([s ? [s.id,s.boundary,s.origin,s.u,s.v] : null, loops]); }
   function formSignature() { return JSON.stringify([$("fpPurpose").value,$("fpView").value,$("fpInterior").checked]); }
@@ -79,7 +90,7 @@ window.FaceProjection = (() => {
     try {
       const source = await readSource(Number(bid));
       if (seq !== serial || ReferenceWorkspace.context().id !== contextId) return;
-      session = {bid:Number(bid),contextId,source,options,invalid:false,
+      session = {bid:Number(bid),contextId,source,options,invalid:false,generation:seq,
         frame:ReferenceWorkspace.history.frame,historyTop:ReferenceWorkspace.history.undo.at(-1),
         faceKey:ReferenceWorkspace.history.frame.ids.get(Number(bid))};
       $("fpTitle").textContent = `面 ${bid} · 平面投影定義`;
@@ -140,7 +151,7 @@ window.FaceProjection = (() => {
           signature(s,fresh.loops) !== current.signature || JSON.stringify(get(current.bid,current.surface.id)) !== JSON.stringify(current.original)) throw new Error("來源面、放置或定義已變更。請關閉並重新開啟設定，確認最新內容。");
       ReferenceWorkspace.setFaceProjection(current.bid,current.surface.id,definition);
       const payload = {boundary_id:current.bid,placement_id:current.surface.id,definition:clone(definition),build};
-      dialog.close();
+      closeSession(current);
       if (current.options.onApplied) await current.options.onApplied(payload);
       else if (build) await window.SpaceModelWorkspace?.openCurrentFace(current.surface.id);
       else if (typeof toast === "function") toast(definition ? "已套用平面投影定義，請保存專案。" : "已恢復為一般面，請保存專案。");
@@ -150,7 +161,7 @@ window.FaceProjection = (() => {
   async function goPlace() {
     if (!session) return;
     if(formSignature() !== session.formSignature) {message("請先套用投影定義，或取消本次修改，再編輯圖面放置。",true);return;}
-    const bid=session.bid, pid=session.surface?.id; dialog.close();
+    const bid=session.bid, pid=session.surface?.id; closeSession();
     window.SpaceModelWorkspace?.close();
     // Expose the existing placement form; no placement or geometry is changed here.
     if (oc.focus?.t !== "face" || oc.focus.id !== bid) await enterFocus("face",bid);
@@ -340,18 +351,19 @@ function inspectorState(pane, bid) {
   return { focus: pane.contains(a) ? a.id : "", scroll: pane.parentElement.scrollTop,
     ownScroll: pane.scrollTop,
     placement: pane.dataset.placement, timberRoleManual: pane.dataset.tbRoleManual,
-    timberDirManual: pane.dataset.tbDirManual,
+    timberDirManual: pane.dataset.tbDirManual, timberSectionManual:pane.dataset.tbSectionManual,
     referencePage: pane.dataset.referencePage, calibrationPoints: pane.dataset.calibrationPoints,
     gridIdentity: pane.dataset.gridIdentity,
     drafts: [...pane.querySelectorAll("input[id],select[id]")]
-      .filter(e => /^(tb|ref|grid|subgrid|place[OUV]|ulCalib)/.test(e.id)).map(e => [e.id, e.value]),
+      .filter(e => !e.matches("[data-room-edge-length]") && /^(tb|ref|grid|subgrid|place[OUV]|ulCalib)/.test(e.id)).map(e => [e.id, e.value, e.selectedOptions?.[0]?.textContent]),
     details: [...pane.querySelectorAll("details[id]")].map(e => [e.id, e.open]) };
 }
 function restoreInspectorState(pane, state) {
   if (!state) return;
   pane.dataset.tbRoleManual = state.timberRoleManual || "false";
   pane.dataset.tbDirManual = state.timberDirManual || "false";
-  for (const [id, value] of state.drafts) {
+  pane.dataset.tbSectionManual = state.timberSectionManual || "false";
+  for (const [id, value, label] of state.drafts) {
     /* A model change (including undo) replaces placement values; ordinary
        redraws still preserve an unfinished placement draft. */
     if (/^place[OUV]/.test(id) && state.placement !== pane.dataset.placement) continue;
@@ -359,7 +371,14 @@ function restoreInspectorState(pane, state) {
     if (/^(ref|ulCalib)/.test(id) && state.referencePage !== pane.dataset.referencePage) continue;
     if (/^ulCalib/.test(id) && state.calibrationPoints !== pane.dataset.calibrationPoints) continue;
     if (/^(grid|subgrid)/.test(id) && state.gridIdentity !== pane.dataset.gridIdentity) continue;
-    const e = pane.querySelector(`#${id}`); if (e) e.value = value;
+    const e = pane.querySelector(`#${id}`);
+    // A native rollback publishes metadata before its reference snapshot is
+    // reloaded. Retain the full typed raw reference as unavailable, rather
+    // than silently clearing it when rebuilding the select in that interval.
+    if(e?.tagName==='SELECT'&&(GridRuleLines.parseAnchor(value)||GridRuleLines.parseExpression(value))&&![...e.options].some(o=>o.value===value)){
+      const pending=new Option((label||value)+'（等待原生核對）',value);pending.disabled=true;e.add(pending);
+    }
+    if (e) e.value = value;
   }
   for (const [id, open] of state.details) {
     if (/^ref/.test(id) && state.referencePage !== pane.dataset.referencePage) continue;
@@ -367,6 +386,80 @@ function restoreInspectorState(pane, state) {
   }
   if (state.focus) pane.querySelector(`#${state.focus}`)?.focus({ preventScroll: true });
   pane.parentElement.scrollTop = state.scroll; pane.scrollTop = state.ownScroll;
+}
+/* Some fields, including the advanced guide expression, are hidden until later
+   in the same rebuild. Focusing them above does not stick. Reapply the
+   snapshot target only after its visibility is final, and leave a different
+   control in this pane alone so a late read cannot take the keyboard back. */
+function reapplyInspectorFocus(pane, state) {
+  if (!state?.focus) return;
+  const target = pane.querySelector("#" + state.focus);
+  if (!target || target.disabled || !target.getClientRects().length || document.activeElement === target) return;
+  if (pane.contains(document.activeElement)) return;
+  target.focus({ preventScroll: true });
+}
+/* Edge lengths are outside the face draft filter. Keep a typed value when the
+   same boundary is rebuilt and the model length is unchanged. Also keep a
+   keystroke typed while a commit is in flight: edgePending is that submission,
+   and the rebuilt field shows it after the commit lands. */
+/* Removing a focused edge field fires change. That event is the redraw, not a
+   new submission, so the handler must ignore it. */
+function disarmEdgeInputs(pane) {
+  if (!pane) return;
+  for (const input of pane.querySelectorAll("input[data-edge-len]")) input.dataset.edgeSuppress = "1";
+}
+let edgeInputSequence = 0;
+function trackEdgeInput(input) {
+  input.addEventListener("input", () => { input.dataset.edgeRevision = String(++edgeInputSequence); });
+}
+function beginEdgeSubmission(pane, input) {
+  const submission = String(++edgeInputSequence);
+  input.dataset.edgePending = input.value;
+  input.dataset.edgeSubmission = submission;
+  return { pane, owner: pane.dataset.redrawOwner, id: input.id, submission,
+    revision: input.dataset.edgeRevision || "", value: input.value };
+}
+function finishEdgeSubmission(submitted, rejected = false) {
+  const { pane, owner, id, submission, revision, value } = submitted;
+  if (pane.dataset.redrawOwner !== owner) return false;
+  const input = pane.querySelector("#" + id);
+  if (!input || input.dataset.edgeSubmission !== submission) return false;
+  // The DOM node may have been replaced. Submission and input generations
+  // travel with its draft; typing the same string again is still a new draft.
+  if (rejected && (input.dataset.edgeRevision || "") === revision && input.value === value)
+    input.value = input.defaultValue;
+  delete input.dataset.edgePending;
+  delete input.dataset.edgeSubmission;
+  return true;
+}
+function captureDirtyInputs(pane) {
+  if (!pane) return null;
+  const active = document.activeElement;
+  const edits = [];
+  for (const input of pane.querySelectorAll("input[data-edge-len][id]")) {
+    if (!/^[A-Za-z][\w-]*$/.test(input.id) || (input.value === input.defaultValue && !input.dataset.edgeSubmission)) continue;
+    edits.push({ id: input.id, value: input.value, model: input.defaultValue,
+      pending: input.dataset.edgePending || "", submission: input.dataset.edgeSubmission || "",
+      revision: input.dataset.edgeRevision || "", focus: active === input });
+  }
+  return { owner: pane.dataset.redrawOwner || "", edits };
+}
+function restoreDirtyInputs(pane, snap) {
+  if (!pane || !snap?.owner || pane.dataset.redrawOwner !== snap.owner) return;
+  for (const edit of snap.edits) {
+    const input = pane.querySelector("#" + edit.id);
+    if (!input) continue;
+    const modelUnchanged = input.value === edit.model;
+    const appliedPending = edit.pending !== "" && input.value === edit.pending && edit.value !== edit.pending;
+    if (!modelUnchanged && !appliedPending) continue;
+    input.value = edit.value;
+    input.dataset.edgeRevision = edit.revision;
+    if (edit.submission) {
+      input.dataset.edgePending = edit.pending;
+      input.dataset.edgeSubmission = edit.submission;
+    }
+    if (edit.focus && !pane.contains(document.activeElement)) input.focus({ preventScroll: true });
+  }
 }
 
 /* DrawStyle 外觀表：與 STYLE_SPEC + SVG 後端的 CSS 同一份值。 */
@@ -521,7 +614,7 @@ document.addEventListener("keydown", e => {
 }, true);
 async function apiRequest(cmd, roomLease = null) {
   const rollback = cmd === "line history-abort";
-  if (/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm )/.test(cmd)) {
+  if (/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(cmd)) {
     try { if (roomLease) RoomCollectionWorkspace.assertTransaction(roomLease); else { ReferenceWorkspace.assertAssemblyIdle(); if (!rollback) ReferenceWorkspace.assertEditable?.(); } }
     catch (error) { return {ok:false,error:error.message}; }
   }
@@ -535,7 +628,7 @@ async function apiRequest(cmd, roomLease = null) {
   const releaseNativeOperation = ReferenceWorkspace.beginNativeOperation?.(cmd);
   try {
   const t0 = performance.now();
-  const requestId = connection.session && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm )/.test(cmd) ? crypto.randomUUID() : null;
+  const requestId = connection.session && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(cmd) ? crypto.randomUUID() : null;
   const ack = [...acknowledgedApiResults];
   let confirmation = null;
   const featureToken=cmd.match(/^line confirm (\S+)$/)?.[1];
@@ -544,7 +637,7 @@ async function apiRequest(cmd, roomLease = null) {
     try{confirmation=ReferenceWorkspace.beginFeatureConfirmation(featureToken);}catch(error){return {ok:false,error:error.message};}
     if(confirmation)pendingAssemblyConfirmations.set(requestId,confirmation);
   }
-  if (cmd.startsWith('assembly-confirm ')) {
+  if (/^(assembly-confirm|section-profile-confirm) /.test(cmd)) {
     if (!requestId) return {ok:false,error:"請先確認服務連線，再確認組構變更。"};
     try { confirmation = ReferenceWorkspace.beginAssemblyConfirmation(); }
     catch (error) { return {ok:false,error:error.message}; }
@@ -597,7 +690,7 @@ async function apiRequest(cmd, roomLease = null) {
   if (current) ReferenceWorkspace.observe(cmd, res);
   if (confirmation) { ReferenceWorkspace.finishAssemblyConfirmation(confirmation); pendingAssemblyConfirmations.delete(requestId); }
   if (current && res.ok && !res.preview && res.history_changed !== false &&
-      /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm )/.test(cmd) &&
+      /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(cmd) &&
       !/^line\s+(?:$|#|preview\b|cancel-preview\b|history-(?:begin|end)\b|canvas\b)/.test(cmd))
     window.dispatchEvent(new CustomEvent('geometry-definition-changed',{detail:{command:cmd}}));
   window.fbRecord?.("api", { cmd: String(cmd).slice(0, 500), ok: res.ok !== false, error: res.error,
@@ -813,9 +906,11 @@ function replay(ops, root) {
 }
 
 /* ---- 重繪 ---- */
-async function render() {
+async function render(current = presentationCurrent()) {
+  if (!current()) return;
   hoverPickScheduler.cancel();
   const r = await api("render");
+  if (!current()) return;
   if (!r.ok) { layout = null; world.textContent = ""; setStatus("✗ " + (r.error || "場景沒有可畫的表面")); toast(r.error || "場景沒有可畫的表面"); return; }
   layout = r.layout;
   world.textContent = "";
@@ -1012,18 +1107,20 @@ cv.addEventListener("pointerdown", async e => {
   })().catch(err => { d.failed = true; toast(err.message || "選取失敗"); });
 });
 cv.addEventListener("pointerup", async e => {
+  // Retire a pending down synchronously, before any bridge continuation.
+  const gesture = e.button === 0 ? retireCanvasGesture(e) : null;
   if (e.button === 1) panning = null;
   if (e.button === 0 && dragging) await finishGuideDrag(false, screenToView(e.clientX, e.clientY));
   if (tool !== "view" && e.button === 0) {
     const sv = screenToView(e.clientX, e.clientY);
-    await canvasUp(e, sv);
+    await canvasUp(e, sv, gesture);
   }
   document.body.classList.toggle("v3-picked", !!selected);
   applyTransform();
 });
 cv.addEventListener("pointerleave", () => { hoverPickScheduler.cancel(); clearMainHover(); });
-cv.addEventListener("pointercancel", () => { hoverPickScheduler.cancel(); panning = null; finishGuideDrag(true); });
-cv.addEventListener("lostpointercapture", () => { if (dragging) finishGuideDrag(true); });
+cv.addEventListener("pointercancel", e => { retireCanvasGesture(e, true); hoverPickScheduler.cancel(); panning = null; finishGuideDrag(true); });
+cv.addEventListener("lostpointercapture", e => { retireCanvasGesture(e, true); if (dragging) finishGuideDrag(true); });
 cv.addEventListener("wheel", e => {
   e.preventDefault();
   const r = cv.getBoundingClientRect();
@@ -1053,14 +1150,43 @@ let tool = "view";
 let workSurfaces = [];        /* /surfaces 快取 */
 let rectStart = null;         /* 矩形起點 {u,v} */
 let editLoops = null;         /* 編輯中邊界 loops（[{verts,fixity}]） */
+let editToken = 0;            /* enterEdit 這一次的代號；離開或重進編輯即失效 */
 let editBid = 0;
-let editDrag = null;          /* {loop,index,kind} */
+let editDrag = null;
+let canvasGesture = null, rectGesture = null, canvasGestureSequence = 0, faceGestureSequence = 0;
+function beginCanvasGesture(event) {
+  retireCanvasGesture(null, true);
+  const sequence = ++canvasGestureSequence;
+  const owner = presentationCurrent(), bid = editBid, loops = editLoops;
+  const gesture = { sequence, pointerId: event.pointerId, live: true, owner,
+    current: () => canvasGesture === gesture && gesture.live && owner() && editBid === bid && editLoops === loops };
+  canvasGesture = gesture;
+  return gesture;
+}
+function retireCanvasGesture(event, cancel = false) {
+  const gesture = canvasGesture;
+  if (!gesture || (event && event.pointerId !== gesture.pointerId)) return null;
+  const ownsPresentation = gesture.owner();
+  canvasGesture = null;
+  gesture.live = false;
+  if (cancel) {
+    ++canvasGestureSequence;
+    const ownsDrag = editDrag?.gesture === gesture.sequence, ownsRect = rectGesture === gesture;
+    if (ownsDrag) editDrag = null;
+    if (ownsRect) { rectStart = null; rectGesture = null; }
+    if ((ownsDrag || ownsRect) && ownsPresentation) {
+      previewClear();
+      if (tool === "edit") void drawEditHandles();
+    }
+  }
+  return gesture;
+}          /* {loop,index,kind} */
 let affineCache = {};         /* "v:sid" → uv↔view-mm 仿射映射 */
 let previewGs = [];
 
 /* uv↔view-mm 仿射映射：取 3 個 proj 樣本解出（C 端永遠是計算來源）。 */
 async function uvMapFor(v, sid) {
-  const key = v + ":" + sid;
+  const key = v + ":" + sid, cache = affineCache, current = presentationCurrent();
   if (affineCache[key]) return affineCache[key];
   const [p00, p10, p01] = await Promise.all([
     api(`proj ${v} 0 0 ${sid}`),
@@ -1075,7 +1201,7 @@ async function uvMapFor(v, sid) {
   };
   m.det = m.ax * m.by - m.ay * m.bx;
   if (!m.det) return null;                    /* 這視圖看不到這面 */
-  affineCache[key] = m;
+  if (cache === affineCache && current()) cache[key] = m;
   return m;
 }
 function mapUv(m, u, v) {
@@ -1137,15 +1263,34 @@ function previewPoly(m, pts, close, g) {
 function vertsStr(pts) { return pts.map(p => `${p[0]},${p[1]}`).join(" "); }
 function fixityStr(fx) { return fx.map(f => f ? "F" : "X").join(" "); }
 
+// A native edit may finish after its initiating workspace or tool was left.
+// Its result remains real, but only that presentation may consume the reply.
+function presentationCurrent() {
+  const context = ReferenceWorkspace.context(), frame = ReferenceWorkspace.history.frame,
+    session = connection.session, focus = oc.focus, edit = oc.edit, objectMode = oc.on,
+    navigation = oc.navigationSequence, threeView = view3, activeTool = tool,
+    token = editToken, surface = $("workSurf").value, gestureSequence = canvasGestureSequence, faceSequence = faceGestureSequence;
+  return () => ReferenceWorkspace.context() === context && ReferenceWorkspace.history.frame === frame &&
+    connection.session === session && oc.focus === focus && oc.edit === edit && oc.on === objectMode &&
+    oc.navigationSequence === navigation && view3 === threeView && tool === activeTool &&
+    editToken === token && $("workSurf").value === surface && canvasGestureSequence === gestureSequence && faceGestureSequence === faceSequence;
+}
 async function emitLine(text, options = {}) {
   if (oc.busy) return false;
+  if(options.operation&&!options.operation.current())return false;
+  const owner = presentationCurrent();
+  const current = () => owner() && (!options.operation?.ownsPresentation || options.operation.ownsPresentation());
   const r = await api("line " + text);
+  if (!current()) return r.ok;
   if (r.ok) {
     setStatus("✓ " + (options.successText || text));
     rectStart = null; previewClear();
     selected = null;
-    if (oc.on) await renderObjects();
-    else { await render(); await refreshSurfaces(); }
+    if (oc.on) await renderObjects({ current });
+    else {
+      await render(current);
+      if (current()) await refreshSurfaces(current);
+    }
   } else {
     setStatus("✗ " + (r.error || ""));
     toast(r.error || "指令失敗");
@@ -1154,9 +1299,9 @@ async function emitLine(text, options = {}) {
 }
 
 /* 在選定平面上建新「surface」（boundary + placement 合體一行）。 */
-async function emitNewSurface(pts) {
+async function emitNewSurface(pts, current = presentationCurrent(), s = curSurf()) {
   const ids = await api("newid");
-  const s = curSurf();
+  if (!current() || canvasGesture) return false;
   if (!s) { setStatus("✗ 沒有選工作面"); return false; }
   /* GEO-157：`surface` 一行同時宣告 boundary 與 placement，所以 id 必須兩邊都空。
      原本用 Math.max(ids.boundary, ids.placement) 湊——那只在「沒有回繞」時成立
@@ -1182,9 +1327,10 @@ async function emitBoundary(bid, loops) {
   return emitLine(s);
 }
 
-async function refreshSurfaces() {
+async function refreshSurfaces(current = presentationCurrent()) {
+  if (!current()) return;
   const r = await api("surfaces");
-  if (!r.ok) return;
+  if (!r.ok || !current()) return;
   workSurfaces = r.surfaces;
   const sel = $("workSurf"), keep = sel.value;
   sel.textContent = "";
@@ -1203,6 +1349,7 @@ async function refreshSurfaces() {
 }
 function syncV3PlaneControls() {
   const sel = $("workSurf"), bar = $("v3ToolbarSurf");
+  sel.closest('label').hidden=true; // Keep the original value/consumer, one visible entry in the toolbar.
   bar.innerHTML = sel.innerHTML;
   bar.value = sel.value;
   $("v3PlaneControls").hidden = tool !== "rect";
@@ -1215,6 +1362,8 @@ function syncV3PlaneControls() {
 
 /* ---- 編輯工具 ---- */
 async function enterEdit() {
+  retireCanvasGesture(null, true);
+  const token = ++editToken;
   editLoops = null; editBid = 0; editDrag = null; previewClear();
   const s = curSurf();
   if (!s || s.isNew || !s.boundary) {
@@ -1222,17 +1371,23 @@ async function enterEdit() {
     return;
   }
   const b = await api("boundary " + s.boundary);
+  if (token !== editToken || tool !== "edit") return;
   if (!b.ok) { setStatus("✗ " + (b.error || "")); return; }
+  if (token !== editToken || tool !== "edit") return;
   editLoops = b.loops; editBid = s.boundary;
   setStatus(`編輯邊界 ${editBid}：拖頂點拉角、拖邊平移；完成即重宣告`);
-  await drawEditHandles();
+  if (token !== editToken || tool !== "edit") { editLoops = null; editBid = 0; return; }
+  await drawEditHandles(token);
 }
 
-async function drawEditHandles() {
-  if (!editLoops) return;
+async function drawEditHandles(token = editToken, current = presentationCurrent()) {
+  if (token !== editToken || tool !== "edit" || !editLoops || !current()) return;
   previewClear();
   for (let v = 0; v < 3; ++v) {
     const m = await uvMap(v);
+    /* 這次投影對應已經過期。較新的編輯擁有目前手把，過期回覆不得清掉。 */
+    if (token !== editToken || tool !== "edit" || !current()) return;
+    if (!editLoops) { previewClear(); return; }
     if (!m) continue;                     /* det=0：此視圖看這面是線 */
     const g = previewIn(v);
     for (const loop of editLoops) {
@@ -1336,27 +1491,30 @@ function edgeListRowsHTML(loops, idPrefix) {
 
 /* ---- 畫布滑鼠流程 ---- */
 async function canvasDown(e, sv) {
+  const gesture = beginCanvasGesture(e), bid = editBid, loops = editLoops;
   const m = await uvMap(sv.v);
+  if (!gesture.current()) return;
   if (!m) { setStatus("這個視圖看不到工作面（換俯視圖或換工作面）"); return; }
   const uv = unmapView(m, sv.x, sv.y);
 
   if (tool === "rect" || tool === "hole") {
+    rectGesture = gesture;
     rectStart = uv; previewClear(); previewPoly(m, [[uv.u, uv.v], [uv.u, uv.v]], true, previewIn(sv.v));
   } else if (tool === "edit" && editLoops) {
-    const s = curSurf();
-    const h = await api(`bhit ${editBid} ${uv.u} ${uv.v} ${sv.r}`);
-    if (!h.ok) return;
-    editDrag = { loop: h.loop, index: h.index, kind: h.kind,
-                 loops: editLoops.map(l => ({ verts: l.verts.map(p => [...p]),
+    const h = await api(`bhit ${bid} ${uv.u} ${uv.v} ${sv.r}`);
+    if (!h.ok || !gesture.current()) return;
+    editDrag = { gesture: gesture.sequence, bid, loop: h.loop, index: h.index, kind: h.kind,
+                 loops: loops.map(l => ({ verts: l.verts.map(p => [...p]),
                                             fixity: [...l.fixity] })) };
     previewClear(); previewIn(sv.v);
   }
 }
 
 async function canvasMove(e, sv) {
-  if (tool === "view") return;
+  const gesture = canvasGesture, drag = editDrag, start = rectStart;
+  if (tool === "view" || !gesture?.current() || e.pointerId !== gesture.pointerId) return;
   const m = await uvMap(sv.v);
-  if (!m) return;
+  if (!m || !gesture.current() || editDrag !== drag || rectStart !== start) return;
   const uv = unmapView(m, sv.x, sv.y);
 
   if ((tool === "rect" || tool === "hole") && rectStart) {
@@ -1374,35 +1532,43 @@ async function canvasMove(e, sv) {
   }
 }
 
-async function canvasUp(e, sv) {
-  if ((tool === "rect" || tool === "hole") && rectStart) {
+async function canvasUp(e, sv, gesture) {
+  if (!gesture || !gesture.owner()) return;
+  const owner = gesture.owner, surface = curSurf(), activeTool = tool;
+  if ((tool === "rect" || tool === "hole") && rectStart && rectGesture === gesture) {
+    const st = rectStart;
     if (!sv) { rectStart = null; previewClear(); return; }
     const m = await uvMap(sv.v);
+    if (!owner() || rectStart !== st || rectGesture !== gesture) return;
     const uv = m ? unmapView(m, sv.x, sv.y) : null;
-    const st = rectStart; rectStart = null; previewClear();
+    rectStart = null; rectGesture = null; previewClear();
     if (!uv || st.u === uv.u || st.v === uv.v) return;
     const u0 = Math.min(st.u, uv.u), u1 = Math.max(st.u, uv.u);
     const v0 = Math.min(st.v, uv.v), v1 = Math.max(st.v, uv.v);
     const pts = [[u0, v0], [u1, v0], [u1, v1], [u0, v1]];
-    if (tool === "rect") {
-      await emitNewSurface(pts);
+    if (activeTool === "rect") {
+      await emitNewSurface(pts, owner, surface);
     } else {
       /* 挖孔：把矩形當新孔併進工作面的邊界，整體重宣告。 */
-      const s = curSurf();
+      const s = surface;
       if (!s || !s.boundary) { setStatus("✗ 挖孔要有邊界面的工作面"); return; }
       const b = await api("boundary " + s.boundary);
-      if (!b.ok) return;
+      if (!b.ok || !owner() || canvasGesture) return;
       b.loops.push({ verts: pts, fixity: pts.map(() => 1) });
       await emitBoundary(s.boundary, b.loops);
     }
-  } else if (tool === "edit" && editDrag) {
-    const loops = editDrag.loops; editDrag = null;
-    if (await emitBoundary(editBid, loops)) { await enterEdit(); }
-    else { await drawEditHandles(); }
+  } else if (tool === "edit" && editDrag?.gesture === gesture.sequence) {
+    const drag = editDrag; editDrag = null;
+    const ok = await emitBoundary(drag.bid, drag.loops);
+    if (!owner() || canvasGesture) return;
+    if (ok) await enterEdit();
+    else await drawEditHandles();
   }
 }
 
 async function v3SetTool(t) {
+  retireCanvasGesture(null, true);
+  if (t === "edit" || tool === "edit") editToken++;
   tool = t;
   $("tool").value = t;
   for (const b of document.querySelectorAll("[data-v3-tool]"))
@@ -1438,6 +1604,7 @@ $("v3ZoomFit").addEventListener("click", () => { zoom = 1; panX = panY = 0; appl
 for (const c of document.querySelectorAll("[data-v3-view],[data-v3-layer]"))
   c.addEventListener("change", () => { if (view3) render(); });
 $("workSurf").addEventListener("change", async () => {
+  retireCanvasGesture(null, true);
   syncV3PlaneControls();
   if (tool === "edit") await enterEdit();
 });
@@ -1730,6 +1897,11 @@ function bindMenu(btnId, popId) {
     }
     pop.hidden = !open;
     button.setAttribute("aria-expanded",String(open));
+    if(open && popId === 'fileMenuPop') {
+      closePanels();
+      pop.style.position='fixed';pop.style.right='auto';
+      positionCanvasMenu(pop,button);
+    }
     if (open && canvasMenu) {
       canvasMenuTrigger = button;
       positionCanvasMenu(pop,button);
@@ -1769,6 +1941,19 @@ document.addEventListener("focusin", e => {
   if (!canvasMenuTrigger) return;
   const pop = $(canvasMenuTrigger.getAttribute("aria-controls"));
   if (e.target !== canvasMenuTrigger && !pop?.contains(e.target)) closeMenus();
+});
+document.addEventListener("focusin", e => {
+  const nav = $("faceWorkspaceTools"), tool = e.target;
+  if (!nav || !tool?.matches?.(".workspace-tool") || !nav.contains(tool)
+      || tool !== document.activeElement || !nav.closest("#objectWorkspace:not([hidden])")
+      || nav.closest("[hidden]") || !nav.getClientRects().length
+      || getComputedStyle(tool).visibility !== "visible") return;
+  const box = nav.getBoundingClientRect(), rect = tool.getBoundingClientRect();
+  if (nav.clientWidth <= 0 || rect.width <= 0 || rect.height <= 0) return;
+  const padding = Math.min(3, Math.max(0, (nav.clientWidth - rect.width) / 2));
+  const left = box.left + nav.clientLeft + padding, right = box.left + nav.clientLeft + nav.clientWidth - padding;
+  const delta = rect.left < left ? rect.left - left : rect.right > right ? rect.right - right : 0;
+  if (delta) nav.scrollLeft += delta;
 });
 document.addEventListener("pointerdown", e => {
   if (!e.target.closest || !e.target.closest(".menu,[aria-controls$='Pop']")) closeMenus();
@@ -2126,23 +2311,24 @@ function rcCard(o, kind) {
 }
 
 /* ---- 渲染 ---- */
-async function renderObjects({ persistPositions = true } = {}) {
+async function renderObjects({ persistPositions = true, current = () => true } = {}) {
+  if (!current()) return false;
   const seq = ++ocSeq;
   const r = await api("objects");
-  if (!r.ok || seq !== ocSeq) return;
+  if (!r.ok || seq !== ocSeq || !current()) return;
   const sf = await api("surfaces");
-  if (!sf.ok || seq !== ocSeq) return false;
+  if (!sf.ok || seq !== ocSeq || !current()) return false;
   if (!Array.isArray(r.faces) || !Array.isArray(r.spaces) || !Array.isArray(sf.surfaces)) {
     connectionFailed("服務回傳的場景資料不完整，請重試。"); return false;
   }
   const boundaries = {};
   for (const f of r.faces.filter(f => f.kind === "boundary")) {
-    if (seq !== ocSeq) return false;
+    if (seq !== ocSeq || !current()) return false;
     const b = await api("boundary " + f.id);
     if (!b.ok || !Array.isArray(b.loops)) return false;
     boundaries[f.id] = b.loops;
   }
-  if (seq !== ocSeq || connection.phase === "error") return false;
+  if (seq !== ocSeq || !current() || connection.phase === "error") return false;
   oc.faces = r.faces; oc.spaces = r.spaces;
   oc.columns = r.columns || []; oc.beams = r.beams || [];
   oc.gridSystems = r.gridSystems || [];
@@ -2162,13 +2348,14 @@ async function renderObjects({ persistPositions = true } = {}) {
                     ...oc.gridSystems.filter(g => !g.hasPos),
                     ...oc.gridBindings.filter(g => !g.hasPos), ...oc.parameters.filter(g => !g.hasPos), ...oc.assemblyRules.filter(g=>!g.hasPos), ...oc.assemblyBindings.filter(g=>!g.hasPos)];
   for (const o of homeless) {
+    if (seq !== ocSeq || !current()) return false;
     const [cx, cy] = nextCardPosition(o, occupied);
     o.cx = cx; o.cy = cy;
     o.hasPos = true;
     const kind = o.members ? "space" : o.kind;
     if (persistPositions && connection.phase === "ready") {
       const placed = await api(`line canvas-pos ${kind} ${o.id} ${cx} ${cy}`);
-      if (!placed.ok) return false;
+      if (!placed.ok || seq !== ocSeq || !current()) return false;
     }
   }
 
@@ -2176,7 +2363,7 @@ async function renderObjects({ persistPositions = true } = {}) {
      HTTP connections when a projection creates many faces, and abandon an
      obsolete refresh before it can overwrite the current boundary cache.
      Keep the published cache usable until its complete replacement is ready. */
-  if (seq !== ocSeq) return;
+  if (seq !== ocSeq || !current()) return;
   drawObjects();
   /* C5:任何 mutate 成功後,空間工作區(含三視圖投影)自動重繪 */
   if (oc.focus && oc.focus.t === "space") await renderSpaceWorkspace();
@@ -2257,7 +2444,8 @@ function drawObjects() {
   for (const card of cl.children) {
     const kind = card.dataset.kind, id = +card.dataset.id;
     const box = cardBox(ocFind(kind, id));
-    const verb = kindOpenMode(kind, ocFind(kind, id)) === "workspace" ? "進入" : "檢查";
+    const openMode = kindOpenMode(kind, ocFind(kind, id));
+    const verb = openMode === "workspace" ? "進入" : "檢查";
     const action = el("g", { class: "card-enter", tabindex: 0, role: "button",
       "aria-label": `${verb}${KIND_ZH[kind] || ""} ${id}` }, card);
     el("rect", { x: box.w - 67, y: box.h - 58, width: 58, height: 24, rx: 6, fill: "#fff", stroke: "#dfe4eb" }, action);
@@ -2267,12 +2455,12 @@ function drawObjects() {
     action.addEventListener("pointerdown", e => { if (!oc.drawTool) e.stopPropagation(); });
     const enter = e => {
       if (oc.drawTool) return;
-      e.stopPropagation(); closePanels();
+      e.stopPropagation(); if (openMode === "workspace") closePanels();
       if (kind === "boundary" || kind === "space") enterFocus(kind === "space" ? "space" : "face", id);
       else if (kind.startsWith("assembly-")) window.AssemblyWorkspace.open(kind,id);
       else if (kind === "grid-binding") window.InfiniteGridWorkspace.openBinding(id);
       else if (kind === "grid-system" && ocFind(kind,id)?.mode === "infinite") window.InfiniteGridWorkspace.openSystem(id);
-      else { selectObject(kind, id); if (["grid-system","parameter"].includes(kind) && innerWidth <= 900) openPanel("right", $("toggleRight")); } };
+      else { if (!selectObject(kind, id)) return; closePanels(); if (["grid-system","parameter"].includes(kind) && innerWidth <= 900) openPanel("right", $("toggleRight")); } };
     action.addEventListener("click", enter);
     action.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); enter(e); } });
     if (kind === "space") {
@@ -2576,16 +2764,7 @@ async function leaveFocus() {
     try {await RoomCollectionWorkspace.cancel();} catch (error) {if(isCurrent())toast(error.message); return null;}
     if (!isCurrent()) return null;
   }
-  window.RoomOutlineWorkspace?.reset();
-  clearCanvasSelections({keepSingleObject:true});
-  GridEditor.clear();
-  closePanels();
-  if (pendingSlot?.bid != null && oc.focus?.t === "face" && oc.focus.id === pendingSlot.bid) pendingSlot = null;
-  oc.focus = oc.stack.pop() || null;
-  oc.rect = null; oc.edit = null; oc.drawTool = null;
-  renderCanvasModeHint();
-  fe.panHold = null; fe.work = null;
-  fe.draft = PolyDraft.createState(); fe.draftPreview = null; feSyncDraftMirror();
+  finishFocusExit(oc.stack.pop() || null);
   if (oc.focus && oc.focus.t === "face") {
     /* 上層仍是面工作區（巢狀）：重開 */
     const edit = oc.edit = { bid: oc.focus.id, contextId };
@@ -2597,16 +2776,36 @@ async function leaveFocus() {
     await openFaceWorkspace(edit.bid);
   } else if (oc.focus && oc.focus.t === "space") {
     await openSpaceWorkspace(oc.focus.id);
-  } else {
+  } else finishObjectCanvasExit();
+  if (!isCurrent()) return null;
+  drawObjects();
+  if (!oc.focus)setStatus(objectCanvasHelp());
+  return navigation;
+}
+/* Shared normal navigation lifecycle: presentation exits preserve boundary
+ * loops and authored face features. Only a project replacement resets them. */
+function finishFocusExit(next) {
+  window.RoomOutlineWorkspace?.reset();
+  clearCanvasSelections({keepSingleObject:true});
+  GridEditor.clear();
+  GridRuleLines.clear();
+  closePanels();
+  if (pendingSlot?.bid != null && oc.focus?.t === "face" && oc.focus.id === pendingSlot.bid) pendingSlot = null;
+  oc.focus = next;
+  oc.rect = null; oc.edit = null; oc.drawTool = null;
+  renderCanvasModeHint();
+  fe.panHold = null; fe.work = null;
+  fe.draft = PolyDraft.createState(); fe.draftPreview = null; feSyncDraftMirror();
+}
+function finishObjectCanvasExit() {
     $("objectWorkspace").hidden = true;
     fe.guides = [];
     oc.panX = 0; oc.panY = 0; oc.zoom = 1; ocApply();
-  }
-  if (!isCurrent()) return null;
-  drawObjects();
-  if (!oc.focus)
-    setStatus(objectCanvasHelp());
-  return navigation;
+}
+function commitSourceCanvasNavigation() {
+  if(window.RoomCollectionWorkspace?.hasWork||oc.busy||ReferenceWorkspace.getEvidenceState().blocked)throw Error('請先完成目前操作，再定位來源。');
+  ++oc.navigationSequence;
+  oc.stack=[];finishFocusExit(null);finishObjectCanvasExit();drawObjects();setStatus(objectCanvasHelp());
 }
 
 /* ---- 面內工作區（Phase 3）：objectWorkspace 殼 + data-face-hit 直編 ----
@@ -2709,7 +2908,7 @@ function gridAnchorCoordinate(grid, axis, index, band) {
 }
 function feChooseTimberAnchor(anchor) {
   const select=$("tbAnchor");if(!select)return;
-  if(![...select.options].some(o=>o.value===anchor) && gridAnchorParts(anchor) && feAnchorLineInfo(oc.edit?.bid,anchor))
+  if(![...select.options].some(o=>o.value===anchor) && (gridAnchorParts(anchor)||GridRuleLines.parseAnchor(anchor)) && feAnchorLineInfo(oc.edit?.bid,anchor))
     select.add(new Option(feTimberAnchorLabel(oc.edit?.bid,feSurf(oc.edit?.bid),anchor),anchor));
   select.value=anchor;
 }
@@ -2771,7 +2970,8 @@ const ReferenceVisibility = (() => {
   function anchorVisible(anchor) {
     const guide=/^at-line guide (\d+)$/.exec(anchor || "");
     const grid=gridAnchorParts(anchor || "");
-    return visible(guide ? guideKey(guide[1]) : grid ? gridKey(grid.id,grid.axis,grid.index) : "");
+    const rule=GridRuleLines.parseAnchor(anchor || '');
+    return visible(rule ? 'rule:'+GridRuleLines.key(rule) : guide ? guideKey(guide[1]) : grid ? gridKey(grid.id,grid.axis,grid.index) : "");
   }
   function groups() {
     const out=[];
@@ -2782,6 +2982,13 @@ const ReferenceVisibility = (() => {
     if(draft) {const i=grids.findIndex(g=>g.id===draft.id);if(i<0)grids.push(draft);else grids[i]=draft;}
     for(const g of grids) out.push({id:`grid:${g.id}`,label:`${g.kind === "subgrid" ? `子網格 ${g.id} · 主格 ${g.parentId}` : `主網格 ${g.id}`}${g === draft ? " · 草稿" : ""}`,items:
       ["u","v"].flatMap(axis=>gridLineEntries(g,axis).map(({coordinate:c,index:i})=>({key:gridKey(g.id,axis,i),label:`${gridLineLabel(g,axis,i)} · ${axis}=${c} mm`,axis,index:i}))) });
+    const ruleGroups=new Map();
+    for(const line of GridRuleLines.entries().filter(l=>l.segments.length)){
+      const id=`rule:${line.ref.appliedGridId}:${line.systemId}:${line.ruleKey}`;
+      if(!ruleGroups.has(id))ruleGroups.set(id,{id,label:`來源規則 ${line.systemId}/${line.ruleKey} · 套用 ${line.ref.appliedGridId}`,items:[]});
+      ruleGroups.get(id).items.push({key:'rule:'+GridRuleLines.key(line.ref),label:GridRuleLines.label(line.ref,line.name)+` · ${line.axis}=${line.coordinate} mm`});
+    }
+    out.push(...ruleGroups.values());
     return out;
   }
   function update() {
@@ -2822,7 +3029,9 @@ const ReferenceVisibility = (() => {
     const latticeIds=new Set(fe.grids.filter(g=>g.indexSpace==="lattice").map(g=>String(g.id)));
     const state=faces.get(oc.edit?.bid);if(state) for(const key of state) {
       const match=/^grid:(\d+):[uv]:-?\d+$/.exec(key);
-      if(!keys.has(key) && !(match && latticeIds.has(match[1])))state.delete(key);
+      const rule=key.startsWith('rule:')&&GridRuleLines.parseExpression('gridrule:'+key.slice(5));
+      const liveRule=rule&&fe.grids.some(g=>g.id===rule.appliedGridId&&g.sourceSystem===rule.systemId)&&oc.gridSystems.some(s=>s.id===rule.systemId&&s.rules?.some(r=>r.ruleKey===rule.ruleKey));
+      if(!keys.has(key) && !(match && latticeIds.has(match[1]))&&!liveRule)state.delete(key);
     }
   }
   function clear() {faces.clear();signature="";const box=$("faceReferenceVisibility");if(box){box.replaceChildren();box.hidden=true;}}
@@ -3342,6 +3551,7 @@ function renderSpacePlan(sp) {
       class: "space-plan-label" }, svg).textContent =
       `樑${bm.id} ${b[3] - b[0]}×${b[4] - b[1]}`;
   }
+  syncSpacePlanAnnotations();
 
   const preview = el("rect", { class: "space-plan-preview", visibility: "hidden" }, svg);
 
@@ -3361,6 +3571,8 @@ function renderSpacePlan(sp) {
     svg.dataset.spMoved = "";            /* 自訂游標讀取:按下未拖=點放柱 */
   };
   svg.onpointermove = ev => {
+    const point=toRoom(ev),metrics=$('spacePlanMetrics');
+    if(metrics)metrics.textContent=`x ${Math.round(point[0])} · y ${Math.round(point[1])} mm · 格距 ${svg.dataset.planGridStep} mm`;
     if (!drag) return;
     drag.p1 = toRoom(ev);
     const dx = Math.abs(drag.p1[0] - drag.p0[0]);
@@ -3417,6 +3629,21 @@ function renderSpacePlan(sp) {
     if (await emitLine(line)) await renderSpaceWorkspace();
   };
   svg.onpointercancel = () => { drag = null; preview.setAttribute("visibility", "hidden"); };
+}
+function syncSpacePlanAnnotations(){
+  const svg=$('spacePlanSvg'),matrix=svg?.getScreenCTM();if(!svg||svg.hidden||!matrix)return;
+  const scale=Math.hypot(matrix.a,matrix.b);if(!Number.isFinite(scale)||scale<=0)return;
+  for(const label of svg.querySelectorAll('.space-plan-label'))label.style.fontSize=(12/scale)+'px';
+  const step=10**Math.floor(Math.log10(80/scale)),box=svg.viewBox.baseVal;
+  svg.dataset.planGridStep=String(step);
+  let grid=svg.querySelector('[data-plan-grid]');
+  if(!grid){const defs=el('defs',{},svg),pattern=el('pattern',{id:'spacePlanGridPattern',patternUnits:'userSpaceOnUse'},defs);
+    el('path',{'data-plan-grid-path':'',fill:'none',stroke:'var(--border)','stroke-width':1,'vector-effect':'non-scaling-stroke'},pattern);
+    grid=el('rect',{'data-plan-grid':'',fill:'url(#spacePlanGridPattern)','pointer-events':'none'},svg);svg.prepend(defs,grid);}
+  const pattern=svg.querySelector('#spacePlanGridPattern');pattern.setAttribute('width',step);pattern.setAttribute('height',step);
+  pattern.firstChild.setAttribute('d',`M ${step} 0 H 0 V ${step}`);
+  for(const [key,value] of Object.entries({x:box.x,y:box.y,width:box.width,height:box.height}))grid.setAttribute(key,value);
+  const metrics=$('spacePlanMetrics');if(metrics)metrics.textContent=`x ${Math.round(box.x)}…${Math.round(box.x+box.width)} · y ${Math.round(box.y)}…${Math.round(box.y+box.height)} mm · 格距 ${step} mm`;
 }
 
 /* C3:六槽語意名+軸向副標;空槽「＋放置一片面到這裡」→ 進游離面帶入對應預設 */
@@ -4219,6 +4446,7 @@ function feGuidePickShow(u, v, cx, cy) {
 }
 
 async function feLoadGuides() {
+  GridRuleLines.clear();
   const loadSeq = ++fe.guidesLoadSeq;
   fe.guides = []; fe.specs = []; fe.timbers = []; fe.timberReferenceData = null; fe.grids = []; fe.gridPreview = null; fe.obstacles = null;
   const edit = oc.edit, focus = oc.focus, context = ReferenceWorkspace.context(), frame = ReferenceWorkspace.history.frame, session = connection.session;
@@ -4239,6 +4467,9 @@ async function feLoadGuides() {
   for(const grid of grids)grid.engineeringSources=(r.engineeringSources || []).filter(source=>source.target.kind==='grid' && source.target.id===grid.id);
   const dump = await api("dump");
   if (!current()) return;
+  const sourceIndex=await apiRequest('source-inspect');
+  if(!current()||!sourceIndex.ok||sourceIndex.sourceFingerprint!==r.sourceFingerprint)return;
+  fe.referenceRevision=sourceIndex.revision;
   const gridRefs = [...(dump.text || "").matchAll(/^place (\d+) on \d+ at-line grid (\d+) ([uv]) (-?\d+)(?: band (-?\d+))?(?=\s|$)/gm)];
   for (const g of grids) g.references = gridRefs.filter(m => +m[2] === g.id).map(m => ({timber:+m[1],axis:m[3],index:g.indexSpace==="lattice" ? m[4] : +m[4]}));
   fe.guides = guides; fe.specs = r.specs || []; fe.timbers = timbers; fe.grids = grids; fe.timberReferenceData = r;
@@ -4302,6 +4533,9 @@ function feAnchorLineInfo(bid, anchorValue) {
        周邊既有慣例(g.axis==="v" → u 固定在 g.off)。 */
     return { constAxis: g.axis === "v" ? "u" : "v", value: g.off };
   }
+  const ruleAnchor=GridRuleLines.parseAnchor(anchorValue),ruleLine=ruleAnchor&&GridRuleLines.find(ruleAnchor);
+  if(ruleAnchor)return ruleLine?{constAxis:ruleLine.axis,value:ruleLine.coordinate,
+    bounds:ruleLine.bounds.slice()}:null;
   const gridAnchor = gridAnchorParts(anchorValue);
   if (gridAnchor) {
     const g = fe.grids.find(x => x.id === +gridAnchor.id);
@@ -4363,6 +4597,7 @@ function referenceAnchorEntries(bid, surf) {
       }
       options.push([`at-line grid ${g.id} ${axis} ${index}`, labelOf(value, null)]);
     });
+  for(const l of GridRuleLines.entries())if(l.segments.length)options.push([GridRuleLines.anchor(l.ref),GridRuleLines.label(l.ref,l.name)+` · ${l.axis}=${l.coordinate} mm`]);
   for (const t of fe.timbers) options.push([`at-face t${t.id}`, `角材 ${t.id} 側面（須有唯一解）`]);
   return options.map(([value, label]) => ({ value, label, occupied: feAnchorOccupied(bid, value) }));
 }
@@ -4387,6 +4622,7 @@ function referenceGuideSources(bid, along) {
     options.push([`guide:${guide.id}`, `參考線 ${guide.id} · ${guidePositionLabel(guide)}`]);
   for (const grid of fe.grids) for (const line of gridLineEntries(grid,coordinate))
     options.push([`grid:${grid.id}:${coordinate}:${line.index}`, `${grid.kind === "subgrid" ? "子網格" : "主網格"} ${grid.id} · ${gridLineLabel(grid,coordinate,line.index)} · ${line.coordinate} mm`]);
+  for(const l of GridRuleLines.entries())if(l.axis===coordinate&&l.segments.length)options.push([GridRuleLines.expression(l.ref),GridRuleLines.label(l.ref,l.name)+` · ${l.coordinate} mm`]);
   return options;
 }
 /* 目前 #tbAnchor 選中值對應的中文標籤,找不到就回傳原始引用式本身。 */
@@ -4516,6 +4752,7 @@ function feTimberSuggestion(bid, anchor) {
   const info = feAnchorLineInfo(bid, anchor || "");
   if (!info) return null;
   const dir = feAnchorDirFromInfo(info);
+  if(GridRuleLines.parseAnchor(anchor))return {dir,role:null,subgrid:true,sourceRule:true};
   const match = gridAnchorParts(anchor || "");
   if (match) {
     const grid = fe.grids.find(g => g.id === +match.id);
@@ -4529,7 +4766,7 @@ function feTimberSuggestForm({ direction = true, forceRole = false } = {}) {
   const suggestion = feTimberSuggestion(oc.edit?.bid, $("tbAnchor")?.value);
   if (forceRole) pane.dataset.tbRoleManual = "false";
   if (suggestion) {
-    if (direction) { $("tbDir").value = suggestion.dir; $("tbDir").classList.remove("invalid"); pane.dataset.tbDirManual = "false"; }
+    if (direction&&!suggestion.sourceRule) { $("tbDir").value = suggestion.dir; $("tbDir").classList.remove("invalid"); pane.dataset.tbDirManual = "false"; }
     if (suggestion.role && pane.dataset.tbRoleManual !== "true") {
       $("tbRole").innerHTML = feTimberRoleOptionsHTML(oc.edit.bid, $("tbDir").value, suggestion.role);
       $("tbRole").value = suggestion.role;
@@ -4549,7 +4786,7 @@ function feTimberShowSuggestion() {
   const suggestion = feTimberSuggestion(oc.edit?.bid, $("tbAnchor")?.value);
   const label = $("tbSuggestion");
   if (label) label.textContent = suggestion?.subgrid
-    ? `子線預設副支 3。${feSubgridRoleWarning(oc.edit?.bid, suggestion.dir, "secondary") || "角材須完整留在父格內，兩端仍須有實際支撐。"}`
+    ? suggestion.sourceRule ? '請明確選擇角色並輸入截面 A/B。角材須完整留在父格內，兩端仍須有實際支撐。' : `子線預設副支 3。${feSubgridRoleWarning(oc.edit?.bid, suggestion.dir, "secondary") || "角材須完整留在父格內，兩端仍須有實際支撐。"}`
     : suggestion?.role
     ? `建議：${suggestion.dir} · ${TB_ROLE_OPTS.find(([v]) => v === suggestion.role)[1]}`
     : "目前無法推導建議，請檢查定位引用與角色。";
@@ -4665,7 +4902,29 @@ function feTimberPlaceErrorMessage(err, bid, surf, anchorValue) {
 }
 
 /* 表單主鈕與畫布點線共用同一筆 timber + place 交易。 */
+/* One ephemeral operation pin for face reference controls. Raw inputs and
+ * the typed native snapshot are checked across every preparation await. */
+function faceReferenceOperation(bid,inputIds) {
+  const context=ReferenceWorkspace.context(),edit=oc.edit,focus=oc.focus,frame=ReferenceWorkspace.history.frame,
+    session=connection.session,mark=JSON.stringify(ReferenceWorkspace.getModelOperationState()),
+    nativeRevision=fe.referenceRevision,fingerprint=fe.timberReferenceData?.sourceFingerprint;
+  const raw=()=>JSON.stringify(inputIds.map(id=>[id,$(id)?.value]));const inputs=raw();let group=null;
+  const ruleReference=inputIds.map(id=>GridRuleLines.parseAnchor($(id)?.value)||GridRuleLines.parseExpression($(id)?.value)).find(Boolean);
+  const ownsPresentation=()=>context===ReferenceWorkspace.context()&&edit===oc.edit&&edit?.bid===bid&&focus===oc.focus&&
+    frame===ReferenceWorkspace.history.frame&&session===connection.session;
+  const sameOwner=()=>ownsPresentation()&&inputs===raw();
+  const current=()=>sameOwner()&&mark===JSON.stringify(ReferenceWorkspace.getModelOperationState());
+  const transactionCurrent=()=>sameOwner()&&group!==null&&group===ReferenceWorkspace.history.group;
+  const ownsNativeTransaction=()=>context===ReferenceWorkspace.context()&&session===connection.session&&group!==null&&group===ReferenceWorkspace.history.group;
+  return {current,sameOwner,ownsPresentation,transactionCurrent,ownsNativeTransaction,beginTransaction(){group=ReferenceWorkspace.history.group;return transactionCurrent();},
+    // Native rollback can advance its revision without changing World bytes.
+    // Refresh the existing owner snapshot after rejection, preserving raw form
+    // inputs and the strict revision pin for the next operation.
+    async reloadAfterRejection(){await GridRuleLines.reloadNative(feLoadGuides,ownsPresentation,ruleReference);},
+    async verify(){if(!current())return false;const graph=await apiRequest('source-inspect');return current()&&graph.ok&&graph.revision===nativeRevision&&graph.sourceFingerprint===fingerprint;}};
+}
 async function fePlaceTimberFromForm(bid) {
+  if (oc.busy) return false;
   const sid = feSid(bid);
   if (!sid) { toast("請先放置這片面，再放角材"); return false; }
   const A = Number($("tbA")?.value), B = Number($("tbB")?.value);
@@ -4677,6 +4936,12 @@ async function fePlaceTimberFromForm(bid) {
   }
   const anchor = $("tbAnchor")?.value;
   if (!anchor) { toast("請先選擇定位邊、參考線或格線"); feMarkInvalid($("tbAnchor")); return false; }
+  if(GridRuleLines.parseAnchor(anchor)){
+    if(!GridRuleLines.find(GridRuleLines.parseAnchor(anchor))){toast('來源規則子線已過期，請重新完整定位。');return false;}
+    if($("faceInspectorContent").dataset.tbRoleManual!=='true'||$("faceInspectorContent").dataset.tbSectionManual!=='true'){
+      toast('沿來源規則子線放置前，請明確選擇角色並輸入截面 A/B。');return false;
+    }
+  }
   if (anchor.startsWith("at-line grid ") && !feTimberSuggestion(bid, anchor)?.role &&
       $("faceInspectorContent")?.dataset.tbRoleManual !== "true") {
     toast("這座網格尚未設定主支方向，請明確選擇角材角色");
@@ -4694,15 +4959,20 @@ async function fePlaceTimberFromForm(bid) {
   if (role === "custom" && !(pri >= 1)) {
     toast("自訂角色須填優先序（≥1 的整數）"); feMarkInvalid($("tbPri")); return false;
   }
+  const selector = $("tbSelector")?.value.trim() || "";
+  const operation=faceReferenceOperation(bid,['tbA','tbB','tbAnchor','tbSelector','tbDir','tbSide','tbRole','tbPri']);
   const ids = await api("newid");
-  if (!ids.ok) return false;
+  if (!ids.ok||!operation.current()||!await operation.verify()) {toast('放置來源或輸入已變更，請重新核對後放置。');return false;}
   const decl = `timber ${ids.timber} ${A} ${B} role ${role}` +
     (role === "custom" ? ` priority ${pri}` : "");
-  const selector = $("tbSelector")?.value.trim() || "";
   const surf = feSurf(bid);
   if (!(await mutate([decl, `place ${ids.timber} on ${sid} ${anchor} ${selector} ${dir} ${side}`],
-    { friendlyError: err => feTimberPlaceErrorMessage(err, bid, surf, anchor) }))) return false;
-  await feLoadGuides(); drawFaceEditor(); renderFaceLayers(); renderFaceInspector();
+    {operation, friendlyError: err => feTimberPlaceErrorMessage(err, bid, surf, anchor),
+      async afterSettlement(committed) {
+        if (committed) { if (operation.ownsPresentation()) await feLoadGuides(); }
+        else await operation.reloadAfterRejection();
+      } }))) return false;
+  if (operation.sameOwner()) { drawFaceEditor(); renderFaceLayers(); renderFaceInspector(); }
   return true;
 }
 
@@ -4738,8 +5008,8 @@ function feUnderlayEditable(bid, expected = null) {
 }
 function feChangeUnderlay(bid, ul, changes, recheck = false) {
   if (!feUnderlayEditable(bid, ul)) return false;
-  if (window.RoomCollectionWorkspace?.roomForBoundary(bid) && Object.keys(changes).some(key => ["x","y","rot","mmPerPx"].includes(key))) {
-    try {return RoomCollectionWorkspace.changeBasis(bid, changes);} catch(error) {toast(error.message); return false;}
+  if (window.RoomCollectionWorkspace?.roomForBoundary(bid)) {
+    try {return RoomCollectionWorkspace.changeView(bid, changes);} catch(error) {toast(error.message); return false;}
   }
   const previous = Object.fromEntries(Object.keys(changes).map(key => [key, ul[key]]));
   Object.assign(ul, changes);
@@ -4941,6 +5211,7 @@ function drawFaceEditor() {
   const loops = fe.work || oc.bmap[e.bid];
   if (!loops) return;
   feRefreshLatticeViewport();
+  GridRuleLines.refresh();
   ReferenceVisibility.update();
   feCalibrationPrompt();
   const root = $("faceEditorRoot");
@@ -5117,6 +5388,7 @@ function drawFaceEditor() {
       }
     });
   }
+  GridRuleLines.draw(root,refRoot,z);
   GridEditor.draw(root, refRoot, gb, z);
   /* 角材 A0 足跡（Q3）：axis_a = axis_b × axis_length 的 uv 版
      GEO-191:加 data-face-hit="t:<id>" 可選取;select 工具下才吃事件(見 app.css
@@ -5157,14 +5429,18 @@ function drawFaceEditor() {
       const A2 = Number($("tbA")?.value) || 0;
       const cr = feAnchorCrossRange(e.bid, anchorVal, A2);
       if (cr) {
-        const bandG = el("g", { "clip-path": "url(#face-material-clip)" }, root);
         const br = cr.constAxis === "u" ? [Math.max(cr.lo,localBounds[0]), localBounds[1], Math.min(cr.hi,localBounds[2]), localBounds[3]]
                                         : [localBounds[0], Math.max(cr.lo,localBounds[1]), localBounds[2], Math.min(cr.hi,localBounds[3])];
-        el("rect", { x: br[0], y: br[1], width: br[2] - br[0], height: br[3] - br[1],
-          class: "fe-anchor-band" }, bandG);
-        el("text", { x: (br[0] + br[2]) / 2, y: (br[1] + br[3]) / 2,
-          "font-size": 10.5 / z, "text-anchor": "middle", "dominant-baseline": "middle",
-          class: "fe-dim fe-anchor-band-label" }, el("g", {"clip-path":"url(#face-material-clip)"}, annotations)).textContent = "橫向定位示意";
+        // A disjoint or merely touching intersection has no material area.
+        // Keep the reference highlight, but do not emit an invalid/empty band.
+        if (br[2] > br[0] && br[3] > br[1]) {
+          const bandG = el("g", { "clip-path": "url(#face-material-clip)" }, root);
+          el("rect", { x: br[0], y: br[1], width: br[2] - br[0], height: br[3] - br[1],
+            class: "fe-anchor-band" }, bandG);
+          el("text", { x: (br[0] + br[2]) / 2, y: (br[1] + br[3]) / 2,
+            "font-size": 10.5 / z, "text-anchor": "middle", "dominant-baseline": "middle",
+            class: "fe-dim fe-anchor-band-label" }, el("g", {"clip-path":"url(#face-material-clip)"}, annotations)).textContent = "橫向定位示意";
+        }
       }
     }
   }
@@ -5379,6 +5655,7 @@ function feDraftPreviewMove(pt, defer = false) {
 async function feDown(pt, ev) {
   const e = oc.edit;
   if (!e) return;
+  ++faceGestureSequence;
   if (fe.tool === "pan" || fe.spaceDown) {
     fe.panHold = fe.drag || null;         /* 保留重畫草稿 */
     fe.drag = { kind: "pan", cx: ev.clientX, cy: ev.clientY };
@@ -5446,6 +5723,11 @@ async function feDown(pt, ev) {
     const hit = hit0 ? hit0.dataset.faceHit.split(":") : null;
     if (hit && hit[0] === "e" && +hit[1] !== 0) {
       toast("目前不支援直接點孔邊——請從右欄「定位引用」選孔邊(at-face h<i>e<j>)"); return;
+    }
+    if(hit?.[0]==='r'){
+      const rule=GridRuleLines.parseExpression('gridrule:'+hit.slice(1).join(':'));
+      if(!rule||!GridRuleLines.find(rule)){toast('這條來源規則子線已失效，請重新定位。');return;}
+      feChooseTimberAnchor(GridRuleLines.anchor(rule));await fePlaceTimberFromForm(e.bid);return;
     }
     if (hit && (hit[0] === "e" || hit[0] === "g" || hit[0] === "k")) {
       const clickAnchor = hit[0] === "e" ? `at-face e${hit[2]}`
@@ -5591,8 +5873,10 @@ function feClickSelectHit(k, a, b) {
 }
 
 function feMove(pt, ev) {
-  if (window.RoomOutlineWorkspace?.move(pt)) return;
-  if (window.RoomOutlineWorkspace?.pending(oc.edit?.bid) && fe.tool === "redraw") return;
+  if (fe.drag?.kind !== "pan") {
+    if (window.RoomOutlineWorkspace?.move(pt)) return;
+    if (window.RoomOutlineWorkspace?.pending(oc.edit?.bid) && fe.tool === "redraw") return;
+  }
   const d = fe.drag;
   /* diff#4/#6(§5.A.1.4/.6):redraw 工具的 pointermove 優先分派給 feDraftPreviewMove，
      涵蓋「尚未落第一點」(d 為 null)與「已落點」(d.kind==="redraw"，此時 d 只是
@@ -5616,6 +5900,7 @@ function feMove(pt, ev) {
       if (hitH[0] === "e" && +hitH[1] === 0) hoverAnchor = `at-face e${hitH[2]}`;
       else if (hitH[0] === "g") hoverAnchor = `at-line guide ${+hitH[1]}`;
       else if (hitH[0] === "k") hoverAnchor = `at-line grid ${+hitH[1]} ${hitH[2]} ${hitH[3]}${hitH[4]!=null&&hitH[4]!==""?` band ${hitH[4]}`:""}`;
+      else if(hitH[0]==='r')hoverAnchor=GridRuleLines.anchor(GridRuleLines.parseExpression('gridrule:'+hitH.slice(1).join(':')));
     }
     if (hoverAnchor !== fe.timberHoverAnchor) {
       fe.timberHoverAnchor = hoverAnchor;
@@ -5691,9 +5976,10 @@ function feMove(pt, ev) {
 }
 
 /* 邊界變更成功後：重拉 loops + guides + 面板 */
-async function feAfterChange() {
+async function feAfterChange(owner = presentationCurrent()) {
+  if (!owner()) return;
   const edit = oc.edit, focus = oc.focus, frame = ReferenceWorkspace.history.frame, session = connection.session;
-  const current = () => oc.edit === edit && oc.focus === focus && ReferenceWorkspace.history.frame === frame && connection.session === session;
+  const current = () => owner() && oc.edit === edit && oc.focus === focus && ReferenceWorkspace.history.frame === frame && connection.session === session;
   // Undo restores saved room metadata into a fresh history frame. Rebuild its
   // derived PDF/image pages before redrawing the still-focused face workspace.
   if (window.RoomCollectionWorkspace) await RoomCollectionWorkspace.prepareSharedPages();
@@ -5712,8 +5998,23 @@ async function feAfterChange() {
   renderFaceInspector();
 }
 
+// Pin the presentation before guide preparation can yield. Its native edit may
+// update history, but a replacement face/project must never receive this repaint.
+function feGuidePresentationRefresh() {
+  const edit = oc.edit, focus = oc.focus, context = ReferenceWorkspace.context(),
+    frame = ReferenceWorkspace.history.frame, session = connection.session;
+  const current = () => oc.edit === edit && oc.focus === focus && ReferenceWorkspace.context() === context &&
+    ReferenceWorkspace.history.frame === frame && connection.session === session;
+  return async changed => {
+    if (!current()) return;
+    if (changed) await feLoadGuides();
+    if (!current()) return;
+    drawFaceEditor(); renderFaceLayers();
+    if (changed) renderFaceInspector();
+  };
+}
 async function feUp(pt) {
-  if (await window.RoomOutlineWorkspace?.up(pt)) return;
+  if (fe.drag?.kind !== "pan" && await window.RoomOutlineWorkspace?.up(pt)) return;
   const e = oc.edit;
   const d = fe.drag; fe.drag = null;
   if (!e || !d) { fe.panHold = null; drawFaceEditor(); return; }
@@ -5753,18 +6054,13 @@ async function feUp(pt) {
     const axis = dx >= dy ? "u" : "v";
     const off = Math.round(axis === "u" ? d.y1 : d.x1);
     const sid = feSid(e.bid);
-    const ids = await api("newid");
-    if (await createReferenceGuide(sid, axis, off))
-      await feLoadGuides();
-    drawFaceEditor();
-    renderFaceLayers();
+    const refresh = feGuidePresentationRefresh();
+    await refresh(await createReferenceGuide(sid, axis, off));
     return;
   }
   if (d.kind === "guide") {
-    if (d.moved && await moveReferenceGuide(d.id, d.axis, d.off))
-      await feLoadGuides();
-    drawFaceEditor();
-    renderFaceLayers();
+    const refresh = feGuidePresentationRefresh();
+    await refresh(d.moved && await moveReferenceGuide(d.id, d.axis, d.off));
     return;
   }
   /* GEO-192 B:拖預覽矩形邊——放開不套用(仍要 Enter/#feOpApply),只是結束這次拖曳。 */
@@ -6782,7 +7078,7 @@ function feShapePaneHTML(bid) {
       `<label>${sideOpt("ay", ["top", "bottom"])}<input type="number" step="1" min="0" data-feat-num="dy" value="${m.dy}"></label>` +
       `</div></div>`;
   });
-  html += `</div></div>`;
+  html += `</div><section id="faceProjectionEditor" aria-label="柱樑投影套用"></section></div>`;
   return html;
 }
 function feBindShapePane(pane, bid) {
@@ -6938,10 +7234,19 @@ async function feExportTimberSchedule() {
     setTimeout(()=>URL.revokeObjectURL(url),1000);return true;
   } catch(error) {toast(error.message);return false;}
 }
-function renderFaceLayers() {
+const faceProjectionDrafts = new WeakMap();
+function feProjectionDraft() {
+  const pane=$('faceProjectionEditor');
+  if (!pane || pane._projectionEdit !== oc.edit) return faceProjectionDrafts.get(oc.edit) || null;
+  const draft={edit:oc.edit,checks:new Map([...pane.querySelectorAll('.fe-ob-check')].map(c=>[c.dataset.itemType+':'+c.dataset.itemId,c.checked])),cut:!!pane.querySelector('#feCutStrip')?.checked};
+  faceProjectionDrafts.set(oc.edit,draft);return draft;
+}
+function renderFaceLayers(projectionDraft = feProjectionDraft()) {
   const e = oc.edit;
   const list = $("faceLayerList");
   if (!e || !list) return;
+  const schedulePane=$('faceTimberSchedule');if(schedulePane)schedulePane.replaceChildren();
+  const projectionPane=$('faceProjectionEditor');if(projectionPane){projectionPane.replaceChildren();projectionPane._projectionEdit=e;}
   const loops = fe.work || oc.bmap[e.bid] || [];
   let n = 0;
   list.textContent = "";
@@ -7008,14 +7313,24 @@ function renderFaceLayers() {
     }
   } else emptyGroup("參考線", "尚無參考線 · 開啟建立表單", "guide");
   if ((fe.timbers || []).length) {
-    group("角材料單");
+    group("角材");
+    for(const timber of fe.timbers){
+      const r=row(icon('timber'),`角材 ${timber.id}`,`定位 ${timber.anchor||'—'}`,()=>feDeleteTimber(timber.id));r.dataset.timberId=timber.id;
+      r.classList.toggle('sel',feTimberSelected(timber.id));
+      const pick=document.createElement('button');pick.type='button';pick.className='grid-layer-open';
+      pick.append(r.querySelector('.face-layer-icon'),r.querySelector('.face-layer-copy'));r.prepend(pick);
+      r.querySelector('.face-layer-del').disabled=fe.timberSelection.size>1;
+      r.onclick=ev=>{if(ev.target.closest('.face-layer-del'))return;feSelectTimber(timber.id,ev.shiftKey);const box=feTimberRect(timber),vp=$('faceEditorViewport');
+        fe.panX=vp.clientWidth/2-(box[0]+box[2])/2*fe.zoom;fe.panY=vp.clientHeight/2-(box[1]+box[3])/2*fe.zoom;feApplyZoom();};
+      r.onmouseenter=()=>{fe.hoverTimber=timber.id;drawFaceEditor();};r.onmouseleave=()=>{fe.hoverTimber=null;drawFaceEditor();};
+    }
     let schedule;
     try { schedule=feTimberScheduleSnapshot(); }
-    catch(error) { const note=document.createElement("p");note.id="timberScheduleStatus";note.textContent=error.message;list.append(note); }
+    catch(error) { const note=document.createElement("p");note.id="timberScheduleStatus";note.textContent=error.message;schedulePane?.append(note); }
     const view=fe.scheduleView;
     const controls=document.createElement("div");controls.className="timber-schedule-controls";
     controls.innerHTML='<label>範圍<select id="timberScheduleScope"><option value="surface">此承載面的全部角材</option><option value="selection">所選角材集合</option></select></label><label>顯示單位<select id="timberScheduleUnit"><option>mm</option><option>cm</option></select></label><label>排序<select id="timberScheduleOrder"><option value="id">構件身分</option><option value="length">完成長度</option></select></label><button type="button" id="timberScheduleCSV" class="btn">匯出精確 mm CSV</button>';
-    list.append(controls);
+    schedulePane?.append(controls);
     controls.querySelector('#timberScheduleScope').value=view.ids===null?'surface':'selection';
     controls.querySelector('#timberScheduleScope').onchange=ev=>{
       if(ev.target.value==='selection' && !fe.timberSelection.size){toast('請先選取角材，再選擇料單範圍。');ev.target.value=view.ids===null?'surface':'selection';return;}
@@ -7027,15 +7342,15 @@ function renderFaceLayers() {
     controls.querySelector('#timberScheduleOrder').onchange=ev=>{view.order=ev.target.value;renderFaceLayers();};
     controls.querySelector('#timberScheduleCSV').disabled=!schedule?.rows.length;
     controls.querySelector('#timberScheduleCSV').onclick=feExportTimberSchedule;
-    if(schedule){const status=document.createElement('p');status.id='timberScheduleStatus';status.className='fi-note';status.textContent=`承載面 ${schedule.surface} · ${schedule.rows.length} 支正式角材 · 材料／加工未設定者保持未知`;list.append(status);}
+    if(schedule){const status=document.createElement('p');status.id='timberScheduleStatus';status.className='fi-note';status.textContent=`承載面 ${schedule.surface} · ${schedule.rows.length} 支正式角材 · 材料／加工未設定者保持未知`;schedulePane?.append(status);}
     /* GEO-191:角材列可選——不用共用的 row()(它沒有 hover/click/data-timber-id 掛鉤),
        hover → 畫布矩形加 .hover;點列(非 ✕ 鈕)→ 與畫布點選同一效果。 */
     for (const item of TimberSchedule.sorted(schedule?.rows || [],view.order)) {
       const t2=fe.timbers.find(t=>t.id===item.id);
       const selT = feTimberSelected(t2.id);
       const r = document.createElement("div");
-      r.className = "face-layer-row" + (selT ? " sel" : "");
-      r.dataset.timberId = t2.id;
+      r.className = "timber-schedule-row" + (selT ? " sel" : "");
+      r.dataset.timberId=t2.id;
       const copy=document.createElement('span');copy.className='face-layer-copy';
       const pick=document.createElement('button');pick.type='button';pick.className='timber-schedule-pick';pick.dataset.scheduleTimber=item.id;
       pick.setAttribute('aria-pressed',String(selT));pick.setAttribute('aria-label',`定位角材 ${item.id}`);
@@ -7060,8 +7375,7 @@ function renderFaceLayers() {
         const box=feTimberRect(t2),cx=(box[0]+box[2])/2,cy=(box[1]+box[3])/2,vp=$('faceEditorViewport');
         fe.panX=vp.clientWidth/2-cx*fe.zoom;fe.panY=vp.clientHeight/2-cy*fe.zoom;feApplyZoom();
       });
-      list.appendChild(r);
-      ++n;
+      schedulePane?.appendChild(r);
     }
   } else emptyGroup("角材", "尚無角材 · 設定並放置", "timber");
   if ((fe.grids || []).length) {
@@ -7098,7 +7412,8 @@ function renderFaceLayers() {
       const cb = document.createElement("input");
       cb.type = "checkbox"; cb.className = "fe-ob-check";
       cb.dataset.itemId = it.id; cb.dataset.itemType = it.type;
-      cb.checked = it.cls !== "strip";   /* 條帶預設不裁,不預選 */
+      cb.checked = projectionDraft?.edit===e && projectionDraft.checks.has(it.type+':'+it.id)
+        ? projectionDraft.checks.get(it.type+':'+it.id) : it.cls !== "strip"; /* 條帶預設不裁,不預選 */
       cb.addEventListener("change", feSyncObApply);
       const symbol = document.createElement("span");
       symbol.className = `face-layer-icon ${it.type}`; symbol.innerHTML = icon(it.type === "beam" ? "beam" : "column");
@@ -7112,7 +7427,10 @@ function renderFaceLayers() {
         `<small>${sub}</small>`;
       r.appendChild(copy);
       cb.setAttribute("aria-label", `套用${it.type === "beam" ? "樑" : "柱"} ${it.id} 投影`);
-      r.appendChild(cb);
+      if (projectionPane) { const editorRow=r.cloneNode(true);editorRow.appendChild(cb);projectionPane.appendChild(editorRow); }
+      r.tabIndex=0;r.setAttribute('role','button');r.setAttribute('aria-label',`編輯${it.type === "beam" ? "樑" : "柱"} ${it.id} 投影`);
+      const open=()=>{fiShowTab('shape');if(innerWidth<=680)openPanel('right',$('workspaceToggleRight'));};
+      r.onclick=open;r.onkeydown=ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();open();}};
       list.appendChild(r);
       ++n;
     }
@@ -7123,8 +7441,9 @@ function renderFaceLayers() {
       `<label class="fe-ob-cut"><input type="checkbox" id="feCutStrip"> 裁切條帶</label>` +
       `<button id="feApplyProj" class="btn">套用投影</button>` +
       `<small class="fe-ob-note">套用後成為面的一部分，不再跟隨柱樑變動；可 Ctrl+Z 復原。拆面後會產生新的面編號。</small>`;
-    list.appendChild(ctrl);
-    $("feApplyProj").addEventListener("click", feApplyProj);
+    if(projectionPane)projectionPane.appendChild(ctrl);
+    if(projectionDraft?.edit===e)ctrl.querySelector('#feCutStrip').checked=projectionDraft.cut;
+    ctrl.querySelector('#feApplyProj').addEventListener("click", feApplyProj);
     feSyncObApply();
   } else { group("柱樑投影");
     const note = document.createElement("div"); note.className = "fl-empty";
@@ -7146,14 +7465,17 @@ function feSyncObApply() {
 async function feApplyProj() {
   const e = oc.edit;
   if (!e || !fe.obstacles) return;
+  const owner=presentationCurrent(),work=fe.work,drag=fe.drag,panHold=fe.panHold,faceTool=fe.tool,draft=fe.draft;
+  const sameDraft=()=>fe.tool===faceTool && fe.draft===draft;
   const ids = [...document.querySelectorAll(".fe-ob-check:checked")]
     .map(c => (c.dataset.itemType === "beam" ? "b" : "c") + c.dataset.itemId);
   if (!ids.length) { toast("先勾選要套用的投影項"); return; }
   let line = `apply-proj ${e.bid} ${ids.join(" ")}`;
   if ($("feCutStrip") && $("feCutStrip").checked) line += " cut-strip";
-  if (await emitLine(line)) {
+  if (await emitLine(line) && owner() && sameDraft() && fe.work === work && fe.drag === drag && fe.panHold === panHold) {
     fe.work = null; fe.drag = null; fe.panHold = null;
     await feLoadGuides();
+    if(!owner() || !sameDraft() || fe.work !== null || fe.drag !== null || fe.panHold !== null)return;
     renderFaceLayers(); drawFaceEditor(); renderFaceInspector();
   }
 }
@@ -7427,8 +7749,8 @@ const GridEditor = (() => {
   }
   function html(g, surf) {
     if(g?.kind === "subgrid" || fe.subgridDraftParent != null)return SubgridEditor.html(g,surf);
-    if(g?.bindingId != null)return `<section data-component-section="grid"><h2 class="component-heading">網格 ${g.id}</h2><div class="inspector-block"><h3>無限網格配置 ${g.bindingId}</h3><p>格線由來源與邊界的對齊關係決定。畫面只顯示邊界內的部分，正負索引保持不變。</p><button type="button" class="btn" id="gridBindingOpen">編輯網格與邊界對齊</button><div class="grid-subgrid-note"><h4>局部等分</h4>${(g.uDefinition?.stagger || g.vDefinition?.stagger) ? `<p>有相位差的主格不能建立子網格。</p><button type="button" id="subgridNew" class="btn" disabled>建立子網格</button>` : `<p>選取原網格的一個完整 cell；邊界只裁切顯示範圍。</p><button type="button" id="subgridNew" class="btn">建立子網格</button>`}</div></div></section>`;
-    if(g?.sourceSystem != null)return GridSystemEditor.appliedHTML(g);
+    if(g?.bindingId != null)return `<section data-component-section="grid"><h2 class="component-heading">網格 ${g.id}</h2><div class="inspector-block"><h3>無限網格配置 ${g.bindingId}</h3><p>格線由來源與邊界的對齊關係決定。畫面只顯示邊界內的部分，正負索引保持不變。</p><button type="button" class="btn" id="gridBindingOpen">編輯網格與邊界對齊</button>${GridRuleLines.html(g)}<div class="grid-subgrid-note"><h4>局部等分</h4>${(g.uDefinition?.stagger || g.vDefinition?.stagger) ? `<p>有相位差的主格不能建立子網格。</p><button type="button" id="subgridNew" class="btn" disabled>建立子網格</button>` : `<p>選取原網格的一個完整 cell；邊界只裁切顯示範圍。</p><button type="button" id="subgridNew" class="btn">建立子網格</button>`}</div></div></section>`;
+    if(g?.sourceSystem != null)return GridSystemEditor.appliedHTML(g)+GridRuleLines.html(g);
     if(g?.engineeringSources?.length)return `<section data-component-section="grid"><h2 class="component-heading">網格 ${g.id}</h2><div class="inspector-block engineering-grid-details"><h3>尺寸引用工程規格</h3><p>來源變更會重新檢查排格及引用它的角材。起算點保存在這個網格內。</p>${engineeringSourceSummary(g.engineeringSources)}<p>起算點：u ${esc(g.uDefinition?.anchor ?? '—')} · v ${esc(g.vDefinition?.anchor ?? '—')} mm</p><button type="button" class="btn primary-button" data-engineering-open data-placement-id="${surf.id}" data-grid-id="${g.id}">編輯工程來源與覆寫</button><div class="grid-subgrid-note"><h4>局部等分</h4><p>選擇這個主格的一格，建立子網格；主格的工程來源保持不變。</p><button type="button" id="subgridNew" class="btn">建立子網格</button></div></div></section>`;
     const dis = surf ? "" : " disabled";
     return `<section data-component-section="grid"><h2 class="component-heading">網格</h2><div class="inspector-block grid-editor">` +
@@ -7627,6 +7949,7 @@ const GridEditor = (() => {
   function bind(pane,bid,grid,surf) {
     if(dragCancel) dragCancel();if(active) {clearTimeout(active.timer);active=null;}
     SubgridEditor.clear();
+    if(grid)GridRuleLines.bind(pane,grid);
     if(grid?.kind === "subgrid" || fe.subgridDraftParent != null){SubgridEditor.bind(pane,bid,grid,surf);return;}
     pane.querySelector('#subgridNew')?.addEventListener('click',()=>{if(grid && !grid.uDefinition?.stagger && !grid.vDefinition?.stagger)SubgridEditor.begin(grid.id);});
     if(grid?.bindingId != null) {
@@ -7690,13 +8013,14 @@ const GridEditor = (() => {
   }
   function focusSection() {
     const p=$("faceInspectorContent");if(!p) return;
-    const selected=["grid","timber","guide"].includes(fe.fiTab) ? fe.fiTab : null;
+    const selected=["grid","timber","guide"].includes(fe.fiTab) ? fe.fiTab : "guide";
     p.dataset.componentFocus=selected || "all";
     for(const sec of p.querySelectorAll("[data-component-section]")) {
       const focused=!selected || selected === sec.dataset.componentSection;
       sec.classList.toggle("component-collapsed",!focused);
       sec.querySelector(".component-heading button")?.setAttribute("aria-expanded",String(focused));
     }
+    for(const button of p.querySelectorAll('[data-component-tab]')){button.classList.toggle('active',button.dataset.componentTab===selected);button.setAttribute('aria-selected',String(button.dataset.componentTab===selected));}
     document.body.classList.toggle("grid-workspace-active",selected === "grid");
     if(selected !== "grid" && $("gridReturnSettings")) $("gridReturnSettings").hidden=true;
   }
@@ -8133,25 +8457,29 @@ function renderFaceInspector() {
   const e = oc.edit;
   const pane = $("faceInspectorContent");
   if (!e || !pane) return;
+  disarmEdgeInputs(pane);
   if (e.contextId !== ReferenceWorkspace.context().id) { resetSceneFocus(); return; }
+  const projectionDraft = feProjectionDraft();
   if (fe.timberSelection.size > 1) {
     GridEditor.clear();
+    pane.dataset.redrawOwner = "";
     pane.innerHTML = selectionMultiHTML([...fe.timberSelection].map(id => ({id})), true);
     return;
   }
+  const dirtyInputs = captureDirtyInputs(pane);
   ++fe.gridPreviewSeq;
   const bid = e.bid;
   const saved = inspectorState(pane, bid);
   pane.dataset.bid = String(bid);
   pane.dataset.referencePage = ReferenceWorkspace.active(bid)?.id || "";
   pane.dataset.calibrationPoints = JSON.stringify(fe.ulCalib?.pts || null);
-  if (!saved) { pane.dataset.tbRoleManual = "false"; pane.dataset.tbDirManual = "false"; }
+  if (!saved) { pane.dataset.tbRoleManual = "false"; pane.dataset.tbDirManual = "false"; pane.dataset.tbSectionManual="false"; }
   const loops = oc.bmap[bid] || [];
   const surf = feSurf(bid);
   const placementSurf = fePlacementSurf(bid);
   const currentGrid = fe.grids.find(g => g.surface === surf?.id && g.id === fe.gridEditingId) || fe.grids.find(g => g.surface === surf?.id) || null;
   const draftParent=fe.grids.find(g=>g.id===fe.subgridDraftParent);
-  pane.dataset.gridIdentity = fe.subgridDraftParent != null ? JSON.stringify(["new-subgrid",fe.subgridDraftParent,draftParent?.u,draftParent?.v,draftParent?.bounds]) : currentGrid ? JSON.stringify([currentGrid.id,currentGrid.mainAlong,currentGrid.uDefinition,currentGrid.vDefinition,currentGrid.cell,currentGrid.divisions,currentGrid.bounds]) : "new";
+  pane.dataset.gridIdentity = fe.subgridDraftParent != null ? JSON.stringify(["new-subgrid",fe.subgridDraftParent,draftParent?.u,draftParent?.v,draftParent?.bounds]) : currentGrid ? JSON.stringify([currentGrid.id,currentGrid.mainAlong,currentGrid.uDefinition,currentGrid.vDefinition,currentGrid.cell,currentGrid.divisions,currentGrid.bounds,currentGrid.bindingId,GeometryProject.Features.gridSourceKey(oc.gridSystems.find(s=>s.id===currentGrid.sourceSystem))]) : "new";
   pane.dataset.placement = JSON.stringify(placementSurf ? [placementSurf.id, placementSurf.origin, placementSurf.u, placementSurf.v] : null);
   updateFaceWorkspaceHeading(bid);
   const bb = loops.length ? loopsBBox(loops) : null;
@@ -8226,6 +8554,7 @@ function renderFaceInspector() {
     `</div><div id="projViews"></div></div></details></div>`;
   html += `</div>`;
   html += `<div data-fi-pane="components"${["components", "guide", "timber", "grid"].includes(fe.fiTab) ? "" : " hidden"}>` +
+    `<div id="faceComponentSwitch" class="segmented" role="tablist" aria-label="構件種類">${[['guide','參考線'],['timber','角材'],['grid','網格']].map(([id,label])=>`<button type="button" class="seg" role="tab" data-component-tab="${id}">${label}</button>`).join('')}</div>` +
     `<section data-component-section="guide"><h2 class="component-heading">參考線</h2>${guideHTML}</section>`;
   /* B2:角材頁（游離面顯示停用說明,欄位一併停用）
      GEO-195:定位引用改用 referenceAnchorOptions 的新排序(未占用在前,預設自然選中第一條
@@ -8260,12 +8589,13 @@ function renderFaceInspector() {
     (surf ? "選好定位引用後可直接放置；畫布點線也是快捷入口，點擊位置不作為尺寸輸入。"
           : "游離面：先「放置」才可放角材") + `</div>` +
     `<div class="timber-suggestion"${surf ? "" : " hidden"}><span id="tbSuggestion"></span><button id="tbUseSuggestion" type="button" class="btn">套用建議</button></div>` +
-    `<button id="tbPlace" class="primary-button"${surf ? "" : " disabled"}>放置角材</button></div></section>`;
+    `<button id="tbPlace" class="primary-button"${surf ? "" : " disabled"}>放置角材</button></div><section id="faceTimberSchedule" aria-label="角材料單"></section></section>`;
   html += GridEditor.html(currentGrid, surf) + `</div>`;
   /* GEO-188(方案 B):形狀頁 */
   html += feShapePaneHTML(bid);
   /* GEO-190:底圖頁 */
   html += feUnderlayPaneHTML(bid);
+  pane.dataset.redrawOwner = "boundary:" + bid;
   pane.innerHTML = html;
   const editTimber = fe.sel?.kind === 'timber' && fe.timbers.find(t => t.id === fe.sel.id);
   if (editTimber?.definition && pane.querySelector('#tbEditAnchor')) {
@@ -8329,9 +8659,11 @@ function renderFaceInspector() {
     const expr = $("refGuideExpr").value.trim(), axis = $("refGuideAxis").value;
     if (!expr || /[\r\n#]/.test(expr)) { toast("請選擇位置來源，或在進階模式填寫合法引用式"); return; }
     const edit = oc.edit, sid = feSid(bid);
+    const operation=faceReferenceOperation(bid,['refGuideExpr','refGuideAxis','refGuideSource','refGuideRatio','refGuideMode']);
     const ids = await api("newid");
-    if (!ids.ok || oc.edit !== edit || edit.contextId !== ReferenceWorkspace.context().id) return;
-    if (await emitLine(`guide ${ids.guide} ${sid} ${axis} ${expr}`)) await feAfterChange();
+    if (!ids.ok || oc.edit !== edit || edit.contextId !== ReferenceWorkspace.context().id||!operation.current()||!await operation.verify()) return;
+    if (await emitLine(`guide ${ids.guide} ${sid} ${axis} ${expr}`,{operation})) await feAfterChange();
+    else await operation.reloadAfterRejection();
   };
 
 
@@ -8342,15 +8674,22 @@ function renderFaceInspector() {
       const i = +b.dataset.fixEdge;
       const val = b.dataset.fixVal != null ? +b.dataset.fixVal
         : (oc.bmap[bid][0].fixity[i] ? 0 : 1);
-      if (await commitEdgeFixity(bid, oc.bmap[bid], i, val)) await feAfterChange();
+      const owner = presentationCurrent();
+      if (await commitEdgeFixity(bid, oc.bmap[bid], i, val)) await feAfterChange(owner);
     });
   /* Phase 2 邊長輸入:commitEdgeLength 內部呼叫 applyEdgeLen 傳播後重宣告 */
-  for (const inp of pane.querySelectorAll("[data-edge-len]"))
+  for (const inp of pane.querySelectorAll("[data-edge-len]")) {
+    trackEdgeInput(inp);
     inp.addEventListener("change", async () => {
-      const i = +inp.dataset.edgeLen, len = Math.round(+inp.value);
-      if (await commitEdgeLength(bid, oc.bmap[bid], i, len)) await feAfterChange();
-      else renderFaceInspector();
+      if (inp.dataset.edgeSuppress === "1") return;
+      const i = +inp.dataset.edgeLen, submitted = beginEdgeSubmission(pane, inp), len = Math.round(+submitted.value),
+        owner = presentationCurrent();
+      if (await commitEdgeLength(bid, oc.bmap[bid], i, len)) {
+        await feAfterChange(owner);
+        finishEdgeSubmission(submitted);
+      } else if (finishEdgeSubmission(submitted, true)) renderFaceInspector();
     });
+  }
   bindPlaceForm(pane, bid);
   /* GEO-090:priority 欄只在 custom 角色時顯示 */
   const tbRole = pane.querySelector("#tbRole");
@@ -8391,6 +8730,7 @@ function renderFaceInspector() {
   for (const [id, evt] of [["tbA", "input"], ["tbB", "input"], ["tbSide", "change"]]) {
     const inp = pane.querySelector("#" + id);
     if (inp) inp.addEventListener(evt, () => {
+      if(id==='tbA'||id==='tbB')pane.dataset.tbSectionManual='true';
       feTimberHintRefresh();
       if (fe.tool === "timber" || fe.anchorPreview) drawFaceEditor();
     });
@@ -8436,12 +8776,16 @@ function renderFaceInspector() {
     updateGuideSource(true, saved?.drafts.find(([id]) => id === "refGuideSource")?.[1]);
   }
   GridEditor.bind(pane, bid, currentGrid, surf);
+  for(const button of pane.querySelectorAll('[data-component-tab]'))button.onclick=()=>fiShowTab(button.dataset.componentTab);
+  renderFaceLayers(projectionDraft);
   feTimberAutoBadges(pane);
   ReferenceWorkspace.present();
   if (!saved || (saved.placement === "null" && surf)) feTimberSuggestForm();
   else feTimberShowSuggestion();
   updatePlaceValid(pane);
   const pri = pane.querySelector("#tbPriLabel"); if (pri) pri.hidden = pane.querySelector("#tbRole").value !== "custom";
+  reapplyInspectorFocus(pane, saved);
+  restoreDirtyInputs(pane, dirtyInputs);
 }
 
 /* 放置表單（主畫布右欄與面內檢視器共用，§5.5.3a） */
@@ -9205,13 +9549,17 @@ function syncParameterEditingLayout() {
 function renderInspectorBody() {
   syncCompositionLayout();
   const pane = $("inspectorContent"); if (!pane) return;
+  disarmEdgeInputs(pane);
+  const dirtyInputs = captureDirtyInputs(pane);
   const empty = $("inspectorEmpty");
-  if(oc.parameterCreating){if(empty)empty.hidden=true;pane.hidden=false;window.ParameterUI?.render(pane);return;}
+  if(oc.parameterCreating){pane.dataset.redrawOwner="";if(empty)empty.hidden=true;pane.hidden=false;window.ParameterUI?.render(pane);return;}
   if (oc.gridSystemCreating && !oc.selection.length) {
+    pane.dataset.redrawOwner="";
     if (empty) empty.hidden = true;
     pane.hidden = false; GridSystemEditor.render(pane, null); return;
   }
   if (oc.selection.length > 1) {
+    pane.dataset.redrawOwner="";
     if (empty) empty.hidden = true;
     pane.hidden = false; pane.innerHTML = selectionMultiHTML(oc.selection);
     return;
@@ -9219,18 +9567,20 @@ function renderInspectorBody() {
   const sel = oc.sel && ocFind(oc.sel.kind, oc.sel.id) ? oc.sel : null;
   if (empty) empty.hidden = !!sel;
   pane.hidden = !sel;
-  if (!sel) { pane.innerHTML = ""; return; }
+  if (!sel) { pane.dataset.redrawOwner=""; pane.innerHTML = ""; return; }
   const o = ocFind(sel.kind, sel.id);
-  if (sel.kind === "grid-binding" || sel.kind === "grid-system" && o.mode === "infinite") {renderGridObjectInspector(pane,o);return;}
-  if (sel.kind === "grid-system") { GridSystemEditor.render(pane, o); return; }
-  if (sel.kind.startsWith("assembly-")) { window.AssemblyWorkspace?.inspector(pane,o);return; }
-  if (sel.kind === "parameter") { window.ParameterUI?.render(pane, o); return; }
+  if (sel.kind === "grid-binding" || sel.kind === "grid-system" && o.mode === "infinite") {pane.dataset.redrawOwner="";renderGridObjectInspector(pane,o);return;}
+  if (sel.kind === "grid-system") { pane.dataset.redrawOwner=""; GridSystemEditor.render(pane, o); return; }
+  if (sel.kind.startsWith("assembly-")) { pane.dataset.redrawOwner=""; window.AssemblyWorkspace?.inspector(pane,o);return; }
+  if (sel.kind === "parameter") { pane.dataset.redrawOwner=""; window.ParameterUI?.render(pane, o); return; }
   pane.textContent = "";
   /* RC 構件檢視器(B-3):欄位表單 → DSL 重宣告(交易式);雙擊也只到這裡(Q10)。 */
   if (sel.kind === "column" || sel.kind === "beam") {
+    pane.dataset.redrawOwner="";
     renderRcInspector(pane, sel.kind, o);
     return;
   }
+  pane.dataset.redrawOwner = sel.kind === "boundary" ? "boundary:" + sel.id : "";
   const name = sel.kind === "space" ? `空間 ${o.id}`
     : `${KIND_ZH[sel.kind] || "面"} ${o.id}`;
   const state = sel.kind === "space"
@@ -9289,7 +9639,7 @@ function renderInspectorBody() {
   /* §5.A.1.10:外環邊清單事件——commitEdgeFixity/commitEdgeLength 成功時
      已經透過 emitBoundary→emitLine→renderObjects() 自動重繪本檢視器(oc.focus
      為空時 drawObjects() 會呼叫 renderInspector());只有失敗(驗證擋下或核心
-     拒絕)才需要自己重繪一次,把輸入框重置回真實值。 */
+     拒絕)才需要自己重繪一次。被拒內容還留在欄位才重置，較新的鍵入不清除。 */
   if (sel.kind === "boundary" && bLoops && bLoops.length) {
     for (const b of pane.querySelectorAll("[data-fix-edge]"))
       b.addEventListener("click", async () => {
@@ -9298,11 +9648,15 @@ function renderInspectorBody() {
           : (oc.bmap[sel.id][0].fixity[i] ? 0 : 1);
         await commitEdgeFixity(sel.id, oc.bmap[sel.id], i, val);
       });
-    for (const inp of pane.querySelectorAll("[data-edge-len]"))
+    for (const inp of pane.querySelectorAll("[data-edge-len]")) {
+      trackEdgeInput(inp);
       inp.addEventListener("change", async () => {
-        const i = +inp.dataset.edgeLen, len = Math.round(+inp.value);
-        if (!(await commitEdgeLength(sel.id, oc.bmap[sel.id], i, len))) renderInspector();
+        if (inp.dataset.edgeSuppress === "1") return;
+        const i = +inp.dataset.edgeLen, submitted = beginEdgeSubmission(pane, inp), len = Math.round(+submitted.value);
+        if (await commitEdgeLength(sel.id, oc.bmap[sel.id], i, len)) finishEdgeSubmission(submitted);
+        else if (finishEdgeSubmission(submitted, true)) renderInspector();
       });
+    }
   }
   const be = pane.querySelector("#inspEnter");
   if (sel.kind === "placement") { be.disabled = true; be.title = "placement 面沒有邊界可編輯"; }
@@ -9320,6 +9674,7 @@ function renderInspectorBody() {
     const t = pane.querySelector(".place-block") || pane.querySelector("#placeFlow");
     if (t) t.scrollIntoView({ block: "nearest" });
   }
+  if (sel.kind === "boundary") restoreDirtyInputs(pane, dirtyInputs);
 }
 
 /* RC 柱/樑檢視器:box=[xlo,ylo,zlo,xhi,yhi,zhi] → 欄位表單;
@@ -9789,36 +10144,52 @@ function toast(msg, type = "error") {
    toast;不傳就是既有行為(直接 toast 原文),不影響既有呼叫點。 */
 async function mutate(lines, opts) {
   if (oc.busy) return false;
+  if(opts?.operation&&!opts.operation.current())return false;
   oc.busy = true;
   document.body.classList.add("oc-busy");
   const busyEl = $("busyIndicator");
   const trigger = document.activeElement?.closest("button");
   trigger?.classList.add("is-busy");
   const busyTimer = setTimeout(() => { if (busyEl) busyEl.hidden = false; }, 400);
+  let committed = false;
   try {
     const b = await api("line history-begin");
     if (!b.ok) { toast(b.error || "指令失敗"); return false; }
+    if(opts?.operation&&!opts.operation.beginTransaction()){
+      if(opts.operation.ownsNativeTransaction())await api('line history-abort');return false;
+    }
     for (let k = 0; k < lines.length; ++k) {
       const r = await api("line " + lines[k]);
       if (!r.ok) {
-        const ab = await api("line history-abort");
-        if (!ab.ok) toast("回滾失敗,狀態可能不一致");
+        if(!opts?.operation||opts.operation.ownsNativeTransaction()){
+          const ab = await api("line history-abort");
+          if (!ab.ok) toast("回滾失敗,狀態可能不一致");
+        }
         const msg = (opts && opts.friendlyError) ? (opts.friendlyError(r.error) || r.error) : r.error;
         toast(msg || "指令失敗");
         return false;
       }
+      if(opts?.operation&&!opts.operation.transactionCurrent()){
+        if(opts.operation.ownsNativeTransaction())await api('line history-abort');return false;
+      }
     }
     const e = await api("line history-end");
     if (!e.ok) { toast(e.error || "指令失敗"); return false; }
+    committed = true;
     return true;
   } catch (err) {
-    try { await api("line history-abort"); } catch (_) { }
+    try { if(!opts?.operation||opts.operation.ownsNativeTransaction())await api("line history-abort"); } catch (_) { }
     throw err;
   } finally {
-    clearTimeout(busyTimer); trigger?.classList.remove("is-busy");
-    oc.busy = false;
-    document.body.classList.remove("oc-busy");
-    if (busyEl) busyEl.hidden = true;
+    // Keep the transaction's input lock through its derived native refresh.
+    // A refresh failure must release the lock without aborting a committed edit.
+    try { await opts?.afterSettlement?.(committed); }
+    finally {
+      clearTimeout(busyTimer); trigger?.classList.remove("is-busy");
+      oc.busy = false;
+      document.body.classList.remove("oc-busy");
+      if (busyEl) busyEl.hidden = true;
+    }
   }
 }
 /* 快速六面盒對話框(§5.6) */
@@ -10140,10 +10511,8 @@ for (const b of document.querySelectorAll("#feGuidePick button"))
     if (!sid) return;
     const axis = b.dataset.axis;
     const off = Math.round(+(axis === "u" ? pk.dataset.v : pk.dataset.u));
-    const ids = await api("newid");
-    if (await createReferenceGuide(sid, axis, off))
-      await feLoadGuides();
-    drawFaceEditor(); renderFaceLayers();
+    const refresh = feGuidePresentationRefresh();
+    await refresh(await createReferenceGuide(sid, axis, off));
   });
 fevp.addEventListener("wheel", e => {
   if (e.target.closest?.("#feCtxMenu, #feOpPanel")) return;
@@ -10232,6 +10601,8 @@ async function setView3(on, { persistPositions = true } = {}) {
   ++oc.navigationSequence;
   clearCanvasSelections();
   if (on === view3) return;
+  disarmEdgeInputs($("inspectorContent"));
+  disarmEdgeInputs($("faceInspectorContent"));
   hoverPickScheduler.cancel();
   closePanels(); pendingSlot = null;
   view3 = on;
@@ -10267,6 +10638,10 @@ async function setView3(on, { persistPositions = true } = {}) {
   }
 }
 $("btnObj").addEventListener("click", () => setView3(true));
+$("btnObj").addEventListener("pointerdown", e => {
+  // View navigation preserves a draft; its focus change is not a submission.
+  if (e.button === 0 && !view3) disarmEdgeInputs($("inspectorContent"));
+});
 $("btnCanvasView").addEventListener("click", () => setView3(false));
 $("btnModelLibraryMenu").addEventListener("click", () => { closeMenus(); $("btnSpaceModels").click(); });
 $("btnBack").addEventListener("click", leaveFocus);
@@ -10316,6 +10691,10 @@ for (const [id, label] of [["spacePlaceColumn", "在平面圖點一下放柱"], 
 /* Current size appears next to the selected placement mode. */
 $("spaceSizeTools").appendChild(document.querySelector(".space-plan-tools"));
 document.querySelector(".space-plan-head").remove();
+document.querySelector('.space-plan-strip').prepend($('spaceWorkspaceTools'));
+const planMetrics=document.createElement('p');planMetrics.id='spacePlanMetrics';planMetrics.className='space-plan-metrics';
+$('spacePlanSvg').before(planMetrics);
+new ResizeObserver(syncSpacePlanAnnotations).observe($('spacePlanSvg'));
 let canvasResizeFrame = 0;
 window.addEventListener("resize", () => {
   cancelAnimationFrame(canvasResizeFrame);

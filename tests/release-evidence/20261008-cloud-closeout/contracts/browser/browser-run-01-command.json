@@ -1,0 +1,18 @@
+{
+  "command": [
+    "python",
+    "/workspace/closure-evidence/contracts/browser_save_reopen_probe.py",
+    "--root",
+    "/workspace/geometry-axiom",
+    "--url",
+    "http://127.0.0.1:18971/",
+    "--out",
+    "/workspace/closure-evidence/contracts/browser-run-01"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "started": "2026-10-08T16:51:14.328940+00:00",
+  "finished": "2026-10-08T16:51:14.478608+00:00",
+  "stdout": "{\"out\": \"/workspace/closure-evidence/contracts/browser-run-01\", \"exit_code\": 1, \"cases\": []}\n",
+  "stderr": "",
+  "exit_code": 1
+}

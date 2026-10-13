@@ -1,0 +1,1806 @@
+{
+  "name": "same-edit-up-390",
+  "width": 390,
+  "mode": "same-edit-up",
+  "scope": null,
+  "started": "2026-10-09T15:50:48.953156+00:00",
+  "ok": true,
+  "fixture": {
+    "commands": [
+      "surface 731 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+      "surface 732 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+      "canvas-pos boundary 731 30 30",
+      "canvas-pos boundary 732 310 30"
+    ],
+    "replies": [
+      {
+        "ok": true
+      },
+      {
+        "ok": true
+      },
+      {
+        "ok": true
+      },
+      {
+        "ok": true
+      },
+      {
+        "ok": true
+      }
+    ],
+    "setupIsApi": true
+  },
+  "heldNativeReply": {
+    "ok": true,
+    "kind": "vertex",
+    "loop": -1,
+    "index": 0
+  },
+  "before": {
+    "workSurf": "731",
+    "view3": true,
+    "tool": "edit",
+    "editBid": 731,
+    "editToken": 2,
+    "editLoops": [
+      {
+        "loop": -1,
+        "verts": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "fixity": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "vertices": [
+          {
+            "index": 0,
+            "key": null,
+            "uv": [
+              0,
+              0
+            ]
+          },
+          {
+            "index": 1,
+            "key": null,
+            "uv": [
+              4000,
+              0
+            ]
+          },
+          {
+            "index": 2,
+            "key": null,
+            "uv": [
+              4000,
+              3000
+            ]
+          },
+          {
+            "index": 3,
+            "key": null,
+            "uv": [
+              0,
+              3000
+            ]
+          }
+        ]
+      },
+      {
+        "loop": 0,
+        "verts": [
+          [
+            3000,
+            1000
+          ],
+          [
+            3500,
+            1000
+          ],
+          [
+            3500,
+            1500
+          ],
+          [
+            3000,
+            1500
+          ]
+        ],
+        "fixity": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "vertices": [
+          {
+            "index": 0,
+            "key": null,
+            "uv": [
+              3000,
+              1000
+            ]
+          },
+          {
+            "index": 1,
+            "key": null,
+            "uv": [
+              3500,
+              1000
+            ]
+          },
+          {
+            "index": 2,
+            "key": null,
+            "uv": [
+              3500,
+              1500
+            ]
+          },
+          {
+            "index": 3,
+            "key": null,
+            "uv": [
+              3000,
+              1500
+            ]
+          }
+        ]
+      }
+    ],
+    "editDrag": null,
+    "rectStart": null,
+    "ocOn": false,
+    "ocFocus": null,
+    "ocEdit": null,
+    "navigationSequence": 1,
+    "groups": [
+      "<g transform=\"translate(250,1930)\"><polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle><polygon points=\"3000,1000 3500,1000 3500,1500 3000,1500\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"3000\" cy=\"1000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"3500\" cy=\"1000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"3500\" cy=\"1500\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"3000\" cy=\"1500\" r=\"4\" fill=\"#c0392b\"></circle></g>"
+    ],
+    "handles": [
+      "<polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+      "<circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+      "<circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+      "<circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>",
+      "<circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>",
+      "<polygon points=\"3000,1000 3500,1000 3500,1500 3000,1500\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+      "<circle cx=\"3000\" cy=\"1000\" r=\"4\" fill=\"#c0392b\"></circle>",
+      "<circle cx=\"3500\" cy=\"1000\" r=\"4\" fill=\"#c0392b\"></circle>",
+      "<circle cx=\"3500\" cy=\"1500\" r=\"4\" fill=\"#c0392b\"></circle>",
+      "<circle cx=\"3000\" cy=\"1500\" r=\"4\" fill=\"#c0392b\"></circle>"
+    ],
+    "canvasVisible": true,
+    "workspaceHidden": true,
+    "inspectorHidden": true,
+    "context": "f0248aac-267e-4ede-8c42-b15a34944eee"
+  },
+  "after": {
+    "workSurf": "731",
+    "view3": true,
+    "tool": "edit",
+    "editBid": 731,
+    "editToken": 2,
+    "editLoops": [
+      {
+        "loop": -1,
+        "verts": [
+          [
+            0,
+            0
+          ],
+          [
+            4000,
+            0
+          ],
+          [
+            4000,
+            3000
+          ],
+          [
+            0,
+            3000
+          ]
+        ],
+        "fixity": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "vertices": [
+          {
+            "index": 0,
+            "key": null,
+            "uv": [
+              0,
+              0
+            ]
+          },
+          {
+            "index": 1,
+            "key": null,
+            "uv": [
+              4000,
+              0
+            ]
+          },
+          {
+            "index": 2,
+            "key": null,
+            "uv": [
+              4000,
+              3000
+            ]
+          },
+          {
+            "index": 3,
+            "key": null,
+            "uv": [
+              0,
+              3000
+            ]
+          }
+        ]
+      },
+      {
+        "loop": 0,
+        "verts": [
+          [
+            3000,
+            1000
+          ],
+          [
+            3500,
+            1000
+          ],
+          [
+            3500,
+            1500
+          ],
+          [
+            3000,
+            1500
+          ]
+        ],
+        "fixity": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "vertices": [
+          {
+            "index": 0,
+            "key": null,
+            "uv": [
+              3000,
+              1000
+            ]
+          },
+          {
+            "index": 1,
+            "key": null,
+            "uv": [
+              3500,
+              1000
+            ]
+          },
+          {
+            "index": 2,
+            "key": null,
+            "uv": [
+              3500,
+              1500
+            ]
+          },
+          {
+            "index": 3,
+            "key": null,
+            "uv": [
+              3000,
+              1500
+            ]
+          }
+        ]
+      }
+    ],
+    "editDrag": null,
+    "rectStart": null,
+    "ocOn": false,
+    "ocFocus": null,
+    "ocEdit": null,
+    "navigationSequence": 1,
+    "groups": [
+      "<g transform=\"translate(250,1930)\"><polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle><polygon points=\"3000,1000 3500,1000 3500,1500 3000,1500\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"3000\" cy=\"1000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"3500\" cy=\"1000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"3500\" cy=\"1500\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"3000\" cy=\"1500\" r=\"4\" fill=\"#c0392b\"></circle></g>"
+    ],
+    "handles": [
+      "<polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+      "<circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+      "<circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+      "<circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>",
+      "<circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>",
+      "<polygon points=\"3000,1000 3500,1000 3500,1500 3000,1500\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+      "<circle cx=\"3000\" cy=\"1000\" r=\"4\" fill=\"#c0392b\"></circle>",
+      "<circle cx=\"3500\" cy=\"1000\" r=\"4\" fill=\"#c0392b\"></circle>",
+      "<circle cx=\"3500\" cy=\"1500\" r=\"4\" fill=\"#c0392b\"></circle>",
+      "<circle cx=\"3000\" cy=\"1500\" r=\"4\" fill=\"#c0392b\"></circle>"
+    ],
+    "canvasVisible": true,
+    "workspaceHidden": true,
+    "inspectorHidden": true,
+    "context": "f0248aac-267e-4ede-8c42-b15a34944eee"
+  },
+  "exactWorldUnchangedAtRelease": true,
+  "BCompletion": null,
+  "audit": {
+    "gate": {
+      "kind": "bhit",
+      "id": 731,
+      "phase": "released",
+      "release": null,
+      "promise": null,
+      "command": "bhit 731 0 0 186",
+      "stack": "Error\n    at window.fetch (eval at evaluate (:311:30), <anonymous>:21:19)\n    at apiRequest (http://127.0.0.1:19186/app.js:639:21)\n    at api (http://127.0.0.1:19186/app.js:691:24)\n    at Object.canvasDown (http://127.0.0.1:19186/app.js:1493:21)\n    at async canvasDown (eval at <anonymous> (eval at evaluate (:311:30)), <anonymous>:1:223)",
+      "nativeReply": {
+        "ok": true,
+        "kind": "vertex",
+        "loop": -1,
+        "index": 0
+      }
+    },
+    "downs": [
+      {
+        "phase": "settled",
+        "trusted": true,
+        "pointerId": 1,
+        "buttons": 1,
+        "before": {
+          "workSurf": "731",
+          "view3": true,
+          "tool": "edit",
+          "editBid": 731,
+          "editToken": 2,
+          "editLoops": [
+            {
+              "loop": -1,
+              "verts": [
+                [
+                  0,
+                  0
+                ],
+                [
+                  4000,
+                  0
+                ],
+                [
+                  4000,
+                  3000
+                ],
+                [
+                  0,
+                  3000
+                ]
+              ],
+              "fixity": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "vertices": [
+                {
+                  "index": 0,
+                  "key": null,
+                  "uv": [
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "index": 1,
+                  "key": null,
+                  "uv": [
+                    4000,
+                    0
+                  ]
+                },
+                {
+                  "index": 2,
+                  "key": null,
+                  "uv": [
+                    4000,
+                    3000
+                  ]
+                },
+                {
+                  "index": 3,
+                  "key": null,
+                  "uv": [
+                    0,
+                    3000
+                  ]
+                }
+              ]
+            },
+            {
+              "loop": 0,
+              "verts": [
+                [
+                  3000,
+                  1000
+                ],
+                [
+                  3500,
+                  1000
+                ],
+                [
+                  3500,
+                  1500
+                ],
+                [
+                  3000,
+                  1500
+                ]
+              ],
+              "fixity": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "vertices": [
+                {
+                  "index": 0,
+                  "key": null,
+                  "uv": [
+                    3000,
+                    1000
+                  ]
+                },
+                {
+                  "index": 1,
+                  "key": null,
+                  "uv": [
+                    3500,
+                    1000
+                  ]
+                },
+                {
+                  "index": 2,
+                  "key": null,
+                  "uv": [
+                    3500,
+                    1500
+                  ]
+                },
+                {
+                  "index": 3,
+                  "key": null,
+                  "uv": [
+                    3000,
+                    1500
+                  ]
+                }
+              ]
+            }
+          ],
+          "editDrag": null,
+          "rectStart": null,
+          "ocOn": false,
+          "ocFocus": null,
+          "ocEdit": null,
+          "navigationSequence": 1,
+          "groups": [
+            "<g transform=\"translate(250,1930)\"><polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle><polygon points=\"3000,1000 3500,1000 3500,1500 3000,1500\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"3000\" cy=\"1000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"3500\" cy=\"1000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"3500\" cy=\"1500\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"3000\" cy=\"1500\" r=\"4\" fill=\"#c0392b\"></circle></g>"
+          ],
+          "handles": [
+            "<polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+            "<circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<polygon points=\"3000,1000 3500,1000 3500,1500 3000,1500\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+            "<circle cx=\"3000\" cy=\"1000\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"3500\" cy=\"1000\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"3500\" cy=\"1500\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"3000\" cy=\"1500\" r=\"4\" fill=\"#c0392b\"></circle>"
+          ],
+          "canvasVisible": true,
+          "workspaceHidden": true,
+          "inspectorHidden": true,
+          "context": "f0248aac-267e-4ede-8c42-b15a34944eee"
+        },
+        "after": {
+          "workSurf": "731",
+          "view3": true,
+          "tool": "edit",
+          "editBid": 731,
+          "editToken": 2,
+          "editLoops": [
+            {
+              "loop": -1,
+              "verts": [
+                [
+                  0,
+                  0
+                ],
+                [
+                  4000,
+                  0
+                ],
+                [
+                  4000,
+                  3000
+                ],
+                [
+                  0,
+                  3000
+                ]
+              ],
+              "fixity": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "vertices": [
+                {
+                  "index": 0,
+                  "key": null,
+                  "uv": [
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "index": 1,
+                  "key": null,
+                  "uv": [
+                    4000,
+                    0
+                  ]
+                },
+                {
+                  "index": 2,
+                  "key": null,
+                  "uv": [
+                    4000,
+                    3000
+                  ]
+                },
+                {
+                  "index": 3,
+                  "key": null,
+                  "uv": [
+                    0,
+                    3000
+                  ]
+                }
+              ]
+            },
+            {
+              "loop": 0,
+              "verts": [
+                [
+                  3000,
+                  1000
+                ],
+                [
+                  3500,
+                  1000
+                ],
+                [
+                  3500,
+                  1500
+                ],
+                [
+                  3000,
+                  1500
+                ]
+              ],
+              "fixity": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "vertices": [
+                {
+                  "index": 0,
+                  "key": null,
+                  "uv": [
+                    3000,
+                    1000
+                  ]
+                },
+                {
+                  "index": 1,
+                  "key": null,
+                  "uv": [
+                    3500,
+                    1000
+                  ]
+                },
+                {
+                  "index": 2,
+                  "key": null,
+                  "uv": [
+                    3500,
+                    1500
+                  ]
+                },
+                {
+                  "index": 3,
+                  "key": null,
+                  "uv": [
+                    3000,
+                    1500
+                  ]
+                }
+              ]
+            }
+          ],
+          "editDrag": null,
+          "rectStart": null,
+          "ocOn": false,
+          "ocFocus": null,
+          "ocEdit": null,
+          "navigationSequence": 1,
+          "groups": [
+            "<g transform=\"translate(250,1930)\"><polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle><polygon points=\"3000,1000 3500,1000 3500,1500 3000,1500\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"3000\" cy=\"1000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"3500\" cy=\"1000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"3500\" cy=\"1500\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"3000\" cy=\"1500\" r=\"4\" fill=\"#c0392b\"></circle></g>"
+          ],
+          "handles": [
+            "<polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+            "<circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<polygon points=\"3000,1000 3500,1000 3500,1500 3000,1500\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+            "<circle cx=\"3000\" cy=\"1000\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"3500\" cy=\"1000\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"3500\" cy=\"1500\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"3000\" cy=\"1500\" r=\"4\" fill=\"#c0392b\"></circle>"
+          ],
+          "canvasVisible": true,
+          "workspaceHidden": true,
+          "inspectorHidden": true,
+          "context": "f0248aac-267e-4ede-8c42-b15a34944eee"
+        }
+      }
+    ],
+    "moves": [
+      {
+        "phase": "settled",
+        "trusted": true,
+        "pointerId": 1,
+        "buttons": 0,
+        "before": {
+          "workSurf": "731",
+          "view3": true,
+          "tool": "edit",
+          "editBid": 731,
+          "editToken": 2,
+          "editLoops": [
+            {
+              "loop": -1,
+              "verts": [
+                [
+                  0,
+                  0
+                ],
+                [
+                  4000,
+                  0
+                ],
+                [
+                  4000,
+                  3000
+                ],
+                [
+                  0,
+                  3000
+                ]
+              ],
+              "fixity": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "vertices": [
+                {
+                  "index": 0,
+                  "key": null,
+                  "uv": [
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "index": 1,
+                  "key": null,
+                  "uv": [
+                    4000,
+                    0
+                  ]
+                },
+                {
+                  "index": 2,
+                  "key": null,
+                  "uv": [
+                    4000,
+                    3000
+                  ]
+                },
+                {
+                  "index": 3,
+                  "key": null,
+                  "uv": [
+                    0,
+                    3000
+                  ]
+                }
+              ]
+            },
+            {
+              "loop": 0,
+              "verts": [
+                [
+                  3000,
+                  1000
+                ],
+                [
+                  3500,
+                  1000
+                ],
+                [
+                  3500,
+                  1500
+                ],
+                [
+                  3000,
+                  1500
+                ]
+              ],
+              "fixity": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "vertices": [
+                {
+                  "index": 0,
+                  "key": null,
+                  "uv": [
+                    3000,
+                    1000
+                  ]
+                },
+                {
+                  "index": 1,
+                  "key": null,
+                  "uv": [
+                    3500,
+                    1000
+                  ]
+                },
+                {
+                  "index": 2,
+                  "key": null,
+                  "uv": [
+                    3500,
+                    1500
+                  ]
+                },
+                {
+                  "index": 3,
+                  "key": null,
+                  "uv": [
+                    3000,
+                    1500
+                  ]
+                }
+              ]
+            }
+          ],
+          "editDrag": null,
+          "rectStart": null,
+          "ocOn": false,
+          "ocFocus": null,
+          "ocEdit": null,
+          "navigationSequence": 1,
+          "groups": [
+            "<g transform=\"translate(250,1930)\"><polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle><polygon points=\"3000,1000 3500,1000 3500,1500 3000,1500\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"3000\" cy=\"1000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"3500\" cy=\"1000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"3500\" cy=\"1500\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"3000\" cy=\"1500\" r=\"4\" fill=\"#c0392b\"></circle></g>"
+          ],
+          "handles": [
+            "<polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+            "<circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<polygon points=\"3000,1000 3500,1000 3500,1500 3000,1500\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+            "<circle cx=\"3000\" cy=\"1000\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"3500\" cy=\"1000\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"3500\" cy=\"1500\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"3000\" cy=\"1500\" r=\"4\" fill=\"#c0392b\"></circle>"
+          ],
+          "canvasVisible": true,
+          "workspaceHidden": true,
+          "inspectorHidden": true,
+          "context": "f0248aac-267e-4ede-8c42-b15a34944eee"
+        },
+        "after": {
+          "workSurf": "731",
+          "view3": true,
+          "tool": "edit",
+          "editBid": 731,
+          "editToken": 2,
+          "editLoops": [
+            {
+              "loop": -1,
+              "verts": [
+                [
+                  0,
+                  0
+                ],
+                [
+                  4000,
+                  0
+                ],
+                [
+                  4000,
+                  3000
+                ],
+                [
+                  0,
+                  3000
+                ]
+              ],
+              "fixity": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "vertices": [
+                {
+                  "index": 0,
+                  "key": null,
+                  "uv": [
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "index": 1,
+                  "key": null,
+                  "uv": [
+                    4000,
+                    0
+                  ]
+                },
+                {
+                  "index": 2,
+                  "key": null,
+                  "uv": [
+                    4000,
+                    3000
+                  ]
+                },
+                {
+                  "index": 3,
+                  "key": null,
+                  "uv": [
+                    0,
+                    3000
+                  ]
+                }
+              ]
+            },
+            {
+              "loop": 0,
+              "verts": [
+                [
+                  3000,
+                  1000
+                ],
+                [
+                  3500,
+                  1000
+                ],
+                [
+                  3500,
+                  1500
+                ],
+                [
+                  3000,
+                  1500
+                ]
+              ],
+              "fixity": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "vertices": [
+                {
+                  "index": 0,
+                  "key": null,
+                  "uv": [
+                    3000,
+                    1000
+                  ]
+                },
+                {
+                  "index": 1,
+                  "key": null,
+                  "uv": [
+                    3500,
+                    1000
+                  ]
+                },
+                {
+                  "index": 2,
+                  "key": null,
+                  "uv": [
+                    3500,
+                    1500
+                  ]
+                },
+                {
+                  "index": 3,
+                  "key": null,
+                  "uv": [
+                    3000,
+                    1500
+                  ]
+                }
+              ]
+            }
+          ],
+          "editDrag": null,
+          "rectStart": null,
+          "ocOn": false,
+          "ocFocus": null,
+          "ocEdit": null,
+          "navigationSequence": 1,
+          "groups": [
+            "<g transform=\"translate(250,1930)\"><polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle><polygon points=\"3000,1000 3500,1000 3500,1500 3000,1500\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"3000\" cy=\"1000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"3500\" cy=\"1000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"3500\" cy=\"1500\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"3000\" cy=\"1500\" r=\"4\" fill=\"#c0392b\"></circle></g>"
+          ],
+          "handles": [
+            "<polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+            "<circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<polygon points=\"3000,1000 3500,1000 3500,1500 3000,1500\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+            "<circle cx=\"3000\" cy=\"1000\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"3500\" cy=\"1000\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"3500\" cy=\"1500\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"3000\" cy=\"1500\" r=\"4\" fill=\"#c0392b\"></circle>"
+          ],
+          "canvasVisible": true,
+          "workspaceHidden": true,
+          "inspectorHidden": true,
+          "context": "f0248aac-267e-4ede-8c42-b15a34944eee"
+        }
+      }
+    ],
+    "ups": [
+      {
+        "phase": "settled",
+        "trusted": true,
+        "pointerId": 1,
+        "buttons": 0,
+        "before": {
+          "workSurf": "731",
+          "view3": true,
+          "tool": "edit",
+          "editBid": 731,
+          "editToken": 2,
+          "editLoops": [
+            {
+              "loop": -1,
+              "verts": [
+                [
+                  0,
+                  0
+                ],
+                [
+                  4000,
+                  0
+                ],
+                [
+                  4000,
+                  3000
+                ],
+                [
+                  0,
+                  3000
+                ]
+              ],
+              "fixity": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "vertices": [
+                {
+                  "index": 0,
+                  "key": null,
+                  "uv": [
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "index": 1,
+                  "key": null,
+                  "uv": [
+                    4000,
+                    0
+                  ]
+                },
+                {
+                  "index": 2,
+                  "key": null,
+                  "uv": [
+                    4000,
+                    3000
+                  ]
+                },
+                {
+                  "index": 3,
+                  "key": null,
+                  "uv": [
+                    0,
+                    3000
+                  ]
+                }
+              ]
+            },
+            {
+              "loop": 0,
+              "verts": [
+                [
+                  3000,
+                  1000
+                ],
+                [
+                  3500,
+                  1000
+                ],
+                [
+                  3500,
+                  1500
+                ],
+                [
+                  3000,
+                  1500
+                ]
+              ],
+              "fixity": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "vertices": [
+                {
+                  "index": 0,
+                  "key": null,
+                  "uv": [
+                    3000,
+                    1000
+                  ]
+                },
+                {
+                  "index": 1,
+                  "key": null,
+                  "uv": [
+                    3500,
+                    1000
+                  ]
+                },
+                {
+                  "index": 2,
+                  "key": null,
+                  "uv": [
+                    3500,
+                    1500
+                  ]
+                },
+                {
+                  "index": 3,
+                  "key": null,
+                  "uv": [
+                    3000,
+                    1500
+                  ]
+                }
+              ]
+            }
+          ],
+          "editDrag": null,
+          "rectStart": null,
+          "ocOn": false,
+          "ocFocus": null,
+          "ocEdit": null,
+          "navigationSequence": 1,
+          "groups": [
+            "<g transform=\"translate(250,1930)\"><polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle><polygon points=\"3000,1000 3500,1000 3500,1500 3000,1500\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"3000\" cy=\"1000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"3500\" cy=\"1000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"3500\" cy=\"1500\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"3000\" cy=\"1500\" r=\"4\" fill=\"#c0392b\"></circle></g>"
+          ],
+          "handles": [
+            "<polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+            "<circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<polygon points=\"3000,1000 3500,1000 3500,1500 3000,1500\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+            "<circle cx=\"3000\" cy=\"1000\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"3500\" cy=\"1000\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"3500\" cy=\"1500\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"3000\" cy=\"1500\" r=\"4\" fill=\"#c0392b\"></circle>"
+          ],
+          "canvasVisible": true,
+          "workspaceHidden": true,
+          "inspectorHidden": true,
+          "context": "f0248aac-267e-4ede-8c42-b15a34944eee"
+        },
+        "after": {
+          "workSurf": "731",
+          "view3": true,
+          "tool": "edit",
+          "editBid": 731,
+          "editToken": 2,
+          "editLoops": [
+            {
+              "loop": -1,
+              "verts": [
+                [
+                  0,
+                  0
+                ],
+                [
+                  4000,
+                  0
+                ],
+                [
+                  4000,
+                  3000
+                ],
+                [
+                  0,
+                  3000
+                ]
+              ],
+              "fixity": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "vertices": [
+                {
+                  "index": 0,
+                  "key": null,
+                  "uv": [
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "index": 1,
+                  "key": null,
+                  "uv": [
+                    4000,
+                    0
+                  ]
+                },
+                {
+                  "index": 2,
+                  "key": null,
+                  "uv": [
+                    4000,
+                    3000
+                  ]
+                },
+                {
+                  "index": 3,
+                  "key": null,
+                  "uv": [
+                    0,
+                    3000
+                  ]
+                }
+              ]
+            },
+            {
+              "loop": 0,
+              "verts": [
+                [
+                  3000,
+                  1000
+                ],
+                [
+                  3500,
+                  1000
+                ],
+                [
+                  3500,
+                  1500
+                ],
+                [
+                  3000,
+                  1500
+                ]
+              ],
+              "fixity": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "vertices": [
+                {
+                  "index": 0,
+                  "key": null,
+                  "uv": [
+                    3000,
+                    1000
+                  ]
+                },
+                {
+                  "index": 1,
+                  "key": null,
+                  "uv": [
+                    3500,
+                    1000
+                  ]
+                },
+                {
+                  "index": 2,
+                  "key": null,
+                  "uv": [
+                    3500,
+                    1500
+                  ]
+                },
+                {
+                  "index": 3,
+                  "key": null,
+                  "uv": [
+                    3000,
+                    1500
+                  ]
+                }
+              ]
+            }
+          ],
+          "editDrag": null,
+          "rectStart": null,
+          "ocOn": false,
+          "ocFocus": null,
+          "ocEdit": null,
+          "navigationSequence": 1,
+          "groups": [
+            "<g transform=\"translate(250,1930)\"><polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle><polygon points=\"3000,1000 3500,1000 3500,1500 3000,1500\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"3000\" cy=\"1000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"3500\" cy=\"1000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"3500\" cy=\"1500\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"3000\" cy=\"1500\" r=\"4\" fill=\"#c0392b\"></circle></g>"
+          ],
+          "handles": [
+            "<polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+            "<circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<polygon points=\"3000,1000 3500,1000 3500,1500 3000,1500\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+            "<circle cx=\"3000\" cy=\"1000\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"3500\" cy=\"1000\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"3500\" cy=\"1500\" r=\"4\" fill=\"#c0392b\"></circle>",
+            "<circle cx=\"3000\" cy=\"1500\" r=\"4\" fill=\"#c0392b\"></circle>"
+          ],
+          "canvasVisible": true,
+          "workspaceHidden": true,
+          "inspectorHidden": true,
+          "context": "f0248aac-267e-4ede-8c42-b15a34944eee"
+        }
+      }
+    ],
+    "draws": [
+      {
+        "bid": 731,
+        "token": 2,
+        "phase": "settled"
+      }
+    ],
+    "changes": [],
+    "events": [
+      {
+        "type": "pointermove",
+        "trusted": true,
+        "id": "btnObj",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": -1,
+        "buttons": 0,
+        "x": 243.7899932861328,
+        "y": 70,
+        "value": null
+      },
+      {
+        "type": "pointerdown",
+        "trusted": true,
+        "id": "btnObj",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 1,
+        "x": 243.7899932861328,
+        "y": 70,
+        "value": null
+      },
+      {
+        "type": "pointerup",
+        "trusted": true,
+        "id": "btnObj",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 243.7899932861328,
+        "y": 70,
+        "value": null
+      },
+      {
+        "type": "click",
+        "trusted": true,
+        "id": "btnObj",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 243,
+        "y": 70,
+        "value": null
+      },
+      {
+        "type": "pointermove",
+        "trusted": true,
+        "id": null,
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": -1,
+        "buttons": 0,
+        "x": 117.5199966430664,
+        "y": 120.69000244140625,
+        "value": null
+      },
+      {
+        "type": "pointerdown",
+        "trusted": true,
+        "id": null,
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 1,
+        "x": 117.5199966430664,
+        "y": 120.69000244140625,
+        "value": null
+      },
+      {
+        "type": "pointerup",
+        "trusted": true,
+        "id": null,
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 117.5199966430664,
+        "y": 120.69000244140625,
+        "value": null
+      },
+      {
+        "type": "click",
+        "trusted": true,
+        "id": null,
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 117,
+        "y": 120,
+        "value": null
+      },
+      {
+        "type": "pointermove",
+        "trusted": true,
+        "id": "v3ToolbarSurf",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": -1,
+        "buttons": 0,
+        "x": 319.489990234375,
+        "y": 120.68000030517578,
+        "value": null
+      },
+      {
+        "type": "pointerdown",
+        "trusted": true,
+        "id": "v3ToolbarSurf",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 1,
+        "x": 319.489990234375,
+        "y": 120.68000030517578,
+        "value": null
+      },
+      {
+        "type": "pointerup",
+        "trusted": true,
+        "id": "v3ToolbarSurf",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 319.489990234375,
+        "y": 120.68000030517578,
+        "value": null
+      },
+      {
+        "type": "click",
+        "trusted": true,
+        "id": "v3ToolbarSurf",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 319,
+        "y": 120,
+        "value": null
+      },
+      {
+        "type": "click",
+        "trusted": true,
+        "id": "v3ToolbarSurf",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 0,
+        "pointerType": "",
+        "button": -1,
+        "buttons": 0,
+        "x": 248,
+        "y": 105,
+        "value": null
+      },
+      {
+        "type": "pointermove",
+        "trusted": true,
+        "id": null,
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": -1,
+        "buttons": 0,
+        "x": 161.5500030517578,
+        "y": 120.69000244140625,
+        "value": null
+      },
+      {
+        "type": "pointerdown",
+        "trusted": true,
+        "id": null,
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 1,
+        "x": 161.5500030517578,
+        "y": 120.69000244140625,
+        "value": null
+      },
+      {
+        "type": "pointerup",
+        "trusted": true,
+        "id": null,
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 161.5500030517578,
+        "y": 120.69000244140625,
+        "value": null
+      },
+      {
+        "type": "click",
+        "trusted": true,
+        "id": null,
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 161,
+        "y": 120,
+        "value": null
+      },
+      {
+        "type": "pointermove",
+        "trusted": true,
+        "id": null,
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": -1,
+        "buttons": 0,
+        "x": 26.78313446044922,
+        "y": 450.72784423828125,
+        "value": null
+      },
+      {
+        "type": "pointerdown",
+        "trusted": true,
+        "id": null,
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 1,
+        "x": 26.78313446044922,
+        "y": 450.72784423828125,
+        "value": null
+      },
+      {
+        "type": "gotpointercapture",
+        "trusted": true,
+        "id": "cv",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": -1,
+        "buttons": 1,
+        "x": 26.78313446044922,
+        "y": 450.72784423828125,
+        "value": null
+      },
+      {
+        "type": "pointerup",
+        "trusted": true,
+        "id": "cv",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 26.78313446044922,
+        "y": 450.72784423828125,
+        "value": null
+      },
+      {
+        "type": "lostpointercapture",
+        "trusted": true,
+        "id": "cv",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 26.78313446044922,
+        "y": 450.72784423828125,
+        "value": null
+      },
+      {
+        "type": "click",
+        "trusted": true,
+        "id": "cv",
+        "card": null,
+        "cardId": null,
+        "key": null,
+        "pointerId": 1,
+        "pointerType": "mouse",
+        "button": 0,
+        "buttons": 0,
+        "x": 26,
+        "y": 450,
+        "value": null
+      }
+    ],
+    "fetches": [
+      {
+        "command": "reset",
+        "httpStatus": 200
+      },
+      {
+        "command": "section-profile-read",
+        "httpStatus": 200
+      },
+      {
+        "command": "line surface 731 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+        "httpStatus": 200
+      },
+      {
+        "command": "section-profile-read",
+        "httpStatus": 200
+      },
+      {
+        "command": "line surface 732 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+        "httpStatus": 200
+      },
+      {
+        "command": "section-profile-read",
+        "httpStatus": 200
+      },
+      {
+        "command": "line canvas-pos boundary 731 30 30",
+        "httpStatus": 200
+      },
+      {
+        "command": "line canvas-pos boundary 732 310 30",
+        "httpStatus": 200
+      },
+      {
+        "command": "objects",
+        "httpStatus": 200
+      },
+      {
+        "command": "surfaces",
+        "httpStatus": 200
+      },
+      {
+        "command": "boundary 731",
+        "httpStatus": 200
+      },
+      {
+        "command": "boundary 732",
+        "httpStatus": 200
+      },
+      {
+        "command": "render",
+        "httpStatus": 200
+      },
+      {
+        "command": "surfaces",
+        "httpStatus": 200
+      },
+      {
+        "command": "boundary 731",
+        "httpStatus": 200
+      },
+      {
+        "command": "proj 0 0 0 731",
+        "httpStatus": 200
+      },
+      {
+        "command": "dump",
+        "httpStatus": 200
+      },
+      {
+        "command": "proj 0 1000 0 731",
+        "httpStatus": 200
+      },
+      {
+        "command": "proj 0 0 1000 731",
+        "httpStatus": 200
+      },
+      {
+        "command": "proj 1 0 0 731",
+        "httpStatus": 200
+      },
+      {
+        "command": "proj 1 1000 0 731",
+        "httpStatus": 200
+      },
+      {
+        "command": "proj 1 0 1000 731",
+        "httpStatus": 200
+      },
+      {
+        "command": "proj 2 0 0 731",
+        "httpStatus": 200
+      },
+      {
+        "command": "proj 2 0 1000 731",
+        "httpStatus": 200
+      },
+      {
+        "command": "proj 2 1000 0 731",
+        "httpStatus": 200
+      },
+      {
+        "command": "dump",
+        "httpStatus": 200
+      },
+      {
+        "command": "bhit 731 0 0 186",
+        "httpStatus": 200
+      },
+      {
+        "command": "dump",
+        "httpStatus": 200
+      },
+      {
+        "command": "dump",
+        "httpStatus": 200
+      }
+    ]
+  },
+  "finished": "2026-10-09T15:50:50.916995+00:00",
+  "pageErrors": []
+}

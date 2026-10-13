@@ -1,0 +1,40 @@
+{
+  "phase": "save-reopen-grid",
+  "head": "4e6ab4421e0e634ff4fd06356dadb7d8eaf4feb3",
+  "committedOnThisHead": false,
+  "status": " M geometry-web/space_model_test.js\n M geometry-web/space_test_floor.js\n M tests/test_space_test_floor.js\n?? geometry-web/save_reopen_synthetic_test.js\n",
+  "productDiff": "app.js and space-workspace.js unchanged since 4e6ab44",
+  "lfSha256": {
+    "geometry-web/app.js": "509299aa5b326893748a07ebc283e22e7dac440777f378190bd013008c1e6231",
+    "geometry-web/space-workspace.js": "a735338f5cc14f3ae743578986750ace3c7389e0d73fd44c21773d82c2503868",
+    "geometry-web/save_reopen_synthetic_test.js": "2eda7db51ca8f44d15eddb94251dd57b904a27e924f455c39bd76400bf46b4c0",
+    "geometry-web/space_model_test.js": "8ddd0448c9207a3c012355c2c26915b4064c9d7d258ee54160f9e0fc66dd6dba",
+    "geometry-web/space_test_floor.js": "edf06111a1e2df3e6ab36f707ed2f9c85586849a811fd31095e19c3be3664222",
+    "tests/test_space_test_floor.js": "575f08b4317aca408c6a4fb7341388c735b427fbba647c4ed508761fb52f096a"
+  },
+  "exitCode": 0,
+  "completed": true,
+  "passed": 24,
+  "failed": 0,
+  "assertions": {
+    "setup": 2,
+    "save-reopen-grid": 20,
+    "browser-health": 2,
+    "widths": [1400, 390]
+  },
+  "runtime": {
+    "schema": "geometry-runtime/1",
+    "version": "f0c9f4c72d601dde34476ee0b763f29fceeb0a5dd70488b04fd1fa59abef92c4",
+    "fresh": true,
+    "root": "D:\\geometry-axiom-async-qa",
+    "pid": 34272,
+    "session": "728f35b5fa984353a36ef0013fb52299",
+    "port": 8921,
+    "cdp": 9521
+  },
+  "bridgeSha256": "aa2cc6ae4fd47277c4620bf08bbc99ccae0ee48757c0728785528cfd1357736d",
+  "bridgeRebuilt": false,
+  "command": "GEOMETRY_TEST_URL=http://127.0.0.1:8921/ GEOMETRY_FEEDBACK_DIR=<local-user>\\\\AppData\\\\Local\\\\Temp\\\\geometry-async-qa-20261008\\\\feedback GEOMETRY_CDP_PORT=9521 GEOMETRY_SAVE_REOPEN_ONLY=1 GEOMETRY_SPACE_TEST_DIR=<local-user>\\\\AppData\\\\Local\\\\Temp\\\\geometry-async-qa-20261008\\\\run-save GEOMETRY_CHROME_PROFILE=<local-user>\\\\AppData\\\\Local\\\\Temp\\\\geometry-async-qa-20261008\\\\chrome-profile node geometry-web/space_model_test.js",
+  "scope": "Synthetic 600x400 placed face, unplaced 300x300 boundary, grid 假格網, rule key 1, binding vertexKey, in-cell timbers, product .gcanvas save and reopen. Both widths. Download fallback is not an OS save-dialog acceptance.",
+  "notClaimed": ["GRID 346", "P88 137", "cdp_test.js", "OS save dialog", "cross-project assembly", "model-library merge", "historical 10/155"]
+}

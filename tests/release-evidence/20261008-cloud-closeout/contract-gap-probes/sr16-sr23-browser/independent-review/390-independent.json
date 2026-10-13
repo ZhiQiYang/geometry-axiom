@@ -1,0 +1,724 @@
+{
+  "schema": "geometry-sr16-sr23-independent-raw-review/1",
+  "reviewer": "/root/remote_inventory/sanitizer_driver_review",
+  "reviewedAt": "2026-10-08T20:05:14.224243+00:00",
+  "scope": "390px only; retained raw and trace read-only, no product execution",
+  "head": "d8642b2e684038cbb8e24aba057c44e7aac1b231",
+  "scriptSha256": "b694cd73cdd53d50dff49eb907a3faea1a96834772f6a1b4cb891690512eda8c",
+  "reportedExitCode": 0,
+  "checks": [
+    {
+      "name": "Face1 guide and direct timber succeed before second binding, then face2 references precede source edit",
+      "passed": true
+    },
+    {
+      "name": "Face1 snapshot contains exactly binding1, guide23/timber103 and no later references",
+      "passed": true
+    },
+    {
+      "name": "Second snapshot contains both bindings and both references",
+      "passed": true
+    },
+    {
+      "name": "SR16 only timber104 has the concrete span rejection; both bindings shown and Confirm disabled",
+      "passed": true
+    },
+    {
+      "name": "sr16-before-preview.json == sr16-pending.json full native plus serialized history",
+      "passed": true
+    },
+    {
+      "name": "sr16-before-preview.json == sr16-cancelled.json full native plus serialized history",
+      "passed": true
+    },
+    {
+      "name": "sr23-before-preview.json == sr23-cancelled.json full native plus serialized history",
+      "passed": true
+    },
+    {
+      "name": "Three original identity-preserving history evaluations and one single transaction evaluation returned true",
+      "passed": true
+    },
+    {
+      "name": "Original trace UI evaluations equal retained preview JSON, with disabled true then false then false",
+      "passed": true
+    },
+    {
+      "name": "Source edit serializes exactly pitch600/400 to900/600 and no other definition changes",
+      "passed": true
+    },
+    {
+      "name": "Existing guide23 and timber103 move exactly with stable typed references",
+      "passed": true
+    },
+    {
+      "name": "Existing guide24 and timber104 move exactly with stable typed references",
+      "passed": true
+    },
+    {
+      "name": "undone.json == before-source-edit.json complete World except transaction revision",
+      "passed": true
+    },
+    {
+      "name": "redone.json == after-source-edit.json complete World except transaction revision",
+      "passed": true
+    },
+    {
+      "name": "saved.json == before-save.json complete World except transaction revision",
+      "passed": true
+    },
+    {
+      "name": "project-reopened.json == saved.json complete World except transaction revision",
+      "passed": true
+    },
+    {
+      "name": "open-undone.json == fresh-profile-empty.json complete World except transaction revision",
+      "passed": true
+    },
+    {
+      "name": "open-redone.json == project-reopened.json complete World except transaction revision",
+      "passed": true
+    },
+    {
+      "name": "saved.json == before-save.json complete project contract",
+      "passed": true
+    },
+    {
+      "name": "project-reopened.json == saved.json complete project contract",
+      "passed": true
+    },
+    {
+      "name": "open-undone.json == fresh-profile-empty.json complete project contract",
+      "passed": true
+    },
+    {
+      "name": "open-redone.json == project-reopened.json complete project contract",
+      "passed": true
+    },
+    {
+      "name": "new-empty.json genuinely empty",
+      "passed": true
+    },
+    {
+      "name": "fresh-profile-empty.json genuinely empty",
+      "passed": true
+    },
+    {
+      "name": "Saved artifact World equals retained saved World; full manifest equals pre-save expected manifest",
+      "passed": true
+    },
+    {
+      "name": "Relevant UI trace clicks completed without force",
+      "passed": true
+    },
+    {
+      "name": "Actual Save download and fresh-context Open chooser setInputFiles are retained",
+      "passed": true
+    },
+    {
+      "name": "Formal Open sends saved World to prepare then confirms token186 successfully",
+      "passed": true
+    },
+    {
+      "name": "Save/Open trusted input and chooser change retained",
+      "passed": true
+    }
+  ],
+  "blockers": [],
+  "authoredIdentities": {
+    "source": 1,
+    "ruleKey": 1,
+    "records": [
+      {
+        "face": 1,
+        "binding": 1,
+        "grid": 1,
+        "guide": 23,
+        "timber": 103,
+        "expression": "gridrule:1:1:1:-2:1:u:0",
+        "anchor": "at-line rule 1 1 1 -2 1 v 0",
+        "selector": "between t1 t2",
+        "length": 240
+      },
+      {
+        "face": 2,
+        "binding": 2,
+        "grid": 2,
+        "guide": 24,
+        "timber": 104,
+        "expression": "gridrule:2:1:1:-2:1:u:0",
+        "anchor": "at-line rule 2 1 1 -2 1 v 0",
+        "selector": "between t21 t22",
+        "length": 540
+      }
+    ]
+  },
+  "httpUiSequence": [
+    {
+      "line": 93,
+      "at": "2026-10-08T19:59:34.546025+00:00",
+      "phase": "ui-source-rule",
+      "cmd": "line preview grid-system 1 name-hex 53523136205352323320333930 main-along none u repeat 0 600 v repeat 0 400",
+      "ok": true,
+      "previewToken": 433,
+      "previewValid": true
+    },
+    {
+      "line": 145,
+      "at": "2026-10-08T19:59:37.514594+00:00",
+      "phase": "ui-face1-binding-before-refs",
+      "cmd": "line preview grid-binding 1 on-boundary 1 from-system 1 vertex outer 0 geometry-hash 89cc7c66c46e592101d98301fa67b32a3b2b0dea688007e5b43360363ad6373e cell -2 1 anchor 0 2 0 2",
+      "ok": true,
+      "previewToken": 435,
+      "previewValid": true
+    },
+    {
+      "line": 210,
+      "at": "2026-10-08T19:59:42.583216+00:00",
+      "phase": "ui-face1-guide-direct-before-next-binding",
+      "cmd": "line guide 23 1 v gridrule:1:1:1:-2:1:u:0",
+      "ok": true,
+      "previewToken": null,
+      "previewValid": null
+    },
+    {
+      "line": 245,
+      "at": "2026-10-08T19:59:48.388169+00:00",
+      "phase": "ui-face1-guide-direct-before-next-binding",
+      "cmd": "line place 103 on 1 at-line rule 1 1 1 -2 1 v 0 between t1 t2 +u +n",
+      "ok": true,
+      "previewToken": null,
+      "previewValid": null
+    },
+    {
+      "line": 286,
+      "at": "2026-10-08T19:59:52.082955+00:00",
+      "phase": "ui-face2-binding-before-refs",
+      "cmd": "line preview grid-binding 2 on-boundary 2 from-system 1 vertex outer 0 geometry-hash 89cc7c66c46e592101d98301fa67b32a3b2b0dea688007e5b43360363ad6373e cell -2 1 anchor 0 2 0 2",
+      "ok": true,
+      "previewToken": 437,
+      "previewValid": true
+    },
+    {
+      "line": 354,
+      "at": "2026-10-08T19:59:57.705491+00:00",
+      "phase": "ui-face2-guide-direct-before-next-binding",
+      "cmd": "line guide 24 2 v gridrule:2:1:1:-2:1:u:0",
+      "ok": true,
+      "previewToken": null,
+      "previewValid": null
+    },
+    {
+      "line": 390,
+      "at": "2026-10-08T20:00:03.076928+00:00",
+      "phase": "ui-face2-guide-direct-before-next-binding",
+      "cmd": "line place 104 on 2 at-line rule 2 1 1 -2 1 v 0 between t21 t22 +u +n",
+      "ok": true,
+      "previewToken": null,
+      "previewValid": null
+    },
+    {
+      "line": 430,
+      "at": "2026-10-08T20:00:05.559997+00:00",
+      "phase": "SR16-invalid-source",
+      "cmd": "line preview grid-system 1 name-hex 53523136205352323320333930 main-along none u repeat 0 300 v repeat 0 400",
+      "ok": true,
+      "previewToken": 439,
+      "previewValid": false
+    },
+    {
+      "line": 446,
+      "at": "2026-10-08T20:00:07.522364+00:00",
+      "phase": "SR23-positive-cancel-confirm",
+      "cmd": "line preview grid-system 1 name-hex 53523136205352323320333930 main-along none u repeat 0 900 v repeat 0 600",
+      "ok": true,
+      "previewToken": 440,
+      "previewValid": true
+    },
+    {
+      "line": 457,
+      "at": "2026-10-08T20:00:08.344901+00:00",
+      "phase": "SR23-positive-cancel-confirm",
+      "cmd": "line preview grid-system 1 name-hex 53523136205352323320333930 main-along none u repeat 0 900 v repeat 0 600",
+      "ok": true,
+      "previewToken": 441,
+      "previewValid": true
+    }
+  ],
+  "sr16Violation": [
+    {
+      "timber": 104,
+      "clause": "R6/I5/I6",
+      "expected": "one non-overlapping supported span; role and direction constraints satisfied",
+      "actual": "between 指名的兩端之間沒有合法跨距（被實體擋住，或兩端座標相同）"
+    }
+  ],
+  "historyPinTrace": [
+    {
+      "line": 9065,
+      "before": {
+        "type": "before",
+        "callId": "call@8540",
+        "startTime": 87155.245,
+        "class": "Frame",
+        "method": "evaluateExpression",
+        "params": {
+          "expression": "id=>{const h=ReferenceWorkspace.history,b=__srPins.get(id),same=(a,z)=>a.length===z.length&&a.every((e,i)=>e===z[i]);return h.limit===b.limit&&h.frame===b.frame&&same(h.undo,b.undo)&&same(h.redo,b.redo)}",
+          "arg": {
+            "value": {
+              "n": 0
+            },
+            "handles": []
+          }
+        },
+        "pageId": "page@7a11a003cbf9b37ee926a72a2889bab7",
+        "beforeSnapshot": "before@call@8540"
+      },
+      "afterLine": 9068,
+      "after": {
+        "type": "after",
+        "callId": "call@8540",
+        "endTime": 87166.185,
+        "result": {
+          "value": {
+            "b": true
+          }
+        },
+        "afterSnapshot": "after@call@8540"
+      }
+    },
+    {
+      "line": 9175,
+      "before": {
+        "type": "before",
+        "callId": "call@8588",
+        "startTime": 87598.801,
+        "class": "Frame",
+        "method": "evaluateExpression",
+        "params": {
+          "expression": "id=>{const h=ReferenceWorkspace.history,b=__srPins.get(id),same=(a,z)=>a.length===z.length&&a.every((e,i)=>e===z[i]);return h.limit===b.limit&&h.frame===b.frame&&same(h.undo,b.undo)&&same(h.redo,b.redo)}",
+          "arg": {
+            "value": {
+              "n": 0
+            },
+            "handles": []
+          }
+        },
+        "pageId": "page@7a11a003cbf9b37ee926a72a2889bab7",
+        "beforeSnapshot": "before@call@8588"
+      },
+      "afterLine": 9178,
+      "after": {
+        "type": "after",
+        "callId": "call@8588",
+        "endTime": 87606.634,
+        "result": {
+          "value": {
+            "b": true
+          }
+        },
+        "afterSnapshot": "after@call@8588"
+      }
+    },
+    {
+      "line": 9570,
+      "before": {
+        "type": "before",
+        "callId": "call@8748",
+        "startTime": 89194.193,
+        "class": "Frame",
+        "method": "evaluateExpression",
+        "params": {
+          "expression": "id=>{const h=ReferenceWorkspace.history,b=__srPins.get(id),same=(a,z)=>a.length===z.length&&a.every((e,i)=>e===z[i]);return h.limit===b.limit&&h.frame===b.frame&&same(h.undo,b.undo)&&same(h.redo,b.redo)}",
+          "arg": {
+            "value": {
+              "n": 1
+            },
+            "handles": []
+          }
+        },
+        "pageId": "page@7a11a003cbf9b37ee926a72a2889bab7",
+        "beforeSnapshot": "before@call@8748"
+      },
+      "afterLine": 9573,
+      "after": {
+        "type": "after",
+        "callId": "call@8748",
+        "endTime": 89202.551,
+        "result": {
+          "value": {
+            "b": true
+          }
+        },
+        "afterSnapshot": "after@call@8748"
+      }
+    },
+    {
+      "line": 9739,
+      "before": {
+        "type": "before",
+        "callId": "call@8866",
+        "startTime": 89992.932,
+        "class": "Frame",
+        "method": "evaluateExpression",
+        "params": {
+          "expression": "id=>{const h=ReferenceWorkspace.history,b=__srPins.get(id),r=b.undo.slice(Math.max(0,b.undo.length+1-h.limit));return h.limit===b.limit&&h.group===null&&h.redo.length===0&&h.undo.length===r.length+1&&h.undo.slice(0,-1).every((v,i)=>v===r[i])&&!b.undo.includes(h.undo.at(-1))}",
+          "arg": {
+            "value": {
+              "n": 1
+            },
+            "handles": []
+          }
+        },
+        "pageId": "page@7a11a003cbf9b37ee926a72a2889bab7",
+        "beforeSnapshot": "before@call@8866"
+      },
+      "afterLine": 9744,
+      "after": {
+        "type": "after",
+        "callId": "call@8866",
+        "endTime": 90009.863,
+        "result": {
+          "value": {
+            "b": true
+          }
+        },
+        "afterSnapshot": "after@call@8866"
+      }
+    }
+  ],
+  "sourceEditMovement": [
+    {
+      "guide": 23,
+      "offsets": [
+        300,
+        400
+      ],
+      "timber": 103,
+      "centerlines": [
+        400,
+        500
+      ],
+      "length": 240
+    },
+    {
+      "guide": 24,
+      "offsets": [
+        300,
+        400
+      ],
+      "timber": 104,
+      "centerlines": [
+        400,
+        500
+      ],
+      "length": 540
+    }
+  ],
+  "uiTraceClicks": [
+    {
+      "line": 963,
+      "callId": "call@5358",
+      "selector": "#igSaveSource",
+      "afterLine": 982
+    },
+    {
+      "line": 1958,
+      "callId": "call@5778",
+      "selector": "#igSaveBinding",
+      "afterLine": 1975
+    },
+    {
+      "line": 3332,
+      "callId": "call@6346",
+      "selector": "#refGuideCreate",
+      "afterLine": 3349
+    },
+    {
+      "line": 4736,
+      "callId": "call@6800",
+      "selector": "#tbPlace",
+      "afterLine": 4753
+    },
+    {
+      "line": 5573,
+      "callId": "call@7144",
+      "selector": "#igSaveBinding",
+      "afterLine": 5590
+    },
+    {
+      "line": 6955,
+      "callId": "call@7724",
+      "selector": "#refGuideCreate",
+      "afterLine": 6972
+    },
+    {
+      "line": 8353,
+      "callId": "call@8180",
+      "selector": "#tbPlace",
+      "afterLine": 8370
+    },
+    {
+      "line": 8958,
+      "callId": "call@8484",
+      "selector": "#igSaveSource",
+      "afterLine": 8977
+    },
+    {
+      "line": 9406,
+      "callId": "call@8668",
+      "selector": "#igSaveSource",
+      "afterLine": 9423
+    },
+    {
+      "line": 9595,
+      "callId": "call@8760",
+      "selector": "#igSaveSource",
+      "afterLine": 9616
+    },
+    {
+      "line": 11107,
+      "callId": "call@9312",
+      "selector": "#btnUndo",
+      "afterLine": 11125
+    },
+    {
+      "line": 11256,
+      "callId": "call@9402",
+      "selector": "#btnRedo",
+      "afterLine": 11273
+    },
+    {
+      "line": 11495,
+      "callId": "call@9534",
+      "selector": "#btnSaveProject",
+      "afterLine": 11517
+    }
+  ],
+  "saveDownload": [
+    {
+      "line": 11512,
+      "event": {
+        "type": "event",
+        "time": 97888.365,
+        "class": "BrowserContext",
+        "method": "download",
+        "params": {
+          "pageId": "page@7a11a003cbf9b37ee926a72a2889bab7",
+          "url": "blob:http://127.0.0.1:18971/ccaf0f79-182e-4753-b742-92b2dd2fbb90",
+          "suggestedFilename": "未命名專案.gcanvas"
+        }
+      }
+    }
+  ],
+  "openChooserTrace": [
+    {
+      "line": 149,
+      "before": {
+        "type": "before",
+        "callId": "call@9774",
+        "startTime": 101261.904,
+        "class": "Frame",
+        "method": "click",
+        "params": {
+          "selector": "#btnOpenProject",
+          "strict": true,
+          "timeout": 10000
+        },
+        "pageId": "page@139ec536d5b2c37036700a3cdc682f03",
+        "beforeSnapshot": "before@call@9774"
+      },
+      "afterLine": 166,
+      "after": {
+        "type": "after",
+        "callId": "call@9774",
+        "endTime": 101308.298,
+        "afterSnapshot": "after@call@9774"
+      }
+    },
+    {
+      "line": 181,
+      "before": {
+        "type": "before",
+        "callId": "call@9784",
+        "startTime": 101334.854,
+        "class": "ElementHandle",
+        "method": "setInputFiles",
+        "params": {
+          "localPaths": [
+            "/workspace/closure-evidence/sr16-sr23-browser-r1/390/sr23-project.gcanvas"
+          ],
+          "timeout": 30000
+        },
+        "pageId": "page@139ec536d5b2c37036700a3cdc682f03",
+        "beforeSnapshot": "before@call@9784"
+      },
+      "afterLine": 187,
+      "after": {
+        "type": "after",
+        "callId": "call@9784",
+        "endTime": 101350.584,
+        "afterSnapshot": "after@call@9784"
+      }
+    }
+  ],
+  "uploadSequence": [
+    {
+      "line": 8,
+      "at": "2026-10-08T19:59:30.584172+00:00",
+      "url": "http://127.0.0.1:18971/upload",
+      "status": 200
+    },
+    {
+      "line": 549,
+      "at": "2026-10-08T20:00:17.415256+00:00",
+      "url": "http://127.0.0.1:18971/upload",
+      "status": 200
+    },
+    {
+      "line": 567,
+      "at": "2026-10-08T20:00:20.388399+00:00",
+      "url": "http://127.0.0.1:18971/upload/prepare",
+      "status": 200
+    },
+    {
+      "line": 568,
+      "at": "2026-10-08T20:00:20.447447+00:00",
+      "url": "http://127.0.0.1:18971/upload/confirm",
+      "status": 200
+    }
+  ],
+  "sourceHashes": {
+    "390/after-face1-rendered-lines.json": "11f2cff6789f2a18e4595fbf35898397c12fcae327273436eb1caa2382ecb38f",
+    "390/after-face2-rendered-lines.json": "393bd16964f0df78bd3ee220b700e19e7308d46c5431cc6daf9edd5663c58111",
+    "390/after-source-edit-face1-query.json": "9b9787328574e0847f4932638f0effa9b0767382b14a9f67c24d1056200d37ca",
+    "390/after-source-edit-face2-query.json": "a8af824f4bb3e8e64a9f12ed1cd64cb77ce626071be60fe947dc881087bc5441",
+    "390/after-source-edit.json": "8de6b1df33f85002bbeec6b81f5a9d0ef41326aa0b452f212c7cfb2817fd7622",
+    "390/after-source-edit.scene": "84948f646c63478d4cd6ca4e4854a0dbbaaea3b173ffa9457a8edae8ba9e188d",
+    "390/archive-manifest.json": "e2de98e99d7ffef5230c4be1199ef236b4d2ff327f6bf44d67beb52c6caec826",
+    "390/authored-identities.json": "32362cfc4acd7b8aad1df62d16a1737c081c0a8923dbc9875a70037637a49bd3",
+    "390/before-save.json": "e7979e92a73d9fbcf08655594a11d22da1f12f5c6569f5ac0d12dc52602f3f91",
+    "390/before-save.scene": "84948f646c63478d4cd6ca4e4854a0dbbaaea3b173ffa9457a8edae8ba9e188d",
+    "390/before-source-edit-face1-query.json": "5c20adcc3bbf14afa56aefc8a9ca48722121dec6d3e886911cbdbcf9189501c4",
+    "390/before-source-edit-face2-query.json": "901f86285e270924c6cfd3571f280d8ff270933afdc1821a17e0a9cacb84cb22",
+    "390/before-source-edit.json": "8a669f1e7b87ac6f90a6bc9fb7e087cdc6432eedaf023b2080b51adc2c3e0c2d",
+    "390/before-source-edit.scene": "07e1c9049781205d07505fb102a0e59a0d607c0e8d0ac02b98222e15a0e5c11f",
+    "390/boundary-support-fixture.json": "a4e1bdf6f64f4fc3dc5be7afe6a97c7b92387156a7f071380531ffe90bb3dd3d",
+    "390/boundary-support-fixture.scene": "07ad17acf9ca7cd2bc9145744fe8e3e3274125db7aa78ea609f93bcf123a8e52",
+    "390/dialogs.jsonl": "f0ed4ea1d4508defe513e1961aae65f38e169bf6e575a9c7d87bf8e8559818c4",
+    "390/expected-archive-manifest.json": "e2de98e99d7ffef5230c4be1199ef236b4d2ff327f6bf44d67beb52c6caec826",
+    "390/explicit-native.jsonl": "5ab4f8b2ac243703cc42eae4eac9b9fefe4ebd2c89ae8fa07242850e76e82bd1",
+    "390/face1-refs-authored.json": "9d0a76667154e91dc2b42608fb5db4a22d7e27ddd3525e094879ef25985c6aad",
+    "390/face1-refs-authored.scene": "ae278cc3ccb88a105c0164fece47dfa7f76d763c741b9ef101cac865c9c67f68",
+    "390/face2-refs-authored.json": "fb3bfc9857cd9f7960106eb220af417117a106b761c098a54fcff97070c32821",
+    "390/face2-refs-authored.scene": "07e1c9049781205d07505fb102a0e59a0d607c0e8d0ac02b98222e15a0e5c11f",
+    "390/fresh-profile-empty.json": "9492ba7e5ee68b08d2051138fbc64d812456f60fb51b89611a80065e9e8773f7",
+    "390/fresh-profile-empty.scene": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "390/http-raw.jsonl": "192f9b42248ae65f6895002168ff9ad2bca5fea2b4ec066e75996bc198f1dd64",
+    "390/initial-empty.json": "f6b3fbc9bca9cd1edf77ead2efeadd21eab2db9fe796e3d4b012de2642166283",
+    "390/initial-empty.scene": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "390/inputs-first-browser.json": "c5863bd47a9d72b51730e4fcb4cff9d24d42e6e00a3b709b6e9ba3e34527e2a6",
+    "390/inputs-reopened-browser.json": "521bc46d4be6f66109019ca6cec6e4b540b67bd437af8f8b8dd73b77ecc2e272",
+    "390/new-empty.json": "d5b47b35e8920d049a895851613e07177a9afb5c07d23a1823360b29764901ee",
+    "390/new-empty.scene": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "390/open-redone-face1-query.json": "9b9787328574e0847f4932638f0effa9b0767382b14a9f67c24d1056200d37ca",
+    "390/open-redone-face2-query.json": "a8af824f4bb3e8e64a9f12ed1cd64cb77ce626071be60fe947dc881087bc5441",
+    "390/open-redone.json": "ff17236a530533ab0b2ac4ea5ca44bf95ad581d34c174e8962c17b8060fc903a",
+    "390/open-redone.scene": "84948f646c63478d4cd6ca4e4854a0dbbaaea3b173ffa9457a8edae8ba9e188d",
+    "390/open-undone.json": "54b2d1359ecff70fe3ce6378d82abd52e5cf292f00758cd35f12ea5a83738966",
+    "390/open-undone.scene": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "390/project-reopened-face1-query.json": "9b9787328574e0847f4932638f0effa9b0767382b14a9f67c24d1056200d37ca",
+    "390/project-reopened-face2-query.json": "a8af824f4bb3e8e64a9f12ed1cd64cb77ce626071be60fe947dc881087bc5441",
+    "390/project-reopened.json": "ffff9baafa9a78f6306433939def337434372b81a61f78eba5ec92be3ede29ce",
+    "390/project-reopened.scene": "84948f646c63478d4cd6ca4e4854a0dbbaaea3b173ffa9457a8edae8ba9e188d",
+    "390/redone-face1-query.json": "9b9787328574e0847f4932638f0effa9b0767382b14a9f67c24d1056200d37ca",
+    "390/redone-face2-query.json": "a8af824f4bb3e8e64a9f12ed1cd64cb77ce626071be60fe947dc881087bc5441",
+    "390/redone.json": "e7979e92a73d9fbcf08655594a11d22da1f12f5c6569f5ac0d12dc52602f3f91",
+    "390/redone.scene": "84948f646c63478d4cd6ca4e4854a0dbbaaea3b173ffa9457a8edae8ba9e188d",
+    "390/result.json": "c858ce5ac254ea3cdc54daa30a028d7bc52e0f681dea607eb78304737ea022a0",
+    "390/saved.json": "a1ce41409c685e83560c28a225ac0d712f664b96bdf7ef1dbcca69670647515a",
+    "390/saved.scene": "84948f646c63478d4cd6ca4e4854a0dbbaaea3b173ffa9457a8edae8ba9e188d",
+    "390/sr16-before-preview.json": "0775fb417d858186ef6441d788bc97dd8390bb14b4e701412bc0fea68eedb750",
+    "390/sr16-before-preview.scene": "07e1c9049781205d07505fb102a0e59a0d607c0e8d0ac02b98222e15a0e5c11f",
+    "390/sr16-cancelled.json": "0775fb417d858186ef6441d788bc97dd8390bb14b4e701412bc0fea68eedb750",
+    "390/sr16-cancelled.scene": "07e1c9049781205d07505fb102a0e59a0d607c0e8d0ac02b98222e15a0e5c11f",
+    "390/sr16-native-preview.json": "f2d21a5a5bb290c48b694c4122178fe6291333d4d5493fc214dd505a6f06777c",
+    "390/sr16-pending.json": "0775fb417d858186ef6441d788bc97dd8390bb14b4e701412bc0fea68eedb750",
+    "390/sr16-pending.scene": "07e1c9049781205d07505fb102a0e59a0d607c0e8d0ac02b98222e15a0e5c11f",
+    "390/sr16-preview.png": "7e7bce66e720b9ae716d6426ac6a342f4fa374dd1c57cb284d036c1fe72a6e39",
+    "390/sr16-ui-preview.json": "a6ba98fe9bc28f7c3b7e117f0baf3dd3ac0caa0665ffb79b9ecca5dbe2a5db8f",
+    "390/sr23-before-preview.json": "0c546d7a72abd49df7f329da9420b7a17c330c2ce1fc6f8bed908ff0d3435209",
+    "390/sr23-before-preview.scene": "07e1c9049781205d07505fb102a0e59a0d607c0e8d0ac02b98222e15a0e5c11f",
+    "390/sr23-cancel-native-preview.json": "99183b390596f291bcb10b3f434b9db32438a2e82ac2aaf23eb5bcae9cbb1435",
+    "390/sr23-cancel-preview.png": "3ef85ec11ddf882cae94e02aa3ac018bc286b196ac2c1ccd7fb7f40290c47b0c",
+    "390/sr23-cancel-ui-preview.json": "fd8c72519ab566887cc4a2c785098be91ff25c57a7c88f0d5613f9f0df1d14b6",
+    "390/sr23-cancelled.json": "0c546d7a72abd49df7f329da9420b7a17c330c2ce1fc6f8bed908ff0d3435209",
+    "390/sr23-cancelled.scene": "07e1c9049781205d07505fb102a0e59a0d607c0e8d0ac02b98222e15a0e5c11f",
+    "390/sr23-confirm-native-preview.json": "5670265950ec5c960b8d917adb4b6e45831f0a8d2ad767c03378d912154c539d",
+    "390/sr23-confirm-preview.png": "3ef85ec11ddf882cae94e02aa3ac018bc286b196ac2c1ccd7fb7f40290c47b0c",
+    "390/sr23-confirm-ui-preview.json": "fd8c72519ab566887cc4a2c785098be91ff25c57a7c88f0d5613f9f0df1d14b6",
+    "390/sr23-project.gcanvas": "54204c3736d6284944a095da324c8d9ccb2f71f1e60da392f3f4648c8bedc827",
+    "390/trace-3.zip": "07e368d2d16cb5b197bc5dc68290fdf46ca364741bdc573499f8129af9f37c22",
+    "390/trace-4.zip": "6fff7f7df1e82c7878d47e0614ae69641a82a13d423e2422ee9a7a908e46d723",
+    "390/undone-face1-query.json": "5c20adcc3bbf14afa56aefc8a9ca48722121dec6d3e886911cbdbcf9189501c4",
+    "390/undone-face2-query.json": "901f86285e270924c6cfd3571f280d8ff270933afdc1821a17e0a9cacb84cb22",
+    "390/undone.json": "eed57c2d3cca3044c9f06ec909880f09dc66edee34f94341263304c8f142ddfe",
+    "390/undone.scene": "07e1c9049781205d07505fb102a0e59a0d607c0e8d0ac02b98222e15a0e5c11f"
+  },
+  "limits": [
+    "Author-provided pass counts were not used to determine findings.",
+    "Boundary, placement and legal physical supports were explicit API prerequisites; source/rule/binding/guide/direct-rule timber operations were UI-authored.",
+    "Save uses an explicitly selected download fallback; this does not validate a native OS save picker.",
+    "The Open chooser is automated setInputFiles on the real product file input, followed by product prepare/confirm; no internal load call substitutes for it.",
+    "Trusted Chromium390 input is not physical-phone or IME acceptance.",
+    "Snapshots preserve serialized history; exact history entry/frame identity is corroborated by original browser evaluate return values in trace.",
+    "Successful World comparisons exclude only dump/assembly-read transaction revision; refusal/cancel comparisons retain every field."
+  ],
+  "uiPreviewTrace": [
+    {
+      "callId": "call@8506",
+      "line": 8996,
+      "afterLine": 8999,
+      "bindings": [
+        1,
+        2
+      ],
+      "guides": [
+        23,
+        24
+      ],
+      "confirmDisabled": true,
+      "fullTextMatchesRetainedJson": true
+    },
+    {
+      "callId": "call@8698",
+      "line": 9448,
+      "afterLine": 9451,
+      "bindings": [
+        1,
+        2
+      ],
+      "guides": [
+        23,
+        24
+      ],
+      "confirmDisabled": false,
+      "fullTextMatchesRetainedJson": true
+    },
+    {
+      "callId": "call@8794",
+      "line": 9639,
+      "afterLine": 9642,
+      "bindings": [
+        1,
+        2
+      ],
+      "guides": [
+        23,
+        24
+      ],
+      "confirmDisabled": false,
+      "fullTextMatchesRetainedJson": true
+    }
+  ]
+}

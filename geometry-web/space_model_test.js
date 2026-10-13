@@ -8,6 +8,7 @@
  * GEOMETRY_SPACE_FLOW_ONLY=1 isolates GEO-210 inline projection, draft,
  * responsive setup and save-flow regression. Native save handles are stubbed;
  * the real Save action still packs the project, while downloads stay in RUN_DIR.
+ * GEOMETRY_PROJECTION_CLOSE_ONLY=1 isolates the native close callback races.
  */
 'use strict';
 const { spawn } = require('child_process');
@@ -15,8 +16,59 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { installConfirmationDumpGate } = require('./cdp_confirmation_gate.js');
+const { asyncReplyUiRegression } = require('./async_reply_ui_test.js');
+const { saveReopenGridRegression } = require('./save_reopen_synthetic_test.js');
 const { createRetainedEvaluator } = require('./cdp_evaluation.js');
 const { FULL_SPACE_GROUPS, createGroupCensus } = require('./space_test_floor.js');
+const { installProjectionCloseProbe, projectionCloseRegression } = require('./projection_close_probe.js');
+function installSourceDumpGate(scope, context) {
+  const original = scope.fetch;
+  const evidence = { phase: 'armed', context, caller: null, claimed: 0, held: 0, nativeOK: false, ignored: [] };
+  scope.__sourceDumpGate = evidence;
+  scope.__sourceDumpHeld = false;
+  const gate = new Promise(resolve => { scope.__releaseSourceDump = resolve; });
+  const interceptedFetch = async (...args) => {
+    // Recovery also reads dump. Select the source owner before network I/O and
+    // reserve it immediately, so a concurrent background response cannot win.
+    const caller = new Error().stack || '';
+    let command;
+    try { command = JSON.parse(args[1]?.body || '{}').cmd; } catch (_) {}
+    const dump = String(args[0]) === '/api' && command === 'dump';
+    const targeted = evidence.phase === 'armed' && dump &&
+      /(?:^|\n)\s*at (?:async )?(?:Object\.)?openCurrentFace\s*\(/.test(caller);
+    if (targeted) {
+      evidence.phase = 'requested'; evidence.caller = caller; evidence.claimed++;
+      scope.fetch = original;
+    } else if (dump) evidence.ignored.push(caller);
+    try {
+      const response = await original(...args);
+      if (targeted) {
+        const json = response.json.bind(response);
+        response.json = async () => {
+          try {
+            const data = await json();
+            evidence.nativeOK = data.ok === true;
+            evidence.phase = 'held'; evidence.held++;
+            scope.__sourceDumpHeld = true;
+            await gate;
+            evidence.held--; evidence.phase = 'released';
+            scope.__sourceDumpHeld = false;
+            return data;
+          } catch (error) { evidence.phase = 'failed'; throw error; }
+        };
+      }
+      return response;
+    } catch (error) {
+      if (targeted) evidence.phase = 'failed';
+      throw error;
+    }
+  };
+  scope.fetch = interceptedFetch;
+  scope.__cleanupSourceDumpGate = () => {
+    scope.__releaseSourceDump();
+    if (scope.fetch === interceptedFetch) scope.fetch = original;
+  };
+}
 function spaceRunConfiguration(env = process.env) {
   if(!env.GEOMETRY_TEST_URL)throw Error('GEOMETRY_TEST_URL is required; use an explicitly isolated test service. No browser or reset was started.');
   const target=new globalThis.URL(env.GEOMETRY_TEST_URL);
@@ -24,15 +76,15 @@ function spaceRunConfiguration(env = process.env) {
   if(!env.GEOMETRY_FEEDBACK_DIR||!path.isAbsolute(env.GEOMETRY_FEEDBACK_DIR))throw Error('GEOMETRY_FEEDBACK_DIR must name the isolated server feedback directory under TEMP');
   const relative=path.relative(os.tmpdir(),path.resolve(env.GEOMETRY_FEEDBACK_DIR));
   if(!relative||relative==='..'||relative.startsWith('..'+path.sep)||path.isAbsolute(relative))throw Error('GEOMETRY_FEEDBACK_DIR must be a dedicated directory under TEMP');
-  const names=['GEOMETRY_SPACE_FLOW_ONLY','GEOMETRY_TIMBER_ONLY','GEOMETRY_TIMBER_GUARDS_ONLY','GEOMETRY_SPACE_STYLE_ONLY','GEOMETRY_PROJECTION_PLACEMENT_ONLY'];
+  const names=['GEOMETRY_SPACE_FLOW_ONLY','GEOMETRY_TIMBER_ONLY','GEOMETRY_TIMBER_GUARDS_ONLY','GEOMETRY_SPACE_STYLE_ONLY','GEOMETRY_PROJECTION_PLACEMENT_ONLY','GEOMETRY_PROJECTION_CLOSE_ONLY','GEOMETRY_ASYNC_REPLY_ONLY','GEOMETRY_SAVE_REOPEN_ONLY'];
   const filters=names.filter(name=>env[name]);
   if([...filters,...(env.GEOMETRY_TIMBER_HISTORY_ONLY?['GEOMETRY_TIMBER_HISTORY_ONLY']:[])].some(name=>env[name]!=='1'))throw Error('Scope flags accept only 1; remove a flag to disable it');
   if(filters.length>1)throw Error('Choose only one primary space test filter; combined filters silently omit suites');
   if(env.GEOMETRY_TIMBER_HISTORY_ONLY&&!filters.some(name=>name==='GEOMETRY_TIMBER_ONLY'||name==='GEOMETRY_TIMBER_GUARDS_ONLY'))throw Error('GEOMETRY_TIMBER_HISTORY_ONLY requires TIMBER_ONLY or TIMBER_GUARDS_ONLY');
   const guard=env.GEOMETRY_TIMBER_HISTORY_ONLY?'timber-history-guard':'timber-source-guards';
-  const mapping={GEOMETRY_SPACE_FLOW_ONLY:['space-flow'],GEOMETRY_TIMBER_ONLY:['timber-material',guard,'font-layout'],GEOMETRY_TIMBER_GUARDS_ONLY:[guard],GEOMETRY_SPACE_STYLE_ONLY:['font-layout'],GEOMETRY_PROJECTION_PLACEMENT_ONLY:['projection-placement','font-layout']};
-  const included=filters.length?mapping[filters[0]]:['space-height-library','projection-lifecycle','projection-placement','font-layout','space-flow'];
-  const all=['space-height-library','projection-lifecycle','projection-placement','font-layout','space-flow','timber-material','timber-source-guards'];
+  const mapping={GEOMETRY_SPACE_FLOW_ONLY:['space-flow'],GEOMETRY_TIMBER_ONLY:['timber-material',guard,'font-layout'],GEOMETRY_TIMBER_GUARDS_ONLY:[guard],GEOMETRY_SPACE_STYLE_ONLY:['font-layout'],GEOMETRY_PROJECTION_PLACEMENT_ONLY:['projection-placement','font-layout'],GEOMETRY_PROJECTION_CLOSE_ONLY:['projection-close'],GEOMETRY_ASYNC_REPLY_ONLY:['async-reply-ui'],GEOMETRY_SAVE_REOPEN_ONLY:['save-reopen-grid']};
+  const included=filters.length?mapping[filters[0]]:['space-height-library','projection-lifecycle','projection-placement','font-layout','space-flow','projection-close'];
+  const all=['space-height-library','projection-lifecycle','projection-placement','font-layout','space-flow','projection-close','timber-material','timber-source-guards'];
   return {mode:filters.length?'partial':'full-space-suite',filters:[...filters,...(env.GEOMETRY_TIMBER_HISTORY_ONLY?['GEOMETRY_TIMBER_HISTORY_ONLY']:[])],included,omitted:all.filter(name=>!included.includes(name)),url:target.href,feedbackDirectory:path.resolve(env.GEOMETRY_FEEDBACK_DIR)};
 }
 const SCOPE=spaceRunConfiguration();
@@ -98,14 +150,20 @@ async function point(selector) {
     for(const type of ['mousePressed','mouseReleased'])await send('Input.dispatchMouseEvent',{type,x:disclosure.x,y:disclosure.y,button:'left',clickCount:1});
     await settle();
   }
-  const p = await evaluate(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)throw Error('Missing '+${JSON.stringify(selector)});e.scrollIntoView({block:'nearest',inline:'nearest'});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,h=document.elementFromPoint(x,y);return {x,y,width:r.width,height:r.height,disabled:!!e.disabled,hit:!!h&&(h===e||e.contains(h)),hitTag:h?.tagName,hitId:h?.id};})()`);
-  if (!p.width || !p.height || !p.hit || p.disabled) throw Error('Control is not usable: ' + selector + ' ' + JSON.stringify(p));
-  return p;
+  let p;
+  for (let attempt = 0; attempt < 4; attempt++) {
+    p = await evaluate(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)throw Error('Missing '+${JSON.stringify(selector)});e.scrollIntoView({block:'nearest',inline:'nearest'});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,h=document.elementFromPoint(x,y);return {x,y,width:r.width,height:r.height,disabled:!!e.disabled,hit:!!h&&(h===e||e.contains(h)),hitTag:h?.tagName,hitId:h?.id};})()`);
+    if (p.width && p.height && p.hit && !p.disabled) return p;
+    const moved = await evaluate(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});const r=e?.getBoundingClientRect();const h=r&&document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);const sticky=h?.closest?.('.ig-footer');if(!sticky)return false;let scroller=sticky.parentElement;while(scroller&&scroller!==document.documentElement){const s=getComputedStyle(scroller);if(/(auto|scroll)/.test(s.overflowY))break;scroller=scroller.parentElement;}if(!scroller)return false;const top=sticky.getBoundingClientRect().top;if(!(r.bottom>top-8))return false;scroller.scrollTop+=r.bottom-(top-12);return true;})()`);
+    if (!moved) break;
+    await settle();
+  }
+  throw Error('Control is not usable: ' + selector + ' ' + JSON.stringify(p));
 }
 async function click(selector) {
   if(await evaluate(`document.querySelector(${JSON.stringify(selector)})?.closest('#exampleMenuPop')?.hidden===true`))await click('#exampleMenuBtn');
   if(await evaluate(`document.querySelector(${JSON.stringify(selector)})?.closest('#fileMenuPop')?.hidden===true`))await click('#fileMenuBtn');
-  if(await evaluate(`document.querySelector(${JSON.stringify(selector)})?.closest('#createObjectPop')?.hidden===true`))await click(await evaluate(`innerWidth<=900?'#mobileCreateObject':'#btnCreateObject'`));
+  if(await evaluate(`document.querySelector(${JSON.stringify(selector)})?.closest('#createObjectPop')?.hidden===true`))await click(await evaluate(`(()=>{const visible=['mobileCreateObject','btnCreateObject'].filter(id=>{const e=document.getElementById(id),r=e?.getBoundingClientRect();return r&&r.width>0&&r.height>0;});if(visible.length!==1)throw Error('Expected one visible create-object opener: '+visible.join(','));return '#'+visible[0];})()`));
   const p = await point(selector);
   for (const type of ['mousePressed', 'mouseReleased']) await send('Input.dispatchMouseEvent', { type, x: p.x, y: p.y, button: 'left', clickCount: 1 });
   await settle();
@@ -174,6 +232,84 @@ async function create() {
   await click('#smCreate');
   await wait(`!!SpaceModelWorkspace.snapshot().createdId`, 'created model');
   return snapshot();
+}
+async function libraryHistoryRegression(modelId, originalScene) {
+  // Reuse the first real producer model. End each viewport with its deletion
+  // undone; then undo/redo creation once after the source cache becomes stale.
+  // The following original core edit naturally clears the remaining redo entry.
+  // The original creation remains in undo, so Undo itself stays focusable.
+  const capture = () => evaluate(`(async()=>({models:JSON.stringify(ReferenceWorkspace.getSpaceModels()),
+    scene:(await api('dump')).text,nativeRevision:ReferenceWorkspace.getEvidenceState().nativeRevision,
+    context:ReferenceWorkspace.context().id,undo:ReferenceWorkspace.history.undo.length,redo:ReferenceWorkspace.history.redo.length}))()`);
+  const sameSource = (value, baseline) => value.scene===originalScene && value.nativeRevision===baseline.nativeRevision && value.context===baseline.context;
+  const exactModel = (value, baseline) => value.models===baseline.models && sameSource(value,baseline);
+  const identity = () => evaluate(`(()=>{const n=window.__issue159SpaceNodes,b=$('projectBar');return n.undo===$('btnUndo')&&n.redo===$('btnRedo')&&n.save===b.querySelector('[data-project-action="save"]')&&
+    [$('btnUndo'),$('btnRedo'),n.save].every(e=>b.contains(e))&&['btnUndo','btnRedo','projectBar'].every(id=>document.querySelectorAll('#'+id).length===1)&&$('smWorkspace').contains(b);})()`);
+  const idle = async () => {await wait(`!WorkspaceShell.historyBusy($('smWorkspace'))&&!ReferenceWorkspace.busy&&!oc.busy`,'library history idle');await settle();};
+  const present = () => `ReferenceWorkspace.getSpaceModels().some(m=>m.id===${JSON.stringify(modelId)})`;
+  await evaluate(`window.__issue159SpaceNodes={undo:$('btnUndo'),redo:$('btnRedo'),save:$('projectBar').querySelector('[data-project-action="save"]')};void 0`);
+  await click('#smLibrary');
+  await wait(`$('smWorkspace').open&&!$('smLibraryPanel').hidden&&${present()}`,'first saved model library');
+  for (const [width,height] of [[1400,900],[390,844]]) {
+    await viewport(width,height);
+    const label=width+'px', baseline=await capture();
+    if(baseline.undo<1)throw Error('Library history fixture must retain the real model creation in undo');
+    check('ISSUE159 '+label+' library retains the original Undo, Redo and native Save nodes',await identity());
+    const layout=await evaluate(`(()=>{const d=$('smWorkspace'),b=$('projectBar'),controls=[$('btnUndo'),$('btnRedo'),b.querySelector('[data-project-action="save"]')];return {width:innerWidth,doc:document.documentElement.scrollWidth,dialog:d.scrollWidth,bar:b.scrollWidth,barWidth:b.clientWidth,
+      controls:controls.map(e=>{const r=e.getBoundingClientRect(),hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return {width:r.width,height:r.height,left:r.left,right:r.right,top:r.top,bottom:r.bottom,hit:hit===e||e.contains(hit)};})};})()`);
+    check('ISSUE159 '+label+' library history controls have 44px real hit targets without overflow',layout.doc<=width+1&&layout.dialog<=width+1&&layout.bar<=layout.barWidth+1&&layout.controls.every(r=>r.width>=44&&r.height>=44&&r.left>=-1&&r.right<=width+1&&r.top>=0&&r.bottom<=height+1&&r.hit),layout);
+    await click('[data-sm-remove-model="'+modelId+'"]');
+    await wait(`!(${present()})`,'library model removed');await idle();
+    let current=await capture();
+    check('ISSUE159 '+label+' real library removal is one local history step and preserves native source',await evaluate(`$('smWorkspace').open&&!$('smLibraryPanel').hidden&&!$('btnUndo').disabled`)&&sameSource(current,baseline)&&current.undo===baseline.undo+1&&JSON.parse(current.models).length===JSON.parse(baseline.models).length-1,current);
+    await click('#btnUndo');await wait(present(),'library Undo restores saved model');await idle();
+    current=await capture();
+    check('ISSUE159 '+label+' Undo restores the complete saved model bytes and creation history',exactModel(current,baseline)&&current.undo===baseline.undo&&current.redo===1,current);
+    check('ISSUE159 '+label+' completed Undo retains its original enabled keyboard focus',await evaluate(`document.activeElement===$('btnUndo')&&!$('btnUndo').disabled`));
+    await key('y','KeyY',89,2);await wait(`!(${present()})`,'focused library Ctrl+Y');await idle();
+    current=await capture();
+    check('ISSUE159 '+label+' trusted Ctrl+Y redoes removal once from the retained Undo focus',sameSource(current,baseline)&&current.undo===baseline.undo+1&&current.redo===0&&await evaluate(`document.activeElement===$('btnUndo')`),current);
+    await key('z','KeyZ',90,2);await wait(present(),'focused library Ctrl+Z');await idle();
+    current=await capture();
+    check('ISSUE159 '+label+' trusted Ctrl+Z restores the exact model while keeping Undo focused',exactModel(current,baseline)&&current.undo===baseline.undo&&current.redo===1&&await evaluate(`document.activeElement===$('btnUndo')`),current);
+    await key('Tab','Tab',9);
+    check('ISSUE159 '+label+' real Tab reaches the available original Redo button',await evaluate(`document.activeElement===$('btnRedo')&&!$('btnRedo').disabled`));
+    await key('Enter','Enter',13);await wait(`!(${present()})`,'keyboard library Redo');await idle();
+    current=await capture();
+    check('ISSUE159 '+label+' Enter redoes removal and hands focus to the remaining enabled Undo',sameSource(current,baseline)&&current.undo===baseline.undo+1&&current.redo===0&&await evaluate(`$('btnRedo').disabled&&!$('btnUndo').disabled&&document.activeElement===$('btnUndo')`),current);
+    await key('z','KeyZ',90,2);await wait(present(),'library keyboard restoration');await idle();
+    current=await capture();
+    check('ISSUE159 '+label+' restored keyboard focus can undo again without changing saved source or mesh',exactModel(current,baseline)&&current.undo===baseline.undo&&current.redo===1,current);
+    check('ISSUE159 '+label+' all history refreshes preserve the same Save handler node and original controls',await identity()&&await evaluate(`!$('projectBar').querySelector('[data-project-action="save"]').disabled`));
+    await shot('issue159-library-history-'+width);
+  }
+  await viewport(1400,900);
+  const beforeBuilder=await capture();
+  const raw=()=>evaluate(`JSON.stringify([...document.querySelectorAll('#smSettings input,#smSettings select,#smMode,#smModelName,#smProjectionView')].map(el=>({id:el.id,dataset:{...el.dataset},value:el.value,checked:el.checked})))`);
+  await click('#smUseCurrent');
+  await wait(`SpaceModelWorkspace.snapshot().phase==='ready'&&SpaceModelWorkspace.snapshot().sourceKind==='scene'&&$('smSourceSelect').value==='101'`,'library regression reads the unique real surface 101');
+  await input('#smHeight','3210');
+  const builderRaw=await raw();
+  await click('#smLibrary');
+  const builderBlocked=await evaluate(`$('smWorkspace').open&&!$('smLibraryPanel').hidden&&$('btnUndo').disabled&&$('btnRedo').disabled&&$('smHeight').value==='3210'&&
+    document.querySelector('[data-sm-remove-model="'+${JSON.stringify(modelId)}+'"]')?.disabled===true`);
+  await key('z','KeyZ',90,2);await idle();
+  const blockedUndo=await capture(),blockedUndoRaw=await raw();
+  await key('y','KeyY',89,2);await idle();
+  let current=await capture();
+  check('ISSUE159 a valid current-face builder blocks library history and removal without changing raw draft, source or saved model',builderBlocked&&exactModel(blockedUndo,beforeBuilder)&&blockedUndo.undo===beforeBuilder.undo&&blockedUndo.redo===beforeBuilder.redo&&blockedUndoRaw===builderRaw&&exactModel(current,beforeBuilder)&&current.undo===beforeBuilder.undo&&current.redo===beforeBuilder.redo&&await raw()===builderRaw,{blockedUndo,current});
+  await click('#smClose');await wait(`!$('smWorkspace').open`,'close valid source builder');
+  await click('#btnUndo');await wait(`!(${present()})`,'canvas Undo of the real model creation');await idle();
+  current=await capture();
+  check('ISSUE159 canvas Undo removes the original model creation while preserving the exact native world and raw height',JSON.parse(current.models).length===0&&sameSource(current,beforeBuilder)&&current.undo===beforeBuilder.undo-1&&current.redo===beforeBuilder.redo+1&&await raw()===builderRaw,current);
+  await click('#btnSpaceModels');await wait(`$('smWorkspace').open&&!$('smLibraryPanel').hidden`,'reopen library with stale source history');
+  current=await capture();
+  check('ISSUE159 stale source history leaves the real library Redo available without discarding raw height',await evaluate(`!$('btnRedo').disabled&&$('smHeight').value==='3210'&&$('smLibraryPanel').querySelectorAll('[data-sm-remove-model]').length===0`)&&sameSource(current,beforeBuilder)&&JSON.parse(current.models).length===0&&current.redo===beforeBuilder.redo+1&&await raw()===builderRaw,current);
+  await click('#btnRedo');await wait(present(),'library Redo of the original model creation');await idle();
+  current=await capture();
+  check('ISSUE159 library Redo restores the complete first model and world while retaining raw height 3210',exactModel(current,beforeBuilder)&&current.undo===beforeBuilder.undo&&current.redo===beforeBuilder.redo&&await raw()===builderRaw&&await evaluate(`$('smHeight').value==='3210'&&!$('btnUndo').disabled`),current);
+  await shot('issue159-stale-builder-history');
+  await evaluate(`delete window.__issue159SpaceNodes;void 0`);
 }
 async function example(id) {
   await click(id);
@@ -603,16 +739,25 @@ async function projectionSourceRaceRegression() {
     await closeWorkspace();
     await setup(['surface 84 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000']);
     await evaluate(`enterFocus('face',84)`);
-    await evaluate(`(()=>{window.__raceContext=ReferenceWorkspace.context().id;window.__sourceDumpHeld=false;const original=window.fetch,gate=new Promise(resolve=>window.__releaseSourceDump=resolve);window.fetch=async(...args)=>{const response=await original(...args);let cmd;try{cmd=JSON.parse(args[1]?.body||'{}').cmd}catch{}if(String(args[0]).includes('/api')&&cmd==='dump'){window.fetch=original;const json=response.json.bind(response);response.json=async()=>{const data=await json();window.__sourceDumpHeld=true;await gate;window.__sourceDumpHeld=false;return data;};}return response;};})()`);
-    await openFaceModel();
-    await wait(`window.__sourceDumpHeld===true`, 'delayed original-context source dump');
-    if(closeFirst)await closeWorkspace();
-    await evaluate(`(async()=>{resetSceneFocus();await ReferenceWorkspace.newProject();await api('line surface 84 origin 0 0 4500 u +x v +y outline 0,0 2000,0 2000,2000 0,2000');await renderObjects();})()`);
-    await evaluate(`window.__releaseSourceDump()`);
-    await wait(`window.__sourceDumpHeld===false`, 'late source dump delivered');
-    await settle();
-    check((closeFirst?'closing a loading source and switching project':'switching project during source load')+' cannot bind the old response to the new project',await evaluate(`ReferenceWorkspace.context().id!==window.__raceContext && SpaceModelWorkspace.snapshot().sourceKind===null && document.querySelector('#smPreview').disabled && document.querySelector('#smCreate').disabled && ReferenceWorkspace.getSpaceModels().length===0`));
-    if(closeFirst)check('a late old-project response cannot reopen the closed workspace',await evaluate(`!document.querySelector('#smWorkspace').open`));
+    await evaluate(`window.__raceContext=ReferenceWorkspace.context().id;(${installSourceDumpGate.toString()})(window,window.__raceContext)`);
+    try {
+      await openFaceModel();
+      await wait(`window.__sourceDumpHeld===true`, 'delayed original-context source dump');
+      const evidence=await evaluate(`({gate:window.__sourceDumpGate,context:ReferenceWorkspace.context().id,snapshot:SpaceModelWorkspace.snapshot(),open:document.querySelector('#smWorkspace').open})`);
+      console.log('SOURCE_LOAD_GATE',JSON.stringify({closeFirst,...evidence}));
+      if(evidence.gate?.phase!=='held'||evidence.gate.claimed!==1||evidence.gate.held!==1||!evidence.gate.nativeOK||
+        !/(?:^|\n)\s*at (?:async )?(?:Object\.)?openCurrentFace\s*\(/.test(evidence.gate.caller||'')||
+        evidence.context!==evidence.gate.context||evidence.snapshot.phase!=='loading'||evidence.snapshot.sourceKind!==null||!evidence.open)
+        throw Error('Original-context source load was not exclusively held: '+JSON.stringify(evidence));
+      if(closeFirst)await closeWorkspace();
+      await evaluate(`(async()=>{resetSceneFocus();await ReferenceWorkspace.newProject();await api('line surface 84 origin 0 0 4500 u +x v +y outline 0,0 2000,0 2000,2000 0,2000');await renderObjects();})()`);
+      await evaluate(`window.__releaseSourceDump()`);
+      await wait(`window.__sourceDumpHeld===false`, 'late source dump delivered');
+      await settle();
+      const actual=await evaluate(`({contextChanged:ReferenceWorkspace.context().id!==window.__raceContext,sourceKind:SpaceModelWorkspace.snapshot().sourceKind,previewDisabled:document.querySelector('#smPreview').disabled,createDisabled:document.querySelector('#smCreate').disabled,models:ReferenceWorkspace.getSpaceModels().length,snapshot:SpaceModelWorkspace.snapshot(),open:document.querySelector('#smWorkspace').open,gate:window.__sourceDumpGate})`);
+      check((closeFirst?'closing a loading source and switching project':'switching project during source load')+' cannot bind the old response to the new project',await evaluate(`ReferenceWorkspace.context().id!==window.__raceContext && SpaceModelWorkspace.snapshot().sourceKind===null && document.querySelector('#smPreview').disabled && document.querySelector('#smCreate').disabled && ReferenceWorkspace.getSpaceModels().length===0`),actual);
+      if(closeFirst)check('a late old-project response cannot reopen the closed workspace',await evaluate(`!document.querySelector('#smWorkspace').open`));
+    } finally { await evaluate(`window.__cleanupSourceDumpGate()`); }
   }
   await closeWorkspace();
 }
@@ -688,7 +833,7 @@ async function fontLayoutRegression() {
   for(const width of [1382,1160,900,680,600]){
     await viewport(width,804);
     const rows=await evaluate(`(()=>{const h=document.querySelector('.object-workspace-topbar').getBoundingClientRect(),s=document.querySelector('.object-workspace-statusbar').getBoundingClientRect(),t=document.querySelector('#faceWorkspaceTools').getBoundingClientRect(),a=document.querySelector('.object-workspace-actions').getBoundingClientRect(),title=document.querySelector('#workspaceTitle').getBoundingClientRect();return {header:h.height,status:s.height,actionsRight:a.right,toolsRight:t.right,actionsLeft:a.left,toolsTop:t.top,toolsBottom:t.bottom,actionsTop:a.top,actionsBottom:a.bottom,docWidth:document.documentElement.scrollWidth,titleWidth:title.width,width:innerWidth};})()`);
-    check('documented face header rows fit at '+width+'px',rows.header===(width<=720?122:116)&&rows.status===32&&rows.actionsRight<=rows.width&&rows.docWidth<=rows.width+1&&(rows.toolsRight<=rows.actionsLeft+1||rows.toolsTop>=rows.actionsBottom-1||rows.toolsBottom<=rows.actionsTop+1)&&rows.titleWidth>0,rows);
+    check('documented face header rows fit at '+width+'px',rows.header===(width<=560?96:56)&&rows.status===32&&rows.actionsRight<=rows.width&&rows.docWidth<=rows.width+1&&(rows.toolsRight<=rows.actionsLeft+1||rows.toolsTop>=rows.actionsBottom-1||rows.toolsBottom<=rows.actionsTop+1)&&rows.titleWidth>0,rows);
   }
   await viewport(1382,804);
   await evaluate(`(async()=>{await leaveFocus();await enterFocus('space',1);})()`); await settle();
@@ -1076,12 +1221,33 @@ async function run() {
   await connect();
   await send('Runtime.enable');
   await send('Page.enable');
+  if (SCOPE.included.includes('projection-close')) await send('Page.addScriptToEvaluateOnNewDocument', {source:`(${installProjectionCloseProbe.toString()})()`});
   await send('Browser.setDownloadBehavior',{behavior:'allow',downloadPath:path.join(RUN_DIR,'downloads')});
   await send('Page.addScriptToEvaluateOnNewDocument', { source: `(()=>{let pending=0,last=performance.now();const original=window.fetch.bind(window);window.fetch=(...args)=>{pending++;last=performance.now();return original(...args).finally(()=>{pending--;last=performance.now();});};const observer=new MutationObserver(()=>{last=performance.now();});document.addEventListener('DOMContentLoaded',()=>observer.observe(document.body,{subtree:true,childList:true,attributes:true,characterData:true}));window.__spaceTestSettle=async()=>{const end=performance.now()+5000;while(performance.now()<end){if(pending===0&&performance.now()-last>120)return;await new Promise(r=>setTimeout(r,30));}};})()` });
   await send('Emulation.setDeviceMetricsOverride', { width: 1400, height: 900, deviceScaleFactor: 1, mobile: false });
   await send('Page.navigate', { url: URL });
   await wait(`typeof SpaceModelWorkspace==='object' && typeof api==='function' && connection.phase==='ready'`, 'application ready',90000);
   });
+  if (SCOPE.included.includes('projection-close')) {
+    await runGroup('projection-close', projectionCloseRegression({
+      check, evaluate, click, select, checked, key, setup, wait, openFaceModel, closeWorkspace, scene, projectionDialog,
+      record:value=>fs.writeFileSync(path.join(RUN_DIR,'projection-close-proof.json'),JSON.stringify(value,null,2))
+    }));
+    if (process.env.GEOMETRY_PROJECTION_CLOSE_ONLY) return;
+  }
+  if (process.env.GEOMETRY_ASYNC_REPLY_ONLY) {
+    await runGroup('async-reply-ui', asyncReplyUiRegression({
+      check, evaluate, click, viewport, setup, wait, settle, key, send, select, closeWorkspace, openFlowFace, scene
+    }));
+    return;
+  }
+  if (process.env.GEOMETRY_SAVE_REOPEN_ONLY) {
+    await runGroup('save-reopen-grid', saveReopenGridRegression({
+      check, evaluate, click, viewport, wait, settle, key, send, select, input, scene,
+      downloadDir: path.join(RUN_DIR, 'downloads')
+    }));
+    return;
+  }
   if (process.env.GEOMETRY_SPACE_FLOW_ONLY) {
     await runGroup('space-flow', spaceFlowRegression);
     return;
@@ -1185,6 +1351,7 @@ async function run() {
   const leaveGuard = await evaluate(`(()=>{const old=window.confirm;let asked='';window.confirm=s=>{asked=s;return false;};try{return {allowed:ReferenceWorkspace.mayLeave(),asked};}finally{window.confirm=old;}})()`);
   check('model-only unsaved project requests leave confirmation', leaveGuard.allowed === false && leaveGuard.asked.length > 0, leaveGuard);
 
+  await libraryHistoryRegression(first.createdId, originalScene);
   await closeWorkspace();
   const coreEdit = await evaluate(`api('line boundary 202 outline 0,0 500,0 500,500 0,500')`);
   check('core edit after model creation succeeds', coreEdit.ok === true, coreEdit);

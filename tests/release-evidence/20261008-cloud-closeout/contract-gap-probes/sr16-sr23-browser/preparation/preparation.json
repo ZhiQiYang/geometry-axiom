@@ -1,0 +1,104 @@
+{
+  "preparedAt": "2026-10-08T19:55:14.440312+00:00",
+  "status": "prepared-not-executed; independent source review accepted except cleanup fix, fixed now",
+  "probeSha256": "b694cd73cdd53d50dff49eb907a3faea1a96834772f6a1b4cb891690512eda8c",
+  "astParse": "passed",
+  "browserExecuted": false,
+  "nativeExecuted": false,
+  "commands": [
+    {
+      "command": [
+        "pwd"
+      ],
+      "stdout": "/workspace/geometry-axiom\n",
+      "stderr": "",
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "git",
+        "status",
+        "--short"
+      ],
+      "stdout": "",
+      "stderr": "",
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "stdout": "d8642b2e684038cbb8e24aba057c44e7aac1b231\n",
+      "stderr": "",
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "origin/main"
+      ],
+      "stdout": "5cc1ffa1ee85120eca14258b86b715151cad274f\n",
+      "stderr": "",
+      "exitCode": 0
+    }
+  ],
+  "sourceHashes": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "d3fcb30f0e711a4130f032a2ae8edab70c0cd69897c37ae504cd5f3416d3cbca"
+    },
+    {
+      "path": "公理層.md",
+      "sha256": "29ad0c657e53d364347862fddac23ba26a248a4fd8f83487d86f9e648bd1eaf2"
+    },
+    {
+      "path": "tests/release_gate.py",
+      "sha256": "ad460ddbdd52c48995188079339bc224e7f39b3d01e3147091a858ba8f541389"
+    },
+    {
+      "path": "tests/test_grid_subdivision_oracle.py",
+      "sha256": "c4dc7efa339c8121463c1799ec66b7ff0459aae82dbf719ac34b95d0b4405777"
+    },
+    {
+      "path": "geometry-web/grid_rule_lines_test.js",
+      "sha256": "bf7b648d6d367446b9bf12f7b08e9c9957d4c0d0913e357d0c9684d594ded9b3"
+    },
+    {
+      "path": "geometry-web/grid-system-workspace.js",
+      "sha256": "4ce581dcc35058244302a15e7d46592ce26876c430a3454f50b2f0d1274d32d0"
+    },
+    {
+      "path": "geometry-web/reference-workspace.js",
+      "sha256": "8ecb3673c92339b57e411d7f105400bec1a37b86f8468089a942d6f50c59ee53"
+    },
+    {
+      "path": "geometry-web/project-store.js",
+      "sha256": "d06dce17c7dd9e17c5a83045128bfc447b14b0b39c3902e27d338b6ef9d3c3a3"
+    },
+    {
+      "path": "geometry-web/feature-attachments.js",
+      "sha256": "6313fc24471ff1529c5dbafa533ae77c3389ff3e378e25cfbd50f65aa4714d2b"
+    },
+    {
+      "path": "geometry-web/app.js",
+      "sha256": "02f92b848407172f1b52e1d1903017886d095e75a37e969d1e838ffc4f4c545c"
+    },
+    {
+      "path": "current_geometry.c",
+      "sha256": "4130623fce97cefd03e3b8534636b9ddb8d8b109875262239f1726bdae6b4aa8"
+    },
+    {
+      "path": "geometry-web/grid_binding_bridge.inc",
+      "sha256": "c28c35ea3d49da56d4b1b69ba78da1be6449f18196a801562a07d760cfb476bd"
+    }
+  ],
+  "updatedAt": "2026-10-08T19:57:53.642631+00:00",
+  "previousUnexecutedPreparation": {
+    "path": "/workspace/closure-evidence/final-contract-probes/browser/prepared-e176-sr16_sr23_browser.py",
+    "sha256": "e1766778dd237d8bcbca0f6fc18b3a44923875e107335e1a80e7f6f21c71ec99"
+  },
+  "cleanupFix": "Close owned browser before copying callback error arrays; preserve original exception and cleanup traces; fail case/receipt on late error"
+}

@@ -1,0 +1,294 @@
+{
+  "gate": "timber-r2",
+  "auditedAt": "2026-10-08T18:42:20.776102+00:00",
+  "verdict": "bounded-pass",
+  "counts": {
+    "observed": 79,
+    "passed": 79,
+    "failed": 0,
+    "basis": "individual canonical result records"
+  },
+  "commandExitCode": 0,
+  "gateExitCode": 0,
+  "controllerExitCode": 0,
+  "identityVerifiedByReceipt": true,
+  "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+  "mainAtAudit": "5cc1ffa1ee85120eca14258b86b715151cad274f",
+  "dirtyBefore": "",
+  "dirtyAfter": "",
+  "runtimeBefore": {
+    "schema": "geometry-runtime/1",
+    "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 174658,
+    "session": "86b719350c9d4e3b90536403b05f9dcc"
+  },
+  "runtimeAfter": {
+    "schema": "geometry-runtime/1",
+    "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 174658,
+    "session": "86b719350c9d4e3b90536403b05f9dcc"
+  },
+  "nativeConfiguredFiles": {
+    "bridge": {
+      "name": "bridge",
+      "state": "fresh",
+      "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T15:41:17+00:00）",
+      "path": "/tmp/geometry-tests/bridge",
+      "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+      "sha256": "b76a6da590512722d6eda64cfc946392ccc2636f82ab187ef822c1e1606d68b5",
+      "sidecarSha256": "557a324f01866a47f3123f08511b0bc46941c06c45ac804bc01447a65166eaaf"
+    },
+    "model-base": {
+      "name": "model-base",
+      "state": "fresh",
+      "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T15:41:31+00:00）",
+      "path": "/tmp/geometry-tests/model-base",
+      "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+      "sha256": "1b350a7d54aac1d410e87f2a74010515739f3e2b8fc4b8c5216ff413b153662e",
+      "sidecarSha256": "e5dad713990793ed6c7b096bd4c2c6579ac3fbc527f7b9d545421be6550f6673"
+    }
+  },
+  "command": [
+    "node",
+    "geometry-web/space_model_test.js"
+  ],
+  "canonicalSource": "/tmp/geometry-tests/space-model-179524/result.json",
+  "terminalLogRecord": {
+    "prefix": "SPACE_RESULT",
+    "value": {
+      "schema": "geometry-space-result/1",
+      "scope": {
+        "mode": "partial",
+        "filters": [
+          "GEOMETRY_TIMBER_ONLY"
+        ],
+        "included": [
+          "timber-material",
+          "timber-source-guards",
+          "font-layout"
+        ],
+        "omitted": [
+          "space-height-library",
+          "projection-lifecycle",
+          "projection-placement",
+          "space-flow"
+        ],
+        "url": "http://127.0.0.1:18971/",
+        "feedbackDirectory": "/tmp/geometry-closeout-r2-feedback"
+      },
+      "completed": true,
+      "groups": {
+        "setup": {
+          "expected": 2,
+          "passed": 2,
+          "failed": 0,
+          "completed": true
+        },
+        "timber-material": {
+          "expected": 48,
+          "passed": 48,
+          "failed": 0,
+          "completed": true
+        },
+        "timber-source-guards": {
+          "expected": 8,
+          "passed": 8,
+          "failed": 0,
+          "completed": true
+        },
+        "font-layout": {
+          "expected": 19,
+          "passed": 19,
+          "failed": 0,
+          "completed": true
+        },
+        "browser-health": {
+          "expected": 2,
+          "passed": 2,
+          "failed": 0,
+          "completed": true
+        }
+      },
+      "completenessProblems": [],
+      "passed": 79,
+      "failed": 0,
+      "exceptions": [],
+      "consoleErrors": []
+    }
+  },
+  "limitations": [
+    "Explicit partial timber/material/source-guard/font scope.",
+    "Linux Chromium, not physical phone/IME/native OS picker certification.",
+    "The command.log combines child stdout/stderr; separate gate-wrapper stdout/stderr are preserved.",
+    "A native file hash alone is not proof of which live native process was loaded; consult separate live-service binding."
+  ],
+  "canonicalLimitations": "Trusted pointer/keyboard controls with programmatic fixture setup, state observation and failure injection; counts are assertions, not end-to-end scenarios.",
+  "rawFiles": [
+    {
+      "source": "/workspace/closure-evidence/gates/timber-r2/command.log",
+      "public": "timber-r2/command.log",
+      "bytes": 8201,
+      "sha256": "578c9234d721ab9ec3d7858da395cab40884be68fe9e52fb4d86a6c3bd03557a"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/timber-r2/receipt.json",
+      "public": "timber-r2/receipt.json",
+      "bytes": 7024,
+      "sha256": "2c4c58901329cd18b4131c92d10045fcca8aa52c58f5fb75cbd18420bdfe615c"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/timber-r2.command.json",
+      "public": "timber-r2.command.json",
+      "bytes": 1149,
+      "sha256": "46284ecf728def2a9de091ee12cb1e78a803ecc52835457c42cf05f0349a3c05"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/timber-r2.stdout",
+      "public": "timber-r2.stdout",
+      "bytes": 173,
+      "sha256": "c3cc57d7836102ddcfb7f6f54d5b4deb0fa78d6e7a5e1ac4d47d4fd1e19c5621"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/timber-r2.stderr",
+      "public": "timber-r2.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "artifacts": [
+    {
+      "source": "/tmp/geometry-tests/space-model-179524/chrome.stderr.log",
+      "relative": "chrome.stderr.log",
+      "bytes": 5379,
+      "sha256": "5580e5620755679731a977fdeb813489dd95218cfd8348e3d97ed03b7af0716d",
+      "public": "timber-r2/artifacts/chrome.stderr.log"
+    },
+    {
+      "source": "/tmp/geometry-tests/space-model-179524/downloads/z=2500 角材骨架・4 × 3 m空間-timbers.model.json",
+      "relative": "downloads/z=2500 角材骨架・4 × 3 m空間-timbers.model.json",
+      "bytes": 113440,
+      "sha256": "bcddb341b6fa493e1eeecfaa9265c9775e84196e9390617c0a5eb80b9afd0a15",
+      "public": "timber-r2/artifacts/downloads/z=2500 角材骨架・4 × 3 m空間-timbers.model.json"
+    },
+    {
+      "source": "/tmp/geometry-tests/space-model-179524/final-state.png",
+      "relative": "final-state.png",
+      "bytes": 68523,
+      "sha256": "84577931c948a0e5fabffd042e7579a5788464098ebe56aae78d2f40589670dc",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-tests/space-model-179524/fonts-11px-desktop-1280x720.png",
+      "relative": "fonts-11px-desktop-1280x720.png",
+      "bytes": 131814,
+      "sha256": "c4f12b4cbe53e90336a5f9060c20295d99c75404e8c67e9bf986bb1895c95a85",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-tests/space-model-179524/fonts-11px-mobile-preview.png",
+      "relative": "fonts-11px-mobile-preview.png",
+      "bytes": 70565,
+      "sha256": "041f55543d94f6f99cc7aa4c25e541f368728bff03d7028b89c152a20fe315c8",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-tests/space-model-179524/fonts-11px-mobile-settings.png",
+      "relative": "fonts-11px-mobile-settings.png",
+      "bytes": 65266,
+      "sha256": "149697ae77132e5fb0e43660f037deaf41d58a378fa96381baa19fce360f31fb",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-tests/space-model-179524/result.json",
+      "relative": "result.json",
+      "bytes": 13613,
+      "sha256": "b6bbff118460cdc9c915cfb04aa2c95e9fa532bd6f3ea4a4b2a8ea5ec6894334",
+      "public": "timber-r2/artifacts/result.json"
+    },
+    {
+      "source": "/tmp/geometry-tests/space-model-179524/timber-frame-desktop-all.png",
+      "relative": "timber-frame-desktop-all.png",
+      "bytes": 138130,
+      "sha256": "a978c38823995855fcad72b6d3ead1d8c429f665599786d91d938d91af5c1fc3",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-tests/space-model-179524/timber-frame-desktop-timbers-bottom.png",
+      "relative": "timber-frame-desktop-timbers-bottom.png",
+      "bytes": 121598,
+      "sha256": "2ef90a90485f8f86c04c60bf6a8bbca1efcd5f28b5de400d250934d4c2bc006d",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-tests/space-model-179524/timber-frame-desktop-timbers-iso.png",
+      "relative": "timber-frame-desktop-timbers-iso.png",
+      "bytes": 134869,
+      "sha256": "c294e434ae10b2a7c1c2e911f4b6d7a0cb127eb14506b9090dc5080eefac1dcc",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-tests/space-model-179524/timber-frame-desktop-timbers-top.png",
+      "relative": "timber-frame-desktop-timbers-top.png",
+      "bytes": 121527,
+      "sha256": "208dc6b4d4d6d2186fb7856328cc9fa1371e9c462602ae32244b446283655724",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-tests/space-model-179524/timber-frame-mobile-settings.png",
+      "relative": "timber-frame-mobile-settings.png",
+      "bytes": 62247,
+      "sha256": "41650b301e55e1733a44abb2d9089abfcc4641c6181aca3d46c2ad7de4ceddf2",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-tests/space-model-179524/timber-frame-mobile-timbers-bottom.png",
+      "relative": "timber-frame-mobile-timbers-bottom.png",
+      "bytes": 68080,
+      "sha256": "2db688f22276a2cd6b01f92c80cc090d86285bb7179b74cfe6456d7cb563622c",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    }
+  ],
+  "sources": [
+    {
+      "source": "geometry-web/space_model_test.js",
+      "sha256": "8ddd0448c9207a3c012355c2c26915b4064c9d7d258ee54160f9e0fc66dd6dba",
+      "public": "timber-r2/sources/geometry-web/space_model_test.js",
+      "binding": "git object at recorded head, copied after execution; clean before/after receipt binds checkout, cannot exclude transient edits"
+    },
+    {
+      "source": "/workspace/closure-evidence/sandbox-launch.cjs",
+      "public": "timber-r2/sources/launch-adapters/sandbox-launch.cjs",
+      "bytes": 912,
+      "sha256": "c917611c821f63cea2e5ef3ed1c0ddde128dcf47fde65d1a7ace8ff24fba2b1e",
+      "binding": "post-run adapter copy; launch policy only, no action/oracle changes"
+    },
+    {
+      "source": "/workspace/closure-evidence/python-launch/sitecustomize.py",
+      "public": "timber-r2/sources/launch-adapters/sitecustomize.py",
+      "bytes": 748,
+      "sha256": "e49545951bb661db0169e3d466c96321ee67c5f8a39fac3f7f0ed6954c22a7be",
+      "binding": "post-run adapter copy; launch policy only, no action/oracle changes"
+    },
+    {
+      "source": "/workspace/geometry-axiom/tests/release_gate.py",
+      "public": "timber-r2/sources/tests/release_gate.py",
+      "bytes": 17583,
+      "sha256": "ad460ddbdd52c48995188079339bc224e7f39b3d01e3147091a858ba8f541389",
+      "binding": "post-run clean tested-head release identity wrapper"
+    }
+  ]
+}

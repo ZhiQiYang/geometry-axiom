@@ -4,6 +4,16 @@
  */
 const cdp=require('./cdp_helpers.js');
 module.exports = async function gridSystemTests({send,eval_,sleep,click,drag,waitForUI,expectNativeDialog,exceptionCount}) {
+  // S2 keeps the same exact discard question inside the active workspace.
+  const discardDraft=async({message,accept})=>{
+    await ctl('#igDiscardDraft');
+    await waitForUI(`!!$('igDiscardConfirmation')&&$('igDiscardConfirmation').getAttribute('role')==='alertdialog'`,10000);
+    const actual=await eval_(`$('igDiscardQuestion').textContent`);
+    if(actual!==message)throw Error('Discard question changed: '+JSON.stringify({expected:message,actual}));
+    await ctl(accept?'#igDiscardConfirm':'#igDiscardCancel');
+    await waitForUI(`!$('igDiscardConfirmation')`,10000);
+  };
+
   console.log('=== P70. 無限格線、獨立邊界與 cell 對齊 ===');
   const fs=require('fs'),path=require('path'),os=require('os'),same=require('util').isDeepStrictEqual,exceptions=exceptionCount();
   const check=cdp.makeCheck({prefix:'P70 ',throwOnFail:true});
@@ -32,7 +42,7 @@ module.exports = async function gridSystemTests({send,eval_,sleep,click,drag,wai
     // This native-geometry suite explicitly abandons its raw test inputs.
     // The separate portable-draft browser gate verifies ordinary return/resume.
     if(discard||await read(`!!ReferenceWorkspace.readFeatureAttachment('grid-draft')`))
-      await expectNativeDialog(()=>ctl('#igDiscardDraft'),{message:'捨棄這份未發布的原始草稿？已保存到場景的網格保持不變。',accept:true});
+      await discardDraft({message:'捨棄這份未發布的原始草稿？已保存到場景的網格保持不變。',accept:true});
     else await ctl('#igClose');
   }};
   const open=async(kind,id)=>{await close();await ctl('#btnZoom');
@@ -72,8 +82,8 @@ module.exports = async function gridSystemTests({send,eval_,sleep,click,drag,wai
   check('1b 工具列顯示目前比例（格距 mm 與一格像素）',gv.zoom===`1 格 600×400 mm · ${Math.round(600*gv.scale)} px`,gv.zoom);
   check('1b 網格拉高填滿主區，下方不再留大片空白',gv.slack<4&&gv.size[1]>=400,{slack:gv.slack,size:gv.size});
   // 審查 3a 製圖桌：單列麵包屑、右側檢查器、分段主支方向、格資訊與格子縮圖
-  const l3=await read(`(()=>{const r=s=>document.querySelector(s).getBoundingClientRect(),h=r('.ig-header'),p=r('.workspace-project-header'),m=r('.ig-main'),a=r('.ig-inspector'),th=r('.ig-def-cell'),save=document.querySelector('#projectBar [data-project-action="save"]');return {h:[h.top,h.height],p:[p.top,p.height],mainRight:m.right,inspLeft:a.left,inspW:a.width,crumb:[...document.querySelectorAll('.ig-crumb > *')].map(e=>e.textContent),headerParagraph:!!document.querySelector('.ig-header p'),heading:!!document.querySelector('.ig-view-heading')||[...document.querySelectorAll('.ig-main h2')].some(e=>e.offsetParent),intro:[...document.querySelectorAll('.ig-settings p')].some(x=>/不需要總條數/.test(x.textContent)),footerInInspector:!!document.querySelector('.ig-inspector > .ig-footer #igSaveSource'),footerRow:!!document.querySelector('.ig-layout ~ .ig-footer, dialog > .ig-footer'),saveBg:getComputedStyle(save).backgroundColor,thumb:th.width/th.height,thumbLabels:['u','v'].map(a=>document.querySelector('[data-ig-chip="'+a+':step"]').textContent.replace(/\\D/g,'')),mode:document.querySelector('#igMainAlong').getAttribute('role')};})()`);
-  check('3a 專案列與工作區標題合併成單列麵包屑，返回在最前，只剩「預覽並建立」一個主動作',Math.abs(l3.h[0]-l3.p[0])<1&&l3.h[1]===56&&l3.p[1]===56&&l3.crumb.includes('無限網格')&&l3.crumb.includes('雙向 無限 <A & B>')&&!l3.headerParagraph&&l3.footerInInspector&&!l3.footerRow&&l3.saveBg==='rgb(255, 255, 255)',l3);
+  const l3=await read(`(()=>{const r=s=>document.querySelector(s).getBoundingClientRect(),h=r('.ig-header'),p=r('.workspace-project-header'),m=r('.ig-main'),a=r('.ig-inspector'),th=r('.ig-def-cell'),save=document.querySelector('#projectBar [data-project-action="save"]');return {h:[h.top,h.height],p:[p.top,p.height],mainRight:m.right,inspLeft:a.left,inspW:a.width,crumb:[...document.querySelectorAll('.ig-crumb > *')].map(e=>e.textContent),headerParagraph:!!document.querySelector('.ig-header p'),heading:!!document.querySelector('.ig-view-heading')||[...document.querySelectorAll('.ig-main h2')].some(e=>e.offsetParent),intro:[...document.querySelectorAll('.ig-settings p')].some(x=>/不需要總條數/.test(x.textContent)),footerInInspector:!!document.querySelector('.ig-inspector > .ig-footer #igSaveSource'),footerRow:!!document.querySelector('.ig-layout ~ .ig-footer, dialog > .ig-footer'),saveBg:getComputedStyle(save).backgroundColor,thumb:th.width/th.height,thumbLabels:['u','v'].map(a=>document.querySelector('[data-ig-chip="'+a+':step"]').textContent.replace(/\\D/g,'')),mode:document.querySelector('#igMainAlong').getAttribute('role'),footerOrder:[...document.querySelectorAll('.ig-footer-actions > button')].filter(b=>!b.hidden&&b.getBoundingClientRect().width>0).map(b=>b.id),footerActions:r('.ig-footer-actions').toJSON(),discard:r('#igDiscardDraft').toJSON(),primary:r('#igSaveSource').toJSON()};})()`);
+  check('3a 單列麵包屑與原返回，共用保存主色、建立仍經預覽確認',Math.abs(l3.h[0]-l3.p[0])<1&&l3.h[1]===56&&l3.p[1]===56&&l3.crumb.includes('無限網格')&&l3.crumb.includes('雙向 無限 <A & B>')&&!l3.headerParagraph&&l3.footerInInspector&&!l3.footerRow&&l3.saveBg==='rgb(78, 103, 232)'&&l3.footerOrder[0]==='igDiscardDraft'&&l3.footerOrder.at(-1)==='igSaveSource'&&l3.discard.left<=l3.primary.left&&Math.abs(l3.discard.left-l3.footerActions.left)<1&&Math.abs(l3.primary.right-l3.footerActions.right)<1,l3);
   check('3a 設定集中到右側 360px 檢查器，網格在左側成為畫面本體，沒有標題與說明卡',l3.inspLeft>=l3.mainRight-1&&l3.inspW===360&&!l3.heading&&!l3.intro,l3);
   check('2a 定義圖的格子維持 600:400 比例，尺寸標籤對應間距',Math.abs(l3.thumb-1.5)<.02&&l3.thumbLabels.join('/')==='600/400',l3);
   await ctl('#igMainAlong input[value="u"]');const seg=await read(`({value:$('igMainAlong').value,checked:document.querySelector('#igMainAlong input:checked')?.value,dirty:!$('igSaveSource').disabled})`);
@@ -125,7 +135,9 @@ module.exports = async function gridSystemTests({send,eval_,sleep,click,drag,wai
   await fixture(['boundary 301 outline 100,200 1300,200 1300,1000 100,1000','boundary 302 outline -1800,-1200 2400,-1200 2400,1600 -1800,1600 hole 100,200 100,400 300,400 300,200']);
   const leftTop=await binding(source,301,'outer:0','0,0',[1300,-200]),center=await binding(source,302,'hole:0:0','1,1',[1000,-400]);o=await objects();
   check('同來源組合兩個未放置邊界，孔頂點也有穩定身分',o.gridBindings.length===2&&o.gridBindings.every(b=>b.system===source&&b.vertexKey>0)&&(await query('surfaces')).surfaces.length===0&&same(o.gridBindings.find(b=>b.id===center).anchor,[{num:1,den:2},{num:1,den:2}]),o.gridBindings);
-  check('配置結果使用原生裁切查詢',await read(`$('igResultView').querySelectorAll('[data-ig-result-index]').length>0 && $('igResultView').dataset.queryMode==='sample'`));await shot('infinite-binding-hole');
+  const bindingUI=await read(`(()=>{const section=$('igBoundarySection'),summary=$('igVertexSummary'),buttons=[...document.querySelectorAll('[data-ig-anchor]')],positions=window.GridAnchorPositions?.positions||[],custom=[{num:1,den:3},{num:2,den:5}],before=JSON.stringify(custom),danger=$('igDeleteBinding'),details=danger?.closest('.ig-delete-section');return {nativeResult:$('igResultView').querySelectorAll('[data-ig-result-index]').length>0&&$('igResultView').dataset.queryMode==='sample',rightStep2:!!section.closest('.ig-inspector')&&!!section.closest('#igBindingForm')&&summary.nextElementSibling===section,anchors:buttons.map(b=>[b.dataset.igAnchor,b.textContent]),descriptors:positions.map(p=>[p.u+','+p.v,p.name]),fractions:positions.map(p=>GridAnchorPositions.fractions(p)),customNoSnap:positions.every(p=>!GridAnchorPositions.selected(p,custom))&&JSON.stringify(custom)===before,deleteIsolated:document.querySelectorAll('#igDeleteBinding').length===1&&!!details&&!details.open&&!!details.querySelector(':scope > summary')&&!danger.closest('.ig-footer')};})()`);
+  const anchorNames=['左上','上中','右上','左中','中心','右中','左下','下中','右下'],anchorDescriptors=anchorNames.map((name,index)=>[index%3+','+Math.floor(index/3),name]),anchorFractions=[0,1,2].flatMap(v=>[0,1,2].map(u=>[u,v].map(n=>n===0?{num:0,den:1}:n===1?{num:1,den:2}:{num:1,den:1})));
+  check('配置結果使用原生裁切查詢',bindingUI.nativeResult&&bindingUI.rightStep2&&same(bindingUI.anchors,anchorDescriptors)&&same(bindingUI.descriptors,anchorDescriptors)&&same(bindingUI.fractions,anchorFractions)&&bindingUI.customNoSnap&&bindingUI.deleteIsolated,bindingUI);await shot('infinite-binding-hole');
   const originalQuery=await query(`grid-query binding ${center} rect -1800 -1200 2400 1600 mode exact limit 64`);
   await ctl('#igKeyedEditor > summary');for(const edge of ['Left','Right','Top','Bottom'])await fill('#igGrow'+edge,1200);await ctl('#igGrowBoundary');const beforeGrow=await dump();await ctl('#igSaveBoundary');await impact();
   const boundaryImpact=await read(`document.querySelector('[data-impact-boundary="302"]')?.textContent || ''`);
@@ -144,7 +156,7 @@ module.exports = async function gridSystemTests({send,eval_,sleep,click,drag,wai
   check('修改間距仍將左上與中心錨定同一頂點',same(newBindings.find(b=>b.id===leftTop).translation,[1700,-300])&&same(newBindings.find(b=>b.id===center).translation,[1300,-550])&&newBindings.every(b=>same(b.cell,['-2','1'])),newBindings);
   await close();await ctl('#btnUndo');await settled();check('來源與所有配置一次復原',(await dump())===beforePitch);await ctl('#btnRedo');await settled();check('來源與所有配置一次重做',(await dump())===afterPitch);
   await open('grid-binding',center);check('重開配置顯示確切負索引與中心錨點',await read(`$('igCellI').value==='-2' && $('igCellJ').value==='1' && document.querySelector('[data-ig-anchor="1,1"]').getAttribute('aria-pressed')==='true'`));await close();
-  const bindingBefore=(await objects()).gridBindings.find(b=>b.id===center),geometryBefore=await refs();await ctl('#btnZoom');const pos=await read(`(()=>{const r=document.querySelector(${JSON.stringify(card('grid-binding',center))}).getBoundingClientRect();return {x:r.left+55,y:r.top+18};})()`);await drag(pos.x,pos.y,pos.x+70,pos.y+40,8);await settled();await sleep(150);const moved=(await objects()).gridBindings.find(b=>b.id===center);check('配置卡片可拖動且不改錨定幾何',moved.hasPos&&(moved.cx!==bindingBefore.cx||moved.cy!==bindingBefore.cy)&&same(moved.cell,bindingBefore.cell)&&same(moved.translation,bindingBefore.translation)&&same(geometryBefore,await refs()),{bindingBefore,moved});
+  const bindingBefore=(await objects()).gridBindings.find(b=>b.id===center),geometryBefore=await refs();await ctl('#btnZoom');const pos=await read(`(()=>{const r=document.querySelector(${JSON.stringify(card('grid-binding',center))}).getBoundingClientRect();return {x:r.left+55,y:r.top+18};})()`);await drag(pos.x,pos.y,pos.x+70,pos.y+40,8);const commit=await cdp.waitCardCanvasPos(eval_,{kind:'grid-binding',id:center,beforeCx:bindingBefore.cx,beforeCy:bindingBefore.cy});const moved=(await objects()).gridBindings.find(b=>b.id===center);check('配置卡片可拖動且不改錨定幾何',commit.ok&&moved.hasPos&&(moved.cx!==bindingBefore.cx||moved.cy!==bindingBefore.cy)&&same(moved.cell,bindingBefore.cell)&&same(moved.translation,bindingBefore.translation)&&same(geometryBefore,await refs()),{bindingBefore,moved,commit});
   await fixture(['placement 401 on boundary 301 origin 0 0 0 u +x v +y','placement 402 on boundary 302 origin 10000 0 0 u +x v +y','grid-system 900 name-hex 4c65676163792066696e697465 main-along none u series 0 600 4 v explicit 0 400 800']);
   for(const [id,surface] of [[leftTop,401],[center,402]]){await open('grid-binding',id);const offered=await read(`[...$('igSurface').options].filter(o=>o.value!=='').map(o=>Number(o.value))`);check('套用只列出同邊界承載面',same(offered,[surface]),offered);await choose('#igSurface',surface);const beforeApply=await dump();await ctl('#igApplyBinding');await impact();check('套用到承載面也先預覽',(await dump())===beforeApply);await confirm();await close();}
   const applied=(await refs()).grids;check('兩個主網格保留配置引用與有號 lattice 身分',applied.length===2&&applied.every(g=>g.indexSpace==='lattice')&&same(applied.map(g=>[g.surface,g.bindingId]).sort((a,b)=>a[0]-b[0]),[[401,leftTop],[402,center]]),applied);
@@ -240,6 +252,46 @@ module.exports = async function gridSystemTests({send,eval_,sleep,click,drag,wai
   await close();await ctl('#btnZoom');await ctl(card('grid-system',staggered));
   const inspector=await read(`({text:document.querySelector('#giVStep')?.closest('label')?.innerText||'',extra:!!$('giUStagger')||!!$('giVStagger')})`);
   check('底部檢查器沿用第 0 線那一行帶出相位差，不加輸入欄',inspector.text.includes('第 0 線座標 0 mm')&&inspector.text.includes('相鄰格子相位差 400 mm')&&!inspector.extra,inspector);
+
+  // The lesson is shared DOM. A successful grid confirmation replaces its
+  // editor owner, then the same lesson moves to the parameter canvas. Exercise
+  // this after the original geometry/archive oracles, without committing a
+  // parameter or changing their fixtures.
+  await open('grid-system',staggered);
+  await read(`(()=>{const node=$('paramGridLesson'),buttons=[...node.querySelectorAll('button')],events=[];
+    const observe=e=>{const b=e.target.closest?.('button');if(b&&node.contains(b))events.push({id:b.id,trusted:e.isTrusted});};
+    window.addEventListener('click',observe,true);window.__p70SharedLesson={node,buttons,events,observe};})()`);
+  const lessonHistory=cdp.makeHistoryOracle(read,'p70-shared-lesson');
+  const lessonState=()=>read(`(()=>{const pin=__p70SharedLesson,n=$('paramGridLesson');return {same:n===pin.node&&pin.buttons.every(b=>n.contains(b)),parent:n?.parentElement?.id,enabled:pin.buttons.every(b=>!b.disabled),open:n?.classList.contains('is-open'),frame:n?.dataset.frame,events:pin.events.slice()};})()`);
+  const lessonRaw=selector=>read(`JSON.stringify([...document.querySelectorAll(${JSON.stringify(selector)})].map(n=>[n.id,n.getAttribute('data-input'),n.value,n.checked,n.disabled]))`);
+  const cycleLesson=async()=>{
+    if((await lessonState()).open)await ctl('#paramGridLessonClose');
+    await ctl('#paramGridLessonOpen');await ctl('#paramGridLessonFrame2');const second=(await lessonState()).frame==='2';
+    await ctl('#paramGridLessonClose');const collapsed=!(await lessonState()).open;
+    await ctl('#paramGridLessonOpen');const after=await lessonState(),events=after.events.slice(-4);
+    return second&&collapsed&&after.open&&after.frame==='1'&&events.every(e=>e.trusted)&&
+      events.map(e=>e.id).join(',')==='paramGridLessonOpen,paramGridLessonFrame2,paramGridLessonClose,paramGridLessonOpen';
+  };
+  const pins=[];
+  try {
+    await fill('#igName','交丁 1830 · 共用圖解');await saveSource();
+    const replaced=await lessonState();
+    check('網格確認更換編輯狀態後，同一份共用圖解全部控制仍可操作',replaced.same&&replaced.enabled&&replaced.parent==='paramGridLessonSlot'&&(await objects()).gridSystems.find(g=>g.id===staggered)?.name==='交丁 1830 · 共用圖解',replaced);
+    const gridScene=await dump(),gridRaw=await lessonRaw('#igSourceForm input,#igSourceForm select'),gridHistory=await lessonHistory.capture();pins.push(gridHistory);
+    const gridCycle=await cycleLesson();
+    check('網格圖解真實展開換頁關閉重開，不改世界、歷史或原始欄位',gridCycle&&(await dump())===gridScene&&(await lessonRaw('#igSourceForm input,#igSourceForm select'))===gridRaw&&await lessonHistory.unchanged(gridHistory));
+    await close();await ctl('#btnCreateObject');await ctl('#btnNewParameter');await wait(`!!$('paramQuick')&&$('paramName')?.value==='參數'`);
+    const transferred=await lessonState();
+    check('網格圖解移回參數畫布仍是同一節點且沒有舊編輯器的停用狀態',transferred.same&&transferred.enabled&&transferred.parent==='canvasViewport'&&(await dump())===gridScene&&await lessonHistory.unchanged(gridHistory),transferred);
+    await fill('#paramName','圖解保全中的參數');await fill('[data-param-field] [data-input]','00027');await ctl('#paramPreview');await wait(`!ParameterUI.previewing&&!$('paramConfirm').disabled`);
+    const parameterScene=await dump(),parameterRaw=await lessonRaw('#parameterEditor input,#parameterEditor select'),parameterHistory=await lessonHistory.capture();pins.push(parameterHistory);
+    const parameterCycle=await cycleLesson();
+    check('參數圖解真實展開換頁關閉重開，保留未提交原稿與候選歷史',parameterCycle&&(await dump())===parameterScene&&(await lessonRaw('#parameterEditor input,#parameterEditor select'))===parameterRaw&&await lessonHistory.unchanged(parameterHistory)&&await read(`ParameterUI.pending&&document.querySelector('[data-param-field] [data-input]').value==='00027'`));
+    await ctl('#paramDiscard');
+  } finally {
+    for(const pin of pins)await lessonHistory.release(pin);
+    await read(`window.removeEventListener('click',__p70SharedLesson.observe,true);delete window.__p70SharedLesson;void 0`);
+  }
   await require('./infinite_grid_face_test.js')({send,eval_,sleep,click,waitForUI});
   await require('./grid_trial_test.js')({send,eval_,sleep,click,drag,waitForUI,expectNativeDialog,exceptionCount});
 };

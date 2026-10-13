@@ -1,0 +1,186 @@
+{
+  "schema": "geometry-work-manager-availability-public-packet/1",
+  "preparedUtc": "2026-10-09T19:41:47.580280+00:00",
+  "preparerActor": "/root/delivery_closeout",
+  "scope": "Read-only availability and existing CLI --help; no queue recovery/product acceptance.",
+  "rounds": [],
+  "historyReviewsAndExecutorSources": [
+    {
+      "path": "availability.public.json",
+      "bytes": 2832,
+      "sha256": "f13f606c62ac6b49f4e5c9a7c0ae18f5fdd67c504ac9884fe45e5506b6602749",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 2832,
+      "originalSha256": "f13f606c62ac6b49f4e5c9a7c0ae18f5fdd67c504ac9884fe45e5506b6602749",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Original already-public availability summary; hash exact, currentunknown, original old data preserved."
+    },
+    {
+      "path": "selected-execution.public.json",
+      "bytes": 3789,
+      "sha256": "268c3d5e178368919145a6e952955d5f60622730890a3a596107274273a30a43",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 3789,
+      "originalSha256": "268c3d5e178368919145a6e952955d5f60622730890a3a596107274273a30a43",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Explicit selected public projection with original private receipt hash only; not the original full receipt."
+    },
+    {
+      "path": "cli-help/existing-cli-help-only.command.json",
+      "bytes": 617,
+      "sha256": "1067dd9ce9ddd0fd233b817b1c93ccf56686dd0708af02877e0ea644f10c3f82",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 882,
+      "originalSha256": "c4ad9608de3357d5404615c533fa9ef0503f35c259cd5157af6804d0040640be",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated path labels; colliding dictionary path keys retain stable original-key SHA256 IDs without dropping entries."
+      ],
+      "projectionDictionaryKeyAudit": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Only nonsecret existing CLI --help invocation/result; actual exit0, no Store, no reconcile/list-ready/list-alerts execution."
+    },
+    {
+      "path": "cli-help/existing-cli-help-only.stdout.log",
+      "bytes": 490,
+      "sha256": "4b963d57c58c7b2886d693f08e904ed988a4b6fa421682d79d891e103e12cbc6",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 490,
+      "originalSha256": "4b963d57c58c7b2886d693f08e904ed988a4b6fa421682d79d891e103e12cbc6",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Only nonsecret existing CLI --help invocation/result; actual exit0, no Store, no reconcile/list-ready/list-alerts execution."
+    },
+    {
+      "path": "cli-help/existing-cli-help-only.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 0,
+      "originalSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byteIdenticalOriginal": true,
+      "publicProjection": false,
+      "projectionChanges": [],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Only nonsecret existing CLI --help invocation/result; actual exit0, no Store, no reconcile/list-ready/list-alerts execution."
+    },
+    {
+      "path": "source/geometry-check-final-manager-availability-f3b.py",
+      "bytes": 12596,
+      "sha256": "eeae5599bbb7b71fc4997ab449dd2069b6e844e3756a5620a925faa7bd246a2c",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 12723,
+      "originalSha256": "eadcc728ce9d8c283f27e42752ea76ff049cf0aa10cd4f4c48a47a2cfd192259",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Original source SHA256 and explicit bounded ASCII path-token public projection. Source code reference, never public private ledger/database/export rows."
+    },
+    {
+      "path": "source/geometry-prepare-final-manager-availability-f3b.py",
+      "bytes": 904,
+      "sha256": "0d4086dcf0b01ba5ed34f56b58e1eafdcd1d2ee0710382e785fa6b321e0b3c86",
+      "originalPathLabel": "<workspace-path>",
+      "originalBytes": 1131,
+      "originalSha256": "61e166ccd4c368c27cd6da6291e1598e56c9410128be95c31eea0f04b3f83d06",
+      "byteIdenticalOriginal": false,
+      "publicProjection": true,
+      "projectionChanges": [
+        "Machine/executable/isolated feedback/profile path labels only."
+      ],
+      "originalRetainedOutsideGit": true,
+      "purpose": "Original source SHA256 and explicit bounded ASCII path-token public projection. Source code reference, never public private ledger/database/export rows."
+    }
+  ],
+  "fullTestedCommitSourceCopies": [],
+  "historicalFullCdp": null,
+  "windows173": null,
+  "omissions": [
+    "Private queue DB/events/owner threads",
+    "Private feedback and user source files",
+    "Standalone large screenshots/profile directories",
+    "Native binary/sidecar bytes"
+  ],
+  "limits": [
+    "No private receipt/root inventory/DB/export candidate details or original real task/owner payload is published.",
+    "Incremental199roots/84newDB observations reuse old fullscan, not an exhaustive new fullscan. Original52 observation and23 existing synthetic/empty/export bytes are preserved.",
+    "Historical v5 ready59read_only/0write alerts374 remains historical; this packet establishes no currentready/tasks/owners.",
+    "Only existing CLI --help exited0. reconcile/list-ready/list-alerts were not executed because unavailable originalledger would cause Store initialization. No empty recovery database or Store was created.",
+    "Availability/executable/source/metadata checks are not browser/product tests. Missing original PID/proc argv/live executable attestation remains unknown."
+  ],
+  "releaseApproved": false,
+  "availabilityOriginalSHA256": "f13f606c62ac6b49f4e5c9a7c0ae18f5fdd67c504ac9884fe45e5506b6602749",
+  "currentRealQueueStatus": "unknown",
+  "originalRealLedgerOrValidCompleteExportAccessible": false,
+  "publicSelectionIsFullPrivateReceipt": false,
+  "publicationSourceSHA256": "1f237f99a28a02228ff1d405bd6bed176bc3a66a3b31fe6d67b8d2315d746dda",
+  "projectionEngineOriginalSHA256": "0209c3f9467a9b63d6c4ae3ca74e4d14cf48a3f51dd31e1ec1fa594f15a0f065",
+  "publicFiles": [
+    {
+      "path": "README.md",
+      "bytes": 2153,
+      "sha256": "fdc2b4b80094ed006b68eb144ec332019dadb304c804c416555c62f6651a1341"
+    },
+    {
+      "path": "availability.public.json",
+      "bytes": 2832,
+      "sha256": "f13f606c62ac6b49f4e5c9a7c0ae18f5fdd67c504ac9884fe45e5506b6602749"
+    },
+    {
+      "path": "cli-help/existing-cli-help-only.command.json",
+      "bytes": 617,
+      "sha256": "1067dd9ce9ddd0fd233b817b1c93ccf56686dd0708af02877e0ea644f10c3f82"
+    },
+    {
+      "path": "cli-help/existing-cli-help-only.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "cli-help/existing-cli-help-only.stdout.log",
+      "bytes": 490,
+      "sha256": "4b963d57c58c7b2886d693f08e904ed988a4b6fa421682d79d891e103e12cbc6"
+    },
+    {
+      "path": "selected-execution.public.json",
+      "bytes": 3789,
+      "sha256": "268c3d5e178368919145a6e952955d5f60622730890a3a596107274273a30a43"
+    },
+    {
+      "path": "source/geometry-check-final-manager-availability-f3b.py",
+      "bytes": 12596,
+      "sha256": "eeae5599bbb7b71fc4997ab449dd2069b6e844e3756a5620a925faa7bd246a2c"
+    },
+    {
+      "path": "source/geometry-prepare-final-manager-availability-f3b.py",
+      "bytes": 904,
+      "sha256": "0d4086dcf0b01ba5ed34f56b58e1eafdcd1d2ee0710382e785fa6b321e0b3c86"
+    }
+  ],
+  "publicationImplementation": {
+    "finalMetadataReviserSHA256": "90d2730b75738a0822fbc39c770b0ba45acf88125e8a17ff69f237b76de01929",
+    "actualPackagingWrapperOriginalSHA256": "1f237f99a28a02228ff1d405bd6bed176bc3a66a3b31fe6d67b8d2315d746dda",
+    "dynamicInputBuilderOriginalSHA256": "08055a8327904b297176e9c89bccd780452fa626ca38447f1b63cdcb9d799e34",
+    "dynamicInputRole": "v2 reads immutable v1 source text and corrects schema access/version names before exec; both sources form publication-only closure.",
+    "projectionEngineOriginalSHA256": "0209c3f9467a9b63d6c4ae3ca74e4d14cf48a3f51dd31e1ec1fa594f15a0f065",
+    "configurationSHA256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "extrasSHA256": "2b9f3f19b2a2e31a3fae23cef4094935f9348dd451ce3a488b527e71557af162",
+    "metadataSHA256": "8b9eed11b59f7bd0bc4e0956b6e46f4b45df7cc7c7fb0899f90f99ca608fc49f",
+    "originalBuildReceiptSHA256": "6659b16c8fcb71df28062db904fcb6a59e5cbdb20ad133264fae4597e57ed95f",
+    "actualPackagingExitCode": 0,
+    "productExecuted": false
+  },
+  "supersededScratchV2ManifestSHA256": "1fbeebdf9c9b05b53d2556ca118ac4441df35ebc08484ab92f781f8e4d4439e8"
+}

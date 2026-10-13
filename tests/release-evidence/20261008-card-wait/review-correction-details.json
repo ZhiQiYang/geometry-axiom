@@ -1,0 +1,81 @@
+{
+  "schema": "geometry-card-wait-reviewer-correction-details/1",
+  "createdAt": "2026-10-08T12:08:50.918530+00:00",
+  "scope": "Read-only explanation of one scanner self-match. No rerun of product tests; no archive, original checker, v2 checker, manifest or delivery receipt changed.",
+  "archive": {
+    "name": "geometry-card-wait-evidence-b822a9ff.tar.gz",
+    "bytes": 7859803,
+    "sha256": "72fc05df87dd70ee74182b19bfcf56a66d0403c102116bcdc71bde30abeee53e",
+    "members": 235
+  },
+  "originalBroadRegex": "/workspace/scratch/geometry-advance/work-manager(?:/|\\b)",
+  "completeOriginalPredicateScan": {
+    "outerMembersScanned": 235,
+    "nestedProjectMembersScanned": 30,
+    "payloadsScanned": 265,
+    "matches": [
+      {
+        "member": "packaging/review-card-wait.py",
+        "byteOffsetStart": 4454,
+        "byteOffsetEndExclusive": 4502,
+        "line": 68,
+        "matchedText": "/workspace/scratch/geometry-advance/work-manager",
+        "exactLine": "   if re.search(rb'/workspace/scratch/geometry-advance/work-manager(?:/|\\b)',data): self.flags.append({'path':label,'flag':'private-WM-execution-path'})"
+      }
+    ],
+    "onlyMatchIsRegexDeclaration": true,
+    "concreteWMExecutionChildPathsObserved": 0,
+    "meaning": "The only matched bytes are the root prefix inside a Python raw-byte regular-expression declaration. No actual WM execution file, private data, or concrete child path matched anywhere in the unchanged tar or project ZIP payloads."
+  },
+  "originalEmbeddedChecker": {
+    "archivePath": "packaging/review-card-wait.py",
+    "sha256": "bc5331d3836786f50a23523c98834d7096e5f6fc02759157f35a8f4d99d95c95"
+  },
+  "correctedExternalChecker": {
+    "name": "review-card-wait-v2.py",
+    "sha256": "05a4575e3dd00613b2dbb0e7e8368e74e29c18475601949e3eb91db777341fb1",
+    "includedInsideTar": false,
+    "behaviorChange": "Require a slash followed by a concrete filename character after the WM execution root; retain all other scope, byte, artifact and privacy checks."
+  },
+  "unifiedDiffFromOriginalToV2": "--- a/review-card-wait.py\n+++ b/review-card-wait-v2.py\n@@ -65,7 +65,7 @@\n    for kind,pattern in SECRET_PATTERNS.items():\n     count=len(re.findall(pattern,data))\n     if count:self.flags.append({'path':label,'flag':kind,'count':count,'matchedValuesOmitted':True})\n-   if re.search(rb'/workspace/scratch/geometry-advance/work-manager(?:/|\\b)',data): self.flags.append({'path':label,'flag':'private-WM-execution-path'})\n+   if re.search(rb'/workspace/scratch/geometry-advance/work-manager/[A-Za-z0-9._-]',data): self.flags.append({'path':label,'flag':'private-WM-execution-path'})\n   is_project=Path(label).suffix.lower() in {'.gcanvas','.zip'}\n   if not is_project:return\n   info={'path':label,'bytes':len(data),'members':0,'validZip':False};self.projects.append(info)\n@@ -188,6 +188,7 @@\n  after=identity();r.check('Repository identity stable throughout this review',before==after,{'before':before,'after':after})\n  if args.phase=='packaging':r.check('Packaging review ends exact clean freeze/tree',after=={'head':FREEZE,'tree':TREE,'status':''})\n  result={'schema':'geometry-card-wait-independent-review/1','phase':args.phase,'started':started,'finished':now(),'command':sys.argv,'reviewerSha256':sha(Path(__file__).read_bytes()),'freeze':FREEZE,'before':before,'after':after,'archiveName':ARCHIVE,'archiveSha256':sha(archive_bytes) if archive_bytes else None,'manifestSha256':sha(manifest_bytes) if manifest_bytes else None,'filesReviewed':len(records),'passed':sum(x['passed'] for x in r.checks),'failed':sum(not x['passed'] for x in r.checks),'checks':r.checks,'possibleSensitiveFlags':r.flags,'nestedProjectArchives':r.projects,'fatal':fatal,'releaseApproved':False,'scope':'Read-only artifact/census verification. Packaging is exact clean b822; publication is a separate explicit documentary-diff audit. No tests rerun or original evidence modified.'}\n+ result['reviewerCorrection']={'priorAttempt':'independent-review-attempt01.json','priorAttemptSha256':'10f566a306ec7eca4e189c0690933b02dfb13ddc1a5e5ae2742b16531a20eb49','originalEmbeddedReviewerSha256':'bc5331d3836786f50a23523c98834d7096e5f6fc02759157f35a8f4d99d95c95','reason':'The first review matched the archived checker regex declaration itself. The corrected predicate requires a concrete WM execution child path. No archive, manifest, delivery receipt, source artifact, census, or other check changed.'}\n  with output.open('x') as f:json.dump(result,f,ensure_ascii=False,indent=2);f.write('\\n')\n  print(json.dumps({'output':str(output),'sha256':sha(output.read_bytes()),'passed':result['passed'],'failed':result['failed'],'files':len(records)}))\n  return 0 if result['failed']==0 else 1\n",
+  "originalFailedReview": {
+    "path": "/workspace/scratch/geometry-delivery-20261008-card-wait/independent-review-attempt01.json",
+    "sha256": "10f566a306ec7eca4e189c0690933b02dfb13ddc1a5e5ae2742b16531a20eb49",
+    "passed": 26,
+    "failed": 1,
+    "failure": "Only scanner self-match explained above; no other archive/gate failure."
+  },
+  "originalPassingV2Review": {
+    "preservedPath": "/workspace/scratch/geometry-delivery-20261008-card-wait/independent-review-pass-before-diff.json",
+    "sha256": "7bcb9acbd90669ab1519972f8d511abde13e3ad2d535197ce1af7cd3de069f10",
+    "passed": 27,
+    "failed": 0
+  },
+  "intermediateV3Disclosure": {
+    "reviewer": "review-card-wait-v3.py",
+    "reviewerSha256": "6e7c8e908b55b958704ba8c3092fd3af858ff4e8e133757aa5713e87f078fdee",
+    "resultSha256": "f61afd936cf79c514bd70ade7107c7e339edebd0131595b1fe5b06f4c7a6af59",
+    "meaning": "Created on the prior parent request before STOP; root explicitly selected this completed27/27 v3 result as final. It adds reproducibility/offset metadata only; original v2 checker and passing result remain preserved."
+  },
+  "checks": {
+    "tarHashUnchanged": true,
+    "singleExactDeclaredSelfMatch": true,
+    "originalFailedReviewHashUnchanged": true,
+    "originalPassingV2ReviewHashUnchanged": true,
+    "v1AndV2BytesUnchanged": true
+  },
+  "releaseApproved": false,
+  "finalSelection": {
+    "confirmedBy": "root",
+    "finalReview": "independent-review.json",
+    "sha256": "f61afd936cf79c514bd70ade7107c7e339edebd0131595b1fe5b06f4c7a6af59",
+    "passed": 27,
+    "failed": 0,
+    "reviewer": "review-card-wait-v3.py",
+    "reviewerSha256": "6e7c8e908b55b958704ba8c3092fd3af858ff4e8e133757aa5713e87f078fdee",
+    "originalPassingV2ReviewPreserved": "independent-review-pass-before-diff.json",
+    "originalPassingV2ReviewSha256": "7bcb9acbd90669ab1519972f8d511abde13e3ad2d535197ce1af7cd3de069f10",
+    "meaning": "Root selected the already completed v3 result as final. No restoration, renaming or additional review execution is performed."
+  },
+  "unifiedDiffV2ToFinalV3": "--- a/review-card-wait-v2.py\n+++ b/review-card-wait-v3.py\n@@ -5,7 +5,7 @@\n \"\"\"\n from pathlib import Path, PurePosixPath\n from datetime import datetime, timezone\n-import argparse, hashlib, io, json, re, stat, subprocess, sys, tarfile, zipfile\n+import argparse, difflib, hashlib, io, json, re, stat, subprocess, sys, tarfile, zipfile\n \n OUT = Path(__file__).resolve().parent\n ROOT = Path('/workspace/geometry-final')\n@@ -189,6 +189,13 @@\n  if args.phase=='packaging':r.check('Packaging review ends exact clean freeze/tree',after=={'head':FREEZE,'tree':TREE,'status':''})\n  result={'schema':'geometry-card-wait-independent-review/1','phase':args.phase,'started':started,'finished':now(),'command':sys.argv,'reviewerSha256':sha(Path(__file__).read_bytes()),'freeze':FREEZE,'before':before,'after':after,'archiveName':ARCHIVE,'archiveSha256':sha(archive_bytes) if archive_bytes else None,'manifestSha256':sha(manifest_bytes) if manifest_bytes else None,'filesReviewed':len(records),'passed':sum(x['passed'] for x in r.checks),'failed':sum(not x['passed'] for x in r.checks),'checks':r.checks,'possibleSensitiveFlags':r.flags,'nestedProjectArchives':r.projects,'fatal':fatal,'releaseApproved':False,'scope':'Read-only artifact/census verification. Packaging is exact clean b822; publication is a separate explicit documentary-diff audit. No tests rerun or original evidence modified.'}\n  result['reviewerCorrection']={'priorAttempt':'independent-review-attempt01.json','priorAttemptSha256':'10f566a306ec7eca4e189c0690933b02dfb13ddc1a5e5ae2742b16531a20eb49','originalEmbeddedReviewerSha256':'bc5331d3836786f50a23523c98834d7096e5f6fc02759157f35a8f4d99d95c95','reason':'The first review matched the archived checker regex declaration itself. The corrected predicate requires a concrete WM execution child path. No archive, manifest, delivery receipt, source artifact, census, or other check changed.'}\n+ original_reviewer=stable_bytes(OUT/'review-card-wait.py')\n+ old_matches=list(re.finditer(rb'/workspace/scratch/geometry-advance/work-manager(?:/|\\b)',original_reviewer))\n+ result['reviewerCorrection']['originalAttemptCounts']={'passed':26,'failed':1}\n+ result['reviewerCorrection']['onlyFalsePositiveArtifact']='packaging/review-card-wait.py'\n+ result['reviewerCorrection']['matchedDeclarations']=[{'byteOffsetStart':m.start(),'byteOffsetEndExclusive':m.end(),'line':original_reviewer[:m.start()].count(b'\\n')+1,'matchedText':m.group().decode(),'exactDeclarationLine':original_reviewer.splitlines()[original_reviewer[:m.start()].count(b'\\n')].decode(),'meaning':'Literal in the scanner regular-expression declaration, with no concrete WM execution child path or private data.'} for m in old_matches]\n+ result['reviewerCorrection']['unifiedDiffFromEmbeddedReviewer']=''.join(difflib.unified_diff(original_reviewer.decode().splitlines(keepends=True),Path(__file__).read_text().splitlines(keepends=True),fromfile='a/review-card-wait.py',tofile='b/review-card-wait-v3.py'))\n+ result['reviewerCorrection']['reproduction']='Apply this exact diff to the original packaging/review-card-wait.py extracted from the unchanged tar. The resulting script SHA256 must equal reviewerSha256. Its original source and original failed-review bytes remain unchanged; the corrected reviewer is external and is not claimed to be inside the tar.'\n  with output.open('x') as f:json.dump(result,f,ensure_ascii=False,indent=2);f.write('\\n')\n  print(json.dumps({'output':str(output),'sha256':sha(output.read_bytes()),'passed':result['passed'],'failed':result['failed'],'files':len(records)}))\n  return 0 if result['failed']==0 else 1\n"
+}

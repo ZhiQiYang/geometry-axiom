@@ -1,0 +1,278 @@
+{
+  "schema": "geometry-owned-lifecycle-readonly-source-review/1",
+  "checkedUTC": "2026-10-09T18:20:18.578370+00:00",
+  "testedFullSHA": "9eb670110379ec0d726914f3e5b2d8e7237f2b9c",
+  "before": {
+    "head": "9eb670110379ec0d726914f3e5b2d8e7237f2b9c",
+    "dirty": ""
+  },
+  "after": {
+    "head": "9eb670110379ec0d726914f3e5b2d8e7237f2b9c",
+    "dirty": ""
+  },
+  "executor": {
+    "command": [
+      "python",
+      "-B",
+      "<workspace-path>"
+    ],
+    "actualPython": "<python-runtime>/bin/python3.12",
+    "actualPythonSHA256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+    "scriptSHA256": "b28c0e3f610a97fcc6fe6c0c5d534b74f18ae4e256971f1392d2899577bbf02f"
+  },
+  "sourceHashes": {
+    "<workspace-path>|basename=geometry-owned-integration-lifecycle.py|originalKeySha256=85a60257ae63118c78337d66f484066f66cdcd7cc88f6258696e5de19e7797a6": "b9ccec4a3767818df28f2c06fbc5ee6d481cf832ef07a51a94466946742af870",
+    "<workspace-path>|basename=geometry-stop-with-terminal-receipt.py|originalKeySha256=f2d90e00ceb0db5b022505f710f5249431db80b67d53c8f44a93bef61a2d11e6": "8f76e4f471061f201e8746ff0fcd0181a59c708d30167a1e53b2989566804787",
+    "<workspace-path>|basename=geometry-stop-with-terminal-receipt-v2.py|originalKeySha256=314ff0b8fdc37b4e8eb0b4c0a1aa72ff63bf6cb9e8c13fad755cbb7d21fde482": "5272b2630041d657a8326fd09f7fbbfa70c26157d1fd77ede93fd0ffed5273de",
+    "<workspace-path>|basename=geometry-stage-launch.py|originalKeySha256=c1bb6657798939b4876f7eb6f2ad325de9d23ec0371198c65d39ab875271d456": "d2dbdd3c30631874c63a3fdaac763868f9a5809588c085cf12baed61bed33631",
+    "<workspace-path>|basename=geometry-owned-full-stage-stop.py|originalKeySha256=e7abcb3712cb961d903a46cf30f7b57be180402ead837a37b20fc20361624ec9": "08fc4d561116583129b0faab25d2ad12d2685443ba4ff5f4f3c299cf9f83a3d5",
+    "<workspace-path>|basename=geometry-stage-stop.py|originalKeySha256=2e41494b93172137751de9ed95b8c61335f6aab5c4fe8f6bd095d258af429cb7": "6952a294a2352091f8a33e6e80a49fef84295fb49b129f9b4c972aaf80a2f626",
+    "<original-evidence-root>/run_full_cdp_identity.py": "5ce8212de96e45d0b613b17888a053a7a679024dc1a230f4c734a6170cc5da89",
+    "<original-evidence-root>/run_full_space_identity.py": "8b9729cb300347361b2f6bf507e08fd6fab662ec2bc9f0fca107fb2da02dadae"
+  },
+  "recordHashes": {
+    "<workspace-path>|basename=started.json|originalKeySha256=5e66ed57be6bb5a47f0d8a5082f3842c58080c6cc538cc231f80d3cee3bb8954": "fc06f46e6259e34a78e388f7a5622c389deb491a2d6ae370cea4abbd9494d7b7",
+    "<workspace-path>|basename=ready-runtime.json|originalKeySha256=e6d641457f4ee031b208fdcecfe9b11b916ff1a3e49c4eca55585d3c48dc35bd": "803ed9076cc577e796c1d1a8f06e2f22b5a210d8b8886635c46787c252dbb82e"
+  },
+  "observedCurrentService": {
+    "exe": "<python-runtime>/bin/python3.12",
+    "cwd": "<workspace-path>",
+    "cmdline": "<python-runtime>/bin/python3.12 -u <workspace-path> 19182 ",
+    "exeSHA256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7"
+  },
+  "checks": [
+    {
+      "name": "all eight scripts parse without execution",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "current tracked candidate clean and exact",
+      "ok": true,
+      "detail": {
+        "head": "9eb670110379ec0d726914f3e5b2d8e7237f2b9c",
+        "dirty": ""
+      }
+    },
+    {
+      "name": "run_full_cdp_identity.py original runner exact bytes",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "run_full_space_identity.py original runner exact bytes",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "stop v2 delta only records liveBinding process observations",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "stop v2 adds no signal or broadened helper call",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "controller launches no filtered or override suite",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "original CDP and Space canonical commands retained",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "launch retains service PID through execve and checks port twice",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "exact owned ready runtime accepted in VM",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "ready guard rejects missing",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "ready guard rejects wrong PID",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "ready guard rejects wrong root",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "ready guard rejects stale",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "ready guard rejects wrong version",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "before source guard rejects wrong HEAD",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "before source guard rejects dirty",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "runner hash guard rejects changed wrapper",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "receipt required before invoking any stop helper",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "actual gate exit propagated rather than invented",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "readiness and original gate bounds retained",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "controller writes actual error rather than green terminal on missing receipt",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "stop observation census old node/browser",
+      "ok": true,
+      "detail": {
+        "1": "owned server",
+        "2": "owned bridge",
+        "3": "actual test node",
+        "4": "actual test browser"
+      }
+    },
+    {
+      "name": "stop observation census new nested binding",
+      "ok": true,
+      "detail": {
+        "1": "owned server",
+        "2": "owned bridge",
+        "5": "node",
+        "6": "chrome"
+      }
+    },
+    {
+      "name": "stop observation census absent and null",
+      "ok": true,
+      "detail": {
+        "1": "owned server",
+        "2": "owned bridge"
+      }
+    },
+    {
+      "name": "stop observation census mixed duplicate/missing PID",
+      "ok": true,
+      "detail": {
+        "1": "owned server",
+        "2": "owned bridge",
+        "3": "actual full integration process"
+      }
+    },
+    {
+      "name": "geometry-owned-full-stage-stop.py validates root/cwd/serve identity before signals",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "geometry-owned-full-stage-stop.py signals only validated direct-child native and server",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "geometry-owned-full-stage-stop.py preserves genuine native dump before termination",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "geometry-stage-stop.py validates root/cwd/serve identity before signals",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "geometry-stage-stop.py signals only validated direct-child native and server",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "geometry-stage-stop.py preserves genuine native dump before termination",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "actual started record binds controller/launch/runner bytes",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "actual recorded interpreter hash matches file",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "actual recorded command has correct CDP root/SHA/native/url and no filters",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "actual ready record binds unique owned service",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "actual current service exe/cwd/cmdline match ready owned identity",
+      "ok": true,
+      "detail": {
+        "exe": "<python-runtime>/bin/python3.12",
+        "cwd": "<workspace-path>",
+        "cmdline": "<python-runtime>/bin/python3.12 -u <workspace-path> 19182 ",
+        "exeSHA256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7"
+      }
+    },
+    {
+      "name": "tracked source untouched by independent review",
+      "ok": true,
+      "detail": null
+    }
+  ],
+  "passed": 38,
+  "failed": 0,
+  "exitCode": 0,
+  "rawLog": {
+    "path": "<workspace-path>",
+    "sha256": "3e7459ab82164a0977721d51e67b7b72a9bc3956f8857bf0072e57f764b6776c"
+  },
+  "browserExecuted": false,
+  "serviceStartedOrStopped": false,
+  "repoWritten": false,
+  "limits": [
+    "Source/VM and existing start/ready records only; never executes lifecycle/launch/stop or acceptance harness.",
+    "Recovered integration is not counted complete before its original terminal receipt, canonical scope census and golden check.",
+    "Stop v2 observes actual gate processes; only immutable helper signals root/port-validated server and direct native children.",
+    "Helpers assume exclusively owned port. Final receipt must compare stopped identity with ready PID/runtime; source alone does not prove future stop ownership.",
+    "On controller error, an error receipt is written and success is not manufactured; source does not guarantee automatic cleanup on every exception.",
+    "Historical noReceipt outputs retain unknown original wrapper/Node exits and identity; no old partial is added to recovery counts."
+  ]
+}

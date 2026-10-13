@@ -1,0 +1,208 @@
+{
+  "schema": "geometry-ci-readonly/1",
+  "actor": "/root/delivery_closeout",
+  "source": "GitHub REST unauthenticated public GET, each recorded endpoint once, no retry",
+  "startedUtc": "2026-10-09T17:06:54.228195+00:00",
+  "finishedUtc": "2026-10-09T17:06:57.923482+00:00",
+  "head": "bb7e6302d4d909766521840ca564fbe1aaf57a27",
+  "runId": 37963664690,
+  "command": [
+    "<python-runtime>/bin/python3",
+    "<delivery-closeout-root>/review_ci_bb7.py"
+  ],
+  "scriptSha256": "31305a645da784e0ef11f34b71ef5ec4ad0f7cd12a167a7a6eb9e367c62fa61e",
+  "actualPython": {
+    "pid": 208251,
+    "exe": "<python-runtime>/bin/python3.12",
+    "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+    "version": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+  },
+  "actualReadOnlyCommandExitCode": 0,
+  "runAndPrAndJobsSameExactHead": true,
+  "allSevenJobsUnexecuted": true,
+  "status": "unexecuted",
+  "jobs": [
+    {
+      "id": 113932512854,
+      "name": "native",
+      "head_sha": "bb7e6302d4d909766521840ca564fbe1aaf57a27",
+      "runner_id": 0,
+      "runner_name": "",
+      "steps": [],
+      "conclusion": "failure",
+      "check_run_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/check-runs/113932512854"
+    },
+    {
+      "id": 113932512928,
+      "name": "browser (space)",
+      "head_sha": "bb7e6302d4d909766521840ca564fbe1aaf57a27",
+      "runner_id": 0,
+      "runner_name": "",
+      "steps": [],
+      "conclusion": "failure",
+      "check_run_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/check-runs/113932512928"
+    },
+    {
+      "id": 113932512929,
+      "name": "browser (assembly)",
+      "head_sha": "bb7e6302d4d909766521840ca564fbe1aaf57a27",
+      "runner_id": 0,
+      "runner_name": "",
+      "steps": [],
+      "conclusion": "failure",
+      "check_run_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/check-runs/113932512929"
+    },
+    {
+      "id": 113932513075,
+      "name": "browser (grid)",
+      "head_sha": "bb7e6302d4d909766521840ca564fbe1aaf57a27",
+      "runner_id": 0,
+      "runner_name": "",
+      "steps": [],
+      "conclusion": "failure",
+      "check_run_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/check-runs/113932513075"
+    },
+    {
+      "id": 113932513086,
+      "name": "browser (timber)",
+      "head_sha": "bb7e6302d4d909766521840ca564fbe1aaf57a27",
+      "runner_id": 0,
+      "runner_name": "",
+      "steps": [],
+      "conclusion": "failure",
+      "check_run_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/check-runs/113932513086"
+    },
+    {
+      "id": 113932513124,
+      "name": "browser (canvas)",
+      "head_sha": "bb7e6302d4d909766521840ca564fbe1aaf57a27",
+      "runner_id": 0,
+      "runner_name": "",
+      "steps": [],
+      "conclusion": "failure",
+      "check_run_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/check-runs/113932513124"
+    },
+    {
+      "id": 113932513128,
+      "name": "browser (documents)",
+      "head_sha": "bb7e6302d4d909766521840ca564fbe1aaf57a27",
+      "runner_id": 0,
+      "runner_name": "",
+      "steps": [],
+      "conclusion": "failure",
+      "check_run_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/check-runs/113932513128"
+    }
+  ],
+  "annotationMessages": [
+    "The job was not started because recent account payments have failed or your spending limit needs to be increased. Please check the 'Billing & plans' section in your settings",
+    "\"The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748\"",
+    "The job was not started because recent account payments have failed or your spending limit needs to be increased. Please check the 'Billing & plans' section in your settings",
+    "\"The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748\"",
+    "The job was not started because recent account payments have failed or your spending limit needs to be increased. Please check the 'Billing & plans' section in your settings",
+    "\"The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748\"",
+    "The job was not started because recent account payments have failed or your spending limit needs to be increased. Please check the 'Billing & plans' section in your settings",
+    "\"The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748\"",
+    "The job was not started because recent account payments have failed or your spending limit needs to be increased. Please check the 'Billing & plans' section in your settings",
+    "\"The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748\"",
+    "The job was not started because recent account payments have failed or your spending limit needs to be increased. Please check the 'Billing & plans' section in your settings",
+    "\"The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748\"",
+    "The job was not started because recent account payments have failed or your spending limit needs to be increased. Please check the 'Billing & plans' section in your settings",
+    "\"The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748\""
+  ],
+  "rawRecords": [
+    {
+      "name": "pull-179",
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/pulls/179",
+      "readUtc": "2026-10-09T17:06:57.153373+00:00",
+      "httpStatus": 200,
+      "path": "pull-179.raw.json",
+      "sha256": "e4b7ba437ba2635c564d3709cec5be6b01bb2db97bc7fb6f99de212c9fd20a1b",
+      "bytes": 36619
+    },
+    {
+      "name": "run-37963664690",
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/runs/37963664690",
+      "readUtc": "2026-10-09T17:06:55.648618+00:00",
+      "httpStatus": 200,
+      "path": "run-37963664690.raw.json",
+      "sha256": "8d15d42b0e502ed1cbf604990d2d10ab9d054c89fc8f2ec92c79574060de7737",
+      "bytes": 13353
+    },
+    {
+      "name": "jobs-37963664690",
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/runs/37963664690/jobs?per_page=100",
+      "readUtc": "2026-10-09T17:06:56.296036+00:00",
+      "httpStatus": 200,
+      "path": "jobs-37963664690.raw.json",
+      "sha256": "a7582e08ebf0220e70d974be41480707a71e76f9d69d2a2d3f60d35dc4bd7399",
+      "bytes": 6437
+    },
+    {
+      "name": "annotations-113932512854",
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/check-runs/113932512854/annotations?per_page=100",
+      "readUtc": "2026-10-09T17:06:57.724057+00:00",
+      "httpStatus": 200,
+      "path": "annotations-113932512854.raw.json",
+      "sha256": "2df41c5c3e743c656b18c502f6ba7ec13860a7452b9593bbd53f16daaa0dd414",
+      "bytes": 868
+    },
+    {
+      "name": "annotations-113932512928",
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/check-runs/113932512928/annotations?per_page=100",
+      "readUtc": "2026-10-09T17:06:57.795934+00:00",
+      "httpStatus": 200,
+      "path": "annotations-113932512928.raw.json",
+      "sha256": "2df41c5c3e743c656b18c502f6ba7ec13860a7452b9593bbd53f16daaa0dd414",
+      "bytes": 868
+    },
+    {
+      "name": "annotations-113932512929",
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/check-runs/113932512929/annotations?per_page=100",
+      "readUtc": "2026-10-09T17:06:57.917323+00:00",
+      "httpStatus": 200,
+      "path": "annotations-113932512929.raw.json",
+      "sha256": "2df41c5c3e743c656b18c502f6ba7ec13860a7452b9593bbd53f16daaa0dd414",
+      "bytes": 868
+    },
+    {
+      "name": "annotations-113932513075",
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/check-runs/113932513075/annotations?per_page=100",
+      "readUtc": "2026-10-09T17:06:57.732823+00:00",
+      "httpStatus": 200,
+      "path": "annotations-113932513075.raw.json",
+      "sha256": "2df41c5c3e743c656b18c502f6ba7ec13860a7452b9593bbd53f16daaa0dd414",
+      "bytes": 868
+    },
+    {
+      "name": "annotations-113932513086",
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/check-runs/113932513086/annotations?per_page=100",
+      "readUtc": "2026-10-09T17:06:57.874023+00:00",
+      "httpStatus": 200,
+      "path": "annotations-113932513086.raw.json",
+      "sha256": "2df41c5c3e743c656b18c502f6ba7ec13860a7452b9593bbd53f16daaa0dd414",
+      "bytes": 868
+    },
+    {
+      "name": "annotations-113932513124",
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/check-runs/113932513124/annotations?per_page=100",
+      "readUtc": "2026-10-09T17:06:57.867640+00:00",
+      "httpStatus": 200,
+      "path": "annotations-113932513124.raw.json",
+      "sha256": "2df41c5c3e743c656b18c502f6ba7ec13860a7452b9593bbd53f16daaa0dd414",
+      "bytes": 868
+    },
+    {
+      "name": "annotations-113932513128",
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/check-runs/113932513128/annotations?per_page=100",
+      "readUtc": "2026-10-09T17:06:57.761216+00:00",
+      "httpStatus": 200,
+      "path": "annotations-113932513128.raw.json",
+      "sha256": "2df41c5c3e743c656b18c502f6ba7ec13860a7452b9593bbd53f16daaa0dd414",
+      "bytes": 868
+    }
+  ],
+  "limitations": [
+    "Zero runner/steps means no product CI execution; job failure is not a test assertion result.",
+    "No retry, merge, deploy, account/security edits or review/comment writes."
+  ]
+}

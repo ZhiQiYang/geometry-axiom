@@ -1,0 +1,11 @@
+--- a/geometry-core/grid_subdivision.inc
++++ b/geometry-core/grid_subdivision.inc
+@@ -224,7 +224,7 @@
+ }
+ static bool grid_rules_scene_integrity(const World *w)
+ {
+-    if(g_rule_scene_encountered && !g_rule_scene_required)return false;
++    if(false && g_rule_scene_encountered && !g_rule_scene_required)return false;
+     if(!grid_subdivision_used(w))return true;
+     if(!g_rule_scene_required)return false;
+     for(size_t i=0;i<w->grid_system_count;++i)if((w->grid_systems[i].rule_count || w->grid_systems[i].next_rule_key!=1) && !g_rule_scene_highwater[i])return false;

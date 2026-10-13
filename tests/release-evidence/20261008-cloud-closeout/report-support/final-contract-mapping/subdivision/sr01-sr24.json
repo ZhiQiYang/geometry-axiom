@@ -1,0 +1,2461 @@
+{
+  "schema": "geometry-final-clause-mapping/1",
+  "createdAt": "2026-10-08T19:37:32.914834+00:00",
+  "scope": "Read-only source/evidence mapping. No test execution, product mutation, policy/axiom change, issue closure or release approval.",
+  "author": "/root/report_finalize",
+  "currentHead": "d8642b2e684038cbb8e24aba057c44e7aac1b231",
+  "main": "5cc1ffa1ee85120eca14258b86b715151cad274f",
+  "currentStatus": "M geometry-web/docs/RELEASE-CANDIDATE.md\n?? tests/release-evidence/20261008-cloud-closeout/",
+  "browserTestHead": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+  "nativeTestHead": "458779f003e1f57fdc0f4420564a0b295227843e",
+  "sourceDifferenceFromBrowserTestForMappedFiles": "",
+  "browserReceipt": "/workspace/closure-evidence/gates/full-cdp-r3/receipt.json",
+  "nativeReceipt": "/workspace/closure-evidence/native/full-run-all-new-owners.json",
+  "nativeSourceEquivalence": "/workspace/closure-evidence/public-candidate/report-support/native-source-impact-458-to-5174.json",
+  "executionBinding": {
+    "browserCommand": [
+      "node",
+      "geometry-web/cdp_test.js"
+    ],
+    "browserExitCode": 0,
+    "browserRuntime": {
+      "schema": "geometry-runtime/1",
+      "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+      "fresh": true,
+      "root": "/workspace/geometry-axiom",
+      "pid": 196578,
+      "session": "ca31be77efb542b89d45d5a88c3b1b45"
+    },
+    "nativeCommand": [
+      "python3",
+      "tests/run_all.py"
+    ],
+    "nativeExitCode": 0
+  },
+  "inputs": [
+    {
+      "path": "/workspace/closure-evidence/inventory/publication-review/remote-post-pr176/open-issues.json",
+      "sha256": "0f16d08c2dd677d8614d7fb5f6df96071889aa0142d92a5af51340d021f4f967"
+    },
+    {
+      "path": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+      "sha256": "c4dc7efa339c8121463c1799ec66b7ff0459aae82dbf719ac34b95d0b4405777"
+    },
+    {
+      "path": "/workspace/closure-evidence/native/full-run-all-new-owners-suite-logs/py_test_grid_subdivision_oracle.json",
+      "sha256": "41bf8ea03b0f3cda730e6937fd8d246cb7aa5cbc6a7ed34983e6da5af45e7b14"
+    },
+    {
+      "path": "/workspace/closure-evidence/native/full-run-all-new-owners-suite-logs/py_test_grid_subdivision_oracle.unittest.log",
+      "sha256": "e8467dd6fd6a301e28777b8ba0aa9e25df1ed7f71ea33771cc2342313f33e365"
+    },
+    {
+      "path": "/workspace/closure-evidence/gates/full-cdp-r3/command.log",
+      "sha256": "0ad7a05ac1f21a5120523d06db5dd54f933eea8bc7228d35101ca4b5d8723f07"
+    },
+    {
+      "path": "/workspace/closure-evidence/gates/full-cdp-r3/receipt.json",
+      "sha256": "934718d24a79e60a69be92a55c9bf2c46027cc9081171b62347044605a8a0695"
+    },
+    {
+      "path": "/workspace/closure-evidence/native/full-run-all-new-owners-suite-logs/node_tests-js.log",
+      "sha256": "a5f7287fa7f445574f9f7a7bac5ebba6032b967117bd795b537aad70714e7c10"
+    },
+    {
+      "path": "/workspace/closure-evidence/native/full-run-all-new-owners.json",
+      "sha256": "528e2e33463a74c3e3a213cbe58372495ccf8391bf19f1fd7d37c177ccb4df28"
+    },
+    {
+      "path": "/workspace/closure-evidence/public-candidate/report-support/native-source-impact-458-to-5174.json",
+      "sha256": "3e6ce1023adb43fda9dd629d7b438ebe87cfc897bf7bcc75eb38fd367069df9a"
+    },
+    {
+      "path": "/workspace/geometry-axiom/公理層.md",
+      "sha256": "29ad0c657e53d364347862fddac23ba26a248a4fd8f83487d86f9e648bd1eaf2"
+    },
+    {
+      "path": "/workspace/geometry-axiom/geometry-core/GRID-SUBDIVISION-NATIVE-CONTRACT.md",
+      "sha256": "2775676361c6eab03d63a8d3ed98fa3592d934d3f9712be80b47d6433d867411"
+    },
+    {
+      "path": "/workspace/geometry-axiom/geometry-core/NATIVE-SUBDIVISION-VALIDATION-20261004.md",
+      "sha256": "8fa1ba7abf30b68e29266f57453e686e6b4e41d49791b5098ac4fe92e92c49b4"
+    },
+    {
+      "path": "/workspace/geometry-axiom/tests/mutate.py",
+      "sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d"
+    },
+    {
+      "path": "/workspace/geometry-axiom/tests/mutants_results.json",
+      "sha256": "3065fc03773c326b9256a7ffeb05cd602cd254dcab2d267626abc42101f38392"
+    },
+    {
+      "path": "/workspace/geometry-axiom/geometry-web/grid_rule_editor_test.js",
+      "sha256": "1e9d59355cc638c2c9089a82db92cc777c0b736599385f88c6dc1b8f436ce4ad"
+    },
+    {
+      "path": "/workspace/geometry-axiom/geometry-web/grid_rule_lines_test.js",
+      "sha256": "bf7b648d6d367446b9bf12f7b08e9c9957d4c0d0913e357d0c9684d594ded9b3"
+    },
+    {
+      "path": "/workspace/geometry-axiom/tests/test_subdivision_project_store.js",
+      "sha256": "a455fe7029607a671b6408d5ca0020f3c7a3e951a1219cf074f781f52f77e64a"
+    },
+    {
+      "path": "/workspace/geometry-axiom/tests/test_grid_rule_draft.js",
+      "sha256": "42ebfcfede92a875940c6ad64724c4562f432fca50a85bbf451c546643330621"
+    },
+    {
+      "path": "/workspace/closure-evidence/gates/rule-reader/receipt.json",
+      "sha256": "b2849f799db79de78529b070947c4db562feb19326ea1e4d587d6670eb9af291"
+    },
+    {
+      "path": "/workspace/closure-evidence/gates/rule-reader/command.log",
+      "sha256": "6fb73c7afb5deb0c60c5224a005527a0250b544a38a8bf94d86cacd91db91061"
+    }
+  ],
+  "rows": [
+    {
+      "id": "SR01",
+      "scenario": "空世界來源＋規則",
+      "expectation": "無房間／邊界／承載面也可保存合法規則，沒有隱式面或材料",
+      "state": "observed",
+      "nativeOracles": [
+        {
+          "name": "test_cancel_create_key_lifecycle_and_complete_undo_redo",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 311,
+          "endLine": 336
+        }
+      ],
+      "browserOracles": [
+        {
+          "line": 1387,
+          "oracle": "P87 新空白 context 無來源、配置、面或規則 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1413,
+          "oracle": "P87 未 blur 的空白／非法輸入及 signed 原文留在有限 /2 raw ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1417,
+          "oracle": "P87 開檔前確有新空白 context，未借用舊規則 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1418,
+          "oracle": "P87 新空白 context 真開檔恢復逐字 native 與 raw ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1428,
+          "oracle": "P87 390px 正常空白來源→signed cell→真 native 確認 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1435,
+          "oracle": "P87 390px 開檔前新空白 context 沒有借用原場景 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1505,
+          "oracle": "P88 重開前確有新空白 context ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1506,
+          "oracle": "P88 1280 新空白 context 真重開逐字場景、來源 key 及 signed binding ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1516,
+          "oracle": "P88 重開前確有新空白 context ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1579,
+          "oracle": "P88 重開前確有新空白 context ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1580,
+          "oracle": "P88 390 新空白 context 真重開逐字場景、來源 key 及 signed binding ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1590,
+          "oracle": "P88 重開前確有新空白 context ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        }
+      ],
+      "nodeOracles": [],
+      "observedScope": "P87 從空白 context 經來源／rule 真 UI 建立，核對無配置、面或舊規則；native create/cancel/key/history 另有完整 snapshot。",
+      "remainingExactScope": "本列既定空世界範圍無新增待辦。"
+    },
+    {
+      "id": "SR02",
+      "scenario": "全格與指定格",
+      "expectation": "all-cells每格適用；指定cell只作用於該真實signedcell，不按視窗序號",
+      "state": "observed",
+      "nativeOracles": [
+        {
+          "name": "test_literal_source_and_binding_numerical_vectors",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 268,
+          "endLine": 287
+        },
+        {
+          "name": "test_single_cell_and_all_cells_overlap_rules_are_explicit",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 442,
+          "endLine": 459
+        }
+      ],
+      "browserOracles": [
+        {
+          "line": 1469,
+          "oracle": "P88 1280 配置 0 真 signed cell 保存及只讀裁切顯示 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1470,
+          "oracle": "P88 1280 配置 1 真 signed cell 保存及只讀裁切顯示 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1472,
+          "oracle": "P88 1280 面 0 exact cell 線段與 native 相同，完整 tuple 含真正大索引 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1480,
+          "oracle": "P88 1280 面 1 exact cell 線段與 native 相同，完整 tuple 含真正大索引 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1541,
+          "oracle": "P88 390 配置 0 真 signed cell 保存及只讀裁切顯示 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1542,
+          "oracle": "P88 390 配置 1 真 signed cell 保存及只讀裁切顯示 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1544,
+          "oracle": "P88 390 面 0 exact cell 線段與 native 相同，完整 tuple 含真正大索引 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1553,
+          "oracle": "P88 390 面 1 exact cell 線段與 native 相同，完整 tuple 含真正大索引 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        }
+      ],
+      "nodeOracles": [],
+      "observedScope": "all-cells/single-cell 原生數值、selector 與 UI signed binding/query；大索引完整 tuple 保留實際 cell，不以抽樣位置代替。",
+      "remainingExactScope": "本列具名範圍已核收；不重跑同版。"
+    },
+    {
+      "id": "SR03",
+      "scenario": "600×400 U3/V2",
+      "expectation": "相對內線U200/400、V200，六個200×200小格；改900後U300/600",
+      "state": "observed",
+      "nativeOracles": [
+        {
+          "name": "test_literal_source_and_binding_numerical_vectors",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 268,
+          "endLine": 287
+        },
+        {
+          "name": "test_full_source_edit_retains_rules_and_updates_both_anchored_bindings",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 351,
+          "endLine": 370
+        }
+      ],
+      "browserOracles": [
+        {
+          "line": 1390,
+          "oracle": "P87 native 候選原/新摘要含 source、rule、nextKey 與 200×200／6 小格 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1489,
+          "oracle": "P88 1280 原子確認單步更新全部配置，key 不重配 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1563,
+          "oracle": "P88 390 原子確認單步更新全部配置，key 不重配 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        }
+      ],
+      "nodeOracles": [],
+      "observedScope": "16 literal vectors 與兩種 anchored bindings 的 source 600→900 獨立期望值；P87 候選 200×200／六格，P88 真 UI source edit 原子確認。",
+      "remainingExactScope": "本列算術／pitch 基準已核收；參數與 anchor 修改組合另列 SR15。"
+    },
+    {
+      "id": "SR04",
+      "scenario": "面材＋縫",
+      "expectation": "panel915+gap2以pitch917分7份，每份131，不錯用915",
+      "state": "superseded-expectation",
+      "nativeOracles": [
+        {
+          "name": "test_source_rules_require_dual_repeat_while_ordinary_panel_sources_remain_supported",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 391,
+          "endLine": 440
+        },
+        {
+          "name": "test_repeat_pitch917_divides_exactly_into_seven",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 94,
+          "endLine": 101
+        }
+      ],
+      "browserOracles": [
+        {
+          "line": 1438,
+          "oracle": "P87 不支援的來源 901 明示原因並鎖住規則，不改其定義 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1439,
+          "oracle": "P87 不支援的來源 902 明示原因並鎖住規則，不改其定義 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1440,
+          "oracle": "P87 不支援的來源 903 明示原因並鎖住規則，不改其定義 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        }
+      ],
+      "nodeOracles": [],
+      "observedScope": "原 issue 的 REPEAT_PANEL 成功預期已被正式採納的 repeat-only 公理 D19a/I25a 取代。原生 panel 普通來源 917 保留；新增／保留子規則明確 SOURCE_KIND 拒絕。917÷7=131 的 repeat 算術向量不冒稱 panel 規則支援。",
+      "remainingExactScope": "只更新舊 SR04 文字指向已採納公理；不得為舊期待擴張 panel rule 功能。"
+    },
+    {
+      "id": "SR05",
+      "scenario": "非整數／非法等分",
+      "expectation": "600/7、0、66、1/1等因指定理由拒絕，不取整且完整dump不變",
+      "state": "observed",
+      "nativeOracles": [
+        {
+          "name": "test_invalid_divisions_source_and_cell_guards_refuse_without_partial_state",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 372,
+          "endLine": 389
+        }
+      ],
+      "browserOracles": [
+        {
+          "line": 1408,
+          "oracle": "P87 inline 1–65 拒絕 U0/V2，焦點/raw/World/history 保留且零 native mutation ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1409,
+          "oracle": "P87 inline 1–65 拒絕 U66/V2，焦點/raw/World/history 保留且零 native mutation ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1411,
+          "oracle": "P87 native 拒絕 U7/V2，raw/World/history 保留 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        }
+      ],
+      "nodeOracles": [],
+      "observedScope": "指定 DIVISION_NOT_EXACT／DIVISION_RANGE／RULE_SYNTAX native 原因及完整狀態不變；P87 實際無效欄位与 native 拒絕。",
+      "remainingExactScope": "本列具名負例已核收。"
+    },
+    {
+      "id": "SR06",
+      "scenario": "不支援的來源",
+      "expectation": "缺一軸、legacy-finite、stagger、遞迴子規則拒絕，既有來源本身不被偷偷改寫",
+      "state": "partial-evidence",
+      "nativeOracles": [
+        {
+          "name": "test_invalid_divisions_source_and_cell_guards_refuse_without_partial_state",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 372,
+          "endLine": 389
+        },
+        {
+          "name": "test_source_rules_require_dual_repeat_while_ordinary_panel_sources_remain_supported",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 391,
+          "endLine": 440
+        }
+      ],
+      "browserOracles": [
+        {
+          "line": 1438,
+          "oracle": "P87 不支援的來源 901 明示原因並鎖住規則，不改其定義 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1439,
+          "oracle": "P87 不支援的來源 902 明示原因並鎖住規則，不改其定義 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1440,
+          "oracle": "P87 不支援的來源 903 明示原因並鎖住規則，不改其定義 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        }
+      ],
+      "nodeOracles": [
+        {
+          "line": 615,
+          "oracle": "✔ native source closure preflight rejects unknown rule syntax atomically (241.386475ms)",
+          "log": "/workspace/closure-evidence/native/full-run-all-new-owners-suite-logs/node_tests-js.log"
+        }
+      ],
+      "observedScope": "缺軸、finite、stagger、panel SOURCE_KIND／未改來源有原生及 UI 證據；unknown rule syntax 保存前預驗另有具名負例。",
+      "remainingExactScope": "遞迴子規則在 v1 明確排除，但封存 oracle 未指名一個實際 recursive payload 的拒絕。補既有拒絕路徑的 payload→原因→World 不變證據；不新增巢狀能力。"
+    },
+    {
+      "id": "SR07",
+      "scenario": "負索引與邊界",
+      "expectation": "正負cell、整數除法及父格邊定位正確，子線不重複父邊",
+      "state": "observed",
+      "nativeOracles": [
+        {
+          "name": "test_literal_source_and_binding_numerical_vectors",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 268,
+          "endLine": 287
+        },
+        {
+          "name": "test_literal_segments_end_on_parent_cell_edges",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 126,
+          "endLine": 134
+        }
+      ],
+      "browserOracles": [
+        {
+          "line": 1469,
+          "oracle": "P88 1280 配置 0 真 signed cell 保存及只讀裁切顯示 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1470,
+          "oracle": "P88 1280 配置 1 真 signed cell 保存及只讀裁切顯示 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1472,
+          "oracle": "P88 1280 面 0 exact cell 線段與 native 相同，完整 tuple 含真正大索引 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1480,
+          "oracle": "P88 1280 面 1 exact cell 線段與 native 相同，完整 tuple 含真正大索引 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1541,
+          "oracle": "P88 390 配置 0 真 signed cell 保存及只讀裁切顯示 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1542,
+          "oracle": "P88 390 配置 1 真 signed cell 保存及只讀裁切顯示 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1544,
+          "oracle": "P88 390 面 0 exact cell 線段與 native 相同，完整 tuple 含真正大索引 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1553,
+          "oracle": "P88 390 面 1 exact cell 線段與 native 相同，完整 tuple 含真正大索引 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        }
+      ],
+      "nodeOracles": [],
+      "observedScope": "正負 literal vectors、父邊排除與不同 anchor 相對求值；UI full tuple/pick 使用真實 signed cell。",
+      "remainingExactScope": "本列固定向量範圍已核收。"
+    },
+    {
+      "id": "SR08",
+      "scenario": "超2^53索引",
+      "expectation": "使用可相對求值的binding夾具；JSON及保存全程字串，無Number精度損失",
+      "state": "observed",
+      "nativeOracles": [
+        {
+          "name": "test_placed_reference_records_real_applied_grid_and_exact_signed_identity",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 289,
+          "endLine": 301
+        },
+        {
+          "name": "test_formal_rule_line_timber_undo_redo_survives_reset_load",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 640,
+          "endLine": 678
+        }
+      ],
+      "browserOracles": [
+        {
+          "line": 1472,
+          "oracle": "P88 1280 面 0 exact cell 線段與 native 相同，完整 tuple 含真正大索引 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1480,
+          "oracle": "P88 1280 面 1 exact cell 線段與 native 相同，完整 tuple 含真正大索引 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1506,
+          "oracle": "P88 1280 新空白 context 真重開逐字場景、來源 key 及 signed binding ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1544,
+          "oracle": "P88 390 面 0 exact cell 線段與 native 相同，完整 tuple 含真正大索引 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1553,
+          "oracle": "P88 390 面 1 exact cell 線段與 native 相同，完整 tuple 含真正大索引 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1580,
+          "oracle": "P88 390 新空白 context 真重開逐字場景、來源 key 及 signed binding ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        }
+      ],
+      "nodeOracles": [],
+      "observedScope": "相對 binding 索引 9007199254740993/-9007199254740995，placed reference／JSON／dump 保留字串；P88 真 ZIP→新空白 context 重開。",
+      "remainingExactScope": "本列已核收；native roundtrip helper 的舊 no-op 限制不再代替新 reset/load oracle。"
+    },
+    {
+      "id": "SR09",
+      "scenario": "L形、凹口、孔",
+      "expectation": "可見段／標籤／命中／定位預示按C∩F裁切，不以外接框冒充實際面",
+      "state": "observed-with-limits",
+      "nativeOracles": [
+        {
+          "name": "test_hole_clipping_preserves_line_identity_and_all_visible_segments",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 522,
+          "endLine": 537
+        },
+        {
+          "name": "test_legal_comb_holes_preserve_all_41_visible_segments_across_queries_and_guides",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 539,
+          "endLine": 595
+        }
+      ],
+      "browserOracles": [
+        {
+          "line": 1474,
+          "oracle": "P88 1280 面 0 u 真 anchor 預示四數 bounds、全部座標 finite、parent/孔裁切 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1475,
+          "oracle": "P88 1280 面 0 v 真 anchor 預示四數 bounds、全部座標 finite、parent/孔裁切 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1479,
+          "oracle": "P88 1280 面 0 source jump 保留凹形/孔原始快取及 boundary 卡 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1481,
+          "oracle": "P88 1280 面 1 u 真 anchor 預示四數 bounds、全部座標 finite、parent/孔裁切 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1482,
+          "oracle": "P88 1280 面 1 v 真 anchor 預示四數 bounds、全部座標 finite、parent/孔裁切 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1486,
+          "oracle": "P88 1280 面 1 source jump 保留凹形/孔原始快取及 boundary 卡 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1546,
+          "oracle": "P88 390 面 0 u 真 anchor 預示四數 bounds、全部座標 finite、parent/孔裁切 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1547,
+          "oracle": "P88 390 面 0 v 真 anchor 預示四數 bounds、全部座標 finite、parent/孔裁切 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1552,
+          "oracle": "P88 390 面 0 source jump 保留凹形/孔原始快取及 boundary 卡 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1554,
+          "oracle": "P88 390 面 1 u 真 anchor 預示四數 bounds、全部座標 finite、parent/孔裁切 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1555,
+          "oracle": "P88 390 面 1 v 真 anchor 預示四數 bounds、全部座標 finite、parent/孔裁切 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1560,
+          "oracle": "P88 390 面 1 source jump 保留凹形/孔原始快取及 boundary 卡 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        }
+      ],
+      "nodeOracles": [],
+      "observedScope": "native 固定 clip segments、五孔梳形 41 段；P88 L 形／孔洞實際線 hit/source jump、u/v anchor clipping 以及顯示 cache。",
+      "remainingExactScope": "已觀察指定 L 形／孔樣本；沒有理由把它擴成任意多邊形全部 UI 標籤布局的证明。無另開一般化測試要求。"
+    },
+    {
+      "id": "SR10",
+      "scenario": "指定cell在面外",
+      "expectation": "規則與身分保留，零可見段明示；舊手動子格正面積守門不放寬",
+      "state": "observed",
+      "nativeOracles": [
+        {
+          "name": "test_source_cell_outside_face_remains_defined_and_manual_positive_area_guard_remains",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 707,
+          "endLine": 726
+        }
+      ],
+      "browserOracles": [
+        {
+          "line": 1511,
+          "oracle": "P88 1280 零可見 exact cell 有即時完成狀態 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1585,
+          "oracle": "P88 390 零可見 exact cell 有即時完成狀態 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        }
+      ],
+      "nodeOracles": [],
+      "observedScope": "cell(20,20) 保留身分、座標存在而 segments=[]；舊 manual 正面積 I25 拒絕；P88 exact 零線立即完成。",
+      "remainingExactScope": "本列指定面外樣本已核收。"
+    },
+    {
+      "id": "SR11",
+      "scenario": "大量父cell",
+      "expectation": "超過4096個可涉父cell仍非逐格建立World物件，舊16組容量不被無限族耗盡",
+      "state": "observed",
+      "nativeOracles": [
+        {
+          "name": "test_query_cell_capacity_one_limit_limit_plus_one_and_honest_dense_sampling",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 766,
+          "endLine": 800
+        },
+        {
+          "name": "test_rectangle_selector_filters_before_capacity_and_zero_matches_are_complete",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 751,
+          "endLine": 764
+        },
+        {
+          "name": "test_segment_capacity_exact_4096_and_4224_refusal_preserves_all_sampled_lines",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 802,
+          "endLine": 824
+        },
+        {
+          "name": "test_single_cell_4232_segments_rejects_unthinnable_sampling_with_counts_and_bounded_termination",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 826,
+          "endLine": 911
+        }
+      ],
+      "browserOracles": [
+        {
+          "line": 1492,
+          "oracle": "P88 1280 高密度原生 sample 有界且明示 incomplete，查询零寫入 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1508,
+          "oracle": "P88 1280 late sample 保住真正大索引 raw 及鍵盤 focus ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1566,
+          "oracle": "P88 390 高密度原生 sample 有界且明示 incomplete，查询零寫入 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1582,
+          "oracle": "P88 390 late sample 保住真正大索引 raw 及鍵盤 focus ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        }
+      ],
+      "nodeOracles": [],
+      "observedScope": "native 10000 cells 與 40000-cell 搜尋範圍、回傳 cell/segment 上限、sample stride/完整 cell、不建立額外 World grids；8孔4232段單格拒絕有5秒有界 worker 等待。",
+      "remainingExactScope": "已核收工程預算／固定工作量 oracle；不宣稱無上限效能。"
+    },
+    {
+      "id": "SR12",
+      "scenario": "exact／sample／選格",
+      "expectation": "精確查詢過限明報、抽樣明示不完整；選格及單格聚焦使用真實格距／索引",
+      "state": "observed",
+      "nativeOracles": [
+        {
+          "name": "test_query_cell_capacity_one_limit_limit_plus_one_and_honest_dense_sampling",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 766,
+          "endLine": 800
+        },
+        {
+          "name": "test_segment_capacity_exact_4096_and_4224_refusal_preserves_all_sampled_lines",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 802,
+          "endLine": 824
+        },
+        {
+          "name": "test_single_cell_4232_segments_rejects_unthinnable_sampling_with_counts_and_bounded_termination",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 826,
+          "endLine": 911
+        },
+        {
+          "name": "test_exact_rectangle_has_positive_area_cells_and_real_row_major_identity",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 728,
+          "endLine": 749
+        }
+      ],
+      "browserOracles": [
+        {
+          "line": 1473,
+          "oracle": "P88 1280 真 Tab/Enter 完整定位保留按鈕焦點且 World/raw/history 零寫入 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1493,
+          "oracle": "P88 1280 高密度仍可用真正 cell 完整定位 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1497,
+          "oracle": "P88 1280 真 at-line native 拒絕保留同表單完整定位及角色截面，World/undo/redo 零寫入 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1545,
+          "oracle": "P88 390 真 Tab/Enter 完整定位保留按鈕焦點且 World/raw/history 零寫入 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1567,
+          "oracle": "P88 390 高密度仍可用真正 cell 完整定位 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1571,
+          "oracle": "P88 390 真 at-line native 拒絕保留同表單完整定位及角色截面，World/undo/redo 零寫入 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        }
+      ],
+      "nodeOracles": [],
+      "observedScope": "exact 容量明拒、sample 明示 incomplete／stride／真 identity；P88 真 focus 與 Tab/Enter 使用精確 cell 回覆，延遲回覆不得奪焦。",
+      "remainingExactScope": "本列有界 exact/sample 既定範圍已核收。"
+    },
+    {
+      "id": "SR13",
+      "scenario": "規則及手動子格衝突",
+      "expectation": "all與single、同cell兩規則、手動子格雙向衝突皆拒絕並定位，不最後輸入者勝出",
+      "state": "observed",
+      "nativeOracles": [
+        {
+          "name": "test_single_cell_and_all_cells_overlap_rules_are_explicit",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 442,
+          "endLine": 459
+        },
+        {
+          "name": "test_rule_and_manual_conflicts_reject_in_both_creation_orders",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 497,
+          "endLine": 508
+        }
+      ],
+      "browserOracles": [
+        {
+          "line": 1407,
+          "oracle": "P87 同來源重疊 cell 真 native 拒絕並停用確認 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        }
+      ],
+      "nodeOracles": [],
+      "observedScope": "RULE_OVERLAP/SELECTOR_MISS 與 MANUAL_CONFLICT 兩建立順序，native 完整狀態保留；P87 UI 同 cell 衝突。",
+      "remainingExactScope": "本列冲突原生守門已核收；沒有正式新增 manual 编辑 UI 要求。"
+    },
+    {
+      "id": "SR14",
+      "scenario": "規則身分生命週期",
+      "expectation": "改名／重排不改key；create不覆蓋、草稿不撞號、刪除重建不冒充舊rule",
+      "state": "partial-evidence",
+      "nativeOracles": [
+        {
+          "name": "test_cancel_create_key_lifecycle_and_complete_undo_redo",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 311,
+          "endLine": 336
+        },
+        {
+          "name": "test_explicit_edit_cannot_create_or_resurrect_a_key_and_highwater_is_replay_only",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 475,
+          "endLine": 482
+        },
+        {
+          "name": "test_highwater_replay_lifecycle_cannot_supply_a_different_or_reset_source",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 999,
+          "endLine": 1024
+        },
+        {
+          "name": "test_rule_capacity_32_and_33rd_is_a_capacity_refusal",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 1039,
+          "endLine": 1048
+        },
+        {
+          "name": "test_maximum_uint32_allocator_exhaustion_survives_delete_save_and_history",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 1050,
+          "endLine": 1074
+        }
+      ],
+      "browserOracles": [
+        {
+          "line": 1397,
+          "oracle": "P87 只有改名仍出現原/新規則摘要 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1398,
+          "oracle": "P87 改名不重配 key，不增加高水位、不產生 HTML ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1404,
+          "oracle": "P87 刪除保留 nextKey 高水位 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1405,
+          "oracle": "P87 重建配 key2，不復用刪除 key；signed cell 保持字串 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1422,
+          "oracle": "P87 刪除與同 ID 重建不自動接管舊 rule raw 或耗 key ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1424,
+          "oracle": "P87 同工作階段同 ID 同定義重建仍被 revision guard 拒絕 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1430,
+          "oracle": "P87 390px 真改名保持 key ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1436,
+          "oracle": "P87 390px 真重開與續編保留非法 raw、key、高水位 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1524,
+          "oracle": "P88 1280 檢查器外 處理結束時釋放後重建 376 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1529,
+          "oracle": "P88 1280 其他對話框 處理結束時沒有再重建檢查器 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1534,
+          "oracle": "P88 1280 切換選取並離開面 處理結束時沒有再重建檢查器 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1598,
+          "oracle": "P88 390 檢查器外 處理結束時釋放後重建 476 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1603,
+          "oracle": "P88 390 關閉抽屜 處理結束時釋放後重建 481 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1608,
+          "oracle": "P88 390 切換選取並離開面 處理結束時沒有再重建檢查器 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        }
+      ],
+      "nodeOracles": [],
+      "observedScope": "rename/delete/recreate、高水位、create 不覆蓋／edit 不復活、uint32 exhausted；取消不消耗 key；真 UI 與保存有對照。",
+      "remainingExactScope": "未找到具名 reorder/permutation oracle。先對照現有可用重排入口或保存序列重排是否屬既定操作，再補 stable key 比對；不自行新增重排 UI。"
+    },
+    {
+      "id": "SR15",
+      "scenario": "兩配置／兩面共源",
+      "expectation": "同一rule被兩處繼承；來源pitch／參數／錨點更新經預覽完整重算，不複製失聯數字",
+      "state": "partial-evidence",
+      "nativeOracles": [
+        {
+          "name": "test_full_source_edit_retains_rules_and_updates_both_anchored_bindings",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 351,
+          "endLine": 370
+        }
+      ],
+      "browserOracles": [
+        {
+          "line": 1391,
+          "oracle": "P87 預覽沒有提前改 World 或歷史 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1403,
+          "oracle": "P87 刪除必須先預覽，取消仍保留原規則 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1471,
+          "oracle": "P88 1280 兩面正常 UI 共用同來源、兩配置及兩 applied grids ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1487,
+          "oracle": "P88 1280 真來源預覽含兩個 typed 配置及兩面 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1489,
+          "oracle": "P88 1280 原子確認單步更新全部配置，key 不重配 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1501,
+          "oracle": "P88 1280 引用鎖 native 預覽不可確認 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1543,
+          "oracle": "P88 390 兩面正常 UI 共用同來源、兩配置及兩 applied grids ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1561,
+          "oracle": "P88 390 真來源預覽含兩個 typed 配置及兩面 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1563,
+          "oracle": "P88 390 原子確認單步更新全部配置，key 不重配 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1575,
+          "oracle": "P88 390 引用鎖 native 預覽不可確認 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        }
+      ],
+      "nodeOracles": [],
+      "observedScope": "兩配置不同 anchor 共源，native 600→900 所有 binding 重算；P88 兩面正常 UI pitch edit/cancel/confirm/undo/redo。",
+      "remainingExactScope": "現有 P88 pitch edit 在正式 guide/direct 引用建立之前。尚缺同一 rule、兩面與已存在有限下游的 source parameter／anchor 更新組合；先確認來源支持的參數/錨點入口，再沿既定流程補精確動作與 affected-object 比對。"
+    },
+    {
+      "id": "SR16",
+      "scenario": "只一面下游非法",
+      "expectation": "一處違規則整筆不提交，其他面不能先改；預覽指名真正失敗來源與構件",
+      "state": "partial-evidence",
+      "nativeOracles": [
+        {
+          "name": "test_only_second_actual_component_invalidates_complete_source_candidate",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 680,
+          "endLine": 705
+        }
+      ],
+      "browserOracles": [
+        {
+          "line": 1391,
+          "oracle": "P87 預覽沒有提前改 World 或歷史 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1403,
+          "oracle": "P87 刪除必須先預覽，取消仍保留原規則 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1487,
+          "oracle": "P88 1280 真來源預覽含兩個 typed 配置及兩面 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1489,
+          "oracle": "P88 1280 原子確認單步更新全部配置，key 不重配 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1501,
+          "oracle": "P88 1280 引用鎖 native 預覽不可確認 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1561,
+          "oracle": "P88 390 真來源預覽含兩個 typed 配置及兩面 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1563,
+          "oracle": "P88 390 原子確認單步更新全部配置，key 不重配 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1575,
+          "oracle": "P88 390 引用鎖 native 預覽不可確認 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        }
+      ],
+      "nodeOracles": [],
+      "observedScope": "native 兩面中只有第二構件23非法，preview bindings={0,1}、violations={23}、confirm 全拒且完整 snapshot 不變；P88 兩面合法修改有真 UI。",
+      "remainingExactScope": "尚未找到相同第二面構件非法情境經真 UI 預覽／拒絕，逐字核對失敗來源/構件及兩面/World/history 不變的 oracle。這是 UI 組合證據缺口，不是已重現產品缺陷。"
+    },
+    {
+      "id": "SR17",
+      "scenario": "引用保護與換來源",
+      "expectation": "被引用rule的divisions／selector／刪除受守門；不同system同號ruleKey不能接住舊引用",
+      "state": "observed",
+      "nativeOracles": [
+        {
+          "name": "test_formal_guide_reference_locks_divisions_selector_and_delete",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 461,
+          "endLine": 473
+        },
+        {
+          "name": "test_same_rule_key_in_another_source_cannot_rebind_an_existing_reference",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 510,
+          "endLine": 520
+        },
+        {
+          "name": "test_missing_rule_and_out_of_range_inner_index_never_choose_nearby_lines",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 484,
+          "endLine": 495
+        }
+      ],
+      "browserOracles": [
+        {
+          "line": 1495,
+          "oracle": "P88 1280 真 guide 進階入口錯 source 保留 native 拒絕、零 World/history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1496,
+          "oracle": "P88 1280 錯 source 取消後 history 不變 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1501,
+          "oracle": "P88 1280 引用鎖 native 預覽不可確認 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1502,
+          "oracle": "P88 1280 引用鎖拒絕零 World 寫入 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1569,
+          "oracle": "P88 390 真 guide 進階入口錯 source 保留 native 拒絕、零 World/history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1570,
+          "oracle": "P88 390 錯 source 取消後 history 不變 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1575,
+          "oracle": "P88 390 引用鎖 native 預覽不可確認 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1576,
+          "oracle": "P88 390 引用鎖拒絕零 World 寫入 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        }
+      ],
+      "nodeOracles": [],
+      "observedScope": "divisions/selector/delete RULE_REFERENCED；錯 source 同 key、missing key/index 原因；P88 真 guide 錯 source 與被引用 rule 刪除 UI。",
+      "remainingExactScope": "本列具名來源／引用保護已核收。"
+    },
+    {
+      "id": "SR18",
+      "scenario": "guide與直接放材",
+      "expectation": "guide僅引用軸座標；直接at-line完整footprint留在父cell，仍需真支撐／正確角色；無自動生成材料",
+      "state": "partial-evidence",
+      "nativeOracles": [
+        {
+          "name": "test_direct_line_needs_real_support_and_complete_cell_scope_while_guide_is_coordinate_only",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 611,
+          "endLine": 638
+        },
+        {
+          "name": "test_formal_rule_line_timber_undo_redo_survives_reset_load",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 640,
+          "endLine": 678
+        }
+      ],
+      "browserOracles": [
+        {
+          "line": 1497,
+          "oracle": "P88 1280 真 at-line native 拒絕保留同表單完整定位及角色截面，World/undo/redo 零寫入 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1498,
+          "oracle": "P88 1280 只修 selector 原地重試成功且 native 單步 history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1499,
+          "oracle": "P88 1280 真 direct at-line 原生支撐、父 cell 足跡及明選角色截面 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1571,
+          "oracle": "P88 390 真 at-line native 拒絕保留同表單完整定位及角色截面，World/undo/redo 零寫入 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1572,
+          "oracle": "P88 390 只修 selector 原地重試成功且 native 單步 history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1573,
+          "oracle": "P88 390 真 direct at-line 原生支撐、父 cell 足跡及明選角色截面 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        }
+      ],
+      "nodeOracles": [],
+      "observedScope": "guide 軸座標允許長1560，direct完整父cell／真支撐的合法secondary長540；P88 bad selector拒絕→修selector原地成功。native reset/load 保留正式引用。",
+      "remainingExactScope": "角色負例仍缺具名鎖因：native primary 兩次 I13/R6 拒絕同時含無支撐/超父cell限制；P88 拒絕是不存在支撐 t9999。需先提供合法支撐且完整 footprint 合法，只切錯角色並鎖定角色原因與資料不變。不可把目前失敗原因改稱角色通過。"
+    },
+    {
+      "id": "SR19",
+      "scenario": "草稿與未失焦输入",
+      "expectation": "未提交／未填／不合法輸入按草稿schema保存重開，不自動提交，也不假稱World已套用",
+      "state": "observed",
+      "nativeOracles": [],
+      "browserOracles": [
+        {
+          "line": 1389,
+          "oracle": "P87 建立草稿沒有保留正式 key/token，唯一主動作沿用固定頁尾 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1392,
+          "oracle": "P87 取消保留逐字 World、raw 與歷史且不耗 ruleKey ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1394,
+          "oracle": "P87 確認及清除對應 raw 同一 ContextHistory step ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1395,
+          "oracle": "P87 真復原同時恢復無規則 native 與確認前 raw ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1396,
+          "oracle": "P87 真重做同時恢復規則及移除 raw ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1399,
+          "oracle": "P87 真 UI 確認遇到 native 變更拒絕舊候選，保留 raw／新 World／歷史 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1408,
+          "oracle": "P87 inline 1–65 拒絕 U0/V2，焦點/raw/World/history 保留且零 native mutation ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1409,
+          "oracle": "P87 inline 1–65 拒絕 U66/V2，焦點/raw/World/history 保留且零 native mutation ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1410,
+          "oracle": "P87 native 拒絕 U1/V1，raw/World/history 保留 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1411,
+          "oracle": "P87 native 拒絕 U7/V2，raw/World/history 保留 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1413,
+          "oracle": "P87 未 blur 的空白／非法輸入及 signed 原文留在有限 /2 raw ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1414,
+          "oracle": "P87 真正 Save 產生非空 ZIP，原生 World 未被 raw 確認 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1415,
+          "oracle": "P87 正式 ZIP /13 保存 raw、native rule/highwater 與兩類能力 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1418,
+          "oracle": "P87 新空白 context 真開檔恢復逐字 native 與 raw ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1419,
+          "oracle": "P87 正式重新進入來源恢復無效 raw，不自動配 key/確認 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1422,
+          "oracle": "P87 刪除與同 ID 重建不自動接管舊 rule raw 或耗 key ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1433,
+          "oracle": "P87 390px 真 Save 保存未確認 raw 與已確認 native ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1436,
+          "oracle": "P87 390px 真重開與續編保留非法 raw、key、高水位 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1442,
+          "oracle": "P87 edit 正式卡片刪除來源保留原始 rule 草稿 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1443,
+          "oracle": "P87 edit 空狀態續編 orphan 不改 World/raw/history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1445,
+          "oracle": "P87 edit orphan 真 Save ZIP 保留原 pin、raw 及無來源 native ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1448,
+          "oracle": "P87 edit orphan 真返回解除 modal 且保留 raw ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1450,
+          "oracle": "P87 edit orphan 明確捨棄只清 raw，不創建 native 來源 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1453,
+          "oracle": "P87 delete 正式卡片刪除來源保留原始 rule 草稿 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1454,
+          "oracle": "P87 delete 空狀態續編 orphan 不改 World/raw/history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1456,
+          "oracle": "P87 delete orphan 真 Save ZIP 保留原 pin、raw 及無來源 native ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1459,
+          "oracle": "P87 delete orphan 真返回解除 modal 且保留 raw ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1461,
+          "oracle": "P87 delete orphan 明確捨棄只清 raw，不創建 native 來源 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1473,
+          "oracle": "P88 1280 真 Tab/Enter 完整定位保留按鈕焦點且 World/raw/history 零寫入 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1477,
+          "oracle": "P88 1280 面 0 首指標選取及標籤不改 native/raw/history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1484,
+          "oracle": "P88 1280 面 1 首指標選取及標籤不改 native/raw/history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1503,
+          "oracle": "P88 1280 真 Save ZIP 含兩配置及 guide/direct typed 引用 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1508,
+          "oracle": "P88 1280 late sample 保住真正大索引 raw 及鍵盤 focus ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1509,
+          "oracle": "P88 1280 late exact 不覆寫新 raw/focus 或把舊 tuple 宣稱完成 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1510,
+          "oracle": "P88 1280 late rule query 保住具名規格 editor/raw/focus、World/history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1512,
+          "oracle": "P88 1280 newid raw 漂移後零 history-begin/timber/place/World/history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1545,
+          "oracle": "P88 390 真 Tab/Enter 完整定位保留按鈕焦點且 World/raw/history 零寫入 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1550,
+          "oracle": "P88 390 面 0 首指標選取及標籤不改 native/raw/history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1558,
+          "oracle": "P88 390 面 1 首指標選取及標籤不改 native/raw/history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1577,
+          "oracle": "P88 390 真 Save ZIP 含兩配置及 guide/direct typed 引用 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1582,
+          "oracle": "P88 390 late sample 保住真正大索引 raw 及鍵盤 focus ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1583,
+          "oracle": "P88 390 late exact 不覆寫新 raw/focus 或把舊 tuple 宣稱完成 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1584,
+          "oracle": "P88 390 late rule query 保住具名規格 editor/raw/focus、World/history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1586,
+          "oracle": "P88 390 newid raw 漂移後零 history-begin/timber/place/World/history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        }
+      ],
+      "nodeOracles": [
+        {
+          "line": 117,
+          "oracle": "✔ raw source rule draft survives real ZIP with exact invalid unblurred signed strings and editor-only format13 (21.396344ms)",
+          "log": "/workspace/closure-evidence/native/full-run-all-new-owners-suite-logs/node_tests-js.log"
+        },
+        {
+          "line": 120,
+          "oracle": "✔ rule raw values including future selector, blanks and whitespace stay raw until native validation (0.667294ms)",
+          "log": "/workspace/closure-evidence/native/full-run-all-new-owners-suite-logs/node_tests-js.log"
+        },
+        {
+          "line": 121,
+          "oracle": "✔ strict raw rule shapes reject key reservation, foreign targets, nonstrings, excessive fields and unknown schema (1.414686ms)",
+          "log": "/workspace/closure-evidence/native/full-run-all-new-owners-suite-logs/node_tests-js.log"
+        }
+      ],
+      "observedScope": "raw /2 未失焦、空白、不合法 signed字串與真 /13 ZIP 保存／新 context 重開；無 native 自動確認。",
+      "remainingExactScope": "本列既定 raw 草稿路徑已核收。"
+    },
+    {
+      "id": "SR20",
+      "scenario": "真正保存與新上下文重開",
+      "expectation": "完整來源閉包、穩定key／高水位、配置／套用、signed索引與複合線引用一致",
+      "state": "observed",
+      "nativeOracles": [
+        {
+          "name": "test_formal_rule_line_timber_undo_redo_survives_reset_load",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 640,
+          "endLine": 678
+        }
+      ],
+      "browserOracles": [
+        {
+          "line": 1398,
+          "oracle": "P87 改名不重配 key，不增加高水位、不產生 HTML ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1404,
+          "oracle": "P87 刪除保留 nextKey 高水位 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1436,
+          "oracle": "P87 390px 真重開與續編保留非法 raw、key、高水位 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1503,
+          "oracle": "P88 1280 真 Save ZIP 含兩配置及 guide/direct typed 引用 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1506,
+          "oracle": "P88 1280 新空白 context 真重開逐字場景、來源 key 及 signed binding ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1577,
+          "oracle": "P88 390 真 Save ZIP 含兩配置及 guide/direct typed 引用 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1580,
+          "oracle": "P88 390 新空白 context 真重開逐字場景、來源 key 及 signed binding ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        }
+      ],
+      "nodeOracles": [
+        {
+          "line": 598,
+          "oracle": "✔ formal reader opens a real archive in a fresh project context and preserves every native identity (396.4919ms)",
+          "log": "/workspace/closure-evidence/native/full-run-all-new-owners-suite-logs/node_tests-js.log"
+        },
+        {
+          "line": 618,
+          "oracle": "✔ rules coexist with existing raw drafts, source rooms and historical records without schema conversion (6590.717376ms)",
+          "log": "/workspace/closure-evidence/native/full-run-all-new-owners-suite-logs/node_tests-js.log"
+        }
+      ],
+      "observedScope": "真 UI ZIP含兩配置+guide/direct+key/signed；新空白 context 後 Open 全dump相等。native正式角材另 reset 確认清空後load。Node完整來源包含未用source/highwater及raw。",
+      "remainingExactScope": "完整閉包按上述具名證據組合核收；不是同一單次 UI 錄像包含所有 unused/raw 條件，不能把組合證據描述成一輪。"
+    },
+    {
+      "id": "SR21",
+      "scenario": "格式／能力負例",
+      "expectation": "假舊version、移除required capability、缺source、服務不支持，在替換World前拒絕",
+      "state": "observed",
+      "nativeOracles": [
+        {
+          "name": "test_unsupported_model_adapter_cannot_hide_subdivision_capability",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 32,
+          "endLine": 50
+        },
+        {
+          "name": "test_native_save_requires_capability_and_load_failures_preserve_live_world",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 913,
+          "endLine": 944
+        },
+        {
+          "name": "test_saved_rule_reference_missing_key_wrong_source_and_index_reject_atomic_load",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 971,
+          "endLine": 997
+        }
+      ],
+      "browserOracles": [],
+      "nodeOracles": [
+        {
+          "line": 593,
+          "oracle": "✔ manifest capability removal, duplicate/unknown capabilities and unknown fields reject before native load (10.577566ms)",
+          "log": "/workspace/closure-evidence/native/full-run-all-new-owners-suite-logs/node_tests-js.log"
+        },
+        {
+          "line": 594,
+          "oracle": "✔ every older schema refuses rules rather than silently downgrading the scene (17.594672ms)",
+          "log": "/workspace/closure-evidence/native/full-run-all-new-owners-suite-logs/node_tests-js.log"
+        },
+        {
+          "line": 602,
+          "oracle": "✔ service without the required native capability cancels its candidate without replacing project or history (276.002098ms)",
+          "log": "/workspace/closure-evidence/native/full-run-all-new-owners-suite-logs/node_tests-js.log"
+        },
+        {
+          "line": 610,
+          "oracle": "✔ native source closure preflight rejects missing source atomically (224.041361ms)",
+          "log": "/workspace/closure-evidence/native/full-run-all-new-owners-suite-logs/node_tests-js.log"
+        }
+      ],
+      "observedScope": "Node正式reader 原生preflight缺來源／能力／格式負例；native scene marker/closure原子拒絕。另 rule-reader gate 有真 browser canonical/evidence/capability拒絕且零confirm與World/context/raw/history不變。",
+      "remainingExactScope": "本列具名負例已核收；rule-reader 34 的細項另見封存 command.log，不以總數代替。"
+    },
+    {
+      "id": "SR22",
+      "scenario": "交易／歷史／跨案",
+      "expectation": "確認、取消、過期token、undo/redo、遲到／遺失回覆及切專案無部分更新／重複提交／串資料",
+      "state": "observed-with-limits",
+      "nativeOracles": [
+        {
+          "name": "test_cancel_create_key_lifecycle_and_complete_undo_redo",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 311,
+          "endLine": 336
+        },
+        {
+          "name": "test_query_success_and_failure_preserve_a_valid_pending_confirmation",
+          "source": "/workspace/geometry-axiom/tests/test_grid_subdivision_oracle.py",
+          "line": 338,
+          "endLine": 349
+        }
+      ],
+      "browserOracles": [
+        {
+          "line": 1387,
+          "oracle": "P87 新空白 context 無來源、配置、面或規則 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1395,
+          "oracle": "P87 真復原同時恢復無規則 native 與確認前 raw ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1396,
+          "oracle": "P87 真重做同時恢復規則及移除 raw ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1401,
+          "oracle": "P87 真 UI 確認遇到 metadata undo 換 frame，仍有效的 native token 不送出 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1417,
+          "oracle": "P87 開檔前確有新空白 context，未借用舊規則 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1418,
+          "oracle": "P87 新空白 context 真開檔恢復逐字 native 與 raw ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1426,
+          "oracle": "P87 延遲 preview 失去 context 後不寫入、不開確認、不取消新 owner 候選 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1435,
+          "oracle": "P87 390px 開檔前新空白 context 沒有借用原場景 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1447,
+          "oracle": "P87 edit 新 context 真重開 orphan 仍唯讀，不默認新建或重關聯 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1458,
+          "oracle": "P87 delete 新 context 真重開 orphan 仍唯讀，不默認新建或重關聯 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1490,
+          "oracle": "P88 1280 來源變更單步 undo ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1497,
+          "oracle": "P88 1280 真 at-line native 拒絕保留同表單完整定位及角色截面，World/undo/redo 零寫入 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1505,
+          "oracle": "P88 重開前確有新空白 context ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1506,
+          "oracle": "P88 1280 新空白 context 真重開逐字場景、來源 key 及 signed binding ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1508,
+          "oracle": "P88 1280 late sample 保住真正大索引 raw 及鍵盤 focus ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1509,
+          "oracle": "P88 1280 late exact 不覆寫新 raw/focus 或把舊 tuple 宣稱完成 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1510,
+          "oracle": "P88 1280 late rule query 保住具名規格 editor/raw/focus、World/history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1516,
+          "oracle": "P88 重開前確有新空白 context ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1517,
+          "oracle": "P88 1280 newid 晚返同 ID/同輸入新 context 零 history-begin/timber/place/World/history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1564,
+          "oracle": "P88 390 來源變更單步 undo ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1571,
+          "oracle": "P88 390 真 at-line native 拒絕保留同表單完整定位及角色截面，World/undo/redo 零寫入 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1579,
+          "oracle": "P88 重開前確有新空白 context ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1580,
+          "oracle": "P88 390 新空白 context 真重開逐字場景、來源 key 及 signed binding ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1582,
+          "oracle": "P88 390 late sample 保住真正大索引 raw 及鍵盤 focus ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1583,
+          "oracle": "P88 390 late exact 不覆寫新 raw/focus 或把舊 tuple 宣稱完成 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1584,
+          "oracle": "P88 390 late rule query 保住具名規格 editor/raw/focus、World/history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1590,
+          "oracle": "P88 重開前確有新空白 context ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1591,
+          "oracle": "P88 390 newid 晚返同 ID/同輸入新 context 零 history-begin/timber/place/World/history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        }
+      ],
+      "nodeOracles": [
+        {
+          "line": 13,
+          "oracle": "✔ rule confirmation removes raw draft in the same native ContextHistory step and undo/redo restores both (45.376356ms)",
+          "log": "/workspace/closure-evidence/native/full-run-all-new-owners-suite-logs/node_tests-js.log"
+        },
+        {
+          "line": 14,
+          "oracle": "✔ native rejection and preview cancellation keep rule raw and history unchanged (21.737588ms)",
+          "log": "/workspace/closure-evidence/native/full-run-all-new-owners-suite-logs/node_tests-js.log"
+        },
+        {
+          "line": 15,
+          "oracle": "✔ rule prepared leases reject context, native revision, session, raw edit and history races before sending (58.72068ms)",
+          "log": "/workspace/closure-evidence/native/full-run-all-new-owners-suite-logs/node_tests-js.log"
+        },
+        {
+          "line": 17,
+          "oracle": "✔ late rule reply cannot remove raw or append history in an externally replaced context (7.102631ms)",
+          "log": "/workspace/closure-evidence/native/full-run-all-new-owners-suite-logs/node_tests-js.log"
+        },
+        {
+          "line": 306,
+          "oracle": "✔ retry uses the committed receipt for lost replies and refuses a later different World (20.589057ms)",
+          "log": "/workspace/closure-evidence/native/full-run-all-new-owners-suite-logs/node_tests-js.log"
+        }
+      ],
+      "observedScope": "native token/complete history；Node context/native revision/session/raw/history leases、lost reply reconciliation；P87/P88 真 UI cancel/history/切 context/延遲 query與focus owner有具名原始結果。",
+      "remainingExactScope": "此為 source-rule交易範圍。全產品 #173 held A→B ownership 與 #174 source疑點不能被這些通過抵銷，沿既有專項保留。"
+    },
+    {
+      "id": "SR23",
+      "scenario": "桌面與390px真操作",
+      "expectation": "從空白完成規則、配置、引用、來源修改及保存；滑鼠／鍵盤等效，無遮擋或選取錯位",
+      "state": "partial-evidence",
+      "nativeOracles": [],
+      "browserOracles": [
+        {
+          "line": 1428,
+          "oracle": "P87 390px 正常空白來源→signed cell→真 native 確認 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1429,
+          "oracle": "P87 390px 真取消不改已確認 native 名稱 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1430,
+          "oracle": "P87 390px 真改名保持 key ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1432,
+          "oracle": "P87 390px 無橫向溢出、規則控件至少44px、單一頁尾主動作 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1433,
+          "oracle": "P87 390px 真 Save 保存未確認 raw 與已確認 native ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1435,
+          "oracle": "P87 390px 開檔前新空白 context 沒有借用原場景 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1436,
+          "oracle": "P87 390px 真重開與續編保留非法 raw、key、高水位 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1445,
+          "oracle": "P87 edit orphan 真 Save ZIP 保留原 pin、raw 及無來源 native ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1456,
+          "oracle": "P87 delete orphan 真 Save ZIP 保留原 pin、raw 及無來源 native ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1468,
+          "oracle": "P88 1280 来源原生子線顯示而 ref:null 未轉成 applied 引用 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1469,
+          "oracle": "P88 1280 配置 0 真 signed cell 保存及只讀裁切顯示 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1470,
+          "oracle": "P88 1280 配置 1 真 signed cell 保存及只讀裁切顯示 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1471,
+          "oracle": "P88 1280 兩面正常 UI 共用同來源、兩配置及兩 applied grids ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1472,
+          "oracle": "P88 1280 面 0 exact cell 線段與 native 相同，完整 tuple 含真正大索引 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1473,
+          "oracle": "P88 1280 真 Tab/Enter 完整定位保留按鈕焦點且 World/raw/history 零寫入 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1474,
+          "oracle": "P88 1280 面 0 u 真 anchor 預示四數 bounds、全部座標 finite、parent/孔裁切 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1475,
+          "oracle": "P88 1280 面 0 v 真 anchor 預示四數 bounds、全部座標 finite、parent/孔裁切 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1476,
+          "oracle": "P88 1280 面 0 共用參考線隱藏同時停用 rule hit/anchor 且零寫入 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1477,
+          "oracle": "P88 1280 面 0 首指標選取及標籤不改 native/raw/history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1478,
+          "oracle": "P88 1280 面 0 來源 jump 同 editor+systemId/ruleKey，零寫入 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1479,
+          "oracle": "P88 1280 面 0 source jump 保留凹形/孔原始快取及 boundary 卡 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1480,
+          "oracle": "P88 1280 面 1 exact cell 線段與 native 相同，完整 tuple 含真正大索引 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1481,
+          "oracle": "P88 1280 面 1 u 真 anchor 預示四數 bounds、全部座標 finite、parent/孔裁切 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1482,
+          "oracle": "P88 1280 面 1 v 真 anchor 預示四數 bounds、全部座標 finite、parent/孔裁切 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1483,
+          "oracle": "P88 1280 面 1 共用參考線隱藏同時停用 rule hit/anchor 且零寫入 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1484,
+          "oracle": "P88 1280 面 1 首指標選取及標籤不改 native/raw/history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1485,
+          "oracle": "P88 1280 面 1 來源 jump 同 editor+systemId/ruleKey，零寫入 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1486,
+          "oracle": "P88 1280 面 1 source jump 保留凹形/孔原始快取及 boundary 卡 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1487,
+          "oracle": "P88 1280 真來源預覽含兩個 typed 配置及兩面 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1488,
+          "oracle": "P88 1280 取消逐字 World/history 不變 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1489,
+          "oracle": "P88 1280 原子確認單步更新全部配置，key 不重配 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1490,
+          "oracle": "P88 1280 來源變更單步 undo ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1491,
+          "oracle": "P88 1280 來源變更單步 redo ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1492,
+          "oracle": "P88 1280 高密度原生 sample 有界且明示 incomplete，查询零寫入 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1493,
+          "oracle": "P88 1280 高密度仍可用真正 cell 完整定位 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1494,
+          "oracle": "P88 1280 既有 guide 選項送真正 gridrule 引用，不翻 U/V ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1495,
+          "oracle": "P88 1280 真 guide 進階入口錯 source 保留 native 拒絕、零 World/history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1496,
+          "oracle": "P88 1280 錯 source 取消後 history 不變 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1497,
+          "oracle": "P88 1280 真 at-line native 拒絕保留同表單完整定位及角色截面，World/undo/redo 零寫入 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1498,
+          "oracle": "P88 1280 只修 selector 原地重試成功且 native 單步 history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1499,
+          "oracle": "P88 1280 真 direct at-line 原生支撐、父 cell 足跡及明選角色截面 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1500,
+          "oracle": "P88 1280 單規則引用數只計該 rule guide/timber ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1501,
+          "oracle": "P88 1280 引用鎖 native 預覽不可確認 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1502,
+          "oracle": "P88 1280 引用鎖拒絕零 World 寫入 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1503,
+          "oracle": "P88 1280 真 Save ZIP 含兩配置及 guide/direct typed 引用 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1506,
+          "oracle": "P88 1280 新空白 context 真重開逐字場景、來源 key 及 signed binding ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1508,
+          "oracle": "P88 1280 late sample 保住真正大索引 raw 及鍵盤 focus ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1509,
+          "oracle": "P88 1280 late exact 不覆寫新 raw/focus 或把舊 tuple 宣稱完成 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1510,
+          "oracle": "P88 1280 late rule query 保住具名規格 editor/raw/focus、World/history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1511,
+          "oracle": "P88 1280 零可見 exact cell 有即時完成狀態 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1512,
+          "oracle": "P88 1280 newid raw 漂移後零 history-begin/timber/place/World/history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1513,
+          "oracle": "P88 1280 newid native 漂移後零 history-begin/timber/place/World/history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1514,
+          "oracle": "P88 1280 newid history 漂移後零 history-begin/timber/place/World/history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1517,
+          "oracle": "P88 1280 newid 晚返同 ID/同輸入新 context 零 history-begin/timber/place/World/history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1518,
+          "oracle": "P88 1280 延遲 exact query 返回時不改新 view/native ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1519,
+          "oracle": "P88 1280 detached source jump 讀取尚未提前離開 face ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1520,
+          "oracle": "P88 1280 延遲 source jump 對換 view 零定位 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1521,
+          "oracle": "P88 1280 檢查器外 已離開引用式 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1522,
+          "oracle": "P88 1280 檢查器外 回覆未完成前不得判斷焦點 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1523,
+          "oracle": "P88 1280 檢查器外 搶回引用式會被判失敗 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1524,
+          "oracle": "P88 1280 檢查器外 處理結束時釋放後重建 376 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1525,
+          "oracle": "P88 1280 檢查器外 舊查詢不搶回焦點 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1526,
+          "oracle": "P88 1280 其他對話框 已離開引用式 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1527,
+          "oracle": "P88 1280 其他對話框 回覆未完成前不得判斷焦點 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1528,
+          "oracle": "P88 1280 其他對話框 搶回引用式會被判失敗 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1529,
+          "oracle": "P88 1280 其他對話框 處理結束時沒有再重建檢查器 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1530,
+          "oracle": "P88 1280 其他對話框 舊查詢不搶回焦點 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1531,
+          "oracle": "P88 1280 切換選取並離開面 已離開引用式 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1532,
+          "oracle": "P88 1280 切換選取並離開面 回覆未完成前不得判斷焦點 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1533,
+          "oracle": "P88 1280 切換選取並離開面 搶回引用式會被判失敗 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1534,
+          "oracle": "P88 1280 切換選取並離開面 處理結束時沒有再重建檢查器 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1535,
+          "oracle": "P88 1280 切換選取並離開面 舊查詢不搶回焦點 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1537,
+          "oracle": "P88 1280 指定 signed cell 規則原生裁切及完整 source/grid/cell 引用 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1538,
+          "oracle": "P88 1280 指定規則 selector 外保留 native 拒絕且零寫入 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1540,
+          "oracle": "P88 390 来源原生子線顯示而 ref:null 未轉成 applied 引用 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1541,
+          "oracle": "P88 390 配置 0 真 signed cell 保存及只讀裁切顯示 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1542,
+          "oracle": "P88 390 配置 1 真 signed cell 保存及只讀裁切顯示 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1543,
+          "oracle": "P88 390 兩面正常 UI 共用同來源、兩配置及兩 applied grids ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1544,
+          "oracle": "P88 390 面 0 exact cell 線段與 native 相同，完整 tuple 含真正大索引 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1545,
+          "oracle": "P88 390 真 Tab/Enter 完整定位保留按鈕焦點且 World/raw/history 零寫入 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1546,
+          "oracle": "P88 390 面 0 u 真 anchor 預示四數 bounds、全部座標 finite、parent/孔裁切 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1547,
+          "oracle": "P88 390 面 0 v 真 anchor 預示四數 bounds、全部座標 finite、parent/孔裁切 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1548,
+          "oracle": "P88 390 面 0 source/cell 觸控高度及 inspector 無水平溢出 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1549,
+          "oracle": "P88 390 面 0 共用參考線隱藏同時停用 rule hit/anchor 且零寫入 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1550,
+          "oracle": "P88 390 面 0 首指標選取及標籤不改 native/raw/history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1551,
+          "oracle": "P88 390 面 0 來源 jump 同 editor+systemId/ruleKey，零寫入 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1552,
+          "oracle": "P88 390 面 0 source jump 保留凹形/孔原始快取及 boundary 卡 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1553,
+          "oracle": "P88 390 面 1 exact cell 線段與 native 相同，完整 tuple 含真正大索引 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1554,
+          "oracle": "P88 390 面 1 u 真 anchor 預示四數 bounds、全部座標 finite、parent/孔裁切 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1555,
+          "oracle": "P88 390 面 1 v 真 anchor 預示四數 bounds、全部座標 finite、parent/孔裁切 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1556,
+          "oracle": "P88 390 面 1 source/cell 觸控高度及 inspector 無水平溢出 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1557,
+          "oracle": "P88 390 面 1 共用參考線隱藏同時停用 rule hit/anchor 且零寫入 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1558,
+          "oracle": "P88 390 面 1 首指標選取及標籤不改 native/raw/history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1559,
+          "oracle": "P88 390 面 1 來源 jump 同 editor+systemId/ruleKey，零寫入 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1560,
+          "oracle": "P88 390 面 1 source jump 保留凹形/孔原始快取及 boundary 卡 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1561,
+          "oracle": "P88 390 真來源預覽含兩個 typed 配置及兩面 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1562,
+          "oracle": "P88 390 取消逐字 World/history 不變 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1563,
+          "oracle": "P88 390 原子確認單步更新全部配置，key 不重配 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1564,
+          "oracle": "P88 390 來源變更單步 undo ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1565,
+          "oracle": "P88 390 來源變更單步 redo ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1566,
+          "oracle": "P88 390 高密度原生 sample 有界且明示 incomplete，查询零寫入 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1567,
+          "oracle": "P88 390 高密度仍可用真正 cell 完整定位 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1568,
+          "oracle": "P88 390 既有 guide 選項送真正 gridrule 引用，不翻 U/V ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1569,
+          "oracle": "P88 390 真 guide 進階入口錯 source 保留 native 拒絕、零 World/history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1570,
+          "oracle": "P88 390 錯 source 取消後 history 不變 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1571,
+          "oracle": "P88 390 真 at-line native 拒絕保留同表單完整定位及角色截面，World/undo/redo 零寫入 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1572,
+          "oracle": "P88 390 只修 selector 原地重試成功且 native 單步 history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1573,
+          "oracle": "P88 390 真 direct at-line 原生支撐、父 cell 足跡及明選角色截面 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1574,
+          "oracle": "P88 390 單規則引用數只計該 rule guide/timber ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1575,
+          "oracle": "P88 390 引用鎖 native 預覽不可確認 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1576,
+          "oracle": "P88 390 引用鎖拒絕零 World 寫入 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1577,
+          "oracle": "P88 390 真 Save ZIP 含兩配置及 guide/direct typed 引用 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1580,
+          "oracle": "P88 390 新空白 context 真重開逐字場景、來源 key 及 signed binding ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1582,
+          "oracle": "P88 390 late sample 保住真正大索引 raw 及鍵盤 focus ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1583,
+          "oracle": "P88 390 late exact 不覆寫新 raw/focus 或把舊 tuple 宣稱完成 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1584,
+          "oracle": "P88 390 late rule query 保住具名規格 editor/raw/focus、World/history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1585,
+          "oracle": "P88 390 零可見 exact cell 有即時完成狀態 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1586,
+          "oracle": "P88 390 newid raw 漂移後零 history-begin/timber/place/World/history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1587,
+          "oracle": "P88 390 newid native 漂移後零 history-begin/timber/place/World/history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1588,
+          "oracle": "P88 390 newid history 漂移後零 history-begin/timber/place/World/history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1591,
+          "oracle": "P88 390 newid 晚返同 ID/同輸入新 context 零 history-begin/timber/place/World/history ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1592,
+          "oracle": "P88 390 延遲 exact query 返回時不改新 view/native ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1593,
+          "oracle": "P88 390 detached source jump 讀取尚未提前離開 face ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1594,
+          "oracle": "P88 390 延遲 source jump 對換 view 零定位 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1595,
+          "oracle": "P88 390 檢查器外 已離開引用式 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1596,
+          "oracle": "P88 390 檢查器外 回覆未完成前不得判斷焦點 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1597,
+          "oracle": "P88 390 檢查器外 搶回引用式會被判失敗 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1598,
+          "oracle": "P88 390 檢查器外 處理結束時釋放後重建 476 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1599,
+          "oracle": "P88 390 檢查器外 舊查詢不搶回焦點 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1600,
+          "oracle": "P88 390 關閉抽屜 已離開引用式 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1601,
+          "oracle": "P88 390 關閉抽屜 回覆未完成前不得判斷焦點 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1602,
+          "oracle": "P88 390 關閉抽屜 搶回引用式會被判失敗 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1603,
+          "oracle": "P88 390 關閉抽屜 處理結束時釋放後重建 481 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1604,
+          "oracle": "P88 390 關閉抽屜 舊查詢不搶回焦點 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1605,
+          "oracle": "P88 390 切換選取並離開面 已離開引用式 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1606,
+          "oracle": "P88 390 切換選取並離開面 回覆未完成前不得判斷焦點 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1607,
+          "oracle": "P88 390 切換選取並離開面 搶回引用式會被判失敗 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1608,
+          "oracle": "P88 390 切換選取並離開面 處理結束時沒有再重建檢查器 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1609,
+          "oracle": "P88 390 切換選取並離開面 舊查詢不搶回焦點 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1611,
+          "oracle": "P88 390 指定 signed cell 規則原生裁切及完整 source/grid/cell 引用 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        },
+        {
+          "line": 1612,
+          "oracle": "P88 390 指定規則 selector 外保留 native 拒絕且零寫入 ✓",
+          "log": "/workspace/closure-evidence/gates/full-cdp-r3/command.log"
+        }
+      ],
+      "nodeOracles": [],
+      "observedScope": "P87/P88 1280及390真點擊／選項鍵盤、空白建source/rule、兩binding/applied面、guide/direct、pitch修改、保存新空白重開；44px/無水平溢出/焦點有原始檢查。",
+      "remainingExactScope": "完整 issue必走順序要求先建立引用、再第二面、再改pitch看既有有限下游；P88先完成兩面+pitch更新才建引用，且SR16的非法下游UI與SR18角色鎖因未覆蓋。只補這條組合差異，不重跑所有已過基礎gates。390雙擊其他產品流程仍按原專項，不能宣稱全產品鍵盤等效。"
+    },
+    {
+      "id": "SR24",
+      "scenario": "實體手機與OS流程",
+      "expectation": "實機觸控、鍵盤、選檔與下載位置分別人工記錄；桌面窄版／選檔替身不能代替",
+      "state": "external-unverified",
+      "nativeOracles": [],
+      "browserOracles": [],
+      "nodeOracles": [],
+      "observedScope": "桌面 Chromium 390px 與受控 chooser只證明自動化入口；未取得實體手機原始驗收。",
+      "remainingExactScope": "由實機QA在交付精確版本分別記錄觸控、IME/軟鍵盤、OS選檔、下載位置；保存裝置/OS/瀏覽器版本與原始結果。不得關閉或稱全平台通過。"
+    }
+  ]
+}

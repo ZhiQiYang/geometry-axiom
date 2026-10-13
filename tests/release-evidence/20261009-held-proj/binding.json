@@ -1,0 +1,51 @@
+{
+  "schema": "geometry-held-proj-evidence/1",
+  "branch": "fix/async-reply-ui-20261008",
+  "worktree": "D:\\geometry-axiom-async-qa",
+  "parent": "b0ef9bcfb6133e6463c859952270231f8e740363",
+  "product": "geometry-web/app.js drawEditHandles",
+  "bridgeSha256": "aa2cc6ae4fd47277c4620bf08bbc99ccae0ee48757c0728785528cfd1357736d",
+  "modelBaseSha256": "03a487c77ee20adcc73624adc947027019c071cff9025d1c7ba8cc5a81c8476f",
+  "bridgeRebuilt": false,
+  "port8915Stopped": false,
+  "before": {
+    "appSha256": "c6cfc99e54a9daf05dad7ee442cbbd1203dd730736834d4f84a60b7d5bbbf4c8",
+    "testSha256": "152c23ab908bc4c205a22d1fb2064536e3af121d4bcd2dbc7e1edad60f3553aa",
+    "floorSha256": "ae43121580fcf6a1b8cd9c7baa98751991e4f9ce31881553cbe57cb6780d084f",
+    "runtime": "6c320952b78b69fd6297e752937e68655d6b85f0a7ef2920f80df1682a2d2e03",
+    "fresh": true,
+    "pid": 2572,
+    "session": "52946a2dd38349f4b82b8be718b2f773",
+    "port": 8924,
+    "cdp": 9348,
+    "nodeExit": 1,
+    "passed": 10,
+    "failed": 3,
+    "completed": false,
+    "handles": {
+      "1400": [
+        5,
+        0
+      ],
+      "390": [
+        5,
+        0
+      ]
+    }
+  },
+  "after": {
+    "appSha256": "e6ab3b4e24d93b45e8d68b6e799879637750a08764df31ae0a0855a4fe7932a9",
+    "testSha256": "152c23ab908bc4c205a22d1fb2064536e3af121d4bcd2dbc7e1edad60f3553aa",
+    "floorSha256": "ae43121580fcf6a1b8cd9c7baa98751991e4f9ce31881553cbe57cb6780d084f",
+    "runtime": "497e9cc85a60dd9a738eb8e9ef8ff49c555ad34255afa3615c6fd4e9586287bb",
+    "fresh": true,
+    "pid": 7536,
+    "session": "e7db6a8a56c34dffaac51835123ea99f",
+    "port": 8924,
+    "cdp": 9348,
+    "nodeExit": 0,
+    "passed": 12,
+    "failed": 0,
+    "completed": true
+  }
+}

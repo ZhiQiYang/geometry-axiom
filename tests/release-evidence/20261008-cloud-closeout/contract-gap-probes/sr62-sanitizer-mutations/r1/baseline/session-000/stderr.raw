@@ -1,0 +1,13 @@
+I8a preview 1: valid; confirm token to apply
+grid-system 0 name oracle 0 mode infinite main-along none u repeat 0 600 v repeat 0 400 rule-next 1 -> grid-system 0 name oracle 0 mode infinite main-along none u repeat 0 600 v repeat 0 400 rule-next 2 rule 1 name oracle rule selector all-cells divide 3 2
+input:3: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
+input:5: I8a: missing/invalid preview token; cannot apply
+I8a preview 2: valid; confirm token to apply
+grid-system 0 name oracle 0 mode infinite main-along none u repeat 0 600 v repeat 0 400 rule-next 1 -> grid-system 0 name oracle 0 mode infinite main-along none u repeat 0 600 v repeat 0 400 rule-next 2 rule 1 name oracle rule selector all-cells divide 3 2
+input:6: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
+I8a preview 3: valid; confirm token to apply
+grid-system 0 name oracle 0 mode infinite main-along none u repeat 0 600 v repeat 0 400 rule-next 2 rule 1 name oracle rule selector all-cells divide 3 2 -> grid-system 0 name oracle 0 mode infinite main-along none u repeat 0 600 v repeat 0 400 rule-next 2
+input:10: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
+I8a preview 4: valid; confirm token to apply
+grid-system 0 name oracle 0 mode infinite main-along none u repeat 0 600 v repeat 0 400 rule-next 2 -> grid-system 0 name oracle 0 mode infinite main-along none u repeat 0 600 v repeat 0 400 rule-next 3 rule 2 name oracle rule selector all-cells divide 3 2
+input:12: I8a: impact preview required; inspect preview, then confirm token (World unchanged)

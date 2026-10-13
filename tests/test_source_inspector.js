@@ -60,9 +60,9 @@ function nestedSpaceNavigationHarness(){
     selection:[],sel:null,bmap:{},spaces:[],parameterCreating:false,gridSystemCreating:false,panX:17,panY:23,zoom:1};
   const nodes=new Map(),$=key=>{if(!nodes.has(key))nodes.set(key,{hidden:false,textContent:'',innerHTML:'',setAttribute(){},
     appendChild:child=>child,querySelector:()=>null,classList:{contains:()=>false}});return nodes.get(key);};
-  const sandbox={window:{DraftGate:{ask:()=>true}},ReferenceWorkspace:{context:()=>context},oc,ocSeq:0,connection:{phase:'ready'},
+  const sandbox={window:{DraftGate:{ask:()=>true}},ReferenceWorkspace:{context:()=>context,getEvidenceState:()=>({blocked:false})},oc,ocSeq:0,connection:{phase:'ready'},
     ocAllObjects:()=>[],cardBox:()=>[],fe:{guides:[],placementTarget:null},pendingSlot:null,$,
-    GridEditor:{clear(){}},clearCanvasSelections(){},closePanels(){},renderCanvasModeHint(){},PolyDraft:{createState:()=>({})},
+    GridEditor:{clear(){}},GridRuleLines:{clear(){}},clearCanvasSelections(){},closePanels(){},renderCanvasModeHint(){},PolyDraft:{createState:()=>({})},
     feSyncDraftMirror(){},drawObjects:()=>calls.push(['draw',oc.focus?.id]),setStatus:value=>calls.push(['status',value]),
     objectCanvasHelp:()=>'',ocApply(){},toast(){},syncCompositionLayout(){},icon:()=>'',syncSpaceStageTools(){},
     updateWorkspaceKeyHints:()=>calls.push(['hints',oc.focus?.id]),document:{createElement:()=>({})},
@@ -81,7 +81,46 @@ function nestedSpaceNavigationHarness(){
     ['function ocSetSelection(','function feSetTimberSelection(']];
   for(const [start,end] of cuts){const begin=app.indexOf(start),finish=app.indexOf(end,begin+start.length);assert.ok(begin>=0&&finish>begin);
     vm.runInNewContext(app.slice(begin,finish),sandbox);}
+  vm.runInNewContext(fs.readFileSync(require.resolve('../geometry-web/grid-rule-lines.js'),'utf8'),sandbox);
+  sandbox.GridRuleLines=sandbox.window.GridRuleLines;
   return {sandbox,oc,calls,wait,started};
+}
+function guidePreparationHarness(waitFor='snap') {
+  const state={contextToken:'original-frame',revision:0,nativeRevision:1,session:'original-service',undo:'u1',redo:null,blocked:false},calls=[],commits=[];
+  let release,arrived;const reached=new Promise(resolve=>arrived=resolve),gate=new Promise(resolve=>release=resolve);
+  const sandbox={oc:{edit:{bid:1},focus:{t:'face',id:1}},fe:{zoom:1,guides:[{id:7,source:'local',expression:'spec:authored'}]},
+    ReferenceWorkspace:{getEvidenceState:()=>({...state})},feSid:()=>10,toast(){},
+    api:async command=>{calls.push(command);if(command.startsWith(waitFor)){arrived();await gate;}return command==='newid'?{ok:true,guide:0}:{ok:true,expression:'spec:authored'};},
+    emitLine:async command=>{commits.push(command);return true;}};
+  const source=fs.readFileSync(process.env.GEOMETRY_REFERENCE_UI_JS||require.resolve('../geometry-web/reference-ui.js'),'utf8');
+  const ownerStart=source.indexOf('function referenceGuidePreparation('),start=ownerStart<0?source.indexOf('async function createReferenceGuide('):ownerStart;
+  vm.runInNewContext(source.slice(start,source.indexOf('/* D6c:',start)),sandbox);
+  return {sandbox,state,calls,commits,reached,release};
+}
+function guideCallerHarness(kind,{holdReload=false}={}) {
+  const g=guidePreparationHarness(kind==='move'?'snap':'newid'),pick={hidden:false,dataset:{u:'700',v:'1500'}};
+  g.context={id:'same-project'};g.history={frame:{}};g.connection={session:'original-service'};
+  g.renders=[];g.reloads=0;g.reloadStarted=deferred();g.reloadWait=deferred();
+  g.refreshedGuide={id:kind==='move'?7:0,source:'local',axis:'u',off:kind==='move'?1700:1500,expression:'spec:authored'};
+  Object.assign(g.sandbox.ReferenceWorkspace,{context:()=>g.context,history:g.history});
+  Object.assign(g.sandbox,{window:{RoomOutlineWorkspace:{up:async()=>false}},$:()=>pick,
+    connection:g.connection,drawFaceEditor:()=>g.renders.push({kind:'canvas'}),renderFaceLayers:()=>g.renders.push({kind:'layers'}),
+    renderFaceInspector:()=>g.renders.push({kind:'inspector',guides:structuredClone(g.sandbox.fe.guides)}),
+    feLoadGuides:async()=>{g.reloads++;g.reloadStarted.resolve();if(holdReload)await g.reloadWait.promise;g.sandbox.fe.guides=[g.refreshedGuide];}});
+  const source=fs.readFileSync(process.env.GEOMETRY_GUIDE_APP_JS||require.resolve('../geometry-web/app.js'),'utf8');
+  const helper=source.indexOf('function feGuidePresentationRefresh()');
+  if(helper>=0)vm.runInNewContext(source.slice(helper,source.indexOf('async function feUp(pt) {',helper)),g.sandbox);
+  if(kind==='drag'||kind==='move'){
+    const start=source.indexOf('async function feUp(pt) {');
+    vm.runInNewContext(source.slice(start,source.indexOf('function fePinchRect(',start)),g.sandbox);
+    g.sandbox.fe.drag=kind==='move'?{kind:'guide',id:7,axis:'u',off:1700,moved:true}:{kind:'guideNew',x0:700,y0:1500,x1:1700,y1:1500};
+    g.call=()=>g.sandbox.feUp({x:1700,y:1500});
+  }else{
+    g.sandbox.document={querySelectorAll:()=>[{dataset:{axis:'u'},addEventListener:(_,callback)=>g.call=callback}]};
+    const start=source.indexOf('for (const b of document.querySelectorAll("#feGuidePick button"))');
+    vm.runInNewContext(source.slice(start,source.indexOf('fevp.addEventListener("wheel"',start)),g.sandbox);
+  }
+  return g;
 }
 test('native typed location preserves the second placement of a shared boundary and ID0',()=>{
   for(const [pid,tid] of [[20,7],[0,0]]){
@@ -136,6 +175,74 @@ test('draft cancellation leaves the current workspace intact and source changes 
   const late=navigationHarness(),enter=late.sandbox.enterFocus;
   late.sandbox.enterFocus=async(...args)=>{await enter(...args);late.data.revision++;late.data.sourceFingerprint=hash(8);};
   await assert.rejects(late.navigate({kind:'timber',id:7}),/來源已變更/);assert.equal(late.fe.sel,null);
+  // The same ephemeral source-owner premise also guards read-only guide
+  // preparation before it can submit a native mutation. These are dispatch
+  // checks; the formal browser separately proves actual native acceptance.
+  for(const stage of ['snap','newid'])for(const expired of ['focus','same-ID context','history','session']){
+    const g=guidePreparationHarness(stage),pending=g.sandbox.createReferenceGuide(10,'u',1500);await g.reached;
+    if(expired==='focus')g.sandbox.oc.focus=null;
+    if(expired==='same-ID context'){g.sandbox.oc.edit={bid:1};g.state.contextToken='replacement-frame';}
+    if(expired==='history'){g.state.undo='different-undo';g.state.nativeRevision++;}
+    if(expired==='session')g.state.session='replacement-service';
+    g.release();assert.equal(await pending,false,stage+': '+expired);assert.deepEqual(g.commits,[]);
+  }
+  for(const datum of [false,true]){
+    const g=guidePreparationHarness(),pending=g.sandbox.moveReferenceGuide(7,'u',1500);await g.reached;
+    g.sandbox.fe.guides=[{id:7,source:datum?'datum':'local',expression:'spec:replacement'}];g.release();
+    assert.equal(await pending,false);assert.deepEqual(g.commits,[],'a reused guide ID never authorizes the former source');
+  }
+  for(const kind of ['create','move']){
+    const g=guidePreparationHarness(),pending=kind==='create'?g.sandbox.createReferenceGuide(10,'u',1500):g.sandbox.moveReferenceGuide(7,'u',1500);
+    await g.reached;g.release();assert.equal(await pending,true);
+    assert.deepEqual(g.commits,[kind==='create'?'guide 0 10 u spec:authored':'move 7 spec:authored'],'current ownership preserves native expressions and ID0');
+  }
+  const rejected=guidePreparationHarness('never');rejected.sandbox.api=async command=>command==='newid'?{ok:false,error:'authored ID rejection'}:{ok:true,expression:'spec:authored'};
+  assert.equal(await rejected.sandbox.createReferenceGuide(10,'u',1500),false);assert.deepEqual(rejected.commits,[]);
+  // Execute the shipped callers too: their first read must already belong to
+  // the departed gesture, including reentry with the same face/surface IDs.
+  for(const kind of ['drag','move','picker'])for(const expired of ['World','same-face reentry','replacement context']){
+    const g=guideCallerHarness(kind),pending=g.call();await g.reached;
+    g.sandbox.oc.edit=expired==='World'?null:{bid:1};g.sandbox.oc.focus=expired==='World'?null:{t:'face',id:1};
+    if(expired==='replacement context')g.state.contextToken='replacement-frame';
+    g.release();await pending;assert.deepEqual(g.commits,[],kind+': '+expired);
+    assert.deepEqual(g.renders,[],kind+': a departed gesture cannot repaint its replacement');
+  }
+  for(const kind of ['drag','move','picker']){
+    const g=guideCallerHarness(kind),pending=g.call();await g.reached;g.release();await pending;
+    assert.deepEqual(g.commits,[kind==='move'?'move 7 spec:authored':'guide 0 10 u spec:authored'],kind+': current gesture preserves native reference and ID0');
+  }
+});
+test('guide drag, move and picker refresh the existing inspector after their new cache arrives',async()=>{
+  for(const kind of ['drag','move','picker']){
+    const g=guideCallerHarness(kind,{holdReload:true}),emit=g.sandbox.emitLine;
+    g.sandbox.emitLine=async command=>{const changed=await emit(command);g.state.nativeRevision++;g.state.undo='committed-undo';return changed;};
+    const pending=g.call();await g.reached;g.release();await g.reloadStarted.promise;
+    assert.deepEqual(g.renders,[],kind+': never render stale guide data before reload settles');
+    g.reloadWait.resolve();await pending;
+    assert.equal(g.reloads,1,kind);
+    assert.deepEqual(g.renders,[{kind:'canvas'},{kind:'layers'},{kind:'inspector',guides:[g.refreshedGuide]}],kind+': one source-list refresh with the committed position');
+  }
+});
+test('guide reload cannot repaint a departed or replaced presentation owner',async()=>{
+  for(const kind of ['drag','move','picker'])for(const expired of ['World','same-face reentry','project','history frame','session']){
+    const g=guideCallerHarness(kind,{holdReload:true}),pending=g.call();await g.reached;g.release();await g.reloadStarted.promise;
+    if(expired==='World'){g.sandbox.oc.edit=null;g.sandbox.oc.focus=null;}
+    if(expired==='same-face reentry'){g.sandbox.oc.edit={bid:1};g.sandbox.oc.focus={t:'face',id:1};}
+    if(expired==='project')g.context={id:'same-project'};
+    if(expired==='history frame')g.history.frame={};
+    if(expired==='session')g.connection.session='replacement-service';
+    g.reloadWait.resolve();await pending;
+    assert.equal(g.commits.length,1,kind+': the accepted native edit is not retried or erased');
+    assert.deepEqual(g.renders,[],kind+': '+expired+' keeps its own presentation');
+  }
+});
+test('declined guide changes remove only the gesture preview without replacing inspector input',async()=>{
+  for(const kind of ['drag','move','picker']){
+    const g=guideCallerHarness(kind);g.sandbox.emitLine=async()=>false;
+    const pending=g.call();await g.reached;g.release();await pending;
+    assert.equal(g.reloads,0,kind+': no uncommitted cache reload');
+    assert.deepEqual(g.renders,[{kind:'canvas'},{kind:'layers'}],kind+': no inspector replacement after rejection');
+  }
 });
 test('the navigation owner can cancel during render or the final native read before enter/select',async()=>{
   for(const stage of ['render','final']){
@@ -186,17 +293,27 @@ test('source and list navigation honor selection cancellation and the existing o
   assert.equal(empty.oc.gridSystemCreating,true,'default empty selection keeps the existing creation presentation');
   const acceptedExit=cardNavigationHarness({focus:{t:'face',id:4},replacePane:true});await acceptedExit.navigate();
   assert.equal(acceptedExit.oc.sel.id,1);assert.ok(acceptedExit.calls.includes('drawer'),'an owned exit can finish transferred navigation');
+  const realExit=cardNavigationHarness({focus:{t:'face',id:4},replacePane:true}),exitContext={id:'real-exit',groups:new Map()};
+  realExit.oc.stack=[];
+  Object.assign(realExit.sandbox,{ReferenceWorkspace:{context:()=>exitContext},pendingSlot:null,
+    clearCanvasSelections(){},GridEditor:{clear(){}},GridRuleLines:{clear(){}},closePanels(){},renderCanvasModeHint(){},
+    PolyDraft:{createState:()=>({})},feSyncDraftMirror(){},drawObjects:()=>realExit.calls.push('draw'),
+    setStatus(){},objectCanvasHelp:()=>'',toast(){},$:()=>({})});
+  const exitApp=fs.readFileSync(require.resolve('../geometry-web/app.js'),'utf8');
+  vm.runInNewContext(exitApp.slice(exitApp.indexOf('async function leaveFocus()'),exitApp.indexOf('/* ---- 面內工作區')),realExit.sandbox);
+  await realExit.navigate();
+  assert.equal(realExit.oc.sel.id,1);assert.ok(realExit.calls.includes('drawer'),'the shipped successful exit token completes the real source handoff');
   for(const stop of ['late-owner','blocked-exit']){
     const h=cardNavigationHarness({focus:{t:'face',id:4}});
     h.sandbox.leaveFocus=async()=>{if(stop==='late-owner'){h.oc.focus=null;await Promise.resolve();h.owner.current=false;}};
     await h.navigate();assert.equal(h.oc.sel.kind,'parameter');assert.ok(!h.calls.includes('camera')&&!h.calls.includes('drawer'));
   }
-  for(const change of ['selection','focus','view','context','room-cancel']){
+  for(const change of ['selection','focus','view','context','room-cancel','source-rule']){
     const h=cardNavigationHarness({focus:{t:'face',id:4}}),wait=deferred(),started=deferred();let context={id:'same-project'},opens=0;
     h.oc.stack=[{t:'face',id:3}];h.oc.bmap={3:[]};
-    Object.assign(h.sandbox,{ReferenceWorkspace:{context:()=>context},pendingSlot:null,
+    Object.assign(h.sandbox,{ReferenceWorkspace:{context:()=>context,getEvidenceState:()=>({blocked:false})},pendingSlot:null,
       ocFind:(kind,id)=>kind==='boundary'&&[1,2].includes(id)?{kind,id}:null,
-      clearCanvasSelections(){},GridEditor:{clear(){}},closePanels(){},renderCanvasModeHint(){},
+      clearCanvasSelections(){},GridEditor:{clear(){}},GridRuleLines:{clear(){}},closePanels(){},renderCanvasModeHint(){},
       PolyDraft:{createState:()=>({})},feSyncDraftMirror(){},drawObjects:()=>h.calls.push('draw'),
       setStatus:()=>h.calls.push('status'),objectCanvasHelp:()=>'',toast(){},$:()=>({}),
       syncCompositionLayout(){},api:async()=>({ok:true,loops:[]}),
@@ -214,7 +331,8 @@ test('source and list navigation honor selection cancellation and the existing o
       await h.sandbox.enterFocus('face',8);
     }else if(change==='view'){
       h.sandbox.view3=false;await h.sandbox.setView3(false);
-    }else if(change==='context')context={id:'new-project'};
+    }else if(change==='source-rule')h.sandbox.commitSourceCanvasNavigation();
+    else if(change==='context')context={id:'new-project'};
     else h.sandbox.selectObject('boundary',2);
     const after=JSON.stringify(h.oc),calls=h.calls.length;wait.resolve();await pending;
     assert.equal(h.owner.current,true,'the transferred source lease remains valid');
@@ -227,6 +345,22 @@ test('source and list navigation honor selection cancellation and the existing o
   assert.deepEqual(nested.calls.filter(c=>c[0]==='plan').at(-1),['plan',20]);
   const count=nested.calls.length;nested.wait.resolve();assert.equal(await oldExit,null);
   assert.equal(nested.oc.focus.id,20);assert.deepEqual(nested.calls.slice(count),[],'no old projection replay, Rc/Plan binding or outer repaint after a normal new space entry');
+  const source=nestedSpaceNavigationHarness(),sourceExit=source.sandbox.leaveFocus();await source.started.promise;
+  const loops=[{verts:[[0,0],[600,0],[600,200],[200,200],[200,600],[0,600]]}];source.oc.bmap[4]=loops;
+  source.sandbox.fe.ruleSelection={ruleKey:7};source.sandbox.fe.ruleFocus={rule:7};
+  const navigation=source.oc.navigationSequence;source.sandbox.commitSourceCanvasNavigation();
+  assert.equal(source.oc.navigationSequence,navigation+1,'accepted source-rule navigation owns a newer intent');
+  assert.equal(source.oc.bmap[4],loops,'presentation exit preserves the authored boundary-loop cache');
+  assert.equal(source.sandbox.fe.ruleSelection,null);assert.equal(source.sandbox.fe.ruleFocus,null,'actual rule presentation is cleared');
+  assert.equal(source.oc.focus,null);const sourceCalls=source.calls.length;source.wait.resolve();
+  assert.equal(await sourceExit,null);assert.deepEqual(source.calls.slice(sourceCalls),[],'a late nested-space exit cannot repaint the source-rule destination');
+  const successful=nestedSpaceNavigationHarness();successful.oc.stack=[];
+  assert.equal(await successful.sandbox.leaveFocus(),successful.oc.navigationSequence,'successful shipped leaveFocus returns the accepted navigation token');
+  const blocked=nestedSpaceNavigationHarness();blocked.oc.busy=true;
+  const beforeBlocked=JSON.stringify({oc:blocked.oc,fe:blocked.sandbox.fe});
+  assert.throws(()=>blocked.sandbox.commitSourceCanvasNavigation(),/請先完成/);
+  assert.equal(blocked.oc.navigationSequence,0,'blocked source navigation leaves the current intent intact');
+  assert.equal(JSON.stringify({oc:blocked.oc,fe:blocked.sandbox.fe}),beforeBlocked,'blocked source navigation does not change focus, stack, cache or presentation');
 });
 const node=(key,n=1)=>({key,definitionFingerprint:hash(n),valueFingerprint:hash(n),label:key});
 const edge=(from,to,relation='dimension',field='A',active=true)=>({from,to,relation,field,active});

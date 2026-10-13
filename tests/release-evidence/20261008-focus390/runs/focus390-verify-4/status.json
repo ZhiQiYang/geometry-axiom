@@ -1,0 +1,1274 @@
+{
+  "mode": "verify",
+  "url": "http://127.0.0.1:8907/",
+  "cdpPort": 9507,
+  "profile": "<local-user>\\AppData\\Local\\Temp\\geometry-focus390-20261008\\chrome-profile-verify-4",
+  "out": "<local-user>\\AppData\\Local\\Temp\\geometry-aux-20261008\\focus390-verify-4",
+  "startedAt": "2026-10-08T12:31:54.703Z",
+  "cases": {
+    "reach": {
+      "status": "reached",
+      "boundaryId": "1",
+      "surface": "1"
+    },
+    "desktopClick": {
+      "status": "focus-kept-same-node",
+      "before": {
+        "name": "",
+        "exists": true,
+        "visible": true,
+        "born": "",
+        "hiddenLabel": false,
+        "value": "spec:主支中線",
+        "disabled": false,
+        "rect": {
+          "x": 1066,
+          "y": 405.890625,
+          "w": 155,
+          "h": 24.84375
+        },
+        "hit": "INPUT#refGuideExpr true",
+        "hitIsInput": true,
+        "stack": [
+          "INPUT#refGuideExpr.",
+          "LABEL#refGuideExprLabel.",
+          "DIV#.inspector-block",
+          "SECTION#.",
+          "DIV#.",
+          "DIV#faceInspectorContent."
+        ],
+        "active": "SELECT#refGuideMode",
+        "scroll": {
+          "pane": 0,
+          "parent": 0,
+          "x": 0,
+          "y": 0
+        },
+        "inner": 1280,
+        "inflight": 0
+      },
+      "after": {
+        "name": "",
+        "exists": true,
+        "visible": true,
+        "born": "armed",
+        "hiddenLabel": false,
+        "value": "spec:主支中線",
+        "disabled": false,
+        "rect": {
+          "x": 1066,
+          "y": 405.890625,
+          "w": 155,
+          "h": 24.84375
+        },
+        "hit": "INPUT#refGuideExpr true",
+        "hitIsInput": true,
+        "stack": [
+          "INPUT#refGuideExpr.",
+          "LABEL#refGuideExprLabel.",
+          "DIV#.inspector-block",
+          "SECTION#.",
+          "DIV#.",
+          "DIV#faceInspectorContent."
+        ],
+        "active": "INPUT#refGuideExpr",
+        "scroll": {
+          "pane": 0,
+          "parent": 0,
+          "x": 0,
+          "y": 0
+        },
+        "inner": 1280,
+        "inflight": 0
+      },
+      "trace": [
+        {
+          "k": "focusout",
+          "id": "refGuideMode",
+          "tag": "SELECT",
+          "t": 10522
+        },
+        {
+          "k": "focusin",
+          "id": "refGuideExpr",
+          "tag": "INPUT",
+          "t": 10522
+        }
+      ],
+      "box": [
+        {
+          "k": "status",
+          "msg": "面 1 · 選取",
+          "t": 1791462725434
+        },
+        {
+          "k": "click",
+          "el": "button.fi-tab[data-fi-tab=\"components\"] < nav#faceInspectorTabs",
+          "text": "構件",
+          "x": 1149.25,
+          "y": 138.6953125,
+          "t": 1791462725472
+        },
+        {
+          "k": "api",
+          "cmd": "source-inspect",
+          "ok": true,
+          "ms": 17,
+          "t": 1791462725549
+        },
+        {
+          "k": "api",
+          "cmd": "grid-query grid 1 rect -259 -759 4259 4094 mode sample limit 64",
+          "ok": true,
+          "ms": 149,
+          "t": 1791462725680
+        },
+        {
+          "k": "api",
+          "cmd": "grid-rule-query grid 1 rule 1 rect -259 -759 4259 4094 mode sample limit 32",
+          "ok": true,
+          "ms": 260,
+          "t": 1791462725809
+        },
+        {
+          "k": "click",
+          "el": "select#refGuideMode",
+          "text": "選擇位置來源進階：完整引用式",
+          "x": 1183.75,
+          "y": 391.890625,
+          "t": 1791462725815
+        },
+        {
+          "k": "api",
+          "cmd": "source-inspect",
+          "ok": true,
+          "ms": 24,
+          "t": 1791462725833
+        },
+        {
+          "k": "key",
+          "key": "Home",
+          "el": "select#refGuideMode",
+          "t": 1791462725999
+        },
+        {
+          "k": "key",
+          "key": "ArrowDown",
+          "el": "select#refGuideMode",
+          "t": 1791462726002
+        },
+        {
+          "k": "change",
+          "el": "select#refGuideMode",
+          "value": "advanced",
+          "t": 1791462726006
+        },
+        {
+          "k": "key",
+          "key": "Enter",
+          "el": "select#refGuideMode",
+          "t": 1791462726025
+        },
+        {
+          "k": "click",
+          "el": "input#refGuideExpr",
+          "text": "spec:主支中線",
+          "x": 1143.5,
+          "y": 418.3125,
+          "t": 1791462726038
+        }
+      ]
+    },
+    "desktopQuery": {
+      "status": "focus-restored",
+      "prep": {
+        "name": "",
+        "exists": true,
+        "visible": true,
+        "born": "armed",
+        "hiddenLabel": false,
+        "value": "spec:主支中線",
+        "disabled": false,
+        "rect": {
+          "x": 1066,
+          "y": 405.890625,
+          "w": 155,
+          "h": 24.84375
+        },
+        "hit": "INPUT#refGuideExpr true",
+        "hitIsInput": true,
+        "stack": [
+          "INPUT#refGuideExpr.",
+          "LABEL#refGuideExprLabel.",
+          "DIV#.inspector-block",
+          "SECTION#.",
+          "DIV#.",
+          "DIV#faceInspectorContent."
+        ],
+        "active": "SELECT#refGuideMode",
+        "scroll": {
+          "pane": 0,
+          "parent": 0,
+          "x": 0,
+          "y": 0
+        },
+        "inner": 1280,
+        "inflight": 0
+      },
+      "mid": {
+        "name": "",
+        "exists": true,
+        "visible": true,
+        "born": "armed",
+        "hiddenLabel": false,
+        "value": "spec:主支中線",
+        "disabled": false,
+        "rect": {
+          "x": 1066,
+          "y": 405.890625,
+          "w": 155,
+          "h": 24.84375
+        },
+        "hit": "INPUT#refGuideExpr true",
+        "hitIsInput": true,
+        "stack": [
+          "INPUT#refGuideExpr.",
+          "LABEL#refGuideExprLabel.",
+          "DIV#.inspector-block",
+          "SECTION#.",
+          "DIV#.",
+          "DIV#faceInspectorContent."
+        ],
+        "active": "SELECT#refGuideMode",
+        "scroll": {
+          "pane": 0,
+          "parent": 0,
+          "x": 0,
+          "y": 0
+        },
+        "inner": 1280,
+        "inflight": 1
+      },
+      "after": {
+        "name": "",
+        "exists": true,
+        "visible": true,
+        "born": "",
+        "hiddenLabel": false,
+        "value": "spec:主支中線",
+        "disabled": false,
+        "rect": {
+          "x": 1066,
+          "y": 405.890625,
+          "w": 155,
+          "h": 24.84375
+        },
+        "hit": "INPUT#refGuideExpr true",
+        "hitIsInput": true,
+        "stack": [
+          "INPUT#refGuideExpr.",
+          "LABEL#refGuideExprLabel.",
+          "DIV#.inspector-block",
+          "SECTION#.",
+          "DIV#.",
+          "DIV#faceInspectorContent."
+        ],
+        "active": "INPUT#refGuideExpr",
+        "scroll": {
+          "pane": 0,
+          "parent": 0,
+          "x": 0,
+          "y": 0
+        },
+        "inner": 1280,
+        "inflight": 0
+      },
+      "trace": [
+        {
+          "k": "query-start",
+          "cmd": "grid-rule-query grid 1 rule 1 rect -517 -759 4000 4094 mode sample limit 32",
+          "t": 12195
+        },
+        {
+          "k": "focusout",
+          "id": "refGuideMode",
+          "tag": "SELECT",
+          "t": 12205
+        },
+        {
+          "k": "focusin",
+          "id": "refGuideExpr",
+          "tag": "INPUT",
+          "t": 12205
+        },
+        {
+          "k": "query-end",
+          "ok": true,
+          "t": 12356
+        },
+        {
+          "k": "render-before",
+          "active": "refGuideExpr",
+          "born": "armed",
+          "hidden": false,
+          "t": 12380
+        },
+        {
+          "k": "focusout",
+          "id": "refGuideExpr",
+          "tag": "INPUT",
+          "t": 12390
+        },
+        {
+          "k": "focusin",
+          "id": "refGuideExpr",
+          "tag": "INPUT",
+          "t": 12408
+        },
+        {
+          "k": "render-after",
+          "active": "refGuideExpr",
+          "same": false,
+          "born": "",
+          "hidden": false,
+          "rects": 1,
+          "t": 12413
+        }
+      ]
+    },
+    "narrowClick": {
+      "status": "focus-kept-same-node",
+      "before": {
+        "name": "",
+        "exists": true,
+        "visible": true,
+        "born": "",
+        "hiddenLabel": false,
+        "value": "spec:主支中線",
+        "disabled": false,
+        "rect": {
+          "x": 176,
+          "y": 458.5,
+          "w": 155,
+          "h": 44
+        },
+        "hit": "INPUT#refGuideExpr true",
+        "hitIsInput": true,
+        "stack": [
+          "INPUT#refGuideExpr.",
+          "LABEL#refGuideExprLabel.",
+          "DIV#.inspector-block",
+          "SECTION#.",
+          "DIV#.",
+          "DIV#faceInspectorContent."
+        ],
+        "active": "SELECT#refGuideMode",
+        "scroll": {
+          "pane": 0,
+          "parent": 64,
+          "x": 0,
+          "y": 0
+        },
+        "inner": 390,
+        "inflight": 0
+      },
+      "after": {
+        "name": "",
+        "exists": true,
+        "visible": true,
+        "born": "armed",
+        "hiddenLabel": false,
+        "value": "spec:主支中線",
+        "disabled": false,
+        "rect": {
+          "x": 176,
+          "y": 458.5,
+          "w": 155,
+          "h": 44
+        },
+        "hit": "INPUT#refGuideExpr true",
+        "hitIsInput": true,
+        "stack": [
+          "INPUT#refGuideExpr.",
+          "LABEL#refGuideExprLabel.",
+          "DIV#.inspector-block",
+          "SECTION#.",
+          "DIV#.",
+          "DIV#faceInspectorContent."
+        ],
+        "active": "INPUT#refGuideExpr",
+        "scroll": {
+          "pane": 0,
+          "parent": 64,
+          "x": 0,
+          "y": 0
+        },
+        "inner": 390,
+        "inflight": 0
+      },
+      "trace": [
+        {
+          "k": "focusout",
+          "id": "refGuideMode",
+          "tag": "SELECT",
+          "t": 14559
+        },
+        {
+          "k": "focusin",
+          "id": "refGuideExpr",
+          "tag": "INPUT",
+          "t": 14559
+        }
+      ],
+      "box": [
+        {
+          "k": "click",
+          "el": "input#refGuideExpr",
+          "text": "spec:主支中線",
+          "x": 1143.5,
+          "y": 418.3125,
+          "t": 1791462727721
+        },
+        {
+          "k": "api",
+          "cmd": "grid-rule-query grid 1 rule 1 rect -517 -759 4000 4094 mode sample limit 32",
+          "ok": true,
+          "ms": 162,
+          "t": 1791462727874
+        },
+        {
+          "k": "api",
+          "cmd": "source-inspect",
+          "ok": true,
+          "ms": 7,
+          "t": 1791462727881
+        },
+        {
+          "k": "api",
+          "cmd": "grid-query grid 1 rect -517 -759 4000 4094 mode sample limit 64",
+          "ok": true,
+          "ms": 154,
+          "t": 1791462728124
+        },
+        {
+          "k": "click",
+          "el": "svg < span[data-icon=\"inspect\"] < button#workspaceToggleRight",
+          "text": "",
+          "x": 178,
+          "y": 31,
+          "t": 1791462729581
+        },
+        {
+          "k": "api",
+          "cmd": "source-inspect",
+          "ok": true,
+          "ms": 27,
+          "t": 1791462729604
+        },
+        {
+          "k": "api",
+          "cmd": "grid-query grid 1 rect -517 -3017 4517 6610 mode sample limit 64",
+          "ok": true,
+          "ms": 156,
+          "t": 1791462729732
+        },
+        {
+          "k": "click",
+          "el": "button.fi-tab.active[data-fi-tab=\"components\"] < nav#faceInspectorTabs",
+          "text": "構件",
+          "x": 259.25,
+          "y": 210,
+          "t": 1791462729761
+        },
+        {
+          "k": "api",
+          "cmd": "grid-rule-query grid 1 rule 1 rect -517 -3017 4517 6610 mode sample limit 32",
+          "ok": true,
+          "ms": 261,
+          "t": 1791462729865
+        },
+        {
+          "k": "api",
+          "cmd": "source-inspect",
+          "ok": true,
+          "ms": 8,
+          "t": 1791462729873
+        },
+        {
+          "k": "click",
+          "el": "select#refGuideMode",
+          "text": "選擇位置來源進階：完整引用式",
+          "x": 293.75,
+          "y": 436.5,
+          "t": 1791462729934
+        },
+        {
+          "k": "click",
+          "el": "input#refGuideExpr",
+          "text": "spec:主支中線",
+          "x": 253.5,
+          "y": 480.5,
+          "t": 1791462730075
+        }
+      ]
+    },
+    "narrowQuery": {
+      "status": "focus-restored",
+      "prep": {
+        "name": "",
+        "exists": true,
+        "visible": true,
+        "born": "armed",
+        "hiddenLabel": false,
+        "value": "spec:主支中線",
+        "disabled": false,
+        "rect": {
+          "x": 176,
+          "y": 458.5,
+          "w": 155,
+          "h": 44
+        },
+        "hit": "INPUT#refGuideExpr true",
+        "hitIsInput": true,
+        "stack": [
+          "INPUT#refGuideExpr.",
+          "LABEL#refGuideExprLabel.",
+          "DIV#.inspector-block",
+          "SECTION#.",
+          "DIV#.",
+          "DIV#faceInspectorContent."
+        ],
+        "active": "SELECT#refGuideMode",
+        "scroll": {
+          "pane": 0,
+          "parent": 64,
+          "x": 0,
+          "y": 0
+        },
+        "inner": 390,
+        "inflight": 0
+      },
+      "mid": {
+        "name": "",
+        "exists": true,
+        "visible": true,
+        "born": "armed",
+        "hiddenLabel": false,
+        "value": "spec:主支中線",
+        "disabled": false,
+        "rect": {
+          "x": 176,
+          "y": 458.5,
+          "w": 155,
+          "h": 44
+        },
+        "hit": "INPUT#refGuideExpr true",
+        "hitIsInput": true,
+        "stack": [
+          "INPUT#refGuideExpr.",
+          "LABEL#refGuideExprLabel.",
+          "DIV#.inspector-block",
+          "SECTION#.",
+          "DIV#.",
+          "DIV#faceInspectorContent."
+        ],
+        "active": "SELECT#refGuideMode",
+        "scroll": {
+          "pane": 0,
+          "parent": 64,
+          "x": 0,
+          "y": 0
+        },
+        "inner": 390,
+        "inflight": 1
+      },
+      "after": {
+        "name": "",
+        "exists": true,
+        "visible": true,
+        "born": "",
+        "hiddenLabel": false,
+        "value": "spec:主支中線",
+        "disabled": false,
+        "rect": {
+          "x": 176,
+          "y": 458.5,
+          "w": 155,
+          "h": 44
+        },
+        "hit": "INPUT#refGuideExpr true",
+        "hitIsInput": true,
+        "stack": [
+          "INPUT#refGuideExpr.",
+          "LABEL#refGuideExprLabel.",
+          "DIV#.inspector-block",
+          "SECTION#.",
+          "DIV#.",
+          "DIV#faceInspectorContent."
+        ],
+        "active": "INPUT#refGuideExpr",
+        "scroll": {
+          "pane": 0,
+          "parent": 64,
+          "x": 0,
+          "y": 0
+        },
+        "inner": 390,
+        "inflight": 0
+      },
+      "trace": [
+        {
+          "k": "query-start",
+          "cmd": "grid-rule-query grid 1 rule 1 rect -1033 -3017 4000 6610 mode sample limit 32",
+          "t": 16340
+        },
+        {
+          "k": "focusout",
+          "id": "refGuideMode",
+          "tag": "SELECT",
+          "t": 16365
+        },
+        {
+          "k": "focusin",
+          "id": "refGuideExpr",
+          "tag": "INPUT",
+          "t": 16365
+        },
+        {
+          "k": "query-end",
+          "ok": true,
+          "t": 16475
+        },
+        {
+          "k": "render-before",
+          "active": "refGuideExpr",
+          "born": "armed",
+          "hidden": false,
+          "t": 16493
+        },
+        {
+          "k": "focusout",
+          "id": "refGuideExpr",
+          "tag": "INPUT",
+          "t": 16501
+        },
+        {
+          "k": "focusin",
+          "id": "refGuideExpr",
+          "tag": "INPUT",
+          "t": 16511
+        },
+        {
+          "k": "render-after",
+          "active": "refGuideExpr",
+          "same": false,
+          "born": "",
+          "hidden": false,
+          "rects": 1,
+          "t": 16513
+        }
+      ]
+    },
+    "narrowTabEnter": {
+      "status": "tab-enter-kept-input",
+      "rows": {
+        "390": {
+          "status": "tab-enter-kept-input",
+          "before": {
+            "name": "",
+            "exists": true,
+            "visible": true,
+            "born": "",
+            "hiddenLabel": false,
+            "value": "spec:主支中線",
+            "disabled": false,
+            "rect": {
+              "x": 176,
+              "y": 458.5,
+              "w": 155,
+              "h": 44
+            },
+            "hit": "INPUT#refGuideExpr true",
+            "hitIsInput": true,
+            "stack": [
+              "INPUT#refGuideExpr.",
+              "LABEL#refGuideExprLabel.",
+              "DIV#.inspector-block",
+              "SECTION#.",
+              "DIV#.",
+              "DIV#faceInspectorContent."
+            ],
+            "active": "SELECT#refGuideMode",
+            "scroll": {
+              "pane": 0,
+              "parent": 64,
+              "x": 0,
+              "y": 0
+            },
+            "inner": 390,
+            "inflight": 0
+          },
+          "afterTab": {
+            "name": "",
+            "exists": true,
+            "visible": true,
+            "born": "",
+            "hiddenLabel": false,
+            "value": "spec:主支中線",
+            "disabled": false,
+            "rect": {
+              "x": 176,
+              "y": 458.5,
+              "w": 155,
+              "h": 44
+            },
+            "hit": "INPUT#refGuideExpr true",
+            "hitIsInput": true,
+            "stack": [
+              "INPUT#refGuideExpr.",
+              "LABEL#refGuideExprLabel.",
+              "DIV#.inspector-block",
+              "SECTION#.",
+              "DIV#.",
+              "DIV#faceInspectorContent."
+            ],
+            "active": "INPUT#refGuideExpr",
+            "scroll": {
+              "pane": 0,
+              "parent": 64,
+              "x": 0,
+              "y": 0
+            },
+            "inner": 390,
+            "inflight": 0
+          },
+          "afterEnter": {
+            "name": "",
+            "exists": true,
+            "visible": true,
+            "born": "",
+            "hiddenLabel": false,
+            "value": "spec:主支中線",
+            "disabled": false,
+            "rect": {
+              "x": 176,
+              "y": 458.5,
+              "w": 155,
+              "h": 44
+            },
+            "hit": "INPUT#refGuideExpr true",
+            "hitIsInput": true,
+            "stack": [
+              "INPUT#refGuideExpr.",
+              "LABEL#refGuideExprLabel.",
+              "DIV#.inspector-block",
+              "SECTION#.",
+              "DIV#.",
+              "DIV#faceInspectorContent."
+            ],
+            "active": "INPUT#refGuideExpr",
+            "scroll": {
+              "pane": 0,
+              "parent": 64,
+              "x": 0,
+              "y": 0
+            },
+            "inner": 390,
+            "inflight": 0
+          },
+          "afterNext": {
+            "name": "",
+            "exists": true,
+            "visible": true,
+            "born": "",
+            "hiddenLabel": false,
+            "value": "spec:主支中線",
+            "disabled": false,
+            "rect": {
+              "x": 176,
+              "y": 458.5,
+              "w": 155,
+              "h": 44
+            },
+            "hit": "INPUT#refGuideExpr true",
+            "hitIsInput": true,
+            "stack": [
+              "INPUT#refGuideExpr.",
+              "LABEL#refGuideExprLabel.",
+              "DIV#.inspector-block",
+              "SECTION#.",
+              "DIV#.",
+              "DIV#faceInspectorContent."
+            ],
+            "active": "BUTTON#refGuideCreate",
+            "scroll": {
+              "pane": 0,
+              "parent": 64,
+              "x": 0,
+              "y": 0
+            },
+            "inner": 390,
+            "inflight": 0
+          },
+          "trace": [
+            {
+              "k": "focusout",
+              "id": "refGuideMode",
+              "tag": "SELECT",
+              "t": 20168
+            },
+            {
+              "k": "focusin",
+              "id": "refGuideExpr",
+              "tag": "INPUT",
+              "t": 20168
+            },
+            {
+              "k": "focusout",
+              "id": "refGuideExpr",
+              "tag": "INPUT",
+              "t": 20707
+            },
+            {
+              "k": "focusin",
+              "id": "refGuideCreate",
+              "tag": "BUTTON",
+              "t": 20708
+            }
+          ]
+        },
+        "1280": {
+          "status": "tab-enter-kept-input",
+          "before": {
+            "name": "",
+            "exists": true,
+            "visible": true,
+            "born": "",
+            "hiddenLabel": false,
+            "value": "spec:主支中線",
+            "disabled": false,
+            "rect": {
+              "x": 1066,
+              "y": 405.890625,
+              "w": 155,
+              "h": 24.84375
+            },
+            "hit": "INPUT#refGuideExpr true",
+            "hitIsInput": true,
+            "stack": [
+              "INPUT#refGuideExpr.",
+              "LABEL#refGuideExprLabel.",
+              "DIV#.inspector-block",
+              "SECTION#.",
+              "DIV#.",
+              "DIV#faceInspectorContent."
+            ],
+            "active": "SELECT#refGuideMode",
+            "scroll": {
+              "pane": 0,
+              "parent": 0,
+              "x": 0,
+              "y": 0
+            },
+            "inner": 1280,
+            "inflight": 0
+          },
+          "afterTab": {
+            "name": "",
+            "exists": true,
+            "visible": true,
+            "born": "",
+            "hiddenLabel": false,
+            "value": "spec:主支中線",
+            "disabled": false,
+            "rect": {
+              "x": 1066,
+              "y": 405.890625,
+              "w": 155,
+              "h": 24.84375
+            },
+            "hit": "INPUT#refGuideExpr true",
+            "hitIsInput": true,
+            "stack": [
+              "INPUT#refGuideExpr.",
+              "LABEL#refGuideExprLabel.",
+              "DIV#.inspector-block",
+              "SECTION#.",
+              "DIV#.",
+              "DIV#faceInspectorContent."
+            ],
+            "active": "INPUT#refGuideExpr",
+            "scroll": {
+              "pane": 0,
+              "parent": 0,
+              "x": 0,
+              "y": 0
+            },
+            "inner": 1280,
+            "inflight": 0
+          },
+          "afterEnter": {
+            "name": "",
+            "exists": true,
+            "visible": true,
+            "born": "",
+            "hiddenLabel": false,
+            "value": "spec:主支中線",
+            "disabled": false,
+            "rect": {
+              "x": 1066,
+              "y": 405.890625,
+              "w": 155,
+              "h": 24.84375
+            },
+            "hit": "INPUT#refGuideExpr true",
+            "hitIsInput": true,
+            "stack": [
+              "INPUT#refGuideExpr.",
+              "LABEL#refGuideExprLabel.",
+              "DIV#.inspector-block",
+              "SECTION#.",
+              "DIV#.",
+              "DIV#faceInspectorContent."
+            ],
+            "active": "INPUT#refGuideExpr",
+            "scroll": {
+              "pane": 0,
+              "parent": 0,
+              "x": 0,
+              "y": 0
+            },
+            "inner": 1280,
+            "inflight": 0
+          },
+          "afterNext": {
+            "name": "",
+            "exists": true,
+            "visible": true,
+            "born": "",
+            "hiddenLabel": false,
+            "value": "spec:主支中線",
+            "disabled": false,
+            "rect": {
+              "x": 1066,
+              "y": 405.890625,
+              "w": 155,
+              "h": 24.84375
+            },
+            "hit": "INPUT#refGuideExpr true",
+            "hitIsInput": true,
+            "stack": [
+              "INPUT#refGuideExpr.",
+              "LABEL#refGuideExprLabel.",
+              "DIV#.inspector-block",
+              "SECTION#.",
+              "DIV#.",
+              "DIV#faceInspectorContent."
+            ],
+            "active": "BUTTON#refGuideCreate",
+            "scroll": {
+              "pane": 0,
+              "parent": 0,
+              "x": 0,
+              "y": 0
+            },
+            "inner": 1280,
+            "inflight": 0
+          },
+          "trace": [
+            {
+              "k": "focusout",
+              "id": "refGuideMode",
+              "tag": "SELECT",
+              "t": 18701
+            },
+            {
+              "k": "focusin",
+              "id": "refGuideExpr",
+              "tag": "INPUT",
+              "t": 18702
+            },
+            {
+              "k": "focusout",
+              "id": "refGuideExpr",
+              "tag": "INPUT",
+              "t": 19215
+            },
+            {
+              "k": "focusin",
+              "id": "refGuideCreate",
+              "tag": "BUTTON",
+              "t": 19215
+            }
+          ]
+        }
+      }
+    },
+    "staleReply": {
+      "status": "kept-later-target",
+      "focused": {
+        "name": "",
+        "exists": true,
+        "visible": true,
+        "born": "armed",
+        "hiddenLabel": false,
+        "value": "spec:主支中線",
+        "disabled": false,
+        "rect": {
+          "x": 176,
+          "y": 458.5,
+          "w": 155,
+          "h": 44
+        },
+        "hit": "INPUT#refGuideExpr true",
+        "hitIsInput": true,
+        "stack": [
+          "INPUT#refGuideExpr.",
+          "LABEL#refGuideExprLabel.",
+          "DIV#.inspector-block",
+          "SECTION#.",
+          "DIV#.",
+          "DIV#faceInspectorContent."
+        ],
+        "active": "INPUT#refGuideExpr",
+        "scroll": {
+          "pane": 0,
+          "parent": 64,
+          "x": 0,
+          "y": 0
+        },
+        "inner": 390,
+        "inflight": 1
+      },
+      "moved": {
+        "name": "",
+        "exists": true,
+        "visible": true,
+        "born": "armed",
+        "hiddenLabel": false,
+        "value": "spec:主支中線",
+        "disabled": false,
+        "rect": {
+          "x": 176,
+          "y": 458.5,
+          "w": 155,
+          "h": 44
+        },
+        "hit": "INPUT#refGuideExpr true",
+        "hitIsInput": true,
+        "stack": [
+          "INPUT#refGuideExpr.",
+          "LABEL#refGuideExprLabel.",
+          "DIV#.inspector-block",
+          "SECTION#.",
+          "DIV#.",
+          "DIV#faceInspectorContent."
+        ],
+        "active": "BUTTON#refGuideCreate",
+        "scroll": {
+          "pane": 0,
+          "parent": 64,
+          "x": 0,
+          "y": 0
+        },
+        "inner": 390,
+        "inflight": 1
+      },
+      "after": {
+        "name": "",
+        "exists": true,
+        "visible": true,
+        "born": "",
+        "hiddenLabel": false,
+        "value": "spec:主支中線",
+        "disabled": false,
+        "rect": {
+          "x": 176,
+          "y": 458.5,
+          "w": 155,
+          "h": 44
+        },
+        "hit": "INPUT#refGuideExpr true",
+        "hitIsInput": true,
+        "stack": [
+          "INPUT#refGuideExpr.",
+          "LABEL#refGuideExprLabel.",
+          "DIV#.inspector-block",
+          "SECTION#.",
+          "DIV#.",
+          "DIV#faceInspectorContent."
+        ],
+        "active": "BUTTON#refGuideCreate",
+        "scroll": {
+          "pane": 0,
+          "parent": 64,
+          "x": 0,
+          "y": 0
+        },
+        "inner": 390,
+        "inflight": 0
+      },
+      "trace": [
+        {
+          "k": "query-end",
+          "ok": true,
+          "t": 22110
+        },
+        {
+          "k": "render-before",
+          "active": "refGuideCreate",
+          "born": "armed",
+          "hidden": false,
+          "t": 22127
+        },
+        {
+          "k": "focusout",
+          "id": "refGuideCreate",
+          "tag": "BUTTON",
+          "t": 22134
+        },
+        {
+          "k": "focusin",
+          "id": "refGuideCreate",
+          "tag": "BUTTON",
+          "t": 22143
+        },
+        {
+          "k": "render-after",
+          "active": "refGuideCreate",
+          "same": false,
+          "born": "",
+          "hidden": false,
+          "rects": 1,
+          "t": 22147
+        }
+      ]
+    },
+    "editDuringWait": {
+      "status": "kept-edit-and-later-focus",
+      "moved": {
+        "name": "",
+        "exists": true,
+        "visible": true,
+        "born": "",
+        "hiddenLabel": false,
+        "value": "changed-while-waiting",
+        "disabled": false,
+        "rect": {
+          "x": 176,
+          "y": 458.5,
+          "w": 155,
+          "h": 44
+        },
+        "hit": "INPUT#refGuideExpr true",
+        "hitIsInput": true,
+        "stack": [
+          "INPUT#refGuideExpr.",
+          "LABEL#refGuideExprLabel.",
+          "DIV#.inspector-block",
+          "SECTION#.",
+          "DIV#.",
+          "DIV#faceInspectorContent."
+        ],
+        "active": "BUTTON#refGuideCreate",
+        "scroll": {
+          "pane": 0,
+          "parent": 64,
+          "x": 0,
+          "y": 0
+        },
+        "inner": 390,
+        "inflight": 1
+      },
+      "after": {
+        "name": "",
+        "exists": true,
+        "visible": true,
+        "born": "",
+        "hiddenLabel": false,
+        "value": "changed-while-waiting",
+        "disabled": false,
+        "rect": {
+          "x": 176,
+          "y": 458.5,
+          "w": 155,
+          "h": 44
+        },
+        "hit": "INPUT#refGuideExpr true",
+        "hitIsInput": true,
+        "stack": [
+          "INPUT#refGuideExpr.",
+          "LABEL#refGuideExprLabel.",
+          "DIV#.inspector-block",
+          "SECTION#.",
+          "DIV#.",
+          "DIV#faceInspectorContent."
+        ],
+        "active": "BUTTON#refGuideCreate",
+        "scroll": {
+          "pane": 0,
+          "parent": 64,
+          "x": 0,
+          "y": 0
+        },
+        "inner": 390,
+        "inflight": 0
+      }
+    },
+    "leaveDuringWait": {
+      "status": "left-before-reply",
+      "before": {
+        "name": "",
+        "exists": true,
+        "visible": true,
+        "born": "",
+        "hiddenLabel": false,
+        "value": "changed-while-waiting",
+        "disabled": false,
+        "rect": {
+          "x": 176,
+          "y": 458.5,
+          "w": 155,
+          "h": 44
+        },
+        "hit": "INPUT#refGuideExpr true",
+        "hitIsInput": true,
+        "stack": [
+          "INPUT#refGuideExpr.",
+          "LABEL#refGuideExprLabel.",
+          "DIV#.inspector-block",
+          "SECTION#.",
+          "DIV#.",
+          "DIV#faceInspectorContent."
+        ],
+        "active": "SELECT#refGuideMode",
+        "scroll": {
+          "pane": 0,
+          "parent": 64,
+          "x": 0,
+          "y": 0
+        },
+        "inner": 390,
+        "inflight": 1
+      },
+      "active": "",
+      "focus": null
+    }
+  },
+  "reached": [
+    "reach",
+    "desktopClick",
+    "desktopQuery",
+    "narrowClick",
+    "narrowQuery",
+    "narrowTabEnter",
+    "staleReply",
+    "editDuringWait",
+    "leaveDuringWait"
+  ],
+  "notReached": [],
+  "error": null,
+  "browserPid": 13056,
+  "exitCode": 0,
+  "endedAt": "2026-10-08T12:32:23.325Z"
+}

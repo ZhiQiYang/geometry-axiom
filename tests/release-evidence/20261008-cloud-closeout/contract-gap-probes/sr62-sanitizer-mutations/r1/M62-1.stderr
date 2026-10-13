@@ -1,0 +1,17 @@
+test_invalid_divisions_source_and_cell_guards_refuse_without_partial_state (tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_invalid_divisions_source_and_cell_guards_refuse_without_partial_state) ... 
+  test_invalid_divisions_source_and_cell_guards_refuse_without_partial_state (tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_invalid_divisions_source_and_cell_guards_refuse_without_partial_state) (divisions=(7, 2)) ... FAIL
+
+======================================================================
+FAIL: test_invalid_divisions_source_and_cell_guards_refuse_without_partial_state (tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_invalid_divisions_source_and_cell_guards_refuse_without_partial_state) (divisions=(7, 2))
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source/tests/test_grid_subdivision_oracle.py", line 379, in test_invalid_divisions_source_and_cell_guards_refuse_without_partial_state
+    self.reject(self.rule(divisions=divisions), reason)
+  File "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source/tests/test_grid_subdivision_oracle.py", line 189, in reject
+    self.assertFalse(result["preview"]["valid"], result)
+AssertionError: True is not false : {'ok': False, 'error': 'line 4: I8a: impact preview required; inspect preview, then confirm token (World unchanged)', 'preview': {'token': 1, 'valid': True, 'command': 'grid-source-rule 0 create name-hex 6f7261636c652072756c65 selector all-cells divide 7 2', 'timbers': [], 'guides': [], 'grids': [], 'datums': [], 'gridSystems': [{'id': 0, 'before': {'kind': 'grid-system', 'id': 0, 'name': 'oracle 0', 'mode': 'infinite', 'mainAlong': None, 'uDefinition': {'source': 'repeat', 'phase': 0, 'step': 600}, 'vDefinition': {'source': 'repeat', 'phase': 0, 'step': 400}, 'nextRuleKey': 1, 'rules': [], 'applications': [], 'bindings': [], 'cx': 0, 'cy': 0, 'hasPos': False}, 'after': {'kind': 'grid-system', 'id': 0, 'name': 'oracle 0', 'mode': 'infinite', 'mainAlong': None, 'uDefinition': {'source': 'repeat', 'phase': 0, 'step': 600}, 'vDefinition': {'source': 'repeat', 'phase': 0, 'step': 400}, 'nextRuleKey': 2, 'rules': [{'ruleKey': 1, 'name': 'oracle rule', 'selector': {'kind': 'all-cells'}, 'divisions': [7, 2]}], 'applications': [], 'bindings': [], 'cx': 0, 'cy': 0, 'hasPos': False}}], 'gridBindings': [], 'boundaries': [], 'assembly': {'before': {'capabilities': ['assembly-rule-authoring/1', 'assembly-timber-generation/1'], 'rules': [], 'bindings': [], 'instances': []}, 'after': {'capabilities': ['assembly-rule-authoring/1', 'assembly-timber-generation/1'], 'rules': [], 'bindings': [], 'instances': []}}, 'sectionProfiles': {'before': {'profiles': [], 'members': [], 'runs': []}, 'after': {'profiles': [], 'members': [], 'runs': []}, 'warnings': [], 'diagnosticsComplete': True, 'violations': []}, 'violations': []}}
+
+----------------------------------------------------------------------
+Ran 1 test in 0.280s
+
+FAILED (failures=1)

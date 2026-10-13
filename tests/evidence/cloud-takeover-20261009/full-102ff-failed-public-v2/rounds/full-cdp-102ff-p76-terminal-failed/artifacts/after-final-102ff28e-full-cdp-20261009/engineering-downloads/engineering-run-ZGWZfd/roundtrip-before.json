@@ -1,0 +1,1469 @@
+{
+  "scene": "requires engineering-spec/1\nengineering material eyJmaW5nZXJwcmludCI6ImNlNmVlN2Y0ZTQ5NGVlY2Y0NjYxZDA1MTc3YmM3MjgzZmQzMWYyMDU0NDcxODkzNTE3NTU4MTRjNmY2YmM5NTYiLCJ2YWx1ZSI6eyJicmFuZCI6bnVsbCwiaWQiOiJtYXRlcmlhbC1mYTZlZWMxOC00MDFiLTQyMTgtYTVmNi0yNTYzMzBmOTNkODIiLCJraW5kIjoicGFuZWwiLCJsZW5ndGgiOjE4MzAsIm1vZGVsIjpudWxsLCJuYW1lIjoi6amX5pS26Z2i5p2QIiwibm90ZXMiOm51bGwsInRoaWNrbmVzcyI6IjYuNSIsInZlcnNpb24iOjEsIndpZHRoIjo5MTV9fQ==\nengineering material eyJmaW5nZXJwcmludCI6IjdkNTlmMDdhNjJhNjFmMTE0M2I5MzBlMjk1Y2QyY2Y2MDAyYzJiNjhlMWI4NmJkOTVjY2ZlOTMxNjY3YjVhYjQiLCJ2YWx1ZSI6eyJBIjoyNywiQiI6MzMsImJyYW5kIjpudWxsLCJpZCI6Im1hdGVyaWFsLWVhMzcxYjdjLWJkNDMtNDhkYi04YjI0LWE3OTA5YmZhNThiYSIsImtpbmQiOiJ0aW1iZXIiLCJtb2RlbCI6bnVsbCwibmFtZSI6Iumpl+aUtuinkuadkCIsIm5vdGVzIjpudWxsLCJ2ZXJzaW9uIjoxfX0=\nengineering material eyJmaW5nZXJwcmludCI6IjI0YzcxMDA3ZmQzNGI0ZTFjNGI2ZjIxZGQ1ZmJkNzY2ZWYwNzk2YmUyNGJjYzM1MDY1MGQ1ZjQ3ZTVlMzRjYWIiLCJ2YWx1ZSI6eyJicmFuZCI6bnVsbCwiaWQiOiJtYXRlcmlhbC1mYTZlZWMxOC00MDFiLTQyMTgtYTVmNi0yNTYzMzBmOTNkODIiLCJraW5kIjoicGFuZWwiLCJsZW5ndGgiOjE4MjAsIm1vZGVsIjpudWxsLCJuYW1lIjoi6amX5pS26Z2i5p2QIiwibm90ZXMiOm51bGwsInRoaWNrbmVzcyI6IjYuNSIsInZlcnNpb24iOjIsIndpZHRoIjo5MTB9fQ==\nengineering method eyJmaW5nZXJwcmludCI6IjU5NzE5ZmM4MzhkMDRkMTU2Y2YwYjhlYWRlMGIzMjVkODlhMjExYTllOGUwYzViNTFiYjI3N2MyNzZkZDMzNjgiLCJ2YWx1ZSI6eyJnYXAiOjMsImlkIjoibWV0aG9kLTI3MDY5NmU4LTM1NTYtNGFkNS05MWY2LWE4Nzg2ZTYyODk0ZSIsImxvbmdBeGlzIjoidiIsIm1haW5BbG9uZyI6InUiLCJuYW1lIjoi6amX5pS25aSp6Iqx5YGa5rOVIiwibm90ZXMiOm51bGwsInBhbmVsIjp7ImlkIjoibWF0ZXJpYWwtZmE2ZWVjMTgtNDAxYi00MjE4LWE1ZjYtMjU2MzMwZjkzZDgyIiwidmVyc2lvbiI6MX0sInJvbGVzIjp7ImJvdW5kYXJ5Ijp7ImlkIjoibWF0ZXJpYWwtZWEzNzFiN2MtYmQ0My00OGRiLThiMjQtYTc5MDliZmE1OGJhIiwidmVyc2lvbiI6MX0sInByaW1hcnkiOm51bGwsInNlY29uZGFyeSI6bnVsbH0sInZlcnNpb24iOjF9fQ==\nengineering method eyJmaW5nZXJwcmludCI6IjY4YTg5MDI0Y2ViZGE5YWVjZWUwZTQwYTdkYmNjNzNkN2UyYjczYTc3OWZmZGY2N2EwYTczZTcwZjE5YTI0ODciLCJ2YWx1ZSI6eyJnYXAiOjQsImlkIjoibWV0aG9kLTI3MDY5NmU4LTM1NTYtNGFkNS05MWY2LWE4Nzg2ZTYyODk0ZSIsImxvbmdBeGlzIjoidiIsIm1haW5BbG9uZyI6InUiLCJuYW1lIjoi6amX5pS25aSp6Iqx5YGa5rOVIiwibm90ZXMiOm51bGwsInBhbmVsIjp7ImlkIjoibWF0ZXJpYWwtZmE2ZWVjMTgtNDAxYi00MjE4LWE1ZjYtMjU2MzMwZjkzZDgyIiwidmVyc2lvbiI6Mn0sInJvbGVzIjp7ImJvdW5kYXJ5Ijp7ImlkIjoibWF0ZXJpYWwtZWEzNzFiN2MtYmQ0My00OGRiLThiMjQtYTc5MDliZmE1OGJhIiwidmVyc2lvbiI6MX0sInByaW1hcnkiOm51bGwsInNlY29uZGFyeSI6bnVsbH0sInZlcnNpb24iOjJ9fQ==\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\nboundary 2 outline 0,0 3000,0 3000,3000 0,3000\nboundary 3 outline 0,0 100000,0 100000,3000 0,3000\nplacement 1 on boundary 1 origin 0 0 2500 u +x v +y\nplacement 2 on boundary 2 origin 6000 0 2500 u +x v +y\nplacement 3 on boundary 3 origin 12000 0 2500 u +x v +y\nspec EngineeringWidth 29\nspec EngineeringCenter 1500\nspec EngineeringStale 100\nengineering application eyJhbmNob3JPcHRpb25zIjp7InUiOnsia2luZCI6ImVkZ2UiLCJzaWRlIjoibWluIn0sInYiOnsia2luZCI6ImVkZ2UiLCJzaWRlIjoibWluIn19LCJpZCI6ImFwcGxpY2F0aW9uLWMyNjQ5MGYzLTRhZmUtNGQ1Yy1iYzRiLWViMTFkODdkOTk3MCIsImxvbmdBeGlzIjpudWxsLCJtYWluQWxvbmciOm51bGwsIm1ldGhvZCI6eyJpZCI6Im1ldGhvZC0yNzA2OTZlOC0zNTU2LTRhZDUtOTFmNi1hODc4NmU2Mjg5NGUiLCJ2ZXJzaW9uIjoyfSwib3ZlcnJpZGVzIjp7ImdhcCI6eyJraW5kIjoibGl0ZXJhbCIsInZhbHVlIjo1fX0sInBsYWNlbWVudF9pZCI6MX0=\nengineering application eyJhbmNob3JPcHRpb25zIjp7InUiOnsia2luZCI6ImVkZ2UiLCJzaWRlIjoibWluIn0sInYiOnsia2luZCI6ImVkZ2UiLCJzaWRlIjoibWluIn19LCJpZCI6ImFwcGxpY2F0aW9uLWRmMGQ0ZjVhLWQ4ODEtNDYyNy05NGZjLTlmMzBjNDk2OGMzOSIsImxvbmdBeGlzIjpudWxsLCJtYWluQWxvbmciOm51bGwsIm1ldGhvZCI6eyJpZCI6Im1ldGhvZC0yNzA2OTZlOC0zNTU2LTRhZDUtOTFmNi1hODc4NmU2Mjg5NGUiLCJ2ZXJzaW9uIjoyfSwib3ZlcnJpZGVzIjp7fSwicGxhY2VtZW50X2lkIjoyfQ==\nengineering grid eyJheGVzIjp7InUiOnsiYW5jaG9yIjowLCJnYXAiOnsib3ZlcnJpZGUiOm51bGwsInNvdXJjZSI6eyJmaWVsZCI6InUuZ2FwIiwiaWQiOiJhcHBsaWNhdGlvbi1jMjY0OTBmMy00YWZlLTRkNWMtYmM0Yi1lYjExZDg3ZDk5NzAiLCJraW5kIjoiYXBwbGljYXRpb24ifX0sImtpbmQiOiJwYW5lbCIsInBhbmVsIjp7Im92ZXJyaWRlIjpudWxsLCJzb3VyY2UiOnsiZmllbGQiOiJ1LnBhbmVsIiwiaWQiOiJhcHBsaWNhdGlvbi1jMjY0OTBmMy00YWZlLTRkNWMtYmM0Yi1lYjExZDg3ZDk5NzAiLCJraW5kIjoiYXBwbGljYXRpb24ifX19LCJ2Ijp7ImFuY2hvciI6MCwiZ2FwIjp7Im92ZXJyaWRlIjpudWxsLCJzb3VyY2UiOnsiZmllbGQiOiJ2LmdhcCIsImlkIjoiYXBwbGljYXRpb24tYzI2NDkwZjMtNGFmZS00ZDVjLWJjNGItZWIxMWQ4N2Q5OTcwIiwia2luZCI6ImFwcGxpY2F0aW9uIn19LCJraW5kIjoicGFuZWwiLCJwYW5lbCI6eyJvdmVycmlkZSI6bnVsbCwic291cmNlIjp7ImZpZWxkIjoidi5wYW5lbCIsImlkIjoiYXBwbGljYXRpb24tYzI2NDkwZjMtNGFmZS00ZDVjLWJjNGItZWIxMWQ4N2Q5OTcwIiwia2luZCI6ImFwcGxpY2F0aW9uIn19fX0sImlkIjowLCJtYWluQWxvbmciOiJ1IiwicGxhY2VtZW50X2lkIjoxfQ==\nengineering grid eyJheGVzIjp7InUiOnsiYW5jaG9yIjowLCJnYXAiOnsib3ZlcnJpZGUiOm51bGwsInNvdXJjZSI6eyJmaWVsZCI6InUuZ2FwIiwiaWQiOiJhcHBsaWNhdGlvbi1kZjBkNGY1YS1kODgxLTQ2MjctOTRmYy05ZjMwYzQ5NjhjMzkiLCJraW5kIjoiYXBwbGljYXRpb24ifX0sImtpbmQiOiJwYW5lbCIsInBhbmVsIjp7Im92ZXJyaWRlIjpudWxsLCJzb3VyY2UiOnsiZmllbGQiOiJ1LnBhbmVsIiwiaWQiOiJhcHBsaWNhdGlvbi1kZjBkNGY1YS1kODgxLTQ2MjctOTRmYy05ZjMwYzQ5NjhjMzkiLCJraW5kIjoiYXBwbGljYXRpb24ifX19LCJ2Ijp7ImFuY2hvciI6MCwiZ2FwIjp7Im92ZXJyaWRlIjpudWxsLCJzb3VyY2UiOnsiZmllbGQiOiJ2LmdhcCIsImlkIjoiYXBwbGljYXRpb24tZGYwZDRmNWEtZDg4MS00NjI3LTk0ZmMtOWYzMGM0OTY4YzM5Iiwia2luZCI6ImFwcGxpY2F0aW9uIn19LCJraW5kIjoicGFuZWwiLCJwYW5lbCI6eyJvdmVycmlkZSI6bnVsbCwic291cmNlIjp7ImZpZWxkIjoidi5wYW5lbCIsImlkIjoiYXBwbGljYXRpb24tZGYwZDRmNWEtZDg4MS00NjI3LTk0ZmMtOWYzMGM0OTY4YzM5Iiwia2luZCI6ImFwcGxpY2F0aW9uIn19fX0sImlkIjoxLCJtYWluQWxvbmciOiJ1IiwicGxhY2VtZW50X2lkIjoyfQ==\nengineering timber eyJBIjp7Im92ZXJyaWRlIjpudWxsLCJzb3VyY2UiOnsiZmllbGQiOiJib3VuZGFyeS5BIiwiaWQiOiJhcHBsaWNhdGlvbi1jMjY0OTBmMy00YWZlLTRkNWMtYmM0Yi1lYjExZDg3ZDk5NzAiLCJraW5kIjoiYXBwbGljYXRpb24ifX0sIkIiOnsib3ZlcnJpZGUiOm51bGwsInNvdXJjZSI6eyJmaWVsZCI6ImJvdW5kYXJ5LkIiLCJpZCI6ImFwcGxpY2F0aW9uLWMyNjQ5MGYzLTRhZmUtNGQ1Yy1iYzRiLWViMTFkODdkOTk3MCIsImtpbmQiOiJhcHBsaWNhdGlvbiJ9fSwiaWQiOjAsInJvbGUiOiJib3VuZGFyeSJ9\ntimber 1 27 33 role boundary\nengineering timber eyJBIjp7Im92ZXJyaWRlIjpudWxsLCJzb3VyY2UiOnsia2luZCI6InNwZWMiLCJuYW1lIjoiRW5naW5lZXJpbmdXaWR0aCJ9fSwiQiI6eyJvdmVycmlkZSI6bnVsbCwic291cmNlIjp7ImZpZWxkIjoiQiIsImlkIjoibWF0ZXJpYWwtZWEzNzFiN2MtYmQ0My00OGRiLThiMjQtYTc5MDliZmE1OGJhIiwia2luZCI6Im1hdGVyaWFsIiwidmVyc2lvbiI6MX19LCJpZCI6MiwicHJpb3JpdHkiOjcsInJvbGUiOiJjdXN0b20ifQ==\nguide 0 1 v spec:EngineeringCenter\nplace 0 on 1 at-face e0 +u +n\n# R18 角材 0: onBoundary=true coversEdge=true boundaryEdge=0\nplace 1 on 1 at-face e2 +u +n\n# R18 角材 1: onBoundary=true coversEdge=true boundaryEdge=2\nplace 2 on 1 at-line guide 0 through 600 +v +n\n# R18 角材 2: onBoundary=false coversEdge=false boundaryEdge=-1\ncanvas-pos boundary 1 60 60\ncanvas-pos boundary 2 440 60\ncanvas-pos boundary 3 60 360\n",
+  "state": {
+    "capabilities": [
+      "engineering-spec/1",
+      "parameters/1",
+      "assembly-rule-authoring/1",
+      "assembly-timber-generation/1",
+      "grid-subdivision-rules/1",
+      "section-profile/1"
+    ],
+    "required_capabilities": [
+      "engineering-spec/1"
+    ],
+    "native_capabilities": [
+      "section-profile-native/1"
+    ],
+    "specs": [
+      {
+        "name": "EngineeringWidth",
+        "value": 29
+      },
+      {
+        "name": "EngineeringCenter",
+        "value": 1500
+      },
+      {
+        "name": "EngineeringStale",
+        "value": 100
+      }
+    ],
+    "materials": [
+      {
+        "brand": null,
+        "id": "material-fa6eec18-401b-4218-a5f6-256330f93d82",
+        "kind": "panel",
+        "length": 1830,
+        "model": null,
+        "name": "驗收面材",
+        "notes": null,
+        "thickness": "6.5",
+        "version": 1,
+        "width": 915,
+        "fingerprint": "ce6ee7f4e494eecf4661d05177bc7283fd31f205447189351755814c6f6bc956",
+        "archived": false
+      },
+      {
+        "A": 27,
+        "B": 33,
+        "brand": null,
+        "id": "material-ea371b7c-bd43-48db-8b24-a7909bfa58ba",
+        "kind": "timber",
+        "model": null,
+        "name": "驗收角材",
+        "notes": null,
+        "version": 1,
+        "fingerprint": "7d59f07a62a61f1143b930e295cd2cf6002c2b68e1b86bd95ccfe931667b5ab4",
+        "archived": false
+      },
+      {
+        "brand": null,
+        "id": "material-fa6eec18-401b-4218-a5f6-256330f93d82",
+        "kind": "panel",
+        "length": 1820,
+        "model": null,
+        "name": "驗收面材",
+        "notes": null,
+        "thickness": "6.5",
+        "version": 2,
+        "width": 910,
+        "fingerprint": "24c71007fd34b4e1c4b6f21dd5fbd766ef0796be24bcc350650d5f47e5e34cab",
+        "archived": false
+      }
+    ],
+    "methods": [
+      {
+        "gap": 3,
+        "id": "method-270696e8-3556-4ad5-91f6-a8786e62894e",
+        "longAxis": "v",
+        "mainAlong": "u",
+        "name": "驗收天花做法",
+        "notes": null,
+        "panel": {
+          "id": "material-fa6eec18-401b-4218-a5f6-256330f93d82",
+          "version": 1
+        },
+        "roles": {
+          "boundary": {
+            "id": "material-ea371b7c-bd43-48db-8b24-a7909bfa58ba",
+            "version": 1
+          },
+          "primary": null,
+          "secondary": null
+        },
+        "version": 1,
+        "fingerprint": "59719fc838d04d156cf0b8eade0b325d89a211a9e8e0c5b51bb277c276dd3368",
+        "archived": false
+      },
+      {
+        "gap": 4,
+        "id": "method-270696e8-3556-4ad5-91f6-a8786e62894e",
+        "longAxis": "v",
+        "mainAlong": "u",
+        "name": "驗收天花做法",
+        "notes": null,
+        "panel": {
+          "id": "material-fa6eec18-401b-4218-a5f6-256330f93d82",
+          "version": 2
+        },
+        "roles": {
+          "boundary": {
+            "id": "material-ea371b7c-bd43-48db-8b24-a7909bfa58ba",
+            "version": 1
+          },
+          "primary": null,
+          "secondary": null
+        },
+        "version": 2,
+        "fingerprint": "68a89024cebda9aecee0e40a7dbcc73d7e2b73a779ffdf67a0a73e70f19a2487",
+        "archived": false
+      }
+    ],
+    "applications": [
+      {
+        "anchorOptions": {
+          "u": {
+            "kind": "edge",
+            "side": "min"
+          },
+          "v": {
+            "kind": "edge",
+            "side": "min"
+          }
+        },
+        "id": "application-c26490f3-4afe-4d5c-bc4b-eb11d87d9970",
+        "longAxis": null,
+        "mainAlong": null,
+        "method": {
+          "id": "method-270696e8-3556-4ad5-91f6-a8786e62894e",
+          "version": 2
+        },
+        "overrides": {
+          "gap": {
+            "kind": "literal",
+            "value": 5
+          }
+        },
+        "placement_id": 1,
+        "bindings": [
+          {
+            "axis": "u",
+            "field": "panel",
+            "id": 0,
+            "kind": "grid"
+          },
+          {
+            "axis": "u",
+            "field": "gap",
+            "id": 0,
+            "kind": "grid"
+          },
+          {
+            "axis": "v",
+            "field": "panel",
+            "id": 0,
+            "kind": "grid"
+          },
+          {
+            "axis": "v",
+            "field": "gap",
+            "id": 0,
+            "kind": "grid"
+          },
+          {
+            "field": "A",
+            "id": 0,
+            "kind": "timber"
+          },
+          {
+            "field": "B",
+            "id": 0,
+            "kind": "timber"
+          }
+        ]
+      },
+      {
+        "anchorOptions": {
+          "u": {
+            "kind": "edge",
+            "side": "min"
+          },
+          "v": {
+            "kind": "edge",
+            "side": "min"
+          }
+        },
+        "id": "application-df0d4f5a-d881-4627-94fc-9f30c4968c39",
+        "longAxis": null,
+        "mainAlong": null,
+        "method": {
+          "id": "method-270696e8-3556-4ad5-91f6-a8786e62894e",
+          "version": 2
+        },
+        "overrides": {},
+        "placement_id": 2,
+        "bindings": [
+          {
+            "axis": "u",
+            "field": "panel",
+            "id": 1,
+            "kind": "grid"
+          },
+          {
+            "axis": "u",
+            "field": "gap",
+            "id": 1,
+            "kind": "grid"
+          },
+          {
+            "axis": "v",
+            "field": "panel",
+            "id": 1,
+            "kind": "grid"
+          },
+          {
+            "axis": "v",
+            "field": "gap",
+            "id": 1,
+            "kind": "grid"
+          }
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "target": {
+          "axis": "u",
+          "field": "panel",
+          "id": 0,
+          "kind": "grid"
+        },
+        "source": {
+          "field": "u.panel",
+          "id": "application-c26490f3-4afe-4d5c-bc4b-eb11d87d9970",
+          "kind": "application"
+        },
+        "override": null,
+        "effective": 910,
+        "path": "application:application-c26490f3-4afe-4d5c-bc4b-eb11d87d9970 -> method:method-270696e8-3556-4ad5-91f6-a8786e62894e@2 -> material:material-fa6eec18-401b-4218-a5f6-256330f93d82@2.width"
+      },
+      {
+        "target": {
+          "axis": "u",
+          "field": "gap",
+          "id": 0,
+          "kind": "grid"
+        },
+        "source": {
+          "field": "u.gap",
+          "id": "application-c26490f3-4afe-4d5c-bc4b-eb11d87d9970",
+          "kind": "application"
+        },
+        "override": null,
+        "effective": 5,
+        "path": "application:application-c26490f3-4afe-4d5c-bc4b-eb11d87d9970 -> method:method-270696e8-3556-4ad5-91f6-a8786e62894e@2 -> face override -> explicit integer mm"
+      },
+      {
+        "target": {
+          "axis": "v",
+          "field": "panel",
+          "id": 0,
+          "kind": "grid"
+        },
+        "source": {
+          "field": "v.panel",
+          "id": "application-c26490f3-4afe-4d5c-bc4b-eb11d87d9970",
+          "kind": "application"
+        },
+        "override": null,
+        "effective": 1820,
+        "path": "application:application-c26490f3-4afe-4d5c-bc4b-eb11d87d9970 -> method:method-270696e8-3556-4ad5-91f6-a8786e62894e@2 -> material:material-fa6eec18-401b-4218-a5f6-256330f93d82@2.length"
+      },
+      {
+        "target": {
+          "axis": "v",
+          "field": "gap",
+          "id": 0,
+          "kind": "grid"
+        },
+        "source": {
+          "field": "v.gap",
+          "id": "application-c26490f3-4afe-4d5c-bc4b-eb11d87d9970",
+          "kind": "application"
+        },
+        "override": null,
+        "effective": 5,
+        "path": "application:application-c26490f3-4afe-4d5c-bc4b-eb11d87d9970 -> method:method-270696e8-3556-4ad5-91f6-a8786e62894e@2 -> face override -> explicit integer mm"
+      },
+      {
+        "target": {
+          "field": "A",
+          "id": 0,
+          "kind": "timber"
+        },
+        "source": {
+          "field": "boundary.A",
+          "id": "application-c26490f3-4afe-4d5c-bc4b-eb11d87d9970",
+          "kind": "application"
+        },
+        "override": null,
+        "effective": 27,
+        "path": "application:application-c26490f3-4afe-4d5c-bc4b-eb11d87d9970 -> method:method-270696e8-3556-4ad5-91f6-a8786e62894e@2 -> material:material-ea371b7c-bd43-48db-8b24-a7909bfa58ba@1.A"
+      },
+      {
+        "target": {
+          "field": "B",
+          "id": 0,
+          "kind": "timber"
+        },
+        "source": {
+          "field": "boundary.B",
+          "id": "application-c26490f3-4afe-4d5c-bc4b-eb11d87d9970",
+          "kind": "application"
+        },
+        "override": null,
+        "effective": 33,
+        "path": "application:application-c26490f3-4afe-4d5c-bc4b-eb11d87d9970 -> method:method-270696e8-3556-4ad5-91f6-a8786e62894e@2 -> material:material-ea371b7c-bd43-48db-8b24-a7909bfa58ba@1.B"
+      },
+      {
+        "target": {
+          "field": "A",
+          "id": 2,
+          "kind": "timber"
+        },
+        "source": {
+          "kind": "spec",
+          "name": "EngineeringWidth"
+        },
+        "override": null,
+        "effective": 29,
+        "path": "spec:EngineeringWidth"
+      },
+      {
+        "target": {
+          "field": "B",
+          "id": 2,
+          "kind": "timber"
+        },
+        "source": {
+          "field": "B",
+          "id": "material-ea371b7c-bd43-48db-8b24-a7909bfa58ba",
+          "kind": "material",
+          "version": 1
+        },
+        "override": null,
+        "effective": 33,
+        "path": "material:material-ea371b7c-bd43-48db-8b24-a7909bfa58ba@1.B"
+      },
+      {
+        "target": {
+          "axis": "u",
+          "field": "panel",
+          "id": 1,
+          "kind": "grid"
+        },
+        "source": {
+          "field": "u.panel",
+          "id": "application-df0d4f5a-d881-4627-94fc-9f30c4968c39",
+          "kind": "application"
+        },
+        "override": null,
+        "effective": 910,
+        "path": "application:application-df0d4f5a-d881-4627-94fc-9f30c4968c39 -> method:method-270696e8-3556-4ad5-91f6-a8786e62894e@2 -> material:material-fa6eec18-401b-4218-a5f6-256330f93d82@2.width"
+      },
+      {
+        "target": {
+          "axis": "u",
+          "field": "gap",
+          "id": 1,
+          "kind": "grid"
+        },
+        "source": {
+          "field": "u.gap",
+          "id": "application-df0d4f5a-d881-4627-94fc-9f30c4968c39",
+          "kind": "application"
+        },
+        "override": null,
+        "effective": 4,
+        "path": "application:application-df0d4f5a-d881-4627-94fc-9f30c4968c39 -> method:method-270696e8-3556-4ad5-91f6-a8786e62894e@2 -> explicit integer mm"
+      },
+      {
+        "target": {
+          "axis": "v",
+          "field": "panel",
+          "id": 1,
+          "kind": "grid"
+        },
+        "source": {
+          "field": "v.panel",
+          "id": "application-df0d4f5a-d881-4627-94fc-9f30c4968c39",
+          "kind": "application"
+        },
+        "override": null,
+        "effective": 1820,
+        "path": "application:application-df0d4f5a-d881-4627-94fc-9f30c4968c39 -> method:method-270696e8-3556-4ad5-91f6-a8786e62894e@2 -> material:material-fa6eec18-401b-4218-a5f6-256330f93d82@2.length"
+      },
+      {
+        "target": {
+          "axis": "v",
+          "field": "gap",
+          "id": 1,
+          "kind": "grid"
+        },
+        "source": {
+          "field": "v.gap",
+          "id": "application-df0d4f5a-d881-4627-94fc-9f30c4968c39",
+          "kind": "application"
+        },
+        "override": null,
+        "effective": 4,
+        "path": "application:application-df0d4f5a-d881-4627-94fc-9f30c4968c39 -> method:method-270696e8-3556-4ad5-91f6-a8786e62894e@2 -> explicit integer mm"
+      }
+    ],
+    "parameters": [],
+    "assembly": {
+      "capabilities": [
+        "assembly-rule-authoring/1",
+        "assembly-timber-generation/1"
+      ],
+      "rules": [],
+      "bindings": [],
+      "instances": []
+    },
+    "sectionProfiles": {
+      "profiles": [],
+      "members": [],
+      "runs": []
+    }
+  },
+  "references": {
+    "ok": true,
+    "sourceFingerprint": "a281eaec947368563652ddaac5a00347740a9bf82a78abe0caed64c74d8e94a2",
+    "guides": [
+      {
+        "id": 0,
+        "surface": 1,
+        "source": "local",
+        "datum": 0,
+        "axis": "v",
+        "off": 1500,
+        "expression": "spec:EngineeringCenter",
+        "worldPoint": [
+          1500,
+          0,
+          2500
+        ],
+        "worldDirection": [
+          0,
+          1,
+          0
+        ],
+        "segments": [
+          [
+            [
+              1500,
+              0
+            ],
+            [
+              1500,
+              3000
+            ]
+          ]
+        ]
+      }
+    ],
+    "grids": [
+      {
+        "id": 0,
+        "surface": 1,
+        "bindingId": null,
+        "indexSpace": "ordinal",
+        "sourceSystem": null,
+        "origin": [
+          0,
+          0
+        ],
+        "kind": "main",
+        "parentId": null,
+        "cell": null,
+        "divisions": null,
+        "bounds": {
+          "u": [
+            0,
+            4000
+          ],
+          "v": [
+            0,
+            3000
+          ]
+        },
+        "mainAlong": "u",
+        "geometryMode": "exact",
+        "geometryExact": true,
+        "u": [
+          912,
+          1827,
+          2742,
+          3657
+        ],
+        "uDefinition": {
+          "source": "panel",
+          "panel": 910,
+          "gap": 5,
+          "anchor": 0,
+          "anchorExplicit": true
+        },
+        "v": [
+          1822
+        ],
+        "vDefinition": {
+          "source": "panel",
+          "panel": 1820,
+          "gap": 5,
+          "anchor": 0,
+          "anchorExplicit": true
+        },
+        "lines": [
+          {
+            "axis": "u",
+            "index": 0,
+            "coordinate": 912,
+            "role": "secondary",
+            "priority": 3,
+            "segments": [
+              [
+                [
+                  912,
+                  0
+                ],
+                [
+                  912,
+                  3000
+                ]
+              ]
+            ]
+          },
+          {
+            "axis": "u",
+            "index": 1,
+            "coordinate": 1827,
+            "role": "secondary",
+            "priority": 3,
+            "segments": [
+              [
+                [
+                  1827,
+                  0
+                ],
+                [
+                  1827,
+                  3000
+                ]
+              ]
+            ]
+          },
+          {
+            "axis": "u",
+            "index": 2,
+            "coordinate": 2742,
+            "role": "secondary",
+            "priority": 3,
+            "segments": [
+              [
+                [
+                  2742,
+                  0
+                ],
+                [
+                  2742,
+                  3000
+                ]
+              ]
+            ]
+          },
+          {
+            "axis": "u",
+            "index": 3,
+            "coordinate": 3657,
+            "role": "secondary",
+            "priority": 3,
+            "segments": [
+              [
+                [
+                  3657,
+                  0
+                ],
+                [
+                  3657,
+                  3000
+                ]
+              ]
+            ]
+          },
+          {
+            "axis": "v",
+            "index": 0,
+            "coordinate": 1822,
+            "role": "primary",
+            "priority": 2,
+            "segments": [
+              [
+                [
+                  0,
+                  1822
+                ],
+                [
+                  4000,
+                  1822
+                ]
+              ]
+            ]
+          }
+        ],
+        "dependencies": {
+          "children": [],
+          "guides": [],
+          "timbers": []
+        }
+      },
+      {
+        "id": 1,
+        "surface": 2,
+        "bindingId": null,
+        "indexSpace": "ordinal",
+        "sourceSystem": null,
+        "origin": [
+          0,
+          0
+        ],
+        "kind": "main",
+        "parentId": null,
+        "cell": null,
+        "divisions": null,
+        "bounds": {
+          "u": [
+            0,
+            3000
+          ],
+          "v": [
+            0,
+            3000
+          ]
+        },
+        "mainAlong": "u",
+        "geometryMode": "exact",
+        "geometryExact": true,
+        "u": [
+          912,
+          1826,
+          2740
+        ],
+        "uDefinition": {
+          "source": "panel",
+          "panel": 910,
+          "gap": 4,
+          "anchor": 0,
+          "anchorExplicit": true
+        },
+        "v": [
+          1822
+        ],
+        "vDefinition": {
+          "source": "panel",
+          "panel": 1820,
+          "gap": 4,
+          "anchor": 0,
+          "anchorExplicit": true
+        },
+        "lines": [
+          {
+            "axis": "u",
+            "index": 0,
+            "coordinate": 912,
+            "role": "secondary",
+            "priority": 3,
+            "segments": [
+              [
+                [
+                  912,
+                  0
+                ],
+                [
+                  912,
+                  3000
+                ]
+              ]
+            ]
+          },
+          {
+            "axis": "u",
+            "index": 1,
+            "coordinate": 1826,
+            "role": "secondary",
+            "priority": 3,
+            "segments": [
+              [
+                [
+                  1826,
+                  0
+                ],
+                [
+                  1826,
+                  3000
+                ]
+              ]
+            ]
+          },
+          {
+            "axis": "u",
+            "index": 2,
+            "coordinate": 2740,
+            "role": "secondary",
+            "priority": 3,
+            "segments": [
+              [
+                [
+                  2740,
+                  0
+                ],
+                [
+                  2740,
+                  3000
+                ]
+              ]
+            ]
+          },
+          {
+            "axis": "v",
+            "index": 0,
+            "coordinate": 1822,
+            "role": "primary",
+            "priority": 2,
+            "segments": [
+              [
+                [
+                  0,
+                  1822
+                ],
+                [
+                  3000,
+                  1822
+                ]
+              ]
+            ]
+          }
+        ],
+        "dependencies": {
+          "children": [],
+          "guides": [],
+          "timbers": []
+        }
+      }
+    ],
+    "timbers": [
+      {
+        "id": 0,
+        "role": "boundary",
+        "geometry": {
+          "surface": 1,
+          "centerline": 13,
+          "length": 4000,
+          "u": 0,
+          "v": 0,
+          "dir": "+u",
+          "side": "+n",
+          "A": 27,
+          "B": 33,
+          "origin": [
+            0,
+            0,
+            2500
+          ],
+          "axes": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              1
+            ]
+          ]
+        },
+        "definition": {
+          "anchor": "at-face e0",
+          "selector": "",
+          "priority": 1
+        }
+      },
+      {
+        "id": 1,
+        "role": "boundary",
+        "geometry": {
+          "surface": 1,
+          "centerline": 2986,
+          "length": 4000,
+          "u": 0,
+          "v": 2973,
+          "dir": "+u",
+          "side": "+n",
+          "A": 27,
+          "B": 33,
+          "origin": [
+            0,
+            2973,
+            2500
+          ],
+          "axes": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              1
+            ]
+          ]
+        },
+        "definition": {
+          "anchor": "at-face e2",
+          "selector": "",
+          "priority": 1
+        }
+      },
+      {
+        "id": 2,
+        "role": "custom",
+        "geometry": {
+          "surface": 1,
+          "centerline": 1500,
+          "length": 2946,
+          "u": 1515,
+          "v": 27,
+          "dir": "+v",
+          "side": "+n",
+          "A": 29,
+          "B": 33,
+          "origin": [
+            1515,
+            27,
+            2500
+          ],
+          "axes": [
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              -1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1
+            ]
+          ]
+        },
+        "definition": {
+          "anchor": "at-line guide 0",
+          "selector": "through 600",
+          "priority": 7
+        }
+      }
+    ],
+    "timberSupports": {
+      "schema": "native-timber-supports/1",
+      "sourceFingerprint": "a281eaec947368563652ddaac5a00347740a9bf82a78abe0caed64c74d8e94a2",
+      "entries": [
+        {
+          "id": 0,
+          "surface": 1,
+          "owner": null,
+          "start": {
+            "status": "exact",
+            "at": 0,
+            "crossRange": [
+              0,
+              27
+            ],
+            "relation": {
+              "kind": "outline-edge",
+              "source": {
+                "kind": "boundary",
+                "id": 1
+              },
+              "edgeIndex": 3,
+              "holeIndex": null,
+              "localFace": null,
+              "normalWorld": null,
+              "owner": null,
+              "surface": 1,
+              "stop": {
+                "axis": "u",
+                "at": 0,
+                "range": [
+                  0,
+                  3000
+                ],
+                "fixity": "fixed"
+              }
+            }
+          },
+          "finish": {
+            "status": "exact",
+            "at": 4000,
+            "crossRange": [
+              0,
+              27
+            ],
+            "relation": {
+              "kind": "outline-edge",
+              "source": {
+                "kind": "boundary",
+                "id": 1
+              },
+              "edgeIndex": 1,
+              "holeIndex": null,
+              "localFace": null,
+              "normalWorld": null,
+              "owner": null,
+              "surface": 1,
+              "stop": {
+                "axis": "u",
+                "at": 4000,
+                "range": [
+                  0,
+                  3000
+                ],
+                "fixity": "fixed"
+              }
+            }
+          }
+        },
+        {
+          "id": 1,
+          "surface": 1,
+          "owner": null,
+          "start": {
+            "status": "exact",
+            "at": 0,
+            "crossRange": [
+              2973,
+              3000
+            ],
+            "relation": {
+              "kind": "outline-edge",
+              "source": {
+                "kind": "boundary",
+                "id": 1
+              },
+              "edgeIndex": 3,
+              "holeIndex": null,
+              "localFace": null,
+              "normalWorld": null,
+              "owner": null,
+              "surface": 1,
+              "stop": {
+                "axis": "u",
+                "at": 0,
+                "range": [
+                  0,
+                  3000
+                ],
+                "fixity": "fixed"
+              }
+            }
+          },
+          "finish": {
+            "status": "exact",
+            "at": 4000,
+            "crossRange": [
+              2973,
+              3000
+            ],
+            "relation": {
+              "kind": "outline-edge",
+              "source": {
+                "kind": "boundary",
+                "id": 1
+              },
+              "edgeIndex": 1,
+              "holeIndex": null,
+              "localFace": null,
+              "normalWorld": null,
+              "owner": null,
+              "surface": 1,
+              "stop": {
+                "axis": "u",
+                "at": 4000,
+                "range": [
+                  0,
+                  3000
+                ],
+                "fixity": "fixed"
+              }
+            }
+          }
+        },
+        {
+          "id": 2,
+          "surface": 1,
+          "owner": null,
+          "start": {
+            "status": "exact",
+            "at": 27,
+            "crossRange": [
+              1486,
+              1515
+            ],
+            "relation": {
+              "kind": "timber-face",
+              "source": {
+                "kind": "timber",
+                "id": 0
+              },
+              "localFace": "B1",
+              "normalWorld": [
+                0,
+                1,
+                0
+              ],
+              "owner": null,
+              "surface": 1,
+              "stop": {
+                "axis": "v",
+                "at": 27,
+                "range": [
+                  0,
+                  4000
+                ],
+                "fixity": "fixed"
+              }
+            }
+          },
+          "finish": {
+            "status": "exact",
+            "at": 2973,
+            "crossRange": [
+              1486,
+              1515
+            ],
+            "relation": {
+              "kind": "timber-face",
+              "source": {
+                "kind": "timber",
+                "id": 1
+              },
+              "localFace": "B0",
+              "normalWorld": [
+                0,
+                -1,
+                0
+              ],
+              "owner": null,
+              "surface": 1,
+              "stop": {
+                "axis": "v",
+                "at": 2973,
+                "range": [
+                  0,
+                  4000
+                ],
+                "fixity": "fixed"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "specs": [
+      {
+        "name": "EngineeringWidth",
+        "value": 29
+      },
+      {
+        "name": "EngineeringCenter",
+        "value": 1500
+      },
+      {
+        "name": "EngineeringStale",
+        "value": 100
+      }
+    ],
+    "datums": [],
+    "engineeringSources": [
+      {
+        "target": {
+          "axis": "u",
+          "field": "panel",
+          "id": 0,
+          "kind": "grid"
+        },
+        "source": {
+          "field": "u.panel",
+          "id": "application-c26490f3-4afe-4d5c-bc4b-eb11d87d9970",
+          "kind": "application"
+        },
+        "override": null,
+        "effective": 910,
+        "path": "application:application-c26490f3-4afe-4d5c-bc4b-eb11d87d9970 -> method:method-270696e8-3556-4ad5-91f6-a8786e62894e@2 -> material:material-fa6eec18-401b-4218-a5f6-256330f93d82@2.width"
+      },
+      {
+        "target": {
+          "axis": "u",
+          "field": "gap",
+          "id": 0,
+          "kind": "grid"
+        },
+        "source": {
+          "field": "u.gap",
+          "id": "application-c26490f3-4afe-4d5c-bc4b-eb11d87d9970",
+          "kind": "application"
+        },
+        "override": null,
+        "effective": 5,
+        "path": "application:application-c26490f3-4afe-4d5c-bc4b-eb11d87d9970 -> method:method-270696e8-3556-4ad5-91f6-a8786e62894e@2 -> face override -> explicit integer mm"
+      },
+      {
+        "target": {
+          "axis": "v",
+          "field": "panel",
+          "id": 0,
+          "kind": "grid"
+        },
+        "source": {
+          "field": "v.panel",
+          "id": "application-c26490f3-4afe-4d5c-bc4b-eb11d87d9970",
+          "kind": "application"
+        },
+        "override": null,
+        "effective": 1820,
+        "path": "application:application-c26490f3-4afe-4d5c-bc4b-eb11d87d9970 -> method:method-270696e8-3556-4ad5-91f6-a8786e62894e@2 -> material:material-fa6eec18-401b-4218-a5f6-256330f93d82@2.length"
+      },
+      {
+        "target": {
+          "axis": "v",
+          "field": "gap",
+          "id": 0,
+          "kind": "grid"
+        },
+        "source": {
+          "field": "v.gap",
+          "id": "application-c26490f3-4afe-4d5c-bc4b-eb11d87d9970",
+          "kind": "application"
+        },
+        "override": null,
+        "effective": 5,
+        "path": "application:application-c26490f3-4afe-4d5c-bc4b-eb11d87d9970 -> method:method-270696e8-3556-4ad5-91f6-a8786e62894e@2 -> face override -> explicit integer mm"
+      },
+      {
+        "target": {
+          "field": "A",
+          "id": 0,
+          "kind": "timber"
+        },
+        "source": {
+          "field": "boundary.A",
+          "id": "application-c26490f3-4afe-4d5c-bc4b-eb11d87d9970",
+          "kind": "application"
+        },
+        "override": null,
+        "effective": 27,
+        "path": "application:application-c26490f3-4afe-4d5c-bc4b-eb11d87d9970 -> method:method-270696e8-3556-4ad5-91f6-a8786e62894e@2 -> material:material-ea371b7c-bd43-48db-8b24-a7909bfa58ba@1.A"
+      },
+      {
+        "target": {
+          "field": "B",
+          "id": 0,
+          "kind": "timber"
+        },
+        "source": {
+          "field": "boundary.B",
+          "id": "application-c26490f3-4afe-4d5c-bc4b-eb11d87d9970",
+          "kind": "application"
+        },
+        "override": null,
+        "effective": 33,
+        "path": "application:application-c26490f3-4afe-4d5c-bc4b-eb11d87d9970 -> method:method-270696e8-3556-4ad5-91f6-a8786e62894e@2 -> material:material-ea371b7c-bd43-48db-8b24-a7909bfa58ba@1.B"
+      },
+      {
+        "target": {
+          "field": "A",
+          "id": 2,
+          "kind": "timber"
+        },
+        "source": {
+          "kind": "spec",
+          "name": "EngineeringWidth"
+        },
+        "override": null,
+        "effective": 29,
+        "path": "spec:EngineeringWidth"
+      },
+      {
+        "target": {
+          "field": "B",
+          "id": 2,
+          "kind": "timber"
+        },
+        "source": {
+          "field": "B",
+          "id": "material-ea371b7c-bd43-48db-8b24-a7909bfa58ba",
+          "kind": "material",
+          "version": 1
+        },
+        "override": null,
+        "effective": 33,
+        "path": "material:material-ea371b7c-bd43-48db-8b24-a7909bfa58ba@1.B"
+      },
+      {
+        "target": {
+          "axis": "u",
+          "field": "panel",
+          "id": 1,
+          "kind": "grid"
+        },
+        "source": {
+          "field": "u.panel",
+          "id": "application-df0d4f5a-d881-4627-94fc-9f30c4968c39",
+          "kind": "application"
+        },
+        "override": null,
+        "effective": 910,
+        "path": "application:application-df0d4f5a-d881-4627-94fc-9f30c4968c39 -> method:method-270696e8-3556-4ad5-91f6-a8786e62894e@2 -> material:material-fa6eec18-401b-4218-a5f6-256330f93d82@2.width"
+      },
+      {
+        "target": {
+          "axis": "u",
+          "field": "gap",
+          "id": 1,
+          "kind": "grid"
+        },
+        "source": {
+          "field": "u.gap",
+          "id": "application-df0d4f5a-d881-4627-94fc-9f30c4968c39",
+          "kind": "application"
+        },
+        "override": null,
+        "effective": 4,
+        "path": "application:application-df0d4f5a-d881-4627-94fc-9f30c4968c39 -> method:method-270696e8-3556-4ad5-91f6-a8786e62894e@2 -> explicit integer mm"
+      },
+      {
+        "target": {
+          "axis": "v",
+          "field": "panel",
+          "id": 1,
+          "kind": "grid"
+        },
+        "source": {
+          "field": "v.panel",
+          "id": "application-df0d4f5a-d881-4627-94fc-9f30c4968c39",
+          "kind": "application"
+        },
+        "override": null,
+        "effective": 1820,
+        "path": "application:application-df0d4f5a-d881-4627-94fc-9f30c4968c39 -> method:method-270696e8-3556-4ad5-91f6-a8786e62894e@2 -> material:material-fa6eec18-401b-4218-a5f6-256330f93d82@2.length"
+      },
+      {
+        "target": {
+          "axis": "v",
+          "field": "gap",
+          "id": 1,
+          "kind": "grid"
+        },
+        "source": {
+          "field": "v.gap",
+          "id": "application-df0d4f5a-d881-4627-94fc-9f30c4968c39",
+          "kind": "application"
+        },
+        "override": null,
+        "effective": 4,
+        "path": "application:application-df0d4f5a-d881-4627-94fc-9f30c4968c39 -> method:method-270696e8-3556-4ad5-91f6-a8786e62894e@2 -> explicit integer mm"
+      }
+    ],
+    "assembly": {
+      "capabilities": [
+        "assembly-rule-authoring/1",
+        "assembly-timber-generation/1"
+      ],
+      "rules": [],
+      "bindings": [],
+      "instances": []
+    }
+  },
+  "drafts": [
+    {
+      "id": "engineering-workspace-application",
+      "kind": "application",
+      "base_ref": null,
+      "data": {
+        "form": {
+          "method": {
+            "id": "method-270696e8-3556-4ad5-91f6-a8786e62894e",
+            "version": 2
+          },
+          "targets": {
+            "1": {
+              "placement_id": 1,
+              "gridAction": "application",
+              "gridId": 0,
+              "longAxis": "inherit",
+              "mainAlong": "inherit",
+              "anchors": {
+                "u": {
+                  "mode": "lower",
+                  "value": ""
+                },
+                "v": {
+                  "mode": "lower",
+                  "value": ""
+                }
+              },
+              "preserveOverrides": true,
+              "overrides": {},
+              "timberIds": [],
+              "objectOverrides": {},
+              "objectSources": {}
+            },
+            "2": {
+              "placement_id": 2,
+              "gridAction": "update",
+              "gridId": 1,
+              "longAxis": "inherit",
+              "mainAlong": "inherit",
+              "anchors": {
+                "u": {
+                  "mode": "keep",
+                  "value": ""
+                },
+                "v": {
+                  "mode": "keep",
+                  "value": ""
+                }
+              },
+              "preserveOverrides": true,
+              "overrides": {},
+              "timberIds": [],
+              "objectOverrides": {},
+              "objectSources": {}
+            }
+          },
+          "stashedTargets": {
+            "1": {
+              "placement_id": 1,
+              "gridAction": "application",
+              "gridId": 0,
+              "longAxis": "inherit",
+              "mainAlong": "inherit",
+              "anchors": {
+                "u": {
+                  "mode": "lower",
+                  "value": ""
+                },
+                "v": {
+                  "mode": "lower",
+                  "value": ""
+                }
+              },
+              "preserveOverrides": true,
+              "overrides": {},
+              "timberIds": [],
+              "objectOverrides": {},
+              "objectSources": {}
+            },
+            "2": {
+              "placement_id": 2,
+              "gridAction": "update",
+              "gridId": 1,
+              "longAxis": "inherit",
+              "mainAlong": "inherit",
+              "anchors": {
+                "u": {
+                  "mode": "keep",
+                  "value": ""
+                },
+                "v": {
+                  "mode": "keep",
+                  "value": ""
+                }
+              },
+              "preserveOverrides": true,
+              "overrides": {},
+              "timberIds": [],
+              "objectOverrides": {},
+              "objectSources": {}
+            },
+            "3": {
+              "placement_id": 3,
+              "gridAction": "create",
+              "gridId": null,
+              "longAxis": "inherit",
+              "mainAlong": "inherit",
+              "anchors": {
+                "u": {
+                  "mode": "lower",
+                  "value": ""
+                },
+                "v": {
+                  "mode": "lower",
+                  "value": ""
+                }
+              },
+              "preserveOverrides": true,
+              "overrides": {},
+              "timberIds": [],
+              "objectOverrides": {},
+              "objectSources": {}
+            }
+          }
+        },
+        "ui": {
+          "section": "materials",
+          "inlineKind": null,
+          "activePlacement": 3,
+          "importText": ""
+        }
+      },
+      "updated_at": "2026-10-09T16:47:34.230Z"
+    },
+    {
+      "id": "engineering-workspace-material",
+      "kind": "material",
+      "base_ref": null,
+      "data": {
+        "mode": "new",
+        "base": null,
+        "name": "待完成角材草稿",
+        "type": "timber",
+        "width": "",
+        "length": "",
+        "thickness": "",
+        "A": "29",
+        "B": "",
+        "brand": "",
+        "model": "",
+        "source": "",
+        "note": ""
+      },
+      "updated_at": "2026-10-09T16:47:35.049Z"
+    }
+  ]
+}

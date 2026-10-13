@@ -1,0 +1,88 @@
+{
+  "schema": "geometry-normal-shell-return-driver/1",
+  "started": {
+    "utc": "2026-10-09T19:19:53.769Z",
+    "head": "f3b8285729b42cd22451c98cba1e2ec4514517f3",
+    "dirty": "",
+    "command": [
+      "<execution-runtime-path>",
+      "<workspace-path>"
+    ],
+    "node": {
+      "path": "<execution-runtime-path>",
+      "sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12",
+      "version": "v24.19.0"
+    },
+    "driverSHA256": "31d0233a74630ee97fa9fae8a185b0c191f9a7142432306b3fa5cf783421aef1",
+    "helperSHA256": "ca3ecb98d6091283bb242f4528ae0a47b153888626f7fe1d85479de649e74471",
+    "sourceHashes": {
+      "geometry-web/assembly-workspace.js": "a2ff6c76c113506e7a66786ade2aa1e5393f7d567c72d318c90b2ce3cc5a2d27",
+      "geometry-web/assembly-workspace.css": "7a91095c3042de5b98e64d4a699df3ac2f3571b411f534f732aae721c528d644",
+      "geometry-web/section-profile-workspace.js": "399f4c9736df5944092d04063146248859559e9c272b6b6edcf101b0f3c828e5",
+      "geometry-web/section-profile-workspace.css": "b8b2221ca312757dbbbdf1af8f8e447788334030e58421976eaf549f8553c884",
+      "geometry-web/workspace-shell.js": "780a26eb4e061069f8161bedd44665d2ed4ece9f695cefeffef7a7d855ec3b4c",
+      "geometry-web/workspace-shell.css": "9211befe64b34dfa1842639debbb40ad1848f96b37a65b78b8c864ddbba1eea6",
+      "geometry-web/index.html": "5084ee2b214a1653bcdfd31105bbb05b786f1447d14f9eb177ecb3185d27a9a4"
+    },
+    "nativePrecondition": {
+      "profiles": 0,
+      "runtime": {
+        "schema": "geometry-runtime/1",
+        "version": "efbcfff4ca94d6a1844228ea59628ee5de24dcd5e337c62f9c0587f5a38c8a11",
+        "fresh": true,
+        "root": "<workspace-path>",
+        "pid": 282925,
+        "session": "80c9417febd84bd89c6bc01edc0c91c6"
+      },
+      "native": "boundary 1 outline 0,0 4000,0 4000,3000 0,3000\nplacement 1 on boundary 1 origin 0 0 2500 u +x v +y\nspec 主支中線 500\ntimber 1 27 33 role boundary\ntimber 2 27 33 role boundary\ntimber 3 27 33 role primary\nguide 1 1 v spec:主支中線\nplace 1 on 1 at-face e0 +u +n\n# R18 角材 1: onBoundary=true coversEdge=true boundaryEdge=0\nplace 2 on 1 at-face e2 +u +n\n# R18 角材 2: onBoundary=true coversEdge=true boundaryEdge=2\nplace 3 on 1 at-line guide 1 +v +n\n# R18 角材 3: onBoundary=false coversEdge=false boundaryEdge=-1\n"
+    }
+  },
+  "finished": {
+    "utc": "2026-10-09T19:19:55.707Z",
+    "head": "f3b8285729b42cd22451c98cba1e2ec4514517f3",
+    "dirty": "",
+    "driverSHA256": "31d0233a74630ee97fa9fae8a185b0c191f9a7142432306b3fa5cf783421aef1",
+    "helperSHA256": "ca3ecb98d6091283bb242f4528ae0a47b153888626f7fe1d85479de649e74471"
+  },
+  "scope": {
+    "mode": "bounded-normal-shell-return",
+    "cases": [
+      {
+        "width": 1400,
+        "family": "ASM"
+      },
+      {
+        "width": 1400,
+        "family": "SP"
+      },
+      {
+        "width": 390,
+        "family": "ASM"
+      },
+      {
+        "width": 390,
+        "family": "SP"
+      }
+    ],
+    "fixture": "Fresh isolated zero native section profiles; normal SP Cancel; no programmatic geometry or UI state writes",
+    "notCovered": [
+      "full CDP/golden",
+      "standalone Space",
+      "all43/privateZIP",
+      "physical touch/IME"
+    ]
+  },
+  "completed": false,
+  "passed": 16,
+  "failed": 1,
+  "checks": 17,
+  "helperProbePath": "<isolated-test-directory>",
+  "helperProbeSHA256": "aaa7540cfed9fa1115a8dbce80caefe3bf5b1fbd7219ede9b13bcb1f618715c7",
+  "error": {
+    "message": "one normal physical click precondition #spClose",
+    "stack": "Error: one normal physical click precondition #spClose\n    at normalWorkspaceReturnProbe (<workspace-path>)\n    at async <workspace-path>"
+  },
+  "errors": [],
+  "sandbox": true,
+  "exitCode": 1
+}

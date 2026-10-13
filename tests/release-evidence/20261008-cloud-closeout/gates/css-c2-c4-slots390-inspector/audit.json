@@ -1,0 +1,159 @@
+{
+  "gate": "css-c2-c4-slots390-inspector",
+  "auditedAt": "2026-10-08T19:03:54.281142+00:00",
+  "verdict": "bounded-pass",
+  "counts": {
+    "observed": 1,
+    "passed": 1,
+    "failed": 0,
+    "basis": "individual canonical result records"
+  },
+  "commandExitCode": 0,
+  "gateExitCode": 0,
+  "controllerExitCode": 0,
+  "identityVerifiedByReceipt": true,
+  "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+  "mainAtAudit": "5cc1ffa1ee85120eca14258b86b715151cad274f",
+  "dirtyBefore": "",
+  "dirtyAfter": "",
+  "dirtyDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "runtimeBefore": {
+    "schema": "geometry-runtime/1",
+    "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 196578,
+    "session": "ca31be77efb542b89d45d5a88c3b1b45"
+  },
+  "runtimeAfter": {
+    "schema": "geometry-runtime/1",
+    "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 196578,
+    "session": "ca31be77efb542b89d45d5a88c3b1b45"
+  },
+  "nativeConfiguredFiles": {
+    "bridge": {
+      "name": "bridge",
+      "state": "fresh",
+      "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T15:41:17+00:00）",
+      "path": "/tmp/geometry-tests/bridge",
+      "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+      "sha256": "b76a6da590512722d6eda64cfc946392ccc2636f82ab187ef822c1e1606d68b5",
+      "sidecarSha256": "557a324f01866a47f3123f08511b0bc46941c06c45ac804bc01447a65166eaaf"
+    },
+    "model-base": {
+      "name": "model-base",
+      "state": "fresh",
+      "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T15:41:31+00:00）",
+      "path": "/tmp/geometry-tests/model-base",
+      "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+      "sha256": "1b350a7d54aac1d410e87f2a74010515739f3e2b8fc4b8c5216ff413b153662e",
+      "sidecarSha256": "e5dad713990793ed6c7b096bd4c2c6579ac3fbc527f7b9d545421be6550f6673"
+    }
+  },
+  "command": [
+    "python3",
+    "/workspace/closure-evidence/contracts/remaining-product-scope-20261008/css_c2_c4_browser_probe.py",
+    "--url",
+    "http://127.0.0.1:18971/",
+    "--out",
+    "/workspace/closure-evidence/async-review/browser-css-5174-slots390-inspector",
+    "--width",
+    "390",
+    "--only",
+    "slots",
+    "--entry",
+    "inspector"
+  ],
+  "canonicalSource": "/workspace/closure-evidence/async-review/browser-css-5174-slots390-inspector/receipt.json",
+  "terminalLogRecord": {
+    "prefix": "",
+    "value": {
+      "out": "/workspace/closure-evidence/async-review/browser-css-5174-slots390-inspector",
+      "exit_code": 0,
+      "cases": [
+        {
+          "case": "slots",
+          "width": 390,
+          "passed": true
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "Only the 390 empty-slot flow, using the already-supported inspector #inspEnter route: normal pointer plus Tab/Enter and full data preservation pass. Does not repair or retest the failed card-double-click route.",
+    "Linux Chromium, not physical phone/IME/native OS picker certification.",
+    "The command.log combines child stdout/stderr; separate gate-wrapper stdout/stderr are preserved.",
+    "A native file hash alone is not proof of which live native process was loaded; consult separate live-service binding."
+  ],
+  "canonicalLimitations": null,
+  "rawFiles": [
+    {
+      "source": "/workspace/closure-evidence/gates/css-c2-c4-slots390-inspector/command.log",
+      "public": "css-c2-c4-slots390-inspector/command.log",
+      "bytes": 218,
+      "sha256": "cba61007079da3f08bcef64d60ccf553b9814617d5ed9c58a133a1abb1f78f65"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/css-c2-c4-slots390-inspector/receipt.json",
+      "public": "css-c2-c4-slots390-inspector/receipt.json",
+      "bytes": 5511,
+      "sha256": "2f8929af1dfdb10b35236f7ea07bee8b7e1c4e104556142e2120c0fe533db0f1"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/css-c2-c4-slots390-inspector.command.json",
+      "public": "css-c2-c4-slots390-inspector.command.json",
+      "bytes": 1448,
+      "sha256": "2c527ef13bcf7146e067e4a8291f9c4c047f08350cdd239aee893380838331f9"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/css-c2-c4-slots390-inspector.stdout",
+      "public": "css-c2-c4-slots390-inspector.stdout",
+      "bytes": 192,
+      "sha256": "8af4826f179b972f799dffb618a2b2f7f92787caf3945adbc473458fe6eb33a2"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/css-c2-c4-slots390-inspector.stderr",
+      "public": "css-c2-c4-slots390-inspector.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "artifacts": [],
+  "sources": [
+    {
+      "source": "/workspace/closure-evidence/async-review/browser-css-5174-slots390-inspector/script.py",
+      "public": "css-c2-c4-slots390-inspector/sources/css_c2_c4_browser_probe.py",
+      "bytes": 27785,
+      "sha256": "4db7be7eadd9ccfec9ea72ec648a1c53ea4e20c7aaeaa72608c9367421aba881",
+      "binding": "execution-time copied source"
+    },
+    {
+      "source": "/workspace/closure-evidence/sandbox-launch.cjs",
+      "public": "css-c2-c4-slots390-inspector/sources/launch-adapters/sandbox-launch.cjs",
+      "bytes": 912,
+      "sha256": "c917611c821f63cea2e5ef3ed1c0ddde128dcf47fde65d1a7ace8ff24fba2b1e",
+      "binding": "post-run adapter copy; launch policy only, no action/oracle changes"
+    },
+    {
+      "source": "/workspace/closure-evidence/python-launch/sitecustomize.py",
+      "public": "css-c2-c4-slots390-inspector/sources/launch-adapters/sitecustomize.py",
+      "bytes": 748,
+      "sha256": "e49545951bb661db0169e3d466c96321ee67c5f8a39fac3f7f0ed6954c22a7be",
+      "binding": "post-run adapter copy; launch policy only, no action/oracle changes"
+    },
+    {
+      "source": "/workspace/geometry-axiom/tests/release_gate.py",
+      "public": "css-c2-c4-slots390-inspector/sources/tests/release_gate.py",
+      "bytes": 17583,
+      "sha256": "ad460ddbdd52c48995188079339bc224e7f39b3d01e3147091a858ba8f541389",
+      "binding": "post-run clean tested-head release identity wrapper"
+    }
+  ],
+  "authoritativeEvidence": "../../css-c2-c4/README.md",
+  "canonicalPublicSource": "../../css-c2-c4/runs/r4/receipt.json",
+  "canonicalSha256": "397842a6aea542f1eefdbf80963e0e187f61b1d9d776984969b3d65eda82accf",
+  "diagnosisStatus": "independently-reviewed; see authoritative CSS package"
+}

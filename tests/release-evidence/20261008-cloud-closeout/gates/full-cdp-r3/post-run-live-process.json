@@ -1,0 +1,24 @@
+{
+  "observedAt": "2026-10-08T19:25:51.838016+00:00",
+  "timing": "post-completion read-only /proc observation, not a during-run sample",
+  "records": [
+    {
+      "pid": 196578,
+      "present": true,
+      "ppid": 196575,
+      "pgid": 196575,
+      "startTicks": 1027038,
+      "executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12",
+      "runningSha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7"
+    },
+    {
+      "pid": 196579,
+      "present": true,
+      "ppid": 196578,
+      "pgid": 196575,
+      "startTicks": 1027063,
+      "executable": "/tmp/geometry-tests/bridge",
+      "runningSha256": "b76a6da590512722d6eda64cfc946392ccc2636f82ab187ef822c1e1606d68b5"
+    }
+  ]
+}

@@ -241,9 +241,9 @@
       const x = 49, y = height - 45, length = 28;
       ctx.save(); ctx.font = '600 11px system-ui, sans-serif'; ctx.lineWidth = 1.8;
       const axes = [
-        { vector: [1, 0, 0], color: ink.axes[0], label: '+X' },
-        { vector: [0, 1, 0], color: ink.axes[1], label: '+Y' },
-        { vector: [0, 0, 1], color: ink.axes[2], label: '+Z' }
+        { vector: [1, 0, 0], color: ink.axes[0], label: options.axisLabels?.[0] || '+X' },
+        { vector: [0, 1, 0], color: ink.axes[1], label: options.axisLabels?.[1] || '+Y' },
+        { vector: [0, 0, 1], color: ink.axes[2], label: options.axisLabels?.[2] || '+Z' }
       ].map(axis => ({ ...axis, p: project(axis.vector, yaw, pitch) })).sort((a, b) => a.p[2] - b.p[2]);
       axes.forEach(axis => {
         const dx = axis.p[0] * length, dy = axis.p[1] * length;

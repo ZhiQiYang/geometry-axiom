@@ -2,15 +2,19 @@
 const cdp=require('./cdp_helpers.js'),fs=require('fs'),path=require('path');
 module.exports=async function({send,eval_,sleep,click,waitForUI,exceptionCount}){
  console.log('=== P80. 原生角材完成尺寸料單 ===');
- const check=cdp.makeCheck({prefix:'P80 '}),errors=exceptionCount();
+ const check=cdp.makeCheck({prefix:'P80 '}),settle=cdp.makeSettle({waitForUI,eval_},{tag:'P80'}),errors=exceptionCount();
  const ctl=async selector=>{
   const p=await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)throw Error('missing '+${JSON.stringify(selector)});e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;return {x,y,hit:e.contains(document.elementFromPoint(x,y))};})()`);
   if(!p.hit)throw Error('Schedule control covered: '+selector);await click(p.x,p.y);await sleep(150);
  };
+ const timberPane=async()=>{
+  if(await eval_(`innerWidth<=680&&!document.body.classList.contains('drawer-right-open')`))await ctl('#workspaceToggleRight');
+  await ctl('[data-fi-tab="components"]');await ctl('[data-component-tab="timber"]');
+ };
  const choose=async(id,value)=>eval_(`(()=>{const e=$(${JSON.stringify(id)});e.value=${JSON.stringify(value)};e.dispatchEvent(new Event('change',{bubbles:true}));})()`);
  const snapshot=()=>eval_(`(async()=>({dump:(await api('dump')).text,dirty:ReferenceWorkspace.context().dirty,undo:ReferenceWorkspace.history.undo.length,redo:ReferenceWorkspace.history.redo.length}))()`);
  await send('Emulation.setDeviceMetricsOverride',{width:1400,height:900,deviceScaleFactor:1,mobile:false});
- await eval_(`(async()=>{resetSceneFocus();await api('default');await renderObjects();await enterFocus('face',1);})()`);
+ await eval_(`(async()=>{resetSceneFocus();await api('default');await renderObjects();await enterFocus('face',1);})()`);await timberPane();
  await waitForUI(`!!$('timberScheduleCSV')&&!$('timberScheduleCSV').disabled`);
  check('逐件身份與精確完成尺寸等於原生讀回',await eval_(`(async()=>{const native=(await apiRequest('references')).timbers.filter(t=>t.geometry.surface===1),s=feTimberScheduleSnapshot();return s.rows.length===3&&s.rows.every(r=>{const t=native.find(t=>t.id===r.id);return r.A===t.geometry.A&&r.B===t.geometry.B&&r.L===t.geometry.length&&r.dir===t.geometry.dir&&r.side===t.geometry.side;});})()`));
  check('原生來源指紋與未設定材料明確可查',await eval_(`$('timberScheduleStatus').textContent.includes('3 支正式角材')&&document.querySelector('.timber-schedule-source p').textContent.includes('材料／加工：未知')&&/^[a-f0-9]{64}$/.test(feTimberScheduleSnapshot().sourceFingerprint)`));
@@ -36,12 +40,20 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,exceptionCount})
  check('CSV 導出同一排序與精確 mm、來源指紋',await eval_(`(async()=>{const csv=await __s47Blob.text(),s=feTimberScheduleSnapshot();return csv.includes('"2946"')&&csv.includes(s.sourceFingerprint)&&csv.split('\\r\\n')[1].startsWith('"timber","3","1"');})()`));
  check('選取、排序、顯示單位與匯出均不改 World 或歷史',JSON.stringify(immutable)===JSON.stringify(await snapshot()));
  await eval_(`api('line spec schedule_stale 99')`);
+ // The fingerprint of the one accepted export: the refreshed list must move away from it.
+ const exportedFingerprint=(await eval_(`(async()=>{const csv=await __s47Blob.text();return csv.match(/[a-f0-9]{64}/)?.[0]??null;})()`));
  await ctl('#timberScheduleCSV');
- check('來源改動先更新且拒絕匯出過期料單',await eval_(`(async()=>__s47Exports===1&&fe.timberReferenceData.sourceFingerprint===(await apiRequest('references')).sourceFingerprint&&feTimberScheduleSnapshot().sourceFingerprint!==${JSON.stringify(await eval_(`(async()=>{const csv=await __s47Blob.text();return csv.match(/[a-f0-9]{64}/)?.[0];})()`))})()`));
- await eval_(`(async()=>{URL.createObjectURL=__s47URL;window.__s47Saved=await ReferenceWorkspace.exportBytes();window.__s47Rows=JSON.stringify(feTimberScheduleSnapshot().rows);await ReferenceWorkspace.importBytes(__s47Saved,'schedule.gcanvas');await renderObjects();await enterFocus('face',1);})()`);
+ // ctl only sleeps 150ms, but the click starts references -> (stale) feLoadGuides: obstacles -> references -> dump -> source-inspect,
+ // and fe.timberReferenceData is null/old until feLoadGuides assigns it (app.js feLoadGuides). Wait for that observable end of the
+ // refresh chain (or for a wrong second export, which the check below then fails on) instead of racing it with a fixed sleep.
+ await settle('點匯出後偵測到來源改動並刷新完成：fe.timberReferenceData 取得與首次匯出不同的來源指紋',
+  `window.__s47Exports>1||(!!fe.timberReferenceData&&fe.timberReferenceData.sourceFingerprint!==${JSON.stringify(exportedFingerprint)})`,
+  {observe:`({exports:window.__s47Exports,hasReferenceData:!!fe.timberReferenceData,referenceFingerprint:fe.timberReferenceData?.sourceFingerprint?.slice(0,12)??null,exportedFingerprint:${JSON.stringify(exportedFingerprint?.slice(0,12)??null)},guidesLoadSeq:fe.guidesLoadSeq,toasts:[...document.querySelectorAll('#toastRegion .toast')].map(t=>t.textContent)})`});
+ check('來源改動先更新且拒絕匯出過期料單',await eval_(`(async()=>__s47Exports===1&&fe.timberReferenceData.sourceFingerprint===(await apiRequest('references')).sourceFingerprint&&feTimberScheduleSnapshot().sourceFingerprint!==${JSON.stringify(exportedFingerprint)})()`));
+ await eval_(`(async()=>{URL.createObjectURL=__s47URL;window.__s47Saved=await ReferenceWorkspace.exportBytes();window.__s47Rows=JSON.stringify(feTimberScheduleSnapshot().rows);await ReferenceWorkspace.importBytes(__s47Saved,'schedule.gcanvas');await renderObjects();await enterFocus('face',1);})()`);await timberPane();
  check('正式保存重開後可重新導出相同逐件料單',await eval_(`JSON.stringify(feTimberScheduleSnapshot().rows)===__s47Rows`));
  await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
- await eval_(`openPanel('left',$('workspaceToggleLeft'));`);await sleep(150);
+ await timberPane();await sleep(150);
  await ctl('[data-schedule-timber="3"]');
  check('390px 可點料單並定位同一構件',await eval_(`fe.timberSelection.has(3)&&document.querySelector('[data-schedule-timber="3"]').getAttribute('aria-pressed')==='true'`));
  check('390px 控制大於44px且沒有橫向溢出',await eval_(`document.documentElement.scrollWidth<=innerWidth&&[...document.querySelectorAll('.timber-schedule-controls button,.timber-schedule-controls select,.timber-schedule-pick')].every(e=>e.getBoundingClientRect().height>=44)`));
@@ -49,14 +61,14 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,exceptionCount})
  await waitForUI(`!document.querySelector('#toastRegion .toast')`,6000);
  fs.writeFileSync(path.join(out,'schedule-mobile.png'),Buffer.from((await send('Page.captureScreenshot',{format:'png'})).result.data,'base64'));
  await send('Emulation.setDeviceMetricsOverride',{width:1400,height:900,deviceScaleFactor:1,mobile:false});
- await eval_(`openPanel('left',$('workspaceToggleLeft'));`);await sleep(100);
+ await timberPane();await sleep(100);
  fs.writeFileSync(path.join(out,'schedule-desktop.png'),Buffer.from((await send('Page.captureScreenshot',{format:'png'})).result.data,'base64'));
- await eval_(`(async()=>{resetSceneFocus();const r=await fetch('/examples/assembly-generation-v1.gcanvas');if(!r.ok)throw Error('Generation example absent');await ReferenceWorkspace.importBytes(new Uint8Array(await r.arrayBuffer()),'原生生成料單.gcanvas');await renderObjects();await enterFocus('face',1);})()`);
+ await eval_(`(async()=>{resetSceneFocus();const r=await fetch('/examples/assembly-generation-v1.gcanvas');if(!r.ok)throw Error('Generation example absent');await ReferenceWorkspace.importBytes(new Uint8Array(await r.arrayBuffer()),'原生生成料單.gcanvas');await renderObjects();await enterFocus('face',1);})()`);await timberPane();
  check('生成實例只計三支 owned 角材與兩支既有支撐，不重複計量',await eval_(`(()=>{const s=feTimberScheduleSnapshot(),a=fe.timberReferenceData.assembly.instances[0];return s.rows.length===5&&s.rows.filter(r=>r.assembly).length===3&&new Set(s.ids).size===5&&a.members.every(m=>s.rows.some(r=>r.id===m.timberId&&r.assembly.memberId===m.memberId&&r.L===m.geometry.length));})()`));
  check('生成料單保留原生配置尺寸來源與固定規則，CSV可追溯同身分',await eval_(`(()=>{const s=feTimberScheduleSnapshot(),r=s.rows.find(r=>r.assembly),a=fe.timberReferenceData.assembly.instances[0],b=fe.timberReferenceData.assembly.bindings[0];return r.assembly.instanceId===a.value.source.id&&r.assembly.bindingFingerprint===b.fingerprint&&r.assembly.ruleFingerprint===a.value.source.rule.fingerprint&&r.sources.length===2&&document.querySelector('[data-timber-id="'+r.id+'"] .timber-schedule-source p').textContent.includes('組構實例')&&TimberSchedule.csv(s).includes(r.assembly.ruleFingerprint)&&TimberSchedule.csv(s).includes('dimension_source_definitions');})()`));
  const zeroScene='reset\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\nplacement 0 on boundary 1 origin 0 0 2500 u +x v +y\ntimber 0 27 33 role boundary\nplace 0 on 0 at-face e0 +u +n\n';
  const zeroFixture=async()=>{
-  await eval_(`(async()=>{resetSceneFocus();const bytes=await GeometryProject.pack(${JSON.stringify(zeroScene)},{projectId:'schedule-zero',name:'合法零號料單',sources:[],faces:[]},new Map(),fflate);await ReferenceWorkspace.importBytes(bytes,'零號料單.gcanvas');await renderObjects();await enterFocus('face',1);})()`);
+  await eval_(`(async()=>{resetSceneFocus();const bytes=await GeometryProject.pack(${JSON.stringify(zeroScene)},{projectId:'schedule-zero',name:'合法零號料單',sources:[],faces:[]},new Map(),fflate);await ReferenceWorkspace.importBytes(bytes,'零號料單.gcanvas');await renderObjects();await enterFocus('face',1);})()`);await timberPane();
   await waitForUI(`!!$('timberScheduleCSV')&&!$('timberScheduleCSV').disabled`);
  };
  await zeroFixture();

@@ -1,0 +1,83 @@
+{
+  "actualExecutedBuilderSHA256": "1d4de05133a7e719120d95f5447ace121a6315c843be5e5d988c928b7f363808",
+  "actualExecutedBuilderBytes": 21495,
+  "publicBuilderSHA256": "7ad7b350ad43b85b22a308647de543cc5ab63d9ef867a3f5931dd10013aad3c5",
+  "publicBuilderBytes": 21310,
+  "publicBuilderWasExecuted": false,
+  "tokenSpans": [
+    {
+      "originalStartByte": 391,
+      "originalEndByte": 451,
+      "originalStartCharacter": 391,
+      "originalEndCharacter": 451,
+      "originalTokenBytes": 60,
+      "originalTokenSha256": "7fd52e22f609201e7064ee93a3ae771cb64ae07e88adb426582fbeae0b2ab8fd",
+      "replacement": "<workspace-path>",
+      "publicStartByte": 391,
+      "publicEndByte": 407,
+      "publicStartCharacter": 391,
+      "publicEndCharacter": 407
+    },
+    {
+      "originalStartByte": 467,
+      "originalEndByte": 574,
+      "originalStartCharacter": 467,
+      "originalEndCharacter": 574,
+      "originalTokenBytes": 107,
+      "originalTokenSha256": "187319c5bd31d7b19ffc2eae1238c1abb07aa408b433d184735f165220ae1cd5",
+      "replacement": "<workspace-path>",
+      "publicStartByte": 423,
+      "publicEndByte": 439,
+      "publicStartCharacter": 423,
+      "publicEndCharacter": 439
+    },
+    {
+      "originalStartByte": 594,
+      "originalEndByte": 660,
+      "originalStartCharacter": 594,
+      "originalEndCharacter": 660,
+      "originalTokenBytes": 66,
+      "originalTokenSha256": "dc064641e684f157abf364a2e84a00309d0b1007cb903b212d2167a5dcb8ef58",
+      "replacement": "<workspace-path>",
+      "publicStartByte": 459,
+      "publicEndByte": 475,
+      "publicStartCharacter": 459,
+      "publicEndCharacter": 475
+    }
+  ],
+  "unchangedSegments": [
+    {
+      "originalStartByte": 0,
+      "originalEndByte": 391,
+      "publicStartByte": 0,
+      "publicEndByte": 391,
+      "bytes": 391,
+      "sha256": "a82c805307ec7b5f36d767c2e9fde428525487b0de2a97993dfa7fd558931b58"
+    },
+    {
+      "originalStartByte": 451,
+      "originalEndByte": 467,
+      "publicStartByte": 407,
+      "publicEndByte": 423,
+      "bytes": 16,
+      "sha256": "61b8ab1a7a75f032046e7e114ed2323aa7f638025de644d2333ec5e1d4aa9f2b"
+    },
+    {
+      "originalStartByte": 574,
+      "originalEndByte": 594,
+      "publicStartByte": 439,
+      "publicEndByte": 459,
+      "bytes": 20,
+      "sha256": "70bb838728c61a97e701f47478528fe23d4ad3086f5bcfd2b4606e33aee5b9da"
+    },
+    {
+      "originalStartByte": 660,
+      "originalEndByte": 21495,
+      "publicStartByte": 475,
+      "publicEndByte": 21310,
+      "bytes": 20835,
+      "sha256": "b45175453dbbd9f5b1713adca237ba76926e2538d817001ed74af78e79a4798a"
+    }
+  ],
+  "allNonTokenBytesRetained": true
+}

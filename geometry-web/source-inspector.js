@@ -2,7 +2,7 @@
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.SourceInspector=api;})(globalThis,()=>{
   'use strict';
   const LIMIT=48,DEPTH=6,HASH=/^[a-f0-9]{64}$/;
-  const labels={dimension:'尺寸來源',position:'定位來源','rule-version':'固定規則版本','material-version':'固定材料版本',member:'成員對應','joint-definition':'接合規則定義（未生成也可存在）','span-candidate':'跨距求值候選（支撐未知）','confirmed-support':'原生已確認支撐'};
+  const labels={dimension:'尺寸來源',position:'定位來源',containment:'所屬斷面','material-spec':'固定面材規格',profile:'斷面輪廓','rule-version':'固定規則版本','material-version':'固定材料版本',member:'成員對應','joint-definition':'接合規則定義（未生成也可存在）','span-candidate':'跨距求值候選（支撐未知）','confirmed-support':'原生已確認支撐'};
   const key=(kind,id,version=0,fieldId=0)=>`${kind}:${id}${version?':v'+version:''}${fieldId||kind==='parameter-field'?':f'+fieldId:''}`;
   const id=n=>Number.isSafeInteger(n)&&n>=0&&n<=4294967295,hash=s=>typeof s==='string'&&HASH.test(s),clone=x=>JSON.parse(JSON.stringify(x));
   const ownerFields=['instanceId','memberId','bindingId','ruleId','ruleVersion','ruleFingerprint','instanceFingerprint','bindingFingerprint'];

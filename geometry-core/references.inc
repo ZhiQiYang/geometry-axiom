@@ -14,6 +14,9 @@ static void reference_capture_trial(const World *world)
 {
     if (!g_reference_capturing) return;
     g_reference_trial=*world;
+    /* Rejected upstream sources still need every Q38 dependent diagnostic.
+     * Rebuild only the disposable trial, preserving the primary error. */
+    sp_capture_diagnostics(&g_reference_trial);
     /* A rejected source has no validated downstream geometry yet. */
     for (size_t i=0;i<g_reference_trial.guide_count;++i) g_reference_trial.guides[i].resolved=false;
     for (size_t i=0;i<g_reference_trial.timber_count;++i) g_reference_trial.timbers[i].placed=false;

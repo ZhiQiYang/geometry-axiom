@@ -1,0 +1,28 @@
+{
+  "phase": "after-fix",
+  "headBeforeCommit": "ce0958ca700753172338fe291a17e781da89465a",
+  "status": " M geometry-web/app.js\n M geometry-web/space-workspace.js\n M geometry-web/space_model_test.js\n M geometry-web/space_test_floor.js\n?? geometry-web/async_reply_ui_test.js\n?? tests/release-evidence/20261008-async-repro/\n",
+  "diffStat": " geometry-web/app.js              | 13 ++++++++++---\n geometry-web/space-workspace.js  |  7 ++++++-\n geometry-web/space_model_test.js | 11 +++++++++--\n geometry-web/space_test_floor.js |  1 +\n 4 files changed, 26 insertions(+), 6 deletions(-)\n",
+  "lfSha256": {
+    "geometry-web/app.js": "509299aa5b326893748a07ebc283e22e7dac440777f378190bd013008c1e6231",
+    "geometry-web/space-workspace.js": "a735338f5cc14f3ae743578986750ace3c7389e0d73fd44c21773d82c2503868",
+    "geometry-web/async_reply_ui_test.js": "8220ef389ac652a279a18dbfc8c10b944bcb466f15ccfbf2614cfa65971bbaaa",
+    "geometry-web/space_model_test.js": "a36359a6d2114f2f0f3c435207554f8c82e82bddcccd0dfb357b92e1c472e252",
+    "geometry-web/space_test_floor.js": "03f48a31fc8dc96b75456a207082731e607ae8e038e1fd479ef64d2f446d6591"
+  },
+  "exitCode": 0,
+  "completed": true,
+  "passed": 10,
+  "failed": 0,
+  "runtime": {
+    "schema": "geometry-runtime/1",
+    "version": "14320d731e89367ffaf43197ad83a981865936fe78c9429803428fb79f351c3f",
+    "fresh": true,
+    "root": "D:\\geometry-axiom-async-qa",
+    "port": 8921,
+    "cdp": 9521
+  },
+  "bridgeSha256": "aa2cc6ae4fd47277c4620bf08bbc99ccae0ee48757c0728785528cfd1357736d",
+  "bridgeRebuilt": false,
+  "command": "GEOMETRY_TEST_URL=http://127.0.0.1:8921/ GEOMETRY_FEEDBACK_DIR=<local-user>\\\\AppData\\\\Local\\\\Temp\\\\geometry-async-qa-20261008\\\\feedback GEOMETRY_CDP_PORT=9521 GEOMETRY_ASYNC_REPLY_ONLY=1 GEOMETRY_SPACE_TEST_DIR=<local-user>\\\\AppData\\\\Local\\\\Temp\\\\geometry-async-qa-20261008\\\\run-after GEOMETRY_CHROME_PROFILE=<local-user>\\\\AppData\\\\Local\\\\Temp\\\\geometry-async-qa-20261008\\\\run-after\\\\chrome-profile node geometry-web/space_model_test.js"
+}
