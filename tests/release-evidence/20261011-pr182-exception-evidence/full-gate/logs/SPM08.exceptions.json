@@ -1,0 +1,25 @@
+{
+  "schema": "section-profile-exceptions/1",
+  "requested": [
+    "tests.test_section_profile_native.SectionProfileNative.test_panel_strict_width_fixed_spec_and_long_run"
+  ],
+  "executed": [
+    "tests.test_section_profile_native.SectionProfileNative.test_panel_strict_width_fixed_spec_and_long_run"
+  ],
+  "passed": [],
+  "tests_run": 1,
+  "failures": 1,
+  "errors": 0,
+  "skipped": 0,
+  "expected_failures": 0,
+  "unexpected_successes": 0,
+  "events": [
+    {
+      "test_id": "tests.test_section_profile_native.SectionProfileNative.test_panel_strict_width_fixed_spec_and_long_run",
+      "subtest_id": null,
+      "kind": "failure",
+      "exception_type": "builtins.AssertionError",
+      "message": "Lists differ: [0, 0, 914, 6] != [0, 0, 914, 7]\n\nFirst differing element 3:\n6\n7\n\n- [0, 0, 914, 6]\n?             ^\n\n+ [0, 0, 914, 7]\n?             ^\n : D40/R36: calcium-silicate-6 is 6 mm thick, thickness along v, w=914"
+    }
+  ]
+}

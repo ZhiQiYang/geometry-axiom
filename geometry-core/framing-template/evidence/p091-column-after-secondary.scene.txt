@@ -1,0 +1,30 @@
+boundary 1 outline 0,4920 3200,4920 3200,7000 0,7000 hole 1400,5800 1700,5800 1700,6100 1400,6100
+placement 1 on boundary 1 origin 0 0 2506 u +x v +y
+timber 1 27 33 role boundary
+timber 2 27 33 role boundary
+place 1 on 1 at-face e0 +u +n
+place 2 on 1 at-face e2 +u +n
+spec leftColumn 1386
+spec rightColumn 1713
+spec topColumn 5786
+spec bottomColumn 6113
+guide 1 1 v spec:leftColumn
+guide 2 1 v spec:rightColumn
+guide 3 1 u spec:topColumn
+guide 4 1 u spec:bottomColumn
+spec mainLeft 916
+guide 5 1 v spec:mainLeft
+timber 7 27 33 role primary
+place 7 on 1 at-line guide 5 between t1 t2 +v +n
+spec subLine 5900
+guide 6 1 u spec:subLine
+timber 8 27 33 role secondary
+place 8 on 1 at-line guide 6 through 1100 +u +n
+timber 3 27 33 role primary
+timber 4 27 33 role primary
+place 3 on 1 at-line guide 1 between t1 t2 +v +n
+place 4 on 1 at-line guide 2 between t1 t2 +v +n
+timber 5 27 33 role secondary
+timber 6 27 33 role secondary
+place 5 on 1 at-line guide 3 between t3 t4 +u +n
+place 6 on 1 at-line guide 4 between t3 t4 +u +n

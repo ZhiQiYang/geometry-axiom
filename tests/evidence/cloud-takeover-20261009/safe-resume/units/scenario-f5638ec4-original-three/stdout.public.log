@@ -1,0 +1,192 @@
+✔ registered evidence setter uses original source metadata, one history and synchronous native busy guard (37.663573ms)
+✔ production detached prepare cancellation during byte hash never warms or selects cold PDF page (4.316296ms)
+✔ production synchronous reader commit rejects unleased or forged prepared pages before any mutation (2.584462ms)
+✔ repeated evidence exports release every detached PDF while keeping the live reader document (23.996719ms)
+✔ evidence page rejection releases detached validation handles without closing the live PDF (3.857805ms)
+✔ cancelled and failed PDF loads release temporary validation tasks exactly once (22.994059ms)
+✔ saving during PDF selection writes the selected page and its original bytes (22.932457ms)
+✔ edits completed during file writing remain unsaved (13.601627ms)
+✔ save remains dirty until close finishes; edits during close remain unsaved (20.959694ms)
+✔ writer close failure aborts and cannot report a saved project (2.829696ms)
+✔ switching context while writing never marks the new project saved (5.333719ms)
+✔ switching context in the picker or scene dump refuses mixed-project export (5.608006ms)
+✔ rapid selections retain the newest page even when an earlier PDF render resolves last (3.433093ms)
+✔ failed PDF selection leaves the old page savable and releases pending work (4.972371ms)
+✔ a save waiting for a failed current selection reports the failure without writing an older page (1.593729ms)
+✔ a newer cached selection releases saving without waiting for a superseded PDF render (4.892893ms)
+✔ switching projects cancels pending selection and export; restoring the old project cannot revive it (3.557909ms)
+✔ removing an active page cancels an earlier selection so it cannot later replace the fallback (3.470589ms)
+✔ legacy source conversion is included before the scene snapshot (6.705338ms)
+✔ source file reading cannot open a modal after the project has changed (5.144857ms)
+✔ applying a source cannot attach it to another project after async face navigation (2.178258ms)
+✔ manifest refuses a context switch while legacy source conversion is pending (1.881657ms)
+✔ edits while obtaining the scene or packing prevent a mixed snapshot from reaching the writer (9.771715ms)
+✔ scenario catalog validation releases disposable PDF leaves without releasing adopted history readers (66.098349ms)
+✔ scenario adoption releases rejected PDF candidates and preserves live and uncertain owners (32.024681ms)
+✔ opening owns the busy state from first byte read through rendering and refuses reentry (15.277008ms)
+✔ changes during project reading or its pre-upload dump prevent replacement without swallowing edits (4.178081ms)
+✔ late native candidate blocks local metadata edits and cancels after external context or revision change (3.95619ms)
+✔ missing final native targets cancel without losing source bytes, metadata or undo (2.276264ms)
+✔ late confirm rejects local metadata edits and preserves externally invalidated context without import history (2.095756ms)
+✔ native prepare blocks direct scene upload reentry until its commit finishes (2.033262ms)
+✔ retry cancels the token before a delayed confirm can mutate old or identical Worlds (9.025055ms)
+✔ retry uses the committed receipt for lost replies and refuses a later different World (10.295333ms)
+﹣ real native HTTP committed ABA keeps the old project bytes references and undo (0.160669ms) # SKIP
+✔ failed reading or unpacking releases busy state and leaves the existing project untouched (3.205605ms)
+✔ automatic layout during open explains the real unsaved change; later user changes clear that explanation (3.665268ms)
+✔ example provenance does not pretend a user file exists or mark unchanged data dirty (2.000944ms)
+✔ file opening does not invent a save time and successful writer close records one (2.23316ms)
+✔ download mode records generation separately from a confirmed disk write (2.397323ms)
+✔ new project and clear contents have distinct identities and undo restores full context (5.925868ms)
+✔ cancelled empty-project action preserves context and sends no world mutation (2.872811ms)
+✔ undoing clear restores saved content and timestamps but expires the prior download status (2.392036ms)
+✔ matching reload restores complete project context without uploading or inventing undo (12.181627ms)
+✔ reload refuses different server or geometry and preserves the original backup (4.758393ms)
+✔ duplicate-tab lock, denied storage and write failure never report restored or saved (6.271232ms)
+✔ another tab invalidates saving, metadata editing and local undo until explicit project replacement (2.534937ms)
+✔ external mutation during final reload fingerprint cannot commit the earlier local context (2.548368ms)
+✔ service editing lease rejects every replacement and can be acquired only by explicit retry (5.33532ms)
+✔ backup-key lock conflict never loads another tabs attachments despite owning the service lease (1.780456ms)
+✔ owner edits keep a reader retryable and takeover discards unproven metadata before editing (2.463342ms)
+✔ readonly project rename is rejected before prompting or changing local identity (1.916088ms)
+✔ readonly reference mutation APIs preserve all page metadata and do not open the file picker (2.02494ms)
+✔ reference records and review UI reject readonly writes while the owning page can edit them (4.128777ms)
+✔ source attachment rechecks edit ownership after navigation before writing an existing face (1.855428ms)
+✔ outline completion belongs to source page, calibration, transform and exact geometry; opacity is irrelevant (1.585957ms)
+✔ review receipts undo with core changes and local review without inheriting reused face ids (1.867375ms)
+✔ formal cases detached prepare commits one common metadata history and true Undo/Redo (349.58832ms)
+✔ formal cases cancellation or native operation after detached response produces zero writes (447.83696ms)
+✔ formal cases no-op has zero history; equal data after Undo/Redo cannot revive an old prepared lease (702.237107ms)
+✔ case-only near-limit project rejects full manifest growth before HTTP, history or dirty changes (744.314189ms)
+✔ caller mutation during real hashes cannot replace the detached snapshot verified by the core (457.61644ms)
+✖ twelve interrupted reload/Edit attempts retain one identity without allocation, iframe or import (5.387638ms)
+✔ interrupted creating and initializing tickets never replay create or ordinary import (5.460958ms)
+✖ recovered discard specifically names B and warns it may be open elsewhere; declining retains all data (1.371549ms)
+✖ confirmed recovered discard persists intent before exact close and preserves A (4.987363ms)
+✔ unreadable or malformed reserved ticket fails closed before any allocation (2.120662ms)
+✔ pre-create ticket storage refusal sends zero create and leaves A unchanged (0.965155ms)
+✔ lost pre-create ticket acknowledgement retains the committed identity and blocks the next fresh attempt (1.375114ms)
+✔ simultaneous Edit callers share the owner CAS fence and dispatch at most one fresh create (11.583548ms)
+✔ fresh flow persists creating before create and context before iframe, importing exact ticket while inert (1.663462ms)
+✔ invalid service identity or sequence never persists or dispatches a create (2.73167ms)
+✔ two lost create replies retain exact creating ticket without auto-close or initialization (0.855722ms)
+✔ malformed or root-context create reply retains ticket without mounting the iframe (2.513066ms)
+✔ unknown initialization retains its context and ticket without implicit discard (3.293246ms)
+✔ Cancel wins a held create; its late response cannot bind, mount, import or resurrect (0.979726ms)
+✔ Cancel waits an in-flight binding CAS, then retires its latest exact version without iframe import (1.036701ms)
+✔ Cancel during import aborts the wait; a late import acknowledgement never promotes active (1.754148ms)
+✔ Cancel racing the active CAS retires that exact committed phase and never re-enables the frame (1.94426ms)
+✔ unknown close preserves a retiring exact tuple; explicit retry clears only its confirmed retirement (1.89075ms)
+✔ close success without retired state cannot erase the durable ticket (2.629298ms)
+✔ discovered retirement must verify before replay and never permits fresh allocation on failed proof (0.790896ms)
+✔ verified discovered retirement replays only exact close before another user-requested Edit (1.469244ms)
+✔ Finish freezes and verifies B, durably writes A before exact close, and never separately commits catalog (1.713657ms)
+✔ checkpoint failure preserves A and active ticket, releases B freeze, and sends no close (1.818813ms)
+✔ Cancel during held export aborts its wait immediately while discard journaling remains pending (1.564526ms)
+✔ Cancel during held archive replacement prevents every late A commit (1.607309ms)
+✔ Cancel during held freeze verification prevents the critical checkpoint from starting (1.422194ms)
+✔ critical checkpoint blocks Cancel, Escape and main close until its terminal result (2.364164ms)
+✔ stale freeze verification cannot reach checkpoint or close and releases the owned freeze (1.925492ms)
+✔ successful durable Finish plus lost close stays frozen/retiring and retry does not duplicate A history (1.878212ms)
+✔ Cancel during Finish retirement coalesces the existing close and deletes the ticket once (4.353872ms)
+✔ Cancel waits an already-dispatched failed-Finish freeze release before persisting retirement (1.510896ms)
+✔ failed explicit Cancel journal never closes B or changes A (1.08358ms)
+✔ child bootstrap invokes authorized initializer with exact ticket and no ordinary import (0.757776ms)
+✔ child protocol ignores wrong origin or source before all owner operations (0.665649ms)
+✔ child export remains frozen through parent verification and releases only the exact owned freeze (0.642034ms)
+✔ child release can settle an export whose reply is still pending without losing the freeze token (2.554086ms)
+✔ root and two native B bootstraps use distinct recovery keys and do not restore or overwrite interrupted metadata (28.572481ms)
+✔ ticket allocation is durable, unique, and rejects storage failure before exposing a create identity (20.356127ms)
+✔ durable Cancel CAS cannot be overwritten by a late create or initialization completion (14.496298ms)
+✔ unknown or stale bootstrap tickets never import an old catalog into surviving B (9.76176ms)
+✔ fresh initializing ticket authorizes exactly one import, while interrupted active bootstrap remains blocked (12.926123ms)
+✔ Finish writes proposed complete A checkpoint and retiring ticket atomically before publishing A in memory (49.348572ms)
+✔ Finish transaction abort rolls back both persistent writes and leaves A plus active B ticket unchanged (44.366542ms)
+✔ Finish retirement refuses a replaced parent package (19.291796ms)
+✔ B freeze blocks metadata mutation through the whole parent checkpoint and releases only its exact token (7.136648ms)
+✔ pre-create checkpoint preserves a just-captured A catalog before its recovery debounce (26.325636ms)
+✔ pre-create checkpoint and ticket both roll back when the second storage write fails (6.665878ms)
+✔ Finish immutable receipt survives ordinary recovery writes and an exact close retry remains verifiable (24.456793ms)
+✔ committed Finish with lost local acknowledgement restores its immutable complete A on the same parent bootstrap (40.910423ms)
+✔ a different parent tab cannot silently take over a Finish receipt or retire B (18.700677ms)
+✔ B cannot freeze while a dispatched native mutation is still awaiting its result (11.218967ms)
+✔ a later acknowledged A metadata edit wins over the older immutable Finish receipt on a second reload (44.087648ms)
+✔ unsupported strict durability refuses a ticket without allocating or overwriting the parent checkpoint (3.936571ms)
+✔ an older completed Finish marker cannot outrank a newer committed Finish with lost local acknowledgement (47.542078ms)
+✔ a queued ordinary recovery write cannot overtake the atomic Finish receipt (12.666838ms)
+✔ present null, undefined, or malformed reserved tickets block fresh allocation instead of looking absent (10.352127ms)
+ℹ tests 117
+ℹ suites 0
+ℹ pass 113
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 1
+ℹ todo 0
+ℹ duration_ms 3219.898131
+
+✖ failing tests:
+
+test at tests/test_scenario_editor_tickets.js:5:23
+✖ twelve interrupted reload/Edit attempts retain one identity without allocation, iframe or import (5.387638ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (<resume-repository-root>/tests/test_scenario_editor_tickets.js:95:138)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/test_scenario_editor_tickets.js:5:23
+✖ recovered discard specifically names B and warns it may be open elsewhere; declining retains all data (1.371549ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (<resume-repository-root>/tests/test_scenario_editor_tickets.js:104:52)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/test_scenario_editor_tickets.js:5:23
+✖ confirmed recovered discard persists intent before exact close and preserves A (4.987363ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      {
+  +     action: 'resolve',
+  +     context: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
+  +     requestId: '00000000-0000-4000-8000-000000000001',
+  +     sequence: 1,
+  +     session: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+  +   },
+  +   {
+        action: 'close',
+        requestId: '00000000-0000-4000-8000-000000000001',
+        sequence: 1,
+        session: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+      }
+  
+      at TestContext.<anonymous> (<resume-repository-root>/tests/test_scenario_editor_tickets.js:108:57)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { action: 'resolve', requestId: '00000000-0000-4000-8000-000000000001', sequence: 1, session: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', context: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb' }, { action: 'close', requestId: '00000000-0000-4000-8000-000000000001', sequence: 1, session: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' } ],
+    expected: [ { action: 'close', requestId: '00000000-0000-4000-8000-000000000001', sequence: 1, session: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

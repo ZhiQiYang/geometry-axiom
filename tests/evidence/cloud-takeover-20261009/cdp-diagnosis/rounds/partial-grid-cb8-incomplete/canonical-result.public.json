@@ -1,0 +1,33 @@
+{
+  "origin": "Exact CDP_RESULT JSON payload parsed from the retained raw command log; paths projected only.",
+  "originalLogSha256": "a987e180e9cd2b9dbc4f7fe5f87a47c6acdd04f2717095da42f4132e76ca3110",
+  "originalLogBytes": 29703,
+  "canonicalResult": {
+    "schema": "geometry-cdp-result/1",
+    "scope": {
+      "mode": "partial",
+      "filters": [
+        "GEOMETRY_GRID_SYSTEM_ONLY"
+      ],
+      "modifiers": [],
+      "url": "http://127.0.0.1:19189/",
+      "feedbackDirectory": "<isolated-test-directory>",
+      "browserProfile": "<isolated-test-directory>",
+      "cdpPort": 43327,
+      "browserPid": 55265
+    },
+    "completed": false,
+    "passedAssertions": 193,
+    "failedAssertions": 0,
+    "fatal": "Rule control unreachable .ocard[data-kind=\"grid-system\"][data-id=\"903\"] {\"x\":468,\"y\":829,\"w\":260,\"h\":220,\"hit\":false,\"disabled\":false}",
+    "skipped": [],
+    "sections": {
+      "P70": 117,
+      "P71": 9,
+      "P78": 23,
+      "P87": 44
+    },
+    "currentSection": "P87",
+    "goldenCompare": "not compared (run did not complete)"
+  }
+}

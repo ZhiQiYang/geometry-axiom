@@ -164,8 +164,13 @@ static bool apply_engineering_line(const char *path,int line_no,char **tokens,in
     eng_json_free(&j);return ok;
 }
 static bool sp_scene_required;
+/* I56: panel-fill/1 is usable only together with engineering-spec/1 and parameters/1. */
+static bool fs_scene_required, fs_scene_engineering, fs_scene_parameters;
 static bool apply_requires_line(const char *path,int line_no,char **tokens,int count,World *w)
 {
     if(!strcmp(tokens[1],SP_CAPABILITY)){sp_scene_required=true;return true;}
+    if(!strcmp(tokens[1],FS_CAPABILITY)){fs_scene_required=true;return true;}
+    if(!strcmp(tokens[1],"engineering-spec/1"))fs_scene_engineering=true;
+    if(!strcmp(tokens[1],"parameters/1"))fs_scene_parameters=true;
     (void)count;if(!strcmp(tokens[1],GRID_SUBDIVISION_CAPABILITY)){g_rule_scene_required=true;return true;}if(!strcmp(tokens[1],ASM_GENERATION_CAPABILITY)){w->assembly.generation_required=true;return true;}if(!strcmp(tokens[1],"engineering-spec/1")||!strcmp(tokens[1],"parameters/1")||!strcmp(tokens[1],ASM_CAPABILITY))return true;scene_error(path,line_no,"I32: unsupported required scene capability");return false;
 }

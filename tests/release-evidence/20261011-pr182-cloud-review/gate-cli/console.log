@@ -1,0 +1,3 @@
+native baseline: exit 0
+{"id": "SPM41", "group": "native", "clause": "I44", "desc": "a single positive-area outside region is incorrectly treated as contained", "binary_sha256": "514b408fb66554f4bd6ea22960c1755a0ec87e4eac8f6164ff90b4b6c6480003", "exit": 1, "failed": ["FAIL test_concave_not_four_corners_and_winding"], "first_failure": "True is not false : expected rejection 'V_PROFILE_OUTSIDE' but the candidate was accepted: {'token': 2, 'valid': True, 'revision': 12, 'diagnosticsComplete': True, 'validationStrategy': 'all-section-profile-violations', 'before': {'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule", "verdict": "killed"}
+{"summary": {"killed": 1}}

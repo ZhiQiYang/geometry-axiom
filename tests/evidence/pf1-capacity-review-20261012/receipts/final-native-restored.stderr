@@ -1,0 +1,27 @@
+test_apply_proj_footprint_is_only_contact (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_apply_proj_footprint_is_only_contact) ... ok
+test_capabilities_are_declared_but_not_claimed_complete (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_capabilities_are_declared_but_not_claimed_complete) ... ok
+test_capacity_is_explicit (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_capacity_is_explicit) ... ok
+test_create_preview_lists_each_obstacle_relation_and_keeps_layers_pending (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_create_preview_lists_each_obstacle_relation_and_keeps_layers_pending) ... ok
+test_deleting_a_referenced_source_is_rejected_until_the_reference_is_removed (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_deleting_a_referenced_source_is_rejected_until_the_reference_is_removed) ... ok
+test_dump_reopen_round_trip_is_exact (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_dump_reopen_round_trip_is_exact) ... ok
+test_gap_between_prongs_is_outside_f (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_gap_between_prongs_is_outside_f) ... ok
+test_holes_are_subtracted_from_f (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_holes_are_subtracted_from_f) ... ok
+test_interactive_dsl_cannot_bypass_the_preview (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_interactive_dsl_cannot_bypass_the_preview) ... ok
+test_invalid_definitions_are_rejected_without_changing_world (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_invalid_definitions_are_rejected_without_changing_world) ... ok
+test_local_obstacle_coordinates_must_stay_in_d1 (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_local_obstacle_coordinates_must_stay_in_d1) ... ok
+test_mid_transaction_failure_commits_nothing (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_mid_transaction_failure_commits_nothing) ... ok
+test_modify_cancel_stale_delete_and_history (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_modify_cancel_stale_delete_and_history) ... ok
+test_name_capacity_is_not_invalid_and_never_commits (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_name_capacity_is_not_invalid_and_never_commits) ... ok
+test_out_of_scope_operations_are_refused_instead_of_hidden (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_out_of_scope_operations_are_refused_instead_of_hidden) ... ok
+test_rejected_or_cancelled_previews_keep_redo (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_rejected_or_cancelled_previews_keep_redo) ... ok
+test_reopen_rejects_tampered_or_undeclared_records (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_reopen_rejects_tampered_or_undeclared_records) ... ok
+test_scene_name_capacity_preserves_invalid_format_and_world (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_scene_name_capacity_preserves_invalid_format_and_world) ... ok
+test_scene_obstacle_capacity_is_structured_and_atomic (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_scene_obstacle_capacity_is_structured_and_atomic) ... ok
+test_scenes_without_finish_surfaces_keep_their_old_dump (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_scenes_without_finish_surfaces_keep_their_old_dump) ... ok
+test_tokens_of_other_transaction_kinds_are_refused (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_tokens_of_other_transaction_kinds_are_refused) ... ok
+test_world_position_follows_frame_and_structure_side (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_world_position_follows_frame_and_structure_side) ... ok
+
+----------------------------------------------------------------------
+Ran 22 tests in 3.879s
+
+OK

@@ -1,0 +1,287 @@
+{
+  "schema": "geometry-release-command/1",
+  "created": "2026-10-09T14:04:41.554933+00:00",
+  "command": [
+    "node",
+    "<original-evidence-root>/resume_pause_browser.cjs"
+  ],
+  "cwd": "<resume-repository-root>",
+  "url": "http://127.0.0.1:19178/",
+  "timeoutSeconds": 900,
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "status": "command-failed",
+  "executionVerified": false,
+  "releaseApproved": false,
+  "problems": [],
+  "limitations": [
+    "Only this command is covered; independent delivery gates remain separate.",
+    "Native receipts attest configured files; /runtime does not attest the running native process.",
+    "Before/after identity checks do not prove absence of transient source changes."
+  ],
+  "environment": {
+    "GEOMETRY_TEST_BRIDGE": "<isolated-test-directory>",
+    "GEOMETRY_BRIDGE": "<isolated-test-directory>",
+    "GEOMETRY_MODEL_BASE": "<isolated-test-directory>",
+    "GEOMETRY_FEEDBACK_DIR": "<isolated-test-directory>",
+    "GEOMETRY_CHROME": "/usr/bin/chromium",
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:19178/"
+  },
+  "kind": "command",
+  "before": {
+    "at": "2026-10-09T14:04:41.555792+00:00",
+    "root": "<resume-repository-root>",
+    "problems": [],
+    "git": {
+      "root": "<resume-repository-root>",
+      "head": "128afbec9240f36ae149682830e6b3a96ea02101",
+      "tree": "a61ddb7ded0f18996c96b2f3f2c2416703e73bde",
+      "status": ""
+    },
+    "sourceVersion": "04efb282c3c88028a4d5e276f0bd10d9c2c5d585da699ac8850178935fe5176f",
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "04efb282c3c88028a4d5e276f0bd10d9c2c5d585da699ac8850178935fe5176f",
+      "fresh": true,
+      "root": "<resume-repository-root>",
+      "pid": 58008,
+      "session": "dd441b41a3574c98bea61a8d19daaf00"
+    },
+    "native": {
+      "bridge": {
+        "name": "bridge",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T14:02:42+00:00）",
+        "path": "<isolated-test-directory>",
+        "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+        "sha256": "d19b7bc12cd155120be9cc05e2161e63cb6588ea3ea1c9ee278dbd1e54039843",
+        "sidecarSha256": "ad6c89ad602c96c40d1d9c3582c08f13a10bcb6dcdc944dc3bcdc5329b4d2b80"
+      },
+      "model-base": {
+        "name": "model-base",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T14:02:46+00:00）",
+        "path": "<isolated-test-directory>",
+        "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+        "sha256": "ceba93dcbcbe0af813e52c4f53221ef1c11ac150ead321bd891e710ae68a49a2",
+        "sidecarSha256": "e7daf99209f8346bf6e65c475ada3f39c852c892ab830d2670efc7a563e6d665"
+      }
+    },
+    "executables": {
+      "node": {
+        "commandPath": "<node-runtime>/bin/node",
+        "resolvedPath": "<node-runtime>/bin/node",
+        "sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12",
+        "version": "v24.19.0"
+      },
+      "python": {
+        "commandPath": "<python-runtime>/bin/python3",
+        "resolvedPath": "<python-runtime>/bin/python3.12",
+        "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+        "version": "Python 3.12.14"
+      },
+      "chromeLauncher": {
+        "commandPath": "/usr/bin/chromium",
+        "resolvedPath": "/usr/bin/chromium",
+        "sha256": "2c8d32d29dc6781c35ae196ea83299d507ac88fc339301abe74672feda299779",
+        "version": "Chromium 151.0.7922.173 built on Debian GNU/Linux 13 (trixie)"
+      }
+    },
+    "identityObserverSha256": "94104ef119419939d2fca47e8c12fc5af935bde2fd56faa00e88ecb7c4a53c29",
+    "sources": {
+      "geometry-web/app.js": "ec284229af0c3de951941cb474d31dc452a99b32eeb1849f288889a57b4015d9",
+      "geometry-web/space-workspace.js": "a735338f5cc14f3ae743578986750ace3c7389e0d73fd44c21773d82c2503868",
+      "geometry-web/app.css": "ca597aff139aab7b8209206d0c65d54ed79b913268c46e57ab79de7bed6db793",
+      "geometry-web/index.html": "e8a6635073f46f4b6a824cea430d56d2feb4e3e024e285ef3e068751a968b00b",
+      "geometry-web/serve.py": "bacc291874f7191739236696cf6e1c231daee57008f827d96389a562f5f30fb6",
+      "tests/release_gate.py": "ad460ddbdd52c48995188079339bc224e7f39b3d01e3147091a858ba8f541389",
+      "tests/binaries.py": "a211fd0d066b8a5138855c4773373f9f526717f26264de909c0f61f997ac9aba",
+      "geometry-web/reference-workspace.js": "4637836fe46c016a4bb623e9f2337fda9a8e2aeac853bcca33e9d5fff55b7c62",
+      "geometry-web/scenario-workspace.js": "cc31954c5afe9e91ed72b9b56ac62599751ffd3cb3b12cf3d9ae257acededfa9",
+      "geometry-web/scenario-integration.js": "7b35bcaa7599ad92ba46c5992136f0aec0ff96c94c7bf019b22fcc74898fe2fe",
+      "geometry-web/scenario-catalog.js": "013940df8c3e841a8803455ee1f7b894ac29f873a151cf4cf880b6dbec26dcf1",
+      "geometry-web/scenario-snapshots.js": "a4f4f1be350aa5d093ad1948b17c2f8e4bab01b8f280c9b853c81c99aa0bd598",
+      "geometry-web/project-store.js": "d06dce17c7dd9e17c5a83045128bfc447b14b0b39c3902e27d338b6ef9d3c3a3",
+      "geometry-web/vendor/fflate/umd/index.js": "462ef8041fc970e3615a20a9dd2b2e3047a073b2da729ef4f02b634bba8b7b83",
+      "tests/fixtures/evidence_pdf.cjs": "897fe2f7f59611f7a9df6b5d563901f4b33aee527eb8e1b7ffbb9f0f47139904"
+    },
+    "executionFiles": {
+      "<original-evidence-root>/run_resume_gate_identity.py": "57816b11e135887ef2f995434dcf2e54c818356d936cf4a46555e64c44d8d25b",
+      "<original-evidence-root>/resume_pause_browser.cjs": "71e7d5369a907e3902b64b408b15d970d949960274b8ada95fbe67d43787409e"
+    },
+    "liveBridge": [
+      {
+        "pid": 58071,
+        "parent": 58008,
+        "exe": "<isolated-test-directory>",
+        "sha256": "d19b7bc12cd155120be9cc05e2161e63cb6588ea3ea1c9ee278dbd1e54039843"
+      }
+    ]
+  },
+  "execution": {
+    "started": "2026-10-09T14:04:41.816976+00:00",
+    "exitCode": 1,
+    "timedOut": false,
+    "interrupted": false,
+    "pid": 58464,
+    "finished": "2026-10-09T14:05:14.963531+00:00"
+  },
+  "after": {
+    "at": "2026-10-09T14:05:14.963566+00:00",
+    "root": "<resume-repository-root>",
+    "problems": [],
+    "git": {
+      "root": "<resume-repository-root>",
+      "head": "128afbec9240f36ae149682830e6b3a96ea02101",
+      "tree": "a61ddb7ded0f18996c96b2f3f2c2416703e73bde",
+      "status": ""
+    },
+    "sourceVersion": "04efb282c3c88028a4d5e276f0bd10d9c2c5d585da699ac8850178935fe5176f",
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "04efb282c3c88028a4d5e276f0bd10d9c2c5d585da699ac8850178935fe5176f",
+      "fresh": true,
+      "root": "<resume-repository-root>",
+      "pid": 58008,
+      "session": "dd441b41a3574c98bea61a8d19daaf00"
+    },
+    "native": {
+      "bridge": {
+        "name": "bridge",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T14:02:42+00:00）",
+        "path": "<isolated-test-directory>",
+        "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+        "sha256": "d19b7bc12cd155120be9cc05e2161e63cb6588ea3ea1c9ee278dbd1e54039843",
+        "sidecarSha256": "ad6c89ad602c96c40d1d9c3582c08f13a10bcb6dcdc944dc3bcdc5329b4d2b80"
+      },
+      "model-base": {
+        "name": "model-base",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-09T14:02:46+00:00）",
+        "path": "<isolated-test-directory>",
+        "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+        "sha256": "ceba93dcbcbe0af813e52c4f53221ef1c11ac150ead321bd891e710ae68a49a2",
+        "sidecarSha256": "e7daf99209f8346bf6e65c475ada3f39c852c892ab830d2670efc7a563e6d665"
+      }
+    },
+    "executables": {
+      "node": {
+        "commandPath": "<node-runtime>/bin/node",
+        "resolvedPath": "<node-runtime>/bin/node",
+        "sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12",
+        "version": "v24.19.0"
+      },
+      "python": {
+        "commandPath": "<python-runtime>/bin/python3",
+        "resolvedPath": "<python-runtime>/bin/python3.12",
+        "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+        "version": "Python 3.12.14"
+      },
+      "chromeLauncher": {
+        "commandPath": "/usr/bin/chromium",
+        "resolvedPath": "/usr/bin/chromium",
+        "sha256": "2c8d32d29dc6781c35ae196ea83299d507ac88fc339301abe74672feda299779",
+        "version": "Chromium 151.0.7922.173 built on Debian GNU/Linux 13 (trixie)"
+      }
+    },
+    "identityObserverSha256": "94104ef119419939d2fca47e8c12fc5af935bde2fd56faa00e88ecb7c4a53c29",
+    "sources": {
+      "geometry-web/app.js": "ec284229af0c3de951941cb474d31dc452a99b32eeb1849f288889a57b4015d9",
+      "geometry-web/space-workspace.js": "a735338f5cc14f3ae743578986750ace3c7389e0d73fd44c21773d82c2503868",
+      "geometry-web/app.css": "ca597aff139aab7b8209206d0c65d54ed79b913268c46e57ab79de7bed6db793",
+      "geometry-web/index.html": "e8a6635073f46f4b6a824cea430d56d2feb4e3e024e285ef3e068751a968b00b",
+      "geometry-web/serve.py": "bacc291874f7191739236696cf6e1c231daee57008f827d96389a562f5f30fb6",
+      "tests/release_gate.py": "ad460ddbdd52c48995188079339bc224e7f39b3d01e3147091a858ba8f541389",
+      "tests/binaries.py": "a211fd0d066b8a5138855c4773373f9f526717f26264de909c0f61f997ac9aba",
+      "geometry-web/reference-workspace.js": "4637836fe46c016a4bb623e9f2337fda9a8e2aeac853bcca33e9d5fff55b7c62",
+      "geometry-web/scenario-workspace.js": "cc31954c5afe9e91ed72b9b56ac62599751ffd3cb3b12cf3d9ae257acededfa9",
+      "geometry-web/scenario-integration.js": "7b35bcaa7599ad92ba46c5992136f0aec0ff96c94c7bf019b22fcc74898fe2fe",
+      "geometry-web/scenario-catalog.js": "013940df8c3e841a8803455ee1f7b894ac29f873a151cf4cf880b6dbec26dcf1",
+      "geometry-web/scenario-snapshots.js": "a4f4f1be350aa5d093ad1948b17c2f8e4bab01b8f280c9b853c81c99aa0bd598",
+      "geometry-web/project-store.js": "d06dce17c7dd9e17c5a83045128bfc447b14b0b39c3902e27d338b6ef9d3c3a3",
+      "geometry-web/vendor/fflate/umd/index.js": "462ef8041fc970e3615a20a9dd2b2e3047a073b2da729ef4f02b634bba8b7b83",
+      "tests/fixtures/evidence_pdf.cjs": "897fe2f7f59611f7a9df6b5d563901f4b33aee527eb8e1b7ffbb9f0f47139904"
+    },
+    "executionFiles": {
+      "<original-evidence-root>/run_resume_gate_identity.py": "57816b11e135887ef2f995434dcf2e54c818356d936cf4a46555e64c44d8d25b",
+      "<original-evidence-root>/resume_pause_browser.cjs": "71e7d5369a907e3902b64b408b15d970d949960274b8ada95fbe67d43787409e"
+    },
+    "liveBridge": [
+      {
+        "pid": 58071,
+        "parent": 58008,
+        "exe": "<isolated-test-directory>",
+        "sha256": "d19b7bc12cd155120be9cc05e2161e63cb6588ea3ea1c9ee278dbd1e54039843"
+      }
+    ]
+  },
+  "log": {
+    "path": "<original-evidence-root>/after-resume-128afbec-20261009/command.log",
+    "bytes": 1028,
+    "sha256": "e213ddc23b64378d99cf07e4f29bb3c7ea9759b36f42dc485fbe33ae8b2b6c44"
+  },
+  "finished": "2026-10-09T14:05:15.213564+00:00",
+  "gateExitCode": 1,
+  "harnessScope": "Scoped unchanged probe, synthetic fixtures; not full product acceptance",
+  "stackBytes": 16777216,
+  "runnerSha256": "57816b11e135887ef2f995434dcf2e54c818356d936cf4a46555e64c44d8d25b",
+  "browserExecutionIdentity": {
+    "head": "128afbec9240f36ae149682830e6b3a96ea02101",
+    "tree": "a61ddb7ded0f18996c96b2f3f2c2416703e73bde",
+    "dirty": false,
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "04efb282c3c88028a4d5e276f0bd10d9c2c5d585da699ac8850178935fe5176f",
+      "fresh": true,
+      "root": "<resume-repository-root>",
+      "pid": 58008,
+      "session": "dd441b41a3574c98bea61a8d19daaf00"
+    },
+    "browserIdentity": {
+      "node": {
+        "pid": 58464,
+        "exe": "<node-runtime>/bin/node",
+        "version": "v24.19.0",
+        "sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12"
+      },
+      "browser": {
+        "pid": 58488,
+        "exe": "/usr/lib/chromium/chromium",
+        "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+        "cmdline": "/usr/lib/chromium/chromium --show-component-extension-options --enable-gpu-rasterization --no-default-browser-check --disable-pings --media-router=0 --enable-remote-extensions --load-extension= --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --user-data-dir=<isolated-browser-profile> --remote-debugging-pipe --no-startup-window"
+      }
+    },
+    "script": {
+      "path": "<original-evidence-root>/resume_pause_browser.cjs",
+      "sha256": "71e7d5369a907e3902b64b408b15d970d949960274b8ada95fbe67d43787409e"
+    },
+    "scope": "Four synthetic browser lifecycles; not full CDP, physical mobile, abrupt reload or cross-service Resume"
+  },
+  "browserExecutionIdentitySha256": "1cb462fddf90e9202671049bdcb6acf2bcd1e7271431288f3abd0e47904f8aa4",
+  "probeCensus": {
+    "resultsPath": "<isolated-test-directory>",
+    "resultsSha256": "590cc7e5ae55643e943b53673465dfac3bc0e26eba11284072daa130854e16e4",
+    "expectedCases": 4,
+    "actualCases": 1,
+    "pass": 0,
+    "fail": 1,
+    "completed": false,
+    "cases": [
+      {
+        "name": "pause-resume-finish-1280",
+        "ok": false,
+        "harnessError": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#btnObj')\u001b[22m\n\u001b[2m    - locator resolved to <button id=\"btnObj\" class=\"seg\" title=\"三視圖\" type=\"button\" aria-label=\"三視圖\" aria-pressed=\"false\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    58 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n",
+        "pageErrors": []
+      }
+    ]
+  },
+  "probeVerified": false,
+  "publicProjection": {
+    "originalPathLabel": "<original-evidence-root>/after-resume-128afbec-20261009/receipt.json",
+    "originalSha256": "9320a3fdcbf44009c5c3e33a0558fffec8789ed953e8ab6cf72bad96ee1e8ddc",
+    "originalBytes": 16716,
+    "originalRetainedOutsideGit": true,
+    "changes": "Machine root, executable and isolated feedback/profile paths only; historical SHA, dirty, identity, command, exit and original hashes/results preserved."
+  }
+}

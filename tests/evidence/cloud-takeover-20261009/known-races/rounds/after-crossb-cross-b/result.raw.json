@@ -1,0 +1,3979 @@
+[
+  {
+    "name": "edge-transition-1400-main-success-control",
+    "utc": "2026-10-09T13:18:12.080283+00:00",
+    "scope": "main",
+    "mode": "success-control",
+    "fixture": {
+      "commands": [
+        "surface 731 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+        "surface 732 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+        "canvas-pos boundary 731 30 30",
+        "canvas-pos boundary 732 310 30"
+      ],
+      "results": [
+        {
+          "ok": true
+        },
+        {
+          "ok": true
+        },
+        {
+          "ok": true
+        },
+        {
+          "ok": true
+        },
+        {
+          "ok": true
+        }
+      ],
+      "initialPresentation": {
+        "view3": false,
+        "ocOn": true,
+        "focus": null
+      }
+    },
+    "nativeReply": {
+      "ok": true
+    },
+    "inputAfter": {
+      "value": "4200",
+      "model": "4200",
+      "connected": true,
+      "visible": true
+    },
+    "stateAfter": {
+      "workSurf": "1",
+      "view3": false,
+      "tool": "view",
+      "editBid": 0,
+      "editToken": 0,
+      "editLoops": null,
+      "editDrag": null,
+      "groups": 0,
+      "handles": 0,
+      "handleShapes": [],
+      "groupShapes": [],
+      "ocOn": true,
+      "ocEdit": null,
+      "ocFocus": null,
+      "navigationSequence": 1,
+      "bodyClass": "canvas-composition canvas-has-inspector",
+      "canvasVisible": false,
+      "workspaceHidden": true,
+      "inspectorHidden": false,
+      "status": "✓ boundary 731 outline 0,0 4200,0 4200,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500"
+    },
+    "worldIsOnlyExpectedAChange": true,
+    "ok": true,
+    "audit": {
+      "gate": {
+        "id": 731,
+        "hold": false,
+        "phase": "returned",
+        "release": null,
+        "promise": null,
+        "command": "line boundary 731 outline 0,0 4200,0 4200,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+        "stack": "Error\n    at window.fetch (eval at evaluate (:311:30), <anonymous>:27:19)\n    at apiRequest (http://127.0.0.1:19176/app.js:639:21)\n    at api (http://127.0.0.1:19176/app.js:691:24)\n    at emitLine (http://127.0.0.1:19176/app.js:1242:19)\n    at emitBoundary (http://127.0.0.1:19176/app.js:1286:10)\n    at commitEdgeLength (http://127.0.0.1:19176/app.js:1411:10)\n    at HTMLInputElement.<anonymous> (http://127.0.0.1:19176/app.js:9534:19)\n    at HTMLInputElement.wrapped (eval at evaluate (:311:30), <anonymous>:70:37)",
+        "nativeReply": {
+          "ok": true
+        }
+      },
+      "draws": [],
+      "changes": [
+        {
+          "id": "mainEdgeLength0",
+          "value": "4200",
+          "trusted": true,
+          "phase": "settled",
+          "after": {
+            "workSurf": "1",
+            "view3": false,
+            "tool": "view",
+            "editBid": 0,
+            "editToken": 0,
+            "editLoops": null,
+            "editDrag": null,
+            "groups": 0,
+            "handles": 0,
+            "handleShapes": [],
+            "groupShapes": [],
+            "ocOn": true,
+            "ocEdit": null,
+            "ocFocus": null,
+            "navigationSequence": 1,
+            "bodyClass": "canvas-composition canvas-has-inspector",
+            "canvasVisible": false,
+            "workspaceHidden": true,
+            "inspectorHidden": false,
+            "status": "✓ boundary 731 outline 0,0 4200,0 4200,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500"
+          }
+        }
+      ],
+      "navigation": [],
+      "fetches": [
+        {
+          "command": "reset",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "line surface 731 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "line surface 732 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "line canvas-pos boundary 731 30 30",
+          "status": 200
+        },
+        {
+          "command": "line canvas-pos boundary 732 310 30",
+          "status": 200
+        },
+        {
+          "command": "objects",
+          "status": 200
+        },
+        {
+          "command": "surfaces",
+          "status": 200
+        },
+        {
+          "command": "boundary 731",
+          "status": 200
+        },
+        {
+          "command": "boundary 732",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        },
+        {
+          "command": "line boundary 731 outline 0,0 4200,0 4200,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+          "status": 200
+        },
+        {
+          "command": "objects",
+          "status": 200
+        },
+        {
+          "command": "surfaces",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "boundary 731",
+          "status": 200
+        },
+        {
+          "command": "boundary 732",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        }
+      ]
+    },
+    "singleTrusted4200Change": true,
+    "exactNativeCommand": true,
+    "realNavigationRoute": true,
+    "pageErrors": []
+  },
+  {
+    "name": "edge-transition-1400-main-held-success-to-B",
+    "utc": "2026-10-09T13:18:13.604667+00:00",
+    "scope": "main",
+    "mode": "held-success-to-B",
+    "fixture": {
+      "commands": [
+        "surface 731 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+        "surface 732 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+        "canvas-pos boundary 731 30 30",
+        "canvas-pos boundary 732 310 30"
+      ],
+      "results": [
+        {
+          "ok": true
+        },
+        {
+          "ok": true
+        },
+        {
+          "ok": true
+        },
+        {
+          "ok": true
+        },
+        {
+          "ok": true
+        }
+      ],
+      "initialPresentation": {
+        "view3": false,
+        "ocOn": true,
+        "focus": null
+      }
+    },
+    "nativeReply": {
+      "ok": true
+    },
+    "atGate": {
+      "state": {
+        "workSurf": "731",
+        "view3": false,
+        "tool": "view",
+        "editBid": 0,
+        "editToken": 0,
+        "editLoops": null,
+        "editDrag": null,
+        "groups": 0,
+        "handles": 0,
+        "handleShapes": [],
+        "groupShapes": [],
+        "ocOn": true,
+        "ocEdit": null,
+        "ocFocus": null,
+        "navigationSequence": 1,
+        "bodyClass": "canvas-composition canvas-has-inspector",
+        "canvasVisible": false,
+        "workspaceHidden": true,
+        "inspectorHidden": false,
+        "status": "物件畫布：空白拖曳框選 · Shift 加選 · 單張卡片可拖移 · 空白鍵/中鍵拖曳平移"
+      },
+      "input": {
+        "value": "4200",
+        "model": "4000",
+        "connected": true,
+        "visible": true
+      }
+    },
+    "beforeB": {
+      "workSurf": "732",
+      "view3": true,
+      "tool": "edit",
+      "editBid": 732,
+      "editToken": 2,
+      "editLoops": [
+        {
+          "loop": -1,
+          "verts": [
+            [
+              0,
+              0
+            ],
+            [
+              4000,
+              0
+            ],
+            [
+              4000,
+              3000
+            ],
+            [
+              0,
+              3000
+            ]
+          ],
+          "fixity": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "vertices": [
+            {
+              "index": 0,
+              "key": null,
+              "uv": [
+                0,
+                0
+              ]
+            },
+            {
+              "index": 1,
+              "key": null,
+              "uv": [
+                4000,
+                0
+              ]
+            },
+            {
+              "index": 2,
+              "key": null,
+              "uv": [
+                4000,
+                3000
+              ]
+            },
+            {
+              "index": 3,
+              "key": null,
+              "uv": [
+                0,
+                3000
+              ]
+            }
+          ]
+        }
+      ],
+      "editDrag": null,
+      "groups": 1,
+      "handles": 5,
+      "handleShapes": [
+        "<polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+        "<circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+        "<circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+        "<circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>",
+        "<circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>"
+      ],
+      "groupShapes": [
+        "<g transform=\"translate(250,1930)\"><polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle></g>"
+      ],
+      "ocOn": false,
+      "ocEdit": null,
+      "ocFocus": null,
+      "navigationSequence": 2,
+      "bodyClass": "v3-mode",
+      "canvasVisible": true,
+      "workspaceHidden": true,
+      "inspectorHidden": true,
+      "status": "編輯邊界 732：拖頂點拉角、拖邊平移；完成即重宣告"
+    },
+    "afterB": {
+      "workSurf": "732",
+      "view3": true,
+      "tool": "edit",
+      "editBid": 732,
+      "editToken": 2,
+      "editLoops": [
+        {
+          "loop": -1,
+          "verts": [
+            [
+              0,
+              0
+            ],
+            [
+              4000,
+              0
+            ],
+            [
+              4000,
+              3000
+            ],
+            [
+              0,
+              3000
+            ]
+          ],
+          "fixity": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "vertices": [
+            {
+              "index": 0,
+              "key": null,
+              "uv": [
+                0,
+                0
+              ]
+            },
+            {
+              "index": 1,
+              "key": null,
+              "uv": [
+                4000,
+                0
+              ]
+            },
+            {
+              "index": 2,
+              "key": null,
+              "uv": [
+                4000,
+                3000
+              ]
+            },
+            {
+              "index": 3,
+              "key": null,
+              "uv": [
+                0,
+                3000
+              ]
+            }
+          ]
+        }
+      ],
+      "editDrag": null,
+      "groups": 1,
+      "handles": 5,
+      "handleShapes": [
+        "<polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+        "<circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+        "<circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+        "<circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>",
+        "<circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>"
+      ],
+      "groupShapes": [
+        "<g transform=\"translate(250,1930)\"><polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle></g>"
+      ],
+      "ocOn": false,
+      "ocEdit": null,
+      "ocFocus": null,
+      "navigationSequence": 2,
+      "bodyClass": "v3-mode",
+      "canvasVisible": true,
+      "workspaceHidden": true,
+      "inspectorHidden": true,
+      "status": "編輯邊界 732：拖頂點拉角、拖邊平移；完成即重宣告"
+    },
+    "ownershipChangedFields": [],
+    "visibleChangedFields": [],
+    "editModelChangedFields": [],
+    "ownershipTokenOnlyChange": false,
+    "gateWorldIsOnlyExpectedAChange": true,
+    "BReadyWorldEqualsGate": true,
+    "releasedWorldEqualsGate": true,
+    "ok": true,
+    "audit": {
+      "gate": {
+        "id": 731,
+        "hold": true,
+        "phase": "released",
+        "release": null,
+        "promise": null,
+        "command": "line boundary 731 outline 0,0 4200,0 4200,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+        "stack": "Error\n    at window.fetch (eval at evaluate (:311:30), <anonymous>:27:19)\n    at apiRequest (http://127.0.0.1:19176/app.js:639:21)\n    at api (http://127.0.0.1:19176/app.js:691:24)\n    at emitLine (http://127.0.0.1:19176/app.js:1242:19)\n    at emitBoundary (http://127.0.0.1:19176/app.js:1286:10)\n    at commitEdgeLength (http://127.0.0.1:19176/app.js:1411:10)\n    at HTMLInputElement.<anonymous> (http://127.0.0.1:19176/app.js:9534:19)\n    at HTMLInputElement.wrapped (eval at evaluate (:311:30), <anonymous>:70:37)",
+        "nativeReply": {
+          "ok": true
+        }
+      },
+      "draws": [
+        {
+          "token": 2,
+          "bid": 732,
+          "phase": "settled",
+          "after": {
+            "workSurf": "732",
+            "view3": true,
+            "tool": "edit",
+            "editBid": 732,
+            "editToken": 2,
+            "editLoops": [
+              {
+                "loop": -1,
+                "verts": [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    4000,
+                    0
+                  ],
+                  [
+                    4000,
+                    3000
+                  ],
+                  [
+                    0,
+                    3000
+                  ]
+                ],
+                "fixity": [
+                  1,
+                  1,
+                  1,
+                  1
+                ],
+                "vertices": [
+                  {
+                    "index": 0,
+                    "key": null,
+                    "uv": [
+                      0,
+                      0
+                    ]
+                  },
+                  {
+                    "index": 1,
+                    "key": null,
+                    "uv": [
+                      4000,
+                      0
+                    ]
+                  },
+                  {
+                    "index": 2,
+                    "key": null,
+                    "uv": [
+                      4000,
+                      3000
+                    ]
+                  },
+                  {
+                    "index": 3,
+                    "key": null,
+                    "uv": [
+                      0,
+                      3000
+                    ]
+                  }
+                ]
+              }
+            ],
+            "editDrag": null,
+            "groups": 1,
+            "handles": 5,
+            "handleShapes": [
+              "<polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+              "<circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+              "<circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+              "<circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>",
+              "<circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>"
+            ],
+            "groupShapes": [
+              "<g transform=\"translate(250,1930)\"><polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle></g>"
+            ],
+            "ocOn": false,
+            "ocEdit": null,
+            "ocFocus": null,
+            "navigationSequence": 2,
+            "bodyClass": "v3-mode",
+            "canvasVisible": true,
+            "workspaceHidden": true,
+            "inspectorHidden": true,
+            "status": "編輯邊界 732：拖頂點拉角、拖邊平移；完成即重宣告"
+          }
+        }
+      ],
+      "changes": [
+        {
+          "id": "mainEdgeLength0",
+          "value": "4200",
+          "trusted": true,
+          "phase": "settled",
+          "after": {
+            "workSurf": "732",
+            "view3": true,
+            "tool": "edit",
+            "editBid": 732,
+            "editToken": 2,
+            "editLoops": [
+              {
+                "loop": -1,
+                "verts": [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    4000,
+                    0
+                  ],
+                  [
+                    4000,
+                    3000
+                  ],
+                  [
+                    0,
+                    3000
+                  ]
+                ],
+                "fixity": [
+                  1,
+                  1,
+                  1,
+                  1
+                ],
+                "vertices": [
+                  {
+                    "index": 0,
+                    "key": null,
+                    "uv": [
+                      0,
+                      0
+                    ]
+                  },
+                  {
+                    "index": 1,
+                    "key": null,
+                    "uv": [
+                      4000,
+                      0
+                    ]
+                  },
+                  {
+                    "index": 2,
+                    "key": null,
+                    "uv": [
+                      4000,
+                      3000
+                    ]
+                  },
+                  {
+                    "index": 3,
+                    "key": null,
+                    "uv": [
+                      0,
+                      3000
+                    ]
+                  }
+                ]
+              }
+            ],
+            "editDrag": null,
+            "groups": 1,
+            "handles": 5,
+            "handleShapes": [
+              "<polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+              "<circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+              "<circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+              "<circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>",
+              "<circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>"
+            ],
+            "groupShapes": [
+              "<g transform=\"translate(250,1930)\"><polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle></g>"
+            ],
+            "ocOn": false,
+            "ocEdit": null,
+            "ocFocus": null,
+            "navigationSequence": 2,
+            "bodyClass": "v3-mode",
+            "canvasVisible": true,
+            "workspaceHidden": true,
+            "inspectorHidden": true,
+            "status": "編輯邊界 732：拖頂點拉角、拖邊平移；完成即重宣告"
+          }
+        }
+      ],
+      "navigation": [
+        {
+          "type": "click",
+          "id": "btnObj",
+          "tool": null,
+          "trusted": true,
+          "before": {
+            "workSurf": "731",
+            "view3": false,
+            "tool": "view",
+            "editBid": 0,
+            "editToken": 0,
+            "editLoops": null,
+            "editDrag": null,
+            "groups": 0,
+            "handles": 0,
+            "handleShapes": [],
+            "groupShapes": [],
+            "ocOn": true,
+            "ocEdit": null,
+            "ocFocus": null,
+            "navigationSequence": 1,
+            "bodyClass": "canvas-composition canvas-has-inspector",
+            "canvasVisible": false,
+            "workspaceHidden": true,
+            "inspectorHidden": false,
+            "status": "物件畫布：空白拖曳框選 · Shift 加選 · 單張卡片可拖移 · 空白鍵/中鍵拖曳平移"
+          }
+        },
+        {
+          "type": "change",
+          "id": "workSurf",
+          "value": "732",
+          "trusted": true,
+          "before": {
+            "workSurf": "732",
+            "view3": true,
+            "tool": "view",
+            "editBid": 0,
+            "editToken": 0,
+            "editLoops": null,
+            "editDrag": null,
+            "groups": 0,
+            "handles": 0,
+            "handleShapes": [],
+            "groupShapes": [],
+            "ocOn": false,
+            "ocEdit": null,
+            "ocFocus": null,
+            "navigationSequence": 2,
+            "bodyClass": "v3-mode",
+            "canvasVisible": true,
+            "workspaceHidden": true,
+            "inspectorHidden": true,
+            "status": "三視圖總覽：左鍵點選/拖參考線 · 滾輪縮放 · 「物件畫布」返回"
+          }
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "edit",
+          "trusted": true,
+          "before": {
+            "workSurf": "732",
+            "view3": true,
+            "tool": "view",
+            "editBid": 0,
+            "editToken": 0,
+            "editLoops": null,
+            "editDrag": null,
+            "groups": 0,
+            "handles": 0,
+            "handleShapes": [],
+            "groupShapes": [],
+            "ocOn": false,
+            "ocEdit": null,
+            "ocFocus": null,
+            "navigationSequence": 2,
+            "bodyClass": "v3-mode",
+            "canvasVisible": true,
+            "workspaceHidden": true,
+            "inspectorHidden": true,
+            "status": "三視圖總覽：左鍵點選/拖參考線 · 滾輪縮放 · 「物件畫布」返回"
+          }
+        }
+      ],
+      "fetches": [
+        {
+          "command": "reset",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "line surface 731 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "line surface 732 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+          "status": 200
+        },
+        {
+          "command": "line canvas-pos boundary 731 30 30",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "line canvas-pos boundary 732 310 30",
+          "status": 200
+        },
+        {
+          "command": "objects",
+          "status": 200
+        },
+        {
+          "command": "surfaces",
+          "status": 200
+        },
+        {
+          "command": "boundary 731",
+          "status": 200
+        },
+        {
+          "command": "boundary 732",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        },
+        {
+          "command": "line boundary 731 outline 0,0 4200,0 4200,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        },
+        {
+          "command": "render",
+          "status": 200
+        },
+        {
+          "command": "surfaces",
+          "status": 200
+        },
+        {
+          "command": "boundary 732",
+          "status": 200
+        },
+        {
+          "command": "proj 0 0 1000 732",
+          "status": 200
+        },
+        {
+          "command": "proj 0 1000 0 732",
+          "status": 200
+        },
+        {
+          "command": "proj 0 0 0 732",
+          "status": 200
+        },
+        {
+          "command": "proj 1 1000 0 732",
+          "status": 200
+        },
+        {
+          "command": "proj 1 0 0 732",
+          "status": 200
+        },
+        {
+          "command": "proj 1 0 1000 732",
+          "status": 200
+        },
+        {
+          "command": "proj 2 0 0 732",
+          "status": 200
+        },
+        {
+          "command": "proj 2 1000 0 732",
+          "status": 200
+        },
+        {
+          "command": "proj 2 0 1000 732",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        }
+      ]
+    },
+    "singleTrusted4200Change": true,
+    "exactNativeCommand": true,
+    "realNavigationRoute": true,
+    "pageErrors": []
+  },
+  {
+    "name": "edge-transition-1400-face-success-control",
+    "utc": "2026-10-09T13:18:15.352785+00:00",
+    "scope": "face",
+    "mode": "success-control",
+    "fixture": {
+      "commands": [
+        "surface 731 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+        "surface 732 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+        "canvas-pos boundary 731 30 30",
+        "canvas-pos boundary 732 310 30"
+      ],
+      "results": [
+        {
+          "ok": true
+        },
+        {
+          "ok": true
+        },
+        {
+          "ok": true
+        },
+        {
+          "ok": true
+        },
+        {
+          "ok": true
+        }
+      ],
+      "initialPresentation": {
+        "view3": false,
+        "ocOn": true,
+        "focus": null
+      }
+    },
+    "nativeReply": {
+      "ok": true
+    },
+    "inputAfter": {
+      "value": "4200",
+      "model": "4200",
+      "connected": true,
+      "visible": true
+    },
+    "stateAfter": {
+      "workSurf": "731",
+      "view3": false,
+      "tool": "view",
+      "editBid": 0,
+      "editToken": 0,
+      "editLoops": null,
+      "editDrag": null,
+      "groups": 0,
+      "handles": 0,
+      "handleShapes": [],
+      "groupShapes": [],
+      "ocOn": true,
+      "ocEdit": {
+        "bid": 731,
+        "contextId": "24f34a15-5712-4d4d-ab4f-e5664c8814f7"
+      },
+      "ocFocus": {
+        "t": "face",
+        "id": 731
+      },
+      "navigationSequence": 2,
+      "bodyClass": "",
+      "canvasVisible": false,
+      "workspaceHidden": false,
+      "inspectorHidden": false,
+      "status": "✓ boundary 731 outline 0,0 4200,0 4200,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500"
+    },
+    "worldIsOnlyExpectedAChange": true,
+    "ok": true,
+    "audit": {
+      "gate": {
+        "id": 731,
+        "hold": false,
+        "phase": "returned",
+        "release": null,
+        "promise": null,
+        "command": "line boundary 731 outline 0,0 4200,0 4200,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+        "stack": "Error\n    at window.fetch (eval at evaluate (:311:30), <anonymous>:27:19)\n    at apiRequest (http://127.0.0.1:19176/app.js:639:21)\n    at api (http://127.0.0.1:19176/app.js:691:24)\n    at emitLine (http://127.0.0.1:19176/app.js:1242:19)\n    at emitBoundary (http://127.0.0.1:19176/app.js:1286:10)\n    at commitEdgeLength (http://127.0.0.1:19176/app.js:1411:10)\n    at HTMLInputElement.<anonymous> (http://127.0.0.1:19176/app.js:8567:17)\n    at HTMLInputElement.wrapped (eval at evaluate (:311:30), <anonymous>:70:37)",
+        "nativeReply": {
+          "ok": true
+        }
+      },
+      "draws": [],
+      "changes": [
+        {
+          "id": "edgeLength0",
+          "value": "4200",
+          "trusted": true,
+          "phase": "settled",
+          "after": {
+            "workSurf": "731",
+            "view3": false,
+            "tool": "view",
+            "editBid": 0,
+            "editToken": 0,
+            "editLoops": null,
+            "editDrag": null,
+            "groups": 0,
+            "handles": 0,
+            "handleShapes": [],
+            "groupShapes": [],
+            "ocOn": true,
+            "ocEdit": {
+              "bid": 731,
+              "contextId": "24f34a15-5712-4d4d-ab4f-e5664c8814f7"
+            },
+            "ocFocus": {
+              "t": "face",
+              "id": 731
+            },
+            "navigationSequence": 2,
+            "bodyClass": "",
+            "canvasVisible": false,
+            "workspaceHidden": false,
+            "inspectorHidden": false,
+            "status": "✓ boundary 731 outline 0,0 4200,0 4200,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500"
+          }
+        }
+      ],
+      "navigation": [],
+      "fetches": [
+        {
+          "command": "reset",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "line surface 731 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "line surface 732 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "line canvas-pos boundary 731 30 30",
+          "status": 200
+        },
+        {
+          "command": "line canvas-pos boundary 732 310 30",
+          "status": 200
+        },
+        {
+          "command": "objects",
+          "status": 200
+        },
+        {
+          "command": "surfaces",
+          "status": 200
+        },
+        {
+          "command": "boundary 731",
+          "status": 200
+        },
+        {
+          "command": "boundary 732",
+          "status": 200
+        },
+        {
+          "command": "boundary 731",
+          "status": 200
+        },
+        {
+          "command": "obstacles 731",
+          "status": 200
+        },
+        {
+          "command": "references",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        },
+        {
+          "command": "source-inspect",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        },
+        {
+          "command": "line boundary 731 outline 0,0 4200,0 4200,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+          "status": 200
+        },
+        {
+          "command": "objects",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "surfaces",
+          "status": 200
+        },
+        {
+          "command": "boundary 731",
+          "status": 200
+        },
+        {
+          "command": "boundary 732",
+          "status": 200
+        },
+        {
+          "command": "boundary 731",
+          "status": 200
+        },
+        {
+          "command": "obstacles 731",
+          "status": 200
+        },
+        {
+          "command": "references",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        },
+        {
+          "command": "source-inspect",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        }
+      ]
+    },
+    "singleTrusted4200Change": true,
+    "exactNativeCommand": true,
+    "realNavigationRoute": true,
+    "pageErrors": []
+  },
+  {
+    "name": "edge-transition-1400-face-held-success-to-B",
+    "utc": "2026-10-09T13:18:16.949964+00:00",
+    "scope": "face",
+    "mode": "held-success-to-B",
+    "fixture": {
+      "commands": [
+        "surface 731 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+        "surface 732 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+        "canvas-pos boundary 731 30 30",
+        "canvas-pos boundary 732 310 30"
+      ],
+      "results": [
+        {
+          "ok": true
+        },
+        {
+          "ok": true
+        },
+        {
+          "ok": true
+        },
+        {
+          "ok": true
+        },
+        {
+          "ok": true
+        }
+      ],
+      "initialPresentation": {
+        "view3": false,
+        "ocOn": true,
+        "focus": null
+      }
+    },
+    "nativeReply": {
+      "ok": true
+    },
+    "atGate": {
+      "state": {
+        "workSurf": "731",
+        "view3": false,
+        "tool": "view",
+        "editBid": 0,
+        "editToken": 0,
+        "editLoops": null,
+        "editDrag": null,
+        "groups": 0,
+        "handles": 0,
+        "handleShapes": [],
+        "groupShapes": [],
+        "ocOn": true,
+        "ocEdit": {
+          "bid": 731,
+          "contextId": "92ff1bae-9775-40fb-aa73-3d201c3fb34f"
+        },
+        "ocFocus": {
+          "t": "face",
+          "id": 731
+        },
+        "navigationSequence": 2,
+        "bodyClass": "",
+        "canvasVisible": false,
+        "workspaceHidden": false,
+        "inspectorHidden": false,
+        "status": "面 731 · 選取"
+      },
+      "input": {
+        "value": "4200",
+        "model": "4000",
+        "connected": true,
+        "visible": true
+      }
+    },
+    "beforeB": {
+      "workSurf": "732",
+      "view3": true,
+      "tool": "edit",
+      "editBid": 732,
+      "editToken": 2,
+      "editLoops": [
+        {
+          "loop": -1,
+          "verts": [
+            [
+              0,
+              0
+            ],
+            [
+              4000,
+              0
+            ],
+            [
+              4000,
+              3000
+            ],
+            [
+              0,
+              3000
+            ]
+          ],
+          "fixity": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "vertices": [
+            {
+              "index": 0,
+              "key": null,
+              "uv": [
+                0,
+                0
+              ]
+            },
+            {
+              "index": 1,
+              "key": null,
+              "uv": [
+                4000,
+                0
+              ]
+            },
+            {
+              "index": 2,
+              "key": null,
+              "uv": [
+                4000,
+                3000
+              ]
+            },
+            {
+              "index": 3,
+              "key": null,
+              "uv": [
+                0,
+                3000
+              ]
+            }
+          ]
+        }
+      ],
+      "editDrag": null,
+      "groups": 1,
+      "handles": 5,
+      "handleShapes": [
+        "<polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+        "<circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+        "<circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+        "<circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>",
+        "<circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>"
+      ],
+      "groupShapes": [
+        "<g transform=\"translate(250,1930)\"><polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle></g>"
+      ],
+      "ocOn": false,
+      "ocEdit": null,
+      "ocFocus": null,
+      "navigationSequence": 4,
+      "bodyClass": "v3-mode",
+      "canvasVisible": true,
+      "workspaceHidden": true,
+      "inspectorHidden": true,
+      "status": "編輯邊界 732：拖頂點拉角、拖邊平移；完成即重宣告"
+    },
+    "afterB": {
+      "workSurf": "732",
+      "view3": true,
+      "tool": "edit",
+      "editBid": 732,
+      "editToken": 2,
+      "editLoops": [
+        {
+          "loop": -1,
+          "verts": [
+            [
+              0,
+              0
+            ],
+            [
+              4000,
+              0
+            ],
+            [
+              4000,
+              3000
+            ],
+            [
+              0,
+              3000
+            ]
+          ],
+          "fixity": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "vertices": [
+            {
+              "index": 0,
+              "key": null,
+              "uv": [
+                0,
+                0
+              ]
+            },
+            {
+              "index": 1,
+              "key": null,
+              "uv": [
+                4000,
+                0
+              ]
+            },
+            {
+              "index": 2,
+              "key": null,
+              "uv": [
+                4000,
+                3000
+              ]
+            },
+            {
+              "index": 3,
+              "key": null,
+              "uv": [
+                0,
+                3000
+              ]
+            }
+          ]
+        }
+      ],
+      "editDrag": null,
+      "groups": 1,
+      "handles": 5,
+      "handleShapes": [
+        "<polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+        "<circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+        "<circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+        "<circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>",
+        "<circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>"
+      ],
+      "groupShapes": [
+        "<g transform=\"translate(250,1930)\"><polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle></g>"
+      ],
+      "ocOn": false,
+      "ocEdit": null,
+      "ocFocus": null,
+      "navigationSequence": 4,
+      "bodyClass": "v3-mode",
+      "canvasVisible": true,
+      "workspaceHidden": true,
+      "inspectorHidden": true,
+      "status": "編輯邊界 732：拖頂點拉角、拖邊平移；完成即重宣告"
+    },
+    "ownershipChangedFields": [],
+    "visibleChangedFields": [],
+    "editModelChangedFields": [],
+    "ownershipTokenOnlyChange": false,
+    "gateWorldIsOnlyExpectedAChange": true,
+    "BReadyWorldEqualsGate": true,
+    "releasedWorldEqualsGate": true,
+    "ok": true,
+    "audit": {
+      "gate": {
+        "id": 731,
+        "hold": true,
+        "phase": "released",
+        "release": null,
+        "promise": null,
+        "command": "line boundary 731 outline 0,0 4200,0 4200,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+        "stack": "Error\n    at window.fetch (eval at evaluate (:311:30), <anonymous>:27:19)\n    at apiRequest (http://127.0.0.1:19176/app.js:639:21)\n    at api (http://127.0.0.1:19176/app.js:691:24)\n    at emitLine (http://127.0.0.1:19176/app.js:1242:19)\n    at emitBoundary (http://127.0.0.1:19176/app.js:1286:10)\n    at commitEdgeLength (http://127.0.0.1:19176/app.js:1411:10)\n    at HTMLInputElement.<anonymous> (http://127.0.0.1:19176/app.js:8567:17)\n    at HTMLInputElement.wrapped (eval at evaluate (:311:30), <anonymous>:70:37)",
+        "nativeReply": {
+          "ok": true
+        }
+      },
+      "draws": [
+        {
+          "token": 2,
+          "bid": 732,
+          "phase": "settled",
+          "after": {
+            "workSurf": "732",
+            "view3": true,
+            "tool": "edit",
+            "editBid": 732,
+            "editToken": 2,
+            "editLoops": [
+              {
+                "loop": -1,
+                "verts": [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    4000,
+                    0
+                  ],
+                  [
+                    4000,
+                    3000
+                  ],
+                  [
+                    0,
+                    3000
+                  ]
+                ],
+                "fixity": [
+                  1,
+                  1,
+                  1,
+                  1
+                ],
+                "vertices": [
+                  {
+                    "index": 0,
+                    "key": null,
+                    "uv": [
+                      0,
+                      0
+                    ]
+                  },
+                  {
+                    "index": 1,
+                    "key": null,
+                    "uv": [
+                      4000,
+                      0
+                    ]
+                  },
+                  {
+                    "index": 2,
+                    "key": null,
+                    "uv": [
+                      4000,
+                      3000
+                    ]
+                  },
+                  {
+                    "index": 3,
+                    "key": null,
+                    "uv": [
+                      0,
+                      3000
+                    ]
+                  }
+                ]
+              }
+            ],
+            "editDrag": null,
+            "groups": 1,
+            "handles": 5,
+            "handleShapes": [
+              "<polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+              "<circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+              "<circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+              "<circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>",
+              "<circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>"
+            ],
+            "groupShapes": [
+              "<g transform=\"translate(250,1930)\"><polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle></g>"
+            ],
+            "ocOn": false,
+            "ocEdit": null,
+            "ocFocus": null,
+            "navigationSequence": 4,
+            "bodyClass": "v3-mode",
+            "canvasVisible": true,
+            "workspaceHidden": true,
+            "inspectorHidden": true,
+            "status": "編輯邊界 732：拖頂點拉角、拖邊平移；完成即重宣告"
+          }
+        }
+      ],
+      "changes": [
+        {
+          "id": "edgeLength0",
+          "value": "4200",
+          "trusted": true,
+          "phase": "settled",
+          "after": {
+            "workSurf": "732",
+            "view3": true,
+            "tool": "edit",
+            "editBid": 732,
+            "editToken": 2,
+            "editLoops": [
+              {
+                "loop": -1,
+                "verts": [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    4000,
+                    0
+                  ],
+                  [
+                    4000,
+                    3000
+                  ],
+                  [
+                    0,
+                    3000
+                  ]
+                ],
+                "fixity": [
+                  1,
+                  1,
+                  1,
+                  1
+                ],
+                "vertices": [
+                  {
+                    "index": 0,
+                    "key": null,
+                    "uv": [
+                      0,
+                      0
+                    ]
+                  },
+                  {
+                    "index": 1,
+                    "key": null,
+                    "uv": [
+                      4000,
+                      0
+                    ]
+                  },
+                  {
+                    "index": 2,
+                    "key": null,
+                    "uv": [
+                      4000,
+                      3000
+                    ]
+                  },
+                  {
+                    "index": 3,
+                    "key": null,
+                    "uv": [
+                      0,
+                      3000
+                    ]
+                  }
+                ]
+              }
+            ],
+            "editDrag": null,
+            "groups": 1,
+            "handles": 5,
+            "handleShapes": [
+              "<polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+              "<circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+              "<circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+              "<circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>",
+              "<circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>"
+            ],
+            "groupShapes": [
+              "<g transform=\"translate(250,1930)\"><polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle></g>"
+            ],
+            "ocOn": false,
+            "ocEdit": null,
+            "ocFocus": null,
+            "navigationSequence": 4,
+            "bodyClass": "v3-mode",
+            "canvasVisible": true,
+            "workspaceHidden": true,
+            "inspectorHidden": true,
+            "status": "編輯邊界 732：拖頂點拉角、拖邊平移；完成即重宣告"
+          }
+        }
+      ],
+      "navigation": [
+        {
+          "type": "click",
+          "id": "workspaceBackButton",
+          "tool": null,
+          "trusted": true,
+          "before": {
+            "workSurf": "731",
+            "view3": false,
+            "tool": "view",
+            "editBid": 0,
+            "editToken": 0,
+            "editLoops": null,
+            "editDrag": null,
+            "groups": 0,
+            "handles": 0,
+            "handleShapes": [],
+            "groupShapes": [],
+            "ocOn": true,
+            "ocEdit": {
+              "bid": 731,
+              "contextId": "92ff1bae-9775-40fb-aa73-3d201c3fb34f"
+            },
+            "ocFocus": {
+              "t": "face",
+              "id": 731
+            },
+            "navigationSequence": 2,
+            "bodyClass": "",
+            "canvasVisible": false,
+            "workspaceHidden": false,
+            "inspectorHidden": false,
+            "status": "面 731 · 選取"
+          }
+        },
+        {
+          "type": "click",
+          "id": "btnObj",
+          "tool": null,
+          "trusted": true,
+          "before": {
+            "workSurf": "731",
+            "view3": false,
+            "tool": "view",
+            "editBid": 0,
+            "editToken": 0,
+            "editLoops": null,
+            "editDrag": null,
+            "groups": 0,
+            "handles": 0,
+            "handleShapes": [],
+            "groupShapes": [],
+            "ocOn": true,
+            "ocEdit": null,
+            "ocFocus": null,
+            "navigationSequence": 3,
+            "bodyClass": "canvas-composition canvas-has-inspector",
+            "canvasVisible": false,
+            "workspaceHidden": true,
+            "inspectorHidden": false,
+            "status": "物件畫布：空白拖曳框選 · Shift 加選 · 單張卡片可拖移 · 空白鍵/中鍵拖曳平移"
+          }
+        },
+        {
+          "type": "change",
+          "id": "workSurf",
+          "value": "732",
+          "trusted": true,
+          "before": {
+            "workSurf": "732",
+            "view3": true,
+            "tool": "view",
+            "editBid": 0,
+            "editToken": 0,
+            "editLoops": null,
+            "editDrag": null,
+            "groups": 0,
+            "handles": 0,
+            "handleShapes": [],
+            "groupShapes": [],
+            "ocOn": false,
+            "ocEdit": null,
+            "ocFocus": null,
+            "navigationSequence": 4,
+            "bodyClass": "v3-mode",
+            "canvasVisible": true,
+            "workspaceHidden": true,
+            "inspectorHidden": true,
+            "status": "三視圖總覽：左鍵點選/拖參考線 · 滾輪縮放 · 「物件畫布」返回"
+          }
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "edit",
+          "trusted": true,
+          "before": {
+            "workSurf": "732",
+            "view3": true,
+            "tool": "view",
+            "editBid": 0,
+            "editToken": 0,
+            "editLoops": null,
+            "editDrag": null,
+            "groups": 0,
+            "handles": 0,
+            "handleShapes": [],
+            "groupShapes": [],
+            "ocOn": false,
+            "ocEdit": null,
+            "ocFocus": null,
+            "navigationSequence": 4,
+            "bodyClass": "v3-mode",
+            "canvasVisible": true,
+            "workspaceHidden": true,
+            "inspectorHidden": true,
+            "status": "三視圖總覽：左鍵點選/拖參考線 · 滾輪縮放 · 「物件畫布」返回"
+          }
+        }
+      ],
+      "fetches": [
+        {
+          "command": "reset",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "line surface 731 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "line surface 732 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "line canvas-pos boundary 731 30 30",
+          "status": 200
+        },
+        {
+          "command": "line canvas-pos boundary 732 310 30",
+          "status": 200
+        },
+        {
+          "command": "objects",
+          "status": 200
+        },
+        {
+          "command": "surfaces",
+          "status": 200
+        },
+        {
+          "command": "boundary 731",
+          "status": 200
+        },
+        {
+          "command": "boundary 732",
+          "status": 200
+        },
+        {
+          "command": "boundary 731",
+          "status": 200
+        },
+        {
+          "command": "obstacles 731",
+          "status": 200
+        },
+        {
+          "command": "references",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        },
+        {
+          "command": "source-inspect",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        },
+        {
+          "command": "line boundary 731 outline 0,0 4200,0 4200,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        },
+        {
+          "command": "render",
+          "status": 200
+        },
+        {
+          "command": "surfaces",
+          "status": 200
+        },
+        {
+          "command": "boundary 732",
+          "status": 200
+        },
+        {
+          "command": "proj 0 0 0 732",
+          "status": 200
+        },
+        {
+          "command": "proj 0 1000 0 732",
+          "status": 200
+        },
+        {
+          "command": "proj 0 0 1000 732",
+          "status": 200
+        },
+        {
+          "command": "proj 1 0 0 732",
+          "status": 200
+        },
+        {
+          "command": "proj 1 0 1000 732",
+          "status": 200
+        },
+        {
+          "command": "proj 1 1000 0 732",
+          "status": 200
+        },
+        {
+          "command": "proj 2 0 0 732",
+          "status": 200
+        },
+        {
+          "command": "proj 2 0 1000 732",
+          "status": 200
+        },
+        {
+          "command": "proj 2 1000 0 732",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        }
+      ]
+    },
+    "singleTrusted4200Change": true,
+    "exactNativeCommand": true,
+    "realNavigationRoute": true,
+    "pageErrors": []
+  },
+  {
+    "name": "edge-transition-390-main-success-control",
+    "utc": "2026-10-09T13:18:19.053464+00:00",
+    "scope": "main",
+    "mode": "success-control",
+    "fixture": {
+      "commands": [
+        "surface 731 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+        "surface 732 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+        "canvas-pos boundary 731 30 30",
+        "canvas-pos boundary 732 310 30"
+      ],
+      "results": [
+        {
+          "ok": true
+        },
+        {
+          "ok": true
+        },
+        {
+          "ok": true
+        },
+        {
+          "ok": true
+        },
+        {
+          "ok": true
+        }
+      ],
+      "initialPresentation": {
+        "view3": false,
+        "ocOn": true,
+        "focus": null
+      }
+    },
+    "nativeReply": {
+      "ok": true
+    },
+    "inputAfter": {
+      "value": "4200",
+      "model": "4200",
+      "connected": true,
+      "visible": true
+    },
+    "stateAfter": {
+      "workSurf": "731",
+      "view3": false,
+      "tool": "view",
+      "editBid": 0,
+      "editToken": 0,
+      "editLoops": null,
+      "editDrag": null,
+      "groups": 0,
+      "handles": 0,
+      "handleShapes": [],
+      "groupShapes": [],
+      "ocOn": true,
+      "ocEdit": null,
+      "ocFocus": null,
+      "navigationSequence": 1,
+      "bodyClass": "canvas-composition canvas-has-inspector",
+      "canvasVisible": false,
+      "workspaceHidden": true,
+      "inspectorHidden": false,
+      "status": "✓ boundary 731 outline 0,0 4200,0 4200,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500"
+    },
+    "worldIsOnlyExpectedAChange": true,
+    "ok": true,
+    "audit": {
+      "gate": {
+        "id": 731,
+        "hold": false,
+        "phase": "returned",
+        "release": null,
+        "promise": null,
+        "command": "line boundary 731 outline 0,0 4200,0 4200,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+        "stack": "Error\n    at window.fetch (eval at evaluate (:311:30), <anonymous>:27:19)\n    at apiRequest (http://127.0.0.1:19176/app.js:639:21)\n    at api (http://127.0.0.1:19176/app.js:691:24)\n    at emitLine (http://127.0.0.1:19176/app.js:1242:19)\n    at emitBoundary (http://127.0.0.1:19176/app.js:1286:10)\n    at commitEdgeLength (http://127.0.0.1:19176/app.js:1411:10)\n    at HTMLInputElement.<anonymous> (http://127.0.0.1:19176/app.js:9534:19)\n    at HTMLInputElement.wrapped (eval at evaluate (:311:30), <anonymous>:70:37)",
+        "nativeReply": {
+          "ok": true
+        }
+      },
+      "draws": [],
+      "changes": [
+        {
+          "id": "mainEdgeLength0",
+          "value": "4200",
+          "trusted": true,
+          "phase": "settled",
+          "after": {
+            "workSurf": "731",
+            "view3": false,
+            "tool": "view",
+            "editBid": 0,
+            "editToken": 0,
+            "editLoops": null,
+            "editDrag": null,
+            "groups": 0,
+            "handles": 0,
+            "handleShapes": [],
+            "groupShapes": [],
+            "ocOn": true,
+            "ocEdit": null,
+            "ocFocus": null,
+            "navigationSequence": 1,
+            "bodyClass": "canvas-composition canvas-has-inspector",
+            "canvasVisible": false,
+            "workspaceHidden": true,
+            "inspectorHidden": false,
+            "status": "✓ boundary 731 outline 0,0 4200,0 4200,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500"
+          }
+        }
+      ],
+      "navigation": [
+        {
+          "type": "keydown",
+          "key": "Escape",
+          "trusted": true,
+          "before": {
+            "workSurf": "731",
+            "view3": false,
+            "tool": "view",
+            "editBid": 0,
+            "editToken": 0,
+            "editLoops": null,
+            "editDrag": null,
+            "groups": 0,
+            "handles": 0,
+            "handleShapes": [],
+            "groupShapes": [],
+            "ocOn": true,
+            "ocEdit": null,
+            "ocFocus": null,
+            "navigationSequence": 1,
+            "bodyClass": "canvas-composition drawer-left-open canvas-has-inspector",
+            "canvasVisible": false,
+            "workspaceHidden": true,
+            "inspectorHidden": false,
+            "status": "物件畫布：點選卡片 · 空白拖曳框選 · 選「平移」拖曳視角 · ＋／−縮放"
+          }
+        }
+      ],
+      "fetches": [
+        {
+          "command": "reset",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "line surface 731 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "line surface 732 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "line canvas-pos boundary 731 30 30",
+          "status": 200
+        },
+        {
+          "command": "line canvas-pos boundary 732 310 30",
+          "status": 200
+        },
+        {
+          "command": "objects",
+          "status": 200
+        },
+        {
+          "command": "surfaces",
+          "status": 200
+        },
+        {
+          "command": "boundary 731",
+          "status": 200
+        },
+        {
+          "command": "boundary 732",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        },
+        {
+          "command": "line boundary 731 outline 0,0 4200,0 4200,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+          "status": 200
+        },
+        {
+          "command": "objects",
+          "status": 200
+        },
+        {
+          "command": "surfaces",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "boundary 731",
+          "status": 200
+        },
+        {
+          "command": "boundary 732",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        }
+      ]
+    },
+    "singleTrusted4200Change": true,
+    "exactNativeCommand": true,
+    "realNavigationRoute": true,
+    "pageErrors": []
+  },
+  {
+    "name": "edge-transition-390-main-held-success-to-B",
+    "utc": "2026-10-09T13:18:20.358976+00:00",
+    "scope": "main",
+    "mode": "held-success-to-B",
+    "fixture": {
+      "commands": [
+        "surface 731 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+        "surface 732 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+        "canvas-pos boundary 731 30 30",
+        "canvas-pos boundary 732 310 30"
+      ],
+      "results": [
+        {
+          "ok": true
+        },
+        {
+          "ok": true
+        },
+        {
+          "ok": true
+        },
+        {
+          "ok": true
+        },
+        {
+          "ok": true
+        }
+      ],
+      "initialPresentation": {
+        "view3": false,
+        "ocOn": true,
+        "focus": null
+      }
+    },
+    "nativeReply": {
+      "ok": true
+    },
+    "atGate": {
+      "state": {
+        "workSurf": "731",
+        "view3": false,
+        "tool": "view",
+        "editBid": 0,
+        "editToken": 0,
+        "editLoops": null,
+        "editDrag": null,
+        "groups": 0,
+        "handles": 0,
+        "handleShapes": [],
+        "groupShapes": [],
+        "ocOn": true,
+        "ocEdit": null,
+        "ocFocus": null,
+        "navigationSequence": 1,
+        "bodyClass": "canvas-composition canvas-has-inspector",
+        "canvasVisible": false,
+        "workspaceHidden": true,
+        "inspectorHidden": false,
+        "status": "物件畫布：點選卡片 · 空白拖曳框選 · 選「平移」拖曳視角 · ＋／−縮放"
+      },
+      "input": {
+        "value": "4200",
+        "model": "4000",
+        "connected": true,
+        "visible": true
+      }
+    },
+    "beforeB": {
+      "workSurf": "732",
+      "view3": true,
+      "tool": "edit",
+      "editBid": 732,
+      "editToken": 2,
+      "editLoops": [
+        {
+          "loop": -1,
+          "verts": [
+            [
+              0,
+              0
+            ],
+            [
+              4000,
+              0
+            ],
+            [
+              4000,
+              3000
+            ],
+            [
+              0,
+              3000
+            ]
+          ],
+          "fixity": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "vertices": [
+            {
+              "index": 0,
+              "key": null,
+              "uv": [
+                0,
+                0
+              ]
+            },
+            {
+              "index": 1,
+              "key": null,
+              "uv": [
+                4000,
+                0
+              ]
+            },
+            {
+              "index": 2,
+              "key": null,
+              "uv": [
+                4000,
+                3000
+              ]
+            },
+            {
+              "index": 3,
+              "key": null,
+              "uv": [
+                0,
+                3000
+              ]
+            }
+          ]
+        }
+      ],
+      "editDrag": null,
+      "groups": 1,
+      "handles": 5,
+      "handleShapes": [
+        "<polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+        "<circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+        "<circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+        "<circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>",
+        "<circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>"
+      ],
+      "groupShapes": [
+        "<g transform=\"translate(250,1930)\"><polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle></g>"
+      ],
+      "ocOn": false,
+      "ocEdit": null,
+      "ocFocus": null,
+      "navigationSequence": 2,
+      "bodyClass": "v3-mode",
+      "canvasVisible": true,
+      "workspaceHidden": true,
+      "inspectorHidden": true,
+      "status": "編輯邊界 732：拖頂點拉角、拖邊平移；完成即重宣告"
+    },
+    "afterB": {
+      "workSurf": "732",
+      "view3": true,
+      "tool": "edit",
+      "editBid": 732,
+      "editToken": 2,
+      "editLoops": [
+        {
+          "loop": -1,
+          "verts": [
+            [
+              0,
+              0
+            ],
+            [
+              4000,
+              0
+            ],
+            [
+              4000,
+              3000
+            ],
+            [
+              0,
+              3000
+            ]
+          ],
+          "fixity": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "vertices": [
+            {
+              "index": 0,
+              "key": null,
+              "uv": [
+                0,
+                0
+              ]
+            },
+            {
+              "index": 1,
+              "key": null,
+              "uv": [
+                4000,
+                0
+              ]
+            },
+            {
+              "index": 2,
+              "key": null,
+              "uv": [
+                4000,
+                3000
+              ]
+            },
+            {
+              "index": 3,
+              "key": null,
+              "uv": [
+                0,
+                3000
+              ]
+            }
+          ]
+        }
+      ],
+      "editDrag": null,
+      "groups": 1,
+      "handles": 5,
+      "handleShapes": [
+        "<polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+        "<circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+        "<circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+        "<circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>",
+        "<circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>"
+      ],
+      "groupShapes": [
+        "<g transform=\"translate(250,1930)\"><polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle></g>"
+      ],
+      "ocOn": false,
+      "ocEdit": null,
+      "ocFocus": null,
+      "navigationSequence": 2,
+      "bodyClass": "v3-mode",
+      "canvasVisible": true,
+      "workspaceHidden": true,
+      "inspectorHidden": true,
+      "status": "編輯邊界 732：拖頂點拉角、拖邊平移；完成即重宣告"
+    },
+    "ownershipChangedFields": [],
+    "visibleChangedFields": [],
+    "editModelChangedFields": [],
+    "ownershipTokenOnlyChange": false,
+    "gateWorldIsOnlyExpectedAChange": true,
+    "BReadyWorldEqualsGate": true,
+    "releasedWorldEqualsGate": true,
+    "ok": true,
+    "audit": {
+      "gate": {
+        "id": 731,
+        "hold": true,
+        "phase": "released",
+        "release": null,
+        "promise": null,
+        "command": "line boundary 731 outline 0,0 4200,0 4200,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+        "stack": "Error\n    at window.fetch (eval at evaluate (:311:30), <anonymous>:27:19)\n    at apiRequest (http://127.0.0.1:19176/app.js:639:21)\n    at api (http://127.0.0.1:19176/app.js:691:24)\n    at emitLine (http://127.0.0.1:19176/app.js:1242:19)\n    at emitBoundary (http://127.0.0.1:19176/app.js:1286:10)\n    at commitEdgeLength (http://127.0.0.1:19176/app.js:1411:10)\n    at HTMLInputElement.<anonymous> (http://127.0.0.1:19176/app.js:9534:19)\n    at HTMLInputElement.wrapped (eval at evaluate (:311:30), <anonymous>:70:37)",
+        "nativeReply": {
+          "ok": true
+        }
+      },
+      "draws": [
+        {
+          "token": 2,
+          "bid": 732,
+          "phase": "settled",
+          "after": {
+            "workSurf": "732",
+            "view3": true,
+            "tool": "edit",
+            "editBid": 732,
+            "editToken": 2,
+            "editLoops": [
+              {
+                "loop": -1,
+                "verts": [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    4000,
+                    0
+                  ],
+                  [
+                    4000,
+                    3000
+                  ],
+                  [
+                    0,
+                    3000
+                  ]
+                ],
+                "fixity": [
+                  1,
+                  1,
+                  1,
+                  1
+                ],
+                "vertices": [
+                  {
+                    "index": 0,
+                    "key": null,
+                    "uv": [
+                      0,
+                      0
+                    ]
+                  },
+                  {
+                    "index": 1,
+                    "key": null,
+                    "uv": [
+                      4000,
+                      0
+                    ]
+                  },
+                  {
+                    "index": 2,
+                    "key": null,
+                    "uv": [
+                      4000,
+                      3000
+                    ]
+                  },
+                  {
+                    "index": 3,
+                    "key": null,
+                    "uv": [
+                      0,
+                      3000
+                    ]
+                  }
+                ]
+              }
+            ],
+            "editDrag": null,
+            "groups": 1,
+            "handles": 5,
+            "handleShapes": [
+              "<polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+              "<circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+              "<circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+              "<circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>",
+              "<circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>"
+            ],
+            "groupShapes": [
+              "<g transform=\"translate(250,1930)\"><polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle></g>"
+            ],
+            "ocOn": false,
+            "ocEdit": null,
+            "ocFocus": null,
+            "navigationSequence": 2,
+            "bodyClass": "v3-mode",
+            "canvasVisible": true,
+            "workspaceHidden": true,
+            "inspectorHidden": true,
+            "status": "編輯邊界 732：拖頂點拉角、拖邊平移；完成即重宣告"
+          }
+        }
+      ],
+      "changes": [
+        {
+          "id": "mainEdgeLength0",
+          "value": "4200",
+          "trusted": true,
+          "phase": "settled",
+          "after": {
+            "workSurf": "732",
+            "view3": true,
+            "tool": "edit",
+            "editBid": 732,
+            "editToken": 2,
+            "editLoops": [
+              {
+                "loop": -1,
+                "verts": [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    4000,
+                    0
+                  ],
+                  [
+                    4000,
+                    3000
+                  ],
+                  [
+                    0,
+                    3000
+                  ]
+                ],
+                "fixity": [
+                  1,
+                  1,
+                  1,
+                  1
+                ],
+                "vertices": [
+                  {
+                    "index": 0,
+                    "key": null,
+                    "uv": [
+                      0,
+                      0
+                    ]
+                  },
+                  {
+                    "index": 1,
+                    "key": null,
+                    "uv": [
+                      4000,
+                      0
+                    ]
+                  },
+                  {
+                    "index": 2,
+                    "key": null,
+                    "uv": [
+                      4000,
+                      3000
+                    ]
+                  },
+                  {
+                    "index": 3,
+                    "key": null,
+                    "uv": [
+                      0,
+                      3000
+                    ]
+                  }
+                ]
+              }
+            ],
+            "editDrag": null,
+            "groups": 1,
+            "handles": 5,
+            "handleShapes": [
+              "<polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+              "<circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+              "<circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+              "<circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>",
+              "<circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>"
+            ],
+            "groupShapes": [
+              "<g transform=\"translate(250,1930)\"><polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle></g>"
+            ],
+            "ocOn": false,
+            "ocEdit": null,
+            "ocFocus": null,
+            "navigationSequence": 2,
+            "bodyClass": "v3-mode",
+            "canvasVisible": true,
+            "workspaceHidden": true,
+            "inspectorHidden": true,
+            "status": "編輯邊界 732：拖頂點拉角、拖邊平移；完成即重宣告"
+          }
+        }
+      ],
+      "navigation": [
+        {
+          "type": "keydown",
+          "key": "Escape",
+          "trusted": true,
+          "before": {
+            "workSurf": "731",
+            "view3": false,
+            "tool": "view",
+            "editBid": 0,
+            "editToken": 0,
+            "editLoops": null,
+            "editDrag": null,
+            "groups": 0,
+            "handles": 0,
+            "handleShapes": [],
+            "groupShapes": [],
+            "ocOn": true,
+            "ocEdit": null,
+            "ocFocus": null,
+            "navigationSequence": 1,
+            "bodyClass": "canvas-composition drawer-left-open canvas-has-inspector",
+            "canvasVisible": false,
+            "workspaceHidden": true,
+            "inspectorHidden": false,
+            "status": "物件畫布：點選卡片 · 空白拖曳框選 · 選「平移」拖曳視角 · ＋／−縮放"
+          }
+        },
+        {
+          "type": "click",
+          "id": "btnObj",
+          "tool": null,
+          "trusted": true,
+          "before": {
+            "workSurf": "731",
+            "view3": false,
+            "tool": "view",
+            "editBid": 0,
+            "editToken": 0,
+            "editLoops": null,
+            "editDrag": null,
+            "groups": 0,
+            "handles": 0,
+            "handleShapes": [],
+            "groupShapes": [],
+            "ocOn": true,
+            "ocEdit": null,
+            "ocFocus": null,
+            "navigationSequence": 1,
+            "bodyClass": "canvas-composition canvas-has-inspector",
+            "canvasVisible": false,
+            "workspaceHidden": true,
+            "inspectorHidden": false,
+            "status": "物件畫布：點選卡片 · 空白拖曳框選 · 選「平移」拖曳視角 · ＋／−縮放"
+          }
+        },
+        {
+          "type": "change",
+          "id": "workSurf",
+          "value": "732",
+          "trusted": true,
+          "before": {
+            "workSurf": "732",
+            "view3": true,
+            "tool": "view",
+            "editBid": 0,
+            "editToken": 0,
+            "editLoops": null,
+            "editDrag": null,
+            "groups": 0,
+            "handles": 0,
+            "handleShapes": [],
+            "groupShapes": [],
+            "ocOn": false,
+            "ocEdit": null,
+            "ocFocus": null,
+            "navigationSequence": 2,
+            "bodyClass": "v3-mode drawer-left-open",
+            "canvasVisible": true,
+            "workspaceHidden": true,
+            "inspectorHidden": true,
+            "status": "三視圖總覽：左鍵點選/拖參考線 · 滾輪縮放 · 「物件畫布」返回"
+          }
+        },
+        {
+          "type": "keydown",
+          "key": "Escape",
+          "trusted": true,
+          "before": {
+            "workSurf": "732",
+            "view3": true,
+            "tool": "view",
+            "editBid": 0,
+            "editToken": 0,
+            "editLoops": null,
+            "editDrag": null,
+            "groups": 0,
+            "handles": 0,
+            "handleShapes": [],
+            "groupShapes": [],
+            "ocOn": false,
+            "ocEdit": null,
+            "ocFocus": null,
+            "navigationSequence": 2,
+            "bodyClass": "v3-mode drawer-left-open",
+            "canvasVisible": true,
+            "workspaceHidden": true,
+            "inspectorHidden": true,
+            "status": "三視圖總覽：左鍵點選/拖參考線 · 滾輪縮放 · 「物件畫布」返回"
+          }
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "edit",
+          "trusted": true,
+          "before": {
+            "workSurf": "732",
+            "view3": true,
+            "tool": "view",
+            "editBid": 0,
+            "editToken": 0,
+            "editLoops": null,
+            "editDrag": null,
+            "groups": 0,
+            "handles": 0,
+            "handleShapes": [],
+            "groupShapes": [],
+            "ocOn": false,
+            "ocEdit": null,
+            "ocFocus": null,
+            "navigationSequence": 2,
+            "bodyClass": "v3-mode",
+            "canvasVisible": true,
+            "workspaceHidden": true,
+            "inspectorHidden": true,
+            "status": "三視圖總覽：左鍵點選/拖參考線 · 滾輪縮放 · 「物件畫布」返回"
+          }
+        }
+      ],
+      "fetches": [
+        {
+          "command": "reset",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "line surface 731 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "line surface 732 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "line canvas-pos boundary 731 30 30",
+          "status": 200
+        },
+        {
+          "command": "line canvas-pos boundary 732 310 30",
+          "status": 200
+        },
+        {
+          "command": "objects",
+          "status": 200
+        },
+        {
+          "command": "surfaces",
+          "status": 200
+        },
+        {
+          "command": "boundary 731",
+          "status": 200
+        },
+        {
+          "command": "boundary 732",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        },
+        {
+          "command": "line boundary 731 outline 0,0 4200,0 4200,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        },
+        {
+          "command": "render",
+          "status": 200
+        },
+        {
+          "command": "surfaces",
+          "status": 200
+        },
+        {
+          "command": "boundary 732",
+          "status": 200
+        },
+        {
+          "command": "proj 0 0 0 732",
+          "status": 200
+        },
+        {
+          "command": "proj 0 0 1000 732",
+          "status": 200
+        },
+        {
+          "command": "proj 0 1000 0 732",
+          "status": 200
+        },
+        {
+          "command": "proj 1 0 0 732",
+          "status": 200
+        },
+        {
+          "command": "proj 1 1000 0 732",
+          "status": 200
+        },
+        {
+          "command": "proj 1 0 1000 732",
+          "status": 200
+        },
+        {
+          "command": "proj 2 0 0 732",
+          "status": 200
+        },
+        {
+          "command": "proj 2 1000 0 732",
+          "status": 200
+        },
+        {
+          "command": "proj 2 0 1000 732",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        }
+      ]
+    },
+    "singleTrusted4200Change": true,
+    "exactNativeCommand": true,
+    "realNavigationRoute": true,
+    "pageErrors": []
+  },
+  {
+    "name": "edge-transition-390-face-success-control",
+    "utc": "2026-10-09T13:18:22.223656+00:00",
+    "scope": "face",
+    "mode": "success-control",
+    "fixture": {
+      "commands": [
+        "surface 731 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+        "surface 732 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+        "canvas-pos boundary 731 30 30",
+        "canvas-pos boundary 732 310 30"
+      ],
+      "results": [
+        {
+          "ok": true
+        },
+        {
+          "ok": true
+        },
+        {
+          "ok": true
+        },
+        {
+          "ok": true
+        },
+        {
+          "ok": true
+        }
+      ],
+      "initialPresentation": {
+        "view3": false,
+        "ocOn": true,
+        "focus": null
+      }
+    },
+    "nativeReply": {
+      "ok": true
+    },
+    "inputAfter": {
+      "value": "4200",
+      "model": "4200",
+      "connected": true,
+      "visible": true
+    },
+    "stateAfter": {
+      "workSurf": "731",
+      "view3": false,
+      "tool": "view",
+      "editBid": 0,
+      "editToken": 0,
+      "editLoops": null,
+      "editDrag": null,
+      "groups": 0,
+      "handles": 0,
+      "handleShapes": [],
+      "groupShapes": [],
+      "ocOn": true,
+      "ocEdit": {
+        "bid": 731,
+        "contextId": "adb156af-3674-42f2-a37e-9b0237b230a7"
+      },
+      "ocFocus": {
+        "t": "face",
+        "id": 731
+      },
+      "navigationSequence": 2,
+      "bodyClass": "drawer-right-open",
+      "canvasVisible": false,
+      "workspaceHidden": false,
+      "inspectorHidden": false,
+      "status": "✓ boundary 731 outline 0,0 4200,0 4200,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500"
+    },
+    "worldIsOnlyExpectedAChange": true,
+    "ok": true,
+    "audit": {
+      "gate": {
+        "id": 731,
+        "hold": false,
+        "phase": "returned",
+        "release": null,
+        "promise": null,
+        "command": "line boundary 731 outline 0,0 4200,0 4200,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+        "stack": "Error\n    at window.fetch (eval at evaluate (:311:30), <anonymous>:27:19)\n    at apiRequest (http://127.0.0.1:19176/app.js:639:21)\n    at api (http://127.0.0.1:19176/app.js:691:24)\n    at emitLine (http://127.0.0.1:19176/app.js:1242:19)\n    at emitBoundary (http://127.0.0.1:19176/app.js:1286:10)\n    at commitEdgeLength (http://127.0.0.1:19176/app.js:1411:10)\n    at HTMLInputElement.<anonymous> (http://127.0.0.1:19176/app.js:8567:17)\n    at HTMLInputElement.wrapped (eval at evaluate (:311:30), <anonymous>:70:37)",
+        "nativeReply": {
+          "ok": true
+        }
+      },
+      "draws": [],
+      "changes": [
+        {
+          "id": "edgeLength0",
+          "value": "4200",
+          "trusted": true,
+          "phase": "settled",
+          "after": {
+            "workSurf": "731",
+            "view3": false,
+            "tool": "view",
+            "editBid": 0,
+            "editToken": 0,
+            "editLoops": null,
+            "editDrag": null,
+            "groups": 0,
+            "handles": 0,
+            "handleShapes": [],
+            "groupShapes": [],
+            "ocOn": true,
+            "ocEdit": {
+              "bid": 731,
+              "contextId": "adb156af-3674-42f2-a37e-9b0237b230a7"
+            },
+            "ocFocus": {
+              "t": "face",
+              "id": 731
+            },
+            "navigationSequence": 2,
+            "bodyClass": "drawer-right-open",
+            "canvasVisible": false,
+            "workspaceHidden": false,
+            "inspectorHidden": false,
+            "status": "✓ boundary 731 outline 0,0 4200,0 4200,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500"
+          }
+        }
+      ],
+      "navigation": [
+        {
+          "type": "keydown",
+          "key": "Escape",
+          "trusted": true,
+          "before": {
+            "workSurf": "731",
+            "view3": false,
+            "tool": "view",
+            "editBid": 0,
+            "editToken": 0,
+            "editLoops": null,
+            "editDrag": null,
+            "groups": 0,
+            "handles": 0,
+            "handleShapes": [],
+            "groupShapes": [],
+            "ocOn": true,
+            "ocEdit": null,
+            "ocFocus": null,
+            "navigationSequence": 1,
+            "bodyClass": "canvas-composition drawer-left-open canvas-has-inspector",
+            "canvasVisible": false,
+            "workspaceHidden": true,
+            "inspectorHidden": false,
+            "status": "物件畫布：點選卡片 · 空白拖曳框選 · 選「平移」拖曳視角 · ＋／−縮放"
+          }
+        }
+      ],
+      "fetches": [
+        {
+          "command": "reset",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "line surface 731 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "line surface 732 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "line canvas-pos boundary 731 30 30",
+          "status": 200
+        },
+        {
+          "command": "line canvas-pos boundary 732 310 30",
+          "status": 200
+        },
+        {
+          "command": "objects",
+          "status": 200
+        },
+        {
+          "command": "surfaces",
+          "status": 200
+        },
+        {
+          "command": "boundary 731",
+          "status": 200
+        },
+        {
+          "command": "boundary 732",
+          "status": 200
+        },
+        {
+          "command": "boundary 731",
+          "status": 200
+        },
+        {
+          "command": "obstacles 731",
+          "status": 200
+        },
+        {
+          "command": "references",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        },
+        {
+          "command": "source-inspect",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        },
+        {
+          "command": "line boundary 731 outline 0,0 4200,0 4200,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+          "status": 200
+        },
+        {
+          "command": "objects",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "surfaces",
+          "status": 200
+        },
+        {
+          "command": "boundary 731",
+          "status": 200
+        },
+        {
+          "command": "boundary 732",
+          "status": 200
+        },
+        {
+          "command": "boundary 731",
+          "status": 200
+        },
+        {
+          "command": "obstacles 731",
+          "status": 200
+        },
+        {
+          "command": "references",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        },
+        {
+          "command": "source-inspect",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        }
+      ]
+    },
+    "singleTrusted4200Change": true,
+    "exactNativeCommand": true,
+    "realNavigationRoute": true,
+    "pageErrors": []
+  },
+  {
+    "name": "edge-transition-390-face-held-success-to-B",
+    "utc": "2026-10-09T13:18:23.801879+00:00",
+    "scope": "face",
+    "mode": "held-success-to-B",
+    "fixture": {
+      "commands": [
+        "surface 731 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+        "surface 732 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+        "canvas-pos boundary 731 30 30",
+        "canvas-pos boundary 732 310 30"
+      ],
+      "results": [
+        {
+          "ok": true
+        },
+        {
+          "ok": true
+        },
+        {
+          "ok": true
+        },
+        {
+          "ok": true
+        },
+        {
+          "ok": true
+        }
+      ],
+      "initialPresentation": {
+        "view3": false,
+        "ocOn": true,
+        "focus": null
+      }
+    },
+    "nativeReply": {
+      "ok": true
+    },
+    "atGate": {
+      "state": {
+        "workSurf": "731",
+        "view3": false,
+        "tool": "view",
+        "editBid": 0,
+        "editToken": 0,
+        "editLoops": null,
+        "editDrag": null,
+        "groups": 0,
+        "handles": 0,
+        "handleShapes": [],
+        "groupShapes": [],
+        "ocOn": true,
+        "ocEdit": {
+          "bid": 731,
+          "contextId": "d453e20a-ba65-4b83-9e54-0cd6064ce69a"
+        },
+        "ocFocus": {
+          "t": "face",
+          "id": 731
+        },
+        "navigationSequence": 2,
+        "bodyClass": "drawer-right-open",
+        "canvasVisible": false,
+        "workspaceHidden": false,
+        "inspectorHidden": false,
+        "status": "面 731 · 選取"
+      },
+      "input": {
+        "value": "4200",
+        "model": "4000",
+        "connected": true,
+        "visible": true
+      }
+    },
+    "beforeB": {
+      "workSurf": "732",
+      "view3": true,
+      "tool": "edit",
+      "editBid": 732,
+      "editToken": 2,
+      "editLoops": [
+        {
+          "loop": -1,
+          "verts": [
+            [
+              0,
+              0
+            ],
+            [
+              4000,
+              0
+            ],
+            [
+              4000,
+              3000
+            ],
+            [
+              0,
+              3000
+            ]
+          ],
+          "fixity": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "vertices": [
+            {
+              "index": 0,
+              "key": null,
+              "uv": [
+                0,
+                0
+              ]
+            },
+            {
+              "index": 1,
+              "key": null,
+              "uv": [
+                4000,
+                0
+              ]
+            },
+            {
+              "index": 2,
+              "key": null,
+              "uv": [
+                4000,
+                3000
+              ]
+            },
+            {
+              "index": 3,
+              "key": null,
+              "uv": [
+                0,
+                3000
+              ]
+            }
+          ]
+        }
+      ],
+      "editDrag": null,
+      "groups": 1,
+      "handles": 5,
+      "handleShapes": [
+        "<polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+        "<circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+        "<circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+        "<circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>",
+        "<circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>"
+      ],
+      "groupShapes": [
+        "<g transform=\"translate(250,1930)\"><polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle></g>"
+      ],
+      "ocOn": false,
+      "ocEdit": null,
+      "ocFocus": null,
+      "navigationSequence": 4,
+      "bodyClass": "v3-mode",
+      "canvasVisible": true,
+      "workspaceHidden": true,
+      "inspectorHidden": true,
+      "status": "編輯邊界 732：拖頂點拉角、拖邊平移；完成即重宣告"
+    },
+    "afterB": {
+      "workSurf": "732",
+      "view3": true,
+      "tool": "edit",
+      "editBid": 732,
+      "editToken": 2,
+      "editLoops": [
+        {
+          "loop": -1,
+          "verts": [
+            [
+              0,
+              0
+            ],
+            [
+              4000,
+              0
+            ],
+            [
+              4000,
+              3000
+            ],
+            [
+              0,
+              3000
+            ]
+          ],
+          "fixity": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "vertices": [
+            {
+              "index": 0,
+              "key": null,
+              "uv": [
+                0,
+                0
+              ]
+            },
+            {
+              "index": 1,
+              "key": null,
+              "uv": [
+                4000,
+                0
+              ]
+            },
+            {
+              "index": 2,
+              "key": null,
+              "uv": [
+                4000,
+                3000
+              ]
+            },
+            {
+              "index": 3,
+              "key": null,
+              "uv": [
+                0,
+                3000
+              ]
+            }
+          ]
+        }
+      ],
+      "editDrag": null,
+      "groups": 1,
+      "handles": 5,
+      "handleShapes": [
+        "<polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+        "<circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+        "<circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+        "<circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>",
+        "<circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>"
+      ],
+      "groupShapes": [
+        "<g transform=\"translate(250,1930)\"><polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle></g>"
+      ],
+      "ocOn": false,
+      "ocEdit": null,
+      "ocFocus": null,
+      "navigationSequence": 4,
+      "bodyClass": "v3-mode",
+      "canvasVisible": true,
+      "workspaceHidden": true,
+      "inspectorHidden": true,
+      "status": "編輯邊界 732：拖頂點拉角、拖邊平移；完成即重宣告"
+    },
+    "ownershipChangedFields": [],
+    "visibleChangedFields": [],
+    "editModelChangedFields": [],
+    "ownershipTokenOnlyChange": false,
+    "gateWorldIsOnlyExpectedAChange": true,
+    "BReadyWorldEqualsGate": true,
+    "releasedWorldEqualsGate": true,
+    "ok": true,
+    "audit": {
+      "gate": {
+        "id": 731,
+        "hold": true,
+        "phase": "released",
+        "release": null,
+        "promise": null,
+        "command": "line boundary 731 outline 0,0 4200,0 4200,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+        "stack": "Error\n    at window.fetch (eval at evaluate (:311:30), <anonymous>:27:19)\n    at apiRequest (http://127.0.0.1:19176/app.js:639:21)\n    at api (http://127.0.0.1:19176/app.js:691:24)\n    at emitLine (http://127.0.0.1:19176/app.js:1242:19)\n    at emitBoundary (http://127.0.0.1:19176/app.js:1286:10)\n    at commitEdgeLength (http://127.0.0.1:19176/app.js:1411:10)\n    at HTMLInputElement.<anonymous> (http://127.0.0.1:19176/app.js:8567:17)\n    at HTMLInputElement.wrapped (eval at evaluate (:311:30), <anonymous>:70:37)",
+        "nativeReply": {
+          "ok": true
+        }
+      },
+      "draws": [
+        {
+          "token": 2,
+          "bid": 732,
+          "phase": "settled",
+          "after": {
+            "workSurf": "732",
+            "view3": true,
+            "tool": "edit",
+            "editBid": 732,
+            "editToken": 2,
+            "editLoops": [
+              {
+                "loop": -1,
+                "verts": [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    4000,
+                    0
+                  ],
+                  [
+                    4000,
+                    3000
+                  ],
+                  [
+                    0,
+                    3000
+                  ]
+                ],
+                "fixity": [
+                  1,
+                  1,
+                  1,
+                  1
+                ],
+                "vertices": [
+                  {
+                    "index": 0,
+                    "key": null,
+                    "uv": [
+                      0,
+                      0
+                    ]
+                  },
+                  {
+                    "index": 1,
+                    "key": null,
+                    "uv": [
+                      4000,
+                      0
+                    ]
+                  },
+                  {
+                    "index": 2,
+                    "key": null,
+                    "uv": [
+                      4000,
+                      3000
+                    ]
+                  },
+                  {
+                    "index": 3,
+                    "key": null,
+                    "uv": [
+                      0,
+                      3000
+                    ]
+                  }
+                ]
+              }
+            ],
+            "editDrag": null,
+            "groups": 1,
+            "handles": 5,
+            "handleShapes": [
+              "<polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+              "<circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+              "<circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+              "<circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>",
+              "<circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>"
+            ],
+            "groupShapes": [
+              "<g transform=\"translate(250,1930)\"><polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle></g>"
+            ],
+            "ocOn": false,
+            "ocEdit": null,
+            "ocFocus": null,
+            "navigationSequence": 4,
+            "bodyClass": "v3-mode",
+            "canvasVisible": true,
+            "workspaceHidden": true,
+            "inspectorHidden": true,
+            "status": "編輯邊界 732：拖頂點拉角、拖邊平移；完成即重宣告"
+          }
+        }
+      ],
+      "changes": [
+        {
+          "id": "edgeLength0",
+          "value": "4200",
+          "trusted": true,
+          "phase": "settled",
+          "after": {
+            "workSurf": "732",
+            "view3": true,
+            "tool": "edit",
+            "editBid": 732,
+            "editToken": 2,
+            "editLoops": [
+              {
+                "loop": -1,
+                "verts": [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    4000,
+                    0
+                  ],
+                  [
+                    4000,
+                    3000
+                  ],
+                  [
+                    0,
+                    3000
+                  ]
+                ],
+                "fixity": [
+                  1,
+                  1,
+                  1,
+                  1
+                ],
+                "vertices": [
+                  {
+                    "index": 0,
+                    "key": null,
+                    "uv": [
+                      0,
+                      0
+                    ]
+                  },
+                  {
+                    "index": 1,
+                    "key": null,
+                    "uv": [
+                      4000,
+                      0
+                    ]
+                  },
+                  {
+                    "index": 2,
+                    "key": null,
+                    "uv": [
+                      4000,
+                      3000
+                    ]
+                  },
+                  {
+                    "index": 3,
+                    "key": null,
+                    "uv": [
+                      0,
+                      3000
+                    ]
+                  }
+                ]
+              }
+            ],
+            "editDrag": null,
+            "groups": 1,
+            "handles": 5,
+            "handleShapes": [
+              "<polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon>",
+              "<circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+              "<circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle>",
+              "<circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>",
+              "<circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle>"
+            ],
+            "groupShapes": [
+              "<g transform=\"translate(250,1930)\"><polygon points=\"0,0 4000,0 4000,3000 0,3000\" fill=\"rgba(51,102,204,.15)\" stroke=\"#c0392b\" stroke-width=\"1.5\" stroke-dasharray=\"8 4\" vector-effect=\"non-scaling-stroke\"></polygon><circle cx=\"0\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"0\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"4000\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle><circle cx=\"0\" cy=\"3000\" r=\"4\" fill=\"#c0392b\"></circle></g>"
+            ],
+            "ocOn": false,
+            "ocEdit": null,
+            "ocFocus": null,
+            "navigationSequence": 4,
+            "bodyClass": "v3-mode",
+            "canvasVisible": true,
+            "workspaceHidden": true,
+            "inspectorHidden": true,
+            "status": "編輯邊界 732：拖頂點拉角、拖邊平移；完成即重宣告"
+          }
+        }
+      ],
+      "navigation": [
+        {
+          "type": "keydown",
+          "key": "Escape",
+          "trusted": true,
+          "before": {
+            "workSurf": "731",
+            "view3": false,
+            "tool": "view",
+            "editBid": 0,
+            "editToken": 0,
+            "editLoops": null,
+            "editDrag": null,
+            "groups": 0,
+            "handles": 0,
+            "handleShapes": [],
+            "groupShapes": [],
+            "ocOn": true,
+            "ocEdit": null,
+            "ocFocus": null,
+            "navigationSequence": 1,
+            "bodyClass": "canvas-composition drawer-left-open canvas-has-inspector",
+            "canvasVisible": false,
+            "workspaceHidden": true,
+            "inspectorHidden": false,
+            "status": "物件畫布：點選卡片 · 空白拖曳框選 · 選「平移」拖曳視角 · ＋／−縮放"
+          }
+        },
+        {
+          "type": "keydown",
+          "key": "Escape",
+          "trusted": true,
+          "before": {
+            "workSurf": "731",
+            "view3": false,
+            "tool": "view",
+            "editBid": 0,
+            "editToken": 0,
+            "editLoops": null,
+            "editDrag": null,
+            "groups": 0,
+            "handles": 0,
+            "handleShapes": [],
+            "groupShapes": [],
+            "ocOn": true,
+            "ocEdit": {
+              "bid": 731,
+              "contextId": "d453e20a-ba65-4b83-9e54-0cd6064ce69a"
+            },
+            "ocFocus": {
+              "t": "face",
+              "id": 731
+            },
+            "navigationSequence": 2,
+            "bodyClass": "drawer-right-open",
+            "canvasVisible": false,
+            "workspaceHidden": false,
+            "inspectorHidden": false,
+            "status": "面 731 · 選取"
+          }
+        },
+        {
+          "type": "click",
+          "id": "workspaceBackButton",
+          "tool": null,
+          "trusted": true,
+          "before": {
+            "workSurf": "731",
+            "view3": false,
+            "tool": "view",
+            "editBid": 0,
+            "editToken": 0,
+            "editLoops": null,
+            "editDrag": null,
+            "groups": 0,
+            "handles": 0,
+            "handleShapes": [],
+            "groupShapes": [],
+            "ocOn": true,
+            "ocEdit": {
+              "bid": 731,
+              "contextId": "d453e20a-ba65-4b83-9e54-0cd6064ce69a"
+            },
+            "ocFocus": {
+              "t": "face",
+              "id": 731
+            },
+            "navigationSequence": 2,
+            "bodyClass": "",
+            "canvasVisible": false,
+            "workspaceHidden": false,
+            "inspectorHidden": false,
+            "status": "面 731 · 選取"
+          }
+        },
+        {
+          "type": "click",
+          "id": "btnObj",
+          "tool": null,
+          "trusted": true,
+          "before": {
+            "workSurf": "731",
+            "view3": false,
+            "tool": "view",
+            "editBid": 0,
+            "editToken": 0,
+            "editLoops": null,
+            "editDrag": null,
+            "groups": 0,
+            "handles": 0,
+            "handleShapes": [],
+            "groupShapes": [],
+            "ocOn": true,
+            "ocEdit": null,
+            "ocFocus": null,
+            "navigationSequence": 3,
+            "bodyClass": "canvas-composition canvas-has-inspector",
+            "canvasVisible": false,
+            "workspaceHidden": true,
+            "inspectorHidden": false,
+            "status": "物件畫布：點選卡片 · 空白拖曳框選 · 選「平移」拖曳視角 · ＋／−縮放"
+          }
+        },
+        {
+          "type": "change",
+          "id": "workSurf",
+          "value": "732",
+          "trusted": true,
+          "before": {
+            "workSurf": "732",
+            "view3": true,
+            "tool": "view",
+            "editBid": 0,
+            "editToken": 0,
+            "editLoops": null,
+            "editDrag": null,
+            "groups": 0,
+            "handles": 0,
+            "handleShapes": [],
+            "groupShapes": [],
+            "ocOn": false,
+            "ocEdit": null,
+            "ocFocus": null,
+            "navigationSequence": 4,
+            "bodyClass": "v3-mode drawer-left-open",
+            "canvasVisible": true,
+            "workspaceHidden": true,
+            "inspectorHidden": true,
+            "status": "三視圖總覽：左鍵點選/拖參考線 · 滾輪縮放 · 「物件畫布」返回"
+          }
+        },
+        {
+          "type": "keydown",
+          "key": "Escape",
+          "trusted": true,
+          "before": {
+            "workSurf": "732",
+            "view3": true,
+            "tool": "view",
+            "editBid": 0,
+            "editToken": 0,
+            "editLoops": null,
+            "editDrag": null,
+            "groups": 0,
+            "handles": 0,
+            "handleShapes": [],
+            "groupShapes": [],
+            "ocOn": false,
+            "ocEdit": null,
+            "ocFocus": null,
+            "navigationSequence": 4,
+            "bodyClass": "v3-mode drawer-left-open",
+            "canvasVisible": true,
+            "workspaceHidden": true,
+            "inspectorHidden": true,
+            "status": "三視圖總覽：左鍵點選/拖參考線 · 滾輪縮放 · 「物件畫布」返回"
+          }
+        },
+        {
+          "type": "click",
+          "id": null,
+          "tool": "edit",
+          "trusted": true,
+          "before": {
+            "workSurf": "732",
+            "view3": true,
+            "tool": "view",
+            "editBid": 0,
+            "editToken": 0,
+            "editLoops": null,
+            "editDrag": null,
+            "groups": 0,
+            "handles": 0,
+            "handleShapes": [],
+            "groupShapes": [],
+            "ocOn": false,
+            "ocEdit": null,
+            "ocFocus": null,
+            "navigationSequence": 4,
+            "bodyClass": "v3-mode",
+            "canvasVisible": true,
+            "workspaceHidden": true,
+            "inspectorHidden": true,
+            "status": "三視圖總覽：左鍵點選/拖參考線 · 滾輪縮放 · 「物件畫布」返回"
+          }
+        }
+      ],
+      "fetches": [
+        {
+          "command": "reset",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "line surface 731 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "line surface 732 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "line canvas-pos boundary 731 30 30",
+          "status": 200
+        },
+        {
+          "command": "line canvas-pos boundary 732 310 30",
+          "status": 200
+        },
+        {
+          "command": "objects",
+          "status": 200
+        },
+        {
+          "command": "surfaces",
+          "status": 200
+        },
+        {
+          "command": "boundary 731",
+          "status": 200
+        },
+        {
+          "command": "boundary 732",
+          "status": 200
+        },
+        {
+          "command": "boundary 731",
+          "status": 200
+        },
+        {
+          "command": "obstacles 731",
+          "status": 200
+        },
+        {
+          "command": "references",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        },
+        {
+          "command": "source-inspect",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        },
+        {
+          "command": "line boundary 731 outline 0,0 4200,0 4200,3000 0,3000 hole 3000,1000 3500,1000 3500,1500 3000,1500",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        },
+        {
+          "command": "render",
+          "status": 200
+        },
+        {
+          "command": "surfaces",
+          "status": 200
+        },
+        {
+          "command": "boundary 732",
+          "status": 200
+        },
+        {
+          "command": "proj 0 0 0 732",
+          "status": 200
+        },
+        {
+          "command": "proj 0 1000 0 732",
+          "status": 200
+        },
+        {
+          "command": "proj 0 0 1000 732",
+          "status": 200
+        },
+        {
+          "command": "proj 1 0 0 732",
+          "status": 200
+        },
+        {
+          "command": "proj 1 0 1000 732",
+          "status": 200
+        },
+        {
+          "command": "proj 1 1000 0 732",
+          "status": 200
+        },
+        {
+          "command": "proj 2 0 0 732",
+          "status": 200
+        },
+        {
+          "command": "proj 2 1000 0 732",
+          "status": 200
+        },
+        {
+          "command": "proj 2 0 1000 732",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        },
+        {
+          "command": "section-profile-read",
+          "status": 200
+        },
+        {
+          "command": "dump",
+          "status": 200
+        }
+      ]
+    },
+    "singleTrusted4200Change": true,
+    "exactNativeCommand": true,
+    "realNavigationRoute": true,
+    "pageErrors": []
+  }
+]

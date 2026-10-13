@@ -1,0 +1,65 @@
+{
+  "zip_bytes": 222289,
+  "payloads_verified": 32,
+  "historical_exits": {
+    "natural": 0,
+    "old-refresh": 1,
+    "candidate-refresh": 0,
+    "revert-refresh": 1,
+    "restore-refresh": 0
+  },
+  "controlled_observations": [
+    {
+      "name": "old-refresh",
+      "fields": [
+        "actualProductEntry",
+        "dumpUnchanged",
+        "historyUnchanged",
+        "hit",
+        "newRect",
+        "nodeReplaced"
+      ],
+      "scope": "recorded text equality and undo length equality only"
+    },
+    {
+      "name": "candidate-refresh",
+      "fields": [
+        "actualProductEntry",
+        "dumpUnchanged",
+        "historyUnchanged",
+        "hit",
+        "newRect",
+        "nodeReplaced"
+      ],
+      "scope": "recorded text equality and undo length equality only"
+    },
+    {
+      "name": "revert-refresh",
+      "fields": [
+        "actualProductEntry",
+        "dumpUnchanged",
+        "historyUnchanged",
+        "hit",
+        "newRect",
+        "nodeReplaced"
+      ],
+      "scope": "recorded text equality and undo length equality only"
+    },
+    {
+      "name": "restore-refresh",
+      "fields": [
+        "actualProductEntry",
+        "dumpUnchanged",
+        "historyUnchanged",
+        "hit",
+        "newRect",
+        "nodeReplaced"
+      ],
+      "scope": "recorded text equality and undo length equality only"
+    }
+  ],
+  "new_product_tests": 0,
+  "complete_world_history_zero_write_proven": false,
+  "scroll_top_measured": false,
+  "wrapper_and_census_delivered": false
+}

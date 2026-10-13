@@ -8,6 +8,7 @@
  * GEOMETRY_SPACE_FLOW_ONLY=1 isolates GEO-210 inline projection, draft,
  * responsive setup and save-flow regression. Native save handles are stubbed;
  * the real Save action still packs the project, while downloads stay in RUN_DIR.
+ * GEOMETRY_PROJECTION_CLOSE_ONLY=1 isolates the native close callback races.
  */
 'use strict';
 const { spawn } = require('child_process');
@@ -19,6 +20,7 @@ const { asyncReplyUiRegression } = require('./async_reply_ui_test.js');
 const { saveReopenGridRegression } = require('./save_reopen_synthetic_test.js');
 const { createRetainedEvaluator } = require('./cdp_evaluation.js');
 const { FULL_SPACE_GROUPS, createGroupCensus } = require('./space_test_floor.js');
+const { installProjectionCloseProbe, projectionCloseRegression } = require('./projection_close_probe.js');
 function installSourceDumpGate(scope, context) {
   const original = scope.fetch;
   const evidence = { phase: 'armed', context, caller: null, claimed: 0, held: 0, nativeOK: false, ignored: [] };
@@ -74,15 +76,15 @@ function spaceRunConfiguration(env = process.env) {
   if(!env.GEOMETRY_FEEDBACK_DIR||!path.isAbsolute(env.GEOMETRY_FEEDBACK_DIR))throw Error('GEOMETRY_FEEDBACK_DIR must name the isolated server feedback directory under TEMP');
   const relative=path.relative(os.tmpdir(),path.resolve(env.GEOMETRY_FEEDBACK_DIR));
   if(!relative||relative==='..'||relative.startsWith('..'+path.sep)||path.isAbsolute(relative))throw Error('GEOMETRY_FEEDBACK_DIR must be a dedicated directory under TEMP');
-  const names=['GEOMETRY_SPACE_FLOW_ONLY','GEOMETRY_TIMBER_ONLY','GEOMETRY_TIMBER_GUARDS_ONLY','GEOMETRY_SPACE_STYLE_ONLY','GEOMETRY_PROJECTION_PLACEMENT_ONLY','GEOMETRY_ASYNC_REPLY_ONLY','GEOMETRY_SAVE_REOPEN_ONLY'];
+  const names=['GEOMETRY_SPACE_FLOW_ONLY','GEOMETRY_TIMBER_ONLY','GEOMETRY_TIMBER_GUARDS_ONLY','GEOMETRY_SPACE_STYLE_ONLY','GEOMETRY_PROJECTION_PLACEMENT_ONLY','GEOMETRY_PROJECTION_CLOSE_ONLY','GEOMETRY_ASYNC_REPLY_ONLY','GEOMETRY_SAVE_REOPEN_ONLY'];
   const filters=names.filter(name=>env[name]);
   if([...filters,...(env.GEOMETRY_TIMBER_HISTORY_ONLY?['GEOMETRY_TIMBER_HISTORY_ONLY']:[])].some(name=>env[name]!=='1'))throw Error('Scope flags accept only 1; remove a flag to disable it');
   if(filters.length>1)throw Error('Choose only one primary space test filter; combined filters silently omit suites');
   if(env.GEOMETRY_TIMBER_HISTORY_ONLY&&!filters.some(name=>name==='GEOMETRY_TIMBER_ONLY'||name==='GEOMETRY_TIMBER_GUARDS_ONLY'))throw Error('GEOMETRY_TIMBER_HISTORY_ONLY requires TIMBER_ONLY or TIMBER_GUARDS_ONLY');
   const guard=env.GEOMETRY_TIMBER_HISTORY_ONLY?'timber-history-guard':'timber-source-guards';
-  const mapping={GEOMETRY_SPACE_FLOW_ONLY:['space-flow'],GEOMETRY_TIMBER_ONLY:['timber-material',guard,'font-layout'],GEOMETRY_TIMBER_GUARDS_ONLY:[guard],GEOMETRY_SPACE_STYLE_ONLY:['font-layout'],GEOMETRY_PROJECTION_PLACEMENT_ONLY:['projection-placement','font-layout'],GEOMETRY_ASYNC_REPLY_ONLY:['async-reply-ui'],GEOMETRY_SAVE_REOPEN_ONLY:['save-reopen-grid']};
-  const included=filters.length?mapping[filters[0]]:['space-height-library','projection-lifecycle','projection-placement','font-layout','space-flow'];
-  const all=['space-height-library','projection-lifecycle','projection-placement','font-layout','space-flow','timber-material','timber-source-guards'];
+  const mapping={GEOMETRY_SPACE_FLOW_ONLY:['space-flow'],GEOMETRY_TIMBER_ONLY:['timber-material',guard,'font-layout'],GEOMETRY_TIMBER_GUARDS_ONLY:[guard],GEOMETRY_SPACE_STYLE_ONLY:['font-layout'],GEOMETRY_PROJECTION_PLACEMENT_ONLY:['projection-placement','font-layout'],GEOMETRY_PROJECTION_CLOSE_ONLY:['projection-close'],GEOMETRY_ASYNC_REPLY_ONLY:['async-reply-ui'],GEOMETRY_SAVE_REOPEN_ONLY:['save-reopen-grid']};
+  const included=filters.length?mapping[filters[0]]:['space-height-library','projection-lifecycle','projection-placement','font-layout','space-flow','projection-close'];
+  const all=['space-height-library','projection-lifecycle','projection-placement','font-layout','space-flow','projection-close','timber-material','timber-source-guards'];
   return {mode:filters.length?'partial':'full-space-suite',filters:[...filters,...(env.GEOMETRY_TIMBER_HISTORY_ONLY?['GEOMETRY_TIMBER_HISTORY_ONLY']:[])],included,omitted:all.filter(name=>!included.includes(name)),url:target.href,feedbackDirectory:path.resolve(env.GEOMETRY_FEEDBACK_DIR)};
 }
 const SCOPE=spaceRunConfiguration();
@@ -1219,12 +1221,20 @@ async function run() {
   await connect();
   await send('Runtime.enable');
   await send('Page.enable');
+  if (SCOPE.included.includes('projection-close')) await send('Page.addScriptToEvaluateOnNewDocument', {source:`(${installProjectionCloseProbe.toString()})()`});
   await send('Browser.setDownloadBehavior',{behavior:'allow',downloadPath:path.join(RUN_DIR,'downloads')});
   await send('Page.addScriptToEvaluateOnNewDocument', { source: `(()=>{let pending=0,last=performance.now();const original=window.fetch.bind(window);window.fetch=(...args)=>{pending++;last=performance.now();return original(...args).finally(()=>{pending--;last=performance.now();});};const observer=new MutationObserver(()=>{last=performance.now();});document.addEventListener('DOMContentLoaded',()=>observer.observe(document.body,{subtree:true,childList:true,attributes:true,characterData:true}));window.__spaceTestSettle=async()=>{const end=performance.now()+5000;while(performance.now()<end){if(pending===0&&performance.now()-last>120)return;await new Promise(r=>setTimeout(r,30));}};})()` });
   await send('Emulation.setDeviceMetricsOverride', { width: 1400, height: 900, deviceScaleFactor: 1, mobile: false });
   await send('Page.navigate', { url: URL });
   await wait(`typeof SpaceModelWorkspace==='object' && typeof api==='function' && connection.phase==='ready'`, 'application ready',90000);
   });
+  if (SCOPE.included.includes('projection-close')) {
+    await runGroup('projection-close', projectionCloseRegression({
+      check, evaluate, click, select, checked, key, setup, wait, openFaceModel, closeWorkspace, scene, projectionDialog,
+      record:value=>fs.writeFileSync(path.join(RUN_DIR,'projection-close-proof.json'),JSON.stringify(value,null,2))
+    }));
+    if (process.env.GEOMETRY_PROJECTION_CLOSE_ONLY) return;
+  }
   if (process.env.GEOMETRY_ASYNC_REPLY_ONLY) {
     await runGroup('async-reply-ui', asyncReplyUiRegression({
       check, evaluate, click, viewport, setup, wait, settle, key, send, select, closeWorkspace, openFlowFace, scene

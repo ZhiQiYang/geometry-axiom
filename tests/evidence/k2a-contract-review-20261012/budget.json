@@ -1,0 +1,35 @@
+{
+  "scope": "Original single-draft validator acceptance plus finite JSON byte arithmetic; no collection runtime, World deletion, save/reopen or Undo/Redo execution",
+  "single": {
+    "before_bytes": 131072,
+    "marked_bytes": 131084,
+    "automatic_lost_delta": 12,
+    "unmarked_single_validator": "accepted",
+    "marked_single_validator": "rejected",
+    "marked_error": "功能附件超過容量上限。",
+    "sha256": "64b33503abbd7ad574bb7fa35e81f5d3c86a50aad7b78d6586537222809285a8"
+  },
+  "collection": {
+    "draft_count": 9,
+    "before_record_bytes": 1048576,
+    "marked_record_bytes": 1048684,
+    "automatic_lost_delta": 108,
+    "all_orphan_record_bytes": 1048737,
+    "individual_draft_bytes": [
+      131072,
+      131072,
+      131072,
+      131072,
+      131072,
+      131072,
+      131072,
+      129977,
+      967
+    ],
+    "every_unmarked_draft_original_validator": "accepted",
+    "record_sha256": "d1f86513839557805b0a726444dc310273a6009b3055da01bf8f0f4428b8fc4f",
+    "marked_record_sha256": "b2e337125690e48093054fa087443e8308f6969d92a5f1c434eceaa2e3e6f62e"
+  },
+  "raw_preserved": true,
+  "string_limits": "All raw/rule strings <=4096 UTF-16 code units"
+}
