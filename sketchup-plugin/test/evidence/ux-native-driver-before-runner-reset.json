@@ -1,0 +1,44 @@
+{
+  "suite": "workflow",
+  "started_at": "2026-10-13T12:28:46+08:00",
+  "sketchup": "26.0.429",
+  "ruby": "ruby 3.2.2 (2023-03-30 revision e51014f9c0) [x64-mswin64_140]",
+  "runtime_source": "C:/Users/Yang/AppData/Local/Temp/geometry-framing-release-ux-20261013",
+  "snapshot": "C:/Users/Yang/AppData/Local/Temp/geometry-framing-native-workflow-20261013-122846-21584-35175d/source",
+  "source_sha256": "c432da567e4568d55b6b6c06d6c23eb9694b68f46d3880d973cfad24656bb875",
+  "loader_sha256": "d38cea3a011b5e78f5f89e375af35d6efffd8591ea37dabd23e6a4a6e9794ffb",
+  "source_files": {
+    "core/checks.rb": "17c0a309c31159e4b0ad74e0bc3123d77d633e434610d95238f54dff79b2b41f",
+    "core/flat_ceiling.rb": "63e1e248f9854c837d09884a3749179ef5da22c3068655008e861440a6480bdc",
+    "core/geometry.rb": "64f760fcd74d9eea83b392415dc708904de621951bc799a28a1f16aee6007f22",
+    "core/panel_axis.rb": "2ddbfc73b9f9ad0de7633e005f29abd7cd85d284e87b66fef31b3492c3c0cad6",
+    "core/profile.rb": "1167401930802ea330e9df64765c9b5c67e3eb0056881989f2e2d3ad2d50f133",
+    "su/builder.rb": "5da35abd46708fd57cc21fc7e052f6cdd7c91b1cd5b9e5041fc1b33874c15497",
+    "su/dialog.rb": "091872427e52c734c4a95d6bdd30134e34bd9658a30f293124f332683f2e81e6",
+    "su/main.rb": "b5b0eb02423d4d8f010f1a8944728c948d87c02e7a3fd4611ae0f0edcc82699a",
+    "su/obstacles.rb": "83d3020c84a24bb6ec36515988ecd2288a3fbe535dd70d3d6dcf94964e5bdbdb",
+    "su/selection.rb": "0b1690fc6b7e32c291b3c97bc392043e8011f8de305f84bd0fd99d2c5ae4ba8b",
+    "su/selection_watch.rb": "db2a1344803ed39cf3ee10051828353751f32e164327ba3a4cb6b8a04443c1fd",
+    "ui/dialog.css": "af8a302dda2ec7db8ae7543004dce3a258d37730766e9643c609a472bc591e09",
+    "ui/dialog.html": "fbddd3e1cdd739272ece5631009fe520f0cd644bf4431026e31e6cfa8e3a27d1",
+    "ui/dialog.js": "070578219eecabf829fa09d84f0801880bc6a709c04f85258ae287376fa5235b"
+  },
+  "suite_sha256": "b1afdceaa7cccd2f60f6f64e63bba4807f77dd07609a06d679f620c622794943",
+  "rbz_path": "D:/geometry-axiom/sketchup-plugin/releases/geometry-framing-0.1.0.rbz",
+  "rbz_sha256": "9983c2cfd5b3ad85841c4a0ce4a6364e6be0bf8524ede807db8b7ce505cdd345",
+  "semantic_exit_code": 1,
+  "passed": false,
+  "source_unchanged": true,
+  "first_failure": "NoMethodError: private method `remove_const' called for GeometryFraming::Acceptance:Module",
+  "suite_result": {
+  },
+  "finished_at": "2026-10-13T12:28:47+08:00",
+  "driver_error_backtrace": [
+    "C:/Users/Yang/AppData/Local/Temp/geometry-framing-native-driver.rb:171:in `execute_audit'",
+    "C:/Users/Yang/AppData/Local/Temp/geometry-framing-native-driver.rb:90:in `run'",
+    "C:/Users/Yang/AppData/Local/Temp/geometry-framing-native-driver.rb:200:in `<top (required)>'",
+    "(eval):1:in `load'",
+    "(eval):1:in `<main>'",
+    "SketchUp:in `eval'"
+  ]
+}

@@ -7,11 +7,20 @@ module GeometryFraming
     class InputError < StandardError; end
     class StartPointError < InputError; end
 
-    # SketchUp 在開啟元件編輯時會改變幾何讀取的座標系。暫時關閉編輯，
-    # 再讀定義座標與完整 instance path；離開時保全編輯路徑與原選取。
-    # 不在 start_operation 內切換 context，避免把產生動作切成多個操作。
+    # active_entities 內讀到的位置已是世界座標；唯讀查詢不能切換 active_path，
+    # 否則光按「檢查」就會新增 Undo 紀錄或清掉 Redo。
+    # 寫入根層才暫離編輯；呼叫者必須把離開、寫入、還原包在同一 operation。
     module Context
       module_function
+
+      # 官方 ModelObserver#onActivePathChanged 說明編輯中的幾何讀值為世界座標。
+      # 根層／其他 instance 遞迴則沿其 API 回傳的 transformation 累積。
+      # https://ruby.sketchup.com/Sketchup/ModelObserver.html#onActivePathChanged-instance_method
+      def read(model)
+        selected = model.selection.to_a
+        path = model.active_path || []
+        yield(selected, path, Geom::Transformation.new)
+      end
 
       def at_root(model)
         path = model.active_path
@@ -33,7 +42,7 @@ module GeometryFraming
       module_function
 
       def read(mode, model = Sketchup.active_model, start_vertex_id: nil, &choose_start)
-        Context.at_root(model) do |selected, path, transform|
+        Context.read(model) do |selected, path, transform| # UX_READ_WITHOUT_CONTEXT_SWITCH
           case mode
           when 'flat' then flat(model, selected, path, transform)
           when 'profile' then profile(model, selected, path, transform, start_vertex_id: start_vertex_id, &choose_start)

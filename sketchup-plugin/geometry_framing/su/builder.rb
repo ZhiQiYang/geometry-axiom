@@ -25,11 +25,14 @@ module GeometryFraming
 
         solids.each { |solid| validate_solid!(solid) }
         group = nil
-        Context.at_root(model) do
-          started = false
-          begin
-            model.start_operation(mode == 'flat' ? '下角材 平釘' : '下角材 斷面', true)
-            started = true
+        selected_before = model.selection.to_a
+        started = false
+        begin
+          # active_path= 會自動拆透明子交易；離開與恢復都須包在本批操作內。
+          # https://ruby.sketchup.com/Sketchup/Model.html#active_path=-instance_method
+          model.start_operation(mode == 'flat' ? '下角材 平釘' : '下角材 斷面', true)
+          started = true
+          Context.at_root(model) do # UX_SINGLE_UNDO_CONTEXT_BOUNDARY
             group = model.entities.add_group
             group.name = "下角材 #{mode == 'flat' ? '平釘' : '斷面'} #{Time.now.strftime('%Y%m%d %H%M%S')}"
             group.layer = model.layers[0]
@@ -55,12 +58,19 @@ module GeometryFraming
                              '長度' => solid.fetch(:length), '規則' => solid.fetch(:rule).to_s, 'unit' => 'mm' }
               attributes.each { |key, value| instance.set_attribute(DICTIONARY, key, value) }
             end
-            model.commit_operation
-            started = false
-          rescue StandardError
-            model.abort_operation if started
-            raise
           end
+          model.commit_operation
+          started = false
+        rescue StandardError
+          if started
+            model.abort_operation
+            # 原生 abort 會清空選取；只修本次主動回滾的收尾，不改使用者 Undo 的語意。
+            if model.valid?
+              model.selection.clear
+              model.selection.add(selected_before.select(&:valid?)) # UX_ABORT_RESTORE_SELECTION
+            end
+          end
+          raise
         end
         group
       end

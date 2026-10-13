@@ -40,9 +40,37 @@ module FramingMutationRunner
         'test_hierarchy_visibility_and_tag_folder_visibility_are_respected' => 'P076 M2 可見性'
       } },
     { id: 'dialog_lifecycle', rule: '對話框生命週期', file: 'su/dialog.rb',
-      before: 'dialog.set_on_closed { @dialog = nil if @dialog.equal?(dialog) }',
-      after: 'dialog.set_on_closed { @dialog = nil }',
+      before: '          if @dialog.equal?(dialog)',
+      after: '          if true',
       tests: { 'test_delayed_close_preserves_the_current_dialog' => '規則：對話框生命週期' } },
+    { id: 'review_snapshot', rule: '過期快照不得生成', file: 'su/dialog.rb',
+      before: 'if generate && @review[:stamp] != stamp', after: 'if false',
+      tests: { 'test_geometry_and_parameter_changes_are_rejected_without_observer' => 'UX_STALE_SNAPSHOT' } },
+    { id: 'stale_selection_refresh', rule: '過期後持續更新目前選取', file: 'su/dialog.rb',
+      before: "@review = nil\n        receive(status: 'stale'",
+      after: "@review = nil\n        @has_result = false\n        receive(status: 'stale'",
+      tests: { 'test_stale_selection_keeps_updating_after_generated_batch_is_undone' => 'UX_STALE_SELECTION_REFRESH' } },
+    { id: 'profile_rechoose', rule: '斷面每次檢查可重選起點', file: 'su/dialog.rb',
+      before: 'start_vertex_id = previous_id if generate', after: 'start_vertex_id = previous_id',
+      tests: { 'test_every_profile_preview_rechooses_start_and_preserves_parameters' => 'UX_PROFILE_RESELECT' } },
+    { id: 'readonly_context', rule: '唯讀預覽不更動 Undo/Redo', file: 'su/selection.rb',
+      before: 'Context.read(model) do |selected, path, transform| # UX_READ_WITHOUT_CONTEXT_SWITCH',
+      after: 'Context.at_root(model) do |selected, path, transform| # UX_READ_WITHOUT_CONTEXT_SWITCH',
+      tests: {
+        'test_reading_selection_has_no_transaction_or_context_side_effects' => 'UX_READ_ONLY',
+        'test_reading_selection_after_undo_keeps_redo_available' => 'UX_READ_ONLY'
+      } },
+    { id: 'single_undo_boundary', rule: '編輯群組內一批只需一次 Undo', file: 'su/builder.rb',
+      before: "          end\n          model.commit_operation\n          started = false",
+      after: "            model.commit_operation\n            started = false\n          end",
+      tests: {
+        'test_one_undo_inside_group_removes_only_latest_batch' => 'UX_UNDO',
+        'test_context_switches_are_inside_the_generation_operation' => 'UX_UNDO'
+      } },
+    { id: 'abort_selection_restore', rule: '建立失敗保留原選取', file: 'su/builder.rb',
+      before: 'model.selection.add(selected_before.select(&:valid?)) # UX_ABORT_RESTORE_SELECTION',
+      after: 'nil # UX_ABORT_RESTORE_SELECTION',
+      tests: { 'test_generation_failure_rolls_back_only_the_current_batch' => 'UX_UNDO' } },
     { id: 'material_preservation', rule: '既有材質保留', file: 'su/builder.rb',
       before: 'return value if value',
       after: "value.color = COLORS.fetch(role) if value\n        return value if value",
@@ -197,14 +225,16 @@ module FramingMutationRunner
   end
 
   def selftest
-    tests = { 'test_first' => '規則：D1 整數mm', 'test_second' => '規則：D1 整數mm' }
-    output = "  1) Failure:\nExample#test_first [a.rb:1]:\n規則：D1 整數mm\n\n  2) Failure:\nExample#test_second [a.rb:2]:\n規則：D1 整數mm\n\n2 runs, 2 assertions, 2 failures, 0 errors, 0 skips\n"
+    tests = { 'test_first' => '規則：D1 整數mm', 'test_second' => '規則：過期預覽不得生成' }
+    output = "  1) Failure:\nExample#test_first [a.rb:1]:\n規則：D1 整數mm\n\n  2) Failure:\nExample#test_second [a.rb:2]:\n規則：過期預覽不得生成\n\n2 runs, 2 assertions, 2 failures, 0 errors, 0 skips\n"
     good = { output: output, exit_code: 1, timed_out: false, launch_error: nil }
     checks = {
       '兩個具名 assertion failure' => expected_failures?(good, tests),
       '其中一個測試沒有規則訊息必須拒絕' => !expected_failures?(good.merge(output: output.sub('規則：D1 整數mm', '沒有規則名稱')), tests),
       '少跑一個測試必須拒絕' => !expected_failures?(good.merge(output: output.sub('2 runs', '1 runs')), tests),
       '測試名稱不符必須拒絕' => !expected_failures?(good.merge(output: output.sub('#test_first', '#test_wrong')), tests),
+      '規則訊息出現在別的測試不能借用' => !expected_failures?(good.merge(output: output.gsub('規則：D1 整數mm', '__MARKER__').gsub('規則：過期預覽不得生成', '規則：D1 整數mm').gsub('__MARKER__', '規則：過期預覽不得生成')), tests),
+      '重複同名 failure 不能冒充兩個指定測試' => !expected_failures?(good.merge(output: output.sub('#test_second', '#test_first')), tests),
       'error 不得當成 assertion failure' => !expected_failures?(good.merge(output: output.sub('0 errors', '1 errors')), tests),
       'skip 不得算成功' => !expected_failures?(good.merge(output: output.sub('0 skips', '1 skips')), tests),
       'exit 0 不是突變失敗' => !expected_failures?(good.merge(exit_code: 0), tests),
@@ -214,6 +244,8 @@ module FramingMutationRunner
     checks['真實 LoadError exit 1 必須拒絕'] = load_error[:exit_code] == 1 && !expected_failures?(load_error, tests)
     timed = execute([RbConfig.ruby, '-e', 'sleep 5'], timeout: 0.2)
     checks['真實超時必須終止且拒絕'] = timed[:timed_out] && !expected_failures?(timed, tests)
+    missing = execute([File.join(Dir.tmpdir, "framing-nonexistent-program-#{Process.pid}.exe")], timeout: 1)
+    checks['啟動失敗不能冒充測試變紅'] = !missing[:launch_error].nil? && !expected_failures?(missing, tests)
     checks.each { |name, ok| puts "#{ok ? '通過' : '失敗'}：#{name}" }
     puts "runner 誠實性自測：#{checks.count { |_name, ok| ok }}/#{checks.length}"
     checks.values.all? ? 0 : 1

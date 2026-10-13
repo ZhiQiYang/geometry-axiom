@@ -1,6 +1,30 @@
 # SketchUp 2026 內驗收
 
-這份腳本已通過一般 Ruby 語法檢查，**尚未在 SketchUp 執行**。Minitest 通過不代表 SketchUp 幾何、HtmlDialog、編輯 context 或復原已驗收。
+此目錄包含完整幾何驗收與較小的工作流回歸。一般 Ruby 語法檢查／minitest 不能代替
+SketchUp 幾何、HtmlDialog、編輯 context 或復原的真機證據；實際通過狀態以該次原始輸出為準。
+
+工作流修正優先用 `run_workflow_regressions.rb`：另開新的空白模型，在 Ruby 主控台執行下列命令。
+它不開 HtmlDialog 或原生起點視窗，不透過 UI timer 或 `send_action`；只建立兩個小天花面與一條斷面。
+
+```ruby
+ENV['GEOMETRY_FRAMING_WORKFLOW_OUTPUT'] = 'D:/geometry-framing-workflow-evidence'
+load 'D:/geometry-axiom/sketchup-plugin/test_su/run_workflow_regressions.rb'
+```
+
+這份小腳本直接使用與 UI 相同的 `Dialog.dispatch`，以真實模型驗證：
+
+- 群組內預覽不增加 Undo 層：先建立一個標記，預覽後只呼叫一次 [`Sketchup.undo`](https://ruby.sketchup.com/Sketchup.html#undo-class_method)，必須移除標記並保留原輸入及編輯路徑。
+- 群組內連續生成 A、B 兩批後，一次真正的 `Sketchup.undo` 必須只消除 B 的全部角色，A 與輸入仍在。
+- 群組內保留前批時，暫時讓 `Builder.add_boxes` 完成第一件後在第二件拋錯，隨即還原原方法；驗證失敗當批完整回滾、前批與輸入及編輯路徑保留，根實體 ID、definitions／materials／layers 的數量與名稱皆回復。
+- A 通過檢查後改選 B，直接生成必須回報過期且不更動模型；參數變更也必須過期。重新檢查 B 後才能生成。
+- 同一斷面已通過檢查後仍能再次明示另一端為起點，核心 points 真正反向，L／cap／板厚／角材斷面參數保持不變。測試注入明示選擇 callback，不代替使用者猜端點。
+
+預設輸出為 `Sketchup.temp_dir/geometry-framing-workflow-YYYYMMDD-HHMMSS/` 的 `output.txt` 與
+`result.json`。此腳本是同步回歸，以最後的「工作流回歸完成，exit_code=0」為完成證據。
+它不清除測試後模型；失敗時保留現場及原始紀錄。不要同時執行完整驗收，也不要在使用者工作模型上跑。
+原生 Undo 可能清空目前選取；Undo 後只要求原編輯路徑與輸入保留，下一輪檢查由腳本明示重選輸入。
+
+以下為既有完整幾何驗收 `run_all.rb` 的操作方式。
 
 先在 SketchUp 2026 開一個新的空白模型，刪除預設人物等範本實體，再開啟「視窗 → Ruby 主控台」。腳本要求模型完全沒有實體且未進入群組編輯；不會清空既有模型。範本也不能預先帶有「下角材 面材」材質：保色驗收只修改本次新建的夾具材質，避免碰到既有材質。不要在使用者正在工作的模型執行。
 
@@ -49,11 +73,18 @@ load 'D:/geometry-axiom/sketchup-plugin/test_su/run_all.rb'
 - 兩端接同一樓板的斷面能依 demo 直接封閉，不虛構 RC 牆。
 - 旋轉 1°、平移後的巢狀群組輸入：與未旋轉版逐角色數量相同，並重驗主支／副支／柱邊料的世界 X／Y／Z，還有頂層產物、編輯路徑與選取保全，以及一次復原。世界位置期望用已知夾具常數手算：先 `(x, -y, z)`，加內層平移 `(500, 800, 0)`，再用 `sin`／`cos` 旋轉 1°，最後加外層平移 `(30000, 20000, 0)`；不讀取 selection 的 frame，也不以 `Geom::Transformation` 重用被測座標管道。
 
-上述幾何、座標與復原斷言仍需在 SketchUp 2026 真機執行。一般 Ruby 的 `ruby -c sketchup-plugin/test_su/run_all.rb` 只確認語法；不會載入或執行驗收。空白模型前置條件使用官方支援的 `Entities#length.zero?`，不呼叫 `Entities#empty?`。
+上述幾何、座標與復原斷言必須在 SketchUp 2026 真機執行；目前已保存的實際結果見
+[完整原生 audit](../test/evidence/native-full-result.json) 與
+[工作流原生 audit](../test/evidence/native-workflow-result.json)，各檔記錄當次受測來源與 RBZ 雜湊。
+一般 Ruby 的 `ruby -c sketchup-plugin/test_su/run_all.rb` 只確認語法；不會載入或執行驗收。
+空白模型前置條件使用官方支援的 `Entities#length.zero?`，不呼叫 `Entities#empty?`。
 
 腳本未自動點擊 HtmlDialog。驗收者另需手動確認兩個「擴充功能 → 下角材」入口、調整參數後檢查、失敗時禁止建立、成功時建立，以及右上／左上起鋪的差異。平釘的世界 Z 可在對話框調低；斷面兩端須貼住模型中的既有 RC 參照面，接面判斷不等同材料鑑定。
 
-斷面首次按「檢查選取」時，會以原生對話框列出兩端的世界 mm 座標，必須明示選擇起點。起點會改變 demo 的轉角面材搭接，不能由邊的選取順序或實體 ID 推定。取消或未選端點時不建模；同一選取的後續檢查與建立沿用該起點，但每次都重驗它仍是端點。更換模型、編輯路徑或選取邊之後需重新檢查並選擇。重新開啟「斷面設計」也會清除起點選擇，便於改從另一端開始。請手動驗證這些互動。
+斷面每次按「檢查／選起點」時，會以原生對話框列出兩端的世界 mm 座標，必須明示選擇起點。
+起點會改變 demo 的轉角面材搭接，不能由邊的選取順序或實體 ID 推定。已通過的同一折線可以再次選另一端，
+保留目前參數；生成使用最後一次有效檢查的起點。取消或未選端點時不建模。
+更換模型、編輯路徑、選取邊或參數後必須重新檢查，不能直接沿用舊檢查產生幾何。請手動驗證 UI 呈現及按鈕狀態。
 
 自動驗收的斷面夾具使用 `SU::Dialog.evaluate(..., start_vertex_id: vertex.persistent_id)` 明示預期起點，因此不跳出原生對話框。非互動 API 沒有明示起點或選擇 callback 時會拒絕，不會替使用者猜方向。
 

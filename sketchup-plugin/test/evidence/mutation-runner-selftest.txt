@@ -1,18 +1,21 @@
 Ruby：ruby 3.3.11 (2026-03-26 revision 1f2d15125a) [x64-mingw-ucrt]
-正式 core+su+test_su 來源 SHA-256：63e90d4a466f46c960ec62806532027d9a88cacdc326484016266974d1615aec
+正式 core+su+test_su 來源 SHA-256：388a13d66974a514a2b31407c512513a09173d0241585ceff814fc4d4f044e51
 命令："C:/Ruby33-x64/bin/ruby.exe" "D:/geometry-axiom/sketchup-plugin/test/run_mutations.rb" "--selftest"
 
 通過：兩個具名 assertion failure
 通過：其中一個測試沒有規則訊息必須拒絕
 通過：少跑一個測試必須拒絕
 通過：測試名稱不符必須拒絕
+通過：規則訊息出現在別的測試不能借用
+通過：重複同名 failure 不能冒充兩個指定測試
 通過：error 不得當成 assertion failure
 通過：skip 不得算成功
 通過：exit 0 不是突變失敗
 通過：timeout 不能冒充成功
 通過：真實 LoadError exit 1 必須拒絕
 通過：真實超時必須終止且拒絕
-runner 誠實性自測：10/10
+通過：啟動失敗不能冒充測試變紅
+runner 誠實性自測：13/13
 
 exit_code=0
 timeout=false

@@ -1,0 +1,9 @@
+NATIVE AUDIT START suite=workflow evidence=C:/Users/Yang/AppData/Local/Temp/geometry-framing-native-workflow-20261013-122846-21584-35175d
+NATIVE DRIVER ERROR NoMethodError: private method `remove_const' called for GeometryFraming::Acceptance:Module
+C:/Users/Yang/AppData/Local/Temp/geometry-framing-native-driver.rb:171:in `execute_audit'
+C:/Users/Yang/AppData/Local/Temp/geometry-framing-native-driver.rb:90:in `run'
+C:/Users/Yang/AppData/Local/Temp/geometry-framing-native-driver.rb:200:in `<top (required)>'
+(eval):1:in `load'
+(eval):1:in `<main>'
+SketchUp:in `eval'
+NATIVE AUDIT FAIL semantic_exit_code=1 first_failure="NoMethodError: private method `remove_const' called for GeometryFraming::Acceptance:Module" evidence=C:/Users/Yang/AppData/Local/Temp/geometry-framing-native-workflow-20261013-122846-21584-35175d

@@ -1,0 +1,12 @@
+NATIVE AUDIT START suite=workflow evidence=C:/Users/Yang/AppData/Local/Temp/geometry-framing-driver-reentry-20261013-31984-8lyxlj/geometry-framing-native-workflow-20261013-123043-31984-c45970
+DRIVER_DOUBLE suite finished; no product geometry executed
+NATIVE AUDIT PASS semantic_exit_code=0 first_failure=nil evidence=C:/Users/Yang/AppData/Local/Temp/geometry-framing-driver-reentry-20261013-31984-8lyxlj/geometry-framing-native-workflow-20261013-123043-31984-c45970
+PASS cycle=1 semantic_exit=0 source_unchanged=true stdout_stderr_restored=true
+NATIVE AUDIT START suite=workflow evidence=C:/Users/Yang/AppData/Local/Temp/geometry-framing-driver-reentry-20261013-31984-8lyxlj/geometry-framing-native-workflow-20261013-123043-31984-039c08
+DRIVER_DOUBLE suite finished; no product geometry executed
+NATIVE AUDIT PASS semantic_exit_code=0 first_failure=nil evidence=C:/Users/Yang/AppData/Local/Temp/geometry-framing-driver-reentry-20261013-31984-8lyxlj/geometry-framing-native-workflow-20261013-123043-31984-039c08
+PASS cycle=2 semantic_exit=0 source_unchanged=true stdout_stderr_restored=true
+PASS existing class was removed and replaced on the second identical suite cycle
+driver_sha256=6a51225ccd05f76706a6eca99ea6ecc06b5784a5d1124c4d2f1a398fc0089792
+DRIVER_ONLY_REENTRY exit_code=0; SketchUp and product behavior were not tested
+process_exit_code=0
