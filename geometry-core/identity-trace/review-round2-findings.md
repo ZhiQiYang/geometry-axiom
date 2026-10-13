@@ -1,0 +1,43 @@
+## 審查要點與裁決
+
+- **#1【阻擋】F2 型的身分誤判在參數批次重現**
+  - 原因:
+    - 工程批次會在同一個候選 World 上依序執行最多 256 個 op(`engineering_bridge.inc:97-104`)。
+    - `parameter_import` 從 0 起找最小空號配卡片 id(`parameters.inc:314`)。
+    - `parameter_remove` 不檢查引用(`:277`)。
+  - 反例一:`[delete-parameter 0, import-parameters P]`。匯入的卡拿回 id 0,被判為 continuous,和 D⟨K3-2⟩ 第 44 行「匯入的新卡片均為新存在期」衝突。
+  - 反例二:`[delete-parameter 2, put-parameter{id:2}]`。這會繞過 I38 的「刪除的欄位 id 不得重用」。
+  - **裁決**:K3-Q5 整體改為 B,「明示刪除即結束存在期」。列舉算作刪除的操作:互動 delete、delete-parameter(連同其欄位)、sp delete-placement。重宣告仍算延續。
+  - 另外在 PROPOSAL 列一項「須另開 BACKLOG 工單的既有核心缺陷」(與 K3 本身無關):同一批先刪卡 0 再匯入時,World 內指向卡 0 的 ParameterRef 會被靜默改綁,違反 I39 的「獨立副本」。
+- **#2 L-18(c) 的突變測試沒有牙齒**
+  - 原因:啟用會讓修訂號 +1;`world_definitions_equal` 比對整個 World;確認時又會驗 revision。所以舊候選一律 STALE,這個突變永遠不會變紅。
+  - **裁決**:換成能變紅的突變,例如「略過 batch_confirm 路徑的結算」。
+- **#3 K3-44 的啟用入口前後矛盾**
+  - 矛盾:§3/§6-2 寫「有未確認預覽時拒絕啟用」,M-11 卻寫「建模預覽後按啟用 → 該預覽過期」。
+  - 另外三個缺口:
+    - 「未確認的原生預覽」由誰判定沒有寫。原生端只有 g_preview 一格加 g_load,使用者離開時沒取消的孤兒預覽會永久擋住證據。
+    - 建模和 F1b 的預覽不是原生預覽。
+    - #46 試改保全(`reference-workspace.js:1451`)沒有涵蓋。
+  - **裁決**:兩種寫法擇一寫死,並明定「未確認預覽」的判定來源。
+- **#4 去身分 dump 的使用點漏列**
+  - `section-profile-workspace.js:98` 把完整的 dump 當成 `definitions.base_scene` 送到 /model(`section_profile_transport.py:24`),還寫進 `.model.json`。
+  - 要跟著一起改的比對點:`space-workspace.js:492、495、604、610、641`,以及 `section-profile-workspace.js:100`。
+  - 可以維持完整 dump 的點:`reference-workspace.js:290、300、1413、1451、1772、1824`,`serve.py:290`,`app.js:491`。
+  - **裁決**:`app.js:1458` 匯出的 .scene 和 `feedback.js:212` 的回報內容**都要去身分**,與 K2b 提案的 D⟨K2b-4⟩(f)「存在期記號不寫入交換格式」一致。
+- **#5 K3-44 遇到組構所有角材的根時寫不出 sourceIdentity**
+  - 原因:建 plan 模型時沒有濾掉 owned 角材(`space-workspace.js:361-363`)。
+  - **裁決**:該根記 null、判為 unknown,不整筆拒絕。
+- **#6 公理直接寫了實作名稱**
+  - `definitionFingerprint`、`valueFingerprint`、「節點」、「定義雜湊」在公理層都沒有定義。
+  - **裁決**:在 D⟨K3-4⟩ 用語意定義「內容指紋」,實作名稱改放到 geometry-core 的正式契約。
+- **#7 整體取代與提交的分類對不上橋接器指令**
+  - 原因:`default`(`web_bridge.c:907-911`)也會換掉整個 World,卻不在清單內。
+  - **裁決**:列出對照表。reset、default、loadfile、load-confirm 歸為整體取代(後兩者可以 undo,見 `web_bridge.c:325`、`scene-import-bridge.inc:65`);line、drag、各類 *-confirm 歸為提交。
+- **僅記錄項(一併寫入)**
+  - (a) 群組內結算失敗:改寫成「依群組語意整組回滾」(`current_geometry.c:4078-4081`)。
+  - (b) 第一次新增 ledger 證據時會自動啟用,所有 legacy-v1 連結的租約因此失效、轉為 needs-reassociation(`evidence-links.js:105`)。E-08 要寫明。
+  - (c) I⟨K3-1⟩(e) 拒絕 dump 之後的恢復途徑要寫明,也要寫明去身分 dump 是否一併拒絕。
+  - (d) D⟨K3-4⟩ 的「若 D⟨K2b-4⟩ 採納」條件句不宜寫進 SSOT,改成無條件陳述。
+  - (e) PF-0 已經用了「已知限制 K3」這個標籤,本提案的限制標籤改用其他前綴。
+  - (f) 桌面版的載入路徑是第 4778 行的 `gdi_load_scene_file`。
+  - (g) E-03 用的夾具 S′ 裡沒有卡 3,換一個案例。
