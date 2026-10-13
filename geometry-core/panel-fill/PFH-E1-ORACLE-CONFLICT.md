@@ -22,3 +22,7 @@ wrapper exit0表示成功核對預期拒絕，不是「E1可建立」。
 
 依AGENTS與P-098「發現條文矛盾，停手回報」暫停產品實作，待此疑點釐清。
 GEO-219：無新入口；未跑WSL，核心mutate無新覆蓋。
+
+## 審查M1補強（2026-10-14）
+
+新增pfh-e1-diagnostic-20261014原件，不覆寫原probe。逐角色斷言V_BOUNDARY_ROLE／V_CUT_PRIORITY、目標角材1、最後place所在行（5／secondary7）與World不變。破壞最後place指令為未知DSL，診斷碼斷言必須失敗；還原再次通過。父層捕捉實際子程序returncode為0／1／0，原stdout／stderr／命令保存，不能把child自填wrapper_exit常數當作父層收據。這是診斷probe負控制，不是PF-H接入產品突變或衍生宿主見證。B1仍待合法fixture裁決。
