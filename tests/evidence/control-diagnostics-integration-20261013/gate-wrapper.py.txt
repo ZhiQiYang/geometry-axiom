@@ -1,0 +1,42 @@
+import json,os,subprocess,sys,time,platform,hashlib
+from pathlib import Path
+root=Path('/tmp/geometry-control-diagnostics')
+out=root/'tests/evidence/control-diagnostics-integration-20261013'
+out.mkdir(exist_ok=True)
+sys.path.insert(0,str(root/'tests'))
+import binaries
+binaries.OUT_DIR=Path('/tmp/control-diag-integration-binaries')
+def run(label,cmd,env=None):
+    started=time.monotonic()
+    with (out/(label+'.log')).open('w') as log:
+        result=subprocess.run(cmd,cwd=root,env=env,stdout=log,stderr=subprocess.STDOUT)
+    receipt={'command':cmd,'exit':result.returncode,'seconds':time.monotonic()-started,'tested_head':subprocess.check_output(['git','rev-parse','HEAD'],cwd=root).decode().strip()}
+    (out/(label+'.json')).write_text(json.dumps(receipt,indent=2)+'\n')
+    print(label,receipt,flush=True)
+    return result.returncode
+mode=sys.argv[1]
+if mode=='build':
+    with (out/'build.log').open('w') as log:
+        results=binaries.build(log=lambda s:print(s,file=log,flush=True))
+    print({k:v.status for k,v in results.items()})
+elif mode=='native':
+    env=os.environ.copy();env['MUTATE_CACHE']='/tmp/control-diag-integration-mutate-cache'
+    code=run('native',[sys.executable,'/tmp/control-diag-integration-native.py'],env)
+    sys.exit(code)
+else:
+    port,cdp=(8974,9574) if mode=='canvas' else (8975,9575)
+    env=os.environ.copy()
+    env.update(GEOMETRY_BRIDGE=str(binaries.OUT_DIR/'bridge'),GEOMETRY_MODEL_BASE=str(binaries.OUT_DIR/'model-base'),GEOMETRY_FEEDBACK_DIR=f'/tmp/control-diag-integration-{mode}-feedback',GEOMETRY_TEST_URL=f'http://127.0.0.1:{port}/',GEOMETRY_CHROME='/usr/bin/chromium',GEOMETRY_CHROME_FLAGS='--no-sandbox --disable-dev-shm-usage',GEOMETRY_CHROME_PROFILE=f'/tmp/control-diag-integration-{mode}-chrome',GEOMETRY_CDP_PORT=str(cdp))
+    if mode=='grid':env['GEOMETRY_GRID_SYSTEM_ONLY']='1'
+    with (out/(mode+'-service.log')).open('w') as log:
+        server=subprocess.Popen([sys.executable,'geometry-web/serve.py',str(port)],cwd=root,env=env,stdout=log,stderr=subprocess.STDOUT)
+        try:
+            import urllib.request
+            for _ in range(100):
+                try:
+                    urllib.request.urlopen(env['GEOMETRY_TEST_URL']+'runtime',timeout=1).read();break
+                except Exception:time.sleep(.1)
+            code=run(mode,['node','geometry-web/cdp_test.js'],env)
+        finally:
+            server.terminate();server.wait(timeout=15)
+    sys.exit(code)
