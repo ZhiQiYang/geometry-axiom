@@ -55,6 +55,16 @@ class PanelFillLayout(unittest.TestCase):
         self.assertEqual(9, d["tileCount"])
         self.assertEqual(4, d["wholeCount"])
         self.assertEqual(5, d["cutCount"])
+        self.assertTrue(self.command("line placement 8 on boundary 8 origin 0 0 0 u +x v +y")["ok"])
+        self.assertTrue(self.command("line grid 9 on 8 u panel 100 gap 3 from 0")["ok"])
+        legacy = self.command("references")
+        self.assertTrue(legacy["ok"],legacy)
+        grid = next(g for g in legacy["grids"] if g["id"] == 9)
+        self.assertEqual([101,204],grid["u"], "PF02: actual finite PANEL_LAYOUT must agree")
+        self.assertTrue(self.command("line grid-system 90 name-hex 7066 main-along none u repeat-panel 100 gap 3 from 0 v repeat-panel 100 gap 3 from 0")["ok"])
+        query=self.command("grid-query system 90 rect 0 0 250 250 mode exact limit 64")
+        self.assertTrue(query["ok"],query)
+        self.assertEqual([101,204],[s["coordinate"] for s in query["axes"]["u"]["lines"]], "PF02: actual D29 REPEAT_PANEL must agree")
 
     def test_PF03_negative_indices_and_alternating_rows(self):
         self.seed(outline="-150,-150 250,-150 250,250 -150,250")
@@ -162,6 +172,20 @@ class PanelFillLayout(unittest.TestCase):
         self.reject([fill(threshold=dict(parameterId=90,fieldId=99))],"I38")
         self.reject([fill(panel=dict(id="missing",version=1))],"I52")
         self.reject([fill(pattern="stagger",stagger=dict(axis="u",value=103))],"I52")
+
+    def test_I55_parameter_preview_shows_recomputed_fill_and_rejects_missing_ref(self):
+        self.seed(); self.layout(fill(gap=dict(parameterId=90,fieldId=1)))
+        before=self.snapshot(); request=self.directory/"parameter-change.json"
+        def preview(fields):
+            request.write_text(json.dumps(dict(schema="engineering-transaction/1",expectedRevision=self.read()["revision"],operations=[dict(op="put-parameter",value=dict(id=90,name="renamed",fields=fields))])))
+            return self.command("engineering-preview "+str(request))["preview"]
+        p=preview([dict(id=1,name="new name",type="dimension",input="9")])
+        self.assertTrue(p["valid"],p)
+        self.assertEqual([104,213],[s["coordinate"] for s in p["after"]["panelFill"]["panelFills"][0]["derived"]["seamLines"] if s["axis"]=="u"])
+        self.assertEqual(before,self.snapshot(), "I55: reading a recomputed candidate cannot submit it")
+        self.assertTrue(self.command("engineering-cancel %d"%p["token"])["ok"])
+        for fields in [[],[dict(id=1,name="X",type="dimension",input="0")],[dict(id=1,name="X",type="scalar",input="8")]]:
+            p=preview(fields); self.assertFalse(p["valid"],p);self.assertEqual(before,self.snapshot())
 
 
 if __name__ == "__main__": unittest.main()

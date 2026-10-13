@@ -8,15 +8,17 @@
 typedef struct { SurfacePoint2 *points; size_t count; bool hole; } PfLoop;
 typedef struct { PfLoop *loops; size_t count; Coord area; } PfFragment;
 typedef struct { int64_t i,j; Coord body[4],area; PfFragment *fragments; size_t count; } PfTile;
+typedef struct { int axis;int64_t k,band;Coord coordinate,range[2];bool staggered; } PfSeamLine;
 typedef struct {
     PfTile *tiles; size_t count,fragments,vertices,whole;
+    PfSeamLine *seams;size_t seam_count;
     Coord size[2],gap,stagger,t; const FinishSurface *finish;
     FsObstacleView obstacles[FS_OBSTACLE_MAX]; bool cuts[FS_OBSTACLE_MAX];
 } PfLayout;
 static const PanelFill *pf_find(const World *w,uint32_t id)
 { for(uint64_t i=0;i<w->finish_surfaces.fill_count;++i)if(w->finish_surfaces.fills[i].id==id)return &w->finish_surfaces.fills[i];return NULL; }
 static void pf_free(PfLayout *d)
-{ if(d->tiles)for(size_t i=0;i<d->count;++i){PfTile *t=&d->tiles[i];for(size_t k=0;k<t->count;++k){PfFragment *f=&t->fragments[k];for(size_t l=0;l<f->count;++l)free(f->loops[l].points);free(f->loops);}free(t->fragments);}free(d->tiles);memset(d,0,sizeof *d); }
+{ if(d->tiles)for(size_t i=0;i<d->count;++i){PfTile *t=&d->tiles[i];for(size_t k=0;k<t->count;++k){PfFragment *f=&t->fragments[k];for(size_t l=0;l<f->count;++l)free(f->loops[l].points);free(f->loops);}free(t->fragments);}free(d->tiles);free(d->seams);memset(d,0,sizeof *d); }
 static bool pf_source(EngJson *j,int t,Coord *value,ParameterRef *ref)
 {
     if(eng_json_integer(j,t,value))return coord_in_range(*value)||fs_error("I52/D1: panel-fill source outside D1");
@@ -142,6 +144,18 @@ static bool pf_build(const World *w,const PanelFill *p,PfLayout *d)
             for(size_t f=0;f<t->count;++f)for(size_t l=0;l<t->fragments[f].count;++l)for(size_t v=0;v<t->fragments[f].loops[l].count;++v){SurfacePoint2 point=t->fragments[f].loops[l].points[v];const SurfaceFrame *frame=&d->finish->frame;
                 Coord u=point.u,z=point.v;Point3 world={frame->origin.x+u*frame->axis_u.x+z*frame->axis_v.x,frame->origin.y+u*frame->axis_u.y+z*frame->axis_v.y,frame->origin.z+u*frame->axis_u.z+z*frame->axis_v.z};
                 if(!coord_in_range(u)||!coord_in_range(z)||!coord_in_range(world.x)||!coord_in_range(world.y)||!coord_in_range(world.z)){pf_free(d);return fs_capacity_error("I52/D1 CAPACITY: returned panel-fill vertex outside D1");}}
+        }
+    }
+    d->seams=calloc(4*PF_TILE_MAX,sizeof *d->seams);if(!d->seams){pf_free(d);return fs_capacity_error("I33 CAPACITY: seam workspace unavailable");}
+    for(int axis=0;axis<2;++axis){int other=1-axis;Coord step=pitch[axis],phase=panel_layout_center(p->origin[axis],d->size[axis],d->gap,0);
+        int64_t r0=0,r1=0;if(p->stagger_axis==axis){r0=grid_floor_div(lo[other]-p->origin[other]-d->size[other],pitch[other])+1;r1=grid_ceil_div(hi[other]-p->origin[other],pitch[other])-1;}
+        for(int64_t r=r0;r<=r1;++r){Coord shift=p->stagger_axis==axis?panel_layout_shift(true,d->stagger,r):0;
+            int64_t k0=grid_ceil_div(lo[axis]-phase-shift,step),k1=grid_floor_div(hi[axis]-phase-shift,step);
+            for(int64_t k=k0;k<=k1;++k){if(d->seam_count==4*PF_TILE_MAX){pf_free(d);return fs_capacity_error("I33 CAPACITY: seam line limit is %d",4*PF_TILE_MAX);}
+                PfSeamLine *s=&d->seams[d->seam_count++];s->axis=axis;s->k=k;s->band=r;s->staggered=p->stagger_axis==axis;s->coordinate=panel_layout_center(p->origin[axis]+shift,d->size[axis],d->gap,k);
+                if(s->staggered){s->range[0]=panel_layout_center(p->origin[other],d->size[other],d->gap,r-1);s->range[1]=panel_layout_center(p->origin[other],d->size[other],d->gap,r);
+                    if(!coord_in_range(s->range[0])||!coord_in_range(s->range[1])){pf_free(d);return fs_capacity_error("I52/D1 CAPACITY: returned seam band outside D1");}}
+            }
         }
     }
     return true;
