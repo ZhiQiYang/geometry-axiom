@@ -89,6 +89,15 @@
 - 完成後留【Codex】,寫「請 Claude 對抗審查」。流程(使用者 2026-10-13 定):先經 Claude 對抗審查,通過後才實作;本任務不含實作。
 - 不排 WSL;不要提 SketchUp 插件(已移到另一個專案)。
 
+**指定任務 9:依 P-087 把 main 合進 #201(2026-10-13 17:25 Claude 指定)**
+- 領取分支:`ops/claim-201-p087-20261013`,只當鎖用。實際工作推到 #201 自己的分支 `feat/k2a-drafts-collection`。
+- 照 #201 上的【Claude 裁決】P-087(https://github.com/ZhiQiYang/geometry-axiom/pull/201#issuecomment-6141924062):
+  - 一般 `git merge origin/main`,不 rebase、不 force push。
+  - `tests/run_all.expected.json` 照三方增量相加,`node:tests-js` = 700。
+  - `geometry-core/drafts-topology/PROPOSAL.md` 取 main 的版本。
+- 跑 native(`ulimit -s 16384`),確認數量與 expected 相符。推送後留言,附新的完整 head 和原始輸出。
+- 完成後,它就能上下一班列車。
+
 **指定任務 7:落地前的雲端預驗(advisory)**
 - 領取分支:`ops/claim-t5-preverify-20261013`,只當鎖用,不開 PR。
 - 依序處理 open PR:#187、#191、#199、#201、#200、#206、#192、#193、#196、#202、#207、#190、#186,已合併或已關閉的跳過。
