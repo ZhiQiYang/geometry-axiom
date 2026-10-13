@@ -17,4 +17,13 @@ ASan/UBSan PF-2 + PF-1：39/39、compile exit0、test exit0，見 sanitizer rece
 
 ## 完整 native 與正式列車
 
-完整 native 收據後續加入；不拿定向/sanitizer或舊head native拼出綠燈。產品正式七項由既定合併列車跑，仍 pending；雲端不排WSL。本片沒有接入PF-H宿主或新增UI；P-098後續順序已更新PF2-NATIVE.md，PF23/24僅列後續補充驗收、未冒稱此片實跑。
+完整 native 受測 `f9194e26aad7cc7b4c85c20d6874f89616afd95a`：88 suites，2721 pass / 0 fail / 1 allowed Windows GDI skip，actual exit0，1101.709秒；PF-2 17/17、PF-1 22/22、Node659/659、reader41/41、binaries32/32、expected全符，stack16384KiB。sources before/after全部tracked SHA一致，受測工作樹clean。
+
+完整 native archive 公開所有本輪實際 binary/sidecar bytes、tracked source manifests、raw stdout/stderr與本輪新寫的suite logs；index逐檔記SHA，過往log不列進本輪archive。actual OS退出碼先持久化再後處理，來源為本輪受測head，不拼接前次收據。產品正式七項由既定合併列車跑，仍 pending；雲端不排WSL。本片沒有接入PF-H宿主或新增UI；P-098後續順序已更新PF2-NATIVE.md，PF23/24僅列後續補充驗收、未冒稱此片實跑。
+
+
+## 完整 native 首紅與同 head 重跑
+
+首輪同 head f9194e26、88 suites：2716 pass / 5 fail / 1 allowed GDI skip，actual exit1，1084.336秒。PF-2 17/17、PF-1 22/22通過；失敗為scenario兩案、serve一案及Node兩案，包含BASE_TIMEOUT、base child未及啟動及HTTP逾時。原件與所有首輪binary/sidecar、來源manifest、日誌均存native-first-raw.tar.gz。沒有自行免除或確定環境根因。
+
+同head、原時限／原斷言／原expected下，scenario37/37、serve51/51及兩Node案例2/2各exit0；這些診斷不代替完整runner。之後才完整重跑同head，最終綠燈只屬重跑，兩轮不拼接；沒有改產品或套件來取得重跑結果。
