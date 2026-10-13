@@ -27,16 +27,26 @@ oracles = {p:hashlib.sha256((root/p).read_bytes()).hexdigest() for p in oracle_p
 def bounded():
     _, hard = resource.getrlimit(resource.RLIMIT_STACK)
     resource.setrlimit(resource.RLIMIT_STACK, (16384*1024, hard))
-def run(name, command):
+def run(name, command, timeout=180):
     start = time.monotonic()
+    timed_out = False
+    error_message = None
     try:
-        p = subprocess.run(command, cwd=root, capture_output=True, preexec_fn=bounded, timeout=180)
+        p = subprocess.run(command, cwd=root, capture_output=True, preexec_fn=bounded, timeout=timeout)
         stdout, stderr, code = p.stdout, p.stderr, p.returncode
+    except subprocess.TimeoutExpired as error:
+        stdout, stderr, code = error.stdout or b'', error.stderr or b'', 2
+        timed_out = True
+        error_message = str(error)
     except (OSError, subprocess.SubprocessError) as error:
         stdout, stderr, code = b'', str(error).encode(), 2
+        error_message = str(error)
+    if isinstance(stdout, str): stdout = stdout.encode()
+    if isinstance(stderr, str): stderr = stderr.encode()
     (out/(name+'.stdout')).write_bytes(stdout)
     (out/(name+'.stderr')).write_bytes(stderr)
-    rows.append(dict(name=name, command=list(map(str,command)), exit=code, seconds=time.monotonic()-start))
+    rows.append(dict(name=name, command=list(map(str,command)), exit=code, seconds=time.monotonic()-start,
+                     timed_out=timed_out, error=error_message))
     (out/'commands.json').write_text(json.dumps(rows, indent=2))
     if code: raise RuntimeError(f'{name} exited {code}; see raw output')
 try:
