@@ -4,7 +4,7 @@
 
 ## 原始量測
 
-`profile-preload.cjs.txt` 是本次实际執行的 instrumentation。profile 使用原基線、已由 registry 編譯的 bridge；`profile-497120.json` 為有測試的 worker，另一份為 parent。profile / actual-source 各自 exit 0、2/2。測試本體没有磁碟寫入或 Python 子行程；before hook 的 catalog fixture 子行程不屬於測試本體，成功的 execFileSync API 不提供其 PID。ZIP 產物在記憶體。
+`profile-preload.cjs.txt` 是本次實際執行的 instrumentation。profile 使用原基線、已由 registry 編譯的 bridge；`profile-497120.json` 為有測試的 worker，另一份為 parent。profile / actual-source 各自 exit 0、2/2。測試本體沒有磁碟寫入或 Python 子行程；before hook 的 catalog fixture 子行程不屬於測試本體，成功的 execFileSync API 不提供其 PID。ZIP 產物在記憶體。
 
 | 階段（ms） | 130955 | 130956 |
 | --- | ---: | ---: |
@@ -32,4 +32,13 @@
 
 ## 完整 native
 
-完整 runner receipt 後續加入此目錄。mutation-check 僅為既有執行檔及 ledger 的 freshness 檢查：40 killed / 1 crashed / 4 equivalent / 3 retired、0 stale / blocked；本次沒有重新執行 core mutants。native source 與 oracle 均無修改，不把 freshness 檢查說成新增 mutation 執行。
+完整 native：87 suites、2754 pass / 0 fail / 1 allowed Windows GDI skip，actual exit 0；Node703/703、reader41/41。受測 head `ade6d7f0cbdbfaadb210a87e4b674fec34fccf3c`，耗時 911.826 秒。native-actual-exit.json 先保存 OS status，native-receipt.json 保存 argv/PID/時間；sources before/after 逐byte SHA 全等、工作樹 clean。mutation-check 僅為既有執行檔及 ledger 的 freshness 檢查：40 killed / 1 crashed / 4 equivalent / 3 retired、0 stale / blocked；本次沒有重新執行 core mutants。native source 與 oracle 均無修改，不把 freshness 檢查說成新增 mutation 執行。
+
+
+## 收據捕捉器的首輪失敗
+
+首輪完整 runner 的文字結果為 2754 / 0 / 1、Node703/703（兩案 2918.782 / 2409.844 ms），但我寫的 helper 最後讀取 clone 不存在的 origin/main 時拋錯，helper actual exit 1，native child OS status 未持久保存；**此輪不是最終 native 綠燈收據**。native-first-incomplete.tar.gz 保留完整 raw、前後 sources、catalog/Node 原始日誌與實際 helper source；capture-error.md 說明缺口，沒有從文字 exit 0 反填 actual OS status。
+
+修正的 helper 以既定 base-main SHA 為 metadata，child.wait() 後立即保存實際退出碼，最後 exit(code)，再完整重跑同一受測 head。最終 native.stdout/.stderr、native-actual-exit.json、native-receipt.json 與 native-raw.tar.gz 僅屬重跑，不拼接兩輪。archive 只包含本輪時間內重寫的 run_all-logs；native-raw-index.json 標示完整本機原件（含 binary / sidecar）的 SHA 及 log freshness，舊 log 不計作本輪結果。所有 binary 本機原件保留，archive 不重複收錄執行檔。
+
+這是雲端 native 收據；正式七項仍待固定 head 的合併列車，沒有執行或宣稱 WSL/CDP 全量。
