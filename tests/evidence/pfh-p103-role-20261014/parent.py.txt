@@ -1,0 +1,8 @@
+from pathlib import Path
+import subprocess,json,sys
+out=Path('/tmp/geometry-pf3-current/tests/evidence/pfh-p103-role-20261014')
+command=[sys.executable,'/tmp/pfh-p103-role.py'];p=subprocess.run(command,capture_output=True,text=True)
+(out/'stdout.log').write_text(p.stdout);(out/'stderr.log').write_text(p.stderr)
+(out/'parent.json').write_text(json.dumps({'command':command,'actual_returncode':p.returncode,'scope':'D7 necessary role check only, not PF-H product acceptance'},indent=2)+'\n')
+assert p.returncode==0,p.stderr
+(out/'parent.py.txt').write_bytes(Path(__file__).read_bytes())
