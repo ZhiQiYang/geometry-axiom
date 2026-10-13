@@ -47,10 +47,15 @@ load 'D:/geometry-axiom/sketchup-plugin/test_su/run_all.rb'
 
 腳本未自動點擊 HtmlDialog。驗收者另需手動確認兩個「擴充功能 → 下角材」入口、調整參數後檢查、失敗時禁止建立、成功時建立，以及右上／左上起鋪的差異。平釘的世界 Z 可在對話框調低；斷面兩端須貼住模型中的既有 RC 參照面，接面判斷不等同材料鑑定。
 
+斷面首次按「檢查選取」時，會以原生對話框列出兩端的世界 mm 座標，必須明示選擇起點。起點會改變 demo 的轉角面材搭接，不能由邊的選取順序或實體 ID 推定。取消或未選端點時不建模；同一選取的後續檢查與建立沿用該起點，但每次都重驗它仍是端點。更換模型、編輯路徑或選取邊之後需重新檢查並選擇。重新開啟「斷面設計」也會清除起點選擇，便於改從另一端開始。請手動驗證這些互動。
+
+自動驗收的斷面夾具使用 `SU::Dialog.evaluate(..., start_vertex_id: vertex.persistent_id)` 明示預期起點，因此不跳出原生對話框。非互動 API 沒有明示起點或選擇 callback 時會拒絕，不會替使用者猜方向。
+
 轉接器依據的官方 API：
 
 - [Model.active_path=／edit_transform 與操作](https://ruby.sketchup.com/Sketchup/Model.html)
 - [HtmlDialog 回呼](https://ruby.sketchup.com/UI/HtmlDialog.html)
+- [UI.inputbox 原生選擇](https://ruby.sketchup.com/UI.html#inputbox-class_method)
 - [Face.all_connected／classify_point](https://ruby.sketchup.com/Sketchup/Face.html)
 - [ModelObserver.onTransactionUndo](https://ruby.sketchup.com/Sketchup/ModelObserver.html)
 - [View.write_image](https://ruby.sketchup.com/Sketchup/View.html)

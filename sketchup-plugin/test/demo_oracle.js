@@ -62,6 +62,7 @@ const oracle = vm.runInContext(`(() => {
   };
   return {flats,variants,profiles:[
     profile('cove',PF_PRESETS.cove),profile('drop',PF_PRESETS.drop),
+    profile('cove_reversed',PF_PRESETS.cove.slice().reverse()),
     profile('rotated',PF_PRESETS.cove,{a:33,b:27}),profile('flipped',PF_PRESETS.cove,{flip:true}),
     profile('short_extrusion',PF_PRESETS.cove,{L:449}),profile('exact_spacing',PF_PRESETS.drop,{L:900,cap:300}),
     profile('custom_section',PF_PRESETS.cove,{t:9,a:30,b:40,L:1250,cap:320})

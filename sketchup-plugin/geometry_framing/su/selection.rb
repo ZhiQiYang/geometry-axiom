@@ -3,6 +3,7 @@
 module GeometryFraming
   module SU
     class InputError < StandardError; end
+    class StartPointError < InputError; end
 
     # SketchUp 在開啟元件編輯時會改變幾何讀取的座標系。暫時關閉編輯，
     # 再讀定義座標與完整 instance path；離開時保全編輯路徑與原選取。
@@ -29,11 +30,11 @@ module GeometryFraming
       TOL = 0.0001 # mm；僅用於讀取 API 浮點座標，非放寬 demo 的規則。
       module_function
 
-      def read(mode, model = Sketchup.active_model)
+      def read(mode, model = Sketchup.active_model, start_vertex_id: nil, &choose_start)
         Context.at_root(model) do |selected, path, transform|
           case mode
           when 'flat' then flat(model, selected, path, transform)
-          when 'profile' then profile(model, selected, path, transform)
+          when 'profile' then profile(model, selected, path, transform, start_vertex_id: start_vertex_id, &choose_start)
           else raise InputError, '未知模式。請選平釘天花或斷面設計。'
           end
         end
@@ -170,12 +171,20 @@ module GeometryFraming
         { id: "#{label} ##{path.map(&:persistent_id).join('/')}", min: minimum, max: maximum }
       end
 
-      def profile(model, selected, path, transform)
+      def profile(model, selected, path, transform, start_vertex_id: nil, &choose_start)
         unless !selected.empty? && selected.all? { |entity| entity.is_a?(Sketchup::Edge) }
           raise InputError, '斷面模式請只選一條連通、無分叉、未閉合的正交折線。'
         end
 
-        vertices = ordered_vertices(selected)
+        selector = if choose_start
+                     lambda do |ends|
+                       choices = ends.map do |vertex|
+                         { id: vertex.persistent_id, point: xyz(vertex.position.transform(transform)) }
+                       end
+                       choose_start.call(choices)
+                     end
+                   end
+        vertices = ordered_vertices(selected, start_vertex_id: start_vertex_id, &selector)
         points = vertices.map { |vertex| xyz(vertex.position.transform(transform)) }
         horizontal = points.each_cons(2).find { |a, b| (a[2] - b[2]).abs < TOL && Math.hypot(a[0] - b[0], a[1] - b[1]) > TOL }
         raise InputError, '單一直立邊未定義斷面平面；請選取同一垂直平面的完整折線。' unless horizontal
@@ -206,13 +215,14 @@ module GeometryFraming
         {
           input: { points: clean(chosen[:points]), source: "正交斷面（#{selected.length} 條邊）",
                    reference: chosen[:reference], source_path: path.map(&:persistent_id),
-                   source_ids: selected.map(&:persistent_id),
+                   source_ids: selected.map(&:persistent_id), start_vertex_id: vertices.first.persistent_id,
+                   start_point_mm: points.first,
                    axis_note: 'u 向遠離牆、v 向下；拉伸 L 沿 u 左側的水平法向。RC 僅驗證既有面接觸，未判定材料。' },
           frame: chosen[:frame], obstacles: []
         }
       end
 
-      def ordered_vertices(edges)
+      def ordered_vertices(edges, start_vertex_id: nil)
         adjacency = Hash.new { |hash, key| hash[key] = [] }
         edges.each { |edge| edge.vertices.each { |vertex| adjacency[vertex] << edge } }
         ends = adjacency.select { |_vertex, connected| connected.length == 1 }.keys
@@ -220,7 +230,16 @@ module GeometryFraming
           raise InputError, '折線必須有兩個端點且沒有分叉或閉環。'
         end
 
-        current = ends.min_by(&:persistent_id)
+        if start_vertex_id.nil?
+          raise StartPointError, '斷面起點會影響面材搭接；請先明示選擇折線的起點，不能由選取順序或實體 ID 推定。' unless block_given?
+
+          start_vertex_id = yield(ends)
+          raise StartPointError, '已取消斷面起點選擇，未建立任何構件。' if start_vertex_id.nil?
+        end
+        current = ends.find { |vertex| vertex.persistent_id == start_vertex_id }
+        unless current
+          raise StartPointError, '指定起點已不是目前折線的端點，請重新檢查並選擇起點。'
+        end
         result = [current]
         visited = []
         loop do

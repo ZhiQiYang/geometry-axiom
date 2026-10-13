@@ -8,26 +8,26 @@ Run options: --seed 20261013
 
 # Running:
 
-.......................................
+.............................................
 
-Finished in 0.253036s, 154.1280 runs/s, 100768.1108 assertions/s.
+Finished in 0.454670s, 98.9728 runs/s, 57197.5027 assertions/s.
 
-39 runs, 25498 assertions, 0 failures, 0 errors, 0 skips
+45 runs, 26006 assertions, 0 failures, 0 errors, 0 skips
 exit_code=0
 
 突變 edge_shift：拿掉「收邊挪縫」
 實際替換：if !seams.empty? && seams.last > limit + 1e-9 → if false
-命令：C:/Ruby33-x64/bin/ruby.exe C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-16836-rtqmfq/test/run.rb --seed 20261013 --name test_edge_shift_rule
+命令：C:/Ruby33-x64/bin/ruby.exe C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-27176-c43x7x/test/run.rb --seed 20261013 --name test_edge_shift_rule
 Run options: --seed 20261013 --name test_edge_shift_rule
 
 # Running:
 
 F
 
-Finished in 0.009044s, 110.5669 runs/s, 110.5669 assertions/s.
+Finished in 0.004039s, 247.5615 runs/s, 247.5615 assertions/s.
 
   1) Failure:
-PanelAxisTest#test_edge_shift_rule [C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-16836-rtqmfq/test/test_panel_axis.rb:10]:
+PanelAxisTest#test_edge_shift_rule [C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-27176-c43x7x/test/test_panel_axis.rb:10]:
 規則：收邊挪縫，最後一道縫必須從 3667 移到 3659.
 Expected: [916, 1833, 2750, 3659]
   Actual: [916, 1833, 2750, 3667]
@@ -38,17 +38,17 @@ exit_code=1
 
 突變 column_edge：拿掉「柱邊料」
 實際替換：next if ri.positive? && !p[:colEdge] → next if ri.positive?
-命令：C:/Ruby33-x64/bin/ruby.exe C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-16836-bzjgxh/test/run.rb --seed 20261013 --name test_column_edge_rule
+命令：C:/Ruby33-x64/bin/ruby.exe C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-27176-n91vmt/test/run.rb --seed 20261013 --name test_column_edge_rule
 Run options: --seed 20261013 --name test_column_edge_rule
 
 # Running:
 
 F
 
-Finished in 0.007521s, 132.9663 runs/s, 132.9663 assertions/s.
+Finished in 0.009615s, 104.0042 runs/s, 104.0042 assertions/s.
 
   1) Failure:
-FlatCeilingTest#test_column_edge_rule [C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-16836-bzjgxh/test/test_flat_ceiling.rb:59]:
+FlatCeilingTest#test_column_edge_rule [C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-27176-n91vmt/test/test_flat_ceiling.rb:59]:
 規則：柱邊料，獨立柱四邊必須各有一支沿邊料.
 Expected: 4
   Actual: 0
@@ -59,17 +59,17 @@ exit_code=1
 
 突變 primary_continuity：拿掉「主支不可斷開」
 實際替換：continuity_ok = g[:clashes].empty? → continuity_ok = true
-命令：C:/Ruby33-x64/bin/ruby.exe C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-16836-505b3n/test/run.rb --seed 20261013 --name test_primary_continuity_rule
+命令：C:/Ruby33-x64/bin/ruby.exe C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-27176-v5sz31/test/run.rb --seed 20261013 --name test_primary_continuity_rule
 Run options: --seed 20261013 --name test_primary_continuity_rule
 
 # Running:
 
 F
 
-Finished in 0.005588s, 178.9517 runs/s, 357.9034 assertions/s.
+Finished in 0.100005s, 9.9995 runs/s, 19.9991 assertions/s.
 
   1) Failure:
-FlatCeilingTest#test_primary_continuity_rule [C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-16836-505b3n/test/test_flat_ceiling.rb:70]:
+FlatCeilingTest#test_primary_continuity_rule [C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-27176-v5sz31/test/test_flat_ceiling.rb:70]:
 規則：主支不可斷開，碰柱邊料不能當成可切斷的有效骨架
 
 1 runs, 2 assertions, 1 failures, 0 errors, 0 skips

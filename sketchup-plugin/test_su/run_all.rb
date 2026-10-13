@@ -133,7 +133,7 @@ module GeometryFraming
       end
 
       def profile
-        edges = nil
+        edges = start_vertex = nil
         transaction('驗收夾具 斷面') do
           base = 10_000
           slab = @model.entities.add_group
@@ -144,9 +144,12 @@ module GeometryFraming
           wall.entities.add_face([[-200, 2200], [2700, 2200], [2700, 2900], [-200, 2900]].map { |y, z| [base.mm, y.mm, z.mm] })
           points = [[467, 0], [467, 148], [743, 148], [743, 351], [0, 351]].map { |u, v| [(base + u).mm, 0, (2800 - v).mm] }
           edges = @model.entities.add_edges(points)
+          start_vertex = edges.flat_map(&:vertices).uniq.find { |vertex| vertex.position == Geom::Point3d.new(points.first) }
         end
         select(edges)
-        evaluated = SU::Dialog.evaluate(mode: 'profile', model: @model)
+        assert(!start_vertex.nil?, 'SU_PROFILE_START：夾具明示樓板端為起點')
+        evaluated = SU::Dialog.evaluate(mode: 'profile', model: @model, start_vertex_id: start_vertex.persistent_id)
+        assert(evaluated[:snapshot][:input][:start_vertex_id] == start_vertex.persistent_id, 'SU_PROFILE_START：核心方向使用明示起點')
         assert(evaluated[:result][:valid], 'SU_PROFILE_CHECKS：間接照明槽七項檢查全通過')
         assert(evaluated[:result][:boards].length == 4 && evaluated[:result][:longs].length == 6 && evaluated[:result][:ribs].length == 4,
                'SU_PROFILE_SECTION：4 塊面材、6 支縱向料、每站 4 支橫撐')
@@ -161,15 +164,17 @@ module GeometryFraming
       end
 
       def same_slab_profile
-        edges = nil
+        edges = start_vertex = nil
         transaction('驗收夾具 同樓板斷面') do
           slab = @model.entities.add_group
           slab.entities.add_face([[20_000, -100, 2800], [21_000, -100, 2800], [21_000, 2700, 2800], [20_000, 2700, 2800]].map { |point| point.map(&:mm) })
           points = [[20_100, 0, 2800], [20_100, 0, 2500], [20_600, 0, 2500], [20_600, 0, 2800]].map { |point| point.map(&:mm) }
           edges = @model.entities.add_edges(points)
+          start_vertex = edges.flat_map(&:vertices).uniq.find { |vertex| vertex.position == Geom::Point3d.new(points.first) }
         end
         select(edges)
-        evaluated = SU::Dialog.evaluate(mode: 'profile', model: @model)
+        assert(!start_vertex.nil?, 'SU_PROFILE_SAME_SLAB_START：夾具明示左端為起點')
+        evaluated = SU::Dialog.evaluate(mode: 'profile', model: @model, start_vertex_id: start_vertex.persistent_id)
         assert(evaluated[:result][:valid], 'SU_PROFILE_SAME_SLAB：兩端接同一樓板依 demo 直接封閉')
         reference = evaluated[:snapshot][:input][:reference]
         assert(reference[:slab] && !reference[:wall], 'SU_PROFILE_SAME_SLAB：不能虛構 RC 牆')

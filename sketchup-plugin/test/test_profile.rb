@@ -43,4 +43,16 @@ class ProfileTest < Minitest::Test
       assert_equal [0, 2400], solid[:boxes].first.values_at(1, 4), '面材與縱向料須涵蓋完整 L'
     end
   end
+
+  def test_reversing_cove_changes_lap_geometry_even_when_both_directions_pass
+    forward = profile(ORACLE[:profiles].find { |item| item[:name] == 'cove' })
+    reversed = profile(ORACLE[:profiles].find { |item| item[:name] == 'cove_reversed' })
+    assert forward[:valid], '斷面起點：demo 原方向的間接照明槽應通過檢查'
+    assert reversed[:valid], '斷面起點：demo 反方向也可通過檢查，不能因此推定起點不重要'
+    assert_equal forward[:points].sort, reversed[:points].sort, '斷面起點：兩種方向描述同一組完成面頂點'
+    refute_equal forward[:boards].map { |board| board[:r] }.sort, reversed[:boards].map { |board| board[:r] }.sort,
+                 '斷面起點：反轉輸入會改變 demo 面材搭接幾何，SU 必須使用明示起點，不能按 persistent_id 猜'
+    refute_equal forward[:longs].map { |member| member[:r] }.sort, reversed[:longs].map { |member| member[:r] }.sort,
+                 '斷面起點：反轉輸入也會改變縱向料幾何'
+  end
 end

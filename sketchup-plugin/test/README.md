@@ -22,6 +22,8 @@ node sketchup-plugin/test/demo_oracle.js D:/geometry-axiom-board/tasks/reference
 涵蓋五房間的每支料、板軸、記號、端面與所有 3D 盒子；八種方向/起鋪組合、參數變更、
 柱邊料關閉、廚房衝突與替代方案、樑碰撞及降板；斷面兩個範例、旋轉、換邊、不同斷面與
 拉伸參數及每支 3D 橫撐位置。明示驗收數字有專屬規則 assertion。
+斷面另以 demo 的正反輸入證明搭接幾何會改變；fake 邊／頂點測試確認 SU 轉接遵守明示起點、
+不受選邊順序影響，且拒絕缺起點、非端點與不存在的頂點 ID。
 
 突變 runner 先跑完整基準線，再複製 core 與測試到系統暫存目錄，逐一真正改掉收邊挪縫、
 柱邊料、主支不可斷開的實作，執行各自具名測試。只有 exit code 1、恰一項 assertion failure、
