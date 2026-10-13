@@ -1,10 +1,17 @@
 """Linux 8 MiB regression; supply separately built core and bridge paths."""
 import json, pathlib, resource, subprocess, sys
 root = pathlib.Path(__file__).resolve().parents[2]
+def set_stack_soft(limit):
+    _, hard = resource.getrlimit(resource.RLIMIT_STACK)
+    resource.setrlimit(resource.RLIMIT_STACK, (limit, hard))
+_, hard = resource.getrlimit(resource.RLIMIT_STACK)
+if hard != resource.RLIM_INFINITY and hard < 16384 * 1024:
+    print('ENVIRONMENT BLOCKED: inherited hard stack limit is below 16 MiB', file=sys.stderr)
+    sys.exit(2)
 def bounded():
-    resource.setrlimit(resource.RLIMIT_STACK, (8192 * 1024, resource.RLIM_INFINITY))
+    set_stack_soft(8192 * 1024)
 def core_bounds():
-    resource.setrlimit(resource.RLIMIT_STACK, (16384 * 1024, resource.RLIM_INFINITY))
+    set_stack_soft(16384 * 1024)
 core, bridge = sys.argv[1:]
 scene = root / '_ax_r13_anchor_follows.scene'
 result = subprocess.run([core, '--scene', str(scene), '--no-window', '--out', '/tmp/fragment-stack.svg'], cwd=root, capture_output=True, preexec_fn=core_bounds, timeout=30)

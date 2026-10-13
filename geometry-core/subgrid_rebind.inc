@@ -1,11 +1,12 @@
 /* R13/I25: evaluate references on each proposed fragment, not at stale cached
  * offsets. All source-face objects are provisionally on that fragment; the
  * selected per-object assignments are then checked together by I8/I9. */
-static bool reference_fragment_candidate(const World *base,SurfaceId source,SurfaceId target,
+/* -1: allocation failure; 0: invalid geometry; 1: valid candidate. */
+static int reference_fragment_candidate(const World *base,SurfaceId source,SurfaceId target,
     bool timber,size_t index,GuideLine *out_guide,Timber *out_timber,TimberAnchor *out_anchor)
 {
     World *candidate=malloc(sizeof *candidate);
-    if (!candidate) return false;
+    if (!candidate) return -1;
     *candidate=*base;
     ReferenceEval ctx={0}; ctx.world=candidate;
     for (size_t i=0;i<candidate->guide_count;++i) {
