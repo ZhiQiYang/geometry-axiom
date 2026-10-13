@@ -454,6 +454,7 @@ P73 `uiux_review_test.js` 透過 `cdp_test.js` 驗證本節，也可用 `GEOMETR
 | `feDeleteTimber` | 刪角材共用路徑(GEO-191;`delete timber <id>` + 清選取/重載) | 測試可直接呼叫 `feDeleteTimber(id)` |
 | `feTimberEditApply` | 面內角材就地編輯(GEO-194;同一 id「刪掉重放」一筆 `mutate`:`delete timber <id>`→`timber <id> …`→`place <id> on …`,失敗 `mutate` 自己回滾+toast、成功後選取留在同一 id) | 測試可直接呼叫 `feTimberEditApply(id)`(需先填好 `#tbEditForm` 欄位) |
 | `feActionsFor` / `feRunAction` | 浮動列/右鍵選單共用的動作清單與處理器(GEO-192 C) | 測試比對 `#feActionBar`/`#feCtxMenu` 的 `[data-fe-act]` 清單逐一相同 |
+| `ContextMenuShell.create(adapter)` / `FaceContextMenu` | K4 PR-a 共用選單殼（`context-menu-shell.js`）與面內 adapter。`create` 回傳 `{open, hide, sync, position, render, reason, destroy, current, stamp, isOpen, state}`；`ContextMenuShell.active` 是唯一開著的實例（DP-24）。`FaceContextMenu` 對外面維持 `{show, hide, sync, position, current, stamp, open}`，`app.js` 的呼叫點不變 | `tests/test_issue116_canvases_browser.js` B 段用拋棄式 adapter 直接驅動殼；A 段只經 `FaceContextMenu`／真右鍵 |
 | `feHandleDblClick` / `feDblOpenFor` | 雙擊的選取+開面板邏輯(GEO-192 D,由 `fevp` 的 `pointerdown` 自己判斷雙擊後呼叫,不掛原生 `dblclick`) | 不建議測試直接呼叫,走真滑鼠雙擊(見 cdp_test §P44 說明) |
 | `feApplyGhostDrag` / `fePinchRect` | 拖預覽矩形邊(GEO-192 B)/Alt 拖頂點捏缺口(GEO-192 A)的純幾何計算 | 純函式,不碰 DOM |
 | `renderObjects` | 重拉 objects/surfaces 並重繪畫布 | 測試在送指令後手動觸發刷新 |
@@ -748,6 +749,13 @@ P73 `uiux_review_test.js` 透過 `cdp_test.js` 驗證本節，也可用 `GEOMETR
   B 期間 `.fcm-suppressed` 收起 `#feActionBar`；`.fcm-anchor` 保存右鍵真落點。
   點選單／表單／`[data-fe-handle]` 外部、焦點離開、工具／選取／場景／連線情境改變
   會取消舊預覽；所有提交仍過既有交易及影響確認守門。
+  **K4 PR-a（2026-10-11，純重構）**：開關、單一實例、渲染、鍵盤、邊緣夾限、子選單、外部焦點關閉與「執行前再核
+  `current()`」抽成 `context-menu-shell.js`（`window.ContextMenuShell`）；`face-context-menu.js` 只留面內的
+  `model()`／`stamp()`／`current()`／寫入守門／各項目效果／側接表單。`#feCtxMenu`、`[data-fe-act]`、`.fcm-*`、
+  `.fcm-anchor`、所有文字與尺寸逐字不變（`tests/test_issue116_canvases_browser.js` A 段以 16 組目標的選單
+  DOM／幾何快照雜湊對照抽出前後）。守門兩級：`level:'view'` 的項目（顯示全部／回到 100%／格點／吸附／在右欄編輯）
+  不受寫入守門，其餘項目（預設 `world`）受 `writable()`；兩級之前，殼對每個項目都先以 adapter 的 `current()` 再核
+  一次（過期節點不執行、選單關閉）。
 - **D. 雙擊**:**不掛原生 `dblclick` 事件**——單擊選取本身會呼叫 `drawFaceEditor()` 整份
   重繪 SVG、`feSyncOverlays()` 重建 `#feActionBar` 的按鈕,第一下處理完那個節點就已經被
   拔掉,原生 `dblclick` 的 target 常常冒泡不到任何監聽器(`ev.detail` 在這個測試 harness

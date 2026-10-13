@@ -1,0 +1,2019 @@
+{
+  "active": {
+    "schema": "scenario-editor-ticket/1",
+    "rootSession": "dd441b41a3574c98bea61a8d19daaf00",
+    "request": {
+      "action": "create",
+      "requestId": "4decb02f-da94-49ae-9dd4-aa3752bb0292",
+      "sequence": 4,
+      "session": "dd441b41a3574c98bea61a8d19daaf00"
+    },
+    "scenarioId": "1d8fa1ff-7bd0-4b9e-98b1-88b13a1a19c4",
+    "label": "B",
+    "parentCheckpoint": {
+      "key": "8555b3a4-78d6-446f-8574-8289055f1827",
+      "sceneHash": "4fab08a9ba6c81bfb3eaf233df9f3b67d892d2cf978c515934021c9c9353e4e4",
+      "packageHash": "79b4d551974cd2bd7e46f740fbfd2ba6acebb3131fb71f7895abd60efd72f5fb",
+      "projectId": "a2eee5db-caf0-4d5c-9a21-048a03235a4e"
+    },
+    "phase": "active",
+    "context": "a977b8ae1570407c9c94cd6cb2815261",
+    "eligible": false,
+    "retirement": null
+  },
+  "aBefore": {
+    "world": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIyMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 55 443\n",
+    "state": {
+      "id": "a2eee5db-caf0-4d5c-9a21-048a03235a4e",
+      "contextToken": "ccbcde8c-1c49-4d9a-bcc0-fb7ad72fb0c9",
+      "revision": 8,
+      "dirty": true,
+      "saved": false
+    },
+    "catalog": {
+      "schema": "geometry-scenario-snapshots/1",
+      "scenarios": [
+        {
+          "scenarioId": "9ed05988-3582-4602-bb7a-1d678626dd50",
+          "label": "A",
+          "basis": null,
+          "originMapping": [],
+          "objects": [
+            {
+              "kind": "boundary",
+              "id": 1,
+              "version": null
+            },
+            {
+              "id": 1,
+              "kind": "parameter",
+              "version": null
+            },
+            {
+              "kind": "reference-page",
+              "id": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+              "version": null
+            }
+          ],
+          "requiredCapabilities": [
+            "parameters/1"
+          ],
+          "closureHash": "3b6865bc23fc2c0ed3708bd417fb5d598a0c73eef4e5dd4202dbbd8eb6115caa",
+          "snapshot": {
+            "projectManifest": {
+              "projectId": "a2eee5db-caf0-4d5c-9a21-048a03235a4e",
+              "name": "未命名專案",
+              "sources": [
+                {
+                  "id": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                  "hash": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                  "name": "resume-synthetic.pdf",
+                  "type": "application/pdf",
+                  "size": 1713,
+                  "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+                }
+              ],
+              "faces": [
+                {
+                  "bid": 1,
+                  "activePageId": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+                  "pages": [
+                    {
+                      "id": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+                      "sourceId": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                      "page": 1,
+                      "imgW": 300,
+                      "imgH": 200,
+                      "crop": [
+                        0,
+                        0,
+                        300,
+                        200
+                      ],
+                      "mmPerPx": 13.333333333333334,
+                      "x": 0,
+                      "y": 0,
+                      "rot": 0,
+                      "opacity": 0.5,
+                      "locked": false,
+                      "calibration": null,
+                      "reviewRequired": false,
+                      "records": []
+                    }
+                  ]
+                }
+              ],
+              "format": "geometry-canvas/6",
+              "sceneHash": "4fab08a9ba6c81bfb3eaf233df9f3b67d892d2cf978c515934021c9c9353e4e4",
+              "requiredCapabilities": [
+                "parameters/1"
+              ],
+              "models": [],
+              "faceProjections": []
+            },
+            "worldScene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIyMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 55 443\n",
+            "assetHashes": [
+              "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+            ]
+          }
+        },
+        {
+          "scenarioId": "1d8fa1ff-7bd0-4b9e-98b1-88b13a1a19c4",
+          "label": "B",
+          "basis": {
+            "scenarioId": "9ed05988-3582-4602-bb7a-1d678626dd50",
+            "snapshotHash": "3b6865bc23fc2c0ed3708bd417fb5d598a0c73eef4e5dd4202dbbd8eb6115caa"
+          },
+          "snapshot": {
+            "projectManifest": {
+              "projectId": "a2eee5db-caf0-4d5c-9a21-048a03235a4e",
+              "name": "未命名專案",
+              "sources": [
+                {
+                  "id": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                  "hash": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                  "name": "resume-synthetic.pdf",
+                  "type": "application/pdf",
+                  "size": 1713,
+                  "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+                }
+              ],
+              "faces": [
+                {
+                  "bid": 1,
+                  "activePageId": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+                  "pages": [
+                    {
+                      "id": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+                      "sourceId": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                      "page": 1,
+                      "imgW": 300,
+                      "imgH": 200,
+                      "crop": [
+                        0,
+                        0,
+                        300,
+                        200
+                      ],
+                      "mmPerPx": 13.333333333333334,
+                      "x": 0,
+                      "y": 0,
+                      "rot": 0,
+                      "opacity": 0.5,
+                      "locked": false,
+                      "calibration": null,
+                      "reviewRequired": false,
+                      "records": []
+                    }
+                  ]
+                }
+              ],
+              "format": "geometry-canvas/6",
+              "sceneHash": "4fab08a9ba6c81bfb3eaf233df9f3b67d892d2cf978c515934021c9c9353e4e4",
+              "requiredCapabilities": [
+                "parameters/1"
+              ],
+              "models": [],
+              "faceProjections": []
+            },
+            "worldScene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIyMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 55 443\n",
+            "assetHashes": [
+              "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+            ]
+          },
+          "originMapping": [
+            {
+              "from": {
+                "scenarioId": "9ed05988-3582-4602-bb7a-1d678626dd50",
+                "kind": "boundary",
+                "id": 1,
+                "version": null
+              },
+              "to": {
+                "scenarioId": "1d8fa1ff-7bd0-4b9e-98b1-88b13a1a19c4",
+                "kind": "boundary",
+                "id": 1,
+                "version": null
+              },
+              "snapshotHash": "3b6865bc23fc2c0ed3708bd417fb5d598a0c73eef4e5dd4202dbbd8eb6115caa"
+            },
+            {
+              "from": {
+                "scenarioId": "9ed05988-3582-4602-bb7a-1d678626dd50",
+                "id": 1,
+                "kind": "parameter",
+                "version": null
+              },
+              "to": {
+                "scenarioId": "1d8fa1ff-7bd0-4b9e-98b1-88b13a1a19c4",
+                "id": 1,
+                "kind": "parameter",
+                "version": null
+              },
+              "snapshotHash": "3b6865bc23fc2c0ed3708bd417fb5d598a0c73eef4e5dd4202dbbd8eb6115caa"
+            },
+            {
+              "from": {
+                "scenarioId": "9ed05988-3582-4602-bb7a-1d678626dd50",
+                "kind": "reference-page",
+                "id": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+                "version": null
+              },
+              "to": {
+                "scenarioId": "1d8fa1ff-7bd0-4b9e-98b1-88b13a1a19c4",
+                "kind": "reference-page",
+                "id": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+                "version": null
+              },
+              "snapshotHash": "3b6865bc23fc2c0ed3708bd417fb5d598a0c73eef4e5dd4202dbbd8eb6115caa"
+            }
+          ],
+          "objects": [
+            {
+              "kind": "boundary",
+              "id": 1,
+              "version": null
+            },
+            {
+              "id": 1,
+              "kind": "parameter",
+              "version": null
+            },
+            {
+              "kind": "reference-page",
+              "id": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+              "version": null
+            }
+          ],
+          "requiredCapabilities": [
+            "parameters/1"
+          ],
+          "closureHash": "85fb9fc2fa91ce6fc583586799059f89d5b5551c6cb056ac724899d99f395146"
+        }
+      ]
+    },
+    "drafts": [],
+    "assembly": [],
+    "history": {
+      "undo": [
+        "建立新專案",
+        null,
+        null,
+        "保存候選方案",
+        "保存候選方案"
+      ],
+      "redo": []
+    }
+  },
+  "bBefore": {
+    "world": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIzMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 55 443\n",
+    "state": {
+      "id": "a2eee5db-caf0-4d5c-9a21-048a03235a4e",
+      "contextToken": "bccfa002-232d-4a1b-af77-24f039886596",
+      "revision": 5,
+      "dirty": true,
+      "saved": true
+    },
+    "catalog": null,
+    "drafts": [
+      {
+        "id": "resume-latest-engineering",
+        "kind": "material",
+        "base_ref": null,
+        "data": {
+          "name": "Latest B 390 finish",
+          "width": "123",
+          "length": "456"
+        },
+        "updated_at": "2026-10-09T00:00:00.000Z"
+      }
+    ],
+    "assembly": [
+      {
+        "id": "resume-latest-assembly",
+        "kind": "rule",
+        "base_ref": null,
+        "data": {
+          "id": 1,
+          "version": 1,
+          "name": "Latest B 390 finish",
+          "slots": [],
+          "members": [],
+          "joints": []
+        },
+        "updated_at": "2026-10-09T00:00:00.000Z"
+      }
+    ],
+    "history": {
+      "undo": [
+        "開啟專案「未命名專案」",
+        null,
+        "編輯組構草稿"
+      ],
+      "redo": []
+    }
+  },
+  "fullBefore": {
+    "packageHash": "6ab1154e2b5f3bcf15342d3df53633a63290312382561efdf7f66d9c0fbbb161",
+    "manifest": {
+      "projectId": "a2eee5db-caf0-4d5c-9a21-048a03235a4e",
+      "name": "Latest B 390 finish",
+      "sources": [
+        {
+          "id": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "hash": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "name": "resume-synthetic.pdf",
+          "type": "application/pdf",
+          "size": 1713,
+          "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+        }
+      ],
+      "faces": [
+        {
+          "bid": 1,
+          "activePageId": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+          "pages": [
+            {
+              "id": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+              "sourceId": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+              "page": 1,
+              "imgW": 300,
+              "imgH": 200,
+              "crop": [
+                0,
+                0,
+                300,
+                200
+              ],
+              "mmPerPx": 10,
+              "x": 42,
+              "y": 0,
+              "rot": 0,
+              "opacity": 0.73,
+              "locked": false,
+              "calibration": {
+                "points": [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    10,
+                    0
+                  ]
+                ],
+                "distanceMm": 100,
+                "inputValue": 10,
+                "inputUnit": "cm"
+              },
+              "reviewRequired": true,
+              "records": []
+            }
+          ]
+        }
+      ],
+      "assemblyDrafts": {
+        "schema": "assembly-drafts/1",
+        "records": [
+          {
+            "id": "resume-latest-assembly",
+            "kind": "rule",
+            "base_ref": null,
+            "data": {
+              "id": 1,
+              "version": 1,
+              "name": "Latest B 390 finish",
+              "slots": [],
+              "members": [],
+              "joints": []
+            },
+            "updated_at": "2026-10-09T00:00:00.000Z"
+          }
+        ]
+      },
+      "engineeringDrafts": {
+        "schema": "engineering-drafts/1",
+        "records": [
+          {
+            "id": "resume-latest-engineering",
+            "kind": "material",
+            "base_ref": null,
+            "data": {
+              "name": "Latest B 390 finish",
+              "width": "123",
+              "length": "456"
+            },
+            "updated_at": "2026-10-09T00:00:00.000Z"
+          }
+        ]
+      },
+      "format": "geometry-canvas/7",
+      "models": [],
+      "faceProjections": [],
+      "sceneHash": "25aa95fc12494ae90d730b76205da28ede52a5675e216719b0f7856f79e52be3",
+      "requiredCapabilities": [
+        "assembly-rule-authoring/1",
+        "parameters/1"
+      ]
+    },
+    "scene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIzMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 55 443\n",
+    "sources": [
+      {
+        "id": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+        "hash": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+        "bytes": 1713
+      }
+    ]
+  },
+  "stateAfter": {
+    "world": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIzMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 55 443\n",
+    "state": {
+      "id": "a2eee5db-caf0-4d5c-9a21-048a03235a4e",
+      "contextToken": "f8fed6a8-2672-4a8c-8dd5-ecc05d75058c",
+      "revision": 0,
+      "dirty": true,
+      "saved": true
+    },
+    "catalog": null,
+    "drafts": [
+      {
+        "id": "resume-latest-engineering",
+        "kind": "material",
+        "base_ref": null,
+        "data": {
+          "name": "Latest B 390 finish",
+          "width": "123",
+          "length": "456"
+        },
+        "updated_at": "2026-10-09T00:00:00.000Z"
+      }
+    ],
+    "assembly": [
+      {
+        "id": "resume-latest-assembly",
+        "kind": "rule",
+        "base_ref": null,
+        "data": {
+          "id": 1,
+          "version": 1,
+          "name": "Latest B 390 finish",
+          "slots": [],
+          "members": [],
+          "joints": []
+        },
+        "updated_at": "2026-10-09T00:00:00.000Z"
+      }
+    ],
+    "history": {
+      "undo": [],
+      "redo": []
+    }
+  },
+  "fullAfter": {
+    "packageHash": "02a8dd662703152fbd1804c135749dac8ec0d6da9983fefa403d1dc3b7fe34da",
+    "manifest": {
+      "projectId": "a2eee5db-caf0-4d5c-9a21-048a03235a4e",
+      "name": "Latest B 390 finish",
+      "sources": [
+        {
+          "id": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "hash": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "name": "resume-synthetic.pdf",
+          "type": "application/pdf",
+          "size": 1713,
+          "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+        }
+      ],
+      "faces": [
+        {
+          "bid": 1,
+          "activePageId": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+          "pages": [
+            {
+              "id": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+              "sourceId": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+              "page": 1,
+              "imgW": 300,
+              "imgH": 200,
+              "crop": [
+                0,
+                0,
+                300,
+                200
+              ],
+              "mmPerPx": 10,
+              "x": 42,
+              "y": 0,
+              "rot": 0,
+              "opacity": 0.73,
+              "locked": false,
+              "calibration": {
+                "points": [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    10,
+                    0
+                  ]
+                ],
+                "distanceMm": 100,
+                "inputValue": 10,
+                "inputUnit": "cm"
+              },
+              "reviewRequired": true,
+              "records": []
+            }
+          ]
+        }
+      ],
+      "assemblyDrafts": {
+        "schema": "assembly-drafts/1",
+        "records": [
+          {
+            "id": "resume-latest-assembly",
+            "kind": "rule",
+            "base_ref": null,
+            "data": {
+              "id": 1,
+              "version": 1,
+              "name": "Latest B 390 finish",
+              "slots": [],
+              "members": [],
+              "joints": []
+            },
+            "updated_at": "2026-10-09T00:00:00.000Z"
+          }
+        ]
+      },
+      "engineeringDrafts": {
+        "schema": "engineering-drafts/1",
+        "records": [
+          {
+            "id": "resume-latest-engineering",
+            "kind": "material",
+            "base_ref": null,
+            "data": {
+              "name": "Latest B 390 finish",
+              "width": "123",
+              "length": "456"
+            },
+            "updated_at": "2026-10-09T00:00:00.000Z"
+          }
+        ]
+      },
+      "format": "geometry-canvas/7",
+      "models": [],
+      "faceProjections": [],
+      "sceneHash": "25aa95fc12494ae90d730b76205da28ede52a5675e216719b0f7856f79e52be3",
+      "requiredCapabilities": [
+        "assembly-rule-authoring/1",
+        "parameters/1"
+      ]
+    },
+    "scene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIzMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 55 443\n",
+    "sources": [
+      {
+        "id": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+        "hash": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+        "bytes": 1713
+      }
+    ]
+  },
+  "later": {
+    "world": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI0MDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 55 443\n",
+    "state": {
+      "id": "a2eee5db-caf0-4d5c-9a21-048a03235a4e",
+      "contextToken": "f8fed6a8-2672-4a8c-8dd5-ecc05d75058c",
+      "revision": 1,
+      "dirty": true,
+      "saved": true
+    },
+    "catalog": null,
+    "drafts": [
+      {
+        "id": "resume-latest-engineering",
+        "kind": "material",
+        "base_ref": null,
+        "data": {
+          "name": "Latest B 390 finish",
+          "width": "123",
+          "length": "456"
+        },
+        "updated_at": "2026-10-09T00:00:00.000Z"
+      }
+    ],
+    "assembly": [
+      {
+        "id": "resume-latest-assembly",
+        "kind": "rule",
+        "base_ref": null,
+        "data": {
+          "id": 1,
+          "version": 1,
+          "name": "Latest B 390 finish",
+          "slots": [],
+          "members": [],
+          "joints": []
+        },
+        "updated_at": "2026-10-09T00:00:00.000Z"
+      }
+    ],
+    "history": {
+      "undo": [
+        null
+      ],
+      "redo": []
+    }
+  },
+  "laterPackage": {
+    "packageHash": "958658119ee4ef0ec7b76d09fc3d87fe362efe9b3ed571d1ede46e7bb8512365",
+    "manifest": {
+      "projectId": "a2eee5db-caf0-4d5c-9a21-048a03235a4e",
+      "name": "Latest B 390 finish",
+      "sources": [
+        {
+          "id": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "hash": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "name": "resume-synthetic.pdf",
+          "type": "application/pdf",
+          "size": 1713,
+          "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+        }
+      ],
+      "faces": [
+        {
+          "bid": 1,
+          "activePageId": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+          "pages": [
+            {
+              "id": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+              "sourceId": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+              "page": 1,
+              "imgW": 300,
+              "imgH": 200,
+              "crop": [
+                0,
+                0,
+                300,
+                200
+              ],
+              "mmPerPx": 10,
+              "x": 42,
+              "y": 0,
+              "rot": 0,
+              "opacity": 0.73,
+              "locked": false,
+              "calibration": {
+                "points": [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    10,
+                    0
+                  ]
+                ],
+                "distanceMm": 100,
+                "inputValue": 10,
+                "inputUnit": "cm"
+              },
+              "reviewRequired": true,
+              "records": []
+            }
+          ]
+        }
+      ],
+      "assemblyDrafts": {
+        "schema": "assembly-drafts/1",
+        "records": [
+          {
+            "id": "resume-latest-assembly",
+            "kind": "rule",
+            "base_ref": null,
+            "data": {
+              "id": 1,
+              "version": 1,
+              "name": "Latest B 390 finish",
+              "slots": [],
+              "members": [],
+              "joints": []
+            },
+            "updated_at": "2026-10-09T00:00:00.000Z"
+          }
+        ]
+      },
+      "engineeringDrafts": {
+        "schema": "engineering-drafts/1",
+        "records": [
+          {
+            "id": "resume-latest-engineering",
+            "kind": "material",
+            "base_ref": null,
+            "data": {
+              "name": "Latest B 390 finish",
+              "width": "123",
+              "length": "456"
+            },
+            "updated_at": "2026-10-09T00:00:00.000Z"
+          }
+        ]
+      },
+      "format": "geometry-canvas/7",
+      "models": [],
+      "faceProjections": [],
+      "sceneHash": "17d4842e94cad0ee38b4a95e205363020dce8a1ea61d08a6683fce12c9693166",
+      "requiredCapabilities": [
+        "assembly-rule-authoring/1",
+        "parameters/1"
+      ]
+    },
+    "scene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI0MDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 55 443\n",
+    "sources": [
+      {
+        "id": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+        "hash": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+        "bytes": 1713
+      }
+    ]
+  },
+  "aAfter": {
+    "world": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIyMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 55 443\n",
+    "state": {
+      "id": "a2eee5db-caf0-4d5c-9a21-048a03235a4e",
+      "contextToken": "ccbcde8c-1c49-4d9a-bcc0-fb7ad72fb0c9",
+      "revision": 9,
+      "dirty": true,
+      "saved": false
+    },
+    "catalog": {
+      "schema": "geometry-scenario-snapshots/1",
+      "scenarios": [
+        {
+          "scenarioId": "9ed05988-3582-4602-bb7a-1d678626dd50",
+          "label": "A",
+          "basis": null,
+          "originMapping": [],
+          "objects": [
+            {
+              "kind": "boundary",
+              "id": 1,
+              "version": null
+            },
+            {
+              "id": 1,
+              "kind": "parameter",
+              "version": null
+            },
+            {
+              "kind": "reference-page",
+              "id": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+              "version": null
+            }
+          ],
+          "requiredCapabilities": [
+            "parameters/1"
+          ],
+          "closureHash": "3b6865bc23fc2c0ed3708bd417fb5d598a0c73eef4e5dd4202dbbd8eb6115caa",
+          "snapshot": {
+            "projectManifest": {
+              "projectId": "a2eee5db-caf0-4d5c-9a21-048a03235a4e",
+              "name": "未命名專案",
+              "sources": [
+                {
+                  "id": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                  "hash": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                  "name": "resume-synthetic.pdf",
+                  "type": "application/pdf",
+                  "size": 1713,
+                  "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+                }
+              ],
+              "faces": [
+                {
+                  "bid": 1,
+                  "activePageId": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+                  "pages": [
+                    {
+                      "id": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+                      "sourceId": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                      "page": 1,
+                      "imgW": 300,
+                      "imgH": 200,
+                      "crop": [
+                        0,
+                        0,
+                        300,
+                        200
+                      ],
+                      "mmPerPx": 13.333333333333334,
+                      "x": 0,
+                      "y": 0,
+                      "rot": 0,
+                      "opacity": 0.5,
+                      "locked": false,
+                      "calibration": null,
+                      "reviewRequired": false,
+                      "records": []
+                    }
+                  ]
+                }
+              ],
+              "format": "geometry-canvas/6",
+              "sceneHash": "4fab08a9ba6c81bfb3eaf233df9f3b67d892d2cf978c515934021c9c9353e4e4",
+              "requiredCapabilities": [
+                "parameters/1"
+              ],
+              "models": [],
+              "faceProjections": []
+            },
+            "worldScene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIyMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 55 443\n",
+            "assetHashes": [
+              "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+            ]
+          }
+        },
+        {
+          "scenarioId": "1d8fa1ff-7bd0-4b9e-98b1-88b13a1a19c4",
+          "label": "B",
+          "basis": {
+            "scenarioId": "9ed05988-3582-4602-bb7a-1d678626dd50",
+            "snapshotHash": "3b6865bc23fc2c0ed3708bd417fb5d598a0c73eef4e5dd4202dbbd8eb6115caa"
+          },
+          "snapshot": {
+            "projectManifest": {
+              "projectId": "a2eee5db-caf0-4d5c-9a21-048a03235a4e",
+              "name": "Latest B 390 finish",
+              "sources": [
+                {
+                  "id": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                  "hash": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                  "name": "resume-synthetic.pdf",
+                  "type": "application/pdf",
+                  "size": 1713,
+                  "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+                }
+              ],
+              "faces": [
+                {
+                  "bid": 1,
+                  "activePageId": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+                  "pages": [
+                    {
+                      "id": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+                      "sourceId": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                      "page": 1,
+                      "imgW": 300,
+                      "imgH": 200,
+                      "crop": [
+                        0,
+                        0,
+                        300,
+                        200
+                      ],
+                      "mmPerPx": 10,
+                      "x": 42,
+                      "y": 0,
+                      "rot": 0,
+                      "opacity": 0.73,
+                      "locked": false,
+                      "calibration": {
+                        "points": [
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            10,
+                            0
+                          ]
+                        ],
+                        "distanceMm": 100,
+                        "inputValue": 10,
+                        "inputUnit": "cm"
+                      },
+                      "reviewRequired": true,
+                      "records": []
+                    }
+                  ]
+                }
+              ],
+              "assemblyDrafts": {
+                "schema": "assembly-drafts/1",
+                "records": [
+                  {
+                    "id": "resume-latest-assembly",
+                    "kind": "rule",
+                    "base_ref": null,
+                    "data": {
+                      "id": 1,
+                      "version": 1,
+                      "name": "Latest B 390 finish",
+                      "slots": [],
+                      "members": [],
+                      "joints": []
+                    },
+                    "updated_at": "2026-10-09T00:00:00.000Z"
+                  }
+                ]
+              },
+              "engineeringDrafts": {
+                "schema": "engineering-drafts/1",
+                "records": [
+                  {
+                    "id": "resume-latest-engineering",
+                    "kind": "material",
+                    "base_ref": null,
+                    "data": {
+                      "name": "Latest B 390 finish",
+                      "width": "123",
+                      "length": "456"
+                    },
+                    "updated_at": "2026-10-09T00:00:00.000Z"
+                  }
+                ]
+              },
+              "format": "geometry-canvas/7",
+              "models": [],
+              "faceProjections": [],
+              "sceneHash": "17d4842e94cad0ee38b4a95e205363020dce8a1ea61d08a6683fce12c9693166",
+              "requiredCapabilities": [
+                "assembly-rule-authoring/1",
+                "parameters/1"
+              ]
+            },
+            "worldScene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI0MDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 55 443\n",
+            "assetHashes": [
+              "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+            ]
+          },
+          "originMapping": [],
+          "objects": [
+            {
+              "kind": "assembly-draft",
+              "id": "resume-latest-assembly",
+              "version": null
+            },
+            {
+              "kind": "boundary",
+              "id": 1,
+              "version": null
+            },
+            {
+              "kind": "engineering-draft",
+              "id": "resume-latest-engineering",
+              "version": null
+            },
+            {
+              "id": 1,
+              "kind": "parameter",
+              "version": null
+            },
+            {
+              "kind": "reference-page",
+              "id": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+              "version": null
+            }
+          ],
+          "requiredCapabilities": [
+            "assembly-rule-authoring/1",
+            "parameters/1"
+          ],
+          "closureHash": "636a889a213f9a54d8c47d465922b1f4760828c50144a0d868bb692438fcbd0e"
+        }
+      ]
+    },
+    "drafts": [],
+    "assembly": [],
+    "history": {
+      "undo": [
+        "建立新專案",
+        null,
+        null,
+        "保存候選方案",
+        "保存候選方案",
+        "保存候選方案"
+      ],
+      "redo": []
+    }
+  },
+  "paused": {
+    "journal": {
+      "schema": "scenario-resume/1",
+      "rootSession": "dd441b41a3574c98bea61a8d19daaf00",
+      "requestId": "4decb02f-da94-49ae-9dd4-aa3752bb0292",
+      "sequence": 4,
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "epoch": "11da0b60-cdf9-428e-9683-818c97ec0fef",
+      "eligible": true,
+      "packageHash": "02a8dd662703152fbd1804c135749dac8ec0d6da9983fefa403d1dc3b7fe34da",
+      "metadataHash": "9c7b072e9589ef4ba4e0b79cfdc2b1ebfe66d2ce12f744cdc94ba3d687f8ae6b",
+      "sceneHash": "25aa95fc12494ae90d730b76205da28ede52a5675e216719b0f7856f79e52be3",
+      "projectId": "a2eee5db-caf0-4d5c-9a21-048a03235a4e"
+    },
+    "project": {
+      "dirty": true,
+      "dirtyReason": "",
+      "saved": true,
+      "downloaded": false,
+      "provenance": {
+        "kind": "file",
+        "label": "專案檔案「B.gcanvas」",
+        "openedAt": "2026-10-09T14:10:33.604Z",
+        "lastSavedAt": null,
+        "lastDownloadAt": null
+      }
+    }
+  },
+  "resumedJournal": {
+    "schema": "scenario-resume/1",
+    "rootSession": "dd441b41a3574c98bea61a8d19daaf00",
+    "requestId": "4decb02f-da94-49ae-9dd4-aa3752bb0292",
+    "sequence": 4,
+    "context": "a977b8ae1570407c9c94cd6cb2815261",
+    "epoch": "11da0b60-cdf9-428e-9683-818c97ec0fef",
+    "eligible": false,
+    "packageHash": "02a8dd662703152fbd1804c135749dac8ec0d6da9983fefa403d1dc3b7fe34da",
+    "metadataHash": "9c7b072e9589ef4ba4e0b79cfdc2b1ebfe66d2ce12f744cdc94ba3d687f8ae6b",
+    "sceneHash": "25aa95fc12494ae90d730b76205da28ede52a5675e216719b0f7856f79e52be3",
+    "projectId": "a2eee5db-caf0-4d5c-9a21-048a03235a4e"
+  },
+  "requests": [
+    {
+      "route": "/api",
+      "context": null,
+      "body": {
+        "cmd": "dump"
+      }
+    },
+    {
+      "route": "/scenarios/verify-native",
+      "context": null,
+      "body": {
+        "manifest": {
+          "projectId": "a2eee5db-caf0-4d5c-9a21-048a03235a4e",
+          "name": "未命名專案",
+          "sources": [
+            {
+              "id": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+              "hash": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+              "name": "resume-synthetic.pdf",
+              "type": "application/pdf",
+              "size": 1713,
+              "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+            }
+          ],
+          "faces": [
+            {
+              "bid": 1,
+              "activePageId": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+              "pages": [
+                {
+                  "id": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+                  "sourceId": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                  "page": 1,
+                  "imgW": 300,
+                  "imgH": 200,
+                  "crop": [
+                    0,
+                    0,
+                    300,
+                    200
+                  ],
+                  "mmPerPx": 13.333333333333334,
+                  "x": 0,
+                  "y": 0,
+                  "rot": 0,
+                  "opacity": 0.5,
+                  "locked": false,
+                  "calibration": null,
+                  "reviewRequired": false,
+                  "records": []
+                }
+              ]
+            }
+          ],
+          "format": "geometry-canvas/6",
+          "sceneHash": "4fab08a9ba6c81bfb3eaf233df9f3b67d892d2cf978c515934021c9c9353e4e4",
+          "requiredCapabilities": [
+            "parameters/1"
+          ],
+          "models": [],
+          "faceProjections": []
+        },
+        "scene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIyMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 55 443\n"
+      }
+    },
+    {
+      "route": "/scenarios/verify-native",
+      "context": null,
+      "body": {
+        "manifest": {
+          "projectId": "a2eee5db-caf0-4d5c-9a21-048a03235a4e",
+          "name": "未命名專案",
+          "sources": [
+            {
+              "id": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+              "hash": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+              "name": "resume-synthetic.pdf",
+              "type": "application/pdf",
+              "size": 1713,
+              "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+            }
+          ],
+          "faces": [
+            {
+              "bid": 1,
+              "activePageId": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+              "pages": [
+                {
+                  "id": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+                  "sourceId": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                  "page": 1,
+                  "imgW": 300,
+                  "imgH": 200,
+                  "crop": [
+                    0,
+                    0,
+                    300,
+                    200
+                  ],
+                  "mmPerPx": 13.333333333333334,
+                  "x": 0,
+                  "y": 0,
+                  "rot": 0,
+                  "opacity": 0.5,
+                  "locked": false,
+                  "calibration": null,
+                  "reviewRequired": false,
+                  "records": []
+                }
+              ]
+            }
+          ],
+          "format": "geometry-canvas/6",
+          "sceneHash": "4fab08a9ba6c81bfb3eaf233df9f3b67d892d2cf978c515934021c9c9353e4e4",
+          "requiredCapabilities": [
+            "parameters/1"
+          ],
+          "models": [],
+          "faceProjections": []
+        },
+        "scene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIyMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 55 443\n"
+      }
+    },
+    {
+      "route": "/api",
+      "context": null,
+      "body": {
+        "cmd": "dump"
+      }
+    },
+    {
+      "route": "/scenarios/editor",
+      "context": null,
+      "body": {
+        "action": "create",
+        "requestId": "4decb02f-da94-49ae-9dd4-aa3752bb0292",
+        "sequence": 4,
+        "session": "dd441b41a3574c98bea61a8d19daaf00"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "dump"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "objects"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "surfaces"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "boundary 1"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "surfaces"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "dump"
+      }
+    },
+    {
+      "route": "/upload/prepare",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIyMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 55 443\n"
+    },
+    {
+      "route": "/upload/confirm",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": 1
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "objects"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "surfaces"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "boundary 1"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "references"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "engineering-read"
+      }
+    },
+    {
+      "route": "/engineering/preview",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "schema": "engineering-transaction/1",
+        "expectedRevision": 11,
+        "operations": [
+          {
+            "op": "put-parameter",
+            "value": {
+              "id": 1,
+              "name": "Resume authored parameter",
+              "nextFieldId": 2,
+              "fields": [
+                {
+                  "id": 1,
+                  "name": "尺寸",
+                  "type": "dimension",
+                  "input": "300"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/api",
+      "context": null,
+      "body": {
+        "cmd": "dump"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "engineering-confirm 1",
+        "requestId": "30bf5bb4-91c6-4220-a3e8-f9595933e9ff",
+        "session": "a977b8ae1570407c9c94cd6cb2815261",
+        "ack": []
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "section-profile-read"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "objects"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "surfaces"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "boundary 1"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "objects"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "surfaces"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "boundary 1"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "references"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "dump"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "dump"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "dump"
+      }
+    },
+    {
+      "route": "/api",
+      "context": null,
+      "body": {
+        "cmd": "dump"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "dump"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "dump"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "dump"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "dump"
+      }
+    },
+    {
+      "route": "/scenarios/editor",
+      "context": null,
+      "body": {
+        "action": "resolve",
+        "requestId": "4decb02f-da94-49ae-9dd4-aa3752bb0292",
+        "sequence": 4,
+        "session": "dd441b41a3574c98bea61a8d19daaf00",
+        "context": "a977b8ae1570407c9c94cd6cb2815261"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "dump"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "objects"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "surfaces"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "boundary 1"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "surfaces"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "dump"
+      }
+    },
+    {
+      "route": "/scenarios/verify-native",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "manifest": {
+          "projectId": "a2eee5db-caf0-4d5c-9a21-048a03235a4e",
+          "name": "Latest B 390 finish",
+          "sources": [
+            {
+              "id": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+              "hash": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+              "name": "resume-synthetic.pdf",
+              "type": "application/pdf",
+              "size": 1713,
+              "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+            }
+          ],
+          "faces": [
+            {
+              "bid": 1,
+              "activePageId": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+              "pages": [
+                {
+                  "id": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+                  "sourceId": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                  "page": 1,
+                  "imgW": 300,
+                  "imgH": 200,
+                  "crop": [
+                    0,
+                    0,
+                    300,
+                    200
+                  ],
+                  "mmPerPx": 10,
+                  "x": 42,
+                  "y": 0,
+                  "rot": 0,
+                  "opacity": 0.73,
+                  "locked": false,
+                  "calibration": {
+                    "points": [
+                      [
+                        0,
+                        0
+                      ],
+                      [
+                        10,
+                        0
+                      ]
+                    ],
+                    "distanceMm": 100,
+                    "inputValue": 10,
+                    "inputUnit": "cm"
+                  },
+                  "reviewRequired": true,
+                  "records": []
+                }
+              ]
+            }
+          ],
+          "assemblyDrafts": {
+            "schema": "assembly-drafts/1",
+            "records": [
+              {
+                "id": "resume-latest-assembly",
+                "kind": "rule",
+                "base_ref": null,
+                "data": {
+                  "id": 1,
+                  "version": 1,
+                  "name": "Latest B 390 finish",
+                  "slots": [],
+                  "members": [],
+                  "joints": []
+                },
+                "updated_at": "2026-10-09T00:00:00.000Z"
+              }
+            ]
+          },
+          "engineeringDrafts": {
+            "schema": "engineering-drafts/1",
+            "records": [
+              {
+                "id": "resume-latest-engineering",
+                "kind": "material",
+                "base_ref": null,
+                "data": {
+                  "name": "Latest B 390 finish",
+                  "width": "123",
+                  "length": "456"
+                },
+                "updated_at": "2026-10-09T00:00:00.000Z"
+              }
+            ]
+          },
+          "format": "geometry-canvas/7",
+          "models": [],
+          "faceProjections": [],
+          "sceneHash": "25aa95fc12494ae90d730b76205da28ede52a5675e216719b0f7856f79e52be3",
+          "requiredCapabilities": [
+            "assembly-rule-authoring/1",
+            "parameters/1"
+          ]
+        },
+        "scene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIzMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 55 443\n"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "dump"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "dump"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "dump"
+      }
+    },
+    {
+      "route": "/api",
+      "context": null,
+      "body": {
+        "cmd": "dump"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "references"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "engineering-read"
+      }
+    },
+    {
+      "route": "/engineering/preview",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "schema": "engineering-transaction/1",
+        "expectedRevision": 12,
+        "operations": [
+          {
+            "op": "put-parameter",
+            "value": {
+              "id": 1,
+              "name": "Resume authored parameter",
+              "nextFieldId": 2,
+              "fields": [
+                {
+                  "id": 1,
+                  "name": "尺寸",
+                  "type": "dimension",
+                  "input": "400"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "engineering-confirm 2",
+        "requestId": "d8da7f39-6c03-4d8c-b51b-657006b707d1",
+        "session": "a977b8ae1570407c9c94cd6cb2815261",
+        "ack": []
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "section-profile-read"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "objects"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "surfaces"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "boundary 1"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "objects"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "surfaces"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "boundary 1"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "references"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "dump"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "dump"
+      }
+    },
+    {
+      "route": "/api",
+      "context": null,
+      "body": {
+        "cmd": "dump"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "dump"
+      }
+    },
+    {
+      "route": "/scenarios/verify-native",
+      "context": null,
+      "body": {
+        "manifest": {
+          "projectId": "a2eee5db-caf0-4d5c-9a21-048a03235a4e",
+          "name": "未命名專案",
+          "sources": [
+            {
+              "id": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+              "hash": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+              "name": "resume-synthetic.pdf",
+              "type": "application/pdf",
+              "size": 1713,
+              "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+            }
+          ],
+          "faces": [
+            {
+              "bid": 1,
+              "activePageId": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+              "pages": [
+                {
+                  "id": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+                  "sourceId": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                  "page": 1,
+                  "imgW": 300,
+                  "imgH": 200,
+                  "crop": [
+                    0,
+                    0,
+                    300,
+                    200
+                  ],
+                  "mmPerPx": 13.333333333333334,
+                  "x": 0,
+                  "y": 0,
+                  "rot": 0,
+                  "opacity": 0.5,
+                  "locked": false,
+                  "calibration": null,
+                  "reviewRequired": false,
+                  "records": []
+                }
+              ]
+            }
+          ],
+          "format": "geometry-canvas/6",
+          "sceneHash": "4fab08a9ba6c81bfb3eaf233df9f3b67d892d2cf978c515934021c9c9353e4e4",
+          "requiredCapabilities": [
+            "parameters/1"
+          ],
+          "models": [],
+          "faceProjections": []
+        },
+        "scene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIyMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 55 443\n"
+      }
+    },
+    {
+      "route": "/scenarios/verify-native",
+      "context": null,
+      "body": {
+        "manifest": {
+          "projectId": "a2eee5db-caf0-4d5c-9a21-048a03235a4e",
+          "name": "未命名專案",
+          "sources": [
+            {
+              "id": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+              "hash": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+              "name": "resume-synthetic.pdf",
+              "type": "application/pdf",
+              "size": 1713,
+              "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+            }
+          ],
+          "faces": [
+            {
+              "bid": 1,
+              "activePageId": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+              "pages": [
+                {
+                  "id": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+                  "sourceId": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                  "page": 1,
+                  "imgW": 300,
+                  "imgH": 200,
+                  "crop": [
+                    0,
+                    0,
+                    300,
+                    200
+                  ],
+                  "mmPerPx": 13.333333333333334,
+                  "x": 0,
+                  "y": 0,
+                  "rot": 0,
+                  "opacity": 0.5,
+                  "locked": false,
+                  "calibration": null,
+                  "reviewRequired": false,
+                  "records": []
+                }
+              ]
+            }
+          ],
+          "format": "geometry-canvas/6",
+          "sceneHash": "4fab08a9ba6c81bfb3eaf233df9f3b67d892d2cf978c515934021c9c9353e4e4",
+          "requiredCapabilities": [
+            "parameters/1"
+          ],
+          "models": [],
+          "faceProjections": []
+        },
+        "scene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIyMDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 55 443\n"
+      }
+    },
+    {
+      "route": "/scenarios/verify-native",
+      "context": null,
+      "body": {
+        "manifest": {
+          "projectId": "a2eee5db-caf0-4d5c-9a21-048a03235a4e",
+          "name": "Latest B 390 finish",
+          "sources": [
+            {
+              "id": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+              "hash": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+              "name": "resume-synthetic.pdf",
+              "type": "application/pdf",
+              "size": 1713,
+              "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+            }
+          ],
+          "faces": [
+            {
+              "bid": 1,
+              "activePageId": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+              "pages": [
+                {
+                  "id": "43f45e82-a3c6-4f59-b4b3-7d911204fac2",
+                  "sourceId": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+                  "page": 1,
+                  "imgW": 300,
+                  "imgH": 200,
+                  "crop": [
+                    0,
+                    0,
+                    300,
+                    200
+                  ],
+                  "mmPerPx": 10,
+                  "x": 42,
+                  "y": 0,
+                  "rot": 0,
+                  "opacity": 0.73,
+                  "locked": false,
+                  "calibration": {
+                    "points": [
+                      [
+                        0,
+                        0
+                      ],
+                      [
+                        10,
+                        0
+                      ]
+                    ],
+                    "distanceMm": 100,
+                    "inputValue": 10,
+                    "inputUnit": "cm"
+                  },
+                  "reviewRequired": true,
+                  "records": []
+                }
+              ]
+            }
+          ],
+          "assemblyDrafts": {
+            "schema": "assembly-drafts/1",
+            "records": [
+              {
+                "id": "resume-latest-assembly",
+                "kind": "rule",
+                "base_ref": null,
+                "data": {
+                  "id": 1,
+                  "version": 1,
+                  "name": "Latest B 390 finish",
+                  "slots": [],
+                  "members": [],
+                  "joints": []
+                },
+                "updated_at": "2026-10-09T00:00:00.000Z"
+              }
+            ]
+          },
+          "engineeringDrafts": {
+            "schema": "engineering-drafts/1",
+            "records": [
+              {
+                "id": "resume-latest-engineering",
+                "kind": "material",
+                "base_ref": null,
+                "data": {
+                  "name": "Latest B 390 finish",
+                  "width": "123",
+                  "length": "456"
+                },
+                "updated_at": "2026-10-09T00:00:00.000Z"
+              }
+            ]
+          },
+          "format": "geometry-canvas/7",
+          "models": [],
+          "faceProjections": [],
+          "sceneHash": "17d4842e94cad0ee38b4a95e205363020dce8a1ea61d08a6683fce12c9693166",
+          "requiredCapabilities": [
+            "assembly-rule-authoring/1",
+            "parameters/1"
+          ]
+        },
+        "scene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlJlc3VtZSBhdXRob3JlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiLlsLrlr7giLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI0MDAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\ncanvas-pos parameter 1 60 60\ncanvas-pos boundary 1 55 443\n"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "dump"
+      }
+    },
+    {
+      "route": "/api",
+      "context": null,
+      "body": {
+        "cmd": "dump"
+      }
+    },
+    {
+      "route": "/api",
+      "context": null,
+      "body": {
+        "cmd": "dump"
+      }
+    },
+    {
+      "route": "/scenarios/editor",
+      "context": null,
+      "body": {
+        "action": "close",
+        "requestId": "4decb02f-da94-49ae-9dd4-aa3752bb0292",
+        "sequence": 4,
+        "session": "dd441b41a3574c98bea61a8d19daaf00"
+      }
+    },
+    {
+      "route": "/api",
+      "context": null,
+      "body": {
+        "cmd": "dump"
+      }
+    },
+    {
+      "route": "/api",
+      "context": "a977b8ae1570407c9c94cd6cb2815261",
+      "body": {
+        "cmd": "dump"
+      }
+    }
+  ]
+}

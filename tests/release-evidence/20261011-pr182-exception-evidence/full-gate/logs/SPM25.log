@@ -1,0 +1,15 @@
+test_all_cardinal_frames_and_four_host_directions_are_exact (tests.test_section_profile_native.SectionProfileNative.test_all_cardinal_frames_and_four_host_directions_are_exact) ... FAIL
+
+======================================================================
+FAIL: test_all_cardinal_frames_and_four_host_directions_are_exact (tests.test_section_profile_native.SectionProfileNative.test_all_cardinal_frames_and_four_host_directions_are_exact)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_section_profile_native.py", line 664, in test_all_cardinal_frames_and_four_host_directions_are_exact
+    self.assertEqual(state,self.read()["state"]["runs"][0],"D38: advanced->simple must recover dir/p/q/up ("+where+")")
+AssertionError: {'val[78 chars]r': '+u', 'host': {'frame': {'N': '+Z', 'U': '[388 chars]: []} != {'val[78 chars]r': '-v', 'host': {'frame': {'N': '+Z', 'U': '[389 chars]: []}
+Diff is 1501 characters long. Set self.maxDiff to None to see it. : D38: advanced->simple must recover dir/p/q/up (host U=+X V=+Y dir=+u up=+Z)
+
+----------------------------------------------------------------------
+Ran 1 test in 0.102s
+
+FAILED (failures=1)

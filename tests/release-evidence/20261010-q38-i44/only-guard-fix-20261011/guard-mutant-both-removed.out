@@ -1,0 +1,26 @@
+FAIL: test_unknown_id_and_empty_selection_raise (__main__.SelectCases.test_unknown_id_and_empty_selection_raise) (only=['SPM3'], groups=['native', 'model'])
+AssertionError: ValueError not raised
+FAIL: test_unknown_id_and_empty_selection_raise (__main__.SelectCases.test_unknown_id_and_empty_selection_raise) (only=['SPM03', 'nope'], groups=['native'])
+AssertionError: ValueError not raised
+FAIL: test_unknown_id_and_empty_selection_raise (__main__.SelectCases.test_unknown_id_and_empty_selection_raise) (only=['SPM36'], groups=['native'])
+AssertionError: ValueError not raised
+FAIL: test_mistyped_id_exits_2_and_lists_the_valid_ids (__main__.SelectionGuardCli.test_mistyped_id_exits_2_and_lists_the_valid_ids) (only='SPM3')
+AssertionError: 0 != 2 : exit 0 means the mistyped selection was taken as a success: no case was selected, so no baseline ran and all([]) reported success; stdout='{"summary": {}}\n' stderr=''
+FAIL: test_mistyped_id_exits_2_and_lists_the_valid_ids (__main__.SelectionGuardCli.test_mistyped_id_exits_2_and_lists_the_valid_ids) (only='spm03')
+AssertionError: 0 != 2 : exit 0 means the mistyped selection was taken as a success: no case was selected, so no baseline ran and all([]) reported success; stdout='{"summary": {}}\n' stderr=''
+FAIL: test_mistyped_id_exits_2_and_lists_the_valid_ids (__main__.SelectionGuardCli.test_mistyped_id_exits_2_and_lists_the_valid_ids) (only='SPM99')
+AssertionError: 0 != 2 : exit 0 means the mistyped selection was taken as a success: no case was selected, so no baseline ran and all([]) reported success; stdout='{"summary": {}}\n' stderr=''
+FAIL: test_mistyped_id_exits_2_and_lists_the_valid_ids (__main__.SelectionGuardCli.test_mistyped_id_exits_2_and_lists_the_valid_ids) (only='SPM003')
+AssertionError: 0 != 2 : exit 0 means the mistyped selection was taken as a success: no case was selected, so no baseline ran and all([]) reported success; stdout='{"summary": {}}\n' stderr=''
+FAIL: test_mistyped_id_exits_2_and_lists_the_valid_ids (__main__.SelectionGuardCli.test_mistyped_id_exits_2_and_lists_the_valid_ids) (only='')
+AssertionError: 0 != 2 : exit 0 means the mistyped selection was taken as a success: no case was selected, so no baseline ran and all([]) reported success; stdout='{"summary": {}}\n' stderr=''
+FAIL: test_one_mistyped_id_among_legal_ones_rejects_the_whole_run (__main__.SelectionGuardCli.test_one_mistyped_id_among_legal_ones_rejects_the_whole_run)
+AssertionError: 0 != 2 : exit 0 means the mistyped selection was taken as a success: no case was selected, so no baseline ran and all([]) reported success; stdout='ngle of the outline (L shape lost)\nSPM37 model R39 the reference envelope is counted as material volume\nSPM38 model R37/D40 a panel is cut at the 1830 mm sheet leng
+FAIL: test_selection_outside_the_chosen_group_is_empty_and_rejected (__main__.SelectionGuardCli.test_selection_outside_the_chosen_group_is_empty_and_rejected) (only='SPM36', group='native')
+AssertionError: 0 != 2 : exit 0 means the mistyped selection was taken as a success: no case was selected, so no baseline ran and all([]) reported success; stdout='{"summary": {}}\n' stderr=''
+FAIL: test_selection_outside_the_chosen_group_is_empty_and_rejected (__main__.SelectionGuardCli.test_selection_outside_the_chosen_group_is_empty_and_rejected) (only='SPM01', group='model')
+AssertionError: 0 != 2 : exit 0 means the mistyped selection was taken as a success: no case was selected, so no baseline ran and all([]) reported success; stdout='{"summary": {}}\n' stderr=''
+FAIL: test_the_guard_also_applies_to_list (__main__.SelectionGuardCli.test_the_guard_also_applies_to_list)
+AssertionError: 0 != 2 : a mistyped id must not be ignored just because --list was given: exit 0 means the mistyped selection was taken as a success: no case was selected, so no baseline ran and all([]) reported success; stdout='ngle of the outline (L shape lost)\nSPM37 model R39 the reference envelope is counted as material vol
+Ran 9 tests in 6.152s
+FAILED (failures=12)

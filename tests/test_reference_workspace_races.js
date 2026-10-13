@@ -1,6 +1,6 @@
 /* Node VM scheduling contract; DOM, picker and PDF rendering are fakes, not E2E.
    Packing/source hashes and the workspace implementation are real. */
-const {test:nodeTest} = require('node:test');
+const {test:nodeTest, before} = require('node:test');
 const test = (name, fn) => nodeTest(name, {timeout:5000}, fn);
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -1120,9 +1120,13 @@ test('review receipts undo with core changes and local review without inheriting
 });
 
 // Only HTTP timing is faked; these exercise the actual common metadata/history adapter.
-const caseData=()=>({schema:P.Features.CASE_SCHEMA,definitions:JSON.parse(require('node:child_process').execFileSync('python',['-c',"import sys,json;sys.path.insert(0,'geometry-core');from rule_cases.catalog import cases;print(json.dumps(cases()))"],{cwd:require('node:path').resolve(__dirname,'..'),encoding:'utf8'})),receipts:[]});
+// 2026-10-13 scope ruling: under ten CPU0 competitors these finite catalog /
+// JSON/hash cases took up to 14.2s (instrumented); 25s includes >50% margin.
+// The caller-mutation race below retains its original five-second budget.
+const caseTest=(name,fn)=>nodeTest(name,{timeout:25000},fn);
+const caseData=()=>({schema:P.Features.CASE_SCHEMA,definitions:JSON.parse(require('node:child_process').execFileSync('python',['-c',"import sys,json;sys.path.insert(0,'geometry-core');from rule_cases.catalog import cases;print(json.dumps(cases()))"],{cwd:require('node:path').resolve(__dirname,'..'),encoding:'utf8',timeout:20000})),receipts:[]});
 const caseResponse=data=>({ok:true,json:async()=>({ok:true,data,trust:'historical-unverified'})});
-test('formal cases detached prepare commits one common metadata history and true Undo/Redo',async()=>{
+caseTest('formal cases detached prepare commits one common metadata history and true Undo/Redo',async()=>{
   const data=caseData(),f=await fixture({casePrepare:()=>caseResponse(data)}),W=f.w,token=W.getProjectState().contextToken,before=W.history.undo.length;
   assert.throws(()=>W.setFeatureAttachment(P.Features.CASE_KIND,data,token),/隔離資料驗證/);
   const prepared=await W.prepareFeatureAttachment(P.Features.CASE_KIND,data,token);
@@ -1133,7 +1137,7 @@ test('formal cases detached prepare commits one common metadata history and true
   W.tryLocalHistory('line redo');assert.equal(JSON.stringify(W.readFeatureAttachment(P.Features.CASE_KIND)),JSON.stringify(data));
   assert.throws(()=>W.commitPreparedFeatureAttachment(prepared),/取消或提交/);
 });
-test('formal cases cancellation or native operation after detached response produces zero writes',async()=>{
+caseTest('formal cases cancellation or native operation after detached response produces zero writes',async()=>{
   for(const change of ['cancel','native','metadata']){const data=caseData(),gate=deferred(),reached=deferred(),f=await fixture({casePrepare:async()=>{reached.resolve();await gate.promise;return caseResponse(data);}}),W=f.w;
     let cancelled=false;const guard=()=>{if(cancelled)throw Error('cancelled');},before=W.history.undo.length;
     const pending=W.prepareFeatureAttachment(P.Features.CASE_KIND,data,W.getProjectState().contextToken,guard),rejected=assert.rejects(pending);await reached.promise;
@@ -1141,7 +1145,7 @@ test('formal cases cancellation or native operation after detached response prod
     gate.resolve();await rejected;release?.();assert.equal(W.history.undo.length,before);assert.equal(W.readFeatureAttachment(P.Features.CASE_KIND),null);
   }
 });
-test('formal cases no-op has zero history; equal data after Undo/Redo cannot revive an old prepared lease',async()=>{
+caseTest('formal cases no-op has zero history; equal data after Undo/Redo cannot revive an old prepared lease',async()=>{
   const data=caseData(),f=await fixture({casePrepare:()=>caseResponse(data)}),W=f.w,kind=P.Features.CASE_KIND;
   W.commitPreparedFeatureAttachment(await W.prepareFeatureAttachment(kind,data,W.getProjectState().contextToken));
   const unchanged=await W.prepareFeatureAttachment(kind,data,W.getProjectState().contextToken),before=W.history.undo.length;
@@ -1149,7 +1153,7 @@ test('formal cases no-op has zero history; equal data after Undo/Redo cannot rev
   const stale=await W.prepareFeatureAttachment(kind,data,W.getProjectState().contextToken);
   W.tryLocalHistory('line undo');W.tryLocalHistory('line redo');assert.throws(()=>W.commitPreparedFeatureAttachment(stale),/晚到/);assert.equal(W.history.undo.length,before);
 });
-test('case-only near-limit project rejects full manifest growth before HTTP, history or dirty changes',async()=>{
+caseTest('case-only near-limit project rejects full manifest growth before HTTP, history or dirty changes',async()=>{
   const data=caseData(),definition=data.definitions.find(d=>d.caseId==='legal-rule');
   const digest=async value=>P.sha(new TextEncoder().encode(P.Features.Cases.canonical(value)));
   const receipt={caseId:definition.caseId,definitionHash:await digest(definition),sourceHash:await digest(definition.sourcePins),
@@ -1165,17 +1169,60 @@ test('case-only near-limit project rejects full manifest growth before HTTP, his
   await assert.rejects(W.prepareFeatureAttachment(P.Features.CASE_KIND,data,original.contextToken),/8 MB|容量/);
   assert.equal(http,0);assert.deepEqual(W.getProjectState(),original);assert.equal(W.history.undo.length,before);assert.equal(W.readFeatureAttachment(P.Features.CASE_KIND),null);
 });
-test('caller mutation during real hashes cannot replace the detached snapshot verified by the core',async()=>{
+let snapshotCaseFixture;
+// Catalog loading and generation of a known passing native receipt are setup,
+// not the caller-mutation race; keep the race itself on its original budget.
+before(() => {
   const definition=caseData().definitions[0],receipt=JSON.parse(require('node:child_process').execFileSync('python',['-c',
     "import sys,json;sys.path[:0]=['geometry-web','geometry-core'];from rule_cases.catalog import cases;from rule_cases.request import run_case_request;from tests._bridge import find_bridge;print(json.dumps(run_case_request(json.dumps(cases()[0]).encode(),project_id='snapshot-original',generation=1,binary=find_bridge())))"],
-    {cwd:require('node:path').resolve(__dirname,'..'),encoding:'utf8'}));
+    {cwd:require('node:path').resolve(__dirname,'..'),encoding:'utf8',timeout:180000}));
   assert.equal(receipt.status,'passed');const data=caseData();data.receipts=[{definition,receipt}];
+  assert.deepEqual(prepareSnapshotCase(data),{ok:true,data,trust:'historical-unverified'},
+    'the unmodified native pass evidence must be accepted with unchanged data and trust');
+  for(const malformed of [
+    {ok:true,error:'core rejected original native pass evidence'},
+    {ok:true,data},
+    {ok:true,data:[],trust:'historical-unverified'},
+    {ok:true,data:{},trust:'historical-unverified'},
+    {ok:true,data,trust:'historical-unverified',error:'core rejected original native pass evidence'},
+    {ok:true,data,trust:'historical-unverified',rejectionType:'ReceiptValidationError'},
+  ])assert.throws(()=>prepareSnapshotCase(data,()=>JSON.stringify(malformed)),
+    /Native case preparation infrastructure failed/,'malformed success must not masquerade as semantic rejection');
+  assert.throws(()=>prepareSnapshotCase(data,(file,args,options)=>
+    require('node:child_process').execFileSync(file,[args[0],"import sys;sys.exit(3)\n"+args[1]],options)),
+    error=>error.message==='Native case preparation infrastructure failed' && error.cause?.status===3 &&
+      /core rejected/.test(error.cause.message),'command text must not turn an infrastructure exit into a semantic rejection');
+  snapshotCaseFixture={definition,receipt,data};
+}, {timeout:180000});
+function prepareSnapshotCase(data,runPython=require('node:child_process').execFileSync){
+  try {
+  const result=JSON.parse(runPython('python',['-c',
+    "import sys,json;sys.path.insert(0,'geometry-web');from rule_case_host import prepare_data;from rule_cases.executor import ReceiptValidationError\n"+
+    "try:\n result=prepare_data(sys.stdin.buffer.read())\n"+
+    "except ReceiptValidationError as error:\n"+
+    " if str(error)!='Passed receipt contains an invalid assertion': raise\n"+
+    " result={'ok':False,'error':'core rejected original native pass evidence','rejectionType':type(error).__name__}\n"+
+    "print(json.dumps(result))"],
+    {cwd:require('node:path').resolve(__dirname,'..'),input:typeof data==='string'?data:JSON.stringify(data),encoding:'utf8',stdio:['pipe','pipe','pipe'],timeout:180000}));
+  if(result?.ok===true){
+    const input=typeof data==='string'?JSON.parse(data):JSON.parse(JSON.stringify(data));
+    assert.ok(result.data && typeof result.data==='object' && !Array.isArray(result.data));
+    assert.deepEqual(result,{ok:true,data:input,trust:'historical-unverified'},
+      'Successful native preparation must preserve the complete input and trust');
+  } else if(!(result?.ok===false && result.rejectionType==='ReceiptValidationError' &&
+    result.error==='core rejected original native pass evidence'))throw new Error('Invalid native case preparation result');
+  return result;
+  } catch(cause) {
+    throw new Error('Native case preparation infrastructure failed',{cause});
+  }
+}
+test('caller mutation during real hashes cannot replace the detached snapshot verified by the core',async()=>{
+  const {definition,receipt,data}=structuredClone(snapshotCaseFixture);
+  assert.equal(receipt.status,'passed');
   receipt.observations.after.rules[0].value.members[0].slotId=13;P.Features.Cases.validate(data);
   const reached=deferred(),gate=deferred(),f=await fixture({projectOverride:{Features:{...P.Features,Cases:{...P.Features.Cases,
     verifyHashes:async value=>{reached.resolve();await gate.promise;return P.Features.Cases.verifyHashes(value);}}}},
-    casePrepare:request=>{let result;try{result=JSON.parse(require('node:child_process').execFileSync('python',['-c',
-      "import sys,json;sys.path.insert(0,'geometry-web');from rule_case_host import prepare_data;print(json.dumps(prepare_data(sys.stdin.buffer.read())))"],
-      {cwd:require('node:path').resolve(__dirname,'..'),input:request.body,encoding:'utf8',stdio:['pipe','pipe','pipe']}));}catch(error){return {ok:false,json:async()=>({ok:false,error:'core rejected original native pass evidence'})};}return {ok:true,json:async()=>result};}});
+    casePrepare:request=>{const result=prepareSnapshotCase(request.body);return {ok:result.ok,json:async()=>result};}});
   const before=f.w.getProjectState(),undo=f.w.history.undo.length,pending=f.w.prepareFeatureAttachment(P.Features.CASE_KIND,data,before.contextToken),rejected=assert.rejects(pending,/core rejected/);
   await reached.promise;receipt.observations.after.rules[0].value.members[0].slotId=7;gate.resolve();await rejected;
   assert.equal(f.w.readFeatureAttachment(P.Features.CASE_KIND),null);assert.equal(f.w.history.undo.length,undo);assert.deepEqual(f.w.getProjectState(),before);
