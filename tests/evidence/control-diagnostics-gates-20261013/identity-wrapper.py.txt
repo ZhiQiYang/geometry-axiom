@@ -1,0 +1,16 @@
+import hashlib,json,subprocess,urllib.request
+from pathlib import Path
+root=Path('/tmp/geometry-control-diagnostics');out=root/'tests/evidence/control-diagnostics-gates-20261013'
+files=['geometry-web/ux_refinement_test.js','geometry-web/grid_rule_editor_test.js','geometry-web/cdp_test.js','geometry-web/cdp_helpers.js','tests/run_all.py','tests/run_all.expected.json','tests/run_tests.py','tests/mutants_results.json','current_geometry.c']
+record={'head':subprocess.check_output(['git','rev-parse','HEAD'],cwd=root).decode().strip(),'files':{n:hashlib.sha256((root/n).read_bytes()).hexdigest() for n in files},'binaries':{}}
+for name in ['core','bridge','integrity','model-base','engineering-json-test']:
+    p=Path('/tmp/control-diag-binaries')/name
+    record['binaries'][name]=hashlib.sha256(p.read_bytes()).hexdigest()
+    side=p.with_name(p.name+'.fingerprint.json')
+    if side.exists():(out/(name+'-fingerprint.json')).write_bytes(side.read_bytes())
+for port,label in [(8972,'canvas'),(8973,'grid')]:
+    raw=urllib.request.urlopen(f'http://127.0.0.1:{port}/runtime').read()
+    (out/(label+'-runtime.json')).write_bytes(raw)
+    result=subprocess.run(['python','geometry-web/runtime_version.py','--probe',str(port)],cwd=root,capture_output=True,text=True)
+    (out/(label+'-probe.json')).write_text(json.dumps({'exit':result.returncode,'stdout':result.stdout,'stderr':result.stderr},indent=2)+'\n')
+(out/'identity-before.json').write_text(json.dumps(record,indent=2)+'\n')
