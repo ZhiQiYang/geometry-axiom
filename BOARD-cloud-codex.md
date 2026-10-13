@@ -46,7 +46,8 @@
   - `elementFromPoint` 命中節點 `outerHTML` 的前 200 字
   - 選單容器的 display/visibility、`#fileMenuBtn` 的展開狀態
   - 現有 `diagnostics()` 的輸出
-- 不改任何等待、逾時、斷言或期望數。開工前確認沒有其他 open PR 正在改這兩個檔。
+- 不改任何等待、逾時、斷言或期望數。
+- **2026-10-13 17:00 更新**:#201 也改 `grid_rule_editor_test.js`,但沒有改 `ux_refinement_test.js`。所以**現在先做 `ux_refinement_test.js` 那一半**,開 draft PR。`grid_rule_editor_test.js` 那一半等 #201 合進 main 之後,在同一支分支補上。不要因為 #201 就整項停住。
 - 驗證:兩個檔都要過 `node --check`;有 Chrome 就跑對應的子集。開 draft PR,註明這是測試類,依規則只需 native + canvas + grid。
 
 **指定任務 6:#211 native 測試的堆疊用量超過 8 MiB**
