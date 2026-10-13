@@ -328,6 +328,21 @@ temporary-shebang fixture skips。這些沒有平台豁免，Windows strict 會�
 另跑無 scope flag 的 `geometry-web/cdp_test.js`，包括原選取／游標及所有既有共用介面回歸。
 PR #114 正式多房間 owner 與實體 iOS／IME／系統選檔仍須 dot 整合後驗收，不能以本 gate 代替。
 
+## #116 K4 共用選單殼（PR-a）
+
+`tests/test_issue116_canvases_browser.js` 是 K4（#116 其餘畫布）的獨立 gate，PR-a 先建「殼段」，
+游標／物件畫布選單／觸控各段由 PR-b／c／d 接續。與 `tests/test_issue116_browser.js` 同一套隔離規矩
+（隔離 `GEOMETRY_TEST_URL`、TEMP `GEOMETRY_FEEDBACK_DIR`、`NODE_PATH` 指向既有 Playwright）：
+`node tests/test_issue116_canvases_browser.js`；`GEOMETRY_K4_PHASE=characterize` 只跑 A 段（可對抽出前的程式跑，
+產出 `menu-snapshots.sha256` 供前後逐位元比對）；`GEOMETRY_K4_KEEP_GOING=1` 列出全部**行為**失敗項（突變分析用）。
+身分／隔離前置（runtime fresh、runtime root 屬本 worktree、頁面由該 runtime 供應）在任何模式下都是 fail-fast，先於任何 fixture 或命令；
+兩個 phase 共用同一個結算（`settle()`），任何失敗都以非零結束。`GEOMETRY_K4_SELFTEST=fail-check|stale-runtime` 注入刻意失敗以驗證退出碼與 fail-fast。
+a1／b3 只證明「同一次開啟內，情境改變後殼拒絕執行已保存的節點」；不證明更早一次開啟遺留的節點（承襲自抽出前的行為，節點已被 `hide()` 拔掉，沒有使用者路徑），
+不得當成完整的過期節點保證。
+A 段釘住既有面內選單（過期節點送出計數 0、兩級守門、IME、焦點離開、16 組目標的選單 DOM／幾何快照）；
+B 段驗殼本身的契約（單一實例 DP-24、兩級守門 DP-33、執行前 `current()` 再核、鍵盤、邊緣夾限與翻轉、
+外部 pointerdown 選用、屬性參數化）。它不取代 87 項的 `test_issue116_browser.js`——兩者每個 PR 都要跑並記入 handoff。
+
 ## #48 正式 app 證據流程
 
 `geometry-web/evidence_links_integration_test.js` 的 110 個檢查獨立於非瀏覽器 aggregate；真 app/store/native、1280/390px、原圖手動矩形和欄位選擇、完整 ZIP 保存／新空白 context 重開、刪除／ID 重建、evidence-only bytes、undo/redo、32 個 staged navigation race 和非法匯入零提交。只使用自製 PDF。另保留既有 independent adapter 67 項，不把 memory-backend 結果當正式保存證據。
