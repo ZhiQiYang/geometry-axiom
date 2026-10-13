@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/evidence/q17-p3-diagnostic-scope-20261012/audit.py", line 25, in <module>
+    if event['type'] == 'pointerdown' and event.get('previous', {}).get('id') == 20][-1]
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'get'
