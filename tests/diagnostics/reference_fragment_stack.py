@@ -1,5 +1,7 @@
 """Linux 8 MiB regression; supply separately built core and bridge paths."""
 import json, pathlib, resource, subprocess, sys
+if not __debug__:
+    raise RuntimeError('Verification requires assertions; Python optimization mode is not supported')
 root = pathlib.Path(__file__).resolve().parents[2]
 def set_stack_soft(limit):
     _, hard = resource.getrlimit(resource.RLIMIT_STACK)

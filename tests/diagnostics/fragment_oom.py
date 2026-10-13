@@ -1,5 +1,7 @@
 """Run against a bridge with a one-shot allocation fault at the fragment allocator."""
 import json, os, pathlib, resource, subprocess, sys, tempfile
+if not __debug__:
+    raise RuntimeError('Verification requires assertions; Python optimization mode is not supported')
 root = pathlib.Path(__file__).resolve().parents[2]
 source = (root / '_ax_r13_anchor_follows.scene').read_text().replace('guide 1 5 u spec:', 'guide 1 5 v spec:')
 with tempfile.TemporaryDirectory() as tmp:

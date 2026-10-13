@@ -31,8 +31,10 @@ def run(name, command, timeout=180):
     start = time.monotonic()
     timed_out = False
     error_message = None
+    child_env = dict(os.environ)
+    child_env.pop('PYTHONOPTIMIZE', None)
     try:
-        p = subprocess.run(command, cwd=root, capture_output=True, preexec_fn=bounded, timeout=timeout)
+        p = subprocess.run(command, cwd=root, capture_output=True, preexec_fn=bounded, timeout=timeout, env=child_env)
         stdout, stderr, code = p.stdout, p.stderr, p.returncode
     except subprocess.TimeoutExpired as error:
         stdout, stderr, code = error.stdout or b'', error.stderr or b'', 2

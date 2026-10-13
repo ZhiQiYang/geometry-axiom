@@ -1,5 +1,7 @@
 """Exercise the gate's actual run function with real child stdout/stderr and timeout."""
-import ast, json, pathlib, resource, subprocess, sys, tempfile, time
+import ast, json, os, pathlib, resource, subprocess, sys, tempfile, time
+if not __debug__:
+    raise RuntimeError('Verification requires assertions; Python optimization mode is not supported')
 source = pathlib.Path(sys.argv[1]) if len(sys.argv)>1 else pathlib.Path(__file__).with_name('run_fragment_heap_gate.py')
 tree = ast.parse(source.read_text())
 functions = [node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name in ('bounded','run')]
@@ -7,7 +9,7 @@ assert len(functions) == 2
 with tempfile.TemporaryDirectory() as tmp:
     out = pathlib.Path(tmp)
     rows = []
-    namespace = dict(resource=resource,subprocess=subprocess,time=time,json=json,root=out,out=out,rows=rows)
+    namespace = dict(resource=resource,subprocess=subprocess,time=time,json=json,os=os,root=out,out=out,rows=rows)
     exec(compile(ast.Module(body=functions,type_ignores=[]),str(source),'exec'),namespace)
     command = [sys.executable,'-c',"import sys,time;print('partial stdout',flush=True);print('partial stderr',file=sys.stderr,flush=True);time.sleep(30)"]
     try:
