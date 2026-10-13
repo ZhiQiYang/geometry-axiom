@@ -497,12 +497,14 @@ const ReferenceWorkspace = (() => {
     }
     const drafts=collection.drafts.filter(d=>d.draftId!==draftId);if(value!==null)drafts.push(value);
     const orphans=collection.orphans.filter(id=>value!==null || id!==draftId);
-    const valueNext=P.Features.gridDraftValue(drafts,orphans,false,readFeatureAttachment(P.Features.GRID_KIND)?.schema===P.Features.GRID_DRAFTS_SCHEMA);
+    const storedGrid=value===null; // Removal retains only unchanged, already stored drafts.
+    const valueNext=P.Features.gridDraftValue(drafts,orphans,storedGrid,readFeatureAttachment(P.Features.GRID_KIND)?.schema===P.Features.GRID_DRAFTS_SCHEMA);
     const projected=P.Features.gridLifecycleValue(valueNext);
     const projectedRecords=(context().featureAttachments||[]).filter(record=>record.kind!==P.Features.GRID_KIND);
-    if(projected)projectedRecords.push(P.Features.record(P.Features.GRID_KIND,projected));
-    assertMetadataCapacity({featureAttachments:projectedRecords});
-    setFeatureAttachment(P.Features.GRID_KIND,valueNext,expectedContextToken,{gridWrite:gridDraftWrite});
+    if(projected)projectedRecords.push(P.Features.record(P.Features.GRID_KIND,projected,storedGrid));
+    if(storedGrid)P.assertManifestCapacity(manifestData({...context(),featureAttachments:projectedRecords}),"",true);
+    else assertMetadataCapacity({featureAttachments:projectedRecords});
+    setFeatureAttachment(P.Features.GRID_KIND,valueNext,expectedContextToken,{gridWrite:gridDraftWrite,storedGrid});
     return readGridDraft(draftId);
   }
   async function repinGridDraft(draftId,expectedBaseFingerprint,expectedContextToken) {
@@ -586,7 +588,7 @@ const ReferenceWorkspace = (() => {
           current.drafts.length===1 && value!==null && value.draftId!==current.drafts[0].draftId || value?.schema===P.Features.GRID_DRAFTS_SCHEMA)
         throw new Error("舊網格草稿介面不能取代集合或失效草稿。");
     }
-    const proposal = featureProposal(kind,value), previous = readFeatureAttachment(kind);
+    const proposal = featureProposal(kind,value,kind===P.Features.GRID_KIND&&options.gridWrite===gridDraftWrite&&options.storedGrid===true), previous = readFeatureAttachment(kind);
     if (sameModelData(previous, value)) return previous;
     const next = structuredClone(proposal);
     if (!groupedRoom) history.push(history.snapshot(), "local", kind === P.Features.CASE_KIND ? "保留規則案例" : kind === E.KIND ? "編輯參數證據" : kind === P.Features.ROOM_KIND ? "編輯房間來源" : value === null ? "捨棄網格編輯草稿" : "編輯網格草稿");

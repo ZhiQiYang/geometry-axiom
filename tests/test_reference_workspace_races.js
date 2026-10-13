@@ -69,6 +69,8 @@ nodeTest('K2a P064 confirmation preflight rejects an over-budget manifest before
     w.context().featureAttachments=[P.Features.record(P.Features.GRID_KIND,{schema:P.Features.GRID_DRAFTS_SCHEMA,drafts:[d,other],orphans:[]},true)];
     w.context().engineeringDrafts=Array.from({length:34},(_,i)=>({id:'budget-'+i,kind:'material',base_ref:null,data:{raw:'x'.repeat(250000)},updated_at:'2026-10-12T00:00:00Z'}));
     const before=JSON.stringify(w.history.snapshot()),count=w.history.undo.length;
+    assert.throws(()=>w.setGridDraft(other.draftId,null,token),/容量|上限|8 MB/,'ordinary removal still validates the complete manifest');
+    assert.equal(JSON.stringify(w.history.snapshot()),before);assert.equal(w.history.undo.length,count);
     assert.throws(()=>w.prepareFeatureConfirmation(991,'grid-draft',other,token),/容量|上限|8 MB/,'prepare must reject an unrepresentable remaining singleton');
     assert.equal(w.hasFeatureConfirmation(991),false);assert.equal(JSON.stringify(w.history.snapshot()),before);assert.equal(w.history.undo.length,count);
   }
@@ -89,6 +91,34 @@ nodeTest('K2a P064 confirmation preflight rejects an over-budget manifest before
   const current=w.context().featureAttachments.find(r=>r.kind===P.Features.GRID_KIND).value.drafts.find(row=>row.draftId===d.draftId);
   w.context().engineeringDrafts=Array.from({length:34},(_,i)=>({id:'budget-'+i,kind:'material',base_ref:null,data:{raw:'x'.repeat(250000)},updated_at:'2026-10-12T00:00:00Z'}));
   const before=JSON.stringify(w.history.snapshot());assert.throws(()=>w.beginFeatureConfirmation(993),/容量|上限|8 MB/);assert.equal(JSON.stringify(w.history.snapshot()),before);
+});
+test('K2a review B1 legacy live-ref capacity survives ordinary discard, UndoRedo and cold ZIP',async()=>{
+  const C=require('./test_grid_drafts_lifecycle_capacity.js');
+  // Frozen ZIP was written by the unmodified 9e136db writer before lost reserves.
+  const bytes=fs.readFileSync(require('node:path').join(__dirname,'fixtures/k2a-legacy-live-ref-9e136db.gcanvas'));
+  const old=await P.unpack(new Uint8Array(bytes),zip),f=await fixture(),w=f.w;
+  w.context().featureAttachments=structuredClone(old.manifest.featureAttachments.records);
+  // sync() refreshes oc.underlays; native geometry and API calls must stay unchanged.
+  const geometry=()=>JSON.stringify([f.env.oc.faces,f.env.oc.bmap]);
+  const token=w.getProjectState().contextToken,before=w.readGridDrafts(),world=geometry(),history=w.history.undo.length;
+  const capacity=before.drafts.find(d=>d.draftId==='capacity');
+  assert.equal(C.bytes(capacity),131072);assert.equal(capacity.baseRef.id,1);
+  assert.deepEqual(capacity.inputRefs.map(r=>[r.kind,r.id,r.lost]),[['grid-system',2,undefined]]);
+  assert.match(old.scene,/grid-system 1 /);assert.match(old.scene,/grid-system 2 /);
+  assert.doesNotThrow(()=>w.setGridDraft('other',null,token),'B1: discard must preserve unchanged 131072-byte legacy draft with live inputRef');
+  const remaining={drafts:[capacity],orphans:[]};assert.deepEqual(w.readGridDrafts(),remaining);
+  assert.equal(w.history.undo.length,history+1);assert.equal(geometry(),world);assert.equal(f.calls.length,0);
+  assert.equal(w.tryLocalHistory('line undo').ok,true);assert.deepEqual(w.readGridDrafts(),before);
+  assert.equal(w.tryLocalHistory('line redo').ok,true);assert.deepEqual(w.readGridDrafts(),remaining);
+  const sourceMap=new Map([[f.source.meta.id,f.source.bytes]]),saved=await P.pack(old.scene,await w.manifest(),sourceMap,zip),cold=await P.unpack(saved,zip);
+  assert.equal(cold.scene,old.scene);assert.equal(cold.manifest.format,P.GRID_DRAFTS_FORMAT);
+  assert.deepEqual(P.Features.gridDrafts(cold.manifest.featureAttachments.records.find(r=>r.kind===P.Features.GRID_KIND).value),remaining);
+  const state=w.getProjectState(),count=w.history.undo.length,changed=structuredClone(capacity),fresh=structuredClone(capacity);
+  const form=changed.ruleDraft.rawForm;form[Object.keys(form).find(k=>form[k].length<4096)]+='x';fresh.draftId='new';
+  assert.throws(()=>w.setGridDraft(capacity.draftId,changed,state.contextToken),/容量|上限/,'B1: real content changes still require admission reserves');
+  assert.throws(()=>w.setGridDraft(fresh.draftId,fresh,state.contextToken),/容量|上限/,'B1: new drafts still require admission reserves');
+  assert.deepEqual(w.getProjectState(),state);assert.equal(w.history.undo.length,count);assert.deepEqual(w.readGridDrafts(),remaining);
+  assert.equal(geometry(),world);assert.equal(f.calls.length,0);
 });
 test('K2a P064 ordinary discard preserves large normal singleton ZIP raw and local UndoRedo',async()=>{
  const C=require('./test_grid_drafts_lifecycle_capacity.js');for(const size of [130956,131072]){const {w,source}=await fixture(),token=w.getProjectState().contextToken,d=C.largeDraft();d.inputRefs=[];C.pad(d,size);const other=k2aDraft('other',true);other.baseRef.id=2;const empty=JSON.stringify(w.history.snapshot());assert.throws(()=>w.setGridDraft(d.draftId,d,token),/容量|上限/);assert.equal(JSON.stringify(w.history.snapshot()),empty);w.setGridDraft(other.draftId,other,token);w.setGridDraft(d.draftId,d,token);const before=w.readGridDrafts();assert.doesNotThrow(()=>w.setGridDraft(other.draftId,null,token),'P064 removal must keep the bounded collection');assert.deepEqual(w.readGridDrafts(),{drafts:[d],orphans:[]});const opened=await P.unpack(await P.pack('',await w.manifest(),new Map([[source.meta.id,source.bytes]]),zip),zip);assert.equal(opened.manifest.format,P.GRID_DRAFTS_FORMAT);assert.deepEqual(opened.manifest.featureAttachments.records[0].value.drafts[0],d);w.tryLocalHistory('line undo');assert.deepEqual(w.readGridDrafts(),before);w.tryLocalHistory('line redo');assert.deepEqual(w.readGridDrafts(),{drafts:[d],orphans:[]});}
