@@ -98,6 +98,16 @@
 - 跑 native(`ulimit -s 16384`),確認數量與 expected 相符。推送後留言,附新的完整 head 和原始輸出。
 - 完成後,它就能上下一班列車。
 
+**指定任務 10:依 P-089 修 #212 的 test_binaries 間歇失敗(2026-10-13 18:30 Claude 指定;優先)**
+- 領取分支:`fix/212-binaries-ctime-test-20261013`,base = main。
+- 照 #212 上的【Claude 裁決】P-089(https://github.com/ZhiQiYang/geometry-axiom/issues/212#issuecomment-6143528242)。採 A,只修測試:
+  - 改寫前先等 ctime 刻度前進一格,等待有上限。
+  - `_identity_signature` 只補限制說明,不改行為。
+  - 原斷言與期望數都不改。
+- 突變:把 ctime 從簽章拿掉,修好的測試必須每次都失敗。
+- 雲端可以先跑 200 次加突變。WSL/ext4 的 200 次驗收由本機工人排;開 draft PR 時寫明「待本機 WSL/ext4 200 次」。
+- 屬測試類,只需 native。
+
 **指定任務 7:落地前的雲端預驗(advisory)**
 - 領取分支:`ops/claim-t5-preverify-20261013`,只當鎖用,不開 PR。
 - 依序處理 open PR:#187、#191、#199、#201、#200、#206、#192、#193、#196、#202、#207、#190、#186,已合併或已關閉的跳過。
