@@ -17,7 +17,7 @@
 | ZIP generate（3 次） | 8.139 | 2.843 |
 | deepEqual（5 次） | 0.289 | 0.257 |
 
-這些是 nested inclusive 計時，不能相加。JSON parse 與緊接的容量驗證合併計時；沒有將合併時間誤標為單純 parse。主要成本是產品現有的重複 plain-JSON 容量驗證，縮減 roundtrip 或 payload 會移除原驗收範圍。因此採 P-095 允許的兩案具名預算。正式 WSL train6 回報最慢 5878.7 ms（review comment 6147195327），10000 ms 小於其 3 倍；這份 receipt 沒有宣稱自行執行 WSL。
+這些是 nested inclusive 計時，不能相加。JSON parse 與緊接的容量驗證合併計時；沒有將合併時間誤標為單純 parse。主要成本是產品現有的重複 plain-JSON 容量驗證，縮減 roundtrip 或 payload 會移除原驗收範圍。因此採 P-095 允許的兩案具名預算。正式 WSL train6 **首跑**最慢為 5878.74943 ms（先前引用四捨五入的 5878.7）；首跑加兩次原 Rule2 補跑的最大值為 **6557.867129 ms**，見 [原 runner 報告 6146574784](https://github.com/ZhiQiYang/geometry-axiom/pull/201#issuecomment-6146574784)。10000 ms 小於三輪最大值的 3 倍；這份 receipt 沒有宣稱自行執行 WSL。
 
 ## 受控移除 / 還原
 
@@ -42,3 +42,11 @@
 修正的 helper 以既定 base-main SHA 為 metadata，child.wait() 後立即保存實際退出碼，最後 exit(code)，再完整重跑同一受測 head。最終 native.stdout/.stderr、native-actual-exit.json、native-receipt.json 與 native-raw.tar.gz 僅屬重跑，不拼接兩輪。archive 只包含本輪時間內重寫的 run_all-logs；native-raw-index.json 標示完整本機原件（含 binary / sidecar）的 SHA 及 log freshness，舊 log 不計作本輪結果。所有 binary 本機原件保留，archive 不重複收錄執行檔。
 
 這是雲端 native 收據；正式七項仍待固定 head 的合併列車，沒有執行或宣稱 WSL/CDP 全量。
+
+## M2 計時範圍更正（2026-10-14）
+
+對照審查 6149716938 與獨立 GET 的原 runner 報告：train6 首跑兩案 5878.74943 / 5466.975161 ms；attempt1 為 5073.326949 / 5977.045559 ms；attempt2 為 6557.867129 / 6023.049008 ms。先前把首跑最大值稱為整體「最慢」的說明不準確，現已同步 README、目前 JS 註解及 PR 正文。
+
+本輪只更正說明與一行 JS 註解，不改 10000 ms 預算、案例本體、原斷言、fixture、Node703 或產品。`m2-comment-proof.json` 核對除該註解外的程式 bytes 與前交付 3f1664f 完全相同；僅做 node --check，不重跑或冒稱新提交有新 native／突變收據。上述 native 仍明列原受測 ade6d7f。
+
+既有 profile／controls 腳本與 receipts 是當時實際執行的原件，保留其原註解及 source SHA，不事後重寫歷史來源。train9 的新首紅及 Rule2 紅燈與 train6 量測分開處理，不以本項說明更正免除。
