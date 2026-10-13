@@ -41,6 +41,8 @@ AXIOM_SHA256 = "9d4f90aacbc863941c1065a6b962f760e7e842c4d7dda55a56c4dc321f9a0f93
 # Packages from the clarified stack keep the existing geometry capabilities.
 PRE_IDENTITY_TRACE_AXIOM_VERSIONS = frozenset({
     ("6992607d0463bba8fae4c409af57a61066dafca2", "c878c355c0c233119686ee1ca2b0ddd2c2fbdb7eb2c8b88896a3a8a6d37cb6ad"),
+    # Main's P-063/P-064 clarification release retains the same model capabilities.
+    ("a393a0f01284433ca20fe8b10d9f21111026e7f1", "b06ffecf4f3b7a907a50d329f2073799d9514daa26b9056380f62ad37e5725ee"),
 })
 # P-049 clarifies the adopted stack without changing this executor's supported
 # geometry semantics or capabilities. Packages from the followed K2a text remain valid.
