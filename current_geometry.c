@@ -11032,17 +11032,17 @@ static bool proj_rebind_aux(
     for (size_t i=0;i<source.guide_count;++i) {
         if (source.guides[i].placement_id!=old_pl->id) continue;
         GuideLine keep,other;
-        bool k=reference_fragment_candidate(&source,old_pl->id,old_pl->id,false,i,&keep,NULL,NULL);
-        bool n=reference_fragment_candidate(&source,old_pl->id,new_pl_id,false,i,&other,NULL,NULL);
-        if (!k && !n) return false;
+        int k=reference_fragment_candidate(&source,old_pl->id,old_pl->id,false,i,&keep,NULL,NULL);
+        int n=reference_fragment_candidate(&source,old_pl->id,new_pl_id,false,i,&other,NULL,NULL);
+        if (k<0 || n<0 || (!k && !n)) return false;
         world->guides[i]=k?keep:other;
     }
     for (size_t i=0;i<source.timber_count;++i) {
         if (!source.timbers[i].placed || source.anchors[i].placement_id!=old_pl->id) continue;
         Timber keep,other; TimberAnchor ka,na;
-        bool k=reference_fragment_candidate(&source,old_pl->id,old_pl->id,true,i,NULL,&keep,&ka);
-        bool n=reference_fragment_candidate(&source,old_pl->id,new_pl_id,true,i,NULL,&other,&na);
-        if (!k && !n) return false;
+        int k=reference_fragment_candidate(&source,old_pl->id,old_pl->id,true,i,NULL,&keep,&ka);
+        int n=reference_fragment_candidate(&source,old_pl->id,new_pl_id,true,i,NULL,&other,&na);
+        if (k<0 || n<0 || (!k && !n)) return false;
         world->timbers[i]=k?keep:other;
         world->anchors[i]=k?ka:na;
     }
