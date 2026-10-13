@@ -1,0 +1,510 @@
+In file included from /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:10019,
+                 from /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/web_bridge.c:25:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/parameters.inc: In function ‘parameter_wrap_error’:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/parameters.inc:184:45: warning: ‘%s’ directive output may be truncated writing up to 511 bytes into a region of size between 0 and 505 [-Wformat-truncation=]
+  184 |     snprintf(out,sizeof out,"%s... -> %.*s%s%s",head,inner_len,inner,inner_len?" -> ":"",root);
+      |                                             ^~
+In file included from /usr/include/stdio.h:980,
+                 from /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:7:
+In function ‘snprintf’,
+    inlined from ‘parameter_wrap_error’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/parameters.inc:184:5:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 8 and 1289 bytes into a destination of size 512
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+In file included from /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:10021:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/engineering.inc: In function ‘eng_resolve’:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/engineering.inc:6:99: warning: ‘%s’ directive output may be truncated writing up to 511 bytes into a region of size 256 [-Wformat-truncation=]
+    6 | static bool eng_fail(const char *text) { snprintf(g_engineering_error,sizeof g_engineering_error,"%s",text); utf8_trim_tail(g_engineering_error); return false; }
+      |                                                                                                   ^~
+......
+  230 |         if(!parameter_coord(w,s->parameter,value))return eng_fail(g_parameter_error);
+      |                                                                   ~~~~~~~~~~~~~~~~~                
+In function ‘snprintf’,
+    inlined from ‘eng_fail’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/engineering.inc:6:42,
+    inlined from ‘eng_resolve’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/engineering.inc:230:58:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin_snprintf’ output between 1 and 512 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+In file included from /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:10020:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/references.inc: In function ‘reference_eval_guide’:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/references.inc:307:209: warning: ‘%s’ directive output may be truncated writing up to 511 bytes into a region of size between 238 and 247 [-Wformat-truncation=]
+  307 |         char message[256];if(g_rule_reference_error[0])snprintf(message,sizeof message,"guide %u: %.210s",g->id,g_rule_reference_error);else if(g_parameter_error[0])snprintf(message,sizeof message,"guide %u: %s",g->id,g_parameter_error);else snprintf(message,sizeof message,"guide %u: invalid/missing reference, axis/surface mismatch, cycle or rational overflow: %.120s",g->id,g->expression);
+      |                                                                                                                                                                                                                 ^~        ~~~~~~~~~~~~~~~~~
+In function ‘snprintf’,
+    inlined from ‘reference_eval_guide’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/references.inc:307:166:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 10 and 530 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+In file included from /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/section_profiles.inc:94,
+                 from /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:10029:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/section_profile_validation.inc: In function ‘sp_rebuild.constprop’:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/section_profile_validation.inc:50:72: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size 192 [-Wformat-truncation=]
+   50 |                 snprintf(m->source_error[f],sizeof m->source_error[f],"%s",g_engineering_error);sp_first_error(first,sizeof first,g_engineering_error);dimensions=false;}}
+      |                                                                        ^~  ~~~~~~~~~~~~~~~~~~~
+In function ‘snprintf’,
+    inlined from ‘sp_rebuild.constprop’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/section_profile_validation.inc:50:17:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin_snprintf’ output between 1 and 256 bytes into a destination of size 192
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/section_profile_validation.inc: In function ‘sp_rebuild.constprop’:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/section_profile_validation.inc:50:72: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size 192 [-Wformat-truncation=]
+   50 |                 snprintf(m->source_error[f],sizeof m->source_error[f],"%s",g_engineering_error);sp_first_error(first,sizeof first,g_engineering_error);dimensions=false;}}
+      |                                                                        ^~  ~~~~~~~~~~~~~~~~~~~
+In function ‘snprintf’,
+    inlined from ‘sp_rebuild.constprop’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/section_profile_validation.inc:50:17:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin_snprintf’ output between 1 and 256 bytes into a destination of size 192
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c: In function ‘apply_section_profile_line’:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6451:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 6451 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6450:5,
+    inlined from ‘apply_section_profile_line’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/section_profiles.inc:155:30:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c: In function ‘apply_parameters_line’:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6451:24: warning: ‘%s’ directive output may be truncated writing up to 511 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 6451 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6450:5,
+    inlined from ‘apply_parameters_line’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/parameters.inc:356:206:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 530 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c: In function ‘apply_parameters_line’:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6451:24: warning: ‘%s’ directive output may be truncated writing up to 511 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 6451 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6450:5,
+    inlined from ‘apply_parameters_line’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/parameters.inc:370:6:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 530 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c: In function ‘apply_scene_line_candidate’:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6451:24: warning: ‘%s’ directive output may be truncated writing up to 767 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 6451 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6450:5,
+    inlined from ‘apply_scene_line_candidate’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/transactions.inc:607:13:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 786 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c: In function ‘apply_assembly_line’:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6451:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 6451 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6450:5,
+    inlined from ‘apply_assembly_line’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/assembly.inc:239:151:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c: In function ‘apply_assembly_line’:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6451:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 6451 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6450:5,
+    inlined from ‘apply_assembly_line’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/assembly.inc:263:6:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/references.inc: In function ‘world_revalidate_candidate’:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/references.inc:266:86: warning: ‘%s’ directive output may be truncated writing up to 511 bytes into a region of size between 238 and 247 [-Wformat-truncation=]
+  266 |             char msg[256];if(g_parameter_error[0])snprintf(msg,sizeof msg,"datum %u: %s",d->id,g_parameter_error);else snprintf(msg,sizeof msg,"datum %u: missing spec, bare mm, unsupported reference or rational overflow",d->id);
+      |                                                                                      ^~        ~~~~~~~~~~~~~~~~~
+In function ‘snprintf’,
+    inlined from ‘reference_eval_datums’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/references.inc:266:51,
+    inlined from ‘reference_rebuild’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/references.inc:529:10,
+    inlined from ‘world_revalidate_candidate’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:8651:18:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 10 and 530 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c: In function ‘apply_space_line’:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6451:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 6451 |              "line %d: %s", line_no, message);
+      |                        ^~
+......
+11922 |         scene_error(path, line_no, message);
+      |                                    ~~~~~~~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6450:5,
+    inlined from ‘apply_space_line’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:11922:9:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c: In function ‘apply_grid_system_line’:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6451:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 6451 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6450:5,
+    inlined from ‘apply_grid_system_line’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/grid_systems.inc:218:9:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c: In function ‘apply_grid_source_rule’:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6451:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 6451 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6450:5,
+    inlined from ‘apply_grid_source_rule’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/grid_subdivision.inc:200:39:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c: In function ‘parse_scene_file’:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6451:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 239 and 248 [-Wformat-truncation=]
+ 6451 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6450:5,
+    inlined from ‘parse_scene_file’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:12596:9:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 273 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c: In function ‘parse_scene_file’:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6451:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 239 and 248 [-Wformat-truncation=]
+ 6451 |              "line %d: %s", line_no, message);
+      |                        ^~
+......
+12592 |     if (ok && !assembly_generation_integrity(out_world)) { scene_error(path,line_no,g_engineering_error); ok=false; }
+      |                                                                                     ~~~~~~~~~~~~~~~~~~~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6450:5,
+    inlined from ‘parse_scene_file’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:12592:60:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 273 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c: In function ‘apply_spec_line’:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6451:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 6451 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6450:5,
+    inlined from ‘reference_checked’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/references.inc:540:5,
+    inlined from ‘reference_checked’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/references.inc:537:13,
+    inlined from ‘apply_spec_line’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/references.inc:552:12:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c: In function ‘apply_datum_line’:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6451:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 6451 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6450:5,
+    inlined from ‘reference_checked’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/references.inc:540:5,
+    inlined from ‘reference_checked’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/references.inc:537:13,
+    inlined from ‘apply_datum_line’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/references.inc:566:12:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c: In function ‘apply_move_line’:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6451:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 6451 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6450:5,
+    inlined from ‘reference_checked’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/references.inc:540:5,
+    inlined from ‘reference_checked’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/references.inc:537:13,
+    inlined from ‘apply_reference_move’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/references.inc:594:16,
+    inlined from ‘apply_move_line’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:10017:10:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c: In function ‘apply_reference_guide’:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6451:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 6451 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6450:5,
+    inlined from ‘reference_checked’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/references.inc:540:5,
+    inlined from ‘reference_checked’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/references.inc:537:13,
+    inlined from ‘apply_reference_guide’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/references.inc:583:28:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c: In function ‘apply_reference_place’:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6451:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 6451 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6450:5,
+    inlined from ‘reference_checked’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/references.inc:540:5,
+    inlined from ‘reference_checked’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/references.inc:537:13,
+    inlined from ‘apply_reference_place’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/references.inc:654:12:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c: In function ‘apply_assembly_owned_line’:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6451:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 6451 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6450:5,
+    inlined from ‘apply_assembly_owned_line’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/assembly_generation.inc:141:170:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c: In function ‘apply_subgrid_line’:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6451:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 6451 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6450:5,
+    inlined from ‘apply_subgrid_line’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/subgrid_commands.inc:63:13:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c: In function ‘apply_subgrid_line’:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6451:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 6451 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6450:5,
+    inlined from ‘apply_subgrid_line’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/subgrid_commands.inc:71:13:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c: In function ‘apply_boundary_keyed_line’:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6451:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 6451 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6450:5,
+    inlined from ‘apply_boundary_keyed_line’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/boundary_vertex_keys.inc:362:9:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c: In function ‘apply_applyproj_line’:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6451:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 6451 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6450:5,
+    inlined from ‘proj_apply_one’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:11363:13,
+    inlined from ‘apply_applyproj_line’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:11531:18:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c: In function ‘apply_applyproj_line’:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6451:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 6451 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6450:5,
+    inlined from ‘proj_apply_one’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:11290:17,
+    inlined from ‘apply_applyproj_line’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:11531:18:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c: In function ‘apply_delete_line’:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6451:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 6451 |              "line %d: %s", line_no, message);
+      |                        ^~
+......
+11651 |                 scene_error(path, line_no, message);
+      |                                            ~~~~~~~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6450:5,
+    inlined from ‘apply_delete_line’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:11651:17:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c: In function ‘apply_grid_line’:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6451:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 6451 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6450:5,
+    inlined from ‘apply_grid_binding_application’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/grid_bindings.inc:153:13,
+    inlined from ‘apply_grid_line’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:9635:16:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/engineering.inc: In function ‘eng_operation’:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/engineering.inc:6:99: warning: ‘%s’ directive output may be truncated writing up to 511 bytes into a region of size 256 [-Wformat-truncation=]
+    6 | static bool eng_fail(const char *text) { snprintf(g_engineering_error,sizeof g_engineering_error,"%s",text); utf8_trim_tail(g_engineering_error); return false; }
+      |                                                                                                   ^~
+In function ‘snprintf’,
+    inlined from ‘eng_fail’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/engineering.inc:6:42,
+    inlined from ‘eng_operation’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/engineering_commands.inc:13:44:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin_snprintf’ output between 1 and 512 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/engineering.inc: In function ‘eng_operation’:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/engineering.inc:6:99: warning: ‘%s’ directive output may be truncated writing up to 511 bytes into a region of size 256 [-Wformat-truncation=]
+    6 | static bool eng_fail(const char *text) { snprintf(g_engineering_error,sizeof g_engineering_error,"%s",text); utf8_trim_tail(g_engineering_error); return false; }
+      |                                                                                                   ^~
+In function ‘snprintf’,
+    inlined from ‘eng_fail’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/engineering.inc:6:42,
+    inlined from ‘eng_operation’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/engineering_commands.inc:9:103:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin_snprintf’ output between 1 and 512 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/engineering.inc: In function ‘eng_operation’:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/engineering.inc:6:99: warning: ‘%s’ directive output may be truncated writing up to 511 bytes into a region of size 256 [-Wformat-truncation=]
+    6 | static bool eng_fail(const char *text) { snprintf(g_engineering_error,sizeof g_engineering_error,"%s",text); utf8_trim_tail(g_engineering_error); return false; }
+      |                                                                                                   ^~
+In function ‘snprintf’,
+    inlined from ‘eng_fail’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/engineering.inc:6:42,
+    inlined from ‘eng_operation’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/engineering_commands.inc:6:106:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin_snprintf’ output between 1 and 512 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c: In function ‘apply_engineering_line’:
+/tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6451:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size 248 [-Wformat-truncation=]
+ 6451 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../current_geometry.c:6450:5,
+    inlined from ‘reference_checked’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/references.inc:540:5,
+    inlined from ‘reference_checked’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/references.inc:537:13,
+    inlined from ‘eng_restore_grid’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/engineering_commands.inc:136:12,
+    inlined from ‘apply_engineering_line’ at /tmp/geometry217-postmerge-fragment-gate/fault-source/geometry-web/../geometry-core/engineering_commands.inc:160:42:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 264 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
