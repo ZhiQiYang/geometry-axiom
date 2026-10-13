@@ -1,0 +1,75 @@
+[
+  {
+    "name": "core-build",
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O2",
+      "/workspace/scratch/860de1a99063/geometry-axiom/current_geometry.c",
+      "-lm",
+      "-o",
+      "/tmp/geometry217-gate-timeout-fixed/core"
+    ],
+    "exit": 0,
+    "seconds": 6.518784321000567,
+    "timed_out": false,
+    "error": null
+  },
+  {
+    "name": "bridge-build",
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O2",
+      "/workspace/scratch/860de1a99063/geometry-axiom/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/tmp/geometry217-gate-timeout-fixed/bridge"
+    ],
+    "exit": 0,
+    "seconds": 8.816199352000694,
+    "timed_out": false,
+    "error": null
+  },
+  {
+    "name": "fault-build",
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O2",
+      "/tmp/geometry217-gate-timeout-fixed/fault-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/tmp/geometry217-gate-timeout-fixed/fault-bridge"
+    ],
+    "exit": 0,
+    "seconds": 8.748470041002292,
+    "timed_out": false,
+    "error": null
+  },
+  {
+    "name": "stack-regression",
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "/workspace/scratch/860de1a99063/geometry-axiom/tests/diagnostics/reference_fragment_stack.py",
+      "/tmp/geometry217-gate-timeout-fixed/core",
+      "/tmp/geometry217-gate-timeout-fixed/bridge"
+    ],
+    "exit": 0,
+    "seconds": 0.12604102199838962,
+    "timed_out": false,
+    "error": null
+  },
+  {
+    "name": "oom-regression",
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "/workspace/scratch/860de1a99063/geometry-axiom/tests/diagnostics/fragment_oom.py",
+      "/tmp/geometry217-gate-timeout-fixed/fault-bridge"
+    ],
+    "exit": 0,
+    "seconds": 0.17640296000172384,
+    "timed_out": false,
+    "error": null
+  }
+]

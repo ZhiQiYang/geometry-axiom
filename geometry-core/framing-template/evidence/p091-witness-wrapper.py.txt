@@ -1,0 +1,35 @@
+from pathlib import Path
+import subprocess,json,hashlib,sys,math
+r=Path('/tmp/geometry-framing-proposal/geometry-core/framing-template'); e=r/'evidence'
+base=Path('/tmp/framing-p091-column.scene').read_text()
+extra='spec mainLeft 916\nguide 5 1 v spec:mainLeft\ntimber 7 27 33 role primary\nplace 7 on 1 at-line guide 5 between t1 t2 +v +n\nspec subLine 5900\nguide 6 1 u spec:subLine\ntimber 8 27 33 role secondary\nplace 8 on 1 at-line guide 6 through 1100 +u +n\n'
+positive=base+extra
+cut=base.index('timber 3 ')
+negative=base[:cut]+extra+base[cut:]
+records=[]
+exe=Path('/tmp/framing-proposal-binaries/core')
+for name,scene,expected in [('column-first',positive,0),('column-after-secondary',negative,1)]:
+ path=e/f'p091-{name}.scene.txt'; path.write_text(scene)
+ proc=subprocess.run([str(exe),'--scene',str(path),'--no-window','--out',f'/tmp/p091-{name}.svg'],capture_output=True,text=True)
+ (e/f'p091-{name}.log').write_text(proc.stdout+proc.stderr)
+ assert proc.returncode==expected,(name,proc.returncode,proc.stderr)
+ records.append({'case':name,'command':[str(exe),'--scene',str(path),'--no-window','--out',f'/tmp/p091-{name}.svg'],'exit':proc.returncode})
+# Independent interval witness only, not panel-fill product / template execution.
+script='''import sys,json,math
+gap=int(sys.argv[1]); mode=sys.argv[2]
+P=915; c=P+gap//2; footprint=[c-13,c+14]
+def overlap(a,b): return max(0,min(a[1],b[1])-max(a[0],b[0]))
+left=overlap(footprint,[0,P]); right=overlap(footprint,[P+gap,2*P+gap])
+accepted=(left>=8 and right>=8) if mode=="check" else True
+print(json.dumps(dict(gap=gap,X=8,footprint=footprint,bearing=[left,right],accepted=accepted,diagnostic="FT06_BEARING" if not accepted else None)))
+# Deliberately expects green; the insufficient fixture must exit red.
+sys.exit(0 if accepted else 1)
+'''
+helper=Path('/tmp/p091-bearing.py'); helper.write_text(script)
+(e/'p091-bearing-witness.py.txt').write_text(script)
+for gap,mode,expected in [(2,'check',0),(12,'check',1),(12,'omit',0),(12,'check',1)]:
+ proc=subprocess.run([sys.executable,str(helper),str(gap),mode],capture_output=True,text=True)
+ assert proc.returncode==expected
+ records.append({'case':'bearing-independent-interval-witness','gap':gap,'mode':mode,'exit':proc.returncode,'stdout':proc.stdout,'stderr':proc.stderr})
+(e/'p091-witness-results.json').write_text(json.dumps({'scope':'Core generic D7 column fixture and independent interval-bearing witness; no R45 or template execution','core_sha256':hashlib.sha256(exe.read_bytes()).hexdigest(),'records':records},ensure_ascii=False,indent=2)+'\n')
+print(json.dumps(records,ensure_ascii=False))

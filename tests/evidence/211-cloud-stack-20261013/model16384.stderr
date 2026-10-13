@@ -1,0 +1,10 @@
+211-stagger-source8.scene:12: I24：有相位差的主格不能建立子網格
+I8a preview 1: invalid; cannot apply
+ timber 90 center 10 -> 10 length 4000 -> 4000
+  surface 1 origin [20,0,0] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [20,0,0] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 91 center 1990 -> 1990 length 4000 -> 4000
+  surface 1 origin [2000,0,0] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [2000,0,0] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 1 center 1830 -> 1830 length 1960 -> 1960
+  surface 1 origin [20,1817,0] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [20,1817,0] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 0 I8 expected: all world invariants pass; actual: line 12: I24：有相位差的主格不能建立子網格
+211-stagger-source8.scene:12: I8a: impact preview required (World unchanged); line 12: I24：有相位差的主格不能建立子網格
