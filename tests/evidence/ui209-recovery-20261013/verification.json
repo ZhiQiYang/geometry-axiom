@@ -1,0 +1,91 @@
+{
+  "sourceComparisons": {
+    "p70-vs-195": {
+      "reference": "0c437b7d1a404643fd9e00b3c07718e943a6d757",
+      "count": 435,
+      "mismatches": [],
+      "compilerClosurePaths": 42
+    },
+    "p88-vs-b406": {
+      "reference": "b40620cd433ae36c6a3905c4293313dfd6e7f745",
+      "count": 434,
+      "mismatches": [],
+      "compilerClosurePaths": 42
+    }
+  },
+  "archive": {
+    "name": "raw.tar.xz",
+    "bytes": 2865276,
+    "sha256": "89a7ea908a7fb3d0957d1103d45f00b11c5de55d2a305b589b5a5bfcf7d6f5ba",
+    "members": 328
+  },
+  "runs": 8,
+  "toolVersions": 9,
+  "checks": [
+    {
+      "argv": [
+        "node",
+        "--check",
+        "tests/diagnostics/ui209_browser.cjs"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "--check",
+        "tests/diagnostics/ui209_instrument.cjs"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "--check",
+        "tests/diagnostics/ui209_observer.js"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "py_compile",
+        "tests/diagnostics/ui209_run.py",
+        "tests/diagnostics/ui209_server.py",
+        "tests/diagnostics/ui209_summarize.py"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "python3",
+        "tests/diagnostics/ui209_summarize.py",
+        "/tmp/ui209-verify-e_wspgor"
+      ],
+      "exit": 0,
+      "summaryByteIdentical": true,
+      "stderr": ""
+    }
+  ],
+  "rawManifestVerified": 328,
+  "summaryRecomputedFromFreshExtraction": true
+}
