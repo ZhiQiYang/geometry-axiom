@@ -27,6 +27,45 @@
 - 領取:先確認遠端沒有分支 `feat/sketchup-framing-plugin-20261013`;沒有就建立並 push 佔位提交,再照 SKP.md 做。
 - 驗收照 SKP.md:插件測試、突變、SketchUp 內驗收腳本。不跑 geometry-axiom 的 7 項(P-074)。
 
+### 指定任務 4～7(2026-10-13 13:55 Claude 指定;每項只要一個人做;不受「步驟 B 暫停」限制)
+共同規則:
+- 領取方式同上:先確認遠端沒有該項的「領取分支」;沒有就從 origin/main 建立,`git commit --allow-empty -m "chore: claim <任務代號>"`,push 成功才算領到,被拒就換下一項。
+- 不使用本機 WSL;測試在你自己的雲端環境跑。native 一律先 `ulimit -s 16384`。
+- 每 20 分鐘推送一次進度。證據是原始輸出加 exit code,不貼整包 base64。
+- 不改 `公理層.md`、白話、正典閱讀器、🔒 行和 `sketchup-plugin/`。
+
+**指定任務 4:#215 的 Linux 實測(issue #212)**
+- 領取分支:`ops/claim-t1-215-linux-20261013`,只當鎖用。實際工作推到 PR #215 的分支 `fix/212-binaries-ctime-flake-20261013`。
+- 照 #215 正文的工具與說明,在 Linux 跑 200 次 control 加 200 次 observed。結果和原始數據貼到 #212,寫明 ctime 刻度推測成立或不成立。
+- 推測成立時,另做兩個修法草案,各附突變測試:A 只修測試;B 修 `tests/binaries.py`。PR 標題寫明「待 Claude 裁決用哪個方案」。
+
+**指定任務 5:#209 UI 控制項失敗時的現場診斷**
+- 領取分支:`test/209-control-diagnostics-20261013`。先讀 #209,以及 #208 上的 P-077 和它的補充。
+- 只改失敗路徑:在 `ux_refinement_test.js` 第二分頁的 `control()`(約 :218)和 `grid_rule_editor_test.js` 的 `ctl`,失敗當下把以下資料寫進錯誤訊息:
+  - 按鈕的 rect、`disabled`
+  - `elementFromPoint` 命中節點 `outerHTML` 的前 200 字
+  - 選單容器的 display/visibility、`#fileMenuBtn` 的展開狀態
+  - 現有 `diagnostics()` 的輸出
+- 不改任何等待、逾時、斷言或期望數。開工前確認沒有其他 open PR 正在改這兩個檔。
+- 驗證:兩個檔都要過 `node --check`;有 Chrome 就跑對應的子集。開 draft PR,註明這是測試類,依規則只需 native + canvas + grid。
+
+**指定任務 6:#211 native 測試的堆疊用量超過 8 MiB**
+- 領取分支:`fix/211-native-stack-20261013`。先讀 #211。
+- 8 MiB 和 16 MiB 各跑一次 native,找出只在 8 MiB 下崩潰的案例,定位 `current_geometry.c` 的最深遞迴鏈,並量出實際堆疊深度。報告貼到 #211。
+- `current_geometry.c` 是統一 CRLF,用二進位模式讀寫。
+- 只有能用對照證明行為不變時才修;修了就開 draft PR,註明這是產品程式,要走合併列車跑 7 項。
+
+**指定任務 7:落地前的雲端預驗(advisory)**
+- 領取分支:`ops/claim-t5-preverify-20261013`,只當鎖用,不開 PR。
+- 依序處理 open PR:#187、#191、#199、#201、#200、#206、#192、#193、#196、#202、#207、#190、#186,已合併或已關閉的跳過。
+- 每個 PR 的最新 head:先用 `git merge-tree --write-tree origin/main <head>` 檢查衝突,再跑 native。
+- 結果以「【Codex】雲端預驗(advisory)」留言到該 PR,內容包含:
+  - 完整 head SHA
+  - 衝突有無
+  - pass/fail/skip 數、失敗測試名稱、exit code、耗時
+  - 環境說明(OS、gcc、python、ulimit)
+- 註明「這不是正式 WSL 收據」。不寫「等 Claude 裁決」,除非 PR 獨有的失敗需要裁決。
+
 ## 步驟 A:先處理自己 PR 上的審查意見(優先)
 看下表「本線的 PR」。若某個 PR 上最新的「【dot】」、「【ChatGPT 審查】」或「【Claude 裁決】」留言,晚於該 PR 上最新的「【Codex】」留言,而且其中有「阻擋」或「須改」項目,或是一則要求實作的裁決:就處理那個 PR(成立就修,測試先行+突變;不成立就附條號與證據回覆),在該 PR 留「【Codex】」逐項回覆後結束。一次只處理一個 PR。
 
