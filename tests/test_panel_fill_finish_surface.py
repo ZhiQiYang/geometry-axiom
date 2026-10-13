@@ -474,7 +474,7 @@ class FinishSurfaceNative(unittest.TestCase):
         self.assertNotIn("panel-fill/1", dump["capabilities"], "I32: PF-1 alone is not complete panel-fill/1")
         self.assertIn("panel-fill-native/1", dump["native_capabilities"])
         read = self.read()
-        self.assertEqual(["finish-surface"], read["supportedRecords"])
+        self.assertEqual(["finish-surface", "panel-fill"], read["supportedRecords"])
         self.assertFalse(read["complete"])
 
     def test_reopen_rejects_tampered_or_undeclared_records(self):
@@ -493,7 +493,7 @@ class FinishSurfaceNative(unittest.TestCase):
         self.load_fails(BASE + head + record.replace("side +n", "side +1"), "finish-surface id on boundary")
         self.load_fails(BASE + head + record + record, "duplicate")
         self.load_fails(head + record + BASE, "I52")
-        self.load_fails(BASE + head + record + "panel-fill trial 1\n", "不認得的指令")
+        self.load_fails(BASE + head + record + "panel-fill trial 1\n", "欄位數不對")
         self.load_fails(BASE + head + record + "delete column 1\n", "I55")
         self.load_fails(BASE + head.replace("panel-fill/1", "panel-fill/2") + record, "I32")
 
