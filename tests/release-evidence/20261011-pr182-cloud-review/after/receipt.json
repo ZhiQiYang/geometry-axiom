@@ -1,0 +1,316 @@
+{
+  "phase": "after",
+  "head": "aa4067b3a4343329a5fba261453c9032bb60290a",
+  "status_before": " M geometry-core/SECTION-PROFILE-NATIVE-CONTRACT.md\n M tests/release-evidence/20261010-q38-i44/README.md\n M tests/release-evidence/20261010-q38-i44/SHA256SUMS.txt\n M tests/section_profile_mutation_check.py\n?? tests/release-evidence/20261011-pr182-cloud-review/\n",
+  "gate_sha256": "b4ac6fab6d6bf811a204f062c310aa7f3188a710d381e87d5fcf59c21087b6ff",
+  "test_sha256": "0f91a972c167e9f5e24bb8a61e9878294dbe5cb11ae58adf32fdd4f7e58b5c9a",
+  "shared_predicate_owner": "e37c06826d3ed5503117a47d6e3699908e2804b6",
+  "owner_core_sha256": "44e77eb73e556b1653104d9075eb662ab5d82f7011ac9c79c31c16cdc5248606",
+  "case": {
+    "group": "native",
+    "id": "SPM41",
+    "clause": "I44",
+    "desc": "a single positive-area outside region is incorrectly treated as contained",
+    "file": "geometry-core/section_profile_validation.inc",
+    "before": "return n;",
+    "after": "return n>1?n:0;",
+    "tests": [
+      "test_concave_not_four_corners_and_winding"
+    ],
+    "cause": [
+      "expected rejection 'V_PROFILE_OUTSIDE'"
+    ],
+    "equivalent": null
+  },
+  "contexts": {
+    "pr182": {
+      "source_digest": "69687d1978f17ecd1c76e823cff5b4419a20957b1bb555e080498f37f15ba862",
+      "core_sha256": "4130623fce97cefd03e3b8534636b9ddb8d8b109875262239f1726bdae6b4aa8",
+      "validation_sha256": "63e9980d422fc8709165335b1d1193c29df2dc889fb94237bae644a853964a89",
+      "runs": {
+        "baseline": {
+          "compile": {
+            "command": [
+              "cc",
+              "-std=c11",
+              "-O2",
+              "/tmp/pr182-spm41-uufsnz0t/pr182/geometry-web/web_bridge.c",
+              "-lm",
+              "-o",
+              "/tmp/pr182-spm41-uufsnz0t/pr182-baseline"
+            ],
+            "cwd": "/workspace/geometry-axiom",
+            "exit": 0,
+            "seconds": 14.541769587998715,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "test": {
+            "command": [
+              "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+              "-c",
+              "import sys, unittest\nfrom unittest.mock import patch\nimport importlib\nmodule = importlib.import_module('tests.test_section_profile_native')\nexe = sys.argv.pop(1)\nwith patch.object(module, \"find_bridge\", return_value=exe):\n    unittest.main(module=None, argv=[\"x\", \"-v\", *sys.argv[1:]])\n",
+              "/tmp/pr182-spm41-uufsnz0t/pr182-baseline",
+              "tests.test_section_profile_native.SectionProfileNative.test_ac01_03_08_independent_rectangles_volumes_and_scope",
+              "tests.test_section_profile_native.SectionProfileNative.test_ac09_advanced_axes_and_vertex_range",
+              "tests.test_section_profile_native.SectionProfileNative.test_all_bad_dimension_dependents_are_diagnosed",
+              "tests.test_section_profile_native.SectionProfileNative.test_all_cardinal_frames_and_four_host_directions_are_exact",
+              "tests.test_section_profile_native.SectionProfileNative.test_all_violations_exact_regions_and_retained_rectangles",
+              "tests.test_section_profile_native.SectionProfileNative.test_atomic_preview_cancel_wrong_kind_stale_undo_redo",
+              "tests.test_section_profile_native.SectionProfileNative.test_concave_not_four_corners_and_winding",
+              "tests.test_section_profile_native.SectionProfileNative.test_conversion_reports_all_unsatisfied_conditions_and_zero_writes",
+              "tests.test_section_profile_native.SectionProfileNative.test_each_capacity_rejects_without_partial_writes",
+              "tests.test_section_profile_native.SectionProfileNative.test_exact_dump_load_zero_ids_empty_profile_and_fail_closed",
+              "tests.test_section_profile_native.SectionProfileNative.test_live_host_follow_detach_conversion_and_atomic_delete",
+              "tests.test_section_profile_native.SectionProfileNative.test_live_host_shrink_lists_each_run_and_pending_reads_preserve_token",
+              "tests.test_section_profile_native.SectionProfileNative.test_maximum_pair_diagnostics_and_copied_host_capacity_roundtrip",
+              "tests.test_section_profile_native.SectionProfileNative.test_named_sources_rebuild_and_explicit_dependency_transaction",
+              "tests.test_section_profile_native.SectionProfileNative.test_named_spec_preview_discloses_legacy_geometry_without_profiles",
+              "tests.test_section_profile_native.SectionProfileNative.test_panel_strict_width_fixed_spec_and_long_run",
+              "tests.test_section_profile_native.SectionProfileNative.test_parameter_zero_ids_types_and_fixed_material_sources_roundtrip",
+              "tests.test_section_profile_native.SectionProfileNative.test_profile_geometry_and_coordinate_rejections",
+              "tests.test_section_profile_native.SectionProfileNative.test_shared_parameter_preview_cancel_tokens_and_history_both_domains",
+              "tests.test_section_profile_native.SectionProfileNative.test_shrink_reject_and_expand_loses_right_contact",
+              "tests.test_section_profile_native.SectionProfileNative.test_simple_copied_host_ac24_and_fresh_scene_roundtrip",
+              "tests.test_section_profile_native.SectionProfileNative.test_simple_holes_closed_boundary_vertical_direction_and_invalid_up",
+              "tests.test_section_profile_native.SectionProfileNative.test_source_only_native_preview_discloses_material_publication",
+              "tests.test_section_profile_native.SectionProfileNative.test_touch_edges_points_and_cross_kind_overlap",
+              "tests.test_section_profile_native.SectionProfileNative.test_upstream_engineering_and_parameter_failure_still_lists_each_profile_dependent"
+            ],
+            "cwd": "/workspace/geometry-axiom",
+            "exit": 0,
+            "seconds": 7.115512742999272,
+            "log_sha256": "d2e253d85daaf62fb7ef442a528f831342b979e6089001011a559bbdb54209fa"
+          },
+          "binary_sha256": "7efc042fc04f1549ea891354d2c69a13e2e7647fb69b6da15807b2886f056e13",
+          "skips": false,
+          "failures": []
+        },
+        "mutant": {
+          "compile": {
+            "command": [
+              "cc",
+              "-std=c11",
+              "-O2",
+              "/tmp/pr182-spm41-uufsnz0t/pr182/geometry-web/web_bridge.c",
+              "-lm",
+              "-o",
+              "/tmp/pr182-spm41-uufsnz0t/pr182-mutant"
+            ],
+            "cwd": "/workspace/geometry-axiom",
+            "exit": 0,
+            "seconds": 12.321506191998196,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "test": {
+            "command": [
+              "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+              "-c",
+              "import sys, unittest\nfrom unittest.mock import patch\nimport importlib\nmodule = importlib.import_module('tests.test_section_profile_native')\nexe = sys.argv.pop(1)\nwith patch.object(module, \"find_bridge\", return_value=exe):\n    unittest.main(module=None, argv=[\"x\", \"-v\", *sys.argv[1:]])\n",
+              "/tmp/pr182-spm41-uufsnz0t/pr182-mutant",
+              "tests.test_section_profile_native.SectionProfileNative.test_concave_not_four_corners_and_winding"
+            ],
+            "cwd": "/workspace/geometry-axiom",
+            "exit": 1,
+            "seconds": 0.23022459899948444,
+            "log_sha256": "f750fec26ae69ec355a8c92ec8f259f8c30d77e1e6dc34dcc13409d4925f8416"
+          },
+          "binary_sha256": "f9223ac84791cca7b5c9ec95899510698581a8b5a6d917e6bb571694d6190335",
+          "skips": false,
+          "failures": [
+            [
+              "FAIL",
+              "test_concave_not_four_corners_and_winding"
+            ]
+          ],
+          "verdict": {
+            "exit": 1,
+            "failed": [
+              "FAIL test_concave_not_four_corners_and_winding"
+            ],
+            "first_failure": "True is not false : expected rejection 'V_PROFILE_OUTSIDE' but the candidate was accepted: {'token': 2, 'valid': True, 'revision': 12, 'diagnosticsComplete': True, 'validationStrategy': 'all-section-profile-violations', 'before': {'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule",
+            "verdict": "killed"
+          }
+        },
+        "restored": {
+          "compile": {
+            "command": [
+              "cc",
+              "-std=c11",
+              "-O2",
+              "/tmp/pr182-spm41-uufsnz0t/pr182/geometry-web/web_bridge.c",
+              "-lm",
+              "-o",
+              "/tmp/pr182-spm41-uufsnz0t/pr182-restored"
+            ],
+            "cwd": "/workspace/geometry-axiom",
+            "exit": 0,
+            "seconds": 12.304730437001126,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "test": {
+            "command": [
+              "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+              "-c",
+              "import sys, unittest\nfrom unittest.mock import patch\nimport importlib\nmodule = importlib.import_module('tests.test_section_profile_native')\nexe = sys.argv.pop(1)\nwith patch.object(module, \"find_bridge\", return_value=exe):\n    unittest.main(module=None, argv=[\"x\", \"-v\", *sys.argv[1:]])\n",
+              "/tmp/pr182-spm41-uufsnz0t/pr182-restored",
+              "tests.test_section_profile_native.SectionProfileNative.test_concave_not_four_corners_and_winding"
+            ],
+            "cwd": "/workspace/geometry-axiom",
+            "exit": 0,
+            "seconds": 0.4108607150010357,
+            "log_sha256": "4edf508b3b9349df380ecbea5affa4ea23b5f05f523ed30166e60be443ae4acc"
+          },
+          "binary_sha256": "7efc042fc04f1549ea891354d2c69a13e2e7647fb69b6da15807b2886f056e13",
+          "skips": false,
+          "failures": []
+        }
+      },
+      "mutated_validation_sha256": "a0e439777ea06fb932ea481449849f7d72e912efc147cc69f104083e7a3f9ab4"
+    },
+    "shared-predicate-192": {
+      "source_digest": "0e697f379a1caf42f953baabd9cc10a2e3d2ab88189b0744609b074cc5474da6",
+      "core_sha256": "36d7e5e872ac35eaf1b9b914438963cfc4d65e7f60ef729678cf10f29ef9eba5",
+      "validation_sha256": "63e9980d422fc8709165335b1d1193c29df2dc889fb94237bae644a853964a89",
+      "runs": {
+        "baseline": {
+          "compile": {
+            "command": [
+              "cc",
+              "-std=c11",
+              "-O2",
+              "/tmp/pr182-spm41-uufsnz0t/shared-predicate-192/geometry-web/web_bridge.c",
+              "-lm",
+              "-o",
+              "/tmp/pr182-spm41-uufsnz0t/shared-predicate-192-baseline"
+            ],
+            "cwd": "/workspace/geometry-axiom",
+            "exit": 0,
+            "seconds": 12.19395209600043,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "test": {
+            "command": [
+              "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+              "-c",
+              "import sys, unittest\nfrom unittest.mock import patch\nimport importlib\nmodule = importlib.import_module('tests.test_section_profile_native')\nexe = sys.argv.pop(1)\nwith patch.object(module, \"find_bridge\", return_value=exe):\n    unittest.main(module=None, argv=[\"x\", \"-v\", *sys.argv[1:]])\n",
+              "/tmp/pr182-spm41-uufsnz0t/shared-predicate-192-baseline",
+              "tests.test_section_profile_native.SectionProfileNative.test_ac01_03_08_independent_rectangles_volumes_and_scope",
+              "tests.test_section_profile_native.SectionProfileNative.test_ac09_advanced_axes_and_vertex_range",
+              "tests.test_section_profile_native.SectionProfileNative.test_all_bad_dimension_dependents_are_diagnosed",
+              "tests.test_section_profile_native.SectionProfileNative.test_all_cardinal_frames_and_four_host_directions_are_exact",
+              "tests.test_section_profile_native.SectionProfileNative.test_all_violations_exact_regions_and_retained_rectangles",
+              "tests.test_section_profile_native.SectionProfileNative.test_atomic_preview_cancel_wrong_kind_stale_undo_redo",
+              "tests.test_section_profile_native.SectionProfileNative.test_concave_not_four_corners_and_winding",
+              "tests.test_section_profile_native.SectionProfileNative.test_conversion_reports_all_unsatisfied_conditions_and_zero_writes",
+              "tests.test_section_profile_native.SectionProfileNative.test_each_capacity_rejects_without_partial_writes",
+              "tests.test_section_profile_native.SectionProfileNative.test_exact_dump_load_zero_ids_empty_profile_and_fail_closed",
+              "tests.test_section_profile_native.SectionProfileNative.test_live_host_follow_detach_conversion_and_atomic_delete",
+              "tests.test_section_profile_native.SectionProfileNative.test_live_host_shrink_lists_each_run_and_pending_reads_preserve_token",
+              "tests.test_section_profile_native.SectionProfileNative.test_maximum_pair_diagnostics_and_copied_host_capacity_roundtrip",
+              "tests.test_section_profile_native.SectionProfileNative.test_named_sources_rebuild_and_explicit_dependency_transaction",
+              "tests.test_section_profile_native.SectionProfileNative.test_named_spec_preview_discloses_legacy_geometry_without_profiles",
+              "tests.test_section_profile_native.SectionProfileNative.test_panel_strict_width_fixed_spec_and_long_run",
+              "tests.test_section_profile_native.SectionProfileNative.test_parameter_zero_ids_types_and_fixed_material_sources_roundtrip",
+              "tests.test_section_profile_native.SectionProfileNative.test_profile_geometry_and_coordinate_rejections",
+              "tests.test_section_profile_native.SectionProfileNative.test_shared_parameter_preview_cancel_tokens_and_history_both_domains",
+              "tests.test_section_profile_native.SectionProfileNative.test_shrink_reject_and_expand_loses_right_contact",
+              "tests.test_section_profile_native.SectionProfileNative.test_simple_copied_host_ac24_and_fresh_scene_roundtrip",
+              "tests.test_section_profile_native.SectionProfileNative.test_simple_holes_closed_boundary_vertical_direction_and_invalid_up",
+              "tests.test_section_profile_native.SectionProfileNative.test_source_only_native_preview_discloses_material_publication",
+              "tests.test_section_profile_native.SectionProfileNative.test_touch_edges_points_and_cross_kind_overlap",
+              "tests.test_section_profile_native.SectionProfileNative.test_upstream_engineering_and_parameter_failure_still_lists_each_profile_dependent"
+            ],
+            "cwd": "/workspace/geometry-axiom",
+            "exit": 0,
+            "seconds": 7.26812644399979,
+            "log_sha256": "c46cfd0057510ecf341207ce6e1e4a47db5b17adfbe9ce6caaf16cda255d8e7a"
+          },
+          "binary_sha256": "2686f1c75efeca6dc61c2f889b411c39c123977792d3861e121ea138450e1e3b",
+          "skips": false,
+          "failures": []
+        },
+        "mutant": {
+          "compile": {
+            "command": [
+              "cc",
+              "-std=c11",
+              "-O2",
+              "/tmp/pr182-spm41-uufsnz0t/shared-predicate-192/geometry-web/web_bridge.c",
+              "-lm",
+              "-o",
+              "/tmp/pr182-spm41-uufsnz0t/shared-predicate-192-mutant"
+            ],
+            "cwd": "/workspace/geometry-axiom",
+            "exit": 0,
+            "seconds": 14.553058009998495,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "test": {
+            "command": [
+              "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+              "-c",
+              "import sys, unittest\nfrom unittest.mock import patch\nimport importlib\nmodule = importlib.import_module('tests.test_section_profile_native')\nexe = sys.argv.pop(1)\nwith patch.object(module, \"find_bridge\", return_value=exe):\n    unittest.main(module=None, argv=[\"x\", \"-v\", *sys.argv[1:]])\n",
+              "/tmp/pr182-spm41-uufsnz0t/shared-predicate-192-mutant",
+              "tests.test_section_profile_native.SectionProfileNative.test_concave_not_four_corners_and_winding"
+            ],
+            "cwd": "/workspace/geometry-axiom",
+            "exit": 1,
+            "seconds": 0.21726518500145175,
+            "log_sha256": "6e84e3216900fea4276eec238e9e395264fc55cba3668095bf21657786165345"
+          },
+          "binary_sha256": "f664ca491a7c2b81d5eb3813b545cb21357f6b0ef01cd0c0f645d236cb97f184",
+          "skips": false,
+          "failures": [
+            [
+              "FAIL",
+              "test_concave_not_four_corners_and_winding"
+            ]
+          ],
+          "verdict": {
+            "exit": 1,
+            "failed": [
+              "FAIL test_concave_not_four_corners_and_winding"
+            ],
+            "first_failure": "True is not false : expected rejection 'V_PROFILE_OUTSIDE' but the candidate was accepted: {'token': 2, 'valid': True, 'revision': 12, 'diagnosticsComplete': True, 'validationStrategy': 'all-section-profile-violations', 'before': {'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule",
+            "verdict": "killed"
+          }
+        },
+        "restored": {
+          "compile": {
+            "command": [
+              "cc",
+              "-std=c11",
+              "-O2",
+              "/tmp/pr182-spm41-uufsnz0t/shared-predicate-192/geometry-web/web_bridge.c",
+              "-lm",
+              "-o",
+              "/tmp/pr182-spm41-uufsnz0t/shared-predicate-192-restored"
+            ],
+            "cwd": "/workspace/geometry-axiom",
+            "exit": 0,
+            "seconds": 12.522490727998957,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "test": {
+            "command": [
+              "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+              "-c",
+              "import sys, unittest\nfrom unittest.mock import patch\nimport importlib\nmodule = importlib.import_module('tests.test_section_profile_native')\nexe = sys.argv.pop(1)\nwith patch.object(module, \"find_bridge\", return_value=exe):\n    unittest.main(module=None, argv=[\"x\", \"-v\", *sys.argv[1:]])\n",
+              "/tmp/pr182-spm41-uufsnz0t/shared-predicate-192-restored",
+              "tests.test_section_profile_native.SectionProfileNative.test_concave_not_four_corners_and_winding"
+            ],
+            "cwd": "/workspace/geometry-axiom",
+            "exit": 0,
+            "seconds": 0.3917623999986972,
+            "log_sha256": "236e2e53d1ab0f32f793777f6dd390f87d08c7833f51dc01bd68f64a3f4fbf6d"
+          },
+          "binary_sha256": "2686f1c75efeca6dc61c2f889b411c39c123977792d3861e121ea138450e1e3b",
+          "skips": false,
+          "failures": []
+        }
+      },
+      "mutated_validation_sha256": "a0e439777ea06fb932ea481449849f7d72e912efc147cc69f104083e7a3f9ab4"
+    }
+  },
+  "status_after": " M geometry-core/SECTION-PROFILE-NATIVE-CONTRACT.md\n M tests/release-evidence/20261010-q38-i44/README.md\n M tests/release-evidence/20261010-q38-i44/SHA256SUMS.txt\n M tests/section_profile_mutation_check.py\n?? tests/release-evidence/20261011-pr182-cloud-review/\n"
+}

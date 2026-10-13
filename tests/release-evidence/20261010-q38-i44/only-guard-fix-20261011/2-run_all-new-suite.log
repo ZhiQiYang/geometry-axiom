@@ -1,0 +1,44 @@
+二進位輸出目錄：/tmp/geometry-tests
+[binaries]
+[環境] CC=未設定（繼承自外殼；僅影響 binaries.py 在非 Windows 的編譯）
+[環境] 已清除外殼繼承的 GEOMETRY_*：（無）
+[環境] run_all 設給子行程的 GEOMETRY_*：GEOMETRY_ENGINEERING_BRIDGE、GEOMETRY_MODEL_BASE、GEOMETRY_TEST_BRIDGE、GEOMETRY_TEST_CORE、GEOMETRY_TEST_ENGINEERING_JSON
+[1/1] py:test_section_profile_mutation_check …
+
+suite                                   測試數  pass  fail  skip   秒  備註
+-----------------------------------------------------------------------
+py:test_section_profile_mutation_check       9     9     0     0  1.7
+-----------------------------------------------------------------------
+合計(已執行、有計數者)                       9     9     0     0  1.7
+未納入                                       -     -     -     -    -  需 Chrome，另行執行：geometry-web/cdp_test.js、geometry-web/space_model_test.js
+必要 owner／browser 整合與模組驗證另驗（不計入上述 pass/skip）：
+  tests/test_issue123_create_feedback_browser.py：Explicit isolated Playwright mouse/touch first-center gate from #131; run with --url/--out, not a unittest suite；獨立執行，本 aggregate 未驗。
+  tests/integration/issue77_attachment_owner.js：5項 required；source-rooms owner 接口未實作時 exit3/pending_implementation，不是環境 skip或pass。
+  tests/scenario_browser_check.cjs：Required isolated scenario-module Chromium/ZIP harness; fresh receipt-backed native adapters and Playwright; run separately (INTEGRATION-GATES.md)；獨立執行，本 aggregate 未驗。
+  tests/test_issue77_browser.js：Required real app/native/Chromium room acceptance; formal owner exists, execute separately; see INTEGRATION-GATES.md；獨立執行，本 aggregate 未驗。
+  tests/test_issue77_exit_browser.js：Required real app/native/Chromium room draft-exit gate; formal owner exists, execute separately; see INTEGRATION-GATES.md；獨立執行，本 aggregate 未驗。
+  tests/test_issue77_recovery_browser.js：Required real app/native/Chromium room recovery gate; formal owner exists, execute separately; see INTEGRATION-GATES.md；獨立執行，本 aggregate 未驗。
+  tests/test_issue77_remove_browser.js：Required real app/native/Chromium room unlink/removal gate; formal owner exists, execute separately; see INTEGRATION-GATES.md；獨立執行，本 aggregate 未驗。
+  tests/test_scenario_grid_interface.js：Required real GridDraft owner-validator compatibility; PR104 is not on main; execute with actual owner validator, never count missing-injection skip as pass (INTEGRATION-GATES.md)；獨立執行，本 aggregate 未驗。
+  tests/room_multi_candidate_browser.js：34 real same-page multiroom import/calibration/select/review/accept/park/save/new/Open; explicit late Worker and lost-response injections checks required；本 aggregate 未驗。
+  tests/test_section_profile_browser.js：68 real desktop/390 Q38 authoring, typed sources, exact models, source impact/cancel, placement conversion, shared history and /16 Save/Open checks required；本 aggregate 未驗。
+  tests/integration/q38_save_roundtrip.py：18 native-authored complete section fixture; real download/fresh-browser chooser, full World and exact mesh oracle; explicit download fallback, not OS picker checks required；本 aggregate 未驗。
+  tests/integration/model_library_history_browser.py：35 real model-library/native Undo, Web Locks, drafts and explicit late-owner injections checks required；本 aggregate 未驗。
+  tests/integration/save_roundtrip_acceptance.cjs：33 real form/native/model/download/file-chooser roundtrip and explicit save-failure injection checks required；本 aggregate 未驗。
+  tests/rule-case-workbench-browser.cjs：91 standalone component/native checks required；本 aggregate 未驗。
+  tests/test_rule_case_app_browser.js：76 formal app/native/ZIP/history checks required；本 aggregate 未驗。
+  tests/test_rule_case_app_races.js：30 formal app/native/context races checks required；本 aggregate 未驗。
+  tests/room_outline_keyboard_browser.js：396 real keyboard/click parity; synthetic composition and stale DOM guards checks required；本 aggregate 未驗。
+  tests/room_outline_acceptance_browser.js：253 formal room app/PDF-image/UI/ZIP/model checks required；本 aggregate 未驗。
+  tests/room_outline_pan_browser.js：32 real input/native preservation; API fixture and injected pointercancel checks required；本 aggregate 未驗。
+  tests/room_outline_worker_browser.js：78 native Worker/UI invalidation with injected late-consumer delivery checks required；本 aggregate 未驗。
+  geometry-web/feedback_resize_observer_test.js：38 real ResizeObserver/error/manual-report events; owned fresh/root/source/runtime identity required checks required；本 aggregate 未驗。
+  tests/test_grid_rule_reader_browser.js：34 formal app/native/grid/ZIP checks required；本 aggregate 未驗。
+  geometry-web/evidence_links_browser_check.js：67 independent injected-backend adapter checks required；本 aggregate 未驗。
+  geometry-web/evidence_links_integration_test.js：110 formal app/PDF/ZIP/history checks required；本 aggregate 未驗。
+  geometry-web/grid_raw_provenance_browser_test.py：207 formal raw enum/pin provenance, ZIP cold reopen, explicit correction and native Undo/Redo checks required；本 aggregate 未驗。
+
+==== 部分／示範執行，不可當完整驗收 ====
+使用了：--only section_profile_mutation_check
+
+exit 0：所選 suite 沒有 fail、沒有環境問題、沒有可避免的 skip（只代表所選範圍，沒選到的沒跑）
