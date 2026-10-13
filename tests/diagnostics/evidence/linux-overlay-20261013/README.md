@@ -20,7 +20,7 @@ An initial run had extra final newline in transferred files; it is not delivered
 Each command used Bash `ulimit -s 16384`; soft/hard limit 16777216 bytes.
 - `python3 tests/diagnostics/binaries_ctime_probe.py --iterations 200 --samples 10000 --temp-root /tmp --output ../evidence/exact-ctime`: exit 0; control 200 pass / 0 failure / 0 error / 0 skip; observed same; complete telemetry 200/200.
 - `python3 tests/test_binaries.py`: exit 0; 32 tests passed, 0 failures/errors/skips, 0.092 s. This uses the original unittest setup/assertions/cleanup and mock binary fixtures, not real native compilation.
-- `python3 tests/run_all.py --build --only py:test_binaries`: exit 1. Partial snapshot lacks registered files and C sources. No selected suite was run; compile/registry errors are environmental, not a demonstrated product regression. Full unedited log retained. The direct invocation cannot replace this required baseline.
+- `python3 tests/run_all.py --build --only py:test_binaries`: exit 1. Partial snapshot lacks registered files and C sources. The selected py:test_binaries suite ran 32 tests and all 32 passed; the unified runner still exited 1 because the partial snapshot lacks files and has registry errors, so the required passing baseline has not been achieved. Compile/registry errors are environmental, not a demonstrated product regression. Full unedited log retained. The direct invocation cannot replace this required baseline.
 - Diagnostic pipeline synthetic tests: 14 passed / exit 0 (pre-final transfer-normalization); synthetic evidence alone does not support the ctime claim.
 
 ctime calibration: 10000 deltas, zero 0, negative 0, positive 10000; minimum observed positive 2584 ns, maximum 325500 ns. Not a universal resolution claim.
