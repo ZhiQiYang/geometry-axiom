@@ -1,0 +1,21 @@
+環境：既有 Playwright 1.62.1 + Chrome 155.0.8059.39；SketchUp bridge 為 mock。
+命令：
+$env:NODE_PATH='C:/Users/Yang/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules'
+$env:GEOMETRY_FRAMING_BROWSER_CHANNEL='chrome'
+& 'C:/Users/Yang/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node.exe' sketchup-plugin/test/ui_smoke.cjs
+
+Browser plugin not available；使用既有 Playwright。
+此測試的 SketchUp bridge 是 mock；不代表已在 SketchUp 執行。
+URL：file:///D:/geometry-axiom/sketchup-plugin/geometry_framing/ui/dialog.html
+瀏覽器：Chromium 155.0.8059.39
+截圖：C:\Users\Yang\AppData\Local\Temp\geometry-framing-ui-smoke\flat-720.png
+截圖：C:\Users\Yang\AppData\Local\Temp\geometry-framing-ui-smoke\profile-pass-720.png
+PASS 720×720：平釘 → 斷面 → 轉 90° → 失敗阻擋 → 通過 → 產生 → 改參數失效
+截圖：C:\Users\Yang\AppData\Local\Temp\geometry-framing-ui-smoke\flat-420.png
+截圖：C:\Users\Yang\AppData\Local\Temp\geometry-framing-ui-smoke\profile-pass-420.png
+PASS 420×720：平釘 → 斷面 → 轉 90° → 失敗阻擋 → 通過 → 產生 → 改參數失效
+PASS：69 項 UI 斷言；console error/warning/pageerror 0。
+exit_code=0
+
+環境註記：初次未指定 channel 時，Playwright 缺少 chromium_headless_shell-1234，
+在開頁前即 exit_code=1；後改用本機既有 Chrome 完成以上驗證，沒有安裝新依賴。

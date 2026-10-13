@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>下角材</title>
+  <link rel="stylesheet" href="dialog.css">
+  <script defer src="dialog.js"></script>
+</head>
+<body>
+  <header><div><small>SKETCHUP · mm</small><h1>下角材</h1></div>
+    <label class="mode-label">模式<select id="mode"><option value="flat">平釘天花下角材</option><option value="profile">斷面設計</option></select></label>
+  </header>
+  <p id="instruction" class="instruction">選取一個水平正交面，內圈視為獨立柱。</p>
+  <main>
+    <form id="parameters">
+      <fieldset id="flat-fields"><legend>排板與骨架</legend>
+        <div class="fields">
+          <label>板寬<input name="pw" type="number" min="1" step="any" value="915" required></label>
+          <label>板長<input name="pl" type="number" min="1" step="any" value="1830" required></label>
+          <label>板縫<input name="gap" type="number" min="0" step="any" value="2" required></label>
+          <label>承接門檻<input name="bear" type="number" min="0" step="any" value="8" required></label>
+          <label>起鋪角<select name="corner"><option value="tl">左上</option><option value="tr">右上</option><option value="bl">左下</option><option value="br">右下</option></select></label>
+          <label>板長方向<select name="longY"><option value="auto">依房間短向</option><option value="true">沿 Y</option><option value="false">沿 X</option></select></label>
+          <label>角材寬<input name="tw" type="number" min="1" step="any" value="27" required></label>
+          <label>角材高<input name="md" type="number" min="1" step="any" value="33" required></label>
+          <label>面材厚<input name="bt" type="number" min="1" step="any" value="6" required></label>
+          <label>間距上限<input name="cap" type="number" min="1" step="any" value="450" required></label>
+          <label class="wide">完成面標高<input name="ceil" type="number" step="any" placeholder="沿用所選面標高"></label>
+          <label class="checkbox wide"><input name="colEdge" type="checkbox" checked>柱子四周放沿邊料</label>
+        </div>
+      </fieldset>
+      <fieldset id="profile-fields" hidden disabled><legend>斷面與延伸</legend>
+        <div class="fields">
+          <label>面材厚<input name="t" type="number" min="1" step="any" value="6" required></label>
+          <label>拉伸長度 L<input name="L" type="number" min="1" step="any" value="2400" required></label>
+          <label>角材 u 向<input name="a" type="number" min="1" step="any" value="27" required></label>
+          <label>角材 v 向<input name="b" type="number" min="1" step="any" value="33" required></label>
+          <button id="rotate" class="wide secondary" type="button">角材轉 90°</button>
+          <label class="wide">橫撐間距上限<input name="cap" type="number" min="1" step="any" value="450" required></label>
+          <label class="checkbox wide"><input name="flip" type="checkbox">結構換邊</label>
+        </div>
+      </fieldset>
+    </form>
+    <section class="results" aria-label="規則檢查">
+      <h2>規則檢查</h2>
+      <p id="selection" class="selection"></p>
+      <p id="status" role="status" aria-live="polite">選取幾何後，按「檢查選取」。</p>
+      <div id="counts" class="counts"></div>
+      <ol id="checks"></ol>
+    </section>
+  </main>
+  <footer><button id="preview" class="secondary" type="button">檢查選取</button><button id="generate" type="button" disabled>產生角材</button></footer>
+</body>
+</html>

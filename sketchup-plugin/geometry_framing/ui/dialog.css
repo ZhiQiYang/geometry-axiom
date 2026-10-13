@@ -1,0 +1,38 @@
+:root { color-scheme: dark; font-family: "Microsoft JhengHei", "PingFang TC", system-ui, sans-serif; background: #191d20; color: #eeeae1; font-size: 14px; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 24px; }
+header { display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+h1 { margin: 3px 0 0; font-size: 29px; font-weight: 600; }
+small { color: #a9b1b4; font-size: 10px; letter-spacing: .13em; }
+h2, legend { font-size: 15px; font-weight: 600; }
+h2 { margin: 0 0 18px; }
+.instruction { color: #b9c0c1; line-height: 1.6; margin: 20px 0; }
+main { display: grid; grid-template-columns: 260px 1fr; gap: 28px; margin-bottom: 24px; }
+fieldset { border: 0; padding: 0; margin: 0; }
+legend { margin-bottom: 18px; padding: 0; }
+.fields { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 12px; }
+label { display: flex; flex-direction: column; gap: 7px; color: #b9c0c1; font-size: 12px; }
+input, select, button { font: inherit; }
+input:not([type=checkbox]), select { width: 100%; min-width: 0; border: 1px solid #4b5458; border-radius: 4px; background: #242a2e; color: #f4f2eb; padding: 9px; font-size: 14px; }
+input::placeholder { color: #929da2; }
+input:focus-visible, select:focus-visible, button:focus-visible { outline: 2px solid #a1cab5; outline-offset: 3px; }
+.wide { grid-column: 1/-1; }
+.checkbox { flex-direction: row; align-items: center; min-height: 30px; }
+.checkbox input { accent-color: #a1cab5; width: 16px; height: 16px; }
+.results { border-left: 1px solid #384045; padding-left: 28px; min-width: 0; }
+#status { line-height: 1.6; white-space: pre-line; margin: 0 0 18px; }
+.counts { color: #a1cab5; line-height: 1.8; margin-bottom: 12px; }
+.selection { color: #aab4b8; font-size: 12px; line-height: 1.6; }
+ol { list-style: none; margin: 0; padding: 0; }
+li { padding: 12px 0; border-top: 1px solid #384045; line-height: 1.6; }
+li strong { display: block; font-weight: 500; }
+li .detail { color: #aab4b8; font-size: 12px; white-space: pre-line; margin-top: 5px; }
+.pass { color: #a1cab5; }
+.fail { color: #ffb4a6; }
+footer { display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid #384045; padding-top: 18px; }
+button { background: #a1cab5; color: #16221c; border: 1px solid transparent; border-radius: 4px; padding: 11px 18px; font-weight: 600; cursor: pointer; }
+button.secondary { background: transparent; color: #eeeae1; border-color: #566166; }
+button:hover:not(:disabled) { filter: brightness(1.12); }
+button:disabled { opacity: .4; cursor: default; }
+[hidden] { display: none !important; }
+@media (max-width: 660px) { body { padding: 18px; } main { grid-template-columns: 1fr; } .results { border-left: 0; border-top: 1px solid #384045; padding: 22px 0 0; } header { flex-wrap: wrap; gap: 12px; } .mode-label { flex: 1; min-width: 190px; } }
