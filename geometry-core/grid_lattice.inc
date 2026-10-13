@@ -13,9 +13,9 @@ static bool grid_axis_is_infinite(const GridAxisDef *a)
 static bool grid_system_is_infinite(const GridSystem *s)
 { return grid_axis_is_infinite(&s->axis[0]) || grid_axis_is_infinite(&s->axis[1]); }
 static Coord grid_axis_pitch(const GridAxisDef *a)
-{ return a->source==GRID_SRC_REPEAT?a->step:a->panel+a->gap; }
+{ return a->source==GRID_SRC_REPEAT?a->step:panel_layout_pitch(a->panel,a->gap); }
 static Coord grid_axis_phase(const GridAxisDef *a)
-{ return a->source==GRID_SRC_REPEAT?a->start:a->anchor+a->panel+a->gap/2; }
+{ return a->source==GRID_SRC_REPEAT?a->start:panel_layout_center(a->anchor,a->panel,a->gap,0); }
 
 static bool grid_lattice_coord(const ReferenceGrid *g,int axis,int64_t k,Coord *out)
 {
@@ -73,7 +73,7 @@ invalid:
 
 /* D10b: the lowest bit selects the odd band, including negative odds. Shift 0 keeps the unstaggered coordinate. */
 static Coord grid_axis_stagger_shift(const GridAxisDef *a,int64_t band)
-{ return a && a->stagger_set && (band&1) ? a->stagger : 0; }
+{ return a?panel_layout_shift(a->stagger_set,a->stagger,band):0; }
 
 static bool grid_lattice_coord_band(const ReferenceGrid *g,int axis,int64_t k,int64_t band,Coord *out)
 {
