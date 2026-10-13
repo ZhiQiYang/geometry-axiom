@@ -23,6 +23,7 @@ module GeometryFraming
     class Runner
       RINGS = [[[0, 0], [5000, 0], [5000, 3200], [3200, 3200], [3200, 4800], [0, 4800]],
                [[1200, 1200], [1600, 1200], [1600, 1600], [1200, 1600]]].freeze
+      PROFILE_POINTS = [[467, 0], [467, 148], [743, 148], [743, 351], [0, 351]].freeze
 
       def initialize
         @model = Sketchup.active_model
@@ -32,21 +33,26 @@ module GeometryFraming
       end
 
       def run
-        raise '請先開一個新的空白模型；驗收腳本不會刪除既有模型。' unless @model.entities.empty? && @model.active_path.nil?
+        raise '請先開一個新的空白模型；驗收腳本不會刪除既有模型。' unless @model.entities.length.zero? && @model.active_path.nil?
         raise '本驗收目標是 SketchUp 2026。' unless Sketchup.version.to_i == 26
+        raise '請使用沒有「下角材 面材」材質的新空白範本；驗收不會改動既有材質。' if @model.materials['下角材 面材']
 
         record("開始 SketchUp #{Sketchup.version} / Ruby #{RUBY_VERSION} 驗收")
         transaction('驗收夾具 平釘') { @flat = ceiling(@model.entities) }
         select(@flat)
         evaluated = SU::Dialog.evaluate(mode: 'flat', model: @model)
         assert(evaluated[:result][:valid], 'SU_FLAT_CHECKS：L 形天花含 400 × 400 柱孔必須通過核心檢查')
+        expected = flat_reference(@flat)
         group = generate('flat', evaluated)
-        verify_members(group, evaluated[:result], 'SU_FLAT')
+        @flat_counts = verify_members(group, expected, 'SU_FLAT')
+        verify_flat_positions(group, expected, 'SU_FLAT')
         screenshot(group, 'flat.png')
-        undo_once(group, 'SU_FLAT_UNDO') do
-          assert(@flat.valid?, 'SU_FLAT_UNDO：一步復原必須保留輸入天花面')
-          raw_obstacle
-          profile
+        same_face_rerun(group) do
+          undo_once(group, 'SU_FLAT_UNDO') do
+            assert(@flat.valid?, 'SU_FLAT_UNDO：一步復原必須保留輸入天花面')
+            raw_obstacle
+            profile
+          end
         end
       rescue StandardError => error
         finish(error)
@@ -89,6 +95,12 @@ module GeometryFraming
         SU::Builder.generate(mode: mode, result: evaluated[:result], frame: snapshot[:frame], input: snapshot[:input], model: @model)
       end
 
+      # 幾何期望只來自夾具常數，不借用 Selection.read 的 rings、params 或 frame。
+      # persistent_id 只對齊元件名稱，沒有參與幾何計算。
+      def flat_reference(face, params = {})
+        Core::FlatCeiling.build(rings: RINGS, params: { ceil: 2500 }.merge(params), id: "F#{face.persistent_id}")
+      end
+
       def verify_members(group, result, prefix)
         expected = result[:solids].group_by { |solid| solid[:role] }.transform_values(&:length)
         actual = {}
@@ -109,8 +121,113 @@ module GeometryFraming
                    "#{prefix}_UNTAGGED：#{id} 原始幾何使用 Untagged")
           end
         end
-        assert(actual == expected, "#{prefix}_COUNTS：角色數量 #{actual.inspect} 與 core #{expected.inspect} 一致")
+        assert(actual == expected, "#{prefix}_COUNTS：角色數量 #{actual.inspect} 與獨立夾具 core #{expected.inspect} 一致")
         assert(group.parent == @model, "#{prefix}_TOP_LEVEL：結果是模型頂層群組")
+        actual
+      end
+
+      # 實測端讀取「已建立元件」的頂點，連同其真正實例 transform 轉到世界。
+      # 預期端只使用 RINGS 的 core boxes 與建夾具時明示的座標公式；不讀 selection frame。
+      def verify_flat_positions(group, expected, prefix, nested: false)
+        samples = {
+          'PRI' => expected[:members].find { |member| member[:role] == 'pri' },
+          'SEC' => expected[:members].find { |member| member[:role] == 'sec' },
+          'COLUMN_EDGE' => expected[:members].find { |member| member[:role] == 'wall' && member[:ri].positive? }
+        }
+        samples.each do |label, source|
+          assert(!source.nil?, "#{prefix}_POSITION_#{label}：獨立夾具中有可抽驗構件")
+          solid = expected[:solids].find { |item| item[:id] == source[:id] }
+          expected_points = solid[:boxes].flat_map do |box|
+            [box[0], box[3]].product([box[1], box[4]], [box[2], box[5]]).map do |point|
+              fixture_world(point, nested: nested)
+            end
+          end
+          wanted = extents(expected_points)
+          role_group = group.entities.grep(Sketchup::Group).find do |candidate|
+            candidate.get_attribute(SU::Builder::DICTIONARY, 'role') == source[:role]
+          end
+          assert(!role_group.nil?, "#{prefix}_POSITION_#{label}：產物包含 #{source[:role]} 角色")
+          candidates = role_group.entities.grep(Sketchup::ComponentInstance).map do |member|
+            transform = group.transformation * role_group.transformation * member.transformation
+            vertices = member.definition.entities.grep(Sketchup::Edge).flat_map(&:vertices).uniq
+            points = vertices.map { |vertex| vertex.position.transform(transform).to_a.map(&:to_mm) }
+            [member, extents(points)]
+          end
+          # SketchUp 可改變 loop 起點及順序，柱邊料 ID 也會跟著換；按獨立世界位置找料。
+          matched = candidates.min_by { |_member, bounds| bounds.zip(wanted).sum { |a, b| (a - b).abs } }
+          assert(!matched.nil?, "#{prefix}_POSITION_#{label}：產物中有實際元件")
+          member, actual = matched
+          %w[X_MIN Y_MIN Z_MIN X_MAX Y_MAX Z_MAX].each_with_index do |axis, index|
+            assert((actual[index] - wanted[index]).abs < 0.001,
+                   "#{prefix}_POSITION_#{label}_#{axis}：#{member.name} 世界 #{actual[index]} mm，獨立夾具預期 #{wanted[index]} mm")
+          end
+        end
+      end
+
+      def extents(points)
+        (0..2).map { |axis| points.map { |point| point[axis] }.min } +
+          (0..2).map { |axis| points.map { |point| point[axis] }.max }
+      end
+
+      def fixture_world(point, nested: false)
+        x, y, z = point
+        return [x, -y, z] unless nested
+
+        # 原夾具 (x,-y,z)，內層平移 (500,800,0)，再旋轉 1°，外層平移 (30000,20000,0)。
+        # 刻意不用 Geom::Transformation 或 SU::Selection，避免被測管道與裁判同錯。
+        cosine = Math.cos(Math::PI / 180)
+        sine = Math.sin(Math::PI / 180)
+        [30_000 + cosine * (x + 500) - sine * (-y + 800),
+         20_000 + sine * (x + 500) + cosine * (-y + 800), z]
+      end
+
+      def same_face_rerun(first_group, &continuation)
+        material = @model.materials['下角材 面材']
+        assert(!material.nil?, 'SU_MATERIAL_CREATED：A 產物建立面材材質')
+        original_rgb = material_rgb(material)
+        transaction('驗收夾具 自訂面材紅色') { material.color = Sketchup::Color.new(255, 0, 0) }
+        verify_board_material(first_group, material, 'SU_MATERIAL_A_BEFORE_B')
+        select(@flat)
+        # 這個有柱夾具的左下起鋪有效；右上會依 demo 產生真正的主支衝突。
+        params = { corner: 'bl' }
+        evaluated = SU::Dialog.evaluate(mode: 'flat', params: params, model: @model)
+        assert(first_group.valid?, 'SU_RERUN_EXISTING：再次檢查時第一次產物仍留在模型')
+        assert(evaluated[:result][:checks].find { |check| check[:id].to_s == 'obstacles' }[:ok],
+               'SU_RERUN_OBSTACLES：本插件前次產物不能誤判為樑')
+        assert(evaluated[:result][:valid], 'SU_RERUN_CHECKS：同一面改左下起鋪後必須通過')
+        expected = flat_reference(@flat, params)
+        rerun_group = generate('flat', evaluated)
+        assert(@model.materials['下角材 面材'] == material, 'SU_MATERIAL_SHARED：B 生成後仍使用 A 的同一個面材材質')
+        verify_board_material(first_group, material, 'SU_MATERIAL_A_AFTER_B')
+        verify_board_material(rerun_group, material, 'SU_MATERIAL_B')
+        verify_members(rerun_group, expected, 'SU_RERUN')
+        verify_flat_positions(rerun_group, expected, 'SU_RERUN')
+        screenshot(rerun_group, 'flat-rerun.png')
+        undo_once(rerun_group, 'SU_RERUN_UNDO') do
+          assert(first_group.valid? && @flat.valid?, 'SU_RERUN_UNDO：一步復原只移除第二次產物，保留第一次產物與輸入面')
+          verify_board_material(first_group, material, 'SU_MATERIAL_A_AFTER_B_UNDO')
+          # 自訂顏色本身是一個獨立操作；先復原它，再驗 A 產物的一步復原。
+          undo_transaction('SU_MATERIAL_UNDO') do
+            assert(first_group.valid? && @flat.valid?, 'SU_MATERIAL_UNDO：復原自訂顏色不會刪除 A 產物或輸入面')
+            assert(material_rgb(material) == original_rgb, 'SU_MATERIAL_UNDO：自訂顏色單獨復原到修改前 RGB')
+            continuation.call
+          end
+        end
+      end
+
+      def material_rgb(material)
+        color = material.color
+        [color.red, color.green, color.blue]
+      end
+
+      def verify_board_material(group, material, prefix)
+        board_group = group.entities.grep(Sketchup::Group).find do |candidate|
+          candidate.get_attribute(SU::Builder::DICTIONARY, 'role') == 'board'
+        end
+        assert(!board_group.nil?, "#{prefix}：產物含面材角色群組")
+        boards = board_group.entities.grep(Sketchup::ComponentInstance)
+        assert(!boards.empty? && boards.all? { |board| board.material == material }, "#{prefix}：全部面材使用相同材質實體")
+        assert(material_rgb(material) == [255, 0, 0], "#{prefix}：自訂紅色 RGB 必須保留 [255, 0, 0]，實際 #{material_rgb(material).inspect}")
       end
 
       def raw_obstacle
@@ -122,6 +239,11 @@ module GeometryFraming
         select(@flat)
         evaluated = SU::Dialog.evaluate(mode: 'flat', model: @model)
         assert(!evaluated[:result][:valid], 'SU_RAW_BEAM：未分組樑的連通幾何 bounds 必須攔截碰撞')
+        failed = evaluated[:result][:checks].reject { |check| check[:ok] }.map { |check| check[:id].to_s }
+        assert(failed == ['obstacles'], "SU_RAW_BEAM_RULE：必須只因 obstacles 失敗，實際 #{failed.inspect}")
+        suggested = evaluated[:result][:suggested_ceil]
+        assert(suggested.is_a?(Numeric) && (suggested - 2471).abs < 0.001,
+               "SU_RAW_BEAM_HEIGHT：樑底 2510 − 板厚 6 − 角材高 33，建議完成面必須為 2471 mm，實際 #{suggested.inspect}")
         count = @model.entities.length
         begin
           generate('flat', evaluated)
@@ -142,7 +264,7 @@ module GeometryFraming
           wall = @model.entities.add_group
           wall.name = '驗收 RC 牆'
           wall.entities.add_face([[-200, 2200], [2700, 2200], [2700, 2900], [-200, 2900]].map { |y, z| [base.mm, y.mm, z.mm] })
-          points = [[467, 0], [467, 148], [743, 148], [743, 351], [0, 351]].map { |u, v| [(base + u).mm, 0, (2800 - v).mm] }
+          points = PROFILE_POINTS.map { |u, v| [(base + u).mm, 0, (2800 - v).mm] }
           edges = @model.entities.add_edges(points)
           start_vertex = edges.flat_map(&:vertices).uniq.find { |vertex| vertex.position == Geom::Point3d.new(points.first) }
         end
@@ -154,7 +276,7 @@ module GeometryFraming
         assert(evaluated[:result][:boards].length == 4 && evaluated[:result][:longs].length == 6 && evaluated[:result][:ribs].length == 4,
                'SU_PROFILE_SECTION：4 塊面材、6 支縱向料、每站 4 支橫撐')
         group = generate('profile', evaluated)
-        verify_members(group, evaluated[:result], 'SU_PROFILE')
+        verify_members(group, Core::Profile.build(points: PROFILE_POINTS), 'SU_PROFILE')
         screenshot(group, 'profile.png')
         undo_once(group, 'SU_PROFILE_UNDO') do
           assert(edges.all?(&:valid?), 'SU_PROFILE_UNDO：一步復原必須保留輸入折線與 RC')
@@ -197,12 +319,13 @@ module GeometryFraming
         assert(@model.active_path == path && @model.selection.to_a == [face], 'SU_CONTEXT_PREVIEW：預覽後保留巢狀編輯路徑與選取')
         assert(evaluated[:result][:valid], 'SU_CONTEXT_COORDINATES：旋轉平移後仍通過核心正交檢查')
         group = generate('flat', evaluated)
+        expected = flat_reference(face)
+        counts = verify_members(group, expected, 'SU_CONTEXT')
+        assert(counts == @flat_counts,
+               "SU_CONTEXT_COUNTS：旋轉 1° 巢狀版 #{counts.inspect} 與未旋轉版 #{@flat_counts.inspect} 逐角色數量相同")
+        verify_flat_positions(group, expected, 'SU_CONTEXT', nested: true)
         assert(@model.active_path == path && @model.selection.to_a == [face], 'SU_CONTEXT_GENERATE：產生後保留巢狀編輯路徑與選取')
         assert(@model.entities.include?(group), 'SU_CONTEXT_ROOT：在巢狀群組內選面仍產生模型頂層結果')
-        # 一個 core 板角點經輸出 frame 轉換，應位在選取天花的世界高度。
-        box = evaluated[:result][:solids].find { |solid| solid[:role] == 'board' }[:boxes].first
-        point = Geom::Point3d.new(box[0, 3].map(&:mm)).transform(group.transformation)
-        assert((point.z.to_mm - 2500).abs < 0.001, 'SU_CONTEXT_HEIGHT：沒有重複套用編輯座標 transform')
         screenshot(group, 'nested-flat.png')
         undo_once(group, 'SU_CONTEXT_UNDO') do
           assert(face.valid? && outer.valid? && inner.valid?, 'SU_CONTEXT_UNDO：一次復原只移除結果，夾具仍在')
@@ -226,6 +349,13 @@ module GeometryFraming
       # send_action 的 undo 是 UI 非同步動作。真正收到 onTransactionUndo
       # 後才驗證，不能用同步 Ruby 腳本錯把還沒執行的 undo 當成失敗。
       def undo_once(group, rule, &continuation)
+        undo_transaction(rule) do
+          assert(!group.valid?, "#{rule}：只發出一次 editUndo 就移除整個產物")
+          continuation.call
+        end
+      end
+
+      def undo_transaction(rule, &verification)
         finished = false
         observer = UndoObserver.new do
           next if finished
@@ -234,8 +364,7 @@ module GeometryFraming
           UI.start_timer(0, false) do
             begin
               @model.remove_observer(observer)
-              assert(!group.valid?, "#{rule}：只發出一次 editUndo 就移除整個產物")
-              continuation.call
+              verification.call
             rescue StandardError => error
               finish(error)
             end

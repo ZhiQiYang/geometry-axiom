@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative 'obstacles'
+
 module GeometryFraming
   module SU
     class InputError < StandardError; end
@@ -91,41 +93,43 @@ module GeometryFraming
         end
         loops = [face.outer_loop] + face.loops.reject(&:outer?)
         world_rings = loops.map { |loop| loop.vertices.map { |vertex| xyz(vertex.position.transform(transform)) } }
+        projection = project_flat_rings(world_rings)
+        rings, z, origin, xaxis, yaxis = projection.values_at(:rings, :ceil, :origin, :xaxis, :yaxis)
+        frame = transform_for(origin, xaxis, yaxis)
+        obstacles = Obstacles.collect(model, selected_path: path, face: face, inverse: frame.inverse)
+        {
+          input: { rings: rings, ceil: z, source: "水平完成面 ##{face.persistent_id}",
+                   axis_note: '平面 X 沿外圈整數長度最長的有向邊；同長取外圈先出現者，Y 朝其右側。角名跟隨此局部座標。',
+                   source_path: path.map(&:persistent_id), source_id: face.persistent_id },
+          frame: frame, obstacles: obstacles
+        }
+      end
+
+      # 純數值 world(mm) → 平面(mm)；flat() 與一般 Ruby 測試共用真正的投影。
+      def project_flat_rings(world_rings)
         z = world_rings.first.first[2]
         unless world_rings.flatten(1).all? { |point| (point[2] - z).abs < TOL }
           raise InputError, '只接受世界座標中的水平面；斜面尚待使用者決定。'
         end
 
-        directions = world_rings.first.each_with_index.map do |point, i|
-          canonical_horizontal(sub(world_rings.first[(i + 1) % world_rings.first.length], point))
+        edges = world_rings.first.each_with_index.map do |point, i|
+          sub(world_rings.first[(i + 1) % world_rings.first.length], point)
         end
-        # 兩個正交軸之中，較接近模型紅軸的方向作為平面 X 正向。
-        xaxis = directions.max_by { |direction| [direction[0].abs.round(8), direction[1].abs] }
+        # D1 的整數長度比較可避免等長邊因 API 浮點誤差輪流中選。
+        # 同長保留 outer_loop 先者；保留有向邊而不朝世界紅軸翻號，
+        # 因此同一個 loop 作剛體旋轉時，局部起鋪角仍指向同一個角落。
+        longest = edges.max_by { |edge| Math.hypot(edge[0], edge[1]).round }
+        xaxis = normalize([longest[0], longest[1], 0.0])
         yaxis = [xaxis[1], -xaxis[0], 0.0] # demo 的 Y 朝平面圖下方。
         projected = world_rings.map { |ring| ring.map { |point| [dot(point, xaxis), dot(point, yaxis)] } }
         minx = projected.flatten(1).map(&:first).min
         miny = projected.flatten(1).map(&:last).min
-        lengths = projected.map(&:length)
-        snapped = snap_axes(projected.flatten(1).map { |x, y| [x - minx, y - miny] })
-        rings = lengths.map { |length| snapped.shift(length) }
-        rings.each do |ring|
-          ring.each_with_index do |a, i|
-            b = ring[(i + 1) % ring.length]
-            unless (a[0] - b[0]).abs < TOL || (a[1] - b[1]).abs < TOL
-              raise InputError, '外圈或柱孔有非正交邊；此情況 demo 未定義，待使用者決定。'
-            end
-          end
+        rings = projected.map do |ring|
+          integer_projection(ring.map { |x, y| [x - minx, y - miny] }, closed: true)
         end
         rings = rings.map { |ring| clean(ring, closed: true) }
         origin = xaxis.zip(yaxis).map { |x, y| x * minx + y * miny }
-        frame = transform_for(origin, xaxis, yaxis)
-        obstacles = obstacle_boxes(model.entities, Geom::Transformation.new, [], path, face, frame.inverse)
-        {
-          input: { rings: rings, ceil: z, source: "水平完成面 ##{face.persistent_id}",
-                   axis_note: '平面 X 為較接近模型紅軸的正交邊方向；Y 朝其右側（圖下）。',
-                   source_path: path.map(&:persistent_id), source_id: face.persistent_id },
-          frame: frame, obstacles: obstacles
-        }
+        { rings: rings, ceil: z.round, origin: origin, xaxis: xaxis, yaxis: yaxis }
       end
 
       def container?(entity)
@@ -134,41 +138,6 @@ module GeometryFraming
 
       def entities_of(instance)
         instance.is_a?(Sketchup::Group) ? instance.entities : instance.definition.entities
-      end
-
-      def obstacle_boxes(entities, transform, path, selected_path, face, inverse)
-        visited = {}
-        entities.flat_map do |entity|
-          if container?(entity)
-            next_path = path + [entity]
-            if selected_path.take(next_path.length) == next_path
-              obstacle_boxes(entities_of(entity), transform * entity.transformation, next_path, selected_path, face, inverse)
-            else
-              [bounds_record(entity, entity.bounds, transform, inverse, next_path)]
-            end
-          elsif entity.is_a?(Sketchup::Face) && !(path == selected_path && entity == face) && !visited[entity]
-            connected = entity.all_connected
-            connected.each { |part| visited[part] = true }
-            bounds = Geom::BoundingBox.new
-            connected.grep(Sketchup::Edge).each { |edge| edge.vertices.each { |vertex| bounds.add(vertex.position) } }
-            [bounds_record(entity, bounds, transform, inverse, path + [entity])]
-          else
-            []
-          end
-        end.compact
-      end
-
-      def bounds_record(entity, bounds, transform, inverse, path)
-        return nil if bounds.empty?
-
-        points = (0..7).map { |index| xyz(bounds.corner(index).transform(transform).transform(inverse)) }
-        minimum = (0..2).map { |axis| points.map { |point| point[axis] }.min }
-        maximum = (0..2).map { |axis| points.map { |point| point[axis] }.max }
-        # 未分組的樑由 all_connected 合併 bounds；單一零厚度面則沒有體積。
-        return nil if (0..2).any? { |axis| maximum[axis] - minimum[axis] < TOL }
-
-        label = entity.respond_to?(:name) && !entity.name.empty? ? entity.name : '模型實體'
-        { id: "#{label} ##{path.map(&:persistent_id).join('/')}", min: minimum, max: maximum }
       end
 
       def profile(model, selected, path, transform, start_vertex_id: nil, &choose_start)
@@ -298,7 +267,7 @@ module GeometryFraming
             # 未存在的 RC 軸只作座標平移，最小值 1，避免被 onRC 誤認為接面。
             u0 = walls.empty? ? uvalues.min - 1.0 : walls.first * sign
             z0 = slabs.empty? ? points.map(&:last).max + 1.0 : slabs.first
-            projected = snap_axes(points.map { |point| [dot(point, uaxis) - u0, z0 - point[2]] })
+            projected = integer_projection(points.map { |point| [dot(point, uaxis) - u0, z0 - point[2]] })
             next unless projected.all? { |u, v| u >= -TOL && v >= -TOL }
 
             origin = (0..2).map { |axis| uaxis[axis] * u0 + normal[axis] * plane_offset }
@@ -312,24 +281,22 @@ module GeometryFraming
         candidates.uniq { |candidate| candidate[:points] }
       end
 
-      # 同一軸線經世界座標旋轉／轉回時會有浮點漂移。將 TOL 內同軸值
-      # 聚成完全相同的數值，再交給 core 的精確正交判斷；不吸附真正斜邊。
-      def snap_axes(points)
-        maps = (0..1).map do |axis|
-          groups = []
-          points.map { |point| point[axis] }.uniq.sort.each do |value|
-            if groups.empty? || value - groups.last.first > TOL
-              groups << [value]
-            else
-              groups.last << value
-            end
-          end
-          groups.each_with_object({}) do |group, mapping|
-            representative = group.any? { |value| value.abs < TOL } ? 0.0 : (group.sum / group.length).round(6)
-            group.each { |value| mapping[value] = representative }
-          end
+      # D1 只在原生輸入→局部平面邊界落到整數 mm；不取整 core 衍生的
+      # 半寬、構件斷面或材長。先檢查未取整偏差，避免以取整掩蓋斜邊。
+      def integer_projection(points, closed: false)
+        segments = points.each_cons(2).to_a
+        segments << [points.last, points.first] if closed
+        if segments.any? { |a, b| [(a[0] - b[0]).abs, (a[1] - b[1]).abs].min > 0.5 }
+          raise InputError, 'D1 整數 mm：取整前偏離正交超過 0.5 mm，不能把斜邊改成正交。'
         end
-        points.map { |point| [maps[0].fetch(point[0]), maps[1].fetch(point[1])] }
+
+        rounded = points.map { |point| point.map { |value| value.round } } # D1_INTEGER_MM_PROJECTION
+        segments = rounded.each_cons(2).to_a
+        segments << [rounded.last, rounded.first] if closed
+        unless segments.all? { |a, b| a[0] == b[0] || a[1] == b[1] }
+          raise InputError, 'D1 整數 mm：取整後仍有非正交邊，請修正輸入。'
+        end
+        rounded
       end
 
       # 對應 demo pfClean；平面邊界也合併 SketchUp 拆碎的共線邊。

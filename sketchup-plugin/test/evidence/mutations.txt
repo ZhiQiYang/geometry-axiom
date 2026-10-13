@@ -1,81 +1,243 @@
 Ruby：ruby 3.3.11 (2026-03-26 revision 1f2d15125a) [x64-mingw-ucrt]
+正式 core+su+test_su 來源 SHA-256：63e90d4a466f46c960ec62806532027d9a88cacdc326484016266974d1615aec
 命令："C:/Ruby33-x64/bin/ruby.exe" "D:/geometry-axiom/sketchup-plugin/test/run_mutations.rb"
 
+正式 core+su+test_su 來源 SHA-256：63e90d4a466f46c960ec62806532027d9a88cacdc326484016266974d1615aec
 Ruby：ruby 3.3.11 (2026-03-26 revision 1f2d15125a) [x64-mingw-ucrt]
 基準線：先確認未改規則的完整 minitest 全過
-命令：C:/Ruby33-x64/bin/ruby.exe D:/geometry-axiom/sketchup-plugin/test/run.rb --seed 20261013
+命令："C:/Ruby33-x64/bin/ruby.exe" "D:/geometry-axiom/sketchup-plugin/test/run.rb" "--seed" "20261013"
 Run options: --seed 20261013
 
 # Running:
 
-.............................................
+.............................................................
 
-Finished in 0.454670s, 98.9728 runs/s, 57197.5027 assertions/s.
+Finished in 4.553141s, 13.3973 runs/s, 5728.1335 assertions/s.
 
-45 runs, 26006 assertions, 0 failures, 0 errors, 0 skips
+61 runs, 26081 assertions, 0 failures, 0 errors, 0 skips
 exit_code=0
+timeout=false
 
 突變 edge_shift：拿掉「收邊挪縫」
+來源：core/panel_axis.rb
 實際替換：if !seams.empty? && seams.last > limit + 1e-9 → if false
-命令：C:/Ruby33-x64/bin/ruby.exe C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-27176-c43x7x/test/run.rb --seed 20261013 --name test_edge_shift_rule
-Run options: --seed 20261013 --name test_edge_shift_rule
+命令："C:/Ruby33-x64/bin/ruby.exe" "C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-33056-prk1sv/test/run.rb" "--seed" "20261013" "--name" "/\\A(?:test_edge_shift_rule)\\z/"
+Run options: --seed 20261013 --name "/\\A(?:test_edge_shift_rule)\\z/"
 
 # Running:
 
 F
 
-Finished in 0.004039s, 247.5615 runs/s, 247.5615 assertions/s.
+Finished in 0.004156s, 240.5928 runs/s, 240.5928 assertions/s.
 
   1) Failure:
-PanelAxisTest#test_edge_shift_rule [C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-27176-c43x7x/test/test_panel_axis.rb:10]:
+PanelAxisTest#test_edge_shift_rule [C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-33056-prk1sv/test/test_panel_axis.rb:10]:
 規則：收邊挪縫，最後一道縫必須從 3667 移到 3659.
 Expected: [916, 1833, 2750, 3659]
   Actual: [916, 1833, 2750, 3667]
 
 1 runs, 1 assertions, 1 failures, 0 errors, 0 skips
 exit_code=1
-已偵測：edge_shift；對應測試變紅，失敗訊息指名規則。
+timeout=false
+已偵測：edge_shift；1 個指定測試各自變紅，失敗訊息指名規則。
 
 突變 column_edge：拿掉「柱邊料」
+來源：core/flat_ceiling.rb
 實際替換：next if ri.positive? && !p[:colEdge] → next if ri.positive?
-命令：C:/Ruby33-x64/bin/ruby.exe C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-27176-n91vmt/test/run.rb --seed 20261013 --name test_column_edge_rule
-Run options: --seed 20261013 --name test_column_edge_rule
+命令："C:/Ruby33-x64/bin/ruby.exe" "C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-33056-sht019/test/run.rb" "--seed" "20261013" "--name" "/\\A(?:test_column_edge_rule)\\z/"
+Run options: --seed 20261013 --name "/\\A(?:test_column_edge_rule)\\z/"
 
 # Running:
 
 F
 
-Finished in 0.009615s, 104.0042 runs/s, 104.0042 assertions/s.
+Finished in 0.015843s, 63.1214 runs/s, 63.1214 assertions/s.
 
   1) Failure:
-FlatCeilingTest#test_column_edge_rule [C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-27176-n91vmt/test/test_flat_ceiling.rb:59]:
+FlatCeilingTest#test_column_edge_rule [C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-33056-sht019/test/test_flat_ceiling.rb:59]:
 規則：柱邊料，獨立柱四邊必須各有一支沿邊料.
 Expected: 4
   Actual: 0
 
 1 runs, 1 assertions, 1 failures, 0 errors, 0 skips
 exit_code=1
-已偵測：column_edge；對應測試變紅，失敗訊息指名規則。
+timeout=false
+已偵測：column_edge；1 個指定測試各自變紅，失敗訊息指名規則。
 
 突變 primary_continuity：拿掉「主支不可斷開」
+來源：core/checks.rb
 實際替換：continuity_ok = g[:clashes].empty? → continuity_ok = true
-命令：C:/Ruby33-x64/bin/ruby.exe C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-27176-v5sz31/test/run.rb --seed 20261013 --name test_primary_continuity_rule
-Run options: --seed 20261013 --name test_primary_continuity_rule
+命令："C:/Ruby33-x64/bin/ruby.exe" "C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-33056-8tpyi/test/run.rb" "--seed" "20261013" "--name" "/\\A(?:test_primary_continuity_rule)\\z/"
+Run options: --seed 20261013 --name "/\\A(?:test_primary_continuity_rule)\\z/"
 
 # Running:
 
 F
 
-Finished in 0.100005s, 9.9995 runs/s, 19.9991 assertions/s.
+Finished in 0.029762s, 33.6001 runs/s, 67.2002 assertions/s.
 
   1) Failure:
-FlatCeilingTest#test_primary_continuity_rule [C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-27176-v5sz31/test/test_flat_ceiling.rb:70]:
+FlatCeilingTest#test_primary_continuity_rule [C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-33056-8tpyi/test/test_flat_ceiling.rb:70]:
 規則：主支不可斷開，碰柱邊料不能當成可切斷的有效骨架
 
 1 runs, 2 assertions, 1 failures, 0 errors, 0 skips
 exit_code=1
-已偵測：primary_continuity；對應測試變紅，失敗訊息指名規則。
+timeout=false
+已偵測：primary_continuity；1 個指定測試各自變紅，失敗訊息指名規則。
 
-突變結果：3/3 個規則移除均被對應測試偵測；正式 core 未改動。
+突變 d1_integer_mm：拿掉「D1 整數 mm」
+來源：su/selection.rb
+實際替換：rounded = points.map { |point| point.map { |value| value.round } } # D1_INTEGER_MM_PROJECTION → rounded = points.map(&:dup) # D1_INTEGER_MM_PROJECTION
+命令："C:/Ruby33-x64/bin/ruby.exe" "C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-33056-zugvo/test/run.rb" "--seed" "20261013" "--name" "/\\A(?:test_d1_integer_mm_longest_edge_projection_notch_3000_angles|test_d1_integer_mm_projection_3664_by_3668_400_angles_keeps_inventory)\\z/"
+Run options: --seed 20261013 --name "/\\A(?:test_d1_integer_mm_longest_edge_projection_notch_3000_angles|test_d1_integer_mm_projection_3664_by_3668_400_angles_keeps_inventory)\\z/"
+
+# Running:
+
+FF
+
+Finished in 0.635041s, 3.1494 runs/s, 3.1494 assertions/s.
+
+  1) Failure:
+SelectionMathTest#test_d1_integer_mm_longest_edge_projection_notch_3000_angles [C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-33056-zugvo/test/test_selection_math.rb:49]:
+D1 整數 mm：12000×8000／30 mm 凹口旋轉3000角度須0誤拒且尺寸完全相同；失敗2996，前例[[0.12, "D1 整數 mm：取整後仍有非正交邊，請修正輸入。"], [0.24, "D1 整數 mm：取整後仍有非正交邊，請修正輸入。"], [0.36, "D1 整數 mm：取整後仍有非正交邊，請修正輸入。"], [0.48, "D1 整數 mm：取整後仍有非正交邊，請修正輸入。"]]
+
+  2) Failure:
+SelectionMathTest#test_d1_integer_mm_projection_3664_by_3668_400_angles_keeps_inventory [C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-33056-zugvo/test/test_selection_math.rb:67]:
+D1 整數 mm：3664×3668含0.2°在400角度的數量／縫／面材須與未旋轉相同；失敗399，前例[[0.1, "D1 整數 mm：取整後仍有非正交邊，請修正輸入。"], [0.2, "D1 整數 mm：取整後仍有非正交邊，請修正輸入。"], [0.3, "D1 整數 mm：取整後仍有非正交邊，請修正輸入。"], [0.4, "D1 整數 mm：取整後仍有非正交邊，請修正輸入。"]]
+
+2 runs, 2 assertions, 2 failures, 0 errors, 0 skips
+exit_code=1
+timeout=false
+已偵測：d1_integer_mm；2 個指定測試各自變紅，失敗訊息指名規則。
+
+突變 obstacle_generated_filter：拿掉「自產物排除」
+來源：su/obstacles.rb
+實際替換：return false if path.any? { |entity| generated?(entity) } → return false if false
+命令："C:/Ruby33-x64/bin/ruby.exe" "C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-33056-z4zwbs/test/run.rb" "--seed" "20261013" "--name" "/\\A(?:test_previous_plugin_result_is_not_a_beam_on_rerun)\\z/"
+Run options: --seed 20261013 --name "/\\A(?:test_previous_plugin_result_is_not_a_beam_on_rerun)\\z/"
+
+# Running:
+
+F
+
+Finished in 0.015306s, 65.3321 runs/s, 65.3321 assertions/s.
+
+  1) Failure:
+ObstaclesTest#test_previous_plugin_result_is_not_a_beam_on_rerun [C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-33056-z4zwbs/test/test_obstacles.rb:164]:
+P076 M2 自產物排除：前次下角材群組不可在同面重跑時被當成樑.
+Expected: 1
+  Actual: 2
+
+1 runs, 1 assertions, 1 failures, 0 errors, 0 skips
+exit_code=1
+timeout=false
+已偵測：obstacle_generated_filter；1 個指定測試各自變紅，失敗訊息指名規則。
+
+突變 obstacle_visibility_filter：拿掉「障礙可見性」
+來源：su/obstacles.rb
+實際替換：return false unless path.all? { |entity| visible?(entity) } → return false unless true
+命令："C:/Ruby33-x64/bin/ruby.exe" "C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-33056-x9zuoz/test/run.rb" "--seed" "20261013" "--name" "/\\A(?:test_hidden_or_tag_disabled_entities_are_excluded|test_hierarchy_visibility_and_tag_folder_visibility_are_respected)\\z/"
+Run options: --seed 20261013 --name "/\\A(?:test_hidden_or_tag_disabled_entities_are_excluded|test_hierarchy_visibility_and_tag_folder_visibility_are_respected)\\z/"
+
+# Running:
+
+FF
+
+Finished in 0.015156s, 131.9609 runs/s, 131.9609 assertions/s.
+
+  1) Failure:
+ObstaclesTest#test_hierarchy_visibility_and_tag_folder_visibility_are_respected [C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-33056-x9zuoz/test/test_obstacles.rb:196]:
+P076 M2 可見性：父群組隱藏／Tag 關閉／祖先 Tag 資料夾關閉必須一路生效.
+Expected: 1
+  Actual: 4
+
+  2) Failure:
+ObstaclesTest#test_hidden_or_tag_disabled_entities_are_excluded [C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-33056-x9zuoz/test/test_obstacles.rb:181]:
+P076 M2 可見性：隱藏及關閉 Tag 的實體不得算障礙.
+Expected: 1
+  Actual: 3
+
+2 runs, 2 assertions, 2 failures, 0 errors, 0 skips
+exit_code=1
+timeout=false
+已偵測：obstacle_visibility_filter；2 個指定測試各自變紅，失敗訊息指名規則。
+
+突變 dialog_lifecycle：拿掉「對話框生命週期」
+來源：su/dialog.rb
+實際替換：dialog.set_on_closed { @dialog = nil if @dialog.equal?(dialog) } → dialog.set_on_closed { @dialog = nil }
+命令："C:/Ruby33-x64/bin/ruby.exe" "C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-33056-uvu16a/test/run.rb" "--seed" "20261013" "--name" "/\\A(?:test_delayed_close_preserves_the_current_dialog)\\z/"
+Run options: --seed 20261013 --name "/\\A(?:test_delayed_close_preserves_the_current_dialog)\\z/"
+
+# Running:
+
+F
+
+Finished in 0.081522s, 12.2666 runs/s, 12.2666 assertions/s.
+
+  1) Failure:
+DialogLifecycleTest#test_delayed_close_preserves_the_current_dialog [C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-33056-uvu16a/test/test_dialog_lifecycle.rb:55]:
+規則：對話框生命週期，舊 close 回呼不得清除新對話框.
+Expected: 1
+  Actual: 0
+
+1 runs, 1 assertions, 1 failures, 0 errors, 0 skips
+exit_code=1
+timeout=false
+已偵測：dialog_lifecycle；1 個指定測試各自變紅，失敗訊息指名規則。
+
+突變 material_preservation：拿掉「既有材質保留」
+來源：su/builder.rb
+實際替換：return value if value → value.color = COLORS.fetch(role) if value
+        return value if value
+命令："C:/Ruby33-x64/bin/ruby.exe" "C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-33056-g54g7f/test/run.rb" "--seed" "20261013" "--name" "/\\A(?:test_second_ceiling_keeps_the_first_ceiling_user_material_color|test_existing_named_material_is_reused_without_any_color_write)\\z/"
+Run options: --seed 20261013 --name "/\\A(?:test_second_ceiling_keeps_the_first_ceiling_user_material_color|test_existing_named_material_is_reused_without_any_color_write)\\z/"
+
+# Running:
+
+FF
+
+Finished in 0.023720s, 84.3160 runs/s, 126.4739 assertions/s.
+
+  1) Failure:
+BuilderMaterialTest#test_existing_named_material_is_reused_without_any_color_write [C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-33056-g54g7f/test/test_builder_material.rb:88]:
+P076 材質保留：不得覆寫模型原有同名材質的色彩.
+Expected: "#112233"
+  Actual: "#C34F3E"
+
+  2) Failure:
+BuilderMaterialTest#test_second_ceiling_keeps_the_first_ceiling_user_material_color [C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-33056-g54g7f/test/test_builder_material.rb:72]:
+P076 材質保留：生成第二面天花不可把第一面使用者改紅的共用材質重設為預設色.
+Expected: "#FF0000"
+  Actual: "#DCCCA8"
+
+2 runs, 3 assertions, 2 failures, 0 errors, 0 skips
+exit_code=1
+timeout=false
+已偵測：material_preservation；2 個指定測試各自變紅，失敗訊息指名規則。
+
+突變 acceptance_entities_api：拿掉「B1 Entities API」
+來源：test_su/run_all.rb
+實際替換：@model.entities.length.zero? → @model.entities.empty?
+命令："C:/Ruby33-x64/bin/ruby.exe" "C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-33056-vek225/test/run.rb" "--seed" "20261013" "--name" "/\\A(?:test_b1_empty_model_reaches_first_fixture_transaction_without_entities_empty)\\z/"
+Run options: --seed 20261013 --name "/\\A(?:test_b1_empty_model_reaches_first_fixture_transaction_without_entities_empty)\\z/"
+
+# Running:
+
+F
+
+Finished in 1.364807s, 0.7327 runs/s, 2.9308 assertions/s.
+
+  1) Failure:
+SketchUpEntryContractTest#test_b1_empty_model_reaches_first_fixture_transaction_without_entities_empty [C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-33056-vek225/test/test_su_entry.rb:107]:
+B1 Entities API：空白模型必須進入第一個夾具操作，不能因 Entities.empty? 提早失敗；實際{"passed"=>false, "exit_code"=>1, "sketchup"=>"26.0.0", "ruby"=>"3.3.11", "assertions"=>0, "log"=>["FAIL NoMethodError: undefined method `empty?' for an instance of ContractEntities", "C:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-33056-vek225/test_su/run_all.rb:36:in `run'\nC:/Users/Yang/AppData/Local/Temp/geometry-framing-mutation-20261013-33056-vek225/test_su/run_all.rb:408:in `<top (required)>'\n-e:69:in `load'\n-e:69:in `<main>'"]}
+
+1 runs, 4 assertions, 1 failures, 0 errors, 0 skips
+exit_code=1
+timeout=false
+已偵測：acceptance_entities_api；1 個指定測試各自變紅，失敗訊息指名規則。
+
+突變結果：9/9 個規則移除均被對應測試偵測。
+正式 core+su+test_su 來源集合與每檔 SHA-256 均未改動。
 
 exit_code=0
+timeout=false

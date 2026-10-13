@@ -2,11 +2,83 @@
 
 require 'minitest/autorun'
 require_relative '../geometry_framing/su/selection'
+require_relative '../geometry_framing/core/flat_ceiling'
 
 class SelectionMathTest < Minitest::Test
   Selection = GeometryFraming::SU::Selection
   FakeVertex = Struct.new(:persistent_id)
   FakeEdge = Struct.new(:vertices)
+
+  def rotated_world(ring, degrees)
+    angle = degrees * Math::PI / 180.0
+    cosine, sine = Math.cos(angle), Math.sin(angle)
+    # 獨立建立世界座標夾具；6位小數重現 SketchUp 讀取的 mm 精度。
+    [ring.map do |x, y|
+      [(10_000 + x * cosine + y * sine).round(6),
+       (20_000 + x * sine - y * cosine).round(6), 2500]
+    end]
+  end
+
+  def flat_inventory(rings)
+    result = GeometryFraming::Core::FlatCeiling.build(rings: rings)
+    {
+      counts: result[:solids].group_by { |solid| solid[:role] }.transform_values(&:length),
+      seams: [result[:la][:seams], result[:lb][:seams]],
+      # 以板寬A／板長B座標比較面材；換房間局部X/Y不應令預期也跟著錯。
+      boards: result[:solids].select { |solid| solid[:role] == 'board' }.map do |solid|
+        solid[:boxes].map do |box|
+          result[:A] == 'x' ? box : [box[1], box[0], box[2], box[4], box[3], box[5]]
+        end
+      end
+    }
+  end
+
+  def test_d1_integer_mm_longest_edge_projection_notch_3000_angles
+    original = [[0, 0], [12_000, 0], [12_000, 8000], [6030, 8000],
+                [6030, 7970], [6000, 7970], [6000, 8000], [0, 8000]]
+    failures = []
+    3000.times do |index|
+      degrees = index * 360.0 / 3000
+      begin
+        rings = Selection.project_flat_rings(rotated_world(original, degrees))[:rings]
+        failures << [degrees, '座標不等於整數 mm 夾具'] unless rings == [original]
+      rescue GeometryFraming::SU::InputError => error
+        failures << [degrees, error.message]
+      end
+    end
+    assert failures.empty?, "D1 整數 mm：12000×8000／30 mm 凹口旋轉3000角度須0誤拒且尺寸完全相同；失敗#{failures.length}，前例#{failures.first(4).inspect}"
+  end
+
+  def test_d1_integer_mm_projection_3664_by_3668_400_angles_keeps_inventory
+    original = [[0, 0], [3664, 0], [3664, 3668], [0, 3668]]
+    # 最長邊沿原本的 Y：新平面 X=3668、Y=3664；預期不用投影helper計算。
+    expected = flat_inventory([[[0, 0], [3668, 0], [3668, 3664], [0, 3664]]])
+    failures = []
+    400.times do |index|
+      degrees = index / 10.0
+      begin
+        rings = Selection.project_flat_rings(rotated_world(original, degrees))[:rings]
+        actual = flat_inventory(rings)
+        failures << [degrees, actual[:counts], actual[:seams]] unless actual == expected
+      rescue GeometryFraming::SU::InputError, ArgumentError => error
+        failures << [degrees, error.message]
+      end
+    end
+    assert failures.empty?, "D1 整數 mm：3664×3668含0.2°在400角度的數量／縫／面材須與未旋轉相同；失敗#{failures.length}，前例#{failures.first(4).inspect}"
+  end
+
+  def test_d1_equal_length_edges_keep_loop_direction_across_full_rotation
+    original = [[0, 0], [4000, 0], [4000, 4000], [0, 4000]]
+    failures = []
+    400.times do |index|
+      degrees = index * 360.0 / 400
+      actual = Selection.project_flat_rings(rotated_world(original, degrees))
+      failures << degrees unless actual[:rings] == [original]
+      expected_x = [Math.cos(degrees * Math::PI / 180), Math.sin(degrees * Math::PI / 180), 0]
+      failures << [degrees, 'X 軸翻轉'] unless Selection.dot(actual[:xaxis], expected_x) > 0.999_999
+    end
+    assert failures.empty?, "D1 整數 mm：等長邊不可因微小誤差輪流中選或翻轉有向軸；前例#{failures.first(4).inspect}"
+  end
 
   def chain
     # 尾端 PID 比起端小；若不小心恢復 min_by(&:persistent_id)，會反轉方向。
@@ -59,9 +131,7 @@ class SelectionMathTest < Minitest::Test
     world = original.map do |x, y|
       [(10_000 + x * cosine + y * sine).round(6), (20_000 + x * sine - y * cosine).round(6), 2500]
     end
-    projected = world.map { |point| [Selection.dot(point, [cosine, sine, 0]), Selection.dot(point, [sine, -cosine, 0])] }
-    minx, miny = (0..1).map { |axis| projected.map { |point| point[axis] }.min }
-    points = Selection.snap_axes(projected.map { |x, y| [x - minx, y - miny] })
+    points = Selection.project_flat_rings([world])[:rings].first
     points.each_with_index do |a, index|
       b = points[(index + 1) % points.length]
       assert(a[0] == b[0] || a[1] == b[1], 'SU_COORDINATES：水平面旋轉 1° 後仍须精確正交，不能因浮點漂移被 core 拒絕')
@@ -72,14 +142,23 @@ class SelectionMathTest < Minitest::Test
   end
 
   def test_profile_shared_axis_values_and_rc_zero_survive_numeric_drift
-    points = Selection.snap_axes([[467.000002, -0.000001], [466.999999, 148.000002], [743, 147.999999]])
+    points = Selection.integer_projection([[467.000002, -0.000001], [466.999999, 148.000002], [743, 147.999999]])
     assert_equal(0.0, points[0][1], 'SU_COORDINATES：RC 基準須維持精確零')
     assert_equal(points[0][0], points[1][0], 'SU_COORDINATES：斷面直立段須精確共線')
     assert_equal(points[1][1], points[2][1], 'SU_COORDINATES：斷面水平段須精確共線')
   end
 
-  def test_real_nonorthogonal_edge_is_not_snapped_to_a_rule
-    points = Selection.snap_axes([[0, 0], [5000, 0.001]])
-    refute_equal(points[0][1], points[1][1], 'SU_COORDINATES：超出數值容差的斜邊不得被改成正交')
+  def test_real_nonorthogonal_edge_is_not_rounded_to_a_rule
+    error = assert_raises(GeometryFraming::SU::InputError) do
+      Selection.integer_projection([[0, 0.1], [5000, 0.7]])
+    end
+    assert_match(/取整前.*0.5 mm/, error.message, 'D1 整數 mm：取整前偏軸誤差超過0.5mm須拒絕')
+  end
+
+  def test_d1_integer_mm_projection_uses_half_mm_boundary_for_native_input_only
+    assert_equal [[0, 0], [5000, 0]], Selection.integer_projection([[0, -0.25], [5000, 0.25]]),
+                 'D1 整數 mm：0.5mm內的原生輸入投影可落到整數座標'
+    assert_equal [[2, -2], [5000, -2]], Selection.integer_projection([[1.5, -1.5], [4999.5, -1.5]]),
+                 'D1 整數 mm：半mm依Ruby round取整，僅限原生輸入邊界'
   end
 end

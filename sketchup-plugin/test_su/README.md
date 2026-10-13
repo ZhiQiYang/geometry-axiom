@@ -2,7 +2,7 @@
 
 這份腳本已通過一般 Ruby 語法檢查，**尚未在 SketchUp 執行**。Minitest 通過不代表 SketchUp 幾何、HtmlDialog、編輯 context 或復原已驗收。
 
-先在 SketchUp 2026 開一個新的空白模型，刪除預設人物等範本實體，再開啟「視窗 → Ruby 主控台」。腳本要求模型完全沒有實體且未進入群組編輯；不會清空既有模型。不要在使用者正在工作的模型執行。
+先在 SketchUp 2026 開一個新的空白模型，刪除預設人物等範本實體，再開啟「視窗 → Ruby 主控台」。腳本要求模型完全沒有實體且未進入群組編輯；不會清空既有模型。範本也不能預先帶有「下角材 面材」材質：保色驗收只修改本次新建的夾具材質，避免碰到既有材質。不要在使用者正在工作的模型執行。
 
 以本機 repository 路徑執行：
 
@@ -21,6 +21,7 @@ Sketchup.temp_dir/geometry-framing-su-YYYYMMDD-HHMMSS/
   output.txt
   result.json
   flat.png
+  flat-rerun.png
   profile.png
   nested-flat.png
 ```
@@ -36,14 +37,19 @@ load 'D:/geometry-axiom/sketchup-plugin/test_su/run_all.rb'
 
 驗收項目：
 
-- 5000 × 4800 mm L 形天花面，含 400 × 400 mm 柱孔；每種角色數量與 core 一致。
+- 5000 × 4800 mm L 形天花面，含 400 × 400 mm 柱孔；直接把腳本 `RINGS` 常數餵給 core 作為獨立期望，比對實際產物的每種角色數量，不拿 `Selection.read` 的快照重算裁判。未旋轉夾具預期為面材 16、沿邊料 10、主支 5、副支 69。
+- 從直接由 `RINGS` 算出的構件中，各抽 1 支主支、1 支副支、1 支柱邊料；實際讀取已建立元件的頂點並套用真實實例變換，驗世界 X／Y／Z 的最小及最大值（誤差小於 0.001 mm）。未旋轉的獨立期望公式為 `(x, -y, z)`。比對依角色與世界位置找料，不依 SketchUp 可能重排的外圈起點編號。
 - 頂層群組、角色子群組、每支料的元件、角色 Tag、斷面／長度／規則屬性；原始幾何放在 Untagged。
 - 每件元件為封閉實體；L 形與孔位裁切的多個 box 合成外皮，不留內隔板。
 - 平釘與斷面都可用一次復原刪除本次全部產物，保留輸入。
-- 未分組獨立樑以連通幾何 bounds 被攔截；檢查失敗不新增模型實體。
-- 間接照明槽：斷面有 4 塊面材、6 支縱向料、每站 4 支橫撐，沿 L 產生的實際數量與 core 一致。
+- 第一次平釘產物 A 仍在模型時，同一面由左上改成左下起鋪，第二次 B 的檢查及建立都必須成功；本插件前次產物不能被當成樑。再次建立的數量與位置也用 `RINGS` 的獨立期望比對，預期為面材 18、沿邊料 10、主支 5、副支 71。
+- 材質保色：生成 A 後，用一個獨立操作把本次新建的「下角材 面材」改成紅色 `RGB(255, 0, 0)`，再生成 B；確認 A／B 全部面材共用同一材質實體，且 A／B 仍為紅色，不能被新生成操作重設為預設米色。`flat-rerun.png` 記錄紅色 B 產物。接著一次復原 B（保留 A 及紅色）、另一次只復原自訂顏色（保留 A 並還原原色），最後一次復原 A；每個生成動作仍各自只需一次復原。
+- 未分組獨立樑以連通幾何 bounds 被攔截，失敗項目必須只有 `obstacles`；樑底 2510 − 面材 6 − 角材高 33，因此 `suggested_ceil` 必須是 **2471 mm**。檢查失敗不新增模型實體。
+- 間接照明槽：斷面有 4 塊面材、6 支縱向料、每站 4 支橫撐，沿 L 產生的實際數量與直接使用 `PROFILE_POINTS` 常數的 core 一致。
 - 兩端接同一樓板的斷面能依 demo 直接封閉，不虛構 RC 牆。
-- 旋轉 1°、平移後的巢狀群組輸入：數值正交、世界高度、頂層產物、編輯路徑與選取保全，以及一次復原。
+- 旋轉 1°、平移後的巢狀群組輸入：與未旋轉版逐角色數量相同，並重驗主支／副支／柱邊料的世界 X／Y／Z，還有頂層產物、編輯路徑與選取保全，以及一次復原。世界位置期望用已知夾具常數手算：先 `(x, -y, z)`，加內層平移 `(500, 800, 0)`，再用 `sin`／`cos` 旋轉 1°，最後加外層平移 `(30000, 20000, 0)`；不讀取 selection 的 frame，也不以 `Geom::Transformation` 重用被測座標管道。
+
+上述幾何、座標與復原斷言仍需在 SketchUp 2026 真機執行。一般 Ruby 的 `ruby -c sketchup-plugin/test_su/run_all.rb` 只確認語法；不會載入或執行驗收。空白模型前置條件使用官方支援的 `Entities#length.zero?`，不呼叫 `Entities#empty?`。
 
 腳本未自動點擊 HtmlDialog。驗收者另需手動確認兩個「擴充功能 → 下角材」入口、調整參數後檢查、失敗時禁止建立、成功時建立，以及右上／左上起鋪的差異。平釘的世界 Z 可在對話框調低；斷面兩端須貼住模型中的既有 RC 參照面，接面判斷不等同材料鑑定。
 
@@ -54,6 +60,8 @@ load 'D:/geometry-axiom/sketchup-plugin/test_su/run_all.rb'
 轉接器依據的官方 API：
 
 - [Model.active_path=／edit_transform 與操作](https://ruby.sketchup.com/Sketchup/Model.html)
+- [Entities.length：取得實體數量](https://ruby.sketchup.com/Sketchup/Entities.html#length-instance_method)
+- [Material.color=／Material.==：自訂顏色與材質同一性](https://ruby.sketchup.com/Sketchup/Material.html)
 - [HtmlDialog 回呼](https://ruby.sketchup.com/UI/HtmlDialog.html)
 - [UI.inputbox 原生選擇](https://ruby.sketchup.com/UI.html#inputbox-class_method)
 - [Face.all_connected／classify_point](https://ruby.sketchup.com/Sketchup/Face.html)

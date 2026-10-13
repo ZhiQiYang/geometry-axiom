@@ -89,7 +89,11 @@ module GeometryFraming
 
       def material(model, role)
         name = "下角材 #{ROLES.fetch(role)}"
-        value = model.materials[name] || model.materials.add(name)
+        value = model.materials[name]
+        # MUTATION: material_preservation — 重用共用材質時，保留使用者的顏色與其他屬性。
+        return value if value
+
+        value = model.materials.add(name)
         value.color = COLORS.fetch(role)
         value
       end

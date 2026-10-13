@@ -1,14 +1,16 @@
 Ruby：ruby 3.3.11 (2026-03-26 revision 1f2d15125a) [x64-mingw-ucrt]
+正式 core+su+test_su 來源 SHA-256：63e90d4a466f46c960ec62806532027d9a88cacdc326484016266974d1615aec
 命令："C:/Ruby33-x64/bin/ruby.exe" "D:/geometry-axiom/sketchup-plugin/test/run.rb" "--seed" "20261013"
 
 Run options: --seed 20261013
 
 # Running:
 
-.............................................
+.............................................................
 
-Finished in 0.578819s, 77.7446 runs/s, 44929.4477 assertions/s.
+Finished in 3.184816s, 19.1534 runs/s, 8189.1693 assertions/s.
 
-45 runs, 26006 assertions, 0 failures, 0 errors, 0 skips
+61 runs, 26081 assertions, 0 failures, 0 errors, 0 skips
 
 exit_code=0
+timeout=false

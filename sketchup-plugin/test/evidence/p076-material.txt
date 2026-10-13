@@ -1,0 +1,36 @@
+P-076 補充材質修前：同名材質無條件重寫預設顏色。
+ruby sketchup-plugin/test/test_builder_material.rb --seed 20261013
+Run options: --seed 20261013
+
+# Running:
+
+.FF
+
+Finished in 0.004549s, 659.4856 runs/s, 4836.2277 assertions/s.
+
+  1) Failure:
+BuilderMaterialTest#test_existing_named_material_is_reused_without_any_color_write [sketchup-plugin/test/test_builder_material.rb:88]:
+P076 材質保留：不得覆寫模型原有同名材質的色彩.
+Expected: "#112233"
+  Actual: "#C34F3E"
+
+  2) Failure:
+BuilderMaterialTest#test_second_ceiling_keeps_the_first_ceiling_user_material_color [sketchup-plugin/test/test_builder_material.rb:72]:
+P076 材質保留：生成第二面天花不可把第一面使用者改紅的共用材質重設為預設色.
+Expected: "#FF0000"
+  Actual: "#DCCCA8"
+
+3 runs, 22 assertions, 2 failures, 0 errors, 0 skips
+exit_code=1
+P-076 補充材質修後：只在新增材質時初始化預設色，既有材質直接沿用。
+ruby sketchup-plugin/test/test_builder_material.rb --seed 20261013
+Run options: --seed 20261013
+
+# Running:
+
+...
+
+Finished in 0.002027s, 1479.9467 runs/s, 13812.8361 assertions/s.
+
+3 runs, 28 assertions, 0 failures, 0 errors, 0 skips
+exit_code=0

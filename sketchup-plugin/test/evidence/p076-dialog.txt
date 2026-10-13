@@ -1,0 +1,34 @@
+P-076 dialog lifecycle: isolated previous callback versus corrected source.
+Fake HtmlDialog, not SketchUp runtime.
+
+BEFORE (isolated copy, identity guard removed):
+Run options: --seed 20261013
+
+# Running:
+
+F
+
+Finished in 0.009275s, 107.8144 runs/s, 107.8144 assertions/s.
+
+  1) Failure:
+DialogLifecycleTest#test_delayed_close_preserves_the_current_dialog [C:/Users/Yang/AppData/Local/Temp/geometry-framing-p076-dialog-684d_kzb/test/test_dialog_lifecycle.rb:55]:
+規則：對話框生命週期，舊 close 回呼不得清除新對話框.
+Expected: 1
+  Actual: 0
+
+1 runs, 1 assertions, 1 failures, 0 errors, 0 skips
+
+exit_code=1
+
+AFTER (working source):
+Run options: --seed 20261013
+
+# Running:
+
+.
+
+Finished in 0.003460s, 289.0173 runs/s, 578.0347 assertions/s.
+
+1 runs, 2 assertions, 0 failures, 0 errors, 0 skips
+
+exit_code=0

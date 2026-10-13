@@ -20,7 +20,8 @@ module GeometryFraming
         @dialog.add_action_callback('ready') { |_context| receive(initial_payload) }
         @dialog.add_action_callback('preview') { |_context, payload| dispatch(payload, false) }
         @dialog.add_action_callback('generate') { |_context, payload| dispatch(payload, true) }
-        @dialog.set_on_closed { @dialog = nil }
+        dialog = @dialog
+        dialog.set_on_closed { @dialog = nil if @dialog.equal?(dialog) }
         @dialog.show
       end
 
