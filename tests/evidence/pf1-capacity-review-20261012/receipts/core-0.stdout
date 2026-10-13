@@ -1,0 +1,27 @@
+Mutation scope: partial M02, M07, M12, M17, M22, M27, M32, M56, M34, M39
+BASELINE exe 沿用快取(來源與編譯指令沒變)
+BASELINE OK: 139/139 全過(未變異原始碼)
+M02  exe 已重編
+M02  KILLED    I5：射線半開區間 [v_min,v_max) 改 (v_min,v_max)  <- _test_lshape.scene: FAIL 錯誤不符: 期望含「沒有擋面」實得「<repo>/_test_lshape.scene:17: R6/I5/I6 timber 2: 中線上沒有任何合法跨距」
+M07  exe 已重編
+M07  KILLED    I5：直立邊 v 區間零長度接觸也算穿入(< 改 <=)  <- _test_lshape.scene: FAIL 錯誤不符: 期望含「沒有擋面」實得「<repo>/_test_lshape.scene:17: R6/I5/I6 timber 2: 中線上沒有任何合法跨距」
+M12  exe 已重編
+M12  KILLED    I11：正面積重疊:端點相接也算重疊(> 改 >=)  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:13: R6/I5/I6 timber 1: 中線上沒有任何合法跨距
+M17  exe 已重編
+M17  KILLED    D11：擋面涵蓋檢查:邊界相等不算涵蓋(> 改 >=)  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:7: R6/I5/I6 timber 80: 跨距起點沒有擋面（端面懸空）
+M22  exe 已重編
+M22  KILLED    R6(d)：拿掉 FREE 擋面拒絕  <- _test_free.scene: FAIL 錯誤不符: 期望含「自由邊」實得「<repo>/_test_free.scene:7: R6/I5/I6 timber 1: I5/I6 footprint outside effective region or FREE edge」
+M27  exe 已重編
+M27  KILLED    深度側反轉:角材往面下長  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:7: R6(d)/I6 timber 80: end 1 at 4000 mm, cross [-20,0], legal stops=0
+M32  exe 已重編
+M32  KILLED    I10：格線座標上下界改成嚴格(壓邊界的格線拒絕)  <- _edge_grid_at_border.scene: FAIL 錯誤不符: 期望含「沒有任何合法跨距」實得「<repo>/_edge_grid_at_border.scene:3: grid 座標不合法（u 軸）：座標要落在承載面外接範圍內」
+M56  exe 已重編
+M56  EQUIVALENT I23：I23(b) 不再檢查被錨定的索引是否仍推導得出  <- 等價變異(GEO-173 實證,更正 GEO-100 的舊結論):world_validate_derived 只在 reference_rebuild 成功後才跑,而 reference_rebuild → reference_place_geometry 對每個 AT_GRID 角材已先跑同一個 grid_anchor_line_coord(同 grids/count/grid/placement/axis/index/has_band/band;boundary 若為自帶 rect 的合成輪廓,其 bounds/area 與 NULL boundary 的 rect 路徑相同),索引消失會先在那裡失敗;被變異那行在現行語意(2026-09-18 反轉為重算)下永遠是 no-op。夾具 M56_grid_index_vanish(面縮到索引 7 消失)原始版與變異版輸出逐字相同。
+M34  exe 已重編
+M34  KILLED    I13：at-edge 平行守門員反轉  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:7: I13 timber 80: at-face 邊必須平行於長度軸
+M39  exe 已重編
+M39  KILLED    R6(a)：切點去重用 < 不去重(零長 cell 出現)  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:7: R6/I5/I6 timber 80: 中線上沒有任何合法跨距
+
+本次 10:殺死 killed 9 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 1 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0
+歷次紀錄(不是本次覆蓋)10:殺死 killed 9 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 1 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0 / 未跑 unrun 38
+  (過期明細用 --check 列出)
