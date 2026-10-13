@@ -1,0 +1,20 @@
+from pathlib import Path
+import sys,json,tempfile,os,hashlib,subprocess
+root=Path('/tmp/geometry-control-diagnostics'); sys.path.insert(0,str(root))
+from tests._bridge import BridgeSession,find_bridge
+os.environ['GEOMETRY_TEST_BRIDGE']='/tmp/control-diag-integration-binaries/bridge'
+binary=find_bridge()
+with tempfile.TemporaryDirectory(prefix='p093-capability-') as d:
+ b=BridgeSession(binary,cwd=d)
+ try:
+  reset=b.command('reset'); read=b.command('panel-fill-read')
+  # Capability probe only: this is not asserted to be the adopted derived-host API.
+  tx=Path(d)/'probe.json'; tx.write_text(json.dumps({'schema':'panel-fill-transaction/1','expectedRevision':read['revision'],'operations':[{'op':'put-derived-placement','value':{'id':100}}]}))
+  result=b.command('panel-fill-preview '+str(tx))
+  assert 'accept only put-finish-surface and delete-finish-surface' in json.dumps(result)
+ finally: b.stop()
+record={'scope':'PF-1 capability probe, not a valid derived-host witness; exploratory op has no adopted executable API here','source_head':subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip(),'source_main':'2004c6c8bebe1bbff2df142630b630e1ee5115b8','bridge':binary,'bridge_sha256':hashlib.sha256(Path(binary).read_bytes()).hexdigest(),'reset':reset,'read':read,'probe_result':result,'wrapper_exit':0,'derived_host_witness':'UNVERIFIED: PF-1 accepts only finish surface edits; D42/derived placement not implemented'}
+e=Path('/tmp/geometry-framing-proposal/geometry-core/framing-template/evidence')
+(e/'p093-pf1-capability-probe.json').write_text(json.dumps(record,ensure_ascii=False,indent=2)+'\n')
+(e/'p093-pf1-capability-probe.py.txt').write_bytes(Path(__file__).read_bytes())
+print(json.dumps(result,ensure_ascii=False))
