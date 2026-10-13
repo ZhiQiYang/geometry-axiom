@@ -16,14 +16,16 @@ static bool eng_definition_hash(const World *w,char hash[65])
 }
 static void json_engineering_capabilities(const World *w)
 {
+    /* panel-fill/1 is required by scenes holding finish surfaces (I56 adds its two prerequisites), but it is not
+     * advertised as supported: PF-1 implements only the finish-surface records, and I32 forbids claiming the
+     * whole capability.  panel-fill-native/1 + panel-fill-read report the supported subset. */
+    bool fs=fs_used(w),eng=engineering_used(w)||fs,par=w->parameters.card_count||fs,first=true;
+    const struct {bool used;const char *name;} required[]={{eng,"engineering-spec/1"},{par,"parameters/1"},{assembly_used(w),ASM_CAPABILITY},
+        {w->assembly.instance_count!=0,ASM_GENERATION_CAPABILITY},{grid_subdivision_used(w),GRID_SUBDIVISION_CAPABILITY},{sp_used(w),SP_CAPABILITY},{fs,FS_CAPABILITY}};
     fputs("\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\"],\"required_capabilities\":[",stdout);
-    if(engineering_used(w))js_string("engineering-spec/1");
-    if(w->parameters.card_count){if(engineering_used(w))putchar(',');js_string("parameters/1");}
-    if(assembly_used(w)){if(engineering_used(w)||w->parameters.card_count)putchar(',');js_string(ASM_CAPABILITY);}
-    if(w->assembly.instance_count){if(engineering_used(w)||w->parameters.card_count||assembly_used(w))putchar(',');js_string(ASM_GENERATION_CAPABILITY);}
-    if(grid_subdivision_used(w)){if(engineering_used(w)||w->parameters.card_count||assembly_used(w)||w->assembly.instance_count)putchar(',');js_string(GRID_SUBDIVISION_CAPABILITY);}
-    if(sp_used(w)){if(engineering_used(w)||w->parameters.card_count||assembly_used(w)||w->assembly.instance_count||grid_subdivision_used(w))putchar(',');js_string(SP_CAPABILITY);}putchar(']');
-    fputs(",\"native_capabilities\":[\"section-profile-native/1\"]",stdout);
+    for(size_t i=0;i<sizeof required/sizeof required[0];++i)if(required[i].used){if(!first)putchar(',');first=false;js_string(required[i].name);}
+    putchar(']');
+    fputs(",\"native_capabilities\":[\"section-profile-native/1\",\"" FS_NATIVE_CAPABILITY "\"]",stdout);
 }
 static void json_engineering_sources(const World *w)
 {
@@ -105,14 +107,14 @@ static void batch_preview(const char *path,const char *schema_name,const char *s
         g_subgrid_before=&g_world;ok=world_revalidate(candidate);g_subgrid_before=previous;g_reference_capturing=capturing;
         if(!ok){*candidate=g_reference_trial;if(!g_engineering_error[0])eng_fail(g_revalidate_error[0]?g_revalidate_error:"I35: candidate geometry is invalid");}}
     for(size_t i=0;i<candidate->timber_count&&ok;++i)if(!candidate->timbers[i].placed){ok=eng_fail("I9: candidate still contains an unplaced timber");}
-    char *stage_label=(char *)label;reference_stage(&g_world,candidate,&stage_label,1,ok);g_preview.engineering_batch=true;g_preview.assembly_batch=kind==1;g_preview.profile_batch=kind==2;
+    char *stage_label=(char *)label;reference_stage(&g_world,candidate,&stage_label,1,ok);g_preview.engineering_batch=true;g_preview.assembly_batch=kind==1;g_preview.profile_batch=kind==2;g_preview.finish_batch=kind==3;
     if(!ok)g_preview.assembly_diagnostic=g_asm_diagnostic;
     fputs("{\"ok\":true,\"preview\":",stdout);write_preview();fputs("}\n",stdout);
     free(candidate);eng_json_free(&j);free(text);
 }
 static bool batch_token_kind(int kind)
 {
-    return g_preview.engineering_batch && (kind==2?g_preview.profile_batch:kind==1?g_preview.assembly_batch:!g_preview.assembly_batch&&!g_preview.profile_batch);
+    return g_preview.engineering_batch && (kind==3?g_preview.finish_batch:kind==2?g_preview.profile_batch:kind==1?g_preview.assembly_batch:!g_preview.assembly_batch&&!g_preview.profile_batch&&!g_preview.finish_batch);
 }
 static void batch_confirm(const char *arg,int kind,const char *token_message,const char *stale_message)
 {
