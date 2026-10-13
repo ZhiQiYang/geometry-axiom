@@ -9,6 +9,7 @@ import shutil
 from pathlib import Path
 import sys
 import tempfile
+import time
 import unittest
 from unittest.mock import patch
 
@@ -573,6 +574,19 @@ class BinaryFreshnessTests(unittest.TestCase):
                 chunk = self.fh.read(size)
                 if chunk and not self.done:
                     self.done = True
+                    if os.name != 'nt':
+                        # stat change time has finite granularity. Cross a tick on
+                        # the same filesystem before rewriting the hashed file.
+                        sentinel = path.with_name('ctime-sentinel')
+                        sentinel.touch()
+                        deadline = time.monotonic() + 1.0
+                        while True:
+                            os.utime(sentinel, None)
+                            if sentinel.stat().st_ctime_ns > before.st_ctime_ns:
+                                break
+                            if time.monotonic() >= deadline:
+                                raise RuntimeError('environment: ctime did not advance within 1s')
+                            time.sleep(0.001)
                     held = path.stat()
                     with original(path, 'r+b') as writer:
                         first = writer.read(1)
@@ -617,3 +631,4 @@ class BinaryFreshnessTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
