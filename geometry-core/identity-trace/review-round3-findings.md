@@ -1,0 +1,11 @@
+## P-026 K3 r2 第 3 輪審查(opus):須先改,1 阻擋 + 7 須先改 + 4 僅記錄 → r3 裁決(2026-10-10)
+- F1【阻擋】D⟨K3-4⟩「被引用者不得被刪除…所以不會留下指向已結束存在期的引用」被 Q5-B 推翻(I38 允許同候選內解除+刪除後整包驗證;parameter_remove 不查引用;L-21 主案 [delete-parameter 2, put-parameter{id:2}] 會通過,timber 5 的 ParameterRef 靜默改綁到新存在期)。→ 裁決:刪「所以」句,改「同一提交明示刪除後同鍵重建時,World 內引用依 id 解析到新存在期,本層不記此改綁(§7.1 列為已知限制)」;不採「整筆拒絕」(會改 I38 允許的核心行為,超出 K3 範圍);L-21 備援句與 §7.1 同改。
+- F2 D⟨K3-2⟩(2)「參數交易中」太窄且非 SSOT 用詞(delete-parameter 可經 assembly-preview/assembly-generation-preview/section-profile-preview 落到 eng_operation)→「任何交易中的 delete-parameter」,刪除記錄掛 parameter_remove 內;L-21 補組構與斷面路徑案例。
+- F3 明示刪除閉集與 PF-0 r2 衍生承載面(共用 (placement,id),同交易可刪可建)對不上 → 閉集改原則句「提交中任何操作使該受涵蓋物件不存在,即為明示刪除」,契約層列 op 名;順帶統一 K2a 孤兒判定的「刪除」定義(F12)。
+- F4 L-21 斷面案例做不到(sp 的 op 不能建承載面;placement 0 掛 timber 5/6 必失敗)→ 明寫「現行無同提交重建承載面路徑」,保留為未來案例。
+- F5 對照表漏 `line reset`(apply_reset_line :11948,可 undo)與桌面「清除」(:5532)→ 補列為「提交」;D⟨K3-3⟩:53-54 改正;寫明結果「身分帳仍啟用、區段保留、World 空」;K3-LIM-1 改寫:桌面版(GDI,不設區段)開啟已啟用專案時以唯讀模式載入,直到桌面支援區段。
+- F6 M-12/K3-Q32「組構角材根 null 合法」匯入時無可靠依據(所有權會變)→ 每個根存理由標記(如 uncovered:"assembly-owned"),驗證依標記不依目前 World。
+- F7 去身分 dump 使用點補:space-workspace.js:435/451/454、507/511;model-update-app.js:58/64/153/155/191;model_update.py ~401 _graph;rule_cases/executor.py:513/528;serve.py:463 唯讀白名單加去身分 dump 指令;reference-workspace.js:1262 exportSnapshot 列為維持完整 dump。
+- F8 batch_confirm 直接套 g_preview.after 不重跑 op → 明寫明示刪除集合隨候選存在 g_preview,確認時據此結算。
+- 僅記錄:F9 行號 :110→:121、:396→:395;F10 §9.2-4 改「走不到」(current_geometry.c:4079 必回滾);F11 L-16 補互動 preview/confirm(transactions.inc:551-558);F12 由 F3 解。審查員在 WSL 留了 /tmp/cg_unused(repo 外,待清)。
+- 狀態:**修訂待派**——sonnet 週限額已達(重置 8pm Asia/Taipei),見下。
