@@ -1,0 +1,84 @@
+import pathlib, json, hashlib, tarfile, shutil, re, subprocess
+root=pathlib.Path('/tmp/geometry-framing-proposal')
+out=root/'tests/evidence/plain-align-ssot-20261015/p112'
+gates=json.loads((out/'gates.json').read_text())
+native=json.loads((out/'native.json').read_text())
+reader=json.loads((out/'reader41.json').read_text())
+assert gates['sourcesEqual'] and gates['head']==gates['headAfter']
+assert native['exit']==reader['exit']==0
+assert native['head']==native['headAfter']==reader['head']==reader['headAfter']==gates['head']
+assert re.search(r'Ran 41 tests', (out/'reader41.stderr.log').read_text())
+text=(out/'native.stdout.log').read_text()
+m=re.search(r'^合計.*?\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+([\d.]+)\s*$',text,re.M)
+assert m
+counts=dict(total=int(m[1]),passed=int(m[2]),failed=int(m[3]),skipped=int(m[4]))
+assert counts['failed']==0 and counts['skipped']==1
+(out/'counts.json').write_text(json.dumps(counts,indent=2)+'\n')
+logs=pathlib.Path('/tmp/plain-align-binaries/run_all-logs')
+start=(out/'sources-before.json').stat().st_mtime
+files=sorted(p for p in logs.rglob('*') if p.is_file() and p.stat().st_mtime>=start)
+members=[]
+with tarfile.open(out/'native-raw.tar.gz','w:gz') as archive:
+    for p in files:
+        raw=p.read_bytes(); name=str(p.relative_to(logs))
+        members.append(dict(path=name,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest()))
+        archive.add(p,arcname=name)
+with tarfile.open(out/'native-raw.tar.gz','r:gz') as archive:
+    for row in members:
+        raw=archive.extractfile(row['path']).read()
+        assert len(raw)==row['bytes'] and hashlib.sha256(raw).hexdigest()==row['sha256']
+(out/'native-members.json').write_text(json.dumps(members,indent=2)+'\n')
+binary={}
+def raw_clauses(html):
+    encoded=re.search(r'<script\b[^>]*id="clause-data"[^>]*>(.*?)</script>',html,re.S)[1]
+    decoder=json.JSONDecoder(); index=1; rows={}
+    while True:
+        while encoded[index] in ' \t\r\n,': index+=1
+        if encoded[index]==']': break
+        value,end=decoder.raw_decode(encoded,index)
+        rows[value['id']]=encoded[index:end]
+        index=end
+    return rows
+old_raw=raw_clauses(subprocess.check_output(['git','show','79412a85:geometry-guide/公理層-閱讀器.html'],cwd=root).decode())
+new_raw=raw_clauses((root/'geometry-guide/公理層-閱讀器.html').read_text())
+locked=json.loads((out/'scope-proof.json').read_text())['lockedClauseIds']
+assert all(old_raw[key]==new_raw[key] for key in locked)
+(out/'locked-serialized.json').write_text(json.dumps({key:hashlib.sha256(old_raw[key].encode()).hexdigest() for key in locked},indent=2)+'\n')
+for p in pathlib.Path('/tmp/plain-align-binaries').iterdir():
+    if p.is_file() and p.suffix!='.json':
+        binary[p.name]=hashlib.sha256(p.read_bytes()).hexdigest()
+    elif p.name.endswith('.fingerprint.json'):
+        shutil.copyfile(p,out/p.name)
+(out/'binary-final.json').write_text(json.dumps(binary,indent=2)+'\n')
+readme=f'''# P-112 後正式雲端驗證
+
+固定受測 head：{gates['head']}；基底 main79412a85。
+原位sync／check各actual0，五道assert與independent SSOT通過，204clauses／851blocks。
+原41題：actual exit0／{reader['seconds']:.3f}秒。
+完整native --build、stack16384：{counts['passed']} pass／0 fail／1具名允許Windows GDI skip，
+actual exit0／{native['seconds']:.3f}秒，所有登錄suite執行、expected吻合。
+受測head前後相同，{gates['sourceCount']}選定tracked檔案前後SHA相同；不是連續監看。
+native包{len(members)}成員逐件核bytes/SHA；另附原stdout、stderr與獨立41題日誌。
+binary只提供最終hash／sidecar，不提供exe bytes或前後binary身分聲明。
+
+P-112允許同步器改動含🔒的整包JSON生成行。scope-proof核全部204正式body、
+含🔒的D15／R6／R8／R12整個clause物件與五則comments不變；人寫🔒內容不變。
+白話只改D1／I10／I53／R45及Q38檔頭一行；S1／S6／S7／S9未動。
+SSOT、BACKLOG、決策、C、帳本、registry／expected、同步脚本都與base逐byte相同。
+沒有新增測試／產品突變，mutate無新覆蓋；GEO-219無新入口。
+原41包含既有故障注入，不冒稱本次新產品變異覆蓋。
+
+早期d8c85d55的候選sync與停手原件仍在父目錄，維持原歷史界線；
+不把候選／停手證據改寫成當時已交付正典。P-112是本輪明確授權，不是等待時間當同意。
+本輪只需文件類native。實際桌面／手機瀏覽器及WSL未跑，不把CLI驗證當UI收據。
+CI 受帳號計費阻擋,正式合併裁判由本機 WSL 收據提供。
+由Claude逐段審查後處理合併；作者不合併PR、不force push、不關PR或issue。
+'''
+(out/'README.md').write_text(readme)
+items=[]
+for p in sorted(out.rglob('*')):
+    if p.is_file() and p.name!='inventory.json':
+        raw=p.read_bytes()
+        items.append(dict(path=str(p.relative_to(out)),bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest()))
+(out/'inventory.json').write_text(json.dumps(items,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps(dict(native=native,reader=reader,gates=gates,counts=counts,archiveMembers=len(members),inventoryEntries=len(items)),ensure_ascii=False))
