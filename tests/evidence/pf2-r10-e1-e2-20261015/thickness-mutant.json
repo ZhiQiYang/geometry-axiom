@@ -1,0 +1,182 @@
+{
+  "mutation": {
+    "path": "geometry-core/panel_fill_layout.inc",
+    "old": "char thickness[ENG_THICKNESS_CAPACITY];",
+    "new": "char thickness[64];"
+  },
+  "compile_argv": [
+    "cc",
+    "-std=c11",
+    "-O2",
+    "-I/tmp/geometry-209-segments",
+    "-I/tmp/geometry-209-segments/geometry-web",
+    "/tmp/geometry-wake31-pf2/thickness-mutant/bridge.c",
+    "-lm",
+    "-o",
+    "/tmp/geometry-wake31-pf2/thickness-mutant/bridge"
+  ],
+  "compile_exit": 0,
+  "compile_seconds": 15.282879443,
+  "source_sha256": {
+    "/tmp/geometry-209-segments/geometry-core/panel_fill_layout.inc": "66464f3574cb1372818ead478d1c7cf5edc52e99db9d3aee87874d66c9804652",
+    "/tmp/geometry-wake31-pf2/thickness-mutant/panel_fill_layout.inc": "bbbee0084ac0c0f1b5cb7af2b7ba0c94812f037800469310816553d0acda6e82",
+    "/tmp/geometry-wake31-pf2/thickness-mutant/core.c": "de3c7188c3c14a4093977c4c951346326a453aa3826e4ca3bf8fb031f15bf15c",
+    "/tmp/geometry-wake31-pf2/thickness-mutant/bridge.c": "279960bd4f1fd3324e7401dd6b750aaa9bac5d3c04b5404081abf4de8f7b0ff9"
+  },
+  "current_geometry_crlf_preserved": true,
+  "runs": [
+    {
+      "label": "fixed-before",
+      "argv": [
+        "python3",
+        "/tmp/geometry-wake31-pf2/run_thickness_case.py",
+        "--binary",
+        "/tmp/geometry-tests/bridge",
+        "--out",
+        "/tmp/geometry-wake31-pf2/thickness-mutant/fixed-before"
+      ],
+      "pid": 653495,
+      "actual_os_exit": 0,
+      "seconds": 0.328983143,
+      "result": {
+        "test_pid": 653495,
+        "case": "test_PF13_integer_thickness_keeps_full_published_representation",
+        "binary": "/tmp/geometry-tests/bridge",
+        "binary_sha256": "6d58e51af037985bef00f4c0f859bf20e705a1d0ea9f22d8d8fa846913f03103",
+        "oracle_sha256": "f3898c73db7ead9c80528e8cf80001d2cd8e2b556de4d582a6f0fe70b74cb0c6",
+        "tests_run": 1,
+        "failures": [],
+        "errors": [],
+        "skips": [],
+        "subtests": [
+          {
+            "id": "tests.test_panel_fill_layout.PanelFillLayout.test_PF13_integer_thickness_keeps_full_published_representation (thickness_bytes=63)",
+            "ok": true,
+            "exception": null,
+            "message": null
+          },
+          {
+            "id": "tests.test_panel_fill_layout.PanelFillLayout.test_PF13_integer_thickness_keeps_full_published_representation (thickness_bytes=64)",
+            "ok": true,
+            "exception": null,
+            "message": null
+          },
+          {
+            "id": "tests.test_panel_fill_layout.PanelFillLayout.test_PF13_integer_thickness_keeps_full_published_representation (thickness_bytes=127)",
+            "ok": true,
+            "exception": null,
+            "message": null
+          }
+        ],
+        "unittest_result_code": 0,
+        "seconds": 0.182814907,
+        "binary_selection": "explicit standalone diagnostic executable; original BridgeSession protocol and assertions"
+      }
+    },
+    {
+      "label": "withdrawn",
+      "argv": [
+        "python3",
+        "/tmp/geometry-wake31-pf2/run_thickness_case.py",
+        "--binary",
+        "/tmp/geometry-wake31-pf2/thickness-mutant/bridge",
+        "--out",
+        "/tmp/geometry-wake31-pf2/thickness-mutant/withdrawn"
+      ],
+      "pid": 653497,
+      "actual_os_exit": 1,
+      "seconds": 0.258028986,
+      "result": {
+        "test_pid": 653497,
+        "case": "test_PF13_integer_thickness_keeps_full_published_representation",
+        "binary": "/tmp/geometry-wake31-pf2/thickness-mutant/bridge",
+        "binary_sha256": "9be4ca4c973ae6225a067d7cffcdefcb175b27225b7a7badaa6585daf805db96",
+        "oracle_sha256": "f3898c73db7ead9c80528e8cf80001d2cd8e2b556de4d582a6f0fe70b74cb0c6",
+        "tests_run": 1,
+        "failures": [
+          {
+            "id": "tests.test_panel_fill_layout.PanelFillLayout.test_PF13_integer_thickness_keeps_full_published_representation (thickness_bytes=64)",
+            "traceback": "Traceback (most recent call last):\n  File \"/tmp/geometry-209-segments/tests/test_panel_fill_layout.py\", line 220, in test_PF13_integer_thickness_keeps_full_published_representation\n    self.assertTrue(preview[\"valid\"], \"PF2_THICKNESS_VALUE_9: I52 must accept exact 9 mm, not reject its representation: %s\" % preview)\nAssertionError: False is not true : PF2_THICKNESS_VALUE_9: I52 must accept exact 9 mm, not reject its representation: {'token': 6, 'valid': False, 'revision': 19, 'diagnosticsComplete': True, 'layerJudgement': {'status': 'pending', 'clause': 'I53/R41', 'reason': 'full two-layer judgement needs a derived placement h; PF-2 reports the panel layer per fill, while the timber layer remains pending'}, 'before': {'finishSurfaces': [{'id': 1, 'name': '天花完成面', 'boundaryId': 8, 'frame': {'origin': [0, 0, 0], 'U': '+X', 'V': '+Y', 'N': '+Z'}, 'structureSide': 1, 'obstacles': [], 'derived': {'n': '+Z', 'region': {'outline': [[0, 0], [250, 0], [250, 250], [0, 250]], 'holes': []}, 'obstacles': []}}], 'panelFills': []}, 'after': {'finishSurfaces': [{'id': 1, 'name': '天花完成面', 'boundaryId': 8, 'frame': {'origin': [0, 0, 0], 'U': '+X', 'V': '+Y', 'N': '+Z'}, 'structureSide': 1, 'obstacles': [], 'derived': {'n': '+Z', 'region': {'outline': [[0, 0], [250, 0], [250, 250], [0, 250]], 'holes': []}, 'obstacles': []}}], 'panelFills': [{'definition': {'finishSurfaceId': 1, 'gap': 3, 'id': 1, 'lengthAlong': 'v', 'origin': [0, 0], 'panel': {'id': 'pf-board', 'version': 1}, 'pattern': 'straight', 'threshold': {'fieldId': 1, 'parameterId': 90}}, 'derived': {'error': 'I52: panel-fill thickness must be explicitly set positive integer mm in D1; no rounding'}}]}, 'changes': [{'record': 'panel-fill', 'id': 1, 'change': 'created'}], 'violations': [{'status': 'INVALID', 'code': 'PANEL_FILL_INVALID', 'clause': 'I52', 'message': 'I52: panel-fill thickness must be explicitly set positive integer mm in D1; no rounding'}]}\n"
+          },
+          {
+            "id": "tests.test_panel_fill_layout.PanelFillLayout.test_PF13_integer_thickness_keeps_full_published_representation (thickness_bytes=127)",
+            "traceback": "Traceback (most recent call last):\n  File \"/tmp/geometry-209-segments/tests/test_panel_fill_layout.py\", line 220, in test_PF13_integer_thickness_keeps_full_published_representation\n    self.assertTrue(preview[\"valid\"], \"PF2_THICKNESS_VALUE_9: I52 must accept exact 9 mm, not reject its representation: %s\" % preview)\nAssertionError: False is not true : PF2_THICKNESS_VALUE_9: I52 must accept exact 9 mm, not reject its representation: {'token': 9, 'valid': False, 'revision': 22, 'diagnosticsComplete': True, 'layerJudgement': {'status': 'pending', 'clause': 'I53/R41', 'reason': 'full two-layer judgement needs a derived placement h; PF-2 reports the panel layer per fill, while the timber layer remains pending'}, 'before': {'finishSurfaces': [{'id': 1, 'name': '天花完成面', 'boundaryId': 8, 'frame': {'origin': [0, 0, 0], 'U': '+X', 'V': '+Y', 'N': '+Z'}, 'structureSide': 1, 'obstacles': [], 'derived': {'n': '+Z', 'region': {'outline': [[0, 0], [250, 0], [250, 250], [0, 250]], 'holes': []}, 'obstacles': []}}], 'panelFills': []}, 'after': {'finishSurfaces': [{'id': 1, 'name': '天花完成面', 'boundaryId': 8, 'frame': {'origin': [0, 0, 0], 'U': '+X', 'V': '+Y', 'N': '+Z'}, 'structureSide': 1, 'obstacles': [], 'derived': {'n': '+Z', 'region': {'outline': [[0, 0], [250, 0], [250, 250], [0, 250]], 'holes': []}, 'obstacles': []}}], 'panelFills': [{'definition': {'finishSurfaceId': 1, 'gap': 3, 'id': 1, 'lengthAlong': 'v', 'origin': [0, 0], 'panel': {'id': 'pf-board', 'version': 1}, 'pattern': 'straight', 'threshold': {'fieldId': 1, 'parameterId': 90}}, 'derived': {'error': 'I52: panel-fill thickness must be explicitly set positive integer mm in D1; no rounding'}}]}, 'changes': [{'record': 'panel-fill', 'id': 1, 'change': 'created'}], 'violations': [{'status': 'INVALID', 'code': 'PANEL_FILL_INVALID', 'clause': 'I52', 'message': 'I52: panel-fill thickness must be explicitly set positive integer mm in D1; no rounding'}]}\n"
+          }
+        ],
+        "errors": [],
+        "skips": [],
+        "subtests": [
+          {
+            "id": "tests.test_panel_fill_layout.PanelFillLayout.test_PF13_integer_thickness_keeps_full_published_representation (thickness_bytes=63)",
+            "ok": true,
+            "exception": null,
+            "message": null
+          },
+          {
+            "id": "tests.test_panel_fill_layout.PanelFillLayout.test_PF13_integer_thickness_keeps_full_published_representation (thickness_bytes=64)",
+            "ok": false,
+            "exception": "AssertionError",
+            "message": "False is not true : PF2_THICKNESS_VALUE_9: I52 must accept exact 9 mm, not reject its representation: {'token': 6, 'valid': False, 'revision': 19, 'diagnosticsComplete': True, 'layerJudgement': {'status': 'pending', 'clause': 'I53/R41', 'reason': 'full two-layer judgement needs a derived placement h; PF-2 reports the panel layer per fill, while the timber layer remains pending'}, 'before': {'finishSurfaces': [{'id': 1, 'name': '天花完成面', 'boundaryId': 8, 'frame': {'origin': [0, 0, 0], 'U': '+X', 'V': '+Y', 'N': '+Z'}, 'structureSide': 1, 'obstacles': [], 'derived': {'n': '+Z', 'region': {'outline': [[0, 0], [250, 0], [250, 250], [0, 250]], 'holes': []}, 'obstacles': []}}], 'panelFills': []}, 'after': {'finishSurfaces': [{'id': 1, 'name': '天花完成面', 'boundaryId': 8, 'frame': {'origin': [0, 0, 0], 'U': '+X', 'V': '+Y', 'N': '+Z'}, 'structureSide': 1, 'obstacles': [], 'derived': {'n': '+Z', 'region': {'outline': [[0, 0], [250, 0], [250, 250], [0, 250]], 'holes': []}, 'obstacles': []}}], 'panelFills': [{'definition': {'finishSurfaceId': 1, 'gap': 3, 'id': 1, 'lengthAlong': 'v', 'origin': [0, 0], 'panel': {'id': 'pf-board', 'version': 1}, 'pattern': 'straight', 'threshold': {'fieldId': 1, 'parameterId': 90}}, 'derived': {'error': 'I52: panel-fill thickness must be explicitly set positive integer mm in D1; no rounding'}}]}, 'changes': [{'record': 'panel-fill', 'id': 1, 'change': 'created'}], 'violations': [{'status': 'INVALID', 'code': 'PANEL_FILL_INVALID', 'clause': 'I52', 'message': 'I52: panel-fill thickness must be explicitly set positive integer mm in D1; no rounding'}]}"
+          },
+          {
+            "id": "tests.test_panel_fill_layout.PanelFillLayout.test_PF13_integer_thickness_keeps_full_published_representation (thickness_bytes=127)",
+            "ok": false,
+            "exception": "AssertionError",
+            "message": "False is not true : PF2_THICKNESS_VALUE_9: I52 must accept exact 9 mm, not reject its representation: {'token': 9, 'valid': False, 'revision': 22, 'diagnosticsComplete': True, 'layerJudgement': {'status': 'pending', 'clause': 'I53/R41', 'reason': 'full two-layer judgement needs a derived placement h; PF-2 reports the panel layer per fill, while the timber layer remains pending'}, 'before': {'finishSurfaces': [{'id': 1, 'name': '天花完成面', 'boundaryId': 8, 'frame': {'origin': [0, 0, 0], 'U': '+X', 'V': '+Y', 'N': '+Z'}, 'structureSide': 1, 'obstacles': [], 'derived': {'n': '+Z', 'region': {'outline': [[0, 0], [250, 0], [250, 250], [0, 250]], 'holes': []}, 'obstacles': []}}], 'panelFills': []}, 'after': {'finishSurfaces': [{'id': 1, 'name': '天花完成面', 'boundaryId': 8, 'frame': {'origin': [0, 0, 0], 'U': '+X', 'V': '+Y', 'N': '+Z'}, 'structureSide': 1, 'obstacles': [], 'derived': {'n': '+Z', 'region': {'outline': [[0, 0], [250, 0], [250, 250], [0, 250]], 'holes': []}, 'obstacles': []}}], 'panelFills': [{'definition': {'finishSurfaceId': 1, 'gap': 3, 'id': 1, 'lengthAlong': 'v', 'origin': [0, 0], 'panel': {'id': 'pf-board', 'version': 1}, 'pattern': 'straight', 'threshold': {'fieldId': 1, 'parameterId': 90}}, 'derived': {'error': 'I52: panel-fill thickness must be explicitly set positive integer mm in D1; no rounding'}}]}, 'changes': [{'record': 'panel-fill', 'id': 1, 'change': 'created'}], 'violations': [{'status': 'INVALID', 'code': 'PANEL_FILL_INVALID', 'clause': 'I52', 'message': 'I52: panel-fill thickness must be explicitly set positive integer mm in D1; no rounding'}]}"
+          }
+        ],
+        "unittest_result_code": 1,
+        "seconds": 0.144268162,
+        "binary_selection": "explicit standalone diagnostic executable; original BridgeSession protocol and assertions"
+      }
+    },
+    {
+      "label": "fixed-restored",
+      "argv": [
+        "python3",
+        "/tmp/geometry-wake31-pf2/run_thickness_case.py",
+        "--binary",
+        "/tmp/geometry-tests/bridge",
+        "--out",
+        "/tmp/geometry-wake31-pf2/thickness-mutant/fixed-restored"
+      ],
+      "pid": 653499,
+      "actual_os_exit": 0,
+      "seconds": 0.299485717,
+      "result": {
+        "test_pid": 653499,
+        "case": "test_PF13_integer_thickness_keeps_full_published_representation",
+        "binary": "/tmp/geometry-tests/bridge",
+        "binary_sha256": "6d58e51af037985bef00f4c0f859bf20e705a1d0ea9f22d8d8fa846913f03103",
+        "oracle_sha256": "f3898c73db7ead9c80528e8cf80001d2cd8e2b556de4d582a6f0fe70b74cb0c6",
+        "tests_run": 1,
+        "failures": [],
+        "errors": [],
+        "skips": [],
+        "subtests": [
+          {
+            "id": "tests.test_panel_fill_layout.PanelFillLayout.test_PF13_integer_thickness_keeps_full_published_representation (thickness_bytes=63)",
+            "ok": true,
+            "exception": null,
+            "message": null
+          },
+          {
+            "id": "tests.test_panel_fill_layout.PanelFillLayout.test_PF13_integer_thickness_keeps_full_published_representation (thickness_bytes=64)",
+            "ok": true,
+            "exception": null,
+            "message": null
+          },
+          {
+            "id": "tests.test_panel_fill_layout.PanelFillLayout.test_PF13_integer_thickness_keeps_full_published_representation (thickness_bytes=127)",
+            "ok": true,
+            "exception": null,
+            "message": null
+          }
+        ],
+        "unittest_result_code": 0,
+        "seconds": 0.182113216,
+        "binary_selection": "explicit standalone diagnostic executable; original BridgeSession protocol and assertions"
+      }
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "raw_files": 374,
+  "raw_archive_sha256": "980570b170f6ff57c092db2cc56c3acfd8801e7319ebc739d3ccb17074d25155",
+  "native_head": "730001a53fb69dd1f7e38480d0807c0182a7a844",
+  "native_exit": 0,
+  "native_seconds": 842.678064062,
+  "expected_change_exactly_one_test": true,
+  "standard_mutations": {
+    "killed": 40,
+    "crashed": 1,
+    "equivalent": 4,
+    "retired": 3
+  },
+  "thickness_control_actual_os_exits": [
+    0,
+    1,
+    0
+  ],
+  "same_selected_method_sha256": "5f64fdcdef969606f208d73b97cfc3327c095ab7b28f3c496da9a25555dc06be"
+}
