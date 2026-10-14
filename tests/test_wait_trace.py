@@ -100,7 +100,13 @@ try:
     response = connection.getresponse()
     body = response.read()
     connection.close()
-    print(json.dumps({'status':response.status,'body':body.decode(),'stdin':m.root_context.bridge.stdin.getvalue().decode()}))
+    receipt_data = {'receipt':data['requestId'],'requestId':'87654321-4321-4321-4321-210987654321','cmd':'ignored','session':m.root_context.session}
+    connection = http.client.HTTPConnection('127.0.0.1', server.server_port)
+    connection.request('POST', '/api', json.dumps(receipt_data), {'Host':'localhost'})
+    receipt_response = connection.getresponse()
+    receipt = json.loads(receipt_response.read())
+    connection.close()
+    print(json.dumps({'status':response.status,'body':body.decode(),'receipt':receipt,'stdin':m.root_context.bridge.stdin.getvalue().decode()}))
 finally:
     server.shutdown(); server.server_close(); thread.join(); t.tearDown()
 '''
@@ -119,12 +125,15 @@ finally:
                     self.assertEqual(list(pathlib.Path(directory).iterdir()), [], 'WAIT_TRACE_DEFAULT_OFF_HTTP')
             self.assertEqual(outputs[0], outputs[1], 'WAIT_TRACE_RESPONSE_UNCHANGED')
             self.assertEqual(outputs[1]['body'], '{"ok":true,"text":"native-result"}\n')
+            self.assertEqual(outputs[1]['receipt'], {'ok':True,'result':{'ok':True,'text':'native-result'}})
+            self.assertEqual(outputs[1]['stdin'], 'newid 1\n', 'WAIT_TRACE_RECEIPT_MUST_NOT_REEXECUTE')
             rows = [json.loads(line) for line in (pathlib.Path(directory) / 'wait-trace.jsonl').read_text().splitlines()]
             stages = {r['stage'] for r in rows}
             self.assertTrue({'source_lock','receipt_lock','bridge_lock','stdin_write','stdin_flush','response_queue','http_write','request_end'} <= stages, stages)
             commands = [r for r in rows if r['stage'] != 'request_begin']
-            self.assertTrue(all(r['command'] == 'newid 1' for r in commands))
-            self.assertEqual(len({r['traceRequestId'] for r in rows}), 1)
+            self.assertEqual({r['command'] for r in commands}, {'newid 1','receipt'}, 'WAIT_TRACE_RECEIPT_COMMAND')
+            self.assertTrue(all(r['businessRequestId'] == '12345678-1234-1234-1234-123456789012' for r in commands), 'WAIT_TRACE_RECEIPT_ID_PRECEDENCE')
+            self.assertEqual(len({r['traceRequestId'] for r in rows}), 2)
 
     def load(self, directory, enabled):
         path = pathlib.Path(__file__).resolve().parents[1] / 'geometry-web/wait_trace.py'

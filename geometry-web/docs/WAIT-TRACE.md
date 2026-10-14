@@ -6,8 +6,11 @@ there is no output. No default feedback location is used, avoiding user reports.
 An unwritable sink does not change command results or trigger a retry.
 
 Each event has a diagnostic UUID distinct from the business request/receipt ID,
-route, command, process/thread, wall time and monotonic time. Stages include
-source_lock, receipt_lock, bridge_lock, stdin_write, stdin_flush, response_queue,
+route, command, process/thread, wall time and monotonic time.
+For receipt lookups, the command label is `receipt` and the receipt ID takes
+precedence over an incidental requestId/cmd, matching recorded_api; tracing
+does not replay the original mutation.
+Stages include source_lock, receipt_lock, bridge_lock, stdin_write, stdin_flush, response_queue,
 http_write and request begin/end. Lock begin events report the holder's request,
 command/thread and elapsed hold time observed when waiting begins; completion
 events report acquisition duration and success. Hold time is an observation,
@@ -15,11 +18,18 @@ not a claim that the same holder persisted throughout the wait. Reentrant locks
 retain the outer acquisition's identity. Durations use one process's monotonic
 clock; do not subtract browser and server timestamps from each other.
 
-The canvas CDP harness records `firstTransportFailure` in both completed and fatal
-CDP_RESULT records. It retains the first same-origin /api or Fetch/XHR network
-failure or HTTP5xx, including posted request, step and timestamps; later failures cannot replace
-it. API-level geometric rejection and errors blocked before fetch are not network
-failures. HTTP timing covers headers and body, including send_error and broken
+The canvas CDP harness records `firstTransportFailure` from the frontend's actual
+`transport:true` result, including HTTP200 bridge errors and local transport
+guards. Its observer returns the exact original Promise, without retry or an
+extra awaited chain. A CDP binding reports the first result; later failures do
+not replace it. The document's observer is installed on DOMContentLoaded, with
+no added readiness loop. Startup calls made before installation are not covered
+by the frontend observer.
+
+`firstNetworkFailure` separately retains the first same-origin /api or Fetch/XHR
+network failure or HTTP5xx, with posted request, step and timestamps. A network
+failure recovered through a receipt need not become a frontend transport error.
+Geometric rejections are not frontend transport errors. HTTP timing covers headers and body, including send_error and broken
 headers, and rethrows the original exception. This diagnostic does not alter
 assertions, waits, retries or deadlines.
 

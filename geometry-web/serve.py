@@ -502,8 +502,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
             try:
                 trace_data = json.loads(body)
                 if isinstance(trace_data, dict):
-                    wait_trace.command(trace_data.get('cmd', 'receipt' if 'receipt' in trace_data else self.path),
-                                       trace_data.get('requestId', trace_data.get('receipt')))
+                    wait_trace.command('receipt' if 'receipt' in trace_data else trace_data.get('cmd', self.path),
+                                       trace_data.get('receipt', trace_data.get('requestId')))
             except (ValueError, UnicodeDecodeError):
                 pass
 

@@ -4,6 +4,7 @@
 function createTransportFailureTrace(origin, now = () => new Date().toISOString()) {
   const requests = new Map();
   let first = null;
+  let firstApi = null;
   return {
     observe(message, step) {
       const p = message.params, key = (message.sessionId || 'main') + ':' + p.requestId;
@@ -25,7 +26,35 @@ function createTransportFailureTrace(origin, now = () => new Date().toISOString(
       }
       if (['Network.loadingFailed', 'Network.loadingFinished'].includes(message.method)) requests.delete(key);
     },
+    observeApiFailure(record) {
+      if (!firstApi && record?.transport === true) firstApi = record;
+    },
+    apiFirst: () => firstApi,
     first: () => first
   };
 }
-module.exports = {createTransportFailureTrace};
+function installClientTransportTrace(target, report,
+    now = () => ({wall:new Date().toISOString(),monotonic:performance.now()})) {
+  if (target.__geometryTransportObserver || typeof target.apiRequest !== 'function') return false;
+  target.__geometryTransportObserver = true;
+  const original = target.apiRequest;
+  let first = false;
+  target.apiRequest = function(...args) {
+    const requested = now();
+    const promise = original.apply(this, args);
+    if (promise && typeof promise.then === 'function') promise.then(result => {
+      if (first || result?.transport !== true) return;
+      first = true;
+      try {
+        const failed = now();
+        report({source:'api-result',transport:true,command:args[0],
+          requestedAt:requested.wall,requestedMonotonic:requested.monotonic,
+          failedAt:failed.wall,failedMonotonic:failed.monotonic,
+          error:result.error || null});
+      } catch { /* A failed diagnostic must not change the original Promise. */ }
+    }, () => {});
+    return promise;
+  };
+  return true;
+}
+module.exports = {createTransportFailureTrace, installClientTransportTrace};

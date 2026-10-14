@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const {createTransportFailureTrace} = require('../geometry-web/transport_failure_trace.js');
+const {createTransportFailureTrace, installClientTransportTrace} = require('../geometry-web/transport_failure_trace.js');
 
 test('first API transport failure survives later failures and other sessions', () => {
   let tick = 0;
@@ -36,4 +36,50 @@ test('first non-api business fetch failure survives later api failure', () => {
   assert.equal(trace.first()?.url, 'http://localhost:8765/model/space-preview', 'FIRST_BUSINESS_FETCH_FAILURE_MISSING');
   assert.equal(trace.first().status, 503);
   assert.equal(trace.first().step, 'model step');
+});
+
+test('frontend transport flag is recorded even without a failed network event', async () => {
+  assert.equal(typeof installClientTransportTrace, 'function', 'API_TRANSPORT_OBSERVER_MISSING');
+  const trace = createTransportFailureTrace('http://localhost:8765');
+  const firstResult = {ok:false,transport:true,error:'first bridge failure'};
+  let calls = 0, tick = 0;
+  const promises = [Promise.resolve(firstResult),Promise.resolve({ok:false,transport:true,error:'later guard'})];
+  const target = {apiRequest: () => promises[calls++]};
+  const reports = [];
+  installClientTransportTrace(target, record => { reports.push(record); trace.observeApiFailure(record); }, () => ({wall:`time-${++tick}`,monotonic:tick}));
+  const first = target.apiRequest('first command');
+  assert.strictEqual(first, promises[0], 'API_PROMISE_IDENTITY_CHANGED');
+  assert.strictEqual(await first, firstResult);
+  await target.apiRequest('later command');
+  assert.equal(calls, 2, 'API_OBSERVER_RETRIED');
+  assert.equal(reports.length, 1, 'API_FIRST_FAILURE_OVERWRITTEN');
+  assert.equal(trace.apiFirst().command, 'first command');
+  assert.equal(trace.apiFirst().error, 'first bridge failure');
+  assert.equal(trace.first(), null, 'BODY_TRANSPORT_IS_NOT_NETWORK_FAILURE');
+  trace.observeApiFailure({...reports[0],command:'secondary'});
+  assert.equal(trace.apiFirst().command, 'first command', 'API_COLLECTOR_OVERWRITTEN');
+});
+
+test('observer preserves success and rejection and does not replay either', async () => {
+  assert.equal(typeof installClientTransportTrace, 'function', 'API_TRANSPORT_OBSERVER_MISSING');
+  let calls = 0;
+  const value = {ok:true};
+  const error = Error('original rejection');
+  const target = {apiRequest: () => { calls++; return calls === 1 ? Promise.resolve(value) : Promise.reject(error); }};
+  const reports = [];
+  installClientTransportTrace(target, record => reports.push(record));
+  assert.strictEqual(await target.apiRequest('success'), value);
+  await assert.rejects(target.apiRequest('reject'), caught => caught === error);
+  assert.equal(calls, 2);
+  assert.deepEqual(reports, []);
+});
+
+test('a broken diagnostic sink cannot alter a transport result', async () => {
+  assert.equal(typeof installClientTransportTrace, 'function', 'API_TRANSPORT_OBSERVER_MISSING');
+  const value = {ok:false,transport:true,error:'original'};
+  const promise = Promise.resolve(value);
+  const target = {apiRequest: () => promise};
+  installClientTransportTrace(target, () => { throw Error('sink unavailable'); });
+  assert.strictEqual(target.apiRequest('cmd'), promise);
+  assert.strictEqual(await promise, value);
 });
