@@ -45,7 +45,7 @@ locked=json.loads((out/'scope-proof.json').read_text())['lockedClauseIds']
 assert all(old_raw[key]==new_raw[key] for key in locked)
 (out/'locked-serialized.json').write_text(json.dumps({key:hashlib.sha256(old_raw[key].encode()).hexdigest() for key in locked},indent=2)+'\n')
 for p in pathlib.Path('/tmp/plain-align-binaries').iterdir():
-    if p.is_file() and p.suffix!='.json':
+    if p.name in ('core','bridge','integrity','model-base','engineering-json-test'):
         binary[p.name]=hashlib.sha256(p.read_bytes()).hexdigest()
     elif p.name.endswith('.fingerprint.json'):
         shutil.copyfile(p,out/p.name)
