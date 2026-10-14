@@ -40,6 +40,8 @@ AXIOM_SHA256 = "ab31dc36d5416762ac44932940a94f6142b72e831ceb62c0bc67375512109004
 # Q38j adds saved-space snapshot rules without implementing /3 output.
 # Existing K3 packages keep the same geometry capabilities and source gates.
 PRE_SPACE_MERGE_AXIOM_VERSIONS = frozenset({
+    # Released K3 main keeps its existing geometry and section-profile capabilities.
+    ("d1db88ae99ca9b6858b0ada34d082e902f00c9f9", "9d4f90aacbc863941c1065a6b962f760e7e842c4d7dda55a56c4dc321f9a0f93"),
     ("9371378439563f8e2512e12299fa072c95615e9e", "604413cb9fefeedb3d8fb76ac4baa71ba751a874e36060c6fc7714a7cc122d5e"),
 })
 # K3 adopts identity-ledger/1 without implementing it or widening model inputs.
