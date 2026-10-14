@@ -1,0 +1,37 @@
+import asyncio,json,subprocess,sys
+from pathlib import Path
+from playwright.async_api import async_playwright
+root=Path('/tmp/geometry-control-diagnostics');out=root/'tests/evidence/grid-control-diagnostics-20261014';out.mkdir(parents=True,exist_ok=True)
+base=subprocess.check_output(['git','show','origin/main:geometry-web/grid_rule_editor_test.js'],cwd=root,text=True)
+current=(root/'geometry-web/grid_rule_editor_test.js').read_text()
+def closure(s):
+ a=s.index('  const ctl=') if '  const baseCtl=' not in s else s.index('  const baseCtl=')
+ return s[a:s.index('  const key=',a)]
+helpers=subprocess.check_output(['node','-e',"const c=require('./geometry-web/cdp_helpers'); console.log(JSON.stringify({read:c.makeRead.toString(),ctl:c.makeCtl.toString()}))"],cwd=root,text=True)
+helper=json.loads(helpers)
+async def main():
+ async with async_playwright() as p:
+  browser=await p.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox']);page=await browser.new_page()
+  await page.set_content('<button id="fileMenuBtn" aria-expanded="false">File</button><div id="fileMenuPop" style="display:none;visibility:hidden"></div><button id="target" disabled>Target</button>')
+  await page.evaluate('window.connection={phase:"ready",session:"oracle"};window.ReferenceWorkspace={busy:false,getProjectInfo:()=>({fixture:true})}')
+  records=[]
+  for label,src in ([('baseline',base)] if sys.argv[1]=='baseline' else [('before',base),('fixed',current),('removed',base),('restored',current)]):
+   expression='async()=>{const makeRead='+helper['read']+',makeCtl='+helper['ctl']+';const cdp={makeCtl},eval_=async x=>eval(x),read=makeRead(eval_),sleep=async()=>{},click=async()=>{throw Error("disabled target must not click")};'+closure(src)+'try{await ctl("#target");return {unexpectedSuccess:true}}catch(e){return {error:e.message}}}'
+   result=await page.evaluate(expression)
+   passed=all(x in result.get('error','') for x in ['"rect"','"disabled":true','"hit"','"display":"none"','"visibility":"hidden"','"fileMenuExpanded":"false"','"phase":"ready"'])
+   records.append(dict(case=label,diagnostic_pass=passed,**result))
+  print(json.dumps(records),flush=True)
+  if sys.argv[1]!='baseline':
+   await page.evaluate('document.querySelector("#target").disabled=false')
+   for selector in ['#target','#missing']:
+    traces=[]
+    for src in [base,current]:
+     expression='async()=>{const makeRead='+helper['read']+',makeCtl='+helper['ctl']+';const cdp={makeCtl},trace=[],eval_=async x=>{trace.push({evaluate:x});return eval(x)},read=makeRead(eval_),sleep=async ms=>{trace.push({sleep:ms})},click=async(x,y)=>{trace.push({click:[x,y]})};'+closure(src)+'try{await ctl('+json.dumps(selector)+');return {trace}}catch(e){return {trace,error:e.message}}}'
+     traces.append(await page.evaluate(expression))
+    assert traces[0]==traces[1],('GRID_SUCCESS_OR_MISSING_CHANGED',selector,traces)
+    records.append(dict(case='unchanged-'+selector,trace=traces[1]))
+  (out/(sys.argv[1]+'-oracle.json')).write_text(json.dumps(records,indent=2)+'\n')
+  await browser.close()
+  if sys.argv[1]=='baseline': assert records[0]['diagnostic_pass'],'GRID_CONTROL_DIAGNOSTICS_MISSING'
+  else: assert [r['diagnostic_pass'] for r in records[:4]]==[False,True,False,True]
+asyncio.run(main())

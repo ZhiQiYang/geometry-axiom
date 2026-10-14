@@ -1,0 +1,7 @@
+baseline {"pass":true,"state":{"phase":"ready","error":"","notice":"連線完成後即可編輯。","worldView":{"tool":"select"}}}
+renderer-cpu20 {"pass":true,"state":{"phase":"ready","error":"","notice":"連線完成後即可編輯。","worldView":{"tool":"select"}}}
+bridge3 {"pass":true,"state":{"phase":"ready","error":"","notice":"連線完成後即可編輯。","worldView":{"tool":"select"}}}
+bridge18 {"pass":false,"state":{"phase":"error","error":"服務未在 15 秒內回應，請稍後重試。","notice":"服務未在 15 秒內回應，請稍後重試。 目前保留最後讀取的畫面，內容可能已過期。","worldView":{"tool":"select"}},"error":{"name":"Error","message":"page.evaluate: TypeError: Cannot read properties of undefined (reading '0')\n    at eval (eval at evaluate (:311:30), <anonymous>:23:42)\n    at async <anonymous>:337:30"}}
+native18 {"pass":false,"state":{"phase":"error","error":"服務未在 15 秒內回應，請稍後重試。","notice":"服務未在 15 秒內回應，請稍後重試。 目前保留最後讀取的畫面，內容可能已過期。","worldView":{"tool":"select"}},"error":{"name":"Error","message":"page.evaluate: TypeError: Cannot read properties of undefined (reading '0')\n    at eval (eval at evaluate (:311:30), <anonymous>:23:42)\n    at async <anonymous>:337:30"}}
+runtime18 {"pass":false,"state":{"phase":"ready","error":"","notice":"連線完成後即可編輯。","worldView":{"tool":"select"}},"error":{"name":"Error","message":"page.evaluate: TypeError: Cannot read properties of null (reading 'click')\n    at eval (eval at evaluate (:311:30), <anonymous>:10:68)\n    at async <anonymous>:337:30"}}
+receipt18 {"pass":true,"state":{"phase":"ready","error":"","notice":"連線完成後即可編輯。","worldView":{"tool":"select"}}}
