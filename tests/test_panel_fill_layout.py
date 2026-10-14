@@ -22,6 +22,15 @@ def area(loop):
     return sum(a[0]*b[1]-b[0]*a[1] for a, b in zip(loop, loop[1:]+loop[:1])) // 2
 
 
+def assert_definition_only(case, text, expected):
+    records = [line.split() for line in text.splitlines() if line.startswith("panel-fill ")]
+    case.assertEqual(1, len(records), "PF11: exactly one D42 definition record")
+    case.assertEqual(["panel-fill", "1", "definition-hex"], records[0][:3])
+    definition = json.loads(bytes.fromhex(records[0][3]))
+    case.assertEqual(set(expected), set(definition), "PF11 D42: definition must contain only source fields, never a derived cache")
+    case.assertEqual(expected, definition, "PF11 D42: exact material/parameter sources must survive dump")
+
+
 class PanelFillLayout(unittest.TestCase):
     setUpClass = classmethod(pf1.FinishSurfaceNative.setUpClass.__func__)
     setUp = pf1.FinishSurfaceNative.setUp
@@ -73,6 +82,37 @@ class PanelFillLayout(unittest.TestCase):
         self.assertEqual(0, starts[0, 0]); self.assertEqual(20, starts[0, 1])
         self.assertEqual(0, starts[0, 2]); self.assertEqual(20, starts[0, -1])
         self.assertEqual(-103, starts[-1, 0])
+
+    def check_half_gap_bands(self, axis):
+        # Independent D43 oracle: a band is between seam centers, not the panel body.
+        intervals = [(100,101),(101,103),(100,104),(-3,-2),(-2,0),(-3,1),
+                     (203,204),(204,206),(-106,-105),(-105,-103)]
+        delta = 20 if axis == "u" else -20
+        for lo, hi in intervals:
+            with self.subTest(axis=axis, interval=(lo, hi)):
+                bounds = [0, lo, 200, hi] if axis == "u" else [lo, 0, hi, 200]
+                u0,v0,u1,v1 = bounds
+                self.seed(outline=f"{u0},{v0} {u1},{v0} {u1},{v1} {u0},{v1}")
+                derived = self.layout(fill(pattern="stagger", stagger=dict(axis=axis, value=delta)))
+                expected = []
+                for band in range(-3, 4):
+                    start, end = 101+(band-1)*103, 101+band*103
+                    if max(lo,start) >= min(hi,end):
+                        continue  # A point contact is not a positive-length band intersection.
+                    for k in range(-3, 4):
+                        coordinate = 101+k*103+(delta if band & 1 else 0)
+                        if 0 <= coordinate <= 200:
+                            expected.append((k, band, coordinate, (start,end)))
+                actual = [(s["k"],s["band"],s["coordinate"],tuple(s["range"]))
+                          for s in derived["seamLines"] if s["axis"] == axis]
+                self.assertEqual(expected, actual,
+                                 "D43 B1: center-to-center bands must include both half gaps, negative bands and exact endpoints")
+
+    def test_D43_u_stagger_bands_include_both_half_gaps(self):
+        self.check_half_gap_bands("u")
+
+    def test_D43_v_stagger_bands_include_both_half_gaps(self):
+        self.check_half_gap_bands("v")
 
     def test_PF03_coverage_matches_independent_integer_cell_oracle(self):
         self.seed(outline="0,0 250,0 250,120 120,120 120,250 0,250")
@@ -147,9 +187,11 @@ class PanelFillLayout(unittest.TestCase):
         self.assertFalse(self.command("panel-fill-confirm %d" % p["token"])["ok"])
 
     def test_PF11_native_dump_reopen_definitions_only(self):
-        self.seed(); expected = self.layout(fill(pattern="stagger", stagger=dict(axis="u", value=20)))
+        definition = fill(pattern="stagger", stagger=dict(axis="u", value=20))["value"]
+        self.seed(); expected = self.layout({"op":"put-panel-fill", "value":definition})
         text = self.command("dump")["text"]
         self.assertNotIn('"fragments"',text); self.assertNotIn('"seamLines"',text)
+        assert_definition_only(self, text, definition)
         self.command("reset"); self.load_text(text, "reopen.scene")
         self.assertEqual(expected,self.read()["state"]["panelFills"][0]["derived"])
         self.assertEqual(text,self.command("dump")["text"])

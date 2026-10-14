@@ -190,6 +190,8 @@ def _identity_signature(st):
     those calls when the runtime provides it; otherwise Windows keeps
     ``st_ctime``. Other platforms always keep ``st_ctime``, which still moves
     on a metadata update.
+    A same-size rewrite restoring mtime within one ctime tick cannot be
+    detected by stat.
     """
     if os.name == 'nt':
         birth = getattr(st, 'st_birthtime_ns', None)
@@ -715,3 +717,4 @@ def main(argv=None):
 
 if __name__ == '__main__':
     sys.exit(main())
+

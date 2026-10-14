@@ -1,0 +1,62 @@
+{
+  "scope": "Core generic D7 column fixture and independent interval-bearing witness; no R45 or template execution",
+  "core_sha256": "7d48c5109c61718175accd9cdfc24e45a21b4d75c68d90d2efc2de5b7c55d4c4",
+  "records": [
+    {
+      "case": "column-first",
+      "command": [
+        "/tmp/framing-proposal-binaries/core",
+        "--scene",
+        "/tmp/geometry-framing-proposal/geometry-core/framing-template/evidence/p091-column-first.scene.txt",
+        "--no-window",
+        "--out",
+        "/tmp/p091-column-first.svg"
+      ],
+      "exit": 0
+    },
+    {
+      "case": "column-after-secondary",
+      "command": [
+        "/tmp/framing-proposal-binaries/core",
+        "--scene",
+        "/tmp/geometry-framing-proposal/geometry-core/framing-template/evidence/p091-column-after-secondary.scene.txt",
+        "--no-window",
+        "--out",
+        "/tmp/p091-column-after-secondary.svg"
+      ],
+      "exit": 1
+    },
+    {
+      "case": "bearing-independent-interval-witness",
+      "gap": 2,
+      "mode": "check",
+      "exit": 0,
+      "stdout": "{\"gap\": 2, \"X\": 8, \"footprint\": [903, 930], \"bearing\": [12, 13], \"accepted\": true, \"diagnostic\": null}\n",
+      "stderr": ""
+    },
+    {
+      "case": "bearing-independent-interval-witness",
+      "gap": 12,
+      "mode": "check",
+      "exit": 1,
+      "stdout": "{\"gap\": 12, \"X\": 8, \"footprint\": [908, 935], \"bearing\": [7, 8], \"accepted\": false, \"diagnostic\": \"FT06_BEARING\"}\n",
+      "stderr": ""
+    },
+    {
+      "case": "bearing-independent-interval-witness",
+      "gap": 12,
+      "mode": "omit",
+      "exit": 0,
+      "stdout": "{\"gap\": 12, \"X\": 8, \"footprint\": [908, 935], \"bearing\": [7, 8], \"accepted\": true, \"diagnostic\": null}\n",
+      "stderr": ""
+    },
+    {
+      "case": "bearing-independent-interval-witness",
+      "gap": 12,
+      "mode": "check",
+      "exit": 1,
+      "stdout": "{\"gap\": 12, \"X\": 8, \"footprint\": [908, 935], \"bearing\": [7, 8], \"accepted\": false, \"diagnostic\": \"FT06_BEARING\"}\n",
+      "stderr": ""
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/workspace/scratch/860de1a99063/geometry-axiom/tests/diagnostics/fragment_oom.py", line 20, in <module>
+    assert replies[2]['ok'] is False, 'OOM must reject the transaction instead of selecting the other fragment'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: OOM must reject the transaction instead of selecting the other fragment
