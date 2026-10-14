@@ -10,6 +10,11 @@ summaries=[]
 for folder in sorted(root.iterdir()):
  if not folder.is_dir():continue
  result=json.loads((folder/'result.json').read_text());assert not result.get('harness_error'),result
+ assert result.get('drain',{}).get('complete'),folder
+ assert result['native_before_cleanup']=={'native_returncode':None,'bridge_failure':None},folder
+ assert result['server_exit']=={'code':0,'signal':None},folder
+ for tool,digest in result['tool_hashes'].items():
+  assert hashlib.sha256((folder/(tool+'.executed')).read_bytes()).hexdigest()==digest,(folder,tool)
  events=[json.loads(line) for line in (folder/'server-events.jsonl').read_text().splitlines()]
  browser=json.loads((folder/'browser-events.json').read_text());requests=collections.defaultdict(list)
  for event in events:requests[event.get('request')].append(event)
@@ -29,6 +34,7 @@ for folder in sorted(root.iterdir()):
    'receipt_lock_wait_ms':duration(rows,'receipt_lock_acquired','wait_ms'),'bridge_lock_wait_ms':duration(rows,'bridge_lock_acquired','wait_ms'),
    'stdin_write_ms':duration(rows,'stdin_write_end','elapsed_ms'),'stdin_flush_ms':duration(rows,'stdin_flush_end','elapsed_ms'),
    'response_queue_wait_ms':duration(rows,'response_queue_end','elapsed_ms'),'http_write_ms':duration(rows,'http_write_end','elapsed_ms'),'http_total_ms':span(rows,'http_enter','http_exit')},
+   'native_responses':[r for r in rows if r['event']=='native_response_arrived' and r['bytes']>0],
    'http_write_errors':[r for r in rows if r['event']=='http_write_error'],'browser_headers_received':head is not None,'server_events':len(rows),'absent_stage_means':'not entered, not measured zero'}
   assert rows,identifier
   all_requests.append(row)
@@ -44,6 +50,8 @@ for name in ['baseline','renderer-cpu20','bridge3','receipt18']:assert by[name][
 for name,stage in [('bridge18','bridge_lock_wait_ms'),('native18','response_queue_wait_ms')]:
  s=by[name];assert not s['p7_pass'] and s['phase']=='error' and '15 秒' in s['error']
  assert any(t['stages'][stage]>17000 for t in s['timeouts']),name
+ for t in s['timeouts']:
+  assert t['stages']['response_queue_wait_ms'] is not None and t['native_responses'],(name,t['id'],'missing real late native response')
  assert all(any(b['command']==cmd for b in s['blocked_before_fetch']) for cmd in ['dump','boundary 1','references 1'])
 assert any(r['stages']['runtime_lock_wait_ms'] is not None and r['stages']['runtime_lock_wait_ms']>17000 for r in by['runtime18']['requests'])
 assert any(r['stages']['receipt_lock_wait_ms'] is not None and r['stages']['receipt_lock_wait_ms']>17000 for r in by['receipt18']['requests'])
