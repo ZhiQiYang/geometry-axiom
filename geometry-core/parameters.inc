@@ -387,21 +387,57 @@ static bool parameter_retirements_valid(const World *w)
     }
     return true;
 }
-/* P-062: evaluate only the deleted card's fields and their current closures.
- * A temporarily invalid field must not obstruct deletion of that whole definition.
- * It also must not supply an older cached value to a later explicit unbind. */
+/* P-065: query only the dependency paths that can lose the removed card.
+ * This is reachability, not evaluation: unrelated invalid definitions cannot block deletion. */
+static bool parameter_field_depends_on(const World *w,int index,uint32_t id,bool visited[PARAM_FIELD_MAX]);
+static bool parameter_ast_depends_on(const World *w,const EngJson *j,int t,uint32_t id,bool visited[PARAM_FIELD_MAX],int depth)
+{
+    if(depth>32)return false;
+    char op[16];if(!eng_json_string(j,eng_json_member(j,t,"op"),op,sizeof op))return false;
+    if(!strcmp(op,"ref")){
+        int64_t card=-1,field=-1;
+        if(!eng_json_integer(j,eng_json_member(j,t,"parameterId"),&card)||
+           !eng_json_integer(j,eng_json_member(j,t,"fieldId"),&field)||card<0||card>UINT32_MAX||field<0||field>UINT32_MAX)return false;
+        if((uint32_t)card==id)return true;
+        int index=parameter_field_index(w,(uint32_t)card,(uint32_t)field);
+        return index>=0&&parameter_field_depends_on(w,index,id,visited);
+    }
+    int left=eng_json_member(j,t,"left"),right=eng_json_member(j,t,"right");
+    return (left>=0&&parameter_ast_depends_on(w,j,left,id,visited,depth+1))||
+           (right>=0&&parameter_ast_depends_on(w,j,right,id,visited,depth+1));
+}
+static bool parameter_field_depends_on(const World *w,int index,uint32_t id,bool visited[PARAM_FIELD_MAX])
+{
+    const ParameterField *f=&w->parameters.fields[index];
+    if(f->parameter_id==id)return true;
+    if(visited[index])return false;visited[index]=true;
+    EngJson j;bool hit=eng_json_parse_n(&j,f->expression,strlen(f->expression))&&
+        parameter_ast_depends_on(w,&j,0,id,visited,0);
+    eng_json_free(&j);return hit;
+}
+/* P-062/P-065: refresh the removed fields and their affected dependants while
+ * their current closures are still available. A later upstream deletion may make
+ * evaluation impossible; preserve an earlier valid candidate snapshot in that case.
+ * Ordinary evaluation and surviving unbind sources never read these snapshots. */
 static bool parameter_capture_deleted_values(World *w,uint32_t id)
 {
     ParameterState *p=&w->parameters;
     ParameterEval *e=calloc(1,sizeof *e);
     if(!e)return parameter_fail("UNSUPPORTED/CAPACITY: deleted parameter evaluation memory");
     for(size_t i=0;i<p->field_count;++i){
-        ParameterField *f=&p->fields[i];if(f->parameter_id!=id)continue;
+        ParameterField *f=&p->fields[i];bool visited[PARAM_FIELD_MAX]={0};
+        if(!parameter_field_depends_on(w,(int)i,id,visited))continue;
         memset(e,0,sizeof *e);e->w=w;g_parameter_error[0]=0;
         if(!parameter_eval_field(e,(int)i))continue;
-        if(p->deleted_value_count==PARAM_DELETED_VALUE_MAX){free(e);return parameter_fail("UNSUPPORTED/CAPACITY: deleted parameter values");}
-        DeletedParameterValue *saved=&p->deleted_values[p->deleted_value_count++];
-        memset(saved,0,sizeof *saved);saved->parameter_id=id;saved->field_id=f->id;saved->type=f->type;
+        size_t saved_index=0;
+        while(saved_index<p->deleted_value_count&&(p->deleted_values[saved_index].parameter_id!=f->parameter_id||
+              p->deleted_values[saved_index].field_id!=f->id))++saved_index;
+        if(saved_index==p->deleted_value_count){
+            if(p->deleted_value_count==PARAM_DELETED_VALUE_MAX){free(e);return parameter_fail("UNSUPPORTED/CAPACITY: deleted parameter values");}
+            ++p->deleted_value_count;
+        }
+        DeletedParameterValue *saved=&p->deleted_values[saved_index];
+        memset(saved,0,sizeof *saved);saved->parameter_id=f->parameter_id;saved->field_id=f->id;saved->type=f->type;
         saved->value.num=f->value.num;saved->value.den=f->value.den;saved->value.unit=f->value.unit;
     }
     free(e);g_parameter_error[0]=0;return true;

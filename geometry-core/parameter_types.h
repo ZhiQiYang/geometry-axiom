@@ -7,7 +7,7 @@
 #define PARAM_NODE_MAX 128
 #define PARAM_DEPTH_MAX 64
 #define PARAM_RETIRED_MAX 256
-#define PARAM_DELETED_VALUE_MAX (PARAM_RETIRED_MAX * PARAM_FIELDS_PER_CARD)
+#define PARAM_DELETED_VALUE_MAX (PARAM_RETIRED_MAX * PARAM_FIELDS_PER_CARD + PARAM_FIELD_MAX)
 typedef struct { int64_t num, den; int unit; } ParamValue;
 typedef struct { bool set; uint32_t parameter_id, field_id; } ParameterRef;
 typedef struct {
@@ -34,7 +34,8 @@ typedef struct {
     /* I38/I39: card identities deleted earlier in the operation sequence that is editing this World. Candidate-owned scratch:
      * copied with the candidate, cleared when the sequence ends (batch_preview / engineering archive), never serialized. */
     uint32_t retired[PARAM_RETIRED_MAX]; size_t retired_count;
-    /* P-062: deletion-time values are usable only by explicit unbind in this candidate.
+    /* P-062/P-065: last-valid values before a card or its upstream disappears.
+     * Live fields may be captured, but only explicitly unbound deleted sources can consume them.
      * Both arrays and counts are cleared before comparison, staging, or history. */
     DeletedParameterValue deleted_values[PARAM_DELETED_VALUE_MAX]; size_t deleted_value_count;
     bool loading; /* only native full-scene loading may stage a parameter block */

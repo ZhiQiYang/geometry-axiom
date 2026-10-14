@@ -85,6 +85,7 @@ PY_NEEDS = {
     'test_parameters_final_candidate': ['bridge'],
     'test_parameters_unbind_scope': ['bridge'],
     'test_parameters_deleted_unbind': ['bridge'],
+    'test_parameters_upstream_unbind': ['bridge'],
     'test_reference_contract': ['bridge'],
     'test_release_gate': [],
     'test_local_launcher': ['core', 'bridge', 'model-base'],
