@@ -173,9 +173,159 @@ static void test_collinear_vertex_rect_corner(void)
     CHECK(!poly_contains_rect(&loop,80,20,101,50));
 }
 
+static void test_notch_rect_with_corners_on_ring_is_outside(void)
+{
+    /* GEO-257:凹槽 x∈[40,60]、y∈[40,100] 在環外。「四角都在環內 + 無環邊穿入內部」
+     * 不足以證明矩形在環內:槽裡的矩形四角可以全落在槽壁上。 */
+    PolygonLoop2 loop = {.count=8,
+        .v={{0,0},{100,0},{100,100},{60,100},{60,40},{40,40},{40,100},{0,100}}};
+    PolygonLoop2 reversed = {.count=8};
+    for (size_t i=0; i<loop.count; ++i) {
+        loop.fixity[i]=EDGE_FIXED;
+        reversed.v[i]=loop.v[loop.count-1-i];
+        reversed.fixity[i]=EDGE_FIXED;
+    }
+    SpaceBoundarySurface boundary = {.id=1, .outline=loop};
+    PlacementSurface placement = {0};
+    CHECK(poly_loop_is_valid(&loop));
+    CHECK(poly_loop_is_valid(&reversed));
+    CHECK(boundary_is_valid(&boundary));
+
+    /* 反例:BACKLOG GEO-257 的 R=[40,60]x[50,70],四角都在槽壁(環邊)上、整個在槽裡。 */
+    CHECK(!poly_contains_rect(&loop,40,50,60,70));
+    CHECK(!boundary_contains_rect(&boundary,40,50,60,70));
+    CHECK(!surface_contains_rect(&placement,&boundary,40,50,60,70));
+    CHECK(!poly_contains_rect(&reversed,40,50,60,70));
+    /* 同一個槽裡的其他貼壁矩形:貼槽底(角在環頂點上)、整個槽、槽的上半。 */
+    CHECK(!poly_contains_rect(&loop,40,40,60,60));
+    CHECK(!poly_contains_rect(&loop,40,40,60,100));
+    CHECK(!poly_contains_rect(&loop,40,60,60,100));
+    CHECK(!poly_contains_rect(&reversed,40,40,60,100));
+    /* 中心是半整數(寬 20、高 21)時仍要判外:座標放大 2 倍後比較,不得被整數除法吃掉。 */
+    CHECK(!poly_contains_rect(&loop,40,50,60,71));
+
+    /* 對照組:碰槽壁/槽底、但真的在環內的矩形必須維持接受。 */
+    CHECK(poly_contains_rect(&loop,0,50,40,70));      /* 左臂,右緣整條貼槽壁 */
+    CHECK(poly_contains_rect(&loop,60,50,100,70));    /* 右臂,左緣整條貼槽壁 */
+    CHECK(poly_contains_rect(&loop,40,0,60,40));      /* 槽底正下方,上緣整條貼槽底 */
+    CHECK(poly_contains_rect(&loop,0,0,100,40));      /* 槽底以下整條,上緣有一段貼槽底 */
+    CHECK(poly_contains_rect(&loop,20,0,40,100));     /* 貼槽壁的長條,四角在環邊/環頂點上 */
+    CHECK(poly_contains_rect(&reversed,0,50,40,70));
+    CHECK(poly_contains_rect(&reversed,40,0,60,40));
+    CHECK(poly_contains_rect(&loop,0,50,39,51));      /* 奇數邊長、半整數中心,完全在內 */
+    CHECK(boundary_contains_rect(&boundary,0,50,40,70));
+    CHECK(surface_contains_rect(&placement,&boundary,40,0,60,40));
+
+    /* 一般跨出仍然拒絕(有環邊穿入內部)。 */
+    CHECK(!poly_contains_rect(&loop,30,50,70,70));    /* 橫跨整個槽 */
+    CHECK(!poly_contains_rect(&loop,20,50,50,70));    /* 一半在槽裡 */
+    CHECK(!poly_contains_rect(&loop,40,30,60,50));    /* 跨槽底 */
+    CHECK(!poly_contains_rect(&loop,-1,0,10,10));     /* 跨出外輪廓 */
+}
+
+/* GEO-257:poly_contains_rect 對「格子取樣」真值的窮舉核對。
+ * 4x4 格子的每一種格子集合(65536 種)當作一個多邊形候選:只收單一連通、無洞、無對角捏點的(正交簡單多邊形),
+ * 每個多邊形用 8 種寫法(順/逆時針 x 合併共線頂點與否 x 每個整數點都切開與否)交給 poly_contains_rect,
+ * 對每個頂點在格線上的矩形(座標放大 3 倍,所以奇數邊長會出現半整數中心)逐一與真值比:
+ * 矩形 ⊆ 多邊形 ⇔ 矩形涵蓋的每個單位格都在集合內。 */
+#define ORACLE_N 4
+#define ORACLE_SCALE 3
+
+typedef struct { int x0, y0, x1, y1; bool used; } OracleEdge;
+
+static bool oracle_cell(unsigned set, int i, int j)
+{
+    return i >= 0 && j >= 0 && i < ORACLE_N && j < ORACLE_N && ((set >> (j * ORACLE_N + i)) & 1u);
+}
+
+static bool oracle_loop(unsigned set, PolygonLoop2 *loop, bool merge_collinear, bool split_all, bool reverse)
+{
+    OracleEdge edges[4 * ORACLE_N * ORACLE_N];
+    int ne = 0;
+    for (int i = 0; i < ORACLE_N; ++i)
+        for (int j = 0; j < ORACLE_N; ++j) {
+            if (!oracle_cell(set, i, j)) continue;
+            if (!oracle_cell(set, i, j - 1)) edges[ne++] = (OracleEdge){ i, j, i + 1, j, false };
+            if (!oracle_cell(set, i + 1, j)) edges[ne++] = (OracleEdge){ i + 1, j, i + 1, j + 1, false };
+            if (!oracle_cell(set, i, j + 1)) edges[ne++] = (OracleEdge){ i + 1, j + 1, i, j + 1, false };
+            if (!oracle_cell(set, i - 1, j)) edges[ne++] = (OracleEdge){ i, j + 1, i, j, false };
+        }
+    if (ne == 0) return false;
+    for (int a = 0; a < ne; ++a)            /* 對角捏點:同一頂點有兩條出邊 */
+        for (int b = a + 1; b < ne; ++b)
+            if (edges[a].x0 == edges[b].x0 && edges[a].y0 == edges[b].y0) return false;
+    int px[4 * ORACLE_N * ORACLE_N], py[4 * ORACLE_N * ORACLE_N], np = 0, cur = 0, used = 1;
+    edges[0].used = true;
+    px[np] = edges[0].x0; py[np] = edges[0].y0; ++np;
+    for (;;) {
+        int nx = edges[cur].x1, ny = edges[cur].y1, found = -1;
+        if (nx == edges[0].x0 && ny == edges[0].y0) break;
+        for (int k = 0; k < ne; ++k)
+            if (!edges[k].used && edges[k].x0 == nx && edges[k].y0 == ny) { found = k; break; }
+        if (found < 0) return false;
+        edges[found].used = true; ++used;
+        px[np] = nx; py[np] = ny; ++np;
+        cur = found;
+    }
+    if (used != ne) return false;           /* 不只一圈:有洞或不連通 */
+    int mx[4 * ORACLE_N * ORACLE_N], my[4 * ORACLE_N * ORACLE_N], nm = 0;
+    for (int k = 0; k < np; ++k) {          /* 合併共線頂點(可選) */
+        int pk = (k + np - 1) % np, nk = (k + 1) % np;
+        bool collinear = (px[pk] == px[k] && px[k] == px[nk]) || (py[pk] == py[k] && py[k] == py[nk]);
+        if (merge_collinear && collinear) continue;
+        mx[nm] = px[k]; my[nm] = py[k]; ++nm;
+    }
+    int sx[8 * ORACLE_N * ORACLE_N], sy[8 * ORACLE_N * ORACLE_N], ns = 0;
+    for (int k = 0; k < nm; ++k) {          /* 每個整數點都切開(可選):產生共線頂點 */
+        int x1 = mx[(k + 1) % nm], y1 = my[(k + 1) % nm];
+        sx[ns] = mx[k]; sy[ns] = my[k]; ++ns;
+        if (split_all) {
+            int len = abs(x1 - mx[k]) + abs(y1 - my[k]);
+            int dx = (x1 > mx[k]) - (x1 < mx[k]), dy = (y1 > my[k]) - (y1 < my[k]);
+            for (int t = 1; t < len && ns < 8 * ORACLE_N * ORACLE_N; ++t) { sx[ns] = mx[k] + dx * t; sy[ns] = my[k] + dy * t; ++ns; }
+        }
+    }
+    if (ns < 4 || ns > POLY_MAX_VERTICES) return false;
+    loop->count = (size_t)ns;
+    for (int k = 0; k < ns; ++k) {
+        int at = reverse ? ns - 1 - k : k;
+        loop->v[k] = (SurfacePoint2){ (Coord)sx[at] * ORACLE_SCALE, (Coord)sy[at] * ORACLE_SCALE };
+        loop->fixity[k] = EDGE_FIXED;
+    }
+    return true;
+}
+
+static void test_poly_contains_rect_matches_cell_oracle(void)
+{
+    long polygons[8] = {0}, wrong[8] = {0};
+    for (unsigned set = 1; set < (1u << (ORACLE_N * ORACLE_N)); ++set) {
+        for (int variant = 0; variant < 8; ++variant) {
+            PolygonLoop2 loop = {0};
+            if (!oracle_loop(set, &loop, (variant & 1) != 0, (variant & 2) != 0, (variant & 4) != 0)) continue;
+            if (!poly_loop_is_valid(&loop)) { ++wrong[variant]; continue; }   /* 產生器自己的假設:輸出必為合法環 */
+            ++polygons[variant];
+            for (int u0 = 0; u0 < ORACLE_N; ++u0) for (int u1 = u0 + 1; u1 <= ORACLE_N; ++u1)
+            for (int v0 = 0; v0 < ORACLE_N; ++v0) for (int v1 = v0 + 1; v1 <= ORACLE_N; ++v1) {
+                bool truth = true;
+                for (int i = u0; i < u1 && truth; ++i)
+                    for (int j = v0; j < v1; ++j)
+                        if (!oracle_cell(set, i, j)) { truth = false; break; }
+                if (poly_contains_rect(&loop, u0 * ORACLE_SCALE, v0 * ORACLE_SCALE, u1 * ORACLE_SCALE, v1 * ORACLE_SCALE) != truth)
+                    ++wrong[variant];
+            }
+        }
+    }
+    for (int variant = 0; variant < 8; ++variant) {
+        CHECK(polygons[variant] > 1000);   /* 真的測到了足夠多的多邊形(不是產生器默默什麼都沒產生) */
+        CHECK(wrong[variant] == 0);
+    }
+}
+
 int main(void)
 {
     test_collinear_vertex_rect_corner();
+    test_notch_rect_with_corners_on_ring_is_outside();
+    test_poly_contains_rect_matches_cell_oracle();
     test_partial_collinear_stop_is_not_duplicated();
     test_frame_updates();
     test_space_extents();
