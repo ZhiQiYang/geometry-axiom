@@ -134,6 +134,13 @@ class ParameterDeleteOrder(unittest.TestCase):
         self.assertEqual(before, self.command("dump")["text"])
         self.assertEqual(revision, self.read()["revision"])
         self.assertEqual("11", self.values()[2, 1]["num"])
+        # A rebuilt key still has to satisfy the surviving definition's field/type reference.
+        for fields, message in [([field(2, "10")], "parameter 1 field 1"),
+                                ([field(1, "1", "ratio")], "UNIT")]:
+            with self.subTest(rebuilt_invalid_source=message):
+                self.rejected([{"op": "delete-parameter", "id": 1},
+                               card(1, "rebuilt invalid source", fields)], message)
+                self.assertEqual(revision, self.read()["revision"])
         self.apply_line("redo")
         self.assertEqual(redo_world, self.command("dump")["text"], "invalid candidate destroyed redo")
 

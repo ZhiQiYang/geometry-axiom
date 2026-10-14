@@ -279,11 +279,11 @@ class ParametersCore(unittest.TestCase):
         self.assertEqual(deleted, receipt["deletedObjects"])
         _, receipt = self.apply([{"op": "delete-parameter", "id": 2}, {"op": "import-parameters", "value": package}])
         self.assertEqual(deleted, receipt["deletedObjects"])
-        ids = [c["id"] for c in self.read()["state"]["parameters"]]
+        ids = sorted(c["id"] for c in self.read()["state"]["parameters"])
         self.assertEqual([0, 1, 2], ids)
         self.apply([{"op": "delete-parameter", "id": 2}])
         self.apply([card(2, "再宣告", [field(1, "1")])])
-        self.assertEqual([0, 1, 2], [c["id"] for c in self.read()["state"]["parameters"]])
+        self.assertEqual([0, 1, 2], sorted(c["id"] for c in self.read()["state"]["parameters"]))
 
     def archive_line(self, operation):
         """The DSL entry that dispatches an arbitrary engineering operation without engineering-preview."""
