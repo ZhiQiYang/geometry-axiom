@@ -76,10 +76,10 @@ class ParameterDeleteOrder(unittest.TestCase):
                 self.assert_deleted_fields(1, 2)
                 self.apply_line("undo")
                 self.assertEqual(before, self.command("dump")["text"])
-        # P-111: the free keys 1 and 2 may belong to new imported cards.
+        # P-117: core-assigned imports skip keys retired in this candidate.
         self.atomic_preview_and_confirm(operations + [self.independent_import()])
-        self.assertEqual([0, 1, 2], [c["id"] for c in self.read()["state"]["parameters"]])
-        self.assertEqual({(0, 1), (1, 1), (2, 1)}, set(self.values()))
+        self.assertEqual([0, 3, 4], [c["id"] for c in self.read()["state"]["parameters"]])
+        self.assertEqual({(0, 1), (3, 1), (4, 1)}, set(self.values()))
         self.assert_deleted_fields(1, 2)
 
     def test_delete_source_then_dependent_uses_complete_candidate(self):
@@ -112,8 +112,8 @@ class ParameterDeleteOrder(unittest.TestCase):
                 self.assertEqual(before, self.command("dump")["text"])
                 self.atomic_preview_and_confirm(operations + [self.independent_import()])
                 ids = [c["id"] for c in self.read()["state"]["parameters"]]
-                self.assertEqual([0, 1, 2, 3], sorted(ids))
-                self.assertEqual("3", self.values()[1, 1]["num"])
+                self.assertEqual([0, 2, 3, 4], sorted(ids))
+                self.assertEqual("3", self.values()[0, 1]["num"])
                 self.assertEqual("9", self.values()[2, 1]["num"])
                 self.assert_deleted_fields(1)
                 self.apply_line("undo")
@@ -134,6 +134,15 @@ class ParameterDeleteOrder(unittest.TestCase):
         self.assertEqual(before, self.command("dump")["text"])
         self.assertEqual(revision, self.read()["revision"])
         self.assertEqual("11", self.values()[2, 1]["num"])
+        imported = self.request([{"op": "delete-parameter", "id": 1}, self.independent_import()])
+        self.assertTrue(imported["ok"], imported)
+        self.assertFalse(imported["preview"]["valid"],
+                         "匯入卡接上了被刪卡的引用: " + json.dumps(imported, ensure_ascii=False))
+        self.assertIn("I38 MISSING", json.dumps(imported))
+        self.assertIn("parameter 1 is still referenced by parameter 2 field 1", json.dumps(imported))
+        self.assertFalse(self.command("engineering-confirm " + str(imported["preview"]["token"]))["ok"])
+        self.assertEqual(before, self.command("dump")["text"])
+        self.assertEqual(revision, self.read()["revision"])
         # A rebuilt key still has to satisfy the surviving definition's field/type reference.
         for fields, message in [([field(2, "10")], "parameter 1 field 1"),
                                 ([field(1, "1", "ratio")], "UNIT")]:

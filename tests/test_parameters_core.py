@@ -255,7 +255,8 @@ class ParametersCore(unittest.TestCase):
                       "parameter 8 field 1; parameter 9 field 1; parameter 10 field 1 and 1 more; unbind or repoint them")
 
     def test_delete_then_import_or_redeclare_keeps_the_deletion_receipt(self):
-        # P-111: rebuilding a key is legal; its predecessor's explicit deletion remains in the receipt.
+        # P-117: automatic import must not silently retarget an existing reference.
+        # P-111: explicitly rebuilding a key remains legal and retains its deletion receipt.
         # K3's enabled incarnation allocator is not implemented by this parameter test harness.
         self.apply([card(0, "來源", [field(1, "915")]), card(1, "引用者", [field(1, "=@0:1 + 1 mm")])])
         package = {"schema": "geometry-parameters/1", "cards": [{"id": 7, "name": "外來", "fields": [
@@ -265,10 +266,18 @@ class ParametersCore(unittest.TestCase):
                       "parameter 0 is still referenced by parameter 1 field 1")
         self.assertEqual(before, self.values())
         deleted = [{"kind": "parameter-field", "parameterId": 0, "fieldId": 1}]
-        _, receipt = self.apply([{"op": "delete-parameter", "id": 0}, {"op": "import-parameters", "value": package}])
-        self.assertEqual(deleted, receipt["deletedObjects"])
-        self.assertEqual("1", self.values()[0, 1]["num"])
-        self.assertEqual("2", self.values()[1, 1]["num"])
+        before_dump = self.command("dump")["text"]
+        revision = self.read()["revision"]
+        result = self.request([{"op": "delete-parameter", "id": 0}, {"op": "import-parameters", "value": package}])
+        self.assertTrue(result["ok"], result)
+        self.assertFalse(result["preview"]["valid"],
+                         "匯入卡接上了被刪卡的引用: " + json.dumps(result, ensure_ascii=False))
+        self.assertIn("I38 MISSING", json.dumps(result))
+        self.assertIn("parameter 0 is still referenced by parameter 1 field 1", json.dumps(result))
+        self.assertFalse(self.command(f'engineering-confirm {result["preview"]["token"]}')["ok"])
+        self.assertEqual(before_dump, self.command("dump")["text"])
+        self.assertEqual(revision, self.read()["revision"])
+        self.assertEqual(before, self.values())
         _, receipt = self.apply([{"op": "delete-parameter", "id": 0}, card(0, "換人", [field(1, "3")])])
         self.assertEqual(deleted, receipt["deletedObjects"])
         self.assertEqual("3", self.values()[0, 1]["num"])
@@ -280,8 +289,8 @@ class ParametersCore(unittest.TestCase):
         _, receipt = self.apply([{"op": "delete-parameter", "id": 2}, {"op": "import-parameters", "value": package}])
         self.assertEqual(deleted, receipt["deletedObjects"])
         ids = sorted(c["id"] for c in self.read()["state"]["parameters"])
-        self.assertEqual([0, 1, 2], ids)
-        self.apply([{"op": "delete-parameter", "id": 2}])
+        self.assertEqual([0, 1, 3], ids, "import reused the key retired in this candidate")
+        self.apply([{"op": "delete-parameter", "id": 3}])
         self.apply([card(2, "再宣告", [field(1, "1")])])
         self.assertEqual([0, 1, 2], sorted(c["id"] for c in self.read()["state"]["parameters"]))
 

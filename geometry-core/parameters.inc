@@ -506,7 +506,10 @@ static bool parameter_import(World *w,EngJson *j,int t)
     for(int k=0;k<n;++k){
         int c=eng_json_at(j,cards,k);if(!parameter_u32(j,eng_json_member(j,c,"id"),&old[k]))return false;
         for(int q=0;q<k;++q)if(old[q]==old[k])return parameter_fail("I39 PACKAGE: duplicate card identity");
-        while(parameter_find(w,candidate))++candidate;fresh[k]=candidate++;
+        /* P-117/I39: core-assigned imports must not silently reconnect existing
+         * references to a card deleted in this candidate. Explicit put of that
+         * key remains legal under D60/P-111; import does not choose it. */
+        while(parameter_find(w,candidate)||parameter_retired(w,candidate))++candidate;fresh[k]=candidate++;
     }
     char *buffer=malloc(PARAM_FIELDS_PER_CARD*(PARAM_EXPR_MAX+1000));if(!buffer)return parameter_fail("UNSUPPORTED/CAPACITY: package memory");bool ok=true;
     for(int k=0;k<n&&ok;++k){
