@@ -38,9 +38,17 @@ class ParameterDeleteOrder(unittest.TestCase):
         self.assertEqual(revision, self.read()["revision"], "preview changed revision")
         confirmed = self.command("engineering-confirm " + str(result["preview"]["token"]))
         self.assertTrue(confirmed["ok"], confirmed)
+        self.last_confirm_receipt = confirmed
         self.assertTrue(confirmed["history_changed"], confirmed)
         self.assertEqual(revision + 1, self.read()["revision"], "batch was not one history step")
         return before, self.command("dump")["text"]
+
+    def assert_deleted_fields(self, *identities):
+        expected = [{"kind": "parameter-field", "parameterId": identity, "fieldId": 1}
+                    for identity in sorted(identities)]
+        actual = sorted(self.last_confirm_receipt["deletedObjects"],
+                        key=lambda item: (item["parameterId"], item["fieldId"]))
+        self.assertEqual(expected, actual, "same-key rebuild lost the intermediate deletion")
 
     def independent_import(self):
         return {"op": "import-parameters", "value": {"schema": "geometry-parameters/1", "cards": [
@@ -53,6 +61,7 @@ class ParameterDeleteOrder(unittest.TestCase):
         self.seed_dependency()
         operations = [{"op": "delete-parameter", "id": identity} for identity in order]
         before, after = self.atomic_preview_and_confirm(operations)
+        self.assert_deleted_fields(1, 2)
         self.assertEqual([], self.read()["state"]["parameters"])
         self.apply_line("undo")
         self.assertEqual(before, self.command("dump")["text"])
@@ -61,12 +70,17 @@ class ParameterDeleteOrder(unittest.TestCase):
         self.apply_line("undo")
         for identity in (1, 2):
             with self.subTest(redeclare=identity):
-                self.rejected(operations + [card(identity, "must not rebind", [field(1, "9")])],
-                              "parameter %d was deleted earlier in this transaction" % identity)
-        # Three imported cards would allocate 0,1,2 if the retirement guard vanished.
+                self.atomic_preview_and_confirm(operations + [card(identity, "rebuilt", [field(1, "9")])])
+                self.assertEqual([identity], [c["id"] for c in self.read()["state"]["parameters"]])
+                self.assertEqual("9", self.values()[identity, 1]["num"])
+                self.assert_deleted_fields(1, 2)
+                self.apply_line("undo")
+                self.assertEqual(before, self.command("dump")["text"])
+        # P-111: the free keys 1 and 2 may belong to new imported cards.
         self.atomic_preview_and_confirm(operations + [self.independent_import()])
-        self.assertEqual([0, 3, 4], [c["id"] for c in self.read()["state"]["parameters"]])
-        self.assertEqual({(0, 1), (3, 1), (4, 1)}, set(self.values()))
+        self.assertEqual([0, 1, 2], [c["id"] for c in self.read()["state"]["parameters"]])
+        self.assertEqual({(0, 1), (1, 1), (2, 1)}, set(self.values()))
+        self.assert_deleted_fields(1, 2)
 
     def test_delete_source_then_dependent_uses_complete_candidate(self):
         self.check_both_deleted((1, 2))
@@ -82,6 +96,7 @@ class ParameterDeleteOrder(unittest.TestCase):
         for operations in ([delete, replace], [replace, delete]):
             with self.subTest(order=[o["op"] for o in operations]):
                 before, after = self.atomic_preview_and_confirm(operations)
+                self.assert_deleted_fields(1)
                 self.assertEqual([2], [c["id"] for c in self.read()["state"]["parameters"]])
                 self.assertEqual("9", self.values()[2, 1]["num"])
                 self.apply_line("undo")
@@ -89,12 +104,18 @@ class ParameterDeleteOrder(unittest.TestCase):
                 self.apply_line("redo")
                 self.assertEqual(after, self.command("dump")["text"])
                 self.apply_line("undo")
-                self.rejected(operations + [card(1, "reused", [field(1, "10")])],
-                              "parameter 1 was deleted earlier in this transaction")
+                self.atomic_preview_and_confirm(operations + [card(1, "rebuilt", [field(1, "10")])])
+                self.assertEqual("10", self.values()[1, 1]["num"])
+                self.assertEqual("9", self.values()[2, 1]["num"])
+                self.assert_deleted_fields(1)
+                self.apply_line("undo")
+                self.assertEqual(before, self.command("dump")["text"])
                 self.atomic_preview_and_confirm(operations + [self.independent_import()])
                 ids = [c["id"] for c in self.read()["state"]["parameters"]]
-                self.assertNotIn(1, ids)
-                self.assertEqual([0, 2, 3, 4], sorted(ids))
+                self.assertEqual([0, 1, 2, 3], sorted(ids))
+                self.assertEqual("3", self.values()[1, 1]["num"])
+                self.assertEqual("9", self.values()[2, 1]["num"])
+                self.assert_deleted_fields(1)
                 self.apply_line("undo")
                 self.assertEqual(before, self.command("dump")["text"])
 

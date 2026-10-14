@@ -254,29 +254,36 @@ class ParametersCore(unittest.TestCase):
         self.rejected([{"op": "delete-parameter", "id": 7}],
                       "parameter 8 field 1; parameter 9 field 1; parameter 10 field 1 and 1 more; unbind or repoint them")
 
-    def test_delete_then_import_or_redeclare_cannot_rebind_references(self):
-        # BACKLOG GEO-258 兩個反例:[delete 0, import P]、[delete 2, put-parameter{id:2}],World 內有引用指向被刪的卡。
+    def test_delete_then_import_or_redeclare_keeps_the_deletion_receipt(self):
+        # P-111: rebuilding a key is legal; its predecessor's explicit deletion remains in the receipt.
+        # K3's enabled incarnation allocator is not implemented by this parameter test harness.
         self.apply([card(0, "來源", [field(1, "915")]), card(1, "引用者", [field(1, "=@0:1 + 1 mm")])])
         package = {"schema": "geometry-parameters/1", "cards": [{"id": 7, "name": "外來", "fields": [
             {"id": 1, "name": "寬", "type": "dimension", "expression": {"op": "literal", "num": "1", "den": "1", "unit": "mm"}}]}]}
         before = self.values()
-        self.rejected([{"op": "delete-parameter", "id": 0}, {"op": "import-parameters", "value": package}],
+        self.rejected([{"op": "delete-parameter", "id": 0}],
                       "parameter 0 is still referenced by parameter 1 field 1")
-        # P-060: identity reuse is rejected before the complete-candidate reference check.
-        self.rejected([{"op": "delete-parameter", "id": 0}, card(0, "換人", [field(1, "1")])],
-                      "parameter 0 was deleted earlier in this transaction")
         self.assertEqual(before, self.values())
-        # 沒有任何引用時刪除本身合法;但同一交易內不得把剛刪的身分再宣告,匯入也必須拿到新身分。
+        deleted = [{"kind": "parameter-field", "parameterId": 0, "fieldId": 1}]
+        _, receipt = self.apply([{"op": "delete-parameter", "id": 0}, {"op": "import-parameters", "value": package}])
+        self.assertEqual(deleted, receipt["deletedObjects"])
+        self.assertEqual("1", self.values()[0, 1]["num"])
+        self.assertEqual("2", self.values()[1, 1]["num"])
+        _, receipt = self.apply([{"op": "delete-parameter", "id": 0}, card(0, "換人", [field(1, "3")])])
+        self.assertEqual(deleted, receipt["deletedObjects"])
+        self.assertEqual("3", self.values()[0, 1]["num"])
+        self.assertEqual("4", self.values()[1, 1]["num"])
         self.apply([card(2, "獨立", [field(1, "5")])])
-        self.rejected([{"op": "delete-parameter", "id": 2}, card(2, "換人", [field(1, "1")])],
-                      "parameter 2 was deleted earlier in this transaction")
-        self.apply([{"op": "delete-parameter", "id": 2}, {"op": "import-parameters", "value": package}])
+        deleted = [{"kind": "parameter-field", "parameterId": 2, "fieldId": 1}]
+        _, receipt = self.apply([{"op": "delete-parameter", "id": 2}, card(2, "換人", [field(1, "1")])])
+        self.assertEqual(deleted, receipt["deletedObjects"])
+        _, receipt = self.apply([{"op": "delete-parameter", "id": 2}, {"op": "import-parameters", "value": package}])
+        self.assertEqual(deleted, receipt["deletedObjects"])
         ids = [c["id"] for c in self.read()["state"]["parameters"]]
-        self.assertEqual([0, 1, 3], ids)  # 2 已退役,不得被匯入重用
-        # 「退役」只在那一筆候選內:之後另一筆交易可以重新宣告同一身分(沒有任何引用能指到它)。
-        self.apply([{"op": "delete-parameter", "id": 3}])
-        self.apply([card(3, "再宣告", [field(1, "1")])])
-        self.assertEqual([0, 1, 3], [c["id"] for c in self.read()["state"]["parameters"]])
+        self.assertEqual([0, 1, 2], ids)
+        self.apply([{"op": "delete-parameter", "id": 2}])
+        self.apply([card(2, "再宣告", [field(1, "1")])])
+        self.assertEqual([0, 1, 2], [c["id"] for c in self.read()["state"]["parameters"]])
 
     def archive_line(self, operation):
         """The DSL entry that dispatches an arbitrary engineering operation without engineering-preview."""
@@ -300,9 +307,10 @@ class ParametersCore(unittest.TestCase):
         self.apply([{"op": "delete-parameter", "id": 0}])
         self.apply([card(0, "批次刪後再宣告", [field(1, "10")])])
         self.assertEqual([0], [c["id"] for c in self.read()["state"]["parameters"]])
-        # 同一筆候選內仍然禁止(範圍是候選,不是放寬)。
-        self.rejected([{"op": "delete-parameter", "id": 0}, card(0, "同候選再宣告", [field(1, "11")])],
-                      "parameter 0 was deleted earlier in this transaction")
+        # P-111 also permits the same-candidate rebuild, while retaining its deletion event.
+        _, receipt = self.apply([{"op": "delete-parameter", "id": 0}, card(0, "同候選再宣告", [field(1, "11")])])
+        self.assertEqual("11", self.values()[0, 1]["num"])
+        self.assertEqual([{"kind": "parameter-field", "parameterId": 0, "fieldId": 1}], receipt["deletedObjects"])
 
     def test_archive_parameter_update_rebuilds_values_and_dependencies_before_confirm(self):
         self.apply([card(0, "source", [field(1, "10")]),
