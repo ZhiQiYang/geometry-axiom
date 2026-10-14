@@ -736,7 +736,10 @@ if __name__ == "__main__":
     if wait_trace.ENABLED:
         import signal
         def stop_traced_service(signum, frame):
-            raise SystemExit(0)
+            # SIGTERM previously bypassed finally/business-lock cleanup. Keep
+            # that termination path, adding only the bounded diagnostic drain.
+            wait_trace.close()
+            os._exit(0)
         signal.signal(signal.SIGTERM, stop_traced_service)
     try:
         host = "0.0.0.0" if os.environ.get("GEOMETRY_MANAGED_PREVIEW") == "1" and PORT == 4173 else "127.0.0.1"

@@ -3,11 +3,11 @@ F
 FAIL: test_two_runs_remove_only_old_trace_and_archive_current_run (__main__.WaitTraceTests.test_two_runs_remove_only_old_trace_and_archive_current_run)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/tmp/geometry-wait-trace/tests/test_wait_trace.py", line 139, in test_two_runs_remove_only_old_trace_and_archive_current_run
+  File "/tmp/geometry-wait-trace/tests/test_wait_trace.py", line 161, in test_two_runs_remove_only_old_trace_and_archive_current_run
     self.assertFalse((feedback/'wait-trace.jsonl').exists(), 'WAIT_TRACE_STALE_SOURCE_MUST_BE_REMOVED_BEFORE_SERVICE')
 AssertionError: True is not false : WAIT_TRACE_STALE_SOURCE_MUST_BE_REMOVED_BEFORE_SERVICE
 
 ----------------------------------------------------------------------
-Ran 1 test in 0.031s
+Ran 1 test in 0.027s
 
 FAILED (failures=1)

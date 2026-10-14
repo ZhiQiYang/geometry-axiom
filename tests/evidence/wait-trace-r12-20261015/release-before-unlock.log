@@ -3,16 +3,16 @@ F
 FAIL: test_release_snapshot_uses_actual_unlock_boundary (__main__.WaitTraceTests.test_release_snapshot_uses_actual_unlock_boundary)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/tmp/geometry-wait-trace/tests/test_wait_trace.py", line 92, in test_release_snapshot_uses_actual_unlock_boundary
+  File "/tmp/geometry-wait-trace/tests/test_wait_trace.py", line 114, in test_release_snapshot_uses_actual_unlock_boundary
     lock.acquire(); clock[0] = 2; lock.release()
                                   ^^^^^^^^^^^^^^
   File "/tmp/geometry-wait-trace/geometry-web/wait_trace.py", line 192, in release
     emit(self.name + '_release', holder=holder, heldSeconds=0, releasedMonotonic=0)
-  File "/tmp/geometry-wait-trace/tests/test_wait_trace.py", line 87, in emit
+  File "/tmp/geometry-wait-trace/tests/test_wait_trace.py", line 109, in emit
     self.assertFalse(lock.lock.locked(), 'WAIT_TRACE_RELEASE_IO_AFTER_UNLOCK')
 AssertionError: True is not false : WAIT_TRACE_RELEASE_IO_AFTER_UNLOCK
 
 ----------------------------------------------------------------------
-Ran 1 test in 0.005s
+Ran 1 test in 0.006s
 
 FAILED (failures=1)

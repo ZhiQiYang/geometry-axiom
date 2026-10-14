@@ -1,6 +1,7 @@
 import pathlib,subprocess,json
 root=pathlib.Path('/tmp/geometry-wait-trace'); out=root/'tests/evidence/wait-trace-r12-20261015'
 cases=[
+ ('unbounded-signal-cleanup','geometry-web/serve.py',b'            wait_trace.close()\n            os._exit(0)',b'            raise SystemExit(0)','test_trace_sigterm_does_not_enter_business_lock_cleanup'),
  ('sync-acquire','geometry-web/wait_trace.py',b'    _writer.submit(row)',b"    _writer.write(row) if stage == 'bridge' else _writer.submit(row)",'test_slow_sink_does_not_extend_nested_business_locks'),
  ('sync-call','geometry-web/wait_trace.py',b'    _writer.submit(row)',b"    _writer.write(row) if stage == 'stdin_write_begin' else _writer.submit(row)",'test_slow_sink_does_not_extend_nested_business_locks'),
  ('sync-release','geometry-web/wait_trace.py',b'    _writer.submit(row)',b"    _writer.write(row) if stage == 'receipt_release' else _writer.submit(row)",'test_slow_sink_does_not_extend_nested_business_locks'),

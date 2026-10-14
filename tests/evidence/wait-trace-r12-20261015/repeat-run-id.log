@@ -3,11 +3,11 @@ F
 FAIL: test_two_runs_remove_only_old_trace_and_archive_current_run (__main__.WaitTraceTests.test_two_runs_remove_only_old_trace_and_archive_current_run)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/tmp/geometry-wait-trace/tests/test_wait_trace.py", line 151, in test_two_runs_remove_only_old_trace_and_archive_current_run
+  File "/tmp/geometry-wait-trace/tests/test_wait_trace.py", line 173, in test_two_runs_remove_only_old_trace_and_archive_current_run
     self.assertNotEqual(runs[0],runs[1])
 AssertionError: 'same-run-id' == 'same-run-id'
 
 ----------------------------------------------------------------------
-Ran 1 test in 0.247s
+Ran 1 test in 0.245s
 
 FAILED (failures=1)

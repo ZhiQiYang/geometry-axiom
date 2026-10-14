@@ -9,10 +9,32 @@ import unittest
 import subprocess
 import sys
 import io
+import ast
 from unittest.mock import patch
 
 
 class WaitTraceTests(unittest.TestCase):
+    def test_trace_sigterm_does_not_enter_business_lock_cleanup(self):
+        root = pathlib.Path(__file__).resolve().parents[1]
+        source = (root / 'geometry-web/serve.py').read_text()
+        function = next(node for node in ast.walk(ast.parse(source)) if isinstance(node, ast.FunctionDef) and node.name == 'stop_traced_service')
+        code = ast.get_source_segment(source, function)
+        script = 'import os,signal,time,types\nwait_trace=types.SimpleNamespace(close=lambda:True)\n' + code + '\nsignal.signal(signal.SIGTERM,stop_traced_service)\nprint("READY",flush=True)\ntry:\n while True: time.sleep(1)\nfinally:\n time.sleep(2)\n'
+        child = subprocess.Popen([sys.executable, '-c', script], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        try:
+            self.assertEqual(child.stdout.readline().strip(), 'READY')
+            child.terminate()
+            try:
+                child.wait(timeout=.5)
+                bounded = True
+            except subprocess.TimeoutExpired:
+                bounded = False
+            self.assertTrue(bounded, 'WAIT_TRACE_SIGTERM_MUST_NOT_WAIT_FOR_BUSINESS_CLEANUP')
+            self.assertEqual(child.returncode, 0)
+        finally:
+            if child.poll() is None: child.kill(); child.wait()
+            child.stdout.close(); child.stderr.close()
+
     def test_slow_sink_does_not_extend_nested_business_locks(self):
         for stage in ('bridge', 'stdin_write_begin', 'receipt_release'):
             with self.subTest(stage=stage), tempfile.TemporaryDirectory() as directory:

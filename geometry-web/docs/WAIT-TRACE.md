@@ -40,8 +40,10 @@ separately measured; prePublishAcquireSeconds excludes the final publication.
 These are elapsed boundary measurements, not a claim of pure business CPU cost
 or zero scheduling/serialization overhead. Explicit flush is only a test barrier.
 
-On traced service shutdown, SIGTERM follows the existing cleanup and permits a
-bounded one-second writer drain. Default-off signal behavior is unchanged.
+On traced service SIGTERM, a bounded one-second writer drain precedes process
+exit. It bypasses business-lock cleanup, as the previous terminating SIGTERM
+did; it must not wait on NativeContext.close locks. Default-off signal behavior
+is unchanged. An ordinary non-SIGTERM exit still uses existing context cleanup.
 trace_start/trace_complete identify a run; the completion record reports drops
 and write errors. A timed-out writer, missing completion, unmatched observed
 request begin/end, mixed run IDs or loss makes the collector reject the trace
@@ -76,6 +78,10 @@ it atomically unlinks **only** wait-trace.jsonl and assigns a fresh run ID, leav
 all other feedback intact. Cleanup waits for its own service to exit before
 copying bytes; collector verifies every row belongs to that expected run ID.
 An active older service must already be stopped by its owner, not by this tool.
+The helper's stdout must become GEOMETRY_WAIT_TRACE_RUN_ID in the service and
+collector environment. External runners should execute this same preparation
+and cleanup, not just set GEOMETRY_WAIT_TRACE. Raw manual tracing may use its
+fallback UUID, but collection without the expected run ID is rejected.
 
 The active local WSL runner is external to this cloud checkout. Historical
 runner copies under `tests/release-evidence/` are not modified. Its archived
