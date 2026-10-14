@@ -120,13 +120,14 @@ test('K2a review B1 legacy live-ref capacity survives ordinary discard, UndoRedo
   assert.deepEqual(w.getProjectState(),state);assert.equal(w.history.undo.length,count);assert.deepEqual(w.readGridDrafts(),remaining);
   assert.equal(geometry(),world);assert.equal(f.calls.length,0);
 });
+// P-104: ceil(2.5 * observed WSL maximum / 1000) * 1000, including train9 and five isolated runs.
+const NORMAL_COLLECTION_ZIP_TIMEOUT_MS = Object.freeze({130956:15000,131072:22000});
 for(const size of [130956,131072])test(`K2a P064 ordinary discard preserves large normal singleton ZIP raw and local UndoRedo ${size}-byte boundary`,async()=>{
  const C=require('./test_grid_drafts_lifecycle_capacity.js');const {w,source}=await fixture(),token=w.getProjectState().contextToken,d=C.largeDraft();d.inputRefs=[];C.pad(d,size);const other=k2aDraft('other',true);other.baseRef.id=2;const empty=JSON.stringify(w.history.snapshot());assert.throws(()=>w.setGridDraft(d.draftId,d,token),/容量|上限/);assert.equal(JSON.stringify(w.history.snapshot()),empty);w.setGridDraft(other.draftId,other,token);w.setGridDraft(d.draftId,d,token);const before=w.readGridDrafts();assert.doesNotThrow(()=>w.setGridDraft(other.draftId,null,token),'P064 removal must keep the bounded collection');assert.deepEqual(w.readGridDrafts(),{drafts:[d],orphans:[]});const opened=await P.unpack(await P.pack('',await w.manifest(),new Map([[source.meta.id,source.bytes]]),zip),zip);assert.equal(opened.manifest.format,P.GRID_DRAFTS_FORMAT);assert.deepEqual(opened.manifest.featureAttachments.records[0].value.drafts[0],d);w.tryLocalHistory('line undo');assert.deepEqual(w.readGridDrafts(),before);w.tryLocalHistory('line redo');assert.deepEqual(w.readGridDrafts(),{drafts:[d],orphans:[]});
-});
-// P-095: three complete 131 KiB lifecycle ZIP roundtrips repeatedly run bounded plain-JSON
-// validation. Cloud profiling: 1.93-2.13 s/case; WSL train6 first run: 5.879 s worst, reruns: 6.558 s max.
-// 10 s is a named budget for these two cases only, below 3 * the measured worst.
-const ORPHAN_COLLECTION_ZIP_TIMEOUT_MS = 10000;
+}, {timeout:NORMAL_COLLECTION_ZIP_TIMEOUT_MS[size]});
+// Three complete 131 KiB ZIP roundtrips retain all plain-JSON validation and cold reads.
+// P-104: the same 2.5x WSL rule; the faster isolated samples do not replace loaded train9 timings.
+const ORPHAN_COLLECTION_ZIP_TIMEOUT_MS = Object.freeze({130955:31000,130956:21000});
 for(const size of [130955,130956])test(`K2a B1 collection two drafts orphan remove other manifest ZIP cold read preserves ${size}-byte boundary`,async()=>{
   const C=require('./test_grid_drafts_lifecycle_capacity.js');
     const f=await fixture(),w=f.w,token=w.getProjectState().contextToken,d=C.largeDraft();d.inputRefs=[];C.pad(d,size);
@@ -146,7 +147,7 @@ for(const size of [130955,130956])test(`K2a B1 collection two drafts orphan remo
     assert.deepEqual(remaining.drafts[0],both.drafts.find(row=>row.draftId===d.draftId));
     assert.equal(opened.manifest.format,P.GRID_DRAFTS_FORMAT);assert.ok(opened.manifest.requiredCapabilities.includes(P.Features.GRID_DRAFTS_SCHEMA));
     assert.equal(C.bytes(remaining.drafts[0]),size);assert.equal(f.calls.length,0,'metadata-only save sequence sends no native API');
-}, {timeout:ORPHAN_COLLECTION_ZIP_TIMEOUT_MS});
+}, {timeout:ORPHAN_COLLECTION_ZIP_TIMEOUT_MS[size]});
 test('K2a B1 previous collection ZIP original import and save preserves raw refs orphan and full draft size',async()=>{
   const pdf=countedPDF(),f=await openFixture({withPDF:true,pdfLibrary:pdf.library});
   const fetch=f.env.fetch;f.env.fetch=async(url,request)=>{const response=await fetch(url,request);if(url!=='/upload/prepare')return response;const candidate=await response.json();return {...response,json:async()=>({...candidate,final_scene:request.body})};};
