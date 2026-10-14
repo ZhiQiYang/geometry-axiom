@@ -1,0 +1,14 @@
+二進位輸出目錄：/tmp/framing-proposal-binaries
+[binaries]
+  bridge     missing  找不到 /tmp/framing-proposal-binaries/bridge
+  core       fresh    來源與 binary SHA-256 相符（建於 2026-10-13T09:12:45+00:00）
+  engjson    missing  找不到 /tmp/framing-proposal-binaries/engineering-json-test
+  gdi        n/a      僅 Windows
+  integrity  missing  找不到 /tmp/framing-proposal-binaries/integrity
+  model-base missing  找不到 /tmp/framing-proposal-binaries/model-base
+[環境] CC=未設定（繼承自外殼；僅影響 binaries.py 在非 Windows 的編譯）
+[環境] 已清除外殼繼承的 GEOMETRY_*：（無）
+[環境] run_all 設給子行程的 GEOMETRY_*：GEOMETRY_TEST_CORE
+[2/86] core:run_tests …
+[3/86] mutation:check …
+[10/86] py:test_axiom_reader …
