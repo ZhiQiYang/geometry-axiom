@@ -1,0 +1,38 @@
+[
+  {
+    "name": "K2a P064 confirmation preflight rejects an over-budget manifest before history changes",
+    "duration_ms": 5499.891608,
+    "result": "pass",
+    "scope": "this new-main cloud native, not WSL"
+  },
+  {
+    "name": "K2a review B1 legacy live-ref capacity survives ordinary discard, UndoRedo and cold ZIP",
+    "duration_ms": 1318.730041,
+    "result": "pass",
+    "scope": "this new-main cloud native, not WSL"
+  },
+  {
+    "name": "K2a P064 ordinary discard preserves large normal singleton ZIP raw and local UndoRedo 130956-byte boundary",
+    "duration_ms": 1301.56566,
+    "result": "pass",
+    "scope": "this new-main cloud native, not WSL"
+  },
+  {
+    "name": "K2a P064 ordinary discard preserves large normal singleton ZIP raw and local UndoRedo 131072-byte boundary",
+    "duration_ms": 954.717667,
+    "result": "pass",
+    "scope": "this new-main cloud native, not WSL"
+  },
+  {
+    "name": "K2a B1 collection two drafts orphan remove other manifest ZIP cold read preserves 130955-byte boundary",
+    "duration_ms": 2387.419098,
+    "result": "pass",
+    "scope": "this new-main cloud native, not WSL"
+  },
+  {
+    "name": "K2a B1 collection two drafts orphan remove other manifest ZIP cold read preserves 130956-byte boundary",
+    "duration_ms": 2236.966792,
+    "result": "pass",
+    "scope": "this new-main cloud native, not WSL"
+  }
+]
