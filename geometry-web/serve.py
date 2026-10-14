@@ -733,6 +733,11 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
+    if wait_trace.ENABLED:
+        import signal
+        def stop_traced_service(signum, frame):
+            raise SystemExit(0)
+        signal.signal(signal.SIGTERM, stop_traced_service)
     try:
         host = "0.0.0.0" if os.environ.get("GEOMETRY_MANAGED_PREVIEW") == "1" and PORT == 4173 else "127.0.0.1"
         server = PreviewHTTPServer((host, PORT), Handler)
@@ -742,3 +747,5 @@ if __name__ == "__main__":
         root_context.close()
         for context in list(scenario_contexts.values()):
             context.close()
+        if wait_trace.ENABLED:
+            wait_trace.close()

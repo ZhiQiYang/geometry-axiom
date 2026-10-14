@@ -74,9 +74,13 @@ jobs:
           # WSL canvas wait trace
           # Clear inherited flags for all other jobs.
           unset GEOMETRY_WAIT_TRACE
+          unset GEOMETRY_WAIT_TRACE_RUN_ID
           case "$GEOMETRY_BROWSER_SUITE:$(uname -r)" in
             canvas:*[Mm]icrosoft*) export GEOMETRY_WAIT_TRACE=1 ;;
           esac
+          if [ "${GEOMETRY_WAIT_TRACE-}" = 1 ]; then
+            export GEOMETRY_WAIT_TRACE_RUN_ID="$(python3 geometry-web/prepare_wait_trace.py)"
+          fi
           if [ -n "${GITHUB_ENV-}" ]; then
             printf 'GEOMETRY_WAIT_TRACE=%s\n' "${GEOMETRY_WAIT_TRACE-}" >> "$GITHUB_ENV"
           fi
@@ -86,6 +90,7 @@ jobs:
             original_status=$?
             set +e
             kill "$server" 2>/dev/null || true
+            wait "$server" 2>/dev/null || true
             if [ "$GEOMETRY_BROWSER_SUITE" = canvas ]; then
               python3 geometry-web/archive_wait_trace.py /tmp/geometry-wait-trace-artifact
               archive_status=$?

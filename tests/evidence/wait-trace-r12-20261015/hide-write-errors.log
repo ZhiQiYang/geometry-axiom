@@ -1,0 +1,13 @@
+F
+======================================================================
+FAIL: test_unwritable_sink_does_not_change_result (__main__.WaitTraceTests.test_unwritable_sink_does_not_change_result)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/geometry-wait-trace/tests/test_wait_trace.py", line 442, in test_unwritable_sink_does_not_change_result
+    self.assertFalse(m.close(), 'WAIT_TRACE_SINK_FAILURE_MUST_BE_RECORDED')
+AssertionError: True is not false : WAIT_TRACE_SINK_FAILURE_MUST_BE_RECORDED
+
+----------------------------------------------------------------------
+Ran 1 test in 0.026s
+
+FAILED (failures=1)

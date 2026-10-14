@@ -1,9 +1,14 @@
 # #209 opt-in wait diagnostics (P-107 / board task 13)
 
-Only `GEOMETRY_WAIT_TRACE=1` enables tracing. Supply the isolated test service's
+Only `GEOMETRY_WAIT_TRACE=1` enables **server wait tracing**. Supply the isolated test service's
 `GEOMETRY_FEEDBACK_DIR`; events append to `wait-trace.jsonl`. Without that directory
 there is no output. No default feedback location is used, avoiding user reports.
 An unwritable sink does not change command results or trigger a retry.
+The canvas transport observer is a separate, always-on P-107 harness diagnostic:
+it still installs, samples its clock and adds the two CDP_RESULT fields when the
+server flag is absent. Server off tests prove original lock identity and command
+responses and absence of server diagnostic clock/UUID/file operations, **not**
+unchanged browser output or zero import/dispatch overhead for the whole process.
 
 Each event has a diagnostic UUID distinct from the business request/receipt ID,
 route, command, process/thread, wall time and monotonic time.
@@ -15,12 +20,33 @@ http_write and request begin/end. Lock begin events report the holder's request,
 command/thread and elapsed hold time observed when waiting begins; completion
 events report acquisition duration and success. Hold time is an observation,
 not a claim that the same holder persisted throughout the wait. Each outermost
-release emits a `*_release` event before unlock, with the original holder identity,
-command and total `heldSeconds`. Reentrant inner releases do not emit an end
+release captures the original holder before unlock, then captures the actual
+unlock timestamp and publishes `*_release` after the metadata mutex is also free,
+with identity, command, `releasedMonotonic` and total `heldSeconds`.
+Reentrant inner releases do not emit an end
 event. Correlate holder request IDs with these end events to distinguish holder
 changes during a long wait. Reentrant locks
 retain the outer acquisition's identity. Durations use one process's monotonic
 clock; do not subtract browser and server timestamps from each other.
+
+No business operation performs sink I/O. A dedicated writer receives rows via
+a bounded 256-row Queue.put_nowait handoff, including acquire, call and nested
+receipt/bridge paths. Queue/stat mutexes never cover file I/O. Full queues drop
+diagnostic rows and count the loss; they do not wait, change a return value or
+retry a command. Pre-publication acquisition, native acquisition and initial
+metadata wait are distinct fields; queueDelaySeconds, sinkThread and the final
+sinkSeconds aggregate identify the persistence side. Handoff CPU cost is not
+separately measured; prePublishAcquireSeconds excludes the final publication.
+These are elapsed boundary measurements, not a claim of pure business CPU cost
+or zero scheduling/serialization overhead. Explicit flush is only a test barrier.
+
+On traced service shutdown, SIGTERM follows the existing cleanup and permits a
+bounded one-second writer drain. Default-off signal behavior is unchanged.
+trace_start/trace_complete identify a run; the completion record reports drops
+and write errors. A timed-out writer, missing completion, unmatched observed
+request begin/end, mixed run IDs or loss makes the collector reject the trace
+as incomplete while retaining raw bytes. A permanently failed sink may prevent
+the marker itself from being written; missing evidence is a failure, never green.
 
 The canvas CDP harness records `firstTransportFailure` from the frontend's actual
 `transport:true` result, including HTTP200 bridge errors and local transport
@@ -45,6 +71,11 @@ starting start_local.py/serve.py. The cloud shell test substitutes Linux/WSL
 kernel strings across canvas/grid/space; this is not WSL execution.
 Nonstandard WSL kernels without the Microsoft marker require an explicit
 local runner override. Native and other browser jobs do not enable tracing.
+Only enabled canvas jobs run prepare_wait_trace.py before service startup:
+it atomically unlinks **only** wait-trace.jsonl and assigns a fresh run ID, leaving
+all other feedback intact. Cleanup waits for its own service to exit before
+copying bytes; collector verifies every row belongs to that expected run ID.
+An active older service must already be stopped by its owner, not by this tool.
 
 The active local WSL runner is external to this cloud checkout. Historical
 runner copies under `tests/release-evidence/` are not modified. Its archived

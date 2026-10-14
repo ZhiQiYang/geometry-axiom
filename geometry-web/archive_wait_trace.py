@@ -14,7 +14,7 @@ def main(destination):
     target.mkdir(parents=True, exist_ok=True)
     copied = target / 'wait-trace.jsonl'
     copied.unlink(missing_ok=True)
-    keys = ('GEOMETRY_WAIT_TRACE', 'GEOMETRY_FEEDBACK_DIR', 'GEOMETRY_BROWSER_SUITE')
+    keys = ('GEOMETRY_WAIT_TRACE', 'GEOMETRY_FEEDBACK_DIR', 'GEOMETRY_BROWSER_SUITE', 'GEOMETRY_WAIT_TRACE_RUN_ID')
     environment = {key: os.environ.get(key) for key in keys}
     enabled = environment['GEOMETRY_WAIT_TRACE'] == '1'
     directory = environment['GEOMETRY_FEEDBACK_DIR']
@@ -34,6 +34,25 @@ def main(destination):
             status = 0 if raw else 1
             if not raw:
                 receipt['status'] = 'empty-enabled-trace'
+            else:
+                try:
+                    rows = [json.loads(line) for line in raw.splitlines()]
+                    run_id = environment['GEOMETRY_WAIT_TRACE_RUN_ID']
+                    complete = rows[-1]
+                    begun = {r['traceRequestId'] for r in rows if r['stage'] == 'request_begin'}
+                    ended = {r['traceRequestId'] for r in rows if r['stage'] == 'request_end'}
+                    valid = (run_id and all(r.get('traceRunId') == run_id for r in rows)
+                             and rows[0]['stage'] == 'trace_start' and complete['stage'] == 'trace_complete'
+                             and complete.get('incomplete') is False
+                             and complete.get('droppedEvents', 0) == 0 and complete.get('writeErrors', 0) == 0
+                             and complete.get('writtenEvents', len(rows)-1) == len(rows)-1 and begun == ended)
+                    receipt.update(traceRunId=run_id, unfinishedRequests=sorted(begun-ended))
+                    if not valid:
+                        receipt['status'] = 'incomplete-or-mixed-trace'
+                        status = 1
+                except (ValueError, KeyError, TypeError):
+                    receipt['status'] = 'invalid-trace'
+                    status = 1
     (target / 'receipt.json').write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     print(json.dumps(receipt, ensure_ascii=False))
     return status

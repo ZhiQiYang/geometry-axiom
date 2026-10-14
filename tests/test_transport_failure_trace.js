@@ -2,6 +2,27 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const {createTransportFailureTrace, installClientTransportTrace} = require('../geometry-web/transport_failure_trace.js');
 
+test('canvas observer remains independent of the disabled server flag', async () => {
+  const prior = process.env.GEOMETRY_WAIT_TRACE;
+  delete process.env.GEOMETRY_WAIT_TRACE;
+  try {
+    let ticks = 0, calls = 0;
+    const result = {ok:true};
+    const promise = Promise.resolve(result);
+    const target = {apiRequest: () => { calls++; return promise; }};
+    const reports = [];
+    installClientTransportTrace(target, record => reports.push(record), () => ({wall:'test',monotonic:++ticks}));
+    assert.strictEqual(target.apiRequest('one'), promise);
+    assert.strictEqual(await promise, result);
+    assert.equal(ticks, 1, 'BROWSER_OBSERVER_IS_NOT_SERVER_DEFAULT_OFF');
+    assert.equal(calls, 1);
+    assert.deepEqual(reports, []);
+  } finally {
+    if (prior === undefined) delete process.env.GEOMETRY_WAIT_TRACE;
+    else process.env.GEOMETRY_WAIT_TRACE = prior;
+  }
+});
+
 test('first API transport failure survives later failures and other sessions', () => {
   let tick = 0;
   const trace = createTransportFailureTrace('http://localhost:8765', () => `time-${++tick}`);

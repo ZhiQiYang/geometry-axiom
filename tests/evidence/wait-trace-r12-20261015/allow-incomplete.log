@@ -1,0 +1,13 @@
+F
+======================================================================
+FAIL: test_runner_archive_keeps_raw_trace_and_effective_environment (__main__.WaitTraceTests.test_runner_archive_keeps_raw_trace_and_effective_environment)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/geometry-wait-trace/tests/test_wait_trace.py", line 403, in test_runner_archive_keeps_raw_trace_and_effective_environment
+    self.assertEqual(rejected.returncode, 1, 'WAIT_TRACE_MIXED_OR_INCOMPLETE_MUST_FAIL')
+AssertionError: 0 != 1 : WAIT_TRACE_MIXED_OR_INCOMPLETE_MUST_FAIL
+
+----------------------------------------------------------------------
+Ran 1 test in 0.083s
+
+FAILED (failures=1)

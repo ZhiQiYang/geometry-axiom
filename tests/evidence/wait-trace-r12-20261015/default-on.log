@@ -1,0 +1,13 @@
+F
+======================================================================
+FAIL: test_default_off_preserves_lock_and_output (__main__.WaitTraceTests.test_default_off_preserves_lock_and_output)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/geometry-wait-trace/tests/test_wait_trace.py", line 298, in test_default_off_preserves_lock_and_output
+    self.assertIs(m.wrap_lock(lock, 'bridge'), lock, 'WAIT_TRACE_DEFAULT_OFF')
+AssertionError: <trace_test.TracedLock object at 0x7f9af8d98b90> is not <unlocked _thread.RLock object owner=0 count=0 at 0x7f9af8cd0ac0> : WAIT_TRACE_DEFAULT_OFF
+
+----------------------------------------------------------------------
+Ran 1 test in 0.006s
+
+FAILED (failures=1)
