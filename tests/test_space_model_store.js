@@ -112,7 +112,7 @@ test('older core steps remain redoable after local entries evict their browser m
   s.send('line undo');assert.equal(s.core,2);
   assert.equal(s.send('line redo').ok,true);assert.equal(s.core,3);
 });
-function workspace(verify, rebuild = () => model().result) {
+function workspace(verify, rebuild = () => model().result, prepareCandidate = null) {
   const events=[],calls=[],requests=[];
   const env = { GeometryProject:P,crypto,structuredClone,fflate:zip,TextEncoder,TextDecoder,AbortSignal,Uint8Array,Map,Set,console,
     requestAnimationFrame:()=>1, CustomEvent:class {constructor(type){this.type=type;}},
@@ -121,11 +121,43 @@ function workspace(verify, rebuild = () => model().result) {
     api:async cmd=>({ok:true,text:'old scene'}),resetSceneFocus:()=>{},refreshActive:async()=>{},setStatus:()=>{},
     sceneMenuDisplay:x=>x,curScene:{},
     fetch:async (url,opts)=>{calls.push(url);requests.push({url,body:['/upload','/upload/prepare'].includes(url)?opts.body:JSON.parse(opts.body)});return {ok:true,json:async()=>url==='/model/verify'?verify(JSON.parse(opts.body)):
-      url==='/model/space-replay'?rebuild(JSON.parse(opts.body).input):url==='/upload/prepare'?{ok:true,token:1,capabilities:nativeCapabilities,required_capabilities:[],final_objects:{boundaries:[],placements:[]}}:{ok:true,path:'loaded'}};}
+      url==='/model/space-replay'?rebuild(JSON.parse(opts.body).input):url==='/upload/prepare'?{ok:true,token:1,capabilities:nativeCapabilities,required_capabilities:[],final_objects:{boundaries:[],placements:[]},...(prepareCandidate || {})}:{ok:true,path:'loaded'}};}
   };
   vm.runInNewContext(fs.readFileSync(require.resolve('../geometry-web/reference-workspace.js'),'utf8')+'\nglobalThis.workspace=ReferenceWorkspace;',env);
   return {api:env.workspace,events,calls,requests};
 }
+test('Q23 genuine Q38 v16 archive opens with its frozen model and all profile sources preserved', async () => {
+  const fixture = JSON.parse(fs.readFileSync(require.resolve('./fixtures/q38-legacy-space-model.json'), 'utf8'));
+  const bytes = fs.readFileSync(require.resolve('./fixtures/q38-legacy-space-model.gcanvas'));
+  const loaded = await P.unpack(bytes, zip);
+  assert.equal(loaded.manifest.format, 'geometry-canvas/16');
+  assert.ok(loaded.manifest.requiredCapabilities.includes('section-profile/1'));
+  assert.equal(loaded.scene, fixture.scene);
+  assert.deepEqual(loaded.manifest.models, [fixture.model]);
+  // This checks the actual client transaction with transport doubles. The
+  // companion native Python test verifies/replays every frozen package.
+  // The shared legacy double intentionally lacks section-profile/1. Keep its
+  // refusal as a guard before supplying the real bridge's /16 envelope fields.
+  const unsupported = workspace(p => p, () => fixture.model.result);
+  await assert.rejects(unsupported.api.importBytes(bytes), /不支援此專案所需的工程規格能力/);
+  assert.equal(unsupported.calls.includes('/upload/confirm'), false);
+  assert.deepEqual(clone(unsupported.api.getSpaceModels()), []);
+  const w = workspace(p => p, () => fixture.model.result, {
+    capabilities: [...nativeCapabilities, 'section-profile/1'],
+    required_capabilities: P.sceneCapabilities(fixture.scene),
+    final_scene: fixture.scene,
+    final_objects: { boundaries: [1], placements: [{id:1,bid:1,horizontal:true}] },
+  });
+  await w.api.importBytes(bytes);
+  assert.deepEqual(clone(w.api.getSpaceModels()), [fixture.model]);
+  assert.equal(w.calls.filter(url => url === '/model/verify').length, 4);
+  assert.equal(w.calls.filter(url => url === '/model/space-replay').length, 1);
+  assert.equal(w.requests.find(request => request.url === '/upload/prepare').body, fixture.scene);
+  const roundtrip = await P.unpack(await P.pack(loaded.scene, loaded.manifest, new Map(), zip), zip);
+  assert.equal(roundtrip.scene, fixture.scene);
+  assert.deepEqual(roundtrip.manifest.models, [fixture.model]);
+});
+
 test('model-only edits (including removing the last model) warn before leaving and getters cannot mutate saved data', () => {
   const w=workspace(p=>p),m=model();w.api.addSpaceModel(m);m.name='caller changed';
   assert.equal(w.api.getSpaceModels()[0].name,'已建立空間');
