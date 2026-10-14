@@ -1,6 +1,6 @@
 # GEO-258 候選退役狀態與 archive 重驗
 
-最新狀態（2026-10-14）：P-065 已採 A 並交付，產品／測試提交 `45013ece5147d4d5c1bad2de35387d2bdfaf28c8`。上游先刪的 27／27／29／29 四例確認成功，兩序完整 dump 相同；同份 12 新題修前 8 紅 4 綠，修後與 P-062 原 14 題共 26 綠，兩突變及刷新帳本見文末。B3 最終 #207 整合與 B4 七 job 未做，不能把本段定向驗證擴大成整個 PR 完成。
+最新狀態（2026-10-14）：P-065/B5 已補候選覆寫前的最後有效值，產品／測試提交 `69eb637552d0f5616d044a3116ea18ecb5077439`。同份12新題修前8行為斷言紅／4對照綠，修後連同既有26題共38綠；27／29等六組完整dump雙序逐byte相同，兩個針對覆寫捕捉／刷新的真突變及新鮮全50帳本詳文末。B3 最終 #207 整合與 B4 固定最終head的正式七項仍待，不宣稱整個PR已完成。
 
 以下各批次保留當時的來源與結果；較早段落中的「本次」僅指該批次。
 
@@ -205,3 +205,36 @@ M1移除上游失效前的捕捉，原值與先改29的兩個upstream-first案�
 受測輸入是 `86d3e0e376fe6dcc90936dd5e2ef301339f0b1d5` 加五個凍結路徑，實跑時不是乾淨最終提交。提交 `45013ece5147d4d5c1bad2de35387d2bdfaf28c8` 的五路徑已從Git讀回、LF SHA逐一等於受測輸入；契約文案另更新。同一性核對沒有宣稱另一次產品實跑。實際WSL exit0（隱藏launcher的OS退出碼與外層工具退出碼未獨立取得），489次取樣foreign空；收據SHA-256 `cb15882b36dc8aaf179ecb96fb628191a60fe756a2201f47a1d6b980f7f4c99b`，五例原件SHA-256 `e682e84bcfd97339f61cded5d0fd16f5e27691aa9f58a2e1299e5255e272789b`。完整來源、首跑、突變、還原、帳本與原始輸出保存在`D:/geometry-axiom-work/board-local-codex/pr193-p065-native-r3/`。
 
 P-062末段的「多來源邊界待裁」是當時狀態，已由本段P-065裁決與實跑承接；原15份反例和111份P-062交付原件保留原版本界線。B3最終#207正典整合與B4正式七job仍待；本輪無新UI入口，未改SSOT、白話、閱讀器、AXIOM常數、BACKLOG或決策佇列。CI受帳號計費阻擋，以本機WSL收據代替。
+
+
+## P-065/B5：覆寫成暫時缺引用前的最後有效值（2026-10-14）
+
+依審查6166398934及既有P-065採A，`D4=27、S3=@4:1、T→S3` 在同候選先把D4改成缺失引用，再刪D4／S3並明示unbind，仍保留27；先合法改成29再改壞則保留29。修正只在合法語法／容量檢查後、真正覆寫既有卡片前，沿原受影響閉包刷新暫存。一般evaluator及存活來源／覆寫不讀暫存，最終引用與候選出口清空閘門不變，未改SSOT。
+
+同一份12新題先在乾淨 `842db122a58cc25c048234f52314498a0d09dc05` 的產品跑：8個行為斷言紅、4個對照綠；其後才在測試clone套入四個凍結路徑。修後既有P-062十四題／P-065十二題與B5十二題共38綠。六組真bridge確認的27／29、循環、欄位移除與無關非法中間態，完整原生dump雙序逐UTF-8 byte相同；也驗取消／失敗不洩漏、存活來源及override仍拒絕失效依賴。
+
+M1拿掉覆寫前捕捉，兩個指定27／29案例以missing有效值斷言紅；M2只允許第一次捕捉，29案例實得27而紅。每項逐byte還原、重編，再跑38題全綠。另有既有11模組142題、integrity130／130、核心場景143／143。全50帳本重新產生：`{"killed": 42, "equivalent": 4, "crashed": 1, "retired": 3}`，無stale／survived／blocked；原執行檔與sidecar均封存。Windows另作來源／裁判帳本校驗，不冒稱再跑mutants。
+
+| 原步驟 | 實際退出碼 | 秒數 |
+|---|---:|---:|
+| fixed-thirty-eight-green | 0 | 166.741 |
+| fixed-integrity | 0 | 2.537 |
+| fixed-core-scenes | 0 | 12.783 |
+| fixed-test_parameters_unbind_scope | 0 | 36.03 |
+| fixed-test_parameters_core | 0 | 107.887 |
+| fixed-test_parameter_retirement_scope | 0 | 28.179 |
+| fixed-test_parameter_netzero | 0 | 25.527 |
+| fixed-test_parameters_final_candidate | 0 | 20.757 |
+| fixed-test_section_profile_native | 0 | 169.375 |
+| fixed-test_assembly_rules | 0 | 167.574 |
+| fixed-test_evidence_link_native | 0 | 32.783 |
+| fixed-test_engineering_core | 0 | 80.341 |
+| fixed-test_assembly_parameter_refs | 0 | 33.063 |
+| fixed-test_engineering_model_sources | 0 | 12.688 |
+| M1-no-pre-overwrite-capture-red | 1 | 12.265 |
+| M2-no-pre-overwrite-refresh-red | 1 | 8.301 |
+| full-mutation | 0 | 1372.758 |
+| mutation-check | 0 | 6.617 |
+| final-thirty-eight-green | 0 | 170.918 |
+
+完整原件：`D:\geometry-axiom-work\board-local-codex\pr193-b5-native-r1`；receipt SHA `5453d2c84645f997b38c9dfc74ee33e4388e3c802017c50b155dd58238a9867a`，帳本 SHA `d24c8b8cf2f3587373a8f3048c3f56d21ff44576d74e97d9fcb97d430187e959`。實際WSL exit0；hidden launcher的OS退出與外層工具退出未獨立取得，保持unknown。foreign原取樣清單空，不宣稱連續監看。受測是乾淨842db加四路徑凍結overlay；提交後Git讀回只核同一性，不把它改標為乾淨final SHA重跑。B3／B4仍由既定最終整合及正式列車承接。舊P-060／P-062／P-065各輪失敗與原退出碼全文保持。
