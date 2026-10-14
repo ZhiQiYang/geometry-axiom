@@ -9,7 +9,7 @@ function createTransportFailureTrace(origin, now = () => new Date().toISOString(
       const p = message.params, key = (message.sessionId || 'main') + ':' + p.requestId;
       if (message.method === 'Network.requestWillBeSent') {
         let url; try { url = new URL(p.request.url); } catch { return; }
-        if (url.origin !== origin || url.pathname !== '/api') return;
+        if (url.origin !== origin || (url.pathname !== '/api' && !['Fetch','XHR'].includes(p.type))) return;
         requests.set(key, {url: url.href, requestId: p.requestId,
           sessionId: message.sessionId || null, method: p.request.method,
           postData: p.request.postData || null, step, requestedAt: now(),

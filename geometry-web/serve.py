@@ -334,6 +334,16 @@ class Handler(http.server.BaseHTTPRequestHandler):
         pass
 
     def _send(self, body: bytes, ctype="application/json; charset=utf-8", status=200):
+        if wait_trace.ENABLED:
+            return wait_trace.call('http_write', lambda: self._send_body(body, ctype, status))
+        return self._send_body(body, ctype, status)
+
+    def send_error(self, *args, **kwargs):
+        if wait_trace.ENABLED:
+            return wait_trace.call('http_write', lambda: super(Handler, self).send_error(*args, **kwargs))
+        return super().send_error(*args, **kwargs)
+
+    def _send_body(self, body: bytes, ctype="application/json; charset=utf-8", status=200):
         self.send_response(status)
         self.send_header("Content-Type", ctype)
         self.send_header("Content-Length", str(len(body)))
@@ -344,10 +354,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
         self.send_header("X-Geometry-Release", "engineering-spec-v1-20260928")
         self.send_header("Cache-Control", "no-store")
         self.end_headers()
-        if wait_trace.ENABLED:
-            wait_trace.call('http_write', lambda: self.wfile.write(body))
-        else:
-            self.wfile.write(body)
+        self.wfile.write(body)
 
     def do_GET(self):
         if not wait_trace.ENABLED:

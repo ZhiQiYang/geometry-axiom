@@ -26,3 +26,14 @@ test('successful API and asset failures do not become API transport failures', (
   }
   assert.equal(trace.first(), null);
 });
+
+test('first non-api business fetch failure survives later api failure', () => {
+  const trace = createTransportFailureTrace('http://localhost:8765');
+  trace.observe({method:'Network.requestWillBeSent',params:{requestId:'model',type:'Fetch',timestamp:1,request:{url:'http://localhost:8765/model/space-preview',method:'POST',postData:'{"fixture":true}'}}}, 'model step');
+  trace.observe({method:'Network.responseReceived',params:{requestId:'model',type:'Fetch',timestamp:2,response:{status:503,statusText:'Unavailable'}}}, 'model step');
+  trace.observe({method:'Network.requestWillBeSent',params:{requestId:'api',type:'Fetch',timestamp:3,request:{url:'http://localhost:8765/api',method:'POST'}}}, 'api step');
+  trace.observe({method:'Network.loadingFailed',params:{requestId:'api',timestamp:4,errorText:'secondary'}}, 'api step');
+  assert.equal(trace.first()?.url, 'http://localhost:8765/model/space-preview', 'FIRST_BUSINESS_FETCH_FAILURE_MISSING');
+  assert.equal(trace.first().status, 503);
+  assert.equal(trace.first().step, 'model step');
+});

@@ -12,6 +12,42 @@ from unittest.mock import patch
 
 
 class WaitTraceTests(unittest.TestCase):
+    def test_http_header_errors_are_recorded_without_replacing_exception(self):
+        root = pathlib.Path(__file__).resolve().parents[1]
+        script = '''
+import sys, pathlib, json
+from unittest.mock import Mock
+sys.path.insert(0, str(pathlib.Path.cwd() / 'tests'))
+from test_serve import BridgeServerTests
+t=BridgeServerTests(); t.setUp(); m=t.server_module
+try:
+    for action in ('_send', 'send_error'):
+        handler=object.__new__(m.Handler)
+        failure=BrokenPipeError('original header failure')
+        handler.send_response=Mock(side_effect=failure)
+        handler.wfile=Mock()
+        m.wait_trace.begin('/api'); m.wait_trace.command(action)
+        try:
+            getattr(handler, action)(b'body' if action == '_send' else 400)
+            raise AssertionError('HTTP_ERROR_NOT_PROPAGATED')
+        except BrokenPipeError as exc:
+            assert exc is failure
+        finally:
+            m.wait_trace.end()
+        handler.wfile.write.assert_not_called()
+finally:
+    t.tearDown()
+'''
+        with tempfile.TemporaryDirectory() as directory:
+            env = dict(os.environ, GEOMETRY_WAIT_TRACE='1', GEOMETRY_FEEDBACK_DIR=directory)
+            run = subprocess.run([sys.executable, '-c', script], cwd=root, env=env,
+                                 capture_output=True, text=True, timeout=30)
+            self.assertEqual(run.returncode, 0, run.stderr)
+            rows = [json.loads(line) for line in (pathlib.Path(directory) / 'wait-trace.jsonl').read_text().splitlines()]
+            writes = [r for r in rows if r['stage'] == 'http_write']
+            self.assertEqual({r['command'] for r in writes}, {'_send', 'send_error'}, 'WAIT_TRACE_HTTP_HEADERS_MISSING')
+            self.assertTrue(all(r['error'] == 'BrokenPipeError' for r in writes))
+
     def test_measurements_exclude_diagnostic_sink_time(self):
         with tempfile.TemporaryDirectory() as directory:
             m = self.load(directory, '1')

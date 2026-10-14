@@ -16,10 +16,12 @@ retain the outer acquisition's identity. Durations use one process's monotonic
 clock; do not subtract browser and server timestamps from each other.
 
 The canvas CDP harness records `firstTransportFailure` in both completed and fatal
-CDP_RESULT records. It retains the first same-origin /api network failure or HTTP
-5xx, including posted request, step and timestamps; later failures cannot replace
+CDP_RESULT records. It retains the first same-origin /api or Fetch/XHR network
+failure or HTTP5xx, including posted request, step and timestamps; later failures cannot replace
 it. API-level geometric rejection and errors blocked before fetch are not network
-failures. This diagnostic does not alter assertions, waits, retries or deadlines.
+failures. HTTP timing covers headers and body, including send_error and broken
+headers, and rethrows the original exception. This diagnostic does not alter
+assertions, waits, retries or deadlines.
 
 ## WSL train workflow change (shared file; not run under WSL here)
 
