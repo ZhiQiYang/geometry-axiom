@@ -74,7 +74,7 @@
 | [#235](https://github.com/ZhiQiYang/geometry-axiom/pull/235) | 2026-10-14／`bfb308db` | #209 | 七組請求分段診斷；受控逾時／fetch 前擋下已定位，原故障組未完成，不等於 P7 或歷史根因已修 |
 | [#236](https://github.com/ZhiQiYang/geometry-axiom/pull/236) | 2026-10-14／`79412a85` | #209／驗收基礎 | #201 合併後補 grid control 失敗現場；未改等待／逾時／斷言，未宣稱修好 P7／P85 |
 | [#244](https://github.com/ZhiQiYang/geometry-axiom/pull/244) | 2026-10-15／`b690eeb9` | GEO-231／GEO-243 | Windows start.ps1 的 WSL runtime 移 /var/tmp；真 wsl --terminate 未驗，以沙盒清理及實際啟動驗證 |
-| [#245](https://github.com/ZhiQiYang/geometry-axiom/pull/245) | 2026-10-15／`40ae266e` | GEO-231／GEO-243 | 同一 pwsh 重跑清除腳本自留失效 model-base 覆寫；保留使用者明示覆寫，正文後續連啟兩次仍待留言收據 |
+| [#245](https://github.com/ZhiQiYang/geometry-axiom/pull/245) | 2026-10-15／`40ae266e` | GEO-231／GEO-243 | 同一 pwsh 重跑清除腳本自留失效 model-base 覆寫；保留使用者明示覆寫；[合併後實測](https://github.com/ZhiQiYang/geometry-axiom/pull/245#issuecomment-6176615656) 同一 pwsh 連啟兩次，皆 fresh:true／ready |
 | [#243](https://github.com/ZhiQiYang/geometry-axiom/pull/243) | 2026-10-15／`5cf7efd1` | GEO-257 | 第 14 班展開為 #192；fresh 50 筆帳本、正典及完整七項已交付；第 13 班原紅保留 |
 | [#192](https://github.com/ZhiQiYang/geometry-axiom/pull/192) | 2026-10-15／`1681dfd5` | GEO-257 | 倍整數中心檢查修矩形跨凹槽誤收；隨 #243 正式落地，不混算 #193 overlay 收據 |
 | [#241](https://github.com/ZhiQiYang/geometry-axiom/pull/241) | 2026-10-15／`ea034fac` | #240／GEO-256／閱讀器 | S2–S5、S8 白話對齊；P-114 核收、已合併，正式七項補驗由第 16 班負責；S1/S6/S7/S9 待使用者 |
