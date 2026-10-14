@@ -109,6 +109,7 @@
 - 屬測試類,只需 native。
 
 **指定任務 11:GEO-255 PF-2～PF-6 面材鋪滿的核心切片(2026-10-13 21:30 Claude 指定;一次一片,依序)**
+- **2026-10-15 04:10 PF-H 解除暫停**:#227 上的 P-116(https://github.com/ZhiQiYang/geometry-axiom/pull/227#issuecomment-6177092438)更正 P-103:E1-legal 的 V 向料是 **primary**(D17 的定義推論)。請 PF-H 負責人立刻依 P-098 與 P-116 實作:真宿主建立、保存、重開、復原與讀回;移除接入後具名轉紅;#221 原生見證。實跑結果要與 P-116 列的推導逐段比對。
 - 依據:BACKLOG GEO-255、issue #128、`公理層.md` 的 D41–D45、I52–I57、R41–R46(PF-0 已採納)。木工模板 #221 依賴這五片(P-094),所以這是模板的前置。
 - **一片一個 PR,照順序做**(2026-10-13 23:30 依 P-098 更新):PF-2 鋪滿與顯示(#225,**2026-10-14 已合進 main `0eb447e0`**)→ **PF-H 衍生宿主最小接入**(#227;PF-2 已進 main,請把 main 合進 PF-H 分支,並把 #227 的 base 改成 main;E1 依 #227 上的 P-103 分成純演算法 oracle 與合法場景 E1-legal)→ PF-3 承接比對(#226)→ PF-6 建議角材 → PF-4 網格對齊鋪排 → PF-5 空間完成面(只剩高度、方向與樑)。領取分支是 `feat/pf2-panel-fill-20261013` 這種形式;前一片的 PR 開出後,才領下一片。
 - **本輪只做原生核心與 bridge API,不新增可見的 UI 入口**:新增入口時依 GEO-219 要寫明減項,而這件事目前還沒定。UI 等之後另議。
@@ -172,6 +173,30 @@
 - 這是產品程式的改動,要走列車跑 7 項;雲端先跑 native。開 draft PR,連到 #128。
 
 **指定任務 16:已撤回(2026-10-15 03:15)**。使用者要求由 Claude 直接熱修並插隊處理,分支 `fix/start-ps1-runtime-dir-20261015` 由 Claude 使用,**請勿領取**。
+
+**指定任務 17:BACKLOG 帳本對齊(2026-10-05 以後;2026-10-15 05:00 Claude 指定)**
+- 領取分支:`docs/backlog-align-20261015`,base = main。**只改 `BACKLOG.md`**。`決策佇列.md` 由 Claude 的 #246 處理;`公理層.md`、白話、正典閱讀器一律不動。
+- 背景:10-05 以後的真實進度都寫在 PR 正文與裁決留言,BACKLOG 沒有跟上。
+- 做法:
+  - 用 `gh pr list --state merged --search "merged:>=2026-10-05" --limit 200 --json number,title,mergedAt,mergeCommit,body`,逐張對照 BACKLOG 的 GEO 工單狀態。
+  - 帳實不符的,把狀態改成事實,並附 PR 編號、merge commit 前 8 碼與日期。只寫 PR 正文或裁決明寫的事;PR 寫「未驗」的項目照寫未驗,不得因為已合併就寫成完成。
+  - 列車 PR(train/…)要展開成車上的各個 PR,分別記到對應工單。
+- 今天的裁決要一併記上:
+  - GEO-253:K3-L 的必要驗收新增兩項,依 P-117(https://github.com/ZhiQiYang/geometry-axiom/pull/193#issuecomment-6177187407)。一是同鍵重建配新記號;二是沿用舊記號的突變必須轉紅。
+  - GEO-258:
+    - 第一個反例 `[delete 0, import P]` 仍是缺陷,#193 的阻擋 B1 待修(P-117)。
+    - 第二個反例 `[delete 2, put{id:2}]` 依 P-111/D60 改為合法。
+  - GEO-255:
+    - PF-2 已隨第 10 班合併(`0eb447e0`)。
+    - PF-2 的 E1/E2 修正 #242 已審過,待第 16 班。
+    - PF-H(#227)依 P-116 解除暫停。
+  - GEO-257:已隨第 14 班 #243 合併(`5cf7efd1`)。
+  - #240 的 S1、S6、S7、S9 待使用者決定;S2–S5、S8 已由 #241 對齊(`ea034fac`)。
+- **🔒 行一個字都不能改**:含 🔒 的行只能在它下面加註記。交付前用 diff 證明 🔒 行零刪改。
+- 驗收:
+  - 依決策 M,只改 `*.md` 屬文件類,只需 native。
+  - 但同步腳本會讀 BACKLOG 的 GEO-120(🔒),所以**另外**要跑 `python3 geometry-guide/sync_axiom_reader.py --check` 與 `python3 tests/test_axiom_reader.py`(原 41 題)。
+  - 開 draft PR,逐張列出改了哪張工單、依據哪個 PR 或留言,由 Claude 審查後合併。
 
 **指定任務 7:落地前的雲端預驗(advisory)**
 - 領取分支:`ops/claim-t5-preverify-20261013`,只當鎖用,不開 PR。
