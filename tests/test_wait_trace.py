@@ -1,0 +1,131 @@
+import importlib.util
+import json
+import os
+import pathlib
+import tempfile
+import threading
+import time
+import unittest
+import subprocess
+import sys
+from unittest.mock import patch
+
+
+class WaitTraceTests(unittest.TestCase):
+    def test_real_http_identical_response_and_all_stages(self):
+        root = pathlib.Path(__file__).resolve().parents[1]
+        script = '''
+import sys, pathlib, importlib.util, json, http.client, threading
+sys.path.insert(0, str(pathlib.Path.cwd() / 'tests'))
+from test_serve import BridgeServerTests
+t = BridgeServerTests()
+t.setUp()
+m = t.server_module
+server = m.PreviewHTTPServer(('127.0.0.1', 0), m.Handler)
+thread = threading.Thread(target=server.serve_forever)
+thread.start()
+try:
+    t.responses.put(b'{"ok":true,"text":"native-result"}\\n')
+    data = {'cmd':'newid 1','requestId':'12345678-1234-1234-1234-123456789012','session':m.root_context.session}
+    connection = http.client.HTTPConnection('127.0.0.1', server.server_port)
+    connection.request('POST', '/api', json.dumps(data), {'Host':'localhost'})
+    response = connection.getresponse()
+    body = response.read()
+    connection.close()
+    print(json.dumps({'status':response.status,'body':body.decode(),'stdin':m.root_context.bridge.stdin.getvalue().decode()}))
+finally:
+    server.shutdown(); server.server_close(); thread.join(); t.tearDown()
+'''
+        outputs = []
+        with tempfile.TemporaryDirectory() as directory:
+            for enabled in (None, '1'):
+                env = dict(os.environ, GEOMETRY_FEEDBACK_DIR=directory)
+                env.pop('GEOMETRY_WAIT_TRACE', None)
+                if enabled:
+                    env['GEOMETRY_WAIT_TRACE'] = enabled
+                run = subprocess.run([sys.executable, '-c', script], cwd=root, env=env,
+                                     capture_output=True, text=True, timeout=30)
+                self.assertEqual(run.returncode, 0, run.stderr)
+                outputs.append(json.loads(run.stdout))
+                if enabled is None:
+                    self.assertEqual(list(pathlib.Path(directory).iterdir()), [], 'WAIT_TRACE_DEFAULT_OFF_HTTP')
+            self.assertEqual(outputs[0], outputs[1], 'WAIT_TRACE_RESPONSE_UNCHANGED')
+            self.assertEqual(outputs[1]['body'], '{"ok":true,"text":"native-result"}\n')
+            rows = [json.loads(line) for line in (pathlib.Path(directory) / 'wait-trace.jsonl').read_text().splitlines()]
+            stages = {r['stage'] for r in rows}
+            self.assertTrue({'source_lock','receipt_lock','bridge_lock','stdin_write','stdin_flush','response_queue','http_write','request_end'} <= stages, stages)
+            commands = [r for r in rows if r['stage'] != 'request_begin']
+            self.assertTrue(all(r['command'] == 'newid 1' for r in commands))
+            self.assertEqual(len({r['traceRequestId'] for r in rows}), 1)
+
+    def load(self, directory, enabled):
+        path = pathlib.Path(__file__).resolve().parents[1] / 'geometry-web/wait_trace.py'
+        spec = importlib.util.spec_from_file_location('trace_test', path)
+        module = importlib.util.module_from_spec(spec)
+        env = {'GEOMETRY_FEEDBACK_DIR': directory}
+        if enabled is not None:
+            env['GEOMETRY_WAIT_TRACE'] = enabled
+        with patch.dict(os.environ, env, clear=True):
+            spec.loader.exec_module(module)
+        return module
+
+    def test_default_off_preserves_lock_and_output(self):
+        with tempfile.TemporaryDirectory() as directory:
+            for enabled in (None, '0', 'true'):
+                m = self.load(directory, enabled)
+                lock = threading.RLock()
+                self.assertIs(m.wrap_lock(lock, 'bridge'), lock, 'WAIT_TRACE_DEFAULT_OFF')
+                m.begin('/api')
+                m.command('dump')
+                self.assertEqual(m.call('write', lambda: b'unchanged'), b'unchanged')
+                m.end()
+                self.assertEqual(list(pathlib.Path(directory).iterdir()), [], 'WAIT_TRACE_DEFAULT_OFF')
+
+    def test_enabled_records_wait_holder_reentrancy_and_failure(self):
+        with tempfile.TemporaryDirectory() as directory:
+            m = self.load(directory, '1')
+            lock = m.wrap_lock(threading.RLock(), 'bridge')
+            held, release = threading.Event(), threading.Event()
+            def holder():
+                m.begin('/api')
+                m.command('holder-command')
+                with lock:
+                    with lock:
+                        held.set()
+                        release.wait(2)
+                m.end()
+            thread = threading.Thread(target=holder)
+            thread.start()
+            self.assertTrue(held.wait(2))
+            m.begin('/api')
+            m.command('waiting-command', 'business-id')
+            self.assertFalse(lock.acquire(timeout=.02))
+            release.set()
+            thread.join(2)
+            self.assertFalse(thread.is_alive())
+            with lock:
+                self.assertEqual(m.call('stdin_write', lambda: 3), 3)
+                with self.assertRaisesRegex(ValueError, 'original'):
+                    m.call('response_queue', lambda: (_ for _ in ()).throw(ValueError('original')))
+            m.end()
+            rows = [json.loads(line) for line in (pathlib.Path(directory) / 'wait-trace.jsonl').read_text().splitlines()]
+            wait = next(r for r in rows if r['stage'] == 'bridge' and r.get('acquired') is False)
+            self.assertEqual(wait['holder']['command'], 'holder-command')
+            self.assertGreaterEqual(wait['holder']['heldSeconds'], 0)
+            self.assertGreaterEqual(wait['seconds'], .015)
+            self.assertEqual(wait['businessRequestId'], 'business-id')
+            self.assertTrue(any(r['stage'] == 'response_queue' and r['error'] == 'ValueError' for r in rows))
+            self.assertTrue(any(r['stage'] == 'stdin_write' for r in rows))
+
+    def test_unwritable_sink_does_not_change_result(self):
+        with tempfile.TemporaryDirectory() as directory:
+            target = pathlib.Path(directory) / 'file'
+            target.write_text('occupied')
+            m = self.load(str(target), '1')
+            m.begin('/api')
+            self.assertEqual(m.call('http_write', lambda: 7), 7)
+            m.end()
+
+
+if __name__ == '__main__':
+    unittest.main()

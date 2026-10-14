@@ -25,9 +25,12 @@ HERE = pathlib.Path(__file__).resolve().parent
 SCENE_DIR = HERE.parent                      # *.scene 都在 knowledgebase 根目錄
 sys.path.insert(0, str(HERE))
 import feedback_store  # noqa: E402
+import wait_trace
 from runtime_version import RuntimeSnapshot, RESTART_MESSAGE
 
 RUNTIME = RuntimeSnapshot(SCENE_DIR)
+if wait_trace.ENABLED:
+    RUNTIME._lock = wait_trace.wrap_lock(RUNTIME._lock, 'source_lock')
 FEEDBACK_MAX_BYTES = 32 * 1024 * 1024
 API_MAX_BYTES = 64 * 1024  # Escaped 4094-byte command, 256 receipt acknowledgements.
 UPLOAD_MAX_BYTES = 16 * 1024 * 1024
@@ -85,7 +88,7 @@ from native_context import NativeContext
 
 BRIDGE_TIMEOUT = 30.0
 MAX_RECEIPTS = 256
-root_context = NativeContext(BRIDGE_CMD)
+root_context = wait_trace.native(NativeContext(BRIDGE_CMD))
 request_context = threading.local()
 scenario_contexts = {}
 scenario_context_lock = threading.Lock()
@@ -133,9 +136,14 @@ def ask_bridge(cmd: str) -> bytes:
         if native.bridge_failure is not None:
             return err_json(native.bridge_failure)
         try:
-            native.bridge.stdin.write(payload + b"\n")
-            native.bridge.stdin.flush()
-            response = native.bridge_responses.get(timeout=BRIDGE_TIMEOUT)
+            if wait_trace.ENABLED:
+                wait_trace.call('stdin_write', lambda: native.bridge.stdin.write(payload + b"\n"))
+                wait_trace.call('stdin_flush', native.bridge.stdin.flush)
+                response = wait_trace.call('response_queue', lambda: native.bridge_responses.get(timeout=BRIDGE_TIMEOUT))
+            else:
+                native.bridge.stdin.write(payload + b"\n")
+                native.bridge.stdin.flush()
+                response = native.bridge_responses.get(timeout=BRIDGE_TIMEOUT)
         except queue.Empty:
             native.bridge_failure = "橋接器回應逾時，請重新啟動服務"
         except (OSError, ValueError):
@@ -336,9 +344,22 @@ class Handler(http.server.BaseHTTPRequestHandler):
         self.send_header("X-Geometry-Release", "engineering-spec-v1-20260928")
         self.send_header("Cache-Control", "no-store")
         self.end_headers()
-        self.wfile.write(body)
+        if wait_trace.ENABLED:
+            wait_trace.call('http_write', lambda: self.wfile.write(body))
+        else:
+            self.wfile.write(body)
 
     def do_GET(self):
+        if not wait_trace.ENABLED:
+            return self._do_GET()
+        wait_trace.begin(self.path)
+        wait_trace.command(self.path)
+        try:
+            return self._do_GET()
+        finally:
+            wait_trace.end()
+
+    def _do_GET(self):
         # Same Host rule as POST, before any dispatch: a DNS-rebinding page is same-origin with its
         # own name, so only the Host header tells it apart from the real local UI.
         if not self._host_allowed():
@@ -444,6 +465,15 @@ class Handler(http.server.BaseHTTPRequestHandler):
         return True
 
     def do_POST(self):
+        if not wait_trace.ENABLED:
+            return self._do_POST()
+        wait_trace.begin(self.path)
+        try:
+            return self._do_POST()
+        finally:
+            wait_trace.end()
+
+    def _do_POST(self):
         if self._local_only():
             return
         if not self._select_native():
@@ -461,6 +491,14 @@ class Handler(http.server.BaseHTTPRequestHandler):
             self.send_error(413)
             return
         body = self.rfile.read(length)
+        if wait_trace.ENABLED:
+            try:
+                trace_data = json.loads(body)
+                if isinstance(trace_data, dict):
+                    wait_trace.command(trace_data.get('cmd', 'receipt' if 'receipt' in trace_data else self.path),
+                                       trace_data.get('requestId', trace_data.get('receipt')))
+            except (ValueError, UnicodeDecodeError):
+                pass
 
         # Keep dump/receipts available so a stale server can still be saved.
         # All geometry mutations and derived previews require a current runtime.
@@ -549,7 +587,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
                         if previous:
                             native=scenario_contexts[previous['context']]
                         else:
-                            native = NativeContext([command])
+                            native = wait_trace.native(NativeContext([command]))
                             scenario_contexts[native.session] = native
                             root_context.editor_sequence=data['sequence']
                             root_context.editor_creations[data['requestId']]={'sequence':data['sequence'],'context':native.session}

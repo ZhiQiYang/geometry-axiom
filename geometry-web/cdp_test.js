@@ -6,6 +6,8 @@ const floor = require('./cdp_floor.js');
 const cdp = require('./cdp_helpers.js');
 const {createRetainedEvaluator} = require('./cdp_evaluation.js');
 const {waitForExpectedNavigation} = require('./cdp_navigation.js');
+const {createTransportFailureTrace} = require('./transport_failure_trace.js');
+let transportFailureTrace;
 const SCOPE_FLAGS = ['GEOMETRY_ROOM_OUTLINE_ONLY','GEOMETRY_TIMBER_SCHEDULE_ONLY','GEOMETRY_ASSEMBLY_ONLY','GEOMETRY_PARAMETERS_ONLY','GEOMETRY_SELECTION_CURSOR_ONLY','GEOMETRY_UX_REFINEMENT_ONLY','GEOMETRY_UIUX_FIX_ONLY','GEOMETRY_MARQUEE_ONLY','GEOMETRY_PROJECT_AUDIT_ONLY','GEOMETRY_ENGINEERING_WORKFLOW_ONLY','GEOMETRY_GRID_SYSTEM_ONLY','GEOMETRY_INFINITE_FACE_ONLY','GEOMETRY_COMPOSITION_ONLY','GEOMETRY_UI_REVIEW_ONLY','GEOMETRY_REPAIR_ONLY','GEOMETRY_FLOW_REPAIR_ONLY','GEOMETRY_REFERENCE_ONLY','GEOMETRY_CDP_FROM_P31'];
 const ENGINEERING_MODIFIERS=['GEOMETRY_ENGINEERING_EXAMPLE_ONLY','GEOMETRY_ENGINEERING_NAVIGATION_ONLY','GEOMETRY_ENGINEERING_SUBGRID_ONLY'];
 function runConfiguration(env = process.env) {
@@ -113,6 +115,8 @@ let expectedException=null, scope, skipped=[];
 const assetRequests=new Map(), assetFailures=[];
 const _log = console.log;
 function observeAssetNetwork(message) {
+  if (!transportFailureTrace) transportFailureTrace = createTransportFailureTrace(new URL(scope.url).origin);
+  transportFailureTrace.observe(message, currentTestStep);
   const p=message.params,key=(message.sessionId||'main')+':'+p.requestId;
   if(message.method==='Network.requestWillBeSent'){
     let url;try {url=new URL(p.request.url);}catch{return;}
@@ -7126,7 +7130,7 @@ async function main() {
   if(passN+failN===0){failN++;_log('No assertions executed');}
   const goldenCompare=evaluateSections();
   _log(`\n=== 結果:${passN} 通過斷言 / ${failN} 失敗斷言 / ${skipped.length} 略過群組 (${scope.mode}) ===`);
-  _log('CDP_RESULT '+JSON.stringify({schema:'geometry-cdp-result/1',scope,completed:true,passedAssertions:passN,failedAssertions:failN,skipped,sections:sectionPass,...(Object.keys(sectionFail).length?{sectionsFailed:sectionFail}:{}),goldenCompare,uncaughtBrowserExceptions:excN,coverage:'Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts.'}));
+  _log('CDP_RESULT '+JSON.stringify({schema:'geometry-cdp-result/1',scope,firstTransportFailure:transportFailureTrace?.first()||null,completed:true,passedAssertions:passN,failedAssertions:failN,skipped,sections:sectionPass,...(Object.keys(sectionFail).length?{sectionsFailed:sectionFail}:{}),goldenCompare,uncaughtBrowserExceptions:excN,coverage:'Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts.'}));
   process.exit(failN > 0 ? 1 : 0);
 }
 async function fatal(e) {
@@ -7144,7 +7148,7 @@ async function fatal(e) {
     }
   } catch(captureError) {_log('FATAL_CAPTURE_FAILED:',captureError.message);}
   finally {
-    _log('CDP_RESULT '+JSON.stringify({schema:'geometry-cdp-result/1',scope,completed:false,passedAssertions:passN,failedAssertions:failN,fatal:e.message,skipped,sections:sectionPass,...(Object.keys(sectionFail).length?{sectionsFailed:sectionFail}:{}),currentSection,goldenCompare:'not compared (run did not complete)'}));
+    _log('CDP_RESULT '+JSON.stringify({schema:'geometry-cdp-result/1',scope,firstTransportFailure:transportFailureTrace?.first()||null,completed:false,passedAssertions:passN,failedAssertions:failN,fatal:e.message,skipped,sections:sectionPass,...(Object.keys(sectionFail).length?{sectionsFailed:sectionFail}:{}),currentSection,goldenCompare:'not compared (run did not complete)'}));
     chrome?.kill();process.exit(1);
   }
 }

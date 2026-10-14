@@ -98,6 +98,7 @@ PY_NEEDS = {
     'test_scenario_verify': ['bridge', 'model-base'],
     'test_scene_import': ['bridge'],
     'test_serve': [],
+    'test_wait_trace': [],
     'test_space_modeling': ['model-base'],
     'test_subgrid_contract': ['bridge'],
     'test_timber_support_projection': [],
