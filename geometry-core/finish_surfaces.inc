@@ -8,6 +8,9 @@
 /* A diagnostic kind is carried separately from its human-readable message. */
 typedef enum { FS_DIAGNOSTIC_INVALID, FS_DIAGNOSTIC_CAPACITY } FsDiagnosticKind;
 static FsDiagnosticKind g_fs_diagnostic=FS_DIAGNOSTIC_INVALID;
+static bool pf_rebuild(const World *);
+static bool pf_operation(World *,EngJson *,int,bool);
+static void pf_dump(const World *,FILE *);
 static bool fs_error(const char *format,...)
 {
     g_fs_diagnostic=FS_DIAGNOSTIC_INVALID;
@@ -165,6 +168,7 @@ static bool fs_rebuild(World *w,char *error,size_t capacity)
         for(uint64_t k=0;k<i;++k)if(s->items[k].id==s->items[i].id){snprintf(error,capacity,"D41: duplicate finish surface id %u",(unsigned)s->items[i].id);return false;}
         if(!fs_check(w,&s->items[i])){snprintf(error,capacity,"%s",g_engineering_error);utf8_trim_tail(error);return false;}
     }
+    if(!pf_rebuild(w)){snprintf(error,capacity,"%s",g_engineering_error);return false;}
     return true;
 }
 /* I55 delete guard for the DSL `delete` line: name the first finish surface that still references the source. */
@@ -231,6 +235,7 @@ static bool fs_operation(World *w,EngJson *j,int t)
 {
     char op[40];uint32_t id;
     if(!eng_json_string(j,eng_json_member(j,t,"op"),op,sizeof op))return fs_error("I55: panel-fill operation needs op");
+    if(!strcmp(op,"put-panel-fill")||!strcmp(op,"delete-panel-fill"))return pf_operation(w,j,t,!strcmp(op,"delete-panel-fill"));
     if(!strcmp(op,"put-finish-surface")){
         if(!eng_json_keys(j,t,"op,value",""))return fs_error("I55: put-finish-surface takes op and value");
         return fs_put(w,j,eng_json_member(j,t,"value"));
@@ -267,6 +272,7 @@ static void fs_dump(const World *w,FILE *out)
         fputs(" name-hex ",out);for(size_t k=0;f->name[k];++k)fprintf(out,"%02x",(unsigned char)f->name[k]);
         fputc('\n',out);
     }
+    pf_dump(w,out);
 }
 static bool apply_finish_surface_line(const char *path,int line_no,char **t,int count,World *w)
 {

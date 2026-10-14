@@ -14,7 +14,7 @@ static void fs_json_loop(const PolygonLoop2 *p)
 }
 static void fs_json_layer_pending(void)
 {
-    fputs("{\"status\":\"pending\",\"clause\":\"I53/R41\",\"reason\":\"two-layer judgement needs the panel thickness t of a D42 panel fill and the h of its derived placement; PF-1 has neither\"}",stdout);
+    fputs("{\"status\":\"pending\",\"clause\":\"I53/R41\",\"reason\":\"full two-layer judgement needs a derived placement h; PF-2 reports the panel layer per fill, while the timber layer remains pending\"}",stdout);
 }
 static void json_finish_surface(const World *w,const FinishSurface *f)
 {
@@ -45,11 +45,12 @@ static void json_finish_surface(const World *w,const FinishSurface *f)
     snprintf(g_engineering_error,sizeof g_engineering_error,"%s",saved);g_fs_diagnostic=saved_kind;
     fputs("]}}",stdout);
 }
+#include "panel_layout_bridge.inc"
 static void json_panel_fill_state(const World *w)
 {
     fputs("{\"finishSurfaces\":[",stdout);
     for(uint64_t i=0;i<w->finish_surfaces.count;++i){if(i)putchar(',');json_finish_surface(w,&w->finish_surfaces.items[i]);}
-    fputs("]}",stdout);
+    putchar(']');pf_json_state(w);putchar('}');
 }
 static void json_panel_fill_changes(const World *before,const World *after)
 {
@@ -60,6 +61,11 @@ static void json_panel_fill_changes(const World *before,const World *after)
     for(uint64_t i=0;i<before->finish_surfaces.count;++i){const FinishSurface *a=&before->finish_surfaces.items[i];
         if(fs_find(after,a->id))continue;
         printf("%s{\"id\":%u,\"change\":\"deleted\"}",first?"":",",(unsigned)a->id);first=false;}
+    for(uint64_t i=0;i<after->finish_surfaces.fill_count;++i){const PanelFill *z=&after->finish_surfaces.fills[i],*a=pf_find(before,z->id);
+        if(a&&!memcmp(a,z,sizeof *a)&&world_definitions_equal(before,after))continue;
+        printf("%s{\"record\":\"panel-fill\",\"id\":%u,\"change\":\"%s\"}",first?"":",",z->id,!a?"created":memcmp(a,z,sizeof *a)?"modified":"derived");first=false;}
+    for(uint64_t i=0;i<before->finish_surfaces.fill_count;++i){const PanelFill *a=&before->finish_surfaces.fills[i];if(pf_find(after,a->id))continue;
+        printf("%s{\"record\":\"panel-fill\",\"id\":%u,\"change\":\"deleted\"}",first?"":",",a->id);first=false;}
     putchar(']');
 }
 static void json_panel_fill_preview(void)
@@ -84,7 +90,7 @@ static void json_panel_fill_preview(void)
 }
 static void cmd_panel_fill_read(void)
 {
-    printf("{\"ok\":true,\"schema\":\"%s\",\"capability\":\"%s\",\"complete\":false,\"supportedRecords\":[\"finish-surface\"],"
+    printf("{\"ok\":true,\"schema\":\"%s\",\"capability\":\"%s\",\"complete\":false,\"supportedRecords\":[\"finish-surface\",\"panel-fill\"],"
            "\"revision\":%llu,\"capacity\":{\"finishSurfaces\":%d,\"obstacles\":%d,\"nameBytes\":%d},",
         FS_NATIVE_CAPABILITY,FS_CAPABILITY,(unsigned long long)g_definition_revision,FS_MAX,FS_OBSTACLE_MAX,FS_NAME_MAX);
     json_engineering_capabilities(&g_world);

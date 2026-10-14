@@ -37,6 +37,7 @@ static void json_engineering_sources(const World *w)
     }putchar(']');
 }
 static void json_assembly_state(const World *w,bool geometry);
+static void json_panel_fill_state(const World *w);
 static void json_engineering_state(const World *w,bool geometry)
 {
     putchar('{');json_engineering_capabilities(w);fputs(",\"specs\":[",stdout);
@@ -59,7 +60,9 @@ static void json_engineering_state(const World *w,bool geometry)
         fputs("],\"datums\":[",stdout);for(size_t i=0;i<w->datum_count;++i){const DatumPlane *d=&w->datums[i];printf("%s{\"id\":%u,\"position\":%lld,\"expression\":",i?",":"",d->id,(long long)d->position);js_string(d->expression);putchar('}');}
         fputs("],\"guides\":[",stdout);for(size_t i=0;i<w->guide_count;++i){if(i)putchar(',');json_reference_guide(w,i);}
         fputs("],\"timbers\":[",stdout);for(size_t i=0;i<w->timber_count;++i){printf("%s{\"id\":%u,\"role\":",i?",":"",w->timbers[i].id);js_string(timber_role_name(w->timbers[i].role));fputs(",\"geometry\":",stdout);json_reference_geometry(w,(int)i);putchar('}');}fputs("]}",stdout);
-    }putchar('}');
+    }
+    if(w->finish_surfaces.fill_count){fputs(",\"panelFill\":",stdout);json_panel_fill_state(w);}
+    putchar('}');
 }
 static void cmd_engineering_read(void)
 {

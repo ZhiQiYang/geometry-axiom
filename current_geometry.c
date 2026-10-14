@@ -1352,6 +1352,7 @@ typedef struct {
     unsigned divisions[2];
 } ReferenceGrid;
 
+#include "geometry-core/panel_layout_math.h"
 #include "geometry-core/grid_lattice.inc"
 
 static bool grid_coord_list_is_valid(const Coord coords[], size_t count)
@@ -1449,7 +1450,7 @@ static bool grid_axis_lines(
          * 產生條件 a+(k+1)·T < hi——整條縫落在範圍內，且其後仍有非空的面材本體。
          * 不滿足就停：末端是裁切片，合法，不因「除不盡」而拒絕。
          */
-        const Coord T = def->panel + def->gap;
+        const Coord T = panel_layout_pitch(def->panel,def->gap);
 
         if (def->panel <= 0 || def->gap < 0 ||
             def->anchor < lo || def->anchor >= hi) {
@@ -1476,8 +1477,7 @@ static bool grid_axis_lines(
                 return false;
             }
 
-            out[n++] = def->anchor + (Coord)k * T
-                     + def->panel + def->gap / 2;
+            out[n++] = panel_layout_center(def->anchor,def->panel,def->gap,(int64_t)k);
         }
     } else {
         if (err != NULL) {
@@ -10034,6 +10034,7 @@ static bool apply_move_line(const char *p, int n, char **t, int c, World *w)
 #include "geometry-core/assembly_generation.inc"
 #include "geometry-core/section_profiles.inc"
 #include "geometry-core/finish_surfaces.inc"
+#include "geometry-core/panel_fill_layout.inc"
 
 
 /* space <id> boundary <面id> <面id> [面id ...]：建構子吃邊界面清單，
@@ -12344,6 +12345,7 @@ static const struct {
     { "grid-system", 10, SCENE_MAX_TOKENS, false, "grid-system id name-hex utf8hex main-along u|v|none u definition v definition", apply_grid_system_line },
     { "owned", 5, 20, false, "owned timber|place instance member native-arguments", apply_assembly_owned_line },
     { "section-profile", 3, 3, false, "section-profile profile|member|run base64-json (atomic scene only)", apply_section_profile_line },
+    { "panel-fill", 4, 4, false, "panel-fill id definition-hex HEX (atomic scene only)", apply_panel_fill_line },
     { "finish-surface", 19, SCENE_MAX_TOKENS, false, "finish-surface id on boundary B origin x y z u A v A n A side +n|-n [obstacles c<id>|b<id> ...] name-hex HEX (atomic scene only)", apply_finish_surface_line },
     { "assembly", 2, 3, false, "assembly begin|record|data|commit|end", apply_assembly_line },
     { "parameters", 2, 3, false, "parameters begin|card|field|end", apply_parameters_line },
