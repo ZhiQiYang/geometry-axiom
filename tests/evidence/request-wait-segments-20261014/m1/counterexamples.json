@@ -1,0 +1,446 @@
+{
+  "archive_sha256": "85169cee90b3feed67fd7291ea0be35b8b3ce8dc8819cd16d7e85eca25376c08",
+  "before_analyzer_sha256": "6e54ef43838319c883ffa45671f072e107bec418eb2171b46da1202a6978412e",
+  "after_analyzer_sha256": "0c9a3ea626d5d293b44adca0561ca2087bb44dae9fc19d39d0e73fa957d73c4a",
+  "unchanged_accepted": true,
+  "counterexamples_rejected": 12,
+  "results": [
+    {
+      "case": "unchanged",
+      "cohort": null,
+      "mutation": null,
+      "expected_rejection": null,
+      "changed_inputs": {},
+      "before": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geometry-wake30-235/counterexamples/analyze-before-M1.py",
+          "/tmp/geometry-wake30-235/counterexamples/work/unchanged"
+        ],
+        "pid": 615834,
+        "exit": 0,
+        "elapsed_ms": 77.769963,
+        "analyzer_sha256": "6e54ef43838319c883ffa45671f072e107bec418eb2171b46da1202a6978412e"
+      },
+      "after": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geometry-209-segments/tests/diagnostics/request_wait_segments/analyze.py",
+          "/tmp/geometry-wake30-235/counterexamples/work/unchanged"
+        ],
+        "pid": 615835,
+        "exit": 0,
+        "elapsed_ms": 101.259361,
+        "analyzer_sha256": "0c9a3ea626d5d293b44adca0561ca2087bb44dae9fc19d39d0e73fa957d73c4a"
+      }
+    },
+    {
+      "case": "runtime-late-native",
+      "cohort": "runtime18",
+      "mutation": "late-native",
+      "expected_rejection": "cancelled-before-native",
+      "changed_inputs": {
+        "server-events.jsonl": {
+          "before_sha256": "864cc62ac134e82bf42f73e8334bc898281c99945019d8bc50906e474a4393ce",
+          "after_sha256": "bc69b83979f2e0411adda3bca226f84eddd5e106cae4c873d6d6dda1d0898c36"
+        }
+      },
+      "before": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geometry-wake30-235/counterexamples/analyze-before-M1.py",
+          "/tmp/geometry-wake30-235/counterexamples/work/runtime-late-native"
+        ],
+        "pid": 615836,
+        "exit": 0,
+        "elapsed_ms": 82.819163,
+        "analyzer_sha256": "6e54ef43838319c883ffa45671f072e107bec418eb2171b46da1202a6978412e"
+      },
+      "after": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geometry-209-segments/tests/diagnostics/request_wait_segments/analyze.py",
+          "/tmp/geometry-wake30-235/counterexamples/work/runtime-late-native"
+        ],
+        "pid": 615837,
+        "exit": 1,
+        "elapsed_ms": 122.9125,
+        "analyzer_sha256": "0c9a3ea626d5d293b44adca0561ca2087bb44dae9fc19d39d0e73fa957d73c4a"
+      }
+    },
+    {
+      "case": "runtime-wrong-receipt",
+      "cohort": "runtime18",
+      "mutation": "wrong-receipt",
+      "expected_rejection": "same-receipt-id",
+      "changed_inputs": {
+        "browser-events.json": {
+          "before_sha256": "46a63c1193f2ce8ab70a45494ecc146e1a6e86dda68ae7c78b671aa94d7aedcf",
+          "after_sha256": "6f5880d9fae23043fbc1a213e31c3eb395e22b8cca24a5255778639200850ebb"
+        }
+      },
+      "before": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geometry-wake30-235/counterexamples/analyze-before-M1.py",
+          "/tmp/geometry-wake30-235/counterexamples/work/runtime-wrong-receipt"
+        ],
+        "pid": 615838,
+        "exit": 0,
+        "elapsed_ms": 77.05567,
+        "analyzer_sha256": "6e54ef43838319c883ffa45671f072e107bec418eb2171b46da1202a6978412e"
+      },
+      "after": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geometry-209-segments/tests/diagnostics/request_wait_segments/analyze.py",
+          "/tmp/geometry-wake30-235/counterexamples/work/runtime-wrong-receipt"
+        ],
+        "pid": 615839,
+        "exit": 1,
+        "elapsed_ms": 77.280069,
+        "analyzer_sha256": "0c9a3ea626d5d293b44adca0561ca2087bb44dae9fc19d39d0e73fa957d73c4a"
+      }
+    },
+    {
+      "case": "runtime-wrong-server-receipt",
+      "cohort": "runtime18",
+      "mutation": "wrong-server-receipt",
+      "expected_rejection": "server-receipt-identity",
+      "changed_inputs": {
+        "server-events.jsonl": {
+          "before_sha256": "864cc62ac134e82bf42f73e8334bc898281c99945019d8bc50906e474a4393ce",
+          "after_sha256": "008830925502871e2c84cd942b15df62ff230af7f6db34f487cf8036220dc08a"
+        }
+      },
+      "before": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geometry-wake30-235/counterexamples/analyze-before-M1.py",
+          "/tmp/geometry-wake30-235/counterexamples/work/runtime-wrong-server-receipt"
+        ],
+        "pid": 615840,
+        "exit": 0,
+        "elapsed_ms": 76.400715,
+        "analyzer_sha256": "6e54ef43838319c883ffa45671f072e107bec418eb2171b46da1202a6978412e"
+      },
+      "after": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geometry-209-segments/tests/diagnostics/request_wait_segments/analyze.py",
+          "/tmp/geometry-wake30-235/counterexamples/work/runtime-wrong-server-receipt"
+        ],
+        "pid": 615841,
+        "exit": 1,
+        "elapsed_ms": 105.603791,
+        "analyzer_sha256": "0c9a3ea626d5d293b44adca0561ca2087bb44dae9fc19d39d0e73fa957d73c4a"
+      }
+    },
+    {
+      "case": "runtime-not-ready",
+      "cohort": "runtime18",
+      "mutation": "not-ready",
+      "expected_rejection": "receipt-ready",
+      "changed_inputs": {
+        "result.json": {
+          "before_sha256": "9ff740d6a27a9af5c51e1f205ad684c35bbb6a32d2bf2fdc0dd1cdfec562a55d",
+          "after_sha256": "ab95d301895e5ca4535b82073b3e9ffb24e263e96e3e64d677dc6d8843d6ccc1"
+        }
+      },
+      "before": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geometry-wake30-235/counterexamples/analyze-before-M1.py",
+          "/tmp/geometry-wake30-235/counterexamples/work/runtime-not-ready"
+        ],
+        "pid": 615842,
+        "exit": 0,
+        "elapsed_ms": 83.191324,
+        "analyzer_sha256": "6e54ef43838319c883ffa45671f072e107bec418eb2171b46da1202a6978412e"
+      },
+      "after": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geometry-209-segments/tests/diagnostics/request_wait_segments/analyze.py",
+          "/tmp/geometry-wake30-235/counterexamples/work/runtime-not-ready"
+        ],
+        "pid": 615843,
+        "exit": 1,
+        "elapsed_ms": 74.06569,
+        "analyzer_sha256": "0c9a3ea626d5d293b44adca0561ca2087bb44dae9fc19d39d0e73fa957d73c4a"
+      }
+    },
+    {
+      "case": "runtime-not-cancelled",
+      "cohort": "runtime18",
+      "mutation": "not-cancelled",
+      "expected_rejection": "receipt-result-body",
+      "changed_inputs": {
+        "browser-events.json": {
+          "before_sha256": "46a63c1193f2ce8ab70a45494ecc146e1a6e86dda68ae7c78b671aa94d7aedcf",
+          "after_sha256": "90d9709b64dbc8b82caf106a7af43f19f644edeae8bd36eb2571a531922b48e9"
+        }
+      },
+      "before": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geometry-wake30-235/counterexamples/analyze-before-M1.py",
+          "/tmp/geometry-wake30-235/counterexamples/work/runtime-not-cancelled"
+        ],
+        "pid": 615844,
+        "exit": 0,
+        "elapsed_ms": 80.113363,
+        "analyzer_sha256": "6e54ef43838319c883ffa45671f072e107bec418eb2171b46da1202a6978412e"
+      },
+      "after": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geometry-209-segments/tests/diagnostics/request_wait_segments/analyze.py",
+          "/tmp/geometry-wake30-235/counterexamples/work/runtime-not-cancelled"
+        ],
+        "pid": 615845,
+        "exit": 1,
+        "elapsed_ms": 74.063651,
+        "analyzer_sha256": "0c9a3ea626d5d293b44adca0561ca2087bb44dae9fc19d39d0e73fa957d73c4a"
+      }
+    },
+    {
+      "case": "receipt-repeat-write",
+      "cohort": "receipt18",
+      "mutation": "repeat-write",
+      "expected_rejection": "exactly-once-native",
+      "changed_inputs": {
+        "server-events.jsonl": {
+          "before_sha256": "05c27ab69424cf9fbfa1f330720124e5641ad858ee635d3c07eba519eda342e4",
+          "after_sha256": "d2640f4e9ee4b04f9d4e8254817795b7d072ccafe0e55960a5586914658a9df0"
+        }
+      },
+      "before": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geometry-wake30-235/counterexamples/analyze-before-M1.py",
+          "/tmp/geometry-wake30-235/counterexamples/work/receipt-repeat-write"
+        ],
+        "pid": 615846,
+        "exit": 0,
+        "elapsed_ms": 72.009073,
+        "analyzer_sha256": "6e54ef43838319c883ffa45671f072e107bec418eb2171b46da1202a6978412e"
+      },
+      "after": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geometry-209-segments/tests/diagnostics/request_wait_segments/analyze.py",
+          "/tmp/geometry-wake30-235/counterexamples/work/receipt-repeat-write"
+        ],
+        "pid": 615847,
+        "exit": 1,
+        "elapsed_ms": 99.741326,
+        "analyzer_sha256": "0c9a3ea626d5d293b44adca0561ca2087bb44dae9fc19d39d0e73fa957d73c4a"
+      }
+    },
+    {
+      "case": "receipt-repeat-reply",
+      "cohort": "receipt18",
+      "mutation": "repeat-reply",
+      "expected_rejection": "exactly-once-native",
+      "changed_inputs": {
+        "server-events.jsonl": {
+          "before_sha256": "05c27ab69424cf9fbfa1f330720124e5641ad858ee635d3c07eba519eda342e4",
+          "after_sha256": "6326a496e5ac18d38ca32601c7f5150b1c9a5cc7a32dfd4ab703f131fe1b4ccd"
+        }
+      },
+      "before": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geometry-wake30-235/counterexamples/analyze-before-M1.py",
+          "/tmp/geometry-wake30-235/counterexamples/work/receipt-repeat-reply"
+        ],
+        "pid": 615848,
+        "exit": 0,
+        "elapsed_ms": 103.063758,
+        "analyzer_sha256": "6e54ef43838319c883ffa45671f072e107bec418eb2171b46da1202a6978412e"
+      },
+      "after": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geometry-209-segments/tests/diagnostics/request_wait_segments/analyze.py",
+          "/tmp/geometry-wake30-235/counterexamples/work/receipt-repeat-reply"
+        ],
+        "pid": 615849,
+        "exit": 1,
+        "elapsed_ms": 64.565038,
+        "analyzer_sha256": "0c9a3ea626d5d293b44adca0561ca2087bb44dae9fc19d39d0e73fa957d73c4a"
+      }
+    },
+    {
+      "case": "receipt-wrong-receipt",
+      "cohort": "receipt18",
+      "mutation": "wrong-receipt",
+      "expected_rejection": "same-receipt-id",
+      "changed_inputs": {
+        "browser-events.json": {
+          "before_sha256": "c857a7fe580378664d6c62623d1501e60f0671395f9a7fe57a6cfb073e319022",
+          "after_sha256": "c95e5e079be6d08e2dbfcfe7a1ac5b8c8a50930a37b717cfb17f69b11a3579e3"
+        }
+      },
+      "before": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geometry-wake30-235/counterexamples/analyze-before-M1.py",
+          "/tmp/geometry-wake30-235/counterexamples/work/receipt-wrong-receipt"
+        ],
+        "pid": 615850,
+        "exit": 0,
+        "elapsed_ms": 76.448363,
+        "analyzer_sha256": "6e54ef43838319c883ffa45671f072e107bec418eb2171b46da1202a6978412e"
+      },
+      "after": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geometry-209-segments/tests/diagnostics/request_wait_segments/analyze.py",
+          "/tmp/geometry-wake30-235/counterexamples/work/receipt-wrong-receipt"
+        ],
+        "pid": 615851,
+        "exit": 1,
+        "elapsed_ms": 66.46885,
+        "analyzer_sha256": "0c9a3ea626d5d293b44adca0561ca2087bb44dae9fc19d39d0e73fa957d73c4a"
+      }
+    },
+    {
+      "case": "receipt-not-ready",
+      "cohort": "receipt18",
+      "mutation": "not-ready",
+      "expected_rejection": "receipt-ready",
+      "changed_inputs": {
+        "result.json": {
+          "before_sha256": "45addbf124ff94dfad2947906612e9c2f283d30b9b92dace350e599af0c5c624",
+          "after_sha256": "c0ccaa8df8d7e8b1a8536c5004627ab248e70fb5cfdba119483ace4e563cf3d2"
+        }
+      },
+      "before": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geometry-wake30-235/counterexamples/analyze-before-M1.py",
+          "/tmp/geometry-wake30-235/counterexamples/work/receipt-not-ready"
+        ],
+        "pid": 615852,
+        "exit": 0,
+        "elapsed_ms": 77.490159,
+        "analyzer_sha256": "6e54ef43838319c883ffa45671f072e107bec418eb2171b46da1202a6978412e"
+      },
+      "after": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geometry-209-segments/tests/diagnostics/request_wait_segments/analyze.py",
+          "/tmp/geometry-wake30-235/counterexamples/work/receipt-not-ready"
+        ],
+        "pid": 615853,
+        "exit": 1,
+        "elapsed_ms": 69.060415,
+        "analyzer_sha256": "0c9a3ea626d5d293b44adca0561ca2087bb44dae9fc19d39d0e73fa957d73c4a"
+      }
+    },
+    {
+      "case": "bridge-missing-timeout",
+      "cohort": "bridge18",
+      "mutation": "missing-timeout",
+      "expected_rejection": "exact-timeout-blocked-counts",
+      "changed_inputs": {
+        "browser-events.json": {
+          "before_sha256": "1c79595f1c7946fb27e56c5fdcaa6551f0fe7163894d2a59ce369f80387dfef5",
+          "after_sha256": "042fd0f00b5392041539cd62f6f3369c87a00b3ad084aed84e6c904739400d83"
+        }
+      },
+      "before": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geometry-wake30-235/counterexamples/analyze-before-M1.py",
+          "/tmp/geometry-wake30-235/counterexamples/work/bridge-missing-timeout"
+        ],
+        "pid": 615854,
+        "exit": 0,
+        "elapsed_ms": 80.958683,
+        "analyzer_sha256": "6e54ef43838319c883ffa45671f072e107bec418eb2171b46da1202a6978412e"
+      },
+      "after": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geometry-209-segments/tests/diagnostics/request_wait_segments/analyze.py",
+          "/tmp/geometry-wake30-235/counterexamples/work/bridge-missing-timeout"
+        ],
+        "pid": 615855,
+        "exit": 1,
+        "elapsed_ms": 53.516094,
+        "analyzer_sha256": "0c9a3ea626d5d293b44adca0561ca2087bb44dae9fc19d39d0e73fa957d73c4a"
+      }
+    },
+    {
+      "case": "native-missing-guard",
+      "cohort": "native18",
+      "mutation": "missing-guard",
+      "expected_rejection": "exact-timeout-blocked-counts",
+      "changed_inputs": {
+        "browser-events.json": {
+          "before_sha256": "28435bf48b8eea3d84be9fe08e2661a4663fac47fb4622a0635ed19f6dd412e4",
+          "after_sha256": "34f392c491d35158520b54371aa223705fcbef5c92037b1320d404808b075a59"
+        }
+      },
+      "before": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geometry-wake30-235/counterexamples/analyze-before-M1.py",
+          "/tmp/geometry-wake30-235/counterexamples/work/native-missing-guard"
+        ],
+        "pid": 615856,
+        "exit": 0,
+        "elapsed_ms": 79.165895,
+        "analyzer_sha256": "6e54ef43838319c883ffa45671f072e107bec418eb2171b46da1202a6978412e"
+      },
+      "after": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geometry-209-segments/tests/diagnostics/request_wait_segments/analyze.py",
+          "/tmp/geometry-wake30-235/counterexamples/work/native-missing-guard"
+        ],
+        "pid": 615857,
+        "exit": 1,
+        "elapsed_ms": 74.256156,
+        "analyzer_sha256": "0c9a3ea626d5d293b44adca0561ca2087bb44dae9fc19d39d0e73fa957d73c4a"
+      }
+    },
+    {
+      "case": "baseline-unexpected-timeout",
+      "cohort": "baseline",
+      "mutation": "unexpected-timeout",
+      "expected_rejection": "exact-timeout-blocked-counts",
+      "changed_inputs": {
+        "browser-events.json": {
+          "before_sha256": "1f81ee881bfa869b259520fe14f1d14ae9ca9354becb6e28c8a5d026aa937523",
+          "after_sha256": "b01f88ad9e89ccd580cde9df45fb1e69c4b5eb8f0aa4041ec3e019e3e9cc64c6"
+        }
+      },
+      "before": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geometry-wake30-235/counterexamples/analyze-before-M1.py",
+          "/tmp/geometry-wake30-235/counterexamples/work/baseline-unexpected-timeout"
+        ],
+        "pid": 615858,
+        "exit": 0,
+        "elapsed_ms": 74.179859,
+        "analyzer_sha256": "6e54ef43838319c883ffa45671f072e107bec418eb2171b46da1202a6978412e"
+      },
+      "after": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geometry-209-segments/tests/diagnostics/request_wait_segments/analyze.py",
+          "/tmp/geometry-wake30-235/counterexamples/work/baseline-unexpected-timeout"
+        ],
+        "pid": 615859,
+        "exit": 1,
+        "elapsed_ms": 55.79172,
+        "analyzer_sha256": "0c9a3ea626d5d293b44adca0561ca2087bb44dae9fc19d39d0e73fa957d73c4a"
+      }
+    }
+  ]
+}

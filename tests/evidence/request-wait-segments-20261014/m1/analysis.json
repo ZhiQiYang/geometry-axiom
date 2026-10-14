@@ -1,0 +1,5703 @@
+[
+  {
+    "case": "baseline",
+    "p7_pass": true,
+    "phase": "ready",
+    "error": "",
+    "wall_ms": 3168,
+    "server_exit": {
+      "code": 0,
+      "signal": null
+    },
+    "timeouts": [],
+    "blocked_before_fetch": [],
+    "requests": [
+      {
+        "id": "fetch-2",
+        "call": "call-1",
+        "command": "line reset",
+        "receipt": null,
+        "browser_fetch_ms": 76.5,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 0.008591,
+          "fresh_total_ms": 57.460167,
+          "fresh_body_approx_ms": 57.451575999999996,
+          "receipt_lock_wait_ms": 0.052066,
+          "bridge_lock_wait_ms": 0.008491,
+          "stdin_write_ms": 0.007947,
+          "stdin_flush_ms": 0.023387,
+          "response_queue_wait_ms": 13.16494,
+          "http_write_ms": 0.131591,
+          "http_total_ms": 71.499267
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239803111406429,
+            "pid": 611597,
+            "tid": 611599,
+            "request": "fetch-2",
+            "command": "line reset",
+            "context": "611598",
+            "bytes": 58,
+            "sha256": "2a7f828b225b5ae1127682c8a36124cabfde2fe2429e2d478b13f9ee07044484"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 23,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-4",
+        "call": "call-3",
+        "command": "section-profile-read",
+        "receipt": null,
+        "browser_fetch_ms": 73.59999999403954,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 0.007883,
+          "fresh_total_ms": 51.923536,
+          "fresh_body_approx_ms": 51.915653,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.012214,
+          "stdin_write_ms": 0.007531,
+          "stdin_flush_ms": 0.024452,
+          "response_queue_wait_ms": 17.178548,
+          "http_write_ms": 0.208548,
+          "http_total_ms": 69.757118
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239803187608522,
+            "pid": 611597,
+            "tid": 611599,
+            "request": "fetch-4",
+            "command": "section-profile-read",
+            "context": "611598",
+            "bytes": 776,
+            "sha256": "f075ec2b6bcd1866bd640ac106c0df57cbe804f71b0bc3eb1305072901fca833"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 20,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-6",
+        "call": "call-5",
+        "command": "line surface 1 origin 0 0 0 u +x v +y outline 0,0 200,0 200,100 0,100",
+        "receipt": null,
+        "browser_fetch_ms": 116.5,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 51.020729,
+          "fresh_total_ms": 99.735731,
+          "fresh_body_approx_ms": 48.715002,
+          "receipt_lock_wait_ms": 0.012674,
+          "bridge_lock_wait_ms": 0.007665,
+          "stdin_write_ms": 0.007629,
+          "stdin_flush_ms": 0.02642,
+          "response_queue_wait_ms": 12.078254,
+          "http_write_ms": 0.127284,
+          "http_total_ms": 112.248222
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239803236859382,
+            "pid": 611597,
+            "tid": 611599,
+            "request": "fetch-6",
+            "command": "line surface 1 origin 0 0 0 u +x v +y outline 0,0 200,0 200,100 0,100",
+            "context": "611598",
+            "bytes": 32,
+            "sha256": "c6e13f6fc496c2455b73019b7976a1605402150816be5e4e2fa90e0afb32be56"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 23,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-8",
+        "call": "call-7",
+        "command": "section-profile-read",
+        "receipt": null,
+        "browser_fetch_ms": 59.099999994039536,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 0.020536,
+          "fresh_total_ms": 54.397111,
+          "fresh_body_approx_ms": 54.376575,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.03391,
+          "stdin_write_ms": 0.020025,
+          "stdin_flush_ms": 0.106915,
+          "response_queue_wait_ms": 0.165646,
+          "http_write_ms": 0.403407,
+          "http_total_ms": 55.453388
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239803300868412,
+            "pid": 611597,
+            "tid": 611599,
+            "request": "fetch-8",
+            "command": "section-profile-read",
+            "context": "611598",
+            "bytes": 776,
+            "sha256": "2e37896233816269a2f9209ab71b45c3a69c616656141345c9ee3e6339fdc6e7"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 20,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-10",
+        "call": "call-9",
+        "command": "objects",
+        "receipt": null,
+        "browser_fetch_ms": 5.0999999940395355,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.024605,
+          "stdin_write_ms": 0.018886,
+          "stdin_flush_ms": 0.03485,
+          "response_queue_wait_ms": 0.350839,
+          "http_write_ms": 0.378664,
+          "http_total_ms": 1.278109
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239803246953287,
+            "pid": 611597,
+            "tid": 611599,
+            "request": "fetch-10",
+            "command": "objects",
+            "context": "611598",
+            "bytes": 302,
+            "sha256": "65b83cf478e080904702e201abb5a51f240835c6f77fc88870a2ca8279424aeb"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-12",
+        "call": "call-11",
+        "command": "surfaces",
+        "receipt": null,
+        "browser_fetch_ms": 14.800000011920929,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.030646,
+          "stdin_write_ms": 0.185216,
+          "stdin_flush_ms": 0.09127,
+          "response_queue_wait_ms": 0.228989,
+          "http_write_ms": 0.258138,
+          "http_total_ms": 1.156236
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239803263244305,
+            "pid": 611597,
+            "tid": 611599,
+            "request": "fetch-12",
+            "command": "surfaces",
+            "context": "611598",
+            "bytes": 88,
+            "sha256": "fadff99be50f03049d448ab575447f7545d087c579a51ac4ea10a5311be6684e"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-14",
+        "call": "call-13",
+        "command": "boundary 1",
+        "receipt": null,
+        "browser_fetch_ms": 3.5,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.018963,
+          "stdin_write_ms": 0.009006,
+          "stdin_flush_ms": 0.13469,
+          "response_queue_wait_ms": 0.177942,
+          "http_write_ms": 0.527844,
+          "http_total_ms": 1.319659
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239803267805374,
+            "pid": 611597,
+            "tid": 611599,
+            "request": "fetch-14",
+            "command": "boundary 1",
+            "context": "611598",
+            "bytes": 391,
+            "sha256": "0f2d1680ae2a1c42d6e77071ceb2f7d888b7808e709c6dfbf15b2173d9fb5279"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-16",
+        "call": "call-15",
+        "command": "line canvas-pos boundary 1 60 60",
+        "receipt": null,
+        "browser_fetch_ms": 84.0,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 25.032365,
+          "fresh_total_ms": 72.167112,
+          "fresh_body_approx_ms": 47.134747000000004,
+          "receipt_lock_wait_ms": 0.013084,
+          "bridge_lock_wait_ms": 0.008248,
+          "stdin_write_ms": 0.00724,
+          "stdin_flush_ms": 0.027689,
+          "response_queue_wait_ms": 4.523424,
+          "http_write_ms": 0.139605,
+          "http_total_ms": 77.518845
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239803352298435,
+            "pid": 611597,
+            "tid": 611599,
+            "request": "fetch-16",
+            "command": "line canvas-pos boundary 1 60 60",
+            "context": "611598",
+            "bytes": 32,
+            "sha256": "c6e13f6fc496c2455b73019b7976a1605402150816be5e4e2fa90e0afb32be56"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 23,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-18",
+        "call": "call-17",
+        "command": "boundary 1",
+        "receipt": null,
+        "browser_fetch_ms": 16.900000005960464,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.010906,
+          "stdin_write_ms": 0.006822,
+          "stdin_flush_ms": 0.018196,
+          "response_queue_wait_ms": 0.272073,
+          "http_write_ms": 0.101052,
+          "http_total_ms": 0.566129
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239803366164333,
+            "pid": 611597,
+            "tid": 611599,
+            "request": "fetch-18",
+            "command": "boundary 1",
+            "context": "611598",
+            "bytes": 391,
+            "sha256": "0f2d1680ae2a1c42d6e77071ceb2f7d888b7808e709c6dfbf15b2173d9fb5279"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-20",
+        "call": "call-19",
+        "command": "obstacles 1",
+        "receipt": null,
+        "browser_fetch_ms": 8.800000011920929,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.027623,
+          "stdin_write_ms": 0.019216,
+          "stdin_flush_ms": 0.236651,
+          "response_queue_wait_ms": 0.019455,
+          "http_write_ms": 0.224152,
+          "http_total_ms": 0.788511
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239803430967279,
+            "pid": 611597,
+            "tid": 611599,
+            "request": "fetch-20",
+            "command": "obstacles 1",
+            "context": "611598",
+            "bytes": 46,
+            "sha256": "d2f633987dc4c50610693afdfa3dd4f2c85ba9cc97cac73907445f15f0277f69"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-22",
+        "call": "call-21",
+        "command": "references",
+        "receipt": null,
+        "browser_fetch_ms": 8.900000005960464,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.030058,
+          "stdin_write_ms": 0.013528,
+          "stdin_flush_ms": 0.019868,
+          "response_queue_wait_ms": 2.044574,
+          "http_write_ms": 0.110496,
+          "http_total_ms": 2.612727
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239803445364202,
+            "pid": 611597,
+            "tid": 611599,
+            "request": "fetch-22",
+            "command": "references",
+            "context": "611598",
+            "bytes": 466,
+            "sha256": "bc9e21cedd6bb1e95911add42b0f1aa2e4b88640c0297ace2ee01d80b6880945"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-24",
+        "call": "call-23",
+        "command": "dump",
+        "receipt": null,
+        "browser_fetch_ms": 3.5999999940395355,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.019853,
+          "stdin_write_ms": 0.014965,
+          "stdin_flush_ms": 0.019664,
+          "response_queue_wait_ms": 0.658787,
+          "http_write_ms": 0.097426,
+          "http_total_ms": 0.982926
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239803449533014,
+            "pid": 611597,
+            "tid": 611599,
+            "request": "fetch-24",
+            "command": "dump",
+            "context": "611598",
+            "bytes": 505,
+            "sha256": "d20dd811e25c7078ee6a67de07af42535bad5b5b20f0beeb583f6a6fffe673a5"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-26",
+        "call": "call-25",
+        "command": "source-inspect",
+        "receipt": null,
+        "browser_fetch_ms": 2.9000000059604645,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.008211,
+          "stdin_write_ms": 0.00608,
+          "stdin_flush_ms": 0.019153,
+          "response_queue_wait_ms": 0.487095,
+          "http_write_ms": 0.078375,
+          "http_total_ms": 0.707125
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239803453332638,
+            "pid": 611597,
+            "tid": 611599,
+            "request": "fetch-26",
+            "command": "source-inspect",
+            "context": "611598",
+            "bytes": 1073,
+            "sha256": "03597263de5eda5647060766f2399cc8c045dda0cd718499319f7a71abe9e800"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-28",
+        "call": "call-27",
+        "command": "line boundary 1 outline 0,0 50,0 50,50 150,50 150,0 200,0 200,100 0,100",
+        "receipt": null,
+        "browser_fetch_ms": 61.10000002384186,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 0.008943,
+          "fresh_total_ms": 48.915371,
+          "fresh_body_approx_ms": 48.906428,
+          "receipt_lock_wait_ms": 0.01939,
+          "bridge_lock_wait_ms": 0.008299,
+          "stdin_write_ms": 0.007036,
+          "stdin_flush_ms": 0.022339,
+          "response_queue_wait_ms": 7.795172,
+          "http_write_ms": 0.124732,
+          "http_total_ms": 57.27165
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239803621009672,
+            "pid": 611597,
+            "tid": 611599,
+            "request": "fetch-28",
+            "command": "line boundary 1 outline 0,0 50,0 50,50 150,50 150,0 200,0 200,100 0,100",
+            "context": "611598",
+            "bytes": 32,
+            "sha256": "c6e13f6fc496c2455b73019b7976a1605402150816be5e4e2fa90e0afb32be56"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 23,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-30",
+        "call": "call-29",
+        "command": "section-profile-read",
+        "receipt": null,
+        "browser_fetch_ms": 60.30000001192093,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 0.012241,
+          "fresh_total_ms": 55.543838,
+          "fresh_body_approx_ms": 55.531597,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.010841,
+          "stdin_write_ms": 0.007028,
+          "stdin_flush_ms": 0.046035,
+          "response_queue_wait_ms": 1.009821,
+          "http_write_ms": 0.086649,
+          "http_total_ms": 56.888749
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239803681768482,
+            "pid": 611597,
+            "tid": 611599,
+            "request": "fetch-30",
+            "command": "section-profile-read",
+            "context": "611598",
+            "bytes": 776,
+            "sha256": "238d853233c269cc6044c26f6f478a4fd857ac3b70f8604b963a1c90c5a96b36"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 20,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-32",
+        "call": "call-31",
+        "command": "objects",
+        "receipt": null,
+        "browser_fetch_ms": 18.400000005960464,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.047608,
+          "stdin_write_ms": 0.016192,
+          "stdin_flush_ms": 0.203986,
+          "response_queue_wait_ms": 1.236885,
+          "http_write_ms": 0.106007,
+          "http_total_ms": 2.572133
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239803639307414,
+            "pid": 611597,
+            "tid": 611599,
+            "request": "fetch-32",
+            "command": "objects",
+            "context": "611598",
+            "bytes": 303,
+            "sha256": "9fc02f48c0f21f9d5a0546c9daed5cd23258e41d13cd3f6df2c328342788f30a"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-34",
+        "call": "call-33",
+        "command": "surfaces",
+        "receipt": null,
+        "browser_fetch_ms": 5.300000011920929,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.019631,
+          "stdin_write_ms": 0.015438,
+          "stdin_flush_ms": 0.136694,
+          "response_queue_wait_ms": 0.171625,
+          "http_write_ms": 0.109977,
+          "http_total_ms": 0.793373
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239803647565847,
+            "pid": 611597,
+            "tid": 611599,
+            "request": "fetch-34",
+            "command": "surfaces",
+            "context": "611598",
+            "bytes": 88,
+            "sha256": "fadff99be50f03049d448ab575447f7545d087c579a51ac4ea10a5311be6684e"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-36",
+        "call": "call-35",
+        "command": "boundary 1",
+        "receipt": null,
+        "browser_fetch_ms": 11.099999994039536,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.011249,
+          "stdin_write_ms": 0.007332,
+          "stdin_flush_ms": 0.010107,
+          "response_queue_wait_ms": 0.277079,
+          "http_write_ms": 0.095037,
+          "http_total_ms": 0.563499
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239803656473396,
+            "pid": 611597,
+            "tid": 611599,
+            "request": "fetch-36",
+            "command": "boundary 1",
+            "context": "611598",
+            "bytes": 575,
+            "sha256": "c6fcf51f2cb685468e2ab4797caab12d902e33ffdd56864cd2a4499663ff76c6"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-38",
+        "call": "call-37",
+        "command": "boundary 1",
+        "receipt": null,
+        "browser_fetch_ms": 9.800000011920929,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.023474,
+          "stdin_write_ms": 0.02416,
+          "stdin_flush_ms": 0.058564,
+          "response_queue_wait_ms": 1.234321,
+          "http_write_ms": 0.706334,
+          "http_total_ms": 2.349953
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239803675004147,
+            "pid": 611597,
+            "tid": 611599,
+            "request": "fetch-38",
+            "command": "boundary 1",
+            "context": "611598",
+            "bytes": 575,
+            "sha256": "c6fcf51f2cb685468e2ab4797caab12d902e33ffdd56864cd2a4499663ff76c6"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-40",
+        "call": "call-39",
+        "command": "obstacles 1",
+        "receipt": null,
+        "browser_fetch_ms": 6.5,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.01151,
+          "stdin_write_ms": 0.007119,
+          "stdin_flush_ms": 0.020167,
+          "response_queue_wait_ms": 2.679666,
+          "http_write_ms": 0.108268,
+          "http_total_ms": 3.021863
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239803686308978,
+            "pid": 611597,
+            "tid": 611599,
+            "request": "fetch-40",
+            "command": "obstacles 1",
+            "context": "611598",
+            "bytes": 46,
+            "sha256": "d2f633987dc4c50610693afdfa3dd4f2c85ba9cc97cac73907445f15f0277f69"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-42",
+        "call": "call-41",
+        "command": "references",
+        "receipt": null,
+        "browser_fetch_ms": 3.5,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.018419,
+          "stdin_write_ms": 0.014773,
+          "stdin_flush_ms": 0.063999,
+          "response_queue_wait_ms": 0.599974,
+          "http_write_ms": 0.101206,
+          "http_total_ms": 0.979042
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239803690246853,
+            "pid": 611597,
+            "tid": 611599,
+            "request": "fetch-42",
+            "command": "references",
+            "context": "611598",
+            "bytes": 466,
+            "sha256": "0780b18a054aa7b52c02f0001e811de810ab7a402a645667fae359a05289b5fd"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-44",
+        "call": "call-43",
+        "command": "dump",
+        "receipt": null,
+        "browser_fetch_ms": 4.199999988079071,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.021825,
+          "stdin_write_ms": 0.008868,
+          "stdin_flush_ms": 0.014895,
+          "response_queue_wait_ms": 1.607181,
+          "http_write_ms": 0.098047,
+          "http_total_ms": 2.070663
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239803702360864,
+            "pid": 611597,
+            "tid": 611599,
+            "request": "fetch-44",
+            "command": "dump",
+            "context": "611598",
+            "bytes": 529,
+            "sha256": "bc44149fb1ed9dfd4116c0eb2c1c482b0d1507ce4b158e8b745f16cf4464b9fa"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-46",
+        "call": "call-45",
+        "command": "source-inspect",
+        "receipt": null,
+        "browser_fetch_ms": 6.4000000059604645,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.024233,
+          "stdin_write_ms": 0.024009,
+          "stdin_flush_ms": 0.033193,
+          "response_queue_wait_ms": 2.339907,
+          "http_write_ms": 0.092302,
+          "http_total_ms": 2.734652
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239803708862186,
+            "pid": 611597,
+            "tid": 611599,
+            "request": "fetch-46",
+            "command": "source-inspect",
+            "context": "611598",
+            "bytes": 1073,
+            "sha256": "a85fe3849cfe7bd3c9490918ba4add7f6d220e3bb5d1a6c9dd214e72ec616783"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-48",
+        "call": "call-47",
+        "command": "boundary 1",
+        "receipt": null,
+        "browser_fetch_ms": 10.400000005960464,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.034109,
+          "stdin_write_ms": 0.024081,
+          "stdin_flush_ms": 0.064978,
+          "response_queue_wait_ms": 3.215771,
+          "http_write_ms": 0.136951,
+          "http_total_ms": 4.011118
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239803922677756,
+            "pid": 611597,
+            "tid": 611599,
+            "request": "fetch-48",
+            "command": "boundary 1",
+            "context": "611598",
+            "bytes": 575,
+            "sha256": "c6fcf51f2cb685468e2ab4797caab12d902e33ffdd56864cd2a4499663ff76c6"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 16,
+        "absent_stage_means": "not entered, not measured zero"
+      }
+    ],
+    "late_signal_for_already_received_headers": 0,
+    "console_errors": [],
+    "source_identity": {
+      "schema": "geometry-runtime/1",
+      "version": "afe9bc3739109bcf734a82dc4265b1ac03a59d9454f3e9df4335773a7e16d90a",
+      "fresh": true,
+      "root": "/tmp/geometry-209-segments",
+      "pid": 611597,
+      "session": "69baf0da3d66429694ebd70aa96b2c2f"
+    },
+    "tool_hashes": {
+      "browser.cjs": "782b50b161db9a05a81b3f5255c23da98b0f25feb5890431ecd9e2d3e7e4833c",
+      "server.py": "d4a8797c0b10f168d67ad5d7a229cda993d2295a6eeb8fc78d12d697ab0ada2a"
+    },
+    "native_pid": 611598,
+    "binary_sha256": "b49dccd56ee3729d48dcf5f8a908ae619fdd994d91a59cd70af691034adc76e3",
+    "receipt_evidence": null
+  },
+  {
+    "case": "bridge18",
+    "p7_pass": false,
+    "phase": "error",
+    "error": "服務未在 15 秒內回應，請稍後重試。",
+    "wall_ms": 20290,
+    "server_exit": {
+      "code": 0,
+      "signal": null
+    },
+    "timeouts": [
+      {
+        "id": "fetch-26",
+        "call": "call-25",
+        "command": "source-inspect",
+        "receipt": null,
+        "browser_fetch_ms": 15002.0,
+        "fetch_error": {
+          "event": "fetch_error",
+          "ms": 16210.800000011921,
+          "id": "fetch-26",
+          "call": "call-25",
+          "name": "TimeoutError",
+          "message": "signal timed out"
+        },
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 17999.714816,
+          "stdin_write_ms": 0.015613,
+          "stdin_flush_ms": 1.249752,
+          "response_queue_wait_ms": 0.088531,
+          "http_write_ms": 0.686649,
+          "http_total_ms": 18002.347493
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239847135896193,
+            "pid": 612353,
+            "tid": 612355,
+            "request": "fetch-26",
+            "command": "source-inspect",
+            "context": "612354",
+            "bytes": 1073,
+            "sha256": "03597263de5eda5647060766f2399cc8c045dda0cd718499319f7a71abe9e800"
+          }
+        ],
+        "http_write_errors": [
+          {
+            "event": "http_write_error",
+            "mono_ns": 239847136614684,
+            "pid": 612353,
+            "tid": 612573,
+            "request": "fetch-26",
+            "command": "source-inspect",
+            "exception": "BrokenPipeError",
+            "message": "[Errno 32] Broken pipe"
+          }
+        ],
+        "browser_headers_received": false,
+        "server_events": 16,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-28",
+        "call": "call-27",
+        "command": "dump",
+        "receipt": null,
+        "browser_fetch_ms": 15000.299999982119,
+        "fetch_error": {
+          "event": "fetch_error",
+          "ms": 16742.59999999404,
+          "id": "fetch-28",
+          "call": "call-27",
+          "name": "TimeoutError",
+          "message": "signal timed out"
+        },
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 17466.017304,
+          "stdin_write_ms": 0.011004,
+          "stdin_flush_ms": 0.011909,
+          "response_queue_wait_ms": 0.897619,
+          "http_write_ms": 0.252699,
+          "http_total_ms": 17467.408423
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239847137270156,
+            "pid": 612353,
+            "tid": 612355,
+            "request": "fetch-28",
+            "command": "dump",
+            "context": "612354",
+            "bytes": 505,
+            "sha256": "d20dd811e25c7078ee6a67de07af42535bad5b5b20f0beeb583f6a6fffe673a5"
+          }
+        ],
+        "http_write_errors": [
+          {
+            "event": "http_write_error",
+            "mono_ns": 239847137618687,
+            "pid": 612353,
+            "tid": 612574,
+            "request": "fetch-28",
+            "command": "dump",
+            "exception": "BrokenPipeError",
+            "message": "[Errno 32] Broken pipe"
+          }
+        ],
+        "browser_headers_received": false,
+        "server_events": 17,
+        "absent_stage_means": "not entered, not measured zero"
+      }
+    ],
+    "blocked_before_fetch": [
+      {
+        "call": "call-29",
+        "command": "line boundary 1 outline 0,0 50,0 50,50 150,50 150,0 200,0 200,100 0,100",
+        "error": "服務未在 15 秒內回應，請稍後重試。",
+        "fetches": 0
+      },
+      {
+        "call": "call-30",
+        "command": "boundary 1",
+        "error": "服務未在 15 秒內回應，請稍後重試。",
+        "fetches": 0
+      },
+      {
+        "call": "call-31",
+        "command": "dump",
+        "error": "服務未在 15 秒內回應，請稍後重試。",
+        "fetches": 0
+      },
+      {
+        "call": "call-32",
+        "command": "boundary 1",
+        "error": "服務未在 15 秒內回應，請稍後重試。",
+        "fetches": 0
+      },
+      {
+        "call": "call-33",
+        "command": "references 1",
+        "error": "服務未在 15 秒內回應，請稍後重試。",
+        "fetches": 0
+      }
+    ],
+    "requests": [
+      {
+        "id": "fetch-2",
+        "call": "call-1",
+        "command": "line reset",
+        "receipt": null,
+        "browser_fetch_ms": 72.60000002384186,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 0.010648,
+          "fresh_total_ms": 59.839394,
+          "fresh_body_approx_ms": 59.828745999999995,
+          "receipt_lock_wait_ms": 0.01763,
+          "bridge_lock_wait_ms": 0.00833,
+          "stdin_write_ms": 0.008132,
+          "stdin_flush_ms": 0.031897,
+          "response_queue_wait_ms": 8.160096,
+          "http_write_ms": 0.12845,
+          "http_total_ms": 68.595296
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239828821846299,
+            "pid": 612353,
+            "tid": 612355,
+            "request": "fetch-2",
+            "command": "line reset",
+            "context": "612354",
+            "bytes": 58,
+            "sha256": "2a7f828b225b5ae1127682c8a36124cabfde2fe2429e2d478b13f9ee07044484"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 23,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-4",
+        "call": "call-3",
+        "command": "section-profile-read",
+        "receipt": null,
+        "browser_fetch_ms": 55.400000005960464,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 0.011051,
+          "fresh_total_ms": 51.65503,
+          "fresh_body_approx_ms": 51.643978999999995,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.024242,
+          "stdin_write_ms": 0.015551,
+          "stdin_flush_ms": 0.155003,
+          "response_queue_wait_ms": 0.110305,
+          "http_write_ms": 0.16651,
+          "http_total_ms": 52.510701
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239828885733240,
+            "pid": 612353,
+            "tid": 612355,
+            "request": "fetch-4",
+            "command": "section-profile-read",
+            "context": "612354",
+            "bytes": 776,
+            "sha256": "f075ec2b6bcd1866bd640ac106c0df57cbe804f71b0bc3eb1305072901fca833"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 20,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-6",
+        "call": "call-5",
+        "command": "line surface 1 origin 0 0 0 u +x v +y outline 0,0 200,0 200,100 0,100",
+        "receipt": null,
+        "browser_fetch_ms": 110.2000000178814,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 51.089311,
+          "fresh_total_ms": 98.94954,
+          "fresh_body_approx_ms": 47.860229,
+          "receipt_lock_wait_ms": 0.013388,
+          "bridge_lock_wait_ms": 0.008233,
+          "stdin_write_ms": 0.007682,
+          "stdin_flush_ms": 0.024331,
+          "response_queue_wait_ms": 8.344951,
+          "http_write_ms": 0.157747,
+          "http_total_ms": 107.820592
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239828941552353,
+            "pid": 612353,
+            "tid": 612355,
+            "request": "fetch-6",
+            "command": "line surface 1 origin 0 0 0 u +x v +y outline 0,0 200,0 200,100 0,100",
+            "context": "612354",
+            "bytes": 32,
+            "sha256": "c6e13f6fc496c2455b73019b7976a1605402150816be5e4e2fa90e0afb32be56"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 23,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-8",
+        "call": "call-7",
+        "command": "section-profile-read",
+        "receipt": null,
+        "browser_fetch_ms": 64.09999999403954,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 0.008277,
+          "fresh_total_ms": 59.097931,
+          "fresh_body_approx_ms": 59.089654,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.205177,
+          "stdin_write_ms": 0.015572,
+          "stdin_flush_ms": 0.026724,
+          "response_queue_wait_ms": 0.238087,
+          "http_write_ms": 0.631745,
+          "http_total_ms": 60.508548
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239829007546541,
+            "pid": 612353,
+            "tid": 612355,
+            "request": "fetch-8",
+            "command": "section-profile-read",
+            "context": "612354",
+            "bytes": 776,
+            "sha256": "2e37896233816269a2f9209ab71b45c3a69c616656141345c9ee3e6339fdc6e7"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 20,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-10",
+        "call": "call-9",
+        "command": "objects",
+        "receipt": null,
+        "browser_fetch_ms": 6.5,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.061186,
+          "stdin_write_ms": 0.01651,
+          "stdin_flush_ms": 0.03114,
+          "response_queue_wait_ms": 0.371742,
+          "http_write_ms": 0.472148,
+          "http_total_ms": 2.998546
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239828950610473,
+            "pid": 612353,
+            "tid": 612355,
+            "request": "fetch-10",
+            "command": "objects",
+            "context": "612354",
+            "bytes": 302,
+            "sha256": "65b83cf478e080904702e201abb5a51f240835c6f77fc88870a2ca8279424aeb"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-12",
+        "call": "call-11",
+        "command": "surfaces",
+        "receipt": null,
+        "browser_fetch_ms": 13.900000005960464,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.027457,
+          "stdin_write_ms": 0.024384,
+          "stdin_flush_ms": 0.056321,
+          "response_queue_wait_ms": 0.336035,
+          "http_write_ms": 0.266338,
+          "http_total_ms": 1.268854
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239828965735015,
+            "pid": 612353,
+            "tid": 612355,
+            "request": "fetch-12",
+            "command": "surfaces",
+            "context": "612354",
+            "bytes": 88,
+            "sha256": "fadff99be50f03049d448ab575447f7545d087c579a51ac4ea10a5311be6684e"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-14",
+        "call": "call-13",
+        "command": "boundary 1",
+        "receipt": null,
+        "browser_fetch_ms": 3.5,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.023873,
+          "stdin_write_ms": 0.019943,
+          "stdin_flush_ms": 0.08386,
+          "response_queue_wait_ms": 0.394221,
+          "http_write_ms": 0.244424,
+          "http_total_ms": 1.025611
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239828970078376,
+            "pid": 612353,
+            "tid": 612355,
+            "request": "fetch-14",
+            "command": "boundary 1",
+            "context": "612354",
+            "bytes": 391,
+            "sha256": "0f2d1680ae2a1c42d6e77071ceb2f7d888b7808e709c6dfbf15b2173d9fb5279"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-16",
+        "call": "call-15",
+        "command": "line canvas-pos boundary 1 60 60",
+        "receipt": null,
+        "browser_fetch_ms": 92.40000000596046,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 32.450325,
+          "fresh_total_ms": 85.176208,
+          "fresh_body_approx_ms": 52.725883,
+          "receipt_lock_wait_ms": 0.01206,
+          "bridge_lock_wait_ms": 0.008353,
+          "stdin_write_ms": 0.006238,
+          "stdin_flush_ms": 0.025814,
+          "response_queue_wait_ms": 2.991452,
+          "http_write_ms": 0.099944,
+          "http_total_ms": 88.557449
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239829062802251,
+            "pid": 612353,
+            "tid": 612355,
+            "request": "fetch-16",
+            "command": "line canvas-pos boundary 1 60 60",
+            "context": "612354",
+            "bytes": 32,
+            "sha256": "c6e13f6fc496c2455b73019b7976a1605402150816be5e4e2fa90e0afb32be56"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 23,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-18",
+        "call": "call-17",
+        "command": "boundary 1",
+        "receipt": null,
+        "browser_fetch_ms": 3.5999999940395355,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.010798,
+          "stdin_write_ms": 0.007434,
+          "stdin_flush_ms": 0.021309,
+          "response_queue_wait_ms": 0.317729,
+          "http_write_ms": 0.105587,
+          "http_total_ms": 0.765856
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239829072063756,
+            "pid": 612353,
+            "tid": 612355,
+            "request": "fetch-18",
+            "command": "boundary 1",
+            "context": "612354",
+            "bytes": 391,
+            "sha256": "0f2d1680ae2a1c42d6e77071ceb2f7d888b7808e709c6dfbf15b2173d9fb5279"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-20",
+        "call": "call-19",
+        "command": "obstacles 1",
+        "receipt": null,
+        "browser_fetch_ms": 9.300000011920929,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.011455,
+          "stdin_write_ms": 0.007253,
+          "stdin_flush_ms": 0.022711,
+          "response_queue_wait_ms": 5.359997,
+          "http_write_ms": 0.115489,
+          "http_total_ms": 5.707314
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239829112148919,
+            "pid": 612353,
+            "tid": 612355,
+            "request": "fetch-20",
+            "command": "obstacles 1",
+            "context": "612354",
+            "bytes": 46,
+            "sha256": "d2f633987dc4c50610693afdfa3dd4f2c85ba9cc97cac73907445f15f0277f69"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-22",
+        "call": "call-21",
+        "command": "references",
+        "receipt": null,
+        "browser_fetch_ms": 7.799999982118607,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.019037,
+          "stdin_write_ms": 0.024736,
+          "stdin_flush_ms": 0.027149,
+          "response_queue_wait_ms": 2.25895,
+          "http_write_ms": 0.103553,
+          "http_total_ms": 2.6886
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239829120869651,
+            "pid": 612353,
+            "tid": 612355,
+            "request": "fetch-22",
+            "command": "references",
+            "context": "612354",
+            "bytes": 466,
+            "sha256": "bc9e21cedd6bb1e95911add42b0f1aa2e4b88640c0297ace2ee01d80b6880945"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-24",
+        "call": "call-23",
+        "command": "dump",
+        "receipt": null,
+        "browser_fetch_ms": 3.7999999821186066,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.020664,
+          "stdin_write_ms": 0.038343,
+          "stdin_flush_ms": 0.019196,
+          "response_queue_wait_ms": 0.694305,
+          "http_write_ms": 0.096487,
+          "http_total_ms": 1.048921
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239829128242759,
+            "pid": 612353,
+            "tid": 612355,
+            "request": "fetch-24",
+            "command": "dump",
+            "context": "612354",
+            "bytes": 505,
+            "sha256": "d20dd811e25c7078ee6a67de07af42535bad5b5b20f0beeb583f6a6fffe673a5"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-26",
+        "call": "call-25",
+        "command": "source-inspect",
+        "receipt": null,
+        "browser_fetch_ms": 15002.0,
+        "fetch_error": {
+          "event": "fetch_error",
+          "ms": 16210.800000011921,
+          "id": "fetch-26",
+          "call": "call-25",
+          "name": "TimeoutError",
+          "message": "signal timed out"
+        },
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 17999.714816,
+          "stdin_write_ms": 0.015613,
+          "stdin_flush_ms": 1.249752,
+          "response_queue_wait_ms": 0.088531,
+          "http_write_ms": 0.686649,
+          "http_total_ms": 18002.347493
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239847135896193,
+            "pid": 612353,
+            "tid": 612355,
+            "request": "fetch-26",
+            "command": "source-inspect",
+            "context": "612354",
+            "bytes": 1073,
+            "sha256": "03597263de5eda5647060766f2399cc8c045dda0cd718499319f7a71abe9e800"
+          }
+        ],
+        "http_write_errors": [
+          {
+            "event": "http_write_error",
+            "mono_ns": 239847136614684,
+            "pid": 612353,
+            "tid": 612573,
+            "request": "fetch-26",
+            "command": "source-inspect",
+            "exception": "BrokenPipeError",
+            "message": "[Errno 32] Broken pipe"
+          }
+        ],
+        "browser_headers_received": false,
+        "server_events": 16,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-28",
+        "call": "call-27",
+        "command": "dump",
+        "receipt": null,
+        "browser_fetch_ms": 15000.299999982119,
+        "fetch_error": {
+          "event": "fetch_error",
+          "ms": 16742.59999999404,
+          "id": "fetch-28",
+          "call": "call-27",
+          "name": "TimeoutError",
+          "message": "signal timed out"
+        },
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 17466.017304,
+          "stdin_write_ms": 0.011004,
+          "stdin_flush_ms": 0.011909,
+          "response_queue_wait_ms": 0.897619,
+          "http_write_ms": 0.252699,
+          "http_total_ms": 17467.408423
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239847137270156,
+            "pid": 612353,
+            "tid": 612355,
+            "request": "fetch-28",
+            "command": "dump",
+            "context": "612354",
+            "bytes": 505,
+            "sha256": "d20dd811e25c7078ee6a67de07af42535bad5b5b20f0beeb583f6a6fffe673a5"
+          }
+        ],
+        "http_write_errors": [
+          {
+            "event": "http_write_error",
+            "mono_ns": 239847137618687,
+            "pid": 612353,
+            "tid": 612574,
+            "request": "fetch-28",
+            "command": "dump",
+            "exception": "BrokenPipeError",
+            "message": "[Errno 32] Broken pipe"
+          }
+        ],
+        "browser_headers_received": false,
+        "server_events": 17,
+        "absent_stage_means": "not entered, not measured zero"
+      }
+    ],
+    "late_signal_for_already_received_headers": 12,
+    "console_errors": [],
+    "source_identity": {
+      "schema": "geometry-runtime/1",
+      "version": "afe9bc3739109bcf734a82dc4265b1ac03a59d9454f3e9df4335773a7e16d90a",
+      "fresh": true,
+      "root": "/tmp/geometry-209-segments",
+      "pid": 612353,
+      "session": "914e30ab261a43e8a271194497a72eec"
+    },
+    "tool_hashes": {
+      "browser.cjs": "782b50b161db9a05a81b3f5255c23da98b0f25feb5890431ecd9e2d3e7e4833c",
+      "server.py": "d4a8797c0b10f168d67ad5d7a229cda993d2295a6eeb8fc78d12d697ab0ada2a"
+    },
+    "native_pid": 612354,
+    "binary_sha256": "b49dccd56ee3729d48dcf5f8a908ae619fdd994d91a59cd70af691034adc76e3",
+    "receipt_evidence": null
+  },
+  {
+    "case": "bridge3",
+    "p7_pass": true,
+    "phase": "ready",
+    "error": "",
+    "wall_ms": 5929,
+    "server_exit": {
+      "code": 0,
+      "signal": null
+    },
+    "timeouts": [],
+    "blocked_before_fetch": [],
+    "requests": [
+      {
+        "id": "fetch-2",
+        "call": "call-1",
+        "command": "line reset",
+        "receipt": null,
+        "browser_fetch_ms": 59.70000001788139,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 0.020377,
+          "fresh_total_ms": 43.455449,
+          "fresh_body_approx_ms": 43.435072,
+          "receipt_lock_wait_ms": 0.407006,
+          "bridge_lock_wait_ms": 0.010692,
+          "stdin_write_ms": 0.007375,
+          "stdin_flush_ms": 0.018827,
+          "response_queue_wait_ms": 8.231128,
+          "http_write_ms": 0.46574,
+          "http_total_ms": 53.112089
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239822948262205,
+            "pid": 612120,
+            "tid": 612122,
+            "request": "fetch-2",
+            "command": "line reset",
+            "context": "612121",
+            "bytes": 58,
+            "sha256": "2a7f828b225b5ae1127682c8a36124cabfde2fe2429e2d478b13f9ee07044484"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 23,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-4",
+        "call": "call-3",
+        "command": "section-profile-read",
+        "receipt": null,
+        "browser_fetch_ms": 71.5,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 0.010941,
+          "fresh_total_ms": 54.977381,
+          "fresh_body_approx_ms": 54.96644,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.014221,
+          "stdin_write_ms": 0.007598,
+          "stdin_flush_ms": 0.153332,
+          "response_queue_wait_ms": 5.882046,
+          "http_write_ms": 6.776859,
+          "http_total_ms": 68.782294
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239823021112744,
+            "pid": 612120,
+            "tid": 612122,
+            "request": "fetch-4",
+            "command": "section-profile-read",
+            "context": "612121",
+            "bytes": 776,
+            "sha256": "f075ec2b6bcd1866bd640ac106c0df57cbe804f71b0bc3eb1305072901fca833"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 20,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-6",
+        "call": "call-5",
+        "command": "line surface 1 origin 0 0 0 u +x v +y outline 0,0 200,0 200,100 0,100",
+        "receipt": null,
+        "browser_fetch_ms": 119.89999997615814,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 54.156782,
+          "fresh_total_ms": 104.934166,
+          "fresh_body_approx_ms": 50.777384000000005,
+          "receipt_lock_wait_ms": 0.012756,
+          "bridge_lock_wait_ms": 0.010129,
+          "stdin_write_ms": 0.013539,
+          "stdin_flush_ms": 0.183366,
+          "response_queue_wait_ms": 9.778675,
+          "http_write_ms": 0.417901,
+          "http_total_ms": 115.755573
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239823078478474,
+            "pid": 612120,
+            "tid": 612122,
+            "request": "fetch-6",
+            "command": "line surface 1 origin 0 0 0 u +x v +y outline 0,0 200,0 200,100 0,100",
+            "context": "612121",
+            "bytes": 32,
+            "sha256": "c6e13f6fc496c2455b73019b7976a1605402150816be5e4e2fa90e0afb32be56"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 23,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-8",
+        "call": "call-7",
+        "command": "section-profile-read",
+        "receipt": null,
+        "browser_fetch_ms": 53.0,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 0.009495,
+          "fresh_total_ms": 47.590104,
+          "fresh_body_approx_ms": 47.580608999999995,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.023086,
+          "stdin_write_ms": 0.014994,
+          "stdin_flush_ms": 0.869695,
+          "response_queue_wait_ms": 0.017753,
+          "http_write_ms": 0.125853,
+          "http_total_ms": 48.896884
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239823136072551,
+            "pid": 612120,
+            "tid": 612122,
+            "request": "fetch-8",
+            "command": "section-profile-read",
+            "context": "612121",
+            "bytes": 776,
+            "sha256": "2e37896233816269a2f9209ab71b45c3a69c616656141345c9ee3e6339fdc6e7"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 20,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-10",
+        "call": "call-9",
+        "command": "objects",
+        "receipt": null,
+        "browser_fetch_ms": 5.200000017881393,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.022922,
+          "stdin_write_ms": 0.020356,
+          "stdin_flush_ms": 0.4166,
+          "response_queue_wait_ms": 0.013638,
+          "http_write_ms": 0.520214,
+          "http_total_ms": 1.251602
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239823088799164,
+            "pid": 612120,
+            "tid": 612122,
+            "request": "fetch-10",
+            "command": "objects",
+            "context": "612121",
+            "bytes": 302,
+            "sha256": "65b83cf478e080904702e201abb5a51f240835c6f77fc88870a2ca8279424aeb"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-12",
+        "call": "call-11",
+        "command": "surfaces",
+        "receipt": null,
+        "browser_fetch_ms": 10.900000005960464,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.036778,
+          "stdin_write_ms": 0.024174,
+          "stdin_flush_ms": 0.049323,
+          "response_queue_wait_ms": 0.75441,
+          "http_write_ms": 0.366324,
+          "http_total_ms": 1.671197
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239823100291945,
+            "pid": 612120,
+            "tid": 612122,
+            "request": "fetch-12",
+            "command": "surfaces",
+            "context": "612121",
+            "bytes": 88,
+            "sha256": "fadff99be50f03049d448ab575447f7545d087c579a51ac4ea10a5311be6684e"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-14",
+        "call": "call-13",
+        "command": "boundary 1",
+        "receipt": null,
+        "browser_fetch_ms": 6.5999999940395355,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.025828,
+          "stdin_write_ms": 0.020547,
+          "stdin_flush_ms": 0.125688,
+          "response_queue_wait_ms": 3.650704,
+          "http_write_ms": 0.168382,
+          "http_total_ms": 4.387633
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239823107328459,
+            "pid": 612120,
+            "tid": 612122,
+            "request": "fetch-14",
+            "command": "boundary 1",
+            "context": "612121",
+            "bytes": 391,
+            "sha256": "0f2d1680ae2a1c42d6e77071ceb2f7d888b7808e709c6dfbf15b2173d9fb5279"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-16",
+        "call": "call-15",
+        "command": "line canvas-pos boundary 1 60 60",
+        "receipt": null,
+        "browser_fetch_ms": 77.30000001192093,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 21.901539,
+          "fresh_total_ms": 69.261526,
+          "fresh_body_approx_ms": 47.359987000000004,
+          "receipt_lock_wait_ms": 0.012537,
+          "bridge_lock_wait_ms": 0.007738,
+          "stdin_write_ms": 0.006345,
+          "stdin_flush_ms": 0.024225,
+          "response_queue_wait_ms": 3.436484,
+          "http_write_ms": 0.10601,
+          "http_total_ms": 73.083007
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239823186288577,
+            "pid": 612120,
+            "tid": 612122,
+            "request": "fetch-16",
+            "command": "line canvas-pos boundary 1 60 60",
+            "context": "612121",
+            "bytes": 32,
+            "sha256": "c6e13f6fc496c2455b73019b7976a1605402150816be5e4e2fa90e0afb32be56"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 23,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-18",
+        "call": "call-17",
+        "command": "boundary 1",
+        "receipt": null,
+        "browser_fetch_ms": 13.400000005960464,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.030793,
+          "stdin_write_ms": 0.284081,
+          "stdin_flush_ms": 0.160502,
+          "response_queue_wait_ms": 0.094897,
+          "http_write_ms": 0.102278,
+          "http_total_ms": 0.893787
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239823196219620,
+            "pid": 612120,
+            "tid": 612122,
+            "request": "fetch-18",
+            "command": "boundary 1",
+            "context": "612121",
+            "bytes": 391,
+            "sha256": "0f2d1680ae2a1c42d6e77071ceb2f7d888b7808e709c6dfbf15b2173d9fb5279"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-20",
+        "call": "call-19",
+        "command": "obstacles 1",
+        "receipt": null,
+        "browser_fetch_ms": 13.300000011920929,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.012428,
+          "stdin_write_ms": 0.306511,
+          "stdin_flush_ms": 0.012729,
+          "response_queue_wait_ms": 0.120027,
+          "http_write_ms": 0.090304,
+          "http_total_ms": 0.720705
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239823255697852,
+            "pid": 612120,
+            "tid": 612122,
+            "request": "fetch-20",
+            "command": "obstacles 1",
+            "context": "612121",
+            "bytes": 46,
+            "sha256": "d2f633987dc4c50610693afdfa3dd4f2c85ba9cc97cac73907445f15f0277f69"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-22",
+        "call": "call-21",
+        "command": "references",
+        "receipt": null,
+        "browser_fetch_ms": 6.4000000059604645,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.032122,
+          "stdin_write_ms": 0.01059,
+          "stdin_flush_ms": 0.020572,
+          "response_queue_wait_ms": 1.932707,
+          "http_write_ms": 0.108547,
+          "http_total_ms": 2.366659
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239823267486790,
+            "pid": 612120,
+            "tid": 612122,
+            "request": "fetch-22",
+            "command": "references",
+            "context": "612121",
+            "bytes": 466,
+            "sha256": "bc9e21cedd6bb1e95911add42b0f1aa2e4b88640c0297ace2ee01d80b6880945"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-24",
+        "call": "call-23",
+        "command": "dump",
+        "receipt": null,
+        "browser_fetch_ms": 3.7000000178813934,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.02167,
+          "stdin_write_ms": 0.016765,
+          "stdin_flush_ms": 0.029498,
+          "response_queue_wait_ms": 0.702494,
+          "http_write_ms": 0.106289,
+          "http_total_ms": 1.088797
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239823272370798,
+            "pid": 612120,
+            "tid": 612122,
+            "request": "fetch-24",
+            "command": "dump",
+            "context": "612121",
+            "bytes": 505,
+            "sha256": "d20dd811e25c7078ee6a67de07af42535bad5b5b20f0beeb583f6a6fffe673a5"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-26",
+        "call": "call-25",
+        "command": "source-inspect",
+        "receipt": null,
+        "browser_fetch_ms": 3003.5,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 2997.676847,
+          "stdin_write_ms": 0.014256,
+          "stdin_flush_ms": 0.013531,
+          "response_queue_wait_ms": 0.820728,
+          "http_write_ms": 1.044197,
+          "http_total_ms": 2999.88802
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239826277718237,
+            "pid": 612120,
+            "tid": 612122,
+            "request": "fetch-26",
+            "command": "source-inspect",
+            "context": "612121",
+            "bytes": 1073,
+            "sha256": "03597263de5eda5647060766f2399cc8c045dda0cd718499319f7a71abe9e800"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-28",
+        "call": "call-27",
+        "command": "dump",
+        "receipt": null,
+        "browser_fetch_ms": 2492.0999999940395,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 2485.080136,
+          "stdin_write_ms": 0.020839,
+          "stdin_flush_ms": 0.02205,
+          "response_queue_wait_ms": 1.600978,
+          "http_write_ms": 0.178686,
+          "http_total_ms": 2487.273416
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239826279765688,
+            "pid": 612120,
+            "tid": 612122,
+            "request": "fetch-28",
+            "command": "dump",
+            "context": "612121",
+            "bytes": 505,
+            "sha256": "d20dd811e25c7078ee6a67de07af42535bad5b5b20f0beeb583f6a6fffe673a5"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-30",
+        "call": "call-29",
+        "command": "line boundary 1 outline 0,0 50,0 50,50 150,50 150,0 200,0 200,100 0,100",
+        "receipt": null,
+        "browser_fetch_ms": 76.80000001192093,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 0.010994,
+          "fresh_total_ms": 57.177141,
+          "fresh_body_approx_ms": 57.166147,
+          "receipt_lock_wait_ms": 0.013307,
+          "bridge_lock_wait_ms": 0.013875,
+          "stdin_write_ms": 0.012506,
+          "stdin_flush_ms": 0.019765,
+          "response_queue_wait_ms": 11.497092,
+          "http_write_ms": 0.152008,
+          "http_total_ms": 70.216502
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239826486751232,
+            "pid": 612120,
+            "tid": 612122,
+            "request": "fetch-30",
+            "command": "line boundary 1 outline 0,0 50,0 50,50 150,50 150,0 200,0 200,100 0,100",
+            "context": "612121",
+            "bytes": 32,
+            "sha256": "c6e13f6fc496c2455b73019b7976a1605402150816be5e4e2fa90e0afb32be56"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 23,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-32",
+        "call": "call-31",
+        "command": "section-profile-read",
+        "receipt": null,
+        "browser_fetch_ms": 75.19999998807907,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 0.02313,
+          "fresh_total_ms": 70.702755,
+          "fresh_body_approx_ms": 70.679625,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.027381,
+          "stdin_write_ms": 0.01948,
+          "stdin_flush_ms": 0.061589,
+          "response_queue_wait_ms": 0.830471,
+          "http_write_ms": 0.099184,
+          "http_total_ms": 72.060777
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239826565080777,
+            "pid": 612120,
+            "tid": 612122,
+            "request": "fetch-32",
+            "command": "section-profile-read",
+            "context": "612121",
+            "bytes": 776,
+            "sha256": "238d853233c269cc6044c26f6f478a4fd857ac3b70f8604b963a1c90c5a96b36"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 20,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-34",
+        "call": "call-33",
+        "command": "objects",
+        "receipt": null,
+        "browser_fetch_ms": 6.100000023841858,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.022616,
+          "stdin_write_ms": 0.015792,
+          "stdin_flush_ms": 0.020173,
+          "response_queue_wait_ms": 0.370409,
+          "http_write_ms": 2.121208,
+          "http_total_ms": 3.029498
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239826494441979,
+            "pid": 612120,
+            "tid": 612122,
+            "request": "fetch-34",
+            "command": "objects",
+            "context": "612121",
+            "bytes": 303,
+            "sha256": "9fc02f48c0f21f9d5a0546c9daed5cd23258e41d13cd3f6df2c328342788f30a"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-36",
+        "call": "call-35",
+        "command": "surfaces",
+        "receipt": null,
+        "browser_fetch_ms": 14.800000011920929,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.02623,
+          "stdin_write_ms": 0.020059,
+          "stdin_flush_ms": 0.023814,
+          "response_queue_wait_ms": 0.22897,
+          "http_write_ms": 1.177363,
+          "http_total_ms": 1.918128
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239826513510925,
+            "pid": 612120,
+            "tid": 612122,
+            "request": "fetch-36",
+            "command": "surfaces",
+            "context": "612121",
+            "bytes": 88,
+            "sha256": "fadff99be50f03049d448ab575447f7545d087c579a51ac4ea10a5311be6684e"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-38",
+        "call": "call-37",
+        "command": "boundary 1",
+        "receipt": null,
+        "browser_fetch_ms": 7.300000011920929,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.020054,
+          "stdin_write_ms": 0.015949,
+          "stdin_flush_ms": 0.060946,
+          "response_queue_wait_ms": 0.140364,
+          "http_write_ms": 0.152891,
+          "http_total_ms": 0.62542
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239826521817396,
+            "pid": 612120,
+            "tid": 612122,
+            "request": "fetch-38",
+            "command": "boundary 1",
+            "context": "612121",
+            "bytes": 575,
+            "sha256": "c6fcf51f2cb685468e2ab4797caab12d902e33ffdd56864cd2a4499663ff76c6"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-40",
+        "call": "call-39",
+        "command": "boundary 1",
+        "receipt": null,
+        "browser_fetch_ms": 6.0999999940395355,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.019197,
+          "stdin_write_ms": 0.014725,
+          "stdin_flush_ms": 0.482714,
+          "response_queue_wait_ms": 0.022319,
+          "http_write_ms": 0.336367,
+          "http_total_ms": 1.161841
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239826530073568,
+            "pid": 612120,
+            "tid": 612122,
+            "request": "fetch-40",
+            "command": "boundary 1",
+            "context": "612121",
+            "bytes": 575,
+            "sha256": "c6fcf51f2cb685468e2ab4797caab12d902e33ffdd56864cd2a4499663ff76c6"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-42",
+        "call": "call-41",
+        "command": "obstacles 1",
+        "receipt": null,
+        "browser_fetch_ms": 16.099999994039536,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.032563,
+          "stdin_write_ms": 0.020777,
+          "stdin_flush_ms": 0.435806,
+          "response_queue_wait_ms": 0.373516,
+          "http_write_ms": 3.295437,
+          "http_total_ms": 5.706152
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239826549140848,
+            "pid": 612120,
+            "tid": 612122,
+            "request": "fetch-42",
+            "command": "obstacles 1",
+            "context": "612121",
+            "bytes": 46,
+            "sha256": "d2f633987dc4c50610693afdfa3dd4f2c85ba9cc97cac73907445f15f0277f69"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-44",
+        "call": "call-43",
+        "command": "references",
+        "receipt": null,
+        "browser_fetch_ms": 8.400000005960464,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.04135,
+          "stdin_write_ms": 0.018905,
+          "stdin_flush_ms": 0.112275,
+          "response_queue_wait_ms": 1.27353,
+          "http_write_ms": 3.10982,
+          "http_total_ms": 6.387157
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239826561261750,
+            "pid": 612120,
+            "tid": 612122,
+            "request": "fetch-44",
+            "command": "references",
+            "context": "612121",
+            "bytes": 466,
+            "sha256": "0780b18a054aa7b52c02f0001e811de810ab7a402a645667fae359a05289b5fd"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-46",
+        "call": "call-45",
+        "command": "dump",
+        "receipt": null,
+        "browser_fetch_ms": 3.2000000178813934,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.009638,
+          "stdin_write_ms": 0.00617,
+          "stdin_flush_ms": 0.009133,
+          "response_queue_wait_ms": 0.579882,
+          "http_write_ms": 0.096796,
+          "http_total_ms": 0.812898
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239826567544038,
+            "pid": 612120,
+            "tid": 612122,
+            "request": "fetch-46",
+            "command": "dump",
+            "context": "612121",
+            "bytes": 529,
+            "sha256": "bc44149fb1ed9dfd4116c0eb2c1c482b0d1507ce4b158e8b745f16cf4464b9fa"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-48",
+        "call": "call-47",
+        "command": "source-inspect",
+        "receipt": null,
+        "browser_fetch_ms": 3.7999999821186066,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.010065,
+          "stdin_write_ms": 0.005833,
+          "stdin_flush_ms": 0.020558,
+          "response_queue_wait_ms": 1.213054,
+          "http_write_ms": 0.143307,
+          "http_total_ms": 1.525655
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239826571875105,
+            "pid": 612120,
+            "tid": 612122,
+            "request": "fetch-48",
+            "command": "source-inspect",
+            "context": "612121",
+            "bytes": 1073,
+            "sha256": "a85fe3849cfe7bd3c9490918ba4add7f6d220e3bb5d1a6c9dd214e72ec616783"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-50",
+        "call": "call-49",
+        "command": "boundary 1",
+        "receipt": null,
+        "browser_fetch_ms": 4.699999988079071,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.026572,
+          "stdin_write_ms": 0.009687,
+          "stdin_flush_ms": 0.02362,
+          "response_queue_wait_ms": 0.425623,
+          "http_write_ms": 0.149876,
+          "http_total_ms": 0.889375
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239826770944847,
+            "pid": 612120,
+            "tid": 612122,
+            "request": "fetch-50",
+            "command": "boundary 1",
+            "context": "612121",
+            "bytes": 575,
+            "sha256": "c6fcf51f2cb685468e2ab4797caab12d902e33ffdd56864cd2a4499663ff76c6"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 16,
+        "absent_stage_means": "not entered, not measured zero"
+      }
+    ],
+    "late_signal_for_already_received_headers": 0,
+    "console_errors": [],
+    "source_identity": {
+      "schema": "geometry-runtime/1",
+      "version": "afe9bc3739109bcf734a82dc4265b1ac03a59d9454f3e9df4335773a7e16d90a",
+      "fresh": true,
+      "root": "/tmp/geometry-209-segments",
+      "pid": 612120,
+      "session": "104c4a5de66d481bb48a3cc58b877aec"
+    },
+    "tool_hashes": {
+      "browser.cjs": "782b50b161db9a05a81b3f5255c23da98b0f25feb5890431ecd9e2d3e7e4833c",
+      "server.py": "d4a8797c0b10f168d67ad5d7a229cda993d2295a6eeb8fc78d12d697ab0ada2a"
+    },
+    "native_pid": 612121,
+    "binary_sha256": "b49dccd56ee3729d48dcf5f8a908ae619fdd994d91a59cd70af691034adc76e3",
+    "receipt_evidence": null
+  },
+  {
+    "case": "native18",
+    "p7_pass": false,
+    "phase": "error",
+    "error": "服務未在 15 秒內回應，請稍後重試。",
+    "wall_ms": 20626,
+    "server_exit": {
+      "code": 0,
+      "signal": null
+    },
+    "timeouts": [
+      {
+        "id": "fetch-26",
+        "call": "call-25",
+        "command": "source-inspect",
+        "receipt": null,
+        "browser_fetch_ms": 15000.299999982119,
+        "fetch_error": {
+          "event": "fetch_error",
+          "ms": 16485.90000000596,
+          "id": "fetch-26",
+          "call": "call-25",
+          "name": "TimeoutError",
+          "message": "signal timed out"
+        },
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.011833,
+          "stdin_write_ms": 0.007524,
+          "stdin_flush_ms": 0.007964,
+          "response_queue_wait_ms": 17997.636243,
+          "http_write_ms": 0.290567,
+          "http_total_ms": 17999.036729
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239867774561669,
+            "pid": 612602,
+            "tid": 612604,
+            "request": "fetch-26",
+            "command": "source-inspect",
+            "context": "612603",
+            "bytes": 1073,
+            "sha256": "03597263de5eda5647060766f2399cc8c045dda0cd718499319f7a71abe9e800"
+          }
+        ],
+        "http_write_errors": [
+          {
+            "event": "http_write_error",
+            "mono_ns": 239867775012886,
+            "pid": 612602,
+            "tid": 612819,
+            "request": "fetch-26",
+            "command": "source-inspect",
+            "exception": "BrokenPipeError",
+            "message": "[Errno 32] Broken pipe"
+          }
+        ],
+        "browser_headers_received": false,
+        "server_events": 16,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-28",
+        "call": "call-27",
+        "command": "dump",
+        "receipt": null,
+        "browser_fetch_ms": 15000.40000000596,
+        "fetch_error": {
+          "event": "fetch_error",
+          "ms": 17000.40000000596,
+          "id": "fetch-28",
+          "call": "call-27",
+          "name": "TimeoutError",
+          "message": "signal timed out"
+        },
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 17482.395873,
+          "stdin_write_ms": 0.067228,
+          "stdin_flush_ms": 0.027026,
+          "response_queue_wait_ms": 1.849735,
+          "http_write_ms": 0.140648,
+          "http_total_ms": 17484.766209
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239867776924819,
+            "pid": 612602,
+            "tid": 612604,
+            "request": "fetch-28",
+            "command": "dump",
+            "context": "612603",
+            "bytes": 505,
+            "sha256": "d20dd811e25c7078ee6a67de07af42535bad5b5b20f0beeb583f6a6fffe673a5"
+          }
+        ],
+        "http_write_errors": [
+          {
+            "event": "http_write_error",
+            "mono_ns": 239867777135021,
+            "pid": 612602,
+            "tid": 612820,
+            "request": "fetch-28",
+            "command": "dump",
+            "exception": "BrokenPipeError",
+            "message": "[Errno 32] Broken pipe"
+          }
+        ],
+        "browser_headers_received": false,
+        "server_events": 17,
+        "absent_stage_means": "not entered, not measured zero"
+      }
+    ],
+    "blocked_before_fetch": [
+      {
+        "call": "call-29",
+        "command": "line boundary 1 outline 0,0 50,0 50,50 150,50 150,0 200,0 200,100 0,100",
+        "error": "服務未在 15 秒內回應，請稍後重試。",
+        "fetches": 0
+      },
+      {
+        "call": "call-30",
+        "command": "boundary 1",
+        "error": "服務未在 15 秒內回應，請稍後重試。",
+        "fetches": 0
+      },
+      {
+        "call": "call-31",
+        "command": "dump",
+        "error": "服務未在 15 秒內回應，請稍後重試。",
+        "fetches": 0
+      },
+      {
+        "call": "call-32",
+        "command": "boundary 1",
+        "error": "服務未在 15 秒內回應，請稍後重試。",
+        "fetches": 0
+      },
+      {
+        "call": "call-33",
+        "command": "references 1",
+        "error": "服務未在 15 秒內回應，請稍後重試。",
+        "fetches": 0
+      }
+    ],
+    "requests": [
+      {
+        "id": "fetch-2",
+        "call": "call-1",
+        "command": "line reset",
+        "receipt": null,
+        "browser_fetch_ms": 67.90000000596046,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 0.00914,
+          "fresh_total_ms": 54.400579,
+          "fresh_body_approx_ms": 54.391439,
+          "receipt_lock_wait_ms": 0.017346,
+          "bridge_lock_wait_ms": 0.007753,
+          "stdin_write_ms": 0.007465,
+          "stdin_flush_ms": 0.026343,
+          "response_queue_wait_ms": 6.494065,
+          "http_write_ms": 0.152483,
+          "http_total_ms": 61.530243
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239849450645681,
+            "pid": 612602,
+            "tid": 612604,
+            "request": "fetch-2",
+            "command": "line reset",
+            "context": "612603",
+            "bytes": 58,
+            "sha256": "2a7f828b225b5ae1127682c8a36124cabfde2fe2429e2d478b13f9ee07044484"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 23,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-4",
+        "call": "call-3",
+        "command": "section-profile-read",
+        "receipt": null,
+        "browser_fetch_ms": 51.19999998807907,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 0.007627,
+          "fresh_total_ms": 46.714642,
+          "fresh_body_approx_ms": 46.707015,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.029365,
+          "stdin_write_ms": 0.023426,
+          "stdin_flush_ms": 0.085213,
+          "response_queue_wait_ms": 0.439559,
+          "http_write_ms": 0.719466,
+          "http_total_ms": 48.351744
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239849512975564,
+            "pid": 612602,
+            "tid": 612604,
+            "request": "fetch-4",
+            "command": "section-profile-read",
+            "context": "612603",
+            "bytes": 776,
+            "sha256": "f075ec2b6bcd1866bd640ac106c0df57cbe804f71b0bc3eb1305072901fca833"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 20,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-6",
+        "call": "call-5",
+        "command": "line surface 1 origin 0 0 0 u +x v +y outline 0,0 200,0 200,100 0,100",
+        "receipt": null,
+        "browser_fetch_ms": 117.7999999821186,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 45.970869,
+          "fresh_total_ms": 103.723642,
+          "fresh_body_approx_ms": 57.752773,
+          "receipt_lock_wait_ms": 0.01467,
+          "bridge_lock_wait_ms": 0.007943,
+          "stdin_write_ms": 0.007411,
+          "stdin_flush_ms": 0.026522,
+          "response_queue_wait_ms": 10.022407,
+          "http_write_ms": 1.385593,
+          "http_total_ms": 115.635653
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239849580459713,
+            "pid": 612602,
+            "tid": 612604,
+            "request": "fetch-6",
+            "command": "line surface 1 origin 0 0 0 u +x v +y outline 0,0 200,0 200,100 0,100",
+            "context": "612603",
+            "bytes": 32,
+            "sha256": "c6e13f6fc496c2455b73019b7976a1605402150816be5e4e2fa90e0afb32be56"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 23,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-8",
+        "call": "call-7",
+        "command": "section-profile-read",
+        "receipt": null,
+        "browser_fetch_ms": 50.599999994039536,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 0.011696,
+          "fresh_total_ms": 46.903913,
+          "fresh_body_approx_ms": 46.892217,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.021796,
+          "stdin_write_ms": 0.010978,
+          "stdin_flush_ms": 0.122215,
+          "response_queue_wait_ms": 0.181886,
+          "http_write_ms": 0.197972,
+          "http_total_ms": 47.736203
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239849633480075,
+            "pid": 612602,
+            "tid": 612604,
+            "request": "fetch-8",
+            "command": "section-profile-read",
+            "context": "612603",
+            "bytes": 776,
+            "sha256": "2e37896233816269a2f9209ab71b45c3a69c616656141345c9ee3e6339fdc6e7"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 20,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-10",
+        "call": "call-9",
+        "command": "objects",
+        "receipt": null,
+        "browser_fetch_ms": 5.0,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.019028,
+          "stdin_write_ms": 0.136191,
+          "stdin_flush_ms": 1.341745,
+          "response_queue_wait_ms": 0.024904,
+          "http_write_ms": 1.384533,
+          "http_total_ms": 3.20135
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239849587806164,
+            "pid": 612602,
+            "tid": 612604,
+            "request": "fetch-10",
+            "command": "objects",
+            "context": "612603",
+            "bytes": 302,
+            "sha256": "65b83cf478e080904702e201abb5a51f240835c6f77fc88870a2ca8279424aeb"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-12",
+        "call": "call-11",
+        "command": "surfaces",
+        "receipt": null,
+        "browser_fetch_ms": 10.099999994039536,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.025656,
+          "stdin_write_ms": 0.022256,
+          "stdin_flush_ms": 0.086399,
+          "response_queue_wait_ms": 0.366723,
+          "http_write_ms": 0.617167,
+          "http_total_ms": 1.594221
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239849600766978,
+            "pid": 612602,
+            "tid": 612604,
+            "request": "fetch-12",
+            "command": "surfaces",
+            "context": "612603",
+            "bytes": 88,
+            "sha256": "fadff99be50f03049d448ab575447f7545d087c579a51ac4ea10a5311be6684e"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-14",
+        "call": "call-13",
+        "command": "boundary 1",
+        "receipt": null,
+        "browser_fetch_ms": 6.9000000059604645,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.028527,
+          "stdin_write_ms": 0.019426,
+          "stdin_flush_ms": 0.212898,
+          "response_queue_wait_ms": 0.792696,
+          "http_write_ms": 0.116388,
+          "http_total_ms": 1.935246
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239849607985546,
+            "pid": 612602,
+            "tid": 612604,
+            "request": "fetch-14",
+            "command": "boundary 1",
+            "context": "612603",
+            "bytes": 391,
+            "sha256": "0f2d1680ae2a1c42d6e77071ceb2f7d888b7808e709c6dfbf15b2173d9fb5279"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-16",
+        "call": "call-15",
+        "command": "line canvas-pos boundary 1 60 60",
+        "receipt": null,
+        "browser_fetch_ms": 76.40000000596046,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 19.784279,
+          "fresh_total_ms": 66.97922,
+          "fresh_body_approx_ms": 47.194941,
+          "receipt_lock_wait_ms": 0.012168,
+          "bridge_lock_wait_ms": 0.008843,
+          "stdin_write_ms": 0.006551,
+          "stdin_flush_ms": 0.024211,
+          "response_queue_wait_ms": 6.236503,
+          "http_write_ms": 0.102657,
+          "http_total_ms": 73.658715
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239849686543974,
+            "pid": 612602,
+            "tid": 612604,
+            "request": "fetch-16",
+            "command": "line canvas-pos boundary 1 60 60",
+            "context": "612603",
+            "bytes": 32,
+            "sha256": "c6e13f6fc496c2455b73019b7976a1605402150816be5e4e2fa90e0afb32be56"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 23,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-18",
+        "call": "call-17",
+        "command": "boundary 1",
+        "receipt": null,
+        "browser_fetch_ms": 11.300000011920929,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.01039,
+          "stdin_write_ms": 0.006638,
+          "stdin_flush_ms": 0.019335,
+          "response_queue_wait_ms": 0.164127,
+          "http_write_ms": 0.095063,
+          "http_total_ms": 0.430682
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239849695482618,
+            "pid": 612602,
+            "tid": 612604,
+            "request": "fetch-18",
+            "command": "boundary 1",
+            "context": "612603",
+            "bytes": 391,
+            "sha256": "0f2d1680ae2a1c42d6e77071ceb2f7d888b7808e709c6dfbf15b2173d9fb5279"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-20",
+        "call": "call-19",
+        "command": "obstacles 1",
+        "receipt": null,
+        "browser_fetch_ms": 9.599999994039536,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.017388,
+          "stdin_write_ms": 0.010658,
+          "stdin_flush_ms": 0.022561,
+          "response_queue_wait_ms": 0.291524,
+          "http_write_ms": 0.100775,
+          "http_total_ms": 0.662436
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239849739350027,
+            "pid": 612602,
+            "tid": 612604,
+            "request": "fetch-20",
+            "command": "obstacles 1",
+            "context": "612603",
+            "bytes": 46,
+            "sha256": "d2f633987dc4c50610693afdfa3dd4f2c85ba9cc97cac73907445f15f0277f69"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-22",
+        "call": "call-21",
+        "command": "references",
+        "receipt": null,
+        "browser_fetch_ms": 17.400000005960464,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.026132,
+          "stdin_write_ms": 0.012432,
+          "stdin_flush_ms": 0.056129,
+          "response_queue_wait_ms": 10.485836,
+          "http_write_ms": 0.109827,
+          "http_total_ms": 10.939049
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239849759085616,
+            "pid": 612602,
+            "tid": 612604,
+            "request": "fetch-22",
+            "command": "references",
+            "context": "612603",
+            "bytes": 466,
+            "sha256": "bc9e21cedd6bb1e95911add42b0f1aa2e4b88640c0297ace2ee01d80b6880945"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-24",
+        "call": "call-23",
+        "command": "dump",
+        "receipt": null,
+        "browser_fetch_ms": 4.4000000059604645,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.01075,
+          "stdin_write_ms": 0.008512,
+          "stdin_flush_ms": 0.014984,
+          "response_queue_wait_ms": 0.865286,
+          "http_write_ms": 0.13124,
+          "http_total_ms": 1.21143
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239849767045409,
+            "pid": 612602,
+            "tid": 612604,
+            "request": "fetch-24",
+            "command": "dump",
+            "context": "612603",
+            "bytes": 505,
+            "sha256": "d20dd811e25c7078ee6a67de07af42535bad5b5b20f0beeb583f6a6fffe673a5"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-26",
+        "call": "call-25",
+        "command": "source-inspect",
+        "receipt": null,
+        "browser_fetch_ms": 15000.299999982119,
+        "fetch_error": {
+          "event": "fetch_error",
+          "ms": 16485.90000000596,
+          "id": "fetch-26",
+          "call": "call-25",
+          "name": "TimeoutError",
+          "message": "signal timed out"
+        },
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.011833,
+          "stdin_write_ms": 0.007524,
+          "stdin_flush_ms": 0.007964,
+          "response_queue_wait_ms": 17997.636243,
+          "http_write_ms": 0.290567,
+          "http_total_ms": 17999.036729
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239867774561669,
+            "pid": 612602,
+            "tid": 612604,
+            "request": "fetch-26",
+            "command": "source-inspect",
+            "context": "612603",
+            "bytes": 1073,
+            "sha256": "03597263de5eda5647060766f2399cc8c045dda0cd718499319f7a71abe9e800"
+          }
+        ],
+        "http_write_errors": [
+          {
+            "event": "http_write_error",
+            "mono_ns": 239867775012886,
+            "pid": 612602,
+            "tid": 612819,
+            "request": "fetch-26",
+            "command": "source-inspect",
+            "exception": "BrokenPipeError",
+            "message": "[Errno 32] Broken pipe"
+          }
+        ],
+        "browser_headers_received": false,
+        "server_events": 16,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-28",
+        "call": "call-27",
+        "command": "dump",
+        "receipt": null,
+        "browser_fetch_ms": 15000.40000000596,
+        "fetch_error": {
+          "event": "fetch_error",
+          "ms": 17000.40000000596,
+          "id": "fetch-28",
+          "call": "call-27",
+          "name": "TimeoutError",
+          "message": "signal timed out"
+        },
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 17482.395873,
+          "stdin_write_ms": 0.067228,
+          "stdin_flush_ms": 0.027026,
+          "response_queue_wait_ms": 1.849735,
+          "http_write_ms": 0.140648,
+          "http_total_ms": 17484.766209
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239867776924819,
+            "pid": 612602,
+            "tid": 612604,
+            "request": "fetch-28",
+            "command": "dump",
+            "context": "612603",
+            "bytes": 505,
+            "sha256": "d20dd811e25c7078ee6a67de07af42535bad5b5b20f0beeb583f6a6fffe673a5"
+          }
+        ],
+        "http_write_errors": [
+          {
+            "event": "http_write_error",
+            "mono_ns": 239867777135021,
+            "pid": 612602,
+            "tid": 612820,
+            "request": "fetch-28",
+            "command": "dump",
+            "exception": "BrokenPipeError",
+            "message": "[Errno 32] Broken pipe"
+          }
+        ],
+        "browser_headers_received": false,
+        "server_events": 17,
+        "absent_stage_means": "not entered, not measured zero"
+      }
+    ],
+    "late_signal_for_already_received_headers": 12,
+    "console_errors": [],
+    "source_identity": {
+      "schema": "geometry-runtime/1",
+      "version": "afe9bc3739109bcf734a82dc4265b1ac03a59d9454f3e9df4335773a7e16d90a",
+      "fresh": true,
+      "root": "/tmp/geometry-209-segments",
+      "pid": 612602,
+      "session": "6970386dc9fe4923a1c3944d88e20e5c"
+    },
+    "tool_hashes": {
+      "browser.cjs": "782b50b161db9a05a81b3f5255c23da98b0f25feb5890431ecd9e2d3e7e4833c",
+      "server.py": "d4a8797c0b10f168d67ad5d7a229cda993d2295a6eeb8fc78d12d697ab0ada2a"
+    },
+    "native_pid": 612603,
+    "binary_sha256": "b49dccd56ee3729d48dcf5f8a908ae619fdd994d91a59cd70af691034adc76e3",
+    "receipt_evidence": null
+  },
+  {
+    "case": "receipt18",
+    "p7_pass": true,
+    "phase": "ready",
+    "error": "",
+    "wall_ms": 20859,
+    "server_exit": {
+      "code": 0,
+      "signal": null
+    },
+    "timeouts": [
+      {
+        "id": "fetch-6",
+        "call": "call-5",
+        "command": "line surface 1 origin 0 0 0 u +x v +y outline 0,0 200,0 200,100 0,100",
+        "receipt": null,
+        "browser_fetch_ms": 15000.600000023842,
+        "fetch_error": {
+          "event": "fetch_error",
+          "ms": 15915.5,
+          "id": "fetch-6",
+          "call": "call-5",
+          "name": "TimeoutError",
+          "message": "signal timed out"
+        },
+        "stages": {
+          "runtime_lock_wait_ms": 33.025768,
+          "fresh_total_ms": 86.993477,
+          "fresh_body_approx_ms": 53.967709,
+          "receipt_lock_wait_ms": 17898.452149,
+          "bridge_lock_wait_ms": 0.01946,
+          "stdin_write_ms": 0.008565,
+          "stdin_flush_ms": 0.026625,
+          "response_queue_wait_ms": 14.394886,
+          "http_write_ms": 0.218629,
+          "http_total_ms": 18000.785378
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239908390925357,
+            "pid": 613076,
+            "tid": 613078,
+            "request": "fetch-6",
+            "command": "line surface 1 origin 0 0 0 u +x v +y outline 0,0 200,0 200,100 0,100",
+            "context": "613077",
+            "bytes": 32,
+            "sha256": "c6e13f6fc496c2455b73019b7976a1605402150816be5e4e2fa90e0afb32be56"
+          }
+        ],
+        "http_write_errors": [
+          {
+            "event": "http_write_error",
+            "mono_ns": 239908391832367,
+            "pid": 613076,
+            "tid": 613287,
+            "request": "fetch-6",
+            "command": "line surface 1 origin 0 0 0 u +x v +y outline 0,0 200,0 200,100 0,100",
+            "exception": "BrokenPipeError",
+            "message": "[Errno 32] Broken pipe"
+          }
+        ],
+        "browser_headers_received": false,
+        "server_events": 24,
+        "absent_stage_means": "not entered, not measured zero"
+      }
+    ],
+    "blocked_before_fetch": [],
+    "requests": [
+      {
+        "id": "fetch-2",
+        "call": "call-1",
+        "command": "line reset",
+        "receipt": null,
+        "browser_fetch_ms": 63.80000001192093,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 0.009321,
+          "fresh_total_ms": 50.88508,
+          "fresh_body_approx_ms": 50.875759,
+          "receipt_lock_wait_ms": 0.01691,
+          "bridge_lock_wait_ms": 0.00791,
+          "stdin_write_ms": 0.007389,
+          "stdin_flush_ms": 0.022681,
+          "response_queue_wait_ms": 7.75053,
+          "http_write_ms": 0.132003,
+          "http_total_ms": 59.18318
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239890358638971,
+            "pid": 613076,
+            "tid": 613078,
+            "request": "fetch-2",
+            "command": "line reset",
+            "context": "613077",
+            "bytes": 58,
+            "sha256": "2a7f828b225b5ae1127682c8a36124cabfde2fe2429e2d478b13f9ee07044484"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 23,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-4",
+        "call": "call-3",
+        "command": "section-profile-read",
+        "receipt": null,
+        "browser_fetch_ms": 53.39999997615814,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 0.017337,
+          "fresh_total_ms": 48.697726,
+          "fresh_body_approx_ms": 48.680389000000005,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.024723,
+          "stdin_write_ms": 0.101414,
+          "stdin_flush_ms": 0.020033,
+          "response_queue_wait_ms": 0.279835,
+          "http_write_ms": 0.141705,
+          "http_total_ms": 49.536709
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239890424537602,
+            "pid": 613076,
+            "tid": 613078,
+            "request": "fetch-4",
+            "command": "section-profile-read",
+            "context": "613077",
+            "bytes": 776,
+            "sha256": "f075ec2b6bcd1866bd640ac106c0df57cbe804f71b0bc3eb1305072901fca833"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 20,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-6",
+        "call": "call-5",
+        "command": "line surface 1 origin 0 0 0 u +x v +y outline 0,0 200,0 200,100 0,100",
+        "receipt": null,
+        "browser_fetch_ms": 15000.600000023842,
+        "fetch_error": {
+          "event": "fetch_error",
+          "ms": 15915.5,
+          "id": "fetch-6",
+          "call": "call-5",
+          "name": "TimeoutError",
+          "message": "signal timed out"
+        },
+        "stages": {
+          "runtime_lock_wait_ms": 33.025768,
+          "fresh_total_ms": 86.993477,
+          "fresh_body_approx_ms": 53.967709,
+          "receipt_lock_wait_ms": 17898.452149,
+          "bridge_lock_wait_ms": 0.01946,
+          "stdin_write_ms": 0.008565,
+          "stdin_flush_ms": 0.026625,
+          "response_queue_wait_ms": 14.394886,
+          "http_write_ms": 0.218629,
+          "http_total_ms": 18000.785378
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239908390925357,
+            "pid": 613076,
+            "tid": 613078,
+            "request": "fetch-6",
+            "command": "line surface 1 origin 0 0 0 u +x v +y outline 0,0 200,0 200,100 0,100",
+            "context": "613077",
+            "bytes": 32,
+            "sha256": "c6e13f6fc496c2455b73019b7976a1605402150816be5e4e2fa90e0afb32be56"
+          }
+        ],
+        "http_write_errors": [
+          {
+            "event": "http_write_error",
+            "mono_ns": 239908391832367,
+            "pid": 613076,
+            "tid": 613287,
+            "request": "fetch-6",
+            "command": "line surface 1 origin 0 0 0 u +x v +y outline 0,0 200,0 200,100 0,100",
+            "exception": "BrokenPipeError",
+            "message": "[Errno 32] Broken pipe"
+          }
+        ],
+        "browser_headers_received": false,
+        "server_events": 24,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-7",
+        "call": "call-5",
+        "command": null,
+        "receipt": "631ca45f-4aa7-4321-bf17-f42a549d3f7e",
+        "browser_fetch_ms": 3014.800000011921,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": 3003.281113,
+          "bridge_lock_wait_ms": null,
+          "stdin_write_ms": null,
+          "stdin_flush_ms": null,
+          "response_queue_wait_ms": null,
+          "http_write_ms": 0.138511,
+          "http_total_ms": 3004.026275
+        },
+        "native_responses": [],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 8,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-9",
+        "call": "call-8",
+        "command": "section-profile-read",
+        "receipt": null,
+        "browser_fetch_ms": 76,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 0.021012,
+          "fresh_total_ms": 68.25919,
+          "fresh_body_approx_ms": 68.238178,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.134954,
+          "stdin_write_ms": 0.008191,
+          "stdin_flush_ms": 0.042509,
+          "response_queue_wait_ms": 0.191429,
+          "http_write_ms": 0.115408,
+          "http_total_ms": 69.035017
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239908472225474,
+            "pid": 613076,
+            "tid": 613078,
+            "request": "fetch-9",
+            "command": "section-profile-read",
+            "context": "613077",
+            "bytes": 776,
+            "sha256": "2e37896233816269a2f9209ab71b45c3a69c616656141345c9ee3e6339fdc6e7"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 20,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-11",
+        "call": "call-10",
+        "command": "objects",
+        "receipt": null,
+        "browser_fetch_ms": 8,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.198457,
+          "stdin_write_ms": 0.019596,
+          "stdin_flush_ms": 0.618721,
+          "response_queue_wait_ms": 0.023963,
+          "http_write_ms": 0.158622,
+          "http_total_ms": 1.295458
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239908405256399,
+            "pid": 613076,
+            "tid": 613078,
+            "request": "fetch-11",
+            "command": "objects",
+            "context": "613077",
+            "bytes": 302,
+            "sha256": "65b83cf478e080904702e201abb5a51f240835c6f77fc88870a2ca8279424aeb"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-13",
+        "call": "call-12",
+        "command": "surfaces",
+        "receipt": null,
+        "browser_fetch_ms": 13.799999982118607,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.019523,
+          "stdin_write_ms": 0.018151,
+          "stdin_flush_ms": 0.050707,
+          "response_queue_wait_ms": 0.240354,
+          "http_write_ms": 0.948127,
+          "http_total_ms": 1.515389
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239908419735999,
+            "pid": 613076,
+            "tid": 613078,
+            "request": "fetch-13",
+            "command": "surfaces",
+            "context": "613077",
+            "bytes": 88,
+            "sha256": "fadff99be50f03049d448ab575447f7545d087c579a51ac4ea10a5311be6684e"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-15",
+        "call": "call-14",
+        "command": "boundary 1",
+        "receipt": null,
+        "browser_fetch_ms": 6.199999988079071,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.017016,
+          "stdin_write_ms": 0.014899,
+          "stdin_flush_ms": 0.033675,
+          "response_queue_wait_ms": 2.874774,
+          "http_write_ms": 0.091897,
+          "http_total_ms": 3.205572
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239908425089358,
+            "pid": 613076,
+            "tid": 613078,
+            "request": "fetch-15",
+            "command": "boundary 1",
+            "context": "613077",
+            "bytes": 391,
+            "sha256": "0f2d1680ae2a1c42d6e77071ceb2f7d888b7808e709c6dfbf15b2173d9fb5279"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-17",
+        "call": "call-16",
+        "command": "line canvas-pos boundary 1 60 60",
+        "receipt": null,
+        "browser_fetch_ms": 95.0,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 39.559354,
+          "fresh_total_ms": 88.706305,
+          "fresh_body_approx_ms": 49.146951,
+          "receipt_lock_wait_ms": 0.012405,
+          "bridge_lock_wait_ms": 0.008163,
+          "stdin_write_ms": 0.007079,
+          "stdin_flush_ms": 0.025779,
+          "response_queue_wait_ms": 3.296008,
+          "http_write_ms": 0.119276,
+          "http_total_ms": 92.424886
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239908524177140,
+            "pid": 613076,
+            "tid": 613078,
+            "request": "fetch-17",
+            "command": "line canvas-pos boundary 1 60 60",
+            "context": "613077",
+            "bytes": 32,
+            "sha256": "c6e13f6fc496c2455b73019b7976a1605402150816be5e4e2fa90e0afb32be56"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 23,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-19",
+        "call": "call-18",
+        "command": "boundary 1",
+        "receipt": null,
+        "browser_fetch_ms": 3.4000000059604645,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.024511,
+          "stdin_write_ms": 0.015691,
+          "stdin_flush_ms": 0.02954,
+          "response_queue_wait_ms": 0.251169,
+          "http_write_ms": 0.196108,
+          "http_total_ms": 0.860191
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239908531970293,
+            "pid": 613076,
+            "tid": 613078,
+            "request": "fetch-19",
+            "command": "boundary 1",
+            "context": "613077",
+            "bytes": 391,
+            "sha256": "0f2d1680ae2a1c42d6e77071ceb2f7d888b7808e709c6dfbf15b2173d9fb5279"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-21",
+        "call": "call-20",
+        "command": "obstacles 1",
+        "receipt": null,
+        "browser_fetch_ms": 11.5,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.022911,
+          "stdin_write_ms": 0.012275,
+          "stdin_flush_ms": 0.061979,
+          "response_queue_wait_ms": 1.599665,
+          "http_write_ms": 0.181713,
+          "http_total_ms": 2.326902
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239908565847186,
+            "pid": 613076,
+            "tid": 613078,
+            "request": "fetch-21",
+            "command": "obstacles 1",
+            "context": "613077",
+            "bytes": 46,
+            "sha256": "d2f633987dc4c50610693afdfa3dd4f2c85ba9cc97cac73907445f15f0277f69"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-23",
+        "call": "call-22",
+        "command": "references",
+        "receipt": null,
+        "browser_fetch_ms": 14,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.016428,
+          "stdin_write_ms": 0.010003,
+          "stdin_flush_ms": 0.030588,
+          "response_queue_wait_ms": 7.557057,
+          "http_write_ms": 0.152977,
+          "http_total_ms": 8.481324
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239908586032769,
+            "pid": 613076,
+            "tid": 613078,
+            "request": "fetch-23",
+            "command": "references",
+            "context": "613077",
+            "bytes": 466,
+            "sha256": "bc9e21cedd6bb1e95911add42b0f1aa2e4b88640c0297ace2ee01d80b6880945"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-25",
+        "call": "call-24",
+        "command": "dump",
+        "receipt": null,
+        "browser_fetch_ms": 5.799999982118607,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.01203,
+          "stdin_write_ms": 0.00723,
+          "stdin_flush_ms": 0.019851,
+          "response_queue_wait_ms": 1.543444,
+          "http_write_ms": 0.117942,
+          "http_total_ms": 1.863594
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239908594460186,
+            "pid": 613076,
+            "tid": 613078,
+            "request": "fetch-25",
+            "command": "dump",
+            "context": "613077",
+            "bytes": 505,
+            "sha256": "d20dd811e25c7078ee6a67de07af42535bad5b5b20f0beeb583f6a6fffe673a5"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-27",
+        "call": "call-26",
+        "command": "source-inspect",
+        "receipt": null,
+        "browser_fetch_ms": 3.5,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.011403,
+          "stdin_write_ms": 0.00717,
+          "stdin_flush_ms": 0.011108,
+          "response_queue_wait_ms": 0.947404,
+          "http_write_ms": 0.117485,
+          "http_total_ms": 1.240464
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239908598731753,
+            "pid": 613076,
+            "tid": 613078,
+            "request": "fetch-27",
+            "command": "source-inspect",
+            "context": "613077",
+            "bytes": 1073,
+            "sha256": "03597263de5eda5647060766f2399cc8c045dda0cd718499319f7a71abe9e800"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-29",
+        "call": "call-28",
+        "command": "line boundary 1 outline 0,0 50,0 50,50 150,50 150,0 200,0 200,100 0,100",
+        "receipt": null,
+        "browser_fetch_ms": 127.40000000596046,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 0.026138,
+          "fresh_total_ms": 102.149771,
+          "fresh_body_approx_ms": 102.123633,
+          "receipt_lock_wait_ms": 0.013759,
+          "bridge_lock_wait_ms": 0.009394,
+          "stdin_write_ms": 0.010765,
+          "stdin_flush_ms": 0.02382,
+          "response_queue_wait_ms": 15.474015,
+          "http_write_ms": 0.181081,
+          "http_total_ms": 118.669607
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239908874054832,
+            "pid": 613076,
+            "tid": 613078,
+            "request": "fetch-29",
+            "command": "line boundary 1 outline 0,0 50,0 50,50 150,50 150,0 200,0 200,100 0,100",
+            "context": "613077",
+            "bytes": 32,
+            "sha256": "c6e13f6fc496c2455b73019b7976a1605402150816be5e4e2fa90e0afb32be56"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 23,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-31",
+        "call": "call-30",
+        "command": "section-profile-read",
+        "receipt": null,
+        "browser_fetch_ms": 71.90000000596046,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 0.021419,
+          "fresh_total_ms": 67.346472,
+          "fresh_body_approx_ms": 67.32505300000001,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.020458,
+          "stdin_write_ms": 0.03291,
+          "stdin_flush_ms": 0.060928,
+          "response_queue_wait_ms": 0.459324,
+          "http_write_ms": 0.103327,
+          "http_total_ms": 68.395163
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239908949673667,
+            "pid": 613076,
+            "tid": 613078,
+            "request": "fetch-31",
+            "command": "section-profile-read",
+            "context": "613077",
+            "bytes": 776,
+            "sha256": "238d853233c269cc6044c26f6f478a4fd857ac3b70f8604b963a1c90c5a96b36"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 20,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-33",
+        "call": "call-32",
+        "command": "objects",
+        "receipt": null,
+        "browser_fetch_ms": 9.099999994039536,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.028603,
+          "stdin_write_ms": 0.020127,
+          "stdin_flush_ms": 0.113866,
+          "response_queue_wait_ms": 3.26646,
+          "http_write_ms": 14.006564,
+          "http_total_ms": 17.960668
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239908885102902,
+            "pid": 613076,
+            "tid": 613078,
+            "request": "fetch-33",
+            "command": "objects",
+            "context": "613077",
+            "bytes": 303,
+            "sha256": "9fc02f48c0f21f9d5a0546c9daed5cd23258e41d13cd3f6df2c328342788f30a"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-35",
+        "call": "call-34",
+        "command": "surfaces",
+        "receipt": null,
+        "browser_fetch_ms": 6.0999999940395355,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.028706,
+          "stdin_write_ms": 0.020419,
+          "stdin_flush_ms": 0.176937,
+          "response_queue_wait_ms": 0.012425,
+          "http_write_ms": 0.549163,
+          "http_total_ms": 1.184817
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239908904317372,
+            "pid": 613076,
+            "tid": 613078,
+            "request": "fetch-35",
+            "command": "surfaces",
+            "context": "613077",
+            "bytes": 88,
+            "sha256": "fadff99be50f03049d448ab575447f7545d087c579a51ac4ea10a5311be6684e"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-37",
+        "call": "call-36",
+        "command": "boundary 1",
+        "receipt": null,
+        "browser_fetch_ms": 7.5999999940395355,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.029051,
+          "stdin_write_ms": 0.024242,
+          "stdin_flush_ms": 0.069969,
+          "response_queue_wait_ms": 0.116238,
+          "http_write_ms": 0.592662,
+          "http_total_ms": 1.094394
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239908914024007,
+            "pid": 613076,
+            "tid": 613078,
+            "request": "fetch-37",
+            "command": "boundary 1",
+            "context": "613077",
+            "bytes": 575,
+            "sha256": "c6fcf51f2cb685468e2ab4797caab12d902e33ffdd56864cd2a4499663ff76c6"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-39",
+        "call": "call-38",
+        "command": "boundary 1",
+        "receipt": null,
+        "browser_fetch_ms": 6.200000017881393,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.030862,
+          "stdin_write_ms": 0.025735,
+          "stdin_flush_ms": 0.114091,
+          "response_queue_wait_ms": 0.233863,
+          "http_write_ms": 0.165997,
+          "http_total_ms": 0.923375
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239908923405784,
+            "pid": 613076,
+            "tid": 613078,
+            "request": "fetch-39",
+            "command": "boundary 1",
+            "context": "613077",
+            "bytes": 575,
+            "sha256": "c6fcf51f2cb685468e2ab4797caab12d902e33ffdd56864cd2a4499663ff76c6"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-41",
+        "call": "call-40",
+        "command": "obstacles 1",
+        "receipt": null,
+        "browser_fetch_ms": 14.199999988079071,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.019467,
+          "stdin_write_ms": 0.015662,
+          "stdin_flush_ms": 0.762606,
+          "response_queue_wait_ms": 0.022229,
+          "http_write_ms": 0.192926,
+          "http_total_ms": 1.227274
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239908941611134,
+            "pid": 613076,
+            "tid": 613078,
+            "request": "fetch-41",
+            "command": "obstacles 1",
+            "context": "613077",
+            "bytes": 46,
+            "sha256": "d2f633987dc4c50610693afdfa3dd4f2c85ba9cc97cac73907445f15f0277f69"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-43",
+        "call": "call-42",
+        "command": "references",
+        "receipt": null,
+        "browser_fetch_ms": 3.5999999940395355,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.019988,
+          "stdin_write_ms": 0.015468,
+          "stdin_flush_ms": 0.585836,
+          "response_queue_wait_ms": 0.18748,
+          "http_write_ms": 3.648651,
+          "http_total_ms": 4.707873
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239908945507221,
+            "pid": 613076,
+            "tid": 613078,
+            "request": "fetch-43",
+            "command": "references",
+            "context": "613077",
+            "bytes": 466,
+            "sha256": "0780b18a054aa7b52c02f0001e811de810ab7a402a645667fae359a05289b5fd"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-45",
+        "call": "call-44",
+        "command": "dump",
+        "receipt": null,
+        "browser_fetch_ms": 3.0999999940395355,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.016066,
+          "stdin_write_ms": 0.012586,
+          "stdin_flush_ms": 0.64876,
+          "response_queue_wait_ms": 0.194966,
+          "http_write_ms": 0.100155,
+          "http_total_ms": 1.213303
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239908952283457,
+            "pid": 613076,
+            "tid": 613078,
+            "request": "fetch-45",
+            "command": "dump",
+            "context": "613077",
+            "bytes": 529,
+            "sha256": "bc44149fb1ed9dfd4116c0eb2c1c482b0d1507ce4b158e8b745f16cf4464b9fa"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-47",
+        "call": "call-46",
+        "command": "source-inspect",
+        "receipt": null,
+        "browser_fetch_ms": 7.0999999940395355,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.019747,
+          "stdin_write_ms": 0.014798,
+          "stdin_flush_ms": 0.026188,
+          "response_queue_wait_ms": 1.415439,
+          "http_write_ms": 0.10797,
+          "http_total_ms": 1.788865
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239908956225025,
+            "pid": 613076,
+            "tid": 613078,
+            "request": "fetch-47",
+            "command": "source-inspect",
+            "context": "613077",
+            "bytes": 1073,
+            "sha256": "a85fe3849cfe7bd3c9490918ba4add7f6d220e3bb5d1a6c9dd214e72ec616783"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-49",
+        "call": "call-48",
+        "command": "boundary 1",
+        "receipt": null,
+        "browser_fetch_ms": 4.199999988079071,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.02235,
+          "stdin_write_ms": 0.01648,
+          "stdin_flush_ms": 0.040508,
+          "response_queue_wait_ms": 0.172375,
+          "http_write_ms": 0.124514,
+          "http_total_ms": 0.633878
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239909154953932,
+            "pid": 613076,
+            "tid": 613078,
+            "request": "fetch-49",
+            "command": "boundary 1",
+            "context": "613077",
+            "bytes": 575,
+            "sha256": "c6fcf51f2cb685468e2ab4797caab12d902e33ffdd56864cd2a4499663ff76c6"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 16,
+        "absent_stage_means": "not entered, not measured zero"
+      }
+    ],
+    "late_signal_for_already_received_headers": 2,
+    "console_errors": [],
+    "source_identity": {
+      "schema": "geometry-runtime/1",
+      "version": "afe9bc3739109bcf734a82dc4265b1ac03a59d9454f3e9df4335773a7e16d90a",
+      "fresh": true,
+      "root": "/tmp/geometry-209-segments",
+      "pid": 613076,
+      "session": "db477fc577a147ca9e956322fd47a3cf"
+    },
+    "tool_hashes": {
+      "browser.cjs": "782b50b161db9a05a81b3f5255c23da98b0f25feb5890431ecd9e2d3e7e4833c",
+      "server.py": "d4a8797c0b10f168d67ad5d7a229cda993d2295a6eeb8fc78d12d697ab0ada2a"
+    },
+    "native_pid": 613077,
+    "binary_sha256": "b49dccd56ee3729d48dcf5f8a908ae619fdd994d91a59cd70af691034adc76e3",
+    "receipt_evidence": {
+      "business_request_id": "631ca45f-4aa7-4321-bf17-f42a549d3f7e",
+      "mutation_fetch": "fetch-6",
+      "receipt_fetch": "fetch-7",
+      "call": "call-5",
+      "result": {
+        "ok": true,
+        "deletedObjects": []
+      },
+      "mutation_stdin_writes": 1,
+      "mutation_native_replies": 1,
+      "receipt_stdin_writes": 0,
+      "receipt_delivered": true
+    }
+  },
+  {
+    "case": "renderer-cpu20",
+    "p7_pass": true,
+    "phase": "ready",
+    "error": "",
+    "wall_ms": 16835,
+    "server_exit": {
+      "code": 0,
+      "signal": null
+    },
+    "timeouts": [],
+    "blocked_before_fetch": [],
+    "requests": [
+      {
+        "id": "fetch-2",
+        "call": "call-1",
+        "command": "line reset",
+        "receipt": null,
+        "browser_fetch_ms": 203.2000000178814,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 0.01102,
+          "fresh_total_ms": 131.123825,
+          "fresh_body_approx_ms": 131.112805,
+          "receipt_lock_wait_ms": 0.021356,
+          "bridge_lock_wait_ms": 0.008267,
+          "stdin_write_ms": 0.007251,
+          "stdin_flush_ms": 0.023514,
+          "response_queue_wait_ms": 7.011515,
+          "http_write_ms": 0.598644,
+          "http_total_ms": 139.265407
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239806538377788,
+            "pid": 611835,
+            "tid": 611837,
+            "request": "fetch-2",
+            "command": "line reset",
+            "context": "611836",
+            "bytes": 58,
+            "sha256": "2a7f828b225b5ae1127682c8a36124cabfde2fe2429e2d478b13f9ee07044484"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 23,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-4",
+        "call": "call-3",
+        "command": "section-profile-read",
+        "receipt": null,
+        "browser_fetch_ms": 284.19999998807907,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 0.010699,
+          "fresh_total_ms": 70.68824,
+          "fresh_body_approx_ms": 70.67754099999999,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.055596,
+          "stdin_write_ms": 0.020029,
+          "stdin_flush_ms": 0.797904,
+          "response_queue_wait_ms": 15.450698,
+          "http_write_ms": 0.203042,
+          "http_total_ms": 87.721692
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239806972109474,
+            "pid": 611835,
+            "tid": 611837,
+            "request": "fetch-4",
+            "command": "section-profile-read",
+            "context": "611836",
+            "bytes": 776,
+            "sha256": "f075ec2b6bcd1866bd640ac106c0df57cbe804f71b0bc3eb1305072901fca833"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 20,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-6",
+        "call": "call-5",
+        "command": "line surface 1 origin 0 0 0 u +x v +y outline 0,0 200,0 200,100 0,100",
+        "receipt": null,
+        "browser_fetch_ms": 242.40000000596046,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 11.450299,
+          "fresh_total_ms": 70.926217,
+          "fresh_body_approx_ms": 59.47591799999999,
+          "receipt_lock_wait_ms": 0.012485,
+          "bridge_lock_wait_ms": 0.007771,
+          "stdin_write_ms": 0.189968,
+          "stdin_flush_ms": 0.020188,
+          "response_queue_wait_ms": 13.985491,
+          "http_write_ms": 0.849165,
+          "http_total_ms": 86.419979
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239807042057650,
+            "pid": 611835,
+            "tid": 611837,
+            "request": "fetch-6",
+            "command": "line surface 1 origin 0 0 0 u +x v +y outline 0,0 200,0 200,100 0,100",
+            "context": "611836",
+            "bytes": 32,
+            "sha256": "c6e13f6fc496c2455b73019b7976a1605402150816be5e4e2fa90e0afb32be56"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 23,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-8",
+        "call": "call-7",
+        "command": "section-profile-read",
+        "receipt": null,
+        "browser_fetch_ms": 166.30000001192093,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 0.010666,
+          "fresh_total_ms": 66.889115,
+          "fresh_body_approx_ms": 66.878449,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.016144,
+          "stdin_write_ms": 0.009731,
+          "stdin_flush_ms": 0.027071,
+          "response_queue_wait_ms": 0.423041,
+          "http_write_ms": 0.164092,
+          "http_total_ms": 67.82979
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239807506067983,
+            "pid": 611835,
+            "tid": 611837,
+            "request": "fetch-8",
+            "command": "section-profile-read",
+            "context": "611836",
+            "bytes": 776,
+            "sha256": "2e37896233816269a2f9209ab71b45c3a69c616656141345c9ee3e6339fdc6e7"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 20,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-10",
+        "call": "call-9",
+        "command": "objects",
+        "receipt": null,
+        "browser_fetch_ms": 139.40000000596046,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.014717,
+          "stdin_write_ms": 0.009195,
+          "stdin_flush_ms": 0.019296,
+          "response_queue_wait_ms": 1.421091,
+          "http_write_ms": 0.132634,
+          "http_total_ms": 1.886654
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239807509740341,
+            "pid": 611835,
+            "tid": 611837,
+            "request": "fetch-10",
+            "command": "objects",
+            "context": "611836",
+            "bytes": 302,
+            "sha256": "65b83cf478e080904702e201abb5a51f240835c6f77fc88870a2ca8279424aeb"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-12",
+        "call": "call-11",
+        "command": "surfaces",
+        "receipt": null,
+        "browser_fetch_ms": 103.09999999403954,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.017594,
+          "stdin_write_ms": 0.035122,
+          "stdin_flush_ms": 0.020883,
+          "response_queue_wait_ms": 0.207432,
+          "http_write_ms": 0.441287,
+          "http_total_ms": 2.038377
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239807655542235,
+            "pid": 611835,
+            "tid": 611837,
+            "request": "fetch-12",
+            "command": "surfaces",
+            "context": "611836",
+            "bytes": 88,
+            "sha256": "fadff99be50f03049d448ab575447f7545d087c579a51ac4ea10a5311be6684e"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-14",
+        "call": "call-13",
+        "command": "boundary 1",
+        "receipt": null,
+        "browser_fetch_ms": 194.5,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.017101,
+          "stdin_write_ms": 0.038892,
+          "stdin_flush_ms": 0.022098,
+          "response_queue_wait_ms": 0.321549,
+          "http_write_ms": 0.150888,
+          "http_total_ms": 0.76888
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239807811466722,
+            "pid": 611835,
+            "tid": 611837,
+            "request": "fetch-14",
+            "command": "boundary 1",
+            "context": "611836",
+            "bytes": 391,
+            "sha256": "0f2d1680ae2a1c42d6e77071ceb2f7d888b7808e709c6dfbf15b2173d9fb5279"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-16",
+        "call": "call-15",
+        "command": "line canvas-pos boundary 1 60 60",
+        "receipt": null,
+        "browser_fetch_ms": 182.80000001192093,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 0.01734,
+          "fresh_total_ms": 58.230086,
+          "fresh_body_approx_ms": 58.212746,
+          "receipt_lock_wait_ms": 0.01379,
+          "bridge_lock_wait_ms": 0.011223,
+          "stdin_write_ms": 0.039096,
+          "stdin_flush_ms": 0.024786,
+          "response_queue_wait_ms": 4.032543,
+          "http_write_ms": 0.154729,
+          "http_total_ms": 62.897325
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239808104327564,
+            "pid": 611835,
+            "tid": 611837,
+            "request": "fetch-16",
+            "command": "line canvas-pos boundary 1 60 60",
+            "context": "611836",
+            "bytes": 32,
+            "sha256": "c6e13f6fc496c2455b73019b7976a1605402150816be5e4e2fa90e0afb32be56"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 23,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-18",
+        "call": "call-17",
+        "command": "boundary 1",
+        "receipt": null,
+        "browser_fetch_ms": 602.4000000059605,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.015346,
+          "stdin_write_ms": 0.009555,
+          "stdin_flush_ms": 0.024734,
+          "response_queue_wait_ms": 0.91171,
+          "http_write_ms": 0.153251,
+          "http_total_ms": 1.336157
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239808629279118,
+            "pid": 611835,
+            "tid": 611837,
+            "request": "fetch-18",
+            "command": "boundary 1",
+            "context": "611836",
+            "bytes": 391,
+            "sha256": "0f2d1680ae2a1c42d6e77071ceb2f7d888b7808e709c6dfbf15b2173d9fb5279"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-20",
+        "call": "call-19",
+        "command": "dump",
+        "receipt": null,
+        "browser_fetch_ms": 65.7999999821186,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.018143,
+          "stdin_write_ms": 0.034395,
+          "stdin_flush_ms": 0.027529,
+          "response_queue_wait_ms": 2.442665,
+          "http_write_ms": 0.160984,
+          "http_total_ms": 4.825601
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239809291414808,
+            "pid": 611835,
+            "tid": 611837,
+            "request": "fetch-20",
+            "command": "dump",
+            "context": "611836",
+            "bytes": 505,
+            "sha256": "d20dd811e25c7078ee6a67de07af42535bad5b5b20f0beeb583f6a6fffe673a5"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-22",
+        "call": "call-21",
+        "command": "obstacles 1",
+        "receipt": null,
+        "browser_fetch_ms": 254.0,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.015157,
+          "stdin_write_ms": 0.015012,
+          "stdin_flush_ms": 0.023169,
+          "response_queue_wait_ms": 1.426799,
+          "http_write_ms": 0.232093,
+          "http_total_ms": 1.954428
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239810649135647,
+            "pid": 611835,
+            "tid": 611837,
+            "request": "fetch-22",
+            "command": "obstacles 1",
+            "context": "611836",
+            "bytes": 46,
+            "sha256": "d2f633987dc4c50610693afdfa3dd4f2c85ba9cc97cac73907445f15f0277f69"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-24",
+        "call": "call-23",
+        "command": "references",
+        "receipt": null,
+        "browser_fetch_ms": 101.2999999821186,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.015334,
+          "stdin_write_ms": 0.011159,
+          "stdin_flush_ms": 0.012018,
+          "response_queue_wait_ms": 1.544917,
+          "http_write_ms": 0.181499,
+          "http_total_ms": 2.03078
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239811286595225,
+            "pid": 611835,
+            "tid": 611837,
+            "request": "fetch-24",
+            "command": "references",
+            "context": "611836",
+            "bytes": 466,
+            "sha256": "bc9e21cedd6bb1e95911add42b0f1aa2e4b88640c0297ace2ee01d80b6880945"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-26",
+        "call": "call-25",
+        "command": "dump",
+        "receipt": null,
+        "browser_fetch_ms": 114.80000001192093,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.016446,
+          "stdin_write_ms": 0.009437,
+          "stdin_flush_ms": 0.020987,
+          "response_queue_wait_ms": 2.335268,
+          "http_write_ms": 0.158293,
+          "http_total_ms": 2.784971
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239811432750608,
+            "pid": 611835,
+            "tid": 611837,
+            "request": "fetch-26",
+            "command": "dump",
+            "context": "611836",
+            "bytes": 505,
+            "sha256": "d20dd811e25c7078ee6a67de07af42535bad5b5b20f0beeb583f6a6fffe673a5"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-28",
+        "call": "call-27",
+        "command": "source-inspect",
+        "receipt": null,
+        "browser_fetch_ms": 169.90000000596046,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.103251,
+          "stdin_write_ms": 0.019554,
+          "stdin_flush_ms": 0.079576,
+          "response_queue_wait_ms": 1.333607,
+          "http_write_ms": 0.155012,
+          "http_total_ms": 2.021164
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239811579384555,
+            "pid": 611835,
+            "tid": 611837,
+            "request": "fetch-28",
+            "command": "source-inspect",
+            "context": "611836",
+            "bytes": 1073,
+            "sha256": "03597263de5eda5647060766f2399cc8c045dda0cd718499319f7a71abe9e800"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-30",
+        "call": "call-29",
+        "command": "line boundary 1 outline 0,0 50,0 50,50 150,50 150,0 200,0 200,100 0,100",
+        "receipt": null,
+        "browser_fetch_ms": 393.40000000596046,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 0.011504,
+          "fresh_total_ms": 57.364714,
+          "fresh_body_approx_ms": 57.35321,
+          "receipt_lock_wait_ms": 0.01796,
+          "bridge_lock_wait_ms": 0.011141,
+          "stdin_write_ms": 0.010069,
+          "stdin_flush_ms": 0.029134,
+          "response_queue_wait_ms": 17.6165,
+          "http_write_ms": 0.360088,
+          "http_total_ms": 75.842487
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239816173843277,
+            "pid": 611835,
+            "tid": 611837,
+            "request": "fetch-30",
+            "command": "line boundary 1 outline 0,0 50,0 50,50 150,50 150,0 200,0 200,100 0,100",
+            "context": "611836",
+            "bytes": 32,
+            "sha256": "c6e13f6fc496c2455b73019b7976a1605402150816be5e4e2fa90e0afb32be56"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 23,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-32",
+        "call": "call-31",
+        "command": "section-profile-read",
+        "receipt": null,
+        "browser_fetch_ms": 296.19999998807907,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 0.009994,
+          "fresh_total_ms": 79.116703,
+          "fresh_body_approx_ms": 79.106709,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.013211,
+          "stdin_write_ms": 0.007389,
+          "stdin_flush_ms": 0.011694,
+          "response_queue_wait_ms": 0.200852,
+          "http_write_ms": 0.125094,
+          "http_total_ms": 79.702356
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239816738119354,
+            "pid": 611835,
+            "tid": 611837,
+            "request": "fetch-32",
+            "command": "section-profile-read",
+            "context": "611836",
+            "bytes": 776,
+            "sha256": "238d853233c269cc6044c26f6f478a4fd857ac3b70f8604b963a1c90c5a96b36"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 20,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-34",
+        "call": "call-33",
+        "command": "objects",
+        "receipt": null,
+        "browser_fetch_ms": 276.7999999821186,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.031482,
+          "stdin_write_ms": 0.019829,
+          "stdin_flush_ms": 0.034098,
+          "response_queue_wait_ms": 3.777251,
+          "http_write_ms": 0.27586,
+          "http_total_ms": 4.50899
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239816730517263,
+            "pid": 611835,
+            "tid": 611837,
+            "request": "fetch-34",
+            "command": "objects",
+            "context": "611836",
+            "bytes": 303,
+            "sha256": "9fc02f48c0f21f9d5a0546c9daed5cd23258e41d13cd3f6df2c328342788f30a"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-36",
+        "call": "call-35",
+        "command": "surfaces",
+        "receipt": null,
+        "browser_fetch_ms": 264.5,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.028558,
+          "stdin_write_ms": 0.024284,
+          "stdin_flush_ms": 0.085799,
+          "response_queue_wait_ms": 0.402296,
+          "http_write_ms": 0.150083,
+          "http_total_ms": 0.969121
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239817101058784,
+            "pid": 611835,
+            "tid": 611837,
+            "request": "fetch-36",
+            "command": "surfaces",
+            "context": "611836",
+            "bytes": 88,
+            "sha256": "fadff99be50f03049d448ab575447f7545d087c579a51ac4ea10a5311be6684e"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-38",
+        "call": "call-37",
+        "command": "dump",
+        "receipt": null,
+        "browser_fetch_ms": 51.900000005960464,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.027973,
+          "stdin_write_ms": 0.020997,
+          "stdin_flush_ms": 1.344018,
+          "response_queue_wait_ms": 0.017064,
+          "http_write_ms": 0.370837,
+          "http_total_ms": 2.124772
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239817403614337,
+            "pid": 611835,
+            "tid": 611837,
+            "request": "fetch-38",
+            "command": "dump",
+            "context": "611836",
+            "bytes": 529,
+            "sha256": "bc44149fb1ed9dfd4116c0eb2c1c482b0d1507ce4b158e8b745f16cf4464b9fa"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-40",
+        "call": "call-39",
+        "command": "boundary 1",
+        "receipt": null,
+        "browser_fetch_ms": 146.09999999403954,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.016593,
+          "stdin_write_ms": 0.009531,
+          "stdin_flush_ms": 0.031578,
+          "response_queue_wait_ms": 1.208928,
+          "http_write_ms": 0.237885,
+          "http_total_ms": 1.895677
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239817522361071,
+            "pid": 611835,
+            "tid": 611837,
+            "request": "fetch-40",
+            "command": "boundary 1",
+            "context": "611836",
+            "bytes": 575,
+            "sha256": "c6fcf51f2cb685468e2ab4797caab12d902e33ffdd56864cd2a4499663ff76c6"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-42",
+        "call": "call-41",
+        "command": "boundary 1",
+        "receipt": null,
+        "browser_fetch_ms": 306.40000000596046,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.029166,
+          "stdin_write_ms": 0.019565,
+          "stdin_flush_ms": 0.316586,
+          "response_queue_wait_ms": 0.022381,
+          "http_write_ms": 0.261621,
+          "http_total_ms": 0.920512
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239817978933577,
+            "pid": 611835,
+            "tid": 611837,
+            "request": "fetch-42",
+            "command": "boundary 1",
+            "context": "611836",
+            "bytes": 575,
+            "sha256": "c6fcf51f2cb685468e2ab4797caab12d902e33ffdd56864cd2a4499663ff76c6"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-44",
+        "call": "call-43",
+        "command": "obstacles 1",
+        "receipt": null,
+        "browser_fetch_ms": 132.40000000596046,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.030814,
+          "stdin_write_ms": 0.01039,
+          "stdin_flush_ms": 0.019836,
+          "response_queue_wait_ms": 0.561955,
+          "http_write_ms": 0.147844,
+          "http_total_ms": 1.091245
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239818381108144,
+            "pid": 611835,
+            "tid": 611837,
+            "request": "fetch-44",
+            "command": "obstacles 1",
+            "context": "611836",
+            "bytes": 46,
+            "sha256": "d2f633987dc4c50610693afdfa3dd4f2c85ba9cc97cac73907445f15f0277f69"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-46",
+        "call": "call-45",
+        "command": "references",
+        "receipt": null,
+        "browser_fetch_ms": 81.60000002384186,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.01483,
+          "stdin_write_ms": 0.014951,
+          "stdin_flush_ms": 0.024899,
+          "response_queue_wait_ms": 0.860055,
+          "http_write_ms": 0.291513,
+          "http_total_ms": 1.416521
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239818527700177,
+            "pid": 611835,
+            "tid": 611837,
+            "request": "fetch-46",
+            "command": "references",
+            "context": "611836",
+            "bytes": 466,
+            "sha256": "0780b18a054aa7b52c02f0001e811de810ab7a402a645667fae359a05289b5fd"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-48",
+        "call": "call-47",
+        "command": "dump",
+        "receipt": null,
+        "browser_fetch_ms": 85.5,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.016699,
+          "stdin_write_ms": 0.009489,
+          "stdin_flush_ms": 0.012318,
+          "response_queue_wait_ms": 1.84566,
+          "http_write_ms": 0.181551,
+          "http_total_ms": 2.332226
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239818621851007,
+            "pid": 611835,
+            "tid": 611837,
+            "request": "fetch-48",
+            "command": "dump",
+            "context": "611836",
+            "bytes": 529,
+            "sha256": "bc44149fb1ed9dfd4116c0eb2c1c482b0d1507ce4b158e8b745f16cf4464b9fa"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-50",
+        "call": "call-49",
+        "command": "source-inspect",
+        "receipt": null,
+        "browser_fetch_ms": 177.39999997615814,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.015863,
+          "stdin_write_ms": 0.012328,
+          "stdin_flush_ms": 0.022945,
+          "response_queue_wait_ms": 2.325314,
+          "http_write_ms": 0.155399,
+          "http_total_ms": 2.86153
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239818743477088,
+            "pid": 611835,
+            "tid": 611837,
+            "request": "fetch-50",
+            "command": "source-inspect",
+            "context": "611836",
+            "bytes": 1073,
+            "sha256": "a85fe3849cfe7bd3c9490918ba4add7f6d220e3bb5d1a6c9dd214e72ec616783"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-52",
+        "call": "call-51",
+        "command": "boundary 1",
+        "receipt": null,
+        "browser_fetch_ms": 26.80000001192093,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.015724,
+          "stdin_write_ms": 0.009551,
+          "stdin_flush_ms": 0.013035,
+          "response_queue_wait_ms": 0.714277,
+          "http_write_ms": 0.150878,
+          "http_total_ms": 1.117432
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239819949343297,
+            "pid": 611835,
+            "tid": 611837,
+            "request": "fetch-52",
+            "command": "boundary 1",
+            "context": "611836",
+            "bytes": 575,
+            "sha256": "c6fcf51f2cb685468e2ab4797caab12d902e33ffdd56864cd2a4499663ff76c6"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 16,
+        "absent_stage_means": "not entered, not measured zero"
+      }
+    ],
+    "late_signal_for_already_received_headers": 0,
+    "console_errors": [],
+    "source_identity": {
+      "schema": "geometry-runtime/1",
+      "version": "afe9bc3739109bcf734a82dc4265b1ac03a59d9454f3e9df4335773a7e16d90a",
+      "fresh": true,
+      "root": "/tmp/geometry-209-segments",
+      "pid": 611835,
+      "session": "f31ccc5dc6024692a49befedbbf5f7e3"
+    },
+    "tool_hashes": {
+      "browser.cjs": "782b50b161db9a05a81b3f5255c23da98b0f25feb5890431ecd9e2d3e7e4833c",
+      "server.py": "d4a8797c0b10f168d67ad5d7a229cda993d2295a6eeb8fc78d12d697ab0ada2a"
+    },
+    "native_pid": 611836,
+    "binary_sha256": "b49dccd56ee3729d48dcf5f8a908ae619fdd994d91a59cd70af691034adc76e3",
+    "receipt_evidence": null
+  },
+  {
+    "case": "runtime18",
+    "p7_pass": false,
+    "phase": "ready",
+    "error": "",
+    "wall_ms": 20600,
+    "server_exit": {
+      "code": 0,
+      "signal": null
+    },
+    "timeouts": [
+      {
+        "id": "fetch-6",
+        "call": "call-5",
+        "command": "line surface 1 origin 0 0 0 u +x v +y outline 0,0 200,0 200,100 0,100",
+        "receipt": null,
+        "browser_fetch_ms": 15000.800000011921,
+        "fetch_error": {
+          "event": "fetch_error",
+          "ms": 16073.700000017881,
+          "id": "fetch-6",
+          "call": "call-5",
+          "name": "TimeoutError",
+          "message": "signal timed out"
+        },
+        "stages": {
+          "runtime_lock_wait_ms": 17994.791663,
+          "fresh_total_ms": 18051.186215,
+          "fresh_body_approx_ms": 56.39455200000157,
+          "receipt_lock_wait_ms": 0.020172,
+          "bridge_lock_wait_ms": null,
+          "stdin_write_ms": null,
+          "stdin_flush_ms": null,
+          "response_queue_wait_ms": null,
+          "http_write_ms": 0.161572,
+          "http_total_ms": 18051.635747
+        },
+        "native_responses": [],
+        "http_write_errors": [
+          {
+            "event": "http_write_error",
+            "mono_ns": 239888423143831,
+            "pid": 612844,
+            "tid": 613052,
+            "request": "fetch-6",
+            "command": "line surface 1 origin 0 0 0 u +x v +y outline 0,0 200,0 200,100 0,100",
+            "exception": "BrokenPipeError",
+            "message": "[Errno 32] Broken pipe"
+          }
+        ],
+        "browser_headers_received": false,
+        "server_events": 14,
+        "absent_stage_means": "not entered, not measured zero"
+      }
+    ],
+    "blocked_before_fetch": [],
+    "requests": [
+      {
+        "id": "fetch-2",
+        "call": "call-1",
+        "command": "line reset",
+        "receipt": null,
+        "browser_fetch_ms": 58.099999994039536,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 0.008337,
+          "fresh_total_ms": 47.730643,
+          "fresh_body_approx_ms": 47.722306,
+          "receipt_lock_wait_ms": 0.029954,
+          "bridge_lock_wait_ms": 0.008591,
+          "stdin_write_ms": 0.010063,
+          "stdin_flush_ms": 0.022757,
+          "response_queue_wait_ms": 5.93263,
+          "http_write_ms": 0.125364,
+          "http_total_ms": 54.709234
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239870301582802,
+            "pid": 612844,
+            "tid": 612846,
+            "request": "fetch-2",
+            "command": "line reset",
+            "context": "612845",
+            "bytes": 58,
+            "sha256": "2a7f828b225b5ae1127682c8a36124cabfde2fe2429e2d478b13f9ee07044484"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 23,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-4",
+        "call": "call-3",
+        "command": "section-profile-read",
+        "receipt": null,
+        "browser_fetch_ms": 56.70000001788139,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": 0.0114,
+          "fresh_total_ms": 53.172477,
+          "fresh_body_approx_ms": 53.161077,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.012939,
+          "stdin_write_ms": 0.008414,
+          "stdin_flush_ms": 0.018446,
+          "response_queue_wait_ms": 0.263266,
+          "http_write_ms": 0.252325,
+          "http_total_ms": 54.017087
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239870366165243,
+            "pid": 612844,
+            "tid": 612846,
+            "request": "fetch-4",
+            "command": "section-profile-read",
+            "context": "612845",
+            "bytes": 776,
+            "sha256": "f075ec2b6bcd1866bd640ac106c0df57cbe804f71b0bc3eb1305072901fca833"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 20,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-6",
+        "call": "call-5",
+        "command": "line surface 1 origin 0 0 0 u +x v +y outline 0,0 200,0 200,100 0,100",
+        "receipt": null,
+        "browser_fetch_ms": 15000.800000011921,
+        "fetch_error": {
+          "event": "fetch_error",
+          "ms": 16073.700000017881,
+          "id": "fetch-6",
+          "call": "call-5",
+          "name": "TimeoutError",
+          "message": "signal timed out"
+        },
+        "stages": {
+          "runtime_lock_wait_ms": 17994.791663,
+          "fresh_total_ms": 18051.186215,
+          "fresh_body_approx_ms": 56.39455200000157,
+          "receipt_lock_wait_ms": 0.020172,
+          "bridge_lock_wait_ms": null,
+          "stdin_write_ms": null,
+          "stdin_flush_ms": null,
+          "response_queue_wait_ms": null,
+          "http_write_ms": 0.161572,
+          "http_total_ms": 18051.635747
+        },
+        "native_responses": [],
+        "http_write_errors": [
+          {
+            "event": "http_write_error",
+            "mono_ns": 239888423143831,
+            "pid": 612844,
+            "tid": 613052,
+            "request": "fetch-6",
+            "command": "line surface 1 origin 0 0 0 u +x v +y outline 0,0 200,0 200,100 0,100",
+            "exception": "BrokenPipeError",
+            "message": "[Errno 32] Broken pipe"
+          }
+        ],
+        "browser_headers_received": false,
+        "server_events": 14,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-7",
+        "call": "call-5",
+        "command": null,
+        "receipt": "75965015-9977-404e-b070-4f5825054a4b",
+        "browser_fetch_ms": 10.900000005960464,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": 0.049908,
+          "bridge_lock_wait_ms": null,
+          "stdin_write_ms": null,
+          "stdin_flush_ms": null,
+          "response_queue_wait_ms": null,
+          "http_write_ms": 1.575158,
+          "http_total_ms": 2.161444
+        },
+        "native_responses": [],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 8,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-9",
+        "call": "call-8",
+        "command": "objects",
+        "receipt": null,
+        "browser_fetch_ms": 6.0999999940395355,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.025325,
+          "stdin_write_ms": 0.043301,
+          "stdin_flush_ms": 0.022441,
+          "response_queue_wait_ms": 0.460352,
+          "http_write_ms": 0.137192,
+          "http_total_ms": 0.938536
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239885387257523,
+            "pid": 612844,
+            "tid": 612846,
+            "request": "fetch-9",
+            "command": "objects",
+            "context": "612845",
+            "bytes": 183,
+            "sha256": "c5b0205275d97a4abd6cc1909fdba6b5ec72831b2438ea5399a0a49a3750d5b0"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-11",
+        "call": "call-10",
+        "command": "surfaces",
+        "receipt": null,
+        "browser_fetch_ms": 3.600000023841858,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.015106,
+          "stdin_write_ms": 0.009782,
+          "stdin_flush_ms": 0.032967,
+          "response_queue_wait_ms": 0.547674,
+          "http_write_ms": 0.141076,
+          "http_total_ms": 0.999863
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239885393930747,
+            "pid": 612844,
+            "tid": 612846,
+            "request": "fetch-11",
+            "command": "surfaces",
+            "context": "612845",
+            "bytes": 26,
+            "sha256": "d1d637af80bbdae01b070c9c2955f59b281853056ba9ac6150b55ec44bb7ba21"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 15,
+        "absent_stage_means": "not entered, not measured zero"
+      },
+      {
+        "id": "fetch-13",
+        "call": "call-12",
+        "command": "boundary 1",
+        "receipt": null,
+        "browser_fetch_ms": 2.7999999821186066,
+        "fetch_error": null,
+        "stages": {
+          "runtime_lock_wait_ms": null,
+          "fresh_total_ms": null,
+          "fresh_body_approx_ms": null,
+          "receipt_lock_wait_ms": null,
+          "bridge_lock_wait_ms": 0.018931,
+          "stdin_write_ms": 0.015162,
+          "stdin_flush_ms": 0.052453,
+          "response_queue_wait_ms": 0.123446,
+          "http_write_ms": 0.094558,
+          "http_total_ms": 0.496842
+        },
+        "native_responses": [
+          {
+            "event": "native_response_arrived",
+            "mono_ns": 239885401645827,
+            "pid": 612844,
+            "tid": 612846,
+            "request": "fetch-13",
+            "command": "boundary 1",
+            "context": "612845",
+            "bytes": 42,
+            "sha256": "41a9eb5a282c8668e43c3416cd4e54437c36e8e972afff82517f87697d300f20"
+          }
+        ],
+        "http_write_errors": [],
+        "browser_headers_received": true,
+        "server_events": 16,
+        "absent_stage_means": "not entered, not measured zero"
+      }
+    ],
+    "late_signal_for_already_received_headers": 2,
+    "console_errors": [],
+    "source_identity": {
+      "schema": "geometry-runtime/1",
+      "version": "afe9bc3739109bcf734a82dc4265b1ac03a59d9454f3e9df4335773a7e16d90a",
+      "fresh": true,
+      "root": "/tmp/geometry-209-segments",
+      "pid": 612844,
+      "session": "88ae05f7919b4d96a1ce1cf686b8e7b6"
+    },
+    "tool_hashes": {
+      "browser.cjs": "782b50b161db9a05a81b3f5255c23da98b0f25feb5890431ecd9e2d3e7e4833c",
+      "server.py": "d4a8797c0b10f168d67ad5d7a229cda993d2295a6eeb8fc78d12d697ab0ada2a"
+    },
+    "native_pid": 612845,
+    "binary_sha256": "b49dccd56ee3729d48dcf5f8a908ae619fdd994d91a59cd70af691034adc76e3",
+    "receipt_evidence": {
+      "business_request_id": "75965015-9977-404e-b070-4f5825054a4b",
+      "mutation_fetch": "fetch-6",
+      "receipt_fetch": "fetch-7",
+      "call": "call-5",
+      "result": {
+        "ok": false,
+        "error": "操作未送達，場景未變更；請重新操作。"
+      },
+      "mutation_stdin_writes": 0,
+      "mutation_native_replies": 0,
+      "receipt_stdin_writes": 0,
+      "receipt_delivered": true
+    }
+  }
+]
