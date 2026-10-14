@@ -51,7 +51,7 @@ static bool pf_values(const World *w,const PanelFill *p,PfLayout *d)
     if(!d->finish)return fs_error("I55: panel-fill %u references missing finish surface %u",p->id,p->finish_id);
     if(!m||m->kind!=0)return fs_error("I52: panel-fill %u needs an existing fixed panel material version",p->id);
     d->size[p->length_axis]=m->length;d->size[1-p->length_axis]=m->width;
-    EngJson j;bool ok=eng_json_parse(&j,m->content);char thickness[64];
+    EngJson j;bool ok=eng_json_parse(&j,m->content);char thickness[ENG_THICKNESS_CAPACITY];
     if(ok)ok=eng_json_string(&j,eng_json_member(&j,0,"thickness"),thickness,sizeof thickness);eng_json_free(&j);
     d->t=0;
     if(ok){bool decimal=false;for(char *s=thickness;*s&&ok;++s){if(*s=='.')decimal=true;else if(decimal)ok=*s=='0';else if(*s<'0'||*s>'9'||d->t>(COORD_LIMIT-(*s-'0'))/10)ok=false;else d->t=d->t*10+(*s-'0');}}
