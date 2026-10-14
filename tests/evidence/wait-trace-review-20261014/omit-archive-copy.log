@@ -18,10 +18,10 @@ AssertionError: 1 != 0 : Traceback (most recent call last):
   File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
     return io.open(self, mode, buffering, encoding, errors, newline)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpjg3jtie6/artifact/wait-trace.jsonl'
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmp910nnoc1/artifact/wait-trace.jsonl'
 
 
 ----------------------------------------------------------------------
-Ran 1 test in 0.042s
+Ran 1 test in 0.049s
 
 FAILED (failures=1)

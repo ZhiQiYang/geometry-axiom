@@ -63,13 +63,19 @@ Keep the existing private GEOMETRY_FEEDBACK_DIR unchanged and archive its
 wait-trace.jsonl together with CDP_RESULT/stdout. All other jobs must leave the
 variable unset. Add this key to the runner's recorded effective environment.
 The checked-in workflow now records the effective flag through GITHUB_ENV and
-uses two `always()` canvas steps: `archive_wait_trace.py` copies raw JSONL and
+uses an unconditional EXIT cleanup for canvas: `archive_wait_trace.py` copies raw JSONL and
 records actual kernel, head, effective environment, bytes/SHA and record count;
-the artifact step uploads both files even after a failed regression. An enabled
+the `always()` artifact step uploads both files even after a failed regression. An enabled
 run with missing/empty JSONL fails explicitly. A disabled Linux canvas records
 `trace-disabled-for-this-runner`, never claiming a WSL trace. Existing archive
 files are cleared so a rerun cannot publish stale JSONL. The standalone collector
 is also the versioned archive command for a local runner after its canvas job.
+The cleanup runs in the service-starting shell, so GITHUB_ENV support is optional;
+it retains the original regression failure, and an archive failure makes an
+otherwise successful run fail. Historical ci_job.py skips upload-artifact and
+does not support `always()` run steps, so no such run step was added. Its private
+job temporary directory will contain geometry-wait-trace-artifact; the active
+owner must include that directory in the local receipt publication.
 
 The active runner update, canvas output under WSL, and formal seven jobs remain
 unverified here; the local train owner must apply and report that shared change.

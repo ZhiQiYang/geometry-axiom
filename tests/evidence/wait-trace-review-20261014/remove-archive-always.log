@@ -3,11 +3,11 @@ F
 FAIL: test_archive_workflow_runs_even_on_failure (__main__.WaitTraceTests.test_archive_workflow_runs_even_on_failure)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/tmp/geometry-wait-trace/tests/test_wait_trace.py", line 268, in test_archive_workflow_runs_even_on_failure
-    self.assertIn("if: always() && matrix.suite == 'canvas'", collect, 'WAIT_TRACE_ARCHIVE_ALWAYS')
-AssertionError: "if: always() && matrix.suite == 'canvas'" not found in "\n        if: success() && matrix.suite == 'canvas'\n        run: python3 geometry-web/archive_wait_trace.py /tmp/geometry-wait-trace-artifact\n" : WAIT_TRACE_ARCHIVE_ALWAYS
+  File "/tmp/geometry-wait-trace/tests/test_wait_trace.py", line 282, in test_archive_workflow_runs_even_on_failure
+    self.assertIn("if: always() && matrix.suite == 'canvas'", upload)
+AssertionError: "if: always() && matrix.suite == 'canvas'" not found in "\n        if: success() && matrix.suite == 'canvas'\n        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4\n        with:\n          name: canvas-wait-trace\n          path: /tmp/geometry-wait-trace-artifact/\n          if-no-files-found: error\n          retention-days: 7\n      - name: Preserve assembly authoring screenshots\n        if: always() && matrix.suite == 'assembly'\n        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4\n        with:\n          name: assembly-review-screens\n          path: /tmp/geometry-tests/assembly-*.png\n          if-no-files-found: ignore\n          retention-days: 7\n      - name: Preserve grid trial screenshots\n        if: always() && (matrix.suite == 'grid' || matrix.suite == 'canvas')\n        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4\n        with:\n          name: grid-trial-screens-${{ matrix.suite }}\n          path: /tmp/geometry-grid-screens/grid-trial-*.png\n          if-no-files-found: ignore\n          retention-days: 7\n      - name: Preserve document reader screenshots\n        if: always() && matrix.suite == 'documents'\n        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4\n        with:\n          name: document-reader-screens\n          path: /tmp/geometry-document-screens/*.png\n          if-no-files-found: ignore\n          retention-days: 7\n"
 
 ----------------------------------------------------------------------
-Ran 1 test in 0.000s
+Ran 1 test in 0.001s
 
 FAILED (failures=1)

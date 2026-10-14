@@ -260,13 +260,25 @@ finally:
             self.assertFalse((output / 'wait-trace.jsonl').exists(), 'WAIT_TRACE_ARCHIVE_NO_STALE_FILE')
             self.assertEqual(json.loads((output / 'receipt.json').read_text())['status'], 'missing-enabled-trace')
 
+    def test_archive_cleanup_preserves_failed_job_status(self):
+        root = pathlib.Path(__file__).resolve().parents[1]
+        workflow = (root / '.github/workflows/integration-tests.yml').read_text()
+        cleanup = 'cleanup() {' + workflow.split('cleanup() {', 1)[1].split('          for attempt', 1)[0]
+        with tempfile.TemporaryDirectory() as directory:
+            output = pathlib.Path(directory) / 'artifact'
+            script = 'set -e\nkill() { :; }; server=unused\n' + cleanup.replace('/tmp/geometry-wait-trace-artifact', str(output)) + '\nexit 7\n'
+            env = dict(os.environ, GEOMETRY_BROWSER_SUITE='canvas', GEOMETRY_WAIT_TRACE='1', GEOMETRY_FEEDBACK_DIR=directory)
+            run = subprocess.run(['bash', '-c', script], cwd=root, env=env, capture_output=True, text=True)
+            self.assertEqual(run.returncode, 7, 'WAIT_TRACE_ARCHIVE_MUST_KEEP_ORIGINAL_FAILURE')
+            self.assertEqual(json.loads((output / 'receipt.json').read_text())['status'], 'missing-enabled-trace')
+
     def test_archive_workflow_runs_even_on_failure(self):
         root = pathlib.Path(__file__).resolve().parents[1]
         workflow = (root / '.github/workflows/integration-tests.yml').read_text()
-        archive = workflow.split('      - name: Collect canvas wait trace')[1]
-        collect, upload = archive.split('      - name: Preserve canvas wait trace', 1)
-        self.assertIn("if: always() && matrix.suite == 'canvas'", collect, 'WAIT_TRACE_ARCHIVE_ALWAYS')
-        self.assertIn('archive_wait_trace.py', collect)
+        collect, upload = workflow.split('      - name: Preserve canvas wait trace', 1)
+        self.assertIn('trap cleanup EXIT', collect, 'WAIT_TRACE_ARCHIVE_ALWAYS')
+        self.assertIn('python3 geometry-web/archive_wait_trace.py /tmp/geometry-wait-trace-artifact', collect)
+        self.assertIn('exit "$original_status"', collect)
         self.assertIn("if: always() && matrix.suite == 'canvas'", upload)
         self.assertIn('if-no-files-found: error', upload)
 
