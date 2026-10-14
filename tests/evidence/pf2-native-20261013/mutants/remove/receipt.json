@@ -1,0 +1,32 @@
+{
+  "label": "remove",
+  "mutation": {
+    "file": "geometry-core/finish_surfaces.inc",
+    "old": "return pf_operation(w,j,t,!strcmp(op,\"delete-panel-fill\"));",
+    "new": "return fs_error(\"PF-2 implementation removed: put-panel-fill unsupported\");"
+  },
+  "compile_argv": [
+    "cc",
+    "-std=c11",
+    "-O0",
+    "-I/workspace/geometry-axiom",
+    "-I/workspace/geometry-axiom/geometry-web",
+    "/tmp/geometry-wake20/pf2-mutants/remove/bridge.c",
+    "-lm",
+    "-o",
+    "/tmp/geometry-wake20/pf2-mutants/remove/bridge"
+  ],
+  "compile_exit": 0,
+  "compiler_seconds": 2.4532820520107634,
+  "sources": {
+    "/tmp/geometry-wake20/pf2-mutants/remove/bridge.c": "1d2b7b86f8b8ce8355d2026c18b32ec91075a6d6326e4e1e047e0451c52d8e4d",
+    "/tmp/geometry-wake20/pf2-mutants/remove/core.c": "a4e5f5fb14235a1000c504ed2de6c538a9413d865478881b36c0ff1974725441"
+  },
+  "tests": 1,
+  "failures": 1,
+  "errors": 0,
+  "skipped": 0,
+  "test_exit": 1,
+  "seconds": 0.10604409399093129,
+  "binary_sha256": "187d3a84737f98705990353616a4f251758da43834ee2092ad04262a7a2bbb05"
+}

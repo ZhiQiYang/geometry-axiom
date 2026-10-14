@@ -21,7 +21,17 @@ typedef struct {
     char name[FS_NAME_MAX + 8]; /* not identity; NUL-terminated UTF-8, at most FS_NAME_MAX bytes */
 } FinishSurface;
 typedef struct {
+    uint32_t id, finish_id;
+    EngVersionRef panel;
+    int32_t length_axis, stagger_axis; /* 0=u,1=v; stagger -1 means straight */
+    Coord origin[2], gap, stagger;
+    ParameterRef gap_ref, stagger_ref, threshold;
+    char definition[1024]; /* canonical D42 definition, never derived geometry */
+} PanelFill;
+typedef struct {
     FinishSurface items[FS_MAX];
     uint64_t count;
+    PanelFill fills[FS_MAX];
+    uint64_t fill_count;
 } FinishSurfaceState;
 #endif

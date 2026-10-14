@@ -1,0 +1,15 @@
+{
+  "head": "f9194e26aad7cc7b4c85c20d6874f89616afd95a",
+  "argv": [
+    "node",
+    "--test",
+    "--test-name-pattern=^native final confirmation refuses changed source and changed runtime receipt without adding history$|^real timber package round trip, verification, replay and height update use only saved definitions$",
+    "tests/test_model_update.js",
+    "tests/test_space_model_store.js"
+  ],
+  "pid": 543322,
+  "started_at": "2026-10-14T01:15:20.336137+08:00",
+  "seconds": 19.49973521399079,
+  "exit": 0,
+  "changed_limits_or_assertions": false
+}
