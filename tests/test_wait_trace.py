@@ -12,6 +12,38 @@ from unittest.mock import patch
 
 
 class WaitTraceTests(unittest.TestCase):
+    def test_measurements_exclude_diagnostic_sink_time(self):
+        with tempfile.TemporaryDirectory() as directory:
+            m = self.load(directory, '1')
+            clock, rows = [0.0], []
+            def emit(stage, **fields):
+                rows.append((stage, fields))
+                clock[0] += 100
+            def operation():
+                clock[0] += 2
+                return 7
+            with patch.object(m, 'emit', side_effect=emit), patch.object(m.time, 'monotonic', side_effect=lambda: clock[0]):
+                self.assertEqual(m.call('write', operation), 7)
+                lock = m.wrap_lock(threading.Lock(), 'lock')
+                with lock:
+                    pass
+            durations = {stage: fields['seconds'] for stage, fields in rows if 'seconds' in fields}
+            self.assertEqual(durations, {'write': 2, 'lock': 0}, 'WAIT_TRACE_DIAGNOSTIC_IO_IN_WAIT')
+
+    def test_workflow_enables_only_wsl_canvas_before_server(self):
+        root = pathlib.Path(__file__).resolve().parents[1]
+        workflow = (root / '.github/workflows/integration-tests.yml').read_text()
+        self.assertIn('# WSL canvas wait trace', workflow, 'WAIT_TRACE_RUNNER_GATE_MISSING')
+        gate = workflow.split('# WSL canvas wait trace', 1)[1].split('python3 -u geometry-web/start_local.py', 1)[0]
+        for kernel in ('6.18-linux', '6.6-microsoft-standard-WSL2'):
+            for suite in ('canvas', 'grid', 'space'):
+                env = dict(os.environ, GEOMETRY_BROWSER_SUITE=suite, GEOMETRY_WAIT_TRACE='1')
+                script = 'uname() { printf "%s\\n" "$TEST_KERNEL"; };\n' + gate + '\nprintf "%s" "${GEOMETRY_WAIT_TRACE-unset}"'
+                env['TEST_KERNEL'] = kernel
+                result = subprocess.run(['bash', '-c', script], env=env, capture_output=True, text=True, timeout=5)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertEqual(result.stdout, '1' if suite == 'canvas' and 'microsoft' in kernel else 'unset', 'WAIT_TRACE_RUNNER_SCOPE')
+
     def test_real_http_identical_response_and_all_stages(self):
         root = pathlib.Path(__file__).resolve().parents[1]
         script = '''

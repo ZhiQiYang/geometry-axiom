@@ -71,6 +71,12 @@ jobs:
         run: |
           ulimit -s 16384
           test -x "$GEOMETRY_CHROME"
+          # WSL canvas wait trace
+          # Clear inherited flags for all other jobs.
+          unset GEOMETRY_WAIT_TRACE
+          case "$GEOMETRY_BROWSER_SUITE:$(uname -r)" in
+            canvas:*[Mm]icrosoft*) export GEOMETRY_WAIT_TRACE=1 ;;
+          esac
           python3 -u geometry-web/start_local.py --port 18839 > /tmp/geometry-integration-server.log 2>&1 &
           server=$!
           trap 'kill "$server" 2>/dev/null || true' EXIT

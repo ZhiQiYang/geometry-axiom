@@ -49,8 +49,8 @@ def emit(stage, **fields):
 def call(stage, operation):
     if not ENABLED:
         return operation()
-    started = time.monotonic()
     emit(stage + '_begin')
+    started = time.monotonic()
     error = None
     try:
         return operation()
@@ -75,6 +75,7 @@ class TracedLock:
         if holder:
             holder['heldSeconds'] = started - holder.pop('since')
         emit(self.name + '_begin', holder=holder)
+        wait_started = time.monotonic()
         acquired = self.lock.acquire(*args, **kwargs)
         finished = time.monotonic()
         if acquired:
@@ -85,7 +86,7 @@ class TracedLock:
                     self.owner = dict(getattr(_local, 'request', None) or {},
                                       thread=threading.get_ident(), since=finished)
                     self.depth = 1
-        emit(self.name, seconds=finished - started, acquired=acquired, holder=holder)
+        emit(self.name, seconds=finished - wait_started, acquired=acquired, holder=holder)
         return acquired
 
     def release(self):

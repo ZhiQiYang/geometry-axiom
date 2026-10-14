@@ -1,0 +1,77 @@
+[
+  {
+    "label": "fixed-python",
+    "argv": [
+      "python",
+      "tests/test_wait_trace.py"
+    ],
+    "exit": 0,
+    "seconds": 1.8838644630159251
+  },
+  {
+    "label": "fixed-js",
+    "argv": [
+      "node",
+      "--test",
+      "tests/test_transport_failure_trace.js"
+    ],
+    "exit": 0,
+    "seconds": 0.12109485099790618
+  },
+  {
+    "label": "default-on",
+    "argv": [
+      "python",
+      "tests/test_wait_trace.py"
+    ],
+    "exit": 1,
+    "seconds": 0.9961143500113394
+  },
+  {
+    "label": "default-on-restored",
+    "argv": [
+      "python",
+      "tests/test_wait_trace.py"
+    ],
+    "exit": 0,
+    "seconds": 1.8968086900131311
+  },
+  {
+    "label": "overwrite-first",
+    "argv": [
+      "node",
+      "--test",
+      "tests/test_transport_failure_trace.js"
+    ],
+    "exit": 1,
+    "seconds": 0.11981364901294
+  },
+  {
+    "label": "overwrite-first-restored",
+    "argv": [
+      "node",
+      "--test",
+      "tests/test_transport_failure_trace.js"
+    ],
+    "exit": 0,
+    "seconds": 0.10920830300892703
+  },
+  {
+    "label": "remove-bridge-hook",
+    "argv": [
+      "python",
+      "tests/test_wait_trace.py"
+    ],
+    "exit": 1,
+    "seconds": 1.8590720710053574
+  },
+  {
+    "label": "remove-bridge-hook-restored",
+    "argv": [
+      "python",
+      "tests/test_wait_trace.py"
+    ],
+    "exit": 0,
+    "seconds": 1.8156945810187608
+  }
+]
