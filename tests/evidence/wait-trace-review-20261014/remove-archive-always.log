@@ -1,0 +1,13 @@
+F
+======================================================================
+FAIL: test_archive_workflow_runs_even_on_failure (__main__.WaitTraceTests.test_archive_workflow_runs_even_on_failure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/geometry-wait-trace/tests/test_wait_trace.py", line 268, in test_archive_workflow_runs_even_on_failure
+    self.assertIn("if: always() && matrix.suite == 'canvas'", collect, 'WAIT_TRACE_ARCHIVE_ALWAYS')
+AssertionError: "if: always() && matrix.suite == 'canvas'" not found in "\n        if: success() && matrix.suite == 'canvas'\n        run: python3 geometry-web/archive_wait_trace.py /tmp/geometry-wait-trace-artifact\n" : WAIT_TRACE_ARCHIVE_ALWAYS
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (failures=1)

@@ -14,7 +14,11 @@ Stages include source_lock, receipt_lock, bridge_lock, stdin_write, stdin_flush,
 http_write and request begin/end. Lock begin events report the holder's request,
 command/thread and elapsed hold time observed when waiting begins; completion
 events report acquisition duration and success. Hold time is an observation,
-not a claim that the same holder persisted throughout the wait. Reentrant locks
+not a claim that the same holder persisted throughout the wait. Each outermost
+release emits a `*_release` event before unlock, with the original holder identity,
+command and total `heldSeconds`. Reentrant inner releases do not emit an end
+event. Correlate holder request IDs with these end events to distinguish holder
+changes during a long wait. Reentrant locks
 retain the outer acquisition's identity. Durations use one process's monotonic
 clock; do not subtract browser and server timestamps from each other.
 
@@ -58,6 +62,15 @@ This must affect the **serve.py process**, not merely the later Node command.
 Keep the existing private GEOMETRY_FEEDBACK_DIR unchanged and archive its
 wait-trace.jsonl together with CDP_RESULT/stdout. All other jobs must leave the
 variable unset. Add this key to the runner's recorded effective environment.
+The checked-in workflow now records the effective flag through GITHUB_ENV and
+uses two `always()` canvas steps: `archive_wait_trace.py` copies raw JSONL and
+records actual kernel, head, effective environment, bytes/SHA and record count;
+the artifact step uploads both files even after a failed regression. An enabled
+run with missing/empty JSONL fails explicitly. A disabled Linux canvas records
+`trace-disabled-for-this-runner`, never claiming a WSL trace. Existing archive
+files are cleared so a rerun cannot publish stale JSONL. The standalone collector
+is also the versioned archive command for a local runner after its canvas job.
+
 The active runner update, canvas output under WSL, and formal seven jobs remain
 unverified here; the local train owner must apply and report that shared change.
 

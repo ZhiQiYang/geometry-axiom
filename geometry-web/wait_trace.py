@@ -91,7 +91,12 @@ class TracedLock:
 
     def release(self):
         with self.metadata:
-            # Clear metadata before unlock so the next acquirer cannot overwrite it.
+            # Record the outer holder before unlocking. Metadata remains guarded
+            # until release completes, so a new holder cannot erase this identity.
+            if self.depth == 1 and self.owner:
+                holder = dict(self.owner)
+                held_seconds = time.monotonic() - holder.pop('since')
+                emit(self.name + '_release', holder=holder, heldSeconds=held_seconds)
             self.lock.release()
             self.depth -= 1
             if not self.depth:

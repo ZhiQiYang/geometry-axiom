@@ -76,7 +76,11 @@ finally:
                 env = dict(os.environ, GEOMETRY_BROWSER_SUITE=suite, GEOMETRY_WAIT_TRACE='1')
                 script = 'uname() { printf "%s\\n" "$TEST_KERNEL"; };\n' + gate + '\nprintf "%s" "${GEOMETRY_WAIT_TRACE-unset}"'
                 env['TEST_KERNEL'] = kernel
-                result = subprocess.run(['bash', '-c', script], env=env, capture_output=True, text=True, timeout=5)
+                with tempfile.TemporaryDirectory() as directory:
+                    env['GITHUB_ENV'] = str(pathlib.Path(directory) / 'environment')
+                    result = subprocess.run(['bash', '-c', script], env=env, capture_output=True, text=True, timeout=5)
+                    exported = pathlib.Path(env['GITHUB_ENV']).read_text()
+                    self.assertEqual(exported, 'GEOMETRY_WAIT_TRACE=1\n' if suite == 'canvas' and 'microsoft' in kernel else 'GEOMETRY_WAIT_TRACE=\n', 'WAIT_TRACE_ARCHIVE_EFFECTIVE_ENV')
                 self.assertEqual(result.returncode, 0, result.stderr)
                 self.assertEqual(result.stdout, '1' if suite == 'canvas' and 'microsoft' in kernel else 'unset', 'WAIT_TRACE_RUNNER_SCOPE')
 
@@ -193,6 +197,78 @@ finally:
             self.assertEqual(wait['businessRequestId'], 'business-id')
             self.assertTrue(any(r['stage'] == 'response_queue' and r['error'] == 'ValueError' for r in rows))
             self.assertTrue(any(r['stage'] == 'stdin_write' for r in rows))
+
+    def test_outer_release_records_each_holder_before_unlock(self):
+        with tempfile.TemporaryDirectory() as directory:
+            m = self.load(directory, '1')
+            lock = m.wrap_lock(threading.RLock(), 'bridge')
+            held, waiting = threading.Event(), threading.Event()
+            release_observations = []
+            original_emit = m.emit
+            def observe(stage, **fields):
+                if stage == 'bridge_release':
+                    release_observations.append((lock.owner is not None, lock.depth))
+                if stage == 'bridge_begin' and fields.get('holder') and fields['holder']['command'] == 'first':
+                    waiting.set()
+                original_emit(stage, **fields)
+            m.emit = observe
+            def first():
+                m.begin('/api'); m.command('first')
+                with lock:
+                    with lock:
+                        held.set()
+                        self.assertTrue(waiting.wait(2))
+                m.end()
+            worker = threading.Thread(target=first)
+            worker.start()
+            self.assertTrue(held.wait(2))
+            m.begin('/api'); m.command('second')
+            with lock:
+                pass
+            m.end()
+            worker.join(2)
+            self.assertFalse(worker.is_alive())
+            rows = [json.loads(line) for line in (pathlib.Path(directory) / 'wait-trace.jsonl').read_text().splitlines()]
+            releases = [r for r in rows if r['stage'] == 'bridge_release']
+            self.assertEqual(release_observations, [(True, 1), (True, 1)], 'WAIT_TRACE_RELEASE_BEFORE_UNLOCK')
+            self.assertEqual([r['holder']['command'] for r in releases], ['first', 'second'], 'WAIT_TRACE_OUTER_RELEASE')
+            for row in releases:
+                self.assertGreaterEqual(row['heldSeconds'], 0)
+                self.assertEqual(row['holder']['traceRequestId'], row['traceRequestId'])
+            self.assertIsNone(lock.owner)
+            self.assertEqual(lock.depth, 0)
+
+    def test_runner_archive_keeps_raw_trace_and_effective_environment(self):
+        root = pathlib.Path(__file__).resolve().parents[1]
+        with tempfile.TemporaryDirectory() as directory:
+            base = pathlib.Path(directory)
+            feedback, output = base / 'feedback', base / 'artifact'
+            feedback.mkdir()
+            raw = b'{"stage":"bridge_release","heldSeconds":1}\n'
+            (feedback / 'wait-trace.jsonl').write_bytes(raw)
+            env = dict(os.environ, GEOMETRY_WAIT_TRACE='1', GEOMETRY_FEEDBACK_DIR=str(feedback), GEOMETRY_BROWSER_SUITE='canvas')
+            run = subprocess.run([sys.executable, str(root / 'geometry-web/archive_wait_trace.py'), str(output)], env=env, capture_output=True, text=True)
+            self.assertEqual(run.returncode, 0, run.stderr)
+            self.assertEqual((output / 'wait-trace.jsonl').read_bytes(), raw, 'WAIT_TRACE_ARCHIVE_RAW')
+            receipt = json.loads((output / 'receipt.json').read_text())
+            self.assertEqual(receipt['effectiveEnvironment']['GEOMETRY_WAIT_TRACE'], '1')
+            self.assertEqual(receipt['status'], 'archived')
+            self.assertEqual(receipt['records'], 1)
+            (feedback / 'wait-trace.jsonl').unlink()
+            run = subprocess.run([sys.executable, str(root / 'geometry-web/archive_wait_trace.py'), str(output)], env=env, capture_output=True, text=True)
+            self.assertEqual(run.returncode, 1, 'WAIT_TRACE_ARCHIVE_MISSING_MUST_FAIL')
+            self.assertFalse((output / 'wait-trace.jsonl').exists(), 'WAIT_TRACE_ARCHIVE_NO_STALE_FILE')
+            self.assertEqual(json.loads((output / 'receipt.json').read_text())['status'], 'missing-enabled-trace')
+
+    def test_archive_workflow_runs_even_on_failure(self):
+        root = pathlib.Path(__file__).resolve().parents[1]
+        workflow = (root / '.github/workflows/integration-tests.yml').read_text()
+        archive = workflow.split('      - name: Collect canvas wait trace')[1]
+        collect, upload = archive.split('      - name: Preserve canvas wait trace', 1)
+        self.assertIn("if: always() && matrix.suite == 'canvas'", collect, 'WAIT_TRACE_ARCHIVE_ALWAYS')
+        self.assertIn('archive_wait_trace.py', collect)
+        self.assertIn("if: always() && matrix.suite == 'canvas'", upload)
+        self.assertIn('if-no-files-found: error', upload)
 
     def test_unwritable_sink_does_not_change_result(self):
         with tempfile.TemporaryDirectory() as directory:

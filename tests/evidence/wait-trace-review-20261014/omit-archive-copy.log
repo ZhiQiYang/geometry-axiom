@@ -1,0 +1,27 @@
+F
+======================================================================
+FAIL: test_runner_archive_keeps_raw_trace_and_effective_environment (__main__.WaitTraceTests.test_runner_archive_keeps_raw_trace_and_effective_environment)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/geometry-wait-trace/tests/test_wait_trace.py", line 251, in test_runner_archive_keeps_raw_trace_and_effective_environment
+    self.assertEqual(run.returncode, 0, run.stderr)
+AssertionError: 1 != 0 : Traceback (most recent call last):
+  File "/tmp/geometry-wait-trace/geometry-web/archive_wait_trace.py", line 43, in <module>
+    sys.exit(main(sys.argv[1]))
+             ^^^^^^^^^^^^^^^^^
+  File "/tmp/geometry-wait-trace/geometry-web/archive_wait_trace.py", line 32, in main
+    raw = copied.read_bytes()
+          ^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1019, in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpjg3jtie6/artifact/wait-trace.jsonl'
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.042s
+
+FAILED (failures=1)
