@@ -1,0 +1,20 @@
+from pathlib import Path
+import subprocess,shutil,re,json,hashlib
+root=Path('/tmp/k2aa-k1b-integration');out=Path('/tmp/k2aa-k1b-integration-mutants');out.mkdir(exist_ok=True)
+cases=[('cutting-capability','feature-attachments.js','record.kind === Cutting.KIND ? [Cutting.CAPABILITY] : ','','actual.cjs','P-054 actual merged validators preserve cutting and grid collections together'),('reader-capability','project-store.js','capability!==CUTTING_CAPABILITY||cutting','true','test_cutting_project_store.js','T17 archive roundtrip retains settings and highwater but no plan, scope or World declaration')];results=[]
+for name,file,before,after,judge,test in cases:
+ d=out/name;(d/'geometry-web').mkdir(parents=True,exist_ok=True);(d/'tests').mkdir(exist_ok=True)
+ for p in (root/'geometry-web').glob('*.js'):shutil.copy2(p,d/'geometry-web'/p.name)
+ shutil.copytree(root/'geometry-web/vendor/fflate',d/'geometry-web/vendor/fflate',dirs_exist_ok=True)
+ if judge=='actual.cjs':(d/'tests'/judge).write_text(Path('/tmp/k2aa-k1b-actual-coexist.cjs').read_text().replace(str(root),str(d)))
+ else:shutil.copy2(root/'tests'/judge,d/'tests'/judge)
+ p=d/'geometry-web'/file;original=p.read_bytes();assert original.decode().count(before)==1
+ command=['node','--test','--test-reporter=tap','--test-name-pattern=^'+re.escape(test)+'$','tests/'+judge]
+ def run(cmd,label):
+  r=subprocess.run(cmd,cwd=d,capture_output=True,text=True);raw=r.stdout+r.stderr;(d/(label+'.log')).write_text(raw);return r.returncode,raw
+ code,raw=run(command,'baseline');assert code==0 and '# pass 1' in raw and '# skipped 0' in raw
+ p.write_text(original.decode().replace(before,after));code,raw=run(['node','--check',str(p)],'build');assert code==0
+ code,raw=run(command,'red');assert code!=0 and '# fail 1' in raw and '# skipped 0' in raw and "code: 'ERR_ASSERTION'" in raw,(name,raw)
+ p.write_bytes(original);code,raw=run(command,'restored');assert code==0 and '# pass 1' in raw
+ results.append({'id':name,'detected':True,'expected_test':test,'source_sha256':hashlib.sha256(original).hexdigest(),'judge_sha256':hashlib.sha256((d/'tests'/judge).read_bytes()).hexdigest(),'command':command});print(name,flush=True)
+(out/'results.json').write_text(json.dumps(results,indent=2)+'\n')

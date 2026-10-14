@@ -1,0 +1,188 @@
+TAP version 13
+# Subtest: M02 two raw drafts survive real ZIP with collection capability and canonical identity order
+not ok 1 - M02 two raw drafts survive real ZIP with collection capability and canonical identity order
+  ---
+  duration_ms: 36.115693
+  type: 'test'
+  location: '/tmp/k2aa-mutations-review/M02-first-only/tests/test_grid_drafts_collection.js:14:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      [
+        {
+          baseRef: null,
+    -     draftId: 'a',
+    -     inputRefs: [],
+    -     intent: 'create',
+    -     kind: 'source',
+    -     rawForm: {
+    -       igMainAlong: '',
+    -       igName: '  原樣 a ',
+    -       igUAnchor: '',
+    -       igUAnchorSource: '',
+    -       igUGap: '',
+    -       igUGapSource: '',
+    -       igUPanel: '',
+    -       igUPanelSource: '',
+    -       igUPhase: '',
+    -       igUPhaseSource: '',
+    -       igUSource: '',
+    -       igUStagger: '',
+    -       igUStaggerSource: '',
+    -       igUStep: '1e',
+    -       igUStepSource: '',
+    -       igVAnchor: '',
+    -       igVAnchorSource: '',
+    -       igVGap: '',
+    -       igVGapSource: '',
+    -       igVPanel: '',
+    -       igVPanelSource: '',
+    -       igVPhase: '',
+    -       igVPhaseSource: '',
+    -       igVSource: '',
+    -       igVStagger: '',
+    -       igVStaggerSource: '',
+    -       igVStep: '',
+    -       igVStepSource: ''
+    -     },
+    -     schema: 'grid-editor-draft/1'
+    -   },
+    -   {
+    -     baseRef: null,
+          draftId: 'b',
+          inputRefs: [],
+          intent: 'create',
+          kind: 'source',
+          rawForm: {
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0:
+      schema: 'grid-editor-draft/1'
+      draftId: 'a'
+      kind: 'source'
+      intent: 'create'
+      baseRef: ~
+      inputRefs:
+      rawForm:
+        igName: '  原樣 a '
+        igMainAlong: ''
+        igUSource: ''
+        igUStep: '1e'
+        igUStepSource: ''
+        igUPhase: ''
+        igUPhaseSource: ''
+        igUPanel: ''
+        igUPanelSource: ''
+        igUGap: ''
+        igUGapSource: ''
+        igUAnchor: ''
+        igUAnchorSource: ''
+        igUStagger: ''
+        igUStaggerSource: ''
+        igVSource: ''
+        igVStep: ''
+        igVStepSource: ''
+        igVPhase: ''
+        igVPhaseSource: ''
+        igVPanel: ''
+        igVPanelSource: ''
+        igVGap: ''
+        igVGapSource: ''
+        igVAnchor: ''
+        igVAnchorSource: ''
+        igVStagger: ''
+        igVStaggerSource: ''
+    1:
+      schema: 'grid-editor-draft/2'
+      draftId: 'b'
+      kind: 'source'
+      intent: 'create'
+      baseRef: ~
+      inputRefs:
+      rawForm:
+        igName: '  原樣 b '
+        igMainAlong: ''
+        igUSource: ''
+        igUStep: '1e'
+        igUStepSource: ''
+        igUPhase: ''
+        igUPhaseSource: ''
+        igUPanel: ''
+        igUPanelSource: ''
+        igUGap: ''
+        igUGapSource: ''
+        igUAnchor: ''
+        igUAnchorSource: ''
+        igUStagger: ''
+        igUStaggerSource: ''
+        igVSource: ''
+        igVStep: ''
+        igVStepSource: ''
+        igVPhase: ''
+        igVPhaseSource: ''
+        igVPanel: ''
+        igVPanelSource: ''
+        igVGap: ''
+        igVGapSource: ''
+        igVAnchor: ''
+        igVAnchorSource: ''
+        igVStagger: ''
+        igVStaggerSource: ''
+      ruleDraft: ~
+  actual:
+    0:
+      schema: 'grid-editor-draft/2'
+      draftId: 'b'
+      kind: 'source'
+      intent: 'create'
+      baseRef: ~
+      inputRefs:
+      rawForm:
+        igName: '  原樣 b '
+        igMainAlong: ''
+        igUSource: ''
+        igUStep: '1e'
+        igUStepSource: ''
+        igUPhase: ''
+        igUPhaseSource: ''
+        igUPanel: ''
+        igUPanelSource: ''
+        igUGap: ''
+        igUGapSource: ''
+        igUAnchor: ''
+        igUAnchorSource: ''
+        igUStagger: ''
+        igUStaggerSource: ''
+        igVSource: ''
+        igVStep: ''
+        igVStepSource: ''
+        igVPhase: ''
+        igVPhaseSource: ''
+        igVPanel: ''
+        igVPanelSource: ''
+        igVGap: ''
+        igVGapSource: ''
+        igVAnchor: ''
+        igVAnchorSource: ''
+        igVStagger: ''
+        igVStaggerSource: ''
+      ruleDraft: ~
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (/tmp/k2aa-mutations-review/M02-first-only/tests/test_grid_drafts_collection.js:18:70)
+    async Test.run (node:internal/test_runner/test:1389:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 189.001615

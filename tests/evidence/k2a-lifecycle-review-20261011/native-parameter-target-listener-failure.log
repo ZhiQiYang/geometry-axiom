@@ -1,0 +1,34 @@
+{"M04":true,"M06":true,"M14":true,"M14b":true,"deletion":[{"kind":"grid-system","id":0}]}
+AssertionError [ERR_ASSERTION]: M1 empty source selection must preserve lost reference, raw and history
++ actual - expected
+... Skipped lines
+
+  {
+    drafts: {
+      drafts: [
+        {
+          baseRef: null,
+...
+            igUStaggerSource: '',
++           igUStep: '',
+-           igUStep: '600',
+            igUStepSource: '1:1',
+            igVAnchor: '0',
+            igVAnchorSource: '',
+            igVGap: '0',
+            igVGapSource: '',
+...
+    },
++   history: 5
+-   history: 4
+  }
+
+    at Proxy.<anonymous> (/workspace/geometry-k2aa-review/tests/k2a_browser_receipt.cjs:21:153)
+    at /workspace/geometry-k2aa-review/tests/k2a_native_browser.cjs:54:9 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: [Object],
+  expected: [Object],
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}

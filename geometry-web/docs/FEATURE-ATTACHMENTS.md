@@ -1,4 +1,4 @@
-# 有界功能附件與單一網格草稿（#45）
+# 有界功能附件與網格草稿集合（#45、D56/D57、I68、R54）
 
 `feature-attachments.js` 是有限種類的 plain JSON 驗證器；`project-store.js` 保存附件，`ReferenceWorkspace` 協調專案上下文及既有歷史。附件不宣告 World，不執行程式、不保存 preview token、DOM、快取 URL 或另一份 geometry。
 
@@ -35,7 +35,11 @@
 }
 ```
 
-目前只支持 `grid-draft`，每專案零或一份；未知種類／任一 schema／額外欄位／重複／超限拒。非空附件被降至 `/1`…`/9`、移除附件但保留能力、移除所需能力，都拒。合法空 envelope 保存時移除，沿資料選擇既有格式。第 10 版仍保留組構生成、參數、工程來源、完整模型、圖頁原始 bytes 與第 9 版輪廓核對收據，沒有降級或剝除既有能力。
+單份、非孤兒且不含 `lost` 的草稿沿用原單份格式；零份時移除 record。其他情形使用 `geometry-canvas/17` 與集合 value：`{schema:"grid-editor-drafts/1",drafts:[原單份 value…],orphans:[draftId…]}`。能力包含集合能力與元素實際使用的 `/1`、`/2`，兩者可在集合內共存。集合依 draftId 排序保存，最多 16 份、每份 128 KiB、整筆 record 1 MiB；同目標的非孤兒編輯草稿至多一份。未知 schema、額外欄位、重複身分、假孤兒、超限、降版或剝能力均拒絕，沒有截斷。
+
+`inputRefs` 只在集合內允許 `lost:true`；其他值、baseRef 或單份格式中的 lost 均拒絕。已提交操作觀察到刪除，會在同一歷史步驟標記基底為孤兒、來源引用為 lost；同 id 同內容的新物件不能解除旗標。匯入後首次 objects 掃描補標缺失對象。任一 lost 都阻擋預覽及提交；換到另一物件須列出新舊引用並確認，重新取得基底不清除 lost。
+
+`readGridDrafts()` 回傳深拷貝；`setGridDraft(draftId,value|null,token)` 只改指定草稿。旧單份寫入介面只能更新目前唯一、非孤兒、無 lost 且同 draftId 的草稿。確認只清除 leased draftId，與核心提交同一步 undo。過期草稿的「重新取得基底」先做原字串對現況正規值的兩方比對，確認只更新 pin，仍須預覽及確認才改 World。
 
 `grid-editor-draft/1` 是本 reader 的編輯能力。`readerCapabilities(nativeCapabilities)` 加入它用於專案能力檢查；`sceneCapabilities`、原生候選 `required_capabilities` 及原生能力 validator 都仍拒它。它與尚待 native owner 實作的 `grid-subdivision-rules/1` 沒有互相代替。
 

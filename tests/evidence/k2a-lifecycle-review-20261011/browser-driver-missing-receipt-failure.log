@@ -1,0 +1,17 @@
+drafts
+source
+rule
+Traceback (most recent call last):
+  File "/tmp/k2aa-lifecycle-gates.py", line 9, in <module>
+    Path('/tmp/k2aa-lifecycle-old-browser-mutations-final.log').write_text(r.stdout+r.stderr);assert r.returncode==0,r.stdout+r.stderr
+                                                                                                     ^^^^^^^^^^^^^^^
+AssertionError: Traceback (most recent call last):
+  File "/workspace/geometry-k2aa-review/tests/k2a_browser_mutate.py", line 18, in <module>
+    assert baseline.returncode == 0, baseline.stdout + baseline.stderr
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Error: explicit TEMP receipt path required
+    at exports.begin (/workspace/geometry-k2aa-review/tests/k2a_browser_receipt.cjs:20:128)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async /workspace/geometry-k2aa-review/tests/k2a_drafts_browser.cjs:6:13
+
+

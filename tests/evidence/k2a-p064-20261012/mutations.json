@@ -1,0 +1,317 @@
+[
+  {
+    "label": "remove-origin-baseline",
+    "command": [
+      "node",
+      "--test",
+      "--test-name-pattern=P064 normal collection retains",
+      "tests/test_grid_drafts_lifecycle_capacity.js"
+    ],
+    "exit": 0,
+    "stdoutSHA256": "0f09e9c811137f2cf5f25130f398deca2a77b7a33968addfb6d998ab0cd9bc51",
+    "sources": {
+      "geometry-web/feature-attachments.js": "4c1c1acc2183d7c8560cdd7b9b4bd758f1e3e1b7dad7d386bab8d20942823b72",
+      "geometry-web/project-store.js": "7b998fea23698849cd5948b220ae5bc7d4c85e70ad00e145be91c45ca3fc02dd",
+      "geometry-web/reference-workspace.js": "9e2939ab169e43ea3772cafde1b671c13317e96af1fa38067c47db81d371afc3",
+      "tests/test_grid_drafts_lifecycle_capacity.js": "5b3d50e22c1a117cc2afc7475f896c350d3e39772d307c50912d5cd5fbbf56a1",
+      "tests/test_reference_workspace_races.js": "35ded7e04cf8538876722dd35ab93e5a34a47a919d7b9f490c27d9cd45f97601"
+    }
+  },
+  {
+    "label": "remove-origin-syntax",
+    "command": [
+      "node",
+      "--check",
+      "/workspace/geometry-k2aa-review/geometry-web/feature-attachments.js"
+    ],
+    "exit": 0
+  },
+  {
+    "label": "remove-origin-mutant",
+    "command": [
+      "node",
+      "--test",
+      "--test-name-pattern=P064 normal collection retains",
+      "tests/test_grid_drafts_lifecycle_capacity.js"
+    ],
+    "exit": 1,
+    "stdoutSHA256": "1351f6d11e12e9af9c2e24f89a26485d2099108f1bf7a542e7dc87b7c2566559",
+    "sources": {
+      "geometry-web/feature-attachments.js": "39d08d5c8e4a2c6e97d79813ca5cd49ad7eacb69d0425141de909e6f4a309cab",
+      "geometry-web/project-store.js": "7b998fea23698849cd5948b220ae5bc7d4c85e70ad00e145be91c45ca3fc02dd",
+      "geometry-web/reference-workspace.js": "9e2939ab169e43ea3772cafde1b671c13317e96af1fa38067c47db81d371afc3",
+      "tests/test_grid_drafts_lifecycle_capacity.js": "5b3d50e22c1a117cc2afc7475f896c350d3e39772d307c50912d5cd5fbbf56a1",
+      "tests/test_reference_workspace_races.js": "35ded7e04cf8538876722dd35ab93e5a34a47a919d7b9f490c27d9cd45f97601"
+    }
+  },
+  {
+    "label": "remove-origin-restored",
+    "command": [
+      "node",
+      "--test",
+      "--test-name-pattern=P064 normal collection retains",
+      "tests/test_grid_drafts_lifecycle_capacity.js"
+    ],
+    "exit": 0,
+    "stdoutSHA256": "0388532f41e46249c73409773fd194d4b3fd28c57fc86f0fca11c439002775fe",
+    "sources": {
+      "geometry-web/feature-attachments.js": "4c1c1acc2183d7c8560cdd7b9b4bd758f1e3e1b7dad7d386bab8d20942823b72",
+      "geometry-web/project-store.js": "7b998fea23698849cd5948b220ae5bc7d4c85e70ad00e145be91c45ca3fc02dd",
+      "geometry-web/reference-workspace.js": "9e2939ab169e43ea3772cafde1b671c13317e96af1fa38067c47db81d371afc3",
+      "tests/test_grid_drafts_lifecycle_capacity.js": "5b3d50e22c1a117cc2afc7475f896c350d3e39772d307c50912d5cd5fbbf56a1",
+      "tests/test_reference_workspace_races.js": "35ded7e04cf8538876722dd35ab93e5a34a47a919d7b9f490c27d9cd45f97601"
+    }
+  },
+  {
+    "label": "remove-p064-baseline",
+    "command": [
+      "node",
+      "--test",
+      "--test-name-pattern=P064 normal collection retains",
+      "tests/test_grid_drafts_lifecycle_capacity.js"
+    ],
+    "exit": 0,
+    "stdoutSHA256": "ae1db68e2f067b637c21474b5988b8d8f60ac0d4bc42e0b757f0398c5f830887",
+    "sources": {
+      "geometry-web/feature-attachments.js": "4c1c1acc2183d7c8560cdd7b9b4bd758f1e3e1b7dad7d386bab8d20942823b72",
+      "geometry-web/project-store.js": "7b998fea23698849cd5948b220ae5bc7d4c85e70ad00e145be91c45ca3fc02dd",
+      "geometry-web/reference-workspace.js": "9e2939ab169e43ea3772cafde1b671c13317e96af1fa38067c47db81d371afc3",
+      "tests/test_grid_drafts_lifecycle_capacity.js": "5b3d50e22c1a117cc2afc7475f896c350d3e39772d307c50912d5cd5fbbf56a1",
+      "tests/test_reference_workspace_races.js": "35ded7e04cf8538876722dd35ab93e5a34a47a919d7b9f490c27d9cd45f97601"
+    }
+  },
+  {
+    "label": "remove-p064-syntax",
+    "command": [
+      "node",
+      "--check",
+      "/workspace/geometry-k2aa-review/geometry-web/feature-attachments.js"
+    ],
+    "exit": 0
+  },
+  {
+    "label": "remove-p064-mutant",
+    "command": [
+      "node",
+      "--test",
+      "--test-name-pattern=P064 normal collection retains",
+      "tests/test_grid_drafts_lifecycle_capacity.js"
+    ],
+    "exit": 1,
+    "stdoutSHA256": "d9bd407fb5c0dfd427cb22910386af151992e3b4004f45fb73e0e09b13460b13",
+    "sources": {
+      "geometry-web/feature-attachments.js": "4350642335396e0bf246be58ab0ce05fdc9fdae06815847ab47628546298d44b",
+      "geometry-web/project-store.js": "7b998fea23698849cd5948b220ae5bc7d4c85e70ad00e145be91c45ca3fc02dd",
+      "geometry-web/reference-workspace.js": "9e2939ab169e43ea3772cafde1b671c13317e96af1fa38067c47db81d371afc3",
+      "tests/test_grid_drafts_lifecycle_capacity.js": "5b3d50e22c1a117cc2afc7475f896c350d3e39772d307c50912d5cd5fbbf56a1",
+      "tests/test_reference_workspace_races.js": "35ded7e04cf8538876722dd35ab93e5a34a47a919d7b9f490c27d9cd45f97601"
+    }
+  },
+  {
+    "label": "remove-p064-restored",
+    "command": [
+      "node",
+      "--test",
+      "--test-name-pattern=P064 normal collection retains",
+      "tests/test_grid_drafts_lifecycle_capacity.js"
+    ],
+    "exit": 0,
+    "stdoutSHA256": "d88039e45f901eea409e25beffc9471d2749d28daaa0976a7bbfe7a1fcf11449",
+    "sources": {
+      "geometry-web/feature-attachments.js": "4c1c1acc2183d7c8560cdd7b9b4bd758f1e3e1b7dad7d386bab8d20942823b72",
+      "geometry-web/project-store.js": "7b998fea23698849cd5948b220ae5bc7d4c85e70ad00e145be91c45ca3fc02dd",
+      "geometry-web/reference-workspace.js": "9e2939ab169e43ea3772cafde1b671c13317e96af1fa38067c47db81d371afc3",
+      "tests/test_grid_drafts_lifecycle_capacity.js": "5b3d50e22c1a117cc2afc7475f896c350d3e39772d307c50912d5cd5fbbf56a1",
+      "tests/test_reference_workspace_races.js": "35ded7e04cf8538876722dd35ab93e5a34a47a919d7b9f490c27d9cd45f97601"
+    }
+  },
+  {
+    "label": "remove-save-normalization-baseline",
+    "command": [
+      "node",
+      "--test",
+      "--test-name-pattern=P064 save normalizes",
+      "tests/test_grid_drafts_lifecycle_capacity.js"
+    ],
+    "exit": 0,
+    "stdoutSHA256": "1e71f8df66f559a936bd1443860a531cffff0e39aa474cb8b0553ef3b263b86d",
+    "sources": {
+      "geometry-web/feature-attachments.js": "4c1c1acc2183d7c8560cdd7b9b4bd758f1e3e1b7dad7d386bab8d20942823b72",
+      "geometry-web/project-store.js": "7b998fea23698849cd5948b220ae5bc7d4c85e70ad00e145be91c45ca3fc02dd",
+      "geometry-web/reference-workspace.js": "9e2939ab169e43ea3772cafde1b671c13317e96af1fa38067c47db81d371afc3",
+      "tests/test_grid_drafts_lifecycle_capacity.js": "5b3d50e22c1a117cc2afc7475f896c350d3e39772d307c50912d5cd5fbbf56a1",
+      "tests/test_reference_workspace_races.js": "35ded7e04cf8538876722dd35ab93e5a34a47a919d7b9f490c27d9cd45f97601"
+    }
+  },
+  {
+    "label": "remove-save-normalization-syntax",
+    "command": [
+      "node",
+      "--check",
+      "/workspace/geometry-k2aa-review/geometry-web/project-store.js"
+    ],
+    "exit": 0
+  },
+  {
+    "label": "remove-save-normalization-mutant",
+    "command": [
+      "node",
+      "--test",
+      "--test-name-pattern=P064 save normalizes",
+      "tests/test_grid_drafts_lifecycle_capacity.js"
+    ],
+    "exit": 1,
+    "stdoutSHA256": "bdb697ddbb4261b3ea0c767dc5e7cf4385c53da0a87adfa99f05387241e10737",
+    "sources": {
+      "geometry-web/feature-attachments.js": "4c1c1acc2183d7c8560cdd7b9b4bd758f1e3e1b7dad7d386bab8d20942823b72",
+      "geometry-web/project-store.js": "7408dda4f9c9eda2a611217f3a2392de99163e7dd8b0467a0cc04a01b84da697",
+      "geometry-web/reference-workspace.js": "9e2939ab169e43ea3772cafde1b671c13317e96af1fa38067c47db81d371afc3",
+      "tests/test_grid_drafts_lifecycle_capacity.js": "5b3d50e22c1a117cc2afc7475f896c350d3e39772d307c50912d5cd5fbbf56a1",
+      "tests/test_reference_workspace_races.js": "35ded7e04cf8538876722dd35ab93e5a34a47a919d7b9f490c27d9cd45f97601"
+    }
+  },
+  {
+    "label": "remove-save-normalization-restored",
+    "command": [
+      "node",
+      "--test",
+      "--test-name-pattern=P064 save normalizes",
+      "tests/test_grid_drafts_lifecycle_capacity.js"
+    ],
+    "exit": 0,
+    "stdoutSHA256": "8e174f7bac3f86d9a27531a9bd5021ed3711146e7aaa7622aa83ea7b08123739",
+    "sources": {
+      "geometry-web/feature-attachments.js": "4c1c1acc2183d7c8560cdd7b9b4bd758f1e3e1b7dad7d386bab8d20942823b72",
+      "geometry-web/project-store.js": "7b998fea23698849cd5948b220ae5bc7d4c85e70ad00e145be91c45ca3fc02dd",
+      "geometry-web/reference-workspace.js": "9e2939ab169e43ea3772cafde1b671c13317e96af1fa38067c47db81d371afc3",
+      "tests/test_grid_drafts_lifecycle_capacity.js": "5b3d50e22c1a117cc2afc7475f896c350d3e39772d307c50912d5cd5fbbf56a1",
+      "tests/test_reference_workspace_races.js": "35ded7e04cf8538876722dd35ab93e5a34a47a919d7b9f490c27d9cd45f97601"
+    }
+  },
+  {
+    "label": "remove-prepare-baseline",
+    "command": [
+      "node",
+      "--test",
+      "--test-name-pattern=P064 confirmation preflight",
+      "tests/test_reference_workspace_races.js"
+    ],
+    "exit": 0,
+    "stdoutSHA256": "dbd0c3a7e7035823bea3e9375b212a2657da3de032ea6578f63d59fe5775a854",
+    "sources": {
+      "geometry-web/feature-attachments.js": "4c1c1acc2183d7c8560cdd7b9b4bd758f1e3e1b7dad7d386bab8d20942823b72",
+      "geometry-web/project-store.js": "7b998fea23698849cd5948b220ae5bc7d4c85e70ad00e145be91c45ca3fc02dd",
+      "geometry-web/reference-workspace.js": "9e2939ab169e43ea3772cafde1b671c13317e96af1fa38067c47db81d371afc3",
+      "tests/test_grid_drafts_lifecycle_capacity.js": "5b3d50e22c1a117cc2afc7475f896c350d3e39772d307c50912d5cd5fbbf56a1",
+      "tests/test_reference_workspace_races.js": "35ded7e04cf8538876722dd35ab93e5a34a47a919d7b9f490c27d9cd45f97601"
+    }
+  },
+  {
+    "label": "remove-prepare-syntax",
+    "command": [
+      "node",
+      "--check",
+      "/workspace/geometry-k2aa-review/geometry-web/reference-workspace.js"
+    ],
+    "exit": 0
+  },
+  {
+    "label": "remove-prepare-mutant",
+    "command": [
+      "node",
+      "--test",
+      "--test-name-pattern=P064 confirmation preflight",
+      "tests/test_reference_workspace_races.js"
+    ],
+    "exit": 1,
+    "stdoutSHA256": "237ab632b553734aa2817553347b7471952f7e9aa9f0f51f01902b42d4f80888",
+    "sources": {
+      "geometry-web/feature-attachments.js": "4c1c1acc2183d7c8560cdd7b9b4bd758f1e3e1b7dad7d386bab8d20942823b72",
+      "geometry-web/project-store.js": "7b998fea23698849cd5948b220ae5bc7d4c85e70ad00e145be91c45ca3fc02dd",
+      "geometry-web/reference-workspace.js": "a01e894c446268e14198c6b8dad8aa6317cf285943ea8805d037e139dc07e24b",
+      "tests/test_grid_drafts_lifecycle_capacity.js": "5b3d50e22c1a117cc2afc7475f896c350d3e39772d307c50912d5cd5fbbf56a1",
+      "tests/test_reference_workspace_races.js": "35ded7e04cf8538876722dd35ab93e5a34a47a919d7b9f490c27d9cd45f97601"
+    }
+  },
+  {
+    "label": "remove-prepare-restored",
+    "command": [
+      "node",
+      "--test",
+      "--test-name-pattern=P064 confirmation preflight",
+      "tests/test_reference_workspace_races.js"
+    ],
+    "exit": 0,
+    "stdoutSHA256": "d5fd00b92183accf00ad5d60548b78576f61e4900aa768f43d18786288e7b940",
+    "sources": {
+      "geometry-web/feature-attachments.js": "4c1c1acc2183d7c8560cdd7b9b4bd758f1e3e1b7dad7d386bab8d20942823b72",
+      "geometry-web/project-store.js": "7b998fea23698849cd5948b220ae5bc7d4c85e70ad00e145be91c45ca3fc02dd",
+      "geometry-web/reference-workspace.js": "9e2939ab169e43ea3772cafde1b671c13317e96af1fa38067c47db81d371afc3",
+      "tests/test_grid_drafts_lifecycle_capacity.js": "5b3d50e22c1a117cc2afc7475f896c350d3e39772d307c50912d5cd5fbbf56a1",
+      "tests/test_reference_workspace_races.js": "35ded7e04cf8538876722dd35ab93e5a34a47a919d7b9f490c27d9cd45f97601"
+    }
+  },
+  {
+    "label": "remove-begin-baseline",
+    "command": [
+      "node",
+      "--test",
+      "--test-name-pattern=P064 confirmation preflight",
+      "tests/test_reference_workspace_races.js"
+    ],
+    "exit": 0,
+    "stdoutSHA256": "c31139a6914d8ffc64d4af0d089709046a6289736211dd89efb0e2c28a1c8f62",
+    "sources": {
+      "geometry-web/feature-attachments.js": "4c1c1acc2183d7c8560cdd7b9b4bd758f1e3e1b7dad7d386bab8d20942823b72",
+      "geometry-web/project-store.js": "7b998fea23698849cd5948b220ae5bc7d4c85e70ad00e145be91c45ca3fc02dd",
+      "geometry-web/reference-workspace.js": "9e2939ab169e43ea3772cafde1b671c13317e96af1fa38067c47db81d371afc3",
+      "tests/test_grid_drafts_lifecycle_capacity.js": "5b3d50e22c1a117cc2afc7475f896c350d3e39772d307c50912d5cd5fbbf56a1",
+      "tests/test_reference_workspace_races.js": "35ded7e04cf8538876722dd35ab93e5a34a47a919d7b9f490c27d9cd45f97601"
+    }
+  },
+  {
+    "label": "remove-begin-syntax",
+    "command": [
+      "node",
+      "--check",
+      "/workspace/geometry-k2aa-review/geometry-web/reference-workspace.js"
+    ],
+    "exit": 0
+  },
+  {
+    "label": "remove-begin-mutant",
+    "command": [
+      "node",
+      "--test",
+      "--test-name-pattern=P064 confirmation preflight",
+      "tests/test_reference_workspace_races.js"
+    ],
+    "exit": 1,
+    "stdoutSHA256": "00440d20446c3bd650c8655a85987a8b0ddb9b9b886dac22c11ea10c19637fda",
+    "sources": {
+      "geometry-web/feature-attachments.js": "4c1c1acc2183d7c8560cdd7b9b4bd758f1e3e1b7dad7d386bab8d20942823b72",
+      "geometry-web/project-store.js": "7b998fea23698849cd5948b220ae5bc7d4c85e70ad00e145be91c45ca3fc02dd",
+      "geometry-web/reference-workspace.js": "0d4a9509c54b79f69510db528f0e2818e9777a49407a6c1c499e8d2841b002f8",
+      "tests/test_grid_drafts_lifecycle_capacity.js": "5b3d50e22c1a117cc2afc7475f896c350d3e39772d307c50912d5cd5fbbf56a1",
+      "tests/test_reference_workspace_races.js": "35ded7e04cf8538876722dd35ab93e5a34a47a919d7b9f490c27d9cd45f97601"
+    }
+  },
+  {
+    "label": "remove-begin-restored",
+    "command": [
+      "node",
+      "--test",
+      "--test-name-pattern=P064 confirmation preflight",
+      "tests/test_reference_workspace_races.js"
+    ],
+    "exit": 0,
+    "stdoutSHA256": "781baa1c4d9c7d3fd3c4862cf46a38801735e6591d4f7fa7b8fbeae8c5024f39",
+    "sources": {
+      "geometry-web/feature-attachments.js": "4c1c1acc2183d7c8560cdd7b9b4bd758f1e3e1b7dad7d386bab8d20942823b72",
+      "geometry-web/project-store.js": "7b998fea23698849cd5948b220ae5bc7d4c85e70ad00e145be91c45ca3fc02dd",
+      "geometry-web/reference-workspace.js": "9e2939ab169e43ea3772cafde1b671c13317e96af1fa38067c47db81d371afc3",
+      "tests/test_grid_drafts_lifecycle_capacity.js": "5b3d50e22c1a117cc2afc7475f896c350d3e39772d307c50912d5cd5fbbf56a1",
+      "tests/test_reference_workspace_races.js": "35ded7e04cf8538876722dd35ab93e5a34a47a919d7b9f490c27d9cd45f97601"
+    }
+  }
+]

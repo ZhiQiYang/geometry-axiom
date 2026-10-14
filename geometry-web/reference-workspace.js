@@ -91,11 +91,13 @@ const ReferenceWorkspace = (() => {
     return Number.isInteger(value)&&value>0&&value<=4294967295?String(value):null;
   }
   function prepareFeatureConfirmation(token,kind,value,expectedContextToken){
-    P.Features.assertKind(kind);P.Features.validateGridDraft(value);assertEditable();
+    P.Features.assertKind(kind);P.Features.validateGridDraft(value,true);assertEditable();
     const key=featureTokenKey(token);
     if(key===null||getProjectState().contextToken!==expectedContextToken||
-       busy||history.group||pendingLoad||preparingSceneLoad||!sameModelData(readFeatureAttachment(kind),value))
+       busy||history.group||pendingLoad||preparingSceneLoad||!sameModelData(kind===P.Features.GRID_KIND?readGridDraft(value.draftId):readFeatureAttachment(kind),value) ||
+       kind===P.Features.GRID_KIND && (readGridDrafts().orphans.includes(value.draftId) || value.inputRefs.some(r=>r.lost)))
       throw new Error("草稿或專案已變更，請重新預覽確認。");
+    preflightGridConfirmation(kind,value);
     featureConfirmations.clear();
     featureConfirmations.set(key,{context:context(),frame:history.frame,kind,value:JSON.parse(JSON.stringify(value)),
       revision:revision(context()),session:connection.session,nativeRevision});
@@ -105,8 +107,14 @@ const ReferenceWorkspace = (() => {
     featureConfirmations.delete(key);assertEditable();
     if(busy||history.group||pendingLoad||preparingSceneLoad||!assemblyConfirmationCurrent(prepared)||
        prepared.revision!==revision(context())||prepared.session!==connection.session||prepared.nativeRevision!==nativeRevision||
-       !sameModelData(readFeatureAttachment(prepared.kind),prepared.value))throw new Error("草稿確認已過期，未套用。");
+       !sameModelData(prepared.kind===P.Features.GRID_KIND?readGridDraft(prepared.value.draftId):readFeatureAttachment(prepared.kind),prepared.value))throw new Error("草稿確認已過期，未套用。");
+    preflightGridConfirmation(prepared.kind,prepared.value);
     assemblyConfirmation={...prepared,featureCommand:"line confirm "+key};schedulePresentation();return assemblyConfirmation;
+  }
+  function preflightGridConfirmation(kind,value){
+    if(kind!==P.Features.GRID_KIND)return;
+    const c=readGridDrafts(),drafts=c.drafts.filter(d=>d.draftId!==value.draftId),orphans=c.orphans.filter(id=>id!==value.draftId);
+    featureProposal(kind,P.Features.gridDraftValue(drafts,orphans,true,readFeatureAttachment(kind)?.schema===P.Features.GRID_DRAFTS_SCHEMA),true);
   }
   function cancelFeatureConfirmation(token){featureConfirmations.delete(featureTokenKey(token));}
   function finishAssemblyConfirmation(stamp){if(assemblyConfirmation===stamp){assemblyConfirmation=null;schedulePresentation();scheduleRecovery();}}
@@ -411,8 +419,11 @@ const ReferenceWorkspace = (() => {
     if (roomTransaction && result.ok && cmd === "line history-end") roomTransaction.entry = history.undo.at(-1);
     window.RoomCollectionWorkspace?.observeNativeResult?.(cmd, result);
     const feature=assemblyConfirmation;
-    if(result.ok&&feature?.featureCommand===cmd&&assemblyConfirmationCurrent(feature)&&sameModelData(readFeatureAttachment(feature.kind),feature.value))
-      context().featureAttachments=context().featureAttachments.filter(record=>record.kind!==feature.kind);
+    if(result.ok&&feature?.featureCommand===cmd&&assemblyConfirmationCurrent(feature)&&sameModelData(feature.kind===P.Features.GRID_KIND?readGridDraft(feature.value.draftId):readFeatureAttachment(feature.kind),feature.value)){
+      if(feature.kind===P.Features.GRID_KIND){const c=readGridDrafts();replaceGridDrafts(c.drafts.filter(d=>d.draftId!==feature.value.draftId),c.orphans.filter(id=>id!==feature.value.draftId));}
+      else context().featureAttachments=context().featureAttachments.filter(record=>record.kind!==feature.kind);
+    }
+    if(result.ok && !result.preview)scanGridDrafts(result.deletedObjects || [],cmd==="objects"?result:null,result.history_changed===false);
     if (hadModels && result.ok && /^line\s+(reset|default)\s*$/.test(cmd)) context().modelsDirty = true;
     if (hadProjections && result.ok && /^line\s+(reset|default)\s*$/.test(cmd)) context().faceProjectionsDirty = true;
     const edited = result.ok && !result.preview && cmd.match(/^line\s+(?:boundary|surface)\s+(\d+)\s/);
@@ -433,13 +444,99 @@ const ReferenceWorkspace = (() => {
     const record = (context().featureAttachments || []).find(record => record.kind === kind);
     return record ? JSON.parse(JSON.stringify(record.value)) : null;
   }
-  function featureProposal(kind,value) {
-    const record = value === null ? null : P.Features.record(kind,value);
+  const gridDraftWrite = Symbol("per-draft-write");
+  function readGridDrafts(expectedContextToken) {
+    return P.Features.gridDrafts(readFeatureAttachment(P.Features.GRID_KIND,expectedContextToken));
+  }
+  function readGridDraft(draftId) {return readGridDrafts().drafts.find(d=>d.draftId===draftId) || null;}
+  function replaceGridDrafts(drafts,orphans) {
+    const value=P.Features.gridDraftValue(drafts,orphans,true,readFeatureAttachment(P.Features.GRID_KIND)?.schema===P.Features.GRID_DRAFTS_SCHEMA);
+    context().featureAttachments=featureProposal(P.Features.GRID_KIND,value,true);
+  }
+  function scanGridDrafts(deleted,objects=null,localDeletion=false) {
+    const c=readGridDrafts();if(!c.drafts.length)return;
+    const absent=ref=>deleted.some(d=>P.Features.referenceKey(d)===P.Features.referenceKey(ref) || ref.kind==='parameter-field' && d.kind==='parameter' && d.id===ref.parameterId) || objects &&
+      (ref.kind==='parameter-field'?!objects.parameters?.some(p=>p.id===ref.parameterId && p.card.fields.some(f=>f.id===ref.fieldId)):
+        !({"grid-system":objects.gridSystems,"grid-binding":objects.gridBindings,"boundary":objects.faces}[ref.kind] || []).some(row=>row.id===ref.id));
+    let changed=false;
+    for(const d of c.drafts){
+      if(d.baseRef && absent(d.baseRef) && !c.orphans.includes(d.draftId)){c.orphans.push(d.draftId);changed=true;}
+      for(const ref of d.inputRefs)if(!ref.lost && absent(ref)){ref.lost=true;changed=true;}
+    }
+    if(changed){if(localDeletion)history.push(history.snapshot(),"local","記錄本交易的來源缺失");replaceGridDrafts(c.drafts,c.orphans);dirty();}
+  }
+  function setGridDraft(draftId,value,expectedContextToken) {
+    const collection=readGridDrafts(expectedContextToken),old=collection.drafts.find(d=>d.draftId===draftId);
+    if(value!==null) {
+      // Validate before comparing caller data; unchanged legacy flushes persist.
+      P.Features.validateGridDraft(value,true,true);
+      if(old&&sameModelData(old,value))return readGridDraft(draftId);
+      P.Features.validateGridDraft(value,true);
+      if(value.draftId!==draftId)throw new Error("網格草稿身分不符。");
+      if(old && (old.kind!==value.kind || old.intent!==value.intent || !sameModelData(old.baseRef,value.baseRef)))
+        throw new Error("不得靜默更換草稿基底。");
+      for(const ref of old?.inputRefs || [])if(ref.lost && value.inputRefs.some(next=>P.Features.referenceKey(next)===P.Features.referenceKey(ref) && !next.lost))
+        throw new Error("不得抹除曾缺失來源旗標。");
+      const replacements=new Set();
+      for(const ref of old?.inputRefs || [])if(ref.lost&&!value.inputRefs.some(next=>P.Features.referenceKey(next)===P.Features.referenceKey(ref))){
+        const fields=ref.kind==='parameter-field'?P.Features.sourceFields.filter(field=>field.endsWith('Source')&&!['igUSource','igVSource'].includes(field)&&old.rawForm[field]===`${ref.parameterId}:${ref.fieldId}`):[];
+        if(fields.length){
+          if(!fields.every(field=>value.inputRefs.some(next=>next.kind==='parameter-field'&&!next.lost&&next.parameterId!==ref.parameterId&&value.rawForm[field]===`${next.parameterId}:${next.fieldId}`)))
+            throw new Error("曾缺失來源只准逐欄改指另一個物件，不得純移除。");
+          continue;
+        }
+        const next=value.inputRefs.find(next=>!next.lost&&next.kind===ref.kind&&!replacements.has(P.Features.referenceKey(next))&&
+          !old.inputRefs.some(existing=>P.Features.referenceKey(existing)===P.Features.referenceKey(next))&&
+          (ref.kind!=='parameter-field'||next.parameterId!==ref.parameterId));
+        if(!next)throw new Error("曾缺失來源只准改指另一個物件，不得純移除。");
+        replacements.add(P.Features.referenceKey(next));
+      }
+      for(const ref of old?.inputRefs || [])if(ref.lost && ref.kind==='parameter-field' && value.inputRefs.some(next=>next.kind==='parameter-field' && next.parameterId===ref.parameterId && !next.lost &&
+        !old.inputRefs.some(existing=>P.Features.referenceKey(existing)===P.Features.referenceKey(next) && !existing.lost)))
+        throw new Error("曾缺失的參數卡不得以另一欄位重新取得。");
+    }
+    const drafts=collection.drafts.filter(d=>d.draftId!==draftId);if(value!==null)drafts.push(value);
+    const orphans=collection.orphans.filter(id=>value!==null || id!==draftId);
+    const storedGrid=value===null; // Removal retains only unchanged, already stored drafts.
+    const valueNext=P.Features.gridDraftValue(drafts,orphans,storedGrid,readFeatureAttachment(P.Features.GRID_KIND)?.schema===P.Features.GRID_DRAFTS_SCHEMA);
+    const projected=P.Features.gridLifecycleValue(valueNext);
+    const projectedRecords=(context().featureAttachments||[]).filter(record=>record.kind!==P.Features.GRID_KIND);
+    if(projected)projectedRecords.push(P.Features.record(P.Features.GRID_KIND,projected,storedGrid));
+    if(storedGrid)P.assertManifestCapacity(manifestData({...context(),featureAttachments:projectedRecords}),"",true);
+    else assertMetadataCapacity({featureAttachments:projectedRecords});
+    setFeatureAttachment(P.Features.GRID_KIND,valueNext,expectedContextToken,{gridWrite:gridDraftWrite,storedGrid});
+    return readGridDraft(draftId);
+  }
+  async function repinGridDraft(draftId,expectedBaseFingerprint,expectedContextToken) {
+    assertEditable();const c=context(),frame=history.frame,rev=revision(c),draft=readGridDraft(draftId);
+    if(!draft || readGridDrafts().orphans.includes(draftId) || !draft.baseRef)throw new Error("孤兒或新建草稿不能重新取得基底。");
+    const check=()=>{assertEditable();if(context()!==c || history.frame!==frame || revision(c)!==rev ||
+      getProjectState().contextToken!==expectedContextToken || !sameModelData(readGridDraft(draftId),draft))throw new Error("草稿重新取得已過期。");};
+    check();const objects=await api("objects");check();if(!objects.ok)throw new Error("無法核對草稿基底。");
+    const pin=async ref=>{
+      let value;
+      if(ref.kind==="grid-system"){const row=objects.gridSystems?.find(r=>r.id===ref.id);if(row)value=P.Features.gridSourceKey(row,draft.schema===P.Features.GRID_SCHEMA);}
+      else if(ref.kind==="grid-binding"){const row=objects.gridBindings?.find(r=>r.id===ref.id);if(row)value=JSON.stringify([row.id,row.system,row.boundary,row.vertexKey,row.cell,row.anchor]);}
+      else if(ref.kind==="parameter-field"){const row=objects.parameters?.find(r=>r.id===ref.parameterId),field=row?.card.fields.find(f=>f.id===ref.fieldId);if(field)value=[row.card.id,field];}
+      else if(ref.kind==="boundary"){const row=await api("boundary "+ref.id);check();if(row.ok && row.loops?.length)return {...ref,fingerprint:row.geometryFingerprint,
+        vertexKeysFingerprint:await P.sha(new TextEncoder().encode(JSON.stringify(row.loops.map((loop,li)=>(loop.vertices || loop.verts.map((uv,index)=>({index,key:null}))).map(v=>[li,v.index,v.key])))))};}
+      if(value===undefined)throw new Error("來源已刪除，不能重新取得同一編號。");
+      return {...ref,fingerprint:await P.sha(new TextEncoder().encode(JSON.stringify(value)))};
+    };
+    const next=structuredClone(draft);next.baseRef=await pin(draft.baseRef);check();
+    if(next.baseRef.fingerprint!==expectedBaseFingerprint)throw new Error("基底已變更，請重新檢視兩方覆蓋預覽。");
+    for(let i=0;i<next.inputRefs.length;i++)if(!next.inputRefs[i].lost){next.inputRefs[i]=await pin(next.inputRefs[i]);check();}
+    const collection=readGridDrafts();setFeatureAttachment(P.Features.GRID_KIND,P.Features.gridDraftValue(collection.drafts.map(d=>d.draftId===draftId?next:d),collection.orphans,false,readFeatureAttachment(P.Features.GRID_KIND)?.schema===P.Features.GRID_DRAFTS_SCHEMA),expectedContextToken,{gridWrite:gridDraftWrite});
+    return readGridDraft(draftId);
+  }
+  function featureProposal(kind,value,storedGrid = false) {
+    const record = value === null ? null : P.Features.record(kind,value,storedGrid);
     const next = (context().featureAttachments || []).filter(record => record.kind !== kind);
     if (record) next.push(record);
     P.Features.sourceRooms({schema:P.Features.SCHEMA,records:next},context().sources);
     P.Features.evidenceLinks({schema:P.Features.SCHEMA,records:next},context().sources,context().id);
-    assertMetadataCapacity({featureAttachments:next});
+    if(storedGrid)P.assertManifestCapacity(manifestData({...context(),featureAttachments:next}),"",true);
+    else assertMetadataCapacity({featureAttachments:next});
     return next;
   }
   async function validateRuleCaseClosure(envelope, assertCurrent=()=>{}) {
@@ -485,7 +582,13 @@ const ReferenceWorkspace = (() => {
       throw new Error("專案已切換或缺少編輯上下文，未寫入功能附件。");
     if (busy || oc.busy || (!groupedRoom && history.group) || preparingSceneLoad || pendingLoad || nativePending)
       throw new Error("請先完成目前操作，再變更功能附件。");
-    const proposal = featureProposal(kind,value), previous = readFeatureAttachment(kind);
+    if(kind===P.Features.GRID_KIND && options.gridWrite!==gridDraftWrite){
+      const current=readGridDrafts();
+      if(current.drafts.length>1 || current.orphans.length || current.drafts.some(d=>d.inputRefs.some(r=>r.lost)) ||
+          current.drafts.length===1 && value!==null && value.draftId!==current.drafts[0].draftId || value?.schema===P.Features.GRID_DRAFTS_SCHEMA)
+        throw new Error("舊網格草稿介面不能取代集合或失效草稿。");
+    }
+    const proposal = featureProposal(kind,value,kind===P.Features.GRID_KIND&&options.gridWrite===gridDraftWrite&&options.storedGrid===true), previous = readFeatureAttachment(kind);
     if (sameModelData(previous, value)) return previous;
     const next = structuredClone(proposal);
     if (!groupedRoom) history.push(history.snapshot(), "local", kind === P.Features.CASE_KIND ? "保留規則案例" : kind === E.KIND ? "編輯參數證據" : kind === P.Features.ROOM_KIND ? "編輯房間來源" : value === null ? "捨棄網格編輯草稿" : "編輯網格草稿");
@@ -1235,7 +1338,7 @@ const ReferenceWorkspace = (() => {
   }
   async function manifest(c = context(), scene = null) {
     await referencesReady(c); assertContext(c);
-    const data = manifestData(c);P.assertManifestCapacity(data,scene);
+    const data = manifestData(c);P.assertManifestCapacity(data,scene,true);
     return JSON.parse(JSON.stringify(data));
   }
   function assertSaveReady(transactionOwner=null) {
@@ -1265,7 +1368,7 @@ const ReferenceWorkspace = (() => {
     const r=await api("dump"); if (!r.ok) throw new Error(r.error||"無法讀取場景。");
     assertCurrent();assertSnapshot(stamp,transactionOwner);
     const snapshot=proposal||c,m=includeCatalog?proposal?manifestData(snapshot):await manifest(c,r.text):manifestData({...snapshot,scenarioCatalog:null});
-    P.assertManifestCapacity(m,r.text);assertCurrent();assertSnapshot(stamp,transactionOwner);
+    P.assertManifestCapacity(m,r.text,true);assertCurrent();assertSnapshot(stamp,transactionOwner);
     await validateRuleCaseClosure(m.featureAttachments,()=>{assertCurrent();assertSnapshot(stamp,transactionOwner);});assertCurrent();assertSnapshot(stamp,transactionOwner);
     await validateEvidenceClosure(snapshot, m.featureAttachments, () => {assertCurrent();assertSnapshot(stamp,transactionOwner);}); assertCurrent();assertSnapshot(stamp,transactionOwner);
     const data=new Map([...snapshot.sources].map(([k,s])=>[k,s.bytes]));
@@ -2019,6 +2122,7 @@ const ReferenceWorkspace = (() => {
     readFeatureAttachment,setFeatureAttachment,prepareFeatureAttachment,commitPreparedFeatureAttachment,validateRuleCaseClosure,getRoomIntegration:()=>roomIntegration,
     getAssemblyDrafts,setAssemblyDraft,removeAssemblyDraft,getEngineeringDrafts,setEngineeringDraft,removeEngineeringDraft,getProjectState,getModelOperationState,getProjectInfo,restoreSession,retryRecovery,persistSession,assertEditable,assertWritableLease,
     assertAssemblyIdle,beginAssemblyConfirmation,assemblyConfirmationCurrent,finishAssemblyConfirmation,
+    readGridDrafts,setGridDraft,repinGridDraft,
     prepareFeatureConfirmation,beginFeatureConfirmation,cancelFeatureConfirmation,hasFeatureConfirmation:token=>featureConfirmations.has(featureTokenKey(token)),
     featureConfirmationPending:()=>!!assemblyConfirmation?.featureCommand,
     newProject:()=>replaceWithEmpty(false),clearContents:()=>replaceWithEmpty(true),

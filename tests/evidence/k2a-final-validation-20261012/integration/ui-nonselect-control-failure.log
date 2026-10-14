@@ -1,0 +1,17 @@
+K2A_BROWSER_RESULT {"assertions":0,"head":"904bebf1e28b27f0cf2f8d4f989a0e79d08befb2","receipt":"/tmp/k2aa-k1b-ui-final2-identity"}
+K2A_BROWSER_RESULT {"assertions":3,"head":"904bebf1e28b27f0cf2f8d4f989a0e79d08befb2","receipt":"/tmp/k2aa-k1b-ui-final2-identity"}
+locator.selectOption: Error: Element is not a <select> element
+Call log:
+[2m  - waiting for locator('#igUSource')[22m
+[2m    - locator resolved to <div id="igUSource" role="radiogroup" class="ig-segment" aria-label="u 排格方式" aria-invalid="false">…</div>[22m
+[2m  - attempting select option action[22m
+[2m    - waiting for element to be visible and enabled[22m
+
+    at /tmp/k2aa-k1b-ui-coexist.cjs:14:193 {
+  log: [
+    "  - waiting for locator('#igUSource')",
+    '    - locator resolved to <div id="igUSource" role="radiogroup" class="ig-segment" aria-label="u 排格方式" aria-invalid="false">…</div>',
+    '  - attempting select option action',
+    '    - waiting for element to be visible and enabled'
+  ]
+}

@@ -1,0 +1,9 @@
+Error: ENOENT: no such file or directory, open '/tmp/evidence/k2a-boundary-review-20261012/legacy/base49-capacity.gcanvas'
+    at Object.openSync (node:fs:622:18)
+    at Object.readFileSync (node:fs:488:35)
+    at /tmp/k2aa-normal-native-candidate.cjs:61:50 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/tmp/evidence/k2a-boundary-review-20261012/legacy/base49-capacity.gcanvas'
+}
