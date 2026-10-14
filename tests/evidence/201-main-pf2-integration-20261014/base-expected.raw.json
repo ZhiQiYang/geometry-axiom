@@ -1,0 +1,428 @@
+{
+ "_說明": "run_all.py 的各 suite「發現到的測試／斷言數」；完整跑時逐 suite 嚴格相等，不符即 fail。新增或刪除測試後請在一次完整跑之後用 --update-expected 明確更新（並在 commit 中說明）。exit-code-only 表示該 suite 只有結束碼、沒有可數的 test。",
+ "suites": {
+  "c:integrity": {
+   "mode": "count",
+   "count": 88,
+   "unit": "C 檢查點"
+  },
+  "core:run_tests": {
+   "mode": "count",
+   "count": 139,
+   "unit": "場景"
+  },
+  "mutation:check": {
+   "mode": "exit-code-only"
+  },
+  "py:test_assembly_candidate_impact": {
+   "mode": "count",
+   "count": 4,
+   "unit": "test"
+  },
+  "py:test_assembly_capacity": {
+   "mode": "count",
+   "count": 5,
+   "unit": "test"
+  },
+  "py:test_assembly_generation": {
+   "mode": "count",
+   "count": 22,
+   "unit": "test"
+  },
+  "py:test_assembly_native_diagnostics": {
+   "mode": "count",
+   "count": 8,
+   "unit": "test"
+  },
+  "py:test_assembly_parameter_refs": {
+   "mode": "count",
+   "count": 3,
+   "unit": "test"
+  },
+  "py:test_assembly_rules": {
+   "mode": "count",
+   "count": 35,
+   "unit": "test"
+  },
+  "py:test_axiom_reader": {
+   "mode": "count",
+   "count": 41,
+   "unit": "test"
+  },
+  "py:test_binaries": {
+   "mode": "count",
+   "count": 32,
+   "unit": "test"
+  },
+  "py:test_bridge_integrity": {
+   "mode": "count",
+   "count": 24,
+   "unit": "test"
+  },
+  "py:test_cli_args": {
+   "mode": "count",
+   "count": 6,
+   "unit": "test"
+  },
+  "py:test_datum_contract": {
+   "mode": "count",
+   "count": 9,
+   "unit": "test"
+  },
+  "py:test_engineering_core": {
+   "mode": "count",
+   "count": 18,
+   "unit": "test"
+  },
+  "py:test_engineering_json": {
+   "mode": "count",
+   "count": 7,
+   "unit": "test"
+  },
+  "py:test_engineering_model_compatibility": {
+   "mode": "count",
+   "count": 28,
+   "unit": "test"
+  },
+  "py:test_engineering_model_sources": {
+   "mode": "count",
+   "count": 4,
+   "unit": "test"
+  },
+  "py:test_engineering_transport": {
+   "mode": "count",
+   "count": 7,
+   "unit": "test"
+  },
+  "py:test_evidence_link_native": {
+   "mode": "count",
+   "count": 6,
+   "unit": "test"
+  },
+  "py:test_feedback_store": {
+   "mode": "count",
+   "count": 11,
+   "unit": "test"
+  },
+  "py:test_gdi_contract": {
+   "mode": "count",
+   "count": 1,
+   "unit": "test"
+  },
+  "py:test_grid_subdivision_oracle": {
+   "mode": "count",
+   "count": 41,
+   "unit": "test"
+  },
+  "py:test_grid_system_contract": {
+   "mode": "count",
+   "count": 13,
+   "unit": "test"
+  },
+  "py:test_grid_trial_contract": {
+   "mode": "count",
+   "count": 5,
+   "unit": "test"
+  },
+  "py:test_guide_panels": {
+   "mode": "count",
+   "count": 1,
+   "unit": "test"
+  },
+  "py:test_infinite_grid_contract": {
+   "mode": "count",
+   "count": 25,
+   "unit": "test"
+  },
+  "py:test_local_launcher": {
+   "mode": "count",
+   "count": 17,
+   "unit": "test"
+  },
+  "py:test_model_update": {
+   "mode": "count",
+   "count": 26,
+   "unit": "test"
+  },
+  "py:test_modeling_degenerate": {
+   "mode": "count",
+   "count": 24,
+   "unit": "test"
+  },
+  "py:test_modeling_runtime": {
+   "mode": "count",
+   "count": 46,
+   "unit": "test"
+  },
+  "py:test_modeling_transport": {
+   "mode": "count",
+   "count": 3,
+   "unit": "test"
+  },
+  "py:test_mutation_freshness": {
+   "mode": "count",
+   "count": 24,
+   "unit": "test"
+  },
+  "py:test_panel_fill_finish_surface": {
+   "mode": "count",
+   "count": 22,
+   "unit": "test"
+  },
+  "py:test_parameters_core": {
+   "mode": "count",
+   "count": 20,
+   "unit": "test"
+  },
+  "py:test_reference_contract": {
+   "mode": "count",
+   "count": 35,
+   "unit": "test"
+  },
+  "py:test_release_gate": {
+   "mode": "count",
+   "count": 21,
+   "unit": "test"
+  },
+  "py:test_rule_case_catalog": {
+   "mode": "count",
+   "count": 14,
+   "unit": "test"
+  },
+  "py:test_rule_case_definition": {
+   "mode": "count",
+   "count": 27,
+   "unit": "test"
+  },
+  "py:test_rule_case_executor": {
+   "mode": "count",
+   "count": 40,
+   "unit": "test"
+  },
+  "py:test_rule_case_host": {
+   "mode": "count",
+   "count": 13,
+   "unit": "test"
+  },
+  "py:test_rule_case_request": {
+   "mode": "count",
+   "count": 5,
+   "unit": "test"
+  },
+  "py:test_rule_case_workbench_http": {
+   "mode": "count",
+   "count": 19,
+   "unit": "test"
+  },
+  "py:test_runtime_version": {
+   "mode": "count",
+   "count": 24,
+   "unit": "test"
+  },
+  "py:test_scenario_verify": {
+   "mode": "count",
+   "count": 37,
+   "unit": "test"
+  },
+  "py:test_scene_import": {
+   "mode": "count",
+   "count": 10,
+   "unit": "test"
+  },
+  "py:test_section_profile_modeling": {
+   "mode": "count",
+   "count": 19,
+   "unit": "test"
+  },
+  "py:test_section_profile_mutation_check": {
+   "mode": "count",
+   "count": 29,
+   "unit": "test"
+  },
+  "py:test_section_profile_native": {
+   "mode": "count",
+   "count": 26,
+   "unit": "test"
+  },
+  "py:test_serve": {
+   "mode": "count",
+   "count": 51,
+   "unit": "test"
+  },
+  "py:test_source_inspector": {
+   "mode": "count",
+   "count": 18,
+   "unit": "test"
+  },
+  "py:test_source_inspector_transport": {
+   "mode": "count",
+   "count": 2,
+   "unit": "test"
+  },
+  "py:test_space_modeling": {
+   "mode": "count",
+   "count": 40,
+   "unit": "test"
+  },
+  "py:test_subgrid_contract": {
+   "mode": "count",
+   "count": 31,
+   "unit": "test"
+  },
+  "py:test_timber_support_projection": {
+   "mode": "count",
+   "count": 13,
+   "unit": "test"
+  },
+  "py:test_unittest_runner": {
+   "mode": "count",
+   "count": 1,
+   "unit": "test"
+  },
+  "py:test_witness_diagnostics": {
+   "mode": "count",
+   "count": 2,
+   "unit": "test"
+  },
+  "py:test_witness_marks": {
+   "mode": "count",
+   "count": 6,
+   "unit": "test"
+  },
+  "node:tests-js": {
+   "mode": "count",
+   "count": 659,
+   "unit": "node test"
+  },
+  "node:model_viewer": {
+   "mode": "exit-code-only"
+  },
+  "node:polydraft": {
+   "mode": "count",
+   "count": 75,
+   "unit": "node test"
+  },
+  "node:canvas_direct": {
+   "mode": "count",
+   "count": 408,
+   "unit": "斷言"
+  },
+  "node:document_format": {
+   "mode": "exit-code-only"
+  },
+  "node:document_cases": {
+   "mode": "exit-code-only"
+  },
+  "node:cdp_navigation": {
+   "mode": "exit-code-only"
+  },
+  "node:cdp_confirmation_gate": {
+   "mode": "exit-code-only"
+  },
+  "node:grid_lesson_control_ownership": {
+   "mode": "count",
+   "count": 9,
+   "unit": "node test"
+  },
+  "node:parameter_confirmation_settlement": {
+   "mode": "count",
+   "count": 16,
+   "unit": "node test"
+  },
+  "node:face_reference_settlement": {
+   "mode": "count",
+   "count": 18,
+   "unit": "node test"
+  },
+  "node:face_projection_lifecycle": {
+   "mode": "count",
+   "count": 14,
+   "unit": "node test"
+  },
+  "node:workspace_shell_history": {
+   "mode": "count",
+   "count": 28,
+   "unit": "node test"
+  },
+  "node:feedback_events": {
+   "mode": "count",
+   "count": 41,
+   "unit": "node test"
+  },
+  "node:space_test_floor": {
+   "mode": "count",
+   "count": 10,
+   "unit": "node test"
+  },
+  "node:history_operation": {
+   "mode": "count",
+   "count": 4,
+   "unit": "node test"
+  },
+  "node:context_operations": {
+   "mode": "count",
+   "count": 12,
+   "unit": "node test"
+  },
+  "node:cdp_card_position": {
+   "mode": "count",
+   "count": 21,
+   "unit": "node test"
+  },
+  "node:cdp_settle": {
+   "mode": "count",
+   "count": 10,
+   "unit": "node test"
+  },
+  "node:cdp_evaluation": {
+   "mode": "count",
+   "count": 9,
+   "unit": "node test"
+  },
+  "node:background_grid_viewport": {
+   "mode": "count",
+   "count": 9,
+   "unit": "node test"
+  },
+  "node:anchor_band_clip": {
+   "mode": "count",
+   "count": 14,
+   "unit": "node test"
+  },
+  "node:hover_pick_scheduler": {
+   "mode": "count",
+   "count": 19,
+   "unit": "node test"
+  },
+  "node:face_paint_scheduler": {
+   "mode": "count",
+   "count": 7,
+   "unit": "node test"
+  },
+  "node:room_outline_worker": {
+   "mode": "count",
+   "count": 6,
+   "unit": "node test"
+  },
+  "node:room_outline_closeout": {
+   "mode": "count",
+   "count": 24,
+   "unit": "node test"
+  },
+  "node:evidence_links": {
+   "mode": "count",
+   "count": 29,
+   "unit": "node test"
+  },
+  "node:evidence_project_store": {
+   "mode": "count",
+   "count": 7,
+   "unit": "node test"
+  },
+  "node:grid_definition_diagram": {
+   "mode": "count",
+   "count": 12,
+   "unit": "node test"
+  }
+ }
+}

@@ -1,0 +1,51 @@
+{
+  "archives": [
+    {
+      "archive": "cloud-native-originals.tar.gz",
+      "members": 219,
+      "all_bytes_and_hashes_match": true,
+      "sha256": "582b851a499d43eb422cb2c7bde4f5669b9ad2bc73fc22544e64d90322f3cd2b"
+    },
+    {
+      "archive": "executed-sources.tar.gz",
+      "members": 1347,
+      "all_bytes_and_hashes_match": true,
+      "sha256": "194d9da2baf39905e8009203c75997164cb6e55cf3fc5fc205cc040449a390aa"
+    }
+  ],
+  "native_binary_source_closures": [
+    {
+      "sidecar": "binaries/bridge.fingerprint.json",
+      "binary": "bridge",
+      "binary_sha256": "b49dccd56ee3729d48dcf5f8a908ae619fdd994d91a59cd70af691034adc76e3",
+      "source_references_verified": 50
+    },
+    {
+      "sidecar": "binaries/core.fingerprint.json",
+      "binary": "core",
+      "binary_sha256": "8081b910f7eee373ae0efc6807e02a788d97265d64aa68efc7bc50148337d8bb",
+      "source_references_verified": 50
+    },
+    {
+      "sidecar": "binaries/engineering-json-test.fingerprint.json",
+      "binary": "engineering-json-test",
+      "binary_sha256": "d13ffc152acea10c4afe687b182e0fb18dbec461ba19db1dc1363e0001598783",
+      "source_references_verified": 51
+    },
+    {
+      "sidecar": "binaries/integrity.fingerprint.json",
+      "binary": "integrity",
+      "binary_sha256": "1905cf8cc11690b14ee0dd59a4bb260662f435e888135b38735a1d9bbc756c68",
+      "source_references_verified": 51
+    },
+    {
+      "sidecar": "binaries/model-base.fingerprint.json",
+      "binary": "model-base",
+      "binary_sha256": "5f2b2c0a347bd5cccc1fc3c75679f35420865fcca5a3ec2599b2a45d43885822",
+      "source_references_verified": 50
+    }
+  ],
+  "fingerprint_normalization": "tests/binaries.py:_normalized_sha applies CRLF to LF; raw archive inventories retain exact bytes",
+  "tracked_before_after_equal": true,
+  "scope": "local independently reopened delivery artifacts; cloud native integration artifacts only; formal WSL train receipt remains separate"
+}
