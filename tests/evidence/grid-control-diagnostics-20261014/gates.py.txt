@@ -1,0 +1,35 @@
+from pathlib import Path
+import json,os,sys,subprocess,time,urllib.request,hashlib
+root=Path('/tmp/geometry-control-diagnostics');out=root/'tests/evidence/grid-control-diagnostics-20261014';out.mkdir(parents=True,exist_ok=True)
+sys.path.insert(0,str(root/'tests'));import binaries
+binaries.OUT_DIR=Path('/tmp/grid-diag-binaries')
+def run(label,cmd,env=None):
+ before=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip();start=time.monotonic()
+ with (out/(label+'.log')).open('w') as log:r=subprocess.run(cmd,cwd=root,env=env,stdout=log,stderr=subprocess.STDOUT)
+ after=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()
+ receipt={'command':cmd,'actual_returncode':r.returncode,'seconds':time.monotonic()-start,'tested_head_before':before,'tested_head_after':after}
+ (out/(label+'.json')).write_text(json.dumps(receipt,indent=2)+'\n');print(json.dumps(receipt),flush=True);return r.returncode
+mode=sys.argv[1]
+if mode=='build':
+ with (out/'build.log').open('w') as log:results=binaries.build(log=lambda s:print(s,file=log,flush=True))
+ assert all(r.ok for r in results.values() if r.status!='n/a'),results
+ print({k:v.status for k,v in results.items()})
+elif mode=='native':
+ env=os.environ.copy();env['MUTATE_CACHE']='/tmp/grid-diag-mutate-cache';sys.exit(run(mode,[sys.executable,'/tmp/grid-diag-native.py'],env))
+else:
+ port,cdp=(9034,9634) if mode=='canvas' else (9035,9635)
+ env=os.environ.copy();env.update(GEOMETRY_BRIDGE=str(binaries.OUT_DIR/'bridge'),GEOMETRY_MODEL_BASE=str(binaries.OUT_DIR/'model-base'),GEOMETRY_FEEDBACK_DIR=f'/tmp/grid-diag-{mode}-feedback',GEOMETRY_TEST_URL=f'http://127.0.0.1:{port}/',GEOMETRY_CHROME='/usr/bin/chromium',GEOMETRY_CHROME_FLAGS='--no-sandbox --disable-dev-shm-usage',GEOMETRY_CHROME_PROFILE=f'/tmp/grid-diag-{mode}-chrome',GEOMETRY_CDP_PORT=str(cdp))
+ if mode=='grid':env['GEOMETRY_GRID_SYSTEM_ONLY']='1'
+ with (out/(mode+'-service.log')).open('w') as log:
+  server=subprocess.Popen([sys.executable,'geometry-web/serve.py',str(port)],cwd=root,env=env,stdout=log,stderr=subprocess.STDOUT)
+  try:
+   for _ in range(100):
+    try:
+     raw=urllib.request.urlopen(env['GEOMETRY_TEST_URL']+'runtime',timeout=1).read();(out/(mode+'-runtime.json')).write_bytes(raw);break
+    except Exception:time.sleep(.1)
+   else:raise RuntimeError('service readiness failed')
+   probe=subprocess.run([sys.executable,'geometry-web/runtime_version.py','--probe',str(port)],cwd=root,env=env,capture_output=True,text=True)
+   (out/(mode+'-probe.json')).write_text(json.dumps({'command':probe.args,'actual_returncode':probe.returncode,'stdout':probe.stdout,'stderr':probe.stderr},indent=2)+'\n');assert probe.returncode==0
+   code=run(mode,['node','geometry-web/cdp_test.js'],env)
+  finally:server.terminate();server.wait(timeout=15)
+ sys.exit(code)
