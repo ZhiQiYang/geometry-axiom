@@ -274,6 +274,7 @@ static bool parameter_name(EngJson *j,int t,char out[PARAM_NAME_MAX])
  * at it, because the committed World never holds a dangling reference). */
 static bool parameter_retired(const World *w,uint32_t id)
 {for(size_t i=0;i<w->parameters.retired_count;++i)if(w->parameters.retired[i]==id)return true;return false;}
+static bool parameter_capture_deleted_values(World *w,uint32_t id);
 static bool parameter_put(World *w,EngJson *j,int t)
 {
     uint32_t id;if(!eng_json_keys(j,t,"id,name,fields","nextFieldId")||!parameter_u32(j,eng_json_member(j,t,"id"),&id))return parameter_fail("I38 CARD: expected id, name and fields");
@@ -298,6 +299,9 @@ static bool parameter_put(World *w,EngJson *j,int t)
     size_t slot=0;while(slot<w->parameters.card_count&&w->parameters.cards[slot].id!=id)++slot;
     size_t existing=0;for(size_t i=0;i<w->parameters.field_count;++i)existing+=w->parameters.fields[i].parameter_id==id;
     if(ok&&(slot==PARAM_CARD_MAX||w->parameters.field_count-existing+card.count>PARAM_FIELD_MAX))ok=parameter_fail("UNSUPPORTED/CAPACITY: 64 cards / 256 total fields exceeded");
+    /* P-065/B5: preserve the current affected closure before overwriting its definitions.
+     * Only explicit unbind of an actually deleted source can consume this history. */
+    if(ok&&old&&!parameter_capture_deleted_values(w,id))ok=false;
     if(ok){size_t n=0;for(size_t i=0;i<w->parameters.field_count;++i)if(w->parameters.fields[i].parameter_id!=id)w->parameters.fields[n++]=w->parameters.fields[i];for(size_t k=0;k<card.count;++k)w->parameters.fields[n++]=fresh[k];memset(w->parameters.fields+n,0,(PARAM_FIELD_MAX-n)*sizeof(ParameterField));w->parameters.field_count=n;w->parameters.cards[slot]=card;if(slot==w->parameters.card_count)++w->parameters.card_count;}
     free(fresh);return ok;
 }
@@ -387,7 +391,7 @@ static bool parameter_retirements_valid(const World *w)
     }
     return true;
 }
-/* P-065: query only the dependency paths that can lose the removed card.
+/* P-065: query only the dependency paths affected by an overwritten or removed card.
  * This is reachability, not evaluation: unrelated invalid definitions cannot block deletion. */
 static bool parameter_field_depends_on(const World *w,int index,uint32_t id,bool visited[PARAM_FIELD_MAX]);
 static bool parameter_ast_depends_on(const World *w,const EngJson *j,int t,uint32_t id,bool visited[PARAM_FIELD_MAX],int depth)
@@ -415,7 +419,7 @@ static bool parameter_field_depends_on(const World *w,int index,uint32_t id,bool
         parameter_ast_depends_on(w,&j,0,id,visited,0);
     eng_json_free(&j);return hit;
 }
-/* P-062/P-065: refresh the removed fields and their affected dependants while
+/* P-062/P-065: refresh overwritten/removed fields and their affected dependants while
  * their current closures are still available. A later upstream deletion may make
  * evaluation impossible; preserve an earlier valid candidate snapshot in that case.
  * Ordinary evaluation and surviving unbind sources never read these snapshots. */
@@ -423,7 +427,7 @@ static bool parameter_capture_deleted_values(World *w,uint32_t id)
 {
     ParameterState *p=&w->parameters;
     ParameterEval *e=calloc(1,sizeof *e);
-    if(!e)return parameter_fail("UNSUPPORTED/CAPACITY: deleted parameter evaluation memory");
+    if(!e)return parameter_fail("UNSUPPORTED/CAPACITY: candidate parameter evaluation memory");
     for(size_t i=0;i<p->field_count;++i){
         ParameterField *f=&p->fields[i];bool visited[PARAM_FIELD_MAX]={0};
         if(!parameter_field_depends_on(w,(int)i,id,visited))continue;
