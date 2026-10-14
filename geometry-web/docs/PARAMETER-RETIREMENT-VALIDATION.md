@@ -1,6 +1,44 @@
 # GEO-258 候選退役狀態與 archive 重驗
 
-最新狀態（2026-10-15，P-111 修正準備中）：[P-111](https://github.com/ZhiQiYang/geometry-axiom/pull/193#issuecomment-6173105491) 以 D60／R56 更新 P-060 的「不重用身分」：退休的是舊存在期，不禁止同候選重建同一個鍵。已準備移除 put／import 的鍵保留限制，最終引用檢查只拒絕仍缺失的來源；自己的舊反例改驗合法重建、完整候選與中間刪除收據。尚未實跑此修正，不能引用下列舊綠燈作為 P-111 驗收。main 的 K2a 測試與 SSOT 未修改。
+最新狀態（2026-10-15，P-111 現有路徑修正已定向實測）：[P-111](https://github.com/ZhiQiYang/geometry-axiom/pull/193#issuecomment-6173105491) 以 D60／R56 更新 P-060 的「不重用身分」：退休的是舊存在期，不禁止同候選重建同一個鍵。put／import 已移除鍵保留限制，最終引用檢查只拒絕仍缺失的來源；自己的舊反例改驗合法重建、完整候選與中間刪除收據。main 的 K2a 測試與 SSOT 未修改。
+
+受測乾淨來源 `886727a2649091158634afb1712915a8a3980d5c`（產品修正 `b032f48d4fe98197f803b0144a6a97f8f13c1763`）；之後的提交只同步工具生成的唯一正典及本紀錄，沒有改受測產品／測試。實際 WSL exit0、150 題真 bridge／相依 Python 方法全過，完整原生場景 143 項與 integrity 130 項通過；原位 sync→--check→原41 全部0。四支固定執行器前後實算 SHA 相同且 fresh；來源、binary、sidecar、每步原日誌由另一個只讀驗證器核符。
+
+兩個真反證皆先實際失敗1題、逐 byte 還原並重編後指定2題回綠：恢復舊鍵退休拒絕使未改的 main K2a 轉紅；把已重建鍵誤當缺失來源使自己的存活引用重建案例轉紅。它們只證明現有交易路徑，**不代替尚未實作 K3 的舊記號沿用反證**。全表變異帳本與固定最終整合 head 的正式七項仍留下一班依 P-109 執行，不借舊綠燈。
+
+本輪原件：`D:/geometry-axiom-work/board-local-codex/pr193-p111-native-r2`；收據 SHA-256 `3d401eccd6437d293ec12231ba72e0b20310d3c1b74a59db75e339f707e36839`；完整獨立讀回 `D:/geometry-axiom-work/board-local-codex/pr193-p111-native-r2/independently-verified.json`。外來程序僅取樣、集合為空：`{"samples": 133, "foreign_processes_seen_during_run": {}, "exclusive_during_run": true, "max_loadavg_1min_sampled": 7.31}`。共享四 runner 同 SHA；未觀察隱藏啟動器最終 OS exit，保持 unknown。R1 僅在等待鎖時撤回（實際 WSL9，未 checkout／編譯／測試），原件在 `pr193-p111-queue-r1`；R2 未覆蓋它。
+
+| 實際步驟 | 原 exit | 秒數 |
+|---|---:|---:|
+| clone | 0 | 4.789 |
+| checkout | 0 | 336.915 |
+| fixed-build | 0 | 161.848 |
+| fixed-test_parameters_core | 0 | 106.699 |
+| fixed-test_parameters_final_candidate | 0 | 20.284 |
+| fixed-test_parameter_retirement_scope | 0 | 27.203 |
+| fixed-test_parameter_netzero | 0 | 23.315 |
+| fixed-test_parameters_unbind_scope | 0 | 35.884 |
+| fixed-test_parameters_deleted_unbind | 0 | 63.676 |
+| fixed-test_parameters_upstream_unbind | 0 | 56.208 |
+| fixed-test_parameters_candidate_value_history | 0 | 55.646 |
+| fixed-test_grid_system_contract | 0 | 67.126 |
+| fixed-test_engineering_core | 0 | 80.778 |
+| fixed-test_assembly_parameter_refs | 0 | 35.443 |
+| fixed-test_engineering_model_compatibility | 0 | 16.892 |
+| fixed-integrity | 0 | 3.497 |
+| fixed-core-scenes | 0 | 14.682 |
+| M1-restore-key-retirement-build | 0 | 46.892 |
+| M1-restore-key-retirement-red | 1 | 7.84 |
+| M1-restore-key-retirement-restore-build | 0 | 43.229 |
+| M1-restore-key-retirement-restored | 0 | 15.471 |
+| M2-treat-rebuilt-source-as-missing-build | 0 | 43.313 |
+| M2-treat-rebuilt-source-as-missing-red | 1 | 7.896 |
+| M2-treat-rebuilt-source-as-missing-restore-build | 0 | 42.818 |
+| M2-treat-rebuilt-source-as-missing-restored | 0 | 15.819 |
+| reader-sync | 0 | 11.513 |
+| reader-check | 0 | 1.929 |
+| reader-forty-one | 0 | 382.847 |
+
 
 目前 K3 正式契約明寫核心／宿主／保存尚未實作，原生核心沒有 `identity-ledger/1` 啟用與記號路徑。[驗收範圍缺口](https://github.com/ZhiQiYang/geometry-axiom/pull/193#issuecomment-6173502544) 已回報；本次不造記號，不宣稱新 incarnation 或沿用舊記號反證通過。下列舊紀錄中「同候選禁止重用鍵」及其反證只屬當時 P-060 的歷史結果，已由 P-111 取代；完整候選引用驗證、暫存隔離及 P-062／P-065 最後有效值的既有要求仍保留。
 
