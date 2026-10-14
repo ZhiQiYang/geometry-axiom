@@ -1,0 +1,11 @@
+from pathlib import Path
+import subprocess,os,json,hashlib
+root=Path('/workspace/geometry-k2aa-review');out=Path('/tmp/k2aa-p064-evidence')
+for name,script in [('native','tests/k2a_native_browser.cjs'),('zip','tests/k2a_zip_browser.cjs')]:
+ env=os.environ.copy();env.update(GEOMETRY_TEST_URL='http://127.0.0.1:8946/',GEOMETRY_FRESH_TEST_URL='http://127.0.0.1:8947/',GEOMETRY_ISOLATED_SERVICE='1',GEOMETRY_BROWSER_RECEIPT=str(out/(name+'-browser')))
+ head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()
+ env['GEOMETRY_EXPECTED_SHA']=head
+ with (out/(name+'-browser.log')).open('wb') as log:p=subprocess.run(['node',script],cwd=root,env=env,stdout=log,stderr=subprocess.STDOUT)
+ (out/(name+'-browser-parent.json')).write_text(json.dumps({'command':['node',script],'head':head,'returncode':p.returncode,'scriptSHA256':hashlib.sha256((root/script).read_bytes()).hexdigest(),'stdoutSHA256':hashlib.sha256((out/(name+'-browser.log')).read_bytes()).hexdigest()},indent=2)+'\n')
+ print(name,p.returncode,flush=True)
+ if p.returncode:raise SystemExit(p.returncode)

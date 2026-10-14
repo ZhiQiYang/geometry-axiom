@@ -1,0 +1,11 @@
+✔ actual owner rejects invalid, referenced-stock and stale/busy edits before history or revision changes (17.49378ms)
+✔ actual owner P-047 undo, redo and alternate edit allocate key 2 after key 1 was undone (6.632859ms)
+✔ actual owner no-op and unrelated history do not modify declarations; caller aliases are detached (4.66156ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 99.85434

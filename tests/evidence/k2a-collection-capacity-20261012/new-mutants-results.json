@@ -1,0 +1,78 @@
+[
+  {
+    "id": "force-collapse-byte-boundary",
+    "source": "geometry-web/feature-attachments.js",
+    "sourceSHA256": "65d27b112d73186018da44821d310a8bb229b3c83472be6dd4831fc31613b90f",
+    "before": "try{boundedJSON({schema:SCHEMA,records:[{...record,schema:value.schema,value}]});}",
+    "after": "try{/* incorrectly force collection into the smaller single quota */}",
+    "command": [
+      "node",
+      "--test",
+      "--test-name-pattern=B1 collection projection",
+      "tests/test_grid_drafts_lifecycle_capacity.js"
+    ],
+    "baseline": 0,
+    "compile": 0,
+    "red": 1,
+    "restored": 0,
+    "designatedAssertion": true,
+    "skipped": 0
+  },
+  {
+    "id": "force-collapse-writer-save",
+    "source": "geometry-web/feature-attachments.js",
+    "sourceSHA256": "65d27b112d73186018da44821d310a8bb229b3c83472be6dd4831fc31613b90f",
+    "before": "try{boundedJSON({schema:SCHEMA,records:[{...record,schema:value.schema,value}]});}",
+    "after": "try{/* incorrectly force collection into the smaller single quota */}",
+    "command": [
+      "node",
+      "--test",
+      "--test-name-pattern=K2a B1 collection two",
+      "tests/test_reference_workspace_races.js"
+    ],
+    "baseline": 0,
+    "compile": 0,
+    "red": 1,
+    "restored": 0,
+    "designatedAssertion": true,
+    "skipped": 0
+  },
+  {
+    "id": "force-collapse-old-reader",
+    "source": "geometry-web/feature-attachments.js",
+    "sourceSHA256": "65d27b112d73186018da44821d310a8bb229b3c83472be6dd4831fc31613b90f",
+    "before": "try{boundedJSON({schema:SCHEMA,records:[{...record,schema:value.schema,value}]});}",
+    "after": "try{/* incorrectly force collection into the smaller single quota */}",
+    "command": [
+      "node",
+      "--test",
+      "--test-name-pattern=B1 previous collection",
+      "tests/test_grid_drafts_lifecycle_capacity.js"
+    ],
+    "baseline": 0,
+    "compile": 0,
+    "red": 1,
+    "restored": 0,
+    "designatedAssertion": true,
+    "skipped": 0
+  },
+  {
+    "id": "force-collapse-old-import",
+    "source": "geometry-web/feature-attachments.js",
+    "sourceSHA256": "65d27b112d73186018da44821d310a8bb229b3c83472be6dd4831fc31613b90f",
+    "before": "try{boundedJSON({schema:SCHEMA,records:[{...record,schema:value.schema,value}]});}",
+    "after": "try{/* incorrectly force collection into the smaller single quota */}",
+    "command": [
+      "node",
+      "--test",
+      "--test-name-pattern=K2a B1 previous collection",
+      "tests/test_reference_workspace_races.js"
+    ],
+    "baseline": 0,
+    "compile": 0,
+    "red": 1,
+    "restored": 0,
+    "designatedAssertion": true,
+    "skipped": 0
+  }
+]

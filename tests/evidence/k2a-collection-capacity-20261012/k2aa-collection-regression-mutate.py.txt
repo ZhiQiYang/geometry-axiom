@@ -1,0 +1,47 @@
+from pathlib import Path
+import shutil, subprocess, json, hashlib
+root=Path('/workspace/geometry-k2aa-review')
+out=Path('/tmp/k2aa-collection-regression-mutants');out.mkdir(exist_ok=True)
+private=out/'private'
+if private.exists(): shutil.rmtree(private)
+(private/'tests').mkdir(parents=True)
+shutil.copytree(root/'geometry-web',private/'geometry-web',ignore=shutil.ignore_patterns('node_modules','__pycache__','feedback','*.exe'))
+for name in ['test_grid_drafts_lifecycle_capacity.js','test_reference_workspace_races.js']:
+    shutil.copy2(root/'tests'/name,private/'tests'/name)
+for name in ['evidence','fixtures']:(private/'tests'/name).symlink_to(root/'tests'/name,target_is_directory=True)
+F='geometry-web/feature-attachments.js';P='geometry-web/project-store.js';W='geometry-web/reference-workspace.js'
+capacity='tests/test_grid_drafts_lifecycle_capacity.js';races='tests/test_reference_workspace_races.js'
+cases=[
+ ('reject-stored-read',F,'function validateGridDraft(value, allowLost = false, stored = false) {','function validateGridDraft(value, allowLost = false, stored = false) { stored=false;',capacity,'B1 legacy near-limit ZIP'),
+ ('allow-one-raw-byte',F,'const MAX_BYTES = 128 * 1024,','const MAX_BYTES = 128 * 1024 + 1,',capacity,'B1 marking allowance'),
+ ('tighten-existing-collection-record',F,'jsonBytes(original,MAX_GRID_DRAFTS_BYTES,','jsonBytes(original,stored&&original.value.drafts?.length===1?MAX_BYTES:MAX_GRID_DRAFTS_BYTES,',capacity,'B1 existing collection'),
+ ('allow-one-collection-byte',F,'jsonBytes(original,MAX_GRID_DRAFTS_BYTES,','jsonBytes(original,MAX_GRID_DRAFTS_BYTES+1,',capacity,'B1 collection record marking'),
+ ('reject-legacy-scan',W,'P.Features.gridDraftValue(drafts,orphans,true);','P.Features.gridDraftValue(drafts,orphans,false);',races,'K2a B1'),
+ ('reject-unchanged-flush',W,'if(old&&sameModelData(old,value))return readGridDraft(draftId);','if(false)return readGridDraft(draftId);',races,'K2a B1'),
+ ('allow-changed-legacy-flush',W,'if(old&&sameModelData(old,value))return readGridDraft(draftId);','if(old)return readGridDraft(draftId);',races,'K2a B1'),
+ ('allow-one-manifest-byte',P,'const MAX_MANIFEST = 8 * 1024 * 1024,','const MAX_MANIFEST = 8 * 1024 * 1024 + 1,',capacity,'B1 complete legacy manifest'),
+ ('skip-original-manifest-ceiling',P,'if(stored)Features.jsonBytes(gridUnmarkedManifest(manifest,scene),MAX_MANIFEST,0,','if(false)Features.jsonBytes(gridUnmarkedManifest(manifest,scene),MAX_MANIFEST,0,',capacity,'B1 normalization cannot'),
+ ('hide-unrelated-metadata',P,'return {...manifest,featureAttachments,format:normalized.format,requiredCapabilities:normalized.requiredCapabilities};','return normalized;',capacity,'B1 normalization cannot'),
+ ('drop-stored-lost',P,'const m = copy(normalizedManifest(manifest,scene));','const m = copy(normalizedManifest(manifest,scene)); for(const record of m.featureAttachments?.records||[])if(record.kind===Features.GRID_KIND&&record.schema===Features.GRID_DRAFTS_SCHEMA)for(const draft of record.value.drafts)for(const ref of draft.inputRefs)delete ref.lost;',races,'K2a B1'),
+ ('remove-new-admission-reserve',F,'MAX_BYTES,stored?0:gridLostReserve(value),','MAX_BYTES,0,',capacity,'M2 individual draft reserves'),
+]
+def run(cmd,path):
+    p=subprocess.run(cmd,cwd=private,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+    path.write_text(p.stdout);return p
+results=[]
+for ident,rel,before,after,test,pattern in cases:
+    folder=out/ident;folder.mkdir(exist_ok=True)
+    file=private/rel;original=file.read_text();assert original.count(before)==1,(ident,original.count(before))
+    command=['node','--test','--test-name-pattern='+pattern,test]
+    baseline=run(command,folder/'baseline.log');assert baseline.returncode==0,(ident,'baseline',baseline.stdout)
+    try:
+        file.write_text(original.replace(before,after))
+        build=run(['node','--check',rel],folder/'build.log');assert build.returncode==0
+        red=run(command,folder/'red.log')
+        assert red.returncode==1 and 'AssertionError [ERR_ASSERTION]' in red.stdout and 'ℹ skipped 0' in red.stdout and '✖ '+pattern in red.stdout,(ident,red.stdout)
+        if ident in ['reject-stored-read','reject-legacy-scan','reject-unchanged-flush']:assert '容量' in red.stdout,(ident,'capacity reason required')
+    finally:file.write_text(original)
+    restored=run(command,folder/'restored.log');assert restored.returncode==0,(ident,'restored',restored.stdout)
+    result=dict(id=ident,source=rel,sourceSHA256=hashlib.sha256(original.encode()).hexdigest(),before=before,after=after,command=command,baseline=baseline.returncode,build=build.returncode,red=red.returncode,restored=restored.returncode,designatedAssertion=True,skip=0)
+    results.append(result);print(ident,'baseline green / build green / designated assertion red / restored green',flush=True)
+(out/'results.json').write_text(json.dumps(results,ensure_ascii=False,indent=2)+'\n')

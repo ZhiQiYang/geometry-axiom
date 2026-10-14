@@ -1,0 +1,22 @@
+STRICT_RED True
+test_k2a_deletion_receipt_names_removed_source_and_not_recreated_identity (tests.test_grid_system_contract.GridSystemContract.test_k2a_deletion_receipt_names_removed_source_and_not_recreated_identity) ... FAIL
+
+======================================================================
+FAIL: test_k2a_deletion_receipt_names_removed_source_and_not_recreated_identity (tests.test_grid_system_contract.GridSystemContract.test_k2a_deletion_receipt_names_removed_source_and_not_recreated_identity)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-k2aa-review/tests/test_grid_system_contract.py", line 324, in test_k2a_deletion_receipt_names_removed_source_and_not_recreated_identity
+    self.assertEqual([{"kind": "grid-system", "id": 0}], receipt.get("deletedObjects"))
+AssertionError: Lists differ: [{'kind': 'grid-system', 'id': 0}] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+{'kind': 'grid-system', 'id': 0}
+
+- [{'id': 0, 'kind': 'grid-system'}]
++ []
+
+----------------------------------------------------------------------
+Ran 1 test in 0.049s
+
+FAILED (failures=1)

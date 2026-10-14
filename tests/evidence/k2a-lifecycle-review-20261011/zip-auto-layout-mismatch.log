@@ -1,0 +1,20 @@
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
++ actual - expected
+
+  'boundary 2 outline 0,0 1000,0 1000,1000 0,1000\n' +
++   'boundary-vertex-keys 2 outer 1 2 3 4 next-key 5\n' +
++   'canvas-pos boundary 2 60 60\n'
+-   'boundary-vertex-keys 2 outer 1 2 3 4 next-key 5\n'
+
+    at Proxy.<anonymous> (/workspace/geometry-k2aa-review/tests/k2a_browser_receipt.cjs:22:153)
+    at /workspace/geometry-k2aa-review/tests/k2a_zip_browser.cjs:57:64 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 'boundary 2 outline 0,0 1000,0 1000,1000 0,1000\n' +
+    'boundary-vertex-keys 2 outer 1 2 3 4 next-key 5\n' +
+    'canvas-pos boundary 2 60 60\n',
+  expected: 'boundary 2 outline 0,0 1000,0 1000,1000 0,1000\n' +
+    'boundary-vertex-keys 2 outer 1 2 3 4 next-key 5\n',
+  operator: 'strictEqual',
+  diff: 'simple'
+}

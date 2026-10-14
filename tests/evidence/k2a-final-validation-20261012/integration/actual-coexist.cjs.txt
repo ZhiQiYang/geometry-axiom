@@ -1,0 +1,10 @@
+const {test}=require('node:test'),assert=require('node:assert/strict');
+const P=require('/tmp/k2aa-k1b-integration/geometry-web/project-store.js'),S=require('/tmp/k2aa-k1b-integration/geometry-web/cutting-settings.js'),zip=require('/tmp/k2aa-k1b-integration/geometry-web/vendor/fflate/umd/index.js');
+const settings=()=>({kerf:3,allowance:0,minRemnant:300,stockTypes:[{key:1,name:'木材',section:[27,33],material:null,length:3636,endTrim:5}],remnants:[],nextStockKey:2,nextRemnantKey:1});
+const record=value=>P.Features.record(S.KIND,value),attachment=value=>({schema:P.Features.SCHEMA,records:[record(value)]});
+test('P-054 actual merged validators preserve cutting and grid collections together',async()=>{
+ const F=P.Features,grid=F.record(F.GRID_KIND,{schema:F.GRID_DRAFTS_SCHEMA,drafts:['a','b'].map(draftId=>({schema:F.GRID_SCHEMA,draftId,kind:'source',intent:'create',baseRef:null,inputRefs:[],rawForm:Object.fromEntries(F.sourceFields.map(k=>[k,'']))})),orphans:[]});
+ const records=[record(settings()),grid],m={format:P.FORMAT,projectId:'actual-merge',name:'actual-merge',sceneHash:'0'.repeat(64),sources:[],faces:[],featureAttachments:{schema:F.SCHEMA,records}};
+ let bytes;await assert.doesNotReject(async()=>{bytes=await P.pack('',m,new Map(),zip);},'P-054 actual merged archive must remain accepted');const got=await P.unpack(bytes,zip);assert.deepEqual(got.manifest.featureAttachments.records,records);assert.deepEqual(got.manifest.requiredCapabilities,[S.CAPABILITY,F.GRID_SCHEMA,F.GRID_DRAFTS_SCHEMA].sort());
+ const files=zip.unzipSync(bytes),invalid=structuredClone(got.manifest);invalid.requiredCapabilities=invalid.requiredCapabilities.filter(c=>c!==S.CAPABILITY);files['manifest.json']=new TextEncoder().encode(JSON.stringify(invalid));await assert.rejects(P.unpack(zip.zipSync(files),zip));
+});
