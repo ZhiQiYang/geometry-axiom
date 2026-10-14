@@ -4,6 +4,14 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path -Parent $PSScriptRoot
+# 在同一個 PowerShell 視窗重跑時，上一次啟動設定的 GEOMETRY_MODEL_BASE 仍在，
+# 會被當成「使用者已指定」而跳過編譯、沿用可能已失效的舊執行檔。
+# 只清本腳本自己設定過的值（符合本腳本的 runtime 路徑格式）；使用者明示的覆寫保留。
+$launcherModelBase = '^(/var/tmp/geometry-runtime|/tmp/geometry-tests)/axiom-runtime-[0-9a-f]{32}/model-base$'
+if ("$env:GEOMETRY_MODEL_BASE" -match $launcherModelBase) {
+    Remove-Item Env:GEOMETRY_MODEL_BASE -ErrorAction SilentlyContinue
+    Remove-Item Env:GEOMETRY_MODEL_BASE_WSL_DISTRO -ErrorAction SilentlyContinue
+}
 $portProbe = [System.Net.Sockets.TcpClient]::new()
 try {
     $null = $portProbe.ConnectAsync('127.0.0.1', $Port).Wait(500)
