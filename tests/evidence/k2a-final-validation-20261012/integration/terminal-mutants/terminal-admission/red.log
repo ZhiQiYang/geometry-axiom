@@ -1,0 +1,15 @@
+STRICT_ASSERTION True
+test_native_terminal_observations_roundtrip_and_reject_malformed_terminals (tests.test_rule_case_workbench_http.WorkbenchHTTP.test_native_terminal_observations_roundtrip_and_reject_malformed_terminals) ... FAIL
+
+======================================================================
+FAIL: test_native_terminal_observations_roundtrip_and_reject_malformed_terminals (tests.test_rule_case_workbench_http.WorkbenchHTTP.test_native_terminal_observations_roundtrip_and_reject_malformed_terminals)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/k2aa-k1b-integration/tests/test_rule_case_workbench_http.py", line 269, in test_native_terminal_observations_roundtrip_and_reject_malformed_terminals
+    self.assertEqual(status, 200, assessed)
+AssertionError: 400 != 200 : {'ok': False, 'code': 'RECEIPT', 'error': 'Unknown or missing portable receipt fields'}
+
+----------------------------------------------------------------------
+Ran 1 test in 0.686s
+
+FAILED (failures=1)

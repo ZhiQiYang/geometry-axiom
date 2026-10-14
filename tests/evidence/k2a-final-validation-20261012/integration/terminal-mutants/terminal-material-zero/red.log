@@ -1,0 +1,16 @@
+STRICT_ASSERTION True
+test_native_terminal_observations_roundtrip_and_reject_malformed_terminals (tests.test_rule_case_workbench_http.WorkbenchHTTP.test_native_terminal_observations_roundtrip_and_reject_malformed_terminals) ... FAIL
+
+======================================================================
+FAIL: test_native_terminal_observations_roundtrip_and_reject_malformed_terminals (tests.test_rule_case_workbench_http.WorkbenchHTTP.test_native_terminal_observations_roundtrip_and_reject_malformed_terminals)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/k2aa-k1b-integration/tests/test_rule_case_workbench_http.py", line 272, in test_native_terminal_observations_roundtrip_and_reject_malformed_terminals
+    with self.assertRaises(sys.modules["rule_case_workbench_adapter"].AdapterError): sys.modules["rule_case_workbench_adapter"]._observed_state(invalid["receipts"][0]["receipt"]["observations"]["before"])
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: AdapterError not raised
+
+----------------------------------------------------------------------
+Ran 1 test in 0.771s
+
+FAILED (failures=1)

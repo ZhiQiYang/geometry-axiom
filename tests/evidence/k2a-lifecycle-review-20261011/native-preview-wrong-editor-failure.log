@@ -1,0 +1,13 @@
+AssertionError [ERR_ASSERTION]: The input did not match the regular expression /來源已刪除/. Input:
+
+'來源／配置原始輸入會隨專案保存，未確認前不改場景。'
+
+    at Proxy.<anonymous> (/workspace/geometry-k2aa-review/tests/k2a_browser_receipt.cjs:22:153)
+    at /workspace/geometry-k2aa-review/tests/k2a_native_browser.cjs:42:116 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: '來源／配置原始輸入會隨專案保存，未確認前不改場景。',
+  expected: /來源已刪除/,
+  operator: 'match',
+  diff: 'simple'
+}

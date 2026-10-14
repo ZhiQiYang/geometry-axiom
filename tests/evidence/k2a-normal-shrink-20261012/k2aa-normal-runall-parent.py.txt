@@ -1,0 +1,11 @@
+from pathlib import Path
+import subprocess,json,hashlib,os,resource
+root=Path('/workspace/geometry-k2aa-review');out=Path('/tmp/k2aa-normal-evidence')
+cmd=['python','/tmp/k2aa-runall-isolated.py','--build','--update-expected']
+files=['geometry-web/feature-attachments.js','geometry-web/reference-workspace.js','tests/run_all.py','tests/test_grid_drafts_lifecycle_capacity.js','tests/test_reference_workspace_races.js','current_geometry.c','tests/mutants_results.json']
+def hashes():return {f:hashlib.sha256((root/f).read_bytes()).hexdigest() for f in files}
+before=hashes()
+head_before=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()
+with (out/'runall.log').open('wb') as log:p=subprocess.run(cmd,cwd=root,stdout=log,stderr=subprocess.STDOUT)
+(out/'runall-parent.json').write_text(json.dumps({'command':cmd,'exit':p.returncode,'wrapper_sha256':hashlib.sha256(Path(cmd[1]).read_bytes()).hexdigest(),'stack_limit':resource.getrlimit(resource.RLIMIT_STACK),'MUTATE_CACHE':os.environ.get('MUTATE_CACHE'),'head_before':head_before,'head_after':subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip(),'before':before,'after':hashes()},indent=2)+'\n')
+raise SystemExit(p.returncode)

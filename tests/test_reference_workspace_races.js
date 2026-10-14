@@ -1,7 +1,7 @@
 /* Node VM scheduling contract; DOM, picker and PDF rendering are fakes, not E2E.
    Packing/source hashes and the workspace implementation are real. */
 const {test:nodeTest, before} = require('node:test');
-const test = (name, fn) => nodeTest(name, {timeout:5000}, fn);
+const test = (name, fn, options = {}) => nodeTest(name, {timeout:5000,...options}, fn);
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
@@ -36,7 +36,7 @@ async function fixture(options = {}) {
     document:{getElementById:element,querySelectorAll:()=>[],querySelector:()=>element('scroll'),addEventListener(){},
       createElement:tag=>tag==='canvas'?{getContext:()=>({}),toDataURL:()=> 'data:image/png;base64,rendered'}:element(tag)},
     oc:{busy:false,faces:[{id:1,kind:'boundary'}],bmap:{},edit:null},fe:{feats:{}},connection:{phase:'ready'},
-    api:async command=>{assert.equal(command,'dump');calls.push(command);return options.dumpGate ? options.dumpGate.promise : {ok:true,text:'boundary 1 outline 0,0 800,0 800,700 0,700\n'};},
+    api:async command=>{if(options.api)return options.api(command);assert.equal(command,'dump');calls.push(command);return options.dumpGate ? options.dumpGate.promise : {ok:true,text:'boundary 1 outline 0,0 800,0 800,700 0,700\n'};},
     setStatus:s=>statuses.push(s),toast:s=>statuses.push(s),drawFaceEditor(){},renderFaceInspector(){},
     innerWidth:1280,feUlImgToMm:(_p,x,y)=>[x,y],feFit(){}};
   // Only the PDF library provider is faked here; production validation/cleanup
@@ -59,6 +59,216 @@ async function fixture(options = {}) {
 
 const legacyPage=()=>({src:'data:image/png;base64,legacy',imgW:100,imgH:80,mmPerPx:10,x:0,y:0,rot:0,opacity:.5,locked:false});
 const legacyResponse=bytes=>({blob:async()=>new Blob([bytes],{type:'image/png'})});
+
+const k2aDraft=(id,edit=false)=>({schema:P.Features.GRID_SCHEMA,draftId:id,kind:'source',intent:edit?'edit':'create',baseRef:edit?{kind:'grid-system',id:1,fingerprint:'a'.repeat(64)}:null,inputRefs:[],rawForm:Object.fromEntries(P.Features.sourceFields.map(f=>[f,' 1e ']))});
+nodeTest('K2a P064 confirmation preflight rejects an over-budget manifest before history changes',{timeout:15000},async()=>{
+  const C=require('./test_grid_drafts_lifecycle_capacity.js');
+  for(const size of [130956]){
+    const {w}=await fixture(),token=w.getProjectState().contextToken,d=C.largeDraft();d.inputRefs=[];C.pad(d,size);
+    const other=k2aDraft('other',true);other.baseRef.id=2;
+    w.context().featureAttachments=[P.Features.record(P.Features.GRID_KIND,{schema:P.Features.GRID_DRAFTS_SCHEMA,drafts:[d,other],orphans:[]},true)];
+    w.context().engineeringDrafts=Array.from({length:34},(_,i)=>({id:'budget-'+i,kind:'material',base_ref:null,data:{raw:'x'.repeat(250000)},updated_at:'2026-10-12T00:00:00Z'}));
+    const before=JSON.stringify(w.history.snapshot()),count=w.history.undo.length;
+    assert.throws(()=>w.setGridDraft(other.draftId,null,token),/容量|上限|8 MB/,'ordinary removal still validates the complete manifest');
+    assert.equal(JSON.stringify(w.history.snapshot()),before);assert.equal(w.history.undo.length,count);
+    assert.throws(()=>w.prepareFeatureConfirmation(991,'grid-draft',other,token),/容量|上限|8 MB/,'prepare must reject an unrepresentable remaining singleton');
+    assert.equal(w.hasFeatureConfirmation(991),false);assert.equal(JSON.stringify(w.history.snapshot()),before);assert.equal(w.history.undo.length,count);
+  }
+  for(const confirm of [false,true]){
+    const {w,source}=await fixture(),token=w.getProjectState().contextToken,d=C.largeDraft();d.inputRefs=[];C.pad(d,130955);
+    const other=k2aDraft('other',true);other.baseRef.id=2;
+    w.setGridDraft(other.draftId,other,token);w.setGridDraft(d.draftId,d,token);
+    const before=w.readGridDrafts();
+    if(confirm){w.prepareFeatureConfirmation(992,'grid-draft',other,token);w.beginFeatureConfirmation(992);w.observe('line confirm 992',{ok:true});}
+    else w.setGridDraft(other.draftId,null,token);
+    const opened=await P.unpack(await P.pack('',await w.manifest(),new Map([[source.meta.id,source.bytes]]),zip),zip);
+    assert.equal(opened.manifest.format,P.GRID_RULE_FORMAT);assert.deepEqual(P.Features.gridDrafts(opened.manifest.featureAttachments.records.find(r=>r.kind===P.Features.GRID_KIND).value),w.readGridDrafts());
+    if(!confirm){w.tryLocalHistory('line undo');assert.deepEqual(w.readGridDrafts(),before);w.tryLocalHistory('line redo');assert.equal(w.readGridDrafts().drafts.length,1);}
+  }
+  const {w}=await fixture(),token=w.getProjectState().contextToken,other=k2aDraft('other',true),d=C.largeDraft();other.baseRef.id=2;d.inputRefs=[];C.pad(d,130955);
+  w.setGridDraft(other.draftId,other,token);w.setGridDraft(d.draftId,d,token);w.prepareFeatureConfirmation(993,'grid-draft',other,token);
+  // Adversarial change without a revision bump: begin must repeat the candidate check.
+  const current=w.context().featureAttachments.find(r=>r.kind===P.Features.GRID_KIND).value.drafts.find(row=>row.draftId===d.draftId);
+  w.context().engineeringDrafts=Array.from({length:34},(_,i)=>({id:'budget-'+i,kind:'material',base_ref:null,data:{raw:'x'.repeat(250000)},updated_at:'2026-10-12T00:00:00Z'}));
+  const before=JSON.stringify(w.history.snapshot());assert.throws(()=>w.beginFeatureConfirmation(993),/容量|上限|8 MB/);assert.equal(JSON.stringify(w.history.snapshot()),before);
+});
+test('K2a review B1 legacy live-ref capacity survives ordinary discard, UndoRedo and cold ZIP',async()=>{
+  const C=require('./test_grid_drafts_lifecycle_capacity.js');
+  // Frozen ZIP was written by the unmodified 9e136db writer before lost reserves.
+  const bytes=fs.readFileSync(require('node:path').join(__dirname,'fixtures/k2a-legacy-live-ref-9e136db.gcanvas'));
+  const old=await P.unpack(new Uint8Array(bytes),zip),f=await fixture(),w=f.w;
+  w.context().featureAttachments=structuredClone(old.manifest.featureAttachments.records);
+  // sync() refreshes oc.underlays; native geometry and API calls must stay unchanged.
+  const geometry=()=>JSON.stringify([f.env.oc.faces,f.env.oc.bmap]);
+  const token=w.getProjectState().contextToken,before=w.readGridDrafts(),world=geometry(),history=w.history.undo.length;
+  const capacity=before.drafts.find(d=>d.draftId==='capacity');
+  assert.equal(C.bytes(capacity),131072);assert.equal(capacity.baseRef.id,1);
+  assert.deepEqual(capacity.inputRefs.map(r=>[r.kind,r.id,r.lost]),[['grid-system',2,undefined]]);
+  assert.match(old.scene,/grid-system 1 /);assert.match(old.scene,/grid-system 2 /);
+  assert.doesNotThrow(()=>w.setGridDraft('other',null,token),'B1: discard must preserve unchanged 131072-byte legacy draft with live inputRef');
+  const remaining={drafts:[capacity],orphans:[]};assert.deepEqual(w.readGridDrafts(),remaining);
+  assert.equal(w.history.undo.length,history+1);assert.equal(geometry(),world);assert.equal(f.calls.length,0);
+  assert.equal(w.tryLocalHistory('line undo').ok,true);assert.deepEqual(w.readGridDrafts(),before);
+  assert.equal(w.tryLocalHistory('line redo').ok,true);assert.deepEqual(w.readGridDrafts(),remaining);
+  const sourceMap=new Map([[f.source.meta.id,f.source.bytes]]),saved=await P.pack(old.scene,await w.manifest(),sourceMap,zip),cold=await P.unpack(saved,zip);
+  assert.equal(cold.scene,old.scene);assert.equal(cold.manifest.format,P.GRID_DRAFTS_FORMAT);
+  assert.deepEqual(P.Features.gridDrafts(cold.manifest.featureAttachments.records.find(r=>r.kind===P.Features.GRID_KIND).value),remaining);
+  const state=w.getProjectState(),count=w.history.undo.length,changed=structuredClone(capacity),fresh=structuredClone(capacity);
+  const form=changed.ruleDraft.rawForm;form[Object.keys(form).find(k=>form[k].length<4096)]+='x';fresh.draftId='new';
+  assert.throws(()=>w.setGridDraft(capacity.draftId,changed,state.contextToken),/容量|上限/,'B1: real content changes still require admission reserves');
+  assert.throws(()=>w.setGridDraft(fresh.draftId,fresh,state.contextToken),/容量|上限/,'B1: new drafts still require admission reserves');
+  assert.deepEqual(w.getProjectState(),state);assert.equal(w.history.undo.length,count);assert.deepEqual(w.readGridDrafts(),remaining);
+  assert.equal(geometry(),world);assert.equal(f.calls.length,0);
+});
+// P-104: ceil(2.5 * observed WSL maximum / 1000) * 1000, including train9 and five isolated runs.
+const NORMAL_COLLECTION_ZIP_TIMEOUT_MS = Object.freeze({130956:15000,131072:22000});
+for(const size of [130956,131072])test(`K2a P064 ordinary discard preserves large normal singleton ZIP raw and local UndoRedo ${size}-byte boundary`,async()=>{
+ const C=require('./test_grid_drafts_lifecycle_capacity.js');const {w,source}=await fixture(),token=w.getProjectState().contextToken,d=C.largeDraft();d.inputRefs=[];C.pad(d,size);const other=k2aDraft('other',true);other.baseRef.id=2;const empty=JSON.stringify(w.history.snapshot());assert.throws(()=>w.setGridDraft(d.draftId,d,token),/容量|上限/);assert.equal(JSON.stringify(w.history.snapshot()),empty);w.setGridDraft(other.draftId,other,token);w.setGridDraft(d.draftId,d,token);const before=w.readGridDrafts();assert.doesNotThrow(()=>w.setGridDraft(other.draftId,null,token),'P064 removal must keep the bounded collection');assert.deepEqual(w.readGridDrafts(),{drafts:[d],orphans:[]});const opened=await P.unpack(await P.pack('',await w.manifest(),new Map([[source.meta.id,source.bytes]]),zip),zip);assert.equal(opened.manifest.format,P.GRID_DRAFTS_FORMAT);assert.deepEqual(opened.manifest.featureAttachments.records[0].value.drafts[0],d);w.tryLocalHistory('line undo');assert.deepEqual(w.readGridDrafts(),before);w.tryLocalHistory('line redo');assert.deepEqual(w.readGridDrafts(),{drafts:[d],orphans:[]});
+}, {timeout:NORMAL_COLLECTION_ZIP_TIMEOUT_MS[size]});
+// Three complete 131 KiB ZIP roundtrips retain all plain-JSON validation and cold reads.
+// P-104: the same 2.5x WSL rule; the faster isolated samples do not replace loaded train9 timings.
+const ORPHAN_COLLECTION_ZIP_TIMEOUT_MS = Object.freeze({130955:31000,130956:21000});
+for(const size of [130955,130956])test(`K2a B1 collection two drafts orphan remove other manifest ZIP cold read preserves ${size}-byte boundary`,async()=>{
+  const C=require('./test_grid_drafts_lifecycle_capacity.js');
+    const f=await fixture(),w=f.w,token=w.getProjectState().contextToken,d=C.largeDraft();d.inputRefs=[];C.pad(d,size);
+    const other=k2aDraft('other',true);other.baseRef.id=2;
+    // This exercises an already saved collection, not new large-draft admission.
+    w.context().featureAttachments=[P.Features.record(P.Features.GRID_KIND,{schema:P.Features.GRID_DRAFTS_SCHEMA,drafts:[d,other],orphans:[]},true)];
+    const sourceMap=new Map([[f.source.meta.id,f.source.bytes]]),initial=w.readGridDrafts();
+    const save=async()=>P.unpack(await P.pack('',await w.manifest(),sourceMap,zip),zip);
+    assert.deepEqual(P.Features.gridDrafts((await save()).manifest.featureAttachments.records.find(r=>r.kind===P.Features.GRID_KIND).value),initial);
+    w.observe('line delete grid-system 1',{ok:true,deletedObjects:[d.baseRef]});
+    const both=w.readGridDrafts();assert.deepEqual(Array.from(both.orphans),[d.draftId]);
+    assert.deepEqual(P.Features.gridDrafts((await save()).manifest.featureAttachments.records.find(r=>r.kind===P.Features.GRID_KIND).value),both);
+    assert.doesNotThrow(()=>w.setGridDraft('other',null,token));const remaining=w.readGridDrafts();
+    let opened;await assert.doesNotReject(async()=>{opened=await save();},/容量|上限/,'remaining orphan collection must save at its declared quota');
+    const value=opened.manifest.featureAttachments.records.find(r=>r.kind===P.Features.GRID_KIND).value;
+    assert.deepEqual(P.Features.gridDrafts(value),remaining,'real pack/unpack preserves raw/id/baseRef/refs/orphan');
+    assert.deepEqual(remaining.drafts[0],both.drafts.find(row=>row.draftId===d.draftId));
+    assert.equal(opened.manifest.format,P.GRID_DRAFTS_FORMAT);assert.ok(opened.manifest.requiredCapabilities.includes(P.Features.GRID_DRAFTS_SCHEMA));
+    assert.equal(C.bytes(remaining.drafts[0]),size);assert.equal(f.calls.length,0,'metadata-only save sequence sends no native API');
+}, {timeout:ORPHAN_COLLECTION_ZIP_TIMEOUT_MS[size]});
+test('K2a B1 previous collection ZIP original import and save preserves raw refs orphan and full draft size',async()=>{
+  const pdf=countedPDF(),f=await openFixture({withPDF:true,pdfLibrary:pdf.library});
+  const fetch=f.env.fetch;f.env.fetch=async(url,request)=>{const response=await fetch(url,request);if(url!=='/upload/prepare')return response;const candidate=await response.json();return {...response,json:async()=>({...candidate,final_scene:request.body})};};
+  const bytes=fs.readFileSync(require('node:path').join(__dirname,'evidence/k2a-collection-capacity-20261012/legacy6a-with-scene.gcanvas'));
+  const original=JSON.parse(new TextDecoder().decode(zip.unzipSync(bytes)['manifest.json'])).featureAttachments;
+  await assert.doesNotReject(()=>f.w.importBytes(new Uint8Array(bytes),'legacy6a.gcanvas'),/容量|上限/);
+  const expected=P.Features.gridDrafts(original.records.find(r=>r.kind===P.Features.GRID_KIND).value);
+  assert.deepEqual(f.w.readGridDrafts(),expected);assert.equal(require('./test_grid_drafts_lifecycle_capacity.js').bytes(expected.drafts[0]),131072);
+  const sources=new Map([...f.w.context().sources].map(([id,source])=>[id,source.bytes])),manifest=await f.w.manifest();
+  const opened=await P.unpack(await P.pack('',manifest,sources,zip),zip);
+  assert.deepEqual(opened.manifest.featureAttachments,original);assert.equal(opened.manifest.format,P.GRID_DRAFTS_FORMAT);
+  assert.ok(f.requests.some(request=>request.url==='/upload/prepare'),'original import proceeds to native verifier seam after reading');
+});
+test('K2a B1 legacy missing-source scan preserves raw and unchanged flush; one byte edits still need admission',async()=>{
+  const {w}=await fixture(),old=new Uint8Array(fs.readFileSync(require('node:path').join(__dirname,'evidence/k2a-boundary-review-20261012/legacy/base49-capacity.gcanvas'))),opened=await P.unpack(old,zip);
+  w.context().featureAttachments=structuredClone(opened.manifest.featureAttachments.records);
+  const original=w.readGridDrafts().drafts[0];
+  assert.doesNotThrow(()=>w.observe('line delete grid-system 1',{ok:true,deletedObjects:[original.baseRef,...original.inputRefs]}),/容量|上限/);
+  const marked=w.readGridDrafts(),state=w.getProjectState(),history=w.history.undo.length;
+  assert.deepEqual(Array.from(marked.orphans),[original.draftId]);assert.equal(marked.drafts[0].inputRefs.filter(ref=>ref.lost).length,20);assert.deepEqual(marked.drafts[0].rawForm,original.rawForm);
+  assert.doesNotThrow(()=>w.setGridDraft(original.draftId,structuredClone(marked.drafts[0]),state.contextToken));
+  const changed=structuredClone(marked.drafts[0]),form=changed.ruleDraft.rawForm;form[Object.keys(form).find(key=>form[key].length<4096)]+='x';
+  assert.throws(()=>w.setGridDraft(original.draftId,changed,state.contextToken),/容量|上限/);
+  assert.deepEqual(w.getProjectState(),state);assert.equal(w.history.undo.length,history);assert.deepEqual(w.readGridDrafts(),marked);
+  const saved=await P.pack('',await w.manifest(),new Map([[...w.context().sources][0]].map(([id,source])=>[id,source.bytes])),zip),again=await P.unpack(saved,zip);
+  assert.deepEqual(P.Features.gridDrafts(again.manifest.featureAttachments.records.find(r=>r.kind===P.Features.GRID_KIND).value),marked);
+});
+test('K2a review M1 original handler replaces lost P1 with already-used P2 without permitting pure removal',async()=>{
+  const f=await fixture(),w=f.w,token=w.getProjectState().contextToken,d=k2aDraft('shared-pin');
+  d.rawForm=Object.fromEntries(P.Features.sourceFields.map(k=>[k,'']));d.rawForm.igUStepSource='1:1';d.rawForm.igVStepSource='2:1';
+  const p1={kind:'parameter-field',parameterId:1,fieldId:1,fingerprint:'a'.repeat(64),lost:true},p2={kind:'parameter-field',parameterId:2,fieldId:1,fingerprint:'b'.repeat(64)};
+  d.inputRefs=[p1,p2];w.setGridDraft(d.draftId,d,token);
+  const removed=structuredClone(d);removed.inputRefs=[p2];const before=JSON.stringify(w.readGridDrafts()),count=w.history.undo.length;
+  assert.throws(()=>w.setGridDraft(d.draftId,removed,token),/不得純移除/,'unchanged raw cannot borrow existing P2');
+  assert.equal(JSON.stringify(w.readGridDrafts()),before);assert.equal(w.history.undo.length,count);
+  f.env.ReferenceWorkspace=w;f.env.document.body={append(){}};f.env.oc.gridBindings=[];
+  const source=fs.readFileSync(process.env.GEOMETRY_GRID_WORKSPACE_SOURCE||require.resolve('../geometry-web/grid-system-workspace.js'),'utf8').replace('window.InfiniteGridWorkspace={','window.InfiniteGridWorkspace={__replacementTest:{selectParameterPin,flush,setState:s=>{state=s;dialog.open=true;}},');
+  vm.runInNewContext(source,f.env);const seam=f.env.window.InfiniteGridWorkspace.__replacementTest;
+  for(const [key,value]of Object.entries(d.rawForm))f.element(key).value=value;
+  const key=r=>`parameter-field:${r.parameterId}:${r.fieldId}`,s={context:w.context(),contextToken:token,mode:'source',draftId:d.draftId,draftSchema:d.schema,baseRef:null,restored:d,rawOverrides:new Map(),inputPins:new Map([[key(p1),p1],[key(p2),p2]]),pins:new Map([[key(p2),p2]]),referenceSelections:new Map([['igUStepSource',key(p1)],['igVStepSource',key(p2)]])};
+  seam.setState(s);const node=f.element('igUStepSource');node.id='igUStepSource';node.value='2:1';f.env.window.confirm=()=>false;
+  assert.equal(seam.selectParameterPin(s,node),false);assert.equal(node.value,'1:1');assert.equal(JSON.stringify(w.readGridDrafts()),before);
+  node.value='2:1';f.env.window.confirm=()=>true;seam.selectParameterPin(s,node);
+  assert.doesNotThrow(()=>seam.flush(s),'confirmed field replacement may share V already-used P2');
+  const after=JSON.stringify(w.readGridDrafts());assert.equal(w.readGridDrafts().drafts.find(row=>row.draftId===d.draftId).inputRefs.length,1);assert.equal(w.readGridDrafts().drafts.find(row=>row.draftId===d.draftId).rawForm.igUStepSource,'2:1');
+  assert.equal(w.tryLocalHistory('line undo').ok,true);assert.equal(JSON.stringify(w.readGridDrafts()),before);assert.equal(w.tryLocalHistory('line redo').ok,true);assert.equal(JSON.stringify(w.readGridDrafts()),after);
+  const packed=await P.pack('',await w.manifest(),new Map([[f.source.meta.id,f.source.bytes]]),zip),opened=await P.unpack(packed,zip);
+  assert.deepEqual(JSON.parse(JSON.stringify(P.Features.gridDrafts(opened.manifest.featureAttachments.records.find(r=>r.kind===P.Features.GRID_KIND).value))),JSON.parse(after));
+});
+test('K2a M2 near-limit draft admission rejects before native calls, history or dirty changes',async()=>{
+  const {w,calls}=await fixture(),C=require('./test_grid_drafts_lifecycle_capacity.js'),draft=C.pad(C.largeDraft(),128*1024-240);
+  const padding=C.nearManifest().engineeringDrafts.records; padding.at(-1).data.raw='';w.context().engineeringDrafts=padding;
+  const base=await w.manifest(),candidate={...base,sceneHash:'0'.repeat(64),format:P.GRID_RULE_FORMAT,requiredCapabilities:[P.Features.GRID_RULE_SCHEMA],featureAttachments:{schema:P.Features.SCHEMA,records:[C.record(draft)]}};
+  padding.at(-1).data.raw='x'.repeat(8*1024*1024-1-C.bytes(candidate));
+  P.assertManifestCapacity(await w.manifest(),'');const before=w.getProjectState(),history=w.history.undo.length,http=calls.length;
+  assert.throws(()=>w.setGridDraft(draft.draftId,draft,before.contextToken),/8 MB|容量/,'M2 rejected before draft can create an unsaveable deletion state');
+  assert.deepEqual(w.getProjectState(),before);assert.equal(w.history.undo.length,history);assert.equal(calls.length,http);assert.equal(w.readGridDrafts().drafts.length,0);
+});
+test('K2a M01/M03/M12 per-draft writes coexist, legacy replacement and late context flush cannot alter them',async()=>{
+  const {w}=await fixture(),token=w.getProjectState().contextToken;
+  w.setGridDraft('a',k2aDraft('a'),token);w.setGridDraft('b',k2aDraft('b'),token);
+  assert.deepEqual(Array.from(w.readGridDrafts().drafts,d=>d.draftId),['a','b']);
+  const a=k2aDraft('a');a.rawForm.igName='續開';w.setGridDraft('a',a,token);
+  assert.equal(w.readGridDrafts().drafts.find(d=>d.draftId==='a').rawForm.igName,'續開');
+  const before=JSON.stringify(w.readGridDrafts()),history=w.history.undo.length;
+  assert.throws(()=>w.setFeatureAttachment('grid-draft',a,token));assert.throws(()=>w.setGridDraft('a',a,'late-context'));
+  assert.equal(JSON.stringify(w.readGridDrafts()),before);assert.equal(w.history.undo.length,history);
+});
+test('K2a M12/M14b lost flags cannot be erased or repinned with the same identity',async()=>{
+  const {w}=await fixture(),token=w.getProjectState().contextToken,a=k2aDraft('a');
+  a.inputRefs=[{kind:'grid-system',id:2,fingerprint:'b'.repeat(64),lost:true}];w.setGridDraft('a',a,token);
+  const clear=structuredClone(a);delete clear.inputRefs[0].lost;assert.throws(()=>w.setGridDraft('a',clear,token));
+  const removed=structuredClone(a);removed.inputRefs=[];const beforeRemove=JSON.stringify(w.readGridDrafts()),beforeHistory=w.history.undo.length;
+  assert.throws(()=>w.setGridDraft('a',removed,token),/不得純移除/,'M1 pure removal cannot erase a lost reference');
+  assert.equal(JSON.stringify(w.readGridDrafts()),beforeRemove);assert.equal(w.history.undo.length,beforeHistory);
+  assert.throws(()=>w.setFeatureAttachment('grid-draft',null,token));
+  assert.equal(w.readGridDrafts().drafts[0].inputRefs[0].lost,true);
+  clear.inputRefs[0].id=3;w.setGridDraft('a',clear,token);assert.equal(w.readGridDrafts().drafts[0].inputRefs[0].lost,undefined);
+  const parameter=structuredClone(clear);parameter.inputRefs=[{kind:'parameter-field',parameterId:2,fieldId:1,fingerprint:'b'.repeat(64),lost:true}];
+  w.setGridDraft('a',parameter,token);const sameCard=structuredClone(parameter);sameCard.inputRefs[0].fieldId=2;delete sameCard.inputRefs[0].lost;
+  assert.throws(()=>w.setGridDraft('a',sameCard,token),'a lost parameter card cannot be reacquired through another field');
+});
+test('K2a M04 removing one draft and local undo restores precisely that draft',async()=>{
+  const {w}=await fixture(),token=w.getProjectState().contextToken;
+  w.setGridDraft('a',k2aDraft('a'),token);w.setGridDraft('b',k2aDraft('b'),token);w.setGridDraft('a',null,token);
+  assert.deepEqual(Array.from(w.readGridDrafts().drafts,d=>d.draftId),['b']);w.tryLocalHistory('line undo');
+  assert.deepEqual(Array.from(w.readGridDrafts().drafts,d=>d.draftId),['a','b']);
+});
+test('K2a M04 native confirmation clears only its leased draft; failed confirmation preserves both',async()=>{
+  const {w}=await fixture(),token=w.getProjectState().contextToken,a=k2aDraft('a');
+  w.setGridDraft('a',a,token);w.setGridDraft('b',k2aDraft('b'),token);
+  w.prepareFeatureConfirmation(99,'grid-draft',a,token);const failed=w.beginFeatureConfirmation(99);
+  w.observe('line confirm 99',{ok:false});w.finishAssemblyConfirmation(failed);assert.equal(w.readGridDrafts().drafts.length,2);
+  w.prepareFeatureConfirmation(100,'grid-draft',a,token);w.beginFeatureConfirmation(100);w.observe('line confirm 100',{ok:true});
+  assert.deepEqual(Array.from(w.readGridDrafts().drafts,d=>d.draftId),['b']);
+});
+test('K2a M06/M14 deletion receipt marks orphans and lost even when identical ids still exist',async()=>{
+  const {w}=await fixture(),token=w.getProjectState().contextToken,a=k2aDraft('a',true);
+  a.inputRefs=[{kind:'grid-system',id:2,fingerprint:'b'.repeat(64)}];w.setGridDraft('a',a,token);
+  w.observe('line delete grid-system 1',{ok:true,deletedObjects:[{kind:'grid-system',id:1},{kind:'grid-system',id:2}]});
+  assert.deepEqual(Array.from(w.readGridDrafts().orphans),['a']);assert.equal(w.readGridDrafts().drafts[0].inputRefs[0].lost,true);
+  w.observe('objects',{ok:true,gridSystems:[{id:1},{id:2}],gridBindings:[],parameters:[],faces:[]});
+  assert.deepEqual(Array.from(w.readGridDrafts().orphans),['a']);assert.equal(w.readGridDrafts().drafts[0].inputRefs[0].lost,true);
+});
+test('K2a M14b identical native transaction gives deletion flags one reversible local history step',async()=>{
+  const {w}=await fixture(),token=w.getProjectState().contextToken,a=k2aDraft('a');
+  a.inputRefs=[{kind:'parameter-field',parameterId:1,fieldId:1,fingerprint:'b'.repeat(64)}];w.setGridDraft('a',a,token);
+  const count=w.history.undo.length;
+  w.observe('engineering-confirm 77',{ok:true,history_changed:false,deletedObjects:[{kind:'parameter-field',parameterId:1,fieldId:1}]});
+  assert.equal(w.history.undo.length,count+1);assert.equal(w.readGridDrafts().drafts[0].inputRefs[0].lost,true);
+  const undo=w.tryLocalHistory('line undo');assert.equal(undo.ok,true);assert.equal(undo.local,true);assert.equal(w.readGridDrafts().drafts.length,1);assert.equal(w.readGridDrafts().drafts[0].inputRefs[0].lost,undefined);
+});
+test('K2a M15 repin requires the reviewed current fingerprint and keeps raw and lost references intact',async()=>{
+  const row={id:1,mode:'infinite',name:'current',mainAlong:null,uDefinition:{source:'repeat',step:915,phase:0},vDefinition:{source:'none'},nextRuleKey:1,rules:[]};
+  const {w}=await fixture({api:async cmd=>{assert.equal(cmd,'objects');return {ok:true,gridSystems:[row]};}}),token=w.getProjectState().contextToken,a=k2aDraft('a',true);
+  a.inputRefs=[{kind:'grid-system',id:2,fingerprint:'b'.repeat(64),lost:true}];w.setGridDraft('a',a,token);
+  const hash=await P.sha(new TextEncoder().encode(JSON.stringify(P.Features.gridSourceKey(row,true))));
+  await assert.rejects(()=>w.repinGridDraft('a','c'.repeat(64),token));assert.equal(w.readGridDrafts().drafts[0].baseRef.fingerprint,'a'.repeat(64));
+  await w.repinGridDraft('a',hash,token);const actual=w.readGridDrafts().drafts[0];assert.equal(actual.baseRef.fingerprint,hash);
+  assert.equal(actual.inputRefs[0].lost,true);assert.deepEqual(JSON.parse(JSON.stringify(actual.rawForm)),a.rawForm);
+});
 
 test('registered evidence setter uses original source metadata, one history and synchronous native busy guard',async()=>{
   const f=await fixture(),E=P.Features.Evidence,p=f.w.active(1),token=f.w.getProjectState().contextToken;

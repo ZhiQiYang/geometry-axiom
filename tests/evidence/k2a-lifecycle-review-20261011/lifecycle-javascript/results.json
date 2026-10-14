@@ -1,0 +1,122 @@
+[
+  {
+    "id": "M2-collection-projection",
+    "expected_test": "M2 healthy singleton collection never subtracts lifecycle capacity",
+    "command": [
+      "node",
+      "--test",
+      "--test-reporter=tap",
+      "--test-name-pattern=^M2\\ healthy\\ singleton\\ collection\\ never\\ subtracts\\ lifecycle\\ capacity$",
+      "tests/test_grid_drafts_lifecycle_capacity.js"
+    ],
+    "detected": true,
+    "source_sha256": "f1cc0ed047dec750be3f16f4870af9c30319003a485fdf4e78a7a4b46d3df40d",
+    "judge_sha256": "733042b82c7bfd4fdd4998a278222e9d584fcec4bcaf83a769b2345a6cee50ad",
+    "logs": {
+      "baseline": "581a80df82063c73cde491b83d9a0f8f002bb548ff2e6b23232c212bfd41b733",
+      "build": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "red": "fcc73f53dd53d34f7310c3dbe8d54be3a7d930700fc05c8dd6b431e5f52ce26e",
+      "restored": "2c3b294f51e5bc05be640e19b7177dc7436d01bf65b0c0246d8a8c5ab9be8f5a"
+    }
+  },
+  {
+    "id": "M1-pure-removal",
+    "expected_test": "K2a M12/M14b lost flags cannot be erased or repinned with the same identity",
+    "command": [
+      "node",
+      "--test",
+      "--test-reporter=tap",
+      "--test-name-pattern=^K2a\\ M12/M14b\\ lost\\ flags\\ cannot\\ be\\ erased\\ or\\ repinned\\ with\\ the\\ same\\ identity$",
+      "tests/test_reference_workspace_races.js"
+    ],
+    "detected": true,
+    "source_sha256": "d16acfa168ed8d62d2d1f9fcdeb96325b2763498036925c0c4a29e26f11be983",
+    "judge_sha256": "7c90e56dbc21f8b5f46b3567f0ba9500a85766f73d3a19f29fe8b02271d4ebe6",
+    "logs": {
+      "baseline": "ec40e0e7a0d052ebae83740474c782d3018b035f30e545b7690694c7d7c3bde0",
+      "build": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "red": "f44443f8daa67ef6b536dea8451dfe8940341b2440dcac96718bef6ec6ed2b80",
+      "restored": "13381124887b2f835a4f9a463854b705e59ccece8e628b95e3f89a346063e2ca"
+    }
+  },
+  {
+    "id": "M2-individual-reserve",
+    "expected_test": "M2 individual draft reserves every automatic lost flag before admission",
+    "command": [
+      "node",
+      "--test",
+      "--test-reporter=tap",
+      "--test-name-pattern=^M2\\ individual\\ draft\\ reserves\\ every\\ automatic\\ lost\\ flag\\ before\\ admission$",
+      "tests/test_grid_drafts_lifecycle_capacity.js"
+    ],
+    "detected": true,
+    "source_sha256": "f1cc0ed047dec750be3f16f4870af9c30319003a485fdf4e78a7a4b46d3df40d",
+    "judge_sha256": "733042b82c7bfd4fdd4998a278222e9d584fcec4bcaf83a769b2345a6cee50ad",
+    "logs": {
+      "baseline": "f9da5f998aa5123753cddb6acf9cabad3a6c84530797f2b0287489e909bd8a73",
+      "build": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "red": "46c79a86fae08c2e0c4a6890775b4f598caa5bcd56e229dd42ce096137eb242d",
+      "restored": "77acb736659b393a8b73d9823ba7d4c1a3690bb56844b582e74c8a5706d7e518"
+    }
+  },
+  {
+    "id": "M2-collection-reserve",
+    "expected_test": "M2 collection value reserves all lost flags and orphan identifiers",
+    "command": [
+      "node",
+      "--test",
+      "--test-reporter=tap",
+      "--test-name-pattern=^M2\\ collection\\ value\\ reserves\\ all\\ lost\\ flags\\ and\\ orphan\\ identifiers$",
+      "tests/test_grid_drafts_lifecycle_capacity.js"
+    ],
+    "detected": true,
+    "source_sha256": "f1cc0ed047dec750be3f16f4870af9c30319003a485fdf4e78a7a4b46d3df40d",
+    "judge_sha256": "733042b82c7bfd4fdd4998a278222e9d584fcec4bcaf83a769b2345a6cee50ad",
+    "logs": {
+      "baseline": "888390c9e6428ef536c1be2ec8062eb6f4d7731ddd16e2c62417a0db3bacacc0",
+      "build": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "red": "492a3fc85a8fd9c6b2d2c2c3a1ee78c9bb3d4b93b68965fead7ab6a2a5042883",
+      "restored": "46084896516356480ab86691eae78dfb5bad7375b4e26c3396a5756a6c635614"
+    }
+  },
+  {
+    "id": "M2-record-reserve",
+    "expected_test": "M2 collection record reserves automatic marking within its own byte limit",
+    "command": [
+      "node",
+      "--test",
+      "--test-reporter=tap",
+      "--test-name-pattern=^M2\\ collection\\ record\\ reserves\\ automatic\\ marking\\ within\\ its\\ own\\ byte\\ limit$",
+      "tests/test_grid_drafts_lifecycle_capacity.js"
+    ],
+    "detected": true,
+    "source_sha256": "f1cc0ed047dec750be3f16f4870af9c30319003a485fdf4e78a7a4b46d3df40d",
+    "judge_sha256": "733042b82c7bfd4fdd4998a278222e9d584fcec4bcaf83a769b2345a6cee50ad",
+    "logs": {
+      "baseline": "cbfd8212e3ecacbafbd7088806b42c4d4bdea9e8ebe7dc1de576bcfdaf890656",
+      "build": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "red": "3f4c96daccfc6e766ff6811d8fdbe958aeab825d21dc02c3fdb66bf3d7a64647",
+      "restored": "ee113ed2a71ddd3487fc9121b2404c51e216c452f5b014be252f2fcf945723b2"
+    }
+  },
+  {
+    "id": "M2-manifest-reserve",
+    "expected_test": "M2 complete manifest reserves grid promotion before native deletion or import",
+    "command": [
+      "node",
+      "--test",
+      "--test-reporter=tap",
+      "--test-name-pattern=^M2\\ complete\\ manifest\\ reserves\\ grid\\ promotion\\ before\\ native\\ deletion\\ or\\ import$",
+      "tests/test_grid_drafts_lifecycle_capacity.js"
+    ],
+    "detected": true,
+    "source_sha256": "4fb2b73d06a70ec946c945bdc1fd36f5e65a9c4c0f826ad953fb0434baeb850d",
+    "judge_sha256": "733042b82c7bfd4fdd4998a278222e9d584fcec4bcaf83a769b2345a6cee50ad",
+    "logs": {
+      "baseline": "24d5d4493b731aabb988be10b16608538ba4722ba63732a5e813246d7b30f470",
+      "build": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "red": "5e71bc1b2ca5ff5e746a9317768a0e14b4deaeba52cb071d10c3a24ef615ed33",
+      "restored": "4b73dc5eb7d0ff472f97776d5d2093c4e6a99e4e2a5156652779ef09799bb17f"
+    }
+  }
+]
