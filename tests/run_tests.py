@@ -48,6 +48,13 @@ TESTS = [{'scene': '_wit_d30_infinite_grid_binding.scene', 'expect': 'accept'},
  {'scene': '_edge_axis_violation.scene', 'expect': 'reject', 'error': '垂直'},
  {'scene': '_edge_concave.scene', 'expect': 'accept', 'lengths': [4000]},
  {'scene': '_ax_i5_collinear_vertex_rect_corner.scene', 'expect': 'accept', 'lengths': [4000]},
+ # GEO-257:凹槽(環外)內四角貼壁、無環邊穿過內部的矩形不是「在環內」。between 把足跡定在槽內 → 槽內 cell 非合法跨距。
+ # M59 殺手(拿掉矩形中心必須在環內的檢查);後兩個是貼槽邊但真的在內的對照組。
+ {'scene': '_ax_i5_notch_cell_corners_on_ring.scene', 'expect': 'reject', 'error': 'between 指名的兩端之間沒有合法跨距'},
+ {'scene': '_ax_i5_notch_floor_flush_inside.scene', 'expect': 'accept', 'lengths': [100]},
+ {'scene': '_ax_i5_notch_wall_flush_inside.scene', 'expect': 'accept', 'lengths': [100]},
+ # M08 殺手:四角在環上、中心在環內、但槽底邊穿過內部的 cell 只有「環邊穿入開內部」擋得下(合法跨距被槽切成兩段)。
+ {'scene': '_ax_i5_notch_edge_cuts_interior.scene', 'expect': 'reject', 'error': '跨距歧義'},
  {'scene': '_edge_dir_violation.scene', 'expect': 'reject', 'error': '平行'},
  {'scene': '_edge_free.scene', 'expect': 'reject', 'error': '自由邊'},
  {'scene': '_edge_freeze.scene', 'expect': 'reject', 'lengths': [1800], 'error': 'I8a'},
