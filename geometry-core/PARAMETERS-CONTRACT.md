@@ -28,7 +28,7 @@
 | operation | 內容 |
 | --- | --- |
 | put-parameter | value 卡片，每欄提供 input 或 expression，二者擇一 |
-| delete-parameter | id；依 P-060／I38／R33，在整筆候選操作完成後檢查引用，最終來源仍缺失且被定義引用即拒絕並指名引用者；同候選刪除依賴卡或將引用欄改為直接值時，兩種刪除／修改順序皆合法。P-111 更新「不重用身分」為不延續已結束的存在期：使用者明示 put-parameter 同鍵重建依 D60 合法；匯入由核心配號，不配同一候選內已刪除的鍵；確認收據仍保留中間刪除的 parameter-field。候選內刪除名單只供完整候選診斷與明確解除來源，不保留數值鍵，出口清空，不進入 World／history |
+| delete-parameter | id；依 P-060／I38／R33，在整筆候選操作完成後檢查引用，最終來源仍缺失且被定義引用即拒絕並指名引用者；同候選刪除依賴卡或將引用欄改為直接值時，兩種刪除／修改順序皆合法。P-111 更新「不重用身分」為不延續已結束的存在期：使用者明示 put-parameter 同鍵重建依 D60 合法；匯入由核心配號，不配同一候選內已刪除的鍵；確認收據仍保留中間刪除的 parameter-field。候選內刪除名單供完整候選診斷、明確解除來源及匯入配號避開使用；不限制明示 put 同鍵重建，出口清空，不進入 World／history |
 | import-parameters | value 完整參數包，由核心配新卡片身分與改寫引用 |
 | set-source / set-override | 原有 grid/timber target，source/value 可為 `{kind:"parameter",parameterId,fieldId}` |
 | unbind-source | target；存活的原始來源與覆寫依當前候選重算必要參數依賴；同候選已刪參數卡的來源值依 P-062／P-065 取其自身或上游被覆寫或刪除到無法重算前的最後有效值，含先前修改。明確解除後才把有效尺寸寫成直接值並移除來源及覆寫；原始來源、幾何限制與完整候選驗證仍適用 |
