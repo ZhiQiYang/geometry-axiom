@@ -1,0 +1,7 @@
+from pathlib import Path
+import sys
+sys.path.insert(0,'/tmp/geometry-control-diagnostics/tests')
+import binaries
+binaries.OUT_DIR=Path('/tmp/grid-diag-binaries')
+import run_all
+sys.exit(run_all.main(['--build']))

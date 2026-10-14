@@ -16,7 +16,16 @@ module.exports=async function ruleEditorTests({send,eval_,sleep,click,waitForUI,
   console.log('=== P87. 來源規則 CRUD、typed baseline、原始草稿與正式 ZIP ===');
   const fs=require('fs'),path=require('path'),os=require('os'),P=require('./project-store.js'),zip=require('./vendor/fflate/umd/index.js');
   const read=cdp.makeRead(eval_),wait=cdp.makeWait(waitForUI,20000),check=cdp.makeCheck({prefix:'P87 ',throwOnFail:true}),startExceptions=exceptionCount();
-  const ctl=cdp.makeCtl({eval_,sleep,click},{scroll:'center',attempts:12,pollMs:70,settleMs:100,missing:'Missing ',unreachable:(s,p)=>'Rule control unreachable '+s+' '+JSON.stringify(p)});
+  const baseCtl=cdp.makeCtl({eval_,sleep,click},{scroll:'center',attempts:12,pollMs:70,settleMs:100,missing:'Missing ',unreachable:(s,p)=>'Rule control unreachable '+s+' '+JSON.stringify(p)});
+  const ctl=async selector=>{
+    try{return await baseCtl(selector);}catch(error){
+      if(!error.message.startsWith('Rule control unreachable '))throw error;
+      let control,state;
+      try{control=await read(`(()=>{const e=document.querySelector(${JSON.stringify(selector)}),r=e?.getBoundingClientRect(),hit=r?document.elementFromPoint(r.x+r.width/2,r.y+r.height/2):null,menu=document.querySelector('#fileMenuPop'),style=menu?getComputedStyle(menu):null;return {rect:r?{x:r.x,y:r.y,width:r.width,height:r.height,top:r.top,right:r.right,bottom:r.bottom,left:r.left}:null,disabled:!!e?.disabled,hit:hit?.outerHTML?.slice(0,200)||null,menu:menu?{display:style.display,visibility:style.visibility,hidden:menu.hidden}:null,fileMenuExpanded:document.querySelector('#fileMenuBtn')?.getAttribute('aria-expanded')??null};})()`);}catch(failure){control={diagnosticError:failure.message};}
+      try{state=await read(`(async()=>({connection:typeof connection==='undefined'?null:{phase:connection.phase,session:connection.session},info:typeof ReferenceWorkspace==='undefined'?null:ReferenceWorkspace.getProjectInfo(),busy:typeof ReferenceWorkspace==='undefined'?null:ReferenceWorkspace.busy,locks:navigator.locks?await navigator.locks.query():null}))()`);}catch(failure){state={diagnosticError:failure.message};}
+      throw Error(error.message+' '+JSON.stringify({control,state}));
+    }
+  };
   const key=cdp.makeKey({send,sleep}),fill=cdp.makeFill({ctl,key,send,sleep},{afterMs:35});
   const historyOracle=cdp.makeHistoryOracle(read,'P87');
   const query=cmd=>read(`apiRequest(${JSON.stringify(cmd)}).then(r=>{if(!r.ok)throw Error(JSON.stringify(r));return r;})`);
