@@ -1,0 +1,17 @@
+{
+  "head": "17731486bc6e290b69be835277b4ff8cdd8d16b3",
+  "main": "2004c6c8bebe1bbff2df142630b630e1ee5115b8",
+  "argv": [
+    "bash",
+    "-c",
+    "set -e; ulimit -s 16384; exec python3 -u tests/run_all.py --build"
+  ],
+  "MUTATE_CACHE": "/tmp/geometry-wake19/mutants-final",
+  "pid": 450997,
+  "started_at": "2026-10-13T19:48:05.258499+08:00",
+  "ended_at": "2026-10-13T20:03:27.510060+08:00",
+  "seconds": 917.1904031769955,
+  "exit": 1,
+  "sources_unchanged": true,
+  "git_status": ""
+}

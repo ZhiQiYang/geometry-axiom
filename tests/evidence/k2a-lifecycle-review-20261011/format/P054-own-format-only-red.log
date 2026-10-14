@@ -1,0 +1,41 @@
+TAP version 13
+# Subtest: P-054 shared /17 accepts each registered feature alone and both without discarding attachments
+not ok 1 - P-054 shared /17 accepts each registered feature alone and both without discarding attachments
+  ---
+  duration_ms: 81.726342
+  type: 'test'
+  location: '/workspace/geometry-k2aa-review/tests/test_shared_format17.js:14:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Got unwanted rejection: P-054 registered family roundtrip remains accepted
+    Actual message: "第 17 版附件不可降版。"
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  actual:
+  error: '第 17 版附件不可降版。'
+  stack: |-
+    fail (evalmachine.<anonymous>:42:35)
+    validateEngineeringScene (evalmachine.<anonymous>:327:209)
+    validate (evalmachine.<anonymous>:554:5)
+    Object.pack (evalmachine.<anonymous>:659:5)
+    async roundtrip (/workspace/geometry-k2aa-review/tests/test_shared_format17.js:13:51)
+    async /workspace/geometry-k2aa-review/tests/test_shared_format17.js:15:115
+    async waitForActual (node:assert:646:5)
+    async strict.doesNotReject (node:assert:789:33)
+    async TestContext.<anonymous> (/workspace/geometry-k2aa-review/tests/test_shared_format17.js:15:74)
+    async Test.run (node:internal/test_runner/test:1389:7)
+  operator: 'doesNotReject'
+  stack: |-
+    async TestContext.<anonymous> (/workspace/geometry-k2aa-review/tests/test_shared_format17.js:15:74)
+    async Test.run (node:internal/test_runner/test:1389:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 169.514551

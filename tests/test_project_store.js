@@ -100,7 +100,7 @@ test('rejects damaged scene, source, unknown version, duplicate paths and missin
   const newer=[...supported,'grid-subdivision-rules/1'];
   assert.deepEqual(require('./fixtures/native_available_capabilities.json'),newer);
   assert.deepEqual(P.nativeReaderCapabilities(newer),newer);
-  assert.deepEqual(P.readerCapabilities(newer),[...newer,P.Features.GRID_SCHEMA,P.Features.GRID_RULE_SCHEMA,P.Features.ROOM_CAPABILITY,P.Features.ROOM_HISTORY_CAPABILITY,P.Features.ROOM_DISPLAY_CAPABILITY,P.EVIDENCE_CAPABILITY,P.SCENARIO_CAPABILITY,P.CASE_CAPABILITY]);
+  assert.deepEqual(P.readerCapabilities(newer),[...newer,P.Features.GRID_SCHEMA,P.Features.GRID_RULE_SCHEMA,P.Features.GRID_DRAFTS_SCHEMA,P.Features.ROOM_CAPABILITY,P.Features.ROOM_HISTORY_CAPABILITY,P.Features.ROOM_DISPLAY_CAPABILITY,P.EVIDENCE_CAPABILITY,P.SCENARIO_CAPABILITY,P.CASE_CAPABILITY]);
   assert.deepEqual(newer,[...supported,'grid-subdivision-rules/1']);
   assert.deepEqual(P.nativeReaderCapabilities(['grid-subdivision-rules/1']),['grid-subdivision-rules/1']);
   P.assertProjectCapabilities({requiredCapabilities:[P.PARAMETER_CAPABILITY]},P.nativeReaderCapabilities(newer));

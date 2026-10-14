@@ -1,0 +1,32 @@
+from pathlib import Path
+import subprocess
+root=Path('/workspace/geometry-k2aa-review')
+old=Path('/tmp/k2aa-collection-6a/geometry-web')
+source=(root/'tests/test_reference_workspace_races.js').read_text().split('const k2aDraft=')[0]
+source=source.replace("require('../geometry-web/project-store.js')",'require('+repr(str(old/'project-store.js'))+')')
+source=source.replace("require('../geometry-web/vendor/fflate/umd/index.js')",'require('+repr(str(old/'vendor/fflate/umd/index.js'))+')')
+source=source.replace("require('./fixtures/native_available_capabilities.json')",'require('+repr(str(root/'tests/fixtures/native_available_capabilities.json'))+')')
+source="process.env.GEOMETRY_TEST_REFERENCE_WORKSPACE="+repr(str(old/'reference-workspace.js'))+";\n"+source
+source+='''
+(async()=>{
+ const C=require('/workspace/geometry-k2aa-review/tests/test_grid_drafts_lifecycle_capacity.js'),f=await fixture(),w=f.w,token=w.getProjectState().contextToken,d=C.largeDraft();d.inputRefs=[];C.pad(d,131072);
+ const other=C.largeDraft('other',2);other.inputRefs=[];
+ w.setGridDraft('other',other,token);w.setGridDraft(d.draftId,d,token);
+ w.observe('line delete grid-system 1',{ok:true,deletedObjects:[d.baseRef]});w.setGridDraft('other',null,token);
+ const original=JSON.parse(JSON.stringify(w.readGridDrafts())),manifest=await w.manifest(),sources=new Map([[f.source.meta.id,f.source.bytes]]);
+ const packed=await P.pack('',manifest,sources,zip),opened=await P.unpack(packed,zip);
+ assert.deepEqual(P.Features.gridDrafts(opened.manifest.featureAttachments.records.find(r=>r.kind===P.Features.GRID_KIND).value),original);
+ assert.equal(opened.manifest.format,P.GRID_DRAFTS_FORMAT);assert.equal(C.bytes(original.drafts[0]),131072);
+ fs.writeFileSync('/tmp/k2aa-collection-review/legacy6a.gcanvas',packed);
+ const nativeScene='boundary 1 outline 0,0 800,0 800,700 0,700\\n',withScene=await P.pack(nativeScene,manifest,sources,zip);
+ assert.deepEqual(P.Features.gridDrafts((await P.unpack(withScene,zip)).manifest.featureAttachments.records.find(r=>r.kind===P.Features.GRID_KIND).value),original);
+ fs.writeFileSync('/tmp/k2aa-collection-review/legacy6a-with-scene.gcanvas',withScene);
+ fs.writeFileSync('/tmp/k2aa-collection-review/legacy6a-proof.json',JSON.stringify({sourceHead:'6a3d37a31a43130b5398376031c70915956eb7d0',zipBytes:packed.length,original,manifest:opened.manifest,nativeAPI:f.calls.length},null,2)+'\\n');
+ console.log(JSON.stringify({oldWriterAndColdRead:true,zipBytes:packed.length,draftBytes:C.bytes(original.drafts[0]),format:opened.manifest.format,api:f.calls.length}));
+})().catch(error=>{console.error(error);process.exitCode=1});
+'''
+Path('/tmp/k2aa-collection-old-writer.cjs').write_text(source)
+p=subprocess.run(['node','/tmp/k2aa-collection-old-writer.cjs'],cwd=root,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+Path('/tmp/k2aa-collection-review/legacy6a-writer.log').write_bytes(p.stdout)
+print(p.returncode,p.stdout.decode()[-1500:])
+assert p.returncode==0

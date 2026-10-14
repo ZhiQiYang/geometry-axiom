@@ -1,0 +1,23 @@
+{
+  "source_head": "026a58a58ad86c5a9e702a163a2fb4512a0d96e3",
+  "argv": [
+    "cc",
+    "-std=c11",
+    "-O1",
+    "-g",
+    "-fsanitize=address,undefined",
+    "-fno-omit-frame-pointer",
+    "geometry-web/web_bridge.c",
+    "-lm",
+    "-o",
+    "/tmp/geometry-wake20/bridge-sanitized"
+  ],
+  "compile_exit": 0,
+  "test_exit": 0,
+  "tests": 37,
+  "pass": 37,
+  "fail": 0,
+  "skip": 0,
+  "binary_sha256": "bb8221e4d69eb61d23848aee5f37af2e9304c31f8af25091fb527feb21284eb4",
+  "scope": "instrumented PF-2 + PF-1 native; no registry or browser/WSL receipt"
+}

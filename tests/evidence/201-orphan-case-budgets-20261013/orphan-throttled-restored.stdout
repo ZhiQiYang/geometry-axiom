@@ -1,0 +1,20 @@
+ORPHAN_CASE {"pid":450241,"size":130955,"event":"start","monotonic_ms":2481.963011}
+ORPHAN_CASE {"pid":450241,"size":130956,"event":"start","monotonic_ms":7510.553567}
+✖ K2a B1 collection two drafts orphan remove other manifest ZIP cold read preserves both single boundaries 130955-byte boundary (5028.935915ms)
+ORPHAN_CASE {"pid":450241,"size":130955,"event":"end","monotonic_ms":8700.227189,"elapsed_ms":6218.285339}
+ORPHAN_CASE {"pid":450241,"size":130956,"event":"end","monotonic_ms":11642.551555,"elapsed_ms":4132.006107}
+✔ K2a B1 collection two drafts orphan remove other manifest ZIP cold read preserves both single boundaries 130956-byte boundary (4133.457505ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 1
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 11825.87808
+
+✖ failing tests:
+
+test at tests/test_reference_workspace_races.js:4:28
+✖ K2a B1 collection two drafts orphan remove other manifest ZIP cold read preserves both single boundaries 130955-byte boundary (5028.935915ms)
+  'test timed out after 5000ms'

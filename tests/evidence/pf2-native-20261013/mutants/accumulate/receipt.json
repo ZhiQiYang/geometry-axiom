@@ -1,0 +1,32 @@
+{
+  "label": "accumulate",
+  "mutation": {
+    "file": "geometry-core/panel_layout_math.h",
+    "old": "return set&&(row&1)?delta:0;",
+    "new": "return set?row*delta:0;"
+  },
+  "compile_argv": [
+    "cc",
+    "-std=c11",
+    "-O0",
+    "-I/workspace/geometry-axiom",
+    "-I/workspace/geometry-axiom/geometry-web",
+    "/tmp/geometry-wake20/pf2-mutants/accumulate/bridge.c",
+    "-lm",
+    "-o",
+    "/tmp/geometry-wake20/pf2-mutants/accumulate/bridge"
+  ],
+  "compile_exit": 0,
+  "compiler_seconds": 3.5966804350027815,
+  "sources": {
+    "/tmp/geometry-wake20/pf2-mutants/accumulate/bridge.c": "c628d70df9aac7128fba80f385aa0525c66a0fc2a5ce6f722d40675448842821",
+    "/tmp/geometry-wake20/pf2-mutants/accumulate/core.c": "c1ef68858031fead9a1803e29c7d6f098a8333f72ce0b3443676a75054e5f752"
+  },
+  "tests": 1,
+  "failures": 1,
+  "errors": 0,
+  "skipped": 0,
+  "test_exit": 1,
+  "seconds": 0.13565529198967852,
+  "binary_sha256": "397617f5558e86a830ed87813b0d36f718f117c713adfea6c4659b89fd9249c2"
+}

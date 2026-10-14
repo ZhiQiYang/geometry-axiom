@@ -1,0 +1,120 @@
+{
+  "heads": {
+    "base": "caf49852a4b40d4e61bdf76480c79b43bb5a3676",
+    "ours": "fd66e210c4fce475192741a65df555a2eaa5725b",
+    "main": "0eb447e00605f6df117711b03e6c98ccabbcd026"
+  },
+  "only_conflicted_path": "tests/run_all.expected.json",
+  "resolutions": [
+    {
+      "suite": "py:test_panel_fill_layout",
+      "base": null,
+      "ours": null,
+      "main": {
+        "mode": "count",
+        "count": 17,
+        "unit": "test"
+      },
+      "result": {
+        "mode": "count",
+        "count": 17,
+        "unit": "test"
+      }
+    },
+    {
+      "suite": "node:grid_lesson_control_ownership",
+      "base": {
+        "mode": "count",
+        "count": 9,
+        "unit": "node test"
+      },
+      "ours": {
+        "mode": "count",
+        "count": 13,
+        "unit": "node test"
+      },
+      "main": {
+        "mode": "count",
+        "count": 9,
+        "unit": "node test"
+      },
+      "result": {
+        "mode": "count",
+        "count": 13,
+        "unit": "node test"
+      }
+    },
+    {
+      "suite": "py:test_grid_system_contract",
+      "base": {
+        "mode": "count",
+        "count": 13,
+        "unit": "test"
+      },
+      "ours": {
+        "mode": "count",
+        "count": 15,
+        "unit": "test"
+      },
+      "main": {
+        "mode": "count",
+        "count": 13,
+        "unit": "test"
+      },
+      "result": {
+        "mode": "count",
+        "count": 15,
+        "unit": "test"
+      }
+    },
+    {
+      "suite": "node:tests-js",
+      "base": {
+        "mode": "count",
+        "count": 659,
+        "unit": "node test"
+      },
+      "ours": {
+        "mode": "count",
+        "count": 703,
+        "unit": "node test"
+      },
+      "main": {
+        "mode": "count",
+        "count": 659,
+        "unit": "node test"
+      },
+      "result": {
+        "mode": "count",
+        "count": 703,
+        "unit": "node test"
+      }
+    }
+  ],
+  "total_counted_items": 2776,
+  "counted_suites": 82,
+  "registered_suites": 88,
+  "byte_equality": {
+    "current_geometry.c": {
+      "equals": "MERGE_HEAD",
+      "raw_sha256": "1ff9c054308f6de81f4a2dad2455f611495494c50eb4025f3dbafb8370beab51"
+    },
+    "tests/mutants_results.json": {
+      "equals": "MERGE_HEAD",
+      "raw_sha256": "82922187a0f12407a81b5633bf5de519fe2987c494f6e9314861c97a344b49c7"
+    },
+    "tests/mutate.py": {
+      "equals": "MERGE_HEAD",
+      "raw_sha256": "31d207ddc9c69e2af0703b9a87e9dc998a49b1d6d64b8750715208e94b516004"
+    },
+    "tests/run_tests.py": {
+      "equals": "MERGE_HEAD",
+      "raw_sha256": "d327e7ee1d770bf951dddb2afae33a2130ea62411b789124adc1574428da452d"
+    },
+    "tests/test_reference_workspace_races.js": {
+      "equals": "HEAD",
+      "raw_sha256": "db68d08f3a129b3fc79076c611358b90327cb3d065873af676f57fdfb3962d42"
+    }
+  },
+  "note": "P104 four case budgets/callbacks unchanged; inherited P105 main core and ledger without rewriting hashes"
+}

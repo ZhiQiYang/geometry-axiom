@@ -1,0 +1,10 @@
+AssertionError [ERR_ASSERTION]: M13 chooser touch targets remain at least 44px
+    at Proxy.<anonymous> (/workspace/geometry-k2aa-review/tests/k2a_browser_receipt.cjs:21:153)
+    at /workspace/geometry-k2aa-review/tests/k2a_drafts_browser.cjs:25:70 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
