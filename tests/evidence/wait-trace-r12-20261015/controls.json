@@ -1,5 +1,15 @@
 [
   {
+    "name": "drop-admitted-at-close",
+    "mutantExit": 1,
+    "restoredExit": 0
+  },
+  {
+    "name": "age-before-snapshot",
+    "mutantExit": 1,
+    "restoredExit": 0
+  },
+  {
     "name": "unbounded-signal-cleanup",
     "mutantExit": 1,
     "restoredExit": 0

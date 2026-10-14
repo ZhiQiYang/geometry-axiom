@@ -45,7 +45,13 @@ exit. It bypasses business-lock cleanup, as the previous terminating SIGTERM
 did; it must not wait on NativeContext.close locks. Default-off signal behavior
 is unchanged. An ordinary non-SIGTERM exit still uses existing context cleanup.
 trace_start/trace_complete identify a run; the completion record reports drops
-and write errors. A timed-out writer, missing completion, unmatched observed
+and write errors, acceptedEvents and closedMonotonic. Admission and the empty
+shutdown check share the short stats mutex, preventing an accepted row from
+being discarded at close. Completion covers records admitted before that
+cutoff; it is not a claim about requests after shutdown starts. Publication order
+may differ from lock boundary order; use acquired/released/observedMonotonic,
+not JSONL line order. Holder age uses its metadata snapshot time, not method entry.
+A timed-out writer, missing completion, unmatched observed
 request begin/end, mixed run IDs or loss makes the collector reject the trace
 as incomplete while retaining raw bytes. A permanently failed sink may prevent
 the marker itself from being written; missing evidence is a failure, never green.

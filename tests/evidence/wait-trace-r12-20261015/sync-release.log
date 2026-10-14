@@ -3,11 +3,11 @@ F
 FAIL: test_slow_sink_does_not_extend_nested_business_locks (__main__.WaitTraceTests.test_slow_sink_does_not_extend_nested_business_locks) (stage='receipt_release')
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/tmp/geometry-wait-trace/tests/test_wait_trace.py", line 61, in test_slow_sink_does_not_extend_nested_business_locks
+  File "/tmp/geometry-wait-trace/tests/test_wait_trace.py", line 102, in test_slow_sink_does_not_extend_nested_business_locks
     self.assertTrue(done.wait(.5), 'WAIT_TRACE_SINK_MUST_NOT_EXTEND_BUSINESS_LOCKS')
 AssertionError: False is not true : WAIT_TRACE_SINK_MUST_NOT_EXTEND_BUSINESS_LOCKS
 
 ----------------------------------------------------------------------
-Ran 1 test in 0.574s
+Ran 1 test in 0.573s
 
 FAILED (failures=1)

@@ -10,10 +10,51 @@ import subprocess
 import sys
 import io
 import ast
+import queue
 from unittest.mock import patch
 
 
 class WaitTraceTests(unittest.TestCase):
+    def test_close_drains_a_row_admitted_after_empty_observation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            m = self.load(directory, '1')
+            empty, resume = threading.Event(), threading.Event()
+            get = m._writer.pending.get
+            def paused_empty(*args, **kwargs):
+                try: return get(*args, **kwargs)
+                except queue.Empty:
+                    empty.set(); resume.wait(2); raise
+            m._writer.pending.get = paused_empty
+            try:
+                self.assertTrue(empty.wait(2))
+                self.assertTrue(m._writer.submit(dict(stage='must-keep',monotonic=time.monotonic())))
+                m.close(timeout=.01)
+            finally:
+                resume.set(); m._writer.thread.join(2)
+            self.assertFalse(m._writer.thread.is_alive())
+            rows = [json.loads(line) for line in (pathlib.Path(directory)/'wait-trace.jsonl').read_text().splitlines()]
+            self.assertTrue(any(row['stage']=='must-keep' for row in rows), 'WAIT_TRACE_CLOSE_MUST_NOT_DISCARD_ACCEPTED_ROW')
+            self.assertEqual(rows[-1]['acceptedEvents']+1, rows[-1]['writtenEvents'])
+
+    def test_holder_age_is_sampled_after_metadata_wait(self):
+        with tempfile.TemporaryDirectory() as directory:
+            m = self.load(directory, '1'); lock = m.wrap_lock(threading.Lock(), 'bridge')
+            clock, rows = [0.0], []
+            class Metadata:
+                def __enter__(self):
+                    clock[0] = 2
+                    lock.owner = dict(thread=-1,since=1,command='new-holder')
+                def __exit__(self, *args): pass
+            lock.metadata = Metadata(); lock.lock.acquire()
+            m.emit = lambda stage, **fields: rows.append((stage, fields))
+            try:
+                with patch.object(m.time, 'monotonic', side_effect=lambda: clock[0]):
+                    self.assertFalse(lock.acquire(blocking=False))
+                begin = next(fields for stage,fields in rows if stage=='bridge_begin')
+                self.assertEqual(begin['holder']['heldSeconds'], 1, 'WAIT_TRACE_HOLDER_AGE_MUST_USE_SNAPSHOT_TIME')
+            finally:
+                lock.lock.release(); m.close()
+
     def test_trace_sigterm_does_not_enter_business_lock_cleanup(self):
         root = pathlib.Path(__file__).resolve().parents[1]
         source = (root / 'geometry-web/serve.py').read_text()
@@ -371,7 +412,7 @@ finally:
             original_emit = m.emit
             def observe(stage, **fields):
                 if stage == 'bridge_release':
-                    release_observations.append((lock.owner is None, lock.depth, lock.metadata.locked()))
+                    release_observations.append(fields['holder']['command'])
                 if stage == 'bridge_begin' and fields.get('holder') and fields['holder']['command'] == 'first':
                     waiting.set()
                 original_emit(stage, **fields)
@@ -394,8 +435,8 @@ finally:
             self.assertFalse(worker.is_alive())
             self.assertTrue(m.close())
             rows = [json.loads(line) for line in (pathlib.Path(directory) / 'wait-trace.jsonl').read_text().splitlines()]
-            releases = [r for r in rows if r['stage'] == 'bridge_release']
-            self.assertEqual(release_observations, [(True, 0, False), (True, 0, False)], 'WAIT_TRACE_RELEASE_AFTER_UNLOCK')
+            releases = sorted([r for r in rows if r['stage'] == 'bridge_release'], key=lambda r:r['releasedMonotonic'])
+            self.assertCountEqual(release_observations, ['first','second'], 'WAIT_TRACE_RELEASE_SNAPSHOTS_PRESERVED')
             self.assertEqual([r['holder']['command'] for r in releases], ['first', 'second'], 'WAIT_TRACE_OUTER_RELEASE')
             for row in releases:
                 self.assertGreaterEqual(row['heldSeconds'], 0)

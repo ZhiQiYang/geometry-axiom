@@ -46,6 +46,7 @@ def main(destination):
                              and complete.get('incomplete') is False
                              and complete.get('droppedEvents', 0) == 0 and complete.get('writeErrors', 0) == 0
                              and complete.get('writtenEvents', len(rows)-1) == len(rows)-1 and begun == ended)
+                    valid = valid and complete.get('acceptedEvents', len(rows)-2)+1 == complete.get('writtenEvents', len(rows)-1)
                     receipt.update(traceRunId=run_id, unfinishedRequests=sorted(begun-ended))
                     if not valid:
                         receipt['status'] = 'incomplete-or-mixed-trace'

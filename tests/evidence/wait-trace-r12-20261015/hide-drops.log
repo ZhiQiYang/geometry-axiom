@@ -3,11 +3,11 @@ F
 FAIL: test_bounded_writer_reports_loss_without_replaying_operation (__main__.WaitTraceTests.test_bounded_writer_reports_loss_without_replaying_operation)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/tmp/geometry-wait-trace/tests/test_wait_trace.py", line 147, in test_bounded_writer_reports_loss_without_replaying_operation
+  File "/tmp/geometry-wait-trace/tests/test_wait_trace.py", line 188, in test_bounded_writer_reports_loss_without_replaying_operation
     self.assertTrue(complete['incomplete'], 'WAIT_TRACE_LOSS_MUST_BE_EXPLICIT')
 AssertionError: False is not true : WAIT_TRACE_LOSS_MUST_BE_EXPLICIT
 
 ----------------------------------------------------------------------
-Ran 1 test in 0.046s
+Ran 1 test in 0.047s
 
 FAILED (failures=1)

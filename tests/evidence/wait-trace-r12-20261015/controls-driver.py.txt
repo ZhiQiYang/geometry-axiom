@@ -1,6 +1,8 @@
 import pathlib,subprocess,json
 root=pathlib.Path('/tmp/geometry-wait-trace'); out=root/'tests/evidence/wait-trace-r12-20261015'
 cases=[
+ ('drop-admitted-at-close','geometry-web/wait_trace.py',b'if self.closed and self.pending.empty():',b'if self.closed:','test_close_drains_a_row_admitted_after_empty_observation'),
+ ('age-before-snapshot','geometry-web/wait_trace.py',b"holder['heldSeconds'] = observed - holder.pop('since')",b"holder['heldSeconds'] = started - holder.pop('since')",'test_holder_age_is_sampled_after_metadata_wait'),
  ('unbounded-signal-cleanup','geometry-web/serve.py',b'            wait_trace.close()\n            os._exit(0)',b'            raise SystemExit(0)','test_trace_sigterm_does_not_enter_business_lock_cleanup'),
  ('sync-acquire','geometry-web/wait_trace.py',b'    _writer.submit(row)',b"    _writer.write(row) if stage == 'bridge' else _writer.submit(row)",'test_slow_sink_does_not_extend_nested_business_locks'),
  ('sync-call','geometry-web/wait_trace.py',b'    _writer.submit(row)',b"    _writer.write(row) if stage == 'stdin_write_begin' else _writer.submit(row)",'test_slow_sink_does_not_extend_nested_business_locks'),

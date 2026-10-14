@@ -20,6 +20,8 @@ class Writer:
         self.pending = queue.Queue(maxsize=capacity)
         self.stats_lock = threading.Lock()
         self.dropped = self.errors = self.written = 0
+        self.accepted = 0
+        self.closed_at = None
         self.sink_seconds = 0.0
         self.closed = False
         self.thread = threading.Thread(target=self.run, name='wait-trace-writer', daemon=True)
@@ -29,18 +31,22 @@ class Writer:
         with self.stats_lock:
             return dict(droppedEvents=self.dropped, writeErrors=self.errors,
                         writtenEvents=self.written, sinkSeconds=self.sink_seconds,
+                        acceptedEvents=self.accepted, closedMonotonic=self.closed_at,
                         incomplete=bool(self.dropped or self.errors))
 
     def submit(self, row):
-        if not self.closed:
+        payload = dict(row, traceRunId=self.run_id)
+        with self.stats_lock:
+            if self.closed:
+                self.dropped += 1
+                return False
             try:
-                self.pending.put_nowait(dict(row, traceRunId=self.run_id))
+                self.pending.put_nowait(payload)
+                self.accepted += 1
                 return True
             except queue.Full:
-                pass
-        with self.stats_lock:
-            self.dropped += 1
-        return False
+                self.dropped += 1
+                return False
 
     def write(self, row):
         # Neither queue nor stats mutex is held during encoding or file I/O.
@@ -67,8 +73,9 @@ class Writer:
             try:
                 row = self.pending.get(timeout=.02)
             except queue.Empty:
-                if self.closed:
-                    break
+                with self.stats_lock:
+                    if self.closed and self.pending.empty():
+                        break
                 continue
             if isinstance(row, threading.Event):
                 row.set()
@@ -87,10 +94,13 @@ class Writer:
         return barrier.wait(timeout)
 
     def close(self, timeout=1):
-        if self.closed:
-            return not self.thread.is_alive() and not self.statistics()['incomplete']
-        self.closed = True
-        self.thread.join(timeout)
+        with self.stats_lock:
+            already_closed = self.closed
+            self.closed = True
+            if not already_closed:
+                self.closed_at = time.monotonic()
+        if not already_closed:
+            self.thread.join(timeout)
         return not self.thread.is_alive() and not self.statistics()['incomplete']
 
 
@@ -162,9 +172,11 @@ class TracedLock:
         started = time.monotonic()
         with self.metadata:
             holder = dict(self.owner) if self.owner else None
+            observed = time.monotonic()
         metadata_seconds = time.monotonic() - started
         if holder:
-            holder['heldSeconds'] = started - holder.pop('since')
+            holder['heldSeconds'] = observed - holder.pop('since')
+            holder['observedMonotonic'] = observed
         emit(self.name + '_begin', holder=holder)
         wait_started = time.monotonic()
         acquired = self.lock.acquire(*args, **kwargs)
