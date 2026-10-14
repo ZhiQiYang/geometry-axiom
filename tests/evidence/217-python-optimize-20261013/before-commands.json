@@ -1,0 +1,75 @@
+[
+  {
+    "name": "core-build",
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O2",
+      "/tmp/geometry217-opt-bad-before/current_geometry.c",
+      "-lm",
+      "-o",
+      "/tmp/geometry217-opt-bad-before-receipt/core"
+    ],
+    "exit": 0,
+    "seconds": 6.4866887429998314,
+    "timed_out": false,
+    "error": null
+  },
+  {
+    "name": "bridge-build",
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O2",
+      "/tmp/geometry217-opt-bad-before/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/tmp/geometry217-opt-bad-before-receipt/bridge"
+    ],
+    "exit": 0,
+    "seconds": 8.812048937998043,
+    "timed_out": false,
+    "error": null
+  },
+  {
+    "name": "fault-build",
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O2",
+      "/tmp/geometry217-opt-bad-before-receipt/fault-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/tmp/geometry217-opt-bad-before-receipt/fault-bridge"
+    ],
+    "exit": 0,
+    "seconds": 8.416139090000797,
+    "timed_out": false,
+    "error": null
+  },
+  {
+    "name": "stack-regression",
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "/tmp/geometry217-opt-bad-before/tests/diagnostics/reference_fragment_stack.py",
+      "/tmp/geometry217-opt-bad-before-receipt/core",
+      "/tmp/geometry217-opt-bad-before-receipt/bridge"
+    ],
+    "exit": 0,
+    "seconds": 0.11632321100114495,
+    "timed_out": false,
+    "error": null
+  },
+  {
+    "name": "oom-regression",
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "/tmp/geometry217-opt-bad-before/tests/diagnostics/fragment_oom.py",
+      "/tmp/geometry217-opt-bad-before-receipt/fault-bridge"
+    ],
+    "exit": 0,
+    "seconds": 0.1622393049983657,
+    "timed_out": false,
+    "error": null
+  }
+]

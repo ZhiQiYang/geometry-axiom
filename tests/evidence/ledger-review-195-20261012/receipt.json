@@ -1,0 +1,93 @@
+{
+  "head": "ef719904913a50803c20fe632d93c0954042ea2e",
+  "status": [
+    " M BACKLOG.md",
+    "?? tests/evidence/ledger-review-195-20261012/"
+  ],
+  "scope": "Ledger consistency and protected-text audits only, not runtime mutation tests or formal seven jobs",
+  "before_exec_tool_exit_observed": 1,
+  "before_issues": 7,
+  "commands": [
+    {
+      "name": "after",
+      "mode": "after",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/tmp/geometry-195-audit.py",
+        "after"
+      ],
+      "returncode": 0,
+      "seconds": 0.08711914499872364,
+      "stdout_sha256": "249de73dbd73c4316650f2d061b911cf645126389d29eed79cef0903dbd73af2"
+    },
+    {
+      "name": "modify",
+      "mode": "mutant-modify",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/tmp/geometry-195-audit.py",
+        "mutant-modify"
+      ],
+      "returncode": 1,
+      "seconds": 0.07738308599800803,
+      "stdout_sha256": "7235314fd3825f5f77b1c792fa7175a4e21aa53b9d3106c18be5ca1e2e739382"
+    },
+    {
+      "name": "delete",
+      "mode": "mutant-delete",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/tmp/geometry-195-audit.py",
+        "mutant-delete"
+      ],
+      "returncode": 1,
+      "seconds": 0.07946855999762192,
+      "stdout_sha256": "e708bfba15d9e118ae8ec693b738b58a5fb158b550b66c3bfdce4fd79ebabd6d"
+    },
+    {
+      "name": "reorder",
+      "mode": "mutant-reorder",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/tmp/geometry-195-audit.py",
+        "mutant-reorder"
+      ],
+      "returncode": 1,
+      "seconds": 0.08595435399911366,
+      "stdout_sha256": "14ec1028e8a83bc38ea44e223e339629ccaf8446533393ab6b26b8264f8684ee"
+    },
+    {
+      "name": "restored",
+      "mode": "after",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/tmp/geometry-195-audit.py",
+        "after"
+      ],
+      "returncode": 0,
+      "seconds": 0.07238558399694739,
+      "stdout_sha256": "249de73dbd73c4316650f2d061b911cf645126389d29eed79cef0903dbd73af2"
+    }
+  ],
+  "before_backlog_sha256": "78f4e575f75472890c08425b19c91f24edb82af32734230bad547bfc89e7ea8a",
+  "after_backlog_sha256": "d5049210dd7bab9657bf297b1a3175346b68f4eb909334e47ddfd8fd16dff903",
+  "audit_sha256": "2bff13ba6201c0fbe07fdb42ded768a7579424a9f3156f53ff6ba7a66192e4d7",
+  "source_sha256": {
+    "current_geometry.c": "4130623fce97cefd03e3b8534636b9ddb8d8b109875262239f1726bdae6b4aa8",
+    "公理層.md": "29ad0c657e53d364347862fddac23ba26a248a4fd8f83487d86f9e648bd1eaf2",
+    "geometry-guide/公理層-白話.md": "78bad3b496223643ad3cd78eb3a751a80915494d793c9e233f1f47396bc004cf",
+    "geometry-guide/公理層-閱讀器.html": "b0c45777c7ee868d312714aa65cbc284a4b6f4fdd7228ef6c6d244602bd56ff1",
+    "決策佇列.md": "c1faece9c4d442f347f6d044c59a60ca464fb9d5d42c0c373dfeefe141f02660",
+    "tests/mutants_results.json": "3065fc03773c326b9256a7ffeb05cd602cd254dcab2d267626abc42101f38392",
+    "tests/run_all.py": "7d9d3347e01bc666bb6417ea46e03a5cce14a1ab1f52937e7afe185b565d7ff2",
+    "tests/run_all.expected.json": "508dc618eca36aa94c46c210e9263a5bbd01ee5a1e7c6db50cbbfabbe34132ed",
+    "geometry-core/grid_subdivision_query.inc": "d0d860a6bc9e3f19bad52fd548a229a967ff124c1a70fdd6050012e5fa221b87",
+    "geometry-web/grid_subdivision_bridge.inc": "1cfe0f48668a51f20f4d71f547923caae6f10dbc5d3c9f146b6a01dcaa6c1d2b"
+  },
+  "ssot_lf_sha256": "29ad0c657e53d364347862fddac23ba26a248a4fd8f83487d86f9e648bd1eaf2",
+  "c_bytes": {
+    "crlf": 13047,
+    "bare_lf": 0,
+    "nul": 0
+  }
+}

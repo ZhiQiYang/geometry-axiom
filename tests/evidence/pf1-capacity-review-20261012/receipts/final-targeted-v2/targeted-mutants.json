@@ -1,0 +1,449 @@
+{
+  "sources": {
+    "current_geometry.c": "b3201749c4f535c8b3bf013c97d6b84ab0d4dfb314036530e4896008eb5f6932",
+    "geometry-core/subgrid_commands.inc": "c4a8763c429d39cbe86e067b7b4e49d077ac42061f8e774459b70dc0ff7d3d4e",
+    "geometry-core/parameters.inc": "e56646470644f9a52fff2f9a2ae4725f90168c8f5ec0705916df48d0589d28ba",
+    "geometry-core/grid_subdivision_query.inc": "d0d860a6bc9e3f19bad52fd548a229a967ff124c1a70fdd6050012e5fa221b87",
+    "geometry-core/parameter_types.h": "b7e2576fa43f6cc0c25742b239bc75ebec112ddb84a59e984d018ddb516edd09",
+    "geometry-core/subgrid_rebind.inc": "a50f2e79516806148bbee14e018b51cc26fe6788f9abf1d1ac2686aee6292d25",
+    "geometry-core/section_profile_placement.inc": "47ea510d9aee18796b187021086ba88588d8b1f472decfb531567762356561b3",
+    "geometry-core/assembly_types.h": "952ce67924055a3dc74eceb70bd154ea20876881887481b2b08216ca90b5ac2d",
+    "geometry-core/engineering_types.h": "1c80317f00fb6b51426deb35324ce52ea1155bb8097ee7faa208a3957d90a63b",
+    "geometry-core/engineering_json.inc": "78a75f77cfde2fffd12722d7c302ee6aef22496f1c518e59902e80a4e7ecec3b",
+    "geometry-core/finish_surfaces.inc": "d87fbde306514990ec0ee970f86eb4eebe6c194736e436dd16fb5a8739cc8a32",
+    "geometry-core/references.inc": "06e80fe7d4f3869eb343eb27741a6b056c95ead679b90032cc1ce3453fe473ce",
+    "geometry-core/subgrid_world.inc": "3dbf7322d756629599b54553fcee72716096e14b1b2d828bc7dd3776637c642f",
+    "geometry-core/assembly.inc": "429bbfaf178ce1be9b4eec73131c761de8dcad89f307958b3bb98990cbd3684f",
+    "geometry-core/grid_systems.inc": "7ab68b6fb039b4a0fb251835a92dde66e34fe2d2999ef16d5d824656570c2832",
+    "geometry-core/section_profile_conversion.inc": "0eb378cb94dc4e2197bc4acd35cf1fa33c7caacc0534526b60aa81b2aff4110d",
+    "geometry-core/reference_types.h": "897fb363686547f9d520783ad3aa0aa73f5cca93b2cf9c53022e256a178b6675",
+    "geometry-core/grid_bindings.inc": "ff67705a311770c7388ac6a30e46d3fd2a8d0b89eb79af905f53e153bd4c56f0",
+    "geometry-core/assembly_generation.inc": "e58acee135f27c799aab83d9410ec6ce97f8b053d830ac28abed92aedd29b48e",
+    "geometry-core/subgrids.inc": "b20907d2b50b147491ae22cd7f2383e357df42be453773267570498177ee4436",
+    "geometry-core/transactions.inc": "923f6388b955f74ca820220b5ac06bfa6469d0bbc2180cd703773f4d8a5bd4c7",
+    "geometry-core/engineering_commands.inc": "ac55a2dd34b1e4052f29510248c0752eebe7074ff9e7a82d8ec167bb06f6cf03",
+    "geometry-core/section_profile_validation.inc": "a5d1cc23265d94de9881dca4df563b5e072126d5d69d5b92a0f35e8dc7c0bb49",
+    "geometry-core/engineering.inc": "477f737de0335b217ae65b4de3eb8244338f1400d04be8d0fd0834c2047cbd4a",
+    "geometry-core/section_profiles.inc": "c0f72d950b0f7e2aff5ec3cebe75e5bb9e4610ceb7ccb19a338641b5e41b0c78",
+    "geometry-core/section_profile_types.h": "5afdbed8e568a866130c9f78d9b6c108472466ff082836703461d07ca8c9792d",
+    "geometry-core/grid_subdivision.inc": "a1d37f00bdcf0532c574127ad12d4ec3ec911e8ed00355f51cb3b30801e19a6b",
+    "geometry-core/grid_lattice.inc": "163b836712f18c74b86e27c49ce473d0c271dd142c109e2081d662855eb2f598",
+    "geometry-core/finish_surface_types.h": "5803d50630a693b97203e06ca6d2b33be3f979c5b469dc75aff2322f1eedf480",
+    "geometry-core/boundary_vertex_keys.inc": "8d95a6e6ebb783eddd6f21abb6ffd37d27462a9cd36f69e6b90cf5818e5b9772",
+    "geometry-core/model_base.c": "d8842c087a03ee32a573d74ceb2c8bc3b6769d2dc8afed0516a0ab2d63b1a486",
+    "geometry-web/panel_fill_bridge.inc": "0258e97d50c2eed3b17eb35d20a037eed3566617e25fef63f9e4ae7ac95ffc1b",
+    "geometry-web/grid_subdivision_bridge.inc": "1cfe0f48668a51f20f4d71f547923caae6f10dbc5d3c9f146b6a01dcaa6c1d2b",
+    "geometry-web/grid_binding_bridge.inc": "c28c35ea3d49da56d4b1b69ba78da1be6449f18196a801562a07d760cfb476bd",
+    "geometry-web/section_profile_diagnostics.inc": "edb80cd7fce7784c7201d10376428f2fe26b771058f353845b6c2b1cf083931d",
+    "geometry-web/engineering_bridge.inc": "757acd3ab191929f8863da8b5e58696e8168c23b249686be84a57addf7ca856a",
+    "geometry-web/section_profile_source_index.inc": "ff316024b12606f7ec7c291527602a87bcf2e67a9f91a5ed8e2a822459b35912",
+    "geometry-web/grid_system_bridge.inc": "8c123b6ec7720642758a61b3adfdd4cbe11c156527acb97a463b56fb734ee339",
+    "geometry-web/parameter_bridge.inc": "1646a4b5f13b11293a73682241ac8574430d5e56fad42cae62f4e1a840d539c2",
+    "geometry-web/timber_support_projection.inc": "f5f20fa285f6bf47d9e4e807acb38349bbef86b01705263a7d62f99ad0a2845c",
+    "geometry-web/reference_bridge.inc": "dab2b87f0dd868c9202fa178086ba522224e24451f73f5b93da5b1e407303e76",
+    "geometry-web/section_profile_bridge.inc": "8989ea42b0861b0fa09c4862032671fdf7873f2fdf62e61b09d1778bdef9ac0d",
+    "geometry-web/source-inspector-bridge.inc": "4f7d035689920ee26c471b8e21d796958ec6878a0cfc6c21ec14fff6ae97ba46",
+    "geometry-web/assembly_bridge.inc": "25289581f4d2f3d563f77ea4bd9b66915797feb8b21a5b54b5b777a4a02c9f3f",
+    "geometry-web/web_bridge.c": "0965ddb13c82e40aec6c5cde58e38f2233cbacb9b71669a8a74c766a06676015",
+    "geometry-web/scene-import-bridge.inc": "baeb2cbb08c470cd891751cad132b5c0e27fb652afd0ce0cbb9991d334f8b53f",
+    "geometry-web/docs/evidence/wp60-a-20261004/completed-seams/wp60-receipt-io.c": "e796808d125a6d683d9d5ebb6c0d3c74c929fed9e7ed2a7cf4eb3f683688ee51"
+  },
+  "repository_restored": true,
+  "lower_capacity_baseline": {
+    "id": "lower-capacity-baseline",
+    "file": "geometry-core/finish_surfaces.inc",
+    "old": "if(n>FS_NAME_MAX)return fs_capacity_error(",
+    "new": "if(n>FS_NAME_MAX)return fs_capacity_error(",
+    "original_sha256": "d87fbde306514990ec0ee970f86eb4eebe6c194736e436dd16fb5a8739cc8a32",
+    "mutated_sha256": "d87fbde306514990ec0ee970f86eb4eebe6c194736e436dd16fb5a8739cc8a32",
+    "binary_sha256": "007f021ea748a8c41f1bcb3d63efbe32eea2ef31a140ef87dde31fe33d7e6ae8",
+    "compile": {
+      "argv": [
+        "cc",
+        "-std=c11",
+        "-O2",
+        "/tmp/geometry-tests/pr190-capacity/final-targeted-v2/shadow-lower-capacity-baseline/geometry-web/web_bridge.c",
+        "-lm",
+        "-o",
+        "/tmp/geometry-tests/pr190-capacity/final-targeted-v2/bridge-lower-capacity-baseline"
+      ],
+      "returncode": 0,
+      "duration_seconds": 17.00109839439392,
+      "origin": "subprocess.run"
+    },
+    "test": {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/tmp/geometry-190-private-suite.py",
+        "/tmp/geometry-tests/pr190-capacity/final-targeted-v2/bridge-lower-capacity-baseline",
+        "test_name_capacity_is_not_invalid_and_never_commits",
+        "test_scene_obstacle_capacity_is_structured_and_atomic",
+        "test_scene_name_capacity_preserves_invalid_format_and_world"
+      ],
+      "returncode": 0,
+      "duration_seconds": 1.8338427543640137,
+      "origin": "subprocess.run"
+    },
+    "result": {
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "events": []
+    },
+    "verdict": "baseline",
+    "instrumentation": "FS_OBSTACLE_MAX 64 -> 63 only in private source copy"
+  },
+  "results": [
+    {
+      "id": "name-capacity-as-invalid",
+      "file": "geometry-core/finish_surfaces.inc",
+      "old": "if(n>FS_NAME_MAX)return fs_capacity_error(",
+      "new": "if(n>FS_NAME_MAX)return fs_error(",
+      "original_sha256": "d87fbde306514990ec0ee970f86eb4eebe6c194736e436dd16fb5a8739cc8a32",
+      "mutated_sha256": "0ca8c8cadeb24c7222c778cebb729530953d71b89f42a95d4558e4696751435b",
+      "binary_sha256": "9aee5c479e3234d773f9ad912ce14594af4cdb59429952e064eb0a1d1b928932",
+      "compile": {
+        "argv": [
+          "cc",
+          "-std=c11",
+          "-O2",
+          "/tmp/geometry-tests/pr190-capacity/final-targeted-v2/shadow-name-capacity-as-invalid/geometry-web/web_bridge.c",
+          "-lm",
+          "-o",
+          "/tmp/geometry-tests/pr190-capacity/final-targeted-v2/bridge-name-capacity-as-invalid"
+        ],
+        "returncode": 0,
+        "duration_seconds": 30.882664918899536,
+        "origin": "subprocess.run"
+      },
+      "test": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "/tmp/geometry-190-private-suite.py",
+          "/tmp/geometry-tests/pr190-capacity/final-targeted-v2/bridge-name-capacity-as-invalid",
+          "test_name_capacity_is_not_invalid_and_never_commits",
+          "test_scene_obstacle_capacity_is_structured_and_atomic",
+          "test_scene_name_capacity_preserves_invalid_format_and_world"
+        ],
+        "returncode": 1,
+        "duration_seconds": 3.9074864387512207,
+        "origin": "subprocess.run"
+      },
+      "result": {
+        "tests": 3,
+        "failures": 6,
+        "errors": 0,
+        "skips": 0,
+        "events": [
+          {
+            "test": "tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_name_capacity_is_not_invalid_and_never_commits",
+            "subtest": "test_name_capacity_is_not_invalid_and_never_commits (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_name_capacity_is_not_invalid_and_never_commits) (bytes=97)",
+            "type": "AssertionError",
+            "message": "Tuples differ: ('UNSUPPORTED', 'CAPACITY') != ('INVALID', 'PANEL_FILL_INVALID')\n\nFirst differing element 0:\n'UNSUPPORTED'\n'INVALID'\n\n- ('UNSUPPORTED', 'CAPACITY')\n+ ('INVALID', 'PANEL_FILL_INVALID')"
+          },
+          {
+            "test": "tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_name_capacity_is_not_invalid_and_never_commits",
+            "subtest": "test_name_capacity_is_not_invalid_and_never_commits (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_name_capacity_is_not_invalid_and_never_commits) (bytes=99)",
+            "type": "AssertionError",
+            "message": "Tuples differ: ('UNSUPPORTED', 'CAPACITY') != ('INVALID', 'PANEL_FILL_INVALID')\n\nFirst differing element 0:\n'UNSUPPORTED'\n'INVALID'\n\n- ('UNSUPPORTED', 'CAPACITY')\n+ ('INVALID', 'PANEL_FILL_INVALID')"
+          },
+          {
+            "test": "tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_name_capacity_is_not_invalid_and_never_commits",
+            "subtest": "test_name_capacity_is_not_invalid_and_never_commits (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_name_capacity_is_not_invalid_and_never_commits) (bytes=1024)",
+            "type": "AssertionError",
+            "message": "Tuples differ: ('UNSUPPORTED', 'CAPACITY') != ('INVALID', 'PANEL_FILL_INVALID')\n\nFirst differing element 0:\n'UNSUPPORTED'\n'INVALID'\n\n- ('UNSUPPORTED', 'CAPACITY')\n+ ('INVALID', 'PANEL_FILL_INVALID')"
+          },
+          {
+            "test": "tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_scene_name_capacity_preserves_invalid_format_and_world",
+            "subtest": "test_scene_name_capacity_preserves_invalid_format_and_world (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_scene_name_capacity_preserves_invalid_format_and_world) (bytes=97, status='UNSUPPORTED')",
+            "type": "AssertionError",
+            "message": "Tuples differ: ('UNSUPPORTED', 'CAPACITY') != ('INVALID', 'SCENE_INVALID')\n\nFirst differing element 0:\n'UNSUPPORTED'\n'INVALID'\n\n- ('UNSUPPORTED', 'CAPACITY')\n+ ('INVALID', 'SCENE_INVALID')"
+          },
+          {
+            "test": "tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_scene_name_capacity_preserves_invalid_format_and_world",
+            "subtest": "test_scene_name_capacity_preserves_invalid_format_and_world (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_scene_name_capacity_preserves_invalid_format_and_world) (bytes=99, status='UNSUPPORTED')",
+            "type": "AssertionError",
+            "message": "Tuples differ: ('UNSUPPORTED', 'CAPACITY') != ('INVALID', 'SCENE_INVALID')\n\nFirst differing element 0:\n'UNSUPPORTED'\n'INVALID'\n\n- ('UNSUPPORTED', 'CAPACITY')\n+ ('INVALID', 'SCENE_INVALID')"
+          },
+          {
+            "test": "tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_scene_name_capacity_preserves_invalid_format_and_world",
+            "subtest": "test_scene_name_capacity_preserves_invalid_format_and_world (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_scene_name_capacity_preserves_invalid_format_and_world) (bytes=1024, status='UNSUPPORTED')",
+            "type": "AssertionError",
+            "message": "Tuples differ: ('UNSUPPORTED', 'CAPACITY') != ('INVALID', 'SCENE_INVALID')\n\nFirst differing element 0:\n'UNSUPPORTED'\n'INVALID'\n\n- ('UNSUPPORTED', 'CAPACITY')\n+ ('INVALID', 'SCENE_INVALID')"
+          }
+        ]
+      },
+      "verdict": "killed",
+      "instrumentation": null
+    },
+    {
+      "id": "scene-count-as-invalid",
+      "file": "geometry-core/finish_surfaces.inc",
+      "old": "if(f.obstacle_count==FS_OBSTACLE_MAX){fs_capacity_error(",
+      "new": "if(f.obstacle_count==FS_OBSTACLE_MAX){fs_error(",
+      "original_sha256": "d87fbde306514990ec0ee970f86eb4eebe6c194736e436dd16fb5a8739cc8a32",
+      "mutated_sha256": "61a7f11c33e28597730979edae965745ceaa0745a1e4e2e5602155eab866efed",
+      "binary_sha256": "76f7a53ac96b675f4370f6bdb133c1331a78dc0bf94115b8c856d0babd868983",
+      "compile": {
+        "argv": [
+          "cc",
+          "-std=c11",
+          "-O2",
+          "/tmp/geometry-tests/pr190-capacity/final-targeted-v2/shadow-scene-count-as-invalid/geometry-web/web_bridge.c",
+          "-lm",
+          "-o",
+          "/tmp/geometry-tests/pr190-capacity/final-targeted-v2/bridge-scene-count-as-invalid"
+        ],
+        "returncode": 0,
+        "duration_seconds": 28.306430101394653,
+        "origin": "subprocess.run"
+      },
+      "test": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "/tmp/geometry-190-private-suite.py",
+          "/tmp/geometry-tests/pr190-capacity/final-targeted-v2/bridge-scene-count-as-invalid",
+          "test_name_capacity_is_not_invalid_and_never_commits",
+          "test_scene_obstacle_capacity_is_structured_and_atomic",
+          "test_scene_name_capacity_preserves_invalid_format_and_world"
+        ],
+        "returncode": 1,
+        "duration_seconds": 4.078730583190918,
+        "origin": "subprocess.run"
+      },
+      "result": {
+        "tests": 3,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "events": [
+          {
+            "test": "tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_scene_obstacle_capacity_is_structured_and_atomic",
+            "subtest": "test_scene_obstacle_capacity_is_structured_and_atomic (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_scene_obstacle_capacity_is_structured_and_atomic) (tail='b32', count=64)",
+            "type": "AssertionError",
+            "message": "Tuples differ: ('UNSUPPORTED', 'CAPACITY') != ('INVALID', 'SCENE_INVALID')\n\nFirst differing element 0:\n'UNSUPPORTED'\n'INVALID'\n\n- ('UNSUPPORTED', 'CAPACITY')\n+ ('INVALID', 'SCENE_INVALID')"
+          }
+        ]
+      },
+      "verdict": "killed",
+      "instrumentation": "FS_OBSTACLE_MAX 64 -> 63 only in private source copy"
+    },
+    {
+      "id": "invalid-name-as-capacity",
+      "file": "geometry-core/finish_surfaces.inc",
+      "old": "return fs_error(\"D41: finish surface name must be printable UTF-8\");i+=k;",
+      "new": "return fs_capacity_error(\"D41: finish surface name must be printable UTF-8\");i+=k;",
+      "original_sha256": "d87fbde306514990ec0ee970f86eb4eebe6c194736e436dd16fb5a8739cc8a32",
+      "mutated_sha256": "47ffabfdd1d61115cb06bfec17d50dc29a07ddeb1120497630f7429e66673393",
+      "binary_sha256": "19950f2aab3a7c4e19a3872558f7f31dff61d9744331606d4edb4cd44f3befc3",
+      "compile": {
+        "argv": [
+          "cc",
+          "-std=c11",
+          "-O2",
+          "/tmp/geometry-tests/pr190-capacity/final-targeted-v2/shadow-invalid-name-as-capacity/geometry-web/web_bridge.c",
+          "-lm",
+          "-o",
+          "/tmp/geometry-tests/pr190-capacity/final-targeted-v2/bridge-invalid-name-as-capacity"
+        ],
+        "returncode": 0,
+        "duration_seconds": 31.647053718566895,
+        "origin": "subprocess.run"
+      },
+      "test": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "/tmp/geometry-190-private-suite.py",
+          "/tmp/geometry-tests/pr190-capacity/final-targeted-v2/bridge-invalid-name-as-capacity",
+          "test_name_capacity_is_not_invalid_and_never_commits",
+          "test_scene_obstacle_capacity_is_structured_and_atomic",
+          "test_scene_name_capacity_preserves_invalid_format_and_world"
+        ],
+        "returncode": 1,
+        "duration_seconds": 3.920374870300293,
+        "origin": "subprocess.run"
+      },
+      "result": {
+        "tests": 3,
+        "failures": 9,
+        "errors": 0,
+        "skips": 0,
+        "events": [
+          {
+            "test": "tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_name_capacity_is_not_invalid_and_never_commits",
+            "subtest": "test_name_capacity_is_not_invalid_and_never_commits (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_name_capacity_is_not_invalid_and_never_commits) (invalid_name=\"'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\\\\n'\")",
+            "type": "AssertionError",
+            "message": "Tuples differ: ('INVALID', 'PANEL_FILL_INVALID') != ('UNSUPPORTED', 'CAPACITY')\n\nFirst differing element 0:\n'INVALID'\n'UNSUPPORTED'\n\n- ('INVALID', 'PANEL_FILL_INVALID')\n+ ('UNSUPPORTED', 'CAPACITY')"
+          },
+          {
+            "test": "tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_name_capacity_is_not_invalid_and_never_commits",
+            "subtest": "test_name_capacity_is_not_invalid_and_never_commits (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_name_capacity_is_not_invalid_and_never_commits) (invalid_name=\"'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\\\\x80'\")",
+            "type": "AssertionError",
+            "message": "Tuples differ: ('INVALID', 'PANEL_FILL_INVALID') != ('UNSUPPORTED', 'CAPACITY')\n\nFirst differing element 0:\n'INVALID'\n'UNSUPPORTED'\n\n- ('INVALID', 'PANEL_FILL_INVALID')\n+ ('UNSUPPORTED', 'CAPACITY')"
+          },
+          {
+            "test": "tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_scene_name_capacity_preserves_invalid_format_and_world",
+            "subtest": "test_scene_name_capacity_preserves_invalid_format_and_world (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_scene_name_capacity_preserves_invalid_format_and_world) (bytes=97, status='INVALID')",
+            "type": "AssertionError",
+            "message": "Tuples differ: ('INVALID', 'SCENE_INVALID') != ('UNSUPPORTED', 'CAPACITY')\n\nFirst differing element 0:\n'INVALID'\n'UNSUPPORTED'\n\n- ('INVALID', 'SCENE_INVALID')\n+ ('UNSUPPORTED', 'CAPACITY')"
+          },
+          {
+            "test": "tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_scene_name_capacity_preserves_invalid_format_and_world",
+            "subtest": "test_scene_name_capacity_preserves_invalid_format_and_world (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_scene_name_capacity_preserves_invalid_format_and_world) (bytes=98, status='INVALID')",
+            "type": "AssertionError",
+            "message": "Tuples differ: ('INVALID', 'SCENE_INVALID') != ('UNSUPPORTED', 'CAPACITY')\n\nFirst differing element 0:\n'INVALID'\n'UNSUPPORTED'\n\n- ('INVALID', 'SCENE_INVALID')\n+ ('UNSUPPORTED', 'CAPACITY')"
+          },
+          {
+            "test": "tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_scene_name_capacity_preserves_invalid_format_and_world",
+            "subtest": "test_scene_name_capacity_preserves_invalid_format_and_world (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_scene_name_capacity_preserves_invalid_format_and_world) (invalid_hex='ff')",
+            "type": "AssertionError",
+            "message": "Tuples differ: ('INVALID', 'SCENE_INVALID') != ('UNSUPPORTED', 'CAPACITY')\n\nFirst differing element 0:\n'INVALID'\n'UNSUPPORTED'\n\n- ('INVALID', 'SCENE_INVALID')\n+ ('UNSUPPORTED', 'CAPACITY')"
+          },
+          {
+            "test": "tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_scene_name_capacity_preserves_invalid_format_and_world",
+            "subtest": "test_scene_name_capacity_preserves_invalid_format_and_world (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_scene_name_capacity_preserves_invalid_format_and_world) (invalid_hex='616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161ff')",
+            "type": "AssertionError",
+            "message": "Tuples differ: ('INVALID', 'SCENE_INVALID') != ('UNSUPPORTED', 'CAPACITY')\n\nFirst differing element 0:\n'INVALID'\n'UNSUPPORTED'\n\n- ('INVALID', 'SCENE_INVALID')\n+ ('UNSUPPORTED', 'CAPACITY')"
+          },
+          {
+            "test": "tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_scene_name_capacity_preserves_invalid_format_and_world",
+            "subtest": "test_scene_name_capacity_preserves_invalid_format_and_world (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_scene_name_capacity_preserves_invalid_format_and_world) (invalid_hex='c0af')",
+            "type": "AssertionError",
+            "message": "Tuples differ: ('INVALID', 'SCENE_INVALID') != ('UNSUPPORTED', 'CAPACITY')\n\nFirst differing element 0:\n'INVALID'\n'UNSUPPORTED'\n\n- ('INVALID', 'SCENE_INVALID')\n+ ('UNSUPPORTED', 'CAPACITY')"
+          },
+          {
+            "test": "tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_scene_name_capacity_preserves_invalid_format_and_world",
+            "subtest": "test_scene_name_capacity_preserves_invalid_format_and_world (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_scene_name_capacity_preserves_invalid_format_and_world) (invalid_hex='eda080')",
+            "type": "AssertionError",
+            "message": "Tuples differ: ('INVALID', 'SCENE_INVALID') != ('UNSUPPORTED', 'CAPACITY')\n\nFirst differing element 0:\n'INVALID'\n'UNSUPPORTED'\n\n- ('INVALID', 'SCENE_INVALID')\n+ ('UNSUPPORTED', 'CAPACITY')"
+          },
+          {
+            "test": "tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_scene_name_capacity_preserves_invalid_format_and_world",
+            "subtest": "test_scene_name_capacity_preserves_invalid_format_and_world (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_scene_name_capacity_preserves_invalid_format_and_world) (invalid_hex='00')",
+            "type": "AssertionError",
+            "message": "Tuples differ: ('INVALID', 'SCENE_INVALID') != ('UNSUPPORTED', 'CAPACITY')\n\nFirst differing element 0:\n'INVALID'\n'UNSUPPORTED'\n\n- ('INVALID', 'SCENE_INVALID')\n+ ('UNSUPPORTED', 'CAPACITY')"
+          }
+        ]
+      },
+      "verdict": "killed",
+      "instrumentation": null
+    },
+    {
+      "id": "invalid-reference-as-capacity",
+      "file": "geometry-core/finish_surfaces.inc",
+      "old": "if(!fs_obstacle_parse(t[at],&ref))goto invalid;",
+      "new": "if(!fs_obstacle_parse(t[at],&ref)){fs_capacity_error(\"invalid ref\");scene_error(path,line_no,g_engineering_error);return false;}",
+      "original_sha256": "d87fbde306514990ec0ee970f86eb4eebe6c194736e436dd16fb5a8739cc8a32",
+      "mutated_sha256": "b550932b6d1d0bfee653209c650e64e30ac9b296eafabfb6a01c0f53af368438",
+      "binary_sha256": "0e8c84e15647bae2960cae598d402afdafddfbe609d48a44d0c99311f9ce8db4",
+      "compile": {
+        "argv": [
+          "cc",
+          "-std=c11",
+          "-O2",
+          "/tmp/geometry-tests/pr190-capacity/final-targeted-v2/shadow-invalid-reference-as-capacity/geometry-web/web_bridge.c",
+          "-lm",
+          "-o",
+          "/tmp/geometry-tests/pr190-capacity/final-targeted-v2/bridge-invalid-reference-as-capacity"
+        ],
+        "returncode": 0,
+        "duration_seconds": 45.76159977912903,
+        "origin": "subprocess.run"
+      },
+      "test": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "/tmp/geometry-190-private-suite.py",
+          "/tmp/geometry-tests/pr190-capacity/final-targeted-v2/bridge-invalid-reference-as-capacity",
+          "test_name_capacity_is_not_invalid_and_never_commits",
+          "test_scene_obstacle_capacity_is_structured_and_atomic",
+          "test_scene_name_capacity_preserves_invalid_format_and_world"
+        ],
+        "returncode": 1,
+        "duration_seconds": 5.90257716178894,
+        "origin": "subprocess.run"
+      },
+      "result": {
+        "tests": 3,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "events": [
+          {
+            "test": "tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_scene_obstacle_capacity_is_structured_and_atomic",
+            "subtest": "test_scene_obstacle_capacity_is_structured_and_atomic (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_scene_obstacle_capacity_is_structured_and_atomic) (tail='x1', count=65)",
+            "type": "AssertionError",
+            "message": "Tuples differ: ('INVALID', 'SCENE_INVALID') != ('UNSUPPORTED', 'CAPACITY')\n\nFirst differing element 0:\n'INVALID'\n'UNSUPPORTED'\n\n- ('INVALID', 'SCENE_INVALID')\n+ ('UNSUPPORTED', 'CAPACITY')"
+          }
+        ]
+      },
+      "verdict": "killed",
+      "instrumentation": null
+    },
+    {
+      "id": "stale-scene-kind",
+      "file": "geometry-web/web_bridge.c",
+      "old": "    g_fs_diagnostic=FS_DIAGNOSTIC_INVALID;\n    bool loaded=parse_scene_file(path,draft);",
+      "new": "    bool loaded=parse_scene_file(path,draft);",
+      "original_sha256": "0965ddb13c82e40aec6c5cde58e38f2233cbacb9b71669a8a74c766a06676015",
+      "mutated_sha256": "bf072f42b94f406188358ab9db9739a7911389e913eba90f25f81c1c22df684e",
+      "binary_sha256": "2fc0bf3a1db734a2eb4f59d56c4391e2823df251288f1d7e368f7918dbf263c2",
+      "compile": {
+        "argv": [
+          "cc",
+          "-std=c11",
+          "-O2",
+          "/tmp/geometry-tests/pr190-capacity/final-targeted-v2/shadow-stale-scene-kind/geometry-web/web_bridge.c",
+          "-lm",
+          "-o",
+          "/tmp/geometry-tests/pr190-capacity/final-targeted-v2/bridge-stale-scene-kind"
+        ],
+        "returncode": 0,
+        "duration_seconds": 46.09935975074768,
+        "origin": "subprocess.run"
+      },
+      "test": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "/tmp/geometry-190-private-suite.py",
+          "/tmp/geometry-tests/pr190-capacity/final-targeted-v2/bridge-stale-scene-kind",
+          "test_name_capacity_is_not_invalid_and_never_commits",
+          "test_scene_obstacle_capacity_is_structured_and_atomic",
+          "test_scene_name_capacity_preserves_invalid_format_and_world"
+        ],
+        "returncode": 1,
+        "duration_seconds": 4.857950210571289,
+        "origin": "subprocess.run"
+      },
+      "result": {
+        "tests": 3,
+        "failures": 3,
+        "errors": 0,
+        "skips": 0,
+        "events": [
+          {
+            "test": "tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_scene_name_capacity_preserves_invalid_format_and_world",
+            "subtest": "test_scene_name_capacity_preserves_invalid_format_and_world (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_scene_name_capacity_preserves_invalid_format_and_world) (bytes=97, status='UNSUPPORTED')",
+            "type": "AssertionError",
+            "message": "Tuples differ: ('INVALID', 'SCENE_INVALID') != ('UNSUPPORTED', 'CAPACITY')\n\nFirst differing element 0:\n'INVALID'\n'UNSUPPORTED'\n\n- ('INVALID', 'SCENE_INVALID')\n+ ('UNSUPPORTED', 'CAPACITY')"
+          },
+          {
+            "test": "tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_scene_name_capacity_preserves_invalid_format_and_world",
+            "subtest": "test_scene_name_capacity_preserves_invalid_format_and_world (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_scene_name_capacity_preserves_invalid_format_and_world) (bytes=99, status='UNSUPPORTED')",
+            "type": "AssertionError",
+            "message": "Tuples differ: ('INVALID', 'SCENE_INVALID') != ('UNSUPPORTED', 'CAPACITY')\n\nFirst differing element 0:\n'INVALID'\n'UNSUPPORTED'\n\n- ('INVALID', 'SCENE_INVALID')\n+ ('UNSUPPORTED', 'CAPACITY')"
+          },
+          {
+            "test": "tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_scene_name_capacity_preserves_invalid_format_and_world",
+            "subtest": "test_scene_name_capacity_preserves_invalid_format_and_world (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_scene_name_capacity_preserves_invalid_format_and_world) (bytes=1024, status='UNSUPPORTED')",
+            "type": "AssertionError",
+            "message": "Tuples differ: ('INVALID', 'SCENE_INVALID') != ('UNSUPPORTED', 'CAPACITY')\n\nFirst differing element 0:\n'INVALID'\n'UNSUPPORTED'\n\n- ('INVALID', 'SCENE_INVALID')\n+ ('UNSUPPORTED', 'CAPACITY')"
+          }
+        ]
+      },
+      "verdict": "killed",
+      "instrumentation": null
+    }
+  ]
+}

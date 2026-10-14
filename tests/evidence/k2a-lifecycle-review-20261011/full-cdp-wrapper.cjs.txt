@@ -1,0 +1,9 @@
+'use strict';
+const cp=require('node:child_process');
+(async()=>{
+  const gate=await require('/workspace/geometry-k2aa-review/tests/k2a_browser_receipt.cjs').begin(process.env.GEOMETRY_TEST_URL);
+  const run=cp.spawnSync(process.execPath,['geometry-web/cdp_test.js'],{cwd:'/workspace/geometry-k2aa-review',env:process.env,stdio:'inherit'});
+  await gate.finish();
+  if(run.error)throw run.error;
+  process.exitCode=run.status??1;
+})().catch(e=>{console.error(e);process.exitCode=1;});

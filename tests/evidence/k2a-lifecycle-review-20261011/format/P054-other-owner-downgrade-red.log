@@ -1,0 +1,26 @@
+TAP version 13
+# Subtest: P-054 unsupported other-owner capability and stripped capability reject whole /17 archive
+not ok 1 - P-054 unsupported other-owner capability and stripped capability reject whole /17 archive
+  ---
+  duration_ms: 30.160558
+  type: 'test'
+  location: '/workspace/geometry-k2aa-review/tests/test_shared_format17.js:17:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection: P-054 other-owner attachment cannot downgrade'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (/workspace/geometry-k2aa-review/tests/test_shared_format17.js:21:175)
+    async Test.run (node:internal/test_runner/test:1389:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 122.19822

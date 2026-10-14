@@ -1,0 +1,32 @@
+import asyncio, json, subprocess
+from pathlib import Path
+from playwright.async_api import async_playwright
+root=Path('/tmp/geometry-control-diagnostics')
+out=root/'tests/evidence/control-diagnostics-20261013'
+def closure(source):
+    start=source.index('    const control=async selector=>')
+    end=source.index('    return {id,evaluate,until,control,diagnostics};',start)
+    return source[start:end]
+base=subprocess.check_output(['git','show','HEAD:geometry-web/ux_refinement_test.js'],cwd=root).decode()
+final=(root/'geometry-web/ux_refinement_test.js').read_text()
+async def main():
+    async with async_playwright() as pw:
+        browser=await pw.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox'])
+        page=await browser.new_page()
+        await page.set_content('<button id="fileMenuBtn" aria-expanded="false">File</button><div id="fileMenuPop" style="display:none;visibility:hidden"></div><button id="target" disabled>Target</button>')
+        receipts=[]
+        for label,source in [('before',base),('after',final),('removed-fix',base),('restored',final)]:
+            expr='async()=>{const evaluate=async expression=>eval(expression),raw=async()=>{},diagnostics=async()=>({connection:{phase:"ready"},busy:false});'+closure(source)+'try{await control("#target");return {unexpectedSuccess:true};}catch(error){return {error:error.message};}}'
+            result=await page.evaluate(expr)
+            ok=all(part in result.get('error','') for part in ['"rect"','"disabled":true','"hit"','"display":"none"','"visibility":"hidden"','"fileMenuExpanded":"false"','"connection":{"phase":"ready"}'])
+            receipt={'case':label,'diagnostic_oracle_pass':ok,'exit':0 if ok else 1,**result}
+            receipts.append(receipt);print(json.dumps(receipt),flush=True)
+        assert [r['exit'] for r in receipts]==[1,0,1,0]
+        await page.evaluate('document.querySelector("#target").disabled=false')
+        expr='async()=>{let calls=[];const evaluate=async expression=>eval(expression),raw=async(method,params)=>calls.push({method,params}),diagnostics=async()=>{throw Error("must not run on success");};'+closure(final)+'await control("#target");return calls;}'
+        calls=await page.evaluate(expr)
+        assert [c['params']['type'] for c in calls]==['mousePressed','mouseReleased']
+        receipts.append({'case':'success-unchanged','exit':0,'calls':calls})
+        (out/'diagnostic-oracle.json').write_text(json.dumps(receipts,indent=2)+'\n')
+        await browser.close()
+asyncio.run(main())

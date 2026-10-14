@@ -16,8 +16,69 @@ from .common import (ModelError, canonical_bytes, digest, strict_json_loads,
 
 # The source commit contains the adopted axiom bytes identified by this digest.
 # Update only after committing the corresponding SSOT change (MODELING-CONTRACT).
-AXIOM_REVISION = "3ad8012b6f01f9f46795a28a410ee444c5cce1a0"
-AXIOM_SHA256 = "29ad0c657e53d364347862fddac23ba26a248a4fd8f83487d86f9e648bd1eaf2"
+AXIOM_REVISION = "651c661b2c4c224c58bb4a2ed0a42ed929a16aa6"
+AXIOM_SHA256 = "ab31dc36d5416762ac44932940a94f6142b72e831ceb62c0bc67375512109004"
+# The P-046 amendment (2026-10-11: I68 flag sentence aligned with R54's in-window undo)
+# replaced the ff18cb6 text before it reached main; that interim digest was never
+# declared by a main executor, so it is deliberately not listed as a compatible version.
+# The P-045 amendment (2026-10-11: D51 wording, D54 fail-closed sentence) replaced
+# the ee7c441 text before it reached main; that interim digest was never declared
+# by a main executor, so it is deliberately not listed as a compatible version.
+# The D48 label-format fix (P-044, 2026-10-11) replaced the c24ec08 and 2818289
+# texts before they reached main; those interim digests were never declared by a
+# main executor, so they are deliberately not listed as compatible versions.
+# The K2b texts of ee7c441 (before the P-045 amendment) and a2f8c89 (before
+# following K1's P-047 fix) never reached main; those interim digests were never
+# declared by a main executor, so they are deliberately not listed as compatible versions.
+# The K1 fixes of 2026-10-11 (P-044 D48 label format; P-047 undo semantics) replaced
+# the c24ec08, 2818289 and 7c5485b texts before they reached main; those interim
+# digests were never declared by a main executor, so they are deliberately not
+# listed as compatible versions.
+# The R43 amendment (PF-0 r2.1, 2026-10-11) replaced the a93bb34 text before it
+# reached main; that interim digest was never declared by a main executor, so it
+# is deliberately not listed as a compatible version.
+# Q38j adds saved-space snapshot rules without implementing /3 output.
+# Existing K3 packages keep the same geometry capabilities and source gates.
+PRE_SPACE_MERGE_AXIOM_VERSIONS = frozenset({
+    # Released K3 main keeps its existing geometry and section-profile capabilities.
+    ("d1db88ae99ca9b6858b0ada34d082e902f00c9f9", "9d4f90aacbc863941c1065a6b962f760e7e842c4d7dda55a56c4dc321f9a0f93"),
+    ("9371378439563f8e2512e12299fa072c95615e9e", "604413cb9fefeedb3d8fb76ac4baa71ba751a874e36060c6fc7714a7cc122d5e"),
+})
+# K3 adopts identity-ledger/1 without implementing it or widening model inputs.
+# Packages from the clarified stack keep the existing geometry capabilities.
+PRE_IDENTITY_TRACE_AXIOM_VERSIONS = frozenset({
+    ("6992607d0463bba8fae4c409af57a61066dafca2", "c878c355c0c233119686ee1ca2b0ddd2c2fbdb7eb2c8b88896a3a8a6d37cb6ad"),
+    # Main's P-063/P-064 clarification release retains the same model capabilities.
+    ("a393a0f01284433ca20fe8b10d9f21111026e7f1", "b06ffecf4f3b7a907a50d329f2073799d9514daa26b9056380f62ad37e5725ee"),
+})
+# P-049 clarifies the adopted stack without changing this executor's supported
+# geometry semantics or capabilities. Packages from the followed K2a text remain valid.
+PRE_STACK_CLARIFY_AXIOM_VERSIONS = frozenset({
+    ("e04a63cb3e1280715cd6c24504a37f3522fa43c7", "2c20fd3d401e4246e59191f72f978c0a81a6ad34d3a297fe54abf4783e666c20"),
+})
+# D56-D58 / I68-I69 / R54-R55 (K2a) only add editor drafts (grid-editor-drafts/1) and
+# repeated-bay assembly instances (assembly-bay-repeat/1), and amend D34 / I42 / R35 and the
+# first sentence of D53 for them; this executor implements neither capability, so packages
+# built under the previous adopted text (K2b incl. P-045 and K1's P-047) stay valid.
+PRE_DRAFTS_TOPOLOGY_AXIOM_VERSIONS = frozenset({
+    ("d787146d501b98931cc66caccdbed0006c5ca25f", "2348373fa4182f984489c068b1762725f3d9eaa4087418b0ffb5182c763213e4"),
+})
+# D51-D55 / I63-I67 / R51-R53 (K2b) only add project-level data, room-candidate-drafts/1
+# and definition-import/1, which this executor does not implement; packages built
+# under the previous adopted text (K1) stay valid.
+PRE_ZERO_ROOM_AXIOM_VERSIONS = frozenset({
+    ("ca3790ce7e87e1a9190cb17fb63bbe42f501f7a5", "267a308698954ca610814d3956b5b837463ccaec8d4d074236de9f9df7f8a050"),
+})
+# D46-D50 / I58-I62 / R47-R50 only add cutting-plan/1, which this executor does
+# not implement; packages built under the previous adopted text stay valid.
+PRE_CUTTING_PLAN_AXIOM_VERSIONS = frozenset({
+    ("8a8b56424407bb758de0d16e66c94e21eb79aa41", "d8a0b4a1c108197f4abb5c67d73fa22aa7fa4288769f605a5a9372fd93aa7b52"),
+})
+# D41-D45 / I52-I57 / R41-R46 only add panel-fill/1, which this executor does
+# not implement; packages built under the previous adopted text stay valid.
+PRE_PANEL_FILL_AXIOM_VERSIONS = frozenset({
+    ("3ad8012b6f01f9f46795a28a410ee444c5cce1a0", "29ad0c657e53d364347862fddac23ba26a248a4fd8f83487d86f9e648bd1eaf2"),
+})
 # The Q38 extension is additive; packages under the prior text remain supported
 # only when they do not claim or contain section-profile/1 definitions.
 PRE_SECTION_PROFILE_AXIOM_VERSIONS = frozenset({
@@ -171,24 +232,30 @@ def verify_package(package, *, max_cells=200000, base_executable=None):
     if not all(type(part) is str for part in supplied_version) or supplied_version not in {
             current_version, *LEGACY_AXIOM_VERSIONS, *ENGINEERING_AXIOM_VERSIONS,
             *FINITE_GRID_AXIOM_VERSIONS, *INFINITE_GRID_AXIOM_VERSIONS, *PARAMETER_AXIOM_VERSIONS, *PRE_GENERATION_AXIOM_VERSIONS, *PRE_SUBDIVISION_AXIOM_VERSIONS,
-            *PRE_SECTION_PROFILE_AXIOM_VERSIONS}:
+            *PRE_SECTION_PROFILE_AXIOM_VERSIONS, *PRE_PANEL_FILL_AXIOM_VERSIONS,
+            *PRE_CUTTING_PLAN_AXIOM_VERSIONS, *PRE_ZERO_ROOM_AXIOM_VERSIONS,
+            *PRE_DRAFTS_TOPOLOGY_AXIOM_VERSIONS,
+            *PRE_STACK_CLARIFY_AXIOM_VERSIONS,
+            *PRE_IDENTITY_TRACE_AXIOM_VERSIONS,
+            *PRE_SPACE_MERGE_AXIOM_VERSIONS}:
         raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "This executor does not implement the supplied axiom revision")
     if supplied_version != current_version:
         definitions = package["definitions"]
         if (not isinstance(definitions, dict) or type(definitions.get("base_scene")) is not str):
             raise ModelError("INVALID", "PACKAGE_SCHEMA", "D25", "Expected complete source definitions")
-        if (SECTION_PROFILE_CAPABILITY in scene_required_capabilities(definitions["base_scene"]) or
+        if supplied_version not in PRE_PANEL_FILL_AXIOM_VERSIONS | PRE_CUTTING_PLAN_AXIOM_VERSIONS | PRE_ZERO_ROOM_AXIOM_VERSIONS | PRE_DRAFTS_TOPOLOGY_AXIOM_VERSIONS | PRE_STACK_CLARIFY_AXIOM_VERSIONS | PRE_IDENTITY_TRACE_AXIOM_VERSIONS | PRE_SPACE_MERGE_AXIOM_VERSIONS and (
+                SECTION_PROFILE_CAPABILITY in scene_required_capabilities(definitions["base_scene"]) or
                 isinstance(manifest["capabilities"], list) and SECTION_PROFILE_CAPABILITY in manifest["capabilities"]):
             raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "Section profiles require the adopted Q38 axiom revision")
-        if supplied_version not in PRE_SECTION_PROFILE_AXIOM_VERSIONS and "grid-subdivision-rules/1" in scene_required_capabilities(definitions["base_scene"]):
+        if supplied_version not in PRE_SECTION_PROFILE_AXIOM_VERSIONS | PRE_PANEL_FILL_AXIOM_VERSIONS | PRE_CUTTING_PLAN_AXIOM_VERSIONS | PRE_ZERO_ROOM_AXIOM_VERSIONS | PRE_DRAFTS_TOPOLOGY_AXIOM_VERSIONS | PRE_STACK_CLARIFY_AXIOM_VERSIONS | PRE_IDENTITY_TRACE_AXIOM_VERSIONS | PRE_SPACE_MERGE_AXIOM_VERSIONS and "grid-subdivision-rules/1" in scene_required_capabilities(definitions["base_scene"]):
             raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "Source subdivision requires its adopted axiom revision")
-        if supplied_version not in PRE_GENERATION_AXIOM_VERSIONS | PRE_SUBDIVISION_AXIOM_VERSIONS | PRE_SECTION_PROFILE_AXIOM_VERSIONS and _scene_uses_stagger(definitions["base_scene"]):
+        if supplied_version not in PRE_GENERATION_AXIOM_VERSIONS | PRE_SUBDIVISION_AXIOM_VERSIONS | PRE_SECTION_PROFILE_AXIOM_VERSIONS | PRE_PANEL_FILL_AXIOM_VERSIONS | PRE_CUTTING_PLAN_AXIOM_VERSIONS | PRE_ZERO_ROOM_AXIOM_VERSIONS | PRE_DRAFTS_TOPOLOGY_AXIOM_VERSIONS | PRE_STACK_CLARIFY_AXIOM_VERSIONS | PRE_IDENTITY_TRACE_AXIOM_VERSIONS | PRE_SPACE_MERGE_AXIOM_VERSIONS and _scene_uses_stagger(definitions["base_scene"]):
             raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "Stagger sources and band anchors require the stagger axiom revision")
-        if supplied_version not in PARAMETER_AXIOM_VERSIONS | PRE_GENERATION_AXIOM_VERSIONS | PRE_SUBDIVISION_AXIOM_VERSIONS | PRE_SECTION_PROFILE_AXIOM_VERSIONS and (PARAMETER_CAPABILITY in scene_required_capabilities(definitions["base_scene"]) or PARAMETER_CAPABILITY in manifest["capabilities"]):
+        if supplied_version not in PARAMETER_AXIOM_VERSIONS | PRE_GENERATION_AXIOM_VERSIONS | PRE_SUBDIVISION_AXIOM_VERSIONS | PRE_SECTION_PROFILE_AXIOM_VERSIONS | PRE_PANEL_FILL_AXIOM_VERSIONS | PRE_CUTTING_PLAN_AXIOM_VERSIONS | PRE_ZERO_ROOM_AXIOM_VERSIONS | PRE_DRAFTS_TOPOLOGY_AXIOM_VERSIONS | PRE_STACK_CLARIFY_AXIOM_VERSIONS | PRE_IDENTITY_TRACE_AXIOM_VERSIONS | PRE_SPACE_MERGE_AXIOM_VERSIONS and (PARAMETER_CAPABILITY in scene_required_capabilities(definitions["base_scene"]) or PARAMETER_CAPABILITY in manifest["capabilities"]):
             raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "Parameter sources require the parameter axiom revision")
-        if supplied_version not in INFINITE_GRID_AXIOM_VERSIONS | PARAMETER_AXIOM_VERSIONS | PRE_GENERATION_AXIOM_VERSIONS | PRE_SUBDIVISION_AXIOM_VERSIONS | PRE_SECTION_PROFILE_AXIOM_VERSIONS and _scene_uses_infinite_grid(definitions["base_scene"]):
+        if supplied_version not in INFINITE_GRID_AXIOM_VERSIONS | PARAMETER_AXIOM_VERSIONS | PRE_GENERATION_AXIOM_VERSIONS | PRE_SUBDIVISION_AXIOM_VERSIONS | PRE_SECTION_PROFILE_AXIOM_VERSIONS | PRE_PANEL_FILL_AXIOM_VERSIONS | PRE_CUTTING_PLAN_AXIOM_VERSIONS | PRE_ZERO_ROOM_AXIOM_VERSIONS | PRE_DRAFTS_TOPOLOGY_AXIOM_VERSIONS | PRE_STACK_CLARIFY_AXIOM_VERSIONS | PRE_IDENTITY_TRACE_AXIOM_VERSIONS | PRE_SPACE_MERGE_AXIOM_VERSIONS and _scene_uses_infinite_grid(definitions["base_scene"]):
             raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "Infinite-grid sources require the infinite-grid axiom revision")
-        if supplied_version not in FINITE_GRID_AXIOM_VERSIONS | INFINITE_GRID_AXIOM_VERSIONS | PARAMETER_AXIOM_VERSIONS | PRE_GENERATION_AXIOM_VERSIONS | PRE_SUBDIVISION_AXIOM_VERSIONS | PRE_SECTION_PROFILE_AXIOM_VERSIONS and _scene_uses_grid_system(definitions["base_scene"]):
+        if supplied_version not in FINITE_GRID_AXIOM_VERSIONS | INFINITE_GRID_AXIOM_VERSIONS | PARAMETER_AXIOM_VERSIONS | PRE_GENERATION_AXIOM_VERSIONS | PRE_SUBDIVISION_AXIOM_VERSIONS | PRE_SECTION_PROFILE_AXIOM_VERSIONS | PRE_PANEL_FILL_AXIOM_VERSIONS | PRE_CUTTING_PLAN_AXIOM_VERSIONS | PRE_ZERO_ROOM_AXIOM_VERSIONS | PRE_DRAFTS_TOPOLOGY_AXIOM_VERSIONS | PRE_STACK_CLARIFY_AXIOM_VERSIONS | PRE_IDENTITY_TRACE_AXIOM_VERSIONS | PRE_SPACE_MERGE_AXIOM_VERSIONS and _scene_uses_grid_system(definitions["base_scene"]):
             raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "Grid-system sources require the grid-system axiom revision")
         if supplied_version in LEGACY_AXIOM_VERSIONS and (
                 scene_required_capabilities(definitions["base_scene"]) or

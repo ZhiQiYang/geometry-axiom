@@ -1,0 +1,23 @@
+二進位輸出目錄：/tmp/k2aa-final-binaries
+[build] 只建置 stale/missing：bridge, core, engjson, gdi, integrity, model-base
+  bridge     reused         沿用（來源與 binary SHA-256 相符（建於 2026-10-11T14:24:49+00:00））
+  core       reused         沿用（來源與 binary SHA-256 相符（建於 2026-10-11T14:25:01+00:00））
+  engjson    reused         沿用（來源與 binary SHA-256 相符（建於 2026-10-11T14:25:02+00:00））
+  gdi        n/a            僅 Windows
+  integrity  reused         沿用（來源與 binary SHA-256 相符（建於 2026-10-11T14:25:11+00:00））
+  model-base reused         沿用（來源與 binary SHA-256 相符（建於 2026-10-11T14:25:23+00:00））
+[binaries]
+  bridge     fresh    來源與 binary SHA-256 相符（建於 2026-10-11T14:24:49+00:00）
+  core       fresh    來源與 binary SHA-256 相符（建於 2026-10-11T14:25:01+00:00）
+  engjson    fresh    來源與 binary SHA-256 相符（建於 2026-10-11T14:25:02+00:00）
+  gdi        n/a      僅 Windows
+  integrity  fresh    來源與 binary SHA-256 相符（建於 2026-10-11T14:25:11+00:00）
+  model-base fresh    來源與 binary SHA-256 相符（建於 2026-10-11T14:25:23+00:00）
+[環境] CC=未設定（繼承自外殼；僅影響 binaries.py 在非 Windows 的編譯）
+[環境] 已清除外殼繼承的 GEOMETRY_*：（無）
+[環境] run_all 設給子行程的 GEOMETRY_*：GEOMETRY_ENGINEERING_BRIDGE、GEOMETRY_MODEL_BASE、GEOMETRY_TEST_BRIDGE、GEOMETRY_TEST_CORE、GEOMETRY_TEST_ENGINEERING_JSON
+[1/83] c:integrity …
+[2/83] core:run_tests …
+[3/83] mutation:check …
+[4/83] py:test_assembly_candidate_impact …
+[5/83] py:test_assembly_capacity …

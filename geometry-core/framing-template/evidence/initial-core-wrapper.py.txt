@@ -1,0 +1,19 @@
+from pathlib import Path
+import hashlib,json,subprocess,sys,time
+root=Path('/tmp/geometry-framing-proposal')
+proposal=root/'geometry-core/framing-template/PROPOSAL.md'
+text=proposal.read_text()
+text=text.translate(str.maketrans('优顺还类简称递归具体键赖环须定义擅称参考证参数当前截断于内层条话边验输发规删现锁义从会辑写单复择并独变样过间为与计统阶确认归论别实开经关错则无机齐给处启户','優順還類簡稱遞歸具體鍵賴環須定義擅稱參考證參數當前截斷於內層條話邊驗輸發規刪現鎖義從會輯寫單複擇並獨變樣過間為與計統階確認歸論別實開經關錯則無機齊給處啟戶'))
+proposal.write_text(text)
+sys.path.insert(0,str(root/'tests'))
+import binaries
+binaries.OUT_DIR=Path('/tmp/framing-proposal-binaries')
+results=binaries.build(['core'])
+out=root/'geometry-core/framing-template/evidence'
+out.mkdir(exist_ok=True)
+start=time.monotonic()
+with (out/'native.log').open('w') as log:
+    result=subprocess.run([sys.executable,'tests/run_tests.py',str(binaries.OUT_DIR/'core')],cwd=root,stdout=log,stderr=subprocess.STDOUT)
+record={'command':[sys.executable,'tests/run_tests.py',str(binaries.OUT_DIR/'core')],'exit':result.returncode,'seconds':time.monotonic()-start,'core_sha256':hashlib.sha256((binaries.OUT_DIR/'core').read_bytes()).hexdigest(),'proposal_sha256':hashlib.sha256(proposal.read_bytes()).hexdigest()}
+(out/'native.json').write_text(json.dumps(record,indent=2)+'\n')
+print(record)

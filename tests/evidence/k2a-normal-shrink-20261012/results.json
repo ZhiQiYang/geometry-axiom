@@ -1,0 +1,114 @@
+[
+  {
+    "name": "baseline",
+    "command": [
+      "node",
+      "--test",
+      "--test-name-pattern=B1 normal collection admission|legacy normal collection confirmation",
+      "tests/test_grid_drafts_lifecycle_capacity.js",
+      "tests/test_reference_workspace_races.js"
+    ],
+    "exit": 0,
+    "sha256": "30dd17b4b71b050dd39b2badefdc57fc2303cecf24c170ada3ef3d242ebb2f56",
+    "sources": {
+      "geometry-web/feature-attachments.js": "e4a92fcfd63f5ffd43fb9c7f046049d1332fa04e9ec414fe8020541467e5b659",
+      "geometry-web/reference-workspace.js": "346efc7f266b836f3454ed993ccb30bd7ebdaee4fa844a22849108feecafcf49"
+    }
+  },
+  {
+    "name": "future-single-mutant",
+    "command": [
+      "node",
+      "--test",
+      "--test-name-pattern=B1 normal collection admission|legacy normal collection confirmation",
+      "tests/test_grid_drafts_lifecycle_capacity.js",
+      "tests/test_reference_workspace_races.js"
+    ],
+    "exit": 1,
+    "sha256": "0bf329068dd9b9e48d07c7a558ac4db93a13955341ba1adb100c59fefb558df5",
+    "sources": {
+      "geometry-web/feature-attachments.js": "65d27b112d73186018da44821d310a8bb229b3c83472be6dd4831fc31613b90f",
+      "geometry-web/reference-workspace.js": "346efc7f266b836f3454ed993ccb30bd7ebdaee4fa844a22849108feecafcf49"
+    }
+  },
+  {
+    "name": "future-single-restored",
+    "command": [
+      "node",
+      "--test",
+      "--test-name-pattern=B1 normal collection admission|legacy normal collection confirmation",
+      "tests/test_grid_drafts_lifecycle_capacity.js",
+      "tests/test_reference_workspace_races.js"
+    ],
+    "exit": 0,
+    "sha256": "567feada7292c2fb3c320883656debd705a60b96e47c5005127f34a30656dc36",
+    "sources": {
+      "geometry-web/feature-attachments.js": "e4a92fcfd63f5ffd43fb9c7f046049d1332fa04e9ec414fe8020541467e5b659",
+      "geometry-web/reference-workspace.js": "346efc7f266b836f3454ed993ccb30bd7ebdaee4fa844a22849108feecafcf49"
+    }
+  },
+  {
+    "name": "prepare-candidate-mutant",
+    "command": [
+      "node",
+      "--test",
+      "--test-name-pattern=B1 normal collection admission|legacy normal collection confirmation",
+      "tests/test_grid_drafts_lifecycle_capacity.js",
+      "tests/test_reference_workspace_races.js"
+    ],
+    "exit": 1,
+    "sha256": "3b4d6ec726bf60dabf243ec44fd3a426cd80f24633ede3045622288be1d56ef4",
+    "sources": {
+      "geometry-web/feature-attachments.js": "e4a92fcfd63f5ffd43fb9c7f046049d1332fa04e9ec414fe8020541467e5b659",
+      "geometry-web/reference-workspace.js": "17da2cbdd7033bf696b5f466ad5fc3603122b498789c7478c2666a993331aa43"
+    }
+  },
+  {
+    "name": "prepare-candidate-restored",
+    "command": [
+      "node",
+      "--test",
+      "--test-name-pattern=B1 normal collection admission|legacy normal collection confirmation",
+      "tests/test_grid_drafts_lifecycle_capacity.js",
+      "tests/test_reference_workspace_races.js"
+    ],
+    "exit": 0,
+    "sha256": "0eb65309378b15b6afea66ec59bcc1abd7082eb87899e702797f2a0ec8486fcd",
+    "sources": {
+      "geometry-web/feature-attachments.js": "e4a92fcfd63f5ffd43fb9c7f046049d1332fa04e9ec414fe8020541467e5b659",
+      "geometry-web/reference-workspace.js": "346efc7f266b836f3454ed993ccb30bd7ebdaee4fa844a22849108feecafcf49"
+    }
+  },
+  {
+    "name": "begin-candidate-mutant",
+    "command": [
+      "node",
+      "--test",
+      "--test-name-pattern=B1 normal collection admission|legacy normal collection confirmation",
+      "tests/test_grid_drafts_lifecycle_capacity.js",
+      "tests/test_reference_workspace_races.js"
+    ],
+    "exit": 1,
+    "sha256": "9dd1152e9a73e846f9af6354b3edb280a40a5a3b570c76e18e0c4320ab5063d2",
+    "sources": {
+      "geometry-web/feature-attachments.js": "e4a92fcfd63f5ffd43fb9c7f046049d1332fa04e9ec414fe8020541467e5b659",
+      "geometry-web/reference-workspace.js": "8e40cfcc30fd6f7400c96121a8c5179b2d6a3d5f6e548b60e431a2a1d3c1f446"
+    }
+  },
+  {
+    "name": "begin-candidate-restored",
+    "command": [
+      "node",
+      "--test",
+      "--test-name-pattern=B1 normal collection admission|legacy normal collection confirmation",
+      "tests/test_grid_drafts_lifecycle_capacity.js",
+      "tests/test_reference_workspace_races.js"
+    ],
+    "exit": 0,
+    "sha256": "9ce0a72b41331d0e4b42570bdfe6ddb0f5a4f9eea25ac54688ea37c15a114026",
+    "sources": {
+      "geometry-web/feature-attachments.js": "e4a92fcfd63f5ffd43fb9c7f046049d1332fa04e9ec414fe8020541467e5b659",
+      "geometry-web/reference-workspace.js": "346efc7f266b836f3454ed993ccb30bd7ebdaee4fa844a22849108feecafcf49"
+    }
+  }
+]

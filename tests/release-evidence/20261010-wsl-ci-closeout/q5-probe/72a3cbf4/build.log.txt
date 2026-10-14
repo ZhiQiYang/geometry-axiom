@@ -1,0 +1,11 @@
+
+> geometry-axiom-dev@0.0.0 build
+> python3 geometry-web/start_local.py --build-only
+
+  core：建置（找不到 /tmp/geometry-runtime/6aac848c845dce190ab7/core）…
+  bridge：建置（找不到 /tmp/geometry-runtime/6aac848c845dce190ab7/bridge）…
+  model-base：建置（找不到 /tmp/geometry-runtime/6aac848c845dce190ab7/model-base）…
+core: built — 建好 /tmp/geometry-runtime/6aac848c845dce190ab7/core
+bridge: built — 建好 /tmp/geometry-runtime/6aac848c845dce190ab7/bridge
+model-base: built — 建好 /tmp/geometry-runtime/6aac848c845dce190ab7/model-base
+LOCAL_RUNTIME {"root": "/root/q5-clones/72a3cbf44814d86606531e6fcbd811aeab11548f", "binaryDirectory": "/tmp/geometry-runtime/6aac848c845dce190ab7", "executables": {"core": "/tmp/geometry-runtime/6aac848c845dce190ab7/core", "bridge": "/tmp/geometry-runtime/6aac848c845dce190ab7/bridge", "model-base": "/tmp/geometry-runtime/6aac848c845dce190ab7/model-base"}, "port": null, "managedPreview": false}

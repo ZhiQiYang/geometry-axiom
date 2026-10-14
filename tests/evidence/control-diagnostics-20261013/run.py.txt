@@ -1,0 +1,35 @@
+import json, os, subprocess, sys, time
+from pathlib import Path
+root=Path('/tmp/geometry-control-diagnostics')
+out=root/'tests/evidence/control-diagnostics-20261013'
+out.mkdir(parents=True,exist_ok=True)
+sys.path.insert(0,str(root/'tests'))
+import binaries
+binaries.OUT_DIR=Path('/tmp/control-diag-binaries')
+def run(label,cmd,env=None):
+    started=time.monotonic()
+    with (out/(label+'.log')).open('w') as log:
+        result=subprocess.run(cmd,cwd=root,env=env,stdout=log,stderr=subprocess.STDOUT)
+    receipt={'command':cmd,'exit':result.returncode,'seconds':time.monotonic()-started}
+    (out/(label+'.json')).write_text(json.dumps(receipt,indent=2)+'\n')
+    print(label,receipt,flush=True)
+    return result.returncode
+if sys.argv[1]=='build':
+    results=binaries.build(['core','bridge','model-base'])
+    print(results)
+elif sys.argv[1]=='native':
+    run('native-core',[sys.executable,'tests/run_tests.py',str(binaries.OUT_DIR/'core')])
+elif sys.argv[1]=='browser':
+    env=os.environ.copy()
+    env.update(GEOMETRY_BRIDGE=str(binaries.OUT_DIR/'bridge'),GEOMETRY_MODEL_BASE=str(binaries.OUT_DIR/'model-base'),GEOMETRY_FEEDBACK_DIR='/tmp/control-diag-feedback',GEOMETRY_TEST_URL='http://127.0.0.1:8970/',GEOMETRY_CHROME='/usr/bin/chromium',GEOMETRY_CHROME_FLAGS='--no-sandbox --disable-dev-shm-usage',GEOMETRY_CHROME_PROFILE='/tmp/control-diag-chrome',GEOMETRY_CDP_PORT='9570',GEOMETRY_UX_REFINEMENT_ONLY='1')
+    with (out/'service.log').open('w') as log:
+        server=subprocess.Popen([sys.executable,'geometry-web/serve.py','8970'],cwd=root,env=env,stdout=log,stderr=subprocess.STDOUT)
+        try:
+            import urllib.request
+            for _ in range(100):
+                try:
+                    urllib.request.urlopen(env['GEOMETRY_TEST_URL']+'runtime',timeout=1).read();break
+                except Exception: time.sleep(.1)
+            run('ux-subset',['node','geometry-web/cdp_test.js'],env)
+        finally:
+            server.terminate();server.wait(timeout=15)

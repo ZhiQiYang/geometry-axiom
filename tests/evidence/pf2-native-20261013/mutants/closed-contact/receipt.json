@@ -1,0 +1,32 @@
+{
+  "label": "closed-contact",
+  "mutation": {
+    "file": "geometry-core/panel_fill_layout.inc",
+    "old": "d->obstacles[i].q[0]<d->t&&d->obstacles[i].q[1]>0",
+    "new": "d->obstacles[i].q[0]<=d->t&&d->obstacles[i].q[1]>=0"
+  },
+  "compile_argv": [
+    "cc",
+    "-std=c11",
+    "-O0",
+    "-I/workspace/geometry-axiom",
+    "-I/workspace/geometry-axiom/geometry-web",
+    "/tmp/geometry-wake20/pf2-mutants/closed-contact/bridge.c",
+    "-lm",
+    "-o",
+    "/tmp/geometry-wake20/pf2-mutants/closed-contact/bridge"
+  ],
+  "compile_exit": 0,
+  "compiler_seconds": 2.488711259997217,
+  "sources": {
+    "/tmp/geometry-wake20/pf2-mutants/closed-contact/bridge.c": "a541be37807d6433ee3e6a709e94f665acfdb2d018b5a47d7baf4c3225eec796",
+    "/tmp/geometry-wake20/pf2-mutants/closed-contact/core.c": "a9062cf2faa4652c654bb6ebd16e7cda05ce30b49336ccec55ab3694af218cb7"
+  },
+  "tests": 1,
+  "failures": 1,
+  "errors": 0,
+  "skipped": 0,
+  "test_exit": 1,
+  "seconds": 0.3239388100046199,
+  "binary_sha256": "4e595e3f1ebfc1e360c061e17a90324f6911a2b829acf43489281588851636c8"
+}

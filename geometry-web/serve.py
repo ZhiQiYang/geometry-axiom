@@ -45,6 +45,7 @@ POST_MAX_BYTES = {
     "/model/update-preview": 8 * 1024 * 1024,
     "/assembly/preview": 1024 * 1024,
     "/section-profile/preview": 1024 * 1024,
+    "/panel-fill/preview": 1024 * 1024,
     "/section-profile/hosts": 16 * 1024 * 1024,
     "/assembly/generate-preview": 1024 * 1024,
     "/engineering/preview": 1024 * 1024,
@@ -119,7 +120,7 @@ def ask_bridge(cmd: str) -> bytes:
         return err_json("橋接指令不得為空")
     if any(c in cmd for c in "\r\n\0"):
         return err_json("指令不得含換行或 NUL")
-    for prefix in ("loadfile ", "load-prepare ", "engineering-preview ", "engineering-validate ", "assembly-preview ", "assembly-generation-preview ", "section-profile-preview ", "source-inspect-file "):
+    for prefix in ("loadfile ", "load-prepare ", "engineering-preview ", "engineering-validate ", "assembly-preview ", "assembly-generation-preview ", "section-profile-preview ", "panel-fill-preview ", "source-inspect-file "):
         if cmd.startswith(prefix):
             cmd = prefix + to_bridge_path(cmd[len(prefix):])
             break
@@ -338,6 +339,11 @@ class Handler(http.server.BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def do_GET(self):
+        # Same Host rule as POST, before any dispatch: a DNS-rebinding page is same-origin with its
+        # own name, so only the Host header tells it apart from the real local UI.
+        if not self._host_allowed():
+            self.send_error(403)
+            return
         route = urlsplit(self.path)
         self.path = route.path
         query = parse_qs(route.query)
@@ -408,14 +414,18 @@ class Handler(http.server.BaseHTTPRequestHandler):
         else:
             self.send_error(404)
 
+    def _host_allowed(self) -> bool:
+        """GET 與 POST 共用的 Host 規則（防 DNS rebinding）：不帶 Host 放行，否則主機名須在 LOCAL_HOSTS。"""
+        host = self.headers.get("Host")
+        return host is None or host.rsplit(":", 1)[0] in LOCAL_HOSTS
+
     def _local_only(self) -> bool:
         """L3：跨站 POST 一律 403；回傳 True = 已拒絕。"""
         origin = self.headers.get("Origin")
         if origin is not None and origin not in LOCAL_ORIGINS:
             self.send_error(403)
             return True
-        host = self.headers.get("Host")
-        if host is not None and host.rsplit(":", 1)[0] not in LOCAL_HOSTS:
+        if not self._host_allowed():
             self.send_error(403)
             return True
         return False
@@ -579,10 +589,10 @@ class Handler(http.server.BaseHTTPRequestHandler):
             except ModelError as exc:
                 self._send(canonical_bytes(exc.as_dict()))
             return
-        if self.path in {"/section-profile/preview", "/assembly/preview", "/assembly/generate-preview", "/engineering/preview", "/engineering/validate-project"}:
+        if self.path in {"/section-profile/preview", "/panel-fill/preview", "/assembly/preview", "/assembly/generate-preview", "/engineering/preview", "/engineering/validate-project"}:
             from engineering_transport import file_request
             try:
-                self._send(file_request(body, ask_bridge, validate_scene=self.path.endswith('validate-project'), assembly=self.path == '/assembly/preview', generation=self.path == '/assembly/generate-preview', section_profile=self.path == '/section-profile/preview'))
+                self._send(file_request(body, ask_bridge, validate_scene=self.path.endswith('validate-project'), assembly=self.path == '/assembly/preview', generation=self.path == '/assembly/generate-preview', section_profile=self.path == '/section-profile/preview', panel_fill=self.path == '/panel-fill/preview'))
             except OSError:
                 self._send(err_json('無法建立工程資料暫存檔，場景未變更。'))
             return

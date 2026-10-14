@@ -1,0 +1,30 @@
+{
+  "scope": "Fixed proposal arithmetic only; no template execution",
+  "wall_case": {
+    "L": 1831,
+    "M": 40,
+    "w": 27,
+    "n": 46,
+    "m": 40,
+    "remainder": 31,
+    "wall_minimum": 40.5,
+    "diagnostic": "FT03_SEGMENT_BELOW_MEMBER_WIDTH"
+  },
+  "formula_mutation": {
+    "L": 800,
+    "M": 367,
+    "correct_n": 3,
+    "correct_m": 267,
+    "wrong_floor_n": 2,
+    "wrong_m": 400,
+    "diagnostic": "FT04_MAX_GAP"
+  },
+  "empty_span": {
+    "y": 6017,
+    "x": [
+      1400,
+      1700
+    ],
+    "result": "skip, not rejection"
+  }
+}

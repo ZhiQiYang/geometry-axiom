@@ -1,0 +1,14 @@
+..E..................................
+======================================================================
+ERROR: test_PF02_centers_are_integer_and_share_panel_lattice (tests.test_panel_fill_layout.PanelFillLayout.test_PF02_centers_are_integer_and_share_panel_lattice)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_panel_fill_layout.py", line 62, in test_PF02_centers_are_integer_and_share_panel_lattice
+    grid = next(g for g in legacy["grids"] if g["id"] == 9)
+                           ~~~~~~^^^^^^^^^
+KeyError: 'grids'
+
+----------------------------------------------------------------------
+Ran 37 tests in 44.020s
+
+FAILED (errors=1)

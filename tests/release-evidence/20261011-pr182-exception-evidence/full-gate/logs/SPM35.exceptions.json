@@ -1,0 +1,25 @@
+{
+  "schema": "section-profile-exceptions/1",
+  "requested": [
+    "tests.test_section_profile_native.SectionProfileNative.test_exact_dump_load_zero_ids_empty_profile_and_fail_closed"
+  ],
+  "executed": [
+    "tests.test_section_profile_native.SectionProfileNative.test_exact_dump_load_zero_ids_empty_profile_and_fail_closed"
+  ],
+  "passed": [],
+  "tests_run": 1,
+  "failures": 1,
+  "errors": 0,
+  "skipped": 0,
+  "expected_failures": 0,
+  "unexpected_successes": 0,
+  "events": [
+    {
+      "test_id": "tests.test_section_profile_native.SectionProfileNative.test_exact_dump_load_zero_ids_empty_profile_and_fail_closed",
+      "subtest_id": null,
+      "kind": "failure",
+      "exception_type": "builtins.AssertionError",
+      "message": "'preview' unexpectedly found in {'ok': False, 'error': 'line 1: I8a: impact preview required; inspect preview, then confirm token (World unchanged)', 'preview': {'token': 1, 'valid': True, 'command': 'section-profile profile eyJpZCI6NywibmFtZSI6ImxhdGUiLCJvdXRsaW5lIjpbWzAsMF0sWzEwLDBdLFsxMCwxMF0sWzAsMTBdXX0=', 'timbers': [], 'guides': [], 'grids': [], 'datums': [], 'gridSystems': [], 'gridBindings': [], 'boundaries': [], 'assembly': {'before': {'capabilities': ['assembly-rule-authoring/1', 'assembly-timber-generation/1'], 'rules': [], 'bindings': [], 'instances': []}, 'after': {'capabilities': ['assembly-rule-authoring/1', 'assembly-timber-generation/1'], 'rules': [], 'bindings': [], 'instances': []}}, 'sectionProfiles': {'before': {'profiles': [{'value': {'id': 0, 'name': 'L 斷面', 'outline': [[-2, -2], [-1, -2], [-1, -1], [-2, -1]]}}, {'value': {'id': 1, 'name': 'L 斷面', 'outline': [[0, 0], [400, 0], [400, 60], [60, 60], [60, 250], [0, 250]]}}], 'members': [{'value': {'A': {'kind': 'literal', 'value': 1}, 'B': {'kind': 'literal', 'value': 1}, 'id': 0, 'kind': 'timber', 'orientation': 'A-u', 'profileId': 0, 'u0': -2, 'v0': -2}, 'rect': [-2, -2, -1, -1], 'dimensions': [1, 1]}], 'runs': [{'value': {'id': 0, 'length': {'kind': 'literal', 'value': 100000000}, 'placement': None, 'profileId': 0}, 'length': 100000000, 'coordinateSpace': 'local', 'frame': None, 'members': [{'memberId': 0, 'bounds': [[-2, -2, 0], [-1, -1, 100000000]]}]}]}, 'after': {'profiles': [{'value': {'id': 0, 'name': 'L 斷面', 'outline': [[-2, -2], [-1, -2], [-1, -1], [-2, -1]]}}, {'value': {'id': 1, 'name': 'L 斷面', 'outline': [[0, 0], [400, 0], [400, 60], [60, 60], [60, 250], [0, 250]]}}, {'value': {'id': 7, 'name': 'late', 'outline': [[0, 0], [10, 0], [10, 10], [0, 10]]}}], 'members': [{'value': {'A': {'kind': 'literal', 'value': 1}, 'B': {'kind': 'literal', 'value': 1}, 'id': 0, 'kind': 'timber', 'orientation': 'A-u', 'profileId': 0, 'u0': -2, 'v0': -2}, 'rect': [-2, -2, -1, -1], 'dimensions': [1, 1]}], 'runs': [{'value': {'id': 0, 'length': {'kind': 'literal', 'value': 100000000}, 'placement': None, 'profileId': 0}, 'length': 100000000, 'coordinateSpace': 'local', 'frame': None, 'members': [{'memberId': 0, 'bounds': [[-2, -2, 0], [-1, -1, 100000000]]}]}]}, 'warnings': [], 'diagnosticsComplete': True, 'violations': []}, 'violations': []}} : I49: section-profile records must not be injected line by line (not even as a confirmable preview)"
+    }
+  ]
+}

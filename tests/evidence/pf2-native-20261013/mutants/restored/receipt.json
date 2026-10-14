@@ -1,0 +1,32 @@
+{
+  "label": "restored",
+  "mutation": {
+    "file": null,
+    "old": null,
+    "new": null
+  },
+  "compile_argv": [
+    "cc",
+    "-std=c11",
+    "-O0",
+    "-I/workspace/geometry-axiom",
+    "-I/workspace/geometry-axiom/geometry-web",
+    "/tmp/geometry-wake20/pf2-mutants/restored/bridge.c",
+    "-lm",
+    "-o",
+    "/tmp/geometry-wake20/pf2-mutants/restored/bridge"
+  ],
+  "compile_exit": 0,
+  "compiler_seconds": 2.4564254339784384,
+  "sources": {
+    "/tmp/geometry-wake20/pf2-mutants/restored/bridge.c": "e6b7f005bda3023df8088eb0009dc9c5381f0627c31ee5bd236534ea6399309a",
+    "/tmp/geometry-wake20/pf2-mutants/restored/core.c": "df23b60f4a8aed90cdef349c120935b2398f5f7b86245451c34f67d75a7f5368"
+  },
+  "tests": 15,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "test_exit": 0,
+  "seconds": 3.5749093119811732,
+  "binary_sha256": "b9838d7215d19463f14709941ebdf7f70de9c89a770c60bc6044e23cbf38a890"
+}

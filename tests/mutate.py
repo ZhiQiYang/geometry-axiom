@@ -227,8 +227,9 @@ MUTANTS = [
          new="                (false) && grid_anchor_line_coord(world->grids, world->grid_count, ag, ap,"),
     # ---- GEO-100:面材推導（D10a）----
     dict(id="M53", desc="D10a：縫中心線改成縫起點(少加 gap/2)",
-         old="                     + def->panel + def->gap / 2;",
-         new="                     + def->panel;"),
+         file="geometry-core/panel_layout_math.h",
+         old="{ return panel_layout_body(anchor,panel,gap,k)+panel+gap/2; }",
+         new="{ return panel_layout_body(anchor,panel,gap,k)+panel; }"),
     dict(id="M54", desc="D10a：產生條件由嚴格小於放寬成小於等於(多出尾端一條)",
          old="            if (gap_hi >= hi) {",
          new="            if (gap_hi > hi) {"),

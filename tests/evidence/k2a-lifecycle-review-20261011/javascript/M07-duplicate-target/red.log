@@ -1,0 +1,28 @@
+TAP version 13
+# Subtest: M07 non-orphan target uniqueness rejects the entire collection; orphans do not reserve targets
+not ok 1 - M07 non-orphan target uniqueness rejects the entire collection; orphans do not reserve targets
+  ---
+  duration_ms: 5.761252
+  type: 'test'
+  location: '/tmp/k2aa-mutations-review/M07-duplicate-target/tests/test_grid_drafts_collection.js:21:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (/tmp/k2aa-mutations-review/M07-duplicate-target/tests/test_grid_drafts_collection.js:23:10)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.start (node:internal/test_runner/test:1242:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 113.258433

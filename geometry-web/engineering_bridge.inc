@@ -16,14 +16,16 @@ static bool eng_definition_hash(const World *w,char hash[65])
 }
 static void json_engineering_capabilities(const World *w)
 {
+    /* panel-fill/1 is required by scenes holding finish surfaces (I56 adds its two prerequisites), but it is not
+     * advertised as supported: PF-1 implements only the finish-surface records, and I32 forbids claiming the
+     * whole capability.  panel-fill-native/1 + panel-fill-read report the supported subset. */
+    bool fs=fs_used(w),eng=engineering_used(w)||fs,par=w->parameters.card_count||fs,first=true;
+    const struct {bool used;const char *name;} required[]={{eng,"engineering-spec/1"},{par,"parameters/1"},{assembly_used(w),ASM_CAPABILITY},
+        {w->assembly.instance_count!=0,ASM_GENERATION_CAPABILITY},{grid_subdivision_used(w),GRID_SUBDIVISION_CAPABILITY},{sp_used(w),SP_CAPABILITY},{fs,FS_CAPABILITY}};
     fputs("\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\"],\"required_capabilities\":[",stdout);
-    if(engineering_used(w))js_string("engineering-spec/1");
-    if(w->parameters.card_count){if(engineering_used(w))putchar(',');js_string("parameters/1");}
-    if(assembly_used(w)){if(engineering_used(w)||w->parameters.card_count)putchar(',');js_string(ASM_CAPABILITY);}
-    if(w->assembly.instance_count){if(engineering_used(w)||w->parameters.card_count||assembly_used(w))putchar(',');js_string(ASM_GENERATION_CAPABILITY);}
-    if(grid_subdivision_used(w)){if(engineering_used(w)||w->parameters.card_count||assembly_used(w)||w->assembly.instance_count)putchar(',');js_string(GRID_SUBDIVISION_CAPABILITY);}
-    if(sp_used(w)){if(engineering_used(w)||w->parameters.card_count||assembly_used(w)||w->assembly.instance_count||grid_subdivision_used(w))putchar(',');js_string(SP_CAPABILITY);}putchar(']');
-    fputs(",\"native_capabilities\":[\"section-profile-native/1\"]",stdout);
+    for(size_t i=0;i<sizeof required/sizeof required[0];++i)if(required[i].used){if(!first)putchar(',');first=false;js_string(required[i].name);}
+    putchar(']');
+    fputs(",\"native_capabilities\":[\"section-profile-native/1\",\"" FS_NATIVE_CAPABILITY "\"]",stdout);
 }
 static void json_engineering_sources(const World *w)
 {
@@ -35,6 +37,7 @@ static void json_engineering_sources(const World *w)
     }putchar(']');
 }
 static void json_assembly_state(const World *w,bool geometry);
+static void json_panel_fill_state(const World *w);
 static void json_engineering_state(const World *w,bool geometry)
 {
     putchar('{');json_engineering_capabilities(w);fputs(",\"specs\":[",stdout);
@@ -57,7 +60,9 @@ static void json_engineering_state(const World *w,bool geometry)
         fputs("],\"datums\":[",stdout);for(size_t i=0;i<w->datum_count;++i){const DatumPlane *d=&w->datums[i];printf("%s{\"id\":%u,\"position\":%lld,\"expression\":",i?",":"",d->id,(long long)d->position);js_string(d->expression);putchar('}');}
         fputs("],\"guides\":[",stdout);for(size_t i=0;i<w->guide_count;++i){if(i)putchar(',');json_reference_guide(w,i);}
         fputs("],\"timbers\":[",stdout);for(size_t i=0;i<w->timber_count;++i){printf("%s{\"id\":%u,\"role\":",i?",":"",w->timbers[i].id);js_string(timber_role_name(w->timbers[i].role));fputs(",\"geometry\":",stdout);json_reference_geometry(w,(int)i);putchar('}');}fputs("]}",stdout);
-    }putchar('}');
+    }
+    if(w->finish_surfaces.fill_count){fputs(",\"panelFill\":",stdout);json_panel_fill_state(w);}
+    putchar('}');
 }
 static void cmd_engineering_read(void)
 {
@@ -97,8 +102,10 @@ static void batch_preview(const char *path,const char *schema_name,const char *s
     int count=eng_json_size(&j,operations);if(count<1||count>ENG_OPERATION_MAX){eng_bridge_error("CAPACITY","Transaction needs 1..256 operations");eng_json_free(&j);free(text);return;}
     World *candidate=malloc(sizeof *candidate);if(!candidate){eng_bridge_error("MEMORY",memory_message);eng_json_free(&j);free(text);return;}*candidate=g_world;
     g_engineering_error[0]=0;g_scene_last_error[0]=0;g_reference_issue_count=0;bool ok=true;
+    g_deleted_field_count=0;g_deleted_fields_token=0;
     for(int i=0;i<count&&ok;++i){
         ok=operation(candidate,&j,eng_json_at(&j,operations,i));
+        if(ok)receipt_scan_candidate(candidate);
         if(ok)ok=assembly_versions_immutable(&g_world,candidate);
     }
     if(ok&&!parameter_retirements_valid(candidate))ok=eng_fail(g_parameter_error);
@@ -107,14 +114,15 @@ static void batch_preview(const char *path,const char *schema_name,const char *s
         g_subgrid_before=&g_world;ok=world_revalidate(candidate);g_subgrid_before=previous;g_reference_capturing=capturing;
         if(!ok){*candidate=g_reference_trial;if(!g_engineering_error[0])eng_fail(g_revalidate_error[0]?g_revalidate_error:"I35: candidate geometry is invalid");}}
     for(size_t i=0;i<candidate->timber_count&&ok;++i)if(!candidate->timbers[i].placed){ok=eng_fail("I9: candidate still contains an unplaced timber");}
-    char *stage_label=(char *)label;reference_stage(&g_world,candidate,&stage_label,1,ok);g_preview.engineering_batch=true;g_preview.assembly_batch=kind==1;g_preview.profile_batch=kind==2;
+    char *stage_label=(char *)label;reference_stage(&g_world,candidate,&stage_label,1,ok);g_preview.engineering_batch=true;g_preview.assembly_batch=kind==1;g_preview.profile_batch=kind==2;g_preview.finish_batch=kind==3;
+    g_deleted_fields_token=g_preview.token;
     if(!ok)g_preview.assembly_diagnostic=g_asm_diagnostic;
     fputs("{\"ok\":true,\"preview\":",stdout);write_preview();fputs("}\n",stdout);
     free(candidate);eng_json_free(&j);free(text);
 }
 static bool batch_token_kind(int kind)
 {
-    return g_preview.engineering_batch && (kind==2?g_preview.profile_batch:kind==1?g_preview.assembly_batch:!g_preview.assembly_batch&&!g_preview.profile_batch);
+    return g_preview.engineering_batch && (kind==3?g_preview.finish_batch:kind==2?g_preview.profile_batch:kind==1?g_preview.assembly_batch:!g_preview.assembly_batch&&!g_preview.profile_batch&&!g_preview.finish_batch);
 }
 static void batch_confirm(const char *arg,int kind,const char *token_message,const char *stale_message)
 {
@@ -128,7 +136,7 @@ static void batch_confirm(const char *arg,int kind,const char *token_message,con
     if(changed){history_record(&g_world);history_restore_world(&g_world,&g_preview.after);++g_definition_revision;}
     g_preview.ready=false;char hash[65];bool hashed=eng_definition_hash(&g_world,hash);
     printf("{\"ok\":true,\"history_changed\":%s,\"revision\":%llu,\"before_revision\":%llu,\"transaction_id\":%u",changed?"true":"false",(unsigned long long)g_definition_revision,(unsigned long long)before,token);
-    if(hashed)printf(",\"definition_sha256\":\"%s\"",hash);fputs("}\n",stdout);
+    if(hashed)printf(",\"definition_sha256\":\"%s\"",hash);json_deleted_objects(&g_preview.before,false);fputs("}\n",stdout);
 }
 static void batch_cancel(const char *arg,int kind,const char *token_message)
 {

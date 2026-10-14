@@ -1,0 +1,28 @@
+{
+  "command": [
+    "python",
+    "/tmp/k2aa-runall-isolated.py",
+    "--build",
+    "--update-expected"
+  ],
+  "exit": 1,
+  "wrapper_sha256": "1cc3d2de3e4967622a9dc5921135fed3622b1760d83209f928213d71b9648d60",
+  "before": {
+    "geometry-web/feature-attachments.js": "e4a92fcfd63f5ffd43fb9c7f046049d1332fa04e9ec414fe8020541467e5b659",
+    "geometry-web/reference-workspace.js": "346efc7f266b836f3454ed993ccb30bd7ebdaee4fa844a22849108feecafcf49",
+    "tests/run_all.py": "d98f78caad5e0c7ac31928e7d3bf986cc138ca7987c73eb81ac0bafc0f0b3e20",
+    "tests/test_grid_drafts_lifecycle_capacity.js": "5a6725f27eaa5566d7629deef487a69919112a9021eb11dc5e7f934f1583e386",
+    "tests/test_reference_workspace_races.js": "86adacd37827d2b6ad9c469a9dfa37447c38567f2f6ec7eec60f3f284d49fd3a",
+    "current_geometry.c": "4130623fce97cefd03e3b8534636b9ddb8d8b109875262239f1726bdae6b4aa8",
+    "tests/mutants_results.json": "3065fc03773c326b9256a7ffeb05cd602cd254dcab2d267626abc42101f38392"
+  },
+  "after": {
+    "geometry-web/feature-attachments.js": "e4a92fcfd63f5ffd43fb9c7f046049d1332fa04e9ec414fe8020541467e5b659",
+    "geometry-web/reference-workspace.js": "346efc7f266b836f3454ed993ccb30bd7ebdaee4fa844a22849108feecafcf49",
+    "tests/run_all.py": "d98f78caad5e0c7ac31928e7d3bf986cc138ca7987c73eb81ac0bafc0f0b3e20",
+    "tests/test_grid_drafts_lifecycle_capacity.js": "5a6725f27eaa5566d7629deef487a69919112a9021eb11dc5e7f934f1583e386",
+    "tests/test_reference_workspace_races.js": "86adacd37827d2b6ad9c469a9dfa37447c38567f2f6ec7eec60f3f284d49fd3a",
+    "current_geometry.c": "4130623fce97cefd03e3b8534636b9ddb8d8b109875262239f1726bdae6b4aa8",
+    "tests/mutants_results.json": "3065fc03773c326b9256a7ffeb05cd602cd254dcab2d267626abc42101f38392"
+  }
+}

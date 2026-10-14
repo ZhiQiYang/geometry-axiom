@@ -1088,6 +1088,7 @@ typedef enum {
 #include "geometry-core/engineering_types.h"
 #include "geometry-core/assembly_types.h"
 #include "geometry-core/section_profile_types.h"
+#include "geometry-core/finish_surface_types.h"
 
 typedef struct {
     GuideLineId id;
@@ -1401,6 +1402,7 @@ typedef struct {
     unsigned divisions[2];
 } ReferenceGrid;
 
+#include "geometry-core/panel_layout_math.h"
 #include "geometry-core/grid_lattice.inc"
 
 static bool grid_coord_list_is_valid(const Coord coords[], size_t count)
@@ -1498,7 +1500,7 @@ static bool grid_axis_lines(
          * 產生條件 a+(k+1)·T < hi——整條縫落在範圍內，且其後仍有非空的面材本體。
          * 不滿足就停：末端是裁切片，合法，不因「除不盡」而拒絕。
          */
-        const Coord T = def->panel + def->gap;
+        const Coord T = panel_layout_pitch(def->panel,def->gap);
 
         if (def->panel <= 0 || def->gap < 0 ||
             def->anchor < lo || def->anchor >= hi) {
@@ -1525,8 +1527,7 @@ static bool grid_axis_lines(
                 return false;
             }
 
-            out[n++] = def->anchor + (Coord)k * T
-                     + def->panel + def->gap / 2;
+            out[n++] = panel_layout_center(def->anchor,def->panel,def->gap,(int64_t)k);
         }
     } else {
         if (err != NULL) {
@@ -3785,6 +3786,7 @@ typedef struct World {
     AssemblyState assembly;
     EngineeringState engineering;
     ParameterState parameters;
+    FinishSurfaceState finish_surfaces;   /* D41 finish surfaces (panel-fill/1, PF-1) */
 } World;
 
 static const GridSystem *world_find_grid_system(const World *w,uint32_t id)
@@ -3839,6 +3841,7 @@ static bool eng_object_bound(const World *,int,uint32_t);
 static uint64_t g_definition_revision;
 static char g_engineering_error[256];
 static bool sp_rebuild(World *,char *,size_t);
+static bool fs_rebuild(World *,char *,size_t);
 static void sp_capture_diagnostics(World *);
 static bool assembly_rebuild(World *,char *,size_t);
 static bool assembly_owned(const World *,uint32_t);
@@ -8680,6 +8683,9 @@ static bool world_revalidate_candidate(World *world,World *candidate)
     if (!sp_rebuild(candidate,grid_error,sizeof grid_error)) {
         set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
     }
+    if (!fs_rebuild(candidate,grid_error,sizeof grid_error)) {
+        set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
+    }
     if (!grid_systems_rebuild(candidate,grid_error,sizeof grid_error)) {
         set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
     }
@@ -10077,6 +10083,8 @@ static bool apply_move_line(const char *p, int n, char **t, int c, World *w)
 #include "geometry-core/assembly.inc"
 #include "geometry-core/assembly_generation.inc"
 #include "geometry-core/section_profiles.inc"
+#include "geometry-core/finish_surfaces.inc"
+#include "geometry-core/panel_fill_layout.inc"
 
 
 /* space <id> boundary <面id> <面id> [面id ...]：建構子吃邊界面清單，
@@ -11082,17 +11090,17 @@ static bool proj_rebind_aux(
     for (size_t i=0;i<source.guide_count;++i) {
         if (source.guides[i].placement_id!=old_pl->id) continue;
         GuideLine keep,other;
-        bool k=reference_fragment_candidate(&source,old_pl->id,old_pl->id,false,i,&keep,NULL,NULL);
-        bool n=reference_fragment_candidate(&source,old_pl->id,new_pl_id,false,i,&other,NULL,NULL);
-        if (!k && !n) return false;
+        int k=reference_fragment_candidate(&source,old_pl->id,old_pl->id,false,i,&keep,NULL,NULL);
+        int n=reference_fragment_candidate(&source,old_pl->id,new_pl_id,false,i,&other,NULL,NULL);
+        if (k<0 || n<0 || (!k && !n)) return false;
         world->guides[i]=k?keep:other;
     }
     for (size_t i=0;i<source.timber_count;++i) {
         if (!source.timbers[i].placed || source.anchors[i].placement_id!=old_pl->id) continue;
         Timber keep,other; TimberAnchor ka,na;
-        bool k=reference_fragment_candidate(&source,old_pl->id,old_pl->id,true,i,NULL,&keep,&ka);
-        bool n=reference_fragment_candidate(&source,old_pl->id,new_pl_id,true,i,NULL,&other,&na);
-        if (!k && !n) return false;
+        int k=reference_fragment_candidate(&source,old_pl->id,old_pl->id,true,i,NULL,&keep,&ka);
+        int n=reference_fragment_candidate(&source,old_pl->id,new_pl_id,true,i,NULL,&other,&na);
+        if (k<0 || n<0 || (!k && !n)) return false;
         world->timbers[i]=k?keep:other;
         world->anchors[i]=k?ka:na;
     }
@@ -11644,6 +11652,15 @@ static bool apply_delete_line(
 
     const char *kind = tokens[1];
     if (!strcmp(kind,"timber") && assembly_owned(world,id)) { scene_error(path,line_no,"I42: delete the owning assembly instance"); return false; }
+    uint32_t finish_owner = fs_reference_owner(world, kind, id);
+    if (finish_owner != 0) {
+        char message[256];
+        snprintf(message, sizeof message,
+                 "I55: %s %u is still referenced by finish surface %u; edit or delete that finish surface "
+                 "through panel-fill-preview/confirm first", kind, (unsigned)id, (unsigned)finish_owner);
+        scene_error(path, line_no, message);
+        return false;
+    }
     World backup = *world;
 
     if (strcmp(kind, "boundary") == 0) {
@@ -12251,6 +12268,7 @@ static void world_dump_dsl(const World *world, FILE *out)
 
     assembly_dump(world,out);
     sp_dump(world,out);
+    fs_dump(world,out);
     /* 畫布座標最後寫：它引用的物件要先存在。 */
     for (size_t i = 0; i < world->canvas_pos_count; ++i) {
         const CanvasPos *p = &world->canvas_pos[i];
@@ -12377,6 +12395,8 @@ static const struct {
     { "grid-system", 10, SCENE_MAX_TOKENS, false, "grid-system id name-hex utf8hex main-along u|v|none u definition v definition", apply_grid_system_line },
     { "owned", 5, 20, false, "owned timber|place instance member native-arguments", apply_assembly_owned_line },
     { "section-profile", 3, 3, false, "section-profile profile|member|run base64-json (atomic scene only)", apply_section_profile_line },
+    { "panel-fill", 4, 4, false, "panel-fill id definition-hex HEX (atomic scene only)", apply_panel_fill_line },
+    { "finish-surface", 19, SCENE_MAX_TOKENS, false, "finish-surface id on boundary B origin x y z u A v A n A side +n|-n [obstacles c<id>|b<id> ...] name-hex HEX (atomic scene only)", apply_finish_surface_line },
     { "assembly", 2, 3, false, "assembly begin|record|data|commit|end", apply_assembly_line },
     { "parameters", 2, 3, false, "parameters begin|card|field|end", apply_parameters_line },
     { "requires", 2, 2, false, "requires engineering-spec/1", apply_requires_line },
@@ -12539,6 +12559,7 @@ static bool parse_scene_file(const char *path, World *out_world)
     memset(g_rule_scene_highwater,0,sizeof g_rule_scene_highwater);
     g_rule_scene_required=false;
     sp_scene_required=false;
+    fs_scene_required=false; fs_scene_engineering=false; fs_scene_parameters=false;
     g_rule_scene_encountered=false;
     g_parameter_scene_loading = true;
 
@@ -12640,6 +12661,7 @@ static bool parse_scene_file(const char *path, World *out_world)
 
     if (ok && !grid_rules_scene_integrity(out_world)) { scene_error(path,line_no,"I25a: source rule capability/highwater closure missing"); ok=false; }
     if (ok && !assembly_generation_integrity(out_world)) { scene_error(path,line_no,g_engineering_error); ok=false; }
+    if (ok && !fs_scene_integrity()) { scene_error(path,line_no,"I56: panel-fill/1 also requires engineering-spec/1 and parameters/1 declarations"); ok=false; }
 
     /* 全部擋面就位後才重驗（grid-ref / I19 / I23 都走這裡），失敗整份拒絕。 */
     if (ok && !world_revalidate(out_world)) {

@@ -14,6 +14,7 @@ import sys
 import tempfile
 import unittest
 from unittest import mock
+from zipfile import ZipFile
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -87,7 +88,7 @@ class SectionProfileModeling(unittest.TestCase):
     def mesh(self, obj, volume, bounds=None):
         self.assertEqual(obj["status"], "COMPLETE")
         self.assertEqual(obj["closure"], "closed")
-        self.assertEqual(obj["volume_mm3"], str(volume))
+        self.assertEqual(obj["volume_mm3"], str(volume), "R37: exact mesh volume of the %s object" % obj.get("section_profile", {}).get("kind"))
         self.assertEqual(signed_volume6(obj), 6 * volume)
         self.assertEqual(len(obj["boundary_shells"]), 1)
         self.assertEqual(obj["boundary_shells"][0]["role"], "outer")
@@ -102,7 +103,7 @@ class SectionProfileModeling(unittest.TestCase):
         if bounds is not None:
             actual = [[min(p[i] for p in obj["vertices_mm"]) for i in range(3)],
                       [max(p[i] for p in obj["vertices_mm"]) for i in range(3)]]
-            self.assertEqual(actual, bounds)
+            self.assertEqual(actual, bounds, "R36/R37: bounds of the %s object" % obj.get("section_profile", {}).get("kind"))
             self.assertEqual(obj["section_profile"]["bounds_mm"], bounds)
 
     def test_three_timber_members_and_actual_concave_reference_envelope(self):
@@ -121,7 +122,7 @@ class SectionProfileModeling(unittest.TestCase):
             if identifier is None:
                 self.mesh(obj, 84960000, [[0, 0, 0], [400, 250, 2400]])
                 self.assertEqual((obj["role"], obj["member_path"], details["kind"], details["material_volume_mm3"]),
-                                 ("reference", [], "envelope", "0"))
+                                 ("reference", [], "envelope", "0"), "R37/R39: the envelope is a reference object and carries no material volume")
                 self.assertIsNone(details["dimensions_mm"])
                 self.assertTrue(all(not (v[0] > 60 and v[1] > 60) for v in obj["vertices_mm"]))
             else:
@@ -333,6 +334,65 @@ class SectionProfileModeling(unittest.TestCase):
         with self.assertRaises(ModelError) as caught:
             verify_package(package, base_executable=self.base)
         self.assertEqual(caught.exception.code, "AXIOM_VERSION")
+
+    def test_q23_q38_legacy_project_and_profile_packages_reopen_unchanged(self):
+        # Frozen outputs from the actual pre-PF0 Q38 producer, not current
+        # packages with their version fields replaced. See fixture provenance.
+        sys.path.insert(0, str(ROOT / "geometry-web"))
+        import space_modeling
+        path = ROOT / "tests/fixtures/q38-legacy-space-model.json"
+        fixture_bytes = path.read_bytes()
+        fixture = json.loads(fixture_bytes)
+        version = ("3ad8012b6f01f9f46795a28a410ee444c5cce1a0",
+                   "29ad0c657e53d364347862fddac23ba26a248a4fd8f83487d86f9e648bd1eaf2")
+        self.assertEqual((fixture["axiom_revision"], fixture["axiom_sha256"]), version)
+        self.assertEqual(fixture["producer_head"], "6a8c2fac3f220ea4e76139da7c232a658dfebf16")
+        with ZipFile(path.with_suffix(".gcanvas")) as archive:
+            manifest = json.loads(archive.read("manifest.json"))
+            self.assertEqual(manifest["format"], "geometry-canvas/16")
+            self.assertIn("section-profile/1", manifest["requiredCapabilities"])
+            self.assertEqual(manifest["models"], [fixture["model"]])
+            self.assertEqual(archive.read("world.scene").decode(), fixture["scene"])
+
+        saved = fixture["model"]
+        self.assertEqual(saved["input"]["base_scene"], fixture["scene"])
+        self.assertNotIn("profile_runs", saved["input"])
+        self.assertNotIn("profile_runs", saved["result"])
+        self.assertEqual(saved["result"]["schema"], "geometry-space-preview/1")
+        self.assertEqual(saved["result"]["summary"]["volume_mm3"], "54000000000")
+        profile_lines = [line for line in fixture["scene"].splitlines() if line.startswith("section-profile ")]
+        self.assertEqual(len(profile_lines), 6)  # One profile, three members, two runs.
+        packages = [fixture["run_package"]] + [saved["result"][key] for key in ("space", "volume", "clearance", "walls")]
+        for package in packages:
+            with self.subTest(roots=package["request"]["roots"]):
+                metadata = package["manifest"]
+                self.assertEqual((metadata["axiom_revision"], metadata["axiom_sha256"]), version)
+                self.assertIn("section-profile/1", metadata["capabilities"])
+                self.assertEqual([line for line in package["definitions"]["base_scene"].splitlines()
+                                  if line.startswith("section-profile ")], profile_lines)
+                original_package = deepcopy(package)
+                rebuilt = verify_package(package, base_executable=self.base)
+                # I31/R30 preserve source and derived semantics. verify_package
+                # returns the current generator's rebuilt package, so exactly
+                # its two axiom-version fields change; every other field stays.
+                expected_rebuilt = deepcopy(package)
+                expected_rebuilt["manifest"]["axiom_revision"] = modeling.AXIOM_REVISION
+                expected_rebuilt["manifest"]["axiom_sha256"] = modeling.AXIOM_SHA256
+                self.assertEqual(rebuilt, expected_rebuilt)
+                self.assertEqual(package, original_package, "verification rewrote the frozen input package")
+        self.assertEqual(sum(int(obj["section_profile"]["material_volume_mm3"])
+                             for obj in fixture["run_package"]["derived"]["objects"]), 6415200)
+        self.assertEqual(space_modeling.replay_stored(saved["input"], saved["result"], base_executable=self.base), saved["result"])
+
+        # Keeping genuine Q38 inputs readable must not admit unknown versions or
+        # versions from before section-profile support.
+        for rejected in (("1" * 40, "2" * 64), next(iter(modeling.PRE_SECTION_PROFILE_AXIOM_VERSIONS))):
+            invalid = deepcopy(fixture["run_package"])
+            invalid["manifest"]["axiom_revision"], invalid["manifest"]["axiom_sha256"] = rejected
+            with self.subTest(rejected=rejected), self.assertRaises(ModelError) as caught:
+                verify_package(invalid, base_executable=self.base)
+            self.assertEqual(caught.exception.code, "AXIOM_VERSION")
+        self.assertEqual(path.read_bytes(), fixture_bytes)
 
     def test_tampered_identity_bounds_volume_or_vertices_fail_reconstruction(self):
         original = self.build()

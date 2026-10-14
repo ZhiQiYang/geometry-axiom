@@ -1,0 +1,12 @@
+{
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+  "python": "3.12.14",
+  "gcc": "gcc (Debian 14.2.0-19) 14.2.0",
+  "stack_kib": 16384,
+  "base_main": "e95437877ed15e819fdd3dba3ce5a9d43b84eeda",
+  "core_fixture_runner": "tests/run_tests.py",
+  "native_aggregate_runner": "tests/run_all.py --build",
+  "initial_incomplete_run_exit": 143,
+  "initial_reason": "Missing --build; explicitly stopped own incomplete-setup run; retained log, not a pass",
+  "proposal_sha256": "909934d423a8ba4d2f9b9ebd67677e6f29e4cf02e5e9050a3875ed4d54f578e3"
+}

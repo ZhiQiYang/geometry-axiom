@@ -19,6 +19,8 @@ from modeling.common import canonical_bytes, digest, scene_required_capabilities
 LEGACY_VERSION = ("494660068ceb884c1a96884a2b704e3bcf5d24ca", "bc01cf0db266f97255156e28e40fb235833031fb95f1f234ad6d90a9f08240f8")
 ENGINEERING_VERSION = ("5698f8501d539ed3a6f0644dab854e62e3bafb1a", "1843e3e9f6a3a6db07ceaa8f62fad693039296d519791af98c2a433554308bcf")
 FINITE_GRID_VERSION = ("b4fe75f7f03ed81b4bc9f85a044282f91bd27cb6", "2d31868524cb2776c2c405367fa69087b8f43371f320f12f3405fb14ce9fdf28")
+CLARIFIED_MAIN_VERSION = ("a393a0f01284433ca20fe8b10d9f21111026e7f1", "b06ffecf4f3b7a907a50d329f2073799d9514daa26b9056380f62ad37e5725ee")
+K3_MAIN_VERSION = ('d1db88ae99ca9b6858b0ada34d082e902f00c9f9', '9d4f90aacbc863941c1065a6b962f760e7e842c4d7dda55a56c4dc321f9a0f93')
 CASE = json.loads((ROOT / "geometry-core/modeling-cases.json").read_text())["cases"][0]
 
 
@@ -61,6 +63,86 @@ class EngineeringAdapterProtocol(unittest.TestCase):
 class EngineeringModelCompatibility(unittest.TestCase):
     def build(self):
         return build_package(deepcopy(CASE["definitions"]), deepcopy(CASE["request"]))
+
+    def saved_main_package(self):
+        # Unmodified build_package output from main 2004c6c; see fixture provenance.
+        package = json.loads((ROOT / "tests/fixtures/model-package-main-a393a0f0.json").read_bytes())
+        manifest = package["manifest"]
+        self.assertEqual((manifest["axiom_revision"], manifest["axiom_sha256"]),
+                         CLARIFIED_MAIN_VERSION)
+        return package
+
+    def test_released_main_package_reopens_and_rebuilds_geometry(self):
+        package = self.saved_main_package()
+        original = deepcopy(package)
+        try:
+            rebuilt = verify_package(package)
+        except ModelError as exc:
+            self.fail("released main package must reopen and rebuild: "
+                      f"{exc.status}/{exc.code} ({exc.clause})")
+        self.assertEqual(package, original, "opening must preserve the saved package")
+        for key in ("definitions", "request", "derived"):
+            self.assertEqual(rebuilt[key], original[key], key)
+        self.assertEqual(rebuilt["manifest"]["geometry_sha256"],
+                         original["manifest"]["geometry_sha256"])
+        self.assertEqual(rebuilt["manifest"]["capabilities"],
+                         original["manifest"]["capabilities"])
+        self.assertEqual(rebuilt["manifest"]["axiom_revision"], modeling.AXIOM_REVISION)
+        self.assertNotIn("identity-ledger/1", rebuilt["manifest"]["capabilities"])
+
+    def test_released_k3_profile_package_reopens_and_rebuilds_geometry(self):
+        # Unmodified build_package output from released main caf49852.
+        package = json.loads((ROOT / "tests/fixtures/model-package-main-d1db88ae-profile.json").read_bytes())
+        manifest = package["manifest"]
+        self.assertEqual((manifest["axiom_revision"], manifest["axiom_sha256"]), K3_MAIN_VERSION)
+        self.assertIn("section-profile/1", manifest["capabilities"])
+        self.assertIn("requires section-profile/1", package["definitions"]["base_scene"])
+        original = deepcopy(package)
+        try:
+            rebuilt = verify_package(package)
+        except ModelError as exc:
+            self.fail("released K3 profile package must reopen and rebuild: "
+                      f"{exc.status}/{exc.code} ({exc.clause})")
+        self.assertEqual(package, original, "opening must preserve the saved K3 package")
+        for key in ("definitions", "request", "derived"):
+            self.assertEqual(rebuilt[key], original[key], key)
+        for key in ("geometry_sha256", "capabilities"):
+            self.assertEqual(rebuilt["manifest"][key], original["manifest"][key], key)
+        self.assertEqual(rebuilt["manifest"]["axiom_revision"], modeling.AXIOM_REVISION)
+        self.assertEqual(rebuilt["manifest"]["axiom_sha256"], modeling.AXIOM_SHA256)
+        self.assertNotIn("identity-ledger/1", rebuilt["manifest"]["capabilities"])
+        for version in ((K3_MAIN_VERSION[0], modeling.AXIOM_SHA256),
+                        (modeling.AXIOM_REVISION, K3_MAIN_VERSION[1])):
+            altered = deepcopy(package)
+            altered["manifest"]["axiom_revision"], altered["manifest"]["axiom_sha256"] = version
+            with self.subTest(version=version), self.assertRaises(ModelError) as caught:
+                verify_package(altered)
+            self.assertEqual(caught.exception.code, "AXIOM_VERSION")
+
+    def test_released_main_package_rejects_rehashed_false_geometry(self):
+        package = self.saved_main_package()
+        package["derived"]["objects"][0]["vertices_mm"][0][0] += 1
+        package["manifest"]["geometry_sha256"] = digest(package["derived"])
+        with self.assertRaises(ModelError) as caught:
+            verify_package(package)
+        self.assertEqual(caught.exception.code, "SNAPSHOT_MISMATCH")
+
+    def test_released_main_package_does_not_gain_identity_capability(self):
+        package = self.saved_main_package()
+        package["definitions"]["base_scene"] += "requires identity-ledger/1\n"
+        package["manifest"]["source_sha256"] = digest(package["definitions"])
+        with self.assertRaises(ModelError) as caught:
+            verify_package(package)
+        self.assertEqual(caught.exception.code, "CAPABILITY")
+
+    def test_released_main_revision_requires_its_exact_hash_pair(self):
+        for version in ((CLARIFIED_MAIN_VERSION[0], modeling.AXIOM_SHA256),
+                        (modeling.AXIOM_REVISION, CLARIFIED_MAIN_VERSION[1])):
+            package = self.saved_main_package()
+            package["manifest"]["axiom_revision"], package["manifest"]["axiom_sha256"] = version
+            with self.subTest(version=version), self.assertRaises(ModelError) as caught:
+                verify_package(package)
+            self.assertEqual(caught.exception.code, "AXIOM_VERSION")
 
     def test_legacy_definitions_do_not_gain_engineering_capability(self):
         package = self.build()

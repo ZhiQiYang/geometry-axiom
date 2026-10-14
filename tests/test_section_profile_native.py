@@ -79,7 +79,7 @@ class SectionProfileNative(unittest.TestCase):
 
     def apply(self, operations):
         preview = self.preview(operations)
-        self.assertTrue(preview["valid"], preview)
+        self.assertTrue(preview["valid"], "expected the candidate to be accepted: %s" % preview)
         done = self.command(f'section-profile-confirm {preview["token"]}')
         self.assertTrue(done["ok"], done)
         return preview, done
@@ -87,8 +87,8 @@ class SectionProfileNative(unittest.TestCase):
     def reject(self, operations, reason):
         before = self.snapshot()
         preview = self.preview(operations)
-        self.assertFalse(preview["valid"], preview)
-        self.assertIn(reason, json.dumps(preview, ensure_ascii=False))
+        self.assertFalse(preview["valid"], "expected rejection %r but the candidate was accepted: %s" % (reason, preview))
+        self.assertIn(reason, json.dumps(preview, ensure_ascii=False), "rejected, but not for %r" % reason)
         self.assertFalse(self.command(f'section-profile-confirm {preview["token"]}')["ok"])
         self.assertEqual(before, self.snapshot())
         return preview
@@ -247,6 +247,20 @@ class SectionProfileNative(unittest.TestCase):
         for vertices in (outline, list(reversed(outline))):
             self.apply([put("profile", profile(outline=vertices))])
             self.reject([put("member", member(u=20, v=20, A=literal(60), B=literal(60)))], "V_PROFILE_OUTSIDE")
+            # I44/D35: every corner of these rectangles lies on an outline edge and no edge crosses their interior,
+            # yet each one fills the notch, i.e. lies wholly outside F.
+            for u0, v0, a, b, region in ((40, 50, 20, 20, [40, 50, 60, 70]), (40, 40, 20, 60, [40, 40, 60, 100]),
+                                         (40, 60, 20, 40, [40, 60, 60, 100])):
+                preview = self.reject([put("member", member(u=u0, v=v0, A=literal(a), B=literal(b)))], "V_PROFILE_OUTSIDE")
+                self.assertEqual([[region]], [v["outsideRegions"] for v in preview["violations"] if v["code"] == "V_PROFILE_OUTSIDE"])
+            # Touching the notch edge from the material side is contained (closed region), not outside.
+            for u0, v0, a, b in ((40, 0, 20, 40), (0, 40, 40, 60), (60, 40, 40, 60)):
+                self.apply([put("member", member(u=u0, v=v0, A=literal(a), B=literal(b)))])
+                self.apply([{"op": "delete-member", "id": 1}])
+        opens_right = [[0, 0], [100, 0], [100, 40], [30, 40], [30, 70], [100, 70], [100, 100], [0, 100]]
+        self.apply([put("profile", profile(outline=opens_right))])
+        preview = self.reject([put("member", member(u=50, v=40, A=literal(30), B=literal(20), orientation="A-v"))], "V_PROFILE_OUTSIDE")
+        self.assertEqual([[[50, 40, 70, 70]]], [v["outsideRegions"] for v in preview["violations"] if v["code"] == "V_PROFILE_OUTSIDE"])
 
     def test_member_in_notch_with_corners_on_walls_is_outside_i44(self):
         # GEO-257:槽 x∈[40,60]、y∈[40,100] 在輪廓外。成員矩形 [40,60]x[50,70] 四角都落在槽壁上、
@@ -283,12 +297,15 @@ class SectionProfileNative(unittest.TestCase):
         for coordinate in ("1/2", 100000001, True):
             self.reject([put("member", member(u=coordinate))], "I46")
         self.reject([put("member", member(3, 0, 223))], "V_PROFILE_OUTSIDE")
+        self.reject([put("member", member(orientation="A-w"))], "timber orientation must be A-u or A-v")
+        self.reject([put("member", panel(u=0, width=100, orientation="thickness-w"))], "panel orientation must be thickness-v or thickness-u")
+        self.reject([put("member", panel(u=0, width=100, panelSpec="gypsum-board-9"))], "panel requires calcium-silicate-6")
 
     def test_panel_strict_width_fixed_spec_and_long_run(self):
         self.apply([put("profile", profile(outline=[[0, 0], [1000, 0], [1000, 100], [0, 100]])),
                     put("member", panel(u=0, width=914)), put("run", run(length=literal(2000)))])
         p = self.read()["state"]["members"][0]
-        self.assertEqual([0, 0, 914, 6], p["rect"])
+        self.assertEqual([0, 0, 914, 6], p["rect"], "D40/R36: calcium-silicate-6 is 6 mm thick, thickness along v, w=914")
         bounds = self.read()["state"]["runs"][0]["members"][0]["bounds"]
         self.assertEqual([[0, 0, 0], [914, 6, 2000]], bounds)
         self.assertEqual(10968000, 914 * 6 * 2000)
@@ -310,8 +327,14 @@ class SectionProfileNative(unittest.TestCase):
         self.reject([put("run", run(placement={**placement, "origin": [100000000, 0, 0]}))], "I47/I48/D1")
         self.reject([put("run", run(placement={"kind": "simple"}))], "explicit")
         self.reject_fractional_json([put("run", run(length=literal(1.5)))])
-        for length in (0, -1, 100000001):
-            self.reject([put("run", run(length=literal(length)))], "I")
+        for length, reason in ((0, "RUN_LENGTH_INVALID"), (-1, "I35: literal dimension"), (100000001, "I35: literal dimension")):
+            self.reject([put("run", run(length=literal(length)))], reason)
+        # I47/D1: the far end of the run is a generated vertex too; origin alone being legal is not enough.
+        far = {**placement, "origin": [1000, 99998000, 2700]}
+        self.apply([put("run", run(length=literal(2000), placement=far))])
+        self.assertEqual([[1000, 99998000, 2667], [1027, 100000000, 2700]], self.read()["state"]["runs"][0]["members"][0]["bounds"])
+        self.reject([put("run", run(length=literal(2001), placement=far))], "I47/I48/D1")
+        self.reject([put("run", run(length=literal(2000), placement={**far, "origin": [1000, 99998001, 2700]}))], "I47/I48/D1")
 
     def test_atomic_preview_cancel_wrong_kind_stale_undo_redo(self):
         empty = self.command("dump")["text"]
@@ -353,6 +376,9 @@ class SectionProfileNative(unittest.TestCase):
         self.reject([{"op": "put-spec", "name": "A", "value": 28}], "V_PROFILE_OVERLAP")
         self.reject([{"op": "delete-spec", "name": "A"}], "missing")
         self.reject([{"op": "delete-profile", "id": 1}], "I49")
+        self.reject([{"op": "delete-profile", "id": 1}, {"op": "delete-member", "id": 1}, {"op": "delete-member", "id": 2}],
+                    "I49")  # the run still references the profile
+        self.reject([{"op": "delete-profile", "id": 1}, {"op": "delete-run", "id": 1}], "I49")  # the members still do
         before = self.snapshot()
         denied = self.command("line spec A 28")
         self.assertFalse(denied["ok"])
@@ -381,6 +407,7 @@ class SectionProfileNative(unittest.TestCase):
         self.apply([{"op": "publish-material", "value": {**material, "version": 2, "B": 34}}])
         self.assertEqual([0, 0, 33, 27], self.read()["state"]["members"][0]["rect"])
         self.reject([put("member", member(A=a_source, B={**b_source, "field": "A"}))], "D36")
+        self.reject([put("run", run(length={**b_source, "field": "A"}))], "unsupported dimension source")
         for field_type, value in (("count", "27"), ("ratio", "27"), ("dimension", "1.5"), ("dimension", "0")):
             bad = deepcopy(parameter)
             bad["fields"][0].update(type=field_type, input=value)
@@ -409,7 +436,9 @@ class SectionProfileNative(unittest.TestCase):
 
     def test_exact_dump_load_zero_ids_empty_profile_and_fail_closed(self):
         value = profile(0, [[-2, -2], [-1, -2], [-1, -1], [-2, -1]])
-        self.apply([put("profile", value), put("run", run(0, profileId=0, length=literal(100000000))), put("profile", profile(1))])
+        self.apply([put("profile", value), put("member", member(0, -2, -2, profileId=0, A=literal(1), B=literal(1))),
+                    put("run", run(0, profileId=0, length=literal(100000000))), put("profile", profile(1))])
+        self.assertEqual([[-2, -2, -1, -1]], [m["rect"] for m in self.read()["state"]["members"]])
         expected = self.command("dump")["text"]
         path = self.directory / "world.scene"
         path.write_text(expected, encoding="utf-8")
@@ -418,16 +447,28 @@ class SectionProfileNative(unittest.TestCase):
         payloads = [json.loads(base64.b64decode(line.split()[2])) for line in expected.splitlines() if line.startswith("section-profile ")]
         self.assertIn(value, payloads)
         before = self.snapshot()
-        variants = [expected.replace("requires section-profile/1\n", ""),
-                    expected.replace("section-profile/1", "section-profile/99"),
-                    expected + next(line for line in expected.splitlines() if line.startswith("section-profile profile ")) + "\n"]
-        for content in variants:
+        profile_line = next(line for line in expected.splitlines() if line.startswith("section-profile profile "))
+        variants = [("missing requires section-profile/1 marker", expected.replace("requires section-profile/1\n", "")),
+                    ("unknown section-profile/99 capability", expected.replace("section-profile/1", "section-profile/99")),
+                    ("duplicate profile id record", expected + profile_line + "\n")]
+        for label, content in variants:
             path.write_text(content, encoding="utf-8")
-            self.assertFalse(self.command("loadfile " + str(path))["ok"])
+            self.assertFalse(self.command("loadfile " + str(path))["ok"], "I51: a scene with a %s must be rejected" % label)
             self.assertEqual(before, self.snapshot())
+        injected = self.command("line " + profile_line)
+        self.assertFalse(injected["ok"], "I49: section-profile records must not be injected line by line: %s" % injected)
+        self.assertNotIn("preview", injected, "I49: section-profile records must not be injected line by line (not even as a confirmable preview)")
+        self.assertEqual(before, self.snapshot())
         with BridgeSession(self.binary, cwd=self.directory) as fresh:
             path.write_text(expected, encoding="utf-8")
             self.assertTrue(fresh.command("loadfile " + str(path))["ok"])
+            self.assertEqual(expected, fresh.command("dump")["text"])
+            # The declaration stays in force after the load; the atomic-load rule is what still refuses a late record.
+            late = base64.b64encode(json.dumps({"id": 7, "name": "late", "outline": [[0, 0], [10, 0], [10, 10], [0, 10]]},
+                                               separators=(",", ":"), sort_keys=True).encode()).decode()
+            injected = fresh.command("line section-profile profile " + late)
+            self.assertFalse(injected["ok"], "I49: section-profile records must not be injected line by line after a scene load: %s" % injected)
+            self.assertNotIn("preview", injected, "I49: section-profile records must not be injected line by line (not even as a confirmable preview)")
             self.assertEqual(expected, fresh.command("dump")["text"])
 
     def test_each_capacity_rejects_without_partial_writes(self):
@@ -516,7 +557,8 @@ class SectionProfileNative(unittest.TestCase):
         value=run(placement=self.simple())
         self.apply([put("run",value)])
         item=self.read()["state"]["runs"][0]
-        self.assertEqual({"origin":[1000,2000,2700],"U":[1,0,0],"V":[0,0,-1],"N":[0,1,0]},item["frame"])
+        self.assertEqual({"origin":[1000,2000,2700],"U":[1,0,0],"V":[0,0,-1],"N":[0,1,0]},item["frame"],
+                         "R38/AC10: dir=+v, up=+Z, (p,q)=(1000,2000) on the host frame at z=2700")
         self.assertEqual([[1000,2000,2667],[1027,4400,2700]],item["members"][0]["bounds"])
         graph=self.command("source-inspect")
         self.assertFalse(any(e["from"]=="profile-run:1" and e["to"].startswith(("space:","placement:")) for e in graph["edges"]))
@@ -542,6 +584,8 @@ class SectionProfileNative(unittest.TestCase):
         vertical=self.host();vertical["frame"]={"origin":[0,0,0],"U":"+X","V":"+Z","N":"-Y"}
         self.apply([put("run",run(placement=self.simple(vertical,up="+X")))])
         self.assertEqual([0,0,1],self.read()["state"]["runs"][0]["frame"]["N"])
+        far=self.host();far["frame"]["origin"]=[99999999,0,2700]
+        self.reject([put("run",run(placement=self.simple(far)))],"origin exceeds D1")
         bad=self.simple(vertical);del bad["up"]
         self.reject([put("run",run(placement=bad))],"explicit")
 
@@ -555,7 +599,8 @@ class SectionProfileNative(unittest.TestCase):
         self.assertFalse(reply["ok"],reply)
         self.assertTrue(reply["preview"]["valid"],reply)
         self.assertTrue(self.command("line confirm "+str(reply["preview"]["token"]))["ok"])
-        self.assertEqual([1000,2000,2800],self.read()["state"]["runs"][0]["frame"]["origin"])
+        self.assertEqual([1000,2000,2800],self.read()["state"]["runs"][0]["frame"]["origin"],
+                         "R38/R40: O = o_H + p*U_H + q*V_H must follow the live host to z=2800")
         self.assertTrue(self.command("line undo")["ok"])
         self.assertEqual(before,self.read()["state"]["runs"][0])
         self.reject([{"op":"delete-placement","id":9}],"missing or invalid")
@@ -565,7 +610,7 @@ class SectionProfileNative(unittest.TestCase):
         self.assertEqual(before["frame"],detached["frame"])
         self.assertEqual(before["members"],detached["members"])
         self.apply([{"op":"convert-run-to-simple","id":1,"host":host}])
-        self.assertEqual(before,self.read()["state"]["runs"][0])
+        self.assertEqual(before,self.read()["state"]["runs"][0],"D38: advanced->simple must give back the authored live placement")
         self.apply([{"op":"convert-run-to-advanced","id":1},{"op":"delete-placement","id":9}])
         self.assertEqual(detached,self.read()["state"]["runs"][0])
         self.assertTrue(self.command("line undo")["ok"])
@@ -622,7 +667,7 @@ class SectionProfileNative(unittest.TestCase):
         path=self.directory/"snapshot.scene";path.write_text(before[0])
         self.assertTrue(self.command("source-inspect-file "+str(path))["complete"])
         self.assertTrue(self.command("section-profile-confirm "+str(preview["token"]))["ok"])
-        self.assertEqual([1200,2000,2700],self.read()["state"]["runs"][0]["frame"]["origin"])
+        self.assertEqual([1200,2000,2700],self.read()["state"]["runs"][0]["frame"]["origin"],"R38: p=1200 moves the run origin along U_H")
 
     def test_all_cardinal_frames_and_four_host_directions_are_exact(self):
         self.apply([put("profile",profile())])
@@ -638,13 +683,14 @@ class SectionProfileNative(unittest.TestCase):
                     placement=self.simple(host,dir=direction,p=0,q=0,up=nname)
                     self.apply([put("run",run(placement=placement))])
                     state=self.read()["state"]["runs"][0]
-                    self.assertEqual(expected,state["frame"]["N"])
-                    self.assertEqual([-a for a in n],state["frame"]["V"])
-                    self.assertEqual(cross([-a for a in n],expected),state["frame"]["U"])
+                    where="host U=%s V=%s dir=%s up=%s"%(uname,vname,direction,nname)
+                    self.assertEqual(expected,state["frame"]["N"],"R38: N must equal the run direction d ("+where+")")
+                    self.assertEqual([-a for a in n],state["frame"]["V"],"R38: V must be -up ("+where+")")
+                    self.assertEqual(cross([-a for a in n],expected),state["frame"]["U"],"R38: U must be V x N ("+where+")")
                     self.apply([{"op":"convert-run-to-advanced","id":1}])
-                    self.assertEqual(state["frame"],self.read()["state"]["runs"][0]["frame"])
+                    self.assertEqual(state["frame"],self.read()["state"]["runs"][0]["frame"],"D38: simple->advanced must keep the evaluated frame ("+where+")")
                     self.apply([{"op":"convert-run-to-simple","id":1,"host":host}])
-                    self.assertEqual(state,self.read()["state"]["runs"][0])
+                    self.assertEqual(state,self.read()["state"]["runs"][0],"D38: advanced->simple must recover dir/p/q/up ("+where+")")
 
     def test_maximum_pair_diagnostics_and_copied_host_capacity_roundtrip(self):
         self.apply([put("profile",profile())])

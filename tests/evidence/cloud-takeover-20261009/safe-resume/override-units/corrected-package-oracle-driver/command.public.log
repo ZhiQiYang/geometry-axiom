@@ -1,0 +1,38 @@
+✔ explicit pause stores the complete latest metadata/source package and resume attaches it once without native upload/create/close (57.831115ms)
+✔ held strict Resume disarm cannot attach metadata or enable editing before transaction completion (18.041412ms)
+✔ Resume disarm quota abort retains eligible checkpoint but never attaches old metadata (18.629927ms)
+✔ unsupported strict durability never disarms or attaches the saved B package (24.367033ms)
+✔ durably committed disarm with lost local owner acknowledgement leaves no attach and a fresh owner cannot reuse eligibility (13.358632ms)
+✔ ordinary active B debounce never creates Resume qualification and an abrupt reload rejects it (15.963694ms)
+✔ metadata-only edit after Resume keeps identical native fingerprint but old suspend metadata is ineligible on reload (19.104792ms)
+✔ Suspend transaction abort preserves current B metadata and leaves its freeze authoritative (11.430217ms)
+✔ Cancel during package validation wins over an older Resume and preserves checkpoint without attaching it (13.306174ms)
+✔ Finish during package validation wins and an old Resume cannot reopen the retired decision (35.050681ms)
+✔ native fingerprint mismatch rejects before disarm and leaves all stored records unchanged (8.921018ms)
+✔ corrupted complete package rejects without disarm, import or metadata attachment (13.238114ms)
+✔ a second editing epoch can explicitly suspend its new complete metadata before the next Resume (18.509678ms)
+✖ present malformed reserved Resume journals are not treated as absent and overwritten by Suspend (6.779856ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 13
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 339.241151
+
+✖ failing tests:
+
+test at ../scratch/geometry-resume-owner-supplement.cjs:18:23
+✖ present malformed reserved Resume journals are not treated as absent and overwritten by Suspend (6.779856ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (<workspace-path>
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /續接點|損壞|記錄/,
+    operator: 'rejects',
+    diff: 'simple'
+  }

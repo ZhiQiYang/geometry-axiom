@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "python",
+    "-m",
+    "unittest",
+    "-v",
+    "tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_name_capacity_is_not_invalid_and_never_commits",
+    "tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_scene_obstacle_capacity_is_structured_and_atomic"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "returncode": 0,
+  "duration_seconds": 14.36624526977539,
+  "origin": "subprocess.run",
+  "base_head": "26a7c443b9bd10ae036b0956bd99233f594b5395",
+  "sources": {
+    "current_geometry.c": "b3201749c4f535c8b3bf013c97d6b84ab0d4dfb314036530e4896008eb5f6932",
+    "geometry-core/finish_surfaces.inc": "cbd9e429a5b4e138a865af3409c0096c505477615f7a91ccf0a97b9d3d1d2059",
+    "geometry-web/web_bridge.c": "0965ddb13c82e40aec6c5cde58e38f2233cbacb9b71669a8a74c766a06676015",
+    "tests/test_panel_fill_finish_surface.py": "2ff881c12142008ecc16cf741c1f46dde617d290b23b6d14be2fbcbff4643e06"
+  }
+}

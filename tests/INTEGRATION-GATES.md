@@ -328,6 +328,21 @@ temporary-shebang fixture skips。這些沒有平台豁免，Windows strict 會�
 另跑無 scope flag 的 `geometry-web/cdp_test.js`，包括原選取／游標及所有既有共用介面回歸。
 PR #114 正式多房間 owner 與實體 iOS／IME／系統選檔仍須 dot 整合後驗收，不能以本 gate 代替。
 
+## #116 K4 共用選單殼（PR-a）
+
+`tests/test_issue116_canvases_browser.js` 是 K4（#116 其餘畫布）的獨立 gate，PR-a 先建「殼段」，
+游標／物件畫布選單／觸控各段由 PR-b／c／d 接續。與 `tests/test_issue116_browser.js` 同一套隔離規矩
+（隔離 `GEOMETRY_TEST_URL`、TEMP `GEOMETRY_FEEDBACK_DIR`、`NODE_PATH` 指向既有 Playwright）：
+`node tests/test_issue116_canvases_browser.js`；`GEOMETRY_K4_PHASE=characterize` 只跑 A 段（可對抽出前的程式跑，
+產出 `menu-snapshots.sha256` 供前後逐位元比對）；`GEOMETRY_K4_KEEP_GOING=1` 列出全部**行為**失敗項（突變分析用）。
+身分／隔離前置（runtime fresh、runtime root 屬本 worktree、頁面由該 runtime 供應）在任何模式下都是 fail-fast，先於任何 fixture 或命令；
+兩個 phase 共用同一個結算（`settle()`），任何失敗都以非零結束。`GEOMETRY_K4_SELFTEST=fail-check|stale-runtime` 注入刻意失敗以驗證退出碼與 fail-fast。
+a1／b3 只證明「同一次開啟內，情境改變後殼拒絕執行已保存的節點」；不證明更早一次開啟遺留的節點（承襲自抽出前的行為，節點已被 `hide()` 拔掉，沒有使用者路徑），
+不得當成完整的過期節點保證。
+A 段釘住既有面內選單（過期節點送出計數 0、兩級守門、IME、焦點離開、16 組目標的選單 DOM／幾何快照）；
+B 段驗殼本身的契約（單一實例 DP-24、兩級守門 DP-33、執行前 `current()` 再核、鍵盤、邊緣夾限與翻轉、
+外部 pointerdown 選用、屬性參數化）。它不取代 87 項的 `test_issue116_browser.js`——兩者每個 PR 都要跑並記入 handoff。
+
 ## #48 正式 app 證據流程
 
 `geometry-web/evidence_links_integration_test.js` 的 110 個檢查獨立於非瀏覽器 aggregate；真 app/store/native、1280/390px、原圖手動矩形和欄位選擇、完整 ZIP 保存／新空白 context 重開、刪除／ID 重建、evidence-only bytes、undo/redo、32 個 staged navigation race 和非法匯入零提交。只使用自製 PDF。另保留既有 independent adapter 67 項，不把 memory-backend 結果當正式保存證據。
@@ -659,3 +674,17 @@ python tests/browser_race_ownership.py --url http://127.0.0.1:18964/ \
 網址必須是 localhost 或 127.0.0.1、路徑 `/`，而且不能用 8765。
 輸出目錄要在 TEMP 底下、事先不存在。這三支探針與 race observer 都不取代
 full CDP、Space 或既有正式 browser gate。
+
+
+## #211 / PR #217：引用片段 heap 修正的必要 Linux gate
+
+此產品修正除既定 native 與最終 head 七項外，必須在 exact candidate 的 Linux checkout 執行以下入口；它不取代完整 native。先設 16 MiB 堆疊，輸出必須是 checkout 外的新目錄。入口會從目前 core／bridge 的完整 quoted-include 閉包重新編譯二進位，再建立只在 reference_fragment_candidate 分配點注入故障的獨立 bridge。
+
+```sh
+ulimit -s 16384
+python3 tests/diagnostics/run_fragment_heap_gate.py --output /tmp/fragment-heap-new-receipt
+```
+
+驗收：三次編譯、core 16 MiB／bridge 8 MiB 的精確世界指紋回歸，以及第 1／第 2 次片段配置各自單次 OOM，均須 exit 0；OOM 必須整筆拒絕且完整 World dump／definition 指紋不變。此 gate 不驗 timber OOM、Undo/Redo 全狀態或其他 8 MiB 堆疊路徑。每個命令的 stdout／stderr／exit／耗時、42 個目前來源檔的 SHA-256、測試及場景雜湊、三支二進位雜湊與環境寫進 receipt.json。來源或裁判在執行期间變動不得通過；不得覆寫既有非空證據目录。
+
+這是必要且可重複的額外正式入口，**不包含在 run_all 的既有 suite 計數裡**，不能以此 exit 0 宣稱完整 native 或七項通過。平台需支援 Linux RLIMIT_STACK；hard 上限不足 16 MiB 是環境阻擋，不能改安全政策或放寬世界斷言。

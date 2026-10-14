@@ -1,0 +1,22 @@
+'use strict';
+const fs=require('node:fs'),assert=require('node:assert/strict');
+const P=require('./writer-9e136db/geometry-web/project-store.js');
+const zip=require('./writer-9e136db/geometry-web/vendor/fflate/umd/index.js');
+const C=require('/workspace/geometry-axiom/tests/test_grid_drafts_lifecycle_capacity.js');
+(async()=>{
+ const commands=JSON.parse(fs.readFileSync(__dirname+'/native-world.json','utf8'));
+ const objects=commands.find(x=>x.command==='objects').response;
+ const pin=async id=>({kind:'grid-system',id,fingerprint:await P.sha(new TextEncoder().encode(JSON.stringify(P.Features.gridSourceKey(objects.gridSystems.find(x=>x.id===id),false))))});
+ const capacity=C.largeDraft();capacity.baseRef=await pin(1);capacity.inputRefs=[await pin(2)];C.pad(capacity,131072);
+ const other={schema:P.Features.GRID_SCHEMA,draftId:'other',kind:'source',intent:'create',baseRef:null,inputRefs:[],rawForm:Object.fromEntries(P.Features.sourceFields.map(k=>[k,' 1e ']))};
+ // The historical writer accepts the two original admissions without lost reserves.
+ P.Features.record(P.Features.GRID_KIND,other);
+ const value=P.Features.gridDraftValue([other,capacity],[]);
+ const manifest={format:P.GRID_DRAFTS_FORMAT,projectId:'legacy-live-ref',name:'legacy live ref',sceneHash:'0'.repeat(64),requiredCapabilities:[P.Features.GRID_DRAFTS_SCHEMA,P.Features.GRID_SCHEMA,P.Features.GRID_RULE_SCHEMA].sort(),sources:[],faces:[],models:[],faceProjections:[],featureAttachments:{schema:P.Features.SCHEMA,records:[P.Features.record(P.Features.GRID_KIND,value)]}};
+ const scene=fs.readFileSync(__dirname+'/legacy.scene','utf8');
+ const bytes=await P.pack(scene,manifest,new Map(),zip);
+ const cold=await P.unpack(bytes,zip);assert.equal(C.bytes(cold.manifest.featureAttachments.records[0].value.drafts.find(d=>d.draftId==='capacity')),131072);
+ const path='/workspace/geometry-axiom/tests/fixtures/k2a-legacy-live-ref-9e136db.gcanvas';fs.writeFileSync(path,bytes);
+ fs.writeFileSync(__dirname+'/legacy-manifest.json',JSON.stringify(cold.manifest,null,2)+'\n');
+ console.log(JSON.stringify({file:path,bytes:bytes.length,inner_bytes:C.bytes(capacity),liveRefs:capacity.inputRefs}));
+})().catch(e=>{console.error(e);process.exitCode=1;});

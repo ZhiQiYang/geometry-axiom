@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/tmp/geometry-190-core-ledger.py", line 12, in <module>
+    records=job('core-warm',['M01'])
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/geometry-190-core-ledger.py", line 10, in job
+    assert p.returncode==0,(label,p.returncode)
+           ^^^^^^^^^^^^^^^
+AssertionError: ('core-warm', 2)
