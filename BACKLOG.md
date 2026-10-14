@@ -77,7 +77,7 @@
 | [#245](https://github.com/ZhiQiYang/geometry-axiom/pull/245) | 2026-10-15／`40ae266e` | GEO-231／GEO-243 | 同一 pwsh 重跑清除腳本自留失效 model-base 覆寫；保留使用者明示覆寫；[合併後實測](https://github.com/ZhiQiYang/geometry-axiom/pull/245#issuecomment-6176615656) 同一 pwsh 連啟兩次，皆 fresh:true／ready |
 | [#243](https://github.com/ZhiQiYang/geometry-axiom/pull/243) | 2026-10-15／`5cf7efd1` | GEO-257 | 第 14 班展開為 #192；fresh 50 筆帳本、正典及完整七項已交付；第 13 班原紅保留 |
 | [#192](https://github.com/ZhiQiYang/geometry-axiom/pull/192) | 2026-10-15／`1681dfd5` | GEO-257 | 倍整數中心檢查修矩形跨凹槽誤收；隨 #243 正式落地，不混算 #193 overlay 收據 |
-| [#241](https://github.com/ZhiQiYang/geometry-axiom/pull/241) | 2026-10-15／`ea034fac` | #240／GEO-256／閱讀器 | S2–S5、S8 白話對齊；P-114 核收、已合併，正式七項補驗由第 16 班負責；S1/S6/S7/S9 待使用者 |
+| [#241](https://github.com/ZhiQiYang/geometry-axiom/pull/241) | 2026-10-15／`ea034fac` | #240／GEO-256／閱讀器 | S2–S5、S8 白話對齊；P-114 核收、已合併，由第 15 班（`c54324f7`）的七項補驗；若第 15 班最後沒有合入，改由第 16 班補；S1/S6/S7/S9 待使用者 |
 
 ### 列車內的非 merged PR 與仍待落地項
 
@@ -86,7 +86,7 @@
 - **第 5 班 #224** 是 #217 舊 `d13fc784` 的七項收據入口，未列在本次 merged 清單；[P-090](https://github.com/ZhiQiYang/geometry-axiom/pull/217#issuecomment-6144479284) 改由 #217 合併，新來源帳本及 native 另外驗，不偽造 #224 的合併提交。未落地／未合併的第 6、9、13、15、16 班亦不因編號相鄰就算 merged。
 - **GEO-246／#196、#198／#202 及唯一正典同步 #207**：已在各自 draft 分支，尚未入 main；[P-117](https://github.com/ZhiQiYang/geometry-axiom/pull/193#issuecomment-6177187407) 要先修 #193 的匯入 B1，再組 #193／#196／#202／#207，於組合來源重產帳本並跑正式七項。正典同步 owner 是 `codex/geo198-reader-sync-20261012`（#207），不另開閱讀器同步線。
 - **#237**：等待追蹤的 draft 已有雲端實作／native；實際 WSL canvas trace／receipt artifact 與正式七項仍待本機列車，不借 #235 診斷或 Linux 煙霧補成已驗。
-- **#240**：S2–S5、S8 由 #241（2026-10-15，`ea034fac`）對齊；S1、S6、S7、S9 待使用者決定。依最新看板對 P-114 分類的更正，白話／正典應走完整七項，由第 16 班補驗；不沿用 #241 正文的舊「只需 native」分類當作已七項完成。
+- **#240**：S2–S5、S8 由 #241（2026-10-15，`ea034fac`）對齊；S1、S6、S7、S9 待使用者決定。白話／正典應走完整七項；依 [P-118](https://github.com/ZhiQiYang/geometry-axiom/pull/247#issuecomment-6178285588)，由第 15 班（`c54324f7`）的七項補驗；若第 15 班最後沒有合入，改由第 16 班補。不沿用 #241 正文的舊「只需 native」分類當作已七項完成。
 - **GEO-250**：本輪合併清單沒有將實體手機／IME／OS picker、私人 PDF、GitHub 計費等尾項定為全數完成；各原未驗項繼續保留。**GEO-259** 仍只核收 bounded Resume；本輪的 async owner 修復不能證明 crash／reload／跨 session Resume。**GEO-260** 的 AC23 故障注入缺口仍未結案（#182 正文明列）。
 
 ---
