@@ -1,0 +1,14 @@
+import pathlib,json,subprocess,time,datetime,os
+repo=pathlib.Path('/workspace/geometry-axiom');root=pathlib.Path('/tmp/geometry-wake23-225');out=root/'failed-subsets';out.mkdir(exist_ok=True)
+env={**os.environ,'GEOMETRY_TEST_CORE':'/tmp/geometry-tests/core','GEOMETRY_TEST_BRIDGE':'/tmp/geometry-tests/bridge','GEOMETRY_ENGINEERING_BRIDGE':'/tmp/geometry-tests/bridge','GEOMETRY_MODEL_BASE':'/tmp/geometry-tests/model-base','GEOMETRY_TEST_ENGINEERING_JSON':'/tmp/geometry-tests/engineering-json-test'}
+jobs=[
+ ('scenario',['python3','-m','unittest','tests.test_scenario_verify']),
+ ('serve',['python3','-m','unittest','tests.test_serve']),
+ ('node',['node','--test','--test-name-pattern=^native final confirmation refuses changed source and changed runtime receipt without adding history$|^real timber package round trip, verification, replay and height update use only saved definitions$','tests/test_model_update.js','tests/test_space_model_store.js']),
+]
+for label,argv in jobs:
+ start=time.monotonic();started=datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).isoformat()
+ with (out/(label+'.stdout')).open('wb') as stdout,(out/(label+'.stderr')).open('wb') as stderr:
+  child=subprocess.Popen(argv,cwd=repo,env=env,stdout=stdout,stderr=stderr);code=child.wait()
+ record={'head':subprocess.check_output(['git','rev-parse','HEAD'],cwd=repo).decode().strip(),'argv':argv,'pid':child.pid,'started_at':started,'seconds':time.monotonic()-start,'exit':code,'changed_limits_or_assertions':False}
+ (out/(label+'.receipt.json')).write_text(json.dumps(record,indent=2)+'\n');print(json.dumps(record),flush=True)

@@ -1,0 +1,425 @@
+== A. 新平面拉矩形 ==
+  PASS 建立矩形面
+  PASS surfaces 列出新面
+== B. 仿射映射一致性 ==
+  PASS uvMapFor 取得映射
+  PASS mapUv(0,0)==proj
+  PASS unmapView 逆解
+  PASS mapUv(1500,700)==proj
+  PASS unmapView 逆解
+  PASS mapUv(4000,3000)==proj
+  PASS unmapView 逆解
+  PASS mapUv(1,2999)==proj
+  PASS unmapView 逆解
+  PASS 前視圖看不到水平面(det=0)
+== C. bhit ==
+  PASS 頂點命中
+  PASS 邊命中
+  PASS 中央不命中
+== D. 編輯頂點 ==
+  PASS 拉角後仍正交
+  PASS 重宣告成功
+  PASS 邊界已更新
+== E. 拖邊 ==
+  PASS 拖邊重宣告
+  PASS 邊已平移
+== F. 挖孔 ==
+  PASS 挖孔重宣告
+  PASS 孔已在
+  PASS 孔邊可命中
+== G. 拒絕非法 ==
+  PASS 非正交拒絕
+  PASS 自交拒絕
+  PASS 越界孔拒絕
+  PASS 拒絕後邊界未變
+== H. dump round-trip ==
+  PASS dump 有內容
+  PASS dump 不含自由錨點
+  PASS 重放後 dump 相同
+== I. 引用保真 ==
+  PASS I setup: line surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
+  PASS I setup: line grid 1 on 1 u 2000 v 1000
+  PASS I setup: line timber 2 20 20 role boundary
+  PASS I setup: line timber 3 20 20 role boundary
+  PASS I setup: line place 2 on 1 at-face e0 +u +n
+  PASS I setup: line place 3 on 1 at-face e2 -u +n
+  PASS I setup: line timber 1 27 33 role primary
+  PASS I setup: line place 1 on 1 at-line grid 1 u 0 +v +n
+  PASS I 移動錨定軸先預覽
+  PASS I 確認後引用重算
+  PASS dump 保留線引用
+  PASS 引用 dump 可重放
+  PASS 引用 dump round-trip 相同
+== J. 物件畫布層 ==
+  PASS 建游離面(無承載面)
+  PASS 建空容器空間
+  PASS canvas-pos 面
+  PASS canvas-pos 空間
+  PASS objects 列游離面
+  PASS objects 列空容器
+  PASS objects 帶畫布座標
+  PASS canvas-pos 壞目標被拒
+  PASS canvas-pos 壞類別被拒
+  PASS 放置游離面
+  PASS 面入空間(重宣告)
+  PASS 空間成員可見
+  PASS dump 含 canvas-pos 與空間
+  PASS 物件層 dump 可重放
+  PASS 物件層 round-trip 相同
+== K. RC 柱/樑 ==
+  PASS 六面盒空間
+  PASS newid 含 column/beam
+  PASS 柱 z 推導成功
+  PASS 推導 z=0~2500 寫進 dump
+  PASS 樑 top 推導成功
+  PASS 推導 top=2500 寫進 dump
+  PASS 游離柱無 z 拒絕
+  PASS 游離柱明寫 z 成立
+  PASS 游離樑無 top 拒絕
+  PASS 游離樑明寫 top 成立
+  PASS 柱-柱重疊拒絕
+  PASS 柱足跡越界拒絕
+  PASS 樑非法軸拒絕
+  PASS in 不存在空間拒絕
+  PASS objects 列柱樑
+  PASS canvas-pos 柱
+  PASS canvas-pos 樑
+  PASS 柱卡座標落地
+  PASS 三視圖有柱/樑投影
+  PASS 刪柱
+  PASS 刪後柱消失
+  PASS 刪空間→柱樑脫鉤
+  PASS 脫鉤後柱變游離
+  PASS 脫鉤後樑變游離
+  PASS 柱樑 dump 可重放
+  PASS 柱樑 round-trip 相同
+  PASS L 六面盒重建
+  PASS L 獨立柱
+  PASS L 貼牆柱
+  PASS L 角柱
+  PASS L 搭牆樑
+  PASS L 邊樑
+  PASS 天花:獨立柱→孔
+  PASS 天花:貼牆柱→凹口
+  PASS 天花:角柱→角凹
+  PASS 天花:搭牆樑→條帶
+  PASS 天花:邊樑→條帶
+  PASS 地板:柱三分類
+  PASS 地板:無樑影
+  PASS 牆:搭牆樑→頂凹
+  PASS 牆:邊樑→頂降
+  PASS 牆:柱2 不貼牆→無項
+  PASS 牆:貼牆柱→拆分
+  PASS 牆:邊樑端搭→頂凹
+  PASS 牆:角柱→拆分
+  PASS 鬼影不改邊界
+  PASS 未放置面建立成功
+  PASS 未放置面拒絕
+== M. apply-proj ==
+  PASS M 六面盒+五夾具
+  PASS M1 apply 柱孔
+  PASS M1 孔進 boundary
+  PASS M1 條帶未裁:外環仍是 4 頂點
+  PASS M1 孔 fixity 全 F
+  PASS M2 apply 角柱
+  PASS M2 外環 6 頂點
+  PASS M3 apply 貼邊柱
+  PASS M3 外環 8 頂點
+  PASS M4 apply 牆拆分
+  PASS M4 面數 6→8(拆片+柱側面)
+  PASS M4 空間成員剔除原牆
+  PASS M4 原 id 留最大片
+  PASS M4 dump 可重放
+  PASS M4 round-trip 相同
+  PASS M5 重建
+  PASS M5 apply 柱孔先落
+  PASS M5 重套同孔拒絕(快照)
+  PASS M5 apply cut-strip
+  PASS M5 面數 6→10
+  PASS M5 天花退出空間
+  PASS M5 保留片無孔
+  PASS M5 孔隨片走
+  PASS M5 render 有面
+  PASS M6 壞 id 拒絕
+  PASS M6 世界未變
+  PASS M7 不存在面拒絕
+  PASS M7 建未放置面
+  PASS M7 未放置面拒絕(R9)
+  PASS M8 重建
+  PASS M8 建樑(x=2800)
+  PASS M8 輔助資料就緒
+  PASS M8 apply cut-strip
+  PASS M8 新片 guide 改掛
+  PASS M8 兩棲 guide 留原片
+  PASS M8 網格改掛新片
+  PASS M8b 重建
+  PASS M8b 帶上錨點拒絕
+  PASS M8b 世界未變
+== U. undo 歷史語義 ==
+  PASS U1 undo 保留 canvas-pos
+  PASS U1b redo 保留 canvas-pos
+  PASS U2 群組建 3 面
+  PASS U2 一次 undo 全退
+  PASS U2 一次 redo 全回
+  PASS U3 群組內首行成功
+  PASS U3 群組內壞行回絕
+  PASS U3 失敗群組世界復原
+  PASS U3 失敗群組不留歷史
+== R. 角色子句（GEO-090）==
+  PASS R1 無 role 拒絕
+  PASS R1b 明寫無 role 拒絕
+  PASS R2 custom 無 priority 拒絕
+  PASS R3 priority 配非 custom 拒絕
+  PASS R3b 不認得角色拒絕
+  PASS R3c priority 0 拒絕
+  PASS R3d 壞行後世界無角材
+  PASS R4 dump 含角色
+  PASS R5 含角色 dump 可重放
+  PASS R6 含角色 round-trip 相同
+  PASS S setup
+  PASS S setup
+  PASS S setup
+  PASS S setup
+  PASS S setup
+  PASS S setup
+  PASS S setup
+  PASS S setup
+  PASS S 換主支軸拒絕
+  PASS S 換軸失敗回滾
+  PASS S 刪除主支需預覽
+  PASS S 刪除確認
+  PASS S 刪除後由 boundary 定軸
+== Review regression ==
+  PASS 失敗前建立可重做操作
+  PASS 復原成功
+  PASS 壞指令拒絕
+  PASS 失敗不清 redo
+  PASS redo 恢復空間
+  PASS 填滿歷史 0
+  PASS 填滿歷史 1
+  PASS 填滿歷史 2
+  PASS 填滿歷史 3
+  PASS 填滿歷史 4
+  PASS 填滿歷史 5
+  PASS 填滿歷史 6
+  PASS 填滿歷史 7
+  PASS 填滿歷史 8
+  PASS 填滿歷史 9
+  PASS 填滿歷史 10
+  PASS 填滿歷史 11
+  PASS 填滿歷史 12
+  PASS 填滿歷史 13
+  PASS 填滿歷史 14
+  PASS 填滿歷史 15
+  PASS 填滿歷史 16
+  PASS 填滿歷史 17
+  PASS 填滿歷史 18
+  PASS 填滿歷史 19
+  PASS 填滿歷史 20
+  PASS 填滿歷史 21
+  PASS 填滿歷史 22
+  PASS 填滿歷史 23
+  PASS 填滿歷史 24
+  PASS 填滿歷史 25
+  PASS 填滿歷史 26
+  PASS 填滿歷史 27
+  PASS 填滿歷史 28
+  PASS 填滿歷史 29
+  PASS 填滿歷史 30
+  PASS 填滿歷史 31
+  PASS 滿歷史壞指令拒絕
+  PASS 失敗不擠掉最舊歷史
+  PASS 群組開始
+  PASS 群組首行
+  PASS 群組壞行拒絕 line canvas-pos boundary 999 1 2
+  PASS 群組壞行自動回滾
+  PASS 群組壞行後不能提交
+  PASS 群組壞行不留歷史
+  PASS 群組開始
+  PASS 群組首行
+  PASS 群組壞行拒絕 line space 77 junk junk junk junk junk
+  PASS 群組壞行自動回滾
+  PASS 群組壞行後不能提交
+  PASS 群組壞行不留歷史
+  PASS 群組開始
+  PASS 群組首行
+  PASS 群組壞行拒絕 line space 77                         
+  PASS 群組壞行自動回滾
+  PASS 群組壞行後不能提交
+  PASS 群組壞行不留歷史
+  PASS 超限橋接指令拒絕
+  PASS 超限橋接指令不修改世界
+  PASS 超限後下一筆指令仍完整
+  PASS 超限橋接指令拒絕
+  PASS 超限橋接指令不修改世界
+  PASS 超限後下一筆指令仍完整
+  PASS 超限橋接指令拒絕
+  PASS 超限橋接指令不修改世界
+  PASS 超限後下一筆指令仍完整
+  PASS 合法空白 DSL 接受
+  PASS 合法註解接受
+  PASS 合法多位元組註解不受舊2KiB上限限制
+  PASS 橋接指令4094-byte邊界接受
+  PASS 橋接指令4095-byte拒絕
+  PASS 橋接邊界後拒絕不修改世界
+  PASS grid-ref setup
+  PASS grid-ref setup
+  PASS grid-ref setup
+  PASS grid-ref setup
+  PASS grid-ref setup
+  PASS grid-ref setup
+  PASS grid-ref setup
+  PASS grid-ref setup
+  PASS dump 保留 at-line grid
+  PASS 重放前引用變更需預覽
+  PASS grid-ref 重放
+  PASS grid-ref 重放
+  PASS grid-ref 重放
+  PASS grid-ref 重放
+  PASS grid-ref 重放
+  PASS grid-ref 重放
+  PASS grid-ref 重放
+  PASS grid-ref 重放
+  PASS grid-ref 重放
+  PASS grid-ref 重放
+  PASS grid-ref 重放
+  PASS grid-ref 重放
+  PASS grid-ref 重放
+  PASS grid-ref dump 往返一致
+  PASS grid-ref 幾何不重算
+  PASS 重放後引用變更需預覽
+  PASS 重放後不能刪引用網格
+  PASS 重放後追加格線合法
+  PASS 重放後仍驗 auto 端面支撐
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup 追加線
+  PASS 壞引用拒絕 grid-ref 999 u 0
+  PASS 壞引用不修改世界
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup 追加線
+  PASS 壞引用拒絕 grid-ref 1 v 0
+  PASS 壞引用不修改世界
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup 追加線
+  PASS 壞引用拒絕 grid-ref 1 u -1
+  PASS 壞引用不修改世界
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup 追加線
+  PASS 壞引用拒絕 grid-ref 1 u 99
+  PASS 壞引用不修改世界
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup 追加線
+  PASS 壞引用拒絕 grid-ref 1 u 1
+  PASS 壞引用不修改世界
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup
+  PASS 壞引用 setup 追加線
+  PASS 壞引用拒絕 grid-ref 1 u 2147483648
+  PASS 壞引用不修改世界
+  PASS default 可建世界
+  PASS reset 前可 undo
+  PASS reset 後 undo 疊已清
+  PASS through-short setup
+  PASS through-short setup
+  PASS through-short setup
+  PASS through-short setup
+  PASS through-short setup
+  PASS through-short setup
+  PASS through-short setup
+  PASS through 漏方向拒絕
+  PASS through 漏方向不改世界
+  PASS I19 setup
+  PASS I19 setup
+  PASS I19 setup
+  PASS I19 setup
+  PASS I19 setup
+  PASS I19 setup
+  PASS I19 setup
+  PASS I19 setup
+  PASS I19 setup
+  PASS I19 setup
+  PASS I19 setup
+  PASS I19 setup
+  PASS I19 setup
+  PASS I19 setup
+  PASS I19 setup
+  PASS I19 setup
+  PASS I19 setup
+  PASS I19 setup
+  PASS I19 setup
+  PASS I19 setup
+  PASS I19 後放高優先級不得被副支裁切
+  PASS I19 後放不改世界
+  PASS 空指令拒絕 ""
+  PASS 空指令後通道可用
+  PASS 空指令拒絕 "   "
+  PASS 空指令後通道可用
+  PASS 空指令拒絕 "\t"
+  PASS 空指令後通道可用
+
+408 pass / 0 fail

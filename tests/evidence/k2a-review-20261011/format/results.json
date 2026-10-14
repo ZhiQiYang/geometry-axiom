@@ -1,0 +1,41 @@
+[
+  {
+    "id": "P054-other-owner-downgrade",
+    "target": "P-054 unsupported other-owner capability and stripped capability reject whole /17 archive",
+    "detected": true,
+    "source_sha256": "ea1de7d6610c144eda35b482ddee4c8b90b57561c669fd492426ba9e10bd1b93",
+    "judge_sha256": "2ec78f7dc14c1f806ccff4878014402443ff49da92504f571d1e4067df7a481b",
+    "logs": {
+      "baseline": "c14bef433dd768f22525862688cb77ce38c92eea8813378de5d43ee7983c90fe",
+      "build": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "red": "96a413267a3c30e5d2f918a60c6a48693b320825d6dcb6ddf7d04095990b34e9",
+      "restored": "f54486cffa11a7ecf5fe28e6146e9d41d98c816cf1de046bb074e643f409185f"
+    }
+  },
+  {
+    "id": "P054-own-format-only",
+    "target": "P-054 shared /17 accepts each registered feature alone and both without discarding attachments",
+    "detected": true,
+    "source_sha256": "ea1de7d6610c144eda35b482ddee4c8b90b57561c669fd492426ba9e10bd1b93",
+    "judge_sha256": "2ec78f7dc14c1f806ccff4878014402443ff49da92504f571d1e4067df7a481b",
+    "logs": {
+      "baseline": "69f52521e181b2334cf68634d4b52aa8699d93e070d147dabb3328858fb9b9c7",
+      "build": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "red": "c09c9aeb3b51d07e6a9aa324dc878103f0642f8b7711478add40d168f082c6d1",
+      "restored": "1901fb6d481a0f9425c85f7a2b81006bf2162ebcaa18ce3a3545a84e44cd4f4c"
+    }
+  },
+  {
+    "id": "P054-drop-nested-capability",
+    "target": "P-054 nested scenario leaves retain each /17 family and reject stripped root capability",
+    "detected": true,
+    "source_sha256": "ea1de7d6610c144eda35b482ddee4c8b90b57561c669fd492426ba9e10bd1b93",
+    "judge_sha256": "2ec78f7dc14c1f806ccff4878014402443ff49da92504f571d1e4067df7a481b",
+    "logs": {
+      "baseline": "ff65d9276dd8b49f340154511a4330bef8f1cc698bb647bbe805b1d6b63dd923",
+      "build": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "red": "cd1827b581eca58d9ac23819b53d943f0b9b9a488471a83df877e074963a1c06",
+      "restored": "9179fcb06f2c555feec19f53eae5f163e6858e62f3c9b0ec107c00619b72c8d2"
+    }
+  }
+]

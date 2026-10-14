@@ -1,0 +1,10 @@
+{
+  "scope": "Fixed arithmetic only; not proposal parsing, template execution or mutant killing",
+  "exit": 0,
+  "cases": {
+    "positive_gap3_center": 916,
+    "negative_gap3_center": 2783,
+    "negative_wrong_local_floor": 2784,
+    "negative_correct_local_ceil": 2783
+  }
+}

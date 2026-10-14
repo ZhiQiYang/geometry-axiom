@@ -1,0 +1,53 @@
+✔ T12 strict settings refuse values without rounding, clamping, ignored keys or defaults (7.342758ms)
+✔ T12b referenced stock section/material locked, but name and new-stock trims editable (1.59183ms)
+✔ T18 settings capacities reject edit rather than truncating (2.93299ms)
+✔ T20 a referenced stock cannot be deleted alone; deleting its remnants atomically is allowed (1.464303ms)
+✔ key allocation remains exhausted or monotonic; deleted keys cannot be reused (1.002569ms)
+✔ P-047(a)(b) remnant undo/redo restore only the edit while counters never rewind (3.513391ms)
+✔ P-047(c) unrelated local/core restoration does not change remnant declaration or highwater (0.730196ms)
+✔ P-047 absent attachment undo preserves consumed keys, and different contexts remain independent (0.37884ms)
+✔ T17 archive roundtrip retains settings and highwater but no plan, scope or World declaration (17.875548ms)
+✔ T17b old project format, missing capability and unknown schema refuse import before changing project (11.143554ms)
+✔ cutting record obeys existing finite plain JSON gate including getters and oversized escaped bytes (0.826023ms)
+✔ cutting format keeps existing native section capability admission independently of project metadata (9.394508ms)
+✔ M10 writer selects legacy only for one healthy draft, collection for orphans or lost (5.972346ms)
+✔ M02 two raw drafts survive real ZIP with collection capability and canonical identity order (57.135644ms)
+✔ M07 non-orphan target uniqueness rejects the entire collection; orphans do not reserve targets (1.253927ms)
+✔ M08 sixteen drafts accepted; seventeenth rejected without truncation (3.981115ms)
+✔ M09 drafts are never valid input references (0.528491ms)
+✔ M10/M14b single orphan or lost collection preserves flags through ZIP reopen (61.878455ms)
+✔ M11 strict schema, orphan membership, lost placement and flag values reject (10.916334ms)
+✔ M11 downgrade and capability stripping fail on real archive bytes (59.770547ms)
+✔ M2 healthy singleton collection never subtracts lifecycle capacity (4.115255ms)
+✔ M2 individual draft reserves every automatic lost flag before admission (7.054034ms)
+✔ M2 collection value reserves all lost flags and orphan identifiers (58.646368ms)
+✔ M2 collection record reserves automatic marking within its own byte limit (124.886898ms)
+✔ M2 exact individual reserve admits a singleton and its marked collection promotion (41.543593ms)
+✔ M2 complete manifest reserves grid promotion before native deletion or import (403.137484ms)
+✔ P-054 shared /17 accepts each registered feature alone and both without discarding attachments (162.362961ms)
+✖ P-054 unsupported other-owner capability and stripped capability reject whole /17 archive (14.622071ms)
+✔ P-054 nested scenario leaves retain each /17 family and reject stripped root capability (137.756021ms)
+ℹ tests 29
+ℹ suites 0
+ℹ pass 28
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 765.287544
+
+✖ failing tests:
+
+test at tests/test_shared_format17.js:17:1
+✖ P-054 unsupported other-owner capability and stripped capability reject whole /17 archive (14.622071ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/tmp/k2aa-k1b-integration/tests/test_shared_format17.js:19:2)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /尚未支援|不支援/,
+    operator: 'rejects',
+    diff: 'simple'
+  }

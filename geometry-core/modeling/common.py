@@ -36,7 +36,7 @@ def scene_required_capabilities(scene):
             result.add("assembly-rule-authoring/1")
         if tokens[0] == "section-profile":
             result.add(SECTION_PROFILE_CAPABILITY)
-        if tokens[0] == "finish-surface":
+        if tokens[0] in ("finish-surface", "panel-fill"):
             result.add(PANEL_FILL_CAPABILITY)
         if tokens[0] == "parameters" or "param:" in " ".join(tokens):
             result.add(PARAMETER_CAPABILITY)

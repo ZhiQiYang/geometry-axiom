@@ -46,7 +46,7 @@ module.exports = async function gridWorkspaceDrafts({send,eval_,sleep,click,wait
     check('邊界讀取未完成時鎖定原始輸入且真正保存拒絕',await eval_(`(async()=>{if(!$('igCellI').disabled||!$('igSaveBinding').disabled)return false;try{await ReferenceWorkspace.save();return false;}catch(error){return /原始輸入仍在還原/.test(error.message)&&!ReferenceWorkspace.busy;}})()`)&&(await dump())===baseline&&await eval_(`JSON.stringify(ReferenceWorkspace.readFeatureAttachment('grid-draft'))===${JSON.stringify(pendingRaw)}&&ReferenceWorkspace.history.undo.length===${pendingUndo}`));
     await eval_('window.__gridDraftDelay.release();void 0');await wait(`!$('igCellI').disabled && !!$('igKeyedVertices').firstElementChild`);
     await fill('#igCellI','-3');
-    check('原生回應到達後輸入確實進入可保存原始草稿',await eval_(`$('igCellI').value==='-3' && !document.querySelector('#projectBar [data-project-action="save"]').disabled && !$('igSaveBinding').disabled && ReferenceWorkspace.readFeatureAttachment('grid-draft').rawForm.igCellI==='-3'`)&&(await dump())===baseline);
+    check('原生回應到達後輸入確實進入可保存原始草稿',await eval_(`$('igCellI').value==='-3' && !document.querySelector('#projectBar [data-project-action="save"]').disabled && !$('igSaveBinding').disabled && ReferenceWorkspace.readGridDrafts().drafts.find(d=>d.draftId===$('infiniteGridWorkspace').dataset.draftId).rawForm.igCellI==='-3'`)&&(await dump())===baseline);
     await discardDraft({message:discardMessage,accept:false});
     check('取消退出保留延遲期間的cell草稿',await eval_(`$('infiniteGridWorkspace').open && $('igCellI').value==='-3'`));
   } finally {
@@ -61,7 +61,7 @@ module.exports = async function gridWorkspaceDrafts({send,eval_,sleep,click,wait
   await expectNativeDialog(()=>ctl('#igClose'),{message:leaveMessage,accept:false});
   check('取消退出也完整保留兩類邊界草稿',await eval_(`$('infiniteGridWorkspace').open && $('igGrowLeft').value==='120' && document.querySelector(${JSON.stringify(vertexSelector)}).value==='90'`));
   await expectNativeDialog(()=>choose('#igBoundary','802'),{message:switchMessage,accept:true});await wait(`$('igVertex').options.length===5`);
-  check('明示捨棄後新邊界不沿用舊頂點或擴大量且原始配置可保存',await eval_(`$('igBoundary').value==='802' && ['Left','Right','Top','Bottom'].every(a=>$('igGrow'+a).value==='0') && !document.querySelector(${JSON.stringify(vertexSelector)}) && !document.querySelector('#projectBar [data-project-action="save"]').disabled && ReferenceWorkspace.readFeatureAttachment('grid-draft').rawForm.igBoundary==='802'`)&&(await dump())===baseline);
+  check('明示捨棄後新邊界不沿用舊頂點或擴大量且原始配置可保存',await eval_(`$('igBoundary').value==='802' && ['Left','Right','Top','Bottom'].every(a=>$('igGrow'+a).value==='0') && !document.querySelector(${JSON.stringify(vertexSelector)}) && !document.querySelector('#projectBar [data-project-action="save"]').disabled && ReferenceWorkspace.readGridDrafts().drafts.find(d=>d.draftId===$('infiniteGridWorkspace').dataset.draftId).rawForm.igBoundary==='802'`)&&(await dump())===baseline);
   await discardDraft({message:discardMessage,accept:true});
   check('退出全部草稿後原生世界逐字未變',(await dump())===baseline);
 };

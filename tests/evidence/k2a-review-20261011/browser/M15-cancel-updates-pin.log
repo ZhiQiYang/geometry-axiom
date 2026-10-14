@@ -1,0 +1,24 @@
+{"width":1280,"drafts":2,"continued":true,"errors":[],"metrics":{"width":480,"buttons":[44,44,44,44]}}
+{"width":390,"drafts":2,"continued":true,"errors":[],"metrics":{"width":356,"buttons":[44,44,44,44]}}
+AssertionError [ERR_ASSERTION]: M15 cancellation preserves complete draft
++ actual - expected
+
+  {
+    baseRef: {
++     fingerprint: 'd1cb9eacaf10bad8ae4ba5da6c22e7c45b8501cb032201a4b1939c86d4a24dee',
+-     fingerprint: '67e2dfa12b9f2cf796dfd6da709914585434ac238e341c4623849fad2daf36ca',
+      id: 910,
+      kind: 'grid-system'
+    },
+    draftId: '9fef8196-0358-465c-9d81-94e9a18426bd',
+    inputRefs: [],
+
+    at Proxy.<anonymous> (/workspace/geometry-k2aa-review/tests/k2a_browser_receipt.cjs:21:153)
+    at /workspace/geometry-k2aa-review/tests/k2a_drafts_browser.cjs:42:9 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: [Object],
+  expected: [Object],
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}

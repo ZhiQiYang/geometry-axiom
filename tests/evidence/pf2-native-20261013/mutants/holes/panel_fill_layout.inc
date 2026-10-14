@@ -1,0 +1,186 @@
+/* PF-2: D42/R42 exact regularised clipping. This does not create a placement, timber or from-fill grid.
+ * All workspace is heap-owned; the committed World stores definitions only. Fixed limits reject the
+ * complete candidate before publication, never return a truncated tile/loop list (I33/I52). */
+#define PF_TILE_MAX 1024
+#define PF_AXIS_MAX 128
+#define PF_EDGE_MAX 4096
+#define PF_VERTEX_MAX 32768
+typedef struct { SurfacePoint2 *points; size_t count; bool hole; } PfLoop;
+typedef struct { PfLoop *loops; size_t count; Coord area; } PfFragment;
+typedef struct { int64_t i,j; Coord body[4],area; PfFragment *fragments; size_t count; } PfTile;
+typedef struct { int axis;int64_t k,band;Coord coordinate,range[2];bool staggered; } PfSeamLine;
+typedef struct {
+    PfTile *tiles; size_t count,fragments,vertices,whole;
+    PfSeamLine *seams;size_t seam_count;
+    Coord size[2],gap,stagger,t; const FinishSurface *finish;
+    FsObstacleView obstacles[FS_OBSTACLE_MAX]; bool cuts[FS_OBSTACLE_MAX];
+} PfLayout;
+static const PanelFill *pf_find(const World *w,uint32_t id)
+{ for(uint64_t i=0;i<w->finish_surfaces.fill_count;++i)if(w->finish_surfaces.fills[i].id==id)return &w->finish_surfaces.fills[i];return NULL; }
+static void pf_free(PfLayout *d)
+{ if(d->tiles)for(size_t i=0;i<d->count;++i){PfTile *t=&d->tiles[i];for(size_t k=0;k<t->count;++k){PfFragment *f=&t->fragments[k];for(size_t l=0;l<f->count;++l)free(f->loops[l].points);free(f->loops);}free(t->fragments);}free(d->tiles);free(d->seams);memset(d,0,sizeof *d); }
+static bool pf_source(EngJson *j,int t,Coord *value,ParameterRef *ref)
+{
+    if(eng_json_integer(j,t,value))return coord_in_range(*value)||fs_error("I52/D1: panel-fill source outside D1");
+    ref->set=true;
+    return (eng_json_keys(j,t,"parameterId,fieldId","")&&parameter_u32(j,eng_json_member(j,t,"parameterId"),&ref->parameter_id)&&parameter_u32(j,eng_json_member(j,t,"fieldId"),&ref->field_id))||fs_error("D42: source must be integer mm or ParameterRef");
+}
+static bool pf_parse(EngJson *j,int t,PanelFill *p)
+{
+    memset(p,0,sizeof *p);int axis;char pattern[16];
+    int o=eng_json_member(j,t,"origin"),s=eng_json_member(j,t,"stagger"),x=eng_json_member(j,t,"threshold");
+    if(!eng_json_keys(j,t,"id,finishSurfaceId,panel,lengthAlong,origin,gap,pattern,threshold","stagger")||
+       !eng_u32(j,eng_json_member(j,t,"id"),&p->id,true)||!eng_u32(j,eng_json_member(j,t,"finishSurfaceId"),&p->finish_id,true)||
+       !eng_ref_parse(j,eng_json_member(j,t,"panel"),&p->panel,false)||!eng_axis(j,eng_json_member(j,t,"lengthAlong"),&axis)||!axis||
+       !eng_json_is_array(j,o)||eng_json_size(j,o)!=2||!eng_json_integer(j,eng_json_at(j,o,0),&p->origin[0])||!coord_in_range(p->origin[0])||!eng_json_integer(j,eng_json_at(j,o,1),&p->origin[1])||!coord_in_range(p->origin[1])||
+       !eng_json_string(j,eng_json_member(j,t,"pattern"),pattern,sizeof pattern))return fs_error("D42: invalid panel-fill definition");
+    p->length_axis=axis-1;p->stagger_axis=-1;
+    if(!pf_source(j,eng_json_member(j,t,"gap"),&p->gap,&p->gap_ref))return false;
+    if(!strcmp(pattern,"stagger")){
+        if(!eng_json_keys(j,s,"axis,value","")||!eng_axis(j,eng_json_member(j,s,"axis"),&axis)||!axis)return fs_error("D42: stagger needs one axis and source");
+        p->stagger_axis=axis-1;if(!pf_source(j,eng_json_member(j,s,"value"),&p->stagger,&p->stagger_ref))return false;
+    }else if(strcmp(pattern,"straight")||s>=0)return fs_error("D42: straight must omit stagger; pattern must be straight or stagger");
+    p->threshold.set=true;
+    if(!eng_json_keys(j,x,"parameterId,fieldId","")||!parameter_u32(j,eng_json_member(j,x,"parameterId"),&p->threshold.parameter_id)||!parameter_u32(j,eng_json_member(j,x,"fieldId"),&p->threshold.field_id))return fs_error("D44: threshold must be a ParameterRef");
+    if(!eng_json_canonical(j,t,p->definition,sizeof p->definition))return fs_capacity_error("I33 CAPACITY: panel-fill definition limit is 1023 bytes");
+    return true;
+}
+static bool pf_values(const World *w,const PanelFill *p,PfLayout *d)
+{
+    d->finish=fs_find(w,p->finish_id);const EngMaterialVersion *m=eng_material(w,p->panel.id,p->panel.version);ParamValue x;
+    if(!d->finish)return fs_error("I55: panel-fill %u references missing finish surface %u",p->id,p->finish_id);
+    if(!m||m->kind!=0)return fs_error("I52: panel-fill %u needs an existing fixed panel material version",p->id);
+    d->size[p->length_axis]=m->length;d->size[1-p->length_axis]=m->width;
+    EngJson j;bool ok=eng_json_parse(&j,m->content);char thickness[64];
+    if(ok)ok=eng_json_string(&j,eng_json_member(&j,0,"thickness"),thickness,sizeof thickness);eng_json_free(&j);
+    d->t=0;
+    if(ok){bool decimal=false;for(char *s=thickness;*s&&ok;++s){if(*s=='.')decimal=true;else if(decimal)ok=*s=='0';else if(*s<'0'||*s>'9'||d->t>(COORD_LIMIT-(*s-'0'))/10)ok=false;else d->t=d->t*10+(*s-'0');}}
+    if(!ok||d->t<=0)return fs_error("I52: panel-fill thickness must be explicitly set positive integer mm in D1; no rounding");
+    d->gap=p->gap;d->stagger=p->stagger;
+    if((p->gap_ref.set&&!parameter_coord(w,p->gap_ref,&d->gap))||(p->stagger_ref.set&&!parameter_coord(w,p->stagger_ref,&d->stagger))||!parameter_value(w,p->threshold,&x))return fs_error("%s",g_parameter_error);
+    if(x.num<=0)return fs_error("D44: panel-fill threshold must be a positive dimension");
+    if(d->gap<0)return fs_error("I52: panel-fill gap must be nonnegative integer mm");
+    if(p->stagger_axis>=0&&(!d->stagger||d->stagger%panel_layout_pitch(d->size[p->stagger_axis],d->gap)==0))return fs_error("I52: stagger is zero or a whole pitch; odd and even rows coincide");
+    for(uint32_t i=0;i<d->finish->obstacle_count;++i){if(!fs_obstacle_view(w,d->finish,&d->finish->obstacles[i],&d->obstacles[i]))return false;
+        d->cuts[i]=d->obstacles[i].relation==FS_INTERIOR&&d->obstacles[i].q[0]<d->t&&d->obstacles[i].q[1]>0;}
+    return true;
+}
+static bool pf_inside_loop(const PolygonLoop2 *p,Coord u2,Coord v2)
+{ bool inside=false;for(size_t i=0;i<p->count;++i){SurfacePoint2 a=p->v[i],b=p->v[(i+1)%p->count];if(a.u==b.u&&2*a.u>u2&&2*coord_min(a.v,b.v)<v2&&v2<2*coord_max(a.v,b.v))inside=!inside;}return inside; }
+static bool pf_inside(const SpaceBoundarySurface *b,const PfLayout *d,Coord u2,Coord v2)
+{ if(!pf_inside_loop(&b->outline,u2,v2))return false;/* MUTANT: holes ignored */
+  for(uint32_t i=0;i<d->finish->obstacle_count;++i){const Coord *r=d->obstacles[i].rect;if(d->cuts[i]&&2*r[0]<u2&&u2<2*r[2]&&2*r[1]<v2&&v2<2*r[3])return false;}return true; }
+static bool pf_cut_coord(Coord *xs,size_t *n,Coord v,Coord lo,Coord hi)
+{ if(v<=lo||v>=hi)return true;for(size_t i=0;i<*n;++i)if(xs[i]==v)return true;if(*n==PF_AXIS_MAX)return fs_capacity_error("I33 CAPACITY: clipping axis limit is %d",PF_AXIS_MAX);xs[(*n)++]=v;return true; }
+typedef struct { int x0,y0,x1,y1,dir;bool used; } PfEdge;
+static int pf_point_order(SurfacePoint2 a,SurfacePoint2 b)
+{return a.u!=b.u?(a.u<b.u?-1:1):a.v!=b.v?(a.v<b.v?-1:1):0;}
+static int pf_loop_order(const void *a,const void *b)
+{const PfLoop *x=a,*y=b;if(x->hole!=y->hole)return x->hole?1:-1;return pf_point_order(x->points[0],y->points[0]);}
+static int pf_fragment_order(const void *a,const void *b)
+{return pf_point_order(((const PfFragment*)a)->loops[0].points[0],((const PfFragment*)b)->loops[0].points[0]);}
+static bool pf_clip(const World *w,PfLayout *d,PfTile *t)
+{
+    const SpaceBoundarySurface *b=world_find_boundary(w,d->finish->boundary_id);
+    Coord xs[PF_AXIS_MAX]={t->body[0],t->body[2]},ys[PF_AXIS_MAX]={t->body[1],t->body[3]};size_t nx=2,ny=2;bool ok=true;
+    for(size_t h=0;h<=b->hole_count&&ok;++h){const PolygonLoop2 *l=h?&b->holes[h-1]:&b->outline;for(size_t i=0;i<l->count&&ok;++i)ok=pf_cut_coord(xs,&nx,l->v[i].u,xs[0],xs[1])&&pf_cut_coord(ys,&ny,l->v[i].v,ys[0],ys[1]);}
+    for(uint32_t i=0;i<d->finish->obstacle_count&&ok;++i)if(d->cuts[i])for(int k=0;k<4&&ok;++k)ok=k%2?pf_cut_coord(ys,&ny,d->obstacles[i].rect[k],ys[0],ys[1]):pf_cut_coord(xs,&nx,d->obstacles[i].rect[k],xs[0],xs[1]);
+    if(!ok)return false;qsort(xs,nx,sizeof *xs,sp_coord_compare);qsort(ys,ny,sizeof *ys,sp_coord_compare);
+    size_t width=nx-1,height=ny-1,n=width*height;int *labels=calloc(n,sizeof *labels),*queue=malloc(n*sizeof *queue);PfEdge *edges=malloc(PF_EDGE_MAX*sizeof *edges);
+    if(!labels||!queue||!edges){free(labels);free(queue);free(edges);return fs_capacity_error("I33 CAPACITY: clipping workspace unavailable");}
+    for(size_t y=0;y<height;++y)for(size_t x=0;x<width;++x)labels[y*width+x]=pf_inside(b,d,xs[x]+xs[x+1],ys[y]+ys[y+1])?-1:0;
+    int component=0;
+    for(size_t seed=0;seed<n&&ok;++seed)if(labels[seed]==-1){
+        ++component;size_t head=0,tail=1;queue[0]=(int)seed;labels[seed]=component;Coord component_area=0;
+        while(head<tail){int cell=queue[head++],x=cell%(int)width,y=cell/(int)width;component_area+=(xs[x+1]-xs[x])*(ys[y+1]-ys[y]);int neighbors[4]={x?cell-1:-1,x+1<(int)width?cell+1:-1,y?cell-(int)width:-1,y+1<(int)height?cell+(int)width:-1};
+            for(int k=0;k<4;++k)if(neighbors[k]>=0&&labels[neighbors[k]]==-1){labels[neighbors[k]]=component;queue[tail++]=neighbors[k];}}
+        PfFragment *grown=realloc(t->fragments,(t->count+1)*sizeof *grown);if(!grown){ok=fs_capacity_error("I33 CAPACITY: fragment workspace unavailable");break;}t->fragments=grown;PfFragment *f=&grown[t->count++];memset(f,0,sizeof *f);f->area=component_area;t->area+=component_area;
+        size_t ne=0;
+        for(size_t q=0;q<tail&&ok;++q){int cell=queue[q],x=cell%(int)width,y=cell/(int)width;
+            bool boundary[4]={!y||labels[cell-width]!=component,x+1==(int)width||labels[cell+1]!=component,y+1==(int)height||labels[cell+width]!=component,!x||labels[cell-1]!=component};
+            int dx[4]={1,0,-1,0},dy[4]={0,1,0,-1},sx[4]={x,x+1,x+1,x},sy[4]={y,y,y+1,y+1};
+            for(int k=0;k<4&&ok;++k)if(boundary[k]){if(ne==PF_EDGE_MAX){ok=fs_capacity_error("I33 CAPACITY: tile contour edge limit is %d",PF_EDGE_MAX);break;}edges[ne++]=(PfEdge){sx[k],sy[k],sx[k]+dx[k],sy[k]+dy[k],k,false};}}
+        for(size_t start=0;start<ne&&ok;++start)if(!edges[start].used){
+            SurfacePoint2 *points=malloc(ne*sizeof *points);if(!points){ok=fs_capacity_error("I33 CAPACITY: loop workspace unavailable");break;}
+            size_t at=start,np=0;int firstx=edges[start].x0,firsty=edges[start].y0;
+            while(ok){PfEdge *e=&edges[at];if(e->used||np==ne){ok=fs_error("R42: contour traversal did not close");break;}e->used=true;points[np++]=(SurfacePoint2){xs[e->x0],ys[e->y0]};if(e->x1==firstx&&e->y1==firsty)break;
+                /* At a repeated vertex take the right branch first: this splits touching hole rings
+                 * into simple clockwise loops, instead of one figure-eight. Components are already
+                 * split by positive-length cell adjacency, so point-touching material is never joined. */
+                int rank=-1;size_t next=ne;for(size_t k=0;k<ne;++k)if(!edges[k].used&&edges[k].x0==e->x1&&edges[k].y0==e->y1){int turn=(edges[k].dir-e->dir+4)%4,r=turn==3?3:turn==0?2:turn==1?1:0;if(r>rank){rank=r;next=k;}}
+                if(next==ne){ok=fs_error("R42: open contour after clipping");break;}at=next;}
+            if(!ok){free(points);break;}
+            /* Remove collinear subdivision vertices, then rotate to the lexicographically smallest point. */
+            SurfacePoint2 *corners=malloc(np*sizeof *corners);if(!corners){free(points);ok=fs_capacity_error("I33 CAPACITY: contour corners unavailable");break;}
+            size_t count=0;for(size_t k=0;k<np;++k){SurfacePoint2 a=points[(k+np-1)%np],v=points[k],z=points[(k+1)%np];if(!((a.u==v.u&&v.u==z.u)||(a.v==v.v&&v.v==z.v)))corners[count++]=v;}free(points);points=corners;
+            size_t min=0;for(size_t k=1;k<count;++k)if(pf_point_order(points[k],points[min])<0)min=k;
+            SurfacePoint2 *ordered=malloc(count*sizeof *ordered);if(!ordered){free(points);ok=fs_capacity_error("I33 CAPACITY: ordered loop unavailable");break;}for(size_t k=0;k<count;++k)ordered[k]=points[(min+k)%count];free(points);
+            if(d->vertices+count>PF_VERTEX_MAX){free(ordered);ok=fs_capacity_error("I33 CAPACITY: layout vertex limit is %d",PF_VERTEX_MAX);break;}d->vertices+=count;
+            PfLoop *loops=realloc(f->loops,(f->count+1)*sizeof *loops);if(!loops){free(ordered);ok=fs_capacity_error("I33 CAPACITY: loop collection unavailable");break;}f->loops=loops;
+            bool hole=ordered[1].v>ordered[0].v;loops[f->count++]=(PfLoop){ordered,count,hole};
+        }
+        if(ok){qsort(f->loops,f->count,sizeof *f->loops,pf_loop_order);if(!f->count||f->loops[0].hole)ok=fs_error("R42: clipped component lacks an outer loop");}
+    }
+    free(labels);free(queue);free(edges);if(ok&&t->count)qsort(t->fragments,t->count,sizeof *t->fragments,pf_fragment_order);return ok;
+}
+static bool pf_build(const World *w,const PanelFill *p,PfLayout *d)
+{
+    memset(d,0,sizeof *d);if(!pf_values(w,p,d))return false;
+    const SpaceBoundarySurface *b=world_find_boundary(w,d->finish->boundary_id);Coord lo[2]={b->outline.v[0].u,b->outline.v[0].v},hi[2]={lo[0],lo[1]};
+    for(size_t i=1;i<b->outline.count;++i){lo[0]=coord_min(lo[0],b->outline.v[i].u);hi[0]=coord_max(hi[0],b->outline.v[i].u);lo[1]=coord_min(lo[1],b->outline.v[i].v);hi[1]=coord_max(hi[1],b->outline.v[i].v);}
+    d->tiles=calloc(PF_TILE_MAX,sizeof *d->tiles);if(!d->tiles)return fs_capacity_error("I33 CAPACITY: layout workspace unavailable");
+    int row=p->stagger_axis==0?1:0,along=1-row;Coord pitch[2]={panel_layout_pitch(d->size[0],d->gap),panel_layout_pitch(d->size[1],d->gap)};
+    int64_t first=grid_floor_div(lo[row]-p->origin[row]-d->size[row],pitch[row])+1,last=grid_ceil_div(hi[row]-p->origin[row],pitch[row])-1;size_t enumerated=0;
+    for(int64_t r=first;r<=last;++r){Coord shifted=p->origin[along]+panel_layout_shift(p->stagger_axis>=0,d->stagger,r);
+        int64_t a=grid_floor_div(lo[along]-shifted-d->size[along],pitch[along])+1,z=grid_ceil_div(hi[along]-shifted,pitch[along])-1;
+        if(z>=a&&(uint64_t)(z-a+1)>PF_TILE_MAX-enumerated){pf_free(d);return fs_capacity_error("I33 CAPACITY: full layout enumeration limit is %d tiles",PF_TILE_MAX);}
+        for(int64_t k=a;k<=z;++k){++enumerated;PfTile *t=&d->tiles[d->count];t->i=row==0?r:k;t->j=row==1?r:k;
+            t->body[row]=panel_layout_body(p->origin[row],d->size[row],d->gap,r);t->body[along]=panel_layout_body(shifted,d->size[along],d->gap,k);t->body[row+2]=t->body[row]+d->size[row];t->body[along+2]=t->body[along]+d->size[along];
+            /* Non-visible sheet corners can be beyond D1; only returned geometry is checked below. */
+            ++d->count;if(!pf_clip(w,d,t)){pf_free(d);return false;}
+            if(!t->count){free(t->fragments);memset(t,0,sizeof *t);--d->count;continue;}
+            d->fragments+=t->count;if(t->area==d->size[0]*d->size[1])++d->whole;
+            for(int v=0;v<4;++v)if(!coord_in_range(t->body[v])){pf_free(d);return fs_capacity_error("I52/D1 CAPACITY: returned sheet corner outside D1");}
+            for(size_t f=0;f<t->count;++f)for(size_t l=0;l<t->fragments[f].count;++l)for(size_t v=0;v<t->fragments[f].loops[l].count;++v){SurfacePoint2 point=t->fragments[f].loops[l].points[v];const SurfaceFrame *frame=&d->finish->frame;
+                Coord u=point.u,z=point.v;Point3 world={frame->origin.x+u*frame->axis_u.x+z*frame->axis_v.x,frame->origin.y+u*frame->axis_u.y+z*frame->axis_v.y,frame->origin.z+u*frame->axis_u.z+z*frame->axis_v.z};
+                if(!coord_in_range(u)||!coord_in_range(z)||!coord_in_range(world.x)||!coord_in_range(world.y)||!coord_in_range(world.z)){pf_free(d);return fs_capacity_error("I52/D1 CAPACITY: returned panel-fill vertex outside D1");}}
+        }
+    }
+    d->seams=calloc(4*PF_TILE_MAX,sizeof *d->seams);if(!d->seams){pf_free(d);return fs_capacity_error("I33 CAPACITY: seam workspace unavailable");}
+    for(int axis=0;axis<2;++axis){int other=1-axis;Coord step=pitch[axis],phase=panel_layout_center(p->origin[axis],d->size[axis],d->gap,0);
+        int64_t r0=0,r1=0;if(p->stagger_axis==axis){r0=grid_floor_div(lo[other]-p->origin[other]-d->size[other],pitch[other])+1;r1=grid_ceil_div(hi[other]-p->origin[other],pitch[other])-1;}
+        for(int64_t r=r0;r<=r1;++r){Coord shift=p->stagger_axis==axis?panel_layout_shift(true,d->stagger,r):0;
+            int64_t k0=grid_ceil_div(lo[axis]-phase-shift,step),k1=grid_floor_div(hi[axis]-phase-shift,step);
+            for(int64_t k=k0;k<=k1;++k){if(d->seam_count==4*PF_TILE_MAX){pf_free(d);return fs_capacity_error("I33 CAPACITY: seam line limit is %d",4*PF_TILE_MAX);}
+                PfSeamLine *s=&d->seams[d->seam_count++];s->axis=axis;s->k=k;s->band=r;s->staggered=p->stagger_axis==axis;s->coordinate=panel_layout_center(p->origin[axis]+shift,d->size[axis],d->gap,k);
+                if(s->staggered){s->range[0]=panel_layout_center(p->origin[other],d->size[other],d->gap,r-1);s->range[1]=panel_layout_center(p->origin[other],d->size[other],d->gap,r);
+                    if(!coord_in_range(s->range[0])||!coord_in_range(s->range[1])){pf_free(d);return fs_capacity_error("I52/D1 CAPACITY: returned seam band outside D1");}}
+            }
+        }
+    }
+    return true;
+}
+static bool pf_rebuild(const World *w)
+{for(uint64_t i=0;i<w->finish_surfaces.fill_count;++i){PfLayout d;bool ok=pf_build(w,&w->finish_surfaces.fills[i],&d);pf_free(&d);if(!ok)return false;}return true;}
+static bool pf_operation(World *w,EngJson *j,int t,bool remove)
+{
+    FinishSurfaceState *s=&w->finish_surfaces;PanelFill p;uint32_t id;
+    if(remove){if(!eng_json_keys(j,t,"op,id","")||!eng_u32(j,eng_json_member(j,t,"id"),&id,true))return fs_error("D42: delete-panel-fill needs id");}
+    else{if(!eng_json_keys(j,t,"op,value","")||!pf_parse(j,eng_json_member(j,t,"value"),&p))return false;id=p.id;}
+    size_t at=0;while(at<s->fill_count&&s->fills[at].id!=id)++at;
+    if(remove){if(at==s->fill_count)return fs_error("D42: deleted panel-fill does not exist");memmove(&s->fills[at],&s->fills[at+1],(s->fill_count-at-1)*sizeof p);memset(&s->fills[--s->fill_count],0,sizeof p);return true;}
+    if(at==s->fill_count){if(at==FS_MAX)return fs_capacity_error("I33 CAPACITY: panel-fill limit is %d",FS_MAX);++s->fill_count;}s->fills[at]=p;return true;
+}
+static void pf_dump(const World *w,FILE *out)
+{for(uint64_t i=0;i<w->finish_surfaces.fill_count;++i){const PanelFill *p=&w->finish_surfaces.fills[i];fprintf(out,"panel-fill %u definition-hex ",p->id);for(const unsigned char *c=(const unsigned char*)p->definition;*c;++c)fprintf(out,"%02x",*c);fputc('\n',out);}}
+static bool apply_panel_fill_line(const char *path,int line,char **t,int count,World *w)
+{
+    if(!g_parsing_scene_file||!fs_scene_required||!fs_scene_engineering||!fs_scene_parameters){scene_error(path,line,"I56: panel-fill requires atomic scene with all three declared capabilities");return false;}
+    uint32_t id;char text[1024];size_t n=strlen(t[3]);if(count!=4||strcmp(t[2],"definition-hex")||!parse_u32(t[1],&id)||!n||n%2||n/2>=sizeof text)goto invalid;
+    for(size_t i=0;i<n/2;++i){int a=grid_system_hex_digit(t[3][2*i]),b=grid_system_hex_digit(t[3][2*i+1]);if(a<0||b<0||!(a*16+b))goto invalid;text[i]=(char)(a*16+b);}text[n/2]=0;
+    EngJson j;PanelFill p;bool ok=eng_json_parse(&j,text);if(ok)ok=pf_parse(&j,0,&p);eng_json_free(&j);
+    if(ok&&(p.id!=id||pf_find(w,id)))ok=fs_error("I56: panel-fill id mismatch or duplicate");
+    if(ok&&w->finish_surfaces.fill_count==FS_MAX)ok=fs_capacity_error("I33 CAPACITY: panel-fill limit is %d",FS_MAX);
+    if(ok)w->finish_surfaces.fills[w->finish_surfaces.fill_count++]=p;else scene_error(path,line,g_engineering_error);return ok;
+invalid:scene_error(path,line,"D42: panel-fill id definition-hex HEX");return false;
+}

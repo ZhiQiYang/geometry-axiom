@@ -1,0 +1,15 @@
+............................F.....
+======================================================================
+FAIL: test_reopen_rejects_tampered_or_undeclared_records (tests.test_panel_fill_finish_surface.FinishSurfaceNative.test_reopen_rejects_tampered_or_undeclared_records)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_panel_fill_finish_surface.py", line 496, in test_reopen_rejects_tampered_or_undeclared_records
+    self.load_fails(BASE + head + record + "panel-fill trial 1\n", "不認得的指令")
+  File "/workspace/geometry-axiom/tests/test_panel_fill_finish_surface.py", line 74, in load_fails
+    self.assertIn(reason, result["error"])
+AssertionError: '不認得的指令' not found in 'line 10: 欄位數不對，用法：panel-fill id definition-hex HEX (atomic scene only)'
+
+----------------------------------------------------------------------
+Ran 34 tests in 28.634s
+
+FAILED (failures=1)

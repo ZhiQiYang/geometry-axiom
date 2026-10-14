@@ -1,0 +1,20 @@
+[
+  {
+    "id": "M06-no-native-deletion-receipt",
+    "expected_test": "tests.test_grid_system_contract.GridSystemContract.test_k2a_deletion_receipt_names_removed_source_and_not_recreated_identity",
+    "exit": 1,
+    "detected": true,
+    "restored_exit": 0,
+    "source_sha256": "c6553eb708355b7edf46e05ebbd964701ce1e68a7e004de0ee0dfb4ab3ad0b52",
+    "judge_sha256": "8bd75c40d694fe789d28a2a67dab52d82e0f588f1556900a1c3533e3d89ff307"
+  },
+  {
+    "id": "M14b-final-state-only",
+    "expected_test": "tests.test_grid_system_contract.GridSystemContract.test_k2a_parameter_confirmation_receipt_includes_intermediate_deletion",
+    "exit": 1,
+    "detected": true,
+    "restored_exit": 0,
+    "source_sha256": "89240f6740694b06e8526ecf8848fe42de9dd595edeee6c2aa6ab273116208f3",
+    "judge_sha256": "8bd75c40d694fe789d28a2a67dab52d82e0f588f1556900a1c3533e3d89ff307"
+  }
+]

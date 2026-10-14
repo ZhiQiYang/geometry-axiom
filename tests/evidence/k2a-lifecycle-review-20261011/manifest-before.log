@@ -1,0 +1,27 @@
+✖ M2 complete manifest reserves grid promotion before native deletion or import (321.466886ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 425.884899
+
+✖ failing tests:
+
+test at tests/test_grid_drafts_lifecycle_capacity.js:15:2
+✖ M2 complete manifest reserves grid promotion before native deletion or import (321.466886ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception: M2 full manifest must reserve automatic grid promotion
+      at TestContext.<anonymous> (/workspace/geometry-k2aa-review/tests/test_grid_drafts_lifecycle_capacity.js:15:168)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: undefined,
+    operator: 'throws',
+    diff: 'simple'
+  }

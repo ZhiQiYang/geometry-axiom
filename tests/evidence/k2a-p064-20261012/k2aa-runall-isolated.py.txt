@@ -1,0 +1,7 @@
+from pathlib import Path
+import sys
+sys.path.insert(0,'/workspace/geometry-k2aa-review/tests')
+import binaries
+binaries.OUT_DIR=Path('/tmp/k2aa-final-binaries')
+import run_all
+sys.exit(run_all.main())

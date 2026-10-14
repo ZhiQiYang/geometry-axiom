@@ -1,0 +1,14 @@
+{"M04":true,"M06":true,"M14":true,"M14b":true,"deletion":[{"kind":"grid-system","id":0}]}
+AssertionError [ERR_ASSERTION]: M1 empty source selection restores the previous source control
+
+'' !== '1:1'
+
+    at Proxy.<anonymous> (/workspace/geometry-k2aa-review/tests/k2a_browser_receipt.cjs:22:153)
+    at /workspace/geometry-k2aa-review/tests/k2a_native_browser.cjs:66:122 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: '1:1',
+  operator: 'strictEqual',
+  diff: 'simple'
+}

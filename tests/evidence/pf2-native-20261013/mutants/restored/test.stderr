@@ -1,0 +1,20 @@
+test_I55_parameter_preview_shows_recomputed_fill_and_rejects_missing_ref (tests.test_panel_fill_layout.PanelFillLayout.test_I55_parameter_preview_shows_recomputed_fill_and_rejects_missing_ref) ... ok
+test_I55_threshold_and_material_are_real_dependencies (tests.test_panel_fill_layout.PanelFillLayout.test_I55_threshold_and_material_are_real_dependencies) ... ok
+test_PF02_centers_are_integer_and_share_panel_lattice (tests.test_panel_fill_layout.PanelFillLayout.test_PF02_centers_are_integer_and_share_panel_lattice) ... ok
+test_PF03_coverage_matches_independent_integer_cell_oracle (tests.test_panel_fill_layout.PanelFillLayout.test_PF03_coverage_matches_independent_integer_cell_oracle) ... ok
+test_PF03_negative_indices_and_alternating_rows (tests.test_panel_fill_layout.PanelFillLayout.test_PF03_negative_indices_and_alternating_rows) ... ok
+test_PF04_hole_loops_and_disconnected_fragments (tests.test_panel_fill_layout.PanelFillLayout.test_PF04_hole_loops_and_disconnected_fragments) ... ok
+test_PF04_point_contact_does_not_merge_material (tests.test_panel_fill_layout.PanelFillLayout.test_PF04_point_contact_does_not_merge_material) ... ok
+test_PF04_touching_holes_have_deterministic_simple_loops (tests.test_panel_fill_layout.PanelFillLayout.test_PF04_touching_holes_have_deterministic_simple_loops) ... ok
+test_PF07_cancel_stale_and_undo_redo_are_atomic (tests.test_panel_fill_layout.PanelFillLayout.test_PF07_cancel_stale_and_undo_redo_are_atomic) ... ok
+test_PF08_PF09_panel_layer_uses_open_intervals (tests.test_panel_fill_layout.PanelFillLayout.test_PF08_PF09_panel_layer_uses_open_intervals) ... ok
+test_PF09_vertical_and_negative_structure_side (tests.test_panel_fill_layout.PanelFillLayout.test_PF09_vertical_and_negative_structure_side) ... ok
+test_PF11_native_dump_reopen_definitions_only (tests.test_panel_fill_layout.PanelFillLayout.test_PF11_native_dump_reopen_definitions_only) ... ok
+test_PF13_capacity_never_returns_partial_tiles (tests.test_panel_fill_layout.PanelFillLayout.test_PF13_capacity_never_returns_partial_tiles) ... ok
+test_PF13_extreme_world_vertex_is_honest_capacity_failure (tests.test_panel_fill_layout.PanelFillLayout.test_PF13_extreme_world_vertex_is_honest_capacity_failure) ... ok
+test_PF13_thickness_required_even_without_obstacles (tests.test_panel_fill_layout.PanelFillLayout.test_PF13_thickness_required_even_without_obstacles) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 3.575s
+
+OK

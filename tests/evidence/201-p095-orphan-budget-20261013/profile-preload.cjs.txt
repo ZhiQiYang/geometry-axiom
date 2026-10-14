@@ -1,0 +1,41 @@
+const fs=require('node:fs'),Module=require('node:module'),path=require('node:path');
+const root=process.env.P095_OUT;
+const events=[],stats=new Map();let active=null;
+const now=()=>Number(process.hrtime.bigint())/1e6;
+function event(label,extra={}){events.push({pid:process.pid,case:active?.size??null,t:now(),label,...extra});}
+function timed(label,fn){
+  if(!active)return fn();const start=now();let settled=false;
+  const end=()=>{if(settled)return;settled=true;const key=active.size+':'+label;const s=stats.get(key)||{count:0,ms:0,max:0};const ms=now()-start;s.count++;s.ms+=ms;s.max=Math.max(s.max,ms);stats.set(key,s);};
+  try{const value=fn();if(value&&typeof value.then==='function')return value.then(v=>{end();return v;},e=>{end();throw e;});end();return value;}catch(e){end();throw e;}
+}
+global.__p095={timed,start(size){active={size,start:now()};event('case:start');},end(){event('case:end',{elapsed:now()-active.start});active=null;},event};
+const originalCompile=Module.prototype._compile;
+Module.prototype._compile=function(source,file){
+  if(file.endsWith('/geometry-web/feature-attachments.js')){
+    source=source.replace('function jsonBytes(', 'function __p095OriginalJsonBytes(');
+    source+='\n';const at=source.lastIndexOf('\n});');
+    if(at<0)throw Error('feature closure not found');
+    source=source.slice(0,at)+'\n  function jsonBytes(...args){return global.__p095.timed("feature.jsonBytes",()=>__p095OriginalJsonBytes(...args));}\n'+source.slice(at);
+  }
+  if(file.endsWith('/geometry-web/project-store.js')){
+    source=source.replace('const m = validate(JSON.parse(decoder.decode(entries["manifest.json"])));','const m = global.__p095.timed("unpack.manifest.parse+validate",()=>validate(JSON.parse(decoder.decode(entries["manifest.json"]))));');
+    source=source.replace('const bytes = await new Promise((resolve, reject) => zip.zip(entries, { level: 0 }, (e,d) => e ? reject(e) : resolve(d)));','const bytes = await global.__p095.timed("pack.zip.generate",()=>new Promise((resolve, reject) => zip.zip(entries, { level: 0 }, (e,d) => e ? reject(e) : resolve(d))));');
+  }
+  if(file.endsWith('/tests/test_reference_workspace_races.js')){
+    const key='for(const size of [130955,130956])test(`K2a B1 collection two drafts orphan remove other manifest ZIP cold read preserves ${size}-byte boundary`,async()=>{';
+    if(!source.includes(key))throw Error('orphan case source missing');
+    source=source.replace(key,key+'\n  global.__p095.start(size);');
+    source=source.replace("assert.equal(C.bytes(remaining.drafts[0]),size);assert.equal(f.calls.length,0,'metadata-only save sequence sends no native API');","assert.equal(C.bytes(remaining.drafts[0]),size);assert.equal(f.calls.length,0,'metadata-only save sequence sends no native API');global.__p095.end();");
+    source=source.replace('const f=await fixture(),w=f.w,token=w.getProjectState().contextToken,d=C.largeDraft();d.inputRefs=[];C.pad(d,size);','const f=await global.__p095.timed("fixture",()=>fixture()),w=f.w,token=w.getProjectState().contextToken,d=C.largeDraft();d.inputRefs=[];global.__p095.timed("draft.pad",()=>C.pad(d,size));\n    for(const key of ["manifest","readGridDrafts","setGridDraft","observe"]){const original=w[key];w[key]=function(...args){return global.__p095.timed("workspace."+key,()=>original.apply(this,args));};}',1);
+  }
+  return originalCompile.call(this,source,file);
+};
+// Independent inclusive timings; nesting means the rows must not be summed.
+const P=require(process.cwd()+'/geometry-web/project-store.js');
+for(const key of ['pack','unpack','sha','assertManifestCapacity']){const fn=P[key];P[key]=function(...args){return timed('project.'+key,()=>fn.apply(this,args));};}
+const assert=require('node:assert/strict');
+for(const key of ['deepEqual','equal','ok','doesNotThrow','doesNotReject']){const fn=assert[key];assert[key]=function(...args){return timed('assert.'+key,()=>fn.apply(this,args));};}
+// Observe real setup subprocesses too. These are tagged case:null when outside the timed orphan body.
+const cp=require('node:child_process'),exec=cp.execFileSync;
+cp.execFileSync=function(file,args,options){const start=now();try{const result=exec.call(this,file,args,options);event('subprocess:exit',{file,args,pid:null,exit:0,ms:now()-start,stdoutBytes:Buffer.byteLength(result),stderr:'not separately exposed by execFileSync'});return result;}catch(e){event('subprocess:exit',{file,args,pid:e.pid??null,exit:e.status,ms:now()-start,stdout:String(e.stdout??''),stderr:String(e.stderr??'')});throw e;}};
+process.on('exit',code=>{fs.writeFileSync(path.join(root,'profile-'+process.pid+'.json'),JSON.stringify({pid:process.pid,code,events,stats:Object.fromEntries(stats)},null,2)+'\n');});
