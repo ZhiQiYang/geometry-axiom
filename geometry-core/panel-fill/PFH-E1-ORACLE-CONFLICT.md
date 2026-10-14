@@ -1,5 +1,22 @@
 # PF-H：E1 指定足跡與 D7 角色約束的疑點
 
+## 目前狀態（2026-10-15，P-116）
+
+P-116（6177092438）已更正 E1-legal 為 primary，解除角色疑點造成的暫停。
+以下疑點與「待裁決」敘述均為歷史記錄，不再代表目前仍需角色裁決。
+已一般 merge main `ea034fac`；新增 `tests/test_panel_fill_host.py` 的四題測試先行基準，
+並登記 run_all 與 count=4。現有原生 bridge 在 put-derived-placement 階段拒絕，
+四題皆 actual exit 1；這是缺功能的紅基準，不是突變 killed，也不是宿主交付。
+
+新測試明確要求來源試排身分、R41 板背映射、E1-legal primary／兩支 boundary、
+保存重開、undo/redo 與 I53 的 B=h。衍生邊以來源／段號／總段數鍵引用，
+不沿用一般面的 e0/e2 索引；測試中的 key-hex 編碼是待實作的原生傳輸契約，
+不宣稱現行 bridge 已接受。原 E1/E2/E3 與五段／三段推導數字不改。
+
+產品接入、還原綠燈、移除接入突變、真宿主見證及正式驗收仍未完成。
+R43 五段／三段仍屬推導，未冒稱實跑。新基準原件見
+`tests/evidence/pfh-p116-20261015/`；歷史證據保持原來源。
+
 P-098授權PF-H最小接入；原始診斷base為PF-2 #225。PF-2落地後依看板一般merge main 0eb447e00605f6df117711b03e6c98ccabbcd026，PR base改main。自有產品實作尚未開始；原證據保持原來源，不改算到整合head。
 先讀D15、I19、I20及R41，再用原生D7驗必要條件，沒有從C反推規格。
 
