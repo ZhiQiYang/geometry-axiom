@@ -86,3 +86,21 @@ python3 tests/diagnostics/request_wait_segments/analyze.py /tmp/geometry-request
 請使用全新 output 目錄；可在 runner 最後參數選單組，如 `bridge18`，分析器則針對完整七組驗證預期的控制與故障表現。新增分析器會拒絕未排空 handler、清理前原生失敗、缺少真正晚到原生回覆或執行工具 hash 不符的證據。
 
 初版 `cohorts/` 的等待以 case 程序啟動為基準，可能在真正負載開始後未滿 18 秒就清理，造成假的原生 EOF/連線中斷。該版及其初步分析**完整保留為失效 pilot**，不採用其原生回覆結論；正式數據只採 `cohorts-drained/`。這是量測工具修正，不是產品修復。每組結束時 root_context.close 的正常清理 EOF 也保留於 raw，不當作清理前的原生失敗。
+
+## M1 審查補強（2026-10-14）
+
+依 [ChatGPT 審查 M1](https://github.com/ZhiQiYang/geometry-axiom/pull/235#issuecomment-6164435921)，分析器另驗證：
+
+- 七組名稱、各組 timeout/blocked 精確為 `(0,0)、(0,0)、(0,0)、(2,5)、(2,5)、(1,0)、(1,0)`；合計六筆 timeout。
+- runtime18/receipt18：同一 call 僅一個原命令與一個原 receipt，瀏覽器 businessRequestId 和 server body 的識別一致；receipt 在原 timeout 後發出並成功回覆，HTTP body hash 與原 apiRequest 取得的結果一致。
+- runtime18：保持 ready；原命令無 stdin/queue/非空 native reply；同 receipt 先完成取消，晚到原請求才取得 receipt 鎖；結果必為「操作未送達，場景未變更；請重新操作。」。
+- receipt18：保持 ready、P7 通過；原命令的 write/flush/queue 各一次、非空 native reply 恰一次；receipt 本身不執行 native，也沒有重送原 mutation。
+
+`check_counterexamples.py` 直接從未變的原 archive 解出七組，僅修改暫存副本。原件由修前與修後分析器皆接受；12 個資料反例均為修前 exit 0、修後 exit 1，且 stderr 指向具名失敗原因。這些反例是合成錯誤紀錄，不是新的瀏覽器或產品失敗。移除 M1（使用原 head `940d25f1` 分析器）會重新錯收全部反例。
+
+```sh
+python3 tests/diagnostics/request_wait_segments/check_counterexamples.py \
+  tests/evidence/request-wait-segments-20261014/raw.tar.gz /tmp/geometry-m1-counterexamples-new
+```
+
+完整 native 依 [P-107](https://github.com/ZhiQiYang/geometry-axiom/pull/235#issuecomment-6164666788) 另跑；結果與原始輸出完成後附在 evidence 的 `m1/`。本輪不領取指定任務 13，不修改產品。
