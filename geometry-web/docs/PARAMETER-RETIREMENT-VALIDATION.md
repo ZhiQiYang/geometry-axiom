@@ -1,6 +1,6 @@
 # GEO-258 候選退役狀態與 archive 重驗
 
-最新狀態（2026-10-12）：P-062 的同候選已刪來源明確 unbind 已交付，產品／測試提交 `c9ad24fbf957eb23f0ec7bf23adea4531d9db7a1`；修前14題為11紅3綠，修後14綠，三項暫存突變與回歸詳見文末。上游來源先刪的多卡順序仍有具體待裁反例，B3最終#207整合與B4七job未做；不能把已驗範圍擴大成整個PR完成。
+最新狀態（2026-10-14）：P-065 已採 A 並交付，產品／測試提交 `45013ece5147d4d5c1bad2de35387d2bdfaf28c8`。上游先刪的 27／27／29／29 四例確認成功，兩序完整 dump 相同；同份 12 新題修前 8 紅 4 綠，修後與 P-062 原 14 題共 26 綠，兩突變及刷新帳本見文末。B3 最終 #207 整合與 B4 七 job 未做，不能把本段定向驗證擴大成整個 PR 完成。
 
 以下各批次保留當時的來源與結果；較早段落中的「本次」僅指該批次。
 
@@ -170,3 +170,38 @@ P-060 裁決來源為 6113538272；net-zero B1 的既有 ce28fdb 範圍已由 61
 具體多來源邊界仍待Claude裁決（https://github.com/ZhiQiYang/geometry-axiom/pull/193#issuecomment-6124416895）：D=27、S=@D且目標綁S。unbind→delete D→delete S的preview有效為27，D先改29時為29；delete D→delete S→unbind的兩種preview均被拒。四組皆preview→cancel，dump回應與revision不變，未confirm。診斷原件15路徑已公開並獨立GET核回，未將此待決案例列為已完成正向驗收。
 
 B3依裁決由最終#207整合owner在承接後原位sync→check→原41題；本輪未改SSOT、白話、閱讀器、AXIOM常數、BACKLOG或決策佇列。B4最終七job仍待，不把本輪定向與變異當七項裁判。GEO-219無新入口；CI受帳號計費阻擋，以本機WSL收據代替。
+
+
+## P-065：上游先刪時的最後有效值（2026-10-14）
+
+依裁決6125213098及審查6125569301採A：只有來源自身也已刪且明確unbind可讀候選暫存；仍存活的來源／覆寫依當下依賴驗證。刪除時先找受影響的引用路徑、重算其必要欄位並更新最後有效值，不在每次刪除重建全圖，也不讓一般求值器讀暫存。原候選出口清零與最終懸空拒絕保留。
+
+同份12新題先在未改產品的 `86d3e0e376fe6dcc90936dd5e2ef301339f0b1d5` 上實跑：8題是缺少同候選有效值的行為斷言紅燈，4個對照原本就綠；然後才在該測試clone套入五個凍結路徑。修後12新題與原P-062的14題合計26題全綠，既有測試期望不改。另有11個既有模組142題、130/130 integrity及143/143原生場景全過。
+
+四組實際bridge確認原件保留所有命令、請求JSON、回應、完整dump、revision、取消及Undo/Redo。D=27、S=@D時，unbind→delete D→delete S與delete D→delete S→unbind都得到27；同候選先改D=29，兩序都得到29。兩組完整dump各自逐UTF-8位元組相同。第五組原件驗證D刪但S存活，unbind使整包無效、confirm被拒、正式dump與revision不變，診斷指名S→D。來源存活／覆寫存活、傳遞來源、無關循環、雙來源、來源恢復後的新值31、失敗候選不洩漏及0號卡片／欄位也在12題內。
+
+| 定向步驟 | exit | 秒數 |
+|---|---|---|
+| fixed-twenty-six-green | 0 | 104.038 |
+| confirmed-value-traces | 0 | 21.969 |
+| fixed-test_parameters_unbind_scope | 0 | 32.176 |
+| fixed-test_parameters_core | 0 | 99.822 |
+| fixed-test_parameter_retirement_scope | 0 | 25.624 |
+| fixed-test_parameter_netzero | 0 | 22.78 |
+| fixed-test_parameters_final_candidate | 0 | 17.936 |
+| fixed-test_section_profile_native | 0 | 157.265 |
+| fixed-test_assembly_rules | 0 | 268.961 |
+| fixed-test_evidence_link_native | 0 | 45.505 |
+| fixed-test_engineering_core | 0 | 140.263 |
+| fixed-test_assembly_parameter_refs | 0 | 68.487 |
+| fixed-test_engineering_model_sources | 0 | 83.783 |
+| full-mutation | 0 | 3823.118 |
+| final-twenty-six-green | 0 | 94.822 |
+
+M1移除上游失效前的捕捉，原值與先改29的兩個upstream-first案例實際斷言失敗；M2不更新已有暫存，來源恢復後應取31卻錯取27而失敗。每項逐byte還原產品、重編bridge後26題全部回綠，沒有把編譯或程序啟動錯誤當成突變被測到。
+
+原生閉包變動後刷新全表50筆：42 killed、1 crashed、4 equivalent、3 retired；無stale、survived或blocked。WSL與Windows的`mutate.py --check`均通過，帳本SHA-256 `b436d97c63886d11e85fc7ab6b4727a47614859a253e9e9720503dec6f28da0c`。帳本後26題及47個既有參數案例共73題再通過；固定四支執行檔的SHA在工作前後一致、sidecar皆fresh。
+
+受測輸入是 `86d3e0e376fe6dcc90936dd5e2ef301339f0b1d5` 加五個凍結路徑，實跑時不是乾淨最終提交。提交 `45013ece5147d4d5c1bad2de35387d2bdfaf28c8` 的五路徑已從Git讀回、LF SHA逐一等於受測輸入；契約文案另更新。同一性核對沒有宣稱另一次產品實跑。實際WSL exit0（隱藏launcher的OS退出碼與外層工具退出碼未獨立取得），489次取樣foreign空；收據SHA-256 `cb15882b36dc8aaf179ecb96fb628191a60fe756a2201f47a1d6b980f7f4c99b`，五例原件SHA-256 `e682e84bcfd97339f61cded5d0fd16f5e27691aa9f58a2e1299e5255e272789b`。完整來源、首跑、突變、還原、帳本與原始輸出保存在`D:/geometry-axiom-work/board-local-codex/pr193-p065-native-r3/`。
+
+P-062末段的「多來源邊界待裁」是當時狀態，已由本段P-065裁決與實跑承接；原15份反例和111份P-062交付原件保留原版本界線。B3最終#207正典整合與B4正式七job仍待；本輪無新UI入口，未改SSOT、白話、閱讀器、AXIOM常數、BACKLOG或決策佇列。CI受帳號計費阻擋，以本機WSL收據代替。
