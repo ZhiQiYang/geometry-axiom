@@ -103,4 +103,4 @@ python3 tests/diagnostics/request_wait_segments/check_counterexamples.py \
   tests/evidence/request-wait-segments-20261014/raw.tar.gz /tmp/geometry-m1-counterexamples-new
 ```
 
-完整 native 依 [P-107](https://github.com/ZhiQiYang/geometry-axiom/pull/235#issuecomment-6164666788) 另跑；結果與原始輸出完成後附在 evidence 的 `m1/`。本輪不領取指定任務 13，不修改產品。
+依 [P-107](https://github.com/ZhiQiYang/geometry-axiom/pull/235#issuecomment-6164666788)，完整 native 在隔離 MUTATE_CACHE 下重跑：88 suites、2775 pass／0 fail／1 平台 skip、exit 0。首輪因共用快取 45 個舊 binary 收據不符而 exit 1，原始結果、45 筆快取對照及負向驗證均保留；詳見 [M1 證據](../../evidence/request-wait-segments-20261014/m1/README.md)。兩輪產品／測試程式 hashes 相同，沒有重產帳本。本輪不領取指定任務 13，不修改產品。

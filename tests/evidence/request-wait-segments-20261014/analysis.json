@@ -916,7 +916,8 @@
       "server.py": "d4a8797c0b10f168d67ad5d7a229cda993d2295a6eeb8fc78d12d697ab0ada2a"
     },
     "native_pid": 611598,
-    "binary_sha256": "b49dccd56ee3729d48dcf5f8a908ae619fdd994d91a59cd70af691034adc76e3"
+    "binary_sha256": "b49dccd56ee3729d48dcf5f8a908ae619fdd994d91a59cd70af691034adc76e3",
+    "receipt_evidence": null
   },
   {
     "case": "bridge18",
@@ -1643,7 +1644,8 @@
       "server.py": "d4a8797c0b10f168d67ad5d7a229cda993d2295a6eeb8fc78d12d697ab0ada2a"
     },
     "native_pid": 612354,
-    "binary_sha256": "b49dccd56ee3729d48dcf5f8a908ae619fdd994d91a59cd70af691034adc76e3"
+    "binary_sha256": "b49dccd56ee3729d48dcf5f8a908ae619fdd994d91a59cd70af691034adc76e3",
+    "receipt_evidence": null
   },
   {
     "case": "bridge3",
@@ -2599,7 +2601,8 @@
       "server.py": "d4a8797c0b10f168d67ad5d7a229cda993d2295a6eeb8fc78d12d697ab0ada2a"
     },
     "native_pid": 612121,
-    "binary_sha256": "b49dccd56ee3729d48dcf5f8a908ae619fdd994d91a59cd70af691034adc76e3"
+    "binary_sha256": "b49dccd56ee3729d48dcf5f8a908ae619fdd994d91a59cd70af691034adc76e3",
+    "receipt_evidence": null
   },
   {
     "case": "native18",
@@ -3326,7 +3329,8 @@
       "server.py": "d4a8797c0b10f168d67ad5d7a229cda993d2295a6eeb8fc78d12d697ab0ada2a"
     },
     "native_pid": 612603,
-    "binary_sha256": "b49dccd56ee3729d48dcf5f8a908ae619fdd994d91a59cd70af691034adc76e3"
+    "binary_sha256": "b49dccd56ee3729d48dcf5f8a908ae619fdd994d91a59cd70af691034adc76e3",
+    "receipt_evidence": null
   },
   {
     "case": "receipt18",
@@ -4344,7 +4348,21 @@
       "server.py": "d4a8797c0b10f168d67ad5d7a229cda993d2295a6eeb8fc78d12d697ab0ada2a"
     },
     "native_pid": 613077,
-    "binary_sha256": "b49dccd56ee3729d48dcf5f8a908ae619fdd994d91a59cd70af691034adc76e3"
+    "binary_sha256": "b49dccd56ee3729d48dcf5f8a908ae619fdd994d91a59cd70af691034adc76e3",
+    "receipt_evidence": {
+      "business_request_id": "631ca45f-4aa7-4321-bf17-f42a549d3f7e",
+      "mutation_fetch": "fetch-6",
+      "receipt_fetch": "fetch-7",
+      "call": "call-5",
+      "result": {
+        "ok": true,
+        "deletedObjects": []
+      },
+      "mutation_stdin_writes": 1,
+      "mutation_native_replies": 1,
+      "receipt_stdin_writes": 0,
+      "receipt_delivered": true
+    }
   },
   {
     "case": "renderer-cpu20",
@@ -5337,7 +5355,8 @@
       "server.py": "d4a8797c0b10f168d67ad5d7a229cda993d2295a6eeb8fc78d12d697ab0ada2a"
     },
     "native_pid": 611836,
-    "binary_sha256": "b49dccd56ee3729d48dcf5f8a908ae619fdd994d91a59cd70af691034adc76e3"
+    "binary_sha256": "b49dccd56ee3729d48dcf5f8a908ae619fdd994d91a59cd70af691034adc76e3",
+    "receipt_evidence": null
   },
   {
     "case": "runtime18",
@@ -5665,6 +5684,20 @@
       "server.py": "d4a8797c0b10f168d67ad5d7a229cda993d2295a6eeb8fc78d12d697ab0ada2a"
     },
     "native_pid": 612845,
-    "binary_sha256": "b49dccd56ee3729d48dcf5f8a908ae619fdd994d91a59cd70af691034adc76e3"
+    "binary_sha256": "b49dccd56ee3729d48dcf5f8a908ae619fdd994d91a59cd70af691034adc76e3",
+    "receipt_evidence": {
+      "business_request_id": "75965015-9977-404e-b070-4f5825054a4b",
+      "mutation_fetch": "fetch-6",
+      "receipt_fetch": "fetch-7",
+      "call": "call-5",
+      "result": {
+        "ok": false,
+        "error": "操作未送達，場景未變更；請重新操作。"
+      },
+      "mutation_stdin_writes": 0,
+      "mutation_native_replies": 0,
+      "receipt_stdin_writes": 0,
+      "receipt_delivered": true
+    }
   }
 ]

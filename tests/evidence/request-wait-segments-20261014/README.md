@@ -2,6 +2,8 @@
 
 完整方法、六筆逐階段表格、限制與修正方向見 [診斷報告](../../diagnostics/request_wait_segments/README.md)。本次只做量測，未修產品，未跑 WSL 全量。
 
+**M1 後續審查修正**見 [m1/README.md](m1/README.md)：同 requestId 收據語意與精確計數、12 個反例、兩輪完整 native（首輪快取問題 exit 1 保留；隔離快取完整重跑 exit 0）。本目錄 `analysis.json` 已更新為 M1 分析器的衍生結果；原 `raw.tar.gz` 與原 manifest 保持不變。
+
 | 檔案 | 內容 |
 |---|---|
 | [raw.tar.gz](raw.tar.gz) | 228 個原始／衍生檔；正式與失效 pilot 均保留 |
