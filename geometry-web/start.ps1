@@ -18,7 +18,15 @@ if ($portBusy) {
 $linuxRepoOutput = & wsl.exe -d $Distro --user root --exec wslpath -u $repo.Replace('\', '/')
 if ($LASTEXITCODE -ne 0 -or !$linuxRepoOutput) { throw '無法取得 WSL 專案路徑。' }
 $linuxRepo = $linuxRepoOutput.Trim()
-$runtime = '/tmp/geometry-tests/axiom-runtime-' + [Guid]::NewGuid().ToString('N')
+# 執行檔放在 /var/tmp，不放 /tmp：WSL 開了 systemd，閒置自動關閉後重開時，
+# tmpfiles 的「D /tmp」會清空 /tmp，剛編譯的 web_bridge／model-base 會在下一次
+# wsl.exe 呼叫前消失（橋接器已結束、空間建模元件無法執行）。/var/tmp 開機時不清空。
+$runtimeRoot = '/var/tmp/geometry-runtime'
+$runtime = "$runtimeRoot/axiom-runtime-" + [Guid]::NewGuid().ToString('N')
+& wsl.exe -d $Distro --user root --exec mkdir -p $runtimeRoot
+if ($LASTEXITCODE -ne 0) { throw '無法建立執行檔目錄。' }
+# 只清本腳本自己留下、超過 7 天的舊執行檔目錄。
+& wsl.exe -d $Distro --user root --exec find $runtimeRoot -mindepth 1 -maxdepth 1 -type d -name 'axiom-runtime-*' -mtime +7 -exec rm -rf '{}' +
 & wsl.exe -d $Distro --user root --exec mkdir -p $runtime
 if ($LASTEXITCODE -ne 0) { throw '無法建立執行檔目錄。' }
 Write-Host '正在編譯目前的幾何核心…'
