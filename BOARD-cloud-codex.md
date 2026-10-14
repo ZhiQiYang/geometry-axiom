@@ -169,6 +169,19 @@
 - R10 的 P1～P5 是風險,不在本任務範圍;在 PR 正文列出,之後另議。
 - 這是產品程式的改動,要走列車跑 7 項;雲端先跑 native。開 draft PR,連到 #128。
 
+**指定任務 16:Windows 本機啟動腳本的原生程式不要放在 WSL 的 /tmp(2026-10-15 03:10 Claude 指定;使用者實際踩到)**
+- 領取分支:`fix/start-ps1-runtime-dir-20261015`,base = main。
+- 症狀:使用者在 Windows 執行 `geometry-web/start.ps1`,app 顯示「橋接器已結束」,或啟動時報「空間建模元件無法執行」;終端機寫著 `/tmp/geometry-tests/axiom-runtime-*/web_bridge: No such file or directory`。
+- 根因(Claude 已查證):`start.ps1` 用好幾次短暫的 `wsl.exe --exec` 把 web_bridge 與 model-base 編譯到 `/tmp/geometry-tests/axiom-runtime-<guid>/`。WSL 開了 systemd,而 `/usr/lib/tmpfiles.d/tmp.conf` 有 `D /tmp 1777 root root 30d`。只要 Ubuntu 在兩次呼叫之間因閒置自動關閉,重開時 /tmp 就被清空,剛編好的程式也跟著消失。
+- 修法要求:
+  - 把 runtime 目錄改到開機時不會被清空的位置,例如 `/var/tmp/geometry-runtime/axiom-runtime-<guid>`(Ubuntu 對 /var/tmp 只做依時間的清理)。
+  - 啟動時清掉同一位置裡過期的舊 runtime 目錄,避免一直累積。
+  - 不改 `tests/binaries.py` 使用的 `/tmp/geometry-tests`(那是測試用的,另有隔離)。
+- 驗證:
+  - 在 Windows 上先執行 `wsl --terminate Ubuntu-24.04` 模擬閒置關閉,再接著跑 `start.ps1`、開頁面、等 30 秒以上再連線,都要正常。
+  - 修前用同一步驟重現失敗。
+- 這是產品檔案(啟動腳本),要走列車跑 7 項。開 draft PR。
+
 **指定任務 7:落地前的雲端預驗(advisory)**
 - 領取分支:`ops/claim-t5-preverify-20261013`,只當鎖用,不開 PR。
 - 依序處理 open PR:#187、#191、#199、#201、#200、#206、#192、#193、#196、#202、#207、#190、#186,已合併或已關閉的跳過。
