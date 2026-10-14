@@ -118,7 +118,7 @@ static bool engineering_used(const World *w) { return w->engineering.material_co
 
 static bool eng_publish_material(World *w,EngJson *j,int t,const char *fingerprint)
 {
-    EngMaterialVersion m={0}; char kind[16],name[192],thickness[128];
+    EngMaterialVersion m={0}; char kind[16],name[192],thickness[ENG_THICKNESS_CAPACITY];
     if (!eng_json_string(j,eng_json_member(j,t,"kind"),kind,sizeof kind)) return eng_fail("D26: material kind is required");
     m.kind=!strcmp(kind,"timber");
     if ((!m.kind && strcmp(kind,"panel")) || !eng_json_keys(j,t,m.kind?"id,version,kind,name,A,B":"id,version,kind,name,width,length",m.kind?"brand,model,notes":"thickness,brand,model,notes") ||

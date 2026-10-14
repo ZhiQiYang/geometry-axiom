@@ -1,5 +1,6 @@
 """PF-2 native oracles: D42/R42 tiles and ordered clipped loops, not PF-3 support or a UI receipt."""
 import copy
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -197,11 +198,32 @@ class PanelFillLayout(unittest.TestCase):
         self.assertEqual(text,self.command("dump")["text"])
 
     def test_PF13_thickness_required_even_without_obstacles(self):
-        for t in [None,"0","9.5"]:
+        for t in [None,"0","9.5","12.5"]:
             if t == "0": continue  # D26 already rejects zero; no material is published.
             self.seed(thickness=t)
             self.reject([fill()],"I52")
         self.seed(thickness="9.000"); self.layout()
+
+    def test_PF13_integer_thickness_keeps_full_published_representation(self):
+        for zeroes in (61, 62, 125):
+            thickness = "9." + "0" * zeroes
+            with self.subTest(thickness_bytes=len(thickness)):
+                self.seed(thickness=thickness)
+                material = self.command("engineering-read")["state"]["materials"][0]
+                self.assertEqual(thickness, material["thickness"], "D26 must preserve the published decimal string")
+                content = {k: v for k, v in material.items() if k not in ("fingerprint", "archived")}
+                fingerprint = hashlib.sha256(json.dumps(content, ensure_ascii=False, sort_keys=True,
+                                                        separators=(",", ":")).encode()).hexdigest()
+                self.assertEqual(fingerprint, material["fingerprint"], "I34: fingerprint covers the full source string")
+                before = self.snapshot()
+                preview = self.preview([fill()])
+                self.assertTrue(preview["valid"], "PF2_THICKNESS_VALUE_9: I52 must accept exact 9 mm, not reject its representation: %s" % preview)
+                self.assertEqual(before, self.snapshot(), "preview must not submit the candidate")
+                self.assertTrue(self.command("panel-fill-confirm %d" % preview["token"])["ok"])
+                self.assertEqual(9, self.read()["state"]["panelFills"][0]["derived"]["thickness"],
+                                 "PF2_THICKNESS_VALUE_9: the exact decimal value is 9 mm")
+                self.assertEqual(material, self.command("engineering-read")["state"]["materials"][0],
+                                 "I34: panel fill must not rewrite material content or its fingerprint")
 
     def test_PF13_capacity_never_returns_partial_tiles(self):
         self.seed(width=1,length=1,outline="0,0 1000,0 1000,1000 0,1000")
