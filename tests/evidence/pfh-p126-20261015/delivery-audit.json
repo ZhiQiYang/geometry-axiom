@@ -1,0 +1,41 @@
+{
+  "nativeHead": "f6d128ac90ef0e028b5bf8f56e93847b14dc5c10",
+  "native": {
+    "headBefore": "f6d128ac90ef0e028b5bf8f56e93847b14dc5c10",
+    "headAfter": "f6d128ac90ef0e028b5bf8f56e93847b14dc5c10",
+    "argv": [
+      "python3",
+      "-u",
+      "tests/run_all.py",
+      "--build"
+    ],
+    "exit": 0,
+    "seconds": 982.2453686840017,
+    "trackedRegularFiles": 15025,
+    "trackedExcluded": [],
+    "trackedBeforeAfterEqual": true,
+    "statusAfter": "",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "python": "3.12.14",
+    "node": "v24.19.0",
+    "gcc": "gcc (Debian 14.2.0-19) 14.2.0",
+    "stackBytes": 16777216,
+    "mutationCache": "/tmp/geometry-wake42/native-empty-cache",
+    "mutationCacheExistedBefore": false,
+    "currentRunLogMembers": 204,
+    "archiveSha256": "072ede1723b0c9c92adc54f5ee003a5595118d386b4c3f50a922d923fe40e358"
+  },
+  "generatedPatchSha256": "296192fc7f0410bf4836e8fc768b9d812a482222bdf67593c7f1f3b65b69f8e1",
+  "canonicalSha256": "15875c5532568f7b976711c0edce44d2134ab2647dcd0356b8baea6233059b40",
+  "productSourcesUnchanged": true,
+  "ssotPlainAndLockedFilesUnchanged": true,
+  "previousEvidenceFilesUnchanged": 420,
+  "currentLogHashesVerified": 204,
+  "previousControlsAndMutations": "retained per P126; not rerun",
+  "formalWSLSeven": {
+    "status": "unverified",
+    "executed": 0,
+    "scheduled": false
+  },
+  "trainIntegration": "P090/P105: rerun official synchronizer on merged tree"
+}
