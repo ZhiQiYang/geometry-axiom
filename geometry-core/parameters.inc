@@ -322,9 +322,14 @@ static bool parameter_current_ast_valid(const World *w,const ParameterField *own
     if(!strcmp(op,"ref")){
         int64_t id=-1,field=-1;
         if(!eng_json_integer(j,eng_json_member(j,t,"parameterId"),&id)||!eng_json_integer(j,eng_json_member(j,t,"fieldId"),&field)||id<0||id>UINT32_MAX||field<0||field>UINT32_MAX)return true;
-        if(parameter_reference_unhandled(w,(uint32_t)id,(uint32_t)field,PARAM_OWNER_CARD,owner->parameter_id,0))
-            return parameter_fail("I38 MISSING: parameter %u field %u still references deleted parameter %u field %u; explicitly redeclare the referrer after the last deletion",owner->parameter_id,owner->id,(uint32_t)id,(uint32_t)field);
         int next=parameter_field_index(w,(uint32_t)id,(uint32_t)field);
+        /* Missing targets retain the evaluator's existing named dependency path.
+         * This extra guard is needed when an unrelated definition reoccupies a key. */
+        if(next>=0&&parameter_reference_unhandled(w,(uint32_t)id,(uint32_t)field,PARAM_OWNER_CARD,owner->parameter_id,0)){
+            parameter_fail("I38 MISSING: parameter %u field %u was deleted; parameter %u field %u must be explicitly redeclared after the last deletion",(uint32_t)id,(uint32_t)field,owner->parameter_id,owner->id);
+            const ParameterSet *card=parameter_find(w,owner->parameter_id);
+            parameter_wrap_error(owner->parameter_id,owner->id,card?card->name:"",owner->name);return false;
+        }
         return next<0||parameter_current_closure_valid(w,next,visited);
     }
     int left=eng_json_member(j,t,"left"),right=eng_json_member(j,t,"right");
