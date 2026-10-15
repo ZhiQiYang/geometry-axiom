@@ -1,0 +1,9 @@
+import resource,sys,unittest
+from unittest.mock import patch
+sys.path.insert(0,'/tmp/geometry-209-segments')
+from tests import _bridge
+resource.setrlimit(resource.RLIMIT_STACK,(16777216,resource.getrlimit(resource.RLIMIT_STACK)[1]))
+with patch.object(_bridge,'find_bridge',return_value='/tmp/geometry-wake41/bridge-asan'):
+ suite=unittest.defaultTestLoader.loadTestsFromName('tests.test_subgrid_contract.SubgridContract.test_s09_retarget_divisions_and_referenced_index_contract')
+ result=unittest.TextTestRunner(verbosity=2).run(suite)
+raise SystemExit(0 if result.wasSuccessful() else 1)

@@ -1,0 +1,13 @@
+....F..
+======================================================================
+FAIL: test_real_http_identical_response_and_all_stages (__main__.WaitTraceTests.test_real_http_identical_response_and_all_stages)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/geometry-wait-trace/tests/test_wait_trace.py", line 124, in test_real_http_identical_response_and_all_stages
+    self.assertTrue({'source_lock','receipt_lock','bridge_lock','stdin_write','stdin_flush','response_queue','http_write','request_end'} <= stages, stages)
+AssertionError: False is not true : {'response_queue_begin', 'stdin_flush_begin', 'request_begin', 'stdin_write', 'response_queue', 'source_lock', 'http_write', 'source_lock_begin', 'stdin_flush', 'request_end', 'stdin_write_begin', 'http_write_begin'}
+
+----------------------------------------------------------------------
+Ran 7 tests in 2.869s
+
+FAILED (failures=1)

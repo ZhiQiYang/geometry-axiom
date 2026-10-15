@@ -1,0 +1,22 @@
+import json,os,resource,sys
+from pathlib import Path
+sys.path.insert(0,'/tmp/geometry-209-segments')
+from tests.test_panel_fill_host import PanelFillHost
+from tests.test_section_profile_native import profile,run,literal,put
+resource.setrlimit(resource.RLIMIT_STACK,(16777216,resource.getrlimit(resource.RLIMIT_STACK)[1]))
+os.environ['GEOMETRY_TEST_BRIDGE']='/tmp/geometry-wake41/controls-final/baseline/bin/bridge'
+PanelFillHost.setUpClass();case=PanelFillHost();case.setUp();records=[]
+try:
+ case.host()
+ for name,channel,operations in [
+  ('D28-application','engineering',[dict(op='publish-method',value=dict(id='host-method',version=1,name='method')),dict(op='put-application',value=dict(id='host-app',placement_id=10,method=dict(id='host-method',version=1)))]),
+  ('D38-live-host','section-profile',[put('profile',profile(outline=[[0,0],[40,0],[40,40],[0,40]])),put('run',run(length=literal(30),placement=dict(kind='simple',host=dict(kind='placement',placementId=10),dir='+v',p=100,q=100,up='+Z')))])]:
+  before=case.snapshot();path=case.directory/'capability.json';request=dict(schema=channel+'-transaction/1',expectedRevision=case.read()['revision'],operations=operations);path.write_text(json.dumps(request))
+  reply=case.command(channel+'-preview '+str(path));assert reply['ok'] and not reply['preview']['valid'],(name,reply)
+  confirm=case.command(channel+'-confirm '+str(reply['preview']['token']));assert not confirm['ok']
+  after=case.snapshot();assert before==after
+  if name.startswith('D28'):assert 'D4' in json.dumps(reply)
+  records.append(dict(name=name,request=request,reply=reply,confirm=confirm,worldAndRevisionUnchanged=before==after))
+finally:case.doCleanups()
+Path('/tmp/geometry-wake41/capability-probe.json').write_text(json.dumps(dict(stackBytes=16777216,records=records),ensure_ascii=False,indent=2)+'\n')
+print('PFH_CAPABILITY_GUARDS: D28 and D38 reject; confirmation and World/revision preservation verified')

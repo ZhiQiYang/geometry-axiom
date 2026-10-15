@@ -1,0 +1,30 @@
+from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
+import json,os,resource,shutil,subprocess,sys,time
+R=Path('/workspace/geometry-axiom');O=Path('/tmp/pf3-official-20261015');O.mkdir(exist_ok=False)
+sys.path.insert(0,str(R/'tests'));import mutate
+resource.setrlimit(resource.RLIMIT_STACK,(16777216,resource.getrlimit(resource.RLIMIT_STACK)[1]))
+head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=R,text=True).strip()
+ids=[m['id'] for m in mutate.MUTANTS];assert len(set(ids))==len(ids)
+groups=[ids[i::3] for i in range(3)]
+def run(i):
+    out=O/str(i);out.mkdir();argv=[sys.executable,'-u','tests/mutate.py',*groups[i]];start=time.monotonic()
+    env={**os.environ,'MUTATE_CACHE':str(out/'cache'),'MUTATE_RESULTS':str(out/'results.json')}
+    with (out/'stdout').open('wb') as so,(out/'stderr').open('wb') as se:p=subprocess.run(argv,cwd=R,env=env,stdout=so,stderr=se)
+    receipt=dict(head=head,argv=argv,ids=groups[i],exit=p.returncode,seconds=time.monotonic()-start,stackBytes=16777216)
+    (out/'receipt.json').write_text(json.dumps(receipt,indent=2)+'\n');print(json.dumps(receipt),flush=True);return receipt
+with ThreadPoolExecutor(max_workers=3) as pool:receipts=list(pool.map(run,range(3)))
+if any(x['exit'] for x in receipts):raise SystemExit(1)
+records={};unified=O/'cache';unified.mkdir()
+for i in range(3):
+    for k,v in json.loads((O/str(i)/'results.json').read_text()).items():
+        if k in groups[i]:assert k not in records;records[k]=v
+    cache=O/str(i)/'cache'
+    for item in cache.iterdir():
+        if item.is_dir() and (item.name in groups[i] or item.name=='_baseline' and not (unified/item.name).exists()):shutil.copytree(item,unified/item.name)
+assert set(records)==set(ids)
+mutate.save_records(R/'tests/mutants_results.json',records)
+argv=[sys.executable,'tests/mutate.py','--check','--killers']
+with (O/'check.stdout').open('wb') as so,(O/'check.stderr').open('wb') as se:p=subprocess.run(argv,cwd=R,env={**os.environ,'MUTATE_CACHE':str(unified)},stdout=so,stderr=se)
+(O/'summary.json').write_text(json.dumps(dict(head=head,receipts=receipts,count=len(records),checkExit=p.returncode),indent=2)+'\n')
+print('checkExit',p.returncode,flush=True);raise SystemExit(p.returncode)

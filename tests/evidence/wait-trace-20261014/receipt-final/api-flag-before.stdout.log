@@ -1,0 +1,85 @@
+✔ first API transport failure survives later failures and other sessions (5.240325ms)
+✔ successful API and asset failures do not become API transport failures (2.125755ms)
+✔ first non-api business fetch failure survives later api failure (1.153545ms)
+✖ frontend transport flag is recorded even without a failed network event (3.770687ms)
+✖ observer preserves success and rejection and does not replay either (1.671622ms)
+✖ a broken diagnostic sink cannot alter a transport result (2.325493ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 3
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 104.862167
+
+✖ failing tests:
+
+test at tests/test_transport_failure_trace.js:41:1
+✖ frontend transport flag is recorded even without a failed network event (3.770687ms)
+  AssertionError [ERR_ASSERTION]: API_TRANSPORT_OBSERVER_MISSING
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at TestContext.<anonymous> (/tmp/geometry-wait-trace/tests/test_transport_failure_trace.js:42:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/test_transport_failure_trace.js:63:1
+✖ observer preserves success and rejection and does not replay either (1.671622ms)
+  AssertionError [ERR_ASSERTION]: API_TRANSPORT_OBSERVER_MISSING
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at TestContext.<anonymous> (/tmp/geometry-wait-trace/tests/test_transport_failure_trace.js:64:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/test_transport_failure_trace.js:77:1
+✖ a broken diagnostic sink cannot alter a transport result (2.325493ms)
+  AssertionError [ERR_ASSERTION]: API_TRANSPORT_OBSERVER_MISSING
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at TestContext.<anonymous> (/tmp/geometry-wait-trace/tests/test_transport_failure_trace.js:78:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

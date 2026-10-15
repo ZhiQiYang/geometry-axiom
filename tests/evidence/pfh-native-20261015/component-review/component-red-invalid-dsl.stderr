@@ -1,0 +1,36 @@
+test_D10_second_component_grid_subgrid_reopen_and_I23_rollback (__main__.ComponentReview.test_D10_second_component_grid_subgrid_reopen_and_I23_rollback) ... FAIL
+test_D19_component_gap_and_hole_are_not_cell_area (__main__.ComponentReview.test_D19_component_gap_and_hole_are_not_cell_area) ... FAIL
+test_R41_scene_render_and_pick_cover_second_component_without_gap (__main__.ComponentReview.test_R41_scene_render_and_pick_cover_second_component_without_gap) ... FAIL
+
+======================================================================
+FAIL: test_D10_second_component_grid_subgrid_reopen_and_I23_rollback (__main__.ComponentReview.test_D10_second_component_grid_subgrid_reopen_and_I23_rollback)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<string>", line 5, in test_D10_second_component_grid_subgrid_reopen_and_I23_rollback
+AssertionError: False is not true : {'ok': False, 'error': 'line 1: grid 的座標不是有效的整數', 'deletedObjects': []}
+
+======================================================================
+FAIL: test_D19_component_gap_and_hole_are_not_cell_area (__main__.ComponentReview.test_D19_component_gap_and_hole_are_not_cell_area)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<string>", line 31, in test_D19_component_gap_and_hole_are_not_cell_area
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_R41_scene_render_and_pick_cover_second_component_without_gap (__main__.ComponentReview.test_R41_scene_render_and_pick_cover_second_component_without_gap)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<string>", line 52, in test_R41_scene_render_and_pick_cover_second_component_without_gap
+AssertionError: Lists differ: [[0, 0, 40, 0, 40, 100, 0, 100], [60, 0, 100, 0, 100, 100, 60, 100]] != [[0, 0, 40, 0, 40, 100, 0, 100]]
+
+First list contains 1 additional elements.
+First extra element 1:
+[60, 0, 100, 0, 100, 100, 60, 100]
+
+- [[0, 0, 40, 0, 40, 100, 0, 100], [60, 0, 100, 0, 100, 100, 60, 100]]
++ [[0, 0, 40, 0, 40, 100, 0, 100]] : PFH_COMPONENT_RENDER: draw both true components, never their bbox
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.534s
+
+FAILED (failures=3)

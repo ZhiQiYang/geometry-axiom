@@ -1,0 +1,48 @@
+import hashlib,json,os,platform,resource,subprocess,sys,tarfile,time
+from pathlib import Path
+R=Path('/workspace/geometry-axiom');O=Path('/tmp/p134-final-native');O.mkdir(exist_ok=False);os.chdir(R)
+def write(p,v):p.write_text(json.dumps(v,ensure_ascii=False,indent=2)+'\n')
+def git(*args):return subprocess.check_output(['git',*args],cwd=R,text=True).strip()
+def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+tracked=[os.fsdecode(p) for p in subprocess.check_output(['git','ls-files','-z'],cwd=R).split(b'\0') if p]
+def snapshot():return {p:sha(R/p) for p in tracked if (R/p).is_file()}
+assert not git('status','--porcelain');head=git('rev-parse','HEAD');before=snapshot();write(O/'tracked-before.json',before)
+resource.setrlimit(resource.RLIMIT_STACK,(16777216,resource.getrlimit(resource.RLIMIT_STACK)[1]))
+env={k:v for k,v in os.environ.items() if not k.startswith('GEOMETRY_')};env['MUTATE_CACHE']='/tmp/p134-native-empty-cache';assert not Path(env['MUTATE_CACHE']).exists()
+argv=[sys.executable,'-u','tests/run_all.py','--build'];started_ns=time.time_ns();started=time.monotonic()
+write(O/'started.json',dict(head=head,argv=argv,startedUnixNs=started_ns,stackBytes=16777216,mutationCache=env['MUTATE_CACHE']))
+with (O/'stdout').open('wb') as so,(O/'stderr').open('wb') as se:p=subprocess.run(argv,cwd=R,env=env,stdout=so,stderr=se)
+elapsed=time.monotonic()-started;after=snapshot();write(O/'tracked-after.json',after)
+bins={};members=[]
+with tarfile.open(O/'binaries.tar.gz','w:gz') as archive:
+    for name in ['bridge','core','integrity','model-base','engineering-json-test','pf3-algorithm']:
+        path=Path('/tmp/geometry-tests')/name;side=path.with_name(path.name+'.fingerprint.json')
+        bins[name]=dict(sha256=sha(path),sidecarSha256=sha(side),sidecar=json.loads(side.read_text()));archive.add(path,arcname=name);archive.add(side,arcname=side.name)
+write(O/'binary-final.json',bins)
+with tarfile.open(O/'logs.tar.gz','w:gz') as archive:
+    for f in sorted(Path('/tmp/geometry-tests/run_all-logs').rglob('*')):
+        if f.is_file() and f.stat().st_mtime_ns>=started_ns:
+            name=str(f.relative_to('/tmp/geometry-tests/run_all-logs'));members.append(dict(path=name,bytes=f.stat().st_size,sha256=sha(f)));archive.add(f,arcname=name)
+write(O/'log-manifest.json',members)
+# Preserve actual binaries locally and prove which already versioned binaries
+# have identical bytes, avoiding duplicate binary payloads in PR comments.
+old=R/'tests/evidence/pf3-native-20261015/native/binaries.tar.gz';reuse={}
+with tarfile.open(old,'r:gz') as archive:
+    for name,row in bins.items():
+        reuse[name]=dict(binaryEqual=hashlib.sha256(archive.extractfile(name).read()).hexdigest()==row['sha256'],
+                         sidecarEqual=hashlib.sha256(archive.extractfile(name+'.fingerprint.json').read()).hexdigest()==row['sidecarSha256'])
+write(O/'binary-reuse.json',dict(versionedArchive='tests/evidence/pf3-native-20261015/native/binaries.tar.gz',members=reuse))
+receipt=dict(headBefore=head,headAfter=git('rev-parse','HEAD'),tree=git('rev-parse','HEAD^{tree}'),argv=argv,exit=p.returncode,seconds=elapsed,
+             trackedRegularFiles=len(before),trackedExcluded=[],trackedBeforeAfterEqual=before==after,statusAfter=git('status','--porcelain'),
+             platform=platform.platform(),python=platform.python_version(),node=subprocess.check_output(['node','--version']).decode().strip(),
+             gcc=subprocess.check_output(['gcc','--version']).decode().splitlines()[0],stackBytes=16777216,mutationCache=env['MUTATE_CACHE'],mutationCacheExistedBefore=False,
+             currentRunLogMembers=len(members),logArchiveSha256=sha(O/'logs.tar.gz'),binaryArchiveSha256=sha(O/'binaries.tar.gz'),
+             trackedBeforeSha256=sha(O/'tracked-before.json'),trackedAfterSha256=sha(O/'tracked-after.json'),
+             publication='PR journal includes complete stdout/stderr, receipts, binary identity, all current logs and manifest; full binaries and tracked maps also preserved locally.')
+write(O/'receipt.json',receipt)
+names=['stdout','stderr','receipt.json','started.json','binary-final.json','binary-reuse.json','log-manifest.json','logs.tar.gz']
+write(O/'journal-manifest.json',{n:dict(sha256=sha(O/n),bytes=(O/n).stat().st_size) for n in names})
+with tarfile.open(O/'journal.tar.gz','w:gz') as archive:
+    for n in [*names,'journal-manifest.json']:archive.add(O/n,arcname=n)
+print(json.dumps({**receipt,'journalSha256':sha(O/'journal.tar.gz'),'journalBytes':(O/'journal.tar.gz').stat().st_size}),flush=True)
+raise SystemExit(p.returncode)

@@ -1,0 +1,72 @@
+import hashlib
+import json
+import os
+from pathlib import Path
+import platform
+import resource
+import subprocess
+import tarfile
+import time
+
+root = Path('/tmp/geometry-209-segments')
+out = Path('/tmp/geometry-wake40/native')
+out.mkdir(exist_ok=True)
+os.chdir(root)
+
+def save(name, value):
+    (out / name).write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n')
+
+def git(*args):
+    return subprocess.check_output(['git', *args]).decode().strip()
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+tracked = [os.fsdecode(p) for p in subprocess.check_output(['git', 'ls-files', '-z']).split(b'\0') if p]
+def snapshot():
+    return {p: sha(root / p) for p in tracked if (root / p).is_file() and True}
+
+before = snapshot()
+save('tracked-before.json', before)
+save('expected-before.json', json.loads((root / 'tests/run_all.expected.json').read_text()))
+head = git('rev-parse', 'HEAD')
+status = git('status', '--porcelain')
+assert not status, status
+resource.setrlimit(resource.RLIMIT_STACK, (16384 * 1024, resource.getrlimit(resource.RLIMIT_STACK)[1]))
+env = dict(os.environ, MUTATE_CACHE='/tmp/geometry-wake40/empty-mutation-cache')
+assert not Path(env['MUTATE_CACHE']).exists()
+argv = ['python3', '-u', 'tests/run_all.py', '--build']
+started_ns = time.time_ns()
+started = time.monotonic()
+save('started.json', dict(head=head, argv=argv, startedUnixNs=started_ns, mutationCache=env['MUTATE_CACHE'], stackBytes=resource.getrlimit(resource.RLIMIT_STACK)[0]))
+with (out / 'native.stdout').open('wb') as stdout, (out / 'native.stderr').open('wb') as stderr:
+    result = subprocess.run(argv, stdout=stdout, stderr=stderr, env=env)
+elapsed = time.monotonic() - started
+after = snapshot()
+save('tracked-after.json', after)
+save('expected-after.json', json.loads((root / 'tests/run_all.expected.json').read_text()))
+binary = {}
+for name in ('bridge', 'core', 'integrity', 'model-base', 'engineering-json-test'):
+    path = Path('/tmp/geometry-tests') / name
+    sidecar = path.with_name(path.name + '.fingerprint.json')
+    binary[name] = dict(sha256=sha(path), sidecar=json.loads(sidecar.read_text()))
+save('binary-final.json', binary)
+logs = Path('/tmp/geometry-tests/run_all-logs')
+members = []
+with tarfile.open(out / 'native-current-logs.tar.gz', 'w:gz') as archive:
+    for p in sorted(logs.rglob('*')):
+        if p.is_file() and p.stat().st_mtime_ns >= started_ns:
+            name = str(p.relative_to(logs))
+            members.append(dict(path=name, bytes=p.stat().st_size, sha256=sha(p)))
+            archive.add(p, arcname=name)
+save('native-log-manifest.json', members)
+receipt = dict(headBefore=head, headAfter=git('rev-parse','HEAD'), argv=argv, exit=result.returncode, seconds=elapsed,
+               trackedRegularFiles=len(before), trackedExcluded=[], trackedBeforeAfterEqual=before==after,
+               statusAfter=git('status','--porcelain'), platform=platform.platform(), python=platform.python_version(),
+               node=subprocess.check_output(['node','--version']).decode().strip(),
+               gcc=subprocess.check_output(['gcc','--version']).decode().splitlines()[0],
+               stackBytes=resource.getrlimit(resource.RLIMIT_STACK)[0], mutationCache=env['MUTATE_CACHE'],
+               mutationCacheExistedBefore=False, currentRunLogMembers=len(members),
+               archiveSha256=sha(out/'native-current-logs.tar.gz'))
+save('native.json', receipt)
+print(json.dumps(receipt, ensure_ascii=False), flush=True)

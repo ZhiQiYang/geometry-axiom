@@ -1,0 +1,42 @@
+test_s09_retarget_divisions_and_referenced_index_contract (tests.test_subgrid_contract.SubgridContract.test_s09_retarget_divisions_and_referenced_index_contract) ... FAIL
+
+======================================================================
+FAIL: test_s09_retarget_divisions_and_referenced_index_contract (tests.test_subgrid_contract.SubgridContract.test_s09_retarget_divisions_and_referenced_index_contract)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/geometry-209-segments/tests/test_subgrid_contract.py", line 467, in test_s09_retarget_divisions_and_referenced_index_contract
+    self.basic()
+  File "/tmp/geometry-209-segments/tests/test_subgrid_contract.py", line 122, in basic
+    self.ok('grid 1 on 1 main-along v u 1000 3000 v 1000 2000')
+  File "/tmp/geometry-209-segments/tests/test_subgrid_contract.py", line 53, in ok
+    result = self.line(command)
+             ^^^^^^^^^^^^^^^^^^
+  File "/tmp/geometry-209-segments/tests/test_subgrid_contract.py", line 50, in line
+    return self.s.send('line ' + command)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/geometry-209-segments/tests/_bridge.py", line 137, in command
+    raise AssertionError('bridge closed: ' + self.stderr_text())
+AssertionError: bridge closed: AddressSanitizer:DEADLYSIGNAL
+=================================================================
+==757933==ERROR: AddressSanitizer: stack-overflow on address 0x7ffefea63098 (pc 0x55a710283583 bp 0x7ffeff0278b0 sp 0x7ffefea63070 T0)
+    #0 0x55a710283583 in grid_axis_lines geometry-web/../current_geometry.c:1490
+    #1 0x55a7102d4703 in apply_grid_line geometry-web/../current_geometry.c:10079
+    #2 0x55a710293715 in apply_scene_line_unchecked geometry-web/../current_geometry.c:12608
+    #3 0x55a710293715 in apply_scene_line_candidate geometry-web/../geometry-core/transactions.inc:584
+    #4 0x55a710296715 in apply_scene_line geometry-web/../geometry-core/transactions.inc:625
+    #5 0x55a710297092 in apply_interactive_tokens geometry-web/../current_geometry.c:4186
+    #6 0x55a710297092 in feed_line geometry-web/web_bridge.c:183
+    #7 0x55a71029c596 in cmd_line geometry-web/web_bridge.c:344
+    #8 0x55a7102e6c85 in main geometry-web/web_bridge.c:989
+    #9 0x7fcc687e7ca7  (/lib/x86_64-linux-gnu/libc.so.6+0x29ca7) (BuildId: 5e5b51f4c39af9ac589408c1dc432ba390a273cc)
+    #10 0x7fcc687e7d64 in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x29d64) (BuildId: 5e5b51f4c39af9ac589408c1dc432ba390a273cc)
+    #11 0x55a7101f55a0 in _start (/tmp/geometry-wake41/bridge-asan+0x325a0) (BuildId: 6cf6347bcb8a8a447dcf309f5150bed23b90a04d)
+
+SUMMARY: AddressSanitizer: stack-overflow geometry-web/../current_geometry.c:1490 in grid_axis_lines
+==757933==ABORTING
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.164s
+
+FAILED (failures=1)

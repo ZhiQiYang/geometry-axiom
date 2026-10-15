@@ -1,0 +1,27 @@
+import hashlib,json,shutil,tarfile
+from pathlib import Path
+R=Path('/workspace/geometry-axiom');E=R/'tests/evidence/pf3-p134-20261015';E.mkdir(parents=True,exist_ok=False)
+def copy(src,name):target=E/name;target.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(src,target)
+for src,prefix in [(Path('/tmp/p134-comparison'),'standalone-10'),(Path('/tmp/p134-comparison-extended-v2'),'standalone-50'),(Path('/tmp/p134-suite-comparison'),'scenario-suite-3')]:
+    for name in ['plan.json','summary.json']:copy(src/name,Path(prefix)/name)
+    manifest=[]
+    with tarfile.open(E/(prefix+'.tar.gz'),'w:gz') as archive:
+        for p in sorted(src.rglob('*')):
+            if not p.is_file():continue
+            relative=str(p.relative_to(src));archive.add(p,arcname=relative,recursive=False)
+            manifest.append(dict(path=relative,bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest()))
+    (E/(prefix+'.inventory.json')).write_text(json.dumps(manifest,indent=2)+'\n')
+for src,name in [('/tmp/p134-compare.py','drivers/compare.py.txt'),('/tmp/p134-repeat.py','drivers/repeat.py.txt'),('/tmp/p134-suite-compare.py','drivers/suite_compare.py.txt'),
+                 ('/tmp/p134-compare-parent.log','standalone-10/parent.stdout'),('/tmp/p134-repeat-v2-parent.log','standalone-50/parent.stdout'),('/tmp/p134-suite-parent.log','scenario-suite-3/parent.stdout'),
+                 ('/tmp/p134-repeat-parent.log','aborted-setup.stderr'),('/tmp/p134-package-comparison.py','drivers/package_comparison.py.txt')]:copy(Path(src),Path(name))
+source={}
+for name in ['base','pf3']:
+    source[name]=json.loads((Path('/tmp/p134-comparison')/name/'source-hashes.json').read_text())
+for p in ['tests/test_scenario_verify.py','geometry-web/scenario_verify.py','geometry-core/modeling/base.py']:assert source['base'][p]==source['pf3'][p]
+result=dict(base='303fec02257d21cf719287045a718665c3283006',pf3='4f8da467e81be91bc288c765971431aed1530a94',
+            pf3MergeTree='aa73311333b874f3cc84975efa642d2451dd2623',standalonePerTree=dict(passed=60,failed=0,skipped=0),
+            fullScenarioSuitePerTree=dict(rounds=3,eachPassed=37,eachFailed=0,eachSkipped=0),sourceHashes=source,
+            causalConclusion='Original native failure was not reproduced; neither conditional failure branch of P-134 was observed. No attribution to PF3, PF-H or environment is proven.',
+            issueCreated=False,productOrTestChanged=False)
+(E/'comparison.json').write_text(json.dumps(result,indent=2)+'\n')
+print(json.dumps(dict(output=str(E),standalonePerTree=60,scenarioSuitesPerTree=3)))

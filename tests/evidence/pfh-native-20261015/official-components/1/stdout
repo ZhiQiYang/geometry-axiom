@@ -1,0 +1,41 @@
+Mutation scope: partial M02, M05, M08, M09, M12, M15, M18, M21, M24, M27, M30, M57, M52, M54, M34, M37, M40
+BASELINE exe 已重編
+BASELINE OK: 143/143 全過(未變異原始碼)
+M02  exe 已重編
+M02  KILLED    I5：射線半開區間 [v_min,v_max) 改 (v_min,v_max)  <- _test_lshape.scene: FAIL 錯誤不符: 期望含「沒有擋面」實得「<repo>/_test_lshape.scene:17: R6/I5/I6 timber 2: 中線上沒有任何合法跨距」
+M05  exe 已重編
+M05  KILLED    I5：直立邊在矩形邊界上也算穿入(<= 改 <)  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:7: R6/I5/I6 timber 80: 中線上沒有任何合法跨距
+M08  exe 已重編
+M08  KILLED    I5：拿掉「環邊不得穿矩形內部」檢查  <- _ax_i5_notch_edge_cuts_interior.scene: FAIL 應拒絕但接受 (L=['100'])
+M09  exe 已重編
+M09  EQUIVALENT I5：孔 bbox 邊界相接也當相交(<= 改 <)  <- 等價變異(GEO-172 實證):bbox 恰好相切時孔的所有點都在 u<=min_u(或對稱軸)一側,後續三道細查(頂點嚴格在內/邊穿過內部/孔罩住矩形)都不可能成立,快退與細查得到同一答案。
+M12  exe 已重編
+M12  KILLED    I11：正面積重疊:端點相接也算重疊(> 改 >=)  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:13: R6/I5/I6 timber 1: 中線上沒有任何合法跨距
+M15  exe 已重編
+M15  KILLED    D11：角材側面涵蓋範圍用錯軸(u 範圍改成 v 範圍)  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:13: R6/I5/I6 timber 1: 跨距起點沒有擋面（端面懸空）
+M18  exe 已重編
+M18  KILLED    D11：重驗擋面:FREE 邊也算合法(!= 改 ==)  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:7: R6(d)/I6 timber 80: end 1 at 4000 mm, cross [0,20], legal stops=0
+M21  exe 已重編
+M21  KILLED    R6(d)：拿掉「終點必須有擋面」檢查  <- _edge_straddle.scene: FAIL 錯誤不符: 期望含「端面懸空」實得「<repo>/_edge_straddle.scene:7: V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC」
+M24  exe 已重編
+M24  KILLED    R6(c)：at-edge 接觸範圍:端點相接也算重疊(< 改 <=)  <- _edge_face_touch_only.scene: FAIL 錯誤不符: 期望含「都不接觸引用的邊」實得「<repo>/_edge_face_touch_only.scene:10: R6/I5/I6 timber 1: 跨距起點沒有擋面（端面懸空）」
+M27  exe 已重編
+M27  KILLED    深度側反轉:角材往面下長  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:7: R6(d)/I6 timber 80: end 1 at 4000 mm, cross [-20,0], legal stops=0
+M30  exe 已重編
+M30  KILLED    I13：孔邊材料側反轉(footprint 長進孔裡)  <- _edge_hole_anchor.scene: FAIL 應接受但拒絕: <repo>/_edge_hole_anchor.scene:20: R6/I5/I6 timber 5: 有合法跨距但都不接觸引用的邊
+M57  exe 已重編
+M57  KILLED    R21：between 的 FREE 邊檢查反轉(明寫就放行自由邊)  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:17: R6/I5/I6 timber 3: between 指名的擋面是自由邊（頂到空氣）
+M52  exe 已重編
+M52  KILLED    I10：重宣告改成疊加而非整軸換掉  <- _test_grid_redeclare.scene: FAIL 應接受但拒絕: <repo>/_test_grid_redeclare.scene:12: grid 座標不合法（u 軸）：座標必須嚴格遞增
+M54  exe 已重編
+M54  KILLED    D10a：產生條件由嚴格小於放寬成小於等於(多出尾端一條)  <- _mut_grid_panel_edge.scene: FAIL 錯誤不符: 期望含「本軸共 7 條」實得「<repo>/_mut_grid_panel_edge.scene:7: R6/I5/I6 timber 1: 中線上沒有任何合法跨距」
+M34  exe 已重編
+M34  KILLED    I13：at-edge 平行守門員反轉  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:7: I13 timber 80: at-face 邊必須平行於長度軸
+M37  exe 已重編
+M37  KILLED    I11：碰撞兩兩檢查變成自己也算(j=i+1 改 j=i)  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:7: 場景重驗失敗
+M40  exe 已重編
+M40  KILLED    R6(b)：有效 cell 判定拿掉碰撞(只查包含)  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:13: V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC
+
+本次 17:殺死 killed 16 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 1 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0
+歷次紀錄(不是本次覆蓋)17:殺死 killed 16 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 1 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0 / 未跑 unrun 33
+  (過期明細用 --check 列出)
