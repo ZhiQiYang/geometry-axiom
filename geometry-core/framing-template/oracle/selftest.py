@@ -36,6 +36,9 @@ MUTANTS = [
     ("no_column_strips", R["F5廚房"], "C3_EDGE_UNSUPPORTED", "柱邊不放角材:柱邊面材沒有支撐"),
     ("shift_main", R["F3次臥"], "C3_EDGE_UNSUPPORTED", "主支偏離板縫 15 mm:板縫沒有支撐"),
     ("allow_split", R["F2主臥"], "C5_MAIN_NOT_SINGLE", "允許主支被凸出切成兩段"),
+    ("rc_through_reflex", R["F1客廳"], "C8_I22_NON_BOUNDARY_EXTENDS", "凹角處沿牆料穿過凹角(舊排法):核心 I22 不接受"),
+    ("rc_through_reflex", R["F1客廳"], "C8_I19_BOUNDARY_END", "同上:凹角另一面的邊界材端面頂到沿牆料,核心 I19 不接受"),
+    ("no_boundary_extension", R["F1客廳"], "C6_END_NOT_ON_TIMBER", "凹角處邊界材不延伸:沿牆料端面懸空"),
 ]
 for mut, room, want, why in MUTANTS:
     res = fo.build(room, LT_Y, p, frozenset({mut, "skip_conflict_scan"}))
@@ -43,7 +46,7 @@ for mut, room, want, why in MUTANTS:
     ok = want in got
     failed |= not ok
     print(f"[{'紅' if ok else '沒抓到!'}] {mut:18s} 預期 {want:24s} 實得 {sorted(got)}  {why}")
-for name in ("F3次臥", "F5廚房"):
+for name in ("F1客廳", "F3次臥", "F5廚房"):
     res = fo.build(R[name], LT_Y, p)
     fails = fo.check(res, p)
     ok = not res["conflicts"] and not fails
@@ -94,6 +97,28 @@ for W in edge_w:
             fails = [] if res["conflicts"] else fo.check(res, p)
             if res["conflicts"] or fails:
                 bad.append((W, H, fo.layout_name(l), sorted({c["code"] for c in res["conflicts"]}), sorted({f["check"] for f in fails})))
+# 凹角房:L 形(缺一角)與壁龕(牆上內凹),8 種排法;可施工的排法都要通過全部檢查(含 C8 核心可表示)
+LROOM = lambda W, H, cw, ch: {"outer": [[0, 0], [W, 0], [W, H - ch], [W - cw, H - ch], [W - cw, H], [0, H]]}
+ALCOVE = lambda W, H, y0, y1, dep: {"outer": [[dep, 0], [W, 0], [W, H], [dep, H], [dep, y1], [0, y1], [0, y0], [dep, y0]]}
+reflex_rooms = [LROOM(W, H, cw, ch) for W in (3000, 4100, 5000) for H in (2600, 3700, 4800)
+                for cw in range(300, W - 299, 457) for ch in range(300, H - 299, 613)]
+reflex_rooms += [ALCOVE(W, 3000, y0, y0 + L, dep) for W in (3000, 4400) for y0 in (400, 1000, 1700)
+                 for L in (400, 900) for dep in (300, 600) if y0 + L <= 2600]
+rb, rbuild = [], 0
+for room in reflex_rooms:
+    for l in fo.LAYOUTS:
+        runs += 1
+        res = fo.build(room, l, p)
+        if res["conflicts"]:
+            continue
+        rbuild += 1
+        fails = fo.check(res, p)
+        if fails:
+            rb.append((room["outer"], fo.layout_name(l), sorted({f["check"] for f in fails})))
+print(f"凹角房 {len(reflex_rooms)} 間 × 8 種排法:可施工 {rbuild} 個,其中檢查失敗 {len(rb)} 個")
+for x in rb[:10]:
+    print("   ", x)
+bad += rb
 print(f"掃描 {runs} 次矩形房建構({'完整' if FULL else '快速'}),{time.time() - t0:.0f} 秒;不可施工或檢查失敗 {len(bad)} 個")
 for b in bad[:30]:
     print("   ", b)

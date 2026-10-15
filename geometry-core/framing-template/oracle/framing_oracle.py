@@ -11,8 +11,12 @@
   G3 主支整支連續,端到端把力傳到 RC。主支線若穿過 RC 後又回到室內(柱、凸出),
      主支勢必被切斷,屬排板衝突,改用其他起鋪角或板長方向。
   G4 RC 邊界一律有角材(側面固定在 RC 上)。其他角材的端面只頂角材,不頂 RC。
-     與主支平行的 RC 面(牆、柱側),其角材沿線延伸到兩端的牆,成為連續的支,
-     讓兩側的副支都有角材可頂。
+     與主支平行的柱面,其角材沿線延伸到兩端的牆,成為連續的支,讓兩側的副支都有角材可頂。
+     與主支平行的外牆在凹角處(牆線越過牆端仍是室內:L 形內角、壁柱、壁龕)停在牆端,
+     改由凹角另一面的邊界材越過凹角延伸,停在最近的主支側面,沿牆料的端面頂在這段延伸上。
+     這是核心 I22 / R19(e) 唯一接受的表示法(2026-10-16 P-145,原生探針 p1–p9):
+     非 boundary 角材不得超出它貼的外牆;延伸段側面以優先級 2 計,主支不得頂它,
+     所以頂在延伸段上的沿牆料核心角色是 custom、優先級 3;主支端面落在延伸段上的排法判衝突。
   G5 角材之間、角材與 RC 之間不得有正面積重疊(碰撞);端面相貼是零面積,允許。
   G6 封板從起鋪角整片鋪,只在對牆收邊,不置中。
   G7 最後一條縫若讓縫上的角材撞到對牆的角材(距離 d > D - 1.5w),
@@ -172,6 +176,10 @@ class Region:
             for i in range(len(ring)):
                 yield ring[i], ring[(i + 1) % len(ring)]
 
+    def outer_edges(self):
+        o = self.rings[0]
+        return [(o[i], o[(i + 1) % len(o)]) for i in range(len(o))]
+
 
 # ---------------------------------------------------------------- 縫
 def seam_centers(lo, hi, start, ps, g, w, mut):
@@ -216,6 +224,7 @@ def build(room, layout, p, mut=frozenset()):
     seams_b, moved_b = seam_centers(Bmin, Bmax, layout["b_start"], Lp, g, w, mut)
     # RC 邊界角材(G4)
     astrips, bedges = [], []
+    outer = set(reg.outer_edges())
     for e0, e1 in reg.edges():
         if e0[b] == e1[b]:  # 與 A 軸平行:邊界材
             e = e0[b]
@@ -225,7 +234,7 @@ def build(room, layout, p, mut=frozenset()):
             if "no_column_strips" in mut and room.get("holes") and any(
                     (e0 in h and e1 in h) for h in [[tuple(q) for q in hh] for hh in room["holes"]]):
                 continue
-            astrips.append(add("boundary", mk(a, (s0, s1), br), rc_line=e))
+            astrips.append(add("boundary", mk(a, (s0, s1), br), rc_line=e, edge=(s0, s1), outer=(e0, e1) in outer))
         else:
             e = e0[a]
             s0, s1 = sorted((e0[b], e1[b]))
@@ -233,28 +242,8 @@ def build(room, layout, p, mut=frozenset()):
             if "no_column_strips" in mut and room.get("holes") and any(
                     (e0 in h and e1 in h) for h in [[tuple(q) for q in hh] for hh in room["holes"]]):
                 continue
-            bedges.append((e, (s0, s1), plus))
-    # 與主支平行的 RC 面:沿線延伸到兩端的牆(G4)
-    bprims = []
-    seen = set()
-    for e, (s0, s1), plus in bedges:
-        ar = (e, e + w) if plus else (e - w, e)
-        line = reg.strip_set(a, *ar)
-        iv = iv_find(line, (s0 + s1) / 2)
-        if iv is None:
-            conflicts.append(dict(code="RC_FACE_STRIP_OUTSIDE", at=[e, s0, s1]))
-            continue
-        blocks = [rng(s["rect"], b) for s in astrips if max(ar[0], rng(s["rect"], a)[0]) < min(ar[1], rng(s["rect"], a)[1])]
-        comp = iv_find(iv_subtract([iv], blocks), (s0 + s1) / 2)
-        if comp is None:
-            conflicts.append(dict(code="RC_FACE_STRIP_BLOCKED", at=[e, s0, s1]))
-            continue
-        r = mk(a, ar, comp)
-        if r in seen:
-            continue
-        seen.add(r)
-        bprims.append(add("rc_parallel", r, rc_line=e))
-    # 主支:每條 A 向縫一支,整支連續(G3)
+            bedges.append((e, (s0, s1), plus, (e0, e1) in outer))
+    # 主支:每條 A 向縫一支,整支連續(G3)。先於沿牆料算出,凹角處的邊界材延伸要停在它們側面。
     mains = []
     for c in seams_a:
         ar = (c - lo_h, c + hi_h)
@@ -275,6 +264,73 @@ def build(room, layout, p, mut=frozenset()):
         for t in mains:
             r = t["rect"]
             t["rect"] = (r[0] + 15, r[1], r[2] + 15, r[3]) if a == 0 else (r[0], r[1] + 15, r[2], r[3] + 15)
+    # 與主支平行的 RC 面(G4)。
+    # 牆與柱:沿線延伸,直到頂到邊界材或牆,讓兩側的副支都有角材可頂。
+    # 外牆在凹角(該牆線越過牆端仍是室內)處停在牆端:核心 I22 不准非 boundary 角材超出它貼的那條外牆,
+    # 所以改由凹角另一面的邊界材越過凹角延伸,停在最近的主支側面(R19(e)),沿牆料的端面頂在這段延伸上。
+    # 頂在延伸段上的沿牆料,核心角色要用 custom、優先級 3(I22:延伸段側面以優先級 2 計,主支不得頂它)。
+    bprims = []
+    seen = set()
+    reflex = []
+    for e, (s0, s1), plus, is_outer in bedges:
+        ar = (e, e + w) if plus else (e - w, e)
+        line = reg.strip_set(a, *ar)
+        iv = iv_find(line, (s0 + s1) / 2)
+        if iv is None:
+            conflicts.append(dict(code="RC_FACE_STRIP_OUTSIDE", at=[e, s0, s1]))
+            continue
+        blocks = [rng(s["rect"], b) for s in astrips if max(ar[0], rng(s["rect"], a)[0]) < min(ar[1], rng(s["rect"], a)[1])]
+        comp = iv_find(iv_subtract([iv], blocks), (s0 + s1) / 2)
+        if comp is None:
+            conflicts.append(dict(code="RC_FACE_STRIP_BLOCKED", at=[e, s0, s1]))
+            continue
+        ends = []
+        if is_outer and "rc_through_reflex" not in mut:
+            if comp[0] < s0:
+                ends.append(s0)
+            if comp[1] > s1:
+                ends.append(s1)
+            comp = (max(comp[0], s0), min(comp[1], s1))
+        r = mk(a, ar, comp)
+        if r in seen:
+            continue
+        seen.add(r)
+        t = add("rc_parallel", r, rc_line=e)
+        if ends:
+            t["core_role"] = "custom"
+            reflex.extend((e, s) for s in ends)
+        bprims.append(t)
+    for e, s in ([] if "no_boundary_extension" in mut else reflex):
+        for t in astrips:
+            if not t["outer"] or t["rc_line"] != s or e not in t["edge"]:
+                continue
+            lo, hi = rng(t["rect"], a)
+            br = rng(t["rect"], b)
+            d = -1 if t["edge"][0] == e else 1  # 往遠離自己那條牆的方向越過凹角
+            comp = iv_find(reg.strip_set(b, *br), e + d * 0.5)
+            if comp is None:
+                conflicts.append(dict(code="REFLEX_EXTENSION_OUTSIDE", at=[e, s]))
+                continue
+            stop = comp[0] if d < 0 else comp[1]
+            for q in mains + bprims:
+                qa, qb = rng(q["rect"], a), rng(q["rect"], b)
+                if max(qb[0], br[0]) >= min(qb[1], br[1]):
+                    continue
+                if d < 0 and qa[1] <= e:
+                    stop = max(stop, qa[1])
+                if d > 0 and qa[0] >= e:
+                    stop = min(stop, qa[0])
+            t["rect"] = mk(a, (stop, hi) if d < 0 else (lo, stop), br)
+            t["ext"] = t.get("ext", []) + [[min(e, stop), max(e, stop)]]
+    # 主支端面落在凹角延伸段上:核心 I22 把延伸段側面當優先級 2,主支不得頂它 → 這個起鋪角/方向不能用
+    ext_rects = [mk(a, tuple(x), rng(t["rect"], b)) for t in astrips for x in t.get("ext", [])]
+    for t in mains:
+        lo, hi = rng(t["rect"], b)
+        o = rng(t["rect"], a)
+        for e0, e1 in ((lo - 1, lo), (hi, hi + 1)):
+            slab = mk(a, o, (e0, e1))
+            if any(overlap(slab, x) for x in ext_rects):
+                conflicts.append(dict(code="MAIN_END_ON_REFLEX_EXTENSION", id=t["id"], end=e1 if e0 == lo - 1 else e0))
     # 副支:逐跨、逐格(G2)
     prims = mains + bprims
     crit = sorted({v for t in prims + astrips for v in rng(t["rect"], b)} | set(reg.coords[b]))
@@ -320,7 +376,9 @@ def build(room, layout, p, mut=frozenset()):
                 lines.append(hit[0]["rc_line"])
         if None in lines:
             continue
-        line0, line1 = lines
+        # 記號從端部角材的「牆線」起算:角材佔 [線, 線+w]。一般牆邊就是 rc_line;
+        # 凹角延伸段在格子外側,改由它朝格子的那一面回推一個料寬,間距上限才算得對。
+        line0, line1 = sb0 - w, sb1 + w
         inner = sorted(e for e in seams_b if sb0 < e < sb1)
         bounds = [(line0, "rc")] + [(e, "seam") for e in inner] + [(line1, "rc")]
         start_low = layout["b_start"] == "min"
@@ -472,6 +530,73 @@ def check(res, p):
             slab = (end[0], o[0], end[1], o[1]) if k == 0 else (o[0], end[0], o[1], end[1])
             if leftover(slab, [s for s in T if s != r]):
                 fails.append(dict(check="C6_END_NOT_ON_TIMBER", id=t["id"], end=list(end)))
+    # C8 核心可表示(只查外牆;孔邊在核心沒有定位邊與延伸段)。與建構分開,直接照核心的規則重算:
+    #   定位邊 = 與角材某側面共線、長度區間正重疊的外牆邊;有整條覆蓋者優先,其次重疊最長,同分取先出現者
+    #   (current_geometry.c timber_role_props)。
+    #   C8a I22:非 boundary 角材的長度區間不得超出定位邊。
+    #   C8b I19:boundary 在定位邊端點結束的端面,室內那部分只能頂另一支 boundary(轉角互頂);
+    #        超出定位邊的延伸段端面須頂到角材或牆。
+    #   C8c I22:延伸段側面以優先級 2 計,主支端面不得頂它。
+    oe = reg.outer_edges()
+
+    def pos_edge(rect, k):
+        span, side = rng(rect, k), rng(rect, 1 - k)
+        best = None
+        for p0, p1 in oe:
+            if p0[1 - k] != p1[1 - k] or p0[1 - k] not in side:
+                continue
+            elo, ehi = sorted((p0[k], p1[k]))
+            ov = min(span[1], ehi) - max(span[0], elo)
+            if ov <= 0:
+                continue
+            cov = span[0] <= elo and span[1] >= ehi
+            if best is None or (cov and not best[2]) or (cov == best[2] and ov > best[3]):
+                best = (elo, ehi, cov, ov)
+        return best
+
+    def end_slabs(rect, k):
+        lo, hi = rng(rect, k)
+        o = rng(rect, 1 - k)
+        for e0, e1, at in ((lo - 1, lo, lo), (hi, hi + 1, hi)):
+            yield at, ((e0, o[0], e1, o[1]) if k == 0 else (o[0], e0, o[1], e1))
+
+    exts = []
+    for t in res["timbers"]:
+        r = t["rect"]
+        if t["kind"] in ("main", "rc_parallel"):
+            pe = pos_edge(r, b)
+            if pe and not (pe[0] <= rng(r, b)[0] and rng(r, b)[1] <= pe[1]):
+                fails.append(dict(check="C8_I22_NON_BOUNDARY_EXTENDS", id=t["id"], span=list(rng(r, b)), edge=list(pe[:2])))
+        if t["kind"] != "boundary":
+            continue
+        pe = pos_edge(r, a)
+        if not pe:
+            continue
+        lo, hi = rng(r, a)
+        if lo < pe[0]:
+            exts.append(mk(a, (lo, pe[0]), rng(r, b)))
+        if hi > pe[1]:
+            exts.append(mk(a, (pe[1], hi), rng(r, b)))
+        others = [s for s in res["timbers"] if s is not t]
+        for at, slab in end_slabs(r, a):
+            outdoor = leftover(slab, R)
+            indoor = leftover(slab, outdoor)  # 端面外 1 mm 落在室內的部分
+            if not indoor:
+                continue  # 端面整片頂在牆上
+            if (at == lo and lo < pe[0]) or (at == hi and hi > pe[1]):
+                if any(leftover(q, [s["rect"] for s in others]) for q in indoor):
+                    fails.append(dict(check="C8_EXTENSION_END_FREE", id=t["id"], end=at))
+                continue
+            bad = [s["id"] for s in others if s["kind"] != "boundary" and any(overlap(q, s["rect"]) for q in indoor)]
+            free = any(leftover(q, [s["rect"] for s in others if s["kind"] == "boundary"]) for q in indoor)
+            if bad or free:
+                fails.append(dict(check="C8_I19_BOUNDARY_END", id=t["id"], end=at, on=bad))
+    for t in res["timbers"]:
+        if t["kind"] != "main":
+            continue
+        for at, slab in end_slabs(t["rect"], b):
+            if any(overlap(slab, x) for x in exts):
+                fails.append(dict(check="C8_MAIN_ON_EXTENSION", id=t["id"], end=at))
     return fails
 
 

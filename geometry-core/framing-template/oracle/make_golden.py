@@ -13,6 +13,15 @@ EXTRA = {
 }
 
 
+def kind_label(t):
+    """golden 裡的種類標籤。頂在凹角延伸段上的沿牆料標 rc_parallel:custom(核心角色 custom、優先級 3)。"""
+    if t["kind"] == "secondary":
+        return "secondary:" + t["role"]
+    if t.get("core_role") == "custom":
+        return t["kind"] + ":custom"
+    return t["kind"]
+
+
 def snapshot(spec):
     p = spec["params"]
     out = {"params": p, "rooms": {}}
@@ -27,7 +36,7 @@ def snapshot(spec):
                 "conflict_codes": sorted({c["code"] for c in res["conflicts"]}),
                 "seams_a": sorted(res["seams_a"]),
                 "seams_b": sorted(res["seams_b"]),
-                "timbers": sorted([t["kind"] if t["kind"] != "secondary" else "secondary:" + t["role"], list(t["rect"])]
+                "timbers": sorted([kind_label(t), list(t["rect"])]
                                   for t in res["timbers"]) if not res["conflicts"] else [],
             })
         out["rooms"][name] = {"room": room, "layouts": rows}
