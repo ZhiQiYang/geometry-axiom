@@ -13,6 +13,7 @@ import json
 import os
 from pathlib import Path
 import resource
+import re
 import subprocess
 import sys
 import time
@@ -61,7 +62,8 @@ def child(args):
         result=unittest.TextTestRunner(verbosity=2).run(unittest.TestSuite(GridCardReference(name) for name in names))
     record={'testsRun':result.testsRun,'failures':len(result.failures),'errors':len(result.errors),
             'skips':len(result.skipped),'failure_names':[str(test) for test,trace in result.failures],
-            'compile_failures':sum('compile_result.returncode' in trace for test,trace in result.failures)}
+            'compile_failures':sum('compile_result.returncode' in trace for test,trace in result.failures),
+            'infrastructure_failures':sum(any(int(code)!=1 for code in re.findall(r'0 != (-?\d+) : CANDIDATE_LIFECYCLE injection:',trace)) for test,trace in result.failures)}
     args.result.write_text(json.dumps(record,indent=2)+'\n')
     return 0 if result.wasSuccessful() else 1
 
@@ -113,7 +115,7 @@ def main(args):
                 receipt['binary_sha256']=sha(mutant_bridge);receipt['model_sha256']=sha(mutant_model)
                 run,counts=test_case(directory,mutant_bridge,mutant_model,m['case'])
                 receipt['red']={'run':run,'counts':counts}
-                receipt['verdict']='killed' if run['exit_code']==1 and counts['failures']>0 and counts['errors']==0 and counts['skips']==0 and counts['compile_failures']==0 else 'NOT_KILLED'
+                receipt['verdict']='killed' if run['exit_code']==1 and counts['failures']>0 and counts['errors']==0 and counts['skips']==0 and counts['compile_failures']==0 and counts['infrastructure_failures']==0 else 'NOT_KILLED'
             finally:
                 for path,data in originals.items(): (ROOT/path).write_bytes(data)
                 if any((ROOT/p).read_bytes()!=data for p,data in originals.items()): raise RuntimeError('byte restoration failed')

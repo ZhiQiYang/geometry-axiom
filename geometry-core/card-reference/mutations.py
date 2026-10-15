@@ -62,14 +62,12 @@ MUTATIONS=[
     mutant('M10', 'CR15', change('geometry-core/grid_bindings.inc', 'for(size_t i=0;i<w->grid_binding_count;++i){\n        ReferenceGrid derived={0};', 'for(size_t i=0;i<w->grid_binding_count&&i<1;++i){\n        ReferenceGrid derived={0};')),
     mutant('M11-expiry', 'CR17', change(EB, 'if(g_hist_grouping||g_preview.revision!=g_definition_revision||!world_definitions_equal(&g_world,&g_preview.before))', 'if(g_hist_grouping)')),
     mutant('M11-revalidation', 'CR17', change(EB, 'bool valid=world_revalidate(&g_preview.after);', 'bool valid=true;')),
-    mutant('M11-undo', 'CR17', change(MAIN, '    *w = *snap;\n\n    for (size_t i = 0; i < cur_n; ++i)', '''    uint32_t old_ids[WORLD_MAX_GRID_SYSTEMS];GridCardReference old_cards[WORLD_MAX_GRID_SYSTEMS];size_t old_count=w->grid_system_count;
+    mutant('M11-undo', 'CR17', change(MAIN, '    history_restore_world(w, &g_hist_undo[--g_hist_undo_n]);', '''    uint32_t old_ids[WORLD_MAX_GRID_SYSTEMS];GridCardReference old_cards[WORLD_MAX_GRID_SYSTEMS];size_t old_count=w->grid_system_count;
     for(size_t k=0;k<old_count;++k){old_ids[k]=w->grid_systems[k].id;old_cards[k]=w->grid_systems[k].card_reference;}
-    *w = *snap;
+    history_restore_world(w, &g_hist_undo[--g_hist_undo_n]);
     for(size_t k=0;k<w->grid_system_count;++k)for(size_t j=0;j<old_count;++j)
         if(w->grid_systems[k].id==old_ids[j]&&w->grid_systems[k].card_reference.set&&old_cards[j].set)
-            w->grid_systems[k].card_reference.fields[1]=old_cards[j].fields[1];
-
-    for (size_t i = 0; i < cur_n; ++i)''')),
+            w->grid_systems[k].card_reference.fields[1]=old_cards[j].fields[1];''')),
     mutant('M13-unused', 'CR19', change(GS, 'const GridSystem *s=&w->grid_systems[i]; fprintf(out,', '''const GridSystem *s=&w->grid_systems[i];bool used=false;
         for(size_t k=0;k<w->grid_binding_count;++k)if(w->grid_bindings[k].system_id==s->id)used=true;
         if(!used)continue; fprintf(out,''')),
