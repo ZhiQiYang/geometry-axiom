@@ -93,6 +93,7 @@ PY_NEEDS = {
     'test_parameters_upstream_unbind': ['bridge'],
     'test_parameters_candidate_value_history': ['bridge'],
     'test_reference_contract': ['bridge'],
+    'test_recorded_api_receipts': [],
     'test_release_gate': [],
     'test_local_launcher': ['core', 'bridge', 'model-base'],
     'test_rule_case_workbench_http': ['bridge'],
