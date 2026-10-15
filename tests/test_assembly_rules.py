@@ -432,7 +432,7 @@ class AssemblyRules(unittest.TestCase):
             self.assertEqual(scene,fresh.command("dump")["text"])
             self.assertEqual(before,fresh.command("assembly-read")["state"])
 
-    def test_delete_parameter_is_refused_at_the_delete_step_naming_the_binding(self):
+    def test_complete_candidate_refuses_unhandled_parameter_reference_naming_the_binding(self):
         # GEO-258 / I38:被組構配置槽位引用的參數卡,刪除那一步就拒絕並指名槽位;同一交易內先改成直接值再刪就通過。
         self.publish()
         param = {"id": 1, "name": "截面", "fields": [{"id": 1, "name": "A", "type": "dimension", "input": "40"}]}

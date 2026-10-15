@@ -267,13 +267,6 @@ static bool parameter_name(EngJson *j,int t,char out[PARAM_NAME_MAX])
 {
     if(!eng_json_string(j,t,out,PARAM_NAME_MAX)||!grid_system_name_valid((const unsigned char*)out,strlen(out)))return parameter_fail("I38 NAME: expected 1..96 UTF-8 bytes without control characters");return true;
 }
-/* P-111/D60: this candidate-local list records explicit deletion, not reserved keys.
- * A later put/import may rebuild the same key; it does not undo the earlier deletion.
- * Reoccupied keys still require explicit handling of their surviving referrers.
- * The bridge's deletion receipt separately retains the intermediate deletion for D60/R56;
- * this scratch list never allocates or substitutes incarnation marks. */
-static bool parameter_retired(const World *w,uint32_t id)
-{for(size_t i=0;i<w->parameters.retired_count;++i)if(w->parameters.retired[i]==id)return true;return false;}
 /* P-121/P-122: an ended field cannot silently reconnect an old referrer.
  * Events are retained (including repeated deletion); only explicit declarations
  * after the last deletion acknowledge the new source. Allocation never reads this.
@@ -343,10 +336,11 @@ static bool parameter_current_closure_valid(const World *w,int index,bool visite
     bool ok=eng_json_parse_n(&j,f->expression,strlen(f->expression));
     if(ok)ok=parameter_current_ast_valid(w,f,&j,0,visited,0);eng_json_free(&j);return ok;
 }
-/* The binding's declaration selects which ended source it explicitly unbinds.
- * A second deletion cannot overwrite the old generation's last-valid value. */
+/* P-065/P-141: a currently present source is evaluated at the unbind step.
+ * Only an actually absent field may use its binding's ended-generation value. */
 static bool parameter_unbind_generation(const World *w,ParameterRef ref,int kind,uint32_t owner,int slot,unsigned *generation)
 {
+    if(parameter_field_index(w,ref.parameter_id,ref.field_id)>=0)return false;
     unsigned declared=parameter_declared_at(w,kind,owner,slot),previous=0;
     for(size_t i=0;i<w->parameters.field_retirement_count;++i){const ParameterFieldRetirement *r=&w->parameters.field_retirements[i];
         if(r->parameter_id!=ref.parameter_id||r->field_id!=ref.field_id)continue;
@@ -391,12 +385,21 @@ static bool parameter_put(World *w,EngJson *j,int t)
 /* I38: enumerate actual references in a complete candidate. Only the first
  * PARAMETER_USES_SHOWN referrers are named; the count is exact. References from the card's own fields vanish with it. */
 #define PARAMETER_USES_SHOWN 3
-typedef struct {char text[256];size_t count;} ParameterUses;
+typedef struct {char text[256],native_text[256];size_t count,native_count;} ParameterUses;
 static void parameter_use(ParameterUses *u,const char *format,...)
 {
     if(u->count++<PARAMETER_USES_SHOWN){
         size_t n=strlen(u->text);if(n&&n+2<sizeof u->text){u->text[n++]=';';u->text[n++]=' ';u->text[n]=0;}
         va_list a;va_start(a,format);if(n<sizeof u->text)vsnprintf(u->text+n,sizeof u->text-n,format,a);va_end(a);
+    }
+}
+/* These owners have no declaration operation in an engineering candidate. */
+static void parameter_native_use(ParameterUses *u,const char *format,...)
+{
+    char owner[96];va_list a;va_start(a,format);vsnprintf(owner,sizeof owner,format,a);va_end(a);
+    parameter_use(u,"%s",owner);
+    if(u->native_count++<PARAMETER_USES_SHOWN){
+        size_t n=strlen(u->native_text);snprintf(u->native_text+n,sizeof u->native_text-n,"%s%s",n?"; ":"",owner);
     }
 }
 static bool parameter_ast_uses(const EngJson *j,int t,uint32_t id,uint32_t field,int depth)
@@ -451,13 +454,21 @@ static size_t parameter_uses(const World *w,uint32_t id,uint32_t field,Parameter
         }
         eng_json_free(&j);
     }
-    for(size_t i=0;i<w->guide_count;++i)if(parameter_text_uses(w->guides[i].expression,id,field)&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GUIDE,w->guides[i].id,0))parameter_use(u,"guide %u",w->guides[i].id);
-    for(size_t i=0;i<w->datum_count;++i)if(parameter_text_uses(w->datums[i].expression,id,field)&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_DATUM,w->datums[i].id,0))parameter_use(u,"datum %u",w->datums[i].id);
+    for(size_t i=0;i<w->guide_count;++i)if(parameter_text_uses(w->guides[i].expression,id,field)&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GUIDE,w->guides[i].id,0))parameter_native_use(u,"guide %u",w->guides[i].id);
+    for(size_t i=0;i<w->datum_count;++i)if(parameter_text_uses(w->datums[i].expression,id,field)&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_DATUM,w->datums[i].id,0))parameter_native_use(u,"datum %u",w->datums[i].id);
     for(size_t i=0;i<w->grid_system_count;++i)for(int axis=0;axis<2;++axis)for(int k=0;k<6;++k){const ParameterRef *r=&w->grid_systems[i].axis[axis].parameters[k];
-        if(r->set&&r->parameter_id==id&&r->field_id==field&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GRID_SYSTEM,w->grid_systems[i].id,0))parameter_use(u,"grid-system %u %c %s",w->grid_systems[i].id,axis?'v':'u',axis_fields[k]);}
+        if(r->set&&r->parameter_id==id&&r->field_id==field&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GRID_SYSTEM,w->grid_systems[i].id,0))parameter_native_use(u,"grid-system %u %c %s",w->grid_systems[i].id,axis?'v':'u',axis_fields[k]);}
     for(size_t i=0;i<w->grid_count;++i){const ReferenceGrid *g=&w->grids[i];if(g->from_system)continue;  /* system-derived copies are the system's own refs */
         for(int axis=0;axis<2;++axis)for(int k=0;k<6;++k){const ParameterRef *r=&g->axis[axis].parameters[k];
-            if(r->set&&r->parameter_id==id&&r->field_id==field&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GRID,g->id,0))parameter_use(u,"grid %u %c %s",g->id,axis?'v':'u',axis_fields[k]);}}
+            if(r->set&&r->parameter_id==id&&r->field_id==field&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GRID,g->id,0))parameter_native_use(u,"grid %u %c %s",g->id,axis?'v':'u',axis_fields[k]);}}
+    /* P-141/D44: panel-fill has no declaration op in this candidate. */
+    for(size_t i=0;i<w->finish_surfaces.fill_count;++i){const PanelFill *fill=&w->finish_surfaces.fills[i];
+        const ParameterRef *refs[3]={&fill->gap_ref,&fill->stagger_ref,&fill->threshold};
+        static const char *const names[3]={"gap","stagger","threshold"};
+        for(int k=0;k<3;++k){const ParameterRef *r=refs[k];
+            if(r->set&&r->parameter_id==id&&r->field_id==field&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_PANEL_FILL,fill->id,k))
+                parameter_native_use(u,"panel-fill %u %s",fill->id,names[k]);}
+    }
     for(size_t i=0;i<w->section_profiles.member_count;++i){const ProfileMember *m=&w->section_profiles.members[i];
         if(m->a_source.kind==ENG_PARAMETER&&m->a_source.parameter.parameter_id==id&&m->a_source.parameter.field_id==field&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_MEMBER,m->id,0))parameter_use(u,"section-profile member %u A",m->id);
         if(m->b_source.kind==ENG_PARAMETER&&m->b_source.parameter.parameter_id==id&&m->b_source.parameter.field_id==field&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_MEMBER,m->id,0))parameter_use(u,"section-profile member %u B",m->id);
@@ -475,6 +486,10 @@ static bool parameter_retirements_valid(const World *w)
         if(r->at!=parameter_field_generation(w,id,r->field_id))continue; /* last actual deletion */
         if(parameter_uses(w,id,r->field_id,&uses)){
             char more[40]="";if(uses.count>PARAMETER_USES_SHOWN)snprintf(more,sizeof more," and %zu more",uses.count-PARAMETER_USES_SHOWN);
+            if(uses.native_count){
+                char native_more[40]="";if(uses.native_count>PARAMETER_USES_SHOWN)snprintf(native_more,sizeof native_more," and %zu more",uses.native_count-PARAMETER_USES_SHOWN);
+                return parameter_fail("I38 MISSING: parameter %u is still referenced by %s%s; 先在原生 DSL 或該物件自己的交易裡改掉引用，另成一筆後再刪 (other references: %zu)",id,uses.native_text,native_more,uses.count-uses.native_count);
+            }
             return parameter_fail("I38 MISSING: parameter %u is still referenced by %s%s; unbind or repoint %s in the same complete candidate",id,uses.text,more,uses.count==1?"it":"them");
         }
     }
@@ -596,7 +611,6 @@ static bool parameter_deleted_coord(const World *w,ParameterRef ref,unsigned gen
 }
 static void parameters_clear_candidate_scratch(World *w)
 {
-    memset(w->parameters.retired,0,sizeof w->parameters.retired);w->parameters.retired_count=0;
     memset(w->parameters.deleted_values,0,sizeof w->parameters.deleted_values);w->parameters.deleted_value_count=0;
     memset(w->parameters.field_retirements,0,sizeof w->parameters.field_retirements);w->parameters.field_retirement_count=0;
     memset(w->parameters.declarations,0,sizeof w->parameters.declarations);w->parameters.declaration_count=0;
@@ -608,14 +622,12 @@ static bool parameter_remove(World *w,uint32_t id)
 {
     size_t k=0;while(k<w->parameters.card_count&&w->parameters.cards[k].id!=id)++k;
     if(k==w->parameters.card_count)return parameter_fail("I38 MISSING: parameter %u",id);
-    if(w->parameters.retired_count>=PARAM_RETIRED_MAX)return parameter_fail("UNSUPPORTED/CAPACITY: too many parameter identities deleted in one transaction");
     if(!parameter_capture_deleted_values(w,id))return false;
     const ParameterSet *removed=&w->parameters.cards[k];
     for(size_t i=0;i<removed->count;++i)if(!parameter_retire_field(w,id,removed->fields[i]))return false;
     memmove(w->parameters.cards+k,w->parameters.cards+k+1,(w->parameters.card_count-k-1)*sizeof(ParameterSet));memset(&w->parameters.cards[--w->parameters.card_count],0,sizeof(ParameterSet));
     size_t n=0;for(size_t i=0;i<w->parameters.field_count;++i)if(w->parameters.fields[i].parameter_id!=id)w->parameters.fields[n++]=w->parameters.fields[i];memset(w->parameters.fields+n,0,(PARAM_FIELD_MAX-n)*sizeof(ParameterField));w->parameters.field_count=n;
     n=0;for(size_t i=0;i<w->canvas_pos_count;++i)if(w->canvas_pos[i].kind!=CANVAS_POS_PARAMETER||w->canvas_pos[i].id!=id)w->canvas_pos[n++]=w->canvas_pos[i];memset(w->canvas_pos+n,0,(w->canvas_pos_count-n)*sizeof(CanvasPos));w->canvas_pos_count=n;
-    w->parameters.retired[w->parameters.retired_count++]=id;
     return true;
 }
 /* Package imports allocate a complete independent identity map before copying.

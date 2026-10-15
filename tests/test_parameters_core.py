@@ -43,6 +43,7 @@ class ParametersCore(unittest.TestCase):
         self.assertIn(message, json.dumps(r), r)
         self.assertFalse(self.command(f'engineering-confirm {r["preview"]["token"]}')["ok"])
         self.assertEqual(before, self.command("dump")["text"])
+        return r
 
     def test_exact_units_cross_card_and_native_roundtrip(self):
         self.apply([card(), card(2, "排格", [field(1, "2"), field(2, "=@1:1 + @2:1"), field(3, "=(@1:1 / 2)"), field(4, "=1/3*3", "ratio"), field(5, "=-2 * (3 + 1)", "ratio")])])
@@ -226,7 +227,7 @@ class ParametersCore(unittest.TestCase):
         self.assertEqual(915,self.command("references")["datums"][0]["position"])
 
     def test_delete_refuses_a_referenced_card_and_names_every_kind_of_referrer(self):
-        # GEO-258 / I38:被其他定義引用的卡片不得刪除。拒絕發生在 delete 那一步(看候選當下狀態),訊息指名引用者。
+        # GEO-258 / I38:完整候選仍有未處理引用時拒絕，訊息指名引用者；不在 delete 當步判定。
         self.apply([card(1, "被卡引用", [field(1, "915")]), card(2, "被綁定引用", [field(1, "27"), field(2, "33")]),
                     card(3, "被導線引用", [field(1, "500")]), card(4, "被格網引用", [field(1, "915")]),
                     card(5, "被基準面引用", [field(1, "700")]), card(6, "引用者", [field(1, "=@1:1 + 1 mm")])])
@@ -241,7 +242,7 @@ class ParametersCore(unittest.TestCase):
                                   (4, "grid-system 1 u step"), (5, "datum 1")]:
             with self.subTest(card=card_id):
                 self.rejected([{"op": "delete-parameter", "id": card_id}], "I38 MISSING: parameter %d is still referenced by %s" % (card_id, referrer))
-        # 順序有意義:先解除(或改綁)再刪,同一交易內通過;先刪再解除仍拒絕。
+        # 完整候選中的明確解除或改綁可與刪除一起驗證；此處驗解除在前的排列。
         self.apply([card(6, "引用者", [field(1, "10")]), {"op": "delete-parameter", "id": 1}])
         self.apply([{"op": "unbind-source", "target": target}, {"op": "delete-parameter", "id": 2}])
         self.apply_line("spec detached 500")
@@ -328,9 +329,57 @@ class ParametersCore(unittest.TestCase):
                     self.apply([{"op": "set-source", "target": {"kind": "grid", "id": 1, "axis": "u", "field": "panel"},
                                  "source": {"kind": "parameter", "parameterId": 0, "fieldId": 1}}])
                 revision = self.read()["revision"]
-                self.rejected([{"op": "delete-parameter", "id": 0},
-                               card(0, "重建來源", [field(1, "920")])], owner)
+                result = self.rejected([{"op": "delete-parameter", "id": 0},
+                                        card(0, "重建來源", [field(1, "920")])], owner)
+                if not engineering:
+                    self.assertIn("另成一筆後再刪", json.dumps(result, ensure_ascii=False))
                 self.assertEqual(revision, self.read()["revision"])
+
+    def _panel_fill_rebuild_requires_prior_reference_change(self, target):
+        self.apply_line("boundary 8 outline 0,0 250,0 250,250 0,250 kind room_plan")
+        self.apply([{"op": "publish-material", "value": {"id": "retirement-board", "version": 1,
+                    "name": "板", "kind": "panel", "width": 100, "length": 100, "thickness": "9"}},
+                    card(90, "引用來源", [field(1, "8"), field(2, "20")]),
+                    card(91, "保留門檻", [field(1, "8")])])
+        ref = {"parameterId": 90, "fieldId": 1}
+        value = {"id": 1, "finishSurfaceId": 1, "panel": {"id": "retirement-board", "version": 1},
+                 "lengthAlong": "v", "origin": [0, 0], "gap": ref if target == "gap" else 3,
+                 "pattern": "stagger" if target == "stagger" else "straight",
+                 "threshold": ref if target == "threshold" else {"parameterId": 91, "fieldId": 1}}
+        if target == "stagger":
+            value["stagger"] = {"axis": "u", "value": ref}
+        surface = {"id": 1, "name": "完成面", "boundaryId": 8,
+                   "frame": {"origin": [0, 0, 0], "U": "+X", "V": "+Y", "N": "+Z"},
+                   "structureSide": 1, "obstacles": []}
+        for operation in [{"op": "put-finish-surface", "value": surface}, {"op": "put-panel-fill", "value": value}]:
+            path = self.directory / "panel-fill-owner.json"
+            path.write_text(json.dumps({"schema": "panel-fill-transaction/1", "expectedRevision": self.read()["revision"],
+                                       "operations": [operation]}, ensure_ascii=False), encoding="utf-8")
+            preview = self.command("panel-fill-preview " + str(path))
+            self.assertTrue(preview["ok"] and preview["preview"]["valid"], preview)
+            self.assertTrue(self.command("panel-fill-confirm " + str(preview["preview"]["token"]))["ok"])
+        rebuilt = card(90, "重建來源", [field(1, "9"), field(2, "20")])
+        for ended in [{"op": "delete-parameter", "id": 90}, card(90, "省略欄位", [field(2, "20")])]:
+            with self.subTest(target=target, ended=ended["op"]):
+                result = self.rejected([ended, rebuilt], "panel-fill 1 " + target)
+                self.assertIn("另成一筆後再刪", json.dumps(result, ensure_ascii=False))
+
+    def test_panel_fill_gap_rebuild_requires_prior_reference_change(self):
+        self._panel_fill_rebuild_requires_prior_reference_change("gap")
+
+    def test_panel_fill_stagger_rebuild_requires_prior_reference_change(self):
+        self._panel_fill_rebuild_requires_prior_reference_change("stagger")
+
+    def test_panel_fill_threshold_rebuild_requires_prior_reference_change(self):
+        self._panel_fill_rebuild_requires_prior_reference_change("threshold")
+
+    def test_separate_transaction_guidance_names_native_owner_after_other_referrers(self):
+        self.apply([card(0, "來源", [field(1, "915")]),
+                    *[card(i, "引用者" + str(i), [field(1, "=@0:1")]) for i in range(1, 4)]])
+        self.apply_line("guide 1 1 u param:0:1")
+        result = self.rejected([{"op": "delete-parameter", "id": 0},
+                                card(0, "重建來源", [field(1, "920")])], "guide 1")
+        self.assertIn("另成一筆後再刪", json.dumps(result, ensure_ascii=False))
 
     def test_direct_grid_axis_redeclaration_is_local(self):
         self.apply([card(0, "來源", [field(1, "915")])])
@@ -432,7 +481,7 @@ class ParametersCore(unittest.TestCase):
         self.apply(deleted + [base, override])
         self.assertEqual("915", self.values()[1, 1]["num"])
 
-    def test_explicit_unbind_preserves_the_ended_generation_after_rebuild(self):
+    def test_explicit_unbind_reads_the_present_generation_after_rebuild(self):
         self.seed_native_block_world()
         target = {"kind": "timber", "id": 10, "field": "A"}
         delete = {"op": "delete-parameter", "id": 1}
@@ -442,14 +491,32 @@ class ParametersCore(unittest.TestCase):
             with self.subTest(operations=operations):
                 before = self.command("dump")["text"]
                 self.apply(operations)
-                self.assertIn("timber 10 915 33", self.command("dump")["text"])
+                self.assertIn("timber 10 920 33", self.command("dump")["text"])
                 self.apply_line("undo")
                 self.assertEqual(before, self.command("dump")["text"])
         rebind = {"op": "set-source", "target": target,
                   "source": {"kind": "parameter", "parameterId": 1, "fieldId": 1}}
         self.apply([delete, rebuild, rebind, delete,
                     card(1, "第三來源", [field(1, "925"), field(2, "1830")]), unbind])
-        self.assertIn("timber 10 920 33", self.command("dump")["text"])
+        self.assertIn("timber 10 925 33", self.command("dump")["text"])
+
+    def test_delete_rebuild_then_unbind_reads_current_99_instead_of_deleted_cache(self):
+        self.apply([card(1, "原來源", [field(1, "27")])])
+        self.apply_line("timber 10 27 33 role boundary")
+        self.apply_line("place 10 on 1 at-face e0 +u +n")
+        target = {"kind": "timber", "id": 10, "field": "A"}
+        self.apply([{"op": "set-source", "target": target,
+                     "source": {"kind": "parameter", "parameterId": 1, "fieldId": 1}}])
+        before = self.command("dump")["text"]
+        delete = {"op": "delete-parameter", "id": 1}
+        unbind = {"op": "unbind-source", "target": target}
+        # A present but invalid replacement must not fall back to the deleted cache.
+        self.rejected([delete, card(1, "壞新來源", [field(1, "=@9:1")]), unbind], "parameter 9 field 1")
+        self.apply([delete, card(1, "新來源", [field(1, "99")]), unbind])
+        self.assertIn("timber 10 99 33", self.command("dump")["text"])
+        self.assertEqual([], self.read()["state"]["sources"])
+        self.apply_line("undo")
+        self.assertEqual(before, self.command("dump")["text"])
 
     def test_deleted_value_capture_does_not_follow_an_unacknowledged_rebuild(self):
         self.apply([card(0, "上游", [field(1, "27")]), card(1, "來源", [field(1, "=@0:1")])])

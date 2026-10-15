@@ -1,4 +1,14 @@
-# P129 同來源分段定向證明（正式整合驗收待第18班）
+# P141 修正候選（尚待新的原生驗證）
+
+依 [P141](https://github.com/ZhiQiYang/geometry-axiom/pull/193#issuecomment-6195362041)，補列面材試排 gap、stagger、threshold 的引用；此擁有者沒有 engineering 改綁入口，來源結束後仍有引用就拒絕。五類原生引用者的訊息改為指名物件，要求先在原生 DSL 或物件自己的交易改掉引用，另成一筆後再刪。未新增交易 op。
+
+刪除無讀取者的 retired[]、retired_count 與 parameter_retired()；候選欄位刪除事件及最後有效值保護仍保留。三個試排案例各覆蓋整卡刪除與欄位省略後重建，另驗引用者清單截斷時仍指出原生物件。P135 七種退化與漏列試排合計八個新變異已登錄 M61–M68；M63 以欄位重建後跳過保護重現舊第三種退化，不恢復已刪死函式。bridge 變異使用實際預覽序列化及 unittest 裁判，與既有核心場景變異合併成同一帳本。
+
+另依 [P141補充](https://github.com/ZhiQiYang/geometry-axiom/pull/193#issuecomment-6196035356)，明確 unbind 那一步若欄位已重建，改走當下求值，不用舊存在期的快取；[delete P, put P(a=99), unbind-source] 必須保存99，無效的新來源仍拒絕。舊期待915的重建案例改驗920／925，另補具名99案例與 M69 真反證。合計59個登錄變異，共用還原19方法。
+
+此段描述待驗候選，不能借下列 6236 來源的歷史綠燈驗收新程式。完整帳本、--check、正典同步與原41及原生回歸仍須在新固定來源實跑；Claude 核對後才上第18班。
+
+## P129 同來源分段定向證明（歷史來源6236；正式整合驗收待第18班）
 
 受測來源固定 `6236f5733052a19362132738a4eb79cac7924e0b`。R3的13模組188方法、core143/143、integrity130/130及4檔JavaScript語法均exit0，控制器誤讀total後實際WSL1、突變0。R4完成前三突變及第四反例/還原build後依使用者關機要求中止，WSL143、final foreign unknown。R5因還原檔案mtime與sidecar不符，在測試前退出WSL1、測試0。
 
@@ -12,11 +22,11 @@ R7官方build後補第五組還原14，再只跑第六、七個真突變，兩�
 
 七個真突變：恢復鍵保留、重佔鍵跳過保護（import/put各一紅）、省略欄位跳過保護、只看首次刪除、錯把u宣告套v（兩子案例）、隱藏預覽重宣告、預覽誤用首次刪除。最後四支執行檔逐byte等於原R3基準，sidecar/source均fresh。R7 foreign `{"samples": 48, "foreign_processes_seen_during_run": {}, "exclusive_during_run": true, "max_loadavg_1min_sampled": 9.2}`。
 
-只依實際core35更新期待值25→35；本版四JS僅語法，browser未驗、reader0。完整native、fresh全表帳本/check、官方sync/check/原41及固定整合head正式七項仍待Claude審查後的17班。K3-L兩個真記號未執行。R1/R2較早啟動/夾具失敗原件保留，不驗收本來源。
+只依實際core35更新期待值25→35；本版四JS僅語法，browser未驗、reader0。完整native、fresh全表帳本/check、官方sync/check/原41及固定整合head正式七項仍待Claude審查後的18班。K3-L兩個真記號未執行。R1/R2較早啟動/夾具失敗原件保留，不驗收本來源。
 
 原件 `D:/geometry-axiom-work/board-local-codex/pr193-p129-native-r3` 至 `-r7` 各段獨立保存；R3 certificate SHA `4f25a4e68501a9d1c051da7c61540a64c6ece66d8e67dfcc82422a589e623a9e`，R4 receipt SHA `d9a97c4a7602749d62df0ec85e3d84bd539c01a0be3226a5b2b85edad0a9ca75`，R6 receipt SHA `e1055ecc20d99691ce20ebd5729ec2990e4acdf1ade53e8930b3d5ada8e2cc43`，R7 receipt SHA `45122c2dd4205202b00868147ace435fbddce0ed210499a4dbb849265a143404`。獨立核對 `D:/geometry-axiom-work/board-local-codex/pr193-p129-native-r7/independently-verified-v2.json`。
 
-P132先診斷服務/bridge與系統、附對照及不確定處，修好後才同6a62隔離grid，環境失敗不計額度。15退役，193未自行准入17或合併。
+P132先診斷服務/bridge與系統、附對照及不確定處，修好後才同6a62隔離grid，環境失敗不計額度。15退役，193未自行准入列車或合併。
 
 依[P136](https://github.com/ZhiQiYang/geometry-axiom/pull/237#issuecomment-6193925984)，#193/#196/#202/#207鏈改搭第18班；第17班改為#227+#237，仍須先完成第16班P132 grid。此處只同步列車安排，既有受測來源6236、raw結果、各次退出、期待值35及證明內容不變。
 
