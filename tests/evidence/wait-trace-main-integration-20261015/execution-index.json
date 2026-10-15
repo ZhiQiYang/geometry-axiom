@@ -1,0 +1,78 @@
+{
+  "testedCodeHead": "3642e67d974f4aa712f174a4483e4b5bc3589667",
+  "mainHead": "839063b9eecbd3592f48cab5ea74f306cacc5fa3",
+  "deliveryCommit": "See the exact delivery SHA in the PR body and delivery comment; this directory is added after the tested commit without product/test changes.",
+  "cloudNative": {
+    "executionHead": "3642e67d974f4aa712f174a4483e4b5bc3589667",
+    "formalWSL": false,
+    "exit": 0,
+    "passed": 2852,
+    "failed": 0,
+    "skipped": 1,
+    "seconds": 1073.5083240520325,
+    "receipt": "native/native.json",
+    "stdout": "native/native.stdout",
+    "logs": "native/native-current-logs.tar.gz"
+  },
+  "formalWSL": [
+    {
+      "job": "native",
+      "status": "unverified",
+      "executionHead": null,
+      "actualExit": null,
+      "traceReceipt": null
+    },
+    {
+      "job": "assembly",
+      "status": "unverified",
+      "executionHead": null,
+      "actualExit": null,
+      "traceReceipt": null
+    },
+    {
+      "job": "documents",
+      "status": "unverified",
+      "executionHead": null,
+      "actualExit": null,
+      "traceReceipt": null
+    },
+    {
+      "job": "grid",
+      "status": "unverified",
+      "executionHead": null,
+      "actualExit": null,
+      "traceReceipt": null
+    },
+    {
+      "job": "canvas",
+      "status": "unverified",
+      "executionHead": null,
+      "actualExit": null,
+      "traceReceipt": null
+    },
+    {
+      "job": "space",
+      "status": "unverified",
+      "executionHead": null,
+      "actualExit": null,
+      "traceReceipt": null
+    },
+    {
+      "job": "timber",
+      "status": "unverified",
+      "executionHead": null,
+      "actualExit": null,
+      "traceReceipt": null
+    }
+  ],
+  "legacyExcludedFromCurrentValidation": [
+    {
+      "head": "c54324f7c7e2e3552a8d7fe709ec219dcdaeb3ff",
+      "reason": "P-119 original train; lacks B1. No current formal result is inferred."
+    },
+    {
+      "head": "fa713704aac53b40b46cb0ee4acdcbf38f6b9c59",
+      "reason": "Previous B1 cloud validation before current main integration; not the current integration native."
+    }
+  ]
+}
