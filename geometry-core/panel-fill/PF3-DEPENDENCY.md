@@ -1,7 +1,8 @@
 # PF-3：PF-H 相依與歷史基準
 
 本分支沿用 `feat/pf3-panel-fill-20261013`。任務 22 依 P-098，已一般 merge
-PF-H #227 的 `4be9ff3453202984433c9256dff9dd60d5c8437a`，PR base 改為
+PF-H #227 的 `4be9ff3453202984433c9256dff9dd60d5c8437a`，並接上最後新增證據的
+最新 head `303fec02257d21cf719287045a718665c3283006`，PR base 改為
 `feat/pfh-derived-host-20261013`。PF-H 已有雲端交付，正式 WSL 七項仍待本機列車，
 沒有將「開 draft」本身當成前置交付。
 

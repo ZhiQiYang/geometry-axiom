@@ -4,10 +4,13 @@
 
 ## 來源與結論
 
-- base：PF-H #227 `4be9ff3453202984433c9256dff9dd60d5c8437a`，已一般 merge，無 rebase／force push。
+- 受測時 base：PF-H #227 `4be9ff3453202984433c9256dff9dd60d5c8437a`。
+  交付前又一般 merge 最新 `303fec02257d21cf719287045a718665c3283006`；該筆只新增
+  `tests/evidence/pfh-task21-20261015/` 的 23 份證據，產品／測試／expected／帳本皆不變。
+  未 rebase／force push，沒有把新 head 說成已重新實跑 native。
 - 產品實作：`f22aa8ba58bd484e4a6d6c4a111a85f5f4248df9`。
 - 最終測試及完整 native execution：`77ef94bedd3fe3c0a834ca0194067d82bff0ee2e`。
-  其後只提交證據與交接，不修改產品／測試／expected／帳本。
+  其後只提交證據與交接、合入 PF-H 新證據，不修改產品／測試／expected／帳本。
 - 完整 native：**90 suites，2876 pass／1 fail／1 既有允許略過，actual exit 1，533.619 秒**。
   所有 90 項都執行；沒有降低 expected 或新增 skip。允許略過是 Linux 沒有 Windows GDI harness。
 - PF-1 22／22、PF-H 32／32、PF-2 17／17、PF-3 20／20、reader 41／41，均無 fail／skip。
