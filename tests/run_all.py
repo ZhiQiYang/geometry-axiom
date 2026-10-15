@@ -311,7 +311,7 @@ class Suite:
 
     @property
     def counted(self):
-        return self.kind not in ('node-script', 'mutation-check')
+        return self.kind not in ('node-script', 'python-script', 'mutation-check')
 
 
 class Row:
@@ -366,6 +366,9 @@ def build_suites():
         Suite('core:run_tests', 'run_tests', None, ['core'], 900, label='tests/run_tests.py <core>'),
         Suite('mutation:check', 'mutation-check', [py, str(HERE / 'mutate.py'), '--check'], [], 120,
               label='tests/mutate.py --check (saved current-source mutation receipts)'),
+        Suite('oracle:framing-selftest', 'python-script',
+              [py, str(ROOT / 'geometry-core/framing-template/oracle/selftest.py')], [], 300,
+              label='geometry-core/framing-template/oracle/selftest.py (six mutants + rectangular sweep)'),
     ]
     for stem in sorted(PY_NEEDS):
         f = HERE / (stem + '.py')
@@ -549,6 +552,9 @@ def run_suite(suite, env, infos):
         mutation_env = dict(env)
         mutation_env['MUTATE_RESULTS'] = str(HERE / 'mutants_results.json')
         res = run_process(suite.cmd, mutation_env, suite.timeout)
+    elif suite.kind == 'python-script':
+        # The oracle reads rooms.json relative to its own directory.
+        res = run_process(suite.cmd, env, suite.timeout, cwd=Path(suite.cmd[1]).parent)
     elif suite.kind == 'node-canvas':
         shim = write_node_shim()
         marker = LOG_DIR / 'canvas_shim.marker'
@@ -640,11 +646,15 @@ def run_suite(suite, env, infos):
         if not parse_node_spec(out, row):
             row.crashed, row.total, row.failed = True, 1, 1
             row.note = 'node 沒有輸出摘要（exit %s）' % code
-    elif suite.kind == 'node-script':
+    elif suite.kind in ('node-script', 'python-script'):
         row.passed, row.failed = (1 if code == 0 else 0), (0 if code == 0 else 1)
         row.note = '僅結束碼：腳本式，無 test 級計數，以 exit code 判定'
         if code:
-            row.details.append(out.strip().splitlines()[-1][:200] if out.strip() else '')
+            if suite.kind == 'python-script':
+                # Keep the oracle's named mutant/check failure, even when the final sweep is green.
+                row.details.extend(line[:200] for line in out.strip().splitlines()[-12:])
+            else:
+                row.details.append(out.strip().splitlines()[-1][:200] if out.strip() else '')
     elif suite.kind == 'node-canvas':
         m = re.search(r'(\d+) pass / (\d+) fail', out)
         if m:
