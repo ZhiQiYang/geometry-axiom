@@ -114,6 +114,47 @@ class PanelFillHost(unittest.TestCase):
         self.reject([dict(op="put-derived-placement",value=dict(id=10,fillId=2,h=31))],"immutable")
         self.reject([dict(op="put-derived-placement",value=dict(id=10,fillId=1,h=dict(kind="application",id="a",field="primary.B")))],"application")
 
+    def test_D4_material_B_and_parameter_h_sources_survive_reopen(self):
+        self.region()
+        request=self.directory/"materials.json"
+        request.write_text(json.dumps(dict(schema="engineering-transaction/1",expectedRevision=self.read()["revision"],operations=[
+            dict(op="publish-material",value=dict(id="host-timber",version=1,name="木料",kind="timber",A=27,B=30))])))
+        reply=self.command("engineering-preview "+str(request));self.assertTrue(reply["preview"]["valid"],reply)
+        self.assertTrue(self.command("engineering-confirm "+str(reply["preview"]["token"]))["ok"])
+        h=dict(kind="material",id="host-timber",version=1,field="B")
+        self.apply([dict(op="put-derived-placement",value=dict(id=10,fillId=1,h=h))])
+        self.assertEqual(30,self.current_host()["derived"]["h"])
+        self.reject([dict(op="put-derived-placement",value=dict(id=10,fillId=1,h={**h,"field":"A"}))],"timber B")
+        parameter=dict(id=90,name="尺寸",fields=[dict(id=1,name="X",type="dimension",input="8"),dict(id=2,name="H",type="dimension",input="31")])
+        self.apply([dict(op="put-parameter",value=parameter),dict(op="put-derived-placement",value=dict(id=10,fillId=1,h=dict(kind="parameter",parameterId=90,fieldId=2)))])
+        self.assertEqual(31,self.current_host()["derived"]["h"])
+        text=self.command("dump")["text"];self.load_text(text,"sources.scene")
+        self.assertEqual(text,self.command("dump")["text"])
+
+    def test_R41_capacity_rejects_components_and_full_key_without_truncation(self):
+        self.seed(width=915,length=1830,outline="0,0 100,0 100,100 0,100",
+                  extra="".join(f"beam {i+1} along x from {10*i+5} to {10*i+7} at 50 width 120 depth 30 top 39\n" for i in range(8)),obstacles=[f"b{i+1}" for i in range(8)])
+        self.apply([fill(gap=0)])
+        preview=self.reject([dict(op="put-derived-placement",value=dict(id=10,fillId=1,h=30))],"component limit")
+        self.assertEqual("UNSUPPORTED",preview["violations"][0]["status"])
+        self.seed(width=915,length=1830,outline="0,0 100,0 100,100 0,100",
+                  extra="".join(f"beam {70000+i} along x from 20 to 40 at 30 width 20 depth 30 top 39\n" for i in range(32)),obstacles=[f"b{70000+i}" for i in range(32)])
+        self.apply([fill(gap=0)])
+        preview=self.reject([dict(op="put-derived-placement",value=dict(id=10,fillId=1,h=30))],"key exceeds")
+        self.assertEqual("UNSUPPORTED",preview["violations"][0]["status"])
+
+    def test_R41_explicit_second_component_stays_on_existing_D7_solver(self):
+        self.region(extra="beam 20 along x from 40 to 60 at 50 width 120 depth 30 top 39\n",obstacles=["b20"])
+        edges=self.current_host()["derived"]["components"][1]["edges"]
+        bottom=next(e["key"] for e in edges if e["start"][1]==e["end"][1]==0)
+        self.assertTrue(self.command("line timber 1 10 30 role boundary")["ok"])
+        reply=self.command("line place 1 on 10 at-face "+self.key(bottom)+" +u +n")
+        self.assertTrue(reply["ok"],reply)
+        geometry=self.command("references")["timbers"][0]["geometry"]
+        self.assertEqual((60,0,40),(geometry["u"],geometry["v"],geometry["length"]))
+        text=self.command("dump")["text"];self.load_text(text,"second-component.scene")
+        self.assertEqual(text,self.command("dump")["text"])
+
     def test_I55_delete_and_corrupt_reopen_preserve_world(self):
         self.host();self.timbers()
         self.reject([dict(op="delete-panel-fill",id=1)],"source fill")
