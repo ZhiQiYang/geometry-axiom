@@ -13,6 +13,7 @@ import re
 import subprocess
 import sys
 import unittest
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -68,12 +69,17 @@ class GridCardReference(unittest.TestCase):
     def state(self):
         return self.dump(), self.read(), self.command('objects')
 
-    def reject(self, ops, reason, label):
+    def reject(self, ops, reason, label, identity=None):
         before = self.state()
         result = self.request(ops)
         self.assertTrue(result['ok'], (label, result))
         self.assertFalse(result['preview']['valid'], (label, result))
-        self.assertIn(reason, json.dumps(result, ensure_ascii=False), (label, result))
+        errors = '\n'.join(v.get('message', '') for v in result['preview']['violations'])
+        self.assertIn(reason, errors, (label, errors))
+        if identity is not None:
+            grid_id, parameter_id, field_id = identity
+            for part in (f'grid-system {grid_id}', f'parameter {parameter_id}', f'field {field_id}'):
+                self.assertIn(part, errors, (label, errors))
         self.assertFalse(self.command(f"engineering-confirm {result['preview']['token']}")['ok'], label)
         self.assertEqual(before, self.state(), label + ': World/metadata/revision unchanged')
         return result
@@ -163,14 +169,17 @@ class GridCardReference(unittest.TestCase):
         self.apply([parameter()])
         self.reject([grid(ref=source(u=3, v=3))], 'DISTINCT_FIELDS', 'DISTINCT_FIELDS')
         bad = source(); bad['vParameterId'] = 11
-        self.reject([grid(ref=bad)], 'SAME_CARD', 'SAME_CARD')
+        rejected = self.reject([grid(ref=bad)], 'SAME_CARD', 'SAME_CARD', identity=(4, 10, 8))
+        self.assertNotIn('COMPLETE_MAPPING', rejected['preview']['violations'][0]['message'])
+        bad['vParameterId'] = 10
+        self.reject([grid(ref=bad)], 'SAME_CARD', 'SAME_CARD rejects per-axis card id even when equal', identity=(4, 10, 8))
 
     def test_CR08_MAPPED_SOURCE_PROTECTION(self):
         self.seed()
-        self.reject([card(10, 'P', [field(3, '12')])], 'grid-system 4', 'MAPPED_SOURCE_PROTECTION')
+        self.reject([card(10, 'P', [field(3, '12')])], 'grid-system 4', 'MAPPED_SOURCE_PROTECTION', identity=(4, 10, 8))
         for kind in ('count', 'ratio'):
-            self.reject([card(10, 'P', [field(3, '12'), field(8, '30', kind)])], 'not a dimension', 'MAPPED_SOURCE_PROTECTION')
-        self.reject([{'op': 'delete-parameter', 'id': 10}, parameter(identifier=11)], 'grid-system 4', 'MAPPED_SOURCE_PROTECTION')
+            self.reject([card(10, 'P', [field(3, '12'), field(8, '30', kind)])], 'not a dimension', 'MAPPED_SOURCE_PROTECTION', identity=(4, 10, 8))
+        self.reject([{'op': 'delete-parameter', 'id': 10}, parameter(identifier=11)], 'grid-system 4', 'MAPPED_SOURCE_PROTECTION', identity=(4, 10, 3))
 
     def test_CR09_EXACT_TARGET_LENGTH(self):
         self.seed()
@@ -197,9 +206,15 @@ class GridCardReference(unittest.TestCase):
         for token in ('12', 'param:10:3'):
             self.reject([grid(u='repeat -5 ' + token)], 'SOURCE_EXCLUSIVITY', 'SOURCE_EXCLUSIVITY')
         bad = source(); del bad['vFieldId']
-        self.reject([grid(ref=bad)], 'COMPLETE_MAPPING', 'COMPLETE_MAPPING')
+        rejected = self.reject([grid(ref=bad)], 'COMPLETE_MAPPING', 'COMPLETE_MAPPING')
+        error = rejected['preview']['violations'][0]['message']
+        self.assertIn('grid-system 4', error)
+        self.assertNotIn('SAME_CARD', error)
         self.reject([grid(v='none')], 'MODE_SCOPE', 'MODE_SCOPE')
         self.reject([grid(u='series 0 12 3')], 'MODE_SCOPE', 'MODE_SCOPE legacy identity')
+        self.reject([{'op': 'set-grid-card-reference', 'id': 4, 'value': bad}], 'grid-system 4', 'COMPLETE_MAPPING set operation')
+        self.apply([unbind(), grid(ref=False, v='none', u='repeat -5 12')])
+        self.reject([{'op': 'set-grid-card-reference', 'id': 4, 'value': source()}], 'grid-system 4', 'MODE_SCOPE set operation')
 
     def test_CR12_ATOMIC_REBIND(self):
         self.seed(); self.apply([parameter(identifier=11, a='20', b='40'), {'op': 'set-grid-card-reference', 'id': 4, 'value': source(11)}])
@@ -364,7 +379,7 @@ class GridCardReference(unittest.TestCase):
         imported = self.import_fixture()
         self.apply([imported])
         self.assertEqual(11, self.read()['state']['parameters'][-1]['id'], 'IMPORT_ISOLATION same name receives independent id')
-        self.reject([{'op': 'delete-parameter', 'id': 10}, imported], 'grid-system 4', 'IMPORT_REUSED_KEY_GUARD')
+        self.reject([{'op': 'delete-parameter', 'id': 10}, imported], 'grid-system 4', 'IMPORT_REUSED_KEY_GUARD', identity=(4, 10, 3))
         self.apply([unbind(), {'op': 'delete-parameter', 'id': 10}, imported])
         c = self.read()['state']['parameters'][-1]
         self.assertEqual(10, c['id'], 'IMPORT_ISOLATION first unused id')
@@ -378,7 +393,7 @@ class GridCardReference(unittest.TestCase):
         self.apply([parameter(a='18')]); self.assertEqual([-11, 7, 25], self.lines('v'))
 
     def test_CR26_SAME_KEY_REFERENCE_GUARD(self):
-        self.seed(); self.reject([{'op': 'delete-parameter', 'id': 10}, parameter()], 'grid-system 4', 'SAME_KEY_REFERENCE_GUARD')
+        self.seed(); self.reject([{'op': 'delete-parameter', 'id': 10}, parameter()], 'grid-system 4', 'SAME_KEY_REFERENCE_GUARD', identity=(4, 10, 3))
 
     def test_CR27_EXPLICIT_POST_DELETE_REBIND(self):
         self.seed(); self.apply([{'op': 'delete-parameter', 'id': 10}, parameter(), grid()])
@@ -389,8 +404,8 @@ class GridCardReference(unittest.TestCase):
 
     def test_CR28_ORDERED_REFERENCE_PROTECTION(self):
         self.seed()
-        self.reject([grid(), {'op': 'delete-parameter', 'id': 10}, parameter()], 'grid-system 4', 'ORDERED_REFERENCE_PROTECTION before delete')
-        self.reject([{'op': 'delete-parameter', 'id': 10}, parameter(), grid(), {'op': 'delete-parameter', 'id': 10}, parameter()], 'grid-system 4', 'ORDERED_REFERENCE_PROTECTION last delete')
+        self.reject([grid(), {'op': 'delete-parameter', 'id': 10}, parameter()], 'grid-system 4', 'ORDERED_REFERENCE_PROTECTION before delete', identity=(4, 10, 3))
+        self.reject([{'op': 'delete-parameter', 'id': 10}, parameter(), grid(), {'op': 'delete-parameter', 'id': 10}, parameter()], 'grid-system 4', 'ORDERED_REFERENCE_PROTECTION last delete', identity=(4, 10, 3))
         self.apply([unbind(), {'op': 'delete-parameter', 'id': 10}, parameter()])
 
     def test_CR29_D25_CARD_CLOSURE(self):
@@ -450,9 +465,28 @@ class GridCardReference(unittest.TestCase):
 
     def test_CR32_FIELD_KEY_RECREATION_GUARD(self):
         self.seed(); omit = card(10, 'P', [field(3, '12')])
-        self.reject([omit, parameter()], 'grid-system 4', 'FIELD_KEY_RECREATION_GUARD')
+        self.reject([omit, parameter()], 'grid-system 4', 'FIELD_KEY_RECREATION_GUARD', identity=(4, 10, 8))
         self.apply([omit, parameter(), grid()])
-        self.reject([omit, parameter(), grid(), omit, parameter()], 'grid-system 4', 'FIELD_KEY_RECREATION_GUARD last deletion')
+        self.reject([omit, parameter(), grid(), omit, parameter()], 'grid-system 4', 'FIELD_KEY_RECREATION_GUARD last deletion', identity=(4, 10, 8))
+
+    def test_P146_ERROR_FIELDS_ONLY(self):
+        self.seed()
+        rejected = self.request([parameter(b='0')])
+        rejected['preview']['after']['nonErrorTestMarker'] = 'ONLY_IN_PREVIEW_DATA'
+        with mock.patch.object(self, 'request', return_value=rejected):
+            with self.assertRaisesRegex(AssertionError, 'ONLY_IN_PREVIEW_DATA'):
+                self.reject([parameter(b='0')], 'ONLY_IN_PREVIEW_DATA', 'ERROR_FIELDS_ONLY')
+
+    def test_P146_CARD_DIRECT_REBUILT_CURRENT_VALUE(self):
+        self.seed()
+        pending, _ = self.apply([{'op': 'delete-parameter', 'id': 10}, parameter(a='99', b='47'), unbind()])
+        self.assertEqual([99, 47], pending['preview']['cardCaptures'][0]['values'])
+        self.assertEqual((99, 47), self.lengths(), 'CARD_DIRECT_REBUILT_CURRENT_VALUE must read this ordered step')
+        self.assertNotIn('cardReference', self.systems()[4])
+
+    def test_P146_CARD_DIRECT_MISSING_SOURCE(self):
+        self.seed()
+        self.reject([{'op': 'delete-parameter', 'id': 10}, unbind()], 'MISSING', 'CARD_DIRECT_MISSING_SOURCE', identity=(4, 10, 3))
 
     def test_CR33_PARAMETER_PACKAGE_BOUNDARY(self):
         self.seed()

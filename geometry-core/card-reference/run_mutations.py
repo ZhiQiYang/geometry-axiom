@@ -89,7 +89,7 @@ def main(args):
     baseline=out/'baseline';baseline.mkdir()
     bridge=compile_binary(baseline,'bridge');model=compile_binary(baseline,'model')
     run,counts=test_case(baseline,bridge,model,'all')
-    if run['exit_code'] or counts['testsRun']!=31 or counts['skips']:
+    if run['exit_code'] or counts['testsRun']!=34 or counts['skips']:
         raise RuntimeError('instrumented full baseline is not green')
     report={'source_head':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
             'test_sha256':sha(ROOT/'tests/test_grid_card_reference.py'),'runner_sha256':sha(__file__),

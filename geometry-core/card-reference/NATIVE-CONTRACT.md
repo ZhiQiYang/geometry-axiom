@@ -40,10 +40,21 @@ put-grid-system 是完整宣告，包含其他維持不變的軸設定；不補 
 完整 put-grid-system 另對其實際宣告的逐欄來源記錄宣告。沿用 #193 的最後欄位刪除序列與每一引用者判斷，不更改匯入配號。
 轉成逐欄也明確宣告兩個新 ParameterRef：ordinary grid-system owner 的 slot 0 表示完整軸宣告，slot `axis*6+field+1` 只表示指定槽（field 次序 phase/step/panel/gap/anchor/stagger）。刪卡重建後的整組轉逐欄因此合法；它不會順帶處理原有 phase/gap/anchor 等其他引用。
 
-direct 解除只在該有序步驟依原生參數 evaluator 重算必要欄位並驗整卡；缺失／刪除／不合法來源拒絕。
+direct 解除只在該有序步驟依原生參數 evaluator 重算必要欄位並驗整卡。
+該步來源存在時取當下有效值，包括刪除後已重建的同鍵來源；例如 `[delete P, put P(a=99), 轉直接值]` 取得 99。
+該步來源不存在（刪除未重建）或來源不合法時拒絕，不因同候選曾刪除而一律拒絕。
 不讀畫面鏡像、正式舊 World、刪除值快取或後續卡片修改。
 預覽 `cardCaptures` 明列 gridSystemId、parameterId、兩個 fieldId、values[2]、timing=ordered-candidate-step 及候選事件 order。
 捕捉紀錄只在預覽序列化副本內，確認後不進 World、dump、定義指紋或 history。
+
+### 捕捉 scratch 的固定記憶體成本
+
+`measure_capture_memory.py` 用真核心型別及同一份 ParameterState 宣告移除捕捉成員的對照量測。
+雲端 Linux x86-64／gcc 14.2 ABI 下，GridCardCapture 為 40 bytes，256 格陣列為 10,240 bytes，count 為 8 bytes；每份 World 固定增加 10,248 bytes。
+World 共 3,178,472 bytes、ParameterState 為 813,632 bytes；這些是此基底與 ABI 的實測大小，不是跨平台 ABI 保證。
+`HISTORY_MAX=32`，Undo 與 Redo 兩個固定陣列共 64 槽，捕捉成員合計增加 655,872 bytes；正式 World、預覽及其他快照的額外空間另計，不能把這個數字當成整個程序的增加量。
+上限 256 對齊 `ENG_OPERATION_MAX=256`：每個有序操作最多產生一筆整組 direct capture；parameter-package 不允許插入解除。
+`parameters_clear_candidate_scratch` 會在 staging／比較／history 前清零陣列及 count；歷史不保留捕捉內容，但 World 內的固定配置空間仍隨每份快照存在，沒有宣稱記憶體成本為零。
 
 objects 的 gridSystems、原生預覽及 engineering 候選 after.geometry.gridSystems 均回一份 cardReference。
 受控槽回 stepSource/panelSource=card，另回唯讀 effectiveStep/effectivePanel；該槽沒有 step/panel 直接值或 ParameterRef。
@@ -62,7 +73,7 @@ geometry-parameters/1 的匯出／匯入仍只有卡片閉包，不包含網格�
 
 ## 驗收邊界
 
-`tests/test_grid_card_reference.py` 登記 31 個具名 CR 核心方法；CR19 會用實際 ZIP writer/reader，開到新原生 context 並逐字核 dump。
+`tests/test_grid_card_reference.py` 登記 31 個具名 CR 核心方法及 3 個 P-146 方法；CR19 會用實際 ZIP writer/reader，開到新原生 context 並逐字核 dump。
 `tests/test_card_reference_project_store.js` 檢查 /18 的保存、降版、能力、未知版本及舊逐欄相容。
 原 PROPOSAL 沒有列 CR23 或 M15，沿用其原始編號，不自行補號。
 CR24／M23 是 UI 切片，本次不宣稱桌面／390px 操作或草稿支援。

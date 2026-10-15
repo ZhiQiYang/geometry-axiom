@@ -3,18 +3,21 @@ static bool grid_card_fail(const char *format,...)
 {va_list args;va_start(args,format);vsnprintf(g_engineering_error,sizeof g_engineering_error,format,args);va_end(args);utf8_trim_tail(g_engineering_error);return false;}
 static GridSystem *grid_card_system(World *w,uint32_t id)
 {for(size_t i=0;i<w->grid_system_count;++i)if(w->grid_systems[i].id==id)return &w->grid_systems[i];return NULL;}
-static bool grid_card_read(EngJson *j,int t,GridCardReference *r)
+static bool grid_card_read(EngJson *j,int t,uint32_t grid_id,GridCardReference *r)
 {
-    if(!eng_json_keys(j,t,"parameterId,uFieldId,vFieldId","")||
-       !parameter_u32(j,eng_json_member(j,t,"parameterId"),&r->parameter_id)||
-       !parameter_u32(j,eng_json_member(j,t,"uFieldId"),&r->fields[0])||
-       !parameter_u32(j,eng_json_member(j,t,"vFieldId"),&r->fields[1]))return eng_fail("I74 COMPLETE_MAPPING: expected one card and both field ids (SAME_CARD)");
+    bool parameter=parameter_u32(j,eng_json_member(j,t,"parameterId"),&r->parameter_id);
+    bool u=parameter_u32(j,eng_json_member(j,t,"uFieldId"),&r->fields[0]);
+    bool v=parameter_u32(j,eng_json_member(j,t,"vFieldId"),&r->fields[1]);
+    if(eng_json_member(j,t,"uParameterId")>=0||eng_json_member(j,t,"vParameterId")>=0)
+        return grid_card_fail("I74 SAME_CARD: grid-system %u parameter %u u field %u v field %u requires one parameterId, not per-axis card ids",grid_id,r->parameter_id,r->fields[0],r->fields[1]);
+    if(!eng_json_keys(j,t,"parameterId,uFieldId,vFieldId","")||!parameter||!u||!v)
+        return grid_card_fail("I74 COMPLETE_MAPPING: grid-system %u parameter %u requires parameterId and both uFieldId/vFieldId",grid_id,r->parameter_id);
     r->set=true;return true;
 }
 static bool grid_card_mark(GridSystem *s)
 {
     for(int a=0;a<2;++a){GridAxisDef *d=&s->axis[a];
-        if(!grid_axis_is_infinite(d))return eng_fail("I74 MODE_SCOPE: both axes must use repeat or repeat-panel");
+        if(!grid_axis_is_infinite(d))return grid_card_fail("I74 MODE_SCOPE: grid-system %u %c parameter %u field %u requires repeat or repeat-panel",s->id,a?'v':'u',s->card_reference.parameter_id,s->card_reference.fields[a]);
         int slot=d->source==GRID_SRC_REPEAT?1:2;
         memset(&d->parameters[slot],0,sizeof d->parameters[slot]);d->card_length=true;
     }
@@ -32,7 +35,7 @@ static bool grid_card_put(World *w,EngJson *j,int t)
     if(!strcmp(main,"u"))s.main_along=1;else if(!strcmp(main,"v"))s.main_along=2;else if(strcmp(main,"none"))return eng_fail("I74 invalid mainAlong");
     for(int a=0;a<2;++a){char *tokens[SCENE_MAX_TOKENS];int at=0,count=split_tokens(axes[a],tokens,SCENE_MAX_TOKENS);
         if(count<1||!grid_system_read_axis(tokens,count,&at,&s.axis[a])||at!=count)return eng_fail("I74 MODE_TRANSITION: invalid or incomplete axis definition");}
-    int ref=eng_json_member(j,t,"cardReference");if(ref>=0&&!grid_card_read(j,ref,&s.card_reference))return false;
+    int ref=eng_json_member(j,t,"cardReference");if(ref>=0&&!grid_card_read(j,ref,s.id,&s.card_reference))return false;
     GridSystem *old=grid_card_system(w,s.id);
     if(old){
         if(old->card_reference.set&&!s.card_reference.set)return eng_fail("I74 CONTROLLED_TOKEN_REJECT: explicitly unbind both axes before removing the card source");
@@ -53,7 +56,7 @@ static bool grid_card_operation(World *w,EngJson *j,int t,const char *op)
     if(!eng_json_keys(j,t,keys,"")||!parameter_u32(j,eng_json_member(j,t,"id"),&id))return eng_fail("I74 invalid card operation");
     GridSystem *s=grid_card_system(w,id);if(!s)return grid_card_fail("I74 MISSING: grid-system %u",id);
     if(!strcmp(op,"set-grid-card-reference")){
-        GridCardReference ref={0};if(!grid_card_read(j,eng_json_member(j,t,"value"),&ref))return false;
+        GridCardReference ref={0};if(!grid_card_read(j,eng_json_member(j,t,"value"),id,&ref))return false;
         s->card_reference=ref;if(!grid_card_mark(s))return false;
     }else{
         if(!s->card_reference.set)return grid_card_fail("I74 MISSING: grid-system %u has no card reference",id);
