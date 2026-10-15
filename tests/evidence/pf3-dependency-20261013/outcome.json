@@ -1,0 +1,7 @@
+{
+  "private_probe_actual_exit": 1,
+  "initial_probe_actual_exit": 1,
+  "failure": "PF3_SUPPORT_MISSING",
+  "scope": "Baseline capability assertion only, not PF23/PF24 execution",
+  "initial_setup_note": "First wrapper used OUTDIR instead of OUT_DIR; actual first build was in /tmp/geometry-tests. Corrected wrapper reran with /tmp/pf3-current-binaries; both original logs retained."
+}

@@ -1,0 +1,15 @@
+{
+  "total": 1,
+  "failed": 1,
+  "errors": 0,
+  "skipped": 0,
+  "nativeExits": [
+    0
+  ],
+  "failures": [
+    {
+      "test": "test_R41_fixity_preserves_source_breaks_and_merged_keys (tests.test_panel_fill_host.PanelFillHost.test_R41_fixity_preserves_source_breaks_and_merged_keys)",
+      "traceback": "Traceback (most recent call last):\n  File \"/tmp/geometry-wake41/controls-release-final/fixity-merged/source/tests/test_panel_fill_host.py\", line 58, in test_R41_fixity_preserves_source_breaks_and_merged_keys\n    self.assertEqual(expected,len(edges),\"PFH_FIXITY: maximal edges merge only equal fixity\")\nAssertionError: 2 != 1 : PFH_FIXITY: maximal edges merge only equal fixity\n"
+    }
+  ]
+}

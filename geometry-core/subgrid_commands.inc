@@ -46,10 +46,13 @@ static bool apply_subgrid_line(const char *path,int line_no,char **t,int count,W
     candidate.is_subgrid=true; candidate.lattice_cell=lattice; candidate.placement_id=parent->placement_id;
     candidate.divisions[0]=du; candidate.divisions[1]=dv;
     /* I8a: invalid candidates must never masquerade as the old definition. */
-    World trial=*world;
-    if (existing) trial.grids[existing-world->grids]=candidate;
-    else if (trial.grid_count<WORLD_MAX_GRIDS) trial.grids[trial.grid_count++]=candidate;
-    reference_capture_trial(&trial);
+    World *trial=malloc(sizeof *trial);
+    if(!trial){scene_error(path,line_no,"I32: subgrid trial allocation failed");return false;}
+    *trial=*world;
+    if (existing) trial->grids[existing-world->grids]=candidate;
+    else if (trial->grid_count<WORLD_MAX_GRIDS) trial->grids[trial->grid_count++]=candidate;
+    reference_capture_trial(trial);
+    free(trial);
     const PlacementSurface *p=world_find_placement(world,parent->placement_id);
     char err[256]="";
     if (!p || !grid_is_valid_in(world->grids,world->grid_count,&candidate,p,world_placement_boundary(world,p),err,sizeof err)) {

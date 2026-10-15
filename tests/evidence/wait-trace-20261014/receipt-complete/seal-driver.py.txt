@@ -1,0 +1,74 @@
+import pathlib, json, tarfile, hashlib, shutil, subprocess, platform
+root=pathlib.Path('/tmp/geometry-wait-trace')
+base=root/'tests/evidence/wait-trace-20261014'
+out=base/'receipt-complete'
+native=json.loads((out/'native.json').read_text())
+assert native['head']==native['headAfter']=='ab16e22e5e5e7e4638f051d4dfbed8dc09da22a6'
+assert native['exit']==0, native
+lines=(out/'native.stdout.log').read_text().splitlines()
+summary=next(line for line in lines if line.startswith('合計(已執行、有計數者)')).split()
+counts=dict(total=int(summary[1]),passed=int(summary[2]),failed=int(summary[3]),skipped=int(summary[4]))
+assert counts==dict(total=2789,passed=2788,failed=0,skipped=1), counts
+assert any(line.startswith('node:tests-js') and '709' in line for line in lines)
+before=json.loads((out/'identity-before.json').read_text())
+after=dict(head=native['headAfter'],sources={name:hashlib.sha256((root/name).read_bytes()).hexdigest() for name in before['sources']},binaries={name:hashlib.sha256((pathlib.Path('/tmp/wait-trace-binaries')/name).read_bytes()).hexdigest() for name in before['binaries']})
+assert before==after
+assert len(after['sources'])==10 and len(after['binaries'])==5
+(out/'identity-after.json').write_text(json.dumps(after,indent=2)+'\n')
+logs=pathlib.Path('/tmp/wait-trace-binaries/run_all-logs')
+members=[]
+with tarfile.open(out/'native-raw.tar.gz','w:gz') as archive:
+    for p in sorted(logs.iterdir()):
+        if p.is_file():
+            archive.add(p,arcname=p.name)
+            members.append(dict(name=p.name,bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest()))
+(out/'native-members.json').write_text(json.dumps(members,indent=2)+'\n')
+identities={}
+for p in sorted(pathlib.Path('/tmp/wait-trace-binaries').glob('*.fingerprint.json')):
+    shutil.copyfile(p,out/p.name)
+    binary=p.with_name(p.name.removesuffix('.fingerprint.json'))
+    identities[binary.name]=hashlib.sha256(binary.read_bytes()).hexdigest()
+(out/'binary-sha256.json').write_text(json.dumps(identities,indent=2)+'\n')
+versions={name:subprocess.check_output(args,text=True).splitlines()[0] for name,args in {'gcc':['gcc','--version'],'node':['node','--version']}.items()}
+(out/'environment.json').write_text(json.dumps(dict(platform=platform.platform(),python=platform.python_version(),stackKiB=16384,WSL=False,**versions),indent=2)+'\n')
+(out/'counts.json').write_text(json.dumps(counts,indent=2)+'\n')
+shutil.copyfile('/tmp/wait-trace-receipt-gate.py',out/'native-driver.py.txt')
+shutil.copyfile('/tmp/wait-trace-final-delivery.py',out/'seal-driver.py.txt')
+(base/'DELIVERY.md').write_text(f'''# Task 13 final cloud delivery
+
+Product tested head: `{native['head']}`; before/after HEAD identical.
+Full native: 89 suites, {counts['passed']} pass / 0 fail / 1 named Windows GDI
+skip, Node 709/709; actual exit0, {native['seconds']:.3f} seconds. Original
+run_all --build used, without filters/allow-skip/update-expected. See receipt-complete/. complete/ is the earlier 3dc72660 positive baseline before receipt and frontend-result fixes.
+
+History is retained: root native.json is the first complete exit1 run (Node
+registration/expected mismatch, not an assertion failure); final/native logs
+are an incomplete second run whose process disappeared when the tool session
+became unavailable, actual exit unknown. Its mixed archive includes unfinished
+second-run and older first-run artifacts and is not a full receipt. scope-interrupted/ is a controlled stop (actual -15) to fix missing non-api fetch and HTTP-header coverage, not a full pass. The complete
+run started with an empty private log directory and a detached capture driver.
+
+Final unit/mutation controls are under receipt-final/: seven Python and six Node tests;
+twelve mutations each actual1 -> restoration0. Two added acceptance tests were
+first run red before fixing timer boundaries and adding the workflow gate.
+These are diagnostic hook controls, not new tests/mutate.py/C mutation coverage.
+The shell kernel strings are test doubles, not WSL execution. Real isolated
+bridge smoke/trace is separate from the mocked-native HTTP unit comparison.
+
+Native artifacts: {len(members)} members, individually byte/SHA inventoried.
+Binary hashes and sidecars are provided without executable bytes. No continuous
+source monitoring or independent binary-byte referee claim is made.
+Initial missing-module shell exit was not retained; that log is not a parent
+exit receipt. The first run's brief added/reverted assertion is disclosed in
+the historical README. Unverified: active local WSL train deployment/trace
+archival, formal seven jobs, full canvas and the historical timeout cause.
+
+Shared workflow change is separately described in geometry-web/docs/WAIT-TRACE.md.
+No C/SSOT/reader/BACKLOG/decision queue/ledger changes. GEO-219: 無新入口.
+''')
+inventory=[]
+for p in sorted(base.rglob('*')):
+    if p.is_file() and p.name!='delivery-inventory.json':
+        inventory.append(dict(name=p.relative_to(base).as_posix(),bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest()))
+(base/'delivery-inventory.json').write_text(json.dumps(inventory,indent=2)+'\n')
+print(native,counts,'archive members',len(members),'evidence files',len(inventory)+1)

@@ -1,0 +1,32 @@
+import hashlib,json,shutil,tarfile
+from pathlib import Path
+R=Path('/workspace/geometry-axiom');E=Path('/tmp/pf3-controls-v2-package');M=Path('/tmp/pf3-mutations-final-v2-20261015')
+E.mkdir(exist_ok=False);(E/'drivers').mkdir()
+summary=json.loads((M/'summary.json').read_text());assert summary['originalSourcesUnchanged'] and len(summary['mutations'])==19 and all(v['verdict']=='killed' for v in summary['mutations'])
+assert summary['baseline']['verdict']==summary['restored']['verdict']=='pass'
+for name in ['summary.json','sources.json']:
+    shutil.copy2(M/name,E/('mutations-v2-'+name))
+shutil.copy2('/tmp/pf3-mutations-final-v2.log',E/'mutations-v2.stdout')
+out=E/'mutations-v2-originals.tar.gz';manifest=[];audit=[]
+with tarfile.open(out,'w:gz') as archive:
+    for p in sorted(M.rglob('*')):
+        if not p.is_file():continue
+        rel=p.relative_to(M)
+        if 'source' in rel.parts:
+            if rel.parts[0]!='baseline' and str(Path(*rel.parts[2:]))!='geometry-core/panel_fill_support.inc':continue
+            if '__pycache__' in rel.parts:continue
+        if 'obj' in rel.parts or 'smoke' in rel.parts:continue
+        archive.add(p,arcname=str(rel),recursive=False);manifest.append(dict(path=str(rel),bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest()))
+out.with_name(out.name+'.inventory.json').write_text(json.dumps(manifest,indent=2)+'\n')
+for p in M.glob('*/result.json'):
+    v=json.loads(p.read_text())
+    for name,sha in v['artifacts'].items():assert hashlib.sha256((p.parent/'binaries'/name).read_bytes()).hexdigest()==sha
+    audit.append(dict(id=v['id'],verdict=v['verdict'],executedArtifactsVerified=True))
+(E/'mutations-v2-artifact-audit.json').write_text(json.dumps(audit,indent=2)+'\n')
+old=E/'interrupted-native';old.mkdir()
+for name in ['receipt.json','stdout','stderr','started.json','logs.tar.gz','log-manifest.json','tracked-before.json','tracked-after.json']:
+    shutil.copy2(Path('/tmp/pf3-native-final-20261015')/name,old/name)
+pf05=E/'pf05';shutil.copytree('/tmp/pf3-pf05-witness-20261015',pf05)
+for src,name in [('/tmp/pf3-pf05-parent.log','parent.stdout'),('/tmp/pf3-capture-pf05.py','driver.py.txt')]:shutil.copy2(src,pf05/name)
+shutil.copy2('/tmp/pf3-package-v2-controls.py',E/'drivers/pf3-package-v2-controls.py.txt')
+print(json.dumps(dict(mutations=19,baseline=20,restored=20,sourceUnchanged=True)))

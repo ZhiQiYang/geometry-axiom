@@ -29,9 +29,16 @@ typedef struct {
     char definition[1024]; /* canonical D42 definition, never derived geometry */
 } PanelFill;
 typedef struct {
+    uint32_t id, fill_id;
+    EngDimensionSource h;
+    char definition[1024]; /* D4 sources only; no frame, outline, holes or fixity. */
+} DerivedPlacement;
+typedef struct {
     FinishSurface items[FS_MAX];
     uint64_t count;
     PanelFill fills[FS_MAX];
     uint64_t fill_count;
+    DerivedPlacement hosts[FS_MAX];
+    uint64_t host_count;
 } FinishSurfaceState;
 #endif

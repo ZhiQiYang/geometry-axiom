@@ -1,0 +1,7 @@
+{
+  "file": "geometry-core/subgrid_commands.inc",
+  "old": "World *trial=malloc(sizeof *trial);\n    if(!trial){scene_error(path,line_no,\"I32: subgrid trial allocation failed\");return false;}\n    *trial=*world;\n    if (existing) trial->grids[existing-world->grids]=candidate;\n    else if (trial->grid_count<WORLD_MAX_GRIDS) trial->grids[trial->grid_count++]=candidate;\n    reference_capture_trial(trial);\n    free(trial);",
+  "new": "World trial=*world;\n    if (existing) trial.grids[existing-world->grids]=candidate;\n    else if (trial.grid_count<WORLD_MAX_GRIDS) trial.grids[trial.grid_count++]=candidate;\n    reference_capture_trial(&trial);",
+  "beforeSha256": "72786f0aa9046f2dda97c92e94700ce0db8cca226c06dbcf1d20fa0564ebf6b1",
+  "afterSha256": "c4a8763c429d39cbe86e067b7b4e49d077ac42061f8e774459b70dc0ff7d3d4e"
+}

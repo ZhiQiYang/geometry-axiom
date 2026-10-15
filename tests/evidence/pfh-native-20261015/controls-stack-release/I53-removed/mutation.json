@@ -1,0 +1,7 @@
+{
+  "file": "geometry-core/references.inc",
+  "old": "if(p->derived_fill_id&&(t->size_b!=p->derived_h||a->depth_side!=SURFACE_DEPTH_POSITIVE_NORMAL))",
+  "new": "if(false&&p->derived_fill_id&&(t->size_b!=p->derived_h||a->depth_side!=SURFACE_DEPTH_POSITIVE_NORMAL))",
+  "beforeSha256": "588dc07b210599784efc6ab7e58b57901c2c7ed079cdca7e3f1e9e7ea332e67e",
+  "afterSha256": "547df2780ae6e308456e799e57db932c2fc3c3c8eb2825c4795d6bcd9005b24b"
+}

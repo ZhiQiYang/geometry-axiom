@@ -1,0 +1,7 @@
+from pathlib import Path
+import sys
+sys.path.insert(0, '/tmp/geometry-wait-trace/tests')
+import binaries
+binaries.OUT_DIR = Path('/tmp/wait-trace-binaries')
+import run_all
+sys.exit(run_all.main(['--build']))

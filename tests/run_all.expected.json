@@ -142,7 +142,7 @@
     "node:tests-js": {
       "mode": "count",
       "unit": "node test",
-      "count": 711
+      "count": 718
     },
     "node:workspace_shell_history": {
       "mode": "count",
@@ -217,7 +217,7 @@
     "py:test_engineering_model_compatibility": {
       "mode": "count",
       "unit": "test",
-      "count": 29
+      "count": 31
     },
     "py:test_engineering_model_sources": {
       "mode": "count",
@@ -312,7 +312,7 @@
     "py:test_panel_fill_layout": {
       "mode": "count",
       "unit": "test",
-      "count": 17
+      "count": 18
     },
     "py:test_parameter_netzero": {
       "mode": "count",
@@ -468,6 +468,21 @@
       "mode": "count",
       "unit": "test",
       "count": 6
+    },
+    "py:test_panel_fill_host": {
+      "mode": "count",
+      "unit": "test",
+      "count": 32
+    },
+    "py:test_panel_fill_support": {
+      "mode": "count",
+      "unit": "test",
+      "count": 20
+    },
+    "py:test_wait_trace": {
+      "mode": "count",
+      "count": 20,
+      "unit": "test"
     }
   }
 }

@@ -1,0 +1,59 @@
+{
+  "manifests": [
+    {
+      "path": "tests/evidence/pfh-native-20261015/final-manifest.json",
+      "sha256": "1d38e59724cc8430c8f09daa2ceb959313b9f586b7af4c048b81109378222d81",
+      "verifiedFiles": 420
+    },
+    {
+      "path": "tests/evidence/pfh-p126-20261015/final-manifest.json",
+      "sha256": "e4c4c2a186a923b1c0c91197e615a702580eef85a2aa0f5564d5a1f13c8675bc",
+      "verifiedFiles": 42
+    }
+  ],
+  "unchangedProductSourceFiles": 24,
+  "unchangedProtectedFiles": [
+    "公理層.md",
+    "geometry-guide/公理層-白話.md",
+    "BACKLOG.md",
+    "決策佇列.md"
+  ],
+  "generatedPatchSha256": "296192fc7f0410bf4836e8fc768b9d812a482222bdf67593c7f1f3b65b69f8e1",
+  "canonicalSha256": "15875c5532568f7b976711c0edce44d2134ab2647dcd0356b8baea6233059b40",
+  "previousNativeLogMembersVerified": 204,
+  "deliverySincePreviousNativeOnlyEvidenceAndDocumentation": true,
+  "deliverySincePreviousNativeChangedPaths": [
+    "tests/evidence/pfh-p126-20261015/README.md",
+    "tests/evidence/pfh-p126-20261015/delivery-audit.json",
+    "tests/evidence/pfh-p126-20261015/final-manifest.json",
+    "tests/evidence/pfh-p126-20261015/native/binary-final.json",
+    "tests/evidence/pfh-p126-20261015/native/ci-jobs.json",
+    "tests/evidence/pfh-p126-20261015/native/ci-native-annotations.json",
+    "tests/evidence/pfh-p126-20261015/native/ci-run.json",
+    "tests/evidence/pfh-p126-20261015/native/expected-after.json",
+    "tests/evidence/pfh-p126-20261015/native/expected-before.json",
+    "tests/evidence/pfh-p126-20261015/native/gdi-suite.json",
+    "tests/evidence/pfh-p126-20261015/native/host-suite.json",
+    "tests/evidence/pfh-p126-20261015/native/native-current-logs.tar.gz",
+    "tests/evidence/pfh-p126-20261015/native/native-log-manifest.json",
+    "tests/evidence/pfh-p126-20261015/native/native-parent.stderr",
+    "tests/evidence/pfh-p126-20261015/native/native-parent.stdout",
+    "tests/evidence/pfh-p126-20261015/native/native.json",
+    "tests/evidence/pfh-p126-20261015/native/native.stderr",
+    "tests/evidence/pfh-p126-20261015/native/native.stdout",
+    "tests/evidence/pfh-p126-20261015/native/package_final.py.txt",
+    "tests/evidence/pfh-p126-20261015/native/postcommit.json",
+    "tests/evidence/pfh-p126-20261015/native/postcommit.py.txt",
+    "tests/evidence/pfh-p126-20261015/native/reader-suite.json",
+    "tests/evidence/pfh-p126-20261015/native/run_native.py.txt",
+    "tests/evidence/pfh-p126-20261015/native/started.json",
+    "tests/evidence/pfh-p126-20261015/native/tracked-snapshots.tar.gz",
+    "tests/evidence/pfh-p126-20261015/native/verify_final.py.txt"
+  ],
+  "previousControlsAndMutations": "retained per P126; not rerun in task21",
+  "formalWSLSeven": {
+    "status": "unverified",
+    "executed": 0,
+    "scheduled": false
+  }
+}

@@ -1,0 +1,29 @@
+import hashlib,json,shutil,subprocess
+from pathlib import Path
+R=Path('/tmp/geometry-209-segments');W=Path('/tmp/geometry-wake42');E=R/'tests/evidence/pfh-p126-20261015'
+def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+checks=json.loads((W/'reader-checks.json').read_text());assert len(checks['checks'])==2 and all(r['exit']==0 for r in checks['checks']) and checks['checks'][1]['total']==41 and checks['checks'][1]['noSkipped']
+g=json.loads((W/'regeneration.json').read_text());assert g['patchSha256']==g['expectedPatchSha256'] and g['changedLines']==14 and g['authoredStateExactlyEqual']
+assert sha(R/'geometry-guide/公理層-閱讀器.html')==g['canonicalAfterSha256']==checks['canonicalBeforeSha256']==checks['canonicalAfterSha256']
+for p,h in g['protectedBefore'].items():assert sha(R/p)==h
+audit=json.loads((R/'tests/evidence/pfh-native-20261015/components-checkpoint/source-audit.json').read_text())
+for p,row in audit['sources'].items():assert sha(R/p)==row['sha256'],p
+E.mkdir(parents=True,exist_ok=True)
+for name in ['authorization.json','regeneration.json','canonical-generated.diff','regenerate.stdout','regenerate.stderr','check.stdout','check.stderr','reader41.stdout','reader41.stderr','reader-checks.json','check-reader-parent.stdout','check-reader-parent.stderr']:
+ shutil.copyfile(W/name,E/name)
+for name in ['regenerate.py','check_reader.py','run_native.py','package_checkpoint.py']:
+ shutil.copyfile(W/name,E/(name+'.txt'))
+(E/'source-audit.json').write_text(json.dumps(dict(unchangedProductCodeHead=audit['codeHead'],unchangedProductSources=audit['sources'],canonicalSha256=g['canonicalAfterSha256'],protectedUnchanged=g['protectedBefore'],authorizationComment=6183800777,generatedPatchSha256=g['patchSha256'],previousControlsAndMutationsRetainedPerP126=True),ensure_ascii=False,indent=2)+'\n')
+(E/'README.md').write_text('''# P-126：官方同步器原位重產
+
+Claude裁決6183800777授權#227不再等#207，以既有 `geometry-guide/sync_axiom_reader.py` 在包含PF-H來源的本分支原位重產。實際生成7增7刪，diff SHA256 `296192fc7f0410bf4836e8fc768b9d812a482222bdf67593c7f1f3b65b69f8e1`，與裁決指定推演完全一致；未手套diff或改HTML。
+
+官方重產exit0、84patch markers；--check exit0，原41題正常直接執行全綠、無skip。整份authored state（條文／blocks／批註／草稿）相同；SSOT、白話、BACKLOG與決策佇列逐byte未變。唯一正典SHA由564fcc85…變為15875c55…；不新增第二份HTML產物。
+
+產品、原生32題、11步控制及50筆突變來源全部未變；依P-126維持前輪報告與原件，不冒稱本輪重新執行。此檢查點提交後，核對提交生成差異，再固定head跑完整native；結果完成前仍未驗。正式WSL七項未跑／未排；上列車依P-090/P-105在合併樹再次同步。
+
+`../pfh-native-20261015/` 保留前輪完整原件與manifest；該處reader六紅／等待裁決僅屬當時48a02205歷史，不是本輪P-126後狀態。新完整native收據將置於本目錄native/。
+''')
+doc=R/'geometry-core/panel-fill/PFH-NATIVE.md';s=doc.read_text();assert '## P-126 正典同步' not in s
+doc.write_text(s+'\n## P-126 正典同步\n\n2026-10-15 依 Claude P-126（6183800777），本分支已使用官方同步器原位重產唯一正典。\n14 行追溯差異與指定推演 SHA 完全一致；`--check` 與原 41 題全過，SSOT／白話／批註未改。\n最新完整 native 與來源原件見 `tests/evidence/pfh-p126-20261015/`；前輪 reader 六紅保留為歷史。\n產品、32 題、11 步負控制與 50 筆突變依裁決維持前輪報告；正式 WSL 七項未跑／未排。\n上列車時仍須依 P-090／P-105 在合併樹用官方同步器再次重產。\n')
+print(json.dumps(dict(generatedPatch=g['patchSha256'],readerTests=41,productSourcesUnchanged=True),ensure_ascii=False))

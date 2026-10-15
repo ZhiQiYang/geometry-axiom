@@ -1,0 +1,14 @@
+test_R41_total_source_segments_are_identity_and_stale_key_rejects (tests.test_panel_fill_host.PanelFillHost.test_R41_total_source_segments_are_identity_and_stale_key_rejects) ... FAIL
+
+======================================================================
+FAIL: test_R41_total_source_segments_are_identity_and_stale_key_rejects (tests.test_panel_fill_host.PanelFillHost.test_R41_total_source_segments_are_identity_and_stale_key_rejects)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/geometry-wake41/controls-release-final/total-erased/source/tests/test_panel_fill_host.py", line 66, in test_R41_total_source_segments_are_identity_and_stale_key_rejects
+    self.assertTrue(self.command("line place 1 on 10 at-face "+key+" +u +n")["ok"])
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 1 test in 0.198s
+
+FAILED (failures=1)

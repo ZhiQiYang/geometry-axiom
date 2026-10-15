@@ -1,0 +1,65 @@
+{
+  "request": {
+    "receipt": "12345678-1234-1234-1234-123456789012",
+    "requestId": "87654321-4321-4321-4321-210987654321",
+    "cmd": "ignored",
+    "session": "ae3b3ee7d503412fbb296b0136ab2edf"
+  },
+  "response": {
+    "ok": true,
+    "result": {
+      "ok": true,
+      "text": "native-result"
+    }
+  },
+  "rows": [
+    {
+      "traceRequestId": "0563fe1f-10a2-4561-96c5-bc3979ef636b",
+      "route": "/api",
+      "command": null,
+      "businessRequestId": null,
+      "stage": "request_begin",
+      "monotonic": 260999.712891602,
+      "wallTime": 1791975386.209979,
+      "pid": 1018100,
+      "thread": 140186548803392
+    },
+    {
+      "traceRequestId": "0563fe1f-10a2-4561-96c5-bc3979ef636b",
+      "route": "/api",
+      "command": "receipt",
+      "businessRequestId": "12345678-1234-1234-1234-123456789012",
+      "stage": "receipt_lock_begin",
+      "monotonic": 260999.713102571,
+      "wallTime": 1791975386.2101898,
+      "pid": 1018100,
+      "thread": 140186548803392,
+      "holder": null
+    },
+    {
+      "traceRequestId": "0563fe1f-10a2-4561-96c5-bc3979ef636b",
+      "route": "/api",
+      "command": "receipt",
+      "businessRequestId": "12345678-1234-1234-1234-123456789012",
+      "stage": "receipt_lock",
+      "monotonic": 260999.713163949,
+      "wallTime": 1791975386.210251,
+      "pid": 1018100,
+      "thread": 140186548803392,
+      "seconds": 1.3069948181509972e-06,
+      "acquired": true,
+      "holder": null
+    },
+    {
+      "traceRequestId": "0563fe1f-10a2-4561-96c5-bc3979ef636b",
+      "route": "/api",
+      "command": "receipt",
+      "businessRequestId": "12345678-1234-1234-1234-123456789012",
+      "stage": "request_end",
+      "monotonic": 260999.713312157,
+      "wallTime": 1791975386.2103992,
+      "pid": 1018100,
+      "thread": 140186548803392
+    }
+  ]
+}
