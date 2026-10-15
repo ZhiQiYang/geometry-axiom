@@ -5,9 +5,11 @@ CR18 tests the currently supported no-ledger context; marked identity-ledger/1
 acceptance remains with its implementation owner (no native ledger is advertised).
 """
 from copy import deepcopy
+import base64
 import json
 import os
 from pathlib import Path
+import re
 import subprocess
 import sys
 import unittest
@@ -122,10 +124,23 @@ class GridCardReference(unittest.TestCase):
         self.assertEqual((3, -5), tuple(self.systems()[4]['uDefinition'][x] for x in ('gap', 'anchor')))
 
     def test_CR04_EQUAL_VALUE_IDENTITY(self):
-        self.seed(b='12'); before = self.dump(); preview, _ = self.apply([swap()])
+        self.seed(b='12')
+        graph = lambda: self.command('source-inspect')
+        node = lambda g: next(n for n in g['nodes'] if n['key'] == 'grid-system:4')
+        old_graph = graph(); old_node = node(old_graph)
+        self.assertTrue(old_graph['complete'], 'EQUAL_VALUE_IDENTITY complete native source index')
+        edges = {(e['to'], e['field']) for e in old_graph['edges'] if e['from'] == 'grid-system:4'}
+        self.assertTrue({('parameter:10', 'card-reference'), ('parameter-field:10:f3', 'u.step'), ('parameter-field:10:f8', 'v.step')} <= edges, 'EQUAL_VALUE_IDENTITY source unit and paths')
+        before = self.dump(); preview, _ = self.apply([swap()])
         self.assertNotEqual(before, self.dump(), 'EQUAL_VALUE_IDENTITY')
         self.assertEqual(source(u=8, v=3), preview['preview']['after']['geometry']['gridSystems'][0]['cardReference'])
+        swapped = node(graph())
+        self.assertNotEqual(old_node['definitionFingerprint'], swapped['definitionFingerprint'], 'EQUAL_VALUE_IDENTITY mapping is a definition')
+        self.assertEqual(old_node['valueFingerprint'], swapped['valueFingerprint'])
         self.apply([parameter(a='18', b='12')]); self.assertEqual((12, 18), self.lengths())
+        changed = node(graph())
+        self.assertEqual(swapped['definitionFingerprint'], changed['definitionFingerprint'], 'EQUAL_VALUE_IDENTITY values are not definitions')
+        self.assertNotEqual(swapped['valueFingerprint'], changed['valueFingerprint'])
 
     def test_CR05_STABLE_FIELD_IDS(self):
         self.seed(); p = self.request([swap()])['preview']
@@ -166,6 +181,10 @@ class GridCardReference(unittest.TestCase):
 
     def test_CR10_FIELD_GRAPH_AND_PRECISION(self):
         self.seed(); self.apply([parameter(b='=3 mm/2*2')]); self.assertEqual((12, 3), self.lengths())
+        exact = parameter(); b = exact['value']['fields'][1]; del b['input']
+        b['expression'] = {'op': 'mul', 'left': {'op': 'literal', 'num': '3', 'den': '2', 'unit': 'mm'},
+                           'right': {'op': 'literal', 'num': '2', 'den': '1', 'unit': '1'}}
+        self.apply([exact]); self.assertEqual((12, 3), self.lengths(), 'FIELD_GRAPH_AND_PRECISION exact fractional AST')
         self.reject([parameter(b='=3/2*2')], 'UNIT', 'FIELD_GRAPH_AND_PRECISION unit')
         self.reject([parameter(b='=9223372036854775807 mm*2')], 'PRECISION', 'FIELD_GRAPH_AND_PRECISION precision')
         self.reject([parameter(b='=@10:8')], 'CYCLE', 'FIELD_GRAPH_AND_PRECISION cycle')
@@ -227,6 +246,7 @@ class GridCardReference(unittest.TestCase):
             self.assertEqual(a['vertexKey'], b['vertexKey'])
             self.assertEqual(a['anchor'], b['anchor'])
         self.assertNotEqual(before, after, 'ALL_BINDINGS_RECOMPUTE effective geometry')
+        self.apply_line('grid-binding 2 on-boundary 2 from-system 4 vertex-key 1 cell -2 1 anchor 0 1 1 2')
         self.reject([parameter(a='13')], 'integer', 'ALL_BINDINGS_RECOMPUTE half millimetre')
 
     def test_CR16_INDEX_AND_DOWNSTREAM(self):
@@ -238,14 +258,30 @@ class GridCardReference(unittest.TestCase):
         before = self.systems()[4]['rules']; self.apply([parameter(a='20')]); self.assertEqual(before, self.systems()[4]['rules'])
 
     def test_CR17_CANDIDATE_LIFECYCLE(self):
-        self.seed(); before = self.dump(); p = self.request([swap()])['preview']
+        self.seed()
+        self.apply_line('boundary-vertex-keys 1 outer 1 2 3 4 next-key 5')
+        self.apply_line('grid-binding 2 on-boundary 1 from-system 4 vertex-key 1 cell 0 0 anchor 0 1 0 1')
+        before = self.dump(); p = self.request([swap()])['preview']
         self.assertEqual(before, self.dump()); self.command(f"engineering-cancel {p['token']}")
         self.assertFalse(self.command(f"engineering-confirm {p['token']}")['ok']); self.assertEqual(before, self.dump())
         p = self.request([swap()])['preview']; self.apply([parameter(a='18')])
         self.assertFalse(self.command(f"engineering-confirm {p['token']}")['ok'], 'CANDIDATE_LIFECYCLE stale')
+        p = self.request([swap()])['preview']; self.apply_line('spec stale_marker 3')
+        stale = self.command(f"engineering-confirm {p['token']}")
+        self.assertEqual('STALE', stale.get('code'), 'CANDIDATE_LIFECYCLE unrelated definition expiry')
         before = self.dump(); self.apply([swap()]); after = self.dump()
         self.apply_line('undo'); self.assertEqual(before, self.dump(), 'CANDIDATE_LIFECYCLE one undo')
         self.apply_line('redo'); self.assertEqual(after, self.dump(), 'CANDIDATE_LIFECYCLE full redo')
+        scene = self.directory / 'confirm.scene'; scene.write_text(self.dump(), encoding='utf-8')
+        probe = self.directory / 'confirm-probe'
+        bridge_source = ROOT / 'geometry-web/web_bridge.c'
+        instrumented = bridge_source.read_text().replace('int main(void)', 'int geometry_bridge_main(void)')
+        instrumented = re.sub(r'#include "([^"]+)"', lambda m: '#include "' + str((bridge_source.parent / m[1]).resolve()) + '"', instrumented)
+        included = self.directory / 'bridge-main-renamed.inc'; included.write_text(instrumented, encoding='utf-8')
+        compile_result = subprocess.run(['cc', '-std=c11', '-O0', '-DCR_BRIDGE_SOURCE="' + str(included) + '"', str(ROOT / 'geometry-core/card-reference/confirmation_probe.c'), '-lm', '-o', str(probe)], capture_output=True, text=True, timeout=60)
+        self.assertEqual(0, compile_result.returncode, compile_result.stderr)
+        result = subprocess.run([str(probe), str(scene), str(self.directory / 'confirm.json')], capture_output=True, text=True, timeout=30)
+        self.assertEqual(0, result.returncode, 'CANDIDATE_LIFECYCLE injection: ' + result.stdout + result.stderr)
 
     def test_CR18_INCARNATION_NOT_CONTENT_NO_LEDGER_CONTEXT(self):
         self.seed(); before = self.dump()
@@ -276,6 +312,10 @@ class GridCardReference(unittest.TestCase):
             path = self.directory / f'bad{n}.scene'; path.write_text(scene, encoding='utf-8')
             self.assertFalse(self.command('loadfile ' + str(path))['ok'], 'NO_SILENT_DOWNGRADE')
             self.assertEqual(before, self.state(), 'NO_SILENT_DOWNGRADE current context retained')
+        self.command('reset'); empty = self.state()
+        for n in range(len(bad)):
+            self.assertFalse(self.command('loadfile ' + str(self.directory / f'bad{n}.scene'))['ok'])
+            self.assertEqual(empty, self.state(), 'NO_SILENT_DOWNGRADE empty context retained')
 
     def test_CR21_LEGACY_UNCHANGED(self):
         self.apply([parameter(), grid(ref=False, u='repeat -5 param:10:3', v='repeat 7 param:10:8')])
@@ -292,6 +332,8 @@ class GridCardReference(unittest.TestCase):
 
     def test_CR22_IMPORT_REUSED_KEY_GUARD_IMPORT_ISOLATION(self):
         imported = self.import_fixture()
+        self.apply([imported])
+        self.assertEqual(11, self.read()['state']['parameters'][-1]['id'], 'IMPORT_ISOLATION same name receives independent id')
         self.reject([{'op': 'delete-parameter', 'id': 10}, imported], 'grid-system 4', 'IMPORT_REUSED_KEY_GUARD')
         self.apply([unbind(), {'op': 'delete-parameter', 'id': 10}, imported])
         c = self.read()['state']['parameters'][-1]
@@ -333,12 +375,30 @@ class GridCardReference(unittest.TestCase):
             self.apply_line(line)
         definitions = {'base_scene': self.dump(), 'extensions': []}
         req = {'roots': [{'kind': 'timber', 'id': 1}], 'role': 'geometry', 'target': 'solid-set', 'allow_partial': False}
-        pkg = build_package(definitions, req)
-        self.assertEqual(pkg['derived'], verify_package(pkg)['derived'], 'D25_CARD_CLOSURE recompute')
+        try:
+            pkg = build_package(definitions, req)
+            rebuilt = verify_package(pkg)
+        except ModelError as error:
+            self.fail('D25_CARD_CLOSURE failed to retain/rebuild card sources: ' + str(error))
+        self.assertEqual(pkg['derived'], rebuilt['derived'], 'D25_CARD_CLOSURE recompute')
         text = pkg['definitions']['base_scene']
         self.assertIn('card-reference 10 3 8 u repeat -5 card v repeat 7 card', text, 'D25_CARD_CLOSURE keep mapping/source')
         self.assertIn('grid-card-reference/1', pkg['manifest']['capabilities'], 'D25_CARD_CLOSURE capability')
         self.assertIn('parameters/1', pkg['manifest']['capabilities'])
+        records = [(line.split()[1], json.loads(base64.b64decode(line.split()[2])))
+                   for line in text.splitlines() if line.startswith(('parameters card ', 'parameters field '))]
+        self.assertEqual({10, 11}, {r['id'] for kind, r in records if kind == 'card'}, 'D25_CARD_CLOSURE provider cards')
+        b = next(r for kind, r in records if kind == 'field' and r['parameterId'] == 10 and r['id'] == 8)
+        self.assertEqual({'op': 'ref', 'parameterId': 11, 'fieldId': 8}, b['expression'], 'D25_CARD_CLOSURE transitive source')
+        without_q = []
+        for line in text.splitlines():
+            if line.startswith(('parameters card ', 'parameters field ')):
+                r = json.loads(base64.b64decode(line.split()[2]))
+                if (r.get('parameterId') if 'parameterId' in r else r['id']) == 11: continue
+            without_q.append(line)
+        for bad_text in ('\n'.join(without_q) + '\n', text.replace('card-reference 10 3 8', 'card-reference 10 3')):
+            broken = deepcopy(pkg); broken['definitions']['base_scene'] = bad_text
+            with self.assertRaises(ModelError, msg='D25_CARD_CLOSURE missing provider or mapping'): verify_package(broken)
         for removal in ['requires grid-card-reference/1\n', 'requires parameters/1\n']:
             broken = deepcopy(pkg); broken['definitions']['base_scene'] = text.replace(removal, '')
             with self.assertRaises(ModelError, msg='D25_CARD_CLOSURE stripped source capability'): verify_package(broken)

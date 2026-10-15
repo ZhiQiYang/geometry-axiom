@@ -47,6 +47,7 @@ direct 解除只在該有序步驟依原生參數 evaluator 重算必要欄位�
 objects 的 gridSystems、原生預覽及 engineering 候選 after.geometry.gridSystems 均回一份 cardReference。
 受控槽回 stepSource/panelSource=card，另回唯讀 effectiveStep/effectivePanel；該槽沒有 step/panel 直接值或 ParameterRef。
 parameterUses 回一個 kind=grid-card-reference 的使用單位，內有兩條 fieldId/axis/slot 路徑，不用兩份逐欄使用處冒充。
+唯讀 source-inspect 亦保存卡片單位與兩條實際欄位路徑。其定義指紋含映射而不含有效長度；同值對調改定義指紋，改來源值只改有效值指紋。這是原生 bridge 索引，不新增 UI 或變更幾何根走訪。
 
 ## 保存、格式與 P-133
 
@@ -61,6 +62,7 @@ geometry-parameters/1 的匯出／匯入仍只有卡片閉包，不包含網格�
 
 `tests/test_grid_card_reference.py` 登記 31 個具名 CR 核心方法；CR19 會用實際 ZIP writer/reader，開到新原生 context 並逐字核 dump。
 `tests/test_card_reference_project_store.js` 檢查 /18 的保存、降版、能力、未知版本及舊逐欄相容。
+原 PROPOSAL 沒有列 CR23 或 M15，沿用其原始編號，不自行補號。
 CR24／M23 是 UI 切片，本次不宣稱桌面／390px 操作或草稿支援。
 CR18 本次驗未啟用身分帳的對照；此基底未宣告原生 identity-ledger/1，啟用身分帳的新記號／外部 pin 與 M12 仍待其實作切片，不新增假 skip 或聲稱通過。
 CR10 以原生 AST 表示 `(3/2 mm) × 2` 的精確尺寸；文字入口沿既有 parser 寫 `=3 mm/2*2`，不把既有 `3 / (2 mm)` 反向長度語意偷改成尺寸。
