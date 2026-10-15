@@ -1,24 +1,28 @@
-# P-121／P-122／P-129 候選狀態（2026-10-15；尚未執行本輪驗證）
+# P129 同來源分段定向證明（正式整合驗收待第18班）
 
-[P-121](https://github.com/ZhiQiYang/geometry-axiom/pull/193#issuecomment-6179914302) 要求引用者在來源最後一次刪除後明確重新宣告；同鍵重建不自動處理舊引用。[P-122](https://github.com/ZhiQiYang/geometry-axiom/pull/193#issuecomment-6180612542) 已撤回 P-117 的匯入跳號：配號維持 R53，剛刪鍵可被匯入重用，安全由 I38 引用保護負責。[補充](https://github.com/ZhiQiYang/geometry-axiom/pull/193#issuecomment-6180660038) 同時涵蓋省略 fieldId 的欄位刪除與最後一次刪除。
+受測來源固定 `6236f5733052a19362132738a4eb79cac7924e0b`。R3的13模組188方法、core143/143、integrity130/130及4檔JavaScript語法均exit0，控制器誤讀total後實際WSL1、突變0。R4完成前三突變及第四反例/還原build後依使用者關機要求中止，WSL143、final foreign unknown。R5因還原檔案mtime與sidecar不符，在測試前退出WSL1、測試0。
 
-候選新增欄位刪除事件與各引用者的明確宣告順序，出口清空整個候選暫存；工程來源及覆寫分別處理，格式轉換不冒充改綁。P-062／P-065 的明確解除保留已結束來源的最後有效值；同鍵重佔不得刷新成無關新值。沒有新增 K3 記號、能力或保存格式。
+R6經官方binaries build恢復新鮮度，完成第四組還原14綠；第五組單軸反證的同一測試方法有兩個子案例失敗，真實exit1/FAILED(failures=2)，但控制器只接受failures=1而退出WSL1。保留兩個有效子案例及原始失敗格式，不冒稱產品失敗，不重跑已完成基準/前三組/第四還原/第五紅。
 
-[P-129](https://github.com/ZhiQiYang/geometry-axiom/pull/193#issuecomment-6184120678) 已裁決：刪後相同內容的明確宣告算 I38 改綁，僅涵蓋該操作實際宣告的部分；沒有 engineering op 的 DSL 引用者不能靠重建來源放行。本候選新增三個原生回歸方法：guide／datum／grid-system 的 DSL 引用與 direct grid 的既有工程來源在未改綁時拒絕重建、grid 單軸宣告不處理另一軸，以及預覽只揭露最後刪除後仍存在的明確宣告。既有 assembly／section-profile 正例也核對預覽列出的引用者。
+R7官方build後補第五組還原14，再只跑第六、七個真突變，兩者均有效轉紅、各逐byte還原重編14方法綠。R7實際WSL0。合計7真突變、8次紅燈測試命令、9個失敗子案例（第五組占2），每組還原14綠。全部52個實際命令的原exit、byte原件、source/binary/sidecar/Git獨立核對；各段wrapper為1/143/1/1/0。R4 final foreign仍unknown，其他有終局取樣的段落空；四共享runner不變。
 
-首次 R2 原生執行在來源 `a45f6be28c898137842fc83441be3b5055f62d33` 完成四支編譯與 core35：34過、1失敗。失敗是新增 direct-grid 夾具誤用只適用 grid-system 的 `repeat` 語法，建立夾具即被「座標不是有效整數」拒絕，尚未進入該 subcase 的刪除保護；不是該保護的行為反證。R2 原 exit1／日誌／binary 留存，不採為188全過。夾具改為合法有限 PANEL grid，再用既有 set-source 建立參數引用；其餘產品與測試斷言不放寬，修後仍須完整重跑定向證明。
+依[P129](https://github.com/ZhiQiYang/geometry-axiom/pull/193#issuecomment-6184120678)，來源最後一次刪除後的明確操作算I38改綁，即使引用相同；只涵蓋該操作宣告部分。實測包含原生DSL引用未處理時拒絕來源重建、direct-grid既有set-source、僅宣告u仍拒v、最後刪除、base/override獨立、assembly與section-profile。預覽redeclaredReferences精確列最後刪除後來源/引用者，刪除前宣告或已移除owner不列已處理，不洩漏下一候選；既有四影響清單顯示說明。World清scratch後重驗，操作順序副本僅於序列化呼叫存活。SSOT、白話、正典、mainK2a、current_geometry.c未改，無新engineering op/SSOT例外/K3能力。
 
-`redeclaredReferences` 隨 engineering／assembly／section-profile／panel-fill 的整包預覽回傳來源欄位、引用者及說明；原生序列化使用離開候選前的操作順序副本，正式 World 先清空暫存，再做完整重驗。序列化後即釋放順序副本，不進入 World、history、交換格式或確認令牌。刪後重宣告說明併入各工作區既有影響清單。Python 與 JavaScript 目前僅通過語法檢查；原生編譯、定向測試及新真突變仍待實際執行。
+依P1356193100401逐一核對新增三方法在R3原始raw清單第9/26/29行均為ok，不重跑已被裁決認可的基準。
 
-已改自己的匯入配號與 P060 順序測試，恢復 R53 期待的 0／1／2；加入七個回歸方法，涵蓋卡片、欄位、最後刪除、重宣告前後順序、未刪與從未存在的欄位、工程 base／override 分離，以及重建後明確解除的最後有效值。main K2a、SSOT、白話與正典未修改。這些只是已寫出的測試，**尚未執行，不能算通過**；run_all 的新方法數仍待實際執行後同步。
+七個真突變：恢復鍵保留、重佔鍵跳過保護（import/put各一紅）、省略欄位跳過保護、只看首次刪除、錯把u宣告套v（兩子案例）、隱藏預覽重宣告、預覽誤用首次刪除。最後四支執行檔逐byte等於原R3基準，sidecar/source均fresh。R7 foreign `{"samples": 48, "foreign_processes_seen_during_run": {}, "exclusive_during_run": true, "max_loadavg_1min_sampled": 9.2}`。
 
-WSL 最新順序依 P127／P128：Chrome 啟動診斷核定後，train16 固定 `6a62bb05` 單獨 grid 一次；train15 已退役，不再重跑。P129 解除本候選對相同引用重宣告的規則解讀阻擋，修正後仍須定向原生及新真突變。舊 P117 R1／R2 僅等鎖即撤回，舊證明與舊 train17 控制保留 HOLD，不得執行；沒有借歷史 150 題或舊突變結果替本候選背書。Claude 審查通過後才可與新 #237 組核心鏈第17班；最終整合來源仍須全新完整帳本、官方 sync／check／原41 與固定最終 head 七項。
+只依實際core35更新期待值25→35；本版四JS僅語法，browser未驗、reader0。完整native、fresh全表帳本/check、官方sync/check/原41及固定整合head正式七項仍待Claude審查後的17班。K3-L兩個真記號未執行。R1/R2較早啟動/夾具失敗原件保留，不驗收本來源。
 
-K3「同鍵重建配新記號」及「沿用舊記號突變轉紅」兩項依 P117 其餘裁決仍移交 K3-L／GEO253；本 PR 沒有實作或宣稱通過。
+原件 `D:/geometry-axiom-work/board-local-codex/pr193-p129-native-r3` 至 `-r7` 各段獨立保存；R3 certificate SHA `4f25a4e68501a9d1c051da7c61540a64c6ece66d8e67dfcc82422a589e623a9e`，R4 receipt SHA `d9a97c4a7602749d62df0ec85e3d84bd539c01a0be3226a5b2b85edad0a9ca75`，R6 receipt SHA `e1055ecc20d99691ce20ebd5729ec2990e4acdf1ade53e8930b3d5ada8e2cc43`，R7 receipt SHA `45122c2dd4205202b00868147ace435fbddce0ed210499a4dbb849265a143404`。獨立核對 `D:/geometry-axiom-work/board-local-codex/pr193-p129-native-r7/independently-verified-v2.json`。
 
-## 下列為 P121／P122 前的歷史實測
+P132先診斷服務/bridge與系統、附對照及不確定處，修好後才同6a62隔離grid，環境失敗不計額度。15退役，193未自行准入17或合併。
 
-歷史原文保留；其中「重建鍵即可接回舊引用」已被 P121 否決，舊 P111 的兩個突變不能驗收本候選；舊 P117 匯入跳號與對應測試也已撤回。下列綠燈只屬各自列明的歷史來源。
+依[P136](https://github.com/ZhiQiYang/geometry-axiom/pull/237#issuecomment-6193925984)，#193/#196/#202/#207鏈改搭第18班；第17班改為#227+#237，仍須先完成第16班P132 grid。此處只同步列車安排，既有受測來源6236、raw結果、各次退出、期待值35及證明內容不變。
+
+## 以下為較早來源的歷史紀錄
+
+歷史結果只屬各自來源；舊P117跳號及重建即可接回引用的說法已撤回。
 
 # GEO-258 候選退役狀態與 archive 重驗
 
