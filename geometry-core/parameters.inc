@@ -453,6 +453,8 @@ static size_t parameter_uses(const World *w,uint32_t id,uint32_t field,Parameter
     }
     for(size_t i=0;i<w->guide_count;++i)if(parameter_text_uses(w->guides[i].expression,id,field)&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GUIDE,w->guides[i].id,0))parameter_use(u,"guide %u",w->guides[i].id);
     for(size_t i=0;i<w->datum_count;++i)if(parameter_text_uses(w->datums[i].expression,id,field)&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_DATUM,w->datums[i].id,0))parameter_use(u,"datum %u",w->datums[i].id);
+    for(size_t i=0;i<w->grid_system_count;++i){const GridSystem *s=&w->grid_systems[i];const GridCardReference *r=&s->card_reference;
+        if(r->set&&r->parameter_id==id&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GRID_CARD,s->id,0))for(int a=0;a<2;++a)if(r->fields[a]==field)parameter_use(u,"grid-system %u card-reference %c field %u",s->id,a?'v':'u',field);}
     for(size_t i=0;i<w->grid_system_count;++i)for(int axis=0;axis<2;++axis)for(int k=0;k<6;++k){const ParameterRef *r=&w->grid_systems[i].axis[axis].parameters[k];
         if(r->set&&r->parameter_id==id&&r->field_id==field&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GRID_SYSTEM,w->grid_systems[i].id,0))parameter_use(u,"grid-system %u %c %s",w->grid_systems[i].id,axis?'v':'u',axis_fields[k]);}
     for(size_t i=0;i<w->grid_count;++i){const ReferenceGrid *g=&w->grids[i];if(g->from_system)continue;  /* system-derived copies are the system's own refs */
@@ -486,6 +488,7 @@ static bool parameter_retirements_valid(const World *w)
 static bool parameter_declared_owner_present(const World *w,const ParameterDeclaration *d)
 {
     if(d->kind==PARAM_OWNER_CARD)return parameter_find(w,d->id)!=NULL;
+    if(d->kind==PARAM_OWNER_GRID_CARD||d->kind==PARAM_OWNER_GRID_SYSTEM)return world_find_grid_system(w,d->id)!=NULL;
     if(d->kind==PARAM_OWNER_ENG_GRID||d->kind==PARAM_OWNER_ENG_TIMBER){
         for(size_t i=0;i<w->engineering.binding_count;++i){const EngBinding *b=&w->engineering.bindings[i];
             if(b->target.id==d->id&&parameter_engineering_owner(&b->target)==d->kind&&
@@ -497,6 +500,9 @@ static bool parameter_declared_owner_present(const World *w,const ParameterDecla
 }
 static bool parameter_declared_owner_uses(const World *w,const ParameterDeclaration *d,uint32_t id,uint32_t field)
 {
+    const GridSystem *gs=(d->kind==PARAM_OWNER_GRID_CARD||d->kind==PARAM_OWNER_GRID_SYSTEM)?world_find_grid_system(w,d->id):NULL;
+    if(gs&&d->kind==PARAM_OWNER_GRID_CARD)return gs->card_reference.set&&gs->card_reference.parameter_id==id&&(gs->card_reference.fields[0]==field||gs->card_reference.fields[1]==field);
+    if(gs&&d->kind==PARAM_OWNER_GRID_SYSTEM){for(int a=0;a<2;++a)for(int k=0;k<6;++k){ParameterRef r=gs->axis[a].parameters[k];if(r.set&&r.parameter_id==id&&r.field_id==field)return true;}return false;}
     if(d->kind==PARAM_OWNER_CARD){
         for(size_t i=0;i<w->parameters.field_count;++i){const ParameterField *f=&w->parameters.fields[i];if(f->parameter_id!=d->id)continue;
             EngJson j;bool hit=eng_json_parse_n(&j,f->expression,strlen(f->expression))&&parameter_ast_uses(&j,0,id,field,0);eng_json_free(&j);if(hit)return true;}
@@ -600,6 +606,7 @@ static void parameters_clear_candidate_scratch(World *w)
     memset(w->parameters.deleted_values,0,sizeof w->parameters.deleted_values);w->parameters.deleted_value_count=0;
     memset(w->parameters.field_retirements,0,sizeof w->parameters.field_retirements);w->parameters.field_retirement_count=0;
     memset(w->parameters.declarations,0,sizeof w->parameters.declarations);w->parameters.declaration_count=0;
+    memset(w->parameters.card_captures,0,sizeof w->parameters.card_captures);w->parameters.card_capture_count=0;
     w->parameters.candidate_order=0;w->parameters.tracking=false;
 }
 static void parameters_begin_candidate(World *w)

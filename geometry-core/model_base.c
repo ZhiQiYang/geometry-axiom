@@ -396,6 +396,7 @@ int main(int argc, char **argv)
     fputs(",\"required_capabilities\":[",stdout);
     if(engineering_used(&world))model_string(stdout,"engineering-spec/1");
     if(world.parameters.card_count){if(engineering_used(&world))fputc(',',stdout);model_string(stdout,"parameters/1");}
+    if(grid_card_used(&world)){if(engineering_used(&world)||world.parameters.card_count)fputc(',',stdout);model_string(stdout,GRID_CARD_CAPABILITY);}
     if(grid_subdivision_used(&world)){if(engineering_used(&world)||world.parameters.card_count)fputc(',',stdout);model_string(stdout,GRID_SUBDIVISION_CAPABILITY);}
     if(sp_used(&world)){if(engineering_used(&world)||world.parameters.card_count||grid_subdivision_used(&world))fputc(',',stdout);model_string(stdout,SP_CAPABILITY);}
     fputs("],\"specs\":[", stdout);

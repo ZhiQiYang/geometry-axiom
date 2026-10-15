@@ -1326,6 +1326,7 @@ typedef struct {
     Coord anchor;
     bool anchor_explicit;   /* 只影響 dump 是否輸出 from，不影響推導 */
     ParameterRef parameters[6]; /* phase, step, panel, gap, anchor, stagger (D10b) */
+    bool card_length; /* I74: length comes exclusively from GridSystem.card_reference. */
     Coord stagger;          /* D10b: odd-band offset; meaningful only when stagger_set */
     bool stagger_set;
 } GridAxisDef;
@@ -1351,6 +1352,7 @@ typedef struct {
     uint32_t id;
     char name[GRID_SYSTEM_NAME_MAX+1];
     GridAxisDef axis[2];
+    GridCardReference card_reference;
     int main_along;
     GridSubdivisionRule rules[GRID_MAX_SUBDIVISION_RULES];
     size_t rule_count;
@@ -12142,6 +12144,7 @@ static void world_dump_dsl(const World *world, FILE *out)
         fprintf(out, "spec %s %lld\n", world->specs[i].name, (long long)world->specs[i].value);
 
     boundary_keys_dump(world,out);
+    if(grid_card_used(world)) fputs("requires " GRID_CARD_CAPABILITY "\n",out);
     if(grid_subdivision_used(world)) fputs("requires " GRID_SUBDIVISION_CAPABILITY "\n",out);
     grid_systems_dump(world,out);
     grid_bindings_dump(world,out);
@@ -12560,6 +12563,7 @@ static bool parse_scene_file(const char *path, World *out_world)
     g_rule_scene_required=false;
     sp_scene_required=false;
     fs_scene_required=false; fs_scene_engineering=false; fs_scene_parameters=false;
+    grid_card_scene_required=false;
     g_rule_scene_encountered=false;
     g_parameter_scene_loading = true;
 
@@ -12659,6 +12663,7 @@ static bool parse_scene_file(const char *path, World *out_world)
         }
     }
 
+    if(ok && grid_card_used(out_world) && (!grid_card_scene_required||!fs_scene_parameters)){scene_error(path,line_no,"I74 CAPABILITY: card reference requires grid-card-reference/1 and parameters/1 declarations");ok=false;}
     if (ok && !grid_rules_scene_integrity(out_world)) { scene_error(path,line_no,"I25a: source rule capability/highwater closure missing"); ok=false; }
     if (ok && !assembly_generation_integrity(out_world)) { scene_error(path,line_no,g_engineering_error); ok=false; }
     if (ok && !fs_scene_integrity()) { scene_error(path,line_no,"I56: panel-fill/1 also requires engineering-spec/1 and parameters/1 declarations"); ok=false; }

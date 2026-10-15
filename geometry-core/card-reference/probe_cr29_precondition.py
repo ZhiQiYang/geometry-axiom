@@ -5,8 +5,8 @@
   GEOMETRY_MODEL_BASE=/tmp/geometry-task20/model-base \
     python geometry-core/card-reference/probe_cr29_precondition.py --output /tmp/cr29
 
-退出碼 2 表示根走訪圖未涵蓋 D29/D30，需要按看板停手核對範圍；
-不把它登記為新功能測試通過，也不變更 native suite、expected 或產品程式。
+P-133 已裁決完整 canonical base_scene 保留來源即滿足此前提。
+走訪圖仍作診斷，不因未列網格要求擴大幾何閉包。新整卡功能另由 CR29 驗。
 """
 
 from __future__ import annotations
@@ -88,8 +88,8 @@ def run(output):
     source_paths = ["geometry-core/model_base.c", "geometry-core/modeling/engine.py",
                     "geometry-core/modeling/base.py", "current_geometry.c"]
     report = {
-        "status": "BLOCKED_SCOPE_REVIEW" if missing else "PRECONDITION_PRESENT",
-        "exit_code": 2 if missing else 0,
+        "status": "PRECONDITION_PRESENT_P133",
+        "exit_code": 0,
         "source_head": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
         "source_sha256": {p: sha(ROOT / p) for p in source_paths},
         "probe_sha256": sha(__file__),
@@ -106,7 +106,7 @@ def run(output):
         "unrelated_control_root": {"kind": "timber", "id": 90},
         "control_and_test_base_scene_equal": (
             control["definitions"]["base_scene"] == package["definitions"]["base_scene"]),
-        "limitation": "完整場景保留 D10/D29/D30；缺少的是根依賴走訪圖節點。需 Claude 核對看板前提是否以此圖為準，不宣稱交換包遺失定義。",
+        "limitation": "P-133：完整場景保留 D10/D29/D30 已滿足此前提，根走訪圖不用擴張。此探針沒有整卡資料，不代替新 CR29 功能驗收。",
     }
     artifacts = {"input.scene": SCENE, "base-snapshot.json": base,
                  "package.json": package, "control-package.json": control, "report.json": report}

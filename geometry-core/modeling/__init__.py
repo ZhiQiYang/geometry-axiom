@@ -11,7 +11,7 @@ from pathlib import Path
 import secrets
 
 from .common import (ModelError, canonical_bytes, digest, strict_json_loads,
-                     ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, SECTION_PROFILE_CAPABILITY,
+                     ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, GRID_CARD_CAPABILITY, SECTION_PROFILE_CAPABILITY,
                      scene_required_capabilities)
 
 # The source commit contains the adopted axiom bytes identified by this digest.
@@ -115,7 +115,7 @@ PROFILE = "orthogonal-model/1"
 GENERATOR = {"name": "geometry-axiom-reference", "version": "1.4.0"}
 CAPABILITIES = ("extrusion/1", "shell/1", "composite-space/1",
                 "solid-composition/1", "model-export/1", ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY,
-                SECTION_PROFILE_CAPABILITY)
+                SECTION_PROFILE_CAPABILITY, GRID_CARD_CAPABILITY)
 _AXIOM_PATH = Path(__file__).resolve().parents[2] / "公理層.md"
 
 
@@ -194,7 +194,7 @@ def build_package(definitions, request, *, capabilities=None, max_cells=200000,
                       base_executable=base_executable)
     # evaluate checks known definition contradictions before capability errors.
     active = [c for c in CAPABILITIES if c in available and
-              (c not in (ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, SECTION_PROFILE_CAPABILITY) or c in result["required_capabilities"])]
+              (c not in (ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, GRID_CARD_CAPABILITY, SECTION_PROFILE_CAPABILITY) or c in result["required_capabilities"])]
     package = {
         "manifest": {"schema": SCHEMA, "profile": PROFILE,
                      "axiom_revision": AXIOM_REVISION,
