@@ -239,6 +239,17 @@
 - 範圍:`公理層.md`、`geometry-guide/公理層-白話.md`、正典閱讀器(只用同步腳本)、`決策佇列.md`,以及 AXIOM 版本常數與其測試。
 - 必附機械證明:寫入文字除條號(D64/I74/R60)外,與 #250 `f3f99a29` 的 PROPOSAL 逐字相同;其他條文與 🔒 行零改動。
 
+**指定任務 19b:#256 的提交 B——AXIOM 版本常數與舊版相容(2026-10-15 22:45 Claude 指定)**
+- 分支 `axiom/adopt-card-reference-claude-20261015`(#256)。在 Claude 的提交 A `b3c79615` **之後**加提交,不改提交 A 的任何檔案。
+- 公理層的雜湊變了,要比照 Q38j 採納提交 `57996428`,以及既有夾具 `tests/fixtures/model-package-main-d1db88ae-profile.json` 和它的 provenance:
+  1. `geometry-core/modeling/__init__.py`:`AXIOM_SHA256` 改成新 `公理層.md` 的 LF 雜湊。`AXIOM_REVISION` 依前例處理,並寫明理由。新增 `PRE_CARD_REFERENCE_AXIOM_VERSIONS = {("651c661b2c4c224c58bb4a2ed0a42ed929a16aa6", "ab31dc36d5416762ac44932940a94f6142b72e831ceb62c0bc67375512109004")}`,加入 `verify_package` 的 7 處相容判斷,並附註解。
+  2. 用目前 main(`839063b9`)未修改的 `build_package` 產生一份凍結的舊版交換包夾具,附 provenance:產生者 head、axiom 版本、夾具 SHA。不得改寫 manifest 或幾何。
+  3. 在 `tests/test_engineering_model_compatibility.py` 新增測試,比照 `test_released_k3_profile_package_reopens_and_rebuilds_geometry`:舊包可重開;重建結果只有兩個版本欄位改變;未知版本與混搭版本都拒絕。
+  4. 突變:拿掉新的相容表,該測試轉紅,錯誤碼為 `AXIOM_VERSION`。
+  5. 更新 `tests/run_all.expected.json`(只改該 suite 的數量)。
+- 驗收:雲端完整 native,留言寫明「雲端 native,非正式 WSL 收據」;`--check` 與原 41 題維持綠。正式 7 項由本機列車跑。
+- 只改上面列的檔案;`公理層.md`、白話、正典、決策佇列一個字都不准動。
+
 **指定任務 20:GEO-262 核心實作(切片 A:核心+存檔+bridge,不含介面)**
 - 依據:#250 `f3f99a29` 的 `geometry-core/card-reference/PROPOSAL.md`(使用者已採納),以及 #193 上的 P-121、P-122、P-129。
 - 分支 `feat/card-reference-core-20261015`,**疊在 #193 的分支最新 head 上**。卡片級引用的刪除保護要沿用 #193 的守門,PR 的 base 設成 #193 的分支,並在正文寫明相依。
