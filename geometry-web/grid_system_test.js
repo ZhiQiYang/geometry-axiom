@@ -220,27 +220,41 @@ module.exports = async function gridSystemTests({send,eval_,sleep,click,drag,wai
   // actual pointers/confirmation here; the standalone native probe covers all
   // axes/modes and is not substituted for this browser gate.
   const inlineRename=async(id,name)=>{
+    await ctl('#btnZoom');
+    if(await read(`(()=>{const b=document.querySelector('#ocSelectionSummary .guidance-dismiss');return !!b&&b.getBoundingClientRect().width>0&&!b.hidden;})()`))await ctl('#ocSelectionSummary .guidance-dismiss');
     await ctl(card('grid-system',id));await wait(`!!document.querySelector('#gridInlineInspector #giName')`);
     await fill('#giName',name);await ctl('#giPreview');await impact();await confirm();
     return (await objects()).gridSystems.find(g=>g.id===id);
   };
+  const fixtureBefore263=await dump();
+  const originalDeclarations263=fixtureBefore263.split('\n').filter(line=>new RegExp('^grid-system ('+[staggered,referenceGrid.id].join('|')+') ').test(line));
+  const updateStaggerParameter=async value=>read(`(async()=>{
+    const request={expectedRevision:(await apiRequest('engineering-read')).revision,operations:[{op:'put-parameter',value:{id:901,name:'相位差驗收',fields:[{id:1,name:'零',type:'dimension',input:'0'},{id:2,name:'有效相位差',type:'dimension',input:${JSON.stringify(String(value))}},{id:3,name:'整格間距',type:'dimension',input:'405'}]}}]};
+    const p=await EngineeringAdapter.preview(request);if(!p.valid)throw Error(JSON.stringify(p));const r=await EngineeringAdapter.confirm({token:p.token});if(!r.ok)throw Error(JSON.stringify(r));await renderObjects();return true;
+  })()`);
+  try {
   const directBefore=(await objects()).gridSystems.find(g=>g.id===staggered);
   const directRenamed=await inlineRename(staggered,'GEO263 直接相位差改名');
   check('GEO263_STAGGER_LOST：精簡改名保留直接相位差',same(directRenamed.uDefinition,directBefore.uDefinition)&&same(directRenamed.vDefinition,directBefore.vDefinition),{directBefore,directRenamed});
   const referenceRenamed=await inlineRename(referenceGrid.id,'GEO263 參數相位差改名');
   check('GEO263_STAGGER_REF_LOST：精簡改名保留相位差值與參數引用',same(referenceRenamed.uDefinition,referenceGrid.uDefinition)&&same(referenceRenamed.vDefinition,referenceGrid.vDefinition),referenceRenamed);
-  const updateStaggerParameter=async value=>read(`(async()=>{
-    const request={expectedRevision:(await apiRequest('engineering-read')).revision,operations:[{op:'put-parameter',value:{id:901,name:'相位差驗收',fields:[{id:1,name:'零',type:'dimension',input:'0'},{id:2,name:'有效相位差',type:'dimension',input:${JSON.stringify(String(value))}},{id:3,name:'整格間距',type:'dimension',input:'405'}]}}]};
-    const p=await EngineeringAdapter.preview(request);if(!p.valid)throw Error(JSON.stringify(p));const r=await EngineeringAdapter.confirm({token:p.token});if(!r.ok)throw Error(JSON.stringify(r));await renderObjects();return true;
-  })()`);
   await updateStaggerParameter(350);
   const reevaluated=(await objects()).gridSystems.find(g=>g.id===referenceGrid.id);
   check('GEO263_STAGGER_REF_REEVALUATES：改名後參數改值仍重算',reevaluated.uDefinition.stagger===350&&reevaluated.uDefinition.parameterRefs.stagger.parameterId===901&&reevaluated.uDefinition.parameterRefs.stagger.fieldId===2,reevaluated);
   await open('grid-system',referenceGrid.id);await ctl('[data-ig-remove-stagger="u"]');await saveSource();
   const removed=(await objects()).gridSystems.find(g=>g.id===referenceGrid.id);
   check('GEO263_EXPLICIT_REMOVAL：完整工作區明確移除仍解除數值與引用',!Object.hasOwn(removed.uDefinition,'stagger')&&!removed.uDefinition.parameterRefs?.stagger,removed);
-  // Restore the pre-existing fixture's parameter/value for the roundtrip gates.
-  await ctl('[data-ig-add-stagger="u"]');await choose('#igUStaggerSource','901:2');await saveSource();await close();await updateStaggerParameter(400);
+  } finally {
+    // Restore full canonical declarations, including both original names and
+    // the removed ref, even when one of the four checks throws.
+    if(await read(`!!document.querySelector('.reference-impact[open]')`))await cancel();
+    await close(true);await updateStaggerParameter(400);
+    await read(`(async()=>{for(const line of ${JSON.stringify(originalDeclarations263)}){
+      const p=await apiRequest('line preview '+line);if(!p.preview?.valid)throw Error(JSON.stringify(p));
+      const r=await apiRequest('line confirm '+p.preview.token);if(!r.ok)throw Error(JSON.stringify(r));
+    }await renderObjects();return true;})()`);
+    if((await dump())!==fixtureBefore263)throw Error('GEO263_FIXTURE_RESTORE: canonical scene changed after cleanup');
+  }
 
   // Actual formal download, reset, and file input; no application save helper.
   const downloadRoot=fs.mkdtempSync(path.join(os.tmpdir(),'geometry-infinite-grid-download-'));await send('Browser.setDownloadBehavior',{behavior:'allow',downloadPath:downloadRoot});const beforeSave=await snapshot();let file;

@@ -7,7 +7,7 @@ const path = require('node:path');
 const vm = require('node:vm');
 const {spawn} = require('node:child_process');
 const {createInterface} = require('node:readline');
-const ROOT = __dirname;
+const ROOT = path.join(__dirname,'..','geometry-web');
 
 function element(value='') {
   return {value, disabled:false, isConnected:true, children:[], dataset:{},
@@ -27,7 +27,7 @@ function pane() {
     s.split(',').map(q=>p.querySelector(q)).filter(Boolean);
   return p;
 }
-async function run() {
+async function run(testContext) {
   const binary=process.env.GEOMETRY_TEST_BRIDGE;
   assert.ok(binary,'Set GEOMETRY_TEST_BRIDGE to the freshly compiled native bridge');
   const temp=fs.mkdtempSync(path.join(os.tmpdir(),'geometry-263-'));
@@ -68,7 +68,10 @@ async function run() {
     const next=await grid();assert.equal(next.name,name,'inspector must actually confirm renamed source');return next;
   };
   let passed=0;
-  const check=async(name,body)=>{await body();passed++;console.log('PASS '+name);};
+  const check=async(name,body)=>{
+    const execute=async()=>{await body();passed++;console.log('PASS '+name);};
+    if(testContext)await testContext.test(name,execute);else await execute();
+  };
   try {
     await ok('reset');await parameter(400);
     for(const axis of ['u','v'])for(const mode of ['repeat','repeat-panel'])for(const ref of [false,true]){
@@ -101,14 +104,44 @@ async function run() {
       const start=source.indexOf('  function sourceCommand(d,id) {'),end=source.indexOf('\n  async function saveSource(s)',start);
       assert.ok(start>=0&&end>start,'locate production serializer');
       const command=vm.runInNewContext(source.slice(start,end)+'\nsourceCommand', {axes:['u','v']});
-      const g=await grid();delete g.uDefinition.stagger;delete g.uDefinition.parameterRefs.stagger;g.hex='72656d6f766564';g.mainAlong='none';
-      const declaration=command(g,7);assert.ok(!declaration.includes('stagger'),'explicit removal must not copy the old stagger');
+      const g=await grid(),fields=new Map(),refs=new Map();
+      const s={mode:'source',source:structuredClone(g),rawOverrides:new Map(),staggerOpen:{u:true,v:false}};
+      const field=(id,value)=>{const node=element(String(value));node.dispatchEvent=event=>{if(event.type==='change')refs.delete(id.replace(/Source$/,''));};fields.set(id,node);};
+      field('igName','removed');field('igMainAlong','none');
+      for(const a of ['u','v']){const p='ig'+a.toUpperCase(),d=g[a+'Definition'];field(p+'Source',d.source);
+        for(const key of ['Phase','Step','Panel','Gap','Anchor','Stagger']){
+          const lower=key.toLowerCase();field(p+key,d[lower]??'');field(p+key+'Source',d.parameterRefs?.[lower]?'90:1':'');
+          if(d.parameterRefs?.[lower])refs.set(p+key,d.parameterRefs[lower]);
+        }}
+      const slice=(from,to)=>{const start=source.indexOf(from),end=source.indexOf(to,start);assert.ok(start>=0&&end>start,from);return source.slice(start,end);};
+      const intSource=slice('  const int = (id, title, min = -LIMIT, max = LIMIT) => {','  const signed =');
+      const draftSource=slice('  function sourceDraft(s) {','  function anchor(');
+      const removeSource=slice('      const a = b.dataset.igRemoveStagger,','\n    };\n    $(\'igSourceForm\')');
+      const inputContext={axes:['u','v'],TextEncoder,LIMIT:100000000,state:s,quietDraft:false,
+        rawField:(_s,id)=>fields.get(id).value,$:id=>fields.get(id),canEdit:()=>true,
+        window:{ParameterUI:{sourceRef:id=>refs.get(id)}},Event:class {constructor(type){this.type=type;}},
+        b:{dataset:{igRemoveStagger:'u'}},s};
+      vm.createContext(inputContext);
+      vm.runInContext('(function(){'+removeSource+'})()',inputContext);
+      assert.equal(fields.get('igUStagger').value,'','GEO263_REMOVE_CLEARS_INPUT');
+      assert.equal(refs.has('igUStagger'),false,'GEO263_REMOVE_CLEARS_REFERENCE');
+      const draft=vm.runInContext(intSource+draftSource+'\nsourceDraft(s)',inputContext);
+      assert.equal(Object.hasOwn(draft.uDefinition,'stagger'),false,'GEO263_SOURCE_DRAFT_MUST_NOT_RESTORE_REMOVED_STAGGER');
+      assert.equal(Object.hasOwn(draft.uDefinition.parameterRefs,'stagger'),false);
+      const declaration=command(draft,7);assert.ok(!declaration.includes('stagger'),'explicit removal must not copy the old stagger');
       await declare(declaration);assert.equal(Object.hasOwn((await grid()).uDefinition,'stagger'),false);
     });
-    console.log(`${passed} pass / 0 fail`);
+    await check('GEO263_RENAME_PRESERVES_MAIN_ALONG_AND_SOURCE_RULE',async()=>{
+      await declare('grid-system 7 name-hex 41 main-along u u repeat 0 600 v repeat 0 400');
+      await declare('grid-source-rule 7 create name-hex 72756c65 selector all-cells divide 2 2');
+      const before=await grid(),after=await rename('with rule');
+      assert.equal(after.mainAlong,'u','GEO263_MAIN_ALONG_LOST');assert.ok(before.rules.length===1);
+      assert.deepEqual(after.rules,before.rules,'GEO263_SOURCE_RULE_LOST');
+    });
+    console.log(`${passed} pass / ${12-passed} fail`);
   } finally {child.stdin.end();await new Promise(resolve=>child.once('close',resolve));lines.close();
     if(process.env.GEOMETRY_263_TRANSCRIPT)fs.writeFileSync(process.env.GEOMETRY_263_TRANSCRIPT,transcript.map(row=>JSON.stringify(row)).join('\n')+'\n');
     fs.rmSync(temp,{recursive:true,force:true});}
 }
-if(require.main===module)run().catch(error=>{console.error(error);process.exitCode=1;});
+if(require.main===module)require('node:test')('GEO263 native inspector contract',run);
 module.exports=run;
