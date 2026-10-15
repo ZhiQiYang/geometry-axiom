@@ -1,0 +1,27 @@
+{
+  "name": "contracts-v2",
+  "command": [
+    "wsl",
+    "-d",
+    "Ubuntu-24.04",
+    "--exec",
+    "unshare",
+    "--mount",
+    "--propagation",
+    "private",
+    "/bin/bash",
+    "/tmp/geo246-review-fe7da3d/tests/geo246/isolated_wsl.sh",
+    "/tmp/geo246-review-fe7da3d",
+    "/tmp/geo246-review-pre-native",
+    "python3",
+    "tests/run_all.py",
+    "--only",
+    "grid_system_contract",
+    "--only",
+    "infinite_grid_contract",
+    "--only",
+    "subgrid_contract"
+  ],
+  "exit_code": 0,
+  "seconds": 83.135
+}

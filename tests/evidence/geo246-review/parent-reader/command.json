@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "/usr/bin/python3",
+    "/tmp/geo246-parent/tests/_unittest_runner.py",
+    "/tmp/geo246-parent/tests/test_axiom_reader.py",
+    "--json-out",
+    "/tmp/geo246-parent-review/reader.json",
+    "--log",
+    "/tmp/geo246-parent-review/reader.log"
+  ],
+  "exit_code": 1,
+  "head": "7b603b4dc34bbbf41731f0e7845d0519dd876c71",
+  "tree": "5e89cef213923b3c7bb5c6a97a1473457b6e2a3b",
+  "executor": "/mnt/d/geometry-axiom-geo246/tests/geo246/parent_reader.py",
+  "executor_sha256": "f5f60966639bef19e4bff78537b1e16468c50e34443286c7f245a9c3765c2519",
+  "scope": "Parent reader suite only; not a full parent/head comparison.",
+  "required_binaries": []
+}

@@ -1,0 +1,23 @@
+{
+  "name": "mutants-v2",
+  "command": [
+    "wsl",
+    "-d",
+    "Ubuntu-24.04",
+    "--exec",
+    "unshare",
+    "--mount",
+    "--propagation",
+    "private",
+    "/bin/bash",
+    "/tmp/geo246-review-fe7da3d/tests/geo246/isolated_wsl.sh",
+    "/tmp/geo246-review-fe7da3d",
+    "/tmp/geo246-review-pre-native",
+    "python3",
+    "tests/geo246/refresh_mutants.py",
+    "--out",
+    "/tmp/geo246-review-pre-native/mutation-batches"
+  ],
+  "exit_code": 0,
+  "seconds": 1140.713
+}

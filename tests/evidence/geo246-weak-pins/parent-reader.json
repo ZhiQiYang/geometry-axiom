@@ -1,0 +1,23 @@
+{
+  "command": [
+    "wsl",
+    "-d",
+    "Ubuntu-24.04",
+    "--cd",
+    "/mnt/d/geometry-axiom-geo246",
+    "--exec",
+    "unshare",
+    "--mount",
+    "--propagation",
+    "private",
+    "/bin/bash",
+    "_geo246_native.sh",
+    "env",
+    "PATH=/opt/node/bin:/usr/bin:/bin",
+    "python3",
+    "-u",
+    "/tmp/geo246-parent/tests/test_axiom_reader.py"
+  ],
+  "exit_code": 1,
+  "seconds": 244.87
+}
