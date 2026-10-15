@@ -368,7 +368,7 @@ def build_suites():
               label='tests/mutate.py --check (saved current-source mutation receipts)'),
         Suite('oracle:framing-selftest', 'python-script',
               [py, str(ROOT / 'geometry-core/framing-template/oracle/selftest.py')], [], 300,
-              label='geometry-core/framing-template/oracle/selftest.py (six mutants + rectangular sweep)'),
+              label='geometry-core/framing-template/oracle/selftest.py (mutants + golden + geometry sweep)'),
     ]
     for stem in sorted(PY_NEEDS):
         f = HERE / (stem + '.py')
