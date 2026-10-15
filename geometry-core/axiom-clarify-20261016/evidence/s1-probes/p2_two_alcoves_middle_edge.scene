@@ -1,0 +1,8 @@
+# S1 probe 2: two alcoves on wall u=400; the middle wall edge e7 (v 1000..2000) lies wholly inside the wall main's span.
+surface 1 origin 0 0 2500 u +x v +y outline 400,0 4400,0 4400,3000 400,3000 400,2600 0,2600 0,2000 400,2000 400,1000 0,1000 0,400 400,400
+timber 1 27 33 role boundary
+timber 2 27 33 role boundary
+timber 3 27 33 role primary
+place 1 on 1 at-face e0 +u +n
+place 2 on 1 at-face e2 -u +n
+place 3 on 1 at-face e7 +v +n

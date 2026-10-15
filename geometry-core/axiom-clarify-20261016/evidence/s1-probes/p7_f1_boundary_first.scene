@@ -1,0 +1,11 @@
+# S1 probe 7: user room F1 (L-shape, reflex corner 3200,3000). Mains along v. Oracle layout 1 needs an RC-parallel timber on e3.
+# Here the inner-wall boundary e2 is placed first (core's R19(e) style), then the e3 edge main.
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 5000,0 5000,3000 3200,3000 3200,4800 0,4800
+timber 1 27 33 role boundary
+timber 2 27 33 role boundary
+timber 3 27 33 role boundary
+timber 4 27 33 role primary
+place 1 on 1 at-face e0 +u +n
+place 2 on 1 at-face e4 -u +n
+place 3 on 1 at-face e2 -u +n
+place 4 on 1 at-face e3 +v +n

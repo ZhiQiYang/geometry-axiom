@@ -1,0 +1,9 @@
+# S1 probe 1: wall u=400 has an alcove [0,400]x[1000,2000]; primary axis v.
+# Wall main along e7 runs continuous across the alcove mouth from boundary e0 to boundary e2.
+surface 1 origin 0 0 2500 u +x v +y outline 400,0 4400,0 4400,3000 400,3000 400,2000 0,2000 0,1000 400,1000
+timber 1 27 33 role boundary
+timber 2 27 33 role boundary
+timber 3 27 33 role primary
+place 1 on 1 at-face e0 +u +n
+place 2 on 1 at-face e2 -u +n
+place 3 on 1 at-face e7 +v +n
