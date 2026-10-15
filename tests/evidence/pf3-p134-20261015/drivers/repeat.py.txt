@@ -1,0 +1,30 @@
+import hashlib,json,os,resource,shutil,subprocess,sys,time
+from pathlib import Path
+FIRST=Path('/tmp/p134-comparison');OUT=Path('/tmp/p134-comparison-extended-v2');OUT.mkdir(exist_ok=False)
+ACTIVE=Path('/tmp/p134-active-binaries');plan=json.loads((FIRST/'plan.json').read_text())
+ENV={k:v for k,v in os.environ.items() if not k.startswith('GEOMETRY_')};ENV.update(GEOMETRY_TEST_BRIDGE=str(ACTIVE/'bridge'),GEOMETRY_MODEL_BASE=str(ACTIVE/'model-base'))
+eh=hashlib.sha256(json.dumps(ENV,sort_keys=True).encode()).hexdigest()
+assert {k:ENV.get(k) for k in plan['visibleEnvironment']}==plan['visibleEnvironment']
+plan={**plan,'previousPhaseEnvironmentSha256':plan['environmentSha256'],'environmentSha256':eh,
+      'environmentScope':'One immutable environment dictionary for both trees in this phase; previous shell invocation had a different full environment hash. Visible execution settings match; no test was launched by the aborted cross-phase-hash guard.'}
+resource.setrlimit(resource.RLIMIT_STACK,(16777216,resource.getrlimit(resource.RLIMIT_STACK)[1]))
+def write(p,x):p.write_text(json.dumps(x,ensure_ascii=False,indent=2)+'\n')
+def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+def git(root,*args):return subprocess.check_output(['git',*args],cwd=root,text=True).strip()
+plan={**plan,'trialsPerTree':50,'reason':'Initial fixed 10 paired rounds did not reproduce; expand the bounded observation set without stress or code changes.'};write(OUT/'plan.json',plan)
+results=[]
+for trial in range(1,51):
+    for name in ['base','pf3']:
+        root=Path('/tmp/p134-'+name);head=plan[name];out=OUT/name/f'trial-{trial:02d}';out.mkdir(parents=True)
+        for p in (FIRST/name/'binaries').iterdir():shutil.copy2(p,ACTIVE/p.name)
+        start=time.monotonic()
+        with (out/'stdout').open('wb') as so,(out/'stderr').open('wb') as se:r=subprocess.run(plan['argv'],cwd=root,env=ENV,stdout=so,stderr=se,timeout=300)
+        err=(out/'stderr').read_text();result=dict(tree=name,trial=trial,sourceHead=head,headBefore=head,headAfter=git(root,'rev-parse','HEAD'),
+            cwd=str(root),argv=plan['argv'],exit=r.returncode,seconds=time.monotonic()-start,environmentSha256=eh,stackBytes=16777216,
+            namedFailure='A model timeout left its native base child running' in err,oneTestRan='Ran 1 test in ' in err,skipped='skipped' in err.lower(),
+            stdoutSha256=sha(out/'stdout'),stderrSha256=sha(out/'stderr'),statusAfter=git(root,'status','--porcelain'))
+        write(out/'receipt.json',result);results.append(result)
+        assert r.returncode in (0,1) and result['oneTestRan'] and not result['skipped'] and not result['statusAfter'] and result['headAfter']==head,result
+        print(json.dumps({k:result[k] for k in ['tree','trial','exit','namedFailure']}),flush=True)
+summary=dict(plan=plan,results=results,counts={name:dict(passed=sum(r['exit']==0 for r in results if r['tree']==name),failed=sum(r['exit']==1 for r in results if r['tree']==name),namedFailures=sum(r['namedFailure'] for r in results if r['tree']==name)) for name in ['base','pf3']})
+write(OUT/'summary.json',summary);print(json.dumps(summary['counts']),flush=True)

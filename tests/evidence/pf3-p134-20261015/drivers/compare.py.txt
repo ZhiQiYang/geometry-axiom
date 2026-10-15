@@ -1,0 +1,50 @@
+import hashlib,json,os,platform,resource,shutil,subprocess,sys,time
+from pathlib import Path
+OUT=Path('/tmp/p134-comparison');OUT.mkdir(exist_ok=False)
+ACTIVE=Path('/tmp/p134-active-binaries');ACTIVE.mkdir(exist_ok=False)
+CASES=[('base',Path('/tmp/p134-base'),'303fec02257d21cf719287045a718665c3283006'),('pf3',Path('/tmp/p134-pf3'),'4f8da467e81be91bc288c765971431aed1530a94')]
+TEST='tests.test_scenario_verify.ScenarioNativeAcceptance.test_model_timeout_stops_its_base_child_before_it_can_finish_late'
+ENV={k:v for k,v in os.environ.items() if not k.startswith('GEOMETRY_')}
+ENV.update(GEOMETRY_TEST_BRIDGE=str(ACTIVE/'bridge'),GEOMETRY_MODEL_BASE=str(ACTIVE/'model-base'))
+resource.setrlimit(resource.RLIMIT_STACK,(16777216,resource.getrlimit(resource.RLIMIT_STACK)[1]))
+ARGV=[sys.executable,'-m','unittest',TEST,'-v']
+def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+def write(p,x):p.write_text(json.dumps(x,ensure_ascii=False,indent=2)+'\n')
+def git(root,*args):return subprocess.check_output(['git',*args],cwd=root,text=True).strip()
+def run(root,out,argv):
+    start=time.monotonic()
+    with (out/'stdout').open('wb') as so,(out/'stderr').open('wb') as se:p=subprocess.run(argv,cwd=root,env=ENV,stdout=so,stderr=se,timeout=300)
+    value=dict(argv=argv,cwd=str(root),headBefore=git(root,'rev-parse','HEAD'),exit=p.returncode,seconds=time.monotonic()-start,
+               stdoutSha256=sha(out/'stdout'),stderrSha256=sha(out/'stderr'),environmentSha256=hashlib.sha256(json.dumps(ENV,sort_keys=True).encode()).hexdigest(),stackBytes=16777216)
+    write(out/'receipt.json',value);return value
+plan=dict(trialsPerTree=10,order='base then pf3 for each of 10 paired rounds; no failure retries or result filtering',argv=ARGV,
+          base=CASES[0][2],pf3=CASES[1][2],mergeTree=git(CASES[1][1],'merge-tree','--write-tree',CASES[0][2],CASES[1][2]),
+          pf3Tree=git(CASES[1][1],'rev-parse','HEAD^{tree}'),platform=platform.platform(),python=sys.version,stackBytes=16777216,
+          environmentSha256=hashlib.sha256(json.dumps(ENV,sort_keys=True).encode()).hexdigest(),
+          visibleEnvironment={k:ENV.get(k) for k in ['PATH','LANG','LC_ALL','TMPDIR','GEOMETRY_TEST_BRIDGE','GEOMETRY_MODEL_BASE']})
+assert plan['mergeTree']==plan['pf3Tree'];write(OUT/'plan.json',plan)
+for name,root,head in CASES:
+    assert git(root,'rev-parse','HEAD')==head and not git(root,'status','--porcelain')
+    out=OUT/name;out.mkdir();build=out/'build';build.mkdir()
+    code="import sys;from pathlib import Path;sys.path.insert(0,'tests');import binaries;binaries.OUT_DIR=Path(sys.argv[1]);raise SystemExit(binaries.main(['build','bridge','model-base']))"
+    result=run(root,build,[sys.executable,'-c',code,str(ACTIVE)]);assert result['exit']==0,result
+    bins=out/'binaries';bins.mkdir()
+    for binary in ['bridge','model-base']:
+        for p in [ACTIVE/binary,ACTIVE/(binary+'.fingerprint.json')]:shutil.copy2(p,bins/p.name)
+    write(out/'source-hashes.json',{p:sha(root/p) for p in ['tests/test_scenario_verify.py','geometry-web/scenario_verify.py','geometry-core/modeling/base.py','current_geometry.c','tests/run_all.py','tests/run_all.expected.json']})
+results=[]
+for trial in range(1,11):
+    for name,root,head in CASES:
+        for p in (OUT/name/'binaries').iterdir():shutil.copy2(p,ACTIVE/p.name)
+        out=OUT/name/f'trial-{trial:02d}';out.mkdir()
+        result=run(root,out,ARGV);result.update(tree=name,trial=trial,sourceHead=head)
+        stderr=(out/'stderr').read_text()
+        result['namedFailure']='A model timeout left its native base child running' in stderr
+        result['oneTestRan']='Ran 1 test in ' in stderr
+        result['skipped']='skipped' in stderr.lower()
+        result['headAfter']=git(root,'rev-parse','HEAD');result['statusAfter']=git(root,'status','--porcelain')
+        write(out/'receipt.json',result);results.append(result);print(json.dumps(result),flush=True)
+        assert result['exit'] in (0,1) and result['oneTestRan'] and not result['skipped'] and not result['statusAfter'],result
+summary=dict(plan=plan,results=results,counts={name:dict(passed=sum(r['exit']==0 for r in results if r['tree']==name),
+    failed=sum(r['exit']==1 for r in results if r['tree']==name),namedFailures=sum(r['namedFailure'] for r in results if r['tree']==name)) for name,_,_ in CASES})
+write(OUT/'summary.json',summary);print(json.dumps(summary['counts']),flush=True)

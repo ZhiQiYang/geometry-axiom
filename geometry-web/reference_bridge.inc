@@ -343,14 +343,15 @@ static void cmd_grid_preview(const char *command)
 }
 static void reference_face_text(char *out,size_t size,const ReferenceFace *r)
 {
-    if (r->kind) snprintf(out,size,"t%u",r->timber);
+    if(r->kind==2){size_t n=strlen(r->key);if(n*2+9>size){out[0]=0;return;}memcpy(out,"key-hex:",8);for(size_t i=0;i<n;++i)snprintf(out+8+i*2,size-8-i*2,"%02x",(unsigned char)r->key[i]);}
+    else if (r->kind==1) snprintf(out,size,"t%u",r->timber);
     else if (r->hole>=0) snprintf(out,size,"h%de%d",r->hole,r->edge);
     else snprintf(out,size,"e%d",r->edge);
 }
 /* Return stored I13 references; derived uv is never used to reconstruct an anchor. */
 static void json_reference_timber_definition(const Timber *t,const TimberAnchor *a)
 {
-    char anchor[128],selector[128]="",face[32];
+    char anchor[1100],selector[2200]="",face[1040];
     if (a->anchor_kind==ANCHOR_AT_LINE) snprintf(anchor,sizeof anchor,"at-line guide %u",a->ref_guide);
     else if (a->anchor_kind==ANCHOR_AT_GRID) {
         if (a->ref_grid_has_band)
@@ -364,12 +365,13 @@ static void json_reference_timber_definition(const Timber *t,const TimberAnchor 
             (long long)r->cell[0],(long long)r->cell[1],r->axis?'v':'u',r->inner_index);
     }
     else {
-        ReferenceFace ref={a->ref_is_timber?1:0,a->ref_hole,a->ref_edge,a->ref_timber};
+        ReferenceFace ref={a->ref_derived_key[0]?2:a->ref_is_timber?1:0,a->ref_hole,a->ref_edge,a->ref_timber,{0}};
+        snprintf(ref.key,sizeof ref.key,"%s",a->ref_derived_key);
         reference_face_text(face,sizeof face,&ref); snprintf(anchor,sizeof anchor,"at-face %s",face);
     }
     if (a->has_through) snprintf(selector,sizeof selector,"through %lld",(long long)a->through);
     else if (a->has_between) {
-        char other[32]; reference_face_text(face,sizeof face,&a->between[0]);
+        char other[1040]; reference_face_text(face,sizeof face,&a->between[0]);
         reference_face_text(other,sizeof other,&a->between[1]);
         snprintf(selector,sizeof selector,"between %s %s",face,other);
     }

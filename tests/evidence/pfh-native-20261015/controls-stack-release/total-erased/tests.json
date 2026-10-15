@@ -1,0 +1,15 @@
+{
+  "total": 1,
+  "failed": 1,
+  "errors": 0,
+  "skipped": 0,
+  "nativeExits": [
+    0
+  ],
+  "failures": [
+    {
+      "test": "test_R41_total_source_segments_are_identity_and_stale_key_rejects (tests.test_panel_fill_host.PanelFillHost.test_R41_total_source_segments_are_identity_and_stale_key_rejects)",
+      "traceback": "Traceback (most recent call last):\n  File \"/tmp/geometry-wake41/controls-stack-release/total-erased/source/tests/test_panel_fill_host.py\", line 66, in test_R41_total_source_segments_are_identity_and_stale_key_rejects\n    self.assertTrue(self.command(\"line place 1 on 10 at-face \"+key+\" +u +n\")[\"ok\"])\nAssertionError: False is not true\n"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+F
+======================================================================
+FAIL: test_archive_cleanup_preserves_failed_job_status (__main__.WaitTraceTests.test_archive_cleanup_preserves_failed_job_status)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/geometry-wait-trace/tests/test_wait_trace.py", line 272, in test_archive_cleanup_preserves_failed_job_status
+    self.assertEqual(run.returncode, 7, 'WAIT_TRACE_ARCHIVE_MUST_KEEP_ORIGINAL_FAILURE')
+AssertionError: 1 != 7 : WAIT_TRACE_ARCHIVE_MUST_KEEP_ORIGINAL_FAILURE
+
+----------------------------------------------------------------------
+Ran 1 test in 0.300s
+
+FAILED (failures=1)

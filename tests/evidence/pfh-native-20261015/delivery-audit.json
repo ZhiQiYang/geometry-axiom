@@ -1,0 +1,113 @@
+{
+  "nativeHead": "48a0220561cdda9322bde86dbddad7b4b4705764",
+  "productCodeHead": "858515596f21a9329beff339caa83725906b491a",
+  "productSourcesUnchanged": true,
+  "metadataContractTestSha256": "0a3a7f758909f909d029635709672668369e90def704742dbdb936823bcdd942",
+  "native": {
+    "headBefore": "48a0220561cdda9322bde86dbddad7b4b4705764",
+    "headAfter": "48a0220561cdda9322bde86dbddad7b4b4705764",
+    "argv": [
+      "python3",
+      "-u",
+      "tests/run_all.py",
+      "--build"
+    ],
+    "exit": 1,
+    "seconds": 971.4745106119663,
+    "trackedRegularFiles": 14903,
+    "trackedExcluded": [],
+    "trackedBeforeAfterEqual": true,
+    "statusAfter": "",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "python": "3.12.14",
+    "node": "v24.19.0",
+    "gcc": "gcc (Debian 14.2.0-19) 14.2.0",
+    "stackBytes": 16777216,
+    "mutationCache": "/tmp/geometry-wake41/native-components-empty-cache",
+    "mutationCacheExistedBefore": false,
+    "currentRunLogMembers": 204,
+    "archiveSha256": "1ea21d5e057caaa836a2a7a2f3cb1b21b1a86b9d936e4b857971b909677cdc54"
+  },
+  "releaseControlsHead": "48a0220561cdda9322bde86dbddad7b4b4705764",
+  "releaseControls": [
+    {
+      "name": "baseline",
+      "exit": 0,
+      "total": 32,
+      "failures": 0
+    },
+    {
+      "name": "host-removed",
+      "exit": 1,
+      "total": 1,
+      "failures": 1
+    },
+    {
+      "name": "closed-timber-depth",
+      "exit": 1,
+      "total": 1,
+      "failures": 1
+    },
+    {
+      "name": "topology-unchecked",
+      "exit": 1,
+      "total": 1,
+      "failures": 1
+    },
+    {
+      "name": "fixity-merged",
+      "exit": 1,
+      "total": 1,
+      "failures": 1
+    },
+    {
+      "name": "total-erased",
+      "exit": 1,
+      "total": 1,
+      "failures": 1
+    },
+    {
+      "name": "I53-removed",
+      "exit": 1,
+      "total": 1,
+      "failures": 1
+    },
+    {
+      "name": "subgrid-stack-rollback",
+      "exit": 1,
+      "total": 1,
+      "failures": 1
+    },
+    {
+      "name": "cell-component-removed",
+      "exit": 1,
+      "total": 1,
+      "failures": 1
+    },
+    {
+      "name": "render-component-removed",
+      "exit": 1,
+      "total": 1,
+      "failures": 1
+    },
+    {
+      "name": "restored",
+      "exit": 0,
+      "total": 32,
+      "failures": 0
+    }
+  ],
+  "archiveMemberHashesVerified": true,
+  "readerSyncBlock": {
+    "failed": 6,
+    "ownerPR": 207,
+    "ownerBranch": "codex/geo198-reader-sync-20261012",
+    "canonicalUnchanged": true
+  },
+  "formalWSLSeven": {
+    "status": "unverified",
+    "executed": 0,
+    "scheduled": false
+  },
+  "protectedAuthorDiff": []
+}

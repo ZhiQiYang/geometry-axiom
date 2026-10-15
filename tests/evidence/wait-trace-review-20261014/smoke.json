@@ -1,0 +1,41 @@
+{
+  "runtime": {
+    "schema": "geometry-runtime/1",
+    "version": "a463ccbf963f586ce27682fa914890074d324cbca0604071d19d9a3a3cf352fd",
+    "fresh": true,
+    "root": "/tmp/geometry-wait-trace",
+    "pid": 1039342,
+    "session": "f10e854d369145718200612a23184328"
+  },
+  "request": {
+    "cmd": "newid 1",
+    "requestId": "347b8e0f-a139-480d-bd50-70b620cdb49a",
+    "session": "f10e854d369145718200612a23184328"
+  },
+  "response": {
+    "ok": true,
+    "boundary": 2,
+    "placement": 2,
+    "guide": 2,
+    "grid": 1,
+    "gridSystem": 1,
+    "gridBinding": 1,
+    "timber": 4,
+    "space": 1,
+    "column": 1,
+    "beam": 1,
+    "datum": 1,
+    "parameter": 1,
+    "assemblyRule": 1,
+    "assemblyBinding": 1,
+    "assemblyInstance": 1,
+    "surfaces": [
+      2
+    ],
+    "grids": [
+      0
+    ]
+  },
+  "exit": 0,
+  "seconds": 0.6387213460402563
+}

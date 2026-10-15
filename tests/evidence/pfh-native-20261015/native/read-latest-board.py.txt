@@ -1,0 +1,8 @@
+import base64,hashlib,json,subprocess
+from datetime import datetime,timezone
+from pathlib import Path
+W=Path('/tmp/geometry-wake41')
+v=json.loads(subprocess.check_output(['gh','api','repos/ZhiQiYang/geometry-axiom/contents/BOARD-cloud-codex.md?ref=ops%2Fagent-board']))
+raw=base64.b64decode(v['content']);(W/'board-latest.md').write_bytes(raw)
+receipt=dict(readAt=datetime.now(timezone.utc).isoformat(),branch='ops/agent-board',path='BOARD-cloud-codex.md',gitBlobSha=v['sha'],sha256=hashlib.sha256(raw).hexdigest(),sameAsWorkInstructions=raw==(W/'board-final.md').read_bytes(),url=v['html_url'])
+(W/'board-latest-read.json').write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+'\n');print(json.dumps(receipt,ensure_ascii=False))

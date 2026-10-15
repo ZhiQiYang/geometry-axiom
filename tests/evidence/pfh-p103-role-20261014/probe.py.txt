@@ -1,0 +1,31 @@
+from pathlib import Path
+import sys,tempfile,json,hashlib,subprocess
+root=Path('/tmp/geometry-pf3-current');sys.path.insert(0,str(root))
+from tests._bridge import BridgeSession
+out=root/'tests/evidence/pfh-p103-role-20261014';out.mkdir(parents=True,exist_ok=True)
+base='''surface 1 origin 0 0 2409 u +x v +y outline 0,0 1000,0 1000,300 0,300
+timber 1 27 30 role boundary
+timber 2 27 30 role boundary
+place 1 on 1 at-face e0 +u +n
+place 2 on 1 at-face e2 +u +n
+spec center 105
+guide 1 1 v spec:center
+timber 3 30 30 role ROLE
+place 3 on 1 at-line guide 1 between t1 t2 +v +n
+'''
+records=[]
+with tempfile.TemporaryDirectory(prefix='pfh-p103-') as d:
+ for role,expected in [('secondary',False),('primary',True)]:
+  scene=base.replace('ROLE',role); path=Path(d)/'fixture.scene';path.write_text(scene)
+  s=BridgeSession('/tmp/pf3-current-binaries/bridge',cwd=d)
+  try:
+   s.command('reset');before=s.command('dump');reply=s.command('loadfile '+str(path));dump=s.command('dump')
+  finally:s.stop()
+  assert reply['ok']==expected,reply
+  if not expected:
+   assert 'V_PRIMARY_AXIS' in reply['error'] and '角材 3' in reply['error'] and 'line 9:' in reply['error'],reply
+   assert before['text']==dump['text']
+  records.append({'role':role,'scene':scene,'reply':reply,'dump':dump})
+(out/'results.json').write_text(json.dumps({'scope':'General D7 role check only; NOT derived-host or R43 execution','source_head':subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip(),'binary_sha256':hashlib.sha256(Path('/tmp/pf3-current-binaries/bridge').read_bytes()).hexdigest(),'records':records},ensure_ascii=False,indent=2)+'\n')
+(out/'probe.py.txt').write_bytes(Path(__file__).read_bytes())
+print(json.dumps([{'role':x['role'],'reply':x['reply']} for x in records],ensure_ascii=False))
