@@ -1,0 +1,10 @@
+main lines not kept in order: 4
+    替換原文 每個欄位恰有一個來源，存直接值或 ParameterRef；引用的有效值先按 D1 與本條驗證，再使用原有排格公式。
+    替換原文 引用為 `(parameterId, fieldId)`，不使用顯示名稱、欄位位置或畫布位置配對；改名、排序、拖移不重綁。
+    替換原文 D29 的參數來源在候選內先求值，再驗本條所有限制；配置及主格沿來源取得數值，不能另加參數覆蓋同一有效欄位。
+    替換原文 R32 網格求值與保存：先依 R33 求參數值並驗 D29 各欄位，再讀來源、邊界key與配置，單線按signed k直接精確求值；
+added lines: 78 unexplained: 0
+proposal lines missing from SSOT: 0
+lock lines old/new: 6 6 identical: True
+RESULT: PASS
+exit=0
