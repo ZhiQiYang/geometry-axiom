@@ -218,7 +218,7 @@ static bool reference_eval_text(ReferenceEval *ctx, const GuideLine *g, const ch
         if (!*p || ++terms>64) return false;
         const char *end=p;
         while (*end) {
-            if(end==p+4&&!strncmp(p,"edge-key:",9)){++end;continue;}
+            if(*end=='-'&&end-p>=4&&!strncmp(end-4,"edge-key:",9)){++end;continue;}
             if (*end=='+' || *end=='-') {
                 /* A sign immediately after ':' belongs to the grid index;
                  * the next sign still separates expression terms. */

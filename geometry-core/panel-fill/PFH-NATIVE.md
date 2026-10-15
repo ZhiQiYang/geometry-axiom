@@ -49,7 +49,7 @@ D28 application 與 D38 live placement host 明確拒絕；現有 modeling execu
 來源定義最多 1023 bytes、完整鍵最多 511 bytes；超限明確 I33 CAPACITY，拒絕整筆，不截短。
 原生測試使用 16 MiB stack。
 
-`tests/test_panel_fill_host.py` 涵蓋 28 題，包括 R15 的拓撲／深度／fixity／總段數案例、
+`tests/test_panel_fill_host.py` 涵蓋 29 題，包括 R15 的拓撲／深度／fixity／總段數案例、
 來源型別、0 id、第二分量、容量、原子 h/B 更新、拒絕回滾、保存／重開及 Undo／Redo。
 原四題紅基準保留；其中 Undo／Redo 的橋接器指令更正為既有 `line undo`／`line redo`。
 

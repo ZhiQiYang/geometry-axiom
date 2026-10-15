@@ -93,6 +93,15 @@ class PanelFillHost(unittest.TestCase):
         supports=self.command("references")["timberSupports"]["entries"][0]
         self.assertEqual([["e3",0,1]],supports["start"]["relation"]["edgeKey"])
 
+    def test_D6a_derived_key_is_a_quantity_in_rational_expressions(self):
+        self.region()
+        right=self.key([["e1",0,1]]).split(":")[1]
+        left=self.key([["e3",0,1]]).split(":")[1]
+        for i,expression in enumerate(["1/2*edge-key:"+right+":u","edge-key:"+left+":u+1/2*edge-key:"+right+":u"],1):
+            reply=self.command(f"line guide {i} 10 v "+expression)
+            self.assertTrue(reply["ok"],"PFH_D6A_ARITHMETIC: "+json.dumps(reply,ensure_ascii=False))
+        self.assertEqual([50,50],[g["off"] for g in self.command("references")["guides"]])
+
     def test_I53_atomic_height_and_B_source_update(self):
         self.host();self.timbers()
         self.reject([dict(op="put-derived-placement",value=dict(id=10,fillId=1,h=31))],"V_DERIVED_TIMBER")
