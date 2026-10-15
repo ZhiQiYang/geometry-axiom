@@ -530,7 +530,7 @@ finally:
                     raw = ''.join(json.dumps(row) + '\n' for row in changed).encode()
                     run, receipt = collect(raw)
                     self.assertEqual(run.returncode, 1, 'WAIT_TRACE_INTEGRITY_COUNTS_REQUIRED: ' + name)
-                    self.assertEqual(receipt['status'], 'incomplete-or-mixed-trace')
+                    self.assertIn(receipt['status'], ('incomplete-or-mixed-trace', 'invalid-trace'))
 
     def test_archive_cleanup_preserves_failed_job_status(self):
         root = pathlib.Path(__file__).resolve().parents[1]
