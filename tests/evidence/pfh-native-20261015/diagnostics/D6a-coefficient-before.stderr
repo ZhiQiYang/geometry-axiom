@@ -1,0 +1,13 @@
+F
+======================================================================
+FAIL: test_D6a_derived_key_is_a_quantity_in_rational_expressions (__main__.PanelFillHost.test_D6a_derived_key_is_a_quantity_in_rational_expressions)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/geometry-209-segments/tests/test_panel_fill_host.py", line 102, in test_D6a_derived_key_is_a_quantity_in_rational_expressions
+    self.assertTrue(reply["ok"],"PFH_D6A_ARITHMETIC: "+json.dumps(reply,ensure_ascii=False))
+AssertionError: False is not true : PFH_D6A_ARITHMETIC: {"ok": false, "error": "line 1: D6a/I7/I9 timber 0: guide 1: invalid/missing reference, axis/surface mismatch, cycle or rational overflow: 1/2*edge-key:5b5b226531222c302c315d5d:u", "deletedObjects": []}
+
+----------------------------------------------------------------------
+Ran 1 test in 0.402s
+
+FAILED (failures=1)
