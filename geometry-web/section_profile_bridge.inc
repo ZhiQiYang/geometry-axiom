@@ -89,6 +89,7 @@ static void json_section_profile_preview(void)
     printf("{\"token\":%u,\"valid\":%s,\"revision\":%llu,\"diagnosticsComplete\":true,\"validationStrategy\":\"all-section-profile-violations\"",g_preview.token,g_preview.valid?"true":"false",(unsigned long long)g_preview.revision);
     fputs(",\"before\":",stdout);json_engineering_state(&g_preview.before,true);
     fputs(",\"after\":",stdout);json_engineering_state(&g_preview.after,true);
+    json_parameter_rebindings();
     snprintf(g_engineering_error,sizeof g_engineering_error,"%s",error);
     json_section_profile_impact(&g_preview.before,&g_preview.after);fputs(",\"violations\":",stdout);
     sp_json_violations(&g_preview.before,&g_preview.after,!g_preview.valid);putchar('}');

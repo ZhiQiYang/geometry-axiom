@@ -440,7 +440,12 @@ class SectionProfileNative(unittest.TestCase):
         self.reject([deleted, rebuilt, declare_member], "section-profile run 1 length")
         self.reject([deleted, rebuilt, declare_run], "section-profile member 1 A")
         self.reject([deleted, rebuilt, declare_member, declare_run, deleted, rebuilt], "section-profile member 1 A")
-        _, done = self.apply([deleted, rebuilt, declare_member, declare_run])
+        preview, done = self.apply([deleted, rebuilt, declare_member, declare_run])
+        self.assertEqual([{"kind": "section-profile-member", "id": 1, "slot": 0},
+                          {"kind": "section-profile-run", "id": 1, "slot": 0}],
+                         [r["owner"] for r in preview["redeclaredReferences"]])
+        self.assertEqual([{"parameterId": 0, "fieldId": 0}] * 2,
+                         [r["source"] for r in preview["redeclaredReferences"]])
         self.assertEqual([{"kind": "parameter-field", "parameterId": 0, "fieldId": 0}], done["deletedObjects"])
         self.apply([put("member", member()), put("run", run()), deleted])
         self.assertEqual([], self.command("engineering-read")["state"]["parameters"])

@@ -480,6 +480,48 @@ static bool parameter_retirements_valid(const World *w)
     }
     return true;
 }
+/* P-129: preview disclosure reads explicit owner declarations, including a
+ * reference that the declaration replaced with a literal/different source.
+ * It does not grant new declaration paths to native-DSL-only consumers. */
+static bool parameter_declared_owner_present(const World *w,const ParameterDeclaration *d)
+{
+    if(d->kind==PARAM_OWNER_CARD)return parameter_find(w,d->id)!=NULL;
+    if(d->kind==PARAM_OWNER_ENG_GRID||d->kind==PARAM_OWNER_ENG_TIMBER){
+        for(size_t i=0;i<w->engineering.binding_count;++i){const EngBinding *b=&w->engineering.bindings[i];
+            if(b->target.id==d->id&&parameter_engineering_owner(&b->target)==d->kind&&
+               parameter_engineering_slot(&b->target,0)==d->slot%4)return true;}
+    }else if(d->kind==PARAM_OWNER_ASSEMBLY){for(size_t i=0;i<w->assembly.binding_count;++i)if(w->assembly.bindings[i].id==d->id)return true;}
+    else if(d->kind==PARAM_OWNER_MEMBER){for(size_t i=0;i<w->section_profiles.member_count;++i)if(w->section_profiles.members[i].id==d->id)return true;}
+    else if(d->kind==PARAM_OWNER_RUN){for(size_t i=0;i<w->section_profiles.run_count;++i)if(w->section_profiles.runs[i].id==d->id)return true;}
+    return false;
+}
+static bool parameter_declared_owner_uses(const World *w,const ParameterDeclaration *d,uint32_t id,uint32_t field)
+{
+    if(d->kind==PARAM_OWNER_CARD){
+        for(size_t i=0;i<w->parameters.field_count;++i){const ParameterField *f=&w->parameters.fields[i];if(f->parameter_id!=d->id)continue;
+            EngJson j;bool hit=eng_json_parse_n(&j,f->expression,strlen(f->expression))&&parameter_ast_uses(&j,0,id,field,0);eng_json_free(&j);if(hit)return true;}
+    }else if(d->kind==PARAM_OWNER_ENG_GRID||d->kind==PARAM_OWNER_ENG_TIMBER){
+        for(size_t i=0;i<w->engineering.binding_count;++i){const EngBinding *b=&w->engineering.bindings[i];
+            if(b->target.id!=d->id||parameter_engineering_owner(&b->target)!=d->kind)continue;
+            for(int override=0;override<2;++override){const EngDimensionSource *s=override?&b->override_value:&b->source;
+                if((!override||b->has_override)&&parameter_engineering_slot(&b->target,override)==d->slot&&s->kind==ENG_PARAMETER&&s->parameter.parameter_id==id&&s->parameter.field_id==field)return true;}
+        }
+    }else if(d->kind==PARAM_OWNER_ASSEMBLY){
+        for(size_t i=0;i<w->assembly.binding_count;++i){const AsmBinding *b=&w->assembly.bindings[i];if(b->id!=d->id)continue;EngJson j;bool hit=false;
+            if(eng_json_parse(&j,b->content)){int slots=eng_json_member(&j,0,"slots");
+                for(int k=0;k<eng_json_size(&j,slots)&&!hit;++k)for(int axis=0;axis<2&&!hit;++axis){
+                    int source=eng_json_member(&j,eng_json_at(&j,slots,k),axis?"B":"A");char kind[16];int64_t card=-1,f=-1;
+                    hit=eng_json_string(&j,eng_json_member(&j,source,"kind"),kind,sizeof kind)&&!strcmp(kind,"parameter")&&eng_json_integer(&j,eng_json_member(&j,source,"parameterId"),&card)&&card==(int64_t)id&&eng_json_integer(&j,eng_json_member(&j,source,"fieldId"),&f)&&f==(int64_t)field;}}
+            eng_json_free(&j);if(hit)return true;
+        }
+    }else if(d->kind==PARAM_OWNER_MEMBER){
+        for(size_t i=0;i<w->section_profiles.member_count;++i){const ProfileMember *m=&w->section_profiles.members[i];if(m->id!=d->id)continue;
+            const EngDimensionSource *s[2]={&m->a_source,&m->b_source};for(int k=0;k<2;++k)if(s[k]->kind==ENG_PARAMETER&&s[k]->parameter.parameter_id==id&&s[k]->parameter.field_id==field)return true;}
+    }else if(d->kind==PARAM_OWNER_RUN){
+        for(size_t i=0;i<w->section_profiles.run_count;++i){const ProfileRun *r=&w->section_profiles.runs[i];if(r->id==d->id&&r->length_source.kind==ENG_PARAMETER&&r->length_source.parameter.parameter_id==id&&r->length_source.parameter.field_id==field)return true;}
+    }
+    return false;
+}
 /* P-065: query only the dependency paths affected by an overwritten or removed card.
  * This is reachability, not evaluation: unrelated invalid definitions cannot block deletion. */
 static bool parameter_field_depends_on(const World *w,int index,uint32_t id,bool visited[PARAM_FIELD_MAX]);

@@ -309,6 +309,65 @@ class ParametersCore(unittest.TestCase):
         self.assertEqual(before, self.command("dump")["text"])
         self.assertEqual(revision, self.read()["revision"])
 
+    def test_dsl_only_consumers_cannot_acknowledge_parameter_rebuild(self):
+        self.apply([card(0, "來源", [field(1, "915")])])
+        baseline = self.command("dump")["text"]
+        cases = [
+            ("guide 1 1 u param:0:1", "guide 1"),
+            ("datum 1 x param:0:1", "datum 1"),
+            ("grid-system 1 name-hex 47726964 main-along none u repeat 0 param:0:1 v none", "grid-system 1"),
+            ("grid 1 on 1 u repeat 0 param:0:1 v none", "grid 1"),
+        ]
+        for line, owner in cases:
+            with self.subTest(owner=owner):
+                self.assertTrue(self.load_scene(baseline)["ok"])
+                self.apply_line(line)
+                revision = self.read()["revision"]
+                self.rejected([{"op": "delete-parameter", "id": 0},
+                               card(0, "重建來源", [field(1, "920")])], owner)
+                self.assertEqual(revision, self.read()["revision"])
+
+    def test_direct_grid_axis_redeclaration_is_local(self):
+        self.apply([card(0, "來源", [field(1, "915")])])
+        self.apply_line("grid 1 on 1 u panel 915 gap 2 from 0 v panel 915 gap 2 from 0")
+        source = {"kind": "parameter", "parameterId": 0, "fieldId": 1}
+        bind = lambda axis: {"op": "set-source", "target": {"kind": "grid", "id": 1, "axis": axis, "field": "panel"}, "source": source}
+        self.apply([bind("u"), bind("v")])
+        deleted = [{"op": "delete-parameter", "id": 0}, card(0, "重建來源", [field(1, "920")])]
+        before = self.command("dump")["text"]
+        for operations, unhandled in [(deleted + [bind("u")], "grid 1 v panel"),
+                                      ([bind("v")] + deleted + [bind("u")], "grid 1 v panel"),
+                                      (deleted + [bind("u"), bind("v")] + deleted + [bind("u")], "grid 1 v panel")]:
+            with self.subTest(operations=operations):
+                self.rejected(operations, unhandled)
+        preview, _ = self.apply(deleted + [bind("u"), bind("v")])
+        rows = preview["preview"]["redeclaredReferences"]
+        self.assertEqual([{"kind": "grid", "id": 1, "slot": 0}, {"kind": "grid", "id": 1, "slot": 2}], [r["owner"] for r in rows])
+        self.assertEqual([{"parameterId": 0, "fieldId": 1}] * 2, [r["source"] for r in rows])
+        self.assertTrue(all("已明確重新宣告" in r["message"] for r in rows))
+        self.apply_line("undo")
+        self.assertEqual(before, self.command("dump")["text"])
+
+    def test_preview_discloses_only_last_deletion_redeclarations(self):
+        source = card(0, "來源", [field(1, "27"), field(2, "33")])
+        owner = card(1, "引用者", [field(1, "=@0:1")])
+        self.apply([source, owner, card(2, "保留欄引用者", [field(1, "=@0:2")])])
+        omit = card(0, "來源", [field(2, "33")])
+        preview, _ = self.apply([omit, source, owner, card(3, "無關宣告", [field(1, "41")])])
+        rows = preview["preview"]["redeclaredReferences"]
+        self.assertEqual([{"kind": "parameter", "id": 1, "slot": 0}], [r["owner"] for r in rows])
+        self.assertEqual([{"parameterId": 0, "fieldId": 1}], [r["source"] for r in rows])
+        ordinary = self.request([owner])["preview"]
+        self.assertTrue(ordinary["valid"])
+        self.assertEqual([], ordinary["redeclaredReferences"], "old candidate order leaked into another preview")
+        self.command("engineering-cancel " + str(ordinary["token"]))
+        invalid = self.request([omit, source, owner, omit, source])["preview"]
+        self.assertFalse(invalid["valid"])
+        self.assertEqual([], invalid["redeclaredReferences"], "declaration before the final deletion was reported as handled")
+        removed = self.request([omit, source, owner, {"op": "delete-parameter", "id": 1}])["preview"]
+        self.assertTrue(removed["valid"])
+        self.assertEqual([], removed["redeclaredReferences"], "removed owner was reported as a surviving redeclared reference")
+
     def test_referrer_must_be_declared_after_the_last_card_deletion(self):
         source = card(0, "來源", [field(1, "27")])
         owner = card(1, "引用者", [field(1, "=@0:1")])

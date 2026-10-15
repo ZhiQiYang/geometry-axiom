@@ -72,7 +72,14 @@ class AssemblyParameterRefs(unittest.TestCase):
             declared = {"op": "put-binding", "value": bound}
             self.reject([deleted, rebuilt], "binding 1 slot 1.A")
             self.reject([declared, deleted, rebuilt], "binding 1 slot 1.A")
-            done = self.apply([deleted, rebuilt, declared])
+            preview = self.request([deleted, rebuilt, declared])["preview"]
+            self.assertTrue(preview["valid"], preview)
+            self.assertEqual([{"kind": "assembly-binding", "id": 1, "slot": 0}],
+                             [r["owner"] for r in preview["redeclaredReferences"]])
+            self.assertEqual([{"parameterId": parameter_id, "fieldId": field_id}],
+                             [r["source"] for r in preview["redeclaredReferences"]])
+            done = self.command("assembly-confirm " + str(preview["token"]))
+            self.assertTrue(done["ok"], done)
             self.assertEqual(29, self.read()["state"]["bindings"][0]["effective"][0]["A"]["value"])
             self.assertEqual([{"kind": "parameter-field", "parameterId": parameter_id, "fieldId": field_id}], done["deletedObjects"])
             self.apply([{"op": "delete-binding", "id": 1}, {"op": "delete-parameter", "id": parameter_id}])
