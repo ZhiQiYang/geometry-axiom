@@ -1,0 +1,36 @@
+import pathlib,subprocess,json
+root=pathlib.Path('/tmp/geometry-wait-trace'); out=root/'tests/evidence/wait-trace-r12-20261015'
+cases=[
+ ('drop-admitted-at-close','geometry-web/wait_trace.py',b'if self.closed and self.pending.empty():',b'if self.closed:','test_close_drains_a_row_admitted_after_empty_observation'),
+ ('age-before-snapshot','geometry-web/wait_trace.py',b"holder['heldSeconds'] = observed - holder.pop('since')",b"holder['heldSeconds'] = started - holder.pop('since')",'test_holder_age_is_sampled_after_metadata_wait'),
+ ('unbounded-signal-cleanup','geometry-web/serve.py',b'            wait_trace.close()\n            os._exit(0)',b'            raise SystemExit(0)','test_trace_sigterm_does_not_enter_business_lock_cleanup'),
+ ('sync-acquire','geometry-web/wait_trace.py',b'    _writer.submit(row)',b"    _writer.write(row) if stage == 'bridge' else _writer.submit(row)",'test_slow_sink_does_not_extend_nested_business_locks'),
+ ('sync-call','geometry-web/wait_trace.py',b'    _writer.submit(row)',b"    _writer.write(row) if stage == 'stdin_write_begin' else _writer.submit(row)",'test_slow_sink_does_not_extend_nested_business_locks'),
+ ('sync-release','geometry-web/wait_trace.py',b'    _writer.submit(row)',b"    _writer.write(row) if stage == 'receipt_release' else _writer.submit(row)",'test_slow_sink_does_not_extend_nested_business_locks'),
+ ('blocking-handoff','geometry-web/wait_trace.py',b'    _writer.submit(row)',b'    _writer.pending.join()\n    _writer.submit(row)','test_slow_sink_is_outside_acquire_timeout'),
+ ('release-before-unlock','geometry-web/wait_trace.py',b'            self.lock.release()\n            released',b"            if holder:\n                emit(self.name + '_release', holder=holder, heldSeconds=0, releasedMonotonic=0)\n            self.lock.release()\n            released",'test_release_snapshot_uses_actual_unlock_boundary'),
+ ('hide-drops','geometry-web/wait_trace.py',b'incomplete=bool(self.dropped or self.errors)',b'incomplete=False','test_bounded_writer_reports_loss_without_replaying_operation'),
+ ('hide-write-errors','geometry-web/wait_trace.py',b'                self.errors += 1',b'                pass','test_unwritable_sink_does_not_change_result'),
+ ('default-on','geometry-web/wait_trace.py',b"ENABLED = os.environ.get('GEOMETRY_WAIT_TRACE') == '1'",b'ENABLED = True','test_default_off_preserves_lock_and_output'),
+ ('keep-stale-source','geometry-web/prepare_wait_trace.py',b"    (directory / 'wait-trace.jsonl').unlink(missing_ok=True)",b'    pass','test_two_runs_remove_only_old_trace_and_archive_current_run'),
+ ('repeat-run-id','geometry-web/prepare_wait_trace.py',b'return str(uuid.uuid4())',b"return 'same-run-id'",'test_two_runs_remove_only_old_trace_and_archive_current_run'),
+ ('allow-incomplete','geometry-web/archive_wait_trace.py',b'                    if not valid:',b'                    if False:','test_runner_archive_keeps_raw_trace_and_effective_environment'),
+]
+results=[]
+def run(name,test):
+    with (out/(name+'.log')).open('wb') as stream:
+        p=subprocess.run(['python3','tests/test_wait_trace.py','WaitTraceTests.'+test],cwd=root,stdout=stream,stderr=subprocess.STDOUT,timeout=30)
+    (out/(name+'.exit')).write_text(str(p.returncode)+'\n')
+    return p.returncode
+for name,file,old,new,test in cases:
+    path=root/file; original=path.read_bytes(); assert old in original,name
+    try:
+        path.write_bytes(original.replace(old,new))
+        red=run(name,test)
+    finally:
+        path.write_bytes(original)
+    green=run(name+'-restored',test)
+    results.append(dict(name=name,mutantExit=red,restoredExit=green))
+    assert red==1 and green==0,results[-1]
+(out/'controls.json').write_text(json.dumps(results,indent=2)+'\n')
+print(json.dumps(results))

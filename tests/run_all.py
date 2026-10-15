@@ -100,6 +100,7 @@ PY_NEEDS = {
     'test_scenario_verify': ['bridge', 'model-base'],
     'test_scene_import': ['bridge'],
     'test_serve': [],
+    'test_wait_trace': [],
     'test_space_modeling': ['model-base'],
     'test_subgrid_contract': ['bridge'],
     'test_timber_support_projection': [],
@@ -113,6 +114,7 @@ PY_BROWSER_GATES = {
     'test_issue123_create_feedback_browser': 'Explicit isolated Playwright mouse/touch first-center gate from #131; run with --url/--out, not a unittest suite',
 }
 NODE_TEST_FILES = [
+    'tests/test_transport_failure_trace.js',
     'tests/test_section_profile_compat.js',
     'tests/test_assembly_project_store.js',
     'tests/test_assembly_transport_context.js',

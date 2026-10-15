@@ -142,7 +142,7 @@
     "node:tests-js": {
       "mode": "count",
       "unit": "node test",
-      "count": 704
+      "count": 711
     },
     "node:workspace_shell_history": {
       "mode": "count",
@@ -304,6 +304,11 @@
       "unit": "test",
       "count": 22
     },
+    "py:test_panel_fill_host": {
+      "mode": "count",
+      "unit": "test",
+      "count": 32
+    },
     "py:test_panel_fill_layout": {
       "mode": "count",
       "unit": "test",
@@ -424,6 +429,11 @@
       "count": 1,
       "unit": "test"
     },
+    "py:test_wait_trace": {
+      "mode": "count",
+      "count": 20,
+      "unit": "test"
+    },
     "py:test_witness_diagnostics": {
       "mode": "count",
       "count": 2,
@@ -433,11 +443,6 @@
       "mode": "count",
       "count": 6,
       "unit": "test"
-    },
-    "py:test_panel_fill_host": {
-      "mode": "count",
-      "unit": "test",
-      "count": 32
     }
   }
 }
