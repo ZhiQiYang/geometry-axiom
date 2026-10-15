@@ -431,7 +431,18 @@ class SectionProfileNative(unittest.TestCase):
                     "parameter 0 is still referenced by section-profile member 1 A; section-profile run 1 length")
         self.reject([put("member", member()), {"op": "delete-parameter", "id": 0}],
                     "parameter 0 is still referenced by section-profile run 1 length")
-        self.apply([put("member", member()), put("run", run()), {"op": "delete-parameter", "id": 0}])
+        # Rebuilding the key cannot acknowledge either surviving reference owner.
+        deleted = {"op": "delete-parameter", "id": 0}
+        rebuilt = {"op": "put-parameter", "value": parameter}
+        declare_member = put("member", member(A=source))
+        declare_run = put("run", run(length=source))
+        self.reject([deleted, rebuilt], "section-profile member 1 A; section-profile run 1 length")
+        self.reject([deleted, rebuilt, declare_member], "section-profile run 1 length")
+        self.reject([deleted, rebuilt, declare_run], "section-profile member 1 A")
+        self.reject([deleted, rebuilt, declare_member, declare_run, deleted, rebuilt], "section-profile member 1 A")
+        _, done = self.apply([deleted, rebuilt, declare_member, declare_run])
+        self.assertEqual([{"kind": "parameter-field", "parameterId": 0, "fieldId": 0}], done["deletedObjects"])
+        self.apply([put("member", member()), put("run", run()), deleted])
         self.assertEqual([], self.command("engineering-read")["state"]["parameters"])
 
     def test_exact_dump_load_zero_ids_empty_profile_and_fail_closed(self):
