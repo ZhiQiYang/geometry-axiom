@@ -100,14 +100,26 @@ class PanelFillSupport(unittest.TestCase):
             self.assertEqual(expected,self.algorithm(rectangles),"PF05_WIDTHS: per-side continuous coverage")
 
     def test_PF05_insufficient_can_save_and_X9_recomputes(self):
-        self.host();self.timbers()
-        p=self.parameter("1000");self.assertTrue(p["valid"],p)
-        self.assertTrue(self.command("engineering-confirm "+str(p["token"]))["ok"])
-        before=self.derived();self.assertTrue(all(not s["supported"] for s in before["support"]))
-        scene=self.command("dump")["text"];self.load_text(scene)
-        self.assertEqual(before,self.derived(),"PF05_SAVE: insufficient support is a result, never a validity gate")
-        self.assertNotIn('"effectiveSeams"',scene)
-        self.assertNotIn('"support"',scene)
+        # Genuine D7 primary between two legal boundary timbers. The central
+        # interval has exactly 8/8 or 7/9; boundary footprints remain in the union.
+        for center,left,right,green in [(100,8,8,True),(101,7,9,False)]:
+            self.host();key=pfh.PanelFillHost.key
+            for line in ["timber 1 27 30 role boundary","timber 2 27 30 role boundary",
+                         "place 1 on 10 at-face "+key([["e0",0,1]])+" +u +n",
+                         "place 2 on 10 at-face "+key([["e2",0,1]])+" +u +n",
+                         f"spec center {center}","guide 1 10 v spec:center","timber 3 16 30 role primary",
+                         "place 3 on 10 at-line guide 1 between t1 t2 +v +n"]:
+                self.assertTrue(self.command("line "+line)["ok"],"PF05_NATIVE_D7: "+line)
+            self.assertEqual([[0,27,100,900,True],[27,273,left,right,green],[273,300,100,900,True]],
+                             self.widths(),"PF05_NATIVE_WIDTHS: actual D7 footprint, not only a pure algorithm input")
+            p=self.parameter("9");self.assertTrue(p["valid"],p)
+            self.assertTrue(self.command("engineering-confirm "+str(p["token"]))["ok"])
+            self.assertEqual([[0,27,100,900,True],[27,273,left,right,False],[273,300,100,900,True]],
+                             self.widths(),"PF05_NATIVE_X9: 8/8 becomes insufficient without invalidating the legal fill")
+            before=self.derived();scene=self.command("dump")["text"];self.load_text(scene)
+            self.assertEqual(before,self.derived(),"PF05_SAVE: insufficient support is a result, never a validity gate")
+            self.assertNotIn('"effectiveSeams"',scene)
+            self.assertNotIn('"support"',scene)
 
     def test_PF06_positive_rational_comparison_and_rename_reorder(self):
         self.e1(125)
@@ -120,6 +132,7 @@ class PanelFillSupport(unittest.TestCase):
         self.assertTrue(p["valid"],p)
         self.assertTrue(self.command("engineering-confirm "+str(p["token"]))["ok"])
         self.assertEqual(old,self.derived(),"PF06_ID: names/order do not retarget threshold")
+        self.assertEqual([[0,300,8,8,False]],self.algorithm([(92,0,108,300)]),"PF06_ID: still uses field1=9, never reordered field2=1")
 
     def test_PF06_extreme_rational_does_not_overflow_comparison(self):
         self.e1(125)
