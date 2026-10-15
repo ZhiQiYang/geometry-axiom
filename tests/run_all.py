@@ -84,6 +84,7 @@ PY_NEEDS = {
     'test_mutation_freshness': [],
     'test_parameters_core': ['bridge', 'model-base'],
     'test_reference_contract': ['bridge'],
+    'test_recorded_api_receipts': [],
     'test_release_gate': [],
     'test_local_launcher': ['core', 'bridge', 'model-base'],
     'test_rule_case_workbench_http': ['bridge'],
