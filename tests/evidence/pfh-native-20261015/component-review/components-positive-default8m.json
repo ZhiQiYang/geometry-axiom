@@ -1,0 +1,54 @@
+{
+  "total": 32,
+  "failed": 3,
+  "errors": 0,
+  "skipped": 0,
+  "nativeExits": [
+    -11,
+    -11,
+    -11,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "failures": [
+    {
+      "test": "test_D10_grid_save_order_and_reopen (tests.test_panel_fill_host.PanelFillHost.test_D10_grid_save_order_and_reopen)",
+      "traceback": "Traceback (most recent call last):\n  File \"/tmp/geometry-209-segments/tests/test_panel_fill_host.py\", line 180, in test_D10_grid_save_order_and_reopen\n    self.assertTrue(self.command(\"line grid 1 on 10 u series 0 10 11\")[\"ok\"])\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/geometry-209-segments/tests/test_panel_fill_finish_surface.py\", line 59, in command\n    return self.bridge.command(text)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/geometry-209-segments/tests/_bridge.py\", line 137, in command\n    raise AssertionError('bridge closed: ' + self.stderr_text())\nAssertionError: bridge closed: \n"
+    },
+    {
+      "test": "test_D10_second_component_grid_subgrid_reopen_and_I23_rollback (tests.test_panel_fill_host.PanelFillHost.test_D10_second_component_grid_subgrid_reopen_and_I23_rollback)",
+      "traceback": "Traceback (most recent call last):\n  File \"/tmp/geometry-209-segments/tests/test_panel_fill_host.py\", line 248, in test_D10_second_component_grid_subgrid_reopen_and_I23_rollback\n    main=self.command(\"line grid 1 on 10 u 20 60 80 v 50\")\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/geometry-209-segments/tests/test_panel_fill_finish_surface.py\", line 59, in command\n    return self.bridge.command(text)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/geometry-209-segments/tests/_bridge.py\", line 137, in command\n    raise AssertionError('bridge closed: ' + self.stderr_text())\nAssertionError: bridge closed: \n"
+    },
+    {
+      "test": "test_D19_component_gap_and_hole_are_not_cell_area (tests.test_panel_fill_host.PanelFillHost.test_D19_component_gap_and_hole_are_not_cell_area)",
+      "traceback": "Traceback (most recent call last):\n  File \"/tmp/geometry-209-segments/tests/test_panel_fill_host.py\", line 275, in test_D19_component_gap_and_hole_are_not_cell_area\n    self.assertTrue(self.command(\"line grid 1 on 10 u 40 60 v 50\")[\"ok\"])\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/geometry-209-segments/tests/test_panel_fill_finish_surface.py\", line 59, in command\n    return self.bridge.command(text)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/geometry-209-segments/tests/_bridge.py\", line 137, in command\n    raise AssertionError('bridge closed: ' + self.stderr_text())\nAssertionError: bridge closed: \n"
+    }
+  ]
+}

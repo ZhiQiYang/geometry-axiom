@@ -243,6 +243,69 @@ class PanelFillHost(unittest.TestCase):
         self.apply([dict(op="put-derived-placement",value=dict(id=10,fillId=1,h=30))])
         return self.read()["state"]["derivedPlacements"][0]
 
+    def test_D10_second_component_grid_subgrid_reopen_and_I23_rollback(self):
+        self.region(extra="beam 20 along x from 40 to 60 at 50 width 120 depth 30 top 39\n", obstacles=["b20"])
+        main=self.command("line grid 1 on 10 u 20 60 80 v 50")
+        self.assertTrue(main["ok"],main)
+        child=self.command("line subgrid 2 parent 1 cell u line:1 line:2 v min line:0 divisions u 2 v 2")
+        self.assertTrue(child["ok"],"PFH_COMPONENT_CELL: second component has positive area: "+str(child))
+        self.assertTrue(self.command("line guide 9 10 v grid:2:u:0")["ok"])
+        refs=self.command("references")
+        grids={g["id"]:g for g in refs["grids"]}
+        self.assertEqual([20,60,80],grids[1]["u"])
+        self.assertEqual(dict(u=[60,80],v=[0,50]),grids[2]["bounds"])
+        self.assertEqual([70],grids[2]["u"])
+        self.assertEqual([25],grids[2]["v"])
+        self.assertEqual([[[70,0],[70,50]]],next(l for l in grids[2]["lines"] if l["axis"]=="u")["segments"])
+        self.assertEqual([[[0,50],[40,50]],[[60,50],[100,50]]],next(l for l in grids[1]["lines"] if l["axis"]=="v")["segments"])
+        text=self.command("dump")["text"]
+        self.load_text(text,"second-component-grid.scene")
+        self.assertEqual(text,self.command("dump")["text"])
+        self.assertEqual(refs,self.command("references"))
+        before=self.snapshot()
+        # The surviving index moves out of material; the child must not switch component.
+        invalid=self.command("line beam 20 along x from 40 to 85 at 50 width 120 depth 30 top 39")
+        self.assertFalse(invalid["ok"],"PFH_COMPONENT_I23: reject a now-empty referenced parent cell")
+        self.assertEqual(before,self.snapshot())
+        self.assertFalse(self.command("line subgrid 2 parent 1 cell u line:1 line:2 v min line:0 divisions u 1 v 2")["ok"],"PFH_COMPONENT_I23: guide index cannot disappear")
+        self.assertEqual(before,self.snapshot())
+
+    def test_D19_component_gap_and_hole_are_not_cell_area(self):
+        self.region(extra="beam 20 along x from 40 to 60 at 50 width 120 depth 30 top 39\n", obstacles=["b20"])
+        self.assertTrue(self.command("line grid 1 on 10 u 40 60 v 50")["ok"])
+        before=self.snapshot()
+        self.assertFalse(self.command("line subgrid 2 parent 1 cell u line:0 line:1 v min line:0 divisions u 2 v 2")["ok"],"PFH_COMPONENT_GAP: bbox overlap is zero material area")
+        self.assertEqual(before,self.snapshot())
+        self.region(extra="beam 20 along x from 40 to 60 at 50 width 120 depth 30 top 39\nbeam 21 along x from 70 to 90 at 50 width 20 depth 30 top 39\n", obstacles=["b20","b21"])
+        self.assertTrue(self.command("line grid 1 on 10 u 70 90 v 40 60")["ok"])
+        before=self.snapshot()
+        self.assertFalse(self.command("line subgrid 2 parent 1 cell u line:0 line:1 v line:0 line:1 divisions u 2 v 2")["ok"],"PFH_COMPONENT_HOLE: subtract holes in every component")
+        self.assertEqual(before,self.snapshot())
+
+    def test_R41_scene_render_and_pick_cover_second_component_without_gap(self):
+        self.region(extra="beam 20 along x from 40 to 60 at 50 width 120 depth 30 top 39\n", obstacles=["b20"])
+        self.assertTrue(self.command("line spec mid 50")["ok"])
+        self.assertTrue(self.command("line guide 9 10 u spec:mid")["ok"])
+        render=self.command("render")
+        self.assertTrue(render["ok"],render)
+        # DrawTarget style 2 is STYLE_SURFACE; inspect actual bottom-view polygons.
+        view=-1;polys=[]
+        for op in render["ops"]:
+            if op["op"]=="begin": view+=1
+            if view==2 and op["op"]=="poly" and op["s"]==2: polys.append(op["p"])
+        self.assertEqual([[0,0,40,0,40,100,0,100],[60,0,100,0,100,100,60,100]],polys,"PFH_COMPONENT_RENDER: draw both true components, never their bbox")
+        hit=self.command("pick 2 80 50 1")
+        self.assertTrue(hit["ok"] and not hit["none"],hit)
+        self.assertIn("參考線9",hit["desc"])
+        hover=[op for op in hit["hover"] if op["op"]=="line"]
+        self.assertEqual([(0,50,40,50),(60,50,100,50)],[(o["x0"],o["y0"],o["x1"],o["y1"]) for o in hover])
+        gap=self.command("pick 2 50 50 1")
+        # The obstacle itself wins the existing scene pick order; it is never guide 9.
+        self.assertEqual(-1,gap["guide"],"PFH_COMPONENT_PICK: excluded strip is not a guide segment")
+        text=self.command("dump")["text"];self.load_text(text,"component-render.scene")
+        self.assertEqual(render,self.command("render"))
+        self.assertEqual(hit,self.command("pick 2 80 50 1"))
+
     def test_R41_multiple_components_share_one_host_and_preserve_gap(self):
         host = self.region(extra="beam 20 along x from 40 to 60 at 50 width 120 depth 30 top 39\n", obstacles=["b20"])
         self.assertEqual([[[0,0],[40,0],[40,100],[0,100]], [[60,0],[100,0],[100,100],[60,100]]],

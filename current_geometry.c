@@ -864,7 +864,8 @@ static void placement_outline(
 {
     if (p->derived_fill_id) {
         memset(out,0,sizeof *out);
-        if (p->component_count) *out=p->components[0].outline;
+        if (boundary) *out=boundary->outline;
+        else if (p->component_count) *out=p->components[0].outline;
         return;
     }
     if (boundary != NULL) {
@@ -2797,6 +2798,11 @@ static void scene_draw_view(
         const SpaceBoundarySurface *boundary =
             scene_placement_boundary(scene, surface);
 
+        /* R41: a surface is a component set. Draw every real loop; guides and
+         * grids below are clipped once against the whole set. */
+        bool surface_has_area = false;
+        for(size_t component=0;component<(surface->derived_fill_id?surface->component_count:1);++component) {
+        if(surface->derived_fill_id) boundary=&surface->components[component];
         /* 1. 有效輪廓（邊界面的外輪廓，或自帶矩形） */
         PolygonLoop2 outline;
         placement_outline(surface, boundary, &outline);
@@ -2809,7 +2815,8 @@ static void scene_draw_view(
         }
 
         /* 輪廓在此視圖中是不是有面積（否則它只是一條線，邊與參考線的文字就不標）。 */
-        bool surface_has_area = view_poly_area2(outline_pts, outline.count) != 0;
+        bool component_has_area = view_poly_area2(outline_pts, outline.count) != 0;
+        surface_has_area = surface_has_area || component_has_area;
 
         scene_emit_polygon(
             target, bounds, outline_pts, outline.count, STYLE_SURFACE);
@@ -2850,7 +2857,7 @@ static void scene_draw_view(
             scene_emit_line(target, bounds, a, b,
                 outline.fixity[i] == EDGE_FIXED ? STYLE_EDGE : STYLE_EDGE_FREE);
 
-            if (!surface_has_area) {
+            if (!component_has_area) {
                 continue;
             }
 
@@ -2876,6 +2883,8 @@ static void scene_draw_view(
             scene_emit_text(target, at, STYLE_LABEL, label, a.x == b.x ? -90 : 0);
         }
 
+        }
+        boundary=scene_placement_boundary(scene,surface);
         /* 4. 這片面的參考線：虛線，多邊形下可能被截成多段 */
         for (size_t i = 0; i < scene->guide_count; ++i) {
             const GuideLine *guide = &scene->guides[i];
