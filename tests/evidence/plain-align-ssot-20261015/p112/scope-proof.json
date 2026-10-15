@@ -1,0 +1,33 @@
+{
+  "base": "79412a858f712981fa0ba15a6b293c3e0bf06f21",
+  "changedPlainSections": [
+    "D1",
+    "I10",
+    "I53",
+    "R45"
+  ],
+  "headerChange": [
+    [
+      [
+        "> **這批規格尚未實作於現行 C 核心或物件畫布**；下文解釋的是實作必須遵守的契約，不是已上線功能。"
+      ],
+      [
+        "> 條文採納不等於功能已完成；C 核心、建模執行器與介面已隨 PR #167 / #169 合入，同源真瀏覽器驗收仍在進行（BACKLOG〈Q38 斷面拉伸完整產品接線〉），完成前不得宣稱完整支援。"
+      ]
+    ]
+  ],
+  "all204ClauseBodiesIdentical": true,
+  "lockedClauseIds": [
+    "D15",
+    "R6",
+    "R8",
+    "R12"
+  ],
+  "lockedClauseObjectsIdentical": true,
+  "humanLockedLinesUnchanged": true,
+  "rawGeneratedLockedLinesChanged": 2,
+  "commentsUnchanged": true,
+  "commentCount": 5,
+  "canonicalProducedBySync": true,
+  "canonicalSha256": "1c111aab0731c183c293672db2e8a11d48ea067c1b70f87e821150cfad9f5ee0"
+}
