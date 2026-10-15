@@ -14,6 +14,8 @@
 
 內部對抗審查已關閉 D19 的單軸 `n=1` 與 R44 的普通值快照可編輯問題。獨立驗證員另核對來源全文、提案一致性、登錄計數與未改正式規範。這些是 P0 審查，不是 Claude 最終品質審查。
 
+[採納前置手冊](ADOPTION-RUNBOOK.md)另核對版本配對、舊包能力年代閘門、31 個見證及閱讀器。現行同步器不呈現前言／§四，故 P1 必須原位合併既有兩份說明、驗新分層總契約可見；全篇 hash 綠燈不能代替此驗收。這是批准後的執行準備，未改待批准的逐條 payload。
+
 ## 測試清冊
 
 | 項目 | 基準 | P0 | 差異 |
@@ -36,14 +38,14 @@ counted checks 混合測試、assertions 與場景，不能改稱 2856 個端到
 |---|---|---|
 | 第一輪完整基準，`tests/run_all.py --build` | 基準 | exit 1：發現 2821，pass 2731，fail 89，skip 1；node:tests-js 缺裸 `python`，該 suite 比預期少發現 6 項 |
 | 補私有 `python → python3` PATH alias 後只跑 node:tests-js，`--build --only node:tests-js` | 同一基準，來源未改 | 704／704，exit 0 |
-| 補 alias 後完整基準重跑，`tests/run_all.py --build` | 同一基準 | 執行中，尚無完整通過結論 |
-| P0 完整候選，`tests/run_all.py --build --update-expected` | P0 | 執行中；產生的 expected JSON 必須逐項等於提交版，不能以更新清冊掩蓋測試增減 |
+| 補 alias 後完整基準重跑，`tests/run_all.py --build` | 同一基準 | exit 0：88 suites，2827 counted＝2826 pass／0 fail／1 Windows-only GDI skip；14575 個 tracked 檔前後完全相同 |
+| P0 完整候選，`tests/run_all.py --build --update-expected` | P0 | exit 0：89 suites，2856 counted＝2855 pass／0 fail／1 Windows-only GDI skip；產生的 expected JSON 與提交版全等，既有 88 項不變 |
 
-保留第一輪環境失敗紀錄，不以單一 suite 復測冒稱完整基準通過。候選 `--update-expected` 若只改 JSON 排版，須先證明解析後完全相同，再在隔離 checkout 回復原位元組並記錄；若資料不同即屬未解差異。
+保留第一輪環境失敗紀錄及單一 suite 復測；完整基準的通過來自另一輪真正全跑。四輪的原始 aggregate、summary、exit、兩份 Node 詳細 log 及候選 expected 原件／再生件位於 [native 證據目錄](evidence/p0-native/README.md)。候選 `--update-expected` 只改 JSON 排版：先保全再生 raw bytes、驗解析後完全相同，才在隔離 checkout 回復原位元組；14580 個 tracked 檔前後 hash 全等、status 皆空。run_all、expected 語意比對、tracked 來源比對及 combined exit 均為 0。
 
 ## 尚未完成的驗收
 
-- 全量 native 最終結果與精簡原始收據尚待寫回。
+- P0 完整 native 已通過；後續實作須以其實際 source SHA 重新驗證，不能沿用 P0 收據。
 - 六個瀏覽器 job 未在 P0 執行。P0 不改產品介面；後續實作仍須依改動跑真實 app 操作，正式七項列車由 Claude 核收。
 - 基準 main 沒有 `geometry-core/framing-template/oracle/`，因此 oracle selftest 未跑，不算通過。
 - 原生突變帳本 freshness check exit 0（42 killed／1 crashed／4 equivalent／3 retired，無 stale）；尚未全量重產。解耦實作後必須重產。
