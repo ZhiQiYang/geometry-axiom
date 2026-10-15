@@ -1,4 +1,18 @@
-# P141 子命令結果與排他性限制（尚待Claude裁決）
+# P150 測試補強與完整60筆帳本
+
+[Claude P150](https://github.com/ZhiQiYang/geometry-axiom/pull/193#issuecomment-6201649988)核收P141/P142產品邏輯及舊PR層子命令事實；[續審](https://github.com/ZhiQiYang/geometry-axiom/pull/193#issuecomment-6202605616)核對本輪M1–M3並要求全表check0。歷史P141 R1/R2 WSL1/1與foreign限制未改，正式排他驗收歸第18班。
+
+受測 `4b1d09e083a2b834e369cdd5dbd02cd05cbf765b`，只改5個tests檔：M1註解改成完整候選驗證；M2反例為 `[delete 1, put 1(=@9:1), unbind, put 9(99)]`，最終圖可解析，unbind當下缺9仍必須拒絕，M69錯讀快取27會錯誤接受並被否定斷言抓到；M3具名 `DeletedSourceUnbind.test_delete_then_unbind_has_identical_dump_to_legal_order` 守住只刪未重建得27，新增反方向M70與20方法還原集合。產品程式、SSOT、正典與期待值未改。
+
+90方法已補齊：P150 R1 core40中39通過／1模型案例因控制環境漏adapter而明確skip，實際WSL1；R2官方建adapter只補該1例，再跑deleted-unbind14與assembly36全部過，沒有重跑39。M61–M70十組真bridge變異皆由具名行為斷言殺死，errors／skip0；20方法基準綠，每組逐byte還原、官方重編20方法再綠，還原binary與基準同byte。實際失敗子案例數 `{"M61":1,"M62":2,"M63":1,"M64":1,"M65":2,"M66":1,"M67":1,"M68":6,"M69":1,"M70":1}`。
+
+依Claude續審6202605616要求全表check0，R3再對同一來源執行核心47個有效變異的裁判（3筆退役只核定義），刷新原先因tool_hash改變而過期的紀錄。只複製P141已封存且來源閉包／變異／編譯指紋／ELF SHA完全相符的48份binary到新cache；實際日誌確認48次沿用，沒有宣稱重編。bridge10帳本列逐字相同、未重跑。最終60筆：52 killed／1 crashed／4 equivalent／3 retired，stale／blocked／invalid／survived／unrun皆0，WSL全表`--check` exit0；Windows獨立全表check亦0。
+
+P150三段實際WSL退出 `[1, 1, 0]`，原值及日誌全保留。R2回歸及十組突變完成，但子表檢查誤用完整60筆ledger，把其餘50個id視為不在子表而退出1；R3依最新要求刷新並驗完整60筆，沒有重跑bridge10或回歸90。三段foreign取樣皆空，四共享runner逐byte不變。獨立唯讀核對291個Git來源、1500個bridge sidecar來源引用、全部bridge原始stdout/stderr/binary/sidecar及47份core binary指紋；R3 receipt SHA `9df1270e7d8a8b14457dc2a6e52321d1fc22888bfe9ca553ecb268cb6ea49df0`。
+
+原件 `D:/geometry-axiom-work/board-local-codex/pr193-p150-native-r1`、`pr193-p150-native-r2`、`pr193-p150-core-refresh-r3` 及各自queue；核對 `pr193-p150-full60-verified-r1/certificate.json`。這是同一4b1來源分段完成的PR層證據，非完整native或正式七項。固定整合head的全表重產、官方正典sync/check/原41與七項仍歸第18班。
+
+## 歷史P141交核紀錄（P150已限定採計，原始限制保留）
 
 受測來源 `2a54a7960ae53f57e88544175cca01594a1648ab`；本次證據提交只更新帳本、官方正典產物、實測期待值及本紀錄。17個定向Python suite共300方法全過（含core40、誠實性32、PF-1 22/PF-2 17、assembly36），另原生場景143、integrity130皆exit0。空私有cache實跑全表59變異，判決 `killed=51, crashed=1, equivalent=4, retired=3`；`--check`、官方sync、正典`--check`與原41全0。R2實際WSL1：所有子命令exit0，但最後排他性assert失敗。405次取樣觀察到外來geo261基準/候選的_unittest_runner、run_all.py與cc1等，exclusive_during_run=false；完整原字典保留，不認證整輪排他綠燈，交Claude裁決、不自行重跑。首輪R1實際WSL1，268方法過、純32有一個DrvFS奈秒時間戳前提失敗，原件保留，R2只於私有16MiB tmpfs重跑32，不重跑268，原始退出與日誌不改寫。這是定向子命令的事實結果，不是已驗收的排他證明、完整native或正式七項。
 
