@@ -51,7 +51,7 @@ direct 解除只在該有序步驟依原生參數 evaluator 重算必要欄位�
 
 `measure_capture_memory.py` 用真核心型別及同一份 ParameterState 宣告移除捕捉成員的對照量測。
 雲端 Linux x86-64／gcc 14.2 ABI 下，GridCardCapture 為 40 bytes，256 格陣列為 10,240 bytes，count 為 8 bytes；每份 World 固定增加 10,248 bytes。
-World 共 3,178,472 bytes、ParameterState 為 813,632 bytes；這些是此基底與 ABI 的實測大小，不是跨平台 ABI 保證。
+P-146 量測來源 `417ea06d` 的 World 共 3,178,472 bytes、ParameterState 為 813,632 bytes；這些是該來源與 ABI 的實測大小，不是後續合入 main 或跨平台 ABI 的大小保證。
 `HISTORY_MAX=32`，Undo 與 Redo 兩個固定陣列共 64 槽，捕捉成員合計增加 655,872 bytes；正式 World、預覽及其他快照的額外空間另計，不能把這個數字當成整個程序的增加量。
 上限 256 對齊 `ENG_OPERATION_MAX=256`：每個有序操作最多產生一筆整組 direct capture；parameter-package 不允許插入解除。
 `parameters_clear_candidate_scratch` 會在 staging／比較／history 前清零陣列及 count；歷史不保留捕捉內容，但 World 內的固定配置空間仍隨每份快照存在，沒有宣稱記憶體成本為零。
@@ -70,6 +70,17 @@ JSON 模型包仍使用 geometry-model-package/1，新增明示能力；完整 c
 依 P-133，幾何走訪不必列網格；model_base.c 只新增能力序列化，沒有修改幾何依賴折疊。
 verify_package 仍從來源重算幾何及摘要；不得輸出兩個常數或兩份 ParameterRef 代替 CardReference。
 geometry-parameters/1 的匯出／匯入仍只有卡片閉包，不包含網格，不新增 D55 根種類。
+
+### 採納前模型包的版本防線（P-142 B1）
+
+依 #256 已採納的 D64／I74／R60，執行器版本指向提交 A `b3c79615` 及其 LF 條文雜湊。
+所有已知採納前的相容版本（包括 `PRE_CARD_REFERENCE_AXIOM_VERSIONS`）只有在未宣告且未使用整卡能力時才相容。
+`verify_package` 在重建之前檢查 manifest.capabilities 與 base_scene 的能力宣告／整卡語法；任一出現 `grid-card-reference/1` 語意即回 `UNSUPPORTED/AXIOM_VERSION`。
+兩處能力宣告都被移除但仍有 card-reference／card 語法，也不能藉此套用舊版公理。
+現行版本的完整整卡包仍可原樣重建；未知或混搭版本仍由原有精確版本配對拒絕。
+
+`tests/test_engineering_model_compatibility.py` 的五個具名方法涵蓋三條拒絕路徑、現行完整包與全部舊版無整卡對照。
+`run_axiom_mutations.py --output <新目錄>` 實際撤除整道防線、漏查 manifest、漏查來源或豁免最後一個採納前版本家族；每筆要求具名斷言轉紅、沒有 error／skip，逐 byte 還原後完整相容性 suite 回綠。
 
 ## 驗收邊界
 
