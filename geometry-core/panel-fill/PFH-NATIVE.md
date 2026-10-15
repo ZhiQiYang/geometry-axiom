@@ -37,6 +37,8 @@ F 邊繼承 fixity，切邊 FIXED；共線邊僅在方向與 fixity 一致時合
 
 衍生面不接受一般 e/h 索引或頂點引用；零個／多個完整匹配均拒絕。
 多分量共用既有 contains、跨距、擋面、D17／I19／I20／I21 和碰撞檢查，沒有角色豁免或 bbox 補面。
+D10／I23 的座標範圍取全部分量的聯合外接範圍，索引語意不變；D19 的 C∩F 正面積逐分量扣孔判定，
+缺口或第二分量的孔不算材料。DrawTarget 逐分量畫真實輪廓，guide／grid 線只裁切一次完整集合，guide pick／hover 沿用同一可見段。
 I53 要求 B=h 且 +n；只改 h 使既有 B 失效會拒絕。host 交易可同批明改 B source／override、參數，
 其 before／after dependencies 在確認前公開；不自動改 B 或刪除角材。
 D28 application 與 D38 live placement host 明確拒絕；現有 modeling executor 仍不支援 panel-fill/1，
@@ -49,8 +51,9 @@ D28 application 與 D38 live placement host 明確拒絕；現有 modeling execu
 來源定義最多 1023 bytes、完整鍵最多 511 bytes；超限明確 I33 CAPACITY，拒絕整筆，不截短。
 原生測試使用 16 MiB stack。
 
-`tests/test_panel_fill_host.py` 涵蓋 29 題，包括 R15 的拓撲／深度／fixity／總段數案例、
-來源型別、0 id、第二分量、容量、原子 h/B 更新、拒絕回滾、保存／重開及 Undo／Redo。
+`tests/test_panel_fill_host.py` 涵蓋 32 題，包括 R15 的拓撲／深度／fixity／總段數案例、
+來源型別、0 id、第二分量 grid／subgrid 的重開及 I23 回滾、實際 render／pick、
+容量、原子 h/B 更新、拒絕回滾、保存／重開及 Undo／Redo。
 原四題紅基準保留；其中 Undo／Redo 的橋接器指令更正為既有 `line undo`／`line redo`。
 
 `python3 tests/pfh_witness.py --out /tmp/pfh-witness` 會保存 #221 的真衍生宿主原生見證、
