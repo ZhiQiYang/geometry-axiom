@@ -5,8 +5,9 @@ import sys
 
 import framing_oracle as fo
 
-COLORS = {"boundary": "#2e7d32", "rc_parallel": "#00796b", "main": "#1565c0", "seam": "#e65100", "mark": "#f9a825"}
-NAMES = {"boundary": "RC 邊界角材(貼牆、柱面)", "rc_parallel": "平行主支的 RC 面角材(延伸到兩端牆)",
+COLORS = {"boundary": "#2e7d32", "rc_parallel": "#00796b", "main": "#1565c0", "seam": "#e65100", "mark": "#f9a825", "ext": "#8bc34a"}
+NAMES = {"boundary": "RC 邊界角材(貼牆、柱面)", "rc_parallel": "平行主支的 RC 面角材(柱面延伸到兩端牆;外牆在凹角處停在牆端)",
+         "ext": "邊界角材越過凹角的延伸段(停在最近的主支側面)",
          "main": "主支(板縫下,整支連續)", "seam": "副支(板端縫下)", "mark": "副支(記號位置)"}
 CONFLICT_TEXT = {
     "MAIN_LINE_CROSSES_RC": "主支線穿過 RC 後又回到室內,主支會被切斷",
@@ -56,7 +57,11 @@ def svg(room, res, width=620):
     for t in res["timbers"]:
         r = t["rect"]
         k = t["kind"] if t["kind"] != "secondary" else t["role"]
-        out.append(f'<rect x="{r[0]}" y="{r[1]}" width="{r[2]-r[0]}" height="{r[3]-r[1]}" fill="{COLORS[k]}"><title>{html.escape(NAMES[k])} {list(r)}</title></rect>')
+        note = "(核心角色 custom、優先級 3)" if t.get("core_role") == "custom" else ""
+        out.append(f'<rect x="{r[0]}" y="{r[1]}" width="{r[2]-r[0]}" height="{r[3]-r[1]}" fill="{COLORS[k]}"><title>{html.escape(NAMES[k] + note)} {list(r)}</title></rect>')
+        for x in t.get("ext", []):
+            q = fo.mk(a, tuple(x), fo.rng(r, b))
+            out.append(f'<rect x="{q[0]}" y="{q[1]}" width="{q[2]-q[0]}" height="{q[3]-q[1]}" fill="{COLORS["ext"]}"><title>{html.escape(NAMES["ext"])} {list(q)}</title></rect>')
     for c in res["conflicts"]:
         for r in c.get("rects", []):
             out.append(f'<rect x="{r[0]-30}" y="{r[1]-30}" width="{r[2]-r[0]+60}" height="{r[3]-r[1]+60}" fill="none" stroke="var(--bad)" stroke-width="22"/>')

@@ -10,7 +10,17 @@ import framing_oracle as fo
 EXTRA = {
     "例:3700×2000 矩形(最後一條縫挪動)": {"outer": [[0, 0], [3700, 0], [3700, 2000], [0, 2000]]},
     "例:940×2000 矩形(第一條縫就要挪)": {"outer": [[0, 0], [940, 0], [940, 2000], [0, 2000]]},
+    "例:縫寬 3 的 3700×4000 矩形(反向起鋪首縫取上界)": {"outer": [[0, 0], [3700, 0], [3700, 4000], [0, 4000]], "params": {"gap": 3}},
 }
+
+
+def kind_label(t):
+    """golden 裡的種類標籤。頂在凹角延伸段上的沿牆料標 rc_parallel:custom(核心角色 custom、優先級 3)。"""
+    if t["kind"] == "secondary":
+        return "secondary:" + t["role"]
+    if t.get("core_role") == "custom":
+        return t["kind"] + ":custom"
+    return t["kind"]
 
 
 def snapshot(spec):
@@ -18,7 +28,7 @@ def snapshot(spec):
     out = {"params": p, "rooms": {}}
     for name, room in dict(spec["rooms"], **EXTRA).items():
         rows = []
-        for l, res, fails in fo.solve(room, p):
+        for l, res, fails in fo.solve(room, dict(p, **room.get("params", {}))):
             assert not fails, (name, fo.layout_name(l), fails)
             rows.append({
                 "layout": l,
@@ -27,7 +37,7 @@ def snapshot(spec):
                 "conflict_codes": sorted({c["code"] for c in res["conflicts"]}),
                 "seams_a": sorted(res["seams_a"]),
                 "seams_b": sorted(res["seams_b"]),
-                "timbers": sorted([t["kind"] if t["kind"] != "secondary" else "secondary:" + t["role"], list(t["rect"])]
+                "timbers": sorted([kind_label(t), list(t["rect"])]
                                   for t in res["timbers"]) if not res["conflicts"] else [],
             })
         out["rooms"][name] = {"room": room, "layouts": rows}
