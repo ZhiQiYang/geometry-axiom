@@ -187,6 +187,7 @@ class GridCardReference(unittest.TestCase):
         self.apply([exact]); self.assertEqual((12, 3), self.lengths(), 'FIELD_GRAPH_AND_PRECISION exact fractional AST')
         self.reject([parameter(b='=3/2*2')], 'UNIT', 'FIELD_GRAPH_AND_PRECISION unit')
         self.reject([parameter(b='=9223372036854775807 mm*2')], 'PRECISION', 'FIELD_GRAPH_AND_PRECISION precision')
+        self.reject([parameter(b='=1 mm/9223372036854775807/2')], 'PRECISION', 'FIELD_GRAPH_AND_PRECISION denominator precision')
         self.reject([parameter(b='=@10:8')], 'CYCLE', 'FIELD_GRAPH_AND_PRECISION cycle')
         self.apply([parameter(b='=@11:3'), parameter(identifier=11, b='=@10:3')])
         self.assertEqual((12, 12), self.lengths(), 'FIELD_GRAPH_AND_PRECISION cross-card acyclic')
@@ -206,6 +207,10 @@ class GridCardReference(unittest.TestCase):
         self.assert_source(source(11))
         self.apply([card(12, 'Qbad', [field(3, '25'), field(8, '45', 'count')])])
         self.reject([{'op': 'set-grid-card-reference', 'id': 4, 'value': source(12)}], 'not a dimension', 'ATOMIC_REBIND')
+        self.apply([parameter(identifier=13, a='20', b='40')])
+        before = self.dump(); preview = self.request([{'op': 'set-grid-card-reference', 'id': 4, 'value': source(13)}])['preview']
+        self.assertEqual(source(13), preview['after']['geometry']['gridSystems'][0]['cardReference'], 'ATOMIC_REBIND same values different card')
+        self.assertEqual(before, self.dump()); self.command(f"engineering-cancel {preview['token']}")
 
     def test_CR13_EXPLICIT_UNBIND_ORDERED_CAPTURE(self):
         self.seed(extras=[field(9, '3')]); self.apply([grid(u='repeat-panel card gap param:10:9 from -5'), unbind('parameter')])
@@ -221,6 +226,8 @@ class GridCardReference(unittest.TestCase):
         p, _ = self.apply([unbind(), parameter(a='18', extras=[field(9, '3')])])
         self.assertEqual([12, 30], p['preview']['cardCaptures'][0]['values'], 'EXPLICIT_UNBIND earlier capture preview')
         self.assertEqual((12, 30), self.lengths(), 'EXPLICIT_UNBIND must not capture future value')
+        self.apply([{'op': 'set-grid-card-reference', 'id': 4, 'value': source()}])
+        self.reject([{'op': 'delete-parameter', 'id': 10}, unbind(), parameter(extras=[field(9, '3')])], 'MISSING', 'EXPLICIT_UNBIND cannot borrow future/deleted sources')
 
     def test_CR14_MODE_TRANSITION(self):
         self.seed(); self.apply([grid(v='repeat-panel card gap 3 from 7')]); self.assertEqual((12, 30), self.lengths())
@@ -253,9 +260,25 @@ class GridCardReference(unittest.TestCase):
         self.seed(); self.apply([grid(u='repeat -5 card stagger 6')]); self.binding_fixture()
         self.apply([parameter(a='18')]); self.assertEqual((-2, 1), tuple(map(int, self.command('objects')['gridBindings'][0]['cell'])))
         self.reject([parameter(a='6')], '整數倍', 'INDEX_AND_DOWNSTREAM stagger')
+        before = self.state(); r = self.command('line grid-source-rule 4 create name-hex 52 selector all-cells divide 2 2')
+        self.assertFalse(r.get('preview', {}).get('valid', r.get('ok')), 'INDEX_AND_DOWNSTREAM stagger cannot gain source subgrid')
+        self.assertIn('SOURCE_KIND', rejection_reason(r)); self.assertEqual(before, self.state())
         # D19a rules retain keys when the parent's actual length changes.
         self.apply([grid()]); self.apply_line('grid-source-rule 4 create name-hex 52 selector all-cells divide 2 2')
+        self.apply_line('placement 2 on boundary 2 origin 0 0 0 u +x v +y')
+        self.apply_line('grid 12 on 2 from-binding 2')
+        for line in ['timber 90 2 4 role boundary', 'place 90 on 2 at-face e0 +u +n',
+                     'timber 91 2 4 role boundary', 'place 91 on 2 at-face e2 +u +n',
+                     'guide 50 2 v gridrule:12:4:1:-1:1:u:0',
+                     'timber 1 2 4 role primary', 'place 1 on 2 at-line guide 50 +v +n']:
+            self.apply_line(line)
+        timber = lambda: next(t for t in self.command('references')['timbers'] if t['id'] == 1)
+        self.assertEqual(118, timber()['geometry']['centerline'], 'INDEX_AND_DOWNSTREAM original rule coordinate')
+        anchor = timber()['definition']['anchor']
         before = self.systems()[4]['rules']; self.apply([parameter(a='20')]); self.assertEqual(before, self.systems()[4]['rules'])
+        self.assertEqual(120, timber()['geometry']['centerline'], 'INDEX_AND_DOWNSTREAM downstream recomputed')
+        self.assertEqual(anchor, timber()['definition']['anchor'], 'INDEX_AND_DOWNSTREAM source-rule key and signed cell remain')
+        self.assertIn('gridrule:12:4:1:-1:1:u:0', self.dump(), 'INDEX_AND_DOWNSTREAM exact rule-line identity')
 
     def test_CR17_CANDIDATE_LIFECYCLE(self):
         self.seed()
@@ -291,7 +314,8 @@ class GridCardReference(unittest.TestCase):
         self.apply_line('redo'); self.assert_source()
 
     def test_CR19_CARD_SAVE_ROUNDTRIP(self):
-        self.seed(); self.apply([grid(identifier=5)]); before = self.dump()
+        self.seed(extras=[field(9, '3')]); self.apply([grid(u='repeat param:10:9 card'), grid(identifier=5)])
+        self.binding_fixture(); before = self.dump()
         path = self.directory / 'card.scene'; path.write_text(before, encoding='utf-8')
         self.command('reset'); self.assertTrue(self.command('loadfile ' + str(path))['ok'])
         self.assertEqual(before, self.dump(), 'CARD_SAVE_ROUNDTRIP full definitions')
