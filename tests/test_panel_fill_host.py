@@ -202,7 +202,8 @@ class PanelFillHost(unittest.TestCase):
                 # P-103 retains the independent original one-footprint algorithm input.
                 old=support(layout,[(90,0,120,300)])
                 self.assertEqual([[0,50,10,20],[50,100,10,5],[100,300,10,20]] if x==105 else [[0,300,10,20]],old)
-                self.assertIsNone(layout["support"],"PF-H does not claim PF-3 runtime support output")
+                self.assertEqual(expected,[[*s["range"],s["left"],s["right"]] for s in layout["support"]],
+                                 "PF3_NATIVE_ORACLE: runtime must agree with PF-H independent oracle")
                 text=self.command("dump")["text"];self.load_text(text,"legal.scene")
                 self.assertEqual(native,self.read()["state"])
                 self.assertEqual(text,self.command("dump")["text"])

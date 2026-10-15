@@ -3906,6 +3906,7 @@ static uint64_t g_definition_revision;
 static char g_engineering_error[256];
 static bool sp_rebuild(World *,char *,size_t);
 static bool fs_rebuild(World *,char *,size_t);
+static bool pf_support_rebuild(const World *);
 static bool dp_rebuild(World *);
 static bool dp_edge_resolve(const World *,const PlacementSurface *,const char *,int *,int *);
 static bool dp_edge_key(const World *,const PlacementSurface *,size_t,int,size_t,char *,size_t);
@@ -8787,6 +8788,10 @@ static bool world_revalidate_candidate(World *world,World *candidate)
         return false;
     }
 
+    if (!pf_support_rebuild(candidate)) {
+        set_revalidate_error(g_engineering_error); return false;
+    }
+
     for (size_t i = 0; i < candidate->space_count; ++i) {
         const Space *s = &world->spaces[i];
         if (s->boundary_count == 0) {
@@ -10166,6 +10171,7 @@ static bool apply_move_line(const char *p, int n, char **t, int c, World *w)
 #include "geometry-core/finish_surfaces.inc"
 #include "geometry-core/panel_fill_layout.inc"
 #include "geometry-core/derived_placements.inc"
+#include "geometry-core/panel_fill_support.inc"
 
 
 /* space <id> boundary <面id> <面id> [面id ...]：建構子吃邊界面清單，
