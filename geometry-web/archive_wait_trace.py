@@ -41,12 +41,14 @@ def main(destination):
                     complete = rows[-1]
                     begun = {r['traceRequestId'] for r in rows if r['stage'] == 'request_begin'}
                     ended = {r['traceRequestId'] for r in rows if r['stage'] == 'request_end'}
-                    valid = (run_id and all(r.get('traceRunId') == run_id for r in rows)
+                    count_keys = ('droppedEvents', 'writeErrors', 'writtenEvents', 'acceptedEvents')
+                    valid_counts = all(type(complete.get(key)) is int and complete[key] >= 0 for key in count_keys)
+                    valid = (valid_counts and run_id and all(r.get('traceRunId') == run_id for r in rows)
                              and rows[0]['stage'] == 'trace_start' and complete['stage'] == 'trace_complete'
                              and complete.get('incomplete') is False
-                             and complete.get('droppedEvents', 0) == 0 and complete.get('writeErrors', 0) == 0
-                             and complete.get('writtenEvents', len(rows)-1) == len(rows)-1 and begun == ended)
-                    valid = valid and complete.get('acceptedEvents', len(rows)-2)+1 == complete.get('writtenEvents', len(rows)-1)
+                             and complete['droppedEvents'] == 0 and complete['writeErrors'] == 0
+                             and complete['writtenEvents'] == len(rows)-1 and begun == ended)
+                    valid = valid and complete['acceptedEvents']+1 == complete['writtenEvents']
                     receipt.update(traceRunId=run_id, unfinishedRequests=sorted(begun-ended))
                     if not valid:
                         receipt['status'] = 'incomplete-or-mixed-trace'

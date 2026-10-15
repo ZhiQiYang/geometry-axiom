@@ -450,7 +450,12 @@ finally:
             base = pathlib.Path(directory)
             feedback, output = base / 'feedback', base / 'artifact'
             feedback.mkdir()
-            raw = b'{"stage":"trace_start","traceRunId":"fixture"}\n{"stage":"trace_complete","traceRunId":"fixture","incomplete":false}\n'
+            rows = [dict(stage='trace_start', traceRunId='fixture')]
+            rows += [dict(stage=stage, traceRunId='fixture', traceRequestId='request')
+                     for stage in ('request_begin', 'bridge_lock_release', 'request_end')]
+            rows.append(dict(stage='trace_complete', traceRunId='fixture', incomplete=False,
+                             acceptedEvents=3, writtenEvents=4, droppedEvents=0, writeErrors=0))
+            raw = ''.join(json.dumps(row) + '\n' for row in rows).encode()
             (feedback / 'wait-trace.jsonl').write_bytes(raw)
             env = dict(os.environ, GEOMETRY_WAIT_TRACE='1', GEOMETRY_FEEDBACK_DIR=str(feedback), GEOMETRY_BROWSER_SUITE='canvas', GEOMETRY_WAIT_TRACE_RUN_ID='fixture')
             run = subprocess.run([sys.executable, str(root / 'geometry-web/archive_wait_trace.py'), str(output)], env=env, capture_output=True, text=True)
@@ -459,7 +464,7 @@ finally:
             receipt = json.loads((output / 'receipt.json').read_text())
             self.assertEqual(receipt['effectiveEnvironment']['GEOMETRY_WAIT_TRACE'], '1')
             self.assertEqual(receipt['status'], 'archived')
-            self.assertEqual(receipt['records'], 2)
+            self.assertEqual(receipt['records'], 5)
             for bad in (raw.replace(b'fixture', b'older', 1), raw.replace(b'false', b'true'), raw.splitlines()[0]+b'\n'):
                 (feedback / 'wait-trace.jsonl').write_bytes(bad)
                 rejected = subprocess.run([sys.executable, str(root / 'geometry-web/archive_wait_trace.py'), str(output)], env=env, capture_output=True, text=True)
@@ -471,6 +476,61 @@ finally:
             self.assertEqual(run.returncode, 1, 'WAIT_TRACE_ARCHIVE_MISSING_MUST_FAIL')
             self.assertFalse((output / 'wait-trace.jsonl').exists(), 'WAIT_TRACE_ARCHIVE_NO_STALE_FILE')
             self.assertEqual(json.loads((output / 'receipt.json').read_text())['status'], 'missing-enabled-trace')
+
+    def test_archive_requires_integrity_counts_from_real_writer(self):
+        root = pathlib.Path(__file__).resolve().parents[1]
+        with tempfile.TemporaryDirectory() as directory:
+            base = pathlib.Path(directory)
+            feedback, output = base / 'feedback', base / 'artifact'
+            m = self.load(str(feedback), '1')
+            run_id = m._writer.run_id
+            for stage in ('request_begin', 'bridge_lock_release', 'request_end'):
+                self.assertTrue(m._writer.submit(dict(stage=stage, traceRequestId='request')))
+            self.assertTrue(m.close())
+            source = feedback / 'wait-trace.jsonl'
+            original = source.read_bytes()
+            rows = [json.loads(line) for line in original.splitlines()]
+            env = dict(os.environ, GEOMETRY_WAIT_TRACE='1', GEOMETRY_FEEDBACK_DIR=str(feedback),
+                       GEOMETRY_BROWSER_SUITE='canvas', GEOMETRY_WAIT_TRACE_RUN_ID=run_id)
+
+            def collect(raw):
+                source.write_bytes(raw)
+                run = subprocess.run([sys.executable, str(root / 'geometry-web/archive_wait_trace.py'), str(output)],
+                                     env=env, capture_output=True, text=True, timeout=10)
+                self.assertEqual((output / 'wait-trace.jsonl').read_bytes(), raw, 'WAIT_TRACE_REJECTION_PRESERVES_RAW')
+                receipt = json.loads((output / 'receipt.json').read_text())
+                return run, receipt
+
+            run, receipt = collect(original)
+            self.assertEqual(run.returncode, 0, 'WAIT_TRACE_REAL_WRITER_MUST_ARCHIVE: ' + run.stderr)
+            self.assertEqual(receipt['status'], 'archived')
+            keys = ('acceptedEvents', 'writtenEvents', 'droppedEvents', 'writeErrors')
+            cases = []
+            for key in keys:
+                complete = dict(rows[-1])
+                del complete[key]
+                cases.append(('missing-' + key, rows[:-1] + [complete]))
+                for value in (float(rows[-1][key]), str(rows[-1][key]), None, -1, [], {}):
+                    cases.append(('invalid-%s-%r' % (key, value),
+                                  rows[:-1] + [dict(rows[-1], **{key: value})]))
+                if rows[-1][key] == 0:
+                    cases.append(('boolean-' + key, rows[:-1] + [dict(rows[-1], **{key: False})]))
+            missing_counts = {key: value for key, value in rows[-1].items() if key not in keys}
+            cases.append(('missing-all-counts', rows[:-1] + [missing_counts]))
+            # Delete only the interior event; begin/end still match. Counts must expose the loss.
+            without_release = [row for row in rows[:-1] if row['stage'] != 'bridge_lock_release']
+            cases.append(('lost-release-with-counts', without_release + [rows[-1]]))
+            cases.append(('lost-release-without-counts', without_release + [missing_counts]))
+            # A zero-event completion otherwise makes False/True compare equal to 0/1 in Python.
+            empty = [rows[0], dict(rows[-1], acceptedEvents=0, writtenEvents=1)]
+            cases.append(('boolean-acceptedEvents', [empty[0], dict(empty[1], acceptedEvents=False)]))
+            cases.append(('boolean-writtenEvents', [empty[0], dict(empty[1], writtenEvents=True)]))
+            for name, changed in cases:
+                with self.subTest(case=name):
+                    raw = ''.join(json.dumps(row) + '\n' for row in changed).encode()
+                    run, receipt = collect(raw)
+                    self.assertEqual(run.returncode, 1, 'WAIT_TRACE_INTEGRITY_COUNTS_REQUIRED: ' + name)
+                    self.assertEqual(receipt['status'], 'incomplete-or-mixed-trace')
 
     def test_archive_cleanup_preserves_failed_job_status(self):
         root = pathlib.Path(__file__).resolve().parents[1]

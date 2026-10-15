@@ -55,6 +55,10 @@ A timed-out writer, missing completion, unmatched observed
 request begin/end, mixed run IDs or loss makes the collector reject the trace
 as incomplete while retaining raw bytes. A permanently failed sink may prevent
 the marker itself from being written; missing evidence is a failure, never green.
+The completion record must explicitly contain `acceptedEvents`, `writtenEvents`,
+`droppedEvents` and `writeErrors` as nonnegative JSON integers (booleans and floats
+are rejected). The collector never infers missing counters from the file length
+or assumes zero loss; the writer's counters must independently match the raw file.
 
 The canvas CDP harness records `firstTransportFailure` from the frontend's actual
 `transport:true` result, including HTTP200 bridge errors and local transport
