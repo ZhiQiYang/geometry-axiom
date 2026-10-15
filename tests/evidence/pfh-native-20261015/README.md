@@ -1,3 +1,11 @@
+# 多分量消費端已補：原生整合裁判待固定 head 重跑
+
+產品程式 head `858515596f21a9329beff339caa83725906b491a`：宿主32／32、原有子格31／31；11步控制為基線32綠→八項領域斷言紅＋一項堆疊撤回紅→還原32綠。官方50筆全量新編執行後check=0；M20為crashed，不冒稱斷言kill。
+新來源14行正典生成差異只在記憶體內驗41／41，正典未改；最新補丁SHA見components-checkpoint/checkpoint.json，不得借用前一版4a534e4f的patch。正式WSL七項未跑／未排，PR保持draft。
+本次證據及mutants_results提交後，固定新head跑完整native與同head控制；完成前下方63ed444的2848／6／1只屬歷史，不能宣稱新head已通過。
+
+---
+
 # 新審查 6183160730：消費端已補，最終裁判待重跑
 
 第二分量的子格正面積與場景輪廓已修正。新增三題覆蓋第二分量 grid/subgrid、重開與 I23 原子回滾、缺口／孔零面積、實際 DrawTarget render 與 guide pick；32 題在規定 16 MiB stack 全過。

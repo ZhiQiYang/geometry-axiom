@@ -8,13 +8,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "ae55a07300ae815dcdc0ec9a43b1c21fb548027626f3215662975b04ccea9186",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -33,8 +33,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "516e0f6addbbe63aea8d4096b6f9866d830f9411ee913649268053c66d09d47d",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "b9e17298e4c1f03b47a640de2e9372ecde72ca09b23016f7a82e2250e77ba418",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -1798,7 +1798,7 @@
     }
    ]
   },
-  "record_sha256": "7ab76d8f794c00688d686c0fee20941150e434500a0bde1e4e6ad1232ad4694b"
+  "record_sha256": "1dd06b30e38fa8064a97f8a3bc486739fa4ff2ae5416191c643bb2447d60aa26"
  },
  "M02": {
   "desc": "I5：射線半開區間 [v_min,v_max) 改 (v_min,v_max)",
@@ -1812,13 +1812,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "eb37820358b0fb178168f468e3c67f734e62bb17966740f66393de92db1190c3",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -1837,8 +1837,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "25cbc37df033cbfa80f345a06557cde2302bc39f0741c0b6b8e78f727282efe1",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "a7033e3a8489d12917eb1e90736eab7d3d0d59d570546ddbb97567fbe38cb4d9",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -3602,7 +3602,7 @@
     }
    ]
   },
-  "record_sha256": "b73585efbced8ee2804f54f2ae6eae296dda200dca45d1aad438c6feb72a32ed"
+  "record_sha256": "bf400493d7fc110b6c92b7df5dee2a2b6b96bb1987822dd892cd52b5b938ff9b"
  },
  "M03": {
   "desc": "I5：射線只數直立邊 -> 改數水平邊",
@@ -3617,13 +3617,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "c8afc0fd8ec130f35d760fcec6096ed9155ba8367d7e0f1ae3fed4ed8ab52481",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -3642,8 +3642,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "4c87ad875e2b9a25ac58e0a72d3f817e70e13b0c61f34e5b889a03f5a1410599",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "f70b5355e8cf842e1d1a71f5d480dfbe9642d43c3e1cb6215dc9996505149c20",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -5407,7 +5407,7 @@
     }
    ]
   },
-  "record_sha256": "d8559934f291f979eeeb31ce5b996d7ce590929f2848988c985e4de8214bca62"
+  "record_sha256": "442331a79665c342f31b60c54e738018f90450095d9d1725bd538baab5a1ca92"
  },
  "M04": {
   "desc": "I5：奇偶判定反轉(內外互換)",
@@ -5422,13 +5422,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "5936b5e5af45b23a7c73556b9080af268239032c092ace748e691c74175f30bc",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -5447,8 +5447,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "dc126c22619884c7f4feb2b524aa42fbaff8d7edfc3f0c8f1c8d97ff8be99315",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "5ed234fcfdc1b54a18913780143c642feee77650f39fabc787b0b79cd5a98596",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -7212,7 +7212,7 @@
     }
    ]
   },
-  "record_sha256": "73e51f270ef1c1f509d39cd0861221f08f9b7fe817016e0206a221f68cff83e4"
+  "record_sha256": "f59b00a0cda6d76e74e6dadd93c3919ba29d4f318d4342fd7d3037929ed83b32"
  },
  "M05": {
   "desc": "I5：直立邊在矩形邊界上也算穿入(<= 改 <)",
@@ -7227,13 +7227,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "a0d421686e0a6f4609f4fe8a0ef9ad48a995cf3b3cde2174ef4d712ccb39c45f",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -7252,8 +7252,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "5bb8426aaa2f9272a3b351145b977f130f56a4d2913829d152c1cd08779614dc",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "9c52fb5ddf77caf18795c2b96ba6419ab38abf06de35dd67016c44ce9a6e3a42",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -9017,7 +9017,7 @@
     }
    ]
   },
-  "record_sha256": "dff1583bed0f2dac3ee781b1ab44b072caa557f77179ce6ff1b8b317d10e4ae1"
+  "record_sha256": "f58144fd08330555f1f2970b2386f70b93909723c46309aeb1aacacce4abf4d5"
  },
  "M06": {
   "desc": "I5：水平邊在矩形邊界上也算穿入(<= 改 <)",
@@ -9032,13 +9032,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "8e7ce972ee543bb08d95b6578353ca1a92df6972861bca37c988ba60faaa6465",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -9057,8 +9057,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "a3e9097d9526bc6bfd2f51b2e1965c0631872d5372c3cb88d9935ac431922351",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "1929dd04ec878e5fa892a0626a44719f550321cdd783139d7504ce4d54c8fcbd",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -10822,7 +10822,7 @@
     }
    ]
   },
-  "record_sha256": "3f9386024dd928e5d9f66a6b3e0b1cef6977f4f45f8fbabb0eaa2c99945170f4"
+  "record_sha256": "ca83c2896ee270f14764d57361832a52d93d42b62c0d88b10b1fa60b0547c4ba"
  },
  "M07": {
   "desc": "I5：直立邊 v 區間零長度接觸也算穿入(< 改 <=)",
@@ -10837,13 +10837,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "29f1d7295a8a6a5fd73ff8b13be58283844d74327962449d86593975899dba3f",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -10862,8 +10862,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "ee9535622dceaf3c044807a2f616e0c727944374e38c6b09a3f1543b673bf40a",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "00f81a1fe293601aaf5ec590f8323886e40081e964349fab31192d5bfb457976",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -12627,7 +12627,7 @@
     }
    ]
   },
-  "record_sha256": "25ff550d0dcb445b149d532d76a544e1146b703faaff700468fc218fb6feedd2"
+  "record_sha256": "b0aff4bce2ae76525c473d82adaa9f1eb13c765b0c1571ca29c2038429255e00"
  },
  "M08": {
   "desc": "I5：拿掉「環邊不得穿矩形內部」檢查",
@@ -12638,13 +12638,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "52590d545b6d64a49bb78f34a65091bb40c52f167956c784502fd2f2156e07f0",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -12663,8 +12663,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "7b6cd15c718885856c9e466f8440696ba5d56cb9ebd79617b2b71fe9a3fa2129",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "23829d4a5199157a08f3c3ada301dff360fc8605e6e32c3717f49decacc49c16",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -14428,7 +14428,7 @@
     }
    ]
   },
-  "record_sha256": "26e9b246e69ad6e915dd1b8a51cae1d9651fb583723415e91d3eace3a91f78ee"
+  "record_sha256": "371b4735f1f381bd35be9b52ead7a12c22533f523b04e0318236fd23e2451cc5"
  },
  "M09": {
   "desc": "I5：孔 bbox 邊界相接也當相交(<= 改 <)",
@@ -14436,13 +14436,13 @@
   "why": "等價變異(GEO-172 實證):bbox 恰好相切時孔的所有點都在 u<=min_u(或對稱軸)一側,後續三道細查(頂點嚴格在內/邊穿過內部/孔罩住矩形)都不可能成立,快退與細查得到同一答案。",
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "0a30f16585f0013f0a811e76053f85de15ee90ba5f549da2278e15f3a76354d1",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -14461,8 +14461,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "137a18f078bccfa0b7424fb7538767367bc0495b745fd0dd389f50ca9bb94ea9",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "682815182437b7b2794356e41df6f3794e631bcbb692bc7b6039c5516c48f8d3",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -16226,7 +16226,7 @@
     }
    ]
   },
-  "record_sha256": "a0685f811789fdeef8bf70ebf97ef730a7d1e531fee7114d957b4c3761b2f7f7"
+  "record_sha256": "86fb9d3c02ba353b10bb301d44e76ed33999be074700c31a83a4adc2c40e7c60"
  },
  "M10": {
   "desc": "I5：孔頂點嚴格在矩形內 -> 含邊界(> 改 >=)",
@@ -16237,13 +16237,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "b1356a3a3a4051ce662872a6e1cbd3ecbb748ec9967f7025a48c6a51c18cf499",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -16262,8 +16262,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "5100cce64952ec0fe0a0d8b76bdafbd319b75b137fb2edac6b323f493f016f78",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "14b1a4525ec824b2bd94f8b56c5788e878ebebddd93996f0272606f72a1c9973",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -18027,7 +18027,7 @@
     }
    ]
   },
-  "record_sha256": "4a7183036d789088cfd239d838272cc3d496d7f37d4a5945a354a33efd1c7165"
+  "record_sha256": "3934d5f6ad59bae3ba969cc3d80a820ad0ff1bfcea66029edc3667e651040852"
  },
  "M11": {
   "desc": "I5：孔罩住矩形判定:inside==4 改 inside==0(罩住反而放行)",
@@ -18042,13 +18042,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "906ffbb1c748702b07ef73eb4adbc19503880df11603a5563bc4e639af1adcf3",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -18067,8 +18067,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "1405c0a311a8f0313acc98c1530747f8efdce5dee6bede09ac234ec8083f3ac6",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "a95a6d99a3384839fab1754689f7bda2fb2a825ca5350a0d13f2b7647ba583e0",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -19832,7 +19832,7 @@
     }
    ]
   },
-  "record_sha256": "dab10e213d0673906d64d351282986160edace977e388a8a22a7d804ed9041f0"
+  "record_sha256": "1c09706b54f2b485aa614ad5d3802964918490cbfcfeacf132eab20505199a7d"
  },
  "M12": {
   "desc": "I11：正面積重疊:端點相接也算重疊(> 改 >=)",
@@ -19847,13 +19847,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "6f3338036e7b7dcf7c9e242dd2d694668f26c0331e9f44bd31ded0b66d1da05c",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -19872,8 +19872,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "7bbcac4cb988dc6fefd3b1b32a6c23acb31e3d1af37ea600a9a2267bd238624e",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "1d55446eff89072ac32287c8d796dc2ef4e96eca9829135a444e80d9c462ceb7",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -21637,7 +21637,7 @@
     }
    ]
   },
-  "record_sha256": "b676c7bec6e153ca484555b45fc3fc93696b304ec37b954a793bfe58bbc41f62"
+  "record_sha256": "998fde748246de3c00ff424822821f7c99889583fa4ae1cff59e4d70156687a2"
  },
  "M13": {
   "desc": "I11：碰撞只看同承載面 -> 看不同承載面(!= 改 ==)",
@@ -21652,13 +21652,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "d5d4cc60292eab5ed895d246b449c22b46d0f5b51a5ac41372a81d71747ed143",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -21677,8 +21677,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "0cfb27fc9d8f9c8d0a59a634f9c7ecbb85b4f72f6a6d3b540b73eb4d10ef99ae",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "c7665322a564e8c109e1d0f62a821d943148d57b691a57de064b6f0e64de8336",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -23442,7 +23442,7 @@
     }
    ]
   },
-  "record_sha256": "fb18ece02669cb936f995ff7fc2b67cd730a1e1d2d1ff5563bb51a0bd52eadd6"
+  "record_sha256": "b74afcb4c52c4e82cdc06d464016631396b03e0faf36fe340f6ef440971ed3d6"
  },
  "M14": {
   "desc": "D11：只收垂直邊 -> 只收平行邊(along_v 分支)",
@@ -23457,13 +23457,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "c255f1c47e3868de98f6b19e5cd3ba34671df7e4b1ab3d0711c0c03b229f685f",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -23482,8 +23482,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "278d7a504cb636b127993ef3f18c88cce1479b81134433efb226e42a5bbdaab7",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "65fb974bde91ed1be41164f91d5a4e16c205a984f79e5afa3b96a76c26d0ff33",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -25247,7 +25247,7 @@
     }
    ]
   },
-  "record_sha256": "e2efd371cb964cc5f606faa92e424dba7210f14753fdd3d432943b868f12396f"
+  "record_sha256": "1f744d67d8517faa5561f678a5d756e92b4a1f13e6cbedec13cd95ea747320f9"
  },
  "M15": {
   "desc": "D11：角材側面涵蓋範圍用錯軸(u 範圍改成 v 範圍)",
@@ -25262,13 +25262,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "613083fb68232378dad0d7f113e34464d9ee15a2c19b30ce2d1a3f3c53415b7f",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -25287,8 +25287,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "1bcb07dc786e6e82c242e82868cc8d2f9e69aa04db95c859b20e8fdbc8a59e69",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "4bb13a38f951d63d2e2b820da74f43a1c9e5c9996cc5382b762a72e8677bfe51",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -27052,7 +27052,7 @@
     }
    ]
   },
-  "record_sha256": "b002b5f65d8db48f7226f932c4c9ad524f2eba65c0dc2f0497e3494898e12cab"
+  "record_sha256": "0b9cb321cf87d70fea96367d2c5b95695f015cb7cde2f36082d3383727497bfd"
  },
  "M16": {
   "desc": "D11：擋面涵蓋檢查:丟掉 hi 側檢查(半寬也算涵蓋)",
@@ -27063,13 +27063,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "0f0575851812ae0bf8e1eb789f2698dcbc5db2b8a7610892fb14cfd363db8690",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -27088,8 +27088,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "2c49343c875dfbc40c6ced745b6d378ca52febdb18ac6ecf6ab0cc43e456a97b",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "4f063b582b5ab44a84cf69537a943c8adb30a401bdd74e82e11a2609edc2ce1b",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -28853,7 +28853,7 @@
     }
    ]
   },
-  "record_sha256": "51b3cbf7e1e4137e96f6b8b3fcb602a069ddb4f0d0793ed21902834c4c392f26"
+  "record_sha256": "d0a66cba719463e01baaeb45d477ebe7f071ddfafb971d067ac7bb88c4a73bc1"
  },
  "M17": {
   "desc": "D11：擋面涵蓋檢查:邊界相等不算涵蓋(> 改 >=)",
@@ -28868,13 +28868,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "0338932766ba4f87c488178d06bff00bd548c9544a9f510c9015791f7545482f",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -28893,8 +28893,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "4da1bfb93aa0eb5467960164aae90204a3659c9b801dabbb24cca197216d4d8a",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "031256cfce169d4c7540e4e4bd1e0a24f79996b2dd956887ad382856e017854b",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -30658,7 +30658,7 @@
     }
    ]
   },
-  "record_sha256": "d98ad8f7487a1ba52c8dccf4113202d4c6ac548f43de0d93d2209dd408ec383f"
+  "record_sha256": "aed0432764c0daafea377da3cff46e8bab328e7cbbedd3ce08fe9a39d95ba2d2"
  },
  "M18": {
   "desc": "D11：重驗擋面:FREE 邊也算合法(!= 改 ==)",
@@ -30673,13 +30673,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "f32f48552271af3ea6321e97572a6a24375d5116dd859e731eff1f4fe92226a6",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -30698,8 +30698,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "2afca953e5937624cad438e851c3a5f6b469584ed36c6b304472ad521ac8d17e",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "37b0b27caf59753b9dc2d41a28b0a58797f1c38d6e14dd5c6053fc2b6b743b40",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -32463,7 +32463,7 @@
     }
    ]
   },
-  "record_sha256": "4d775566a06cac14cde61d2d2ff07954c51a5ae0d4d94e5dcfa6e3fbe16ca65c"
+  "record_sha256": "f5648591f1c062a13d8cfbed543ca9f67a8622cb1b5a960aa9eeb070e5ee3d0d"
  },
  "M19": {
   "desc": "R6(c)：through 選段:邊界座標不算在區間內(<= 改 <)",
@@ -32474,13 +32474,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "d2585c2dc642cf6f745a09349b9de906f244db7d1c294f7a03db13d801dd0892",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -32499,8 +32499,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "351fe8cc445a0733ec5c8e276e9f9f72e15b43aa60b1e7066fb599f1456b5ef7",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "c43ae279a1f1f8edf7e5fdbb0b8ed2955b0c4b935476776ac7719a47d29cc7b3",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -34264,7 +34264,7 @@
     }
    ]
   },
-  "record_sha256": "08b8e251829ad10574d7bcd4bd0c3492c2eaa798858d1d7bebea2a3264b647d5"
+  "record_sha256": "959ff7d7ce8459d9c2e03dde849b2da69729d9468d1d586b02baf9ca33fa3fa2"
  },
  "M20": {
   "desc": "R6(d)：拿掉「起點必須有擋面」檢查(懸空端放行)",
@@ -34275,13 +34275,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "d38138c5de0bd3caa2a7a6626dcbc84147d2a51d1527e456141730a79aa424c3",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -34300,8 +34300,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "e0f8453352abf323fb507f5b41eb33d9dda2a8b7a5b1142724d94bb825c63fdc",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "eec8be3ee40c52b6f12a4a0fabab2d56a1132ae65ee326bac1559029a5292db2",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -37825,7 +37825,7 @@
     }
    ]
   },
-  "record_sha256": "d5eddce37c6309d521e0ce1ce18789c1ea06e0e2bd67d1f8852427bd85dac7fa"
+  "record_sha256": "4a9ecbbc3a80c1a113f7c66807dd8eccc7c8e5c53e1baef278870ce223ccf95a"
  },
  "M21": {
   "desc": "R6(d)：拿掉「終點必須有擋面」檢查",
@@ -37839,13 +37839,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "4194657a4155d5304184e1a602fc40aceab8c5b8b8aeb282c91e58d8f2d109ff",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -37864,8 +37864,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "b1700890bdc1fff7fd356c69e1689746b4fa50b2c0c53f919037b72bd7a1294d",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "6f3aef5be413787eb194546cf005e9834d2a15cf19e017e23840beebaa882add",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -39629,7 +39629,7 @@
     }
    ]
   },
-  "record_sha256": "8dcb1bcd66f6d61542b23eb1ef91b4a204a2aae6ae1602fa9b8979ad5463bb38"
+  "record_sha256": "2f78c21a630add56c7bf7b776ba6581d00832c81217f9c104745c9df0b633e0b"
  },
  "M22": {
   "desc": "R6(d)：拿掉 FREE 擋面拒絕",
@@ -39642,13 +39642,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "391ffab2fa68e7087053cf782f2a3f2d01373b682d170d5067a2e7dc2c2e2f46",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -39667,8 +39667,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "953e4807c907ae918a51fe1535ca7e40e2e5b3bba005a9f4ac36b8df3f43110a",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "22cc0421818db404f11120d1861ad95d51b53d972facc64e10f44710f2ee8eec",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -41432,7 +41432,7 @@
     }
    ]
   },
-  "record_sha256": "c60227be0904807248898cac4bf70859c0f7293b4d8a9c189a62edad1602bd97"
+  "record_sha256": "89b8cfd35dba53a5a754968f203f57bda1ee9a6f6ff078b57a96022e42aac9d0"
  },
  "M23": {
   "desc": "R6(d)：擋面歧義放行(hits>1 不拒絕)",
@@ -41440,13 +41440,13 @@
   "why": "等價變異(GEO-172 實證):hits>1 需要兩個邊類擋面在同一座標且都涵蓋角材全寬。輪廓邊+孔邊 → 孔要貼輪廓,核心拒絕;兩孔共邊/共角 → 核心拒絕(兩孔分開才接受);任一為角材側面 → stop_face_shadowed 只留一個;同一簡單多邊形不可能兩邊同座標又涵蓋同段。該分支在合法輸入下不可達,改掉不改變行為。",
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "a5db3dc3a3c6dbfe7500081d9ebfdc9acc68f2473206ad06c18e347a88faa113",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -41465,8 +41465,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "27b92de1270665d58ea5feb85df0e4737d077bbbf7382bc8b4db3f1af698f498",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "df08323d75c6be9fe2fe1d7833a84b614940387f749daabfffcd5e501a3a3ef7",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -43230,7 +43230,7 @@
     }
    ]
   },
-  "record_sha256": "83c8e1660de1ccdd846bb38fb92834c0cd21a356105162ac7c82460f5811cf36"
+  "record_sha256": "c370b91cca436d79a578fa29c97240e933ca8082ed8288485bf7500cfffa4ff6"
  },
  "M24": {
   "desc": "R6(c)：at-edge 接觸範圍:端點相接也算重疊(< 改 <=)",
@@ -43241,13 +43241,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "552a00013ac33518a2cbf0e54295b2b1193a932131d4cdb5ba017155b8fb88e1",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -43266,8 +43266,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "eeccb42b283e12e50cb7721a92cc2341d2638a8175405548a7a92263dd6b755b",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "64f09c63c0cdc8b1d75af3dc30a04227b54fd08450843dbb5ace835eeaebacc2",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -45031,7 +45031,7 @@
     }
    ]
   },
-  "record_sha256": "66ff09c0f5d39d29b95eb679dbb5f1024a755a549575be15954f99c71f77aca6"
+  "record_sha256": "ab84d9076b0bc3f6648fb28bd423bf78408f56db5a3075ea353517b6216ef945"
  },
  "M25": {
   "desc": "R6(c)：跨距歧義放行:多區間自動選第一段",
@@ -45043,13 +45043,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "a3fa516cd72d8c23928914238d8ba22b93ce7ba07b84aa7ae0c48e1960f401fb",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -45068,8 +45068,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "a4b1553cf2253e768cddcd23f3b503a2c8cd1553a77a0dbc7d070a80f72a29b4",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "acb901d927b8c98bf7e8577f7b71a290e178beae7798075caeff87a51e41f4a3",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -46833,7 +46833,7 @@
     }
    ]
   },
-  "record_sha256": "5ae0368c39ed304c2c2b52f89229284b9eff41960703c080c6a2d83249a8c4d4"
+  "record_sha256": "0c127b4afaa2367f08084c53bb904b741fd5f707c01face62da3a23a78330177"
  },
  "M26": {
   "desc": "I13：錨角選錯邊(min/max 對調)",
@@ -46848,13 +46848,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "57f74daed563f3e2f594141f746261c7e6cedc86244e1a7a7fd339f38487642d",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -46873,8 +46873,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "6fe15b00ba53b95501417d366eebf75c004eda283528cdad3b2d64da631bf330",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "243fbbdd9e3d0d23a4f99e711d46e41e47d19b05208c7016ed83d45fc6bc48e9",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -48638,7 +48638,7 @@
     }
    ]
   },
-  "record_sha256": "5000d268bd144ba5128af0f4f16d3e192270c38f9d2598cfe8611b6be5787f72"
+  "record_sha256": "7b8dfcffe32bc3dbed9e6bc034823e4e3a5c252d951a157dcb354f070a9b85e5"
  },
  "M27": {
   "desc": "深度側反轉:角材往面下長",
@@ -48653,13 +48653,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "714be2601168637ab8f8a51b304a098aea567df9ccff4429ee2288e4244ca86d",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -48678,8 +48678,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "a7df5f9e0ee8088e024a5cf49b0bf89f9bcea617fdf4d233f3234aecbbb10d2d",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "8f10a14016aa65b230165a8b61726145f0c6875b73d29084fc7e0ff7c32f2005",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -50443,7 +50443,7 @@
     }
    ]
   },
-  "record_sha256": "ccc051097fbb4fe20278e800656bec8c45ba2965cd201a8c465b1573580c60db"
+  "record_sha256": "6627f2177f3ec30a62eb28742137304afebe70b6a0f0ea3107a7347a644ee165"
  },
  "M28": {
   "desc": "I13：奇數寬多的 1mm 改放 -cross 側",
@@ -50458,12 +50458,12 @@
   "date": "2026-10-15",
   "source_file": "geometry-core/references.inc",
   "source_sha256": "588dc07b210599784efc6ab7e58b57901c2c7ed079cdca7e3f1e9e7ea332e67e",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "5f7c13c50d40ae599b5d951c9e9d720e4e16f6f845f349b37c558927fb753553",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -50482,8 +50482,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "3eadc330aeb9a47c3b4f66b26a90f0d7f7e51a029a1cdd74a5725faadf1e851c",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "a4a9d157a831879009303864093e93bdc8a18975e2010c99cbf33bc0d97bd2e8",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -52247,7 +52247,7 @@
     }
    ]
   },
-  "record_sha256": "bcb2bdbeafa829445a29301932e39a0b534d0d691a0a8825d6fc618a1400d0f4"
+  "record_sha256": "ba31deab9190b460c27aeeb09c4ed0ce576776a78cca0937a1e49d7d49c88566"
  },
  "M29": {
   "desc": "I13：外輪廓材料側反轉(footprint 長到面外)",
@@ -52263,12 +52263,12 @@
   "date": "2026-10-15",
   "source_file": "geometry-core/references.inc",
   "source_sha256": "588dc07b210599784efc6ab7e58b57901c2c7ed079cdca7e3f1e9e7ea332e67e",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "be3abef585e270613d176ef631b8eda734afb0f3e7aede2d9e10c63c53ba038d",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -52287,8 +52287,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "98efda755f2bceb065a42a8184f58dccbd87dea394d648ef7b8343687e023558",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "ebf43b406d3a867828c686d9a54dfb6dd7ba371bc45a78abf0517442f330bc10",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -54052,7 +54052,7 @@
     }
    ]
   },
-  "record_sha256": "4645f1373e2297f8708f07848c362462f3fb71958cbf6a5ef86978743d25d5b7"
+  "record_sha256": "3fc844cdb5827c9486f6eb4dfd85b779c401d5d534b4db6f66b41af0f9087cdc"
  },
  "M30": {
   "desc": "I13：孔邊材料側反轉(footprint 長進孔裡)",
@@ -54066,12 +54066,12 @@
   "date": "2026-10-15",
   "source_file": "geometry-core/references.inc",
   "source_sha256": "588dc07b210599784efc6ab7e58b57901c2c7ed079cdca7e3f1e9e7ea332e67e",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "ec89a6710d05f4de421a7f2e15b87c76970bcedc5b1fb711b2e13cf33b39f761",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -54090,8 +54090,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "9601ab1cd1ea6c825fea8fd2ba0cfb07fb29c1241a97e79f96e2518e4ac4c03d",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "0327722b77d6613a2c6f4f240a11d98e56e6ae8583c1e4298b34ed57351fbe74",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -55855,7 +55855,7 @@
     }
    ]
   },
-  "record_sha256": "7ff23aacafe14e8cf784f1cd7346006940077f6eaebd76aa67cf3c22618076f2"
+  "record_sha256": "3321e261ec1e134bed51241002f4b1a4ed04678ebbe66b4e241eeb925c5843fa"
  },
  "M31": {
   "desc": "I10：格線座標遞增改非嚴格(<= 改 <)",
@@ -55866,13 +55866,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "ce9a7c2cc5c09f1715231e63a643f61061cfe6b919428cdae0cb14104bd574dc",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -55891,8 +55891,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "614bbf4d02cd01e37ff42036a2f179b96ecc1c19504b2a229c16cdd44a6f747e",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "338d7e4002f2f68a2e76a7ebddf55c22be9564e5d658a23400d6665cea749772",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -57656,7 +57656,7 @@
     }
    ]
   },
-  "record_sha256": "24feecf839eeba580bc01e6e35a53eacd75119c95c212973c1536523684e77d0"
+  "record_sha256": "bfc79885e6fe51d52e90dac27c183c869e2be5ebc2af5d0511070c2f5aecfcf3"
  },
  "M32": {
   "desc": "I10：格線座標上下界改成嚴格(壓邊界的格線拒絕)",
@@ -57667,13 +57667,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "8eafea1fdf987abd8fa473f45cea58c2917f8ac7ce747f11feec6b2e074f90c6",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -57692,8 +57692,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "f6eb267fa81e094e4b46499bc51bdb4dcd853f0954142dd87a47bf714c14b759",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "4b047fd92c80ab4dae59167e2b2a8b6afabd6e18ccd5fa1d23ed97a82bc027f8",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -59457,7 +59457,7 @@
     }
    ]
   },
-  "record_sha256": "566358aa2d13681a53dc29e1a86723d3b54c574ad8856145ec280f59d1b3c068"
+  "record_sha256": "49945e27ce82d8578079c1893c6e1354f2805d1c15ec251d48a906ee46472405"
  },
  "M33": {
   "desc": "I13：at-grid 軸向守門員反轉",
@@ -59473,12 +59473,12 @@
   "date": "2026-10-15",
   "source_file": "geometry-core/references.inc",
   "source_sha256": "588dc07b210599784efc6ab7e58b57901c2c7ed079cdca7e3f1e9e7ea332e67e",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "d8e4aa2a96774117b6fdb7a25e7b0c1288651bb3bd2782f4134b75a98109c973",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -59497,8 +59497,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "bc123c137fe5bec2b3b569576c5e8eb5a60d77590447d4489fe0765dea57736b",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "f15e864d706bfb2ecec4d867df12e681bc3c4cf9758e0f3d384d8cd1675265e8",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -61262,7 +61262,7 @@
     }
    ]
   },
-  "record_sha256": "6b8db17a4473759effd95b33ee504438753c0113048a621db898ddc15a65ba33"
+  "record_sha256": "598f74264cc68b595ba6717296ccf4e6c620019b9f3969da7da89826400424a4"
  },
  "M34": {
   "desc": "I13：at-edge 平行守門員反轉",
@@ -61278,12 +61278,12 @@
   "date": "2026-10-15",
   "source_file": "geometry-core/references.inc",
   "source_sha256": "588dc07b210599784efc6ab7e58b57901c2c7ed079cdca7e3f1e9e7ea332e67e",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "4b721b9afbbdf8d63b78b375158891292614d093407b921f60e62695e93f0e9f",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -61302,8 +61302,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "5228aaf97069355221bde6b9e82498e59bc9d27145db8c429deec647fef3028b",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "d6eb0c2c10eccec1a364b326d0788815d6702fc563f824b47f321f64fbe0ef11",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -63067,7 +63067,7 @@
     }
    ]
   },
-  "record_sha256": "f9425e07137b98edd61a4d9a0934f7404c8842f85eeed61a920bfa0883a51646"
+  "record_sha256": "72fe4c793217706f0e31e982a7983ac6e299cf4d4b287cc413c0947446cad155"
  },
  "M35": {
   "desc": "明寫長度允許 L=0(<= 改 <)",
@@ -63084,13 +63084,13 @@
   "why": "等價變異(冗餘檢查,2026-10-01 實證):被變異的是 world_validate_derived 內的 R6(d)/R21 端面唯一擋面檢查,它唯一的呼叫者是 world_revalidate,而 world_revalidate 在它之前(同一個 candidate、reference_rebuild 之後)先跑 reference_check_all(references.inc:485-491),對每支已放角材算同一個 collect_stop_faces / count_legal_stops / 同一個 hits==0||(!has_between&&hits!=1) 條件,不過就 return false、根本到不了 world_validate_derived;兩處輸入(candidate 的 timbers/anchors/placements/boundaries)逐項相同,中間只改 candidate.spaces,不影響擋面。差分測試:基準 exe 與 M36 變異 exe 對 7143 個輸入(根目錄 143 個 .scene + tests/fuzz_scene.py 語料 3000 案 seed 1 + 4000 個 surface/grid 重宣告擾動,其中基準接受 362、重驗拒絕 612)比 exit code / stdout / stderr,零分歧;基準輸出從未出現 world_validate_derived 的專屬訊息「R6(d): 端面需要恰好一個涵蓋全寬的合法擋面」。另:同時拿掉兩處檢查 136/136 仍全過(前一輪探針)。此塊是 reference_check_all 的重複防線,不是獨立判定。",
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "4d479111f4a39b8bac332d9011211ee8ecbe9cc8421b9bbdbbc5d091b8a4f241",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -63109,8 +63109,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "0909b953fa53b621afacb115ce16923ec41cd25bf8c048e12d90f0b2e27f3933",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "dca1e15065437aafe0f11834672c84acc25a2ea47fcf1bdc6c86f62d393744e3",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -64874,7 +64874,7 @@
     }
    ]
   },
-  "record_sha256": "872e6cfdc2edcaf167e3f23fd64ef290d49ad1a5790bf5c0bc05da590ca7c58a"
+  "record_sha256": "0d0fbc35710e1944d4474b0b449ad78377ed5244f3cf497875f01515c3b8e4cf"
  },
  "M37": {
   "desc": "I11：碰撞兩兩檢查變成自己也算(j=i+1 改 j=i)",
@@ -64889,13 +64889,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "9058138d4bb0af2308a222c655d92d19f934d6b33819e9e3c366200d96deff51",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -64914,8 +64914,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "3da3440890ee78b682388067efb4561a7b2e81643083930cf406412f86c70b51",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "345d547100682f3c7d6adb57e60332afc977428004867c5100f2c76daf74cbf4",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -66679,7 +66679,7 @@
     }
    ]
   },
-  "record_sha256": "b462b5e481df18a797e36b19f314c8a7876fb831963dcaf987cf631bccee5565"
+  "record_sha256": "dbc8083c86373949975557609c60bc318bfb047c31c600c47c308ed0574c23c6"
  },
  "M38": {
   "desc": "I13：at-edge 邊參照:孔索引 <0 也放行(hole<0 檢查拿掉)",
@@ -66690,13 +66690,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "dc85a69c25e55c9b4b3a76c35d69bb42d6d6dcc69c94fc4f8b0ef44eea8c6632",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -66715,8 +66715,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "d48c93c9ba952179d9851d9fccdacd40e1af281a1fdd7e7b93bdfb6c8ae8f2de",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "c8e0524472efecadcda7837f13ab944acea5a2a7c3e60836a910afd7ea569591",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -68480,7 +68480,7 @@
     }
    ]
   },
-  "record_sha256": "cab7dd69eed0acd91c0e00c1c3dda9e7714b1ac4a7b43514295fcba95bb5efa6"
+  "record_sha256": "8678db57ad8571b64fa1d001127594e34d2ee59f87a129851c3a08b6979d82aa"
  },
  "M39": {
   "desc": "R6(a)：切點去重用 < 不去重(零長 cell 出現)",
@@ -68495,13 +68495,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "d61046c10861234fa589b5b3fad934fb0d3c654d3e405e92e7b1bc13da2cb14a",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -68520,8 +68520,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "2af8cd6f9c0c41cc2556d0e8cd4cc1ab7fc415e7d0fe37dbc232f795276bb6d2",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "292a9ee0ea4e4b28e658d8b552a056d8996ccf3c4d341354e9d4e619b13ebf43",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -70285,7 +70285,7 @@
     }
    ]
   },
-  "record_sha256": "12a2405ced9d52719009f251fa78cf5cbdd057f790dc4a9bc450ba3b532ca5a8"
+  "record_sha256": "3e9e707298c9ba8f7183e0c99ad2e947857ddd9ce826d7c15a485875b2b5a12b"
  },
  "M40": {
   "desc": "R6(b)：有效 cell 判定拿掉碰撞(只查包含)",
@@ -70300,13 +70300,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "b5a24e8846793126d6b86adfbad2dcf569a910731a50725e67bc8a4d0f0e62cf",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -70325,8 +70325,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "30f210a5413cef5364c73f443dfa565b584eaf707068970965b2f4ca7dc3f6cb",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "79f274398cb211cf03f13324cf25486735312942bb4790a9fa9bea48de33d95b",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -72090,7 +72090,7 @@
     }
    ]
   },
-  "record_sha256": "2bb1c66b56b61e4d317e7d0e4d44f54f3b2b3deb46dd2a05be6a40928c751d07"
+  "record_sha256": "85a5e3f642d3d0ac4ea85f859595b0324645fd19882ddb03eeefb19b4e8084db"
  },
  "M51": {
   "desc": "I23：I23(a) 拿掉座標比對(移動已錨定的線也放行)",
@@ -72111,13 +72111,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "bafed119bde6b640d9253b8520492be45516586cb0c56c21175dc0590475e2b0",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -72136,8 +72136,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "10b9186fa720b34cada0a1851e1ad46fe91483a377da374387e5e1ab89984584",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "ef06647004b9aef178d4269d5eeb478e2853bf0c33c1e7ce2865d6c5eda0067b",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -73901,7 +73901,7 @@
     }
    ]
   },
-  "record_sha256": "5c7fc16954cf9da5cce7ac056b2868f2d31b2bdf842702176a241d07d66e6da0"
+  "record_sha256": "1a1389d4763c05aa241b714eebcf672a64aebafeae0386a31ce6d8b53525fbfd"
  },
  "M53": {
   "desc": "D10a：縫中心線改成縫起點(少加 gap/2)",
@@ -73914,12 +73914,12 @@
   "date": "2026-10-15",
   "source_file": "geometry-core/panel_layout_math.h",
   "source_sha256": "8f72b2eb8ef40633d5aa0d05b6f0822e070e26cf24334c900d1e1b7b1f2f822b",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "8f6f2ea06df333154ca9a73b5a14b991c53add2fa6473fde7167076fff25006d",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -73938,8 +73938,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "6a5545d973b7c869ec4e2090c3921fa3d7f7a1cd5bae7eded073d2d3553fe0e0",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "a3ce472093b09957acb5e0521d561d597574eab7f238ec90e3c6dd1786d5ca13",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -75703,7 +75703,7 @@
     }
    ]
   },
-  "record_sha256": "939ba5b7550ac4e6198945d1534a23204bdaf1db12373e1f2c9e4f86c53d6c3f"
+  "record_sha256": "836347de9840380edeb36cce873e147c3925c7e5ed5abc2f3b9b8367e8c42a6e"
  },
  "M54": {
   "desc": "D10a：產生條件由嚴格小於放寬成小於等於(多出尾端一條)",
@@ -75714,13 +75714,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "35dd01741c9cef7c529bf016d1682aa93a76f0ae883857537e894e35203215c3",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -75739,8 +75739,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "90df65336bb9e50728ca64bfb6f59d6ac4a3c402554e1551bcdd4e2d091bd4a1",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "794604d47a3d23492b95ade0fe5b78557e5bc32a7dfc24a4b4097ca5ef9f0484",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -77504,7 +77504,7 @@
     }
    ]
   },
-  "record_sha256": "6fc6d4e11b41b0bc7fade3931756f8e0a33a0a80a729f2cdd5ef0a267e72185f"
+  "record_sha256": "4dd1207a2539b767964623b49ec63ce79f25e986e2e45a90c354221d1f5e5908"
  },
  "M55": {
   "desc": "D10a：縫寬奇數不再拒絕(改成只擋負數)",
@@ -77521,13 +77521,13 @@
   "why": "等價變異(GEO-173 實證,更正 GEO-100 的舊結論):world_validate_derived 只在 reference_rebuild 成功後才跑,而 reference_rebuild → reference_place_geometry 對每個 AT_GRID 角材已先跑同一個 grid_anchor_line_coord(同 grids/count/grid/placement/axis/index/has_band/band;boundary 若為自帶 rect 的合成輪廓,其 bounds/area 與 NULL boundary 的 rect 路徑相同),索引消失會先在那裡失敗;被變異那行在現行語意(2026-09-18 反轉為重算)下永遠是 no-op。夾具 M56_grid_index_vanish(面縮到索引 7 消失)原始版與變異版輸出逐字相同。",
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "570f1fc9fd9005c2595998fd62bdf6f916e4104f6055487b5b95f5a051baba92",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -77546,8 +77546,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "af5a07be0b62f80b79f010680d9f606f17c79820571ca3215ff8362dc01af34f",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "c9465b8a01ca8bbcfe0d4450ba64f13a8d83535005e4e54e4f3024b0bd85451b",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -79311,7 +79311,7 @@
     }
    ]
   },
-  "record_sha256": "8876d5465e7c263df1ff093864c2547bfd16542e81219bc52a5a609ac6403ff2"
+  "record_sha256": "93d37f1792d4ecd47ecc01ada8234461061a1d620d48f45e495d6739379c8f83"
  },
  "M57": {
   "desc": "R21：between 的 FREE 邊檢查反轉(明寫就放行自由邊)",
@@ -79326,13 +79326,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "2f04e96bc4e06187cebc8bbdb836fb34c9a04d12fbcf4a49177c44409b61f8b0",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -79351,8 +79351,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "6399bf01b85d683811bf52e5ebce9e495a874e9d9d91cd2fd365c82b434fed5a",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "7abf27617f6ee9531f5dd169706014b65145af1471165671431f115f523a14c5",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -81116,7 +81116,7 @@
     }
    ]
   },
-  "record_sha256": "ab4e53b415d570e7f89d672ac73b4615ea952710ae2d849fd6f16e0c2ea900d4"
+  "record_sha256": "bf5861837fb03b1ffb831fbbd7c3ef366595f74513861948b8ab7a514ad7829c"
  },
  "M58": {
   "desc": "R21：between 不再要求跨距落在合法區間內(可穿過實體)",
@@ -81131,13 +81131,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "4bbc7542d27c74057498ad0440beb3905da2ed0d2228e0de8101b8fd9ed95b4f",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -81156,8 +81156,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "5bad5eebf9c3dfb40d200820f59c5b5ece81f03ed6eb3ea1b4c51b08952a5e6a",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "ab2222f1bb61457ec58c78a25f18ca665ad5137cc3bdc40a72ecb1568e34b4e9",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -82921,7 +82921,7 @@
     }
    ]
   },
-  "record_sha256": "5d6d708fea3ef6636be2fa11c6386a88d4b2a4b35c5111b7b8dbb5dc46ad03fc"
+  "record_sha256": "9f29ab1b4338f4ee65760f553ef4871e56b092b35b72190cac017bd2f6e327e2"
  },
  "M59": {
   "desc": "I5：拿掉「矩形中心必須在環內」檢查(凹槽內四角貼壁的矩形放行)",
@@ -82932,13 +82932,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "a79bb967573c2ef9c028b04be55288a68058942191e2ae67d2a7be06df614ee0",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -82957,8 +82957,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "09e920597fb1a919c3952801770933064d78d605351266c3e0301d7f0a34f234",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "0a58821c3d57b7704c3fcc267a7c06fb61c7b2fb305f2ac6fb282985569c1e0b",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -84722,7 +84722,7 @@
     }
    ]
   },
-  "record_sha256": "14f01218befbe85992f3b97c36e4ca542ef7488857818d9e1914940e07348e91"
+  "record_sha256": "1904eccc8bf5c834ced5f66599a5cf7e3e4693be343cfe8ba2b29fc77791b425"
  },
  "M60": {
   "desc": "I5：矩形中心的奇偶判定反轉(環內外互換)",
@@ -84737,13 +84737,13 @@
   ],
   "date": "2026-10-15",
   "source_file": "current_geometry.c",
-  "source_sha256": "13615dcf03c64304e403203237a68a19388439edda64168cbbbf159b2f1d9400",
-  "closure_sha256": "bf659c71e17eecbb40a10b033c2f8f674ee99156576aa0b5c4666cf05520e35a",
+  "source_sha256": "44de6ce06c871fc705d0773e1886cdb3be551b9ef425afd824508568c2e73b03",
+  "closure_sha256": "139e37c7b4090155bc097dae5f231ce1db75c48993446f2d5b2fbd84d675faa0",
   "oracle_sha256": "454d5326e88aac8e3b97e3f06a7140ed82156182c53d720510b727312cbff78e",
   "mutant_sha256": "fa0df8332b2b795fd812eb7343347e934c0c5a7b33ce13159ae86ef6197f61e7",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+   "head": "858515596f21a9329beff339caa83725906b491a",
    "platform": "posix",
    "tool_sha256": "2d4cb20028a3b707dec57893d46746b18ddfc91a444e9fe33b51e220e8fab02b",
    "compile_exit_code": 0,
@@ -84762,8 +84762,8 @@
     "tests/run_tests.py",
     "<binary>"
    ],
-   "exe_sha256": "946060668a5bb2c11a653548e3cdb54df8c2bceb52897276bd6aa3b3cf5ca829",
-   "baseline_exe_sha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+   "exe_sha256": "187291a0add4011779b8f5b85633d62a58e369650daa0e9f3ea8b9315668b8f3",
+   "baseline_exe_sha256": "d51eafa8248990e1b7b0ad1ab23aa67cea368e2ba93d030a4de2d56e70cc0ac6",
    "baseline": {
     "exit_code": 0,
     "result": {
@@ -86527,6 +86527,6 @@
     }
    ]
   },
-  "record_sha256": "66f790809b2096c8f3e7d9a8b621e9b58a63a26426e73977f0fb3f89864b1c11"
+  "record_sha256": "6bcf5a64fb1c519dc82d1025e1b273d28a86deb4670edf8051b5ce935d92fb3e"
  }
 }
