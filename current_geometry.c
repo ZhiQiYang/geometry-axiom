@@ -12935,7 +12935,10 @@ int main(int argc, char **argv)
         }
     }
 
-    World world = { 0 };
+    /* The CLI owns one World, like the bridge. Keep its bounded R41 caches
+     * off the 16 MiB call stack used by nested atomic reconstruction. */
+    static World world;
+    memset(&world,0,sizeof world);
 
     if (scene_path != NULL) {
         if (!parse_scene_file(scene_path, &world)) {
