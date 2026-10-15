@@ -35,18 +35,27 @@ MUTANTS = [
     ("drop_mark", R["F3次臥"], "C4_SPACING", "每格少放第一支記號副支:間距超過上限"),
     ("no_column_strips", R["F5廚房"], "C3_EDGE_UNSUPPORTED", "柱邊不放角材:柱邊面材沒有支撐"),
     ("shift_main", R["F3次臥"], "C3_EDGE_UNSUPPORTED", "主支偏離板縫 15 mm:板縫沒有支撐"),
-    ("allow_split", R["F2主臥"], "C5_MAIN_NOT_SINGLE", "允許主支被凸出切成兩段"),
+    ("split_main_mid", R["F3次臥"], "C5_MAIN_GAP", "主支在室內中間斷開 100 mm(不是停在 RC)"),
+    ("split_main_mid", R["F3次臥"], "C5_MAIN_END_NOT_ON_RC", "同上:斷開處的端面不在 RC 或外牆邊界材上"),
+    ("seam_centered", R["F1客廳"], "C1_OVERLAP", "板端縫副支一律置中、不貼著 RC 角材挪:撞到凹角邊界材", "左下起鋪,板長沿Y"),
+    ("misalign_marks", R["F3次臥"], "C9_MARKS_NOT_ALIGNED", "第一支主支右側的記號副支整組偏 20 mm:兩側不對齊"),
+    ("fixed_n", R["F2主臥"], "C4_SPACING", "記號撞到壁柱邊界材時不加密,只拿掉:間距超過上限", "左上起鋪,板長沿Y"),
+    ("no_main_shift", R["F1客廳"], "C1_OVERLAP", "主支不平移:撞到內牆的沿牆角材", "右上起鋪,板長沿Y"),
+    ("no_doubling", R["F1客廳"], "C3_EDGE_UNSUPPORTED", "主支平移 8 mm 後不補併料:另一側整片板邊承接不足", "右上起鋪,板長沿Y"),
+    ("no_end_push", {"outer": [[0, 0], [3000, 0], [3000, 948], [2700, 948], [2700, 3700], [0, 3700]]}, "C8_MAIN_ON_EXTENSION",
+     "主支跨在凹角牆線上、不推進牆段:端面一部分落在延伸段", "左下起鋪,板長沿X"),
     ("rc_through_reflex", R["F1客廳"], "C8_I22_NON_BOUNDARY_EXTENDS", "凹角處沿牆料穿過凹角(舊排法):核心 I22 不接受"),
     ("rc_through_reflex", R["F1客廳"], "C8_I19_BOUNDARY_END", "同上:凹角另一面的邊界材端面頂到沿牆料,核心 I19 不接受"),
     ("no_boundary_extension", R["F1客廳"], "C6_END_NOT_ON_TIMBER", "凹角處邊界材不延伸:沿牆料端面懸空"),
 ]
-for mut, room, want, why in MUTANTS:
-    res = fo.build(room, LT_Y, p, frozenset({mut, "skip_conflict_scan"}))
+for mut, room, want, why, *lay in MUTANTS:
+    lt = next(l for l in fo.LAYOUTS if fo.layout_name(l) == lay[0]) if lay else LT_Y
+    res = fo.build(room, lt, p, frozenset({mut, "skip_conflict_scan"}))
     got = {f["check"] for f in fo.check(res, p)}
     ok = want in got
     failed |= not ok
     print(f"[{'紅' if ok else '沒抓到!'}] {mut:18s} 預期 {want:24s} 實得 {sorted(got)}  {why}")
-for name in ("F1客廳", "F3次臥", "F5廚房"):
+for name in ("F1客廳", "F2主臥", "F3次臥", "F5廚房"):
     res = fo.build(R[name], LT_Y, p)
     fails = fo.check(res, p)
     ok = not res["conflicts"] and not fails
@@ -104,18 +113,24 @@ reflex_rooms = [LROOM(W, H, cw, ch) for W in (3000, 4100, 5000) for H in (2600, 
                 for cw in range(300, W - 299, 457) for ch in range(300, H - 299, 613)]
 reflex_rooms += [ALCOVE(W, 3000, y0, y0 + L, dep) for W in (3000, 4400) for y0 in (400, 1000, 1700)
                  for L in (400, 900) for dep in (300, 600) if y0 + L <= 2600]
+COLUMN = lambda W, H, x, y, cs: {"outer": [[0, 0], [W, 0], [W, H], [0, H]], "holes": [[[x, y], [x + cs, y], [x + cs, y + cs], [x, y + cs]]]}
+reflex_rooms += [COLUMN(W, H, x, y, cs) for W, H in ((3600, 3000), (5000, 4200)) for cs in (300, 450)
+                 for x in range(500, W - cs - 499, 433) for y in range(500, H - cs - 499, 521)]
 rb, rbuild = [], 0
+codes = {}
 for room in reflex_rooms:
     for l in fo.LAYOUTS:
         runs += 1
         res = fo.build(room, l, p)
         if res["conflicts"]:
+            for c in res["conflicts"]:
+                codes[c["code"]] = codes.get(c["code"], 0) + 1
             continue
         rbuild += 1
         fails = fo.check(res, p)
         if fails:
             rb.append((room["outer"], fo.layout_name(l), sorted({f["check"] for f in fails})))
-print(f"凹角房 {len(reflex_rooms)} 間 × 8 種排法:可施工 {rbuild} 個,其中檢查失敗 {len(rb)} 個")
+print(f"凹角、壁龕與獨立柱房 {len(reflex_rooms)} 間 × 8 種排法:可施工 {rbuild} 個,其中檢查失敗 {len(rb)} 個;不可施工的原因 {codes}")
 for x in rb[:10]:
     print("   ", x)
 bad += rb
