@@ -35,6 +35,7 @@ grid-system 4 name-hex 47 main-along none card-reference 10 3 8 u repeat -5 card
 | parameter-package | operations：僅 put-parameter/delete-parameter/import-parameters；整包讀完及求值，不接受包內插入解除 |
 
 put-grid-system 是完整宣告，包含其他維持不變的軸設定；不補 phase、gap、anchor 等缺欄。
+定義的缺欄、未知鍵與 mainAlong 型別／值錯誤使用 `D29 GRID_DEFINITION` 並指名網格；卡片映射缺欄才使用 `I74 COMPLETE_MAPPING`，保留兩種拒絕原因的區別。
 已有整卡時，完整宣告若改成直接／逐欄而未先明示整組解除，亦拒絕同值 token，不能暗拆。
 明確重新宣告整卡來源使用獨立的 PARAM_OWNER_GRID_CARD；只對調／改綁整卡不會替其他逐欄來源蓋章。
 完整 put-grid-system 另對其實際宣告的逐欄來源記錄宣告。沿用 #193 的最後欄位刪除序列與每一引用者判斷，不更改匯入配號。
@@ -84,7 +85,9 @@ geometry-parameters/1 的匯出／匯入仍只有卡片閉包，不包含網格�
 
 ## 驗收邊界
 
-`tests/test_grid_card_reference.py` 登記 31 個具名 CR 核心方法及 3 個 P-146 方法；CR19 會用實際 ZIP writer/reader，開到新原生 context 並逐字核 dump。
+`tests/test_grid_card_reference.py` 登記 31 個具名 CR 核心方法、3 個 P-146 方法及 2 個 P-154 方法；CR19 會用實際 ZIP writer/reader，開到新原生 context 並逐字核 dump。
+拒絕測試逐則核對原因與完整 id token，要求同一則診斷同時具有原因及全部身分，不將 field 3 誤配到 field 30，也不拼接不同違規的身分。
+模型包在網頁正式開啟、恢復及方案載入時的原生驗證路徑與實際服務探針，見 `MODEL-ADMISSION-AUDIT.md`；結構驗證／ZIP 解包本身不冒稱通過原生版本核對。
 `tests/test_card_reference_project_store.js` 檢查 /18 的保存、降版、能力、未知版本及舊逐欄相容。
 原 PROPOSAL 沒有列 CR23 或 M15，沿用其原始編號，不自行補號。
 CR24／M23 是 UI 切片，本次不宣稱桌面／390px 操作或草稿支援。
