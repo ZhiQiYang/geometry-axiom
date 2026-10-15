@@ -211,7 +211,8 @@ def build(room, layout, p, mut=frozenset()):
         return (av, bv) if a == 0 else (bv, av)
 
     # 縫(G6、G7)
-    seams_a, moved_a = seam_centers(Amin, Amax, layout["a_start"], P, g, w, mut)
+    shift = 20 if "shift_origin" in mut else 0  # 突變:起鋪點整組錯移 20 mm,其餘幾何照樣自洽
+    seams_a, moved_a = seam_centers(Amin + shift, Amax + shift, layout["a_start"], P, g, w, mut)
     seams_b, moved_b = seam_centers(Bmin, Bmax, layout["b_start"], Lp, g, w, mut)
     # RC 邊界角材(G4)
     astrips, bedges = [], []
@@ -361,8 +362,23 @@ def build(room, layout, p, mut=frozenset()):
                             "TIMBERS_COLLIDE")
                     conflicts.append(dict(code=code, ids=[i, j], kinds=sorted(ks),
                                           rects=[list(timbers[i]["rect"]), list(timbers[j]["rect"])]))
-    return dict(region=reg, a=a, b=b, seams_a=seams_a, seams_b=seams_b, moved_a=moved_a, moved_b=moved_b,
+    return dict(region=reg, a=a, b=b, layout=dict(layout), seams_a=seams_a, seams_b=seams_b, moved_a=moved_a, moved_b=moved_b,
                 timbers=timbers, conflicts=conflicts, spans=marks_out)
+
+
+# ---------------------------------------------------------------- 檢查用的獨立縫位推算(不呼叫 seam_centers)
+def expected_seam_positions(lo, hi, start, panel, gap, width):
+    """G6/G7 另寫一次:從起鋪側量起,第 k 條縫中心距起鋪牆 k·(panel+gap)+panel+gap/2,
+    只要下一片板的起點仍在對牆之內就有這條縫;最後一條縫距起鋪牆超過 D-1.5w 時挪到 floor(D-1.5w)。"""
+    span = hi - lo
+    dist = []
+    k = 0
+    while (k + 1) * (panel + gap) < span:
+        dist.append(k * (panel + gap) + panel + gap // 2)
+        k += 1
+    if dist and dist[-1] * 2 > 2 * span - 3 * width:  # 整數比較:d > D - 1.5w
+        dist[-1] = (2 * span - 3 * width) // 2
+    return [lo + d for d in dist] if start == "min" else [hi - d for d in dist]
 
 
 # ---------------------------------------------------------------- 檢查(與建構分開,用來抓錯)
@@ -371,6 +387,15 @@ def check(res, p):
     w, M, X, g = p["w"], p["M"], p["X"], p["gap"]
     T = [t["rect"] for t in res["timbers"]]
     fails = []
+    # C7 縫位必須等於獨立推算的起鋪結果(G6/G7)。之後的 C3/C4/C5 也改用這組獨立縫位,
+    # 不拿建構輸出當「期望」,所以整組錯移但彼此自洽的幾何會在這裡被抓到。
+    lay = res["layout"]
+    exp_a = expected_seam_positions(reg.bbox[a], reg.bbox[a + 2], lay["a_start"], p["P"], g, w)
+    exp_b = expected_seam_positions(reg.bbox[b], reg.bbox[b + 2], lay["b_start"], p["L"], g, w)
+    if sorted(exp_a) != sorted(res["seams_a"]):
+        fails.append(dict(check="C7_SEAMS_NOT_FROM_START", axis="A", expected=sorted(exp_a), got=sorted(res["seams_a"])))
+    if sorted(exp_b) != sorted(res["seams_b"]):
+        fails.append(dict(check="C7_SEAMS_NOT_FROM_START", axis="B", expected=sorted(exp_b), got=sorted(res["seams_b"])))
     # C1 不碰撞
     for i in range(len(T)):
         for j in range(i + 1, len(T)):
@@ -393,8 +418,8 @@ def check(res, p):
         return out
 
     pieces = []
-    for ar in cuts(Amin, Amax, res["seams_a"]):
-        for br in cuts(Bmin, Bmax, res["seams_b"]):
+    for ar in cuts(Amin, Amax, exp_a):  # 面材格子用獨立推算的縫位
+        for br in cuts(Bmin, Bmax, exp_b):
             cell = mk(a, ar, br)
             for r in R:
                 q = (max(cell[0], r[0]), max(cell[1], r[1]), min(cell[2], r[2]), min(cell[3], r[3]))
@@ -430,7 +455,7 @@ def check(res, p):
                     if f1 - f0 > M - w:
                         fails.append(dict(check="C4_SPACING", at=[um, f0, f1], free=f1 - f0))
     # C5 每條縫一支主支(G3)
-    for c in res["seams_a"]:
+    for c in exp_a:
         if reg.strip_set(a, c, c + 1):
             n = sum(1 for t in res["timbers"] if t["kind"] == "main" and t.get("seam") == c)
             if n != 1:
