@@ -165,6 +165,92 @@ class EngineeringModelCompatibility(unittest.TestCase):
             self.assertEqual(caught.exception.code, "AXIOM_VERSION")
         self.assertEqual(package, self.saved_pre_card_reference_package())
 
+    def pre_card_reference_versions(self):
+        # Every released compatibility family predates D64, not just the latest
+        # pre-adoption main. Keep the family list explicit so a missing gate for
+        # an older supported release cannot hide behind the newest fixture.
+        families = (
+            'LEGACY', 'ENGINEERING', 'FINITE_GRID', 'INFINITE_GRID', 'PARAMETER',
+            'PRE_GENERATION', 'PRE_SUBDIVISION', 'PRE_SECTION_PROFILE',
+            'PRE_PANEL_FILL', 'PRE_CUTTING_PLAN', 'PRE_ZERO_ROOM',
+            'PRE_DRAFTS_TOPOLOGY', 'PRE_STACK_CLARIFY', 'PRE_IDENTITY_TRACE',
+            'PRE_SPACE_MERGE', 'PRE_CARD_REFERENCE',
+        )
+        return sorted(set().union(*(getattr(modeling, name + '_AXIOM_VERSIONS')
+                                    for name in families)))
+
+    def assert_card_requires_adopted_axioms(self, package, label):
+        original = deepcopy(package)
+        for version in self.pre_card_reference_versions():
+            altered = deepcopy(package)
+            altered['manifest']['axiom_revision'], altered['manifest']['axiom_sha256'] = version
+            with self.subTest(version=version, path=label):
+                with self.assertRaises(ModelError, msg=label) as caught:
+                    verify_package(altered)
+                self.assertEqual(caught.exception.code, 'AXIOM_VERSION', label)
+                self.assertEqual(caught.exception.status, 'UNSUPPORTED', label)
+                self.assertIn('grid-card-reference/1', caught.exception.message, label)
+                self.assertEqual(altered['definitions'], original['definitions'],
+                                 label + ': reject must not rewrite source')
+        self.assertEqual(package, original)
+
+    def test_pre_card_axioms_reject_manifest_card_capability(self):
+        package = self.build()
+        package['manifest']['capabilities'].append('grid-card-reference/1')
+        self.assert_card_requires_adopted_axioms(package, 'CARD_AXIOM_MANIFEST')
+
+    def test_pre_card_axioms_reject_scene_card_capability_before_rebuild(self):
+        package = self.build()
+        package['definitions']['base_scene'] += 'requires grid-card-reference/1\n'
+        package['manifest']['source_sha256'] = digest(package['definitions'])
+        self.assert_card_requires_adopted_axioms(package, 'CARD_AXIOM_SOURCE')
+
+    def card_reference_package(self):
+        definitions = deepcopy(CASE['definitions'])
+        def encoded(value):
+            return base64.b64encode(canonical_bytes(value)).decode('ascii')
+        lines = ['requires parameters/1', 'parameters begin',
+                 'parameters card ' + encoded({'id': 10, 'name': 'P', 'nextFieldId': 9})]
+        for identifier, value in ((3, '12'), (8, '30')):
+            lines.append('parameters field ' + encoded({
+                'parameterId': 10, 'id': identifier, 'name': str(identifier), 'type': 0,
+                'expression': {'op': 'literal', 'num': value, 'den': '1', 'unit': 'mm'},
+            }))
+        lines += ['parameters end', 'requires grid-card-reference/1',
+                  'grid-system 4 name-hex 47 main-along none card-reference 10 3 8 u repeat -5 card v repeat 7 card']
+        definitions['base_scene'] += '\n'.join(lines) + '\n'
+        return build_package(definitions, deepcopy(CASE['request']))
+
+    def test_pre_card_axioms_reject_card_syntax_with_stripped_declarations(self):
+        package = self.card_reference_package()
+        self.assertEqual(verify_package(package), package, 'CARD_AXIOM_SYNTAX current control')
+        package['manifest']['capabilities'].remove('grid-card-reference/1')
+        package['definitions']['base_scene'] = package['definitions']['base_scene'].replace(
+            'requires grid-card-reference/1\n', '')
+        package['manifest']['source_sha256'] = digest(package['definitions'])
+        self.assert_card_requires_adopted_axioms(package, 'CARD_AXIOM_SYNTAX')
+
+    def test_adopted_card_axioms_roundtrip_current_capability_and_sources(self):
+        package = self.card_reference_package()
+        self.assertIn('grid-card-reference/1', package['manifest']['capabilities'])
+        self.assertIn('card-reference 10 3 8', package['definitions']['base_scene'])
+        self.assertEqual((package['manifest']['axiom_revision'], package['manifest']['axiom_sha256']),
+                         (modeling.AXIOM_REVISION, modeling.AXIOM_SHA256))
+        self.assertEqual(verify_package(package), package, 'CARD_AXIOM_CURRENT')
+
+    def test_pre_card_axioms_ignore_card_words_in_source_comments(self):
+        package = self.build()
+        definitions = deepcopy(package['definitions'])
+        definitions['base_scene'] += '# requires grid-card-reference/1 card-reference card\n'
+        package = build_package(definitions, deepcopy(CASE['request']))
+        self.assertNotIn('grid-card-reference/1', package['manifest']['capabilities'])
+        for version in self.pre_card_reference_versions():
+            altered = deepcopy(package)
+            altered['manifest']['axiom_revision'], altered['manifest']['axiom_sha256'] = version
+            with self.subTest(version=version):
+                self.assertEqual(verify_package(altered)['derived'], package['derived'],
+                                 'CARD_AXIOM_COMMENT: older sources without capability remain supported')
+
     def test_released_main_package_rejects_rehashed_false_geometry(self):
         package = self.saved_main_package()
         package["derived"]["objects"][0]["vertices_mm"][0][0] += 1

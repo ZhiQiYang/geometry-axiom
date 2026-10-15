@@ -37,9 +37,9 @@ AXIOM_SHA256 = "e5e43ec5da2030669c9ecd7a67f8b250cfb7290cf663365b2b66c51814bb77b9
 # The R43 amendment (PF-0 r2.1, 2026-10-11) replaced the a93bb34 text before it
 # reached main; that interim digest was never declared by a main executor, so it
 # is deliberately not listed as a compatible version.
-# GEO-262 adopts D64/I74/R60 without adding grid-card-reference/1 to this
-# executor. Pin the revision to the committed adoption source (submission A);
-# pre-adoption main packages retain their existing geometry and capability gates.
+# GEO-262 implements grid-card-reference/1 under the adopted D64/I74/R60 text.
+# Pin the revision to its committed adoption source (submission A). Pre-adoption
+# packages remain compatible only without card-reference capabilities or sources.
 PRE_CARD_REFERENCE_AXIOM_VERSIONS = frozenset({
     ("651c661b2c4c224c58bb4a2ed0a42ed929a16aa6", "ab31dc36d5416762ac44932940a94f6142b72e831ceb62c0bc67375512109004"),
 })
@@ -250,6 +250,12 @@ def verify_package(package, *, max_cells=200000, base_executable=None):
         definitions = package["definitions"]
         if (not isinstance(definitions, dict) or type(definitions.get("base_scene")) is not str):
             raise ModelError("INVALID", "PACKAGE_SCHEMA", "D25", "Expected complete source definitions")
+        # Every accepted noncurrent version predates D64, including the latest
+        # PRE_CARD_REFERENCE release. Inspect source syntax as well as declarations
+        # so stripping either capability marker cannot grant the new semantics.
+        if (GRID_CARD_CAPABILITY in scene_required_capabilities(definitions["base_scene"]) or
+                isinstance(manifest["capabilities"], list) and GRID_CARD_CAPABILITY in manifest["capabilities"]):
+            raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "grid-card-reference/1 requires the adopted D64/I74/R60 axiom revision")
         if supplied_version not in PRE_PANEL_FILL_AXIOM_VERSIONS | PRE_CUTTING_PLAN_AXIOM_VERSIONS | PRE_ZERO_ROOM_AXIOM_VERSIONS | PRE_DRAFTS_TOPOLOGY_AXIOM_VERSIONS | PRE_STACK_CLARIFY_AXIOM_VERSIONS | PRE_IDENTITY_TRACE_AXIOM_VERSIONS | PRE_SPACE_MERGE_AXIOM_VERSIONS | PRE_CARD_REFERENCE_AXIOM_VERSIONS and (
                 SECTION_PROFILE_CAPABILITY in scene_required_capabilities(definitions["base_scene"]) or
                 isinstance(manifest["capabilities"], list) and SECTION_PROFILE_CAPABILITY in manifest["capabilities"]):
