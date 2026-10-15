@@ -36,7 +36,7 @@ def load_recorded_api(native, bridge):
                 selected.append(node)
                 found.update(targets)
     if found != names | constants:
-        raise AssertionError("T1 extraction: production definitions missing: %r" % (names | constants - found))
+        raise AssertionError("T1 extraction: production definitions missing: %r" % ((names | constants) - found))
     namespace = {"json": json, "re": re, "ask_bridge": bridge,
                  "current_native_context": lambda: native}
     exec(compile(ast.Module(body=selected, type_ignores=[]), str(path), "exec"), namespace)

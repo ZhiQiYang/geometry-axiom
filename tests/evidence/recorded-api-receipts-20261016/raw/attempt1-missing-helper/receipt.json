@@ -1,0 +1,92 @@
+{
+  "baseline": {
+    "actual_exit": 1,
+    "seconds": 0.04743057900486747,
+    "source_sha256": "897a0c6e3358683babbead9a1580f4c05e02be05044b0199eca169a5bb13381b",
+    "test_sha256": "c11d45be07d8026340bc1f10e0d4709a02def8383744e4eddfa98d4faa3c9dcd",
+    "result": {
+      "file": "tests/test_recorded_api_receipts.py",
+      "total": 1,
+      "run": 0,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "explicit_skipped": 0,
+      "unrun_skipped": 0,
+      "blocked_by_error": 0,
+      "expected_failed": 0,
+      "expected_failures": [],
+      "failures": [
+        {
+          "test": "test_recorded_api_receipts",
+          "kind": "import",
+          "message": "ModuleNotFoundError: No module named 'binaries'"
+        }
+      ],
+      "skip_reasons": {},
+      "skip_items": [],
+      "import_error": "Traceback (most recent call last):\n  File \"/tmp/geometry-receipt-mutant-i8mbvt3y/tests/_unittest_runner.py\", line 221, in main\n    import binaries\nModuleNotFoundError: No module named 'binaries'\n",
+      "seconds": 0.0
+    }
+  },
+  "mutant": {
+    "actual_exit": 1,
+    "seconds": 0.056089252000674605,
+    "source_sha256": "b330fef4e062b3276b9d4a14970237eb439c20c13ccbcf3359bbeed6fa1c958d",
+    "test_sha256": "c11d45be07d8026340bc1f10e0d4709a02def8383744e4eddfa98d4faa3c9dcd",
+    "result": {
+      "file": "tests/test_recorded_api_receipts.py",
+      "total": 1,
+      "run": 0,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "explicit_skipped": 0,
+      "unrun_skipped": 0,
+      "blocked_by_error": 0,
+      "expected_failed": 0,
+      "expected_failures": [],
+      "failures": [
+        {
+          "test": "test_recorded_api_receipts",
+          "kind": "import",
+          "message": "ModuleNotFoundError: No module named 'binaries'"
+        }
+      ],
+      "skip_reasons": {},
+      "skip_items": [],
+      "import_error": "Traceback (most recent call last):\n  File \"/tmp/geometry-receipt-mutant-i8mbvt3y/tests/_unittest_runner.py\", line 221, in main\n    import binaries\nModuleNotFoundError: No module named 'binaries'\n",
+      "seconds": 0.0
+    }
+  },
+  "restored": {
+    "actual_exit": 1,
+    "seconds": 0.07263571699877502,
+    "source_sha256": "897a0c6e3358683babbead9a1580f4c05e02be05044b0199eca169a5bb13381b",
+    "test_sha256": "c11d45be07d8026340bc1f10e0d4709a02def8383744e4eddfa98d4faa3c9dcd",
+    "result": {
+      "file": "tests/test_recorded_api_receipts.py",
+      "total": 1,
+      "run": 0,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "explicit_skipped": 0,
+      "unrun_skipped": 0,
+      "blocked_by_error": 0,
+      "expected_failed": 0,
+      "expected_failures": [],
+      "failures": [
+        {
+          "test": "test_recorded_api_receipts",
+          "kind": "import",
+          "message": "ModuleNotFoundError: No module named 'binaries'"
+        }
+      ],
+      "skip_reasons": {},
+      "skip_items": [],
+      "import_error": "Traceback (most recent call last):\n  File \"/tmp/geometry-receipt-mutant-i8mbvt3y/tests/_unittest_runner.py\", line 221, in main\n    import binaries\nModuleNotFoundError: No module named 'binaries'\n",
+      "seconds": 0.0
+    }
+  }
+}

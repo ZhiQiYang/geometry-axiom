@@ -1,0 +1,98 @@
+{
+  "baseline": {
+    "actual_exit": 0,
+    "seconds": 0.13218109899753472,
+    "source_sha256": "8b4a6d1674e0952d4c07b598809fc7c384a90d08c96539059a17d831b7f795be",
+    "test_sha256": "c11d45be07d8026340bc1f10e0d4709a02def8383744e4eddfa98d4faa3c9dcd",
+    "result": {
+      "file": "tests/test_recorded_api_receipts.py",
+      "total": 6,
+      "run": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "explicit_skipped": 0,
+      "unrun_skipped": 0,
+      "blocked_by_error": 0,
+      "expected_failed": 0,
+      "expected_failures": [],
+      "failures": [],
+      "skip_reasons": {},
+      "skip_items": [],
+      "import_error": null,
+      "extra_errors": 0,
+      "seconds": 0.07
+    }
+  },
+  "mutant": {
+    "actual_exit": 1,
+    "seconds": 0.1177177470017341,
+    "source_sha256": "6c547cd8a4506f5b5fec2399ee76b964804d78691963bc3c32a3f07ef1e3d861",
+    "test_sha256": "c11d45be07d8026340bc1f10e0d4709a02def8383744e4eddfa98d4faa3c9dcd",
+    "result": {
+      "file": "tests/test_recorded_api_receipts.py",
+      "total": 6,
+      "run": 6,
+      "passed": 2,
+      "failed": 4,
+      "skipped": 0,
+      "explicit_skipped": 0,
+      "unrun_skipped": 0,
+      "blocked_by_error": 0,
+      "expected_failed": 0,
+      "expected_failures": [],
+      "failures": [
+        {
+          "test": "test_recorded_api_receipts.RecordedApiReceipts.test_256_unacknowledged_results_block_new_command",
+          "kind": "failure",
+          "message": "+ {'error': '未確認的操作結果過多，已暫停新增操作。', 'ok': False}"
+        },
+        {
+          "test": "test_recorded_api_receipts.RecordedApiReceipts.test_lookup_before_command_seals_id_even_when_acknowledged",
+          "kind": "failure",
+          "message": "+ {'ok': True, 'revision': 7, 'transaction_id': 19} : T1_EARLY_LOOKUP_SEALS_ID"
+        },
+        {
+          "test": "test_recorded_api_receipts.RecordedApiReceipts.test_lost_response_lookup_and_same_command_do_not_reexecute",
+          "kind": "failure",
+          "message": "+ {'ok': True, 'result': {'error': '操作未送達，場景未變更；請重新操作。', 'ok': False}} : T1_LOST_RESPONSE_RECOVERED"
+        },
+        {
+          "test": "test_recorded_api_receipts.RecordedApiReceipts.test_same_id_with_different_command_is_rejected",
+          "kind": "failure",
+          "message": "AssertionError: True is not false : T1_COMMAND_BINDING"
+        }
+      ],
+      "skip_reasons": {},
+      "skip_items": [],
+      "import_error": null,
+      "extra_errors": 0,
+      "seconds": 0.07
+    }
+  },
+  "restored": {
+    "actual_exit": 0,
+    "seconds": 0.12243698799284175,
+    "source_sha256": "8b4a6d1674e0952d4c07b598809fc7c384a90d08c96539059a17d831b7f795be",
+    "test_sha256": "c11d45be07d8026340bc1f10e0d4709a02def8383744e4eddfa98d4faa3c9dcd",
+    "result": {
+      "file": "tests/test_recorded_api_receipts.py",
+      "total": 6,
+      "run": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "explicit_skipped": 0,
+      "unrun_skipped": 0,
+      "blocked_by_error": 0,
+      "expected_failed": 0,
+      "expected_failures": [],
+      "failures": [],
+      "skip_reasons": {},
+      "skip_items": [],
+      "import_error": null,
+      "extra_errors": 0,
+      "seconds": 0.06
+    }
+  }
+}
