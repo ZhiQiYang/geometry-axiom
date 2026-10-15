@@ -13,7 +13,7 @@ static void pf_json_layout(const World *w,const PanelFill *p)
         printf("%s{\"axis\":\"%c\",\"k\":%lld,\"coordinate\":%lld",i?",":"",line->axis?'v':'u',(long long)line->k,(long long)line->coordinate);
         if(line->staggered)printf(",\"band\":%lld,\"range\":[%lld,%lld]",(long long)line->band,(long long)line->range[0],(long long)line->range[1]);putchar('}');
     }
-    fputs("],\"effectiveSeams\":null,\"support\":null,\"derivedPlacement\":null,\"pending\":[\"PF-3 effective seams and support\",\"PF-5 timber layer and derived placement\"]}",stdout);pf_free(&d);
+    fputs("],\"effectiveSeams\":null,\"support\":null,\"derivedPlacement\":null,\"pending\":[\"PF-3 effective seams and support\",\"PF-H timber layer and derived placement\"]}",stdout);pf_free(&d);
 }
 static void pf_json_state(const World *w)
 {

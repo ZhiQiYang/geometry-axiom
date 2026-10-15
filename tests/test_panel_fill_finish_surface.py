@@ -382,7 +382,7 @@ class FinishSurfaceNative(unittest.TestCase):
         self.assertEqual(before, self.snapshot())
 
     def test_out_of_scope_operations_are_refused_instead_of_hidden(self):
-        # The panel-fill preview only discloses finish surfaces, so it must not commit anything else (I8a/I55):
+        # The panel-fill preview discloses finish surfaces and panel fills, not other definitions (I8a/I55):
         # a perfectly valid parameter card would otherwise land in World behind an empty `changes` list.
         valid_card = {"op": "put-parameter", "value": {"id": 9, "name": "板材", "fields": [
             {"id": 1, "name": "寬", "type": "dimension", "input": "915"}]}}
@@ -392,7 +392,7 @@ class FinishSurfaceNative(unittest.TestCase):
                     "source": {"kind": "literal", "value": 3}}], [])]
         for operations, candidate_changes in cases:
             with self.subTest(ops=[o["op"] for o in operations]):
-                preview = self.reject(operations, "only put-finish-surface and delete-finish-surface")
+                preview = self.reject(operations, "only put-finish-surface, delete-finish-surface, put-panel-fill and delete-panel-fill")
                 self.assertEqual(candidate_changes, preview["changes"], "changes describe the rejected candidate, not a commit")
         self.assertEqual({}, self.surfaces())
         self.assertNotIn("parameters", self.command("dump")["text"])
