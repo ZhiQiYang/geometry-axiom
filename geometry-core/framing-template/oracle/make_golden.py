@@ -10,6 +10,7 @@ import framing_oracle as fo
 EXTRA = {
     "例:3700×2000 矩形(最後一條縫挪動)": {"outer": [[0, 0], [3700, 0], [3700, 2000], [0, 2000]]},
     "例:940×2000 矩形(第一條縫就要挪)": {"outer": [[0, 0], [940, 0], [940, 2000], [0, 2000]]},
+    "例:縫寬 3 的 3700×4000 矩形(反向起鋪首縫取上界)": {"outer": [[0, 0], [3700, 0], [3700, 4000], [0, 4000]], "params": {"gap": 3}},
 }
 
 
@@ -27,7 +28,7 @@ def snapshot(spec):
     out = {"params": p, "rooms": {}}
     for name, room in dict(spec["rooms"], **EXTRA).items():
         rows = []
-        for l, res, fails in fo.solve(room, p):
+        for l, res, fails in fo.solve(room, dict(p, **room.get("params", {}))):
             assert not fails, (name, fo.layout_name(l), fails)
             rows.append({
                 "layout": l,

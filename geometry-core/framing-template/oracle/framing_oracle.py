@@ -190,10 +190,11 @@ class Region:
 def seam_centers(lo, hi, start, ps, g, w, mut):
     """從起鋪側整片鋪,回傳縫中心(世界座標)。G6、G7。"""
     T, D = ps + g, hi - lo
+    half = g // 2 if (start == "min" or "gap_floor_both" in mut) else g - g // 2  # FT01:正向取下界、反向取上界
     ds = []
     i = 0
     while (i + 1) * T < D:
-        ds.append(i * T + ps + g // 2)
+        ds.append(i * T + ps + half)
         i += 1
     moved = None
     if ds and "no_sliver" not in mut and ds[-1] > D - 1.5 * w:
@@ -207,7 +208,7 @@ def seam_centers(lo, hi, start, ps, g, w, mut):
 # ---------------------------------------------------------------- 建構
 def build(room, layout, p, mut=frozenset()):
     P, Lp, g, w, M, X = p["P"], p["L"], p["gap"], p["w"], p["M"], p["X"]
-    assert g % 2 == 0, "第一版只處理偶數縫寬"
+    gl, gu = g // 2, g - g // 2  # 縫在世界座標佔 [c-gl, c+gu]:下側板邊 c-gl、上側板邊 c+gu(兩個起鋪方向都一樣)
     reg = Region(room["outer"], room.get("holes", []))
     a = 0 if layout["A"] == "x" else 1
     b = 1 - a
@@ -292,8 +293,8 @@ def build(room, layout, p, mut=frozenset()):
     # 碰到 RC:主支線碰到壁柱或獨立柱就停在那裡,分成幾段;每段兩端都接到 RC——外牆與壁柱停在它們的
     #   邊界材側面,獨立柱停在柱面(柱面的角材在主支兩側分段)。這就是「連續傳到 RC」;
     #   只有在室內中間斷開去接別的角材才不行(使用者 2026-10-14 第 3 題、2026-10-16)。
-    allow_lo = lo_h - g // 2 - X  # 往 + 平移的上限:- 側板邊承接仍 >= X
-    allow_hi = hi_h - g // 2 - X  # 往 - 平移的上限:+ 側板邊承接仍 >= X
+    allow_lo = lo_h - gl - X  # 往 + 平移的上限:- 側板邊承接仍 >= X
+    allow_hi = hi_h - gu - X  # 往 - 平移的上限:+ 側板邊承接仍 >= X
     mains, doublings = [], []
     outer_blocks = [s for s in astrips if s["outer"]]
     for c in seams_a:
@@ -348,10 +349,10 @@ def build(room, layout, p, mut=frozenset()):
             continue
         # 承接不足的那一側:板邊帶 [縫 ± g/2, ± X] 中主支蓋不到的部分,沿 RC 角材那條線補併料
         if s < 0:
-            need = (ar[1], c + g // 2 + X)
+            need = (ar[1], c + gu + X)
             da = (ar[1], ar[1] + w)
         else:
-            need = (c - g // 2 - X, ar[0])
+            need = (c - gl - X, ar[0])
             da = (ar[0] - w, ar[0])
         doublings.append((c, need, da, pieces))
     if "shift_main" in mut:
@@ -507,7 +508,7 @@ def build(room, layout, p, mut=frozenset()):
             continue
         feas = {}
         for e in seams_b:
-            need = [(max(x0, sb0), min(x1, sb1)) for x0, x1 in ((e - g // 2 - X, e - g // 2), (e + g // 2, e + g // 2 + X))
+            need = [(max(x0, sb0), min(x1, sb1)) for x0, x1 in ((e - gl - X, e - gl), (e + gu, e + gu + X))
                     if min(x1, sb1) > max(x0, sb0)]
             if not need:
                 continue  # 縫兩側板邊都已在這一跨的端部角材上
@@ -596,6 +597,13 @@ def build(room, layout, p, mut=frozenset()):
         for lo, hi, role, at in sorted(sups):
             add("secondary", mk(a, (sr["g0"], sr["g1"]), (lo, hi)), at=at, role=role, span=[tid, uid])
         marks_out.append(dict(span=[tid, uid], b_range=[sr["sb0"], sr["sb1"]], supports=[list(s) for s in sorted(sups)]))
+    if "one_sided_delete" in mut and mains:
+        m0 = rng(mains[0]["rect"], a)
+        right = [t_ for t_ in timbers if t_["kind"] == "secondary" and t_.get("role") == "mark" and rng(t_["rect"], a)[0] == m0[1]]
+        if right:
+            timbers.remove(right[len(right) // 2])
+            for i_, t_ in enumerate(timbers):
+                t_["id"] = i_
     # 碰撞與入 RC 都是排板衝突(G5):這個起鋪角/方向不能用
     if "skip_conflict_scan" not in mut:
         R = reg.rects()
@@ -620,10 +628,11 @@ def expected_seam_positions(lo, hi, start, panel, gap, width):
     """G6/G7 另寫一次:從起鋪側量起,第 k 條縫中心距起鋪牆 k·(panel+gap)+panel+gap/2,
     只要下一片板的起點仍在對牆之內就有這條縫;最後一條縫距起鋪牆超過 D-1.5w 時挪到 floor(D-1.5w)。"""
     span = hi - lo
+    half = gap // 2 if start == "min" else gap - gap // 2  # 提案 FT01:正向 P+⌊gap/2⌋,反向 P+⌈gap/2⌉
     dist = []
     k = 0
     while (k + 1) * (panel + gap) < span:
-        dist.append(k * (panel + gap) + panel + gap // 2)
+        dist.append(k * (panel + gap) + panel + half)
         k += 1
     if dist and dist[-1] * 2 > 2 * span - 3 * width:  # 整數比較:d > D - 1.5w
         dist[-1] = (2 * span - 3 * width) // 2
@@ -673,7 +682,7 @@ def check(res, p):
         out, cur = [], lo
         for c in sorted(seams):
             out.append((cur, c - g // 2))
-            cur = c + g // 2
+            cur = c + (g - g // 2)
         out.append((cur, hi))
         return out
 
@@ -756,12 +765,11 @@ def check(res, p):
         for side, mine, other, x0 in (("左", left, right, ma[1]), ("右", right, left, ma[0] - 1)):
             for br in mine - other:
                 probe = mk(a, (x0, x0 + 1), br)
-                if leftover(probe, R) or any(overlap(probe, s["rect"]) for s in res["timbers"] if s["kind"] != "secondary"):
-                    continue  # 另一側那裡是 RC 或別的角材,不必對齊
-                near = [s for s in other if max(s[0], br[0] - w) < min(s[1], br[1] + w)]
-                if not near:
-                    continue  # 另一側在那附近沒有副支(那一側的記號被 RC 角材拿掉)
-                fails.append(dict(check="C9_MARKS_NOT_ALIGNED", main=mt["id"], at=list(br), other=[list(s) for s in near]))
+                if leftover(probe, R) or any(overlap(probe, s["rect"]) for s in res["timbers"]
+                                             if not (s["kind"] == "secondary" and s.get("role") == "mark")):
+                    continue  # 另一側那裡是 RC 或別的角材(含縫上副支),那支記號本來就放不下
+                fails.append(dict(check="C9_MARKS_NOT_ALIGNED", main=mt["id"], at=list(br), side=side,
+                                  other=[list(s) for s in other if max(s[0], br[0] - w) < min(s[1], br[1] + w)]))
     # C8 核心可表示(只查外牆;孔邊在核心沒有定位邊與延伸段)。與建構分開,直接照核心的規則重算:
     #   定位邊 = 與角材某側面共線、長度區間正重疊的外牆邊;有整條覆蓋者優先,其次重疊最長,同分取先出現者
     #   (current_geometry.c timber_role_props)。

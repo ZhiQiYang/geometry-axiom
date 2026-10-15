@@ -44,14 +44,18 @@ MUTANTS = [
     ("no_doubling", R["F1客廳"], "C3_EDGE_UNSUPPORTED", "主支平移 8 mm 後不補併料:另一側整片板邊承接不足", "右上起鋪,板長沿Y"),
     ("no_end_push", {"outer": [[0, 0], [3000, 0], [3000, 948], [2700, 948], [2700, 3700], [0, 3700]]}, "C8_MAIN_ON_EXTENSION",
      "主支跨在凹角牆線上、不推進牆段:端面一部分落在延伸段", "左下起鋪,板長沿X"),
+    ("gap_floor_both", dict(RECT(3700, 4000), params={"gap": 3}), "C7_SEAMS_NOT_FROM_START",
+     "縫寬 3、反向起鋪仍取下界:首縫偏 1 mm(提案 FT01 反向取上界)", "右上起鋪,板長沿Y"),
+    ("one_sided_delete", R["F3次臥"], "C9_MARKS_NOT_ALIGNED", "第一支主支右側少一支記號副支,左側那支還在"),
     ("rc_through_reflex", R["F1客廳"], "C8_I22_NON_BOUNDARY_EXTENDS", "凹角處沿牆料穿過凹角(舊排法):核心 I22 不接受"),
     ("rc_through_reflex", R["F1客廳"], "C8_I19_BOUNDARY_END", "同上:凹角另一面的邊界材端面頂到沿牆料,核心 I19 不接受"),
     ("no_boundary_extension", R["F1客廳"], "C6_END_NOT_ON_TIMBER", "凹角處邊界材不延伸:沿牆料端面懸空"),
 ]
 for mut, room, want, why, *lay in MUTANTS:
     lt = next(l for l in fo.LAYOUTS if fo.layout_name(l) == lay[0]) if lay else LT_Y
-    res = fo.build(room, lt, p, frozenset({mut, "skip_conflict_scan"}))
-    got = {f["check"] for f in fo.check(res, p)}
+    pp = dict(p, **room.get("params", {}))
+    res = fo.build(room, lt, pp, frozenset({mut, "skip_conflict_scan"}))
+    got = {f["check"] for f in fo.check(res, pp)}
     ok = want in got
     failed |= not ok
     print(f"[{'紅' if ok else '沒抓到!'}] {mut:18s} 預期 {want:24s} 實得 {sorted(got)}  {why}")
@@ -130,6 +134,20 @@ for room in reflex_rooms:
         fails = fo.check(res, p)
         if fails:
             rb.append((room["outer"], fo.layout_name(l), sorted({f["check"] for f in fails})))
+# 奇數縫寬:縫寬 1、3 的矩形房,8 種排法(反向起鋪首縫取上界)
+p_odd = [dict(p, gap=gg) for gg in (1, 3)]
+odd_bad = odd_runs = 0
+for pp in p_odd:
+    for W in range(1200, 4001, 233):
+        for H in range(1900, 5001, 377):
+            for l in fo.LAYOUTS:
+                odd_runs += 1
+                res = fo.build(RECT(W, H), l, pp)
+                fl = [] if res["conflicts"] else fo.check(res, pp)
+                if res["conflicts"] or fl:
+                    odd_bad += 1
+                    rb.append(((W, H, pp["gap"]), fo.layout_name(l), sorted({c["code"] for c in res["conflicts"]} | {f["check"] for f in fl})))
+print(f"奇數縫寬(1、3)矩形房 {odd_runs} 次:不可施工或檢查失敗 {odd_bad} 個")
 print(f"凹角、壁龕與獨立柱房 {len(reflex_rooms)} 間 × 8 種排法:可施工 {rbuild} 個,其中檢查失敗 {len(rb)} 個;不可施工的原因 {codes}")
 for x in rb[:10]:
     print("   ", x)
