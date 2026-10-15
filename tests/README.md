@@ -93,7 +93,7 @@ python3 tests/test_axiom_reader.py
 `test_feedback_store.py`（GEO-183）驗證回報收件匣的寫入、編號、INBOX 與 `feedback_cli.py`，寫在暫存目錄、不需要 bridge。
 `test_guide_panels.py`（GEO-175）驗證導讀頁每個面板的符號與 callout 都還在目前的 `current_geometry.c` 裡；
 改 C 後若紅燈，改 `geometry-guide/make_guide.py` 的面板設定並重跑它。
-`test_core_integrity.c` 驗證承載面重綁後的世界座標、Space 範圍、交易回滾、undo/redo，以及 I2 合法共線頂點的 I5 矩形包含。
+`test_core_integrity.c` 驗證承載面重綁後的世界座標、Space 範圍、交易回滾、undo/redo，以及 I2 合法共線頂點的 I5 矩形包含；GEO-257 起另驗「凹槽（環外）內四角貼壁的矩形不是在環內」與貼槽邊但真的在內的對照組（場景層對應 `_ax_i5_notch_*.scene`，I44 對應 `test_section_profile_native.py`）。
 `test_bridge_integrity.py` 使用獨立 bridge 程序，驗證不完整指令、存檔重載、auto 支撐義務及所有接受型場景的幾何往返。
 
 以下輸出目錄須先建立；執行測試時可在專案外工作，避免 SVG 測試產物覆寫工作中的圖。

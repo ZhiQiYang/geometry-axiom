@@ -56,6 +56,7 @@ PY_NEEDS = {
     'test_section_profile_native': ['bridge', 'model-base'],
     'test_panel_fill_finish_surface': ['bridge'],
     'test_panel_fill_layout': ['bridge'],
+    'test_panel_fill_host': ['bridge'],
     'test_section_profile_modeling': ['bridge', 'model-base'],
     'test_section_profile_mutation_check': [],
     'test_assembly_generation': ['bridge'],
@@ -120,6 +121,8 @@ NODE_TEST_FILES = [
     'tests/test_face_projection_store.js',
     'tests/test_grid_trial_geometry.js',
     'tests/test_grid_rule_draft.js',
+    'tests/test_grid_drafts_collection.js',
+    'tests/test_grid_drafts_lifecycle_capacity.js',
     'tests/test_grid_rule_lines.js',
     'tests/test_issue77_attachment.js',
     'tests/test_issue77_history.js',
@@ -130,6 +133,7 @@ NODE_TEST_FILES = [
     'tests/test_model_update.js',
     'tests/test_parameters_project_store.js',
     'tests/test_project_store.js',
+    'tests/test_shared_format17.js',
     'tests/test_subdivision_project_store.js',
     'tests/test_reference_workspace_races.js',
     'tests/test_room_outline.js',
@@ -180,6 +184,13 @@ NODE_PURE_TEST_FILES = {
     'node:grid_definition_diagram': 'tests/test_grid_definition_diagram.js',
 }
 NODE_EXCLUDED = {
+    'tests/k1b_cutting_settings_fixture.cjs': 'Pinned K1-b validator fixture for the shared /17 owner-dispatch contract; not an executable test',
+    'tests/k2a_browser_receipt.cjs': 'Shared browser receipt/identity helper; registers no tests',
+    'tests/k2a_rule_repin_browser.cjs': 'Required actual source-rule raw preservation and two-way repin comparison gate',
+    'tests/k2a_source_repin_browser.cjs': 'Required isolated K2a-A Chromium source repin/replacement gate: stale cancellation, same-ID lost refusal and reviewed different-ID selection',
+    'tests/k2a_zip_browser.cjs': 'Required K2a-A true ZIP save/import into another fresh isolated service; set GEOMETRY_FRESH_TEST_URL as well as GEOMETRY_TEST_URL',
+    'tests/k2a_native_browser.cjs': 'Required isolated K2a-A native confirm/Undo, deletion receipts, permanent orphans/lost and same-ID recreation through the actual browser owner',
+    'tests/k2a_drafts_browser.cjs': 'Required isolated K2a-A real Chromium 1280/390 draft collection/continuation gate; run with GEOMETRY_ISOLATED_SERVICE=1 and GEOMETRY_TEST_URL',
     'tests/room_multi_candidate_browser.js': 'Required isolated same-page candidate sessions through actual room owner, Worker/source invalidation, interrupted replies, history and fresh-context ZIP reopen',
     'tests/test_section_profile_browser.js': 'Required isolated Q38 native/UI model, desktop/390, keyboard, preview/cancel, placement and real project Save/new/Open gate; run separately, not a node unit suite',
     'tests/rule-case-workbench-controller.cjs': 'Required actual standalone HTTP/native controller lifecycle suite; needs explicit isolated GEOMETRY_RULE_CASE_TEST_URL; not a generic node fixture',
@@ -216,6 +227,11 @@ REQUIRED_OWNER_GATES = {
 }
 # Runtime adapter checks, separate from non-browser source suites and formal owner completion.
 REQUIRED_BROWSER_GATES = {
+    'tests/k2a_drafts_browser.cjs': 27,
+    'tests/k2a_native_browser.cjs': 42,
+    'tests/k2a_source_repin_browser.cjs': 14,
+    'tests/k2a_zip_browser.cjs': 89,
+    'tests/k2a_rule_repin_browser.cjs': 35,
     'tests/room_multi_candidate_browser.js': 34,
     'tests/test_section_profile_browser.js': 68,
     'tests/integration/q38_save_roundtrip.py': 18,
@@ -235,6 +251,11 @@ REQUIRED_BROWSER_GATES = {
     'geometry-web/grid_raw_provenance_browser_test.py': 207,
 }
 BROWSER_GATE_SCOPES = {
+    'tests/k2a_drafts_browser.cjs': 'real 1280/390 collection continuation, source repin/cancel and lost save',
+    'tests/k2a_native_browser.cjs': 'actual native confirmation/deletion receipts, history and permanent lost browser owner',
+    'tests/k2a_source_repin_browser.cjs': 'explicit binding source selection, stale cancel and permanent same-ID lost rejection',
+    'tests/k2a_zip_browser.cjs': 'true ZIP and cold isolated native reopen including permanent lost; distinct service sessions required',
+    'tests/k2a_rule_repin_browser.cjs': 'actual D19a rule changed/deleted repin with valid/invalid raw, cancellation and close preservation',
     'tests/room_multi_candidate_browser.js': 'real same-page multiroom import/calibration/select/review/accept/park/save/new/Open; explicit late Worker and lost-response injections',
     'tests/test_section_profile_browser.js': 'real desktop/390 Q38 authoring, typed sources, exact models, source impact/cancel, placement conversion, shared history and /16 Save/Open',
     'tests/integration/q38_save_roundtrip.py': 'native-authored complete section fixture; real download/fresh-browser chooser, full World and exact mesh oracle; explicit download fallback, not OS picker',

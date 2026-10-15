@@ -1,0 +1,36 @@
+✖ P-054 shared /17 accepts each registered feature alone and both without discarding attachments (47.981173ms)
+✖ P-054 unsupported other-owner capability and stripped capability reject whole /17 archive (3.15447ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 0
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 139.379275
+
+✖ failing tests:
+
+test at tests/test_shared_format17.js:14:1
+✖ P-054 shared /17 accepts each registered feature alone and both without discarding attachments (47.981173ms)
+  Error: 專案需要尚未支援的能力。
+      at fail (evalmachine.<anonymous>:40:35)
+      at validateManifestCapabilities (evalmachine.<anonymous>:288:7)
+      at validate (evalmachine.<anonymous>:528:7)
+      at Object.pack (evalmachine.<anonymous>:649:5)
+      at async roundtrip (/workspace/geometry-k2aa-review/tests/test_shared_format17.js:13:51)
+      at async TestContext.<anonymous> (/workspace/geometry-k2aa-review/tests/test_shared_format17.js:15:76)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+
+test at tests/test_shared_format17.js:17:1
+✖ P-054 unsupported other-owner capability and stripped capability reject whole /17 archive (3.15447ms)
+  Error: 專案需要尚未支援的能力。
+      at fail (evalmachine.<anonymous>:40:35)
+      at validateManifestCapabilities (evalmachine.<anonymous>:288:7)
+      at validate (evalmachine.<anonymous>:528:7)
+      at Object.pack (evalmachine.<anonymous>:649:5)
+      at async roundtrip (/workspace/geometry-k2aa-review/tests/test_shared_format17.js:13:51)
+      at async TestContext.<anonymous> (/workspace/geometry-k2aa-review/tests/test_shared_format17.js:18:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)

@@ -1,0 +1,13 @@
+baseline P7 True phase ready real rejected fetches 0 guarded calls 0
+bridge18 P7 False phase error real rejected fetches 2 guarded calls 5
+  fetch-26 source-inspect 15002.0 {'runtime_lock_wait_ms': None, 'fresh_total_ms': None, 'fresh_body_approx_ms': None, 'receipt_lock_wait_ms': None, 'bridge_lock_wait_ms': 17999.715, 'stdin_write_ms': 0.016, 'stdin_flush_ms': 1.25, 'response_queue_wait_ms': 0.089, 'http_write_ms': 0.687, 'http_total_ms': 18002.347}
+  fetch-28 dump 15000.3 {'runtime_lock_wait_ms': None, 'fresh_total_ms': None, 'fresh_body_approx_ms': None, 'receipt_lock_wait_ms': None, 'bridge_lock_wait_ms': 17466.017, 'stdin_write_ms': 0.011, 'stdin_flush_ms': 0.012, 'response_queue_wait_ms': 0.898, 'http_write_ms': 0.253, 'http_total_ms': 17467.408}
+bridge3 P7 True phase ready real rejected fetches 0 guarded calls 0
+native18 P7 False phase error real rejected fetches 2 guarded calls 5
+  fetch-26 source-inspect 15000.3 {'runtime_lock_wait_ms': None, 'fresh_total_ms': None, 'fresh_body_approx_ms': None, 'receipt_lock_wait_ms': None, 'bridge_lock_wait_ms': 0.012, 'stdin_write_ms': 0.008, 'stdin_flush_ms': 0.008, 'response_queue_wait_ms': 17997.636, 'http_write_ms': 0.291, 'http_total_ms': 17999.037}
+  fetch-28 dump 15000.4 {'runtime_lock_wait_ms': None, 'fresh_total_ms': None, 'fresh_body_approx_ms': None, 'receipt_lock_wait_ms': None, 'bridge_lock_wait_ms': 17482.396, 'stdin_write_ms': 0.067, 'stdin_flush_ms': 0.027, 'response_queue_wait_ms': 1.85, 'http_write_ms': 0.141, 'http_total_ms': 17484.766}
+receipt18 P7 True phase ready real rejected fetches 1 guarded calls 0
+  fetch-6 line surface 1 origin 0 0 0 u +x v +y outline 0,0 200,0 200,100 0,100 15000.6 {'runtime_lock_wait_ms': 33.026, 'fresh_total_ms': 86.993, 'fresh_body_approx_ms': 53.968, 'receipt_lock_wait_ms': 17898.452, 'bridge_lock_wait_ms': 0.019, 'stdin_write_ms': 0.009, 'stdin_flush_ms': 0.027, 'response_queue_wait_ms': 14.395, 'http_write_ms': 0.219, 'http_total_ms': 18000.785}
+renderer-cpu20 P7 True phase ready real rejected fetches 0 guarded calls 0
+runtime18 P7 False phase ready real rejected fetches 1 guarded calls 0
+  fetch-6 line surface 1 origin 0 0 0 u +x v +y outline 0,0 200,0 200,100 0,100 15000.8 {'runtime_lock_wait_ms': 17994.792, 'fresh_total_ms': 18051.186, 'fresh_body_approx_ms': 56.395, 'receipt_lock_wait_ms': 0.02, 'bridge_lock_wait_ms': None, 'stdin_write_ms': None, 'stdin_flush_ms': None, 'response_queue_wait_ms': None, 'http_write_ms': 0.162, 'http_total_ms': 18051.636}

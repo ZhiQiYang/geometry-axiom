@@ -1,0 +1,842 @@
+[
+  {
+    "name": "model8192",
+    "stack_kib": 8192,
+    "command": [
+      "/tmp/geometry211-model",
+      "211-stagger-source8.scene"
+    ],
+    "exit": -11,
+    "seconds": 0.036211749000358395,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "model16384",
+    "stack_kib": 16384,
+    "command": [
+      "/tmp/geometry211-model",
+      "211-stagger-source8.scene"
+    ],
+    "exit": 1,
+    "seconds": 0.03001656199921854,
+    "stdout_bytes": 195,
+    "stderr_bytes": 875
+  },
+  {
+    "name": "boundary-8192-0",
+    "stack_kib": 8192,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.017250353001145413,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8192-1",
+    "stack_kib": 8192,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.015781042999151396,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8192-2",
+    "stack_kib": 8192,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.017829703998359037,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8256-0",
+    "stack_kib": 8256,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.01596869499917375,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8256-1",
+    "stack_kib": 8256,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.016014634999010013,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8256-2",
+    "stack_kib": 8256,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.015614066998750786,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8320-0",
+    "stack_kib": 8320,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.017090897999878507,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8320-1",
+    "stack_kib": 8320,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.01935318600044411,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8320-2",
+    "stack_kib": 8320,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.014695080000819871,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8384-0",
+    "stack_kib": 8384,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.016662249001456075,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8384-1",
+    "stack_kib": 8384,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.016924822999499156,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8384-2",
+    "stack_kib": 8384,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.019343802001458243,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8448-0",
+    "stack_kib": 8448,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.01578007200077991,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8448-1",
+    "stack_kib": 8448,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.017600479999600793,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8448-2",
+    "stack_kib": 8448,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.022581507999348105,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8512-0",
+    "stack_kib": 8512,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.01673759000004793,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8512-1",
+    "stack_kib": 8512,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.01672531699841784,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8512-2",
+    "stack_kib": 8512,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.015932968999550212,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8576-0",
+    "stack_kib": 8576,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.017159004000859568,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8576-1",
+    "stack_kib": 8576,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.02569594899978256,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8576-2",
+    "stack_kib": 8576,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.018611585999678937,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8640-0",
+    "stack_kib": 8640,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.02235944399944856,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8640-1",
+    "stack_kib": 8640,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.015567694999845116,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8640-2",
+    "stack_kib": 8640,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.017886252999232966,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8704-0",
+    "stack_kib": 8704,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.024028456999076298,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8704-1",
+    "stack_kib": 8704,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.015024076999907265,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8704-2",
+    "stack_kib": 8704,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.0176027969991992,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8768-0",
+    "stack_kib": 8768,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.016569771998547367,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8768-1",
+    "stack_kib": 8768,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.014347845000884263,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8768-2",
+    "stack_kib": 8768,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.01629247500022757,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8832-0",
+    "stack_kib": 8832,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.014270943000155967,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8832-1",
+    "stack_kib": 8832,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.014397764000023017,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8832-2",
+    "stack_kib": 8832,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.01459035399966524,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8896-0",
+    "stack_kib": 8896,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.018687198999032262,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8896-1",
+    "stack_kib": 8896,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.0159311119987251,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8896-2",
+    "stack_kib": 8896,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.016462767000120948,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8960-0",
+    "stack_kib": 8960,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.015426893998665037,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8960-1",
+    "stack_kib": 8960,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.017741134999596397,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-8960-2",
+    "stack_kib": 8960,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.01415333699878829,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-9024-0",
+    "stack_kib": 9024,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.023007899999356596,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-9024-1",
+    "stack_kib": 9024,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.015248114001224167,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-9024-2",
+    "stack_kib": 9024,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.016374258000723785,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-9088-0",
+    "stack_kib": 9088,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.01684789200044179,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-9088-1",
+    "stack_kib": 9088,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.01582085599875427,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-9088-2",
+    "stack_kib": 9088,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.015797240999745554,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-9152-0",
+    "stack_kib": 9152,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.019404799000767525,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-9152-1",
+    "stack_kib": 9152,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.01569314400148869,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-9152-2",
+    "stack_kib": 9152,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.01816855899960501,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-9216-0",
+    "stack_kib": 9216,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.01671531200008758,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-9216-1",
+    "stack_kib": 9216,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.016219485998590244,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "name": "boundary-9216-2",
+    "stack_kib": 9216,
+    "command": [
+      "/tmp/geometry211-core",
+      "--scene",
+      "subgrid-local.scene",
+      "--no-window",
+      "--out",
+      "/tmp/geometry211-boundary.svg"
+    ],
+    "exit": -11,
+    "seconds": 0.015139952000026824,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  }
+]

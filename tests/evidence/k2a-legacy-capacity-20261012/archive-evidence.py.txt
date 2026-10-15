@@ -1,0 +1,58 @@
+from pathlib import Path
+import subprocess,json,hashlib,gzip,tarfile,io,re
+root=Path('/workspace/geometry-k2aa-review')
+out=root/'tests/evidence/k2a-legacy-capacity-20261012';out.mkdir(parents=True,exist_ok=True)
+files={}
+def sha(raw):return hashlib.sha256(raw).hexdigest()
+def save(source,name,compressed=False):
+    raw=Path(source).read_bytes();data=gzip.compress(raw,mtime=0)if compressed else raw
+    p=out/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(data)
+    files[name]={'raw_sha256':sha(raw),'stored_sha256':sha(data),'gzip':compressed,'raw_bytes':len(raw)}
+def bundle(source,name,extensions):
+    memory=io.BytesIO();members={}
+    with tarfile.open(fileobj=memory,mode='w')as tar:
+        for p in sorted(Path(source).rglob('*')):
+            if not p.is_file()or p.suffix not in extensions or 'private' in p.relative_to(source).parts:continue
+            raw=p.read_bytes();key=str(p.relative_to(source));info=tarfile.TarInfo(key);info.size=len(raw);info.mode=0o644;info.mtime=0
+            tar.addfile(info,io.BytesIO(raw));members[key]={'sha256':sha(raw),'bytes':len(raw)}
+    data=gzip.compress(memory.getvalue(),mtime=0);(out/name).write_bytes(data)
+    files[name]={'stored_sha256':sha(data),'tar_members':members}
+log=Path('/tmp/k2aa-b1-runall.log').read_text();assert 'exit 0：'in log
+total=re.search(r'合計\(已執行、有計數者\)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)',log);assert total
+for source,name,compress in [('/tmp/k2aa-b1-before.log','capacity-before.log',False),('/tmp/k2aa-b1-capacity.log','capacity-green.log',False),('/tmp/k2aa-b1-js-regression.log','js-regression.log',False),('/tmp/k2aa-b1-runall.log','nonbrowser.log',False),('/tmp/k2aa-b1-policy.json','policy-P059.json',False),('/tmp/k2aa-b1-board.md','board.md',False),('/tmp/k2aa-b1-pr199.diff','pr199.diff.gz',True),('/tmp/k2aa-b1-pr199-axiom.diff','pr199-axiom.diff.gz',True),('/tmp/k2aa-b1-mutate.py','mutate-boundaries.py.txt',False),('/tmp/k2aa-b1-mutants/results.json','mutants-results.json',False)]:save(source,name,compress)
+save('/tmp/k2aa-b1-runall-initial.log','nonbrowser-initial.log')
+save('/tmp/k2aa-b1-existing-collection-before.log','existing-collection-before.log')
+save('/tmp/k2aa-b1-existing-collection.cjs','existing-collection-repro.cjs.txt')
+save('/tmp/k2aa-b1-runall-interrupted.log','nonbrowser-interrupted.log')
+save('/tmp/k2aa-b1-general-budget-before.log','general-budget-before.log')
+save('/tmp/k2aa-b1-general-budget.cjs','general-budget-repro.cjs.txt')
+save('/tmp/k2aa-b1-pr199-state.json','pr199-state.json')
+save('/tmp/k2aa-b1-latest-comments.json','latest-review-context.json')
+save('/tmp/k2aa-b1-native-artifacts.cjs','native-artifacts.cjs.txt')
+save('/tmp/k2aa-b1-native-parent.py','native-parent.py.txt')
+save('/tmp/k2aa-b1-native-artifacts.log','native-artifacts.log')
+save('/tmp/k2aa-b1-native-parent.json','native-parent.json')
+save('/tmp/k2aa-b1-native-artifact-proof.json','native-artifact-proof.json.gz',True)
+save('/tmp/k2aa-b1-native-marked.gcanvas','native-marked.gcanvas')
+for kind in ['native','zip']:
+    save('/tmp/k2aa-b1-verified-'+kind+'-browser.log','browser/'+kind+'.log')
+    for p in sorted(Path('/tmp').glob('k2aa-b1-verified-'+kind+'-browser*.json')):
+        r=json.loads(p.read_text());before=r['before'];assert before['head']=='977150daae71e6bc27feaf33f3386904448be64a'and before['status']==''
+        if 'after'in r:assert before==r['after']
+        save(p,'browser/'+p.name+'.gz',True)
+for port in [8826,8827]:save('/tmp/k2aa-b1-service-'+str(port)+'.log','browser/service-'+str(port)+'.log')
+save('/tmp/archive-k2aa-b1.py','archive-evidence.py.txt')
+bundle('/tmp/k2aa-b1-mutants','mutant-logs.tar.gz',{'.log'})
+bundle('/tmp/k2aa-final-binaries/run_all-logs','nonbrowser-suites.tar.gz',{'.log','.json'})
+(out/'changed-files.txt').write_text(subprocess.check_output(['git','diff','--name-only','6a3d37a31a43130b5398376031c70915956eb7d0','--'],cwd=root,text=True))
+sources=['geometry-web/feature-attachments.js','geometry-web/project-store.js','geometry-web/reference-workspace.js','tests/k2a_zip_browser.cjs','tests/test_grid_drafts_lifecycle_capacity.js','tests/test_reference_workspace_races.js']
+(out/'inventory.json').write_text(json.dumps({'schema':'k2aa-legacy-capacity/1','code_head':'977150daae71e6bc27feaf33f3386904448be64a','before_head':'6a3d37a31a43130b5398376031c70915956eb7d0','legacy_base':'49c391f2afbcee17bb2647fce74c3c5532a01527','counts':dict(zip(['total','passed','failed','skipped'],map(int,total.groups()))),'sources':{p:sha((root/p).read_bytes())for p in sources},'files':files},ensure_ascii=False,indent=2)+'\n')
+inventory=json.loads((out/'inventory.json').read_text());inventory['generated_after_run']={'tests/run_all.expected.json':sha((root/'tests/run_all.expected.json').read_bytes())};inventory['historical_runs']={'initial_complete_head':'4b44a8a76a18f22201852597d5b0509c54576c5a','interrupted_head':'f8910e1c5a3f183401ab96c87318dc099867a090'};(out/'inventory.json').write_text(json.dumps(inventory,ensure_ascii=False,indent=2)+'\n')
+for name,entry in files.items():
+    raw=(out/name).read_bytes();assert sha(raw)==entry['stored_sha256']
+    if entry.get('gzip'):assert sha(gzip.decompress(raw))==entry['raw_sha256']
+    if 'tar_members'in entry:
+        with tarfile.open(fileobj=io.BytesIO(raw),mode='r:gz')as tar:
+            assert set(tar.getnames())==set(entry['tar_members'])
+            for member,expected in entry['tar_members'].items():assert sha(tar.extractfile(member).read())==expected['sha256']
+print(json.dumps({'files':len(files),'counts':total.groups()},ensure_ascii=False))

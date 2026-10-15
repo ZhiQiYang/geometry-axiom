@@ -1,0 +1,10 @@
+AssertionError [ERR_ASSERTION]: native Undo and subsequent object scan preserve restored valid input
+    at Proxy.<anonymous> (/workspace/geometry-k2aa-review/tests/k2a_browser_receipt.cjs:22:153)
+    at /workspace/geometry-k2aa-review/tests/k2a_native_browser.cjs:41:138 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

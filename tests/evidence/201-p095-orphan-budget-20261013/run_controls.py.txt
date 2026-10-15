@@ -1,0 +1,46 @@
+import datetime,hashlib,json,os,pathlib,resource,signal,subprocess,sys,time
+repo=pathlib.Path('/tmp/geometry-p095-201');out=pathlib.Path('/tmp/geometry-wake21-p095')
+source=repo/'tests/test_reference_workspace_races.js';original=source.read_text()
+resource.setrlimit(resource.RLIMIT_STACK,(16384*1024,resource.getrlimit(resource.RLIMIT_STACK)[1]))
+constants="""// P-095: three complete 131 KiB lifecycle ZIP roundtrips repeatedly run bounded plain-JSON
+// validation. Cloud profiling: 1.93-2.13 s/case; formal WSL: 5.879 s worst.
+// 10 s is a named budget for these two cases only, below 3 * the measured worst.
+const ORPHAN_COLLECTION_ZIP_TIMEOUT_MS = 10000;
+"""
+prefix='for(const size of [130955,130956])test(`K2a B1 collection two drafts orphan remove other manifest ZIP cold read preserves ${size}-byte boundary`,async()=>{'
+a=original.index(prefix);z=original.index("\ntest('K2a B1 previous collection ZIP",a)
+part=original[a:z];assert part.endswith('\n});')
+updated=original.replace('const test = (name, fn) => nodeTest(name, {timeout:5000}, fn);','const test = (name, fn, options = {}) => nodeTest(name, {timeout:5000,...options}, fn);',1)
+updated=updated.replace(part,constants+part[:-len('\n});')]+'\n}, {timeout:ORPHAN_COLLECTION_ZIP_TIMEOUT_MS});',1)
+(out/'proposed-test.js').write_text(updated)
+# All case-body bytes must stay exact, including every original assertion.
+old_body=part[part.index('async()=>{')+len('async()=>{'):part.rindex('\n});')]
+new_a=updated.index(prefix);new_z=updated.index("\ntest('K2a B1 previous collection ZIP",new_a)
+new_part=updated[new_a:new_z]
+new_body=new_part[new_part.index('async()=>{')+len('async()=>{'):new_part.rindex('\n}, {timeout:')]
+assert old_body==new_body
+(out/'body-equality.json').write_text(json.dumps({'identical':True,'bytes':len(old_body.encode()),'sha256':hashlib.sha256(old_body.encode()).hexdigest()},indent=2)+'\n')
+def run(label,text,size,duty=.3,profile=False):
+ wrapper=out/(label+'.cjs');wrapped="const Module=require('node:module'),path=require('node:path');const target="+json.dumps(str(source))+";const m=new Module(target,module);m.filename=target;m.paths=Module._nodeModulePaths(path.dirname(target));m._compile("+json.dumps(text)+",target);\n"
+ wrapper.write_text(wrapped)
+ argv=['node']+(['--require',str(out/'profile-preload.cjs')] if profile else [])+['--test','--test-name-pattern=^K2a B1 collection two drafts orphan remove other manifest ZIP cold read preserves '+str(size)+'-byte boundary$',str(wrapper)]
+ start=time.monotonic();signals=[];started=datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).isoformat()
+ with (out/(label+'.stdout')).open('wb') as stdout,(out/(label+'.stderr')).open('wb') as stderr:
+  child=subprocess.Popen(argv,cwd=repo,env={**os.environ,'GEOMETRY_TEST_BRIDGE':'/tmp/geometry-tests/bridge','P095_OUT':str(out)},stdout=stdout,stderr=stderr,start_new_session=True)
+  assert os.getpgid(child.pid)==child.pid
+  while child.poll() is None:
+   time.sleep(.1*duty)
+   if child.poll() is not None:break
+   if duty<1:
+    try:
+     os.killpg(child.pid,signal.SIGSTOP);signals.append({'t':time.monotonic(),'signal':'STOP'})
+     time.sleep(.1*(1-duty));os.killpg(child.pid,signal.SIGCONT);signals.append({'t':time.monotonic(),'signal':'CONT'})
+    except ProcessLookupError:break
+  code=child.wait()
+ record={'label':label,'size':size,'argv':argv,'pid':child.pid,'pgid':child.pid,'started_at':started,'seconds':time.monotonic()-start,'exit':code,'nominal_duty':duty,'period_s':.1,'signals':signals,'source_sha256':hashlib.sha256(text.encode()).hexdigest(),'wrapper_sha256':hashlib.sha256(wrapped.encode()).hexdigest()}
+ (out/(label+'.receipt.json')).write_text(json.dumps(record,indent=2)+'\n')
+ print(label,code,[l for l in (out/(label+'.stdout')).read_text().splitlines() if 'boundary (' in l or 'timed out' in l],flush=True)
+ return code
+for size in [130955,130956]:
+ codes=[run(f'old-{size}',original,size),run(f'fixed-{size}',updated,size),run(f'removed-{size}',original,size),run(f'restored-{size}',updated,size)]
+ if codes!=[1,0,1,0]:raise RuntimeError((size,codes))

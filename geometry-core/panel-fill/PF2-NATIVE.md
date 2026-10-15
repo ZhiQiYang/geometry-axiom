@@ -45,6 +45,7 @@ gap 及 stagger.value 分別接受直接整數，或
   分片另計。裁切片的尺寸可直接從完整輪廓取得，沒有另藏「窄條」尺寸門檻。
   SSOT 未定窄條警告值；不套用木工模板的收邊下限，不以承接門檻 X 冒充窄條門檻。
 - `seamLines`：D43 縫線座標及 signed k；交丁另有板列 band p 及中心到中心 range。
+  依 band 與完成面 bbox 的正長度交集列舉，包含上下半縫及負 band；僅點接觸不列。
   這是縫線身分與座標，**不是有效板縫段或承接結論**。
 - `obstacles[].panelLayer`：R41／I53 的正體積判定；timberLayer 仍為 null。
 
@@ -82,6 +83,8 @@ gap 及 stagger.value 分別接受直接整數，或
 | PF13 | 完整枚舉超限、D1 世界頂點、缺厚度及 9.5 厚度拒絕、空障礙不豁免 | 其餘衍生宿主容量 |
 | PF16／18 | PF-1 原投影接觸及 PF-2 障礙孔／斷開裁切 | 邊材、角色、I19 候選 |
 
-PF05／06、PF10、PF14／15、PF17、PF19～24 的完整結論屬後續切片，沒有拿提案表當通過收據。
-PF-3 effectiveSeams/support、PF-5 derivedPlacement/timberLayer、PF-4 網格、PF-6 建議仍明示 pending。
+PF05／06、PF10、PF14／15、PF17、PF19～22 的完整結論屬後續切片，沒有拿提案表當通過收據。
+PF23／24 另見 r2.1 amendment 的補充例子，完整驗收屬 PF-3，不列本片已驗項目。
+依 P-098 的順序，衍生宿主先由 PF-H 接入，再接 PF-3 effectiveSeams/support、
+PF-6 建議、PF-4 網格及 PF-5 的高度／方向／樑；本片各對應結果仍明示 pending。
 產品 PR 的正式七項由合併列車驗證；雲端 native 或 sanitizer 不能代替 WSL／瀏覽器收據。

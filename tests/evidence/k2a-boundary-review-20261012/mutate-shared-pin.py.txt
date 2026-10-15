@@ -1,0 +1,17 @@
+from pathlib import Path
+import subprocess,os,json,hashlib
+root=Path('/workspace/geometry-k2aa-review');out=Path('/tmp/k2aa-shared-pin-mutants');out.mkdir(exist_ok=True)
+writer=root/'geometry-web/reference-workspace.js';grid=root/'geometry-web/grid-system-workspace.js';original=writer.read_text();start=original.index('        const fields=ref.kind===');end=original.index('        const next=value.inputRefs.find',start)
+cases=[('reject-shared-target',writer,original[start:end],''),('accept-unchanged-raw',writer,'if(!fields.every(field=>','if(false&&!fields.every(field=>'),('skip-user-confirmation',grid,"return window.confirm('重新選取來源","return true||window.confirm('重新選取來源")];results=[]
+for name,source,before,after in cases:
+ d=out/name;d.mkdir(exist_ok=True);raw=source.read_text();assert raw.count(before)==1;p=d/source.name;p.write_text(raw)
+ env=dict(os.environ);env['GEOMETRY_TEST_REFERENCE_WORKSPACE' if source==writer else 'GEOMETRY_GRID_WORKSPACE_SOURCE']=str(p)
+ cmd=['node','--test','--test-name-pattern=K2a review M1','tests/test_reference_workspace_races.js']
+ def run(command,label):
+  r=subprocess.run(command,cwd=root,env=env,capture_output=True,text=True);text=r.stdout+r.stderr;(d/(label+'.log')).write_text(text);return r.returncode,text
+ code,text=run(cmd,'baseline');assert code==0 and 'pass 1' in text and 'fail 0' in text
+ p.write_text(raw.replace(before,after));code,text=run(['node','--check',str(p)],'build');assert code==0
+ code,text=run(cmd,'red');assert code!=0 and 'AssertionError' in text and 'fail 1' in text and 'skipped 0' in text,(name,text)
+ p.write_text(raw);code,text=run(cmd,'restored');assert code==0 and 'pass 1' in text and 'fail 0' in text
+ results.append({'id':name,'detected':True,'source_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),'judge_sha256':hashlib.sha256((root/'tests/test_reference_workspace_races.js').read_bytes()).hexdigest(),'logs':{k:hashlib.sha256((d/(k+'.log')).read_bytes()).hexdigest()for k in ['baseline','build','red','restored']}})
+(out/'results.json').write_text(json.dumps(results,indent=2)+'\n');print(json.dumps(results))

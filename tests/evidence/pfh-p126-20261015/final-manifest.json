@@ -1,0 +1,170 @@
+{
+  "delivery-audit.json": {
+    "bytes": 1449,
+    "sha256": "5d5ca90122899814a41cc2bb56d18d27944241e65de7038c9c0926dda976481e"
+  },
+  "README.md": {
+    "bytes": 3565,
+    "sha256": "4688410a0cad40dd2147d8008e5523024ecfbd46c22f18adc49f924da8031a47"
+  },
+  "source-audit.json": {
+    "bytes": 4462,
+    "sha256": "e4954818b11cc0f8dcf2a3dd2b037e28c7ed214013a1a28fb0166015a81f0e3b"
+  },
+  "package_checkpoint.py.txt": {
+    "bytes": 3867,
+    "sha256": "7cfcc19cfdfa57825801c24393b1599a437e36496601b1af073941f51e779b3a"
+  },
+  "run_native.py.txt": {
+    "bytes": 3508,
+    "sha256": "c9bcf384dcbf9bd9ab8c4de55b462c6d7598b7b41c7ad33a8b56624e0bf92e75"
+  },
+  "check_reader.py.txt": {
+    "bytes": 1367,
+    "sha256": "b1a53409e9c9df3ce03e3f2a397d09d2464e60af7aa17f498fb6dbdbf66ab076"
+  },
+  "regenerate.py.txt": {
+    "bytes": 2377,
+    "sha256": "86aa1e2255ebae53e5b506dccaf26538a53b62292c4bccc56d4db0da177e9a23"
+  },
+  "check-reader-parent.stderr": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "check-reader-parent.stdout": {
+    "bytes": 277,
+    "sha256": "85ccd7c34a1e936a16b7a45a98cea966c72eeb39d47c10df5152cd3ce0477c88"
+  },
+  "reader-checks.json": {
+    "bytes": 625,
+    "sha256": "2b95d9d528722dcaeb4e9a37dee0b159fb320fc917181dd03c4c44f64301426c"
+  },
+  "reader41.stderr": {
+    "bytes": 57215,
+    "sha256": "122be9a868ed6fab1ebe4a4fc7820a46e6367c2f783b06c8b86fcfe80f22113a"
+  },
+  "reader41.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "check.stderr": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "check.stdout": {
+    "bytes": 340,
+    "sha256": "45ce49d77f401fd3303cde49815dabf6f4a445f0359b4eee2e302f8d8d35c14c"
+  },
+  "regenerate.stderr": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "regenerate.stdout": {
+    "bytes": 341,
+    "sha256": "e7ae83193180a847299b3a4f463c2568cff4cb9e9e876534cfec0b3c5d213327"
+  },
+  "canonical-generated.diff": {
+    "bytes": 151793,
+    "sha256": "296192fc7f0410bf4836e8fc768b9d812a482222bdf67593c7f1f3b65b69f8e1"
+  },
+  "regeneration.json": {
+    "bytes": 1479,
+    "sha256": "5f59b4f0b360b0c476486ae0946006c13a45874279444de287964c56a91c9608"
+  },
+  "authorization.json": {
+    "bytes": 2754,
+    "sha256": "8838554495a71497ab24de3d16fa45678f4075b260460d63a389d250619e02b8"
+  },
+  "native/ci-native-annotations.json": {
+    "bytes": 868,
+    "sha256": "06db2bdb2e0d41ddaa385694b41d7f6eddf289a921cecf2157452ce813dc8084"
+  },
+  "native/ci-jobs.json": {
+    "bytes": 6325,
+    "sha256": "1f22cbafa0cf5a0f11bd0977b43d1c23fba08bb0062f74c75d3a415c63609364"
+  },
+  "native/ci-run.json": {
+    "bytes": 271,
+    "sha256": "703444ed7cdaa35c77db50a6587186a647c746d9b3b776279b71ed208d41cf77"
+  },
+  "native/host-suite.json": {
+    "bytes": 349,
+    "sha256": "b5bcee9940636ae78da0fb02d62804e491c537af92ae022ea747fa97683c1929"
+  },
+  "native/gdi-suite.json": {
+    "bytes": 696,
+    "sha256": "ff49b7a56f655ee6d5f8266f4c0092fb549a6de486a7b61f34fc96de706f3905"
+  },
+  "native/reader-suite.json": {
+    "bytes": 349,
+    "sha256": "48a4795d5b2979f891c05ba5fdff20ba1c2b37a9056722b6c6f36eff662a5674"
+  },
+  "native/tracked-snapshots.tar.gz": {
+    "bytes": 1263561,
+    "sha256": "0eeef8a8f47033bea809ea826b0111492066fd976f2f8c866d25b419a3472e7c"
+  },
+  "native/verify_final.py.txt": {
+    "bytes": 1516,
+    "sha256": "511960017dc284342112cbe22227422fbe620e5acd92c465a2309a3b3446a973"
+  },
+  "native/package_final.py.txt": {
+    "bytes": 8431,
+    "sha256": "007bc93165f13cb0e8a47a7eb597073b7dd165f3c18c96ba136a24eb2209256f"
+  },
+  "native/postcommit.py.txt": {
+    "bytes": 1360,
+    "sha256": "af19d0621bb36c9319ca2790a890665f7d9037997d607201f14e09be8769d20f"
+  },
+  "native/run_native.py.txt": {
+    "bytes": 3508,
+    "sha256": "c9bcf384dcbf9bd9ab8c4de55b462c6d7598b7b41c7ad33a8b56624e0bf92e75"
+  },
+  "native/postcommit.json": {
+    "bytes": 319,
+    "sha256": "457a4f635abe3f35cca25cd0b50b47e48c40becf8070f8f1fac566bd7614d8d3"
+  },
+  "native/native-parent.stderr": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "native/native-parent.stdout": {
+    "bytes": 687,
+    "sha256": "2d6d639e240ba814be7edb9d054e1e0ff3ee21f7467a31e3bde8f77a82acc3b7"
+  },
+  "native/native-log-manifest.json": {
+    "bytes": 31716,
+    "sha256": "f88e96b0ce769a9041225f188acdab20914ca11008c436cb1ef491284572c9ae"
+  },
+  "native/native-current-logs.tar.gz": {
+    "bytes": 59042,
+    "sha256": "072ede1723b0c9c92adc54f5ee003a5595118d386b4c3f50a922d923fe40e358"
+  },
+  "native/binary-final.json": {
+    "bytes": 32631,
+    "sha256": "fa9c67f1ef2788f0b01b495e44a1c8748b9f1d7c94acc7480665ce28159d9821"
+  },
+  "native/expected-after.json": {
+    "bytes": 9553,
+    "sha256": "cb4018a04a86fea085ea7c0245d034784253dbf70f8d94f7b319ae7eebe93f8f"
+  },
+  "native/expected-before.json": {
+    "bytes": 9553,
+    "sha256": "cb4018a04a86fea085ea7c0245d034784253dbf70f8d94f7b319ae7eebe93f8f"
+  },
+  "native/started.json": {
+    "bytes": 265,
+    "sha256": "8e62930761e0ecf7fb7e01f0820541a0eb646c223f6ab112fbbf495333f884f8"
+  },
+  "native/native.json": {
+    "bytes": 745,
+    "sha256": "c4e5bd244f29211fa823005fe0b72d30e8c81be6a3466dfb5d3584796e67a5e9"
+  },
+  "native/native.stderr": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "native/native.stdout": {
+    "bytes": 18190,
+    "sha256": "17fcf978bc0789e384c8946127e4404205c25c139df503282885331c164310ff"
+  }
+}

@@ -4,6 +4,14 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path -Parent $PSScriptRoot
+# 在同一個 PowerShell 視窗重跑時，上一次啟動設定的 GEOMETRY_MODEL_BASE 仍在，
+# 會被當成「使用者已指定」而跳過編譯、沿用可能已失效的舊執行檔。
+# 只清本腳本自己設定過的值（符合本腳本的 runtime 路徑格式）；使用者明示的覆寫保留。
+$launcherModelBase = '^(/var/tmp/geometry-runtime|/tmp/geometry-tests)/axiom-runtime-[0-9a-f]{32}/model-base$'
+if ("$env:GEOMETRY_MODEL_BASE" -match $launcherModelBase) {
+    Remove-Item Env:GEOMETRY_MODEL_BASE -ErrorAction SilentlyContinue
+    Remove-Item Env:GEOMETRY_MODEL_BASE_WSL_DISTRO -ErrorAction SilentlyContinue
+}
 $portProbe = [System.Net.Sockets.TcpClient]::new()
 try {
     $null = $portProbe.ConnectAsync('127.0.0.1', $Port).Wait(500)
@@ -18,7 +26,15 @@ if ($portBusy) {
 $linuxRepoOutput = & wsl.exe -d $Distro --user root --exec wslpath -u $repo.Replace('\', '/')
 if ($LASTEXITCODE -ne 0 -or !$linuxRepoOutput) { throw '無法取得 WSL 專案路徑。' }
 $linuxRepo = $linuxRepoOutput.Trim()
-$runtime = '/tmp/geometry-tests/axiom-runtime-' + [Guid]::NewGuid().ToString('N')
+# 執行檔放在 /var/tmp，不放 /tmp：WSL 開了 systemd，閒置自動關閉後重開時，
+# tmpfiles 的「D /tmp」會清空 /tmp，剛編譯的 web_bridge／model-base 會在下一次
+# wsl.exe 呼叫前消失（橋接器已結束、空間建模元件無法執行）。/var/tmp 開機時不清空。
+$runtimeRoot = '/var/tmp/geometry-runtime'
+$runtime = "$runtimeRoot/axiom-runtime-" + [Guid]::NewGuid().ToString('N')
+& wsl.exe -d $Distro --user root --exec mkdir -p $runtimeRoot
+if ($LASTEXITCODE -ne 0) { throw '無法建立執行檔目錄。' }
+# 只清本腳本自己留下、超過 7 天的舊執行檔目錄。
+& wsl.exe -d $Distro --user root --exec find $runtimeRoot -mindepth 1 -maxdepth 1 -type d -name 'axiom-runtime-*' -mtime +7 -exec rm -rf '{}' +
 & wsl.exe -d $Distro --user root --exec mkdir -p $runtime
 if ($LASTEXITCODE -ne 0) { throw '無法建立執行檔目錄。' }
 Write-Host '正在編譯目前的幾何核心…'

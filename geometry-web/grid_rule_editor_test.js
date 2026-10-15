@@ -16,11 +16,20 @@ module.exports=async function ruleEditorTests({send,eval_,sleep,click,waitForUI,
   console.log('=== P87. 來源規則 CRUD、typed baseline、原始草稿與正式 ZIP ===');
   const fs=require('fs'),path=require('path'),os=require('os'),P=require('./project-store.js'),zip=require('./vendor/fflate/umd/index.js');
   const read=cdp.makeRead(eval_),wait=cdp.makeWait(waitForUI,20000),check=cdp.makeCheck({prefix:'P87 ',throwOnFail:true}),startExceptions=exceptionCount();
-  const ctl=cdp.makeCtl({eval_,sleep,click},{scroll:'center',attempts:12,pollMs:70,settleMs:100,missing:'Missing ',unreachable:(s,p)=>'Rule control unreachable '+s+' '+JSON.stringify(p)});
+  const baseCtl=cdp.makeCtl({eval_,sleep,click},{scroll:'center',attempts:12,pollMs:70,settleMs:100,missing:'Missing ',unreachable:(s,p)=>'Rule control unreachable '+s+' '+JSON.stringify(p)});
+  const ctl=async selector=>{
+    try{return await baseCtl(selector);}catch(error){
+      if(!error.message.startsWith('Rule control unreachable '))throw error;
+      let control,state;
+      try{control=await read(`(()=>{const e=document.querySelector(${JSON.stringify(selector)}),r=e?.getBoundingClientRect(),hit=r?document.elementFromPoint(r.x+r.width/2,r.y+r.height/2):null,menu=document.querySelector('#fileMenuPop'),style=menu?getComputedStyle(menu):null;return {rect:r?{x:r.x,y:r.y,width:r.width,height:r.height,top:r.top,right:r.right,bottom:r.bottom,left:r.left}:null,disabled:!!e?.disabled,hit:hit?.outerHTML?.slice(0,200)||null,menu:menu?{display:style.display,visibility:style.visibility,hidden:menu.hidden}:null,fileMenuExpanded:document.querySelector('#fileMenuBtn')?.getAttribute('aria-expanded')??null};})()`);}catch(failure){control={diagnosticError:failure.message};}
+      try{state=await read(`(async()=>({connection:typeof connection==='undefined'?null:{phase:connection.phase,session:connection.session},info:typeof ReferenceWorkspace==='undefined'?null:ReferenceWorkspace.getProjectInfo(),busy:typeof ReferenceWorkspace==='undefined'?null:ReferenceWorkspace.busy,locks:navigator.locks?await navigator.locks.query():null}))()`);}catch(failure){state={diagnosticError:failure.message};}
+      throw Error(error.message+' '+JSON.stringify({control,state}));
+    }
+  };
   const key=cdp.makeKey({send,sleep}),fill=cdp.makeFill({ctl,key,send,sleep},{afterMs:35});
   const historyOracle=cdp.makeHistoryOracle(read,'P87');
   const query=cmd=>read(`apiRequest(${JSON.stringify(cmd)}).then(r=>{if(!r.ok)throw Error(JSON.stringify(r));return r;})`);
-  const dump=async()=>(await query('dump')).text,objects=()=>query('objects'),raw=()=>read(`ReferenceWorkspace.readFeatureAttachment('grid-draft')`),history=()=>read('ReferenceWorkspace.history.undo.length');
+  const dump=async()=>(await query('dump')).text,objects=()=>query('objects'),raw=()=>read(`(()=>{const c=ReferenceWorkspace.readGridDrafts(),id=$('infiniteGridWorkspace')?.dataset.draftId;return c.drafts.find(d=>d.draftId===id)||(c.drafts.length===1?c.drafts[0]:null);})()`),history=()=>read('ReferenceWorkspace.history.undo.length');
   const settled=()=>wait('!oc.busy&&!ReferenceWorkspace.busy'),impact=()=>wait(`!!document.querySelector('.reference-impact[open]')`);
   const confirm=async()=>{await ctl('#impact-confirm');await wait(`!document.querySelector('.reference-impact[open]')`);await settled();};
   const cancel=async()=>{await ctl('.reference-impact .impact-actions button:first-child');await wait(`!document.querySelector('.reference-impact[open]')`);await settled();};
@@ -80,7 +89,7 @@ module.exports=async function ruleEditorTests({send,eval_,sleep,click,waitForUI,
   check('重建配 key2，不復用刪除 key；signed cell 保持字串',source.rules[0].ruleKey===2&&source.nextRuleKey===3&&JSON.stringify(source.rules[0].selector.cell)==='["-2","1"]');
   // Overlap and exact integer divisions are judged by the actual candidate.
   await ctl('#igRuleAdd');await choose('#igRuleSelector','cell');await read(`$('igGridView').scrollIntoView({block:'center'});void 0`);const point=await read(`(()=>{const g=$('igGridView'),c=g.dataset.igCamera.split(' ').map(Number),r=g.querySelector('[data-ig-plot]').getBoundingClientRect(),k=r.width/(c[2]-c[0]);return {x:r.left+(-900-c[0])*k,y:r.top+(600-c[1])*k};})()`);await click(point.x,point.y);await ctl('#igRuleUseCell');
-  check('真點主格後明選使用目前主格，以 signed 原字串填規則欄位',await read(`$('igRuleCellI').value==='-2'&&$('igRuleCellJ').value==='1'&&ReferenceWorkspace.readFeatureAttachment('grid-draft').ruleDraft.rawForm.cellI==='-2'`));const conflict=await dump(),conflictCount=await history();await ctl('#igRulePreview');await impact();
+  check('真點主格後明選使用目前主格，以 signed 原字串填規則欄位',await read(`$('igRuleCellI').value==='-2'&&$('igRuleCellJ').value==='1'&&ReferenceWorkspace.readGridDrafts().drafts.find(d=>d.draftId===$('infiniteGridWorkspace').dataset.draftId).ruleDraft.rawForm.cellI==='-2'`));const conflict=await dump(),conflictCount=await history();await ctl('#igRulePreview');await impact();
   check('同來源重疊 cell 真 native 拒絕並停用確認',await read(`$('impact-confirm').disabled&&document.querySelector('.impact-violation')!==null`)&&(await dump())===conflict&&await history()===conflictCount);await cancel();await ctl('#igRuleCancel');
   for(const [u,v] of [['0','2'],['66','2'],['1','1'],['7','2']]){
     await ctl('#igRuleAdd');await fill('#igRuleU',u);await fill('#igRuleV',v);const world=await dump(),n=await history(),draft=await raw();
@@ -102,7 +111,8 @@ module.exports=async function ruleEditorTests({send,eval_,sleep,click,waitForUI,
   await newProject();check('開檔前確有新空白 context，未借用舊規則',(await objects()).gridSystems.length===0&&await raw()===null&&await read(`ReferenceWorkspace.getProjectState().id!==${JSON.stringify(scopeBefore)}`));
   await send('Page.setInterceptFileChooserDialog',{enabled:true});try{await ctl('#fileMenuBtn');await ctl('#btnOpenProject');const doc=await send('DOM.getDocument',{depth:0}),node=await send('DOM.querySelector',{nodeId:doc.result.root.nodeId,selector:'#projectFile'});await send('DOM.setFileInputFiles',{nodeId:node.result.nodeId,files:[file]});await settled();await wait(`oc.gridSystems.length===1`);}finally{await send('Page.setInterceptFileChooserDialog',{enabled:false});}
   check('新空白 context 真開檔恢復逐字 native 與 raw',(await dump())===sceneBefore&&JSON.stringify(await raw())===JSON.stringify(rawBefore));
-  await ctl('#btnNewGridSystem');await wait(`!!$('igRuleName')&&!$('igRuleName').disabled`);
+  await ctl('#btnNewGridSystem');await wait(`!!$('gridDraftChooser')?.open`);
+  await ctl(`#gridDraftChooser [data-draft-id="${rawBefore.draftId}"]`);await wait(`$('infiniteGridWorkspace')?.open&&!!$('igRuleName')&&!$('igRuleName').disabled`);
   check('正式重新進入來源恢復無效 raw，不自動配 key/確認',await read(`$('igRuleU').value===' 7 '&&$('igRuleV').value===''&&$('igRuleCellJ').value===' - '`)&&(await objects()).gridSystems[0].nextRuleKey===4);
   await ctl('#igRuleName');await shot('rule-editor-desktop-restored');await ctl('#igRuleCancel');
   // A rule-only native change must invalidate the full source baseline.
@@ -112,11 +122,11 @@ module.exports=async function ruleEditorTests({send,eval_,sleep,click,waitForUI,
   await discard();await open(sid);
   await ctl('[data-ig-rule-key="2"] [data-ig-rule-action="edit"]');await fill('#igRuleName','Deleted source raw');const orphan=await raw();
   await fixture(`delete grid-system ${sid}`);await fixture(`grid-system ${sid} name-hex 52656275696c74 main-along none u repeat 0 600 v repeat 0 400`);
-  const rebuilt=await dump();await ctl('#igRulePreview');await settled();
-  check('刪除與同 ID 重建不自動接管舊 rule raw 或耗 key',(await dump())===rebuilt&&JSON.stringify(await raw())===JSON.stringify(orphan)&&(await objects()).gridSystems[0].rules.length===0&&await read(`$('igDraftNote').textContent.includes('身分已變更')`));await discard();await open(sid);
+  const rebuilt=await dump();if(!await read(`$('igRulePreview').disabled`)){await ctl('#igRulePreview');await settled();}
+  check('刪除與同 ID 重建不自動接管舊 rule raw 或耗 key',(await dump())===rebuilt&&JSON.stringify(await raw())===JSON.stringify(orphan)&&(await objects()).gridSystems[0].rules.length===0&&await read(`($('igDraftNote').textContent.includes('身分已變更')||$('igDraftNote').textContent.includes('已遺失'))`));await discard();await open(sid);
   await ctl('#igRuleAdd');const equalRaw=await raw(),definition=P.Features.gridSourceKey((await objects()).gridSystems[0]);
   await fixture(`delete grid-system ${sid}`);await fixture(`grid-system ${sid} name-hex 52656275696c74 main-along none u repeat 0 600 v repeat 0 400`);const equalWorld=await dump();
-  await ctl('#igRulePreview');await settled();check('同工作階段同 ID 同定義重建仍被 revision guard 拒絕',P.Features.gridSourceKey((await objects()).gridSystems[0])===definition&&(await dump())===equalWorld&&JSON.stringify(await raw())===JSON.stringify(equalRaw)&&await read(`$('igDraftNote').textContent.includes('場景已更新')`));await discard();await open(sid);
+  if(!await read(`$('igRulePreview').disabled`)){await ctl('#igRulePreview');await settled();}check('同工作階段同 ID 同定義重建仍被永久孤兒 guard 拒絕',P.Features.gridSourceKey((await objects()).gridSystems[0])===definition&&(await dump())===equalWorld&&JSON.stringify(await raw())===JSON.stringify(equalRaw)&&await read(`($('igDraftNote').textContent.includes('場景已更新')||$('igDraftNote').textContent.includes('已遺失'))`));await discard();await open(sid);
   // Response arrives after an external context replacement. The old owner
   // cannot write the new frame or unscopingly cancel its candidate.
   await ctl('#igRuleAdd');await read(`(()=>{const g=window.__ruleDelay={original:window.apiRequest,release:null,cancels:0};window.apiRequest=async function(cmd,...args){if(cmd==='line cancel-preview')g.cancels++;const r=await g.original(cmd,...args);if(cmd.startsWith('line preview grid-source-rule')&&!g.release)return new Promise(resolve=>{g.release=()=>resolve(r);});return r;};return true;})()`);
@@ -152,18 +162,18 @@ module.exports=async function ruleEditorTests({send,eval_,sleep,click,waitForUI,
     if(await read(`!!document.querySelector('.reference-impact[open]')`))await confirm();await wait('oc.gridSystems.length===0');
     const orphanScene=await dump(),orphanCount=await history();
     check(`${intent} 正式卡片刪除來源保留原始 rule 草稿`,JSON.stringify(await raw())===JSON.stringify(ownedRaw));
-    await ctl('#emptyNewGridSystem');await wait(`!!$('infiniteGridWorkspace')?.open&&typeof $('igClose')?.onclick==='function'`);
+    await ctl('#emptyNewGridSystem');await wait(`!!$('gridDraftChooser')?.open`);await ctl(`#gridDraftChooser [data-draft-id="${ownedRaw.draftId}"]`);await wait(`!!$('infiniteGridWorkspace')?.open&&typeof $('igClose')?.onclick==='function'`);
     check(`${intent} 空狀態續編 orphan 不改 World/raw/history`,(await dump())===orphanScene&&await history()===orphanCount&&JSON.stringify(await raw())===JSON.stringify(ownedRaw));
     check(`${intent} orphan 明示遺失、鎖住發布與輸入，保存/返回/捨棄可用`,await read(`$('igTitle').textContent.includes('已遺失')&&$('igRulePreview').disabled&&$('igRuleName').disabled&&$('igSaveSource').disabled&&!$('igDiscardDraft').disabled&&!!document.querySelector('#infiniteGridWorkspace .workspace-project-header')&&!$('igClose').disabled`));
     await shot(`rule-editor-orphan-${intent}`);const saved=await saveProject(),package_=await P.unpack(new Uint8Array(fs.readFileSync(saved.file)),zip);
-    check(`${intent} orphan 真 Save ZIP 保留原 pin、raw 及無來源 native`,package_.scene===orphanScene&&JSON.stringify(package_.manifest.featureAttachments.records[0].value)===JSON.stringify(ownedRaw)&&(await objects()).gridSystems.length===0);
+    check(`${intent} orphan 真 Save ZIP 保留原 pin、raw 及無來源 native`,package_.scene===orphanScene&&JSON.stringify(P.Features.gridDrafts(package_.manifest.featureAttachments.records[0].value).drafts[0])===JSON.stringify(ownedRaw)&&P.Features.gridDrafts(package_.manifest.featureAttachments.records[0].value).orphans.includes(ownedRaw.draftId)&&(await objects()).gridSystems.length===0);
     await newProject();await send('Page.setInterceptFileChooserDialog',{enabled:true});
     try{await ctl('#fileMenuBtn');await ctl('#btnOpenProject');const doc=await send('DOM.getDocument',{depth:0}),node=await send('DOM.querySelector',{nodeId:doc.result.root.nodeId,selector:'#projectFile'});await send('DOM.setFileInputFiles',{nodeId:node.result.nodeId,files:[saved.file]});await settled();await wait(`!!ReferenceWorkspace.readFeatureAttachment('grid-draft')`);}
     finally{await send('Page.setInterceptFileChooserDialog',{enabled:false});}
-    await ctl('#emptyNewGridSystem');await wait(`!!$('igRuleName')&&$('igRuleName').disabled`);
+    await ctl('#emptyNewGridSystem');await wait(`!!$('gridDraftChooser')?.open`);await ctl(`#gridDraftChooser [data-draft-id="${ownedRaw.draftId}"]`);await wait(`$('infiniteGridWorkspace')?.open&&!!$('igRuleName')&&$('igRuleName').disabled`);
     check(`${intent} 新 context 真重開 orphan 仍唯讀，不默認新建或重關聯`,(await dump())===orphanScene&&JSON.stringify(await raw())===JSON.stringify(ownedRaw)&&(await objects()).gridSystems.length===0&&await read(`$('igRulePreview').disabled&&$('igTitle').textContent.includes('已遺失')`));
     await leave();check(`${intent} orphan 真返回解除 modal 且保留 raw`,!await read(`$('infiniteGridWorkspace').open`)&&JSON.stringify(await raw())===JSON.stringify(ownedRaw));
-    await ctl('#emptyNewGridSystem');await wait(`!!$('igDiscardDraft')&&!$('igDiscardDraft').disabled`);await discard();await leave();
+    await ctl('#emptyNewGridSystem');await wait(`!!$('gridDraftChooser')?.open`);await ctl(`#gridDraftChooser [data-draft-id="${ownedRaw.draftId}"]`);await wait(`$('infiniteGridWorkspace')?.open&&!!$('igDiscardDraft')&&!$('igDiscardDraft').disabled`);await discard();await leave();
     check(`${intent} orphan 明確捨棄只清 raw，不創建 native 來源`,await raw()===null&&(await dump())===orphanScene&&(await objects()).gridSystems.length===0);
     console.log(`P87 orphan ${intent} saved artifact ${saved.file}`);
   }

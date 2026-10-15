@@ -1,0 +1,45 @@
+{
+  "prior_head": "a09a90cbd13a13cf223ad4cdb0a1be76253e94e6",
+  "local_case_count": 78,
+  "all_names_order_and_callback_bytes_identical": true,
+  "changed": [
+    {
+      "name": "K2a P064 ordinary discard preserves large normal singleton ZIP raw and local UndoRedo 130956-byte boundary",
+      "before": {
+        "timeout": 5000
+      },
+      "after": {
+        "timeout": 15000
+      }
+    },
+    {
+      "name": "K2a P064 ordinary discard preserves large normal singleton ZIP raw and local UndoRedo 131072-byte boundary",
+      "before": {
+        "timeout": 5000
+      },
+      "after": {
+        "timeout": 22000
+      }
+    },
+    {
+      "name": "K2a B1 collection two drafts orphan remove other manifest ZIP cold read preserves 130955-byte boundary",
+      "before": {
+        "timeout": 10000
+      },
+      "after": {
+        "timeout": 31000
+      }
+    },
+    {
+      "name": "K2a B1 collection two drafts orphan remove other manifest ZIP cold read preserves 130956-byte boundary",
+      "before": {
+        "timeout": 10000
+      },
+      "after": {
+        "timeout": 21000
+      }
+    }
+  ],
+  "source_sha256": "db68d08f3a129b3fc79076c611358b90327cb3d065873af676f57fdfb3962d42",
+  "case_bodies_executed": false
+}

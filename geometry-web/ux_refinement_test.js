@@ -215,7 +215,14 @@ module.exports = async function uxRefinement({send,eval_,sleep,click,waitForUI,e
       throw Error('Second-tab timeout '+expression+'; state='+JSON.stringify(state));
     };
     await until(`typeof ReferenceWorkspace!=='undefined'&&typeof connection!=='undefined'&&connection.phase==='ready'&&!ReferenceWorkspace.busy&&ReferenceWorkspace.getProjectInfo().recovery.state!=='pending'`);
-    const control=async selector=>{const p=await evaluate(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)throw Error('Missing control');e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;return {x,y,usable:r.width>0&&r.height>0&&!e.disabled&&e.contains(document.elementFromPoint(x,y))};})()`);if(!p.usable)throw Error('Second-tab control unreachable '+selector);for(const type of ['mousePressed','mouseReleased'])await raw('Input.dispatchMouseEvent',{type,x:p.x,y:p.y,button:'left',clickCount:1});await new Promise(r=>setTimeout(r,180));};
+    const control=async selector=>{
+      const p=await evaluate(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)throw Error('Missing control');e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,hit=document.elementFromPoint(x,y),usable=r.width>0&&r.height>0&&!e.disabled&&e.contains(hit);if(usable)return {x,y,usable};const menu=document.querySelector('#fileMenuPop'),style=menu?getComputedStyle(menu):null,button=document.querySelector('#fileMenuBtn');return {x,y,usable,rect:{x:r.x,y:r.y,width:r.width,height:r.height,top:r.top,right:r.right,bottom:r.bottom,left:r.left},disabled:!!e.disabled,hit:hit?.outerHTML?.slice(0,200)||null,menu:menu?{display:style.display,visibility:style.visibility,hidden:menu.hidden}:null,fileMenuExpanded:button?.getAttribute('aria-expanded')??null};})()`);
+      if(!p.usable){
+        let state;try{state=await diagnostics();}catch(error){state={diagnosticError:error.message};}
+        throw Error('Second-tab control unreachable '+selector+' '+JSON.stringify({control:p,state}));
+      }
+      for(const type of ['mousePressed','mouseReleased'])await raw('Input.dispatchMouseEvent',{type,x:p.x,y:p.y,button:'left',clickCount:1});await new Promise(r=>setTimeout(r,180));
+    };
     return {id,evaluate,until,control,diagnostics};
   };
   try {

@@ -1,0 +1,8 @@
+from pathlib import Path
+import subprocess,json,hashlib,datetime,sys
+script=Path('/tmp/k2aa-b1-native-artifacts.cjs');command=['node',str(script)]
+started=datetime.datetime.now(datetime.timezone.utc).isoformat()
+p=subprocess.run(command,cwd='/workspace/geometry-k2aa-review',stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+Path('/tmp/k2aa-b1-native-artifacts.log').write_bytes(p.stdout)
+Path('/tmp/k2aa-b1-native-parent.json').write_text(json.dumps({'schema':'k2aa-parent-exit-observation/1','scope':'TEMP native artifact supplement only; not the registered gates','startedAt':started,'finishedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'command':command,'scriptSHA256':hashlib.sha256(script.read_bytes()).hexdigest(),'returncode':p.returncode,'stdoutSHA256':hashlib.sha256(p.stdout).hexdigest()},indent=2)+'\n')
+print(p.stdout.decode());sys.exit(p.returncode)

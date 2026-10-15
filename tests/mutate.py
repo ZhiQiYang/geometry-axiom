@@ -110,6 +110,13 @@ MUTANTS = [
     dict(id="M08", desc="I5：拿掉「環邊不得穿矩形內部」檢查",
          old="        if (segment2_crosses_rect_interior(\n                loop->v[i], loop->v[(i + 1) % loop->count],\n                min_u, min_v, max_u, max_v)) {\n            return false;\n        }\n    }\n\n    return true;\n}",
          new="        if (0 && segment2_crosses_rect_interior(\n                loop->v[i], loop->v[(i + 1) % loop->count],\n                min_u, min_v, max_u, max_v)) {\n            return false;\n        }\n    }\n\n    return true;\n}"),
+    # ---- poly_contains_rect:矩形中心必須在環內(GEO-257)----
+    dict(id="M59", desc="I5：拿掉「矩形中心必須在環內」檢查(凹槽內四角貼壁的矩形放行)",
+         old="    if (!poly_rect_center_inside(loop, min_u, min_v, max_u, max_v)) {\n        return false;\n    }",
+         new="    if (0 && !poly_rect_center_inside(loop, min_u, min_v, max_u, max_v)) {\n        return false;\n    }"),
+    dict(id="M60", desc="I5：矩形中心的奇偶判定反轉(環內外互換)",
+         old="    return (crossings & 1) != 0;",
+         new="    return (crossings & 1) == 0;"),
     # ---- boundary_contains_rect:孔干涉 ----
     dict(id="M09", desc="I5：孔 bbox 邊界相接也當相交(<= 改 <)",
          equivalent="等價變異(GEO-172 實證):bbox 恰好相切時孔的所有點都在 u<=min_u(或對稱軸)一側,後續三道細查(頂點嚴格在內/邊穿過內部/孔罩住矩形)都不可能成立,快退與細查得到同一答案。",
@@ -185,12 +192,12 @@ MUTANTS = [
     # ---- at-edge 材料側 ----
     dict(id="M29", desc="I13：外輪廓材料側反轉(footprint 長到面外)",
          file="geometry-core/references.inc",
-         old="Coord inward=(along?normal.u:normal.v)*(a->ref_hole<0?-1:1);",
-         new="Coord inward=(along?normal.u:normal.v)*(a->ref_hole<0?(along?1:-1):1);"),
+         old="Coord inward=(along?normal.u:normal.v)*(hole<0?-1:1);",
+         new="Coord inward=(along?normal.u:normal.v)*(hole<0?(along?1:-1):1);"),
     dict(id="M30", desc="I13：孔邊材料側反轉(footprint 長進孔裡)",
          file="geometry-core/references.inc",
-         old="Coord inward=(along?normal.u:normal.v)*(a->ref_hole<0?-1:1);",
-         new="Coord inward=(along?normal.u:normal.v)*(a->ref_hole<0?-1:(along?1:-1));"),
+         old="Coord inward=(along?normal.u:normal.v)*(hole<0?-1:1);",
+         new="Coord inward=(along?normal.u:normal.v)*(hole<0?-1:(along?1:-1));"),
     # ---- grid ----
     dict(id="M31", desc="I10：格線座標遞增改非嚴格(<= 改 <)",
          old="        if (i > 0 && coords[i] <= coords[i - 1]) {",

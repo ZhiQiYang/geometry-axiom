@@ -4,10 +4,11 @@
 // Browser regression separately proves actual native save -> reopen -> lesson.
 const test=require('node:test'),assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
+const P=require('../geometry-web/project-store.js');
 const source=fs.readFileSync(process.env.GEOMETRY_GRID_WORKSPACE_SOURCE||path.join(__dirname,'../geometry-web/grid-system-workspace.js'),'utf8');
 const boundary='window.InfiniteGridWorkspace={';
 assert.equal(source.split(boundary).length,2,'one shipped workspace export');
-const executable=source.replace(boundary,boundary+`__controlTest:{operation,releaseHeldControls,syncOrphanDraft,
+const executable=source.replace(boundary,boundary+`__controlTest:{operation,releaseHeldControls,syncOrphanDraft,approveInputReplacement,overwriteFields,validateDraftPins,flush,
   getState:()=>state,setState:value=>{state=value;},
   ports:value=>{capture=value.capture;syncDraftState=value.sync;applicationState=value.application;reveal=value.reveal;open=value.open;}},`);
 function deferred(){let resolve,reject;const promise=new Promise((a,b)=>{resolve=a;reject=b;});return {promise,resolve,reject};}
@@ -33,14 +34,16 @@ function node(tag,id='',classes=[]){
 }
 function harness({syncOrphan=false,holdRender=false}={}){
   const body=node('body'),canvas=node('div','canvasViewport'),calls=[],reached=deferred(),renderReply=deferred();body.append(canvas);
-  let context={id:'same-project'},contextToken='first-context',pending=false,attachment={schema:'grid-editor-draft/1',rawForm:{igName:' Raw 001 ',igUStep:'=1/0'}},active;
+  let context={id:'same-project'},contextToken='first-context',pending=false,approval=false,objects={ok:true},attachment={schema:'grid-editor-draft/1',rawForm:{igName:' Raw 001 ',igUStep:'=1/0'}},active;
   const lesson=node('div','paramGridLesson');
   const lessonButtons=['Stage','Frame1','Frame2','Close','Open'].map(name=>node('button','paramGridLesson'+name));lesson.append(...lessonButtons);
   const document={body,createElement:tag=>node(tag),getElementById:id=>body.querySelectorAll('#'+id)[0]||null};
   const oc={busy:false,gridBindings:[]};
-  const sandbox={document,oc,console,TextEncoder,window:{addEventListener(){}},GeometryProject:{Features:{}},connection:{phase:'ready'},
+  const sandbox={document,oc,console,TextEncoder,apiRequest:async command=>{assert.equal(command,'objects');return objects;},window:{addEventListener(){},confirm:message=>{calls.push(['confirm',message]);return approval;}},GeometryProject:P,connection:{phase:'ready'},
     ReferenceWorkspace:{escape:value=>value,context:()=>context,getProjectState:()=>({contextToken}),
-      featureConfirmationPending:()=>pending,readFeatureAttachment:()=>attachment},
+      featureConfirmationPending:()=>pending,readFeatureAttachment:()=>attachment,
+      setGridDraft:(...args)=>calls.push(['setGridDraft',...args]),
+      readGridDrafts:()=>({drafts:attachment?[attachment]:[],orphans:[]})},
     renderObjects:async()=>{calls.push(['render']);reached.resolve();if(holdRender)await renderReply.promise;return true;},
   };
   vm.runInNewContext(executable,sandbox,{filename:'grid-system-workspace.production.js'});
@@ -64,7 +67,7 @@ function harness({syncOrphan=false,holdRender=false}={}){
     open:async(options,committed)=>{calls.push(['open',options,committed]);mount({locked:true});return true;}});
   function lessonUntouched(){assert.ok(lessonButtons.every(button=>!button.disabled),'all five shared lesson buttons remain enabled');assert.ok(lessonButtons.every(button=>button.writes.length===0),'grid locks never write a shared lesson disabled bit');}
   return {ui,seam,oc,dialog,canvas,lesson,lessonButtons,original,calls,lessonUntouched,mount,
-    moveLesson:()=>canvas.append(lesson),setPending:value=>{pending=value;},setAttachment:value=>{attachment=value;},
+    moveLesson:()=>canvas.append(lesson),setPending:value=>{pending=value;},setApproval:value=>{approval=value;},setObjects:value=>{objects=value;},setAttachment:value=>{attachment=value;},
     get attachment(){return attachment;},get active(){return active;},connection:sandbox.connection,
     renderReached:reached.promise,releaseRender:()=>renderReply.resolve(),operation:run=>seam.operation(original.state,run)};
 }
@@ -81,6 +84,46 @@ test('held operation locks grid mutations without borrowing lesson controls or a
     await h.operation(async()=>{runs++;});assert.equal(runs,1,'busy owner cannot dispatch another operation');
   }finally{gate.resolve();await task;}
   restored(h.original);h.lessonUntouched();assert.equal(h.oc.busy,false);assert.equal(h.original.state.busy,false);
+});
+
+test('K2a M14b replacement requires old/new confirmation and rejects a previously lost identity',()=>{
+  const h=harness(),before={kind:'grid-system',id:2,fingerprint:'a'.repeat(64),lost:true},next={kind:'grid-system',id:3,fingerprint:'b'.repeat(64)};
+  h.setApproval(true);assert.equal(h.seam.approveInputReplacement(before,{...before,lost:undefined}),false);assert.equal(h.calls.length,0);
+  const parameter={kind:'parameter-field',parameterId:2,fieldId:1,fingerprint:'a'.repeat(64),lost:true};
+  assert.equal(h.seam.approveInputReplacement(parameter,{...parameter,fieldId:2,lost:undefined}),false);
+  h.setApproval(false);assert.equal(h.seam.approveInputReplacement(before,next),false);
+  assert.match(h.calls.at(-1)[1],/"before"/);assert.match(h.calls.at(-1)[1],/"after"/);
+  h.setApproval(true);assert.equal(h.seam.approveInputReplacement(before,next),true);
+});
+
+test('K2a M15 two-way comparison follows integer and signed-cell parsing rather than raw spelling',()=>{
+  const h=harness(),raw={igUStep:'1830 ',igCellI:' 001 ',igCellJ:'1e',igName:' room '};
+  const same=h.seam.overwriteFields(raw,{igUStep:'1830',igCellI:'1',igCellJ:'0',igName:'room'});
+  assert.deepEqual(Array.from(same,r=>r.field),['igCellJ']);
+  const different=h.seam.overwriteFields(raw,{igUStep:'915',igCellI:'1',igCellJ:'0',igName:'room'});
+  assert.equal(different[0].raw,'1830 ');assert.equal(different[0].current,'915');
+});
+
+test('K2a M05 changed input pin blocks preview until an explicitly selected current pin is recorded',async()=>{
+  const h=harness(),row={id:1,mode:'infinite',name:'current',mainAlong:null,uDefinition:{source:'repeat',step:915,phase:0},vDefinition:{source:'none'}};
+  const s=h.original.state;s.draftId='stale';s.source=row;s.initialRaw='not-the-form';s.rawOverrides=new Map();
+  const rawForm=Object.fromEntries(P.Features.sourceFields.map(f=>[f,'']));rawForm.igUStepSource='2:1';
+  const field={id:1,value:915},objects={ok:true,gridSystems:[row],parameters:[{id:2,card:{id:2,fields:[field]}}]};h.setObjects(objects);
+  const stale={schema:P.Features.GRID_SCHEMA,draftId:'stale',kind:'source',intent:'edit',baseRef:null,inputRefs:[{kind:'parameter-field',parameterId:2,fieldId:1,fingerprint:'a'.repeat(64)}],rawForm};h.setAttachment(stale);
+  await assert.rejects(()=>h.seam.validateDraftPins(s),/已變更／遺失/);
+  const next={...stale.inputRefs[0],fingerprint:await P.sha(new TextEncoder().encode(JSON.stringify([2,field])))};
+  h.setApproval(false);assert.equal(h.seam.approveInputReplacement(stale.inputRefs[0],next),false);
+  assert.equal(stale.inputRefs[0].fingerprint,'a'.repeat(64));
+  h.setApproval(true);assert.equal(h.seam.approveInputReplacement(stale.inputRefs[0],next),true);stale.inputRefs=[next];
+  assert.equal((await h.seam.validateDraftPins(s)).draftId,'stale');
+});
+
+test('K2a M12 a late flush from the retired draft cannot write after another draft owns the editor',()=>{
+  const h=harness(),old=h.original.state;Object.assign(old,{draftId:'old',draftSchema:P.Features.GRID_SCHEMA,baseRef:null,inputPins:new Map(),rawOverrides:new Map()});
+  h.mount();assert.equal(h.seam.flush(old),undefined);assert.equal(h.calls.some(([name])=>name==='setGridDraft'),false);
+  const ref={kind:'grid-system',id:1,fingerprint:'a'.repeat(64)};old.inputPins.set('grid-system:1',ref);
+  h.setAttachment({draftId:'old',inputRefs:[{...ref,lost:true}]});h.seam.setState(old);h.seam.flush(old);
+  assert.equal(h.calls.at(-1)[2].inputRefs[0].lost,true,'immediate save folds the deletion receipt into cached editor pins');
 });
 
 test('same-owner operation failures restore original grid bits and preserve raw input',async()=>{

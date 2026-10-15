@@ -1,0 +1,11 @@
+{
+  "head": "ade6d7f0cbdbfaadb210a87e4b674fec34fccf3c",
+  "base_main": "2004c6c8bebe1bbff2df142630b630e1ee5115b8",
+  "argv": [
+    "bash",
+    "-c",
+    "set -e; ulimit -s 16384; exec python3 -u tests/run_all.py --build"
+  ],
+  "pid": 509222,
+  "started_at": "2026-10-13T23:12:37.194770+08:00"
+}

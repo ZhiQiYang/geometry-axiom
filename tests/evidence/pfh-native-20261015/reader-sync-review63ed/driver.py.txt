@@ -1,0 +1,23 @@
+import difflib,hashlib,importlib.util,json,subprocess,sys,time,unittest
+from pathlib import Path
+R=Path('/tmp/geometry-209-segments');O=Path('/tmp/geometry-wake41/reader-sync-final');O.mkdir(exist_ok=True)
+sys.path.insert(0,str(R));spec=importlib.util.spec_from_file_location('reader_tests',R/'tests/test_axiom_reader.py');module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+reader=module.reader
+html=reader.CANONICAL.read_text(encoding='utf-8');axiom=reader.AXIOM.read_text(encoding='utf-8');plain=reader.PLAIN.read_text(encoding='utf-8')
+before=hashlib.sha256(reader.CANONICAL.read_bytes()).hexdigest();started=time.monotonic()
+regenerated=reader.rebuild(html,axiom,plain)
+old=json.loads(reader.script_text(html,'axiom-review-data'));new=json.loads(reader.script_text(regenerated,'axiom-review-data'))
+assert old==new,'a trace-only synchronization must preserve the full authored annotation/SSOT state'
+validation=reader.validate(regenerated,axiom,plain)
+patch=''.join(difflib.unified_diff(html.splitlines(keepends=True),regenerated.splitlines(keepends=True),fromfile='a/geometry-guide/公理層-閱讀器.html',tofile='b/geometry-guide/公理層-閱讀器.html'))
+(O/'canonical-trace-only.diff').write_text(patch)
+(O/'generation.json').write_text(json.dumps(dict(head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=R,text=True).strip(),seconds=time.monotonic()-started,canonicalSha256=before,authoredStateExactlyEqual=old==new,validation=validation,changedLines=sum(1 for line in patch.splitlines() if line[:1] in ['+','-'] and not line.startswith(('+++','---')))),ensure_ascii=False,indent=2)+'\n')
+def setup(cls):
+ cls.html=regenerated;cls.axiom=axiom;cls.plain=plain;cls.state=new
+module.CanonicalReader.setUpClass=classmethod(setup)
+suite=unittest.defaultTestLoader.loadTestsFromTestCase(module.CanonicalReader)
+with (O/'counterfactual-tests.stderr').open('w') as stream:result=unittest.TextTestRunner(stream=stream,verbosity=2).run(suite)
+receipt=dict(scope='counterfactual: official synchronizer result only in memory; tracked canonical remains untouched',total=result.testsRun,failures=len(result.failures),errors=len(result.errors),skipped=len(result.skipped),passed=result.testsRun-len(result.failures)-len(result.errors)-len(result.skipped),seconds=time.monotonic()-started,canonicalBeforeSha256=before,canonicalAfterSha256=hashlib.sha256(reader.CANONICAL.read_bytes()).hexdigest())
+assert receipt['canonicalBeforeSha256']==receipt['canonicalAfterSha256']
+(O/'counterfactual-tests.json').write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+'\n');print(json.dumps(receipt,ensure_ascii=False),flush=True)
+raise SystemExit(0 if result.wasSuccessful() and result.testsRun==41 and not result.skipped else 1)

@@ -1,0 +1,67 @@
+import hashlib,json,os,resource,shutil,subprocess,sys,time
+from pathlib import Path
+ROOT=Path('/tmp/geometry-209-segments');OUT=Path('/tmp/geometry-wake41/controls-verified');OUT.mkdir(exist_ok=True)
+sys.path.insert(0,str(ROOT/'tests'));import binaries
+resource.setrlimit(resource.RLIMIT_STACK,(16777216,resource.getrlimit(resource.RLIMIT_STACK)[1]))
+shared=[p.relative_to(ROOT) for p in binaries._scan_shared() if p.is_file()]
+helpers=[Path('tests')/n for n in ['__init__.py','binaries.py','_bridge.py','test_panel_fill_finish_surface.py','test_panel_fill_layout.py','test_panel_fill_host.py','test_subgrid_contract.py','pfh_oracle.py']]
+CHILD='''import json,os,sys,unittest
+from pathlib import Path
+root=Path(sys.argv[1]);sys.path.insert(0,str(root));os.chdir(root)
+from tests import binaries
+binaries.OUT_DIR=Path(sys.argv[2]);binaries.OUT_DIR.mkdir(parents=True,exist_ok=True)
+build=binaries.build_one(binaries.BY_NAME['bridge'])
+if not build.ok:raise RuntimeError((build.status,build.detail))
+os.environ['GEOMETRY_TEST_BRIDGE']=str(binaries.BY_NAME['bridge'].path)
+from tests import _bridge
+native_exits=[];old_stop=_bridge.BridgeSession.stop
+def stop(self,*args,**kwargs):
+    already=self._stopped;old_stop(self,*args,**kwargs)
+    if not already:native_exits.append(self.process.poll())
+_bridge.BridgeSession.stop=stop;_bridge.BridgeSession.close=stop
+suite=unittest.defaultTestLoader.loadTestsFromName(sys.argv[3])
+result=unittest.TextTestRunner(verbosity=2).run(suite)
+value=dict(total=result.testsRun,failed=len(result.failures),errors=len(result.errors),skipped=len(result.skipped),nativeExits=native_exits,failures=[dict(test=str(t),traceback=s) for t,s in result.failures+result.errors])
+Path(sys.argv[4]).write_text(json.dumps(value,indent=2)+'\\n')
+raise SystemExit(0 if result.wasSuccessful() and result.testsRun and not result.skipped else 1)
+'''
+(OUT/'child.py.txt').write_text(CHILD)
+child=OUT/'child.py';child.write_text(CHILD)
+dp='geometry-core/derived_placements.inc';refs='geometry-core/references.inc';fs='geometry-core/finish_surfaces.inc'
+variants=[
+ ('baseline',None,None,None,None),
+ ('host-removed',fs,'return dp_operation(w,j,t,!strcmp(op,"delete-derived-placement"));','return fs_error("PFH_HOST_DISABLED: native integration removed");','test_E1_legal_native_host_and_saved_identity'),
+ ('closed-timber-depth',dp,'d->obstacles[i].q[1]>d->t;','d->obstacles[i].q[1]>=d->t;','test_R41_layers_use_open_depth_intervals'),
+ ('topology-unchecked',dp,'if(ok&&!boundary_is_valid(b))','if(false&&!boundary_is_valid(b))','test_R41_touching_holes_reject_without_changing_world'),
+ ('fixity-merged',dp,'if(fix[prev]==fix[i]&&','if(true&&','test_R41_fixity_preserves_source_breaks_and_merged_keys'),
+ ('total-erased',dp,'(unsigned)total};break;','1};break;','test_R41_total_source_segments_are_identity_and_stale_key_rejects'),
+ ('I53-removed',refs,'if(p->derived_fill_id&&(t->size_b!=p->derived_h||a->depth_side!=SURFACE_DEPTH_POSITIVE_NORMAL))','if(false&&p->derived_fill_id&&(t->size_b!=p->derived_h||a->depth_side!=SURFACE_DEPTH_POSITIVE_NORMAL))','test_derived_timber_depth_cannot_violate_I53'),
+ ('subgrid-stack-rollback','geometry-core/subgrid_commands.inc','World *trial=malloc(sizeof *trial);\n    if(!trial){scene_error(path,line_no,"I32: subgrid trial allocation failed");return false;}\n    *trial=*world;\n    if (existing) trial->grids[existing-world->grids]=candidate;\n    else if (trial->grid_count<WORLD_MAX_GRIDS) trial->grids[trial->grid_count++]=candidate;\n    reference_capture_trial(trial);\n    free(trial);','World trial=*world;\n    if (existing) trial.grids[existing-world->grids]=candidate;\n    else if (trial.grid_count<WORLD_MAX_GRIDS) trial.grids[trial.grid_count++]=candidate;\n    reference_capture_trial(&trial);','tests.test_subgrid_contract.SubgridContract.test_s09_retarget_divisions_and_referenced_index_contract'),
+ ('restored',None,None,None,None),
+]
+records=[];head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
+source_hashes={str(p):hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in shared+helpers}
+(OUT/'sources.json').write_text(json.dumps(source_hashes,indent=2)+'\n')
+for name,target,old,new,method in variants:
+    work=OUT/name;work.mkdir(exist_ok=True);tree=work/'source';tree.mkdir(exist_ok=True)
+    for relative in shared+helpers:
+        dst=tree/relative;dst.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(ROOT/relative,dst)
+    if target:
+        path=tree/target;raw=path.read_bytes();assert raw.count(old.encode())==1,(name,raw.count(old.encode()))
+        changed=raw.replace(old.encode(),new.encode());path.write_bytes(changed)
+        (work/'mutation.json').write_text(json.dumps(dict(file=target,old=old,new=new,beforeSha256=hashlib.sha256(raw).hexdigest(),afterSha256=hashlib.sha256(changed).hexdigest()),indent=2)+'\n')
+    selected=method if method and method.startswith('tests.') else 'tests.test_panel_fill_host.PanelFillHost'+('.'+method if method else '')
+    argv=[sys.executable,str(child),str(tree),str(work/'bin'),selected,str(work/'tests.json')]
+    started=time.monotonic()
+    with (work/'stdout').open('wb') as so,(work/'stderr').open('wb') as se:p=subprocess.run(argv,stdout=so,stderr=se,cwd=tree)
+    tests=json.loads((work/'tests.json').read_text()) if (work/'tests.json').exists() else None
+    binary=work/'bin'/'bridge'
+    record=dict(name=name,argv=argv,exit=p.returncode,seconds=time.monotonic()-started,tests=tests,
+                binarySha256=hashlib.sha256(binary.read_bytes()).hexdigest() if binary.exists() else None)
+    records.append(record);(OUT/'summary.json').write_text(json.dumps(dict(head=head,stackBytes=16777216,records=records),indent=2)+'\n')
+    print(json.dumps({k:record[k] for k in ['name','exit','seconds']}),flush=True)
+    assert tests and tests['total'] and tests['skipped']==0 and tests['errors']==0,record
+    assert p.returncode==(1 if target else 0),record
+    if target:assert tests['failed']>0 and method in json.dumps(tests),record
+assert source_hashes=={str(p):hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in shared+helpers},'source changed during controls'
+print('PFH_NEGATIVE_CONTROLS: baseline 29 green, six domain assertion reds, one subgrid stack rollback red, restored 29 green',flush=True)

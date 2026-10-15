@@ -1,0 +1,14 @@
+test_derived_timber_depth_cannot_violate_I53 (tests.test_panel_fill_host.PanelFillHost.test_derived_timber_depth_cannot_violate_I53) ... FAIL
+
+======================================================================
+FAIL: test_derived_timber_depth_cannot_violate_I53 (tests.test_panel_fill_host.PanelFillHost.test_derived_timber_depth_cannot_violate_I53)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/geometry-wake41/controls-final/I53-removed/source/tests/test_panel_fill_host.py", line 349, in test_derived_timber_depth_cannot_violate_I53
+    self.assertFalse(result["ok"],"PFH_I53: B27 cannot enter h30 host")
+AssertionError: True is not false : PFH_I53: B27 cannot enter h30 host
+
+----------------------------------------------------------------------
+Ran 1 test in 0.217s
+
+FAILED (failures=1)

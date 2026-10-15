@@ -1,0 +1,7 @@
+{
+  "file": "geometry-core/derived_placements.inc",
+  "old": "d->obstacles[i].q[1]>d->t;",
+  "new": "d->obstacles[i].q[1]>=d->t;",
+  "beforeSha256": "2794861c82074f6dbf2bb628f8961609e205d2ed0f1a6d0071c72fa5bd49bdd3",
+  "afterSha256": "1baadc1e8222c2254eed99eb1ec798d634d8f1ca502d22920aaed470f0fa0ae0"
+}

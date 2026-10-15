@@ -57,7 +57,8 @@ test('format and required-capability guards refuse every downgrade, false declar
     assert.deepEqual(policy,{modelCollections:version>=3,engineeringCandidate:version>=5,canonicalScene:version>=11});
     assert.ok(Object.isFrozen(policy));assert.throws(()=>{policy.canonicalScene=false;});
   }
-  for(const format of ['geometry-canvas/17','geometry-canvas/999','__proto__',null,13])assert.throws(()=>P.formatPolicy(format));
+  assert.deepEqual(P.formatPolicy('geometry-canvas/17'),{modelCollections:true,engineeringCandidate:true,canonicalScene:true});
+  for(const format of ['geometry-canvas/18','geometry-canvas/999','__proto__',null,13])assert.throws(()=>P.formatPolicy(format));
   const bytes=await P.pack(scene,{...manifest(),featureAttachments:envelope(draft())},new Map(),zip);
   for(const change of [m=>m.requiredCapabilities=[],m=>m.requiredCapabilities=[F.GRID_RULE_SCHEMA,F.GRID_RULE_SCHEMA],
     m=>m.requiredCapabilities=['grid-editor-draft/3'],m=>delete m.featureAttachments,

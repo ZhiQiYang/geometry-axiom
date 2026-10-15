@@ -1,0 +1,17 @@
+✔ K2a review M1 original handler replaces lost P1 with already-used P2 without permitting pure removal (108.696643ms)
+✔ K2a M2 near-limit draft admission rejects before native calls, history or dirty changes (504.352183ms)
+✔ K2a M01/M03/M12 per-draft writes coexist, legacy replacement and late context flush cannot alter them (70.685054ms)
+✔ K2a M12/M14b lost flags cannot be erased or repinned with the same identity (38.649869ms)
+✔ K2a M04 removing one draft and local undo restores precisely that draft (34.98344ms)
+✔ K2a M04 native confirmation clears only its leased draft; failed confirmation preserves both (31.72338ms)
+✔ K2a M06/M14 deletion receipt marks orphans and lost even when identical ids still exist (16.626983ms)
+✔ K2a M14b identical native transaction gives deletion flags one reversible local history step (17.248065ms)
+✔ K2a M15 repin requires the reviewed current fingerprint and keeps raw and lost references intact (19.307173ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 924.572639
