@@ -1,4 +1,17 @@
-# P141 修正候選（尚待新的原生驗證）
+# P141 子命令結果與排他性限制（尚待Claude裁決）
+
+受測來源 `2a54a7960ae53f57e88544175cca01594a1648ab`；本次證據提交只更新帳本、官方正典產物、實測期待值及本紀錄。17個定向Python suite共300方法全過（含core40、誠實性32、PF-1 22/PF-2 17、assembly36），另原生場景143、integrity130皆exit0。空私有cache實跑全表59變異，判決 `killed=51, crashed=1, equivalent=4, retired=3`；`--check`、官方sync、正典`--check`與原41全0。R2實際WSL1：所有子命令exit0，但最後排他性assert失敗。405次取樣觀察到外來geo261基準/候選的_unittest_runner、run_all.py與cc1等，exclusive_during_run=false；完整原字典保留，不認證整輪排他綠燈，交Claude裁決、不自行重跑。首輪R1實際WSL1，268方法過、純32有一個DrvFS奈秒時間戳前提失敗，原件保留，R2只於私有16MiB tmpfs重跑32，不重跑268，原始退出與日誌不改寫。這是定向子命令的事實結果，不是已驗收的排他證明、完整native或正式七項。
+
+M61–M69九個真bridge變異各由具名行為斷言殺死，非錯誤或skip；先跑19個基準，每組逐byte還原、官方重編、19方法全過，還原binary逐byte等於基準。M68覆蓋三種試排引用與整卡刪除/欄位省略；M69驗[delete P, put P(a=99), unbind-source]錯讀快取必紅。既有M63同類欄位退化不恢復已刪死函式。結果與完整raw stdout/stderr、sidecar/source、Git blob由另一支唯讀腳本獨立核對。
+
+實測ParameterState：main1c807511 570904 bytes，本候選 802352 bytes；每World增加231448 bytes，因World內嵌該POD結構。HISTORY_MAX=32，undo與redo兩組共64份，上限增量14812672 bytes（約14.13 MiB）。主要上限為4096欄位刪除事件、4352份最後有效值與512份宣告；出口清空scratch，容量仍占World大小。P141已接受約230KB/World、約15MB歷史的級距。
+
+原件 `D:/geometry-axiom-work/board-local-codex/pr193-p141-native-r2`；receipt SHA `f62e8ca8fb74b221b7850841206e138f0b757b4a4a51390f6f09c86f51c9730e`；獨立certificate `independently-verified-raw-foreign-limited.json`。核對33個實際步驟、294個Git來源、8個固定binary引用/402個sidecar來源引用，以及467份原始byte；外來程序終局取樣 `{"samples":405,"foreign_processes_seen_during_run":{"/usr/bin/python3 /var/tmp/geo261-baseline-1c807511/tests/_unittest_runner.py /tmp/geometry-runner-cl":1,"/usr/bin/python3 /var/tmp/geo261-baseline-1c807511/tests/_unittest_runner.py /var/tmp/geo261-baselin":145,"/usr/bin/python3 /var/tmp/geo261-candidate-17a25e92/tests/_unittest_runner.py /var/tmp/geo261-candid":47,"/usr/libexec/gcc/x86_64-linux-gnu/13/cc1 -quiet -I /var/tmp/geo261-baseline-1c807511/geometry-web -i":5,"/usr/libexec/gcc/x86_64-linux-gnu/13/cc1 -quiet -I /var/tmp/geo261-candidate-17a25e92/geometry-web -":1,"/usr/libexec/gcc/x86_64-linux-gnu/13/cc1 -quiet -imultiarch x86_64-linux-gnu /var/tmp/geo261-baselin":12,"/usr/libexec/gcc/x86_64-linux-gnu/13/cc1 -quiet -imultiarch x86_64-linux-gnu /var/tmp/geo261-candida":4,"/usr/libexec/gcc/x86_64-linux-gnu/13/cc1 -quiet -imultiarch x86_64-linux-gnu geometry-web/web_bridge":4,"bash -lc ls -la /opt/node; ls -la /opt/node/bin; /opt/node/bin/node --version; /usr/bin/google-chrom":1,"python3 -u tests/run_all.py --build ":163},"exclusive_during_run":false,"max_loadavg_1min_sampled":7.87}`，四共享runner SHA不變。
+
+只依本次實測改期待值core35→40、誠實性24→32。正式瀏覽器與固定整合head七項留第18班，先交Claude審P141；不自行准入、不合併。第17班由Claude負責；#251新P145及#254承接/核對另有前置，不在本PR借舊綠。
+
+## P141 修正內容
+
 
 依 [P141](https://github.com/ZhiQiYang/geometry-axiom/pull/193#issuecomment-6195362041)，補列面材試排 gap、stagger、threshold 的引用；此擁有者沒有 engineering 改綁入口，來源結束後仍有引用就拒絕。五類原生引用者的訊息改為指名物件，要求先在原生 DSL 或物件自己的交易改掉引用，另成一筆後再刪。未新增交易 op。
 
@@ -6,7 +19,7 @@
 
 另依 [P141補充](https://github.com/ZhiQiYang/geometry-axiom/pull/193#issuecomment-6196035356)，明確 unbind 那一步若欄位已重建，改走當下求值，不用舊存在期的快取；[delete P, put P(a=99), unbind-source] 必須保存99，無效的新來源仍拒絕。舊期待915的重建案例改驗920／925，另補具名99案例與 M69 真反證。合計59個登錄變異，共用還原19方法。
 
-此段描述待驗候選，不能借下列 6236 來源的歷史綠燈驗收新程式。完整帳本、--check、正典同步與原41及原生回歸仍須在新固定來源實跑；Claude 核對後才上第18班。
+以上修正已有本頁開頭的固定新來源子命令結果；排他性未通過，不能當整輪驗收。下列6236結果仍只屬歷史來源，未改寫舊raw或退出碼。交Claude裁決後才談第18班。
 
 ## P129 同來源分段定向證明（歷史來源6236；正式整合驗收待第18班）
 
