@@ -474,7 +474,7 @@ class FinishSurfaceNative(unittest.TestCase):
         self.assertNotIn("panel-fill/1", dump["capabilities"], "I32: PF-1 alone is not complete panel-fill/1")
         self.assertIn("panel-fill-native/1", dump["native_capabilities"])
         read = self.read()
-        self.assertEqual(["finish-surface", "panel-fill"], read["supportedRecords"])
+        self.assertEqual(["finish-surface", "panel-fill", "derived-placement"], read["supportedRecords"])
         self.assertFalse(read["complete"])
 
     def test_reopen_rejects_tampered_or_undeclared_records(self):
