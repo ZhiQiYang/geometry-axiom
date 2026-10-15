@@ -220,6 +220,20 @@ def build_package(definitions, request, *, capabilities=None, max_cells=200000,
     return package
 
 
+def _accepted_axiom_versions(current_version):
+    """The verifier and compatibility regressions share the exact allowlist."""
+    return frozenset({
+            current_version, *LEGACY_AXIOM_VERSIONS, *ENGINEERING_AXIOM_VERSIONS,
+            *FINITE_GRID_AXIOM_VERSIONS, *INFINITE_GRID_AXIOM_VERSIONS, *PARAMETER_AXIOM_VERSIONS, *PRE_GENERATION_AXIOM_VERSIONS, *PRE_SUBDIVISION_AXIOM_VERSIONS,
+            *PRE_SECTION_PROFILE_AXIOM_VERSIONS, *PRE_PANEL_FILL_AXIOM_VERSIONS,
+            *PRE_CUTTING_PLAN_AXIOM_VERSIONS, *PRE_ZERO_ROOM_AXIOM_VERSIONS,
+            *PRE_DRAFTS_TOPOLOGY_AXIOM_VERSIONS,
+            *PRE_STACK_CLARIFY_AXIOM_VERSIONS,
+            *PRE_IDENTITY_TRACE_AXIOM_VERSIONS,
+            *PRE_SPACE_MERGE_AXIOM_VERSIONS,
+            *PRE_CARD_REFERENCE_AXIOM_VERSIONS})
+
+
 def verify_package(package, *, max_cells=200000, base_executable=None):
     """Rebuild from definitions and reject any altered or incompatible snapshot."""
     canonical_bytes(package)
@@ -235,16 +249,7 @@ def verify_package(package, *, max_cells=200000, base_executable=None):
         raise ModelError("UNSUPPORTED", "VERSION", "I32", "Unsupported package schema or modeling profile")
     current_version = (AXIOM_REVISION, _axiom_hash())
     supplied_version = (manifest["axiom_revision"], manifest["axiom_sha256"])
-    if not all(type(part) is str for part in supplied_version) or supplied_version not in {
-            current_version, *LEGACY_AXIOM_VERSIONS, *ENGINEERING_AXIOM_VERSIONS,
-            *FINITE_GRID_AXIOM_VERSIONS, *INFINITE_GRID_AXIOM_VERSIONS, *PARAMETER_AXIOM_VERSIONS, *PRE_GENERATION_AXIOM_VERSIONS, *PRE_SUBDIVISION_AXIOM_VERSIONS,
-            *PRE_SECTION_PROFILE_AXIOM_VERSIONS, *PRE_PANEL_FILL_AXIOM_VERSIONS,
-            *PRE_CUTTING_PLAN_AXIOM_VERSIONS, *PRE_ZERO_ROOM_AXIOM_VERSIONS,
-            *PRE_DRAFTS_TOPOLOGY_AXIOM_VERSIONS,
-            *PRE_STACK_CLARIFY_AXIOM_VERSIONS,
-            *PRE_IDENTITY_TRACE_AXIOM_VERSIONS,
-            *PRE_SPACE_MERGE_AXIOM_VERSIONS,
-            *PRE_CARD_REFERENCE_AXIOM_VERSIONS}:
+    if not all(type(part) is str for part in supplied_version) or supplied_version not in _accepted_axiom_versions(current_version):
         raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "This executor does not implement the supplied axiom revision")
     if supplied_version != current_version:
         definitions = package["definitions"]

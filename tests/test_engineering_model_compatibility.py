@@ -166,18 +166,8 @@ class EngineeringModelCompatibility(unittest.TestCase):
         self.assertEqual(package, self.saved_pre_card_reference_package())
 
     def pre_card_reference_versions(self):
-        # Every released compatibility family predates D64, not just the latest
-        # pre-adoption main. Keep the family list explicit so a missing gate for
-        # an older supported release cannot hide behind the newest fixture.
-        families = (
-            'LEGACY', 'ENGINEERING', 'FINITE_GRID', 'INFINITE_GRID', 'PARAMETER',
-            'PRE_GENERATION', 'PRE_SUBDIVISION', 'PRE_SECTION_PROFILE',
-            'PRE_PANEL_FILL', 'PRE_CUTTING_PLAN', 'PRE_ZERO_ROOM',
-            'PRE_DRAFTS_TOPOLOGY', 'PRE_STACK_CLARIFY', 'PRE_IDENTITY_TRACE',
-            'PRE_SPACE_MERGE', 'PRE_CARD_REFERENCE',
-        )
-        return sorted(set().union(*(getattr(modeling, name + '_AXIOM_VERSIONS')
-                                    for name in families)))
+        current = (modeling.AXIOM_REVISION, modeling.AXIOM_SHA256)
+        return sorted(modeling._accepted_axiom_versions(current) - {current})
 
     def assert_card_requires_adopted_axioms(self, package, label):
         original = deepcopy(package)

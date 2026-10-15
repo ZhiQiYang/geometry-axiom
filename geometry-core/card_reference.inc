@@ -16,6 +16,7 @@ static bool grid_card_read(EngJson *j,int t,uint32_t grid_id,GridCardReference *
 }
 static bool grid_card_mark(GridSystem *s)
 {
+    /* I74: length comes exclusively from GridSystem.card_reference. */
     for(int a=0;a<2;++a){GridAxisDef *d=&s->axis[a];
         if(!grid_axis_is_infinite(d))return grid_card_fail("I74 MODE_SCOPE: grid-system %u %c parameter %u field %u requires repeat or repeat-panel",s->id,a?'v':'u',s->card_reference.parameter_id,s->card_reference.fields[a]);
         int slot=d->source==GRID_SRC_REPEAT?1:2;
@@ -26,13 +27,14 @@ static bool grid_card_mark(GridSystem *s)
 static bool grid_card_put(World *w,EngJson *j,int t)
 {
     GridSystem s={0};char main[8],axes[2][SCENE_MAX_LINE];s.next_rule_key=1;
+    bool has_id=parameter_u32(j,eng_json_member(j,t,"id"),&s.id);
     if(!eng_json_keys(j,t,"id,name,mainAlong,u,v","cardReference")||
-       !parameter_u32(j,eng_json_member(j,t,"id"),&s.id)||
+       !has_id||
        !eng_json_string(j,eng_json_member(j,t,"name"),s.name,sizeof s.name)||
        !eng_json_string(j,eng_json_member(j,t,"mainAlong"),main,sizeof main)||
        !eng_json_string(j,eng_json_member(j,t,"u"),axes[0],sizeof axes[0])||
-       !eng_json_string(j,eng_json_member(j,t,"v"),axes[1],sizeof axes[1]))return eng_fail("I74 COMPLETE_MAPPING: invalid grid-system definition");
-    if(!strcmp(main,"u"))s.main_along=1;else if(!strcmp(main,"v"))s.main_along=2;else if(strcmp(main,"none"))return eng_fail("I74 invalid mainAlong");
+       !eng_json_string(j,eng_json_member(j,t,"v"),axes[1],sizeof axes[1]))return grid_card_fail("D29 GRID_DEFINITION: grid-system %u requires id, name, mainAlong, u and v with their declared types and no unknown keys",s.id);
+    if(!strcmp(main,"u"))s.main_along=1;else if(!strcmp(main,"v"))s.main_along=2;else if(strcmp(main,"none"))return grid_card_fail("D29 GRID_DEFINITION: grid-system %u mainAlong must be none, u or v",s.id);
     for(int a=0;a<2;++a){char *tokens[SCENE_MAX_TOKENS];int at=0,count=split_tokens(axes[a],tokens,SCENE_MAX_TOKENS);
         if(count<1||!grid_system_read_axis(tokens,count,&at,&s.axis[a])||at!=count)return eng_fail("I74 MODE_TRANSITION: invalid or incomplete axis definition");}
     int ref=eng_json_member(j,t,"cardReference");if(ref>=0&&!grid_card_read(j,ref,s.id,&s.card_reference))return false;

@@ -1377,7 +1377,7 @@ typedef struct {
     Coord anchor;
     bool anchor_explicit;   /* 只影響 dump 是否輸出 from，不影響推導 */
     ParameterRef parameters[6]; /* phase, step, panel, gap, anchor, stagger (D10b) */
-    bool card_length; /* I74: length comes exclusively from GridSystem.card_reference. */
+    bool card_length;
     Coord stagger;          /* D10b: odd-band offset; meaningful only when stagger_set */
     bool stagger_set;
 } GridAxisDef;

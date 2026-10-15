@@ -74,12 +74,14 @@ class GridCardReference(unittest.TestCase):
         result = self.request(ops)
         self.assertTrue(result['ok'], (label, result))
         self.assertFalse(result['preview']['valid'], (label, result))
-        errors = '\n'.join(v.get('message', '') for v in result['preview']['violations'])
-        self.assertIn(reason, errors, (label, errors))
+        errors = [v.get('message', '') for v in result['preview']['violations']]
+        matching = [message for message in errors if reason in message]
+        self.assertTrue(matching, (label, reason, errors))
         if identity is not None:
             grid_id, parameter_id, field_id = identity
-            for part in (f'grid-system {grid_id}', f'parameter {parameter_id}', f'field {field_id}'):
-                self.assertIn(part, errors, (label, errors))
+            parts = (f'grid-system {grid_id}', f'parameter {parameter_id}', f'field {field_id}')
+            self.assertTrue(any(all(re.search(r'\b' + re.escape(part) + r'\b', message)
+                                    for part in parts) for message in matching), (label, errors))
         self.assertFalse(self.command(f"engineering-confirm {result['preview']['token']}")['ok'], label)
         self.assertEqual(before, self.state(), label + ': World/metadata/revision unchanged')
         return result
@@ -212,7 +214,7 @@ class GridCardReference(unittest.TestCase):
         self.assertNotIn('SAME_CARD', error)
         self.reject([grid(v='none')], 'MODE_SCOPE', 'MODE_SCOPE')
         self.reject([grid(u='series 0 12 3')], 'MODE_SCOPE', 'MODE_SCOPE legacy identity')
-        self.reject([{'op': 'set-grid-card-reference', 'id': 4, 'value': bad}], 'grid-system 4', 'COMPLETE_MAPPING set operation')
+        self.reject([{'op': 'set-grid-card-reference', 'id': 4, 'value': bad}], 'COMPLETE_MAPPING', 'COMPLETE_MAPPING set operation')
         self.apply([unbind(), grid(ref=False, v='none', u='repeat -5 12')])
         self.reject([{'op': 'set-grid-card-reference', 'id': 4, 'value': source()}], 'grid-system 4', 'MODE_SCOPE set operation')
 
@@ -476,6 +478,38 @@ class GridCardReference(unittest.TestCase):
         with mock.patch.object(self, 'request', return_value=rejected):
             with self.assertRaisesRegex(AssertionError, 'ONLY_IN_PREVIEW_DATA'):
                 self.reject([parameter(b='0')], 'ONLY_IN_PREVIEW_DATA', 'ERROR_FIELDS_ONLY')
+
+    def test_P154_GRID_DEFINITION_DIAGNOSTIC(self):
+        self.seed()
+        for name, change in (
+                ('missing name', lambda v: v.pop('name')),
+                ('unknown key', lambda v: v.update(extra=True)),
+                ('mainAlong type', lambda v: v.update(mainAlong=42)),
+                ('mainAlong value', lambda v: v.update(mainAlong='diagonal'))):
+            operation = grid()
+            change(operation['value'])
+            with self.subTest(case=name):
+                rejected = self.reject([operation], 'GRID_DEFINITION', 'GRID_DEFINITION ' + name)
+                messages = [v['message'] for v in rejected['preview']['violations']]
+                self.assertTrue(any(re.search(r'\bgrid-system 4\b', m) for m in messages), name)
+                self.assertFalse(any('COMPLETE_MAPPING' in m for m in messages), name)
+        bad = source()
+        del bad['vFieldId']
+        rejected = self.reject([grid(ref=bad)], 'COMPLETE_MAPPING', 'mapping remains distinct')
+        self.assertFalse(any('GRID_DEFINITION' in v['message'] for v in rejected['preview']['violations']))
+
+    def test_P154_IDENTITY_IN_ONE_DIAGNOSTIC_WITH_TOKEN_BOUNDARIES(self):
+        self.seed()
+        original = self.request([parameter(b='0')])
+        for messages in (
+                ['P154_REASON grid-system 4 parameter 10 field 30'],
+                ['P154_REASON grid-system 4', 'parameter 10 field 3'],
+                ['P154_REASON', 'grid-system 4 parameter 10 field 3']):
+            rejected = deepcopy(original)
+            rejected['preview']['violations'] = [{'message': m} for m in messages]
+            with self.subTest(messages=messages), mock.patch.object(self, 'request', return_value=rejected):
+                with self.assertRaisesRegex(AssertionError, 'P154_IDENTITY'):
+                    self.reject([parameter(b='0')], 'P154_REASON', 'P154_IDENTITY', identity=(4, 10, 3))
 
     def test_P146_CARD_DIRECT_REBUILT_CURRENT_VALUE(self):
         self.seed()
