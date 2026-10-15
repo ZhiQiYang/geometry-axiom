@@ -37,6 +37,7 @@ static bool sp_host(const World *w,const ProfileRun *r,SurfaceFrame *frame,Space
 {
     if(r->copied_host){*frame=r->host_frame;*region=r->host_region;return true;}
     const PlacementSurface *p=world_find_placement(w,r->host_id);
+    if(p&&p->derived_fill_id)return sp_error("D4: derived placements cannot host D38 positioning");
     if(!p||!surface_frame_is_valid(&p->frame))return false;
     const SpaceBoundarySurface *b=world_placement_boundary(w,p);
     if(p->boundary_id&&!b)return false;

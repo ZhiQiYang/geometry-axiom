@@ -1,0 +1,37 @@
+{
+  "base": "303fec02257d21cf719287045a718665c3283006",
+  "pf3": "4f8da467e81be91bc288c765971431aed1530a94",
+  "pf3MergeTree": "aa73311333b874f3cc84975efa642d2451dd2623",
+  "standalonePerTree": {
+    "passed": 60,
+    "failed": 0,
+    "skipped": 0
+  },
+  "fullScenarioSuitePerTree": {
+    "rounds": 3,
+    "eachPassed": 37,
+    "eachFailed": 0,
+    "eachSkipped": 0
+  },
+  "sourceHashes": {
+    "base": {
+      "tests/test_scenario_verify.py": "66f2badbbcedebe9928b6e104b6b0dd81318a9f6b342bfdda5313334ee779c39",
+      "geometry-web/scenario_verify.py": "abb9c2444730fa40bd0363dd0c88a9ee8e4aa577b9a9304993b1682fd4c151b1",
+      "geometry-core/modeling/base.py": "3e720d8d1861b1b4520a43c3ca59a9e0eeb6ae918251daf5b4caef74ae717088",
+      "current_geometry.c": "e3c5d95307f36ded50128410cb0a0f8a20f0cc38a63afde9f7d2366cbeabad0c",
+      "tests/run_all.py": "55e7099bfd9c8378b9db31c498cb379d45a6726cedf4dd1edbf07648ad1294f7",
+      "tests/run_all.expected.json": "cb4018a04a86fea085ea7c0245d034784253dbf70f8d94f7b319ae7eebe93f8f"
+    },
+    "pf3": {
+      "tests/test_scenario_verify.py": "66f2badbbcedebe9928b6e104b6b0dd81318a9f6b342bfdda5313334ee779c39",
+      "geometry-web/scenario_verify.py": "abb9c2444730fa40bd0363dd0c88a9ee8e4aa577b9a9304993b1682fd4c151b1",
+      "geometry-core/modeling/base.py": "3e720d8d1861b1b4520a43c3ca59a9e0eeb6ae918251daf5b4caef74ae717088",
+      "current_geometry.c": "1018d93746f7fd204c54fe4710ed9796b7ea0919092194753ef668ab4efb6882",
+      "tests/run_all.py": "84f6735e494305851bcebcfd35b60bdcd5eafd922dc3fd71a4a8b01e151ca2b5",
+      "tests/run_all.expected.json": "124a5fbf702b0d1df90dc411cf21a5da1ff537d4f77e66ba6648c760e7b8bc4d"
+    }
+  },
+  "causalConclusion": "Original native failure was not reproduced; neither conditional failure branch of P-134 was observed. No attribution to PF3, PF-H or environment is proven.",
+  "issueCreated": false,
+  "productOrTestChanged": false
+}

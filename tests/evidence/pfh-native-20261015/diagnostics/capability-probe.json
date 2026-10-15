@@ -1,0 +1,1892 @@
+{
+  "stackBytes": 16777216,
+  "records": [
+    {
+      "name": "D28-application",
+      "request": {
+        "schema": "engineering-transaction/1",
+        "expectedRevision": 17,
+        "operations": [
+          {
+            "op": "publish-method",
+            "value": {
+              "id": "host-method",
+              "version": 1,
+              "name": "method"
+            }
+          },
+          {
+            "op": "put-application",
+            "value": {
+              "id": "host-app",
+              "placement_id": 10,
+              "method": {
+                "id": "host-method",
+                "version": 1
+              }
+            }
+          }
+        ]
+      },
+      "reply": {
+        "ok": true,
+        "preview": {
+          "token": 5,
+          "valid": false,
+          "revision": 17,
+          "before": {
+            "capabilities": [
+              "engineering-spec/1",
+              "parameters/1",
+              "assembly-rule-authoring/1",
+              "assembly-timber-generation/1",
+              "grid-subdivision-rules/1",
+              "section-profile/1"
+            ],
+            "required_capabilities": [
+              "engineering-spec/1",
+              "parameters/1",
+              "panel-fill/1"
+            ],
+            "native_capabilities": [
+              "section-profile-native/1",
+              "panel-fill-native/1"
+            ],
+            "specs": [],
+            "materials": [
+              {
+                "id": "pf-board",
+                "kind": "panel",
+                "length": 1830,
+                "name": "板",
+                "thickness": "9",
+                "version": 1,
+                "width": 915,
+                "fingerprint": "d8b678c1736fcaa0b5418f447d18ec28b87d4a64511a6db480a5eb7a2e905aa7",
+                "archived": false
+              }
+            ],
+            "methods": [],
+            "applications": [],
+            "sources": [],
+            "parameters": [
+              {
+                "id": 90,
+                "name": "門檻",
+                "nextFieldId": 2,
+                "fields": [
+                  {
+                    "id": 1,
+                    "name": "X",
+                    "type": "dimension",
+                    "expression": {
+                      "den": "1",
+                      "num": "8",
+                      "op": "literal",
+                      "unit": "mm"
+                    },
+                    "value": {
+                      "num": "8",
+                      "den": "1",
+                      "unit": "mm"
+                    }
+                  }
+                ]
+              }
+            ],
+            "assembly": {
+              "capabilities": [
+                "assembly-rule-authoring/1",
+                "assembly-timber-generation/1"
+              ],
+              "rules": [],
+              "bindings": [],
+              "instances": []
+            },
+            "sectionProfiles": {
+              "profiles": [],
+              "members": [],
+              "runs": []
+            },
+            "geometry": {
+              "grids": [],
+              "gridSystems": [],
+              "datums": [],
+              "guides": [],
+              "timbers": []
+            },
+            "panelFill": {
+              "finishSurfaces": [
+                {
+                  "id": 1,
+                  "name": "天花完成面",
+                  "boundaryId": 8,
+                  "frame": {
+                    "origin": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "U": "+X",
+                    "V": "+Y",
+                    "N": "+Z"
+                  },
+                  "structureSide": 1,
+                  "obstacles": [],
+                  "derived": {
+                    "n": "+Z",
+                    "region": {
+                      "outline": [
+                        [
+                          0,
+                          0
+                        ],
+                        [
+                          1000,
+                          0
+                        ],
+                        [
+                          1000,
+                          300
+                        ],
+                        [
+                          0,
+                          300
+                        ]
+                      ],
+                      "holes": []
+                    },
+                    "obstacles": []
+                  }
+                }
+              ],
+              "panelFills": [
+                {
+                  "definition": {
+                    "finishSurfaceId": 1,
+                    "gap": 0,
+                    "id": 1,
+                    "lengthAlong": "v",
+                    "origin": [
+                      -815,
+                      -100
+                    ],
+                    "panel": {
+                      "id": "pf-board",
+                      "version": 1
+                    },
+                    "pattern": "straight",
+                    "threshold": {
+                      "fieldId": 1,
+                      "parameterId": 90
+                    }
+                  },
+                  "derived": {
+                    "tileCount": 2,
+                    "fragmentCount": 2,
+                    "wholeCount": 0,
+                    "cutCount": 2,
+                    "thickness": 9,
+                    "tiles": [
+                      {
+                        "key": [
+                          1,
+                          0,
+                          0
+                        ],
+                        "i": 0,
+                        "j": 0,
+                        "body": [
+                          -815,
+                          -100,
+                          100,
+                          1730
+                        ],
+                        "whole": false,
+                        "fragments": [
+                          {
+                            "key": [
+                              1,
+                              0,
+                              0,
+                              0
+                            ],
+                            "area": 30000,
+                            "outer": [
+                              [
+                                0,
+                                0
+                              ],
+                              [
+                                100,
+                                0
+                              ],
+                              [
+                                100,
+                                300
+                              ],
+                              [
+                                0,
+                                300
+                              ]
+                            ],
+                            "holes": []
+                          }
+                        ]
+                      },
+                      {
+                        "key": [
+                          1,
+                          1,
+                          0
+                        ],
+                        "i": 1,
+                        "j": 0,
+                        "body": [
+                          100,
+                          -100,
+                          1015,
+                          1730
+                        ],
+                        "whole": false,
+                        "fragments": [
+                          {
+                            "key": [
+                              1,
+                              1,
+                              0,
+                              0
+                            ],
+                            "area": 270000,
+                            "outer": [
+                              [
+                                100,
+                                0
+                              ],
+                              [
+                                1000,
+                                0
+                              ],
+                              [
+                                1000,
+                                300
+                              ],
+                              [
+                                100,
+                                300
+                              ]
+                            ],
+                            "holes": []
+                          }
+                        ]
+                      }
+                    ],
+                    "obstacles": [],
+                    "seamLines": [
+                      {
+                        "axis": "u",
+                        "k": 0,
+                        "coordinate": 100
+                      }
+                    ],
+                    "effectiveSeams": null,
+                    "support": null,
+                    "derivedPlacement": 10,
+                    "pending": [
+                      "PF-3 effective seams and support",
+                      "PF-5 remaining spatial flow"
+                    ]
+                  }
+                }
+              ],
+              "derivedPlacements": [
+                {
+                  "id": 10,
+                  "definition": {
+                    "fillId": 1,
+                    "h": 30,
+                    "id": 10
+                  },
+                  "derived": {
+                    "h": 30,
+                    "frame": {
+                      "origin": [
+                        0,
+                        0,
+                        9
+                      ],
+                      "U": "+X",
+                      "V": "+Y",
+                      "N": "+Z"
+                    },
+                    "components": [
+                      {
+                        "outline": [
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            1000,
+                            0
+                          ],
+                          [
+                            1000,
+                            300
+                          ],
+                          [
+                            0,
+                            300
+                          ]
+                        ],
+                        "holes": [],
+                        "edges": [
+                          {
+                            "key": [
+                              [
+                                "e0",
+                                0,
+                                1
+                              ]
+                            ],
+                            "start": [
+                              0,
+                              0
+                            ],
+                            "end": [
+                              1000,
+                              0
+                            ],
+                            "fixity": "FIXED"
+                          },
+                          {
+                            "key": [
+                              [
+                                "e1",
+                                0,
+                                1
+                              ]
+                            ],
+                            "start": [
+                              1000,
+                              0
+                            ],
+                            "end": [
+                              1000,
+                              300
+                            ],
+                            "fixity": "FIXED"
+                          },
+                          {
+                            "key": [
+                              [
+                                "e2",
+                                0,
+                                1
+                              ]
+                            ],
+                            "start": [
+                              1000,
+                              300
+                            ],
+                            "end": [
+                              0,
+                              300
+                            ],
+                            "fixity": "FIXED"
+                          },
+                          {
+                            "key": [
+                              [
+                                "e3",
+                                0,
+                                1
+                              ]
+                            ],
+                            "start": [
+                              0,
+                              300
+                            ],
+                            "end": [
+                              0,
+                              0
+                            ],
+                            "fixity": "FIXED"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          "after": {
+            "capabilities": [
+              "engineering-spec/1",
+              "parameters/1",
+              "assembly-rule-authoring/1",
+              "assembly-timber-generation/1",
+              "grid-subdivision-rules/1",
+              "section-profile/1"
+            ],
+            "required_capabilities": [
+              "engineering-spec/1",
+              "parameters/1",
+              "panel-fill/1"
+            ],
+            "native_capabilities": [
+              "section-profile-native/1",
+              "panel-fill-native/1"
+            ],
+            "specs": [],
+            "materials": [
+              {
+                "id": "pf-board",
+                "kind": "panel",
+                "length": 1830,
+                "name": "板",
+                "thickness": "9",
+                "version": 1,
+                "width": 915,
+                "fingerprint": "d8b678c1736fcaa0b5418f447d18ec28b87d4a64511a6db480a5eb7a2e905aa7",
+                "archived": false
+              }
+            ],
+            "methods": [
+              {
+                "id": "host-method",
+                "name": "method",
+                "version": 1,
+                "fingerprint": "4563c226d63a572924af6c69ec1f531d1109fabcbda0af407f86dcf148a99c60",
+                "archived": false
+              }
+            ],
+            "applications": [],
+            "sources": [],
+            "parameters": [
+              {
+                "id": 90,
+                "name": "門檻",
+                "nextFieldId": 2,
+                "fields": [
+                  {
+                    "id": 1,
+                    "name": "X",
+                    "type": "dimension",
+                    "expression": {
+                      "den": "1",
+                      "num": "8",
+                      "op": "literal",
+                      "unit": "mm"
+                    },
+                    "value": {
+                      "num": "8",
+                      "den": "1",
+                      "unit": "mm"
+                    }
+                  }
+                ]
+              }
+            ],
+            "assembly": {
+              "capabilities": [
+                "assembly-rule-authoring/1",
+                "assembly-timber-generation/1"
+              ],
+              "rules": [],
+              "bindings": [],
+              "instances": []
+            },
+            "sectionProfiles": {
+              "profiles": [],
+              "members": [],
+              "runs": []
+            },
+            "geometry": {
+              "grids": [],
+              "gridSystems": [],
+              "datums": [],
+              "guides": [],
+              "timbers": []
+            },
+            "panelFill": {
+              "finishSurfaces": [
+                {
+                  "id": 1,
+                  "name": "天花完成面",
+                  "boundaryId": 8,
+                  "frame": {
+                    "origin": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "U": "+X",
+                    "V": "+Y",
+                    "N": "+Z"
+                  },
+                  "structureSide": 1,
+                  "obstacles": [],
+                  "derived": {
+                    "n": "+Z",
+                    "region": {
+                      "outline": [
+                        [
+                          0,
+                          0
+                        ],
+                        [
+                          1000,
+                          0
+                        ],
+                        [
+                          1000,
+                          300
+                        ],
+                        [
+                          0,
+                          300
+                        ]
+                      ],
+                      "holes": []
+                    },
+                    "obstacles": []
+                  }
+                }
+              ],
+              "panelFills": [
+                {
+                  "definition": {
+                    "finishSurfaceId": 1,
+                    "gap": 0,
+                    "id": 1,
+                    "lengthAlong": "v",
+                    "origin": [
+                      -815,
+                      -100
+                    ],
+                    "panel": {
+                      "id": "pf-board",
+                      "version": 1
+                    },
+                    "pattern": "straight",
+                    "threshold": {
+                      "fieldId": 1,
+                      "parameterId": 90
+                    }
+                  },
+                  "derived": {
+                    "tileCount": 2,
+                    "fragmentCount": 2,
+                    "wholeCount": 0,
+                    "cutCount": 2,
+                    "thickness": 9,
+                    "tiles": [
+                      {
+                        "key": [
+                          1,
+                          0,
+                          0
+                        ],
+                        "i": 0,
+                        "j": 0,
+                        "body": [
+                          -815,
+                          -100,
+                          100,
+                          1730
+                        ],
+                        "whole": false,
+                        "fragments": [
+                          {
+                            "key": [
+                              1,
+                              0,
+                              0,
+                              0
+                            ],
+                            "area": 30000,
+                            "outer": [
+                              [
+                                0,
+                                0
+                              ],
+                              [
+                                100,
+                                0
+                              ],
+                              [
+                                100,
+                                300
+                              ],
+                              [
+                                0,
+                                300
+                              ]
+                            ],
+                            "holes": []
+                          }
+                        ]
+                      },
+                      {
+                        "key": [
+                          1,
+                          1,
+                          0
+                        ],
+                        "i": 1,
+                        "j": 0,
+                        "body": [
+                          100,
+                          -100,
+                          1015,
+                          1730
+                        ],
+                        "whole": false,
+                        "fragments": [
+                          {
+                            "key": [
+                              1,
+                              1,
+                              0,
+                              0
+                            ],
+                            "area": 270000,
+                            "outer": [
+                              [
+                                100,
+                                0
+                              ],
+                              [
+                                1000,
+                                0
+                              ],
+                              [
+                                1000,
+                                300
+                              ],
+                              [
+                                100,
+                                300
+                              ]
+                            ],
+                            "holes": []
+                          }
+                        ]
+                      }
+                    ],
+                    "obstacles": [],
+                    "seamLines": [
+                      {
+                        "axis": "u",
+                        "k": 0,
+                        "coordinate": 100
+                      }
+                    ],
+                    "effectiveSeams": null,
+                    "support": null,
+                    "derivedPlacement": 10,
+                    "pending": [
+                      "PF-3 effective seams and support",
+                      "PF-5 remaining spatial flow"
+                    ]
+                  }
+                }
+              ],
+              "derivedPlacements": [
+                {
+                  "id": 10,
+                  "definition": {
+                    "fillId": 1,
+                    "h": 30,
+                    "id": 10
+                  },
+                  "derived": {
+                    "h": 30,
+                    "frame": {
+                      "origin": [
+                        0,
+                        0,
+                        9
+                      ],
+                      "U": "+X",
+                      "V": "+Y",
+                      "N": "+Z"
+                    },
+                    "components": [
+                      {
+                        "outline": [
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            1000,
+                            0
+                          ],
+                          [
+                            1000,
+                            300
+                          ],
+                          [
+                            0,
+                            300
+                          ]
+                        ],
+                        "holes": [],
+                        "edges": [
+                          {
+                            "key": [
+                              [
+                                "e0",
+                                0,
+                                1
+                              ]
+                            ],
+                            "start": [
+                              0,
+                              0
+                            ],
+                            "end": [
+                              1000,
+                              0
+                            ],
+                            "fixity": "FIXED"
+                          },
+                          {
+                            "key": [
+                              [
+                                "e1",
+                                0,
+                                1
+                              ]
+                            ],
+                            "start": [
+                              1000,
+                              0
+                            ],
+                            "end": [
+                              1000,
+                              300
+                            ],
+                            "fixity": "FIXED"
+                          },
+                          {
+                            "key": [
+                              [
+                                "e2",
+                                0,
+                                1
+                              ]
+                            ],
+                            "start": [
+                              1000,
+                              300
+                            ],
+                            "end": [
+                              0,
+                              300
+                            ],
+                            "fixity": "FIXED"
+                          },
+                          {
+                            "key": [
+                              [
+                                "e3",
+                                0,
+                                1
+                              ]
+                            ],
+                            "start": [
+                              0,
+                              300
+                            ],
+                            "end": [
+                              0,
+                              0
+                            ],
+                            "fixity": "FIXED"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          "sectionProfiles": {
+            "before": {
+              "profiles": [],
+              "members": [],
+              "runs": []
+            },
+            "after": {
+              "profiles": [],
+              "members": [],
+              "runs": []
+            },
+            "warnings": [],
+            "diagnosticsComplete": true,
+            "violations": [
+              {
+                "code": "SECTION_PROFILE_INVALID",
+                "clause": "I43-I49",
+                "message": "D4: derived placements cannot receive D28 face applications",
+                "expected": "valid atomic transaction",
+                "actual": "rejected input or upstream dependency"
+              }
+            ]
+          },
+          "violations": [
+            {
+              "code": "ENGINEERING_INVALID",
+              "clause": "I8/I35",
+              "message": "D4: derived placements cannot receive D28 face applications"
+            },
+            {
+              "timber": 0,
+              "clause": "I8",
+              "expected": "all world invariants pass",
+              "message": "candidate rejected"
+            }
+          ]
+        }
+      },
+      "confirm": {
+        "ok": false,
+        "code": "TOKEN",
+        "error": "Missing, invalid or unrelated engineering preview token"
+      },
+      "worldAndRevisionUnchanged": true
+    },
+    {
+      "name": "D38-live-host",
+      "request": {
+        "schema": "section-profile-transaction/1",
+        "expectedRevision": 17,
+        "operations": [
+          {
+            "op": "put-profile",
+            "value": {
+              "id": 1,
+              "name": "L 斷面",
+              "outline": [
+                [
+                  0,
+                  0
+                ],
+                [
+                  40,
+                  0
+                ],
+                [
+                  40,
+                  40
+                ],
+                [
+                  0,
+                  40
+                ]
+              ]
+            }
+          },
+          {
+            "op": "put-run",
+            "value": {
+              "id": 1,
+              "profileId": 1,
+              "length": {
+                "kind": "literal",
+                "value": 30
+              },
+              "placement": {
+                "kind": "simple",
+                "host": {
+                  "kind": "placement",
+                  "placementId": 10
+                },
+                "dir": "+v",
+                "p": 100,
+                "q": 100,
+                "up": "+Z"
+              }
+            }
+          }
+        ]
+      },
+      "reply": {
+        "ok": true,
+        "preview": {
+          "token": 6,
+          "valid": false,
+          "revision": 17,
+          "diagnosticsComplete": true,
+          "validationStrategy": "all-section-profile-violations",
+          "before": {
+            "capabilities": [
+              "engineering-spec/1",
+              "parameters/1",
+              "assembly-rule-authoring/1",
+              "assembly-timber-generation/1",
+              "grid-subdivision-rules/1",
+              "section-profile/1"
+            ],
+            "required_capabilities": [
+              "engineering-spec/1",
+              "parameters/1",
+              "panel-fill/1"
+            ],
+            "native_capabilities": [
+              "section-profile-native/1",
+              "panel-fill-native/1"
+            ],
+            "specs": [],
+            "materials": [
+              {
+                "id": "pf-board",
+                "kind": "panel",
+                "length": 1830,
+                "name": "板",
+                "thickness": "9",
+                "version": 1,
+                "width": 915,
+                "fingerprint": "d8b678c1736fcaa0b5418f447d18ec28b87d4a64511a6db480a5eb7a2e905aa7",
+                "archived": false
+              }
+            ],
+            "methods": [],
+            "applications": [],
+            "sources": [],
+            "parameters": [
+              {
+                "id": 90,
+                "name": "門檻",
+                "nextFieldId": 2,
+                "fields": [
+                  {
+                    "id": 1,
+                    "name": "X",
+                    "type": "dimension",
+                    "expression": {
+                      "den": "1",
+                      "num": "8",
+                      "op": "literal",
+                      "unit": "mm"
+                    },
+                    "value": {
+                      "num": "8",
+                      "den": "1",
+                      "unit": "mm"
+                    }
+                  }
+                ]
+              }
+            ],
+            "assembly": {
+              "capabilities": [
+                "assembly-rule-authoring/1",
+                "assembly-timber-generation/1"
+              ],
+              "rules": [],
+              "bindings": [],
+              "instances": []
+            },
+            "sectionProfiles": {
+              "profiles": [],
+              "members": [],
+              "runs": []
+            },
+            "geometry": {
+              "grids": [],
+              "gridSystems": [],
+              "datums": [],
+              "guides": [],
+              "timbers": []
+            },
+            "panelFill": {
+              "finishSurfaces": [
+                {
+                  "id": 1,
+                  "name": "天花完成面",
+                  "boundaryId": 8,
+                  "frame": {
+                    "origin": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "U": "+X",
+                    "V": "+Y",
+                    "N": "+Z"
+                  },
+                  "structureSide": 1,
+                  "obstacles": [],
+                  "derived": {
+                    "n": "+Z",
+                    "region": {
+                      "outline": [
+                        [
+                          0,
+                          0
+                        ],
+                        [
+                          1000,
+                          0
+                        ],
+                        [
+                          1000,
+                          300
+                        ],
+                        [
+                          0,
+                          300
+                        ]
+                      ],
+                      "holes": []
+                    },
+                    "obstacles": []
+                  }
+                }
+              ],
+              "panelFills": [
+                {
+                  "definition": {
+                    "finishSurfaceId": 1,
+                    "gap": 0,
+                    "id": 1,
+                    "lengthAlong": "v",
+                    "origin": [
+                      -815,
+                      -100
+                    ],
+                    "panel": {
+                      "id": "pf-board",
+                      "version": 1
+                    },
+                    "pattern": "straight",
+                    "threshold": {
+                      "fieldId": 1,
+                      "parameterId": 90
+                    }
+                  },
+                  "derived": {
+                    "tileCount": 2,
+                    "fragmentCount": 2,
+                    "wholeCount": 0,
+                    "cutCount": 2,
+                    "thickness": 9,
+                    "tiles": [
+                      {
+                        "key": [
+                          1,
+                          0,
+                          0
+                        ],
+                        "i": 0,
+                        "j": 0,
+                        "body": [
+                          -815,
+                          -100,
+                          100,
+                          1730
+                        ],
+                        "whole": false,
+                        "fragments": [
+                          {
+                            "key": [
+                              1,
+                              0,
+                              0,
+                              0
+                            ],
+                            "area": 30000,
+                            "outer": [
+                              [
+                                0,
+                                0
+                              ],
+                              [
+                                100,
+                                0
+                              ],
+                              [
+                                100,
+                                300
+                              ],
+                              [
+                                0,
+                                300
+                              ]
+                            ],
+                            "holes": []
+                          }
+                        ]
+                      },
+                      {
+                        "key": [
+                          1,
+                          1,
+                          0
+                        ],
+                        "i": 1,
+                        "j": 0,
+                        "body": [
+                          100,
+                          -100,
+                          1015,
+                          1730
+                        ],
+                        "whole": false,
+                        "fragments": [
+                          {
+                            "key": [
+                              1,
+                              1,
+                              0,
+                              0
+                            ],
+                            "area": 270000,
+                            "outer": [
+                              [
+                                100,
+                                0
+                              ],
+                              [
+                                1000,
+                                0
+                              ],
+                              [
+                                1000,
+                                300
+                              ],
+                              [
+                                100,
+                                300
+                              ]
+                            ],
+                            "holes": []
+                          }
+                        ]
+                      }
+                    ],
+                    "obstacles": [],
+                    "seamLines": [
+                      {
+                        "axis": "u",
+                        "k": 0,
+                        "coordinate": 100
+                      }
+                    ],
+                    "effectiveSeams": null,
+                    "support": null,
+                    "derivedPlacement": 10,
+                    "pending": [
+                      "PF-3 effective seams and support",
+                      "PF-5 remaining spatial flow"
+                    ]
+                  }
+                }
+              ],
+              "derivedPlacements": [
+                {
+                  "id": 10,
+                  "definition": {
+                    "fillId": 1,
+                    "h": 30,
+                    "id": 10
+                  },
+                  "derived": {
+                    "h": 30,
+                    "frame": {
+                      "origin": [
+                        0,
+                        0,
+                        9
+                      ],
+                      "U": "+X",
+                      "V": "+Y",
+                      "N": "+Z"
+                    },
+                    "components": [
+                      {
+                        "outline": [
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            1000,
+                            0
+                          ],
+                          [
+                            1000,
+                            300
+                          ],
+                          [
+                            0,
+                            300
+                          ]
+                        ],
+                        "holes": [],
+                        "edges": [
+                          {
+                            "key": [
+                              [
+                                "e0",
+                                0,
+                                1
+                              ]
+                            ],
+                            "start": [
+                              0,
+                              0
+                            ],
+                            "end": [
+                              1000,
+                              0
+                            ],
+                            "fixity": "FIXED"
+                          },
+                          {
+                            "key": [
+                              [
+                                "e1",
+                                0,
+                                1
+                              ]
+                            ],
+                            "start": [
+                              1000,
+                              0
+                            ],
+                            "end": [
+                              1000,
+                              300
+                            ],
+                            "fixity": "FIXED"
+                          },
+                          {
+                            "key": [
+                              [
+                                "e2",
+                                0,
+                                1
+                              ]
+                            ],
+                            "start": [
+                              1000,
+                              300
+                            ],
+                            "end": [
+                              0,
+                              300
+                            ],
+                            "fixity": "FIXED"
+                          },
+                          {
+                            "key": [
+                              [
+                                "e3",
+                                0,
+                                1
+                              ]
+                            ],
+                            "start": [
+                              0,
+                              300
+                            ],
+                            "end": [
+                              0,
+                              0
+                            ],
+                            "fixity": "FIXED"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          "after": {
+            "capabilities": [
+              "engineering-spec/1",
+              "parameters/1",
+              "assembly-rule-authoring/1",
+              "assembly-timber-generation/1",
+              "grid-subdivision-rules/1",
+              "section-profile/1"
+            ],
+            "required_capabilities": [
+              "engineering-spec/1",
+              "parameters/1",
+              "section-profile/1",
+              "panel-fill/1"
+            ],
+            "native_capabilities": [
+              "section-profile-native/1",
+              "panel-fill-native/1"
+            ],
+            "specs": [],
+            "materials": [
+              {
+                "id": "pf-board",
+                "kind": "panel",
+                "length": 1830,
+                "name": "板",
+                "thickness": "9",
+                "version": 1,
+                "width": 915,
+                "fingerprint": "d8b678c1736fcaa0b5418f447d18ec28b87d4a64511a6db480a5eb7a2e905aa7",
+                "archived": false
+              }
+            ],
+            "methods": [],
+            "applications": [],
+            "sources": [],
+            "parameters": [
+              {
+                "id": 90,
+                "name": "門檻",
+                "nextFieldId": 2,
+                "fields": [
+                  {
+                    "id": 1,
+                    "name": "X",
+                    "type": "dimension",
+                    "expression": {
+                      "den": "1",
+                      "num": "8",
+                      "op": "literal",
+                      "unit": "mm"
+                    },
+                    "value": {
+                      "num": "8",
+                      "den": "1",
+                      "unit": "mm"
+                    }
+                  }
+                ]
+              }
+            ],
+            "assembly": {
+              "capabilities": [
+                "assembly-rule-authoring/1",
+                "assembly-timber-generation/1"
+              ],
+              "rules": [],
+              "bindings": [],
+              "instances": []
+            },
+            "sectionProfiles": {
+              "profiles": [
+                {
+                  "value": {
+                    "id": 1,
+                    "name": "L 斷面",
+                    "outline": [
+                      [
+                        0,
+                        0
+                      ],
+                      [
+                        40,
+                        0
+                      ],
+                      [
+                        40,
+                        40
+                      ],
+                      [
+                        0,
+                        40
+                      ]
+                    ]
+                  }
+                }
+              ],
+              "members": [],
+              "runs": [
+                {
+                  "value": {
+                    "id": 1,
+                    "length": {
+                      "kind": "literal",
+                      "value": 30
+                    },
+                    "placement": {
+                      "dir": "+v",
+                      "host": {
+                        "kind": "placement",
+                        "placementId": 10
+                      },
+                      "kind": "simple",
+                      "p": 100,
+                      "q": 100,
+                      "up": "+Z"
+                    },
+                    "profileId": 1
+                  },
+                  "length": null,
+                  "coordinateSpace": "world",
+                  "frame": {
+                    "origin": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "U": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "V": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "N": [
+                      0,
+                      0,
+                      0
+                    ]
+                  },
+                  "members": []
+                }
+              ]
+            },
+            "geometry": {
+              "grids": [],
+              "gridSystems": [],
+              "datums": [],
+              "guides": [],
+              "timbers": []
+            },
+            "panelFill": {
+              "finishSurfaces": [
+                {
+                  "id": 1,
+                  "name": "天花完成面",
+                  "boundaryId": 8,
+                  "frame": {
+                    "origin": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "U": "+X",
+                    "V": "+Y",
+                    "N": "+Z"
+                  },
+                  "structureSide": 1,
+                  "obstacles": [],
+                  "derived": {
+                    "n": "+Z",
+                    "region": {
+                      "outline": [
+                        [
+                          0,
+                          0
+                        ],
+                        [
+                          1000,
+                          0
+                        ],
+                        [
+                          1000,
+                          300
+                        ],
+                        [
+                          0,
+                          300
+                        ]
+                      ],
+                      "holes": []
+                    },
+                    "obstacles": []
+                  }
+                }
+              ],
+              "panelFills": [
+                {
+                  "definition": {
+                    "finishSurfaceId": 1,
+                    "gap": 0,
+                    "id": 1,
+                    "lengthAlong": "v",
+                    "origin": [
+                      -815,
+                      -100
+                    ],
+                    "panel": {
+                      "id": "pf-board",
+                      "version": 1
+                    },
+                    "pattern": "straight",
+                    "threshold": {
+                      "fieldId": 1,
+                      "parameterId": 90
+                    }
+                  },
+                  "derived": {
+                    "tileCount": 2,
+                    "fragmentCount": 2,
+                    "wholeCount": 0,
+                    "cutCount": 2,
+                    "thickness": 9,
+                    "tiles": [
+                      {
+                        "key": [
+                          1,
+                          0,
+                          0
+                        ],
+                        "i": 0,
+                        "j": 0,
+                        "body": [
+                          -815,
+                          -100,
+                          100,
+                          1730
+                        ],
+                        "whole": false,
+                        "fragments": [
+                          {
+                            "key": [
+                              1,
+                              0,
+                              0,
+                              0
+                            ],
+                            "area": 30000,
+                            "outer": [
+                              [
+                                0,
+                                0
+                              ],
+                              [
+                                100,
+                                0
+                              ],
+                              [
+                                100,
+                                300
+                              ],
+                              [
+                                0,
+                                300
+                              ]
+                            ],
+                            "holes": []
+                          }
+                        ]
+                      },
+                      {
+                        "key": [
+                          1,
+                          1,
+                          0
+                        ],
+                        "i": 1,
+                        "j": 0,
+                        "body": [
+                          100,
+                          -100,
+                          1015,
+                          1730
+                        ],
+                        "whole": false,
+                        "fragments": [
+                          {
+                            "key": [
+                              1,
+                              1,
+                              0,
+                              0
+                            ],
+                            "area": 270000,
+                            "outer": [
+                              [
+                                100,
+                                0
+                              ],
+                              [
+                                1000,
+                                0
+                              ],
+                              [
+                                1000,
+                                300
+                              ],
+                              [
+                                100,
+                                300
+                              ]
+                            ],
+                            "holes": []
+                          }
+                        ]
+                      }
+                    ],
+                    "obstacles": [],
+                    "seamLines": [
+                      {
+                        "axis": "u",
+                        "k": 0,
+                        "coordinate": 100
+                      }
+                    ],
+                    "effectiveSeams": null,
+                    "support": null,
+                    "derivedPlacement": 10,
+                    "pending": [
+                      "PF-3 effective seams and support",
+                      "PF-5 remaining spatial flow"
+                    ]
+                  }
+                }
+              ],
+              "derivedPlacements": [
+                {
+                  "id": 10,
+                  "definition": {
+                    "fillId": 1,
+                    "h": 30,
+                    "id": 10
+                  },
+                  "derived": {
+                    "h": 30,
+                    "frame": {
+                      "origin": [
+                        0,
+                        0,
+                        9
+                      ],
+                      "U": "+X",
+                      "V": "+Y",
+                      "N": "+Z"
+                    },
+                    "components": [
+                      {
+                        "outline": [
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            1000,
+                            0
+                          ],
+                          [
+                            1000,
+                            300
+                          ],
+                          [
+                            0,
+                            300
+                          ]
+                        ],
+                        "holes": [],
+                        "edges": [
+                          {
+                            "key": [
+                              [
+                                "e0",
+                                0,
+                                1
+                              ]
+                            ],
+                            "start": [
+                              0,
+                              0
+                            ],
+                            "end": [
+                              1000,
+                              0
+                            ],
+                            "fixity": "FIXED"
+                          },
+                          {
+                            "key": [
+                              [
+                                "e1",
+                                0,
+                                1
+                              ]
+                            ],
+                            "start": [
+                              1000,
+                              0
+                            ],
+                            "end": [
+                              1000,
+                              300
+                            ],
+                            "fixity": "FIXED"
+                          },
+                          {
+                            "key": [
+                              [
+                                "e2",
+                                0,
+                                1
+                              ]
+                            ],
+                            "start": [
+                              1000,
+                              300
+                            ],
+                            "end": [
+                              0,
+                              300
+                            ],
+                            "fixity": "FIXED"
+                          },
+                          {
+                            "key": [
+                              [
+                                "e3",
+                                0,
+                                1
+                              ]
+                            ],
+                            "start": [
+                              0,
+                              300
+                            ],
+                            "end": [
+                              0,
+                              0
+                            ],
+                            "fixity": "FIXED"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          "sectionProfiles": {
+            "before": {
+              "profiles": [],
+              "members": [],
+              "runs": []
+            },
+            "after": {
+              "profiles": [
+                {
+                  "value": {
+                    "id": 1,
+                    "name": "L 斷面",
+                    "outline": [
+                      [
+                        0,
+                        0
+                      ],
+                      [
+                        40,
+                        0
+                      ],
+                      [
+                        40,
+                        40
+                      ],
+                      [
+                        0,
+                        40
+                      ]
+                    ]
+                  }
+                }
+              ],
+              "members": [],
+              "runs": [
+                {
+                  "value": {
+                    "id": 1,
+                    "length": {
+                      "kind": "literal",
+                      "value": 30
+                    },
+                    "placement": {
+                      "dir": "+v",
+                      "host": {
+                        "kind": "placement",
+                        "placementId": 10
+                      },
+                      "kind": "simple",
+                      "p": 100,
+                      "q": 100,
+                      "up": "+Z"
+                    },
+                    "profileId": 1
+                  },
+                  "length": null,
+                  "coordinateSpace": "world",
+                  "frame": {
+                    "origin": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "U": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "V": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "N": [
+                      0,
+                      0,
+                      0
+                    ]
+                  },
+                  "members": []
+                }
+              ]
+            },
+            "warnings": [],
+            "diagnosticsComplete": true,
+            "violations": [
+              {
+                "code": "RUN_PLACEMENT_INVALID",
+                "clause": "I48",
+                "runId": 1,
+                "profileId": 1,
+                "message": "I48: live host 10 is missing or invalid",
+                "expected": "valid referenced profile, positive integer length and legal placement",
+                "actual": "I48: live host 10 is missing or invalid"
+              }
+            ]
+          },
+          "violations": [
+            {
+              "code": "RUN_PLACEMENT_INVALID",
+              "clause": "I48",
+              "runId": 1,
+              "profileId": 1,
+              "message": "I48: live host 10 is missing or invalid",
+              "expected": "valid referenced profile, positive integer length and legal placement",
+              "actual": "I48: live host 10 is missing or invalid"
+            }
+          ]
+        }
+      },
+      "confirm": {
+        "ok": false,
+        "code": "TOKEN",
+        "error": "Missing, invalid or unrelated section-profile token"
+      },
+      "worldAndRevisionUnchanged": true
+    }
+  ]
+}

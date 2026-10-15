@@ -178,6 +178,7 @@ static bool eng_put_application(World *w,EngJson *j,int t)
         !eng_u32(j,eng_json_member(j,t,"placement_id"),&a.placement_id,false) || !world_find_placement(w,a.placement_id) || !eng_ref_parse(j,eng_json_member(j,t,"method"),&a.method,false) ||
         !eng_method(w,a.method.id,a.method.version) || !eng_axis(j,eng_json_member(j,t,"longAxis"),&a.long_axis) || !eng_axis(j,eng_json_member(j,t,"mainAlong"),&a.main_along)) return eng_fail("D28: application needs an existing placement and fixed method version");
     int overrides=eng_json_member(j,t,"overrides"); const char *names[]={"gap","boundary.A","boundary.B","primary.A","primary.B","secondary.A","secondary.B"};
+    if(world_find_placement(w,a.placement_id)->derived_fill_id)return eng_fail("D4: derived placements cannot receive D28 face applications");
     if (overrides>=0) {
         if (!eng_json_keys(j,overrides,"","gap,boundary.A,boundary.B,primary.A,primary.B,secondary.A,secondary.B")) return eng_fail("D28: unknown face override field");
         for (int i=0;i<7;++i) { int v=eng_json_member(j,overrides,names[i]); if (v<0) continue; a.overridden[i]=true; if (!eng_source_parse(j,v,&a.overrides[i],false)) return false; if(a.overrides[i].kind==ENG_PARAMETER)return eng_fail("D28: parameter fields bind object dimensions, not face application overrides"); }
@@ -350,6 +351,8 @@ static bool engineering_rebuild(World *w,char *error,size_t cap)
 {
     for (size_t i=0;i<w->engineering.application_count;++i) {
         const EngApplication *a=&w->engineering.applications[i];
+        const PlacementSurface *placement=world_find_placement(w,a->placement_id);
+        if(placement&&placement->derived_fill_id){eng_fail("D4: derived placements cannot receive D28 face applications");goto fail;}
         if (!world_find_placement(w,a->placement_id) || !eng_method(w,a->method.id,a->method.version)) { eng_fail("I35: application has a dangling placement/method reference"); goto fail; }
         for (int field=0;field<7;++field) if (a->overridden[field]) {
             EngTarget target={0}; Coord ignored; int role=-1;

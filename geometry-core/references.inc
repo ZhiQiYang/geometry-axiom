@@ -92,6 +92,7 @@ static int reference_timber_index(const World *w, uint32_t id)
 }
 
 static char g_rule_reference_error[256];
+static bool reference_face_parse(const char *,ReferenceFace *);
 static bool reference_quantity(ReferenceEval *ctx, const GuideLine *g, const char *text, Coord *out)
 {
     World *w=ctx->world;
@@ -169,12 +170,19 @@ static bool reference_quantity(ReferenceEval *ctx, const GuideLine *g, const cha
                      : (!strcmp(part[3],"lo")?f.min_v:f.max_v);
         return true;
     }
-    if (n==3 && (!strcmp(part[0],"edge") || !strcmp(part[0],"vertex"))) {
+    if (n==3 && (!strcmp(part[0],"edge") || !strcmp(part[0],"vertex") || !strcmp(part[0],"edge-key"))) {
         if (strcmp(part[2],axis==0?"u":"v")) return false;
         PolygonLoop2 rect;
         const PolygonLoop2 *loop;
         int hole=-1, index=-1;
-        if (!strcmp(part[0],"edge")) {
+        if(!strcmp(part[0],"edge-key")) {
+            char encoded[1040];ReferenceFace ref;
+            int len=snprintf(encoded,sizeof encoded,"key-hex:%s",part[1]);
+            if(len<0||(size_t)len>=sizeof encoded||!reference_face_parse(encoded,&ref)||!dp_edge_resolve(w,p,ref.key,&hole,&index))return false;
+            size_t component=hole<0?(size_t)index/POLY_MAX_VERTICES:(size_t)hole/POLY_MAX_HOLES;
+            b=&p->components[component];if(hole<0)index%=POLY_MAX_VERTICES;else hole%=POLY_MAX_HOLES;
+        } else if(p->derived_fill_id) return false;
+        else if (!strcmp(part[0],"edge")) {
             if (!parse_edge_ref(part[1],&hole,&index)) return false;
         } else {
             char *q=part[1]; uint32_t hi=0,vi=0;
@@ -190,7 +198,7 @@ static bool reference_quantity(ReferenceEval *ctx, const GuideLine *g, const cha
         else { if (hole >= (int)b->hole_count) return false; loop=hole<0?&b->outline:&b->holes[hole]; }
         if (index<0 || (size_t)index>=loop->count) return false;
         SurfacePoint2 a=loop->v[index], z=loop->v[(index+1)%loop->count];
-        if (!strcmp(part[0],"edge") && (axis==0 ? a.u!=z.u : a.v!=z.v)) return false;
+        if (strcmp(part[0],"vertex") && (axis==0 ? a.u!=z.u : a.v!=z.v)) return false;
         *out=axis==0?a.u:a.v; return true;
     }
     return false; /* A naked number is never a reference. */
@@ -210,6 +218,7 @@ static bool reference_eval_text(ReferenceEval *ctx, const GuideLine *g, const ch
         if (!*p || ++terms>64) return false;
         const char *end=p;
         while (*end) {
+            if(*end=='-'&&end-p>=4&&!strncmp(end-4,"edge-key:",9)){++end;continue;}
             if (*end=='+' || *end=='-') {
                 /* A sign immediately after ':' belongs to the grid index;
                  * the next sign still separates expression terms. */
@@ -316,12 +325,18 @@ static bool reference_eval_guide(ReferenceEval *ctx, size_t i)
 static bool reference_face_parse(const char *s, ReferenceFace *r)
 {
     memset(r,0,sizeof *r); r->hole=-1;
+    if(!strncmp(s,"key-hex:",8)) {
+        s+=8;size_t n=strlen(s);if(!n||n%2||n/2>=sizeof r->key)return false;
+        for(size_t i=0;i<n/2;++i){unsigned char byte=0;for(int k=0;k<2;++k){char c=s[2*i+k];int x=c>='0'&&c<='9'?c-'0':c>='a'&&c<='f'?c-'a'+10:c>='A'&&c<='F'?c-'A'+10:-1;if(x<0)return false;byte=(unsigned char)(byte*16+x);}if(!byte)return false;r->key[i]=(char)byte;}
+        r->kind=2;return true;
+    }
     if (s[0]=='t') { r->kind=1; return parse_u32(s+1,&r->timber); }
     return parse_edge_ref(s,&r->hole,&r->edge);
 }
 static void reference_face_format(FILE *out, const ReferenceFace *r)
 {
-    if (r->kind) fprintf(out,"t%u",r->timber);
+    if(r->kind==2){fputs("key-hex:",out);for(const unsigned char *c=(const unsigned char*)r->key;*c;++c)fprintf(out,"%02x",*c);}
+    else if (r->kind==1) fprintf(out,"t%u",r->timber);
     else if (r->hole>=0) fprintf(out,"h%de%d",r->hole,r->edge);
     else fprintf(out,"e%d",r->edge);
 }
@@ -331,6 +346,10 @@ static bool reference_place_geometry(World *w, size_t ti)
     Timber *t=&w->timbers[ti]; TimberAnchor *a=&w->anchors[ti];
     const PlacementSurface *p=world_find_placement(w,a->placement_id);
     if (!p) return reference_issue(t->id,"I13","existing placement","placement missing");
+    if(p->derived_fill_id&&(t->size_b!=p->derived_h||a->depth_side!=SURFACE_DEPTH_POSITIVE_NORMAL)){
+        char error[180];snprintf(error,sizeof error,"V_DERIVED_TIMBER: timber %u B=%lld host h=%lld requires B=h and +n",t->id,(long long)t->size_b,(long long)p->derived_h);
+        return reference_issue(t->id,"I53","B=h and +n",error);
+    }
     SpaceBoundarySurface effective;
     const SpaceBoundarySurface *b=placement_effective_boundary(p,world_placement_boundary(w,p),&effective);
     bool along=a->length_direction==SURFACE_DIRECTION_POS_V || a->length_direction==SURFACE_DIRECTION_NEG_V;
@@ -376,19 +395,26 @@ static bool reference_place_geometry(World *w, size_t ti)
             contacts[0][1]=contacts[1][1]=along?f.max_v:f.max_u; n=2;
         } else {
             PolygonLoop2 rect; const PolygonLoop2 *loop;
-            if (!b) { if (a->ref_hole>=0) return false; placement_outline(p,NULL,&rect); loop=&rect; }
+            int hole=a->ref_hole,edge=a->ref_edge;
+            if(p->derived_fill_id){
+                if(!a->ref_derived_key[0])return reference_issue(t->id,"R41/I13","one exact source/segment/total key","derived edge index aliases are forbidden; an exact key is required");
+                if(!dp_edge_resolve(w,p,a->ref_derived_key,&hole,&edge))return reference_issue(t->id,"R41/I13","one exact source/segment/total key",g_engineering_error);
+                size_t component=hole<0?(size_t)edge/POLY_MAX_VERTICES:(size_t)hole/POLY_MAX_HOLES;
+                b=&p->components[component];if(hole<0)edge%=POLY_MAX_VERTICES;else hole%=POLY_MAX_HOLES;
+            } else if(a->ref_derived_key[0])return reference_issue(t->id,"D4/R41","derived placement for edge key","key on ordinary placement");
+            if (!b) { if (hole>=0) return false; placement_outline(p,NULL,&rect); loop=&rect; }
             else {
-                if (a->ref_hole>=(int)b->hole_count) return reference_issue(t->id,"I13","existing hole edge","hole missing");
-                loop=a->ref_hole<0?&b->outline:&b->holes[a->ref_hole];
+                if (hole>=(int)b->hole_count) return reference_issue(t->id,"I13","existing hole edge","hole missing");
+                loop=hole<0?&b->outline:&b->holes[hole];
             }
             SurfaceSegment2 e; SurfacePoint2 normal;
-            if (a->ref_edge<0 || !loop_get_edge_segment(loop,(size_t)a->ref_edge,&e) ||
-                !loop_edge_outward_normal(loop,(size_t)a->ref_edge,&normal))
+            if (edge<0 || !loop_get_edge_segment(loop,(size_t)edge,&e) ||
+                !loop_edge_outward_normal(loop,(size_t)edge,&normal))
                 return reference_issue(t->id,"I13","existing edge","edge missing");
             if ((e.start.u==e.end.u)!=along)
                 return reference_issue(t->id,"I13","edge parallel to length","at-face 邊必須平行於長度軸");
             Coord c=along?e.start.u:e.start.v;
-            Coord inward=(along?normal.u:normal.v)*(a->ref_hole<0?-1:1);
+            Coord inward=(along?normal.u:normal.v)*(hole<0?-1:1);
             widths[0][0]=inward>0?c:c-t->size_a; widths[0][1]=widths[0][0]+t->size_a;
             contacts[0][0]=along?coord_min(e.start.v,e.end.v):coord_min(e.start.u,e.end.u);
             contacts[0][1]=along?coord_max(e.start.v,e.end.v):coord_max(e.start.u,e.end.u); n=1;
@@ -396,7 +422,12 @@ static bool reference_place_geometry(World *w, size_t ti)
     } else return reference_issue(t->id,"I12","at-line or at-face","obsolete anchor");
 
     StopFaceRef between[2];
-    for (int i=0;i<2;++i) between[i]=(StopFaceRef){a->between[i].kind,a->between[i].hole,a->between[i].edge,a->between[i].timber};
+    for (int i=0;i<2;++i) {
+        const ReferenceFace *r=&a->between[i];between[i]=(StopFaceRef){r->kind==1,r->hole,r->edge,r->timber};
+        if(!a->has_between)continue;
+        if(r->kind==2){if(!dp_edge_resolve(w,p,r->key,&between[i].hole,&between[i].edge))return reference_issue(t->id,"R41/D18","one exact source key","between derived key missing, stale or ambiguous");}
+        else if(p->derived_fill_id&&r->kind!=1)return reference_issue(t->id,"R41/D18","source key or timber","derived edge index aliases are forbidden");
+    }
     Timber best=*t; TimberAnchor best_a=*a; int found=0;
     size_t issues_before=g_reference_issue_count;
     char last[256]="R6: 沒有任何合法跨距", candidates[180]="";
@@ -414,6 +445,7 @@ static bool reference_place_geometry(World *w, size_t ti)
             snprintf(last,sizeof last,"I13：角材的完整足跡必須留在子格內"); continue;
         }
         Timber probe=*t; probe.length=end-start; probe.placed=false;
+        const SpaceBoundarySurface *selected=placement_boundary_for_rect(p,b,&rect);
         SurfacePoint2 uv=anchor_corner_from_rect(p,a->length_direction,a->depth_side,&rect);
         bool checks=true; char first_check[256]="";
         if (!surface_primary_axis_check(w,p->id,&probe,along,err,sizeof err)) {
@@ -421,12 +453,12 @@ static bool reference_place_geometry(World *w, size_t ti)
             checks=false; snprintf(last,sizeof last,"%s",err);
             if (n==1) reference_issue(t->id,"D17/I21","length axis consistent with same-face roles",err);
         }
-        if (!timber_end_face_check(w,p,b,&probe,along,start,end,widths[k][0],widths[k][1],err,sizeof err)) {
+        if (!timber_end_face_check(w,p,selected,&probe,along,start,end,widths[k][0],widths[k][1],err,sizeof err)) {
             if (checks) snprintf(first_check,sizeof first_check,"%s",err);
             checks=false; snprintf(last,sizeof last,"%s",err);
             if (n==1) reference_issue(t->id,"I19/I22","each stop has strictly higher cut priority, subject to boundary exceptions",err);
         }
-        if (!timber_boundary_role_check(p,b,&probe,along,start,end,widths[k][0],widths[k][1],err,sizeof err)) {
+        if (!timber_boundary_role_check(p,selected,&probe,along,start,end,widths[k][0],widths[k][1],err,sizeof err)) {
             if (checks) snprintf(first_check,sizeof first_check,"%s",err);
             checks=false; snprintf(last,sizeof last,"%s",err);
             if (n==1) reference_issue(t->id,"I20/R18","boundary covers its full fixed outline edge",err);
@@ -470,9 +502,9 @@ static bool reference_eval_timber(ReferenceEval *ctx, size_t i)
         }
         if (!exists) ok=false;
     }
-    uint32_t refs[3]={a->ref_timber,a->has_between&&a->between[0].kind?a->between[0].timber:0,
-        a->has_between&&a->between[1].kind?a->between[1].timber:0};
-    bool ref_used[3]={a->ref_is_timber,a->has_between&&a->between[0].kind,a->has_between&&a->between[1].kind};
+    uint32_t refs[3]={a->ref_timber,a->has_between&&a->between[0].kind==1?a->between[0].timber:0,
+        a->has_between&&a->between[1].kind==1?a->between[1].timber:0};
+    bool ref_used[3]={a->ref_is_timber,a->has_between&&a->between[0].kind==1,a->has_between&&a->between[1].kind==1};
     for (int k=0;k<3;++k) if (ref_used[k]) {
         int j=reference_timber_index(w,refs[k]);
         if (j<0 || w->anchors[j].order>=a->order || !reference_eval_timber(ctx,(size_t)j)) ok=false;
@@ -494,7 +526,7 @@ static bool reference_check_all(const World *w)
         if (!t->placed) continue;
         const PlacementSurface *p=world_find_placement(w,a->placement_id); SurfaceRegion2 f;
         if (!p || !timber_a0_footprint_uv(p,t,a,&f)) { ok=reference_issue(t->id,"I5","valid footprint on existing surface","missing footprint"); continue; }
-        const SpaceBoundarySurface *b=world_placement_boundary(w,p);
+        const SpaceBoundarySurface *b=placement_boundary_for_rect(p,world_placement_boundary(w,p),&f);
         bool along=a->length_direction==SURFACE_DIRECTION_POS_V || a->length_direction==SURFACE_DIRECTION_NEG_V;
         Coord lo=along?f.min_u:f.min_v,hi=along?f.max_u:f.max_v;
         Coord ends[2]={along?f.min_v:f.min_u,along?f.max_v:f.max_u};
@@ -632,7 +664,8 @@ static bool apply_reference_place(const char *p,int n,char **tokens,int count,Wo
         if (!reference_face_parse(tokens[i++],&r)) {
             scene_error(p,n,"I13: 邊參照必須是 e索引、h孔e邊或 t角材"); return false;
         }
-        a.anchor_kind=ANCHOR_AT_EDGE; a.ref_hole=r.hole; a.ref_edge=r.edge; a.ref_timber=r.timber; a.ref_is_timber=r.kind!=0;
+        a.anchor_kind=ANCHOR_AT_EDGE; a.ref_hole=r.hole; a.ref_edge=r.edge; a.ref_timber=r.timber; a.ref_is_timber=r.kind==1;
+        if(r.kind==2)snprintf(a.ref_derived_key,sizeof a.ref_derived_key,"%s",r.key);
     } else { scene_error(p,n,"I12: 只允許 at-line / at-face；at、at-guides、at-grid、at-edge 已廢除"); return false; }
     if (i<count && !strcmp(tokens[i],"through")) {
         if (i+1>=count || !parse_coord(tokens[i+1],&a.through)) return false;
@@ -719,7 +752,7 @@ static void reference_dump(const World *w,FILE *out)
             fprintf(out,"at-line rule %u %u %u %lld %lld %c %u",r->grid_id,r->system_id,r->rule_key,
                 (long long)r->cell[0],(long long)r->cell[1],r->axis?'v':'u',r->inner_index);
         }
-        else { ReferenceFace r={a->ref_is_timber?1:0,a->ref_hole,a->ref_edge,a->ref_timber}; fputs("at-face ",out); reference_face_format(out,&r); }
+        else { ReferenceFace r={a->ref_derived_key[0]?2:a->ref_is_timber?1:0,a->ref_hole,a->ref_edge,a->ref_timber,{0}};snprintf(r.key,sizeof r.key,"%s",a->ref_derived_key); fputs("at-face ",out); reference_face_format(out,&r); }
         if (a->has_through) fprintf(out," through %lld",(long long)a->through);
         if (a->has_between) { fputs(" between ",out); reference_face_format(out,&a->between[0]); fputc(' ',out); reference_face_format(out,&a->between[1]); }
         const char *dirs[]={"+u","-u","+v","-v"};
@@ -727,8 +760,12 @@ static void reference_dump(const World *w,FILE *out)
         const PlacementSurface *p=world_find_placement(w,a->placement_id); SurfaceRegion2 f; bool on=false,covers=false; int edge=-1;
         bool along=a->length_direction==SURFACE_DIRECTION_POS_V || a->length_direction==SURFACE_DIRECTION_NEG_V;
         SpaceBoundarySurface effective;
-        if (p && timber_a0_footprint_uv(p,t,a,&f)) timber_role_props(placement_effective_boundary(p,world_placement_boundary(w,p),&effective),along,along?f.min_v:f.min_u,along?f.max_v:f.max_u,along?f.min_u:f.min_v,along?f.max_u:f.max_v,&on,&covers,&edge);
-        fprintf(out,"# R18 角材 %u: onBoundary=%s coversEdge=%s boundaryEdge=%d\n",t->id,on?"true":"false",covers?"true":"false",edge);
+        const SpaceBoundarySurface *selected=NULL;
+        if (p && timber_a0_footprint_uv(p,t,a,&f)) {selected=placement_boundary_for_rect(p,placement_effective_boundary(p,world_placement_boundary(w,p),&effective),&f);timber_role_props(selected,along,along?f.min_v:f.min_u,along?f.max_v:f.max_u,along?f.min_u:f.min_v,along?f.max_u:f.max_v,&on,&covers,&edge);}
+        if(p&&p->derived_fill_id){char key[512];bool found=false;
+            for(size_t c=0;c<p->component_count;++c)if(selected==&p->components[c]&&edge>=0)found=dp_edge_key(w,p,c,-1,(size_t)edge,key,sizeof key);
+            fprintf(out,"# R18 角材 %u: onBoundary=%s coversEdge=%s boundaryEdge=%s\n",t->id,on?"true":"false",covers?"true":"false",found?key:"null");
+        }else fprintf(out,"# R18 角材 %u: onBoundary=%s coversEdge=%s boundaryEdge=%d\n",t->id,on?"true":"false",covers?"true":"false",edge);
         placed[at]=true;
     }
 }

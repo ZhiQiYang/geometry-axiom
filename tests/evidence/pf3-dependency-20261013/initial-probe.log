@@ -1,0 +1,7 @@
+  bridge：重建（來源指紋不符（exe 建於 2026-10-11T15:30:18+00:00，指紋 899baabf88… ≠ 現在 9d6dd4da53…）；變動：current_geometry.c, geometry-core/engineering_commands.inc, geometry-core/finish_surface_types.h, geometry-core/finish_surfaces.inc 等 13 個檔）…
+PF3_BASELINE: {"effectiveSeams": null, "support": null, "derivedPlacement": null, "pending": ["PF-3 effective seams and support", "PF-5 timber layer and derived placement"]}
+Traceback (most recent call last):
+  File "/tmp/pf3-dependency-probe.py", line 23, in <module>
+    assert derived['support'] is not None,'PF3_SUPPORT_MISSING: expected R43 support results, got null'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: PF3_SUPPORT_MISSING: expected R43 support results, got null

@@ -1,0 +1,14 @@
+test_D10_second_component_grid_subgrid_reopen_and_I23_rollback (tests.test_panel_fill_host.PanelFillHost.test_D10_second_component_grid_subgrid_reopen_and_I23_rollback) ... FAIL
+
+======================================================================
+FAIL: test_D10_second_component_grid_subgrid_reopen_and_I23_rollback (tests.test_panel_fill_host.PanelFillHost.test_D10_second_component_grid_subgrid_reopen_and_I23_rollback)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/geometry-wake41/controls-release-final/cell-component-removed/source/tests/test_panel_fill_host.py", line 251, in test_D10_second_component_grid_subgrid_reopen_and_I23_rollback
+    self.assertTrue(child["ok"],"PFH_COMPONENT_CELL: second component has positive area: "+str(child))
+AssertionError: False is not true : PFH_COMPONENT_CELL: second component has positive area: {'ok': False, 'error': 'line 2: I25：子格 2 的父格 1 所選矩形與有效面沒有正面積交集', 'deletedObjects': []}
+
+----------------------------------------------------------------------
+Ran 1 test in 0.169s
+
+FAILED (failures=1)

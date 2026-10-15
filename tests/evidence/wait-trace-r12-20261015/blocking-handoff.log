@@ -1,0 +1,13 @@
+F
+======================================================================
+FAIL: test_slow_sink_is_outside_acquire_timeout (__main__.WaitTraceTests.test_slow_sink_is_outside_acquire_timeout)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/geometry-wait-trace/tests/test_wait_trace.py", line 137, in test_slow_sink_is_outside_acquire_timeout
+    self.assertTrue(waiter_done.wait(.5), 'WAIT_TRACE_TIMEOUT_MUST_NOT_WAIT_FOR_SINK')
+AssertionError: False is not true : WAIT_TRACE_TIMEOUT_MUST_NOT_WAIT_FOR_SINK
+
+----------------------------------------------------------------------
+Ran 1 test in 0.530s
+
+FAILED (failures=1)

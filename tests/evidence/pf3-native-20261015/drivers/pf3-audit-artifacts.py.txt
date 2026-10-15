@@ -1,0 +1,31 @@
+import hashlib,json,tarfile
+from pathlib import Path
+R=Path('/workspace/geometry-axiom');F=Path('/tmp/pf3-official-20261015');M=Path('/tmp/pf3-mutations-final-20261015')
+d=json.loads((R/'tests/mutants_results.json').read_text());official=[]
+def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+for i in range(3):
+    group=json.loads((F/str(i)/'receipt.json').read_text())
+    for mid in group['ids']:
+        row=d[mid]
+        if row['verdict']=='retired':continue
+        e=row['execution'];p=F/str(i)/'cache'/mid/'_mut.exe';b=F/str(i)/'cache'/'_baseline'/'baseline.exe'
+        assert sha(p)==e['exe_sha256'],mid
+        assert sha(b)==e['baseline_exe_sha256'],mid
+        assert e['head']=='f22aa8ba58bd484e4a6d6c4a111a85f5f4248df9',mid
+        side=json.loads(p.with_name(p.name+'.fingerprint.json').read_text());assert side['exe_sha256']==sha(p)
+        official.append(dict(id=mid,verdict=row['verdict'],binarySha256=sha(p),baselineSha256=sha(b)))
+assert len(official)==47
+product=[]
+for p in sorted(M.glob('*/result.json')):
+    v=json.loads(p.read_text());base=p.parent/'binaries'
+    for name,h in v['artifacts'].items():assert sha(base/name)==h,(p,name)
+    product.append(dict(id=v['id'],verdict=v['verdict'],binaryAndSidecarHashesMatch=True))
+for path in (R/'tests/evidence/pf3-native-20261015').glob('*.tar.gz'):
+    manifest=json.loads(path.with_name(path.name+'.inventory.json').read_text())
+    with tarfile.open(path,'r:gz') as archive:
+        assert len(archive.getmembers())==len(manifest)
+        for row in manifest:
+            content=archive.extractfile(row['path']).read();assert len(content)==row['bytes'] and hashlib.sha256(content).hexdigest()==row['sha256'],row['path']
+result=dict(official=official,pf3=product,archivesVerified=True)
+Path('/tmp/pf3-artifact-audit.json').write_text(json.dumps(result,indent=2)+'\n')
+print(json.dumps(dict(officialExecuted=47,pf3Executions=len(product),archivesVerified=True)))

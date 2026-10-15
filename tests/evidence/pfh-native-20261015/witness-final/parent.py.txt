@@ -1,0 +1,12 @@
+import hashlib,json,os,resource,subprocess,time
+from pathlib import Path
+r=Path('/tmp/geometry-209-segments');out=Path('/tmp/geometry-wake41/witness-final');out.mkdir(exist_ok=True)
+resource.setrlimit(resource.RLIMIT_STACK,(16777216,resource.getrlimit(resource.RLIMIT_STACK)[1]))
+binary=Path('/tmp/geometry-wake41/components-positive-bin/bridge')
+head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=r,text=True).strip()
+argv=['python3','tests/pfh_witness.py','--out',str(out)]
+start=time.monotonic()
+with (out/'stdout').open('wb') as so,(out/'stderr').open('wb') as se:p=subprocess.run(argv,cwd=r,stdout=so,stderr=se,env={**os.environ,'GEOMETRY_TEST_BRIDGE':str(binary)})
+value=dict(head=head,headAfter=subprocess.check_output(['git','rev-parse','HEAD'],cwd=r,text=True).strip(),argv=argv,exit=p.returncode,seconds=time.monotonic()-start,stackBytes=16777216,binarySha256=hashlib.sha256(binary.read_bytes()).hexdigest(),sidecar=json.loads(binary.with_name('bridge.fingerprint.json').read_text()))
+(out/'parent.json').write_text(json.dumps(value,indent=2)+'\n');print(json.dumps({k:value[k] for k in ['head','exit','seconds','stackBytes']}))
+raise SystemExit(p.returncode)
