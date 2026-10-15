@@ -1,0 +1,18 @@
+import difflib,hashlib,importlib.util,json,os,subprocess,sys,time
+from pathlib import Path
+R=Path('/tmp/geometry-209-segments');W=Path('/tmp/geometry-wake42');os.chdir(R)
+def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+canonical=R/'geometry-guide/公理層-閱讀器.html';old=canonical.read_text()
+protected=['公理層.md','geometry-guide/公理層-白話.md','BACKLOG.md','決策佇列.md']
+before={p:sha(R/p) for p in protected};head=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+assert not subprocess.check_output(['git','status','--porcelain'],text=True).strip()
+spec=importlib.util.spec_from_file_location('pfh_reader',R/'geometry-guide/sync_axiom_reader.py');reader=importlib.util.module_from_spec(spec);sys.modules[spec.name]=reader;spec.loader.exec_module(reader)
+state=json.loads(reader.script_text(old,'axiom-review-data'));argv=['python3','geometry-guide/sync_axiom_reader.py'];start=time.monotonic()
+with (W/'regenerate.stdout').open('wb') as so,(W/'regenerate.stderr').open('wb') as se:p=subprocess.run(argv,stdout=so,stderr=se)
+new=canonical.read_text();patch=''.join(difflib.unified_diff(old.splitlines(keepends=True),new.splitlines(keepends=True),fromfile='a/geometry-guide/公理層-閱讀器.html',tofile='b/geometry-guide/公理層-閱讀器.html'))
+(W/'canonical-generated.diff').write_text(patch)
+after={p:sha(R/p) for p in protected};digest=hashlib.sha256(patch.encode()).hexdigest()
+value=dict(sourceHead=head,authorizationComment=6183800777,argv=argv,exit=p.returncode,seconds=time.monotonic()-start,patchSha256=digest,expectedPatchSha256='296192fc7f0410bf4836e8fc768b9d812a482222bdf67593c7f1f3b65b69f8e1',changedLines=sum(line[:1] in ['+','-'] and not line.startswith(('+++','---')) for line in patch.splitlines()),canonicalBeforeSha256=hashlib.sha256(old.encode()).hexdigest(),canonicalAfterSha256=sha(canonical),authoredStateExactlyEqual=state==json.loads(reader.script_text(new,'axiom-review-data')),protectedBefore=before,protectedAfter=after,protectedUnchanged=before==after)
+(W/'regeneration.json').write_text(json.dumps(value,ensure_ascii=False,indent=2)+'\n');print(json.dumps(value,ensure_ascii=False),flush=True)
+assert p.returncode==0 and value['authoredStateExactlyEqual'] and before==after
+assert value['changedLines']==14 and digest==value['expectedPatchSha256'],'P-126: stop on generated mismatch'

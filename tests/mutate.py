@@ -192,12 +192,12 @@ MUTANTS = [
     # ---- at-edge 材料側 ----
     dict(id="M29", desc="I13：外輪廓材料側反轉(footprint 長到面外)",
          file="geometry-core/references.inc",
-         old="Coord inward=(along?normal.u:normal.v)*(a->ref_hole<0?-1:1);",
-         new="Coord inward=(along?normal.u:normal.v)*(a->ref_hole<0?(along?1:-1):1);"),
+         old="Coord inward=(along?normal.u:normal.v)*(hole<0?-1:1);",
+         new="Coord inward=(along?normal.u:normal.v)*(hole<0?(along?1:-1):1);"),
     dict(id="M30", desc="I13：孔邊材料側反轉(footprint 長進孔裡)",
          file="geometry-core/references.inc",
-         old="Coord inward=(along?normal.u:normal.v)*(a->ref_hole<0?-1:1);",
-         new="Coord inward=(along?normal.u:normal.v)*(a->ref_hole<0?-1:(along?1:-1));"),
+         old="Coord inward=(along?normal.u:normal.v)*(hole<0?-1:1);",
+         new="Coord inward=(along?normal.u:normal.v)*(hole<0?-1:(along?1:-1));"),
     # ---- grid ----
     dict(id="M31", desc="I10：格線座標遞增改非嚴格(<= 改 <)",
          old="        if (i > 0 && coords[i] <= coords[i - 1]) {",

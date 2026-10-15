@@ -56,6 +56,8 @@ PY_NEEDS = {
     'test_section_profile_native': ['bridge', 'model-base'],
     'test_panel_fill_finish_surface': ['bridge'],
     'test_panel_fill_layout': ['bridge'],
+    'test_panel_fill_host': ['bridge'],
+    'test_panel_fill_support': ['bridge', 'pf3-algorithm'],
     'test_section_profile_modeling': ['bridge', 'model-base'],
     'test_section_profile_mutation_check': [],
     'test_assembly_generation': ['bridge'],

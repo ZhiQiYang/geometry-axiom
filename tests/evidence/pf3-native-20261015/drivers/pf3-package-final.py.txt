@@ -1,0 +1,39 @@
+import hashlib,json,shutil,subprocess
+from pathlib import Path
+R=Path('/workspace/geometry-axiom');O=Path('/tmp/pf3-native-final-v2-20261015');E=R/'tests/evidence/pf3-native-20261015'
+receipt=json.loads((O/'receipt.json').read_text())
+assert receipt['exit']==1 and receipt['trackedBeforeAfterEqual'] and receipt['headBefore']==receipt['headAfter'] and not receipt['statusAfter'],receipt
+assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=R,text=True).strip()==receipt['headBefore']
+shutil.copytree('/tmp/pf3-controls-v2-package',E,dirs_exist_ok=True)
+(E/'native').mkdir(exist_ok=True)
+for p in O.iterdir():
+    if p.is_file():shutil.copy2(p,E/'native'/p.name)
+for p in ['/tmp/pf3-artifact-audit.json','/tmp/pf3-native-parent-v2.log','/tmp/pf3-final-targeted-v2.log']:
+    shutil.copy2(p,E/Path(p).name)
+for p in ['/tmp/pf3-audit-artifacts.py','/tmp/pf3-package-final.py','/tmp/pf3-capture-pf05.py']:
+    shutil.copy2(p,E/'drivers'/(Path(p).name+'.txt'))
+shutil.copy2('/tmp/pf3-native-run.py',E/'drivers/pf3-native-run-v2.py.txt')
+protected=['公理層.md','geometry-guide/公理層-白話.md','geometry-guide/公理層-閱讀器.html','決策佇列.md','BACKLOG.md']
+base_expected=json.loads(subprocess.check_output(['git','show','origin/pr227:tests/run_all.expected.json'],cwd=R))
+current_expected=json.loads((R/'tests/run_all.expected.json').read_text());entry=current_expected['suites'].pop('py:test_panel_fill_support')
+assert entry==dict(mode='count',unit='test',count=20) and current_expected==base_expected
+proof={}
+for name in protected:
+    data=(R/name).read_bytes();baseline=subprocess.check_output(['git','show','origin/pr227:'+name],cwd=R)
+    assert data==baseline,name;proof[name]=hashlib.sha256(data).hexdigest()
+source=[]
+for name in subprocess.check_output(['git','ls-files'],cwd=R,text=True).splitlines():
+    if Path(name).suffix in ('.c','.h','.inc','.py','.js','.json') and not name.startswith('tests/evidence/') and not name.startswith('tests/release-evidence/'):
+        old=subprocess.check_output(['git','show','77ef94bedd3fe3c0a834ca0194067d82bff0ee2e:'+name],cwd=R)
+        data=(R/name).read_bytes()
+        if name=='tests/mutants_results.json':continue
+        assert old==data,name
+        source.append(name)
+delivery=dict(productHead='f22aa8ba58bd484e4a6d6c4a111a85f5f4248df9',finalTestHead='77ef94bedd3fe3c0a834ca0194067d82bff0ee2e',executionHead=receipt['headBefore'],productAndTestFilesIdenticalToExecutionCommit=source,protectedEqualToPFH=proof,
+              expectedExistingSuitesUnchanged=True,newSupportSuiteCount=20,
+              nativeAggregateExit=1,blockedByOutOfScopeFailure='test_scenario_verify.ScenarioNativeAcceptance.test_model_timeout_stops_its_base_child_before_it_can_finish_late',
+              historicalProbeFilesUnchanged=not subprocess.check_output(['git','diff','origin/pr226','--','tests/evidence/pf3-dependency-20261013'],cwd=R))
+(E/'delivery-audit.json').write_text(json.dumps(delivery,ensure_ascii=False,indent=2)+'\n')
+manifest={str(p.relative_to(E)):dict(bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest()) for p in sorted(E.rglob('*')) if p.is_file() and p.name!='manifest.json'}
+(E/'manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps(dict(executionHead=receipt['headBefore'],nativeExit=receipt['exit'],files=len(manifest),protectedUnchanged=True)))

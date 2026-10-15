@@ -1,5 +1,5 @@
 /* D6a/D6b/I13: persistent definitions; evaluated geometry is only a cache. */
-#define REF_EXPR_MAX 512
+#define REF_EXPR_MAX 1536
 #define SPEC_NAME_MAX 96
 #define WORLD_MAX_SPECS 64
 #define WORLD_MAX_DATUMS 64
@@ -7,4 +7,4 @@
 typedef struct { uint32_t id; int axis; char expression[REF_EXPR_MAX]; Coord position; } DatumPlane;
 typedef enum { GUIDE_LOCAL = 0, GUIDE_DATUM = 1 } GuideSource;
 typedef struct { char name[SPEC_NAME_MAX]; Coord value; } SpecValue;
-typedef struct { int kind, hole, edge; TimberId timber; } ReferenceFace;
+typedef struct { int kind, hole, edge; TimberId timber; char key[512]; } ReferenceFace;

@@ -1,0 +1,10 @@
+import hashlib,json,os,resource,subprocess,time
+from pathlib import Path
+R=Path('/tmp/geometry-209-segments');O=Path('/tmp/geometry-wake41/subgrid-restored');O.mkdir(exist_ok=True)
+B=Path('/tmp/geometry-wake41/controls-stack-release/restored/bin/bridge');assert B.exists()
+resource.setrlimit(resource.RLIMIT_STACK,(16777216,resource.getrlimit(resource.RLIMIT_STACK)[1]))
+argv=['python3','tests/test_subgrid_contract.py','SubgridContract.test_s09_retarget_divisions_and_referenced_index_contract'];start=time.monotonic()
+with (O/'stdout').open('wb') as so,(O/'stderr').open('wb') as se:p=subprocess.run(argv,cwd=R,env={**os.environ,'GEOMETRY_TEST_BRIDGE':str(B)},stdout=so,stderr=se)
+value=dict(head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=R,text=True).strip(),argv=argv,exit=p.returncode,seconds=time.monotonic()-start,stackBytes=16777216,binarySha256=hashlib.sha256(B.read_bytes()).hexdigest(),sidecar=json.loads(B.with_name('bridge.fingerprint.json').read_text()))
+(O/'parent.json').write_text(json.dumps(value,indent=2)+'\n');print(json.dumps({k:value[k] for k in ['head','exit','seconds']}))
+raise SystemExit(p.returncode)

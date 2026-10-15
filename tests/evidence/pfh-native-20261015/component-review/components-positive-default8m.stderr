@@ -1,0 +1,79 @@
+test_D10_grid_save_order_and_reopen (tests.test_panel_fill_host.PanelFillHost.test_D10_grid_save_order_and_reopen) ... FAIL
+test_D10_second_component_grid_subgrid_reopen_and_I23_rollback (tests.test_panel_fill_host.PanelFillHost.test_D10_second_component_grid_subgrid_reopen_and_I23_rollback) ... FAIL
+test_D19_component_gap_and_hole_are_not_cell_area (tests.test_panel_fill_host.PanelFillHost.test_D19_component_gap_and_hole_are_not_cell_area) ... FAIL
+test_D4_identity_and_index_alias_rejection (tests.test_panel_fill_host.PanelFillHost.test_D4_identity_and_index_alias_rejection) ... ok
+test_D4_material_B_and_parameter_h_sources_survive_reopen (tests.test_panel_fill_host.PanelFillHost.test_D4_material_B_and_parameter_h_sources_survive_reopen) ... ok
+test_D4_shared_id_normal_variant_cannot_be_replaced_or_aliased (tests.test_panel_fill_host.PanelFillHost.test_D4_shared_id_normal_variant_cannot_be_replaced_or_aliased) ... ok
+test_D4_typed_h_sources_and_immutable_fill (tests.test_panel_fill_host.PanelFillHost.test_D4_typed_h_sources_and_immutable_fill) ... ok
+test_D4_zero_id_uses_the_same_placement_identity_space (tests.test_panel_fill_host.PanelFillHost.test_D4_zero_id_uses_the_same_placement_identity_space) ... ok
+test_D6a_derived_edge_keys_and_between_are_persistent (tests.test_panel_fill_host.PanelFillHost.test_D6a_derived_edge_keys_and_between_are_persistent) ... ok
+test_D6a_derived_key_is_a_quantity_in_rational_expressions (tests.test_panel_fill_host.PanelFillHost.test_D6a_derived_key_is_a_quantity_in_rational_expressions) ... ok
+test_E1_legal_native_host_and_saved_identity (tests.test_panel_fill_host.PanelFillHost.test_E1_legal_native_host_and_saved_identity) ... ok
+test_I53_atomic_height_and_B_source_update (tests.test_panel_fill_host.PanelFillHost.test_I53_atomic_height_and_B_source_update) ... ok
+test_I53_negative_depth_and_empty_rebuild_reject_atomically (tests.test_panel_fill_host.PanelFillHost.test_I53_negative_depth_and_empty_rebuild_reject_atomically) ... ok
+test_I55_delete_and_corrupt_reopen_preserve_world (tests.test_panel_fill_host.PanelFillHost.test_I55_delete_and_corrupt_reopen_preserve_world) ... ok
+test_P116_E1_E2_E3_real_host_feeds_separate_R43_oracle (tests.test_panel_fill_host.PanelFillHost.test_P116_E1_E2_E3_real_host_feeds_separate_R43_oracle) ... ok
+test_R41_capacity_rejects_components_and_full_key_without_truncation (tests.test_panel_fill_host.PanelFillHost.test_R41_capacity_rejects_components_and_full_key_without_truncation) ... ok
+test_R41_empty_host_remains_empty (tests.test_panel_fill_host.PanelFillHost.test_R41_empty_host_remains_empty) ... ok
+test_R41_explicit_second_component_stays_on_existing_D7_solver (tests.test_panel_fill_host.PanelFillHost.test_R41_explicit_second_component_stays_on_existing_D7_solver) ... ok
+test_R41_fixity_preserves_source_breaks_and_merged_keys (tests.test_panel_fill_host.PanelFillHost.test_R41_fixity_preserves_source_breaks_and_merged_keys) ... ok
+test_R41_hole_touching_concave_vertex_rejects (tests.test_panel_fill_host.PanelFillHost.test_R41_hole_touching_concave_vertex_rejects) ... ok
+test_R41_layers_use_open_depth_intervals (tests.test_panel_fill_host.PanelFillHost.test_R41_layers_use_open_depth_intervals) ... ok
+test_R41_multiple_components_share_one_host_and_preserve_gap (tests.test_panel_fill_host.PanelFillHost.test_R41_multiple_components_share_one_host_and_preserve_gap) ... ok
+test_R41_overlapping_sources_retain_full_order (tests.test_panel_fill_host.PanelFillHost.test_R41_overlapping_sources_retain_full_order) ... ok
+test_R41_point_connected_material_is_two_components (tests.test_panel_fill_host.PanelFillHost.test_R41_point_connected_material_is_two_components) ... ok
+test_R41_scene_render_and_pick_cover_second_component_without_gap (tests.test_panel_fill_host.PanelFillHost.test_R41_scene_render_and_pick_cover_second_component_without_gap) ... ok
+test_R41_total_source_segments_are_identity_and_stale_key_rejects (tests.test_panel_fill_host.PanelFillHost.test_R41_total_source_segments_are_identity_and_stale_key_rejects) ... ok
+test_R41_touch_only_and_shared_obstacle_edges (tests.test_panel_fill_host.PanelFillHost.test_R41_touch_only_and_shared_obstacle_edges) ... ok
+test_R41_touching_holes_reject_without_changing_world (tests.test_panel_fill_host.PanelFillHost.test_R41_touching_holes_reject_without_changing_world) ... ok
+test_R41_vertical_frame_uses_normal_depth (tests.test_panel_fill_host.PanelFillHost.test_R41_vertical_frame_uses_normal_depth) ... ok
+test_derived_timber_depth_cannot_violate_I53 (tests.test_panel_fill_host.PanelFillHost.test_derived_timber_depth_cannot_violate_I53) ... ok
+test_host_creation_undo_redo (tests.test_panel_fill_host.PanelFillHost.test_host_creation_undo_redo) ... ok
+test_host_maps_structure_side_and_board_back (tests.test_panel_fill_host.PanelFillHost.test_host_maps_structure_side_and_board_back) ... ok
+
+======================================================================
+FAIL: test_D10_grid_save_order_and_reopen (tests.test_panel_fill_host.PanelFillHost.test_D10_grid_save_order_and_reopen)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/geometry-209-segments/tests/test_panel_fill_host.py", line 180, in test_D10_grid_save_order_and_reopen
+    self.assertTrue(self.command("line grid 1 on 10 u series 0 10 11")["ok"])
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/geometry-209-segments/tests/test_panel_fill_finish_surface.py", line 59, in command
+    return self.bridge.command(text)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/geometry-209-segments/tests/_bridge.py", line 137, in command
+    raise AssertionError('bridge closed: ' + self.stderr_text())
+AssertionError: bridge closed: 
+
+======================================================================
+FAIL: test_D10_second_component_grid_subgrid_reopen_and_I23_rollback (tests.test_panel_fill_host.PanelFillHost.test_D10_second_component_grid_subgrid_reopen_and_I23_rollback)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/geometry-209-segments/tests/test_panel_fill_host.py", line 248, in test_D10_second_component_grid_subgrid_reopen_and_I23_rollback
+    main=self.command("line grid 1 on 10 u 20 60 80 v 50")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/geometry-209-segments/tests/test_panel_fill_finish_surface.py", line 59, in command
+    return self.bridge.command(text)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/geometry-209-segments/tests/_bridge.py", line 137, in command
+    raise AssertionError('bridge closed: ' + self.stderr_text())
+AssertionError: bridge closed: 
+
+======================================================================
+FAIL: test_D19_component_gap_and_hole_are_not_cell_area (tests.test_panel_fill_host.PanelFillHost.test_D19_component_gap_and_hole_are_not_cell_area)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/geometry-209-segments/tests/test_panel_fill_host.py", line 275, in test_D19_component_gap_and_hole_are_not_cell_area
+    self.assertTrue(self.command("line grid 1 on 10 u 40 60 v 50")["ok"])
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/geometry-209-segments/tests/test_panel_fill_finish_surface.py", line 59, in command
+    return self.bridge.command(text)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/geometry-209-segments/tests/_bridge.py", line 137, in command
+    raise AssertionError('bridge closed: ' + self.stderr_text())
+AssertionError: bridge closed: 
+
+----------------------------------------------------------------------
+Ran 32 tests in 12.044s
+
+FAILED (failures=3)

@@ -1,0 +1,77 @@
+{
+  "scope": "General D7 role check only; NOT derived-host or R43 execution",
+  "source_head": "38c09dbdd9826c76c1cff916d0a88f8462de165b",
+  "binary_sha256": "dc8dd85a20c20e2da0cd3da038e43ed3e0ae0dfdae64d1e19763d2713ab52dc2",
+  "records": [
+    {
+      "role": "secondary",
+      "scene": "surface 1 origin 0 0 2409 u +x v +y outline 0,0 1000,0 1000,300 0,300\ntimber 1 27 30 role boundary\ntimber 2 27 30 role boundary\nplace 1 on 1 at-face e0 +u +n\nplace 2 on 1 at-face e2 +u +n\nspec center 105\nguide 1 1 v spec:center\ntimber 3 30 30 role secondary\nplace 3 on 1 at-line guide 1 between t1 t2 +v +n\n",
+      "reply": {
+        "ok": false,
+        "error": "line 9: V_PRIMARY_AXIS:角材 3（secondary）長度軸沿 v,與主支軸平行——boundary/secondary 必須垂直於主支軸",
+        "status": "INVALID",
+        "code": "SCENE_INVALID"
+      },
+      "dump": {
+        "ok": true,
+        "text": "",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1",
+          "panel-fill-native/1"
+        ],
+        "revision": 11,
+        "definition_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "role": "primary",
+      "scene": "surface 1 origin 0 0 2409 u +x v +y outline 0,0 1000,0 1000,300 0,300\ntimber 1 27 30 role boundary\ntimber 2 27 30 role boundary\nplace 1 on 1 at-face e0 +u +n\nplace 2 on 1 at-face e2 +u +n\nspec center 105\nguide 1 1 v spec:center\ntimber 3 30 30 role primary\nplace 3 on 1 at-line guide 1 between t1 t2 +v +n\n",
+      "reply": {
+        "ok": true,
+        "revision": 12,
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1",
+          "panel-fill-native/1"
+        ],
+        "definition_sha256": "460e3bee81c5813a3a0d3bbfe9ac173ff1c012ee5135d63fc38c925487534b98"
+      },
+      "dump": {
+        "ok": true,
+        "text": "boundary 1 outline 0,0 1000,0 1000,300 0,300\nplacement 1 on boundary 1 origin 0 0 2409 u +x v +y\nspec center 105\ntimber 1 27 30 role boundary\ntimber 2 27 30 role boundary\ntimber 3 30 30 role primary\nguide 1 1 v spec:center\nplace 1 on 1 at-face e0 +u +n\n# R18 角材 1: onBoundary=true coversEdge=true boundaryEdge=0\nplace 2 on 1 at-face e2 +u +n\n# R18 角材 2: onBoundary=true coversEdge=true boundaryEdge=2\nplace 3 on 1 at-line guide 1 between t1 t2 +v +n\n# R18 角材 3: onBoundary=false coversEdge=false boundaryEdge=-1\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1",
+          "panel-fill-native/1"
+        ],
+        "revision": 12,
+        "definition_sha256": "460e3bee81c5813a3a0d3bbfe9ac173ff1c012ee5135d63fc38c925487534b98"
+      }
+    }
+  ]
+}

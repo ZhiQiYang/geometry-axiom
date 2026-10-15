@@ -1,0 +1,535 @@
+{
+  "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+  "receipts": [
+    {
+      "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-u",
+        "tests/mutate.py",
+        "M01",
+        "M04",
+        "M07",
+        "M60",
+        "M11",
+        "M14",
+        "M17",
+        "M20",
+        "M23",
+        "M26",
+        "M29",
+        "M32",
+        "M51",
+        "M53",
+        "M33",
+        "M36",
+        "M39"
+      ],
+      "ids": [
+        "M01",
+        "M04",
+        "M07",
+        "M60",
+        "M11",
+        "M14",
+        "M17",
+        "M20",
+        "M23",
+        "M26",
+        "M29",
+        "M32",
+        "M51",
+        "M53",
+        "M33",
+        "M36",
+        "M39"
+      ],
+      "exit": 0,
+      "seconds": 413.06249059096444,
+      "stackBytes": 16777216,
+      "freshCache": "/tmp/geometry-wake41/official-stack-final/0/cache"
+    },
+    {
+      "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-u",
+        "tests/mutate.py",
+        "M02",
+        "M05",
+        "M08",
+        "M09",
+        "M12",
+        "M15",
+        "M18",
+        "M21",
+        "M24",
+        "M27",
+        "M30",
+        "M57",
+        "M52",
+        "M54",
+        "M34",
+        "M37",
+        "M40"
+      ],
+      "ids": [
+        "M02",
+        "M05",
+        "M08",
+        "M09",
+        "M12",
+        "M15",
+        "M18",
+        "M21",
+        "M24",
+        "M27",
+        "M30",
+        "M57",
+        "M52",
+        "M54",
+        "M34",
+        "M37",
+        "M40"
+      ],
+      "exit": 0,
+      "seconds": 401.50131982099265,
+      "stackBytes": 16777216,
+      "freshCache": "/tmp/geometry-wake41/official-stack-final/1/cache"
+    },
+    {
+      "head": "7ddd77ad577a286cf50a04ec99fcd5f55675eb28",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-u",
+        "tests/mutate.py",
+        "M03",
+        "M06",
+        "M59",
+        "M10",
+        "M13",
+        "M16",
+        "M19",
+        "M22",
+        "M25",
+        "M28",
+        "M31",
+        "M58",
+        "M56",
+        "M55",
+        "M35",
+        "M38"
+      ],
+      "ids": [
+        "M03",
+        "M06",
+        "M59",
+        "M10",
+        "M13",
+        "M16",
+        "M19",
+        "M22",
+        "M25",
+        "M28",
+        "M31",
+        "M58",
+        "M56",
+        "M55",
+        "M35",
+        "M38"
+      ],
+      "exit": 0,
+      "seconds": 371.7370957940002,
+      "stackBytes": 16777216,
+      "freshCache": "/tmp/geometry-wake41/official-stack-final/2/cache"
+    }
+  ],
+  "mergedRecords": 50,
+  "actualExecutedArtifactAudit": [
+    {
+      "id": "M01",
+      "original": "/tmp/geometry-wake41/official-stack-final/0/cache/M01/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M01/_mut.exe",
+      "exeSha256": "516e0f6addbbe63aea8d4096b6f9866d830f9411ee913649268053c66d09d47d",
+      "copySha256": "516e0f6addbbe63aea8d4096b6f9866d830f9411ee913649268053c66d09d47d",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M04",
+      "original": "/tmp/geometry-wake41/official-stack-final/0/cache/M04/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M04/_mut.exe",
+      "exeSha256": "dc126c22619884c7f4feb2b524aa42fbaff8d7edfc3f0c8f1c8d97ff8be99315",
+      "copySha256": "dc126c22619884c7f4feb2b524aa42fbaff8d7edfc3f0c8f1c8d97ff8be99315",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M07",
+      "original": "/tmp/geometry-wake41/official-stack-final/0/cache/M07/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M07/_mut.exe",
+      "exeSha256": "ee9535622dceaf3c044807a2f616e0c727944374e38c6b09a3f1543b673bf40a",
+      "copySha256": "ee9535622dceaf3c044807a2f616e0c727944374e38c6b09a3f1543b673bf40a",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M11",
+      "original": "/tmp/geometry-wake41/official-stack-final/0/cache/M11/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M11/_mut.exe",
+      "exeSha256": "1405c0a311a8f0313acc98c1530747f8efdce5dee6bede09ac234ec8083f3ac6",
+      "copySha256": "1405c0a311a8f0313acc98c1530747f8efdce5dee6bede09ac234ec8083f3ac6",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M14",
+      "original": "/tmp/geometry-wake41/official-stack-final/0/cache/M14/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M14/_mut.exe",
+      "exeSha256": "278d7a504cb636b127993ef3f18c88cce1479b81134433efb226e42a5bbdaab7",
+      "copySha256": "278d7a504cb636b127993ef3f18c88cce1479b81134433efb226e42a5bbdaab7",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M17",
+      "original": "/tmp/geometry-wake41/official-stack-final/0/cache/M17/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M17/_mut.exe",
+      "exeSha256": "4da1bfb93aa0eb5467960164aae90204a3659c9b801dabbb24cca197216d4d8a",
+      "copySha256": "4da1bfb93aa0eb5467960164aae90204a3659c9b801dabbb24cca197216d4d8a",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M20",
+      "original": "/tmp/geometry-wake41/official-stack-final/0/cache/M20/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M20/_mut.exe",
+      "exeSha256": "e0f8453352abf323fb507f5b41eb33d9dda2a8b7a5b1142724d94bb825c63fdc",
+      "copySha256": "e0f8453352abf323fb507f5b41eb33d9dda2a8b7a5b1142724d94bb825c63fdc",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M23",
+      "original": "/tmp/geometry-wake41/official-stack-final/0/cache/M23/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M23/_mut.exe",
+      "exeSha256": "27b92de1270665d58ea5feb85df0e4737d077bbbf7382bc8b4db3f1af698f498",
+      "copySha256": "27b92de1270665d58ea5feb85df0e4737d077bbbf7382bc8b4db3f1af698f498",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M26",
+      "original": "/tmp/geometry-wake41/official-stack-final/0/cache/M26/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M26/_mut.exe",
+      "exeSha256": "6fe15b00ba53b95501417d366eebf75c004eda283528cdad3b2d64da631bf330",
+      "copySha256": "6fe15b00ba53b95501417d366eebf75c004eda283528cdad3b2d64da631bf330",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M29",
+      "original": "/tmp/geometry-wake41/official-stack-final/0/cache/M29/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M29/_mut.exe",
+      "exeSha256": "98efda755f2bceb065a42a8184f58dccbd87dea394d648ef7b8343687e023558",
+      "copySha256": "98efda755f2bceb065a42a8184f58dccbd87dea394d648ef7b8343687e023558",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M32",
+      "original": "/tmp/geometry-wake41/official-stack-final/0/cache/M32/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M32/_mut.exe",
+      "exeSha256": "f6eb267fa81e094e4b46499bc51bdb4dcd853f0954142dd87a47bf714c14b759",
+      "copySha256": "f6eb267fa81e094e4b46499bc51bdb4dcd853f0954142dd87a47bf714c14b759",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M33",
+      "original": "/tmp/geometry-wake41/official-stack-final/0/cache/M33/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M33/_mut.exe",
+      "exeSha256": "bc123c137fe5bec2b3b569576c5e8eb5a60d77590447d4489fe0765dea57736b",
+      "copySha256": "bc123c137fe5bec2b3b569576c5e8eb5a60d77590447d4489fe0765dea57736b",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M36",
+      "original": "/tmp/geometry-wake41/official-stack-final/0/cache/M36/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M36/_mut.exe",
+      "exeSha256": "0909b953fa53b621afacb115ce16923ec41cd25bf8c048e12d90f0b2e27f3933",
+      "copySha256": "0909b953fa53b621afacb115ce16923ec41cd25bf8c048e12d90f0b2e27f3933",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M39",
+      "original": "/tmp/geometry-wake41/official-stack-final/0/cache/M39/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M39/_mut.exe",
+      "exeSha256": "2af8cd6f9c0c41cc2556d0e8cd4cc1ab7fc415e7d0fe37dbc232f795276bb6d2",
+      "copySha256": "2af8cd6f9c0c41cc2556d0e8cd4cc1ab7fc415e7d0fe37dbc232f795276bb6d2",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M53",
+      "original": "/tmp/geometry-wake41/official-stack-final/0/cache/M53/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M53/_mut.exe",
+      "exeSha256": "6a5545d973b7c869ec4e2090c3921fa3d7f7a1cd5bae7eded073d2d3553fe0e0",
+      "copySha256": "6a5545d973b7c869ec4e2090c3921fa3d7f7a1cd5bae7eded073d2d3553fe0e0",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M60",
+      "original": "/tmp/geometry-wake41/official-stack-final/0/cache/M60/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M60/_mut.exe",
+      "exeSha256": "946060668a5bb2c11a653548e3cdb54df8c2bceb52897276bd6aa3b3cf5ca829",
+      "copySha256": "946060668a5bb2c11a653548e3cdb54df8c2bceb52897276bd6aa3b3cf5ca829",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M02",
+      "original": "/tmp/geometry-wake41/official-stack-final/1/cache/M02/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M02/_mut.exe",
+      "exeSha256": "25cbc37df033cbfa80f345a06557cde2302bc39f0741c0b6b8e78f727282efe1",
+      "copySha256": "25cbc37df033cbfa80f345a06557cde2302bc39f0741c0b6b8e78f727282efe1",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M05",
+      "original": "/tmp/geometry-wake41/official-stack-final/1/cache/M05/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M05/_mut.exe",
+      "exeSha256": "5bb8426aaa2f9272a3b351145b977f130f56a4d2913829d152c1cd08779614dc",
+      "copySha256": "5bb8426aaa2f9272a3b351145b977f130f56a4d2913829d152c1cd08779614dc",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M08",
+      "original": "/tmp/geometry-wake41/official-stack-final/1/cache/M08/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M08/_mut.exe",
+      "exeSha256": "7b6cd15c718885856c9e466f8440696ba5d56cb9ebd79617b2b71fe9a3fa2129",
+      "copySha256": "7b6cd15c718885856c9e466f8440696ba5d56cb9ebd79617b2b71fe9a3fa2129",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M09",
+      "original": "/tmp/geometry-wake41/official-stack-final/1/cache/M09/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M09/_mut.exe",
+      "exeSha256": "137a18f078bccfa0b7424fb7538767367bc0495b745fd0dd389f50ca9bb94ea9",
+      "copySha256": "137a18f078bccfa0b7424fb7538767367bc0495b745fd0dd389f50ca9bb94ea9",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M12",
+      "original": "/tmp/geometry-wake41/official-stack-final/1/cache/M12/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M12/_mut.exe",
+      "exeSha256": "7bbcac4cb988dc6fefd3b1b32a6c23acb31e3d1af37ea600a9a2267bd238624e",
+      "copySha256": "7bbcac4cb988dc6fefd3b1b32a6c23acb31e3d1af37ea600a9a2267bd238624e",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M15",
+      "original": "/tmp/geometry-wake41/official-stack-final/1/cache/M15/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M15/_mut.exe",
+      "exeSha256": "1bcb07dc786e6e82c242e82868cc8d2f9e69aa04db95c859b20e8fdbc8a59e69",
+      "copySha256": "1bcb07dc786e6e82c242e82868cc8d2f9e69aa04db95c859b20e8fdbc8a59e69",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M18",
+      "original": "/tmp/geometry-wake41/official-stack-final/1/cache/M18/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M18/_mut.exe",
+      "exeSha256": "2afca953e5937624cad438e851c3a5f6b469584ed36c6b304472ad521ac8d17e",
+      "copySha256": "2afca953e5937624cad438e851c3a5f6b469584ed36c6b304472ad521ac8d17e",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M21",
+      "original": "/tmp/geometry-wake41/official-stack-final/1/cache/M21/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M21/_mut.exe",
+      "exeSha256": "b1700890bdc1fff7fd356c69e1689746b4fa50b2c0c53f919037b72bd7a1294d",
+      "copySha256": "b1700890bdc1fff7fd356c69e1689746b4fa50b2c0c53f919037b72bd7a1294d",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M24",
+      "original": "/tmp/geometry-wake41/official-stack-final/1/cache/M24/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M24/_mut.exe",
+      "exeSha256": "eeccb42b283e12e50cb7721a92cc2341d2638a8175405548a7a92263dd6b755b",
+      "copySha256": "eeccb42b283e12e50cb7721a92cc2341d2638a8175405548a7a92263dd6b755b",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M27",
+      "original": "/tmp/geometry-wake41/official-stack-final/1/cache/M27/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M27/_mut.exe",
+      "exeSha256": "a7df5f9e0ee8088e024a5cf49b0bf89f9bcea617fdf4d233f3234aecbbb10d2d",
+      "copySha256": "a7df5f9e0ee8088e024a5cf49b0bf89f9bcea617fdf4d233f3234aecbbb10d2d",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M30",
+      "original": "/tmp/geometry-wake41/official-stack-final/1/cache/M30/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M30/_mut.exe",
+      "exeSha256": "9601ab1cd1ea6c825fea8fd2ba0cfb07fb29c1241a97e79f96e2518e4ac4c03d",
+      "copySha256": "9601ab1cd1ea6c825fea8fd2ba0cfb07fb29c1241a97e79f96e2518e4ac4c03d",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M34",
+      "original": "/tmp/geometry-wake41/official-stack-final/1/cache/M34/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M34/_mut.exe",
+      "exeSha256": "5228aaf97069355221bde6b9e82498e59bc9d27145db8c429deec647fef3028b",
+      "copySha256": "5228aaf97069355221bde6b9e82498e59bc9d27145db8c429deec647fef3028b",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M37",
+      "original": "/tmp/geometry-wake41/official-stack-final/1/cache/M37/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M37/_mut.exe",
+      "exeSha256": "3da3440890ee78b682388067efb4561a7b2e81643083930cf406412f86c70b51",
+      "copySha256": "3da3440890ee78b682388067efb4561a7b2e81643083930cf406412f86c70b51",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M40",
+      "original": "/tmp/geometry-wake41/official-stack-final/1/cache/M40/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M40/_mut.exe",
+      "exeSha256": "30f210a5413cef5364c73f443dfa565b584eaf707068970965b2f4ca7dc3f6cb",
+      "copySha256": "30f210a5413cef5364c73f443dfa565b584eaf707068970965b2f4ca7dc3f6cb",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M52",
+      "original": "/tmp/geometry-wake41/official-stack-final/1/cache/M52/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M52/_mut.exe",
+      "exeSha256": "10b9186fa720b34cada0a1851e1ad46fe91483a377da374387e5e1ab89984584",
+      "copySha256": "10b9186fa720b34cada0a1851e1ad46fe91483a377da374387e5e1ab89984584",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M54",
+      "original": "/tmp/geometry-wake41/official-stack-final/1/cache/M54/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M54/_mut.exe",
+      "exeSha256": "90df65336bb9e50728ca64bfb6f59d6ac4a3c402554e1551bcdd4e2d091bd4a1",
+      "copySha256": "90df65336bb9e50728ca64bfb6f59d6ac4a3c402554e1551bcdd4e2d091bd4a1",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M57",
+      "original": "/tmp/geometry-wake41/official-stack-final/1/cache/M57/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M57/_mut.exe",
+      "exeSha256": "6399bf01b85d683811bf52e5ebce9e495a874e9d9d91cd2fd365c82b434fed5a",
+      "copySha256": "6399bf01b85d683811bf52e5ebce9e495a874e9d9d91cd2fd365c82b434fed5a",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M03",
+      "original": "/tmp/geometry-wake41/official-stack-final/2/cache/M03/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M03/_mut.exe",
+      "exeSha256": "4c87ad875e2b9a25ac58e0a72d3f817e70e13b0c61f34e5b889a03f5a1410599",
+      "copySha256": "4c87ad875e2b9a25ac58e0a72d3f817e70e13b0c61f34e5b889a03f5a1410599",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M06",
+      "original": "/tmp/geometry-wake41/official-stack-final/2/cache/M06/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M06/_mut.exe",
+      "exeSha256": "a3e9097d9526bc6bfd2f51b2e1965c0631872d5372c3cb88d9935ac431922351",
+      "copySha256": "a3e9097d9526bc6bfd2f51b2e1965c0631872d5372c3cb88d9935ac431922351",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M10",
+      "original": "/tmp/geometry-wake41/official-stack-final/2/cache/M10/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M10/_mut.exe",
+      "exeSha256": "5100cce64952ec0fe0a0d8b76bdafbd319b75b137fb2edac6b323f493f016f78",
+      "copySha256": "5100cce64952ec0fe0a0d8b76bdafbd319b75b137fb2edac6b323f493f016f78",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M13",
+      "original": "/tmp/geometry-wake41/official-stack-final/2/cache/M13/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M13/_mut.exe",
+      "exeSha256": "0cfb27fc9d8f9c8d0a59a634f9c7ecbb85b4f72f6a6d3b540b73eb4d10ef99ae",
+      "copySha256": "0cfb27fc9d8f9c8d0a59a634f9c7ecbb85b4f72f6a6d3b540b73eb4d10ef99ae",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M16",
+      "original": "/tmp/geometry-wake41/official-stack-final/2/cache/M16/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M16/_mut.exe",
+      "exeSha256": "2c49343c875dfbc40c6ced745b6d378ca52febdb18ac6ecf6ab0cc43e456a97b",
+      "copySha256": "2c49343c875dfbc40c6ced745b6d378ca52febdb18ac6ecf6ab0cc43e456a97b",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M19",
+      "original": "/tmp/geometry-wake41/official-stack-final/2/cache/M19/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M19/_mut.exe",
+      "exeSha256": "351fe8cc445a0733ec5c8e276e9f9f72e15b43aa60b1e7066fb599f1456b5ef7",
+      "copySha256": "351fe8cc445a0733ec5c8e276e9f9f72e15b43aa60b1e7066fb599f1456b5ef7",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M22",
+      "original": "/tmp/geometry-wake41/official-stack-final/2/cache/M22/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M22/_mut.exe",
+      "exeSha256": "953e4807c907ae918a51fe1535ca7e40e2e5b3bba005a9f4ac36b8df3f43110a",
+      "copySha256": "953e4807c907ae918a51fe1535ca7e40e2e5b3bba005a9f4ac36b8df3f43110a",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M25",
+      "original": "/tmp/geometry-wake41/official-stack-final/2/cache/M25/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M25/_mut.exe",
+      "exeSha256": "a4b1553cf2253e768cddcd23f3b503a2c8cd1553a77a0dbc7d070a80f72a29b4",
+      "copySha256": "a4b1553cf2253e768cddcd23f3b503a2c8cd1553a77a0dbc7d070a80f72a29b4",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M28",
+      "original": "/tmp/geometry-wake41/official-stack-final/2/cache/M28/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M28/_mut.exe",
+      "exeSha256": "3eadc330aeb9a47c3b4f66b26a90f0d7f7e51a029a1cdd74a5725faadf1e851c",
+      "copySha256": "3eadc330aeb9a47c3b4f66b26a90f0d7f7e51a029a1cdd74a5725faadf1e851c",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M31",
+      "original": "/tmp/geometry-wake41/official-stack-final/2/cache/M31/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M31/_mut.exe",
+      "exeSha256": "614bbf4d02cd01e37ff42036a2f179b96ecc1c19504b2a229c16cdd44a6f747e",
+      "copySha256": "614bbf4d02cd01e37ff42036a2f179b96ecc1c19504b2a229c16cdd44a6f747e",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M38",
+      "original": "/tmp/geometry-wake41/official-stack-final/2/cache/M38/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M38/_mut.exe",
+      "exeSha256": "d48c93c9ba952179d9851d9fccdacd40e1af281a1fdd7e7b93bdfb6c8ae8f2de",
+      "copySha256": "d48c93c9ba952179d9851d9fccdacd40e1af281a1fdd7e7b93bdfb6c8ae8f2de",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M56",
+      "original": "/tmp/geometry-wake41/official-stack-final/2/cache/M56/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M56/_mut.exe",
+      "exeSha256": "af5a07be0b62f80b79f010680d9f606f17c79820571ca3215ff8362dc01af34f",
+      "copySha256": "af5a07be0b62f80b79f010680d9f606f17c79820571ca3215ff8362dc01af34f",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M58",
+      "original": "/tmp/geometry-wake41/official-stack-final/2/cache/M58/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M58/_mut.exe",
+      "exeSha256": "5bad5eebf9c3dfb40d200820f59c5b5ece81f03ed6eb3ea1b4c51b08952a5e6a",
+      "copySha256": "5bad5eebf9c3dfb40d200820f59c5b5ece81f03ed6eb3ea1b4c51b08952a5e6a",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    },
+    {
+      "id": "M59",
+      "original": "/tmp/geometry-wake41/official-stack-final/2/cache/M59/_mut.exe",
+      "copied": "/tmp/geometry-wake41/official-stack-final/unified-cache/M59/_mut.exe",
+      "exeSha256": "09e920597fb1a919c3952801770933064d78d605351266c3e0301d7f0a34f234",
+      "copySha256": "09e920597fb1a919c3952801770933064d78d605351266c3e0301d7f0a34f234",
+      "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f"
+    }
+  ],
+  "unifiedCache": "/tmp/geometry-wake41/official-stack-final/unified-cache",
+  "baselineSha256": "3d81765f1f8e391a4ce9633bdc7baf2f581bc64ed36fe56827376f02da65a20f",
+  "checkArgv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "tests/mutate.py",
+    "--check",
+    "--killers"
+  ],
+  "checkExit": 0
+}
