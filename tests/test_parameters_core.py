@@ -309,19 +309,24 @@ class ParametersCore(unittest.TestCase):
         self.assertEqual(before, self.command("dump")["text"])
         self.assertEqual(revision, self.read()["revision"])
 
-    def test_dsl_only_consumers_cannot_acknowledge_parameter_rebuild(self):
+    def test_native_consumers_require_explicit_rebinding_after_parameter_rebuild(self):
         self.apply([card(0, "來源", [field(1, "915")])])
         baseline = self.command("dump")["text"]
         cases = [
-            ("guide 1 1 u param:0:1", "guide 1"),
-            ("datum 1 x param:0:1", "datum 1"),
-            ("grid-system 1 name-hex 47726964 main-along none u repeat 0 param:0:1 v none", "grid-system 1"),
-            ("grid 1 on 1 u repeat 0 param:0:1 v none", "grid 1"),
+            ("guide 1 1 u param:0:1", "guide 1", False),
+            ("datum 1 x param:0:1", "datum 1", False),
+            ("grid-system 1 name-hex 47726964 main-along none u repeat 0 param:0:1 v none", "grid-system 1", False),
+            ("grid 1 on 1 u panel 915 gap 2 from 0 v 700", "grid 1 u panel", True),
         ]
-        for line, owner in cases:
+        for line, owner, engineering in cases:
             with self.subTest(owner=owner):
                 self.assertTrue(self.load_scene(baseline)["ok"])
                 self.apply_line(line)
+                if engineering:
+                    # A direct finite grid uses the existing engineering source
+                    # op; REPEAT parameters belong to independent grid-systems.
+                    self.apply([{"op": "set-source", "target": {"kind": "grid", "id": 1, "axis": "u", "field": "panel"},
+                                 "source": {"kind": "parameter", "parameterId": 0, "fieldId": 1}}])
                 revision = self.read()["revision"]
                 self.rejected([{"op": "delete-parameter", "id": 0},
                                card(0, "重建來源", [field(1, "920")])], owner)

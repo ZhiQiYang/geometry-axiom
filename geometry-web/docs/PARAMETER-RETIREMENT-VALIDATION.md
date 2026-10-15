@@ -4,7 +4,9 @@
 
 候選新增欄位刪除事件與各引用者的明確宣告順序，出口清空整個候選暫存；工程來源及覆寫分別處理，格式轉換不冒充改綁。P-062／P-065 的明確解除保留已結束來源的最後有效值；同鍵重佔不得刷新成無關新值。沒有新增 K3 記號、能力或保存格式。
 
-[P-129](https://github.com/ZhiQiYang/geometry-axiom/pull/193#issuecomment-6184120678) 已裁決：刪後相同內容的明確宣告算 I38 改綁，僅涵蓋該操作實際宣告的部分；四類沒有 engineering op 的 DSL 引用者不能靠重建來源放行。本候選新增三個原生回歸方法：四類 DSL 引用拒絕、grid 單軸宣告不處理另一軸，以及預覽只揭露最後刪除後仍存在的明確宣告。既有 assembly／section-profile 正例也核對預覽列出的引用者。
+[P-129](https://github.com/ZhiQiYang/geometry-axiom/pull/193#issuecomment-6184120678) 已裁決：刪後相同內容的明確宣告算 I38 改綁，僅涵蓋該操作實際宣告的部分；沒有 engineering op 的 DSL 引用者不能靠重建來源放行。本候選新增三個原生回歸方法：guide／datum／grid-system 的 DSL 引用與 direct grid 的既有工程來源在未改綁時拒絕重建、grid 單軸宣告不處理另一軸，以及預覽只揭露最後刪除後仍存在的明確宣告。既有 assembly／section-profile 正例也核對預覽列出的引用者。
+
+首次 R2 原生執行在來源 `a45f6be28c898137842fc83441be3b5055f62d33` 完成四支編譯與 core35：34過、1失敗。失敗是新增 direct-grid 夾具誤用只適用 grid-system 的 `repeat` 語法，建立夾具即被「座標不是有效整數」拒絕，尚未進入該 subcase 的刪除保護；不是該保護的行為反證。R2 原 exit1／日誌／binary 留存，不採為188全過。夾具改為合法有限 PANEL grid，再用既有 set-source 建立參數引用；其餘產品與測試斷言不放寬，修後仍須完整重跑定向證明。
 
 `redeclaredReferences` 隨 engineering／assembly／section-profile／panel-fill 的整包預覽回傳來源欄位、引用者及說明；原生序列化使用離開候選前的操作順序副本，正式 World 先清空暫存，再做完整重驗。序列化後即釋放順序副本，不進入 World、history、交換格式或確認令牌。刪後重宣告說明併入各工作區既有影響清單。Python 與 JavaScript 目前僅通過語法檢查；原生編譯、定向測試及新真突變仍待實際執行。
 
