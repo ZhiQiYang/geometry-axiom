@@ -30,6 +30,7 @@ RESTORED = [
         "test_deleted_value_capture_does_not_follow_an_unacknowledged_rebuild",
     ]],
     "tests.test_assembly_parameter_refs.AssemblyParameterRefs.test_missing_zero_reference_rejected_without_world_mutation",
+    "tests.test_parameters_deleted_unbind.DeletedSourceUnbind.test_delete_then_unbind_has_identical_dump_to_legal_order",
     "tests.test_section_profile_native.SectionProfileNative.test_delete_parameter_names_section_profile_member_and_run_referrers",
     *[PREFIX + name for name in [
         "test_native_consumers_require_explicit_rebinding_after_parameter_rebuild",

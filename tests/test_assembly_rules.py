@@ -433,7 +433,8 @@ class AssemblyRules(unittest.TestCase):
             self.assertEqual(before,fresh.command("assembly-read")["state"])
 
     def test_complete_candidate_refuses_unhandled_parameter_reference_naming_the_binding(self):
-        # GEO-258 / I38:被組構配置槽位引用的參數卡,刪除那一步就拒絕並指名槽位;同一交易內先改成直接值再刪就通過。
+        # GEO-258 / I38 / P-060:完整候選仍留有槽位引用時拒絕並指名槽位；
+        # 同一候選明確解除引用並刪卡後整包驗證，不在刪除那一步提前拒絕。
         self.publish()
         param = {"id": 1, "name": "截面", "fields": [{"id": 1, "name": "A", "type": "dimension", "input": "40"}]}
         b = binding()

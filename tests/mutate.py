@@ -326,6 +326,11 @@ MUTANTS += [
          old="    if(parameter_field_index(w,ref.parameter_id,ref.field_id)>=0)return false;",
          new="    /* mutation: let an old retirement override the currently present source */",
          tests=["tests.test_parameters_core.ParametersCore.test_delete_rebuild_then_unbind_reads_current_99_instead_of_deleted_cache"]),
+    dict(id="M70", desc="P142/P150：來源只刪未重建時停用最後有效27快取", binary="bridge",
+         file="geometry-core/parameters.inc",
+         old="    if(parameter_field_index(w,ref.parameter_id,ref.field_id)>=0)return false;",
+         new="    /* mutation: never consume an ended-generation value */ return false;",
+         tests=["tests.test_parameters_deleted_unbind.DeletedSourceUnbind.test_delete_then_unbind_has_identical_dump_to_legal_order"]),
 ]
 
 

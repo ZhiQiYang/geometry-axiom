@@ -510,8 +510,10 @@ class ParametersCore(unittest.TestCase):
         before = self.command("dump")["text"]
         delete = {"op": "delete-parameter", "id": 1}
         unbind = {"op": "unbind-source", "target": target}
-        # A present but invalid replacement must not fall back to the deleted cache.
-        self.rejected([delete, card(1, "壞新來源", [field(1, "=@9:1")]), unbind], "parameter 9 field 1")
+        # P-150: the final graph is resolvable, but @9:1 is absent at unbind.
+        # M69 would wrongly accept using cached 27 before card 9 is declared.
+        self.rejected([delete, card(1, "壞新來源", [field(1, "=@9:1")]), unbind,
+                       card(9, "稍後才存在的上游", [field(1, "99")])], "parameter 9 field 1")
         self.apply([delete, card(1, "新來源", [field(1, "99")]), unbind])
         self.assertIn("timber 10 99 33", self.command("dump")["text"])
         self.assertEqual([], self.read()["state"]["sources"])
