@@ -1,0 +1,428 @@
+[
+  {
+    "mode": "whole-node",
+    "case": "case-only near-limit project rejects full manifest growth before HTTP, history or dirty changes",
+    "steps": {
+      "Cases.validate": {
+        "count": 29,
+        "total_ms": 545.2056909999983,
+        "maximum_ms": 58.71504300000015
+      },
+      "Cases.verifyHashes": {
+        "count": 1,
+        "total_ms": 24.72428899999977,
+        "maximum_ms": 24.72428899999977
+      },
+      "Features.record": {
+        "count": 2,
+        "total_ms": 93.65378300000157,
+        "maximum_ms": 65.28832300000067
+      },
+      "P.assertManifestCapacity": {
+        "count": 3,
+        "total_ms": 999.3877139999995,
+        "maximum_ms": 396.14070300000003
+      },
+      "P.sha": {
+        "count": 3,
+        "total_ms": 1.0447450000001481,
+        "maximum_ms": 0.6314480000000913
+      },
+      "execFileSync (catalog Python)": {
+        "count": 1,
+        "total_ms": 60.01726400000007,
+        "maximum_ms": 60.01726400000007
+      },
+      "test callback": {
+        "count": 1,
+        "total_ms": 1872.3850570000004,
+        "maximum_ms": 1872.3850570000004
+      },
+      "workspace.manifest": {
+        "count": 1,
+        "total_ms": 454.57345799999985,
+        "maximum_ms": 454.57345799999985
+      },
+      "workspace.prepareFeatureAttachment": {
+        "count": 1,
+        "total_ms": 913.9769779999988,
+        "maximum_ms": 913.9769779999988
+      }
+    },
+    "caution": "Nested step totals overlap; Python CPU is excluded from Node cpuUsage."
+  },
+  {
+    "mode": "whole-node",
+    "case": "formal cases cancellation or native operation after detached response produces zero writes",
+    "steps": {
+      "Cases.validate": {
+        "count": 123,
+        "total_ms": 1004.106119000001,
+        "maximum_ms": 47.58362599999964
+      },
+      "Cases.verifyHashes": {
+        "count": 3,
+        "total_ms": 20.296778000000813,
+        "maximum_ms": 9.243264000000636
+      },
+      "Features.record": {
+        "count": 6,
+        "total_ms": 127.09706200000073,
+        "maximum_ms": 36.65552000000025
+      },
+      "P.assertManifestCapacity": {
+        "count": 3,
+        "total_ms": 313.525576,
+        "maximum_ms": 158.3634689999999
+      },
+      "P.sha": {
+        "count": 3,
+        "total_ms": 8.024720000000343,
+        "maximum_ms": 7.63000700000066
+      },
+      "execFileSync (catalog Python)": {
+        "count": 3,
+        "total_ms": 253.1655499999997,
+        "maximum_ms": 104.84836600000017
+      },
+      "test callback": {
+        "count": 1,
+        "total_ms": 1609.3390769999996,
+        "maximum_ms": 1609.3390769999996
+      },
+      "workspace.prepareFeatureAttachment": {
+        "count": 3,
+        "total_ms": 1335.7457249999998,
+        "maximum_ms": 571.963925
+      }
+    },
+    "caution": "Nested step totals overlap; Python CPU is excluded from Node cpuUsage."
+  },
+  {
+    "mode": "whole-node",
+    "case": "formal cases detached prepare commits one common metadata history and true Undo/Redo",
+    "steps": {
+      "Cases.validate": {
+        "count": 117,
+        "total_ms": 997.4594669999983,
+        "maximum_ms": 53.09405700000025
+      },
+      "Cases.verifyHashes": {
+        "count": 1,
+        "total_ms": 33.8570850000001,
+        "maximum_ms": 33.8570850000001
+      },
+      "Features.record": {
+        "count": 4,
+        "total_ms": 77.8410829999998,
+        "maximum_ms": 30.589296000000104
+      },
+      "P.assertManifestCapacity": {
+        "count": 3,
+        "total_ms": 492.8751489999995,
+        "maximum_ms": 235.3599019999997
+      },
+      "P.sha": {
+        "count": 1,
+        "total_ms": 0.8346550000001116,
+        "maximum_ms": 0.8346550000001116
+      },
+      "execFileSync (catalog Python)": {
+        "count": 1,
+        "total_ms": 108.03695500000003,
+        "maximum_ms": 108.03695500000003
+      },
+      "test callback": {
+        "count": 1,
+        "total_ms": 1400.0067240000003,
+        "maximum_ms": 1400.0067240000003
+      },
+      "workspace.commitPreparedFeatureAttachment": {
+        "count": 2,
+        "total_ms": 824.3770069999991,
+        "maximum_ms": 824.3156339999996
+      },
+      "workspace.prepareFeatureAttachment": {
+        "count": 1,
+        "total_ms": 460.4687389999999,
+        "maximum_ms": 460.4687389999999
+      },
+      "workspace.tryLocalHistory": {
+        "count": 2,
+        "total_ms": 0.9228639999992083,
+        "maximum_ms": 0.46543299999939336
+      }
+    },
+    "caution": "Nested step totals overlap; Python CPU is excluded from Node cpuUsage."
+  },
+  {
+    "mode": "whole-node",
+    "case": "formal cases no-op has zero history; equal data after Undo/Redo cannot revive an old prepared lease",
+    "steps": {
+      "Cases.validate": {
+        "count": 237,
+        "total_ms": 950.1093619999847,
+        "maximum_ms": 10.674843999999212
+      },
+      "Cases.verifyHashes": {
+        "count": 3,
+        "total_ms": 25.237119999999777,
+        "maximum_ms": 17.4825179999998
+      },
+      "Features.record": {
+        "count": 9,
+        "total_ms": 71.85396200000014,
+        "maximum_ms": 10.93256399999973
+      },
+      "P.assertManifestCapacity": {
+        "count": 6,
+        "total_ms": 393.92141399999946,
+        "maximum_ms": 88.2920809999996
+      },
+      "P.sha": {
+        "count": 1,
+        "total_ms": 0.9432379999998375,
+        "maximum_ms": 0.9432379999998375
+      },
+      "execFileSync (catalog Python)": {
+        "count": 1,
+        "total_ms": 95.64844600000015,
+        "maximum_ms": 95.64844600000015
+      },
+      "test callback": {
+        "count": 1,
+        "total_ms": 1380.1562829999993,
+        "maximum_ms": 1380.1562829999993
+      },
+      "workspace.commitPreparedFeatureAttachment": {
+        "count": 3,
+        "total_ms": 661.1372919999994,
+        "maximum_ms": 429.22074900000007
+      },
+      "workspace.prepareFeatureAttachment": {
+        "count": 3,
+        "total_ms": 617.8820270000006,
+        "maximum_ms": 232.9082159999998
+      },
+      "workspace.tryLocalHistory": {
+        "count": 2,
+        "total_ms": 0.7777080000005299,
+        "maximum_ms": 0.4117450000003373
+      }
+    },
+    "caution": "Nested step totals overlap; Python CPU is excluded from Node cpuUsage."
+  },
+  {
+    "mode": "isolated",
+    "case": "case-only near-limit project rejects full manifest growth before HTTP, history or dirty changes",
+    "steps": {
+      "Cases.validate": {
+        "count": 29,
+        "total_ms": 412.24275699999544,
+        "maximum_ms": 25.34340499999962
+      },
+      "Cases.verifyHashes": {
+        "count": 1,
+        "total_ms": 22.754555999999866,
+        "maximum_ms": 22.754555999999866
+      },
+      "Features.record": {
+        "count": 2,
+        "total_ms": 76.92810099999951,
+        "maximum_ms": 47.92138799999975
+      },
+      "P.assertManifestCapacity": {
+        "count": 3,
+        "total_ms": 916.8665480000009,
+        "maximum_ms": 390.72568200000023
+      },
+      "P.sha": {
+        "count": 3,
+        "total_ms": 1.2662149999996473,
+        "maximum_ms": 0.9766630000003715
+      },
+      "execFileSync (catalog Python)": {
+        "count": 1,
+        "total_ms": 69.58731699999953,
+        "maximum_ms": 69.58731699999953
+      },
+      "test callback": {
+        "count": 1,
+        "total_ms": 1603.262017,
+        "maximum_ms": 1603.262017
+      },
+      "workspace.manifest": {
+        "count": 1,
+        "total_ms": 458.17266199999995,
+        "maximum_ms": 458.17266199999995
+      },
+      "workspace.prepareFeatureAttachment": {
+        "count": 1,
+        "total_ms": 678.7556979999999,
+        "maximum_ms": 678.7556979999999
+      }
+    },
+    "caution": "Nested step totals overlap; Python CPU is excluded from Node cpuUsage."
+  },
+  {
+    "mode": "isolated",
+    "case": "formal cases cancellation or native operation after detached response produces zero writes",
+    "steps": {
+      "Cases.validate": {
+        "count": 123,
+        "total_ms": 452.53252599999996,
+        "maximum_ms": 12.458234000000175
+      },
+      "Cases.verifyHashes": {
+        "count": 3,
+        "total_ms": 14.779336000000058,
+        "maximum_ms": 7.118191000000024
+      },
+      "Features.record": {
+        "count": 6,
+        "total_ms": 53.67053100000021,
+        "maximum_ms": 12.349826000000121
+      },
+      "P.assertManifestCapacity": {
+        "count": 3,
+        "total_ms": 194.08048499999995,
+        "maximum_ms": 88.48768300000029
+      },
+      "P.sha": {
+        "count": 3,
+        "total_ms": 2.9430359999996654,
+        "maximum_ms": 1.4981069999998908
+      },
+      "execFileSync (catalog Python)": {
+        "count": 3,
+        "total_ms": 210.48487000000023,
+        "maximum_ms": 74.4492110000001
+      },
+      "test callback": {
+        "count": 1,
+        "total_ms": 834.8056490000004,
+        "maximum_ms": 834.8056490000004
+      },
+      "workspace.prepareFeatureAttachment": {
+        "count": 3,
+        "total_ms": 607.0135990000003,
+        "maximum_ms": 233.16054500000018
+      }
+    },
+    "caution": "Nested step totals overlap; Python CPU is excluded from Node cpuUsage."
+  },
+  {
+    "mode": "isolated",
+    "case": "formal cases detached prepare commits one common metadata history and true Undo/Redo",
+    "steps": {
+      "Cases.validate": {
+        "count": 117,
+        "total_ms": 433.7814989999995,
+        "maximum_ms": 12.524862999999868
+      },
+      "Cases.verifyHashes": {
+        "count": 1,
+        "total_ms": 7.874119999999948,
+        "maximum_ms": 7.874119999999948
+      },
+      "Features.record": {
+        "count": 4,
+        "total_ms": 50.06707200000005,
+        "maximum_ms": 17.663827000000083
+      },
+      "P.assertManifestCapacity": {
+        "count": 3,
+        "total_ms": 163.1154250000004,
+        "maximum_ms": 60.20379600000024
+      },
+      "P.sha": {
+        "count": 1,
+        "total_ms": 1.790674000000081,
+        "maximum_ms": 1.790674000000081
+      },
+      "execFileSync (catalog Python)": {
+        "count": 1,
+        "total_ms": 78.27640900000006,
+        "maximum_ms": 78.27640900000006
+      },
+      "test callback": {
+        "count": 1,
+        "total_ms": 647.7924009999999,
+        "maximum_ms": 647.7924009999999
+      },
+      "workspace.commitPreparedFeatureAttachment": {
+        "count": 2,
+        "total_ms": 338.29083299999957,
+        "maximum_ms": 338.2347249999998
+      },
+      "workspace.prepareFeatureAttachment": {
+        "count": 1,
+        "total_ms": 223.55957200000012,
+        "maximum_ms": 223.55957200000012
+      },
+      "workspace.tryLocalHistory": {
+        "count": 2,
+        "total_ms": 1.2212349999999788,
+        "maximum_ms": 0.8368000000000393
+      }
+    },
+    "caution": "Nested step totals overlap; Python CPU is excluded from Node cpuUsage."
+  },
+  {
+    "mode": "isolated",
+    "case": "formal cases no-op has zero history; equal data after Undo/Redo cannot revive an old prepared lease",
+    "steps": {
+      "Cases.validate": {
+        "count": 237,
+        "total_ms": 820.9787819999956,
+        "maximum_ms": 13.746893999999884
+      },
+      "Cases.verifyHashes": {
+        "count": 3,
+        "total_ms": 12.362181999999848,
+        "maximum_ms": 4.745184999999765
+      },
+      "Features.record": {
+        "count": 9,
+        "total_ms": 77.61526300000014,
+        "maximum_ms": 13.031898999999612
+      },
+      "P.assertManifestCapacity": {
+        "count": 6,
+        "total_ms": 312.39976600000045,
+        "maximum_ms": 61.54931399999987
+      },
+      "P.sha": {
+        "count": 1,
+        "total_ms": 1.395614999999907,
+        "maximum_ms": 1.395614999999907
+      },
+      "execFileSync (catalog Python)": {
+        "count": 1,
+        "total_ms": 114.43205200000011,
+        "maximum_ms": 114.43205200000011
+      },
+      "test callback": {
+        "count": 1,
+        "total_ms": 1198.5120629999997,
+        "maximum_ms": 1198.5120629999997
+      },
+      "workspace.commitPreparedFeatureAttachment": {
+        "count": 3,
+        "total_ms": 523.6623609999992,
+        "maximum_ms": 349.9128679999999
+      },
+      "workspace.prepareFeatureAttachment": {
+        "count": 3,
+        "total_ms": 554.226361,
+        "maximum_ms": 199.07530999999972
+      },
+      "workspace.tryLocalHistory": {
+        "count": 2,
+        "total_ms": 0.6861249999992651,
+        "maximum_ms": 0.4514689999996335
+      }
+    },
+    "caution": "Nested step totals overlap; Python CPU is excluded from Node cpuUsage."
+  }
+]

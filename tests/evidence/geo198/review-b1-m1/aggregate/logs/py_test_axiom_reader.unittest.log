@@ -1,0 +1,47 @@
+..F......F........F....F.F...............
+======================================================================
+FAIL: test_color_contract_allows_unrelated_properties_and_untracked_selectors (test_axiom_reader.CanonicalReader.test_color_contract_allows_unrelated_properties_and_untracked_selectors)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_axiom_reader.py", line 355, in test_color_contract_allows_unrelated_properties_and_untracked_selectors
+    self.assertEqual(reader.rebuild(changed, self.axiom, self.plain), changed)
+AssertionError: '<!do[1144372 chars]ode>_ax_i5_notch_cell_corners_on_ring.scene</c[2838809 chars]tml>' != '<!do[1144372 chars]ode>_edge_grid_panel_shrink.scene</code></div>[2837754 chars]tml>'
+
+======================================================================
+FAIL: test_current_layout_change_does_not_relock_historical_migration_tests (test_axiom_reader.CanonicalReader.test_current_layout_change_does_not_relock_historical_migration_tests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_axiom_reader.py", line 268, in test_current_layout_change_does_not_relock_historical_migration_tests
+    self.test_retired_color_migrations_allow_format_and_unrelated_layout_changes()
+  File "/workspace/geometry-axiom/tests/test_axiom_reader.py", line 258, in test_retired_color_migrations_allow_format_and_unrelated_layout_changes
+    self.assertEqual(formatted, rebuilt)
+AssertionError: '<!do[1145106 chars]ode>_edge_grid_panel_shrink.scene</code></div>[2837430 chars]tml>' != '<!do[1145106 chars]ode>_ax_i5_notch_cell_corners_on_ring.scene</c[2838485 chars]tml>'
+
+======================================================================
+FAIL: test_legacy_image_handler_retires_without_changing_live_svg_handler (test_axiom_reader.CanonicalReader.test_legacy_image_handler_retires_without_changing_live_svg_handler)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_axiom_reader.py", line 521, in test_legacy_image_handler_retires_without_changing_live_svg_handler
+    self.assertEqual(updated, self.html)
+AssertionError: '<!do[1144372 chars]ode>_ax_i5_notch_cell_corners_on_ring.scene</c[2838485 chars]tml>' != '<!do[1144372 chars]ode>_edge_grid_panel_shrink.scene</code></div>[2837430 chars]tml>'
+
+======================================================================
+FAIL: test_rebuild_is_byte_idempotent_and_keeps_reviews (test_axiom_reader.CanonicalReader.test_rebuild_is_byte_idempotent_and_keeps_reviews)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_axiom_reader.py", line 58, in test_rebuild_is_byte_idempotent_and_keeps_reviews
+    self.assertEqual(self.html, regenerated)
+AssertionError: '<!do[1144372 chars]ode>_edge_grid_panel_shrink.scene</code></div>[2837430 chars]tml>' != '<!do[1144372 chars]ode>_ax_i5_notch_cell_corners_on_ring.scene</c[2838485 chars]tml>'
+
+======================================================================
+FAIL: test_retired_color_migrations_allow_format_and_unrelated_layout_changes (test_axiom_reader.CanonicalReader.test_retired_color_migrations_allow_format_and_unrelated_layout_changes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_axiom_reader.py", line 258, in test_retired_color_migrations_allow_format_and_unrelated_layout_changes
+    self.assertEqual(formatted, rebuilt)
+AssertionError: '<!do[1145106 chars]ode>_edge_grid_panel_shrink.scene</code></div>[2837430 chars]tml>' != '<!do[1145106 chars]ode>_ax_i5_notch_cell_corners_on_ring.scene</c[2838485 chars]tml>'
+
+----------------------------------------------------------------------
+Ran 41 tests in 118.858s
+
+FAILED (failures=5)

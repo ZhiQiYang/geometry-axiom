@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "tests/run_all.py",
+    "--build",
+    "--update-expected"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "returncode": 1,
+  "seconds": 608.6344569360008,
+  "stack_soft_limit_bytes": 16777216,
+  "log_sha256": "779ec2ac532b80b879b87b2e0d9a931b96d03d4f0299f42b7320883af39da5f8",
+  "sample_count": 602,
+  "receipt": "Direct Popen.poll returncode, not inferred from counts"
+}

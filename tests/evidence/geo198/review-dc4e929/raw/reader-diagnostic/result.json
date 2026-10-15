@@ -1,0 +1,47 @@
+{
+  "head": "dc4e929580228dcfbfe1e46a03192d5e6e1d71d3",
+  "base": "635dd86ee368579aec444fb3ba16e48bccf4877e",
+  "scope": "in-memory rebuild diagnostic, canonical file unchanged; no second reader artifact",
+  "canonical_sha256": "b0c45777c7ee868d312714aa65cbc284a4b6f4fdd7228ef6c6d244602bd56ff1",
+  "current_rebuild_sha256": "bf2b8cee72ff2e55a44534d62537c572b56b61bbbe0138271e1a802582b95b87",
+  "parent_rebuild_sha256": "8a45a33e1456700947e087591ff9287a2cf6a23bae9fc81170f2aab8e0a38077",
+  "canonical_chars": 3960981,
+  "parent_rebuild_chars": 3961283,
+  "current_rebuild_chars": 3961521,
+  "current_minus_parent_chars": 238,
+  "current_rebuild_idempotent": true,
+  "review_identity_preserved": {
+    "documentId": true,
+    "baseDocumentHash": true,
+    "comments": true,
+    "proposals": true,
+    "revisions": true,
+    "draft": true
+  },
+  "validate_rebuilt_in_memory": {
+    "clauses": 140,
+    "blocks": 638,
+    "comments": 5,
+    "witness": 31,
+    "examples": 63,
+    "textRevision": 23,
+    "five_asserts": "pass",
+    "independent_ssot": "pass",
+    "patches": 84,
+    "counts_single_source": "pass",
+    "geo120": "pass",
+    "search": "pass",
+    "color_tokens": "pass",
+    "documentHash": "e0207b266e375b4576c4a7cb407041c153a0d7d6b356863bd3ff84ca4df9a062"
+  },
+  "changed_trace_section_indices": [
+    106,
+    114
+  ],
+  "changed_trace_clauses": [
+    "R7",
+    "R15"
+  ],
+  "non_trace_content_equal_parent": true,
+  "canonical_bytes_unchanged": true
+}

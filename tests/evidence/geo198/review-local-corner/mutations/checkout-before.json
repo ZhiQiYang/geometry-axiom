@@ -1,0 +1,186 @@
+{
+  "head": "adfb5d87eb174cc19ffd15be7bbfdbf1ad607aa6",
+  "tree": "ba11f0271bcf1499ab2a26732440fb6d00ac2aef",
+  "checkout": "/workspace/geometry-axiom",
+  "tracked_diff": [],
+  "status": [],
+  "sources": {
+    "current_geometry.c": {
+      "raw_sha256": "a21854a90dc127af4768f183c309db9709f13aad410fa736d0f3e7eed4aa2fcf",
+      "git_blob_sha256": "a21854a90dc127af4768f183c309db9709f13aad410fa736d0f3e7eed4aa2fcf",
+      "lf_normalized_sha256": "c249929f54953bf5df4983e49a304545299e66285a31f5f8feee88316ee47b27",
+      "git_lf_normalized_sha256": "c249929f54953bf5df4983e49a304545299e66285a31f5f8feee88316ee47b27",
+      "normalized_equal": true,
+      "crlf": 13192,
+      "bare_lf": 0
+    },
+    "geometry-core/grid_systems.inc": {
+      "raw_sha256": "89f68dedb27c06c6e6e733bc75875367cf7392e3876f9121e51a0201864d8a64",
+      "git_blob_sha256": "89f68dedb27c06c6e6e733bc75875367cf7392e3876f9121e51a0201864d8a64",
+      "lf_normalized_sha256": "89f68dedb27c06c6e6e733bc75875367cf7392e3876f9121e51a0201864d8a64",
+      "git_lf_normalized_sha256": "89f68dedb27c06c6e6e733bc75875367cf7392e3876f9121e51a0201864d8a64",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 381
+    },
+    "geometry-core/grid_bindings.inc": {
+      "raw_sha256": "ff9b1359e8471f171d2925de721a8a466ca8ea8b230ee3627bead1c2fb631e1d",
+      "git_blob_sha256": "ff9b1359e8471f171d2925de721a8a466ca8ea8b230ee3627bead1c2fb631e1d",
+      "lf_normalized_sha256": "ff9b1359e8471f171d2925de721a8a466ca8ea8b230ee3627bead1c2fb631e1d",
+      "git_lf_normalized_sha256": "ff9b1359e8471f171d2925de721a8a466ca8ea8b230ee3627bead1c2fb631e1d",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 329
+    },
+    "geometry-core/subgrid_commands.inc": {
+      "raw_sha256": "c01b4a006b182a25510d7ff49aa41727ada0adb39e93ee307611c10b0ad893a5",
+      "git_blob_sha256": "c01b4a006b182a25510d7ff49aa41727ada0adb39e93ee307611c10b0ad893a5",
+      "lf_normalized_sha256": "c01b4a006b182a25510d7ff49aa41727ada0adb39e93ee307611c10b0ad893a5",
+      "git_lf_normalized_sha256": "c01b4a006b182a25510d7ff49aa41727ada0adb39e93ee307611c10b0ad893a5",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 96
+    },
+    "tests/test_grid_system_contract.py": {
+      "raw_sha256": "c1a64192dddfe9048c62569352bd3a42898a4c3748a21763a42afde4d0287942",
+      "git_blob_sha256": "c1a64192dddfe9048c62569352bd3a42898a4c3748a21763a42afde4d0287942",
+      "lf_normalized_sha256": "c1a64192dddfe9048c62569352bd3a42898a4c3748a21763a42afde4d0287942",
+      "git_lf_normalized_sha256": "c1a64192dddfe9048c62569352bd3a42898a4c3748a21763a42afde4d0287942",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 402
+    },
+    "tests/test_infinite_grid_contract.py": {
+      "raw_sha256": "5fc18cb92e16a22b6de8d68f786fd1d9dbce93570fcbda48158a3fb35f3b29ce",
+      "git_blob_sha256": "5fc18cb92e16a22b6de8d68f786fd1d9dbce93570fcbda48158a3fb35f3b29ce",
+      "lf_normalized_sha256": "5fc18cb92e16a22b6de8d68f786fd1d9dbce93570fcbda48158a3fb35f3b29ce",
+      "git_lf_normalized_sha256": "5fc18cb92e16a22b6de8d68f786fd1d9dbce93570fcbda48158a3fb35f3b29ce",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 668
+    },
+    "tests/test_subgrid_contract.py": {
+      "raw_sha256": "671062f926b8f797161dd66d0b6ae471cd7e8008e87a56ad7843ca61a33d8968",
+      "git_blob_sha256": "671062f926b8f797161dd66d0b6ae471cd7e8008e87a56ad7843ca61a33d8968",
+      "lf_normalized_sha256": "671062f926b8f797161dd66d0b6ae471cd7e8008e87a56ad7843ca61a33d8968",
+      "git_lf_normalized_sha256": "671062f926b8f797161dd66d0b6ae471cd7e8008e87a56ad7843ca61a33d8968",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 671
+    },
+    "tests/run_all.py": {
+      "raw_sha256": "7d9d3347e01bc666bb6417ea46e03a5cce14a1ab1f52937e7afe185b565d7ff2",
+      "git_blob_sha256": "7d9d3347e01bc666bb6417ea46e03a5cce14a1ab1f52937e7afe185b565d7ff2",
+      "lf_normalized_sha256": "7d9d3347e01bc666bb6417ea46e03a5cce14a1ab1f52937e7afe185b565d7ff2",
+      "git_lf_normalized_sha256": "7d9d3347e01bc666bb6417ea46e03a5cce14a1ab1f52937e7afe185b565d7ff2",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 1008
+    },
+    "公理層.md": {
+      "raw_sha256": "29ad0c657e53d364347862fddac23ba26a248a4fd8f83487d86f9e648bd1eaf2",
+      "git_blob_sha256": "29ad0c657e53d364347862fddac23ba26a248a4fd8f83487d86f9e648bd1eaf2",
+      "lf_normalized_sha256": "29ad0c657e53d364347862fddac23ba26a248a4fd8f83487d86f9e648bd1eaf2",
+      "git_lf_normalized_sha256": "29ad0c657e53d364347862fddac23ba26a248a4fd8f83487d86f9e648bd1eaf2",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 1182
+    },
+    "geometry-guide/公理層-閱讀器.html": {
+      "raw_sha256": "b0c45777c7ee868d312714aa65cbc284a4b6f4fdd7228ef6c6d244602bd56ff1",
+      "git_blob_sha256": "b0c45777c7ee868d312714aa65cbc284a4b6f4fdd7228ef6c6d244602bd56ff1",
+      "lf_normalized_sha256": "b0c45777c7ee868d312714aa65cbc284a4b6f4fdd7228ef6c6d244602bd56ff1",
+      "git_lf_normalized_sha256": "b0c45777c7ee868d312714aa65cbc284a4b6f4fdd7228ef6c6d244602bd56ff1",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 4503
+    },
+    "tests/geo246_weak_pin_probe.py": {
+      "raw_sha256": "e5057af19291bfd0658df7e62e69881abd0aeb277b36fc331bfd25065a7ca884",
+      "git_blob_sha256": "e5057af19291bfd0658df7e62e69881abd0aeb277b36fc331bfd25065a7ca884",
+      "lf_normalized_sha256": "e5057af19291bfd0658df7e62e69881abd0aeb277b36fc331bfd25065a7ca884",
+      "git_lf_normalized_sha256": "e5057af19291bfd0658df7e62e69881abd0aeb277b36fc331bfd25065a7ca884",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 95
+    },
+    "tests/geo246/identity.py": {
+      "raw_sha256": "c3af5e7ffd074442bb55bd83347224bac2de0bf2fd34a394c5eed249d41b0ea3",
+      "git_blob_sha256": "c3af5e7ffd074442bb55bd83347224bac2de0bf2fd34a394c5eed249d41b0ea3",
+      "lf_normalized_sha256": "c3af5e7ffd074442bb55bd83347224bac2de0bf2fd34a394c5eed249d41b0ea3",
+      "git_lf_normalized_sha256": "c3af5e7ffd074442bb55bd83347224bac2de0bf2fd34a394c5eed249d41b0ea3",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 60
+    },
+    "tests/geo246/message_mutation.py": {
+      "raw_sha256": "a881a0ad89f7816cd6205ba474f47fab9fd7dd16a28646000eeca1c7aaa04900",
+      "git_blob_sha256": "a881a0ad89f7816cd6205ba474f47fab9fd7dd16a28646000eeca1c7aaa04900",
+      "lf_normalized_sha256": "a881a0ad89f7816cd6205ba474f47fab9fd7dd16a28646000eeca1c7aaa04900",
+      "git_lf_normalized_sha256": "a881a0ad89f7816cd6205ba474f47fab9fd7dd16a28646000eeca1c7aaa04900",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 102
+    },
+    "tests/geo246/generic_messages.json": {
+      "raw_sha256": "b0f2aaeaad03c1b3ce321005a9fa735009bb17be83673415247f408a0353dfc0",
+      "git_blob_sha256": "b0f2aaeaad03c1b3ce321005a9fa735009bb17be83673415247f408a0353dfc0",
+      "lf_normalized_sha256": "b0f2aaeaad03c1b3ce321005a9fa735009bb17be83673415247f408a0353dfc0",
+      "git_lf_normalized_sha256": "b0f2aaeaad03c1b3ce321005a9fa735009bb17be83673415247f408a0353dfc0",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 26
+    },
+    "tests/geo246/isolated_wsl.sh": {
+      "raw_sha256": "4e786e5f8b47f50341035d0478893d890740b3ec4cbae6848433babef527a541",
+      "git_blob_sha256": "4e786e5f8b47f50341035d0478893d890740b3ec4cbae6848433babef527a541",
+      "lf_normalized_sha256": "4e786e5f8b47f50341035d0478893d890740b3ec4cbae6848433babef527a541",
+      "git_lf_normalized_sha256": "4e786e5f8b47f50341035d0478893d890740b3ec4cbae6848433babef527a541",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 18
+    },
+    "tests/geo246/refresh_mutants.py": {
+      "raw_sha256": "cc79c32f822b9c659c4d147445438d08805bfe9105a722debaea1937bdc306f1",
+      "git_blob_sha256": "cc79c32f822b9c659c4d147445438d08805bfe9105a722debaea1937bdc306f1",
+      "lf_normalized_sha256": "cc79c32f822b9c659c4d147445438d08805bfe9105a722debaea1937bdc306f1",
+      "git_lf_normalized_sha256": "cc79c32f822b9c659c4d147445438d08805bfe9105a722debaea1937bdc306f1",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 49
+    },
+    "tests/geo246/ci_job.py": {
+      "raw_sha256": "1b8a42969fb20d838ee3659e94fd33b083b022c4ba12afc846d45ab588fce7f8",
+      "git_blob_sha256": "1b8a42969fb20d838ee3659e94fd33b083b022c4ba12afc846d45ab588fce7f8",
+      "lf_normalized_sha256": "1b8a42969fb20d838ee3659e94fd33b083b022c4ba12afc846d45ab588fce7f8",
+      "git_lf_normalized_sha256": "1b8a42969fb20d838ee3659e94fd33b083b022c4ba12afc846d45ab588fce7f8",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 178
+    },
+    "tests/geo246/parent_reader.py": {
+      "raw_sha256": "f5f60966639bef19e4bff78537b1e16468c50e34443286c7f245a9c3765c2519",
+      "git_blob_sha256": "f5f60966639bef19e4bff78537b1e16468c50e34443286c7f245a9c3765c2519",
+      "lf_normalized_sha256": "f5f60966639bef19e4bff78537b1e16468c50e34443286c7f245a9c3765c2519",
+      "git_lf_normalized_sha256": "f5f60966639bef19e4bff78537b1e16468c50e34443286c7f245a9c3765c2519",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 43
+    },
+    ".github/workflows/integration-tests.yml": {
+      "raw_sha256": "faddb699f3be004bbfc5a8fe5948cf58a621d0826db4cd3bf0a77dc097be9fd0",
+      "git_blob_sha256": "faddb699f3be004bbfc5a8fe5948cf58a621d0826db4cd3bf0a77dc097be9fd0",
+      "lf_normalized_sha256": "faddb699f3be004bbfc5a8fe5948cf58a621d0826db4cd3bf0a77dc097be9fd0",
+      "git_lf_normalized_sha256": "faddb699f3be004bbfc5a8fe5948cf58a621d0826db4cd3bf0a77dc097be9fd0",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 125
+    }
+  },
+  "binaries": {},
+  "identity_executor": {
+    "path": "/workspace/geometry-axiom/tests/geo246/identity.py",
+    "sha256": "c3af5e7ffd074442bb55bd83347224bac2de0bf2fd34a394c5eed249d41b0ea3"
+  },
+  "newline_policy": "Raw byte hashes and Git blob hashes are separate; only CRLF-to-LF normalized hashes establish text identity."
+}

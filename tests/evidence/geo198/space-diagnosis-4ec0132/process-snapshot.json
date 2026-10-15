@@ -1,0 +1,445 @@
+{
+  "time_utc": "2026-10-11T17:04:07.434949+00:00",
+  "scope": "One diagnostic snapshot during execution, not a whole-run foreign-process census or formal isolation proof",
+  "processes": [
+    {
+      "pid": 7708,
+      "state": "Z",
+      "comm": "bridge",
+      "argv": []
+    },
+    {
+      "pid": 7924,
+      "state": "Z",
+      "comm": "bridge",
+      "argv": []
+    },
+    {
+      "pid": 9156,
+      "state": "Z",
+      "comm": "bridge",
+      "argv": []
+    },
+    {
+      "pid": 11050,
+      "state": "Z",
+      "comm": "bridge",
+      "argv": []
+    },
+    {
+      "pid": 42497,
+      "state": "Z",
+      "comm": "bridge",
+      "argv": []
+    },
+    {
+      "pid": 42706,
+      "state": "Z",
+      "comm": "bridge",
+      "argv": []
+    },
+    {
+      "pid": 43898,
+      "state": "Z",
+      "comm": "bridge",
+      "argv": []
+    },
+    {
+      "pid": 45871,
+      "state": "Z",
+      "comm": "bridge",
+      "argv": []
+    },
+    {
+      "pid": 49941,
+      "state": "Z",
+      "comm": "chromium",
+      "argv": []
+    },
+    {
+      "pid": 49942,
+      "state": "Z",
+      "comm": "chromium",
+      "argv": []
+    },
+    {
+      "pid": 53110,
+      "state": "Z",
+      "comm": "chromium",
+      "argv": []
+    },
+    {
+      "pid": 53111,
+      "state": "Z",
+      "comm": "chromium",
+      "argv": []
+    },
+    {
+      "pid": 54654,
+      "state": "Z",
+      "comm": "chromium",
+      "argv": []
+    },
+    {
+      "pid": 54655,
+      "state": "Z",
+      "comm": "chromium",
+      "argv": []
+    },
+    {
+      "pid": 55692,
+      "state": "Z",
+      "comm": "chromium",
+      "argv": []
+    },
+    {
+      "pid": 55693,
+      "state": "Z",
+      "comm": "chromium",
+      "argv": []
+    },
+    {
+      "pid": 56755,
+      "state": "Z",
+      "comm": "bridge",
+      "argv": []
+    },
+    {
+      "pid": 56976,
+      "state": "Z",
+      "comm": "bridge",
+      "argv": []
+    },
+    {
+      "pid": 58495,
+      "state": "Z",
+      "comm": "bridge",
+      "argv": []
+    },
+    {
+      "pid": 59249,
+      "state": "Z",
+      "comm": "chromium",
+      "argv": []
+    },
+    {
+      "pid": 59250,
+      "state": "Z",
+      "comm": "chromium",
+      "argv": []
+    },
+    {
+      "pid": 60682,
+      "state": "Z",
+      "comm": "bridge",
+      "argv": []
+    },
+    {
+      "pid": 61188,
+      "state": "Z",
+      "comm": "chromium",
+      "argv": []
+    },
+    {
+      "pid": 61189,
+      "state": "Z",
+      "comm": "chromium",
+      "argv": []
+    },
+    {
+      "pid": 61936,
+      "state": "Z",
+      "comm": "chromium",
+      "argv": []
+    },
+    {
+      "pid": 61937,
+      "state": "Z",
+      "comm": "chromium",
+      "argv": []
+    },
+    {
+      "pid": 62872,
+      "state": "Z",
+      "comm": "chromium",
+      "argv": []
+    },
+    {
+      "pid": 62873,
+      "state": "Z",
+      "comm": "chromium",
+      "argv": []
+    },
+    {
+      "pid": 63433,
+      "state": "Z",
+      "comm": "chromium",
+      "argv": []
+    },
+    {
+      "pid": 63434,
+      "state": "Z",
+      "comm": "chromium",
+      "argv": []
+    },
+    {
+      "pid": 68311,
+      "state": "S",
+      "comm": "bridge",
+      "argv": [
+        "/tmp/geometry-198-review/browser/tmp/geometry-runtime/b9bc23103ebb114398f3/bridge"
+      ]
+    },
+    {
+      "pid": 68364,
+      "state": "Z",
+      "comm": "chromium",
+      "argv": []
+    },
+    {
+      "pid": 68365,
+      "state": "Z",
+      "comm": "chromium",
+      "argv": []
+    },
+    {
+      "pid": 68811,
+      "state": "S",
+      "comm": "chromium",
+      "argv": [
+        "/usr/lib/chromium/chromium",
+        "--show-component-extension-options",
+        "--enable-gpu-rasterization",
+        "--no-default-browser-check",
+        "--disable-pings",
+        "--media-router=0",
+        "--enable-remote-extensions",
+        "--load-extension=",
+        "about:blank",
+        "--headless=new",
+        "--disable-gpu",
+        "--no-first-run",
+        "--no-default-browser-check",
+        "--remote-debugging-port=9349",
+        "--window-size=1400,900",
+        "--user-data-dir=/tmp/geometry-198-space-diagnosis/original/chrome-profile",
+        "--no-sandbox"
+      ]
+    },
+    {
+      "pid": 68828,
+      "state": "S",
+      "comm": "chromium",
+      "argv": [
+        "/usr/lib/chromium/chromium --type=zygote --no-zygote-sandbox --no-sandbox --headless=new --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geometry-198-space-diagnosis/original/chrome-profile --change-stack-guard-on-fork=enable --no-first-run --ozone-platform=headless --ozone-override-screen-size=800,600 --use-angle=swiftshader-webgl"
+      ]
+    },
+    {
+      "pid": 68829,
+      "state": "S",
+      "comm": "chromium",
+      "argv": [
+        "/usr/lib/chromium/chromium --type=zygote --no-sandbox --headless=new --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geometry-198-space-diagnosis/original/chrome-profile --change-stack-guard-on-fork=enable --no-first-run --ozone-platform=headless --ozone-override-screen-size=800,600 --use-angle=swiftshader-webgl"
+      ]
+    },
+    {
+      "pid": 68847,
+      "state": "S",
+      "comm": "chromium",
+      "argv": [
+        "/usr/lib/chromium/chromium --type=gpu-process --gpu-recent-crash-count=0 --no-sandbox --enable-gpu-rasterization --headless=new --ozone-platform=headless --use-angle=swiftshader-webgl --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geometry-198-space-diagnosis/original/chrome-profile --change-stack-guard-on-fork=enable --gpu-preferences=YAAAAAAAAAAgAAAEAAAAAAAAAAAAAGAASAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAwAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAMAAAAAQAAAAAAAAAAAAAACAAAAAAAAAAIAAAAAAAAAA== --shared-files --field-trial-handle=3,i,1111990693701291356,11149682254916077826,262144 --enable-features=SingleAxisScrollContainers --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,15238281049428330768,4815511614886080686,4 --trace-process-track-uuid=3190708988185955192"
+      ]
+    },
+    {
+      "pid": 68854,
+      "state": "S",
+      "comm": "chromium",
+      "argv": [
+        "/usr/lib/chromium/chromium --type=utility --utility-sub-type=network.mojom.NetworkService --lang=en-US --service-sandbox-type=none --no-sandbox --use-angle=swiftshader-webgl --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geometry-198-space-diagnosis/original/chrome-profile --change-stack-guard-on-fork=enable --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,1111990693701291356,11149682254916077826,262144 --enable-features=SingleAxisScrollContainers --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,15238281049428330768,4815511614886080686,4 --trace-process-track-uuid=3190708989122997041"
+      ]
+    },
+    {
+      "pid": 68864,
+      "state": "S",
+      "comm": "chromium",
+      "argv": [
+        "/usr/lib/chromium/chromium --type=utility --utility-sub-type=storage.mojom.StorageService --lang=en-US --service-sandbox-type=utility --no-sandbox --use-angle=swiftshader-webgl --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geometry-198-space-diagnosis/original/chrome-profile --change-stack-guard-on-fork=enable --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,1111990693701291356,11149682254916077826,262144 --enable-features=SingleAxisScrollContainers --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,15238281049428330768,4815511614886080686,4 --trace-process-track-uuid=3190708990060038890"
+      ]
+    },
+    {
+      "pid": 68893,
+      "state": "S",
+      "comm": "chromium",
+      "argv": [
+        "/usr/lib/chromium/chromium --type=renderer --top-chrome-webui --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geometry-198-space-diagnosis/original/chrome-profile --disable-print-preview --change-stack-guard-on-fork=enable --no-sandbox --remote-debugging-port=9349 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=5 --launch-time-ticks=11931178690 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,1111990693701291356,11149682254916077826,262144 --enable-features=SingleAxisScrollContainers --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,15238281049428330768,4815511614886080686,4 --trace-process-track-uuid=3190708990997080739"
+      ]
+    },
+    {
+      "pid": 68902,
+      "state": "S",
+      "comm": "chromium",
+      "argv": [
+        "/usr/lib/chromium/chromium --type=renderer --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geometry-198-space-diagnosis/original/chrome-profile --disable-print-preview --change-stack-guard-on-fork=enable --no-sandbox --remote-debugging-port=9349 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=7 --launch-time-ticks=11931220232 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,1111990693701291356,11149682254916077826,262144 --enable-features=SingleAxisScrollContainers --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,15238281049428330768,4815511614886080686,4 --trace-process-track-uuid=3190708992871164437"
+      ]
+    },
+    {
+      "pid": 68903,
+      "state": "S",
+      "comm": "chromium",
+      "argv": [
+        "/usr/lib/chromium/chromium --type=renderer --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geometry-198-space-diagnosis/original/chrome-profile --disable-print-preview --change-stack-guard-on-fork=enable --no-sandbox --remote-debugging-port=9349 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=6 --launch-time-ticks=11931222276 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,1111990693701291356,11149682254916077826,262144 --enable-features=SingleAxisScrollContainers --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,15238281049428330768,4815511614886080686,4 --trace-process-track-uuid=3190708991934122588"
+      ]
+    },
+    {
+      "pid": 69590,
+      "state": "S",
+      "comm": "codex-linux-san",
+      "argv": [
+        "/run/codex-environment/codex-home/tmp/arg0/codex-arg0CuK6Eq/codex-linux-sandbox",
+        "--inherit-pid-namespace",
+        "--sandbox-policy-cwd",
+        "/workspace",
+        "--command-cwd",
+        "/workspace/geometry-axiom",
+        "--permission-profile",
+        "{\"type\":\"managed\",\"file_system\":{\"type\":\"restricted\",\"entries\":[{\"path\":{\"type\":\"special\",\"value\":{\"kind\":\"root\"}},\"access\":\"read\"},{\"path\":{\"type\":\"path\",\"path\":\"/workspace\"},\"access\":\"write\"},{\"path\":{\"type\":\"path\",\"path\":\"/tmp\"},\"access\":\"write\"},{\"path\":{\"type\":\"special\",\"value\":{\"kind\":\"slash_tmp\"}},\"access\":\"write\"},{\"path\":{\"type\":\"path\",\"path\":\"/workspace/.git\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/tmp/.git\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/workspace/.agents\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/tmp/.agents\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/workspace/.codex\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/tmp/.codex\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/workspace/.aws\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/tmp/.aws\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/workspace\"},\"access\":\"write\"},{\"path\":{\"type\":\"path\",\"path\":\"/tmp\"},\"access\":\"write\"},{\"path\":{\"type\":\"path\",\"path\":\"/workspace/.git\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/tmp/.git\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/workspace/.agents\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/tmp/.agents\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/workspace/.codex\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/tmp/.codex\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/workspace/.aws\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/tmp/.aws\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"}]},\"network\":\"enabled\"}",
+        "--",
+        "/bin/bash",
+        "-lc",
+        "tail -3 /tmp/geometry-198-space-diagnosis/original.log\npython - <<'PY'\nimport pathlib,datetime,json\nout=pathlib.Path('/tmp/geometry-198-space-diagnosis/process-snapshot.json')\nitems=[]\nfor p in pathlib.Path('/proc').iterdir():\n if not p.name.isdecimal():continue\n try:\n  cmd=(p/'cmdline').read_bytes().split(b'\\0'); comm=(p/'comm').read_text().strip(); stat=(p/'stat').read_text();state=stat[stat.rfind(')')+2:].split()[0]\n  if comm in ['cc','gcc','cc1','clang','node','chromium','core','bridge','model-base'] or any(b'run_all.py' in a or b'mutate.py' in a for a in cmd):\n   items.append({'pid':int(p.name),'state':state,'comm':comm,'argv':[a.decode(errors='replace') for a in cmd if a]})\n except (OSError,IndexError):pass\nout.write_text(json.dumps({'time_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'scope':'One diagnostic snapshot during execution, not a whole-run foreign-process census or formal isolation proof','processes':items},indent=2))\nprint('Captured diagnostic process snapshot',len(items),'processes; no whole-run isolation claim')\nPY"
+      ]
+    },
+    {
+      "pid": 69592,
+      "state": "S",
+      "comm": "bwrap",
+      "argv": [
+        "bwrap",
+        "--new-session",
+        "--die-with-parent",
+        "--ro-bind",
+        "/",
+        "/",
+        "--dev",
+        "/dev",
+        "--perms",
+        "000",
+        "--tmpfs",
+        "/tmp/codex-daemon-1000",
+        "--remount-ro",
+        "/tmp/codex-daemon-1000",
+        "--bind",
+        "/workspace",
+        "/workspace",
+        "--perms",
+        "555",
+        "--tmpfs",
+        "/workspace/.git",
+        "--remount-ro",
+        "/workspace/.git",
+        "--perms",
+        "555",
+        "--tmpfs",
+        "/workspace/.agents",
+        "--remount-ro",
+        "/workspace/.agents",
+        "--perms",
+        "555",
+        "--tmpfs",
+        "/workspace/.codex",
+        "--remount-ro",
+        "/workspace/.codex",
+        "--perms",
+        "555",
+        "--tmpfs",
+        "/workspace/.aws",
+        "--remount-ro",
+        "/workspace/.aws",
+        "--bind",
+        "/tmp",
+        "/tmp",
+        "--perms",
+        "000",
+        "--tmpfs",
+        "/tmp/codex-daemon-1000",
+        "--remount-ro",
+        "/tmp/codex-daemon-1000",
+        "--perms",
+        "555",
+        "--tmpfs",
+        "/tmp/.git",
+        "--remount-ro",
+        "/tmp/.git",
+        "--perms",
+        "555",
+        "--tmpfs",
+        "/tmp/.agents",
+        "--remount-ro",
+        "/tmp/.agents",
+        "--perms",
+        "555",
+        "--tmpfs",
+        "/tmp/.codex",
+        "--remount-ro",
+        "/tmp/.codex",
+        "--perms",
+        "555",
+        "--tmpfs",
+        "/tmp/.aws",
+        "--remount-ro",
+        "/tmp/.aws",
+        "--ro-bind",
+        "/tmp/codex-bwrap-synthetic-mount-targets-1000",
+        "/tmp/codex-bwrap-synthetic-mount-targets-1000",
+        "--unshare-user",
+        "--unshare-ipc",
+        "--cap-drop",
+        "ALL",
+        "--argv0",
+        "codex-linux-sandbox",
+        "--",
+        "/opt/codex/bin/codex",
+        "--sandbox-policy-cwd",
+        "/workspace",
+        "--command-cwd",
+        "/workspace/geometry-axiom",
+        "--permission-profile",
+        "{\"type\":\"managed\",\"file_system\":{\"type\":\"restricted\",\"entries\":[{\"path\":{\"type\":\"special\",\"value\":{\"kind\":\"root\"}},\"access\":\"read\"},{\"path\":{\"type\":\"path\",\"path\":\"/workspace\"},\"access\":\"write\"},{\"path\":{\"type\":\"path\",\"path\":\"/tmp\"},\"access\":\"write\"},{\"path\":{\"type\":\"special\",\"value\":{\"kind\":\"slash_tmp\"}},\"access\":\"write\"},{\"path\":{\"type\":\"path\",\"path\":\"/workspace/.git\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/tmp/.git\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/workspace/.agents\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/tmp/.agents\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/workspace/.codex\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/tmp/.codex\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/workspace/.aws\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/tmp/.aws\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/workspace\"},\"access\":\"write\"},{\"path\":{\"type\":\"path\",\"path\":\"/tmp\"},\"access\":\"write\"},{\"path\":{\"type\":\"path\",\"path\":\"/workspace/.git\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/tmp/.git\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/workspace/.agents\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/tmp/.agents\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/workspace/.codex\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/tmp/.codex\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/workspace/.aws\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/tmp/.aws\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"}]},\"network\":\"enabled\"}",
+        "--apply-seccomp-then-exec",
+        "--",
+        "/bin/bash",
+        "-lc",
+        "tail -3 /tmp/geometry-198-space-diagnosis/original.log\npython - <<'PY'\nimport pathlib,datetime,json\nout=pathlib.Path('/tmp/geometry-198-space-diagnosis/process-snapshot.json')\nitems=[]\nfor p in pathlib.Path('/proc').iterdir():\n if not p.name.isdecimal():continue\n try:\n  cmd=(p/'cmdline').read_bytes().split(b'\\0'); comm=(p/'comm').read_text().strip(); stat=(p/'stat').read_text();state=stat[stat.rfind(')')+2:].split()[0]\n  if comm in ['cc','gcc','cc1','clang','node','chromium','core','bridge','model-base'] or any(b'run_all.py' in a or b'mutate.py' in a for a in cmd):\n   items.append({'pid':int(p.name),'state':state,'comm':comm,'argv':[a.decode(errors='replace') for a in cmd if a]})\n except (OSError,IndexError):pass\nout.write_text(json.dumps({'time_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'scope':'One diagnostic snapshot during execution, not a whole-run foreign-process census or formal isolation proof','processes':items},indent=2))\nprint('Captured diagnostic process snapshot',len(items),'processes; no whole-run isolation claim')\nPY"
+      ]
+    },
+    {
+      "pid": 69593,
+      "state": "S",
+      "comm": "codex",
+      "argv": [
+        "codex-linux-sandbox",
+        "--sandbox-policy-cwd",
+        "/workspace",
+        "--command-cwd",
+        "/workspace/geometry-axiom",
+        "--permission-profile",
+        "{\"type\":\"managed\",\"file_system\":{\"type\":\"restricted\",\"entries\":[{\"path\":{\"type\":\"special\",\"value\":{\"kind\":\"root\"}},\"access\":\"read\"},{\"path\":{\"type\":\"path\",\"path\":\"/workspace\"},\"access\":\"write\"},{\"path\":{\"type\":\"path\",\"path\":\"/tmp\"},\"access\":\"write\"},{\"path\":{\"type\":\"special\",\"value\":{\"kind\":\"slash_tmp\"}},\"access\":\"write\"},{\"path\":{\"type\":\"path\",\"path\":\"/workspace/.git\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/tmp/.git\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/workspace/.agents\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/tmp/.agents\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/workspace/.codex\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/tmp/.codex\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/workspace/.aws\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/tmp/.aws\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/workspace\"},\"access\":\"write\"},{\"path\":{\"type\":\"path\",\"path\":\"/tmp\"},\"access\":\"write\"},{\"path\":{\"type\":\"path\",\"path\":\"/workspace/.git\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/tmp/.git\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/workspace/.agents\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/tmp/.agents\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/workspace/.codex\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/tmp/.codex\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/workspace/.aws\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"},{\"path\":{\"type\":\"path\",\"path\":\"/tmp/.aws\"},\"access\":\"read\",\"missing_path_behavior\":\"skip\"}]},\"network\":\"enabled\"}",
+        "--apply-seccomp-then-exec",
+        "--",
+        "/bin/bash",
+        "-lc",
+        "tail -3 /tmp/geometry-198-space-diagnosis/original.log\npython - <<'PY'\nimport pathlib,datetime,json\nout=pathlib.Path('/tmp/geometry-198-space-diagnosis/process-snapshot.json')\nitems=[]\nfor p in pathlib.Path('/proc').iterdir():\n if not p.name.isdecimal():continue\n try:\n  cmd=(p/'cmdline').read_bytes().split(b'\\0'); comm=(p/'comm').read_text().strip(); stat=(p/'stat').read_text();state=stat[stat.rfind(')')+2:].split()[0]\n  if comm in ['cc','gcc','cc1','clang','node','chromium','core','bridge','model-base'] or any(b'run_all.py' in a or b'mutate.py' in a for a in cmd):\n   items.append({'pid':int(p.name),'state':state,'comm':comm,'argv':[a.decode(errors='replace') for a in cmd if a]})\n except (OSError,IndexError):pass\nout.write_text(json.dumps({'time_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'scope':'One diagnostic snapshot during execution, not a whole-run foreign-process census or formal isolation proof','processes':items},indent=2))\nprint('Captured diagnostic process snapshot',len(items),'processes; no whole-run isolation claim')\nPY"
+      ]
+    },
+    {
+      "pid": 69594,
+      "state": "S",
+      "comm": "bash",
+      "argv": [
+        "/bin/bash",
+        "-lc",
+        "tail -3 /tmp/geometry-198-space-diagnosis/original.log\npython - <<'PY'\nimport pathlib,datetime,json\nout=pathlib.Path('/tmp/geometry-198-space-diagnosis/process-snapshot.json')\nitems=[]\nfor p in pathlib.Path('/proc').iterdir():\n if not p.name.isdecimal():continue\n try:\n  cmd=(p/'cmdline').read_bytes().split(b'\\0'); comm=(p/'comm').read_text().strip(); stat=(p/'stat').read_text();state=stat[stat.rfind(')')+2:].split()[0]\n  if comm in ['cc','gcc','cc1','clang','node','chromium','core','bridge','model-base'] or any(b'run_all.py' in a or b'mutate.py' in a for a in cmd):\n   items.append({'pid':int(p.name),'state':state,'comm':comm,'argv':[a.decode(errors='replace') for a in cmd if a]})\n except (OSError,IndexError):pass\nout.write_text(json.dumps({'time_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'scope':'One diagnostic snapshot during execution, not a whole-run foreign-process census or formal isolation proof','processes':items},indent=2))\nprint('Captured diagnostic process snapshot',len(items),'processes; no whole-run isolation claim')\nPY"
+      ]
+    }
+  ]
+}

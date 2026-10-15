@@ -1,0 +1,738 @@
+[
+  {
+    "seconds": 0.0025464470018050633,
+    "cpu_stat": "usage_usec 10313551948\nuser_usec 8012648130\nsystem_usec 2300903817\nnice_usec 0\nnr_periods 87051\nnr_throttled 7487\nthrottled_usec 499763332\nnr_bursts 0\nburst_usec 0\n",
+    "nodes": [
+      {
+        "pid": 117472,
+        "argv": [
+          "node",
+          "--require",
+          "/tmp/geometry-198-timeouts/preload.cjs",
+          "--test",
+          "--test-reporter=spec",
+          "tests/test_reference_workspace_races.js"
+        ]
+      }
+    ]
+  },
+  {
+    "seconds": 0.5070980429991323,
+    "cpu_stat": "usage_usec 10314234060\nuser_usec 8013242041\nsystem_usec 2300992018\nnice_usec 0\nnr_periods 87056\nnr_throttled 7487\nthrottled_usec 499763332\nnr_bursts 0\nburst_usec 0\n",
+    "nodes": [
+      {
+        "pid": 117472,
+        "argv": [
+          "node",
+          "--require",
+          "/tmp/geometry-198-timeouts/preload.cjs",
+          "--test",
+          "--test-reporter=spec",
+          "tests/test_reference_workspace_races.js"
+        ]
+      },
+      {
+        "pid": 117478,
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+          "--experimental-addon-modules",
+          "--test-coverage-functions=0",
+          "--test-concurrency=0",
+          "--inspect-publish-uid=stderr,http",
+          "--inspect-port=127.0.0.1:9229",
+          "--report-signal=SIGUSR2",
+          "--test-coverage-lines=0",
+          "--test-isolation=process",
+          "--heap-prof-interval=524288",
+          "--cpu-prof-interval=1000",
+          "--v8-pool-size=4",
+          "--trace-event-file-pattern=node_trace.${rotation}.log",
+          "--secure-heap-min=2",
+          "--network-family-autoselection-attempt-timeout=250",
+          "--tls-cipher-list=TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:DHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA256:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA",
+          "--use-largepages=off",
+          "--secure-heap=0",
+          "--watch-kill-signal=SIGTERM",
+          "--test-coverage-branches=0",
+          "--max-http-header-size=16384",
+          "--test-timeout=0",
+          "--node-snapshot",
+          "--require=/tmp/geometry-198-timeouts/preload.cjs",
+          "--stack-trace-limit=10",
+          "--heapsnapshot-near-heap-limit=0",
+          "--require",
+          "/tmp/geometry-198-timeouts/preload.cjs",
+          "tests/test_reference_workspace_races.js"
+        ]
+      }
+    ]
+  },
+  {
+    "seconds": 1.0096318409996456,
+    "cpu_stat": "usage_usec 10314888392\nuser_usec 8013806862\nsystem_usec 2301081529\nnice_usec 0\nnr_periods 87061\nnr_throttled 7487\nthrottled_usec 499763332\nnr_bursts 0\nburst_usec 0\n",
+    "nodes": [
+      {
+        "pid": 117472,
+        "argv": [
+          "node",
+          "--require",
+          "/tmp/geometry-198-timeouts/preload.cjs",
+          "--test",
+          "--test-reporter=spec",
+          "tests/test_reference_workspace_races.js"
+        ]
+      },
+      {
+        "pid": 117478,
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+          "--experimental-addon-modules",
+          "--test-coverage-functions=0",
+          "--test-concurrency=0",
+          "--inspect-publish-uid=stderr,http",
+          "--inspect-port=127.0.0.1:9229",
+          "--report-signal=SIGUSR2",
+          "--test-coverage-lines=0",
+          "--test-isolation=process",
+          "--heap-prof-interval=524288",
+          "--cpu-prof-interval=1000",
+          "--v8-pool-size=4",
+          "--trace-event-file-pattern=node_trace.${rotation}.log",
+          "--secure-heap-min=2",
+          "--network-family-autoselection-attempt-timeout=250",
+          "--tls-cipher-list=TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:DHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA256:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA",
+          "--use-largepages=off",
+          "--secure-heap=0",
+          "--watch-kill-signal=SIGTERM",
+          "--test-coverage-branches=0",
+          "--max-http-header-size=16384",
+          "--test-timeout=0",
+          "--node-snapshot",
+          "--require=/tmp/geometry-198-timeouts/preload.cjs",
+          "--stack-trace-limit=10",
+          "--heapsnapshot-near-heap-limit=0",
+          "--require",
+          "/tmp/geometry-198-timeouts/preload.cjs",
+          "tests/test_reference_workspace_races.js"
+        ]
+      }
+    ]
+  },
+  {
+    "seconds": 1.5119764970004326,
+    "cpu_stat": "usage_usec 10315513441\nuser_usec 8014298578\nsystem_usec 2301214863\nnice_usec 0\nnr_periods 87066\nnr_throttled 7487\nthrottled_usec 499763332\nnr_bursts 0\nburst_usec 0\n",
+    "nodes": [
+      {
+        "pid": 117472,
+        "argv": [
+          "node",
+          "--require",
+          "/tmp/geometry-198-timeouts/preload.cjs",
+          "--test",
+          "--test-reporter=spec",
+          "tests/test_reference_workspace_races.js"
+        ]
+      },
+      {
+        "pid": 117478,
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+          "--experimental-addon-modules",
+          "--test-coverage-functions=0",
+          "--test-concurrency=0",
+          "--inspect-publish-uid=stderr,http",
+          "--inspect-port=127.0.0.1:9229",
+          "--report-signal=SIGUSR2",
+          "--test-coverage-lines=0",
+          "--test-isolation=process",
+          "--heap-prof-interval=524288",
+          "--cpu-prof-interval=1000",
+          "--v8-pool-size=4",
+          "--trace-event-file-pattern=node_trace.${rotation}.log",
+          "--secure-heap-min=2",
+          "--network-family-autoselection-attempt-timeout=250",
+          "--tls-cipher-list=TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:DHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA256:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA",
+          "--use-largepages=off",
+          "--secure-heap=0",
+          "--watch-kill-signal=SIGTERM",
+          "--test-coverage-branches=0",
+          "--max-http-header-size=16384",
+          "--test-timeout=0",
+          "--node-snapshot",
+          "--require=/tmp/geometry-198-timeouts/preload.cjs",
+          "--stack-trace-limit=10",
+          "--heapsnapshot-near-heap-limit=0",
+          "--require",
+          "/tmp/geometry-198-timeouts/preload.cjs",
+          "tests/test_reference_workspace_races.js"
+        ]
+      }
+    ]
+  },
+  {
+    "seconds": 2.017519256001833,
+    "cpu_stat": "usage_usec 10316132908\nuser_usec 8014822194\nsystem_usec 2301310714\nnice_usec 0\nnr_periods 87071\nnr_throttled 7487\nthrottled_usec 499763332\nnr_bursts 0\nburst_usec 0\n",
+    "nodes": [
+      {
+        "pid": 117472,
+        "argv": [
+          "node",
+          "--require",
+          "/tmp/geometry-198-timeouts/preload.cjs",
+          "--test",
+          "--test-reporter=spec",
+          "tests/test_reference_workspace_races.js"
+        ]
+      },
+      {
+        "pid": 117478,
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+          "--experimental-addon-modules",
+          "--test-coverage-functions=0",
+          "--test-concurrency=0",
+          "--inspect-publish-uid=stderr,http",
+          "--inspect-port=127.0.0.1:9229",
+          "--report-signal=SIGUSR2",
+          "--test-coverage-lines=0",
+          "--test-isolation=process",
+          "--heap-prof-interval=524288",
+          "--cpu-prof-interval=1000",
+          "--v8-pool-size=4",
+          "--trace-event-file-pattern=node_trace.${rotation}.log",
+          "--secure-heap-min=2",
+          "--network-family-autoselection-attempt-timeout=250",
+          "--tls-cipher-list=TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:DHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA256:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA",
+          "--use-largepages=off",
+          "--secure-heap=0",
+          "--watch-kill-signal=SIGTERM",
+          "--test-coverage-branches=0",
+          "--max-http-header-size=16384",
+          "--test-timeout=0",
+          "--node-snapshot",
+          "--require=/tmp/geometry-198-timeouts/preload.cjs",
+          "--stack-trace-limit=10",
+          "--heapsnapshot-near-heap-limit=0",
+          "--require",
+          "/tmp/geometry-198-timeouts/preload.cjs",
+          "tests/test_reference_workspace_races.js"
+        ]
+      }
+    ]
+  },
+  {
+    "seconds": 2.5197264359994733,
+    "cpu_stat": "usage_usec 10316759568\nuser_usec 8015448854\nsystem_usec 2301310714\nnice_usec 0\nnr_periods 87076\nnr_throttled 7487\nthrottled_usec 499763332\nnr_bursts 0\nburst_usec 0\n",
+    "nodes": [
+      {
+        "pid": 117472,
+        "argv": [
+          "node",
+          "--require",
+          "/tmp/geometry-198-timeouts/preload.cjs",
+          "--test",
+          "--test-reporter=spec",
+          "tests/test_reference_workspace_races.js"
+        ]
+      },
+      {
+        "pid": 117478,
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+          "--experimental-addon-modules",
+          "--test-coverage-functions=0",
+          "--test-concurrency=0",
+          "--inspect-publish-uid=stderr,http",
+          "--inspect-port=127.0.0.1:9229",
+          "--report-signal=SIGUSR2",
+          "--test-coverage-lines=0",
+          "--test-isolation=process",
+          "--heap-prof-interval=524288",
+          "--cpu-prof-interval=1000",
+          "--v8-pool-size=4",
+          "--trace-event-file-pattern=node_trace.${rotation}.log",
+          "--secure-heap-min=2",
+          "--network-family-autoselection-attempt-timeout=250",
+          "--tls-cipher-list=TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:DHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA256:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA",
+          "--use-largepages=off",
+          "--secure-heap=0",
+          "--watch-kill-signal=SIGTERM",
+          "--test-coverage-branches=0",
+          "--max-http-header-size=16384",
+          "--test-timeout=0",
+          "--node-snapshot",
+          "--require=/tmp/geometry-198-timeouts/preload.cjs",
+          "--stack-trace-limit=10",
+          "--heapsnapshot-near-heap-limit=0",
+          "--require",
+          "/tmp/geometry-198-timeouts/preload.cjs",
+          "tests/test_reference_workspace_races.js"
+        ]
+      }
+    ]
+  },
+  {
+    "seconds": 3.0219924070006527,
+    "cpu_stat": "usage_usec 10317363438\nuser_usec 8016020633\nsystem_usec 2301342804\nnice_usec 0\nnr_periods 87081\nnr_throttled 7487\nthrottled_usec 499763332\nnr_bursts 0\nburst_usec 0\n",
+    "nodes": [
+      {
+        "pid": 117472,
+        "argv": [
+          "node",
+          "--require",
+          "/tmp/geometry-198-timeouts/preload.cjs",
+          "--test",
+          "--test-reporter=spec",
+          "tests/test_reference_workspace_races.js"
+        ]
+      },
+      {
+        "pid": 117478,
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+          "--experimental-addon-modules",
+          "--test-coverage-functions=0",
+          "--test-concurrency=0",
+          "--inspect-publish-uid=stderr,http",
+          "--inspect-port=127.0.0.1:9229",
+          "--report-signal=SIGUSR2",
+          "--test-coverage-lines=0",
+          "--test-isolation=process",
+          "--heap-prof-interval=524288",
+          "--cpu-prof-interval=1000",
+          "--v8-pool-size=4",
+          "--trace-event-file-pattern=node_trace.${rotation}.log",
+          "--secure-heap-min=2",
+          "--network-family-autoselection-attempt-timeout=250",
+          "--tls-cipher-list=TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:DHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA256:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA",
+          "--use-largepages=off",
+          "--secure-heap=0",
+          "--watch-kill-signal=SIGTERM",
+          "--test-coverage-branches=0",
+          "--max-http-header-size=16384",
+          "--test-timeout=0",
+          "--node-snapshot",
+          "--require=/tmp/geometry-198-timeouts/preload.cjs",
+          "--stack-trace-limit=10",
+          "--heapsnapshot-near-heap-limit=0",
+          "--require",
+          "/tmp/geometry-198-timeouts/preload.cjs",
+          "tests/test_reference_workspace_races.js"
+        ]
+      }
+    ]
+  },
+  {
+    "seconds": 3.5242538950005837,
+    "cpu_stat": "usage_usec 10317928629\nuser_usec 8016554482\nsystem_usec 2301374147\nnice_usec 0\nnr_periods 87086\nnr_throttled 7487\nthrottled_usec 499763332\nnr_bursts 0\nburst_usec 0\n",
+    "nodes": [
+      {
+        "pid": 117472,
+        "argv": [
+          "node",
+          "--require",
+          "/tmp/geometry-198-timeouts/preload.cjs",
+          "--test",
+          "--test-reporter=spec",
+          "tests/test_reference_workspace_races.js"
+        ]
+      },
+      {
+        "pid": 117478,
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+          "--experimental-addon-modules",
+          "--test-coverage-functions=0",
+          "--test-concurrency=0",
+          "--inspect-publish-uid=stderr,http",
+          "--inspect-port=127.0.0.1:9229",
+          "--report-signal=SIGUSR2",
+          "--test-coverage-lines=0",
+          "--test-isolation=process",
+          "--heap-prof-interval=524288",
+          "--cpu-prof-interval=1000",
+          "--v8-pool-size=4",
+          "--trace-event-file-pattern=node_trace.${rotation}.log",
+          "--secure-heap-min=2",
+          "--network-family-autoselection-attempt-timeout=250",
+          "--tls-cipher-list=TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:DHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA256:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA",
+          "--use-largepages=off",
+          "--secure-heap=0",
+          "--watch-kill-signal=SIGTERM",
+          "--test-coverage-branches=0",
+          "--max-http-header-size=16384",
+          "--test-timeout=0",
+          "--node-snapshot",
+          "--require=/tmp/geometry-198-timeouts/preload.cjs",
+          "--stack-trace-limit=10",
+          "--heapsnapshot-near-heap-limit=0",
+          "--require",
+          "/tmp/geometry-198-timeouts/preload.cjs",
+          "tests/test_reference_workspace_races.js"
+        ]
+      }
+    ]
+  },
+  {
+    "seconds": 4.026468430998648,
+    "cpu_stat": "usage_usec 10318507197\nuser_usec 8017133050\nsystem_usec 2301374147\nnice_usec 0\nnr_periods 87091\nnr_throttled 7487\nthrottled_usec 499763332\nnr_bursts 0\nburst_usec 0\n",
+    "nodes": [
+      {
+        "pid": 117472,
+        "argv": [
+          "node",
+          "--require",
+          "/tmp/geometry-198-timeouts/preload.cjs",
+          "--test",
+          "--test-reporter=spec",
+          "tests/test_reference_workspace_races.js"
+        ]
+      },
+      {
+        "pid": 117478,
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+          "--experimental-addon-modules",
+          "--test-coverage-functions=0",
+          "--test-concurrency=0",
+          "--inspect-publish-uid=stderr,http",
+          "--inspect-port=127.0.0.1:9229",
+          "--report-signal=SIGUSR2",
+          "--test-coverage-lines=0",
+          "--test-isolation=process",
+          "--heap-prof-interval=524288",
+          "--cpu-prof-interval=1000",
+          "--v8-pool-size=4",
+          "--trace-event-file-pattern=node_trace.${rotation}.log",
+          "--secure-heap-min=2",
+          "--network-family-autoselection-attempt-timeout=250",
+          "--tls-cipher-list=TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:DHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA256:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA",
+          "--use-largepages=off",
+          "--secure-heap=0",
+          "--watch-kill-signal=SIGTERM",
+          "--test-coverage-branches=0",
+          "--max-http-header-size=16384",
+          "--test-timeout=0",
+          "--node-snapshot",
+          "--require=/tmp/geometry-198-timeouts/preload.cjs",
+          "--stack-trace-limit=10",
+          "--heapsnapshot-near-heap-limit=0",
+          "--require",
+          "/tmp/geometry-198-timeouts/preload.cjs",
+          "tests/test_reference_workspace_races.js"
+        ]
+      }
+    ]
+  },
+  {
+    "seconds": 4.529026536001766,
+    "cpu_stat": "usage_usec 10319081956\nuser_usec 8017707809\nsystem_usec 2301374147\nnice_usec 0\nnr_periods 87096\nnr_throttled 7487\nthrottled_usec 499763332\nnr_bursts 0\nburst_usec 0\n",
+    "nodes": [
+      {
+        "pid": 117472,
+        "argv": [
+          "node",
+          "--require",
+          "/tmp/geometry-198-timeouts/preload.cjs",
+          "--test",
+          "--test-reporter=spec",
+          "tests/test_reference_workspace_races.js"
+        ]
+      },
+      {
+        "pid": 117478,
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+          "--experimental-addon-modules",
+          "--test-coverage-functions=0",
+          "--test-concurrency=0",
+          "--inspect-publish-uid=stderr,http",
+          "--inspect-port=127.0.0.1:9229",
+          "--report-signal=SIGUSR2",
+          "--test-coverage-lines=0",
+          "--test-isolation=process",
+          "--heap-prof-interval=524288",
+          "--cpu-prof-interval=1000",
+          "--v8-pool-size=4",
+          "--trace-event-file-pattern=node_trace.${rotation}.log",
+          "--secure-heap-min=2",
+          "--network-family-autoselection-attempt-timeout=250",
+          "--tls-cipher-list=TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:DHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA256:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA",
+          "--use-largepages=off",
+          "--secure-heap=0",
+          "--watch-kill-signal=SIGTERM",
+          "--test-coverage-branches=0",
+          "--max-http-header-size=16384",
+          "--test-timeout=0",
+          "--node-snapshot",
+          "--require=/tmp/geometry-198-timeouts/preload.cjs",
+          "--stack-trace-limit=10",
+          "--heapsnapshot-near-heap-limit=0",
+          "--require",
+          "/tmp/geometry-198-timeouts/preload.cjs",
+          "tests/test_reference_workspace_races.js"
+        ]
+      }
+    ]
+  },
+  {
+    "seconds": 5.032003079999413,
+    "cpu_stat": "usage_usec 10319635819\nuser_usec 8018260816\nsystem_usec 2301375002\nnice_usec 0\nnr_periods 87101\nnr_throttled 7487\nthrottled_usec 499763332\nnr_bursts 0\nburst_usec 0\n",
+    "nodes": [
+      {
+        "pid": 117472,
+        "argv": [
+          "node",
+          "--require",
+          "/tmp/geometry-198-timeouts/preload.cjs",
+          "--test",
+          "--test-reporter=spec",
+          "tests/test_reference_workspace_races.js"
+        ]
+      },
+      {
+        "pid": 117478,
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+          "--experimental-addon-modules",
+          "--test-coverage-functions=0",
+          "--test-concurrency=0",
+          "--inspect-publish-uid=stderr,http",
+          "--inspect-port=127.0.0.1:9229",
+          "--report-signal=SIGUSR2",
+          "--test-coverage-lines=0",
+          "--test-isolation=process",
+          "--heap-prof-interval=524288",
+          "--cpu-prof-interval=1000",
+          "--v8-pool-size=4",
+          "--trace-event-file-pattern=node_trace.${rotation}.log",
+          "--secure-heap-min=2",
+          "--network-family-autoselection-attempt-timeout=250",
+          "--tls-cipher-list=TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:DHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA256:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA",
+          "--use-largepages=off",
+          "--secure-heap=0",
+          "--watch-kill-signal=SIGTERM",
+          "--test-coverage-branches=0",
+          "--max-http-header-size=16384",
+          "--test-timeout=0",
+          "--node-snapshot",
+          "--require=/tmp/geometry-198-timeouts/preload.cjs",
+          "--stack-trace-limit=10",
+          "--heapsnapshot-near-heap-limit=0",
+          "--require",
+          "/tmp/geometry-198-timeouts/preload.cjs",
+          "tests/test_reference_workspace_races.js"
+        ]
+      }
+    ]
+  },
+  {
+    "seconds": 5.53450663699914,
+    "cpu_stat": "usage_usec 10320141682\nuser_usec 8018738928\nsystem_usec 2301402754\nnice_usec 0\nnr_periods 87106\nnr_throttled 7487\nthrottled_usec 499763332\nnr_bursts 0\nburst_usec 0\n",
+    "nodes": [
+      {
+        "pid": 117472,
+        "argv": [
+          "node",
+          "--require",
+          "/tmp/geometry-198-timeouts/preload.cjs",
+          "--test",
+          "--test-reporter=spec",
+          "tests/test_reference_workspace_races.js"
+        ]
+      },
+      {
+        "pid": 117478,
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+          "--experimental-addon-modules",
+          "--test-coverage-functions=0",
+          "--test-concurrency=0",
+          "--inspect-publish-uid=stderr,http",
+          "--inspect-port=127.0.0.1:9229",
+          "--report-signal=SIGUSR2",
+          "--test-coverage-lines=0",
+          "--test-isolation=process",
+          "--heap-prof-interval=524288",
+          "--cpu-prof-interval=1000",
+          "--v8-pool-size=4",
+          "--trace-event-file-pattern=node_trace.${rotation}.log",
+          "--secure-heap-min=2",
+          "--network-family-autoselection-attempt-timeout=250",
+          "--tls-cipher-list=TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:DHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA256:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA",
+          "--use-largepages=off",
+          "--secure-heap=0",
+          "--watch-kill-signal=SIGTERM",
+          "--test-coverage-branches=0",
+          "--max-http-header-size=16384",
+          "--test-timeout=0",
+          "--node-snapshot",
+          "--require=/tmp/geometry-198-timeouts/preload.cjs",
+          "--stack-trace-limit=10",
+          "--heapsnapshot-near-heap-limit=0",
+          "--require",
+          "/tmp/geometry-198-timeouts/preload.cjs",
+          "tests/test_reference_workspace_races.js"
+        ]
+      }
+    ]
+  },
+  {
+    "seconds": 6.0370269599989115,
+    "cpu_stat": "usage_usec 10320761013\nuser_usec 8019347899\nsystem_usec 2301413114\nnice_usec 0\nnr_periods 87111\nnr_throttled 7487\nthrottled_usec 499763332\nnr_bursts 0\nburst_usec 0\n",
+    "nodes": [
+      {
+        "pid": 117472,
+        "argv": [
+          "node",
+          "--require",
+          "/tmp/geometry-198-timeouts/preload.cjs",
+          "--test",
+          "--test-reporter=spec",
+          "tests/test_reference_workspace_races.js"
+        ]
+      },
+      {
+        "pid": 117478,
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+          "--experimental-addon-modules",
+          "--test-coverage-functions=0",
+          "--test-concurrency=0",
+          "--inspect-publish-uid=stderr,http",
+          "--inspect-port=127.0.0.1:9229",
+          "--report-signal=SIGUSR2",
+          "--test-coverage-lines=0",
+          "--test-isolation=process",
+          "--heap-prof-interval=524288",
+          "--cpu-prof-interval=1000",
+          "--v8-pool-size=4",
+          "--trace-event-file-pattern=node_trace.${rotation}.log",
+          "--secure-heap-min=2",
+          "--network-family-autoselection-attempt-timeout=250",
+          "--tls-cipher-list=TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:DHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA256:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA",
+          "--use-largepages=off",
+          "--secure-heap=0",
+          "--watch-kill-signal=SIGTERM",
+          "--test-coverage-branches=0",
+          "--max-http-header-size=16384",
+          "--test-timeout=0",
+          "--node-snapshot",
+          "--require=/tmp/geometry-198-timeouts/preload.cjs",
+          "--stack-trace-limit=10",
+          "--heapsnapshot-near-heap-limit=0",
+          "--require",
+          "/tmp/geometry-198-timeouts/preload.cjs",
+          "tests/test_reference_workspace_races.js"
+        ]
+      }
+    ]
+  },
+  {
+    "seconds": 6.548370847001934,
+    "cpu_stat": "usage_usec 10321279001\nuser_usec 8019744475\nsystem_usec 2301534526\nnice_usec 0\nnr_periods 87117\nnr_throttled 7487\nthrottled_usec 499763332\nnr_bursts 0\nburst_usec 0\n",
+    "nodes": [
+      {
+        "pid": 117472,
+        "argv": [
+          "node",
+          "--require",
+          "/tmp/geometry-198-timeouts/preload.cjs",
+          "--test",
+          "--test-reporter=spec",
+          "tests/test_reference_workspace_races.js"
+        ]
+      },
+      {
+        "pid": 117478,
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+          "--experimental-addon-modules",
+          "--test-coverage-functions=0",
+          "--test-concurrency=0",
+          "--inspect-publish-uid=stderr,http",
+          "--inspect-port=127.0.0.1:9229",
+          "--report-signal=SIGUSR2",
+          "--test-coverage-lines=0",
+          "--test-isolation=process",
+          "--heap-prof-interval=524288",
+          "--cpu-prof-interval=1000",
+          "--v8-pool-size=4",
+          "--trace-event-file-pattern=node_trace.${rotation}.log",
+          "--secure-heap-min=2",
+          "--network-family-autoselection-attempt-timeout=250",
+          "--tls-cipher-list=TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:DHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA256:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA",
+          "--use-largepages=off",
+          "--secure-heap=0",
+          "--watch-kill-signal=SIGTERM",
+          "--test-coverage-branches=0",
+          "--max-http-header-size=16384",
+          "--test-timeout=0",
+          "--node-snapshot",
+          "--require=/tmp/geometry-198-timeouts/preload.cjs",
+          "--stack-trace-limit=10",
+          "--heapsnapshot-near-heap-limit=0",
+          "--require",
+          "/tmp/geometry-198-timeouts/preload.cjs",
+          "tests/test_reference_workspace_races.js"
+        ]
+      }
+    ]
+  },
+  {
+    "seconds": 7.05092103700008,
+    "cpu_stat": "usage_usec 10321863788\nuser_usec 8020282916\nsystem_usec 2301580872\nnice_usec 0\nnr_periods 87122\nnr_throttled 7487\nthrottled_usec 499763332\nnr_bursts 0\nburst_usec 0\n",
+    "nodes": [
+      {
+        "pid": 117472,
+        "argv": [
+          "node",
+          "--require",
+          "/tmp/geometry-198-timeouts/preload.cjs",
+          "--test",
+          "--test-reporter=spec",
+          "tests/test_reference_workspace_races.js"
+        ]
+      },
+      {
+        "pid": 117478,
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+          "--experimental-addon-modules",
+          "--test-coverage-functions=0",
+          "--test-concurrency=0",
+          "--inspect-publish-uid=stderr,http",
+          "--inspect-port=127.0.0.1:9229",
+          "--report-signal=SIGUSR2",
+          "--test-coverage-lines=0",
+          "--test-isolation=process",
+          "--heap-prof-interval=524288",
+          "--cpu-prof-interval=1000",
+          "--v8-pool-size=4",
+          "--trace-event-file-pattern=node_trace.${rotation}.log",
+          "--secure-heap-min=2",
+          "--network-family-autoselection-attempt-timeout=250",
+          "--tls-cipher-list=TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:DHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA256:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA",
+          "--use-largepages=off",
+          "--secure-heap=0",
+          "--watch-kill-signal=SIGTERM",
+          "--test-coverage-branches=0",
+          "--max-http-header-size=16384",
+          "--test-timeout=0",
+          "--node-snapshot",
+          "--require=/tmp/geometry-198-timeouts/preload.cjs",
+          "--stack-trace-limit=10",
+          "--heapsnapshot-near-heap-limit=0",
+          "--require",
+          "/tmp/geometry-198-timeouts/preload.cjs",
+          "tests/test_reference_workspace_races.js"
+        ]
+      }
+    ]
+  },
+  {
+    "seconds": 7.553363670998806,
+    "cpu_stat": "usage_usec 10321916047\nuser_usec 8020309335\nsystem_usec 2301606712\nnice_usec 0\nnr_periods 87124\nnr_throttled 7487\nthrottled_usec 499763332\nnr_bursts 0\nburst_usec 0\n",
+    "nodes": []
+  }
+]
