@@ -439,7 +439,17 @@ def write_node_shim():
 # ------------------------------------------------------------------ result parsing
 
 def sac_hits(text):
-    return [face for face in SAC_FACES if face in text]
+    """Keep environment hints without treating oracle rule names as environment errors.
+
+    >>> sac_hits('[沒抓到!] C3_EDGE_UNSUPPORTED')
+    []
+    >>> sac_hits('UNSUPPORTED / BASE_COMPILER')
+    ['BASE_COMPILER', 'UNSUPPORTED']
+    >>> sac_hits('OSError: WinError 4551')
+    ['WinError 4551']
+    """
+    return [face for face in SAC_FACES if face in text and
+            (face != 'UNSUPPORTED' or re.search(r'(?<!\w)UNSUPPORTED(?!\w)', text))]
 
 
 def parse_node_spec(text, row):
