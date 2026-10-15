@@ -702,7 +702,7 @@ def run_suite(suite, env, infos):
         row.failed = max(row.failed, 1)
         row.note += '；子行程 exit %s 但沒有記到失敗的 test' % code
     if row.failed or row.crashed:
-        hits = sac_hits(out + ' '.join(row.details))
+        hits = sac_hits(out + '\n' + ' '.join(row.details))
         if hits:
             row.note += '；疑似環境阻擋（命中：%s）' % '、'.join(hits)
     if row.failed or row.crashed or row.skipped or row.env_problem:
