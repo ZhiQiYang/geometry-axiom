@@ -1,0 +1,15 @@
+✔ canvas observer remains independent of the disabled server flag (3.647836ms)
+✔ first API transport failure survives later failures and other sessions (2.09657ms)
+✔ successful API and asset failures do not become API transport failures (2.25998ms)
+✔ first non-api business fetch failure survives later api failure (1.153745ms)
+✔ frontend transport flag is recorded even without a failed network event (1.185358ms)
+✔ observer preserves success and rejection and does not replay either (5.323226ms)
+✔ a broken diagnostic sink cannot alter a transport result (0.538744ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 116.22107

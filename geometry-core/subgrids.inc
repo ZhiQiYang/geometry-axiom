@@ -45,10 +45,16 @@ static Coord grid_loop_rect_area2(const PolygonLoop2 *loop, const SurfaceRegion2
 
 static bool grid_cell_has_area(const PlacementSurface *p,const SpaceBoundarySurface *b,const SurfaceRegion2 *r)
 {
-    PolygonLoop2 outline; placement_outline(p,b,&outline);
-    Coord area=grid_loop_rect_area2(&outline,r);
-    if (b) for (size_t i=0;i<b->hole_count;++i) area-=grid_loop_rect_area2(&b->holes[i],r);
-    return area>0;
+    /* D19/I25: C intersects the complete effective face, including holes in
+     * each R41 component. A bounding box is only a coordinate range. */
+    for(size_t c=0;c<(p->derived_fill_id?p->component_count:1);++c) {
+        const SpaceBoundarySurface *part=p->derived_fill_id?&p->components[c]:b;
+        PolygonLoop2 outline; placement_outline(p,part,&outline);
+        Coord area=grid_loop_rect_area2(&outline,r);
+        if(part) for(size_t h=0;h<part->hole_count;++h) area-=grid_loop_rect_area2(&part->holes[h],r);
+        if(area>0) return true;
+    }
+    return false;
 }
 
 static bool grid_cell_bounds(const ReferenceGrid *grids,size_t count,const ReferenceGrid *grid,

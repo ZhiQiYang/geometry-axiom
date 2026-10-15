@@ -1,0 +1,57 @@
+{
+  "source_head": "73a73b174b20c57fa1f8083535fd429a9167503e",
+  "source_base": "077165010377cca974bece7fcda930cd005490a9",
+  "binary_sha256": "dc8dd85a20c20e2da0cd3da038e43ed3e0ae0dfdae64d1e19763d2713ab52dc2",
+  "scope": "General D7 necessary-invariant probe only; NOT a derived-host witness or PF23 support run",
+  "wrapper_exit": 0,
+  "records": [
+    {
+      "role": "boundary",
+      "scene": "surface 1 origin 0 0 2409 u +x v +y outline 0,0 1000,0 1000,300 0,300\nspec center 105\nguide 1 1 v spec:center\ntimber 1 30 30 role boundary\nplace 1 on 1 at-line guide 1 +v +n\n",
+      "reply": {
+        "ok": false,
+        "error": "line 5: V_BOUNDARY_ROLE：角材 1 宣告 boundary，但沒有任何側面貼在外輪廓邊上",
+        "status": "INVALID",
+        "code": "SCENE_INVALID"
+      },
+      "elapsed_seconds": 0.03130962201976217,
+      "world_unchanged": true
+    },
+    {
+      "role": "primary",
+      "scene": "surface 1 origin 0 0 2409 u +x v +y outline 0,0 1000,0 1000,300 0,300\nspec center 105\nguide 1 1 v spec:center\ntimber 1 30 30 role primary\nplace 1 on 1 at-line guide 1 +v +n\n",
+      "reply": {
+        "ok": false,
+        "error": "line 5: V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC",
+        "status": "INVALID",
+        "code": "SCENE_INVALID"
+      },
+      "elapsed_seconds": 0.03036524899653159,
+      "world_unchanged": true
+    },
+    {
+      "role": "secondary",
+      "scene": "surface 1 origin 0 0 2409 u +x v +y outline 0,0 1000,0 1000,300 0,300\ntimber 2 30 30 role boundary\nplace 2 on 1 at-face e3 +v +n\nspec center 105\nguide 1 1 v spec:center\ntimber 1 30 30 role secondary\nplace 1 on 1 at-line guide 1 +v +n\n",
+      "reply": {
+        "ok": false,
+        "error": "line 7: V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC",
+        "status": "INVALID",
+        "code": "SCENE_INVALID"
+      },
+      "elapsed_seconds": 0.04617953498382121,
+      "world_unchanged": true
+    },
+    {
+      "role": "custom priority 4",
+      "scene": "surface 1 origin 0 0 2409 u +x v +y outline 0,0 1000,0 1000,300 0,300\nspec center 105\nguide 1 1 v spec:center\ntimber 1 30 30 role custom priority 4\nplace 1 on 1 at-line guide 1 +v +n\n",
+      "reply": {
+        "ok": false,
+        "error": "line 5: V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC",
+        "status": "INVALID",
+        "code": "SCENE_INVALID"
+      },
+      "elapsed_seconds": 0.03510153497336432,
+      "world_unchanged": true
+    }
+  ]
+}

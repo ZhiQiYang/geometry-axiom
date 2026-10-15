@@ -112,6 +112,8 @@ REGISTRY = [
            ['-std=c11', '-O2'], ['GEOMETRY_TEST_CORE'], smoke='core'),
     Binary('bridge', 'bridge', 'geometry-web/web_bridge.c', ['/nologo', '/utf-8', '/O2', '/W3', '/U_WIN32'], _STACK,
            ['-std=c11', '-O2'], ['GEOMETRY_TEST_BRIDGE', 'GEOMETRY_ENGINEERING_BRIDGE'], smoke='bridge'),
+    Binary('pf3-algorithm', 'pf3-algorithm', 'tests/pf3_algorithm.c', ['/nologo', '/utf-8', '/O2', '/W3', '/U_WIN32'], _STACK,
+           ['-std=c11', '-O2'], ['GEOMETRY_TEST_PF3_ALGORITHM']),
     Binary('integrity', 'integrity', 'tests/test_core_integrity.c', ['/nologo', '/utf-8', '/O2', '/W3'], _STACK,
            ['-std=c11', '-O2'], [], smoke='integrity'),
     Binary('gdi', 'gdi-contract', 'tests/gdi_contract_harness.c',

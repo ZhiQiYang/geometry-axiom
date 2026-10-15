@@ -1,0 +1,24 @@
+requires parameters/1
+parameters begin
+parameters card eyJpZCI6OTAsIm5hbWUiOiLploDmqrsiLCJuZXh0RmllbGRJZCI6Mn0=
+parameters field eyJwYXJhbWV0ZXJJZCI6OTAsImlkIjoxLCJuYW1lIjoiWCIsInR5cGUiOjAsImV4cHJlc3Npb24iOnsiZGVuIjoiMSIsIm51bSI6IjgiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=
+parameters end
+requires engineering-spec/1
+engineering material eyJmaW5nZXJwcmludCI6ImQ4YjY3OGMxNzM2ZmNhYTBiNTQxOGY0NDdkMThlYzI4Yjg3ZDRhNjQ1MTFhNmRiNDgwYTVlYjdhMmU5MDVhYTciLCJ2YWx1ZSI6eyJpZCI6InBmLWJvYXJkIiwia2luZCI6InBhbmVsIiwibGVuZ3RoIjoxODMwLCJuYW1lIjoi5p2/IiwidGhpY2tuZXNzIjoiOSIsInZlcnNpb24iOjEsIndpZHRoIjo5MTV9fQ==
+boundary 8 outline 0,0 1000,0 1000,300 0,300 kind room_plan
+spec center 105
+column 1 at 105 50 size 95 50 z -2400 9
+requires panel-fill/1
+finish-surface 1 on boundary 8 origin 0 0 0 u +x v +y n +z side +n obstacles c1 name-hex e5a4a9e88ab1e5ae8ce68890e99da2
+panel-fill 1 definition-hex 7b2266696e697368537572666163654964223a312c22676170223a302c226964223a312c226c656e677468416c6f6e67223a2276222c226f726967696e223a5b2d3831352c2d3130305d2c2270616e656c223a7b226964223a2270662d626f617264222c2276657273696f6e223a317d2c227061747465726e223a227374726169676874222c227468726573686f6c64223a7b226669656c644964223a312c22706172616d657465724964223a39307d7d
+derived-placement 10 definition-hex 7b2266696c6c4964223a312c2268223a33302c226964223a31307d
+timber 1 27 30 role boundary
+timber 2 27 30 role boundary
+timber 3 30 30 role primary
+guide 1 10 v spec:center
+place 1 on 10 at-face key-hex:5b5b226530222c302c315d5d +u +n
+# R18 角材 1: onBoundary=true coversEdge=true boundaryEdge=[["e0",0,1]]
+place 2 on 10 at-face key-hex:5b5b226532222c302c315d5d +u +n
+# R18 角材 2: onBoundary=true coversEdge=true boundaryEdge=[["e2",0,1]]
+place 3 on 10 at-line guide 1 between t1 t2 +v +n
+# R18 角材 3: onBoundary=false coversEdge=false boundaryEdge=null

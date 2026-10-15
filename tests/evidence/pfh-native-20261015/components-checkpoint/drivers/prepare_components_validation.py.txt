@@ -1,0 +1,15 @@
+from pathlib import Path
+W=Path('/tmp/geometry-wake41')
+s=(W/'parallel_mutations.py').read_text().replace('official-stack-final','official-components-final')
+s=s[:s.index("argv=[sys.executable,'tests/mutate.py','--check','--killers']")]+"print(json.dumps(dict(head=head,receipts=receipts,mergedRecords=len(merged),postcheck='independent audited unified cache validator follows')),flush=True)\n"
+(W/'parallel_components.py').write_text(s)
+s=(W/'validate_mutations.py').read_text().replace('official-stack-final','official-components-final');(W/'validate_components_mutations.py').write_text(s)
+s=(W/'reader_sync_diagnostic.py').read_text().replace('reader-sync-final','reader-sync-components');(W/'reader_sync_components.py').write_text(s)
+s=(W/'run_witness.py').read_text().replace('witness-release','witness-components').replace('/tmp/geometry-wake41/controls-stack-release/baseline/bin/bridge','/tmp/geometry-wake41/components-positive-bin/bridge');(W/'run_components_witness.py').write_text(s)
+s=(W/'negative_controls.py').read_text().replace('controls-verified','controls-components')
+anchor=" ('restored',None,None,None,None),"
+extra=""" ('cell-component-removed','geometry-core/subgrids.inc','c<(p->derived_fill_id?p->component_count:1)','c<1','test_D10_second_component_grid_subgrid_reopen_and_I23_rollback'),
+ ('render-component-removed','current_geometry.c','component<(surface->derived_fill_id?surface->component_count:1)','component<1','test_R41_scene_render_and_pick_cover_second_component_without_gap'),
+"""
+assert s.count(anchor)==1;s=s.replace(anchor,extra+anchor).replace('baseline 29 green, six domain assertion reds, one subgrid stack rollback red, restored 29 green','baseline 32 green, eight domain assertion reds, one subgrid stack rollback red, restored 32 green')
+(W/'negative_components.py').write_text(s)

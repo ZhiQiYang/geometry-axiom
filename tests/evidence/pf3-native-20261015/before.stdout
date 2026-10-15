@@ -1,0 +1,19 @@
+F
+======================================================================
+FAIL: test_PF23_E1_legal_five_actual_widths_and_threshold_only (__main__.PanelFillSupport.test_PF23_E1_legal_five_actual_widths_and_threshold_only)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_panel_fill_support.py", line 54, in test_PF23_E1_legal_five_actual_widths_and_threshold_only
+    self.assertEqual(expected,self.widths(),"PF23_LEGAL: every maximal pair of widths must be preserved")
+                              ^^^^^^^^^^^^^
+  File "/workspace/geometry-axiom/tests/test_panel_fill_support.py", line 34, in widths
+    d = d or self.derived()
+             ^^^^^^^^^^^^^^
+  File "/workspace/geometry-axiom/tests/test_panel_fill_support.py", line 29, in derived
+    self.assertIsInstance(d["effectiveSeams"], list, "PF3_EFFECTIVE_SEAMS_MISSING")
+AssertionError: None is not an instance of <class 'list'> : PF3_EFFECTIVE_SEAMS_MISSING
+
+----------------------------------------------------------------------
+Ran 1 test in 0.114s
+
+FAILED (failures=1)

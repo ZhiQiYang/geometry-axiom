@@ -1,0 +1,17 @@
+import hashlib,json,tarfile
+from pathlib import Path
+R=Path('/tmp/geometry-209-segments');E=R/'tests/evidence/pfh-p126-20261015'
+def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+m=json.loads((E/'final-manifest.json').read_text());assert set(m)=={str(p.relative_to(E)) for p in E.rglob('*') if p.is_file() and p.name!='final-manifest.json'}
+for p,row in m.items():assert sha(E/p)==row['sha256'] and (E/p).stat().st_size==row['bytes'],p
+r=json.loads((E/'native/native.json').read_text());assert r['exit']==0 and sha(E/'native/native-current-logs.tar.gz')==r['archiveSha256']
+with tarfile.open(E/'native/native-current-logs.tar.gz') as archive:
+ rows=json.loads((E/'native/native-log-manifest.json').read_text());assert set(archive.getnames())=={x['path'] for x in rows}
+ for x in rows:assert hashlib.sha256(archive.extractfile(x['path']).read()).hexdigest()==x['sha256']
+with tarfile.open(E/'native/tracked-snapshots.tar.gz') as archive:
+ a=json.load(archive.extractfile('tracked-before.json'));b=json.load(archive.extractfile('tracked-after.json'));assert a==b and len(a)==r['trackedRegularFiles']
+audit=json.loads((E/'source-audit.json').read_text())
+for p,row in audit['unchangedProductSources'].items():assert sha(R/p)==row['sha256'],p
+for p,digest in audit['protectedUnchanged'].items():assert sha(R/p)==digest,p
+assert sha(R/'geometry-guide/公理層-閱讀器.html')==audit['canonicalSha256']
+print(json.dumps(dict(files=len(m),logs=len(rows),tracked=len(a),sourceAndProtectedHashesVerified=True)))

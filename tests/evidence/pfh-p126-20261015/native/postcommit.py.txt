@@ -1,0 +1,11 @@
+import difflib,hashlib,json,subprocess
+from pathlib import Path
+R=Path('/tmp/geometry-209-segments');W=Path('/tmp/geometry-wake42');name='geometry-guide/公理層-閱讀器.html'
+head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=R,text=True).strip();assert not subprocess.check_output(['git','status','--porcelain'],cwd=R,text=True).strip()
+old=subprocess.check_output(['git','show','16ed25b8:'+name],cwd=R).decode();new=subprocess.check_output(['git','show',head+':'+name],cwd=R).decode()
+patch=''.join(difflib.unified_diff(old.splitlines(keepends=True),new.splitlines(keepends=True),fromfile='a/'+name,tofile='b/'+name));digest=hashlib.sha256(patch.encode()).hexdigest();assert digest=='296192fc7f0410bf4836e8fc768b9d812a482222bdf67593c7f1f3b65b69f8e1'
+assert (R/name).read_bytes()==new.encode()
+paths=[p for p in subprocess.check_output(['git','diff','--name-only','-z','16ed25b8',head],cwd=R).decode().split('\0') if p]
+assert all(p==name or p=='geometry-core/panel-fill/PFH-NATIVE.md' or p.startswith('tests/evidence/pfh-p126-20261015/') for p in paths),paths
+value=dict(head=head,comparedTo='16ed25b8a61d2de6e4d9c985087062ef674fc5de',generatedPatchSha256=digest,expectedPatchMatches=True,worktreeCanonicalMatchesCommitted=True,onlyAuthorizedPaths=True)
+(W/'postcommit.json').write_text(json.dumps(value,indent=2)+'\n');print(json.dumps(value))

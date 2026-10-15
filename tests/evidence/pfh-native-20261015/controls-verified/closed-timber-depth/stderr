@@ -1,0 +1,15 @@
+test_R41_layers_use_open_depth_intervals (tests.test_panel_fill_host.PanelFillHost.test_R41_layers_use_open_depth_intervals) ... 
+  test_R41_layers_use_open_depth_intervals (tests.test_panel_fill_host.PanelFillHost.test_R41_layers_use_open_depth_intervals) (depth=(0, 9)) ... FAIL
+
+======================================================================
+FAIL: test_R41_layers_use_open_depth_intervals (tests.test_panel_fill_host.PanelFillHost.test_R41_layers_use_open_depth_intervals) (depth=(0, 9))
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/geometry-wake41/controls-release-final/closed-timber-depth/source/tests/test_panel_fill_host.py", line 326, in test_R41_layers_use_open_depth_intervals
+    self.assertEqual(holes, len(host["derived"]["components"][0]["holes"]), "PFH_LAYER_OPEN: panel and timber layers differ at equal endpoints")
+AssertionError: 0 != 1 : PFH_LAYER_OPEN: panel and timber layers differ at equal endpoints
+
+----------------------------------------------------------------------
+Ran 1 test in 0.431s
+
+FAILED (failures=1)

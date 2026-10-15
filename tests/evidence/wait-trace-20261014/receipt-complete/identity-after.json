@@ -1,0 +1,22 @@
+{
+  "head": "ab16e22e5e5e7e4638f051d4dfbed8dc09da22a6",
+  "sources": {
+    ".github/workflows/integration-tests.yml": "c2b0bf7c72bf879267ffa4947a3a0da1139bfa67733802f1c914267ded3fb57b",
+    "geometry-web/serve.py": "097b9e281036db5ef9a6da0f55736812c99f52cad2540541be5dbeeda32feb43",
+    "geometry-web/wait_trace.py": "e771d2e5658e97ff9723aeb15aaa78e4e094ef5cdfa4891ea2e3d6f0de1263ef",
+    "geometry-web/cdp_test.js": "4bc03003b16701965b8ba9e85c030c986465f647c70fb82edc92cda3e4515cf5",
+    "geometry-web/transport_failure_trace.js": "23ddb860213285cb6ab900c10a7009ce4e225bad24898d88836657e7d381e8f4",
+    "geometry-web/docs/WAIT-TRACE.md": "68718e9e9c09efdad60909d552376405825d0a11b689114e727e2657bfd5b0ea",
+    "tests/test_wait_trace.py": "53bf8759f9897f2ae1d1a7ccc31cfb2505de50b6e663834de56e5b5feabe87ae",
+    "tests/test_transport_failure_trace.js": "e4c4ec7f9dc47673b5d0aae4fac4b95c120274c3279bc806b97366ffecd7e341",
+    "tests/run_all.py": "0f2372801da56ead2fb2238a19dbb19061a33d828aaba557a00f1c26856ba86c",
+    "tests/run_all.expected.json": "867013fca7572dcb10468a491a239ece23e69b78fe633f46fce343453a1c6aa8"
+  },
+  "binaries": {
+    "model-base": "0bfb3ba84a16a9a6999d0a9cbbd87071a877522466197e5ce432f87e5aa45ec5",
+    "integrity": "97edf6bda2215b418c6c79094ff96951548180df3cd3fc13c6f453316c226283",
+    "engineering-json-test": "d13ffc152acea10c4afe687b182e0fb18dbec461ba19db1dc1363e0001598783",
+    "core": "6b07de40b0e75d7123272b78aac64c027218b66d0c2ce34718ce87ad6b29dbab",
+    "bridge": "a23173bb707e0902f2ddf5f8a16627e8c5b8c21b6d235d9975bb015d00b7e94f"
+  }
+}
