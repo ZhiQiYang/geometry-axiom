@@ -217,6 +217,15 @@ class PanelFillHost(unittest.TestCase):
                      "surface 10 origin 0 0 9 u +x v +y outline 0,0 1000,0 1000,300 0,300"]:
             before=self.snapshot();self.assertFalse(self.command("line "+line)["ok"]);self.assertEqual(before,self.snapshot())
 
+    def test_D4_zero_id_uses_the_same_placement_identity_space(self):
+        self.region();self.apply([dict(op="delete-derived-placement",id=10)])
+        self.apply([dict(op="put-derived-placement",value=dict(id=0,fillId=1,h=30))])
+        self.assertTrue(self.command("line timber 1 10 30 role boundary")["ok"])
+        reply=self.command("line place 1 on 0 at-face "+self.key([["e0",0,1]])+" +u +n")
+        self.assertTrue(reply["ok"],reply)
+        text=self.command("dump")["text"];self.load_text(text,"zero.scene")
+        self.assertEqual(text,self.command("dump")["text"])
+
     def region(self, outline="0,0 100,0 100,100 0,100", extra="", obstacles=None, side=1):
         self.seed(width=915, length=1830, outline=outline, extra=extra, obstacles=obstacles or [])
         if side != 1:

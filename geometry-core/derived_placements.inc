@@ -5,7 +5,7 @@ static const DerivedPlacement *dp_find(const World *w,uint32_t id)
 static bool dp_parse(EngJson *j,int t,DerivedPlacement *p)
 {
     memset(p,0,sizeof *p);int h=eng_json_member(j,t,"h");
-    if(!eng_json_keys(j,t,"id,fillId,h","")||!eng_u32(j,eng_json_member(j,t,"id"),&p->id,true)||
+    if(!eng_json_keys(j,t,"id,fillId,h","")||!eng_u32(j,eng_json_member(j,t,"id"),&p->id,false)||
        !eng_u32(j,eng_json_member(j,t,"fillId"),&p->fill_id,true))return fs_error("D4: host requires id, fillId and a typed h source");
     if(eng_json_integer(j,h,&p->h.value))p->h.kind=ENG_LITERAL;
     else if(!eng_source_parse(j,h,&p->h,false))return false;
@@ -16,7 +16,7 @@ static bool dp_parse(EngJson *j,int t,DerivedPlacement *p)
 static bool dp_operation(World *w,EngJson *j,int t,bool remove)
 {
     DerivedPlacement d;uint32_t id;FinishSurfaceState *s=&w->finish_surfaces;
-    if(remove){if(!eng_json_keys(j,t,"op,id","")||!eng_u32(j,eng_json_member(j,t,"id"),&id,true))return fs_error("D4: delete-derived-placement needs id");}
+    if(remove){if(!eng_json_keys(j,t,"op,id","")||!eng_u32(j,eng_json_member(j,t,"id"),&id,false))return fs_error("D4: delete-derived-placement needs id");}
     else {if(!eng_json_keys(j,t,"op,value","")||!dp_parse(j,eng_json_member(j,t,"value"),&d))return false;id=d.id;}
     size_t i=0;while(i<s->host_count&&s->hosts[i].id!=id)++i;
     const PlacementSurface *old=world_find_placement(w,id);
@@ -161,7 +161,7 @@ static bool dp_edge_resolve(const World *w,const PlacementSurface *p,const char 
     for(size_t c=0;c<p->component_count;++c){const SpaceBoundarySurface *b=&p->components[c];for(size_t h=0;h<=b->hole_count;++h){const PolygonLoop2 *l=h?&b->holes[h-1]:&b->outline;
         for(size_t e=0;e<l->count;++e){if(!dp_edge_key(w,p,c,h?(int)h-1:-1,e,candidate,sizeof candidate))return false;
             if(!strcmp(key,candidate)){++matches;*hole=h?(int)(c*POLY_MAX_HOLES+h-1):-1;*edge=h?(int)e:(int)(c*POLY_MAX_VERTICES+e);}}}}
-    return matches==1;
+    return matches==1||fs_error("R41: key %.160s matches %zu derived edges; exactly one is required",key,matches);
 }
 static void dp_dump(const World *w,FILE *out)
 {for(uint64_t i=0;i<w->finish_surfaces.host_count;++i){const DerivedPlacement *p=&w->finish_surfaces.hosts[i];fprintf(out,"derived-placement %u definition-hex ",p->id);for(const unsigned char *c=(const unsigned char*)p->definition;*c;++c)fprintf(out,"%02x",*c);fputc('\n',out);}}

@@ -397,7 +397,8 @@ static bool reference_place_geometry(World *w, size_t ti)
             PolygonLoop2 rect; const PolygonLoop2 *loop;
             int hole=a->ref_hole,edge=a->ref_edge;
             if(p->derived_fill_id){
-                if(!a->ref_derived_key[0]||!dp_edge_resolve(w,p,a->ref_derived_key,&hole,&edge))return reference_issue(t->id,"R41/I13","one exact source/segment/total key","derived edge key is missing, stale or ambiguous");
+                if(!a->ref_derived_key[0])return reference_issue(t->id,"R41/I13","one exact source/segment/total key","derived edge index aliases are forbidden; an exact key is required");
+                if(!dp_edge_resolve(w,p,a->ref_derived_key,&hole,&edge))return reference_issue(t->id,"R41/I13","one exact source/segment/total key",g_engineering_error);
                 size_t component=hole<0?(size_t)edge/POLY_MAX_VERTICES:(size_t)hole/POLY_MAX_HOLES;
                 b=&p->components[component];if(hole<0)edge%=POLY_MAX_VERTICES;else hole%=POLY_MAX_HOLES;
             } else if(a->ref_derived_key[0])return reference_issue(t->id,"D4/R41","derived placement for edge key","key on ordinary placement");
