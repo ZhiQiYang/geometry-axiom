@@ -176,7 +176,7 @@
     },
     "py:test_assembly_rules": {
       "mode": "count",
-      "count": 35,
+      "count": 36,
       "unit": "test"
     },
     "py:test_axiom_reader": {
@@ -296,8 +296,8 @@
     },
     "py:test_mutation_freshness": {
       "mode": "count",
-      "count": 24,
-      "unit": "test"
+      "unit": "test",
+      "count": 32
     },
     "py:test_panel_fill_finish_surface": {
       "mode": "count",
@@ -321,7 +321,7 @@
     },
     "py:test_parameters_core": {
       "mode": "count",
-      "count": 20,
+      "count": 40,
       "unit": "test"
     },
     "py:test_reference_contract": {
@@ -391,7 +391,7 @@
     },
     "py:test_section_profile_native": {
       "mode": "count",
-      "count": 27,
+      "count": 28,
       "unit": "test"
     },
     "py:test_serve": {
@@ -442,6 +442,41 @@
     "py:test_witness_marks": {
       "mode": "count",
       "count": 6,
+      "unit": "test"
+    },
+    "py:test_parameter_netzero": {
+      "mode": "count",
+      "count": 4,
+      "unit": "test"
+    },
+    "py:test_parameter_retirement_scope": {
+      "mode": "count",
+      "count": 6,
+      "unit": "test"
+    },
+    "py:test_parameters_candidate_value_history": {
+      "mode": "count",
+      "count": 12,
+      "unit": "test"
+    },
+    "py:test_parameters_deleted_unbind": {
+      "mode": "count",
+      "count": 14,
+      "unit": "test"
+    },
+    "py:test_parameters_final_candidate": {
+      "mode": "count",
+      "count": 4,
+      "unit": "test"
+    },
+    "py:test_parameters_unbind_scope": {
+      "mode": "count",
+      "count": 8,
+      "unit": "test"
+    },
+    "py:test_parameters_upstream_unbind": {
+      "mode": "count",
+      "count": 12,
       "unit": "test"
     }
   }
