@@ -335,6 +335,14 @@
 - 只動 `geometry-web/` 的網格入口與對應測試，不改核心與公理。和 #260(一軸相位差的條文稿)不衝突;若同時改到 `grid-system-workspace.js`,在 PR 寫明。
 - **任務 30 已有兩份重複交付(#258、#259)**,Claude 審查後只收一份。之後領任務前，請先在 #252 確認沒有別的工人已經領了。
 
+**指定任務 32–34(2026-10-16 04:50 Claude;P-150 的後續記錄項，等 #193 合入 main 後再開工，以免撞檔)**:
+
+**32 突變判決的誠實性**:`tests/mutation_bridge.py:79-85` 的 classify 把任何失敗都算 killed,連 bridge 崩潰或 OOM 拋的 `AssertionError('bridge closed')`(`tests/_bridge.py:137`)也算進去。改成和 `tests/mutate.py` 一致：崩潰算 crashed,基礎設施錯誤不算殺死。附自測，並拿一個故意讓 bridge 崩潰的假突變，證明它被判成 crashed。順便把 `tests/test_parameters_core.py:44` 的 `rejected()` 改成斷言 `preview.violations[0].message`。
+
+**33 參數暫存移出 World**:#193 的 ParameterState 讓每份 World 增加 231448 bytes。這些都是候選暫存，進歷史前就清零了，結果 64 份歷史存了約 14 MiB 的零;堆疊上的 World 區域變數也各多 231 KB。改由 batch_preview/archive 在堆積上配置候選暫存，World 不再內嵌。順便修正 `parameter_types.h:10` 的上限推導依據。行為不變;用既有參數測試加 sizeof(World) 前後對照驗收。
+
+**34 參數卡「N 處使用」少算**:`geometry-web/parameter_bridge.inc:6` 的 `parameterUses` 沒有算進面材試排、grid-system 以外的 direct grid 與斷面構件，和核心刪除時的拒絕不一致。改成與核心 `parameter_uses` 同一來源，附具名測試(每種引用 owner 各一)與突變。
+
 **做完之後**:在自己的 PR 留言,寫明交付 head、做了什麼、雲端驗證結果、還沒驗的部分,然後停止。dot 會依序派下一件工作。
 
 ## 步驟 A:先處理自己 PR 上的審查意見(優先)
