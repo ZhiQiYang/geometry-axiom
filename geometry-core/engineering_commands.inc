@@ -20,11 +20,11 @@ static bool eng_operation(World *w,EngJson *j,int t)
         EngDimensionSource *sources[2]={&resolved.source,&resolved.override_value};
         for(size_t i=0;i<(b->has_override?2u:1u);++i){
             EngDimensionSource *source=sources[i];if(source->kind!=ENG_PARAMETER)continue;
-            if(parameter_find(w,source->parameter.parameter_id))refs[ref_count++]=source->parameter;
-            else{
-                if(!parameter_deleted_coord(w,source->parameter,&source->value))return eng_fail(g_parameter_error);
+            unsigned generation;
+            if(parameter_unbind_generation(w,source->parameter,parameter_engineering_owner(&target),target.id,parameter_engineering_slot(&target,(int)i),&generation)){
+                if(!parameter_deleted_coord(w,source->parameter,generation,&source->value))return eng_fail(g_parameter_error);
                 source->kind=ENG_LITERAL;  /* local resolution only; never rewrite the formal binding */
-            }
+            }else refs[ref_count++]=source->parameter;
         }
         char error[512]="";if(!parameters_evaluate_refs(w,refs,ref_count,error,sizeof error))return eng_fail(error);if(!eng_effective(w,&resolved,&value,NULL,0))return false;
         if(target.kind){int i=reference_timber_index(w,target.id);if(target.field)w->timbers[i].size_b=value;else w->timbers[i].size_a=value;}
@@ -52,11 +52,11 @@ static bool eng_operation(World *w,EngJson *j,int t)
         if (!eng_json_keys(j,t,override?"op,target,value":"op,target,source","") || !eng_target_parse(j,eng_json_member(j,t,"target"),&target)) return eng_fail("I35: invalid source/override operation");
         uint32_t pid; int role; if (!eng_target_context(w,&target,&pid,&role)) return false;
         if (target.kind) { int i=reference_timber_index(w,target.id); if (!w->timbers[i].placed) return eng_fail("D28: bind only an already placed timber"); }
-        if (!override) { EngDimensionSource source; if (!eng_source_parse(j,eng_json_member(j,t,"source"),&source,true)) return false; return eng_bind(w,&target,&source); }
+        if (!override) { EngDimensionSource source; if (!eng_source_parse(j,eng_json_member(j,t,"source"),&source,true)) return false; if(!eng_bind(w,&target,&source))return false;return parameter_declare(w,parameter_engineering_owner(&target),target.id,parameter_engineering_slot(&target,0)); }
         EngBinding *b=eng_binding(w,&target); if (!b) return eng_fail("D28: object override requires an explicit source binding");
         int value=eng_json_member(j,t,"value");
-        if (eng_json_is_null(j,value)) { b->has_override=false; memset(&b->override_value,0,sizeof b->override_value); return true; }
-        if (!eng_source_parse(j,value,&b->override_value,false)) return false; b->has_override=true; return true;
+        if (eng_json_is_null(j,value)) { b->has_override=false; memset(&b->override_value,0,sizeof b->override_value); return parameter_declare(w,parameter_engineering_owner(&target),target.id,parameter_engineering_slot(&target,1)); }
+        if (!eng_source_parse(j,value,&b->override_value,false)) return false; b->has_override=true; return parameter_declare(w,parameter_engineering_owner(&target),target.id,parameter_engineering_slot(&target,1));
     }
     if (!strcmp(op,"bind-grid") || !strcmp(op,"bind-timber")) {
         bool grid=!strcmp(op,"bind-grid"); uint32_t id; char appid[ENG_ID_MAX];
@@ -170,7 +170,7 @@ static bool apply_engineering_line(const char *path,int line_no,char **tokens,in
     else if(!strcmp(tokens[1],"grid"))ok=eng_restore_grid(w,&j,0);
     else if(!strcmp(tokens[1],"timber"))ok=eng_restore_timber(w,&j,0);
     else if(!strcmp(tokens[1],"archive")){
-        ok=eng_operation(w,&j,0);
+        parameters_begin_candidate(w);ok=eng_operation(w,&j,0);
         if(ok&&!parameter_retirements_valid(w))ok=eng_fail(g_parameter_error);
         parameters_clear_candidate_scratch(w);
         /* I8/I38: the interactive archive entry is one complete candidate.

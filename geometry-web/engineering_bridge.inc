@@ -100,7 +100,7 @@ static void batch_preview(const char *path,const char *schema_name,const char *s
     }
     if((uint64_t)revision!=g_definition_revision){eng_bridge_error("STALE",stale_message);eng_json_free(&j);free(text);return;}
     int count=eng_json_size(&j,operations);if(count<1||count>ENG_OPERATION_MAX){eng_bridge_error("CAPACITY","Transaction needs 1..256 operations");eng_json_free(&j);free(text);return;}
-    World *candidate=malloc(sizeof *candidate);if(!candidate){eng_bridge_error("MEMORY",memory_message);eng_json_free(&j);free(text);return;}*candidate=g_world;
+    World *candidate=malloc(sizeof *candidate);if(!candidate){eng_bridge_error("MEMORY",memory_message);eng_json_free(&j);free(text);return;}*candidate=g_world;parameters_begin_candidate(candidate);
     g_engineering_error[0]=0;g_scene_last_error[0]=0;g_reference_issue_count=0;bool ok=true;
     g_deleted_field_count=0;g_deleted_fields_token=0;
     for(int i=0;i<count&&ok;++i){

@@ -255,8 +255,8 @@ class ParametersCore(unittest.TestCase):
                       "parameter 8 field 1; parameter 9 field 1; parameter 10 field 1 and 1 more; unbind or repoint them")
 
     def test_delete_then_import_or_redeclare_keeps_the_deletion_receipt(self):
-        # P-117: automatic import must not silently retarget an existing reference.
-        # P-111: explicitly rebuilding a key remains legal and retains its deletion receipt.
+        # P-122: imports may reuse the deleted key under R53; I38 protects old references.
+        # P-121: an explicit put likewise needs the referrer redeclared after deletion.
         # K3's enabled incarnation allocator is not implemented by this parameter test harness.
         self.apply([card(0, "來源", [field(1, "915")]), card(1, "引用者", [field(1, "=@0:1 + 1 mm")])])
         package = {"schema": "geometry-parameters/1", "cards": [{"id": 7, "name": "外來", "fields": [
@@ -278,7 +278,8 @@ class ParametersCore(unittest.TestCase):
         self.assertEqual(before_dump, self.command("dump")["text"])
         self.assertEqual(revision, self.read()["revision"])
         self.assertEqual(before, self.values())
-        _, receipt = self.apply([{"op": "delete-parameter", "id": 0}, card(0, "換人", [field(1, "3")])])
+        _, receipt = self.apply([{"op": "delete-parameter", "id": 0}, card(0, "換人", [field(1, "3")]),
+                                 card(1, "引用者", [field(1, "=@0:1 + 1 mm")])])
         self.assertEqual(deleted, receipt["deletedObjects"])
         self.assertEqual("3", self.values()[0, 1]["num"])
         self.assertEqual("4", self.values()[1, 1]["num"])
@@ -289,10 +290,116 @@ class ParametersCore(unittest.TestCase):
         _, receipt = self.apply([{"op": "delete-parameter", "id": 2}, {"op": "import-parameters", "value": package}])
         self.assertEqual(deleted, receipt["deletedObjects"])
         ids = sorted(c["id"] for c in self.read()["state"]["parameters"])
-        self.assertEqual([0, 1, 3], ids, "import reused the key retired in this candidate")
-        self.apply([{"op": "delete-parameter", "id": 3}])
+        self.assertEqual([0, 1, 2], ids, "R53 must allocate the first unused candidate key, including deleted key 2")
+        self.apply([{"op": "delete-parameter", "id": 2}])
         self.apply([card(2, "再宣告", [field(1, "1")])])
         self.assertEqual([0, 1, 2], sorted(c["id"] for c in self.read()["state"]["parameters"]))
+
+    def test_referenced_card_rebuild_without_referrer_declaration_rejects(self):
+        self.apply([card(0, "來源", [field(1, "27")]), card(1, "引用者", [field(1, "=@0:1")])])
+        before = self.command("dump")["text"]
+        revision = self.read()["revision"]
+        result = self.request([{"op": "delete-parameter", "id": 0}, card(0, "新存在期", [field(1, "29")])])
+        self.assertTrue(result["ok"], result)
+        self.assertFalse(result["preview"]["valid"],
+                         "被引用的卡經刪除重建而未處理引用: " + json.dumps(result, ensure_ascii=False))
+        self.assertIn("I38 MISSING", json.dumps(result))
+        self.assertIn("parameter 0 is still referenced by parameter 1 field 1", json.dumps(result))
+        self.assertFalse(self.command(f'engineering-confirm {result["preview"]["token"]}')["ok"])
+        self.assertEqual(before, self.command("dump")["text"])
+        self.assertEqual(revision, self.read()["revision"])
+
+    def test_referrer_must_be_declared_after_the_last_card_deletion(self):
+        source = card(0, "來源", [field(1, "27")])
+        owner = card(1, "引用者", [field(1, "=@0:1")])
+        delete = {"op": "delete-parameter", "id": 0}
+        rebuild = card(0, "新存在期", [field(1, "29")])
+        self.apply([source, owner])
+        self.rejected([owner, delete, rebuild], "parameter 1 field 1")
+        self.rejected([delete, rebuild, owner, delete, rebuild], "parameter 1 field 1")
+        for operations in ([delete, rebuild, owner], [delete, owner, rebuild],
+                           [delete, rebuild, owner, delete, rebuild, owner]):
+            with self.subTest(operations=operations):
+                before = self.command("dump")["text"]
+                _, receipt = self.apply(operations)
+                self.assertEqual("29", self.values()[1, 1]["num"])
+                self.assertEqual([{"kind": "parameter-field", "parameterId": 0, "fieldId": 1}], receipt["deletedObjects"])
+                self.apply_line("undo")
+                self.assertEqual(before, self.command("dump")["text"])
+
+    def test_referenced_field_omission_and_rebuild_requires_declaration(self):
+        source = card(0, "來源", [field(1, "27"), field(2, "33")])
+        owner = card(1, "引用者", [field(1, "=@0:1")])
+        omit = card(0, "來源", [field(2, "33")])
+        self.apply([source, owner])
+        result = self.request([omit, source])
+        self.assertTrue(result["ok"], result)
+        self.assertFalse(result["preview"]["valid"],
+                         "被引用的欄位經省略重建而未處理引用: " + json.dumps(result, ensure_ascii=False))
+        self.assertIn("parameter 1 field 1", json.dumps(result))
+        self.assertFalse(self.command(f'engineering-confirm {result["preview"]["token"]}')["ok"])
+        self.rejected([omit, source, owner, omit, source], "parameter 1 field 1")
+        _, receipt = self.apply([omit, source, owner])
+        self.assertEqual([{"kind": "parameter-field", "parameterId": 0, "fieldId": 1}], receipt["deletedObjects"])
+        self.assertEqual("27", self.values()[1, 1]["num"])
+
+    def test_deletion_tracking_does_not_retire_retained_or_future_fields(self):
+        self.apply([card(0, "來源", [field(1, "27"), field(2, "33")]),
+                    card(1, "保留欄引用者", [field(1, "=@0:2")])])
+        self.apply([card(0, "來源", [field(2, "33")])])
+        self.assertEqual("33", self.values()[1, 1]["num"])
+        # A never-existing field is not ended by deleting a different field/card.
+        self.apply([card(2, "新欄引用者", [field(1, "=@0:3")]),
+                    {"op": "delete-parameter", "id": 0},
+                    card(0, "重建來源", [field(3, "41")]),
+                    card(1, "改為直接值", [field(1, "33")])])
+        self.assertEqual("41", self.values()[2, 1]["num"])
+
+    def test_engineering_base_and_override_declarations_are_independent(self):
+        self.seed_native_block_world()
+        target = {"kind": "timber", "id": 10, "field": "A"}
+        source = {"kind": "parameter", "parameterId": 1, "fieldId": 1}
+        base = {"op": "set-source", "target": target, "source": source}
+        override = {"op": "set-override", "target": target, "value": source}
+        self.apply([override])
+        deleted = [{"op": "delete-parameter", "id": 1}, card()]
+        self.rejected(deleted + [base], "timber 10 A override")
+        self.rejected(deleted + [override], "timber 10 A")
+        self.apply(deleted + [base, override])
+        self.assertEqual("915", self.values()[1, 1]["num"])
+
+    def test_explicit_unbind_preserves_the_ended_generation_after_rebuild(self):
+        self.seed_native_block_world()
+        target = {"kind": "timber", "id": 10, "field": "A"}
+        delete = {"op": "delete-parameter", "id": 1}
+        rebuild = card(1, "新來源", [field(1, "920"), field(2, "1830")])
+        unbind = {"op": "unbind-source", "target": target}
+        for operations in ([delete, rebuild, unbind], [delete, rebuild, delete, rebuild, unbind]):
+            with self.subTest(operations=operations):
+                before = self.command("dump")["text"]
+                self.apply(operations)
+                self.assertIn("timber 10 915 33", self.command("dump")["text"])
+                self.apply_line("undo")
+                self.assertEqual(before, self.command("dump")["text"])
+        rebind = {"op": "set-source", "target": target,
+                  "source": {"kind": "parameter", "parameterId": 1, "fieldId": 1}}
+        self.apply([delete, rebuild, rebind, delete,
+                    card(1, "第三來源", [field(1, "925"), field(2, "1830")]), unbind])
+        self.assertIn("timber 10 920 33", self.command("dump")["text"])
+
+    def test_deleted_value_capture_does_not_follow_an_unacknowledged_rebuild(self):
+        self.apply([card(0, "上游", [field(1, "27")]), card(1, "來源", [field(1, "=@0:1")])])
+        self.apply_line("timber 10 27 33 role boundary")
+        self.apply_line("place 10 on 1 at-face e0 +u +n")
+        target = {"kind": "timber", "id": 10, "field": "A"}
+        self.apply([{"op": "set-source", "target": target,
+                     "source": {"kind": "parameter", "parameterId": 1, "fieldId": 1}}])
+        operations = [{"op": "delete-parameter", "id": 0}, card(0, "新上游", [field(1, "29")])]
+        self.rejected(operations + [{"op": "unbind-source", "target": target},
+                                   {"op": "delete-parameter", "id": 1}], "parameter 1 field 1")
+        self.apply(operations + [{"op": "delete-parameter", "id": 1},
+                                 {"op": "unbind-source", "target": target}])
+        self.assertIn("timber 10 27 33", self.command("dump")["text"])
 
     def archive_line(self, operation):
         """The DSL entry that dispatches an arbitrary engineering operation without engineering-preview."""

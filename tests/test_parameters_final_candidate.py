@@ -76,10 +76,10 @@ class ParameterDeleteOrder(unittest.TestCase):
                 self.assert_deleted_fields(1, 2)
                 self.apply_line("undo")
                 self.assertEqual(before, self.command("dump")["text"])
-        # P-117: core-assigned imports skip keys retired in this candidate.
+        # R53/P-122: deleted keys are unused; imports allocate 0, 1, 2.
         self.atomic_preview_and_confirm(operations + [self.independent_import()])
-        self.assertEqual([0, 3, 4], [c["id"] for c in self.read()["state"]["parameters"]])
-        self.assertEqual({(0, 1), (3, 1), (4, 1)}, set(self.values()))
+        self.assertEqual([0, 1, 2], [c["id"] for c in self.read()["state"]["parameters"]])
+        self.assertEqual({(0, 1), (1, 1), (2, 1)}, set(self.values()))
         self.assert_deleted_fields(1, 2)
 
     def test_delete_source_then_dependent_uses_complete_candidate(self):
@@ -112,7 +112,7 @@ class ParameterDeleteOrder(unittest.TestCase):
                 self.assertEqual(before, self.command("dump")["text"])
                 self.atomic_preview_and_confirm(operations + [self.independent_import()])
                 ids = [c["id"] for c in self.read()["state"]["parameters"]]
-                self.assertEqual([0, 2, 3, 4], sorted(ids))
+                self.assertEqual([0, 1, 2, 3], sorted(ids))
                 self.assertEqual("3", self.values()[0, 1]["num"])
                 self.assertEqual("9", self.values()[2, 1]["num"])
                 self.assert_deleted_fields(1)
@@ -148,7 +148,8 @@ class ParameterDeleteOrder(unittest.TestCase):
                                 ([field(1, "1", "ratio")], "UNIT")]:
             with self.subTest(rebuilt_invalid_source=message):
                 self.rejected([{"op": "delete-parameter", "id": 1},
-                               card(1, "rebuilt invalid source", fields)], message)
+                               card(1, "rebuilt invalid source", fields),
+                               card(2, "explicitly redeclared dependent", [field(1, "=@1:1 + 1 mm")])], message)
                 self.assertEqual(revision, self.read()["revision"])
         self.apply_line("redo")
         self.assertEqual(redo_world, self.command("dump")["text"], "invalid candidate destroyed redo")
