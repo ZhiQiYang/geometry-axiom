@@ -1,0 +1,26 @@
+AssertionError [ERR_ASSERTION]: GEO263_STAGGER_LOST: rename must preserve value and every ParameterRef
++ actual - expected
+... Skipped lines
+
+  {
+    parameterRefs: {
+      phase: {
+        fieldId: 2,
+        kind: 'parameter',
+...
+    source: 'repeat',
+-   stagger: -250,
+    step: 600
+  }
+
+    at /workspace/scratch/05f2f1cc1aef/task31/geometry-web/grid_inspector_stagger_test.cjs:82:16
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async check (/workspace/scratch/05f2f1cc1aef/task31/geometry-web/grid_inspector_stagger_test.cjs:71:34)
+    at async run (/workspace/scratch/05f2f1cc1aef/task31/geometry-web/grid_inspector_stagger_test.cjs:80:7) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: [Object],
+  expected: [Object],
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
