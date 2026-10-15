@@ -1,4 +1,4 @@
-"""Real JS archive guard mutations; every row runs the actual six Node tests."""
+"""Real JS archive guard mutations; every row runs the actual Node archive suite."""
 from pathlib import Path
 import argparse
 import hashlib
@@ -15,6 +15,7 @@ MUTATIONS=[
     ('A03-source-markers', [('if (usesCard && (!declared.has(CARD_CAPABILITY) || !declared.has(PARAMETER_CAPABILITY)))', 'if (false)')]),
     ('A04-reader', [('SECTION_CAPABILITY,CARD_CAPABILITY].includes(capability)', 'SECTION_CAPABILITY].includes(capability)')]),
     ('A05-version', [('const CARD_FORMAT = "geometry-canvas/18"', 'const CARD_FORMAT = "geometry-canvas/6"')]),
+    ('A06-nested', [('if(manifest.scenarioCatalog?.scenarios.some(s=>projectCapabilities(s.snapshot.projectManifest,s.snapshot.worldScene).includes(CARD_CAPABILITY)))', 'if(false)')]),
 ]
 
 
@@ -46,7 +47,7 @@ def main(out):
             row={'id':name,'patches':patches,'mutant_sha256':hashlib.sha256(text.encode()).hexdigest(),'red':red,'restored':green}
             expected={'A01-format':'CR20 NO_SILENT_DOWNGRADE','A02-manifest':'CR20 manifest capability',
                       'A03-source-markers':'CR20 manifest capability','A04-reader':'CR20 reader',
-                      'A05-version':'CR19 CARD_SAVE_ROUNDTRIP'}[name]
+                      'A05-version':'CR19 CARD_SAVE_ROUNDTRIP','A06-nested':'CR19 snapshot-only'}[name]
             row['verdict']='killed' if red['exit_code']==1 and red['failures'] and red['skips']==0 and green['exit_code']==0 and any(expected in n for n in red['failed_names']) else 'NOT_KILLED'
             report['mutants'].append(row);(out/'report.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
             print(name,row['verdict'],flush=True)

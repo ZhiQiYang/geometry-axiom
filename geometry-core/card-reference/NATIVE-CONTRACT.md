@@ -38,6 +38,7 @@ put-grid-system 是完整宣告，包含其他維持不變的軸設定；不補 
 已有整卡時，完整宣告若改成直接／逐欄而未先明示整組解除，亦拒絕同值 token，不能暗拆。
 明確重新宣告整卡來源使用獨立的 PARAM_OWNER_GRID_CARD；只對調／改綁整卡不會替其他逐欄來源蓋章。
 完整 put-grid-system 另對其實際宣告的逐欄來源記錄宣告。沿用 #193 的最後欄位刪除序列與每一引用者判斷，不更改匯入配號。
+轉成逐欄也明確宣告兩個新 ParameterRef：ordinary grid-system owner 的 slot 0 表示完整軸宣告，slot `axis*6+field+1` 只表示指定槽（field 次序 phase/step/panel/gap/anchor/stagger）。刪卡重建後的整組轉逐欄因此合法；它不會順帶處理原有 phase/gap/anchor 等其他引用。
 
 direct 解除只在該有序步驟依原生參數 evaluator 重算必要欄位並驗整卡；缺失／刪除／不合法來源拒絕。
 不讀畫面鏡像、正式舊 World、刪除值快取或後續卡片修改。
@@ -53,6 +54,7 @@ parameterUses 回一個 kind=grid-card-reference 的使用單位，內有兩條 
 
 完整專案分配 `geometry-canvas/18`，沿用 /17 的全部附件政策，只在整卡資料需要時提升；/1–17 原義保持。
 world.scene 與 manifest.requiredCapabilities 兩處都須保留 grid-card-reference/1、parameters/1。
+只存在於方案快照的整卡來源亦向根專案傳遞兩項能力並使用 /18；既有隔離驗證器的有限能力白名單同步識別此能力，仍拒絕未知版本。
 JSON 模型包仍使用 geometry-model-package/1，新增明示能力；完整 canonical base_scene 保存來源、映射及卡片傳遞依賴。
 依 P-133，幾何走訪不必列網格；model_base.c 只新增能力序列化，沒有修改幾何依賴折疊。
 verify_package 仍從來源重算幾何及摘要；不得輸出兩個常數或兩份 ParameterRef 代替 CardReference。

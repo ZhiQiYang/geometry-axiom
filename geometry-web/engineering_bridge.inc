@@ -97,7 +97,10 @@ static void json_parameter_rebindings(void)
             if(d->at<=r->at||!parameter_declared_owner_present(&g_preview.after,d)||(!parameter_declared_owner_uses(&g_preview.before,d,r->parameter_id,r->field_id)&&!parameter_declared_owner_uses(&g_preview.after,d,r->parameter_id,r->field_id)))continue;
             const char *kind=NULL;char label[160],message[320];
             switch(d->kind){
-            case PARAM_OWNER_GRID_CARD:case PARAM_OWNER_GRID_SYSTEM:kind="grid-system";snprintf(label,sizeof label,"網格整卡來源 %u",d->id);break;
+            case PARAM_OWNER_GRID_CARD:kind="grid-system";snprintf(label,sizeof label,"網格整卡來源 %u",d->id);break;
+            case PARAM_OWNER_GRID_SYSTEM:kind="grid-system";
+                if(d->slot){const char *fields[]={"phase","step","panel","gap","anchor","stagger"};snprintf(label,sizeof label,"網格 %u %c.%s 來源",d->id,(d->slot-1)/6?'v':'u',fields[(d->slot-1)%6]);}
+                else snprintf(label,sizeof label,"網格 %u 完整軸來源",d->id);break;
             case PARAM_OWNER_CARD:kind="parameter";snprintf(label,sizeof label,"參數卡片 %u",d->id);break;
             case PARAM_OWNER_ENG_GRID:kind="grid";snprintf(label,sizeof label,"網格 %u %c.%s%s",d->id,(d->slot%4)/2?'v':'u',d->slot%2?"gap":"panel",d->slot>=4?" 覆寫":" 來源");break;
             case PARAM_OWNER_ENG_TIMBER:kind="timber";snprintf(label,sizeof label,"角材 %u %c%s",d->id,d->slot%2?'B':'A',d->slot>=4?" 覆寫":" 來源");break;

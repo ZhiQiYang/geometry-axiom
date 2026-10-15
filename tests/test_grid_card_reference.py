@@ -228,6 +228,12 @@ class GridCardReference(unittest.TestCase):
         self.assertEqual((12, 30), self.lengths(), 'EXPLICIT_UNBIND must not capture future value')
         self.apply([{'op': 'set-grid-card-reference', 'id': 4, 'value': source()}])
         self.reject([{'op': 'delete-parameter', 'id': 10}, unbind(), parameter(extras=[field(9, '3')])], 'MISSING', 'EXPLICIT_UNBIND cannot borrow future/deleted sources')
+        self.apply([grid()])
+        preview, _ = self.apply([{'op': 'delete-parameter', 'id': 10}, parameter(extras=[field(9, '3')]), unbind('parameter')])
+        self.assertNotIn('cardReference', self.systems()[4], 'EXPLICIT_UNBIND new field refs are explicit post-delete declarations')
+        self.assertEqual({2, 8}, {r['owner']['slot'] for r in preview['preview']['redeclaredReferences'] if r['owner']['kind'] == 'grid-system' and r['owner']['slot']}, 'EXPLICIT_UNBIND declares only both length slots')
+        self.apply([{'op': 'set-grid-card-reference', 'id': 4, 'value': source()}, grid(u='repeat param:10:9 card')])
+        self.reject([{'op': 'delete-parameter', 'id': 10}, parameter(extras=[field(9, '3')]), unbind('parameter')], 'u phase', 'EXPLICIT_UNBIND must not redeclare unrelated references')
 
     def test_CR14_MODE_TRANSITION(self):
         self.seed(); self.apply([grid(v='repeat-panel card gap 3 from 7')]); self.assertEqual((12, 30), self.lengths())

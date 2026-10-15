@@ -456,7 +456,7 @@ static size_t parameter_uses(const World *w,uint32_t id,uint32_t field,Parameter
     for(size_t i=0;i<w->grid_system_count;++i){const GridSystem *s=&w->grid_systems[i];const GridCardReference *r=&s->card_reference;
         if(r->set&&r->parameter_id==id&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GRID_CARD,s->id,0))for(int a=0;a<2;++a)if(r->fields[a]==field)parameter_use(u,"grid-system %u card-reference %c field %u",s->id,a?'v':'u',field);}
     for(size_t i=0;i<w->grid_system_count;++i)for(int axis=0;axis<2;++axis)for(int k=0;k<6;++k){const ParameterRef *r=&w->grid_systems[i].axis[axis].parameters[k];
-        if(r->set&&r->parameter_id==id&&r->field_id==field&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GRID_SYSTEM,w->grid_systems[i].id,0))parameter_use(u,"grid-system %u %c %s",w->grid_systems[i].id,axis?'v':'u',axis_fields[k]);}
+        if(r->set&&r->parameter_id==id&&r->field_id==field&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GRID_SYSTEM,w->grid_systems[i].id,0)&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GRID_SYSTEM,w->grid_systems[i].id,axis*6+k+1))parameter_use(u,"grid-system %u %c %s",w->grid_systems[i].id,axis?'v':'u',axis_fields[k]);}
     for(size_t i=0;i<w->grid_count;++i){const ReferenceGrid *g=&w->grids[i];if(g->from_system)continue;  /* system-derived copies are the system's own refs */
         for(int axis=0;axis<2;++axis)for(int k=0;k<6;++k){const ParameterRef *r=&g->axis[axis].parameters[k];
             if(r->set&&r->parameter_id==id&&r->field_id==field&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GRID,g->id,0))parameter_use(u,"grid %u %c %s",g->id,axis?'v':'u',axis_fields[k]);}}
@@ -502,7 +502,7 @@ static bool parameter_declared_owner_uses(const World *w,const ParameterDeclarat
 {
     const GridSystem *gs=(d->kind==PARAM_OWNER_GRID_CARD||d->kind==PARAM_OWNER_GRID_SYSTEM)?world_find_grid_system(w,d->id):NULL;
     if(gs&&d->kind==PARAM_OWNER_GRID_CARD)return gs->card_reference.set&&gs->card_reference.parameter_id==id&&(gs->card_reference.fields[0]==field||gs->card_reference.fields[1]==field);
-    if(gs&&d->kind==PARAM_OWNER_GRID_SYSTEM){for(int a=0;a<2;++a)for(int k=0;k<6;++k){ParameterRef r=gs->axis[a].parameters[k];if(r.set&&r.parameter_id==id&&r.field_id==field)return true;}return false;}
+    if(gs&&d->kind==PARAM_OWNER_GRID_SYSTEM){for(int a=0;a<2;++a)for(int k=0;k<6;++k){if(d->slot&&d->slot!=a*6+k+1)continue;ParameterRef r=gs->axis[a].parameters[k];if(r.set&&r.parameter_id==id&&r.field_id==field)return true;}return false;}
     if(d->kind==PARAM_OWNER_CARD){
         for(size_t i=0;i<w->parameters.field_count;++i){const ParameterField *f=&w->parameters.fields[i];if(f->parameter_id!=d->id)continue;
             EngJson j;bool hit=eng_json_parse_n(&j,f->expression,strlen(f->expression))&&parameter_ast_uses(&j,0,id,field,0);eng_json_free(&j);if(hit)return true;}

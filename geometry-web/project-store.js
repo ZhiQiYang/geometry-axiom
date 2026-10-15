@@ -301,6 +301,7 @@
     const required = new Set([...(manifest.requiredCapabilities || []), ...sceneCapabilities(scene)]);
     if (manifest.scenarioCatalog) required.add(SCENARIO_CAPABILITY);
     for(const scenario of manifest.scenarioCatalog?.scenarios||[])for(const capability of projectCapabilities(scenario.snapshot.projectManifest,scenario.snapshot.worldScene))if(format17Capabilities.includes(capability))required.add(capability);
+    if(manifest.scenarioCatalog?.scenarios.some(s=>projectCapabilities(s.snapshot.projectManifest,s.snapshot.worldScene).includes(CARD_CAPABILITY))){required.add(CARD_CAPABILITY);required.add(PARAMETER_CAPABILITY);}
     if (manifest.scenarioCatalog?.scenarios.some(s => sceneCapabilities(s.snapshot.worldScene).includes(SECTION_CAPABILITY))) required.add(SECTION_CAPABILITY);
     if (hasCaseData(manifest)) required.add(CASE_CAPABILITY);
     if (Object.hasOwn(manifest, "featureAttachments")) for (const capability of Features.capabilities(manifest.featureAttachments)) required.add(capability);

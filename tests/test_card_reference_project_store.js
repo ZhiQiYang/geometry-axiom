@@ -3,6 +3,7 @@
 const {test}=require('node:test'),assert=require('node:assert/strict');
 const P=require('../geometry-web/project-store.js');
 const zip=require('../geometry-web/vendor/fflate/umd/index.js');
+const S=require('../geometry-web/scenario-snapshots.js');
 const scene='requires parameters/1\nrequires grid-card-reference/1\nparameters begin\nparameters end\ngrid-system 4 name-hex 47 main-along none card-reference 10 8 3 u repeat -5 card v repeat 7 card\n';
 const pack=s=>P.pack(s,{format:P.FORMAT,projectId:'card-project',name:'card',sceneHash:'0'.repeat(64),sources:[],faces:[],models:[]},new Map(),zip);
 function rewrite(bytes,change,changeScene){
@@ -44,4 +45,16 @@ test('CR21 LEGACY_UNCHANGED same-card ParameterRefs remain /6 and unmerged',asyn
   const p=await P.unpack(await pack(old),zip);
   assert.equal(p.manifest.format,'geometry-canvas/6');assert.equal(p.scene,old);
   assert.deepEqual(p.manifest.requiredCapabilities,['parameters/1']);
+});
+test('CR19 snapshot-only card sources require /18 and both capabilities on the root',async()=>{
+  const leaf=await P.unpack(await pack(scene),zip);
+  const archive=S.create({project:P,featureAttachments:{validate:P.Features.validate,references:P.Features.sourceIds},verifyProject:async()=>({ok:true,capabilities:['grid-card-reference/1','parameters/1'],final_objects:{boundaries:[],placements:[]},objects:[]})});
+  await archive.capture(leaf,{scenarioId:'card-leaf',label:'card-leaf'});
+  const root={projectId:'card-project',name:'root',faces:[],sources:[],scenarioCatalog:{schema:S.SCHEMA,scenarios:archive.list()}};
+  const bytes=await P.pack('reset\n',root,new Map(),zip),p=await P.unpack(bytes,zip);
+  assert.equal(p.manifest.format,'geometry-canvas/18');
+  assert.ok(p.manifest.requiredCapabilities.includes('grid-card-reference/1'));
+  assert.ok(p.manifest.requiredCapabilities.includes('parameters/1'));
+  await assert.rejects(()=>P.unpack(rewrite(bytes,m=>m.format='geometry-canvas/14'),zip));
+  await assert.rejects(()=>P.unpack(rewrite(bytes,m=>m.requiredCapabilities=m.requiredCapabilities.filter(c=>c!=='grid-card-reference/1')),zip));
 });

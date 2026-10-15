@@ -76,7 +76,7 @@ static bool grid_card_operation(World *w,EngJson *j,int t,const char *op)
                 for(int a=0;a<2;++a){capture->fields[a]=s->card_reference.fields[a];capture->values[a]=s->axis[a].source==GRID_SRC_REPEAT?s->axis[a].step:s->axis[a].panel;}
             }
             for(int a=0;a<2;++a){GridAxisDef *d=&s->axis[a];int slot=d->source==GRID_SRC_REPEAT?1:2;
-                d->card_length=false;if(!strcmp(mode,"parameter"))d->parameters[slot]=refs[a];
+                d->card_length=false;if(!strcmp(mode,"parameter")){d->parameters[slot]=refs[a];if(!parameter_declare(w,PARAM_OWNER_GRID_SYSTEM,id,a*6+slot+1))return false;}
                 else memset(&d->parameters[slot],0,sizeof d->parameters[slot]);}
             memset(&s->card_reference,0,sizeof s->card_reference);
         }
