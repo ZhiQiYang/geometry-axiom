@@ -1,4 +1,4 @@
-# P129 同來源分段定向證明（正式整合驗收待第17班）
+# P129 同來源分段定向證明（正式整合驗收待第18班）
 
 受測來源固定 `6236f5733052a19362132738a4eb79cac7924e0b`。R3的13模組188方法、core143/143、integrity130/130及4檔JavaScript語法均exit0，控制器誤讀total後實際WSL1、突變0。R4完成前三突變及第四反例/還原build後依使用者關機要求中止，WSL143、final foreign unknown。R5因還原檔案mtime與sidecar不符，在測試前退出WSL1、測試0。
 
@@ -17,6 +17,8 @@ R7官方build後補第五組還原14，再只跑第六、七個真突變，兩�
 原件 `D:/geometry-axiom-work/board-local-codex/pr193-p129-native-r3` 至 `-r7` 各段獨立保存；R3 certificate SHA `4f25a4e68501a9d1c051da7c61540a64c6ece66d8e67dfcc82422a589e623a9e`，R4 receipt SHA `d9a97c4a7602749d62df0ec85e3d84bd539c01a0be3226a5b2b85edad0a9ca75`，R6 receipt SHA `e1055ecc20d99691ce20ebd5729ec2990e4acdf1ade53e8930b3d5ada8e2cc43`，R7 receipt SHA `45122c2dd4205202b00868147ace435fbddce0ed210499a4dbb849265a143404`。獨立核對 `D:/geometry-axiom-work/board-local-codex/pr193-p129-native-r7/independently-verified-v2.json`。
 
 P132先診斷服務/bridge與系統、附對照及不確定處，修好後才同6a62隔離grid，環境失敗不計額度。15退役，193未自行准入17或合併。
+
+依[P136](https://github.com/ZhiQiYang/geometry-axiom/pull/237#issuecomment-6193925984)，#193/#196/#202/#207鏈改搭第18班；第17班改為#227+#237，仍須先完成第16班P132 grid。此處只同步列車安排，既有受測來源6236、raw結果、各次退出、期待值35及證明內容不變。
 
 ## 以下為較早來源的歷史紀錄
 
