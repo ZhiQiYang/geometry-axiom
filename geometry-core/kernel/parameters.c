@@ -119,6 +119,17 @@ bool geo_parameters_rebuild(GeoParameterStore *store,GeoParameterError *error)
     for(size_t i=0;i<store->field_count&&ok;++i)ok=geo_parameter_eval_field(e,(int)i);
     free(e);return ok;
 }
+bool geo_parameters_evaluate_field(GeoParameterStore *store,GeoParameterRef ref,GeoParameterError *error)
+{
+    GeoParameterError local;if(!error)error=&local;memset(error,0,sizeof *error);
+    if(!store)return geo_parameter_error(error,GEO_PARAMETER_INVALID_DEFINITION,ref.parameter_id,ref.field_id);
+    int index=geo_parameters_field_index(store,ref.parameter_id,ref.field_id);
+    if(index<0)return geo_parameter_error(error,GEO_PARAMETER_MISSING_FIELD,ref.parameter_id,ref.field_id);
+    GeoParameterEval *e=calloc(1,sizeof *e);
+    if(!e)return geo_parameter_error(error,GEO_PARAMETER_MEMORY,0,0);
+    e->store=store;e->error=error;bool ok=geo_parameter_eval_field(e,index);
+    free(e);return ok;
+}
 
 
 static bool geo_parameter_name_valid(const char name[GEO_PARAMETER_NAME_MAX])
