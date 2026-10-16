@@ -61,7 +61,22 @@ typedef struct {
 
 typedef struct {const char *id,*name;GeoCoord thickness,width_max,sheet_length;} WoodSectionPanelSpec;
 extern const WoodSectionPanelSpec wood_sp_panel_spec;
+typedef struct WoodSectionProfileContext WoodSectionProfileContext;
+/* Optional same-candidate source evaluation. Direct callers retain the old
+ * ordering and diagnostics when no hooks are installed. Region roots invoke
+ * the direct evaluators below; child hooks are reached during real work. */
 typedef struct {
+    void *user;
+    void (*begin)(void *,WoodSectionProfileContext *,char *,size_t);
+    void (*member)(void *,WoodSectionProfileContext *,size_t,char *,size_t);
+    void (*run)(void *,WoodSectionProfileContext *,size_t,char *,size_t);
+    void (*profile_definition)(void *,WoodSectionProfileContext *,uint32_t);
+    bool (*member_dimension)(void *,WoodSectionProfileContext *,size_t,int,GeoCoord *);
+    bool (*run_length)(void *,WoodSectionProfileContext *,size_t,GeoCoord *);
+    bool (*run_placement)(void *,WoodSectionProfileContext *,size_t);
+    bool (*live_host)(void *,uint32_t,GeoFrame *,WoodBoundaryRegion *,bool *);
+} WoodSectionProfileEvaluation;
+struct WoodSectionProfileContext {
     SectionProfileState *state;
     WoodEngineeringContext engineering;
     void *user;
@@ -71,7 +86,8 @@ typedef struct {
      * The same candidate owns callback facts and the context's W stores. */
     bool (*resolve_dimension)(void *,const EngDimensionSource *,const EngTarget *,GeoCoord *);
     bool (*live_host)(void *,uint32_t,GeoFrame *,WoodBoundaryRegion *,bool *derived);
-} WoodSectionProfileContext;
+    const WoodSectionProfileEvaluation *evaluation;
+};
 bool wood_sp_used(const WoodSectionProfileContext *);
 SectionProfile *wood_sp_profile(WoodSectionProfileContext *,uint32_t);
 ProfileMember *wood_sp_member(WoodSectionProfileContext *,uint32_t);
@@ -90,6 +106,12 @@ GeoPoint3 wood_sp_point(const ProfileRun *,GeoCoord,GeoCoord,GeoCoord);
 size_t wood_sp_outside_regions(const WoodBoundaryLoop *,const GeoRect2 *,GeoRect2 out[SP_OUTSIDE_MAX]);
 bool wood_sp_intersection(const ProfileMember *,const ProfileMember *,GeoRect2 *);
 bool wood_sp_rebuild(WoodSectionProfileContext *,char *,size_t);
+/* The source provider calls these actual evaluators, never cached-result
+ * exporters. Region functions preserve all old cache and error-gather rules. */
+void wood_sp_evaluate_member_direct(WoodSectionProfileContext *,size_t,char *,size_t);
+void wood_sp_evaluate_run_direct(WoodSectionProfileContext *,size_t,char *,size_t);
+bool wood_sp_member_dimension_direct(WoodSectionProfileContext *,size_t,int,GeoCoord *);
+bool wood_sp_run_length_direct(WoodSectionProfileContext *,size_t,GeoCoord *);
 bool wood_sp_remove(WoodSectionProfileContext *,const char *,uint32_t);
 bool wood_sp_begin_conversion(WoodSectionProfileContext *,uint32_t,bool,ProfileRun *);
 bool wood_sp_conversion_fields(WoodSectionProfileContext *,const ProfileRun *,const GeoFrame *,const WoodBoundaryRegion *,int *,GeoCoord *,GeoCoord *,GeoVector3 *);

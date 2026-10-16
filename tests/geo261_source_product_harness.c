@@ -12,10 +12,10 @@ int main(void)
     PlacementSurface placement={.id=1,
         .frame={{0,0,0},{1,0,0},{0,1,0},{0,0,1}},.rect={0,0,1000,1000}};
     CHECK(app_placement_stage(world,&placement));
-    world->timber_count=2;
+    world->wood.timber_count=2;
     for(size_t i=0;i<2;++i){
-        CHECK(timber_construct((uint32_t)i+1,0,40,50,true,TIMBER_ROLE_PRIMARY,0,&world->timbers[i]));
-        world->anchors[i]=(TimberAnchor){.placement_id=1,.anchor_kind=ANCHOR_AT_LINE,.ref_guide=(uint32_t)i+1,.order=i+1};
+        CHECK(timber_construct((uint32_t)i+1,0,40,50,true,TIMBER_ROLE_PRIMARY,0,&world->wood.timbers[i]));
+        world->wood.anchors[i]=(TimberAnchor){.placement_id=1,.anchor_kind=ANCHOR_AT_LINE,.ref_guide=(uint32_t)i+1,.order=i+1};
         GuideLine guide={.id=(uint32_t)i+1,.placement_id=1,.direction=GUIDE_ALONG_V};
         CHECK(app_guide_put(world,&guide,"timber:2:u:lo"));
     }
@@ -33,8 +33,8 @@ int main(void)
     /* The current-cache path was historically observational even if the caller
      * supplies an unresolved cache while testing a disposable candidate. */
     ctx=(ReferenceEval){0};ctx.world=world;ctx.use_current_values=true;
-    GuideLine guide=*geo_guides_at(&world->guide_lines,0);guide.offset=37;guide.resolved=false;
-    CHECK(geo_guides_put(&world->guide_lines,&guide));
-    CHECK(reference_eval_guide(&ctx,0)&&geo_guides_at(&world->guide_lines,0)->offset==37&&!geo_guides_at(&world->guide_lines,0)->resolved);
+    GuideLine guide=*geo_guides_at(&world->geo.guide_lines,0);guide.offset=37;guide.resolved=false;
+    CHECK(geo_guides_put(&world->geo.guide_lines,&guide));
+    CHECK(reference_eval_guide(&ctx,0)&&geo_guides_at(&world->geo.guide_lines,0)->offset==37&&!geo_guides_at(&world->geo.guide_lines,0)->resolved);
     reference_sources_dispose(&ctx);free(world);return 0;
 }

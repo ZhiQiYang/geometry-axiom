@@ -197,14 +197,14 @@ static void model_dep_placement(const World *world, ModelDependencies *deps, uin
 
 static void model_dep_timber(const World *world, ModelDependencies *deps, uint32_t id)
 {
-    for (size_t i = 0; i < world->timber_count; ++i)
-        if (world->timbers[i].id == id) deps->timbers[i] = true;
+    for (size_t i = 0; i < world->wood.timber_count; ++i)
+        if (world->wood.timbers[i].id == id) deps->timbers[i] = true;
 }
 
 static void model_dep_guide(const World *world, ModelDependencies *deps, uint32_t id)
 {
-    for (size_t i = 0; i < geo_guides_count(&world->guide_lines); ++i) {
-        const GuideLine *g = &geo_guides_values(&world->guide_lines)[i];
+    for (size_t i = 0; i < geo_guides_count(&world->geo.guide_lines); ++i) {
+        const GuideLine *g = &geo_guides_values(&world->geo.guide_lines)[i];
         if (g->id != id || deps->guides[i]) continue;
         deps->guides[i] = true;
         model_dep_placement(world, deps, g->placement_id);
@@ -240,9 +240,9 @@ static void model_dep_space(const World *world, ModelDependencies *deps, uint32_
     if (!id) return;
     const Space *space = world_find_space(world, id);
     if (!space) return; /* Successful I9 validation guarantees existence. */
-    for (size_t b = 0; b < space->boundary_count; ++b)
+    for (size_t b = 0; b < space->member_count; ++b)
         for (size_t p = 0; p < world_placement_count(world); ++p)
-            if (world_placement_at(world,p)->boundary_id == space->boundaries[b]) deps->placements[p] = true;
+            if (world_placement_at(world,p)->boundary_id == space->member_ids[b]) deps->placements[p] = true;
 }
 
 static void model_dependency_record(const World *world, const char *kind,
@@ -255,9 +255,9 @@ static void model_dependency_record(const World *world, const char *kind,
         if (count++) putchar(',');
         printf("{\"kind\":\"placement\",\"id\":%" PRIu32 "}", world_placement_at(world,i)->id);
     }
-    for (size_t i = 0; i < world->timber_count; ++i) if (deps->timbers[i]) {
+    for (size_t i = 0; i < world->wood.timber_count; ++i) if (deps->timbers[i]) {
         if (count++) putchar(',');
-        printf("{\"kind\":\"timber\",\"id\":%" PRIu32 "}", world->timbers[i].id);
+        printf("{\"kind\":\"timber\",\"id\":%" PRIu32 "}", world->wood.timbers[i].id);
     }
     fputs("]}", stdout);
 }
@@ -269,33 +269,33 @@ static void model_dependencies(const World *world)
         ModelDependencies deps = {0}; if (count++) putchar(',');
         model_dependency_record(world, "placement", world_placement_at(world,i)->id, &deps);
     }
-    for (size_t i = 0; i < world->column_count; ++i) {
+    for (size_t i = 0; i < world->wood.column_count; ++i) {
         ModelDependencies deps = {0}; if (count++) putchar(',');
         /* D13/I15 membership validation depends on the actual Space members.
          * Frozen z values (R8) are never re-inferred from those members. */
-        model_dep_space(world, &deps, world->columns[i].space_id);
-        model_dependency_record(world, "column", world->columns[i].id, &deps);
+        model_dep_space(world, &deps, world->wood.columns[i].space_id);
+        model_dependency_record(world, "column", world->wood.columns[i].id, &deps);
     }
-    for (size_t i = 0; i < world->beam_count; ++i) {
+    for (size_t i = 0; i < world->wood.beam_count; ++i) {
         ModelDependencies deps = {0}; if (count++) putchar(',');
-        model_dep_space(world, &deps, world->beams[i].space_id);
-        model_dependency_record(world, "beam", world->beams[i].id, &deps);
+        model_dep_space(world, &deps, world->wood.beams[i].space_id);
+        model_dependency_record(world, "beam", world->wood.beams[i].id, &deps);
     }
-    for (size_t i = 0; i < world->timber_count; ++i) {
-        const TimberAnchor *anchor = &world->anchors[i]; ModelDependencies deps = {0};
+    for (size_t i = 0; i < world->wood.timber_count; ++i) {
+        const TimberAnchor *anchor = &world->wood.anchors[i]; ModelDependencies deps = {0};
         model_dep_placement(world, &deps, anchor->placement_id);
-        for (size_t j = 0; j < world->timber_count; ++j)
-            if (world->timbers[j].placed && world->anchors[j].order < anchor->order &&
-                world->anchors[j].placement_id == anchor->placement_id) deps.timbers[j] = true;
+        for (size_t j = 0; j < world->wood.timber_count; ++j)
+            if (world->wood.timbers[j].placed && world->wood.anchors[j].order < anchor->order &&
+                world->wood.anchors[j].placement_id == anchor->placement_id) deps.timbers[j] = true;
         if (anchor->anchor_kind == ANCHOR_AT_LINE) model_dep_guide(world, &deps, anchor->ref_guide);
         if (anchor->ref_is_timber) model_dep_timber(world, &deps, anchor->ref_timber);
         if (anchor->has_between) for (int j = 0; j < 2; ++j)
             if (anchor->between[j].kind) model_dep_timber(world, &deps, anchor->between[j].timber);
         if (count++) putchar(',');
-        model_dependency_record(world, "timber", world->timbers[i].id, &deps);
+        model_dependency_record(world, "timber", world->wood.timbers[i].id, &deps);
     }
-    for (size_t i = 0; i < world->section_profiles.run_count; ++i) {
-        const ProfileRun *run = &world->section_profiles.runs[i];
+    for (size_t i = 0; i < world->wood.section_profiles.run_count; ++i) {
+        const ProfileRun *run = &world->wood.section_profiles.runs[i];
         ModelDependencies deps = {0};
         /* Source metadata only: the authoritative native core has already
          * resolved placement. A live simple host contributes its real faces
@@ -320,7 +320,7 @@ static void model_dependencies(const World *world)
  * triangulates these solids, never reinterprets dimensions or placement. */
 static void model_profile_runs(const World *world)
 {
-    const SectionProfileState *state = &world->section_profiles;
+    const SectionProfileState *state = &world->wood.section_profiles;
     for (size_t i = 0; i < state->run_count; ++i) {
         const ProfileRun *run = &state->runs[i];
         const SectionProfile *profile = sp_profile((World *)world, run->profile_id);
@@ -356,15 +356,15 @@ static void model_legacy_snapshot(World *world,const char *canonical)
     model_string(stdout, canonical);
     fputs(",\"required_capabilities\":[",stdout);
     if(engineering_used(world))model_string(stdout,"engineering-spec/1");
-    if(geo_parameters_card_count(&world->parameters)){if(engineering_used(world))fputc(',',stdout);model_string(stdout,"parameters/1");}
-    if(grid_subdivision_used(world)){if(engineering_used(world)||geo_parameters_card_count(&world->parameters))fputc(',',stdout);model_string(stdout,GRID_SUBDIVISION_CAPABILITY);}
-    if(sp_used(world)){if(engineering_used(world)||geo_parameters_card_count(&world->parameters)||grid_subdivision_used(world))fputc(',',stdout);model_string(stdout,SP_CAPABILITY);}
-    if(fs_used(world)){if(engineering_used(world)||geo_parameters_card_count(&world->parameters)||grid_subdivision_used(world)||sp_used(world))fputc(',',stdout);model_string(stdout,FS_CAPABILITY);}
+    if(geo_parameters_card_count(&world->geo.parameters)){if(engineering_used(world))fputc(',',stdout);model_string(stdout,"parameters/1");}
+    if(grid_subdivision_used(world)){if(engineering_used(world)||geo_parameters_card_count(&world->geo.parameters))fputc(',',stdout);model_string(stdout,GRID_SUBDIVISION_CAPABILITY);}
+    if(sp_used(world)){if(engineering_used(world)||geo_parameters_card_count(&world->geo.parameters)||grid_subdivision_used(world))fputc(',',stdout);model_string(stdout,SP_CAPABILITY);}
+    if(fs_used(world)){if(engineering_used(world)||geo_parameters_card_count(&world->geo.parameters)||grid_subdivision_used(world)||sp_used(world))fputc(',',stdout);model_string(stdout,FS_CAPABILITY);}
     fputs("],\"specs\":[", stdout);
-    for (size_t i = 0; i < geo_named_values_count(&world->named_values); ++i) {
+    for (size_t i = 0; i < geo_named_values_count(&world->geo.named_values); ++i) {
         if (i) putchar(',');
-        fputs("{\"name\":", stdout); model_string(stdout, geo_named_values_at(&world->named_values,i)->name);
-        printf(",\"value\":%" PRId64 "}", geo_named_values_at(&world->named_values,i)->value);
+        fputs("{\"name\":", stdout); model_string(stdout, geo_named_values_at(&world->geo.named_values,i)->name);
+        printf(",\"value\":%" PRId64 "}", geo_named_values_at(&world->geo.named_values,i)->value);
     }
     fputs("],\"placements\":[", stdout);
     for (size_t i = 0; i < world_placement_count(world); ++i) {
@@ -385,16 +385,16 @@ static void model_legacy_snapshot(World *world,const char *canonical)
     }
     fputs("],\"solids\":[", stdout);
     size_t emitted = 0;
-    for (size_t i = 0; i < world->column_count; ++i) {
-        const RcColumn *c = &world->columns[i]; if (emitted++) putchar(',');
+    for (size_t i = 0; i < world->wood.column_count; ++i) {
+        const RcColumn *c = &world->wood.columns[i]; if (emitted++) putchar(',');
         model_box("column", c->id, c->x_lo, c->x_hi, c->y_lo, c->y_hi, c->z_lo, c->z_hi);
     }
-    for (size_t i = 0; i < world->beam_count; ++i) {
-        const RcBeam *b = &world->beams[i]; if (emitted++) putchar(',');
+    for (size_t i = 0; i < world->wood.beam_count; ++i) {
+        const RcBeam *b = &world->wood.beams[i]; if (emitted++) putchar(',');
         model_box("beam", b->id, b->x_lo, b->x_hi, b->y_lo, b->y_hi, b->z_lo, b->z_hi);
     }
-    for (size_t i = 0; i < world->timber_count; ++i) {
-        const Timber *t = &world->timbers[i]; const TimberAnchor *a = &world->anchors[i];
+    for (size_t i = 0; i < world->wood.timber_count; ++i) {
+        const Timber *t = &world->wood.timbers[i]; const TimberAnchor *a = &world->wood.anchors[i];
         const PlacementSurface *p = world_find_placement(world, a->placement_id);
         if (emitted++) putchar(',');
         printf("{\"kind\":\"timber\",\"id\":%" PRIu32 ",\"placement_id\":%" PRIu32 ",\"boundary_id\":", t->id, a->placement_id);
@@ -445,7 +445,7 @@ int main(int argc, char **argv)
     }
     FILE *dump = tmpfile();
     if (!dump) return model_error("UNSUPPORTED", "BASE_IO", "I32", "Cannot allocate canonical dump stream.");
-    world.canvas_pos_count = 0;  /* D12: presentation never enters source identity. */
+    world.app.canvas_pos_count = 0;  /* D12: presentation never enters source identity. */
     world_dump_dsl(&world, dump);
     if (ferror(dump) || fflush(dump) || fseek(dump, 0, SEEK_END)) {
         fclose(dump); return model_error("UNSUPPORTED", "BASE_IO", "I32", "Could not write canonical scene.");

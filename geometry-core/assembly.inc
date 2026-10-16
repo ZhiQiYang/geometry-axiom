@@ -18,10 +18,11 @@ static void app_asm_drop_position(void *user,bool rule,uint32_t id)
 {asm_remove_position((World *)user,rule?CANVAS_POS_ASSEMBLY_RULE:CANVAS_POS_ASSEMBLY_BINDING,id);}
 static bool app_asm_other(void *user,GeoJson *j,int t)
 {return eng_operation((World *)user,j,t);}
+static bool app_assembly_sources_bind(const World *,WoodAssemblyContext *);
 static WoodAssemblyContext app_asm_context(const World *world)
 {
-    World *w=(World *)world;WoodAssemblyContext c={0};c.state=&w->assembly;c.engineering=app_eng_context(w);c.diagnostic=&g_asm_diagnostic;c.parameter_dimension_error=&g_parameter_dimension_error;c.user=w;c.scene_loading=g_parsing_scene_file;
-    c.json_parse=app_asm_json;c.drop_position=app_asm_drop_position;c.other_operation=app_asm_other;c.surface=app_asm_surface;c.guide=app_asm_guide;c.member=app_asm_member;c.footprint=app_asm_footprint;c.member_count=app_asm_member_count;c.member_capacity=WORLD_MAX_TIMBERS;c.allocate_member=app_asm_allocate;c.remove_member=app_asm_remove;c.write_member=app_asm_write;c.anchor_matches=app_asm_anchor_matches;c.instance_content=app_asm_instance_content;return c;
+    World *w=(World *)world;WoodAssemblyContext c={0};c.state=&w->wood.assembly;c.engineering=app_eng_context(w);c.diagnostic=&g_asm_diagnostic;c.parameter_dimension_error=&g_parameter_dimension_error;c.user=w;c.scene_loading=g_parsing_scene_file;
+    c.json_parse=app_asm_json;c.drop_position=app_asm_drop_position;c.other_operation=app_asm_other;c.surface=app_asm_surface;c.guide=app_asm_guide;c.member=app_asm_member;c.footprint=app_asm_footprint;c.member_count=app_asm_member_count;c.member_capacity=WORLD_MAX_TIMBERS;c.allocate_member=app_asm_allocate;c.remove_member=app_asm_remove;c.write_member=app_asm_write;c.anchor_matches=app_asm_anchor_matches;c.instance_content=app_asm_instance_content;app_assembly_sources_bind(world,&c);return c;
 }
 static bool asm_error(const char *format,...)
 {
@@ -31,8 +32,8 @@ static bool asm_error(const char *format,...)
 }
 static void asm_remove_position(World *w,int kind,uint32_t id)
 {
-    for(size_t i=w->canvas_pos_count;i>0;--i)if(w->canvas_pos[i-1].kind==kind&&w->canvas_pos[i-1].id==id){
-        memmove(&w->canvas_pos[i-1],&w->canvas_pos[i],(w->canvas_pos_count-i)*sizeof *w->canvas_pos);memset(&w->canvas_pos[--w->canvas_pos_count],0,sizeof *w->canvas_pos);}
+    for(size_t i=w->app.canvas_pos_count;i>0;--i)if(w->app.canvas_pos[i-1].kind==kind&&w->app.canvas_pos[i-1].id==id){
+        memmove(&w->app.canvas_pos[i-1],&w->app.canvas_pos[i],(w->app.canvas_pos_count-i)*sizeof *w->app.canvas_pos);memset(&w->app.canvas_pos[--w->app.canvas_pos_count],0,sizeof *w->app.canvas_pos);}
 }
 static const AsmRuleVersion *assembly_rule(const World *w,uint32_t id,uint32_t version)
 {WoodAssemblyContext c=app_asm_context(w);return wood_assembly_rule(&c,id,version);}
@@ -65,18 +66,18 @@ static void asm_dump_record(FILE *out,const char *kind,const char *text)
 static void assembly_dump(const World *w,FILE *out)
 {
     if(!assembly_used(w))return;fputs("requires assembly-rule-authoring/1\nassembly begin\n",out);
-    for(size_t i=0;i<w->assembly.rule_count;++i)asm_dump_record(out,"rule",w->assembly.rules[i].content);
-    for(size_t i=0;i<w->assembly.binding_count;++i)asm_dump_record(out,"binding",w->assembly.bindings[i].content);
-    for(size_t i=0;i<w->assembly.instance_count;++i)asm_dump_record(out,"instance",w->assembly.instances[i].content);
+    for(size_t i=0;i<w->wood.assembly.rule_count;++i)asm_dump_record(out,"rule",w->wood.assembly.rules[i].content);
+    for(size_t i=0;i<w->wood.assembly.binding_count;++i)asm_dump_record(out,"binding",w->wood.assembly.bindings[i].content);
+    for(size_t i=0;i<w->wood.assembly.instance_count;++i)asm_dump_record(out,"instance",w->wood.assembly.instances[i].content);
     fputs("assembly end\n",out);
 }
 static bool apply_assembly_line(const char *path,int line_no,char **t,int count,World *w)
 {
     bool ok=false;
     if(!g_parsing_scene_file){scene_error(path,line_no,"I41: assembly records require atomic scene loading; edit through preview/confirm");return false;}
-    if(count==2&&!strcmp(t[1],"begin")){if(w->assembly.loading)goto fail;w->assembly.loading=true;memset(&g_assembly_record,0,sizeof g_assembly_record);return true;}
-    if(!w->assembly.loading)goto fail;
-    if(count==2&&!strcmp(t[1],"end")){if(g_assembly_record.active)goto fail;w->assembly.loading=false;char e[256];if(!assembly_rebuild(w,e,sizeof e)){scene_error(path,line_no,e);return false;}return true;}
+    if(count==2&&!strcmp(t[1],"begin")){if(w->wood.assembly.loading)goto fail;w->wood.assembly.loading=true;memset(&g_assembly_record,0,sizeof g_assembly_record);return true;}
+    if(!w->wood.assembly.loading)goto fail;
+    if(count==2&&!strcmp(t[1],"end")){if(g_assembly_record.active)goto fail;w->wood.assembly.loading=false;char e[256];if(!assembly_rebuild(w,e,sizeof e)){scene_error(path,line_no,e);return false;}return true;}
     if(count==2&&!strcmp(t[1],"commit")){
         if(!g_assembly_record.active||g_assembly_record.used!=g_assembly_record.expected)goto fail;char hash[65];geo_sha256(g_assembly_record.text,g_assembly_record.used,hash);
         if(strcmp(hash,g_assembly_record.hash))goto fail;GeoJson j;

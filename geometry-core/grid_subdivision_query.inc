@@ -102,7 +102,9 @@ static bool grid_rule_query_visit(const World *w,const char *kind,uint32_t id,
     }
     for (int axis=0;axis<2;++axis) {
         Coord lo=axis?bounds.min_v:bounds.min_u,hi=axis?bounds.max_v:bounds.max_u;
-        Coord step=(hi-lo)/(Coord)rule->divisions[axis];
+        Coord coordinates[GRID_MAX_LINES];size_t coordinate_count=0;
+        if(geo_interval_subdivide(lo,hi,rule->divisions[axis],coordinates,GRID_MAX_LINES,&coordinate_count)!=GEO_GRID_OK)
+            return grid_rule_query_error(err,cap,"R32: invalid rule query definition");
         Coord clip_lo=axis?bounds.min_u:bounds.min_v;
         Coord clip_hi=axis?bounds.max_u:bounds.max_v;
         if (rect) {
@@ -110,7 +112,7 @@ static bool grid_rule_query_visit(const World *w,const char *kind,uint32_t id,
             clip_hi=coord_min(clip_hi,rect[3-axis]);
         }
         for (uint32_t inner=0;inner+1<rule->divisions[axis];++inner) {
-            Coord coordinate=lo+(Coord)(inner+1)*step;
+            Coord coordinate=coordinates[inner];
             SurfaceSegment2 clips[GUIDE_MAX_SEGMENTS]; size_t count=0;
             if (clip_lo<clip_hi && (!rect || (coordinate>=rect[axis] && coordinate<=rect[axis+2]))) {
                 if (placement) {

@@ -80,6 +80,13 @@ static int staged_graph(AppWorldCandidate *owner)
     for(size_t i=0;i<geo_eval_provider_count(sources);++i){
         const GeoSourceProvider *provider=geo_eval_provider_at(sources,i);CHECK(provider,"provider-view");
         if(provider->token<APP_SOURCE_GUIDE||provider->token>APP_SOURCE_PARAMETER)continue;
+        if(provider->token==APP_SOURCE_PARAMETER){
+            ReferenceEval *host=app_candidate_evaluation_state(owner->control);
+            GeoParameterSources *parameters=provider->candidate_state;
+            CHECK(host&&parameters==host->parameter_sources,"parameter-provider-owned-by-retained-candidate");
+            CHECK(geo_parameter_sources_store(parameters)==&owner->after.geo.parameters&&geo_parameter_sources_context(parameters)==sources,"parameter-provider-uses-actual-after-and-resolver");
+            continue;
+        }
         ReferenceEval *state=provider->candidate_state;
         CHECK(state&&state==app_candidate_evaluation_state(owner->control),"provider-state-owned-by-retained-candidate");
         CHECK(state->world==&owner->after&&state->sources==sources&&state->sources_borrowed,"provider-uses-actual-after-and-resolver");

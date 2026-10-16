@@ -3,8 +3,8 @@ static void json_reference_grid(const World *w,const ReferenceGrid *g);
 static void json_assembly_state(const World *w,bool geometry);
 static void json_reference_geometry(const World *w,int i)
 {
-    if (i<0 || !w->timbers[i].placed) { fputs("null",stdout); return; }
-    const Timber *t=&w->timbers[i]; const TimberAnchor *a=&w->anchors[i];
+    if (i<0 || !w->wood.timbers[i].placed) { fputs("null",stdout); return; }
+    const Timber *t=&w->wood.timbers[i]; const TimberAnchor *a=&w->wood.anchors[i];
     const PlacementSurface *p=world_find_placement(w,a->placement_id); SurfaceRegion2 f;
     if (!p || !timber_a0_footprint_uv(p,t,a,&f)) { fputs("null",stdout); return; }
     bool along=a->length_direction==SURFACE_DIRECTION_POS_V || a->length_direction==SURFACE_DIRECTION_NEG_V;
@@ -20,7 +20,7 @@ static void json_reference_geometry(const World *w,int i)
 }
 static void json_reference_guide(const World *w,size_t i)
 {
-    const GuideLine *g=&geo_guides_values(&w->guide_lines)[i];
+    const GuideLine *g=&geo_guides_values(&w->geo.guide_lines)[i];
     const PlacementSurface *p=world_find_placement(w,g->placement_id);
     if (!g->resolved || !p) { fputs("null",stdout); return; }
     printf("{\"id\":%u,\"surface\":%u,\"source\":\"%s\",\"datum\":%u,\"axis\":\"%s\",\"off\":%lld,\"expression\":",
@@ -52,10 +52,10 @@ static void json_candidate_timbers(const World *before,const World *after,bool i
     putchar('[');bool first=true;
     for (int pass=0;pass<(include_new?2:1);++pass) {
         const World *w=pass?after:before;
-        for (size_t i=0;i<w->timber_count;++i) {
-            const Timber *t=&w->timbers[i];if (!t->placed) continue;
+        for (size_t i=0;i<w->wood.timber_count;++i) {
+            const Timber *t=&w->wood.timbers[i];if (!t->placed) continue;
             int old=reference_timber_index(before,t->id),now=reference_timber_index(after,t->id);
-            if (pass && old>=0 && before->timbers[old].placed) continue;
+            if (pass && old>=0 && before->wood.timbers[old].placed) continue;
             if (!first) putchar(',');first=false;
             printf("{\"id\":%u,\"before\":",t->id);json_reference_geometry(before,old);
             fputs(",\"after\":",stdout);json_reference_geometry(after,now);putchar('}');
@@ -66,17 +66,17 @@ static void json_candidate_timbers(const World *before,const World *after,bool i
 static void json_candidate_guides(const World *before,const World *after)
 {
     putchar('[');
-    for (size_t i=0;i<geo_guides_count(&before->guide_lines);++i) {
-        const GuideLine *g=&geo_guides_values(&before->guide_lines)[i];
+    for (size_t i=0;i<geo_guides_count(&before->geo.guide_lines);++i) {
+        const GuideLine *g=&geo_guides_values(&before->geo.guide_lines)[i];
         printf("%s{\"id\":%u,\"before\":",i?",":"",g->id); json_reference_guide(before,i);
         fputs(",\"after\":",stdout); size_t j=0;
-        while (j<geo_guides_count(&after->guide_lines) && geo_guides_values(&after->guide_lines)[j].id!=g->id) ++j;
-        if (j==geo_guides_count(&after->guide_lines)) fputs("null",stdout); else json_reference_guide(after,j);
+        while (j<geo_guides_count(&after->geo.guide_lines) && geo_guides_values(&after->geo.guide_lines)[j].id!=g->id) ++j;
+        if (j==geo_guides_count(&after->geo.guide_lines)) fputs("null",stdout); else json_reference_guide(after,j);
         putchar('}');
     }
-    bool first=geo_guides_count(&before->guide_lines)==0;
-    for (size_t i=0;i<geo_guides_count(&after->guide_lines);++i) {
-        const GuideLine *g=&geo_guides_values(&after->guide_lines)[i];
+    bool first=geo_guides_count(&before->geo.guide_lines)==0;
+    for (size_t i=0;i<geo_guides_count(&after->geo.guide_lines);++i) {
+        const GuideLine *g=&geo_guides_values(&after->geo.guide_lines)[i];
         if (world_find_guide(before,g->id)) continue;
         printf("%s{\"id\":%u,\"before\":null,\"after\":",first?"":",",g->id); first=false;
         json_reference_guide(after,i); putchar('}');
@@ -96,8 +96,8 @@ static void json_reference_preview(void)
     json_candidate_timbers(&g_preview.transaction->before,&g_preview.transaction->after,false);
     fputs(",\"guides\":",stdout);json_candidate_guides(&g_preview.transaction->before,&g_preview.transaction->after);
     fputs(",\"grids\":[",stdout); bool first=true;
-    for (size_t i=0;i<g_preview.transaction->before.grid_count;++i) {
-        const ReferenceGrid *g=&g_preview.transaction->before.grids[i];
+    for (size_t i=0;i<g_preview.transaction->before.wood.grid_applications.count;++i) {
+        const ReferenceGrid *g=&g_preview.transaction->before.wood.grid_applications.items[i];
         const ReferenceGrid *after=world_find_grid(&g_preview.transaction->after,g->id);
         printf("%s{\"id\":%u,\"before\":",first?"":",",g->id); first=false;
         json_reference_grid(&g_preview.transaction->before,g);
@@ -105,15 +105,15 @@ static void json_reference_preview(void)
         if (after) json_reference_grid(&g_preview.transaction->after,after); else fputs("null",stdout);
         putchar('}');
     }
-    for (size_t i=0;i<g_preview.transaction->after.grid_count;++i) {
-        const ReferenceGrid *g=&g_preview.transaction->after.grids[i];
+    for (size_t i=0;i<g_preview.transaction->after.wood.grid_applications.count;++i) {
+        const ReferenceGrid *g=&g_preview.transaction->after.wood.grid_applications.items[i];
         if (world_find_grid(&g_preview.transaction->before,g->id)) continue;
         printf("%s{\"id\":%u,\"before\":null,\"after\":",first?"":",",g->id); first=false;
         json_reference_grid(&g_preview.transaction->after,g); putchar('}');
     }
     fputs("],\"datums\":[",stdout);first=true;
     for(int pass=0;pass<2;++pass){const World *w=pass?&g_preview.transaction->after:&g_preview.transaction->before;
-        for(size_t i=0;i<geo_datums_count(&w->datum_planes);++i){uint32_t id=geo_datums_at(&w->datum_planes,i)->id;
+        for(size_t i=0;i<geo_datums_count(&w->geo.datum_planes);++i){uint32_t id=geo_datums_at(&w->geo.datum_planes,i)->id;
             const GeoDatum *before=world_find_datum(&g_preview.transaction->before,id),*after=world_find_datum(&g_preview.transaction->after,id);
             if(pass && before)continue;
             printf("%s{\"id\":%u,\"before\":",first?"":",",id);first=false;json_reference_datum(&g_preview.transaction->before,before);fputs(",\"after\":",stdout);json_reference_datum(&g_preview.transaction->after,after);putchar('}');
@@ -172,20 +172,20 @@ static bool reference_expression_uses_grid(const char *expression,uint32_t id)
 static void json_grid_dependencies(const World *w,const ReferenceGrid *g)
 {
     fputs(",\"dependencies\":{\"children\":[",stdout); bool first=true;
-    for (size_t i=0;i<w->grid_count;++i) {
-        if (!w->grids[i].is_subgrid || w->grids[i].parent_id!=g->id) continue;
-        printf("%s%u",first?"":",",w->grids[i].id); first=false;
+    for (size_t i=0;i<w->wood.grid_applications.count;++i) {
+        if (!w->wood.grid_applications.items[i].is_subgrid || w->wood.grid_applications.items[i].parent_id!=g->id) continue;
+        printf("%s%u",first?"":",",w->wood.grid_applications.items[i].id); first=false;
     }
     fputs("],\"guides\":[",stdout); first=true;
-    for (size_t i=0;i<geo_guides_count(&w->guide_lines);++i) {
-        if (!reference_expression_uses_grid(app_guide_expression(w,geo_guides_values(&w->guide_lines)[i].id),g->id) && !grid_guide_references(w,&geo_guides_values(&w->guide_lines)[i],g->id)) continue;
-        printf("%s%u",first?"":",",geo_guides_values(&w->guide_lines)[i].id); first=false;
+    for (size_t i=0;i<geo_guides_count(&w->geo.guide_lines);++i) {
+        if (!reference_expression_uses_grid(app_guide_expression(w,geo_guides_values(&w->geo.guide_lines)[i].id),g->id) && !grid_guide_references(w,&geo_guides_values(&w->geo.guide_lines)[i],g->id)) continue;
+        printf("%s%u",first?"":",",geo_guides_values(&w->geo.guide_lines)[i].id); first=false;
     }
     fputs("],\"timbers\":[",stdout); first=true;
-    for (size_t i=0;i<w->timber_count;++i) {
-        if (!w->timbers[i].placed || !((w->anchors[i].anchor_kind==ANCHOR_AT_GRID && w->anchors[i].ref_grid==g->id) ||
-            (w->anchors[i].anchor_kind==ANCHOR_AT_RULE && w->anchors[i].ref_rule.grid_id==g->id))) continue;
-        printf("%s%u",first?"":",",w->timbers[i].id); first=false;
+    for (size_t i=0;i<w->wood.timber_count;++i) {
+        if (!w->wood.timbers[i].placed || !((w->wood.anchors[i].anchor_kind==ANCHOR_AT_GRID && w->wood.anchors[i].ref_grid==g->id) ||
+            (w->wood.anchors[i].anchor_kind==ANCHOR_AT_RULE && w->wood.anchors[i].ref_rule.grid_id==g->id))) continue;
+        printf("%s%u",first?"":",",w->wood.timbers[i].id); first=false;
     }
     fputs("]}",stdout);
 }
@@ -226,7 +226,7 @@ static void json_reference_grid(const World *w,const ReferenceGrid *g)
     } else fputs("null,\"cell\":null,\"divisions\":null",stdout);
     SurfaceRegion2 bounds;
     bool has_bounds=p && (g->is_subgrid?
-        grid_cell_bounds(w->grids,w->grid_count,g,p,b,&bounds,NULL,0):
+        grid_cell_bounds(w->wood.grid_applications.items,w->wood.grid_applications.count,g,p,b,&bounds,NULL,0):
         placement_local_bounds(p,b,&bounds));
     fputs(",\"bounds\":",stdout);
     if (has_bounds) printf("{\"u\":[%lld,%lld],\"v\":[%lld,%lld]}",
@@ -252,7 +252,7 @@ static void json_reference_grid(const World *w,const ReferenceGrid *g)
         Coord values[GRID_MAX_LINES]; size_t count=0;
         if (g->from_binding) {
             if (query_ok) { count=sampled[axis].count; for (size_t k=0;k<count;++k) values[k]=sampled[axis].lines[k].coordinate; }
-        } else if (p) grid_axis_lines_in(w->grids,w->grid_count,g,p,b,axis,values,&count,NULL,0);
+        } else if (p) grid_axis_lines_in(w->wood.grid_applications.items,w->wood.grid_applications.count,g,p,b,axis,values,&count,NULL,0);
         printf(",\"%c\":[",axis?'v':'u');
         for (size_t k=0;k<count;++k) printf("%s%lld",k?",":"",(long long)values[k]);
         printf("],\"%cDefinition\":",axis?'v':'u');
@@ -280,7 +280,7 @@ static void json_reference_grid(const World *w,const ReferenceGrid *g)
         Coord values[GRID_MAX_LINES]; size_t count=0;
         if (g->from_binding) {
             if (query_ok) { count=sampled[axis].count; for (size_t k=0;k<count;++k) values[k]=sampled[axis].lines[k].coordinate; }
-        } else if (p) grid_axis_lines_in(w->grids,w->grid_count,g,p,b,axis,values,&count,NULL,0);
+        } else if (p) grid_axis_lines_in(w->wood.grid_applications.items,w->wood.grid_applications.count,g,p,b,axis,values,&count,NULL,0);
         for (size_t k=0;k<count;++k) {
             if (!first) putchar(',');
             first=false;
@@ -296,7 +296,7 @@ static void json_reference_grid(const World *w,const ReferenceGrid *g)
             SurfaceSegment2 finite_segments[GUIDE_MAX_SEGMENTS];
             const SurfaceSegment2 *segments=finite_segments; size_t n;
             if (g->from_binding) { segments=sampled[axis].lines[k].segments; n=sampled[axis].lines[k].segment_count; }
-            else n=grid_line_segments(w->grids,w->grid_count,g,p,b,axis,k,finite_segments,GUIDE_MAX_SEGMENTS);
+            else n=grid_line_segments(w->wood.grid_applications.items,w->wood.grid_applications.count,g,p,b,axis,k,finite_segments,GUIDE_MAX_SEGMENTS);
             for (size_t j=0;j<n;++j) {
                 printf("%s[[%lld,%lld],[%lld,%lld]",j?",":"",
                     (long long)segments[j].start.u,(long long)segments[j].start.v,
@@ -385,37 +385,37 @@ static void json_reference_timber_definition(const Timber *t,const TimberAnchor 
 static void json_references_world(const World *w,const char *fingerprint)
 {
     printf("{\"ok\":true,\"sourceFingerprint\":\"%s\",\"guides\":[",fingerprint);
-    for (size_t i=0;i<geo_guides_count(&w->guide_lines);++i) {
+    for (size_t i=0;i<geo_guides_count(&w->geo.guide_lines);++i) {
         if (i) putchar(','); json_reference_guide(w,i);
     }
     fputs("],\"grids\":[",stdout);
-    for (size_t i=0;i<w->grid_count;++i) {
-        const ReferenceGrid *g=&w->grids[i];
+    for (size_t i=0;i<w->wood.grid_applications.count;++i) {
+        const ReferenceGrid *g=&w->wood.grid_applications.items[i];
         if (i) putchar(',');
         json_reference_grid(w,g);
     }
     fputs("],\"timbers\":[",stdout); bool first=true;
-    for (size_t i=0;i<w->timber_count;++i) {
-        if (!w->timbers[i].placed) continue;
-        printf("%s{\"id\":%u,\"role\":",first?"":",",w->timbers[i].id); first=false;
-        js_string(timber_role_name(w->timbers[i].role)); fputs(",\"geometry\":",stdout);
+    for (size_t i=0;i<w->wood.timber_count;++i) {
+        if (!w->wood.timbers[i].placed) continue;
+        printf("%s{\"id\":%u,\"role\":",first?"":",",w->wood.timbers[i].id); first=false;
+        js_string(timber_role_name(w->wood.timbers[i].role)); fputs(",\"geometry\":",stdout);
         json_reference_geometry(w,(int)i);
-        fputs(",\"definition\":",stdout); json_reference_timber_definition(&w->timbers[i],&w->anchors[i]); putchar('}');
+        fputs(",\"definition\":",stdout); json_reference_timber_definition(&w->wood.timbers[i],&w->wood.anchors[i]); putchar('}');
     }
     fputs("],\"timberSupports\":",stdout);
     json_timber_supports(w,fingerprint);
     fputs(",\"specs\":[",stdout);
-    for (size_t i=0;i<geo_named_values_count(&w->named_values);++i) {
-        printf("%s{\"name\":",i?",":""); js_string(geo_named_values_at(&w->named_values,i)->name);
-        printf(",\"value\":%lld}",(long long)geo_named_values_at(&w->named_values,i)->value);
+    for (size_t i=0;i<geo_named_values_count(&w->geo.named_values);++i) {
+        printf("%s{\"name\":",i?",":""); js_string(geo_named_values_at(&w->geo.named_values,i)->name);
+        printf(",\"value\":%lld}",(long long)geo_named_values_at(&w->geo.named_values,i)->value);
     }
     fputs("],\"datums\":[",stdout);
-    for (size_t i=0;i<geo_datums_count(&w->datum_planes);++i) {
-        const GeoDatum *d=geo_datums_at(&w->datum_planes,i);
+    for (size_t i=0;i<geo_datums_count(&w->geo.datum_planes);++i) {
+        const GeoDatum *d=geo_datums_at(&w->geo.datum_planes,i);
         printf("%s{\"id\":%u,\"axis\":\"%c\",\"position\":%lld,\"expression\":",i?",":"",d->id,"XYZ"[d->axis],(long long)d->position);
         js_string(app_datum_expression(w,d->id)); fputs(",\"guides\":[",stdout); bool first=true;
-        for (size_t j=0;j<geo_guides_count(&w->guide_lines);++j) if (geo_guides_values(&w->guide_lines)[j].source==GUIDE_DATUM && geo_guides_values(&w->guide_lines)[j].datum_id==d->id) {
-            printf("%s%u",first?"":",",geo_guides_values(&w->guide_lines)[j].id); first=false;
+        for (size_t j=0;j<geo_guides_count(&w->geo.guide_lines);++j) if (geo_guides_values(&w->geo.guide_lines)[j].source==GUIDE_DATUM && geo_guides_values(&w->geo.guide_lines)[j].datum_id==d->id) {
+            printf("%s%u",first?"":",",geo_guides_values(&w->geo.guide_lines)[j].id); first=false;
         }
         fputs("]}",stdout);
     }

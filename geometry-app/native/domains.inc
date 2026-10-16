@@ -37,28 +37,28 @@ static void app_boundary_compose(const GeoRegionDefinition *region,const WoodBou
 }
 static const SpaceBoundarySurface *app_boundary_at(const World *w,size_t index,SpaceBoundarySurface *out)
 {
-    const GeoRegionDefinition *r=geo_regions_at(&w->region_data,index);if(!r)return NULL;
-    app_boundary_compose(r,&w->boundary_policy[index],out);return out;
+    const GeoRegionDefinition *r=geo_regions_at(&w->geo.region_data,index);if(!r)return NULL;
+    app_boundary_compose(r,&w->wood.boundary_policy[index],out);return out;
 }
 static const SpaceBoundarySurface *app_boundary_read(const World *w,uint32_t id,SpaceBoundarySurface *out)
 {
-    for(size_t i=0;i<geo_regions_count(&w->region_data);++i)
-        if(geo_regions_at(&w->region_data,i)->id==id)return app_boundary_at(w,i,out);
+    for(size_t i=0;i<geo_regions_count(&w->geo.region_data);++i)
+        if(geo_regions_at(&w->geo.region_data,i)->id==id)return app_boundary_at(w,i,out);
     return NULL;
 }
 static bool app_boundary_stage(World *w,const SpaceBoundarySurface *value)
 {
-    size_t at=0;while(at<geo_regions_count(&w->region_data)&&geo_regions_at(&w->region_data,at)->id!=value->id)++at;
+    size_t at=0;while(at<geo_regions_count(&w->geo.region_data)&&geo_regions_at(&w->geo.region_data,at)->id!=value->id)++at;
     GeoRegionDefinition geometry=app_boundary_region_definition(value);WoodBoundaryPolicy policy=app_boundary_policy(value);
-    if(!geo_regions_stage(&w->region_data,&geometry))return false;
-    w->boundary_policy[at]=policy;return true;
+    if(!geo_regions_stage(&w->geo.region_data,&geometry))return false;
+    w->wood.boundary_policy[at]=policy;return true;
 }
 static bool app_boundary_remove(World *w,uint32_t id)
 {
-    size_t at=0,count=geo_regions_count(&w->region_data);while(at<count&&geo_regions_at(&w->region_data,at)->id!=id)++at;
-    if(at==count||!geo_regions_remove(&w->region_data,id))return false;
-    memmove(w->boundary_policy+at,w->boundary_policy+at+1,(count-at-1)*sizeof w->boundary_policy[0]);
-    memset(w->boundary_policy+count-1,0,sizeof w->boundary_policy[0]);return true;
+    size_t at=0,count=geo_regions_count(&w->geo.region_data);while(at<count&&geo_regions_at(&w->geo.region_data,at)->id!=id)++at;
+    if(at==count||!geo_regions_remove(&w->geo.region_data,id))return false;
+    memmove(w->wood.boundary_policy+at,w->wood.boundary_policy+at+1,(count-at-1)*sizeof w->wood.boundary_policy[0]);
+    memset(w->wood.boundary_policy+count-1,0,sizeof w->wood.boundary_policy[0]);return true;
 }
 static GeoPlacementDefinition app_placement_definition(const PlacementSurface *p)
 {
@@ -70,43 +70,43 @@ static GeoPlacementDefinition app_placement_definition(const PlacementSurface *p
 }
 static const PlacementSurface *app_placement_at(const World *w,size_t index,PlacementSurface *out)
 {
-    const GeoPlacementDefinition *d=geo_placements_at(&w->placement_data,index);if(!d)return NULL;
-    const WoodPlacementPolicy *p=&w->placement_policy[index];memset(out,0,sizeof *out);
+    const GeoPlacementDefinition *d=geo_placements_at(&w->geo.placement_data,index);if(!d)return NULL;
+    const WoodPlacementPolicy *p=&w->wood.placement_policy[index];memset(out,0,sizeof *out);
     out->id=d->id;out->frame=d->frame;out->boundary_id=d->region_id;
-    out->rect=d->domain==GEO_PLACEMENT_REGION_REF?w->placement_metadata[index].unused_rect:d->rect;
+    out->rect=d->domain==GEO_PLACEMENT_REGION_REF?w->app.placement_metadata[index].unused_rect:d->rect;
     out->derived_fill_id=p->fill_id;out->derived_h=p->height;out->component_count=d->component_count;
     for(size_t c=0;c<d->component_count&&c<DP_COMPONENT_MAX;++c)app_boundary_compose(&d->components[c],&p->components[c],&out->components[c]);
     return out;
 }
 static const PlacementSurface *app_placement_read(const World *w,uint32_t id,PlacementSurface *out)
 {
-    for(size_t i=0;i<geo_placements_count(&w->placement_data);++i)
-        if(geo_placements_at(&w->placement_data,i)->id==id)return app_placement_at(w,i,out);
+    for(size_t i=0;i<geo_placements_count(&w->geo.placement_data);++i)
+        if(geo_placements_at(&w->geo.placement_data,i)->id==id)return app_placement_at(w,i,out);
     return NULL;
 }
 static bool app_placement_stage(World *w,const PlacementSurface *value)
 {
-    size_t at=0;while(at<geo_placements_count(&w->placement_data)&&geo_placements_at(&w->placement_data,at)->id!=value->id)++at;
+    size_t at=0;while(at<geo_placements_count(&w->geo.placement_data)&&geo_placements_at(&w->geo.placement_data,at)->id!=value->id)++at;
     GeoPlacementDefinition d=app_placement_definition(value);WoodPlacementPolicy policy;memset(&policy,0,sizeof policy);
     policy.id=value->id;policy.fill_id=value->derived_fill_id;policy.height=value->derived_h;
     for(size_t c=0;c<value->component_count&&c<DP_COMPONENT_MAX;++c)policy.components[c]=app_boundary_policy(&value->components[c]);
-    if(!geo_placements_stage(&w->placement_data,&d))return false;
-    w->placement_policy[at]=policy;
-    memset(&w->placement_metadata[at],0,sizeof w->placement_metadata[at]);
-    if(d.domain==GEO_PLACEMENT_REGION_REF)w->placement_metadata[at].unused_rect=value->rect;
+    if(!geo_placements_stage(&w->geo.placement_data,&d))return false;
+    w->wood.placement_policy[at]=policy;
+    memset(&w->app.placement_metadata[at],0,sizeof w->app.placement_metadata[at]);
+    if(d.domain==GEO_PLACEMENT_REGION_REF)w->app.placement_metadata[at].unused_rect=value->rect;
     return true;
 }
 static bool app_placement_remove(World *w,uint32_t id)
 {
-    size_t at=0,count=geo_placements_count(&w->placement_data);while(at<count&&geo_placements_at(&w->placement_data,at)->id!=id)++at;
-    if(at==count||!geo_placements_remove(&w->placement_data,id))return false;
-    memmove(w->placement_policy+at,w->placement_policy+at+1,(count-at-1)*sizeof w->placement_policy[0]);
-    memset(w->placement_policy+count-1,0,sizeof w->placement_policy[0]);
-    memmove(w->placement_metadata+at,w->placement_metadata+at+1,(count-at-1)*sizeof w->placement_metadata[0]);
-    memset(w->placement_metadata+count-1,0,sizeof w->placement_metadata[0]);return true;
+    size_t at=0,count=geo_placements_count(&w->geo.placement_data);while(at<count&&geo_placements_at(&w->geo.placement_data,at)->id!=id)++at;
+    if(at==count||!geo_placements_remove(&w->geo.placement_data,id))return false;
+    memmove(w->wood.placement_policy+at,w->wood.placement_policy+at+1,(count-at-1)*sizeof w->wood.placement_policy[0]);
+    memset(w->wood.placement_policy+count-1,0,sizeof w->wood.placement_policy[0]);
+    memmove(w->app.placement_metadata+at,w->app.placement_metadata+at+1,(count-at-1)*sizeof w->app.placement_metadata[0]);
+    memset(w->app.placement_metadata+count-1,0,sizeof w->app.placement_metadata[0]);return true;
 }
-#define world_boundary_count(w) geo_regions_count(&(w)->region_data)
-#define world_placement_count(w) geo_placements_count(&(w)->placement_data)
+#define world_boundary_count(w) geo_regions_count(&(w)->geo.region_data)
+#define world_placement_count(w) geo_placements_count(&(w)->geo.placement_data)
 #define world_boundary_at(w,i) app_boundary_at((w),(i),&(SpaceBoundarySurface){0})
 #define world_placement_at(w,i) app_placement_at((w),(i),&(PlacementSurface){0})
 #define world_find_boundary(w,id) app_boundary_read((w),(id),&(SpaceBoundarySurface){0})

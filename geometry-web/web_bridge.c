@@ -296,10 +296,10 @@ static void cmd_pick(int v, Coord x, Coord y, Coord r)
 
 static void cmd_drag(int guide_idx, int v, Coord x, Coord y)
 {
-    if (guide_idx<0 || guide_idx>=(int)geo_guides_count(&g_world.guide_lines) || v<0 || v>=VIEW_COUNT) {
+    if (guide_idx<0 || guide_idx>=(int)geo_guides_count(&g_world.geo.guide_lines) || v<0 || v>=VIEW_COUNT) {
         fputs("{\"ok\":false}\n",stdout); return;
     }
-    const GuideLine *g=&geo_guides_values(&g_world.guide_lines)[guide_idx];
+    const GuideLine *g=&geo_guides_values(&g_world.geo.guide_lines)[guide_idx];
     if (g->source==GUIDE_DATUM) {
         fputs("{\"ok\":false,\"error\":\"R5: 這是共用基準參考線，請編輯共同基準或具名規格\"}\n",stdout); return;
     }
@@ -332,10 +332,10 @@ static bool receipt_field_deleted(uint32_t parameter,uint32_t field)
 }
 static void receipt_scan_candidate(const World *after)
 {
-    for(size_t i=0;i<geo_parameters_field_count(&g_world.parameters);++i){
-        const ParameterField *field=&geo_parameters_fields(&g_world.parameters)[i];bool found=false;
-        for(size_t j=0;j<geo_parameters_field_count(&after->parameters);++j)
-            if(geo_parameters_fields(&after->parameters)[j].parameter_id==field->parameter_id && geo_parameters_fields(&after->parameters)[j].id==field->id){found=true;break;}
+    for(size_t i=0;i<geo_parameters_field_count(&g_world.geo.parameters);++i){
+        const ParameterField *field=&geo_parameters_fields(&g_world.geo.parameters)[i];bool found=false;
+        for(size_t j=0;j<geo_parameters_field_count(&after->geo.parameters);++j)
+            if(geo_parameters_fields(&after->geo.parameters)[j].parameter_id==field->parameter_id && geo_parameters_fields(&after->geo.parameters)[j].id==field->id){found=true;break;}
         if(!found && !receipt_field_deleted(field->parameter_id,field->id)){
             /* There are at most PARAM_FIELD_MAX original identities. */
             g_deleted_fields[g_deleted_field_count].parameter=field->parameter_id;
@@ -347,15 +347,15 @@ static void json_deleted_objects(const World *before,bool all)
 {
     fputs(",\"deletedObjects\":[",stdout);bool first_deleted=true;
     {
-        for(size_t i=0;i<geo_grid_systems_count(&before->grid_store);++i){
-            const GridSystem *system=geo_grid_systems_at(&before->grid_store,i);
-            if(all || !geo_grid_systems_find(&g_world.grid_store,system->id)){
+        for(size_t i=0;i<geo_grid_systems_count(&before->geo.grid_store);++i){
+            const GridSystem *system=geo_grid_systems_at(&before->geo.grid_store,i);
+            if(all || !geo_grid_systems_find(&g_world.geo.grid_store,system->id)){
                 printf("%s{\"kind\":\"grid-system\",\"id\":%u}",first_deleted?"":",",system->id);first_deleted=false;
             }
         }
-        for(size_t i=0;i<geo_grid_bindings_count(&before->grid_store);++i){
-            const GridBinding *binding=geo_grid_bindings_at(&before->grid_store,i);
-            if(all || !geo_grid_bindings_find(&g_world.grid_store,binding->id)){
+        for(size_t i=0;i<geo_grid_bindings_count(&before->geo.grid_store);++i){
+            const GridBinding *binding=geo_grid_bindings_at(&before->geo.grid_store,i);
+            if(all || !geo_grid_bindings_find(&g_world.geo.grid_store,binding->id)){
                 printf("%s{\"kind\":\"grid-binding\",\"id\":%u}",first_deleted?"":",",binding->id);first_deleted=false;
             }
         }
@@ -365,8 +365,8 @@ static void json_deleted_objects(const World *before,bool all)
                 printf("%s{\"kind\":\"boundary\",\"id\":%u}",first_deleted?"":",",boundary->id);first_deleted=false;
             }
         }
-        for(size_t i=0;i<geo_parameters_card_count(&before->parameters);++i){const ParameterSet *card=&geo_parameters_cards(&before->parameters)[i],*after=NULL;
-            for(size_t j=0;j<geo_parameters_card_count(&g_world.parameters);++j)if(geo_parameters_cards(&g_world.parameters)[j].id==card->id){after=&geo_parameters_cards(&g_world.parameters)[j];break;}
+        for(size_t i=0;i<geo_parameters_card_count(&before->geo.parameters);++i){const ParameterSet *card=&geo_parameters_cards(&before->geo.parameters)[i],*after=NULL;
+            for(size_t j=0;j<geo_parameters_card_count(&g_world.geo.parameters);++j)if(geo_parameters_cards(&g_world.geo.parameters)[j].id==card->id){after=&geo_parameters_cards(&g_world.geo.parameters)[j];break;}
             for(size_t f=0;f<card->count;++f){bool found=false;
                 if(after && !all)for(size_t j=0;j<after->count;++j)if(after->fields[j]==card->fields[f]){found=true;break;}
                 bool intermediate=g_preview.transaction && before==&g_preview.transaction->before && g_preview.engineering_batch && g_deleted_fields_token==g_preview.token && receipt_field_deleted(card->id,card->fields[f]);
@@ -614,20 +614,20 @@ static void cmd_newid(size_t surface_count)
     /* boundary 的 0 是 D4 的保留值;space 的 0 表示游離柱樑。其餘類別仍允許 0。 */
     WORLD_NEXT_ID_AT(mb, world_boundary_at(&g_world,i_), world_boundary_count(&g_world), true);
     WORLD_NEXT_ID_AT(mp, world_placement_at(&g_world,i_), world_placement_count(&g_world), false);
-    WORLD_NEXT_ID(mg,  geo_guides_values(&g_world.guide_lines),     geo_guides_count(&g_world.guide_lines),     false);
-    WORLD_NEXT_ID(mgr, g_world.grids,      g_world.grid_count,      false);
-    WORLD_NEXT_ID(mgs, geo_grid_systems_values(&g_world.grid_store), geo_grid_systems_count(&g_world.grid_store), false);
-    WORLD_NEXT_ID(mgb, geo_grid_bindings_values(&g_world.grid_store), geo_grid_bindings_count(&g_world.grid_store), false);
-    WORLD_NEXT_ID(mt,  g_world.timbers,    g_world.timber_count,    false);
-    WORLD_NEXT_ID(ms,  g_world.spaces,     g_world.space_count,     true);
-    WORLD_NEXT_ID(mc,  g_world.columns,    g_world.column_count,    false);
-    WORLD_NEXT_ID(mbm, g_world.beams,      g_world.beam_count,      false);
-    WORLD_NEXT_ID(md, geo_datums_values(&g_world.datum_planes), geo_datums_count(&g_world.datum_planes), false);
-    WORLD_NEXT_ID(mparam, geo_parameters_cards(&g_world.parameters), geo_parameters_card_count(&g_world.parameters), false);
+    WORLD_NEXT_ID(mg,  geo_guides_values(&g_world.geo.guide_lines),     geo_guides_count(&g_world.geo.guide_lines),     false);
+    WORLD_NEXT_ID(mgr, g_world.wood.grid_applications.items,      g_world.wood.grid_applications.count,      false);
+    WORLD_NEXT_ID(mgs, geo_grid_systems_values(&g_world.geo.grid_store), geo_grid_systems_count(&g_world.geo.grid_store), false);
+    WORLD_NEXT_ID(mgb, geo_grid_bindings_values(&g_world.geo.grid_store), geo_grid_bindings_count(&g_world.geo.grid_store), false);
+    WORLD_NEXT_ID(mt,  g_world.wood.timbers,    g_world.wood.timber_count,    false);
+    WORLD_NEXT_ID(ms,  geo_enclosures_values(&g_world.geo.enclosures), geo_enclosures_count(&g_world.geo.enclosures), true);
+    WORLD_NEXT_ID(mc,  g_world.wood.columns,    g_world.wood.column_count,    false);
+    WORLD_NEXT_ID(mbm, g_world.wood.beams,      g_world.wood.beam_count,      false);
+    WORLD_NEXT_ID(md, geo_datums_values(&g_world.geo.datum_planes), geo_datums_count(&g_world.geo.datum_planes), false);
+    WORLD_NEXT_ID(mparam, geo_parameters_cards(&g_world.geo.parameters), geo_parameters_card_count(&g_world.geo.parameters), false);
 
-    WORLD_NEXT_ID(mar,g_world.assembly.rules,g_world.assembly.rule_count,true);
-    WORLD_NEXT_ID(mab,g_world.assembly.bindings,g_world.assembly.binding_count,true);
-    uint32_t mai=1;WORLD_NEXT_ID(mai,g_world.assembly.instances,g_world.assembly.instance_count,true);
+    WORLD_NEXT_ID(mar,g_world.wood.assembly.rules,g_world.wood.assembly.rule_count,true);
+    WORLD_NEXT_ID(mab,g_world.wood.assembly.bindings,g_world.wood.assembly.binding_count,true);
+    uint32_t mai=1;WORLD_NEXT_ID(mai,g_world.wood.assembly.instances,g_world.wood.assembly.instance_count,true);
     /* 既有的純量欄位一個都沒動:舊的呼叫端(以及 canvas_test.js)照常可用。 */
     printf("{\"ok\":true,\"boundary\":%u,\"placement\":%u,\"guide\":%u,"
            "\"grid\":%u,\"gridSystem\":%u,\"gridBinding\":%u,\"timber\":%u,\"space\":%u,"
@@ -753,8 +753,8 @@ static void cmd_obstacles(uint32_t id)
 /* 查某物件的畫布座標；沒設過回 NULL。 */
 static const CanvasPos *find_cpos(int kind, uint32_t id)
 {
-    for (size_t i = 0; i < g_world.canvas_pos_count; ++i) {
-        const CanvasPos *p = &g_world.canvas_pos[i];
+    for (size_t i = 0; i < g_world.app.canvas_pos_count; ++i) {
+        const CanvasPos *p = &g_world.app.canvas_pos[i];
         if (p->kind == kind && p->id == id) {
             return p;
         }
@@ -837,14 +837,14 @@ static void cmd_objects(void)
 
     fputs("],\"spaces\":[", stdout);
 
-    for (size_t i = 0; i < g_world.space_count; ++i) {
-        const Space *s = &g_world.spaces[i];
+    for (size_t i = 0; i < geo_enclosures_count(&g_world.geo.enclosures); ++i) {
+        const Space *s = geo_enclosures_at(&g_world.geo.enclosures,i);
 
         if (i) putchar(',');
         printf("{\"id\":%u,\"members\":[", (unsigned)s->id);
-        for (size_t k = 0; k < s->boundary_count; ++k) {
+        for (size_t k = 0; k < s->member_count; ++k) {
             if (k) putchar(',');
-            printf("%u", (unsigned)s->boundaries[k]);
+            printf("%u", (unsigned)s->member_ids[k]);
         }
         printf("],\"closed\":%s,", s->closed ? "true" : "false");
         cpos_json(CANVAS_POS_SPACE, s->id);
@@ -853,8 +853,8 @@ static void cmd_objects(void)
 
     fputs("],\"columns\":[", stdout);
 
-    for (size_t i = 0; i < g_world.column_count; ++i) {
-        const RcColumn *c = &g_world.columns[i];
+    for (size_t i = 0; i < g_world.wood.column_count; ++i) {
+        const RcColumn *c = &g_world.wood.columns[i];
 
         if (i) putchar(',');
         printf("{\"kind\":\"column\",\"id\":%u,\"space\":%u,"
@@ -868,8 +868,8 @@ static void cmd_objects(void)
 
     fputs("],\"beams\":[", stdout);
 
-    for (size_t i = 0; i < g_world.beam_count; ++i) {
-        const RcBeam *b = &g_world.beams[i];
+    for (size_t i = 0; i < g_world.wood.beam_count; ++i) {
+        const RcBeam *b = &g_world.wood.beams[i];
 
         if (i) putchar(',');
         printf("{\"kind\":\"beam\",\"id\":%u,\"space\":%u,\"axis\":\"%c\","
@@ -883,27 +883,27 @@ static void cmd_objects(void)
     }
 
     fputs("],\"gridSystems\":[",stdout);
-    for (size_t i=0;i<geo_grid_systems_count(&g_world.grid_store);++i) {
+    for (size_t i=0;i<geo_grid_systems_count(&g_world.geo.grid_store);++i) {
         if (i) putchar(',');
-        json_grid_system(&g_world,geo_grid_systems_at(&g_world.grid_store,i));
+        json_grid_system(&g_world,geo_grid_systems_at(&g_world.geo.grid_store,i));
     }
 
     fputs("],\"parameters\":[",stdout);
-    for(size_t i=0;i<geo_parameters_card_count(&g_world.parameters);++i){
-        if(i)putchar(',');const ParameterSet *c=&geo_parameters_cards(&g_world.parameters)[i];
+    for(size_t i=0;i<geo_parameters_card_count(&g_world.geo.parameters);++i){
+        if(i)putchar(',');const ParameterSet *c=&geo_parameters_cards(&g_world.geo.parameters)[i];
         fputs("{\"kind\":\"parameter\",\"card\":",stdout);parameter_json_card(&g_world,c,stdout,true);
         printf(",\"id\":%u,\"name\":",c->id);js_string(c->name);putchar(',');cpos_json(CANVAS_POS_PARAMETER,c->id);putchar('}');
     }
     fputs("],\"assemblyRules\":[",stdout);bool first_rule=true;
-    for(size_t i=0;i<g_world.assembly.rule_count;++i){const AsmRuleVersion *r=&g_world.assembly.rules[i];if(assembly_rule(&g_world,r->id,0)!=r)continue;
+    for(size_t i=0;i<g_world.wood.assembly.rule_count;++i){const AsmRuleVersion *r=&g_world.wood.assembly.rules[i];if(assembly_rule(&g_world,r->id,0)!=r)continue;
         printf("%s{\"kind\":\"assembly-rule\",\"id\":%u,\"version\":%u,\"fingerprint\":\"%s\",\"name\":",first_rule?"":",",r->id,r->version,r->fingerprint);first_rule=false;js_string(r->name);putchar(',');cpos_json(CANVAS_POS_ASSEMBLY_RULE,r->id);putchar('}');}
     fputs("],\"assemblyBindings\":[",stdout);
-    for(size_t i=0;i<g_world.assembly.binding_count;++i){const AsmBinding *b=&g_world.assembly.bindings[i];printf("%s{\"kind\":\"assembly-binding\",\"id\":%u,\"ruleId\":%u,\"version\":%u,\"complete\":%s,\"name\":",i?",":"",b->id,b->rule_id,b->rule_version,b->complete?"true":"false");js_string(b->name);putchar(',');cpos_json(CANVAS_POS_ASSEMBLY_BINDING,b->id);putchar('}');}
+    for(size_t i=0;i<g_world.wood.assembly.binding_count;++i){const AsmBinding *b=&g_world.wood.assembly.bindings[i];printf("%s{\"kind\":\"assembly-binding\",\"id\":%u,\"ruleId\":%u,\"version\":%u,\"complete\":%s,\"name\":",i?",":"",b->id,b->rule_id,b->rule_version,b->complete?"true":"false");js_string(b->name);putchar(',');cpos_json(CANVAS_POS_ASSEMBLY_BINDING,b->id);putchar('}');}
     fputs("],\"parameterUses\":",stdout);json_parameter_uses(&g_world);
     fputs(",\"gridBindings\":[",stdout);
-    for (size_t i=0;i<geo_grid_bindings_count(&g_world.grid_store);++i) {
+    for (size_t i=0;i<geo_grid_bindings_count(&g_world.geo.grid_store);++i) {
         if (i) putchar(',');
-        json_grid_binding(&g_world,geo_grid_bindings_at(&g_world.grid_store,i),false);
+        json_grid_binding(&g_world,geo_grid_bindings_at(&g_world.geo.grid_store,i),false);
     }
 
     /*
@@ -913,9 +913,9 @@ static void cmd_objects(void)
     fputs("],\"timbers\":[", stdout);
 
     first = true;
-    for (size_t i = 0; i < g_world.timber_count; ++i) {
-        const Timber *t = &g_world.timbers[i];
-        const TimberAnchor *a = &g_world.anchors[i];
+    for (size_t i = 0; i < g_world.wood.timber_count; ++i) {
+        const Timber *t = &g_world.wood.timbers[i];
+        const TimberAnchor *a = &g_world.wood.anchors[i];
         const PlacementSurface *p;
         const SpaceBoundarySurface *b;
         SurfaceRegion2 f;

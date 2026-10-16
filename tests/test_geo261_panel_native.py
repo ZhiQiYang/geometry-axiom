@@ -174,9 +174,12 @@ class PanelNativeSource(unittest.TestCase):
 
     def test_host_and_real_p103_client_use_the_extracted_evaluator(self):
         layout = (ROOT / "geometry-core/panel_fill_layout.inc").read_text(encoding="utf-8")
+        finish = (WOOD / "finish.c").read_text(encoding="utf-8")
         support = (ROOT / "geometry-core/panel_fill_support.inc").read_text(encoding="utf-8")
-        self.assertIn("wood_panel_layout_build(&input,&d->layout", layout)
-        self.assertIn("geo_region_clip_rect_minus_rects(&region,&body", layout)
+        self.assertIn("wood_pf_build(&c,p,d)", layout)
+        self.assertIn("wood_pf_clip(&c,d,t)", layout)
+        self.assertIn("wood_panel_layout_build(&input,&d->layout", finish)
+        self.assertIn("geo_region_clip_rect_minus_rects(&region,&body", finish)
         self.assertNotIn("int neighbors[4]", layout)
         self.assertIn("wood_panel_support_evaluate(&d->layout", support)
         self.assertNotIn("pf_support_union", support)

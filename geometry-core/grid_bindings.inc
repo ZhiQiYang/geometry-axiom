@@ -3,53 +3,15 @@ static bool app_grid_vertex(void *state,uint32_t boundary,uint32_t key,GeoPoint2
 { return boundary_vertex_by_key((const World *)state,boundary,key,out); }
 
 static bool grid_binding_cache(const World *w,const GridBinding *binding,ReferenceGrid *g,char *err,size_t cap)
-{
-    GeoGridBindingCache cache={0};GeoGridStoreError detail;
-    for(int axis=0;axis<2;++axis){
-        cache.axis[axis]=g->axis[axis];
-        cache.lattice[axis]=(GeoLattice){g->lattice_base[axis],g->lattice_step[axis],g->lattice_index[axis]};
-    }
-    bool ok=geo_grid_binding_evaluate(&w->grid_store,app_grid_binding_index(w,binding->id),app_grid_vertex,(void *)w,&cache,&detail);
-    if(detail.status!=GEO_GRID_STORE_BINDING_SOURCE && detail.status!=GEO_GRID_STORE_BINDING_MISSING && detail.status!=GEO_GRID_STORE_INVALID){
-        g->from_binding=true;g->binding_id=binding->id;g->main_along=app_grid_system_main_along(w,binding->system_id);
-        for(int axis=0;axis<2;++axis){
-            g->axis[axis]=cache.axis[axis];g->lattice_base[axis]=cache.lattice[axis].base;
-            g->lattice_step[axis]=cache.lattice[axis].pitch;g->lattice_index[axis]=cache.lattice[axis].index;
-        }
-    }
-    if(ok)return true;
-    if(err)switch(detail.status){
-    case GEO_GRID_STORE_BINDING_CELL_RANGE:snprintf(err,cap,"D29/R32: cell upper line index exceeds signed int64");break;
-    case GEO_GRID_STORE_BINDING_ANCHOR:snprintf(err,cap,"D1/I37: anchor must have an exact integer-millimetre offset");break;
-    case GEO_GRID_STORE_BINDING_SHIFT_RANGE:snprintf(err,cap,"D10b/D30: 錯開後的錨點超出可表達範圍");break;
-    default:snprintf(err,cap,"D30/I37: grid-binding needs an existing boundary vertex and two infinite axes");break;
-    }
-    return false;
-}
+{WoodGridContext c=app_grid_context(w);return wood_grid_binding_cache(&c,binding,g,err,cap);}
+
 
 static bool grid_binding_translation(const World *w,const GridBinding *binding,Coord out[2])
-{ return geo_grid_binding_translation(&w->grid_store,app_grid_binding_index(w,binding->id),app_grid_vertex,(void *)w,out,NULL); }
+{ return geo_grid_binding_translation(&w->geo.grid_store,app_grid_binding_index(w,binding->id),app_grid_vertex,(void *)w,out,NULL); }
 
 static bool grid_bindings_rebuild(World *w,char *err,size_t cap)
-{
-    if(geo_grid_bindings_count(&w->grid_store)>WORLD_MAX_GRID_BINDINGS)goto invalid;
-    for(size_t i=0;i<geo_grid_bindings_count(&w->grid_store);++i){
-        ReferenceGrid derived={0};
-        if(!grid_binding_cache(w,geo_grid_bindings_at(&w->grid_store,i),&derived,err,cap))return false;
-        for(size_t j=0;j<i;++j)if((*geo_grid_bindings_at(&w->grid_store,j)).id==(*geo_grid_bindings_at(&w->grid_store,i)).id)goto invalid;
-    }
-    for(size_t i=0;i<w->grid_count;++i){
-        ReferenceGrid *g=&w->grids[i];if(!g->from_binding)continue;
-        const GridBinding *binding=world_find_grid_binding(w,g->binding_id);
-        const PlacementSurface *p=world_find_placement(w,g->placement_id);
-        if(!binding || !p || !p->boundary_id || p->boundary_id!=binding->boundary_id ||
-            g->is_subgrid || g->from_system || eng_object_bound(w,0,g->id))goto invalid;
-        if(!grid_binding_cache(w,binding,g,err,cap))return false;
-    }
-    return true;
-invalid:
-    if(err)snprintf(err,cap,"D30/I37: invalid grid-binding identity, capacity or application");return false;
-}
+{WoodGridContext c=app_grid_context(w);return wood_grid_bindings_rebuild(&c,err,cap);}
+
 
 static bool apply_grid_binding_line(const char *path,int line_no,char **t,int count,World *w)
 {
@@ -85,7 +47,7 @@ static bool apply_grid_binding_line(const char *path,int line_no,char **t,int co
         binding.anchor_num[a]=n;binding.anchor_den[a]=d;
     }
     if(!geo_grid_binding_normalize(&binding))goto invalid;
-    if(!geo_grid_bindings_put(&candidate.grid_store,&binding)){scene_error(path,line_no,"I37: grid-binding capacity is 32");return false;}
+    if(!geo_grid_bindings_put(&candidate.geo.grid_store,&binding)){scene_error(path,line_no,"I37: grid-binding capacity is 32");return false;}
     reference_capture_trial(&candidate);
     if(!app_world_revalidate_staged(w,&candidate)){scene_error(path,line_no,g_revalidate_error);return false;}
     return true;
@@ -98,15 +60,8 @@ static bool apply_grid_binding_application(const char *path,int line_no,char **t
     ReferenceGrid g={0};
     if(count!=6 || !parse_u32(t[1],&g.id) || strcmp(t[2],"on") || !parse_u32(t[3],&g.placement_id) ||
         strcmp(t[4],"from-binding") || !parse_u32(t[5],&g.binding_id))goto invalid;
-    if(eng_object_bound(w,0,g.id))goto invalid;
-    g.from_binding=true;size_t slot=w->grid_count;
-    for(size_t i=0;i<w->grid_count;++i){
-        const ReferenceGrid *old=&w->grids[i];
-        if(old->id==g.id){if(!old->from_binding || old->is_subgrid || old->placement_id!=g.placement_id)goto invalid;slot=i;}
-        else if(!old->is_subgrid && old->placement_id==g.placement_id)goto invalid;
-    }
-    if(slot==WORLD_MAX_GRIDS)goto invalid;
-    World candidate=*w;candidate.grids[slot]=g;if(slot==candidate.grid_count)++candidate.grid_count;
+    World candidate=*w;WoodGridContext context=app_grid_context(&candidate);char error[256]="";
+    if(!wood_grid_apply_binding(&context,&g,error,sizeof error)){scene_error(path,line_no,error);return false;}
     const World *baseline=g_subgrid_before;if(!baseline)g_subgrid_before=w;
     reference_capture_trial(&candidate);bool ok=app_world_revalidate_staged(w,&candidate);g_subgrid_before=baseline;
     if(!ok){scene_error(path,line_no,g_revalidate_error);return false;}
@@ -117,7 +72,7 @@ invalid:
 
 static void grid_bindings_dump(const World *w,FILE *out)
 {
-    for(size_t i=0;i<geo_grid_bindings_count(&w->grid_store);++i){const GridBinding *b=geo_grid_bindings_at(&w->grid_store,i);
+    for(size_t i=0;i<geo_grid_bindings_count(&w->geo.grid_store);++i){const GridBinding *b=geo_grid_bindings_at(&w->geo.grid_store,i);
         fprintf(out,"grid-binding %u on-boundary %u from-system %u vertex-key %u cell %lld %lld anchor %u %u %u %u\n",
             b->id,b->boundary_id,b->system_id,b->vertex_key,(long long)b->cell[0],(long long)b->cell[1],
             b->anchor_num[0],b->anchor_den[0],b->anchor_num[1],b->anchor_den[1]);
@@ -235,7 +190,7 @@ static bool grid_query(const World *w,const char *kind,uint32_t id,const Coord r
             memset(q,0,sizeof *q);q->stride=1;
             if(g->axis[a].source==GRID_SRC_NONE && !g->is_subgrid)continue;
             q->defined=true;Coord coords[GRID_MAX_LINES];size_t n=0;
-            if(!grid_axis_lines_in(w->grids,w->grid_count,g,p,boundary,a,coords,&n,err,cap))return false;
+            if(!grid_axis_lines_in(w->wood.grid_applications.items,w->wood.grid_applications.count,g,p,boundary,a,coords,&n,err,cap))return false;
             for(size_t i=0;i<n;++i)if(coords[i]>=rect[a] && coords[i]<=rect[a+2]){
                 if(!q->total)q->first=(int64_t)i;q->last=(int64_t)i;++q->total;
             }
@@ -256,7 +211,7 @@ static bool grid_query(const World *w,const char *kind,uint32_t id,const Coord r
                 clips[0]=(SurfaceSegment2){a?(SurfacePoint2){lo,line->coordinate}:(SurfacePoint2){line->coordinate,lo},
                     a?(SurfacePoint2){hi,line->coordinate}:(SurfacePoint2){line->coordinate,hi}};n=1;
             }else if(g->is_subgrid){
-                n=grid_line_segments(w->grids,w->grid_count,g,p,boundary,a,line->index,clips,GUIDE_MAX_SEGMENTS);
+                n=grid_line_segments(w->wood.grid_applications.items,w->wood.grid_applications.count,g,p,boundary,a,line->index,clips,GUIDE_MAX_SEGMENTS);
             }else {
                 GuideLine guide={0};guide.placement_id=p->id;guide.direction=a?GUIDE_ALONG_U:GUIDE_ALONG_V;guide.offset=line->coordinate;
                 n=guide_line_get_local_segments(p,boundary,&guide,clips,GUIDE_MAX_SEGMENTS);
