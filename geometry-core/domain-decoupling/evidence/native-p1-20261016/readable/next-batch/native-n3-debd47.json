@@ -1,0 +1,12 @@
+{
+  "source": "debd47ead0881f4cd15ab8a6ceae6f23f92dc81e",
+  "label": "native-n3-debd47ea-v1",
+  "modules": [
+    "tests.test_geo261_native_sources",
+    "tests.test_geo261_wood_members",
+    "tests.test_geo261_wood_product",
+    "tests.test_geo261_native_entrypoints"
+  ],
+  "expected_tests": 24,
+  "scope": "Original 9 source graph, 10 W member, 2 actual W product, and 3 real CLI/model-base/bridge entrypoint tests. No full-suite claim."
+}

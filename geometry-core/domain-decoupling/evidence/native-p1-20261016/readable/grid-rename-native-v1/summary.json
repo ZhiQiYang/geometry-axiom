@@ -1,0 +1,36 @@
+{
+  "kind": "commit-targeted-native-rename-checks",
+  "baseline_main": "a898ad6e12707104568679591fe1b21804bfc3df",
+  "rename_commit": "2f015dfd62779baba066f503f21422f8472a0ae8",
+  "rename_head_unchanged": true,
+  "baseline_checkout": "/var/tmp/geo261-baseline-a898ad6e",
+  "working_tree": "/mnt/d/geometry-axiom-work/geo261-grid-rename",
+  "command": [
+    "python3",
+    "-u",
+    "-m",
+    "unittest",
+    "-v",
+    "tests.test_grid_inspector_contract",
+    "tests.test_infinite_grid_contract"
+  ],
+  "started_utc": "2026-10-16T00:32:23.431555+00:00",
+  "finished_utc": "2026-10-16T00:35:00.174709+00:00",
+  "bridge_path": "/tmp/geometry-tests/bridge",
+  "bridge_fresh": "fresh",
+  "bridge_sha256": "8e4088762c377ce6cbd023b0aee7d2484bd1c3c1267bb9008461ae50cbbc3d3f",
+  "shared_lock_holder": "pid=10100 start=2026-10-16T00:30:31Z label= args=run WSL_CI_JOB_TAG=geo261-p1-baseline-adapters bash /mnt/d/geometry-axiom-work/geo261-evidence/p1/prepare-baseline.sh\n",
+  "unittest_exit": 1,
+  "sources_unchanged": true,
+  "required_source_sha256": {
+    "geometry-web/grid-inspector.js": "d116ef4fbc575f95d371cd280cd5783c9a4e45a2e435d8cfba92602d6e441db9",
+    "tests/fixtures/grid_inspector_command.cjs": "d1491dd13456221fb34ce7877bd21e4e133307eca64334eaba2772120bc53509",
+    "tests/test_grid_inspector_contract.py": "d5d6aebad452d1b9cd6ac638bdef5b883c91112c062d8b2abd936b9401e4c73b"
+  },
+  "source_before_sha256": "04768d9c754a463f0f4bdc3a031994f7849bc862e48cdae825e89d63a25030b4",
+  "source_after_sha256": "04768d9c754a463f0f4bdc3a031994f7849bc862e48cdae825e89d63a25030b4",
+  "log_sha256": "7c8813f5e8129a7b6e74efaef10c482f011dbc5e3798d6026fd53dbd93ebbe3b",
+  "full_suite_executed": false,
+  "browser_executed": false,
+  "exit": 1
+}

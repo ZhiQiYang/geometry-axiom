@@ -1,0 +1,32 @@
+{
+  "source": "db65132a41c4b4c815b6814784651e3980bf4f63",
+  "label": "native-corrected-db65132a-v1",
+  "modules": [
+    "tests.test_geo261_native_entrypoints",
+    "tests.test_geo261_native_kernel",
+    "tests.test_geo261_native_geometry",
+    "tests.test_geo261_native_grid",
+    "tests.test_geo261_native_parameters",
+    "tests.test_geo261_draw_annotation",
+    "tests.test_geo261_native_linear",
+    "tests.test_geo261_native_datums",
+    "tests.test_geo261_native_sources",
+    "tests.test_geo261_wood_members",
+    "tests.test_geo261_wood_product"
+  ],
+  "module_counts": {
+    "tests.test_geo261_native_entrypoints": 3,
+    "tests.test_geo261_native_kernel": 13,
+    "tests.test_geo261_native_geometry": 7,
+    "tests.test_geo261_native_grid": 8,
+    "tests.test_geo261_native_parameters": 7,
+    "tests.test_geo261_draw_annotation": 4,
+    "tests.test_geo261_native_linear": 6,
+    "tests.test_geo261_native_datums": 7,
+    "tests.test_geo261_native_sources": 9,
+    "tests.test_geo261_wood_members": 10,
+    "tests.test_geo261_wood_product": 2
+  },
+  "expected_tests": 76,
+  "scope": "Original three-TU entrypoint preflight first, then 35 N2a native tests, annotation4, linear/datum13, and sources/wood21. No support/guide slices and no full-suite claim."
+}
