@@ -75,20 +75,20 @@ static void json_grid_system(const World *w,const GridSystem *system)
 static void json_grid_system_preview(void)
 {
     fputs(",\"gridSystems\":[",stdout); bool first=true;
-    for (size_t i=0;i<geo_grid_systems_count(&g_preview.before.grid_store);++i) {
-        const GridSystem *before=geo_grid_systems_at(&g_preview.before.grid_store,i);
-        const GridSystem *after=world_find_grid_system(&g_preview.after,before->id);
+    for (size_t i=0;i<geo_grid_systems_count(&g_preview.transaction->before.grid_store);++i) {
+        const GridSystem *before=geo_grid_systems_at(&g_preview.transaction->before.grid_store,i);
+        const GridSystem *after=world_find_grid_system(&g_preview.transaction->after,before->id);
         printf("%s{\"id\":%u,\"before\":",first?"":",",before->id); first=false;
-        json_grid_system(&g_preview.before,before);
+        json_grid_system(&g_preview.transaction->before,before);
         fputs(",\"after\":",stdout);
-        if (after) json_grid_system(&g_preview.after,after); else fputs("null",stdout);
+        if (after) json_grid_system(&g_preview.transaction->after,after); else fputs("null",stdout);
         putchar('}');
     }
-    for (size_t i=0;i<geo_grid_systems_count(&g_preview.after.grid_store);++i) {
-        const GridSystem *after=geo_grid_systems_at(&g_preview.after.grid_store,i);
-        if (world_find_grid_system(&g_preview.before,after->id)) continue;
+    for (size_t i=0;i<geo_grid_systems_count(&g_preview.transaction->after.grid_store);++i) {
+        const GridSystem *after=geo_grid_systems_at(&g_preview.transaction->after.grid_store,i);
+        if (world_find_grid_system(&g_preview.transaction->before,after->id)) continue;
         printf("%s{\"id\":%u,\"before\":null,\"after\":",first?"":",",after->id); first=false;
-        json_grid_system(&g_preview.after,after); putchar('}');
+        json_grid_system(&g_preview.transaction->after,after); putchar('}');
     }
     putchar(']');
 }

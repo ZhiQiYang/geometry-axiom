@@ -87,8 +87,8 @@ static bool apply_grid_binding_line(const char *path,int line_no,char **t,int co
     if(!geo_grid_binding_normalize(&binding))goto invalid;
     if(!geo_grid_bindings_put(&candidate.grid_store,&binding)){scene_error(path,line_no,"I37: grid-binding capacity is 32");return false;}
     reference_capture_trial(&candidate);
-    if(!world_revalidate(&candidate)){scene_error(path,line_no,g_revalidate_error);return false;}
-    *w=candidate;return true;
+    if(!app_world_revalidate_staged(w,&candidate)){scene_error(path,line_no,g_revalidate_error);return false;}
+    return true;
 invalid:
     scene_error(path,line_no,"D30/I37: invalid grid-binding vertex, signed cell or rational anchor declaration");return false;
 }
@@ -108,9 +108,9 @@ static bool apply_grid_binding_application(const char *path,int line_no,char **t
     if(slot==WORLD_MAX_GRIDS)goto invalid;
     World candidate=*w;candidate.grids[slot]=g;if(slot==candidate.grid_count)++candidate.grid_count;
     const World *baseline=g_subgrid_before;if(!baseline)g_subgrid_before=w;
-    reference_capture_trial(&candidate);bool ok=world_revalidate(&candidate);g_subgrid_before=baseline;
+    reference_capture_trial(&candidate);bool ok=app_world_revalidate_staged(w,&candidate);g_subgrid_before=baseline;
     if(!ok){scene_error(path,line_no,g_revalidate_error);return false;}
-    *w=candidate;return true;
+    return true;
 invalid:
     scene_error(path,line_no,"D30/I37: from-binding requires an available lattice grid identity and the binding's boundary placement");return false;
 }
@@ -199,7 +199,8 @@ static bool grid_query(const World *w,const char *kind,uint32_t id,const Coord r
     if(!limit || limit>GRID_MAX_LINES || rect[0]>rect[2] || rect[1]>rect[3])goto invalid;
     for(int a=0;a<4;++a)if(!coord_in_range(rect[a]))goto invalid;
     ReferenceGrid cache={0};const ReferenceGrid *g=&cache;
-    PlacementSurface local={0};const PlacementSurface *p=&local;const SpaceBoundarySurface *boundary=NULL;
+    PlacementSurface local={0};SpaceBoundarySurface boundary_storage;
+    const PlacementSurface *p=&local;const SpaceBoundarySurface *boundary=NULL;
     if(!strcmp(kind,"system")){
         const GridSystem *s=world_find_grid_system(w,id);if(!s || !grid_system_is_infinite(s))goto invalid;
         cache.from_binding=true;
@@ -210,11 +211,11 @@ static bool grid_query(const World *w,const char *kind,uint32_t id,const Coord r
     }else if(!strcmp(kind,"binding")){
         const GridBinding *b=world_find_grid_binding(w,id);
         if(!b || !grid_binding_cache(w,b,&cache,err,cap))goto invalid;
-        boundary=world_find_boundary(w,b->boundary_id);
+        boundary=app_boundary_read(w,b->boundary_id,&boundary_storage);
     }else if(!strcmp(kind,"grid")){
         g=world_find_grid(w,id);if(!g)goto invalid;
-        p=world_find_placement(w,g->placement_id);if(!p)goto invalid;
-        boundary=world_placement_boundary(w,p);
+        p=app_placement_read(w,g->placement_id,&local);if(!p)goto invalid;
+        boundary=app_placement_boundary(w,p,&boundary_storage);
     }else goto invalid;
     for(int a=0;a<2;++a){
         GridQueryAxis *q=&axes[a];

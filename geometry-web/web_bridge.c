@@ -198,14 +198,30 @@ static bool feed_line(const char *path, int line_no, const char *text, World *wo
     return apply_interactive_tokens(path, line_no, tokens, count, world);
 }
 
+typedef struct { bool use_default; uint64_t completed_revision; } AppReplacement;
+static bool app_replace_evaluate(void *after,GeoEvalContext *sources,void *opaque)
+{
+    (void)sources;AppReplacement *operation=opaque;uint64_t revision=g_definition_revision;
+    bool ok=true;
+    if(operation->use_default)ok=reference_default_world(after);
+    else memset(after,0,sizeof(World));
+    /* Default construction historically advances through its constituent DSL
+     * definitions. Preserve that count, but publish it only with the full root. */
+    operation->completed_revision=g_definition_revision;g_definition_revision=revision;
+    return ok&&world_revalidate(after);
+}
+static bool app_replace_world(World *world,bool use_default)
+{
+    AppWorldCandidate *candidate=app_world_candidate_create(world);if(!candidate)return false;
+    AppReplacement operation={use_default,g_definition_revision};
+    bool ok=app_world_candidate_evaluate(candidate,app_replace_evaluate,&operation)==GEO_CANDIDATE_OK;
+    if(ok)ok=app_world_candidate_seal(candidate)&&app_world_candidate_publish(candidate,world,false);
+    if(ok){g_definition_revision=operation.completed_revision+1;history_clear();g_preview.ready=false;}
+    app_world_candidate_destroy(candidate);return ok;
+}
 /* 內建預設 = room_a.scene 的內容，走同一條解析路。 */
 static bool world_default(World *world)
-{
-    bool ok=reference_default_world(world);
-    if (ok) ++g_definition_revision;
-    history_clear(); g_preview.ready=false;
-    return ok;
-}
+{return app_replace_world(world,true);}
 
 /* ---------------- 指令處理 ---------------- */
 
@@ -331,10 +347,6 @@ static void json_deleted_objects(const World *before,bool all)
 {
     fputs(",\"deletedObjects\":[",stdout);bool first_deleted=true;
     {
-#define REMOVED_ROWS(array,count,kind_name) \
-        for(size_t i=0;i<before->count;++i){bool found=false; \
-            for(size_t j=0;!all && j<g_world.count;++j)if(before->array[i].id==g_world.array[j].id){found=true;break;} \
-            if(!found){printf("%s{\"kind\":\"%s\",\"id\":%u}",first_deleted?"":",",kind_name,before->array[i].id);first_deleted=false;}}
         for(size_t i=0;i<geo_grid_systems_count(&before->grid_store);++i){
             const GridSystem *system=geo_grid_systems_at(&before->grid_store,i);
             if(all || !geo_grid_systems_find(&g_world.grid_store,system->id)){
@@ -347,13 +359,17 @@ static void json_deleted_objects(const World *before,bool all)
                 printf("%s{\"kind\":\"grid-binding\",\"id\":%u}",first_deleted?"":",",binding->id);first_deleted=false;
             }
         }
-        REMOVED_ROWS(boundaries,boundary_count,"boundary")
-#undef REMOVED_ROWS
+        for(size_t i=0;i<world_boundary_count(before);++i){
+            const SpaceBoundarySurface *boundary=world_boundary_at(before,i);
+            if(all || !world_find_boundary(&g_world,boundary->id)){
+                printf("%s{\"kind\":\"boundary\",\"id\":%u}",first_deleted?"":",",boundary->id);first_deleted=false;
+            }
+        }
         for(size_t i=0;i<geo_parameters_card_count(&before->parameters);++i){const ParameterSet *card=&geo_parameters_cards(&before->parameters)[i],*after=NULL;
             for(size_t j=0;j<geo_parameters_card_count(&g_world.parameters);++j)if(geo_parameters_cards(&g_world.parameters)[j].id==card->id){after=&geo_parameters_cards(&g_world.parameters)[j];break;}
             for(size_t f=0;f<card->count;++f){bool found=false;
                 if(after && !all)for(size_t j=0;j<after->count;++j)if(after->fields[j]==card->fields[f]){found=true;break;}
-                bool intermediate=before==&g_preview.before && g_preview.engineering_batch && g_deleted_fields_token==g_preview.token && receipt_field_deleted(card->id,card->fields[f]);
+                bool intermediate=g_preview.transaction && before==&g_preview.transaction->before && g_preview.engineering_batch && g_deleted_fields_token==g_preview.token && receipt_field_deleted(card->id,card->fields[f]);
                 if(!found || intermediate){printf("%s{\"kind\":\"parameter-field\",\"parameterId\":%u,\"fieldId\":%u}",first_deleted?"":",",card->id,card->fields[f]);first_deleted=false;}}
         }
     }
@@ -383,13 +399,27 @@ static void cmd_replace_world(bool use_default)
     if(!before){fputs("{\"ok\":false,\"error\":\"Candidate memory unavailable\"}\n",stdout);return;}
     *before=g_world;bool ok=true;
     if(use_default)ok=world_default(&g_world);
-    else{memset(&g_world,0,sizeof g_world);history_clear();++g_definition_revision;}
+    else ok=app_replace_world(&g_world,false);
     printf("{\"ok\":%s",ok?"true":"false");
     if(ok)json_deleted_objects(before,true);
     else fputs(",\"error\":\"內建場景失敗\"",stdout);
     fputs("}\n",stdout);free(before);
 }
 
+static bool app_scene_load_evaluate(void *after,GeoEvalContext *sources,void *opaque)
+{
+    (void)sources;const char *path=opaque;
+    ReferencePreview *saved=malloc(sizeof *saved);
+    if(!saved){scene_error(path,0,"Cannot allocate scene import candidate");return false;}
+    memset(after,0,sizeof(World));
+    *saved=g_preview;memset(&g_preview,0,sizeof g_preview);
+    uint32_t serial=g_preview_serial;uint64_t revision=g_definition_revision;
+    const World *previous=g_subgrid_before;g_subgrid_before=NULL;
+    bool ok=parse_scene_file(path,after);
+    app_world_candidate_destroy(g_preview.transaction);g_preview=*saved;
+    g_preview_serial=serial;g_definition_revision=revision;g_subgrid_before=previous;free(saved);
+    return ok;
+}
 static void cmd_loadfile(const char *path)
 {
     /*
@@ -413,15 +443,17 @@ static void cmd_loadfile(const char *path)
     }
 
     /* 先記快照：失敗時世界不動，成功時載入本身可以 undo。 */
-    World *draft=calloc(1,sizeof *draft);ReferencePreview *saved=malloc(sizeof *saved);
-    if(!draft || !saved){free(draft);free(saved);fputs("{\"ok\":false,\"error\":\"Candidate memory unavailable\"}\n",stdout);return;}
-    *saved=g_preview;uint32_t serial=g_preview_serial;uint64_t revision=g_definition_revision;
-    const World *previous=g_subgrid_before;g_subgrid_before=NULL;
+    AppWorldCandidate *transaction=app_world_candidate_create(&g_world);
+    if(!transaction){fputs("{\"ok\":false,\"error\":\"Candidate memory unavailable\"}\n",stdout);return;}
     g_fs_diagnostic=FS_DIAGNOSTIC_INVALID;
-    bool loaded=parse_scene_file(path,draft);
-    g_preview=*saved;g_preview_serial=serial;g_definition_revision=revision;g_subgrid_before=previous;free(saved);
+    bool loaded=app_world_candidate_evaluate(transaction,app_scene_load_evaluate,(void*)path)==GEO_CANDIDATE_OK;
+    if(loaded)loaded=app_world_candidate_seal(transaction);
     if (loaded) {
-        history_record(&g_world);g_world=*draft;g_preview.ready=false;
+        history_record(&g_world);
+        if(!app_world_candidate_publish(transaction,&g_world,false)){
+            history_unrecord();app_world_candidate_destroy(transaction);
+            fputs("{\"ok\":false,\"error\":\"Scene import candidate changed during validation\"}\n",stdout);return;}
+        g_preview.ready=false;
         ++g_definition_revision;
         char hash[65]; bool hashed=eng_definition_hash(&g_world,hash);
         printf("{\"ok\":true,\"revision\":%llu,",(unsigned long long)g_definition_revision);
@@ -435,7 +467,7 @@ static void cmd_loadfile(const char *path)
         fputs(",\"code\":",stdout);js_string(g_fs_diagnostic==FS_DIAGNOSTIC_CAPACITY?"CAPACITY":"SCENE_INVALID");
         fputs("}\n", stdout);
     }
-    free(draft);
+    app_world_candidate_destroy(transaction);
 }
 
 /* ---- 畫布指令 ---- */
@@ -489,23 +521,25 @@ static void cmd_proj(int v, Coord u, Coord vv, uint32_t sid)
  * 回繞發出 0 的話使用者會拿到成功訊息和一個**永遠掛不上承載面的死面**。
  * 其餘八類的 id 0 實測可用,所以不一律跳過,避免無謂的行為變更。
  */
-#define WORLD_NEXT_ID(out, array, count, skip_zero)                         \
+#define WORLD_NEXT_ID_AT(out, value, count, skip_zero)                         \
     do {                                                                    \
         size_t n_ = (size_t)(count);                                        \
         uint32_t id_ = 0;                                                   \
         for (size_t i_ = 0; i_ < n_; ++i_)                                  \
-            if ((array)[i_].id > id_) id_ = (array)[i_].id;                 \
+            if ((value)->id > id_) id_ = (value)->id;                 \
         ++id_;                                                              \
         for (size_t attempt_ = 0; attempt_ <= n_; ++attempt_) {             \
             bool used_ = false;                                             \
             if ((skip_zero) && id_ == 0) id_ = 1;                           \
             for (size_t i_ = 0; i_ < n_; ++i_)                              \
-                if ((array)[i_].id == id_) { used_ = true; break; }         \
+                if ((value)->id == id_) { used_ = true; break; }         \
             if (!used_) break;                                              \
             ++id_;                                                          \
         }                                                                   \
         (out) = id_;                                                        \
     } while (0)
+#define WORLD_NEXT_ID(out, array, count, skip_zero) \
+    WORLD_NEXT_ID_AT(out, &(array)[i_], count, skip_zero)
 
 /*
  * GEO-157：`surface N` 是「boundary N + placement N」合體一行,
@@ -523,10 +557,10 @@ static void cmd_proj(int v, Coord u, Coord vv, uint32_t sid)
 
 static bool surface_id_taken(uint32_t id, const uint32_t *reserved, size_t reserved_count)
 {
-    for (size_t i = 0; i < g_world.boundary_count; ++i)
-        if (g_world.boundaries[i].id == id) return true;
-    for (size_t i = 0; i < g_world.placement_count; ++i)
-        if (g_world.placements[i].id == id) return true;
+    for (size_t i = 0; i < world_boundary_count(&g_world); ++i)
+        if (world_boundary_at(&g_world,i)->id == id) return true;
+    for (size_t i = 0; i < world_placement_count(&g_world); ++i)
+        if (world_placement_at(&g_world,i)->id == id) return true;
     for (size_t i = 0; i < reserved_count; ++i)
         if (reserved[i] == id) return true;
     return false;
@@ -537,14 +571,14 @@ static bool next_surface_ids(uint32_t *out, size_t n)
 {
     uint32_t id = 0;
 
-    for (size_t i = 0; i < g_world.boundary_count; ++i)
-        if (g_world.boundaries[i].id > id) id = g_world.boundaries[i].id;
-    for (size_t i = 0; i < g_world.placement_count; ++i)
-        if (g_world.placements[i].id > id) id = g_world.placements[i].id;
+    for (size_t i = 0; i < world_boundary_count(&g_world); ++i)
+        if (world_boundary_at(&g_world,i)->id > id) id = world_boundary_at(&g_world,i)->id;
+    for (size_t i = 0; i < world_placement_count(&g_world); ++i)
+        if (world_placement_at(&g_world,i)->id > id) id = world_placement_at(&g_world,i)->id;
     ++id;
 
     for (size_t k = 0; k < n; ++k) {
-        size_t used = g_world.boundary_count + g_world.placement_count + k;
+        size_t used = world_boundary_count(&g_world) + world_placement_count(&g_world) + k;
         bool found = false;
 
         /* 非零候選 used + 1 個且兩兩相異,被占用的至多 used 個 → 必定找得到。 */
@@ -578,8 +612,8 @@ static void cmd_newid(size_t surface_count)
     }
 
     /* boundary 的 0 是 D4 的保留值;space 的 0 表示游離柱樑。其餘類別仍允許 0。 */
-    WORLD_NEXT_ID(mb,  g_world.boundaries, g_world.boundary_count, true);
-    WORLD_NEXT_ID(mp,  g_world.placements, g_world.placement_count, false);
+    WORLD_NEXT_ID_AT(mb, world_boundary_at(&g_world,i_), world_boundary_count(&g_world), true);
+    WORLD_NEXT_ID_AT(mp, world_placement_at(&g_world,i_), world_placement_count(&g_world), false);
     WORLD_NEXT_ID(mg,  geo_guides_values(&g_world.guide_lines),     geo_guides_count(&g_world.guide_lines),     false);
     WORLD_NEXT_ID(mgr, g_world.grids,      g_world.grid_count,      false);
     WORLD_NEXT_ID(mgs, geo_grid_systems_values(&g_world.grid_store), geo_grid_systems_count(&g_world.grid_store), false);
@@ -616,8 +650,8 @@ static void cmd_newid(size_t surface_count)
 static void cmd_surfaces(void)
 {
     fputs("{\"ok\":true,\"surfaces\":[", stdout);
-    for (size_t i = 0; i < g_world.placement_count; ++i) {
-        const PlacementSurface *p = &g_world.placements[i];
+    for (size_t i = 0; i < world_placement_count(&g_world); ++i) {
+        const PlacementSurface *p = world_placement_at(&g_world,i);
         if (i) putchar(',');
         printf("{\"id\":%u,\"boundary\":%u,"
                "\"origin\":[%lld,%lld,%lld],"
@@ -693,9 +727,9 @@ static void cmd_obstacles(uint32_t id)
     }
 
     int n_axis = 2;
-    for (size_t p = 0; p < g_world.placement_count; ++p) {
-        if (g_world.placements[p].boundary_id == b->id) {
-            n_axis = axis_index(g_world.placements[p].frame.normal);
+    for (size_t p = 0; p < world_placement_count(&g_world); ++p) {
+        if (world_placement_at(&g_world,p)->boundary_id == b->id) {
+            n_axis = axis_index(world_placement_at(&g_world,p)->frame.normal);
             break;
         }
     }
@@ -747,8 +781,8 @@ static void cmd_objects(void)
 
     bool first = true;
 
-    for (size_t i = 0; i < g_world.boundary_count; ++i) {
-        const SpaceBoundarySurface *b = &g_world.boundaries[i];
+    for (size_t i = 0; i < world_boundary_count(&g_world); ++i) {
+        const SpaceBoundarySurface *b = world_boundary_at(&g_world,i);
         Coord lo_u = 0, lo_v = 0, hi_u = 0, hi_v = 0;
 
         if (b->outline.count > 0) {
@@ -763,8 +797,8 @@ static void cmd_objects(void)
         }
 
         bool placed = false;
-        for (size_t p = 0; p < g_world.placement_count; ++p) {
-            if (g_world.placements[p].boundary_id == b->id) {
+        for (size_t p = 0; p < world_placement_count(&g_world); ++p) {
+            if (world_placement_at(&g_world,p)->boundary_id == b->id) {
                 placed = true;
                 break;
             }
@@ -783,8 +817,8 @@ static void cmd_objects(void)
     }
 
     /* 自帶矩形（無邊界面）的承載面也是一張面卡。 */
-    for (size_t i = 0; i < g_world.placement_count; ++i) {
-        const PlacementSurface *p = &g_world.placements[i];
+    for (size_t i = 0; i < world_placement_count(&g_world); ++i) {
+        const PlacementSurface *p = world_placement_at(&g_world,i);
 
         if (p->boundary_id != 0) {
             continue;
@@ -972,7 +1006,10 @@ static bool view_coord_in_range(Coord value)
     return value >= -4 * COORD_LIMIT && value <= 4 * COORD_LIMIT;
 }
 
-int main(void)
+#ifndef GEOMETRY_BRIDGE_ENTRYPOINT
+#define GEOMETRY_BRIDGE_ENTRYPOINT main
+#endif
+int GEOMETRY_BRIDGE_ENTRYPOINT(void)
 {
 #ifdef _WIN32
     /* 只有 Windows 需要關掉 CRLF 轉換;POSIX 的 stdio 本來就是位元組流。 */

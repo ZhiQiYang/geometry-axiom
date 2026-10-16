@@ -8,9 +8,9 @@ typedef WoodPanelSupport PfSupport;
 static void pf_support_free(PfSupport *s){wood_panel_support_free(s);}
 static bool pf_support_footprints(const World *w,const PanelFill *p,PfFootprint *rects,size_t *count)
 {
-    *count=0;const PlacementSurface *host=NULL;
+    *count=0;PlacementSurface host_value;const PlacementSurface *host=NULL;
     for(size_t i=0;i<w->finish_surfaces.host_count;++i)if(w->finish_surfaces.hosts[i].fill_id==p->id)
-        host=world_find_placement(w,w->finish_surfaces.hosts[i].id);
+        host=app_placement_read(w,w->finish_surfaces.hosts[i].id,&host_value);
     if(!host)return true;
     const FinishSurface *finish=fs_find(w,p->finish_id);
     for(size_t i=0;i<w->timber_count;++i){

@@ -80,17 +80,17 @@ static bool grid_rule_query_visit(const World *w,const char *kind,uint32_t id,
 {
     ReferenceGrid derived={0};
     const GridSystem *source=NULL; const GridSubdivisionRule *rule=NULL;
+    PlacementSurface placement_storage={0};SpaceBoundarySurface boundary_storage;
     const PlacementSurface *placement=NULL; const SpaceBoundarySurface *boundary=NULL;
     SurfaceRegion2 bounds;
     if (!grid_rule_cell(w,kind,id,key,cell,&derived,&source,&rule,&bounds,
-                       &placement,&boundary,err,cap)) return false;
+                       &placement,&boundary,&placement_storage,&boundary_storage,err,cap)) return false;
     if (!source || !rule || !rule->divisions[0] || !rule->divisions[1] ||
         rule->divisions[0]>GRID_MAX_LINES+1 || rule->divisions[1]>GRID_MAX_LINES+1)
         return grid_rule_query_error(err,cap,"R32: invalid rule query definition");
     /* Binding queries use boundary-local coordinates, like grid_query. This
      * adapter is stack-local and never becomes a placement in World. */
-    PlacementSurface local={0};
-    if (!placement && boundary) placement=&local;
+    if (!placement && boundary) placement=&placement_storage;
     GridRuleQueryCell *result=NULL;
     if (write) {
         if (q->cell_count>=GRID_RULE_QUERY_MAX_CELLS)
@@ -210,8 +210,9 @@ static bool grid_rule_query_rect(const World *w,const char *kind,uint32_t id,
     for (int a=0;a<4;++a) if (!coord_in_range(rect[a]))
         return grid_rule_query_error(err,cap,"R32: rule query rectangle exceeds D1");
     ReferenceGrid derived={0}; const GridSystem *source=NULL;
+    PlacementSurface placement_storage;SpaceBoundarySurface boundary_storage;
     const PlacementSurface *placement=NULL; const SpaceBoundarySurface *boundary=NULL;
-    if (!grid_rule_target(w,kind,id,&derived,&source,&placement,&boundary,err,cap)) return false;
+    if (!grid_rule_target(w,kind,id,&derived,&source,&placement,&boundary,&placement_storage,&boundary_storage,err,cap)) return false;
     const GridSubdivisionRule *rule=source?grid_rule_find(source,key):NULL;
     if (!rule) return grid_rule_query_error(err,cap,"R32: rule query needs an existing source rule");
     int64_t first[2],last[2]; uint64_t counts[2];

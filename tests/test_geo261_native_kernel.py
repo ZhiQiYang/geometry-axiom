@@ -38,7 +38,7 @@ class NativeBuild:
         self.work = Path(self.temp.name)
         self.kernel = self.work / "isolated-kernel"
         self.kernel.mkdir()
-        for name in ("types.h", "exact.h", "exact.c", "codec.h", "codec.c", "geometry.h", "geometry.c", "clip.h", "clip.c", "grid.h", "grid.c", "parameters.h", "parameters.c", "linear.h", "linear.c", "named_values.h", "named_values.c", "datums.h", "datums.c", "source.h", "source.c", "regions.h", "regions.c", "guides.h", "guides.c", "grid_store.h", "grid_store.c"):
+        for name in ("types.h", "exact.h", "exact.c", "codec.h", "codec.c", "geometry.h", "geometry.c", "clip.h", "clip.c", "grid.h", "grid.c", "parameters.h", "parameters.c", "linear.h", "linear.c", "named_values.h", "named_values.c", "datums.h", "datums.c", "source.h", "source.c", "regions.h", "regions.c", "guides.h", "guides.c", "grid_store.h", "grid_store.c", "candidate.h", "candidate.c", "placements.h", "placements.c"):
             shutil.copy2(ROOT / "geometry-core/kernel" / name, self.kernel / name)
         (self.kernel / "internal").mkdir()
         shutil.copy2(ROOT / "geometry-core/kernel/internal/parameter_store.h", self.kernel / "internal/parameter_store.h")
@@ -47,13 +47,14 @@ class NativeBuild:
         shutil.copy2(ROOT / "geometry-core/kernel/internal/regions.h", self.kernel / "internal/regions.h")
         shutil.copy2(ROOT / "geometry-core/kernel/internal/grid_store.h", self.kernel / "internal/grid_store.h")
         shutil.copy2(ROOT / "geometry-core/kernel/internal/guides.h", self.kernel / "internal/guides.h")
+        shutil.copy2(ROOT / "geometry-core/kernel/internal/placements.h", self.kernel / "internal/placements.h")
         self.host = self.work / "isolated-host"
         self.host.mkdir()
-        for name in ("history.h", "history.c"):
+        for name in ("history.h", "history.c", "app_candidate.h", "app_candidate.c"):
             shutil.copy2(ROOT / "geometry-app/native" / name, self.host / name)
         self.woodworking = self.work / "isolated-woodworking"
         self.woodworking.mkdir()
-        for name in ("members.h", "members.c", "supports.h", "supports.c", "contacts.h", "contacts.c", "engineering.h", "engineering.c", "panel_layout.h", "panel_layout.c", "panel_support.h", "panel_support.c"):
+        for name in ("members.h", "members.c", "supports.h", "supports.c", "contacts.h", "contacts.c", "engineering.h", "engineering.c", "panel_layout.h", "panel_layout.c", "panel_support.h", "panel_support.c", "boundary_policy.h", "domain_values.h", "section_profile.h", "section_profile.c", "assembly.h", "assembly.c"):
             shutil.copy2(ROOT / "geometry-templates/woodworking/native" / name, self.woodworking / name)
         self.windows = os.name == "nt"
         self.suffix = ".exe" if self.windows else ""
@@ -81,16 +82,21 @@ class NativeBuild:
         self.named_values_object = self.compile(self.kernel / "named_values.c", "named-values")
         self.datums_object = self.compile(self.kernel / "datums.c", "datums")
         self.source_object = self.compile(self.kernel / "source.c", "source")
+        self.candidate_object = self.compile(self.kernel / "candidate.c", "candidate")
+        self.placements_object = self.compile(self.kernel / "placements.c", "placements")
         self.regions_object = self.compile(self.kernel / "regions.c", "regions")
         self.grid_store_object = self.compile(self.kernel / "grid_store.c", "grid-store")
         self.guides_object = self.compile(self.kernel / "guides.c", "guides")
         self.host_history_object = self.compile(self.host / "history.c", "host-history")
+        self.host_candidate_object = self.compile(self.host / "app_candidate.c", "host-candidate")
         self.wood_members_object = self.compile(self.woodworking / "members.c", "wood-members")
         self.wood_supports_object = self.compile(self.woodworking / "supports.c", "wood-supports")
         self.wood_contacts_object = self.compile(self.woodworking / "contacts.c", "wood-contacts")
         self.wood_engineering_object = self.compile(self.woodworking / "engineering.c", "wood-engineering")
         self.wood_panel_layout_object = self.compile(self.woodworking / "panel_layout.c", "wood-panel-layout")
         self.wood_panel_support_object = self.compile(self.woodworking / "panel_support.c", "wood-panel-support")
+        self.wood_section_profile_object = self.compile(self.woodworking / "section_profile.c", "wood-section-profile")
+        self.wood_assembly_object = self.compile(self.woodworking / "assembly.c", "wood-assembly")
         exact_source = self.work / "exact-client.c"
         shutil.copy2(ROOT / "tests/geo261_exact_harness.c", exact_source)
         self.exact_client = self.compile(exact_source, "exact-client")
@@ -147,28 +153,28 @@ class NativeBuild:
 
     def bridge(self):
         if self.bridge_object is None:
-            self.bridge_object = self.compile(ROOT / "geometry-web/web_bridge.c", "product-bridge", ["GEOMETRY_KERNEL_EXTERNAL=1", "GEOMETRY_WOODWORKING_EXTERNAL=1", "GEOMETRY_HOST_HISTORY_EXTERNAL=1"])
+            self.bridge_object = self.compile(ROOT / "geometry-web/web_bridge.c", "product-bridge", ["GEOMETRY_KERNEL_EXTERNAL=1", "GEOMETRY_WOODWORKING_EXTERNAL=1", "GEOMETRY_HOST_HISTORY_EXTERNAL=1", "GEOMETRY_HOST_CANDIDATE_EXTERNAL=1"])
             self.bridge_exe = self.link("product-bridge", [self.bridge_object, *self.product_objects()])
         return self.bridge_exe
 
     def product_objects(self):
-        return [*self.kernel_objects(), self.wood_members_object, self.wood_supports_object, self.wood_contacts_object, self.wood_engineering_object, self.wood_panel_layout_object, self.wood_panel_support_object, self.host_history_object]
+        return [*self.kernel_objects(), self.wood_members_object, self.wood_supports_object, self.wood_contacts_object, self.wood_engineering_object, self.wood_panel_layout_object, self.wood_panel_support_object, self.wood_section_profile_object, self.wood_assembly_object, self.host_history_object, self.host_candidate_object]
 
     def cli(self):
         if self.cli_exe is None:
-            obj = self.compile(ROOT / "current_geometry.c", "product-cli", ["GEOMETRY_KERNEL_EXTERNAL=1", "GEOMETRY_WOODWORKING_EXTERNAL=1", "GEOMETRY_HOST_HISTORY_EXTERNAL=1"])
+            obj = self.compile(ROOT / "current_geometry.c", "product-cli", ["GEOMETRY_KERNEL_EXTERNAL=1", "GEOMETRY_WOODWORKING_EXTERNAL=1", "GEOMETRY_HOST_HISTORY_EXTERNAL=1", "GEOMETRY_HOST_CANDIDATE_EXTERNAL=1"])
             self.cli_exe = self.link("product-cli", [obj, *self.product_objects()])
         return self.cli_exe
 
     def model_base(self):
         if self.model_base_exe is None:
-            self.model_base_object = self.compile(ROOT / "geometry-core/model_base.c", "product-model-base", ["GEOMETRY_KERNEL_EXTERNAL=1", "GEOMETRY_WOODWORKING_EXTERNAL=1", "GEOMETRY_HOST_HISTORY_EXTERNAL=1"])
+            self.model_base_object = self.compile(ROOT / "geometry-core/model_base.c", "product-model-base", ["GEOMETRY_KERNEL_EXTERNAL=1", "GEOMETRY_WOODWORKING_EXTERNAL=1", "GEOMETRY_HOST_HISTORY_EXTERNAL=1", "GEOMETRY_HOST_CANDIDATE_EXTERNAL=1"])
             self.model_base_exe = self.link("product-model-base", [self.model_base_object, *self.product_objects()])
         return self.model_base_exe
 
     def kernel_objects(self):
         return [self.exact_object, self.codec_object, self.geometry_object, self.clip_object, self.grid_object,
-                self.parameters_object, self.linear_object, self.named_values_object, self.datums_object, self.source_object, self.regions_object, self.grid_store_object, self.guides_object]
+                self.parameters_object, self.linear_object, self.named_values_object, self.datums_object, self.source_object, self.candidate_object, self.placements_object, self.regions_object, self.grid_store_object, self.guides_object]
 
     def mutant(self, module, before, after, client_object=None):
         text = (self.kernel / (module + ".c")).read_text(encoding="utf-8")

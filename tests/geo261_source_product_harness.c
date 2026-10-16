@@ -9,8 +9,9 @@
 int main(void)
 {
     World *world=calloc(1,sizeof *world);CHECK(world);
-    world->placement_count=1;world->placements[0]=(PlacementSurface){.id=1,
+    PlacementSurface placement={.id=1,
         .frame={{0,0,0},{1,0,0},{0,1,0},{0,0,1}},.rect={0,0,1000,1000}};
+    CHECK(app_placement_stage(world,&placement));
     world->timber_count=2;
     for(size_t i=0;i<2;++i){
         CHECK(timber_construct((uint32_t)i+1,0,40,50,true,TIMBER_ROLE_PRIMARY,0,&world->timbers[i]));

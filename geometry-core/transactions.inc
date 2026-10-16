@@ -5,14 +5,13 @@ typedef struct {
     AsmDiagnostic assembly_diagnostic;
     uint64_t revision;
     uint32_t token;
-    World before, after;
+    AppWorldCandidate *transaction;
     char command[SCENE_MAX_LINE];
     ReferenceIssue issues[REFERENCE_MAX_ISSUES];
     size_t issue_count;
 } ReferencePreview;
 static ReferencePreview g_preview;
 static uint32_t g_preview_serial;
-static bool g_preview_confirming;
 static bool reference_preview_pending(void) { return g_preview.ready; }
 static bool reference_preview_valid(void) { return g_preview.ready && g_preview.valid; }
 static uint32_t reference_preview_token(void) { return g_preview.token; }
@@ -137,12 +136,12 @@ static bool reference_gdi_confirm(HWND window, World *world)
         g_preview.ready=false; return false;
     }
     reference_object_preview(details);
-    for (size_t i=0;i<geo_guides_count(&g_preview.before.guide_lines);++i) {
-        uint32_t id=geo_guides_values(&g_preview.before.guide_lines)[i].id;
-        if (!reference_guide_changed(&g_preview.before,&g_preview.after,id)) continue;
+    for (size_t i=0;i<geo_guides_count(&g_preview.transaction->before.guide_lines);++i) {
+        uint32_t id=geo_guides_values(&g_preview.transaction->before.guide_lines)[i].id;
+        if (!reference_guide_changed(&g_preview.transaction->before,&g_preview.transaction->after,id)) continue;
         fprintf(details,"guide %u visible: ",id);
-        reference_guide_clip_text(&g_preview.before,id,details); fputs(" -> ",details);
-        reference_guide_clip_text(&g_preview.after,id,details); fputc('\n',details);
+        reference_guide_clip_text(&g_preview.transaction->before,id,details); fputs(" -> ",details);
+        reference_guide_clip_text(&g_preview.transaction->after,id,details); fputc('\n',details);
     }
     long details_size=ftell(details);
     if (details_size<0 || (size_t)details_size>=sizeof text-used) truncated=true;
@@ -153,31 +152,31 @@ static bool reference_gdi_confirm(HWND window, World *world)
         used+=got; text[used]='\0';
     }
     fclose(details);
-    for (size_t i=0;i<g_preview.before.timber_count;++i) {
-        const Timber *t=&g_preview.before.timbers[i]; if (!t->placed) continue;
+    for (size_t i=0;i<g_preview.transaction->before.timber_count;++i) {
+        const Timber *t=&g_preview.transaction->before.timbers[i]; if (!t->placed) continue;
         if (used+900>=sizeof text) { truncated=true; break; }
-        int j=reference_timber_index(&g_preview.after,t->id); bool valid=j>=0 && g_preview.after.timbers[j].placed;
-        const TimberAnchor *a=&g_preview.before.anchors[i];
-        const PlacementSurface *p=world_find_placement(&g_preview.before,a->placement_id); SurfaceRegion2 f;
+        int j=reference_timber_index(&g_preview.transaction->after,t->id); bool valid=j>=0 && g_preview.transaction->after.timbers[j].placed;
+        const TimberAnchor *a=&g_preview.transaction->before.anchors[i];
+        const PlacementSurface *p=world_find_placement(&g_preview.transaction->before,a->placement_id); SurfaceRegion2 f;
         bool along=a->length_direction==SURFACE_DIRECTION_POS_V || a->length_direction==SURFACE_DIRECTION_NEG_V;
         Coord old=0,newc=0;
         if (p && timber_a0_footprint_uv(p,t,a,&f)) old=(along?f.min_u:f.min_v)+t->size_a/2;
         if (valid) {
-            const Timber *nt=&g_preview.after.timbers[j]; const TimberAnchor *na=&g_preview.after.anchors[j];
-            p=world_find_placement(&g_preview.after,na->placement_id);
+            const Timber *nt=&g_preview.transaction->after.timbers[j]; const TimberAnchor *na=&g_preview.transaction->after.anchors[j];
+            p=world_find_placement(&g_preview.transaction->after,na->placement_id);
             if (p && timber_a0_footprint_uv(p,nt,na,&f)) newc=(along?f.min_u:f.min_v)+nt->size_a/2;
         }
         n=snprintf(text+used,sizeof text-used,"角材 %u：中線 %lld → %lld；長度 %lld → %lld mm%s\n",t->id,(long long)old,(long long)newc,(long long)t->length,
-            valid?(long long)g_preview.after.timbers[j].length:0,valid?"":"（已刪除或無法推導）"); used+=(size_t)n;
+            valid?(long long)g_preview.transaction->after.timbers[j].length:0,valid?"":"（已刪除或無法推導）"); used+=(size_t)n;
         char before[240],after[240];
-        reference_pose_text(&g_preview.before,(int)i,before,sizeof before);
-        reference_pose_text(&g_preview.after,j,after,sizeof after);
+        reference_pose_text(&g_preview.transaction->before,(int)i,before,sizeof before);
+        reference_pose_text(&g_preview.transaction->after,j,after,sizeof after);
         n=snprintf(text+used,sizeof text-used,"  %s → %s\n",before,after); used+=(size_t)n;
     }
-    for (size_t i=0;i<geo_guides_count(&g_preview.before.guide_lines);++i) {
-        uint32_t id=geo_guides_values(&g_preview.before.guide_lines)[i].id; char before[240],after[240];
-        reference_guide_text(&g_preview.before,id,before,sizeof before);
-        reference_guide_text(&g_preview.after,id,after,sizeof after);
+    for (size_t i=0;i<geo_guides_count(&g_preview.transaction->before.guide_lines);++i) {
+        uint32_t id=geo_guides_values(&g_preview.transaction->before.guide_lines)[i].id; char before[240],after[240];
+        reference_guide_text(&g_preview.transaction->before,id,before,sizeof before);
+        reference_guide_text(&g_preview.transaction->after,id,after,sizeof after);
         if (!strcmp(before,after)) continue;
         if (used+600>=sizeof text) { truncated=true; break; }
         n=snprintf(text+used,sizeof text-used,"參考線 %u: %s → %s\n",id,before,after); used+=(size_t)n;
@@ -390,7 +389,7 @@ static void reference_binding_text(const World *w,uint32_t id,FILE *out)
 
 static void reference_object_preview(FILE *out)
 {
-    const World *before=&g_preview.before,*after=&g_preview.after;
+    const World *before=&g_preview.transaction->before,*after=&g_preview.transaction->after;
     for (int pass=0;pass<2;++pass) {
         const World *w=pass?after:before;
         for (size_t i=0;i<geo_grid_systems_count(&w->grid_store);++i) {
@@ -398,8 +397,8 @@ static void reference_object_preview(FILE *out)
             if (pass?world_find_grid_system(before,id)!=NULL:!reference_system_changed(before,after,id)) continue;
             reference_system_text(before,id,out); fputs(" -> ",out); reference_system_text(after,id,out); fputc('\n',out);
         }
-        for (size_t i=0;i<w->boundary_count;++i) {
-            uint32_t id=w->boundaries[i].id;
+        for (size_t i=0;i<world_boundary_count(w);++i) {
+            uint32_t id=geo_regions_at(&w->region_data,i)->id;
             if (pass?world_find_boundary(before,id)!=NULL:!reference_boundary_changed(before,after,id)) continue;
             reference_boundary_text(before,id,out); fputs(" -> ",out); reference_boundary_text(after,id,out); fputc('\n',out);
         }
@@ -478,12 +477,14 @@ static bool parameter_reference_edit(const World *w,char **tokens,int count)
     }
     return false;
 }
-static void reference_stage(const World *before,const World *after,char **tokens,int count,bool valid)
+static void reference_stage(AppWorldCandidate *transaction,char **tokens,int count,bool valid)
 {
+    if(g_preview.transaction!=transaction)app_world_candidate_destroy(g_preview.transaction);
+    g_preview.transaction=transaction;
     g_preview.ready=true; g_preview.valid=valid; g_preview.token=++g_preview_serial;
     g_preview.assembly_diagnostic=(AsmDiagnostic){0};
     g_preview.engineering_batch=false; g_preview.assembly_batch=false; g_preview.profile_batch=false; g_preview.finish_batch=false; g_preview.revision=g_definition_revision;
-    g_preview.before=*before; g_preview.after=*after; g_preview.issue_count=g_reference_issue_count;
+    g_preview.issue_count=g_reference_issue_count;
     memcpy(g_preview.issues,g_reference_issues,g_preview.issue_count*sizeof(ReferenceIssue));
     if (!valid && !g_preview.issue_count) {
         ReferenceIssue *e=&g_preview.issues[g_preview.issue_count++]; e->timber=0;
@@ -502,35 +503,35 @@ static void reference_preview_text(void)
 {
     fprintf(stderr,"I8a preview %u: %s\n",g_preview.token,g_preview.valid?"valid; confirm token to apply":"invalid; cannot apply");
     reference_object_preview(stderr);
-    for (size_t i=0;i<g_preview.before.timber_count;++i) {
-        const Timber *t=&g_preview.before.timbers[i]; if (!t->placed) continue;
-        int j=reference_timber_index(&g_preview.after,t->id);
-        const TimberAnchor *a=&g_preview.before.anchors[i];
-        const PlacementSurface *p=world_find_placement(&g_preview.before,a->placement_id);
+    for (size_t i=0;i<g_preview.transaction->before.timber_count;++i) {
+        const Timber *t=&g_preview.transaction->before.timbers[i]; if (!t->placed) continue;
+        int j=reference_timber_index(&g_preview.transaction->after,t->id);
+        const TimberAnchor *a=&g_preview.transaction->before.anchors[i];
+        const PlacementSurface *p=world_find_placement(&g_preview.transaction->before,a->placement_id);
         SurfaceRegion2 f; Coord old=0,newc=0;
         bool along=a->length_direction==SURFACE_DIRECTION_POS_V || a->length_direction==SURFACE_DIRECTION_NEG_V;
         if (p && timber_a0_footprint_uv(p,t,a,&f)) old=(along?f.min_u:f.min_v)+t->size_a/2;
-        bool valid=j>=0 && g_preview.after.timbers[j].placed;
+        bool valid=j>=0 && g_preview.transaction->after.timbers[j].placed;
         if (valid) {
-            const TimberAnchor *na=&g_preview.after.anchors[j]; const Timber *nt=&g_preview.after.timbers[j];
-            p=world_find_placement(&g_preview.after,na->placement_id);
+            const TimberAnchor *na=&g_preview.transaction->after.anchors[j]; const Timber *nt=&g_preview.transaction->after.timbers[j];
+            p=world_find_placement(&g_preview.transaction->after,na->placement_id);
             if (p && timber_a0_footprint_uv(p,nt,na,&f)) newc=(along?f.min_u:f.min_v)+nt->size_a/2;
         }
         fprintf(stderr," timber %u center %lld -> %lld length %lld -> %lld%s\n",t->id,(long long)old,(long long)newc,(long long)t->length,
-            valid?(long long)g_preview.after.timbers[j].length:0,valid?"":" (unavailable/deleted)");
+            valid?(long long)g_preview.transaction->after.timbers[j].length:0,valid?"":" (unavailable/deleted)");
         char before[240],after[240];
-        reference_pose_text(&g_preview.before,(int)i,before,sizeof before);
-        reference_pose_text(&g_preview.after,j,after,sizeof after);
+        reference_pose_text(&g_preview.transaction->before,(int)i,before,sizeof before);
+        reference_pose_text(&g_preview.transaction->after,j,after,sizeof after);
         fprintf(stderr,"  %s -> %s\n",before,after);
     }
-    for (size_t i=0;i<geo_guides_count(&g_preview.before.guide_lines);++i) {
-        uint32_t id=geo_guides_values(&g_preview.before.guide_lines)[i].id; char before[240],after[240];
-        reference_guide_text(&g_preview.before,id,before,sizeof before);
-        reference_guide_text(&g_preview.after,id,after,sizeof after);
-        if (reference_guide_changed(&g_preview.before,&g_preview.after,id)) {
+    for (size_t i=0;i<geo_guides_count(&g_preview.transaction->before.guide_lines);++i) {
+        uint32_t id=geo_guides_values(&g_preview.transaction->before.guide_lines)[i].id; char before[240],after[240];
+        reference_guide_text(&g_preview.transaction->before,id,before,sizeof before);
+        reference_guide_text(&g_preview.transaction->after,id,after,sizeof after);
+        if (reference_guide_changed(&g_preview.transaction->before,&g_preview.transaction->after,id)) {
             fprintf(stderr," guide %u: %s -> %s\n visible: ",id,before,after);
-            reference_guide_clip_text(&g_preview.before,id,stderr); fputs(" -> ",stderr);
-            reference_guide_clip_text(&g_preview.after,id,stderr); fputc('\n',stderr);
+            reference_guide_clip_text(&g_preview.transaction->before,id,stderr); fputs(" -> ",stderr);
+            reference_guide_clip_text(&g_preview.transaction->after,id,stderr); fputc('\n',stderr);
         }
     }
     for (size_t i=0;i<g_preview.issue_count;++i) {
@@ -539,12 +540,26 @@ static void reference_preview_text(void)
     }
 }
 
-static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens[],int count,World *world,World *candidate)
+typedef struct {
+    const char *path;int line_no;char **tokens;int count;World *before;
+} AppSceneCandidateCall;
+static bool app_scene_candidate_apply(void *after,GeoEvalContext *sources,void *opaque)
 {
+    (void)sources;AppSceneCandidateCall *call=opaque;World *candidate=after;
+    g_reference_trial=*candidate;g_reference_capturing=true;
+    const World *previous_baseline=g_subgrid_before;g_subgrid_before=call->before;
+    bool ok=apply_scene_line_unchecked(call->path,call->line_no,call->tokens,call->count,candidate);
+    g_subgrid_before=previous_baseline;g_reference_capturing=false;return ok;
+}
+static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens[],int count,World *world,AppWorldCandidate *transaction,bool *retained)
+{
+    World *candidate=&transaction->after;
     if (!count) return true;
     if (!strcmp(tokens[0],"cancel-preview")) {
         if (count!=1) return false;
-        g_preview.ready=false; return true;
+        g_preview.ready=false;
+        if(g_preview.transaction)app_candidate_discard(g_preview.transaction->control);
+        return true;
     }
     if (!strcmp(tokens[0],"confirm")) {
         uint32_t token;
@@ -552,23 +567,25 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
             scene_error(path,line_no,"I8a: missing/invalid preview token; cannot apply"); return false;
         }
         /* Canvas layout does not invalidate geometry approval (D12/I14). */
-        if (g_preview.revision!=g_definition_revision || !world_definitions_equal(world,&g_preview.before)) {
+        if (g_preview.revision!=g_definition_revision || !app_world_candidate_current(g_preview.transaction,world)) {
             g_preview.ready=false;
             scene_error(path,line_no,"I8a: preview is stale; preview again against the current world"); return false;
         }
-        char command[SCENE_MAX_LINE],*parts[SCENE_MAX_TOKENS];
-        snprintf(command,sizeof command,"%s",g_preview.command);
-        int n=split_tokens(command,parts,SCENE_MAX_TOKENS);
-        g_preview.ready=false; g_preview_confirming=true;
-        bool ok=apply_scene_line(path,line_no,parts,n,world);
-        g_preview_confirming=false; return ok;
+        if(!app_world_candidate_revalidate(g_preview.transaction,world)){
+            g_preview.ready=false;scene_error(path,line_no,g_revalidate_error[0]?g_revalidate_error:"I8: invalid definition/reference; World unchanged");return false;
+        }
+        bool changed=!world_definitions_equal(world,&g_preview.transaction->after);
+        if(!app_world_candidate_publish(g_preview.transaction,world,true)){
+            g_preview.ready=false;scene_error(path,line_no,"I8a: preview is stale; preview again against the current world");return false;
+        }
+        g_preview.ready=false;if(changed&&!g_parsing_scene_file)++g_definition_revision;
+        return true;
     }
     bool explicit_preview=!strcmp(tokens[0],"preview");
     if (explicit_preview) {
         if (count<2 || !strcmp(tokens[1],"preview") || !strcmp(tokens[1],"confirm")) return false;
         ++tokens; --count;
     }
-    *candidate=*world;
     if (count>1 && (!strcmp(tokens[0],"grid") || !strcmp(tokens[0],"timber"))) {
         uint32_t id;
         if (parse_u32(tokens[1],&id) && eng_object_bound(world,!strcmp(tokens[0],"timber"),id)) {
@@ -576,12 +593,8 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
         }
     }
     g_scene_last_error[0]='\0'; g_engineering_error[0]='\0'; g_reference_issue_count=0;
-    g_reference_trial=*candidate; g_reference_capturing=true;
-    const World *previous_baseline=g_subgrid_before;
-    g_subgrid_before=world;
-    bool ok=apply_scene_line_unchecked(path,line_no,tokens,count,candidate);
-    g_subgrid_before=previous_baseline;
-    g_reference_capturing=false;
+    AppSceneCandidateCall call={path,line_no,tokens,count,world};
+    bool ok=app_world_candidate_evaluate(transaction,app_scene_candidate_apply,&call)==GEO_CANDIDATE_OK;
     bool affects=reference_may_affect(world,tokens,count);
     const World *impact_candidate=ok?candidate:&g_reference_trial;
     bool engineering_edit=!g_parsing_scene_file && (!strcmp(tokens[0],"engineering") || memcmp(&world->engineering,&candidate->engineering,sizeof world->engineering) || memcmp(&world->assembly,&candidate->assembly,sizeof world->assembly) || memcmp(&world->section_profiles,&impact_candidate->section_profiles,sizeof world->section_profiles));
@@ -593,11 +606,13 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
     bool binding_edit=!g_parsing_scene_file && !strcmp(tokens[0],"grid-binding");
     bool rule_edit=!g_parsing_scene_file && !strcmp(tokens[0],"grid-source-rule");
     bool keyed_edit=!g_parsing_scene_file && !strcmp(tokens[0],"boundary-keyed");
-    if (explicit_preview || (!g_preview_confirming &&
+    if (explicit_preview ||
         (engineering_edit || assembly_dimensions_changed(world,candidate) || system_edit || application_edit || binding_edit || rule_edit || keyed_edit || parameter_reference_edit(world,tokens,count) ||
-        (affects && (!ok || reference_geometry_changed(world,candidate)))))) {
+        (affects && (!ok || reference_geometry_changed(world,candidate))))) {
         char replay_error[512];snprintf(replay_error,sizeof replay_error,"%s",g_scene_last_error);
-        reference_stage(world,ok?candidate:&g_reference_trial,tokens,count,ok);
+        if(ok&&!app_world_candidate_seal(transaction)){ok=false;scene_error(path,line_no,"I8: candidate seal failed; World unchanged");}
+        if(!ok)transaction->after=g_reference_trial;
+        reference_stage(transaction,tokens,count,ok);*retained=true;
         reference_preview_text();
         if (explicit_preview) return true;
         if(g_parsing_scene_file&&!ok&&replay_error[0]){
@@ -611,17 +626,19 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
         if (!g_scene_last_error[0]) scene_error(path,line_no,"I8: invalid definition/reference; World unchanged");
         return false;
     }
-    if (!g_parsing_scene_file && strcmp(tokens[0],"canvas-pos") && !world_definitions_equal(world,candidate)) ++g_definition_revision;
-    *world=*candidate;
-    return true;
+    bool changed=!g_parsing_scene_file&&strcmp(tokens[0],"canvas-pos")&&!world_definitions_equal(world,candidate);
+    if(!app_world_candidate_seal(transaction)||!app_world_candidate_publish(transaction,world,false)){
+        scene_error(path,line_no,"I8: candidate seal failed; World unchanged");return false;
+    }
+    if(changed)++g_definition_revision;return true;
 }
 
 static bool apply_scene_line(const char *path,int line_no,char *tokens[],int count,World *world)
 {
-    World *candidate=malloc(sizeof *candidate);
+    AppWorldCandidate *candidate=app_world_candidate_create(world);
     if(!candidate){scene_error(path,line_no,"I32: candidate World allocation failed");return false;}
-    bool ok=apply_scene_line_candidate(path,line_no,tokens,count,world,candidate);
-    free(candidate);return ok;
+    bool retained=false;bool ok=apply_scene_line_candidate(path,line_no,tokens,count,world,candidate,&retained);
+    if(!retained)app_world_candidate_destroy(candidate);return ok;
 }
 
 static bool reference_default_world(World *world)
