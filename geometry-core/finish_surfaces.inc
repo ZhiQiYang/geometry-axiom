@@ -1,12 +1,5 @@
-/* PF-1: D41 finish surfaces (panel-fill/1), I52 / I55 / I56 / R4 and the first half of R41.
- *
- * Only definitions live in World: id, name, D3 boundary reference, D2 frame, structure side s and the
- * explicit obstacle set.  F (outline minus holes), each obstacle's projection R_k, its q interval along
- * n = s*N and the plane relation int(R_k) n int(F) are derived on every read and preview and are never
- * serialized (I56, R4).  The two-layer judgement of I53 needs a panel fill (t) and a derived placement (h),
- * which PF-1 does not have; callers report it as pending instead of guessing. */
-/* A diagnostic kind is carried separately from its human-readable message. */
-typedef enum { FS_DIAGNOSTIC_INVALID, FS_DIAGNOSTIC_CAPACITY } FsDiagnosticKind;
+/* H scene codecs and same-candidate facts for W finish/fill policy. */
+#include "../geometry-templates/woodworking/native/finish.h"
 static FsDiagnosticKind g_fs_diagnostic=FS_DIAGNOSTIC_INVALID;
 static bool pf_rebuild(const World *);
 static bool pf_operation(World *,GeoJson *,int,bool);
@@ -25,51 +18,6 @@ static bool fs_capacity_error(const char *format,...)
     va_list args;va_start(args,format);vsnprintf(g_engineering_error,sizeof g_engineering_error,format,args);va_end(args);
     utf8_trim_tail(g_engineering_error);return false;
 }
-/* Validate the whole name before applying the storage limit; D41 has no 96-byte semantic limit. */
-static bool fs_name_check(const unsigned char *name,size_t n)
-{
-    if(!n)return fs_error("D41: finish surface name must be printable UTF-8");
-    for(size_t i=0;i<n;){size_t k=geo_utf8_scalar(name+i,n-i);
-        if(!k||name[i]<0x20||name[i]==0x7f||(k==2&&name[i]==0xc2&&name[i+1]<=0x9f))
-            return fs_error("D41: finish surface name must be printable UTF-8");i+=k;}
-    if(n>FS_NAME_MAX)return fs_capacity_error("I33 CAPACITY: finish surface name storage is limited to %d bytes",FS_NAME_MAX);
-    return true;
-}
-static bool fs_used(const World *w) { return w->finish_surfaces.count!=0; }
-static int fs_index(const World *w,uint32_t id)
-{
-    for(uint64_t i=0;i<w->finish_surfaces.count;++i)if(w->finish_surfaces.items[i].id==id)return (int)i;
-    return -1;
-}
-static const FinishSurface *fs_find(const World *w,uint32_t id)
-{ int at=fs_index(w,id);return at<0?NULL:&w->finish_surfaces.items[at]; }
-static void fs_obstacle_text(const FinishObstacleRef *r,char out[16])
-{ snprintf(out,16,"%c%u",r->kind==FS_OBSTACLE_BEAM?'b':'c',(unsigned)r->id); }
-/* Typed reference c<id> / b<id>; canonical decimal only (no sign, no leading zero). */
-static bool fs_obstacle_parse(const char *s,FinishObstacleRef *out)
-{
-    uint32_t id;
-    if((s[0]!='c'&&s[0]!='b')||!s[1]||(s[1]=='0'&&s[2]))return false;
-    for(const char *p=s+1;*p;++p)if(*p<'0'||*p>'9')return false;
-    if(!parse_u32(s+1,&id))return false;
-    out->kind=s[0]=='b'?FS_OBSTACLE_BEAM:FS_OBSTACLE_COLUMN;out->id=id;return true;
-}
-/* R41 source order: columns by id < beams by id. */
-static int fs_obstacle_compare(const void *a,const void *b)
-{
-    const FinishObstacleRef *x=a,*y=b;
-    if(x->kind!=y->kind)return x->kind<y->kind?-1:1;
-    return (x->id>y->id)-(x->id<y->id);
-}
-static bool fs_obstacles_normalize(FinishSurface *f)
-{
-    qsort(f->obstacles,f->obstacle_count,sizeof f->obstacles[0],fs_obstacle_compare);
-    for(uint32_t i=1;i<f->obstacle_count;++i)if(!fs_obstacle_compare(&f->obstacles[i-1],&f->obstacles[i])){
-        char text[16];fs_obstacle_text(&f->obstacles[i],text);
-        return fs_error("D41: finish surface %u lists obstacle %s more than once",(unsigned)f->id,text);
-    }
-    return true;
-}
 static bool fs_obstacle_box(const World *w,const FinishObstacleRef *r,Coord lo[3],Coord hi[3])
 {
     if(r->kind==FS_OBSTACLE_COLUMN){
@@ -79,183 +27,68 @@ static bool fs_obstacle_box(const World *w,const FinishObstacleRef *r,Coord lo[3
     const RcBeam *b=world_find_beam(w,r->id);if(!b)return false;
     lo[0]=b->x_lo;lo[1]=b->y_lo;lo[2]=b->z_lo;hi[0]=b->x_hi;hi[1]=b->y_hi;hi[2]=b->z_hi;return true;
 }
-/* Interval of (P - O) . axis over the AABB; axis is a unit integer world axis (I1). */
-static void fs_project_interval(const Coord lo[3],const Coord hi[3],Point3 origin,Vector3 axis,Coord out[2])
+
+static bool app_fs_boundary(void *user,uint32_t id,WoodBoundaryRegion *out)
+{return app_boundary_read((const World *)user,id,out)!=NULL;}
+static bool app_fs_obstacle_box(void *user,const FinishObstacleRef *r,Coord lo[3],Coord hi[3])
+{return fs_obstacle_box((const World *)user,r,lo,hi);}
+static bool app_fs_parameter_coord(void *user,ParameterRef ref,Coord *out)
+{return parameter_coord((const World *)user,ref,out);}
+static bool app_fs_parameter_value(void *user,ParameterRef ref,GeoQuantity *out)
+{return parameter_value((const World *)user,ref,out);}
+static bool app_fs_engineering_operation(void *user,GeoJson *j,int t)
+{return eng_operation((World *)user,j,t);}
+static bool app_fs_derived_operation(void *user,GeoJson *j,int t,bool remove)
+{return dp_operation((World *)user,j,t,remove);}
+static WoodFinishContext app_fs_error_context(void)
+{WoodFinishContext c={0};c.error=g_engineering_error;c.error_capacity=sizeof g_engineering_error;c.diagnostic=&g_fs_diagnostic;c.parameter_error=g_parameter_error;c.parameter_error_capacity=sizeof g_parameter_error;return c;}
+static WoodFinishContext app_fs_context(const World *world)
 {
-    int c=axis.x?0:axis.y?1:2;Coord sign=axis.x?axis.x:axis.y?axis.y:axis.z;
-    Coord o=c==0?origin.x:c==1?origin.y:origin.z;
-    if(sign>0){out[0]=lo[c]-o;out[1]=hi[c]-o;}else{out[0]=o-hi[c];out[1]=o-lo[c];}
+    World *w=(World *)world;WoodFinishContext c=app_fs_error_context();
+    c.state=&w->finish_surfaces;c.engineering=app_eng_context(w);c.user=w;
+    c.boundary=app_fs_boundary;c.obstacle_box=app_fs_obstacle_box;
+    c.parameter_coord=app_fs_parameter_coord;c.parameter_value=app_fs_parameter_value;c.parameter_error=g_parameter_error;
+    c.engineering_operation=app_fs_engineering_operation;c.derived_operation=app_fs_derived_operation;return c;
 }
-/* Exact area of rect [u0,u1]x[v0,v1] inside one simple orthogonal loop: horizontal bands at every vertex v,
- * even-odd crossings of vertical edges at the band middle (doubled to stay integral). */
-static Coord fs_loop_rect_area(const PolygonLoop2 *p,Coord u0,Coord v0,Coord u1,Coord v1)
-{
-    Coord ys[POLY_MAX_VERTICES+2],xs[POLY_MAX_VERTICES],area=0;size_t ny=0;
-    ys[ny++]=v0;ys[ny++]=v1;
-    for(size_t i=0;i<p->count;++i)if(p->v[i].v>v0&&p->v[i].v<v1)ys[ny++]=p->v[i].v;
-    qsort(ys,ny,sizeof ys[0],sp_coord_compare);
-    for(size_t k=1;k<ny;++k){
-        Coord lo=ys[k-1],hi=ys[k],mid2=lo+hi;size_t nx=0;if(lo==hi)continue;
-        for(size_t i=0;i<p->count;++i){SurfacePoint2 a=p->v[i],b=p->v[(i+1)%p->count];
-            if(a.u==b.u&&2*coord_min(a.v,b.v)<mid2&&mid2<2*coord_max(a.v,b.v))xs[nx++]=a.u;}
-        qsort(xs,nx,sizeof xs[0],sp_coord_compare);
-        for(size_t i=0;i+1<nx;i+=2){Coord a=coord_max(xs[i],u0),b=coord_min(xs[i+1],u1);if(a<b)area+=(b-a)*(hi-lo);}
-    }
-    return area;
-}
-/* Closed contact between any loop edge and the closed rectangle (edges are axis-parallel). */
-static bool fs_loop_touches_rect(const PolygonLoop2 *p,Coord u0,Coord v0,Coord u1,Coord v1)
-{
-    for(size_t i=0;i<p->count;++i){SurfacePoint2 a=p->v[i],b=p->v[(i+1)%p->count];
-        if(coord_min(a.u,b.u)<=u1&&u0<=coord_max(a.u,b.u)&&coord_min(a.v,b.v)<=v1&&v0<=coord_max(a.v,b.v))return true;}
-    return false;
-}
-enum { FS_SEPARATE = 0, FS_TOUCH = 1, FS_INTERIOR = 2 };
+static bool fs_name_check(const unsigned char *name,size_t n)
+{WoodFinishContext c=app_fs_error_context();return wood_fs_name_check(&c,name,n);}
+static bool fs_used(const World *w)
+{WoodFinishContext c=app_fs_context(w);return wood_fs_used(&c);}
+static int fs_index(const World *w,uint32_t id)
+{WoodFinishContext c=app_fs_context(w);return wood_fs_index(&c,id);}
+static const FinishSurface *fs_find(const World *w,uint32_t id)
+{WoodFinishContext c=app_fs_context(w);return wood_fs_find(&c,id);}
+static void fs_obstacle_text(const FinishObstacleRef *r,char out[16])
+{wood_fs_obstacle_text(r,out);}
+static bool fs_obstacle_parse(const char *s,FinishObstacleRef *out)
+{return wood_fs_obstacle_parse(s,out);}
+static int fs_obstacle_compare(const void *a,const void *b)
+{return wood_fs_obstacle_compare(a,b);}
+static bool fs_obstacles_normalize(FinishSurface *f)
+{WoodFinishContext c=app_fs_error_context();return wood_fs_obstacles_normalize(&c,f);}
 static const char *fs_relation_name(int relation)
-{ return relation==FS_INTERIOR?"interior":relation==FS_TOUCH?"touch":"separate"; }
-/* R41/I53: interior iff int(R_k) n int(F) is non-empty, i.e. positive area (F is a regular orthogonal region).
- * Otherwise any common point lies on F's boundary, so contact is an edge test. */
-static int fs_relation(const SpaceBoundarySurface *b,const Coord r[4])
-{
-    Coord area=fs_loop_rect_area(&b->outline,r[0],r[1],r[2],r[3]);
-    for(size_t h=0;h<b->hole_count;++h)area-=fs_loop_rect_area(&b->holes[h],r[0],r[1],r[2],r[3]);
-    if(area>0)return FS_INTERIOR;
-    if(fs_loop_touches_rect(&b->outline,r[0],r[1],r[2],r[3]))return FS_TOUCH;
-    for(size_t h=0;h<b->hole_count;++h)if(fs_loop_touches_rect(&b->holes[h],r[0],r[1],r[2],r[3]))return FS_TOUCH;
-    return FS_SEPARATE;
-}
-typedef struct { Coord rect[4],q[2]; int relation; } FsObstacleView;
+{return wood_fs_relation_name(relation);}
 static bool fs_obstacle_view(const World *w,const FinishSurface *f,const FinishObstacleRef *r,FsObstacleView *out)
-{
-    Coord lo[3],hi[3],u[2],v[2],n[2];char text[16];fs_obstacle_text(r,text);
-    if(!fs_obstacle_box(w,r,lo,hi))return fs_error("I52/I55: finish surface %u obstacle %s does not exist",(unsigned)f->id,text);
-    fs_project_interval(lo,hi,f->frame.origin,f->frame.axis_u,u);
-    fs_project_interval(lo,hi,f->frame.origin,f->frame.axis_v,v);
-    fs_project_interval(lo,hi,f->frame.origin,f->frame.normal,n);
-    out->rect[0]=u[0];out->rect[1]=v[0];out->rect[2]=u[1];out->rect[3]=v[1];
-    out->q[0]=f->side>0?n[0]:-n[1];out->q[1]=f->side>0?n[1]:-n[0];
-    for(int i=0;i<4;++i)if(!coord_in_range(out->rect[i]))
-        return fs_capacity_error("I52/D1 CAPACITY: obstacle %s of finish surface %u has local coordinates outside D1 (I33)",text,(unsigned)f->id);
-    for(int i=0;i<2;++i)if(!coord_in_range(out->q[i]))
-        return fs_capacity_error("I52/D1 CAPACITY: obstacle %s of finish surface %u has local coordinates outside D1 (I33)",text,(unsigned)f->id);
-    const SpaceBoundarySurface *b=world_find_boundary(w,f->boundary_id);
-    if(!b)return fs_error("I52: finish surface %u references missing boundary %u",(unsigned)f->id,(unsigned)f->boundary_id);
-    out->relation=fs_relation(b,out->rect);return true;
-}
-/* I52 first sentence + D41: references exist and are typed, frame obeys D1/D2 (I1), s is a sign. */
+{WoodFinishContext c=app_fs_context(w);return wood_fs_obstacle_view(&c,f,r,out);}
 static bool fs_check(const World *w,const FinishSurface *f)
-{
-    size_t n=0;while(n<sizeof f->name&&f->name[n])++n;
-    if(!f->id)return fs_error("D41: finish surface id must be a positive integer");
-    if(!fs_name_check((const unsigned char*)f->name,n))return false;
-    if(!world_find_boundary(w,f->boundary_id))
-        return fs_error("I52: finish surface %u references missing boundary %u",(unsigned)f->id,(unsigned)f->boundary_id);
-    if(!surface_frame_is_valid(&f->frame))
-        return fs_error("I52/I1: finish surface %u frame needs an origin in D1 and unit integer axes with U x V = N",(unsigned)f->id);
-    if(f->side!=1&&f->side!=-1)return fs_error("D41: finish surface %u structureSide must be 1 or -1",(unsigned)f->id);
-    if(f->obstacle_count>FS_OBSTACLE_MAX)return fs_capacity_error("I33 CAPACITY: finish surface %u obstacle set is limited to %d",(unsigned)f->id,FS_OBSTACLE_MAX);
-    for(uint32_t i=0;i<f->obstacle_count;++i){FsObstacleView view;
-        if(i&&fs_obstacle_compare(&f->obstacles[i-1],&f->obstacles[i])>=0)
-            return fs_error("D41: finish surface %u obstacle set must be unique and in R41 order",(unsigned)f->id);
-        if(!fs_obstacle_view(w,f,&f->obstacles[i],&view))return false;
-    }
-    return true;
-}
-/* I55: every candidate World is re-checked as a whole; a committed World never holds a missing reference. */
+{WoodFinishContext c=app_fs_context(w);return wood_fs_check(&c,f);}
 static bool fs_rebuild(World *w,char *error,size_t capacity)
 {
-    const FinishSurfaceState *s=&w->finish_surfaces;
-    if(s->count>FS_MAX){fs_capacity_error("I33 CAPACITY: finish surface limit is %d",FS_MAX);snprintf(error,capacity,"%s",g_engineering_error);return false;}
-    for(uint64_t i=0;i<s->count;++i){
-        for(uint64_t k=0;k<i;++k)if(s->items[k].id==s->items[i].id){snprintf(error,capacity,"D41: duplicate finish surface id %u",(unsigned)s->items[i].id);return false;}
-        if(!fs_check(w,&s->items[i])){snprintf(error,capacity,"%s",g_engineering_error);utf8_trim_tail(error);return false;}
-    }
+    WoodFinishContext c=app_fs_context(w);if(!wood_fs_rebuild(&c,error,capacity))return false;
     if(!pf_rebuild(w)){snprintf(error,capacity,"%s",g_engineering_error);return false;}
     if(!dp_rebuild(w)){snprintf(error,capacity,"%s",g_engineering_error);return false;}
     return true;
 }
-/* I55 delete guard for the DSL `delete` line: name the first finish surface that still references the source. */
 static uint32_t fs_reference_owner(const World *w,const char *kind,uint32_t id)
-{
-    bool boundary=!strcmp(kind,"boundary"),column=!strcmp(kind,"column"),beam=!strcmp(kind,"beam");
-    if(!boundary&&!column&&!beam)return 0;
-    for(uint64_t i=0;i<w->finish_surfaces.count;++i){const FinishSurface *f=&w->finish_surfaces.items[i];
-        if(boundary&&f->boundary_id==id)return f->id;
-        for(uint32_t k=0;k<f->obstacle_count;++k)
-            if(f->obstacles[k].id==id&&f->obstacles[k].kind==(column?FS_OBSTACLE_COLUMN:FS_OBSTACLE_BEAM)&&!boundary)return f->id;
-    }
-    return 0;
-}
-/* ---- transaction operations (panel-fill-transaction/1) ---- */
+{WoodFinishContext c=app_fs_context(w);return wood_fs_reference_owner(&c,kind,id);}
 static bool fs_from_json(GeoJson *j,int t,FinishSurface *f)
-{
-    int frame=geo_json_member(j,t,"frame"),origin,obstacles=geo_json_member(j,t,"obstacles");int64_t side,xyz[3];
-    int name=geo_json_member(j,t,"name");
-    memset(f,0,sizeof *f);
-    if(!geo_json_keys(j,t,"id,name,boundaryId,frame,structureSide,obstacles","")||!eng_u32(j,geo_json_member(j,t,"id"),&f->id,true)||
-       !eng_u32(j,geo_json_member(j,t,"boundaryId"),&f->boundary_id,true))
-        return fs_error("D41: finish surface needs positive id and boundaryId, name, frame {origin,U,V,N}, structureSide and obstacles");
-    if(!geo_json_valid_token(j,name)||j->tokens[name].type!=GEO_J_STRING)return fs_error("D41: finish surface name must be a string");
-    if(!fs_name_check((const unsigned char*)j->tokens[name].string,strlen(j->tokens[name].string)))return false;
-    memcpy(f->name,j->tokens[name].string,strlen(j->tokens[name].string)+1);
-    if(!geo_json_is_object(j,frame)||!geo_json_keys(j,frame,"origin,U,V,N",""))
-        return fs_error("I52/D2: finish surface %u frame needs origin, U, V and N",(unsigned)f->id);
-    origin=geo_json_member(j,frame,"origin");
-    if(!geo_json_is_array(j,origin)||geo_json_size(j,origin)!=3)return fs_error("I52/D1: finish surface %u origin must be three integer mm",(unsigned)f->id);
-    for(int i=0;i<3;++i)if(!geo_json_integer(j,geo_json_at(j,origin,i),&xyz[i]))return fs_error("I52/D1: finish surface %u origin must be three integer mm",(unsigned)f->id);
-    f->frame.origin=(Point3){xyz[0],xyz[1],xyz[2]};
-    if(!sp_axis(j,geo_json_member(j,frame,"U"),&f->frame.axis_u)||!sp_axis(j,geo_json_member(j,frame,"V"),&f->frame.axis_v)||
-       !sp_axis(j,geo_json_member(j,frame,"N"),&f->frame.normal))
-        return fs_error("I52/D2: finish surface %u axes must each be one of +X -X +Y -Y +Z -Z",(unsigned)f->id);
-    if(!geo_json_integer(j,geo_json_member(j,t,"structureSide"),&side)||(side!=1&&side!=-1))
-        return fs_error("D41: finish surface %u structureSide must be 1 or -1",(unsigned)f->id);
-    f->side=(int32_t)side;
-    if(!geo_json_is_array(j,obstacles))return fs_error("D41: finish surface %u obstacles must be an array of c<id> / b<id>",(unsigned)f->id);
-    int count=geo_json_size(j,obstacles);
-    if(count>FS_OBSTACLE_MAX)return fs_capacity_error("I33 CAPACITY: finish surface %u obstacle set is limited to %d",(unsigned)f->id,FS_OBSTACLE_MAX);
-    for(int i=0;i<count;++i){char text[16];
-        if(!geo_json_string(j,geo_json_at(j,obstacles,i),text,sizeof text)||!fs_obstacle_parse(text,&f->obstacles[i]))
-            return fs_error("D41: finish surface %u obstacles must be typed references c<id> or b<id>",(unsigned)f->id);}
-    f->obstacle_count=(uint32_t)count;
-    return fs_obstacles_normalize(f);
-}
+{WoodFinishContext c=app_fs_error_context();return wood_fs_from_json(&c,j,t,f);}
 static bool fs_put(World *w,GeoJson *j,int t)
-{
-    FinishSurface f;FinishSurfaceState *s=&w->finish_surfaces;
-    if(!fs_from_json(j,t,&f)||!fs_check(w,&f))return false;
-    int at=fs_index(w,f.id);
-    if(at<0){if(s->count>=FS_MAX)return fs_capacity_error("I33 CAPACITY: finish surface limit is %d",FS_MAX);at=(int)s->count++;}
-    memcpy(&s->items[at],&f,sizeof f);return true;
-}
+{WoodFinishContext c=app_fs_context(w);return wood_fs_put(&c,j,t);}
 static bool fs_delete(World *w,uint32_t id)
-{
-    FinishSurfaceState *s=&w->finish_surfaces;int at=fs_index(w,id);
-    if(at<0)return fs_error("D41: deleted finish surface %u does not exist",(unsigned)id);
-    memmove(&s->items[at],&s->items[at+1],(size_t)(s->count-(uint64_t)at-1)*sizeof s->items[0]);
-    --s->count;memset(&s->items[s->count],0,sizeof s->items[0]);return true;
-}
+{WoodFinishContext c=app_fs_context(w);return wood_fs_delete(&c,id);}
 static bool fs_operation(World *w,GeoJson *j,int t)
-{
-    char op[40];uint32_t id;
-    if(!geo_json_string(j,geo_json_member(j,t,"op"),op,sizeof op))return fs_error("I55: panel-fill operation needs op");
-    if(!strcmp(op,"put-derived-placement")||!strcmp(op,"delete-derived-placement"))return dp_operation(w,j,t,!strcmp(op,"delete-derived-placement"));
-    /* I53/I55: a host h change and the explicit B source changes may form one
-     * candidate. PF-H previews disclose these dependencies before confirmation. */
-    if(w->finish_surfaces.host_count&&(!strcmp(op,"set-source")||!strcmp(op,"set-override")||!strcmp(op,"unbind-source")||!strcmp(op,"put-parameter")))return eng_operation(w,j,t);
-    if(!strcmp(op,"put-panel-fill")||!strcmp(op,"delete-panel-fill"))return pf_operation(w,j,t,!strcmp(op,"delete-panel-fill"));
-    if(!strcmp(op,"put-finish-surface")){
-        if(!geo_json_keys(j,t,"op,value",""))return fs_error("I55: put-finish-surface takes op and value");
-        return fs_put(w,j,geo_json_member(j,t,"value"));
-    }
-    if(!strcmp(op,"delete-finish-surface")){
-        if(!geo_json_keys(j,t,"op,id","")||!eng_u32(j,geo_json_member(j,t,"id"),&id,true))return fs_error("I55: delete-finish-surface needs a positive id");
-        return fs_delete(w,id);
-    }
-    /* PF-2 scope (I8a/I55): the panel-fill preview discloses finish surfaces and panel-fill definitions only, so it must
-     * not carry any other definition change (parameters, materials, sources) that confirm would commit unseen. */
-    return fs_error("PF-2 scope (I8a/I55): panel-fill transactions accept only put-finish-surface, delete-finish-surface, put-panel-fill and delete-panel-fill; "
-                    "send %s through its own previewed transaction",op);
-}
+{WoodFinishContext c=app_fs_context(w);return wood_fs_operation(&c,j,t);}
 /* ---- scene records (I56 / R4) ---- */
 static const char *fs_axis_word(Vector3 axis)
 {
@@ -309,10 +142,8 @@ static bool apply_finish_surface_line(const char *path,int line_no,char **t,int 
     unsigned char *name=malloc(bytes/2);if(!name){fs_capacity_error("I33 CAPACITY: finish surface name memory unavailable");scene_error(path,line_no,g_engineering_error);return false;}
     for(size_t k=0;k<bytes/2;++k){int a=grid_system_hex_digit(t[at+1][2*k]),b=grid_system_hex_digit(t[at+1][2*k+1]);if(a<0||b<0){free(name);goto invalid;}name[k]=(unsigned char)(a*16+b);}
     bool named=fs_name_check(name,bytes/2);if(named){memcpy(f.name,name,bytes/2);f.name[bytes/2]=0;}free(name);if(!named){scene_error(path,line_no,g_engineering_error);return false;}
-    if(fs_find(w,f.id)){scene_error(path,line_no,"I56: duplicate finish-surface record");return false;}
-    if(!fs_obstacles_normalize(&f)||!fs_check(w,&f)){scene_error(path,line_no,g_engineering_error);return false;}
-    if(w->finish_surfaces.count>=FS_MAX){fs_capacity_error("I33 CAPACITY: finish surface limit reached");scene_error(path,line_no,g_engineering_error);return false;}
-    memcpy(&w->finish_surfaces.items[w->finish_surfaces.count++],&f,sizeof f);return true;
+    WoodFinishContext context=app_fs_context(w);const char *message;
+    if(!wood_fs_load(&context,&f,&message)){if(message)scene_error(path,line_no,message);return false;}return true;
 invalid:
     scene_error(path,line_no,"D41: finish-surface id on boundary B origin x y z u A v A n A side +n|-n [obstacles c<id>|b<id> ...] name-hex HEX");
     return false;

@@ -43,11 +43,6 @@ static ProfileRun *sp_run(World *w,uint32_t id)
 {WoodSectionProfileContext c=app_sp_context(w);return wood_sp_run(&c,id);}
 static bool sp_coord(GeoJson *j,int token,Coord *out)
 {return wood_sp_coord(j,token,out);}
-static bool sp_axis(GeoJson *j,int token,Vector3 *out)
-{return wood_sp_axis(j,token,out);}
-/* Compatibility callback used by the finish-surface projection serializer. */
-static int sp_coord_compare(const void *a,const void *b)
-{Coord x=*(const Coord*)a,y=*(const Coord*)b;return (x>y)-(x<y);}
 static bool sp_put_profile(World *w,GeoJson *j,int t)
 {WoodSectionProfileContext c=app_sp_context(w);return wood_sp_put_profile(&c,j,t);}
 static bool sp_put_member(World *w,GeoJson *j,int t)
