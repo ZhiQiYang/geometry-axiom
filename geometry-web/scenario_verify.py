@@ -23,6 +23,7 @@ import tempfile
 import threading
 
 import space_modeling
+from geometry_app import source_closure
 from modeling import ModelError, canonical_bytes, verify_package
 from modeling.base import load_base
 from modeling.common import scene_required_capabilities
@@ -174,8 +175,10 @@ def _program(value, *, base=False):
 
 def _validator_pins():
     paths = {Path(__file__).resolve(), ROOT / "geometry-web" / "space_modeling.py", ROOT / "tests" / "binaries.py"}
-    paths.update((ROOT / "geometry-core" / "modeling").glob("*.py"))
+    paths.update(path for _, path in source_closure.source_paths(ROOT))
     try:
+        if not source_closure.current_identity()["fresh"]:
+            _fail("SCENARIO_RUNTIME", "Verifier modules changed; reload the Python process.", status="UNSUPPORTED")
         sources = [[path.relative_to(ROOT).as_posix(), hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()]
                    for path in sorted(paths)]
         return {"validator_sha256": hashlib.sha256(canonical_bytes(sources)).hexdigest(),
