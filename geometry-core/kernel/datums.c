@@ -57,6 +57,7 @@ GeoDatumIntersectionStatus geo_datum_intersection(const GeoDatum *datum,const Ge
     GeoCoord u=geo_datum_component(frame->axis_u,datum->axis),v=geo_datum_component(frame->axis_v,datum->axis);
     if(!u&&!v)return origin==datum->position?GEO_DATUM_INTERSECTION_COINCIDENT:GEO_DATUM_INTERSECTION_PARALLEL;
     GeoDatumIntersection result={u?0:1,(u?u:v)*(datum->position-origin)};
+    *out=result;
     if(!geo_coord_in_range(result.coordinate))return GEO_DATUM_INTERSECTION_RANGE;
-    *out=result;return GEO_DATUM_INTERSECTION_OK;
+    return GEO_DATUM_INTERSECTION_OK;
 }

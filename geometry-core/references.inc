@@ -288,9 +288,12 @@ static bool datum_guide_geometry(const World *w,const PlacementSurface *p,GuideL
             status==GEO_DATUM_INTERSECTION_COINCIDENT?"coincident planes have no unique line":"parallel planes do not intersect");
         return reference_issue(0,"I7a","one unique intersection line",msg);
     }
+    if(status==GEO_DATUM_INTERSECTION_OK||status==GEO_DATUM_INTERSECTION_RANGE){
+        g->direction=intersection.coordinate_axis==0?GUIDE_ALONG_V:GUIDE_ALONG_U;
+        g->offset=intersection.coordinate;
+    }
     if(status!=GEO_DATUM_INTERSECTION_OK)return reference_issue(0,"D1/I7a","derived local position within D1","datum intersection outside supported coordinate range");
-    g->direction=intersection.coordinate_axis==0?GUIDE_ALONG_V:GUIDE_ALONG_U;
-    g->offset=intersection.coordinate;return true;
+    return true;
 }
 
 static bool reference_eval_guide(ReferenceEval *ctx, size_t i)
