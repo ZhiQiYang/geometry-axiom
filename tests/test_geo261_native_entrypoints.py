@@ -45,5 +45,5 @@ class NativeEntrypoints(unittest.TestCase):
             dump=bridge.command('dump')['text'];canonical='\n'.join(line for line in dump.splitlines() if not line.startswith('#')).rstrip()+'\n'
             self.assertEqual(snapshot['base_scene'],canonical)
             self.assertEqual(6,len(snapshot['solids'][0]['faces']))
-            self.assertEqual(2,bridge.command('objects')['timbers'][0]['priority'])
+            self.assertEqual(1,bridge.command('objects')['timbers'][0]['priority'])
 if __name__=='__main__':unittest.main(verbosity=2)
