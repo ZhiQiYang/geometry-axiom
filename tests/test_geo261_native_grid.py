@@ -58,6 +58,11 @@ class NativeGrid(unittest.TestCase):
         self.assertEqual([0,197],self.call('coordinate',0,7,-(2**63),2**63-1))
         self.assertEqual([2,1,0,0,0,1,0],self.call('window',0,1,2**63-1,1,2,64,0))
         self.assertEqual([1,50000000],self.call('coordinate',250000000,200000000,0,-1))
+        self.assertEqual([1,0],self.call('coordinate',-400000000,200000000,0,2))
+        self.assertEqual([1,-1],self.call('coordinate',-(2**63),2**63-1,0,1))
+        self.assertEqual([1,0],self.call('coordinate',2**63-1,2**63-1,0,-1))
+        self.assertEqual([0,1,1,1,1,1,1,1,-1],self.call('window',-(2**63),2**63-1,0,-5,5,64,0))
+        self.assertEqual([0,1,0,0,0,1,0],self.call('window',0,100,2**63-1,1,2,64,0))
 
     def test_negative_odd_bands_and_explicit_omission(self):
         for band in range(-7,8):
@@ -103,6 +108,23 @@ class NativeGrid(unittest.TestCase):
         self.assertEqual([(i,c+1) for i,c in expected],self.product_centers(bridge))
         self.assertEqual([302],self.call('center',-100,400,5,0))
         self.assertEqual(expected,self.product_centers(build.bridge()))
+
+    def test_large_staggered_binding_base_still_has_valid_signed_lines(self):
+        with _bridge.BridgeSession(native().bridge()) as session:
+            def commit(command):
+                result=session.command('line '+command)
+                if 'preview' in result:
+                    self.assertTrue(result['preview']['valid'],result)
+                    result=session.command('line confirm '+str(result['preview']['token']))
+                self.assertTrue(result['ok'],result)
+            self.assertTrue(session.command('reset')['ok'])
+            commit('boundary 1 outline -100000000,0 0,0 0,100 -100000000,100')
+            commit('grid-system 0 name-hex 73746167676572 main-along none u repeat-panel 100000000 gap 100000000 from 0 stagger 100000000 v repeat 0 100')
+            fingerprint=session.command('boundary 1')['geometryFingerprint']
+            commit('grid-binding 0 on-boundary 1 from-system 0 vertex outer 0 geometry-hash '+fingerprint+' cell 0 1 anchor 1 1 0 1')
+            result=session.command('grid-query binding 0 rect -5 0 5 100 mode exact limit 64')
+            self.assertTrue(result['ok'],result)
+            self.assertEqual([(2,0)],[(int(line['index']),line['coordinate']) for line in result['axes']['u']['lines']])
 
 
 if __name__=='__main__':unittest.main(verbosity=2)

@@ -12,7 +12,8 @@ typedef enum {
 } GeoGridStatus;
 /* A bounded input anchor plus body and half-gap may put the derived base
  * outside the output coordinate domain. Such a base is valid: other signed
- * indices can still lie inside the domain. Derived bases allow +/-3*limit. */
+ * indices can still lie inside the domain. All int64 bases are accepted;
+ * unsigned distance checks reject only unrepresentable queried outputs. */
 typedef struct {GeoCoord base,pitch;int64_t index;} GeoLattice;
 typedef struct {int64_t index;GeoCoord coordinate;} GeoLatticeLine;
 typedef struct {

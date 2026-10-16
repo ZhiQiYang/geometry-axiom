@@ -21,21 +21,50 @@ GeoCoord geo_alternating_shift(bool set,GeoCoord delta,int64_t row)
 
 bool geo_lattice_coord(const GeoLattice *g,int64_t k,GeoCoord *out)
 {
-    if (!g || g->pitch<=0 || g->base < -3*GEO_COORD_LIMIT || g->base > 3*GEO_COORD_LIMIT) return false;
+    if (!g || g->pitch<=0) return false;
     int64_t base=g->base,origin=g->index,step=g->pitch,value;
     if (k>=origin) {
         uint64_t delta=(uint64_t)k-(uint64_t)origin;
-        int64_t room=GEO_COORD_LIMIT-base;
-        if (room<0 || delta>(uint64_t)(room/step)) return false;
-        value=base+(int64_t)delta*step;
+        if(base>GEO_COORD_LIMIT)return false;
+        uint64_t room=(uint64_t)GEO_COORD_LIMIT-(uint64_t)base;
+        if(delta>room/(uint64_t)step)return false;
+        uint64_t remaining=room-delta*(uint64_t)step;
+        if(remaining>2*(uint64_t)GEO_COORD_LIMIT)return false;
+        value=GEO_COORD_LIMIT-(int64_t)remaining;
     } else {
         uint64_t delta=(uint64_t)origin-(uint64_t)k;
-        int64_t room=base+GEO_COORD_LIMIT;
-        if (room<0 || delta>(uint64_t)(room/step)) return false;
-        value=base-(int64_t)delta*step;
+        if(base < -GEO_COORD_LIMIT)return false;
+        uint64_t room=(uint64_t)base+(uint64_t)GEO_COORD_LIMIT;
+        if(delta>room/(uint64_t)step)return false;
+        uint64_t remaining=room-delta*(uint64_t)step;
+        if(remaining>2*(uint64_t)GEO_COORD_LIMIT)return false;
+        value=-GEO_COORD_LIMIT+(int64_t)remaining;
     }
     if (!geo_coord_in_range(value)) return false;
     if(out) *out=value; return true;
+}
+
+/* Convert a two's-complement residue without an implementation-defined
+ * uint64-to-int64 conversion. All preceding distance arithmetic is unsigned. */
+static int64_t geo_grid_signed_residue(uint64_t bits)
+{return bits<=(uint64_t)INT64_MAX?(int64_t)bits:-(int64_t)(UINT64_MAX-bits)-1;}
+static bool geo_lattice_index_at(const GeoLattice *g,GeoCoord coordinate,bool ceil,int64_t *out)
+{
+    uint64_t distance,delta,room,bits,step=(uint64_t)g->pitch;
+    if(coordinate>=g->base){
+        distance=(uint64_t)coordinate-(uint64_t)g->base;
+        delta=distance/step+(ceil&&distance%step!=0);
+        room=(uint64_t)INT64_MAX-(uint64_t)g->index;
+        if(delta>room)return false;
+        bits=(uint64_t)g->index+delta;
+    }else{
+        distance=(uint64_t)g->base-(uint64_t)coordinate;
+        delta=distance/step+(!ceil&&distance%step!=0);
+        room=(uint64_t)g->index-(uint64_t)INT64_MIN;
+        if(delta>room)return false;
+        bits=(uint64_t)g->index-delta;
+    }
+    *out=geo_grid_signed_residue(bits);return true;
 }
 
 GeoGridStatus geo_lattice_window(const GeoLattice *g,GeoCoord lo,GeoCoord hi,
@@ -43,17 +72,21 @@ GeoGridStatus geo_lattice_window(const GeoLattice *g,GeoCoord lo,GeoCoord hi,
 {
     if(!out)return GEO_GRID_INVALID;
     out->defined=false;out->first=out->last=0;out->total=0;out->stride=1;out->count=0;
-    if (!g || !limit || limit>out->capacity || !out->lines || lo>hi || g->base < -3*GEO_COORD_LIMIT || g->base > 3*GEO_COORD_LIMIT || g->pitch<0 ||
+    if (!g || !limit || limit>out->capacity || !out->lines || lo>hi || g->pitch<0 ||
         !geo_coord_in_range(lo) || !geo_coord_in_range(hi)) goto invalid;
     if (!g->pitch) return GEO_GRID_OK;
     out->defined=true;
-    int64_t step=g->pitch,base=g->base,origin=g->index;
-    int64_t first_delta=geo_ceil_div(lo-base,step),last_delta=geo_floor_div(hi-base,step);
-    if(first_delta>last_delta) return GEO_GRID_OK;
-    if(!geo_i64_add(origin,first_delta,&out->first)||!geo_i64_add(origin,last_delta,&out->last)) {
+    /* A window between consecutive lines is empty even if the next line's
+     * mathematical index would exceed int64. Match before index validation. */
+    uint64_t step=(uint64_t)g->pitch,distance,remainder,advance;
+    if(lo>=g->base){distance=(uint64_t)lo-(uint64_t)g->base;remainder=distance%step;advance=remainder?step-remainder:0;}
+    else{distance=(uint64_t)g->base-(uint64_t)lo;advance=distance%step;}
+    if(advance>(uint64_t)(hi-lo))return GEO_GRID_OK;
+    if(!geo_lattice_index_at(g,lo,true,&out->first)||!geo_lattice_index_at(g,hi,false,&out->last)) {
         return GEO_GRID_INDEX_RANGE;
     }
-    out->total=(uint64_t)(last_delta-first_delta)+1;
+    if(out->first>out->last){out->first=out->last=0;return GEO_GRID_OK;}
+    out->total=(uint64_t)out->last-(uint64_t)out->first+1;
     if(out->total>limit && !sample) {
         return GEO_GRID_CAPACITY;
     }
