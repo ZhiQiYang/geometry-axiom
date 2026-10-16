@@ -45,9 +45,13 @@ class WoodworkingModelProvider:
             for i, item in enumerate(records[key]["inputs"]):
                 self.admit_root((item["kind"], item["id"]), records, target, role, (*path, "inputs", str(i)))
 
-    def profile_objects(self, run):
+    def bind_sources(self, base, sources, roots):
+        from .model_sources import bind_sources
+        return bind_sources(base, sources, roots)
+
+    def profile_objects(self, run, sources=None):
         from .section_profile import profile_objects
-        return profile_objects(run)
+        return profile_objects(run, sources)
 
     def annotate_profile(self, definition, mesh):
         from .section_profile import annotate_profile

@@ -11,7 +11,7 @@ from geometry_kernel import (AssemblyChild, AssemblyDef, DependencyEdge,
     DifferenceDef, EvaluationError, EvaluationRequest, ExportRoot, ExportView,
     ExtrusionDef, FaceUse, InteriorDef, Limits, NodeInput, OrientedShellDef,
     PlacedRegionDef, ProgramBuilder, ProvenanceTemplate, Quantity, QuantityType,
-    SourceContext, SourceDescriptor, SourceKey, SourceRef, Unit, UnionDef,
+    SourceBoxDef, SourceContext, SourceDescriptor, SourceKey, SourceRef, Unit, UnionDef,
     ValueType)
 
 from .model_common import ModelError, canonical_bytes, digest
@@ -19,6 +19,7 @@ from .model_codec import (_as_ref, _context, _fail, _keys, _raise_errors,
                           parse_extensions, parse_request)
 from .model_geometry import _inputs, _source_record, solid_definition
 from .kernel_errors import translate
+from .model_sources import NativeCandidate
 
 
 MAX_EXTENSIONS = 512
@@ -55,7 +56,22 @@ class CompiledModel:
     kernel_request: EvaluationRequest
     limits: Limits
     profile_definitions: dict
+    source_records: dict
     canonical: list | None = None
+
+    def source_record(self, source):
+        identity = (source.origin_handle, source.feature_key)
+        if identity not in self.source_records:
+            if len(source.origin_handle) != 4 or len(source.feature_key) != 3:
+                raise ModelError("UNSUPPORTED", "BASE_SOURCE_PROTOCOL", "I32",
+                                 "The legacy model wire cannot represent this native source feature identity")
+            return _source_record(source)
+        kind, number, placement, boundary, feature, loop, edge = self.source_records[identity]
+        return {"origin": {"kind": kind, "id": number}, "feature": feature,
+                "placement_id": placement, "boundary_id": boundary,
+                "loop_index": loop, "edge_index": edge,
+                "operation_path": list(source.operation_path), "role": source.contribution,
+                "normal_sign": source.normal_sign}
 
     def error(self, error):
         key = self.node_identities.get(error.node)
@@ -91,11 +107,14 @@ class CompiledModel:
 
 
 class ModelingRuntime:
-    def __init__(self, *, provider, native_loader):
+    def __init__(self, *, provider, native_loader, source_graph=False):
         if provider is None or not callable(native_loader):
             raise ModelError("UNSUPPORTED", "MODEL_PROVIDER", "I32", "An explicit modeling provider and native loader are required")
         self.provider = provider
         self.native_loader = native_loader
+        if type(source_graph) is not bool:
+            raise ModelError("UNSUPPORTED", "MODEL_PROVIDER", "I32", "Source graph mode must be explicit")
+        self.source_graph = source_graph
 
     def compile(self, definitions, request, *, max_cells, base_executable=None):
         canonical_bytes(definitions)
@@ -106,7 +125,23 @@ class ModelingRuntime:
         if type(max_cells) is not int or max_cells < 1:
             _fail("CAPACITY", "I33", "max_cells must be a positive integer", status="UNSUPPORTED")
         canonical_request = parse_request(request, self.provider)
-        base = self.native_loader(definitions["base_scene"], executable=base_executable)
+        native = self.native_loader(definitions["base_scene"], executable=base_executable)
+        bindings = None
+        if self.source_graph:
+            if not isinstance(native, NativeCandidate):
+                raise ModelError("UNSUPPORTED", "BASE_SOURCE_PROTOCOL", "I32", "Source graph mode requires a complete native candidate")
+            base = native.legacy_snapshot
+            try:
+                bindings = self.provider.bind_sources(base, native.sources,
+                    tuple((root.association, root.source,
+                        tuple((face.axis, face.side, face.legacy_feature, face.feature_key.hex()) for face in root.faces))
+                        for root in native.roots))
+            except ValueError as error:
+                if not hasattr(error, "clause"):
+                    raise
+                raise _policy_error(error) from error
+        else:
+            base = native
         records, dependencies, original_paths = parse_extensions(definitions["extensions"], base, self.provider)
         placements = {("placement", item["id"]): item for item in base["placements"]}
         solids = {(item["kind"], item["id"]): item for item in base["solids"]}
@@ -118,15 +153,25 @@ class ModelingRuntime:
         node_identities = {value: key for key, value in identities.items()}
         # PY2 retains native-evaluated quantities without inventing another scene
         # parser. The full same-candidate source DTO is a separate required gate.
-        sources = tuple(SourceDescriptor(SourceKey("legacy-spec", (item["name"],)), ValueType.QUANTITY,
-                        SourceContext(), (), Quantity(QuantityType.DIMENSION, item["value"], 1, Unit.MM),
-                        origin=("legacy-spec", item["name"])) for item in base["specs"])
-        builder = ProgramBuilder(sources, snapshot_identity=("legacy-source", digest(base["base_scene"])))
+        if bindings is None:
+            sources = tuple(SourceDescriptor(SourceKey("legacy-spec", (item["name"],)), ValueType.QUANTITY,
+                            SourceContext(), (), Quantity(QuantityType.DIMENSION, item["value"], 1, Unit.MM),
+                            origin=("legacy-spec", item["name"])) for item in base["specs"])
+            spec_sources = {item["name"]: SourceRef(SourceKey("legacy-spec", (item["name"],)), ValueType.QUANTITY) for item in base["specs"]}
+            identity = ("legacy-source", digest(base["base_scene"]))
+            profile_sources, source_records = None, {}
+        else:
+            sources, identity = bindings.sources, native.snapshot_identity
+            spec_sources, profile_sources = dict(bindings.specs), dict(bindings.profiles)
+            placement_sources = {key: (frame, region) for key, frame, region in bindings.placements}
+            solid_sources, source_records = dict(bindings.solids), dict(bindings.provenance)
+        builder = ProgramBuilder(sources, snapshot_identity=identity)
         for key, placement in placements.items():
-            axes, region = _inputs(placement)
+            axes, region = _inputs(placement) if bindings is None else placement_sources[key]
             builder.add(PlacedRegionDef(axes, region, _provenance(key, placement)), key=identities[key], order_token=key, declared=False)
         for key, solid in solids.items():
-            builder.add(solid_definition(solid, _source(key)), key=identities[key], order_token=key, declared=False)
+            definition = solid_definition(solid, _source(key)) if bindings is None else SourceBoxDef(solid_sources[key])
+            builder.add(definition, key=identities[key], order_token=key, declared=False)
 
         next_hidden = len(identities)
         hidden_count = 0
@@ -150,8 +195,7 @@ class ModelingRuntime:
             if key[0] == "extrusion":
                 placed_key = ("placement", record["placement_id"])
                 definition = ExtrusionDef(identities[placed_key],
-                    SourceRef(SourceKey("legacy-spec", (record["lo_spec"],)), ValueType.QUANTITY),
-                    SourceRef(SourceKey("legacy-spec", (record["hi_spec"],)), ValueType.QUANTITY),
+                    spec_sources[record["lo_spec"]], spec_sources[record["hi_spec"]],
                     _provenance(key, placements.get(placed_key)))
             elif key[0] == "shell":
                 definition = OrientedShellDef(tuple(FaceUse(NodeInput(identities[("placement", use["placement_id"])],
@@ -184,7 +228,7 @@ class ModelingRuntime:
             if key not in profiles:
                 continue
             children = []
-            for item in self.provider.profile_objects(profiles[key]):
+            for item in self.provider.profile_objects(profiles[key], profile_sources):
                 placed = hidden(PlacedRegionDef(item.frame, item.region, item.source), key)
                 solid = hidden(ExtrusionDef(placed, 0, item.length, item.source), key)
                 profile_definitions[solid] = item
@@ -222,7 +266,7 @@ class ModelingRuntime:
             exports.append(ExportRoot(selected, view=view, output_tag=key))
         compiled = CompiledModel(base, records, dependencies, original_paths, original_paths,
                     identities, node_identities, roots, canonical_request, program,
-                    EvaluationRequest(tuple(exports), canonical_request["allow_partial"]), limits, profile_definitions)
+                    EvaluationRequest(tuple(exports), canonical_request["allow_partial"]), limits, profile_definitions, source_records)
         try:
             validated = kernel.validate_program(program, limits=limits)
         except EvaluationError as error:
@@ -282,7 +326,7 @@ class ModelingRuntime:
             for record in outcome.records:
                 mesh = deepcopy(record.mesh)
                 mesh.update(root=_as_ref(compiled.roots[outcome.root_index]), member_path=list(record.member_path), role=compiled.canonical_request["role"])
-                mesh["face_sources"] = [[_source_record(source) for source in row] for row in mesh["face_sources"]]
+                mesh["face_sources"] = [[compiled.source_record(source) for source in row] for row in mesh["face_sources"]]
                 if record.node in compiled.profile_definitions:
                     definition = compiled.profile_definitions[record.node]
                     profile_counts[record.node] = profile_counts.get(record.node, 0) + 1

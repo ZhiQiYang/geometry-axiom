@@ -3,15 +3,15 @@ from copy import deepcopy
 from dataclasses import dataclass
 
 from geometry_kernel import (CoordinateDomain, FrameDef, ProvenanceTemplate,
-                             RegionDef)
+                             RegionDef, SourceRef)
 from .model_policy import PolicyIssue
 
 
 @dataclass(frozen=True)
 class ProfileObject:
-    frame: FrameDef
-    region: RegionDef
-    length: int
+    frame: FrameDef | SourceRef
+    region: RegionDef | SourceRef
+    length: int | SourceRef
     source: ProvenanceTemplate
     metadata: dict
 
@@ -24,14 +24,19 @@ class ProfileObject:
         return () if self.metadata["member_id"] is None else (self.metadata["member_id"],)
 
 
-def profile_objects(run):
-    domain = CoordinateDomain() if run["coordinate_space"] == "world" else CoordinateDomain(("profile-run", run["id"]))
-    axes = FrameDef(*(run[key] for key in ("origin", "u", "v", "n")), domain=domain)
+def profile_objects(run, sources=None):
+    if sources is None:
+        domain = CoordinateDomain() if run["coordinate_space"] == "world" else CoordinateDomain(("profile-run", run["id"]))
+        axes = FrameDef(*(run[key] for key in ("origin", "u", "v", "n")), domain=domain)
     identity = ("profile-run", run["id"])
     objects = []
     for member in sorted(run["members"], key=lambda item: item["id"]):
-        u0, v0, u1, v1 = member["rect"]
-        shape = RegionDef(((u0, v0), (u1, v0), (u1, v1), (u0, v1)))
+        if sources is None:
+            u0, v0, u1, v1 = member["rect"]
+            shape = RegionDef(((u0, v0), (u1, v0), (u1, v1), (u0, v1)))
+            length = run["length"]
+        else:
+            axes, shape, length = sources[(run["id"], member["id"])]
         source = ProvenanceTemplate((*identity, None, None), identity, ("members", str(member["id"])))
         metadata = {
             "run_id": run["id"], "profile_id": run["profile_id"],
@@ -40,14 +45,18 @@ def profile_objects(run):
             "dimensions_mm": list(member["dimensions_mm"]),
             "orientation": member["definition"]["orientation"],
         }
-        objects.append(ProfileObject(axes, shape, run["length"], source, metadata))
+        objects.append(ProfileObject(axes, shape, length, source, metadata))
     source = ProvenanceTemplate((*identity, None, None), identity, ("profile", str(run["profile_id"])), "reference")
     metadata = {
         "run_id": run["id"], "profile_id": run["profile_id"],
         "member_id": None, "kind": "envelope", "coordinate_space": run["coordinate_space"],
         "dimensions_mm": None, "orientation": None,
     }
-    objects.append(ProfileObject(axes, RegionDef(run["outline"]), run["length"], source, metadata))
+    if sources is None:
+        shape, length = RegionDef(run["outline"]), run["length"]
+    else:
+        axes, shape, length = sources[(run["id"], None)]
+    objects.append(ProfileObject(axes, shape, length, source, metadata))
     return tuple(objects)
 
 
