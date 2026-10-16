@@ -6,6 +6,7 @@ These packages preserve completed targeted execution records, including failed r
 |---|---:|---|
 | [Original sealed package](native-p1-20261016/README.md) | 24 | Original baseline and targeted native runs, their failures and later corrections. All 203 published files remain unchanged. |
 | [Append-only follow-up](native-p1-followup-20261016/README.md) | 4 | Original 6f1 and 14ab test runs, the 6f1 `runs` failure diagnostic, and the 14ab two-case timing diagnostic. The default dump is an extraction attachment, not a fifth run. |
+| [Authority-source follow-up](native-p1-authority-20261017/README.md) | 22 | Eleven build gates, nine executed focused batches and both f8c reload diagnostics through source `12422c69`. Two additional prepared focused bundles remain UNRUN. All 278 files in the preceding packages remain unchanged. |
 
 The follow-up's two original test runs remain failed:
 
@@ -15,3 +16,5 @@ The follow-up's two original test runs remain failed:
 The separate timing diagnostic rebuilt binaries identical to those in the original 14ab record. Rollback completed in 18.850039 seconds and imports in 43.040446 seconds, each with exit 0 under a 120-second observation watchdog. This does not change the original time limits or failed acceptance result.
 
 The prepared PF-3 continuation (50 original methods and its original 19-mutation driver) and the original 27-method section-profile suite were not executed for these candidate freezes. Each package's README describes exact source commitments, source manifests, original logs, verification commands, and its checksum manifest. A package-verifier success certifies retained evidence consistency, not product correctness.
+
+The authority-source pack preserves 536 original files as 435 exact content blobs, plus the hashes and sizes of 22 omitted source archives. It retains the initial invalid `load` diagnostic as well as the corrected `loadfile` attempt that reached the actual owned-record failure. The nine focused runs retain their original failed outcomes and remaining UNRUN methods. Later `15187`, `18ed` and `de62` work is outside this immutable pack; passing methods from different source SHAs are never combined into a same-SHA acceptance claim.
