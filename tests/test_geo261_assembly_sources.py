@@ -76,7 +76,7 @@ CONTROLS = (
     ("binding-rule-relation", "assembly_sources", "GEO_DEPENDENCY_DEFINITION_REQUIRED)==GEO_SOURCE_OK;}", "GEO_DEPENDENCY_VALUE_REQUIRED)==GEO_SOURCE_OK;}", "graph", "binding-rule-definition-identity-edge"),
     ("generated-dimension-hook", "assembly", "w->evaluation&&w->evaluation->generated_dimension?", "false?", "graph", "generated-slot-actual-quantity-edges"),
     ("quantity-actual-value", "assembly_sources", "*out=value.as.quantity.num;", "*out=value.as.quantity.num+1;", "graph", "generated-dimensions-and-direct-policy-parity"),
-    ("null-slot-quantity", "assembly", "if(geo_json_is_null(j,value)){b->complete=false;continue;}", "if(geo_json_is_null(j,value)){b->complete=false;}", "definitions", "incomplete-binding-remains-legal"),
+    ("null-slot-quantity", "assembly", "if(geo_json_is_null(j,value)){b->complete=false;continue;}", "if(geo_json_is_null(j,value)){b->complete=false;if(!resolve)continue;}", "definitions", "incomplete-binding-remains-legal"),
     ("I42-check-hook", "assembly", "if(w->evaluation&&w->evaluation->instance_check){", "if(false){", "graph", "I42-actual-pose-value-edge"),
     ("failed-retry", "assembly_sources", ".retry_failure=true", ".retry_failure=false", "diagnostics", "failed-binding-retries-original-diagnostic"),
 )
