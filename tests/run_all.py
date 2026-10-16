@@ -122,6 +122,7 @@ PY_BROWSER_GATES = {
     'test_issue123_create_feedback_browser': 'Explicit isolated Playwright mouse/touch first-center gate from #131; run with --url/--out, not a unittest suite',
 }
 NODE_TEST_FILES = [
+    'tests/test_grid_inspector_stagger.cjs',
     'tests/test_transport_failure_trace.js',
     'tests/test_section_profile_compat.js',
     'tests/test_assembly_project_store.js',
