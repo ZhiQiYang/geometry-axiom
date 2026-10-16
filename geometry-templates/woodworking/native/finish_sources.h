@@ -26,7 +26,9 @@ typedef enum {
     WOOD_FINISH_SOURCE_DERIVED_DEFINITION,
     WOOD_FINISH_SOURCE_DERIVED_H,
     WOOD_FINISH_SOURCE_DERIVED_FRAME,
-    WOOD_FINISH_SOURCE_DERIVED_REGION
+    WOOD_FINISH_SOURCE_DERIVED_REGION,
+    WOOD_FINISH_SOURCE_DERIVED_POLICY,
+    WOOD_FINISH_SOURCE_BOUNDARY_POLICY
 } WoodFinishSourceKind;
 typedef struct {unsigned char bytes[5];} WoodFinishSourceKey;
 typedef struct {GeoProviderToken finish,parameter;} WoodFinishSourceTokens;
@@ -44,6 +46,11 @@ bool wood_finish_sources_bind_finish(WoodFinishSources *,WoodFinishContext *);
  * provider. Evaluating them runs the direct W policy, never placement caches.
  * Read returns the same graph value including fixities for W/H callers. */
 bool wood_finish_sources_read_derived(WoodFinishSources *,uint32_t,WoodDerivedValue *);
+/* R41 keys and fixities are canonical definition values. All geometry copied
+ * by read_derived is the returned K REGION_SET/FRAME/QUANTITY, not a side cache. */
+bool wood_finish_sources_edge_key(WoodFinishSources *,uint32_t,size_t,int,size_t,char *,size_t);
+bool wood_finish_sources_edge_resolve(WoodFinishSources *,uint32_t,const char *,int *,int *);
+bool wood_finish_sources_definitions(WoodFinishSources *);
 /* Both teardown orders are safe. After handle destruction the graph may only
  * be destroyed; its borrowed views and provider user pointer are no longer live. */
 void wood_finish_sources_destroy(WoodFinishSources *);

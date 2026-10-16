@@ -5,11 +5,13 @@
 
 typedef struct WoodFinishBoundarySource {
     uint32_t id;WoodBoundaryRegion value;
+    unsigned char *policy;size_t policy_size;
     GeoLoop2View holes[GEO_REGION_MAX_HOLES];GeoRegionView region;
     struct WoodFinishBoundarySource *next;
 } WoodFinishBoundarySource;
 typedef struct {
     WoodDerivedValue value;
+    unsigned char *policy;size_t policy_size;
     GeoLoop2View holes[WOOD_DERIVED_COMPONENT_MAX][GEO_REGION_MAX_HOLES];
     GeoRegionView regions[WOOD_DERIVED_COMPONENT_MAX];
 } WoodFinishDerivedSource;
@@ -32,7 +34,7 @@ bool wood_finish_source_decode(const GeoSourceRef *ref,WoodFinishSourceKind *kin
 {
     if(!ref||!ref->key||ref->key_size!=5||!kind||!id)return false;
     const unsigned char *bytes=ref->key;
-    if(bytes[0]<WOOD_FINISH_SOURCE_DEFINITION||bytes[0]>WOOD_FINISH_SOURCE_DERIVED_REGION)return false;
+    if(bytes[0]<WOOD_FINISH_SOURCE_DEFINITION||bytes[0]>WOOD_FINISH_SOURCE_BOUNDARY_POLICY)return false;
     uint32_t value=0;for(int i=1;i<5;++i)value=(value<<8)|bytes[i];
     *kind=(WoodFinishSourceKind)bytes[0];*id=value;return true;
 }
@@ -52,6 +54,90 @@ static WoodFinishBoundarySource *wood_finish_boundary_slot(WoodFinishSources *s,
     for(WoodFinishBoundarySource *b=s->boundaries;b;b=b->next)if(b->id==id)return b;
     WoodFinishBoundarySource *b=calloc(1,sizeof *b);if(!b)return NULL;
     b->id=id;b->next=s->boundaries;s->boundaries=b;return b;
+}
+/* Policy content is explicit big-endian bytes: version, id, boundary kind,
+ * component count; then hole/edge counts, one-byte fixity and length-prefixed
+ * UTF-8 key bytes. Coordinates and caches are deliberately absent. */
+static void wood_finish_put32(unsigned char **p,uint32_t value)
+{for(int i=3;i>=0;--i)*(*p)++=(unsigned char)(value>>(8*i));}
+static bool wood_finish_copy_region(uint32_t id,const GeoRegionView *region,WoodBoundaryRegion *out)
+{
+    if(region->outline.count>GEO_LOOP_MAX_VERTICES||region->hole_count>GEO_REGION_MAX_HOLES)return false;
+    out->id=id;out->outline.count=region->outline.count;out->hole_count=region->hole_count;
+    memcpy(out->outline.v,region->outline.v,region->outline.count*sizeof *region->outline.v);
+    for(size_t h=0;h<region->hole_count;++h){const GeoLoop2View *loop=&region->holes[h];if(loop->count>GEO_LOOP_MAX_VERTICES)return false;
+        out->holes[h].count=loop->count;memcpy(out->holes[h].v,loop->v,loop->count*sizeof *loop->v);}
+    return true;
+}
+static bool wood_finish_derived_geometry(WoodFinishSources *s,uint32_t id,WoodDerivedValue *out)
+{
+    GeoSourceValue region,height,frame;const DerivedPlacement *def=wood_dp_find(&s->context,id);if(!def)return false;
+    if(!wood_finish_get(s,WOOD_FINISH_SOURCE_DERIVED_REGION,id,GEO_DEPENDENCY_VALUE_REQUIRED,&region)||region.kind!=GEO_SOURCE_REGION_SET||region.as.regions.count>WOOD_DERIVED_COMPONENT_MAX)return false;
+    if(!wood_finish_get(s,WOOD_FINISH_SOURCE_DERIVED_H,id,GEO_DEPENDENCY_VALUE_REQUIRED,&height)||height.kind!=GEO_SOURCE_QUANTITY||height.as.quantity.den!=1)return false;
+    if(!wood_finish_get(s,WOOD_FINISH_SOURCE_DERIVED_FRAME,id,GEO_DEPENDENCY_VALUE_REQUIRED,&frame)||frame.kind!=GEO_SOURCE_FRAME)return false;
+    memset(out,0,sizeof *out);out->id=id;out->derived_fill_id=def->fill_id;out->derived_h=height.as.quantity.num;out->frame=frame.as.frame;out->component_count=region.as.regions.count;
+    for(size_t c=0;c<out->component_count;++c)if(!wood_finish_copy_region(id,&region.as.regions.regions[c],&out->components[c]))return false;
+    return true;
+}
+static bool wood_finish_encode_policy(WoodFinishSources *s,uint32_t id,const WoodBoundaryRegion *regions,size_t count,
+    const WoodDerivedValue *derived,unsigned char **content,size_t *content_size)
+{
+    size_t size=10;for(size_t c=0;c<count;++c){const WoodBoundaryRegion *b=&regions[c];size+=4;
+        for(size_t h=0;h<=b->hole_count;++h){const WoodBoundaryLoop *loop=h?&b->holes[h-1]:&b->outline;size+=4+loop->count*(3+(derived?511:0));}}
+    unsigned char *bytes=malloc(size);if(!bytes)return wood_fs_capacity_error(&s->context.finish,"I33 CAPACITY: finish policy source unavailable");
+    unsigned char *next=bytes;*next++=1;wood_finish_put32(&next,id);*next++=(unsigned char)(derived||!count?0:regions[0].kind);wood_finish_put32(&next,(uint32_t)count);
+    for(size_t c=0;c<count;++c){const WoodBoundaryRegion *b=&regions[c];wood_finish_put32(&next,(uint32_t)b->hole_count);
+        for(size_t h=0;h<=b->hole_count;++h){const WoodBoundaryLoop *loop=h?&b->holes[h-1]:&b->outline;wood_finish_put32(&next,(uint32_t)loop->count);
+            for(size_t e=0;e<loop->count;++e){char key[512];size_t length=0;
+                if(derived){if(!wood_dp_edge_key_direct(&s->context,derived,c,h?(int)h-1:-1,e,key,sizeof key)){free(bytes);return false;}length=strlen(key);}
+                *next++=(unsigned char)loop->fixity[e];*next++=(unsigned char)(length>>8);*next++=(unsigned char)length;
+                if(length){memcpy(next,key,length);next+=length;}}}}
+    free(*content);*content=bytes;*content_size=(size_t)(next-bytes);return true;
+}
+typedef struct {const unsigned char *data;size_t size,at;} WoodFinishPolicyReader;
+static bool wood_finish_policy_u32(WoodFinishPolicyReader *r,uint32_t *out)
+{if(r->at>r->size||r->size-r->at<4)return false;uint32_t value=0;for(int i=0;i<4;++i)value=(value<<8)|r->data[r->at++];*out=value;return true;}
+typedef bool (*WoodFinishPolicyEdge)(void *,size_t,int,size_t,unsigned,const unsigned char *,size_t);
+static bool wood_finish_policy_utf8(const unsigned char *bytes,size_t length)
+{
+    for(size_t at=0;at<length;){size_t scalar=geo_utf8_scalar(bytes+at,length-at);if(!scalar)return false;at+=scalar;}
+    return true;
+}
+static bool wood_finish_policy_walk(const GeoSourceValue *value,uint32_t id,bool derived,WoodDerivedValue *geometry,WoodFinishPolicyEdge visit,void *user)
+{
+    if(value->kind!=GEO_SOURCE_DEFINITION||!value->as.definition.schema||strcmp(value->as.definition.schema,derived?"wood.finish.derived-policy/1":"wood.finish.boundary-policy/1")||!value->as.definition.content||value->as.definition.content_size<10)return false;
+    WoodFinishPolicyReader r={value->as.definition.content,value->as.definition.content_size,0};uint32_t stored,count;
+    if(r.data[r.at++]!=1||!wood_finish_policy_u32(&r,&stored)||stored!=id)return false;unsigned kind=r.data[r.at++];if(kind>WOOD_BOUNDARY_WALL_ELEVATION)return false;
+    if(!wood_finish_policy_u32(&r,&count)||count>WOOD_DERIVED_COMPONENT_MAX||(geometry&&geometry->component_count!=count))return false;
+    for(size_t c=0;c<count;++c){uint32_t holes;if(!wood_finish_policy_u32(&r,&holes)||holes>GEO_REGION_MAX_HOLES)return false;
+        WoodBoundaryRegion *region=geometry?&geometry->components[c]:NULL;if(region){if(region->hole_count!=holes)return false;region->kind=(WoodBoundaryKind)kind;}
+        for(size_t h=0;h<=holes;++h){uint32_t edges;if(!wood_finish_policy_u32(&r,&edges)||edges>GEO_LOOP_MAX_VERTICES)return false;
+            WoodBoundaryLoop *loop=region?(h?&region->holes[h-1]:&region->outline):NULL;if(loop&&loop->count!=edges)return false;
+            for(size_t e=0;e<edges;++e){if(r.size-r.at<3)return false;unsigned fixity=r.data[r.at++];size_t length=(size_t)r.data[r.at++]<<8;length|=r.data[r.at++];
+                if(fixity>WOOD_EDGE_FIXED||length>511||length>r.size-r.at||(derived?!length:length!=0)||memchr(r.data+r.at,0,length))return false;
+                if(!wood_finish_policy_utf8(r.data+r.at,length))return false;
+                if(loop)loop->fixity[e]=(WoodEdgeFixity)fixity;
+                if(visit&&!visit(user,c,h?(int)h-1:-1,e,fixity,r.data+r.at,length))return false;r.at+=length;}}}
+    return r.at==r.size;
+}
+static bool wood_finish_policy(WoodFinishSources *s,WoodFinishSourceKind kind,uint32_t id,GeoSourceValue *out)
+{
+    if(kind==WOOD_FINISH_SOURCE_BOUNDARY_POLICY){GeoSourceValue region;
+        if(!wood_finish_get(s,WOOD_FINISH_SOURCE_BOUNDARY_REGION,id,GEO_DEPENDENCY_VALUE_REQUIRED,&region)||region.kind!=GEO_SOURCE_REGION_SET||region.as.regions.count!=1)return false;
+        WoodFinishBoundarySource *b=wood_finish_boundary_slot(s,id);WoodBoundaryRegion value={0};if(!b||!wood_finish_copy_region(id,&region.as.regions.regions[0],&value))return false;
+        value.kind=b->value.kind;
+        for(size_t h=0;h<=value.hole_count;++h){WoodBoundaryLoop *loop=h?&value.holes[h-1]:&value.outline;const WoodBoundaryLoop *authored=h?&b->value.holes[h-1]:&b->value.outline;
+            if(loop->count!=authored->count)return false;for(size_t e=0;e<loop->count;++e)loop->fixity[e]=authored->fixity[e];}
+        if(!wood_finish_encode_policy(s,id,&value,1,NULL,&b->policy,&b->policy_size))return false;
+        out->kind=GEO_SOURCE_DEFINITION;out->as.definition=(GeoDefinitionValue){"wood.finish.boundary-policy/1",b->policy,b->policy_size};return true;
+    }
+    int index=wood_finish_derived_index(s,id);if(index<0)return false;
+    WoodDerivedValue *geometry=calloc(1,sizeof *geometry);if(!geometry)return wood_fs_capacity_error(&s->context.finish,"I33 CAPACITY: derived policy workspace unavailable");
+    bool ok=wood_finish_derived_geometry(s,id,geometry)&&wood_dp_fixities_direct(&s->context,geometry);
+    WoodFinishDerivedSource *d=s->derived[index];
+    if(ok)ok=d&&wood_finish_encode_policy(s,id,geometry->components,geometry->component_count,geometry,&d->policy,&d->policy_size);
+    free(geometry);if(!ok)return false;
+    out->kind=GEO_SOURCE_DEFINITION;out->as.definition=(GeoDefinitionValue){"wood.finish.derived-policy/1",d->policy,d->policy_size};return true;
 }
 static bool wood_finish_definition(WoodFinishSources *s,WoodFinishSourceKind kind,uint32_t id,GeoSourceValue *out)
 {
@@ -91,6 +177,7 @@ static bool wood_finish_describe(void *user,const GeoSourceRef *ref,GeoSourceDes
     if(kind<=WOOD_FINISH_SOURCE_REGION){if(!wood_fs_find(&s->context.finish,id))return false;
         if(kind==WOOD_FINISH_SOURCE_FRAME)d.kind=GEO_SOURCE_FRAME;else if(kind==WOOD_FINISH_SOURCE_REGION)d.kind=GEO_SOURCE_REGION_SET;
     }else if(kind==WOOD_FINISH_SOURCE_BOUNDARY_REGION)d.kind=GEO_SOURCE_REGION_SET;
+    else if(kind==WOOD_FINISH_SOURCE_BOUNDARY_POLICY)d.kind=GEO_SOURCE_DEFINITION;
     else if(kind==WOOD_FINISH_SOURCE_COLUMN_BOX||kind==WOOD_FINISH_SOURCE_BEAM_BOX)d.kind=GEO_SOURCE_BOX;
     else if(kind<=WOOD_FINISH_SOURCE_PANEL_DEFINITION){if(wood_finish_fill_index(s,id)<0)return false;
         if(kind==WOOD_FINISH_SOURCE_FILL_FRAME)d.kind=GEO_SOURCE_FRAME;
@@ -119,6 +206,7 @@ static bool wood_finish_evaluate(void *user,GeoEvalContext *graph,const GeoSourc
     if(kind==WOOD_FINISH_SOURCE_DEFINITION||kind==WOOD_FINISH_SOURCE_FILL_DEFINITION||kind==WOOD_FINISH_SOURCE_PANEL_DEFINITION||kind==WOOD_FINISH_SOURCE_DERIVED_DEFINITION)
         return wood_finish_definition(s,kind,id,out);
     GeoSourceValue value;
+    if(kind==WOOD_FINISH_SOURCE_BOUNDARY_POLICY||kind==WOOD_FINISH_SOURCE_DERIVED_POLICY)return wood_finish_policy(s,kind,id,out);
     if(kind<=WOOD_FINISH_SOURCE_REGION){
         const FinishSurface *f=wood_fs_find(&s->context.finish,id);if(!f)return false;
         if(!wood_finish_get(s,WOOD_FINISH_SOURCE_DEFINITION,id,GEO_DEPENDENCY_DEFINITION_REQUIRED,&value))return false;
@@ -193,8 +281,11 @@ static bool wood_finish_values_hook(void *user,const PanelFill *p,WoodFinishLayo
 }
 static bool wood_finish_boundary_hook(void *user,uint32_t id,WoodBoundaryRegion *out)
 {
-    WoodFinishSources *s=user;GeoSourceValue value;if(!wood_finish_get(s,WOOD_FINISH_SOURCE_BOUNDARY_REGION,id,GEO_DEPENDENCY_VALUE_REQUIRED,&value))return false;
-    WoodFinishBoundarySource *b=wood_finish_boundary_slot(s,id);if(!b)return false;*out=b->value;return true;
+    WoodFinishSources *s=user;GeoSourceValue value,policy;if(!wood_finish_get(s,WOOD_FINISH_SOURCE_BOUNDARY_REGION,id,GEO_DEPENDENCY_VALUE_REQUIRED,&value)||value.kind!=GEO_SOURCE_REGION_SET||value.as.regions.count!=1)return false;
+    if(!wood_finish_get(s,WOOD_FINISH_SOURCE_BOUNDARY_POLICY,id,GEO_DEPENDENCY_DEFINITION_REQUIRED,&policy))return false;
+    WoodDerivedValue *geometry=calloc(1,sizeof *geometry);if(!geometry)return wood_fs_capacity_error(&s->context.finish,"I33 CAPACITY: boundary policy workspace unavailable");
+    geometry->component_count=1;bool ok=wood_finish_copy_region(id,&value.as.regions.regions[0],&geometry->components[0])&&wood_finish_policy_walk(&policy,id,false,geometry,NULL,NULL);
+    if(ok)*out=geometry->components[0];free(geometry);return ok;
 }
 static bool wood_finish_obstacle_hook(void *user,const FinishObstacleRef *ref,GeoCoord lo[3],GeoCoord hi[3])
 {
@@ -209,17 +300,58 @@ static bool wood_finish_frame_hook(void *user,const DerivedPlacement *def,const 
 {WoodFinishSources *s=user;GeoSourceValue value;(void)layout;if(!wood_finish_get(s,WOOD_FINISH_SOURCE_DERIVED_FRAME,def->id,GEO_DEPENDENCY_VALUE_REQUIRED,&value))return false;*out=value.as.frame;return true;}
 bool wood_finish_sources_read_derived(WoodFinishSources *s,uint32_t id,WoodDerivedValue *out)
 {
-    if(!s||!out)return false;GeoSourceValue value;if(!wood_finish_get(s,WOOD_FINISH_SOURCE_DERIVED_REGION,id,GEO_DEPENDENCY_VALUE_REQUIRED,&value))return false;
-    int index=wood_finish_derived_index(s,id);if(index<0||!s->derived[index])return false;*out=s->derived[index]->value;return true;
+    if(!s||!out)return false;WoodDerivedValue *geometry=calloc(1,sizeof *geometry);
+    if(!geometry)return wood_fs_capacity_error(&s->context.finish,"I33 CAPACITY: derived reader workspace unavailable");
+    GeoSourceValue policy;bool ok=wood_finish_derived_geometry(s,id,geometry)&&
+        wood_finish_get(s,WOOD_FINISH_SOURCE_DERIVED_POLICY,id,GEO_DEPENDENCY_DEFINITION_REQUIRED,&policy)&&wood_finish_policy_walk(&policy,id,true,geometry,NULL,NULL);
+    if(ok)*out=*geometry;free(geometry);return ok;
 }
 static bool wood_finish_derived_hook(void *user,const DerivedPlacement *def,WoodDerivedValue *out)
 {return wood_finish_sources_read_derived(user,def->id,out);}
+typedef struct {size_t component,edge;int hole;const unsigned char *key;size_t size;} WoodFinishKeySelection;
+static bool wood_finish_select_key(void *user,size_t component,int hole,size_t edge,unsigned fixity,const unsigned char *key,size_t size)
+{WoodFinishKeySelection *selection=user;(void)fixity;if(component==selection->component&&hole==selection->hole&&edge==selection->edge){selection->key=key;selection->size=size;}return true;}
+bool wood_finish_sources_edge_key(WoodFinishSources *s,uint32_t id,size_t component,int hole,size_t edge,char *out,size_t cap)
+{
+    if(!s)return false;GeoSourceValue policy;
+    if(!wood_finish_get(s,WOOD_FINISH_SOURCE_DERIVED_POLICY,id,GEO_DEPENDENCY_DEFINITION_REQUIRED,&policy))return false;
+    WoodFinishKeySelection selected={component,edge,hole<0?-1:hole,NULL,0};
+    if(!wood_finish_policy_walk(&policy,id,true,NULL,wood_finish_select_key,&selected)||!selected.key)return false;
+    if(cap>2){size_t copied=selected.size<cap-1?selected.size:cap-1;memcpy(out,selected.key,copied);out[copied]=0;}
+    return (selected.size&&selected.size<cap&&cap>2)||wood_fs_capacity_error(&s->context.finish,"I33 CAPACITY: R41 key exceeds supported size");
+}
+typedef struct {const char *key;size_t size,matches;int *hole,*edge;} WoodFinishKeyMatch;
+static bool wood_finish_match_key(void *user,size_t component,int hole,size_t edge,unsigned fixity,const unsigned char *key,size_t size)
+{
+    WoodFinishKeyMatch *match=user;(void)fixity;if(size==match->size&&!memcmp(key,match->key,size)){++match->matches;
+        *match->hole=hole<0?-1:(int)(component*GEO_REGION_MAX_HOLES+(size_t)hole);
+        *match->edge=hole<0?(int)(component*GEO_LOOP_MAX_VERTICES+edge):(int)edge;}return true;
+}
+bool wood_finish_sources_edge_resolve(WoodFinishSources *s,uint32_t id,const char *key,int *hole,int *edge)
+{
+    if(!s)return false;GeoSourceValue policy;
+    if(!wood_finish_get(s,WOOD_FINISH_SOURCE_DERIVED_POLICY,id,GEO_DEPENDENCY_DEFINITION_REQUIRED,&policy))return false;
+    WoodFinishKeyMatch match={key,strlen(key),0,hole,edge};if(!wood_finish_policy_walk(&policy,id,true,NULL,wood_finish_match_key,&match))return false;
+    return match.matches==1||wood_fs_error(&s->context.finish,"R41: key %.160s matches %zu derived edges; exactly one is required",key,match.matches);
+}
+static bool wood_finish_key_hook(void *user,const WoodDerivedValue *p,size_t component,int hole,size_t edge,char *out,size_t cap)
+{return wood_finish_sources_edge_key(user,p->id,component,hole,edge,out,cap);}
+static bool wood_finish_resolve_hook(void *user,const WoodDerivedValue *p,const char *key,int *hole,int *edge)
+{return wood_finish_sources_edge_resolve(user,p->id,key,hole,edge);}
+bool wood_finish_sources_definitions(WoodFinishSources *s)
+{
+    if(!s)return false;GeoSourceValue value;const FinishSurfaceState *state=s->context.finish.state;
+    for(size_t i=0;i<state->count;++i)if(!wood_finish_get(s,WOOD_FINISH_SOURCE_DEFINITION,state->items[i].id,GEO_DEPENDENCY_DEFINITION_REQUIRED,&value))return false;
+    for(size_t i=0;i<state->fill_count;++i)if(!wood_finish_get(s,WOOD_FINISH_SOURCE_FILL_DEFINITION,state->fills[i].id,GEO_DEPENDENCY_DEFINITION_REQUIRED,&value))return false;
+    for(size_t i=0;i<state->host_count;++i)if(!wood_finish_get(s,WOOD_FINISH_SOURCE_DERIVED_DEFINITION,state->hosts[i].id,GEO_DEPENDENCY_DEFINITION_REQUIRED,&value))return false;
+    return true;
+}
 WoodFinishSources *wood_finish_sources_create(GeoEvalContext *graph,WoodFinishSourceTokens tokens,const WoodDerivedContext *base)
 {
     if(!graph||!base||!base->finish.state||!base->finish.boundary||!base->finish.obstacle_box||!base->finish.parameter_coord||!base->finish.parameter_value||!base->placement_read||base->finish.evaluation||base->evaluation)return NULL;
     WoodFinishSources *s=calloc(1,sizeof *s);if(!s)return NULL;s->graph=graph;s->tokens=tokens;s->base=*base;s->context=*base;
     s->finish_hooks=(WoodFinishEvaluation){s,wood_finish_check_hook,wood_finish_values_hook,wood_finish_field_hook,wood_finish_definition_hook,wood_finish_boundary_hook,wood_finish_obstacle_hook};
-    s->derived_hooks=(WoodDerivedEvaluation){s,wood_finish_derived_hook,wood_finish_height_hook,wood_finish_frame_hook};
+    s->derived_hooks=(WoodDerivedEvaluation){s,wood_finish_derived_hook,wood_finish_height_hook,wood_finish_frame_hook,wood_finish_key_hook,wood_finish_resolve_hook};
     s->context.finish.evaluation=&s->finish_hooks;s->context.evaluation=&s->derived_hooks;
     GeoSourceProvider provider={tokens.finish,"wood.finish","wood-finish-sources/1",s,wood_finish_describe,wood_finish_evaluate};
     if(!geo_eval_register(graph,&provider)){free(s);return NULL;}return s;
@@ -243,6 +375,6 @@ bool wood_finish_sources_bind(WoodFinishSources *s,WoodDerivedContext *w)
 }
 void wood_finish_sources_destroy(WoodFinishSources *s)
 {
-    if(!s)return;for(size_t i=0;i<FS_MAX;++i)free(s->derived[i]);
-    WoodFinishBoundarySource *b=s->boundaries;while(b){WoodFinishBoundarySource *next=b->next;free(b);b=next;}free(s);
+    if(!s)return;for(size_t i=0;i<FS_MAX;++i)if(s->derived[i]){free(s->derived[i]->policy);free(s->derived[i]);}
+    WoodFinishBoundarySource *b=s->boundaries;while(b){WoodFinishBoundarySource *next=b->next;free(b->policy);free(b);b=next;}free(s);
 }

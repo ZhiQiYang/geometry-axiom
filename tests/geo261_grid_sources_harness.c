@@ -76,7 +76,7 @@ static bool attach(Fixture *f)
     f->graph=geo_eval_create(261,80);if(!f->graph)return false;GeoSourceProvider region={GS_REGION,"core.region","grid-test-region/1",f,region_describe,region_evaluate};if(!geo_eval_register(f->graph,&region))return false;
     f->parameter_sources=geo_parameter_sources_register(f->graph,f->parameters,GS_PARAMETER,"core.parameter.field","grid-test-parameter/1");
     f->engineering_sources=wood_engineering_sources_register(f->graph,&f->context.engineering,(WoodEngineeringSourceTokens){GS_DIMENSION,GS_BINDING,GS_DEFINITION,GS_NAMED,GS_PARAMETER});if(!f->parameter_sources||!f->engineering_sources)return false;wood_engineering_sources_bind(f->engineering_sources,&f->context.engineering);
-    f->sources=wood_grid_sources_create(f->graph,(WoodGridSourceTokens){GS_GRID,GS_PARAMETER},&f->context);return f->sources&&wood_grid_sources_bind(f->sources,&f->context);
+    f->sources=wood_grid_sources_create(f->graph,(WoodGridSourceTokens){GS_GRID,GS_PARAMETER,GS_BINDING,0},&f->context);return f->sources&&wood_grid_sources_bind(f->sources,&f->context);
 }
 static void dispose(Fixture *f,bool graph_first)
 {if(!f)return;if(graph_first)geo_eval_destroy(f->graph);wood_grid_sources_destroy(f->sources);wood_engineering_sources_destroy(f->engineering_sources);geo_parameter_sources_destroy(f->parameter_sources);if(!graph_first)geo_eval_destroy(f->graph);geo_grid_store_destroy(f->store);geo_parameters_destroy(f->parameters);geo_versions_destroy(f->versions);free(f);}
@@ -109,7 +109,9 @@ static int engineering_case(void)
     CHECK(wood_grid_sources_application(f->sources,5,error,sizeof error)&&f->state.items[2].axis[0].body==50,"application-consumes-effective-engineering-binding");
     CHECK(wood_grid_sources_dimension(f->sources,5,0,0,&value,error,sizeof error)&&value==50,"typed-panel-quantity");
     WoodGridSourceKey key;size_t panel=node_index(f->graph,wood_grid_dimension_source_ref(GS_GRID,5,0,0,&key)),binding=SIZE_MAX;
-    for(size_t i=0;i<geo_eval_node_count(f->graph);++i){GeoSourceNodeView n;if(geo_eval_node_at(f->graph,i,&n)&&n.source.provider==GS_BINDING)binding=i;}
+    for(size_t i=0;i<geo_eval_node_count(f->graph);++i){GeoSourceNodeView n;WoodEngineeringBindingSourceKind kind;EngTarget target;
+        if(geo_eval_node_at(f->graph,i,&n)&&n.source.provider==GS_BINDING&&wood_engineering_binding_source_decode(&n.source,&kind,&target,NULL)&&
+            kind==WOOD_BINDING_SOURCE_EFFECTIVE&&target.id==5&&target.axis==0&&target.field==0)binding=i;}
     CHECK(edge_at(f,grid_index(f,WOOD_GRID_SOURCE_APPLICATION,5),panel,GEO_DEPENDENCY_VALUE_REQUIRED)&&edge_at(f,panel,binding,GEO_DEPENDENCY_VALUE_REQUIRED),"panel-binding-actual-value-edges");
     uint32_t a[]={90,2},b[]={90,1};CHECK(edge_at(f,node_index(f->graph,(GeoSourceRef){GS_PARAMETER,a,sizeof a}),node_index(f->graph,(GeoSourceRef){GS_PARAMETER,b,sizeof b}),GEO_DEPENDENCY_VALUE_REQUIRED),"transitive-parameter-ast-edge");
     CHECK(wood_grid_sources_line(f->sources,5,9,0,1,false,false,0,&value,NULL,error,sizeof error)&&value==95,"engineering-panel-drives-grid-line");dispose(f,false);return 0;
@@ -148,5 +150,51 @@ static int lifetime_case(void)
     GeoRect2 scope;CHECK(wood_grid_sources_cell(a->sources,4,&scope,error,sizeof error),"borrowed-cell-region");GeoSourceValue cell;CHECK(get(a,WOOD_GRID_SOURCE_CELL,4,&cell)&&cell.as.regions.regions[0].outline.v[2].u==110,"borrowed-region-stable");
     dispose(a,true);dispose(b,false);return 0;
 }
+static int definitions_case(void)
+{
+    Fixture *f=fixture(100);CHECK(f,"unused-definition-fixture");
+    WoodGridState before;memcpy(&before,&f->state,sizeof before);f->coordinate_ok=f->vertex_ok=false;
+    CHECK(attach(f),"unused-definition-attach");char error[1024]="sentinel";
+    CHECK(wood_grid_sources_definitions(f->sources,error,sizeof error),"unused-definitions-enumerate");
+    CHECK(grid_index(f,WOOD_GRID_SOURCE_APPLICATION_DEFINITION,3)!=SIZE_MAX&&
+        grid_index(f,WOOD_GRID_SOURCE_APPLICATION_DEFINITION,4)!=SIZE_MAX&&
+        grid_index(f,WOOD_GRID_SOURCE_APPLICATION_DEFINITION,5)!=SIZE_MAX,"unused-direct-and-child-definitions-present");
+    CHECK(f->host_calls==0&&f->vertex_calls==0&&f->coordinate_calls==0&&f->region_calls==0&&
+        !memcmp(&before,&f->state,sizeof before)&&!strcmp(error,"sentinel"),"unused-definitions-do-not-evaluate-or-write-caches");
+    CHECK(edge(f,WOOD_GRID_SOURCE_APPLICATION_DEFINITION,4,WOOD_GRID_SOURCE_APPLICATION_DEFINITION,3,GEO_DEPENDENCY_DEFINITION_REQUIRED)&&
+        edge(f,WOOD_GRID_SOURCE_APPLICATION_DEFINITION,3,WOOD_GRID_SOURCE_BINDING_DEFINITION,2,GEO_DEPENDENCY_DEFINITION_REQUIRED)&&
+        edge(f,WOOD_GRID_SOURCE_BINDING_DEFINITION,2,WOOD_GRID_SOURCE_SYSTEM_DEFINITION,1,GEO_DEPENDENCY_DEFINITION_REQUIRED),"unused-definition-parent-source-edges");
+    EngTarget target={0,5,0,0};WoodEngineeringBindingSourceKey key;
+    size_t binding=node_index(f->graph,wood_engineering_binding_source_ref(GS_BINDING,WOOD_BINDING_SOURCE_DEFINITION,
+        wood_eng_binding(&f->context.engineering,&target),&key));
+    GeoSourceNodeView node;CHECK(edge_at(f,grid_index(f,WOOD_GRID_SOURCE_APPLICATION_DEFINITION,5),binding,GEO_DEPENDENCY_DEFINITION_REQUIRED)&&
+        geo_eval_node_at(f->graph,binding,&node)&&node.state==GEO_NODE_NEW,"unused-engineering-binding-definition-edge");
+    uint32_t parameter[]={90,1};size_t field=node_index(f->graph,(GeoSourceRef){GS_PARAMETER,parameter,sizeof parameter});
+    CHECK(edge_at(f,grid_index(f,WOOD_GRID_SOURCE_SYSTEM_DEFINITION,1),field,GEO_DEPENDENCY_DEFINITION_REQUIRED)&&
+        geo_eval_node_at(f->graph,field,&node)&&node.state==GEO_NODE_NEW,"unused-parameter-definition-stays-unevaluated");
+    WoodGridSourceKey rule;size_t index=node_index(f->graph,wood_grid_rule_definition_source_ref(GS_GRID,1,7,&rule));
+    CHECK(geo_eval_node_at(f->graph,index,&node)&&node.value&&node.value->kind==GEO_SOURCE_DEFINITION&&
+        !strcmp(node.value->as.definition.schema,"wood.grid.rule/1"),"unused-rule-definition-present");
+    CHECK(edge_at(f,index,grid_index(f,WOOD_GRID_SOURCE_SYSTEM_DEFINITION,1),GEO_DEPENDENCY_DEFINITION_REQUIRED),"unused-rule-keeps-owner-definition");
+    size_t nodes=geo_eval_node_count(f->graph),edges=geo_eval_edge_count(f->graph);
+    CHECK(wood_grid_sources_definitions(f->sources,error,sizeof error)&&geo_eval_node_count(f->graph)==nodes&&
+        geo_eval_edge_count(f->graph)==edges,"unused-definition-enumeration-idempotent");
+    dispose(f,false);return 0;
+}
+static int rule_definition_case(void)
+{
+    Fixture *f=fixture(100);CHECK(f&&attach(f),"rule-definition-fixture");WoodGridSourceKey key;
+    GeoSourceRef ref=wood_grid_rule_definition_source_ref(GS_GRID,1,7,&key);unsigned char expected_key[64]={13,0,0,0,1};expected_key[16]=7;
+    CHECK(ref.key_size==64&&!memcmp(ref.key,expected_key,64),"rule-definition-independent-key-vector");
+    WoodGridSourceKind kind;uint32_t id;CHECK(wood_grid_source_decode(&ref,&kind,&id)&&kind==WOOD_GRID_SOURCE_RULE_DEFINITION&&id==1,"rule-definition-key-decodes");
+    key.bytes[63]=1;CHECK(!wood_grid_source_decode(&ref,&kind,&id),"rule-definition-padding-rejected");key.bytes[63]=0;
+    GeoSourceValue value;CHECK(geo_eval_source(f->graph,ref,GEO_DEPENDENCY_DEFINITION_REQUIRED,&value)==GEO_SOURCE_OK&&
+        value.kind==GEO_SOURCE_DEFINITION&&value.as.definition.content_size==72,"rule-definition-exact-size");
+    unsigned char expected[72]={0};expected[7]=1;expected[15]=7;expected[23]=8;memcpy(expected+24,"quarters",8);
+    expected[39]=1;expected[55]=4;expected[71]=5;
+    CHECK(!memcmp(value.as.definition.content,expected,sizeof expected),"rule-definition-independent-content-vector");
+    CHECK(f->host_calls==0&&f->vertex_calls==0&&f->coordinate_calls==0,"rule-definition-no-geometry-evaluation");
+    dispose(f,true);return 0;
+}
 int main(int argc,char **argv)
-{if(argc!=2)return 2;if(!strcmp(argv[1],"graph"))return graph_case();if(!strcmp(argv[1],"engineering"))return engineering_case();if(!strcmp(argv[1],"diagnostics"))return diagnostic_case();if(!strcmp(argv[1],"failure-output"))return failure_output_case();if(!strcmp(argv[1],"child-value"))return child_value_case();if(!strcmp(argv[1],"lifetime"))return lifetime_case();return 2;}
+{if(argc!=2)return 2;if(!strcmp(argv[1],"definitions"))return definitions_case();if(!strcmp(argv[1],"rule-definition"))return rule_definition_case();if(!strcmp(argv[1],"graph"))return graph_case();if(!strcmp(argv[1],"engineering"))return engineering_case();if(!strcmp(argv[1],"diagnostics"))return diagnostic_case();if(!strcmp(argv[1],"failure-output"))return failure_output_case();if(!strcmp(argv[1],"child-value"))return child_value_case();if(!strcmp(argv[1],"lifetime"))return lifetime_case();return 2;}

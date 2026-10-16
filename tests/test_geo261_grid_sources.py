@@ -102,6 +102,37 @@ class GridSources(unittest.TestCase):
         result = self.case("lifetime")
         self.assertEqual(0, result.returncode, result.stderr)
 
+    def test_unused_direct_child_rule_and_binding_definitions_keep_only_identity_dependencies(self):
+        result=self.case('definitions')
+        self.assertEqual(0,result.returncode,result.stderr)
+
+    def test_rule_definition_has_independent_fixed_key_and_content_vectors(self):
+        result=self.case('rule-definition')
+        self.assertEqual(0,result.returncode,result.stderr)
+
+    def test_definition_enumeration_controls_fail_exact_named_assertions(self):
+        build=native();source=(build.woodworking/'grid_sources.c').read_text(encoding='utf-8')
+        controls=[
+            ('unused-direct','for(size_t i=0;i<s->context.state->count;++i)',
+             'for(size_t i=0;i<0;++i)','unused-direct-and-child-definitions-present'),
+            ('rule-owner','if(!wood_grid_definition_depend(s,WOOD_GRID_SOURCE_SYSTEM_DEFINITION,id))return false;',
+             'if(false)return false;','unused-rule-keeps-owner-definition'),
+            ('engineering-definition','if(!s->tokens.engineering_binding)return true;',
+             'return true;','unused-engineering-binding-definition-edge'),
+        ]
+        for name,before,after,marker in controls:
+            with self.subTest(control=name):
+                self.assertEqual(0,self.case('definitions').returncode)
+                self.assertEqual(1,source.count(before),name)
+                path=build.woodworking/('grid-definition-control-'+name+'.c')
+                path.write_text(source.replace(before,after),encoding='utf-8')
+                changed=build.compile(path,'grid-definition-control-'+name)
+                executable=build.link('grid-definition-control-'+name,self.objects(build,'grid_sources',changed))
+                result=self.case('definitions',executable)
+                self.assertEqual(1,result.returncode,result.stdout+'\n'+result.stderr)
+                self.assertRegex(result.stderr,r'^ASSERT:'+re.escape(marker)+r':\d+\n$')
+                result=self.case('definitions');self.assertEqual(0,result.returncode,result.stderr)
+
     def test_seven_controls_fail_named_independent_assertions(self):
         build = native()
         for name, module, before, after, case, marker in CONTROLS:

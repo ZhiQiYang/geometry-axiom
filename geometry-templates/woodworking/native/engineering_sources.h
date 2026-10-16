@@ -33,6 +33,10 @@ typedef struct {
 WoodEngineeringSources *wood_engineering_sources_register(GeoEvalContext *,const WoodEngineeringContext *,WoodEngineeringSourceTokens);
 void wood_engineering_sources_destroy(WoodEngineeringSources *);
 void wood_engineering_sources_bind(WoodEngineeringSources *,WoodEngineeringContext *);
+/* Complete the candidate's published definition inventory after normal W
+ * validation/rebuild. This requests only canonical definitions, never unused
+ * dimensions or geometry; method slots retain DefinitionRequired edges. */
+bool wood_engineering_sources_definitions(WoodEngineeringSources *);
 const EngineeringState *wood_engineering_sources_state(const WoodEngineeringSources *);
 GeoEvalContext *wood_engineering_sources_context(const WoodEngineeringSources *);
 #endif

@@ -4,6 +4,8 @@ Fixed dimensions, canonical version content, exact edge kinds and established
 error order are checked independently of no-hook parity. The same W hook-bypass
 object must lose its quantity edge in isolated W/K and the actual bridge while
 all earlier numeric assertions still pass. No crash or build error is a kill.
+Definition completion also retains unused published inventory without asking
+for unused dimensions, repeating ordered writes or changing active values.
 """
 import base64
 import hashlib
@@ -111,6 +113,41 @@ class EngineeringSources(unittest.TestCase):
 
     def test_definition_first_cached_binding_rejects_same_graph_store_mutation(self):
         self.case('binding-definition-first')
+
+    def test_all_published_definitions_include_unused_material_method_application_and_binding(self):
+        self.case('definitions')
+
+    def test_definition_completion_preserves_first_values_order_and_memoized_quantities(self):
+        self.case('definitions-after-values')
+
+    def test_definition_inventory_controls_fail_exact_named_oracles(self):
+        build=native()
+        source=(build.woodworking/'engineering_sources.c').read_text(encoding='utf-8')
+        controls=[
+            ('material-inventory','for(size_t i=0;i<state->material_count;++i){',
+             'for(size_t i=state->material_count;i<state->material_count;++i){','definitions-unused-material-published'),
+            ('method-inventory','for(size_t i=0;i<state->method_count;++i){',
+             'for(size_t i=state->method_count;i<state->method_count;++i){','definitions-unused-method-published'),
+            ('application-inventory','for(size_t i=0;i<state->application_count;++i){',
+             'for(size_t i=state->application_count;i<state->application_count;++i){','definitions-unselected-application-published'),
+            ('binding-inventory','for(size_t i=0;i<state->binding_count;++i){',
+             'for(size_t i=state->binding_count;i<state->binding_count;++i){','definitions-unused-binding-published'),
+            ('inactive-slot-edge','geo_eval_depend(ctx,(GeoSourceRef){s->tokens.definition,&upstream,sizeof upstream},GEO_DEPENDENCY_DEFINITION_REQUIRED)',
+             'geo_eval_depend(ctx,(GeoSourceRef){s->tokens.definition,&upstream,sizeof upstream},GEO_DEPENDENCY_VALUE_REQUIRED)',
+             'definitions-inactive-method-slots-definition-required'),
+        ]
+        for name,before,after,marker in controls:
+            with self.subTest(control=name):
+                self.case('definitions');self.assertEqual(1,source.count(before),name)
+                path=build.woodworking/('definition-inventory-control-'+name+'.c')
+                path.write_text(source.replace(before,after),encoding='utf-8')
+                obj=build.compile(path,'definition-inventory-control-'+name)
+                executable=build.link('definition-inventory-control-'+name,[self.client,build.wood_engineering_object,
+                    *[obj if value==build.wood_engineering_sources_object else value for value in self.dependencies]])
+                result=subprocess.run([str(executable),'definitions'],capture_output=True,text=True,encoding='utf-8',timeout=30)
+                self.assertEqual(1,result.returncode,result.stdout+'\n'+result.stderr)
+                self.assertRegex(result.stderr,r'^ASSERT:'+re.escape(marker)+r':\d+\n$')
+                self.case('definitions')
 
     def test_binding_identity_controls_fail_exact_named_oracles(self):
         build=native()

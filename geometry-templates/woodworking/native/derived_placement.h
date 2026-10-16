@@ -20,6 +20,8 @@ typedef struct {
     bool (*value)(void *,const DerivedPlacement *,WoodDerivedValue *);
     bool (*height)(void *,const DerivedPlacement *,GeoCoord *);
     bool (*frame)(void *,const DerivedPlacement *,const WoodFinishLayout *,GeoFrame *);
+    bool (*edge_key)(void *,const WoodDerivedValue *,size_t,int,size_t,char *,size_t);
+    bool (*edge_resolve)(void *,const WoodDerivedValue *,const char *,int *,int *);
 } WoodDerivedEvaluation;
 typedef struct {
     WoodFinishContext finish;
@@ -45,6 +47,9 @@ bool wood_dp_rebuild(WoodDerivedContext *);
 bool wood_dp_value_direct(const WoodDerivedContext *,const DerivedPlacement *,WoodDerivedValue *);
 bool wood_dp_height_direct(const WoodDerivedContext *,const DerivedPlacement *,GeoCoord *);
 bool wood_dp_frame_direct(const WoodDerivedContext *,const WoodFinishLayout *,GeoFrame *);
+/* Direct entry points keep reconstruction independent of its policy source. */
+bool wood_dp_fixities_direct(const WoodDerivedContext *,WoodDerivedValue *);
+bool wood_dp_edge_key_direct(const WoodDerivedContext *,const WoodDerivedValue *,size_t,int,size_t,char *,size_t);
 bool wood_dp_edge_key(const WoodDerivedContext *,const WoodDerivedValue *,size_t,int,size_t,char *,size_t);
 bool wood_dp_edge_resolve(const WoodDerivedContext *,const WoodDerivedValue *,const char *,int *,int *);
 /* Atomic scene admission preserves the old codec's diagnostics: admission

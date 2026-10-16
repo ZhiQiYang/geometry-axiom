@@ -314,5 +314,38 @@ WoodEngineeringSources *wood_engineering_sources_register(GeoEvalContext *ctx,co
 }
 void wood_engineering_sources_destroy(WoodEngineeringSources *s)
 {if(s){WoodDimensionResult *r=s->results;while(r){WoodDimensionResult *next=r->next;free(r);r=next;}free(s);}}
+bool wood_engineering_sources_definitions(WoodEngineeringSources *s)
+{
+    if(!s)return false;
+    const EngineeringState *state=s->context.state;
+    /* Rebuild has already validated applications and effective bindings in
+     * their original order. Finish the inventory without asking W to resolve
+     * an unselected material field, method slot or binding value. */
+    for(size_t i=0;i<state->material_count;++i){
+        const EngVersionRef *identity=&state->materials[i].ref;WoodDefinitionKey key;GeoSourceValue value;
+        if(!wood_source_definition_key(&key,0,identity->id,identity->version))return false;
+        GeoSourceStatus status=geo_eval_source(s->evaluation,(GeoSourceRef){s->tokens.definition,&key,sizeof key},GEO_DEPENDENCY_DEFINITION_REQUIRED,&value);
+        if(status!=GEO_SOURCE_OK)return wood_source_failure(s,status);
+    }
+    for(size_t i=0;i<state->method_count;++i){
+        const EngVersionRef *identity=&state->methods[i].ref;WoodDefinitionKey key;GeoSourceValue value;
+        if(!wood_source_definition_key(&key,1,identity->id,identity->version))return false;
+        GeoSourceStatus status=geo_eval_source(s->evaluation,(GeoSourceRef){s->tokens.definition,&key,sizeof key},GEO_DEPENDENCY_DEFINITION_REQUIRED,&value);
+        if(status!=GEO_SOURCE_OK)return wood_source_failure(s,status);
+    }
+    for(size_t i=0;i<state->application_count;++i){
+        WoodDefinitionKey key;GeoSourceValue value;
+        if(!wood_source_definition_key(&key,2,state->applications[i].id,0))return false;
+        GeoSourceStatus status=geo_eval_source(s->evaluation,(GeoSourceRef){s->tokens.definition,&key,sizeof key},GEO_DEPENDENCY_DEFINITION_REQUIRED,&value);
+        if(status!=GEO_SOURCE_OK)return wood_source_failure(s,status);
+    }
+    for(size_t i=0;i<state->binding_count;++i){
+        WoodEngineeringBindingSourceKey key;GeoSourceValue value;
+        GeoSourceRef ref=wood_engineering_binding_source_ref(s->tokens.binding,WOOD_BINDING_SOURCE_DEFINITION,&state->bindings[i],&key);
+        GeoSourceStatus status=geo_eval_source(s->evaluation,ref,GEO_DEPENDENCY_DEFINITION_REQUIRED,&value);
+        if(status!=GEO_SOURCE_OK)return wood_source_failure(s,status);
+    }
+    return true;
+}
 const EngineeringState *wood_engineering_sources_state(const WoodEngineeringSources *s){return s?s->context.state:NULL;}
 GeoEvalContext *wood_engineering_sources_context(const WoodEngineeringSources *s){return s?s->evaluation:NULL;}
