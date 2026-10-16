@@ -27,6 +27,11 @@ definitions, reference types, cycles, declaration order and resource limits.
 template import. Source dependencies distinguish value requirements, definition
 requirements and evaluation ordering. Export roots select geometry views;
 partial output is restricted to incomplete roots and each root is atomic.
+`SourceBoxDef` consumes a typed box source through that same evaluator, including
+Boolean operations, dependency closure and partial-root handling. Source context
+keeps an opaque owner identity separate from the coordinate domain and axis.
+Validation-only evaluation checks all definitions before the host's output
+capability gate, preserving the existing definition-versus-output error order.
 
 `transactions.py` owns candidate identity and one-time publication tokens.
 `session.py` is its neutral program consumer. The product's `ModelWorld` uses
@@ -42,19 +47,24 @@ establish the final domain-decoupling gate.
 Lightweight validation (no native compiler or binary):
 
 ```text
-python -m unittest tests.test_geometry_kernel_geometry tests.test_geometry_kernel_graph tests.test_geometry_kernel_compatibility tests.test_geometry_kernel_isolation tests.test_geometry_kernel_runtime tests.test_geometry_kernel_transactions tests.test_geometry_kernel_session tests.test_geometry_host_world -v
+python -m unittest tests.test_geometry_kernel_geometry tests.test_geometry_kernel_graph tests.test_geometry_kernel_compatibility tests.test_geometry_kernel_isolation tests.test_geometry_kernel_runtime tests.test_geometry_kernel_transactions tests.test_geometry_kernel_session tests.test_geometry_host_world tests.test_geometry_host_native -v
 ```
 
-The 91 tests include geometry, graph, candidate transactions, both real
+The 119 tests include geometry, graph, candidate transactions, both real
 candidate consumers, product runtime differential oracles and isolation
 controls. The no-template test copies only this package and its four neutral
-test modules (78 tests) into a new temporary directory, then runs
+test modules (82 tests) into a new temporary directory, then runs
 Python with `-I -B` and a blocking import finder for host/template/legacy names.
 It checks actual loaded module paths. The control test edits copied production
 source for hole containment and source normal sign; each mutation must fail
 both its pure geometry oracle and the legacy facade's frozen mesh oracle, and
 restoration must make both pass. Native fixture replays are not claimed by this
 lightweight suite.
+
+`geometry_kernel_receipt.py --suite-set typed-sources` runs this current
+119-case aggregate from an explicit frozen commit. The historical `py2` preset
+retains 91 expected cases for its original `10cbda745bf9692e1108d6da3351d69ddf3a4306`
+source receipt; those counts do not describe the current source tree.
 
 The product runtime oracle compares complete outputs or complete diagnostic
 records for 27 cases against the frozen pre-move engine at `3a9dc84b`. It also

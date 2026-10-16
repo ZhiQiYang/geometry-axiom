@@ -5,7 +5,7 @@ from . import geometry as geo
 from .errors import EvaluationError, invalid, raise_errors
 from .graph import (AssemblyDef, BoxDef, DependencyKind, DifferenceDef,
     EvaluationRequest, ExportView, ExtrusionDef, InteriorDef, Limits,
-    OrientedShellDef, PlacedRegionDef, Program, SourceRef, SourceStatus,
+    OrientedShellDef, PlacedRegionDef, Program, SourceBoxDef, SourceRef, SourceStatus,
     UnionDef, inputs, source_refs, validate_program)
 from .types import CoordinateDomain, Quantity, QuantityType, RegionDef, RegionSetDef
 
@@ -193,6 +193,8 @@ def evaluate(program, request, *, limits=Limits(), validation_only=False):
                 states[key] = _State(geometry=geometry, frame=frame, regions=regions)
             elif isinstance(definition, BoxDef):
                 states[key] = _State(geometry=geo.box_geometry(definition))
+            elif isinstance(definition, SourceBoxDef):
+                states[key] = _State(geometry=geo.box_geometry(value(definition.box)))
             elif isinstance(definition, ExtrusionDef):
                 placed = states[definition.region]
                 if placed.problem is not None:
