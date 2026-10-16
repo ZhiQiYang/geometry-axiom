@@ -203,13 +203,13 @@ static void model_dep_timber(const World *world, ModelDependencies *deps, uint32
 
 static void model_dep_guide(const World *world, ModelDependencies *deps, uint32_t id)
 {
-    for (size_t i = 0; i < world->guide_count; ++i) {
-        const GuideLine *g = &world->guides[i];
+    for (size_t i = 0; i < geo_guides_count(&world->guide_lines); ++i) {
+        const GuideLine *g = &geo_guides_values(&world->guide_lines)[i];
         if (g->id != id || deps->guides[i]) continue;
         deps->guides[i] = true;
         model_dep_placement(world, deps, g->placement_id);
         if (g->source == GUIDE_DATUM) continue; /* Datum expressions contain specs only. */
-        const char *p = g->expression;
+        const char *p = app_guide_expression(world,g->id);
         while (*p) {
             if (*p == '+' || *p == '-') ++p;
             const char *end = p; while (*end && *end != '+' && *end != '-') ++end;

@@ -8,7 +8,7 @@ static bool g_load_ready;
 static bool scene_load_prepare(const char *path)
 {
     g_load_ready=false;
-    if(g_hist_grouping){eng_bridge_error("HISTORY_GROUP","Finish or cancel the current history group first");return false;}
+    if(g_history.grouping){eng_bridge_error("HISTORY_GROUP","Finish or cancel the current history group first");return false;}
     if(g_load_serial==UINT32_MAX){eng_bridge_error("CAPACITY","Restart the service before another scene import");return false;}
     if(!g_load_before)g_load_before=malloc(sizeof *g_load_before);
     if(!g_load_after)g_load_after=malloc(sizeof *g_load_after);
@@ -60,7 +60,7 @@ static void cmd_load_confirm(const char *arg)
     uint32_t token;
     if(!parse_u32(arg,&token)||!g_load_ready||token!=g_load_token){eng_bridge_error("TOKEN","Missing or expired scene import candidate");return;}
     g_load_ready=false;
-    if(g_hist_grouping||g_definition_revision!=g_load_revision||memcmp(&g_world,g_load_before,sizeof g_world)){
+    if(g_history.grouping||g_definition_revision!=g_load_revision||memcmp(&g_world,g_load_before,sizeof g_world)){
         eng_bridge_error("STALE","Current World changed during scene import; open the project again");return;}
     history_record(&g_world);g_world=*g_load_after;++g_definition_revision;g_preview.ready=false;
     char hash[65];bool hashed=eng_definition_hash(&g_world,hash);

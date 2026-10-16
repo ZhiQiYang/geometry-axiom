@@ -46,6 +46,9 @@ class NativeDatums(unittest.TestCase):
             self.load(session,before);self.assertEqual(before,session.command('dump')['text'])
 
     def test_malformed_suffix_keeps_earlier_missing_parameter_diagnostic(self):
+        # Actual a898 baseline bridge, p1/datum-baseline-a898-v1: both malformed
+        # suffixes retain parameter_value's missing-field diagnostic, including
+        # field 1 even when card 99 is absent (stdout SHA256 266666bee39414cec43f8b8a83fed67810ab90415e631d18c0b6d47e935d5fc9).
         with _bridge.BridgeSession(native().bridge()) as session:
             self.load(session);before=session.command('dump')['text']
             for expression in ('param:99:1+1/0*spec:h','param:99:1+param:bad'):
@@ -53,7 +56,7 @@ class NativeDatums(unittest.TestCase):
                 self.assertTrue(result['ok'],result);self.assertFalse(result['preview']['valid'],result)
                 self.assertIn({'timber':0,'clause':'D6c/I7a',
                                'expected':'axis X/Y/Z and exact spec-only expression within D1',
-                               'actual':'datum 9: I38 MISSING: parameter 99'},result['preview']['violations'])
+                               'actual':'datum 9: I38 MISSING: parameter 99 field 1'},result['preview']['violations'])
                 self.assertEqual(before,session.command('dump')['text'])
 
     def test_intersection_negative_control_changes_kernel_and_product(self):

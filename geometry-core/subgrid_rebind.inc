@@ -9,9 +9,10 @@ static int reference_fragment_candidate(const World *base,SurfaceId source,Surfa
     if (!candidate) return -1;
     *candidate=*base;
     ReferenceEval ctx={0}; ctx.world=candidate;
-    for (size_t i=0;i<candidate->guide_count;++i) {
-        if (candidate->guides[i].placement_id==source) candidate->guides[i].placement_id=target;
-        candidate->guides[i].resolved=false;
+    for (size_t i=0;i<geo_guides_count(&candidate->guide_lines);++i) {
+        GeoGuide guide=*geo_guides_at(&candidate->guide_lines,i);
+        if(guide.placement_id==source)guide.placement_id=target;guide.resolved=false;
+        if(!geo_guides_put(&candidate->guide_lines,&guide)){free(candidate);return false;}
     }
     for (size_t i=0;i<candidate->timber_count;++i) {
         if (candidate->anchors[i].placement_id==source) candidate->anchors[i].placement_id=target;
@@ -30,7 +31,7 @@ static int reference_fragment_candidate(const World *base,SurfaceId source,Surfa
     if (timber) {
         *out_timber=candidate->timbers[index]; *out_anchor=candidate->anchors[index];
     } else {
-        const GuideLine *g=&candidate->guides[index];
+        const GuideLine *g=&geo_guides_values(&candidate->guide_lines)[index];
         const PlacementSurface *p=world_find_placement(candidate,target);
         SurfaceSegment2 segs[GUIDE_MAX_SEGMENTS];
         if (!p || !guide_line_get_local_segments(p,world_placement_boundary(candidate,p),g,segs,GUIDE_MAX_SEGMENTS)) { free(candidate); return false; }

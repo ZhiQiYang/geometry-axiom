@@ -219,16 +219,16 @@ static void json_grid_binding(const World *w,const GridBinding *binding,bool wit
 static void json_grid_binding_preview(void)
 {
     fputs(",\"gridBindings\":[",stdout); bool first=true;
-    for (size_t i=0;i<g_preview.before.grid_binding_count;++i) {
-        const GridBinding *before=&g_preview.before.grid_bindings[i];
+    for (size_t i=0;i<geo_grid_bindings_count(&g_preview.before.grid_store);++i) {
+        const GridBinding *before=geo_grid_bindings_at(&g_preview.before.grid_store,i);
         const GridBinding *after=world_find_grid_binding(&g_preview.after,before->id);
         printf("%s{\"id\":%u,\"before\":",first?"":",",before->id); first=false;
         json_grid_binding(&g_preview.before,before,true); fputs(",\"after\":",stdout);
         if (after) json_grid_binding(&g_preview.after,after,true); else fputs("null",stdout);
         putchar('}');
     }
-    for (size_t i=0;i<g_preview.after.grid_binding_count;++i) {
-        const GridBinding *after=&g_preview.after.grid_bindings[i];
+    for (size_t i=0;i<geo_grid_bindings_count(&g_preview.after.grid_store);++i) {
+        const GridBinding *after=geo_grid_bindings_at(&g_preview.after.grid_store,i);
         if (world_find_grid_binding(&g_preview.before,after->id)) continue;
         printf("%s{\"id\":%u,\"before\":null,\"after\":",first?"":",",after->id); first=false;
         json_grid_binding(&g_preview.after,after,true); putchar('}');

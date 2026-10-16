@@ -11,7 +11,7 @@ typedef struct {
 static bool reference_source_id(const GeoSourceRef *source,uint32_t *id)
 {if(source->key_size!=sizeof *id)return false;memcpy(id,source->key,sizeof *id);return true;}
 static int reference_source_guide_index(const World *world,uint32_t id)
-{for(size_t i=0;i<world->guide_count;++i)if(world->guides[i].id==id)return (int)i;return -1;}
+{for(size_t i=0;i<geo_guides_count(&world->guide_lines);++i)if(geo_guides_values(&world->guide_lines)[i].id==id)return (int)i;return -1;}
 static bool reference_source_context(const GeoSourceRef *source,AppReferenceSourceKey *key)
 {
     if(source->key_size!=sizeof *key)return false;
@@ -32,7 +32,7 @@ static bool reference_source_describe(void *opaque,const GeoSourceRef *source,Ge
     if(source->provider==APP_SOURCE_GUIDE){
         if(!reference_source_id(source,&id))return false;
         int i=reference_source_guide_index(world,id);if(i<0)return false;
-        const GuideLine *g=&world->guides[i];
+        const GuideLine *g=&geo_guides_values(&world->guide_lines)[i];
         descriptor->kind=GEO_SOURCE_AXIS_POSITION;
         descriptor->context=(GeoSourceContext){true,g->placement_id,g->direction==GUIDE_ALONG_V?0:1};
         /* Datum guides acquire their axis during evaluation. Resolve the neutral
@@ -74,7 +74,7 @@ static bool reference_source_evaluate(void *opaque,GeoEvalContext *evaluation,co
         if(!reference_source_id(source,&id))return false;
         int i=reference_source_guide_index(world,id);
         if(i<0||!reference_compute_guide(ctx,(size_t)i))return false;
-        const GuideLine *g=&world->guides[i];value->kind=GEO_SOURCE_AXIS_POSITION;
+        const GuideLine *g=&geo_guides_values(&world->guide_lines)[i];value->kind=GEO_SOURCE_AXIS_POSITION;
         value->as.position=(GeoAxisPosition){g->offset,{true,g->placement_id,g->direction==GUIDE_ALONG_V?0:1}};return true;
     }
     if(source->provider==APP_SOURCE_MEMBER_POSE){
@@ -118,13 +118,9 @@ static bool reference_sources_ensure(ReferenceEval *ctx)
 }
 static bool reference_eval_guide(ReferenceEval *ctx,size_t i)
 {
-    if(i>=ctx->world->guide_count||!reference_sources_ensure(ctx))return false;
-    GuideLine *g=&ctx->world->guides[i];uint32_t id=g->id;GeoSourceValue value;
-    if(geo_eval_source(ctx->sources,(GeoSourceRef){APP_SOURCE_GUIDE,&id,sizeof id},GEO_DEPENDENCY_VALUE_REQUIRED,&value)!=GEO_SOURCE_OK)return false;
-    if(ctx->use_current_values)return true;
-    g->offset=value.as.position.coordinate;
-    g->direction=value.as.position.context.axis==0?GUIDE_ALONG_V:GUIDE_ALONG_U;
-    g->resolved=true;return true;
+    if(i>=geo_guides_count(&ctx->world->guide_lines)||!reference_sources_ensure(ctx))return false;
+    uint32_t id=geo_guides_at(&ctx->world->guide_lines,i)->id;GeoSourceValue value;
+    return geo_eval_source(ctx->sources,(GeoSourceRef){APP_SOURCE_GUIDE,&id,sizeof id},GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_OK;
 }
 static bool reference_eval_timber_relation(ReferenceEval *ctx,size_t i,GeoDependencyKind relation)
 {

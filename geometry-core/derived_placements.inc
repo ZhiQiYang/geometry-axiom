@@ -102,8 +102,8 @@ static bool dp_rebuild(World *w)
         p->frame.origin.x+=d.t*p->frame.normal.x;p->frame.origin.y+=d.t*p->frame.normal.y;p->frame.origin.z+=d.t*p->frame.normal.z;
         if(!coord_in_range(p->frame.origin.x)||!coord_in_range(p->frame.origin.y)||!coord_in_range(p->frame.origin.z))return fs_capacity_error("D1/I33 CAPACITY: R41 back frame exceeds D1");
         const SpaceBoundarySurface *f=world_find_boundary(w,d.finish->boundary_id);SurfaceRegion2 bounds;polygon_loop_bounds(&f->outline,&bounds);
-        d.tiles=calloc(1,sizeof *d.tiles);if(!d.tiles)return fs_capacity_error("I33 CAPACITY: R41 workspace unavailable");d.count=1;d.keep_collinear=true;
-        PfTile *tile=d.tiles;tile->body[0]=bounds.min_u;tile->body[1]=bounds.min_v;tile->body[2]=bounds.max_u;tile->body[3]=bounds.max_v;
+        d.layout.tiles=calloc(1,sizeof *d.layout.tiles);if(!d.layout.tiles)return fs_capacity_error("I33 CAPACITY: R41 workspace unavailable");d.layout.count=1;d.keep_collinear=true;
+        PfTile *tile=d.layout.tiles;tile->body[0]=bounds.min_u;tile->body[1]=bounds.min_v;tile->body[2]=bounds.max_u;tile->body[3]=bounds.max_v;
         bool ok=pf_clip(w,&d,tile);DpSource *sources=calloc(DP_SOURCE_MAX,sizeof *sources);if(!sources)ok=fs_capacity_error("I33 CAPACITY: R41 source workspace unavailable");size_t ns=ok?dp_sources(w,&d,sources):0;
         if(ok&&tile->count>DP_COMPONENT_MAX)ok=fs_capacity_error("I33 CAPACITY: R41 component limit is %d",DP_COMPONENT_MAX);
         for(size_t c=0;c<tile->count&&ok;++c){PfFragment *fragment=&tile->fragments[c];SpaceBoundarySurface *b=&p->components[c];b->id=p->id;

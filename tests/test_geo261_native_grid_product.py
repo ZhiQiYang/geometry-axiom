@@ -105,7 +105,7 @@ class GridStoreProduct(unittest.TestCase):
 
     def test_host_first_error_order_and_rejected_partial_cache_use_real_kernel(self):
         build=native();obj=build.compile(ROOT/'tests/geo261_grid_product_harness.c','grid-host-product',
-            ['GEOMETRY_KERNEL_EXTERNAL=1','GEOMETRY_WOODWORKING_EXTERNAL=1'])
+            ['GEOMETRY_KERNEL_EXTERNAL=1','GEOMETRY_WOODWORKING_EXTERNAL=1','GEOMETRY_HOST_HISTORY_EXTERNAL=1'])
         exe=build.link('grid-host-product',[obj,*build.product_objects()])
         run=subprocess.run([str(exe)],capture_output=True,text=True,timeout=15)
         self.assertEqual(0,run.returncode,run.stderr)

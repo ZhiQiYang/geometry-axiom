@@ -37,7 +37,7 @@ class WoodContactsProduct(unittest.TestCase):
         path=build.woodworking/'contacts-product-mutant.c';path.write_text(source.replace(before,'owner_prio = 3;'),encoding='utf-8')
         changed=build.compile(path,'contacts-product-mutant')
         client=build.link('contacts-product-mutant-client',[self.client,self.judge,changed])
-        bridge=build.link('contacts-product-mutant-bridge',[build.bridge_object,*build.kernel_objects(),build.wood_members_object,build.wood_supports_object,changed])
+        bridge=build.link('contacts-product-mutant-bridge',[build.bridge_object,*[changed if obj==build.wood_contacts_object else obj for obj in build.product_objects()]])
         self.assertEqual(1,self.case(client));self.assertFalse(self.load(bridge)['ok'])
         self.assertEqual(0,self.case(self.exe));self.assertTrue(self.load(build.bridge())['ok'])
 

@@ -12,10 +12,10 @@ static int capacity_check(void)
     for(int i=0;i<2;++i){tiles[i].count=1;tiles[i].fragments=&fragments[i];}
     PfSeamLine *lines=calloc(PF_SUPPORT_MAX+1,sizeof *lines);if(!lines)return 2;
     for(size_t i=0;i<=PF_SUPPORT_MAX;++i)lines[i].coordinate=100;
-    PfLayout d={0};d.tiles=tiles;d.count=2;d.vertices=8;d.seams=lines;d.seam_count=PF_SUPPORT_MAX;PfSupport s;
+    PfLayout d={0};d.layout.tiles=tiles;d.layout.count=2;d.layout.vertices=8;d.layout.seams=lines;d.layout.seam_count=PF_SUPPORT_MAX;PfSupport s;
     bool ok=pf_support_evaluate(&d,NULL,0,(ParamValue){8,1,1},&s);
     if(!ok||s.count!=PF_SUPPORT_MAX||s.part_count!=PF_SUPPORT_MAX){fprintf(stderr,"PF3_CAPACITY_N: complete N results required\n");pf_support_free(&s);free(lines);return 1;}
-    pf_support_free(&s);d.seam_count=PF_SUPPORT_MAX+1;
+    pf_support_free(&s);d.layout.seam_count=PF_SUPPORT_MAX+1;
     ok=pf_support_evaluate(&d,NULL,0,(ParamValue){8,1,1},&s);
     bool rejected=!ok&&g_fs_diagnostic==FS_DIAGNOSTIC_CAPACITY&&strstr(g_engineering_error,"limit")&&!s.count&&!s.part_count&&!s.seams&&!s.parts;
     pf_support_free(&s);free(lines);
@@ -40,7 +40,7 @@ int main(int argc,char **argv)
     ok=pf_support_evaluate(&d,rects,nr,x,&s);
     if(!ok)fprintf(stderr,"PF3_ALGORITHM: %s\n",g_engineering_error);
     else {putchar('[');bool first=true;
-        for(size_t i=0;i<s.part_count;++i){const PfSupportPart *v=&s.parts[i];const PfSeamLine *line=&d.seams[s.seams[v->seam].line];
+        for(size_t i=0;i<s.part_count;++i){const PfSupportPart *v=&s.parts[i];const PfSeamLine *line=&d.layout.seams[s.seams[v->seam].line];
             if(line->axis||line->coordinate!=100)continue;
             printf("%s[%lld,%lld,%lld,%lld,%s]",first?"":",",(long long)v->range[0],(long long)v->range[1],(long long)v->left,(long long)v->right,v->supported?"true":"false");first=false;}
         puts("]");}

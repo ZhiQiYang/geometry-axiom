@@ -653,10 +653,9 @@ static bool surface_get_edge_side_plane(
  * 表面參考線：只有定位作用，不是實體
  * ============================================================ */
 
-typedef enum {
-    GUIDE_ALONG_U,
-    GUIDE_ALONG_V
-} GuideDirection;
+typedef GeoGuideDirection GuideDirection;
+#define GUIDE_ALONG_U GEO_GUIDE_ALONG_U
+#define GUIDE_ALONG_V GEO_GUIDE_ALONG_V
 
 #include "geometry-core/reference_types.h"
 #include "geometry-core/parameter_types.h"
@@ -665,21 +664,7 @@ typedef enum {
 #include "geometry-core/section_profile_types.h"
 #include "geometry-core/finish_surface_types.h"
 
-typedef struct {
-    GuideLineId id;
-    SurfaceId placement_id;     /* 屬於哪片承載面 */
-    GuideDirection direction; /* derived for DATUM */
-    GuideSource source;
-    uint32_t datum_id;
-    bool resolved; /* evaluated cache, never serialized */
-
-    /*
-     * GUIDE_ALONG_U：固定 v = offset。
-     * GUIDE_ALONG_V：固定 u = offset。
-     */
-    Coord offset; /* evaluated cache, rebuilt from expression */
-    char expression[REF_EXPR_MAX];
-} GuideLine;
+typedef GeoGuide GuideLine;
 /* 公理 D6：參考線——承載面 + 方向 + offset；線段不存，用時截出（D9）。 */
 
 /*
@@ -882,69 +867,23 @@ static size_t guide_line_get_local_segments(
 #define GRID_MAX_LINES 64
 #define GRID_MAX_PHASES 8
 
-typedef enum {
-    GRID_SRC_NONE = 0,      /* 該軸未宣告 */
-    GRID_SRC_EXPLICIT,      /* 明寫座標 */
-    GRID_SRC_SERIES,        /* 等差：start / step / count（GEO-098） */
-    GRID_SRC_REPEAT,
-    GRID_SRC_REPEAT_PANEL,
-    GRID_SRC_PANEL          /* 面材：panel / gap / anchor（GEO-100、D10a） */
-} GridSource;
-
-typedef struct {
-    int source;             /* GridSource */
-
-    /* GRID_SRC_EXPLICIT */
-    Coord coords[GRID_MAX_LINES];
-    size_t count;
-
-    /* GRID_SRC_SERIES（GEO-098 起用） */
-    Coord start;
-    Coord step;
-    size_t series_count;
-
-    /* GRID_SRC_PANEL（GEO-100 起用；anchor 在宣告當下具體化，D10a） */
-    Coord panel;
-    Coord gap;
-    Coord anchor;
-    bool anchor_explicit;   /* 只影響 dump 是否輸出 from，不影響推導 */
-    ParameterRef parameters[6]; /* phase, step, panel, gap, anchor, stagger (D10b) */
-    Coord stagger;          /* D10b: odd-band offset; meaningful only when stagger_set */
-    bool stagger_set;
-} GridAxisDef;
-
-#define WORLD_MAX_GRID_SYSTEMS 16
-#define GRID_SYSTEM_NAME_MAX 96
-#define GRID_MAX_SUBDIVISION_RULES 32
+typedef GeoGridSource GridSource;
+#define GRID_SRC_NONE GEO_GRID_SOURCE_NONE
+#define GRID_SRC_EXPLICIT GEO_GRID_SOURCE_EXPLICIT
+#define GRID_SRC_SERIES GEO_GRID_SOURCE_SERIES
+#define GRID_SRC_REPEAT GEO_GRID_SOURCE_REPEAT
+#define GRID_SRC_REPEAT_PANEL GEO_GRID_SOURCE_REPEAT_BODY_GAP
+#define GRID_SRC_PANEL GEO_GRID_SOURCE_BODY_GAP
+typedef GeoGridAxisDef GridAxisDef;
+#define WORLD_MAX_GRID_SYSTEMS GEO_GRID_SYSTEM_CAPACITY
+#define GRID_SYSTEM_NAME_MAX (GEO_GRID_NAME_CAPACITY-1)
+#define GRID_MAX_SUBDIVISION_RULES GEO_GRID_RULE_CAPACITY
 #define GRID_SUBDIVISION_CAPABILITY "grid-subdivision-rules/1"
-typedef struct {
-    uint32_t key;
-    char name[GRID_SYSTEM_NAME_MAX+1];
-    bool all_cells;
-    int64_t cell[2];
-    unsigned divisions[2];
-} GridSubdivisionRule;
-typedef struct {
-    uint32_t grid_id,system_id,rule_key;
-    int64_t cell[2];
-    int axis;
-    uint32_t inner_index;
-} GridRuleLineRef;
-typedef struct {
-    uint32_t id;
-    char name[GRID_SYSTEM_NAME_MAX+1];
-    GridAxisDef axis[2];
-    int main_along;
-    GridSubdivisionRule rules[GRID_MAX_SUBDIVISION_RULES];
-    size_t rule_count;
-    uint32_t next_rule_key; /* 0=exhausted; whole World undo restores allocator. */
-} GridSystem;
-#define WORLD_MAX_GRID_BINDINGS 32
-typedef struct {
-    uint32_t id,boundary_id,system_id,vertex_key;
-    int64_t cell[2];
-    uint32_t anchor_num[2],anchor_den[2];
-} GridBinding;
+typedef GeoGridRule GridSubdivisionRule;
+typedef GeoGridRuleLineRef GridRuleLineRef;
+typedef GeoGridSystem GridSystem;
+#define WORLD_MAX_GRID_BINDINGS GEO_GRID_BINDING_CAPACITY
+typedef GeoGridBinding GridBinding;
 typedef GeoRegionKeys BoundaryVertexKeys;
 typedef struct {
     int64_t index; Coord coordinate;
@@ -1043,7 +982,7 @@ static bool grid_axis_lines(
     const Coord lo = axis == 0 ? bounds.min_u : bounds.min_v;
     const Coord hi = axis == 0 ? bounds.max_u : bounds.max_v;
     GeoFiniteSequence sequence={.kind=GEO_SEQUENCE_NONE,.coordinates=def->coords,.count=def->count,
-        .start=def->start,.step=def->step,.body=def->panel,.gap=def->gap,.anchor=def->anchor};
+        .start=def->start,.step=def->step,.body=def->body,.gap=def->gap,.anchor=def->anchor};
     switch(def->source){
     case GRID_SRC_EXPLICIT:sequence.kind=GEO_SEQUENCE_EXPLICIT;break;
     case GRID_SRC_SERIES:sequence.kind=GEO_SEQUENCE_SERIES;sequence.count=def->series_count;break;
@@ -3096,17 +3035,15 @@ typedef struct World {
     SpaceBoundarySurface boundaries[WORLD_MAX_BOUNDARIES];
     size_t boundary_count;
     GeoRegionStore region_data; /* K owns stable vertex identity and allocation. */
-    GridBinding grid_bindings[WORLD_MAX_GRID_BINDINGS];
-    size_t grid_binding_count;
+    GeoGridStore grid_store; /* K owns reusable definitions and vertex bindings. */
+    int grid_main_along[WORLD_MAX_GRID_SYSTEMS]; /* H role metadata, same order as K sources. */
 
     PlacementSurface placements[WORLD_MAX_PLACEMENTS];
     size_t placement_count;
 
-    GuideLine guides[WORLD_MAX_GUIDES];
-    size_t guide_count;
+    GeoGuideStore guide_lines;
+    AppGuideText guide_texts[WORLD_MAX_GUIDES];
 
-    GridSystem grid_systems[WORLD_MAX_GRID_SYSTEMS];
-    size_t grid_system_count;
     ReferenceGrid grids[WORLD_MAX_GRIDS];
     size_t grid_count;
 
@@ -3135,6 +3072,38 @@ typedef struct World {
     FinishSurfaceState finish_surfaces;   /* D41 finish surfaces (panel-fill/1, PF-1) */
 } World;
 
+#include "geometry-app/native/grid_adapter.inc"
+
+/* H owns the legacy source spelling; K owns the sole typed definition/cache. */
+static bool reference_compile_text(const char *,GeoLinearExpression *);
+static const char *app_guide_expression(const World *world,uint32_t id)
+{
+    for(size_t i=0;i<geo_guides_count(&world->guide_lines);++i)
+        if(world->guide_texts[i].id==id)return world->guide_texts[i].expression;
+    return "";
+}
+static bool app_guide_put(World *world,const GeoGuide *guide,const char *text)
+{
+    size_t at=0;while(at<geo_guides_count(&world->guide_lines)&&geo_guides_at(&world->guide_lines,at)->id!=guide->id)++at;
+    if(at==WORLD_MAX_GUIDES)return false;
+    GeoGuide definition=*guide;
+    if(text&&definition.source==GEO_GUIDE_LOCAL)(void)reference_compile_text(text,&definition.expression);
+    if(!geo_guides_put(&world->guide_lines,&definition))return false;
+    if(text){
+        memset(&world->guide_texts[at],0,sizeof world->guide_texts[at]);world->guide_texts[at].id=definition.id;
+        snprintf(world->guide_texts[at].expression,sizeof world->guide_texts[at].expression,"%s",text);
+    }
+    return true;
+}
+static bool app_guide_remove(World *world,uint32_t id)
+{
+    size_t at=0,count=geo_guides_count(&world->guide_lines);
+    while(at<count&&geo_guides_at(&world->guide_lines,at)->id!=id)++at;
+    if(at==count||!geo_guides_remove(&world->guide_lines,id))return false;
+    memmove(world->guide_texts+at,world->guide_texts+at+1,(count-at-1)*sizeof *world->guide_texts);
+    memset(world->guide_texts+count-1,0,sizeof *world->guide_texts);return true;
+}
+
 static const char *app_datum_expression(const World *world,uint32_t id)
 {
     for(size_t i=0;i<geo_datums_count(&world->datum_planes);++i)
@@ -3151,10 +3120,7 @@ static bool app_datum_remove(World *world,uint32_t id)
 }
 
 static const GridSystem *world_find_grid_system(const World *w,uint32_t id)
-{
-    for (size_t i=0;i<w->grid_system_count;++i) if (w->grid_systems[i].id==id) return &w->grid_systems[i];
-    return NULL;
-}
+{ return geo_grid_systems_find(&w->grid_store,id); }
 
 /* 命中物 → 一行描述。網頁橋接與 GDI 狀態列共用；無命中時寫入空字串。 */
 static void scene_describe_pick(const Scene *scene, const World *world,
@@ -3178,18 +3144,15 @@ static void scene_describe_pick(const Scene *scene, const World *world,
                  scene->timbers[p->timber].id, timber_face_name(p->face));
         return;
     }
-    if (p->guide >= 0 && p->guide < (int)world->guide_count) {
-        const GuideLine *gd = &world->guides[p->guide];
+    if (p->guide >= 0 && p->guide < (int)geo_guides_count(&world->guide_lines)) {
+        const GuideLine *gd = &geo_guides_values(&world->guide_lines)[p->guide];
         snprintf(buf, cap, "參考線%" PRIu32 " 沿%s offset=%" PRId64,
                  gd->id, gd->direction == GUIDE_ALONG_U ? "U" : "V",
                  (int64_t)gd->offset);
     }
 }
 static const GridBinding *world_find_grid_binding(const World *w,uint32_t id)
-{
-    for (size_t i=0;i<w->grid_binding_count;++i) if(w->grid_bindings[i].id==id) return &w->grid_bindings[i];
-    return NULL;
-}
+{ return geo_grid_bindings_find(&w->grid_store,id); }
 static const BoundaryVertexKeys *world_find_vertex_keys(const World *,uint32_t);
 static bool boundary_vertex_by_key(const World *,uint32_t,uint32_t,SurfacePoint2 *);
 static bool boundary_keys_reconcile(World *,const World *,char *,size_t);
@@ -3265,60 +3228,27 @@ static bool apply_scene_line(
  */
 static void scene_error(const char *path, int line_no, const char *message);
 
+#include "geometry-app/native/history_unity.inc"
 #define HISTORY_MAX 32
-static World g_hist_undo[HISTORY_MAX];
-static int   g_hist_undo_n;
-static World g_hist_redo[HISTORY_MAX];
-static int   g_hist_redo_n;
-static int   g_hist_record_redo_n;
-static bool  g_hist_record_evicted;
-static World g_hist_evicted;
-
-/* L2 歷史群組:history-begin 時的世界快照;群組內各行不各自記歷史,
- * end 時整組算一步;任一行失敗 → 整組回到 begin 前,不留半套用。 */
-static bool  g_hist_grouping;
-static bool  g_hist_group_dirty;
-static World g_hist_group_base;
+static World g_hist_undo[HISTORY_MAX],g_hist_redo[HISTORY_MAX];
+static World g_hist_evicted,g_hist_group_base;
+static AppHistory g_history={
+    .snapshot_size=sizeof(World),.capacity=HISTORY_MAX,
+    .undo=(unsigned char*)g_hist_undo,.redo=(unsigned char*)g_hist_redo,
+    .evicted=(unsigned char*)&g_hist_evicted,.group_base=(unsigned char*)&g_hist_group_base
+};
 
 /* 變更成功前呼叫：把現況壓入 undo 疊並清掉 redo。 */
 static void history_record(const World *w)
-{
-    g_hist_record_redo_n = g_hist_redo_n;
-    g_hist_record_evicted = g_hist_undo_n >= HISTORY_MAX;
-    if (g_hist_record_evicted) {
-        g_hist_evicted = g_hist_undo[0];
-        memmove(&g_hist_undo[0], &g_hist_undo[1],
-                sizeof(World) * (HISTORY_MAX - 1));
-        --g_hist_undo_n;
-    }
-    g_hist_undo[g_hist_undo_n++] = *w;
-    g_hist_redo_n = 0;
-}
+{app_history_record(&g_history,w);}
 
 /* 檔案載入/啟動載入後呼叫：那些不是使用者操作，不該被 undo。 */
 static void history_clear(void)
-{
-    g_hist_undo_n = 0;
-    g_hist_redo_n = 0;
-    g_hist_grouping = false;
-    g_hist_group_dirty = false;
-}
+{app_history_clear(&g_history);}
 
 /* apply 失敗時呼叫：剛記的快照作廢（世界沒變）。 */
 static void history_unrecord(void)
-{
-    if (g_hist_undo_n > 0) {
-        --g_hist_undo_n;
-    }
-    if (g_hist_record_evicted) {
-        memmove(&g_hist_undo[1], &g_hist_undo[0],
-                sizeof(World) * g_hist_undo_n);
-        g_hist_undo[0] = g_hist_evicted;
-        ++g_hist_undo_n;
-    }
-    g_hist_redo_n = g_hist_record_redo_n;
-    g_hist_record_evicted = false;
-}
+{app_history_unrecord(&g_history);}
 
 /* canvas-pos 目標物件是否存在——L1 還原時過濾還原後已消失的殘留位。 */
 static bool world_canvas_target_exists(const World *w, int kind, uint32_t id)
@@ -3370,45 +3300,24 @@ static void history_restore_world(World *w, const World *snap)
     }
 }
 
+static void app_history_restore_world(void *document,const void *snapshot,void *opaque)
+{(void)opaque;history_restore_world((World*)document,(const World*)snapshot);}
+
 static bool history_undo(World *w)
 {
-    if (g_hist_undo_n <= 0) {
-        return false;
-    }
-    if (g_hist_redo_n >= HISTORY_MAX) {
-        memmove(&g_hist_redo[0], &g_hist_redo[1],
-                sizeof(World) * (HISTORY_MAX - 1));
-        --g_hist_redo_n;
-    }
-    g_hist_redo[g_hist_redo_n++] = *w;
-    history_restore_world(w, &g_hist_undo[--g_hist_undo_n]);
-    ++g_definition_revision;
-    return true;
+    if(!app_history_undo(&g_history,w,app_history_restore_world,NULL))return false;
+    ++g_definition_revision;return true;
 }
 
 static bool history_redo(World *w)
 {
-    if (g_hist_redo_n <= 0) {
-        return false;
-    }
-    if (g_hist_undo_n >= HISTORY_MAX) {
-        memmove(&g_hist_undo[0], &g_hist_undo[1],
-                sizeof(World) * (HISTORY_MAX - 1));
-        --g_hist_undo_n;
-    }
-    g_hist_undo[g_hist_undo_n++] = *w;
-    history_restore_world(w, &g_hist_redo[--g_hist_redo_n]);
-    ++g_definition_revision;
-    return true;
+    if(!app_history_redo(&g_history,w,app_history_restore_world,NULL))return false;
+    ++g_definition_revision;return true;
 }
 
 /* 群組內任一行失敗:回到 begin 前快照並關閉群組,不留半套用。 */
 static void history_group_rollback(World *world)
-{
-    *world = g_hist_group_base;
-    g_hist_grouping = false;
-    g_hist_group_dirty = false;
-}
+{app_history_group_abort(&g_history,world);}
 
 /* 互動入口共用：undo/redo・歷史群組攔截 + 變更前記快照（失敗自動取消）。
  * 回傳值同 apply_scene_line。 */
@@ -3419,17 +3328,15 @@ static bool apply_interactive_tokens(
         return apply_scene_line(path, line_no, tokens, count, world);
     /* L2 群組控制是 session 層指令,不進 .scene 檔格式。 */
     if (count == 1 && strcmp(tokens[0], "history-begin") == 0) {
-        if (g_hist_grouping) {
+        if (g_history.grouping) {
             scene_error(path, line_no, "已有進行中的歷史群組");
             return false;
         }
-        g_hist_group_base = *world;
-        g_hist_grouping = true;
-        g_hist_group_dirty = false;
+        (void)app_history_group_begin(&g_history,world);
         return true;
     }
     if (count == 1 && strcmp(tokens[0], "history-end") == 0) {
-        if (!g_hist_grouping) {
+        if (!g_history.grouping) {
             scene_error(path, line_no, "沒有進行中的歷史群組");
             return false;
         }
@@ -3439,23 +3346,18 @@ static bool apply_interactive_tokens(
                 history_group_rollback(world); return false;
             }
         }
-        g_hist_grouping = false;
-        /* 整組算一步:把 begin 時的世界推入 undo 疊;沒變更就不記。 */
-        if (g_hist_group_dirty) {
-            history_record(&g_hist_group_base);
-        }
-        g_hist_group_dirty = false;
+        (void)app_history_group_end(&g_history);
         return true;
     }
     if (count == 1 && strcmp(tokens[0], "history-abort") == 0) {
         /* 冪等:群組可能已因壞行自動回滾,abort 仍回 ok。 */
-        if (g_hist_grouping) {
+        if (g_history.grouping) {
             history_group_rollback(world);
         }
         return true;
     }
     if (count == 1 && strcmp(tokens[0], "undo") == 0) {
-        if (g_hist_grouping) {
+        if (g_history.grouping) {
             scene_error(path, line_no, "歷史群組進行中,不能 undo");
             history_group_rollback(world);
             return false;
@@ -3467,7 +3369,7 @@ static bool apply_interactive_tokens(
         return false;
     }
     if (count == 1 && strcmp(tokens[0], "redo") == 0) {
-        if (g_hist_grouping) {
+        if (g_history.grouping) {
             scene_error(path, line_no, "歷史群組進行中,不能 redo");
             history_group_rollback(world);
             return false;
@@ -3482,24 +3384,24 @@ static bool apply_interactive_tokens(
      * 否則 renderObjects 的自動排位會把 undo 掉的擺放寫回來。 */
     if (strcmp(tokens[0], "canvas-pos") == 0) {
         bool ok = apply_scene_line(path, line_no, tokens, count, world);
-        if (!ok && g_hist_grouping) history_group_rollback(world);
+        if (!ok && g_history.grouping) history_group_rollback(world);
         return ok;
     }
 
-    if (!g_hist_grouping) {
+    if (!g_history.grouping) {
         history_record(world);
     }
     uint32_t preview_before = reference_preview_token();
     if (apply_scene_line(path, line_no, tokens, count, world)) {
-        if (g_hist_grouping) g_hist_group_dirty = true;
+        app_history_group_mark_dirty(&g_history);
         return true;
     }
-    if (g_hist_grouping) {
+    if (g_history.grouping) {
         if (!reference_preview_valid() || reference_preview_token() == preview_before) history_group_rollback(world);
         return false;
     }
     /* 失敗也可能已寫入 auto 推導長度；先完整還原，再撤銷歷史。 */
-    *world = g_hist_undo[g_hist_undo_n - 1];
+    *world = *(const World*)app_history_peek_undo(&g_history);
     history_unrecord();
     return false;
 }
@@ -5104,7 +5006,7 @@ static LRESULT CALLBACK gdi_window_proc(HWND window, UINT message, WPARAM wparam
                 }
 
                 SurfacePoint2 uv;
-                GuideLine *gd = &app->world->guides[app->drag_guide];
+                const GuideLine *gd = &geo_guides_values(&app->world->guide_lines)[app->drag_guide];
                 const PlacementSurface *surface =
                     world_find_placement(app->world, gd->placement_id);
 
@@ -5150,7 +5052,7 @@ static LRESULT CALLBACK gdi_window_proc(HWND window, UINT message, WPARAM wparam
                 interactive_apply_line(app,window,command);
 
                 /* refresh 會清掉互動態；拖曳還在進行，補回來讓線保持高亮。 */
-                app->drag_guide = (int)(gd - app->world->guides);
+                app->drag_guide = (int)(gd - geo_guides_values(&app->world->guide_lines));
                 app->drag_view = v;
                 app->hover.view = v;
                 app->hover.guide = app->drag_guide;
@@ -5606,8 +5508,8 @@ static Scene scene_from_world(const World *world)
         .boundary_count = world->boundary_count,
         .spaces = world->spaces,
         .space_count = world->space_count,
-        .guides = world->guides,
-        .guide_count = world->guide_count,
+        .guides = geo_guides_values(&world->guide_lines),
+        .guide_count = geo_guides_count(&world->guide_lines),
         .grids = world->grids,
         .grid_count = world->grid_count,
         .timbers = world->timbers,
@@ -5952,15 +5854,7 @@ static const SpaceBoundarySurface *world_placement_boundary(
 }
 
 static const GuideLine *world_find_guide(const World *world, uint32_t id)
-{
-    for (size_t i = 0; i < world->guide_count; ++i) {
-        if (world->guides[i].id == id) {
-            return &world->guides[i];
-        }
-    }
-
-    return NULL;
-}
+{return geo_guides_find(&world->guide_lines,id);}
 
 static Timber *world_find_timber(World *world, uint32_t id)
 {
@@ -7456,8 +7350,8 @@ static bool world_validate_derived(const World *world)
         }
     }
 
-    for (size_t i = 0; i < world->guide_count; ++i) {
-        const GuideLine *g = &world->guides[i];
+    for (size_t i = 0; i < geo_guides_count(&world->guide_lines); ++i) {
+        const GuideLine *g = &geo_guides_values(&world->guide_lines)[i];
         const PlacementSurface *p =
             world_find_placement(world, g->placement_id);
 
@@ -8953,7 +8847,7 @@ static bool apply_grid_line(
             GridAxisDef *pdef = &grid->axis[axis];
 
             pdef->source = GRID_SRC_PANEL;
-            pdef->panel = p_panel;
+            pdef->body = p_panel;
             pdef->gap = p_gap;
             pdef->anchor = p_from;
             pdef->anchor_explicit = has_from;
@@ -10134,13 +10028,13 @@ static bool proj_rebind_aux(
         } else if (!k && !n) return false;
     }
     World source=*world;
-    for (size_t i=0;i<source.guide_count;++i) {
-        if (source.guides[i].placement_id!=old_pl->id) continue;
+    for (size_t i=0;i<geo_guides_count(&source.guide_lines);++i) {
+        if (geo_guides_values(&source.guide_lines)[i].placement_id!=old_pl->id) continue;
         GuideLine keep,other;
         int k=reference_fragment_candidate(&source,old_pl->id,old_pl->id,false,i,&keep,NULL,NULL);
         int n=reference_fragment_candidate(&source,old_pl->id,new_pl_id,false,i,&other,NULL,NULL);
         if (k<0 || n<0 || (!k && !n)) return false;
-        world->guides[i]=k?keep:other;
+        if(!geo_guides_put(&world->guide_lines,k?&keep:&other))return false;
     }
     for (size_t i=0;i<source.timber_count;++i) {
         if (!source.timbers[i].placed || source.anchors[i].placement_id!=old_pl->id) continue;
@@ -10729,7 +10623,7 @@ static bool apply_delete_line(
                 return false;
             }
         }
-        for(size_t i=0;i<world->grid_binding_count;++i)if(world->grid_bindings[i].boundary_id==id){
+        for(size_t i=0;i<geo_grid_bindings_count(&world->grid_store);++i)if((*geo_grid_bindings_at(&world->grid_store,i)).boundary_id==id){
             scene_error(path,line_no,"I37: boundary is still referenced by a grid-binding");return false;
         }
         (void)geo_region_keys_remove(&world->region_data,id);
@@ -10777,8 +10671,8 @@ static bool apply_delete_line(
             scene_error(path, line_no, "這個承載面不存在");
             return false;
         }
-        for (size_t i = 0; i < world->guide_count; ++i) {
-            if (world->guides[i].placement_id == id) {
+        for (size_t i = 0; i < geo_guides_count(&world->guide_lines); ++i) {
+            if (geo_guides_values(&world->guide_lines)[i].placement_id == id) {
                 scene_error(path, line_no,
                     "這個承載面還有參考線，先刪參考線（guide）");
                 return false;
@@ -10808,50 +10702,46 @@ static bool apply_delete_line(
         size_t di = SIZE_MAX;
         for (size_t i=0;i<geo_datums_count(&world->datum_planes);++i) if (geo_datums_at(&world->datum_planes,i)->id==id) di=i;
         if (di==SIZE_MAX) { scene_error(path,line_no,"I7a: datum does not exist"); return false; }
-        for (size_t i=0;i<world->guide_count;++i)
-            if (world->guides[i].source==GUIDE_DATUM && world->guides[i].datum_id==id) {
+        for (size_t i=0;i<geo_guides_count(&world->guide_lines);++i)
+            if (geo_guides_values(&world->guide_lines)[i].source==GUIDE_DATUM && geo_guides_values(&world->guide_lines)[i].datum_id==id) {
                 scene_error(path,line_no,"I7a: datum is still referenced by a guide"); return false;
             }
         (void)app_datum_remove(world,id);
     } else if (strcmp(kind, "guide") == 0) {
         size_t gi = SIZE_MAX;
 
-        for (size_t i = 0; i < world->guide_count; ++i) {
-            if (world->guides[i].id == id) gi = i;
+        for (size_t i = 0; i < geo_guides_count(&world->guide_lines); ++i) {
+            if (geo_guides_values(&world->guide_lines)[i].id == id) gi = i;
         }
         if (gi == SIZE_MAX) {
             scene_error(path, line_no, "這條參考線不存在");
             return false;
         }
-        memmove(&world->guides[gi], &world->guides[gi + 1],
-                (world->guide_count - gi - 1) * sizeof world->guides[0]);
-        --world->guide_count;
+        (void)app_guide_remove(world,id);
     } else if (strcmp(kind, "grid-binding") == 0) {
-        size_t bi=0;while(bi<world->grid_binding_count && world->grid_bindings[bi].id!=id)++bi;
-        if(bi==world->grid_binding_count){scene_error(path,line_no,"I37: grid-binding does not exist");return false;}
+        size_t bi=0;while(bi<geo_grid_bindings_count(&world->grid_store) && (*geo_grid_bindings_at(&world->grid_store,bi)).id!=id)++bi;
+        if(bi==geo_grid_bindings_count(&world->grid_store)){scene_error(path,line_no,"I37: grid-binding does not exist");return false;}
         for(size_t i=0;i<world->grid_count;++i)if(world->grids[i].from_binding && world->grids[i].binding_id==id){
             scene_error(path,line_no,"I37: grid-binding is still referenced by a grid");return false;
         }
-        memmove(&world->grid_bindings[bi],&world->grid_bindings[bi+1],(world->grid_binding_count-bi-1)*sizeof(GridBinding));
-        memset(&world->grid_bindings[--world->grid_binding_count],0,sizeof(GridBinding));
+        geo_grid_bindings_remove(&world->grid_store,id);
         world_drop_canvas_pos(world,CANVAS_POS_GRID_BINDING,id);
     } else if (strcmp(kind, "grid-system") == 0) {
-        for(size_t i=0;i<world->grid_binding_count;++i)if(world->grid_bindings[i].system_id==id){
+        for(size_t i=0;i<geo_grid_bindings_count(&world->grid_store);++i)if((*geo_grid_bindings_at(&world->grid_store,i)).system_id==id){
             scene_error(path,line_no,"I37: grid-system is still referenced by a grid-binding");return false;
         }
         size_t si=0;
-        while (si<world->grid_system_count && world->grid_systems[si].id!=id) ++si;
-        if (si==world->grid_system_count) { scene_error(path,line_no,"I37: grid-system does not exist"); return false; }
+        while (si<geo_grid_systems_count(&world->grid_store) && (*geo_grid_systems_at(&world->grid_store,si)).id!=id) ++si;
+        if (si==geo_grid_systems_count(&world->grid_store)) { scene_error(path,line_no,"I37: grid-system does not exist"); return false; }
         for (size_t i=0;i<world->grid_count;++i) if (world->grids[i].from_system && world->grids[i].system_id==id) {
             char error[160]; snprintf(error,sizeof error,"I37: grid-system %u is still referenced by grid %u",id,world->grids[i].id);
             scene_error(path,line_no,error); return false;
         }
         if(g_parsing_scene_file){
-            memmove(g_rule_scene_highwater+si,g_rule_scene_highwater+si+1,(world->grid_system_count-si-1)*sizeof *g_rule_scene_highwater);
-            g_rule_scene_highwater[world->grid_system_count-1]=false;
+            memmove(g_rule_scene_highwater+si,g_rule_scene_highwater+si+1,(geo_grid_systems_count(&world->grid_store)-si-1)*sizeof *g_rule_scene_highwater);
+            g_rule_scene_highwater[geo_grid_systems_count(&world->grid_store)-1]=false;
         }
-        memmove(&world->grid_systems[si],&world->grid_systems[si+1],(world->grid_system_count-si-1)*sizeof(GridSystem));
-        memset(&world->grid_systems[--world->grid_system_count],0,sizeof(GridSystem));
+        app_grid_system_remove(world,id);
         world_drop_canvas_pos(world,CANVAS_POS_GRID_SYSTEM,id);
     } else if (strcmp(kind, "grid") == 0) {
         size_t gi = SIZE_MAX;
@@ -10869,9 +10759,9 @@ static bool apply_delete_line(
                 scene_error(path,line_no,err); return false;
             }
         }
-        for (size_t i=0;i<world->guide_count;++i) {
-            if (grid_guide_references(&world->guides[i],id)) {
-                char err[160]; snprintf(err,sizeof err,"I23：網格 %u 仍被參考線 %u 引用，不能刪除",id,world->guides[i].id);
+        for (size_t i=0;i<geo_guides_count(&world->guide_lines);++i) {
+            if (grid_guide_references(world,&geo_guides_values(&world->guide_lines)[i],id)) {
+                char err[160]; snprintf(err,sizeof err,"I23：網格 %u 仍被參考線 %u 引用，不能刪除",id,geo_guides_values(&world->guide_lines)[i].id);
                 scene_error(path,line_no,err); return false;
             }
         }
@@ -11182,7 +11072,7 @@ static void world_dump_grids(const World *world,FILE *out)
                 /* 起算點已具體化進定義（D10a），一律輸出——
                  * 省略它的話，承載面事後縮小時重放會取到不同的 a。 */
                 fprintf(out, " panel %lld gap %lld from %lld",
-                        (long long)def->panel, (long long)def->gap,
+                        (long long)def->body, (long long)def->gap,
                         (long long)def->anchor);
             } else {
                 for (size_t k = 0; k < def->count; ++k) {
@@ -11959,9 +11849,9 @@ int main(int argc, char **argv)
 
         printf("\n=== 參考線 ===\n");
 
-        for (size_t i = 0; i < world.guide_count; ++i) {
-            if (world.guides[i].placement_id == placement->id) {
-                print_guide_line(placement, boundary, &world.guides[i]);
+        for (size_t i = 0; i < geo_guides_count(&world.guide_lines); ++i) {
+            if (geo_guides_values(&world.guide_lines)[i].placement_id == placement->id) {
+                print_guide_line(placement, boundary, &geo_guides_values(&world.guide_lines)[i]);
             }
         }
     }

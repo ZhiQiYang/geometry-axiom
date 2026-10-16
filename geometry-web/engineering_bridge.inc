@@ -56,9 +56,9 @@ static void json_engineering_state(const World *w,bool geometry)
     fputs(",\"assembly\":",stdout);json_assembly_state(w,false);
     fputs(",\"sectionProfiles\":",stdout);json_section_profile_state(w);
     if(geometry){fputs(",\"geometry\":{\"grids\":[",stdout);for(size_t i=0;i<w->grid_count;++i){if(i)putchar(',');json_reference_grid(w,&w->grids[i]);}
-        fputs("],\"gridSystems\":[",stdout);for(size_t i=0;i<w->grid_system_count;++i){if(i)putchar(',');json_grid_system(w,&w->grid_systems[i]);}
+        fputs("],\"gridSystems\":[",stdout);for(size_t i=0;i<geo_grid_systems_count(&w->grid_store);++i){if(i)putchar(',');json_grid_system(w,geo_grid_systems_at(&w->grid_store,i));}
         fputs("],\"datums\":[",stdout);for(size_t i=0;i<geo_datums_count(&w->datum_planes);++i){const GeoDatum *d=geo_datums_at(&w->datum_planes,i);printf("%s{\"id\":%u,\"position\":%lld,\"expression\":",i?",":"",d->id,(long long)d->position);js_string(app_datum_expression(w,d->id));putchar('}');}
-        fputs("],\"guides\":[",stdout);for(size_t i=0;i<w->guide_count;++i){if(i)putchar(',');json_reference_guide(w,i);}
+        fputs("],\"guides\":[",stdout);for(size_t i=0;i<geo_guides_count(&w->guide_lines);++i){if(i)putchar(',');json_reference_guide(w,i);}
         fputs("],\"timbers\":[",stdout);for(size_t i=0;i<w->timber_count;++i){printf("%s{\"id\":%u,\"role\":",i?",":"",w->timbers[i].id);js_string(timber_role_name(w->timbers[i].role));fputs(",\"geometry\":",stdout);json_reference_geometry(w,(int)i);putchar('}');}fputs("]}",stdout);
     }
     if(w->finish_surfaces.fill_count){fputs(",\"panelFill\":",stdout);json_panel_fill_state(w);}
@@ -91,7 +91,7 @@ static void json_engineering_preview(void)
 static void batch_preview(const char *path,const char *schema_name,const char *schema_error,const char *stale_message,const char *memory_message,const char *label,int kind,bool (*operation)(World *,GeoJson *,int),void (*write_preview)(void))
 {
     g_asm_diagnostic=(AsmDiagnostic){0};
-    if(g_hist_grouping){eng_bridge_error("HISTORY_GROUP","Finish or cancel the current history group first");return;}
+    if(g_history.grouping){eng_bridge_error("HISTORY_GROUP","Finish or cancel the current history group first");return;}
     size_t size;char *text=eng_read_file(path,&size);if(!text){eng_bridge_error("INPUT",g_engineering_error);return;}
     GeoJson j;if(!app_json_parse_n(&j,text,size)){eng_bridge_error("JSON",j.error);geo_json_free(&j);free(text);return;}
     char schema[40];int64_t revision;int operations=geo_json_member(&j,0,"operations");
@@ -126,7 +126,7 @@ static void batch_confirm(const char *arg,int kind,const char *token_message,con
 {
     uint32_t token;bool mine=batch_token_kind(kind);
     if(!arg||!parse_u32(arg,&token)||!g_preview.ready||!mine||g_preview.token!=token||!g_preview.valid){eng_bridge_error("TOKEN",token_message);return;}
-    if(g_hist_grouping||g_preview.revision!=g_definition_revision||!world_definitions_equal(&g_world,&g_preview.before)){g_preview.ready=false;eng_bridge_error("STALE",stale_message);return;}
+    if(g_history.grouping||g_preview.revision!=g_definition_revision||!world_definitions_equal(&g_world,&g_preview.before)){g_preview.ready=false;eng_bridge_error("STALE",stale_message);return;}
     if(!assembly_versions_immutable(&g_world,&g_preview.after)){g_preview.ready=false;eng_bridge_error("INVALID",g_engineering_error);return;}
     const World *previous=g_subgrid_before;g_subgrid_before=&g_world;bool valid=world_revalidate(&g_preview.after);g_subgrid_before=previous;
     if(!valid){g_preview.ready=false;eng_bridge_error("INVALID",g_revalidate_error);return;}

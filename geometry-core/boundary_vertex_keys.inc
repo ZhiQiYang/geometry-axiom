@@ -117,8 +117,8 @@ static bool boundary_keys_reconcile(World *candidate,const World *before,char *e
         GeoRegionKeys next=*geo_region_keys_at(&candidate->region_data,m);
         const SpaceBoundarySurface *b=world_find_boundary(candidate,next.boundary_id);
         if (!b) {
-            for (size_t j=0;j<candidate->grid_binding_count;++j)
-                if (candidate->grid_bindings[j].boundary_id==next.boundary_id)
+            for (size_t j=0;j<geo_grid_bindings_count(&candidate->grid_store);++j)
+                if ((*geo_grid_bindings_at(&candidate->grid_store,j)).boundary_id==next.boundary_id)
                     return boundary_keys_error(error,cap,"cannot delete a boundary referenced by a grid binding");
             (void)geo_region_keys_remove(&candidate->region_data,next.boundary_id);continue;
         }
@@ -144,8 +144,8 @@ static bool boundary_keys_reconcile(World *candidate,const World *before,char *e
             return boundary_keys_error(error,cap,"invalid, zero, duplicate, or inconsistent boundary vertex keys");
         ++m;
     }
-    for (size_t i=0;i<candidate->grid_binding_count;++i) {
-        const GridBinding *binding=&candidate->grid_bindings[i];
+    for (size_t i=0;i<geo_grid_bindings_count(&candidate->grid_store);++i) {
+        const GridBinding *binding=geo_grid_bindings_at(&candidate->grid_store,i);
         if (!boundary_vertex_by_key(candidate,binding->boundary_id,binding->vertex_key,NULL))
             return boundary_keys_error(error,cap,"a grid binding references a missing boundary vertex key");
     }
