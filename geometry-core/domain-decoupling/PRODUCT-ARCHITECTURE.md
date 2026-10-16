@@ -16,7 +16,7 @@ runtime import blocking, mutation receipts, browser acceptance, or SSOT checks.
 
 ## Complete inventory and responsibilities
 
-The current inventory contains 573 executable files: 332 owned sources and 241
+The current inventory contains 576 executable files: 332 owned sources and 244
 individually named exclusions. The five complete roots are `geometry-core`,
 `geometry-app`, `geometry-templates`, `geometry-web`, and `geometry-guide`.
 `current_geometry.c` is an additional standalone source. The real
@@ -45,7 +45,7 @@ dependency scanning alone cannot prove that every remaining H function is free
 of misplaced domain policy. It must not be cited as that stronger result.
 
 All exclusions have an exact path, individual reason, and SHA-256 using explicitly
-declared CRLF-to-LF normalization. There are 112 historical evidence programs,
+declared CRLF-to-LF normalization. There are 115 historical evidence programs,
 38 other documentation/reproduction/snapshot programs, 66 dedicated test drivers,
 and 25 engineering-spec prototype files. The prototype's `AGENTS.md` explicitly
 states it is not the production application. The manifest has no directory
@@ -134,7 +134,7 @@ not introduce a W/H dependency. This refresh changes only the manifest and its
 derived scan, report and receipt, retaining every previous classification,
 exclusion and scanner guard.
 
-The latest grid-codec and historical-evidence refresh freezes source HEAD
+The preceding grid-codec and historical-evidence refresh froze source HEAD
 `4a13551cc8aac3e116b53486fe44637c07374d49`. The previous manifest's actual CLI
 run exited 1 with `SOURCE_UNREGISTERED` for the new sealed evidence pack's
 `extract_evidence.py`. Independent enumeration found exactly two new W sources,
@@ -160,6 +160,44 @@ added identifier or string at a time through the unchanged scanner: all 207 are
 rejected with the expected guard, while a neutral identifier remains accepted.
 These in-memory probes neither modify source/test files nor increase the
 18-test product-suite count.
+
+The latest host-authority and train19-evidence refresh freezes source HEAD
+`47d3bb4bcccddeeb034dd5899a7aa15c9cab0768`. The previous manifest's actual CLI
+run exits 1 with `EXCLUSION_DIGEST` for
+`geometry-web/cdp_test.js`. Independent
+enumeration finds exactly three new historical Python evidence drivers:
+`geometry-web/docs/evidence/geo263-20261016/compile_probe.py`, that directory's
+`verify.py`, and
+`geometry-web/docs/evidence/geo263-p153-20261016/verify.py`. Each receives an
+exact path, purpose and LF-normalized digest; the receipt also records its raw
+digest and the matching blob at the frozen Git head. These scripts were read,
+not executed. No directory or filename-pattern exclusion is introduced.
+
+The updated H reference adapter composes placement definitions and returned
+geometry, member facts, enclosure/obstacle facts and candidate version inventory
+through the registered K/W providers. The model adapter obtains parameter
+semantics and section-profile definitions through the same source graph. The
+world-validation callbacks consume those composed facts while W retains its
+policy role. These remain existing H sources; this audit does not prove all H
+behavior or native acceptance. The W section-profile provider adds three
+definition-copy accessors: `wood_sp_sources_profile_definition`,
+`wood_sp_sources_member_definition` and `wood_sp_sources_run_definition`.
+All 913 previous forbidden identifiers and 55 strings are preserved, and the
+three accessors raise the identifier total to 916. A fresh lexical inventory of
+all W-native sources finds no additional W-namespaced string guard. Three
+separate in-memory K-source probes reject those identifiers, and a neutral
+probe passes; they do not increase the 18-test suite count. No source is
+reclassified and no scanner or product test changes in this audit.
+
+This refresh captures 11 changed previously sealed executable inputs,
+including the newly merged H/W accessors and train19 browser sources. Two
+existing test-driver exclusions, `geometry-web/cdp_test.js` and
+`geometry-web/grid_system_test.js`, require reviewed hash updates for train19's
+double-click/hit checks and stagger-rename coverage. Their exact paths and
+test-only responsibilities remain unchanged; the receipt records old/new LF
+digests, raw digests and current Git blobs. All other exclusion, vendor and
+embed-route digests remain current. The Python default
+change in #289 is not part of this frozen source and is not certified here.
 
 The manifest, scan, report and receipt are excluded from the product
 input closure because they are derived audit artifacts. Manifest and scan are
@@ -188,8 +226,8 @@ no-template validation. Native execution remains in the serialized P1 queue.
 
 At the latest sealed source HEAD, the actual CLI scan exits 0 with 332 owned sources,
 796 dependency edges and no diagnostics; all 18 product tests pass with no
-skips. Independent enumeration after the run matches every one of the 573
-sealed source hashes. The generic scanner's previous 205-test result (204 pass,
+skips. Independent enumeration after the run matches every one of the 576
+sealed source hashes, both raw and LF-normalized. The generic scanner's previous 205-test result (204 pass,
 one Windows symlink-permission skip) is reused only because both its scanner
 and test source hashes remain unchanged; the receipt records the previous
 receipt's LF-normalized hash and original validation provenance. HEAD and every

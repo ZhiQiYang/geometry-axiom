@@ -2635,7 +2635,7 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "7786774214d90ed0ce5bbbb37348aaf50d0ce04a243c90e747ab978364f80f99",
+      "sha256": "d785e4856a90c2aaeb02c3d0bb90b39dcd90dc0bb0552d096c69340d59540d48",
       "hashMode": "lf"
     },
     {
@@ -3085,7 +3085,7 @@
     {
       "path": "geometry-web/grid_system_test.js",
       "reason": "Dedicated acceptance/test driver grid_system_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "55ed51369d0962f72b7f4c22aa54ed8cf3fdcf9896b03ee6d1a0739524e4a799",
+      "sha256": "f6802f13bc59fbc2058eef4138074bb88af51f07666c635d429da8f43789670f",
       "hashMode": "lf"
     },
     {
@@ -3476,6 +3476,24 @@
       "path": "geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/verify_publication.py",
       "reason": "Standalone byte/provenance validator retained in the sealed historical native-p1-authority-20261017 evidence pack; validates historical records without product execution and is not a product-loaded module or current product entry point.",
       "sha256": "e2e7bd1465803e01b299f242a7cf5afbca8b509bb824473a9a72d04b9cbc47c7",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/evidence/geo263-20261016/compile_probe.py",
+      "reason": "Historical GEO-263 native bridge compilation receipt producer retained with train19 evidence; not a product-loaded module or current product entry point. This audit only reads and hashes this exact script and does not execute it.",
+      "sha256": "c0457dc597412c2195d828f57a85eb451e605a555ad5c25684d8a9033581461a",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/evidence/geo263-20261016/verify.py",
+      "reason": "Historical GEO-263 fixed/mutant/restored stagger evidence driver retained with train19 evidence; not a product-loaded module or current product entry point. This audit only reads and hashes this exact script and does not execute it.",
+      "sha256": "8745ba01a144afa83f5f94f9d670edc0278d96aa8f4dc13bd5c95852f24a49fd",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/evidence/geo263-p153-20261016/verify.py",
+      "reason": "Historical GEO-263 P-153 registered-test and two-mutant evidence driver retained with train19 evidence; not a product-loaded module or current product entry point. This audit only reads and hashes this exact script and does not execute it.",
+      "sha256": "e08e7033d808ebd2b486eef75a25e92738b4a23a2ffa9bf9091541c45be1fb85",
       "hashMode": "lf"
     }
   ],
@@ -4543,6 +4561,9 @@
       "wood_sp_sources_complete",
       "wood_sp_sources_create",
       "wood_sp_sources_destroy",
+      "wood_sp_sources_member_definition",
+      "wood_sp_sources_profile_definition",
+      "wood_sp_sources_run_definition",
       "wood_sp_used",
       "wood_stop_count_legal",
       "wood_stop_matches_ref",
