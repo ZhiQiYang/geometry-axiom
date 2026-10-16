@@ -224,9 +224,9 @@ static bool eng_resolve(World *w,const EngDimensionSource *s,const EngTarget *ta
 {
     if (s->kind==ENG_LITERAL) { *value=s->value; if (path) snprintf(path,cap,"explicit integer mm"); }
     else if (s->kind==ENG_SPEC) {
-        size_t i=0; while (i<w->spec_count&&strcmp(w->specs[i].name,s->ref)) ++i;
-        if (i==w->spec_count) return eng_fail("I35: named dimension spec is missing");
-        *value=w->specs[i].value; if (path) snprintf(path,cap,"spec:%s",s->ref);
+        size_t i=0; while (i<geo_named_values_count(&w->named_values)&&strcmp(geo_named_values_at(&w->named_values,i)->name,s->ref)) ++i;
+        if (i==geo_named_values_count(&w->named_values)) return eng_fail("I35: named dimension spec is missing");
+        *value=geo_named_values_at(&w->named_values,i)->value; if (path) snprintf(path,cap,"spec:%s",s->ref);
     } else if (s->kind==ENG_PARAMETER) {
         if(!parameter_coord(w,s->parameter,value))return eng_fail(g_parameter_error);
         if(path)snprintf(path,cap,"param:%u:%u",s->parameter.parameter_id,s->parameter.field_id);

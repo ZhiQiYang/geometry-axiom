@@ -41,7 +41,7 @@ static void json_panel_fill_state(const World *w);
 static void json_engineering_state(const World *w,bool geometry)
 {
     putchar('{');json_engineering_capabilities(w);fputs(",\"specs\":[",stdout);
-    for(size_t i=0;i<w->spec_count;++i){if(i)putchar(',');fputs("{\"name\":",stdout);js_string(w->specs[i].name);printf(",\"value\":%lld}",(long long)w->specs[i].value);}
+    for(size_t i=0;i<geo_named_values_count(&w->named_values);++i){if(i)putchar(',');fputs("{\"name\":",stdout);js_string(geo_named_values_at(&w->named_values,i)->name);printf(",\"value\":%lld}",(long long)geo_named_values_at(&w->named_values,i)->value);}
     fputs("],\"materials\":[",stdout);
     for(size_t i=0;i<w->engineering.material_count;++i){const EngMaterialVersion *m=&w->engineering.materials[i];printf("%s%.*s,\"fingerprint\":\"%s\",\"archived\":%s}",i?",":"",(int)strlen(m->content)-1,m->content,m->fingerprint,m->archived?"true":"false");}
     fputs("],\"methods\":[",stdout);

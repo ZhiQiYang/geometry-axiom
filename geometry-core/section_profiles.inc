@@ -123,9 +123,8 @@ static bool sp_operation(World *w,GeoJson *j,int t)
         char name[SPEC_NAME_MAX];Coord value=0;bool remove=!strcmp(op,"delete-spec");
         if(!geo_json_keys(j,t,remove?"op,name":"op,name,value","")||!geo_json_string(j,geo_json_member(j,t,"name"),name,sizeof name)||!reference_name(name)||
            (!remove&&!sp_coord(j,geo_json_member(j,t,"value"),&value)))return sp_error("D6b: invalid named integer spec");
-        size_t at=0;while(at<w->spec_count&&strcmp(w->specs[at].name,name))++at;
-        if(remove){if(at==w->spec_count)return sp_error("D6b: deleted spec missing");memmove(w->specs+at,w->specs+at+1,(w->spec_count-at-1)*sizeof(SpecValue));memset(&w->specs[--w->spec_count],0,sizeof(SpecValue));}
-        else {if(at==w->spec_count){if(w->spec_count==WORLD_MAX_SPECS)return sp_error("D6b CAPACITY: spec limit exceeded");++w->spec_count;}snprintf(w->specs[at].name,sizeof w->specs[at].name,"%s",name);w->specs[at].value=value;}
+        if(remove){if(!geo_named_values_remove(&w->named_values,name))return sp_error("D6b: deleted spec missing");}
+        else if(!geo_named_values_put(&w->named_values,name,value))return sp_error("D6b CAPACITY: spec limit exceeded");
         return true;
     }
     return eng_operation(w,j,t);

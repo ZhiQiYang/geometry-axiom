@@ -3227,8 +3227,7 @@ typedef struct {
 #include "geometry-app/native/kernel_storage.h"
 
 typedef struct World {
-    SpecValue specs[WORLD_MAX_SPECS];
-    size_t spec_count;
+    GeoNamedValues named_values;
     DatumPlane datums[WORLD_MAX_DATUMS];
     size_t datum_count;
     uint64_t next_order;
@@ -11600,8 +11599,8 @@ static void world_dump_dsl(const World *world, FILE *out)
         fputc('\n', out);
     }
 
-    for (size_t i = 0; i < world->spec_count; ++i)
-        fprintf(out, "spec %s %lld\n", world->specs[i].name, (long long)world->specs[i].value);
+    for (size_t i = 0; i < geo_named_values_count(&world->named_values); ++i)
+        fprintf(out, "spec %s %lld\n", geo_named_values_at(&world->named_values,i)->name, (long long)geo_named_values_at(&world->named_values,i)->value);
 
     boundary_keys_dump(world,out);
     if(grid_subdivision_used(world)) fputs("requires " GRID_SUBDIVISION_CAPABILITY "\n",out);

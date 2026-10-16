@@ -52,31 +52,7 @@ static bool reference_expression(char **tokens, int start, int count, char *out)
 }
 
 static bool reference_name(const char *name)
-{
-    if (!*name || strlen(name) >= SPEC_NAME_MAX) return false;
-    for (const unsigned char *p=(const unsigned char *)name; *p; ++p)
-        if (*p < 128 && !(isalnum(*p) || *p == '_')) return false;
-    return true;
-}
-
-static Coord ref_gcd(Coord a, Coord b)
-{
-    if (a < 0) a = -a;
-    while (b) { Coord r=a%b; a=b; b=r; }
-    return a;
-}
-static bool ref_mul(Coord a, Coord b, Coord *out)
-{
-    if (a == INT64_MIN || b == INT64_MIN) return false;
-    Coord aa=a<0?-a:a, bb=b<0?-b:b;
-    if (bb && aa > INT64_MAX/bb) return false;
-    *out=a*b; return true;
-}
-static bool ref_add(Coord a, Coord b, Coord *out)
-{
-    if ((b>0 && a>INT64_MAX-b) || (b<0 && a < -INT64_MAX-b)) return false;
-    *out=a+b; return true;
-}
+{return geo_named_value_name_valid(name);}
 
 typedef struct {
     World *world;
@@ -99,8 +75,8 @@ static bool reference_quantity(ReferenceEval *ctx, const GuideLine *g, const cha
     /* D6c deliberately permits only named specs, without a placement context. */
     if (!g) {
         if (strncmp(text,"spec:",5)) return false;
-        for (size_t i=0;i<w->spec_count;++i)
-            if (!strcmp(w->specs[i].name,text+5)) { *out=w->specs[i].value; return true; }
+        for (size_t i=0;i<geo_named_values_count(&w->named_values);++i)
+            if (!strcmp(geo_named_values_at(&w->named_values,i)->name,text+5)) { *out=geo_named_values_at(&w->named_values,i)->value; return true; }
         return false;
     }
     const PlacementSurface *p=world_find_placement(w,g->placement_id);
@@ -124,8 +100,8 @@ static bool reference_quantity(ReferenceEval *ctx, const GuideLine *g, const cha
     }
     uint32_t id;
     if (n==2 && !strcmp(part[0],"spec")) {
-        for (size_t i=0;i<w->spec_count;++i)
-            if (!strcmp(w->specs[i].name,part[1])) { *out=w->specs[i].value; return true; }
+        for (size_t i=0;i<geo_named_values_count(&w->named_values);++i)
+            if (!strcmp(geo_named_values_at(&w->named_values,i)->name,part[1])) { *out=geo_named_values_at(&w->named_values,i)->value; return true; }
         return false;
     }
     if (n==2 && !strcmp(part[0],"guide") && parse_u32(part[1],&id)) {
@@ -204,13 +180,15 @@ static bool reference_quantity(ReferenceEval *ctx, const GuideLine *g, const cha
     return false; /* A naked number is never a reference. */
 }
 
-static bool reference_eval_text(ReferenceEval *ctx, const GuideLine *g, const char *expression, Coord *out)
+/* H decodes the legacy grammar; K owns typed terms and exact evaluation.
+ * A failed suffix is retained so earlier source failures keep their order. */
+enum { APP_LINEAR_SOURCE=1, APP_LINEAR_PARAMETER=2 };
+static bool reference_compile_text(const char *expression,GeoLinearExpression *compiled)
 {
-    g_parameter_error[0]=0;
     const char *p=expression;
-    Coord sum=0,den=1; int terms=0;
+    int terms=0;
     bool exact=strstr(expression,"param:")!=NULL;
-    GeoQuantity total={0,1,1};
+    geo_linear_begin(compiled,exact?GEO_LINEAR_EXACT_INTEGER_FINAL:GEO_LINEAR_FLOOR_FINAL);
     if (!*p) return false;
     while (*p) {
         int sign=1;
@@ -228,36 +206,47 @@ static bool reference_eval_text(ReferenceEval *ctx, const GuideLine *g, const ch
         }
         size_t len=(size_t)(end-p); if (!len || len>=REF_EXPR_MAX) return false;
         char term[REF_EXPR_MAX]; memcpy(term,p,len); term[len]='\0';
-        char *q=term, *star=strchr(term,'*'); Coord num=sign,d=1,value;
+        char *q=term, *star=strchr(term,'*'); Coord num=sign,d=1;
         if (star) {
             *star='\0'; q=star+1; char *slash=strchr(term,'/');
             if (slash) { *slash='\0'; if (!parse_i64(slash+1,&d) || d<=0) return false; }
             if (!parse_i64(term,&num) || num<0 || num==INT64_MIN) return false;
             num*=sign;
         }
-        if(exact){
-            GeoQuantity quantity={0,1,1},coefficient={num,d,0},term_value;ParameterRef ref={0};
-            if(!strncmp(q,"param:",6)){
-                if(!parameter_ref_parse(q,&ref)||!parameter_value(ctx->world,ref,&quantity))return false;
-            }else{if(!reference_quantity(ctx,g,q,&quantity.num))return false;}
-            if(!parameter_binary("mul",quantity,coefficient,&term_value)||!parameter_binary("add",total,term_value,&total))return false;
-            p=end;continue;
+        GeoLinearSource source={APP_LINEAR_SOURCE,0,0,q};
+        if(exact&&!strncmp(q,"param:",6)){
+            ParameterRef ref={0};if(!parameter_ref_parse(q,&ref))return false;
+            source=(GeoLinearSource){APP_LINEAR_PARAMETER,ref.parameter_id,ref.field_id,NULL};
         }
-        if (!reference_quantity(ctx,g,q,&value)) return false;
-        Coord k=ref_gcd(value,d); value/=k; d/=k;
-        k=ref_gcd(num,d); num/=k; d/=k;
-        if (!ref_mul(num,value,&num)) return false;
-        k=ref_gcd(den,d); Coord x,y,newden;
-        if (!ref_mul(sum,d/k,&x) || !ref_mul(num,den/k,&y) ||
-            !ref_add(x,y,&sum) || !ref_mul(den,d/k,&newden)) return false;
-        den=newden; k=ref_gcd(sum,den); sum/=k; den/=k;
+        if(!geo_linear_append(compiled,num,d,source))return false;
         p=end;
     }
-    if(exact){
-        if(total.den!=1)return parameter_fail("I38 GEOMETRY: %s must resolve to integer mm (got %lld/%lld)",expression,(long long)total.num,(long long)total.den);
-        *out=total.num;
-    }else *out=sum/den - (sum<0 && sum%den!=0);
-    return coord_in_range(*out);
+    geo_linear_finish(compiled,true);return true;
+}
+typedef struct { ReferenceEval *evaluation; const GuideLine *guide; } AppLinearContext;
+static bool reference_resolve_linear(void *opaque,const GeoLinearSource *source,GeoQuantity *value)
+{
+    AppLinearContext *context=opaque;
+    if(source->provider==APP_LINEAR_PARAMETER){
+        ParameterRef ref={true,source->id,source->field};
+        return parameter_value(context->evaluation->world,ref,value);
+    }
+    if(source->provider!=APP_LINEAR_SOURCE)return false;
+    *value=(GeoQuantity){0,1,GEO_UNIT_LENGTH};
+    return reference_quantity(context->evaluation,context->guide,source->key,&value->num);
+}
+static bool reference_eval_text(ReferenceEval *ctx,const GuideLine *g,const char *expression,Coord *out)
+{
+    g_parameter_error[0]=0;GeoLinearExpression compiled;
+    (void)reference_compile_text(expression,&compiled);
+    AppLinearContext context={ctx,g};
+    GeoLinearResult result=geo_linear_evaluate(&compiled,reference_resolve_linear,&context);
+    if(result.status==GEO_LINEAR_ARITHMETIC&&compiled.mode==GEO_LINEAR_EXACT_INTEGER_FINAL)
+        return parameter_exact_status(result.exact_status);
+    if(result.status==GEO_LINEAR_NOT_INTEGER)
+        return parameter_fail("I38 GEOMETRY: %s must resolve to integer mm (got %lld/%lld)",expression,(long long)result.value.num,(long long)result.value.den);
+    if(result.status==GEO_LINEAR_OK||result.status==GEO_LINEAR_RANGE)*out=result.value.num;
+    return result.status==GEO_LINEAR_OK;
 }
 
 static bool reference_eval_expression(ReferenceEval *ctx, const GuideLine *g, Coord *out)
@@ -577,10 +566,9 @@ static bool apply_spec_line(const char *p,int n,char **tokens,int count,World *w
     if (!reference_name(tokens[1]) || !parse_coord(tokens[2],&value)) {
         scene_error(p,n,"D6b: spec requires a unique name and integer mm in D1 range"); return false;
     }
-    size_t i=0; while (i<w->spec_count && strcmp(w->specs[i].name,tokens[1])) ++i;
-    if (i==WORLD_MAX_SPECS) { scene_error(p,n,"D6b: spec capacity exceeded"); return false; }
-    if (i==w->spec_count) ++w->spec_count;
-    snprintf(w->specs[i].name,SPEC_NAME_MAX,"%s",tokens[1]); w->specs[i].value=value;
+    if (!geo_named_values_put(&w->named_values,tokens[1],value)) {
+        scene_error(p,n,"D6b: spec capacity exceeded"); return false;
+    }
     return reference_checked(p,n,w);
 }
 static bool apply_datum_line(const char *p,int n,char **tokens,int count,World *w)
@@ -782,7 +770,7 @@ static bool reference_snap(World *w,uint32_t pid,GuideDirection dir,uint32_t exc
     const SpaceBoundarySurface *b=world_placement_boundary(w,p); char axis=dir==GUIDE_ALONG_V?'u':'v';
     enum { SNAP_MAX = WORLD_MAX_SPECS + WORLD_MAX_GUIDES + (POLY_MAX_HOLES+1)*POLY_MAX_VERTICES + WORLD_MAX_GRIDS*GRID_MAX_LINES + WORLD_MAX_TIMBERS*2 };
     char candidates[SNAP_MAX][REF_EXPR_MAX]; size_t n=0;
-    for (size_t i=0;i<w->spec_count && n<SNAP_MAX;++i) snprintf(candidates[n++],REF_EXPR_MAX,"spec:%s",w->specs[i].name);
+    for (size_t i=0;i<geo_named_values_count(&w->named_values) && n<SNAP_MAX;++i) snprintf(candidates[n++],REF_EXPR_MAX,"spec:%s",geo_named_values_at(&w->named_values,i)->name);
     for (size_t i=0;i<w->guide_count && n<SNAP_MAX;++i) if (w->guides[i].id!=exclude && w->guides[i].placement_id==pid && w->guides[i].direction==dir)
         snprintf(candidates[n++],REF_EXPR_MAX,"guide:%u",w->guides[i].id);
     PolygonLoop2 rect; placement_outline(p,b,&rect);

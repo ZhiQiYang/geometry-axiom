@@ -401,10 +401,10 @@ int main(int argc, char **argv)
     if(grid_subdivision_used(&world)){if(engineering_used(&world)||geo_parameters_card_count(&world.parameters))fputc(',',stdout);model_string(stdout,GRID_SUBDIVISION_CAPABILITY);}
     if(sp_used(&world)){if(engineering_used(&world)||geo_parameters_card_count(&world.parameters)||grid_subdivision_used(&world))fputc(',',stdout);model_string(stdout,SP_CAPABILITY);}
     fputs("],\"specs\":[", stdout);
-    for (size_t i = 0; i < world.spec_count; ++i) {
+    for (size_t i = 0; i < geo_named_values_count(&world.named_values); ++i) {
         if (i) putchar(',');
-        fputs("{\"name\":", stdout); model_string(stdout, world.specs[i].name);
-        printf(",\"value\":%" PRId64 "}", world.specs[i].value);
+        fputs("{\"name\":", stdout); model_string(stdout, geo_named_values_at(&world.named_values,i)->name);
+        printf(",\"value\":%" PRId64 "}", geo_named_values_at(&world.named_values,i)->value);
     }
     fputs("],\"placements\":[", stdout);
     for (size_t i = 0; i < world.placement_count; ++i) {

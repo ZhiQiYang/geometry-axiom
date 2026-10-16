@@ -6,5 +6,5 @@
 /* D6c: only axis and spec expression are persistent; position is a cache. */
 typedef struct { uint32_t id; int axis; char expression[REF_EXPR_MAX]; Coord position; } DatumPlane;
 typedef enum { GUIDE_LOCAL = 0, GUIDE_DATUM = 1 } GuideSource;
-typedef struct { char name[SPEC_NAME_MAX]; Coord value; } SpecValue;
+typedef GeoNamedValue SpecValue;
 typedef struct { int kind, hole, edge; TimberId timber; char key[512]; } ReferenceFace;

@@ -4,4 +4,5 @@
 #ifndef GEOMETRY_APP_KERNEL_STORAGE_H
 #define GEOMETRY_APP_KERNEL_STORAGE_H
 #include "../../geometry-core/kernel/internal/parameter_store.h"
+#include "../../geometry-core/kernel/internal/named_values.h"
 #endif

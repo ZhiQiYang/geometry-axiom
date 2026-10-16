@@ -8,11 +8,15 @@
 #include "geometry.h"
 #include "grid.h"
 #include "parameters.h"
+#include "linear.h"
+#include "named_values.h"
 #else
 #include "codec.c"
 #include "exact.c"
 #include "geometry.c"
 #include "grid.c"
 #include "parameters.c"
+#include "linear.c"
+#include "named_values.c"
 #endif
 #endif
