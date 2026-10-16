@@ -4,6 +4,7 @@ const test = require('node:test');
 const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
+const GeometryApplication = require('../geometry-app/application.js');
 const file = process.env.GEOMETRY_GRID_DEFINITION_SOURCE || path.join(__dirname, '../geometry-web/grid-system-workspace.js');
 const source = fs.readFileSync(file, 'utf8');
 const start = source.indexOf('  function drawDefinition(s, data) {');
@@ -88,7 +89,7 @@ test('both shifted axes still cut segments at the other axis unshifted band boun
 // The shipped readAxes/syncDefinition/drawDefinition bodies render accepted
 // raw draft strings through finite DOM ports. No native validation is replaced.
 const F=require('../geometry-web/feature-attachments.js');
-function presentation(rawOverrides={}) {
+function presentation(rawOverrides={}, application=GeometryApplication) {
   const raw=Object.fromEntries(F.sourceFields.map(id=>[id,'']));
   Object.assign(raw,{igName:'Authored raw',igMainAlong:'u'});
   for(const a of ['U','V'])Object.assign(raw,{['ig'+a+'Source']:'repeat',['ig'+a+'Step']:'600',['ig'+a+'Phase']:'0',
@@ -107,7 +108,7 @@ function presentation(rawOverrides={}) {
     return [a,{card,summary,role}];
   }));
   const state={mode:'source',source:{id:0},sourceDirty:false,defFocus:{a:'u',key:''},staggerOpen:{u:false,v:false}};
-  const context=vm.createContext({TextEncoder,axes:['u','v'],LIMIT:100000000,mk:node,$:id=>nodes.get(id),
+  const context=vm.createContext({GeometryApplication:application,TextEncoder,axes:['u','v'],LIMIT:100000000,mk:node,$:id=>nodes.get(id),
     rawField:(_s,id)=>nodes.get(id).value,current:s=>s===state,bindingName:()=>null,
     dialog:{querySelector:selector=>cards[/data-ig-axis="([uv])"/.exec(selector)[1]].card},focusField(){}});
   const cuts=[['  const stepNoun =','  const MODE_LABEL ='],['  const intProblem =','  const bindingName ='],
@@ -117,6 +118,15 @@ function presentation(rawOverrides={}) {
   return {raw,draft,nodes,cards,state,read:()=>context.readAxes(state),sync:()=>context.syncDefinition(state),
     rawNow:()=>Object.fromEntries(F.sourceFields.map(id=>[id,nodes.get(id).value])),drawing:()=>flatten(stage)};
 }
+
+test('grid role identity stays semantic even when presentation labels are exchanged',()=>{
+  const provider=GeometryApplication.woodworking;
+  const application={woodworking:{...provider,labels:{...provider.labels,gridLines:{main:'副支線',sub:'主支線'}}}};
+  const h=presentation({},application);h.sync();
+  assert.equal(h.cards.u.role.textContent,'主支線');assert.equal(h.cards.u.role.dataset.role,'sub');
+  assert.equal(h.cards.v.role.textContent,'副支線');assert.equal(h.cards.v.role.dataset.role,'main');
+  assert.equal(h.cards.u.role.hidden,false);assert.equal(h.cards.v.role.hidden,false);
+});
 
 test('accepted unknown axis raw requires explicit reselection without invented geometry or prototype lookup failures',()=>{
   for(const mode of ['', 'future-mode', ' repeat ', '__proto__', 'constructor'])for(const axis of ['u','v']){

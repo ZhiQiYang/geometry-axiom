@@ -680,7 +680,7 @@
     s.mainAlongValue = $('igMainAlong').value;
     const mainError = ['none','u','v'].includes(s.mainAlongValue) ? '' : '請明確重新選取主支方向；原始值仍保留。';
     $('igMainAlong').setAttribute('aria-invalid', String(!!mainError));
-    const data = readAxes(s), roleOf = x => (mainError || x.modeError || s.mainAlongValue === 'none' || x.mode === 'none') ? '' : ((s.mainAlongValue === 'u') === (x.a === 'v') ? '主支線' : '副支線');
+    const data = readAxes(s), roleOf = x => (mainError || x.modeError || s.mainAlongValue === 'none' || x.mode === 'none') ? '' : ((s.mainAlongValue === 'u') === (x.a === 'v') ? 'main' : 'sub');
     const focus = s.defFocus, owner = data.find(x => x.a === focus.a);
     if (owner && !owner.all.some(f => f.key === focus.key)) focus.key = owner.fields[0]?.key || '';
     for (const x of data) {
@@ -689,7 +689,7 @@
       card.querySelector('.ig-axis-sum').textContent = x.modeError ? '請重新選取排格方式' : x.mode === 'none' ? '不設此軸' : x.mode === 'repeat' ? `每 ${rawOf('step')} mm` : `面材 ${rawOf('panel')} ＋ 縫 ${rawOf('gap')}`;
       $(x.p + 'Source').setAttribute('aria-invalid', String(!!x.modeError));
       const role = roleOf(x), badge = card.querySelector('.ig-role');
-      badge.hidden = !role; badge.textContent = role; badge.dataset.role = role === '主支線' ? 'main' : 'sub';
+      badge.hidden = !role; badge.textContent = role ? GeometryApplication.woodworking.labels.gridLines[role] : ''; badge.dataset.role = role || 'sub';
       for (const node of card.querySelectorAll('[data-ig-field]')) {
         const input = node.querySelector('input'), found = x.all.find(f => f.id === input.id), error = found?.error || '';
         node.classList.toggle('is-focus', focus.a === x.a && focus.key === node.dataset.igField);

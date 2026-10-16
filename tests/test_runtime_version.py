@@ -24,7 +24,8 @@ class RuntimeVersionTests(unittest.TestCase):
         (self.root / '公理層.md').write_bytes(b'axioms\r\n')
         (self.web / 'index.html').write_bytes(b'<html><head></head><script src="app.js"></script></html>')
         (self.web / 'app.js').write_bytes(b'old app\n')
-        for route, path in runtime_version.static_catalog(self.root).items():
+        for route, path in {**runtime_version.static_catalog(self.root),
+                            **runtime_version.application_assets(self.root)}.items():
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(route.encode() + b'\r\n')
 
@@ -43,6 +44,87 @@ class RuntimeVersionTests(unittest.TestCase):
         self.assertTrue(current.fresh())
         self.assertIn('/grid-trial.js', current.assets)
         self.assertNotEqual(current.version, snapshot.version)
+
+    def test_template_and_composition_assets_are_exact_immutable_startup_bytes(self):
+        for route, path in runtime_version.application_assets(self.root).items():
+            with self.subTest(route=route):
+                original = path.read_bytes()
+                snapshot = runtime_version.RuntimeSnapshot(self.root)
+                self.assertEqual(snapshot.assets[route], original)
+                stamp = path.stat()
+                path.write_bytes(original.replace(b'/', b'!', 1))
+                os.utime(path, ns=(stamp.st_atime_ns, stamp.st_mtime_ns))
+                self.assertFalse(snapshot.fresh())
+                self.assertEqual(snapshot.assets[route], original)
+                current = runtime_version.RuntimeSnapshot(self.root)
+                self.assertTrue(current.fresh())
+                self.assertNotEqual(snapshot.version, current.version)
+                self.assertEqual(current.assets[route], path.read_bytes())
+                path.write_bytes(original)
+
+    def test_served_template_checkout_line_endings_are_not_normalized(self):
+        for path in runtime_version.application_assets(self.root).values():
+            with self.subTest(path=path):
+                path.write_bytes(b'fixed template\r\n')
+                snapshot = runtime_version.RuntimeSnapshot(self.root)
+                path.write_bytes(b'fixed template\n')
+                self.assertFalse(snapshot.fresh())
+                self.assertNotEqual(snapshot.version, runtime_version.source_version(self.root))
+
+    def test_missing_template_is_stale_and_prevents_partial_startup(self):
+        for route, path in runtime_version.application_assets(self.root).items():
+            with self.subTest(route=route):
+                original = path.read_bytes()
+                snapshot = runtime_version.RuntimeSnapshot(self.root)
+                path.unlink()
+                self.assertFalse(snapshot.fresh())
+                self.assertEqual(snapshot.assets[route], original)
+                with self.assertRaises(FileNotFoundError):
+                    runtime_version.RuntimeSnapshot(self.root)
+                path.write_bytes(original)
+
+    def test_index_accepts_only_explicit_template_routes(self):
+        index = self.web / 'index.html'
+        for prefix in ('', '/'):
+            index.write_text('<head><script src="' + prefix
+                             + 'templates/woodworking.js"></script>'
+                             + '<script src="application.js"></script></head>')
+            self.assertTrue(runtime_version.RuntimeSnapshot(self.root).fresh())
+        index.write_text('<head><script src="templates/private.js"></script></head>')
+        with self.assertRaisesRegex(RuntimeError, 'templates/private.js'):
+            runtime_version.RuntimeSnapshot(self.root)
+
+    def test_template_native_and_host_source_changes_require_restart(self):
+        for relative in ('geometry-templates/woodworking/native/provider.c',
+                         'geometry-app/native/app.c'):
+            with self.subTest(path=relative):
+                before = runtime_version.RuntimeSnapshot(self.root)
+                path = self.root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(b'provider source\n')
+                self.assertFalse(before.fresh())
+                after = runtime_version.RuntimeSnapshot(self.root)
+                self.assertNotEqual(before.version, after.version)
+                path.write_bytes(b'provider source\r\n')
+                self.assertTrue(after.fresh())
+                path.unlink()
+                self.assertFalse(after.fresh())
+
+    def test_template_routes_do_not_expose_neighbor_source_or_project_data(self):
+        paths = ('geometry-templates/woodworking/private.js',
+                 'geometry-templates/woodworking/private.gcanvas',
+                 'geometry-app/private.scene')
+        for relative in paths:
+            path = self.root / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(b'private bytes')
+        snapshot = runtime_version.RuntimeSnapshot(self.root)
+        self.assertEqual({route for route in snapshot.static if route.startswith('/templates/')},
+                         {'/templates/woodworking.js'})
+        for relative in paths:
+            self.assertNotIn('/' + relative, snapshot.static)
+        self.assertNotIn('/templates/private.js', snapshot.static)
+        self.assertNotIn('/private.scene', snapshot.static)
 
     def test_source_identity_ignores_checkout_line_endings_and_tracks_native_source(self):
         version = runtime_version.source_version(self.root)

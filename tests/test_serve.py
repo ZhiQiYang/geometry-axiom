@@ -417,14 +417,15 @@ class BridgeServerTests(unittest.TestCase):
                                      f"Host {host!r}: GET refused={get_refused} but POST answered {post_status}")
 
     def test_catalog_and_vendor_get_use_the_same_captured_bytes_and_routes(self):
-        from runtime_version import RuntimeSnapshot, static_catalog
+        from runtime_version import RuntimeSnapshot, static_catalog, application_assets
         with tempfile.TemporaryDirectory() as directory:
             root = pathlib.Path(directory)
             web = root / 'geometry-web'
             web.mkdir()
             (root / 'geometry-core').mkdir()
             (web / 'index.html').write_bytes(b'<head></head>')
-            for route, path in static_catalog(root).items():
+            public = {**static_catalog(root), **application_assets(root)}
+            for route, path in public.items():
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.write_bytes(route.encode() + b' old bytes\r\n')
             vendor = web / 'vendor'
@@ -436,9 +437,9 @@ class BridgeServerTests(unittest.TestCase):
             # startup capture and an added file cannot expand its route set.
             (vendor / 'map.bcmap').unlink()
             (vendor / 'new.ttf').write_bytes(b'new unversioned font')
-            for path in static_catalog(root).values():
+            for path in public.values():
                 path.write_bytes(b'new live bytes')
-            for route in [*static_catalog(root), '/vendor/map.bcmap']:
+            for route in [*public, '/vendor/map.bcmap']:
                 with self.subTest(route=route), patch.object(pathlib.Path, 'read_bytes',
                         side_effect=AssertionError('HTTP static request reread filesystem')):
                     handler = object.__new__(self.server_module.Handler)
@@ -448,7 +449,8 @@ class BridgeServerTests(unittest.TestCase):
                     handler.send_error = Mock()
                     handler.do_GET()
                     self.assertEqual(handler._send.call_args.args[0], runtime.static[route])
-                    expected = ('text/html; charset=utf-8' if route == '/axioms' else
+                    expected = ('text/javascript; charset=utf-8' if route in application_assets(root) else
+                                'text/html; charset=utf-8' if route == '/axioms' else
                                 'text/plain; charset=utf-8' if route.startswith('/documents/') else
                                 'application/octet-stream')
                     self.assertEqual(handler._send.call_args.args[1], expected)

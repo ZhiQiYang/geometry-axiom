@@ -15,6 +15,14 @@ SOURCE_SUFFIXES = {'.py', '.js', '.mjs', '.wasm', '.css', '.html', '.c', '.h', '
 SOURCE_EXCLUDES = {'__pycache__', 'docs', 'prototypes', 'node_modules', '.git'}
 
 
+def application_assets(root):
+    """Fixed composition assets; no arbitrary template or repository routing."""
+    return {
+        '/templates/woodworking.js': root / 'geometry-templates/woodworking/frontend.js',
+        '/application.js': root / 'geometry-app/application.js',
+    }
+
+
 def static_catalog(root):
     """Existing explicit public documents/examples, never user project files."""
     web = root / 'geometry-web'
@@ -54,6 +62,7 @@ def static_files(root):
     # Match the existing vendor routes, including file symlinks, every suffix
     # and LICENSE files. Directory symlinks were not traversed by rglob either.
     vendor(web / 'vendor')
+    routes.update(application_assets(root))
     routes.update(static_catalog(root))
     return routes
 
@@ -76,7 +85,7 @@ def source_files(root, routes=None):
                 elif Path(entry.name).suffix in SOURCE_SUFFIXES and entry.is_file():
                     files.append(Path(entry.path))
 
-    for directory in ('geometry-web', 'geometry-core'):
+    for directory in ('geometry-web', 'geometry-core', 'geometry-app', 'geometry-templates'):
         collect(root / directory)
     return sorted(set(files) | set((static_files(root) if routes is None else routes).values()))
 
@@ -87,6 +96,7 @@ def _identity_content(root, path, content):
     # non-served source text may ignore checkout line endings. In particular,
     # archives, fonts, CMaps, images and unknown vendor types are always binary.
     if (path.is_relative_to(web / 'vendor') or path in static_catalog(root).values()
+            or path in application_assets(root).values()
             or path.parent == web and path.suffix in {'.html', '.js', '.css'}):
         return content
     if path.suffix in SOURCE_SUFFIXES - {'.wasm'} or path == root / '公理層.md':
@@ -120,12 +130,15 @@ class RuntimeSnapshot:
         # rather than rereading a potentially different revision for serving.
         self.assets = {'/' + p.name: content for p, content in self._source_contents.items()
                        if p.parent == web and p.suffix in {'.html', '.js', '.css'}}
+        self.assets.update({route: self._source_contents[path]
+                            for route, path in application_assets(root).items()})
         self.static = {route: self._source_contents[path] for route, path in self._routes.items()}
         self.vendor = {route: content for route, content in self.static.items()
                        if route.startswith('/vendor/')}
         for reference in re.findall(rb'(?:src|href)="([^"]+)"', self.assets['/index.html']):
             path = reference.decode('utf-8')
-            if path.endswith(('.js', '.css')) and '/' + path not in self.assets and '/' + path not in self.vendor:
+            route = '/' + path.lstrip('/')
+            if path.endswith(('.js', '.css')) and route not in self.assets and route not in self.vendor:
                 raise RuntimeError('頁面引用的元件不存在：' + path)
         # Fail startup if an edit raced the capture; never publish a mixed snapshot.
         if (static_files(root) != self._routes or source_version(root) != self.version

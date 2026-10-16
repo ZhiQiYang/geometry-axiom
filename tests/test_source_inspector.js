@@ -44,7 +44,7 @@ function cardNavigationHarness({allow=true,current=true,focus=null,replacePane=f
     assert.ok(found,'shipped '+name);vm.runInNewContext(found[0],sandbox);
   }
   const list=app.slice(app.indexOf('function renderObjectList()'));
-  const closure=list.match(/row\.addEventListener\("click", (ev => \{[^]*?)\);\n    row\.addEventListener\("dblclick"/);
+  const closure=list.match(/row\.addEventListener\("click", (ev => \{[^]*?)\);\r?\n    row\.addEventListener\("dblclick"/);
   assert.ok(closure,'shipped object-list click');
   vm.runInNewContext('window.listClick='+closure[1],sandbox);
   vm.runInNewContext(fs.readFileSync(require.resolve('../geometry-web/source-inspector-app.js'),'utf8'),sandbox);
