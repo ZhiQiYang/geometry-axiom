@@ -3,7 +3,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#define CHECK(value) do { if(!(value)){fprintf(stderr,"%s:%d\n",__func__,__LINE__);return 1;} } while(0)
+#define CHECK(value) do { if(!(value)){fprintf(stderr,"ASSERT:%s:%d\n",__func__,__LINE__);return 1;} } while(0)
+#define CHECK_NAMED(value,label) do { if(!(value)){fprintf(stderr,"ASSERT:%s\n",label);return 1;} } while(0)
 typedef struct {
     bool missing_host,missing_vertex;
     GeoPoint2 point;
@@ -80,7 +81,7 @@ static int direct(void)
     GeoGridStore *store=geo_grid_store_create();CHECK(store);WoodGridState state={0};EngineeringState eng={0};Facts facts={0};
     WoodGridContext c=context(&state,store,&eng,&facts);WoodGridApplication g=direct_value(1,10),out={0};char error[256]="";
     g.from_system=true;g.system_id=5;CHECK(wood_grid_stage(&state,&g));WoodGridState snapshot;memcpy(&snapshot,&state,sizeof snapshot);
-    CHECK(!wood_grid_begin_direct(&c,1,10,&out,error,sizeof error));
+    CHECK_NAMED(!wood_grid_begin_direct(&c,1,10,&out,error,sizeof error),"grid-direct-source-lock");
     CHECK(!strcmp(error,"D29: edit the grid-system source or its application origin; direct axis edits are not allowed"));
     CHECK(!memcmp(&state,&snapshot,sizeof state));g.from_system=false;g.is_subgrid=true;CHECK(wood_grid_stage(&state,&g));
     CHECK(!wood_grid_begin_direct(&c,1,10,&out,error,sizeof error));CHECK(!strcmp(error,"D19：不能將既有子網格改成主網格"));
@@ -105,7 +106,7 @@ static int admission(void)
     WoodGridApplication g={0};g.id=1;g.placement_id=10;g.system_id=5;char error[256]="";
     eng.binding_count=1;eng.bindings[0].target=(EngTarget){0,1,0,0};facts.missing_host=true;WoodGridState snapshot;memcpy(&snapshot,&state,sizeof snapshot);
     CHECK(!wood_grid_apply_system(&c,&g,error,sizeof error));CHECK(!strcmp(error,"I37: grid application needs an existing surface and grid-system"));
-    facts.missing_host=false;CHECK(!wood_grid_apply_system(&c,&g,error,sizeof error));
+    facts.missing_host=false;CHECK_NAMED(!wood_grid_apply_system(&c,&g,error,sizeof error),"grid-engineering-source-lock");
     CHECK(!strcmp(error,"D29/I37: detach engineering bindings before choosing a grid-system source"));CHECK(!memcmp(&state,&snapshot,sizeof state));
     eng.binding_count=0;CHECK(wood_grid_apply_system(&c,&g,error,sizeof error));CHECK(state.count==1 && state.items[0].from_system);
     memcpy(&snapshot,&state,sizeof snapshot);g.placement_id=11;CHECK(!wood_grid_apply_system(&c,&g,error,sizeof error));
@@ -131,7 +132,7 @@ static int child(void)
     char error[256]="";CHECK(wood_grid_prepare_child(&c,&g,false,2,2,error,sizeof error));
     CHECK(g.is_subgrid && !g.lattice_cell && g.placement_id==10 && g.divisions[0]==2);
     CHECK(wood_grid_child_check(&c,&g,error,sizeof error));CHECK(wood_grid_stage(&state,&g));WoodGridState snapshot;memcpy(&snapshot,&state,sizeof snapshot);
-    g.parent_id=3;WoodGridApplication unchanged;memcpy(&unchanged,&g,sizeof unchanged);CHECK(!wood_grid_prepare_child(&c,&g,false,2,2,error,sizeof error));
+    g.parent_id=3;WoodGridApplication unchanged;memcpy(&unchanged,&g,sizeof unchanged);CHECK_NAMED(!wood_grid_prepare_child(&c,&g,false,2,2,error,sizeof error),"grid-child-parent-lock");
     CHECK(!strcmp(error,"D19/I25：父格必須是主網格；既有網格的類型與父格編號不能更換"));CHECK(!memcmp(&g,&unchanged,sizeof g));CHECK(!memcmp(&state,&snapshot,sizeof state));
     g.parent_id=1;CHECK(!wood_grid_prepare_child(&c,&g,true,2,2,error,sizeof error));CHECK(!memcmp(&state,&snapshot,sizeof state));
     g.id=4;state.items[0].axis[0].stagger_set=true;
@@ -158,7 +159,7 @@ static int deletion(void)
     facts.refs[1]=(WoodGridReference){.kind=WOOD_GRID_REFERENCE_TIMBER,.id=88,.active=true,.grid_id=9};facts.ref_count=2;
     WoodGridState snapshot;memcpy(&snapshot,&state,sizeof snapshot);CHECK(!wood_grid_delete(&c,"grid",9,error,sizeof error));CHECK(!strcmp(error,"I23：網格 9 仍有子格 22，不能刪除"));CHECK(!memcmp(&state,&snapshot,sizeof state));
     CHECK(wood_grid_delete(&c,"grid",22,error,sizeof error));memcpy(&snapshot,&state,sizeof snapshot);
-    CHECK(!wood_grid_delete(&c,"grid",9,error,sizeof error));CHECK(!strcmp(error,"I23：網格 9 仍被參考線 77 引用，不能刪除"));CHECK(!memcmp(&state,&snapshot,sizeof state));
+    CHECK(!wood_grid_delete(&c,"grid",9,error,sizeof error));CHECK_NAMED(!strcmp(error,"I23：網格 9 仍被參考線 77 引用，不能刪除"),"grid-guide-delete-before-timber");CHECK(!memcmp(&state,&snapshot,sizeof state));
     facts.refs[0].expression="prefixgrid:9:u:0";CHECK(!wood_grid_delete(&c,"grid",9,error,sizeof error));CHECK(!strcmp(error,"V_GRID_LOCKED：有角材錨在這個網格上，先刪角材（timber）"));
     facts.refs[0].expression="10*grid:9:u:0";CHECK(!wood_grid_delete(&c,"grid",9,error,sizeof error));CHECK(!strcmp(error,"I23：網格 9 仍被參考線 77 引用，不能刪除"));
     facts.refs[0].expression="gridrule:9:5:7:0:0:u:0";CHECK(!wood_grid_delete(&c,"grid",9,error,sizeof error));CHECK(strstr(error,"參考線 77")!=NULL);
@@ -179,7 +180,7 @@ static int candidate(void)
     CHECK(old_state.items[0].lattice_base[0]==400 && old_state.items[0].lattice_base[1]==500);
     WoodGridState snapshot;memcpy(&snapshot,&old_state,sizeof snapshot);
     GeoGridSystem old_source;memcpy(&old_source,geo_grid_systems_find(original,5),sizeof old_source);
-    GeoGridStore *copy=geo_grid_store_clone(original);CHECK(copy);new_state=old_state;
+    GeoGridStore *copy=geo_grid_store_clone(original);CHECK(copy);memcpy(&new_state,&old_state,sizeof new_state);
     WoodGridContext after=context(&new_state,copy,&eng,&new_facts);after.before=&before;
     CHECK(wood_grid_bindings_rebuild(&after,error,sizeof error));CHECK(new_state.items[0].lattice_base[0]==700 && new_state.items[0].lattice_base[1]==900);
     CHECK(!memcmp(&old_state,&snapshot,sizeof snapshot));CHECK(!memcmp(geo_grid_systems_find(original,5),&old_source,sizeof old_source));

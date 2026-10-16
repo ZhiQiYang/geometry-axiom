@@ -32,9 +32,12 @@ class WoodGridApplication(unittest.TestCase):
         cls.client = build.compile(source, "grid-application-client")
         cls.exe = build.link("grid-application-client", [cls.client, *build.product_objects()])
 
-    def case(self, name, exe=None):
+    def case(self, name, exe=None, marker=None):
         result = subprocess.run([str(exe or self.exe), name], capture_output=True, text=True, timeout=10)
         self.assertIn(result.returncode, (0, 1), "Native crash/setup failure is not a grid-policy verdict: " + result.stderr)
+        self.assertEqual(1 if marker else 0, result.returncode, name + ": " + result.stderr)
+        if marker:
+            self.assertEqual("ASSERT:" + marker + "\n", result.stderr, "Wrong assertion cannot count as a killed guard: " + result.stderr)
         return result.returncode
 
     def test_roles_follow_source_identity_across_kernel_remove_and_reinsert(self):
@@ -76,20 +79,20 @@ class WoodGridApplication(unittest.TestCase):
         before = 'if(wood_eng_object_bound(&c->engineering,0,g.id))return wood_grid_error(error,cap,"D29/I37:'
         after = 'if(false)return wood_grid_error(error,cap,"D29/I37:'
         exe = self.mutant("engineering-lock", before, after)
-        self.assertEqual(1, self.case("admission", exe))
+        self.assertEqual(1, self.case("admission", exe, "grid-engineering-source-lock"))
         self.assertEqual(0, self.case("admission"))
 
     def test_removed_child_identity_guard_fails_parent_change_assertion(self):
         self.assertEqual(0, self.case("child"))
         before = '(old&&(!old->is_subgrid||old->parent_id!=g->parent_id||old->lattice_cell!=lattice))'
         exe = self.mutant("child-identity", before, "false")
-        self.assertEqual(1, self.case("child", exe))
+        self.assertEqual(1, self.case("child", exe, "grid-child-parent-lock"))
         self.assertEqual(0, self.case("child"))
 
     def test_removed_guide_delete_guard_fails_ordered_rejection_assertion(self):
         self.assertEqual(0, self.case("deletion"))
         exe = self.mutant("guide-delete", "if(used)return wood_grid_error", "if(false)return wood_grid_error")
-        self.assertEqual(1, self.case("deletion", exe))
+        self.assertEqual(1, self.case("deletion", exe, "grid-guide-delete-before-timber"))
         self.assertEqual(0, self.case("deletion"))
 
     def commit(self, session, command):
@@ -125,7 +128,7 @@ class WoodGridApplication(unittest.TestCase):
         self.assertFalse(accepted, response)
         self.assertIn("direct axis edits are not allowed", rejection_reason(response))
         exe, bridge = self.mutant("direct-source-lock", "if(old&&(old->from_system||old->from_binding))", "if(false)", bridge=True)
-        self.assertEqual(1, self.case("direct", exe))
+        self.assertEqual(1, self.case("direct", exe, "grid-direct-source-lock"))
         accepted, response = self.direct_edit(bridge)
         self.assertTrue(accepted, response)
         self.assertEqual(0, self.case("direct"))

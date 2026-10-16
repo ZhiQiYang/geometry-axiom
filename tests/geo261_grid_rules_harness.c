@@ -4,7 +4,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#define CHECK(value) do { if(!(value)){fprintf(stderr,"%s:%d\n",__func__,__LINE__);return 1;} } while(0)
+#define CHECK(value) do { if(!(value)){fprintf(stderr,"ASSERT:%s:%d\n",__func__,__LINE__);return 1;} } while(0)
+#define CHECK_NAMED(value,label) do { if(!(value)){fprintf(stderr,"ASSERT:%s\n",label);return 1;} } while(0)
 typedef struct {
     WoodGridReference references[4];size_t reference_count;
     bool missing_host,missing_vertex;
@@ -75,7 +76,7 @@ static int edits(void)
     CHECK(!strcmp(geo_grid_rule_find(geo_grid_systems_find(store,5),7)->name,"renamed"));
     CHECK(geo_grid_systems_find(store,5)->next_rule_key==8 && wood_grid_source_main_along(&state,5)==2);
     GeoGridSystem snapshot;memcpy(&snapshot,geo_grid_systems_find(store,5),sizeof snapshot);changed.divisions[0]=2;
-    CHECK(!wood_grid_rule_edit(&c,5,&changed,false,false,false,error,sizeof error));
+    CHECK_NAMED(!wood_grid_rule_edit(&c,5,&changed,false,false,false,error,sizeof error),"rule-referenced-edit-rejected");
     CHECK(!strcmp(error,"I25a: RULE_REFERENCED source 5 rule 7"));
     CHECK(!memcmp(geo_grid_systems_find(store,5),&snapshot,sizeof snapshot));
     changed=snapshot.rules[0];changed.all_cells=false;CHECK(!wood_grid_rule_change_allowed(&c,5,7,&changed,false,error,sizeof error));
@@ -101,15 +102,15 @@ static int world(void)
     WoodGridState before_state={0},after_state={0};Facts before_facts={0},after_facts={0};
     WoodGridContext before=context(&before_state,original,&before_facts);CHECK(fixture(&before));
     before_facts.references[0]=(WoodGridReference){.kind=WOOD_GRID_REFERENCE_GUIDE,.active=true,.expression="gridrule:9:5:7:0:0:u:0"};before_facts.reference_count=1;
-    GeoGridStore *candidate=geo_grid_store_clone(original);CHECK(candidate);after_state=before_state;
+    GeoGridStore *candidate=geo_grid_store_clone(original);CHECK(candidate);memcpy(&after_state,&before_state,sizeof after_state);
     WoodGridContext after=context(&after_state,candidate,&after_facts);after.before=&before;
     GeoGridSystem changed=*geo_grid_systems_find(candidate,5);changed.rules[0].divisions[0]=2;CHECK(wood_grid_source_put(&after,&changed,2));
     WoodGridApplication child={0};child.id=22;child.parent_id=9;child.is_subgrid=true;child.lattice_cell=true;
     child.lattice_cell_index[0]=-2;child.lattice_cell_index[1]=-3;CHECK(wood_grid_stage(&after_state,&child));
     char error[256]="";CHECK(!wood_grid_rules_world_valid(&after,error,sizeof error));
-    CHECK(!strcmp(error,"I25a: RULE_REFERENCED source 5 rule 7"));
+    CHECK_NAMED(!strcmp(error,"I25a: RULE_REFERENCED source 5 rule 7"),"rule-before-reference-precedes-manual");
     changed=system_value();CHECK(wood_grid_source_put(&after,&changed,2));
-    CHECK(!wood_grid_rules_world_valid(&after,error,sizeof error));
+    CHECK_NAMED(!wood_grid_rules_world_valid(&after,error,sizeof error),"rule-manual-conflict-rejected");
     CHECK(!strcmp(error,"I25a: MANUAL_CONFLICT source 5 rule 7 manual 22 parent 9 cell (-2,-3)"));
     --after_state.count;CHECK(wood_grid_rules_world_valid(&after,error,sizeof error));
     CHECK(wood_grid_source_remove(&after,5));CHECK(!wood_grid_rules_world_valid(&after,error,sizeof error));
