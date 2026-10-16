@@ -25,7 +25,11 @@ native bridge，要求拒絕且 `dump` 不變；兩個移除控制要求 K 斷�
 - 本地靜態檢查：Python 語法編譯通過；unittest discovery 為 8。
 - `run_all.py` 與 `run_all.expected.json` 僅登記本 suite 的新 key，數量 8 來自 discovery；未改既有
   suite 數量。registry 登記不代表 native 或完整測試已通過。
-- native 執行：待 `p1_validation` 於共用 WSL 鎖下執行；此時沒有將靜態推論記為執行成功。
+- native 首輪實測：舊 `51e9045b` 的六個正向案例為 2 pass／4 assertion failures；預登記的 5 fail
+  門檻未達成，原收據記為失敗。修正版 `be9ed3e7` 的八項為 7 pass／1 fail，失敗在移除孔中心守門後
+  產品仍拒絕。原 fixture 的 boundary 角色另因沒有貼外輪廓觸發 I20，遮住了 I5 移除控制。
+  目前 fixture 改用 D15 的 custom priority 1（沒有 boundary 專屬義務），幾何與全部斷言不變；
+  原八項及新 fixture 的前後差分待共享 WSL 鎖重跑，不把首輪紅燈改記為成功。
 - 凍結前版：指定 `51e9045b43078a77383afdaf5db379117ffc8871`。同一組正向斷言須對該版本的
   完整來源實際執行並獨立保存預期紅燈，不能把新 bridge 與舊 K 混合連結、不能改普通測試期待值。
 
