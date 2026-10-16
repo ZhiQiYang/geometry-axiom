@@ -85,7 +85,7 @@ def source_files(root, routes=None):
                 elif Path(entry.name).suffix in SOURCE_SUFFIXES and entry.is_file():
                     files.append(Path(entry.path))
 
-    for directory in ('geometry-web', 'geometry-core', 'geometry-app', 'geometry-templates'):
+    for directory in ('geometry-web', 'geometry-core', 'geometry-kernel', 'geometry-app', 'geometry-templates'):
         collect(root / directory)
     return sorted(set(files) | set((static_files(root) if routes is None else routes).values()))
 

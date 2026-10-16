@@ -29,8 +29,8 @@ static int boundary_ownership(void)
     SpaceBoundarySurface second=boundary_value(22,BOUNDARY_WALL_ELEVATION,500,800);
     for(size_t i=0;i<4;++i)second.outline.fixity[i]=(i&1)?EDGE_FREE:EDGE_FIXED;
     CHECK(app_boundary_stage(world,&first)&&app_boundary_stage(world,&second));
-    CHECK(world_boundary_count(world)==2&&geo_regions_count(&world->region_data)==2);
-    const GeoRegionDefinition *stored=geo_regions_find(&world->region_data,11);
+    CHECK(world_boundary_count(world)==2&&geo_regions_count(&world->geo.region_data)==2);
+    const GeoRegionDefinition *stored=geo_regions_find(&world->geo.region_data,11);
     CHECK(stored&&stored->outline.v[0].u==0&&stored->outline.v[1].u==100&&stored->holes[0].v[2].u==40);
     SpaceBoundarySurface a,b;CHECK(app_boundary_read(world,11,&a)&&app_boundary_read(world,22,&b));
     CHECK(a.kind==BOUNDARY_ROOM_PLAN&&b.kind==BOUNDARY_WALL_ELEVATION);
@@ -42,18 +42,18 @@ static int boundary_ownership(void)
     a.outline.fixity[0]=EDGE_FIXED;a.holes[0].fixity[2]=EDGE_FREE;
     CHECK(app_boundary_read(world,11,&b));
     CHECK(b.kind==BOUNDARY_ROOM_PLAN&&b.outline.v[1].u==100&&b.outline.fixity[0]==EDGE_FREE);
-    CHECK(geo_regions_find(&world->region_data,11)->outline.v[1].u==100);
+    CHECK(geo_regions_find(&world->geo.region_data,11)->outline.v[1].u==100);
     CHECK(app_boundary_stage(world,&a));
-    CHECK(geo_regions_find(&world->region_data,11)->outline.v[1].u==120);
+    CHECK(geo_regions_find(&world->geo.region_data,11)->outline.v[1].u==120);
     CHECK(app_boundary_read(world,11,&b)&&b.kind==BOUNDARY_WALL_ELEVATION&&b.outline.fixity[0]==EDGE_FIXED);
     CHECK(b.holes[0].fixity[2]==EDGE_FREE);
     memcpy(before,world,sizeof *world);a.outline.count=POLY_MAX_VERTICES+1;
     CHECK(!app_boundary_stage(world,&a)&&!memcmp(before,world,sizeof *world));
     CHECK(app_boundary_remove(world,11));
-    CHECK(world_boundary_count(world)==1&&geo_regions_at(&world->region_data,0)->id==22);
-    CHECK(world->boundary_policy[0].id==22&&world->boundary_policy[0].kind==BOUNDARY_WALL_ELEVATION);
+    CHECK(world_boundary_count(world)==1&&geo_regions_at(&world->geo.region_data,0)->id==22);
+    CHECK(world->wood.boundary_policy[0].id==22&&world->wood.boundary_policy[0].kind==BOUNDARY_WALL_ELEVATION);
     CHECK(app_boundary_at(world,0,&b)&&b.outline.v[0].u==500&&b.outline.fixity[0]==EDGE_FIXED);
-    WoodBoundaryPolicy empty={0};CHECK(!memcmp(&world->boundary_policy[1],&empty,sizeof empty));
+    WoodBoundaryPolicy empty={0};CHECK(!memcmp(&world->wood.boundary_policy[1],&empty,sizeof empty));
     CHECK(!app_boundary_remove(world,11));free(before);free(world);return 0;
 }
 
@@ -70,12 +70,12 @@ static int placement_ownership(void)
     components.components[1]=boundary_value(302,BOUNDARY_WALL_ELEVATION,200,300);
     components.components[1].outline.fixity[0]=EDGE_FIXED;
     CHECK(app_placement_stage(world,&rectangle)&&app_placement_stage(world,&reference)&&app_placement_stage(world,&components));
-    CHECK(world_placement_count(world)==3&&geo_placements_count(&world->placement_data)==3);
-    const GeoPlacementDefinition *stored=geo_placements_find(&world->placement_data,101);
+    CHECK(world_placement_count(world)==3&&geo_placements_count(&world->geo.placement_data)==3);
+    const GeoPlacementDefinition *stored=geo_placements_find(&world->geo.placement_data,101);
     CHECK(stored&&stored->domain==GEO_PLACEMENT_RECT&&stored->frame.origin.x==7&&stored->rect.max_u==100);
-    stored=geo_placements_find(&world->placement_data,102);
+    stored=geo_placements_find(&world->geo.placement_data,102);
     CHECK(stored&&stored->domain==GEO_PLACEMENT_REGION_REF&&stored->region_id==22);
-    stored=geo_placements_find(&world->placement_data,103);
+    stored=geo_placements_find(&world->geo.placement_data,103);
     CHECK(stored&&stored->domain==GEO_PLACEMENT_REGION_SET&&stored->component_count==2&&stored->components[1].outline.v[0].u==200);
     PlacementSurface edit,read;CHECK(app_placement_read(world,103,&edit));
     CHECK(edit.derived_fill_id==47&&edit.derived_h==-12&&edit.components[1].kind==BOUNDARY_WALL_ELEVATION);
@@ -86,19 +86,19 @@ static int placement_ownership(void)
     edit.components[1].outline.fixity[0]=EDGE_FREE;
     CHECK(app_placement_read(world,103,&read)&&read.frame.origin.x==27&&read.derived_h==-12);
     CHECK(read.components[1].outline.v[1].u==300&&read.components[1].outline.fixity[0]==EDGE_FIXED);
-    CHECK(geo_placements_find(&world->placement_data,103)->components[1].outline.v[1].u==300);
+    CHECK(geo_placements_find(&world->geo.placement_data,103)->components[1].outline.v[1].u==300);
     CHECK(app_placement_stage(world,&edit));
-    CHECK(geo_placements_find(&world->placement_data,103)->frame.origin.x==99);
-    CHECK(geo_placements_find(&world->placement_data,103)->components[1].outline.v[1].u==350);
+    CHECK(geo_placements_find(&world->geo.placement_data,103)->frame.origin.x==99);
+    CHECK(geo_placements_find(&world->geo.placement_data,103)->components[1].outline.v[1].u==350);
     CHECK(app_placement_read(world,103,&read)&&read.derived_h==30&&read.components[1].outline.fixity[0]==EDGE_FREE);
     memcpy(before,world,sizeof *world);edit.component_count=DP_COMPONENT_MAX+1;
     CHECK(!app_placement_stage(world,&edit)&&!memcmp(before,world,sizeof *world));
     CHECK(app_placement_remove(world,101));
-    CHECK(world_placement_count(world)==2&&geo_placements_at(&world->placement_data,0)->id==102);
-    CHECK(world->placement_policy[0].id==102&&world->placement_policy[1].id==103);
+    CHECK(world_placement_count(world)==2&&geo_placements_at(&world->geo.placement_data,0)->id==102);
+    CHECK(world->wood.placement_policy[0].id==102&&world->wood.placement_policy[1].id==103);
     CHECK(app_placement_at(world,1,&read)&&read.derived_fill_id==47&&read.derived_h==30);
     CHECK(read.components[1].kind==BOUNDARY_WALL_ELEVATION&&read.components[1].outline.fixity[0]==EDGE_FREE);
-    WoodPlacementPolicy empty={0};CHECK(!memcmp(&world->placement_policy[2],&empty,sizeof empty));
+    WoodPlacementPolicy empty={0};CHECK(!memcmp(&world->wood.placement_policy[2],&empty,sizeof empty));
     CHECK(!app_placement_remove(world,101));free(before);free(world);return 0;
 }
 
@@ -148,16 +148,16 @@ static int inactive_rectangle(void)
     CHECK(first.rect.min_u==-5&&first.rect.min_v==-6&&first.rect.max_u==7&&first.rect.max_v==8);
     CHECK(second.rect.min_u==10&&second.rect.min_v==20&&second.rect.max_u==30&&second.rect.max_v==40);
     GeoRect2 zero={0};
-    CHECK(!memcmp(&geo_placements_find(&world->placement_data,101)->rect,&zero,sizeof zero));
-    CHECK(!memcmp(&geo_placements_find(&world->placement_data,102)->rect,&zero,sizeof zero));
+    CHECK(!memcmp(&geo_placements_find(&world->geo.placement_data,101)->rect,&zero,sizeof zero));
+    CHECK(!memcmp(&geo_placements_find(&world->geo.placement_data,102)->rect,&zero,sizeof zero));
     /* The rectangle is retained wire metadata, not the referenced domain. */
     SpaceBoundarySurface boundary;CHECK(app_boundary_read(world,22,&boundary));
     CHECK(surface_contains_point(&second,&boundary,(SurfacePoint2){250,50}));
     CHECK(!surface_contains_point(&second,&boundary,(SurfacePoint2){20,30}));
     CHECK(app_placement_remove(world,101)&&world_placement_count(world)==1);
     CHECK(app_placement_at(world,0,&second)&&second.id==102&&second.rect.min_u==10&&second.rect.max_v==40);
-    CHECK(world->placement_metadata[0].unused_rect.min_v==20);
-    AppPlacementMetadata empty={0};CHECK(!memcmp(&world->placement_metadata[1],&empty,sizeof empty));
+    CHECK(world->app.placement_metadata[0].unused_rect.min_v==20);
+    AppPlacementMetadata empty={0};CHECK(!memcmp(&world->app.placement_metadata[1],&empty,sizeof empty));
     FILE *dump=tmpfile();CHECK(dump);world_dump_dsl(world,dump);CHECK(!fflush(dump)&&!fseek(dump,0,SEEK_SET));
     char text[4096];size_t length=fread(text,1,sizeof text-1,dump);text[length]=0;
     CHECK(!ferror(dump)&&feof(dump));fclose(dump);

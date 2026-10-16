@@ -10,6 +10,7 @@ struct AppCandidate {
     size_t snapshot_size;
     GeoCandidate *core;
     char before_hash[65],after_hash[65];
+    unsigned char *before_bytes,*after_bytes;
     bool sealed;
     void *evaluation_state;
     AppCandidateDisposeState dispose_state;
@@ -32,6 +33,8 @@ AppCandidate *app_candidate_create(void *before,void *after,const void *live,
     candidate->before=before;candidate->after=after;candidate->snapshot_size=size;
     memcpy(before,live,size);memcpy(after,live,size);
     geo_sha256(before,size,candidate->before_hash);
+    candidate->before_bytes=malloc(size);
+    if(candidate->before_bytes)memcpy(candidate->before_bytes,before,size);
     return candidate;
 }
 void app_candidate_set_evaluation_state(AppCandidate *candidate,void *state,AppCandidateDisposeState dispose)
@@ -47,7 +50,7 @@ void app_candidate_destroy(AppCandidate *candidate)
 {
     if(!candidate)return;
     app_candidate_set_evaluation_state(candidate,NULL,NULL);
-    geo_candidate_destroy(candidate->core);free(candidate);
+    geo_candidate_destroy(candidate->core);free(candidate->before_bytes);free(candidate->after_bytes);free(candidate);
 }
 GeoCandidateStatus app_candidate_bind_core(AppCandidate *candidate,const char *name,size_t offset,size_t size)
 {
@@ -55,7 +58,7 @@ GeoCandidateStatus app_candidate_bind_core(AppCandidate *candidate,const char *n
     return geo_candidate_bind_state(candidate->core,name,(const unsigned char*)candidate->before+offset,
         (unsigned char*)candidate->after+offset,size);
 }
-static bool app_candidate_hash_matches(const void *,size_t,const char expected[65]);
+static bool app_candidate_hash_matches(const void *,size_t,const char expected[65],const void *);
 typedef struct {AppCandidate *candidate;AppCandidateEvaluate evaluate;void *opaque;} AppCandidateCall;
 static bool app_candidate_call(void *opaque,GeoEvalContext *sources)
 {
@@ -66,20 +69,30 @@ GeoCandidateStatus app_candidate_evaluate(AppCandidate *candidate,AppCandidateEv
 {
     if(!candidate||!evaluate)return GEO_CANDIDATE_INVALID;
     if(candidate->sealed)return GEO_CANDIDATE_STATE;
-    if(!app_candidate_hash_matches(candidate->before,candidate->snapshot_size,candidate->before_hash))return GEO_CANDIDATE_STATE_CHANGED;
+    if(!app_candidate_hash_matches(candidate->before,candidate->snapshot_size,candidate->before_hash,candidate->before_bytes))return GEO_CANDIDATE_STATE_CHANGED;
     app_candidate_set_evaluation_state(candidate,NULL,NULL);
     AppCandidateCall call={candidate,evaluate,opaque};
     GeoCandidateStatus status=geo_candidate_evaluate(candidate->core,app_candidate_call,&call);
-    if(status==GEO_CANDIDATE_OK)geo_sha256(candidate->after,candidate->snapshot_size,candidate->after_hash);
+    if(status==GEO_CANDIDATE_OK){
+        geo_sha256(candidate->after,candidate->snapshot_size,candidate->after_hash);
+        if(!candidate->after_bytes)candidate->after_bytes=malloc(candidate->snapshot_size);
+        if(candidate->after_bytes)memcpy(candidate->after_bytes,candidate->after,candidate->snapshot_size);
+    }
     return status;
 }
-static bool app_candidate_hash_matches(const void *bytes,size_t size,const char expected[65])
-{char actual[65];geo_sha256(bytes,size,actual);return !strcmp(actual,expected);}
+static bool app_candidate_hash_matches(const void *bytes,size_t size,const char expected[65],const void *hashed_bytes)
+{
+    /* The private copy contains exactly the bytes used for expected. This is
+     * an exact cache-key comparison, never a weaker digest. Any changed byte
+     * takes the original SHA path; allocation failure merely disables caching. */
+    if(hashed_bytes&&!memcmp(bytes,hashed_bytes,size))return true;
+    char actual[65];geo_sha256(bytes,size,actual);return !strcmp(actual,expected);
+}
 GeoCandidateStatus app_candidate_seal(AppCandidate *candidate)
 {
     if(!candidate)return GEO_CANDIDATE_INVALID;
-    if(!app_candidate_hash_matches(candidate->before,candidate->snapshot_size,candidate->before_hash))return GEO_CANDIDATE_STATE_CHANGED;
-    if(!app_candidate_hash_matches(candidate->after,candidate->snapshot_size,candidate->after_hash))return GEO_CANDIDATE_STATE_CHANGED;
+    if(!app_candidate_hash_matches(candidate->before,candidate->snapshot_size,candidate->before_hash,candidate->before_bytes))return GEO_CANDIDATE_STATE_CHANGED;
+    if(!app_candidate_hash_matches(candidate->after,candidate->snapshot_size,candidate->after_hash,candidate->after_bytes))return GEO_CANDIDATE_STATE_CHANGED;
     GeoCandidateStatus status=geo_candidate_seal(candidate->core);
     if(status!=GEO_CANDIDATE_OK)return status;
     candidate->sealed=true;return GEO_CANDIDATE_OK;
@@ -91,8 +104,8 @@ GeoCandidateStatus app_candidate_check(const AppCandidate *candidate,const void 
     if(!candidate->sealed)return GEO_CANDIDATE_STATE;
     GeoCandidateStatus status=geo_candidate_check(candidate->core,revision,stamp);
     if(status!=GEO_CANDIDATE_OK)return status;
-    if(!app_candidate_hash_matches(candidate->before,candidate->snapshot_size,candidate->before_hash)||
-       !app_candidate_hash_matches(candidate->after,candidate->snapshot_size,candidate->after_hash))return GEO_CANDIDATE_STATE_CHANGED;
+    if(!app_candidate_hash_matches(candidate->before,candidate->snapshot_size,candidate->before_hash,candidate->before_bytes)||
+       !app_candidate_hash_matches(candidate->after,candidate->snapshot_size,candidate->after_hash,candidate->after_bytes))return GEO_CANDIDATE_STATE_CHANGED;
     return equal(live,candidate->before,opaque)?GEO_CANDIDATE_OK:GEO_CANDIDATE_STATE_CHANGED;
 }
 GeoCandidateStatus app_candidate_publish(AppCandidate *candidate,void *live,uint64_t revision,

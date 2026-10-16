@@ -20,7 +20,7 @@ static int first_error(void)
     system.rule_count=1;system.rules[0].key=1;system.next_rule_key=2;
     strcpy(system.rules[0].name,"rule");system.rules[0].divisions[0]=system.rules[0].divisions[1]=1;
     CHECK(app_grid_system_put(world,&system,3));
-    CHECK(world_find_grid_system(world,5)==geo_grid_systems_at(&world->grid_store,0));
+    CHECK(world_find_grid_system(world,5)==geo_grid_systems_at(&world->geo.grid_store,0));
     CHECK(!grid_systems_rebuild(world,error,sizeof error));
     CHECK(!strcmp(error,"I37: grid-system 5 has an invalid definition"));
     CHECK(app_grid_system_put(world,&system,0));
@@ -49,7 +49,7 @@ static int rejected_cache(void)
     GridBinding binding={0};binding.id=9;binding.boundary_id=71;binding.system_id=5;
     binding.vertex_key=world_find_vertex_keys(world,71)->keys[0][0];
     binding.cell[0]=-2;binding.cell[1]=-3;binding.anchor_num[0]=binding.anchor_num[1]=1;
-    binding.anchor_den[0]=2;binding.anchor_den[1]=3;CHECK(geo_grid_bindings_put(&world->grid_store,&binding));
+    binding.anchor_den[0]=2;binding.anchor_den[1]=3;CHECK(geo_grid_bindings_put(&world->geo.grid_store,&binding));
     ReferenceGrid grid={0};grid.id=10;grid.axis[0].start=999;grid.axis[1].start=888;
     grid.lattice_base[0]=111;grid.lattice_base[1]=222;grid.lattice_step[1]=333;grid.lattice_index[1]=444;
     char error[256];CHECK(!grid_binding_cache(world,world_find_grid_binding(world,9),&grid,error,sizeof error));
@@ -57,7 +57,7 @@ static int rejected_cache(void)
     CHECK(grid.from_binding && grid.binding_id==9 && grid.main_along==2);
     CHECK(grid.axis[0].start==7 && grid.lattice_base[0]==340 && grid.lattice_step[0]==120 && grid.lattice_index[0]==-2);
     CHECK(grid.axis[1].start==888 && grid.lattice_base[1]==222 && grid.lattice_step[1]==333 && grid.lattice_index[1]==444);
-    binding.vertex_key=UINT32_MAX;CHECK(geo_grid_bindings_put(&world->grid_store,&binding));ReferenceGrid before=grid;
+    binding.vertex_key=UINT32_MAX;CHECK(geo_grid_bindings_put(&world->geo.grid_store,&binding));ReferenceGrid before=grid;
     CHECK(!grid_binding_cache(world,world_find_grid_binding(world,9),&grid,error,sizeof error));
     CHECK(!strcmp(error,"D30/I37: grid-binding needs an existing boundary vertex and two infinite axes"));
     CHECK(!memcmp(&before,&grid,sizeof grid));free(world);return 0;

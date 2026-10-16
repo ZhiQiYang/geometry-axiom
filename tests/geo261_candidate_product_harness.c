@@ -26,25 +26,25 @@ static int lifecycle(const char *path)
     CHECK(geo_eval_candidate_id(sources)==id&&geo_eval_base_revision(sources)==revision,"same-resolver-identity");
     CHECK(geo_eval_provider_count(sources)>=4&&geo_eval_node_count(sources)>0,"actual-provider-graph");
     CHECK(!memcmp(before,&g_world,sizeof *before),"preview-no-live-mutation");
-    CHECK(geo_named_values_find(&owner->after.named_values,"x")->value==600,"after-evaluated-value");
+    CHECK(geo_named_values_find(&owner->after.geo.named_values,"x")->value==600,"after-evaluated-value");
     CHECK(line("canvas-pos placement 1 17 29"),"presentation-edit");
     CHECK(g_preview.transaction==owner&&geo_candidate_sources(core)==sources,"preview-retains-owner");
     CHECK(confirm(),"confirm-sealed-candidate");
     CHECK(geo_candidate_state(core)==GEO_CANDIDATE_PUBLISHED&&geo_candidate_id(core)==id&&geo_eval_candidate_id(geo_candidate_sources(core))==id&&geo_eval_is_sealed(geo_candidate_sources(core)),"confirm-same-candidate-revalidated");
     CHECK(geo_candidate_evaluation_generation(core)==2,"confirm-full-revalidation");
-    CHECK(g_definition_revision==revision+1&&geo_named_values_find(&g_world.named_values,"x")->value==600,"one-complete-publication");
-    CHECK(g_world.canvas_pos_count==1&&g_world.canvas_pos[0].x==17&&g_world.canvas_pos[0].y==29,"presentation-preserved");
-    CHECK(line("undo")&&geo_named_values_find(&g_world.named_values,"x")->value==500,"one-history-step");
-    CHECK(g_world.canvas_pos_count==1&&g_world.canvas_pos[0].x==17,"undo-preserves-presentation");
+    CHECK(g_definition_revision==revision+1&&geo_named_values_find(&g_world.geo.named_values,"x")->value==600,"one-complete-publication");
+    CHECK(g_world.app.canvas_pos_count==1&&g_world.app.canvas_pos[0].x==17&&g_world.app.canvas_pos[0].y==29,"presentation-preserved");
+    CHECK(line("undo")&&geo_named_values_find(&g_world.geo.named_values,"x")->value==500,"one-history-step");
+    CHECK(g_world.app.canvas_pos_count==1&&g_world.app.canvas_pos[0].x==17,"undo-preserves-presentation");
     free(before);return 0;
 }
 static int tamper(const char *path,int which)
 {
     CHECK(prepare(path),"setup");CHECK(preview(),"preview-valid");
     World *before=malloc(sizeof *before);CHECK(before,"memory");*before=g_world;
-    if(which==0)++g_preview.transaction->after.timbers[0].size_a;
-    if(which==1)++g_preview.transaction->after.canvas_pos_count;
-    if(which==2)++g_preview.transaction->before.timbers[0].size_a;
+    if(which==0)++g_preview.transaction->after.wood.timbers[0].size_a;
+    if(which==1)++g_preview.transaction->after.app.canvas_pos_count;
+    if(which==2)++g_preview.transaction->before.wood.timbers[0].size_a;
     CHECK(!confirm(),"full-snapshot-tamper-rejected");
     CHECK(!memcmp(before,&g_world,sizeof *before),"tamper-does-not-publish");
     free(before);return 0;
@@ -61,7 +61,7 @@ static int cancelled(const char *path)
 {
     CHECK(prepare(path)&&preview(),"preview-valid");AppWorldCandidate *owner=g_preview.transaction;
     CHECK(line("cancel-preview"),"cancel-success");CHECK(geo_candidate_state(app_candidate_core(owner->control))==GEO_CANDIDATE_DISCARDED,"cancel-terminal");
-    CHECK(!confirm()&&geo_named_values_find(&g_world.named_values,"x")->value==500,"cancel-no-publication");return 0;
+    CHECK(!confirm()&&geo_named_values_find(&g_world.geo.named_values,"x")->value==500,"cancel-no-publication");return 0;
 }
 static int imports(const char *path)
 {
@@ -77,7 +77,7 @@ static int imports(const char *path)
     GeoEvalContext *sources=geo_candidate_sources(core);uint64_t id=geo_candidate_id(core);char token[32];snprintf(token,sizeof token,"%u",g_load_token);
     cmd_load_confirm(token);
     CHECK(geo_candidate_state(core)==GEO_CANDIDATE_PUBLISHED&&geo_candidate_sources(core)==sources&&geo_candidate_id(core)==id,"import-publishes-same-candidate");
-    CHECK(geo_named_values_find(&g_world.named_values,"x")->value==500,"import-complete-root");return 0;
+    CHECK(geo_named_values_find(&g_world.geo.named_values,"x")->value==500,"import-complete-root");return 0;
 }
 int main(int argc,char **argv)
 {

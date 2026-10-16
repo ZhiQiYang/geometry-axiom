@@ -30,15 +30,16 @@ from tests import test_engineering_json as existing_codec
 
 
 class NativeBuild:
-    def __init__(self):
+    def __init__(self, *, kernel_only=False):
         parent = Path(tempfile.gettempdir()) / "geometry-tests"
         parent.mkdir(exist_ok=True)
         self.temp = tempfile.TemporaryDirectory(prefix="geo261-n1a-", dir=parent)
         atexit.register(self.temp.cleanup)
         self.work = Path(self.temp.name)
+        self.kernel_only = kernel_only
         self.kernel = self.work / "isolated-kernel"
         self.kernel.mkdir()
-        for name in ("types.h", "exact.h", "exact.c", "codec.h", "codec.c", "geometry.h", "geometry.c", "clip.h", "clip.c", "grid.h", "grid.c", "parameters.h", "parameters.c", "linear.h", "linear.c", "named_values.h", "named_values.c", "datums.h", "datums.c", "source.h", "source.c", "regions.h", "regions.c", "guides.h", "guides.c", "grid_store.h", "grid_store.c", "candidate.h", "candidate.c", "placements.h", "placements.c"):
+        for name in ("types.h", "exact.h", "exact.c", "codec.h", "codec.c", "geometry.h", "geometry.c", "clip.h", "clip.c", "grid.h", "grid.c", "parameters.h", "parameters.c", "parameter_sources.h", "parameter_sources.c", "linear.h", "linear.c", "named_values.h", "named_values.c", "datums.h", "datums.c", "source.h", "source.c", "regions.h", "regions.c", "guides.h", "guides.c", "grid_store.h", "grid_store.c", "candidate.h", "candidate.c", "placements.h", "placements.c", "placement_sources.h", "placement_sources.c", "versions.h", "versions.c", "enclosure.h", "enclosure.c", "document.h", "document.c"):
             shutil.copy2(ROOT / "geometry-core/kernel" / name, self.kernel / name)
         (self.kernel / "internal").mkdir()
         shutil.copy2(ROOT / "geometry-core/kernel/internal/parameter_store.h", self.kernel / "internal/parameter_store.h")
@@ -48,14 +49,18 @@ class NativeBuild:
         shutil.copy2(ROOT / "geometry-core/kernel/internal/grid_store.h", self.kernel / "internal/grid_store.h")
         shutil.copy2(ROOT / "geometry-core/kernel/internal/guides.h", self.kernel / "internal/guides.h")
         shutil.copy2(ROOT / "geometry-core/kernel/internal/placements.h", self.kernel / "internal/placements.h")
-        self.host = self.work / "isolated-host"
-        self.host.mkdir()
-        for name in ("history.h", "history.c", "app_candidate.h", "app_candidate.c"):
-            shutil.copy2(ROOT / "geometry-app/native" / name, self.host / name)
-        self.woodworking = self.work / "isolated-woodworking"
-        self.woodworking.mkdir()
-        for name in ("members.h", "members.c", "supports.h", "supports.c", "contacts.h", "contacts.c", "engineering.h", "engineering.c", "panel_layout.h", "panel_layout.c", "panel_support.h", "panel_support.c", "boundary_policy.h", "domain_values.h", "section_profile.h", "section_profile.c", "assembly.h", "assembly.c"):
-            shutil.copy2(ROOT / "geometry-templates/woodworking/native" / name, self.woodworking / name)
+        shutil.copy2(ROOT / "geometry-core/kernel/internal/versions.h", self.kernel / "internal/versions.h")
+        shutil.copy2(ROOT / "geometry-core/kernel/internal/enclosures.h", self.kernel / "internal/enclosures.h")
+        shutil.copy2(ROOT / "geometry-core/kernel/internal/document.h", self.kernel / "internal/document.h")
+        if not kernel_only:
+            self.host = self.work / "isolated-host"
+            self.host.mkdir()
+            for name in ("history.h", "history.c", "app_candidate.h", "app_candidate.c"):
+                shutil.copy2(ROOT / "geometry-app/native" / name, self.host / name)
+            self.woodworking = self.work / "isolated-woodworking"
+            self.woodworking.mkdir()
+            for name in ("members.h", "members.c", "supports.h", "supports.c", "contacts.h", "contacts.c", "contact_world.h", "contact_world.c", "contact_sources.h", "contact_sources.c", "cut_list.h", "cut_list.c", "member_declaration.h", "member_declaration.c", "world_validation.h", "world_validation.c", "engineering.h", "engineering.c", "engineering_sources.h", "engineering_sources.c", "engineering_operations.h", "engineering_operations.c", "panel_layout.h", "panel_layout.c", "panel_support.h", "panel_support.c", "boundary_policy.h", "boundary_policy.c", "domain_values.h", "section_profile.h", "section_profile.c", "section_profile_sources.h", "section_profile_sources.c", "assembly.h", "assembly.c", "assembly_sources.h", "assembly_sources.c", "finish.h", "finish.c", "derived_placement.h", "derived_placement.c", "finish_sources.h", "finish_sources.c", "grid_application.h", "grid_application.c", "grid_sources.h", "grid_sources.c", "grid_cells.c", "grid_rules.c", "member_reference.h", "member_reference.c", "document.h", "member_placement.h", "obstacles.h"):
+                shutil.copy2(ROOT / "geometry-templates/woodworking/native" / name, self.woodworking / name)
         self.windows = os.name == "nt"
         self.suffix = ".exe" if self.windows else ""
         self.logs = []
@@ -78,25 +83,49 @@ class NativeBuild:
         self.clip_object = self.compile(self.kernel / "clip.c", "clip")
         self.grid_object = self.compile(self.kernel / "grid.c", "grid")
         self.parameters_object = self.compile(self.kernel / "parameters.c", "parameters")
+        self.parameter_sources_object = self.compile(self.kernel / "parameter_sources.c", "parameter-sources")
         self.linear_object = self.compile(self.kernel / "linear.c", "linear")
         self.named_values_object = self.compile(self.kernel / "named_values.c", "named-values")
         self.datums_object = self.compile(self.kernel / "datums.c", "datums")
         self.source_object = self.compile(self.kernel / "source.c", "source")
         self.candidate_object = self.compile(self.kernel / "candidate.c", "candidate")
         self.placements_object = self.compile(self.kernel / "placements.c", "placements")
+        self.placement_sources_object = self.compile(self.kernel / "placement_sources.c", "placement-sources")
+        self.versions_object = self.compile(self.kernel / "versions.c", "versions")
+        self.enclosure_object = self.compile(self.kernel / "enclosure.c", "enclosure")
+        self.document_object = self.compile(self.kernel / "document.c", "document")
         self.regions_object = self.compile(self.kernel / "regions.c", "regions")
         self.grid_store_object = self.compile(self.kernel / "grid_store.c", "grid-store")
         self.guides_object = self.compile(self.kernel / "guides.c", "guides")
-        self.host_history_object = self.compile(self.host / "history.c", "host-history")
-        self.host_candidate_object = self.compile(self.host / "app_candidate.c", "host-candidate")
-        self.wood_members_object = self.compile(self.woodworking / "members.c", "wood-members")
-        self.wood_supports_object = self.compile(self.woodworking / "supports.c", "wood-supports")
-        self.wood_contacts_object = self.compile(self.woodworking / "contacts.c", "wood-contacts")
-        self.wood_engineering_object = self.compile(self.woodworking / "engineering.c", "wood-engineering")
-        self.wood_panel_layout_object = self.compile(self.woodworking / "panel_layout.c", "wood-panel-layout")
-        self.wood_panel_support_object = self.compile(self.woodworking / "panel_support.c", "wood-panel-support")
-        self.wood_section_profile_object = self.compile(self.woodworking / "section_profile.c", "wood-section-profile")
-        self.wood_assembly_object = self.compile(self.woodworking / "assembly.c", "wood-assembly")
+        if not kernel_only:
+            self.host_history_object = self.compile(self.host / "history.c", "host-history")
+            self.host_candidate_object = self.compile(self.host / "app_candidate.c", "host-candidate")
+            self.wood_members_object = self.compile(self.woodworking / "members.c", "wood-members")
+            self.wood_supports_object = self.compile(self.woodworking / "supports.c", "wood-supports")
+            self.wood_contacts_object = self.compile(self.woodworking / "contacts.c", "wood-contacts")
+            self.wood_contact_world_object = self.compile(self.woodworking / "contact_world.c", "wood-contact-world")
+            self.wood_contact_sources_object = self.compile(self.woodworking / "contact_sources.c", "wood-contact-sources")
+            self.wood_cut_list_object = self.compile(self.woodworking / "cut_list.c", "wood-cut-list")
+            self.wood_member_declaration_object = self.compile(self.woodworking / "member_declaration.c", "wood-member-declaration")
+            self.wood_world_validation_object = self.compile(self.woodworking / "world_validation.c", "wood-world-validation")
+            self.wood_boundary_policy_object = self.compile(self.woodworking / "boundary_policy.c", "wood-boundary-policy")
+            self.wood_engineering_object = self.compile(self.woodworking / "engineering.c", "wood-engineering")
+            self.wood_engineering_sources_object = self.compile(self.woodworking / "engineering_sources.c", "wood-engineering-sources")
+            self.wood_engineering_operations_object = self.compile(self.woodworking / "engineering_operations.c", "wood-engineering-operations")
+            self.wood_panel_layout_object = self.compile(self.woodworking / "panel_layout.c", "wood-panel-layout")
+            self.wood_panel_support_object = self.compile(self.woodworking / "panel_support.c", "wood-panel-support")
+            self.wood_section_profile_object = self.compile(self.woodworking / "section_profile.c", "wood-section-profile")
+            self.wood_section_profile_sources_object = self.compile(self.woodworking / "section_profile_sources.c", "wood-section-profile-sources")
+            self.wood_assembly_object = self.compile(self.woodworking / "assembly.c", "wood-assembly")
+            self.wood_assembly_sources_object = self.compile(self.woodworking / "assembly_sources.c", "wood-assembly-sources")
+            self.wood_finish_object = self.compile(self.woodworking / "finish.c", "wood-finish")
+            self.wood_derived_placement_object = self.compile(self.woodworking / "derived_placement.c", "wood-derived-placement")
+            self.wood_finish_sources_object = self.compile(self.woodworking / "finish_sources.c", "wood-finish-sources")
+            self.wood_grid_application_object = self.compile(self.woodworking / "grid_application.c", "wood-grid-application")
+            self.wood_grid_sources_object = self.compile(self.woodworking / "grid_sources.c", "wood-grid-sources")
+            self.wood_grid_cells_object = self.compile(self.woodworking / "grid_cells.c", "wood-grid-cells")
+            self.wood_grid_rules_object = self.compile(self.woodworking / "grid_rules.c", "wood-grid-rules")
+            self.wood_member_reference_object = self.compile(self.woodworking / "member_reference.c", "wood-member-reference")
         exact_source = self.work / "exact-client.c"
         shutil.copy2(ROOT / "tests/geo261_exact_harness.c", exact_source)
         self.exact_client = self.compile(exact_source, "exact-client")
@@ -122,7 +151,7 @@ class NativeBuild:
         else:
             command = args
         run = subprocess.run(command, cwd=self.work, capture_output=True, text=True, errors="replace", timeout=300)
-        self.logs.append({"command": command, "exit": run.returncode, "stdout": run.stdout, "stderr": run.stderr})
+        self.logs.append({"command": command, "arguments": list(args), "exit": run.returncode, "stdout": run.stdout, "stderr": run.stderr})
         (self.work / "build-log.json").write_text(json.dumps(self.logs, indent=2), encoding="utf-8")
         if run.returncode:
             raise AssertionError("Native compile/link failed (not a valid negative control):\n" + run.stdout + run.stderr)
@@ -152,21 +181,29 @@ class NativeBuild:
         return out
 
     def bridge(self):
+        if self.kernel_only:
+            raise AssertionError("K-only build has no host or woodworking product")
         if self.bridge_object is None:
             self.bridge_object = self.compile(ROOT / "geometry-web/web_bridge.c", "product-bridge", ["GEOMETRY_KERNEL_EXTERNAL=1", "GEOMETRY_WOODWORKING_EXTERNAL=1", "GEOMETRY_HOST_HISTORY_EXTERNAL=1", "GEOMETRY_HOST_CANDIDATE_EXTERNAL=1"])
             self.bridge_exe = self.link("product-bridge", [self.bridge_object, *self.product_objects()])
         return self.bridge_exe
 
     def product_objects(self):
-        return [*self.kernel_objects(), self.wood_members_object, self.wood_supports_object, self.wood_contacts_object, self.wood_engineering_object, self.wood_panel_layout_object, self.wood_panel_support_object, self.wood_section_profile_object, self.wood_assembly_object, self.host_history_object, self.host_candidate_object]
+        if self.kernel_only:
+            raise AssertionError("K-only build has no host or woodworking product")
+        return [*self.kernel_objects(), self.wood_members_object, self.wood_supports_object, self.wood_contacts_object, self.wood_contact_world_object, self.wood_contact_sources_object, self.wood_cut_list_object, self.wood_member_declaration_object, self.wood_world_validation_object, self.wood_boundary_policy_object, self.wood_engineering_object, self.wood_engineering_sources_object, self.wood_engineering_operations_object, self.wood_panel_layout_object, self.wood_panel_support_object, self.wood_section_profile_object, self.wood_section_profile_sources_object, self.wood_assembly_object, self.wood_assembly_sources_object, self.wood_finish_object, self.wood_derived_placement_object, self.wood_finish_sources_object, self.wood_grid_application_object, self.wood_grid_sources_object, self.wood_grid_cells_object, self.wood_grid_rules_object, self.wood_member_reference_object, self.host_history_object, self.host_candidate_object]
 
     def cli(self):
+        if self.kernel_only:
+            raise AssertionError("K-only build has no host or woodworking product")
         if self.cli_exe is None:
             obj = self.compile(ROOT / "current_geometry.c", "product-cli", ["GEOMETRY_KERNEL_EXTERNAL=1", "GEOMETRY_WOODWORKING_EXTERNAL=1", "GEOMETRY_HOST_HISTORY_EXTERNAL=1", "GEOMETRY_HOST_CANDIDATE_EXTERNAL=1"])
             self.cli_exe = self.link("product-cli", [obj, *self.product_objects()])
         return self.cli_exe
 
     def model_base(self):
+        if self.kernel_only:
+            raise AssertionError("K-only build has no host or woodworking product")
         if self.model_base_exe is None:
             self.model_base_object = self.compile(ROOT / "geometry-core/model_base.c", "product-model-base", ["GEOMETRY_KERNEL_EXTERNAL=1", "GEOMETRY_WOODWORKING_EXTERNAL=1", "GEOMETRY_HOST_HISTORY_EXTERNAL=1", "GEOMETRY_HOST_CANDIDATE_EXTERNAL=1"])
             self.model_base_exe = self.link("product-model-base", [self.model_base_object, *self.product_objects()])
@@ -174,7 +211,7 @@ class NativeBuild:
 
     def kernel_objects(self):
         return [self.exact_object, self.codec_object, self.geometry_object, self.clip_object, self.grid_object,
-                self.parameters_object, self.linear_object, self.named_values_object, self.datums_object, self.source_object, self.candidate_object, self.placements_object, self.regions_object, self.grid_store_object, self.guides_object]
+                self.parameters_object, self.parameter_sources_object, self.linear_object, self.named_values_object, self.datums_object, self.source_object, self.candidate_object, self.placements_object, self.placement_sources_object, self.versions_object, self.enclosure_object, self.document_object, self.regions_object, self.grid_store_object, self.guides_object]
 
     def mutant(self, module, before, after, client_object=None):
         text = (self.kernel / (module + ".c")).read_text(encoding="utf-8")
@@ -219,10 +256,19 @@ def native():
     return _BUILD
 
 
+_KERNEL_ONLY_BUILD = None
+def kernel_only_native():
+    """Compile K with neither H nor W source directories in the build closure."""
+    global _KERNEL_ONLY_BUILD
+    if _KERNEL_ONLY_BUILD is None:
+        _KERNEL_ONLY_BUILD = NativeBuild(kernel_only=True)
+    return _KERNEL_ONLY_BUILD
+
+
 class KernelCodec(existing_codec.EngineeringJson):
     @classmethod
     def setUpClass(cls):
-        build = native()
+        build = kernel_only_native()
         cls.work = build.work
         cls.exe = build.codec
         cls.compiler_output = "K-only independent compilation; isolated public source closure"
@@ -245,13 +291,13 @@ class KernelExact(unittest.TestCase):
             for _ in range(40):
                 a, b = Fraction(rng.randint(-10000, 10000), rng.randint(1, 100)), Fraction(rng.randint(1, 10000), rng.randint(1, 100))
                 expected = (lambda: a+b, lambda: a-b, lambda: a*b, lambda: a/b)[operation]()
-                result = exact_call(native().exact, operation, (a.numerator, a.denominator, 0), (b.numerator, b.denominator, 0))
+                result = exact_call(kernel_only_native().exact, operation, (a.numerator, a.denominator, 0), (b.numerator, b.denominator, 0))
                 self.assertEqual((0, expected.numerator, expected.denominator, 0), result)
 
     def test_cross_cancellation_precedes_checked_multiplication(self):
-        self.assertEqual((0, 1, 1, 1), exact_call(native().exact, 2, (2**63-1, 3, 1), (3, 2**63-1, 0)))
-        self.assertEqual((0, 0, 1, 0), exact_call(native().exact, 1, (-17, 23, 0), (-17, 23, 0)))
-        self.assertEqual((0, -2, 3, 0), exact_call(native().exact, 3, (2, 7, 1), (-3, 7, 1)))
+        self.assertEqual((0, 1, 1, 1), exact_call(kernel_only_native().exact, 2, (2**63-1, 3, 1), (3, 2**63-1, 0)))
+        self.assertEqual((0, 0, 1, 0), exact_call(kernel_only_native().exact, 1, (-17, 23, 0), (-17, 23, 0)))
+        self.assertEqual((0, -2, 3, 0), exact_call(kernel_only_native().exact, 3, (2, 7, 1), (-3, 7, 1)))
 
     def test_overflow_unit_failures_preserve_output(self):
         cases = [(0, (2**63-1, 1, 0), (1, 1, 0), 3),
@@ -264,14 +310,14 @@ class KernelExact(unittest.TestCase):
                  (9, (1, 1, 0), (1, 1, 0), 8)]
         for operation, a, b, error in cases:
             with self.subTest(operation=operation, a=a, b=b):
-                self.assertEqual((error, 37, 41, 1), exact_call(native().exact, operation, a, b))
+                self.assertEqual((error, 37, 41, 1), exact_call(kernel_only_native().exact, operation, a, b))
 
     def test_public_normalization_rejects_invalid_values(self):
         for value, expected in [((0, 19, 0), (0, 0, 1, 0)), ((-4, 6, 1), (0, -2, 3, 1)),
                                 ((-2**63, 1, 0), (1, 37, 41, 1)), ((1, 0, 0), (9, 37, 41, 1)),
                                 ((1, -1, 0), (9, 37, 41, 1)), ((1, 1, 4), (10, 37, 41, 1))]:
             with self.subTest(value=value):
-                self.assertEqual(expected, exact_call(native().exact, "normalize", value))
+                self.assertEqual(expected, exact_call(kernel_only_native().exact, "normalize", value))
 
 
 def product_preview(exe, expression, *, duplicate=False):

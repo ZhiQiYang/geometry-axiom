@@ -1,0 +1,203 @@
+#include "engineering_sources.h"
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+
+typedef struct {
+    EngDimensionSource source;
+    EngTarget target;
+    uint32_t placement;
+    int role;
+} WoodDimensionKey;
+typedef struct {int kind;uint32_t version;char id[ENG_ID_MAX];} WoodDefinitionKey;
+typedef struct WoodDimensionResult WoodDimensionResult;
+struct WoodDimensionResult {
+    GeoProviderToken provider;
+    union {WoodDimensionKey dimension;EngBinding binding;} key;
+    size_t key_size;
+    GeoCoord value;
+    GeoCoord *requested_output;
+    size_t attempts;
+    char path[512];
+    WoodDimensionResult *next;
+};
+struct WoodEngineeringSources {
+    GeoEvalContext *evaluation;
+    WoodEngineeringContext context;
+    WoodEngineeringSourceTokens tokens;
+    WoodDimensionResult *results;
+};
+static void wood_source_dimension_copy(EngDimensionSource *out,const EngDimensionSource *in)
+{
+    memset(out,0,sizeof *out);out->kind=in->kind;out->field=in->field;out->value=in->value;
+    memcpy(out->ref,in->ref,strlen(in->ref)+1);out->version=in->version;
+    out->parameter.set=in->parameter.set;out->parameter.parameter_id=in->parameter.parameter_id;out->parameter.field_id=in->parameter.field_id;
+}
+static void wood_source_target_copy(EngTarget *out,const EngTarget *in)
+{memset(out,0,sizeof *out);out->kind=in->kind;out->id=in->id;out->axis=in->axis;out->field=in->field;}
+static WoodDimensionResult *wood_source_result(WoodEngineeringSources *s,GeoProviderToken token,const void *key,size_t size,bool create)
+{
+    for(WoodDimensionResult *r=s->results;r;r=r->next)
+        if(r->provider==token&&r->key_size==size&&!memcmp(&r->key,key,size))return r;
+    if(!create||size>sizeof ((WoodDimensionResult *)0)->key)return NULL;
+    WoodDimensionResult *r=calloc(1,sizeof *r);if(!r)return NULL;
+    r->provider=token;r->key_size=size;memcpy(&r->key,key,size);r->next=s->results;s->results=r;return r;
+}
+static bool wood_source_failure(WoodEngineeringSources *s,GeoSourceStatus status)
+{
+    if(status==GEO_SOURCE_MEMORY)return wood_eng_fail(&s->context,"I10: engineering source graph capacity exceeded");
+    if(status==GEO_SOURCE_CYCLE)return wood_eng_fail(&s->context,"I35: cyclic dimension source");
+    return false;
+}
+static bool wood_source_result_value(WoodEngineeringSources *s,WoodDimensionResult *r,GeoCoord *out,char *path,size_t cap)
+{
+    if(!r)return wood_source_failure(s,GEO_SOURCE_MEMORY);
+    size_t attempts=r->attempts;r->requested_output=out;
+    GeoSourceValue value;
+    GeoSourceStatus status=geo_eval_source(s->evaluation,(GeoSourceRef){r->provider,&r->key,r->key_size},GEO_DEPENDENCY_VALUE_REQUIRED,&value);
+    r->requested_output=NULL;
+    if(status!=GEO_SOURCE_OK){
+        if(path&&r->attempts!=attempts&&r->path[0]!='\177')snprintf(path,cap,"%s",r->path);
+        return wood_source_failure(s,status);
+    }
+    *out=value.as.quantity.num;if(path)snprintf(path,cap,"%s",r->path);return true;
+}
+static bool wood_source_resolve(void *opaque,const EngDimensionSource *source,const EngTarget *target,uint32_t pid,int role,GeoCoord *out,char *path,size_t cap)
+{
+    WoodEngineeringSources *s=opaque;WoodDimensionKey key;memset(&key,0,sizeof key);
+    wood_source_dimension_copy(&key.source,source);wood_source_target_copy(&key.target,target);key.placement=pid;key.role=role;
+    return wood_source_result_value(s,wood_source_result(s,s->tokens.dimension,&key,sizeof key,true),out,path,cap);
+}
+static bool wood_source_binding(void *opaque,const EngBinding *binding,GeoCoord *out,char *path,size_t cap)
+{
+    WoodEngineeringSources *s=opaque;EngBinding key;memset(&key,0,sizeof key);
+    wood_source_target_copy(&key.target,&binding->target);wood_source_dimension_copy(&key.source,&binding->source);
+    key.has_override=binding->has_override;
+    if(key.has_override)wood_source_dimension_copy(&key.override_value,&binding->override_value);
+    return wood_source_result_value(s,wood_source_result(s,s->tokens.binding,&key,sizeof key,true),out,path,cap);
+}
+static bool wood_source_named(void *opaque,const char *name,GeoCoord *out)
+{
+    WoodEngineeringSources *s=opaque;GeoSourceValue value;
+    if(geo_eval_source(s->evaluation,(GeoSourceRef){s->tokens.named,name,strlen(name)},GEO_DEPENDENCY_VALUE_REQUIRED,&value)!=GEO_SOURCE_OK)return false;
+    if(value.kind!=GEO_SOURCE_QUANTITY||value.as.quantity.unit!=GEO_UNIT_LENGTH||value.as.quantity.den!=1)return false;
+    *out=value.as.quantity.num;return true;
+}
+static bool wood_source_parameter(void *opaque,GeoParameterRef ref,GeoCoord *out,char *error,size_t cap)
+{
+    WoodEngineeringSources *s=opaque;
+    /* Retain the established field-kind/integer/range diagnostics before the
+     * shared graph supplies the actual value and transitive AST dependencies. */
+    if(!s->context.parameter(s->context.user,ref,out,error,cap))return false;
+    GeoCoord checked=*out;
+    uint32_t key[]={ref.parameter_id,ref.field_id};GeoSourceValue value;
+    GeoSourceStatus status=geo_eval_source(s->evaluation,(GeoSourceRef){s->tokens.parameter,key,sizeof key},GEO_DEPENDENCY_VALUE_REQUIRED,&value);
+    if(status!=GEO_SOURCE_OK)return wood_source_failure(s,status);
+    if(value.kind!=GEO_SOURCE_QUANTITY||value.as.quantity.unit!=GEO_UNIT_LENGTH||value.as.quantity.den!=1||value.as.quantity.num!=checked)return false;
+    *out=value.as.quantity.num;return true;
+}
+static bool wood_source_definition_key(WoodDefinitionKey *key,int kind,const char *id,uint32_t version)
+{
+    if(!id||strlen(id)>=sizeof key->id||kind<0||kind>2)return false;
+    memset(key,0,sizeof *key);key->kind=kind;key->version=version;memcpy(key->id,id,strlen(id)+1);return true;
+}
+static bool wood_source_definition(void *opaque,int kind,const char *id,uint32_t version)
+{
+    WoodEngineeringSources *s=opaque;WoodDefinitionKey key;
+    if(!wood_source_definition_key(&key,kind,id,version))return false;
+    GeoSourceRef ref={s->tokens.definition,&key,sizeof key};GeoSourceStatus status;
+    if(kind==2)status=geo_eval_depend(s->evaluation,ref,GEO_DEPENDENCY_DEFINITION_REQUIRED);
+    else{GeoSourceValue value;status=geo_eval_source(s->evaluation,ref,GEO_DEPENDENCY_DEFINITION_REQUIRED,&value);}
+    return status==GEO_SOURCE_OK?true:wood_source_failure(s,status);
+}
+static bool wood_source_application(void *opaque,const EngApplication *a)
+{
+    WoodEngineeringSources *s=opaque;WoodDefinitionKey key;GeoSourceValue value;
+    if(!wood_source_definition_key(&key,2,a->id,0))return false;
+    GeoSourceStatus status=geo_eval_source(s->evaluation,(GeoSourceRef){s->tokens.definition,&key,sizeof key},GEO_DEPENDENCY_VALUE_REQUIRED,&value);
+    return status==GEO_SOURCE_OK?true:wood_source_failure(s,status);
+}
+void wood_engineering_sources_bind(WoodEngineeringSources *s,WoodEngineeringContext *context)
+{
+    if(!s||!context)return;
+    context->sources=s;context->resolve_source=wood_source_resolve;context->resolve_binding=wood_source_binding;
+    context->source_named=wood_source_named;context->source_parameter=wood_source_parameter;
+    context->depend_definition=wood_source_definition;context->validate_application=wood_source_application;
+}
+static bool wood_source_describe(void *opaque,const GeoSourceRef *ref,GeoSourceDescriptor *out)
+{
+    WoodEngineeringSources *s=opaque;memset(out,0,sizeof *out);out->context.axis=-1;out->retry_failure=true;
+    if(ref->provider==s->tokens.definition){
+        if(ref->key_size!=sizeof(WoodDefinitionKey))return false;
+        WoodDefinitionKey key;memcpy(&key,ref->key,sizeof key);
+        if(!memchr(key.id,0,sizeof key.id)||key.kind<0||key.kind>2)return false;
+        bool found=false;
+        if(key.kind<2){
+            /* Metadata completion also runs after evaluation has been hashed.
+             * Check the K version and W identity without refreshing W caches. */
+            GeoVersionView version;
+            if(wood_eng_version_view(&s->context,key.kind,key.id,key.version,&version)){
+                EngineeringState *state=s->context.state;
+                size_t count=key.kind?state->method_count:state->material_count;
+                for(size_t i=0;i<count;++i){const EngVersionRef *identity=key.kind?&state->methods[i].ref:&state->materials[i].ref;
+                    if(identity->version==key.version&&!strcmp(identity->id,key.id)){found=true;break;}}
+            }
+        }else found=wood_eng_application(&s->context,key.id)!=NULL;
+        if(!found)return false;out->kind=GEO_SOURCE_DEFINITION;out->unit=GEO_UNIT_SCALAR;return true;
+    }
+    if(!wood_source_result(s,ref->provider,ref->key,ref->key_size,false))return false;
+    out->kind=GEO_SOURCE_QUANTITY;out->unit=GEO_UNIT_LENGTH;return true;
+}
+static bool wood_source_evaluate(void *opaque,GeoEvalContext *ctx,const GeoSourceRef *ref,GeoSourceValue *out)
+{
+    WoodEngineeringSources *s=opaque;if(ctx!=s->evaluation)return false;
+    if(ref->provider==s->tokens.definition){
+        WoodDefinitionKey key;if(ref->key_size!=sizeof key)return false;memcpy(&key,ref->key,sizeof key);
+        const char *content,*schema;size_t content_size;
+        if(key.kind==0){GeoVersionView version;if(!wood_eng_version_view(&s->context,0,key.id,key.version,&version))return false;content=version.content;schema=version.schema;content_size=version.content_length;}
+        else if(key.kind==1){
+            const EngMethodVersion *m=wood_eng_method(&s->context,key.id,key.version);if(!m)return false;
+            GeoVersionView version;if(!wood_eng_version_view(&s->context,1,key.id,key.version,&version))return false;
+            content=version.content;schema=version.schema;content_size=version.content_length;
+            /* Version identities are retained even for currently unused slots;
+             * their field values are evaluated only when the policy selects them. */
+            const EngVersionRef *refs[]={&m->panel,&m->roles[0],&m->roles[1],&m->roles[2]};
+            for(size_t i=0;i<4;++i)if(refs[i]->id[0]){
+                WoodDefinitionKey upstream;if(!wood_source_definition_key(&upstream,0,refs[i]->id,refs[i]->version))return false;
+                if(geo_eval_depend(ctx,(GeoSourceRef){s->tokens.definition,&upstream,sizeof upstream},GEO_DEPENDENCY_DEFINITION_REQUIRED)!=GEO_SOURCE_OK)return false;
+            }
+        }else if(key.kind==2){
+            EngApplication *a=wood_eng_application(&s->context,key.id);if(!a||!wood_eng_validate_application_direct(&s->context,a))return false;
+            content=a->content;schema="woodworking.face-application/1";content_size=strlen(content);
+        }else return false;
+        out->kind=GEO_SOURCE_DEFINITION;out->as.definition=(GeoDefinitionValue){schema,content,content_size};return true;
+    }
+    WoodDimensionResult *result=wood_source_result(s,ref->provider,ref->key,ref->key_size,false);if(!result)return false;
+    /* The legacy policy may write an invalid numeric value into candidate
+     * diagnostic state before rejecting it. Use that exact caller destination;
+     * K still publishes no value for the failed source. */
+    GeoCoord *destination=result->requested_output;if(!destination)return false;
+    ++result->attempts;result->path[0]='\177';result->path[1]=0;
+    bool ok;
+    if(ref->provider==s->tokens.dimension){WoodDimensionKey *key=&result->key.dimension;
+        ok=wood_eng_resolve_direct(&s->context,&key->source,&key->target,key->placement,key->role,destination,result->path,sizeof result->path);
+    }else if(ref->provider==s->tokens.binding)ok=wood_eng_effective_direct(&s->context,&result->key.binding,destination,result->path,sizeof result->path);
+    else return false;
+    if(!ok)return false;result->value=*destination;out->kind=GEO_SOURCE_QUANTITY;out->as.quantity=(GeoQuantity){result->value,1,GEO_UNIT_LENGTH};return true;
+}
+WoodEngineeringSources *wood_engineering_sources_register(GeoEvalContext *ctx,const WoodEngineeringContext *context,WoodEngineeringSourceTokens tokens)
+{
+    if(!ctx||!context||!context->state)return NULL;
+    WoodEngineeringSources *s=calloc(1,sizeof *s);if(!s)return NULL;
+    s->evaluation=ctx;s->context=*context;s->tokens=tokens;wood_engineering_sources_bind(s,&s->context);
+    GeoSourceProvider providers[]={
+        {tokens.dimension,"woodworking.dimension-source","woodworking.dimension-source/1",s,wood_source_describe,wood_source_evaluate},
+        {tokens.binding,"woodworking.dimension-binding","woodworking.dimension-binding/1",s,wood_source_describe,wood_source_evaluate},
+        {tokens.definition,"woodworking.engineering-definition","woodworking.engineering-definition/1",s,wood_source_describe,wood_source_evaluate}};
+    if(!geo_eval_register_many(ctx,providers,3)){wood_engineering_sources_destroy(s);return NULL;}
+    return s;
+}
+void wood_engineering_sources_destroy(WoodEngineeringSources *s)
+{if(s){WoodDimensionResult *r=s->results;while(r){WoodDimensionResult *next=r->next;free(r);r=next;}free(s);}}
+const EngineeringState *wood_engineering_sources_state(const WoodEngineeringSources *s){return s?s->context.state:NULL;}
+GeoEvalContext *wood_engineering_sources_context(const WoodEngineeringSources *s){return s?s->evaluation:NULL;}

@@ -14,8 +14,8 @@ static bool g_boundary_keyed_update;
 static uint32_t g_boundary_keyed_id;
 static const char *app_world_provider_stamp(void)
 {
-    return "native-composition/2;core:parameters,named-values,datums,guides,regions,placements,grid;"
-        "wood:engineering,members,supports,contacts,panel;host:history,candidate";
+    return "native-composition/5;core:typed-definitions,linear-graph,parameter-ast,parameters,named-values,datums,guides,regions,placements,grid;"
+        "wood:engineering-source-graph,members,supports,contacts,panel;host:history,candidate";
 }
 static void app_world_candidate_destroy(AppWorldCandidate *candidate)
 {if(candidate){app_candidate_destroy(candidate->control);free(candidate);}}
@@ -27,8 +27,8 @@ static AppWorldCandidate *app_world_candidate_create(const World *live)
         ++g_app_candidate_serial,g_definition_revision,app_world_provider_stamp());
     if(!candidate->control){free(candidate);return NULL;}
 #define APP_BIND_CORE(field) \
-    if(app_candidate_bind_core(candidate->control,"core." #field,offsetof(World,field), \
-        sizeof candidate->after.field)!=GEO_CANDIDATE_OK){app_world_candidate_destroy(candidate);return NULL;}
+    if(app_candidate_bind_core(candidate->control,"core." #field,offsetof(World,geo)+offsetof(GeoDocument,field), \
+        sizeof candidate->after.geo.field)!=GEO_CANDIDATE_OK){app_world_candidate_destroy(candidate);return NULL;}
     APP_BIND_CORE(parameters)
     APP_BIND_CORE(named_values)
     APP_BIND_CORE(datum_planes)
@@ -36,6 +36,8 @@ static AppWorldCandidate *app_world_candidate_create(const World *live)
     APP_BIND_CORE(region_data)
     APP_BIND_CORE(placement_data)
     APP_BIND_CORE(grid_store)
+    APP_BIND_CORE(version_store)
+    APP_BIND_CORE(enclosures)
 #undef APP_BIND_CORE
     return candidate;
 }
@@ -55,6 +57,11 @@ static void app_world_candidate_replace(void *live,const void *after,void *opaqu
 }
 static bool app_world_candidate_seal(AppWorldCandidate *candidate)
 {
+    GeoEvalContext *sources=geo_candidate_sources(app_candidate_core(candidate->control));
+    for(size_t i=0;i<geo_eval_node_count(sources);++i){GeoSourceNodeView node;GeoSourceDescriptor descriptor;
+        if(!geo_eval_node_at(sources,i,&node)||(!node.described&&
+            geo_eval_describe(sources,node.source,&descriptor)!=GEO_SOURCE_OK))return false;
+    }
     if(app_candidate_seal(candidate->control)!=GEO_CANDIDATE_OK)return false;
     geo_sha256(&candidate->operation,sizeof candidate->operation,candidate->operation_seal);return true;
 }

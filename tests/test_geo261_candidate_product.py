@@ -71,9 +71,12 @@ class CandidateProduct(unittest.TestCase):
 
     def test_reset_and_default_replace_complete_world_and_keep_old_history_policy(self):
         with _bridge.BridgeSession(native().bridge()) as session:
-            initial=session.command('dump')['text'];self.assertIn('surface',initial)
+            initial=session.command('dump')['text']
+            self.assertIn('boundary 1 outline ',initial)
+            self.assertIn('placement 1 on boundary 1 ',initial)
             self.assertTrue(session.command('reset')['ok'])
-            empty=session.command('dump')['text'];self.assertNotIn('surface',empty);self.assertNotIn('timber',empty)
+            empty=session.command('dump')['text']
+            self.assertFalse(any(row.startswith(('boundary ','placement ','timber ')) for row in empty.splitlines()))
             self.assertFalse(session.line('undo')['ok'])
             self.assertTrue(session.command('default')['ok'])
             self.assertEqual(initial,session.command('dump')['text'])

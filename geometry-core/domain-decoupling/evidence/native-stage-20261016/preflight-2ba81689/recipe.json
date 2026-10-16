@@ -1,0 +1,212 @@
+{
+  "source": "2ba81689dc78005d5347644186049d10e7f56fb3",
+  "label": "native-candidate-2ba81689-v1",
+  "modules": [
+    "tests.test_geo261_native_entrypoints",
+    "tests.test_geo261_native_candidate",
+    "tests.test_geo261_host_candidate",
+    "tests.test_geo261_native_placements",
+    "tests.test_geo261_domain_product",
+    "tests.test_geo261_candidate_product",
+    "tests.test_geo261_staged_candidate_graph",
+    "tests.test_geo261_wood_assembly",
+    "tests.test_geo261_wood_section_profile",
+    "tests.test_geo261_candidate_cache",
+    "tests.test_geo261_contact_sources",
+    "tests.test_geo261_engineering_sources",
+    "tests.test_geo261_finish_sources",
+    "tests.test_geo261_graph_product",
+    "tests.test_geo261_grid_sources",
+    "tests.test_geo261_member_reference",
+    "tests.test_geo261_native_grid_rules",
+    "tests.test_geo261_native_versions",
+    "tests.test_geo261_parameter_sources",
+    "tests.test_geo261_placement_sources",
+    "tests.test_geo261_section_profile_sources",
+    "tests.test_geo261_source_describe",
+    "tests.test_geo261_version_activation",
+    "tests.test_geo261_wood_contact_world",
+    "tests.test_geo261_wood_derived_placement",
+    "tests.test_geo261_wood_engineering_operations",
+    "tests.test_geo261_wood_finish",
+    "tests.test_geo261_wood_grid_application",
+    "tests.test_geo261_wood_grid_cells",
+    "tests.test_geo261_wood_grid_engineering",
+    "tests.test_geo261_wood_member_declaration",
+    "tests.test_geo261_wood_report_policy",
+    "tests.test_geo261_wood_world_validation"
+  ],
+  "module_counts": {
+    "tests.test_geo261_native_entrypoints": 3,
+    "tests.test_geo261_native_candidate": 17,
+    "tests.test_geo261_host_candidate": 17,
+    "tests.test_geo261_native_placements": 12,
+    "tests.test_geo261_domain_product": 9,
+    "tests.test_geo261_candidate_product": 11,
+    "tests.test_geo261_staged_candidate_graph": 7,
+    "tests.test_geo261_wood_assembly": 13,
+    "tests.test_geo261_wood_section_profile": 12,
+    "tests.test_geo261_candidate_cache": 18,
+    "tests.test_geo261_contact_sources": 12,
+    "tests.test_geo261_engineering_sources": 8,
+    "tests.test_geo261_finish_sources": 8,
+    "tests.test_geo261_graph_product": 5,
+    "tests.test_geo261_grid_sources": 8,
+    "tests.test_geo261_member_reference": 11,
+    "tests.test_geo261_native_grid_rules": 9,
+    "tests.test_geo261_native_versions": 14,
+    "tests.test_geo261_parameter_sources": 11,
+    "tests.test_geo261_placement_sources": 21,
+    "tests.test_geo261_section_profile_sources": 9,
+    "tests.test_geo261_source_describe": 7,
+    "tests.test_geo261_version_activation": 10,
+    "tests.test_geo261_wood_contact_world": 10,
+    "tests.test_geo261_wood_derived_placement": 14,
+    "tests.test_geo261_wood_engineering_operations": 15,
+    "tests.test_geo261_wood_finish": 12,
+    "tests.test_geo261_wood_grid_application": 11,
+    "tests.test_geo261_wood_grid_cells": 13,
+    "tests.test_geo261_wood_grid_engineering": 14,
+    "tests.test_geo261_wood_member_declaration": 9,
+    "tests.test_geo261_wood_report_policy": 8,
+    "tests.test_geo261_wood_world_validation": 14
+  },
+  "groups": {
+    "actual-entrypoints": [
+      "tests.test_geo261_native_entrypoints"
+    ],
+    "kernel-candidate": [
+      "tests.test_geo261_native_candidate"
+    ],
+    "host-candidate": [
+      "tests.test_geo261_host_candidate"
+    ],
+    "native-placements": [
+      "tests.test_geo261_native_placements"
+    ],
+    "domain-product": [
+      "tests.test_geo261_domain_product"
+    ],
+    "candidate-product": [
+      "tests.test_geo261_candidate_product"
+    ],
+    "staged-candidate-graph": [
+      "tests.test_geo261_staged_candidate_graph"
+    ],
+    "wood-assembly": [
+      "tests.test_geo261_wood_assembly"
+    ],
+    "wood-section-profile": [
+      "tests.test_geo261_wood_section_profile"
+    ],
+    "candidate-cache": [
+      "tests.test_geo261_candidate_cache"
+    ],
+    "contact-sources": [
+      "tests.test_geo261_contact_sources"
+    ],
+    "engineering-sources": [
+      "tests.test_geo261_engineering_sources"
+    ],
+    "finish-sources": [
+      "tests.test_geo261_finish_sources"
+    ],
+    "graph-product": [
+      "tests.test_geo261_graph_product"
+    ],
+    "grid-sources": [
+      "tests.test_geo261_grid_sources"
+    ],
+    "member-reference": [
+      "tests.test_geo261_member_reference"
+    ],
+    "native-grid-rules": [
+      "tests.test_geo261_native_grid_rules"
+    ],
+    "native-versions": [
+      "tests.test_geo261_native_versions"
+    ],
+    "parameter-sources": [
+      "tests.test_geo261_parameter_sources"
+    ],
+    "placement-sources": [
+      "tests.test_geo261_placement_sources"
+    ],
+    "section-profile-sources": [
+      "tests.test_geo261_section_profile_sources"
+    ],
+    "source-describe": [
+      "tests.test_geo261_source_describe"
+    ],
+    "version-activation": [
+      "tests.test_geo261_version_activation"
+    ],
+    "wood-contact-world": [
+      "tests.test_geo261_wood_contact_world"
+    ],
+    "wood-derived-placement": [
+      "tests.test_geo261_wood_derived_placement"
+    ],
+    "wood-engineering-operations": [
+      "tests.test_geo261_wood_engineering_operations"
+    ],
+    "wood-finish": [
+      "tests.test_geo261_wood_finish"
+    ],
+    "wood-grid-application": [
+      "tests.test_geo261_wood_grid_application"
+    ],
+    "wood-grid-cells": [
+      "tests.test_geo261_wood_grid_cells"
+    ],
+    "wood-grid-engineering": [
+      "tests.test_geo261_wood_grid_engineering"
+    ],
+    "wood-member-declaration": [
+      "tests.test_geo261_wood_member_declaration"
+    ],
+    "wood-report-policy": [
+      "tests.test_geo261_wood_report_policy"
+    ],
+    "wood-world-validation": [
+      "tests.test_geo261_wood_world_validation"
+    ]
+  },
+  "group_counts": {
+    "actual-entrypoints": 3,
+    "kernel-candidate": 17,
+    "host-candidate": 17,
+    "native-placements": 12,
+    "domain-product": 9,
+    "candidate-product": 11,
+    "staged-candidate-graph": 7,
+    "wood-assembly": 13,
+    "wood-section-profile": 12,
+    "candidate-cache": 18,
+    "contact-sources": 12,
+    "engineering-sources": 8,
+    "finish-sources": 8,
+    "graph-product": 5,
+    "grid-sources": 8,
+    "member-reference": 11,
+    "native-grid-rules": 9,
+    "native-versions": 14,
+    "parameter-sources": 11,
+    "placement-sources": 21,
+    "section-profile-sources": 9,
+    "source-describe": 7,
+    "version-activation": 10,
+    "wood-contact-world": 10,
+    "wood-derived-placement": 14,
+    "wood-engineering-operations": 15,
+    "wood-finish": 12,
+    "wood-grid-application": 11,
+    "wood-grid-cells": 13,
+    "wood-grid-engineering": 14,
+    "wood-member-declaration": 9,
+    "wood-report-policy": 8,
+    "wood-world-validation": 14
+  },
+  "expected_tests": 372,
+  "scope": "Original 14ab 9 modules / 101 methods in unchanged order plus ALL 24 added test_geo261 modules from git diff 14ab..2ba. Original source test timeouts unchanged. Full aggregate, PF3, section-original27, and browser execution excluded from this receipt."
+}

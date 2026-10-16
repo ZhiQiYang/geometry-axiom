@@ -7,7 +7,7 @@ static bool eng_definition_hash(const World *w,char hash[65])
 {
     World *copy=malloc(sizeof *copy);FILE *file=tmpfile();
     if(!copy||!file){free(copy);if(file)fclose(file);return false;}
-    *copy=*w;copy->canvas_pos_count=0;world_dump_dsl(copy,file);free(copy);
+    *copy=*w;copy->app.canvas_pos_count=0;world_dump_dsl(copy,file);free(copy);
     if(ferror(file)||fflush(file)||fseek(file,0,SEEK_END)){fclose(file);return false;}
     long n=ftell(file);if(n<0||n>ENG_INPUT_MAX||fseek(file,0,SEEK_SET)){fclose(file);return false;}
     char *text=malloc((size_t)n+1);if(!text){fclose(file);return false;}
@@ -19,9 +19,9 @@ static void json_engineering_capabilities(const World *w)
     /* panel-fill/1 is required by scenes holding finish surfaces (I56 adds its two prerequisites), but it is not
      * advertised as supported: PF-1 implements only the finish-surface records, and I32 forbids claiming the
      * whole capability.  panel-fill-native/1 + panel-fill-read report the supported subset. */
-    bool fs=fs_used(w),eng=engineering_used(w)||fs,par=geo_parameters_card_count(&w->parameters)||fs,first=true;
+    bool fs=fs_used(w),eng=engineering_used(w)||fs,par=geo_parameters_card_count(&w->geo.parameters)||fs,first=true;
     const struct {bool used;const char *name;} required[]={{eng,"engineering-spec/1"},{par,"parameters/1"},{assembly_used(w),ASM_CAPABILITY},
-        {w->assembly.instance_count!=0,ASM_GENERATION_CAPABILITY},{grid_subdivision_used(w),GRID_SUBDIVISION_CAPABILITY},{sp_used(w),SP_CAPABILITY},{fs,FS_CAPABILITY}};
+        {w->wood.assembly.instance_count!=0,ASM_GENERATION_CAPABILITY},{grid_subdivision_used(w),GRID_SUBDIVISION_CAPABILITY},{sp_used(w),SP_CAPABILITY},{fs,FS_CAPABILITY}};
     fputs("\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\"],\"required_capabilities\":[",stdout);
     for(size_t i=0;i<sizeof required/sizeof required[0];++i)if(required[i].used){if(!first)putchar(',');first=false;js_string(required[i].name);}
     putchar(']');
@@ -30,7 +30,7 @@ static void json_engineering_capabilities(const World *w)
 static void json_engineering_sources(const World *w)
 {
     putchar('[');
-    for(size_t i=0;i<w->engineering.binding_count;++i){const EngBinding *b=&w->engineering.bindings[i];char source[640],override[640],path[400];Coord value;
+    for(size_t i=0;i<w->wood.engineering.binding_count;++i){const EngBinding *b=&w->wood.engineering.bindings[i];char source[640],override[640],path[400];Coord value;
         eng_source_json(&b->source,source,sizeof source);if(b->has_override)eng_source_json(&b->override_value,override,sizeof override);else snprintf(override,sizeof override,"null");
         printf("%s{\"target\":",i?",":"");eng_target_json(&b->target,stdout);printf(",\"source\":%s,\"override\":%s,\"effective\":",source,override);
         if(eng_effective((World*)w,b,&value,path,sizeof path)){printf("%lld,\"path\":",(long long)value);js_string(path);}else{fputs("null,\"path\":null,\"error\":",stdout);js_string(g_engineering_error);}putchar('}');
@@ -41,27 +41,27 @@ static void json_panel_fill_state(const World *w);
 static void json_engineering_state(const World *w,bool geometry)
 {
     putchar('{');json_engineering_capabilities(w);fputs(",\"specs\":[",stdout);
-    for(size_t i=0;i<geo_named_values_count(&w->named_values);++i){if(i)putchar(',');fputs("{\"name\":",stdout);js_string(geo_named_values_at(&w->named_values,i)->name);printf(",\"value\":%lld}",(long long)geo_named_values_at(&w->named_values,i)->value);}
+    for(size_t i=0;i<geo_named_values_count(&w->geo.named_values);++i){if(i)putchar(',');fputs("{\"name\":",stdout);js_string(geo_named_values_at(&w->geo.named_values,i)->name);printf(",\"value\":%lld}",(long long)geo_named_values_at(&w->geo.named_values,i)->value);}
     fputs("],\"materials\":[",stdout);
-    for(size_t i=0;i<w->engineering.material_count;++i){const EngMaterialVersion *m=&w->engineering.materials[i];printf("%s%.*s,\"fingerprint\":\"%s\",\"archived\":%s}",i?",":"",(int)strlen(m->content)-1,m->content,m->fingerprint,m->archived?"true":"false");}
+    for(size_t i=0;i<w->wood.engineering.material_count;++i){const EngMaterialVersion *m=eng_material_at(w,i);if(!m){printf("%snull",i?",":"");continue;}printf("%s%.*s,\"fingerprint\":\"%s\",\"archived\":%s}",i?",":"",(int)strlen(m->content)-1,m->content,m->fingerprint,m->archived?"true":"false");}
     fputs("],\"methods\":[",stdout);
-    for(size_t i=0;i<w->engineering.method_count;++i){const EngMethodVersion *m=&w->engineering.methods[i];printf("%s%.*s,\"fingerprint\":\"%s\",\"archived\":%s}",i?",":"",(int)strlen(m->content)-1,m->content,m->fingerprint,m->archived?"true":"false");}
+    for(size_t i=0;i<w->wood.engineering.method_count;++i){const EngMethodVersion *m=eng_method_at(w,i);if(!m){printf("%snull",i?",":"");continue;}printf("%s%.*s,\"fingerprint\":\"%s\",\"archived\":%s}",i?",":"",(int)strlen(m->content)-1,m->content,m->fingerprint,m->archived?"true":"false");}
     fputs("],\"applications\":[",stdout);
-    for(size_t i=0;i<w->engineering.application_count;++i){const EngApplication *a=&w->engineering.applications[i];printf("%s%.*s,\"bindings\":[",i?",":"",(int)strlen(a->content)-1,a->content);bool first=true;
-        for(size_t k=0;k<w->engineering.binding_count;++k){const EngBinding *b=&w->engineering.bindings[k];if(b->source.kind!=ENG_APPLICATION||strcmp(b->source.ref,a->id))continue;if(!first)putchar(',');first=false;eng_target_json(&b->target,stdout);}fputs("]}",stdout);
+    for(size_t i=0;i<w->wood.engineering.application_count;++i){const EngApplication *a=&w->wood.engineering.applications[i];printf("%s%.*s,\"bindings\":[",i?",":"",(int)strlen(a->content)-1,a->content);bool first=true;
+        for(size_t k=0;k<w->wood.engineering.binding_count;++k){const EngBinding *b=&w->wood.engineering.bindings[k];if(b->source.kind!=ENG_APPLICATION||strcmp(b->source.ref,a->id))continue;if(!first)putchar(',');first=false;eng_target_json(&b->target,stdout);}fputs("]}",stdout);
     }
     fputs("],\"sources\":",stdout);json_engineering_sources(w);
     fputs(",\"parameters\":[",stdout);
-    for(size_t i=0;i<geo_parameters_card_count(&w->parameters);++i){if(i)putchar(',');parameter_json_card(w,&geo_parameters_cards(&w->parameters)[i],stdout,true);}putchar(']');
+    for(size_t i=0;i<geo_parameters_card_count(&w->geo.parameters);++i){if(i)putchar(',');parameter_json_card(w,&geo_parameters_cards(&w->geo.parameters)[i],stdout,true);}putchar(']');
     fputs(",\"assembly\":",stdout);json_assembly_state(w,false);
     fputs(",\"sectionProfiles\":",stdout);json_section_profile_state(w);
-    if(geometry){fputs(",\"geometry\":{\"grids\":[",stdout);for(size_t i=0;i<w->grid_count;++i){if(i)putchar(',');json_reference_grid(w,&w->grids[i]);}
-        fputs("],\"gridSystems\":[",stdout);for(size_t i=0;i<geo_grid_systems_count(&w->grid_store);++i){if(i)putchar(',');json_grid_system(w,geo_grid_systems_at(&w->grid_store,i));}
-        fputs("],\"datums\":[",stdout);for(size_t i=0;i<geo_datums_count(&w->datum_planes);++i){const GeoDatum *d=geo_datums_at(&w->datum_planes,i);printf("%s{\"id\":%u,\"position\":%lld,\"expression\":",i?",":"",d->id,(long long)d->position);js_string(app_datum_expression(w,d->id));putchar('}');}
-        fputs("],\"guides\":[",stdout);for(size_t i=0;i<geo_guides_count(&w->guide_lines);++i){if(i)putchar(',');json_reference_guide(w,i);}
-        fputs("],\"timbers\":[",stdout);for(size_t i=0;i<w->timber_count;++i){printf("%s{\"id\":%u,\"role\":",i?",":"",w->timbers[i].id);js_string(timber_role_name(w->timbers[i].role));fputs(",\"geometry\":",stdout);json_reference_geometry(w,(int)i);putchar('}');}fputs("]}",stdout);
+    if(geometry){fputs(",\"geometry\":{\"grids\":[",stdout);for(size_t i=0;i<w->wood.grid_applications.count;++i){if(i)putchar(',');json_reference_grid(w,&w->wood.grid_applications.items[i]);}
+        fputs("],\"gridSystems\":[",stdout);for(size_t i=0;i<geo_grid_systems_count(&w->geo.grid_store);++i){if(i)putchar(',');json_grid_system(w,geo_grid_systems_at(&w->geo.grid_store,i));}
+        fputs("],\"datums\":[",stdout);for(size_t i=0;i<geo_datums_count(&w->geo.datum_planes);++i){const GeoDatum *d=geo_datums_at(&w->geo.datum_planes,i);printf("%s{\"id\":%u,\"position\":%lld,\"expression\":",i?",":"",d->id,(long long)d->position);js_string(app_datum_expression(w,d->id));putchar('}');}
+        fputs("],\"guides\":[",stdout);for(size_t i=0;i<geo_guides_count(&w->geo.guide_lines);++i){if(i)putchar(',');json_reference_guide(w,i);}
+        fputs("],\"timbers\":[",stdout);for(size_t i=0;i<w->wood.timber_count;++i){printf("%s{\"id\":%u,\"role\":",i?",":"",w->wood.timbers[i].id);js_string(timber_role_name(w->wood.timbers[i].role));fputs(",\"geometry\":",stdout);json_reference_geometry(w,(int)i);putchar('}');}fputs("]}",stdout);
     }
-    if(w->finish_surfaces.fill_count){fputs(",\"panelFill\":",stdout);json_panel_fill_state(w);}
+    if(w->wood.finish_surfaces.fill_count){fputs(",\"panelFill\":",stdout);json_panel_fill_state(w);}
     putchar('}');
 }
 static void cmd_engineering_read(void)
@@ -103,7 +103,7 @@ static bool app_batch_candidate_apply(void *after,GeoEvalContext *sources,void *
     if(ok){const World *previous=g_subgrid_before;bool capturing=g_reference_capturing;g_reference_capturing=true;g_reference_trial=*candidate;
         g_subgrid_before=call->before;ok=world_revalidate(candidate);g_subgrid_before=previous;g_reference_capturing=capturing;
         if(!ok){*candidate=g_reference_trial;if(!g_engineering_error[0])eng_fail(g_revalidate_error[0]?g_revalidate_error:"I35: candidate geometry is invalid");}}
-    for(size_t i=0;i<candidate->timber_count&&ok;++i)if(!candidate->timbers[i].placed){ok=eng_fail("I9: candidate still contains an unplaced timber");}
+    for(size_t i=0;i<candidate->wood.timber_count&&ok;++i)if(!candidate->wood.timbers[i].placed){ok=eng_fail("I9: candidate still contains an unplaced timber");}
     return ok;
 }
 /* Shared candidate flow. Each caller keeps its schema, operation, preview JSON, and token kind. */
