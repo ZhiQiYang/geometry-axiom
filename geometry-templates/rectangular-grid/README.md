@@ -67,6 +67,8 @@ requires the link diagnostic to identify `geo_interval_subdivide`. That link
 failure proves the required dependency and is **not** counted as a killed
 semantic mutant.
 
-Set `GEOMETRY_RECTANGULAR_TEMPLATE_EVIDENCE` to a JSON output path to retain
+Set `GEO261_RECTANGULAR_EVIDENCE` to a JSON output path to retain
 the exact compiler/link commands, native case exits and output. The ordinary
 test runner's source SHA and discovery-count receipt should accompany it.
+This test-only destination survives `run_all.py` clearing inherited `GEOMETRY_*`
+inputs; it does not alter compiler selection, product behavior or test results.

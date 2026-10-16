@@ -93,7 +93,7 @@ class IsolatedNativeBuild:
             raise
 
     def close(self):
-        destination = os.environ.get("GEOMETRY_RECTANGULAR_TEMPLATE_EVIDENCE")
+        destination = os.environ.get("GEO261_RECTANGULAR_EVIDENCE")
         if destination:
             path = Path(destination)
             path.parent.mkdir(parents=True, exist_ok=True)
