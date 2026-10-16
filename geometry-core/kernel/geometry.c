@@ -470,6 +470,26 @@ bool geo_region_is_valid(const GeoRegionView *b)
                     return false;
                 }
             }
+            /* Vertex tests cover containment and every boundary contact, but
+             * two orthogonal rings can cross with all vertices outside. */
+            for (size_t i = 0; i < hole->count; ++i) {
+                GeoPoint2 a = hole->v[i];
+                GeoPoint2 c = hole->v[(i + 1) % hole->count];
+                for (size_t j = 0; j < other->count; ++j) {
+                    GeoPoint2 d = other->v[j];
+                    GeoPoint2 e = other->v[(j + 1) % other->count];
+                    GeoPoint2 h1, h2, v1, v2;
+                    if ((a.v == c.v) == (d.v == e.v)) continue;
+                    if (a.v == c.v) { h1 = a; h2 = c; v1 = d; v2 = e; }
+                    else            { h1 = d; h2 = e; v1 = a; v2 = c; }
+                    if (v1.u > geo_coord_min(h1.u, h2.u) &&
+                        v1.u < geo_coord_max(h1.u, h2.u) &&
+                        h1.v > geo_coord_min(v1.v, v2.v) &&
+                        h1.v < geo_coord_max(v1.v, v2.v)) {
+                        return false; /* GEO261_HOLE_EDGE_CROSSING */
+                    }
+                }
+            }
         }
     }
 
@@ -536,24 +556,12 @@ bool geo_region_contains_rect(
             }
         }
 
-        /* 孔整個罩住矩形（矩形四角都在孔內）。 */
-        if (geo_loop_contains_point(hole, (GeoPoint2){ min_u + 1, min_v + 1 }) &&
-            !geo_loop_point_on_edge(hole, (GeoPoint2){ min_u + 1, min_v + 1 })) {
-            /* min+1 只是代表點：四角嚴格在孔內才算罩住。
-             * 用四角逐一判定較穩。 */
-            GeoPoint2 corners[4] = {
-                { min_u, min_v }, { max_u, min_v },
-                { max_u, max_v }, { min_u, max_v }
-            };
-            size_t inside = 0;
-            for (size_t i = 0; i < 4; ++i) {
-                if (geo_loop_contains_point(hole, corners[i])) {
-                    ++inside;
-                }
-            }
-            if (inside == 4) {
-                return false;
-            }
+        /* No hole edge enters the open rectangle, so its interior is either
+         * wholly inside or wholly outside this hole. Test its exact center:
+         * min+1 can land on an edge when a rectangle dimension is one mm.
+         * The helper doubles bounded D1 coordinates; no rounding or epsilon. */
+        if (geo_loop_rect_center_inside(hole, min_u, min_v, max_u, max_v)) {
+            return false; /* GEO261_HOLE_RECT_CENTER */
         }
     }
 

@@ -87,6 +87,7 @@ PY_NEEDS = {
     'test_geo261_native_parameters': [],
     'test_geo261_draw_annotation': [],
     'test_geo261_native_linear': [],
+    'test_geo261_region_edges': [],  # Builds isolated K and its own same-source bridge.
     'test_grid_system_contract': ['bridge'],
     'test_grid_subdivision_oracle': ['bridge'],
     'test_grid_trial_contract': ['bridge'],
