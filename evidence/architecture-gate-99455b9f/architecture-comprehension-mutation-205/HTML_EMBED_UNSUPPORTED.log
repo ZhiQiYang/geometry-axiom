@@ -1,0 +1,57 @@
+test_html_iframe_source_document_fails_closed (__main__.ArchitectureContract.test_html_iframe_source_document_fails_closed) ... FAIL
+test_html_object_data_document_fails_closed (__main__.ArchitectureContract.test_html_object_data_document_fails_closed) ... FAIL
+test_html_embed_source_document_fails_closed (__main__.ArchitectureContract.test_html_embed_source_document_fails_closed) ... FAIL
+test_html_legacy_frame_source_fails_closed (__main__.ArchitectureContract.test_html_legacy_frame_source_fails_closed) ... FAIL
+
+======================================================================
+FAIL: test_html_iframe_source_document_fails_closed (__main__.ArchitectureContract.test_html_iframe_source_document_fails_closed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 1175, in test_html_iframe_source_document_fails_closed
+    self.rejects("HTML_EMBED_UNSUPPORTED")
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+======================================================================
+FAIL: test_html_object_data_document_fails_closed (__main__.ArchitectureContract.test_html_object_data_document_fails_closed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 1180, in test_html_object_data_document_fails_closed
+    self.rejects("HTML_EMBED_UNSUPPORTED")
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+======================================================================
+FAIL: test_html_embed_source_document_fails_closed (__main__.ArchitectureContract.test_html_embed_source_document_fails_closed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 1185, in test_html_embed_source_document_fails_closed
+    self.rejects("HTML_EMBED_UNSUPPORTED")
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+======================================================================
+FAIL: test_html_legacy_frame_source_fails_closed (__main__.ArchitectureContract.test_html_legacy_frame_source_fails_closed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 1190, in test_html_legacy_frame_source_fails_closed
+    self.rejects("HTML_EMBED_UNSUPPORTED")
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.067s
+
+FAILED (failures=4)

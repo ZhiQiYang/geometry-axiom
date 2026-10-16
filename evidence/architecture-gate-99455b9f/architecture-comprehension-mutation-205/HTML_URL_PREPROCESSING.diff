@@ -1,0 +1,11 @@
+--- tests/architecture_contract.py
++++ TEMP/architecture_contract.py
+@@ -1318,7 +1318,7 @@
+                     elif value:
+                         # Browser URL preprocessing removes embedded ASCII tab /
+                         # CR / LF and trims leading/trailing C0 controls + space.
+-                        url_value = value.translate({9: None, 10: None, 13: None}).strip("".join(map(chr, range(33))))
++                        url_value = value.lstrip()  # TEMP removed HTML_URL_PREPROCESSING
+                         if url_value.lower().startswith("javascript:"):
+                             scanner.scan_javascript(path, url_value.split(":", 1)[1], line - 1)
+                 if tag != "script":

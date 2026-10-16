@@ -1,0 +1,18 @@
+test_trusted_vendor_digest_is_still_mandatory_and_current (__main__.ArchitectureContract.test_trusted_vendor_digest_is_still_mandatory_and_current) ... FAIL
+
+======================================================================
+FAIL: test_trusted_vendor_digest_is_still_mandatory_and_current (__main__.ArchitectureContract.test_trusted_vendor_digest_is_still_mandatory_and_current)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 768, in test_trusted_vendor_digest_is_still_mandatory_and_current
+    self.rejects("VENDOR_DIGEST")
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+----------------------------------------------------------------------
+Ran 1 test in 0.023s
+
+FAILED (failures=1)

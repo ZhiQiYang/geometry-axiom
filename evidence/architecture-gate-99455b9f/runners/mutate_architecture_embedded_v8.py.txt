@@ -1,0 +1,67 @@
+"""TEMP controls for embedded HTML contexts, destructured keys and C BOM handling."""
+import ast
+import hashlib
+import importlib.machinery
+import importlib.util
+import json
+from pathlib import Path
+import sys
+
+BASE = Path(__file__).with_name('mutate_architecture_adjacent_v7.py.txt')
+loader = importlib.machinery.SourceFileLoader('architecture_mutation_v7', str(BASE))
+spec = importlib.util.spec_from_loader(loader.name, loader)
+prior = importlib.util.module_from_spec(spec)
+loader.exec_module(prior)
+runner = prior.runner
+previous_mutate = prior.mutate
+NEW = {
+    'C_BOM_NORMALIZATION': ['test_c_initial_utf8_bom_cannot_hide_template_include',
+                             'test_c_initial_utf8_bom_preserves_neutral_dependency'],
+    'C_UNSUPPORTED_BOM': ['test_c_noninitial_bom_fails_closed', 'test_c_multiple_initial_boms_fail_closed'],
+    'HTML_EMBED_UNSUPPORTED': ['test_html_iframe_source_document_fails_closed',
+                                'test_html_object_data_document_fails_closed',
+                                'test_html_embed_source_document_fails_closed',
+                                'test_html_legacy_frame_source_fails_closed'],
+    'JS_LITERAL_PROPERTY_KEYS': ['test_javascript_string_constructor_destructuring_fails_closed',
+                                  'test_javascript_srcdoc_quoted_pattern_key_fails_closed'],
+    'JS_COMPUTED_PROPERTY_KEYS': ['test_javascript_computed_constructor_destructuring_fails_closed',
+                                   'test_javascript_constructed_destructuring_key_fails_closed'],
+    'JS_NUMERIC_TOKEN_KIND': ['test_javascript_operator_strings_are_not_numeric_coercion'],
+}
+runner.CONTROLS.update(NEW)
+runner.COUNTS.update({name: 1 for name in NEW})
+
+def mutate(source, control):
+    if control == 'JS_NUMERIC_TOKEN_KIND':
+        old = 'if token.kind == "punct" and token.value in {"+", "-", "~", "++", "--"}:'
+        runner.check(source.count(old) == 1, 'wrong unary numeric token-kind guard count')
+        result = source.replace(old, 'if token.value in {"+", "-", "~", "++", "--"}:')
+        ast.parse(result)
+        return result
+    if control not in {'C_BOM_NORMALIZATION', 'JS_LITERAL_PROPERTY_KEYS', 'JS_COMPUTED_PROPERTY_KEYS'}:
+        return previous_mutate(source, control)
+    wanted = {'C_BOM_NORMALIZATION': "text = text.removeprefix('\\ufeff')",
+              'JS_LITERAL_PROPERTY_KEYS': 'literal_keys.add(offset)',
+              'JS_COMPUTED_PROPERTY_KEYS': 'computed.add(start)'}[control]
+    selected = [node for node in ast.walk(ast.parse(source))
+                if isinstance(node, (ast.Expr, ast.Assign)) and ast.unparse(node) == wanted]
+    runner.check(len(selected) == 1, control + ': wrong AST guard count')
+    node = selected[0]
+    lines = source.splitlines(keepends=True)
+    lines[node.lineno - 1:node.end_lineno] = [' ' * node.col_offset + 'pass  # TEMP removed ' + control + '\n']
+    result = ''.join(lines)
+    ast.parse(result)
+    return result
+
+runner.mutate = mutate
+runner.__file__ = __file__
+if __name__ == '__main__':
+    status = runner.main()
+    out = Path(sys.argv[sys.argv.index('--out') + 1])
+    path = out / 'mutation-results.json'
+    report = json.loads(path.read_text(encoding='utf-8'))
+    report['baseRunners'] = [{'path': str(item), 'sha256': hashlib.sha256(item.read_bytes()).hexdigest()}
+                             for item in [BASE, prior.BASE, prior.prior.BASE]]
+    report['embeddedGuardControls'] = list(NEW)
+    path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    raise SystemExit(status)

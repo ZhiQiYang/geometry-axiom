@@ -1,0 +1,11 @@
+--- tests/architecture_contract.py
++++ TEMP/architecture_contract.py
+@@ -1011,7 +1011,7 @@
+             tree = ast.parse(text, filename=path)
+         except SyntaxError as error:
+             require(False, "PYTHON_SYNTAX", path, error.lineno or 1, error.msg)
+-        self.python_package_initializers(path)
++        pass  # TEMP removed PY_IMPLICIT_INITIALIZER_EDGE
+         nodes = sorted(ast.walk(tree), key=lambda node: (getattr(node, "lineno", 0), getattr(node, "col_offset", 0)))
+         identifiers, literals, aliases = [], [], {}
+         strict = self.entries[path]["layer"] != "H"
