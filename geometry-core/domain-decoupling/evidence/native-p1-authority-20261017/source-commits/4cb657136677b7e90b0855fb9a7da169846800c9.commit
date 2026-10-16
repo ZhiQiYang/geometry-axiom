@@ -1,0 +1,8 @@
+tree d55338b15dcf5c0c07b059982d77ef5452b8b573
+parent 3e77421287e086a06f4a25a9d982a70cd6727fc2
+author Yang <b10102230@gmail.com> 1792170769 +0800
+committer Yang <b10102230@gmail.com> 1792170769 +0800
+
+fix(native): retain saved owned dimensions until scene replay completes
+
+Assembly-owned dimensions are neither literal nor resolvable before their assembly definitions load. Preserve the saved dimensions inside the existing replay window, then use unchanged EOF validation. Existing reload tests are the red witness; test counts unchanged.

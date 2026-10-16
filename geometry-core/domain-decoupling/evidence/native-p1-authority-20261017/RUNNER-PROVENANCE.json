@@ -1,0 +1,803 @@
+{
+  "claims": [
+    {
+      "receipt": "build-gate-72d6835c-v1",
+      "field": "runner_sha256_before/run.py",
+      "path": "build-gate-72d6835c-v1/run.py",
+      "expectedSha256": "df681d851ae54aca0452f25a3868f385bb60eb661f2c1fb9e296a9929a6d18c6",
+      "retainedSha256": "df681d851ae54aca0452f25a3868f385bb60eb661f2c1fb9e296a9929a6d18c6"
+    },
+    {
+      "receipt": "build-gate-72d6835c-v1",
+      "field": "runner_sha256_before/namespace.sh",
+      "path": "build-gate-72d6835c-v1/namespace.sh",
+      "expectedSha256": "3907398528971619255a11da7e007885cb966d7ae0e2b52013de909b9407bb0a",
+      "retainedSha256": "3907398528971619255a11da7e007885cb966d7ae0e2b52013de909b9407bb0a"
+    },
+    {
+      "receipt": "build-gate-72d6835c-v1",
+      "field": "runner_sha256_before/selection-summary.json",
+      "path": "build-gate-72d6835c-v1/selection-summary.json",
+      "expectedSha256": "bf03bf89d73ed71a9b20ba83f0d04bfec94948c1756814ad7cc136c6f1e92940",
+      "retainedSha256": "bf03bf89d73ed71a9b20ba83f0d04bfec94948c1756814ad7cc136c6f1e92940"
+    },
+    {
+      "receipt": "build-gate-72d6835c-v1",
+      "field": "runner_sha256_before/selected-paths.json",
+      "path": "build-gate-72d6835c-v1/selected-paths.json",
+      "expectedSha256": "2dcc9fbf47be630b8e3cf441704b828251657dd2f7c7eb6f75425fb65b859e38",
+      "retainedSha256": "2dcc9fbf47be630b8e3cf441704b828251657dd2f7c7eb6f75425fb65b859e38"
+    },
+    {
+      "receipt": "build-gate-a8831ca0-v1",
+      "field": "runner_sha256_before/run.py",
+      "path": "build-gate-a8831ca0-v1/run.py",
+      "expectedSha256": "59f3baa7730c191b36f4e8ee2dc3a207b990f33526d657009c753174dcf13d1a",
+      "retainedSha256": "59f3baa7730c191b36f4e8ee2dc3a207b990f33526d657009c753174dcf13d1a"
+    },
+    {
+      "receipt": "build-gate-a8831ca0-v1",
+      "field": "runner_sha256_before/namespace.sh",
+      "path": "build-gate-a8831ca0-v1/namespace.sh",
+      "expectedSha256": "93a9890e3a759b4829aeae77040cd4cb12141dc6cfc7b84d26f11bb8aaa9830b",
+      "retainedSha256": "93a9890e3a759b4829aeae77040cd4cb12141dc6cfc7b84d26f11bb8aaa9830b"
+    },
+    {
+      "receipt": "build-gate-a8831ca0-v1",
+      "field": "runner_sha256_before/selection-summary.json",
+      "path": "build-gate-a8831ca0-v1/selection-summary.json",
+      "expectedSha256": "7733a85e26e78f536f49a2999915c0dc0211606bc49fd8cc0b239861da462695",
+      "retainedSha256": "7733a85e26e78f536f49a2999915c0dc0211606bc49fd8cc0b239861da462695"
+    },
+    {
+      "receipt": "build-gate-a8831ca0-v1",
+      "field": "runner_sha256_before/selected-paths.json",
+      "path": "build-gate-a8831ca0-v1/selected-paths.json",
+      "expectedSha256": "5634916c64dfeac44a00c72a641a7c15589b19dd473d892215d1c64e1e9bc722",
+      "retainedSha256": "5634916c64dfeac44a00c72a641a7c15589b19dd473d892215d1c64e1e9bc722"
+    },
+    {
+      "receipt": "focused-a8831ca0-v3",
+      "field": "runner_sha256_before/run.py",
+      "path": "focused-a8831ca0-v3/run.py",
+      "expectedSha256": "1873e03046b4bc668f757f6c594789ba759eb2615d2ce052b00700c4f34ba256",
+      "retainedSha256": "1873e03046b4bc668f757f6c594789ba759eb2615d2ce052b00700c4f34ba256"
+    },
+    {
+      "receipt": "focused-a8831ca0-v3",
+      "field": "runner_sha256_before/exercise.py",
+      "path": "focused-a8831ca0-v3/exercise.py",
+      "expectedSha256": "4b9f09aef5e8356cc8c768f843bb62280ee3b06d6a65e39ac7e73d83acf00f9c",
+      "retainedSha256": "4b9f09aef5e8356cc8c768f843bb62280ee3b06d6a65e39ac7e73d83acf00f9c"
+    },
+    {
+      "receipt": "focused-a8831ca0-v3",
+      "field": "runner_sha256_before/namespace.sh",
+      "path": "focused-a8831ca0-v3/namespace.sh",
+      "expectedSha256": "2b9cb0f325f10e56543ac44ac575f5c21c8de5f468d904bd34bf1e6a06bd06c9",
+      "retainedSha256": "2b9cb0f325f10e56543ac44ac575f5c21c8de5f468d904bd34bf1e6a06bd06c9"
+    },
+    {
+      "receipt": "focused-a8831ca0-v3",
+      "field": "runner_sha256_before/recipe.json",
+      "path": "focused-a8831ca0-v3/recipe.json",
+      "expectedSha256": "2ff08bac48a6a7eb0a2a935b78262fe36e6fab02da507d727b04f6e52695f066",
+      "retainedSha256": "2ff08bac48a6a7eb0a2a935b78262fe36e6fab02da507d727b04f6e52695f066"
+    },
+    {
+      "receipt": "focused-a8831ca0-v3",
+      "field": "runner_sha256_before/static-discovery.json",
+      "path": "focused-a8831ca0-v3/static-discovery.json",
+      "expectedSha256": "9e13b64d36d31fbbc98082712818f80b30096511b64c83f81dcfc959b6f90218",
+      "retainedSha256": "9e13b64d36d31fbbc98082712818f80b30096511b64c83f81dcfc959b6f90218"
+    },
+    {
+      "receipt": "focused-a8831ca0-v3",
+      "field": "runner_sha256_before/selection-summary.json",
+      "path": "focused-a8831ca0-v3/selection-summary.json",
+      "expectedSha256": "a4d2071404759b1c04687a327c3ffc7c1bd253e566e32c1cf2752db351146f7b",
+      "retainedSha256": "a4d2071404759b1c04687a327c3ffc7c1bd253e566e32c1cf2752db351146f7b"
+    },
+    {
+      "receipt": "focused-a8831ca0-v3",
+      "field": "runner_sha256_before/selected-paths.json",
+      "path": "focused-a8831ca0-v3/selected-paths.json",
+      "expectedSha256": "a3590b0218245575a025a3ba6d3e8cc0c6a72516f9611279df1c721ed8f41ff6",
+      "retainedSha256": "a3590b0218245575a025a3ba6d3e8cc0c6a72516f9611279df1c721ed8f41ff6"
+    },
+    {
+      "receipt": "build-gate-808b8e69-v1",
+      "field": "runner_sha256_before/run.py",
+      "path": "build-gate-808b8e69-v1/run.py",
+      "expectedSha256": "577818816513a96c6362c27ca776707774091c2160fc3ee92a903a2aff0dc9cd",
+      "retainedSha256": "577818816513a96c6362c27ca776707774091c2160fc3ee92a903a2aff0dc9cd"
+    },
+    {
+      "receipt": "build-gate-808b8e69-v1",
+      "field": "runner_sha256_before/namespace.sh",
+      "path": "build-gate-808b8e69-v1/namespace.sh",
+      "expectedSha256": "5c914231922c3884de23a16b93fd3fd61a633f8e4dcaae54f42a56431f66578c",
+      "retainedSha256": "5c914231922c3884de23a16b93fd3fd61a633f8e4dcaae54f42a56431f66578c"
+    },
+    {
+      "receipt": "build-gate-808b8e69-v1",
+      "field": "runner_sha256_before/selection-summary.json",
+      "path": "build-gate-808b8e69-v1/selection-summary.json",
+      "expectedSha256": "098a63b71fa1e44a64bcbfe5cb8ee15f2a055fbd80106ee668fd106c66f95444",
+      "retainedSha256": "098a63b71fa1e44a64bcbfe5cb8ee15f2a055fbd80106ee668fd106c66f95444"
+    },
+    {
+      "receipt": "build-gate-808b8e69-v1",
+      "field": "runner_sha256_before/selected-paths.json",
+      "path": "build-gate-808b8e69-v1/selected-paths.json",
+      "expectedSha256": "e37fa3b708411fdac0a037cac55206e41caf9e9e866b9ad28895781f7a02f938",
+      "retainedSha256": "e37fa3b708411fdac0a037cac55206e41caf9e9e866b9ad28895781f7a02f938"
+    },
+    {
+      "receipt": "focused-808b8e69-v3",
+      "field": "runner_sha256_before/run.py",
+      "path": "focused-808b8e69-v3/run.py",
+      "expectedSha256": "a6e5fd04bac6fe6bd6765af19cb8be79d8993c0b56e183cd4dc3e674fe0a86b7",
+      "retainedSha256": "a6e5fd04bac6fe6bd6765af19cb8be79d8993c0b56e183cd4dc3e674fe0a86b7"
+    },
+    {
+      "receipt": "focused-808b8e69-v3",
+      "field": "runner_sha256_before/exercise.py",
+      "path": "focused-808b8e69-v3/exercise.py",
+      "expectedSha256": "4b9f09aef5e8356cc8c768f843bb62280ee3b06d6a65e39ac7e73d83acf00f9c",
+      "retainedSha256": "4b9f09aef5e8356cc8c768f843bb62280ee3b06d6a65e39ac7e73d83acf00f9c"
+    },
+    {
+      "receipt": "focused-808b8e69-v3",
+      "field": "runner_sha256_before/namespace.sh",
+      "path": "focused-808b8e69-v3/namespace.sh",
+      "expectedSha256": "38f61b0f905bc2fb7ab5e8d081e3a7c0339d592a31ef7bcdf0922d1b0b5adce5",
+      "retainedSha256": "38f61b0f905bc2fb7ab5e8d081e3a7c0339d592a31ef7bcdf0922d1b0b5adce5"
+    },
+    {
+      "receipt": "focused-808b8e69-v3",
+      "field": "runner_sha256_before/recipe.json",
+      "path": "focused-808b8e69-v3/recipe.json",
+      "expectedSha256": "c245a1e0ee75338c56af34c0a8b29a7741e8889825b38d9823c732ac6e6f26e1",
+      "retainedSha256": "c245a1e0ee75338c56af34c0a8b29a7741e8889825b38d9823c732ac6e6f26e1"
+    },
+    {
+      "receipt": "focused-808b8e69-v3",
+      "field": "runner_sha256_before/static-discovery.json",
+      "path": "focused-808b8e69-v3/static-discovery.json",
+      "expectedSha256": "372e4409675e597d4901240a23c6689010a79aa02829072e6b3d98128dac8ddf",
+      "retainedSha256": "372e4409675e597d4901240a23c6689010a79aa02829072e6b3d98128dac8ddf"
+    },
+    {
+      "receipt": "focused-808b8e69-v3",
+      "field": "runner_sha256_before/selection-summary.json",
+      "path": "focused-808b8e69-v3/selection-summary.json",
+      "expectedSha256": "a13c30c666f1244b798f8e0dae2890deedf1eb4643324eb51e1e9bf716b12885",
+      "retainedSha256": "a13c30c666f1244b798f8e0dae2890deedf1eb4643324eb51e1e9bf716b12885"
+    },
+    {
+      "receipt": "focused-808b8e69-v3",
+      "field": "runner_sha256_before/selected-paths.json",
+      "path": "focused-808b8e69-v3/selected-paths.json",
+      "expectedSha256": "98c83a07fc982cb358035187b8116b9ea32ba587203d827c9f79280cd07676bc",
+      "retainedSha256": "98c83a07fc982cb358035187b8116b9ea32ba587203d827c9f79280cd07676bc"
+    },
+    {
+      "receipt": "build-gate-042dac48-v1",
+      "field": "runner_sha256_before/run.py",
+      "path": "build-gate-042dac48-v1/run.py",
+      "expectedSha256": "ee726a0ee9e866331230dde46296850bc2ab3039381d12da8d32d186de40ec9e",
+      "retainedSha256": "ee726a0ee9e866331230dde46296850bc2ab3039381d12da8d32d186de40ec9e"
+    },
+    {
+      "receipt": "build-gate-042dac48-v1",
+      "field": "runner_sha256_before/namespace.sh",
+      "path": "build-gate-042dac48-v1/namespace.sh",
+      "expectedSha256": "a81d2581d20f20444e405669f774d39fa9ef365fe7f254919cb39162a0273370",
+      "retainedSha256": "a81d2581d20f20444e405669f774d39fa9ef365fe7f254919cb39162a0273370"
+    },
+    {
+      "receipt": "build-gate-042dac48-v1",
+      "field": "runner_sha256_before/selection-summary.json",
+      "path": "build-gate-042dac48-v1/selection-summary.json",
+      "expectedSha256": "7d1edb2f47f4854c68108ce6b1dcfad1a6523f3f92f8afcaa522a123b611582d",
+      "retainedSha256": "7d1edb2f47f4854c68108ce6b1dcfad1a6523f3f92f8afcaa522a123b611582d"
+    },
+    {
+      "receipt": "build-gate-042dac48-v1",
+      "field": "runner_sha256_before/selected-paths.json",
+      "path": "build-gate-042dac48-v1/selected-paths.json",
+      "expectedSha256": "1d56c15d1938be46d45049b1f3d33dbad47a2dc99b13e22725df2eae5eef6461",
+      "retainedSha256": "1d56c15d1938be46d45049b1f3d33dbad47a2dc99b13e22725df2eae5eef6461"
+    },
+    {
+      "receipt": "focused-042dac48-v3",
+      "field": "runner_sha256_before/run.py",
+      "path": "focused-042dac48-v3/run.py",
+      "expectedSha256": "c1ccee428963e843bd8445c26da2c4519f4b0def15d30f5a483c0ffb292fce25",
+      "retainedSha256": "c1ccee428963e843bd8445c26da2c4519f4b0def15d30f5a483c0ffb292fce25"
+    },
+    {
+      "receipt": "focused-042dac48-v3",
+      "field": "runner_sha256_before/exercise.py",
+      "path": "focused-042dac48-v3/exercise.py",
+      "expectedSha256": "4b9f09aef5e8356cc8c768f843bb62280ee3b06d6a65e39ac7e73d83acf00f9c",
+      "retainedSha256": "4b9f09aef5e8356cc8c768f843bb62280ee3b06d6a65e39ac7e73d83acf00f9c"
+    },
+    {
+      "receipt": "focused-042dac48-v3",
+      "field": "runner_sha256_before/namespace.sh",
+      "path": "focused-042dac48-v3/namespace.sh",
+      "expectedSha256": "d19099fc2d4293ac0c034af8209fffa0166cf71fb21004706d6bd06f079af44c",
+      "retainedSha256": "d19099fc2d4293ac0c034af8209fffa0166cf71fb21004706d6bd06f079af44c"
+    },
+    {
+      "receipt": "focused-042dac48-v3",
+      "field": "runner_sha256_before/recipe.json",
+      "path": "focused-042dac48-v3/recipe.json",
+      "expectedSha256": "fab8d0ac8eaebee47200959ab0fcd5ebefd44f283074438b716fee80e5970df9",
+      "retainedSha256": "fab8d0ac8eaebee47200959ab0fcd5ebefd44f283074438b716fee80e5970df9"
+    },
+    {
+      "receipt": "focused-042dac48-v3",
+      "field": "runner_sha256_before/static-discovery.json",
+      "path": "focused-042dac48-v3/static-discovery.json",
+      "expectedSha256": "ea66757a2f4eb36938bdba2a85108c475a18f87d3bb2dfac2e46d13260908a47",
+      "retainedSha256": "ea66757a2f4eb36938bdba2a85108c475a18f87d3bb2dfac2e46d13260908a47"
+    },
+    {
+      "receipt": "focused-042dac48-v3",
+      "field": "runner_sha256_before/selection-summary.json",
+      "path": "focused-042dac48-v3/selection-summary.json",
+      "expectedSha256": "aa8afc762ea7ead00fb0f775e755d2c51f2a7bbc2540520342604bc125209302",
+      "retainedSha256": "aa8afc762ea7ead00fb0f775e755d2c51f2a7bbc2540520342604bc125209302"
+    },
+    {
+      "receipt": "focused-042dac48-v3",
+      "field": "runner_sha256_before/selected-paths.json",
+      "path": "focused-042dac48-v3/selected-paths.json",
+      "expectedSha256": "cc21b0385d69b33518c089196608ebfc4f4bb8324c05864b607e69ca7ecb37d8",
+      "retainedSha256": "cc21b0385d69b33518c089196608ebfc4f4bb8324c05864b607e69ca7ecb37d8"
+    },
+    {
+      "receipt": "build-gate-f8c3e0f2-v1",
+      "field": "runner_sha256_before/run.py",
+      "path": "build-gate-f8c3e0f2-v1/run.py",
+      "expectedSha256": "fe4dd53820a8ab9728ef4a793fa79c7bbaa571d31f74305a7d66ad0b086d7eff",
+      "retainedSha256": "fe4dd53820a8ab9728ef4a793fa79c7bbaa571d31f74305a7d66ad0b086d7eff"
+    },
+    {
+      "receipt": "build-gate-f8c3e0f2-v1",
+      "field": "runner_sha256_before/namespace.sh",
+      "path": "build-gate-f8c3e0f2-v1/namespace.sh",
+      "expectedSha256": "52c1ef1a87945f82ae2fab2fb1313be72f8566493f34a3b3b7a3f7ba48add5b2",
+      "retainedSha256": "52c1ef1a87945f82ae2fab2fb1313be72f8566493f34a3b3b7a3f7ba48add5b2"
+    },
+    {
+      "receipt": "build-gate-f8c3e0f2-v1",
+      "field": "runner_sha256_before/selection-summary.json",
+      "path": "build-gate-f8c3e0f2-v1/selection-summary.json",
+      "expectedSha256": "391227b9a3ba33ffea9116abbc43d15cea1b0db7fbbce21cc7bcd54b16831746",
+      "retainedSha256": "391227b9a3ba33ffea9116abbc43d15cea1b0db7fbbce21cc7bcd54b16831746"
+    },
+    {
+      "receipt": "build-gate-f8c3e0f2-v1",
+      "field": "runner_sha256_before/selected-paths.json",
+      "path": "build-gate-f8c3e0f2-v1/selected-paths.json",
+      "expectedSha256": "fecffa5a5152c50ca54aea5abd9295c10ccd5464b0d718d2ceb485105d6bcdef",
+      "retainedSha256": "fecffa5a5152c50ca54aea5abd9295c10ccd5464b0d718d2ceb485105d6bcdef"
+    },
+    {
+      "receipt": "focused-f8c3e0f2-v3",
+      "field": "runner_sha256_before/run.py",
+      "path": "focused-f8c3e0f2-v3/run.py",
+      "expectedSha256": "0fd7c04ee68475a25c69b53ba397f8a478e26f4de6c5e7423448f414c3a9f335",
+      "retainedSha256": "0fd7c04ee68475a25c69b53ba397f8a478e26f4de6c5e7423448f414c3a9f335"
+    },
+    {
+      "receipt": "focused-f8c3e0f2-v3",
+      "field": "runner_sha256_before/exercise.py",
+      "path": "focused-f8c3e0f2-v3/exercise.py",
+      "expectedSha256": "4b9f09aef5e8356cc8c768f843bb62280ee3b06d6a65e39ac7e73d83acf00f9c",
+      "retainedSha256": "4b9f09aef5e8356cc8c768f843bb62280ee3b06d6a65e39ac7e73d83acf00f9c"
+    },
+    {
+      "receipt": "focused-f8c3e0f2-v3",
+      "field": "runner_sha256_before/namespace.sh",
+      "path": "focused-f8c3e0f2-v3/namespace.sh",
+      "expectedSha256": "027bc75ccf7c7930b1dfa68dc4c51e9682b6ff77c581dc047d5f9090c38b598f",
+      "retainedSha256": "027bc75ccf7c7930b1dfa68dc4c51e9682b6ff77c581dc047d5f9090c38b598f"
+    },
+    {
+      "receipt": "focused-f8c3e0f2-v3",
+      "field": "runner_sha256_before/recipe.json",
+      "path": "focused-f8c3e0f2-v3/recipe.json",
+      "expectedSha256": "17576adbff7b3d80a122dba87e6298056e9e9bc2728d9babfdc585bac3c6d20f",
+      "retainedSha256": "17576adbff7b3d80a122dba87e6298056e9e9bc2728d9babfdc585bac3c6d20f"
+    },
+    {
+      "receipt": "focused-f8c3e0f2-v3",
+      "field": "runner_sha256_before/static-discovery.json",
+      "path": "focused-f8c3e0f2-v3/static-discovery.json",
+      "expectedSha256": "31d0d3117eb357d71a8ad0ce2d7191ada436dd65696a7efa8042c60a3cf09333",
+      "retainedSha256": "31d0d3117eb357d71a8ad0ce2d7191ada436dd65696a7efa8042c60a3cf09333"
+    },
+    {
+      "receipt": "focused-f8c3e0f2-v3",
+      "field": "runner_sha256_before/selection-summary.json",
+      "path": "focused-f8c3e0f2-v3/selection-summary.json",
+      "expectedSha256": "c0ca25683ff60f294a7abcb4787c10ddedefd83b8295606f8d1e5b5cb192d45a",
+      "retainedSha256": "c0ca25683ff60f294a7abcb4787c10ddedefd83b8295606f8d1e5b5cb192d45a"
+    },
+    {
+      "receipt": "focused-f8c3e0f2-v3",
+      "field": "runner_sha256_before/selected-paths.json",
+      "path": "focused-f8c3e0f2-v3/selected-paths.json",
+      "expectedSha256": "e1fc47e22adb720b7de7a414d9e37ac679f3fef7a8f72658f1d3f257b76df671",
+      "retainedSha256": "e1fc47e22adb720b7de7a414d9e37ac679f3fef7a8f72658f1d3f257b76df671"
+    },
+    {
+      "receipt": "build-gate-5fe3bfd5-v1",
+      "field": "runner_sha256_before/run.py",
+      "path": "build-gate-5fe3bfd5-v1/run.py",
+      "expectedSha256": "21e4e92cba09cfa59a679dbefe0b472b4e605049b136eb6887418c7e461d33e5",
+      "retainedSha256": "21e4e92cba09cfa59a679dbefe0b472b4e605049b136eb6887418c7e461d33e5"
+    },
+    {
+      "receipt": "build-gate-5fe3bfd5-v1",
+      "field": "runner_sha256_before/namespace.sh",
+      "path": "build-gate-5fe3bfd5-v1/namespace.sh",
+      "expectedSha256": "ef44035768f6778a498b1750797f570b0668eeea2d1ab5e0f3733335e869b4c9",
+      "retainedSha256": "ef44035768f6778a498b1750797f570b0668eeea2d1ab5e0f3733335e869b4c9"
+    },
+    {
+      "receipt": "build-gate-5fe3bfd5-v1",
+      "field": "runner_sha256_before/selection-summary.json",
+      "path": "build-gate-5fe3bfd5-v1/selection-summary.json",
+      "expectedSha256": "ea59d4658a262ac689f2d733e1070a704875eb9008b8f022a51bef5c21c1ba4c",
+      "retainedSha256": "ea59d4658a262ac689f2d733e1070a704875eb9008b8f022a51bef5c21c1ba4c"
+    },
+    {
+      "receipt": "build-gate-5fe3bfd5-v1",
+      "field": "runner_sha256_before/selected-paths.json",
+      "path": "build-gate-5fe3bfd5-v1/selected-paths.json",
+      "expectedSha256": "5947d3a0df435fade71c43f1cf8c174fdeccd17c48eecd8d9104aa178366ca05",
+      "retainedSha256": "5947d3a0df435fade71c43f1cf8c174fdeccd17c48eecd8d9104aa178366ca05"
+    },
+    {
+      "receipt": "focused-5fe3bfd5-v3",
+      "field": "runner_sha256_before/run.py",
+      "path": "focused-5fe3bfd5-v3/run.py",
+      "expectedSha256": "b5666b23ca42b7eb0731216a62b2bbd23dcfb784fd3f99bef6285d47ff7b130f",
+      "retainedSha256": "b5666b23ca42b7eb0731216a62b2bbd23dcfb784fd3f99bef6285d47ff7b130f"
+    },
+    {
+      "receipt": "focused-5fe3bfd5-v3",
+      "field": "runner_sha256_before/exercise.py",
+      "path": "focused-5fe3bfd5-v3/exercise.py",
+      "expectedSha256": "4b9f09aef5e8356cc8c768f843bb62280ee3b06d6a65e39ac7e73d83acf00f9c",
+      "retainedSha256": "4b9f09aef5e8356cc8c768f843bb62280ee3b06d6a65e39ac7e73d83acf00f9c"
+    },
+    {
+      "receipt": "focused-5fe3bfd5-v3",
+      "field": "runner_sha256_before/namespace.sh",
+      "path": "focused-5fe3bfd5-v3/namespace.sh",
+      "expectedSha256": "a0e6818b621dec84032523c30418a85632390b612306ea8b76dc887f08902c81",
+      "retainedSha256": "a0e6818b621dec84032523c30418a85632390b612306ea8b76dc887f08902c81"
+    },
+    {
+      "receipt": "focused-5fe3bfd5-v3",
+      "field": "runner_sha256_before/recipe.json",
+      "path": "focused-5fe3bfd5-v3/recipe.json",
+      "expectedSha256": "2902b2b94d84869fc14e7980080f869b3e6bf4dd240df9be6b13407502898fc4",
+      "retainedSha256": "2902b2b94d84869fc14e7980080f869b3e6bf4dd240df9be6b13407502898fc4"
+    },
+    {
+      "receipt": "focused-5fe3bfd5-v3",
+      "field": "runner_sha256_before/static-discovery.json",
+      "path": "focused-5fe3bfd5-v3/static-discovery.json",
+      "expectedSha256": "e7cf096508d297ee8902023393c4d89fa7113f1e56282a7dc809212ffb7ddbf5",
+      "retainedSha256": "e7cf096508d297ee8902023393c4d89fa7113f1e56282a7dc809212ffb7ddbf5"
+    },
+    {
+      "receipt": "focused-5fe3bfd5-v3",
+      "field": "runner_sha256_before/selection-summary.json",
+      "path": "focused-5fe3bfd5-v3/selection-summary.json",
+      "expectedSha256": "5ae291f67df3308f0ecb933c10766d7d954ea4a1212e21bcfcdb06a421192a2d",
+      "retainedSha256": "5ae291f67df3308f0ecb933c10766d7d954ea4a1212e21bcfcdb06a421192a2d"
+    },
+    {
+      "receipt": "focused-5fe3bfd5-v3",
+      "field": "runner_sha256_before/selected-paths.json",
+      "path": "focused-5fe3bfd5-v3/selected-paths.json",
+      "expectedSha256": "b4d9c6873260eda0505760f65219eb7538215244a0b928280afdfba3ef0cd4c9",
+      "retainedSha256": "b4d9c6873260eda0505760f65219eb7538215244a0b928280afdfba3ef0cd4c9"
+    },
+    {
+      "receipt": "build-gate-4cb65713-v1",
+      "field": "runner_sha256_before/run.py",
+      "path": "build-gate-4cb65713-v1/run.py",
+      "expectedSha256": "6e921b2baaf7b3ea3492673a49083a46b5a94b323d14d4e4ca69f79e13c3fb3c",
+      "retainedSha256": "6e921b2baaf7b3ea3492673a49083a46b5a94b323d14d4e4ca69f79e13c3fb3c"
+    },
+    {
+      "receipt": "build-gate-4cb65713-v1",
+      "field": "runner_sha256_before/namespace.sh",
+      "path": "build-gate-4cb65713-v1/namespace.sh",
+      "expectedSha256": "554695c65091f3763f0f986efc7e566110731edabcd0fea7b57cb17cb3d2fdc0",
+      "retainedSha256": "554695c65091f3763f0f986efc7e566110731edabcd0fea7b57cb17cb3d2fdc0"
+    },
+    {
+      "receipt": "build-gate-4cb65713-v1",
+      "field": "runner_sha256_before/selection-summary.json",
+      "path": "build-gate-4cb65713-v1/selection-summary.json",
+      "expectedSha256": "8978286aeb6e1a84c6bb5ea6a7e04cd4372eaa243aa052d93e5cdf3f2dda8439",
+      "retainedSha256": "8978286aeb6e1a84c6bb5ea6a7e04cd4372eaa243aa052d93e5cdf3f2dda8439"
+    },
+    {
+      "receipt": "build-gate-4cb65713-v1",
+      "field": "runner_sha256_before/selected-paths.json",
+      "path": "build-gate-4cb65713-v1/selected-paths.json",
+      "expectedSha256": "ba7babe165728dc35110d56b81d515ad1f3142d2ca5940746136fcfc696cbef9",
+      "retainedSha256": "ba7babe165728dc35110d56b81d515ad1f3142d2ca5940746136fcfc696cbef9"
+    },
+    {
+      "receipt": "focused-4cb65713-v3",
+      "field": "runner_sha256_before/run.py",
+      "path": "focused-4cb65713-v3/run.py",
+      "expectedSha256": "43909862b96936ffecda707e9dfde42c882ef740a01095968c18845c50e1b36f",
+      "retainedSha256": "43909862b96936ffecda707e9dfde42c882ef740a01095968c18845c50e1b36f"
+    },
+    {
+      "receipt": "focused-4cb65713-v3",
+      "field": "runner_sha256_before/exercise.py",
+      "path": "focused-4cb65713-v3/exercise.py",
+      "expectedSha256": "4b9f09aef5e8356cc8c768f843bb62280ee3b06d6a65e39ac7e73d83acf00f9c",
+      "retainedSha256": "4b9f09aef5e8356cc8c768f843bb62280ee3b06d6a65e39ac7e73d83acf00f9c"
+    },
+    {
+      "receipt": "focused-4cb65713-v3",
+      "field": "runner_sha256_before/namespace.sh",
+      "path": "focused-4cb65713-v3/namespace.sh",
+      "expectedSha256": "a813e9a3e994e5df48d1bb55f69b5845996369e5896b96e9e34b62996322389a",
+      "retainedSha256": "a813e9a3e994e5df48d1bb55f69b5845996369e5896b96e9e34b62996322389a"
+    },
+    {
+      "receipt": "focused-4cb65713-v3",
+      "field": "runner_sha256_before/recipe.json",
+      "path": "focused-4cb65713-v3/recipe.json",
+      "expectedSha256": "d624fba40cd32b5fe6d76f07d34108f37c0bc89222c768b445d30f156caef044",
+      "retainedSha256": "d624fba40cd32b5fe6d76f07d34108f37c0bc89222c768b445d30f156caef044"
+    },
+    {
+      "receipt": "focused-4cb65713-v3",
+      "field": "runner_sha256_before/static-discovery.json",
+      "path": "focused-4cb65713-v3/static-discovery.json",
+      "expectedSha256": "2414ef7b95fbe3ddd98cdbe29f7aa38351e307115e4206039901661e982e66a4",
+      "retainedSha256": "2414ef7b95fbe3ddd98cdbe29f7aa38351e307115e4206039901661e982e66a4"
+    },
+    {
+      "receipt": "focused-4cb65713-v3",
+      "field": "runner_sha256_before/selection-summary.json",
+      "path": "focused-4cb65713-v3/selection-summary.json",
+      "expectedSha256": "aa35ef8a558bcd149cd4cdb4ecab3e70486b3640ae275c8d14f084d296eca021",
+      "retainedSha256": "aa35ef8a558bcd149cd4cdb4ecab3e70486b3640ae275c8d14f084d296eca021"
+    },
+    {
+      "receipt": "focused-4cb65713-v3",
+      "field": "runner_sha256_before/selected-paths.json",
+      "path": "focused-4cb65713-v3/selected-paths.json",
+      "expectedSha256": "23fd3756d6f79dc676cd3d4dd5e5e02318566b8be1151000a821985e5dd3f7d8",
+      "retainedSha256": "23fd3756d6f79dc676cd3d4dd5e5e02318566b8be1151000a821985e5dd3f7d8"
+    },
+    {
+      "receipt": "build-gate-3e774212-v1",
+      "field": "runner_sha256_before/run.py",
+      "path": "build-gate-3e774212-v1/run.py",
+      "expectedSha256": "14a4d69128492c4e3ce65ee26be8739cb7f1eb42bc7d00b79b1f4b14c27b50d3",
+      "retainedSha256": "14a4d69128492c4e3ce65ee26be8739cb7f1eb42bc7d00b79b1f4b14c27b50d3"
+    },
+    {
+      "receipt": "build-gate-3e774212-v1",
+      "field": "runner_sha256_before/namespace.sh",
+      "path": "build-gate-3e774212-v1/namespace.sh",
+      "expectedSha256": "1e680561dc671411f3395505ee9f3c06b22e6f5291044f9831fbc96067a3040e",
+      "retainedSha256": "1e680561dc671411f3395505ee9f3c06b22e6f5291044f9831fbc96067a3040e"
+    },
+    {
+      "receipt": "build-gate-3e774212-v1",
+      "field": "runner_sha256_before/selection-summary.json",
+      "path": "build-gate-3e774212-v1/selection-summary.json",
+      "expectedSha256": "908f5c9a2bb022567b13d153ff65bcfaf4cf48f58d1ef2691370660cf8019351",
+      "retainedSha256": "908f5c9a2bb022567b13d153ff65bcfaf4cf48f58d1ef2691370660cf8019351"
+    },
+    {
+      "receipt": "build-gate-3e774212-v1",
+      "field": "runner_sha256_before/selected-paths.json",
+      "path": "build-gate-3e774212-v1/selected-paths.json",
+      "expectedSha256": "a97f8cf8cf85ab9551eb2c48bc5f165dc6523a6a765f3afef1a7c17fe334cbc8",
+      "retainedSha256": "a97f8cf8cf85ab9551eb2c48bc5f165dc6523a6a765f3afef1a7c17fe334cbc8"
+    },
+    {
+      "receipt": "focused-3e774212-v3",
+      "field": "runner_sha256_before/run.py",
+      "path": "focused-3e774212-v3/run.py",
+      "expectedSha256": "89d73c01a494e4ace0ae2b57f0863a7ccd303346260a2bb8bec641c29253af49",
+      "retainedSha256": "89d73c01a494e4ace0ae2b57f0863a7ccd303346260a2bb8bec641c29253af49"
+    },
+    {
+      "receipt": "focused-3e774212-v3",
+      "field": "runner_sha256_before/exercise.py",
+      "path": "focused-3e774212-v3/exercise.py",
+      "expectedSha256": "4b9f09aef5e8356cc8c768f843bb62280ee3b06d6a65e39ac7e73d83acf00f9c",
+      "retainedSha256": "4b9f09aef5e8356cc8c768f843bb62280ee3b06d6a65e39ac7e73d83acf00f9c"
+    },
+    {
+      "receipt": "focused-3e774212-v3",
+      "field": "runner_sha256_before/namespace.sh",
+      "path": "focused-3e774212-v3/namespace.sh",
+      "expectedSha256": "99f56bd708dea04b948ad94957ebcb8a2ef8e063d1d44fb729eead42894cae9c",
+      "retainedSha256": "99f56bd708dea04b948ad94957ebcb8a2ef8e063d1d44fb729eead42894cae9c"
+    },
+    {
+      "receipt": "focused-3e774212-v3",
+      "field": "runner_sha256_before/recipe.json",
+      "path": "focused-3e774212-v3/recipe.json",
+      "expectedSha256": "421cb476c1917a4779b818f75570e6a8e176876e140a6caff867f765e30c8bc8",
+      "retainedSha256": "421cb476c1917a4779b818f75570e6a8e176876e140a6caff867f765e30c8bc8"
+    },
+    {
+      "receipt": "focused-3e774212-v3",
+      "field": "runner_sha256_before/static-discovery.json",
+      "path": "focused-3e774212-v3/static-discovery.json",
+      "expectedSha256": "2cf1cbf9dc3db185d6a59cb6bc7edbdae67ffae4d0d479441bd4f08d4e936f65",
+      "retainedSha256": "2cf1cbf9dc3db185d6a59cb6bc7edbdae67ffae4d0d479441bd4f08d4e936f65"
+    },
+    {
+      "receipt": "focused-3e774212-v3",
+      "field": "runner_sha256_before/selection-summary.json",
+      "path": "focused-3e774212-v3/selection-summary.json",
+      "expectedSha256": "9f916849923a3031ae250826f95d12c017a0b39677d237bbb8da39d5cdd205db",
+      "retainedSha256": "9f916849923a3031ae250826f95d12c017a0b39677d237bbb8da39d5cdd205db"
+    },
+    {
+      "receipt": "focused-3e774212-v3",
+      "field": "runner_sha256_before/selected-paths.json",
+      "path": "focused-3e774212-v3/selected-paths.json",
+      "expectedSha256": "731fc69f2f3632b9813e39ee72b5bb8d5309b516ace083c2451571cd617b7905",
+      "retainedSha256": "731fc69f2f3632b9813e39ee72b5bb8d5309b516ace083c2451571cd617b7905"
+    },
+    {
+      "receipt": "build-gate-344935de-v1",
+      "field": "runner_sha256_before/run.py",
+      "path": "build-gate-344935de-v1/run.py",
+      "expectedSha256": "170c82ebdbd503eb7cbe403f2424e5e2087589f41cd011b0c62f547abefc1247",
+      "retainedSha256": "170c82ebdbd503eb7cbe403f2424e5e2087589f41cd011b0c62f547abefc1247"
+    },
+    {
+      "receipt": "build-gate-344935de-v1",
+      "field": "runner_sha256_before/namespace.sh",
+      "path": "build-gate-344935de-v1/namespace.sh",
+      "expectedSha256": "f81a39e335a5956d17cd1f455b25e5347813fa8231b622bf6cc25d13dec5f34e",
+      "retainedSha256": "f81a39e335a5956d17cd1f455b25e5347813fa8231b622bf6cc25d13dec5f34e"
+    },
+    {
+      "receipt": "build-gate-344935de-v1",
+      "field": "runner_sha256_before/selection-summary.json",
+      "path": "build-gate-344935de-v1/selection-summary.json",
+      "expectedSha256": "37022e4830d613a7320dad215a21e785c318cd9512007fb8386be89bc8b42108",
+      "retainedSha256": "37022e4830d613a7320dad215a21e785c318cd9512007fb8386be89bc8b42108"
+    },
+    {
+      "receipt": "build-gate-344935de-v1",
+      "field": "runner_sha256_before/selected-paths.json",
+      "path": "build-gate-344935de-v1/selected-paths.json",
+      "expectedSha256": "93ca933488f9d857127939ad0361f7d32862352e4b5ddfc09be6afb3e8fa4de6",
+      "retainedSha256": "93ca933488f9d857127939ad0361f7d32862352e4b5ddfc09be6afb3e8fa4de6"
+    },
+    {
+      "receipt": "build-gate-4004a1cf-v1",
+      "field": "runner_sha256_before/run.py",
+      "path": "build-gate-4004a1cf-v1/run.py",
+      "expectedSha256": "7b4897632bb2e552f3eeca8fbed56b1b5aac02a6f3284bae7a30784ad4f53ef9",
+      "retainedSha256": "7b4897632bb2e552f3eeca8fbed56b1b5aac02a6f3284bae7a30784ad4f53ef9"
+    },
+    {
+      "receipt": "build-gate-4004a1cf-v1",
+      "field": "runner_sha256_before/namespace.sh",
+      "path": "build-gate-4004a1cf-v1/namespace.sh",
+      "expectedSha256": "423a7e1f7f790ce1e81155473888deee7984e2b628611f4067682b0088189e4f",
+      "retainedSha256": "423a7e1f7f790ce1e81155473888deee7984e2b628611f4067682b0088189e4f"
+    },
+    {
+      "receipt": "build-gate-4004a1cf-v1",
+      "field": "runner_sha256_before/selection-summary.json",
+      "path": "build-gate-4004a1cf-v1/selection-summary.json",
+      "expectedSha256": "ab30876dbdddd7e2d9a75cd4af8e4a717c1fabd0040f35d8c8f58b3b3c17e9db",
+      "retainedSha256": "ab30876dbdddd7e2d9a75cd4af8e4a717c1fabd0040f35d8c8f58b3b3c17e9db"
+    },
+    {
+      "receipt": "build-gate-4004a1cf-v1",
+      "field": "runner_sha256_before/selected-paths.json",
+      "path": "build-gate-4004a1cf-v1/selected-paths.json",
+      "expectedSha256": "0acf4f60b4e328e8f1eb5695d20f42a46376c8a18742d62a7ff48cad238bde69",
+      "retainedSha256": "0acf4f60b4e328e8f1eb5695d20f42a46376c8a18742d62a7ff48cad238bde69"
+    },
+    {
+      "receipt": "focused-4004a1cf-v3",
+      "field": "runner_sha256_before/run.py",
+      "path": "focused-4004a1cf-v3/run.py",
+      "expectedSha256": "62a126fe476660d8b846e28381d07dc858fd3e2a87f63e9d646c6ff29e9483e5",
+      "retainedSha256": "62a126fe476660d8b846e28381d07dc858fd3e2a87f63e9d646c6ff29e9483e5"
+    },
+    {
+      "receipt": "focused-4004a1cf-v3",
+      "field": "runner_sha256_before/exercise.py",
+      "path": "focused-4004a1cf-v3/exercise.py",
+      "expectedSha256": "4b9f09aef5e8356cc8c768f843bb62280ee3b06d6a65e39ac7e73d83acf00f9c",
+      "retainedSha256": "4b9f09aef5e8356cc8c768f843bb62280ee3b06d6a65e39ac7e73d83acf00f9c"
+    },
+    {
+      "receipt": "focused-4004a1cf-v3",
+      "field": "runner_sha256_before/namespace.sh",
+      "path": "focused-4004a1cf-v3/namespace.sh",
+      "expectedSha256": "8c45ce626086df209736e0e7038642551d4e7ec4c1a2522679b1323788aeacc1",
+      "retainedSha256": "8c45ce626086df209736e0e7038642551d4e7ec4c1a2522679b1323788aeacc1"
+    },
+    {
+      "receipt": "focused-4004a1cf-v3",
+      "field": "runner_sha256_before/recipe.json",
+      "path": "focused-4004a1cf-v3/recipe.json",
+      "expectedSha256": "cd724885f8e3bd1fee16df79367bdf87dc11f8eb4e9f6485baccf75bd124016d",
+      "retainedSha256": "cd724885f8e3bd1fee16df79367bdf87dc11f8eb4e9f6485baccf75bd124016d"
+    },
+    {
+      "receipt": "focused-4004a1cf-v3",
+      "field": "runner_sha256_before/static-discovery.json",
+      "path": "focused-4004a1cf-v3/static-discovery.json",
+      "expectedSha256": "8a3e3bf24ecb670ba316bae06e3a898fb60407f4ce54bedb50fd9cdd9f101d2f",
+      "retainedSha256": "8a3e3bf24ecb670ba316bae06e3a898fb60407f4ce54bedb50fd9cdd9f101d2f"
+    },
+    {
+      "receipt": "focused-4004a1cf-v3",
+      "field": "runner_sha256_before/selection-summary.json",
+      "path": "focused-4004a1cf-v3/selection-summary.json",
+      "expectedSha256": "e876e17072488a1bbd8de3d0d53fadc289f907acf1c09d0ca4ad9090a582e794",
+      "retainedSha256": "e876e17072488a1bbd8de3d0d53fadc289f907acf1c09d0ca4ad9090a582e794"
+    },
+    {
+      "receipt": "focused-4004a1cf-v3",
+      "field": "runner_sha256_before/selected-paths.json",
+      "path": "focused-4004a1cf-v3/selected-paths.json",
+      "expectedSha256": "5962964890ce7af270c2dfc229e6c9c10aa1de9d9a6f6d7feebe7d484adb77ad",
+      "retainedSha256": "5962964890ce7af270c2dfc229e6c9c10aa1de9d9a6f6d7feebe7d484adb77ad"
+    },
+    {
+      "receipt": "build-gate-12422c69-v1",
+      "field": "runner_sha256_before/run.py",
+      "path": "build-gate-12422c69-v1/run.py",
+      "expectedSha256": "eb317d8613068cf052089ac4051781e7ed9fe2395a74bfe94579ce54b9b71b39",
+      "retainedSha256": "eb317d8613068cf052089ac4051781e7ed9fe2395a74bfe94579ce54b9b71b39"
+    },
+    {
+      "receipt": "build-gate-12422c69-v1",
+      "field": "runner_sha256_before/namespace.sh",
+      "path": "build-gate-12422c69-v1/namespace.sh",
+      "expectedSha256": "9de8a51476e74bde9fd48cb1193a7b22c20e2730fe76bc5d0655cf56543248c3",
+      "retainedSha256": "9de8a51476e74bde9fd48cb1193a7b22c20e2730fe76bc5d0655cf56543248c3"
+    },
+    {
+      "receipt": "build-gate-12422c69-v1",
+      "field": "runner_sha256_before/selection-summary.json",
+      "path": "build-gate-12422c69-v1/selection-summary.json",
+      "expectedSha256": "7194ee581c523aecd1c0ce728552d7cc571a5e25773222345fda77b93529c49a",
+      "retainedSha256": "7194ee581c523aecd1c0ce728552d7cc571a5e25773222345fda77b93529c49a"
+    },
+    {
+      "receipt": "build-gate-12422c69-v1",
+      "field": "runner_sha256_before/selected-paths.json",
+      "path": "build-gate-12422c69-v1/selected-paths.json",
+      "expectedSha256": "c9c322e673a32862d553443876014d359a31e89f64f4add70566b7af39fa2322",
+      "retainedSha256": "c9c322e673a32862d553443876014d359a31e89f64f4add70566b7af39fa2322"
+    },
+    {
+      "receipt": "focused-12422c69-v3",
+      "field": "runner_sha256_before/run.py",
+      "path": "focused-12422c69-v3/run.py",
+      "expectedSha256": "da570f910b23cedd837f86fc843ef96263a01ddacaaf8ae49c8652baffc53aa9",
+      "retainedSha256": "da570f910b23cedd837f86fc843ef96263a01ddacaaf8ae49c8652baffc53aa9"
+    },
+    {
+      "receipt": "focused-12422c69-v3",
+      "field": "runner_sha256_before/exercise.py",
+      "path": "focused-12422c69-v3/exercise.py",
+      "expectedSha256": "4b9f09aef5e8356cc8c768f843bb62280ee3b06d6a65e39ac7e73d83acf00f9c",
+      "retainedSha256": "4b9f09aef5e8356cc8c768f843bb62280ee3b06d6a65e39ac7e73d83acf00f9c"
+    },
+    {
+      "receipt": "focused-12422c69-v3",
+      "field": "runner_sha256_before/namespace.sh",
+      "path": "focused-12422c69-v3/namespace.sh",
+      "expectedSha256": "ca1a3bc132ddf263d9bdd63d39e103ef04ff4499ba7c9bbb2ca378b2ac568191",
+      "retainedSha256": "ca1a3bc132ddf263d9bdd63d39e103ef04ff4499ba7c9bbb2ca378b2ac568191"
+    },
+    {
+      "receipt": "focused-12422c69-v3",
+      "field": "runner_sha256_before/recipe.json",
+      "path": "focused-12422c69-v3/recipe.json",
+      "expectedSha256": "2495ce9d75603eb0c6eb9a78d8e3e1b458c0b316a6f4265f1f4287164956fa46",
+      "retainedSha256": "2495ce9d75603eb0c6eb9a78d8e3e1b458c0b316a6f4265f1f4287164956fa46"
+    },
+    {
+      "receipt": "focused-12422c69-v3",
+      "field": "runner_sha256_before/static-discovery.json",
+      "path": "focused-12422c69-v3/static-discovery.json",
+      "expectedSha256": "f0f7da6cedd935425388a02f60ca475b27831017ceee897e228b9dfa6c054018",
+      "retainedSha256": "f0f7da6cedd935425388a02f60ca475b27831017ceee897e228b9dfa6c054018"
+    },
+    {
+      "receipt": "focused-12422c69-v3",
+      "field": "runner_sha256_before/selection-summary.json",
+      "path": "focused-12422c69-v3/selection-summary.json",
+      "expectedSha256": "a9cff3a4bd0b3b7842ef558ef6dee0f11ed67f29eb204f90cec7848e1774fffb",
+      "retainedSha256": "a9cff3a4bd0b3b7842ef558ef6dee0f11ed67f29eb204f90cec7848e1774fffb"
+    },
+    {
+      "receipt": "focused-12422c69-v3",
+      "field": "runner_sha256_before/selected-paths.json",
+      "path": "focused-12422c69-v3/selected-paths.json",
+      "expectedSha256": "87e2d734ecfc8b49ebaa82fa24c285c5fc49af777847ccd073800d48499318fd",
+      "retainedSha256": "87e2d734ecfc8b49ebaa82fa24c285c5fc49af777847ccd073800d48499318fd"
+    },
+    {
+      "receipt": "diagnostic-f8c3e0f2-bridge-reload-v1",
+      "field": "runner_sha256_before/run.py",
+      "path": "diagnostic-f8c3e0f2-bridge-reload-v1/run.py",
+      "expectedSha256": "c4ac84854192d1f8ab021e1e40c1f65baf14d619801960cf8780cd3af5828a49",
+      "retainedSha256": "c4ac84854192d1f8ab021e1e40c1f65baf14d619801960cf8780cd3af5828a49"
+    },
+    {
+      "receipt": "diagnostic-f8c3e0f2-bridge-reload-v1",
+      "field": "runner_sha256_before/namespace.sh",
+      "path": "diagnostic-f8c3e0f2-bridge-reload-v1/namespace.sh",
+      "expectedSha256": "525fff9dfa5dfeaccc34a3d20af8a518894a7021a76df43bb358bff34ae45dab",
+      "retainedSha256": "525fff9dfa5dfeaccc34a3d20af8a518894a7021a76df43bb358bff34ae45dab"
+    },
+    {
+      "receipt": "diagnostic-f8c3e0f2-bridge-reload-v1",
+      "field": "runner_sha256_before/launch.ps1",
+      "path": "diagnostic-f8c3e0f2-bridge-reload-v1/launch.ps1",
+      "expectedSha256": "c34039ac8431d76aaa5e999652285f017a058d9ba5cca8e0ca6c4d42514e8e5a",
+      "retainedSha256": "c34039ac8431d76aaa5e999652285f017a058d9ba5cca8e0ca6c4d42514e8e5a"
+    },
+    {
+      "receipt": "diagnostic-f8c3e0f2-bridge-reload-v2",
+      "field": "runner_sha256_before/run.py",
+      "path": "diagnostic-f8c3e0f2-bridge-reload-v2/run.py",
+      "expectedSha256": "9ae6a0fd490c3753ed535dcdb28a414b8842e4d147b7ef1afc375e0902058c4f",
+      "retainedSha256": "9ae6a0fd490c3753ed535dcdb28a414b8842e4d147b7ef1afc375e0902058c4f"
+    },
+    {
+      "receipt": "diagnostic-f8c3e0f2-bridge-reload-v2",
+      "field": "runner_sha256_before/namespace.sh",
+      "path": "diagnostic-f8c3e0f2-bridge-reload-v2/namespace.sh",
+      "expectedSha256": "7ec80be18eba728d73c008af2e49bcbc01167b4cf48a2216a1d240e3537208ca",
+      "retainedSha256": "7ec80be18eba728d73c008af2e49bcbc01167b4cf48a2216a1d240e3537208ca"
+    },
+    {
+      "receipt": "diagnostic-f8c3e0f2-bridge-reload-v2",
+      "field": "runner_sha256_before/launch.ps1",
+      "path": "diagnostic-f8c3e0f2-bridge-reload-v2/launch.ps1",
+      "expectedSha256": "5fdcbcf0d200d9a5708c4e42e8c88bd3c592b74cfadbd48a197668b1b63dc623",
+      "retainedSha256": "5fdcbcf0d200d9a5708c4e42e8c88bd3c592b74cfadbd48a197668b1b63dc623"
+    }
+  ],
+  "missing": [],
+  "externalLauncher": {
+    "path": "/mnt/c/Users/Yang/AppData/Local/Temp/claude/D--geometry-axiom/f46787ac-6918-4891-81a1-b3d8a9aa653c/scratchpad/wsl-ci/wsl_locked3.sh",
+    "previouslyPublished": "native-p1-20261016",
+    "catalogPath": "runtime/wsl_locked3.sh",
+    "sha256": "155f1627c6e6e02f9c70e8324d73754d0648aa0437c187908237cc2aa4f1a454",
+    "scope": "Prior published wrapper bytes only; not a new execution-time hash attestation."
+  }
+}

@@ -1,0 +1,1151 @@
+{
+  "kind": "selected-source-common-compile-link-gate-only",
+  "source": "f8c3e0f2535d6e20a21d48bfeb73aeacb7aad5e4",
+  "tree": "68d84cc92dde502c5e6baf61494d11d11bc791ac",
+  "selection": {
+    "source": "f8c3e0f2535d6e20a21d48bfeb73aeacb7aad5e4",
+    "tree": "68d84cc92dde502c5e6baf61494d11d11bc791ac",
+    "kind": "exact-selected-path-executable-source-export-not-full-source-archive",
+    "selected_files": 185,
+    "selected_bytes": 1927521,
+    "omitted_files": 15943,
+    "omitted_bytes": 870467365,
+    "archive_bytes": 2078720,
+    "archive_sha256": "63acb1db6ee31bc6109e8ee0098452dabe463e80b159063993997a276ae49af9",
+    "compiler_executed": false,
+    "product_tests_executed": false,
+    "fixtures_note": "Common NativeBuild compile gate needs geo261_exact_harness.c and inline codec HARNESS; no saved-scene fixtures are consumed by this gate. Additional selected literal fixture references are recorded individually.",
+    "scope_note": "Minimal NativeBuild common object and three product entrypoint compile/link closure only. Coordinated test batches need their additional exact Git test/harness files. No suite completeness claim."
+  },
+  "source_root": "/var/tmp/geo261-build-gate-f8c3e0f2-v1/source",
+  "started_utc": "2026-10-16T16:47:07.384904+00:00",
+  "finished_utc": "2026-10-16T16:47:40.928383+00:00",
+  "stages": [
+    {
+      "stage": "kernel-only-common-objects",
+      "status": "PASS",
+      "started_utc": "2026-10-16T16:47:10.675787+00:00",
+      "finished_utc": "2026-10-16T16:47:28.106568+00:00"
+    },
+    {
+      "stage": "default-common-objects",
+      "status": "PASS",
+      "started_utc": "2026-10-16T16:47:28.135153+00:00",
+      "finished_utc": "2026-10-16T16:47:32.997795+00:00"
+    },
+    {
+      "stage": "actual-bridge-compile-link",
+      "status": "PASS",
+      "started_utc": "2026-10-16T16:47:33.008467+00:00",
+      "finished_utc": "2026-10-16T16:47:36.537144+00:00"
+    },
+    {
+      "stage": "actual-cli-compile-link",
+      "status": "PASS",
+      "started_utc": "2026-10-16T16:47:36.546994+00:00",
+      "finished_utc": "2026-10-16T16:47:38.513773+00:00"
+    },
+    {
+      "stage": "actual-model-base-compile-link",
+      "status": "PASS",
+      "started_utc": "2026-10-16T16:47:38.521685+00:00",
+      "finished_utc": "2026-10-16T16:47:40.689660+00:00"
+    }
+  ],
+  "failure": null,
+  "stopped_on_first_failure": false,
+  "source_unchanged": true,
+  "runner_sha256_before": {
+    "run.py": "fe4dd53820a8ab9728ef4a793fa79c7bbaa571d31f74305a7d66ad0b086d7eff",
+    "namespace.sh": "52c1ef1a87945f82ae2fab2fb1313be72f8566493f34a3b3b7a3f7ba48add5b2",
+    "selection-summary.json": "391227b9a3ba33ffea9116abbc43d15cea1b0db7fbbce21cc7bcd54b16831746",
+    "selected-paths.json": "fecffa5a5152c50ca54aea5abd9295c10ccd5464b0d718d2ceb485105d6bcdef"
+  },
+  "runner_sha256_after": {
+    "run.py": "fe4dd53820a8ab9728ef4a793fa79c7bbaa571d31f74305a7d66ad0b086d7eff",
+    "namespace.sh": "52c1ef1a87945f82ae2fab2fb1313be72f8566493f34a3b3b7a3f7ba48add5b2",
+    "selection-summary.json": "391227b9a3ba33ffea9116abbc43d15cea1b0db7fbbce21cc7bcd54b16831746",
+    "selected-paths.json": "fecffa5a5152c50ca54aea5abd9295c10ccd5464b0d718d2ceb485105d6bcdef"
+  },
+  "runners_unchanged": true,
+  "build_artifacts": {
+    "kernel-only-common-objects": {
+      "preserved_root": "/var/tmp/geo261-build-gate-f8c3e0f2-v1/build-artifacts/kernel-only-common-objects",
+      "compiler_command_count": 26,
+      "files": {
+        "build-log.json": {
+          "sha256": "f8b673725c1838e41e29c881f1cdb128dc93923eff99711cf0d27d4fb1a04677",
+          "bytes": 19900
+        },
+        "candidate.o": {
+          "sha256": "bd3dab706e7d3cd134adcf09ac974f8fcb20d61b224d66eb76d265dd10f953be",
+          "bytes": 9864
+        },
+        "clip.o": {
+          "sha256": "41c5529ad94bf5164a88f7bfd219a4afe49ce372ed67d6a9f2436d588a8fc206",
+          "bytes": 10656
+        },
+        "codec-client": {
+          "sha256": "31ae8a677b0333d90b8118348d4dc9ce46732a0fb1d93fdbb2a421ec9004684d",
+          "bytes": 34952
+        },
+        "codec-client.c": {
+          "sha256": "e4a093c03179d1fbc370375e2e45bf3a9d2d09f40cbb6b44fe53c2190abd7a13",
+          "bytes": 2857
+        },
+        "codec-client.o": {
+          "sha256": "88e8f87e9e7870760d0566f4c45c157bab327399ab57574f629dad0e41c11856",
+          "bytes": 7088
+        },
+        "codec.o": {
+          "sha256": "556bc1ec7b7e90a99f85e328a1c894b9421b8859d034f600a62adf923fb7ba2c",
+          "bytes": 24800
+        },
+        "datums.o": {
+          "sha256": "b5fc28518bf4aae8ed7c80c8b5fd9703ade3e2d717bc2920387f71059aa4457c",
+          "bytes": 5744
+        },
+        "document.o": {
+          "sha256": "77d9fe5e44a8ff6d4bb87a7da3351501b2d338d8e254c4ffd40d34389461aa7e",
+          "bytes": 4616
+        },
+        "enclosure-sources.o": {
+          "sha256": "f95322c871d124744abaaab50739ec467c7b89959333d6a68e9beaaa93e85e83",
+          "bytes": 13592
+        },
+        "enclosure.o": {
+          "sha256": "71bb0da4cf1c39ae8a69a1be0a7ccc145feca9bb1c2d5a40d40f23136393e5dc",
+          "bytes": 8648
+        },
+        "exact-client": {
+          "sha256": "787de89afc038e2d56eafd0cc1811a04daaf9504e03892b773263db37bf3f0e6",
+          "bytes": 16440
+        },
+        "exact-client.c": {
+          "sha256": "7581efd5b45b3c16fc2a6eb380cdfb2438b3822d95123cca1e337a5c301270cc",
+          "bytes": 919
+        },
+        "exact-client.o": {
+          "sha256": "ccc88f44ad072ee2fcee10e0813bfccc8f79abc661f07a9c9159fca6e72ffe49",
+          "bytes": 2768
+        },
+        "exact.o": {
+          "sha256": "a6014a4fe28167407a8051b268f06b4d76cbc667b41321d9502becabb87b0b4b",
+          "bytes": 3560
+        },
+        "geometry.o": {
+          "sha256": "f0c8d342e2b187642701ddf61b0f889b8d5c8f97420620b9e7c480a7312be409",
+          "bytes": 25992
+        },
+        "grid-store.o": {
+          "sha256": "39f39572d38e98d92c533c75ae26393ea43e4e807e6f2072e79db4cda6940d4b",
+          "bytes": 18520
+        },
+        "grid.o": {
+          "sha256": "21484a94af3a36166f0d857a02f61376db0cc41a54bae554b5b9e81877c46304",
+          "bytes": 6736
+        },
+        "guides.o": {
+          "sha256": "e2f0c12717ac5e27dcbdf8ec6ced70c8a7e8b4e4418f93461883d63038751b18",
+          "bytes": 5976
+        },
+        "isolated-kernel/candidate.c": {
+          "sha256": "3aa25e6adfa2f48e885576377a742f2160fa696b79b51f346233f195dba60d93",
+          "bytes": 11870
+        },
+        "isolated-kernel/candidate.h": {
+          "sha256": "17e273e2c5eed4d6a33f6b79234d4ed924cd7203435556ac11dbeece6c8cae81",
+          "bytes": 3890
+        },
+        "isolated-kernel/clip.c": {
+          "sha256": "c40ca01c4cbde0d88647c28a588aaa80ac922689fc8e152bac162a39db5c12ea",
+          "bytes": 7551
+        },
+        "isolated-kernel/clip.h": {
+          "sha256": "31e2e53370e437073c098296a6f669ef5dd7959f1811c57c77604a34dc71c99c",
+          "bytes": 1597
+        },
+        "isolated-kernel/codec.c": {
+          "sha256": "bde1ca8c6e9c1973f6a4e30afe77b4922c1803581bd2ec9ef39ee6bd340e448a",
+          "bytes": 23308
+        },
+        "isolated-kernel/codec.h": {
+          "sha256": "81de17c90f814c798a271cad6a0b2f6fbcdc5e6c4e46af14a002be818f9feb14",
+          "bytes": 2393
+        },
+        "isolated-kernel/datums.c": {
+          "sha256": "5bb1777c66f8bcd4a675b36214cdc7b070a0262bc3585259e12c4e98cd656b3a",
+          "bytes": 3934
+        },
+        "isolated-kernel/datums.h": {
+          "sha256": "b2ceb4acd34931fd83f32bd4e499799b9b976f131d1b57ef86104c38348a57e8",
+          "bytes": 1570
+        },
+        "isolated-kernel/document.c": {
+          "sha256": "eadfa918e209ac8949909911cc7648250b5c1f27e4310008f06f46b62315c0c1",
+          "bytes": 2636
+        },
+        "isolated-kernel/document.h": {
+          "sha256": "603e684ca9c5ab2b8d23205cc3382a9e305c1e57441c0854367a57c441461e56",
+          "bytes": 2016
+        },
+        "isolated-kernel/enclosure.c": {
+          "sha256": "78f0409c342f0af3dcd9703055b63deaf5ae9606ab88d949191fb67df655ff77",
+          "bytes": 7871
+        },
+        "isolated-kernel/enclosure.h": {
+          "sha256": "8e6162fee153af7ff6a1d8e13d8b3e01db90c51d9d41b846025876dfb3c5c7f5",
+          "bytes": 3604
+        },
+        "isolated-kernel/enclosure_sources.c": {
+          "sha256": "259adf566e67f30d676e756c8efc85817213967720e267f7ed5d38c4e67444ee",
+          "bytes": 14669
+        },
+        "isolated-kernel/enclosure_sources.h": {
+          "sha256": "bf839f7ca1f2fa0a4729051245bbf8565db8bd5e1338bc2f246ef67d90d6642d",
+          "bytes": 3001
+        },
+        "isolated-kernel/exact.c": {
+          "sha256": "4091d2100fc953f08bc2ea66de18503e6ed87e725a952ec14318779af9fd3cbf",
+          "bytes": 3243
+        },
+        "isolated-kernel/exact.h": {
+          "sha256": "bca06ef8df48636d6a79b50dae0f9337b37d886ca4ff097fc03ce865e5cffb2d",
+          "bytes": 1104
+        },
+        "isolated-kernel/geometry.c": {
+          "sha256": "8e9ca0287d1141b7f534d520f15225b0f0a9e32b66d46824114cf7985b98ea9f",
+          "bytes": 29236
+        },
+        "isolated-kernel/geometry.h": {
+          "sha256": "72a6268999b3ee636a668e4d5fa6f74203dbb35de52b6b86f24dda48799ad3b1",
+          "bytes": 5583
+        },
+        "isolated-kernel/grid.c": {
+          "sha256": "88cc8d880f50856e43a2f362a179649de2f9c8583827227cdced45a2024d8b9f",
+          "bytes": 8062
+        },
+        "isolated-kernel/grid.h": {
+          "sha256": "2180b532a060a54572f3e352178326c425ad216e67bb6ee567ae6f62666b4454",
+          "bytes": 2696
+        },
+        "isolated-kernel/grid_store.c": {
+          "sha256": "123983e64599715f743815a339a5f7f9d0068edc018aaf26dcae1c4098bd922a",
+          "bytes": 21431
+        },
+        "isolated-kernel/grid_store.h": {
+          "sha256": "4f8d279b6d2e6e95d7ce02937e34018ee1ed635388b6bd8e72e5936b848e42b4",
+          "bytes": 7244
+        },
+        "isolated-kernel/guides.c": {
+          "sha256": "eb6fa3b7a87c821ea707a919bc6373b47b42d1fcdb1f31876d892f2858593391",
+          "bytes": 5297
+        },
+        "isolated-kernel/guides.h": {
+          "sha256": "6f293517bd83f8dac4a018a81c9a226d4759994690a1ffe585f8884c40576682",
+          "bytes": 2674
+        },
+        "isolated-kernel/internal/datums.h": {
+          "sha256": "244419b5c43ccadf48f8b9b2ac985496cc28453443acd3984dc2ee1e0683a55b",
+          "bytes": 178
+        },
+        "isolated-kernel/internal/document.h": {
+          "sha256": "db38e7ee5a0dde09e69f8290c5ba3ac042eeb979c8d742916da449211a88b489",
+          "bytes": 897
+        },
+        "isolated-kernel/internal/enclosures.h": {
+          "sha256": "d568b1b7ab0df12e65618a2b5a2ce909cddfbae7f0b88eccbfd1bbd693a0c0aa",
+          "bytes": 273
+        },
+        "isolated-kernel/internal/grid_store.h": {
+          "sha256": "499f879f4f9cf6c58cab360dc9273c90095b058880336cf147888072b1602ccd",
+          "bytes": 301
+        },
+        "isolated-kernel/internal/guides.h": {
+          "sha256": "aab50ff4e4ce23a258dbc1207bd44e80e8ce2008e9d9c547454041b4cf0fb114",
+          "bytes": 181
+        },
+        "isolated-kernel/internal/named_values.h": {
+          "sha256": "e1c0d76fed48cb8c6015735aa143b0c4edc90ccfcd3dd85548c6f130b90bd783",
+          "bytes": 219
+        },
+        "isolated-kernel/internal/parameter_store.h": {
+          "sha256": "5d3e31ce6cdee43056ae2ede68e902cb7368fb40108928c9ce9aff63dd4cb88d",
+          "bytes": 453
+        },
+        "isolated-kernel/internal/placements.h": {
+          "sha256": "ff2b4ea612c80b4ab76da4024d768493842b879133ef6598dc4b4f63503201da",
+          "bytes": 301
+        },
+        "isolated-kernel/internal/regions.h": {
+          "sha256": "6dc80e855f3248208fa4cc945141339631673e9d9d2414b11f649f9d48c5df36",
+          "bytes": 410
+        },
+        "isolated-kernel/internal/versions.h": {
+          "sha256": "19d2a7d32dd3c8b4adb0e4dab228f7b0f9aaaeec46bcc15453ca51664bded0ac",
+          "bytes": 704
+        },
+        "isolated-kernel/linear.c": {
+          "sha256": "cecc726b5a69fe060abcee4e708cb804c696dbab69994c2967dd1fc02023e86c",
+          "bytes": 4333
+        },
+        "isolated-kernel/linear.h": {
+          "sha256": "7701f7e77f9ae34ee74004606a5c88bbc9158c0bb463ec55fa116d7d2ad245be",
+          "bytes": 1619
+        },
+        "isolated-kernel/named_values.c": {
+          "sha256": "651a932efedc94e2729e402ba3ee0cf50a731b1d741a546c5dec87815fd357d1",
+          "bytes": 2105
+        },
+        "isolated-kernel/named_values.h": {
+          "sha256": "9965267c054be1b5ca758189c91ffb79e52c6ef98e678acef824ec27fd0ca690",
+          "bytes": 891
+        },
+        "isolated-kernel/parameter_sources.c": {
+          "sha256": "1278051ec70e65cdefb18468afd1ae59d88479c61cdd764e96462a36e0739d23",
+          "bytes": 4553
+        },
+        "isolated-kernel/parameter_sources.h": {
+          "sha256": "8a36e9912b295a827daf9bb8962ffe058609de69eaac356b439f99f5418caf8f",
+          "bytes": 1018
+        },
+        "isolated-kernel/parameters.c": {
+          "sha256": "9ca7e36ccdd50174576e8fe7fbc92d60d18c6a98757afe8628b1d36f7f409a2a",
+          "bytes": 16809
+        },
+        "isolated-kernel/parameters.h": {
+          "sha256": "5e2fe24a4dea28bfae25dbb0ef28db7ffbe86932d0b3847b21b254a1b8dee50d",
+          "bytes": 5193
+        },
+        "isolated-kernel/placement_sources.c": {
+          "sha256": "713d47beaade5c3b2eb967b9dc6a3d4a09434d3f6cafd3d6058c6594bf2f3567",
+          "bytes": 5521
+        },
+        "isolated-kernel/placement_sources.h": {
+          "sha256": "ef102ae7e76c736d001698173ee7f34aeb14e6d4fdb35e6ca2dfa9892c9fa041",
+          "bytes": 1631
+        },
+        "isolated-kernel/placements.c": {
+          "sha256": "20524e1526e9d0bf82c75f07c74cd75d579e9625c868043b0028b1b1d83bc0b2",
+          "bytes": 10229
+        },
+        "isolated-kernel/placements.h": {
+          "sha256": "07977950e771da87b908414c8c591b65af5a6166672b7001724b21ef397921f6",
+          "bytes": 3593
+        },
+        "isolated-kernel/region_key_sources.c": {
+          "sha256": "9a911b8d440e38298c1795c44677a3df0904f76dbc672aa112ced754fb47d77b",
+          "bytes": 9853
+        },
+        "isolated-kernel/region_key_sources.h": {
+          "sha256": "e147a513df0aae2e7ddcedac9d4df17695c6147fcd73305f18a503322c2d9146",
+          "bytes": 2876
+        },
+        "isolated-kernel/regions.c": {
+          "sha256": "e2301dfd2f046da75c15764e045375b022713b3aadbbd37b8e8d0373ea6b8d59",
+          "bytes": 11576
+        },
+        "isolated-kernel/regions.h": {
+          "sha256": "795119199673378f7451411165000800b7a869283dbe87bbccfa0bf372819610",
+          "bytes": 3901
+        },
+        "isolated-kernel/source.c": {
+          "sha256": "6cca0d844aa883257315681094bc0b6606389cc7d021ded5f825980af2ff83c7",
+          "bytes": 12026
+        },
+        "isolated-kernel/source.h": {
+          "sha256": "80bda50baca408e5bd583165b7f5c4370c6ac3bae7fd803530cdd8b88cf96c4b",
+          "bytes": 5027
+        },
+        "isolated-kernel/types.h": {
+          "sha256": "8e2db361ebbd20b9cb58a57a10ac80897a622b244f421e86a95039428544458f",
+          "bytes": 394
+        },
+        "isolated-kernel/versions.c": {
+          "sha256": "f499860f308efb046b575497cff613b3a59b18b74eba8acc040c90a0f46ab632",
+          "bytes": 14772
+        },
+        "isolated-kernel/versions.h": {
+          "sha256": "09f692bd6d3edd5e9edfff20129dd1adffad8c7e6589ebd8c0af354efba8d3e2",
+          "bytes": 5439
+        },
+        "linear.o": {
+          "sha256": "87061489f4d7c1e410d3f3b4783ec1068a7ea94e02afdca0fd7559bd35c5ee99",
+          "bytes": 5328
+        },
+        "named-values.o": {
+          "sha256": "88a3751a5903e8d62b23c5f3a80c86b25df1a84e06d3de0e883d11c47e164783",
+          "bytes": 4352
+        },
+        "parameter-sources.o": {
+          "sha256": "be0e17b893f491481f200332a9a26410c337237272c7f0170b8e16f358707a21",
+          "bytes": 5440
+        },
+        "parameters.o": {
+          "sha256": "737f90710f7aea4e11b7ad780515750c87a2dc0d9da35a2f31dc231d561b399a",
+          "bytes": 19944
+        },
+        "placement-sources.o": {
+          "sha256": "0bb34c88613a7c33513c93bbbcccf4f5aaa766f6b27ece2e5d73ed604189570e",
+          "bytes": 6512
+        },
+        "placements.o": {
+          "sha256": "0ae3207610413ef17c4884bea7d35b4eb9dd376ee04b671ed8490daeacc83d47",
+          "bytes": 10072
+        },
+        "region-key-sources.o": {
+          "sha256": "04b53c25191585570b2784756337451fdd7650e8ed59ef412ace9c7f6169d22e",
+          "bytes": 9664
+        },
+        "regions.o": {
+          "sha256": "f6883f748b5f8f0e1e0cd2e5272b3a7055759945e3c688f404b5a7f6abc74ecc",
+          "bytes": 11352
+        },
+        "source.o": {
+          "sha256": "bc33f4e92244048387f28e21b54d03ccf2ad5c1adcea97d688d0fdc36cd81cac",
+          "bytes": 12032
+        },
+        "versions.o": {
+          "sha256": "5f7aa61a2a9f83062e4b608c4990e48ae86fce008918b57d515f95cf45229532",
+          "bytes": 13808
+        }
+      },
+      "kernel_only": true
+    },
+    "default-common-objects": {
+      "preserved_root": "/var/tmp/geo261-build-gate-f8c3e0f2-v1/build-artifacts/default-common-objects",
+      "compiler_command_count": 61,
+      "files": {
+        "build-log.json": {
+          "sha256": "dacfe9e13a6e76916a919b57d52d650b865556c0892683f6bdc01039f67f93bf",
+          "bytes": 87571
+        },
+        "candidate.o": {
+          "sha256": "bd3dab706e7d3cd134adcf09ac974f8fcb20d61b224d66eb76d265dd10f953be",
+          "bytes": 9864
+        },
+        "clip.o": {
+          "sha256": "41c5529ad94bf5164a88f7bfd219a4afe49ce372ed67d6a9f2436d588a8fc206",
+          "bytes": 10656
+        },
+        "codec-client": {
+          "sha256": "31ae8a677b0333d90b8118348d4dc9ce46732a0fb1d93fdbb2a421ec9004684d",
+          "bytes": 34952
+        },
+        "codec-client.c": {
+          "sha256": "e4a093c03179d1fbc370375e2e45bf3a9d2d09f40cbb6b44fe53c2190abd7a13",
+          "bytes": 2857
+        },
+        "codec-client.o": {
+          "sha256": "88e8f87e9e7870760d0566f4c45c157bab327399ab57574f629dad0e41c11856",
+          "bytes": 7088
+        },
+        "codec.o": {
+          "sha256": "556bc1ec7b7e90a99f85e328a1c894b9421b8859d034f600a62adf923fb7ba2c",
+          "bytes": 24800
+        },
+        "datums.o": {
+          "sha256": "b5fc28518bf4aae8ed7c80c8b5fd9703ade3e2d717bc2920387f71059aa4457c",
+          "bytes": 5744
+        },
+        "document.o": {
+          "sha256": "77d9fe5e44a8ff6d4bb87a7da3351501b2d338d8e254c4ffd40d34389461aa7e",
+          "bytes": 4616
+        },
+        "enclosure-sources.o": {
+          "sha256": "f95322c871d124744abaaab50739ec467c7b89959333d6a68e9beaaa93e85e83",
+          "bytes": 13592
+        },
+        "enclosure.o": {
+          "sha256": "71bb0da4cf1c39ae8a69a1be0a7ccc145feca9bb1c2d5a40d40f23136393e5dc",
+          "bytes": 8648
+        },
+        "exact-client": {
+          "sha256": "787de89afc038e2d56eafd0cc1811a04daaf9504e03892b773263db37bf3f0e6",
+          "bytes": 16440
+        },
+        "exact-client.c": {
+          "sha256": "7581efd5b45b3c16fc2a6eb380cdfb2438b3822d95123cca1e337a5c301270cc",
+          "bytes": 919
+        },
+        "exact-client.o": {
+          "sha256": "ccc88f44ad072ee2fcee10e0813bfccc8f79abc661f07a9c9159fca6e72ffe49",
+          "bytes": 2768
+        },
+        "exact.o": {
+          "sha256": "a6014a4fe28167407a8051b268f06b4d76cbc667b41321d9502becabb87b0b4b",
+          "bytes": 3560
+        },
+        "geometry.o": {
+          "sha256": "f0c8d342e2b187642701ddf61b0f889b8d5c8f97420620b9e7c480a7312be409",
+          "bytes": 25992
+        },
+        "grid-store.o": {
+          "sha256": "39f39572d38e98d92c533c75ae26393ea43e4e807e6f2072e79db4cda6940d4b",
+          "bytes": 18520
+        },
+        "grid.o": {
+          "sha256": "21484a94af3a36166f0d857a02f61376db0cc41a54bae554b5b9e81877c46304",
+          "bytes": 6736
+        },
+        "guides.o": {
+          "sha256": "e2f0c12717ac5e27dcbdf8ec6ced70c8a7e8b4e4418f93461883d63038751b18",
+          "bytes": 5976
+        },
+        "host-candidate.o": {
+          "sha256": "7c0b5649c854abf3d5a6d492faea511f06d2e17de807a09446f38e5290938b24",
+          "bytes": 7080
+        },
+        "host-history.o": {
+          "sha256": "3955e9950ed8c76b0fcb3dcdccbb99d7b2188cfa671127da011e341d9f85f0b3",
+          "bytes": 4280
+        },
+        "isolated-host/app_candidate.c": {
+          "sha256": "8194219748cf3fff32bf60f30303c4972f6ffb738e2885d307e11a3e1505be6f",
+          "bytes": 7446
+        },
+        "isolated-host/app_candidate.h": {
+          "sha256": "7d91934d2e3ed441b7e28f38dfe83a6c725fd6f035ce58e63242c2f0ea6907e8",
+          "bytes": 2642
+        },
+        "isolated-host/history.c": {
+          "sha256": "58e8ca05ba41959c9d5144149354a9d06940cf9c3c2ffba83d15a9229d3e3595",
+          "bytes": 3945
+        },
+        "isolated-host/history.h": {
+          "sha256": "b9a0b9b61a592bd857041ee4e984550ab9d7e8456d8c434a3f5002a59689e0e0",
+          "bytes": 1840
+        },
+        "isolated-kernel/candidate.c": {
+          "sha256": "3aa25e6adfa2f48e885576377a742f2160fa696b79b51f346233f195dba60d93",
+          "bytes": 11870
+        },
+        "isolated-kernel/candidate.h": {
+          "sha256": "17e273e2c5eed4d6a33f6b79234d4ed924cd7203435556ac11dbeece6c8cae81",
+          "bytes": 3890
+        },
+        "isolated-kernel/clip.c": {
+          "sha256": "c40ca01c4cbde0d88647c28a588aaa80ac922689fc8e152bac162a39db5c12ea",
+          "bytes": 7551
+        },
+        "isolated-kernel/clip.h": {
+          "sha256": "31e2e53370e437073c098296a6f669ef5dd7959f1811c57c77604a34dc71c99c",
+          "bytes": 1597
+        },
+        "isolated-kernel/codec.c": {
+          "sha256": "bde1ca8c6e9c1973f6a4e30afe77b4922c1803581bd2ec9ef39ee6bd340e448a",
+          "bytes": 23308
+        },
+        "isolated-kernel/codec.h": {
+          "sha256": "81de17c90f814c798a271cad6a0b2f6fbcdc5e6c4e46af14a002be818f9feb14",
+          "bytes": 2393
+        },
+        "isolated-kernel/datums.c": {
+          "sha256": "5bb1777c66f8bcd4a675b36214cdc7b070a0262bc3585259e12c4e98cd656b3a",
+          "bytes": 3934
+        },
+        "isolated-kernel/datums.h": {
+          "sha256": "b2ceb4acd34931fd83f32bd4e499799b9b976f131d1b57ef86104c38348a57e8",
+          "bytes": 1570
+        },
+        "isolated-kernel/document.c": {
+          "sha256": "eadfa918e209ac8949909911cc7648250b5c1f27e4310008f06f46b62315c0c1",
+          "bytes": 2636
+        },
+        "isolated-kernel/document.h": {
+          "sha256": "603e684ca9c5ab2b8d23205cc3382a9e305c1e57441c0854367a57c441461e56",
+          "bytes": 2016
+        },
+        "isolated-kernel/enclosure.c": {
+          "sha256": "78f0409c342f0af3dcd9703055b63deaf5ae9606ab88d949191fb67df655ff77",
+          "bytes": 7871
+        },
+        "isolated-kernel/enclosure.h": {
+          "sha256": "8e6162fee153af7ff6a1d8e13d8b3e01db90c51d9d41b846025876dfb3c5c7f5",
+          "bytes": 3604
+        },
+        "isolated-kernel/enclosure_sources.c": {
+          "sha256": "259adf566e67f30d676e756c8efc85817213967720e267f7ed5d38c4e67444ee",
+          "bytes": 14669
+        },
+        "isolated-kernel/enclosure_sources.h": {
+          "sha256": "bf839f7ca1f2fa0a4729051245bbf8565db8bd5e1338bc2f246ef67d90d6642d",
+          "bytes": 3001
+        },
+        "isolated-kernel/exact.c": {
+          "sha256": "4091d2100fc953f08bc2ea66de18503e6ed87e725a952ec14318779af9fd3cbf",
+          "bytes": 3243
+        },
+        "isolated-kernel/exact.h": {
+          "sha256": "bca06ef8df48636d6a79b50dae0f9337b37d886ca4ff097fc03ce865e5cffb2d",
+          "bytes": 1104
+        },
+        "isolated-kernel/geometry.c": {
+          "sha256": "8e9ca0287d1141b7f534d520f15225b0f0a9e32b66d46824114cf7985b98ea9f",
+          "bytes": 29236
+        },
+        "isolated-kernel/geometry.h": {
+          "sha256": "72a6268999b3ee636a668e4d5fa6f74203dbb35de52b6b86f24dda48799ad3b1",
+          "bytes": 5583
+        },
+        "isolated-kernel/grid.c": {
+          "sha256": "88cc8d880f50856e43a2f362a179649de2f9c8583827227cdced45a2024d8b9f",
+          "bytes": 8062
+        },
+        "isolated-kernel/grid.h": {
+          "sha256": "2180b532a060a54572f3e352178326c425ad216e67bb6ee567ae6f62666b4454",
+          "bytes": 2696
+        },
+        "isolated-kernel/grid_store.c": {
+          "sha256": "123983e64599715f743815a339a5f7f9d0068edc018aaf26dcae1c4098bd922a",
+          "bytes": 21431
+        },
+        "isolated-kernel/grid_store.h": {
+          "sha256": "4f8d279b6d2e6e95d7ce02937e34018ee1ed635388b6bd8e72e5936b848e42b4",
+          "bytes": 7244
+        },
+        "isolated-kernel/guides.c": {
+          "sha256": "eb6fa3b7a87c821ea707a919bc6373b47b42d1fcdb1f31876d892f2858593391",
+          "bytes": 5297
+        },
+        "isolated-kernel/guides.h": {
+          "sha256": "6f293517bd83f8dac4a018a81c9a226d4759994690a1ffe585f8884c40576682",
+          "bytes": 2674
+        },
+        "isolated-kernel/internal/datums.h": {
+          "sha256": "244419b5c43ccadf48f8b9b2ac985496cc28453443acd3984dc2ee1e0683a55b",
+          "bytes": 178
+        },
+        "isolated-kernel/internal/document.h": {
+          "sha256": "db38e7ee5a0dde09e69f8290c5ba3ac042eeb979c8d742916da449211a88b489",
+          "bytes": 897
+        },
+        "isolated-kernel/internal/enclosures.h": {
+          "sha256": "d568b1b7ab0df12e65618a2b5a2ce909cddfbae7f0b88eccbfd1bbd693a0c0aa",
+          "bytes": 273
+        },
+        "isolated-kernel/internal/grid_store.h": {
+          "sha256": "499f879f4f9cf6c58cab360dc9273c90095b058880336cf147888072b1602ccd",
+          "bytes": 301
+        },
+        "isolated-kernel/internal/guides.h": {
+          "sha256": "aab50ff4e4ce23a258dbc1207bd44e80e8ce2008e9d9c547454041b4cf0fb114",
+          "bytes": 181
+        },
+        "isolated-kernel/internal/named_values.h": {
+          "sha256": "e1c0d76fed48cb8c6015735aa143b0c4edc90ccfcd3dd85548c6f130b90bd783",
+          "bytes": 219
+        },
+        "isolated-kernel/internal/parameter_store.h": {
+          "sha256": "5d3e31ce6cdee43056ae2ede68e902cb7368fb40108928c9ce9aff63dd4cb88d",
+          "bytes": 453
+        },
+        "isolated-kernel/internal/placements.h": {
+          "sha256": "ff2b4ea612c80b4ab76da4024d768493842b879133ef6598dc4b4f63503201da",
+          "bytes": 301
+        },
+        "isolated-kernel/internal/regions.h": {
+          "sha256": "6dc80e855f3248208fa4cc945141339631673e9d9d2414b11f649f9d48c5df36",
+          "bytes": 410
+        },
+        "isolated-kernel/internal/versions.h": {
+          "sha256": "19d2a7d32dd3c8b4adb0e4dab228f7b0f9aaaeec46bcc15453ca51664bded0ac",
+          "bytes": 704
+        },
+        "isolated-kernel/linear.c": {
+          "sha256": "cecc726b5a69fe060abcee4e708cb804c696dbab69994c2967dd1fc02023e86c",
+          "bytes": 4333
+        },
+        "isolated-kernel/linear.h": {
+          "sha256": "7701f7e77f9ae34ee74004606a5c88bbc9158c0bb463ec55fa116d7d2ad245be",
+          "bytes": 1619
+        },
+        "isolated-kernel/named_values.c": {
+          "sha256": "651a932efedc94e2729e402ba3ee0cf50a731b1d741a546c5dec87815fd357d1",
+          "bytes": 2105
+        },
+        "isolated-kernel/named_values.h": {
+          "sha256": "9965267c054be1b5ca758189c91ffb79e52c6ef98e678acef824ec27fd0ca690",
+          "bytes": 891
+        },
+        "isolated-kernel/parameter_sources.c": {
+          "sha256": "1278051ec70e65cdefb18468afd1ae59d88479c61cdd764e96462a36e0739d23",
+          "bytes": 4553
+        },
+        "isolated-kernel/parameter_sources.h": {
+          "sha256": "8a36e9912b295a827daf9bb8962ffe058609de69eaac356b439f99f5418caf8f",
+          "bytes": 1018
+        },
+        "isolated-kernel/parameters.c": {
+          "sha256": "9ca7e36ccdd50174576e8fe7fbc92d60d18c6a98757afe8628b1d36f7f409a2a",
+          "bytes": 16809
+        },
+        "isolated-kernel/parameters.h": {
+          "sha256": "5e2fe24a4dea28bfae25dbb0ef28db7ffbe86932d0b3847b21b254a1b8dee50d",
+          "bytes": 5193
+        },
+        "isolated-kernel/placement_sources.c": {
+          "sha256": "713d47beaade5c3b2eb967b9dc6a3d4a09434d3f6cafd3d6058c6594bf2f3567",
+          "bytes": 5521
+        },
+        "isolated-kernel/placement_sources.h": {
+          "sha256": "ef102ae7e76c736d001698173ee7f34aeb14e6d4fdb35e6ca2dfa9892c9fa041",
+          "bytes": 1631
+        },
+        "isolated-kernel/placements.c": {
+          "sha256": "20524e1526e9d0bf82c75f07c74cd75d579e9625c868043b0028b1b1d83bc0b2",
+          "bytes": 10229
+        },
+        "isolated-kernel/placements.h": {
+          "sha256": "07977950e771da87b908414c8c591b65af5a6166672b7001724b21ef397921f6",
+          "bytes": 3593
+        },
+        "isolated-kernel/region_key_sources.c": {
+          "sha256": "9a911b8d440e38298c1795c44677a3df0904f76dbc672aa112ced754fb47d77b",
+          "bytes": 9853
+        },
+        "isolated-kernel/region_key_sources.h": {
+          "sha256": "e147a513df0aae2e7ddcedac9d4df17695c6147fcd73305f18a503322c2d9146",
+          "bytes": 2876
+        },
+        "isolated-kernel/regions.c": {
+          "sha256": "e2301dfd2f046da75c15764e045375b022713b3aadbbd37b8e8d0373ea6b8d59",
+          "bytes": 11576
+        },
+        "isolated-kernel/regions.h": {
+          "sha256": "795119199673378f7451411165000800b7a869283dbe87bbccfa0bf372819610",
+          "bytes": 3901
+        },
+        "isolated-kernel/source.c": {
+          "sha256": "6cca0d844aa883257315681094bc0b6606389cc7d021ded5f825980af2ff83c7",
+          "bytes": 12026
+        },
+        "isolated-kernel/source.h": {
+          "sha256": "80bda50baca408e5bd583165b7f5c4370c6ac3bae7fd803530cdd8b88cf96c4b",
+          "bytes": 5027
+        },
+        "isolated-kernel/types.h": {
+          "sha256": "8e2db361ebbd20b9cb58a57a10ac80897a622b244f421e86a95039428544458f",
+          "bytes": 394
+        },
+        "isolated-kernel/versions.c": {
+          "sha256": "f499860f308efb046b575497cff613b3a59b18b74eba8acc040c90a0f46ab632",
+          "bytes": 14772
+        },
+        "isolated-kernel/versions.h": {
+          "sha256": "09f692bd6d3edd5e9edfff20129dd1adffad8c7e6589ebd8c0af354efba8d3e2",
+          "bytes": 5439
+        },
+        "isolated-woodworking/native/assembly.c": {
+          "sha256": "ef2febfbc084a88d555d99d6b4fedb682c905dcaa489bdde9495bdfe524a8b9e",
+          "bytes": 38901
+        },
+        "isolated-woodworking/native/assembly.h": {
+          "sha256": "7096c1059fbf06661e8a933dbc436024f4eee16bfe6c2d335d30bee6d60a46e4",
+          "bytes": 6679
+        },
+        "isolated-woodworking/native/assembly_sources.c": {
+          "sha256": "75a6f6c385bfb307416617d40b4ebc5b9e99bebe6f5d4cd20b568c99ad395290",
+          "bytes": 19813
+        },
+        "isolated-woodworking/native/assembly_sources.h": {
+          "sha256": "7d4dc7d116a7d1fcf7a15476a7c6d0a6c9b17db262215151ad259022b188435f",
+          "bytes": 2895
+        },
+        "isolated-woodworking/native/boundary_policy.c": {
+          "sha256": "444b78261b8e52b0476bb065d04aaade5664379a55140c88054b4570701e73b6",
+          "bytes": 162
+        },
+        "isolated-woodworking/native/boundary_policy.h": {
+          "sha256": "00d4b94f4c75c9e5a58742cf1f3e7b0d9e6f7f3c7f7c3c306f9957539ff55f9a",
+          "bytes": 926
+        },
+        "isolated-woodworking/native/contact_sources.c": {
+          "sha256": "ea0fa63d05f9abac1a11ac4f780a2f3a1e10f8aea502df1fa7e7eb1aa681f659",
+          "bytes": 11561
+        },
+        "isolated-woodworking/native/contact_sources.h": {
+          "sha256": "972d33c4fdab2e34e02f949657b7aabe23d207fecd962c2e2d8d10bc7c6fe70f",
+          "bytes": 2853
+        },
+        "isolated-woodworking/native/contact_world.c": {
+          "sha256": "fb961338710375da2c4eeb4b8af56f67bd1cf581067f91a48b356722646c30f8",
+          "bytes": 9089
+        },
+        "isolated-woodworking/native/contact_world.h": {
+          "sha256": "a23b3aaa936123163ef3c16a1414c0e3288cf4ef59c86d62c45983855403a0ad",
+          "bytes": 2096
+        },
+        "isolated-woodworking/native/contacts.c": {
+          "sha256": "4dc8dfdc591604c579c4c374306059aca315e5a8a37539f45043c8dafa0dd766",
+          "bytes": 2256
+        },
+        "isolated-woodworking/native/contacts.h": {
+          "sha256": "c2fdc3456d062ac70ce35b9a2af459ae047cb34c8390013315bd7d609187abfc",
+          "bytes": 1303
+        },
+        "isolated-woodworking/native/cut_list.c": {
+          "sha256": "d17d5ef413f662374b0bc621ed0f451bd61b29c54c6502317f6b0ee62ae06d4f",
+          "bytes": 1562
+        },
+        "isolated-woodworking/native/cut_list.h": {
+          "sha256": "86be5c1322fb704a36ac8a17ef3ff630b730715b0308244c63cea29b661abdda",
+          "bytes": 682
+        },
+        "isolated-woodworking/native/definition_sources.c": {
+          "sha256": "f22fe0aac839b4269a9c06f2ea0b266207cc8ef5a6c4031b35be3e0796505645",
+          "bytes": 16486
+        },
+        "isolated-woodworking/native/definition_sources.h": {
+          "sha256": "eb0874ea9c8bf463b9450695fe69d774ed14704758e89ea4c5533e657e03346d",
+          "bytes": 2456
+        },
+        "isolated-woodworking/native/derived_placement.c": {
+          "sha256": "f593f27b6fd4910175990f8742c37ebc331c27c5dc8ea21dd280ed538eb0055c",
+          "bytes": 18770
+        },
+        "isolated-woodworking/native/derived_placement.h": {
+          "sha256": "8aa8e8ba4cb9998c7954d9148afbf308c66cbc893ed4c2cd90d0aec3e4714db7",
+          "bytes": 3282
+        },
+        "isolated-woodworking/native/document.h": {
+          "sha256": "00ed05fa26a97938de8d2cb8de35caa3ea79460566c355c7c23c7d4d3d49f03d",
+          "bytes": 1413
+        },
+        "isolated-woodworking/native/domain_values.h": {
+          "sha256": "027edcf8bfb0536d03ea4b08c069f5ba0cbfa651c3820fc70b2e02c650f3585b",
+          "bytes": 691
+        },
+        "isolated-woodworking/native/engineering.c": {
+          "sha256": "ef73fcbd7b40e26bb0eede36e66b2b7753364b644ad78945efa477f4948d64cb",
+          "bytes": 39436
+        },
+        "isolated-woodworking/native/engineering.h": {
+          "sha256": "bbc97a53be268682c9eee2685befb80b6e45e9f0a8df60b1ebebaab4a9823bee",
+          "bytes": 8378
+        },
+        "isolated-woodworking/native/engineering_operations.c": {
+          "sha256": "aa557c69731db407139aee223bd06d537190f1334915c49cbb60111fc0ba672b",
+          "bytes": 6890
+        },
+        "isolated-woodworking/native/engineering_operations.h": {
+          "sha256": "df60f24cb3f7ec0beb99856b89be3c1369a2a069a73205512316763a32a4ce10",
+          "bytes": 818
+        },
+        "isolated-woodworking/native/engineering_sources.c": {
+          "sha256": "d76ca3b22deb8e6cc602a02ef106851178d3f628314610078d79095a3144ed11",
+          "bytes": 23761
+        },
+        "isolated-woodworking/native/engineering_sources.h": {
+          "sha256": "7445abb9a63288e3ea64e40c86014b5c82f5885826a8dee84b16da1d59a525cc",
+          "bytes": 2812
+        },
+        "isolated-woodworking/native/finish.c": {
+          "sha256": "edfb970962f65a01052c7d03b6da594e3817b9d5fe05a97a4f6f04cf01268675",
+          "bytes": 28784
+        },
+        "isolated-woodworking/native/finish.h": {
+          "sha256": "68e4b06cf36956086c71d3f702b80e5ae2cbc6e5bba598630cd27c2ddffe3392",
+          "bytes": 6431
+        },
+        "isolated-woodworking/native/finish_sources.c": {
+          "sha256": "65cb3c4ea55433eca8e15ef27b9d441dea5c2afc9a97fdebbb830668d88681bf",
+          "bytes": 33059
+        },
+        "isolated-woodworking/native/finish_sources.h": {
+          "sha256": "3344ae2f4e9fb42124448ebe2a43d3c2f2bd4ed966ce4b610b4431ce95c5c034",
+          "bytes": 3075
+        },
+        "isolated-woodworking/native/grid_application.c": {
+          "sha256": "c3f90fca11c30c2b49fadfae30937b5a5610b6bdd1c3410a5c847a4654faf7cb",
+          "bytes": 28001
+        },
+        "isolated-woodworking/native/grid_application.h": {
+          "sha256": "434e168ea35b744ba77493921820bf1ee9e7a0a038fc420083ea6c80cb1885b9",
+          "bytes": 8818
+        },
+        "isolated-woodworking/native/grid_cells.c": {
+          "sha256": "b9a2b7fca6f6acb9009c4bdb1313d8a7eb97a237b32ee3d8243eb6f36c631d3d",
+          "bytes": 19082
+        },
+        "isolated-woodworking/native/grid_rules.c": {
+          "sha256": "5d6ece3159e24b69f67f1351b297e5de7d61471f11120ae43daf05fe021c6348",
+          "bytes": 13383
+        },
+        "isolated-woodworking/native/grid_sources.c": {
+          "sha256": "8f0058094a290369a6c8df83e93c6faa98cbd917c150d34506812fffce8c158c",
+          "bytes": 32401
+        },
+        "isolated-woodworking/native/grid_sources.h": {
+          "sha256": "e983bfa873951aeac2848f3863a3fa229ba280e77304be927cc8af943c7e171c",
+          "bytes": 3060
+        },
+        "isolated-woodworking/native/member_declaration.c": {
+          "sha256": "3c29df14421c350cdb1cf8c4ec08b3c15c60010aa2baab48b354d5854ba8175b",
+          "bytes": 2335
+        },
+        "isolated-woodworking/native/member_declaration.h": {
+          "sha256": "bdf6763f9c76f641572e6d18304d934829d2e078daa17ca58fe3bea730726569",
+          "bytes": 894
+        },
+        "isolated-woodworking/native/member_placement.h": {
+          "sha256": "0ca9e9aa62bb28b993db717f6e6a97d026c29737b8c4895f66346287dc9cee1b",
+          "bytes": 1549
+        },
+        "isolated-woodworking/native/member_reference.c": {
+          "sha256": "90f3316777c181f3491ff01b4a06b6f3139f120452e74bbf02d78a323c6c024f",
+          "bytes": 30123
+        },
+        "isolated-woodworking/native/member_reference.h": {
+          "sha256": "5faa82245ec3caec19526c36e693c120e7de787d146b76bdbaf538ff063b2903",
+          "bytes": 6430
+        },
+        "isolated-woodworking/native/members.c": {
+          "sha256": "a2542898865479475f74552ce2832e88b1f72f752728ee07b61cb762b2ceab3d",
+          "bytes": 3533
+        },
+        "isolated-woodworking/native/members.h": {
+          "sha256": "217ecee81c0f9fb151edccaa233e0c01d3b401b3ecdc1945a1492c8676fb08f7",
+          "bytes": 2131
+        },
+        "isolated-woodworking/native/obstacles.h": {
+          "sha256": "bdd908653ba732a6d1a27d88abc94c3f5cc2470b32ffe3ab1fe12221f620809f",
+          "bytes": 682
+        },
+        "isolated-woodworking/native/panel_layout.c": {
+          "sha256": "51a2fa38dbc08a56ad5713631a1eea938d175b39c9ae0e09bee1abbb26d33638",
+          "bytes": 5350
+        },
+        "isolated-woodworking/native/panel_layout.h": {
+          "sha256": "e52415b20401515ea0beb8e07857de9314411facc2562f0edaaf2fda68254833",
+          "bytes": 1566
+        },
+        "isolated-woodworking/native/panel_support.c": {
+          "sha256": "4a8476be0dea36677388fdf1128eb03f26f1314718cefaa48139585bfa4f8cff",
+          "bytes": 7069
+        },
+        "isolated-woodworking/native/panel_support.h": {
+          "sha256": "d9f86e886fe5ebe2831c3cff5bd64b997216288c769d5edffeba62bff4c98b32",
+          "bytes": 1440
+        },
+        "isolated-woodworking/native/section_profile.c": {
+          "sha256": "b6b55180e07793d0e723d578f7d78e6e4a120f582986b5acdf6fd675ed9b5c30",
+          "bytes": 23435
+        },
+        "isolated-woodworking/native/section_profile.h": {
+          "sha256": "3299003c964e56c042e26476eed560241a5e566bec263b0028bd7fba85362fde",
+          "bytes": 5857
+        },
+        "isolated-woodworking/native/section_profile_sources.c": {
+          "sha256": "b0e35e7f2c22d07d706ab398ad638fb4517331edeff69cb02677d2f02af06d99",
+          "bytes": 15005
+        },
+        "isolated-woodworking/native/section_profile_sources.h": {
+          "sha256": "6bd75cbca9b11b135fca7dc5b2f77d4414ea0e2bfc0c90aa254f86364eef2da2",
+          "bytes": 1842
+        },
+        "isolated-woodworking/native/supports.c": {
+          "sha256": "1f3c8bfb51c86024b67b0af90f8c381fa38c8babb1cd1956b1cc4a7f022d0775",
+          "bytes": 4658
+        },
+        "isolated-woodworking/native/supports.h": {
+          "sha256": "5bf1dab3e850ce023080b87dcd873ca145b3014c1e3bf6667e815d691bdbc1be",
+          "bytes": 2727
+        },
+        "isolated-woodworking/native/world_validation.c": {
+          "sha256": "3a5d05ffdf45a142326f17b2173bda7c7cd157d9c32d8ea6e71a93b275a3c2fc",
+          "bytes": 7503
+        },
+        "isolated-woodworking/native/world_validation.h": {
+          "sha256": "2bc89f31f355f464d57cfef3424f4c094f3ec1c2d5c4417c91068db8c94f34ca",
+          "bytes": 1935
+        },
+        "linear.o": {
+          "sha256": "87061489f4d7c1e410d3f3b4783ec1068a7ea94e02afdca0fd7559bd35c5ee99",
+          "bytes": 5328
+        },
+        "named-values.o": {
+          "sha256": "88a3751a5903e8d62b23c5f3a80c86b25df1a84e06d3de0e883d11c47e164783",
+          "bytes": 4352
+        },
+        "parameter-sources.o": {
+          "sha256": "be0e17b893f491481f200332a9a26410c337237272c7f0170b8e16f358707a21",
+          "bytes": 5440
+        },
+        "parameters.o": {
+          "sha256": "737f90710f7aea4e11b7ad780515750c87a2dc0d9da35a2f31dc231d561b399a",
+          "bytes": 19944
+        },
+        "placement-sources.o": {
+          "sha256": "0bb34c88613a7c33513c93bbbcccf4f5aaa766f6b27ece2e5d73ed604189570e",
+          "bytes": 6512
+        },
+        "placements.o": {
+          "sha256": "0ae3207610413ef17c4884bea7d35b4eb9dd376ee04b671ed8490daeacc83d47",
+          "bytes": 10072
+        },
+        "product-bridge": {
+          "sha256": "ab2b34326ea161abcd776c2b6f2eea783cd342ec88ae9bbf1d71fac1dfafd7ce",
+          "bytes": 1199504
+        },
+        "product-bridge.o": {
+          "sha256": "5ebc1e54614e232f32c554caeef9cb899f998738108cc7f5b8104f74aa6d426c",
+          "bytes": 869168
+        },
+        "product-cli": {
+          "sha256": "bb80d44a9642f6d986121265e6d64954795a44d43e89e404409c27de127f6179",
+          "bytes": 1027560
+        },
+        "product-cli.o": {
+          "sha256": "c726d1b5b192e40260734877e1611254ff4542fa560420313eec9bdff83fe3c3",
+          "bytes": 593456
+        },
+        "product-model-base": {
+          "sha256": "be94ce0ad005ce925134fb4cfe44e9891c29d33ab740a477db7e6ceaf182580f",
+          "bytes": 1067048
+        },
+        "product-model-base.o": {
+          "sha256": "a182d1dc85e4fd945a430633fce8dc3845039a00d74bd266c6264f5d800ae536",
+          "bytes": 658728
+        },
+        "region-key-sources.o": {
+          "sha256": "04b53c25191585570b2784756337451fdd7650e8ed59ef412ace9c7f6169d22e",
+          "bytes": 9664
+        },
+        "regions.o": {
+          "sha256": "f6883f748b5f8f0e1e0cd2e5272b3a7055759945e3c688f404b5a7f6abc74ecc",
+          "bytes": 11352
+        },
+        "source.o": {
+          "sha256": "bc33f4e92244048387f28e21b54d03ccf2ad5c1adcea97d688d0fdc36cd81cac",
+          "bytes": 12032
+        },
+        "versions.o": {
+          "sha256": "5f7aa61a2a9f83062e4b608c4990e48ae86fce008918b57d515f95cf45229532",
+          "bytes": 13808
+        },
+        "wood-assembly-sources.o": {
+          "sha256": "8e9c32099bbfb85d161209036a4cca8c4ebf75b7b3cc6f5b4fd55370a9d80ee5",
+          "bytes": 19960
+        },
+        "wood-assembly.o": {
+          "sha256": "1870b28e8ad0eb89676ca8ff459471f8f470aaa096e64dcf4cd03435a0cbf4d9",
+          "bytes": 58184
+        },
+        "wood-boundary-policy.o": {
+          "sha256": "60fe3e1b16091b26729de5e4ba54699f8348c3ce61ff65b2be74f6b55a966102",
+          "bytes": 1312
+        },
+        "wood-contact-sources.o": {
+          "sha256": "80ababf0be9a4596c5fc1eb046cba6fe8145157dde6ca52a366610d31f471228",
+          "bytes": 10840
+        },
+        "wood-contact-world.o": {
+          "sha256": "57dd5eb5d328feb0f656ac8d8160c8a8858f2859e04996fddabb66edce085a43",
+          "bytes": 10168
+        },
+        "wood-contacts.o": {
+          "sha256": "57fa0e94138cc5422d16ec2153855b0340c1fda9dcbd57675cde99a3268df2b4",
+          "bytes": 2512
+        },
+        "wood-cut-list.o": {
+          "sha256": "a6419cf8b41e01c9ff36f268e550205ef61d01d97745729c29e770ae82454df1",
+          "bytes": 2968
+        },
+        "wood-definition-sources.o": {
+          "sha256": "a44d1312182f4ed67a16c3f2220985bedd9e018e7dbd9177060bd7a2dd0abded",
+          "bytes": 18184
+        },
+        "wood-derived-placement.o": {
+          "sha256": "7c9c8b84101d5f9ac08bde1fd8fa07bbb3eb168f493cfc51199af08903dbbdf2",
+          "bytes": 26792
+        },
+        "wood-engineering-operations.o": {
+          "sha256": "d6de63cef1b7ee809472f223c83167383e736798956e3e79a7c647090bea3aba",
+          "bytes": 12664
+        },
+        "wood-engineering-sources.o": {
+          "sha256": "f77622ebba387750b6385ab6a0417028cf4b0c917ceda4374a6edc75eef3c72e",
+          "bytes": 20944
+        },
+        "wood-engineering.o": {
+          "sha256": "d79518dbe670ba1feb4c8ed83850fd72b96e5a016174e9002bbe2019da3fe016",
+          "bytes": 53384
+        },
+        "wood-finish-sources.o": {
+          "sha256": "016a95cc1d312ad8f9be5006a5b0b1ceaa199d9439985697edabeb78b1070104",
+          "bytes": 31088
+        },
+        "wood-finish.o": {
+          "sha256": "d0069fd152ad18a2ef22a023a16af8ce77725c36d5f0e85c8bf7499f96619e60",
+          "bytes": 40912
+        },
+        "wood-grid-application.o": {
+          "sha256": "2bc9acfe6a73bbf2306a6f7badb8c96c903b1f2abf0b769c8611c28b9ededcd6",
+          "bytes": 36824
+        },
+        "wood-grid-cells.o": {
+          "sha256": "ffc34a5659260fe5536fa01eeb32c0c6d14de150279ecb85831bc36c637d7eb1",
+          "bytes": 18728
+        },
+        "wood-grid-rules.o": {
+          "sha256": "25433e036f6bbc20767df477b17db64c32123425ae8f3cfcc5050172071ad0df",
+          "bytes": 16008
+        },
+        "wood-grid-sources.o": {
+          "sha256": "dc7d71378070e70c08415d344923175f953945661466d53e3f3833d53a6b259a",
+          "bytes": 33392
+        },
+        "wood-member-declaration.o": {
+          "sha256": "4c14422c95b2e2d8f2396995f708de3546622f72c90d22caa7ee7bccf1f4d2e5",
+          "bytes": 3920
+        },
+        "wood-member-reference.o": {
+          "sha256": "f7fdde2cc95f40d825f1635482e1218a9d59c75a33e0e36b3c8a79c523cc5e76",
+          "bytes": 30480
+        },
+        "wood-members.o": {
+          "sha256": "f17b0ad52b4c9c0ca986160081b4b630431fd1bb268b3e14719e96262a79bb64",
+          "bytes": 4544
+        },
+        "wood-panel-layout.o": {
+          "sha256": "b40e7bedcb010b385d875474aaa3187d521a0a43ed1cbf21431b4a35f2324861",
+          "bytes": 7800
+        },
+        "wood-panel-support.o": {
+          "sha256": "c69def54a540a0d774fbe2e1b5de00cff20743471dc92bf9c1faef2195e4f98e",
+          "bytes": 8656
+        },
+        "wood-section-profile-sources.o": {
+          "sha256": "f79851106680bdb5e14120e78a83c7a9d9bd3be441d25ff42066d3c40e063b0e",
+          "bytes": 14664
+        },
+        "wood-section-profile.o": {
+          "sha256": "2ab389f0ba89fdc6c52ec6823c1744f4b4f3fcdce1f0400b4997b4ce3d9c31a6",
+          "bytes": 36512
+        },
+        "wood-supports.o": {
+          "sha256": "596d5de696c2b3b83481641a8f603473efc065ec09937ec20b2e5479dc11e23c",
+          "bytes": 3936
+        },
+        "wood-world-validation.o": {
+          "sha256": "c714533076c1f6d1e960c17952a7dc2267ff59971b7b0fa77e8221f575f5951d",
+          "bytes": 9192
+        }
+      },
+      "kernel_only": false
+    }
+  },
+  "python_version": "3.12.3",
+  "platform": "Linux-6.6.114.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "cleared_override_names": [],
+  "shared_lock_holder": "pid=267 start=2026-10-16T16:47:02Z label=geo261-build-gate-f8c3e0f2-v1 args=run bash /mnt/d/geometry-axiom-work/geo261-evidence/p1/build-gate-f8c3e0f2-v1/namespace.sh\n",
+  "product_test_methods_run": 0,
+  "product_executables_run": 0,
+  "test_suites_run": 0,
+  "full_repository_materialized": false,
+  "full_test_suite_executed": false,
+  "browser_executed": false,
+  "next_test_batch_requires_root_coordination": true,
+  "exit": 0
+}
