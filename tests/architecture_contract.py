@@ -11,9 +11,11 @@ Vendor entries are individual, digest-locked files, never directory exemptions.
 Manifest schema (all keys required; unknown keys rejected):
   schema: "geometry-architecture/1"
   sourceRoots: [repository-relative directory, ...]
+  sourceFiles (optional): [repository-relative standalone executable file, ...]
   searchRoots: {c: [...], python: [...], javascript: [...]}
   sources: [{path, layer: K|W|H|vendor, language, purpose, [sha256]}]
   exclusions: [{path, reason, sha256}]
+  htmlScriptRoutes (optional): [{source, src, target, purpose}]
   policy: {
     cSystemHeaders: [exact include spelling, ...],
     pythonStdlib: [exact imported module, ...],
@@ -34,9 +36,13 @@ Python AST imports and regular packages, literal JS imports/re-exports/require,
 and HTML script src/inline scripts/events/javascript URLs. C line splicing is
 processed before comments; token boundaries and physical line numbers survive.
 TS static ``import type`` is recognized. Namespace packages, computed imports,
-import assertions, template interpolation, JSX/TSX markup and unsupported
+import assertions, JSX/TSX markup and unsupported
 loader syntax fail closed. JSX/TSX and C++ are inventoried but require a future
-parser before owned source can pass. A lexical JS scan is not a full JS parser.
+parser before owned source can pass. JS template interpolations are recursively
+tokenized, including nested templates; display chunks are never executable tokens.
+HTML host routes are exact source/src pairs pointing to an owned JS file; these
+produce ordinary graph edges and do not exempt either endpoint from layer checks.
+A lexical JS scan is not a full JS parser.
 
 K/W/vendor forbid known dynamic Python loaders, reflection and path injection;
 K/vendor also forbid browser/global JS loader escape names and known C dynamic
@@ -222,11 +228,188 @@ def decode_literal(raw, path, line, *, c=False):
             result.append(chr(codepoint))
             index += len(match.group()) + 1
         else:
-            require(False, "LEXICAL_SYNTAX", path, line, f"unsupported literal escape \\{char}")
+            require(not c, "LEXICAL_SYNTAX", path, line, f"unsupported literal escape \\{char}")
+            result.append(char)  # JavaScript identity escape, including escaped ${.
+            index += 1
     return "".join(result)
 
 
+def lex_javascript(text, path, line_offset=0):
+    """Conservative lexical goals; ambiguous slash contexts fail closed.
+
+    Interpolations run the SAME scanner as ordinary source. Only literal chunks,
+    strings, regex bodies and comments are opaque. In particular braces/comment
+    markers inside regex character classes cannot conceal later executable code.
+    This validates lexical nesting, not arbitrary JavaScript program semantics.
+    """
+    text, lines = physical_lines(text)
+    size = len(text)
+    controls = {"if", "while", "for", "with", "switch", "catch"}
+    prefix_words = {"return", "throw", "case", "delete", "void", "typeof", "new", "in",
+                    "instanceof", "else", "do"}
+
+    def line_at(index):
+        return (lines[index] if index < size else (lines[-1] if lines else 1)) + line_offset
+
+    def quoted(index):
+        quote, start = text[index], index
+        index += 1
+        while index < size and text[index] != quote:
+            require(text[index] != "\n", "LEXICAL_SYNTAX", path, line_at(index), "unescaped newline in literal")
+            index += 2 if text[index] == "\\" else 1
+        require(index < size, "LEXICAL_SYNTAX", path, line_at(start), "unclosed string literal")
+        return index + 1, Token("string", decode_literal(text[start + 1:index], path, line_at(start)), line_at(start))
+
+    def regex(index):
+        start, in_class = index, False
+        index += 1
+        while index < size:
+            char = text[index]
+            require(char != "\n", "LEXICAL_SYNTAX", path, line_at(start), "unclosed regex literal")
+            if char == "\\":
+                require(index + 1 < size and text[index + 1] != "\n", "LEXICAL_SYNTAX", path,
+                        line_at(start), "unfinished regex escape")
+                index += 2
+                continue
+            if char == "[":
+                in_class = True
+            elif char == "]":
+                in_class = False
+            elif char == "/" and not in_class:
+                index += 1
+                flag_start = index
+                while index < size and text[index].isalpha():
+                    index += 1
+                flags = text[flag_start:index]
+                require(set(flags) <= set("dgimsuy") and len(flags) == len(set(flags)),
+                        "JS_REGEX_SYNTAX", path, line_at(start), "unsupported or duplicate regex flags")
+                return index, Token("regex", text[start:index], line_at(start))
+            index += 1
+        require(False, "LEXICAL_SYNTAX", path, line_at(start), "unclosed regex literal")
+
+    def template(index, depth):
+        start = index
+        index += 1
+        chunk_start, pieces, interpolated = index, [], False
+        while index < size:
+            if text[index] == "\\":
+                index += 2
+                continue
+            if text[index] == "`" or text.startswith("${", index):
+                value = decode_literal(text[chunk_start:index], path, line_at(chunk_start))
+                pieces.append(Token("template_chunk", value, line_at(chunk_start)))
+                if text[index] == "`":
+                    if not interpolated:
+                        return index + 1, [Token("template", value, line_at(start))]
+                    return index + 1, [Token("template_start", "`", line_at(start)), *pieces,
+                                       Token("template_end", "`", line_at(index))]
+                interpolated = True
+                pieces.append(Token("template_expression_start", "${", line_at(index)))
+                index, expression = code(index + 2, depth + 1, line_at(index))
+                pieces.extend(expression)
+                pieces.append(Token("template_expression_end", "}", line_at(index - 1)))
+                chunk_start = index
+                continue
+            index += 1
+        require(False, "LEXICAL_SYNTAX", path, line_at(start), "unclosed template literal")
+
+    def code(index, depth=0, interpolation_line=None):
+        require(depth <= 128, "LEXICAL_SYNTAX", path, line_at(index), "template nesting exceeds conservative limit")
+        tokens, brackets = [], []
+        # True = expression expected; False = expression ended; None = ambiguous
+        # block/object close. A slash in the last case needs a full parser.
+        regex_goal = True
+        previous = ""
+        previous_control = False
+        while index < size:
+            char, line = text[index], line_at(index)
+            if char.isspace():
+                index += 1
+                continue
+            if text.startswith("//", index):
+                end = text.find("\n", index + 2)
+                index = size if end == -1 else end
+                continue
+            if text.startswith("/*", index):
+                end = text.find("*/", index + 2)
+                require(end != -1, "LEXICAL_SYNTAX", path, line, "unclosed block comment")
+                index = end + 2
+                continue
+            if char in "\"'":
+                index, token = quoted(index)
+                tokens.append(token)
+                regex_goal, previous = False, "<literal>"
+                continue
+            if char == "`":
+                index, nested = template(index, depth)
+                tokens.extend(nested)
+                regex_goal, previous = False, "<literal>"
+                continue
+            if char == "/":
+                require(regex_goal is not None, "JS_REGEX_SYNTAX", path, line,
+                        "slash after a block/object close is ambiguous; parenthesize the expression")
+                if regex_goal:
+                    index, token = regex(index)
+                    tokens.append(token)
+                    regex_goal, previous = False, "<literal>"
+                    continue
+            require(char != "\\", "LEXICAL_SYNTAX", path, line,
+                    "escaped identifiers outside literals are outside the supported lexical subset")
+            match = IDENTIFIER.match(text, index)
+            if match:
+                value = match.group()
+                tokens.append(Token("identifier", value, line))
+                property_name = previous == "."
+                previous_control = value in controls and not property_name
+                regex_goal = (None if value in {"await", "yield"} else value in prefix_words) if not property_name else False
+                previous = value
+                index += len(value)
+                continue
+            if char.isdigit():
+                # Numeric spelling cannot contain a loader name or a delimiter.
+                match = re.match(r"(?:0[xX][0-9a-fA-F_]+|0[bB][01_]+|0[oO][0-7_]+|[0-9][0-9_]*(?:\.[0-9_]*)?(?:[eE][+-]?[0-9_]+)?)(?:n)?", text[index:])
+                value = match.group()
+                tokens.append(Token("number", value, line))
+                index += len(value)
+                regex_goal, previous = False, "<number>"
+                continue
+            if char in "([{":
+                brackets.append((char, previous_control if char == "(" else False, line))
+                regex_goal = True
+            elif char in ")]}":
+                if char == "}" and not brackets and interpolation_line is not None:
+                    return index + 1, tokens
+                require(bool(brackets) and brackets[-1][0] == {")": "(", "]": "[", "}": "{"}[char],
+                        "LEXICAL_SYNTAX", path, line, "unmatched JavaScript delimiter")
+                opening, control, _ = brackets.pop()
+                regex_goal = control if char == ")" else (None if char == "}" else False)
+            elif text[index:index + 2] in {"++", "--"}:
+                value = text[index:index + 2]
+                tokens.append(Token("punct", value, line))
+                index += 2
+                previous = value
+                continue
+            elif char == ".":
+                regex_goal = False
+            else:
+                regex_goal = True
+            tokens.append(Token("punct", char, line))
+            previous = char
+            previous_control = False
+            index += 1
+        require(interpolation_line is None, "LEXICAL_SYNTAX", path, interpolation_line or line_at(index),
+                "unclosed template interpolation")
+        require(not brackets, "LEXICAL_SYNTAX", path, brackets[-1][2] if brackets else line_at(index),
+                "unclosed JavaScript delimiter")
+        return index, tokens
+
+    _, tokens = code(0)
+    return text, lines, tokens
+
+
 def lex(text, path, *, c=False, line_offset=0):
+    if not c:
+        return lex_javascript(text, path, line_offset)
     text, line_map = physical_lines(text, splice=c)
     masked, tokens = list(text), []
     index = 0
@@ -266,8 +449,6 @@ def lex(text, path, *, c=False, line_offset=0):
                     index += 1
             require(index < len(text), "LEXICAL_SYNTAX", path, line, "unclosed string or character literal")
             raw = text[start + 1:index]
-            require(quote != "`" or "${" not in raw, "JS_TEMPLATE_EXPRESSION", path, line,
-                    "template interpolation requires a parser; it is not silently ignored")
             kind = "char" if c and quote == "'" else ("template" if quote == "`" else "string")
             tokens.append(Token(kind, decode_literal(raw, path, line, c=c), line))
             index += 1
@@ -332,6 +513,7 @@ class Scanner:
         self.exclusions = {}
         self.search = {}
         self.policy = {}
+        self.html_routes = {}
 
     def safe(self, relative, context=None):
         context = context or relative
@@ -347,10 +529,12 @@ class Scanner:
 
     def validate_manifest(self):
         data = self.manifest
-        exact_keys(data, {"schema", "sourceRoots", "searchRoots", "sources", "exclusions", "policy"}, "<manifest>")
+        exact_keys(data, {"schema", "sourceRoots", "searchRoots", "sources", "exclusions", "policy"}, "<manifest>",
+                   {"htmlScriptRoutes", "sourceFiles"})
         require(data["schema"] == SCHEMA, "MANIFEST_SCHEMA", "<manifest>", 1, "unknown manifest schema")
         roots = strings(data["sourceRoots"], "sourceRoots")
-        require(bool(roots), "MANIFEST_SCHEMA", "sourceRoots", 1, "at least one complete product root is required")
+        files = strings(data.get("sourceFiles", []), "sourceFiles")
+        require(bool(roots or files), "MANIFEST_SCHEMA", "sourceRoots", 1, "at least one complete product root/file is required")
         for relative in roots:
             portable_path(relative, "sourceRoots", directory=True)
             require(self.safe(relative).is_dir(), "SOURCE_ROOT", relative, 1, "source root is not a directory")
@@ -358,6 +542,16 @@ class Scanner:
         require(all(not within(a, b) for i, a in enumerate(physical_roots)
                     for j, b in enumerate(physical_roots) if i != j),
                 "MANIFEST_SCHEMA", "sourceRoots", 1, "source roots must not overlap")
+        physical_files = set()
+        for relative in files:
+            portable_path(relative, "sourceFiles")
+            path = self.safe(relative)
+            require(path.is_file() and path.suffix.lower() in LANGUAGES,
+                    "SOURCE_ROOT", relative, 1, "standalone source must be an existing executable file")
+            require(not any(within(path.resolve(), root) for root in physical_roots),
+                    "MANIFEST_SCHEMA", relative, 1, "standalone source overlaps an inventoried root")
+            require(path.resolve() not in physical_files, "SOURCE_DUPLICATE", relative, 1, "duplicate standalone source")
+            physical_files.add(path.resolve())
         exact_keys(data["searchRoots"], {"c", "python", "javascript"}, "searchRoots")
         for language, directories in data["searchRoots"].items():
             self.search[language] = []
@@ -381,7 +575,7 @@ class Scanner:
                     "SOURCE_LANGUAGE", relative, 1, "extension and declared language disagree")
             path = self.safe(relative)
             require(path.is_file(), "SOURCE_MISSING", relative, 1, "declared source is missing")
-            require(any(within(path.resolve(), root) for root in physical_roots),
+            require(path.resolve() in physical_files or any(within(path.resolve(), root) for root in physical_roots),
                     "SOURCE_OUTSIDE_ROOTS", relative, 1, "source is outside the complete product roots")
             if entry["layer"] == "vendor":
                 self.check_digest(path, entry.get("sha256"), "VENDOR_DIGEST")
@@ -398,11 +592,11 @@ class Scanner:
             path = self.safe(relative)
             require(path.is_file() and path.suffix.lower() in LANGUAGES,
                     "SOURCE_MISSING", relative, 1, "exclusion must name an existing executable source")
-            require(any(within(path.resolve(), root) for root in physical_roots),
+            require(path.resolve() in physical_files or any(within(path.resolve(), root) for root in physical_roots),
                     "SOURCE_OUTSIDE_ROOTS", relative, 1, "exclusion is outside product roots")
             self.check_digest(path, entry["sha256"], "EXCLUSION_DIGEST")
             self.exclusions[relative] = entry
-        discovered = set()
+        discovered = {path.relative_to(self.root).as_posix() for path in physical_files}
         for directory in physical_roots:
             for current, directories, files in os.walk(directory, followlinks=False):
                 directories.sort()
@@ -418,7 +612,32 @@ class Scanner:
             require(relative in self.entries or relative in self.exclusions,
                     "SOURCE_UNREGISTERED", relative, 1, "executable source omitted from the complete manifest")
         self.validate_policy(data["policy"])
+        self.validate_html_routes(data.get("htmlScriptRoutes", []))
         self.result.sources = sorted(self.entries)
+
+    def validate_html_routes(self, routes):
+        require(isinstance(routes, list), "MANIFEST_SCHEMA", "htmlScriptRoutes", 1, "expected a route list")
+        seen = set()
+        for route in routes:
+            exact_keys(route, {"source", "src", "target", "purpose"}, "htmlScriptRoutes")
+            source = portable_path(route["source"], "htmlScriptRoutes.source")
+            target = portable_path(route["target"], "htmlScriptRoutes.target")
+            src = route["src"]
+            require(isinstance(src, str) and src and not any(char in src for char in "\\:%?#")
+                    and not src.startswith("//") and not any(char.isspace() for char in src),
+                    "HTML_ROUTE_SYNTAX", source, 1, "route src must be an exact local URL path")
+            portable_path(src[1:] if src.startswith("/") else src, "htmlScriptRoutes.src")
+            require(isinstance(route["purpose"], str) and route["purpose"].strip(),
+                    "MANIFEST_SCHEMA", source, 1, "host route needs an explicit purpose")
+            key = (source, src)
+            require(tuple(part.casefold() for part in key) not in seen, "HTML_ROUTE_DUPLICATE", source, 1,
+                    "duplicate or case-ambiguous source/src route")
+            seen.add(tuple(part.casefold() for part in key))
+            require(source in self.entries and self.entries[source]["language"] == "html",
+                    "HTML_ROUTE_SOURCE", source, 1, "route source must be one exact owned HTML source")
+            require(target in self.entries and self.entries[target]["language"] == "javascript",
+                    "HTML_ROUTE_TARGET", source, 1, "route target must be one exact owned JavaScript source")
+            self.html_routes[key] = target
 
     def check_digest(self, path, digest, code):
         require(isinstance(digest, str) and re.fullmatch(r"[0-9a-f]{64}", digest)
@@ -696,6 +915,17 @@ class Scanner:
             require(not name.startswith((".", "/")) and self.external_allowed(path, name, "javascript"),
                     "DEPENDENCY_UNRESOLVED", path, line, f"unresolved JavaScript module {name!r}")
 
+    def html_script_dependency(self, path, src, line):
+        target = self.html_routes.get((path, src))
+        if target is not None:
+            self.module_policy(path, src, "javascript", line)
+            self.module_policy(path, target, "javascript", line)
+            self.owned(self.root / target, path, line)
+            return
+        require(not src.startswith("/"), "HTML_ROUTE_UNMAPPED", path, line,
+                "root-absolute script src needs an exact reviewed source/src route")
+        self.javascript_dependency(path, src if src.startswith(".") or ":" in src else "./" + src, line)
+
     def scan_javascript(self, path, text, line_offset=0):
         _, _, tokens = lex(text, path, line_offset=line_offset)
         self.core_tokens(path, [(t.value, t.line) for t in tokens if t.kind == "identifier"],
@@ -704,7 +934,7 @@ class Scanner:
             for offset, token in enumerate(tokens):
                 require(token.kind != "identifier" or token.value not in JS_DYNAMIC_NAMES,
                         "JS_DYNAMIC_IMPORT", path, token.line, f"dynamic/global JS entry point {token.value!r} in core")
-                require(not (token.kind == "string" and token.value in {"require", "eval", "import", "Function"}
+                require(not (token.kind in {"string", "template"} and token.value in {"require", "eval", "import", "Function"}
                              and offset > 0 and tokens[offset - 1].value == "["),
                         "JS_DYNAMIC_IMPORT", path, token.line, "computed access to a known JavaScript loader")
         typescript = self.entries[path]["language"] == "typescript"
@@ -806,7 +1036,7 @@ class Scanner:
                 src = values.get("src")
                 if executable and "src" in values:
                     require(isinstance(src, str) and bool(src), "HTML_SCRIPT_SYNTAX", path, line, "empty script src")
-                    scanner.javascript_dependency(path, src if src.startswith((".", "/")) or ":" in src else "./" + src, line)
+                    scanner.html_script_dependency(path, src, line)
                 self.script = {"executable": executable, "src": src, "line": line, "data": []}
             def handle_data(self, data):
                 if self.script is not None:

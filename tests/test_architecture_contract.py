@@ -129,6 +129,33 @@ class ArchitectureContract(unittest.TestCase):
         self.manifest["sourceRoots"] = ["src/k/core.c"]
         self.rejects("SOURCE_ROOT")
 
+    def test_standalone_source_file_is_inventoried(self):
+        self.put("entry.c", '#include "src/helper.h"\n')
+        self.put("src/helper.h", "int helper;\n")
+        self.manifest["sourceFiles"] = ["entry.c"]
+        self.assertEqual(self.green().edges[0].target, "src/helper.h")
+
+    def test_standalone_source_cannot_be_unregistered(self):
+        self.put("entry.c", "int entry;\n", registered=False)
+        self.manifest["sourceFiles"] = ["entry.c"]
+        self.rejects("SOURCE_UNREGISTERED", path="entry.c")
+
+    def test_standalone_source_cannot_overlap_root(self):
+        self.put("src/core.c", "int core;\n")
+        self.manifest["sourceFiles"] = ["src/core.c"]
+        self.rejects("MANIFEST_SCHEMA")
+
+    def test_standalone_source_must_exist_and_be_executable(self):
+        self.manifest["sourceFiles"] = ["missing.c"]
+        self.rejects("SOURCE_ROOT")
+        self.put("readme.md", "documentation", registered=False)
+        self.manifest["sourceFiles"] = ["readme.md"]
+        self.rejects("SOURCE_ROOT")
+
+    def test_standalone_source_parent_escape_is_rejected(self):
+        self.manifest["sourceFiles"] = ["../outside.c"]
+        self.rejects("ROOT_ESCAPE")
+
     def test_manifest_parent_escape_is_rejected(self):
         self.put("src/k/core.c", "int core;\n")
         self.manifest["sources"][0]["path"] = "../outside.c"
@@ -328,13 +355,135 @@ class ArchitectureContract(unittest.TestCase):
     def test_javascript_unsupported_import_bindings_fail_closed(self):
         path = self.put("src/core.js", "import {value from './neutral.js';\n")
         self.put("src/neutral.js", "export const value = 1;\n")
-        self.rejects("JS_IMPORT_SYNTAX")
+        self.rejects("LEXICAL_SYNTAX")
         path.write_text("import './neutral.js'\nwith {type: 'json'};\n", encoding="utf-8")
         self.rejects("JS_IMPORT_SYNTAX")
 
     def test_javascript_interpolated_template_cannot_hide_loader(self):
         self.put("src/core.js", "const x = `${require('./w.js')}`;\n")
-        self.rejects("JS_TEMPLATE_EXPRESSION")
+        self.put("src/w.js", "export const policy = 1;\n", "W")
+        self.rejects("LAYER_DIRECTION", chain=["src/core.js", "src/w.js"])
+
+    def test_javascript_nested_template_tracks_dependency(self):
+        self.put("src/core.js", "const x = `outer ${`inner ${require('./w.js')}`} tail`;\n")
+        self.put("src/w.js", "export const policy = 1;\n", "W")
+        self.rejects("LAYER_DIRECTION", chain=["src/core.js", "src/w.js"])
+
+    def test_javascript_template_keeps_transitive_closure(self):
+        self.put("src/core.js", "const x = `${require('./helper.js')}`;\n")
+        self.put("src/helper.js", "const x = `${`nested ${require('./w.js')}`}`;\n")
+        self.put("src/w.js", "export const policy = 1;\n", "W")
+        self.rejects("LAYER_DIRECTION", chain=["src/core.js", "src/helper.js", "src/w.js"])
+
+    def test_javascript_host_template_still_tracks_dependency(self):
+        self.put("src/host.js", "const x = `${require('./w.js')}`;\n", "H")
+        self.put("src/w.js", "export const policy = 1;\n", "W")
+        result = self.green()
+        self.assertEqual([(edge.source, edge.target) for edge in result.edges], [("src/host.js", "src/w.js")])
+
+    def test_javascript_template_dynamic_loaders_fail_closed(self):
+        path = self.put("src/core.js", "")
+        for expression in ["import('./w.js')", "require(name)", "require(`./${name}.js`)",
+                           "(() => {const load = require; return load(name);})()", "eval(code)",
+                           "object[`require`](name)"]:
+            with self.subTest(expression=expression):
+                path.write_text("const x = `${" + expression + "}`;\n", encoding="utf-8")
+                self.rejects("JS_DYNAMIC_IMPORT")
+
+    def test_javascript_template_forbidden_identifier_is_executable(self):
+        self.put("src/core.js", "const x = `${`inner ${TIMBER_ROLE_PRIMARY}`}`;\n")
+        self.rejects("FORBIDDEN_IDENTIFIER")
+
+    def test_javascript_template_forbidden_string_is_executable(self):
+        self.put("src/core.js", "const x = `${'calcium-silicate-6'}`;\n")
+        self.rejects("FORBIDDEN_STRING")
+
+    def test_javascript_template_display_words_are_not_code(self):
+        self.put("src/core.js", "const x = `require('./w.js') import('./w.js') TIMBER_ROLE_PRIMARY ${'TIMBER_ROLE_PRIMARY'}`;\n")
+        self.assertEqual(self.green().edges, [])
+
+    def test_javascript_template_chunks_do_not_expand_exact_string_policy(self):
+        self.put("src/core.js", "const x = `calcium-silicate-6${value}`;\n")
+        self.green()
+
+    def test_javascript_escaped_interpolation_is_literal(self):
+        self.put("src/core.js", r"const x = `\${require('./missing.js')}`;" + "\n")
+        self.assertEqual(self.green().edges, [])
+
+    def test_javascript_even_backslashes_do_not_hide_interpolation(self):
+        self.put("src/core.js", r"const x = `\\${require('./w.js')}`;" + "\n")
+        self.put("src/w.js", "export const policy = 1;\n", "W")
+        self.rejects("LAYER_DIRECTION")
+
+    def test_javascript_template_braces_in_string_comment_and_nested_template(self):
+        self.put("src/core.js", "const x = `${({a:'}', b:'{', c:`safe ${value}`, d:/* } */ require('./w.js')}).d}`;\n")
+        self.put("src/w.js", "export const policy = 1;\n", "W")
+        self.rejects("LAYER_DIRECTION")
+
+    def test_javascript_template_comment_keeps_physical_line(self):
+        self.put("src/core.js", "const x = `first\n${(() => { // }\n return require('./w.js');\n})()}`;\n")
+        self.put("src/w.js", "export const policy = 1;\n", "W")
+        self.rejects("LAYER_DIRECTION", path="src/core.js", line=3)
+
+    def test_javascript_template_regex_braces_are_not_delimiters(self):
+        path = self.put("src/core.js", "")
+        self.put("src/w.js", "export const policy = 1;\n", "W")
+        for pattern in [r"/[}]/", r"/\}/", r"/[/*]/"]:
+            with self.subTest(pattern=pattern):
+                path.write_text("const x = `${" + pattern + ".test(value) ? require('./w.js') : ''}`;\n", encoding="utf-8")
+                self.rejects("LAYER_DIRECTION")
+
+    def test_javascript_regex_comment_cannot_swallow_dependency(self):
+        self.put("src/core.js", "const x = /[/*]/; require('./w.js'); // */\n")
+        self.put("src/w.js", "export const policy = 1;\n", "W")
+        self.rejects("LAYER_DIRECTION")
+
+    def test_javascript_template_regex_comment_cannot_swallow_dependency(self):
+        self.put("src/core.js", "const x = `${(() => {const r = /[/*]/; require('./w.js'); // */\nreturn '';})()}`;\n")
+        self.put("src/w.js", "export const policy = 1;\n", "W")
+        self.rejects("LAYER_DIRECTION")
+
+    def test_javascript_division_does_not_hide_later_loader(self):
+        path = self.put("src/core.js", "")
+        self.put("src/w.js", "export const policy = 1;\n", "W")
+        for expression in ["a / b / require('./w.js')", "a++ / b / require('./w.js')",
+                           "(a + b) / require('./w.js')", "obj.value / require('./w.js')"]:
+            with self.subTest(expression=expression):
+                path.write_text("const x = `${" + expression + "}`;\n", encoding="utf-8")
+                self.rejects("LAYER_DIRECTION")
+
+    def test_javascript_reserved_property_names_are_not_regex_prefixes(self):
+        path = self.put("src/core.js", "")
+        self.put("src/w.js", "export const policy = 1;\n", "W")
+        for expression in ["obj.return / require('./w.js') / x", "obj.if(x) / require('./w.js') / x",
+                           "obj.await / require('./w.js') / x"]:
+            with self.subTest(expression=expression):
+                path.write_text("const x = `${" + expression + "}`;\n", encoding="utf-8")
+                self.rejects("LAYER_DIRECTION")
+
+    def test_javascript_ambiguous_regex_goal_fails_closed(self):
+        path = self.put("src/core.js", "")
+        for expression in ["yield / require('w') / x", "await / require('w') / x", "{} / require('w') / x"]:
+            with self.subTest(expression=expression):
+                path.write_text("const x = `${" + expression + "}`;\n", encoding="utf-8")
+                self.rejects("JS_REGEX_SYNTAX")
+
+    def test_javascript_control_condition_accepts_regex_statement(self):
+        self.put("src/core.js", "if (ready) /[/*]/.test(value); require('./w.js'); // */\n")
+        self.put("src/w.js", "export const policy = 1;\n", "W")
+        self.rejects("LAYER_DIRECTION")
+
+    def test_javascript_regex_display_words_are_not_code(self):
+        self.put("src/core.js", r"const x = `${/require\('missing'\)|TIMBER_ROLE_PRIMARY/.test(value)}`;" + "\n")
+        self.assertEqual(self.green().edges, [])
+
+    def test_javascript_unclosed_templates_fail_closed(self):
+        path = self.put("src/core.js", "")
+        for text in ["const x = `unclosed", "const x = `${value", "const x = `${`nested ${value}`",
+                     "const x = `${({value: 1})`", "const x = `${/[}]/.test(value)"]:
+            with self.subTest(text=text):
+                path.write_text(text, encoding="utf-8")
+                self.rejects("LEXICAL_SYNTAX")
 
     def test_typescript_type_import_is_tracked(self):
         self.put("src/core.ts", "import type {Size as S} from './types';\n")
@@ -356,6 +505,96 @@ class ArchitectureContract(unittest.TestCase):
         self.put("src/k/page.html", '<html>\n<script src="../w/policy.js"></script>\n</html>\n')
         self.put("src/w/policy.js", "const value = 1;\n", "W")
         self.rejects("LAYER_DIRECTION", path="src/k/page.html", line=2)
+
+    def route(self, source="src/page.html", src="/templates/woodworking.js", target="src/w/frontend.js"):
+        route = {"source": source, "src": src, "target": target, "purpose": "Host serves a reviewed frontend route"}
+        self.manifest.setdefault("htmlScriptRoutes", []).append(route)
+        return route
+
+    def test_html_exact_host_route_is_an_owned_edge(self):
+        self.put("src/page.html", '<script src="/templates/woodworking.js"></script>\n', "H")
+        self.put("src/w/frontend.js", "const value = 1;\n", "W")
+        self.route()
+        self.assertEqual(self.green().edges[0].target, "src/w/frontend.js")
+
+    def test_html_relative_host_route_takes_precedence_over_file_resolution(self):
+        self.put("src/page.html", '<script src="templates/woodworking.js"></script>\n', "H")
+        self.put("src/templates/woodworking.js", "const local = 1;\n", "H")
+        self.put("src/w/frontend.js", "const routed = 1;\n", "W")
+        self.route(src="templates/woodworking.js")
+        self.assertEqual([edge.target for edge in self.green().edges], ["src/w/frontend.js"])
+
+    def test_html_host_route_cannot_bypass_layer_direction(self):
+        self.put("src/page.html", '<script src="/templates/woodworking.js"></script>\n')
+        self.put("src/w/frontend.js", "const value = 1;\n", "W")
+        self.route()
+        self.rejects("LAYER_DIRECTION", chain=["src/page.html", "src/w/frontend.js"])
+
+    def test_html_host_route_keeps_transitive_closure(self):
+        self.put("src/page.html", '<script src="/templates/woodworking.js"></script>\n')
+        self.put("src/w/frontend.js", "require('./policy.js');\n")
+        self.put("src/w/policy.js", "const value = 1;\n", "W")
+        self.route()
+        self.rejects("LAYER_DIRECTION", chain=["src/page.html", "src/w/frontend.js", "src/w/policy.js"])
+
+    def test_html_root_route_must_be_mapped(self):
+        self.put("src/page.html", '<script src="/w/frontend.js"></script>\n', "H")
+        self.put("src/w/frontend.js", "const value = 1;\n", "W")
+        self.rejects("HTML_ROUTE_UNMAPPED")
+
+    def test_html_route_is_scoped_to_exact_source(self):
+        self.put("src/page.html", '<script src="/templates/woodworking.js"></script>\n', "H")
+        self.put("src/other.html", '<script src="/templates/woodworking.js"></script>\n', "H")
+        self.put("src/w/frontend.js", "const value = 1;\n", "W")
+        self.route()
+        self.rejects("HTML_ROUTE_UNMAPPED", path="src/other.html")
+
+    def test_html_route_duplicate_is_rejected(self):
+        self.put("src/page.html", "", "H")
+        self.put("src/w/frontend.js", "const value = 1;\n", "W")
+        self.route()
+        self.route()
+        self.rejects("HTML_ROUTE_DUPLICATE")
+
+    def test_html_route_unknown_target_is_rejected(self):
+        self.put("src/page.html", "", "H")
+        self.route()
+        self.rejects("HTML_ROUTE_TARGET")
+
+    def test_html_route_unknown_source_is_rejected(self):
+        self.put("src/w/frontend.js", "const value = 1;\n", "W")
+        self.route()
+        self.rejects("HTML_ROUTE_SOURCE")
+
+    def test_html_route_does_not_accept_prefix_match(self):
+        self.put("src/page.html", '<script src="/templates/woodworking.js/extra.js"></script>\n', "H")
+        self.put("src/w/frontend.js", "const value = 1;\n", "W")
+        self.route()
+        self.rejects("HTML_ROUTE_UNMAPPED")
+
+    def test_html_route_cannot_target_excluded_code(self):
+        self.put("src/page.html", "", "H")
+        omitted = self.put("src/w/frontend.js", "const value = 1;\n", registered=False)
+        self.manifest["exclusions"].append({"path": "src/w/frontend.js", "reason": "Synthetic excluded example",
+                                            "sha256": hashlib.sha256(omitted.read_bytes()).hexdigest()})
+        self.route()
+        self.rejects("HTML_ROUTE_TARGET")
+
+    def test_html_route_escape_and_ambiguous_urls_are_rejected(self):
+        self.put("src/page.html", "", "H")
+        self.put("src/w/frontend.js", "const value = 1;\n", "W")
+        route = self.route()
+        for key, value, error in [("source", "../outside.html", "ROOT_ESCAPE"),
+                                  ("target", "../outside.js", "ROOT_ESCAPE"),
+                                  ("src", "/../outside.js", "ROOT_ESCAPE"),
+                                  ("src", "//outside/a.js", "HTML_ROUTE_SYNTAX"),
+                                  ("src", "/a%2f.js", "HTML_ROUTE_SYNTAX"),
+                                  ("src", "/a.js?x=1", "HTML_ROUTE_SYNTAX")]:
+            previous = route[key]
+            with self.subTest(key=key, value=value):
+                route[key] = value
+                self.rejects(error)
+            route[key] = previous
 
     def test_html_inline_script_keeps_document_line_numbers(self):
         self.put("src/k/page.html", '<html>\n<script type="module">\nimport "../w/policy.js";\n</script>\n</html>\n')
