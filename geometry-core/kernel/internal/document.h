@@ -1,15 +1,15 @@
 #ifndef GEO_KERNEL_DOCUMENT_INTERNAL_H
 #define GEO_KERNEL_DOCUMENT_INTERNAL_H
 #include "../document.h"
-#include "parameter_store.h"
-#include "named_values.h"
-#include "datums.h"
-#include "guides.h"
-#include "regions.h"
-#include "placements.h"
-#include "grid_store.h"
-#include "versions.h"
-#include "enclosures.h"
+#include "../internal/parameter_store.h"
+#include "../internal/named_values.h"
+#include "../internal/datums.h"
+#include "../internal/guides.h"
+#include "../internal/regions.h"
+#include "../internal/placements.h"
+#include "../internal/grid_store.h"
+#include "../internal/versions.h"
+#include "../internal/enclosures.h"
 /* The host may embed this private layout for whole-candidate value copies.
  * Templates receive public handles, never this storage definition. */
 struct GeoDocument {

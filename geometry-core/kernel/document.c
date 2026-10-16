@@ -16,18 +16,39 @@ void geo_document_destroy(GeoDocument *document)
 void geo_document_clear(GeoDocument *document)
 {if(document)memset(document,0,sizeof *document);}
 
-#define GEO_DOCUMENT_STORE(type,name,field) \
-    type *geo_document_##name(GeoDocument *document) \
-    {return document?&document->field:NULL;} \
-    const type *geo_document_##name##_view(const GeoDocument *document) \
-    {return document?&document->field:NULL;}
-GEO_DOCUMENT_STORE(GeoParameterStore,parameters,parameters)
-GEO_DOCUMENT_STORE(GeoNamedValues,named_values,named_values)
-GEO_DOCUMENT_STORE(GeoDatumStore,datums,datum_planes)
-GEO_DOCUMENT_STORE(GeoGuideStore,guides,guide_lines)
-GEO_DOCUMENT_STORE(GeoRegionStore,regions,region_data)
-GEO_DOCUMENT_STORE(GeoPlacementStore,placements,placement_data)
-GEO_DOCUMENT_STORE(GeoGridStore,grids,grid_store)
-GEO_DOCUMENT_STORE(GeoVersionStore,versions,version_store)
-GEO_DOCUMENT_STORE(GeoEnclosureStore,enclosures,enclosures)
-#undef GEO_DOCUMENT_STORE
+GeoParameterStore *geo_document_parameters(GeoDocument *document)
+{return document?&document->parameters:NULL;}
+const GeoParameterStore *geo_document_parameters_view(const GeoDocument *document)
+{return document?&document->parameters:NULL;}
+GeoNamedValues *geo_document_named_values(GeoDocument *document)
+{return document?&document->named_values:NULL;}
+const GeoNamedValues *geo_document_named_values_view(const GeoDocument *document)
+{return document?&document->named_values:NULL;}
+GeoDatumStore *geo_document_datums(GeoDocument *document)
+{return document?&document->datum_planes:NULL;}
+const GeoDatumStore *geo_document_datums_view(const GeoDocument *document)
+{return document?&document->datum_planes:NULL;}
+GeoGuideStore *geo_document_guides(GeoDocument *document)
+{return document?&document->guide_lines:NULL;}
+const GeoGuideStore *geo_document_guides_view(const GeoDocument *document)
+{return document?&document->guide_lines:NULL;}
+GeoRegionStore *geo_document_regions(GeoDocument *document)
+{return document?&document->region_data:NULL;}
+const GeoRegionStore *geo_document_regions_view(const GeoDocument *document)
+{return document?&document->region_data:NULL;}
+GeoPlacementStore *geo_document_placements(GeoDocument *document)
+{return document?&document->placement_data:NULL;}
+const GeoPlacementStore *geo_document_placements_view(const GeoDocument *document)
+{return document?&document->placement_data:NULL;}
+GeoGridStore *geo_document_grids(GeoDocument *document)
+{return document?&document->grid_store:NULL;}
+const GeoGridStore *geo_document_grids_view(const GeoDocument *document)
+{return document?&document->grid_store:NULL;}
+GeoVersionStore *geo_document_versions(GeoDocument *document)
+{return document?&document->version_store:NULL;}
+const GeoVersionStore *geo_document_versions_view(const GeoDocument *document)
+{return document?&document->version_store:NULL;}
+GeoEnclosureStore *geo_document_enclosures(GeoDocument *document)
+{return document?&document->enclosures:NULL;}
+const GeoEnclosureStore *geo_document_enclosures_view(const GeoDocument *document)
+{return document?&document->enclosures:NULL;}

@@ -17,6 +17,9 @@ Manifest schema (all keys required; unknown keys rejected):
   exclusions: [{path, reason, sha256, [hashMode: raw|lf]}]
   htmlScriptRoutes (optional): [{source, src, target, purpose}]
   javascriptImportRoutes (optional): [{source, specifier, target, purpose}]
+  htmlEmbedRoutes (optional): [{source, elementId, driver, driverSha256,
+    router, routerSha256, receiver, queryValue, srcPrefix, target, loadCount,
+    resetCount, purpose}]
   trustedVendorBundles (optional): [{id, files, layers: [H], purpose}]
   policy: {
     cSystemHeaders: [exact include spelling, ...],
@@ -36,6 +39,10 @@ and listed exactly once. Its internal code/runtime dependencies are TRUSTED, NOT
 statically verified; K/W/untrusted vendor cannot reach it. An optional exact
 host import route permits only H's literal single-argument import() and adds a
 normal dependency edge. Computed/unmapped imports still fail closed.
+An exact H iframe route inventories a reviewed dynamic assignment and HTTP
+router, both LF-digest locked. Only a same-origin root URL with one fixed query
+key and about:blank resets are supported. This is an audited host route, not
+general JavaScript alias/dataflow or HTTP-router verification.
 The reviewed policy is a trust input, not proof
 that a third-party binary or a system header has any particular behavior.
 
@@ -71,6 +78,7 @@ import os
 from pathlib import Path, PurePosixPath
 import re
 import sys
+from urllib.parse import parse_qsl, urlsplit
 
 
 SCHEMA = "geometry-architecture/1"
@@ -632,6 +640,7 @@ class Scanner:
         self.policy = {}
         self.html_routes = {}
         self.javascript_routes = {}
+        self.html_embed_routes = {}
         self.trusted_vendor = set()
 
     def safe(self, relative, context=None):
@@ -649,7 +658,7 @@ class Scanner:
     def validate_manifest(self):
         data = self.manifest
         exact_keys(data, {"schema", "sourceRoots", "searchRoots", "sources", "exclusions", "policy"}, "<manifest>",
-                   {"htmlScriptRoutes", "javascriptImportRoutes", "trustedVendorBundles", "sourceFiles"})
+                   {"htmlScriptRoutes", "javascriptImportRoutes", "htmlEmbedRoutes", "trustedVendorBundles", "sourceFiles"})
         require(data["schema"] == SCHEMA, "MANIFEST_SCHEMA", "<manifest>", 1, "unknown manifest schema")
         roots = strings(data["sourceRoots"], "sourceRoots")
         files = strings(data.get("sourceFiles", []), "sourceFiles")
@@ -736,6 +745,7 @@ class Scanner:
         self.validate_policy(data["policy"])
         self.validate_html_routes(data.get("htmlScriptRoutes", []))
         self.validate_javascript_routes(data.get("javascriptImportRoutes", []))
+        self.validate_html_embed_routes(data.get("htmlEmbedRoutes", []))
         self.validate_vendor_bundles(data.get("trustedVendorBundles", []))
         self.result.trusted_sources = sorted(self.trusted_vendor)
         self.result.sources = sorted(self.entries)
@@ -788,6 +798,69 @@ class Scanner:
             require(target in self.entries and self.entries[target]["language"] == "javascript",
                     "JS_ROUTE_TARGET", source, 1, "host import target must be one exact owned JavaScript source")
             self.javascript_routes[key] = target
+
+    def validate_html_embed_routes(self, routes):
+        require(isinstance(routes, list), "MANIFEST_SCHEMA", "htmlEmbedRoutes", 1, "expected an exact host embed route list")
+        for route in routes:
+            exact_keys(route, {"source", "elementId", "driver", "driverSha256", "router", "routerSha256",
+                              "receiver", "queryValue", "srcPrefix", "target", "loadCount", "resetCount", "purpose"},
+                       "htmlEmbedRoutes")
+            for name, language in (("source", "html"), ("target", "html"), ("driver", "javascript"), ("router", "python")):
+                relative = portable_path(route[name], "htmlEmbedRoutes." + name)
+                require(relative in self.entries and self.entries[relative]["layer"] == "H"
+                        and self.entries[relative]["language"] == language,
+                        "HTML_EMBED_ROUTE_LAYER", relative, 1, "embed source, target, driver and router must be exact owned H sources")
+            source = route["source"]
+            require(isinstance(route["elementId"], str) and re.fullmatch(r"[A-Za-z_][A-Za-z0-9_-]*", route["elementId"])
+                    and isinstance(route["purpose"], str) and route["purpose"].strip(),
+                    "HTML_EMBED_ROUTE_SYNTAX", source, 1, "embed route needs an exact element id and purpose")
+            key = (source, route["elementId"])
+            require(key not in self.html_embed_routes, "HTML_EMBED_ROUTE_DUPLICATE", source, 1, "duplicate embed element route")
+            prefix = route["srcPrefix"]
+            require(isinstance(prefix, str) and re.fullmatch(r"/\?[A-Za-z_][A-Za-z0-9_]*=", prefix),
+                    "HTML_EMBED_ROUTE_SYNTAX", source, 1, "only a same-origin root path with one fixed query key is supported")
+            require(isinstance(route["receiver"], str) and re.fullmatch(r"[A-Za-z_$][A-Za-z0-9_$]*\.[A-Za-z_$][A-Za-z0-9_$]*", route["receiver"])
+                    and isinstance(route["queryValue"], str) and re.fullmatch(r"[A-Za-z_$][A-Za-z0-9_$]*", route["queryValue"])
+                    and type(route["loadCount"]) is int and route["loadCount"] > 0
+                    and type(route["resetCount"]) is int and route["resetCount"] >= 0,
+                    "HTML_EMBED_ROUTE_SYNTAX", source, 1, "embed assignment receiver, value and occurrence counts must be exact")
+            for name in ("driver", "router"):
+                self.check_digest(self.safe(route[name]), route[name + "Sha256"], "HTML_EMBED_ROUTE_DIGEST", mode="lf")
+            text = self.safe(route["driver"]).read_text(encoding="utf-8")
+            _, _, tokens = lex(text, route["driver"])
+            values = [token.value for token in tokens]
+            receiver = route["receiver"].split(".")
+            lhs = [receiver[0], ".", receiver[1], ".", "src", "="]
+            selector = [receiver[1], ":", "$", "(", route["elementId"], ")"]
+            count_pattern = lambda pattern: sum(values[i:i + len(pattern)] == pattern for i in range(len(values)))
+            require(count_pattern(selector) == 1, "HTML_EMBED_ASSIGNMENT", route["driver"], 1,
+                    "reviewed driver must bind the exact frame element once")
+            load = lhs + [prefix, "+", route["queryValue"], ";"]
+            reset = lhs + ["about:blank", ";"]
+            require(count_pattern(load) == route["loadCount"] and count_pattern(reset) == route["resetCount"]
+                    and sum(token.value == "src" for token in tokens) == route["loadCount"] + route["resetCount"]
+                    and all(token.value != "srcdoc" for token in tokens),
+                    "HTML_EMBED_ASSIGNMENT", route["driver"], 1,
+                    "driver src assignments must be exactly the reviewed root-query loads and blank resets")
+            self.html_embed_routes[key] = route
+
+    def html_embed_dependency(self, path, values, line):
+        route = self.html_embed_routes.get((path, values.get("id")))
+        require(route is not None, "HTML_EMBED_UNSUPPORTED", path, line,
+                "iframe requires one exact reviewed H element/driver/router route")
+        if "src" in values:
+            src = values["src"]
+            valid = src == "about:blank"
+            if isinstance(src, str) and src.startswith(route["srcPrefix"]):
+                url = urlsplit(src)
+                query = parse_qsl(url.query, keep_blank_values=True)
+                valid = (not any(char.isspace() or ord(char) < 32 for char in src)
+                         and not url.scheme and not url.netloc and url.path == "/" and not url.fragment
+                         and len(query) == 1 and query[0][0] == route["srcPrefix"][2:-1])
+            require(valid, "HTML_EMBED_SOURCE", path, line, "iframe src must match its exact reviewed same-origin root-query route")
+        self.owned(self.safe(route["target"]), path, line)
+        self.owned(self.safe(route["driver"]), path, line)
+        self.owned(self.safe(route["target"]), route["driver"], 1)
 
     def validate_vendor_bundles(self, bundles):
         require(isinstance(bundles, list), "MANIFEST_SCHEMA", "trustedVendorBundles", 1, "expected a bundle list")
@@ -1301,6 +1374,7 @@ class Scanner:
             def __init__(self):
                 super().__init__(convert_charrefs=True)
                 self.script = None
+                self.embeds = set()
             def handle_starttag(self, tag, attrs):
                 line = self.getpos()[0]
                 names = [key for key, _ in attrs]
@@ -1310,8 +1384,12 @@ class Scanner:
                         "base href changes dependency resolution and is outside the static HTML subset")
                 require("srcdoc" not in values, "HTML_SRCDOC_UNSUPPORTED", path, line,
                         "srcdoc embeds a separately parsed executable document and is outside the static HTML subset")
-                require(tag not in {"iframe", "frame", "object", "embed"}, "HTML_EMBED_UNSUPPORTED", path, line,
+                require(tag not in {"frame", "object", "embed"}, "HTML_EMBED_UNSUPPORTED", path, line,
                         "embedded document/plugin elements require a separate source and execution context parser")
+                if tag == "iframe":
+                    scanner.html_embed_dependency(path, values, line)
+                    require(values["id"] not in self.embeds, "HTML_EMBED_ROUTE_DUPLICATE", path, line, "duplicate routed iframe id")
+                    self.embeds.add(values["id"])
                 for key, value in attrs:
                     if key.startswith("on") and value:
                         scanner.scan_javascript(path, value, line - 1)
@@ -1349,6 +1427,8 @@ class Scanner:
         parser = Scripts()
         parser.feed(text)
         parser.close()
+        require(parser.embeds == {element for source, element in self.html_embed_routes if source == path},
+                "HTML_EMBED_ROUTE_MISSING", path, 1, "declared iframe route must match exactly one actual element")
         require(parser.script is None, "HTML_SCRIPT_SYNTAX", path, parser.script["line"] if parser.script else 1,
                 "unclosed script element")
 

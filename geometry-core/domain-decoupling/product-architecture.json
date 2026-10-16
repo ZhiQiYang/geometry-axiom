@@ -1,0 +1,4321 @@
+{
+  "schema": "geometry-architecture/1",
+  "sourceRoots": [
+    "geometry-core",
+    "geometry-app",
+    "geometry-templates",
+    "geometry-web",
+    "geometry-guide"
+  ],
+  "sourceFiles": [
+    "current_geometry.c",
+    "tests/__init__.py",
+    "tests/binaries.py"
+  ],
+  "searchRoots": {
+    "c": [
+      ".",
+      "geometry-core/kernel"
+    ],
+    "python": [
+      "geometry-core",
+      "geometry-app",
+      "geometry-templates/woodworking",
+      "geometry-templates/rectangular-grid",
+      "geometry-web/work-manager",
+      "geometry-web",
+      "geometry-guide",
+      "."
+    ],
+    "javascript": [
+      "geometry-web"
+    ]
+  },
+  "sources": [
+    {
+      "path": "current_geometry.c",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Existing native CLI/parser/GDI entry and application composition of K/W; legacy host adapters remain explicitly inventoried"
+    },
+    {
+      "path": "geometry-app/application.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host application; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-app/geometry_app/__init__.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host   init  ; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-app/geometry_app/bootstrap.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host bootstrap; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-app/geometry_app/kernel_errors.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host kernel errors; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-app/geometry_app/model_codec.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host model codec; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-app/geometry_app/model_common.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host model common; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-app/geometry_app/model_geometry.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host model geometry; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-app/geometry_app/model_native.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host model native; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-app/geometry_app/model_profile_compat.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host model profile compat; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-app/geometry_app/model_runtime.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host model runtime; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-app/geometry_app/model_sources.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host model sources; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-app/geometry_app/model_world.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host model world; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-app/geometry_app/source_closure.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host source closure; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-app/native/app_candidate.c",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host app candidate; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-app/native/app_candidate.h",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host app candidate; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-app/native/candidate_unity.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host candidate unity; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-app/native/definition_texts.h",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host definition texts; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-app/native/document.h",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host document; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-app/native/domains.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host domains; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-app/native/grid_adapter.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host grid adapter; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-app/native/grid_context.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host grid context; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-app/native/history.c",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host history; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-app/native/history.h",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host history; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-app/native/history_unity.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host history unity; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-app/native/kernel_storage.h",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host kernel storage; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-app/native/legacy_json.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host legacy json; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-app/native/model_sources.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host model sources; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-app/native/reference_sources.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host reference sources; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-app/native/versions_adapter.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host versions adapter; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-app/native/woodworking_unity.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host woodworking unity; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-app/native/world_candidate.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host world candidate; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-app/native/world_validation.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host world validation; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-core/assembly.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Scene/JSON assembly authoring dispatch and same-candidate W context adapter"
+    },
+    {
+      "path": "geometry-core/assembly_generation.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Host scene generation command/diagnostic adapter for W assembly evaluator"
+    },
+    {
+      "path": "geometry-core/assembly_types.h",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Host legacy type-name compatibility shim; underlying typed definitions remain K/W owned"
+    },
+    {
+      "path": "geometry-core/boundary_vertex_keys.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Scene vertex-key parsing, persisted identity adapter and K reconciliation calls"
+    },
+    {
+      "path": "geometry-core/derived_placements.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Host derived placement context, serialization and W/K evaluation composition"
+    },
+    {
+      "path": "geometry-core/engineering.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Host engineering version/role adapters, dump and W source context composition"
+    },
+    {
+      "path": "geometry-core/engineering_commands.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Existing scene engineering command parser and W dispatch"
+    },
+    {
+      "path": "geometry-core/engineering_json.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Existing engineering JSON parser compatibility names"
+    },
+    {
+      "path": "geometry-core/engineering_types.h",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Host legacy type-name compatibility shim; underlying typed definitions remain K/W owned"
+    },
+    {
+      "path": "geometry-core/finish_surface_types.h",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Host legacy type-name compatibility shim; underlying typed definitions remain K/W owned"
+    },
+    {
+      "path": "geometry-core/finish_surfaces.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Host finish scene/transaction adapter, W callbacks and dump"
+    },
+    {
+      "path": "geometry-core/geometry_kernel/__init__.py",
+      "layer": "K",
+      "language": "python",
+      "purpose": "Neutral Python   init   API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/geometry_kernel/canonical.py",
+      "layer": "K",
+      "language": "python",
+      "purpose": "Neutral Python canonical API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/geometry_kernel/errors.py",
+      "layer": "K",
+      "language": "python",
+      "purpose": "Neutral Python errors API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/geometry_kernel/evaluate.py",
+      "layer": "K",
+      "language": "python",
+      "purpose": "Neutral Python evaluate API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/geometry_kernel/geometry.py",
+      "layer": "K",
+      "language": "python",
+      "purpose": "Neutral Python geometry API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/geometry_kernel/graph.py",
+      "layer": "K",
+      "language": "python",
+      "purpose": "Neutral Python graph API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/geometry_kernel/session.py",
+      "layer": "K",
+      "language": "python",
+      "purpose": "Neutral Python session API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/geometry_kernel/transactions.py",
+      "layer": "K",
+      "language": "python",
+      "purpose": "Neutral Python transactions API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/geometry_kernel/types.py",
+      "layer": "K",
+      "language": "python",
+      "purpose": "Neutral Python types API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/grid_bindings.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Host grid binding scene parsing, identity and candidate staging adapters"
+    },
+    {
+      "path": "geometry-core/grid_lattice.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Legacy host numeric names delegating to public K grid arithmetic"
+    },
+    {
+      "path": "geometry-core/grid_subdivision.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Host authored source-rule persistence and command adapters"
+    },
+    {
+      "path": "geometry-core/grid_subdivision_query.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Host source-rule selection/query serialization around shared cell evaluator"
+    },
+    {
+      "path": "geometry-core/grid_systems.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Host grid scene parsing, versioned persistence and K validation adapter"
+    },
+    {
+      "path": "geometry-core/kernel/candidate.c",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native candidate API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/candidate.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native candidate API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/clip.c",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native clip API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/clip.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native clip API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/codec.c",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native codec API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/codec.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native codec API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/datums.c",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native datums API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/datums.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native datums API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/document.c",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native document API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/document.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native document API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/enclosure.c",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native enclosure API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/enclosure.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native enclosure API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/exact.c",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native exact API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/exact.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native exact API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/geometry.c",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native geometry API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/geometry.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native geometry API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/grid.c",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native grid API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/grid.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native grid API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/grid_store.c",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native grid store API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/grid_store.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native grid store API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/guides.c",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native guides API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/guides.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native guides API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/internal/datums.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native datums API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/internal/document.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native document API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/internal/enclosures.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native enclosures API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/internal/grid_store.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native grid store API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/internal/guides.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native guides API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/internal/named_values.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native named values API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/internal/parameter_store.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native parameter store API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/internal/placements.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native placements API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/internal/regions.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native regions API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/internal/versions.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native versions API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/kernel_unity.inc",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native kernel unity API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/linear.c",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native linear API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/linear.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native linear API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/named_values.c",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native named values API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/named_values.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native named values API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/parameter_sources.c",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native parameter sources API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/parameter_sources.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native parameter sources API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/parameters.c",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native parameters API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/parameters.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native parameters API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/placement_sources.c",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native placement sources API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/placement_sources.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native placement sources API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/placements.c",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native placements API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/placements.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native placements API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/regions.c",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native regions API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/regions.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native regions API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/source.c",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native source API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/source.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native source API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/types.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native types API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/versions.c",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native versions API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/versions.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral native versions API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/model_base.c",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host model base; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-core/modeling/__init__.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Historical modeling import/protocol compatibility facade for explicitly composed H/K/W runtime"
+    },
+    {
+      "path": "geometry-core/modeling/_host.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Historical modeling import/protocol compatibility facade for explicitly composed H/K/W runtime"
+    },
+    {
+      "path": "geometry-core/modeling/base.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Historical modeling import/protocol compatibility facade for explicitly composed H/K/W runtime"
+    },
+    {
+      "path": "geometry-core/modeling/common.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Historical modeling import/protocol compatibility facade for explicitly composed H/K/W runtime"
+    },
+    {
+      "path": "geometry-core/modeling/engine.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Historical modeling import/protocol compatibility facade for explicitly composed H/K/W runtime"
+    },
+    {
+      "path": "geometry-core/modeling/geometry.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Historical modeling import/protocol compatibility facade for explicitly composed H/K/W runtime"
+    },
+    {
+      "path": "geometry-core/modeling/kernel_errors.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Historical modeling import/protocol compatibility facade for explicitly composed H/K/W runtime"
+    },
+    {
+      "path": "geometry-core/modeling/section_profile.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Historical modeling import/protocol compatibility facade for explicitly composed H/K/W runtime"
+    },
+    {
+      "path": "geometry-core/modeling_cli.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host modeling cli; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-core/panel_fill_layout.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Host compatibility names and scene codec for W fill layout"
+    },
+    {
+      "path": "geometry-core/panel_fill_support.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Host footprint/source selection and W seam support evaluation adapter"
+    },
+    {
+      "path": "geometry-core/panel_layout_math.h",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Legacy host Coord/helper names forwarding to K period arithmetic"
+    },
+    {
+      "path": "geometry-core/parameter_types.h",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Host legacy type-name compatibility shim; underlying typed definitions remain K/W owned"
+    },
+    {
+      "path": "geometry-core/parameters.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Host parameter scene/JSON protocol, named-value identity and K evaluation adapter"
+    },
+    {
+      "path": "geometry-core/reference_types.h",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Host legacy type-name compatibility shim; underlying typed definitions remain K/W owned"
+    },
+    {
+      "path": "geometry-core/references.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Host reference definition parsing/rebuild scheduling and K/W source composition"
+    },
+    {
+      "path": "geometry-core/rule_cases/__init__.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Host finite authoring-case definition/execution and native result protocol: __init__"
+    },
+    {
+      "path": "geometry-core/rule_cases/__main__.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Host finite authoring-case definition/execution and native result protocol: __main__"
+    },
+    {
+      "path": "geometry-core/rule_cases/catalog.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Host finite authoring-case definition/execution and native result protocol: catalog"
+    },
+    {
+      "path": "geometry-core/rule_cases/definition.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Host finite authoring-case definition/execution and native result protocol: definition"
+    },
+    {
+      "path": "geometry-core/rule_cases/executor.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Host finite authoring-case definition/execution and native result protocol: executor"
+    },
+    {
+      "path": "geometry-core/rule_cases/request.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Host finite authoring-case definition/execution and native result protocol: request"
+    },
+    {
+      "path": "geometry-core/rule_cases/runtime.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Host finite authoring-case definition/execution and native result protocol: runtime"
+    },
+    {
+      "path": "geometry-core/section_profile_conversion.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Host section conversion request and record serialization"
+    },
+    {
+      "path": "geometry-core/section_profile_types.h",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Host legacy type-name compatibility shim; underlying typed definitions remain K/W owned"
+    },
+    {
+      "path": "geometry-core/section_profiles.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Host section scene/protocol composition and same-candidate W context"
+    },
+    {
+      "path": "geometry-core/subgrid_commands.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Host subgrid declaration parser and transaction entry"
+    },
+    {
+      "path": "geometry-core/subgrid_rebind.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Host fragment candidate/rebind scheduling across K/W definitions"
+    },
+    {
+      "path": "geometry-core/subgrid_world.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Host transaction-baseline adapter for W parent-cardinality policy"
+    },
+    {
+      "path": "geometry-core/subgrids.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Host stored subgrid references and legacy compatibility values"
+    },
+    {
+      "path": "geometry-core/transactions.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application transaction/preview/confirm scheduling and whole-world history boundary"
+    },
+    {
+      "path": "geometry-guide/axiom_examples.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Active offline guide/axiom reader authoring, validation or presentation tool: axiom_examples.py"
+    },
+    {
+      "path": "geometry-guide/axiom_matrix.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Active offline guide/axiom reader authoring, validation or presentation tool: axiom_matrix.py"
+    },
+    {
+      "path": "geometry-guide/axiom_transcripts.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Active offline guide/axiom reader authoring, validation or presentation tool: axiom_transcripts.py"
+    },
+    {
+      "path": "geometry-guide/check_panels.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Active offline guide/axiom reader authoring, validation or presentation tool: check_panels.py"
+    },
+    {
+      "path": "geometry-guide/current_geometry-導讀.html",
+      "layer": "H",
+      "language": "html",
+      "purpose": "Active offline guide/axiom reader authoring, validation or presentation tool: current_geometry-導讀.html"
+    },
+    {
+      "path": "geometry-guide/make_guide.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Active offline guide/axiom reader authoring, validation or presentation tool: make_guide.py"
+    },
+    {
+      "path": "geometry-guide/sync_axiom_reader.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Active offline guide/axiom reader authoring, validation or presentation tool: sync_axiom_reader.py"
+    },
+    {
+      "path": "geometry-guide/witness.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Active offline guide/axiom reader authoring, validation or presentation tool: witness.py"
+    },
+    {
+      "path": "geometry-guide/公理層-閱讀器.html",
+      "layer": "H",
+      "language": "html",
+      "purpose": "Active offline guide/axiom reader authoring, validation or presentation tool: 公理層-閱讀器.html"
+    },
+    {
+      "path": "geometry-templates/rectangular-grid/geometry_rectangular/__init__.py",
+      "layer": "W",
+      "language": "python",
+      "purpose": "Rectangular-grid second template using public K APIs"
+    },
+    {
+      "path": "geometry-templates/rectangular-grid/geometry_rectangular/protocol.py",
+      "layer": "W",
+      "language": "python",
+      "purpose": "Rectangular-grid second template using public K APIs"
+    },
+    {
+      "path": "geometry-templates/rectangular-grid/rectangular_grid.c",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Rectangular-grid second template using public K APIs"
+    },
+    {
+      "path": "geometry-templates/rectangular-grid/rectangular_grid.h",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Rectangular-grid second template using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/frontend.js",
+      "layer": "W",
+      "language": "javascript",
+      "purpose": "Woodworking template frontend policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/geometry_woodworking/__init__.py",
+      "layer": "W",
+      "language": "python",
+      "purpose": "Woodworking template   init   policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/geometry_woodworking/model_policy.py",
+      "layer": "W",
+      "language": "python",
+      "purpose": "Woodworking template model policy policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/geometry_woodworking/model_sources.py",
+      "layer": "W",
+      "language": "python",
+      "purpose": "Woodworking template model sources policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/geometry_woodworking/section_profile.py",
+      "layer": "W",
+      "language": "python",
+      "purpose": "Woodworking template section profile policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/assembly.c",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template assembly policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/assembly.h",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template assembly policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/assembly_sources.c",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template assembly sources policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/assembly_sources.h",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template assembly sources policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/boundary_policy.c",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template boundary policy policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/boundary_policy.h",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template boundary policy policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contact_sources.c",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template contact sources policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contact_sources.h",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template contact sources policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contact_world.c",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template contact world policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contact_world.h",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template contact world policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contacts.c",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template contacts policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contacts.h",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template contacts policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/cut_list.c",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template cut list policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/cut_list.h",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template cut list policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/derived_placement.c",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template derived placement policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/derived_placement.h",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template derived placement policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/document.h",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template document policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/domain_values.h",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template domain values policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/engineering.c",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template engineering policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/engineering.h",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template engineering policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/engineering_operations.c",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template engineering operations policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/engineering_operations.h",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template engineering operations policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/engineering_sources.c",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template engineering sources policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/engineering_sources.h",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template engineering sources policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/finish.c",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template finish policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/finish.h",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template finish policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/finish_sources.c",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template finish sources policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/finish_sources.h",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template finish sources policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/grid_application.c",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template grid application policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/grid_application.h",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template grid application policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/grid_cells.c",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template grid cells policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/grid_rules.c",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template grid rules policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/grid_sources.c",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template grid sources policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/grid_sources.h",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template grid sources policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/member_declaration.c",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template member declaration policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/member_declaration.h",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template member declaration policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/member_placement.h",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template member placement policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/member_reference.c",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template member reference policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/member_reference.h",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template member reference policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/members.c",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template members policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/members.h",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template members policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/obstacles.h",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template obstacles policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/panel_layout.c",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template panel layout policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/panel_layout.h",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template panel layout policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/panel_support.c",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template panel support policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/panel_support.h",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template panel support policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/section_profile.c",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template section profile policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/section_profile.h",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template section profile policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/section_profile_sources.c",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template section profile sources policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/section_profile_sources.h",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template section profile sources policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/supports.c",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template supports policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/supports.h",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template supports policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/world_validation.c",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template world validation policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/world_validation.h",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking template world validation policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-web/app.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host app; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/archive_wait_trace.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host archive wait trace; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/assembly-workspace.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host assembly workspace; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/assembly_bridge.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host assembly bridge; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/context-menu-shell.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host context menu shell; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/context-operations.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host context operations; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/cursor-v2.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host cursor v2; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/document-cases.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host document cases; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/document-format.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host document format; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/documents.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host documents; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/engineering-adapter.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host engineering adapter; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/engineering-workspace.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host engineering workspace; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/engineering_bridge.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host engineering bridge; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/engineering_transport.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host engineering transport; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/evidence-links-app.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host evidence links app; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/evidence-links-ui.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host evidence links ui; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/evidence-links.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host evidence links; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/face-context-menu.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host face context menu; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/face-menu-icons.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host face menu icons; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/feature-attachments.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host feature attachments; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/feedback.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host feedback; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/feedback_cli.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host feedback cli; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/feedback_store.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host feedback store; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/grid-anchor-positions.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host grid anchor positions; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/grid-inspector.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host grid inspector; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/grid-rule-lines.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host grid rule lines; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/grid-system-workspace.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host grid system workspace; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/grid-trial.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host grid trial; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/grid_binding_bridge.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host grid binding bridge; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/grid_subdivision_bridge.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host grid subdivision bridge; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/grid_system_bridge.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host grid system bridge; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/index.html",
+      "layer": "H",
+      "language": "html",
+      "purpose": "Application/runtime/protocol or workspace host index; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/model-update-app.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host model update app; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/model-update.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host model update; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/model-viewer.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host model viewer; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/model_update.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host model update; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/native-transport.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host native transport; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/native_context.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host native context; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/panel_fill_bridge.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host panel fill bridge; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/panel_layout_bridge.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host panel layout bridge; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/parameter_bridge.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host parameter bridge; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/parameters.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host parameters; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/polydraft.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host polydraft; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/prepare_wait_trace.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host prepare wait trace; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/project-store.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host project store; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/project-ui.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host project ui; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/reference-display.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host reference display; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/reference-ui.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host reference ui; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/reference-workspace.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host reference workspace; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/reference_bridge.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host reference bridge; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/room-collection-workspace.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host room collection workspace; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/room-collection.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host room collection; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/room-outline-worker.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host room outline worker; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/room-outline-workspace.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host room outline workspace; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/room-outline.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host room outline; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/rule-case-data.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host rule case data; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/rule-case-host.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host rule case host; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/rule-case-workbench.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host rule case workbench; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/rule_case_host.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host rule case host; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/rule_case_workbench_adapter.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host rule case workbench adapter; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/rule_case_workbench_standalone.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host rule case workbench standalone; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/runtime_version.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host runtime version; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/scenario-catalog.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host scenario catalog; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/scenario-diff.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host scenario diff; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/scenario-integration.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host scenario integration; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/scenario-snapshots.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host scenario snapshots; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/scenario-workspace.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host scenario workspace; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/scenario_verify.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host scenario verify; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/scene-import-bridge.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host scene import bridge; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/section-profile-workspace.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host section profile workspace; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/section_profile_bridge.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host section profile bridge; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/section_profile_diagnostics.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host section profile diagnostics; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/section_profile_source_index.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host section profile source index; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/section_profile_transport.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host section profile transport; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/serve.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host serve; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/source-inspector-app.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host source inspector app; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/source-inspector-bridge.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host source inspector bridge; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/source-inspector.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host source inspector; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/source-plane.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host source plane; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/source_inspector_transport.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host source inspector transport; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/space-workspace.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host space workspace; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/space_modeling.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host space modeling; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/start_local.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host start local; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/timber-schedule.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host timber schedule; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/timber-supports.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host timber supports; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/timber_support_projection.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host timber support projection; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/vendor/fflate/umd/index.js",
+      "layer": "vendor",
+      "language": "javascript",
+      "purpose": "Pinned browser-only third-party asset index.js; trusted H bundle, internal runtime not certified by static gate",
+      "sha256": "462ef8041fc970e3615a20a9dd2b2e3047a073b2da729ef4f02b634bba8b7b83"
+    },
+    {
+      "path": "geometry-web/vendor/pdfjs-dist/build/pdf.mjs",
+      "layer": "vendor",
+      "language": "javascript",
+      "purpose": "Pinned browser-only third-party asset pdf.mjs; trusted H bundle, internal runtime not certified by static gate",
+      "sha256": "495588717f62303a839e91a5343deebf1b41f52e2f9f6361e73dee6ea6a4355e"
+    },
+    {
+      "path": "geometry-web/vendor/pdfjs-dist/build/pdf.worker.mjs",
+      "layer": "vendor",
+      "language": "javascript",
+      "purpose": "Pinned browser-only third-party asset pdf.worker.mjs; trusted H bundle, internal runtime not certified by static gate",
+      "sha256": "f2870db902eaff8397442c912b69459980ac91f6f4b5ed827167b12cf7057930"
+    },
+    {
+      "path": "geometry-web/vendor/pdfjs-dist/wasm/jbig2_nowasm_fallback.js",
+      "layer": "vendor",
+      "language": "javascript",
+      "purpose": "Pinned browser-only third-party asset jbig2_nowasm_fallback.js; trusted H bundle, internal runtime not certified by static gate",
+      "sha256": "04c795a6657a4553a64b781ea3e85256203d913c3b71b72b85fa3ce00622f458"
+    },
+    {
+      "path": "geometry-web/vendor/pdfjs-dist/wasm/openjpeg_nowasm_fallback.js",
+      "layer": "vendor",
+      "language": "javascript",
+      "purpose": "Pinned browser-only third-party asset openjpeg_nowasm_fallback.js; trusted H bundle, internal runtime not certified by static gate",
+      "sha256": "0f998419819da4491d8302222aa9e2ff2494685641aa2a6c21c3760c29f3e319"
+    },
+    {
+      "path": "geometry-web/vendor/pdfjs-dist/wasm/quickjs-eval.js",
+      "layer": "vendor",
+      "language": "javascript",
+      "purpose": "Pinned browser-only third-party asset quickjs-eval.js; trusted H bundle, internal runtime not certified by static gate",
+      "sha256": "fe7930418e869791ce892567dbd0bc4698152b7e550b5cefa553992c56ddc325"
+    },
+    {
+      "path": "geometry-web/wait_trace.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host wait trace; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/web_bridge.c",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host web bridge; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/work-manager/adapter.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host adapter; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/work-manager/cli.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host cli; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/work-manager/screenshot.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host screenshot; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/work-manager/server.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host server; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/work-manager/static/app.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host app; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/work-manager/static/index.html",
+      "layer": "H",
+      "language": "html",
+      "purpose": "Application/runtime/protocol or workspace host index; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/work-manager/store.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Application/runtime/protocol or workspace host store; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/workspace-guidance.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host workspace guidance; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/workspace-shell.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host workspace shell; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "tests/__init__.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Runtime-imported native binary provenance registry/package; also used by tests, but real rule_cases runtime depends on it"
+    },
+    {
+      "path": "tests/binaries.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Runtime-imported native binary provenance registry/package; also used by tests, but real rule_cases runtime depends on it"
+    }
+  ],
+  "exclusions": [
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/extract_evidence.py",
+      "reason": "Historical validation/reproduction artifact extract_evidence.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "651b3dc10abe07951283a57d1fc4c9da7077749424f79ad40e2dced0c8813a19",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/finalize_publication.py",
+      "reason": "Historical validation/reproduction artifact finalize_publication.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "d48b7f2aa6ea3362b562b8a0ba945a7592ffb7a7281cd7c4e1ecdde36db046f5",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/prepare_publication.py",
+      "reason": "Historical validation/reproduction artifact prepare_publication.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "c46c804e4d6745ef3eee817ec352033ce046680106f73ebf4d0849a9abd1d492",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/build-baseline.py",
+      "reason": "Historical validation/reproduction artifact build-baseline.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "2c3633747b87eee06badcf9e6fa98a92e8b8dec3ca9f47bcda996fc5b36ea281",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/datum-baseline-witness/prepare-input.py",
+      "reason": "Historical validation/reproduction artifact prepare-input.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "978d7fa606f1b3095ed80159b402a338f0d98f55e210449327350c9ac89ab507",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/datum-baseline-witness/run.py",
+      "reason": "Historical validation/reproduction artifact run.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "2caa8e2febb0cb59c16c1bc78f4590929cc2e7250d4ca1a6a962d3ac00a2da51",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/exercise-native-annotation.py",
+      "reason": "Historical validation/reproduction artifact exercise-native-annotation.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "c31e4172c0437f2b370eec4b1827982173609b02a7101b3cd3fab5216b226b50",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/exercise-native-datums-c28.py",
+      "reason": "Historical validation/reproduction artifact exercise-native-datums-c28.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "03380b73100755332f77e95924cfbaa3314541f809f458f685ec09fc5e1b5867",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/exercise-native-datums.py",
+      "reason": "Historical validation/reproduction artifact exercise-native-datums.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "03380b73100755332f77e95924cfbaa3314541f809f458f685ec09fc5e1b5867",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/exercise-native-geometry.py",
+      "reason": "Historical validation/reproduction artifact exercise-native-geometry.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "0ed7bd6fc5f27a34e8135422bbd6d1d776d444d4de7314cd362b2737d839e5c4",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/exercise-native-grid.py",
+      "reason": "Historical validation/reproduction artifact exercise-native-grid.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "e2560d7f5f7e6f96d8298b07daca2f85b7fae6ca70b699074b60d158771da8a3",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/exercise-native-grid49.py",
+      "reason": "Historical validation/reproduction artifact exercise-native-grid49.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "12927aa726d8e13f3f6c85b1360822537d20a4a8ebdb633171d6f3c15ebe7241",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/exercise-native-kernel.py",
+      "reason": "Historical validation/reproduction artifact exercise-native-kernel.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "e4faad274ea7bcb0bc21da89f3acac9f4147e89940ea9ebed4fc188df3b96225",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/exercise-native-linear.py",
+      "reason": "Historical validation/reproduction artifact exercise-native-linear.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "f9cbf9681600ba9a5e75165a0d91863f5da12763690193af5f8589447b11b3b2",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/exercise-native-parameters.py",
+      "reason": "Historical validation/reproduction artifact exercise-native-parameters.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "0658732628a9dd0f06ffd7953bf608fbb01a5fd0fc4c91ce05c72049a418e536",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/exercise-parameters-legacy.py",
+      "reason": "Historical validation/reproduction artifact exercise-parameters-legacy.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "9e61d12593e98c3c075d534d44b99498605a41cef546d2d398932b7e67b1ffdc",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/exercise-region-edges.py",
+      "reason": "Historical validation/reproduction artifact exercise-region-edges.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "c1de6d07d00668f03ce7079e9e6610f516d860fcb1e6bbcb15eb9363c9773f8d",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/fixture-reopen/run_native_pair.py",
+      "reason": "Historical validation/reproduction artifact run_native_pair.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "68b1c8dde46169dd0b1dc6e0070cb4f1c2ac5047d6f3686c5013912d3f0930bd",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/native-next-99eeabe1/exercise-native-receipt.py",
+      "reason": "Historical validation/reproduction artifact exercise-native-receipt.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "c383344073359656287cc76c84905a330dedad0f855f173ab7ff6fa3da9ca78a",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/native-next-99eeabe1/prepare.py",
+      "reason": "Historical validation/reproduction artifact prepare.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "f3a68c46c9df08feb8e0137dcc829152735d544053dd6e1357e2497b4b3c249d",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/native-next-99eeabe1/run-native-receipt.py",
+      "reason": "Historical validation/reproduction artifact run-native-receipt.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "952dd06ddad0dc42946e60c3c7037b0f18db7f50b853dccddc6e9de1d5e6121b",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/native-next-a3aeef41/exercise-native-receipt.py",
+      "reason": "Historical validation/reproduction artifact exercise-native-receipt.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "c383344073359656287cc76c84905a330dedad0f855f173ab7ff6fa3da9ca78a",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/native-next-a3aeef41/prepare.py",
+      "reason": "Historical validation/reproduction artifact prepare.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "69c7464c8b5af74eb87a491559de7a221bc9d50700bcef4b3d08b981c089379f",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/native-next-a3aeef41/run-native-receipt.py",
+      "reason": "Historical validation/reproduction artifact run-native-receipt.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "952dd06ddad0dc42946e60c3c7037b0f18db7f50b853dccddc6e9de1d5e6121b",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/native-next-b21334a2/exercise-native-receipt.py",
+      "reason": "Historical validation/reproduction artifact exercise-native-receipt.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "c383344073359656287cc76c84905a330dedad0f855f173ab7ff6fa3da9ca78a",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/native-next-b21334a2/prepare.py",
+      "reason": "Historical validation/reproduction artifact prepare.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "23cf91ccbd1e8cb3e553da379d6904acb91fe11b8f0902d22be8b43d947a46d9",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/native-next-b21334a2/run-native-receipt.py",
+      "reason": "Historical validation/reproduction artifact run-native-receipt.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "952dd06ddad0dc42946e60c3c7037b0f18db7f50b853dccddc6e9de1d5e6121b",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/exercise-legacy-receipt.py",
+      "reason": "Historical validation/reproduction artifact exercise-legacy-receipt.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "4b20eccfcfa471b7bc5d99b5725a190e008cd97fe8b646e24475a9d9b43d5ac5",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/exercise-native-receipt.py",
+      "reason": "Historical validation/reproduction artifact exercise-native-receipt.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "f5e12d43e85a2f7b19089f016f86f33164ae0d53d9cc53c1a844a5cd7eff25b3",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/exercise-region-edges.py",
+      "reason": "Historical validation/reproduction artifact exercise-region-edges.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "c1de6d07d00668f03ce7079e9e6610f516d860fcb1e6bbcb15eb9363c9773f8d",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/prepare-corrected-db65132a.py",
+      "reason": "Historical validation/reproduction artifact prepare-corrected-db65132a.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "25dd36d35010db18255c17d4b952cd3636a84226ac5e0405119bf3db32b86cad",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/prepare-legacy-receipt.py",
+      "reason": "Historical validation/reproduction artifact prepare-legacy-receipt.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "f8d3f06843c37d9a00ef109878447018406e9fd4d99cb8f8d0e752df23b1d395",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/prepare-region-v2.py",
+      "reason": "Historical validation/reproduction artifact prepare-region-v2.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "7011b6ddcf4334705381f837f312fded6b3e930a1e3923d1072ffe63ea80e7cf",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/prepare-rename-v3.py",
+      "reason": "Historical validation/reproduction artifact prepare-rename-v3.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "3db26d823283570abc1bb059509093bee87e53572c449a357916b27384c9294b",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/run-legacy-receipt.py",
+      "reason": "Historical validation/reproduction artifact run-legacy-receipt.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "067b6ff978323b5796e27eedacdbc9e4623f8c2b6b2816b1b280bcee24912aae",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/run-native-receipt.py",
+      "reason": "Historical validation/reproduction artifact run-native-receipt.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "952dd06ddad0dc42946e60c3c7037b0f18db7f50b853dccddc6e9de1d5e6121b",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/run-next-stages.py",
+      "reason": "Historical validation/reproduction artifact run-next-stages.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "09f734bc21a9d337130078c5330e3e8cf1ae087d5f306e9bc554361acde6da0e",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/run-region-edges-v2.py",
+      "reason": "Historical validation/reproduction artifact run-region-edges-v2.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "b094438be109f5af82232784aba15eac74cd1686fa46511da550bf23a3df96fc",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/next-batch/run-rename-native-v3.py",
+      "reason": "Historical validation/reproduction artifact run-rename-native-v3.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "a0a9a09ea4c84dbff93c3b189a4eeb4227ff58897eb0dae021ed4396939d8208",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/pf3-a3aeef41/prepare.py",
+      "reason": "Historical validation/reproduction artifact prepare.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "de868005cf4034a5f9e3607e98faa190495faaad733391d14575695dbb5260a7",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/pf3-a3aeef41/run.py",
+      "reason": "Historical validation/reproduction artifact run.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "e6e235315ca73fdd32d8b2c3a0cb02e2ad131aef7553087421665d3d17b0d537",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/prepare-annotation-runner.py",
+      "reason": "Historical validation/reproduction artifact prepare-annotation-runner.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "6626f0647d42b46c304649568da9fb042c0fb73bb6fc26993a57e2029150b24c",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/prepare-datums-c28-runner.py",
+      "reason": "Historical validation/reproduction artifact prepare-datums-c28-runner.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "c659145b62ef6c8851d82e0beb6e7a6de466c7dc4d8df66877d3b69300e5a128",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/prepare-datums-runner.py",
+      "reason": "Historical validation/reproduction artifact prepare-datums-runner.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "1b018a893c3532df0d10b70c4ee5a435ea222bb8bf08b6a6e6a6fda96903b49d",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/prepare-grid49-runner.py",
+      "reason": "Historical validation/reproduction artifact prepare-grid49-runner.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "43734b6745e50a959a50235c01dbeffb092a1f300eb274f3df0868928943c762",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/prepare-linear-runner.py",
+      "reason": "Historical validation/reproduction artifact prepare-linear-runner.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "a2ca602dcb404eaf3970e3a0697d42a881d6f36a1b3ed189b256ebdae87133b2",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/prepare-parameters-runner.py",
+      "reason": "Historical validation/reproduction artifact prepare-parameters-runner.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "cdd94d7b1f5e8b1c6975724c9d9a78d04e09aa27c638f414d88b8509837a1a2b",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/producer/produce_fixtures.py",
+      "reason": "Historical validation/reproduction artifact produce_fixtures.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "18e5e1d54f2879dc07fe5dec57a316341e97ff3b65726ef8a8e64e5976023a95",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/producer/produce_fixtures_v2.py",
+      "reason": "Historical validation/reproduction artifact produce_fixtures_v2.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "18e5e1d54f2879dc07fe5dec57a316341e97ff3b65726ef8a8e64e5976023a95",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/producer/produce_fixtures_v3.py",
+      "reason": "Historical validation/reproduction artifact produce_fixtures_v3.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "592d5456aebffa3f0c4d7a0835482a5cf0e04e76ac0259cc4ada3519cccd4ee7",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/producer/produce_fixtures_v4.py",
+      "reason": "Historical validation/reproduction artifact produce_fixtures_v4.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "c25f6f2cee855800a0d7fccffcd8e3ef11923fcf6cd68235570373fc1a21a7f3",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/retry-producer.py",
+      "reason": "Historical validation/reproduction artifact retry-producer.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "d8e0ce7d8946729d4dd8ba57576a5c5850598e68c3ad7006e914df630e258a23",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-continuation-stages.py",
+      "reason": "Historical validation/reproduction artifact run-continuation-stages.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "2ea9e3f76f80a26724b39c6d44150d9014992f59be66a9609b89bfdabba44719",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-native-annotation.py",
+      "reason": "Historical validation/reproduction artifact run-native-annotation.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "8428173a8eadf7df994da961e93462bb5eccd5337e24de40af5b76b2e20dd76a",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-native-datums-c28.py",
+      "reason": "Historical validation/reproduction artifact run-native-datums-c28.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "715dde9a09d11237872f916c8c21fb77b64cb03cf5bca3cc6ef5b23e27d459cd",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-native-datums.py",
+      "reason": "Historical validation/reproduction artifact run-native-datums.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "a77a1f63b74f7e639f69d0600350e6ef6afaf973ba56ddc5024265ad276d0d9f",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-native-geometry.py",
+      "reason": "Historical validation/reproduction artifact run-native-geometry.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "44f8e924ccc77c27fa6557aa58a3b6899a3759dbe58a35b571199104170b77e5",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-native-grid.py",
+      "reason": "Historical validation/reproduction artifact run-native-grid.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "927a039b7b14c93abbb0f0675333c42542f814e479a3e574081461bd7bd3f90f",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-native-grid49.py",
+      "reason": "Historical validation/reproduction artifact run-native-grid49.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "72c00f480f2c70216d78ee000aa6a2f686e1c3b158e917ed5004c9351217795b",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-native-kernel.py",
+      "reason": "Historical validation/reproduction artifact run-native-kernel.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "27c7ce77c8382d225a46c4a2b6fcfcd747acf535a646c338a41f8f724939e6c4",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-native-linear.py",
+      "reason": "Historical validation/reproduction artifact run-native-linear.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "5eaa2e0ce06f06837d41ae02b0922c7699d6968823b9a1fe81955225b047f6fb",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-native-parameters.py",
+      "reason": "Historical validation/reproduction artifact run-native-parameters.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "a4841cdb2d935044e8b53b2b9c80030e8be6b5ee626b9678dd18a5cfb5c0e4c1",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-parameters-legacy.py",
+      "reason": "Historical validation/reproduction artifact run-parameters-legacy.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "07b03bdfd1ab7bc744bf6721f9836ecd677f3d7066dedb5078dff089cb6150d8",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-rectangular-template.py",
+      "reason": "Historical validation/reproduction artifact run-rectangular-template.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "5f6e9907553b3fbcdbb8f6bdeec88b8e708bfac7e0147c34241f89b032aaa379",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-region-edges.py",
+      "reason": "Historical validation/reproduction artifact run-region-edges.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "d73ef20d0706b09ccdd60978364850b9a57b86278dfecfe23f80e0423bb61491",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-rename-native-v2.py",
+      "reason": "Historical validation/reproduction artifact run-rename-native-v2.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "445c7dc634f15a4b33c9504d4748b55aed23ecb346127ee1a1a6f5a1519536c4",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-rename-native.py",
+      "reason": "Historical validation/reproduction artifact run-rename-native.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "e5a34423c12ad50afc9ff2d2bf14af7edd87cbb0f51fd57ab3f822fb9ee735cd",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/readable/run-stages.py",
+      "reason": "Historical validation/reproduction artifact run-stages.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "8f9165b40286011c72cee7f875d928325d278fca86f675aeab69a2350b207b14",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/verify_publication.py",
+      "reason": "Historical validation/reproduction artifact verify_publication.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "69d474355ba572e3262280e188d14f7c871e434d8c0929d92bcfcf504087ec7a",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/extract_evidence.py",
+      "reason": "Historical validation/reproduction artifact extract_evidence.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "651b3dc10abe07951283a57d1fc4c9da7077749424f79ad40e2dced0c8813a19",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/finalize_publication.py",
+      "reason": "Historical validation/reproduction artifact finalize_publication.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "d48b7f2aa6ea3362b562b8a0ba945a7592ffb7a7281cd7c4e1ecdde36db046f5",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/prepare_publication.py",
+      "reason": "Historical validation/reproduction artifact prepare_publication.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "eff59e047b99774c98fcc49ab442c46f62f3760b7846f8021e08e4d5395f7cbe",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/extract-14ab-readonly.py",
+      "reason": "Historical validation/reproduction artifact extract-14ab-readonly.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "2171e8e3a2261fd26fe01b2f601371531087243bae187898ec20b9adc586ac39",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/native-next-14ab395d/exercise-native-receipt.py",
+      "reason": "Historical validation/reproduction artifact exercise-native-receipt.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "c383344073359656287cc76c84905a330dedad0f855f173ab7ff6fa3da9ca78a",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/native-next-14ab395d/prepare.py",
+      "reason": "Historical validation/reproduction artifact prepare.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "650c59c12519afc86ab564fd86fed74db376dc7de2c11dee394441f9dcd6eced",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/native-next-14ab395d/run-native-receipt.py",
+      "reason": "Historical validation/reproduction artifact run-native-receipt.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "952dd06ddad0dc42946e60c3c7037b0f18db7f50b853dccddc6e9de1d5e6121b",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/native-next-6f1fd92f/exercise-native-receipt.py",
+      "reason": "Historical validation/reproduction artifact exercise-native-receipt.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "c383344073359656287cc76c84905a330dedad0f855f173ab7ff6fa3da9ca78a",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/native-next-6f1fd92f/prepare.py",
+      "reason": "Historical validation/reproduction artifact prepare.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "f792076ad1fa56c3b07e4fb6b5565584c8faf5f239810e7336721fac6e15b887",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/native-next-6f1fd92f/run-native-receipt.py",
+      "reason": "Historical validation/reproduction artifact run-native-receipt.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "952dd06ddad0dc42946e60c3c7037b0f18db7f50b853dccddc6e9de1d5e6121b",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/section-runs-diagnostic-6f1fd92f/run.py",
+      "reason": "Historical validation/reproduction artifact run.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "c4d715120d1a3d3ba3e3e3944301f469d1dfc04e83d1f3312b31f7ca3dbc1264",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/timeout-diagnostic-14ab395d/run.py",
+      "reason": "Historical validation/reproduction artifact run.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "d52ed6235248a29f3d63369f368464ed2b7d2c54955bd2cd4c2d9c61f02a64d2",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/timeout-diagnostic-14ab395d-v1/build-inputs/codec-client.c",
+      "reason": "Historical validation/reproduction artifact codec-client.c; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "e4a093c03179d1fbc370375e2e45bf3a9d2d09f40cbb6b44fe53c2190abd7a13",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/timeout-diagnostic-14ab395d-v1/build-inputs/exact-client.c",
+      "reason": "Historical validation/reproduction artifact exact-client.c; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "7581efd5b45b3c16fc2a6eb380cdfb2438b3822d95123cca1e337a5c301270cc",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/verify_followup.py",
+      "reason": "Historical validation/reproduction artifact verify_followup.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "cde0201e39d9f8bda18b299d4778370be5e60bbda59d91318d71c1e8904d90e9",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/verify_publication.py",
+      "reason": "Historical validation/reproduction artifact verify_publication.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "a9ea77be557b41c91ee28415d5b7fedb506a84dc9bd34dfd223408e6c25e89a6",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-stage-20261016/executed-portable-runner.py",
+      "reason": "Historical validation/reproduction artifact executed-portable-runner.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "55f95132a4db41f2f35f93ba43b1f60c73a8286143979dc690bb027823701618",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/assembly_binding_source_browser_check.js",
+      "reason": "Dedicated acceptance/test driver assembly_binding_source_browser_check.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "90dc577aeb06e05c61cf1608b7912bcaf6de2734e514ea7b2d4f76b0667164ea",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/assembly_candidate_impact_test.js",
+      "reason": "Dedicated acceptance/test driver assembly_candidate_impact_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "7110fd3c71d901465d2697c09723ece7fa4f3e38133edadf995fc3e2cf975c37",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/assembly_context_entry_test.js",
+      "reason": "Dedicated acceptance/test driver assembly_context_entry_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "a02e10d6b53dd2f63efba797333057bf18a029c680a1dfb905c42a6899fe7bc7",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/assembly_generation_test.js",
+      "reason": "Dedicated acceptance/test driver assembly_generation_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "5889de038059b3e5d5e875c90246c1cf9dcb1399335f74fafb3fb79403a7905a",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/assembly_id_test.js",
+      "reason": "Dedicated acceptance/test driver assembly_id_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "6d7c8ebb721b0f697016a8eb12e1ba5b16e6298745a8f85acb259e8261b931ad",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/assembly_review_test.js",
+      "reason": "Dedicated acceptance/test driver assembly_review_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "52f153475b7a85c197f8850b4026a576ade9c5ef81d3579382753d54078df950",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/assembly_workflow_test.js",
+      "reason": "Dedicated acceptance/test driver assembly_workflow_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "be1eaf009660cf8e7d05a6a643040a62abc4af11fdd01ae665d96e48bab048a7",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/async_reply_ui_test.js",
+      "reason": "Dedicated acceptance/test driver async_reply_ui_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "152c23ab908bc4c205a22d1fb2064536e3af121d4bcd2dbc7e1edad60f3553aa",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/canvas_test.js",
+      "reason": "Dedicated acceptance/test driver canvas_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "6d097c3031fe2e49ad5f324b08ef631aed6faa2e2333304b089c88cc19b4f569",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/cdp_confirmation_gate.js",
+      "reason": "Dedicated acceptance/test driver cdp_confirmation_gate.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "59a839da0785adc43b05c0c4234b714bbf6581306954d083b3007beafb85c851",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/cdp_evaluation.js",
+      "reason": "Dedicated acceptance/test driver cdp_evaluation.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "ed20878b55f5c0b1c0209a9bd7731cc5dff99c6c9d1317b5bbfdce6dea9d3e7e",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/cdp_floor.js",
+      "reason": "Dedicated acceptance/test driver cdp_floor.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "01a45d7881d583a7d328e579b457c959baa2b8d3570c3e3fbe66e8781c5f679e",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/cdp_helpers.js",
+      "reason": "Dedicated acceptance/test driver cdp_helpers.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "5562af6231cc1ab958c6d4008603c5153e3981d0334a5cccf3ed7c4455020f02",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/cdp_navigation.js",
+      "reason": "Dedicated acceptance/test driver cdp_navigation.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "64be1d676aec784f275a27f621b17a5e5440fdb4f56a0c786036b2e3708692ae",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/cdp_test.js",
+      "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "7786774214d90ed0ce5bbbb37348aaf50d0ce04a243c90e747ab978364f80f99",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/composition_canvas_test.js",
+      "reason": "Dedicated acceptance/test driver composition_canvas_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "ef6e9c4a94e32e39099e939ba93f8b3e62abd869c695891f37003415f4969dea",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/evidence/browser-acceptance-20261006/env/common.py",
+      "reason": "Historical validation/reproduction artifact common.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "76dc8fbd000a810f784171e814173f7db0ce7e83a0e229793c35834e9a7aa31f",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/evidence/browser-acceptance-20261006/env/p1_browser.py",
+      "reason": "Historical validation/reproduction artifact p1_browser.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "ba00fc6d5c20c3e66a64426c10941e9eb8e26774fcd2555bd229aef7b57ee1b2",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/evidence/browser-acceptance-20261006/main-negative-height/scan.py",
+      "reason": "Historical validation/reproduction artifact scan.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "3666245f98ddf5176ec6ef14649aaf27f80f71e973e1ac3ec995bb0c1ea59fef",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/evidence/browser-acceptance-20261006/pr134/r_lib.py",
+      "reason": "Historical validation/reproduction artifact r_lib.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "cbdfab79e45afa52faae04f4a8fd37b23114178f776f74939bd5779893ca7a55",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/evidence/browser-acceptance-20261006/pr134/r_run1.py",
+      "reason": "Historical validation/reproduction artifact r_run1.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "b298d3b84912f99782fe28e8bb7e1362845961753e16b99c7e4b65a21e1f64e7",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/evidence/browser-acceptance-20261006/pr134/r_run2.py",
+      "reason": "Historical validation/reproduction artifact r_run2.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "df6999bd25143486507a97efaa2cc9e3210f3cd59af2d084c818fc1e339a3687",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/evidence/browser-acceptance-20261006/pr134/r_run3.py",
+      "reason": "Historical validation/reproduction artifact r_run3.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "6266937ca28e81e59ddde45c47fad097834daec4bf500b8a8191ffe40436804f",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/evidence/browser-acceptance-20261006/pr134/r_run4.py",
+      "reason": "Historical validation/reproduction artifact r_run4.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "259b9350607d7609e6ac1edd26253ea05e1415600b9199b7c928443e3c44be4b",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/evidence/browser-acceptance-20261006/pr152/w13_probe.py",
+      "reason": "Historical validation/reproduction artifact w13_probe.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "6a9fd153c51cd7f9e88e013c11dcc6ab8947c83ee5e1623d299b86b6ed517a52",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/evidence/browser-acceptance-20261006/pr152/w_test.py",
+      "reason": "Historical validation/reproduction artifact w_test.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "28a1ec0bb114713dcf4d74d9d1bb85b4168b0ff803ea0d2271b3886bb7a504cf",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/evidence/browser-acceptance-20261006/pr152/w_test2.py",
+      "reason": "Historical validation/reproduction artifact w_test2.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "f7b1b1d3c9dc8842855c20ebe9018c5208fbb6ec00cdeea3a41ed324d1837372",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/evidence/browser-acceptance-20261006/pr156/g8_run.py",
+      "reason": "Historical validation/reproduction artifact g8_run.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "846f5faae141b01161fa92eda0fe03a4cd009aea1f27717a9142fbc9047b28e5",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/evidence/browser-acceptance-20261006/pr156/g_run.py",
+      "reason": "Historical validation/reproduction artifact g_run.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "1de2af37a8a245f4cf5edc882e5985f2c94e9bd567fbd1b61c9af32d25f82572",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/evidence/issue61-3bd31dd-20261005/supplement/model-collections.cjs",
+      "reason": "Historical validation/reproduction artifact model-collections.cjs; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "d851a72e9a2a6eb65d2ba47d5e7c529616b915b2fcc9aa0303ce8baaf894fa90",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/evidence/qa-acceptance-d6b4b45-20261005/fixtures/gen_synthetic_pdfs.py",
+      "reason": "Historical validation/reproduction artifact gen_synthetic_pdfs.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "9cea55de6d1556f7ad4c48e98fac9448d170a8305e196b72b923ee3d4a477ee1",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/evidence/qa-acceptance-d6b4b45-20261005/tools/build_qa.py",
+      "reason": "Historical validation/reproduction artifact build_qa.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "433d1e9f9cf9a4c9af46ebe30d4e887c96de47f55c0814473824d39577b9c432",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/evidence/qa-acceptance-d6b4b45-20261005/tools/qa_cdp.js",
+      "reason": "Historical validation/reproduction artifact qa_cdp.js; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "243df590b3dfb14cf0bb5784e589cf1b09d1d14c565b0e8900c0187e6aab4812",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/evidence/qa-acceptance-d6b4b45-20261005/tools/qa_server.py",
+      "reason": "Historical validation/reproduction artifact qa_server.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "b34b31fdd12ffe184f7d774e4dfa74a2705429925f9e03f154f06f92d3cb1301",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/evidence/wp60-a-20261004/browser-base.cjs",
+      "reason": "Historical validation/reproduction artifact browser-base.cjs; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "0eeaf95b4852015e25badd583ff072e64bddd22880bbd0c778117a08b7cda14a",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/evidence/wp60-a-20261004/completed-seams/wp60-legacy-browser-green.cjs",
+      "reason": "Historical validation/reproduction artifact wp60-legacy-browser-green.cjs; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "028118ca9318541d3bfeefbc225c2d4320e1966d8af9295151c6915dbfd268c8",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/evidence/wp60-a-20261004/completed-seams/wp60-receipt-io.c",
+      "reason": "Historical validation/reproduction artifact wp60-receipt-io.c; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "e796808d125a6d683d9d5ebb6c0d3c74c929fed9e7ed2a7cf4eb3f683688ee51",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/evidence/wp60-a-20261004/completed-seams/wp60-receipt-io.py",
+      "reason": "Historical validation/reproduction artifact wp60-receipt-io.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "909ee9ef642470af754770dd53cfca385faa7f02e42ee26784d20a876506d6c0",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/grid-2a-validation/cloud-qa/p3-acceptance/p3-css-acceptance.py",
+      "reason": "Historical validation/reproduction artifact p3-css-acceptance.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "c955455ba23a2e2e2dab717910e3a4d877cd42187badd927b9f37b25ca73f5d8",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/grid-2a-validation/cloud-qa/p3-acceptance/p3-first-click-repro.py",
+      "reason": "Historical validation/reproduction artifact p3-first-click-repro.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "7eeef65a34e62a78a7176793e12829daf5fa6ada78d59cf93f01819383e072bb",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/grid-2a-validation/combined-pr125/chromium-environment.cjs",
+      "reason": "Historical validation/reproduction artifact chromium-environment.cjs; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "d8bcb586cda598e09073b8305baca09d4a05f5c41c8adb6bd20c2f813caedd9a",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/grid-2a-validation/combined-pr125/mixed-attempt1-flow.py",
+      "reason": "Historical validation/reproduction artifact mixed-attempt1-flow.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "849c33420b81ac622ea6d7fac807a59da739ee04175f87676d6dcd55d035c995",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/grid-2a-validation/combined-pr125/mixed-flow.py",
+      "reason": "Historical validation/reproduction artifact mixed-flow.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "1f85784529913bd68b2678ecce4daf4f3f28c19c685aa35c9500862aaed72710",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/grid-2a-validation/combined-pr125/run-gates.py",
+      "reason": "Historical validation/reproduction artifact run-gates.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "6601d2ee90a4444b741b3fba3a6cb102ace1f93f902162c3907650dbed7affcb",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/grid-2a-validation/combined-pr125/setup.py",
+      "reason": "Historical validation/reproduction artifact setup.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "81df40c51cfcb5b01f7cd77369dc1226e1c5d98db33cc8af7403cf49b794636e",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/issue123-c-pending-tests/repro/build_t3_json.py",
+      "reason": "Historical validation/reproduction artifact build_t3_json.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "8b63b931be05b576ce94d27687aa4001826064f8f7376e74615f8a907090579e",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/issue123-c-pending-tests/repro/common.py",
+      "reason": "Historical validation/reproduction artifact common.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "8fe9f7577ee4016fd602a188d0f2594209c5616123e653e44f732636f874eb5d",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/issue123-c-pending-tests/repro/t1_focus.py",
+      "reason": "Historical validation/reproduction artifact t1_focus.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "8451a32c38d42a10b15bc75038ca1fcac8829844e856b061e0695aabedb630f9",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/issue123-c-pending-tests/repro/t1b_toolbar.py",
+      "reason": "Historical validation/reproduction artifact t1b_toolbar.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "1e703f47a13f76ddd7ba7df45e89303a12c27919816cd80a469aef74e54eb24a",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/issue123-c-pending-tests/repro/t2_b6.py",
+      "reason": "Historical validation/reproduction artifact t2_b6.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "056d3226a5d1949ba39991830b4b61804b59f4f21847b60b8e70edbf96f8c005",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/issue123-c-pending-tests/repro/t5_g3_delete.py",
+      "reason": "Historical validation/reproduction artifact t5_g3_delete.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "7c23f7dc8c4ebe191668dce7b42aaea75e183cb07bfae1451ad0bfb233237925",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/issue123-evidence/repro/common.py",
+      "reason": "Historical validation/reproduction artifact common.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "0dd298d72d4aae90d79b6424bd6f0b5d7d23e0756a9ebbc8216f51c8a523296f",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/issue123-evidence/repro/css-evidence.mjs",
+      "reason": "Historical validation/reproduction artifact css-evidence.mjs; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "edafa5e85d753cc01087ef0177474c1492a8992602fc6a6029f94ccc82119d67",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/issue123-evidence/repro/cssq.mjs",
+      "reason": "Historical validation/reproduction artifact cssq.mjs; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "2f369b2e5fd080e1ea048320e5bba128a494da214d6103c827949537c52a4df9",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/issue123-evidence/repro/explore1.py",
+      "reason": "Historical validation/reproduction artifact explore1.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "cee24fef0e25d5337e55ce83b07dc48c7f7e7c5a4eaf607442195434cbcc402c",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/issue123-evidence/repro/stage_f.py",
+      "reason": "Historical validation/reproduction artifact stage_f.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "5e5f29afaf0f2ad4f3c4a5388057f43f0b37efeff3df08f4a0d50401ea88a467",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/issue123-evidence/repro/stage_f2_explore2.py",
+      "reason": "Historical validation/reproduction artifact stage_f2_explore2.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "c589868c606bae12713cdcea2a661859d9f93b2e01164eda6ee89fe9c40bf2b6",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/issue123-evidence/repro/stage_g.py",
+      "reason": "Historical validation/reproduction artifact stage_g.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "03fe6263c9b14dfda54206ffbd5d36f543062160747ca57b7d62aa08e68d55cf",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/issue123-evidence/repro/stage_h.py",
+      "reason": "Historical validation/reproduction artifact stage_h.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "6385b1881076f40252fa8cbd34717d894136a127f6e25c1704e665bf185ce889",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/issue123-evidence/repro/stage_x1.py",
+      "reason": "Historical validation/reproduction artifact stage_x1.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "e37fba6be12e3f6933a203e693e68d589b9a696ab19f38d4e75d7106ec8f1a20",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/issue123-feedback-overlay/run-gates.py",
+      "reason": "Historical validation/reproduction artifact run-gates.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "04c06013a26a546b079afbe5ce6a433c5c8dfa60b21d70737457ff9c3d4f6e46",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/prototype-構形Canvas-v2.html",
+      "reason": "Historical validation/reproduction artifact prototype-構形Canvas-v2.html; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "b145c70b98e5985eb6002766fc535452acf8051c76c91499bfafc853afa5c60f",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/uiux-review/review-data.js",
+      "reason": "Historical validation/reproduction artifact review-data.js; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "0f6a9736397d0478d6d561881e3a9cd01eec3bc30eb34d332b74b7c2fa9e8acb",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/uiux-review/shapeops.js",
+      "reason": "Historical validation/reproduction artifact shapeops.js; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "905daf243374808e12ddc57b608ce3320c14d3ff696545211e10b37ae9aabfd1",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/uiux-review/support.js",
+      "reason": "Historical validation/reproduction artifact support.js; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "8fe7df74405f3c55f49b7249c74ea1397e65d07dea2b1bd3b4a489bec2e28cbe",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/uiux-review/UI-UX 審查報告.dc.html",
+      "reason": "Historical validation/reproduction artifact UI-UX 審查報告.dc.html; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "50157e71e5d197e49b3724a8a1ad00503f4cbd23721b14c30ef655c09b9bbf37",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/uiux-review/建議-主畫布 v2.dc.html",
+      "reason": "Historical validation/reproduction artifact 建議-主畫布 v2.dc.html; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "6167129ff4219903e8a20a620bd85d8c7b8d02d09d21b21b93a3edfa29b27c66",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/uiux-review/建議-建立參數 4a.dc.html",
+      "reason": "Historical validation/reproduction artifact 建議-建立參數 4a.dc.html; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "e5899ecf57d36a45c0b794f86dbc09b07542dcf90c617e49f999624d42d0c6c8",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/uiux-review/建議-面內工作區 v2.dc.html",
+      "reason": "Historical validation/reproduction artifact 建議-面內工作區 v2.dc.html; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "1695ff19f692d8d68496114d1528ec72a43716d773ba93977400af19027b08c2",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/uiux-review/形狀編輯 步驟板.dc.html",
+      "reason": "Historical validation/reproduction artifact 形狀編輯 步驟板.dc.html; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "0b87f312fff42e7216a05b92f948a953faa4a419ca836550d527400cdfcc6fb4",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/uiux-review/形狀編輯提案.dc.html",
+      "reason": "Historical validation/reproduction artifact 形狀編輯提案.dc.html; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "f7ad84bee1dcabe6a93b263a2206bd556b6daddf29680ad4a17332f0be014a6d",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/uiux-review/現況-三視圖總覽.dc.html",
+      "reason": "Historical validation/reproduction artifact 現況-三視圖總覽.dc.html; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "d4ffa30114c0caa7faa820b14f9a81f4689c5ebc1bd284e063816f5a9532e9a3",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/uiux-review/現況-主畫布.dc.html",
+      "reason": "Historical validation/reproduction artifact 現況-主畫布.dc.html; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "fea7fdcf20e5c7e16b0f69a3f50190e10ed55cf03b6f0047075fa141b2776070",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/uiux-review/現況-空間工作區.dc.html",
+      "reason": "Historical validation/reproduction artifact 現況-空間工作區.dc.html; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "9feed4dd538236392da7f160a80b9296fe2188ff19fe6b77309ea7540b62a39b",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/uiux-review/現況-面內工作區.dc.html",
+      "reason": "Historical validation/reproduction artifact 現況-面內工作區.dc.html; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "31d96ec2ed054b347bb8813f05c50b538595abde82f63471a6a68adb555b5c93",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/uiux-review/組構規則-原版與修正.html",
+      "reason": "Historical validation/reproduction artifact 組構規則-原版與修正.html; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "c2803e022c53ca5e7efab4b05a8dfa56a93d34a438b31082eec6064f5c5bb67f",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/documents_browser_test.js",
+      "reason": "Dedicated acceptance/test driver documents_browser_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "0ab5cec0dd5f497e9501c68dce6970658f1d39c1f8a2c62183744b47b5826886",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/edge_draft_redraw_test.js",
+      "reason": "Dedicated acceptance/test driver edge_draft_redraw_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "ad44ff567644391ecfd8bca20b21726d158bcf67f44197569f897227d706c775",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/engineering_workflow_test.js",
+      "reason": "Dedicated acceptance/test driver engineering_workflow_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "2ff9c6257b2a1c5ad8bffd5a6791c454c6d6e7ba717489697f6807bac9e834c6",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/evidence_links_browser_check.js",
+      "reason": "Dedicated acceptance/test driver evidence_links_browser_check.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "8cc311ec281c3d564739804ef1b4ea3bee5c628eed1b5ea972192fbf1803795d",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/evidence_links_integration_test.js",
+      "reason": "Dedicated acceptance/test driver evidence_links_integration_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "244d6b583d77fb481d250cfc1ca5ded9e88d9819f0833743667ab64f9e9a2d00",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/feedback_resize_observer_test.js",
+      "reason": "Dedicated acceptance/test driver feedback_resize_observer_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "4598612a3f2aaafab69e061b2f7179530024dab8f99d35c750c783b3336db0d5",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/grid_definition_interaction_browser_test.py",
+      "reason": "Dedicated acceptance/test driver grid_definition_interaction_browser_test.py; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "305deaa356c3e85f9ec4f5495273d4419a53009f04d0856702dfd1857e70fa76",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/grid_inspector_rename_test.js",
+      "reason": "Dedicated acceptance/test driver grid_inspector_rename_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "f89b28087f6576010488c4cff44b76264e1e680692efe5adbc34ae16e3dbb27a",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/grid_material_entry_test.js",
+      "reason": "Dedicated acceptance/test driver grid_material_entry_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "9b0c7ed79a8107601fbd894f3a9839901248ec25157fb7ddc00893ae7314a229",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/grid_portable_browser_test.py",
+      "reason": "Dedicated acceptance/test driver grid_portable_browser_test.py; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "036da891b5c0c7cdb4b8653eb36efc22fa25ff9ada868ef35fb57e78308079dc",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/grid_raw_provenance_browser_test.py",
+      "reason": "Dedicated acceptance/test driver grid_raw_provenance_browser_test.py; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "66ddf61b3770c42cd7f9323bf55c9a25f14a383f50063a718eb7218862190ef3",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/grid_rule_editor_test.js",
+      "reason": "Dedicated acceptance/test driver grid_rule_editor_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "ba2ee897e05d862a44ec275c098626627a90bd83dedf6ca2c7f377a58729cc53",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/grid_rule_lines_test.js",
+      "reason": "Dedicated acceptance/test driver grid_rule_lines_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "4c380e38b0bb8300e556df4b7b1d511724d5670a930d6d5d7093b9c861240735",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/grid_system_test.js",
+      "reason": "Dedicated acceptance/test driver grid_system_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "55ed51369d0962f72b7f4c22aa54ed8cf3fdcf9896b03ee6d1a0739524e4a799",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/grid_trial_test.js",
+      "reason": "Dedicated acceptance/test driver grid_trial_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "2493c5aeb2ca31168277a882538991b50707ac39aab9a91f70586c9901607139",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/grid_workspace_draft_test.js",
+      "reason": "Dedicated acceptance/test driver grid_workspace_draft_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "7d7f831cbf1a9a3c6353cdf1028b7701c56628681b24eebe5f0ad1e36b733822",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/infinite_grid_face_test.js",
+      "reason": "Dedicated acceptance/test driver infinite_grid_face_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "b41ab1cbb739ab8c827201c84ee6d881af61894dd8078200a2244e3829cd15bf",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/marquee_test.js",
+      "reason": "Dedicated acceptance/test driver marquee_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "4401f6384699a50646c5b81fba2bea2594f90724d4345a4fdb327dc76f578388",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/model_snapshot_navigation_test.js",
+      "reason": "Dedicated acceptance/test driver model_snapshot_navigation_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "891d0d6626130b1a0d26bbafa5233e3e80819df8542cfc0d8ab59f1b6d12989d",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/model_snapshot_schedule_test.js",
+      "reason": "Dedicated acceptance/test driver model_snapshot_schedule_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "e071e23ce689eb2c23ce8cd829e0c5dbd982ce619464e78ea3569839d204a4a6",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/model_update_browser_check.js",
+      "reason": "Dedicated acceptance/test driver model_update_browser_check.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "2faca3017706b60b686e7a9beb9d1190ed161d162e8dd24eb16f6a2d18c20962",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/native_reader_browser_test.py",
+      "reason": "Dedicated acceptance/test driver native_reader_browser_test.py; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "1fd5a3d836a0c433a6f7f60b76684e95169f3cad873410cc2cea3cb859705711",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/parameter_confirmation_test.js",
+      "reason": "Dedicated acceptance/test driver parameter_confirmation_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "50a814d5abf0cb79506b6be33a64e53a07723bbc7fd911c3529f5d41db54910b",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/parameter_preview_ownership_test.js",
+      "reason": "Dedicated acceptance/test driver parameter_preview_ownership_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "d0e3f70b51907d4f27126e362abbe1dcf0a73f913ebf75da71d9d890373baf63",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/parameter_workflow_test.js",
+      "reason": "Dedicated acceptance/test driver parameter_workflow_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "7c017128b7dbfb917305c8b56e3e9ca6ab0f8fd2afbd2b97b92cb71ce4edbdd8",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/pdf_tracing_snap_test.js",
+      "reason": "Dedicated acceptance/test driver pdf_tracing_snap_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "1aed4e91049e839612323f76fd76bbceebd6dda051b8c9e6fdb0f184020817d4",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/polydraft_test.js",
+      "reason": "Dedicated acceptance/test driver polydraft_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "8e644cc40dc122959d4afbbbe992418cc55da5c0ce783126de6ee892946b4274",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/project_audit_test.js",
+      "reason": "Dedicated acceptance/test driver project_audit_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "23bcafd0cb111785abb6608cbe19ed31dce8ac4cf7933cd73078e3303fbbae67",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/project_import_final_objects_test.js",
+      "reason": "Dedicated acceptance/test driver project_import_final_objects_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "7012ef97b6805cff348bf1c6e44945fcc72662bff1ef0c2cd800a42864595be1",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/projection_close_probe.js",
+      "reason": "Dedicated acceptance/test driver projection_close_probe.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "168a321b1521e5837d260d62e3961278ec240394b685deab576c2838658406a9",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/design/compare.py",
+      "reason": "Separate engineering-spec UI prototype compare.py; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
+      "sha256": "aadeda790a316abcfe58244812b667ed915783ada0492549b98019181bfa8c4e",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/index.html",
+      "reason": "Separate engineering-spec UI prototype index.html; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
+      "sha256": "f86f82922407f735495588a39afc4d31968f2fdd86e48f6e8c3ca1c37348cf7c",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/scripts/prepare-sites-build.mjs",
+      "reason": "Separate engineering-spec UI prototype prepare-sites-build.mjs; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
+      "sha256": "b6a6adaa4fab3234676116dd1c9cb6611275ab9d92dd26f5bf402393e3744bf6",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/src/App.jsx",
+      "reason": "Separate engineering-spec UI prototype App.jsx; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
+      "sha256": "b1ad17ecaac6ebb20ea7b19de34465a32d124f801f39864bec4f372f2bdcc6a5",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/src/canvasGestures.js",
+      "reason": "Separate engineering-spec UI prototype canvasGestures.js; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
+      "sha256": "c234507b00bc5d07fbf3c8f14e3442b6b7538dbe110e8c9c422eb9fa2a7a8e0d",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/src/catalog.js",
+      "reason": "Separate engineering-spec UI prototype catalog.js; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
+      "sha256": "ea36e96f314bf10a742668fac4fe9e8ced79e58e75704bdc39587b5f273ba54a",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/src/catalogPresets.js",
+      "reason": "Separate engineering-spec UI prototype catalogPresets.js; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
+      "sha256": "8d31cc5099efb27dac08852738a71c15b032c5f102a3be62ec782d1e1c9ad526",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/src/geometry.js",
+      "reason": "Separate engineering-spec UI prototype geometry.js; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
+      "sha256": "705cbfeb445924f2071dcd4cb6c5a4b3f557a7aa69b7c493eea1cbf27cceebe1",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/src/GeometryCanvas.jsx",
+      "reason": "Separate engineering-spec UI prototype GeometryCanvas.jsx; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
+      "sha256": "b56cbcb4b64bc1130af73f741cfbe76a81d6c80e9d1a5d1b7ff15f7a71fa8d1c",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/src/inlinePanelDraft.js",
+      "reason": "Separate engineering-spec UI prototype inlinePanelDraft.js; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
+      "sha256": "06b1c7815333feb66c1d030b3dbeb6c0e7b6763a8499032f6061f40479d4e4bd",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/src/InlinePanelEditor.jsx",
+      "reason": "Separate engineering-spec UI prototype InlinePanelEditor.jsx; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
+      "sha256": "2ccb0430de1e8bc31c332bb0c9801cfb5e93bc133f62ee4b37f79587b5041a42",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/src/libraryDraft.js",
+      "reason": "Separate engineering-spec UI prototype libraryDraft.js; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
+      "sha256": "45ce9630376e0418367dc1a0f6b70b00c649990cc4710f967860e85b8efbb633",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/src/main.jsx",
+      "reason": "Separate engineering-spec UI prototype main.jsx; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
+      "sha256": "832f752c6b6a454a26dbc4f2654f5bd633f2b103516c8c0abac648308c133a7e",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/src/persistence.js",
+      "reason": "Separate engineering-spec UI prototype persistence.js; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
+      "sha256": "962ffea83bf4aba4d0a64a0f9f959149d1e2bd1bf863cc34d440d495eb8f5c3b",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/src/previewChanges.js",
+      "reason": "Separate engineering-spec UI prototype previewChanges.js; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
+      "sha256": "b04ae4985cd140132c892c0d007b007e758efb5165415eb83cf935c468ec7c9a",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/src/SpecificationLibrary.jsx",
+      "reason": "Separate engineering-spec UI prototype SpecificationLibrary.jsx; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
+      "sha256": "1c8f41dedc973e1f220449be3df6717d759852c0ca6be4ae5e1cdc7da4f3ad3f",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/tests/canvas-gestures.test.mjs",
+      "reason": "Separate engineering-spec UI prototype canvas-gestures.test.mjs; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
+      "sha256": "d6642f2be10ff9a763deb540f79236c62021edf38a1112c9389750f4ccb51151",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/tests/catalog.test.mjs",
+      "reason": "Separate engineering-spec UI prototype catalog.test.mjs; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
+      "sha256": "08e478c8ff6f17bd2a80fc8ae7c2bf3ad51d1f1b39df6d612deecb6f8e055340",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/tests/inline-panel-draft.test.mjs",
+      "reason": "Separate engineering-spec UI prototype inline-panel-draft.test.mjs; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
+      "sha256": "f30b31fbd9174faf1968bc2126a4d18f446c12f5ba406f933123fce659539409",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/tests/library-draft.test.mjs",
+      "reason": "Separate engineering-spec UI prototype library-draft.test.mjs; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
+      "sha256": "6f2850c9014d6660402c2fb070a3672a5c64e5a1ea613cec4ae83af7b6435476",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/tests/persistence.test.mjs",
+      "reason": "Separate engineering-spec UI prototype persistence.test.mjs; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
+      "sha256": "39c4b1cf88b271d1003a59746edd826fb8b436713b5692d8e9f7b0d724ffa517",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/tests/preview-changes.test.mjs",
+      "reason": "Separate engineering-spec UI prototype preview-changes.test.mjs; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
+      "sha256": "3bc9db8ab1643382c4e1016fd0e1b91d33759c53bc4a4eab294a5f448a4ab0de",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/tests/sites-worker.test.mjs",
+      "reason": "Separate engineering-spec UI prototype sites-worker.test.mjs; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
+      "sha256": "96af7b48906c6460c793356d7b6952f7d5026dbf5a502bec0d9297ff04201c26",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/vite.config.mjs",
+      "reason": "Separate engineering-spec UI prototype vite.config.mjs; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
+      "sha256": "5f20ad6ef5aa89956c8791d8caefa224bc80718ca38df213b5e0c9c883d4bfee",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/worker/index.js",
+      "reason": "Separate engineering-spec UI prototype index.js; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
+      "sha256": "2dd0615a445143933d88d4271f54f5d63ee951421fcd08c5a7617bb09c564389",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/room_outline_test.js",
+      "reason": "Dedicated acceptance/test driver room_outline_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "a388f9a976b3c8af0fc217274c340b0ffe0d9bf2fccedd1533acf984196aba3a",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/save_reopen_synthetic_test.js",
+      "reason": "Dedicated acceptance/test driver save_reopen_synthetic_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "2eda7db51ca8f44d15eddb94251dd57b904a27e924f455c39bd76400bf46b4c0",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/selection_cursor_test.js",
+      "reason": "Dedicated acceptance/test driver selection_cursor_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "28db3b2594c8be1f32ea36a989caba2f2c3978cfc0e987ef83e98a768f228556",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/source_inspector_browser_check.js",
+      "reason": "Dedicated acceptance/test driver source_inspector_browser_check.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "154e9486ddfdedc6702c427924e2cd8762f044b8981dd51599c41eee823f131d",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/source_navigation_test.js",
+      "reason": "Dedicated acceptance/test driver source_navigation_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "92b4b250a07d96878d665b6e710ff84410f69b3b11d3ce06b7408ba9a6e582a6",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/space-short-height-acceptance.cjs",
+      "reason": "Dedicated acceptance/test driver space-short-height-acceptance.cjs; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "738f18ad380641f3e5cccb91c359a782f10594c4a4a14bc76685b8f974d44034",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/space_model_test.js",
+      "reason": "Dedicated acceptance/test driver space_model_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "f1a0129baddedfe8aa56f0e5e1d8d960e5d6ee77c117acfd8740390cd832cfad",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/space_test_floor.js",
+      "reason": "Dedicated acceptance/test driver space_test_floor.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "9fb7c364efe9037a1264b01ca7c4a38c40c9cad173238e05259e80ee4d8a35a2",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/timber_schedule_test.js",
+      "reason": "Dedicated acceptance/test driver timber_schedule_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "6371b7abf2e1f75f259805f33ab3ea258cb71fe852540774aac6daddb128134c",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/timber_supports_browser_test.js",
+      "reason": "Dedicated acceptance/test driver timber_supports_browser_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "b18a593c4c073768d77e2b4130fdeae451ce42ab7a1b0dc6c4759de28d99604e",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/transport_failure_trace.js",
+      "reason": "Dedicated acceptance/test driver transport_failure_trace.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "23ddb860213285cb6ab900c10a7009ce4e225bad24898d88836657e7d381e8f4",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/uiux_review_test.js",
+      "reason": "Dedicated acceptance/test driver uiux_review_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "735122184318cd1ca6f0c4af87d7bea068741ef638240b65f93962f3e9a3cd47",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/ux_refinement_test.js",
+      "reason": "Dedicated acceptance/test driver ux_refinement_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "cd3f8fa12d9d23b18291421be02e5c6e51b6274f9f0e232f16b033fcd093c6db",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/work-manager/test_acceptance.py",
+      "reason": "Dedicated acceptance/test driver test_acceptance.py; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "67cafdf818bb769ef7cc624eecc02abd0ed22edae66d3bc75ae5923f64f26f61",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/work-manager/test_adapter.py",
+      "reason": "Dedicated acceptance/test driver test_adapter.py; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "bec2bad85c879a892bb5ebdf32d405a31d63d00b9ac04d5e02c2a14768373b54",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/work-manager/test_adapter_independent.py",
+      "reason": "Dedicated acceptance/test driver test_adapter_independent.py; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "ab0852b53c905fe5d31e146b086f08ae55ce0940ffcd42566ce9e6426f234bf5",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/work-manager/test_coverage.py",
+      "reason": "Dedicated acceptance/test driver test_coverage.py; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "3c4dda598ed64260e4087c85d6d06f2c0b39f22420b4f48891f2b210270f2135",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/work-manager/test_legacy_upgrade.py",
+      "reason": "Dedicated acceptance/test driver test_legacy_upgrade.py; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "1775854320c71a40d17fdea47f1c5df6ce2291e645ad83c97bf3af3e6956aa39",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/work-manager/test_review_regressions.py",
+      "reason": "Dedicated acceptance/test driver test_review_regressions.py; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "a37fc4e4c249a8cf05be35bc5872026b19f7b3ba8b51215c8bd3313f4e1e2c3f",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/work-manager/test_store.py",
+      "reason": "Dedicated acceptance/test driver test_store.py; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "ac04abdf23254d41bbe2ae42a087b39726dd4f13fb33087c3d2b6646addc2fde",
+      "hashMode": "lf"
+    }
+  ],
+  "htmlScriptRoutes": [
+    {
+      "source": "geometry-web/index.html",
+      "src": "templates/woodworking.js",
+      "target": "geometry-templates/woodworking/frontend.js",
+      "purpose": "serve.py fixed woodworking browser-provider route"
+    },
+    {
+      "source": "geometry-web/index.html",
+      "src": "application.js",
+      "target": "geometry-app/application.js",
+      "purpose": "serve.py fixed browser application-composition route"
+    },
+    {
+      "source": "geometry-web/work-manager/static/index.html",
+      "src": "/app.js",
+      "target": "geometry-web/work-manager/static/app.js",
+      "purpose": "work-manager serve.py fixed static application route"
+    }
+  ],
+  "javascriptImportRoutes": [
+    {
+      "source": "geometry-web/documents.js",
+      "specifier": "/vendor/pdfjs-dist/build/pdf.mjs",
+      "target": "geometry-web/vendor/pdfjs-dist/build/pdf.mjs",
+      "purpose": "Existing literal PDF renderer import through serve.py vendor asset route"
+    },
+    {
+      "source": "geometry-web/reference-workspace.js",
+      "specifier": "/vendor/pdfjs-dist/build/pdf.mjs",
+      "target": "geometry-web/vendor/pdfjs-dist/build/pdf.mjs",
+      "purpose": "Existing literal PDF renderer import through serve.py vendor asset route"
+    }
+  ],
+  "policy": {
+    "cSystemHeaders": [
+      "ctype.h",
+      "errno.h",
+      "inttypes.h",
+      "limits.h",
+      "math.h",
+      "stdarg.h",
+      "stdbool.h",
+      "stddef.h",
+      "stdint.h",
+      "stdio.h",
+      "stdlib.h",
+      "string.h"
+    ],
+    "pythonStdlib": [
+      "__future__",
+      "argparse",
+      "ast",
+      "atexit",
+      "base64",
+      "binascii",
+      "collections",
+      "contextlib",
+      "copy",
+      "dataclasses",
+      "datetime",
+      "difflib",
+      "enum",
+      "fcntl",
+      "fnmatch",
+      "fractions",
+      "functools",
+      "glob",
+      "hashlib",
+      "heapq",
+      "html",
+      "html.parser",
+      "http.server",
+      "importlib.util",
+      "io",
+      "itertools",
+      "json",
+      "math",
+      "msvcrt",
+      "os",
+      "pathlib",
+      "platform",
+      "queue",
+      "re",
+      "resource",
+      "secrets",
+      "shlex",
+      "shutil",
+      "signal",
+      "socket",
+      "sqlite3",
+      "subprocess",
+      "sys",
+      "tempfile",
+      "threading",
+      "time",
+      "typing",
+      "urllib.parse",
+      "urllib.request",
+      "uuid"
+    ],
+    "javascriptBuiltins": [],
+    "externalModules": [
+      {
+        "language": "c",
+        "name": "commdlg.h",
+        "layers": [
+          "H"
+        ],
+        "purpose": "Exact existing application platform/process header; not available to K/W"
+      },
+      {
+        "language": "c",
+        "name": "fcntl.h",
+        "layers": [
+          "H"
+        ],
+        "purpose": "Exact existing application platform/process header; not available to K/W"
+      },
+      {
+        "language": "c",
+        "name": "intrin.h",
+        "layers": [
+          "H"
+        ],
+        "purpose": "Exact existing application platform/process header; not available to K/W"
+      },
+      {
+        "language": "c",
+        "name": "io.h",
+        "layers": [
+          "H"
+        ],
+        "purpose": "Exact existing application platform/process header; not available to K/W"
+      },
+      {
+        "language": "c",
+        "name": "sys/stat.h",
+        "layers": [
+          "H"
+        ],
+        "purpose": "Exact existing application platform/process header; not available to K/W"
+      },
+      {
+        "language": "c",
+        "name": "windows.h",
+        "layers": [
+          "H"
+        ],
+        "purpose": "Exact existing application platform/process header; not available to K/W"
+      },
+      {
+        "language": "python",
+        "name": "playwright.sync_api",
+        "layers": [
+          "H"
+        ],
+        "purpose": "Optional installed browser driver used by the separate work-manager screenshot command; no K/W access"
+      }
+    ],
+    "forbiddenIdentifiers": [
+      "Scene",
+      "SpaceBoundarySurface",
+      "TIMBER_ROLE_PRIMARY",
+      "Timber",
+      "TimberAnchor",
+      "WOODWORKING_FIXED_WIDTH",
+      "WOOD_ANCHOR_AT",
+      "WOOD_ANCHOR_AT_EDGE",
+      "WOOD_ANCHOR_AT_GRID",
+      "WOOD_ANCHOR_AT_GUIDES",
+      "WOOD_ANCHOR_AT_LINE",
+      "WOOD_ANCHOR_AT_RULE",
+      "WOOD_ASSEMBLY_SOURCE_BINDING_CHECK",
+      "WOOD_ASSEMBLY_SOURCE_BINDING_DEFINITION",
+      "WOOD_ASSEMBLY_SOURCE_GENERATED",
+      "WOOD_ASSEMBLY_SOURCE_GENERATED_A",
+      "WOOD_ASSEMBLY_SOURCE_GENERATED_B",
+      "WOOD_ASSEMBLY_SOURCE_GENERATED_DEFINITION",
+      "WOOD_ASSEMBLY_SOURCE_INSTANCE_CHECK",
+      "WOOD_ASSEMBLY_SOURCE_INSTANCE_DEFINITION",
+      "WOOD_ASSEMBLY_SOURCE_MAPPING_DEFINITION",
+      "WOOD_ASSEMBLY_SOURCE_RULE_DEFINITION",
+      "WOOD_ASSEMBLY_SOURCE_SLOT_A",
+      "WOOD_ASSEMBLY_SOURCE_SLOT_B",
+      "WOOD_ASSEMBLY_SOURCE_SLOT_DEFINITION",
+      "WOOD_BOUNDARY_ROOM_PLAN",
+      "WOOD_BOUNDARY_UNSPECIFIED",
+      "WOOD_BOUNDARY_WALL_ELEVATION",
+      "WOOD_CONTACT_COMPONENT_CAPACITY",
+      "WOOD_CONTACT_FACE_CAPACITY",
+      "WOOD_CONTACT_MEMBER_CAPACITY",
+      "WOOD_CONTACT_SOURCE_COLLECTION",
+      "WOOD_CONTACT_SOURCE_FEATURE",
+      "WOOD_CONTACT_SOURCE_METADATA_SIZE",
+      "WOOD_CONTACT_SOURCE_RECORD_SIZE",
+      "WOOD_CUT_LIST_MEMBER_CAPACITY",
+      "WOOD_DEPTH_NEGATIVE_NORMAL",
+      "WOOD_DEPTH_POSITIVE_NORMAL",
+      "WOOD_DERIVED_COMPONENT_MAX",
+      "WOOD_DOCUMENT_BOUNDARY_CAPACITY",
+      "WOOD_DOCUMENT_PLACEMENT_CAPACITY",
+      "WOOD_DP_SOURCE_MAX",
+      "WOOD_EDGE_FIXED",
+      "WOOD_EDGE_FREE",
+      "WOOD_ENGINEERING_SOURCES_H",
+      "WOOD_ENG_VERSION_GAP",
+      "WOOD_ENG_VERSION_KIND",
+      "WOOD_ENG_VERSION_LONG_AXIS",
+      "WOOD_ENG_VERSION_MAIN_ALONG",
+      "WOOD_ENG_VERSION_THICKNESS",
+      "WOOD_FINISH_SOURCE_BEAM_BOX",
+      "WOOD_FINISH_SOURCE_BOUNDARY_REGION",
+      "WOOD_FINISH_SOURCE_CHECK",
+      "WOOD_FINISH_SOURCE_COLUMN_BOX",
+      "WOOD_FINISH_SOURCE_DEFINITION",
+      "WOOD_FINISH_SOURCE_DERIVED_DEFINITION",
+      "WOOD_FINISH_SOURCE_DERIVED_FRAME",
+      "WOOD_FINISH_SOURCE_DERIVED_H",
+      "WOOD_FINISH_SOURCE_DERIVED_REGION",
+      "WOOD_FINISH_SOURCE_FILL_DEFINITION",
+      "WOOD_FINISH_SOURCE_FILL_FRAME",
+      "WOOD_FINISH_SOURCE_FRAME",
+      "WOOD_FINISH_SOURCE_GAP",
+      "WOOD_FINISH_SOURCE_PANEL_DEFINITION",
+      "WOOD_FINISH_SOURCE_PANEL_LENGTH",
+      "WOOD_FINISH_SOURCE_PANEL_THICKNESS",
+      "WOOD_FINISH_SOURCE_PANEL_WIDTH",
+      "WOOD_FINISH_SOURCE_REGION",
+      "WOOD_FINISH_SOURCE_STAGGER",
+      "WOOD_FINISH_SOURCE_THRESHOLD",
+      "WOOD_GRID_CELL_MAX",
+      "WOOD_GRID_CELL_MIN",
+      "WOOD_GRID_MAX",
+      "WOOD_GRID_MAX_LINES",
+      "WOOD_GRID_REFERENCE_GUIDE",
+      "WOOD_GRID_REFERENCE_TIMBER",
+      "WOOD_GRID_RULE_EXPRESSION_CAPACITY",
+      "WOOD_GRID_SOURCE_APPLICATION",
+      "WOOD_GRID_SOURCE_APPLICATION_DEFINITION",
+      "WOOD_GRID_SOURCE_BINDING",
+      "WOOD_GRID_SOURCE_BINDING_DEFINITION",
+      "WOOD_GRID_SOURCE_CELL",
+      "WOOD_GRID_SOURCE_GAP",
+      "WOOD_GRID_SOURCE_LINE",
+      "WOOD_GRID_SOURCE_PANEL",
+      "WOOD_GRID_SOURCE_RULE_CELL",
+      "WOOD_GRID_SOURCE_RULE_LINE",
+      "WOOD_GRID_SOURCE_SYSTEM",
+      "WOOD_GRID_SOURCE_SYSTEM_DEFINITION",
+      "WOOD_MEMBER_CAPACITY",
+      "WOOD_MEMBER_EDGE_MISSING",
+      "WOOD_MEMBER_EDGE_MISSING_HOLE",
+      "WOOD_MEMBER_EDGE_NO_DOMAIN_HOLE",
+      "WOOD_MEMBER_EDGE_OK",
+      "WOOD_MEMBER_FACE_A0",
+      "WOOD_MEMBER_FACE_A1",
+      "WOOD_MEMBER_FACE_B0",
+      "WOOD_MEMBER_FACE_B1",
+      "WOOD_MEMBER_FACE_COUNT",
+      "WOOD_MEMBER_FACE_END",
+      "WOOD_MEMBER_FACE_NAMES",
+      "WOOD_MEMBER_FACE_SPEC",
+      "WOOD_MEMBER_FACE_START",
+      "WOOD_MEMBER_ROLE_BOUNDARY",
+      "WOOD_MEMBER_ROLE_CUSTOM",
+      "WOOD_MEMBER_ROLE_PRIMARY",
+      "WOOD_MEMBER_ROLE_SECONDARY",
+      "WOOD_MEMBER_SPAN_CUT_CAPACITY",
+      "WOOD_MEMBER_SPAN_MEMBER_CAPACITY",
+      "WOOD_OBSTACLE_CAPACITY",
+      "WOOD_PANEL_BAND_RANGE",
+      "WOOD_PANEL_CLIP",
+      "WOOD_PANEL_CORNER_RANGE",
+      "WOOD_PANEL_ENUM_LIMIT",
+      "WOOD_PANEL_OK",
+      "WOOD_PANEL_SEAM_LIMIT",
+      "WOOD_PANEL_SEAM_WORKSPACE",
+      "WOOD_PANEL_SUPPORT_FOOTPRINT_LIMIT",
+      "WOOD_PANEL_SUPPORT_MAX",
+      "WOOD_PANEL_SUPPORT_OK",
+      "WOOD_PANEL_SUPPORT_PART_LIMIT",
+      "WOOD_PANEL_SUPPORT_SEAM_LIMIT",
+      "WOOD_PANEL_SUPPORT_SLAB_LIMIT",
+      "WOOD_PANEL_SUPPORT_WORKSPACE",
+      "WOOD_PANEL_SUPPORT_WORK_MAX",
+      "WOOD_PANEL_TILE_MAX",
+      "WOOD_PANEL_VERTEX_MAX",
+      "WOOD_PANEL_VERTEX_RANGE",
+      "WOOD_PANEL_WORKSPACE",
+      "WOOD_PF_GAP",
+      "WOOD_PF_LENGTH",
+      "WOOD_PF_STAGGER",
+      "WOOD_PF_THICKNESS",
+      "WOOD_PF_THRESHOLD",
+      "WOOD_PF_WIDTH",
+      "WOOD_SPAN_AMBIGUOUS",
+      "WOOD_SPAN_AUTO",
+      "WOOD_SPAN_BETWEEN_AMBIGUOUS",
+      "WOOD_SPAN_BETWEEN_BLOCKED",
+      "WOOD_SPAN_END_AMBIGUOUS",
+      "WOOD_SPAN_END_UNSUPPORTED",
+      "WOOD_SPAN_EXPLICIT",
+      "WOOD_SPAN_FREE_EDGE_END",
+      "WOOD_SPAN_NO_INTERVAL",
+      "WOOD_SPAN_OK",
+      "WOOD_SPAN_OUTSIDE_CONTACT",
+      "WOOD_SPAN_START_AMBIGUOUS",
+      "WOOD_SPAN_START_UNSUPPORTED",
+      "WOOD_SPAN_THROUGH_OUTSIDE",
+      "WOOD_SP_SOURCE_HOST_FRAME",
+      "WOOD_SP_SOURCE_HOST_REGION",
+      "WOOD_SP_SOURCE_MEMBER_A",
+      "WOOD_SP_SOURCE_MEMBER_B",
+      "WOOD_SP_SOURCE_MEMBER_DEFINITION",
+      "WOOD_SP_SOURCE_MEMBER_REGION",
+      "WOOD_SP_SOURCE_PROFILE_DEFINITION",
+      "WOOD_SP_SOURCE_RUN_DEFINITION",
+      "WOOD_SP_SOURCE_RUN_FRAME",
+      "WOOD_SP_SOURCE_RUN_LENGTH",
+      "WOOD_SP_SOURCE_RUN_REGION",
+      "WOOD_STOP_FIXED",
+      "WOOD_STOP_FREE",
+      "WOOD_STOP_HOLE_EDGE",
+      "WOOD_STOP_MEMBER_SIDE",
+      "WOOD_STOP_OUTLINE_EDGE",
+      "WoodAssemblyContext",
+      "WoodAssemblyDefinition",
+      "WoodAssemblyEvaluation",
+      "WoodAssemblyGuide",
+      "WoodAssemblyMember",
+      "WoodAssemblySourceKey",
+      "WoodAssemblySourceKind",
+      "WoodAssemblySourceResult",
+      "WoodAssemblySources",
+      "WoodBeam",
+      "WoodBoundaryKind",
+      "WoodBoundaryLoop",
+      "WoodBoundaryPolicy",
+      "WoodBoundaryRegion",
+      "WoodColumn",
+      "WoodContactMemberFact",
+      "WoodContactQuery",
+      "WoodContactSourceFacts",
+      "WoodContactSourceFactsCallback",
+      "WoodContactSourceKey",
+      "WoodContactSourceKind",
+      "WoodContactSourceRequest",
+      "WoodContactSources",
+      "WoodContactStopResolver",
+      "WoodContactWorld",
+      "WoodCutGroup",
+      "WoodCutList",
+      "WoodDefinitionKey",
+      "WoodDerivedContext",
+      "WoodDerivedEvaluation",
+      "WoodDerivedValue",
+      "WoodDimensionKey",
+      "WoodDimensionResult",
+      "WoodDocument",
+      "WoodDpInterval",
+      "WoodDpSource",
+      "WoodEdgeFixity",
+      "WoodEngineeringContext",
+      "WoodEngineeringOperations",
+      "WoodEngineeringSourceTokens",
+      "WoodEngineeringSources",
+      "WoodEngineeringTargetInfo",
+      "WoodFinishBoundarySource",
+      "WoodFinishContext",
+      "WoodFinishDerivedSource",
+      "WoodFinishEvaluation",
+      "WoodFinishLayout",
+      "WoodFinishSourceKey",
+      "WoodFinishSourceKind",
+      "WoodFinishSourceTokens",
+      "WoodFinishSources",
+      "WoodGridApplication",
+      "WoodGridCellResolver",
+      "WoodGridContext",
+      "WoodGridDefinition",
+      "WoodGridEvaluation",
+      "WoodGridHost",
+      "WoodGridReference",
+      "WoodGridReferenceKind",
+      "WoodGridRuleTarget",
+      "WoodGridSourceKey",
+      "WoodGridSourceKind",
+      "WoodGridSourceResult",
+      "WoodGridSourceRole",
+      "WoodGridSourceTokens",
+      "WoodGridSources",
+      "WoodGridState",
+      "WoodMember",
+      "WoodMemberAnchorKind",
+      "WoodMemberAxisFact",
+      "WoodMemberDeclarationContext",
+      "WoodMemberDepth",
+      "WoodMemberEdgeFact",
+      "WoodMemberEdgeStatus",
+      "WoodMemberFace",
+      "WoodMemberGridFact",
+      "WoodMemberGuideFact",
+      "WoodMemberPlacement",
+      "WoodMemberPlacementFact",
+      "WoodMemberReference",
+      "WoodMemberReferenceContext",
+      "WoodMemberReferenceFace",
+      "WoodMemberReferenceFact",
+      "WoodMemberRole",
+      "WoodMemberSpanFacts",
+      "WoodMemberSpanMode",
+      "WoodMemberSpanRequest",
+      "WoodMemberSpanStatus",
+      "WoodPanelEffectiveSeam",
+      "WoodPanelFootprint",
+      "WoodPanelFragment",
+      "WoodPanelLayout",
+      "WoodPanelLayoutInput",
+      "WoodPanelLoop",
+      "WoodPanelSeamLine",
+      "WoodPanelStatus",
+      "WoodPanelSupport",
+      "WoodPanelSupportPart",
+      "WoodPanelSupportStatus",
+      "WoodPanelTile",
+      "WoodPlacementPolicy",
+      "WoodRoomBounds",
+      "WoodRoomBoundsLookup",
+      "WoodSectionHostSource",
+      "WoodSectionPanelSpec",
+      "WoodSectionProfileContext",
+      "WoodSectionProfileEvaluation",
+      "WoodSectionProfileSourceKey",
+      "WoodSectionProfileSourceKind",
+      "WoodSectionProfileSources",
+      "WoodSolidObstacle",
+      "WoodStopFace",
+      "WoodStopFaceKind",
+      "WoodStopRef",
+      "WoodWorldMemberFact",
+      "WoodWorldValidationContext",
+      "Woodworking",
+      "WoodworkingModelProvider",
+      "World",
+      "wood_asm_binding_parse",
+      "wood_asm_enum",
+      "wood_asm_error",
+      "wood_asm_has",
+      "wood_asm_hash_token",
+      "wood_asm_ids",
+      "wood_asm_instance_parse",
+      "wood_asm_member_definition",
+      "wood_asm_member_index",
+      "wood_asm_name",
+      "wood_asm_rule_immutable",
+      "wood_asm_validate_rule",
+      "wood_assembly_binding",
+      "wood_assembly_binding_hook",
+      "wood_assembly_binding_rebuild_direct",
+      "wood_assembly_check_hook",
+      "wood_assembly_definition",
+      "wood_assembly_definition_value",
+      "wood_assembly_describe",
+      "wood_assembly_dimensions_changed",
+      "wood_assembly_evaluate",
+      "wood_assembly_generated_dimension_direct",
+      "wood_assembly_generated_dimension_hook",
+      "wood_assembly_generated_hook",
+      "wood_assembly_generation_check",
+      "wood_assembly_generation_integrity",
+      "wood_assembly_generation_operation",
+      "wood_assembly_generation_prepare",
+      "wood_assembly_get",
+      "wood_assembly_identity",
+      "wood_assembly_instance",
+      "wood_assembly_instance_check_direct",
+      "wood_assembly_instance_load",
+      "wood_assembly_key_read",
+      "wood_assembly_key_write",
+      "wood_assembly_member_definition_direct",
+      "wood_assembly_operation",
+      "wood_assembly_owned",
+      "wood_assembly_publish",
+      "wood_assembly_put_binding",
+      "wood_assembly_quantity",
+      "wood_assembly_rebuild",
+      "wood_assembly_result",
+      "wood_assembly_rule",
+      "wood_assembly_rule_hook",
+      "wood_assembly_slot_dimension_direct",
+      "wood_assembly_slot_dimension_hook",
+      "wood_assembly_slot_hook",
+      "wood_assembly_source_decode",
+      "wood_assembly_source_member",
+      "wood_assembly_source_ref",
+      "wood_assembly_sources_bind",
+      "wood_assembly_sources_create",
+      "wood_assembly_sources_definitions",
+      "wood_assembly_sources_destroy",
+      "wood_assembly_sources_generated",
+      "wood_assembly_sources_member_dimensions",
+      "wood_assembly_sources_owned_dimensions",
+      "wood_assembly_text",
+      "wood_assembly_used",
+      "wood_assembly_versions_immutable",
+      "wood_boundary_default_fixity",
+      "wood_contact_boundary_interval",
+      "wood_contact_collect_stops",
+      "wood_contact_collection_schema",
+      "wood_contact_end_faces",
+      "wood_contact_end_faces_with_sources",
+      "wood_contact_footprint_collides",
+      "wood_contact_owner_extension",
+      "wood_contact_source_collection",
+      "wood_contact_source_collection_view",
+      "wood_contact_source_decode",
+      "wood_contact_source_describe",
+      "wood_contact_source_encode_face",
+      "wood_contact_source_evaluate",
+      "wood_contact_source_face",
+      "wood_contact_source_facts_valid",
+      "wood_contact_source_query",
+      "wood_contact_source_read_coord",
+      "wood_contact_source_read_int",
+      "wood_contact_source_read_u32",
+      "wood_contact_source_read_u64",
+      "wood_contact_source_ref",
+      "wood_contact_source_u32",
+      "wood_contact_source_u64",
+      "wood_contact_sources_collect",
+      "wood_contact_sources_create",
+      "wood_contact_sources_destroy",
+      "wood_cut_list_collect",
+      "wood_dp_edge_key",
+      "wood_dp_edge_resolve",
+      "wood_dp_find",
+      "wood_dp_fixity",
+      "wood_dp_frame_direct",
+      "wood_dp_height_direct",
+      "wood_dp_interval_order",
+      "wood_dp_load",
+      "wood_dp_loop",
+      "wood_dp_max",
+      "wood_dp_min",
+      "wood_dp_operation",
+      "wood_dp_parse",
+      "wood_dp_rebuild",
+      "wood_dp_sources",
+      "wood_dp_value_direct",
+      "wood_dp_values",
+      "wood_eng_application",
+      "wood_eng_archive",
+      "wood_eng_axis",
+      "wood_eng_bind",
+      "wood_eng_binding",
+      "wood_eng_coord",
+      "wood_eng_effective",
+      "wood_eng_effective_direct",
+      "wood_eng_fail",
+      "wood_eng_id",
+      "wood_eng_material",
+      "wood_eng_material_at",
+      "wood_eng_material_integer",
+      "wood_eng_method",
+      "wood_eng_method_at",
+      "wood_eng_object_bound",
+      "wood_eng_optional_text",
+      "wood_eng_publish_material",
+      "wood_eng_publish_method",
+      "wood_eng_put_application",
+      "wood_eng_ref_parse",
+      "wood_eng_resolve",
+      "wood_eng_resolve_direct",
+      "wood_eng_same_target",
+      "wood_eng_source_parse",
+      "wood_eng_target_context",
+      "wood_eng_target_parse",
+      "wood_eng_u32",
+      "wood_eng_validate_application_direct",
+      "wood_eng_version_copy",
+      "wood_eng_version_definition",
+      "wood_eng_version_error",
+      "wood_eng_version_identity",
+      "wood_eng_version_schema",
+      "wood_eng_version_view",
+      "wood_engineering_drop_owned",
+      "wood_engineering_follow_fragment",
+      "wood_engineering_operation",
+      "wood_engineering_rebuild",
+      "wood_engineering_restore_member",
+      "wood_engineering_sources_bind",
+      "wood_engineering_sources_context",
+      "wood_engineering_sources_destroy",
+      "wood_engineering_sources_register",
+      "wood_engineering_sources_state",
+      "wood_engineering_used",
+      "wood_finish_boundary_hook",
+      "wood_finish_boundary_slot",
+      "wood_finish_check_hook",
+      "wood_finish_definition",
+      "wood_finish_definition_hook",
+      "wood_finish_derived_hook",
+      "wood_finish_derived_index",
+      "wood_finish_describe",
+      "wood_finish_evaluate",
+      "wood_finish_field_hook",
+      "wood_finish_fill_index",
+      "wood_finish_frame_hook",
+      "wood_finish_get",
+      "wood_finish_height_hook",
+      "wood_finish_obstacle_hook",
+      "wood_finish_parameter_value",
+      "wood_finish_source_decode",
+      "wood_finish_source_ref",
+      "wood_finish_sources_bind",
+      "wood_finish_sources_bind_finish",
+      "wood_finish_sources_create",
+      "wood_finish_sources_destroy",
+      "wood_finish_sources_read_derived",
+      "wood_finish_values_hook",
+      "wood_fs_boundary",
+      "wood_fs_capacity_error",
+      "wood_fs_check",
+      "wood_fs_check_direct",
+      "wood_fs_delete",
+      "wood_fs_error",
+      "wood_fs_find",
+      "wood_fs_from_json",
+      "wood_fs_index",
+      "wood_fs_load",
+      "wood_fs_name_check",
+      "wood_fs_obstacle_box",
+      "wood_fs_obstacle_compare",
+      "wood_fs_obstacle_parse",
+      "wood_fs_obstacle_text",
+      "wood_fs_obstacle_view",
+      "wood_fs_obstacles_normalize",
+      "wood_fs_operation",
+      "wood_fs_parameter_u32",
+      "wood_fs_parse_u32",
+      "wood_fs_put",
+      "wood_fs_rebuild",
+      "wood_fs_reference_owner",
+      "wood_fs_relation",
+      "wood_fs_relation_name",
+      "wood_fs_trim_tail",
+      "wood_fs_used",
+      "wood_grid_anchor_line_coord",
+      "wood_grid_anchor_line_coord_resolved",
+      "wood_grid_application_dimension_direct",
+      "wood_grid_application_evaluate_direct",
+      "wood_grid_application_hook",
+      "wood_grid_apply_binding",
+      "wood_grid_apply_system",
+      "wood_grid_axis_lines",
+      "wood_grid_axis_lines_in",
+      "wood_grid_axis_lines_in_resolved",
+      "wood_grid_begin_direct",
+      "wood_grid_bind_engineering",
+      "wood_grid_binding_cache",
+      "wood_grid_binding_cache_direct",
+      "wood_grid_binding_hook",
+      "wood_grid_binding_index",
+      "wood_grid_bindings_rebuild",
+      "wood_grid_cell_bounds",
+      "wood_grid_cell_has_area",
+      "wood_grid_cell_resolve",
+      "wood_grid_cells_bounds",
+      "wood_grid_child_check",
+      "wood_grid_coordinate_source",
+      "wood_grid_copy_binding_cache",
+      "wood_grid_def_axis",
+      "wood_grid_def_number",
+      "wood_grid_def_text",
+      "wood_grid_definition",
+      "wood_grid_delete",
+      "wood_grid_dimension_hook",
+      "wood_grid_dimension_read",
+      "wood_grid_dimension_source_ref",
+      "wood_grid_direct_check",
+      "wood_grid_direct_declared",
+      "wood_grid_error",
+      "wood_grid_family_fits",
+      "wood_grid_find",
+      "wood_grid_find_mut",
+      "wood_grid_host_source",
+      "wood_grid_key_axis",
+      "wood_grid_key_read32",
+      "wood_grid_key_read64",
+      "wood_grid_key_signed64",
+      "wood_grid_key_u32",
+      "wood_grid_key_u64",
+      "wood_grid_lattice_coord",
+      "wood_grid_lattice_coord_band",
+      "wood_grid_lattice_lines",
+      "wood_grid_line_coord_in",
+      "wood_grid_line_coord_in_resolved",
+      "wood_grid_line_source_ref",
+      "wood_grid_parent_count_valid",
+      "wood_grid_prepare_application",
+      "wood_grid_prepare_child",
+      "wood_grid_reference_source",
+      "wood_grid_restore_engineering",
+      "wood_grid_result",
+      "wood_grid_role_slot",
+      "wood_grid_root_get",
+      "wood_grid_rule_cell",
+      "wood_grid_rule_cell_direct",
+      "wood_grid_rule_cell_hook",
+      "wood_grid_rule_cell_ref",
+      "wood_grid_rule_change_allowed",
+      "wood_grid_rule_edit",
+      "wood_grid_rule_edit_begin",
+      "wood_grid_rule_error",
+      "wood_grid_rule_expression_uses",
+      "wood_grid_rule_hook",
+      "wood_grid_rule_i64",
+      "wood_grid_rule_line",
+      "wood_grid_rule_line_direct",
+      "wood_grid_rule_ref_text",
+      "wood_grid_rule_shape_changed",
+      "wood_grid_rule_source_ref",
+      "wood_grid_rule_target",
+      "wood_grid_rule_u32",
+      "wood_grid_rule_used",
+      "wood_grid_rules_valid",
+      "wood_grid_rules_world_valid",
+      "wood_grid_scope_read",
+      "wood_grid_scope_value",
+      "wood_grid_source_decode",
+      "wood_grid_source_describe",
+      "wood_grid_source_evaluate",
+      "wood_grid_source_get",
+      "wood_grid_source_main_along",
+      "wood_grid_source_main_valid",
+      "wood_grid_source_put",
+      "wood_grid_source_redeclare",
+      "wood_grid_source_ref",
+      "wood_grid_source_remove",
+      "wood_grid_sources_application",
+      "wood_grid_sources_bind",
+      "wood_grid_sources_cell",
+      "wood_grid_sources_create",
+      "wood_grid_sources_destroy",
+      "wood_grid_sources_dimension",
+      "wood_grid_sources_line",
+      "wood_grid_sources_rule_line",
+      "wood_grid_stage",
+      "wood_grid_system_error",
+      "wood_grid_system_evaluate_direct",
+      "wood_grid_system_hook",
+      "wood_grid_systems_rebuild",
+      "wood_grid_valid",
+      "wood_grid_valid_in",
+      "wood_grid_vertex_source",
+      "wood_grid_world_valid",
+      "wood_member_anchor_corner",
+      "wood_member_boundary_props",
+      "wood_member_boundary_role_check",
+      "wood_member_construct",
+      "wood_member_declaration_capacity",
+      "wood_member_declaration_priority",
+      "wood_member_declaration_role",
+      "wood_member_declare",
+      "wood_member_end_contact_check",
+      "wood_member_face_name",
+      "wood_member_face_room",
+      "wood_member_face_short_name",
+      "wood_member_face_spec",
+      "wood_member_face_valid",
+      "wood_member_place_a0",
+      "wood_member_primary_axis_check",
+      "wood_member_reference_compute",
+      "wood_member_reference_place",
+      "wood_member_resolve_span",
+      "wood_member_role_name",
+      "wood_member_span_extension_check",
+      "wood_panel_layout_build",
+      "wood_panel_layout_free",
+      "wood_panel_support_evaluate",
+      "wood_panel_support_free",
+      "wood_pf_build",
+      "wood_pf_clip",
+      "wood_pf_clip_status",
+      "wood_pf_field",
+      "wood_pf_field_direct",
+      "wood_pf_find",
+      "wood_pf_free",
+      "wood_pf_load",
+      "wood_pf_operation",
+      "wood_pf_parse",
+      "wood_pf_point_order",
+      "wood_pf_rebuild",
+      "wood_pf_region_view",
+      "wood_pf_selected_cuts",
+      "wood_pf_source",
+      "wood_pf_values",
+      "wood_pf_values_direct",
+      "wood_reference_guide",
+      "wood_reference_max",
+      "wood_reference_member_index",
+      "wood_reference_min",
+      "wood_source_application",
+      "wood_source_binding",
+      "wood_source_definition",
+      "wood_source_definition_key",
+      "wood_source_describe",
+      "wood_source_dimension_copy",
+      "wood_source_evaluate",
+      "wood_source_failure",
+      "wood_source_named",
+      "wood_source_parameter",
+      "wood_source_resolve",
+      "wood_source_result",
+      "wood_source_result_value",
+      "wood_source_target_copy",
+      "wood_sp_axis",
+      "wood_sp_axis_name",
+      "wood_sp_begin_conversion",
+      "wood_sp_conversion_fields",
+      "wood_sp_coord",
+      "wood_sp_error",
+      "wood_sp_evaluate_member_direct",
+      "wood_sp_evaluate_run_direct",
+      "wood_sp_first_error",
+      "wood_sp_frame_json",
+      "wood_sp_host",
+      "wood_sp_host_json",
+      "wood_sp_intersection",
+      "wood_sp_loop_json",
+      "wood_sp_loop_valid",
+      "wood_sp_max",
+      "wood_sp_member",
+      "wood_sp_member_dimension_direct",
+      "wood_sp_min",
+      "wood_sp_outside_regions",
+      "wood_sp_panel_spec",
+      "wood_sp_placement_json",
+      "wood_sp_point",
+      "wood_sp_profile",
+      "wood_sp_put_member",
+      "wood_sp_put_profile",
+      "wood_sp_put_run",
+      "wood_sp_rebuild",
+      "wood_sp_region_point",
+      "wood_sp_region_valid",
+      "wood_sp_region_view",
+      "wood_sp_remove",
+      "wood_sp_resolve_placement",
+      "wood_sp_run",
+      "wood_sp_run_length_direct",
+      "wood_sp_scaled",
+      "wood_sp_source",
+      "wood_sp_source_begin",
+      "wood_sp_source_decode",
+      "wood_sp_source_definition",
+      "wood_sp_source_describe",
+      "wood_sp_source_evaluate",
+      "wood_sp_source_first",
+      "wood_sp_source_get",
+      "wood_sp_source_graph_error",
+      "wood_sp_source_host",
+      "wood_sp_source_identity",
+      "wood_sp_source_live_host",
+      "wood_sp_source_member",
+      "wood_sp_source_member_dimension",
+      "wood_sp_source_member_root",
+      "wood_sp_source_profile_dependency",
+      "wood_sp_source_ref",
+      "wood_sp_source_run",
+      "wood_sp_source_run_length",
+      "wood_sp_source_run_placement",
+      "wood_sp_source_run_root",
+      "wood_sp_sources_bind",
+      "wood_sp_sources_create",
+      "wood_sp_sources_destroy",
+      "wood_sp_used",
+      "wood_stop_count_legal",
+      "wood_stop_matches_ref",
+      "wood_stop_pick",
+      "wood_stop_ref_candidates",
+      "wood_stop_shadowed",
+      "wood_support_max",
+      "wood_support_min",
+      "wood_world_validate_members",
+      "wood_world_validate_obstacles"
+    ],
+    "forbiddenStrings": [
+      "calcium-silicate-6",
+      "woodworking/1",
+      "woodworking-model"
+    ],
+    "forbiddenModules": {
+      "c": [
+        "geometry-templates/woodworking",
+        "woodworking_policy.h"
+      ],
+      "python": [
+        "geometry_woodworking",
+        "geometry_rectangular"
+      ],
+      "javascript": [
+        "@geometry/woodworking"
+      ]
+    }
+  },
+  "htmlEmbedRoutes": [
+    {
+      "source": "geometry-web/index.html",
+      "elementId": "scenarioEditorFrame",
+      "driver": "geometry-web/scenario-workspace.js",
+      "driverSha256": "1d391a00526d752487337e17c1d5aebf27f726595683cd2b64fa2b90326c8d47",
+      "router": "geometry-web/serve.py",
+      "routerSha256": "9d32cf026aacd55fe29a71c0b5444e414f72411eb24a0b27e244c811fd260473",
+      "receiver": "owner.frame",
+      "queryValue": "context",
+      "srcPrefix": "/?scenario=",
+      "target": "geometry-web/index.html",
+      "loadCount": 1,
+      "resetCount": 2,
+      "purpose": "Audited scenario editor: exact frame binding and src assignments; serve.py urlsplit/query selection serves the same root index document. Host driver/router digests require re-review on change."
+    }
+  ],
+  "trustedVendorBundles": [
+    {
+      "id": "browser-assets",
+      "files": [
+        "geometry-web/vendor/fflate/umd/index.js",
+        "geometry-web/vendor/pdfjs-dist/build/pdf.mjs",
+        "geometry-web/vendor/pdfjs-dist/build/pdf.worker.mjs",
+        "geometry-web/vendor/pdfjs-dist/wasm/jbig2_nowasm_fallback.js",
+        "geometry-web/vendor/pdfjs-dist/wasm/openjpeg_nowasm_fallback.js",
+        "geometry-web/vendor/pdfjs-dist/wasm/quickjs-eval.js"
+      ],
+      "layers": [
+        "H"
+      ],
+      "purpose": "Browser PDF rendering and ZIP compression assets; exact file digests, H-only access, internals trusted and not statically parsed"
+    }
+  ]
+}

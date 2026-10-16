@@ -49,6 +49,7 @@ EXPECTED_FILE = HERE / 'run_all.expected.json'
 # A test file that is on disk but not listed makes run_all fail and name it.
 PY_NEEDS = {
     'test_architecture_contract': [],
+    'test_product_architecture': [],
     'test_assembly_capacity': ['bridge'],
     'test_assembly_candidate_impact': ['bridge'],
     'test_assembly_parameter_refs': ['bridge'],
