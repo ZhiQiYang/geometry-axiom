@@ -1,0 +1,58 @@
+PASS GEO263_RENAME_PRESERVES_STAGGER u/repeat/literal
+▶ GEO263 native inspector contract
+  ✔ GEO263_RENAME_PRESERVES_STAGGER u/repeat/literal (32.579107ms)
+PASS GEO263_RENAME_PRESERVES_STAGGER u/repeat/parameter
+  ✔ GEO263_RENAME_PRESERVES_STAGGER u/repeat/parameter (33.170085ms)
+PASS GEO263_RENAME_PRESERVES_STAGGER u/repeat-panel/literal
+  ✔ GEO263_RENAME_PRESERVES_STAGGER u/repeat-panel/literal (73.769728ms)
+PASS GEO263_RENAME_PRESERVES_STAGGER u/repeat-panel/parameter
+  ✔ GEO263_RENAME_PRESERVES_STAGGER u/repeat-panel/parameter (71.355879ms)
+PASS GEO263_RENAME_PRESERVES_STAGGER v/repeat/literal
+  ✔ GEO263_RENAME_PRESERVES_STAGGER v/repeat/literal (49.373397ms)
+PASS GEO263_RENAME_PRESERVES_STAGGER v/repeat/parameter
+  ✔ GEO263_RENAME_PRESERVES_STAGGER v/repeat/parameter (70.931848ms)
+PASS GEO263_RENAME_PRESERVES_STAGGER v/repeat-panel/literal
+  ✔ GEO263_RENAME_PRESERVES_STAGGER v/repeat-panel/literal (74.182872ms)
+PASS GEO263_RENAME_PRESERVES_STAGGER v/repeat-panel/parameter
+  ✔ GEO263_RENAME_PRESERVES_STAGGER v/repeat-panel/parameter (94.485374ms)
+PASS GEO263_PARAMETER_CHANGE_REEVALUATES_STAGGER
+  ✔ GEO263_PARAMETER_CHANGE_REEVALUATES_STAGGER (21.414413ms)
+PASS GEO263_SPACING_EDIT_PRESERVES_STAGGER
+  ✔ GEO263_SPACING_EDIT_PRESERVES_STAGGER (34.409773ms)
+  ✖ GEO263_EXPLICIT_REMOVAL_REMAINS_OMISSION (8.748972ms)
+PASS GEO263_RENAME_PRESERVES_MAIN_ALONG_AND_SOURCE_RULE
+11 pass / 1 fail
+  ✔ GEO263_RENAME_PRESERVES_MAIN_ALONG_AND_SOURCE_RULE (77.296097ms)
+✖ GEO263 native inspector contract (802.738596ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 11
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 867.426308
+
+✖ failing tests:
+
+test at ../../../../tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:73:38
+✖ GEO263_EXPLICIT_REMOVAL_REMAINS_OMISSION (8.748972ms)
+  AssertionError [ERR_ASSERTION]: GEO263_SOURCE_DRAFT_MUST_NOT_RESTORE_REMOVED_STAGGER
+  
+  true !== false
+  
+      at /tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:129:14
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.execute (/tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:72:29)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async check (/tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:73:20)
+      at async TestContext.run (/tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:101:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
