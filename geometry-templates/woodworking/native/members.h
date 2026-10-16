@@ -59,6 +59,9 @@ bool wood_member_construct(
 );
 const char *wood_member_role_name(WoodMemberRole role);
 bool wood_member_face_valid(WoodMemberFace face);
+/* Existing consumers also use the face normal's local axis and side.
+ * Failure leaves both caller-owned outputs untouched. */
+bool wood_member_face_spec(WoodMemberFace face, unsigned *axis, unsigned *side);
 const char *wood_member_face_name(WoodMemberFace face);
 const char *wood_member_face_short_name(WoodMemberFace face);
 bool wood_member_face_room(

@@ -85,7 +85,10 @@ static int names(void)
 {
     const char *full[]={"A0（接觸面）","A1（另一個 A 面）","B0","B1","START 端面","END 端面"};
     const char *brief[]={"A0","A1","B0","B1","START","END"};
+    const unsigned axes[]={2,2,1,1,0,0};
     for(int face=0;face<6;++face){
+        unsigned axis=99,side=99;
+        if(!wood_member_face_spec((WoodMemberFace)face,&axis,&side)||axis!=axes[face]||side!=(unsigned)(face%2))return 1;
         if(!wood_member_face_valid((WoodMemberFace)face)||
            strcmp(wood_member_face_name((WoodMemberFace)face),full[face])||
            strcmp(wood_member_face_short_name((WoodMemberFace)face),brief[face]))return 1;
@@ -93,9 +96,14 @@ static int names(void)
     const int invalid[]={-1,6,7,1000};
     for(size_t i=0;i<sizeof invalid/sizeof invalid[0];++i){
         WoodMemberFace face=(WoodMemberFace)invalid[i];
+        unsigned axis=71,side=73;
+        if(wood_member_face_spec(face,&axis,&side)||axis!=71||side!=73)return 1;
         if(wood_member_face_valid(face)||strcmp(wood_member_face_name(face),"UNKNOWN_FACE")||
            strcmp(wood_member_face_short_name(face),"?"))return 1;
     }
+    unsigned axis=71,side=73;
+    if(wood_member_face_spec(WOOD_MEMBER_FACE_A0,NULL,&side)||side!=73)return 1;
+    if(wood_member_face_spec(WOOD_MEMBER_FACE_A0,&axis,NULL)||axis!=71)return 1;
     return 0;
 }
 

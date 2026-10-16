@@ -30,6 +30,14 @@ bool wood_member_face_valid(WoodMemberFace face)
     return face >= WOOD_MEMBER_FACE_A0 && face < WOOD_MEMBER_FACE_COUNT;
 }
 
+bool wood_member_face_spec(WoodMemberFace face, unsigned *axis, unsigned *side)
+{
+    if (!wood_member_face_valid(face) || !axis || !side) return false;
+    *axis = WOOD_MEMBER_FACE_SPEC[face].axis;
+    *side = WOOD_MEMBER_FACE_SPEC[face].side;
+    return true;
+}
+
 const char *wood_member_face_name(WoodMemberFace face)
 {
     return wood_member_face_valid(face)
