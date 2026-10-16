@@ -1,4 +1,6 @@
 #include "grid_sources.h"
+#include "engineering_sources.h"
+#include "region_key_sources.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -38,14 +40,17 @@ GeoSourceRef wood_grid_rule_source_ref(GeoProviderToken token,const GeoGridRuleL
 {GeoSourceRef ref=wood_grid_source_ref(token,WOOD_GRID_SOURCE_RULE_LINE,rule->grid_id,key);wood_grid_key_u32(key->bytes+5,pid);wood_grid_key_u32(key->bytes+9,rule->system_id);wood_grid_key_u32(key->bytes+13,rule->rule_key);wood_grid_key_u32(key->bytes+17,(uint32_t)rule->axis);wood_grid_key_u64(key->bytes+38,(uint64_t)rule->cell[0]);wood_grid_key_u64(key->bytes+46,(uint64_t)rule->cell[1]);wood_grid_key_u32(key->bytes+54,rule->inner_index);return ref;}
 static GeoSourceRef wood_grid_rule_cell_ref(GeoProviderToken token,uint32_t id,uint32_t rule,const int64_t cell[2],WoodGridSourceKey *key)
 {GeoSourceRef ref=wood_grid_source_ref(token,WOOD_GRID_SOURCE_RULE_CELL,id,key);wood_grid_key_u32(key->bytes+13,rule);wood_grid_key_u64(key->bytes+38,(uint64_t)cell[0]);wood_grid_key_u64(key->bytes+46,(uint64_t)cell[1]);return ref;}
+GeoSourceRef wood_grid_rule_definition_source_ref(GeoProviderToken token,uint32_t system,uint32_t rule,WoodGridSourceKey *key)
+{GeoSourceRef ref=wood_grid_source_ref(token,WOOD_GRID_SOURCE_RULE_DEFINITION,system,key);wood_grid_key_u32(key->bytes+13,rule);return ref;}
 bool wood_grid_source_decode(const GeoSourceRef *ref,WoodGridSourceKind *kind,uint32_t *id)
 {
     if(!ref||!ref->key||ref->key_size!=64||!kind||!id)return false;
-    const unsigned char *p=ref->key;if(p[0]<WOOD_GRID_SOURCE_SYSTEM_DEFINITION||p[0]>WOOD_GRID_SOURCE_RULE_CELL)return false;
+    const unsigned char *p=ref->key;if(p[0]<WOOD_GRID_SOURCE_SYSTEM_DEFINITION||p[0]>WOOD_GRID_SOURCE_RULE_DEFINITION)return false;
     WoodGridSourceKind k=(WoodGridSourceKind)p[0];uint32_t n=wood_grid_key_read32(p+1);WoodGridSourceKey canonical;
     if(k==WOOD_GRID_SOURCE_LINE){if(p[21]>3)return false;wood_grid_line_source_ref(ref->provider,n,wood_grid_key_read32(p+5),wood_grid_key_axis(p+17),wood_grid_key_signed64(p+22),(p[21]&2)!=0,(p[21]&1)!=0,wood_grid_key_signed64(p+30),&canonical);}
     else if(k==WOOD_GRID_SOURCE_RULE_LINE){GeoGridRuleLineRef rule={n,wood_grid_key_read32(p+9),wood_grid_key_read32(p+13),{wood_grid_key_signed64(p+38),wood_grid_key_signed64(p+46)},wood_grid_key_axis(p+17),wood_grid_key_read32(p+54)};wood_grid_rule_source_ref(ref->provider,&rule,wood_grid_key_read32(p+5),&canonical);}
     else if(k==WOOD_GRID_SOURCE_RULE_CELL){int64_t cell[]={wood_grid_key_signed64(p+38),wood_grid_key_signed64(p+46)};wood_grid_rule_cell_ref(ref->provider,n,wood_grid_key_read32(p+13),cell,&canonical);}
+    else if(k==WOOD_GRID_SOURCE_RULE_DEFINITION)wood_grid_rule_definition_source_ref(ref->provider,n,wood_grid_key_read32(p+13),&canonical);
     else if(k==WOOD_GRID_SOURCE_PANEL||k==WOOD_GRID_SOURCE_GAP)wood_grid_dimension_source_ref(ref->provider,n,wood_grid_key_axis(p+17),k==WOOD_GRID_SOURCE_GAP,&canonical);
     else wood_grid_source_ref(ref->provider,k,n,&canonical);
     if(memcmp(p,canonical.bytes,64))return false;*kind=k;*id=n;return true;
@@ -84,26 +89,56 @@ static void wood_grid_def_axis(WoodGridDefinition *d,const GeoGridAxisDef *a,boo
         bool bound=(i==2&&body_bound)||(i==3&&gap_bound);wood_grid_def_number(d,bound);wood_grid_def_number(d,p.set||bound?0:(uint64_t)values[i]);}
     wood_grid_def_number(d,a->series_count);wood_grid_def_number(d,a->anchor_explicit);wood_grid_def_number(d,a->stagger_set);
 }
+static bool wood_grid_definition_depend(WoodGridSources *s,WoodGridSourceKind kind,uint32_t id)
+{WoodGridSourceKey key;return geo_eval_depend(s->graph,wood_grid_source_ref(s->tokens.grid,kind,id,&key),GEO_DEPENDENCY_DEFINITION_REQUIRED)==GEO_SOURCE_OK;}
+static bool wood_grid_parameter_definitions(WoodGridSources *s,const GeoGridAxisDef *axis)
+{
+    if(!s->tokens.parameter)return true;
+    for(size_t i=0;i<6;++i)if(axis->parameters[i].set){uint32_t key[]={axis->parameters[i].parameter_id,axis->parameters[i].field_id};
+        if(geo_eval_depend(s->graph,(GeoSourceRef){s->tokens.parameter,key,sizeof key},GEO_DEPENDENCY_DEFINITION_REQUIRED)!=GEO_SOURCE_OK)return false;}
+    return true;
+}
+static bool wood_grid_binding_definition_depend(WoodGridSources *s,uint32_t id,int axis,int field)
+{
+    if(!s->tokens.engineering_binding)return true;
+    EngTarget target={0,id,axis,field};const EngBinding *binding=wood_eng_binding(&s->context.engineering,&target);
+    if(!binding)return true;WoodEngineeringBindingSourceKey key;
+    return geo_eval_depend(s->graph,wood_engineering_binding_source_ref(s->tokens.engineering_binding,
+        WOOD_BINDING_SOURCE_DEFINITION,binding,&key),GEO_DEPENDENCY_DEFINITION_REQUIRED)==GEO_SOURCE_OK;
+}
 static bool wood_grid_definition(WoodGridSources *s,WoodGridSourceKind kind,uint32_t id,WoodGridSourceResult *r,GeoSourceValue *out)
 {
     WoodGridDefinition d={.ok=true};const char *schema=NULL;wood_grid_def_number(&d,id);
     if(kind==WOOD_GRID_SOURCE_SYSTEM_DEFINITION){
         const GeoGridSystem *g=geo_grid_systems_find(s->context.sources,id);if(!g)return false;schema="wood.grid.system/1";
         wood_grid_def_text(&d,g->name,sizeof g->name);wood_grid_def_number(&d,(uint64_t)wood_grid_source_main_along(s->context.state,id));
-        for(int a=0;a<2;++a)wood_grid_def_axis(&d,&g->axis[a],false,false);
+        for(int a=0;a<2;++a){wood_grid_def_axis(&d,&g->axis[a],false,false);if(!wood_grid_parameter_definitions(s,&g->axis[a]))return false;}
         wood_grid_def_number(&d,g->rule_count);wood_grid_def_number(&d,g->next_rule_key);if(g->rule_count>GEO_GRID_RULE_CAPACITY)return false;
         for(size_t i=0;i<g->rule_count;++i){const GeoGridRule *v=&g->rules[i];wood_grid_def_number(&d,v->key);wood_grid_def_text(&d,v->name,sizeof v->name);wood_grid_def_number(&d,v->all_cells);for(int a=0;a<2;++a){wood_grid_def_number(&d,(uint64_t)v->cell[a]);wood_grid_def_number(&d,v->divisions[a]);}}
+    }else if(kind==WOOD_GRID_SOURCE_RULE_DEFINITION){
+        const GeoGridSystem *g=geo_grid_systems_find(s->context.sources,id);
+        const GeoGridRule *rule=g?geo_grid_rule_find(g,wood_grid_key_read32(r->key.bytes+13)):NULL;if(!rule)return false;
+        schema="wood.grid.rule/1";wood_grid_def_number(&d,rule->key);wood_grid_def_text(&d,rule->name,sizeof rule->name);wood_grid_def_number(&d,rule->all_cells);
+        for(int a=0;a<2;++a){wood_grid_def_number(&d,(uint64_t)rule->cell[a]);wood_grid_def_number(&d,rule->divisions[a]);}
+        if(!wood_grid_definition_depend(s,WOOD_GRID_SOURCE_SYSTEM_DEFINITION,id))return false;
     }else if(kind==WOOD_GRID_SOURCE_BINDING_DEFINITION){
         const GeoGridBinding *b=geo_grid_bindings_find(s->context.sources,id);if(!b)return false;schema="wood.grid.binding/1";
         wood_grid_def_number(&d,b->boundary_id);wood_grid_def_number(&d,b->system_id);wood_grid_def_number(&d,b->vertex_key);
         for(int a=0;a<2;++a){wood_grid_def_number(&d,(uint64_t)b->cell[a]);wood_grid_def_number(&d,b->anchor_num[a]);wood_grid_def_number(&d,b->anchor_den[a]);}
+        if(!wood_grid_definition_depend(s,WOOD_GRID_SOURCE_SYSTEM_DEFINITION,b->system_id))return false;
+        if(s->tokens.region_keys){GeoRegionKeySourceKey key;
+            if(geo_eval_depend(s->graph,geo_region_key_source_ref(s->tokens.region_keys,GEO_REGION_KEY_SOURCE_LEDGER,b->boundary_id,0,0,&key),GEO_DEPENDENCY_DEFINITION_REQUIRED)!=GEO_SOURCE_OK)return false;}
     }else{
         const WoodGridApplication *g=wood_grid_find(s->context.state,id);if(!g)return false;schema="wood.grid.application/1";
         wood_grid_def_number(&d,g->placement_id);wood_grid_def_number(&d,g->from_system);wood_grid_def_number(&d,g->from_binding);wood_grid_def_number(&d,g->is_subgrid);
         wood_grid_def_number(&d,g->binding_id);wood_grid_def_number(&d,g->system_id);wood_grid_def_number(&d,g->parent_id);wood_grid_def_number(&d,g->lattice_cell);
         for(int a=0;a<2;++a){wood_grid_def_number(&d,(uint64_t)g->system_origin[a]);wood_grid_def_number(&d,(uint64_t)g->lattice_cell_index[a]);wood_grid_def_number(&d,g->divisions[a]);for(int j=0;j<2;++j)wood_grid_def_number(&d,(uint64_t)g->cell_ref[a][j]);}
         if(!g->from_system&&!g->from_binding&&!g->is_subgrid){wood_grid_def_number(&d,(uint64_t)g->main_along);
-            for(int a=0;a<2;++a){EngTarget body={0,id,a,0},gap={0,id,a,1};wood_grid_def_axis(&d,&g->axis[a],wood_eng_binding(&s->context.engineering,&body)!=NULL,wood_eng_binding(&s->context.engineering,&gap)!=NULL);}}
+            for(int a=0;a<2;++a){EngTarget body={0,id,a,0},gap={0,id,a,1};wood_grid_def_axis(&d,&g->axis[a],wood_eng_binding(&s->context.engineering,&body)!=NULL,wood_eng_binding(&s->context.engineering,&gap)!=NULL);
+                if(!wood_grid_parameter_definitions(s,&g->axis[a])||!wood_grid_binding_definition_depend(s,id,a,0)||!wood_grid_binding_definition_depend(s,id,a,1))return false;}}
+        if(g->is_subgrid&&!wood_grid_definition_depend(s,WOOD_GRID_SOURCE_APPLICATION_DEFINITION,g->parent_id))return false;
+        if(g->from_system&&!wood_grid_definition_depend(s,WOOD_GRID_SOURCE_SYSTEM_DEFINITION,g->system_id))return false;
+        if(g->from_binding&&!wood_grid_definition_depend(s,WOOD_GRID_SOURCE_BINDING_DEFINITION,g->binding_id))return false;
     }
     if(!d.ok)return false;unsigned char *content=realloc(r->definition,d.size);if(!content)return false;r->definition=content;r->definition_size=d.size;memcpy(content,d.bytes,d.size);
     out->kind=GEO_SOURCE_DEFINITION;out->as.definition=(GeoDefinitionValue){schema,content,d.size};return true;
@@ -157,7 +192,7 @@ static bool wood_grid_source_evaluate(void *user,GeoEvalContext *graph,const Geo
     WoodGridSources *s=user;WoodGridSourceKind kind;uint32_t id;
     if(graph!=s->graph||ref->provider!=s->tokens.grid||!wood_grid_source_decode(ref,&kind,&id))return false;
     WoodGridSourceResult *r=wood_grid_result(s,ref);if(!r)return false;r->error[0]=0;GeoSourceValue definition;
-    if(kind==WOOD_GRID_SOURCE_SYSTEM_DEFINITION||kind==WOOD_GRID_SOURCE_BINDING_DEFINITION||kind==WOOD_GRID_SOURCE_APPLICATION_DEFINITION)return wood_grid_definition(s,kind,id,r,out);
+    if(kind==WOOD_GRID_SOURCE_SYSTEM_DEFINITION||kind==WOOD_GRID_SOURCE_BINDING_DEFINITION||kind==WOOD_GRID_SOURCE_APPLICATION_DEFINITION||kind==WOOD_GRID_SOURCE_RULE_DEFINITION)return wood_grid_definition(s,kind,id,r,out);
     if(kind==WOOD_GRID_SOURCE_SYSTEM){
         if(!wood_grid_root_get(s,WOOD_GRID_SOURCE_SYSTEM_DEFINITION,id,GEO_DEPENDENCY_DEFINITION_REQUIRED,&definition,r->error,sizeof r->error)||!wood_grid_system_evaluate_direct(&s->context,id,r->error,sizeof r->error))return false;*out=definition;return true;
     }
@@ -267,6 +302,19 @@ bool wood_grid_sources_bind(WoodGridSources *s,WoodGridContext *c)
     if((c->evaluation&&c->evaluation!=&s->hooks)||c->state!=b->state||c->sources!=b->sources||c->user!=b->user||c->host!=b->host||c->coordinate!=b->coordinate||c->vertex!=b->vertex||c->reference!=b->reference||c->parameter_error!=b->parameter_error||c->before!=b->before||
        e->state!=a->state||e->versions!=a->versions||e->user!=a->user||e->error!=a->error||e->error_capacity!=a->error_capacity||e->sources!=a->sources||e->placement!=a->placement||e->target!=a->target||e->named_value!=a->named_value||e->parameter!=a->parameter||e->member_owned!=a->member_owned||e->write_dimension!=a->write_dimension||e->serializable!=a->serializable||e->resolve_source!=a->resolve_source||e->resolve_binding!=a->resolve_binding||e->source_named!=a->source_named||e->source_parameter!=a->source_parameter||e->depend_definition!=a->depend_definition||e->validate_application!=a->validate_application)return false;
     c->evaluation=&s->hooks;return true;
+}
+bool wood_grid_sources_definitions(WoodGridSources *s,char *error,size_t cap)
+{
+    if(!s)return false;GeoSourceValue value;
+    for(size_t i=0;i<geo_grid_systems_count(s->context.sources);++i){const GeoGridSystem *g=geo_grid_systems_at(s->context.sources,i);
+        if(!wood_grid_root_get(s,WOOD_GRID_SOURCE_SYSTEM_DEFINITION,g->id,GEO_DEPENDENCY_DEFINITION_REQUIRED,&value,error,cap))return false;
+        for(size_t j=0;j<g->rule_count;++j){WoodGridSourceKey key;
+            if(!wood_grid_source_get(s,wood_grid_rule_definition_source_ref(s->tokens.grid,g->id,g->rules[j].key,&key),GEO_DEPENDENCY_DEFINITION_REQUIRED,&value,error,cap))return false;}}
+    for(size_t i=0;i<geo_grid_bindings_count(s->context.sources);++i)
+        if(!wood_grid_root_get(s,WOOD_GRID_SOURCE_BINDING_DEFINITION,geo_grid_bindings_at(s->context.sources,i)->id,GEO_DEPENDENCY_DEFINITION_REQUIRED,&value,error,cap))return false;
+    for(size_t i=0;i<s->context.state->count;++i)
+        if(!wood_grid_root_get(s,WOOD_GRID_SOURCE_APPLICATION_DEFINITION,s->context.state->items[i].id,GEO_DEPENDENCY_DEFINITION_REQUIRED,&value,error,cap))return false;
+    return true;
 }
 void wood_grid_sources_destroy(WoodGridSources *s)
 {if(!s)return;WoodGridSourceResult *r=s->results;while(r){WoodGridSourceResult *next=r->next;free(r->definition);free(r);r=next;}free(s);}

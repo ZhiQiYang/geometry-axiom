@@ -47,7 +47,7 @@ typedef struct {GeoPoint2 a,b;WoodEdgeFixity fixity;char name[32];} WoodDpSource
 #define WOOD_DP_SOURCE_MAX ((GEO_REGION_MAX_HOLES+1)*GEO_LOOP_MAX_VERTICES+4*FS_OBSTACLE_MAX)
 static size_t wood_dp_sources(const WoodDerivedContext *w,const WoodFinishLayout *d,WoodDpSource *out)
 {
-    size_t n=0;WoodBoundaryRegion source;wood_fs_boundary(&w->finish,d->finish->boundary_id,&source);const WoodBoundaryRegion *f=&source;int side=d->finish->side;
+    size_t n=0;WoodBoundaryRegion source;if(!wood_fs_boundary(&w->finish,d->finish->boundary_id,&source))return SIZE_MAX;const WoodBoundaryRegion *f=&source;int side=d->finish->side;
     for(size_t h=0;h<=f->hole_count;++h){const WoodBoundaryLoop *l=h?&f->holes[h-1]:&f->outline;
         for(size_t e=0;e<l->count;++e){WoodDpSource *s=&out[n++];s->a=l->v[e];s->b=l->v[(e+1)%l->count];s->a.v*=side;s->b.v*=side;s->fixity=l->fixity[e];
             if(h)snprintf(s->name,sizeof s->name,"h%zue%zu",h-1,e);else snprintf(s->name,sizeof s->name,"e%zu",e);}}
@@ -112,10 +112,10 @@ bool wood_dp_value_direct(const WoodDerivedContext *w,const DerivedPlacement *de
         WoodFinishLayout d;if(!wood_dp_values(w,p,&d))return false;
         if(w->evaluation&&w->evaluation->frame){if(!w->evaluation->frame(w->evaluation->user,def,&d,&p->frame))return false;}
         else if(!wood_dp_frame_direct(w,&d,&p->frame))return false;
-        WoodBoundaryRegion source;wood_fs_boundary(&w->finish,d.finish->boundary_id,&source);const WoodBoundaryRegion *f=&source;GeoRect2 bounds;GeoLoop2View outline={f->outline.v,f->outline.count};geo_loop_bbox(&outline,&bounds.min_u,&bounds.min_v,&bounds.max_u,&bounds.max_v);
+        WoodBoundaryRegion source;if(!wood_fs_boundary(&w->finish,d.finish->boundary_id,&source))return false;const WoodBoundaryRegion *f=&source;GeoRect2 bounds;GeoLoop2View outline={f->outline.v,f->outline.count};geo_loop_bbox(&outline,&bounds.min_u,&bounds.min_v,&bounds.max_u,&bounds.max_v);
         d.layout.tiles=calloc(1,sizeof *d.layout.tiles);if(!d.layout.tiles)return wood_fs_capacity_error(&w->finish,"I33 CAPACITY: R41 workspace unavailable");d.layout.count=1;d.keep_collinear=true;
         WoodPanelTile *tile=d.layout.tiles;tile->body[0]=bounds.min_u;tile->body[1]=bounds.min_v;tile->body[2]=bounds.max_u;tile->body[3]=bounds.max_v;
-        bool ok=wood_pf_clip(&w->finish,&d,tile);WoodDpSource *sources=calloc(WOOD_DP_SOURCE_MAX,sizeof *sources);if(!sources)ok=wood_fs_capacity_error(&w->finish,"I33 CAPACITY: R41 source workspace unavailable");size_t ns=ok?wood_dp_sources(w,&d,sources):0;
+        bool ok=wood_pf_clip(&w->finish,&d,tile);WoodDpSource *sources=calloc(WOOD_DP_SOURCE_MAX,sizeof *sources);if(!sources)ok=wood_fs_capacity_error(&w->finish,"I33 CAPACITY: R41 source workspace unavailable");size_t ns=ok?wood_dp_sources(w,&d,sources):0;if(ns==SIZE_MAX)ok=false;
         if(ok&&tile->count>WOOD_DERIVED_COMPONENT_MAX)ok=wood_fs_capacity_error(&w->finish,"I33 CAPACITY: R41 component limit is %d",WOOD_DERIVED_COMPONENT_MAX);
         for(size_t c=0;c<tile->count&&ok;++c){WoodPanelFragment *fragment=&tile->fragments[c];WoodBoundaryRegion *b=&p->components[c];b->id=p->id;
             if(fragment->count>GEO_REGION_MAX_HOLES+1){ok=wood_fs_capacity_error(&w->finish,"I33 CAPACITY: R41 hole limit is %d",GEO_REGION_MAX_HOLES);break;}
@@ -131,7 +131,7 @@ bool wood_dp_value_direct(const WoodDerivedContext *w,const DerivedPlacement *de
         /* Reject the whole candidate if a complete persistent key cannot be
          * represented; readers must never silently substitute a truncated key. */
         for(size_t c=0;c<p->component_count;++c){const WoodBoundaryRegion *b=&p->components[c];for(size_t k=0;k<=b->hole_count;++k){const WoodBoundaryLoop *l=k?&b->holes[k-1]:&b->outline;
-            for(size_t e=0;e<l->count;++e){char key[512];if(!wood_dp_edge_key(w,p,c,k?(int)k-1:-1,e,key,sizeof key))return false;}}}
+            for(size_t e=0;e<l->count;++e){char key[512];if(!wood_dp_edge_key_direct(w,p,c,k?(int)k-1:-1,e,key,sizeof key))return false;}}}
     return true;
 }
 bool wood_dp_rebuild(WoodDerivedContext *w)
@@ -148,7 +148,7 @@ static int wood_dp_interval_order(const void *a,const void *b)
 {const WoodDpInterval *x=a,*y=b;return x->lo!=y->lo?(x->lo<y->lo?-1:1):x->hi<y->hi?-1:x->hi>y->hi;}
 /* A source's segment/total counts refer to maximal retained intervals across ALL
  * components. Consequently a remote split invalidates old keys as R41 requires. */
-bool wood_dp_edge_key(const WoodDerivedContext *w,const WoodDerivedValue *p,size_t component,int hole,size_t edge,char *out,size_t cap)
+bool wood_dp_edge_key_direct(const WoodDerivedContext *w,const WoodDerivedValue *p,size_t component,int hole,size_t edge,char *out,size_t cap)
 {
     if(!p||!p->derived_fill_id||component>=p->component_count)return false;
     const WoodBoundaryRegion *b=&p->components[component];if(hole>=(int)b->hole_count)return false;
@@ -159,7 +159,7 @@ bool wood_dp_edge_key(const WoodDerivedContext *w,const WoodDerivedValue *p,size
     WoodDpInterval *intervals=malloc(capacity*sizeof *intervals);
     typedef struct {GeoCoord first;size_t source;unsigned segment,total;} Part;
     Part *parts=calloc(WOOD_DP_SOURCE_MAX,sizeof *parts);if(!sources||!intervals||!parts){free(sources);free(intervals);free(parts);return wood_fs_capacity_error(&w->finish,"I33 CAPACITY: R41 key workspace unavailable");}
-    size_t ns=wood_dp_sources(w,&d,sources),np=0;
+    size_t ns=wood_dp_sources(w,&d,sources),np=0;if(ns==SIZE_MAX){free(sources);free(intervals);free(parts);return false;}
     for(size_t s=0;s<ns;++s){GeoCoord lo,hi;if(!geo_collinear_segment_overlap(a,z,sources[s].a,sources[s].b,&lo,&hi))continue;size_t n=0;
         for(size_t c=0;c<p->component_count;++c){const WoodBoundaryRegion *region=&p->components[c];for(size_t h=0;h<=region->hole_count;++h){const WoodBoundaryLoop *l=h?&region->holes[h-1]:&region->outline;
             for(size_t e=0;e<l->count;++e){GeoCoord x,y;if(geo_collinear_segment_overlap(l->v[e],l->v[(e+1)%l->count],sources[s].a,sources[s].b,&x,&y))intervals[n++]=(WoodDpInterval){x,y};}}}
@@ -174,10 +174,31 @@ bool wood_dp_edge_key(const WoodDerivedContext *w,const WoodDerivedValue *p,size
     if(ok&&used+2<=cap){out[used++]=']';out[used]=0;}else ok=false;
     free(sources);free(intervals);free(parts);return ok||wood_fs_capacity_error(&w->finish,"I33 CAPACITY: R41 key exceeds supported size");
 }
+bool wood_dp_fixities_direct(const WoodDerivedContext *w,WoodDerivedValue *p)
+{
+    WoodFinishLayout d;if(!wood_dp_values(w,p,&d))return false;
+    WoodDpSource *sources=calloc(WOOD_DP_SOURCE_MAX,sizeof *sources);
+    if(!sources)return wood_fs_capacity_error(&w->finish,"I33 CAPACITY: R41 source workspace unavailable");
+    size_t count=wood_dp_sources(w,&d,sources);if(count==SIZE_MAX){free(sources);return false;}
+    for(size_t c=0;c<p->component_count;++c){WoodBoundaryRegion *b=&p->components[c];
+        for(size_t h=0;h<=b->hole_count;++h){WoodBoundaryLoop *loop=h?&b->holes[h-1]:&b->outline;
+            for(size_t e=0;e<loop->count;++e)loop->fixity[e]=wood_dp_fixity(sources,count,loop->v[e],loop->v[(e+1)%loop->count]);}}
+    free(sources);return true;
+}
+bool wood_dp_edge_key(const WoodDerivedContext *w,const WoodDerivedValue *p,size_t component,int hole,size_t edge,char *out,size_t cap)
+{
+    if(!p||!p->derived_fill_id||component>=p->component_count)return false;
+    const WoodBoundaryRegion *b=&p->components[component];if(hole>=(int)b->hole_count)return false;
+    const WoodBoundaryLoop *loop=hole<0?&b->outline:&b->holes[hole];if(edge>=loop->count)return false;
+    return w->evaluation&&w->evaluation->edge_key?
+        w->evaluation->edge_key(w->evaluation->user,p,component,hole,edge,out,cap):
+        wood_dp_edge_key_direct(w,p,component,hole,edge,out,cap);
+}
 bool wood_dp_edge_resolve(const WoodDerivedContext *w,const WoodDerivedValue *p,const char *key,int *hole,int *edge)
 {
     size_t matches=0;char candidate[512];
     if(!p||!p->derived_fill_id)return false;
+    if(w->evaluation&&w->evaluation->edge_resolve)return w->evaluation->edge_resolve(w->evaluation->user,p,key,hole,edge);
     for(size_t c=0;c<p->component_count;++c){const WoodBoundaryRegion *b=&p->components[c];for(size_t h=0;h<=b->hole_count;++h){const WoodBoundaryLoop *l=h?&b->holes[h-1]:&b->outline;
         for(size_t e=0;e<l->count;++e){if(!wood_dp_edge_key(w,p,c,h?(int)h-1:-1,e,candidate,sizeof candidate))return false;
             if(!strcmp(key,candidate)){++matches;*hole=h?(int)(c*GEO_REGION_MAX_HOLES+h-1):-1;*edge=h?(int)e:(int)(c*GEO_LOOP_MAX_VERTICES+e);}}}}

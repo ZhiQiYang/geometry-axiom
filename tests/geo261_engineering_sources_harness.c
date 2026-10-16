@@ -24,6 +24,12 @@ static const char es_app_json[]="{\"id\":\"a\",\"placement_id\":10,\"method\":{\
 static const char es_override_app_json[]="{\"id\":\"a\",\"placement_id\":10,\"method\":{\"id\":\"m\",\"version\":1},\"overrides\":{\"primary.A\":{\"kind\":\"spec\",\"name\":\"width\"}}}";
 static const char es_panel_canonical[]="{\"id\":\"p\",\"kind\":\"panel\",\"length\":200,\"name\":\"Panel\",\"thickness\":\"6.50\",\"version\":1,\"width\":100}";
 static const char es_member_canonical[]="{\"A\":30,\"B\":40,\"id\":\"t\",\"kind\":\"timber\",\"name\":\"Member\",\"version\":1}";
+static const char es_unused_member_json[]="{\"id\":\"unused\",\"version\":1,\"kind\":\"timber\",\"name\":\"Unused\",\"A\":31,\"B\":41}";
+static const char es_unused_member_canonical[]="{\"A\":31,\"B\":41,\"id\":\"unused\",\"kind\":\"timber\",\"name\":\"Unused\",\"version\":1}";
+static const char es_orphan_panel_json[]="{\"id\":\"orphan\",\"version\":1,\"kind\":\"panel\",\"name\":\"Unreferenced\",\"width\":70,\"length\":90}";
+static const char es_orphan_panel_canonical[]="{\"id\":\"orphan\",\"kind\":\"panel\",\"length\":90,\"name\":\"Unreferenced\",\"version\":1,\"width\":70}";
+static const char es_unused_method_json[]="{\"id\":\"unused\",\"version\":1,\"name\":\"Unused\",\"panel\":{\"id\":\"p\",\"version\":1},\"roles\":{\"boundary\":{\"id\":\"unused\",\"version\":1},\"secondary\":{\"id\":\"t\",\"version\":1}}}";
+static const char es_empty_method_json[]="{\"id\":\"empty\",\"version\":1,\"name\":\"Not yet selected\"}";
 
 static bool es_quantity(const GeoSourceNodeView *node,GeoCoord expected)
 {return node->state==GEO_NODE_VALID&&node->status==GEO_SOURCE_OK&&node->value&&node->value->kind==GEO_SOURCE_QUANTITY&&
@@ -423,6 +429,97 @@ static int es_binding_temporary(void)
     es_free(f);return 0;
 }
 
+static bool es_unused_definitions(EsFixture *f)
+{
+    return es_publish(f,es_unused_member_json,0)&&es_publish(f,es_orphan_panel_json,0)&&
+        es_publish(f,es_unused_method_json,1)&&es_publish(f,es_empty_method_json,1);
+}
+static size_t es_stored_binding_definition(const GeoEvalContext *ctx,EngTarget target,GeoCoord expected,int source_kind)
+{
+    for(size_t i=0;i<geo_eval_node_count(ctx);++i){
+        GeoSourceNodeView node;EngTarget decoded_target;WoodEngineeringBindingSourceKind kind;EngBinding value;
+        if(!geo_eval_node_at(ctx,i,&node)||node.source.provider!=ES_BINDING||node.source.key_size!=17||
+           !wood_engineering_binding_source_decode(&node.source,&kind,&decoded_target,NULL)||
+           kind!=WOOD_BINDING_SOURCE_DEFINITION||!wood_eng_same_target(&decoded_target,&target)||
+           node.state!=GEO_NODE_VALID||!node.value||node.value->kind!=GEO_SOURCE_DEFINITION)continue;
+        const GeoDefinitionValue *definition=&node.value->as.definition;
+        if(strcmp(definition->schema,"woodworking.dimension-binding/2")||
+           !wood_engineering_binding_decode(definition->content,definition->content_size,&value))continue;
+        if(wood_eng_same_target(&value.target,&target)&&value.source.kind==source_kind&&!value.has_override&&
+           (source_kind==ENG_LITERAL?value.source.value==expected:!strcmp(value.source.ref,"width")))return i;
+    }
+    return SIZE_MAX;
+}
+static int es_definitions(void)
+{
+    EsFixture *f=es_fixture();ES_CHECK(f&&es_unused_definitions(f),"definitions-fixture");
+    ES_CHECK(es_publish(f,"{\"id\":\"b\",\"placement_id\":20,\"method\":{\"id\":\"m\",\"version\":1}}",2),"definitions-second-application");
+    EngTarget first={0,1,0,0},second={0,2,0,0};EngDimensionSource source={.kind=ENG_LITERAL,.value=17};
+    ES_CHECK(wood_eng_bind(&f->context,&first,&source),"definitions-first-binding");source=es_source(ENG_SPEC,0,"width");
+    ES_CHECK(wood_eng_bind(&f->context,&second,&source),"definitions-second-binding");
+    char error[256]={0};ES_CHECK(wood_engineering_rebuild(&f->context,error,sizeof error)&&f->writes==2&&
+        f->written_ids[0]==1&&f->written[0]==17&&f->written_ids[1]==2&&f->written[1]==42,
+        "definitions-original-validation-values-and-order");
+    EngineeringState *before=malloc(sizeof *before);ES_CHECK(before&&es_attach(f),"definitions-attach");memcpy(before,&f->state,sizeof *before);
+    int writes=f->writes,calls=f->target_calls,serial=f->serial_calls;
+    uint32_t unused_key[]={4,1};GeoSourceRef unused_ref={ES_PARAMETER,unused_key,sizeof unused_key};
+    ES_CHECK(geo_eval_depend(f->graph,unused_ref,GEO_DEPENDENCY_DEFINITION_REQUIRED)==GEO_SOURCE_OK,"definitions-unused-fraction-identity");
+    ES_CHECK(wood_engineering_sources_definitions(f->engineering_sources),"definitions-inventory-success");
+    ES_CHECK(f->writes==writes&&f->target_calls==calls&&f->serial_calls==serial&&f->named_evaluations==0&&
+        !memcmp(before,&f->state,sizeof *before)&&!strcmp(error,f->error),"definitions-no-effective-value-or-cache-writes");
+    size_t unused=es_definition_node(f->graph,ES_DEFINITION,"woodworking.material-version/1",es_unused_member_canonical);
+    ES_CHECK(unused!=SIZE_MAX&&es_definition_node(f->graph,ES_DEFINITION,"woodworking.material-version/1",es_orphan_panel_canonical)!=SIZE_MAX,
+        "definitions-unused-material-published");
+    size_t method=es_definition_node(f->graph,ES_DEFINITION,"woodworking.method-version/1",f->state.methods[1].content);
+    ES_CHECK(method!=SIZE_MAX&&es_definition_node(f->graph,ES_DEFINITION,"woodworking.method-version/1",f->state.methods[2].content)!=SIZE_MAX,
+        "definitions-unused-method-published");
+    ES_CHECK(es_definition_node(f->graph,ES_DEFINITION,"woodworking.face-application/1",f->state.applications[0].content)!=SIZE_MAX&&
+        es_definition_node(f->graph,ES_DEFINITION,"woodworking.face-application/1",f->state.applications[1].content)!=SIZE_MAX,
+        "definitions-unselected-application-published");
+    ES_CHECK(es_stored_binding_definition(f->graph,first,17,ENG_LITERAL)!=SIZE_MAX&&
+        es_stored_binding_definition(f->graph,second,42,ENG_SPEC)!=SIZE_MAX,"definitions-unused-binding-published");
+    size_t panel=es_definition_node(f->graph,ES_DEFINITION,"woodworking.material-version/1",es_panel_canonical);
+    size_t member=es_definition_node(f->graph,ES_DEFINITION,"woodworking.material-version/1",es_member_canonical);
+    ES_CHECK(es_edge(f->graph,method,panel,GEO_DEPENDENCY_DEFINITION_REQUIRED)&&
+        es_edge(f->graph,method,unused,GEO_DEPENDENCY_DEFINITION_REQUIRED)&&es_edge(f->graph,method,member,GEO_DEPENDENCY_DEFINITION_REQUIRED),
+        "definitions-inactive-method-slots-definition-required");
+    size_t new_value=es_parameter_node(f->graph,4,1);GeoSourceNodeView node;
+    ES_CHECK(geo_eval_node_at(f->graph,new_value,&node)&&node.state==GEO_NODE_NEW&&!node.value,
+        "definitions-keeps-unused-value-new");
+    for(size_t i=0;i<geo_eval_node_count(f->graph);++i){ES_CHECK(geo_eval_node_at(f->graph,i,&node),"definitions-node-view");
+        ES_CHECK(node.source.provider!=ES_DIMENSION&&node.source.provider!=ES_NAMED&&
+            (i==new_value||(node.value&&node.value->kind==GEO_SOURCE_DEFINITION)),"definitions-never-requests-unused-geometry-values");}
+    ES_CHECK(geo_eval_node_count(f->graph)==12&&geo_eval_edge_count(f->graph)==7,"definitions-complete-inventory-counts");
+    ES_CHECK(geo_eval_seal(f->graph)&&wood_engineering_sources_definitions(f->engineering_sources)&&
+        geo_eval_node_count(f->graph)==12&&geo_eval_edge_count(f->graph)==7,"definitions-sealed-idempotence");
+    free(before);es_free(f);return 0;
+}
+static int es_definitions_after_values(void)
+{
+    EsFixture *f=es_fixture(),*plain=es_fixture();ES_CHECK(f&&plain&&es_unused_definitions(f)&&es_unused_definitions(plain),"definitions-after-values-fixtures");
+    ES_CHECK(es_override_setup(f,true)&&es_override_setup(plain,true)&&es_attach(f)&&es_plain_parity(f,plain,true)==0&&
+        f->writes==3&&f->written_ids[0]==7&&f->written[0]==9&&f->written_ids[1]==1&&f->written[1]==100&&
+        f->written_ids[2]==8&&f->written[2]==40,"definitions-after-values-original-order-and-values");
+    size_t count=geo_eval_node_count(f->graph);GeoSourceNodeView nodes[128];GeoQuantity quantities[128];
+    ES_CHECK(count<=sizeof nodes/sizeof nodes[0],"definitions-after-values-snapshot-capacity");
+    for(size_t i=0;i<count;++i){ES_CHECK(geo_eval_node_at(f->graph,i,&nodes[i]),"definitions-after-values-snapshot-node");
+        if(nodes[i].value&&nodes[i].value->kind==GEO_SOURCE_QUANTITY)quantities[i]=nodes[i].value->as.quantity;}
+    EngineeringState *before=malloc(sizeof *before);ES_CHECK(before,"definitions-after-values-snapshot-state");memcpy(before,&f->state,sizeof *before);
+    int writes=f->writes,calls=f->target_calls,named=f->named_evaluations,serial=f->serial_calls;
+    ES_CHECK(wood_engineering_sources_definitions(f->engineering_sources),"definitions-after-values-complete");
+    ES_CHECK(f->writes==writes&&f->target_calls==calls&&f->named_evaluations==named&&f->serial_calls==serial&&
+        !memcmp(before,&f->state,sizeof *before),"definitions-after-values-no-reentry-or-mutation");
+    for(size_t i=0;i<count;++i)if(nodes[i].value&&nodes[i].value->kind==GEO_SOURCE_QUANTITY){GeoSourceNodeView node;
+        ES_CHECK(geo_eval_node_at(f->graph,i,&node)&&node.state==GEO_NODE_VALID&&node.value==nodes[i].value&&
+            node.value->kind==GEO_SOURCE_QUANTITY&&node.value->as.quantity.num==quantities[i].num&&
+            node.value->as.quantity.den==quantities[i].den&&node.value->as.quantity.unit==quantities[i].unit,
+            "definitions-after-values-keeps-memoized-quantities");}
+    ES_CHECK(es_definition_node(f->graph,ES_DEFINITION,"woodworking.material-version/1",es_unused_member_canonical)!=SIZE_MAX&&
+        es_definition_node(f->graph,ES_DEFINITION,"woodworking.method-version/1",f->state.methods[2].content)!=SIZE_MAX,
+        "definitions-after-values-includes-unused-published-content");
+    free(before);es_free(f);es_free(plain);return 0;
+}
+
 int main(int argc,char **argv)
 {
     if(argc!=2)return 2;
@@ -430,6 +527,8 @@ int main(int argc,char **argv)
     if(!strcmp(argv[1],"binding-identity"))return es_binding_identity();
     if(!strcmp(argv[1],"binding-definition-first"))return es_binding_definition_first();
     if(!strcmp(argv[1],"binding-temporary"))return es_binding_temporary();
+    if(!strcmp(argv[1],"definitions"))return es_definitions();
+    if(!strcmp(argv[1],"definitions-after-values"))return es_definitions_after_values();
     if(!strcmp(argv[1],"material"))return es_material();
     if(!strcmp(argv[1],"application"))return es_application();
     if(!strcmp(argv[1],"overrides"))return es_overrides();

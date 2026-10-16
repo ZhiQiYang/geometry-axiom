@@ -4,7 +4,7 @@ enum { APP_SOURCE_GUIDE=1, APP_SOURCE_MEMBER_POSE, APP_SOURCE_REFERENCE, APP_SOU
     APP_SOURCE_NAMED=6, APP_SOURCE_DATUM, APP_SOURCE_ENGINEERING_DIMENSION,
     APP_SOURCE_ENGINEERING_BINDING,APP_SOURCE_ENGINEERING_DEFINITION,APP_SOURCE_SECTION_PROFILE,
     APP_SOURCE_FINISH,APP_SOURCE_PLACEMENT,APP_SOURCE_REGION,APP_SOURCE_GRID,APP_SOURCE_CONTACT,APP_SOURCE_ASSEMBLY,
-    APP_SOURCE_ENCLOSURE,APP_SOURCE_WOOD_DEFINITION }; /* token 5 belongs to model roots */
+    APP_SOURCE_ENCLOSURE,APP_SOURCE_WOOD_DEFINITION,APP_SOURCE_REGION_KEYS }; /* token 5 belongs to model roots */
 typedef struct {
     uint32_t placement;
     uint32_t guide_id;
@@ -203,6 +203,27 @@ static void reference_derived_context(ReferenceEval *ctx,WoodDerivedContext *fin
     reference_finish_context(ctx,&finish->finish);finish->placement_read=reference_dp_read;finish->placement_write=reference_dp_write;
     finish->placement_remove=reference_dp_remove;finish->placement_count=reference_dp_count;finish->remove_canvas_position=reference_dp_remove_position;
 }
+static bool reference_derived_resolve(ReferenceEval *ctx,const PlacementSurface *p,const char *key,int *hole,int *edge)
+{
+    if(!p||!p->derived_fill_id)return false;
+    if(ctx->use_current_values){
+        /* Snapshot reads must not acquire the ambient candidate's hooks. */
+        WoodDerivedContext direct=app_dp_context(ctx->world);direct.evaluation=NULL;direct.finish.evaluation=NULL;
+        direct.finish.user=ctx->world;direct.finish.boundary=app_fs_boundary;direct.finish.obstacle_box=app_fs_obstacle_box;
+        direct.finish.parameter_coord=app_fs_parameter_coord;direct.finish.parameter_value=app_fs_parameter_value;
+        direct.finish.engineering_operation=app_fs_engineering_operation;direct.finish.derived_operation=app_fs_derived_operation;
+        WoodEngineeringContext *engineering=&direct.finish.engineering;engineering->sources=NULL;
+        engineering->resolve_source=NULL;engineering->resolve_binding=NULL;engineering->source_named=NULL;
+        engineering->source_parameter=NULL;engineering->depend_definition=NULL;engineering->validate_application=NULL;
+        direct.placement_read=app_dp_read;direct.placement_write=app_dp_write;direct.placement_remove=app_dp_remove;
+        direct.placement_count=app_dp_count;direct.remove_canvas_position=app_dp_remove_position;
+        WoodDerivedValue value={0};value.id=p->id;value.derived_fill_id=p->derived_fill_id;value.derived_h=p->derived_h;
+        value.frame=p->frame;value.component_count=p->component_count;memcpy(value.components,p->components,sizeof value.components);
+        return wood_dp_edge_resolve(&direct,&value,key,hole,edge);
+    }
+    if(!reference_sources_ensure(ctx))return false;
+    return wood_finish_sources_edge_resolve(ctx->finish_sources,p->id,key,hole,edge);
+}
 static bool reference_grid_host(void *opaque,uint32_t id,WoodGridHost *out)
 {
     ReferenceEval *ctx=opaque;PlacementSurface placement;SpaceBoundarySurface boundary;
@@ -215,17 +236,10 @@ static bool reference_grid_coordinate(void *opaque,GeoParameterRef ref,GeoCoord 
 {return app_grid_coordinate(((ReferenceEval *)opaque)->world,ref,out);}
 static bool reference_grid_vertex(void *opaque,uint32_t id,uint32_t key,GeoPoint2 *out)
 {
-    ReferenceEval *ctx=opaque;
-    if(!app_grid_vertex(ctx->world,id,key,out))return false;
-    GeoRegionSourceKey source_key;GeoSourceValue value;
-    if(geo_eval_source(ctx->sources,geo_region_source_ref(APP_SOURCE_REGION,id,&source_key),GEO_DEPENDENCY_VALUE_REQUIRED,&value)!=GEO_SOURCE_OK||value.as.regions.count!=1)return false;
-    const GeoRegionKeys *keys=geo_region_keys_find(&ctx->world->geo.region_data,id);
-    if(!keys)return false;const GeoRegionView *region=&value.as.regions.regions[0];
-    for(size_t l=0;l<keys->loop_count;++l){
-        GeoLoop2View loop;if(l==0)loop=region->outline;else{if(l-1>=region->hole_count)return false;loop=region->holes[l-1];}
-        for(size_t i=0;i<keys->counts[l];++i)if(keys->keys[l][i]==key){if(i>=loop.count)return false;*out=loop.v[i];return true;}
-    }
-    return false;
+    ReferenceEval *ctx=opaque;GeoPoint2 legacy_point;
+    if(!app_grid_vertex(ctx->world,id,key,&legacy_point))return false;
+    if(ctx->use_current_values){if(out)*out=legacy_point;return true;}
+    return geo_region_key_sources_vertex(ctx->region_key_sources,id,key,out);
 }
 static bool reference_grid_reference(void *opaque,size_t index,WoodGridReference *out)
 {return app_grid_reference(((ReferenceEval *)opaque)->world,index,out);}
@@ -325,6 +339,8 @@ static bool reference_sources_ensure(ReferenceEval *ctx)
     ctx->placement_sources=geo_placement_sources_register(ctx->sources,&ctx->world->geo.placement_data,&ctx->world->geo.region_data,
         APP_SOURCE_PLACEMENT,APP_SOURCE_REGION,reference_placement_binding,ctx);
     if(!ctx->placement_sources){reference_sources_dispose(ctx);return false;}
+    ctx->region_key_sources=geo_region_key_sources_register(ctx->sources,&ctx->world->geo.region_data,APP_SOURCE_REGION_KEYS,APP_SOURCE_REGION);
+    if(!ctx->region_key_sources){reference_sources_dispose(ctx);return false;}
     ctx->enclosure_sources=geo_enclosure_sources_register(ctx->sources,&ctx->world->geo.enclosures,
         &ctx->world->geo.region_data,&ctx->world->geo.placement_data,APP_SOURCE_ENCLOSURE,APP_SOURCE_PLACEMENT,APP_SOURCE_REGION);
     if(!ctx->enclosure_sources){reference_sources_dispose(ctx);return false;}
@@ -337,7 +353,7 @@ static bool reference_sources_ensure(ReferenceEval *ctx)
     ctx->section_profile_sources=wood_sp_sources_create(ctx->sources,APP_SOURCE_SECTION_PROFILE,&profiles);
     if(!ctx->section_profile_sources){reference_sources_dispose(ctx);return false;}
     WoodGridContext grid=app_grid_context(ctx->world);reference_grid_context(ctx,&grid);
-    ctx->grid_sources=wood_grid_sources_create(ctx->sources,(WoodGridSourceTokens){APP_SOURCE_GRID,APP_SOURCE_PARAMETER},&grid);
+    ctx->grid_sources=wood_grid_sources_create(ctx->sources,(WoodGridSourceTokens){APP_SOURCE_GRID,APP_SOURCE_PARAMETER,APP_SOURCE_ENGINEERING_BINDING,APP_SOURCE_REGION_KEYS},&grid);
     if(!ctx->grid_sources){reference_sources_dispose(ctx);return false;}
     ctx->contact_sources=wood_contact_sources_create(ctx->sources,APP_SOURCE_CONTACT,reference_contact_facts,ctx);
     if(!ctx->contact_sources){reference_sources_dispose(ctx);return false;}
