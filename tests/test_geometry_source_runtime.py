@@ -207,6 +207,13 @@ class SourceRuntimeTests(unittest.TestCase):
                 with self.assertRaises(ModelError) as error:
                     runtime(candidate).evaluate(definitions, req)
                 self.assertEqual("BASE_SOURCE_BINDING", error.exception.code)
+        candidate = decode(envelope(base))
+        spec = next(source for source in candidate.sources if source.value_type == kernel.ValueType.QUANTITY)
+        wrong = replace(spec, value=kernel.Quantity(kernel.QuantityType.COUNT, 1, 1, kernel.Unit.UNITLESS))
+        candidate = replace(candidate, sources=tuple(wrong if source.key == spec.key else source for source in candidate.sources))
+        with self.assertRaises(ModelError) as error:
+            runtime(candidate).compile(definitions, req, max_cells=200000)
+        self.assertEqual("BASE_SOURCE_BINDING", error.exception.code)
 
     def test_opaque_native_box_provenance_survives_until_wire_encoding(self):
         base, definitions, req, options = cases()["cavity"]
