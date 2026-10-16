@@ -56,11 +56,18 @@ static bool reference_name(const char *name)
 
 typedef struct {
     World *world;
-    unsigned char guides[WORLD_MAX_GUIDES], timbers[WORLD_MAX_TIMBERS];
+    GeoEvalContext *sources;
+    bool use_current_values;
     bool wanted[WORLD_MAX_TIMBERS];
 } ReferenceEval;
 static bool reference_eval_guide(ReferenceEval *, size_t);
 static bool reference_eval_timber(ReferenceEval *, size_t);
+static bool reference_eval_timber_relation(ReferenceEval *,size_t,GeoDependencyKind);
+static bool reference_sources_ensure(ReferenceEval *);
+static void reference_sources_dispose(ReferenceEval *ctx)
+{geo_eval_destroy(ctx->sources);ctx->sources=NULL;}
+static bool reference_quantity(ReferenceEval *,const GuideLine *,const char *,Coord *);
+static bool reference_parameter_quantity(ReferenceEval *,ParameterRef,GeoQuantity *);
 static int reference_timber_index(const World *w, uint32_t id)
 {
     for (size_t i=0;i<w->timber_count;++i) if (w->timbers[i].id==id) return (int)i;
@@ -69,7 +76,7 @@ static int reference_timber_index(const World *w, uint32_t id)
 
 static char g_rule_reference_error[256];
 static bool reference_face_parse(const char *,ReferenceFace *);
-static bool reference_quantity(ReferenceEval *ctx, const GuideLine *g, const char *text, Coord *out)
+static bool reference_quantity_raw(ReferenceEval *ctx, const GuideLine *g, const char *text, Coord *out)
 {
     World *w=ctx->world;
     /* D6c deliberately permits only named specs, without a placement context. */
@@ -229,7 +236,7 @@ static bool reference_resolve_linear(void *opaque,const GeoLinearSource *source,
     AppLinearContext *context=opaque;
     if(source->provider==APP_LINEAR_PARAMETER){
         ParameterRef ref={true,source->id,source->field};
-        return parameter_value(context->evaluation->world,ref,value);
+        return reference_parameter_quantity(context->evaluation,ref,value);
     }
     if(source->provider!=APP_LINEAR_SOURCE)return false;
     *value=(GeoQuantity){0,1,GEO_UNIT_LENGTH};
@@ -296,26 +303,23 @@ static bool datum_guide_geometry(const World *w,const PlacementSurface *p,GuideL
     return true;
 }
 
-static bool reference_eval_guide(ReferenceEval *ctx, size_t i)
+static bool reference_compute_guide(ReferenceEval *ctx, size_t i)
 {
-    if (ctx->guides[i]==2) return true;
-    if (ctx->guides[i]) return false;
-    ctx->guides[i]=1;
+    if(ctx->use_current_values)return true;
     GuideLine *g=&ctx->world->guides[i]; Coord v;
     const PlacementSurface *p=world_find_placement(ctx->world,g->placement_id);
     if (g->source==GUIDE_DATUM) {
-        if (!p || !datum_guide_geometry(ctx->world,p,g)) { ctx->guides[i]=3; return false; }
-        g->resolved=true; ctx->guides[i]=2; return true;
+        if (!p || !datum_guide_geometry(ctx->world,p,g)) return false;
+        g->resolved=true; return true;
     }
     if (!p || !reference_eval_expression(ctx,g,&v)) {
-        ctx->guides[i]=3;
         char message[256];if(g_rule_reference_error[0])snprintf(message,sizeof message,"guide %u: %.210s",g->id,g_rule_reference_error);else if(g_parameter_error[0])snprintf(message,sizeof message,"guide %u: %s",g->id,g_parameter_error);else snprintf(message,sizeof message,"guide %u: invalid/missing reference, axis/surface mismatch, cycle or rational overflow: %.120s",g->id,g->expression);
         utf8_trim_tail(message);
         return reference_issue(0,"D6a/I7/I9","existing same-surface/axis references; acyclic exact rational expression",message);
     }
     g->offset=v;
     /* I7: a valid infinite line can have an empty visible clip. */
-    g->resolved=true; ctx->guides[i]=2; return true;
+    g->resolved=true; return true;
 }
 
 static bool reference_face_parse(const char *s, ReferenceFace *r)
@@ -477,20 +481,17 @@ static bool reference_place_geometry(World *w, size_t ti)
     *t=best; *a=best_a; return true;
 }
 
-static bool reference_eval_timber(ReferenceEval *ctx, size_t i)
+static bool reference_compute_timber(ReferenceEval *ctx, size_t i)
 {
-    if (ctx->timbers[i]==2) return true;
-    if (ctx->timbers[i]==3) return false;
     World *w=ctx->world; Timber *t=&w->timbers[i]; TimberAnchor *a=&w->anchors[i];
-    if (!ctx->wanted[i] || ctx->timbers[i])
-        return reference_issue(t->id,"I9/I7","acyclic placed dependencies","missing placement or cyclic reference");
-    ctx->timbers[i]=1;
+    if(ctx->use_current_values&&t->placed)return true;
+    if(!ctx->wanted[i])return false;
     /* Placement order is the implicit dependency order for stop faces (I9).
      * Clear all derived placements before replay so later timbers cannot cut predecessors. */
     bool ok=true;
     for (size_t j=0;j<w->timber_count;++j)
         if (ctx->wanted[j] && w->anchors[j].order<a->order && w->anchors[j].placement_id==a->placement_id)
-            (void)reference_eval_timber(ctx,j);
+            (void)reference_eval_timber_relation(ctx,j,GEO_DEPENDENCY_EVALUATE_BEFORE);
     if (a->anchor_kind==ANCHOR_AT_LINE) {
         bool exists=false;
         for (size_t j=0;j<w->guide_count;++j) if (w->guides[j].id==a->ref_guide) {
@@ -506,12 +507,13 @@ static bool reference_eval_timber(ReferenceEval *ctx, size_t i)
         if (j<0 || w->anchors[j].order>=a->order || !reference_eval_timber(ctx,(size_t)j)) ok=false;
     }
     if (!ok) {
-        ctx->timbers[i]=3;
         return reference_issue(t->id,"I9/I13","valid earlier reference dependencies","one or more referenced objects cannot be reconstructed");
     }
     ok=reference_place_geometry(w,i);
-    ctx->timbers[i]=ok?2:3; return ok;
+    return ok;
 }
+
+#include "../geometry-app/native/reference_sources.inc"
 
 /* I8a: report independent failures across the whole reconstructed world. */
 static bool reference_check_all(const World *w)
@@ -554,12 +556,12 @@ static bool reference_rebuild(World *w)
     ReferenceEval ctx={0}; ctx.world=w; bool ok=true;
     for (size_t i=0;i<w->guide_count;++i) w->guides[i].resolved=false;
     for (size_t i=0;i<w->timber_count;++i) { ctx.wanted[i]=w->timbers[i].placed; w->timbers[i].placed=false; }
-    if (!reference_eval_datums(&ctx)) { if (g_reference_capturing) g_reference_trial=*w; return false; }
+    if (!reference_eval_datums(&ctx)) { if (g_reference_capturing) g_reference_trial=*w; reference_sources_dispose(&ctx); return false; }
     /* Timbers drive guide evaluation as needed; remaining guides are then evaluated. */
     for (size_t i=0;i<w->timber_count;++i) if (ctx.wanted[i] && !reference_eval_timber(&ctx,i)) ok=false;
     for (size_t i=0;i<w->guide_count;++i) if (!reference_eval_guide(&ctx,i)) ok=false;
     if (g_reference_capturing) g_reference_trial=*w;
-    return ok;
+    reference_sources_dispose(&ctx);return ok;
 }
 
 static bool reference_checked(const char *p,int n,World *w)
@@ -771,9 +773,8 @@ static void reference_dump(const World *w,FILE *out)
 static bool reference_snap(World *w,uint32_t pid,GuideDirection dir,uint32_t exclude,Coord at,Coord radius,char *out)
 {
     GuideLine probe={0}; probe.placement_id=pid; probe.direction=dir;
-    ReferenceEval ctx={0}; ctx.world=w;
-    for (size_t i=0;i<w->timber_count;++i) { ctx.wanted[i]=w->timbers[i].placed; ctx.timbers[i]=w->timbers[i].placed?2:0; }
-    for (size_t i=0;i<w->guide_count;++i) ctx.guides[i]=2;
+    ReferenceEval ctx={0}; ctx.world=w;ctx.use_current_values=true;
+    for (size_t i=0;i<w->timber_count;++i) ctx.wanted[i]=w->timbers[i].placed;
     Coord best=radius+1; bool found=false;
     const PlacementSurface *p=world_find_placement(w,pid); if (!p) return false;
     const SpaceBoundarySurface *b=world_placement_boundary(w,p); char axis=dir==GUIDE_ALONG_V?'u':'v';
@@ -832,5 +833,5 @@ static bool reference_snap(World *w,uint32_t pid,GuideDirection dir,uint32_t exc
             if (legal) { best=distance; snprintf(out,REF_EXPR_MAX,"%s",candidates[i]); found=true; }
         }
     }
-    return found;
+    reference_sources_dispose(&ctx);return found;
 }

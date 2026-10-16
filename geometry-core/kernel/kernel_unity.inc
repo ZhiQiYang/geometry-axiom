@@ -11,6 +11,7 @@
 #include "linear.h"
 #include "named_values.h"
 #include "datums.h"
+#include "source.h"
 #else
 #include "codec.c"
 #include "exact.c"
@@ -20,5 +21,6 @@
 #include "linear.c"
 #include "named_values.c"
 #include "datums.c"
+#include "source.c"
 #endif
 #endif

@@ -38,7 +38,7 @@ class NativeBuild:
         self.work = Path(self.temp.name)
         self.kernel = self.work / "isolated-kernel"
         self.kernel.mkdir()
-        for name in ("types.h", "exact.h", "exact.c", "codec.h", "codec.c", "geometry.h", "geometry.c", "grid.h", "grid.c", "parameters.h", "parameters.c", "linear.h", "linear.c", "named_values.h", "named_values.c", "datums.h", "datums.c"):
+        for name in ("types.h", "exact.h", "exact.c", "codec.h", "codec.c", "geometry.h", "geometry.c", "grid.h", "grid.c", "parameters.h", "parameters.c", "linear.h", "linear.c", "named_values.h", "named_values.c", "datums.h", "datums.c", "source.h", "source.c"):
             shutil.copy2(ROOT / "geometry-core/kernel" / name, self.kernel / name)
         (self.kernel / "internal").mkdir()
         shutil.copy2(ROOT / "geometry-core/kernel/internal/parameter_store.h", self.kernel / "internal/parameter_store.h")
@@ -68,6 +68,7 @@ class NativeBuild:
         self.linear_object = self.compile(self.kernel / "linear.c", "linear")
         self.named_values_object = self.compile(self.kernel / "named_values.c", "named-values")
         self.datums_object = self.compile(self.kernel / "datums.c", "datums")
+        self.source_object = self.compile(self.kernel / "source.c", "source")
         exact_source = self.work / "exact-client.c"
         shutil.copy2(ROOT / "tests/geo261_exact_harness.c", exact_source)
         self.exact_client = self.compile(exact_source, "exact-client")
@@ -127,7 +128,7 @@ class NativeBuild:
 
     def kernel_objects(self):
         return [self.exact_object, self.codec_object, self.geometry_object, self.grid_object,
-                self.parameters_object, self.linear_object, self.named_values_object, self.datums_object]
+                self.parameters_object, self.linear_object, self.named_values_object, self.datums_object, self.source_object]
 
     def mutant(self, module, before, after, client_object=None):
         text = (self.kernel / (module + ".c")).read_text(encoding="utf-8")
@@ -145,6 +146,7 @@ class NativeBuild:
         linear = changed if module == "linear" else self.linear_object
         named_values = changed if module == "named_values" else self.named_values_object
         datums = changed if module == "datums" else self.datums_object
+        source_object = changed if module == "source" else self.source_object
         if client_object is None:
             client_object = self.exact_client if module == "exact" else self.codec_client
         dependencies = [self.geometry_object] if module == "grid" else []
@@ -157,7 +159,7 @@ class NativeBuild:
         if module == "datums":
             dependencies = [self.geometry_object, self.linear_object, self.exact_object]
         client = self.link(module + "-mutant-client", [client_object, changed, *dependencies])
-        product = self.link(module + "-mutant-bridge", [self.bridge_object, exact, codec, geometry, grid, parameters, linear, named_values, datums])
+        product = self.link(module + "-mutant-bridge", [self.bridge_object, exact, codec, geometry, grid, parameters, linear, named_values, datums, source_object])
         return client, product
 
 

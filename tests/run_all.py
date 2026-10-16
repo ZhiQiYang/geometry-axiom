@@ -84,6 +84,7 @@ PY_NEEDS = {
     'test_geo261_draw_annotation': [],
     'test_geo261_native_linear': [],
     'test_geo261_native_datums': [],
+    'test_geo261_native_sources': [],
     'test_grid_system_contract': ['bridge'],
     'test_grid_subdivision_oracle': ['bridge'],
     'test_grid_trial_contract': ['bridge'],
