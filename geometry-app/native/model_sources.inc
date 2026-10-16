@@ -91,6 +91,15 @@ static void model_source_region(ModelSourceItem *item,size_t i,const PolygonLoop
     for(size_t h=0;h<count;++h)item->holes[i*POLY_MAX_HOLES+h]=(GeoLoop2View){holes[h].v,holes[h].count};
     item->vertex_keys[i]=keys;
 }
+static void model_source_kernel_region(ModelSourceItem *item,size_t i,const GeoRegionView *region,
+    const BoundaryVertexKeys *keys)
+{
+    /* Vertex buffers belong to the same candidate's K store. Copy only the
+     * borrowed view descriptors; caller-owned DTO scratch must not escape. */
+    item->regions[i]=(GeoRegionView){region->outline,item->holes+i*POLY_MAX_HOLES,region->hole_count};
+    for(size_t h=0;h<region->hole_count;++h)item->holes[i*POLY_MAX_HOLES+h]=region->holes[h];
+    item->vertex_keys[i]=keys;
+}
 static void model_source_rectangle(ModelSourceItem *item,GeoRect2 rect)
 {
     item->rectangle[0]=(GeoPoint2){rect.min_u,rect.min_v};item->rectangle[1]=(GeoPoint2){rect.max_u,rect.min_v};
@@ -110,18 +119,18 @@ static bool model_sources_build(ModelSources *state,World *world)
     if(!reference_eval_datums(&state->reference))return false;
     for(size_t i=0;i<world->timber_count;++i)if(!reference_eval_timber(&state->reference,i))return false;
     for(size_t i=0;i<geo_guides_count(&world->guide_lines);++i)if(!reference_eval_guide(&state->reference,i))return false;
-    for(size_t i=0;i<world->placement_count;++i){
-        const PlacementSurface *p=&world->placements[i];
+    for(size_t i=0;i<geo_placements_count(&world->placement_data);++i){
+        const GeoPlacementDefinition *p=geo_placements_at(&world->placement_data,i);
         ModelSourceItem *frame=model_sources_add(state,"placement",p->id,"placement.frame",0,false,GEO_SOURCE_FRAME);
         ModelSourceItem *region=model_sources_add(state,"placement",p->id,"placement.region",0,false,GEO_SOURCE_REGION_SET);
         if(!frame||!region)return false;
         frame->descriptor.context.has_placement=region->descriptor.context.has_placement=true;
         frame->descriptor.context.placement=region->descriptor.context.placement=p->id;frame->value.as.frame=p->frame;
-        const SpaceBoundarySurface *b=world_find_boundary(world,p->boundary_id);
-        size_t count=p->derived_fill_id?p->component_count:1;if(!model_source_regions(region,count))return false;
-        if(p->derived_fill_id){for(size_t c=0;c<count;++c){b=&p->components[c];model_source_region(region,c,&b->outline,b->holes,b->hole_count,NULL);}}
-        else if(b)model_source_region(region,0,&b->outline,b->holes,b->hole_count,world_find_vertex_keys(world,b->id));
-        else model_source_rectangle(region,p->rect);
+        GeoPlacementViewScratch scratch;GeoRegionSetView view;
+        if(!geo_placement_domain_view(p,&world->region_data,&scratch,&view)||!model_source_regions(region,view.count))return false;
+        if(p->domain==GEO_PLACEMENT_RECT)model_source_rectangle(region,p->rect);
+        else for(size_t c=0;c<view.count;++c)model_source_kernel_region(region,c,&view.regions[c],
+            p->domain==GEO_PLACEMENT_REGION_REF?world_find_vertex_keys(world,p->region_id):NULL);
     }
     for(size_t i=0;i<world->column_count+world->beam_count;++i){
         bool column=i<world->column_count;Coord xl,xh,yl,yh,zl,zh;uint32_t id;

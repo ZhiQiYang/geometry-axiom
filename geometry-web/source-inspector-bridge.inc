@@ -198,8 +198,8 @@ static void cmd_source_inspect_file(const char *path)
 {
     size_t length=0;char *text=eng_read_file(path,&length);if(!text){eng_bridge_error("INPUT","Cannot read bounded source snapshot");return;}bool encoded=!memchr(text,0,length)&&utf8_is_valid(text);free(text);if(!encoded){eng_bridge_error("ENCODING","Snapshot must be UTF-8 without NUL");return;}
     World *candidate=calloc(1,sizeof *candidate);ReferencePreview *saved=malloc(sizeof *saved);if(!candidate||!saved){free(candidate);free(saved);eng_bridge_error("MEMORY","Cannot allocate readonly source snapshot");return;}
-    *saved=g_preview;uint32_t serial=g_preview_serial;uint64_t revision=g_definition_revision;const World *previous=g_subgrid_before;g_subgrid_before=NULL;
+    *saved=g_preview;memset(&g_preview,0,sizeof g_preview);uint32_t serial=g_preview_serial;uint64_t revision=g_definition_revision;const World *previous=g_subgrid_before;g_subgrid_before=NULL;
     bool ok=parse_scene_file(path,candidate);SiIndex *s=ok?si_build(candidate):NULL;
-    g_preview=*saved;g_preview_serial=serial;g_definition_revision=revision;g_subgrid_before=previous;
+    app_world_candidate_destroy(g_preview.transaction);g_preview=*saved;g_preview_serial=serial;g_definition_revision=revision;g_subgrid_before=previous;
     if(s){si_json(s,candidate,false);free(s);}else eng_bridge_error("SNAPSHOT_UNCHECKED","Cannot validate or index saved source snapshot");free(candidate);free(saved);
 }

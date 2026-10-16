@@ -105,16 +105,16 @@ static bool reference_source_evaluate(void *opaque,GeoEvalContext *evaluation,co
 }
 static bool reference_sources_ensure(ReferenceEval *ctx)
 {
-    if(ctx->sources)return true;
+    if(ctx->sources_registered)return true;
     /* The lifetime itself is a unique in-process candidate evaluation identity.
      * The host's persistent revision is attached by its publish coordinator. */
-    ctx->sources=geo_eval_create((uint64_t)(uintptr_t)ctx,0);if(!ctx->sources)return false;
+    if(!ctx->sources)ctx->sources=geo_eval_create((uint64_t)(uintptr_t)ctx,0);if(!ctx->sources)return false;
     static const char *const names[]={"app.guide","woodworking.member.pose","app.legacy-reference","core.parameter.field"};
     for(uint32_t token=APP_SOURCE_GUIDE;token<=APP_SOURCE_PARAMETER;++token){
         GeoSourceProvider provider={token,names[token-1],"geo261-native-source/1",ctx,reference_source_describe,reference_source_evaluate};
         if(!geo_eval_register(ctx->sources,&provider)){reference_sources_dispose(ctx);return false;}
     }
-    return true;
+    ctx->sources_registered=true;return true;
 }
 static bool reference_eval_guide(ReferenceEval *ctx,size_t i)
 {

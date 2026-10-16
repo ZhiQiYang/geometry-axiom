@@ -57,6 +57,7 @@ static bool reference_name(const char *name)
 typedef struct {
     World *world;
     GeoEvalContext *sources;
+    bool sources_borrowed,sources_registered;
     bool use_current_values;
     bool wanted[WORLD_MAX_TIMBERS];
 } ReferenceEval;
@@ -65,7 +66,7 @@ static bool reference_eval_timber(ReferenceEval *, size_t);
 static bool reference_eval_timber_relation(ReferenceEval *,size_t,GeoDependencyKind);
 static bool reference_sources_ensure(ReferenceEval *);
 static void reference_sources_dispose(ReferenceEval *ctx)
-{geo_eval_destroy(ctx->sources);ctx->sources=NULL;}
+{if(!ctx->sources_borrowed)geo_eval_destroy(ctx->sources);ctx->sources=NULL;ctx->sources_registered=false;}
 static bool reference_quantity(ReferenceEval *,const GuideLine *,const char *,Coord *);
 static bool reference_parameter_quantity(ReferenceEval *,ParameterRef,GeoQuantity *);
 static int reference_timber_index(const World *w, uint32_t id)
@@ -548,15 +549,25 @@ static bool reference_check_all(const World *w)
 
 static bool reference_rebuild(World *w)
 {
-    ReferenceEval ctx={0}; ctx.world=w; bool ok=true;
+    ReferenceEval local={0},*ctx=&local;bool persistent=false;
+    if(g_active_app_candidate&&w==&g_active_app_candidate->after){
+        AppCandidate *owner=g_active_app_candidate->control;
+        GeoEvalContext *sources=geo_candidate_sources(app_candidate_core(owner));
+        app_candidate_set_evaluation_state(owner,NULL,NULL);
+        if(!sources||!geo_eval_reset(sources))return false;
+        ctx=calloc(1,sizeof *ctx);if(!ctx)return false;
+        ctx->sources=sources;ctx->sources_borrowed=true;persistent=true;
+        app_candidate_set_evaluation_state(owner,ctx,free);
+    }
+    ctx->world=w;bool ok=true;
     geo_guides_reset_resolved(&w->guide_lines);
-    for (size_t i=0;i<w->timber_count;++i) { ctx.wanted[i]=w->timbers[i].placed; w->timbers[i].placed=false; }
-    if (!reference_eval_datums(&ctx)) { if (g_reference_capturing) g_reference_trial=*w; reference_sources_dispose(&ctx); return false; }
+    for (size_t i=0;i<w->timber_count;++i) { ctx->wanted[i]=w->timbers[i].placed; w->timbers[i].placed=false; }
+    if (!reference_eval_datums(ctx)) { if (g_reference_capturing) g_reference_trial=*w; if(!persistent)reference_sources_dispose(ctx); return false; }
     /* Timbers drive guide evaluation as needed; remaining guides are then evaluated. */
-    for (size_t i=0;i<w->timber_count;++i) if (ctx.wanted[i] && !reference_eval_timber(&ctx,i)) ok=false;
-    for (size_t i=0;i<geo_guides_count(&w->guide_lines);++i) if (!reference_eval_guide(&ctx,i)) ok=false;
+    for (size_t i=0;i<w->timber_count;++i) if (ctx->wanted[i] && !reference_eval_timber(ctx,i)) ok=false;
+    for (size_t i=0;i<geo_guides_count(&w->guide_lines);++i) if (!reference_eval_guide(ctx,i)) ok=false;
     if (g_reference_capturing) g_reference_trial=*w;
-    reference_sources_dispose(&ctx);return ok;
+    if(!persistent)reference_sources_dispose(ctx);return ok;
 }
 
 static bool reference_checked(const char *p,int n,World *w)

@@ -353,7 +353,7 @@ static void json_deleted_objects(const World *before,bool all)
             for(size_t j=0;j<geo_parameters_card_count(&g_world.parameters);++j)if(geo_parameters_cards(&g_world.parameters)[j].id==card->id){after=&geo_parameters_cards(&g_world.parameters)[j];break;}
             for(size_t f=0;f<card->count;++f){bool found=false;
                 if(after && !all)for(size_t j=0;j<after->count;++j)if(after->fields[j]==card->fields[f]){found=true;break;}
-                bool intermediate=before==&g_preview.before && g_preview.engineering_batch && g_deleted_fields_token==g_preview.token && receipt_field_deleted(card->id,card->fields[f]);
+                bool intermediate=g_preview.transaction && before==&g_preview.transaction->before && g_preview.engineering_batch && g_deleted_fields_token==g_preview.token && receipt_field_deleted(card->id,card->fields[f]);
                 if(!found || intermediate){printf("%s{\"kind\":\"parameter-field\",\"parameterId\":%u,\"fieldId\":%u}",first_deleted?"":",",card->id,card->fields[f]);first_deleted=false;}}
         }
     }
@@ -390,6 +390,20 @@ static void cmd_replace_world(bool use_default)
     fputs("}\n",stdout);free(before);
 }
 
+static bool app_scene_load_evaluate(void *after,GeoEvalContext *sources,void *opaque)
+{
+    (void)sources;const char *path=opaque;
+    ReferencePreview *saved=malloc(sizeof *saved);
+    if(!saved){scene_error(path,0,"Cannot allocate scene import candidate");return false;}
+    memset(after,0,sizeof(World));
+    *saved=g_preview;memset(&g_preview,0,sizeof g_preview);
+    uint32_t serial=g_preview_serial;uint64_t revision=g_definition_revision;
+    const World *previous=g_subgrid_before;g_subgrid_before=NULL;
+    bool ok=parse_scene_file(path,after);
+    app_world_candidate_destroy(g_preview.transaction);g_preview=*saved;
+    g_preview_serial=serial;g_definition_revision=revision;g_subgrid_before=previous;free(saved);
+    return ok;
+}
 static void cmd_loadfile(const char *path)
 {
     /*
@@ -413,15 +427,17 @@ static void cmd_loadfile(const char *path)
     }
 
     /* 先記快照：失敗時世界不動，成功時載入本身可以 undo。 */
-    World *draft=calloc(1,sizeof *draft);ReferencePreview *saved=malloc(sizeof *saved);
-    if(!draft || !saved){free(draft);free(saved);fputs("{\"ok\":false,\"error\":\"Candidate memory unavailable\"}\n",stdout);return;}
-    *saved=g_preview;uint32_t serial=g_preview_serial;uint64_t revision=g_definition_revision;
-    const World *previous=g_subgrid_before;g_subgrid_before=NULL;
+    AppWorldCandidate *transaction=app_world_candidate_create(&g_world);
+    if(!transaction){fputs("{\"ok\":false,\"error\":\"Candidate memory unavailable\"}\n",stdout);return;}
     g_fs_diagnostic=FS_DIAGNOSTIC_INVALID;
-    bool loaded=parse_scene_file(path,draft);
-    g_preview=*saved;g_preview_serial=serial;g_definition_revision=revision;g_subgrid_before=previous;free(saved);
+    bool loaded=app_world_candidate_evaluate(transaction,app_scene_load_evaluate,(void*)path)==GEO_CANDIDATE_OK;
+    if(loaded)loaded=app_world_candidate_seal(transaction);
     if (loaded) {
-        history_record(&g_world);g_world=*draft;g_preview.ready=false;
+        history_record(&g_world);
+        if(!app_world_candidate_publish(transaction,&g_world,false)){
+            history_unrecord();app_world_candidate_destroy(transaction);
+            fputs("{\"ok\":false,\"error\":\"Scene import candidate changed during validation\"}\n",stdout);return;}
+        g_preview.ready=false;
         ++g_definition_revision;
         char hash[65]; bool hashed=eng_definition_hash(&g_world,hash);
         printf("{\"ok\":true,\"revision\":%llu,",(unsigned long long)g_definition_revision);
@@ -435,7 +451,7 @@ static void cmd_loadfile(const char *path)
         fputs(",\"code\":",stdout);js_string(g_fs_diagnostic==FS_DIAGNOSTIC_CAPACITY?"CAPACITY":"SCENE_INVALID");
         fputs("}\n", stdout);
     }
-    free(draft);
+    app_world_candidate_destroy(transaction);
 }
 
 /* ---- 畫布指令 ---- */

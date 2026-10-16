@@ -87,11 +87,11 @@ static void json_section_profile_preview(void)
     /* Source operations disclose both existing geometry and Q38 dependencies. */
     char error[sizeof g_engineering_error];snprintf(error,sizeof error,"%s",g_engineering_error[0]?g_engineering_error:scene_last_error());
     printf("{\"token\":%u,\"valid\":%s,\"revision\":%llu,\"diagnosticsComplete\":true,\"validationStrategy\":\"all-section-profile-violations\"",g_preview.token,g_preview.valid?"true":"false",(unsigned long long)g_preview.revision);
-    fputs(",\"before\":",stdout);json_engineering_state(&g_preview.before,true);
-    fputs(",\"after\":",stdout);json_engineering_state(&g_preview.after,true);
+    fputs(",\"before\":",stdout);json_engineering_state(&g_preview.transaction->before,true);
+    fputs(",\"after\":",stdout);json_engineering_state(&g_preview.transaction->after,true);
     snprintf(g_engineering_error,sizeof g_engineering_error,"%s",error);
-    json_section_profile_impact(&g_preview.before,&g_preview.after);fputs(",\"violations\":",stdout);
-    sp_json_violations(&g_preview.before,&g_preview.after,!g_preview.valid);putchar('}');
+    json_section_profile_impact(&g_preview.transaction->before,&g_preview.transaction->after);fputs(",\"violations\":",stdout);
+    sp_json_violations(&g_preview.transaction->before,&g_preview.transaction->after,!g_preview.valid);putchar('}');
 }
 static void cmd_section_profile_read(void)
 {

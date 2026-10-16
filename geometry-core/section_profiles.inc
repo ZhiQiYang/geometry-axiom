@@ -99,10 +99,8 @@ static bool sp_operation(World *w,GeoJson *j,int t)
     if(!strcmp(op,"convert-run-to-advanced")||!strcmp(op,"convert-run-to-simple"))return sp_convert_run(w,j,t,!strcmp(op,"convert-run-to-simple"));
     if(!strcmp(op,"delete-placement")){
         uint32_t id;if(!geo_json_keys(j,t,"op,id","")||!eng_u32(j,geo_json_member(j,t,"id"),&id,false))return sp_error("I49: invalid placement identity");
-        size_t i=0;while(i<w->placement_count&&w->placements[i].id!=id)++i;
-        if(i==w->placement_count)return sp_error("I49: placement does not exist");
-        memmove(w->placements+i,w->placements+i+1,(w->placement_count-i-1)*sizeof w->placements[0]);memset(&w->placements[--w->placement_count],0,sizeof w->placements[0]);
-        for(i=0;i<w->canvas_pos_count;++i)if(w->canvas_pos[i].kind==CANVAS_POS_PLACEMENT&&w->canvas_pos[i].id==id){memmove(w->canvas_pos+i,w->canvas_pos+i+1,(w->canvas_pos_count-i-1)*sizeof w->canvas_pos[0]);memset(&w->canvas_pos[--w->canvas_pos_count],0,sizeof w->canvas_pos[0]);break;}
+        if(!app_placement_remove(w,id))return sp_error("I49: placement does not exist");
+        for(size_t i=0;i<w->canvas_pos_count;++i)if(w->canvas_pos[i].kind==CANVAS_POS_PLACEMENT&&w->canvas_pos[i].id==id){memmove(w->canvas_pos+i,w->canvas_pos+i+1,(w->canvas_pos_count-i-1)*sizeof w->canvas_pos[0]);memset(&w->canvas_pos[--w->canvas_pos_count],0,sizeof w->canvas_pos[0]);break;}
         return true;
     }
     if(!strcmp(op,"put-profile")||!strcmp(op,"put-member")||!strcmp(op,"put-run")){

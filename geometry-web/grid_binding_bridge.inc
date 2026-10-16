@@ -31,8 +31,8 @@ static bool boundary_preview_changed(const SpaceBoundarySurface *before,const Sp
     if (!before || !after) return true;
     char a[65]="",b[65]=""; boundary_geometry_hash(before,a); boundary_geometry_hash(after,b);
     if (strcmp(a,b)) return true;
-    const BoundaryVertexKeys *ak=world_find_vertex_keys(&g_preview.before,before->id);
-    const BoundaryVertexKeys *bk=world_find_vertex_keys(&g_preview.after,after->id);
+    const BoundaryVertexKeys *ak=world_find_vertex_keys(&g_preview.transaction->before,before->id);
+    const BoundaryVertexKeys *bk=world_find_vertex_keys(&g_preview.transaction->after,after->id);
     if (!ak || !bk) return ak!=bk;
     if (ak->loop_count!=bk->loop_count) return true;
     for (size_t li=0;li<ak->loop_count;++li) {
@@ -45,20 +45,20 @@ static bool boundary_preview_changed(const SpaceBoundarySurface *before,const Sp
 static void json_boundary_preview(void)
 {
     fputs(",\"boundaries\":[",stdout); bool first=true;
-    for (size_t i=0;i<world_boundary_count(&g_preview.before);++i) {
-        const SpaceBoundarySurface *before=world_boundary_at(&g_preview.before,i);
-        const SpaceBoundarySurface *after=world_find_boundary(&g_preview.after,before->id);
+    for (size_t i=0;i<world_boundary_count(&g_preview.transaction->before);++i) {
+        const SpaceBoundarySurface *before=world_boundary_at(&g_preview.transaction->before,i);
+        const SpaceBoundarySurface *after=world_find_boundary(&g_preview.transaction->after,before->id);
         if (!boundary_preview_changed(before,after)) continue;
         printf("%s{\"id\":%u,\"before\":",first?"":",",before->id); first=false;
-        json_boundary_definition(&g_preview.before,before,false); fputs(",\"after\":",stdout);
-        if (after) json_boundary_definition(&g_preview.after,after,false); else fputs("null",stdout);
+        json_boundary_definition(&g_preview.transaction->before,before,false); fputs(",\"after\":",stdout);
+        if (after) json_boundary_definition(&g_preview.transaction->after,after,false); else fputs("null",stdout);
         putchar('}');
     }
-    for (size_t i=0;i<world_boundary_count(&g_preview.after);++i) {
-        const SpaceBoundarySurface *after=world_boundary_at(&g_preview.after,i);
-        if (world_find_boundary(&g_preview.before,after->id)) continue;
+    for (size_t i=0;i<world_boundary_count(&g_preview.transaction->after);++i) {
+        const SpaceBoundarySurface *after=world_boundary_at(&g_preview.transaction->after,i);
+        if (world_find_boundary(&g_preview.transaction->before,after->id)) continue;
         printf("%s{\"id\":%u,\"before\":null,\"after\":",first?"":",",after->id); first=false;
-        json_boundary_definition(&g_preview.after,after,false); putchar('}');
+        json_boundary_definition(&g_preview.transaction->after,after,false); putchar('}');
     }
     putchar(']');
 }
@@ -219,19 +219,19 @@ static void json_grid_binding(const World *w,const GridBinding *binding,bool wit
 static void json_grid_binding_preview(void)
 {
     fputs(",\"gridBindings\":[",stdout); bool first=true;
-    for (size_t i=0;i<geo_grid_bindings_count(&g_preview.before.grid_store);++i) {
-        const GridBinding *before=geo_grid_bindings_at(&g_preview.before.grid_store,i);
-        const GridBinding *after=world_find_grid_binding(&g_preview.after,before->id);
+    for (size_t i=0;i<geo_grid_bindings_count(&g_preview.transaction->before.grid_store);++i) {
+        const GridBinding *before=geo_grid_bindings_at(&g_preview.transaction->before.grid_store,i);
+        const GridBinding *after=world_find_grid_binding(&g_preview.transaction->after,before->id);
         printf("%s{\"id\":%u,\"before\":",first?"":",",before->id); first=false;
-        json_grid_binding(&g_preview.before,before,true); fputs(",\"after\":",stdout);
-        if (after) json_grid_binding(&g_preview.after,after,true); else fputs("null",stdout);
+        json_grid_binding(&g_preview.transaction->before,before,true); fputs(",\"after\":",stdout);
+        if (after) json_grid_binding(&g_preview.transaction->after,after,true); else fputs("null",stdout);
         putchar('}');
     }
-    for (size_t i=0;i<geo_grid_bindings_count(&g_preview.after.grid_store);++i) {
-        const GridBinding *after=geo_grid_bindings_at(&g_preview.after.grid_store,i);
-        if (world_find_grid_binding(&g_preview.before,after->id)) continue;
+    for (size_t i=0;i<geo_grid_bindings_count(&g_preview.transaction->after.grid_store);++i) {
+        const GridBinding *after=geo_grid_bindings_at(&g_preview.transaction->after.grid_store,i);
+        if (world_find_grid_binding(&g_preview.transaction->before,after->id)) continue;
         printf("%s{\"id\":%u,\"before\":null,\"after\":",first?"":",",after->id); first=false;
-        json_grid_binding(&g_preview.after,after,true); putchar('}');
+        json_grid_binding(&g_preview.transaction->after,after,true); putchar('}');
     }
     putchar(']');
 }

@@ -155,16 +155,14 @@ static bool surface_frame_is_valid(const SurfaceFrame *frame)
 #define DP_COMPONENT_MAX 8
 #define GUIDE_MAX_SEGMENTS (DP_COMPONENT_MAX * POLY_MAX_VERTICES * (POLY_MAX_HOLES + 1))
 
-typedef enum {
-    EDGE_FREE = 0,      /* 外側無垂直實體面可釘（挑空/陽角/門洞…） */
-    EDGE_FIXED = 1      /* 有：牆、樓板、樑底、柱面、陰角 */
-} EdgeFixity;
-
-typedef enum {
-    BOUNDARY_UNSPECIFIED,
-    BOUNDARY_ROOM_PLAN,        /* 平面圖視角 */
-    BOUNDARY_WALL_ELEVATION    /* 立面 */
-} BoundaryKind;
+#include "geometry-templates/woodworking/native/boundary_policy.h"
+typedef WoodEdgeFixity EdgeFixity;
+typedef WoodBoundaryKind BoundaryKind;
+#define EDGE_FREE WOOD_EDGE_FREE
+#define EDGE_FIXED WOOD_EDGE_FIXED
+#define BOUNDARY_UNSPECIFIED WOOD_BOUNDARY_UNSPECIFIED
+#define BOUNDARY_ROOM_PLAN WOOD_BOUNDARY_ROOM_PLAN
+#define BOUNDARY_WALL_ELEVATION WOOD_BOUNDARY_WALL_ELEVATION
 
 typedef struct {
     SurfacePoint2 v[POLY_MAX_VERTICES];
@@ -1568,8 +1566,10 @@ typedef struct {
     Coord x_lo, x_hi, y_lo, y_hi, z_lo, z_hi;
 } RcBeam;
 
-/* 一張圖要畫的所有東西；全部只是引用，不複製。 */
+/* Drawing borrows the host or standalone demo arrays; DTOs are read locally. */
+struct World;
 typedef struct {
+    const struct World *domain_world;
     const PlacementSurface *placements;
     size_t placement_count;
     const SpaceBoundarySurface *boundaries;
@@ -1587,39 +1587,47 @@ typedef struct {
     const RcBeam *beams;
     size_t beam_count;
 } Scene;
+static const PlacementSurface *app_scene_placement_at(const Scene *,size_t,PlacementSurface *);
+static const SpaceBoundarySurface *app_scene_boundary_at(const Scene *,size_t,SpaceBoundarySurface *);
+#define scene_placement_at(s,i) app_scene_placement_at((s),(i),&(PlacementSurface){0})
+#define scene_boundary_at(s,i) app_scene_boundary_at((s),(i),&(SpaceBoundarySurface){0})
 
-static const PlacementSurface *scene_find_placement(
+static const PlacementSurface *app_scene_find_placement(
     const Scene *scene,
-    SurfaceId id
+    SurfaceId id, PlacementSurface *out
 )
 {
     for (size_t i = 0; i < scene->placement_count; ++i) {
-        if (scene->placements[i].id == id) {
-            return &scene->placements[i];
+        if (scene_placement_at(scene,i)->id == id) {
+            return app_scene_placement_at(scene,i,out);
         }
     }
 
     return NULL;
 }
+#define scene_find_placement(s,id) app_scene_find_placement((s),(id),&(PlacementSurface){0})
 
-static const SpaceBoundarySurface *scene_find_boundary(
+
+static const SpaceBoundarySurface *app_scene_find_boundary(
     const Scene *scene,
-    SurfaceId id
+    SurfaceId id, SpaceBoundarySurface *out
 )
 {
     for (size_t i = 0; i < scene->boundary_count; ++i) {
-        if (scene->boundaries[i].id == id) {
-            return &scene->boundaries[i];
+        if (scene_boundary_at(scene,i)->id == id) {
+            return app_scene_boundary_at(scene,i,out);
         }
     }
 
     return NULL;
 }
+#define scene_find_boundary(s,id) app_scene_find_boundary((s),(id),&(SpaceBoundarySurface){0})
+
 
 /* 承載面掛的邊界面（0 = 沒掛）。 */
-static const SpaceBoundarySurface *scene_placement_boundary(
+static const SpaceBoundarySurface *app_scene_placement_boundary(
     const Scene *scene,
-    const PlacementSurface *placement
+    const PlacementSurface *placement, SpaceBoundarySurface *out
 )
 {
     if(placement->derived_fill_id) return placement->component_count?&placement->components[0]:NULL;
@@ -1627,8 +1635,10 @@ static const SpaceBoundarySurface *scene_placement_boundary(
         return NULL;
     }
 
-    return scene_find_boundary(scene, placement->boundary_id);
+    return app_scene_find_boundary(scene, placement->boundary_id,out);
 }
+#define scene_placement_boundary(s,p) app_scene_placement_boundary((s),(p),&(SpaceBoundarySurface){0})
+
 
 /* 畫什麼「角色」由幾何層決定；長什麼樣子由各後端決定。 */
 typedef enum {
@@ -2008,7 +2018,7 @@ static void scene_draw_view(
     char label[128];
 
     for (size_t s = 0; s < scene->placement_count; ++s) {
-        const PlacementSurface *surface = &scene->placements[s];
+        const PlacementSurface *surface = scene_placement_at(scene,s);
         const SpaceBoundarySurface *boundary =
             scene_placement_boundary(scene, surface);
 
@@ -2626,7 +2636,7 @@ static ScenePick scene_pick_at(
     Coord best2 = pick_radius * pick_radius;
     for (size_t pi=0;pi<scene->placement_count;++pi) {
     for (size_t i = 0; i < scene->guide_count; ++i) {
-        if (scene->guides[i].placement_id!=scene->placements[pi].id) continue;
+        if (scene->guides[i].placement_id!=scene_placement_at(scene,pi)->id) continue;
         const GuideLine *guide = &scene->guides[i];
         const PlacementSurface *surface =
             scene_find_placement(scene, guide->placement_id);
@@ -3032,14 +3042,14 @@ typedef struct World {
     GeoDatumStore datum_planes;
     AppDatumText datum_texts[WORLD_MAX_DATUMS];
     uint64_t next_order;
-    SpaceBoundarySurface boundaries[WORLD_MAX_BOUNDARIES];
-    size_t boundary_count;
-    GeoRegionStore region_data; /* K owns stable vertex identity and allocation. */
+    GeoRegionStore region_data; /* K owns geometry and stable vertex identities. */
+    WoodBoundaryPolicy boundary_policy[WORLD_MAX_BOUNDARIES];
     GeoGridStore grid_store; /* K owns reusable definitions and vertex bindings. */
     int grid_main_along[WORLD_MAX_GRID_SYSTEMS]; /* H role metadata, same order as K sources. */
 
-    PlacementSurface placements[WORLD_MAX_PLACEMENTS];
-    size_t placement_count;
+    GeoPlacementStore placement_data;
+    WoodPlacementPolicy placement_policy[WORLD_MAX_PLACEMENTS];
+    AppPlacementMetadata placement_metadata[WORLD_MAX_PLACEMENTS];
 
     GeoGuideStore guide_lines;
     AppGuideText guide_texts[WORLD_MAX_GUIDES];
@@ -3071,6 +3081,8 @@ typedef struct World {
     bool parameter_loading; /* H atomic scene-input state, outside K storage. */
     FinishSurfaceState finish_surfaces;   /* D41 finish surfaces (panel-fill/1, PF-1) */
 } World;
+
+#include "geometry-app/native/domains.inc"
 
 #include "geometry-app/native/grid_adapter.inc"
 
@@ -3210,10 +3222,8 @@ static bool apply_reference_move(const char *, int, char **, int, World *);
 static bool apply_reference_place(const char *, int, char **, int, World *);
 static bool apply_spec_line(const char *, int, char **, int, World *);
 static Scene scene_from_world(const World *world);
-static const PlacementSurface *world_find_placement(
-    const World *world, uint32_t id);
-static const SpaceBoundarySurface *world_find_boundary(
-    const World *world, uint32_t id);
+
+
 static const Space *world_find_space(const World *world, uint32_t id);
 static const RcColumn *world_find_column(const World *world, uint32_t id);
 static const RcBeam *world_find_beam(const World *world, uint32_t id);
@@ -3299,6 +3309,8 @@ static void history_restore_world(World *w, const World *snap)
         }
     }
 }
+
+#include "geometry-app/native/world_candidate.inc"
 
 static void app_history_restore_world(void *document,const void *snapshot,void *opaque)
 {(void)opaque;history_restore_world((World*)document,(const World*)snapshot);}
@@ -3437,23 +3449,23 @@ static bool parse_scene_file(const char *path, World *out_world);
 static uint32_t world_next_surface_id(const World *world)
 {
     uint32_t id = 0;
-    size_t used = world->boundary_count + world->placement_count;
+    size_t used = world_boundary_count(world) + world_placement_count(world);
 
-    for (size_t i = 0; i < world->boundary_count; ++i)
-        if (world->boundaries[i].id > id) id = world->boundaries[i].id;
-    for (size_t i = 0; i < world->placement_count; ++i)
-        if (world->placements[i].id > id) id = world->placements[i].id;
+    for (size_t i = 0; i < world_boundary_count(world); ++i)
+        if (geo_regions_at(&world->region_data,i)->id > id) id = geo_regions_at(&world->region_data,i)->id;
+    for (size_t i = 0; i < world_placement_count(world); ++i)
+        if (geo_placements_at(&world->placement_data,i)->id > id) id = geo_placements_at(&world->placement_data,i)->id;
     ++id;
 
     for (size_t attempt = 0; attempt <= used; ++attempt) {
         bool taken = false;
 
         if (id == 0) id = 1;        /* 任何一輪回繞到保留值都要跳過 */
-        for (size_t i = 0; i < world->boundary_count; ++i)
-            if (world->boundaries[i].id == id) { taken = true; break; }
+        for (size_t i = 0; i < world_boundary_count(world); ++i)
+            if (geo_regions_at(&world->region_data,i)->id == id) { taken = true; break; }
         if (!taken) {
-            for (size_t i = 0; i < world->placement_count; ++i)
-                if (world->placements[i].id == id) { taken = true; break; }
+            for (size_t i = 0; i < world_placement_count(world); ++i)
+                if (geo_placements_at(&world->placement_data,i)->id == id) { taken = true; break; }
         }
         if (!taken) return id;
         ++id;
@@ -4059,8 +4071,8 @@ static void app_refresh(GdiApp *app, HWND window)
     /* 工作面被刪掉時回退到第一片；編輯工具的目標也跟著重取。 */
     if (app->work_placement != 0 &&
         world_find_placement(app->world, app->work_placement) == NULL) {
-        app->work_placement = app->world->placement_count > 0
-            ? app->world->placements[0].id : 0;
+        app->work_placement = world_placement_count(app->world) > 0
+            ? geo_placements_at(&app->world->placement_data,0)->id : 0;
     }
     if (app->canvas_tool == TOOL_EDIT) {
         gdi_enter_edit(app);
@@ -4304,7 +4316,7 @@ static const PlacementSurface *canvas_work_surface(
         tmp->frame.normal = (Vector3){ 0, 0, 1 };
         return tmp;
     }
-    return world_find_placement(app->world, app->work_placement);
+    return app_placement_read(app->world, app->work_placement,tmp);
 }
 
 /* 畫布產生新物件用的 id;0 = 配不到(GEO-158)。 */
@@ -4671,8 +4683,8 @@ static void gdi_rebuild_surf_menu(GdiApp *app)
     while (GetMenuItemCount(app->surf_menu) > 0) {
         DeleteMenu(app->surf_menu, 0, MF_BYPOSITION);
     }
-    for (size_t i = 0; i < app->world->placement_count; ++i) {
-        const PlacementSurface *p = &app->world->placements[i];
+    for (size_t i = 0; i < world_placement_count(app->world); ++i) {
+        const PlacementSurface *p = world_placement_at(app->world,i);
         WCHAR label[96];
         swprintf(label, 96, L"面 %u（z=%lld%hs）",
                  (unsigned)p->id, (long long)p->frame.origin.z,
@@ -4680,7 +4692,7 @@ static void gdi_rebuild_surf_menu(GdiApp *app)
         AppendMenuW(app->surf_menu, MF_STRING,
                     (UINT_PTR)(IDM_WORK_BASE + i), label);
     }
-    if (app->world->placement_count > 0) {
+    if (world_placement_count(app->world) > 0) {
         AppendMenuW(app->surf_menu, MF_SEPARATOR, 0, NULL);
     }
     AppendMenuW(app->surf_menu, MF_STRING, IDM_WORK_NEW_Z0, L"＋新水平面 z=0");
@@ -4920,9 +4932,9 @@ static LRESULT CALLBACK gdi_window_proc(HWND window, UINT message, WPARAM wparam
             if (LOWORD(wparam) >= IDM_WORK_BASE &&
                 LOWORD(wparam) < IDM_WORK_NEW_Z0 &&
                 (size_t)(LOWORD(wparam) - IDM_WORK_BASE) <
-                    app->world->placement_count) {
+                    world_placement_count(app->world)) {
                 app->work_placement =
-                    app->world->placements[LOWORD(wparam) - IDM_WORK_BASE].id;
+                    geo_placements_at(&app->world->placement_data,LOWORD(wparam) - IDM_WORK_BASE)->id;
                 canvas_reset_drawing(app);
                 if (app->canvas_tool == TOOL_EDIT) gdi_enter_edit(app);
                 InvalidateRect(window, NULL, FALSE);
@@ -5502,10 +5514,9 @@ bench_cleanup:
 static Scene scene_from_world(const World *world)
 {
     return (Scene){
-        .placements = world->placements,
-        .placement_count = world->placement_count,
-        .boundaries = world->boundaries,
-        .boundary_count = world->boundary_count,
+        .domain_world = world,
+        .placement_count = world_placement_count(world),
+        .boundary_count = world_boundary_count(world),
         .spaces = world->spaces,
         .space_count = world->space_count,
         .guides = geo_guides_values(&world->guide_lines),
@@ -5778,33 +5789,9 @@ static const char *scene_last_error(void)
     return g_scene_last_error;
 }
 
-static const SpaceBoundarySurface *world_find_boundary(
-    const World *world,
-    uint32_t id
-)
-{
-    for (size_t i = 0; i < world->boundary_count; ++i) {
-        if (world->boundaries[i].id == id) {
-            return &world->boundaries[i];
-        }
-    }
 
-    return NULL;
-}
 
-static const PlacementSurface *world_find_placement(
-    const World *world,
-    uint32_t id
-)
-{
-    for (size_t i = 0; i < world->placement_count; ++i) {
-        if (world->placements[i].id == id) {
-            return &world->placements[i];
-        }
-    }
 
-    return NULL;
-}
 
 static const Space *world_find_space(const World *world, uint32_t id)
 {
@@ -5840,18 +5827,7 @@ static const RcBeam *world_find_beam(const World *world, uint32_t id)
 }
 
 /* 承載面掛的邊界面；0 或未找到都回 NULL（= 自帶 rect 模式）。 */
-static const SpaceBoundarySurface *world_placement_boundary(
-    const World *world,
-    const PlacementSurface *placement
-)
-{
-    if(placement && placement->derived_fill_id) return placement->component_count?&placement->components[0]:NULL;
-    if (placement == NULL || placement->boundary_id == 0) {
-        return NULL;
-    }
 
-    return world_find_boundary(world, placement->boundary_id);
-}
 
 static const GuideLine *world_find_guide(const World *world, uint32_t id)
 {return geo_guides_find(&world->guide_lines,id);}
@@ -6071,12 +6047,13 @@ static bool space_construct(
         }
 
         /* 這片邊界面必須恰有一片承載面掛著。 */
+        PlacementSurface face_value;
         const PlacementSurface *face = NULL;
         size_t carriers = 0;
 
-        for (size_t p = 0; p < world->placement_count; ++p) {
-            if (world->placements[p].boundary_id == bd->id) {
-                face = &world->placements[p];
+        for (size_t p = 0; p < world_placement_count(world); ++p) {
+            if (world_placement_at(world,p)->boundary_id == bd->id) {
+                face = app_placement_at(world,p,&face_value);
                 ++carriers;
             }
         }
@@ -7312,6 +7289,11 @@ static bool world_replace_object(
     return true;
 }
 
+static bool app_boundary_replace(World *world,const SpaceBoundarySurface *value)
+{World backup=*world;if(!app_boundary_stage(world,value)||!world_revalidate(world)){*world=backup;return false;}return true;}
+static bool app_placement_replace(World *world,const PlacementSurface *value)
+{World backup=*world;if(!app_placement_stage(world,value)||!world_revalidate(world)){*world=backup;return false;}return true;}
+
 /*
  * World 全量重驗：
  *   承載面自身合法、掛的邊界面存在；
@@ -7331,14 +7313,14 @@ static bool grid_subdivision_used(const World *);
 
 static bool world_validate_derived(const World *world)
 {
-    for (size_t i = 0; i < world->boundary_count; ++i) {
-        if (!boundary_is_valid(&world->boundaries[i])) {
+    for (size_t i = 0; i < world_boundary_count(world); ++i) {
+        if (!boundary_is_valid(world_boundary_at(world,i))) {
             return false;
         }
     }
 
-    for (size_t i = 0; i < world->placement_count; ++i) {
-        const PlacementSurface *p = &world->placements[i];
+    for (size_t i = 0; i < world_placement_count(world); ++i) {
+        const PlacementSurface *p = world_placement_at(world,i);
 
         if (!placement_is_valid(p)) {
             return false;
@@ -7544,9 +7526,9 @@ static bool world_validate_derived(const World *world)
     }
 
     /* D17/I21：每片承載面推導主支軸,驗證角色-方向一致。 */
-    for (size_t i = 0; i < world->placement_count; ++i) {
+    for (size_t i = 0; i < world_placement_count(world); ++i) {
         if (!surface_primary_axis_check(
-                world, world->placements[i].id, NULL, false,
+                world, geo_placements_at(&world->placement_data,i)->id, NULL, false,
                 NULL, 0)) {
             return false;
         }
@@ -7617,6 +7599,7 @@ static bool world_validate_derived(const World *world)
  * 失敗不會留下部分更新。位置與長度重算，引用與格線索引保持原意。 */
 static bool world_revalidate_candidate(World *world,World *candidate)
 {
+    (void)world;
     g_revalidate_error[0] = '\0';
     char grid_error[256]="";
     if (!boundary_keys_reconcile(candidate,g_subgrid_before,grid_error,sizeof grid_error)) {
@@ -7668,7 +7651,8 @@ static bool world_revalidate_candidate(World *world,World *candidate)
     }
 
     for (size_t i = 0; i < candidate->space_count; ++i) {
-        const Space *s = &world->spaces[i];
+        Space definition=candidate->spaces[i];
+        const Space *s=&definition;
         if (s->boundary_count == 0) {
             candidate->spaces[i] = (Space){0};
             candidate->spaces[i].id = s->id;
@@ -7686,17 +7670,25 @@ static bool world_revalidate_candidate(World *world,World *candidate)
         return false;
     }
     if (!assembly_generation_check(candidate)) { set_revalidate_error(g_engineering_error); return false; }
-    *world = *candidate;
     return true;
 }
 
+static bool app_world_revalidate_evaluate(void *after,GeoEvalContext *sources,void *before)
+{
+    (void)sources;
+    return world_revalidate_candidate((World*)before,(World*)after);
+}
 static bool world_revalidate(World *world)
 {
-    World *candidate=malloc(sizeof *candidate);
+    /* An existing H transaction owns this exact after snapshot. Failure stays
+     * isolated there; the caller retains its old primary diagnostic policy. */
+    if(g_active_app_candidate&&world==&g_active_app_candidate->after)
+        return world_revalidate_candidate(world,world);
+    AppWorldCandidate *candidate=app_world_candidate_create(world);
     if(!candidate){set_revalidate_error("I32: candidate World allocation failed");return false;}
-    *candidate=*world;
-    bool ok=world_revalidate_candidate(world,candidate);
-    free(candidate);return ok;
+    bool ok=app_world_candidate_evaluate(candidate,app_world_revalidate_evaluate,&candidate->before)==GEO_CANDIDATE_OK;
+    if(ok)ok=app_world_candidate_seal(candidate)&&app_world_candidate_publish(candidate,world,false);
+    app_world_candidate_destroy(candidate);return ok;
 }
 
 /* ---- 共用小解析工具 ---- */
@@ -7945,11 +7937,9 @@ static bool apply_boundary_line(
 
     candidate.id = id;
 
-    for (size_t i = 0; i < world->boundary_count; ++i) {
-        if (world->boundaries[i].id == id) {
-            if (!world_replace_object(
-                    world, &world->boundaries[i],
-                    &candidate, sizeof candidate)) {
+    for (size_t i = 0; i < world_boundary_count(world); ++i) {
+        if (geo_regions_at(&world->region_data,i)->id == id) {
+            if (!app_boundary_replace(world,&candidate)) {
                 scene_error(path, line_no,
                     "重宣告後有物件失效（承載面/參考線/角材/空間沒全過）");
                 return false;
@@ -7958,12 +7948,12 @@ static bool apply_boundary_line(
         }
     }
 
-    if (world->boundary_count == WORLD_MAX_BOUNDARIES) {
+    if (world_boundary_count(world) == WORLD_MAX_BOUNDARIES) {
         scene_error(path, line_no, "邊界面的數量超過上限");
         return false;
     }
 
-    world->boundaries[world->boundary_count++] = candidate;
+    if(!app_boundary_stage(world,&candidate))return false;
     return true;
 }
 
@@ -8134,11 +8124,9 @@ static bool apply_placement_line(
         return false;
     }
 
-    for (size_t i = 0; i < world->placement_count; ++i) {
-        if (world->placements[i].id == id) {
-            if (!world_replace_object(
-                    world, &world->placements[i],
-                    &candidate, sizeof candidate)) {
+    for (size_t i = 0; i < world_placement_count(world); ++i) {
+        if (geo_placements_at(&world->placement_data,i)->id == id) {
+            if (!app_placement_replace(world,&candidate)) {
                 scene_error(path, line_no,
                     "重宣告後有物件失效（參考線/角材/空間沒全過）");
                 return false;
@@ -8147,13 +8135,13 @@ static bool apply_placement_line(
         }
     }
 
-    if (world->placement_count == WORLD_MAX_PLACEMENTS) {
+    if (world_placement_count(world) == WORLD_MAX_PLACEMENTS) {
         scene_error(path, line_no, "承載面的數量超過上限");
         return false;
     }
 
     World backup = *world;
-    world->placements[world->placement_count++] = candidate;
+    if(!app_placement_stage(world,&candidate)){*world=backup;return false;}
     if (!world_revalidate(world)) {
         *world = backup;
         scene_error(path, line_no, "新增承載面後有物件失效（已回滾）");
@@ -8233,11 +8221,9 @@ static bool apply_surface_combined_line(
             return false;
         }
 
-        for (size_t i = 0; i < world->placement_count; ++i) {
-            if (world->placements[i].id == id) {
-                if (!world_replace_object(
-                        world, &world->placements[i],
-                        &candidate, sizeof candidate)) {
+        for (size_t i = 0; i < world_placement_count(world); ++i) {
+            if (geo_placements_at(&world->placement_data,i)->id == id) {
+                if (!app_placement_replace(world,&candidate)) {
                     scene_error(path, line_no,
                         "重宣告後有物件失效");
                     return false;
@@ -8246,13 +8232,13 @@ static bool apply_surface_combined_line(
             }
         }
 
-        if (world->placement_count == WORLD_MAX_PLACEMENTS) {
+        if (world_placement_count(world) == WORLD_MAX_PLACEMENTS) {
             scene_error(path, line_no, "承載面的數量超過上限");
             return false;
         }
 
         World backup = *world;
-        world->placements[world->placement_count++] = candidate;
+        if(!app_placement_stage(world,&candidate)){*world=backup;return false;}
         if (!world_revalidate(world)) {
             *world = backup;
             scene_error(path, line_no, "新增承載面後有物件失效（已回滾）");
@@ -8349,18 +8335,18 @@ static bool apply_surface_combined_line(
     bool replace_b = false;
     bool replace_p = false;
 
-    for (size_t i = 0; i < world->boundary_count; ++i) {
-        if (world->boundaries[i].id == id) { replace_b = true; break; }
+    for (size_t i = 0; i < world_boundary_count(world); ++i) {
+        if (geo_regions_at(&world->region_data,i)->id == id) { replace_b = true; break; }
     }
-    for (size_t i = 0; i < world->placement_count; ++i) {
-        if (world->placements[i].id == id) { replace_p = true; break; }
+    for (size_t i = 0; i < world_placement_count(world); ++i) {
+        if (geo_placements_at(&world->placement_data,i)->id == id) { replace_p = true; break; }
     }
 
-    if (!replace_b && world->boundary_count == WORLD_MAX_BOUNDARIES) {
+    if (!replace_b && world_boundary_count(world) == WORLD_MAX_BOUNDARIES) {
         scene_error(path, line_no, "邊界面的數量超過上限");
         return false;
     }
-    if (!replace_p && world->placement_count == WORLD_MAX_PLACEMENTS) {
+    if (!replace_p && world_placement_count(world) == WORLD_MAX_PLACEMENTS) {
         scene_error(path, line_no, "承載面的數量超過上限");
         return false;
     }
@@ -8368,26 +8354,8 @@ static bool apply_surface_combined_line(
     /* 借用 world_replace_object 的交易語意：分兩步，第二步失敗要還原第一步。 */
     World backup = *world;
 
-    if (replace_b) {
-        for (size_t i = 0; i < world->boundary_count; ++i) {
-            if (world->boundaries[i].id == id) {
-                world->boundaries[i] = boundary;
-                break;
-            }
-        }
-    } else {
-        world->boundaries[world->boundary_count++] = boundary;
-    }
-
-    if (replace_p) {
-        for (size_t i = 0; i < world->placement_count; ++i) {
-            if (world->placements[i].id == id) {
-                world->placements[i] = placement;
-                break;
-            }
-        }
-    } else {
-        world->placements[world->placement_count++] = placement;
+    if(!app_boundary_stage(world,&boundary)||!app_placement_stage(world,&placement)){
+        *world=backup;return false;
     }
 
     if (!world_revalidate(world)) {
@@ -9113,8 +9081,8 @@ static bool space_axis_bound(
 )
 {
     for (size_t i = 0; i < space->boundary_count; ++i) {
-        for (size_t p = 0; p < world->placement_count; ++p) {
-            const PlacementSurface *pl = &world->placements[p];
+        for (size_t p = 0; p < world_placement_count(world); ++p) {
+            const PlacementSurface *pl = world_placement_at(world,p);
 
             if (pl->boundary_id != space->boundaries[i]) {
                 continue;
@@ -9552,10 +9520,11 @@ static size_t world_face_obstacles(
     size_t cap
 )
 {
+    PlacementSurface placement_value;
     const PlacementSurface *pl = NULL;
-    for (size_t p = 0; p < world->placement_count; ++p) {
-        if (world->placements[p].boundary_id == b->id) {
-            pl = &world->placements[p];
+    for (size_t p = 0; p < world_placement_count(world); ++p) {
+        if (world_placement_at(world,p)->boundary_id == b->id) {
+            pl = app_placement_at(world,p,&placement_value);
             break;
         }
     }
@@ -9945,24 +9914,24 @@ static bool proj_add_surface(
     Coord ru0, Coord rv0, Coord ru1, Coord rv1
 )
 {
-    if (world->boundary_count >= WORLD_MAX_BOUNDARIES ||
-        world->placement_count >= WORLD_MAX_PLACEMENTS) {
+    if (world_boundary_count(world) >= WORLD_MAX_BOUNDARIES ||
+        world_placement_count(world) >= WORLD_MAX_PLACEMENTS) {
         return false;
     }
-    SpaceBoundarySurface *b = &world->boundaries[world->boundary_count];
+    SpaceBoundarySurface boundary_value; SpaceBoundarySurface *b=&boundary_value;
     memset(b, 0, sizeof(*b));
     b->id = id;
     b->kind = BOUNDARY_UNSPECIFIED;
     b->outline = *outline;
-    ++world->boundary_count;
+    if(!app_boundary_stage(world,b))return false;
 
-    PlacementSurface *p = &world->placements[world->placement_count];
+    PlacementSurface placement_value; PlacementSurface *p=&placement_value;
     memset(p, 0, sizeof(*p));
     p->id = id;
     p->boundary_id = id;
     p->frame = *frame;
     p->rect = (SurfaceRegion2){ ru0, rv0, ru1, rv1 };
-    ++world->placement_count;
+    if(!app_placement_stage(world,p))return false;
     return true;
 }
 
@@ -10012,7 +9981,7 @@ static bool proj_rebind_aux(
 )
 {
     const PlacementSurface *new_pl =
-        &world->placements[world->placement_count - 1];
+        world_placement_at(world,world_placement_count(world) - 1);
 
     for (size_t i = 0; i < world->grid_count; ++i) {
         ReferenceGrid *g = &world->grids[i];
@@ -10281,11 +10250,11 @@ static bool proj_apply_one(
             }
             if (out_new_bid) *out_new_bid = nid;
             b->outline = *keep;
-            proj_redistribute_holes(b,
-                &world->boundaries[world->boundary_count - 1]);
-            if (!proj_rebind_aux(world, pl, b,
-                    &world->boundaries[world->boundary_count - 1],
-                    nid)) {
+            SpaceBoundarySurface new_boundary;
+            if(!app_boundary_read(world,nid,&new_boundary))return false;
+            proj_redistribute_holes(b,&new_boundary);
+            if(!app_boundary_stage(world,b)||!app_boundary_stage(world,&new_boundary))return false;
+            if (!proj_rebind_aux(world, pl, b,&new_boundary,nid)) {
                 scene_error(path, line_no,
                     g_engineering_error[0]?g_engineering_error:"拆分後參考線/網格/角材失去承載面");
                 return false;
@@ -10354,11 +10323,11 @@ static bool proj_apply_one(
         }
         if (out_new_bid) *out_new_bid = nid;
         b->outline = *keep;
-        proj_redistribute_holes(b,
-            &world->boundaries[world->boundary_count - 1]);
-        if (!proj_rebind_aux(world, pl, b,
-                &world->boundaries[world->boundary_count - 1],
-                nid)) {
+        SpaceBoundarySurface new_boundary;
+        if(!app_boundary_read(world,nid,&new_boundary))return false;
+        proj_redistribute_holes(b,&new_boundary);
+        if(!app_boundary_stage(world,b)||!app_boundary_stage(world,&new_boundary))return false;
+        if (!proj_rebind_aux(world, pl, b,&new_boundary,nid)) {
             scene_error(path, line_no,
                 g_engineering_error[0]?g_engineering_error:"拆分後參考線/網格/角材失去承載面");
             return false;
@@ -10434,21 +10403,17 @@ static bool apply_applyproj_line(
         scene_error(path, line_no, "apply-proj 的面 id 不是有效整數");
         return false;
     }
-    SpaceBoundarySurface *b = NULL;
-    for (size_t i = 0; i < world->boundary_count; ++i) {
-        if (world->boundaries[i].id == bid) {
-            b = &world->boundaries[i];
-            break;
-        }
-    }
+    SpaceBoundarySurface boundary_value;
+    SpaceBoundarySurface *b = app_boundary_read(world,bid,&boundary_value)?&boundary_value:NULL;
     if (b == NULL) {
         scene_error(path, line_no, "apply-proj 的邊界面不存在");
         return false;
     }
+    PlacementSurface placement_value;
     const PlacementSurface *pl = NULL;
-    for (size_t i = 0; i < world->placement_count; ++i) {
-        if (world->placements[i].boundary_id == bid) {
-            pl = &world->placements[i];
+    for (size_t i = 0; i < world_placement_count(world); ++i) {
+        if (geo_placements_at(&world->placement_data,i)->region_id == bid) {
+            pl = app_placement_at(world,i,&placement_value);
             break;
         }
     }
@@ -10490,6 +10455,8 @@ static bool apply_applyproj_line(
 
     /* 面片清單:拆分產生的新片與原片同平面同框,後續項要套到
        含它的那片(一筆交易內多條帶的情境)。 */
+    SpaceBoundarySurface boundary_parts[32];
+    PlacementSurface placement_parts[32];
     SpaceBoundarySurface *pb[32];
     const PlacementSurface *pp[32];
     size_t np = 1;
@@ -10532,18 +10499,19 @@ static bool apply_applyproj_line(
                 *world = backup;
                 return false;
             }
+            if(!app_boundary_stage(world,tb)){*world=backup;return false;}
             ++applied;
             if (new_bid != 0 && np < 32) {
                 pb[np] = NULL; pp[np] = NULL;
-                for (size_t j = 0; j < world->boundary_count; ++j) {
-                    if (world->boundaries[j].id == new_bid) {
-                        pb[np] = &world->boundaries[j];
+                for (size_t j = 0; j < world_boundary_count(world); ++j) {
+                    if (geo_regions_at(&world->region_data,j)->id == new_bid) {
+                        pb[np] = app_boundary_at(world,j,&boundary_parts[np])?&boundary_parts[np]:NULL;
                         break;
                     }
                 }
-                for (size_t j = 0; j < world->placement_count; ++j) {
-                    if (world->placements[j].boundary_id == new_bid) {
-                        pp[np] = &world->placements[j];
+                for (size_t j = 0; j < world_placement_count(world); ++j) {
+                    if (world_placement_at(world,j)->boundary_id == new_bid) {
+                        pp[np] = app_placement_at(world,j,&placement_parts[np]);
                         break;
                     }
                 }
@@ -10563,8 +10531,7 @@ static bool apply_applyproj_line(
         return false;
     }
 
-    /* b 可能已不在原位(不會——boundary 陣列是定長 POD);
-       但 items 指標已用過,此處只需重驗。 */
+    /* Every edited fragment is staged in this candidate before revalidation. */
     if (!world_revalidate(world)) {
         *world = backup;
         scene_error(path, line_no,
@@ -10609,15 +10576,15 @@ static bool apply_delete_line(
     if (strcmp(kind, "boundary") == 0) {
         size_t bi = SIZE_MAX;
 
-        for (size_t i = 0; i < world->boundary_count; ++i) {
-            if (world->boundaries[i].id == id) bi = i;
+        for (size_t i = 0; i < world_boundary_count(world); ++i) {
+            if (geo_regions_at(&world->region_data,i)->id == id) bi = i;
         }
         if (bi == SIZE_MAX) {
             scene_error(path, line_no, "這個邊界面不存在");
             return false;
         }
-        for (size_t i = 0; i < world->placement_count; ++i) {
-            if (world->placements[i].boundary_id == id) {
+        for (size_t i = 0; i < world_placement_count(world); ++i) {
+            if (world_placement_at(world,i)->boundary_id == id) {
                 scene_error(path, line_no,
                     "這個邊界面還有承載面掛著，先刪它的承載面（placement）");
                 return false;
@@ -10627,10 +10594,7 @@ static bool apply_delete_line(
             scene_error(path,line_no,"I37: boundary is still referenced by a grid-binding");return false;
         }
         (void)geo_region_keys_remove(&world->region_data,id);
-        memmove(&world->boundaries[bi], &world->boundaries[bi + 1],
-                (world->boundary_count - bi - 1) *
-                sizeof world->boundaries[0]);
-        --world->boundary_count;
+        if(!app_boundary_remove(world,id)){*world=backup;return false;}
         /* 空間成員是參照：剔除後用剩下的成員重建空間。 */
         for (size_t s = 0; s < world->space_count; ++s) {
             Space *sp = &world->spaces[s];
@@ -10664,8 +10628,8 @@ static bool apply_delete_line(
     } else if (strcmp(kind, "placement") == 0) {
         size_t pi = SIZE_MAX;
 
-        for (size_t i = 0; i < world->placement_count; ++i) {
-            if (world->placements[i].id == id) pi = i;
+        for (size_t i = 0; i < world_placement_count(world); ++i) {
+            if (geo_placements_at(&world->placement_data,i)->id == id) pi = i;
         }
         if (pi == SIZE_MAX) {
             scene_error(path, line_no, "這個承載面不存在");
@@ -10693,10 +10657,7 @@ static bool apply_delete_line(
                 return false;
             }
         }
-        memmove(&world->placements[pi], &world->placements[pi + 1],
-                (world->placement_count - pi - 1) *
-                sizeof world->placements[0]);
-        --world->placement_count;
+        if(!app_placement_remove(world,id)){*world=backup;return false;}
         world_drop_canvas_pos(world, CANVAS_POS_PLACEMENT, id);
     } else if (strcmp(kind, "datum") == 0) {
         size_t di = SIZE_MAX;
@@ -11102,8 +11063,8 @@ static void world_dump_dsl(const World *world, FILE *out)
 {
     parameters_dump(world,out);
     engineering_dump_versions(world,out);
-    for (size_t i = 0; i < world->boundary_count; ++i) {
-        const SpaceBoundarySurface *b = &world->boundaries[i];
+    for (size_t i = 0; i < world_boundary_count(world); ++i) {
+        const SpaceBoundarySurface *b = world_boundary_at(world,i);
 
         fprintf(out, "boundary %u outline ", (unsigned)b->id);
         dump_loop(out, &b->outline);
@@ -11120,8 +11081,8 @@ static void world_dump_dsl(const World *world, FILE *out)
         fputc('\n', out);
     }
 
-    for (size_t i = 0; i < world->placement_count; ++i) {
-        const PlacementSurface *p = &world->placements[i];
+    for (size_t i = 0; i < world_placement_count(world); ++i) {
+        const PlacementSurface *p = world_placement_at(world,i);
 
         if(p->derived_fill_id) continue;
         fprintf(out, "placement %u ", (unsigned)p->id);
@@ -11460,7 +11421,7 @@ static bool apply_scene_line_unchecked(const char *path, int line_no, char *toke
             return false;
         }
 
-        if (SCENE_COMMANDS[i].needs_placement && world->placement_count == 0) {
+        if (SCENE_COMMANDS[i].needs_placement && world_placement_count(world) == 0) {
             scene_error(path, line_no, "這個指令前面要先有 placement 或 surface");
             return false;
         }
@@ -11808,15 +11769,15 @@ int main(int argc, char **argv)
         if (!reference_default_world(&world)) return 1;
     }
 
-    if (world.placement_count == 0 && world.boundary_count == 0 &&
+    if (world_placement_count(&world) == 0 && world_boundary_count(&world) == 0 &&
         world.space_count == 0) {
         fprintf(stderr, "場景裡沒有任何物件。\n");
         return 1;
     }
 
     /* 以下不分來源：兩條路徑都只讀 world。逐片承載面分組印，參考線歸屬各自的面。 */
-    for (size_t s = 0; s < world.placement_count; ++s) {
-        const PlacementSurface *placement = &world.placements[s];
+    for (size_t s = 0; s < world_placement_count(&world); ++s) {
+        const PlacementSurface *placement = world_placement_at(&world,s);
         const SpaceBoundarySurface *boundary =
             world_find_boundary(&world, placement->boundary_id);
 
@@ -11934,11 +11895,12 @@ int main(int argc, char **argv)
                                                       "放置錨點";
 
         /* 未放置的角材錨點是零值，沒有所屬面——借第一片面推導房間座標。 */
+        PlacementSurface surface_value;
         const PlacementSurface *surface =
-            world_find_placement(&world, anchor->placement_id);
+            app_placement_read(&world,anchor->placement_id,&surface_value);
 
         if (surface == NULL) {
-            surface = &world.placements[0];
+            surface = app_placement_at(&world,0,&surface_value);
         }
 
         Point3 anchor_room = surface_point_to_room(

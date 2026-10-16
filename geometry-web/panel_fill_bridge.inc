@@ -97,12 +97,12 @@ static void json_panel_fill_preview(void)
     printf("{\"token\":%u,\"valid\":%s,\"revision\":%llu,\"diagnosticsComplete\":true,\"layerJudgement\":",
         g_preview.token,g_preview.valid?"true":"false",(unsigned long long)g_preview.revision);
     fs_json_layer_pending();
-    fputs(",\"before\":",stdout);json_panel_fill_state(&g_preview.before);
-    fputs(",\"after\":",stdout);json_panel_fill_state(&g_preview.after);
-    fputs(",\"changes\":",stdout);json_panel_fill_changes(&g_preview.before,&g_preview.after);
-    if(g_preview.before.finish_surfaces.host_count||g_preview.after.finish_surfaces.host_count){
-        fputs(",\"dependencies\":{\"before\":",stdout);json_engineering_state(&g_preview.before,true);
-        fputs(",\"after\":",stdout);json_engineering_state(&g_preview.after,true);putchar('}');
+    fputs(",\"before\":",stdout);json_panel_fill_state(&g_preview.transaction->before);
+    fputs(",\"after\":",stdout);json_panel_fill_state(&g_preview.transaction->after);
+    fputs(",\"changes\":",stdout);json_panel_fill_changes(&g_preview.transaction->before,&g_preview.transaction->after);
+    if(g_preview.transaction->before.finish_surfaces.host_count||g_preview.transaction->after.finish_surfaces.host_count){
+        fputs(",\"dependencies\":{\"before\":",stdout);json_engineering_state(&g_preview.transaction->before,true);
+        fputs(",\"after\":",stdout);json_engineering_state(&g_preview.transaction->after,true);putchar('}');
     }
     fputs(",\"violations\":[",stdout);
     if(!g_preview.valid){
