@@ -57,7 +57,7 @@ class ContactWorldBoundary(unittest.TestCase):
             self.assertIn(evaluator + "(", body)
             self.assertNotRegex(body, r"\b(?:for|while)\s*\(")
         adapter = function(source, "app_contact_facts")
-        self.assertRegex(adapter, r"(?:&world->timbers\[i\]|const Timber \*t\s*=\s*&world->timbers\[i\])")
+        self.assertRegex(adapter, r"(?:&world->wood.timbers\[i\]|const Timber \*t\s*=\s*&world->wood.timbers\[i\])")
         self.assertIn("placement_effective_boundary(", adapter)
         resolver = function(source, "app_contact_resolve_stops")
         self.assertIn("app_contact_sources_collect(", resolver)

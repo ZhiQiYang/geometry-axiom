@@ -11,20 +11,20 @@ static bool app_eng_target(void *user,const EngTarget *t,WoodEngineeringTargetIn
 {
     World *w=(World *)user;memset(out,0,sizeof *out);
     if(!t->kind){const ReferenceGrid *g=world_find_grid(w,t->id);if(!g)return false;out->placement_id=g->placement_id;out->from_system=g->from_system||g->from_binding;out->is_subgrid=g->is_subgrid;out->panel_axis=g->axis[t->axis].source==GRID_SRC_PANEL;}
-    else{int i=reference_timber_index(w,t->id);if(i<0)return false;out->placement_id=w->anchors[i].placement_id;out->role=w->timbers[i].role;out->placed=w->timbers[i].placed;}
+    else{int i=reference_timber_index(w,t->id);if(i<0)return false;out->placement_id=w->wood.anchors[i].placement_id;out->role=w->wood.timbers[i].role;out->placed=w->wood.timbers[i].placed;}
     return true;
 }
 static bool app_eng_named(void *user,const char *name,GeoCoord *out)
-{const GeoNamedValue *v=geo_named_values_find(&((World *)user)->named_values,name);if(!v)return false;*out=v->value;return true;}
+{const GeoNamedValue *v=geo_named_values_find(&((World *)user)->geo.named_values,name);if(!v)return false;*out=v->value;return true;}
 static bool app_eng_parameter(void *user,GeoParameterRef ref,GeoCoord *out,char *error,size_t cap)
 {if(parameter_coord((World *)user,ref,out))return true;snprintf(error,cap,"%s",g_parameter_error);utf8_trim_tail(error);return false;}
 static bool app_eng_owned(void *user,uint32_t id){return assembly_owned((World *)user,id);}
 static void app_eng_write(void *user,const EngTarget *t,GeoCoord value)
-{World *w=(World *)user;if(!t->kind){ReferenceGrid *g=world_find_grid_mut(w,t->id);if(t->field)g->axis[t->axis].gap=value;else g->axis[t->axis].body=value;}else{int i=reference_timber_index(w,t->id);if(t->field)w->timbers[i].size_b=value;else w->timbers[i].size_a=value;}}
+{World *w=(World *)user;if(!t->kind){ReferenceGrid *g=world_find_grid_mut(w,t->id);if(t->field)g->axis[t->axis].gap=value;else g->axis[t->axis].body=value;}else{int i=reference_timber_index(w,t->id);if(t->field)w->wood.timbers[i].size_b=value;else w->wood.timbers[i].size_a=value;}}
 static bool app_eng_serializable(void *user,char *error,size_t cap)
 {(void)error;(void)cap;return engineering_serializable((World *)user);}
 static WoodEngineeringContext app_eng_context(const World *world)
-{World *w=(World *)world;WoodEngineeringContext c={&w->engineering,w,g_engineering_error,sizeof g_engineering_error,app_eng_placement,app_eng_target,app_eng_named,app_eng_parameter,app_eng_owned,app_eng_write,app_eng_serializable};c.versions=app_eng_version_store(w);WoodEngineeringSources *sources=app_engineering_sources(w);if(sources)wood_engineering_sources_bind(sources,&c);return c;}
+{World *w=(World *)world;WoodEngineeringContext c={&w->wood.engineering,w,g_engineering_error,sizeof g_engineering_error,app_eng_placement,app_eng_target,app_eng_named,app_eng_parameter,app_eng_owned,app_eng_write,app_eng_serializable};c.versions=app_eng_version_store(w);WoodEngineeringSources *sources=app_engineering_sources(w);if(sources)wood_engineering_sources_bind(sources,&c);return c;}
 static bool eng_fail(const char *text)
 {WoodEngineeringContext c={0};c.error=g_engineering_error;c.error_capacity=sizeof g_engineering_error;return wood_eng_fail(&c,text);}
 static bool eng_id(const char *s)
@@ -103,7 +103,7 @@ static void eng_append(EngBuffer *b,const char *format,...)
 }
 static void eng_dimension_json(const World *w,const EngTarget *t,Coord direct,EngBuffer *out)
 {
-    const EngBinding *b=NULL;for(size_t i=0;i<w->engineering.binding_count;++i)if(eng_same_target(t,&w->engineering.bindings[i].target)){b=&w->engineering.bindings[i];break;}
+    const EngBinding *b=NULL;for(size_t i=0;i<w->wood.engineering.binding_count;++i)if(eng_same_target(t,&w->wood.engineering.bindings[i].target)){b=&w->wood.engineering.bindings[i];break;}
     if(!b){eng_append(out,"%lld",(long long)direct);return;}
     char source[640],override[640];if(!eng_source_json(&b->source,source,sizeof source)){out->ok=false;return;}
     if(b->has_override){if(!eng_source_json(&b->override_value,override,sizeof override)){out->ok=false;return;}}else snprintf(override,sizeof override,"null");
@@ -127,8 +127,8 @@ static bool eng_timber_content(const World *w,const Timber *t,EngBuffer *b)
 static bool engineering_serializable(const World *w)
 {
     EngBuffer b;
-    for(size_t i=0;i<w->grid_applications.count;++i)if(eng_object_bound(w,0,w->grid_applications.items[i].id)&&!eng_grid_content(w,&w->grid_applications.items[i],&b))return eng_fail("I10: bound grid definition exceeds scene record capacity");
-    for(size_t i=0;i<w->timber_count;++i)if(eng_object_bound(w,1,w->timbers[i].id)&&!eng_timber_content(w,&w->timbers[i],&b))return eng_fail("I10: bound timber definition exceeds scene record capacity");
+    for(size_t i=0;i<w->wood.grid_applications.count;++i)if(eng_object_bound(w,0,w->wood.grid_applications.items[i].id)&&!eng_grid_content(w,&w->wood.grid_applications.items[i],&b))return eng_fail("I10: bound grid definition exceeds scene record capacity");
+    for(size_t i=0;i<w->wood.timber_count;++i)if(eng_object_bound(w,1,w->wood.timbers[i].id)&&!eng_timber_content(w,&w->wood.timbers[i],&b))return eng_fail("I10: bound timber definition exceeds scene record capacity");
     return true;
 }
 static void eng_dump_record(FILE *out,const char *kind,const char *json)
@@ -139,13 +139,13 @@ static void eng_dump_record(FILE *out,const char *kind,const char *json)
 static void engineering_dump_versions(const World *w,FILE *out)
 {
     if(!engineering_used(w))return;fputs("requires engineering-spec/1\n",out);char record[1200];
-    for(size_t i=0;i<w->engineering.material_count;++i){const EngMaterialVersion *m=eng_material_at(w,i);if(!m){fputs("requires engineering-version-storage-error\n",out);continue;}snprintf(record,sizeof record,"{\"fingerprint\":\"%s\",\"value\":%s}",m->fingerprint,m->content);eng_dump_record(out,"material",record);}
-    for(size_t i=0;i<w->engineering.method_count;++i){const EngMethodVersion *m=eng_method_at(w,i);if(!m){fputs("requires engineering-version-storage-error\n",out);continue;}snprintf(record,sizeof record,"{\"fingerprint\":\"%s\",\"value\":%s}",m->fingerprint,m->content);eng_dump_record(out,"method",record);}
-    for(int kind=0;kind<2;++kind){size_t count=kind?w->engineering.method_count:w->engineering.material_count;for(size_t i=0;i<count;++i){bool archived=kind?w->engineering.methods[i].archived:w->engineering.materials[i].archived;const EngVersionRef *r=kind?&w->engineering.methods[i].ref:&w->engineering.materials[i].ref;if(archived){snprintf(record,sizeof record,"{\"id\":\"%s\",\"kind\":\"%s\",\"op\":\"archive\",\"value\":true,\"version\":%u}",r->id,kind?"method":"material",r->version);eng_dump_record(out,"archive",record);}}}
+    for(size_t i=0;i<w->wood.engineering.material_count;++i){const EngMaterialVersion *m=eng_material_at(w,i);if(!m){fputs("requires engineering-version-storage-error\n",out);continue;}snprintf(record,sizeof record,"{\"fingerprint\":\"%s\",\"value\":%s}",m->fingerprint,m->content);eng_dump_record(out,"material",record);}
+    for(size_t i=0;i<w->wood.engineering.method_count;++i){const EngMethodVersion *m=eng_method_at(w,i);if(!m){fputs("requires engineering-version-storage-error\n",out);continue;}snprintf(record,sizeof record,"{\"fingerprint\":\"%s\",\"value\":%s}",m->fingerprint,m->content);eng_dump_record(out,"method",record);}
+    for(int kind=0;kind<2;++kind){size_t count=kind?w->wood.engineering.method_count:w->wood.engineering.material_count;for(size_t i=0;i<count;++i){bool archived=kind?w->wood.engineering.methods[i].archived:w->wood.engineering.materials[i].archived;const EngVersionRef *r=kind?&w->wood.engineering.methods[i].ref:&w->wood.engineering.materials[i].ref;if(archived){snprintf(record,sizeof record,"{\"id\":\"%s\",\"kind\":\"%s\",\"op\":\"archive\",\"value\":true,\"version\":%u}",r->id,kind?"method":"material",r->version);eng_dump_record(out,"archive",record);}}}
 }
 static void engineering_dump_applications(const World *w,FILE *out)
 {
-    for(size_t i=0;i<w->engineering.application_count;++i)eng_dump_record(out,"application",w->engineering.applications[i].content);
+    for(size_t i=0;i<w->wood.engineering.application_count;++i)eng_dump_record(out,"application",w->wood.engineering.applications[i].content);
 }
 static bool engineering_dump_grid(const World *w,const ReferenceGrid *g,FILE *out)
 {

@@ -7,7 +7,7 @@ static bool grid_binding_cache(const World *w,const GridBinding *binding,Referen
 
 
 static bool grid_binding_translation(const World *w,const GridBinding *binding,Coord out[2])
-{ return geo_grid_binding_translation(&w->grid_store,app_grid_binding_index(w,binding->id),app_grid_vertex,(void *)w,out,NULL); }
+{ return geo_grid_binding_translation(&w->geo.grid_store,app_grid_binding_index(w,binding->id),app_grid_vertex,(void *)w,out,NULL); }
 
 static bool grid_bindings_rebuild(World *w,char *err,size_t cap)
 {WoodGridContext c=app_grid_context(w);return wood_grid_bindings_rebuild(&c,err,cap);}
@@ -47,7 +47,7 @@ static bool apply_grid_binding_line(const char *path,int line_no,char **t,int co
         binding.anchor_num[a]=n;binding.anchor_den[a]=d;
     }
     if(!geo_grid_binding_normalize(&binding))goto invalid;
-    if(!geo_grid_bindings_put(&candidate.grid_store,&binding)){scene_error(path,line_no,"I37: grid-binding capacity is 32");return false;}
+    if(!geo_grid_bindings_put(&candidate.geo.grid_store,&binding)){scene_error(path,line_no,"I37: grid-binding capacity is 32");return false;}
     reference_capture_trial(&candidate);
     if(!app_world_revalidate_staged(w,&candidate)){scene_error(path,line_no,g_revalidate_error);return false;}
     return true;
@@ -72,7 +72,7 @@ invalid:
 
 static void grid_bindings_dump(const World *w,FILE *out)
 {
-    for(size_t i=0;i<geo_grid_bindings_count(&w->grid_store);++i){const GridBinding *b=geo_grid_bindings_at(&w->grid_store,i);
+    for(size_t i=0;i<geo_grid_bindings_count(&w->geo.grid_store);++i){const GridBinding *b=geo_grid_bindings_at(&w->geo.grid_store,i);
         fprintf(out,"grid-binding %u on-boundary %u from-system %u vertex-key %u cell %lld %lld anchor %u %u %u %u\n",
             b->id,b->boundary_id,b->system_id,b->vertex_key,(long long)b->cell[0],(long long)b->cell[1],
             b->anchor_num[0],b->anchor_den[0],b->anchor_num[1],b->anchor_den[1]);
@@ -190,7 +190,7 @@ static bool grid_query(const World *w,const char *kind,uint32_t id,const Coord r
             memset(q,0,sizeof *q);q->stride=1;
             if(g->axis[a].source==GRID_SRC_NONE && !g->is_subgrid)continue;
             q->defined=true;Coord coords[GRID_MAX_LINES];size_t n=0;
-            if(!grid_axis_lines_in(w->grid_applications.items,w->grid_applications.count,g,p,boundary,a,coords,&n,err,cap))return false;
+            if(!grid_axis_lines_in(w->wood.grid_applications.items,w->wood.grid_applications.count,g,p,boundary,a,coords,&n,err,cap))return false;
             for(size_t i=0;i<n;++i)if(coords[i]>=rect[a] && coords[i]<=rect[a+2]){
                 if(!q->total)q->first=(int64_t)i;q->last=(int64_t)i;++q->total;
             }
@@ -211,7 +211,7 @@ static bool grid_query(const World *w,const char *kind,uint32_t id,const Coord r
                 clips[0]=(SurfaceSegment2){a?(SurfacePoint2){lo,line->coordinate}:(SurfacePoint2){line->coordinate,lo},
                     a?(SurfacePoint2){hi,line->coordinate}:(SurfacePoint2){line->coordinate,hi}};n=1;
             }else if(g->is_subgrid){
-                n=grid_line_segments(w->grid_applications.items,w->grid_applications.count,g,p,boundary,a,line->index,clips,GUIDE_MAX_SEGMENTS);
+                n=grid_line_segments(w->wood.grid_applications.items,w->wood.grid_applications.count,g,p,boundary,a,line->index,clips,GUIDE_MAX_SEGMENTS);
             }else {
                 GuideLine guide={0};guide.placement_id=p->id;guide.direction=a?GUIDE_ALONG_U:GUIDE_ALONG_V;guide.offset=line->coordinate;
                 n=guide_line_get_local_segments(p,boundary,&guide,clips,GUIDE_MAX_SEGMENTS);

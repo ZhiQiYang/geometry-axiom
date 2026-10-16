@@ -38,7 +38,7 @@ static bool dp_edge_key(const World *w,const PlacementSurface *p,size_t componen
 static bool dp_edge_resolve(const World *w,const PlacementSurface *p,const char *key,int *hole,int *edge)
 {WoodDerivedContext c=app_dp_context(w);WoodDerivedValue value;if(p)app_dp_value(p,&value);return wood_dp_edge_resolve(&c,p?&value:NULL,key,hole,edge);}
 static void dp_dump(const World *w,FILE *out)
-{for(uint64_t i=0;i<w->finish_surfaces.host_count;++i){const DerivedPlacement *p=&w->finish_surfaces.hosts[i];fprintf(out,"derived-placement %u definition-hex ",p->id);for(const unsigned char *c=(const unsigned char*)p->definition;*c;++c)fprintf(out,"%02x",*c);fputc('\n',out);}}
+{for(uint64_t i=0;i<w->wood.finish_surfaces.host_count;++i){const DerivedPlacement *p=&w->wood.finish_surfaces.hosts[i];fprintf(out,"derived-placement %u definition-hex ",p->id);for(const unsigned char *c=(const unsigned char*)p->definition;*c;++c)fprintf(out,"%02x",*c);fputc('\n',out);}}
 static bool apply_derived_placement_line(const char *path,int line,char **t,int count,World *w)
 {
     if(!g_parsing_scene_file||!fs_scene_required||!fs_scene_engineering||!fs_scene_parameters){scene_error(path,line,"I56: derived-placement requires an atomic scene with all three capabilities");return false;}

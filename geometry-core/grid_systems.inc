@@ -140,8 +140,8 @@ static bool apply_grid_system_application(const char *path,int line_no,char **t,
 
 static void grid_systems_dump(const World *w,FILE *out)
 {
-    for (size_t i=0;i<geo_grid_systems_count(&w->grid_store);++i) {
-        const GridSystem *s=geo_grid_systems_at(&w->grid_store,i); fprintf(out,"grid-system %u name-hex ",s->id);
+    for (size_t i=0;i<geo_grid_systems_count(&w->geo.grid_store);++i) {
+        const GridSystem *s=geo_grid_systems_at(&w->geo.grid_store,i); fprintf(out,"grid-system %u name-hex ",s->id);
         for (size_t k=0;s->name[k];++k) fprintf(out,"%02x",(unsigned char)s->name[k]);
         fprintf(out," main-along %s",app_grid_system_main_along(w,s->id)==1?"u":app_grid_system_main_along(w,s->id)==2?"v":"none");
         for (int axis=0;axis<2;++axis) {

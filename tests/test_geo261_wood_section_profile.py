@@ -47,7 +47,7 @@ class SectionProfileBoundary(unittest.TestCase):
         conversion = (ROOT / "geometry-core/section_profile_conversion.inc").read_text(encoding="utf-8")
         for name in ("begin_conversion", "host_json", "host", "conversion_fields"):
             self.assertIn("wood_sp_" + name + "(", conversion)
-        self.assertIn("geo_parameters_evaluate_field(&w->parameters,source->parameter", source)
+        self.assertIn("geo_parameters_evaluate_field(&w->geo.parameters,source->parameter", source)
         self.assertIn("geo_parameter_sources_value(parameters,source->parameter,&value,&issue)", source)
         self.assertIn("return wood_eng_resolve(&engineering,source,target,UINT32_MAX,0,out,NULL,0)", source)
         self.assertIn("geo_loop_rect_complement(&view,r,out,SP_OUTSIDE_MAX,&count)",

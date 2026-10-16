@@ -21,6 +21,8 @@
 #include "regions.h"
 #include "guides.h"
 #include "grid_store.h"
+#include "enclosure.h"
+#include "document.h"
 #else
 #include "codec.c"
 #include "exact.c"
@@ -40,5 +42,7 @@
 #include "regions.c"
 #include "guides.c"
 #include "grid_store.c"
+#include "enclosure.c"
+#include "document.c"
 #endif
 #endif

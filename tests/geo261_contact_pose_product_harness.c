@@ -50,14 +50,14 @@ static int contact_pose_case(unsigned mode)
     World *world=calloc(1,sizeof *world),*before=malloc(sizeof *before);CHECK("contact-h-world-memory",world&&before);
     PlacementSurface placement={0};placement.id=7;placement.frame=(GeoFrame){{10,20,30},{1,0,0},{0,1,0},{0,0,1}};
     placement.rect=(GeoRect2){0,0,1000,1000};CHECK("contact-h-real-placement-store",app_placement_stage(world,&placement));
-    world->timber_count=1;Timber *member=&world->timbers[0];member->id=41;member->length=40;member->size_a=10;member->size_b=5;
+    world->wood.timber_count=1;Timber *member=&world->wood.timbers[0];member->id=41;member->length=40;member->size_a=10;member->size_b=5;
     member->role=WOOD_MEMBER_ROLE_PRIMARY;member->cut_priority=2;member->placed=true;member->auto_length=true;
     member->origin=placement.frame.origin;member->axis_length=(GeoVector3){1,0,0};member->axis_a=(GeoVector3){0,1,0};member->axis_b=(GeoVector3){0,0,1};
-    world->anchors[0].placement_id=7;world->anchors[0].uv=(GeoPoint2){0,0};world->anchors[0].order=1;
-    world->anchors[0].length_direction=SURFACE_DIRECTION_POS_U;world->anchors[0].depth_side=SURFACE_DEPTH_POSITIVE_NORMAL;
+    world->wood.anchors[0].placement_id=7;world->wood.anchors[0].uv=(GeoPoint2){0,0};world->wood.anchors[0].order=1;
+    world->wood.anchors[0].length_direction=SURFACE_DIRECTION_POS_U;world->wood.anchors[0].depth_side=SURFACE_DEPTH_POSITIVE_NORMAL;
     memcpy(before,world,sizeof *world);
     ReferenceEval ctx={0};ctx.world=world;ctx.sources=geo_eval_create(8100+mode,17);CHECK("contact-h-candidate-graph",ctx.sources);
-    ctx.placement_sources=geo_placement_sources_register(ctx.sources,&world->placement_data,&world->region_data,
+    ctx.placement_sources=geo_placement_sources_register(ctx.sources,&world->geo.placement_data,&world->geo.region_data,
         APP_SOURCE_PLACEMENT,APP_SOURCE_REGION,NULL,NULL);CHECK("contact-h-real-k-placement-provider",ctx.placement_sources);
     ContactPoseInput input={0};input.graph=ctx.sources;
     input.box=(GeoBox3){{{40,70,30},{1,0,0},{0,1,0},{0,0,1}},{40,10,5}};

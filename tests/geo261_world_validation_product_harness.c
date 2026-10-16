@@ -23,21 +23,21 @@ static int selected_component(void)
     p.frame=(SurfaceFrame){{7,13,2500},{1,0,0},{0,1,0},{0,0,1}};
     p.components[0]=component(301,0,100);p.components[1]=component(302,200,300);
     CHECK(app_placement_stage(world,&p),"validation-product-derived-stage");
-    CHECK(wood_member_construct(17,0,10,5,true,WOOD_MEMBER_ROLE_BOUNDARY,0,&world->timbers[0]),
+    CHECK(wood_member_construct(17,0,10,5,true,WOOD_MEMBER_ROLE_BOUNDARY,0,&world->wood.timbers[0]),
         "validation-product-member-construction");
-    world->timbers[0].length=100;
-    world->anchors[0]=(TimberAnchor){.placement_id=103,.uv={200,0},.anchor_kind=ANCHOR_AT,
+    world->wood.timbers[0].length=100;
+    world->wood.anchors[0]=(TimberAnchor){.placement_id=103,.uv={200,0},.anchor_kind=ANCHOR_AT,
         .span_mode=SPAN_AUTO,.length_direction=SURFACE_DIRECTION_POS_U,.depth_side=SURFACE_DEPTH_POSITIVE_NORMAL};
-    CHECK(timber_place_a0_on_surface(&world->timbers[0],&p,&p.components[1],(SurfacePoint2){200,0},
+    CHECK(timber_place_a0_on_surface(&world->wood.timbers[0],&p,&p.components[1],(SurfacePoint2){200,0},
         SURFACE_DIRECTION_POS_U,SURFACE_DEPTH_POSITIVE_NORMAL),
         "validation-product-second-component-pose");
-    world->timber_count=1;WoodMember original;memcpy(&original,&world->timbers[0],sizeof original);char error[256]="preserved";
+    world->wood.timber_count=1;WoodMember original;memcpy(&original,&world->wood.timbers[0],sizeof original);char error[256]="preserved";
     WoodWorldValidationContext validation=app_world_validation_context(world);
     /* Removing H's footprint-based selection makes this placed boundary
      * member get checked against component 1 and changes the final verdict. */
     CHECK(wood_world_validate_members(&validation,error,sizeof error)&&!strcmp(error,"preserved"),
         "validation-product-selected-component-verdict");
-    CHECK(!memcmp(&original,&world->timbers[0],sizeof original),"validation-product-probe-keeps-member");
+    CHECK(!memcmp(&original,&world->wood.timbers[0],sizeof original),"validation-product-probe-keeps-member");
     GeoRect2 rect={200,0,300,10};AppValidationDomain domain;
     CHECK(app_validation_domain(world,103,&rect,&domain)&&domain.b==&domain.p->components[1]&&domain.b->id==302,
         "validation-product-selected-boundary-identity");
@@ -53,7 +53,7 @@ static int selected_component(void)
         "validation-product-host-value-lifetime");
     validation=app_world_validation_context(world);strcpy(error,"still-original");
     CHECK(wood_world_validate_members(&validation,error,sizeof error)&&!strcmp(error,"still-original")&&
-        !memcmp(&original,&world->timbers[0],sizeof original),"validation-product-candidate-isolation");
+        !memcmp(&original,&world->wood.timbers[0],sizeof original),"validation-product-candidate-isolation");
     free(candidate);free(world);return 0;
 }
 int main(int argc,char **argv)

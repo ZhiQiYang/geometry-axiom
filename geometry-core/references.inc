@@ -18,8 +18,8 @@ static void reference_capture_trial(const World *world)
      * Rebuild only the disposable trial, preserving the primary error. */
     sp_capture_diagnostics(&g_reference_trial);
     /* A rejected source has no validated downstream geometry yet. */
-    geo_guides_reset_resolved(&g_reference_trial.guide_lines);
-    for (size_t i=0;i<g_reference_trial.timber_count;++i) g_reference_trial.timbers[i].placed=false;
+    geo_guides_reset_resolved(&g_reference_trial.geo.guide_lines);
+    for (size_t i=0;i<g_reference_trial.wood.timber_count;++i) g_reference_trial.wood.timbers[i].placed=false;
 }
 
 static bool reference_issue(uint32_t id, const char *clause, const char *expected, const char *actual)
@@ -58,6 +58,20 @@ static WoodEngineeringContext app_eng_context(const World *);
 static WoodSectionProfileContext app_sp_context(const World *);
 static WoodFinishContext app_fs_context(const World *);
 static WoodDerivedContext app_dp_context(const World *);
+static WoodAssemblyContext app_asm_context(const World *);
+static bool app_asm_json(void *,GeoJson *,const char *);
+static void app_asm_drop_position(void *,bool,uint32_t);
+static bool app_asm_other(void *,GeoJson *,int);
+static bool app_asm_surface(void *,uint32_t);
+static bool app_asm_guide(void *,uint32_t,WoodAssemblyGuide *);
+static bool app_asm_member(void *,uint32_t,WoodAssemblyMember *);
+static bool app_asm_footprint(void *,uint32_t,uint32_t,GeoRect2 *);
+static size_t app_asm_member_count(void *);
+static void app_asm_allocate(void *,uint32_t);
+static bool app_asm_remove(void *,uint32_t);
+static void app_asm_write(void *,const WoodMember *,const WoodAssemblyDefinition *);
+static bool app_asm_anchor_matches(void *,uint32_t,const WoodAssemblyDefinition *);
+static bool app_asm_instance_content(void *,AsmInstance *,GeoJson *,int);
 static bool app_sp_resolve_dimension_sources(World *,GeoParameterSources *,WoodEngineeringSources *,const EngDimensionSource *,const EngTarget *,Coord *);
 static bool app_sp_live_host(void *,uint32_t,GeoFrame *,WoodBoundaryRegion *,bool *);
 static bool app_fs_boundary(void *,uint32_t,WoodBoundaryRegion *);
@@ -84,6 +98,7 @@ typedef struct {
     GeoPlacementSources *placement_sources;
     WoodGridSources *grid_sources;
     WoodContactSources *contact_sources;
+    WoodAssemblySources *assembly_sources;
     WoodFinishSourceKey placement_binding_key;
     bool use_current_values,source_failure;
     bool wanted[WORLD_MAX_TIMBERS];
@@ -108,13 +123,14 @@ static void reference_sources_dispose(ReferenceEval *ctx)
     geo_placement_sources_destroy(ctx->placement_sources);ctx->placement_sources=NULL;
     wood_grid_sources_destroy(ctx->grid_sources);ctx->grid_sources=NULL;
     wood_contact_sources_destroy(ctx->contact_sources);ctx->contact_sources=NULL;
+    wood_assembly_sources_destroy(ctx->assembly_sources);ctx->assembly_sources=NULL;
     ctx->parameter_sources=NULL;ctx->parameter_snapshot=NULL;ctx->sources=NULL;ctx->sources_registered=false;
 }
 static bool reference_quantity(ReferenceEval *,const GuideLine *,const char *,Coord *);
 static bool reference_parameter_quantity(ReferenceEval *,ParameterRef,GeoQuantity *);
 static int reference_timber_index(const World *w, uint32_t id)
 {
-    for (size_t i=0;i<w->timber_count;++i) if (w->timbers[i].id==id) return (int)i;
+    for (size_t i=0;i<w->wood.timber_count;++i) if (w->wood.timbers[i].id==id) return (int)i;
     return -1;
 }
 
@@ -153,8 +169,8 @@ static bool reference_quantity_raw(ReferenceEval *ctx, const GuideLine *g, const
         return reference_named_quantity(ctx,part[1],out);
     }
     if (n==2 && !strcmp(part[0],"guide") && parse_u32(part[1],&id)) {
-        for (size_t i=0;i<geo_guides_count(&w->guide_lines);++i) {
-            const GuideLine *q=&geo_guides_values(&w->guide_lines)[i];
+        for (size_t i=0;i<geo_guides_count(&w->geo.guide_lines);++i) {
+            const GuideLine *q=&geo_guides_values(&w->geo.guide_lines)[i];
             if (q->id!=id) continue;
             if (q->placement_id!=g->placement_id || !reference_eval_guide(ctx,i) ||
                 q->direction!=g->direction) return false;
@@ -171,7 +187,7 @@ static bool reference_quantity_raw(ReferenceEval *ctx, const GuideLine *g, const
             int64_t k;
             if (grid->axis[axis].stagger_set) return false;
             return n==4 && parse_i64(part[3],&k) &&
-                (ctx->use_current_values?grid_line_coord_in(w->grid_applications.items,w->grid_applications.count,grid,p,b,axis,k,out,NULL,NULL,0):
+                (ctx->use_current_values?grid_line_coord_in(w->wood.grid_applications.items,w->wood.grid_applications.count,grid,p,b,axis,k,out,NULL,NULL,0):
                     wood_grid_sources_line(ctx->grid_sources,id,g->placement_id,axis,k,false,false,0,out,NULL,NULL,0));
         }
         if (n!=3 || grid->axis[axis].source != GRID_SRC_PANEL) return false;
@@ -181,8 +197,8 @@ static bool reference_quantity_raw(ReferenceEval *ctx, const GuideLine *g, const
     if (n>=3 && !strcmp(part[0],"timber") && parse_u32(part[1],&id)) {
         int ti=reference_timber_index(w,id);
         if (ti<0) return false;
-        Timber *t=&w->timbers[ti];
-        if (ctx->wanted[ti] && w->anchors[ti].placement_id!=g->placement_id) return false;
+        Timber *t=&w->wood.timbers[ti];
+        if (ctx->wanted[ti] && w->wood.anchors[ti].placement_id!=g->placement_id) return false;
         if (n==3 && (!strcmp(part[2],"A") || !strcmp(part[2],"B"))) {
             return reference_member_dimension(ctx,id,!strcmp(part[2],"B"),out);
         }
@@ -190,7 +206,7 @@ static bool reference_quantity_raw(ReferenceEval *ctx, const GuideLine *g, const
             (strcmp(part[3],"lo") && strcmp(part[3],"hi")) ||
             !reference_eval_timber(ctx,(size_t)ti)) return false;
         SurfaceRegion2 f;
-        if (!timber_a0_footprint_uv(p,t,&w->anchors[ti],&f)) return false;
+        if (!timber_a0_footprint_uv(p,t,&w->wood.anchors[ti],&f)) return false;
         *out=axis==0 ? (!strcmp(part[3],"lo")?f.min_u:f.max_u)
                      : (!strcmp(part[3],"lo")?f.min_v:f.max_v);
         return true;
@@ -316,10 +332,10 @@ static bool reference_eval_expression(ReferenceEval *ctx, const GuideLine *g, Co
 static bool reference_compute_datum(ReferenceEval *ctx,size_t i)
 {
     if(ctx->use_current_values)return true;
-    World *world=ctx->world;const GeoDatum *d=geo_datums_at(&world->datum_planes,i);
+    World *world=ctx->world;const GeoDatum *d=geo_datums_at(&world->geo.datum_planes,i);
     const char *expression=app_datum_expression(world,d->id);
     AppLinearContext context={ctx,NULL};g_parameter_error[0]=0;
-    GeoLinearResult result=geo_datums_evaluate(&world->datum_planes,i,reference_resolve_linear,&context);
+    GeoLinearResult result=geo_datums_evaluate(&world->geo.datum_planes,i,reference_resolve_linear,&context);
     Coord position;
     if(!reference_linear_result(result,d->expression.mode,expression,&position)){
         char msg[256];if(g_parameter_error[0])snprintf(msg,sizeof msg,"datum %u: %s",d->id,g_parameter_error);else snprintf(msg,sizeof msg,"datum %u: missing spec, bare mm, unsupported reference or rational overflow",d->id);
@@ -330,7 +346,7 @@ static bool reference_compute_datum(ReferenceEval *ctx,size_t i)
 static bool reference_eval_datums(ReferenceEval *ctx)
 {
     bool ok=true;
-    for(size_t i=0;i<geo_datums_count(&ctx->world->datum_planes);++i)
+    for(size_t i=0;i<geo_datums_count(&ctx->world->geo.datum_planes);++i)
         if(!reference_eval_datum(ctx,i))ok=false;
     return ok;
 }
@@ -338,18 +354,18 @@ static bool reference_eval_datums(ReferenceEval *ctx)
 static bool reference_compute_guide(ReferenceEval *ctx, size_t i)
 {
     if(ctx->use_current_values)return true;
-    World *world=ctx->world;const GeoGuide *g=geo_guides_at(&world->guide_lines,i);
+    World *world=ctx->world;const GeoGuide *g=geo_guides_at(&world->geo.guide_lines,i);
     const PlacementSurface *p=world_find_placement(world,g->placement_id);
     GeoFrame source_frame;if(p&&!reference_placement_frame(ctx,p->id,&source_frame))return false;
     const char *expression=app_guide_expression(world,g->id);
     if(g->source==GUIDE_DATUM){
         if(!p)return false;
-        const GeoDatum *d=geo_datums_find(&world->datum_planes,g->datum_id);
+        const GeoDatum *d=geo_datums_find(&world->geo.datum_planes,g->datum_id);
         if(d){
-            size_t at=(size_t)(d-geo_datums_values(&world->datum_planes));
+            size_t at=(size_t)(d-geo_datums_values(&world->geo.datum_planes));
             if(!reference_eval_datum(ctx,at))return false;
         }
-        GeoGuideResult result=geo_guides_evaluate(&world->guide_lines,i,&source_frame,d,NULL,NULL);
+        GeoGuideResult result=geo_guides_evaluate(&world->geo.guide_lines,i,&source_frame,d,NULL,NULL);
         if(result.status==GEO_GUIDE_MISSING_DATUM)return reference_issue(0,"I7a/I9","existing datum","datum guide has missing source");
         if(result.intersection==GEO_DATUM_INTERSECTION_COINCIDENT||result.intersection==GEO_DATUM_INTERSECTION_PARALLEL){
             char msg[160];snprintf(msg,sizeof msg,"guide %u datum %u: %s",g->id,d->id,
@@ -363,7 +379,7 @@ static bool reference_compute_guide(ReferenceEval *ctx, size_t i)
     if(p){
         g_rule_reference_error[0]=0;g_parameter_error[0]=0;
         AppLinearContext context={ctx,g};
-        GeoGuideResult result=geo_guides_evaluate(&world->guide_lines,i,&source_frame,NULL,reference_resolve_linear,&context);
+        GeoGuideResult result=geo_guides_evaluate(&world->geo.guide_lines,i,&source_frame,NULL,reference_resolve_linear,&context);
         Coord value;ok=reference_linear_result(result.linear,g->expression.mode,expression,&value);
     }
     if(!ok){
@@ -405,8 +421,8 @@ typedef struct {
 } AppMemberReferenceContext;
 static bool app_member_reference_at(void *user,size_t i,WoodMemberReferenceFact *out)
 {
-    AppMemberReferenceContext *c=user;World *w=c->world;if(i>=w->timber_count)return false;
-    const TimberAnchor *a=&w->anchors[i];out->member=w->timbers[i];out->wanted=c->evaluation&&c->evaluation->wanted[i];
+    AppMemberReferenceContext *c=user;World *w=c->world;if(i>=w->wood.timber_count)return false;
+    const TimberAnchor *a=&w->wood.anchors[i];out->member=w->wood.timbers[i];out->wanted=c->evaluation&&c->evaluation->wanted[i];
     out->anchor=(WoodMemberReference){.placement_id=a->placement_id,.anchor_kind=a->anchor_kind,.length_direction=a->length_direction,.depth_side=a->depth_side,
         .ref_grid=a->ref_grid,.ref_grid_axis=a->ref_grid_axis,.ref_grid_index=a->ref_grid_index,.ref_grid_has_band=a->ref_grid_has_band,.ref_grid_band=a->ref_grid_band,
         .ref_rule=a->ref_rule,.ref_hole=a->ref_hole,.ref_edge=a->ref_edge,.has_through=a->has_through,.through=a->through,
@@ -418,7 +434,7 @@ static bool app_member_reference_at(void *user,size_t i,WoodMemberReferenceFact 
 }
 static bool app_member_reference_guide(void *user,size_t i,WoodMemberGuideFact *out)
 {
-    AppMemberReferenceContext *c=user;const GuideLine *g=geo_guides_at(&c->world->guide_lines,i);if(!g)return false;
+    AppMemberReferenceContext *c=user;const GuideLine *g=geo_guides_at(&c->world->geo.guide_lines,i);if(!g)return false;
     *out=(WoodMemberGuideFact){g->id,g->placement_id,g->direction==GUIDE_ALONG_V,g->offset};return true;
 }
 static bool app_member_reference_placement(void *user,uint32_t id,WoodMemberPlacementFact *out)
@@ -440,19 +456,19 @@ static bool app_member_reference_grid_line(void *user,const WoodMemberReference 
     AppMemberReferenceContext *c=user;World *w=c->world;const ReferenceGrid *g=world_find_grid(w,a->ref_grid);
     if(c->evaluation&&!c->evaluation->use_current_values)
         return wood_grid_sources_line(c->evaluation->grid_sources,a->ref_grid,a->placement_id,a->ref_grid_axis,a->ref_grid_index,true,a->ref_grid_has_band,a->ref_grid_band,out,NULL,err,cap);
-    return grid_anchor_line_coord(w->grid_applications.items,w->grid_applications.count,g,&c->geometry->placement,c->geometry->boundary_view,a->ref_grid_axis,a->ref_grid_index,a->ref_grid_has_band,a->ref_grid_band,out,err,cap);
+    return grid_anchor_line_coord(w->wood.grid_applications.items,w->wood.grid_applications.count,g,&c->geometry->placement,c->geometry->boundary_view,a->ref_grid_axis,a->ref_grid_index,a->ref_grid_has_band,a->ref_grid_band,out,err,cap);
 }
 static bool app_member_reference_grid_scope(void *user,uint32_t id,SurfaceRegion2 *out,char *err,size_t cap)
 {
     AppMemberReferenceContext *c=user;World *w=c->world;const ReferenceGrid *g=world_find_grid(w,id);
     if(c->evaluation&&!c->evaluation->use_current_values)return wood_grid_sources_cell(c->evaluation->grid_sources,id,out,err,cap);
-    return grid_cell_bounds(w->grid_applications.items,w->grid_applications.count,g,&c->geometry->placement,c->geometry->boundary_view,out,err,cap);
+    return grid_cell_bounds(w->wood.grid_applications.items,w->wood.grid_applications.count,g,&c->geometry->placement,c->geometry->boundary_view,out,err,cap);
 }
 static bool app_member_reference_rule(void *user,const GeoGridRuleLineRef *ref,uint32_t pid,Coord *out,SurfaceRegion2 *scope,char *err,size_t cap)
 {AppMemberReferenceContext *c=user;return c->evaluation&&!c->evaluation->use_current_values?
     wood_grid_sources_rule_line(c->evaluation->grid_sources,ref,pid,out,scope,err,cap):grid_rule_line(c->world,ref,pid,out,scope,err,cap);}
 static bool app_member_reference_footprint(void *user,size_t i,uint32_t pid,SurfaceRegion2 *out)
-{AppMemberReferenceContext *c=user;(void)pid;return timber_a0_footprint_uv(&c->geometry->placement,&c->world->timbers[i],&c->world->anchors[i],out);}
+{AppMemberReferenceContext *c=user;(void)pid;return timber_a0_footprint_uv(&c->geometry->placement,&c->world->wood.timbers[i],&c->world->wood.anchors[i],out);}
 static bool app_member_reference_key(void *user,uint32_t pid,const char *key,int *hole,int *edge,char *err,size_t cap)
 {
     AppMemberReferenceContext *c=user;(void)pid;if(dp_edge_resolve(c->world,&c->geometry->placement,key,hole,edge))return true;
@@ -493,7 +509,7 @@ static bool app_member_reference_boundary(void *user,uint32_t pid,const WoodMemb
 static bool app_member_reference_place(void *user,uint32_t pid,WoodMember *member,SurfacePoint2 uv,int direction,int depth)
 {AppMemberReferenceContext *c=user;(void)pid;return timber_place_a0_on_surface(member,&c->geometry->placement,c->geometry->boundary_view,uv,(SurfaceDirection)direction,(SurfaceDepthSide)depth);}
 static void app_member_reference_write(void *user,size_t i,const WoodMember *member,SurfacePoint2 uv)
-{AppMemberReferenceContext *c=user;c->world->timbers[i]=*member;c->world->anchors[i].uv=uv;}
+{AppMemberReferenceContext *c=user;c->world->wood.timbers[i]=*member;c->world->wood.anchors[i].uv=uv;}
 static bool app_member_reference_issue(void *user,uint32_t id,const char *clause,const char *expected,const char *actual)
 {(void)user;return reference_issue(id,clause,expected,actual);}
 static size_t app_member_reference_issue_count(void *user)
@@ -503,7 +519,7 @@ static void app_member_reference_first_error(void *user,const char *error)
 static WoodMemberReferenceContext app_member_reference_context(AppMemberReferenceContext *c)
 {
     return (WoodMemberReferenceContext){.user=c,.use_current_values=c->evaluation&&c->evaluation->use_current_values,
-        .member_count=c->world->timber_count,.guide_count=geo_guides_count(&c->world->guide_lines),
+        .member_count=c->world->wood.timber_count,.guide_count=geo_guides_count(&c->world->geo.guide_lines),
         .member_at=app_member_reference_at,.guide_at=app_member_reference_guide,.placement=app_member_reference_placement,
         .grid=app_member_reference_grid,.grid_line=app_member_reference_grid_line,.grid_scope=app_member_reference_grid_scope,.rule_line=app_member_reference_rule,
         .member_footprint=app_member_reference_footprint,.resolve_key=app_member_reference_key,.edge=app_member_reference_edge,
@@ -521,12 +537,19 @@ static bool reference_place_geometry(ReferenceEval *evaluation,World *w,size_t t
 static bool reference_compute_timber(ReferenceEval *ctx,size_t i)
 {
     if(!ctx->use_current_values&&ctx->wanted[i]){
-        WoodEngineeringContext engineering=app_eng_context(ctx->world);
-        wood_engineering_sources_bind(ctx->engineering_sources,&engineering);
-        for(int field=0;field<2;++field){EngTarget target={1,ctx->world->timbers[i].id,0,field};
-            const EngBinding *binding=wood_eng_binding(&engineering,&target);GeoCoord dimension;
-            if(binding){if(!wood_eng_effective(&engineering,binding,&dimension,NULL,0))return false;
-                if(field)ctx->world->timbers[i].size_b=dimension;else ctx->world->timbers[i].size_a=dimension;}
+        Timber *member=&ctx->world->wood.timbers[i];WoodAssemblyContext assembly=app_asm_context(ctx->world);
+        if(wood_assembly_owned(&assembly,member->id)){
+            GeoCoord width,depth;
+            if(!wood_assembly_sources_owned_dimensions(ctx->assembly_sources,member->id,&width,&depth))return false;
+            member->size_a=width;member->size_b=depth;
+        }else{
+            WoodEngineeringContext engineering=app_eng_context(ctx->world);
+            wood_engineering_sources_bind(ctx->engineering_sources,&engineering);
+            for(int field=0;field<2;++field){EngTarget target={1,member->id,0,field};
+                const EngBinding *binding=wood_eng_binding(&engineering,&target);GeoCoord dimension;
+                if(binding){if(!wood_eng_effective(&engineering,binding,&dimension,NULL,0))return false;
+                    if(field)member->size_b=dimension;else member->size_a=dimension;}
+            }
         }
     }
     AppMemberReferenceContext c={0};c.evaluation=ctx;c.world=ctx->world;WoodMemberReferenceContext context=app_member_reference_context(&c);bool place=false;if(!wood_member_reference_compute(&context,i,&place))return false;return !place||reference_place_geometry(ctx,ctx->world,i);
@@ -538,8 +561,8 @@ static bool reference_compute_timber(ReferenceEval *ctx,size_t i)
 static bool reference_check_all(const World *w)
 {
     bool ok=true;
-    for (size_t i=0;i<w->timber_count;++i) {
-        const Timber *t=&w->timbers[i]; const TimberAnchor *a=&w->anchors[i];
+    for (size_t i=0;i<w->wood.timber_count;++i) {
+        const Timber *t=&w->wood.timbers[i]; const TimberAnchor *a=&w->wood.anchors[i];
         if (!t->placed) continue;
         const PlacementSurface *p=world_find_placement(w,a->placement_id); SurfaceRegion2 f;
         if (!p || !timber_a0_footprint_uv(p,t,a,&f)) { ok=reference_issue(t->id,"I5","valid footprint on existing surface","missing footprint"); continue; }
@@ -558,11 +581,11 @@ static bool reference_check_all(const World *w)
         char err[256];
         if (!timber_end_face_check(w,p,b,t,along,ends[0],ends[1],lo,hi,err,sizeof err)) { reference_issue(t->id,"I19/I22","higher-priority endpoint supports or defined exception",err); ok=false; }
         if (!timber_boundary_role_check(p,b,t,along,ends[0],ends[1],lo,hi,err,sizeof err)) { reference_issue(t->id,"I20/R18","full fixed-edge coverage for boundary",err); ok=false; }
-        for (size_t j=i+1;j<w->timber_count;++j) {
+        for (size_t j=i+1;j<w->wood.timber_count;++j) {
             SurfaceRegion2 other;
-            if (!w->timbers[j].placed || w->anchors[j].placement_id!=a->placement_id || !timber_a0_footprint_uv(p,&w->timbers[j],&w->anchors[j],&other)) continue;
+            if (!w->wood.timbers[j].placed || w->wood.anchors[j].placement_id!=a->placement_id || !timber_a0_footprint_uv(p,&w->wood.timbers[j],&w->wood.anchors[j],&other)) continue;
             if (uv_rects_overlap(f.min_u,f.min_v,f.max_u,f.max_v,other.min_u,other.min_v,other.max_u,other.max_v)) {
-                char actual[180]; snprintf(actual,sizeof actual,"positive-area intersection with timber %u",w->timbers[j].id);
+                char actual[180]; snprintf(actual,sizeof actual,"positive-area intersection with timber %u",w->wood.timbers[j].id);
                 reference_issue(t->id,"I11","zero positive-area overlap",actual); ok=false;
             }
         }
@@ -590,7 +613,7 @@ static bool reference_parameters_rebuild(World *w,char *error,size_t cap)
 {
     if(!g_active_app_candidate||w!=&g_active_app_candidate->after)return parameters_rebuild(w,error,cap);
     g_parameter_error[0]=0;GeoParameterError issue;bool ok;
-    if(w->parameter_loading)ok=parameter_fail("I39: unterminated parameter block");
+    if(w->app.parameter_loading)ok=parameter_fail("I39: unterminated parameter block");
     else{
         ReferenceEval *ctx=reference_sources_begin_candidate(w);
         if(!ctx)ok=parameter_fail("UNSUPPORTED/CAPACITY: parameter evaluation memory");
@@ -607,12 +630,12 @@ static bool reference_rebuild(World *w)
         if(!ctx)return false;persistent=true;
     }
     ctx->world=w;bool ok=true;
-    geo_guides_reset_resolved(&w->guide_lines);
-    for (size_t i=0;i<w->timber_count;++i) { ctx->wanted[i]=w->timbers[i].placed; w->timbers[i].placed=false; }
+    geo_guides_reset_resolved(&w->geo.guide_lines);
+    for (size_t i=0;i<w->wood.timber_count;++i) { ctx->wanted[i]=w->wood.timbers[i].placed; w->wood.timbers[i].placed=false; }
     if (!reference_eval_datums(ctx)) { if (g_reference_capturing) g_reference_trial=*w; if(!persistent)reference_sources_dispose(ctx); return false; }
     /* Timbers drive guide evaluation as needed; remaining guides are then evaluated. */
-    for (size_t i=0;i<w->timber_count;++i) if (ctx->wanted[i] && !reference_eval_timber(ctx,i)) ok=false;
-    for (size_t i=0;i<geo_guides_count(&w->guide_lines);++i) if (!reference_eval_guide(ctx,i)) ok=false;
+    for (size_t i=0;i<w->wood.timber_count;++i) if (ctx->wanted[i] && !reference_eval_timber(ctx,i)) ok=false;
+    for (size_t i=0;i<geo_guides_count(&w->geo.guide_lines);++i) if (!reference_eval_guide(ctx,i)) ok=false;
     if (g_reference_capturing) g_reference_trial=*w;
     if(!persistent)reference_sources_dispose(ctx);return ok;
 }
@@ -628,7 +651,7 @@ static bool apply_spec_line(const char *p,int n,char **tokens,int count,World *w
     if (!reference_name(tokens[1]) || !parse_coord(tokens[2],&value)) {
         scene_error(p,n,"D6b: spec requires a unique name and integer mm in D1 range"); return false;
     }
-    if (!geo_named_values_put(&w->named_values,tokens[1],value)) {
+    if (!geo_named_values_put(&w->geo.named_values,tokens[1],value)) {
         scene_error(p,n,"D6b: spec capacity exceeded"); return false;
     }
     return reference_checked(p,n,w);
@@ -641,12 +664,12 @@ static bool apply_datum_line(const char *p,int n,char **tokens,int count,World *
         scene_error(p,n,"D6c: datum id x|y|z spec-only position expression"); return false;
     }
     d.axis=tolower((unsigned char)tokens[2][0])=='x'?0:tolower((unsigned char)tokens[2][0])=='y'?1:2;
-    size_t i=0;while(i<geo_datums_count(&w->datum_planes)&&geo_datums_at(&w->datum_planes,i)->id!=d.id)++i;
+    size_t i=0;while(i<geo_datums_count(&w->geo.datum_planes)&&geo_datums_at(&w->geo.datum_planes,i)->id!=d.id)++i;
     if(i==WORLD_MAX_DATUMS){scene_error(p,n,"D6c: datum capacity exceeded");return false;}
     GeoLinearExpression compiled;(void)reference_compile_text(d.expression,&compiled);
-    if(!geo_datums_put(&w->datum_planes,d.id,d.axis,&compiled)){scene_error(p,n,"D6c: datum capacity exceeded");return false;}
-    memset(&w->datum_texts[i],0,sizeof w->datum_texts[i]);w->datum_texts[i].id=d.id;
-    snprintf(w->datum_texts[i].expression,sizeof w->datum_texts[i].expression,"%s",d.expression);
+    if(!geo_datums_put(&w->geo.datum_planes,d.id,d.axis,&compiled)){scene_error(p,n,"D6c: datum capacity exceeded");return false;}
+    memset(&w->app.datum_texts[i],0,sizeof w->app.datum_texts[i]);w->app.datum_texts[i].id=d.id;
+    snprintf(w->app.datum_texts[i].expression,sizeof w->app.datum_texts[i].expression,"%s",d.expression);
     return reference_checked(p,n,w);
 }
 static bool apply_reference_guide(const char *p,int n,char **tokens,int count,World *w)
@@ -666,7 +689,7 @@ static bool apply_reference_guide(const char *p,int n,char **tokens,int count,Wo
 static bool apply_reference_move(const char *p,int n,char **tokens,int count,World *w)
 {
     uint32_t id;if(!parse_u32(tokens[1],&id))return false;
-    const GeoGuide *guide=geo_guides_find(&w->guide_lines,id);
+    const GeoGuide *guide=geo_guides_find(&w->geo.guide_lines,id);
     if(guide){
         if(guide->source==GUIDE_DATUM){scene_error(p,n,"R5: shared guide cannot be moved locally; edit its datum or named spec");return false;}
         char expression[REF_EXPR_MAX];if(!reference_expression(tokens,2,count,expression)||!app_guide_put(w,guide,expression))return false;
@@ -729,8 +752,8 @@ static bool apply_reference_place(const char *p,int n,char **tokens,int count,Wo
         !lookup_keyword(tokens[i+1],DEPTH_SIDE_WORDS,&a.depth_side)) {
         scene_error(p,n,"place 缺少長度方向與深度側，或有多餘欄位"); return false;
     }
-    a.order=w->timbers[ti].placed?w->anchors[ti].order:++w->next_order;
-    w->anchors[ti]=a; w->timbers[ti].placed=true;
+    a.order=w->wood.timbers[ti].placed?w->wood.anchors[ti].order:++w->app.next_order;
+    w->wood.anchors[ti]=a; w->wood.timbers[ti].placed=true;
     return reference_checked(p,n,w);
 }
 
@@ -739,31 +762,31 @@ static void reference_dump_guide(const World *w,FILE *out,size_t i,bool *done)
 {
     if (done[i]) return;
     done[i]=true;
-    const char *p=app_guide_expression(w,geo_guides_values(&w->guide_lines)[i].id);
+    const char *p=app_guide_expression(w,geo_guides_values(&w->geo.guide_lines)[i].id);
     while ((p=strstr(p,"guide:"))!=NULL) {
         char *end; unsigned long id=strtoul(p+6,&end,10);
-        for (size_t j=0;j<geo_guides_count(&w->guide_lines);++j) if (geo_guides_values(&w->guide_lines)[j].id==id) reference_dump_guide(w,out,j,done);
+        for (size_t j=0;j<geo_guides_count(&w->geo.guide_lines);++j) if (geo_guides_values(&w->geo.guide_lines)[j].id==id) reference_dump_guide(w,out,j,done);
         p=end>p?end:p+6;
     }
-    const GuideLine *g=&geo_guides_values(&w->guide_lines)[i];
+    const GuideLine *g=&geo_guides_values(&w->geo.guide_lines)[i];
     if (g->source==GUIDE_DATUM) fprintf(out,"guide %u %u datum %u\n",g->id,g->placement_id,g->datum_id);
     else fprintf(out,"guide %u %u %s %s\n",g->id,g->placement_id,g->direction==GUIDE_ALONG_U?"u":"v",app_guide_expression(w,g->id));
 }
 static bool reference_guide_ready(const World *w,size_t i,const bool *placed,unsigned depth)
 {
     if (depth>WORLD_MAX_GUIDES) return false;
-    const char *p=app_guide_expression(w,geo_guides_values(&w->guide_lines)[i].id);
+    const char *p=app_guide_expression(w,geo_guides_values(&w->geo.guide_lines)[i].id);
     while ((p=strstr(p,"timber:"))!=NULL) {
         char *end; unsigned long id=strtoul(p+7,&end,10);
         int ti=reference_timber_index(w,(uint32_t)id);
         if (ti>=0 && end[0]==':' && end[1]!='A' && end[1]!='B' && !placed[ti]) return false;
         p=end>p?end:p+7;
     }
-    p=app_guide_expression(w,geo_guides_values(&w->guide_lines)[i].id);
+    p=app_guide_expression(w,geo_guides_values(&w->geo.guide_lines)[i].id);
     while ((p=strstr(p,"guide:"))!=NULL) {
         char *end; unsigned long id=strtoul(p+6,&end,10);
-        for (size_t j=0;j<geo_guides_count(&w->guide_lines);++j)
-            if (geo_guides_values(&w->guide_lines)[j].id==id && !reference_guide_ready(w,j,placed,depth+1)) return false;
+        for (size_t j=0;j<geo_guides_count(&w->geo.guide_lines);++j)
+            if (geo_guides_values(&w->geo.guide_lines)[j].id==id && !reference_guide_ready(w,j,placed,depth+1)) return false;
         p=end>p?end:p+6;
     }
     return true;
@@ -771,22 +794,22 @@ static bool reference_guide_ready(const World *w,size_t i,const bool *placed,uns
 static void reference_dump(const World *w,FILE *out)
 {
     bool gd[WORLD_MAX_GUIDES]={0},placed[WORLD_MAX_TIMBERS]={0};
-    for (size_t i=0;i<geo_datums_count(&w->datum_planes);++i)
-        fprintf(out,"datum %u %c %s\n",geo_datums_at(&w->datum_planes,i)->id,"xyz"[geo_datums_at(&w->datum_planes,i)->axis],app_datum_expression(w,geo_datums_at(&w->datum_planes,i)->id));
-    for (size_t i=0;i<w->timber_count;++i) {
-        const Timber *t=&w->timbers[i];
+    for (size_t i=0;i<geo_datums_count(&w->geo.datum_planes);++i)
+        fprintf(out,"datum %u %c %s\n",geo_datums_at(&w->geo.datum_planes,i)->id,"xyz"[geo_datums_at(&w->geo.datum_planes,i)->axis],app_datum_expression(w,geo_datums_at(&w->geo.datum_planes,i)->id));
+    for (size_t i=0;i<w->wood.timber_count;++i) {
+        const Timber *t=&w->wood.timbers[i];
         if (engineering_dump_timber(w,t,out)) continue;
         assembly_owned_prefix(w,t->id,"timber",out);
         fprintf(out,"timber %u %lld %lld role %s",t->id,(long long)t->size_a,(long long)t->size_b,timber_role_name(t->role));
         if (t->role==TIMBER_ROLE_CUSTOM) fprintf(out," priority %lld",(long long)t->cut_priority);
         fputc('\n',out);
     }
-    for (size_t k=0;k<=w->timber_count;++k) {
-        for (size_t i=0;i<geo_guides_count(&w->guide_lines);++i) if (!gd[i] && reference_guide_ready(w,i,placed,0)) reference_dump_guide(w,out,i,gd);
-        size_t at=w->timber_count; uint64_t order=UINT64_MAX;
-        for (size_t i=0;i<w->timber_count;++i) if (w->timbers[i].placed && !placed[i] && w->anchors[i].order<order) { at=i; order=w->anchors[i].order; }
-        if (at==w->timber_count) break;
-        const Timber *t=&w->timbers[at]; const TimberAnchor *a=&w->anchors[at];
+    for (size_t k=0;k<=w->wood.timber_count;++k) {
+        for (size_t i=0;i<geo_guides_count(&w->geo.guide_lines);++i) if (!gd[i] && reference_guide_ready(w,i,placed,0)) reference_dump_guide(w,out,i,gd);
+        size_t at=w->wood.timber_count; uint64_t order=UINT64_MAX;
+        for (size_t i=0;i<w->wood.timber_count;++i) if (w->wood.timbers[i].placed && !placed[i] && w->wood.anchors[i].order<order) { at=i; order=w->wood.anchors[i].order; }
+        if (at==w->wood.timber_count) break;
+        const Timber *t=&w->wood.timbers[at]; const TimberAnchor *a=&w->wood.anchors[at];
         assembly_owned_prefix(w,t->id,"place",out);
         fprintf(out,"place %u on %u ",t->id,a->placement_id);
         if (a->anchor_kind==ANCHOR_AT_LINE) fprintf(out,"at-line guide %u",a->ref_guide);
@@ -822,15 +845,15 @@ static bool reference_snap(World *w,uint32_t pid,GuideDirection dir,uint32_t exc
 {
     GuideLine probe={0}; probe.placement_id=pid; probe.direction=dir;
     ReferenceEval ctx={0}; ctx.world=w;ctx.use_current_values=true;
-    for (size_t i=0;i<w->timber_count;++i) ctx.wanted[i]=w->timbers[i].placed;
+    for (size_t i=0;i<w->wood.timber_count;++i) ctx.wanted[i]=w->wood.timbers[i].placed;
     Coord best=radius+1; bool found=false;
     const PlacementSurface *p=world_find_placement(w,pid); if (!p) return false;
     const SpaceBoundarySurface *b=world_placement_boundary(w,p); char axis=dir==GUIDE_ALONG_V?'u':'v';
     enum { SNAP_MAX = WORLD_MAX_SPECS + WORLD_MAX_GUIDES + (POLY_MAX_HOLES+1)*POLY_MAX_VERTICES + WORLD_MAX_GRIDS*GRID_MAX_LINES + WORLD_MAX_TIMBERS*2 };
     char candidates[SNAP_MAX][REF_EXPR_MAX]; size_t n=0;
-    for (size_t i=0;i<geo_named_values_count(&w->named_values) && n<SNAP_MAX;++i) snprintf(candidates[n++],REF_EXPR_MAX,"spec:%s",geo_named_values_at(&w->named_values,i)->name);
-    for (size_t i=0;i<geo_guides_count(&w->guide_lines) && n<SNAP_MAX;++i) if (geo_guides_values(&w->guide_lines)[i].id!=exclude && geo_guides_values(&w->guide_lines)[i].placement_id==pid && geo_guides_values(&w->guide_lines)[i].direction==dir)
-        snprintf(candidates[n++],REF_EXPR_MAX,"guide:%u",geo_guides_values(&w->guide_lines)[i].id);
+    for (size_t i=0;i<geo_named_values_count(&w->geo.named_values) && n<SNAP_MAX;++i) snprintf(candidates[n++],REF_EXPR_MAX,"spec:%s",geo_named_values_at(&w->geo.named_values,i)->name);
+    for (size_t i=0;i<geo_guides_count(&w->geo.guide_lines) && n<SNAP_MAX;++i) if (geo_guides_values(&w->geo.guide_lines)[i].id!=exclude && geo_guides_values(&w->geo.guide_lines)[i].placement_id==pid && geo_guides_values(&w->geo.guide_lines)[i].direction==dir)
+        snprintf(candidates[n++],REF_EXPR_MAX,"guide:%u",geo_guides_values(&w->geo.guide_lines)[i].id);
     PolygonLoop2 rect; placement_outline(p,b,&rect);
     for (int h=-1; h<(b?(int)b->hole_count:0); ++h) {
         const PolygonLoop2 *loop=h<0?&rect:&b->holes[h];
@@ -839,8 +862,8 @@ static bool reference_snap(World *w,uint32_t pid,GuideDirection dir,uint32_t exc
             else snprintf(candidates[n++],REF_EXPR_MAX,"vertex:h%dv%u:%c",h,(unsigned)i,axis);
         }
     }
-    for (size_t i=0;i<w->grid_applications.count;++i) if (w->grid_applications.items[i].placement_id==pid) {
-        const ReferenceGrid *grid=&w->grid_applications.items[i];
+    for (size_t i=0;i<w->wood.grid_applications.count;++i) if (w->wood.grid_applications.items[i].placement_id==pid) {
+        const ReferenceGrid *grid=&w->wood.grid_applications.items[i];
         Coord coords[GRID_MAX_LINES]; int64_t indices[GRID_MAX_LINES]; size_t count=0; int a=axis=='u'?0:1;
         if (grid->axis[a].stagger_set) continue;
         if (grid->from_binding) {
@@ -855,13 +878,13 @@ static bool reference_snap(World *w,uint32_t pid,GuideDirection dir,uint32_t exc
                         indices[count++]=k;
                 }
             }
-        } else if (!grid_sample_indices_in(w->grid_applications.items,w->grid_applications.count,grid,p,b,a,indices,coords,&count)) continue;
+        } else if (!grid_sample_indices_in(w->wood.grid_applications.items,w->wood.grid_applications.count,grid,p,b,a,indices,coords,&count)) continue;
         for (size_t j=0;j<count && n<SNAP_MAX;++j)
             snprintf(candidates[n++],REF_EXPR_MAX,"grid:%u:%c:%lld",grid->id,axis,(long long)indices[j]);
     }
-    for (size_t i=0;i<w->timber_count && n+1<SNAP_MAX;++i) if (w->timbers[i].placed && w->anchors[i].placement_id==pid) {
-        snprintf(candidates[n++],REF_EXPR_MAX,"timber:%u:%c:lo",w->timbers[i].id,axis);
-        snprintf(candidates[n++],REF_EXPR_MAX,"timber:%u:%c:hi",w->timbers[i].id,axis);
+    for (size_t i=0;i<w->wood.timber_count && n+1<SNAP_MAX;++i) if (w->wood.timbers[i].placed && w->wood.anchors[i].placement_id==pid) {
+        snprintf(candidates[n++],REF_EXPR_MAX,"timber:%u:%c:lo",w->wood.timbers[i].id,axis);
+        snprintf(candidates[n++],REF_EXPR_MAX,"timber:%u:%c:hi",w->wood.timbers[i].id,axis);
     }
     for (size_t i=0;i<n;++i) {
         Coord value;
@@ -872,8 +895,8 @@ static bool reference_snap(World *w,uint32_t pid,GuideDirection dir,uint32_t exc
             /* A reference back through the moving guide/timber is not a legal snap. */
             World candidate=*w; bool legal=true;
             if (exclude) {
-                for (size_t j=0;j<geo_guides_count(&candidate.guide_lines);++j) if (geo_guides_values(&candidate.guide_lines)[j].id==exclude) {
-                    if(!app_guide_put(&candidate,&geo_guides_values(&candidate.guide_lines)[j],candidates[i])){legal=false;break;}
+                for (size_t j=0;j<geo_guides_count(&candidate.geo.guide_lines);++j) if (geo_guides_values(&candidate.geo.guide_lines)[j].id==exclude) {
+                    if(!app_guide_put(&candidate,&geo_guides_values(&candidate.geo.guide_lines)[j],candidates[i])){legal=false;break;}
                     bool capture=g_reference_capturing; g_reference_capturing=false;
                     legal=world_revalidate(&candidate); g_reference_capturing=capture; break;
                 }

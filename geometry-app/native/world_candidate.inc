@@ -27,8 +27,8 @@ static AppWorldCandidate *app_world_candidate_create(const World *live)
         ++g_app_candidate_serial,g_definition_revision,app_world_provider_stamp());
     if(!candidate->control){free(candidate);return NULL;}
 #define APP_BIND_CORE(field) \
-    if(app_candidate_bind_core(candidate->control,"core." #field,offsetof(World,field), \
-        sizeof candidate->after.field)!=GEO_CANDIDATE_OK){app_world_candidate_destroy(candidate);return NULL;}
+    if(app_candidate_bind_core(candidate->control,"core." #field,offsetof(World,geo)+offsetof(GeoDocument,field), \
+        sizeof candidate->after.geo.field)!=GEO_CANDIDATE_OK){app_world_candidate_destroy(candidate);return NULL;}
     APP_BIND_CORE(parameters)
     APP_BIND_CORE(named_values)
     APP_BIND_CORE(datum_planes)
@@ -37,6 +37,7 @@ static AppWorldCandidate *app_world_candidate_create(const World *live)
     APP_BIND_CORE(placement_data)
     APP_BIND_CORE(grid_store)
     APP_BIND_CORE(version_store)
+    APP_BIND_CORE(enclosures)
 #undef APP_BIND_CORE
     return candidate;
 }

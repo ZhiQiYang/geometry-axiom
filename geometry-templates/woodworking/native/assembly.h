@@ -85,6 +85,16 @@ typedef struct {
     AsmDir direction;
     WoodMemberRole role;
 } WoodAssemblyDefinition;
+typedef struct {
+    void *user;
+    bool (*rule_definition)(void *,uint32_t,uint32_t);
+    bool (*binding)(void *,const AsmBinding *,AsmBinding *);
+    bool (*slot_definition)(void *,uint32_t,uint32_t);
+    bool (*slot_dimension)(void *,uint32_t,uint32_t,int,const EngDimensionSource *,GeoCoord *,char *,size_t);
+    bool (*generated)(void *,const AsmInstance *,int,WoodAssemblyDefinition *);
+    bool (*generated_dimension)(void *,const AsmInstance *,int,uint32_t,int,const EngDimensionSource *,GeoCoord *,char *,size_t);
+    bool (*instance_check)(void *,const AsmInstance *);
+} WoodAssemblyEvaluation;
 /* Host callbacks expose facts, storage writes and legacy serialization only.
  * W selects topology, dimensions, roles, support dependencies and phase order. */
 typedef struct {
@@ -108,6 +118,7 @@ typedef struct {
     void (*write_member)(void *,const WoodMember *,const WoodAssemblyDefinition *);
     bool (*anchor_matches)(void *,uint32_t,const WoodAssemblyDefinition *);
     bool (*instance_content)(void *,AsmInstance *,GeoJson *,int);
+    const WoodAssemblyEvaluation *evaluation;
 } WoodAssemblyContext;
 const AsmRuleVersion *wood_assembly_rule(const WoodAssemblyContext *,uint32_t,uint32_t);
 AsmBinding *wood_assembly_binding(WoodAssemblyContext *,uint32_t);
@@ -118,11 +129,16 @@ bool wood_assembly_publish(WoodAssemblyContext *,GeoJson *,int,const char *);
 bool wood_assembly_put_binding(WoodAssemblyContext *,GeoJson *,int);
 bool wood_assembly_versions_immutable(const WoodAssemblyContext *,const WoodAssemblyContext *);
 bool wood_assembly_rebuild(WoodAssemblyContext *,char *,size_t);
+bool wood_assembly_binding_rebuild_direct(WoodAssemblyContext *,const AsmBinding *,AsmBinding *);
+bool wood_assembly_slot_dimension_direct(WoodAssemblyContext *,uint32_t,uint32_t,int,GeoCoord *,char *,size_t);
 bool wood_assembly_dimensions_changed(const WoodAssemblyContext *,const WoodAssemblyContext *);
 bool wood_assembly_operation(WoodAssemblyContext *,GeoJson *,int);
 bool wood_assembly_generation_integrity(const WoodAssemblyContext *);
 bool wood_assembly_generation_prepare(WoodAssemblyContext *);
 bool wood_assembly_generation_check(const WoodAssemblyContext *);
+bool wood_assembly_member_definition_direct(WoodAssemblyContext *,const AsmInstance *,int,WoodAssemblyDefinition *);
+bool wood_assembly_generated_dimension_direct(WoodAssemblyContext *,const AsmInstance *,int,int,GeoCoord *,char *,size_t);
+bool wood_assembly_instance_check_direct(const WoodAssemblyContext *,const AsmInstance *);
 bool wood_assembly_generation_operation(WoodAssemblyContext *,GeoJson *,int);
 bool wood_assembly_instance_load(WoodAssemblyContext *,GeoJson *,int);
 

@@ -36,9 +36,9 @@ static const char *model_source_quantity_type(ModelSources *state,const GeoSourc
     if(item&&item->quantity_type)return item->quantity_type;
     if(ref->provider==APP_SOURCE_PARAMETER&&ref->key_size==2*sizeof(uint32_t)){
         uint32_t ids[2];memcpy(ids,ref->key,sizeof ids);
-        int index=geo_parameters_field_index(&state->reference.world->parameters,ids[0],ids[1]);
+        int index=geo_parameters_field_index(&state->reference.world->geo.parameters,ids[0],ids[1]);
         if(index<0)return NULL;
-        int type=geo_parameters_fields(&state->reference.world->parameters)[index].type;
+        int type=geo_parameters_fields(&state->reference.world->geo.parameters)[index].type;
         return type==GEO_PARAMETER_COUNT?"count":type==GEO_PARAMETER_RATIO?"ratio":"dimension";
     }
     return value->as.quantity.unit==GEO_UNIT_LENGTH?"dimension":NULL;
@@ -150,6 +150,9 @@ static bool model_sources_build(ModelSources *state,World *world)
     WoodEngineeringContext engineering=app_eng_context(world);char engineering_error[256];
     wood_engineering_sources_bind(state->reference.engineering_sources,&engineering);
     if(!wood_engineering_rebuild(&engineering,engineering_error,sizeof engineering_error))return false;
+    WoodAssemblyContext assembly_context=app_asm_context(world);reference_assembly_context(&state->reference,&assembly_context);
+    if(!wood_assembly_sources_bind(state->reference.assembly_sources,&assembly_context)||
+        !wood_assembly_rebuild(&assembly_context,engineering_error,sizeof engineering_error))return false;
     WoodSectionProfileContext profiles_context=app_sp_context(world);
     if(!reference_sp_bind(&state->reference,&profiles_context)||
         !wood_sp_rebuild(&profiles_context,engineering_error,sizeof engineering_error))return false;
@@ -162,50 +165,52 @@ static bool model_sources_build(ModelSources *state,World *world)
     if(!wood_grid_sources_bind(state->reference.grid_sources,&grid_context)||
         !wood_grid_systems_rebuild(&grid_context,engineering_error,sizeof engineering_error)||
         !wood_grid_bindings_rebuild(&grid_context,engineering_error,sizeof engineering_error))return false;
-    geo_guides_reset_resolved(&world->guide_lines);
-    for(size_t i=0;i<world->timber_count;++i){state->reference.wanted[i]=world->timbers[i].placed;world->timbers[i].placed=false;}
+    if(!wood_assembly_generation_prepare(&assembly_context))return false;
+    geo_guides_reset_resolved(&world->geo.guide_lines);
+    for(size_t i=0;i<world->wood.timber_count;++i){state->reference.wanted[i]=world->wood.timbers[i].placed;world->wood.timbers[i].placed=false;}
     /* Re-evaluate through the actual source engine, preserving dependency order.
      * This process owns the candidate and exposes nothing until all roots pass. */
     if(!reference_eval_datums(&state->reference))return false;
-    for(size_t i=0;i<world->timber_count;++i)if(!reference_eval_timber(&state->reference,i))return false;
-    for(size_t i=0;i<geo_guides_count(&world->guide_lines);++i)if(!reference_eval_guide(&state->reference,i))return false;
-    for(size_t i=0;i<geo_placements_count(&world->placement_data);++i){
-        const GeoPlacementDefinition *p=geo_placements_at(&world->placement_data,i);
+    for(size_t i=0;i<world->wood.timber_count;++i)if(!reference_eval_timber(&state->reference,i))return false;
+    for(size_t i=0;i<geo_guides_count(&world->geo.guide_lines);++i)if(!reference_eval_guide(&state->reference,i))return false;
+    if(!wood_assembly_generation_check(&assembly_context)||!wood_assembly_sources_definitions(state->reference.assembly_sources))return false;
+    for(size_t i=0;i<geo_placements_count(&world->geo.placement_data);++i){
+        const GeoPlacementDefinition *p=geo_placements_at(&world->geo.placement_data,i);
         ModelSourceItem *frame=model_sources_add(state,"placement",p->id,"placement.frame",0,false,GEO_SOURCE_FRAME);
         ModelSourceItem *region=model_sources_add(state,"placement",p->id,"placement.region",0,false,GEO_SOURCE_REGION_SET);
         if(!frame||!region)return false;
         frame->descriptor.context.has_placement=region->descriptor.context.has_placement=true;
         frame->descriptor.context.placement=region->descriptor.context.placement=p->id;frame->value.as.frame=p->frame;
         GeoPlacementViewScratch scratch;GeoRegionSetView view;
-        if(!geo_placement_domain_view(p,&world->region_data,&scratch,&view)||!model_source_regions(region,view.count))return false;
+        if(!geo_placement_domain_view(p,&world->geo.region_data,&scratch,&view)||!model_source_regions(region,view.count))return false;
         if(p->domain==GEO_PLACEMENT_RECT)model_source_rectangle(region,p->rect);
         else for(size_t c=0;c<view.count;++c)model_source_kernel_region(region,c,&view.regions[c],
             p->domain==GEO_PLACEMENT_REGION_REF?world_find_vertex_keys(world,p->region_id):NULL);
     }
-    for(size_t i=0;i<world->column_count+world->beam_count;++i){
-        bool column=i<world->column_count;Coord xl,xh,yl,yh,zl,zh;uint32_t id;
-        if(column){const RcColumn *b=&world->columns[i];id=b->id;xl=b->x_lo;xh=b->x_hi;yl=b->y_lo;yh=b->y_hi;zl=b->z_lo;zh=b->z_hi;}
-        else{const RcBeam *b=&world->beams[i-world->column_count];id=b->id;xl=b->x_lo;xh=b->x_hi;yl=b->y_lo;yh=b->y_hi;zl=b->z_lo;zh=b->z_hi;}
+    for(size_t i=0;i<world->wood.column_count+world->wood.beam_count;++i){
+        bool column=i<world->wood.column_count;Coord xl,xh,yl,yh,zl,zh;uint32_t id;
+        if(column){const RcColumn *b=&world->wood.columns[i];id=b->id;xl=b->x_lo;xh=b->x_hi;yl=b->y_lo;yh=b->y_hi;zl=b->z_lo;zh=b->z_hi;}
+        else{const RcBeam *b=&world->wood.beams[i-world->wood.column_count];id=b->id;xl=b->x_lo;xh=b->x_hi;yl=b->y_lo;yh=b->y_hi;zl=b->z_lo;zh=b->z_hi;}
         ModelSourceItem *item=model_sources_add(state,column?"column":"beam",id,"solid.box",0,false,GEO_SOURCE_BOX);if(!item)return false;
         item->value.as.box=(GeoBox3){{{xl,yl,zl},{1,0,0},{0,1,0},{0,0,1}},{xh-xl,yh-yl,zh-zl}};
     }
-    for(size_t i=0;i<world->timber_count;++i){
-        ModelSourceItem *item=model_sources_add(state,"timber",world->timbers[i].id,"solid.box",0,false,GEO_SOURCE_BOX);if(!item)return false;
-        item->descriptor.context=(GeoSourceContext){true,world->anchors[i].placement_id,-1};
+    for(size_t i=0;i<world->wood.timber_count;++i){
+        ModelSourceItem *item=model_sources_add(state,"timber",world->wood.timbers[i].id,"solid.box",0,false,GEO_SOURCE_BOX);if(!item)return false;
+        item->descriptor.context=(GeoSourceContext){true,world->wood.anchors[i].placement_id,-1};
     }
-    for(size_t i=0;i<geo_named_values_count(&world->named_values);++i){
-        const GeoNamedValue *spec=geo_named_values_at(&world->named_values,i);
+    for(size_t i=0;i<geo_named_values_count(&world->geo.named_values);++i){
+        const GeoNamedValue *spec=geo_named_values_at(&world->geo.named_values,i);
         ModelSourceItem *item=model_sources_add(state,"spec",0,"spec.value",0,false,GEO_SOURCE_QUANTITY);if(!item)return false;
         item->name=spec->name;snprintf(item->key,sizeof item->key,"spec:%s",spec->name);
         item->value.as.quantity=(GeoQuantity){spec->value,1,GEO_UNIT_LENGTH};
     }
-    for(size_t i=0;i<geo_parameters_field_count(&world->parameters);++i){
-        const GeoParameterField *field=&geo_parameters_fields(&world->parameters)[i];
+    for(size_t i=0;i<geo_parameters_field_count(&world->geo.parameters);++i){
+        const GeoParameterField *field=&geo_parameters_fields(&world->geo.parameters)[i];
         ModelSourceItem *item=model_sources_add(state,"parameter",field->parameter_id,"parameter.value",field->id,true,GEO_SOURCE_QUANTITY);if(!item)return false;
         item->name=field->name;item->quantity_type=field->type==GEO_PARAMETER_COUNT?"count":field->type==GEO_PARAMETER_RATIO?"ratio":"dimension";
         item->value.as.quantity=field->value;item->descriptor.unit=field->value.unit;
     }
-    const SectionProfileState *profiles=&world->section_profiles;
+    const SectionProfileState *profiles=&world->wood.section_profiles;
     for(size_t i=0;i<profiles->run_count;++i){
         const ProfileRun *run=&profiles->runs[i];const SectionProfile *profile=sp_profile(world,run->profile_id);
         GeoFrame frame=run->placed?run->frame:(GeoFrame){{0,0,0},{1,0,0},{0,1,0},{0,0,1}};
@@ -265,7 +270,7 @@ static const ModelSourceItem *model_source_semantics(ModelSources *state,const G
     if(item||ref->provider!=APP_SOURCE_SECTION_PROFILE)return item;
     WoodSectionProfileSourceKind kind;uint32_t id;
     if(!wood_sp_source_decode(ref,&kind,&id))return NULL;
-    uint32_t profile=0;const SectionProfileState *profiles=&state->reference.world->section_profiles;
+    uint32_t profile=0;const SectionProfileState *profiles=&state->reference.world->wood.section_profiles;
     if(kind==WOOD_SP_SOURCE_MEMBER_REGION){
         for(size_t i=0;i<profiles->member_count;++i)if(profiles->members[i].id==id){profile=profiles->members[i].profile_id;break;}
     }else if(kind==WOOD_SP_SOURCE_RUN_REGION){

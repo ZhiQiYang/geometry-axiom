@@ -344,7 +344,7 @@ static int es_product_graph(AppWorldCandidate *owner)
 {
     GeoCandidate *core=app_candidate_core(owner->control);GeoEvalContext *graph=geo_candidate_sources(core);
     ReferenceEval *host=app_candidate_evaluation_state(owner->control);ES_CHECK(host&&host->world==&owner->after&&host->sources==graph&&geo_eval_is_sealed(graph),"product-engineering-exact-candidate-context");
-    ES_CHECK(host->engineering_sources&&wood_engineering_sources_state(host->engineering_sources)==&owner->after.engineering&&
+    ES_CHECK(host->engineering_sources&&wood_engineering_sources_state(host->engineering_sources)==&owner->after.wood.engineering&&
         wood_engineering_sources_context(host->engineering_sources)==graph,"product-engineering-provider-owned-by-after-state");
     WoodEngineeringSourceTokens tokens={APP_SOURCE_ENGINEERING_DIMENSION,APP_SOURCE_ENGINEERING_BINDING,APP_SOURCE_ENGINEERING_DEFINITION,APP_SOURCE_NAMED,APP_SOURCE_PARAMETER};
     ES_CHECK(es_owned_providers(graph,tokens,host->engineering_sources),"product-all-engineering-providers-use-retained-candidate-state");
@@ -360,12 +360,12 @@ int main(int argc,char **argv)
     ES_CHECK(parse_scene_file(argv[2],&g_world),"product-existing-engineering-scene-dsl");history_clear();g_preview.ready=false;
     World *before=malloc(sizeof *before);ES_CHECK(before,"product-before-memory");memcpy(before,&g_world,sizeof *before);
     char *before_dump=es_product_dump(&g_world);ES_CHECK(before_dump,"product-before-dump");uint64_t revision=g_definition_revision;
-    ES_CHECK(g_world.timber_count==1&&g_world.timbers[0].size_a==30&&g_world.timbers[0].size_b==40,"product-fixed-baseline-values");
+    ES_CHECK(g_world.wood.timber_count==1&&g_world.wood.timbers[0].size_a==30&&g_world.wood.timbers[0].size_b==40,"product-fixed-baseline-values");
     ES_CHECK(es_product_line("preview spec x 600")&&g_preview.ready&&g_preview.valid,"product-ready-valid-preview");
     AppWorldCandidate *owner=g_preview.transaction;ES_CHECK(owner,"product-preview-owner");GeoCandidate *core=app_candidate_core(owner->control);
     uint64_t id=geo_candidate_id(core);const void *before_buffer=app_candidate_before(owner->control);void *after_buffer=app_candidate_after(owner->control);
-    const GuideLine *guide=geo_guides_find(&owner->after.guide_lines,1);
-    ES_CHECK(guide&&guide->offset==600&&owner->after.timbers[0].size_a==30&&owner->after.timbers[0].size_b==40,"product-preview-fixed-values");
+    const GuideLine *guide=geo_guides_find(&owner->after.geo.guide_lines,1);
+    ES_CHECK(guide&&guide->offset==600&&owner->after.wood.timbers[0].size_a==30&&owner->after.wood.timbers[0].size_b==40,"product-preview-fixed-values");
     ES_CHECK(es_product_graph(owner)==0,"product-preview-graph");
     ES_CHECK(!memcmp(before,&g_world,sizeof *before)&&g_definition_revision==revision&&geo_candidate_evaluation_generation(core)==1,"product-preview-keeps-live-bytes");
     char *after_dump=es_product_dump(&owner->after);ES_CHECK(after_dump&&strcmp(after_dump,before_dump),"product-real-staged-change");

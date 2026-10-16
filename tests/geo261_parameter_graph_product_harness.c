@@ -27,9 +27,9 @@ static int parameter_graph_values(const World *world,Coord guide_position)
 {
     int first=parameter_field_index(world,1,1),second=parameter_field_index(world,2,1);
     CHECK(first>=0&&second>=0,"product-parameter-fields-present");
-    const ParameterField *fields=geo_parameters_fields(&world->parameters);
+    const ParameterField *fields=geo_parameters_fields(&world->geo.parameters);
     CHECK(parameter_graph_quantity(fields[first].value,7,1)&&parameter_graph_quantity(fields[second].value,7,3),"product-parameter-values-exact");
-    const GuideLine *guide=geo_guides_find(&world->guide_lines,1),*parameter=geo_guides_find(&world->guide_lines,2);
+    const GuideLine *guide=geo_guides_find(&world->geo.guide_lines,1),*parameter=geo_guides_find(&world->geo.guide_lines,2);
     CHECK(guide&&guide->resolved&&guide->offset==guide_position&&parameter&&parameter->resolved&&parameter->offset==7,"product-guides-use-spec-and-parameter");
     return 0;
 }
@@ -45,7 +45,7 @@ static int parameter_graph_retained(AppWorldCandidate *owner)
         CHECK(provider,"product-provider-view");if(provider->token!=APP_SOURCE_PARAMETER)continue;
         GeoParameterSources *parameters=provider->candidate_state;
         CHECK(parameters==host->parameter_sources&&!strcmp(provider->name_space,"core.parameter.field"),"product-parameter-provider-binding");
-        CHECK(geo_parameter_sources_store(parameters)==&owner->after.parameters&&geo_parameter_sources_context(parameters)==sources,"product-parameter-provider-exact-store-and-context");
+        CHECK(geo_parameter_sources_store(parameters)==&owner->after.geo.parameters&&geo_parameter_sources_context(parameters)==sources,"product-parameter-provider-exact-store-and-context");
         provider_found=true;
     }
     CHECK(provider_found,"product-parameter-provider-retained");
@@ -106,11 +106,11 @@ static int parameter_graph_read_only(void)
      * path detectable even though the valid definitions still evaluate to 7. */
     int first=parameter_field_index(&g_world,1,1),second=parameter_field_index(&g_world,2,1);
     CHECK(first>=0&&second>=0,"readonly-fields");
-    g_world.parameters.fields[first].value=(GeoQuantity){-123,1,GEO_UNIT_LENGTH};
-    g_world.parameters.fields[second].value=(GeoQuantity){-456,1,GEO_UNIT_LENGTH};
+    g_world.geo.parameters.fields[first].value=(GeoQuantity){-123,1,GEO_UNIT_LENGTH};
+    g_world.geo.parameters.fields[second].value=(GeoQuantity){-456,1,GEO_UNIT_LENGTH};
     World *before=malloc(sizeof *before);CHECK(before,"readonly-snapshot-memory");memcpy(before,&g_world,sizeof *before);
     ReferenceEval ctx={0};ctx.world=&g_world;ctx.use_current_values=true;
-    CHECK(reference_sources_ensure(&ctx)&&ctx.parameter_snapshot&&ctx.parameter_snapshot!=&g_world.parameters,"readonly-clones-parameter-store");
+    CHECK(reference_sources_ensure(&ctx)&&ctx.parameter_snapshot&&ctx.parameter_snapshot!=&g_world.geo.parameters,"readonly-clones-parameter-store");
     CHECK(geo_parameter_sources_store(ctx.parameter_sources)==ctx.parameter_snapshot&&
         geo_parameter_sources_context(ctx.parameter_sources)==ctx.sources,"readonly-provider-uses-clone-and-own-resolver");
     GeoQuantity value;CHECK(reference_parameter_quantity(&ctx,(ParameterRef){true,1,1},&value)&&parameter_graph_quantity(value,7,1),"readonly-computes-exact-value-from-definitions");

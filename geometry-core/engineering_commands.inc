@@ -4,11 +4,11 @@
 static bool app_eng_operation_parameters(void *user,char *error,size_t cap)
 {return parameters_rebuild((World *)user,error,cap);}
 static void app_eng_operation_member_created(void *user,size_t i)
-{World *w=(World *)user;memset(&w->anchors[i],0,sizeof w->anchors[i]);w->anchors[i].span_mode=SPAN_AUTO;}
+{World *w=(World *)user;memset(&w->wood.anchors[i],0,sizeof w->wood.anchors[i]);w->wood.anchors[i].span_mode=SPAN_AUTO;}
 static WoodEngineeringOperations app_eng_operations(World *w)
 {
     WoodEngineeringOperations o={0};o.grids=app_grid_context(w);o.grids.engineering=app_eng_context(w);
-    o.members=w->timbers;o.member_count=&w->timber_count;o.member_capacity=WORLD_MAX_TIMBERS;
+    o.members=w->wood.timbers;o.member_count=&w->wood.timber_count;o.member_capacity=WORLD_MAX_TIMBERS;
     o.user=w;o.rebuild_parameters=app_eng_operation_parameters;o.member_created=app_eng_operation_member_created;return o;
 }
 static bool eng_operation(World *w,GeoJson *j,int t)
@@ -68,5 +68,5 @@ static bool apply_requires_line(const char *path,int line_no,char **tokens,int c
     if(!strcmp(tokens[1],FS_CAPABILITY)){fs_scene_required=true;return true;}
     if(!strcmp(tokens[1],"engineering-spec/1"))fs_scene_engineering=true;
     if(!strcmp(tokens[1],"parameters/1"))fs_scene_parameters=true;
-    (void)count;if(!strcmp(tokens[1],GRID_SUBDIVISION_CAPABILITY)){g_rule_scene_required=true;return true;}if(!strcmp(tokens[1],ASM_GENERATION_CAPABILITY)){w->assembly.generation_required=true;return true;}if(!strcmp(tokens[1],"engineering-spec/1")||!strcmp(tokens[1],"parameters/1")||!strcmp(tokens[1],ASM_CAPABILITY))return true;scene_error(path,line_no,"I32: unsupported required scene capability");return false;
+    (void)count;if(!strcmp(tokens[1],GRID_SUBDIVISION_CAPABILITY)){g_rule_scene_required=true;return true;}if(!strcmp(tokens[1],ASM_GENERATION_CAPABILITY)){w->wood.assembly.generation_required=true;return true;}if(!strcmp(tokens[1],"engineering-spec/1")||!strcmp(tokens[1],"parameters/1")||!strcmp(tokens[1],ASM_CAPABILITY))return true;scene_error(path,line_no,"I32: unsupported required scene capability");return false;
 }

@@ -16,7 +16,7 @@ static bool app_sp_resolve_dimension_sources(World *w,GeoParameterSources *param
         GeoParameterError issue;
         GeoQuantity value;
         bool evaluated=parameters?geo_parameter_sources_value(parameters,source->parameter,&value,&issue):
-            geo_parameters_evaluate_field(&w->parameters,source->parameter,&issue);
+            geo_parameters_evaluate_field(&w->geo.parameters,source->parameter,&issue);
         if(!evaluated){
             if(issue.status==GEO_PARAMETER_MEMORY)return sp_error("I32 CAPACITY: parameter evaluation memory");
             parameter_kernel_error(w,&issue);return sp_error("%s",g_parameter_error);
@@ -39,7 +39,7 @@ static bool app_sp_live_host(void *user,uint32_t id,GeoFrame *frame,WoodBoundary
     *frame=p->frame;*region=*placement_effective_boundary(p,b,region);return true;
 }
 static WoodSectionProfileContext app_sp_context(const World *world)
-{World *w=(World *)world;WoodSectionProfileContext c={&w->section_profiles,app_eng_context(w),w,g_engineering_error,sizeof g_engineering_error,app_sp_resolve_dimension,app_sp_live_host};app_section_profile_sources_bind(w,&c);return c;}
+{World *w=(World *)world;WoodSectionProfileContext c={&w->wood.section_profiles,app_eng_context(w),w,g_engineering_error,sizeof g_engineering_error,app_sp_resolve_dimension,app_sp_live_host};app_section_profile_sources_bind(w,&c);return c;}
 static bool sp_used(const World *w)
 {WoodSectionProfileContext c=app_sp_context(w);return wood_sp_used(&c);}
 static SectionProfile *sp_profile(World *w,uint32_t id)
@@ -81,7 +81,7 @@ static bool sp_operation(World *w,GeoJson *j,int t)
     if(!strcmp(op,"delete-placement")){
         uint32_t id;if(!geo_json_keys(j,t,"op,id","")||!eng_u32(j,geo_json_member(j,t,"id"),&id,false))return sp_error("I49: invalid placement identity");
         if(!app_placement_remove(w,id))return sp_error("I49: placement does not exist");
-        for(size_t i=0;i<w->canvas_pos_count;++i)if(w->canvas_pos[i].kind==CANVAS_POS_PLACEMENT&&w->canvas_pos[i].id==id){memmove(w->canvas_pos+i,w->canvas_pos+i+1,(w->canvas_pos_count-i-1)*sizeof w->canvas_pos[0]);memset(&w->canvas_pos[--w->canvas_pos_count],0,sizeof w->canvas_pos[0]);break;}
+        for(size_t i=0;i<w->app.canvas_pos_count;++i)if(w->app.canvas_pos[i].kind==CANVAS_POS_PLACEMENT&&w->app.canvas_pos[i].id==id){memmove(w->app.canvas_pos+i,w->app.canvas_pos+i+1,(w->app.canvas_pos_count-i-1)*sizeof w->app.canvas_pos[0]);memset(&w->app.canvas_pos[--w->app.canvas_pos_count],0,sizeof w->app.canvas_pos[0]);break;}
         return true;
     }
     if(!strcmp(op,"put-profile")||!strcmp(op,"put-member")||!strcmp(op,"put-run")){
@@ -97,8 +97,8 @@ static bool sp_operation(World *w,GeoJson *j,int t)
         char name[SPEC_NAME_MAX];Coord value=0;bool remove=!strcmp(op,"delete-spec");
         if(!geo_json_keys(j,t,remove?"op,name":"op,name,value","")||!geo_json_string(j,geo_json_member(j,t,"name"),name,sizeof name)||!reference_name(name)||
            (!remove&&!sp_coord(j,geo_json_member(j,t,"value"),&value)))return sp_error("D6b: invalid named integer spec");
-        if(remove){if(!geo_named_values_remove(&w->named_values,name))return sp_error("D6b: deleted spec missing");}
-        else if(!geo_named_values_put(&w->named_values,name,value))return sp_error("D6b CAPACITY: spec limit exceeded");
+        if(remove){if(!geo_named_values_remove(&w->geo.named_values,name))return sp_error("D6b: deleted spec missing");}
+        else if(!geo_named_values_put(&w->geo.named_values,name,value))return sp_error("D6b CAPACITY: spec limit exceeded");
         return true;
     }
     return eng_operation(w,j,t);
@@ -106,7 +106,7 @@ static bool sp_operation(World *w,GeoJson *j,int t)
 static void sp_dump(const World *w,FILE *out)
 {
     if(!sp_used(w))return;fputs("requires section-profile/1\n",out);
-    const SectionProfileState *s=&w->section_profiles;char encoded[SP_RUN_RECORD_MAX*2];size_t n;
+    const SectionProfileState *s=&w->wood.section_profiles;char encoded[SP_RUN_RECORD_MAX*2];size_t n;
     for(int kind=0;kind<3;++kind){size_t count=kind==0?s->profile_count:kind==1?s->member_count:s->run_count;
         for(size_t i=0;i<count;++i){const char *text=kind==0?s->profiles[i].content:kind==1?s->members[i].content:s->runs[i].content;
             if(!geo_base64_encode(text,strlen(text),encoded,sizeof encoded,&n)){fputs("requires section-profile-record-capacity-error\n",out);return;}

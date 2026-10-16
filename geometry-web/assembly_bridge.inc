@@ -2,10 +2,10 @@
 static void json_assembly_state(const World *w,bool geometry)
 {
     (void)geometry;fputs("{\"capabilities\":[\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\"],\"rules\":[",stdout);
-    for(size_t i=0;i<w->assembly.rule_count;++i){const AsmRuleVersion *r=&w->assembly.rules[i];
+    for(size_t i=0;i<w->wood.assembly.rule_count;++i){const AsmRuleVersion *r=&w->wood.assembly.rules[i];
         printf("%s{\"value\":%s,\"fingerprint\":\"%s\"}",i?",":"",r->content,r->fingerprint);}
     fputs("],\"bindings\":[",stdout);
-    for(size_t i=0;i<w->assembly.binding_count;++i){const AsmBinding *b=&w->assembly.bindings[i];
+    for(size_t i=0;i<w->wood.assembly.binding_count;++i){const AsmBinding *b=&w->wood.assembly.bindings[i];
         char fingerprint[65];geo_sha256(b->content,strlen(b->content),fingerprint);
         printf("%s{\"value\":%s,\"fingerprint\":\"%s\",\"complete\":%s,\"effective\":[",i?",":"",b->content,fingerprint,b->complete?"true":"false");
         GeoJson j;if(app_json_parse(&j,b->content)){int array=geo_json_member(&j,0,"slots");
@@ -17,9 +17,9 @@ static void json_assembly_state(const World *w,bool geometry)
                 putchar('}');}}
         geo_json_free(&j);fputs("]}",stdout);
     }fputs("],\"instances\":[",stdout);
-    for(size_t i=0;i<w->assembly.instance_count;++i){const AsmInstance *a=&w->assembly.instances[i];char fingerprint[65];geo_sha256(a->content,strlen(a->content),fingerprint);
+    for(size_t i=0;i<w->wood.assembly.instance_count;++i){const AsmInstance *a=&w->wood.assembly.instances[i];char fingerprint[65];geo_sha256(a->content,strlen(a->content),fingerprint);
         printf("%s{\"value\":%s,\"fingerprint\":\"%s\",\"members\":[",i?",":"",a->content,fingerprint);
-        for(int m=0;m<3;++m){int at=reference_timber_index(w,a->timber[m]);printf("%s{\"memberId\":%u,\"timberId\":%u,\"geometry\":",m?",":"",a->member[m],a->timber[m]);json_reference_geometry(w,at);fputs(",\"definition\":",stdout);if(at>=0)json_reference_timber_definition(&w->timbers[at],&w->anchors[at]);else fputs("null",stdout);putchar('}');}fputs("]}",stdout);
+        for(int m=0;m<3;++m){int at=reference_timber_index(w,a->timber[m]);printf("%s{\"memberId\":%u,\"timberId\":%u,\"geometry\":",m?",":"",a->member[m],a->timber[m]);json_reference_geometry(w,at);fputs(",\"definition\":",stdout);if(at>=0)json_reference_timber_definition(&w->wood.timbers[at],&w->wood.anchors[at]);else fputs("null",stdout);putchar('}');}fputs("]}",stdout);
     }fputs("]}",stdout);
 }
 static void cmd_assembly_read(void)

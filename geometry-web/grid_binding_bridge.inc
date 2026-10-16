@@ -157,7 +157,7 @@ static void cmd_grid_trial_query(const char *command)
     World *draft=calloc(1,sizeof *draft);
     GridQueryAxis *axes=calloc(2,sizeof *axes); char error[256]="";
     if (!draft || !axes) { free(draft); free(axes); json_grid_query_error("試擺記憶體不足"); putchar('\n'); return; }
-    draft->parameters=g_world.parameters;
+    draft->geo.parameters=g_world.geo.parameters;
     g_scene_last_error[0]='\0';
     bool ok=apply_grid_system_line("trial",0,tokens+5,count-5,draft);
     const GridSystem *source=ok?world_find_grid_system(draft,id):NULL;
@@ -193,14 +193,14 @@ static void json_grid_binding(const World *w,const GridBinding *binding,bool wit
     else fputs("null",stdout);
     printf(",\"translationRepresentable\":%s,\"applications\":[",representable?"true":"false");
     bool first=true;
-    for (size_t i=0;i<w->grid_applications.count;++i) {
-        const ReferenceGrid *g=&w->grid_applications.items[i]; if (!g->from_binding || g->binding_id!=binding->id) continue;
+    for (size_t i=0;i<w->wood.grid_applications.count;++i) {
+        const ReferenceGrid *g=&w->wood.grid_applications.items[i]; if (!g->from_binding || g->binding_id!=binding->id) continue;
         printf("%s{\"grid\":%u,\"surface\":%u}",first?"":",",g->id,g->placement_id); first=false;
     }
     fputs("],",stdout);
     const CanvasPos *pos=NULL;
-    for (size_t i=0;i<w->canvas_pos_count;++i) {
-        if (w->canvas_pos[i].kind==CANVAS_POS_GRID_BINDING && w->canvas_pos[i].id==binding->id) { pos=&w->canvas_pos[i]; break; }
+    for (size_t i=0;i<w->app.canvas_pos_count;++i) {
+        if (w->app.canvas_pos[i].kind==CANVAS_POS_GRID_BINDING && w->app.canvas_pos[i].id==binding->id) { pos=&w->app.canvas_pos[i]; break; }
     }
     printf("\"cx\":%lld,\"cy\":%lld,\"hasPos\":%s",pos?(long long)pos->x:0LL,
         pos?(long long)pos->y:0LL,pos?"true":"false");
@@ -219,16 +219,16 @@ static void json_grid_binding(const World *w,const GridBinding *binding,bool wit
 static void json_grid_binding_preview(void)
 {
     fputs(",\"gridBindings\":[",stdout); bool first=true;
-    for (size_t i=0;i<geo_grid_bindings_count(&g_preview.transaction->before.grid_store);++i) {
-        const GridBinding *before=geo_grid_bindings_at(&g_preview.transaction->before.grid_store,i);
+    for (size_t i=0;i<geo_grid_bindings_count(&g_preview.transaction->before.geo.grid_store);++i) {
+        const GridBinding *before=geo_grid_bindings_at(&g_preview.transaction->before.geo.grid_store,i);
         const GridBinding *after=world_find_grid_binding(&g_preview.transaction->after,before->id);
         printf("%s{\"id\":%u,\"before\":",first?"":",",before->id); first=false;
         json_grid_binding(&g_preview.transaction->before,before,true); fputs(",\"after\":",stdout);
         if (after) json_grid_binding(&g_preview.transaction->after,after,true); else fputs("null",stdout);
         putchar('}');
     }
-    for (size_t i=0;i<geo_grid_bindings_count(&g_preview.transaction->after.grid_store);++i) {
-        const GridBinding *after=geo_grid_bindings_at(&g_preview.transaction->after.grid_store,i);
+    for (size_t i=0;i<geo_grid_bindings_count(&g_preview.transaction->after.geo.grid_store);++i) {
+        const GridBinding *after=geo_grid_bindings_at(&g_preview.transaction->after.geo.grid_store,i);
         if (world_find_grid_binding(&g_preview.transaction->before,after->id)) continue;
         printf("%s{\"id\":%u,\"before\":null,\"after\":",first?"":",",after->id); first=false;
         json_grid_binding(&g_preview.transaction->after,after,true); putchar('}');

@@ -31,7 +31,7 @@ static bool pf_rebuild(const World *w)
 static bool pf_operation(World *w,GeoJson *j,int t,bool remove)
 {WoodFinishContext c=app_fs_context(w);return wood_pf_operation(&c,j,t,remove);}
 static void pf_dump(const World *w,FILE *out)
-{for(uint64_t i=0;i<w->finish_surfaces.fill_count;++i){const PanelFill *p=&w->finish_surfaces.fills[i];fprintf(out,"panel-fill %u definition-hex ",p->id);for(const unsigned char *c=(const unsigned char*)p->definition;*c;++c)fprintf(out,"%02x",*c);fputc('\n',out);}}
+{for(uint64_t i=0;i<w->wood.finish_surfaces.fill_count;++i){const PanelFill *p=&w->wood.finish_surfaces.fills[i];fprintf(out,"panel-fill %u definition-hex ",p->id);for(const unsigned char *c=(const unsigned char*)p->definition;*c;++c)fprintf(out,"%02x",*c);fputc('\n',out);}}
 static bool apply_panel_fill_line(const char *path,int line,char **t,int count,World *w)
 {
     if(!g_parsing_scene_file||!fs_scene_required||!fs_scene_engineering||!fs_scene_parameters){scene_error(path,line,"I56: panel-fill requires atomic scene with all three declared capabilities");return false;}

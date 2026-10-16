@@ -36,8 +36,8 @@ static bool apply_subgrid_line(const char *path,int line_no,char **t,int count,W
     World *trial=malloc(sizeof *trial);
     if(!trial){scene_error(path,line_no,"I32: subgrid trial allocation failed");return false;}
     *trial=*world;
-    if (existing) trial->grid_applications.items[existing-world->grid_applications.items]=candidate;
-    else if (trial->grid_applications.count<WORLD_MAX_GRIDS) trial->grid_applications.items[trial->grid_applications.count++]=candidate;
+    if (existing) trial->wood.grid_applications.items[existing-world->wood.grid_applications.items]=candidate;
+    else if (trial->wood.grid_applications.count<WORLD_MAX_GRIDS) trial->wood.grid_applications.items[trial->wood.grid_applications.count++]=candidate;
     reference_capture_trial(trial);
     free(trial);
     char err[256]="";
@@ -49,7 +49,7 @@ static bool apply_subgrid_line(const char *path,int line_no,char **t,int count,W
         }
     } else {
         World backup=*world;
-        world->grid_applications.items[world->grid_applications.count++]=candidate;
+        world->wood.grid_applications.items[world->wood.grid_applications.count++]=candidate;
         if (!world_revalidate(world)) {
             *world=backup;
             scene_error(path,line_no,g_revalidate_error[0]?g_revalidate_error:"I25：新子格不合法，已回滾");

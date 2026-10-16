@@ -54,7 +54,7 @@ class WorldValidationBoundary(unittest.TestCase):
         self.assertIn("app_world_obstacles_valid",code)
         self.assertNotIn("ANCHOR_AT_GRID",code)
         self.assertNotIn("wood_stop_count_legal",code)
-        self.assertNotIn("world->column_count",code)
+        self.assertNotIn("world->wood.column_count",code)
 
 
 class WoodWorldValidation(unittest.TestCase):

@@ -46,7 +46,7 @@ static WoodFinishContext app_fs_error_context(void)
 static WoodFinishContext app_fs_context(const World *world)
 {
     World *w=(World *)world;WoodFinishContext c=app_fs_error_context();
-    c.state=&w->finish_surfaces;c.engineering=app_eng_context(w);c.user=w;
+    c.state=&w->wood.finish_surfaces;c.engineering=app_eng_context(w);c.user=w;
     c.boundary=app_fs_boundary;c.obstacle_box=app_fs_obstacle_box;
     c.parameter_coord=app_fs_parameter_coord;c.parameter_value=app_fs_parameter_value;c.parameter_error=g_parameter_error;
     c.engineering_operation=app_fs_engineering_operation;c.derived_operation=app_fs_derived_operation;app_finish_sources_bind(w,&c);return c;
@@ -103,9 +103,9 @@ static void fs_dump(const World *w,FILE *out)
 {
     if(!fs_used(w))return;
     if(!engineering_used(w))fputs("requires engineering-spec/1\n",out);
-    if(!geo_parameters_card_count(&w->parameters))fputs("requires parameters/1\n",out);
+    if(!geo_parameters_card_count(&w->geo.parameters))fputs("requires parameters/1\n",out);
     fputs("requires " FS_CAPABILITY "\n",out);
-    for(uint64_t i=0;i<w->finish_surfaces.count;++i){const FinishSurface *f=&w->finish_surfaces.items[i];
+    for(uint64_t i=0;i<w->wood.finish_surfaces.count;++i){const FinishSurface *f=&w->wood.finish_surfaces.items[i];
         fprintf(out,"finish-surface %u on boundary %u origin %lld %lld %lld u %s v %s n %s side %s",(unsigned)f->id,(unsigned)f->boundary_id,
             (long long)f->frame.origin.x,(long long)f->frame.origin.y,(long long)f->frame.origin.z,
             fs_axis_word(f->frame.axis_u),fs_axis_word(f->frame.axis_v),fs_axis_word(f->frame.normal),f->side>0?"+n":"-n");
