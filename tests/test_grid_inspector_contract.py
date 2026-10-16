@@ -122,9 +122,11 @@ class GridInspectorContract(unittest.TestCase):
                                  "only the exact name-derived fingerprints change; all reference identities remain")
                 self.assertEqual(segments, self.query("binding", identifier, rect=(-900, -900, 1500, 1500), limit=64))
                 after = self.snapshot()
-                self.assertTrue(self.command("undo")["ok"])
+                # Undo/redo are scene commands, routed through the same line
+                # protocol as the product and the inherited history contract.
+                self.commit("undo")
                 self.assertEqual(before, self.snapshot())
-                self.assertTrue(self.command("redo")["ok"])
+                self.commit("redo")
                 self.assertEqual(after, self.snapshot())
         after = self.snapshot()
         path = Path(self.directory.name) / "renamed.scene"
