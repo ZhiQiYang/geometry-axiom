@@ -1,0 +1,124 @@
+{
+  "kind": "bounded-f22-parameters220-evidence",
+  "source": "f22dcccc5681418f99e5a55e60ef558e71dd0b31",
+  "tree": "8bfaf4b405c0c8854cb303a40320f2fe30917f4d",
+  "gate": {
+    "status": "PASS",
+    "stages": 5,
+    "receipt": "D:\\geometry-axiom-work\\geo261-evidence\\p1\\build-gate-f22dcccc-v1\\result\\summary.json",
+    "sha256": "8548a9a0bf207f2eee3b7e53693db2db6bf24459ebdcec82e87c980e794073d4"
+  },
+  "focused": {
+    "status": "FAIL",
+    "planned_methods": 220,
+    "actual_methods": 54,
+    "counts": {
+      "passed": 52,
+      "failed": 2,
+      "UNRUN": 166
+    },
+    "by_execution_kind": {
+      "portable": {
+        "passed": 7,
+        "UNRUN": 27
+      },
+      "native": {
+        "passed": 45,
+        "failed": 2,
+        "UNRUN": 139
+      }
+    },
+    "groups": {
+      "parameter-definition-sources": {
+        "passed": 20
+      },
+      "section-profile-authority": {
+        "passed": 15
+      },
+      "version-field-sources": {
+        "failed": 2,
+        "passed": 17
+      },
+      "host-authority": {
+        "UNRUN": 18
+      },
+      "engineering-parameter-authority": {
+        "UNRUN": 17
+      },
+      "assembly-definition-authority": {
+        "UNRUN": 15
+      },
+      "finish-definition-authority": {
+        "UNRUN": 14
+      },
+      "grid-definition-codec": {
+        "UNRUN": 13
+      },
+      "grid-definition-authority": {
+        "UNRUN": 13
+      },
+      "source-context": {
+        "UNRUN": 8
+      },
+      "enclosure-definition-authority": {
+        "UNRUN": 14
+      },
+      "model-vertex-ledger": {
+        "UNRUN": 7
+      },
+      "host-placement-definition": {
+        "UNRUN": 7
+      },
+      "application-closure": {
+        "UNRUN": 14
+      },
+      "placement-definition": {
+        "UNRUN": 15
+      },
+      "parameter-sources": {
+        "UNRUN": 11
+      }
+    },
+    "stopped_reason": "first-failed-group-completed",
+    "failure_details": [
+      {
+        "test": "tests.test_geo261_version_field_sources.VersionFieldSources.test_real_product_preview_confirm_and_undo_retain_version_provider_candidate",
+        "subtest": null,
+        "classification": "test-assertion-failure",
+        "exceptionType": "AssertionError",
+        "message": "0 != 1 : \nI8a preview 1: valid; confirm token to apply\n timber 1 center 15 -> 15 length 1000 -> 1000\n  surface 1 origin [0,0,0] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,0,0] axes [1,0,0]/[0,1,0]/[0,0,1]\n guide 1: surface 1 u=500 world [500,0,0] direction [0,1,0] -> surface 1 u=600 world [600,0,0] direction [0,1,0]\n visible: {[500,0]-[500,1000]} -> {[600,0]-[600,1000]}\nASSERT:product-complete-version-and-metadata-inventory:307\n",
+        "traceback": "Traceback (most recent call last):\n  File \"/usr/lib/python3.12/unittest/case.py\", line 58, in testPartExecutor\n    yield\n  File \"/usr/lib/python3.12/unittest/case.py\", line 634, in run\n    self._callTestMethod(testMethod)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 589, in _callTestMethod\n    if method() is not None:\n       ^^^^^^^^\n  File \"/var/tmp/geo261-focused-f22dcccc-parameters220-v1/source/tests/test_geo261_version_field_sources.py\", line 101, in test_real_product_preview_confirm_and_undo_retain_version_provider_candidate\n    self.case(\"product\", product=True)\n  File \"/var/tmp/geo261-focused-f22dcccc-parameters220-v1/source/tests/test_geo261_version_field_sources.py\", line 59, in case\n    self.assertEqual(1 if failure else 0, result.returncode, result.stdout + \"\\n\" + result.stderr)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 885, in assertEqual\n    assertion_func(first, second, msg=msg)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 878, in _baseAssertEqual\n    raise self.failureException(msg)\nAssertionError: 0 != 1 : \nI8a preview 1: valid; confirm token to apply\n timber 1 center 15 -> 15 length 1000 -> 1000\n  surface 1 origin [0,0,0] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,0,0] axes [1,0,0]/[0,1,0]/[0,0,1]\n guide 1: surface 1 u=500 world [500,0,0] direction [0,1,0] -> surface 1 u=600 world [600,0,0] direction [0,1,0]\n visible: {[500,0]-[500,1000]} -> {[600,0]-[600,1000]}\nASSERT:product-complete-version-and-metadata-inventory:307\n\n"
+      },
+      {
+        "test": "tests.test_geo261_version_field_sources.VersionFieldSources.test_same_w_field_hook_bypass_fails_isolated_and_actual_product_edges",
+        "subtest": null,
+        "classification": "test-assertion-failure",
+        "exceptionType": "AssertionError",
+        "message": "0 != 1 : \nI8a preview 1: valid; confirm token to apply\n timber 1 center 15 -> 15 length 1000 -> 1000\n  surface 1 origin [0,0,0] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,0,0] axes [1,0,0]/[0,1,0]/[0,0,1]\n guide 1: surface 1 u=500 world [500,0,0] direction [0,1,0] -> surface 1 u=600 world [600,0,0] direction [0,1,0]\n visible: {[500,0]-[500,1000]} -> {[600,0]-[600,1000]}\nASSERT:product-complete-version-and-metadata-inventory:307\n",
+        "traceback": "Traceback (most recent call last):\n  File \"/usr/lib/python3.12/unittest/case.py\", line 58, in testPartExecutor\n    yield\n  File \"/usr/lib/python3.12/unittest/case.py\", line 634, in run\n    self._callTestMethod(testMethod)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 589, in _callTestMethod\n    if method() is not None:\n       ^^^^^^^^\n  File \"/var/tmp/geo261-focused-f22dcccc-parameters220-v1/source/tests/test_geo261_version_field_sources.py\", line 138, in test_same_w_field_hook_bypass_fails_isolated_and_actual_product_edges\n    self.control(\"engineering\", \"if(w->source_version_field&&!w->source_version_field(w->sources,0,&m->ref,(uint32_t)s->field,value))\",\n  File \"/var/tmp/geo261-focused-f22dcccc-parameters220-v1/source/tests/test_geo261_version_field_sources.py\", line 125, in control\n    self.case(\"product\", product=True)\n  File \"/var/tmp/geo261-focused-f22dcccc-parameters220-v1/source/tests/test_geo261_version_field_sources.py\", line 59, in case\n    self.assertEqual(1 if failure else 0, result.returncode, result.stdout + \"\\n\" + result.stderr)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 885, in assertEqual\n    assertion_func(first, second, msg=msg)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 878, in _baseAssertEqual\n    raise self.failureException(msg)\nAssertionError: 0 != 1 : \nI8a preview 1: valid; confirm token to apply\n timber 1 center 15 -> 15 length 1000 -> 1000\n  surface 1 origin [0,0,0] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,0,0] axes [1,0,0]/[0,1,0]/[0,0,1]\n guide 1: surface 1 u=500 world [500,0,0] direction [0,1,0] -> surface 1 u=600 world [600,0,0] direction [0,1,0]\n visible: {[500,0]-[500,1000]} -> {[600,0]-[600,1000]}\nASSERT:product-complete-version-and-metadata-inventory:307\n\n"
+      }
+    ],
+    "receipt": "D:\\geometry-axiom-work\\geo261-evidence\\p1\\focused-f22dcccc-parameters220-v1\\result\\summary.json",
+    "sha256": "65f1c5ecb9cb494d78461a56ff3263d938a3f8dc3c6d208dd8f1576059d85461",
+    "started": "2026-10-16T22:34:50.231812+00:00",
+    "finished": "2026-10-16T22:35:24.670224+00:00",
+    "compiler_commands": 174,
+    "build_artifact_count": 402,
+    "artifact_preservation": {
+      "status": "complete",
+      "error": null
+    }
+  },
+  "watchdog": {
+    "status": "COMPLETED",
+    "timeout_seconds": 3600.0,
+    "receipt": "D:\\geometry-axiom-work\\geo261-evidence\\p1\\focused-f22dcccc-parameters220-v1\\result\\watchdog.json",
+    "sha256": "96321606fc1ba97a82d91e6b4a640f88dd7748d25d3ffde977c7b05c6f2272b9",
+    "source_sha256": "3a0b43973d2eeb3fe4f64135e28e1f136c015c30c07b9ffe59a7aeb0988c2c99",
+    "group_cleanup_complete": true
+  },
+  "source_runner_gate_unchanged": true,
+  "original_test_and_compiler_timeouts_modified": false,
+  "prior_cross_SHA_evidence_combined": false,
+  "limits": "Only the declared 16 modules / 220 unique methods. No all-provider, full native, full run_all, PF3, native6, compatibility or browser claim. Prior failed and prior cross-SHA receipts remain separate."
+}

@@ -1,0 +1,8 @@
+tree 4aebae6edb42d8c1319a234bdc445931c3070f60
+parent 15187e71fd9d5f645a63752ea744020df8abbfcf
+author Yang <b10102230@gmail.com> 1792172577 +0800
+committer Yang <b10102230@gmail.com> 1792172577 +0800
+
+test: place the unused direct grid on its own host
+
+GridDefinitionsProduct staged two main grids on placement 1, contrary to the existing one-grid-per-placement rule. Give unused grid 5 and child 6 placement 7 referencing the same boundary at z=100; binding grid 4 and its exact vertex ledger remain unchanged. Four methods, all assertions and timeouts unchanged. Product policy unchanged, native result pending P1.
