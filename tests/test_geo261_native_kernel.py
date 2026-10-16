@@ -38,15 +38,16 @@ class NativeBuild:
         self.work = Path(self.temp.name)
         self.kernel = self.work / "isolated-kernel"
         self.kernel.mkdir()
-        for name in ("types.h", "exact.h", "exact.c", "codec.h", "codec.c", "geometry.h", "geometry.c", "grid.h", "grid.c", "parameters.h", "parameters.c", "linear.h", "linear.c", "named_values.h", "named_values.c", "datums.h", "datums.c", "source.h", "source.c"):
+        for name in ("types.h", "exact.h", "exact.c", "codec.h", "codec.c", "geometry.h", "geometry.c", "grid.h", "grid.c", "parameters.h", "parameters.c", "linear.h", "linear.c", "named_values.h", "named_values.c", "datums.h", "datums.c", "source.h", "source.c", "regions.h", "regions.c"):
             shutil.copy2(ROOT / "geometry-core/kernel" / name, self.kernel / name)
         (self.kernel / "internal").mkdir()
         shutil.copy2(ROOT / "geometry-core/kernel/internal/parameter_store.h", self.kernel / "internal/parameter_store.h")
         shutil.copy2(ROOT / "geometry-core/kernel/internal/named_values.h", self.kernel / "internal/named_values.h")
         shutil.copy2(ROOT / "geometry-core/kernel/internal/datums.h", self.kernel / "internal/datums.h")
+        shutil.copy2(ROOT / "geometry-core/kernel/internal/regions.h", self.kernel / "internal/regions.h")
         self.woodworking = self.work / "isolated-woodworking"
         self.woodworking.mkdir()
-        for name in ("members.h", "members.c", "supports.h", "supports.c"):
+        for name in ("members.h", "members.c", "supports.h", "supports.c", "contacts.h", "contacts.c"):
             shutil.copy2(ROOT / "geometry-templates/woodworking/native" / name, self.woodworking / name)
         self.windows = os.name == "nt"
         self.suffix = ".exe" if self.windows else ""
@@ -73,8 +74,10 @@ class NativeBuild:
         self.named_values_object = self.compile(self.kernel / "named_values.c", "named-values")
         self.datums_object = self.compile(self.kernel / "datums.c", "datums")
         self.source_object = self.compile(self.kernel / "source.c", "source")
+        self.regions_object = self.compile(self.kernel / "regions.c", "regions")
         self.wood_members_object = self.compile(self.woodworking / "members.c", "wood-members")
         self.wood_supports_object = self.compile(self.woodworking / "supports.c", "wood-supports")
+        self.wood_contacts_object = self.compile(self.woodworking / "contacts.c", "wood-contacts")
         exact_source = self.work / "exact-client.c"
         shutil.copy2(ROOT / "tests/geo261_exact_harness.c", exact_source)
         self.exact_client = self.compile(exact_source, "exact-client")
@@ -136,7 +139,7 @@ class NativeBuild:
         return self.bridge_exe
 
     def product_objects(self):
-        return [*self.kernel_objects(), self.wood_members_object, self.wood_supports_object]
+        return [*self.kernel_objects(), self.wood_members_object, self.wood_supports_object, self.wood_contacts_object]
 
     def cli(self):
         if self.cli_exe is None:
@@ -152,7 +155,7 @@ class NativeBuild:
 
     def kernel_objects(self):
         return [self.exact_object, self.codec_object, self.geometry_object, self.grid_object,
-                self.parameters_object, self.linear_object, self.named_values_object, self.datums_object, self.source_object]
+                self.parameters_object, self.linear_object, self.named_values_object, self.datums_object, self.source_object, self.regions_object]
 
     def mutant(self, module, before, after, client_object=None):
         text = (self.kernel / (module + ".c")).read_text(encoding="utf-8")
@@ -171,6 +174,7 @@ class NativeBuild:
         named_values = changed if module == "named_values" else self.named_values_object
         datums = changed if module == "datums" else self.datums_object
         source_object = changed if module == "source" else self.source_object
+        regions = changed if module == "regions" else self.regions_object
         if client_object is None:
             client_object = self.exact_client if module == "exact" else self.codec_client
         dependencies = [self.geometry_object] if module == "grid" else []
@@ -182,8 +186,10 @@ class NativeBuild:
             dependencies = [self.geometry_object, self.linear_object, self.exact_object]
         if module == "datums":
             dependencies = [self.geometry_object, self.linear_object, self.exact_object]
+        if module == "regions":
+            dependencies = [self.geometry_object]
         client = self.link(module + "-mutant-client", [client_object, changed, *dependencies])
-        product = self.link(module + "-mutant-bridge", [self.bridge_object, exact, codec, geometry, grid, parameters, linear, named_values, datums, source_object, self.wood_members_object, self.wood_supports_object])
+        product = self.link(module + "-mutant-bridge", [self.bridge_object, exact, codec, geometry, grid, parameters, linear, named_values, datums, source_object, regions, self.wood_members_object, self.wood_supports_object, self.wood_contacts_object])
         return client, product
 
 

@@ -945,12 +945,7 @@ typedef struct {
     int64_t cell[2];
     uint32_t anchor_num[2],anchor_den[2];
 } GridBinding;
-typedef struct {
-    uint32_t boundary_id;
-    size_t loop_count,counts[POLY_MAX_HOLES+1];
-    uint32_t keys[POLY_MAX_HOLES+1][POLY_MAX_VERTICES];
-    uint32_t next_key;
-} BoundaryVertexKeys;
+typedef GeoRegionKeys BoundaryVertexKeys;
 typedef struct {
     int64_t index; Coord coordinate;
     size_t segment_count; SurfaceSegment2 segments[GUIDE_MAX_SEGMENTS];
@@ -3100,8 +3095,7 @@ typedef struct World {
     uint64_t next_order;
     SpaceBoundarySurface boundaries[WORLD_MAX_BOUNDARIES];
     size_t boundary_count;
-    BoundaryVertexKeys vertex_keys[WORLD_MAX_BOUNDARIES];
-    size_t vertex_key_count;
+    GeoRegionStore region_data; /* K owns stable vertex identity and allocation. */
     GridBinding grid_bindings[WORLD_MAX_GRID_BINDINGS];
     size_t grid_binding_count;
 
@@ -6911,15 +6905,7 @@ static bool timber_end_face_check(
     bool ext_end[2];
 
     /* I22：非 boundary 的 footprint 不得超出定位邊。 */
-    if (has_edge && self->role != TIMBER_ROLE_BOUNDARY &&
-        (span_lo < edge_lo || span_hi > edge_hi)) {
-        if (err != NULL) {
-            snprintf(err, err_cap,
-                     "V_EXTENSION：非 boundary 角材（%u）的 "
-                     "footprint 超出定位邊範圍", (unsigned)self->id);
-        }
-        return false;
-    }
+    if(!wood_member_span_extension_check(self,has_edge,span_lo,span_hi,edge_lo,edge_hi,err,err_cap))return false;
 
     ext_end[0] = has_edge && self->role == TIMBER_ROLE_BOUNDARY &&
                  span_lo < edge_lo;
@@ -6942,87 +6928,18 @@ static bool timber_end_face_check(
                 continue;
             }
 
-            if (f->kind == STOP_OUTLINE_EDGE) {
-                /* I19 的外輪廓邊那一款：端面不提供固定，擋的不是「碰到牆」，
-                 * 是「那條邊還沒鋪邊界材」——板靠牆的邊要有骨可釘（I20）。
-                 * 孔邊與柱面不在此限（貼邊料角色由宣告決定，I21），
-                 * 所以這裡只攔 STOP_OUTLINE_EDGE（見 _test_hole_auto）。 */
-                if (self->role != TIMBER_ROLE_BOUNDARY) {
-                    if (err != NULL) {
-                        snprintf(err, err_cap,
-                                 "V_CUT_PRIORITY：角材 %u 端面頂到"
-                                 "外輪廓邊（RC）——那條邊還沒鋪邊界材；"
-                                 "只有 boundary 可頂 RC",
-                                 (unsigned)self->id);
-                    }
-                    return false;
+            const Timber *owner=NULL;bool owner_extension=false;
+            if(f->kind==STOP_TIMBER_SIDE){
+                for(size_t k=0;k<world->timber_count;++k){
+                    if(world->timbers[k].id==f->timber_id&&world->timbers[k].placed){owner=&world->timbers[k];break;}
                 }
-                continue;
+                /* Preserve the old short-circuit point and self pointer identity.
+                 * K/W receives the already resolved contact and extension fact. */
+                if(owner&&owner!=self&&!(self->role==TIMBER_ROLE_BOUNDARY&&owner->role==TIMBER_ROLE_BOUNDARY))
+                    owner_extension=stop_in_owner_extension(world,placement,boundary,owner,cross_lo,cross_hi);
             }
+            if(!wood_member_end_contact_check(self,f,owner,owner_extension,err,err_cap))return false;
 
-            if (f->kind == STOP_TIMBER_SIDE) {
-                const Timber *owner = NULL;
-                Coord owner_prio;
-
-                for (size_t k = 0; k < world->timber_count; ++k) {
-                    if (world->timbers[k].id == f->timber_id &&
-                        world->timbers[k].placed) {
-                        owner = &world->timbers[k];
-                        break;
-                    }
-                }
-                if (owner == NULL || owner == self) {
-                    continue;
-                }
-
-                /* 例外一：兩支 boundary 可在轉角互頂。 */
-                if (self->role == TIMBER_ROLE_BOUNDARY &&
-                    owner->role == TIMBER_ROLE_BOUNDARY) {
-                    continue;
-                }
-
-                owner_prio = owner->cut_priority;
-                if (stop_in_owner_extension(
-                        world, placement, boundary,
-                        owner, cross_lo, cross_hi)) {
-                    /*
-                     * I22：延伸段側面作擋面時以優先級 2 計。
-                     *
-                     * 誰頂得到延伸段的側面(由公理層推導)：
-                     *   延伸段沿其所屬 boundary 的長度軸(D16、見
-                     *   stop_in_owner_extension)，而 D17 要求 boundary ⊥ 主支軸，
-                     *   故延伸段 ⊥ 主支軸。端面頂側面需兩者垂直，
-                     *   所以頂得到的料必須「平行於主支軸」。
-                     *   - secondary：D17 要求 ⊥ 主支軸 → 與延伸段平行 → 頂不到。
-                     *   - primary  ：平行主支軸、頂得到，但 cut_priority 同為 2，
-                     *                2 >= 2 落進下面的 V_CUT_PRIORITY(I19)。
-                     *   - custom   ：D17 未約束其長度軸、I21 的拒絕條件也只列
-                     *                boundary/secondary(D15：custom 不取得任何
-                     *                角色專屬的義務或權利)，故可平行主支軸；
-                     *                明寫 priority >= 3 時 2 < 3 → 接受。
-                     * 即接受路徑存在且唯一：custom priority >= 3。
-                     * 正向覆蓋見 _role_priority_ext_custom.scene。
-                     *
-                     * 公理層 I22 括號原本寫「主支端面不得頂它；副支可以」，
-                     * 那句由 D16+D17 推不出來(副支必與延伸段平行、頂不到)。
-                     * 2026-09-16 已改成上面推導出的接受路徑：平行主支軸且
-                     * 優先級大於 2 的 custom 料。條文與這段註解現在一致。
-                     */
-                    owner_prio = 2;
-                }
-
-                if (owner_prio >= self->cut_priority) {
-                    if (err != NULL) {
-                        snprintf(err, err_cap,
-                                 "V_CUT_PRIORITY：角材 %u（優先級 %d）"
-                                 "端面頂到角材 %u（優先級 %d）側面——"
-                                 "擋面擁有者優先級必須嚴格小於自己",
-                                 (unsigned)self->id, (int)self->cut_priority,
-                                 (unsigned)owner->id, (int)owner_prio);
-                    }
-                    return false;
-                }
-            }
             /* STOP_HOLE_EDGE：優先級 0,各角色可頂。 */
         }
     }
@@ -10815,10 +10732,7 @@ static bool apply_delete_line(
         for(size_t i=0;i<world->grid_binding_count;++i)if(world->grid_bindings[i].boundary_id==id){
             scene_error(path,line_no,"I37: boundary is still referenced by a grid-binding");return false;
         }
-        for(size_t i=0;i<world->vertex_key_count;++i)if(world->vertex_keys[i].boundary_id==id){
-            memmove(&world->vertex_keys[i],&world->vertex_keys[i+1],(world->vertex_key_count-i-1)*sizeof(BoundaryVertexKeys));
-            memset(&world->vertex_keys[--world->vertex_key_count],0,sizeof(BoundaryVertexKeys));break;
-        }
+        (void)geo_region_keys_remove(&world->region_data,id);
         memmove(&world->boundaries[bi], &world->boundaries[bi + 1],
                 (world->boundary_count - bi - 1) *
                 sizeof world->boundaries[0]);

@@ -12,6 +12,7 @@
 #include "named_values.h"
 #include "datums.h"
 #include "source.h"
+#include "regions.h"
 #else
 #include "codec.c"
 #include "exact.c"
@@ -22,5 +23,6 @@
 #include "named_values.c"
 #include "datums.c"
 #include "source.c"
+#include "regions.c"
 #endif
 #endif
