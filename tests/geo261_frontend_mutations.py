@@ -22,6 +22,11 @@ FILES = (
     'geometry-web/app.js',
     'geometry-web/engineering-workspace.js',
     'geometry-web/section-profile-workspace.js',
+    'geometry-web/assembly-workspace.js',
+    'geometry-web/project-store.js',
+    'geometry-web/scenario-catalog.js',
+    'geometry-web/context-operations.js',
+    'geometry-web/vendor/fflate/umd/index.js',
     'geometry-web/grid-system-workspace.js',
     'geometry-web/feature-attachments.js',
     'geometry-web/source-plane.js',
@@ -32,13 +37,26 @@ FILES = (
     'tests/test_woodworking_frontend.js',
     'tests/test_grid_definition_diagram.js',
     'tests/test_runtime_version.py',
+    'tests/test_assembly_workspace.js',
 )
 SUITES = {
-    'recipes': (['node', '--test', 'tests/test_woodworking_frontend.js'], 15),
-    'grid': (['node', '--test', 'tests/test_grid_definition_diagram.js'], 13),
+    'recipes': (['node', '--test', '--test-reporter=tap', 'tests/test_woodworking_frontend.js'], 17),
+    'assembly': (['node', '--test', '--test-reporter=tap', 'tests/test_assembly_workspace.js'], 52),
+    'grid': (['node', '--test', '--test-reporter=tap', 'tests/test_grid_definition_diagram.js'], 13),
     'runtime': ([sys.executable, 'tests/test_runtime_version.py'], 30),
 }
 MUTATIONS = (
+    ('instance-bypasses-recipe', 'assembly', 'geometry-web/assembly-workspace.js',
+     'GeometryApplication.woodworking.assemblyInstanceMembers(rule.value)',
+     "((r)=>{if(r.members.length!==3||r.joints.length!==2||r.joints.some(j=>j.kind!=='end-to-side')||r.joints[0].terminatedMember!==r.joints[1].terminatedMember)throw Error('首版只支援兩支主支與一支端接副支。');const sec=r.joints[0].terminatedMember,start=r.joints.find(j=>j.end==='start'),finish=r.joints.find(j=>j.end==='finish');if(!start||!finish)throw Error('副支必須有起端與末端接合。');return r.members.map(m=>({memberId:m.id,role:m.id===sec?'secondary':'primary',guideId:0,dir:m.id===sec?'+u':'+v',depthSide:'+n',ends:m.id===sec?{start:{kind:'member',memberId:start.targetMember},finish:{kind:'member',memberId:finish.targetMember}}:{start:{kind:'timber',id:0},finish:{kind:'timber',id:0}}}));})(rule.value)",
+     'actual instance creation consumes the template before ID allocation'),
+    ('retarget-bypasses-endpoint-policy', 'assembly', 'geometry-web/assembly-workspace.js',
+     'GeometryApplication.woodworking.assemblyInstanceEnd(r.value,k)',
+     "({kind:'member',memberId:r.value.joints.find(j=>j.end===k).targetMember})",
+     'actual binding switch consumes injected compatibility and endpoint policies'),
+    ('instance-secondary-direction-changed', 'recipes', 'geometry-templates/woodworking/frontend.js',
+     "dir: member.id === secondary ? '+u' : '+v'", "dir: member.id === secondary ? '+v' : '+v'",
+     'assembly creation preserves typed roles, directions and endpoint sources'),
     ('creation-bypasses-provider', 'recipes', 'geometry-web/engineering-workspace.js',
      'state.material=GeometryApplication.woodworking.materialDraft(type);',
      "state.material={type,width:'915',name:'矽酸鈣板'};",
@@ -77,18 +95,22 @@ def run_suite(root, name, out, stem):
         error_count = sum(int(n) for n in re.findall(r'errors=(\d+)', text))
         fail_count = sum(int(n) for n in re.findall(r'failures=(\d+)', text))
         skipped = sum(int(n) for n in re.findall(r'skipped=(\d+)', text))
+        failed_names = re.findall(r'^FAIL: (.+)$', text, re.MULTILINE)
     else:
         counts = re.search(r'(?:#|ℹ) tests (\d+)', text)
         failures = re.search(r'(?:#|ℹ) fail (\d+)', text)
         skips = re.search(r'(?:#|ℹ) skipped (\d+)', text)
-        error_count = 0
         fail_count = int(failures.group(1)) if failures else -1
+        assertion_count = len(re.findall(r"^\s+code: 'ERR_ASSERTION'\s*$", text, re.MULTILINE))
+        error_count = max(0, fail_count - assertion_count)
         skipped = int(skips.group(1)) if skips else -1
+        failed_names = re.findall(r'^not ok \d+ - (.+)$', text, re.MULTILINE)
     count = int(counts.group(1)) if counts else -1
     if count != expected:
         raise RuntimeError(f'{stem}: discovered {count}, expected {expected}; see {log}')
     return {'command': command, 'exit': run.returncode, 'discovered': count,
             'failures': fail_count, 'errors': error_count, 'skipped': skipped,
+            'failedTests': failed_names,
             'log': log.name, 'logSha256': sha(run.stdout)}, text
 
 
@@ -132,7 +154,8 @@ def main():
                                    'before': before, 'after': after,
                                    'requiredFailure': failure_name})
                     result['detected'] = (result['exit'] == 1 and result['failures'] > 0
-                                          and result['errors'] == 0 and failure_name in log)
+                                          and result['errors'] == 0
+                                          and any(failure_name in name for name in result['failedTests']))
                     receipt['mutations'].append(result)
                     if not result['detected']:
                         raise RuntimeError(f'{name}: missing named assertion failure')

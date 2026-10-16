@@ -29,7 +29,7 @@ function fixture(options={}){
     setAssemblyDraft(d,expectedToken){assert.equal(expectedToken,token());history.push(history.snapshot(),'local');const found=context().assemblyDrafts.some(x=>x.id===d.id);context().assemblyDrafts=context().assemblyDrafts.map(x=>x.id===d.id?copy(d):x);if(!found)context().assemblyDrafts.push(copy(d));notify();},
     removeAssemblyDraft(id,expectedToken,record=true){assert.equal(expectedToken,token());if(record)history.push(history.snapshot(),'local');removed.push(id);context().assemblyDrafts=context().assemblyDrafts.filter(d=>d.id!==id);notify();}};
   let result={ok:true},world={rules:[],bindings:[]},failRead=false,ids={assemblyRule:2,assemblyBinding:1};
-  const env={ReferenceWorkspace:ref,structuredClone,crypto,Map,Set,console,AbortSignal,setTimeout,
+  const env={GeometryApplication:options.application||require('../geometry-app/application.js'),ReferenceWorkspace:ref,structuredClone,crypto,Map,Set,console,AbortSignal,setTimeout,
     window:{ContextOperations:require('../geometry-web/context-operations.js'),addEventListener:(name,fn)=>listeners.set(name,fn)},document:{createElement:()=>dialog,body:{append(){}},getElementById:element},
     WorkspaceShell:{attach(){},detach(){},refresh(){}},placeStudioLesson(){},renderObjects:async()=>{},toast(){},connection:{phase:'ready'},
     apiRequest:async cmd=>{calls.push(cmd);if(cmd.startsWith('assembly-confirm ')){await gate.promise;history.observe(cmd,result);notify();return result;}
@@ -38,13 +38,73 @@ function fixture(options={}){
       if(cmd==='newid')return {ok:true,...ids};
       return {ok:true,specs:[]};}};
   let source=fs.readFileSync(process.env.GEOMETRY_TEST_ASSEMBLY_WORKSPACE||require.resolve('../geometry-web/assembly-workspace.js'),'utf8');
-  source=source.replace('return {open,close,flush,card,inspector,remove,','return {test:{setState:x=>s=x,getState:()=>s,confirm,diagram,preview,previewCopy,render,safe,changed,newDraft},open,close,flush,card,inspector,remove,');
+  source=source.replace('return {open,close,flush,card,inspector,remove,','return {test:{setState:x=>s=x,getState:()=>s,confirm,diagram,preview,previewCopy,render,safe,changed,newDraft,newInstance},open,close,flush,card,inspector,remove,');
   vm.runInNewContext(source,env);const w=env.window.AssemblyWorkspace,t=w.test;
   const state={context:token(),generation:1,draft:copy(context().assemblyDrafts[0]),draftsRef:context().assemblyDrafts,read:{state:world},engineering:{parameters:[],materials:[],specs:[]},preview:{valid:true,token:'candidate-A'},rotation:0,zoom:1};t.setState(state);
   return {w,t,state,context,history,ref,calls,removed,gate,element,env,notify,notifyLocal:previousContextToken=>listeners.get('project-local-history')?.({detail:{previousContextToken,contextToken:token()}}),setResult:r=>result=r,setWorld:w=>world=w,captureWorld:()=>{state.read={revision:1,state:copy(world)};},setIds:v=>ids=v,failNextRead:()=>failRead=true};
 }
 
 const bindingValue=id=>({id,name:'配置',rule:{id:1,version:1},slots:[1,2].map(slotId=>({slotId,A:null,B:null,contactFace:null,orientation:null}))});
+const instanceRule=()=>({...rule(),joints:[
+  {id:1,kind:'end-to-side',scope:'one',targetMember:1,terminatedMember:2,end:'start',side:'+u',dir:'u'},
+  {id:2,kind:'end-to-side',scope:'one',targetMember:3,terminatedMember:2,end:'finish',side:'-u',dir:'u'},
+]});
+function instanceFixture(options={}){
+  const f=fixture(options),r={value:instanceRule(),fingerprint:'a'.repeat(64)},b={value:bindingValue(4),complete:true};
+  f.setWorld({rules:[r],bindings:[b],instances:[]});f.setIds({assemblyInstance:7});
+  return {...f,r,b};
+}
+test('actual instance creation consumes the template before ID allocation and preserves host provenance',async()=>{
+  const seen=[],members=[{memberId:9,role:'custom',guideId:0,dir:'-v',depthSide:'-n',ends:{start:{kind:'timber',id:0},finish:{kind:'timber',id:0}}}];
+  const f=instanceFixture({application:{woodworking:{assemblyInstanceMembers(r){seen.push(copy(r));assert.ok(!f.calls.includes('newid'));return copy(members);}}}});
+  await f.t.newInstance(4);const d=f.state.draft;
+  assert.deepEqual(seen,[f.r.value]);assert.deepEqual(copy(d.data.members),members);
+  assert.equal(d.data.id,7);assert.equal(d.data.bindingId,4);assert.equal(d.data.name,'配置・角材');
+  assert.deepEqual(copy(d.data.rule),{id:1,version:1,fingerprint:'a'.repeat(64)});
+  assert.equal(d.data.surfaceId,0);assert.equal(d.base_ref,null);assert.equal(f.calls.filter(c=>c==='newid').length,1);
+});
+test('instance policy rejection preserves the old draft and preview before ID allocation',async()=>{
+  for(const change of [r=>r.members.pop(),r=>r.joints[0].kind='ortho-split',r=>r.joints[1].terminatedMember=3,r=>r.joints[1].end='start']){
+    const f=instanceFixture();change(f.r.value);f.setWorld({rules:[f.r],bindings:[f.b],instances:[]});
+    const before=localSnapshot(f);await assert.rejects(f.t.newInstance(4),/首版只支援|副支必須/);
+    assert.equal(localSnapshot(f),before);assert.ok(!f.calls.some(c=>c==='newid'||c.startsWith('assembly-cancel ')));
+  }
+});
+test('editing saved instance data bypasses creation defaults and retains its exact fingerprint',async()=>{
+  const f=instanceFixture({application:{woodworking:{assemblyInstanceMembers(){assert.fail('saved data must not receive creation defaults');}}}});
+  const source={id:7,name:'已儲存',bindingId:4,rule:{id:1,version:1,fingerprint:'a'.repeat(64)},surfaceId:31,
+    members:[{memberId:1,role:'primary',guideId:12,dir:'-v',depthSide:'-n',ends:{start:{kind:'timber',id:50},finish:{kind:'timber',id:51}}}]};
+  const record={value:{source},fingerprint:'b'.repeat(64)};
+  f.setWorld({rules:[f.r],bindings:[f.b],instances:[record]});await f.t.newInstance(4,record);
+  assert.deepEqual(copy(f.state.draft.data),source);assert.deepEqual(copy(f.state.draft.base_ref),{id:7,fingerprint:record.fingerprint});
+  f.state.draft.data.name='修改';assert.equal(source.name,'已儲存');assert.ok(!f.calls.includes('newid'));
+});
+test('late instance allocation discards its result after a local edit',async()=>{
+  const f=instanceFixture(),gate=deferred(),original=f.env.apiRequest;
+  f.env.apiRequest=async cmd=>{if(cmd==='newid')await gate.promise;return original(cmd);};
+  const pending=f.t.newInstance(4);await tick();f.state.draft.data.name='後續編輯';f.state.generation++;
+  const before=localSnapshot(f);gate.resolve();await pending;assert.equal(localSnapshot(f),before);
+});
+test('confirming and incomplete bindings do not request instance recipes or IDs',async()=>{
+  for(const confirming of [false,true]){
+    const f=instanceFixture({application:{woodworking:{assemblyInstanceMembers(){assert.fail('blocked creation must not request defaults');}}}});
+    if(confirming){f.state.confirming={};await f.t.newInstance(4);assert.deepEqual(f.calls,[]);}
+    else{f.b.complete=false;f.setWorld({rules:[f.r],bindings:[f.b],instances:[]});await assert.rejects(f.t.newInstance(4),/請先選齊材料配置/);}
+    assert.ok(!f.calls.includes('newid'));
+  }
+});
+test('actual binding switch consumes injected compatibility and endpoint policies',async()=>{
+  const calls=[],template={...require('../geometry-app/application.js').woodworking,
+    canRetargetAssemblyInstance(members,r){calls.push(['compatibility',copy(members),copy(r)]);return true;},
+    assemblyInstanceEnd(r,end){calls.push(['endpoint',end]);return {kind:'member',memberId:end==='start'?71:73};}};
+  const f=instanceFixture({application:{woodworking:template}});await f.t.newInstance(4);
+  const b2={value:{...bindingValue(8),rule:{id:1,version:2}},complete:true},r2={value:{...instanceRule(),version:2},fingerprint:'c'.repeat(64)};
+  f.state.read.state.bindings.push(b2);f.state.read.state.rules.push(r2);f.t.render();
+  await f.element('asmInstanceBinding').handlers.change({target:{value:'8'}});
+  assert.equal(f.state.draft.data.bindingId,8);assert.equal(f.state.draft.data.rule.fingerprint,r2.fingerprint);
+  assert.deepEqual(copy(f.state.draft.data.members.find(m=>m.role==='secondary').ends),{start:{kind:'member',memberId:71},finish:{kind:'member',memberId:73}});
+  assert.equal(calls[0][0],'compatibility');assert.deepEqual(calls.slice(1),[['endpoint','start'],['endpoint','finish']]);
+});
 function contextFixture(){
   const f=fixture(),record={value:rule(),fingerprint:'a'.repeat(64)};
   f.setWorld({capabilities:['assembly-rule-authoring/1'],rules:[record,{value:{...rule(),version:2},fingerprint:'b'.repeat(64)}],bindings:[]});

@@ -95,7 +95,39 @@
     });
   }
 
+  function assemblyInstanceMembers(rule) {
+    if (rule.members.length !== 3 || rule.joints.length !== 2 ||
+        rule.joints.some(j => j.kind !== 'end-to-side') ||
+        rule.joints[0].terminatedMember !== rule.joints[1].terminatedMember)
+      throw Error('首版只支援兩支主支與一支端接副支。');
+    const secondary = rule.joints[0].terminatedMember;
+    const start = rule.joints.find(j => j.end === 'start');
+    const finish = rule.joints.find(j => j.end === 'finish');
+    if (!start || !finish) throw Error('副支必須有起端與末端接合。');
+    return rule.members.map(member => ({memberId: member.id,
+      role: member.id === secondary ? 'secondary' : 'primary', guideId: 0,
+      dir: member.id === secondary ? '+u' : '+v', depthSide: '+n',
+      ends: member.id === secondary ? {
+        start: {kind: 'member', memberId: start.targetMember},
+        finish: {kind: 'member', memberId: finish.targetMember},
+      } : {start: {kind: 'timber', id: 0}, finish: {kind: 'timber', id: 0}},
+    }));
+  }
+  function canRetargetAssemblyInstance(members, rule) {
+    const secondary = members.find(member => member.role === 'secondary');
+    return rule.members.length === 3 &&
+      !rule.members.some(member => !members.some(old => old.memberId === member.id)) &&
+      rule.joints.length === 2 &&
+      !rule.joints.some(j => j.kind !== 'end-to-side' || j.terminatedMember !== secondary.memberId);
+  }
+  function assemblyInstanceEnd(rule, end) {
+    const joint = rule.joints.find(j => j.end === end);
+    if (!joint) throw Error('新版缺少副支端接來源。');
+    return {kind: 'member', memberId: joint.targetMember};
+  }
+
   return freeze({id: 'woodworking/1', panel, section, labels, materialDraft, sectionMember,
+    assemblyInstanceMembers, canRetargetAssemblyInstance, assemblyInstanceEnd,
     engineeringRoles, placementRoles, primaryAxisInfo, roleForClick, subgridRoleWarning, roleOptions,
     materialPresets: [{width: panel.width, length: panel.length}, {width: 910, length: 1820}],
     thicknessPresets: [panel.thickness, 9],
