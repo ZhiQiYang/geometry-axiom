@@ -3,7 +3,9 @@
  * consumer. Geometry is supplied exclusively through the public K interface. */
 #ifndef GEOMETRY_WOODWORKING_MEMBERS_H
 #define GEOMETRY_WOODWORKING_MEMBERS_H
+#ifndef GEOMETRY_KERNEL_GEOMETRY_H
 #include "geometry.h"
+#endif
 
 typedef enum {
     WOOD_MEMBER_FACE_A0,
