@@ -51,7 +51,7 @@ CONTROLS=(
         "if(!geo_parameter_definition_get(s,GEO_PARAMETER_DEFINITION_CARD,card,0,&owner)||",
         "GeoParameterDefinitionKey owner_key;if(geo_eval_source(s->sources,geo_parameter_definition_source_ref(s->definition_token,GEO_PARAMETER_DEFINITION_CARD,card,0,&owner_key),GEO_DEPENDENCY_VALUE_REQUIRED,&owner)!=GEO_SOURCE_OK||",
         "graph","field-card-definition-edge"),
-    ("successful-cache","geo_parameter_source_evaluate","state->store->fields[index].value=out->as.quantity;",
+    ("successful-cache","geo_parameter_source_evaluate","memcpy(&cached->num,&out->as.quantity.num,sizeof cached->num);",
         "(void)index;","prefix","successful-prefix-cache-is-published"),
     ("unused-quantity","geo_parameter_sources_definitions","GeoSourceValue value;",
         "GeoSourceValue value;GeoQuantity extra;GeoParameterError ignored;(void)geo_parameter_sources_value(state,(GeoParameterRef){true,10,9},&extra,&ignored);",
@@ -61,6 +61,17 @@ CONTROLS=(
     ("registration-atomicity","geo_parameter_sources_register_with_definitions",
         "if(!geo_eval_register_many(ctx,providers,2)){geo_parameter_sources_destroy(state);return NULL;}return state;",
         "(void)geo_eval_register_many(ctx,providers,2);return state;","registration","definition-family-registration-is-atomic"),
+)
+
+CACHE_CONTROLS=(
+    ("parameters.c","parameters_object","geo_parameter_eval_field",
+        "memcpy(&f->value.num,&value.num,sizeof value.num);",
+        "memset(&f->value,0,sizeof f->value);memcpy(&f->value.num,&value.num,sizeof value.num);",
+        "cache-plain","plain-cache-writes-only-quantity-members"),
+    ("parameter_sources.c","parameter_sources_object","geo_parameter_source_evaluate",
+        "memcpy(&cached->num,&out->as.quantity.num,sizeof cached->num);",
+        "memset(cached,0,sizeof *cached);memcpy(&cached->num,&out->as.quantity.num,sizeof cached->num);",
+        "cache-source","source-cache-writes-only-quantity-members"),
 )
 
 
@@ -95,6 +106,11 @@ class ParameterDefinitionBoundary(unittest.TestCase):
                 self.assertEqual(1,definition(source,function).count(before));self.assertNotEqual(before,after)
                 self.assertEqual(1,harness.count('"'+marker+'"'));self.assertIn('"'+case+'"',harness)
         self.assertEqual(13,len(CONTROLS));self.assertEqual(13,len({row[0] for row in CONTROLS}))
+        for filename,attribute,function,before,after,case,marker in CACHE_CONTROLS:
+            with self.subTest(cache_control=case):
+                body=definition((KERNEL/filename).read_text(encoding="utf-8"),function)
+                self.assertEqual(1,body.count(before));self.assertNotEqual(before,after)
+                self.assertEqual(1,harness.count('"'+marker+'"'));self.assertIn('"'+case+'"',harness)
 
 
 class NativeParameterDefinitionSources(unittest.TestCase):
@@ -117,6 +133,8 @@ class NativeParameterDefinitionSources(unittest.TestCase):
     def test_unused_invalid_and_empty_cards_are_complete_without_quantity_evaluation(self):self.case("definitions")
     def test_quantity_parser_consumes_returned_definition_and_changes_only_success_cache(self):self.case("typed")
     def test_actual_definition_and_ast_value_edges_survive_sealed_memoization(self):self.case("graph")
+    def test_successful_cache_writes_preserve_every_byte_outside_quantity_members(self):
+        self.case("cache-plain");self.case("cache-source")
     def test_quantity_descriptor_uses_canonical_unit_in_both_directions_and_metadata_first_order(self):self.case("descriptor")
     def test_original_parser_first_error_identity_trace_and_output_are_preserved(self):self.case("diagnostics")
     def test_recursive_and_cached_depth_limits_keep_exact_diagnostics_and_cache_prefix(self):self.case("depth")
@@ -145,6 +163,20 @@ class NativeParameterDefinitionSources(unittest.TestCase):
                 path.write_text(source.replace(body,body.replace(before,after)),encoding="utf-8")
                 changed=build.compile(path,"parameter-definition-control-"+name)
                 exe=build.link("parameter-definition-control-"+name,[self.client,*[changed if obj==self.provider else obj for obj in self.objects]])
+                self.case(case,exe,marker);self.assertEqual(original_bytes,original_path.read_bytes());self.case(case)
+
+    def test_both_cache_padding_controls_fail_exact_assertions_between_passing_baselines(self):
+        build=kernel_only_native()
+        for filename,attribute,function,before,after,case,marker in CACHE_CONTROLS:
+            with self.subTest(cache_control=case):
+                original_path=build.kernel/filename;original_bytes=original_path.read_bytes()
+                original=original_bytes.decode("utf-8");source=code(original);body=definition(original,function)
+                self.case(case);self.assertEqual(1,body.count(before));self.assertEqual(1,source.count(body))
+                path=build.kernel/("parameter-cache-control-"+case+".c")
+                path.write_text(source.replace(body,body.replace(before,after)),encoding="utf-8")
+                changed=build.compile(path,"parameter-cache-control-"+case);target=getattr(build,attribute)
+                self.assertEqual(1,self.objects.count(target))
+                exe=build.link("parameter-cache-control-"+case,[self.client,*[changed if obj==target else obj for obj in self.objects]])
                 self.case(case,exe,marker);self.assertEqual(original_bytes,original_path.read_bytes());self.case(case)
 
 
