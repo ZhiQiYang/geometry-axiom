@@ -23,7 +23,7 @@ def main():
     args.out.mkdir(parents=True, exist_ok=True)
     source = ROOT / "geometry-web/grid-inspector.js"
     original = source.read_text(encoding="utf-8")
-    absent = "const stagger=Object.hasOwn(d,'stagger') || d.parameterRefs?.stagger ? ` stagger ${token('stagger')}` : '';"
+    absent = "const stagger=d.parameterRefs?.stagger||d.stagger!=null?` stagger ${token('stagger')}`:'';"
     assert original.count(absent) == 1
     assert original.count("${token('stagger')}") == 1
     variants = {"baseline": original,

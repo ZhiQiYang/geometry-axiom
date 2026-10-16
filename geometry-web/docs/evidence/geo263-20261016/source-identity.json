@@ -1,0 +1,255 @@
+{
+  "base": "a898ad6e12707104568679591fe1b21804bfc3df",
+  "files": {
+    "current_geometry.c": {
+      "remote_git_blob": "d0b2e804c14e3ec0ba87a8392781a05120e2d032",
+      "local_git_blob": "d0b2e804c14e3ec0ba87a8392781a05120e2d032",
+      "sha256": "1018d93746f7fd204c54fe4710ed9796b7ea0919092194753ef668ab4efb6882"
+    },
+    "geometry-web/web_bridge.c": {
+      "remote_git_blob": "a6ad15b68add2faf20362c366551126f825dd379",
+      "local_git_blob": "a6ad15b68add2faf20362c366551126f825dd379",
+      "sha256": "612bd9f330f3969fbbdfff92df060e8f580a30ddf6ca8927e678add7e9fc5fa6"
+    },
+    "geometry-core/reference_types.h": {
+      "remote_git_blob": "b1c5cf6b87a668f338dc49c10708942ac986c0d6",
+      "local_git_blob": "b1c5cf6b87a668f338dc49c10708942ac986c0d6",
+      "sha256": "53634e27ae7fa94a7a7624635b9d14c798ed21ec193e5d1266d7dc1021811652"
+    },
+    "geometry-core/parameter_types.h": {
+      "remote_git_blob": "ca97bd6b3ab5cff7d637683e87051274e2f31e82",
+      "local_git_blob": "ca97bd6b3ab5cff7d637683e87051274e2f31e82",
+      "sha256": "b7e2576fa43f6cc0c25742b239bc75ebec112ddb84a59e984d018ddb516edd09"
+    },
+    "geometry-core/engineering_types.h": {
+      "remote_git_blob": "86e633274c9b1cbd582ba78f941cc4b68fd37b3d",
+      "local_git_blob": "86e633274c9b1cbd582ba78f941cc4b68fd37b3d",
+      "sha256": "4dd8dc7999568aa2c8d0069cf9c08e6cab29a6d43742eefc2d2414621ff89fa6"
+    },
+    "geometry-core/assembly_types.h": {
+      "remote_git_blob": "8c4a9e58299fd4c86f3a00022d20366808affaa8",
+      "local_git_blob": "8c4a9e58299fd4c86f3a00022d20366808affaa8",
+      "sha256": "952ce67924055a3dc74eceb70bd154ea20876881887481b2b08216ca90b5ac2d"
+    },
+    "geometry-core/section_profile_types.h": {
+      "remote_git_blob": "37d16ccf119c71270d672d34c2139ec20f0147c2",
+      "local_git_blob": "37d16ccf119c71270d672d34c2139ec20f0147c2",
+      "sha256": "5afdbed8e568a866130c9f78d9b6c108472466ff082836703461d07ca8c9792d"
+    },
+    "geometry-core/finish_surface_types.h": {
+      "remote_git_blob": "802f25eafb2868d56dc4dbd98a425b1b5af7196f",
+      "local_git_blob": "802f25eafb2868d56dc4dbd98a425b1b5af7196f",
+      "sha256": "19b9b75910e62d68b35328a2b855eb341b2c36c70af79ef10db7ada00f5405b4"
+    },
+    "geometry-core/panel_layout_math.h": {
+      "remote_git_blob": "dab0929590364b9d42c4bfd4d91a2dbaa08d6f4c",
+      "local_git_blob": "dab0929590364b9d42c4bfd4d91a2dbaa08d6f4c",
+      "sha256": "8f72b2eb8ef40633d5aa0d05b6f0822e070e26cf24334c900d1e1b7b1f2f822b"
+    },
+    "geometry-core/grid_lattice.inc": {
+      "remote_git_blob": "ee895fb56562eb7cab35ed1945d7c0428da25da4",
+      "local_git_blob": "ee895fb56562eb7cab35ed1945d7c0428da25da4",
+      "sha256": "7fcb9fb25ce22d6393c79a974f66820ce37f1175fc50acff0aae987ad7941ec5"
+    },
+    "geometry-core/subgrids.inc": {
+      "remote_git_blob": "7ccc81937f11d2e77c0cc7cd6b94171998abcd9d",
+      "local_git_blob": "7ccc81937f11d2e77c0cc7cd6b94171998abcd9d",
+      "sha256": "9abf0dd4ce442c14aa287b23c35cbfc67195e8ba76cdad9292dd7866124a336a"
+    },
+    "geometry-core/subgrid_world.inc": {
+      "remote_git_blob": "cd249884acc9e94b00b982e128bc1ba864f26e83",
+      "local_git_blob": "cd249884acc9e94b00b982e128bc1ba864f26e83",
+      "sha256": "3dbf7322d756629599b54553fcee72716096e14b1b2d828bc7dd3776637c642f"
+    },
+    "geometry-core/grid_systems.inc": {
+      "remote_git_blob": "41ef5b82dca331b92660d34e1d54d00ee5c0bc46",
+      "local_git_blob": "41ef5b82dca331b92660d34e1d54d00ee5c0bc46",
+      "sha256": "7ab68b6fb039b4a0fb251835a92dde66e34fe2d2999ef16d5d824656570c2832"
+    },
+    "geometry-core/subgrid_commands.inc": {
+      "remote_git_blob": "589458edf2c8a8e05fd26c5e34d8717ce4547d9d",
+      "local_git_blob": "589458edf2c8a8e05fd26c5e34d8717ce4547d9d",
+      "sha256": "72786f0aa9046f2dda97c92e94700ce0db8cca226c06dbcf1d20fa0564ebf6b1"
+    },
+    "geometry-core/parameters.inc": {
+      "remote_git_blob": "54d11908b264cc6f961757997697b1e189472288",
+      "local_git_blob": "54d11908b264cc6f961757997697b1e189472288",
+      "sha256": "e56646470644f9a52fff2f9a2ae4725f90168c8f5ec0705916df48d0589d28ba"
+    },
+    "geometry-core/references.inc": {
+      "remote_git_blob": "c8184c005d3b9f8aea070ae99b8274e853e563f2",
+      "local_git_blob": "c8184c005d3b9f8aea070ae99b8274e853e563f2",
+      "sha256": "588dc07b210599784efc6ab7e58b57901c2c7ed079cdca7e3f1e9e7ea332e67e"
+    },
+    "geometry-core/engineering.inc": {
+      "remote_git_blob": "a85a357020196c65a0de476f3858f5dc4de2f5b2",
+      "local_git_blob": "a85a357020196c65a0de476f3858f5dc4de2f5b2",
+      "sha256": "54dd7fa8cdfc82a08bc93f35f7bca57de41b50196188d11c7e427f6bf28d0f3c"
+    },
+    "geometry-core/boundary_vertex_keys.inc": {
+      "remote_git_blob": "1a6a14ed75a693a5e14975e8e37cd57d453367d8",
+      "local_git_blob": "1a6a14ed75a693a5e14975e8e37cd57d453367d8",
+      "sha256": "8d95a6e6ebb783eddd6f21abb6ffd37d27462a9cd36f69e6b90cf5818e5b9772"
+    },
+    "geometry-core/grid_bindings.inc": {
+      "remote_git_blob": "cb971dcb29a9fbe2974f7cd8d2ce778f6cad19ae",
+      "local_git_blob": "cb971dcb29a9fbe2974f7cd8d2ce778f6cad19ae",
+      "sha256": "ff67705a311770c7388ac6a30e46d3fd2a8d0b89eb79af905f53e153bd4c56f0"
+    },
+    "geometry-core/grid_subdivision.inc": {
+      "remote_git_blob": "f6f3b695e7b6ae10b50a3993fd3df11b77ca3708",
+      "local_git_blob": "f6f3b695e7b6ae10b50a3993fd3df11b77ca3708",
+      "sha256": "a1d37f00bdcf0532c574127ad12d4ec3ec911e8ed00355f51cb3b30801e19a6b"
+    },
+    "geometry-core/grid_subdivision_query.inc": {
+      "remote_git_blob": "6b306dbc856cdd75a01a64243fec3d9929041fb1",
+      "local_git_blob": "6b306dbc856cdd75a01a64243fec3d9929041fb1",
+      "sha256": "d0d860a6bc9e3f19bad52fd548a229a967ff124c1a70fdd6050012e5fa221b87"
+    },
+    "geometry-core/engineering_commands.inc": {
+      "remote_git_blob": "d1d2ac3d57c0780a407da2223af4dbda5f9e4407",
+      "local_git_blob": "d1d2ac3d57c0780a407da2223af4dbda5f9e4407",
+      "sha256": "ac55a2dd34b1e4052f29510248c0752eebe7074ff9e7a82d8ec167bb06f6cf03"
+    },
+    "geometry-core/assembly.inc": {
+      "remote_git_blob": "a4937df9621a543daaef7b7912a7a1adcfecccd2",
+      "local_git_blob": "a4937df9621a543daaef7b7912a7a1adcfecccd2",
+      "sha256": "429bbfaf178ce1be9b4eec73131c761de8dcad89f307958b3bb98990cbd3684f"
+    },
+    "geometry-core/assembly_generation.inc": {
+      "remote_git_blob": "94b1324c1e1b2422df26fad9993ef5d90df45fee",
+      "local_git_blob": "94b1324c1e1b2422df26fad9993ef5d90df45fee",
+      "sha256": "e58acee135f27c799aab83d9410ec6ce97f8b053d830ac28abed92aedd29b48e"
+    },
+    "geometry-core/section_profiles.inc": {
+      "remote_git_blob": "20a99f1e12391d6b0b12bfbbe988fd56344727bb",
+      "local_git_blob": "20a99f1e12391d6b0b12bfbbe988fd56344727bb",
+      "sha256": "c0f72d950b0f7e2aff5ec3cebe75e5bb9e4610ceb7ccb19a338641b5e41b0c78"
+    },
+    "geometry-core/finish_surfaces.inc": {
+      "remote_git_blob": "6b203be4d3832ef1c8aedc6e375bee59c78f6752",
+      "local_git_blob": "6b203be4d3832ef1c8aedc6e375bee59c78f6752",
+      "sha256": "4c230a45198b7f03dda82c8f4678adef09ae51409cbc7237348f544dd6f08ad8"
+    },
+    "geometry-core/panel_fill_layout.inc": {
+      "remote_git_blob": "16211e3dcb081afa81253261433c8ae14bb59f9a",
+      "local_git_blob": "16211e3dcb081afa81253261433c8ae14bb59f9a",
+      "sha256": "9fa82ddf3b0ca36dd552c49cc1b0edbd6d2021dc05af05418d2d155f636d2ab3"
+    },
+    "geometry-core/derived_placements.inc": {
+      "remote_git_blob": "a0354aa5cce1370e3f20a7b3902f24cf56d81f83",
+      "local_git_blob": "a0354aa5cce1370e3f20a7b3902f24cf56d81f83",
+      "sha256": "2794861c82074f6dbf2bb628f8961609e205d2ed0f1a6d0071c72fa5bd49bdd3"
+    },
+    "geometry-core/panel_fill_support.inc": {
+      "remote_git_blob": "a25205688429e8ef0203f018711afd3e61368671",
+      "local_git_blob": "a25205688429e8ef0203f018711afd3e61368671",
+      "sha256": "fde6f33eb82c3336e5668a7ceab0ddfcf6ac8ce35953f4b54238c3364bd05544"
+    },
+    "geometry-core/subgrid_rebind.inc": {
+      "remote_git_blob": "3e8d6bffcdec56385b72e90fa509cb1b381c8c95",
+      "local_git_blob": "3e8d6bffcdec56385b72e90fa509cb1b381c8c95",
+      "sha256": "fb6d5aed4d675794ecfa68b3190372b787472f54f16257815a614c54a74e9179"
+    },
+    "geometry-core/transactions.inc": {
+      "remote_git_blob": "1a780125ac5c1ade1c3170f8527738c34c65b244",
+      "local_git_blob": "1a780125ac5c1ade1c3170f8527738c34c65b244",
+      "sha256": "923f6388b955f74ca820220b5ac06bfa6469d0bbc2180cd703773f4d8a5bd4c7"
+    },
+    "geometry-web/grid_system_bridge.inc": {
+      "remote_git_blob": "884485207e4a30a4bb7f96044c5c8f0b2a123590",
+      "local_git_blob": "884485207e4a30a4bb7f96044c5c8f0b2a123590",
+      "sha256": "8c123b6ec7720642758a61b3adfdd4cbe11c156527acb97a463b56fb734ee339"
+    },
+    "geometry-web/grid_binding_bridge.inc": {
+      "remote_git_blob": "3f314e0c8ae94a13d602b737c9972154ade5b43f",
+      "local_git_blob": "3f314e0c8ae94a13d602b737c9972154ade5b43f",
+      "sha256": "c28c35ea3d49da56d4b1b69ba78da1be6449f18196a801562a07d760cfb476bd"
+    },
+    "geometry-web/grid_subdivision_bridge.inc": {
+      "remote_git_blob": "c8528d237b16d596181eb10e9255cb91eb2c35fb",
+      "local_git_blob": "c8528d237b16d596181eb10e9255cb91eb2c35fb",
+      "sha256": "1cfe0f48668a51f20f4d71f547923caae6f10dbc5d3c9f146b6a01dcaa6c1d2b"
+    },
+    "geometry-web/reference_bridge.inc": {
+      "remote_git_blob": "b75c7432b2a391372f55ab6d7f96ef39f4e4897a",
+      "local_git_blob": "b75c7432b2a391372f55ab6d7f96ef39f4e4897a",
+      "sha256": "e52a58e4b388728e0d313c2bb7831b5f70ec07e89dae2e9b1b52c41ad9d1dae7"
+    },
+    "geometry-web/parameter_bridge.inc": {
+      "remote_git_blob": "b1dc79005a1a16111e36f56c9c6bf19599b6fa77",
+      "local_git_blob": "b1dc79005a1a16111e36f56c9c6bf19599b6fa77",
+      "sha256": "1646a4b5f13b11293a73682241ac8574430d5e56fad42cae62f4e1a840d539c2"
+    },
+    "geometry-web/engineering_bridge.inc": {
+      "remote_git_blob": "19ad85721375ada0f278cb875f131f2208e94dd0",
+      "local_git_blob": "19ad85721375ada0f278cb875f131f2208e94dd0",
+      "sha256": "c89ae351200f72ea23d9b7308469bfd352b251697067451492b7b1db656cbae0"
+    },
+    "geometry-web/section_profile_bridge.inc": {
+      "remote_git_blob": "fb461cf193ba258606887b4e314ac162859445bf",
+      "local_git_blob": "fb461cf193ba258606887b4e314ac162859445bf",
+      "sha256": "8989ea42b0861b0fa09c4862032671fdf7873f2fdf62e61b09d1778bdef9ac0d"
+    },
+    "geometry-web/panel_fill_bridge.inc": {
+      "remote_git_blob": "3ecc85cd03ab669a6abf0c8a68514c3fc47b1498",
+      "local_git_blob": "3ecc85cd03ab669a6abf0c8a68514c3fc47b1498",
+      "sha256": "046eda2a0c1b6f77fca4648d923219014b7041a4d86ef7ebf957411e9add22b7"
+    },
+    "geometry-web/scene-import-bridge.inc": {
+      "remote_git_blob": "b358d98d8a5f59c3a71dd09aa834e52d660a9990",
+      "local_git_blob": "b358d98d8a5f59c3a71dd09aa834e52d660a9990",
+      "sha256": "baeb2cbb08c470cd891751cad132b5c0e27fb652afd0ce0cbb9991d334f8b53f"
+    },
+    "geometry-web/assembly_bridge.inc": {
+      "remote_git_blob": "46c4a571379ce89e5d39bc7d2bdc972ef807de40",
+      "local_git_blob": "46c4a571379ce89e5d39bc7d2bdc972ef807de40",
+      "sha256": "25289581f4d2f3d563f77ea4bd9b66915797feb8b21a5b54b5b777a4a02c9f3f"
+    },
+    "geometry-web/source-inspector-bridge.inc": {
+      "remote_git_blob": "7b0ac86ba957397065ddd8f609de9080c3fcc1bc",
+      "local_git_blob": "7b0ac86ba957397065ddd8f609de9080c3fcc1bc",
+      "sha256": "4f7d035689920ee26c471b8e21d796958ec6878a0cfc6c21ec14fff6ae97ba46"
+    },
+    "geometry-core/engineering_json.inc": {
+      "remote_git_blob": "b1a5a20e29f2ba0301130edbc08ec6135011016b",
+      "local_git_blob": "b1a5a20e29f2ba0301130edbc08ec6135011016b",
+      "sha256": "78a75f77cfde2fffd12722d7c302ee6aef22496f1c518e59902e80a4e7ecec3b"
+    },
+    "geometry-core/section_profile_placement.inc": {
+      "remote_git_blob": "3516dd984408e8006c7ef372f8d8d6d56d1a4db4",
+      "local_git_blob": "3516dd984408e8006c7ef372f8d8d6d56d1a4db4",
+      "sha256": "1b3fbb08a901e03884b2a2c2d42a095cca28ba5fda06a9fce7a07464fa40f45f"
+    },
+    "geometry-core/section_profile_validation.inc": {
+      "remote_git_blob": "e30237efecee31c6aae154d4534585d696a398d2",
+      "local_git_blob": "e30237efecee31c6aae154d4534585d696a398d2",
+      "sha256": "63e9980d422fc8709165335b1d1193c29df2dc889fb94237bae644a853964a89"
+    },
+    "geometry-core/section_profile_conversion.inc": {
+      "remote_git_blob": "ec1abea45732f3d7a30f5f53db595831ae5dd1fb",
+      "local_git_blob": "ec1abea45732f3d7a30f5f53db595831ae5dd1fb",
+      "sha256": "0eb378cb94dc4e2197bc4acd35cf1fa33c7caacc0534526b60aa81b2aff4110d"
+    },
+    "geometry-web/timber_support_projection.inc": {
+      "remote_git_blob": "a2ccf9c9bec096bf25e1172d9ab40a1c47189fa9",
+      "local_git_blob": "a2ccf9c9bec096bf25e1172d9ab40a1c47189fa9",
+      "sha256": "fbdacaed7349dc971bbfae7affb37b10b9c4f65537de91b1d35c567f93dabd33"
+    },
+    "geometry-web/section_profile_diagnostics.inc": {
+      "remote_git_blob": "ae05588874b5360168bbd1ec64831e850bc4b390",
+      "local_git_blob": "ae05588874b5360168bbd1ec64831e850bc4b390",
+      "sha256": "edb80cd7fce7784c7201d10376428f2fe26b771058f353845b6c2b1cf083931d"
+    },
+    "geometry-web/panel_layout_bridge.inc": {
+      "remote_git_blob": "af8b362d15efcddc0fdb377939788fdebdad4ace",
+      "local_git_blob": "af8b362d15efcddc0fdb377939788fdebdad4ace",
+      "sha256": "990972a13cab227331115b8ad413778f19c40010e82b44e70af286ec82729b2c"
+    },
+    "geometry-web/section_profile_source_index.inc": {
+      "remote_git_blob": "f8de5046b0288ff072b1ce7e25f02236e91baecb",
+      "local_git_blob": "f8de5046b0288ff072b1ce7e25f02236e91baecb",
+      "sha256": "ff316024b12606f7ec7c291527602a87bcf2e67a9f91a5ed8e2a822459b35912"
+    }
+  }
+}
