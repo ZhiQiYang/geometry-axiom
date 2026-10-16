@@ -42,7 +42,10 @@ void wood_engineering_sources_destroy(WoodEngineeringSources *);
 void wood_engineering_sources_bind(WoodEngineeringSources *,WoodEngineeringContext *);
 /* Complete the candidate's published definition inventory after normal W
  * validation/rebuild. This requests only canonical definitions, never unused
- * dimensions or geometry; method slots retain DefinitionRequired edges. */
+ * dimensions or geometry; method slots retain DefinitionRequired edges.
+ * Full-mode rebuild separately evaluates application checks: each consumes
+ * its returned application definition, host, method and all enabled overrides
+ * in the original validation order, including applications with no bindings. */
 bool wood_engineering_sources_definitions(WoodEngineeringSources *);
 bool wood_engineering_sources_metadata(WoodEngineeringSources *);
 const EngineeringState *wood_engineering_sources_state(const WoodEngineeringSources *);

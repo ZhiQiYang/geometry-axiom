@@ -88,11 +88,11 @@ class EnclosureProduct(unittest.TestCase):
         executable=build.link('enclosure-product-control-baseline',[client,*build.product_objects()])
         self.run_client(executable,path)
         source=(build.kernel/'enclosure_sources.c').read_text(encoding='utf-8')
-        before='memcpy(out,&s->values[at],sizeof *out);return true;'
+        before='return value.kind==GEO_SOURCE_DEFINITION&&\n        geo_enclosure_source_decode_definition(GEO_ENCLOSURE_SOURCE_RESULT,&value.as.definition,id,out);'
         self.assertEqual(1,source.count(before),'Control must target the actual K result accessor')
         changed=build.kernel/'enclosure-result-product-control.c'
         changed.write_text(source.replace(before,
-            'memcpy(out,&s->values[at],sizeof *out);if(out->id==5&&out->max[2]==340)++out->max[2];return true;'),encoding='utf-8')
+            'if(value.kind!=GEO_SOURCE_DEFINITION||!geo_enclosure_source_decode_definition(GEO_ENCLOSURE_SOURCE_RESULT,&value.as.definition,id,out))return false;if(out->id==5&&out->max[2]==340)++out->max[2];return true;'),encoding='utf-8')
         obj=build.compile(changed,'enclosure-result-product-control')
         self.assertEqual(1,build.product_objects().count(build.enclosure_sources_object))
         mutant=build.link('enclosure-result-product-control',[client,

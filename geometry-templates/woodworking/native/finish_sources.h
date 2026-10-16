@@ -42,6 +42,12 @@ bool wood_finish_source_decode(const GeoSourceRef *,WoodFinishSourceKind *,uint3
 WoodFinishSources *wood_finish_sources_create(GeoEvalContext *,WoodFinishSourceTokens,const WoodDerivedContext *);
 bool wood_finish_sources_bind(WoodFinishSources *,WoodDerivedContext *);
 bool wood_finish_sources_bind_finish(WoodFinishSources *,WoodFinishContext *);
+/* Definition-only reads consume the actual K return value. The copy contains
+ * authored inputs only; these helpers neither evaluate geometry nor write the
+ * candidate. Failed reads leave the caller's output unchanged. */
+bool wood_finish_sources_surface_definition(WoodFinishSources *,uint32_t,FinishSurface *);
+bool wood_finish_sources_fill_definition(WoodFinishSources *,uint32_t,PanelFill *);
+bool wood_finish_sources_derived_definition(WoodFinishSources *,uint32_t,DerivedPlacement *);
 /* H can return DERIVED_FRAME/DERIVED_REGION refs from its neutral placement
  * provider. Evaluating them runs the direct W policy, never placement caches.
  * Read returns the same graph value including fixities for W/H callers. */

@@ -40,6 +40,11 @@ typedef struct {
     /* A policy for an evaluator whose failure has observable diagnostics.
      * Successful values always memoize. Active recursion always reports cycle. */
     bool retry_failure;
+    /* AXIS_POSITION only: context depends on evaluated geometry. Description
+     * remains metadata-only. A successful value supplies a valid axis 0..2;
+     * K publishes that exact context and clears this flag atomically with the
+     * value. Failure preserves the unresolved descriptor for a possible retry. */
+    bool context_from_value;
 } GeoSourceDescriptor;
 typedef enum {
     GEO_SOURCE_OK=0, GEO_SOURCE_MISSING, GEO_SOURCE_FAILED, GEO_SOURCE_CYCLE,

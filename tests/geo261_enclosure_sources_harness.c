@@ -186,12 +186,13 @@ static void graph(void)
         CHECK(geo_eval_edge_at(f->graph,i,&edge)&&geo_eval_node_at(f->graph,edge.source,&node),"graph-edge-readable");
         if(edge.kind==GEO_DEPENDENCY_DEFINITION_REQUIRED&&node.source.provider==ENC){
             GeoEnclosureSourceKind kind;uint32_t id;int axis,slot;
-            definition_edge=geo_enclosure_source_decode(&node.source,&kind,&id,&axis,&slot)&&kind==GEO_ENCLOSURE_SOURCE_DEFINITION&&id==9&&node.state==GEO_NODE_NEW;
+            /* Membership is consumed as a value; its identity edge stays definition-required. */
+            definition_edge=geo_enclosure_source_decode(&node.source,&kind,&id,&axis,&slot)&&kind==GEO_ENCLOSURE_SOURCE_DEFINITION&&id==9&&node.state==GEO_NODE_VALID;
         }
         if(edge.kind==GEO_DEPENDENCY_VALUE_REQUIRED&&node.source.provider==REGION)region_edge=true;
         if(edge.kind==GEO_DEPENDENCY_VALUE_REQUIRED&&node.source.provider==PLACE)frame_edge=true;
     }
-    CHECK(definition_edge,"graph-definition-edge-new");CHECK(region_edge&&frame_edge&&geo_eval_edge_count(f->graph)==3,"graph-value-region-frame-edges");
+    CHECK(definition_edge,"graph-definition-edge-valid");CHECK(region_edge&&frame_edge&&geo_eval_edge_count(f->graph)==3,"graph-value-region-frame-edges");
     CHECK(geo_enclosure_sources_value(f->sources,9,&out,NULL)&&f->region_calls[0]==1&&f->frame_calls[0]==1,"graph-success-memoized");
     Fixture *other=one(false);other->typed_frames[0]=zplus(250);
     CHECK(geo_enclosure_sources_value(other->sources,9,&out,NULL)&&out.max[2]==250&&

@@ -84,6 +84,7 @@ typedef struct {
     uint32_t surface_id,guide_id,between[2];
     AsmDir direction;
     WoodMemberRole role;
+    uint32_t timber_id,reserved;
 } WoodAssemblyDefinition;
 typedef struct {
     void *user;
@@ -94,6 +95,11 @@ typedef struct {
     bool (*generated)(void *,const AsmInstance *,int,WoodAssemblyDefinition *);
     bool (*generated_dimension)(void *,const AsmInstance *,int,uint32_t,int,const EngDimensionSource *,GeoCoord *,char *,size_t);
     bool (*instance_check)(void *,const AsmInstance *);
+    /* Optional returned authored records. Slot replacement is read at the
+     * existing per-slot policy phase; instance replacement precedes only that
+     * instance's original primary/secondary write sequence. */
+    bool (*slot_record)(void *,uint32_t,uint32_t,char *,size_t);
+    bool (*instance_definition)(void *,const AsmInstance *,const AsmInstance **);
 } WoodAssemblyEvaluation;
 /* Host callbacks expose facts, storage writes and legacy serialization only.
  * W selects topology, dimensions, roles, support dependencies and phase order. */
@@ -126,6 +132,10 @@ AsmInstance *wood_assembly_instance(WoodAssemblyContext *,uint32_t);
 bool wood_assembly_used(const WoodAssemblyContext *);
 bool wood_assembly_owned(const WoodAssemblyContext *,uint32_t);
 bool wood_assembly_publish(WoodAssemblyContext *,GeoJson *,int,const char *);
+/* Definition readers share the authoring policy but never allocate members,
+ * write candidate authoring, resolve dimensions or read host geometry. */
+bool wood_assembly_rule_parse(WoodAssemblyContext *,GeoJson *,int,AsmRuleVersion *);
+bool wood_assembly_instance_definition_parse(WoodAssemblyContext *,GeoJson *,int,AsmInstance *);
 bool wood_assembly_put_binding(WoodAssemblyContext *,GeoJson *,int);
 bool wood_assembly_versions_immutable(const WoodAssemblyContext *,const WoodAssemblyContext *);
 bool wood_assembly_rebuild(WoodAssemblyContext *,char *,size_t);

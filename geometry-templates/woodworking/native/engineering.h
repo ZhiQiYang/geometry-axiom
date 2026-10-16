@@ -149,6 +149,11 @@ bool wood_eng_version_view(const WoodEngineeringContext *w,int kind,const char *
 /* Non-evaluating immutable lookup for provider identity/description. Policy
  * getters below use source_version_definition when a candidate is bound. */
 bool wood_eng_version_view_direct(const WoodEngineeringContext *w,int kind,const char *id,uint32_t version,GeoVersionView *out);
+bool wood_eng_read_version(const WoodEngineeringContext *,int,const char *,uint32_t,GeoVersionView *,GeoVersionField [GEO_VERSION_FIELD_CAPACITY]);
+/* Decode complete canonical material JSON without World/store/cache access.
+ * Publication uses this same parser. Failure preserves out; decimal spelling
+ * stays exact and is never converted merely by reading a definition. */
+bool wood_eng_material_decode(const void *,size_t,EngMaterialVersion *);
 bool wood_eng_material_integer(const WoodEngineeringContext *w,const EngMaterialVersion *material,uint32_t field,GeoCoord minimum,GeoCoord maximum,GeoCoord *out);
 bool wood_eng_archive(WoodEngineeringContext *w,GeoJson *j,int t);
 EngApplication *wood_eng_application(WoodEngineeringContext *w,const char *id);

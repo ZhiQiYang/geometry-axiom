@@ -1,5 +1,6 @@
 /* H: legacy placement encoding and storage callbacks; W owns D34/I42/R35. */
 static bool g_assembly_replay;
+static bool app_assembly_replaying(void){return g_assembly_replay;}
 static bool app_asm_surface(void *user,uint32_t id)
 {return world_find_placement((World *)user,id)!=NULL;}
 static bool app_asm_guide(void *user,uint32_t id,WoodAssemblyGuide *out)
