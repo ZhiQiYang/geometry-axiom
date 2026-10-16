@@ -86,6 +86,8 @@ PY_NEEDS = {
     'test_geometry_host_native': [],
     'test_geometry_host_sources': [],
     'test_geometry_source_runtime': [],
+    'test_rectangular_python': [],
+    'test_rectangular_bridge': [],
     'test_geometry_host_world': [],
     'test_geometry_kernel_compatibility': [],
     'test_geometry_kernel_geometry': [],

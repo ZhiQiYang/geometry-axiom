@@ -5,7 +5,7 @@ policy does not parse scene syntax, execute processes or construct geometry.
 """
 from dataclasses import dataclass, replace
 
-from geometry_kernel import SourceRef, ValueType
+from geometry_kernel import QuantityType, SourceRef, Unit, ValueType
 from .model_policy import PolicyIssue
 
 
@@ -48,6 +48,10 @@ def bind_sources(base, sources, roots):
         reference, faces = associations[association]
         if reference.value_type != expected:
             _fail("Native template root has the wrong source type.")
+        value = catalog[reference.key].value
+        if slot in ("spec.value", "profile.length") and value is not None:
+            if value.value_type != QuantityType.DIMENSION or value.unit != Unit.MM or value.denominator != 1:
+                _fail("Native geometry length roots require exact integral dimensions.")
         consumed.add(association)
         return reference, faces
 

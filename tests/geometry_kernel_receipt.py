@@ -36,12 +36,14 @@ TYPED_SOURCE_SUITES = {**PY2_SUITES, "test_geometry_kernel_graph": 27,
                        "test_geometry_kernel_runtime": 4, "test_geometry_host_native": 22}
 SOURCE_TRANSPORT_SUITES = {**TYPED_SOURCE_SUITES, "test_geometry_host_sources": 17}
 SOURCE_RUNTIME_SUITES = {**SOURCE_TRANSPORT_SUITES, "test_geometry_source_runtime": 10}
+RECTANGULAR_PYTHON_SUITES = {**SOURCE_RUNTIME_SUITES, "test_rectangular_python": 8}
 SUITE_SETS = {"py1": PY1_SUITES, "py2": PY2_SUITES,
               "native-host": {"test_geometry_host_native": 22},
               "capability-phase": {"test_geometry_kernel_runtime": 4},
               "typed-sources": TYPED_SOURCE_SUITES,
               "source-transport": SOURCE_TRANSPORT_SUITES,
-              "source-runtime": SOURCE_RUNTIME_SUITES}
+              "source-runtime": SOURCE_RUNTIME_SUITES,
+              "rectangular-python": RECTANGULAR_PYTHON_SUITES}
 
 
 def git(*args):
@@ -62,6 +64,8 @@ def main():
              "tests/_unittest_runner.py", "tests/binaries.py", *(f"tests/{name}.py" for name in suites))
     if args.suite_set != "py1":
         paths += ("geometry-app/geometry_app", "geometry-templates/woodworking/geometry_woodworking")
+    if "test_rectangular_python" in suites:
+        paths += ("geometry-templates/rectangular-grid/geometry_rectangular", "tests/rectangular_python_consumer.py")
     archive = git("archive", "--format=zip", source, *paths)
     output = args.out.resolve()
     output.mkdir(parents=True, exist_ok=True)
