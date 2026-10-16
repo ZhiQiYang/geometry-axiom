@@ -85,6 +85,7 @@ JS_SUFFIXES = (".js", ".mjs", ".cjs", ".ts", ".jsx", ".tsx")
 C_STRING_PREFIX = re.compile(r'(?:u8|[LuU])(?=["\'])')
 IDENTIFIER = re.compile(r"[A-Za-z_$][A-Za-z0-9_$]*")
 JS_NUMBER = re.compile(r"(?:0[xX][0-9a-fA-F_]+|0[bB][01_]+|0[oO][0-7_]+|[0-9][0-9_]*(?:\.[0-9_]*)?(?:[eE][+-]?[0-9_]+)?)(?:n)?")
+JS_LINE_END = re.compile(r"[\n\u2028\u2029]")
 ALLOWED = {"K": {"K"}, "W": {"K", "W", "vendor"},
            "H": {"K", "W", "H", "vendor"}, "vendor": {"vendor"}}
 PY_LOADERS = {"importlib", "runpy", "pkgutil", "zipimport", "imp", "builtins"}
@@ -94,6 +95,7 @@ PY_DYNAMIC_NAMES = {"__import__", "__builtins__", "exec", "eval", "compile", "gl
 PY_PATH_FIELDS = {"path", "meta_path", "path_hooks", "path_importer_cache", "modules"}
 JS_DYNAMIC_NAMES = {"eval", "Function", "importScripts", "createRequire", "__webpack_require__",
                     "globalThis", "global", "window", "document", "self", "Reflect", "Proxy"}
+JS_REFLECTIVE_NAMES = {"eval", "Function", "constructor", "__proto__", "__lookupGetter__", "__lookupSetter__"}
 C_DYNAMIC_NAMES = {"dlopen", "dlsym", "LoadLibraryA", "LoadLibraryW", "GetProcAddress"}
 C_STANDARD_HEADERS = {
     "assert.h", "complex.h", "ctype.h", "errno.h", "fenv.h", "float.h", "inttypes.h", "iso646.h",
@@ -195,7 +197,7 @@ def portable_path(value, context, directory=False):
     return value
 
 
-def physical_lines(text, splice=False):
+def physical_lines(text, splice=False, javascript=False):
     """Return logical text and an original one-based line for every character."""
     output, lines = [], []
     index, line = 0, 1
@@ -207,7 +209,7 @@ def physical_lines(text, splice=False):
         char = text[index]
         output.append(char)
         lines.append(line)
-        line += char == "\n"
+        line += char in ("\n\u2028\u2029" if javascript else "\n")
         index += 1
     return "".join(output), lines
 
@@ -228,7 +230,7 @@ def decode_literal(raw, path, line, *, c=False):
         if char in simple:
             result.append(simple[char])
             index += 1
-        elif char == "\n":
+        elif char == "\n" or (not c and char in "\u2028\u2029"):
             index += 1
         elif char in "01234567":
             match = re.match(r"[0-7]{1,3}", raw[index:])
@@ -259,7 +261,7 @@ def lex_javascript(text, path, line_offset=0):
     markers inside regex character classes cannot conceal later executable code.
     This validates lexical nesting, not arbitrary JavaScript program semantics.
     """
-    text, lines = physical_lines(text)
+    text, lines = physical_lines(text, javascript=True)
     size = len(text)
     controls = {"if", "while", "for", "with", "switch", "catch"}
     prefix_words = {"return", "throw", "case", "delete", "void", "typeof", "new", "in",
@@ -272,7 +274,7 @@ def lex_javascript(text, path, line_offset=0):
         quote, start = text[index], index
         index += 1
         while index < size and text[index] != quote:
-            require(text[index] != "\n", "LEXICAL_SYNTAX", path, line_at(index), "unescaped newline in literal")
+            require(text[index] not in "\n\u2028\u2029", "LEXICAL_SYNTAX", path, line_at(index), "unescaped line terminator in literal")
             index += 2 if text[index] == "\\" else 1
         require(index < size, "LEXICAL_SYNTAX", path, line_at(start), "unclosed string literal")
         return index + 1, Token("string", decode_literal(text[start + 1:index], path, line_at(start)), line_at(start))
@@ -282,9 +284,9 @@ def lex_javascript(text, path, line_offset=0):
         index += 1
         while index < size:
             char = text[index]
-            require(char != "\n", "LEXICAL_SYNTAX", path, line_at(start), "unclosed regex literal")
+            require(char not in "\n\u2028\u2029", "LEXICAL_SYNTAX", path, line_at(start), "unclosed regex literal")
             if char == "\\":
-                require(index + 1 < size and text[index + 1] != "\n", "LEXICAL_SYNTAX", path,
+                require(index + 1 < size and text[index + 1] not in "\n\u2028\u2029", "LEXICAL_SYNTAX", path,
                         line_at(start), "unfinished regex escape")
                 index += 2
                 continue
@@ -344,8 +346,8 @@ def lex_javascript(text, path, line_offset=0):
                 index += 1
                 continue
             if text.startswith("//", index):
-                end = text.find("\n", index + 2)
-                index = size if end == -1 else end
+                end = JS_LINE_END.search(text, index + 2)
+                index = size if end is None else end.start()
                 continue
             if text.startswith("/*", index):
                 end = text.find("*/", index + 2)
@@ -372,6 +374,8 @@ def lex_javascript(text, path, line_offset=0):
                     continue
             require(char != "\\", "LEXICAL_SYNTAX", path, line,
                     "escaped identifiers outside literals are outside the supported lexical subset")
+            require(ord(char) < 128, "JS_UNSUPPORTED_IDENTIFIER", path, line,
+                    "non-ASCII executable tokens need a Unicode-aware JavaScript parser")
             match = IDENTIFIER.match(text, index)
             if match:
                 value = match.group()
@@ -453,6 +457,8 @@ def lex(text, path, *, c=False, line_offset=0):
         if prefix:
             index += len(prefix.group())
             char = text[index]
+        require(not text.startswith("%:", index), "C_UNSUPPORTED_PREPROCESSOR", path, line,
+                "preprocessor digraphs need a dedicated preprocessing parser")
         if char in "\"'`":
             require(not c or char != "`", "LEXICAL_SYNTAX", path, line, "backticks are not C literals")
             quote, start = char, index
@@ -829,7 +835,7 @@ class Scanner:
             for index, token in enumerate(tokens[:-1]):
                 require(not (token.value == tokens[index + 1].value == "#"), "C_TOKEN_PASTE", path, token.line,
                         "token-pasted core identifiers cannot be statically classified")
-        for match in re.finditer(r"^[ \t]*#[ \t]*(include_next|include|import)\b([^\n]*)", masked, re.MULTILINE):
+        for match in re.finditer(r"^[ \t\v\f]*#[ \t\v\f]*(include_next|include|import)\b([^\n]*)", masked, re.MULTILINE):
             line = lines[match.start()] if lines else 1
             require(match.group(1) == "include", "C_UNSUPPORTED_INCLUDE", path, line, "unsupported preprocessor loader")
             body = match.group(2).strip()
@@ -881,11 +887,28 @@ class Scanner:
         self.owned(target, source, line)
         return target
 
+    def python_package_initializers(self, path):
+        # Importing this source executes its regular-package initializers even
+        # when its own body has no import. Attach the requirement to the module,
+        # not only to whichever host happened to import it during this scan.
+        file = self.root / path
+        for root in self.search["python"]:
+            if not within(file, root):
+                continue
+            parts = file.relative_to(root).parts[:-1]
+            if not all(part.isidentifier() for part in parts):
+                continue
+            for size in range(1, len(parts) + 1):
+                initializer = root.joinpath(*parts[:size], "__init__.py")
+                if initializer.is_file() and initializer != file:
+                    self.owned(initializer, path, 1)
+
     def scan_python(self, path, text):
         try:
             tree = ast.parse(text, filename=path)
         except SyntaxError as error:
             require(False, "PYTHON_SYNTAX", path, error.lineno or 1, error.msg)
+        self.python_package_initializers(path)
         nodes = sorted(ast.walk(tree), key=lambda node: (getattr(node, "lineno", 0), getattr(node, "col_offset", 0)))
         identifiers, literals, aliases = [], [], {}
         strict = self.entries[path]["layer"] != "H"
@@ -925,6 +948,9 @@ class Scanner:
         # mutation. Simple assignments retain imported aliases across scopes.
         assignments = [(target.id, node.value) for node in nodes if isinstance(node, ast.Assign)
                        for target in node.targets if isinstance(target, ast.Name)]
+        assignments.extend((node.target.id, node.value) for node in nodes
+                           if isinstance(node, (ast.AnnAssign, ast.NamedExpr))
+                           and isinstance(node.target, ast.Name) and node.value is not None)
         for _ in range(len(assignments) + 1):
             changed = False
             for name, value in assignments:
@@ -1017,6 +1043,13 @@ class Scanner:
                 require(not (token.kind in {"string", "template"} and token.value in {"require", "eval", "import", "Function"}
                              and offset > 0 and tokens[offset - 1].value == "["),
                         "JS_DYNAMIC_IMPORT", path, token.line, "computed access to a known JavaScript loader")
+        if self.entries[path]["layer"] != "H":
+            for offset, token in enumerate(tokens):
+                require(not (token.value in JS_REFLECTIVE_NAMES and
+                             (token.kind == "identifier" or
+                              (token.kind in {"string", "template"} and offset > 0 and tokens[offset - 1].value == "["))),
+                        "JS_REFLECTIVE_LOADER", path, token.line,
+                        "reflective function construction/prototype access is outside the static dependency subset")
         typescript = self.entries[path]["language"] == "typescript"
         index = 0
         while index < len(tokens):
@@ -1111,11 +1144,17 @@ class Scanner:
                 names = [key for key, _ in attrs]
                 require(len(names) == len(set(names)), "HTML_SCRIPT_SYNTAX", path, line, "duplicate attributes are ambiguous")
                 values = dict(attrs)
+                require(tag != "base" or "href" not in values, "HTML_BASE_URL_UNSUPPORTED", path, line,
+                        "base href changes dependency resolution and is outside the static HTML subset")
                 for key, value in attrs:
                     if key.startswith("on") and value:
                         scanner.scan_javascript(path, value, line - 1)
-                    elif value and value.lower().lstrip().startswith("javascript:"):
-                        scanner.scan_javascript(path, value.split(":", 1)[1], line - 1)
+                    elif value:
+                        # Browser URL preprocessing removes embedded ASCII tab /
+                        # CR / LF and trims leading/trailing C0 controls + space.
+                        url_value = value.translate({9: None, 10: None, 13: None}).strip("".join(map(chr, range(33))))
+                        if url_value.lower().startswith("javascript:"):
+                            scanner.scan_javascript(path, url_value.split(":", 1)[1], line - 1)
                 if tag != "script":
                     return
                 require(self.script is None, "HTML_SCRIPT_SYNTAX", path, line, "nested script tag")

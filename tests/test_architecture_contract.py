@@ -841,6 +841,143 @@ class ArchitectureContract(unittest.TestCase):
             load_manifest(path)
         self.assertEqual(caught.exception.diagnostic.code, "MANIFEST_DUPLICATE_KEY")
 
+    def test_c_formfeed_cannot_hide_template_include(self):
+        self.put("src/k/core.c", '\f#include "../w/policy.h"\n')
+        self.put("src/w/policy.h", "int policy;\n", "W")
+        self.rejects("LAYER_DIRECTION", path="src/k/core.c", line=1)
+
+    def test_c_directive_horizontal_whitespace_cannot_hide_include(self):
+        self.put("src/k/core.c", '/* lead */\v#\finclude "../w/policy.h"\n')
+        self.put("src/w/policy.h", "int policy;\n", "W")
+        self.rejects("LAYER_DIRECTION", path="src/k/core.c", line=1)
+
+    def test_c_preprocessor_digraph_fails_closed(self):
+        self.put("src/k/core.c", '%:include "../w/policy.h"\n')
+        self.put("src/w/policy.h", "int policy;\n", "W")
+        self.rejects("C_UNSUPPORTED_PREPROCESSOR", path="src/k/core.c")
+
+    def test_c_digraph_token_paste_fails_closed(self):
+        self.put("src/core.c", '#define JOIN(a,b) a %:%: b\n')
+        self.rejects("C_UNSUPPORTED_PREPROCESSOR")
+
+    def test_c_display_digraph_is_not_preprocessor_code(self):
+        self.put("src/core.c", '/* %:include "missing.h" */\nconst char *x = "%:";\n')
+        self.green()
+
+    def test_python_annotated_sys_alias_cannot_read_loaded_template(self):
+        self.put("src/core.py", 'import sys\nalias: object = sys\npolicy = alias.modules["w.policy"]\n')
+        self.put("src/w/policy.py", "value = 1\n", "W")
+        self.rejects("CORE_PATH_INJECTION", path="src/core.py", line=3)
+
+    def test_python_named_expression_sys_alias_is_tracked(self):
+        self.put("src/core.py", 'import sys\nif (alias := sys):\n    policy = alias.modules["w.policy"]\n')
+        self.put("src/w/policy.py", "value = 1\n", "W")
+        self.rejects("CORE_PATH_INJECTION", path="src/core.py", line=3)
+
+    def test_python_annotated_neutral_alias_remains_supported(self):
+        self.put("src/core.py", 'import math\nalias: object = math\nvalue = alias.pi\n')
+        self.green()
+
+    def test_python_core_owns_implicit_host_initializer_dependency(self):
+        self.put("src/pkg/__init__.py", "host_value = 1\n", "H")
+        self.put("src/pkg/core.py", "value = 1\n")
+        self.put("src/app.py", "import pkg.core\n", "H")
+        self.rejects("LAYER_DIRECTION", path="src/pkg/core.py", line=1,
+                     chain=["src/pkg/core.py", "src/pkg/__init__.py"])
+
+    def test_python_nested_core_requires_outer_initializer_without_importer(self):
+        self.put("src/pkg/__init__.py", "host_value = 1\n", "H")
+        self.put("src/pkg/sub/__init__.py", "value = 1\n")
+        self.put("src/pkg/sub/core.py", "value = 1\n")
+        self.rejects("LAYER_DIRECTION", chain=["src/pkg/sub/core.py", "src/pkg/__init__.py"])
+
+    def test_python_neutral_implicit_initializers_are_graph_edges(self):
+        self.put("src/pkg/__init__.py", "value = 1\n")
+        self.put("src/pkg/sub/__init__.py", "value = 1\n")
+        self.put("src/pkg/sub/core.py", "value = 1\n")
+        edges = {(edge.source, edge.target) for edge in self.green().edges}
+        self.assertIn(("src/pkg/sub/core.py", "src/pkg/__init__.py"), edges)
+        self.assertIn(("src/pkg/sub/core.py", "src/pkg/sub/__init__.py"), edges)
+
+    def test_html_base_href_cannot_redirect_a_core_script(self):
+        self.put("src/page.html", '<base href="./w/"><script src="load.js"></script>')
+        self.put("src/load.js", "const value = 1;")
+        self.put("src/w/load.js", "const value = 2;", "W")
+        self.rejects("HTML_BASE_URL_UNSUPPORTED", path="src/page.html")
+
+    def test_html_late_base_href_fails_closed_even_with_route(self):
+        self.put("src/page.html", '<script src="/load.js"></script><base href="./w/">', "H")
+        self.put("src/load.js", "const value = 1;", "H")
+        self.route(src="/load.js", target="src/load.js")
+        self.rejects("HTML_BASE_URL_UNSUPPORTED")
+
+    def test_html_base_target_does_not_change_script_resolution(self):
+        self.put("src/page.html", '<base target="_blank"><script src="load.js"></script>')
+        self.put("src/load.js", "const value = 1;")
+        self.assertEqual(self.green().edges[0].target, "src/load.js")
+
+    def test_html_javascript_tab_cannot_hide_dynamic_import(self):
+        self.put("src/core.html", '<a href="java&#x09;script:import(&quot;./w.js&quot;)">go</a>')
+        self.put("src/w.js", "export const value = 1;", "W")
+        self.rejects("JS_DYNAMIC_IMPORT", path="src/core.html")
+
+    def test_html_javascript_url_preprocessing_preserves_dependency(self):
+        self.put("src/core.html", '<a href="&#x01;JaVa&#10;ScRi&#13;pT:require(&quot;./w.js&quot;) ">go</a>')
+        self.put("src/w.js", "module.exports = 1;", "W")
+        self.rejects("LAYER_DIRECTION", chain=["src/core.html", "src/w.js"])
+
+    def test_javascript_unicode_identifier_cannot_hide_division_loader(self):
+        self.put("src/core.js", r"const π=1; const x=π / require('.\x2fw.js') / 1;")
+        self.put("src/w.js", "module.exports = 1;", "W")
+        self.rejects("JS_UNSUPPORTED_IDENTIFIER", path="src/core.js")
+
+    def test_javascript_unicode_identifier_in_template_fails_closed(self):
+        self.put("src/core.js", r"const x=`${π / require('.\x2fw.js') / 1}`;")
+        self.put("src/w.js", "module.exports = 1;", "W")
+        self.rejects("JS_UNSUPPORTED_IDENTIFIER")
+
+    def test_javascript_unicode_display_content_remains_supported(self):
+        self.put("src/core.js", "// π is display text\nconst x='π'; const y=`幾何 ${1}`; const z=/π/;\n")
+        self.green()
+
+    def test_javascript_line_separator_ends_comment_before_dependency(self):
+        self.put("src/core.js", "// display only\u2028require('./w.js');")
+        self.put("src/w.js", "module.exports = 1;", "W")
+        self.rejects("LAYER_DIRECTION", path="src/core.js", line=2)
+
+    def test_javascript_paragraph_separator_ends_comment_before_dependency(self):
+        self.put("src/core.js", "// display only\u2029require('./w.js');")
+        self.put("src/w.js", "module.exports = 1;", "W")
+        self.rejects("LAYER_DIRECTION", path="src/core.js", line=2)
+
+    def test_javascript_template_line_separator_ends_comment(self):
+        self.put("src/core.js", "const x=`${// display only\u2028require('./w.js')}`;")
+        self.put("src/w.js", "module.exports = 1;", "W")
+        self.rejects("LAYER_DIRECTION", path="src/core.js", line=2)
+
+    def test_javascript_arrow_constructor_cannot_create_loader(self):
+        self.put("src/core.js", r'''(()=>{}).constructor('return import("./w.js")')();''')
+        self.put("src/w.js", "export const value = 1;", "W")
+        self.rejects("JS_REFLECTIVE_LOADER")
+
+    def test_javascript_computed_constructor_fails_closed_in_template_layer(self):
+        self.put("src/core.js", r'''(()=>{})["constructor"]('return import("./h.js")')();''', "W")
+        self.put("src/h.js", "export const value = 1;", "H")
+        self.rejects("JS_REFLECTIVE_LOADER")
+
+    def test_javascript_constructor_display_text_is_not_a_loader(self):
+        self.put("src/core.js", "// constructor\nconst x='constructor'; const y=`constructor`;\n")
+        self.green()
+
+    def test_javascript_regex_cannot_cross_unicode_line_terminator(self):
+        self.put("src/core.js", "const x=/display\u2028require('./w.js')/;")
+        self.put("src/w.js", "module.exports = 1;", "W")
+        self.rejects("LEXICAL_SYNTAX")
+
+    def test_javascript_unicode_line_continuation_keeps_exact_string_policy(self):
+        self.put("src/core.js", "const x='calcium-\\\u2028silicate-6';")
+        self.rejects("FORBIDDEN_STRING")
+
     def test_manifest_order_does_not_change_diagnostics_or_graph(self):
         self.put("src/k/core.c", '#include "../w/policy.h"\n')
         self.put("src/w/policy.h", '#include "../h/host.h"\n', "W")

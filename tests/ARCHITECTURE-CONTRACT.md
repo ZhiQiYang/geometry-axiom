@@ -96,6 +96,27 @@ forms, ambiguous slash contexts, unfinished nesting, import assertions, and
 unapproved loaders fail closed. JSX/TSX and C++ are inventoried but need a
 dedicated parser before ordinary ownership can pass.
 
+C directive whitespace includes form feed and vertical tab. Executable `%:`
+preprocessor digraphs, including digraph token pasting, are explicitly rejected;
+their appearances in comments or string literals are display text. A Python
+module has dependency edges to its own regular-package initializers even if
+only H imports that module or the module body contains no import. Simple,
+annotated, and named-expression assignments preserve imported alias provenance.
+
+JavaScript executable identifiers currently use the ASCII subset. Non-ASCII
+executable tokens are rejected by name rather than guessed to be punctuation;
+Unicode comments, literal strings, template display chunks, and regex content
+remain supported. U+2028 and U+2029 terminate line comments and contribute to
+reported line numbers. Known reflective function/prototype entry points,
+including direct and literal-computed `constructor` access, are rejected in
+K, W, and ordinary vendor sources. These checks do not prove arbitrary dynamic
+program semantics or replace the separately required runtime isolation gate.
+
+HTML `<base href>` is explicitly unsupported because it changes relative URL
+resolution, including URLs used by inline code. An exact script route does not
+exempt it. URL attributes use browser-style ASCII tab/CR/LF removal and C0/space
+trimming before `javascript:` detection, then scan the normalized script body.
+
 The policy's exact forbidden identifiers and strings still need responsibility
 review against the actual template APIs and specification keys. Common neutral
 geometry words must not be banned merely because a template also uses them.
