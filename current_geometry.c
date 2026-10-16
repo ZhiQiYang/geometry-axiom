@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
+#include "geometry-core/kernel/kernel_unity.inc"
+#include "geometry-app/native/legacy_json.inc"
 #ifdef _MSC_VER
 #include <intrin.h>
 #endif
@@ -37,14 +39,14 @@
  * 由 公理層.md 與 公理層-白話.md 同步;make_axiom_reader.py 已退役)。
  */
 
-typedef int64_t Coord;
+typedef GeoCoord Coord;
 
 /* 支援的定義座標／尺寸：±100 km，保留整數乘積與最多 32 頂點累加的餘量。
  * ID 仍使用完整 uint32 範圍。衍生世界座標可以較大，不能拿 ID 的解析器讀尺寸。 */
-#define COORD_LIMIT INT64_C(100000000)
+#define COORD_LIMIT GEO_COORD_LIMIT
 static bool coord_in_range(Coord value)
 {
-    return value >= -COORD_LIMIT && value <= COORD_LIMIT;
+    return geo_coord_in_range(value);
 }
 
 typedef uint32_t SurfaceId;
@@ -56,41 +58,19 @@ typedef uint32_t TimberId;
  * 基礎幾何型別
  * ============================================================ */
 
-typedef struct {
-    Coord x;
-    Coord y;
-    Coord z;
-} Point3;
+typedef GeoPoint3 Point3;
 
-typedef struct {
-    Coord x;
-    Coord y;
-    Coord z;
-} Vector3;
+typedef GeoVector3 Vector3;
 
-typedef struct {
-    Coord u;
-    Coord v;
-} SurfacePoint2;
+typedef GeoPoint2 SurfacePoint2;
 
-typedef struct {
-    SurfacePoint2 start;
-    SurfacePoint2 end;
-} SurfaceSegment2;
+typedef GeoSegment2 SurfaceSegment2;
 
-typedef struct {
-    Point3 start;
-    Point3 end;
-} Segment3;
+typedef GeoSegment3 Segment3;
 
-typedef struct {
-    Point3 vertices[4];
-} Quad3;
+typedef GeoQuad3 Quad3;
 
-typedef struct {
-    Point3 point;
-    Vector3 normal;
-} Plane3;
+typedef GeoPlane3 Plane3;
 
 /* ============================================================
  * 向量運算
@@ -98,30 +78,22 @@ typedef struct {
 
 static Coord vector_dot(Vector3 a, Vector3 b)
 {
-    return a.x * b.x + a.y * b.y + a.z * b.z;
+    return geo_vector_dot(a,b);
 }
 
 static Vector3 vector_cross(Vector3 a, Vector3 b)
 {
-    return (Vector3){
-        .x = a.y * b.z - a.z * b.y,
-        .y = a.z * b.x - a.x * b.z,
-        .z = a.x * b.y - a.y * b.x
-    };
+    return geo_vector_cross(a,b);
 }
 
 static Vector3 vector_negate(Vector3 v)
 {
-    return (Vector3){
-        .x = -v.x,
-        .y = -v.y,
-        .z = -v.z
-    };
+    return geo_vector_negate(v);
 }
 
 static bool vector_equal(Vector3 a, Vector3 b)
 {
-    return a.x == b.x && a.y == b.y && a.z == b.z;
+    return geo_vector_equal(a,b);
 }
 
 /* ============================================================
@@ -144,21 +116,11 @@ static bool vector_equal(Vector3 a, Vector3 b)
  *
  *   room = origin + u*axis_u + v*axis_v + w*normal
  */
-typedef struct {
-    Point3 origin;
-    Vector3 axis_u;
-    Vector3 axis_v;
-    Vector3 normal;
-} SurfaceFrame;
+typedef GeoFrame SurfaceFrame;
 /* 公理 D2：承載面框架——原點 + 三個單位整數軸，room = origin + u·U + v·V + w·N。 */
 
 /* 自帶矩形範圍（承載面未掛邊界面時的退路）。 */
-typedef struct {
-    Coord min_u;
-    Coord min_v;
-    Coord max_u;
-    Coord max_v;
-} SurfaceRegion2;
+typedef GeoRect2 SurfaceRegion2;
 
 /*
  * 第一版要求 U、V、N 都是長度 1 的正交整數軸，
@@ -172,18 +134,7 @@ typedef struct {
 /* 公理 I1：承載面 frame 合法——U、V 單位正交且 U×V=N。 */
 static bool surface_frame_is_valid(const SurfaceFrame *frame)
 {
-    if (frame == NULL || !coord_in_range(frame->origin.x) ||
-        !coord_in_range(frame->origin.y) || !coord_in_range(frame->origin.z)) {
-        return false;
-    }
-
-    return vector_dot(frame->axis_u, frame->axis_u) == 1 &&
-           vector_dot(frame->axis_v, frame->axis_v) == 1 &&
-           vector_dot(frame->axis_u, frame->axis_v) == 0 &&
-           vector_equal(
-               vector_cross(frame->axis_u, frame->axis_v),
-               frame->normal
-           );
+    return geo_frame_is_valid(frame);
 }
 
 /* ============================================================
@@ -196,8 +147,8 @@ static bool surface_frame_is_valid(const SurfaceFrame *frame)
  *   - fixity[i] 是邊 i 的固定/自由語意，不寫預設全 FIXED。
  * ============================================================ */
 
-#define POLY_MAX_VERTICES 32
-#define POLY_MAX_HOLES     8
+#define POLY_MAX_VERTICES GEO_LOOP_MAX_VERTICES
+#define POLY_MAX_HOLES GEO_REGION_MAX_HOLES
 /* A line may gain one interval per hole interval; this conservative
  * bound covers the outline and every allowed hole without truncation. */
 #define DP_COMPONENT_MAX 8
@@ -220,6 +171,10 @@ typedef struct {
     EdgeFixity fixity[POLY_MAX_VERTICES];
 } PolygonLoop2;
 
+/* Geometry views deliberately omit edge fixity and application kind. */
+static GeoLoop2View poly_geometry_view(const PolygonLoop2 *loop)
+{return loop?(GeoLoop2View){loop->v,loop->count}:(GeoLoop2View){NULL,0};}
+
 static Coord coord_min(Coord a, Coord b) { return a < b ? a : b; }
 static Coord coord_max(Coord a, Coord b) { return a > b ? a : b; }
 
@@ -231,110 +186,15 @@ static Coord coord_max(Coord a, Coord b) { return a > b ? a : b; }
  */
 static bool poly_loop_is_valid(const PolygonLoop2 *loop)
 {
-    if (loop == NULL || loop->count < 4 ||
-        loop->count > POLY_MAX_VERTICES) {
-        return false;
-    }
-
-    /* 邊的軸平行與非零長檢查。 */
-    for (size_t i = 0; i < loop->count; ++i) {
-        SurfacePoint2 a = loop->v[i];
-        SurfacePoint2 b = loop->v[(i + 1) % loop->count];
-
-        if (!coord_in_range(a.u) || !coord_in_range(a.v)) return false;
-
-        bool axis_u = a.v == b.v;   /* 沿 U 方向的邊：v 座標不變 */
-        bool axis_v = a.u == b.u;
-
-        if ((!axis_u && !axis_v) || (a.u == b.u && a.v == b.v)) {
-            return false;
-        }
-    }
-
-    /* 非相鄰邊不得相交或共線重疊。 */
-    for (size_t i = 0; i < loop->count; ++i) {
-        SurfacePoint2 a1 = loop->v[i];
-        SurfacePoint2 a2 = loop->v[(i + 1) % loop->count];
-
-        for (size_t j = i + 2; j < loop->count; ++j) {
-            if (i == 0 && j + 1 == loop->count) {
-                continue;   /* 首邊與末邊相鄰，共享頂點合法 */
-            }
-
-            SurfacePoint2 b1 = loop->v[j];
-            SurfacePoint2 b2 = loop->v[(j + 1) % loop->count];
-
-            /* 軸平行線段的相交/共線重疊判定。 */
-            if (a1.u == a2.u && b1.u == b2.u) {
-                /* 兩條直立邊。 */
-                if (a1.u != b1.u) {
-                    continue;
-                }
-                if (coord_max(coord_min(a1.v, a2.v), coord_min(b1.v, b2.v)) <=
-                    coord_min(coord_max(a1.v, a2.v), coord_max(b1.v, b2.v))) {
-                    return false;   /* 共線且區間重疊 */
-                }
-            } else if (a1.v == a2.v && b1.v == b2.v) {
-                /* 兩條水平邊。 */
-                if (a1.v != b1.v) {
-                    continue;
-                }
-                if (coord_max(coord_min(a1.u, a2.u), coord_min(b1.u, b2.u)) <=
-                    coord_min(coord_max(a1.u, a2.u), coord_max(b1.u, b2.u))) {
-                    return false;
-                }
-            } else {
-                /* 一橫一直：交點須嚴格同時落在兩邊內部才算相交；
-                 * 端點相碰在非相鄰邊上也不允許（會形成接觸自交）。 */
-                SurfacePoint2 h1, h2, s1, s2;
-                if (a1.v == a2.v) { h1 = a1; h2 = a2; s1 = b1; s2 = b2; }
-                else              { h1 = b1; h2 = b2; s1 = a1; s2 = a2; }
-
-                Coord hu_min = coord_min(h1.u, h2.u);
-                Coord hu_max = coord_max(h1.u, h2.u);
-                Coord sv_min = coord_min(s1.v, s2.v);
-                Coord sv_max = coord_max(s1.v, s2.v);
-
-                if (s1.u >= hu_min && s1.u <= hu_max &&
-                    h1.v >= sv_min && h1.v <= sv_max) {
-                    return false;
-                }
-            }
-        }
-    }
-
-    /* 有向面積非零（shoelace）；順/逆時針不限，但必須有面積。 */
-    Coord area2 = 0;
-    for (size_t i = 0; i < loop->count; ++i) {
-        SurfacePoint2 a = loop->v[i];
-        SurfacePoint2 b = loop->v[(i + 1) % loop->count];
-        area2 += a.u * b.v - b.u * a.v;
-    }
-
-    return area2 != 0;
+    GeoLoop2View view=poly_geometry_view(loop);
+    return loop&&geo_loop_is_valid(&view);
 }
 
 /* 點是否落在環的邊上。 */
 static bool poly_point_on_edge(const PolygonLoop2 *loop, SurfacePoint2 p)
 {
-    for (size_t i = 0; i < loop->count; ++i) {
-        SurfacePoint2 a = loop->v[i];
-        SurfacePoint2 b = loop->v[(i + 1) % loop->count];
-
-        if (a.u == b.u) {
-            if (p.u == a.u &&
-                p.v >= coord_min(a.v, b.v) && p.v <= coord_max(a.v, b.v)) {
-                return true;
-            }
-        } else {
-            if (p.v == a.v &&
-                p.u >= coord_min(a.u, b.u) && p.u <= coord_max(a.u, b.u)) {
-                return true;
-            }
-        }
-    }
-
-    return false;
+    GeoLoop2View view=poly_geometry_view(loop);
+    return loop&&geo_loop_point_on_edge(&view,p);
 }
 
 /*
@@ -344,33 +204,8 @@ static bool poly_point_on_edge(const PolygonLoop2 *loop, SurfacePoint2 p)
  */
 static bool poly_contains_point(const PolygonLoop2 *loop, SurfacePoint2 p)
 {
-    if (loop == NULL) {
-        return false;
-    }
-
-    if (poly_point_on_edge(loop, p)) {
-        return true;
-    }
-
-    int crossings = 0;
-
-    for (size_t i = 0; i < loop->count; ++i) {
-        SurfacePoint2 a = loop->v[i];
-        SurfacePoint2 b = loop->v[(i + 1) % loop->count];
-
-        if (a.u != b.u) {
-            continue;   /* 水平邊不與水平射線交叉 */
-        }
-
-        Coord v_min = coord_min(a.v, b.v);
-        Coord v_max = coord_max(a.v, b.v);
-
-        if (p.v >= v_min && p.v < v_max && p.u < a.u) {
-            ++crossings;
-        }
-    }
-
-    return crossings % 2 == 1;
+    GeoLoop2View view=poly_geometry_view(loop);
+    return loop&&geo_loop_contains_point(&view,p);
 }
 
 /*
@@ -382,22 +217,7 @@ static bool segment2_crosses_rect_interior(
     Coord min_u, Coord min_v, Coord max_u, Coord max_v
 )
 {
-    if (a.u == b.u) {
-        /* 直立邊：u 須嚴格在 (min_u,max_u) 內，且 v 區間與 (min_v,max_v) 有正長度交集。 */
-        if (a.u <= min_u || a.u >= max_u) {
-            return false;
-        }
-        Coord lo = coord_max(coord_min(a.v, b.v), min_v);
-        Coord hi = coord_min(coord_max(a.v, b.v), max_v);
-        return lo < hi;
-    }
-
-    if (a.v <= min_v || a.v >= max_v) {
-        return false;
-    }
-    Coord lo = coord_max(coord_min(a.u, b.u), min_u);
-    Coord hi = coord_min(coord_max(a.u, b.u), max_u);
-    return lo < hi;
+    return geo_segment_crosses_rect_interior(a,b,min_u,min_v,max_u,max_v);
 }
 
 /*
@@ -408,31 +228,7 @@ static bool segment2_crosses_rect_interior(
  * 中心在環邊上時，那條邊必穿入矩形內部（中心嚴格在矩形內部），
  * 另一道檢查（segment2_crosses_rect_interior）本來就會拒絕。
  */
-static bool poly_rect_center_inside(
-    const PolygonLoop2 *loop,
-    Coord min_u, Coord min_v, Coord max_u, Coord max_v
-)
-{
-    Coord cu2 = min_u + max_u;   /* 2 × 中心 u */
-    Coord cv2 = min_v + max_v;   /* 2 × 中心 v */
-    int crossings = 0;
 
-    for (size_t i = 0; i < loop->count; ++i) {
-        SurfacePoint2 a = loop->v[i];
-        SurfacePoint2 b = loop->v[(i + 1) % loop->count];
-
-        if (a.u == b.u) {   /* 只有直立邊會與水平射線交叉 */
-            Coord v_lo2 = 2 * coord_min(a.v, b.v);
-            Coord v_hi2 = 2 * coord_max(a.v, b.v);
-
-            if (cv2 >= v_lo2 && cv2 < v_hi2 && cu2 < 2 * a.u) {
-                ++crossings;
-            }
-        }
-    }
-
-    return (crossings & 1) != 0;
-}
 
 /*
  * 軸平行矩形 ⊆ 環（含邊界）。GEO-257：
@@ -454,36 +250,8 @@ static bool poly_contains_rect(
     Coord min_u, Coord min_v, Coord max_u, Coord max_v
 )
 {
-    if (loop == NULL || min_u >= max_u || min_v >= max_v) {
-        return false;
-    }
-
-    SurfacePoint2 corners[4] = {
-        { min_u, min_v }, { max_u, min_v },
-        { max_u, max_v }, { min_u, max_v }
-    };
-
-    for (size_t i = 0; i < 4; ++i) {
-        if (!poly_contains_point(loop, corners[i])) {
-            return false;
-        }
-    }
-
-    /* 開內部要嘛全在環內、要嘛全在環外；中心在外 → 整個矩形在環外。
-     * 與下面的「環邊穿入」檢查互相獨立，順序不影響結果。 */
-    if (!poly_rect_center_inside(loop, min_u, min_v, max_u, max_v)) {
-        return false;
-    }
-
-    for (size_t i = 0; i < loop->count; ++i) {
-        if (segment2_crosses_rect_interior(
-                loop->v[i], loop->v[(i + 1) % loop->count],
-                min_u, min_v, max_u, max_v)) {
-            return false;
-        }
-    }
-
-    return true;
+    GeoLoop2View view=poly_geometry_view(loop);
+    return loop&&geo_loop_contains_rect(&view,min_u,min_v,max_u,max_v);
 }
 
 /* 環的軸向外接矩形。 */
@@ -493,20 +261,8 @@ static void poly_bbox(
     Coord *out_max_u, Coord *out_max_v
 )
 {
-    Coord min_u = loop->v[0].u, max_u = loop->v[0].u;
-    Coord min_v = loop->v[0].v, max_v = loop->v[0].v;
-
-    for (size_t i = 1; i < loop->count; ++i) {
-        min_u = coord_min(min_u, loop->v[i].u);
-        max_u = coord_max(max_u, loop->v[i].u);
-        min_v = coord_min(min_v, loop->v[i].v);
-        max_v = coord_max(max_v, loop->v[i].v);
-    }
-
-    *out_min_u = min_u;
-    *out_min_v = min_v;
-    *out_max_u = max_u;
-    *out_max_v = max_v;
+    GeoLoop2View view=poly_geometry_view(loop);
+    geo_loop_bbox(&view,out_min_u,out_min_v,out_max_u,out_max_v);
 }
 
 /*
@@ -524,75 +280,8 @@ static size_t poly_clip_line(
     size_t out_cap
 )
 {
-    Coord crossings[POLY_MAX_VERTICES];
-    size_t crossing_count = 0;
-
-    for (size_t i = 0; i < loop->count; ++i) {
-        SurfacePoint2 a = loop->v[i];
-        SurfacePoint2 b = loop->v[(i + 1) % loop->count];
-
-        if (along_u) {
-            /* 直線 v=offset 只與直立邊（a.u == b.u）相交；
-             * 水平邊（a.v == b.v）與它平行，跳過。 */
-            if (a.v == b.v) {
-                continue;
-            }
-            Coord v_min = coord_min(a.v, b.v);
-            Coord v_max = coord_max(a.v, b.v);
-            if (offset >= v_min && offset < v_max) {
-                crossings[crossing_count++] = a.u;
-            }
-        } else {
-            /* 直線 u=offset 只與水平邊（a.v == b.v）相交；
-             * 直立邊與它平行，跳過。 */
-            if (a.u == b.u) {
-                continue;
-            }
-            Coord u_min = coord_min(a.u, b.u);
-            Coord u_max = coord_max(a.u, b.u);
-            if (offset >= u_min && offset < u_max) {
-                crossings[crossing_count++] = a.v;
-            }
-        }
-    }
-
-    /* 插入排序交點；頂點處的相鄰兩邊只會貢獻一個交點（半開區間），
-     * 但水平邊端點與直立邊可能給出重複交點——去重。 */
-    for (size_t i = 1; i < crossing_count; ++i) {
-        Coord key = crossings[i];
-        size_t j = i;
-        while (j > 0 && crossings[j - 1] > key) {
-            crossings[j] = crossings[j - 1];
-            --j;
-        }
-        crossings[j] = key;
-    }
-
-    size_t unique = 0;
-    for (size_t i = 0; i < crossing_count; ++i) {
-        if (unique == 0 || crossings[i] != crossings[unique - 1]) {
-            crossings[unique++] = crossings[i];
-        }
-    }
-    crossing_count = unique;
-
-    /* 奇偶配對：[0,1]、[2,3]… 各成一條內部線段。 */
-    size_t seg_count = 0;
-    for (size_t i = 0; i + 1 < crossing_count && seg_count < out_cap; i += 2) {
-        Coord lo = crossings[i];
-        Coord hi = crossings[i + 1];
-
-        if (along_u) {
-            out[seg_count].start = (SurfacePoint2){ lo, offset };
-            out[seg_count].end   = (SurfacePoint2){ hi, offset };
-        } else {
-            out[seg_count].start = (SurfacePoint2){ offset, lo };
-            out[seg_count].end   = (SurfacePoint2){ offset, hi };
-        }
-        ++seg_count;
-    }
-
-    return seg_count;
+    GeoLoop2View view=poly_geometry_view(loop);size_t count=0;
+    return geo_loop_clip_line(&view,along_u,offset,out,out_cap,&count)==GEO_GEOMETRY_OK?count:0;
 }
 
 /* ============================================================
@@ -611,85 +300,18 @@ typedef struct {
 } SpaceBoundarySurface;
 /* 公理 D3：空間邊界面——純局部 2D，不含世界位置。 */
 
+static GeoRegionView boundary_geometry_view(const SpaceBoundarySurface *boundary,GeoLoop2View holes[POLY_MAX_HOLES])
+{
+    for(size_t h=0;h<boundary->hole_count&&h<POLY_MAX_HOLES;++h)holes[h]=poly_geometry_view(&boundary->holes[h]);
+    return (GeoRegionView){poly_geometry_view(&boundary->outline),holes,boundary->hole_count};
+}
+
 /* 外輪廓合法 + 每個孔合法、嚴格在外輪廓內、孔之間互不重疊。 */
 static bool boundary_is_valid(const SpaceBoundarySurface *b)
 {
-    if (b == NULL || !poly_loop_is_valid(&b->outline)) {
-        return false;
-    }
-
-    for (size_t h = 0; h < b->hole_count; ++h) {
-        const PolygonLoop2 *hole = &b->holes[h];
-
-        if (!poly_loop_is_valid(hole)) {
-            return false;
-        }
-
-        /* 孔的每個頂點必須在外輪廓內（不含外輪廓邊上），
-         * 且孔的每條邊不得穿外輪廓。 */
-        for (size_t i = 0; i < hole->count; ++i) {
-            SurfacePoint2 p = hole->v[i];
-
-            if (poly_point_on_edge(&b->outline, p) ||
-                !poly_contains_point(&b->outline, p)) {
-                return false;
-            }
-        }
-
-        for (size_t i = 0; i < hole->count; ++i) {
-            SurfacePoint2 a = hole->v[i];
-            SurfacePoint2 c = hole->v[(i + 1) % hole->count];
-
-            for (size_t j = 0; j < b->outline.count; ++j) {
-                SurfacePoint2 d = b->outline.v[j];
-                SurfacePoint2 e = b->outline.v[(j + 1) % b->outline.count];
-
-                /* 孔邊與外輪廓邊不得相交（含共線）。 */
-                if (a.u == c.u && d.u == e.u) {
-                    if (a.u == d.u &&
-                        coord_max(coord_min(a.v, c.v), coord_min(d.v, e.v)) <
-                        coord_min(coord_max(a.v, c.v), coord_max(d.v, e.v))) {
-                        return false;
-                    }
-                } else if (a.v == c.v && d.v == e.v) {
-                    if (a.v == d.v &&
-                        coord_max(coord_min(a.u, c.u), coord_min(d.u, e.u)) <
-                        coord_min(coord_max(a.u, c.u), coord_max(d.u, e.u))) {
-                        return false;
-                    }
-                } else {
-                    SurfacePoint2 h1, h2, s1, s2;
-                    if (a.v == c.v) { h1 = a; h2 = c; s1 = d; s2 = e; }
-                    else            { h1 = d; h2 = e; s1 = a; s2 = c; }
-
-                    if (s1.u > coord_min(h1.u, h2.u) &&
-                        s1.u < coord_max(h1.u, h2.u) &&
-                        h1.v > coord_min(s1.v, s2.v) &&
-                        h1.v < coord_max(s1.v, s2.v)) {
-                        return false;
-                    }
-                }
-            }
-        }
-
-        /* 孔互不重疊：任一孔頂點落在別孔內，或邊互相穿越，即拒絕。 */
-        for (size_t k = h + 1; k < b->hole_count; ++k) {
-            const PolygonLoop2 *other = &b->holes[k];
-
-            for (size_t i = 0; i < hole->count; ++i) {
-                if (poly_contains_point(other, hole->v[i])) {
-                    return false;
-                }
-            }
-            for (size_t i = 0; i < other->count; ++i) {
-                if (poly_contains_point(hole, other->v[i])) {
-                    return false;
-                }
-            }
-        }
-    }
-
-    return true;
+    if(!b||b->hole_count>POLY_MAX_HOLES)return false;
+    GeoLoop2View holes[POLY_MAX_HOLES];GeoRegionView view=boundary_geometry_view(b,holes);
+    return geo_region_is_valid(&view);
 }
 
 /* 點是否在邊界面的有效區域：外輪廓內（含邊上）且不在任何孔內（孔邊上算在外）。 */
@@ -698,20 +320,9 @@ static bool boundary_contains_point(
     SurfacePoint2 p
 )
 {
-    if (b == NULL || !poly_contains_point(&b->outline, p)) {
-        return false;
-    }
-
-    for (size_t h = 0; h < b->hole_count; ++h) {
-        const PolygonLoop2 *hole = &b->holes[h];
-
-        if (poly_contains_point(hole, p) &&
-            !poly_point_on_edge(hole, p)) {
-            return false;
-        }
-    }
-
-    return true;
+    if(!b||b->hole_count>POLY_MAX_HOLES)return false;
+    GeoLoop2View holes[POLY_MAX_HOLES];GeoRegionView view=boundary_geometry_view(b,holes);
+    return geo_region_contains_point(&view,p);
 }
 
 /*
@@ -723,62 +334,9 @@ static bool boundary_contains_rect(
     Coord min_u, Coord min_v, Coord max_u, Coord max_v
 )
 {
-    if (b == NULL ||
-        !poly_contains_rect(&b->outline, min_u, min_v, max_u, max_v)) {
-        return false;
-    }
-
-    for (size_t h = 0; h < b->hole_count; ++h) {
-        const PolygonLoop2 *hole = &b->holes[h];
-        Coord h_min_u, h_min_v, h_max_u, h_max_v;
-        poly_bbox(hole, &h_min_u, &h_min_v, &h_max_u, &h_max_v);
-
-        /* 矩形與孔 bbox 無交集 → 快退。 */
-        if (h_max_u <= min_u || h_min_u >= max_u ||
-            h_max_v <= min_v || h_min_v >= max_v) {
-            continue;
-        }
-
-        /* 任一孔頂點嚴格在矩形內 → 相交。 */
-        for (size_t i = 0; i < hole->count; ++i) {
-            SurfacePoint2 p = hole->v[i];
-            if (p.u > min_u && p.u < max_u &&
-                p.v > min_v && p.v < max_v) {
-                return false;
-            }
-        }
-
-        /* 任一孔邊穿過矩形內部 → 相交。 */
-        for (size_t i = 0; i < hole->count; ++i) {
-            if (segment2_crosses_rect_interior(
-                    hole->v[i], hole->v[(i + 1) % hole->count],
-                    min_u, min_v, max_u, max_v)) {
-                return false;
-            }
-        }
-
-        /* 孔整個罩住矩形（矩形四角都在孔內）。 */
-        if (poly_contains_point(hole, (SurfacePoint2){ min_u + 1, min_v + 1 }) &&
-            !poly_point_on_edge(hole, (SurfacePoint2){ min_u + 1, min_v + 1 })) {
-            /* min+1 只是代表點：四角嚴格在孔內才算罩住。
-             * 用四角逐一判定較穩。 */
-            SurfacePoint2 corners[4] = {
-                { min_u, min_v }, { max_u, min_v },
-                { max_u, max_v }, { min_u, max_v }
-            };
-            size_t inside = 0;
-            for (size_t i = 0; i < 4; ++i) {
-                if (poly_contains_point(hole, corners[i])) {
-                    ++inside;
-                }
-            }
-            if (inside == 4) {
-                return false;
-            }
-        }
-    }
-
-    return true;
+    if(!b||b->hole_count>POLY_MAX_HOLES)return false;
+    GeoLoop2View holes[POLY_MAX_HOLES];GeoRegionView view=boundary_geometry_view(b,holes);
+    return geo_region_contains_rect(&view,min_u,min_v,max_u,max_v);
 }
 
 /* ============================================================
@@ -834,22 +392,7 @@ static Point3 surface_point_to_room(
     Coord w
 )
 {
-    return (Point3){
-        .x = surface->frame.origin.x +
-             u * surface->frame.axis_u.x +
-             v * surface->frame.axis_v.x +
-             w * surface->frame.normal.x,
-
-        .y = surface->frame.origin.y +
-             u * surface->frame.axis_u.y +
-             v * surface->frame.axis_v.y +
-             w * surface->frame.normal.y,
-
-        .z = surface->frame.origin.z +
-             u * surface->frame.axis_u.z +
-             v * surface->frame.axis_v.z +
-             w * surface->frame.normal.z
-    };
+    return geo_frame_point(&surface->frame,u,v,w);
 }
 
 /*
@@ -949,21 +492,9 @@ static bool polygon_loop_bounds(
     SurfaceRegion2 *out
 )
 {
-    if (loop == NULL || out == NULL || loop->count == 0) {
-        return false;
-    }
-
-    Coord min_u = loop->v[0].u, max_u = loop->v[0].u;
-    Coord min_v = loop->v[0].v, max_v = loop->v[0].v;
-
-    for (size_t i = 1; i < loop->count; ++i) {
-        min_u = coord_min(min_u, loop->v[i].u);
-        max_u = coord_max(max_u, loop->v[i].u);
-        min_v = coord_min(min_v, loop->v[i].v);
-        max_v = coord_max(max_v, loop->v[i].v);
-    }
-
-    *out = (SurfaceRegion2){ min_u, min_v, max_u, max_v };
+    if(!loop||!out||!loop->count)return false;
+    GeoLoop2View view=poly_geometry_view(loop);
+    geo_loop_bbox(&view,&out->min_u,&out->min_v,&out->max_u,&out->max_v);
     return true;
 }
 
@@ -1456,16 +987,8 @@ typedef struct {
 #include "geometry-core/panel_layout_math.h"
 #include "geometry-core/grid_lattice.inc"
 
-static bool grid_coord_list_is_valid(const Coord coords[], size_t count)
-{
-    for (size_t i = 0; i < count; ++i) {
-        if (i > 0 && coords[i] <= coords[i - 1]) {
-            return false;   /* 必須嚴格遞增 */
-        }
-    }
-
-    return true;
-}
+static bool grid_coord_list_is_valid(const Coord coords[],size_t count)
+{ return geo_coordinates_increasing(coords,count); }
 
 /*
  * 唯一的展開入口（D9：只存定義，線在用時推出）。
@@ -1523,90 +1046,24 @@ static bool grid_axis_lines(
 
     const Coord lo = axis == 0 ? bounds.min_u : bounds.min_v;
     const Coord hi = axis == 0 ? bounds.max_u : bounds.max_v;
-    size_t n = 0;
-
-    if (def->source == GRID_SRC_EXPLICIT) {
-        if (def->count > GRID_MAX_LINES) {
-            return false;
-        }
-
-        for (size_t k = 0; k < def->count; ++k) {
-            out[n++] = def->coords[k];
-        }
-    } else if (def->source == GRID_SRC_SERIES) {
-        /* D10：第 k 條 = start + k·step；step > 0 本身就保證嚴格遞增。 */
-        if (def->series_count == 0 ||
-            def->series_count > GRID_MAX_LINES ||
-            def->step <= 0) {
-            return false;
-        }
-
-        for (size_t k = 0; k < def->series_count; ++k) {
-            out[n++] = def->start + (Coord)k * def->step;
-        }
-    } else if (def->source == GRID_SRC_PANEL) {
-        /*
-         * D10a：週期 T = panel + gap，第 k 條縫中心線
-         *   c_k = a + k·T + panel + gap/2，
-         * 產生條件 a+(k+1)·T < hi——整條縫落在範圍內，且其後仍有非空的面材本體。
-         * 不滿足就停：末端是裁切片，合法，不因「除不盡」而拒絕。
-         */
-        const Coord T = panel_layout_pitch(def->panel,def->gap);
-
-        if (def->panel <= 0 || def->gap < 0 ||
-            def->anchor < lo || def->anchor >= hi) {
-            if (err != NULL) {
-                snprintf(err, err_cap,
-                         "面材參數不合法（面材寬 > 0、縫寬非負、"
-                         "起算點須落在承載面範圍內）");
-            }
-            return false;
-        }
-
-        for (size_t k = 0; ; ++k) {
-            const Coord gap_hi = def->anchor + (Coord)(k + 1) * T;
-
-            if (gap_hi >= hi) {
-                break;
-            }
-
-            if (n == GRID_MAX_LINES) {
-                if (err != NULL) {
-                    snprintf(err, err_cap,
-                             "面材排法推導出的格線超過單軸上限");
-                }
-                return false;
-            }
-
-            out[n++] = panel_layout_center(def->anchor,def->panel,def->gap,(int64_t)k);
-        }
-    } else {
-        if (err != NULL) {
-            snprintf(err, err_cap, "這一軸的格線來源尚未支援");
-        }
-        return false;
+    GeoFiniteSequence sequence={.kind=GEO_SEQUENCE_NONE,.coordinates=def->coords,.count=def->count,
+        .start=def->start,.step=def->step,.body=def->panel,.gap=def->gap,.anchor=def->anchor};
+    switch(def->source){
+    case GRID_SRC_EXPLICIT:sequence.kind=GEO_SEQUENCE_EXPLICIT;break;
+    case GRID_SRC_SERIES:sequence.kind=GEO_SEQUENCE_SERIES;sequence.count=def->series_count;break;
+    case GRID_SRC_PANEL:sequence.kind=GEO_SEQUENCE_BODY_GAP;break;
+    default:if(err)snprintf(err,err_cap,"這一軸的格線來源尚未支援");return false;
     }
-
-    /* I10：嚴格遞增。 */
-    if (!grid_coord_list_is_valid(out, n)) {
-        if (err != NULL) {
-            snprintf(err, err_cap, "座標必須嚴格遞增");
-        }
-        return false;
+    GeoGridStatus status=geo_finite_sequence(&sequence,lo,hi,out,GRID_MAX_LINES,out_count);
+    if(status==GEO_GRID_OK)return true;
+    if(err){const char *message=NULL;
+        if(status==GEO_GRID_BODY_GAP_INVALID)message="面材參數不合法（面材寬 > 0、縫寬非負、起算點須落在承載面範圍內）";
+        else if(status==GEO_GRID_CAPACITY)message="面材排法推導出的格線超過單軸上限";
+        else if(status==GEO_GRID_ORDER)message="座標必須嚴格遞增";
+        else if(status==GEO_GRID_BOUNDS)message="座標要落在承載面外接範圍內";
+        if(message)snprintf(err,err_cap,"%s",message);
     }
-
-    /* I10：每條都落在該軸外接區間內——與 guide offset 同一條規則。 */
-    for (size_t k = 0; k < n; ++k) {
-        if (out[k] < lo || out[k] > hi) {
-            if (err != NULL) {
-                snprintf(err, err_cap, "座標要落在承載面外接範圍內");
-            }
-            return false;
-        }
-    }
-
-    *out_count = n;
-    return true;
+    return false;
 }
 
 static bool grid_is_valid(
@@ -1707,11 +1164,6 @@ static const struct {
     [TIMBER_FACE_END]   = { 0, 1 }
 };
 
-/* 面內四角的繞行順序：沿 u、w 兩軸的 0/1 係數。 */
-static const unsigned char TIMBER_FACE_WALK[2][4][2] = {
-    { {0,0}, {0,1}, {1,1}, {1,0} },   /* s = 0：反向 */
-    { {0,0}, {1,0}, {1,1}, {0,1} }    /* s = 1：正向 */
-};
 
 /* 每個面的全名（文字輸出）與短名（圖上標籤）。 */
 static const struct {
@@ -1864,22 +1316,7 @@ static Vector3 surface_direction_vector(
     SurfaceDirection direction
 )
 {
-    switch (direction) {
-        case SURFACE_DIRECTION_POS_U:
-            return surface->frame.axis_u;
-
-        case SURFACE_DIRECTION_NEG_U:
-            return vector_negate(surface->frame.axis_u);
-
-        case SURFACE_DIRECTION_POS_V:
-            return surface->frame.axis_v;
-
-        case SURFACE_DIRECTION_NEG_V:
-            return vector_negate(surface->frame.axis_v);
-
-        default:
-            return (Vector3){ 0, 0, 0 };
-    }
+    return geo_frame_direction(&surface->frame,(GeoDirection2)direction);
 }
 
 /*
@@ -1945,20 +1382,9 @@ static bool timber_place_a0_on_surface(
      */
     Vector3 axis_a = vector_cross(axis_b, axis_length);
 
-    SurfacePoint2 far_corner = {
-        .u = anchor.u +
-             timber->length * vector_dot(axis_length, surface->frame.axis_u) +
-             timber->size_a * vector_dot(axis_a, surface->frame.axis_u),
-
-        .v = anchor.v +
-             timber->length * vector_dot(axis_length, surface->frame.axis_v) +
-             timber->size_a * vector_dot(axis_a, surface->frame.axis_v)
-    };
-
-    Coord rect_min_u = coord_min(anchor.u, far_corner.u);
-    Coord rect_max_u = coord_max(anchor.u, far_corner.u);
-    Coord rect_min_v = coord_min(anchor.v, far_corner.v);
-    Coord rect_max_v = coord_max(anchor.v, far_corner.v);
+    SurfaceRegion2 footprint_geometry=geo_rectangle_footprint(&surface->frame,anchor,axis_length,axis_a,timber->length,timber->size_a);
+    Coord rect_min_u=footprint_geometry.min_u,rect_max_u=footprint_geometry.max_u;
+    Coord rect_min_v=footprint_geometry.min_v,rect_max_v=footprint_geometry.max_v;
 
     /* 整個 A0 矩形必須在有效區域內——凹角與孔洞下
      * 「兩角點在內」不再是充分條件。 */
@@ -2048,22 +1474,8 @@ static Point3 timber_local_to_room(
     Coord b_coordinate
 )
 {
-    return (Point3){
-        .x = timber->origin.x +
-             length_coordinate * timber->axis_length.x +
-             a_coordinate * timber->axis_a.x +
-             b_coordinate * timber->axis_b.x,
-
-        .y = timber->origin.y +
-             length_coordinate * timber->axis_length.y +
-             a_coordinate * timber->axis_a.y +
-             b_coordinate * timber->axis_b.y,
-
-        .z = timber->origin.z +
-             length_coordinate * timber->axis_length.z +
-             a_coordinate * timber->axis_a.z +
-             b_coordinate * timber->axis_b.z
-    };
+    GeoFrame frame={timber->origin,timber->axis_length,timber->axis_a,timber->axis_b};
+    return geo_frame_point(&frame,length_coordinate,a_coordinate,b_coordinate);
 }
 
 /* 從完整角材推導指定面的四個房間座標頂點。 */
@@ -2073,31 +1485,9 @@ static bool timber_get_face_room(
     Quad3 *out_face
 )
 {
-    if (timber == NULL || out_face == NULL ||
-        !timber->placed || !timber_face_id_is_valid(face)) {
-        return false;
-    }
-
-    const Coord dims[3] = { timber->length, timber->size_a, timber->size_b };
-    const int k = TIMBER_FACE_SPEC[face].axis;
-    const int s = TIMBER_FACE_SPEC[face].side;
-    const int u = (k + 1) % 3;
-    const int w = (k + 2) % 3;
-
-    for (size_t i = 0; i < 4; ++i) {
-        Coord local[3] = { 0, 0, 0 };
-        local[k] = s ? dims[k] : 0;
-        local[u] = TIMBER_FACE_WALK[s][i][0] ? dims[u] : 0;
-        local[w] = TIMBER_FACE_WALK[s][i][1] ? dims[w] : 0;
-        out_face->vertices[i] = timber_local_to_room(
-            timber,
-            local[0],
-            local[1],
-            local[2]
-        );
-    }
-
-    return true;
+    if(!timber||!out_face||!timber->placed||!timber_face_id_is_valid(face))return false;
+    GeoBox3 box={{timber->origin,timber->axis_length,timber->axis_a,timber->axis_b},{timber->length,timber->size_a,timber->size_b}};
+    return geo_box_face(&box,TIMBER_FACE_SPEC[face].axis,TIMBER_FACE_SPEC[face].side,out_face);
 }
 
 /* ============================================================
@@ -7020,21 +6410,7 @@ static bool a0_rect_uv(
 
     Vector3 axis_a = vector_cross(axis_b, axis_length);
 
-    SurfacePoint2 far_pt = {
-        .u = anchor.u +
-             length * vector_dot(axis_length, surface->frame.axis_u) +
-             size_a * vector_dot(axis_a, surface->frame.axis_u),
-        .v = anchor.v +
-             length * vector_dot(axis_length, surface->frame.axis_v) +
-             size_a * vector_dot(axis_a, surface->frame.axis_v)
-    };
-
-    *out = (SurfaceRegion2){
-        coord_min(anchor.u, far_pt.u),
-        coord_min(anchor.v, far_pt.v),
-        coord_max(anchor.u, far_pt.u),
-        coord_max(anchor.v, far_pt.v)
-    };
+    *out=geo_rectangle_footprint(&surface->frame,anchor,axis_length,axis_a,length,size_a);
     return true;
 }
 
@@ -7063,8 +6439,8 @@ static bool uv_rects_overlap(
     Coord b_min_u, Coord b_min_v, Coord b_max_u, Coord b_max_v
 )
 {
-    return coord_min(a_max_u, b_max_u) > coord_max(a_min_u, b_min_u) &&
-           coord_min(a_max_v, b_max_v) > coord_max(a_min_v, b_min_v);
+    GeoRect2 a={a_min_u,a_min_v,a_max_u,a_max_v},b={b_min_u,b_min_v,b_max_u,b_max_v};
+    return geo_rect_overlap_positive(&a,&b);
 }
 
 /* 候選矩形是否與同承載面上任何已放角材正面積重疊。 */
@@ -7905,10 +7281,7 @@ typedef enum {
 #define SPAN_CUT_MAX \
     (DP_COMPONENT_MAX * POLY_MAX_VERTICES * (POLY_MAX_HOLES + 1) + WORLD_MAX_TIMBERS * 2)
 
-typedef struct {
-    Coord start;
-    Coord end;
-} SpanInterval;
+typedef GeoInterval SpanInterval;
 
 /*
  * 解析 auto 跨距。
@@ -7941,7 +7314,6 @@ static SpanStatus resolve_auto_span(
 )
 {
     Coord cuts[SPAN_CUT_MAX];
-    size_t cut_count = 0;
     Coord scope_lo=scope?(along_v?scope->min_v:scope->min_u):0;
     Coord scope_hi=scope?(along_v?scope->max_v:scope->max_u):0;
     if (scope && (cross_lo<(along_v?scope->min_u:scope->min_v) || cross_hi>(along_v?scope->max_u:scope->max_v))) {
@@ -7949,115 +7321,35 @@ static SpanStatus resolve_auto_span(
         return SPAN_NO_INTERVAL;
     }
 
-    /* --- 切點：輪廓與孔的所有頂點在長度軸上的座標 --- */
-    for(size_t component=0;component<(placement->derived_fill_id?placement->component_count:1);++component) {
-        if(placement->derived_fill_id) boundary=&placement->components[component];
-    if (boundary != NULL) {
-        const PolygonLoop2 *loops[1 + POLY_MAX_HOLES];
-        size_t loop_count = 0;
-
-        loops[loop_count++] = &boundary->outline;
-
-        for (size_t h = 0; h < boundary->hole_count; ++h) {
-            loops[loop_count++] = &boundary->holes[h];
-        }
-
-        for (size_t li = 0; li < loop_count; ++li) {
-            for (size_t i = 0; i < loops[li]->count &&
-                            cut_count < SPAN_CUT_MAX; ++i) {
-                cuts[cut_count++] = along_v
-                    ? loops[li]->v[i].v
-                    : loops[li]->v[i].u;
-            }
-        }
-    } else {
-        cuts[cut_count++] = along_v
-            ? placement->rect.min_v : placement->rect.min_u;
-        cuts[cut_count++] = along_v
-            ? placement->rect.max_v : placement->rect.max_u;
-    }
-    }
-
-    /* --- 切點：同面已放角材 footprint 在長度軸上的兩端 --- */
-    for (size_t i = 0; i < world->timber_count &&
-                    cut_count + 2 <= SPAN_CUT_MAX; ++i) {
-        const Timber *t = &world->timbers[i];
-        const TimberAnchor *a = &world->anchors[i];
-        SurfaceRegion2 f;
-
-        if (!t->placed || a->placement_id != placement->id) {
-            continue;
-        }
-
-        if (!timber_a0_footprint_uv(placement, t, a, &f)) {
-            continue;
-        }
-
-        cuts[cut_count++] = along_v ? f.min_v : f.min_u;
-        cuts[cut_count++] = along_v ? f.max_v : f.max_u;
-    }
-
-    /* 排序 + 去重。 */
-    for (size_t i = 1; i < cut_count; ++i) {
-        Coord key = cuts[i];
-        size_t j = i;
-
-        while (j > 0 && cuts[j - 1] > key) {
-            cuts[j] = cuts[j - 1];
-            --j;
-        }
-        cuts[j] = key;
-    }
-
-    size_t unique = 0;
-    for (size_t i = 0; i < cut_count; ++i) {
-        if (unique == 0 || cuts[i] != cuts[unique - 1]) {
-            cuts[unique++] = cuts[i];
+    GeoLoop2View region_holes[DP_COMPONENT_MAX][POLY_MAX_HOLES];
+    GeoRegionView regions[DP_COMPONENT_MAX];GeoPoint2 rectangle[4];
+    size_t region_count=placement->derived_fill_id?placement->component_count:1;
+    for(size_t c=0;c<region_count;++c){
+        if(placement->derived_fill_id)boundary=&placement->components[c];
+        if(boundary)regions[c]=boundary_geometry_view(boundary,region_holes[c]);
+        else{
+            rectangle[0]=(GeoPoint2){placement->rect.min_u,placement->rect.min_v};
+            rectangle[1]=(GeoPoint2){placement->rect.max_u,placement->rect.min_v};
+            rectangle[2]=(GeoPoint2){placement->rect.max_u,placement->rect.max_v};
+            rectangle[3]=(GeoPoint2){placement->rect.min_u,placement->rect.max_v};
+            regions[c]=(GeoRegionView){{rectangle,4},NULL,0};
         }
     }
-    cut_count = unique;
-
-    /* --- 逐 cell 檢查：整個 footprint ⊆ 有效區域且不撞已放角材 --- */
-    SpanInterval intervals[SPAN_CUT_MAX / 2 + 1];
-    size_t interval_count = 0;
-    bool open = false;
-
-    for (size_t i = 0; i + 1 < cut_count; ++i) {
-        Coord lo = cuts[i];
-        Coord hi = cuts[i + 1];
-
-        if (lo >= hi) {
-            continue;
-        }
-
-        SurfaceRegion2 cell;
-
-        if (along_v) {
-            cell = (SurfaceRegion2){ cross_lo, lo, cross_hi, hi };
-        } else {
-            cell = (SurfaceRegion2){ lo, cross_lo, hi, cross_hi };
-        }
-
-        bool ok =
-            surface_contains_rect(
-                placement, boundary,
-                cell.min_u, cell.min_v, cell.max_u, cell.max_v) &&
-            !world_footprint_collides(world, placement, &cell, NULL);
-
-        if (ok && !open) {
-            intervals[interval_count].start = lo;
-            intervals[interval_count].end = hi;
-            open = true;
-        } else if (ok) {
-            intervals[interval_count].end = hi;
-        } else if (open) {
-            ++interval_count;
-            open = false;
-        }
+    GeoRect2 obstacles[WORLD_MAX_TIMBERS];size_t obstacle_count=0;
+    for(size_t i=0;i<world->timber_count;++i){
+        const Timber *t=&world->timbers[i];const TimberAnchor *a=&world->anchors[i];
+        if(!t->placed||a->placement_id!=placement->id)continue;
+        if(timber_a0_footprint_uv(placement,t,a,&obstacles[obstacle_count]))++obstacle_count;
     }
-    if (open) {
-        ++interval_count;
+    SpanInterval intervals[SPAN_CUT_MAX/2+1];
+    GeoIntervalBuffer result={intervals,SPAN_CUT_MAX/2+1,0};
+    GeoRegionSetView domain={regions,region_count};
+    GeoGeometryStatus geometry_status=geo_strip_intervals(&domain,along_v,(GeoInterval){cross_lo,cross_hi},
+        obstacles,obstacle_count,&result,(GeoStripScratch){cuts,SPAN_CUT_MAX});
+    if(geometry_status!=GEO_GEOMETRY_OK){
+        snprintf(err,err_cap,"中線上沒有任何合法跨距");return SPAN_NO_INTERVAL;
     }
+    size_t interval_count=result.count;
 
     if (interval_count == 0) {
         snprintf(err, err_cap, "中線上沒有任何合法跨距");
@@ -10532,16 +9824,7 @@ typedef struct {
 /* 房間座標點在面框上的 uv。axis_u/axis_v 是單位軸向量。 */
 static SurfacePoint2 frame_project_uv(const SurfaceFrame *f, Point3 p)
 {
-    Point3 d = { p.x - f->origin.x, p.y - f->origin.y, p.z - f->origin.z };
-    int au = axis_index(f->axis_u);
-    int av = axis_index(f->axis_v);
-    Coord su = f->axis_u.x + f->axis_u.y + f->axis_u.z;
-    Coord sv = f->axis_v.x + f->axis_v.y + f->axis_v.z;
-    SurfacePoint2 r = {
-        point3_component(d, au) * su,
-        point3_component(d, av) * sv
-    };
-    return r;
+    return geo_frame_project_uv(f,p);
 }
 
 /* AABB 八角投影到面框 uv 的包圍矩形。 */
@@ -10552,20 +9835,8 @@ static void box_project_uv(
     Coord *u_lo, Coord *v_lo, Coord *u_hi, Coord *v_hi
 )
 {
-    Coord ul = INT64_MAX, uh = INT64_MIN, vl = INT64_MAX, vh = INT64_MIN;
-    for (int i = 0; i < 8; ++i) {
-        Point3 c = {
-            (i & 1) ? x_hi : x_lo,
-            (i & 2) ? y_hi : y_lo,
-            (i & 4) ? z_hi : z_lo
-        };
-        SurfacePoint2 q = frame_project_uv(f, c);
-        ul = coord_min(ul, q.u);
-        uh = coord_max(uh, q.u);
-        vl = coord_min(vl, q.v);
-        vh = coord_max(vh, q.v);
-    }
-    *u_lo = ul; *u_hi = uh; *v_lo = vl; *v_hi = vh;
+    GeoRect2 rect=geo_aabb_project_uv(f,(GeoPoint3){x_lo,y_lo,z_lo},(GeoPoint3){x_hi,y_hi,z_hi});
+    *u_lo=rect.min_u;*u_hi=rect.max_u;*v_lo=rect.min_v;*v_hi=rect.max_v;
 }
 
 /* R 的某側是否與輪廓某邊共線正重疊（貼邊）。 */

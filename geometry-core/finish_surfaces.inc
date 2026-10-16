@@ -9,9 +9,9 @@
 typedef enum { FS_DIAGNOSTIC_INVALID, FS_DIAGNOSTIC_CAPACITY } FsDiagnosticKind;
 static FsDiagnosticKind g_fs_diagnostic=FS_DIAGNOSTIC_INVALID;
 static bool pf_rebuild(const World *);
-static bool pf_operation(World *,EngJson *,int,bool);
+static bool pf_operation(World *,GeoJson *,int,bool);
 static void pf_dump(const World *,FILE *);
-static bool dp_operation(World *,EngJson *,int,bool);
+static bool dp_operation(World *,GeoJson *,int,bool);
 static void dp_dump(const World *,FILE *);
 static bool fs_error(const char *format,...)
 {
@@ -29,7 +29,7 @@ static bool fs_capacity_error(const char *format,...)
 static bool fs_name_check(const unsigned char *name,size_t n)
 {
     if(!n)return fs_error("D41: finish surface name must be printable UTF-8");
-    for(size_t i=0;i<n;){size_t k=eng_utf8_scalar(name+i,n-i);
+    for(size_t i=0;i<n;){size_t k=geo_utf8_scalar(name+i,n-i);
         if(!k||name[i]<0x20||name[i]==0x7f||(k==2&&name[i]==0xc2&&name[i+1]<=0x9f))
             return fs_error("D41: finish surface name must be printable UTF-8");i+=k;}
     if(n>FS_NAME_MAX)return fs_capacity_error("I33 CAPACITY: finish surface name storage is limited to %d bytes",FS_NAME_MAX);
@@ -187,39 +187,39 @@ static uint32_t fs_reference_owner(const World *w,const char *kind,uint32_t id)
     return 0;
 }
 /* ---- transaction operations (panel-fill-transaction/1) ---- */
-static bool fs_from_json(EngJson *j,int t,FinishSurface *f)
+static bool fs_from_json(GeoJson *j,int t,FinishSurface *f)
 {
-    int frame=eng_json_member(j,t,"frame"),origin,obstacles=eng_json_member(j,t,"obstacles");int64_t side,xyz[3];
-    int name=eng_json_member(j,t,"name");
+    int frame=geo_json_member(j,t,"frame"),origin,obstacles=geo_json_member(j,t,"obstacles");int64_t side,xyz[3];
+    int name=geo_json_member(j,t,"name");
     memset(f,0,sizeof *f);
-    if(!eng_json_keys(j,t,"id,name,boundaryId,frame,structureSide,obstacles","")||!eng_u32(j,eng_json_member(j,t,"id"),&f->id,true)||
-       !eng_u32(j,eng_json_member(j,t,"boundaryId"),&f->boundary_id,true))
+    if(!geo_json_keys(j,t,"id,name,boundaryId,frame,structureSide,obstacles","")||!eng_u32(j,geo_json_member(j,t,"id"),&f->id,true)||
+       !eng_u32(j,geo_json_member(j,t,"boundaryId"),&f->boundary_id,true))
         return fs_error("D41: finish surface needs positive id and boundaryId, name, frame {origin,U,V,N}, structureSide and obstacles");
-    if(!eng_json_valid_token(j,name)||j->tokens[name].type!=ENG_J_STRING)return fs_error("D41: finish surface name must be a string");
+    if(!geo_json_valid_token(j,name)||j->tokens[name].type!=GEO_J_STRING)return fs_error("D41: finish surface name must be a string");
     if(!fs_name_check((const unsigned char*)j->tokens[name].string,strlen(j->tokens[name].string)))return false;
     memcpy(f->name,j->tokens[name].string,strlen(j->tokens[name].string)+1);
-    if(!eng_json_is_object(j,frame)||!eng_json_keys(j,frame,"origin,U,V,N",""))
+    if(!geo_json_is_object(j,frame)||!geo_json_keys(j,frame,"origin,U,V,N",""))
         return fs_error("I52/D2: finish surface %u frame needs origin, U, V and N",(unsigned)f->id);
-    origin=eng_json_member(j,frame,"origin");
-    if(!eng_json_is_array(j,origin)||eng_json_size(j,origin)!=3)return fs_error("I52/D1: finish surface %u origin must be three integer mm",(unsigned)f->id);
-    for(int i=0;i<3;++i)if(!eng_json_integer(j,eng_json_at(j,origin,i),&xyz[i]))return fs_error("I52/D1: finish surface %u origin must be three integer mm",(unsigned)f->id);
+    origin=geo_json_member(j,frame,"origin");
+    if(!geo_json_is_array(j,origin)||geo_json_size(j,origin)!=3)return fs_error("I52/D1: finish surface %u origin must be three integer mm",(unsigned)f->id);
+    for(int i=0;i<3;++i)if(!geo_json_integer(j,geo_json_at(j,origin,i),&xyz[i]))return fs_error("I52/D1: finish surface %u origin must be three integer mm",(unsigned)f->id);
     f->frame.origin=(Point3){xyz[0],xyz[1],xyz[2]};
-    if(!sp_axis(j,eng_json_member(j,frame,"U"),&f->frame.axis_u)||!sp_axis(j,eng_json_member(j,frame,"V"),&f->frame.axis_v)||
-       !sp_axis(j,eng_json_member(j,frame,"N"),&f->frame.normal))
+    if(!sp_axis(j,geo_json_member(j,frame,"U"),&f->frame.axis_u)||!sp_axis(j,geo_json_member(j,frame,"V"),&f->frame.axis_v)||
+       !sp_axis(j,geo_json_member(j,frame,"N"),&f->frame.normal))
         return fs_error("I52/D2: finish surface %u axes must each be one of +X -X +Y -Y +Z -Z",(unsigned)f->id);
-    if(!eng_json_integer(j,eng_json_member(j,t,"structureSide"),&side)||(side!=1&&side!=-1))
+    if(!geo_json_integer(j,geo_json_member(j,t,"structureSide"),&side)||(side!=1&&side!=-1))
         return fs_error("D41: finish surface %u structureSide must be 1 or -1",(unsigned)f->id);
     f->side=(int32_t)side;
-    if(!eng_json_is_array(j,obstacles))return fs_error("D41: finish surface %u obstacles must be an array of c<id> / b<id>",(unsigned)f->id);
-    int count=eng_json_size(j,obstacles);
+    if(!geo_json_is_array(j,obstacles))return fs_error("D41: finish surface %u obstacles must be an array of c<id> / b<id>",(unsigned)f->id);
+    int count=geo_json_size(j,obstacles);
     if(count>FS_OBSTACLE_MAX)return fs_capacity_error("I33 CAPACITY: finish surface %u obstacle set is limited to %d",(unsigned)f->id,FS_OBSTACLE_MAX);
     for(int i=0;i<count;++i){char text[16];
-        if(!eng_json_string(j,eng_json_at(j,obstacles,i),text,sizeof text)||!fs_obstacle_parse(text,&f->obstacles[i]))
+        if(!geo_json_string(j,geo_json_at(j,obstacles,i),text,sizeof text)||!fs_obstacle_parse(text,&f->obstacles[i]))
             return fs_error("D41: finish surface %u obstacles must be typed references c<id> or b<id>",(unsigned)f->id);}
     f->obstacle_count=(uint32_t)count;
     return fs_obstacles_normalize(f);
 }
-static bool fs_put(World *w,EngJson *j,int t)
+static bool fs_put(World *w,GeoJson *j,int t)
 {
     FinishSurface f;FinishSurfaceState *s=&w->finish_surfaces;
     if(!fs_from_json(j,t,&f)||!fs_check(w,&f))return false;
@@ -234,21 +234,21 @@ static bool fs_delete(World *w,uint32_t id)
     memmove(&s->items[at],&s->items[at+1],(size_t)(s->count-(uint64_t)at-1)*sizeof s->items[0]);
     --s->count;memset(&s->items[s->count],0,sizeof s->items[0]);return true;
 }
-static bool fs_operation(World *w,EngJson *j,int t)
+static bool fs_operation(World *w,GeoJson *j,int t)
 {
     char op[40];uint32_t id;
-    if(!eng_json_string(j,eng_json_member(j,t,"op"),op,sizeof op))return fs_error("I55: panel-fill operation needs op");
+    if(!geo_json_string(j,geo_json_member(j,t,"op"),op,sizeof op))return fs_error("I55: panel-fill operation needs op");
     if(!strcmp(op,"put-derived-placement")||!strcmp(op,"delete-derived-placement"))return dp_operation(w,j,t,!strcmp(op,"delete-derived-placement"));
     /* I53/I55: a host h change and the explicit B source changes may form one
      * candidate. PF-H previews disclose these dependencies before confirmation. */
     if(w->finish_surfaces.host_count&&(!strcmp(op,"set-source")||!strcmp(op,"set-override")||!strcmp(op,"unbind-source")||!strcmp(op,"put-parameter")))return eng_operation(w,j,t);
     if(!strcmp(op,"put-panel-fill")||!strcmp(op,"delete-panel-fill"))return pf_operation(w,j,t,!strcmp(op,"delete-panel-fill"));
     if(!strcmp(op,"put-finish-surface")){
-        if(!eng_json_keys(j,t,"op,value",""))return fs_error("I55: put-finish-surface takes op and value");
-        return fs_put(w,j,eng_json_member(j,t,"value"));
+        if(!geo_json_keys(j,t,"op,value",""))return fs_error("I55: put-finish-surface takes op and value");
+        return fs_put(w,j,geo_json_member(j,t,"value"));
     }
     if(!strcmp(op,"delete-finish-surface")){
-        if(!eng_json_keys(j,t,"op,id","")||!eng_u32(j,eng_json_member(j,t,"id"),&id,true))return fs_error("I55: delete-finish-surface needs a positive id");
+        if(!geo_json_keys(j,t,"op,id","")||!eng_u32(j,geo_json_member(j,t,"id"),&id,true))return fs_error("I55: delete-finish-surface needs a positive id");
         return fs_delete(w,id);
     }
     /* PF-2 scope (I8a/I55): the panel-fill preview discloses finish surfaces and panel-fill definitions only, so it must

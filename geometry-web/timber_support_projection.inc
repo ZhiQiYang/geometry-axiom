@@ -32,8 +32,8 @@ static void json_schedule_support_owner(const World *w,uint32_t timber)
            !strcmp(w->assembly.rules[i].fingerprint,a->rule_hash)) r=&w->assembly.rules[i];
     if(!b || !b->complete || b->rule_id!=a->rule_id || b->rule_version!=a->rule_version || !r) { fputs("null",stdout); return; }
     char instance_hash[65],binding_hash[65];
-    eng_sha256(a->content,strlen(a->content),instance_hash);
-    eng_sha256(b->content,strlen(b->content),binding_hash);
+    geo_sha256(a->content,strlen(a->content),instance_hash);
+    geo_sha256(b->content,strlen(b->content),binding_hash);
     printf("{\"instanceId\":%u,\"memberId\":%u,\"bindingId\":%u,\"ruleId\":%u,\"ruleVersion\":%u,"
            "\"ruleFingerprint\":\"%s\",\"instanceFingerprint\":\"%s\",\"bindingFingerprint\":\"%s\"}",
            a->id,member,a->binding_id,a->rule_id,a->rule_version,a->rule_hash,instance_hash,binding_hash);

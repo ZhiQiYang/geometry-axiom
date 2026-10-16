@@ -19,40 +19,40 @@ static const PanelFill *pf_find(const World *w,uint32_t id)
 { for(uint64_t i=0;i<w->finish_surfaces.fill_count;++i)if(w->finish_surfaces.fills[i].id==id)return &w->finish_surfaces.fills[i];return NULL; }
 static void pf_free(PfLayout *d)
 { if(d->tiles)for(size_t i=0;i<d->count;++i){PfTile *t=&d->tiles[i];for(size_t k=0;k<t->count;++k){PfFragment *f=&t->fragments[k];for(size_t l=0;l<f->count;++l)free(f->loops[l].points);free(f->loops);}free(t->fragments);}free(d->tiles);free(d->seams);memset(d,0,sizeof *d); }
-static bool pf_source(EngJson *j,int t,Coord *value,ParameterRef *ref)
+static bool pf_source(GeoJson *j,int t,Coord *value,ParameterRef *ref)
 {
-    if(eng_json_integer(j,t,value))return coord_in_range(*value)||fs_error("I52/D1: panel-fill source outside D1");
+    if(geo_json_integer(j,t,value))return coord_in_range(*value)||fs_error("I52/D1: panel-fill source outside D1");
     ref->set=true;
-    return (eng_json_keys(j,t,"parameterId,fieldId","")&&parameter_u32(j,eng_json_member(j,t,"parameterId"),&ref->parameter_id)&&parameter_u32(j,eng_json_member(j,t,"fieldId"),&ref->field_id))||fs_error("D42: source must be integer mm or ParameterRef");
+    return (geo_json_keys(j,t,"parameterId,fieldId","")&&parameter_u32(j,geo_json_member(j,t,"parameterId"),&ref->parameter_id)&&parameter_u32(j,geo_json_member(j,t,"fieldId"),&ref->field_id))||fs_error("D42: source must be integer mm or ParameterRef");
 }
-static bool pf_parse(EngJson *j,int t,PanelFill *p)
+static bool pf_parse(GeoJson *j,int t,PanelFill *p)
 {
     memset(p,0,sizeof *p);int axis;char pattern[16];
-    int o=eng_json_member(j,t,"origin"),s=eng_json_member(j,t,"stagger"),x=eng_json_member(j,t,"threshold");
-    if(!eng_json_keys(j,t,"id,finishSurfaceId,panel,lengthAlong,origin,gap,pattern,threshold","stagger")||
-       !eng_u32(j,eng_json_member(j,t,"id"),&p->id,true)||!eng_u32(j,eng_json_member(j,t,"finishSurfaceId"),&p->finish_id,true)||
-       !eng_ref_parse(j,eng_json_member(j,t,"panel"),&p->panel,false)||!eng_axis(j,eng_json_member(j,t,"lengthAlong"),&axis)||!axis||
-       !eng_json_is_array(j,o)||eng_json_size(j,o)!=2||!eng_json_integer(j,eng_json_at(j,o,0),&p->origin[0])||!coord_in_range(p->origin[0])||!eng_json_integer(j,eng_json_at(j,o,1),&p->origin[1])||!coord_in_range(p->origin[1])||
-       !eng_json_string(j,eng_json_member(j,t,"pattern"),pattern,sizeof pattern))return fs_error("D42: invalid panel-fill definition");
+    int o=geo_json_member(j,t,"origin"),s=geo_json_member(j,t,"stagger"),x=geo_json_member(j,t,"threshold");
+    if(!geo_json_keys(j,t,"id,finishSurfaceId,panel,lengthAlong,origin,gap,pattern,threshold","stagger")||
+       !eng_u32(j,geo_json_member(j,t,"id"),&p->id,true)||!eng_u32(j,geo_json_member(j,t,"finishSurfaceId"),&p->finish_id,true)||
+       !eng_ref_parse(j,geo_json_member(j,t,"panel"),&p->panel,false)||!eng_axis(j,geo_json_member(j,t,"lengthAlong"),&axis)||!axis||
+       !geo_json_is_array(j,o)||geo_json_size(j,o)!=2||!geo_json_integer(j,geo_json_at(j,o,0),&p->origin[0])||!coord_in_range(p->origin[0])||!geo_json_integer(j,geo_json_at(j,o,1),&p->origin[1])||!coord_in_range(p->origin[1])||
+       !geo_json_string(j,geo_json_member(j,t,"pattern"),pattern,sizeof pattern))return fs_error("D42: invalid panel-fill definition");
     p->length_axis=axis-1;p->stagger_axis=-1;
-    if(!pf_source(j,eng_json_member(j,t,"gap"),&p->gap,&p->gap_ref))return false;
+    if(!pf_source(j,geo_json_member(j,t,"gap"),&p->gap,&p->gap_ref))return false;
     if(!strcmp(pattern,"stagger")){
-        if(!eng_json_keys(j,s,"axis,value","")||!eng_axis(j,eng_json_member(j,s,"axis"),&axis)||!axis)return fs_error("D42: stagger needs one axis and source");
-        p->stagger_axis=axis-1;if(!pf_source(j,eng_json_member(j,s,"value"),&p->stagger,&p->stagger_ref))return false;
+        if(!geo_json_keys(j,s,"axis,value","")||!eng_axis(j,geo_json_member(j,s,"axis"),&axis)||!axis)return fs_error("D42: stagger needs one axis and source");
+        p->stagger_axis=axis-1;if(!pf_source(j,geo_json_member(j,s,"value"),&p->stagger,&p->stagger_ref))return false;
     }else if(strcmp(pattern,"straight")||s>=0)return fs_error("D42: straight must omit stagger; pattern must be straight or stagger");
     p->threshold.set=true;
-    if(!eng_json_keys(j,x,"parameterId,fieldId","")||!parameter_u32(j,eng_json_member(j,x,"parameterId"),&p->threshold.parameter_id)||!parameter_u32(j,eng_json_member(j,x,"fieldId"),&p->threshold.field_id))return fs_error("D44: threshold must be a ParameterRef");
-    if(!eng_json_canonical(j,t,p->definition,sizeof p->definition))return fs_capacity_error("I33 CAPACITY: panel-fill definition limit is 1023 bytes");
+    if(!geo_json_keys(j,x,"parameterId,fieldId","")||!parameter_u32(j,geo_json_member(j,x,"parameterId"),&p->threshold.parameter_id)||!parameter_u32(j,geo_json_member(j,x,"fieldId"),&p->threshold.field_id))return fs_error("D44: threshold must be a ParameterRef");
+    if(!geo_json_canonical(j,t,p->definition,sizeof p->definition))return fs_capacity_error("I33 CAPACITY: panel-fill definition limit is 1023 bytes");
     return true;
 }
 static bool pf_values(const World *w,const PanelFill *p,PfLayout *d)
 {
-    d->finish=fs_find(w,p->finish_id);const EngMaterialVersion *m=eng_material(w,p->panel.id,p->panel.version);ParamValue x;
+    d->finish=fs_find(w,p->finish_id);const EngMaterialVersion *m=eng_material(w,p->panel.id,p->panel.version);GeoQuantity x;
     if(!d->finish)return fs_error("I55: panel-fill %u references missing finish surface %u",p->id,p->finish_id);
     if(!m||m->kind!=0)return fs_error("I52: panel-fill %u needs an existing fixed panel material version",p->id);
     d->size[p->length_axis]=m->length;d->size[1-p->length_axis]=m->width;
-    EngJson j;bool ok=eng_json_parse(&j,m->content);char thickness[ENG_THICKNESS_CAPACITY];
-    if(ok)ok=eng_json_string(&j,eng_json_member(&j,0,"thickness"),thickness,sizeof thickness);eng_json_free(&j);
+    GeoJson j;bool ok=app_json_parse(&j,m->content);char thickness[ENG_THICKNESS_CAPACITY];
+    if(ok)ok=geo_json_string(&j,geo_json_member(&j,0,"thickness"),thickness,sizeof thickness);geo_json_free(&j);
     d->t=0;
     if(ok){bool decimal=false;for(char *s=thickness;*s&&ok;++s){if(*s=='.')decimal=true;else if(decimal)ok=*s=='0';else if(*s<'0'||*s>'9'||d->t>(COORD_LIMIT-(*s-'0'))/10)ok=false;else d->t=d->t*10+(*s-'0');}}
     if(!ok||d->t<=0)return fs_error("I52: panel-fill thickness must be explicitly set positive integer mm in D1; no rounding");
@@ -164,11 +164,11 @@ static bool pf_build(const World *w,const PanelFill *p,PfLayout *d)
 }
 static bool pf_rebuild(const World *w)
 {for(uint64_t i=0;i<w->finish_surfaces.fill_count;++i){PfLayout d;bool ok=pf_build(w,&w->finish_surfaces.fills[i],&d);pf_free(&d);if(!ok)return false;}return true;}
-static bool pf_operation(World *w,EngJson *j,int t,bool remove)
+static bool pf_operation(World *w,GeoJson *j,int t,bool remove)
 {
     FinishSurfaceState *s=&w->finish_surfaces;PanelFill p;uint32_t id;
-    if(remove){if(!eng_json_keys(j,t,"op,id","")||!eng_u32(j,eng_json_member(j,t,"id"),&id,true))return fs_error("D42: delete-panel-fill needs id");}
-    else{if(!eng_json_keys(j,t,"op,value","")||!pf_parse(j,eng_json_member(j,t,"value"),&p))return false;id=p.id;}
+    if(remove){if(!geo_json_keys(j,t,"op,id","")||!eng_u32(j,geo_json_member(j,t,"id"),&id,true))return fs_error("D42: delete-panel-fill needs id");}
+    else{if(!geo_json_keys(j,t,"op,value","")||!pf_parse(j,geo_json_member(j,t,"value"),&p))return false;id=p.id;}
     size_t at=0;while(at<s->fill_count&&s->fills[at].id!=id)++at;
     if(remove){if(at==s->fill_count)return fs_error("D42: deleted panel-fill does not exist");memmove(&s->fills[at],&s->fills[at+1],(s->fill_count-at-1)*sizeof p);memset(&s->fills[--s->fill_count],0,sizeof p);return true;}
     if(at==s->fill_count){if(at==FS_MAX)return fs_capacity_error("I33 CAPACITY: panel-fill limit is %d",FS_MAX);++s->fill_count;}s->fills[at]=p;return true;
@@ -180,7 +180,7 @@ static bool apply_panel_fill_line(const char *path,int line,char **t,int count,W
     if(!g_parsing_scene_file||!fs_scene_required||!fs_scene_engineering||!fs_scene_parameters){scene_error(path,line,"I56: panel-fill requires atomic scene with all three declared capabilities");return false;}
     uint32_t id;char text[1024];size_t n=strlen(t[3]);if(count!=4||strcmp(t[2],"definition-hex")||!parse_u32(t[1],&id)||!n||n%2||n/2>=sizeof text)goto invalid;
     for(size_t i=0;i<n/2;++i){int a=grid_system_hex_digit(t[3][2*i]),b=grid_system_hex_digit(t[3][2*i+1]);if(a<0||b<0||!(a*16+b))goto invalid;text[i]=(char)(a*16+b);}text[n/2]=0;
-    EngJson j;PanelFill p;bool ok=eng_json_parse(&j,text);if(ok)ok=pf_parse(&j,0,&p);eng_json_free(&j);
+    GeoJson j;PanelFill p;bool ok=app_json_parse(&j,text);if(ok)ok=pf_parse(&j,0,&p);geo_json_free(&j);
     if(ok&&(p.id!=id||pf_find(w,id)))ok=fs_error("I56: panel-fill id mismatch or duplicate");
     if(ok&&w->finish_surfaces.fill_count==FS_MAX)ok=fs_capacity_error("I33 CAPACITY: panel-fill limit is %d",FS_MAX);
     if(ok)w->finish_surfaces.fills[w->finish_surfaces.fill_count++]=p;else scene_error(path,line,g_engineering_error);return ok;

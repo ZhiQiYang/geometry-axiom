@@ -85,7 +85,7 @@ static void boundary_geometry_hash(const SpaceBoundarySurface *b,char out[65])
             used+=(size_t)n;
         }
     }
-    eng_sha256(canonical,used,out);
+    geo_sha256(canonical,used,out);
 }
 
 static bool boundary_geometry_hash_matches(const SpaceBoundarySurface *b,const char *value)

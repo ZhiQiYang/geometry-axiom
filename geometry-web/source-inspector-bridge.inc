@@ -23,11 +23,11 @@ static SiNode *si_node(SiIndex *s,const char *kind,const char *id,uint32_t versi
 {
     if(s->nn==SI_NODE_MAX){s->complete=false;return NULL;}SiNode *n=&s->nodes[s->nn++];
     si_key(n->key,kind,id,version,field);snprintf(n->kind,sizeof n->kind,"%s",kind);snprintf(n->id,sizeof n->id,"%s",id);
-    n->version=version;n->field=field;snprintf(n->label,sizeof n->label,"%s",label?label:kind);eng_sha256(s->text,s->used,n->definition);snprintf(n->value,65,"%s",n->definition);return n;
+    n->version=version;n->field=field;snprintf(n->label,sizeof n->label,"%s",label?label:kind);geo_sha256(s->text,s->used,n->definition);snprintf(n->value,65,"%s",n->definition);return n;
 }
 static SiNode *si_nnode(SiIndex *s,const char *kind,uint32_t id,uint32_t version,uint32_t field,const char *label)
 {char number[32];snprintf(number,sizeof number,"%u",id);return si_node(s,kind,number,version,field,label);}
-static void si_value(SiIndex *s,SiNode *n){if(n)eng_sha256(s->text,s->used,n->value);}
+static void si_value(SiIndex *s,SiNode *n){if(n)geo_sha256(s->text,s->used,n->value);}
 static void si_edge(SiIndex *s,const char *from,const char *to,const char *relation,const char *field,bool active)
 {
     for(size_t i=0;i<s->ne;++i){SiEdge *e=&s->edges[i];if(!strcmp(e->from,from)&&!strcmp(e->to,to)&&!strcmp(e->relation,relation)&&!strcmp(e->field,field?field:"")&&e->active==active)return;}
@@ -47,11 +47,11 @@ static void si_source(SiIndex *s,const char *from,const EngDimensionSource *src,
     char detail[100];snprintf(detail,sizeof detail,"%s%s%s",field?field:"",(src->kind==ENG_MATERIAL||src->kind==ENG_APPLICATION)?" ← ":"",(src->kind==ENG_MATERIAL||src->kind==ENG_APPLICATION)?ENG_FIELDS[src->field]:"");
     si_edge(s,from,key,relation,detail,active);
 }
-static void si_ast(SiIndex *s,const char *from,EngJson *j,int token,const char *field)
+static void si_ast(SiIndex *s,const char *from,GeoJson *j,int token,const char *field)
 {
-    if(!eng_json_is_object(j,token))return;char op[16];if(!eng_json_string(j,eng_json_member(j,token,"op"),op,sizeof op))return;
-    if(!strcmp(op,"ref")){uint32_t card=0,f=0;if(parameter_u32(j,eng_json_member(j,token,"parameterId"),&card)&&parameter_u32(j,eng_json_member(j,token,"fieldId"),&f))si_ref(s,from,"parameter-field",card,0,f,"dimension",field);}
-    else {si_ast(s,from,j,eng_json_member(j,token,"left"),field);si_ast(s,from,j,eng_json_member(j,token,"right"),field);}
+    if(!geo_json_is_object(j,token))return;char op[16];if(!geo_json_string(j,geo_json_member(j,token,"op"),op,sizeof op))return;
+    if(!strcmp(op,"ref")){uint32_t card=0,f=0;if(parameter_u32(j,geo_json_member(j,token,"parameterId"),&card)&&parameter_u32(j,geo_json_member(j,token,"fieldId"),&f))si_ref(s,from,"parameter-field",card,0,f,"dimension",field);}
+    else {si_ast(s,from,j,geo_json_member(j,token,"left"),field);si_ast(s,from,j,geo_json_member(j,token,"right"),field);}
 }
 /* Parse the core's validated D6a quantity grammar, never a diagnostic/label/path. */
 static void si_expression(SiIndex *s,const char *from,const char *expression,uint32_t surface,bool local)
@@ -99,19 +99,19 @@ static void si_loop(SiIndex *s,const PolygonLoop2 *loop)
 {si_text(s,"loop%zu:",loop->count);for(size_t k=0;k<loop->count;++k)si_text(s,"%lld,%lld,%d;",(long long)loop->v[k].u,(long long)loop->v[k].v,loop->fixity[k]);}
 static void si_content(SiIndex *s,const char *content,const char *exclude)
 {
-    EngJson j;if(!eng_json_parse(&j,content)){s->complete=false;eng_json_free(&j);return;}
-    EngJsonKey *keys=eng_json_sorted_keys(&j,0);if(j.tokens[0].size&&!keys)s->complete=false;
-    if(keys)for(int k=0;k<j.tokens[0].size;++k){if(eng_json_csv_has(exclude,keys[k].key))continue;char value[ASM_RECORD_MAX];if(!eng_json_canonical(&j,keys[k].token+1,value,sizeof value)){s->complete=false;break;}si_text(s,"%s=%s;",keys[k].key,value);}free(keys);eng_json_free(&j);
+    GeoJson j;if(!app_json_parse(&j,content)){s->complete=false;geo_json_free(&j);return;}
+    GeoJsonKey *keys=geo_json_sorted_keys(&j,0);if(j.tokens[0].size&&!keys)s->complete=false;
+    if(keys)for(int k=0;k<j.tokens[0].size;++k){if(geo_json_csv_has(exclude,keys[k].key))continue;char value[ASM_RECORD_MAX];if(!geo_json_canonical(&j,keys[k].token+1,value,sizeof value)){s->complete=false;break;}si_text(s,"%s=%s;",keys[k].key,value);}free(keys);geo_json_free(&j);
 }
 static void si_binding_sources(SiIndex *s,const char *from,const char *content)
 {
-    EngJson j;if(!eng_json_parse(&j,content)){s->complete=false;eng_json_free(&j);return;}int slots=eng_json_member(&j,0,"slots");
-    for(int k=0;k<eng_json_size(&j,slots);++k){int slot=eng_json_at(&j,slots,k);int64_t id=0;eng_json_integer(&j,eng_json_member(&j,slot,"slotId"),&id);
-        for(int a=0;a<2;++a){int token=eng_json_member(&j,slot,a?"B":"A");if(eng_json_is_null(&j,token))continue;EngDimensionSource src;if(eng_source_parse(&j,token,&src,false)){char field[60];snprintf(field,sizeof field,"slot:%lld.%c",(long long)id,a?'B':'A');si_source(s,from,&src,field,true);}else s->complete=false;}}
-    eng_json_free(&j);
+    GeoJson j;if(!app_json_parse(&j,content)){s->complete=false;geo_json_free(&j);return;}int slots=geo_json_member(&j,0,"slots");
+    for(int k=0;k<geo_json_size(&j,slots);++k){int slot=geo_json_at(&j,slots,k);int64_t id=0;geo_json_integer(&j,geo_json_member(&j,slot,"slotId"),&id);
+        for(int a=0;a<2;++a){int token=geo_json_member(&j,slot,a?"B":"A");if(geo_json_is_null(&j,token))continue;EngDimensionSource src;if(eng_source_parse(&j,token,&src,false)){char field[60];snprintf(field,sizeof field,"slot:%lld.%c",(long long)id,a?'B':'A');si_source(s,from,&src,field,true);}else s->complete=false;}}
+    geo_json_free(&j);
 }
 static const char *si_name(const char *content,char name[200],const char *fallback)
-{EngJson j;if(eng_json_parse(&j,content)&&eng_json_string(&j,eng_json_member(&j,0,"name"),name,200)){eng_json_free(&j);return name;}eng_json_free(&j);return fallback;}
+{GeoJson j;if(app_json_parse(&j,content)&&geo_json_string(&j,geo_json_member(&j,0,"name"),name,200)){geo_json_free(&j);return name;}geo_json_free(&j);return fallback;}
 /* Native typed resolution path per application field, not every unrelated override. */
 static void si_application_fields(SiIndex *s,const World *w,const EngApplication *a)
 {
@@ -129,9 +129,9 @@ static void si_application_fields(SiIndex *s,const World *w,const EngApplication
 }
 static void si_rule_parts(SiIndex *s,const AsmRuleVersion *r)
 {
-    EngJson j;if(!eng_json_parse(&j,r->content)){s->complete=false;eng_json_free(&j);return;}char root[240];si_numkey(root,"assembly-rule",r->id,r->version,0);
-    const char *parts[2]={"members","joints"};for(int kind=0;kind<2;++kind){int list=eng_json_member(&j,0,parts[kind]);for(int k=0;k<eng_json_size(&j,list);++k){int at=eng_json_at(&j,list,k);int64_t id=0;if(!eng_json_integer(&j,eng_json_member(&j,at,"id"),&id)){s->complete=false;continue;}char text[ASM_RECORD_MAX],key[240],label[100];if(!eng_json_canonical(&j,at,text,sizeof text)){s->complete=false;continue;}const char *type=kind?"assembly-joint":"assembly-member";si_numkey(key,type,r->id,r->version,(uint32_t)id);si_reset(s);si_text(s,"%s",text);snprintf(label,sizeof label,"%s #%lld",kind?"接合定義":"規則構件",(long long)id);si_nnode(s,type,r->id,r->version,(uint32_t)id,label);si_edge(s,root,key,kind?"joint-definition":"member",parts[kind],true);}}
-    eng_json_free(&j);
+    GeoJson j;if(!app_json_parse(&j,r->content)){s->complete=false;geo_json_free(&j);return;}char root[240];si_numkey(root,"assembly-rule",r->id,r->version,0);
+    const char *parts[2]={"members","joints"};for(int kind=0;kind<2;++kind){int list=geo_json_member(&j,0,parts[kind]);for(int k=0;k<geo_json_size(&j,list);++k){int at=geo_json_at(&j,list,k);int64_t id=0;if(!geo_json_integer(&j,geo_json_member(&j,at,"id"),&id)){s->complete=false;continue;}char text[ASM_RECORD_MAX],key[240],label[100];if(!geo_json_canonical(&j,at,text,sizeof text)){s->complete=false;continue;}const char *type=kind?"assembly-joint":"assembly-member";si_numkey(key,type,r->id,r->version,(uint32_t)id);si_reset(s);si_text(s,"%s",text);snprintf(label,sizeof label,"%s #%lld",kind?"接合定義":"規則構件",(long long)id);si_nnode(s,type,r->id,r->version,(uint32_t)id,label);si_edge(s,root,key,kind?"joint-definition":"member",parts[kind],true);}}
+    geo_json_free(&j);
 }
 #include "section_profile_source_index.inc"
 static SiIndex *si_build(const World *w)
@@ -149,7 +149,7 @@ static SiIndex *si_build(const World *w)
     for(size_t i=0;i<w->parameters.card_count;++i){const ParameterSet *c=&w->parameters.cards[i];si_numkey(from,"parameter",c->id,0,0);si_reset(s);si_text(s,"card%u",c->id);si_nnode(s,"parameter",c->id,0,0,c->name);
         for(size_t k=0;k<c->count;++k)si_ref(s,from,"parameter-field",c->id,0,c->fields[k],"member","field");}
     for(size_t i=0;i<w->parameters.field_count;++i){const ParameterField *f=&w->parameters.fields[i];si_numkey(from,"parameter-field",f->parameter_id,0,f->id);si_reset(s);si_text(s,"%d:%s",f->type,f->expression);snprintf(label,sizeof label,"%s.%s",parameter_find(w,f->parameter_id)->name,f->name);n=si_nnode(s,"parameter-field",f->parameter_id,0,f->id,label);
-        si_reset(s);si_text(s,"%lld/%lld:%d",(long long)f->value.num,(long long)f->value.den,f->value.unit);si_value(s,n);EngJson j;if(eng_json_parse(&j,f->expression))si_ast(s,from,&j,0,"expression");else s->complete=false;eng_json_free(&j);}
+        si_reset(s);si_text(s,"%lld/%lld:%d",(long long)f->value.num,(long long)f->value.den,f->value.unit);si_value(s,n);GeoJson j;if(app_json_parse(&j,f->expression))si_ast(s,from,&j,0,"expression");else s->complete=false;geo_json_free(&j);}
     for(size_t i=0;i<w->datum_count;++i){const DatumPlane *d=&w->datums[i];si_numkey(from,"datum",d->id,0,0);si_reset(s);si_text(s,"%d:%s",d->axis,d->expression);n=si_nnode(s,"datum",d->id,0,0,"共用基準");si_reset(s);si_text(s,"%d:%lld",d->axis,(long long)d->position);si_value(s,n);si_expression(s,from,d->expression,0,false);}
     for(size_t i=0;i<w->guide_count;++i){const GuideLine *g=&w->guides[i];si_numkey(from,"guide",g->id,0,0);si_reset(s);si_text(s,"%u:%d:%u:%d:%s",g->placement_id,g->source,g->datum_id,g->source==GUIDE_DATUM?0:g->direction,g->expression);n=si_nnode(s,"guide",g->id,0,0,"參考線");si_reset(s);si_text(s,"%d:%lld",g->direction,(long long)g->offset);si_value(s,n);si_ref(s,from,"placement",g->placement_id,0,0,"position","surface");if(g->source==GUIDE_DATUM)si_ref(s,from,"datum",g->datum_id,0,0,"position","datum");else si_expression(s,from,g->expression,g->placement_id,true);}
     for(size_t i=0;i<w->grid_system_count;++i){const GridSystem *g=&w->grid_systems[i];si_numkey(from,"grid-system",g->id,0,0);si_reset(s);si_text(s,"%d;",g->main_along);si_axis(s,from,&g->axis[0],"u",NULL);si_axis(s,from,&g->axis[1],"v",NULL);si_subdivision(s,g);n=si_nnode(s,"grid-system",g->id,0,0,g->name);si_reset(s);si_axis_value(s,&g->axis[0]);si_axis_value(s,&g->axis[1]);si_subdivision(s,g);si_value(s,n);}

@@ -12,47 +12,17 @@ static void grid_cell_ref_format(int ref, char *out, size_t cap)
 /* Clip an orthogonal loop against a rectangle and take twice its area.
  * Integer intersections stay exact. The shoelace sum also handles disconnected
  * pieces joined by a zero-area clip-boundary walk. */
-static Coord grid_loop_rect_area2(const PolygonLoop2 *loop, const SurfaceRegion2 *r)
-{
-    SurfacePoint2 a[POLY_MAX_VERTICES * 4], z[POLY_MAX_VERTICES * 4];
-    size_t n=loop->count;
-    memcpy(a,loop->v,n*sizeof *a);
-    for (int side=0;side<4 && n;++side) {
-        int axis=side/2; bool low=(side%2)==0;
-        Coord bound=axis==0?(low?r->min_u:r->max_u):(low?r->min_v:r->max_v);
-        size_t m=0;
-        for (size_t i=0;i<n;++i) {
-            SurfacePoint2 p=a[i], q=a[(i+1)%n];
-            Coord pc=axis==0?p.u:p.v, qc=axis==0?q.u:q.v;
-            bool pin=low?pc>=bound:pc<=bound, qin=low?qc>=bound:qc<=bound;
-            if (pin != qin) {
-                SurfacePoint2 hit=p;
-                if (axis==0) hit.u=bound; else hit.v=bound;
-                if (m>=POLY_MAX_VERTICES*4) return 0;
-                z[m++]=hit;
-            }
-            if (qin) {
-                if (m>=POLY_MAX_VERTICES*4) return 0;
-                z[m++]=q;
-            }
-        }
-        n=m; memcpy(a,z,n*sizeof *a);
-    }
-    Coord area=0;
-    for (size_t i=0;i<n;++i) area+=a[i].u*a[(i+1)%n].v-a[(i+1)%n].u*a[i].v;
-    return area<0?-area:area;
-}
+
 
 static bool grid_cell_has_area(const PlacementSurface *p,const SpaceBoundarySurface *b,const SurfaceRegion2 *r)
 {
-    /* D19/I25: C intersects the complete effective face, including holes in
-     * each R41 component. A bounding box is only a coordinate range. */
-    for(size_t c=0;c<(p->derived_fill_id?p->component_count:1);++c) {
+    for(size_t c=0;c<(p->derived_fill_id?p->component_count:1);++c){
         const SpaceBoundarySurface *part=p->derived_fill_id?&p->components[c]:b;
-        PolygonLoop2 outline; placement_outline(p,part,&outline);
-        Coord area=grid_loop_rect_area2(&outline,r);
-        if(part) for(size_t h=0;h<part->hole_count;++h) area-=grid_loop_rect_area2(&part->holes[h],r);
-        if(area>0) return true;
+        PolygonLoop2 outline;placement_outline(p,part,&outline);
+        GeoLoop2View holes[POLY_MAX_HOLES];GeoRegionView region={.outline={outline.v,outline.count},.holes=holes,.hole_count=part?part->hole_count:0};
+        for(size_t h=0;h<region.hole_count;++h)holes[h]=(GeoLoop2View){part->holes[h].v,part->holes[h].count};
+        GeoRegionSetView domain={&region,1};
+        if(geo_region_set_intersects_rect_positive(&domain,r))return true;
     }
     return false;
 }
@@ -123,12 +93,10 @@ static bool grid_axis_lines_in(const ReferenceGrid *grids,size_t count,const Ref
     if (!grid_cell_bounds(grids,count,grid,p,b,&cell,err,cap)) return false;
     Coord lo=axis==0?cell.min_u:cell.min_v, hi=axis==0?cell.max_u:cell.max_v;
     unsigned n=grid->divisions[axis];
-    if (n<1 || n>GRID_MAX_LINES+1 || (hi-lo)%n) {
+    if (geo_interval_subdivide(lo,hi,n,out,GRID_MAX_LINES,out_count)!=GEO_GRID_OK) {
         if (err) snprintf(err,cap,"I25：子格 %u（父格 %u）%c 軸跨度 %lld mm 無法精確分成 %u 等分；等分數須為 1…65",grid->id,grid->parent_id,axis?'v':'u',(long long)(hi-lo),n);
         return false;
     }
-    Coord step=(hi-lo)/n;
-    for (unsigned k=1;k<n;++k) out[(*out_count)++]=lo+k*step;
     return true;
 }
 

@@ -6,18 +6,18 @@ static void json_assembly_state(const World *w,bool geometry)
         printf("%s{\"value\":%s,\"fingerprint\":\"%s\"}",i?",":"",r->content,r->fingerprint);}
     fputs("],\"bindings\":[",stdout);
     for(size_t i=0;i<w->assembly.binding_count;++i){const AsmBinding *b=&w->assembly.bindings[i];
-        char fingerprint[65];eng_sha256(b->content,strlen(b->content),fingerprint);
+        char fingerprint[65];geo_sha256(b->content,strlen(b->content),fingerprint);
         printf("%s{\"value\":%s,\"fingerprint\":\"%s\",\"complete\":%s,\"effective\":[",i?",":"",b->content,fingerprint,b->complete?"true":"false");
-        EngJson j;if(eng_json_parse(&j,b->content)){int array=eng_json_member(&j,0,"slots");
-            for(int k=0;k<eng_json_size(&j,array);++k){int slot=eng_json_at(&j,array,k);uint32_t id=0;eng_u32(&j,eng_json_member(&j,slot,"slotId"),&id,true);printf("%s{\"slotId\":%u",k?",":"",id);
-                for(int axis=0;axis<2;++axis){int token=eng_json_member(&j,slot,axis?"B":"A");EngDimensionSource source;EngTarget target={1,0,0,axis};Coord value;char path[192];
+        GeoJson j;if(app_json_parse(&j,b->content)){int array=geo_json_member(&j,0,"slots");
+            for(int k=0;k<geo_json_size(&j,array);++k){int slot=geo_json_at(&j,array,k);uint32_t id=0;eng_u32(&j,geo_json_member(&j,slot,"slotId"),&id,true);printf("%s{\"slotId\":%u",k?",":"",id);
+                for(int axis=0;axis<2;++axis){int token=geo_json_member(&j,slot,axis?"B":"A");EngDimensionSource source;EngTarget target={1,0,0,axis};Coord value;char path[192];
                     printf(",\"%c\":",axis?'B':'A');
-                    if(!eng_json_is_null(&j,token)&&eng_source_parse(&j,token,&source,false)&&eng_resolve((World*)w,&source,&target,UINT32_MAX,0,&value,path,sizeof path)){
+                    if(!geo_json_is_null(&j,token)&&eng_source_parse(&j,token,&source,false)&&eng_resolve((World*)w,&source,&target,UINT32_MAX,0,&value,path,sizeof path)){
                         printf("{\"value\":%lld,\"path\":",(long long)value);js_string(path);putchar('}');}else fputs("null",stdout);}
                 putchar('}');}}
-        eng_json_free(&j);fputs("]}",stdout);
+        geo_json_free(&j);fputs("]}",stdout);
     }fputs("],\"instances\":[",stdout);
-    for(size_t i=0;i<w->assembly.instance_count;++i){const AsmInstance *a=&w->assembly.instances[i];char fingerprint[65];eng_sha256(a->content,strlen(a->content),fingerprint);
+    for(size_t i=0;i<w->assembly.instance_count;++i){const AsmInstance *a=&w->assembly.instances[i];char fingerprint[65];geo_sha256(a->content,strlen(a->content),fingerprint);
         printf("%s{\"value\":%s,\"fingerprint\":\"%s\",\"members\":[",i?",":"",a->content,fingerprint);
         for(int m=0;m<3;++m){int at=reference_timber_index(w,a->timber[m]);printf("%s{\"memberId\":%u,\"timberId\":%u,\"geometry\":",m?",":"",a->member[m],a->timber[m]);json_reference_geometry(w,at);fputs(",\"definition\":",stdout);if(at>=0)json_reference_timber_definition(&w->timbers[at],&w->anchors[at]);else fputs("null",stdout);putchar('}');}fputs("]}",stdout);
     }fputs("]}",stdout);

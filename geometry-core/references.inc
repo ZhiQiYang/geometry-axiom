@@ -210,7 +210,7 @@ static bool reference_eval_text(ReferenceEval *ctx, const GuideLine *g, const ch
     const char *p=expression;
     Coord sum=0,den=1; int terms=0;
     bool exact=strstr(expression,"param:")!=NULL;
-    ParamValue total={0,1,1};
+    GeoQuantity total={0,1,1};
     if (!*p) return false;
     while (*p) {
         int sign=1;
@@ -236,7 +236,7 @@ static bool reference_eval_text(ReferenceEval *ctx, const GuideLine *g, const ch
             num*=sign;
         }
         if(exact){
-            ParamValue quantity={0,1,1},coefficient={num,d,0},term_value;ParameterRef ref={0};
+            GeoQuantity quantity={0,1,1},coefficient={num,d,0},term_value;ParameterRef ref={0};
             if(!strncmp(q,"param:",6)){
                 if(!parameter_ref_parse(q,&ref)||!parameter_value(ctx->world,ref,&quantity))return false;
             }else{if(!reference_quantity(ctx,g,q,&quantity.num))return false;}
