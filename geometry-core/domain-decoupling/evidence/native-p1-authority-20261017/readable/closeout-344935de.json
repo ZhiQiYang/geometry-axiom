@@ -1,0 +1,99 @@
+{
+  "kind": "common-build-gate-failed-stop-before-focused",
+  "source": "344935de58ec936645f4e6b7058b8ee878f735fe",
+  "tree": "fb894563301a249e16c0ff988e11ffa51ece9994",
+  "started_utc": "2026-10-16T17:01:43.510696+00:00",
+  "finished_utc": "2026-10-16T17:02:10.221562+00:00",
+  "gate_status": "FAIL",
+  "actual_gate_stages": [
+    {
+      "stage": "kernel-only-common-objects",
+      "status": "PASS",
+      "started_utc": "2026-10-16T17:01:46.046916+00:00",
+      "finished_utc": "2026-10-16T17:02:04.301679+00:00"
+    },
+    {
+      "stage": "default-common-objects",
+      "status": "PASS",
+      "started_utc": "2026-10-16T17:02:04.354603+00:00",
+      "finished_utc": "2026-10-16T17:02:09.379716+00:00"
+    },
+    {
+      "stage": "actual-bridge-compile-link",
+      "status": "FAIL"
+    }
+  ],
+  "unrun_gate_stages": [
+    "actual-cli-compile-link",
+    "actual-model-base-compile-link"
+  ],
+  "focused_planned_methods": 121,
+  "focused_actual_methods": 0,
+  "focused_unrun_methods": 121,
+  "focused_status": "UNRUN_COMMON_BUILD_GATE_FAILED",
+  "focused_modules": [
+    "tests.test_geo261_assembly_graph_product",
+    "tests.test_geo261_definition_sources",
+    "tests.test_geo261_definition_graph_product",
+    "tests.test_geo261_enclosure_sources",
+    "tests.test_geo261_enclosure_product",
+    "tests.test_geo261_region_key_sources",
+    "tests.test_geo261_grid_sources",
+    "tests.test_geo261_grid_definitions_product",
+    "tests.test_geo261_engineering_sources",
+    "tests.test_geo261_derived_policy_sources",
+    "tests.test_geo261_derived_policy_graph_product",
+    "tests.test_geo261_contact_sources",
+    "tests.test_geo261_native_sources"
+  ],
+  "deferred_new_methods": 75,
+  "failure_summary": "reference_sources.inc:329 calls app_eng_version_store before its declaration. versions_adapter.inc:3 later supplies a conflicting pointer-returning type. The actual bridge C compile fails under unchanged -Werror=implicit-function-declaration.",
+  "exact_source_symbol_matches": [
+    {
+      "path": "current_geometry.c",
+      "line": 7511,
+      "text": "#include \"geometry-core/references.inc\""
+    },
+    {
+      "path": "current_geometry.c",
+      "line": 7513,
+      "text": "#include \"geometry-core/engineering.inc\""
+    },
+    {
+      "path": "geometry-app/native/reference_sources.inc",
+      "line": 329,
+      "text": "    ctx->version_sources=geo_version_sources_register(ctx->sources,app_eng_version_store(ctx->world),APP_SOURCE_VERSION);"
+    },
+    {
+      "path": "geometry-app/native/versions_adapter.inc",
+      "line": 3,
+      "text": "static GeoVersionStore *app_eng_version_store(const World *world)"
+    },
+    {
+      "path": "geometry-core/engineering.inc",
+      "line": 27,
+      "text": "{World *w=(World *)world;WoodEngineeringContext c={&w->wood.engineering,w,g_engineering_error,sizeof g_engineering_error,app_eng_placement,app_eng_target,app_eng_named,app_eng_parameter,app_eng_owned,app_eng_write,app_eng_serializable};c.versions=app_eng_version_store(w);WoodEngineeringSources *sources=app_engineering_sources(w);if(sources)wood_engineering_sources_bind(sources,&c);return c;}"
+    }
+  ],
+  "receipt": "D:\\geometry-axiom-work\\geo261-evidence\\p1\\build-gate-344935de-v1\\result\\summary.json",
+  "receipt_sha256": "3a3101da602fbba5f9d4774b5d757572b045ef99730d1aaf3730717a1119028f",
+  "compiler_log_receipts": {
+    "D:\\geometry-axiom-work\\geo261-evidence\\p1\\build-gate-344935de-v1\\result\\kernel-only-common-objects-commands.json": {
+      "sha256": "7008ce4e73a365640a42b69557cb757f19c334059168c12bca9dfe657d08f4e3",
+      "command_entries": 28
+    },
+    "D:\\geometry-axiom-work\\geo261-evidence\\p1\\build-gate-344935de-v1\\result\\default-common-objects-commands.json": {
+      "sha256": "1dfa1930a980ec33f2516e6b0fa63f11fe0cd91b86372d4c6a7dc9260e0e10a7",
+      "command_entries": 58
+    }
+  },
+  "preserved_build_artifact_groups": [
+    "kernel-only-common-objects",
+    "default-common-objects"
+  ],
+  "source_unchanged": true,
+  "runners_unchanged": true,
+  "no_focused_launcher_invoked": true,
+  "prior_results_immutable": true,
+  "limits": "No focused methods, full run_all, PF3, native6, new75, compatibility or browser execution; prior PASS remains at its original source SHA."
+}
