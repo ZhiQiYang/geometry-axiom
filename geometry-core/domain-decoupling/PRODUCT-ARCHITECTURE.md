@@ -16,7 +16,7 @@ runtime import blocking, mutation receipts, browser acceptance, or SSOT checks.
 
 ## Complete inventory and responsibilities
 
-The current inventory contains 567 executable files: 330 owned sources and 237
+The current inventory contains 573 executable files: 332 owned sources and 241
 individually named exclusions. The five complete roots are `geometry-core`,
 `geometry-app`, `geometry-templates`, `geometry-web`, and `geometry-guide`.
 `current_geometry.c` is an additional standalone source. The real
@@ -27,11 +27,11 @@ New executable files anywhere under these roots fail until accounted for.
 | Layer | Files | Actual responsibility |
 |---|---:|---|
 | K | 69 | Public neutral C stores/evaluators/source/transaction APIs and the Python geometry kernel, including their private implementation headers |
-| W | 65 | Woodworking policy, material/recipe interpretation, construction, layout, support and presentation; rectangular-grid second-template witness |
+| W | 67 | Woodworking policy, material/recipe interpretation, construction, layout, support and presentation; rectangular-grid second-template witness |
 | H | 190 | Native World/scene/command/transaction adapters and composition, Python application and compatibility facades, browser/server UI, guide authoring, and workspace tooling |
 | vendor | 6 | Individually digest-locked browser PDF and ZIP dependencies, accessible only from H |
 
-The 330 sources contain 187 C/header/include files, 75 Python files, 64 JavaScript
+The 332 sources contain 189 C/header/include files, 75 Python files, 64 JavaScript
 files, and 4 HTML files. The canonical self-contained axiom reader and its
 generator are included. The separate work-manager is included as H tooling,
 although its own instructions distinguish it from the Geometry product UI.
@@ -45,7 +45,7 @@ dependency scanning alone cannot prove that every remaining H function is free
 of misplaced domain policy. It must not be cited as that stronger result.
 
 All exclusions have an exact path, individual reason, and SHA-256 using explicitly
-declared CRLF-to-LF normalization. There are 108 historical evidence programs,
+declared CRLF-to-LF normalization. There are 112 historical evidence programs,
 38 other documentation/reproduction/snapshot programs, 66 dedicated test drivers,
 and 25 engineering-spec prototype files. The prototype's `AGENTS.md` explicitly
 states it is not the production application. The manifest has no directory
@@ -118,7 +118,7 @@ responsibilities without changing any previous classification, scanner guard,
 test or product source. The final scan and 18-test run require this HEAD and
 every source input hash to remain unchanged throughout verification.
 
-The latest linear-definition/version-source refresh first ran the previous
+The preceding linear-definition/version-source refresh first ran the previous
 manifest through the actual CLI against source HEAD
 `d371420ec1922adb3df382a6cc2799b39bef7370`. It exited 1 with
 `SOURCE_UNREGISTERED` for `geometry-core/kernel/linear_definition_sources.c`.
@@ -133,6 +133,33 @@ returned complete definition. Their individually reviewed K responsibilities do
 not introduce a W/H dependency. This refresh changes only the manifest and its
 derived scan, report and receipt, retaining every previous classification,
 exclusion and scanner guard.
+
+The latest grid-codec and historical-evidence refresh freezes source HEAD
+`4a13551cc8aac3e116b53486fe44637c07374d49`. The previous manifest's actual CLI
+run exited 1 with `SOURCE_UNREGISTERED` for the new sealed evidence pack's
+`extract_evidence.py`. Independent enumeration found exactly two new W sources,
+`grid_definition_codec.c` and `.h`, plus four historical Python publication
+helpers. The codec owns woodworking grid authored/value wire formats for
+systems, bindings, applications and rules; its W schemas and cache semantics
+remain outside K. Each historical helper receives an individual exclusion,
+purpose and LF-normalized hash, checked against its sealed package's raw-byte
+digest. No directory exemption was added. The new closure also captures 29
+changed previously sealed inputs; every existing exclusion, vendor and embedded
+route digest remains current.
+
+The same refresh inventories concrete W guards from the actual W-owned native
+C/header/include files. It preserves all 751 prior forbidden identifiers and
+10 prior forbidden strings, adding 162 `Wood*`/`WOOD_*`/`wood_*` executable
+identifiers and 45 `wood`/`woodworking` namespaced string literals, for totals of
+913 and 55. These include all eight public codec functions, its three schema/
+capacity macros, `wood_grid_decode_system`, and
+`woodworking.face-application-check/1`. Neutral `Geo*`/`GEO_*` and generic names
+were not added. The receipt records the exact additions and their source-file
+provenance. Separate static probes pass the actual K `geometry.c` text with one
+added identifier or string at a time through the unchanged scanner: all 207 are
+rejected with the expected guard, while a neutral identifier remains accepted.
+These in-memory probes neither modify source/test files nor increase the
+18-test product-suite count.
 
 The manifest, scan, report and receipt are excluded from the product
 input closure because they are derived audit artifacts. Manifest and scan are
@@ -159,9 +186,9 @@ K tree. This is static missing-template evidence only. It neither compiles C nor
 executes Python product modules, and must not be reported as native/runtime
 no-template validation. Native execution remains in the serialized P1 queue.
 
-At the latest sealed source HEAD, the actual CLI scan exits 0 with 330 owned sources,
-790 dependency edges and no diagnostics; all 18 product tests pass with no
-skips. Independent enumeration after the run matches every one of the 567
+At the latest sealed source HEAD, the actual CLI scan exits 0 with 332 owned sources,
+796 dependency edges and no diagnostics; all 18 product tests pass with no
+skips. Independent enumeration after the run matches every one of the 573
 sealed source hashes. The generic scanner's previous 205-test result (204 pass,
 one Windows symlink-permission skip) is reused only because both its scanner
 and test source hashes remain unchanged; the receipt records the previous

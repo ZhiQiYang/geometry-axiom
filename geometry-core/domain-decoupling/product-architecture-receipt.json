@@ -1,17 +1,17 @@
 {
   "schema": "geometry-product-architecture-receipt/1",
-  "createdUtc": "2026-10-16T17:36:55.562677+00:00",
+  "createdUtc": "2026-10-16T22:17:06.349286+00:00",
   "basis": "Committed integration product sources at sourceBaseHead, plus this reviewed manifest/scan/report/receipt refresh.",
-  "sourceBaseHead": "d371420ec1922adb3df382a6cc2799b39bef7370",
-  "headObservedBefore": "d371420ec1922adb3df382a6cc2799b39bef7370",
-  "headObservedAfter": "d371420ec1922adb3df382a6cc2799b39bef7370",
+  "sourceBaseHead": "4a13551cc8aac3e116b53486fe44637c07374d49",
+  "headObservedBefore": "4a13551cc8aac3e116b53486fe44637c07374d49",
+  "headObservedAfter": "4a13551cc8aac3e116b53486fe44637c07374d49",
   "headBinding": "The source closure excludes derived audit artifacts; a later audit-only commit does not recursively change the certified product inputs.",
   "hashMode": "sha256 after CRLF-to-LF normalization",
-  "manifestSha256": "fb4d70a23e75b3171551be581832810affd1a942f64ee54fac34ec8c276e8446",
+  "manifestSha256": "cea5ca54fd1adeeb19653a29e1ccfc097d9e3f8daf30b7cfcb6cb3b3a747aff9",
   "scannerSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
-  "scanSha256": "aa6cb8af2e4bc6635626159b7948d6b485377eb1c6a4216186b81d04ff25e7cd",
-  "reportSha256": "75092c951bcd418d5faaba2cf70e54209a632ee361b543f78cf499b486823331",
-  "inputClosureSha256": "78121d86bcafb9b3af424155707de32478d6acae9d8dbcd2239c690c54f96889",
+  "scanSha256": "c0898f1fd0fd2f53529cf14c47e283e80c3c66fe9768143c3c44c0849de89ec8",
+  "reportSha256": "5d691140362dbc5e8a2892ea7ca955fe864651b0b4f9361341fa1ed3582d7cf1",
+  "inputClosureSha256": "a82191343789b02ad5385e3aaffcb7557876c84f537224449c48a33d2aaa1905",
   "inputClosureHashSerialization": "SHA-256 of UTF-8 JSON for the path-sorted inputs array, with ensure_ascii=false and separators=(comma,colon); each entry has path then sha256, and no trailing newline.",
   "inputClosureExcludes": [
     "geometry-core/domain-decoupling/product-architecture.json",
@@ -21,38 +21,40 @@
   ],
   "inputClosureExclusionReason": "These non-executable audit artifacts are not product source inputs. Manifest/scan are hashed separately; the receipt never hashes itself.",
   "counts": {
-    "executableFiles": 567,
-    "ownedSources": 330,
-    "exclusions": 237,
-    "edges": 790,
+    "executableFiles": 573,
+    "ownedSources": 332,
+    "exclusions": 241,
+    "edges": 796,
     "diagnostics": 0,
     "layers": {
       "H": 190,
       "K": 69,
-      "W": 65,
+      "W": 67,
       "vendor": 6
     },
     "languages": {
-      "c": 187,
+      "c": 189,
       "html": 4,
       "javascript": 64,
       "python": 75
-    }
+    },
+    "forbiddenIdentifiers": 913,
+    "forbiddenStrings": 55
   },
   "manifestRefresh": {
-    "previousManifestSha256": "740c40ef00013c2ed20b27d6af274ecf624bdd2bb4a40b4b34daee1ee38302ad",
-    "previousReceiptSha256": "0606b3545910a41e46cc1711f5933026057643edcc288c4975054f90152bbd42",
-    "previousReceiptCreatedUtc": "2026-10-16T16:23:35.201222+00:00",
-    "firstObservedHead": "d371420ec1922adb3df382a6cc2799b39bef7370",
+    "previousManifestSha256": "fb4d70a23e75b3171551be581832810affd1a942f64ee54fac34ec8c276e8446",
+    "previousReceiptSha256": "7afc80f50c15045c6d7ce904f55efeb8511dd166ca9905cb1b7c1ed61ed1c6a9",
+    "previousReceiptCreatedUtc": "2026-10-16T17:36:55.562677+00:00",
+    "firstObservedHead": "4a13551cc8aac3e116b53486fe44637c07374d49",
     "priorManifestCheck": {
       "command": "python -B tests/architecture_contract.py --root . --manifest geometry-core/domain-decoupling/product-architecture.json",
       "exitCode": 1,
-      "startedUtc": "2026-10-16T17:33:46.565509+00:00",
-      "finishedUtc": "2026-10-16T17:33:50.257646+00:00",
-      "seconds": 3.688,
+      "startedUtc": "2026-10-16T22:12:36.693804+00:00",
+      "finishedUtc": "2026-10-16T22:12:46.663117+00:00",
+      "seconds": 9.969,
       "diagnostics": [
         {
-          "path": "geometry-core/kernel/linear_definition_sources.c",
+          "path": "geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/extract_evidence.py",
           "line": 1,
           "code": "SOURCE_UNREGISTERED",
           "message": "executable source omitted from the complete manifest",
@@ -61,44 +63,1235 @@
         }
       ],
       "code": "SOURCE_UNREGISTERED",
-      "path": "geometry-core/kernel/linear_definition_sources.c"
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/extract_evidence.py"
     },
     "addedSources": [
       {
-        "path": "geometry-core/kernel/linear_definition_sources.c",
-        "layer": "K",
+        "path": "geometry-templates/woodworking/native/grid_definition_codec.c",
+        "layer": "W",
         "language": "c",
-        "purpose": "Neutral candidate-local datum/guide authored-definition provider and portable codec; preserves expression mode, completeness, ordered signed terms and opaque source keys without evaluating quantities"
+        "purpose": "Woodworking grid authored/value wire codec for systems, bindings, applications and rules; bounded portable field decoding and staged value encoding preserve W-specific schemas and authored cache semantics"
       },
       {
-        "path": "geometry-core/kernel/linear_definition_sources.h",
-        "layer": "K",
+        "path": "geometry-templates/woodworking/native/grid_definition_codec.h",
+        "layer": "W",
         "language": "c",
-        "purpose": "Public neutral datum/guide authored-definition source and codec API; candidate-local registration and complete definition inventory without evaluating terms or positions"
+        "purpose": "Public woodworking grid definition/value codec API and bounded schema identities; exposes W application wire semantics over typed neutral geometry values without moving template interpretation into K"
+      }
+    ],
+    "addedExclusions": [
+      {
+        "path": "geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/extract_evidence.py",
+        "reason": "Exact-byte extractor retained in the sealed historical native-p1-authority-20261017 evidence pack; reconstructs catalogued evidence only and is not a product-loaded module or current product entry point.",
+        "sha256": "ac626b84cc3cc6d029ecb95cceb2d3098b3a8cf084e8f8b69a3e98bd9d7e90f7",
+        "hashMode": "lf"
       },
       {
-        "path": "geometry-core/kernel/version_sources.c",
-        "layer": "K",
-        "language": "c",
-        "purpose": "Neutral immutable-version definition/field provider and portable codec; preserves complete opaque identity, content, fingerprint, schema and typed fields, deriving field quantities from the returned typed definition"
+        "path": "geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/finalize_publication.py",
+        "reason": "Checksum sealing helper retained in the sealed historical native-p1-authority-20261017 evidence pack; freezes evidence files only and is not a product-loaded module or current product entry point.",
+        "sha256": "ee4ae0bda9ee75791eedd88eacf6b8183a65cf88e9dfda22fc87b308e5199e29",
+        "hashMode": "lf"
       },
       {
-        "path": "geometry-core/kernel/version_sources.h",
-        "layer": "K",
-        "language": "c",
-        "purpose": "Public neutral immutable-version source and codec API; complete definitions, typed field source identities and candidate-local immutable-store registration without template-specific interpretation"
+        "path": "geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/prepare_publication.py",
+        "reason": "Historical evidence publication helper retained in the sealed native-p1-authority-20261017 pack; copies and hashes closed receipts without running product code and is not a product-loaded module or current product entry point.",
+        "sha256": "a48b55afe3ae0b4bd0a3bc44dba3161f97165ce1a745e4dafb5dbb3f02c8db8a",
+        "hashMode": "lf"
+      },
+      {
+        "path": "geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/verify_publication.py",
+        "reason": "Standalone byte/provenance validator retained in the sealed historical native-p1-authority-20261017 evidence pack; validates historical records without product execution and is not a product-loaded module or current product entry point.",
+        "sha256": "e2e7bd1465803e01b299f242a7cf5afbca8b509bb824473a9a72d04b9cbc47c7",
+        "hashMode": "lf"
+      }
+    ],
+    "sealedEvidenceExclusions": {
+      "directory": "geometry-core/domain-decoupling/evidence/native-p1-authority-20261017",
+      "packageManifestSha256Raw": "34fdbc368708b6633ca6891f2a9af9203ee4dcedfd461b3ae46bffb2a01233e2",
+      "scripts": [
+        {
+          "path": "geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/extract_evidence.py",
+          "rawSha256": "ac626b84cc3cc6d029ecb95cceb2d3098b3a8cf084e8f8b69a3e98bd9d7e90f7",
+          "lfSha256": "ac626b84cc3cc6d029ecb95cceb2d3098b3a8cf084e8f8b69a3e98bd9d7e90f7",
+          "sealedRawSha256": "ac626b84cc3cc6d029ecb95cceb2d3098b3a8cf084e8f8b69a3e98bd9d7e90f7"
+        },
+        {
+          "path": "geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/finalize_publication.py",
+          "rawSha256": "ee4ae0bda9ee75791eedd88eacf6b8183a65cf88e9dfda22fc87b308e5199e29",
+          "lfSha256": "ee4ae0bda9ee75791eedd88eacf6b8183a65cf88e9dfda22fc87b308e5199e29",
+          "sealedRawSha256": "ee4ae0bda9ee75791eedd88eacf6b8183a65cf88e9dfda22fc87b308e5199e29"
+        },
+        {
+          "path": "geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/prepare_publication.py",
+          "rawSha256": "a48b55afe3ae0b4bd0a3bc44dba3161f97165ce1a745e4dafb5dbb3f02c8db8a",
+          "lfSha256": "a48b55afe3ae0b4bd0a3bc44dba3161f97165ce1a745e4dafb5dbb3f02c8db8a",
+          "sealedRawSha256": "a48b55afe3ae0b4bd0a3bc44dba3161f97165ce1a745e4dafb5dbb3f02c8db8a"
+        },
+        {
+          "path": "geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/verify_publication.py",
+          "rawSha256": "e2e7bd1465803e01b299f242a7cf5afbca8b509bb824473a9a72d04b9cbc47c7",
+          "lfSha256": "e2e7bd1465803e01b299f242a7cf5afbca8b509bb824473a9a72d04b9cbc47c7",
+          "sealedRawSha256": "e2e7bd1465803e01b299f242a7cf5afbca8b509bb824473a9a72d04b9cbc47c7"
+        }
+      ]
+    },
+    "policyGuards": {
+      "method": "Lex actual W-owned native C/header/include files, selecting only Wood*/WOOD_*/wood_* executable identifiers and wood/woodworking-prefixed decoded string literals; retain every previous guard. Neutral Geo*/GEO_* and generic names are not added.",
+      "auditedFiles": [
+        "geometry-templates/rectangular-grid/rectangular_grid.c",
+        "geometry-templates/rectangular-grid/rectangular_grid.h",
+        "geometry-templates/woodworking/native/assembly.c",
+        "geometry-templates/woodworking/native/assembly.h",
+        "geometry-templates/woodworking/native/assembly_sources.c",
+        "geometry-templates/woodworking/native/assembly_sources.h",
+        "geometry-templates/woodworking/native/boundary_policy.c",
+        "geometry-templates/woodworking/native/boundary_policy.h",
+        "geometry-templates/woodworking/native/contact_sources.c",
+        "geometry-templates/woodworking/native/contact_sources.h",
+        "geometry-templates/woodworking/native/contact_world.c",
+        "geometry-templates/woodworking/native/contact_world.h",
+        "geometry-templates/woodworking/native/contacts.c",
+        "geometry-templates/woodworking/native/contacts.h",
+        "geometry-templates/woodworking/native/cut_list.c",
+        "geometry-templates/woodworking/native/cut_list.h",
+        "geometry-templates/woodworking/native/definition_sources.c",
+        "geometry-templates/woodworking/native/definition_sources.h",
+        "geometry-templates/woodworking/native/derived_placement.c",
+        "geometry-templates/woodworking/native/derived_placement.h",
+        "geometry-templates/woodworking/native/document.h",
+        "geometry-templates/woodworking/native/domain_values.h",
+        "geometry-templates/woodworking/native/engineering.c",
+        "geometry-templates/woodworking/native/engineering.h",
+        "geometry-templates/woodworking/native/engineering_operations.c",
+        "geometry-templates/woodworking/native/engineering_operations.h",
+        "geometry-templates/woodworking/native/engineering_sources.c",
+        "geometry-templates/woodworking/native/engineering_sources.h",
+        "geometry-templates/woodworking/native/finish.c",
+        "geometry-templates/woodworking/native/finish.h",
+        "geometry-templates/woodworking/native/finish_sources.c",
+        "geometry-templates/woodworking/native/finish_sources.h",
+        "geometry-templates/woodworking/native/grid_application.c",
+        "geometry-templates/woodworking/native/grid_application.h",
+        "geometry-templates/woodworking/native/grid_cells.c",
+        "geometry-templates/woodworking/native/grid_definition_codec.c",
+        "geometry-templates/woodworking/native/grid_definition_codec.h",
+        "geometry-templates/woodworking/native/grid_rules.c",
+        "geometry-templates/woodworking/native/grid_sources.c",
+        "geometry-templates/woodworking/native/grid_sources.h",
+        "geometry-templates/woodworking/native/member_declaration.c",
+        "geometry-templates/woodworking/native/member_declaration.h",
+        "geometry-templates/woodworking/native/member_placement.h",
+        "geometry-templates/woodworking/native/member_reference.c",
+        "geometry-templates/woodworking/native/member_reference.h",
+        "geometry-templates/woodworking/native/members.c",
+        "geometry-templates/woodworking/native/members.h",
+        "geometry-templates/woodworking/native/obstacles.h",
+        "geometry-templates/woodworking/native/panel_layout.c",
+        "geometry-templates/woodworking/native/panel_layout.h",
+        "geometry-templates/woodworking/native/panel_support.c",
+        "geometry-templates/woodworking/native/panel_support.h",
+        "geometry-templates/woodworking/native/section_profile.c",
+        "geometry-templates/woodworking/native/section_profile.h",
+        "geometry-templates/woodworking/native/section_profile_sources.c",
+        "geometry-templates/woodworking/native/section_profile_sources.h",
+        "geometry-templates/woodworking/native/supports.c",
+        "geometry-templates/woodworking/native/supports.h",
+        "geometry-templates/woodworking/native/world_validation.c",
+        "geometry-templates/woodworking/native/world_validation.h"
+      ],
+      "identifierCountBefore": 751,
+      "identifierCountAfter": 913,
+      "stringCountBefore": 10,
+      "stringCountAfter": 55,
+      "addedIdentifiers": [
+        "WOOD_BINDING_SOURCE_DEFINITION",
+        "WOOD_BINDING_SOURCE_EFFECTIVE",
+        "WOOD_BINDING_SOURCE_REQUEST_DEFINITION",
+        "WOOD_BINDING_SOURCE_REQUEST_VALUE",
+        "WOOD_ENGINEERING_BINDING_CONTENT_MAX",
+        "WOOD_ENGINEERING_BINDING_KEY_MAX",
+        "WOOD_FINISH_SOURCE_BOUNDARY_POLICY",
+        "WOOD_FINISH_SOURCE_DERIVED_POLICY",
+        "WOOD_GRID_APPLICATION_VALUE_SCHEMA",
+        "WOOD_GRID_CODEC_MAX_BYTES",
+        "WOOD_GRID_SOURCE_RULE_DEFINITION",
+        "WOOD_GRID_SYSTEM_VALUE_SCHEMA",
+        "WOOD_SP_SOURCE_MEMBER_PAIR_CHECK",
+        "WOOD_VERSION_METADATA_MAX",
+        "WoodEngineeringBindingSourceKey",
+        "WoodEngineeringBindingSourceKind",
+        "WoodFinishKeyMatch",
+        "WoodFinishKeySelection",
+        "WoodFinishPolicyEdge",
+        "WoodFinishPolicyReader",
+        "WoodGridReader",
+        "WoodGridWriter",
+        "WoodSectionPairSource",
+        "WoodSectionProfilePairKey",
+        "wood_asm_binding_slot_values",
+        "wood_assembly_apply_slot",
+        "wood_assembly_check_read",
+        "wood_assembly_check_value",
+        "wood_assembly_decode_instance",
+        "wood_assembly_generated_read",
+        "wood_assembly_generated_record",
+        "wood_assembly_generated_value",
+        "wood_assembly_instance_definition_parse",
+        "wood_assembly_instance_hook",
+        "wood_assembly_load_binding",
+        "wood_assembly_load_generated",
+        "wood_assembly_load_instance",
+        "wood_assembly_load_rule",
+        "wood_assembly_read_json",
+        "wood_assembly_record",
+        "wood_assembly_rule_parse",
+        "wood_assembly_slot_record_hook",
+        "wood_assembly_slot_text",
+        "wood_assembly_sources_owned",
+        "wood_binding_read_u32",
+        "wood_binding_signed32",
+        "wood_binding_source_read",
+        "wood_binding_source_write",
+        "wood_binding_target_read",
+        "wood_binding_target_write",
+        "wood_binding_u32",
+        "wood_dp_edge_key_direct",
+        "wood_dp_fixities_direct",
+        "wood_eng_application_decode",
+        "wood_eng_application_direct",
+        "wood_eng_material_decode",
+        "wood_eng_material_parse",
+        "wood_eng_read_version",
+        "wood_eng_version_view_direct",
+        "wood_eng_view_field",
+        "wood_eng_view_integer",
+        "wood_engineering_binding_decode",
+        "wood_engineering_binding_encode",
+        "wood_engineering_binding_source_decode",
+        "wood_engineering_binding_source_ref",
+        "wood_engineering_sources_definitions",
+        "wood_engineering_sources_metadata",
+        "wood_engineering_version_metadata_decode",
+        "wood_engineering_version_metadata_encode",
+        "wood_finish_copy_region",
+        "wood_finish_derived_geometry",
+        "wood_finish_encode_policy",
+        "wood_finish_hex",
+        "wood_finish_invalid_definition",
+        "wood_finish_key_hook",
+        "wood_finish_load_definition",
+        "wood_finish_match_key",
+        "wood_finish_number",
+        "wood_finish_panel_value",
+        "wood_finish_policy",
+        "wood_finish_policy_u32",
+        "wood_finish_policy_utf8",
+        "wood_finish_policy_walk",
+        "wood_finish_put32",
+        "wood_finish_resolve_hook",
+        "wood_finish_select_key",
+        "wood_finish_sources_definitions",
+        "wood_finish_sources_derived_definition",
+        "wood_finish_sources_edge_key",
+        "wood_finish_sources_edge_resolve",
+        "wood_finish_sources_fill_definition",
+        "wood_finish_sources_surface_definition",
+        "wood_finish_surface_decode",
+        "wood_finish_surface_encode",
+        "wood_grid_application_value",
+        "wood_grid_binding_definition_depend",
+        "wood_grid_codec_application_prefix",
+        "wood_grid_codec_axis",
+        "wood_grid_codec_begin",
+        "wood_grid_codec_bool",
+        "wood_grid_codec_finish",
+        "wood_grid_codec_i64",
+        "wood_grid_codec_int",
+        "wood_grid_codec_rule",
+        "wood_grid_codec_size",
+        "wood_grid_codec_system",
+        "wood_grid_codec_text",
+        "wood_grid_codec_u32",
+        "wood_grid_codec_u64",
+        "wood_grid_codec_unsigned",
+        "wood_grid_codec_utf8",
+        "wood_grid_codec_write_axis",
+        "wood_grid_codec_write_number",
+        "wood_grid_codec_write_rule",
+        "wood_grid_codec_write_text",
+        "wood_grid_decode_application",
+        "wood_grid_decode_application_value",
+        "wood_grid_decode_binding",
+        "wood_grid_decode_rule",
+        "wood_grid_decode_system",
+        "wood_grid_decode_system_value",
+        "wood_grid_definition_depend",
+        "wood_grid_encode_application_value",
+        "wood_grid_encode_system_value",
+        "wood_grid_install_application",
+        "wood_grid_install_binding",
+        "wood_grid_install_system",
+        "wood_grid_parameter_definitions",
+        "wood_grid_policy_definitions",
+        "wood_grid_publish_application_cache",
+        "wood_grid_publish_system_cache",
+        "wood_grid_rule_definition_hook",
+        "wood_grid_rule_definition_source_ref",
+        "wood_grid_rules_valid_hook",
+        "wood_grid_rules_world_valid_direct",
+        "wood_grid_sources_definition",
+        "wood_grid_sources_definitions",
+        "wood_grid_system_value",
+        "wood_grid_value_bytes",
+        "wood_grid_world_valid_direct",
+        "wood_grid_world_valid_hook",
+        "wood_source_application_read",
+        "wood_source_version_definition",
+        "wood_source_version_field",
+        "wood_source_version_view",
+        "wood_sp_pair_source_decode",
+        "wood_sp_pair_source_ref",
+        "wood_sp_parse_member",
+        "wood_sp_parse_profile",
+        "wood_sp_parse_run",
+        "wood_sp_source_context_matches",
+        "wood_sp_source_invalid_definition",
+        "wood_sp_source_load_definition",
+        "wood_sp_source_member_cache",
+        "wood_sp_source_pair_evaluate",
+        "wood_sp_source_pair_region",
+        "wood_sp_source_pair_root",
+        "wood_sp_source_rectangle",
+        "wood_sp_source_region_copy",
+        "wood_sp_source_run_cache",
+        "wood_sp_source_schema",
+        "wood_sp_sources_complete"
+      ],
+      "addedStrings": [
+        "wood-assembly-sources/2",
+        "wood-contact-sources/1",
+        "wood-finish-sources/1",
+        "wood-grid-sources/1",
+        "wood-section-profile-sources/1",
+        "wood.assembly",
+        "wood.assembly.binding-result/1",
+        "wood.assembly.binding/1",
+        "wood.assembly.check-result/1",
+        "wood.assembly.generated/1",
+        "wood.assembly.instance/1",
+        "wood.assembly.mapping/1",
+        "wood.assembly.result/1",
+        "wood.assembly.rule/1",
+        "wood.assembly.slot/1",
+        "wood.contact",
+        "wood.contact.stops/1",
+        "wood.finish",
+        "wood.finish.boundary-policy/1",
+        "wood.finish.definition/1",
+        "wood.finish.derived-placement/1",
+        "wood.finish.derived-policy/1",
+        "wood.finish.panel-fill/1",
+        "wood.grid",
+        "wood.grid.application-value/1",
+        "wood.grid.application/1",
+        "wood.grid.binding/1",
+        "wood.grid.rule/1",
+        "wood.grid.system-value/1",
+        "wood.grid.system/1",
+        "wood.section-profile",
+        "wood.section-profile.definition/1",
+        "wood.section-profile.member/1",
+        "wood.section-profile.run/1",
+        "woodworking.dimension-binding",
+        "woodworking.dimension-binding/2",
+        "woodworking.dimension-source",
+        "woodworking.dimension-source/1",
+        "woodworking.engineering-definition",
+        "woodworking.engineering-definition/1",
+        "woodworking.face-application-check/1",
+        "woodworking.face-application/1",
+        "woodworking.material-version/1",
+        "woodworking.method-version/1",
+        "woodworking.version-metadata/1"
+      ],
+      "identifierEvidence": {
+        "WOOD_BINDING_SOURCE_DEFINITION": [
+          "geometry-templates/woodworking/native/engineering_sources.c",
+          "geometry-templates/woodworking/native/engineering_sources.h",
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "WOOD_BINDING_SOURCE_EFFECTIVE": [
+          "geometry-templates/woodworking/native/engineering_sources.c",
+          "geometry-templates/woodworking/native/engineering_sources.h"
+        ],
+        "WOOD_BINDING_SOURCE_REQUEST_DEFINITION": [
+          "geometry-templates/woodworking/native/engineering_sources.c",
+          "geometry-templates/woodworking/native/engineering_sources.h"
+        ],
+        "WOOD_BINDING_SOURCE_REQUEST_VALUE": [
+          "geometry-templates/woodworking/native/engineering_sources.c",
+          "geometry-templates/woodworking/native/engineering_sources.h"
+        ],
+        "WOOD_ENGINEERING_BINDING_CONTENT_MAX": [
+          "geometry-templates/woodworking/native/engineering_sources.c",
+          "geometry-templates/woodworking/native/engineering_sources.h"
+        ],
+        "WOOD_ENGINEERING_BINDING_KEY_MAX": [
+          "geometry-templates/woodworking/native/engineering_sources.c",
+          "geometry-templates/woodworking/native/engineering_sources.h"
+        ],
+        "WOOD_FINISH_SOURCE_BOUNDARY_POLICY": [
+          "geometry-templates/woodworking/native/finish_sources.c",
+          "geometry-templates/woodworking/native/finish_sources.h"
+        ],
+        "WOOD_FINISH_SOURCE_DERIVED_POLICY": [
+          "geometry-templates/woodworking/native/finish_sources.c",
+          "geometry-templates/woodworking/native/finish_sources.h"
+        ],
+        "WOOD_GRID_APPLICATION_VALUE_SCHEMA": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c",
+          "geometry-templates/woodworking/native/grid_definition_codec.h",
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "WOOD_GRID_CODEC_MAX_BYTES": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c",
+          "geometry-templates/woodworking/native/grid_definition_codec.h",
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "WOOD_GRID_SOURCE_RULE_DEFINITION": [
+          "geometry-templates/woodworking/native/grid_sources.c",
+          "geometry-templates/woodworking/native/grid_sources.h"
+        ],
+        "WOOD_GRID_SYSTEM_VALUE_SCHEMA": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c",
+          "geometry-templates/woodworking/native/grid_definition_codec.h",
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "WOOD_SP_SOURCE_MEMBER_PAIR_CHECK": [
+          "geometry-templates/woodworking/native/section_profile_sources.c",
+          "geometry-templates/woodworking/native/section_profile_sources.h"
+        ],
+        "WOOD_VERSION_METADATA_MAX": [
+          "geometry-templates/woodworking/native/engineering_sources.c",
+          "geometry-templates/woodworking/native/engineering_sources.h"
+        ],
+        "WoodEngineeringBindingSourceKey": [
+          "geometry-templates/woodworking/native/engineering_sources.c",
+          "geometry-templates/woodworking/native/engineering_sources.h",
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "WoodEngineeringBindingSourceKind": [
+          "geometry-templates/woodworking/native/engineering_sources.c",
+          "geometry-templates/woodworking/native/engineering_sources.h"
+        ],
+        "WoodFinishKeyMatch": [
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "WoodFinishKeySelection": [
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "WoodFinishPolicyEdge": [
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "WoodFinishPolicyReader": [
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "WoodGridReader": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c"
+        ],
+        "WoodGridWriter": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c"
+        ],
+        "WoodSectionPairSource": [
+          "geometry-templates/woodworking/native/section_profile_sources.c"
+        ],
+        "WoodSectionProfilePairKey": [
+          "geometry-templates/woodworking/native/section_profile_sources.c",
+          "geometry-templates/woodworking/native/section_profile_sources.h"
+        ],
+        "wood_asm_binding_slot_values": [
+          "geometry-templates/woodworking/native/assembly.c"
+        ],
+        "wood_assembly_apply_slot": [
+          "geometry-templates/woodworking/native/assembly_sources.c"
+        ],
+        "wood_assembly_check_read": [
+          "geometry-templates/woodworking/native/assembly_sources.c"
+        ],
+        "wood_assembly_check_value": [
+          "geometry-templates/woodworking/native/assembly_sources.c"
+        ],
+        "wood_assembly_decode_instance": [
+          "geometry-templates/woodworking/native/assembly_sources.c"
+        ],
+        "wood_assembly_generated_read": [
+          "geometry-templates/woodworking/native/assembly_sources.c"
+        ],
+        "wood_assembly_generated_record": [
+          "geometry-templates/woodworking/native/assembly_sources.c"
+        ],
+        "wood_assembly_generated_value": [
+          "geometry-templates/woodworking/native/assembly_sources.c"
+        ],
+        "wood_assembly_instance_definition_parse": [
+          "geometry-templates/woodworking/native/assembly.c",
+          "geometry-templates/woodworking/native/assembly.h",
+          "geometry-templates/woodworking/native/assembly_sources.c"
+        ],
+        "wood_assembly_instance_hook": [
+          "geometry-templates/woodworking/native/assembly_sources.c"
+        ],
+        "wood_assembly_load_binding": [
+          "geometry-templates/woodworking/native/assembly_sources.c"
+        ],
+        "wood_assembly_load_generated": [
+          "geometry-templates/woodworking/native/assembly_sources.c"
+        ],
+        "wood_assembly_load_instance": [
+          "geometry-templates/woodworking/native/assembly_sources.c"
+        ],
+        "wood_assembly_load_rule": [
+          "geometry-templates/woodworking/native/assembly_sources.c"
+        ],
+        "wood_assembly_read_json": [
+          "geometry-templates/woodworking/native/assembly_sources.c"
+        ],
+        "wood_assembly_record": [
+          "geometry-templates/woodworking/native/assembly_sources.c"
+        ],
+        "wood_assembly_rule_parse": [
+          "geometry-templates/woodworking/native/assembly.c",
+          "geometry-templates/woodworking/native/assembly.h",
+          "geometry-templates/woodworking/native/assembly_sources.c"
+        ],
+        "wood_assembly_slot_record_hook": [
+          "geometry-templates/woodworking/native/assembly_sources.c"
+        ],
+        "wood_assembly_slot_text": [
+          "geometry-templates/woodworking/native/assembly_sources.c"
+        ],
+        "wood_assembly_sources_owned": [
+          "geometry-templates/woodworking/native/assembly_sources.c",
+          "geometry-templates/woodworking/native/assembly_sources.h"
+        ],
+        "wood_binding_read_u32": [
+          "geometry-templates/woodworking/native/engineering_sources.c"
+        ],
+        "wood_binding_signed32": [
+          "geometry-templates/woodworking/native/engineering_sources.c"
+        ],
+        "wood_binding_source_read": [
+          "geometry-templates/woodworking/native/engineering_sources.c"
+        ],
+        "wood_binding_source_write": [
+          "geometry-templates/woodworking/native/engineering_sources.c"
+        ],
+        "wood_binding_target_read": [
+          "geometry-templates/woodworking/native/engineering_sources.c"
+        ],
+        "wood_binding_target_write": [
+          "geometry-templates/woodworking/native/engineering_sources.c"
+        ],
+        "wood_binding_u32": [
+          "geometry-templates/woodworking/native/engineering_sources.c"
+        ],
+        "wood_dp_edge_key_direct": [
+          "geometry-templates/woodworking/native/derived_placement.c",
+          "geometry-templates/woodworking/native/derived_placement.h",
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "wood_dp_fixities_direct": [
+          "geometry-templates/woodworking/native/derived_placement.c",
+          "geometry-templates/woodworking/native/derived_placement.h",
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "wood_eng_application_decode": [
+          "geometry-templates/woodworking/native/engineering.c",
+          "geometry-templates/woodworking/native/engineering.h",
+          "geometry-templates/woodworking/native/engineering_sources.c"
+        ],
+        "wood_eng_application_direct": [
+          "geometry-templates/woodworking/native/engineering.c",
+          "geometry-templates/woodworking/native/engineering.h",
+          "geometry-templates/woodworking/native/engineering_sources.c"
+        ],
+        "wood_eng_material_decode": [
+          "geometry-templates/woodworking/native/engineering.c",
+          "geometry-templates/woodworking/native/engineering.h",
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "wood_eng_material_parse": [
+          "geometry-templates/woodworking/native/engineering.c"
+        ],
+        "wood_eng_read_version": [
+          "geometry-templates/woodworking/native/engineering.c",
+          "geometry-templates/woodworking/native/engineering.h",
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "wood_eng_version_view_direct": [
+          "geometry-templates/woodworking/native/engineering.c",
+          "geometry-templates/woodworking/native/engineering.h",
+          "geometry-templates/woodworking/native/engineering_sources.c"
+        ],
+        "wood_eng_view_field": [
+          "geometry-templates/woodworking/native/engineering.c"
+        ],
+        "wood_eng_view_integer": [
+          "geometry-templates/woodworking/native/engineering.c"
+        ],
+        "wood_engineering_binding_decode": [
+          "geometry-templates/woodworking/native/engineering_sources.c",
+          "geometry-templates/woodworking/native/engineering_sources.h"
+        ],
+        "wood_engineering_binding_encode": [
+          "geometry-templates/woodworking/native/engineering_sources.c",
+          "geometry-templates/woodworking/native/engineering_sources.h"
+        ],
+        "wood_engineering_binding_source_decode": [
+          "geometry-templates/woodworking/native/engineering_sources.c",
+          "geometry-templates/woodworking/native/engineering_sources.h"
+        ],
+        "wood_engineering_binding_source_ref": [
+          "geometry-templates/woodworking/native/engineering_sources.c",
+          "geometry-templates/woodworking/native/engineering_sources.h",
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "wood_engineering_sources_definitions": [
+          "geometry-templates/woodworking/native/engineering_sources.c",
+          "geometry-templates/woodworking/native/engineering_sources.h"
+        ],
+        "wood_engineering_sources_metadata": [
+          "geometry-templates/woodworking/native/engineering_sources.c",
+          "geometry-templates/woodworking/native/engineering_sources.h"
+        ],
+        "wood_engineering_version_metadata_decode": [
+          "geometry-templates/woodworking/native/engineering_sources.c",
+          "geometry-templates/woodworking/native/engineering_sources.h"
+        ],
+        "wood_engineering_version_metadata_encode": [
+          "geometry-templates/woodworking/native/engineering_sources.c",
+          "geometry-templates/woodworking/native/engineering_sources.h"
+        ],
+        "wood_finish_copy_region": [
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "wood_finish_derived_geometry": [
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "wood_finish_encode_policy": [
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "wood_finish_hex": [
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "wood_finish_invalid_definition": [
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "wood_finish_key_hook": [
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "wood_finish_load_definition": [
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "wood_finish_match_key": [
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "wood_finish_number": [
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "wood_finish_panel_value": [
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "wood_finish_policy": [
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "wood_finish_policy_u32": [
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "wood_finish_policy_utf8": [
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "wood_finish_policy_walk": [
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "wood_finish_put32": [
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "wood_finish_resolve_hook": [
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "wood_finish_select_key": [
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "wood_finish_sources_definitions": [
+          "geometry-templates/woodworking/native/finish_sources.c",
+          "geometry-templates/woodworking/native/finish_sources.h"
+        ],
+        "wood_finish_sources_derived_definition": [
+          "geometry-templates/woodworking/native/finish_sources.c",
+          "geometry-templates/woodworking/native/finish_sources.h"
+        ],
+        "wood_finish_sources_edge_key": [
+          "geometry-templates/woodworking/native/finish_sources.c",
+          "geometry-templates/woodworking/native/finish_sources.h"
+        ],
+        "wood_finish_sources_edge_resolve": [
+          "geometry-templates/woodworking/native/finish_sources.c",
+          "geometry-templates/woodworking/native/finish_sources.h"
+        ],
+        "wood_finish_sources_fill_definition": [
+          "geometry-templates/woodworking/native/finish_sources.c",
+          "geometry-templates/woodworking/native/finish_sources.h"
+        ],
+        "wood_finish_sources_surface_definition": [
+          "geometry-templates/woodworking/native/finish_sources.c",
+          "geometry-templates/woodworking/native/finish_sources.h"
+        ],
+        "wood_finish_surface_decode": [
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "wood_finish_surface_encode": [
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "wood_grid_application_value": [
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "wood_grid_binding_definition_depend": [
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "wood_grid_codec_application_prefix": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c"
+        ],
+        "wood_grid_codec_axis": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c"
+        ],
+        "wood_grid_codec_begin": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c"
+        ],
+        "wood_grid_codec_bool": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c"
+        ],
+        "wood_grid_codec_finish": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c"
+        ],
+        "wood_grid_codec_i64": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c"
+        ],
+        "wood_grid_codec_int": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c"
+        ],
+        "wood_grid_codec_rule": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c"
+        ],
+        "wood_grid_codec_size": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c"
+        ],
+        "wood_grid_codec_system": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c"
+        ],
+        "wood_grid_codec_text": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c"
+        ],
+        "wood_grid_codec_u32": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c"
+        ],
+        "wood_grid_codec_u64": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c"
+        ],
+        "wood_grid_codec_unsigned": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c"
+        ],
+        "wood_grid_codec_utf8": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c"
+        ],
+        "wood_grid_codec_write_axis": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c"
+        ],
+        "wood_grid_codec_write_number": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c"
+        ],
+        "wood_grid_codec_write_rule": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c"
+        ],
+        "wood_grid_codec_write_text": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c"
+        ],
+        "wood_grid_decode_application": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c",
+          "geometry-templates/woodworking/native/grid_definition_codec.h",
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "wood_grid_decode_application_value": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c",
+          "geometry-templates/woodworking/native/grid_definition_codec.h",
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "wood_grid_decode_binding": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c",
+          "geometry-templates/woodworking/native/grid_definition_codec.h",
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "wood_grid_decode_rule": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c",
+          "geometry-templates/woodworking/native/grid_definition_codec.h",
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "wood_grid_decode_system": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c",
+          "geometry-templates/woodworking/native/grid_definition_codec.h",
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "wood_grid_decode_system_value": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c",
+          "geometry-templates/woodworking/native/grid_definition_codec.h",
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "wood_grid_definition_depend": [
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "wood_grid_encode_application_value": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c",
+          "geometry-templates/woodworking/native/grid_definition_codec.h",
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "wood_grid_encode_system_value": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c",
+          "geometry-templates/woodworking/native/grid_definition_codec.h",
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "wood_grid_install_application": [
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "wood_grid_install_binding": [
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "wood_grid_install_system": [
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "wood_grid_parameter_definitions": [
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "wood_grid_policy_definitions": [
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "wood_grid_publish_application_cache": [
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "wood_grid_publish_system_cache": [
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "wood_grid_rule_definition_hook": [
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "wood_grid_rule_definition_source_ref": [
+          "geometry-templates/woodworking/native/grid_sources.c",
+          "geometry-templates/woodworking/native/grid_sources.h"
+        ],
+        "wood_grid_rules_valid_hook": [
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "wood_grid_rules_world_valid_direct": [
+          "geometry-templates/woodworking/native/grid_application.h",
+          "geometry-templates/woodworking/native/grid_rules.c",
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "wood_grid_sources_definition": [
+          "geometry-templates/woodworking/native/grid_sources.c",
+          "geometry-templates/woodworking/native/grid_sources.h"
+        ],
+        "wood_grid_sources_definitions": [
+          "geometry-templates/woodworking/native/grid_sources.c",
+          "geometry-templates/woodworking/native/grid_sources.h"
+        ],
+        "wood_grid_system_value": [
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "wood_grid_value_bytes": [
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "wood_grid_world_valid_direct": [
+          "geometry-templates/woodworking/native/grid_application.h",
+          "geometry-templates/woodworking/native/grid_cells.c",
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "wood_grid_world_valid_hook": [
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "wood_source_application_read": [
+          "geometry-templates/woodworking/native/engineering_sources.c"
+        ],
+        "wood_source_version_definition": [
+          "geometry-templates/woodworking/native/engineering_sources.c"
+        ],
+        "wood_source_version_field": [
+          "geometry-templates/woodworking/native/engineering_sources.c"
+        ],
+        "wood_source_version_view": [
+          "geometry-templates/woodworking/native/engineering_sources.c"
+        ],
+        "wood_sp_pair_source_decode": [
+          "geometry-templates/woodworking/native/section_profile_sources.c",
+          "geometry-templates/woodworking/native/section_profile_sources.h"
+        ],
+        "wood_sp_pair_source_ref": [
+          "geometry-templates/woodworking/native/section_profile_sources.c",
+          "geometry-templates/woodworking/native/section_profile_sources.h"
+        ],
+        "wood_sp_parse_member": [
+          "geometry-templates/woodworking/native/section_profile.c",
+          "geometry-templates/woodworking/native/section_profile.h",
+          "geometry-templates/woodworking/native/section_profile_sources.c"
+        ],
+        "wood_sp_parse_profile": [
+          "geometry-templates/woodworking/native/section_profile.c",
+          "geometry-templates/woodworking/native/section_profile.h",
+          "geometry-templates/woodworking/native/section_profile_sources.c"
+        ],
+        "wood_sp_parse_run": [
+          "geometry-templates/woodworking/native/section_profile.c",
+          "geometry-templates/woodworking/native/section_profile.h",
+          "geometry-templates/woodworking/native/section_profile_sources.c"
+        ],
+        "wood_sp_source_context_matches": [
+          "geometry-templates/woodworking/native/section_profile_sources.c"
+        ],
+        "wood_sp_source_invalid_definition": [
+          "geometry-templates/woodworking/native/section_profile_sources.c"
+        ],
+        "wood_sp_source_load_definition": [
+          "geometry-templates/woodworking/native/section_profile_sources.c"
+        ],
+        "wood_sp_source_member_cache": [
+          "geometry-templates/woodworking/native/section_profile_sources.c"
+        ],
+        "wood_sp_source_pair_evaluate": [
+          "geometry-templates/woodworking/native/section_profile_sources.c"
+        ],
+        "wood_sp_source_pair_region": [
+          "geometry-templates/woodworking/native/section_profile_sources.c"
+        ],
+        "wood_sp_source_pair_root": [
+          "geometry-templates/woodworking/native/section_profile_sources.c"
+        ],
+        "wood_sp_source_rectangle": [
+          "geometry-templates/woodworking/native/section_profile_sources.c"
+        ],
+        "wood_sp_source_region_copy": [
+          "geometry-templates/woodworking/native/section_profile_sources.c"
+        ],
+        "wood_sp_source_run_cache": [
+          "geometry-templates/woodworking/native/section_profile_sources.c"
+        ],
+        "wood_sp_source_schema": [
+          "geometry-templates/woodworking/native/section_profile_sources.c"
+        ],
+        "wood_sp_sources_complete": [
+          "geometry-templates/woodworking/native/section_profile_sources.c",
+          "geometry-templates/woodworking/native/section_profile_sources.h"
+        ]
+      },
+      "stringEvidence": {
+        "wood-assembly-sources/2": [
+          "geometry-templates/woodworking/native/assembly_sources.c"
+        ],
+        "wood-contact-sources/1": [
+          "geometry-templates/woodworking/native/contact_sources.c"
+        ],
+        "wood-finish-sources/1": [
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "wood-grid-sources/1": [
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "wood-section-profile-sources/1": [
+          "geometry-templates/woodworking/native/section_profile_sources.c"
+        ],
+        "wood.assembly": [
+          "geometry-templates/woodworking/native/assembly_sources.c"
+        ],
+        "wood.assembly.binding-result/1": [
+          "geometry-templates/woodworking/native/assembly_sources.c"
+        ],
+        "wood.assembly.binding/1": [
+          "geometry-templates/woodworking/native/assembly_sources.c"
+        ],
+        "wood.assembly.check-result/1": [
+          "geometry-templates/woodworking/native/assembly_sources.c"
+        ],
+        "wood.assembly.generated/1": [
+          "geometry-templates/woodworking/native/assembly_sources.c"
+        ],
+        "wood.assembly.instance/1": [
+          "geometry-templates/woodworking/native/assembly_sources.c"
+        ],
+        "wood.assembly.mapping/1": [
+          "geometry-templates/woodworking/native/assembly_sources.c"
+        ],
+        "wood.assembly.result/1": [
+          "geometry-templates/woodworking/native/assembly_sources.c"
+        ],
+        "wood.assembly.rule/1": [
+          "geometry-templates/woodworking/native/assembly_sources.c"
+        ],
+        "wood.assembly.slot/1": [
+          "geometry-templates/woodworking/native/assembly_sources.c"
+        ],
+        "wood.contact": [
+          "geometry-templates/woodworking/native/contact_sources.c"
+        ],
+        "wood.contact.stops/1": [
+          "geometry-templates/woodworking/native/contact_sources.c"
+        ],
+        "wood.finish": [
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "wood.finish.boundary-policy/1": [
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "wood.finish.definition/1": [
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "wood.finish.derived-placement/1": [
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "wood.finish.derived-policy/1": [
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "wood.finish.panel-fill/1": [
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "wood.grid": [
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "wood.grid.application-value/1": [
+          "geometry-templates/woodworking/native/grid_definition_codec.h"
+        ],
+        "wood.grid.application/1": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c",
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "wood.grid.binding/1": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c",
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "wood.grid.rule/1": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c",
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "wood.grid.system-value/1": [
+          "geometry-templates/woodworking/native/grid_definition_codec.h"
+        ],
+        "wood.grid.system/1": [
+          "geometry-templates/woodworking/native/grid_definition_codec.c",
+          "geometry-templates/woodworking/native/grid_sources.c"
+        ],
+        "wood.section-profile": [
+          "geometry-templates/woodworking/native/section_profile_sources.c"
+        ],
+        "wood.section-profile.definition/1": [
+          "geometry-templates/woodworking/native/section_profile_sources.c"
+        ],
+        "wood.section-profile.member/1": [
+          "geometry-templates/woodworking/native/section_profile_sources.c"
+        ],
+        "wood.section-profile.run/1": [
+          "geometry-templates/woodworking/native/section_profile_sources.c"
+        ],
+        "woodworking.dimension-binding": [
+          "geometry-templates/woodworking/native/engineering_sources.c"
+        ],
+        "woodworking.dimension-binding/2": [
+          "geometry-templates/woodworking/native/engineering_sources.c"
+        ],
+        "woodworking.dimension-source": [
+          "geometry-templates/woodworking/native/engineering_sources.c"
+        ],
+        "woodworking.dimension-source/1": [
+          "geometry-templates/woodworking/native/engineering_sources.c"
+        ],
+        "woodworking.engineering-definition": [
+          "geometry-templates/woodworking/native/engineering_sources.c"
+        ],
+        "woodworking.engineering-definition/1": [
+          "geometry-templates/woodworking/native/engineering_sources.c"
+        ],
+        "woodworking.face-application-check/1": [
+          "geometry-templates/woodworking/native/engineering_sources.c"
+        ],
+        "woodworking.face-application/1": [
+          "geometry-templates/woodworking/native/engineering_sources.c"
+        ],
+        "woodworking.material-version/1": [
+          "geometry-templates/woodworking/native/engineering.c",
+          "geometry-templates/woodworking/native/engineering_sources.c",
+          "geometry-templates/woodworking/native/finish_sources.c"
+        ],
+        "woodworking.method-version/1": [
+          "geometry-templates/woodworking/native/engineering.c",
+          "geometry-templates/woodworking/native/engineering_sources.c"
+        ],
+        "woodworking.version-metadata/1": [
+          "geometry-templates/woodworking/native/engineering_sources.c"
+        ]
+      }
+    },
+    "changedPreviouslySealedInputs": [
+      {
+        "path": "geometry-app/native/model_sources.inc",
+        "previousSha256": "936f22fcdb2b331454e2ed0f9e6bb511333375f4fc37cc3485bdb52ea09efa06",
+        "currentSha256": "99ede8d10f514d6f560f24516ea27e96a357b284eaafa60285131e936ef3fa5f"
+      },
+      {
+        "path": "geometry-app/native/reference_sources.inc",
+        "previousSha256": "8479c06388d698e7e84facea55d94c4f7547515863c897bc369a8354146eb8de",
+        "currentSha256": "573104e163effd853a2148780632e9e732f9f98db896c5e46230badebc6640c7"
+      },
+      {
+        "path": "geometry-app/native/woodworking_unity.inc",
+        "previousSha256": "5029ecbcdddf04031115d6c4eddb47a9835142e5fbd1a8bc2bdf41ffb6515381",
+        "currentSha256": "efe0d4eae40787aad0efcd614432997dbcb71506e93e3b077f7cff8223ba6395"
+      },
+      {
+        "path": "geometry-core/engineering.inc",
+        "previousSha256": "285a9e5d1d135acdaf0359d8753cdb5eb68520a604cc5678bb47f579d208e6ce",
+        "currentSha256": "0e1970fee561dc520c37255b9fdbbd2273594c4c8a59ea8e4969c9658c2aa497"
+      },
+      {
+        "path": "geometry-core/kernel/enclosure_sources.c",
+        "previousSha256": "259adf566e67f30d676e756c8efc85817213967720e267f7ed5d38c4e67444ee",
+        "currentSha256": "dbe7a9f01d77215895baec6e3d463953b4cab1d4c0a3cd591c2aa55f757abf68"
+      },
+      {
+        "path": "geometry-core/kernel/enclosure_sources.h",
+        "previousSha256": "bf839f7ca1f2fa0a4729051245bbf8565db8bd5e1338bc2f246ef67d90d6642d",
+        "currentSha256": "c512b34721bcf1e428ffb19f665970c788292b542c1b8c8bf9b1257ab3c5f4b4"
+      },
+      {
+        "path": "geometry-core/kernel/placement_sources.c",
+        "previousSha256": "713d47beaade5c3b2eb967b9dc6a3d4a09434d3f6cafd3d6058c6594bf2f3567",
+        "currentSha256": "7b953719f5e75ed2e70f99c9e0a96588d398bd9220025a7b7a191c4dbaeb8e12"
+      },
+      {
+        "path": "geometry-core/kernel/placement_sources.h",
+        "previousSha256": "ef102ae7e76c736d001698173ee7f34aeb14e6d4fdb35e6ca2dfa9892c9fa041",
+        "currentSha256": "ff52eb8121cff380de275aa97d8562e56d58d8e21968369fde2db67c04135a7a"
+      },
+      {
+        "path": "geometry-core/kernel/source.c",
+        "previousSha256": "6cca0d844aa883257315681094bc0b6606389cc7d021ded5f825980af2ff83c7",
+        "currentSha256": "b2e65a85776fed150c192c1e374b1d35baa82c4e68f14d529f6d4b30a9ae6ae0"
+      },
+      {
+        "path": "geometry-core/kernel/source.h",
+        "previousSha256": "80bda50baca408e5bd583165b7f5c4370c6ac3bae7fd803530cdd8b88cf96c4b",
+        "currentSha256": "aa00bd5078495bc3c4165c81a58129a4216c6b40c87da91700f7b0c3bf9820a1"
+      },
+      {
+        "path": "geometry-core/panel_fill_support.inc",
+        "previousSha256": "b369d3eef5c2b940faed88317eac6469ce688a12f37e317c84b933677db7bad4",
+        "currentSha256": "18a3a5474b764f704310be284dc661fa8e4a3f1a5172282b9e442c2f60ec3ec7"
+      },
+      {
+        "path": "geometry-core/references.inc",
+        "previousSha256": "80876accae40905593d5e5076b663cb5c7a757965105ac6d8c48364cb8fd3d16",
+        "currentSha256": "3d344fb1a3cf2a6c90ea6b5041eeac5e716d7e44c69393387e2a694d8bcc8424"
+      },
+      {
+        "path": "geometry-templates/woodworking/native/assembly.c",
+        "previousSha256": "ef2febfbc084a88d555d99d6b4fedb682c905dcaa489bdde9495bdfe524a8b9e",
+        "currentSha256": "8c107cf9777be3a93dacfff73c39fa3c6b659a483abe78efb2a10859dbb657ce"
+      },
+      {
+        "path": "geometry-templates/woodworking/native/assembly.h",
+        "previousSha256": "7096c1059fbf06661e8a933dbc436024f4eee16bfe6c2d335d30bee6d60a46e4",
+        "currentSha256": "4f578fddaf8a06b602d858a17e035ea5f70a511f2486bea778a631f416ba12b1"
+      },
+      {
+        "path": "geometry-templates/woodworking/native/assembly_sources.c",
+        "previousSha256": "a4cd810b8ea5f117cdc86540d8ee8a40fa691f75cef62a62944edac544b27abd",
+        "currentSha256": "086b26621fe38bd4bb91259cf3a4867669bcfb0ce6dad5f5ad75995f19d1734a"
+      },
+      {
+        "path": "geometry-templates/woodworking/native/assembly_sources.h",
+        "previousSha256": "7d4dc7d116a7d1fcf7a15476a7c6d0a6c9b17db262215151ad259022b188435f",
+        "currentSha256": "93fd298f151dec8f78ee9358cf2513d9504f21e5422f9fa6070a36790c0b2e0a"
+      },
+      {
+        "path": "geometry-templates/woodworking/native/engineering.c",
+        "previousSha256": "3f89d10d2ea927f61212f5752e732f42f609c68e42fd247b6197b44d6f75d858",
+        "currentSha256": "12ef9dbc7ebea84e4167a0792424842a86cccba37fc53e482ce3519b775d2c31"
+      },
+      {
+        "path": "geometry-templates/woodworking/native/engineering.h",
+        "previousSha256": "e83c7c66c1aaab0268eaa6f36cc937650c02615e0440f6653cc27686dd9fae7b",
+        "currentSha256": "dcabe10d3f4484ce4a303e7afeeb7be14363bfc6da3d2edd91b3e65475b58b59"
+      },
+      {
+        "path": "geometry-templates/woodworking/native/engineering_sources.c",
+        "previousSha256": "9ed8c4198f23d3298baba872b2481e26c0b69c084ac9a20d218ec565e614c9a6",
+        "currentSha256": "92a2a809fdbd4b4e6c39794b03fbf7355eeb5fe55cc28a7b26101fac532a1300"
+      },
+      {
+        "path": "geometry-templates/woodworking/native/engineering_sources.h",
+        "previousSha256": "f1a5d22feeb0256c60f08d02841b80d21b8f9221fdf06eaf43a3133fc02b6893",
+        "currentSha256": "6db63191a7dda06e3a4e9ec0f64ea2a2e9ec15a2be431421c70c15888a857298"
+      },
+      {
+        "path": "geometry-templates/woodworking/native/finish.c",
+        "previousSha256": "edfb970962f65a01052c7d03b6da594e3817b9d5fe05a97a4f6f04cf01268675",
+        "currentSha256": "3d51c6708c7ba227bb63d630ee3ccc1a7be720d922717f93e16cd244ffc25ab8"
+      },
+      {
+        "path": "geometry-templates/woodworking/native/finish.h",
+        "previousSha256": "68e4b06cf36956086c71d3f702b80e5ae2cbc6e5bba598630cd27c2ddffe3392",
+        "currentSha256": "8352adbb98e93e291bc2bd694dabeab5835d679ee26c070156709bb3bb8f548e"
+      },
+      {
+        "path": "geometry-templates/woodworking/native/finish_sources.c",
+        "previousSha256": "81c78c2f44d18ac8a69a05454f30b40b6f836a13f7a7f188e40f7c254a1262d7",
+        "currentSha256": "a69debfd1540fc7743f323b22d7eaecf017f8c59c3ca9368b2e4a89b8874568d"
+      },
+      {
+        "path": "geometry-templates/woodworking/native/finish_sources.h",
+        "previousSha256": "3344ae2f4e9fb42124448ebe2a43d3c2f2bd4ed966ce4b610b4431ce95c5c034",
+        "currentSha256": "822ee077ca5c0d440830fbdbf8ab0fadf18f1b6844d5c5f49603f8a55e5451fa"
+      },
+      {
+        "path": "geometry-templates/woodworking/native/grid_application.h",
+        "previousSha256": "434e168ea35b744ba77493921820bf1ee9e7a0a038fc420083ea6c80cb1885b9",
+        "currentSha256": "418dd45fb114867615090ecb8340e37445f55ad527f2528a21868ae195ec5908"
+      },
+      {
+        "path": "geometry-templates/woodworking/native/grid_cells.c",
+        "previousSha256": "b9a2b7fca6f6acb9009c4bdb1313d8a7eb97a237b32ee3d8243eb6f36c631d3d",
+        "currentSha256": "578c8a1b64de7fbc9460e626811c0ecd11d8739efc87f2fadd923c956aaba434"
+      },
+      {
+        "path": "geometry-templates/woodworking/native/grid_rules.c",
+        "previousSha256": "5d6ece3159e24b69f67f1351b297e5de7d61471f11120ae43daf05fe021c6348",
+        "currentSha256": "14f552a9b0d893a7b6f36bcec46c698301bd1dcea5cbbbe0b7c11d21dd98d15a"
+      },
+      {
+        "path": "geometry-templates/woodworking/native/grid_sources.c",
+        "previousSha256": "7367f72a5cc70d549a7a5eb003438db9240360c0cff29827b043d18377bea464",
+        "currentSha256": "2685686108a8a3da02618bd3ce8d7d84953a093e8441b87b1e1c84d87843daba"
+      },
+      {
+        "path": "geometry-templates/woodworking/native/grid_sources.h",
+        "previousSha256": "e983bfa873951aeac2848f3863a3fa229ba280e77304be927cc8af943c7e171c",
+        "currentSha256": "7abfcdf958e65c940e65d114f57341175d69522e30d0c23e5b4b1f2c374105d0"
       }
     ],
     "staleExcludedVendorOrEmbedDigests": [],
-    "sourceFix": "No product source, prior classification, exclusion, policy or scanner/test change in this refresh; four individually reviewed K datum/guide authored-definition and immutable-version provider/API entries cover normally merged product files."
+    "sourceFix": "No product source, scanner or test change in this refresh. Two individually classified W grid codec files, four exact digest-locked historical evidence script exclusions, and concrete W-only identifier/string guards account for normally merged product/evidence inputs without reclassifying existing sources or weakening prior policy."
   },
   "scanPassed": true,
   "actualCliScan": {
     "command": "python -B tests/architecture_contract.py --root . --manifest geometry-core/domain-decoupling/product-architecture.json",
     "exitCode": 0,
-    "startedUtc": "2026-10-16T17:35:17.864629+00:00",
-    "finishedUtc": "2026-10-16T17:35:37.371899+00:00",
-    "seconds": 19.503
+    "startedUtc": "2026-10-16T22:14:33.698888+00:00",
+    "finishedUtc": "2026-10-16T22:14:52.314239+00:00",
+    "seconds": 18.615
   },
   "validation": [
     {
@@ -110,32 +1303,52 @@
       "skipped": 1,
       "skipReason": "Windows cannot create the real symlink fixture: WinError 1314; not counted as passed.",
       "reusedFrom": {
-        "receiptSha256": "0606b3545910a41e46cc1711f5933026057643edcc288c4975054f90152bbd42",
-        "createdUtc": "2026-10-16T16:23:35.201222+00:00",
-        "sourceBaseHead": "1ee2a890d7a734f381eac8c716910939818315db",
+        "receiptSha256": "7afc80f50c15045c6d7ce904f55efeb8511dd166ca9905cb1b7c1ed61ed1c6a9",
+        "createdUtc": "2026-10-16T17:36:55.562677+00:00",
+        "sourceBaseHead": "d371420ec1922adb3df382a6cc2799b39bef7370",
         "priorProvenance": {
-          "receiptSha256": "6f485e64ae8bf75010da8ceee02e8ec29e03d1656173b5fe2ca8e487215289fb",
-          "createdUtc": "2026-10-16T16:10:00.422787+00:00"
+          "receiptSha256": "0606b3545910a41e46cc1711f5933026057643edcc288c4975054f90152bbd42",
+          "createdUtc": "2026-10-16T16:23:35.201222+00:00",
+          "sourceBaseHead": "1ee2a890d7a734f381eac8c716910939818315db",
+          "priorProvenance": {
+            "receiptSha256": "6f485e64ae8bf75010da8ceee02e8ec29e03d1656173b5fe2ca8e487215289fb",
+            "createdUtc": "2026-10-16T16:10:00.422787+00:00"
+          }
         }
       },
-      "reuseReason": "Scanner and generic test LF-normalized source hashes match the previous receipt and remain unchanged before/after this verification; the 205-test suite was not rerun.",
+      "reuseReason": "Scanner and generic test LF-normalized source hashes exactly match the previous receipt and remain unchanged throughout this verification; the generic 205-test suite was not rerun. Manifest guard additions are separately checked by the product suite and supplemental static probes.",
       "scannerSha256AtReuse": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e"
     },
     {
       "command": "python -B tests/test_product_architecture.py",
       "exitCode": 0,
-      "startedUtc": "2026-10-16T17:35:45.187691+00:00",
-      "finishedUtc": "2026-10-16T17:36:43.197082+00:00",
-      "seconds": 58.008,
+      "startedUtc": "2026-10-16T22:15:09.235052+00:00",
+      "finishedUtc": "2026-10-16T22:16:20.559686+00:00",
+      "seconds": 71.325,
       "tests": 18,
       "passed": 18,
       "failed": 0,
       "skipped": 0,
-      "unittestSeconds": 56.677,
+      "unittestSeconds": 68.993,
       "sha256": "12e83386323afbffda89babcaea46eaa337ade1383f85cf63ec17e114238713e",
       "scope": "Real-root setup inventory before copying, static full product graph, actual-file mutations, audited iframe controls, and all 69 K files without H/W."
     }
   ],
+  "supplementalStaticGuardProbes": {
+    "kind": "supplemental-static-in-memory-actual-K-source-guard-probes",
+    "startedUtc": "2026-10-16T22:15:22.618834+00:00",
+    "finishedUtc": "2026-10-16T22:15:41.212952+00:00",
+    "seconds": 18.594,
+    "source": "geometry-core/kernel/geometry.c",
+    "sourceSha256": "67025ac086dd48a5f9564d0122198de34589db4701109388d378586fd337dc00",
+    "identifierProbes": 162,
+    "stringProbes": 45,
+    "rejectedAsExpected": 207,
+    "neutralProbeAccepted": true,
+    "method": "Pass the actual K geometry.c text plus one probe at a time through unchanged Scanner.scan_c; no product or test file is written and no C is executed. These 207 supplemental probes are separate from the unchanged 18-test product suite.",
+    "manifestSha256": "cea5ca54fd1adeeb19653a29e1ccfc097d9e3f8daf30b7cfcb6cb3b3a747aff9",
+    "guardValues": "Exactly manifestRefresh.policyGuards.addedIdentifiers and addedStrings, one probe per listed value."
+  },
   "notClaimed": [
     "Native compilation or execution",
     "Runtime import-blocker validation",
@@ -144,6 +1357,7 @@
     "All H functions independently proven free of misplaced policy",
     "Future changed source trees"
   ],
+  "nativeAcceptance": "Not evaluated by this static audit. Historical native receipts retain their exact original source SHA and PASS/FAIL/UNRUN outcomes; no current native acceptance is inferred.",
   "inputs": [
     {
       "path": "current_geometry.c",
@@ -259,11 +1473,11 @@
     },
     {
       "path": "geometry-app/native/model_sources.inc",
-      "sha256": "936f22fcdb2b331454e2ed0f9e6bb511333375f4fc37cc3485bdb52ea09efa06"
+      "sha256": "99ede8d10f514d6f560f24516ea27e96a357b284eaafa60285131e936ef3fa5f"
     },
     {
       "path": "geometry-app/native/reference_sources.inc",
-      "sha256": "8479c06388d698e7e84facea55d94c4f7547515863c897bc369a8354146eb8de"
+      "sha256": "573104e163effd853a2148780632e9e732f9f98db896c5e46230badebc6640c7"
     },
     {
       "path": "geometry-app/native/versions_adapter.inc",
@@ -271,7 +1485,7 @@
     },
     {
       "path": "geometry-app/native/woodworking_unity.inc",
-      "sha256": "5029ecbcdddf04031115d6c4eddb47a9835142e5fbd1a8bc2bdf41ffb6515381"
+      "sha256": "efe0d4eae40787aad0efcd614432997dbcb71506e93e3b077f7cff8223ba6395"
     },
     {
       "path": "geometry-app/native/world_candidate.inc",
@@ -578,6 +1792,22 @@
       "sha256": "69d474355ba572e3262280e188d14f7c871e434d8c0929d92bcfcf504087ec7a"
     },
     {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/extract_evidence.py",
+      "sha256": "ac626b84cc3cc6d029ecb95cceb2d3098b3a8cf084e8f8b69a3e98bd9d7e90f7"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/finalize_publication.py",
+      "sha256": "ee4ae0bda9ee75791eedd88eacf6b8183a65cf88e9dfda22fc87b308e5199e29"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/prepare_publication.py",
+      "sha256": "a48b55afe3ae0b4bd0a3bc44dba3161f97165ce1a745e4dafb5dbb3f02c8db8a"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/verify_publication.py",
+      "sha256": "e2e7bd1465803e01b299f242a7cf5afbca8b509bb824473a9a72d04b9cbc47c7"
+    },
+    {
       "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/extract_evidence.py",
       "sha256": "651b3dc10abe07951283a57d1fc4c9da7077749424f79ad40e2dced0c8813a19"
     },
@@ -647,7 +1877,7 @@
     },
     {
       "path": "geometry-core/engineering.inc",
-      "sha256": "285a9e5d1d135acdaf0359d8753cdb5eb68520a604cc5678bb47f579d208e6ce"
+      "sha256": "0e1970fee561dc520c37255b9fdbbd2273594c4c8a59ea8e4969c9658c2aa497"
     },
     {
       "path": "geometry-core/engineering_commands.inc",
@@ -775,11 +2005,11 @@
     },
     {
       "path": "geometry-core/kernel/enclosure_sources.c",
-      "sha256": "259adf566e67f30d676e756c8efc85817213967720e267f7ed5d38c4e67444ee"
+      "sha256": "dbe7a9f01d77215895baec6e3d463953b4cab1d4c0a3cd591c2aa55f757abf68"
     },
     {
       "path": "geometry-core/kernel/enclosure_sources.h",
-      "sha256": "bf839f7ca1f2fa0a4729051245bbf8565db8bd5e1338bc2f246ef67d90d6642d"
+      "sha256": "c512b34721bcf1e428ffb19f665970c788292b542c1b8c8bf9b1257ab3c5f4b4"
     },
     {
       "path": "geometry-core/kernel/exact.c",
@@ -907,11 +2137,11 @@
     },
     {
       "path": "geometry-core/kernel/placement_sources.c",
-      "sha256": "713d47beaade5c3b2eb967b9dc6a3d4a09434d3f6cafd3d6058c6594bf2f3567"
+      "sha256": "7b953719f5e75ed2e70f99c9e0a96588d398bd9220025a7b7a191c4dbaeb8e12"
     },
     {
       "path": "geometry-core/kernel/placement_sources.h",
-      "sha256": "ef102ae7e76c736d001698173ee7f34aeb14e6d4fdb35e6ca2dfa9892c9fa041"
+      "sha256": "ff52eb8121cff380de275aa97d8562e56d58d8e21968369fde2db67c04135a7a"
     },
     {
       "path": "geometry-core/kernel/placements.c",
@@ -939,11 +2169,11 @@
     },
     {
       "path": "geometry-core/kernel/source.c",
-      "sha256": "6cca0d844aa883257315681094bc0b6606389cc7d021ded5f825980af2ff83c7"
+      "sha256": "b2e65a85776fed150c192c1e374b1d35baa82c4e68f14d529f6d4b30a9ae6ae0"
     },
     {
       "path": "geometry-core/kernel/source.h",
-      "sha256": "80bda50baca408e5bd583165b7f5c4370c6ac3bae7fd803530cdd8b88cf96c4b"
+      "sha256": "aa00bd5078495bc3c4165c81a58129a4216c6b40c87da91700f7b0c3bf9820a1"
     },
     {
       "path": "geometry-core/kernel/types.h",
@@ -1011,7 +2241,7 @@
     },
     {
       "path": "geometry-core/panel_fill_support.inc",
-      "sha256": "b369d3eef5c2b940faed88317eac6469ce688a12f37e317c84b933677db7bad4"
+      "sha256": "18a3a5474b764f704310be284dc661fa8e4a3f1a5172282b9e442c2f60ec3ec7"
     },
     {
       "path": "geometry-core/panel_layout_math.h",
@@ -1031,7 +2261,7 @@
     },
     {
       "path": "geometry-core/references.inc",
-      "sha256": "80876accae40905593d5e5076b663cb5c7a757965105ac6d8c48364cb8fd3d16"
+      "sha256": "3d344fb1a3cf2a6c90ea6b5041eeac5e716d7e44c69393387e2a694d8bcc8424"
     },
     {
       "path": "geometry-core/rule_cases/__init__.py",
@@ -1167,19 +2397,19 @@
     },
     {
       "path": "geometry-templates/woodworking/native/assembly.c",
-      "sha256": "ef2febfbc084a88d555d99d6b4fedb682c905dcaa489bdde9495bdfe524a8b9e"
+      "sha256": "8c107cf9777be3a93dacfff73c39fa3c6b659a483abe78efb2a10859dbb657ce"
     },
     {
       "path": "geometry-templates/woodworking/native/assembly.h",
-      "sha256": "7096c1059fbf06661e8a933dbc436024f4eee16bfe6c2d335d30bee6d60a46e4"
+      "sha256": "4f578fddaf8a06b602d858a17e035ea5f70a511f2486bea778a631f416ba12b1"
     },
     {
       "path": "geometry-templates/woodworking/native/assembly_sources.c",
-      "sha256": "a4cd810b8ea5f117cdc86540d8ee8a40fa691f75cef62a62944edac544b27abd"
+      "sha256": "086b26621fe38bd4bb91259cf3a4867669bcfb0ce6dad5f5ad75995f19d1734a"
     },
     {
       "path": "geometry-templates/woodworking/native/assembly_sources.h",
-      "sha256": "7d4dc7d116a7d1fcf7a15476a7c6d0a6c9b17db262215151ad259022b188435f"
+      "sha256": "93fd298f151dec8f78ee9358cf2513d9504f21e5422f9fa6070a36790c0b2e0a"
     },
     {
       "path": "geometry-templates/woodworking/native/boundary_policy.c",
@@ -1247,11 +2477,11 @@
     },
     {
       "path": "geometry-templates/woodworking/native/engineering.c",
-      "sha256": "3f89d10d2ea927f61212f5752e732f42f609c68e42fd247b6197b44d6f75d858"
+      "sha256": "12ef9dbc7ebea84e4167a0792424842a86cccba37fc53e482ce3519b775d2c31"
     },
     {
       "path": "geometry-templates/woodworking/native/engineering.h",
-      "sha256": "e83c7c66c1aaab0268eaa6f36cc937650c02615e0440f6653cc27686dd9fae7b"
+      "sha256": "dcabe10d3f4484ce4a303e7afeeb7be14363bfc6da3d2edd91b3e65475b58b59"
     },
     {
       "path": "geometry-templates/woodworking/native/engineering_operations.c",
@@ -1263,27 +2493,27 @@
     },
     {
       "path": "geometry-templates/woodworking/native/engineering_sources.c",
-      "sha256": "9ed8c4198f23d3298baba872b2481e26c0b69c084ac9a20d218ec565e614c9a6"
+      "sha256": "92a2a809fdbd4b4e6c39794b03fbf7355eeb5fe55cc28a7b26101fac532a1300"
     },
     {
       "path": "geometry-templates/woodworking/native/engineering_sources.h",
-      "sha256": "f1a5d22feeb0256c60f08d02841b80d21b8f9221fdf06eaf43a3133fc02b6893"
+      "sha256": "6db63191a7dda06e3a4e9ec0f64ea2a2e9ec15a2be431421c70c15888a857298"
     },
     {
       "path": "geometry-templates/woodworking/native/finish.c",
-      "sha256": "edfb970962f65a01052c7d03b6da594e3817b9d5fe05a97a4f6f04cf01268675"
+      "sha256": "3d51c6708c7ba227bb63d630ee3ccc1a7be720d922717f93e16cd244ffc25ab8"
     },
     {
       "path": "geometry-templates/woodworking/native/finish.h",
-      "sha256": "68e4b06cf36956086c71d3f702b80e5ae2cbc6e5bba598630cd27c2ddffe3392"
+      "sha256": "8352adbb98e93e291bc2bd694dabeab5835d679ee26c070156709bb3bb8f548e"
     },
     {
       "path": "geometry-templates/woodworking/native/finish_sources.c",
-      "sha256": "81c78c2f44d18ac8a69a05454f30b40b6f836a13f7a7f188e40f7c254a1262d7"
+      "sha256": "a69debfd1540fc7743f323b22d7eaecf017f8c59c3ca9368b2e4a89b8874568d"
     },
     {
       "path": "geometry-templates/woodworking/native/finish_sources.h",
-      "sha256": "3344ae2f4e9fb42124448ebe2a43d3c2f2bd4ed966ce4b610b4431ce95c5c034"
+      "sha256": "822ee077ca5c0d440830fbdbf8ab0fadf18f1b6844d5c5f49603f8a55e5451fa"
     },
     {
       "path": "geometry-templates/woodworking/native/grid_application.c",
@@ -1291,23 +2521,31 @@
     },
     {
       "path": "geometry-templates/woodworking/native/grid_application.h",
-      "sha256": "434e168ea35b744ba77493921820bf1ee9e7a0a038fc420083ea6c80cb1885b9"
+      "sha256": "418dd45fb114867615090ecb8340e37445f55ad527f2528a21868ae195ec5908"
     },
     {
       "path": "geometry-templates/woodworking/native/grid_cells.c",
-      "sha256": "b9a2b7fca6f6acb9009c4bdb1313d8a7eb97a237b32ee3d8243eb6f36c631d3d"
+      "sha256": "578c8a1b64de7fbc9460e626811c0ecd11d8739efc87f2fadd923c956aaba434"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/grid_definition_codec.c",
+      "sha256": "94f2040f95f6de7fe4b29fa218aef02ff55c7a4fbb58d71f6691b07eebb42f91"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/grid_definition_codec.h",
+      "sha256": "d99dbb566cd0f6ae5c9bb36b7911eba9fd2ca1139cd01e96c2aff64da014f020"
     },
     {
       "path": "geometry-templates/woodworking/native/grid_rules.c",
-      "sha256": "5d6ece3159e24b69f67f1351b297e5de7d61471f11120ae43daf05fe021c6348"
+      "sha256": "14f552a9b0d893a7b6f36bcec46c698301bd1dcea5cbbbe0b7c11d21dd98d15a"
     },
     {
       "path": "geometry-templates/woodworking/native/grid_sources.c",
-      "sha256": "7367f72a5cc70d549a7a5eb003438db9240360c0cff29827b043d18377bea464"
+      "sha256": "2685686108a8a3da02618bd3ce8d7d84953a093e8441b87b1e1c84d87843daba"
     },
     {
       "path": "geometry-templates/woodworking/native/grid_sources.h",
-      "sha256": "e983bfa873951aeac2848f3863a3fa229ba280e77304be927cc8af943c7e171c"
+      "sha256": "7abfcdf958e65c940e65d114f57341175d69522e30d0c23e5b4b1f2c374105d0"
     },
     {
       "path": "geometry-templates/woodworking/native/member_declaration.c",
@@ -2447,19 +3685,21 @@
       ".ts",
       ".tsx"
     ],
-    "filesBefore": 567,
-    "filesAfter": 567,
+    "filesBefore": 573,
+    "filesAfter": 573,
     "unregisteredBeforeRefresh": [
-      "geometry-core/kernel/linear_definition_sources.c",
-      "geometry-core/kernel/linear_definition_sources.h",
-      "geometry-core/kernel/version_sources.c",
-      "geometry-core/kernel/version_sources.h"
+      "geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/extract_evidence.py",
+      "geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/finalize_publication.py",
+      "geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/prepare_publication.py",
+      "geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/verify_publication.py",
+      "geometry-templates/woodworking/native/grid_definition_codec.c",
+      "geometry-templates/woodworking/native/grid_definition_codec.h"
     ],
     "unregisteredAfter": [],
     "missingAfter": [],
     "changedInputs": [],
-    "inputClosureSha256Before": "78121d86bcafb9b3af424155707de32478d6acae9d8dbcd2239c690c54f96889",
-    "inputClosureSha256After": "78121d86bcafb9b3af424155707de32478d6acae9d8dbcd2239c690c54f96889",
+    "inputClosureSha256Before": "a82191343789b02ad5385e3aaffcb7557876c84f537224449c48a33d2aaa1905",
+    "inputClosureSha256After": "a82191343789b02ad5385e3aaffcb7557876c84f537224449c48a33d2aaa1905",
     "toolHashesBefore": {
       "tests/architecture_contract.py": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
       "tests/test_architecture_contract.py": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
@@ -2470,7 +3710,7 @@
       "tests/test_architecture_contract.py": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
       "tests/test_product_architecture.py": "12e83386323afbffda89babcaea46eaa337ade1383f85cf63ec17e114238713e"
     },
-    "headObservedAfterIndependentAudit": "d371420ec1922adb3df382a6cc2799b39bef7370",
-    "checkedUtc": "2026-10-16T17:36:55.972038+00:00"
+    "headObservedAfterIndependentAudit": "4a13551cc8aac3e116b53486fe44637c07374d49",
+    "checkedUtc": "2026-10-16T22:17:06.790164+00:00"
   }
 }

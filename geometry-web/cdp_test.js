@@ -293,9 +293,13 @@ async function clickControl(selector) {
   await click(p.x,p.y);await sleep(150);
 }
 async function dblclick(x, y) {
+  // Preserve event order without making CDP acknowledgement latency part of
+  // the gesture: awaiting each reply can exceed the app's 450 ms window.
+  const events = [];
   for (const n of [1, 2])
     for (const type of ["mousePressed", "mouseReleased"])
-      await send("Input.dispatchMouseEvent", { type, x, y, button: "left", clickCount: n });
+      events.push(send("Input.dispatchMouseEvent", { type, x, y, button: "left", clickCount: n }));
+  await Promise.all(events);
 }
 async function drag(x0, y0, x1, y1, steps = 6) {
   await send("Input.dispatchMouseEvent", { type: "mousePressed", x: x0, y: y0, button: "left", clickCount: 1 });
@@ -4900,6 +4904,7 @@ async function main() {
      這個情況,所以雙擊點刻意避開浮動列涵蓋的範圍(邊改點邊上別的位置、頂列的角改把面往下平移),
      不代表雙擊互動本身只在特定位置才有效——feDblOpenFor 的邏輯與點擊位置無關。 */
   pt = await openFace44();
+  await requireFaceHit44('P44-7a double-click start', pt(4000, 300), 'e:0:1');
   await dblclick(pt(4000, 300).x, pt(4000, 300).y);   /* 右邊,避開邊中點附近的浮動列 */
   await sleep(200);
   const p44_7a = await eval_(`({ opType: fe.op && fe.op.type, panelHidden: document.getElementById('feOpPanel').hidden })`);

@@ -1,0 +1,369 @@
+▶ GEO263 native inspector contract
+  ✖ GEO263_RENAME_PRESERVES_STAGGER u/repeat/literal (15.652195ms)
+  ✖ GEO263_RENAME_PRESERVES_STAGGER u/repeat/parameter (11.752952ms)
+  ✖ GEO263_RENAME_PRESERVES_STAGGER u/repeat-panel/literal (11.969609ms)
+  ✖ GEO263_RENAME_PRESERVES_STAGGER u/repeat-panel/parameter (10.54015ms)
+  ✖ GEO263_RENAME_PRESERVES_STAGGER v/repeat/literal (13.112922ms)
+  ✖ GEO263_RENAME_PRESERVES_STAGGER v/repeat/parameter (13.072155ms)
+  ✖ GEO263_RENAME_PRESERVES_STAGGER v/repeat-panel/literal (13.003312ms)
+  ✖ GEO263_RENAME_PRESERVES_STAGGER v/repeat-panel/parameter (12.206608ms)
+  ✖ GEO263_PARAMETER_CHANGE_REEVALUATES_STAGGER (9.755974ms)
+  ✖ GEO263_SPACING_EDIT_PRESERVES_STAGGER (12.572835ms)
+PASS GEO263_EXPLICIT_REMOVAL_REMAINS_OMISSION
+  ✔ GEO263_EXPLICIT_REMOVAL_REMAINS_OMISSION (15.424962ms)
+PASS GEO263_RENAME_PRESERVES_MAIN_ALONG_AND_SOURCE_RULE
+2 pass / 10 fail
+  ✔ GEO263_RENAME_PRESERVES_MAIN_ALONG_AND_SOURCE_RULE (33.76276ms)
+✖ GEO263 native inspector contract (326.256792ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 2
+ℹ fail 11
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 377.785331
+
+✖ failing tests:
+
+test at ../../../../tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:73:38
+✖ GEO263_RENAME_PRESERVES_STAGGER u/repeat/literal (15.652195ms)
+  AssertionError [ERR_ASSERTION]: GEO263_STAGGER_LOST: rename must preserve value and every ParameterRef
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      parameterRefs: {
+        phase: {
+          fieldId: 2,
+          kind: 'parameter',
+  ...
+      source: 'repeat',
+  -   stagger: -250,
+      step: 600
+    }
+  
+      at /tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:85:16
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.execute (/tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:72:29)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async check (/tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:73:20)
+      at async TestContext.run (/tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:83:7)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: { source: 'repeat', phase: -20, step: 600, parameterRefs: { phase: [Object], step: [Object] } },
+    expected: { source: 'repeat', phase: -20, step: 600, stagger: -250, parameterRefs: { phase: [Object], step: [Object] } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at ../../../../tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:73:38
+✖ GEO263_RENAME_PRESERVES_STAGGER u/repeat/parameter (11.752952ms)
+  AssertionError [ERR_ASSERTION]: GEO263_STAGGER_LOST: rename must preserve value and every ParameterRef
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      parameterRefs: {
+        phase: {
+          fieldId: 2,
+          kind: 'parameter',
+          parameterId: 90
+        },
+  -     stagger: {
+  -       fieldId: 1,
+  -       kind: 'parameter',
+  -       parameterId: 90
+  -     },
+        step: {
+          fieldId: 3,
+          kind: 'parameter',
+          parameterId: 90
+        }
+  ...
+      source: 'repeat',
+  -   stagger: 400,
+      step: 600
+    }
+  
+      at /tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:85:16
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.execute (/tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:72:29)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async check (/tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:73:20)
+      at async TestContext.run (/tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:83:7)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: { source: 'repeat', phase: -20, step: 600, parameterRefs: { phase: [Object], step: [Object] } },
+    expected: { source: 'repeat', phase: -20, step: 600, stagger: 400, parameterRefs: { phase: [Object], step: [Object], stagger: [Object] } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at ../../../../tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:73:38
+✖ GEO263_RENAME_PRESERVES_STAGGER u/repeat-panel/literal (11.969609ms)
+  AssertionError [ERR_ASSERTION]: GEO263_STAGGER_LOST: rename must preserve value and every ParameterRef
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      anchor: -100,
+      anchorExplicit: true,
+      gap: 6,
+      panel: 400,
+  ...
+      source: 'repeat-panel',
+  -   stagger: -250
+    }
+  
+      at /tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:85:16
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.execute (/tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:72:29)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async check (/tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:73:20)
+      at async TestContext.run (/tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:83:7)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: { source: 'repeat-panel', panel: 400, gap: 6, anchor: -100, anchorExplicit: true, parameterRefs: { panel: [Object], gap: [Object], anchor: [Object] } },
+    expected: { source: 'repeat-panel', panel: 400, gap: 6, anchor: -100, anchorExplicit: true, stagger: -250, parameterRefs: { panel: [Object], gap: [Object], anchor: [Object] } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at ../../../../tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:73:38
+✖ GEO263_RENAME_PRESERVES_STAGGER u/repeat-panel/parameter (10.54015ms)
+  AssertionError [ERR_ASSERTION]: GEO263_STAGGER_LOST: rename must preserve value and every ParameterRef
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      anchor: -100,
+      anchorExplicit: true,
+      gap: 6,
+      panel: 400,
+  ...
+        },
+  -     stagger: {
+  -       fieldId: 1,
+  -       kind: 'parameter',
+  -       parameterId: 90
+  -     }
+      },
+      source: 'repeat-panel',
+  -   stagger: 400
+    }
+  
+      at /tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:85:16
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.execute (/tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:72:29)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async check (/tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:73:20)
+      at async TestContext.run (/tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:83:7)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: { source: 'repeat-panel', panel: 400, gap: 6, anchor: -100, anchorExplicit: true, parameterRefs: { panel: [Object], gap: [Object], anchor: [Object] } },
+    expected: { source: 'repeat-panel', panel: 400, gap: 6, anchor: -100, anchorExplicit: true, stagger: 400, parameterRefs: { panel: [Object], gap: [Object], anchor: [Object], stagger: [Object] } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at ../../../../tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:73:38
+✖ GEO263_RENAME_PRESERVES_STAGGER v/repeat/literal (13.112922ms)
+  AssertionError [ERR_ASSERTION]: GEO263_STAGGER_LOST: rename must preserve value and every ParameterRef
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      parameterRefs: {
+        phase: {
+          fieldId: 2,
+          kind: 'parameter',
+  ...
+      source: 'repeat',
+  -   stagger: -250,
+      step: 600
+    }
+  
+      at /tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:85:16
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.execute (/tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:72:29)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async check (/tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:73:20)
+      at async TestContext.run (/tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:83:7)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: { source: 'repeat', phase: -20, step: 600, parameterRefs: { phase: [Object], step: [Object] } },
+    expected: { source: 'repeat', phase: -20, step: 600, stagger: -250, parameterRefs: { phase: [Object], step: [Object] } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at ../../../../tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:73:38
+✖ GEO263_RENAME_PRESERVES_STAGGER v/repeat/parameter (13.072155ms)
+  AssertionError [ERR_ASSERTION]: GEO263_STAGGER_LOST: rename must preserve value and every ParameterRef
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      parameterRefs: {
+        phase: {
+          fieldId: 2,
+          kind: 'parameter',
+          parameterId: 90
+        },
+  -     stagger: {
+  -       fieldId: 1,
+  -       kind: 'parameter',
+  -       parameterId: 90
+  -     },
+        step: {
+          fieldId: 3,
+          kind: 'parameter',
+          parameterId: 90
+        }
+  ...
+      source: 'repeat',
+  -   stagger: 400,
+      step: 600
+    }
+  
+      at /tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:85:16
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.execute (/tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:72:29)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async check (/tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:73:20)
+      at async TestContext.run (/tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:83:7)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: { source: 'repeat', phase: -20, step: 600, parameterRefs: { phase: [Object], step: [Object] } },
+    expected: { source: 'repeat', phase: -20, step: 600, stagger: 400, parameterRefs: { phase: [Object], step: [Object], stagger: [Object] } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at ../../../../tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:73:38
+✖ GEO263_RENAME_PRESERVES_STAGGER v/repeat-panel/literal (13.003312ms)
+  AssertionError [ERR_ASSERTION]: GEO263_STAGGER_LOST: rename must preserve value and every ParameterRef
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      anchor: -100,
+      anchorExplicit: true,
+      gap: 6,
+      panel: 400,
+  ...
+      source: 'repeat-panel',
+  -   stagger: -250
+    }
+  
+      at /tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:85:16
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.execute (/tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:72:29)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async check (/tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:73:20)
+      at async TestContext.run (/tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:83:7)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: { source: 'repeat-panel', panel: 400, gap: 6, anchor: -100, anchorExplicit: true, parameterRefs: { panel: [Object], gap: [Object], anchor: [Object] } },
+    expected: { source: 'repeat-panel', panel: 400, gap: 6, anchor: -100, anchorExplicit: true, stagger: -250, parameterRefs: { panel: [Object], gap: [Object], anchor: [Object] } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at ../../../../tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:73:38
+✖ GEO263_RENAME_PRESERVES_STAGGER v/repeat-panel/parameter (12.206608ms)
+  AssertionError [ERR_ASSERTION]: GEO263_STAGGER_LOST: rename must preserve value and every ParameterRef
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      anchor: -100,
+      anchorExplicit: true,
+      gap: 6,
+      panel: 400,
+  ...
+        },
+  -     stagger: {
+  -       fieldId: 1,
+  -       kind: 'parameter',
+  -       parameterId: 90
+  -     }
+      },
+      source: 'repeat-panel',
+  -   stagger: 400
+    }
+  
+      at /tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:85:16
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.execute (/tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:72:29)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async check (/tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:73:20)
+      at async TestContext.run (/tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:83:7)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: { source: 'repeat-panel', panel: 400, gap: 6, anchor: -100, anchorExplicit: true, parameterRefs: { panel: [Object], gap: [Object], anchor: [Object] } },
+    expected: { source: 'repeat-panel', panel: 400, gap: 6, anchor: -100, anchorExplicit: true, stagger: 400, parameterRefs: { panel: [Object], gap: [Object], anchor: [Object], stagger: [Object] } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at ../../../../tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:73:38
+✖ GEO263_PARAMETER_CHANGE_REEVALUATES_STAGGER (9.755974ms)
+  AssertionError [ERR_ASSERTION]: GEO263_STAGGER_REFERENCE_LOST: parameter change must recalculate
+  
+  undefined !== 350
+  
+      at /tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:95:56
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.execute (/tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:72:29)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async check (/tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:73:20)
+      at async TestContext.run (/tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:94:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 350,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ../../../../tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:73:38
+✖ GEO263_SPACING_EDIT_PRESERVES_STAGGER (12.572835ms)
+  AssertionError [ERR_ASSERTION]: GEO263_STAGGER_LOST_ON_SPACING_EDIT
+  
+  undefined !== 350
+  
+      at /tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:99:92
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.execute (/tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:72:29)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async check (/tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:73:20)
+      at async TestContext.run (/tmp/geo263-p153-he0v6xyr/tests/test_grid_inspector_stagger.cjs:98:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 350,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

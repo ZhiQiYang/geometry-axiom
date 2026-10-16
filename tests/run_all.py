@@ -169,6 +169,8 @@ PY_NEEDS = {
     'test_geo261_host_placement_definition': [],
     'test_geo261_application_closure': [],
     'test_geo261_placement_definition': [],
+    'test_geo261_model_semantics_authority': [],
+    'test_geo261_host_facts_authority': [],
     'test_geo261_placement_sources': [],
     'test_geo261_section_profile_sources': [],
     'test_geo261_section_profile_authority': [],
@@ -226,6 +228,7 @@ PY_BROWSER_GATES = {
     'test_issue123_create_feedback_browser': 'Explicit isolated Playwright mouse/touch first-center gate from #131; run with --url/--out, not a unittest suite',
 }
 NODE_TEST_FILES = [
+    'tests/test_grid_inspector_stagger.cjs',
     'tests/test_transport_failure_trace.js',
     'tests/test_section_profile_compat.js',
     'tests/test_assembly_project_store.js',
