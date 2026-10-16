@@ -260,7 +260,8 @@ def _scan_shared():
     files = [ROOT / 'current_geometry.c']
     for pattern in ('*.h', '*.inc'):
         files += sorted(ROOT.glob(pattern))
-    for top, patterns in (('geometry-core', ('*.c', '*.h', '*.inc')), ('geometry-web', ('*.c', '*.h', '*.inc'))):
+    for top in ('geometry-core', 'geometry-web', 'geometry-app', 'geometry-templates'):
+        patterns = ('*.c', '*.h', '*.inc')
         base = ROOT / top
         for pattern in patterns:
             for f in base.rglob(pattern):
