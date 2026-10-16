@@ -76,7 +76,9 @@ class EnclosureProduct(unittest.TestCase):
     def run_client(self,executable,path,marker=None):
         result=subprocess.run([str(executable),str(path)],capture_output=True,text=True,encoding='utf-8',timeout=30)
         self.assertEqual(1 if marker else 0,result.returncode,result.stdout+'\n'+result.stderr)
-        self.assertEqual('ASSERT:'+marker+'\n' if marker else '',result.stderr)
+        expected='I8a preview 1: valid; confirm token to apply\n'
+        if marker:expected+='ASSERT:'+marker+'\n'
+        self.assertEqual(expected,result.stderr)
 
     def test_real_preview_rebuild_confirm_and_undo_retain_enclosure_graph(self):
         build,client,path=self.build_client()

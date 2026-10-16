@@ -596,7 +596,7 @@ static bool reference_member_dimension(ReferenceEval *ctx,uint32_t id,bool b,Coo
 {
     int index=reference_timber_index(ctx->world,id);if(index<0)return false;
     const Timber *member=&ctx->world->wood.timbers[index];
-    if(!ctx->use_current_values){
+    if(!ctx->use_current_values&&!app_assembly_replaying()){
         bool owned;if(!reference_member_owned(ctx,id,&owned))return false;
         if(owned){
             GeoCoord width,depth;if(!wood_assembly_sources_owned_dimensions(ctx->assembly_sources,id,&width,&depth))return false;

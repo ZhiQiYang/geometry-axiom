@@ -590,7 +590,7 @@ static bool reference_place_geometry(ReferenceEval *evaluation,World *w,size_t t
 }
 static bool reference_compute_timber(ReferenceEval *ctx,size_t i)
 {
-    if(!ctx->use_current_values&&ctx->wanted[i]){
+    if(!ctx->use_current_values&&!app_assembly_replaying()&&ctx->wanted[i]){
         Timber *member=&ctx->world->wood.timbers[i];bool owned;
         if(!reference_member_owned(ctx,member->id,&owned))return false;
         if(owned){

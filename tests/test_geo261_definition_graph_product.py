@@ -28,7 +28,7 @@ class DefinitionGraphProduct(unittest.TestCase):
                 for e in envelope['neutralSources']['edges']}
 
     def test_member_pose_uses_authored_anchor_role_and_typed_literal_dimensions(self):
-        envelope = self.execute(SCENE + 'timber 71 27 33 role primary\n')
+        envelope = self.execute(SCENE)
         nodes, edges = self.nodes(envelope), self.edges(envelope)
         pose = 'woodworking.member.pose', struct.pack('=I', 1)
         for kind in (1, 2):
@@ -39,11 +39,16 @@ class DefinitionGraphProduct(unittest.TestCase):
             self.assertEqual(value, nodes[self.source(kind, 1)]['value']['num'])
         declaration = base64.b64decode(nodes[self.source(1, 1)]['value']['contentBase64'], validate=True)
         self.assertEqual(struct.pack('>IBIqBqBq', 1, 1, 0, 1, 1, 40, 1, 50), declaration)
-        self.assertIn(self.source(1, 71), nodes)
-        self.assertIn(self.source(2, 71), nodes)
-        self.assertNotIn(self.source(3, 71), nodes)
-        self.assertNotIn(self.source(4, 71), nodes)
         self.assertTrue(all(root['kind'] != 'wood.definition' for root in envelope['neutralSources']['roots']))
+        # I9 rejects unplaced members at scene EOF. Check the unused authored
+        # identity in an unfinished H candidate, without asserting illegal load.
+        build = native()
+        client = build.compile(ROOT / 'tests/geo261_definition_product_harness.c', 'definition-unplaced-client',
+                               ['GEOMETRY_KERNEL_EXTERNAL=1', 'GEOMETRY_WOODWORKING_EXTERNAL=1',
+                                'GEOMETRY_HOST_HISTORY_EXTERNAL=1', 'GEOMETRY_HOST_CANDIDATE_EXTERNAL=1'])
+        executable = build.link('definition-unplaced-client', [client, *build.product_objects()])
+        result = subprocess.run([str(executable), 'unplaced'], capture_output=True, text=True, timeout=20)
+        self.assertEqual(0, result.returncode, result.stdout + result.stderr)
 
     def test_ordered_contact_features_include_the_actual_boundary_policy(self):
         envelope = self.execute(SCENE)
