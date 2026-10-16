@@ -44,6 +44,10 @@ class NativeBuild:
         shutil.copy2(ROOT / "geometry-core/kernel/internal/parameter_store.h", self.kernel / "internal/parameter_store.h")
         shutil.copy2(ROOT / "geometry-core/kernel/internal/named_values.h", self.kernel / "internal/named_values.h")
         shutil.copy2(ROOT / "geometry-core/kernel/internal/datums.h", self.kernel / "internal/datums.h")
+        self.woodworking = self.work / "isolated-woodworking"
+        self.woodworking.mkdir()
+        for name in ("members.h", "members.c"):
+            shutil.copy2(ROOT / "geometry-templates/woodworking/native" / name, self.woodworking / name)
         self.windows = os.name == "nt"
         self.suffix = ".exe" if self.windows else ""
         self.logs = []
@@ -69,6 +73,7 @@ class NativeBuild:
         self.named_values_object = self.compile(self.kernel / "named_values.c", "named-values")
         self.datums_object = self.compile(self.kernel / "datums.c", "datums")
         self.source_object = self.compile(self.kernel / "source.c", "source")
+        self.wood_members_object = self.compile(self.woodworking / "members.c", "wood-members")
         exact_source = self.work / "exact-client.c"
         shutil.copy2(ROOT / "tests/geo261_exact_harness.c", exact_source)
         self.exact_client = self.compile(exact_source, "exact-client")
@@ -122,9 +127,12 @@ class NativeBuild:
 
     def bridge(self):
         if self.bridge_object is None:
-            self.bridge_object = self.compile(ROOT / "geometry-web/web_bridge.c", "product-bridge", ["GEOMETRY_KERNEL_EXTERNAL=1"])
-            self.bridge_exe = self.link("product-bridge", [self.bridge_object, *self.kernel_objects()])
+            self.bridge_object = self.compile(ROOT / "geometry-web/web_bridge.c", "product-bridge", ["GEOMETRY_KERNEL_EXTERNAL=1", "GEOMETRY_WOODWORKING_EXTERNAL=1"])
+            self.bridge_exe = self.link("product-bridge", [self.bridge_object, *self.product_objects()])
         return self.bridge_exe
+
+    def product_objects(self):
+        return [*self.kernel_objects(), self.wood_members_object]
 
     def kernel_objects(self):
         return [self.exact_object, self.codec_object, self.geometry_object, self.grid_object,
@@ -159,7 +167,7 @@ class NativeBuild:
         if module == "datums":
             dependencies = [self.geometry_object, self.linear_object, self.exact_object]
         client = self.link(module + "-mutant-client", [client_object, changed, *dependencies])
-        product = self.link(module + "-mutant-bridge", [self.bridge_object, exact, codec, geometry, grid, parameters, linear, named_values, datums, source_object])
+        product = self.link(module + "-mutant-bridge", [self.bridge_object, exact, codec, geometry, grid, parameters, linear, named_values, datums, source_object, self.wood_members_object])
         return client, product
 
 

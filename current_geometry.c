@@ -10,6 +10,7 @@
 #include <sys/stat.h>
 #include "geometry-core/kernel/kernel_unity.inc"
 #include "geometry-app/native/legacy_json.inc"
+#include "geometry-app/native/woodworking_unity.inc"
 #ifdef _MSC_VER
 #include <intrin.h>
 #endif
@@ -1132,70 +1133,21 @@ static bool grid_is_valid(
  *   START：local X = 0，尺寸 A × B
  *   END：local X = L，尺寸 A × B
  */
-typedef enum {
-    TIMBER_FACE_A0,
-    TIMBER_FACE_A1,
-    TIMBER_FACE_B0,
-    TIMBER_FACE_B1,
-    TIMBER_FACE_START,
-    TIMBER_FACE_END,
-    TIMBER_FACE_COUNT
-} TimberFaceId;
-
-/*
- * 六個面出自同一條規則：面 = 法向軸 k + 哪一側 s。
- *
- *   k：0 = 長度軸，1 = A 軸，2 = B 軸。
- *   s：0 = 座標 0 側，1 = 滿尺寸側。
- *
- * 面內兩軸是第 (k+1)%3 與 (k+2)%3 軸；(u, w, k) 恆為右手系
- * （u × w = k），所以同一個繞行順序在 s=1 給出 +k 法向、
- * 反向走在 s=0 給出 −k 法向：六個面的法向一律朝外。
- */
-static const struct {
-    unsigned char axis;
-    unsigned char side;
-} TIMBER_FACE_SPEC[TIMBER_FACE_COUNT] = {
-    [TIMBER_FACE_A0]    = { 2, 0 },
-    [TIMBER_FACE_A1]    = { 2, 1 },
-    [TIMBER_FACE_B0]    = { 1, 0 },
-    [TIMBER_FACE_B1]    = { 1, 1 },
-    [TIMBER_FACE_START] = { 0, 0 },
-    [TIMBER_FACE_END]   = { 0, 1 }
-};
-
-
-/* 每個面的全名（文字輸出）與短名（圖上標籤）。 */
-static const struct {
-    const char *full;
-    const char *brief;
-} TIMBER_FACE_NAMES[TIMBER_FACE_COUNT] = {
-    [TIMBER_FACE_A0]    = { "A0（接觸面）",     "A0"    },
-    [TIMBER_FACE_A1]    = { "A1（另一個 A 面）", "A1"    },
-    [TIMBER_FACE_B0]    = { "B0",              "B0"    },
-    [TIMBER_FACE_B1]    = { "B1",              "B1"    },
-    [TIMBER_FACE_START] = { "START 端面",       "START" },
-    [TIMBER_FACE_END]   = { "END 端面",         "END"   }
-};
-
+/* H compatibility names refer to the actual W model. */
+typedef WoodMemberFace TimberFaceId;
+#define TIMBER_FACE_A0 WOOD_MEMBER_FACE_A0
+#define TIMBER_FACE_A1 WOOD_MEMBER_FACE_A1
+#define TIMBER_FACE_B0 WOOD_MEMBER_FACE_B0
+#define TIMBER_FACE_B1 WOOD_MEMBER_FACE_B1
+#define TIMBER_FACE_START WOOD_MEMBER_FACE_START
+#define TIMBER_FACE_END WOOD_MEMBER_FACE_END
+#define TIMBER_FACE_COUNT WOOD_MEMBER_FACE_COUNT
 static bool timber_face_id_is_valid(TimberFaceId face)
-{
-    return face >= TIMBER_FACE_A0 && face < TIMBER_FACE_COUNT;
-}
-
+{return wood_member_face_valid(face);}
 static const char *timber_face_name(TimberFaceId face)
-{
-    return timber_face_id_is_valid(face)
-        ? TIMBER_FACE_NAMES[face].full
-        : "UNKNOWN_FACE";
-}
-
+{return wood_member_face_name(face);}
 static const char *timber_face_short_name(TimberFaceId face)
-{
-    return timber_face_id_is_valid(face)
-        ? TIMBER_FACE_NAMES[face].brief
-        : "?";
-}
+{return wood_member_face_short_name(face);}
 
 typedef enum {
     SURFACE_DIRECTION_POS_U,
@@ -1215,101 +1167,18 @@ typedef enum {
  * primary 主支 = 2、secondary 副支 = 3、custom 由 priority N（N≥1）明寫。
  * custom 的 priority 只參與 I19 的數值比較，不取得任何角色專屬義務。
  */
-typedef enum {
-    TIMBER_ROLE_BOUNDARY = 0,
-    TIMBER_ROLE_PRIMARY,
-    TIMBER_ROLE_SECONDARY,
-    TIMBER_ROLE_CUSTOM
-} TimberRole;
-
-typedef struct {
-    TimberId id;
-
-    Coord length;
-    Coord size_a;
-    Coord size_b;
-
-    /*
-     * D15：角色是宣告；「是否真的在邊界上」是推導（R18），
-     * 兩者不一致 = 拒絕，不改宣告去遷就幾何。
-     * cut_priority 是生效值：非 custom 由角色決定（1/2/3），
-     * custom 用宣告的 N。
-     */
-    TimberRole role;
-    Coord cut_priority;
-
-    /*
-     * true = auto 角材（timber id A B）：length 不是輸入，
-     * 而是每次從位置引用與可延伸區間重建的結果。
-     * false 已廢除，建構子拒絕。
-     */
-    bool auto_length;
-
-    bool placed;
-
-    /*
-     * 完整角材放入房間後的局部座標框架。
-     */
-    Point3 origin;
-    Vector3 axis_length;
-    Vector3 axis_a;
-    Vector3 axis_b;
-} Timber;
+typedef WoodMemberRole TimberRole;
+typedef WoodMember Timber;
+#define TIMBER_ROLE_BOUNDARY WOOD_MEMBER_ROLE_BOUNDARY
+#define TIMBER_ROLE_PRIMARY WOOD_MEMBER_ROLE_PRIMARY
+#define TIMBER_ROLE_SECONDARY WOOD_MEMBER_ROLE_SECONDARY
+#define TIMBER_ROLE_CUSTOM WOOD_MEMBER_ROLE_CUSTOM
 /* 公理 D7：角材——截面 + 長度模式 + 局部三軸 + 原點；八角不存（D9）。 */
-
 static const char *timber_role_name(TimberRole role)
-{
-    switch (role) {
-        case TIMBER_ROLE_BOUNDARY:  return "boundary";
-        case TIMBER_ROLE_PRIMARY:   return "primary";
-        case TIMBER_ROLE_SECONDARY: return "secondary";
-        case TIMBER_ROLE_CUSTOM:    return "custom";
-        default:                    return "?";
-    }
-}
-
-/* Construct 一支完整角材，但此時尚未放進空間邊界面。 */
-static bool timber_construct(
-    TimberId id,
-    Coord length,
-    Coord size_a,
-    Coord size_b,
-    bool auto_length,
-    TimberRole role,
-    Coord custom_priority,
-    Timber *out_timber
-)
-{
-    if (out_timber == NULL ||
-        size_a <= 0 ||
-        size_b <= 0 ||
-        !auto_length ||
-        (auto_length && length != 0) ||
-        (role == TIMBER_ROLE_CUSTOM && custom_priority < 1)) {
-        return false;
-    }
-
-    *out_timber = (Timber){
-        .id = id,
-        .length = length,
-        .size_a = size_a,
-        .size_b = size_b,
-        .auto_length = auto_length,
-        .placed = false,
-        .role = role,
-        .cut_priority = role == TIMBER_ROLE_CUSTOM
-            ? custom_priority
-            : (Coord)role + 1,
-
-        /* 尚未放置前，先使用標準局部框架。 */
-        .origin = { 0, 0, 0 },
-        .axis_length = { 1, 0, 0 },
-        .axis_a = { 0, 1, 0 },
-        .axis_b = { 0, 0, 1 }
-    };
-
-    return true;
-}
+{return wood_member_role_name(role);}
+static bool timber_construct(TimberId id,Coord length,Coord size_a,Coord size_b,
+    bool auto_length,TimberRole role,Coord custom_priority,Timber *out_timber)
+{return wood_member_construct(id,length,size_a,size_b,auto_length,role,custom_priority,out_timber);}
 
 static Vector3 surface_direction_vector(
     const PlacementSurface *surface,
@@ -1485,9 +1354,7 @@ static bool timber_get_face_room(
     Quad3 *out_face
 )
 {
-    if(!timber||!out_face||!timber->placed||!timber_face_id_is_valid(face))return false;
-    GeoBox3 box={{timber->origin,timber->axis_length,timber->axis_a,timber->axis_b},{timber->length,timber->size_a,timber->size_b}};
-    return geo_box_face(&box,TIMBER_FACE_SPEC[face].axis,TIMBER_FACE_SPEC[face].side,out_face);
+    return wood_member_face_room(timber,face,out_face);
 }
 
 /* ============================================================

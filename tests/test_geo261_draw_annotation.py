@@ -14,8 +14,8 @@ class DrawAnnotation(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         build=native()
-        obj=build.compile(ROOT/'tests/geo261_draw_annotation_harness.c','draw-annotation-client',['GEOMETRY_KERNEL_EXTERNAL=1'])
-        cls.exe=build.link('draw-annotation-client',[obj,*build.kernel_objects()])
+        obj=build.compile(ROOT/'tests/geo261_draw_annotation_harness.c','draw-annotation-client',['GEOMETRY_KERNEL_EXTERNAL=1','GEOMETRY_WOODWORKING_EXTERNAL=1'])
+        cls.exe=build.link('draw-annotation-client',[obj,*build.product_objects()])
 
     def check(self,case):
         run=subprocess.run([str(self.exe),case],capture_output=True,text=True,timeout=10)
