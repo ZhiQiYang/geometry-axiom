@@ -1,0 +1,64 @@
+{
+  "kind": "baseline-producer-receipt-retry",
+  "source": "a898ad6e12707104568679591fe1b21804bfc3df",
+  "reason": "original producer serialized historical version tuples through a JSON-only canonicalizer; v4 converts those pairs to arrays",
+  "started_utc": "2026-10-16T00:37:08.738058+00:00",
+  "finished_utc": "2026-10-16T00:37:20.869352+00:00",
+  "shared_lock_holder": "pid=11413 start=2026-10-16T00:37:08Z label= args=run WSL_CI_JOB_TAG=geo261-p1-producer-retry bash /mnt/d/geometry-axiom-work/geo261-evidence/p1/producer-retry-namespace.sh\n",
+  "command": [
+    "python3",
+    "-u",
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/producer/produce_fixtures_v4.py",
+    "--root",
+    "/var/tmp/geo261-baseline-a898ad6e",
+    "--base",
+    "/tmp/geometry-tests/model-base",
+    "--out",
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/compatibility-baseline-v2"
+  ],
+  "producer_script_sha256": "c25f6f2cee855800a0d7fccffcd8e3ef11923fcf6cd68235570373fc1a21a7f3",
+  "producer_exit": 0,
+  "adapters_before": {
+    "model-base": "fresh",
+    "bridge": "fresh"
+  },
+  "adapters_after": {
+    "model-base": "fresh",
+    "bridge": "fresh"
+  },
+  "source_unchanged": true,
+  "source_before_sha256": "cdc20cc15d7885ac9b11c7c68963ab56a0b45f221fd9483e19a89c380ec99fb3",
+  "source_after_sha256": "cdc20cc15d7885ac9b11c7c68963ab56a0b45f221fd9483e19a89c380ec99fb3",
+  "original_partial_fixture_byte_equality": {
+    "finite-grid.input.json": true,
+    "finite-grid.json": true,
+    "infinite-grid.input.json": true,
+    "infinite-grid.json": true,
+    "parameter.input.json": true,
+    "parameter.json": true,
+    "profile.input.json": true,
+    "profile.json": true,
+    "stagger.input.json": true,
+    "stagger.json": true,
+    "subdivision-rejected.json": true
+  },
+  "fixture_sha256": {
+    "finite-grid.input.json": "fe412d6358637f3ebb9d7299e2a78e98cfe9dd6e4ff57c742ae994e1e63ab8ca",
+    "finite-grid.json": "d0b08fa5e15ac82a226a7159d3a4b0855cf890abbfbbc8ca93e5fe37ed6177be",
+    "historical-versions.json": "44a039bc6aa6e465962676de7a4dbd6e715e277209a6310d4798ae5597b3f59d",
+    "infinite-grid.input.json": "7e6f67bb1e2b1b00adec33932d22e2fe3f0147c53a6130c62e5b4ddb8cc0c52c",
+    "infinite-grid.json": "241e9a955432a51ad6dc277ee320c9c0e8320acb8b5c3aca4c84dae0a3fc43ef",
+    "model-contract.json": "207fdb5e1b6e685ee620e7533aeb03c294c6b498874240f0187e7102ec77951c",
+    "parameter.input.json": "12c578b2b004d09dabb3d2d0cce5761bfd1be5a16ca91fe88f908617bef25549",
+    "parameter.json": "b60d9959edcf872b0e5f5142986b0069a865d2a8222bcdf7b6f2aa06958a95bf",
+    "producer-receipt.json": "4660414637141df3cfa8da3c392bb17ae33b7c96ff1c35eb8b86827d0eb707e1",
+    "profile.input.json": "9388878dbfbeea14409e0fd75ade59b6c7a98c162299c86e8b167eb6700df653",
+    "profile.json": "51e5062a04c5f7adb1660071e0c2ac653e7ba5701ebffb50a86ab5de4f9f9a18",
+    "stagger.input.json": "9cc48e02fff5a33b87b7d15c53520ec3617161e2468211fbee0f7edc3281b119",
+    "stagger.json": "d5dec925392492ea4a2722916f300246366973c94157ef3ffbcd1dadd654ea4f",
+    "subdivision-rejected.json": "048809b482c15bcdc34529099cf27daa7dcc72a40000644acc1802d93b09882b"
+  },
+  "log_sha256": "d374318e8e5a896d79fd2794bcc6ac0b2a116eb557d74a84a1f70eff5248ab52",
+  "full_suite_executed": false,
+  "exit": 0
+}

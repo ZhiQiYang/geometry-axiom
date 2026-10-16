@@ -1,10 +1,15 @@
 #!/usr/bin/env python3
 """Targeted regression checks for canonical SSOT reader synchronization."""
 import copy
+import hashlib
 import importlib.util
 import json
+from html.parser import HTMLParser
+import os
 from pathlib import Path
 import re
+import shutil
+import subprocess
 import unittest
 from unittest import mock
 
@@ -12,6 +17,70 @@ ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location("reader_sync", ROOT / "geometry-guide/sync_axiom_reader.py")
 reader = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(reader)
+
+
+class SourceDOM(HTMLParser):
+    """Independent DOM observations for the two visible normative sections."""
+    def __init__(self, markup):
+        super().__init__(convert_charrefs=True)
+        self.leaves, self.rows, self.current, self.row, self.section = [], [], None, None, None
+        self.sections = []
+        self.feed(markup)
+
+    def handle_starttag(self, tag, attributes):
+        attrs = dict(attributes)
+        if "data-ssot-section" in attrs:
+            self.section = attrs["data-ssot-section"]
+            self.sections.append(self.section)
+        if self.section:
+            if tag == "tr":
+                self.row = []
+            if tag in {"h1", "h2", "h3", "h4", "h5", "h6", "p", "li", "th", "td"}:
+                self.current = [self.section, tag, "", attrs.get("class", "")]
+
+    def handle_data(self, value):
+        if self.current is not None:
+            self.current[2] += value
+
+    def handle_endtag(self, tag):
+        if self.current is not None and tag == self.current[1]:
+            if self.current[3] != "reader-source-note":
+                self.leaves.append(tuple(self.current[:3]))
+            if tag in {"th", "td"} and self.row is not None:
+                self.row.append(self.current[2])
+            self.current = None
+        if tag == "tr" and self.row is not None:
+            self.rows.append(self.row)
+            self.row = None
+        if tag in {"section", "footer"}:
+            self.section = None
+
+
+def independent_source_slices(source):
+    # Line offsets deliberately independent of source_sections() and its regex.
+    lines = source.splitlines(keepends=True)
+    first = next(i for i, line in enumerate(lines) if line.startswith("## 一、"))
+    fourth = next(i for i, line in enumerate(lines) if line.startswith("## 四、"))
+    return {"preamble": "".join(lines[:first]), "exclusions": "".join(lines[fourth:])}
+
+
+def execute_packet(markup, state):
+    """Execute the reader's real packet and dependencies, not a Python replica."""
+    script = reader.script_text(markup, "review-script")
+    definitions = script[script.index("function sha256("):script.index("let state, blocks,")]
+    for prefix in ("const statusNames=", "function assert(", "function anchorState("):
+        definitions += next(line for line in script.splitlines() if line.startswith(prefix)) + "\n"
+    definitions += script[script.index("function agentInstructions()"):script.index("function exportPanel()")]
+    code = ("const state=JSON.parse(require('fs').readFileSync(0,'utf8'));"
+            "const blocks=Object.fromEntries(state.blocks.map(b=>[b.id,b]));" + definitions +
+            "try{process.stdout.write(JSON.stringify({packet:packetMD(),instructions:agentInstructions(),state}));}"
+            "catch(error){process.stdout.write(JSON.stringify({error:error.message,state}));}")
+    node = os.environ.get("CODEX_PRIMARY_RUNTIME_NODE") or shutil.which("node")
+    if not node:
+        raise RuntimeError("Node is required to execute the real reader packet")
+    result = subprocess.run([node, "-e", code], input=json.dumps(state, ensure_ascii=False),
+                            text=True, encoding="utf-8", capture_output=True, check=True)
+    return json.loads(result.stdout)
 
 
 class CanonicalReader(unittest.TestCase):
@@ -555,6 +624,200 @@ class CanonicalReader(unittest.TestCase):
         rendered = reader.render_inline_with_reader(self.html, ["I7a I8a D6c R6(e)"], self.state["clauses"])[0]
         for target in ("I7a", "I8a", "D6c", "R6"):
             self.assertIn(f'href="#{target}"', rendered)
+
+    def test_source_sections_keep_exact_independent_slices_and_all_visible_blocks(self):
+        slices = independent_source_slices(self.axiom)
+        observed = SourceDOM(self.html)
+        self.assertEqual(observed.sections, ["preamble", "exclusions"])
+        expected = []
+        for name, source in slices.items():
+            self.assertEqual(self.state["sourceSections"][name], {
+                "source": source, "sourceHash": hashlib.sha256(source.encode("utf-8")).hexdigest()})
+            # Independent paragraph/list/table scanner. It does not use the
+            # generator's block grammar or its produced markup as the oracle.
+            for chunk in source.strip().split("\n\n"):
+                lines = chunk.splitlines()
+                if all(line.startswith(">") for line in lines):
+                    expected.append((name, "p", "\n".join(line[1:].removeprefix(" ") for line in lines)))
+                elif lines[0].startswith("#"):
+                    mark, title = lines[0].split(" ", 1)
+                    self.assertEqual(len(lines), 1)
+                    expected.append((name, "h" + str(len(mark)), title))
+                elif lines[0].startswith("|"):
+                    for row_no, line in enumerate(lines):
+                        if row_no == 1:
+                            continue
+                        expected.extend((name, "th" if row_no == 0 else "td", cell.strip())
+                                        for cell in line.strip("|").split("|"))
+                elif lines[0].startswith("- "):
+                    items = []
+                    for line in lines:
+                        if line.startswith("- "):
+                            items.append(line[2:])
+                        else:
+                            self.assertTrue(line.startswith("  "))
+                            items[-1] += "\n" + line[2:]
+                    expected.extend((name, "li", item) for item in items)
+                else:
+                    expected.append((name, "p", chunk))
+        inline = reader.render_inline_with_reader(self.html, [entry[2] for entry in expected], self.state["clauses"])
+        expected = [(name, tag, reader.visible_text(markup)) for (name, tag, _), markup in zip(expected, inline)]
+        self.assertEqual(observed.leaves, expected)
+        self.assertEqual(len([entry for entry in expected if entry[:2] == ("exclusions", "li")]), 19)
+
+    def test_source_scope_table_preserves_every_cell_and_row(self):
+        section = independent_source_slices(self.axiom)["exclusions"]
+        table = [line for line in section.splitlines() if line.startswith("|")]
+        expected = [[cell.strip() for cell in line.strip("|").split("|")] for line in table]
+        # Nineteen original limits plus the three named column headings.
+        self.assertEqual(len(expected), 21)
+        expected.pop(1)  # Markdown separator has no rendered row.
+        observed = SourceDOM(self.html)
+        self.assertEqual(observed.rows, expected)
+        self.assertEqual([row[0] for row in observed.rows[1:]], [str(n) for n in range(1, 20)])
+
+    def test_source_sections_reject_visible_word_cell_and_item_loss(self):
+        slots = reader.SourceSlots(self.html)
+        for name, change in (
+            ("preamble", lambda body: body.replace("共用核心", "錯誤核心", 1)),
+            ("exclusions", lambda body: body.replace("<td>1</td>", "<td>99</td>", 1)),
+            ("exclusions", lambda body: re.sub(r"<li>.*?</li>", "", body, count=1, flags=re.S)),
+        ):
+            slot = slots.unique(name)
+            old = self.html[slot["innerStart"]:slot["innerEnd"]]
+            changed = change(old)
+            self.assertNotEqual(old, changed)
+            corrupted = self.html[:slot["innerStart"]] + changed + self.html[slot["innerEnd"]:]
+            with self.subTest(section=name), self.assertRaisesRegex(AssertionError, "source section DOM text"):
+                reader.validate(corrupted, self.axiom, self.plain)
+
+    def test_source_sections_reject_data_only_update_and_stale_visible_source(self):
+        for name, old, new in (("preamble", "共用核心", "共用運算核心"),
+                               ("exclusions", "分層界線", "責任界線")):
+            original = independent_source_slices(self.axiom)[name]
+            changed = original.replace(old, new, 1)
+            self.assertNotEqual(original, changed)
+            axiom = self.axiom.replace(original, changed, 1)
+            state = copy.deepcopy(self.state)
+            state["sourceFileSha256"] = reader.digest(axiom)
+            # Forging both hashes and source payloads must not hide stale DOM.
+            state["sourceSections"][name] = {"source": changed, "sourceHash": reader.digest(changed)}
+            forged = reader.replace_script(self.html, "axiom-review-data", reader.safe_json(state))
+            with self.subTest(section=name), self.assertRaisesRegex(AssertionError, "source section DOM text"):
+                reader.validate(forged, axiom, self.plain)
+            state["sourceFileSha256"] = self.state["sourceFileSha256"]
+            payload_only = reader.replace_script(self.html, "axiom-review-data", reader.safe_json(state))
+            with self.subTest(section=name), self.assertRaisesRegex(AssertionError, "source section slices/hash"):
+                reader.validate(payload_only, self.axiom, self.plain)
+            with self.subTest(section=name), self.assertRaisesRegex(AssertionError, "SSOT file hash"):
+                reader.validate(self.html, axiom, self.plain)
+
+    def test_source_section_only_change_refreshes_without_changing_block_identity(self):
+        axiom = self.axiom.replace("分層界線", "測試界線", 1)
+        self.assertNotEqual(axiom, self.axiom)
+        regenerated = reader.rebuild(self.html, axiom, self.plain)
+        state = json.loads(reader.script_text(regenerated, "axiom-review-data"))
+        self.assertEqual(reader.validate(regenerated, axiom, self.plain)["source_sections"], "pass")
+        self.assertEqual(reader.rebuild(regenerated, axiom, self.plain), regenerated)
+        for key in ("documentHash", "blocks", "clauses", "comments", "proposals", "revisions", "draft"):
+            self.assertEqual(state[key], self.state[key], key)
+        self.assertEqual(state["textRevision"], self.state["textRevision"] + 1)
+        self.assertNotEqual(state["snapshotId"], self.state["snapshotId"])
+        self.assertEqual(state["parentSnapshotId"], self.state["snapshotId"])
+        self.assertIn("測試界線", SourceDOM(regenerated).rows[0])
+        packet = execute_packet(regenerated, state)["packet"]
+        self.assertIn(independent_source_slices(axiom)["exclusions"], packet)
+        self.assertNotIn(independent_source_slices(self.axiom)["exclusions"], packet)
+
+    def test_agent_packet_executes_with_exact_scope_and_preserves_review_contract(self):
+        before = copy.deepcopy(self.state)
+        result = execute_packet(self.html, before)
+        self.assertNotIn("error", result)
+        packet = result["packet"]
+        slices = independent_source_slices(self.axiom)
+        pre_label = "## 目前規範前言（來源原文）\n\n"
+        body_label = "\n---\n\n## 目前條文與白話（含固定區塊 ID）\n"
+        exc_label = "\n## 目前排除範圍（來源原文）\n\n"
+        revision_label = "\n## 修訂紀錄\n\n"
+        self.assertEqual(packet.split(pre_label, 1)[1].split(body_label, 1)[0], slices["preamble"])
+        self.assertEqual(packet.split(exc_label, 1)[1].split(revision_label, 1)[0], slices["exclusions"])
+        self.assertLess(packet.index(pre_label), packet.index(body_label))
+        self.assertLess(packet.index(body_label), packet.index(exc_label))
+        self.assertLess(packet.index(exc_label), packet.index(revision_label))
+        self.assertIn(result["instructions"], packet)
+        self.assertIn('"schema": "axiom-agent-response/v1"', result["instructions"])
+        for key in ("documentId", "documentHash"):
+            self.assertIn(before[key], result["instructions"])
+        body = packet.split(body_label, 1)[1].split(exc_label, 1)[0]
+        for block in before["blocks"]:
+            if block["editable"]:
+                self.assertIn("\n#### " + block["id"] + " · " + block["label"] + "\n\n" + block["source"] + "\n", body)
+        for comment in before["comments"]:
+            for value in (comment["id"], comment["userIntent"], comment["target"]["sourceSnapshot"],
+                          comment["mustPreserve"], comment["suggestedText"]):
+                if value:
+                    self.assertIn(value, packet)
+            for response in comment["responses"]:
+                self.assertIn(response["id"], packet)
+                self.assertIn(response["text"], packet)
+        self.assertEqual(json.loads(packet.split(revision_label, 1)[1]), before["revisions"])
+        self.assertEqual(result["state"], before)
+        self.assertEqual(self.state, before)
+
+    def test_agent_packet_rejects_missing_or_tampered_source_sections(self):
+        cases = [("all missing", lambda s: s.pop("sourceSections"))]
+        for name in ("preamble", "exclusions"):
+            cases.extend([
+                (name + " missing", lambda s, n=name: s["sourceSections"].pop(n)),
+                (name + " text missing", lambda s, n=name: s["sourceSections"][n].pop("source")),
+                (name + " text altered", lambda s, n=name: s["sourceSections"][n].update(source="範圍已遭改動")),
+                (name + " hash altered", lambda s, n=name: s["sourceSections"][n].update(sourceHash="0" * 64)),
+            ])
+        for label, corrupt in cases:
+            state = copy.deepcopy(self.state)
+            corrupt(state)
+            result = execute_packet(self.html, state)
+            with self.subTest(case=label):
+                self.assertNotIn("packet", result)
+                self.assertRegex(result.get("error", ""), "規範來源區塊(?:缺失|雜湊不符)")
+                self.assertEqual(result["state"], state)
+
+    def test_source_sections_reject_missing_duplicate_and_hidden_containers(self):
+        slots = reader.SourceSlots(self.html)
+        for name in ("preamble", "exclusions"):
+            slot = slots.unique(name)
+            whole = self.html[slot["start"]:slot["end"]]
+            for replacement in ("", whole + whole, whole.replace(" data-ssot-section=", " hidden data-ssot-section=", 1)):
+                corrupted = self.html[:slot["start"]] + replacement + self.html[slot["end"]:]
+                with self.subTest(section=name, replacement=replacement[:60]), self.assertRaisesRegex((AssertionError, ValueError), "source section"):
+                    reader.validate(corrupted, self.axiom, self.plain)
+            for replacement in ("", whole + whole):
+                corrupted = self.html[:slot["start"]] + replacement + self.html[slot["end"]:]
+                with self.subTest(section=name), self.assertRaisesRegex(ValueError, "slot must occur once"):
+                    reader.rebuild(corrupted, self.axiom, self.plain)
+
+    def test_source_section_patch_markers_and_legacy_slots_migrate_once(self):
+        legacy = self.html
+        for name, replacement in (("preamble", '<p class="hint" id="reader-source-status">舊同步說明</p>'),
+                                  ("exclusions", '<footer class="page-footer">舊來源說明</footer>')):
+            slot = reader.SourceSlots(legacy).unique(name)
+            legacy = legacy[:slot["start"]] + replacement + legacy[slot["end"]:]
+        self.assertEqual(reader.rebuild(legacy, self.axiom, self.plain), self.html)
+        for name in ("preamble", "exclusions"):
+            marker = 'data-ssot-section="' + name + '"'
+            self.assertIn(("GEO-261 source " + name, marker), reader.PATCHES.present)
+            self.assertTrue(reader.PATCHES.verify(self.html.replace(marker, "", 1)))
+        self.assertEqual(self.html.count('class="reader-source-note"'), 1)
+        self.assertIn(".page-footer.ssot-source-section{display:block!important}", self.html)
+
+    def test_source_sections_reject_hidden_rows_and_fake_tables(self):
+        slot = reader.SourceSlots(self.html).unique("exclusions")
+        body = self.html[slot["innerStart"]:slot["innerEnd"]]
+        for changed in (body.replace("<tr>", "<tr hidden>", 1),
+                        body.replace("<table>", "<div>", 1).replace("</table>", "</div>", 1)):
+            corrupted = self.html[:slot["innerStart"]] + changed + self.html[slot["innerEnd"]:]
+            with self.assertRaisesRegex(AssertionError, "source section DOM structure"):
+                reader.validate(corrupted, self.axiom, self.plain)
 
 
 if __name__ == "__main__":
