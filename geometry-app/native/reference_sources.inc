@@ -1,3 +1,4 @@
+static GeoVersionStore *app_eng_version_store(const World *);
 /* H binds every resolver to the exact ReferenceEval candidate. K sees opaque
  * keys and typed outputs; legacy token parsing remains in reference_quantity_raw. */
 enum { APP_SOURCE_GUIDE=1, APP_SOURCE_MEMBER_POSE, APP_SOURCE_REFERENCE, APP_SOURCE_PARAMETER,
@@ -507,9 +508,8 @@ static bool reference_member_dimension(ReferenceEval *ctx,uint32_t id,bool b,Coo
 {
     int index=reference_timber_index(ctx->world,id);if(index<0)return false;
     const Timber *member=&ctx->world->wood.timbers[index];
-    if(!ctx->use_current_values){
-        WoodAssemblyContext assembly=app_asm_context(ctx->world);
-        if(wood_assembly_owned(&assembly,id)){
+    if(!ctx->use_current_values&&!app_assembly_replaying()){
+        if(assembly_owned(ctx->world,id)){
             GeoCoord width,depth;if(!wood_assembly_sources_owned_dimensions(ctx->assembly_sources,id,&width,&depth))return false;
             *out=b?depth:width;return true;
         }
