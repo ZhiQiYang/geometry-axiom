@@ -57,6 +57,9 @@ static int host_pose_case(const char *name)
     CHECK("host-pose-graph",ctx.sources);
     ctx.placement_sources=geo_placement_sources_register(ctx.sources,&world->geo.placement_data,&world->geo.region_data,APP_SOURCE_PLACEMENT,APP_SOURCE_REGION,NULL,NULL);
     CHECK("host-pose-real-placement-provider",ctx.placement_sources);
+    WoodDefinitionContext definitions={&world->wood,&world->geo.region_data,APP_SOURCE_ENCLOSURE,APP_SOURCE_REGION};
+    ctx.definition_sources=wood_definition_sources_create(ctx.sources,APP_SOURCE_WOOD_DEFINITION,&definitions);
+    CHECK("host-pose-real-definition-provider",ctx.definition_sources);
     HostPoseInput input={ctx.sources,{{{40,70,30},{1,0,0},{0,1,0},{0,0,1}},{40,10,5}},0};
     GeoSourceProvider provider={APP_SOURCE_MEMBER_POSE,"woodworking.member.pose","host-authority-input/1",&input,host_pose_describe,host_pose_evaluate};
     CHECK("host-pose-input",geo_eval_register(ctx.sources,&provider));

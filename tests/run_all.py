@@ -149,6 +149,8 @@ PY_NEEDS = {
     'test_geo261_host_placement_definition': [],
     'test_geo261_application_closure': [],
     'test_geo261_placement_definition': [],
+    'test_geo261_model_semantics_authority': [],
+    'test_geo261_host_facts_authority': [],
     'test_geo261_placement_sources': [],
     'test_geo261_section_profile_sources': [],
     'test_geo261_section_profile_authority': [],
