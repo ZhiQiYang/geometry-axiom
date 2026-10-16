@@ -1,10 +1,12 @@
-"""GEO-261 P0: independently check the unapproved proposal against the SSOT.
+"""GEO-261: retain the exact P0 proposal against its independent historical SSOT.
 
 This is a proposal-integrity gate, not evidence that domain decoupling exists.
-P0 compares current SSOT with ``before``. After explicit approval, P1 must
-deliberately migrate this gate to compare adopted ``after`` with the SSOT while
-preserving ``before`` and its provenance. Never edit historical ``before`` or
-remove this gate merely to make an adopted revision pass.
+The 17a25e92 proposal and its proposed-not-approved status are immutable review
+history. The human approval is recorded separately in APPROVAL.json. These
+original 29 checks now use the pinned Git-source fixture, not current SSOT;
+test_domain_decoupling_adoption separately verifies the approved delta and
+the adopted current document, including independently adopted upstream edits.
+Never edit historical ``before`` or remove either gate to make adoption pass.
 
 GEOMETRY_PROPOSAL_ROOT permits running a temporary mutant of this test file
 against the same repository, without modifying the official source or tests.
@@ -257,7 +259,7 @@ def validate_proposal(source_bytes, proposal, markdown):
 class ProposalContract(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.source = (ROOT / "公理層.md").read_bytes()
+        cls.source = (ROOT / "tests" / "fixtures" / "geo261-axiom-base.txt").read_bytes()
         cls.proposal = json.loads((PROPOSAL_DIR / "clause-map.json").read_bytes())
         cls.markdown = normalized((PROPOSAL_DIR / "AXIOM-PROPOSAL.md").read_bytes())
 
