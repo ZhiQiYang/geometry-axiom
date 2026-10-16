@@ -978,6 +978,139 @@ class ArchitectureContract(unittest.TestCase):
         self.put("src/core.js", "const x='calcium-\\\u2028silicate-6';")
         self.rejects("FORBIDDEN_STRING")
 
+    def test_c_trigraph_cannot_hide_template_include(self):
+        self.put("src/core.c", '??=include "w.h"\n')
+        self.put("src/w.h", "int policy;\n", "W")
+        self.rejects("C_UNSUPPORTED_TRIGRAPH", path="src/core.c", line=1)
+
+    def test_c_trigraph_splicing_is_rejected_before_comment_processing(self):
+        self.put("src/core.c", '// display??/\n#include "w.h"\n')
+        self.put("src/w.h", "int policy;\n", "W")
+        self.rejects("C_UNSUPPORTED_TRIGRAPH", line=1)
+
+    def test_c_trigraph_in_literal_is_explicitly_unsupported(self):
+        self.put("src/core.c", 'const char *x = "??=";\n')
+        self.rejects("C_UNSUPPORTED_TRIGRAPH")
+
+    def test_c_double_question_without_trigraph_remains_display_text(self):
+        self.put("src/core.c", 'const char *x = "??x";\n')
+        self.green()
+
+    def test_python_destructured_sys_alias_cannot_read_loaded_template(self):
+        self.put("src/core.py", 'import sys\nalias, = (sys,)\npolicy = alias.modules["w.policy"]\n')
+        self.put("src/w/policy.py", "value = 1\n", "W")
+        self.rejects("CORE_PATH_INJECTION", path="src/core.py", line=3)
+
+    def test_python_nested_list_and_starred_sys_unpacking_is_tracked(self):
+        path = self.put("src/core.py", "")
+        self.put("src/w/policy.py", "value = 1\n", "W")
+        for binding in ['[alias] = [sys]', '((alias,),) = ((sys,),)',
+                        'alias, *rest = (sys, 0)', '*rest, alias = (0, sys)']:
+            with self.subTest(binding=binding):
+                path.write_text('import sys\n' + binding + '\npolicy = alias.modules["w.policy"]\n', encoding="utf-8")
+                self.rejects("CORE_PATH_INJECTION", line=3)
+
+    def test_python_container_then_unpack_preserves_sys_provenance(self):
+        self.put("src/core.py", 'import sys\nbox = (sys,)\nalias, = box\npolicy = alias.modules["w.policy"]\n')
+        self.put("src/w/policy.py", "value = 1\n", "W")
+        self.rejects("CORE_PATH_INJECTION", line=4)
+
+    def test_python_container_index_preserves_sys_provenance(self):
+        self.put("src/core.py", 'import sys\nalias = (sys,)[0]\npolicy = alias.modules["w.policy"]\n')
+        self.put("src/w/policy.py", "value = 1\n", "W")
+        self.rejects("CORE_PATH_INJECTION", line=3)
+
+    def test_python_dict_and_loop_bindings_preserve_sys_provenance(self):
+        path = self.put("src/core.py", "")
+        for source in ['import sys\nalias = {"module": sys}["module"]\npolicy = alias.modules["w.policy"]\n',
+                       'import sys\nfor alias in [sys]:\n    policy = alias.modules["w.policy"]\n',
+                       'import sys\npolicy = [alias.modules["w.policy"] for alias in [sys]]\n']:
+            with self.subTest(source=source):
+                path.write_text(source, encoding="utf-8")
+                self.rejects("CORE_PATH_INJECTION")
+
+    def test_python_sys_storage_through_attribute_target_fails_closed(self):
+        self.put("src/core.py", 'import sys\nholder.alias = sys\npolicy = holder.alias.modules["w.policy"]\n')
+        self.rejects("CORE_SYS_ALIAS_TARGET", line=2)
+
+    def test_python_mixed_nested_sys_storage_target_fails_closed(self):
+        self.put("src/core.py", 'import sys\nvalue, holder.alias = (0, sys)\npolicy = holder.alias.modules["w.policy"]\n')
+        self.rejects("CORE_SYS_ALIAS_TARGET", line=2)
+
+    def test_python_neutral_destructuring_remains_supported(self):
+        self.put("src/core.py", 'import math\nalias, value = (math, 1)\n[nested] = [alias]\nresult = nested.pi + value\n')
+        self.green()
+
+    def test_javascript_parenthesized_constructor_key_fails_closed(self):
+        self.put("src/core.js", r'''(()=>{})[("constructor")]('return import("./w.js")')();''')
+        self.put("src/w.js", "export const value = 1;", "W")
+        self.rejects("JS_COMPUTED_KEY_UNSUPPORTED")
+
+    def test_javascript_constructed_reflective_keys_fail_closed(self):
+        path = self.put("src/core.js", "")
+        self.put("src/w.js", "export const value = 1;", "W")
+        for key in ["(('constructor'))", "'con'+'structor'", "(0,'constructor')",
+                    "'con'.concat('structor')", "`con${'structor'}`", "['constructor'][0]"]:
+            with self.subTest(key=key):
+                path.write_text("(()=>{})[" + key + "]('return import(\"./w.js\")')();", encoding="utf-8")
+                self.rejects("JS_COMPUTED_KEY_UNSUPPORTED")
+
+    def test_javascript_bare_index_variable_is_not_assumed_numeric(self):
+        self.put("src/core.js", "const i = 'constructor'; (()=>{})[i]('return 1')();")
+        self.rejects("JS_COMPUTED_KEY_UNSUPPORTED")
+
+    def test_javascript_unknown_addition_key_is_not_assumed_numeric(self):
+        self.put("src/core.js", "const key = 'con'; (()=>{})[key + 'structor']('return 1')();")
+        self.rejects("JS_COMPUTED_KEY_UNSUPPORTED")
+
+    def test_javascript_numeric_and_coerced_arithmetic_indices_remain_supported(self):
+        self.put("src/core.js", "const values = [1,2,3]; const a=values[0]; const b=values[(1+2)*3]; "
+                 "const c=values[+i + 1]; const d=values[i-1]; const e=values[i|0]; "
+                 "const f=values[(i >>> 0) % 3]; const g=values[i++];\n")
+        self.green()
+
+    def test_javascript_arrays_and_destructuring_are_not_member_keys(self):
+        self.put("src/core.js", "const labels=['constructor', 'srcdoc']; const [first, second]=labels; "
+                 "function values([x,y]=[1,2]) {return [x,y];} const firstValue=[...values()][0];\n")
+        self.green()
+
+    def test_javascript_literal_neutral_property_keys_remain_supported(self):
+        self.put("src/core.js", "const shape={width:1}; const a=shape['width']; const b=shape[`width`];\n")
+        self.green()
+
+    def test_html_srcdoc_document_is_explicitly_unsupported(self):
+        self.put("src/core.html", '<iframe srcdoc="&lt;script src=&quot;./w.js&quot;&gt;&lt;/script&gt;"></iframe>')
+        self.put("src/w.js", "export const value = 1;", "W")
+        self.rejects("HTML_SRCDOC_UNSUPPORTED")
+
+    def test_html_empty_or_host_srcdoc_still_requires_document_parser(self):
+        self.put("src/host.html", '<iframe SRCDOC=""></iframe>', "H")
+        self.rejects("HTML_SRCDOC_UNSUPPORTED")
+
+    def test_javascript_template_srcdoc_property_is_not_a_static_dependency(self):
+        self.put("src/core.js", "frame.srcdoc = '<script src=\"./h.js\"></script>';", "W")
+        self.put("src/h.js", "export const value = 1;", "H")
+        self.rejects("JS_HTML_WRITER_UNSUPPORTED")
+
+    def test_javascript_literal_srcdoc_property_fails_closed(self):
+        self.put("src/core.js", "frame['srcdoc'] = '<script src=\"./h.js\"></script>';", "W")
+        self.put("src/h.js", "export const value = 1;", "H")
+        self.rejects("JS_HTML_WRITER_UNSUPPORTED")
+
+    def test_javascript_constructed_srcdoc_key_fails_closed(self):
+        self.put("src/core.js", "frame['src'+'doc'] = '<script src=\"./h.js\"></script>';", "W")
+        self.put("src/h.js", "export const value = 1;", "H")
+        self.rejects("JS_COMPUTED_KEY_UNSUPPORTED")
+
+    def test_javascript_attribute_writer_cannot_hide_srcdoc(self):
+        self.put("src/core.js", "frame.setAttribute('srcdoc', '<script src=\"./h.js\"></script>');", "W")
+        self.put("src/h.js", "export const value = 1;", "H")
+        self.rejects("JS_HTML_WRITER_UNSUPPORTED")
+
+    def test_javascript_dom_writer_display_names_are_not_executable(self):
+        self.put("src/core.js", "const labels=['srcdoc','innerHTML','setAttribute']; // frame.srcdoc\n")
+        self.green()
+
     def test_manifest_order_does_not_change_diagnostics_or_graph(self):
         self.put("src/k/core.c", '#include "../w/policy.h"\n')
         self.put("src/w/policy.h", '#include "../h/host.h"\n', "W")

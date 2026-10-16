@@ -102,6 +102,13 @@ their appearances in comments or string literals are display text. A Python
 module has dependency edges to its own regular-package initializers even if
 only H imports that module or the module body contains no import. Simple,
 annotated, and named-expression assignments preserve imported alias provenance.
+C trigraphs are rejected before any comment/literal processing, including when
+they appear in comments or strings: C replaces them in an earlier translation
+phase. Python tuple/list/starred unpacking, container values, indexed container
+selection, and loop bindings conservatively retain all possible imported alias
+provenance. Assigning `sys` provenance through an attribute/subscript target is
+explicitly unsupported. This is bounded syntax handling with a
+conservative alias union, not a proof of arbitrary Python dataflow.
 
 JavaScript executable identifiers currently use the ASCII subset. Non-ASCII
 executable tokens are rejected by name rather than guessed to be punctuation;
@@ -112,10 +119,30 @@ including direct and literal-computed `constructor` access, are rejected in
 K, W, and ordinary vendor sources. These checks do not prove arbitrary dynamic
 program semantics or replace the separately required runtime isolation gate.
 
+For K/W/ordinary vendor JavaScript, a computed member key must be either one
+literal string, one non-interpolated template, or a bounded numeric expression.
+Normal array literals, array defaults, destructuring parameters, and numeric
+indices such as `[0]` remain distinct from computed property selection. The
+numeric grammar supports numeric literals, parentheses, unary `+/-/~`, numeric
+increments, `- * / % **`, and bitwise operations. Binary `+` requires both
+operands to be numeric: `[+i + 1]`, `[i - 1]` and `[i | 0]` are supported, while
+bare `[i]` is not presumed numeric and `[i + 1]` remains unknown. Calls, comma
+operators, conditionals, interpolated keys, string assembly, and parenthesized
+string keys are explicitly unsupported. Unknown keys produce
+`JS_COMPUTED_KEY_UNSUPPORTED`; they are not mislabeled as known reflection.
+H retains its documented host runtime boundary; this restriction does not
+claim to statically verify arbitrary host effects.
+
 HTML `<base href>` is explicitly unsupported because it changes relative URL
 resolution, including URLs used by inline code. An exact script route does not
 exempt it. URL attributes use browser-style ASCII tab/CR/LF removal and C0/space
 trimming before `javascript:` detection, then scan the normalized script body.
+An HTML `srcdoc` attribute is unsupported even when empty or on an H source,
+because its document needs a separate parsing/resolution context. K/W/ordinary
+vendor JavaScript also rejects the known DOM writers `srcdoc`, `innerHTML`,
+`outerHTML`, `insertAdjacentHTML`, `setAttribute`, and `setAttributeNS`, including
+literal-computed member names. This deliberately includes attribute setters
+whose arguments could install `srcdoc`; display strings remain permitted.
 
 The policy's exact forbidden identifiers and strings still need responsibility
 review against the actual template APIs and specification keys. Common neutral

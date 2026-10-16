@@ -96,6 +96,7 @@ PY_PATH_FIELDS = {"path", "meta_path", "path_hooks", "path_importer_cache", "mod
 JS_DYNAMIC_NAMES = {"eval", "Function", "importScripts", "createRequire", "__webpack_require__",
                     "globalThis", "global", "window", "document", "self", "Reflect", "Proxy"}
 JS_REFLECTIVE_NAMES = {"eval", "Function", "constructor", "__proto__", "__lookupGetter__", "__lookupSetter__"}
+JS_HTML_WRITER_NAMES = {"srcdoc", "innerHTML", "outerHTML", "insertAdjacentHTML", "setAttribute", "setAttributeNS"}
 C_DYNAMIC_NAMES = {"dlopen", "dlsym", "LoadLibraryA", "LoadLibraryW", "GetProcAddress"}
 C_STANDARD_HEADERS = {
     "assert.h", "complex.h", "ctype.h", "errno.h", "fenv.h", "float.h", "inttypes.h", "iso646.h",
@@ -265,7 +266,7 @@ def lex_javascript(text, path, line_offset=0):
     size = len(text)
     controls = {"if", "while", "for", "with", "switch", "catch"}
     prefix_words = {"return", "throw", "case", "delete", "void", "typeof", "new", "in",
-                    "instanceof", "else", "do"}
+                    "instanceof", "else", "do", "const", "let", "var"}
 
     def line_at(index):
         return (lines[index] if index < size else (lines[-1] if lines else 1)) + line_offset
@@ -394,7 +395,10 @@ def lex_javascript(text, path, line_offset=0):
                 index += len(value)
                 regex_goal, previous = False, "<number>"
                 continue
+            token_kind = "punct"
             if char in "([{":
+                if char == "[" and regex_goal is not True:
+                    token_kind = "member_open"
                 brackets.append((char, previous_control if char == "(" else False, line))
                 regex_goal = True
             elif char in ")]}":
@@ -414,7 +418,7 @@ def lex_javascript(text, path, line_offset=0):
                 regex_goal = False
             else:
                 regex_goal = True
-            tokens.append(Token("punct", char, line))
+            tokens.append(Token(token_kind, char, line))
             previous = char
             previous_control = False
             index += 1
@@ -426,6 +430,69 @@ def lex_javascript(text, path, line_offset=0):
 
     _, tokens = code(0)
     return text, lines, tokens
+
+
+def javascript_numeric_index(tokens):
+    """Accept a bounded primitive arithmetic key whose result is numeric.
+
+    A bare identifier is unknown, never assumed numeric by its name. Arithmetic
+    coercion such as +i, i - 1 or i | 0 proves the property key cannot be the
+    string 'constructor'. Binary + needs numeric operands on BOTH sides.
+    Calls, member lookups, comma/conditional expressions and string assembly
+    deliberately require a future parser/type contract, rather than a guess.
+    """
+    position = 0
+    precedence = {"|": 1, "^": 2, "&": 3, "<<": 4, ">>": 4, ">>>": 4,
+                  "+": 5, "-": 5, "*": 6, "/": 6, "%": 6, "**": 7}
+
+    def operator():
+        for value in (">>>", "<<", ">>", "**", "|", "^", "&", "+", "-", "*", "/", "%"):
+            if [token.value for token in tokens[position:position + len(value)]] == list(value):
+                return value
+        return None
+
+    def primary():
+        nonlocal position
+        if position >= len(tokens):
+            return None
+        token = tokens[position]
+        position += 1
+        if token.value in {"+", "-", "~", "++", "--"}:
+            return True if primary() is not None else None
+        if token.value == "(":
+            numeric = expression(0)
+            if position >= len(tokens) or tokens[position].value != ")":
+                return None
+            position += 1
+        elif token.kind == "number":
+            numeric = True
+        elif token.kind == "identifier":
+            numeric = False
+        else:
+            return None
+        if position < len(tokens) and tokens[position].value in {"++", "--"}:
+            position += 1
+            numeric = True
+        return numeric
+
+    def expression(minimum):
+        nonlocal position
+        left = primary()
+        if left is None:
+            return None
+        while position < len(tokens):
+            op = operator()
+            if op is None or precedence[op] < minimum:
+                break
+            position += len(op)
+            right = expression(precedence[op] + (op != "**"))
+            if right is None:
+                return None
+            left = left and right if op == "+" else True
+        return left
+
+    numeric = expression(0)
+    return numeric is True and position == len(tokens)
 
 
 def lex(text, path, *, c=False, line_offset=0):
@@ -814,6 +881,10 @@ class Scanner:
         return found[0] if found else None
 
     def scan_c(self, path, text):
+        trigraph = re.search(r"\?\?[=/'()!<>-]", text)
+        require(trigraph is None, "C_UNSUPPORTED_TRIGRAPH", path,
+                text.count("\n", 0, trigraph.start()) + 1 if trigraph else 1,
+                "C trigraph replacement occurs before comments and is outside the supported preprocessing subset")
         masked, lines, tokens = lex(text, path, c=True)
         identifiers = [(token.value, token.line) for token in tokens if token.kind == "identifier"]
         literals = []
@@ -943,14 +1014,41 @@ class Scanner:
                 return aliases.get(node.id, {node.id})
             if isinstance(node, ast.Attribute):
                 return {base + "." + node.attr for base in qualified(node.value)}
+            if isinstance(node, (ast.Tuple, ast.List, ast.Set)):
+                return set().union(*(qualified(item) for item in node.elts))
+            if isinstance(node, ast.Dict):
+                return set().union(*(qualified(item) for item in [*node.keys, *node.values] if item is not None))
+            if isinstance(node, (ast.Starred, ast.Subscript, ast.NamedExpr)):
+                return qualified(node.value)
+            if isinstance(node, ast.IfExp):
+                return qualified(node.body) | qualified(node.orelse)
+            if isinstance(node, ast.BoolOp):
+                return set().union(*(qualified(item) for item in node.values))
             return set()
+        def assignment_names(target):
+            if isinstance(target, ast.Name):
+                return [target.id]
+            if isinstance(target, (ast.Tuple, ast.List)):
+                return [name for item in target.elts for name in assignment_names(item)]
+            if isinstance(target, ast.Starred):
+                return assignment_names(target.value)
+            return []
+        def supported_alias_target(target):
+            if isinstance(target, ast.Name):
+                return True
+            if isinstance(target, (ast.Tuple, ast.List)):
+                return all(supported_alias_target(item) for item in target.elts)
+            if isinstance(target, ast.Starred):
+                return supported_alias_target(target.value)
+            return False
         # Conservative alias union: later shadowing cannot hide an earlier path
-        # mutation. Simple assignments retain imported aliases across scopes.
-        assignments = [(target.id, node.value) for node in nodes if isinstance(node, ast.Assign)
-                       for target in node.targets if isinstance(target, ast.Name)]
-        assignments.extend((node.target.id, node.value) for node in nodes
-                           if isinstance(node, (ast.AnnAssign, ast.NamedExpr))
-                           and isinstance(node.target, ast.Name) and node.value is not None)
+        # mutation. Container elements are deliberately over-approximated rather
+        # than guessed to be neutral when unpacked or selected through an index.
+        bindings = [(target, node.value) for node in nodes if isinstance(node, ast.Assign) for target in node.targets]
+        bindings.extend((node.target, node.value) for node in nodes
+                        if isinstance(node, (ast.AnnAssign, ast.NamedExpr)) and node.value is not None)
+        bindings.extend((node.target, node.iter) for node in nodes if isinstance(node, (ast.For, ast.AsyncFor, ast.comprehension)))
+        assignments = [(name, value) for target, value in bindings for name in assignment_names(target)]
         for _ in range(len(assignments) + 1):
             changed = False
             for name, value in assignments:
@@ -961,6 +1059,11 @@ class Scanner:
                     changed = True
             if not changed:
                 break
+        for target, value in bindings:
+            require(not strict or supported_alias_target(target) or
+                    not any(name == "sys" or name.startswith("sys.") for name in qualified(value)),
+                    "CORE_SYS_ALIAS_TARGET", path, getattr(target, "lineno", 1),
+                    "storing sys provenance through an attribute/subscript target is outside the supported alias subset")
         for node in nodes:
             if strict and isinstance(node, ast.Attribute):
                 names = qualified(node)
@@ -1036,20 +1139,41 @@ class Scanner:
         _, _, tokens = lex(text, path, line_offset=line_offset)
         self.core_tokens(path, [(t.value, t.line) for t in tokens if t.kind == "identifier"],
                          [(t.value, t.line) for t in tokens if t.kind in {"string", "template"}])
+        if self.entries[path]["layer"] != "H":
+            for offset, token in enumerate(tokens):
+                if token.kind != "member_open":
+                    continue
+                end, depth = offset + 1, 1
+                while end < len(tokens) and depth:
+                    if tokens[end].value == "[":
+                        depth += 1
+                    elif tokens[end].value == "]":
+                        depth -= 1
+                    end += 1
+                key = tokens[offset + 1:end - 1]
+                require(depth == 0 and ((len(key) == 1 and key[0].kind in {"string", "template"})
+                                       or javascript_numeric_index(key)),
+                        "JS_COMPUTED_KEY_UNSUPPORTED", path, token.line,
+                        "computed member keys need one literal string/template or bounded numeric arithmetic; unknown keys are not assumed numeric")
         if self.entries[path]["layer"] in {"K", "vendor"}:
             for offset, token in enumerate(tokens):
                 require(token.kind != "identifier" or token.value not in JS_DYNAMIC_NAMES,
                         "JS_DYNAMIC_IMPORT", path, token.line, f"dynamic/global JS entry point {token.value!r} in core")
                 require(not (token.kind in {"string", "template"} and token.value in {"require", "eval", "import", "Function"}
-                             and offset > 0 and tokens[offset - 1].value == "["),
+                             and offset > 0 and tokens[offset - 1].kind == "member_open"),
                         "JS_DYNAMIC_IMPORT", path, token.line, "computed access to a known JavaScript loader")
         if self.entries[path]["layer"] != "H":
             for offset, token in enumerate(tokens):
                 require(not (token.value in JS_REFLECTIVE_NAMES and
                              (token.kind == "identifier" or
-                              (token.kind in {"string", "template"} and offset > 0 and tokens[offset - 1].value == "["))),
+                              (token.kind in {"string", "template"} and offset > 0 and tokens[offset - 1].kind == "member_open"))),
                         "JS_REFLECTIVE_LOADER", path, token.line,
                         "reflective function construction/prototype access is outside the static dependency subset")
+                require(not (token.value in JS_HTML_WRITER_NAMES and
+                             (token.kind == "identifier" or
+                              (token.kind in {"string", "template"} and offset > 0 and tokens[offset - 1].kind == "member_open"))),
+                        "JS_HTML_WRITER_UNSUPPORTED", path, token.line,
+                        "DOM string/attribute writers can create executable documents and are outside the non-host static subset")
         typescript = self.entries[path]["language"] == "typescript"
         index = 0
         while index < len(tokens):
@@ -1146,6 +1270,8 @@ class Scanner:
                 values = dict(attrs)
                 require(tag != "base" or "href" not in values, "HTML_BASE_URL_UNSUPPORTED", path, line,
                         "base href changes dependency resolution and is outside the static HTML subset")
+                require("srcdoc" not in values, "HTML_SRCDOC_UNSUPPORTED", path, line,
+                        "srcdoc embeds a separately parsed executable document and is outside the static HTML subset")
                 for key, value in attrs:
                     if key.startswith("on") and value:
                         scanner.scan_javascript(path, value, line - 1)
