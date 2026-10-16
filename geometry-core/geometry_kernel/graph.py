@@ -4,7 +4,7 @@ from enum import Enum
 import heapq
 
 from .errors import EvaluationError, invalid, raise_errors
-from .types import (BoxDef, CoordinateDomain, FrameDef, Provenance, Quantity,
+from .types import (BoxDef, CoordinateDomain, DefinitionValue, FrameDef, Provenance, Quantity,
                     QuantityType, RegionDef, RegionSetDef, SourceKey, _identity)
 
 
@@ -26,6 +26,7 @@ class ValueType(Enum):
     REGION_SET = "region-set"
     BOX = "box"
     FEATURE = "feature"
+    DEFINITION = "definition"
 
 
 class DependencyKind(Enum):
@@ -86,7 +87,7 @@ class SourceDescriptor:
         _identity_tuple(self.origin)
         expected = {ValueType.QUANTITY: Quantity, ValueType.FRAME: FrameDef,
                     ValueType.REGION_SET: RegionSetDef, ValueType.BOX: BoxDef,
-                    ValueType.FEATURE: tuple}[self.value_type]
+                    ValueType.FEATURE: tuple, ValueType.DEFINITION: DefinitionValue}[self.value_type]
         if self.value is not None and not isinstance(self.value, expected):
             invalid("SOURCE_VALUE_TYPE", "Source value and declared type disagree")
         if self.value_type == ValueType.FEATURE and self.value is not None:

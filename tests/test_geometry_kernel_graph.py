@@ -1,5 +1,5 @@
 """Behavioral graph oracles using only public, template-free kernel inputs."""
-from dataclasses import replace
+from dataclasses import FrozenInstanceError, replace
 import importlib.util
 from pathlib import Path
 import sys
@@ -8,7 +8,7 @@ import unittest
 if importlib.util.find_spec("geometry_kernel") is None:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "geometry-core"))
 
-from geometry_kernel import (AssemblyChild, AssemblyDef, BoxDef, CoordinateDomain,
+from geometry_kernel import (AssemblyChild, AssemblyDef, BoxDef, CoordinateDomain, DefinitionValue,
     DependencyEdge, DependencyKind, DifferenceDef, EvaluationError,
     EvaluationRequest, ExportRoot, ExportView, ExtrusionDef, FaceUse, InteriorDef,
     Limits, Node, NodeInput, OrientedShellDef, PlacedRegionDef, Program,
@@ -65,6 +65,46 @@ class KernelGraphTests(unittest.TestCase):
             function()
         self.assertEqual((status, code), (caught.exception.status, caught.exception.code))
         return caught.exception
+
+    def test_definition_sources_preserve_opaque_schema_and_complete_bytes(self):
+        definition_key = SourceKey("second-provider", ("published", 7))
+        box_key = SourceKey("second-provider", ("box", 3))
+        content = b"\x00\xffopaque\ncontent\x00"
+        value = DefinitionValue("independent-schema/7", content)
+        definition = SourceDescriptor(definition_key, ValueType.DEFINITION, SourceContext(), (), value)
+        shape = SourceDescriptor(box_key, ValueType.BOX, SourceContext(),
+                                 (DependencyEdge(definition_key, DependencyKind.DEFINITION_REQUIRED),), box_def())
+        builder = ProgramBuilder((definition, shape))
+        root = builder.add(SourceBoxDef(SourceRef(box_key, ValueType.BOX)))
+        result = evaluate(builder.freeze(), request(root))
+        self.assertEqual("8000", result.records[0].mesh["volume_mm3"])
+        self.assertEqual((definition_key, box_key), tuple(source.key for source in result.sources))
+        self.assertEqual(("independent-schema/7", content), (result.sources[0].value.schema, result.sources[0].value.content))
+        self.assertEqual(result.sources, source_closure(builder.freeze(), (root,)))
+        self.assertEqual(DefinitionValue(" ", b""), DefinitionValue(" ", b""))
+        with self.assertRaises(FrozenInstanceError):
+            value.content = b"rewritten"
+
+    def test_definition_values_reject_missing_schema_and_mutable_content(self):
+        for schema in ("", None, 7, "x\0y", "\ud800"):
+            with self.subTest(schema=repr(schema)):
+                self.assert_code("DEFINITION_SCHEMA", lambda: DefinitionValue(schema, b""))
+        for content in (None, "{}", bytearray(b"{}"), memoryview(b"{}"), [1, 2]):
+            with self.subTest(content=type(content).__name__):
+                self.assert_code("DEFINITION_CONTENT", lambda: DefinitionValue("arbitrary", content))
+        key = SourceKey("neutral", (1,))
+        self.assert_code("SOURCE_VALUE_TYPE", lambda: SourceDescriptor(
+            key, ValueType.DEFINITION, SourceContext(), (), ("not-a-definition-value",)))
+
+    def test_definition_source_cannot_masquerade_as_geometry_or_feature(self):
+        key = SourceKey("neutral", (1,))
+        value = DefinitionValue("any-schema", b"\x00")
+        definition = SourceDescriptor(key, ValueType.DEFINITION, SourceContext(), (), value)
+        builder = ProgramBuilder((definition,))
+        root = builder.add(SourceBoxDef(SourceRef(key, ValueType.DEFINITION)))
+        self.assert_code("SOURCE_REFERENCE_TYPE", lambda: evaluate(builder.freeze(), request(root)))
+        self.assert_code("SOURCE_VALUE_TYPE", lambda: SourceDescriptor(
+            key, ValueType.FEATURE, SourceContext(), (), value))
 
     def test_source_bound_box_recomputes_and_participates_in_boolean_closure(self):
         key = SourceKey("arbitrary-provider", ("fixed-fingerprint", "0080ff"))

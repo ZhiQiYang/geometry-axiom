@@ -115,6 +115,27 @@ class SourceKey:
         _identity(self.key)
 
 
+@dataclass(frozen=True)
+class DefinitionValue:
+    """Opaque provider definition; K retains its schema and exact content bytes.
+
+    The provider owns the content's canonical encoding and domain validation.
+    Empty content and whitespace-only schema names are valid neutral values.
+    """
+    schema: str
+    content: bytes
+
+    def __post_init__(self):
+        if type(self.schema) is not str or not self.schema or "\0" in self.schema:
+            invalid("DEFINITION_SCHEMA", "A definition requires a nonempty schema without NUL bytes")
+        try:
+            self.schema.encode("utf-8")
+        except UnicodeEncodeError:
+            invalid("DEFINITION_SCHEMA", "A definition schema requires valid Unicode")
+        if type(self.content) is not bytes:
+            invalid("DEFINITION_CONTENT", "Definition content must be immutable bytes")
+
+
 class QuantityType(Enum):
     DIMENSION = "dimension"
     COUNT = "count"

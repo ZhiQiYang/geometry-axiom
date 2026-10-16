@@ -37,6 +37,23 @@ Box face keys and local coordinate owners retain their complete opaque identity.
 Incomplete coverage is rejected; there is no snapshot-only fallback on this API.
 The existing `load_base` API and the product's current loader remain unchanged.
 
+The decoder also accepts declared-but-unevaluated native nodes: status
+`unevaluated` requires `value: null` and maps to K `INCOMPLETE`. The full typed
+descriptor and all three dependency kinds remain required. Definition-required
+and evaluate-before edges retain the source closure without pretending to have
+a computed value; a value-required edge still makes its consumer incomplete.
+The strict `ok` if and only if value-is-present rule remains intact. Existing
+failed/missing/cycle/invalid/memory statuses keep their prior outcomes.
+
+The neutral `definition` value type uses scalar units and an exact payload
+`{schema, contentBase64}`. It becomes K `DefinitionValue(schema, content)` with
+immutable, complete bytes. Empty content is valid; schema is nonempty valid
+Unicode without NUL, and whitespace is not trimmed. Base64 must be canonical.
+K preserves the provider's encoding without parsing domain content or treating
+a definition as a geometric feature. Candidate fingerprints include its schema
+and every content byte. The native producer's coverage remains incomplete, so
+none of these additions selects this opt-in path as the default loader.
+
 `ModelingRuntime(source_graph=True)` is the explicit source-reference compile
 path. It requires a `NativeCandidate`; a snapshot or incomplete DTO cannot
 select the older path. The W provider binds the full root association catalog
@@ -55,11 +72,15 @@ identity; this opt-in path rejects that output explicitly instead of truncating
 the source. K still receives and evaluates the full region set. Existing source
 capabilities have not expanded.
 
-The 17 source transport tests use synthetic envelopes at a mocked process
-boundary and feed their decoded descriptors to the actual K evaluator. Three
-production-source guard removals must fail the same behavioral oracles. The
-`source-transport` frozen receipt preset runs these with the prior 119 tests,
-for 136 discovered cases. These tests are not actual native execution evidence.
+The current 26 source transport tests use synthetic envelopes at a mocked
+process boundary and feed decoded descriptors to the actual K evaluator. Eight
+named production-source mutation controls must fail their behavioral oracles,
+including unevaluated/value mismatches, ok/null, canonical Base64 and complete
+definition bytes. The `definition-sources` frozen receipt preset runs 167 tests,
+preserving the prior wire/runtime and second-template synthetic comparisons.
+The historical `source-transport` preset retains its original 136-case census.
+These tests are not actual native execution evidence; the C producer/consumer
+integration cases remain unrun in this Python-only validation phase.
 
 The default product loader still uses the PY2 checkpoint until the native
 producer's graph coverage and source-matched integration replay are complete.
