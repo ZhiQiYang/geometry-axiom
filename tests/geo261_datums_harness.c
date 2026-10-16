@@ -66,6 +66,8 @@ static int frames(void)
     GeoFrame horizontal={{0,0,37},{1,0,0},{0,1,0},{0,0,1}};GeoDatumIntersection result;datum.axis=2;
     if(geo_datum_intersection(&datum,&horizontal,&result)!=GEO_DATUM_INTERSECTION_COINCIDENT)return 1;
     horizontal.origin.z=38;if(geo_datum_intersection(&datum,&horizontal,&result)!=GEO_DATUM_INTERSECTION_PARALLEL)return 1;
+    datum.axis=0;datum.position=GEO_COORD_LIMIT;horizontal.origin.x=-GEO_COORD_LIMIT;
+    if(geo_datum_intersection(&datum,&horizontal,&result)!=GEO_DATUM_INTERSECTION_RANGE||result.coordinate_axis!=0||result.coordinate!=2*GEO_COORD_LIMIT)return 1;
     return 0;
 }
 int main(int argc,char **argv)
