@@ -43,9 +43,9 @@ static void json_engineering_state(const World *w,bool geometry)
     putchar('{');json_engineering_capabilities(w);fputs(",\"specs\":[",stdout);
     for(size_t i=0;i<geo_named_values_count(&w->named_values);++i){if(i)putchar(',');fputs("{\"name\":",stdout);js_string(geo_named_values_at(&w->named_values,i)->name);printf(",\"value\":%lld}",(long long)geo_named_values_at(&w->named_values,i)->value);}
     fputs("],\"materials\":[",stdout);
-    for(size_t i=0;i<w->engineering.material_count;++i){const EngMaterialVersion *m=&w->engineering.materials[i];printf("%s%.*s,\"fingerprint\":\"%s\",\"archived\":%s}",i?",":"",(int)strlen(m->content)-1,m->content,m->fingerprint,m->archived?"true":"false");}
+    for(size_t i=0;i<w->engineering.material_count;++i){const EngMaterialVersion *m=eng_material_at(w,i);if(!m){printf("%snull",i?",":"");continue;}printf("%s%.*s,\"fingerprint\":\"%s\",\"archived\":%s}",i?",":"",(int)strlen(m->content)-1,m->content,m->fingerprint,m->archived?"true":"false");}
     fputs("],\"methods\":[",stdout);
-    for(size_t i=0;i<w->engineering.method_count;++i){const EngMethodVersion *m=&w->engineering.methods[i];printf("%s%.*s,\"fingerprint\":\"%s\",\"archived\":%s}",i?",":"",(int)strlen(m->content)-1,m->content,m->fingerprint,m->archived?"true":"false");}
+    for(size_t i=0;i<w->engineering.method_count;++i){const EngMethodVersion *m=eng_method_at(w,i);if(!m){printf("%snull",i?",":"");continue;}printf("%s%.*s,\"fingerprint\":\"%s\",\"archived\":%s}",i?",":"",(int)strlen(m->content)-1,m->content,m->fingerprint,m->archived?"true":"false");}
     fputs("],\"applications\":[",stdout);
     for(size_t i=0;i<w->engineering.application_count;++i){const EngApplication *a=&w->engineering.applications[i];printf("%s%.*s,\"bindings\":[",i?",":"",(int)strlen(a->content)-1,a->content);bool first=true;
         for(size_t k=0;k<w->engineering.binding_count;++k){const EngBinding *b=&w->engineering.bindings[k];if(b->source.kind!=ENG_APPLICATION||strcmp(b->source.ref,a->id))continue;if(!first)putchar(',');first=false;eng_target_json(&b->target,stdout);}fputs("]}",stdout);

@@ -25,12 +25,7 @@ static bool eng_operation(World *w,GeoJson *j,int t)
         return parameter_remove(w,id)?true:eng_fail(g_parameter_error);
     }
     if (!strcmp(op,"archive")) {
-        char kind[16],id[ENG_ID_MAX]; uint32_t version; int archived;
-        if (!geo_json_keys(j,t,"op,kind,id,version,value","") || !geo_json_string(j,geo_json_member(j,t,"kind"),kind,sizeof kind) || !geo_json_string(j,geo_json_member(j,t,"id"),id,sizeof id) || !eng_u32(j,geo_json_member(j,t,"version"),&version,true) || !geo_json_boolean(j,geo_json_member(j,t,"value"),&archived)) return eng_fail("I35: invalid archive operation");
-        if (!strcmp(kind,"material")) { EngMaterialVersion *m=(EngMaterialVersion*)eng_material(w,id,version); if (!m) return eng_fail("I34: material version not found"); m->archived=archived!=0; }
-        else if (!strcmp(kind,"method")) { EngMethodVersion *m=(EngMethodVersion*)eng_method(w,id,version); if (!m) return eng_fail("I34: method version not found"); m->archived=archived!=0; }
-        else return eng_fail("I35: archive kind must be material/method");
-        return true;
+        WoodEngineeringContext c=app_eng_context(w);return wood_eng_archive(&c,j,t);
     }
     WoodEngineeringOperations operations=app_eng_operations(w);
     return wood_engineering_operation(&operations,j,t,op);

@@ -55,8 +55,9 @@ class FinishBoundary(unittest.TestCase):
         self.assertIn("wood_pf_load(", fill)
 
 
-# Every change hits one actual implementation site. K changes are linked back
-# through the exact same W consumer. Native setup failure is never a kill.
+# Changes remove actual policy checks. The panel-kind predicate occurs at both
+# the batch and single-field entry points; that control removes both copies.
+# K changes link through the same W consumer. Native setup is never a kill.
 CONTROLS = (
     ("whole-name", "finish", "for(size_t i=0;i<n;){size_t k=geo_utf8_scalar", "for(size_t i=0;i<n&&i<FS_NAME_MAX;){size_t k=geo_utf8_scalar", "names", "name-entire-input-before-capacity"),
     ("duplicate-obstacle", "finish", "if(!wood_fs_obstacle_compare(&f->obstacles[i-1],&f->obstacles[i]))", "if(false)", "obstacles", "obstacle-duplicate"),
@@ -64,7 +65,7 @@ CONTROLS = (
     ("subtract-holes", "finish", "area-=geo_loop_rect_intersection_area", "area+=geo_loop_rect_intersection_area", "relations", "relation-hole-interior-excluded"),
     ("closed-contact", "geometry", "geo_coord_min(a.u,b.u)<=u1&&u0<=geo_coord_max(a.u,b.u)&&geo_coord_min(a.v,b.v)<=v1&&v0<=geo_coord_max(a.v,b.v)", "geo_coord_min(a.u,b.u)<u1&&u0<geo_coord_max(a.u,b.u)&&geo_coord_min(a.v,b.v)<v1&&v0<geo_coord_max(a.v,b.v)", "relations", "relation-edge-touch-closed"),
     ("local-capacity", "finish", "if(!geo_coord_in_range(out->rect[i]))", "if(false)", "obstacles", "projection-local-capacity-before-boundary"),
-    ("fractional-thickness", "finish", "else if(decimal)ok=*s=='0'", "else if(decimal)ok=true", "materials", "thickness-no-fractional-rounding"),
+    ("fractional-thickness", "versions", "if(field->literal[i]!='0')return GEO_VERSION_INTEGER;", "if(false)return GEO_VERSION_INTEGER;", "materials", "thickness-no-fractional-rounding"),
     ("panel-kind", "finish", "if(!m||m->kind!=0)", "if(!m)", "materials", "material-panel-kind-required"),
     ("positive-threshold", "finish", "if(x.num<=0)", "if(false)", "sources", "threshold-before-gap"),
     ("nonnegative-gap", "finish", "if(d->layout.gap<0)", "if(false)", "sources", "gap-nonnegative"),
@@ -87,10 +88,11 @@ class WoodFinish(unittest.TestCase):
     @classmethod
     def objects(cls, build, changed=None, module=None):
         kernel = build.kernel_objects()
-        if module == "geometry":
-            if kernel.count(build.geometry_object) != 1:
-                raise AssertionError("K geometry object must occur once")
-            kernel = [changed if obj == build.geometry_object else obj for obj in kernel]
+        if module in ("geometry", "versions"):
+            original = getattr(build, module + "_object")
+            if kernel.count(original) != 1:
+                raise AssertionError("K " + module + " object must occur once")
+            kernel = [changed if obj == original else obj for obj in kernel]
         policy = changed if module == "finish" else build.wood_finish_object
         return [cls.client, policy, build.wood_section_profile_object, build.wood_engineering_object,
                 build.wood_panel_layout_object, *kernel]
@@ -129,9 +131,10 @@ class WoodFinish(unittest.TestCase):
     def mutant(self, control):
         name, module, before, after, _, _ = control
         build = native()
-        directory = build.kernel if module == "geometry" else build.woodworking
+        directory = build.kernel if module in ("geometry", "versions") else build.woodworking
         source = (directory / (module + ".c")).read_text(encoding="utf-8")
-        self.assertEqual(1, source.count(before), "Control must change exactly one actual site: " + name)
+        self.assertEqual(2 if name == "panel-kind" else 1, source.count(before),
+                         "Control must change its declared actual sites: " + name)
         path = directory / ("finish-" + name + ".c")
         path.write_text(source.replace(before, after), encoding="utf-8")
         return build.compile(path, "finish-" + name)
@@ -204,14 +207,14 @@ class WoodFinish(unittest.TestCase):
         baseline = build.bridge()
         self.assertFalse(self.preview_fractional_thickness(baseline, "baseline"))
         changed = self.mutant(CONTROLS[6])
-        client = build.link("finish-fraction-product-client", self.objects(build, changed, "finish"))
+        client = build.link("finish-fraction-product-client", self.objects(build, changed, "versions"))
         result = self.case("materials", client)
         self.assertEqual(1, result.returncode)
         self.assertIn("ASSERT:thickness-no-fractional-rounding", result.stderr)
         objects = build.product_objects()
-        self.assertEqual(1, objects.count(build.wood_finish_object))
+        self.assertEqual(1, objects.count(build.versions_object))
         bridge = build.link("finish-fraction-product-bridge", [build.bridge_object,
-            *[changed if obj == build.wood_finish_object else obj for obj in objects]])
+            *[changed if obj == build.versions_object else obj for obj in objects]])
         self.assertTrue(self.preview_fractional_thickness(bridge, "mutant"))
         self.assertFalse(self.preview_fractional_thickness(baseline, "restored"))
 

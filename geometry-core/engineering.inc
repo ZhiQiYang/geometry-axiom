@@ -1,5 +1,6 @@
 /* H compatibility adapter. Domain definitions/resolution live in W. */
 #include "../geometry-templates/woodworking/native/engineering.h"
+#include "../geometry-app/native/versions_adapter.inc"
 #include <stdarg.h>
 static bool engineering_serializable(const World *w);
 static char g_engineering_error[256];
@@ -22,7 +23,7 @@ static void app_eng_write(void *user,const EngTarget *t,GeoCoord value)
 static bool app_eng_serializable(void *user,char *error,size_t cap)
 {(void)error;(void)cap;return engineering_serializable((World *)user);}
 static WoodEngineeringContext app_eng_context(const World *world)
-{World *w=(World *)world;WoodEngineeringContext c={&w->engineering,w,g_engineering_error,sizeof g_engineering_error,app_eng_placement,app_eng_target,app_eng_named,app_eng_parameter,app_eng_owned,app_eng_write,app_eng_serializable};return c;}
+{World *w=(World *)world;WoodEngineeringContext c={&w->engineering,w,g_engineering_error,sizeof g_engineering_error,app_eng_placement,app_eng_target,app_eng_named,app_eng_parameter,app_eng_owned,app_eng_write,app_eng_serializable};c.versions=app_eng_version_store(w);return c;}
 static bool eng_fail(const char *text)
 {WoodEngineeringContext c={0};c.error=g_engineering_error;c.error_capacity=sizeof g_engineering_error;return wood_eng_fail(&c,text);}
 static bool eng_id(const char *s)
@@ -41,6 +42,10 @@ static const EngMaterialVersion *eng_material(const World *w,const char *id,uint
 {WoodEngineeringContext c=app_eng_context(w);return wood_eng_material(&c,id,version);}
 static const EngMethodVersion *eng_method(const World *w,const char *id,uint32_t version)
 {WoodEngineeringContext c=app_eng_context(w);return wood_eng_method(&c,id,version);}
+static const EngMaterialVersion *eng_material_at(const World *w,size_t index)
+{WoodEngineeringContext c=app_eng_context(w);return wood_eng_material_at(&c,index);}
+static const EngMethodVersion *eng_method_at(const World *w,size_t index)
+{WoodEngineeringContext c=app_eng_context(w);return wood_eng_method_at(&c,index);}
 static EngApplication *eng_application(World *w,const char *id)
 {WoodEngineeringContext c=app_eng_context(w);return wood_eng_application(&c,id);}
 static bool eng_source_parse(GeoJson *j,int t,EngDimensionSource *s,bool allow_app)
@@ -133,8 +138,8 @@ static void eng_dump_record(FILE *out,const char *kind,const char *json)
 static void engineering_dump_versions(const World *w,FILE *out)
 {
     if(!engineering_used(w))return;fputs("requires engineering-spec/1\n",out);char record[1200];
-    for(size_t i=0;i<w->engineering.material_count;++i){const EngMaterialVersion *m=&w->engineering.materials[i];snprintf(record,sizeof record,"{\"fingerprint\":\"%s\",\"value\":%s}",m->fingerprint,m->content);eng_dump_record(out,"material",record);}
-    for(size_t i=0;i<w->engineering.method_count;++i){const EngMethodVersion *m=&w->engineering.methods[i];snprintf(record,sizeof record,"{\"fingerprint\":\"%s\",\"value\":%s}",m->fingerprint,m->content);eng_dump_record(out,"method",record);}
+    for(size_t i=0;i<w->engineering.material_count;++i){const EngMaterialVersion *m=eng_material_at(w,i);if(!m){fputs("requires engineering-version-storage-error\n",out);continue;}snprintf(record,sizeof record,"{\"fingerprint\":\"%s\",\"value\":%s}",m->fingerprint,m->content);eng_dump_record(out,"material",record);}
+    for(size_t i=0;i<w->engineering.method_count;++i){const EngMethodVersion *m=eng_method_at(w,i);if(!m){fputs("requires engineering-version-storage-error\n",out);continue;}snprintf(record,sizeof record,"{\"fingerprint\":\"%s\",\"value\":%s}",m->fingerprint,m->content);eng_dump_record(out,"method",record);}
     for(int kind=0;kind<2;++kind){size_t count=kind?w->engineering.method_count:w->engineering.material_count;for(size_t i=0;i<count;++i){bool archived=kind?w->engineering.methods[i].archived:w->engineering.materials[i].archived;const EngVersionRef *r=kind?&w->engineering.methods[i].ref:&w->engineering.materials[i].ref;if(archived){snprintf(record,sizeof record,"{\"id\":\"%s\",\"kind\":\"%s\",\"op\":\"archive\",\"value\":true,\"version\":%u}",r->id,kind?"method":"material",r->version);eng_dump_record(out,"archive",record);}}}
 }
 static void engineering_dump_applications(const World *w,FILE *out)

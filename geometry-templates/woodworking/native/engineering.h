@@ -14,6 +14,9 @@
 #ifndef GEOMETRY_KERNEL_CODEC_H
 #include "codec.h"
 #endif
+#ifndef GEO_KERNEL_VERSIONS_H
+#include "versions.h"
+#endif
 /* D26-D28: fixed-capacity definitions, copied with the native World/history. */
 #define ENG_ID_MAX 65
 #define ENG_RECORD_MAX 1024
@@ -56,6 +59,8 @@ typedef struct {
     int kind; /* 0=panel, 1=timber */
     GeoCoord width, length, a, b;
     bool archived;
+    bool has_thickness;
+    char thickness[ENG_THICKNESS_CAPACITY];
 } EngMaterialVersion;
 typedef struct {
     EngVersionRef ref;
@@ -76,6 +81,9 @@ typedef struct {
     GeoCoord anchor[2]; /* creation preference only, never an effective grid anchor */
 } EngApplication;
 typedef struct {
+    /* Stable candidate-local interpreted views plus mutable archive metadata.
+     * Immutable definitions/fields belong solely to context.versions. A lookup
+     * reconstructs the selected view from K; these arrays are not a fallback. */
     EngMaterialVersion materials[ENG_MATERIAL_MAX]; size_t material_count;
     EngMethodVersion methods[ENG_METHOD_MAX]; size_t method_count;
     EngApplication applications[ENG_APPLICATION_MAX]; size_t application_count;
@@ -103,7 +111,14 @@ typedef struct {
     bool (*member_owned)(void *,uint32_t);
     void (*write_dimension)(void *,const EngTarget *,GeoCoord);
     bool (*serializable)(void *,char *,size_t);
+    GeoVersionStore *versions;
 } WoodEngineeringContext;
+/* Fixed W schema field IDs. Existing dimension-source IDs remain unchanged. */
+enum {
+    WOOD_ENG_VERSION_THICKNESS=100, WOOD_ENG_VERSION_KIND=101,
+    WOOD_ENG_VERSION_GAP=102, WOOD_ENG_VERSION_LONG_AXIS=103,
+    WOOD_ENG_VERSION_MAIN_ALONG=104
+};
 bool wood_eng_fail(const WoodEngineeringContext *,const char *);
 extern const char *const ENG_FIELDS[14];
 bool wood_eng_u32(const GeoJson *j,int t,uint32_t *out,bool positive);
@@ -114,6 +129,11 @@ bool wood_eng_ref_parse(GeoJson *j,int t,EngVersionRef *r,bool optional);
 bool wood_eng_axis(const GeoJson *j,int t,int *axis);
 const EngMaterialVersion *wood_eng_material(const WoodEngineeringContext *w,const char *id,uint32_t version);
 const EngMethodVersion *wood_eng_method(const WoodEngineeringContext *w,const char *id,uint32_t version);
+const EngMaterialVersion *wood_eng_material_at(const WoodEngineeringContext *w,size_t index);
+const EngMethodVersion *wood_eng_method_at(const WoodEngineeringContext *w,size_t index);
+bool wood_eng_version_view(const WoodEngineeringContext *w,int kind,const char *id,uint32_t version,GeoVersionView *out);
+bool wood_eng_material_integer(const WoodEngineeringContext *w,const EngMaterialVersion *material,uint32_t field,GeoCoord minimum,GeoCoord maximum,GeoCoord *out);
+bool wood_eng_archive(WoodEngineeringContext *w,GeoJson *j,int t);
 EngApplication *wood_eng_application(WoodEngineeringContext *w,const char *id);
 bool wood_eng_source_parse(WoodEngineeringContext *w,GeoJson *j,int t,EngDimensionSource *s,bool allow_app);
 bool wood_eng_target_parse(WoodEngineeringContext *w,GeoJson *j,int t,EngTarget *target);

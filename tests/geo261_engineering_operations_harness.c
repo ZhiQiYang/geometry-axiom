@@ -2,15 +2,24 @@
 #include "engineering_operations.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #define CHECK(value) do { if(!(value)){fprintf(stderr,"ASSERT:%s:%d\n",__func__,__LINE__);return 1;} } while(0)
 #define NAMED(value,label) do { if(!(value)){fprintf(stderr,"ASSERT:%s\n",label);return 1;} } while(0)
 typedef struct {
-    WoodGridState grids;EngineeringState eng;WoodMember members[4];uint32_t pids[4];size_t count;
+    WoodGridState grids;EngineeringState eng;GeoVersionStore *versions;WoodMember members[4];uint32_t pids[4];size_t count;
     WoodEngineeringOperations operations;char error[256],trace[128];size_t trace_count;
     bool missing_host,owned,fail_rebuild,fail_effective,fail_serial,write_saw_binding,write_bad;
     GeoCoord parameter_value;uint32_t parameter_id,field_id;size_t created_count;
 } Fixture;
+static GeoVersionStore *version_stores[64];static size_t version_store_count;
+static void free_versions(void){for(size_t i=0;i<version_store_count;++i)geo_versions_destroy(version_stores[i]);version_store_count=0;}
+static GeoVersionStore *new_versions(const GeoVersionStore *source)
+{
+    GeoVersionStore *store=NULL;GeoVersionStatus status=source?geo_versions_clone(source,&store):geo_versions_create(&store);
+    if(status!=GEO_VERSION_OK||version_store_count==64){geo_versions_destroy(store);fputs("SETUP:version storage\n",stderr);exit(2);}
+    version_stores[version_store_count++]=store;return store;
+}
 static void mark(Fixture *f,char value){if(f->trace_count+1<sizeof f->trace){f->trace[f->trace_count++]=value;f->trace[f->trace_count]=0;}}
 static int member_index(Fixture *f,uint32_t id){for(size_t k=0;k<f->count;++k)if(f->members[k].id==id)return (int)k;return -1;}
 static bool target(void *opaque,const EngTarget *t,WoodEngineeringTargetInfo *out)
@@ -21,7 +30,7 @@ static bool target(void *opaque,const EngTarget *t,WoodEngineeringTargetInfo *ou
     out->placement_id=g->placement_id;out->from_system=g->from_system||g->from_binding;out->is_subgrid=g->is_subgrid;
     out->panel_axis=g->axis[t->axis].source==GEO_GRID_SOURCE_BODY_GAP;return true;
 }
-static bool placement(void *opaque,uint32_t pid,bool *derived){Fixture *f=opaque;*derived=false;return !f->missing_host&&pid==10;}
+static bool placement(void *opaque,uint32_t pid,bool *derived){Fixture *f=opaque;if(derived)*derived=false;return !f->missing_host&&pid==10;}
 static bool host(void *opaque,uint32_t pid,WoodGridHost *out)
 {bool derived;if(!placement(opaque,pid,&derived))return false;memset(out,0,sizeof *out);out->id=pid;out->bounds_valid=true;out->bounds=(GeoRect2){0,0,4000,3000};return true;}
 static bool owned(void *opaque,uint32_t id){(void)id;return ((Fixture *)opaque)->owned;}
@@ -56,17 +65,23 @@ static void wire(Fixture *f)
     w->state=&f->eng;w->user=f;w->error=f->error;w->error_capacity=sizeof f->error;w->placement=placement;w->target=target;
     w->named_value=named;w->parameter=parameter;w->member_owned=owned;w->write_dimension=write_dimension;w->serializable=serializable;
     w->sources=f;w->resolve_binding=effective;
+    w->versions=f->versions;
 }
-static void init(Fixture *f){memset(f,0,sizeof *f);f->parameter_id=17;f->field_id=23;f->parameter_value=55;wire(f);}
+static void init(Fixture *f){memset(f,0,sizeof *f);f->versions=new_versions(NULL);f->parameter_id=17;f->field_id=23;f->parameter_value=55;wire(f);}
+static void candidate_copy(Fixture *after,const Fixture *before)
+{memcpy(after,before,sizeof *after);after->versions=new_versions(before->versions);wire(after);}
 static bool add_member(Fixture *f,uint32_t id,bool placed,WoodMemberRole role)
 {size_t k=f->count;if(k==4||!wood_member_construct(id,0,27,33,true,role,9,&f->members[k]))return false;f->members[k].placed=placed;f->pids[k]=10;++f->count;return true;}
-static void catalog(Fixture *f)
+static bool catalog(Fixture *f)
 {
-    EngMaterialVersion *wood=&f->eng.materials[f->eng.material_count++];strcpy(wood->ref.id,"wood");wood->ref.version=1;wood->kind=1;wood->a=27;wood->b=33;
-    EngMethodVersion *m=&f->eng.methods[f->eng.method_count++];strcpy(m->ref.id,"method");m->ref.version=1;m->main_along=1;
-    for(int r=0;r<3;++r)m->roles[r]=wood->ref;
+    const char *records[]={"{\"id\":\"wood\",\"version\":1,\"kind\":\"timber\",\"name\":\"Wood\",\"A\":27,\"B\":33}",
+        "{\"id\":\"method\",\"version\":1,\"name\":\"Method\",\"mainAlong\":\"u\",\"roles\":{\"boundary\":{\"id\":\"wood\",\"version\":1},\"primary\":{\"id\":\"wood\",\"version\":1},\"secondary\":{\"id\":\"wood\",\"version\":1}}}"};
+    for(int kind=0;kind<2;++kind){GeoJson j;bool ok=geo_json_parse(&j,records[kind]);
+        if(ok)ok=kind?wood_eng_publish_method(&f->operations.grids.engineering,&j,0,NULL):wood_eng_publish_material(&f->operations.grids.engineering,&j,0,NULL);
+        geo_json_free(&j);if(!ok)return false;}
+    const EngMethodVersion *m=wood_eng_method(&f->operations.grids.engineering,"method",1);if(!m)return false;
     EngApplication *a=&f->eng.applications[f->eng.application_count++];strcpy(a->id,"app");a->placement_id=10;a->method=m->ref;
-    a->anchor_kind[0]=a->anchor_kind[1]=1;
+    a->anchor_kind[0]=a->anchor_kind[1]=1;return true;
 }
 static bool operation(Fixture *f,const char *text)
 {
@@ -133,7 +148,7 @@ static int unbind_failures(void)
 static int roles(void)
 {
     const char *bind="{\"op\":\"bind-timber\",\"id\":1,\"application\":\"app\",\"slot\":\"primary\"}";
-    Fixture f;init(&f);catalog(&f);CHECK(add_member(&f,1,true,WOOD_MEMBER_ROLE_BOUNDARY));
+    Fixture f;init(&f);CHECK(catalog(&f));CHECK(add_member(&f,1,true,WOOD_MEMBER_ROLE_BOUNDARY));
     NAMED(!operation(&f,bind)&&!strcmp(f.error,"D28: timber must be placed on the application face with the selected matching role"),"engineering-operations-role-lock");CHECK(f.eng.binding_count==0&&f.members[0].role==WOOD_MEMBER_ROLE_BOUNDARY);
     f.members[0].role=WOOD_MEMBER_ROLE_PRIMARY;f.pids[0]=11;CHECK(!operation(&f,bind));CHECK(f.eng.binding_count==0);
     f.pids[0]=10;f.members[0].placed=false;CHECK(!operation(&f,bind));CHECK(f.eng.binding_count==0);
@@ -172,7 +187,7 @@ static int restore_members(void)
     CHECK(f.count==1&&f.created_count==1&&f.members[0].id==0&&f.members[0].role==WOOD_MEMBER_ROLE_CUSTOM&&f.members[0].cut_priority==9&&!f.members[0].placed&&f.members[0].auto_length&&f.members[0].length==0&&f.pids[0]==0);
     CHECK(!strcmp(f.trace,"CS")&&f.members[0].size_a==27&&f.members[0].size_b==33);
     NAMED(!restore(&f,"{\"id\":0,\"A\":27,\"B\":33,\"role\":\"primary\"}")&&!strcmp(f.error,"I10: timber ID exists or capacity exceeded"),"engineering-operations-restore-identity");CHECK(f.count==1&&f.created_count==1);
-    init(&f);catalog(&f);
+    init(&f);CHECK(catalog(&f));
     CHECK(restore(&f,"{\"id\":2,\"A\":{\"source\":{\"kind\":\"application\",\"id\":\"app\",\"field\":\"primary.A\"},\"override\":{\"kind\":\"parameter\",\"parameterId\":17,\"fieldId\":23}},\"B\":{\"source\":{\"kind\":\"material\",\"id\":\"wood\",\"version\":1,\"field\":\"B\"},\"override\":null},\"role\":\"primary\"}"));
     CHECK(f.count==1&&!f.members[0].placed&&f.members[0].size_a==55&&f.members[0].size_b==33&&f.members[0].cut_priority==2&&f.eng.binding_count==2&&f.pids[0]==0);
     CHECK(f.eng.bindings[0].source.kind==ENG_APPLICATION&&!strcmp(f.eng.bindings[0].source.ref,"app")&&f.eng.bindings[0].source.field==ENG_PRIMARY_A&&f.eng.bindings[0].has_override&&f.eng.bindings[0].override_value.parameter.field_id==23);
@@ -183,7 +198,7 @@ static int restore_members(void)
 }
 static int grid_dispatch(void)
 {
-    Fixture f;init(&f);catalog(&f);
+    Fixture f;init(&f);CHECK(catalog(&f));
     CHECK(!operation(&f,"{\"op\":\"bind-grid\",\"id\":1,\"application\":\"app\",\"slot\":\"primary\"}"));CHECK(!strcmp(f.error,"D28: invalid binding operation"));
     CHECK(!operation(&f,"{\"op\":\"bind-grid\",\"id\":1,\"application\":\"app\"}"));CHECK(!strcmp(f.error,"D28: selected main grid is missing; explicitly choose create"));
     CHECK(operation(&f,"{\"op\":\"bind-grid\",\"id\":1,\"application\":\"app\",\"create\":true}"));
@@ -194,18 +209,18 @@ static int candidate(void)
 {
     Fixture original,after;init(&original);CHECK(add_member(&original,1,false,WOOD_MEMBER_ROLE_PRIMARY));
     EngineeringState eng=original.eng;WoodMember member=original.members[0];
-    memcpy(&after,&original,sizeof after);wire(&after);after.members[0].placed=true;
+    candidate_copy(&after,&original);after.members[0].placed=true;
     CHECK(operation(&after,"{\"op\":\"set-source\",\"target\":{\"kind\":\"timber\",\"id\":1,\"field\":\"A\"},\"source\":{\"kind\":\"literal\",\"value\":42}}"));
     CHECK(after.eng.binding_count==1&&original.eng.binding_count==0&&!original.members[0].placed&&original.error[0]==0);
     CHECK(!memcmp(&original.eng,&eng,sizeof eng)&&!memcmp(&original.members[0],&member,sizeof member));
-    memcpy(&after,&original,sizeof after);wire(&after);after.fail_serial=true;
+    candidate_copy(&after,&original);after.fail_serial=true;
     CHECK(!restore(&after,"{\"id\":2,\"A\":{\"source\":{\"kind\":\"literal\",\"value\":42},\"override\":null},\"B\":33,\"role\":\"secondary\"}"));
     CHECK(!strcmp(after.error,"serialization rejected")&&after.count==2&&after.eng.binding_count==1&&after.members[1].size_a==42&&after.created_count==1);
     CHECK(original.count==1&&original.created_count==0&&original.trace_count==0&&original.error[0]==0&&!memcmp(&original.eng,&eng,sizeof eng)&&!memcmp(&original.members[0],&member,sizeof member));return 0;
 }
 int main(int argc,char **argv)
 {
-    if(argc!=2)return 2;
+    if(argc!=2)return 2;atexit(free_versions);
     if(!strcmp(argv[1],"sources"))return sources();if(!strcmp(argv[1],"unbind-order"))return unbind_order();
     if(!strcmp(argv[1],"unbind-failures"))return unbind_failures();if(!strcmp(argv[1],"roles"))return roles();
     if(!strcmp(argv[1],"publication"))return publication();if(!strcmp(argv[1],"restore-members"))return restore_members();

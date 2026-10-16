@@ -6,6 +6,8 @@
 #define REQUIRE(c,n) do{if(!(c)){fprintf(stderr,"ASSERT:%s line=%d error=%s\n",n,__LINE__,error);return 1;}}while(0)
 static FinishSurfaceState state;
 static EngineeringState engineering;
+static GeoVersionStore *versions;
+static void free_versions(void){geo_versions_destroy(versions);versions=NULL;}
 static WoodBoundaryRegion region;
 static WoodFinishContext context;
 static FsDiagnosticKind diagnostic;
@@ -33,13 +35,14 @@ static void rectangle(WoodBoundaryLoop *loop,GeoCoord u0,GeoCoord v0,GeoCoord u1
 {memset(loop,0,sizeof *loop);loop->count=4;loop->v[0]=(GeoPoint2){u0,v0};loop->v[1]=(GeoPoint2){u1,v0};loop->v[2]=(GeoPoint2){u1,v1};loop->v[3]=(GeoPoint2){u0,v1};}
 static void reset(void)
 {
+ free_versions();if(geo_versions_create(&versions)!=GEO_VERSION_OK){fputs("SETUP:version storage\n",stderr);exit(2);}
  memset(&state,0,sizeof state);memset(&engineering,0,sizeof engineering);memset(&region,0,sizeof region);memset(error,0,sizeof error);
  memset(box_lo,0,sizeof box_lo);memset(box_hi,0,sizeof box_hi);memset(parameter_log,0,sizeof parameter_log);
  region.id=8;rectangle(&region.outline,0,0,100,100);boundary_available=box_available=true;
  for(int i=0;i<3;++i)parameter_available[i]=true;
  coordinates[0]=3;coordinates[1]=-20;threshold=(GeoQuantity){8,1,1};diagnostic=FS_DIAGNOSTIC_INVALID;strcpy(parameter_error,"selected parameter unavailable");
  boundary_calls=box_calls=parameter_calls=engineering_calls=derived_calls=0;derived_remove=false;
- context=(WoodFinishContext){.state=&state,.engineering={.state=&engineering,.error=error,.error_capacity=sizeof error},
+ context=(WoodFinishContext){.state=&state,.engineering={.state=&engineering,.error=error,.error_capacity=sizeof error,.versions=versions},
    .error=error,.error_capacity=sizeof error,.diagnostic=&diagnostic,.boundary=boundary,.obstacle_box=obstacle,
    .parameter_coord=parameter_coord,.parameter_value=parameter_value,.parameter_error=parameter_error,.parameter_error_capacity=sizeof parameter_error,
    .engineering_operation=engineering_operation,.derived_operation=derived_operation};
@@ -242,7 +245,7 @@ static int capacity(void)
 }
 int main(int argc,char **argv)
 {
- if(argc!=2)return 2;reset();
+ if(argc!=2)return 2;atexit(free_versions);reset();
  if(!strcmp(argv[1],"names"))return names();if(!strcmp(argv[1],"obstacles"))return obstacles();
  if(!strcmp(argv[1],"relations"))return relations();if(!strcmp(argv[1],"materials"))return materials();
  if(!strcmp(argv[1],"sources"))return sources();if(!strcmp(argv[1],"operations"))return operations();

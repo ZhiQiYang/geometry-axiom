@@ -8,6 +8,8 @@
 #define REQUIRE(x,n) do { if (!(x)) { fprintf(stderr,"ASSERT:%s error=%s\n",n,error); return 1; } } while (0)
 static SectionProfileState state;
 static EngineeringState engineering;
+static GeoVersionStore *versions;
+static void free_versions(void){geo_versions_destroy(versions);versions=NULL;}
 static WoodSectionProfileContext context;
 static char error[512];
 static GeoCoord parameter_value=33;
@@ -46,6 +48,7 @@ static bool live_host(void *user,uint32_t id,GeoFrame *frame,WoodBoundaryRegion 
 }
 static void reset(void)
 {
+    free_versions();if(geo_versions_create(&versions)!=GEO_VERSION_OK){fputs("SETUP:version storage\n",stderr);exit(2);}
     memset(&state,0,sizeof state);memset(&engineering,0,sizeof engineering);memset(error,0,sizeof error);
     memset(dimension_targets,0,sizeof dimension_targets);memset(dimension_sources,0,sizeof dimension_sources);
     parameter_value=33;parameter_available=host_available=true;host_derived=false;dimension_calls=host_calls=0;
@@ -54,7 +57,7 @@ static void reset(void)
     host_region.outline.v[0]=(GeoPoint2){0,0};host_region.outline.v[1]=(GeoPoint2){100,0};
     host_region.outline.v[2]=(GeoPoint2){100,100};host_region.outline.v[3]=(GeoPoint2){0,100};
     context=(WoodSectionProfileContext){.state=&state,
-        .engineering={.state=&engineering,.error=error,.error_capacity=sizeof error,.named_value=named_value,.parameter=parameter},
+        .engineering={.state=&engineering,.error=error,.error_capacity=sizeof error,.named_value=named_value,.parameter=parameter,.versions=versions},
         .error=error,.error_capacity=sizeof error,.resolve_dimension=dimension,.live_host=live_host};
 }
 static bool record(const char *text,int kind)
@@ -267,7 +270,7 @@ static int capacity(void)
 
 int main(int argc,char **argv)
 {
-    if(argc!=2)return 2;reset();
+    if(argc!=2)return 2;atexit(free_versions);reset();
     if(!strcmp(argv[1],"authoring"))return authoring();
     if(!strcmp(argv[1],"geometry"))return geometry();
     if(!strcmp(argv[1],"sources"))return sources();

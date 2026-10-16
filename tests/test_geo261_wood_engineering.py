@@ -41,8 +41,8 @@ class EngineeringBoundary(unittest.TestCase):
 
 
 CONTROLS = (
-    ("fingerprint", 'fingerprint && strcmp(fingerprint,m.fingerprint)', 'false', "materials", "material-fingerprint-refusal", 1),
-    ("immutable", '!strcmp(old->content,m.content) || wood_eng_fail(w,"I34: material ID/version already has different immutable content")', 'true', "materials", "material-immutable", 1),
+    ("fingerprint", 'if(memcmp(next.fingerprint,definition->fingerprint,GEO_VERSION_FINGERPRINT_BYTES))', 'if(false)', "materials", "material-fingerprint-refusal", 1),
+    ("immutable", 'geo_version_record_equal(existing,next)?GEO_VERSION_OK:GEO_VERSION_IMMUTABLE', 'GEO_VERSION_OK', "materials", "material-immutable", 1),
     ("material-kind", 'mat->kind!=(r<0?0:1)', 'false', "methods", "method-kind", 1),
     ("application-face", 'existing && existing->placement_id!=a.placement_id', 'false', "applications", "application-cannot-move", 1),
     ("application-derived", 'if(derived)', 'if(false)', "applications", "application-derived", 1),
@@ -99,12 +99,20 @@ class WoodEngineering(unittest.TestCase):
     def mutant(self, control):
         name, before, after, _, _, count = control
         build = native()
-        source = (build.woodworking / "engineering.c").read_text(encoding="utf-8")
-        # Fingerprints exist independently in material and method publication.
-        self.assertEqual(2 if name == "fingerprint" else count, source.count(before), name)
-        path = build.woodworking / ("engineering-" + name + ".c")
+        kernel = name in ("fingerprint", "immutable")
+        directory = build.kernel if kernel else build.woodworking
+        source = (directory / ("versions.c" if kernel else "engineering.c")).read_text(encoding="utf-8")
+        self.assertEqual(count, source.count(before), name)
+        path = directory / ("engineering-" + name + ".c")
         path.write_text(source.replace(before, after, count), encoding="utf-8")
         return build.compile(path, "engineering-" + name)
+
+    def policy_objects(self, control, changed):
+        build = native()
+        if control[0] in ("fingerprint", "immutable"):
+            return [self.client, build.wood_engineering_object,
+                    *[changed if obj == build.versions_object else obj for obj in build.kernel_objects()]]
+        return [self.client, changed, *build.kernel_objects()]
 
     def test_twelve_guard_controls_fail_named_assertions(self):
         build = native()
@@ -112,7 +120,7 @@ class WoodEngineering(unittest.TestCase):
             with self.subTest(control=control[0]):
                 self.assertEqual(0, self.case(control[3]).returncode)
                 changed = self.mutant(control)
-                exe = build.link("engineering-mutant-" + control[0], [self.client, changed, *build.kernel_objects()])
+                exe = build.link("engineering-mutant-" + control[0], self.policy_objects(control, changed))
                 result = self.case(control[3], exe)
                 self.assertEqual(1, result.returncode, "W guard removal survived: " + control[0])
                 self.assertIn("ASSERT:" + control[4], result.stderr)
@@ -138,16 +146,16 @@ class WoodEngineering(unittest.TestCase):
             self.assertTrue(bridge.command("engineering-confirm " + str(first["token"]))["ok"])
             return preview(dict(material, name="Changed"))
 
-    def test_same_w_guard_controls_actual_product_preview(self):
+    def test_same_k_version_guard_controls_actual_product_preview(self):
         build = native()
         baseline = build.bridge()
         self.assertFalse(self.preview_immutable_change(baseline, "original")["valid"])
         changed = self.mutant(CONTROLS[1])
-        client = build.link("engineering-product-mutant-client", [self.client, changed, *build.kernel_objects()])
+        client = build.link("engineering-product-mutant-client", self.policy_objects(CONTROLS[1], changed))
         self.assertIn("ASSERT:material-immutable", self.case("materials", client).stderr)
         product_objects = build.product_objects()
-        self.assertEqual(1, product_objects.count(build.wood_engineering_object))
-        mutant = build.link("engineering-product-mutant-bridge", [build.bridge_object, *[changed if obj == build.wood_engineering_object else obj for obj in product_objects]])
+        self.assertEqual(1, product_objects.count(build.versions_object))
+        mutant = build.link("engineering-product-mutant-bridge", [build.bridge_object, *[changed if obj == build.versions_object else obj for obj in product_objects]])
         self.assertTrue(self.preview_immutable_change(mutant, "mutant")["valid"])
         self.assertFalse(self.preview_immutable_change(baseline, "restored")["valid"])
 

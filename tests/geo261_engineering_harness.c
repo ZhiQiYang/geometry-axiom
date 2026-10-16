@@ -5,6 +5,8 @@
 
 #define REQUIRE(x,n) do{if(!(x)){fprintf(stderr,"ASSERT:%s error=%s\n",n,error);return 1;}}while(0)
 static EngineeringState state;
+static GeoVersionStore *versions;
+static void free_versions(void){geo_versions_destroy(versions);versions=NULL;}
 static char error[256];
 static int write_count,serial_count;
 static bool derived,owned,serial_ok=true;
@@ -33,7 +35,7 @@ static const char *method="{\"id\":\"m\",\"version\":1,\"name\":\"Method\",\"pan
 static const char *application="{\"id\":\"a\",\"placement_id\":10,\"method\":{\"id\":\"m\",\"version\":1}}";
 static bool seed(void){return publish(panel,0,NULL)&&publish(member,0,NULL)&&publish(method,1,NULL)&&publish(application,2,NULL);}
 static void reset(void)
-{memset(&state,0,sizeof state);memset(error,0,sizeof error);memset(written,0,sizeof written);write_count=serial_count=0;derived=owned=false;serial_ok=true;for(int i=0;i<3;++i){targets[i]=(WoodEngineeringTargetInfo){10,i==2?1:-1,false,false,true,true};}}
+{free_versions();if(geo_versions_create(&versions)!=GEO_VERSION_OK){fputs("SETUP:version storage\n",stderr);exit(2);}context.versions=versions;memset(&state,0,sizeof state);memset(error,0,sizeof error);memset(written,0,sizeof written);write_count=serial_count=0;derived=owned=false;serial_ok=true;for(int i=0;i<3;++i){targets[i]=(WoodEngineeringTargetInfo){10,i==2?1:-1,false,false,true,true};}}
 static EngDimensionSource source(int kind,int field,const char *id)
 {EngDimensionSource s={0};s.kind=kind;s.field=field;s.version=1;if(id)snprintf(s.ref,sizeof s.ref,"%s",id);return s;}
 static int materials(void)
@@ -43,7 +45,8 @@ static int materials(void)
     char digest[65];geo_sha256(state.materials[0].content,strlen(state.materials[0].content),digest);
     REQUIRE(!strcmp(digest,state.materials[0].fingerprint),"material-fingerprint");
     REQUIRE(publish(panel,0,digest)&&state.material_count==1,"material-repeat");
-    REQUIRE(!publish(panel,0,"wrong")&&!strcmp(error,"I34: material fingerprint mismatch"),"material-fingerprint-refusal");
+    REQUIRE(!publish(panel,0,"wrong")&&!strcmp(error,"I34: material fingerprint mismatch"),"material-fingerprint-shape-refusal");
+    REQUIRE(!publish(panel,0,"0000000000000000000000000000000000000000000000000000000000000000")&&!strcmp(error,"I34: material fingerprint mismatch"),"material-fingerprint-refusal");
     REQUIRE(!publish("{\"id\":\"p\",\"version\":1,\"kind\":\"panel\",\"name\":\"Changed\",\"width\":100,\"length\":200}",0,NULL),"material-immutable");
     REQUIRE(!strcmp(error,"I34: material ID/version already has different immutable content"),"material-immutable-error");
     REQUIRE(state.material_count==1&&state.materials[0].width==100,"material-preserved");
@@ -139,4 +142,4 @@ static int deletion(void)
     return 0;
 }
 int main(int argc,char **argv)
-{if(argc!=2)return 2;reset();if(!strcmp(argv[1],"materials"))return materials();if(!strcmp(argv[1],"methods"))return methods();if(!strcmp(argv[1],"applications"))return applications();if(!strcmp(argv[1],"resolution"))return resolution();if(!strcmp(argv[1],"roles"))return roles();if(!strcmp(argv[1],"rebuild"))return rebuild();if(!strcmp(argv[1],"fragments"))return fragments();if(!strcmp(argv[1],"deletion"))return deletion();return 2;}
+{if(argc!=2)return 2;atexit(free_versions);reset();if(!strcmp(argv[1],"materials"))return materials();if(!strcmp(argv[1],"methods"))return methods();if(!strcmp(argv[1],"applications"))return applications();if(!strcmp(argv[1],"resolution"))return resolution();if(!strcmp(argv[1],"roles"))return roles();if(!strcmp(argv[1],"rebuild"))return rebuild();if(!strcmp(argv[1],"fragments"))return fragments();if(!strcmp(argv[1],"deletion"))return deletion();return 2;}

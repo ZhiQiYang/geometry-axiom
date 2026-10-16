@@ -7,6 +7,8 @@
 
 static FinishSurfaceState state;
 static EngineeringState engineering;
+static GeoVersionStore *versions;
+static void free_versions(void){geo_versions_destroy(versions);versions=NULL;}
 static WoodDerivedContext context;
 static FsDiagnosticKind diagnostic;
 static char error[256],parameter_error[256],scene_message[256],resolved_key[512];
@@ -42,7 +44,9 @@ static bool named(void *u,const char *name,GeoCoord *out)
 {(void)u;if(strcmp(name,"depth"))return false;*out=30;return true;}
 static bool init(void)
 {
+    if(geo_versions_create(&versions)!=GEO_VERSION_OK)return false;atexit(free_versions);
     context.finish.state=&state;context.finish.engineering.state=&engineering;context.finish.engineering.error=error;context.finish.engineering.error_capacity=sizeof error;
+    context.finish.engineering.versions=versions;
     context.finish.engineering.parameter=engineering_parameter;context.finish.engineering.named_value=named;
     context.finish.error=error;context.finish.error_capacity=sizeof error;context.finish.diagnostic=&diagnostic;
     context.finish.boundary=boundary_value;context.finish.obstacle_box=obstacle_value;context.finish.parameter_coord=parameter_coord;context.finish.parameter_value=parameter_value;strcpy(parameter_error,"parameter fact unavailable");context.finish.parameter_error=parameter_error;context.finish.parameter_error_capacity=sizeof parameter_error;
