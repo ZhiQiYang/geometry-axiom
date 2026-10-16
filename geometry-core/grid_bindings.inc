@@ -1,80 +1,42 @@
 /* D30/I37/R32: declarative alignment, evaluated relative to its selected cell. */
-static uint32_t grid_gcd(uint32_t a,uint32_t b)
-{ while(b){uint32_t r=a%b;a=b;b=r;}return a; }
+static bool app_grid_vertex(void *state,uint32_t boundary,uint32_t key,GeoPoint2 *out)
+{ return boundary_vertex_by_key((const World *)state,boundary,key,out); }
 
 static bool grid_binding_cache(const World *w,const GridBinding *binding,ReferenceGrid *g,char *err,size_t cap)
 {
-    const GridSystem *s=world_find_grid_system(w,binding->system_id); SurfacePoint2 v;
-    if(!s || !grid_axis_is_infinite(&s->axis[0]) || !grid_axis_is_infinite(&s->axis[1]) ||
-        !boundary_vertex_by_key(w,binding->boundary_id,binding->vertex_key,&v)) goto invalid;
-    g->from_binding=true;g->binding_id=binding->id;g->main_along=s->main_along;
-    for(int a=0;a<2;++a){
-        if(binding->cell[a]==INT64_MAX){
-            if(err)snprintf(err,cap,"D29/R32: cell upper line index exceeds signed int64");return false;
-        }
-        uint32_t n=binding->anchor_num[a],d=binding->anchor_den[a];
-        Coord pitch=grid_axis_pitch(&s->axis[a]);
-        if(!d || n>d || pitch<=0 || ((uint64_t)pitch*n)%d) {
-            if(err)snprintf(err,cap,"D1/I37: anchor must have an exact integer-millimetre offset");return false;
-        }
-        g->axis[a]=s->axis[a];g->lattice_step[a]=pitch;g->lattice_index[a]=binding->cell[a];
-        Coord base=(a?v.v:v.u)-(Coord)(((uint64_t)pitch*n)/d);
-        /* D10b: shift 0 keeps the subtraction above unchanged. An odd selected cell pins the staggered corner. */
-        if(s->axis[a].stagger_set && (binding->cell[1-a]&1)){
-            int64_t shifted;
-            if(!grid_i64_add(base,-(int64_t)s->axis[a].stagger,&shifted)){
-                if(err)snprintf(err,cap,"D10b/D30: 錯開後的錨點超出可表達範圍");return false;
-            }
-            base=(Coord)shifted;
-        }
-        g->lattice_base[a]=base;
+    GeoGridBindingCache cache={0};GeoGridStoreError detail;
+    for(int axis=0;axis<2;++axis){
+        cache.axis[axis]=g->axis[axis];
+        cache.lattice[axis]=(GeoLattice){g->lattice_base[axis],g->lattice_step[axis],g->lattice_index[axis]};
     }
-    return true;
-invalid:
-    if(err)snprintf(err,cap,"D30/I37: grid-binding needs an existing boundary vertex and two infinite axes");return false;
+    bool ok=geo_grid_binding_evaluate(&w->grid_store,app_grid_binding_index(w,binding->id),app_grid_vertex,(void *)w,&cache,&detail);
+    if(detail.status!=GEO_GRID_STORE_BINDING_SOURCE && detail.status!=GEO_GRID_STORE_BINDING_MISSING && detail.status!=GEO_GRID_STORE_INVALID){
+        g->from_binding=true;g->binding_id=binding->id;g->main_along=app_grid_system_main_along(w,binding->system_id);
+        for(int axis=0;axis<2;++axis){
+            g->axis[axis]=cache.axis[axis];g->lattice_base[axis]=cache.lattice[axis].base;
+            g->lattice_step[axis]=cache.lattice[axis].pitch;g->lattice_index[axis]=cache.lattice[axis].index;
+        }
+    }
+    if(ok)return true;
+    if(err)switch(detail.status){
+    case GEO_GRID_STORE_BINDING_CELL_RANGE:snprintf(err,cap,"D29/R32: cell upper line index exceeds signed int64");break;
+    case GEO_GRID_STORE_BINDING_ANCHOR:snprintf(err,cap,"D1/I37: anchor must have an exact integer-millimetre offset");break;
+    case GEO_GRID_STORE_BINDING_SHIFT_RANGE:snprintf(err,cap,"D10b/D30: 錯開後的錨點超出可表達範圍");break;
+    default:snprintf(err,cap,"D30/I37: grid-binding needs an existing boundary vertex and two infinite axes");break;
+    }
+    return false;
 }
 
 static bool grid_binding_translation(const World *w,const GridBinding *binding,Coord out[2])
-{
-    ReferenceGrid g={0};if(!grid_binding_cache(w,binding,&g,NULL,0))return false;
-    const GridSystem *s=world_find_grid_system(w,binding->system_id);
-    for(int a=0;a<2;++a){
-        int64_t index=binding->cell[a],relative=g.lattice_base[a]-grid_axis_phase(&s->axis[a]);
-        uint64_t magnitude=index<0?UINT64_C(0)-(uint64_t)index:(uint64_t)index;
-        uint64_t pitch=(uint64_t)g.lattice_step[a],product;
-        if(magnitude>UINT64_MAX/pitch)return false;
-        product=magnitude*pitch;
-        /* An intermediate I*pitch may exceed int64 even when translation fits.
-         * Keep a sign and magnitude until after the small local offset. */
-        bool negative=index>=0;
-        if(negative){
-            if(relative>=0){
-                if(product<(uint64_t)relative){product=(uint64_t)relative-product;negative=false;}
-                else product-=(uint64_t)relative;
-            }else{
-                uint64_t extra=UINT64_C(0)-(uint64_t)relative;
-                if(product>UINT64_MAX-extra)return false;product+=extra;
-            }
-        }else{
-            if(relative<0){
-                uint64_t extra=UINT64_C(0)-(uint64_t)relative;
-                if(product<extra){product=extra-product;negative=true;}else product-=extra;
-            }else{if(product>UINT64_MAX-(uint64_t)relative)return false;product+=(uint64_t)relative;}
-        }
-        uint64_t negative_limit=(uint64_t)INT64_MAX+1;
-        if(product>(negative?negative_limit:(uint64_t)INT64_MAX))return false;
-        out[a]=negative?(product==negative_limit?INT64_MIN:-(int64_t)product):(int64_t)product;
-    }
-    return true;
-}
+{ return geo_grid_binding_translation(&w->grid_store,app_grid_binding_index(w,binding->id),app_grid_vertex,(void *)w,out,NULL); }
 
 static bool grid_bindings_rebuild(World *w,char *err,size_t cap)
 {
-    if(w->grid_binding_count>WORLD_MAX_GRID_BINDINGS)goto invalid;
-    for(size_t i=0;i<w->grid_binding_count;++i){
+    if(geo_grid_bindings_count(&w->grid_store)>WORLD_MAX_GRID_BINDINGS)goto invalid;
+    for(size_t i=0;i<geo_grid_bindings_count(&w->grid_store);++i){
         ReferenceGrid derived={0};
-        if(!grid_binding_cache(w,&w->grid_bindings[i],&derived,err,cap))return false;
-        for(size_t j=0;j<i;++j)if(w->grid_bindings[j].id==w->grid_bindings[i].id)goto invalid;
+        if(!grid_binding_cache(w,geo_grid_bindings_at(&w->grid_store,i),&derived,err,cap))return false;
+        for(size_t j=0;j<i;++j)if((*geo_grid_bindings_at(&w->grid_store,j)).id==(*geo_grid_bindings_at(&w->grid_store,i)).id)goto invalid;
     }
     for(size_t i=0;i<w->grid_count;++i){
         ReferenceGrid *g=&w->grids[i];if(!g->from_binding)continue;
@@ -120,14 +82,11 @@ static bool apply_grid_binding_line(const char *path,int line_no,char **t,int co
     for(int a=0;a<2;++a){
         uint32_t n,d;
         if(!parse_u32(t[at+4+a*2],&n)||!parse_u32(t[at+5+a*2],&d)||!d||n>d)goto invalid;
-        uint32_t factor=grid_gcd(n,d);binding.anchor_num[a]=n/factor;binding.anchor_den[a]=d/factor;
+        binding.anchor_num[a]=n;binding.anchor_den[a]=d;
     }
-    size_t slot=0;while(slot<candidate.grid_binding_count && candidate.grid_bindings[slot].id!=binding.id)++slot;
-    if(slot==candidate.grid_binding_count){
-        if(slot==WORLD_MAX_GRID_BINDINGS){scene_error(path,line_no,"I37: grid-binding capacity is 32");return false;}
-        ++candidate.grid_binding_count;
-    }
-    candidate.grid_bindings[slot]=binding;reference_capture_trial(&candidate);
+    if(!geo_grid_binding_normalize(&binding))goto invalid;
+    if(!geo_grid_bindings_put(&candidate.grid_store,&binding)){scene_error(path,line_no,"I37: grid-binding capacity is 32");return false;}
+    reference_capture_trial(&candidate);
     if(!world_revalidate(&candidate)){scene_error(path,line_no,g_revalidate_error);return false;}
     *w=candidate;return true;
 invalid:
@@ -158,7 +117,7 @@ invalid:
 
 static void grid_bindings_dump(const World *w,FILE *out)
 {
-    for(size_t i=0;i<w->grid_binding_count;++i){const GridBinding *b=&w->grid_bindings[i];
+    for(size_t i=0;i<geo_grid_bindings_count(&w->grid_store);++i){const GridBinding *b=geo_grid_bindings_at(&w->grid_store,i);
         fprintf(out,"grid-binding %u on-boundary %u from-system %u vertex-key %u cell %lld %lld anchor %u %u %u %u\n",
             b->id,b->boundary_id,b->system_id,b->vertex_key,(long long)b->cell[0],(long long)b->cell[1],
             b->anchor_num[0],b->anchor_den[0],b->anchor_num[1],b->anchor_den[1]);

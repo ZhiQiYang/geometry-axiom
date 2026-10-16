@@ -20,13 +20,13 @@ static void json_reference_geometry(const World *w,int i)
 }
 static void json_reference_guide(const World *w,size_t i)
 {
-    const GuideLine *g=&w->guides[i];
+    const GuideLine *g=&geo_guides_values(&w->guide_lines)[i];
     const PlacementSurface *p=world_find_placement(w,g->placement_id);
     if (!g->resolved || !p) { fputs("null",stdout); return; }
     printf("{\"id\":%u,\"surface\":%u,\"source\":\"%s\",\"datum\":%u,\"axis\":\"%s\",\"off\":%lld,\"expression\":",
         g->id,g->placement_id,g->source==GUIDE_DATUM?"datum":"local",g->datum_id,
         g->direction==GUIDE_ALONG_U?"u":"v",(long long)g->offset);
-    js_string(g->expression);
+    js_string(app_guide_expression(w,g->id));
     Vector3 along=g->direction==GUIDE_ALONG_U?p->frame.axis_u:p->frame.axis_v;
     Vector3 cross=g->direction==GUIDE_ALONG_U?p->frame.axis_v:p->frame.axis_u;
     printf(",\"worldPoint\":[%lld,%lld,%lld],\"worldDirection\":[%lld,%lld,%lld],\"segments\":[",
@@ -66,17 +66,17 @@ static void json_candidate_timbers(const World *before,const World *after,bool i
 static void json_candidate_guides(const World *before,const World *after)
 {
     putchar('[');
-    for (size_t i=0;i<before->guide_count;++i) {
-        const GuideLine *g=&before->guides[i];
+    for (size_t i=0;i<geo_guides_count(&before->guide_lines);++i) {
+        const GuideLine *g=&geo_guides_values(&before->guide_lines)[i];
         printf("%s{\"id\":%u,\"before\":",i?",":"",g->id); json_reference_guide(before,i);
         fputs(",\"after\":",stdout); size_t j=0;
-        while (j<after->guide_count && after->guides[j].id!=g->id) ++j;
-        if (j==after->guide_count) fputs("null",stdout); else json_reference_guide(after,j);
+        while (j<geo_guides_count(&after->guide_lines) && geo_guides_values(&after->guide_lines)[j].id!=g->id) ++j;
+        if (j==geo_guides_count(&after->guide_lines)) fputs("null",stdout); else json_reference_guide(after,j);
         putchar('}');
     }
-    bool first=before->guide_count==0;
-    for (size_t i=0;i<after->guide_count;++i) {
-        const GuideLine *g=&after->guides[i];
+    bool first=geo_guides_count(&before->guide_lines)==0;
+    for (size_t i=0;i<geo_guides_count(&after->guide_lines);++i) {
+        const GuideLine *g=&geo_guides_values(&after->guide_lines)[i];
         if (world_find_guide(before,g->id)) continue;
         printf("%s{\"id\":%u,\"before\":null,\"after\":",first?"":",",g->id); first=false;
         json_reference_guide(after,i); putchar('}');
@@ -177,9 +177,9 @@ static void json_grid_dependencies(const World *w,const ReferenceGrid *g)
         printf("%s%u",first?"":",",w->grids[i].id); first=false;
     }
     fputs("],\"guides\":[",stdout); first=true;
-    for (size_t i=0;i<w->guide_count;++i) {
-        if (!reference_expression_uses_grid(w->guides[i].expression,g->id) && !grid_guide_references(&w->guides[i],g->id)) continue;
-        printf("%s%u",first?"":",",w->guides[i].id); first=false;
+    for (size_t i=0;i<geo_guides_count(&w->guide_lines);++i) {
+        if (!reference_expression_uses_grid(app_guide_expression(w,geo_guides_values(&w->guide_lines)[i].id),g->id) && !grid_guide_references(w,&geo_guides_values(&w->guide_lines)[i],g->id)) continue;
+        printf("%s%u",first?"":",",geo_guides_values(&w->guide_lines)[i].id); first=false;
     }
     fputs("],\"timbers\":[",stdout); first=true;
     for (size_t i=0;i<w->timber_count;++i) {
@@ -385,7 +385,7 @@ static void json_reference_timber_definition(const Timber *t,const TimberAnchor 
 static void json_references_world(const World *w,const char *fingerprint)
 {
     printf("{\"ok\":true,\"sourceFingerprint\":\"%s\",\"guides\":[",fingerprint);
-    for (size_t i=0;i<w->guide_count;++i) {
+    for (size_t i=0;i<geo_guides_count(&w->guide_lines);++i) {
         if (i) putchar(','); json_reference_guide(w,i);
     }
     fputs("],\"grids\":[",stdout);
@@ -414,8 +414,8 @@ static void json_references_world(const World *w,const char *fingerprint)
         const GeoDatum *d=geo_datums_at(&w->datum_planes,i);
         printf("%s{\"id\":%u,\"axis\":\"%c\",\"position\":%lld,\"expression\":",i?",":"",d->id,"XYZ"[d->axis],(long long)d->position);
         js_string(app_datum_expression(w,d->id)); fputs(",\"guides\":[",stdout); bool first=true;
-        for (size_t j=0;j<w->guide_count;++j) if (w->guides[j].source==GUIDE_DATUM && w->guides[j].datum_id==d->id) {
-            printf("%s%u",first?"":",",w->guides[j].id); first=false;
+        for (size_t j=0;j<geo_guides_count(&w->guide_lines);++j) if (geo_guides_values(&w->guide_lines)[j].source==GUIDE_DATUM && geo_guides_values(&w->guide_lines)[j].datum_id==d->id) {
+            printf("%s%u",first?"":",",geo_guides_values(&w->guide_lines)[j].id); first=false;
         }
         fputs("]}",stdout);
     }

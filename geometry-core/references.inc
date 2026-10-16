@@ -18,7 +18,7 @@ static void reference_capture_trial(const World *world)
      * Rebuild only the disposable trial, preserving the primary error. */
     sp_capture_diagnostics(&g_reference_trial);
     /* A rejected source has no validated downstream geometry yet. */
-    for (size_t i=0;i<g_reference_trial.guide_count;++i) g_reference_trial.guides[i].resolved=false;
+    geo_guides_reset_resolved(&g_reference_trial.guide_lines);
     for (size_t i=0;i<g_reference_trial.timber_count;++i) g_reference_trial.timbers[i].placed=false;
 }
 
@@ -112,8 +112,8 @@ static bool reference_quantity_raw(ReferenceEval *ctx, const GuideLine *g, const
         return false;
     }
     if (n==2 && !strcmp(part[0],"guide") && parse_u32(part[1],&id)) {
-        for (size_t i=0;i<w->guide_count;++i) {
-            GuideLine *q=&w->guides[i];
+        for (size_t i=0;i<geo_guides_count(&w->guide_lines);++i) {
+            const GuideLine *q=&geo_guides_values(&w->guide_lines)[i];
             if (q->id!=id) continue;
             if (q->placement_id!=g->placement_id || !reference_eval_guide(ctx,i) ||
                 q->direction!=g->direction) return false;
@@ -133,7 +133,7 @@ static bool reference_quantity_raw(ReferenceEval *ctx, const GuideLine *g, const
                 grid_line_coord_in(w->grids,w->grid_count,grid,p,b,axis,k,out,NULL,NULL,0);
         }
         if (n!=3 || grid->axis[axis].source != GRID_SRC_PANEL) return false;
-        *out=!strcmp(part[0],"panel")?grid->axis[axis].panel:grid->axis[axis].gap;
+        *out=!strcmp(part[0],"panel")?grid->axis[axis].body:grid->axis[axis].gap;
         return true;
     }
     if (n>=3 && !strcmp(part[0],"timber") && parse_u32(part[1],&id)) {
@@ -263,7 +263,7 @@ static bool reference_eval_text(ReferenceEval *ctx,const GuideLine *g,const char
 static bool reference_eval_expression(ReferenceEval *ctx, const GuideLine *g, Coord *out)
 {
     g_rule_reference_error[0]=0;
-    return reference_eval_text(ctx,g,g->expression,out);
+    return reference_eval_text(ctx,g,app_guide_expression(ctx->world,g->id),out);
 }
 
 static bool reference_eval_datums(ReferenceEval *ctx)
@@ -283,43 +283,38 @@ static bool reference_eval_datums(ReferenceEval *ctx)
     return ok;
 }
 
-/* H maps neutral plane-intersection results to the existing diagnostics. */
-static bool datum_guide_geometry(const World *w,const PlacementSurface *p,GuideLine *g)
-{
-    const GeoDatum *d=geo_datums_find(&w->datum_planes,g->datum_id);
-    if(!d)return reference_issue(0,"I7a/I9","existing datum","datum guide has missing source");
-    GeoDatumIntersection intersection;
-    GeoDatumIntersectionStatus status=geo_datum_intersection(d,&p->frame,&intersection);
-    if(status==GEO_DATUM_INTERSECTION_COINCIDENT||status==GEO_DATUM_INTERSECTION_PARALLEL){
-        char msg[160];snprintf(msg,sizeof msg,"guide %u datum %u: %s",g->id,d->id,
-            status==GEO_DATUM_INTERSECTION_COINCIDENT?"coincident planes have no unique line":"parallel planes do not intersect");
-        return reference_issue(0,"I7a","one unique intersection line",msg);
-    }
-    if(status==GEO_DATUM_INTERSECTION_OK||status==GEO_DATUM_INTERSECTION_RANGE){
-        g->direction=intersection.coordinate_axis==0?GUIDE_ALONG_V:GUIDE_ALONG_U;
-        g->offset=intersection.coordinate;
-    }
-    if(status!=GEO_DATUM_INTERSECTION_OK)return reference_issue(0,"D1/I7a","derived local position within D1","datum intersection outside supported coordinate range");
-    return true;
-}
-
 static bool reference_compute_guide(ReferenceEval *ctx, size_t i)
 {
     if(ctx->use_current_values)return true;
-    GuideLine *g=&ctx->world->guides[i]; Coord v;
-    const PlacementSurface *p=world_find_placement(ctx->world,g->placement_id);
-    if (g->source==GUIDE_DATUM) {
-        if (!p || !datum_guide_geometry(ctx->world,p,g)) return false;
-        g->resolved=true; return true;
+    World *world=ctx->world;const GeoGuide *g=geo_guides_at(&world->guide_lines,i);
+    const PlacementSurface *p=world_find_placement(world,g->placement_id);
+    const char *expression=app_guide_expression(world,g->id);
+    if(g->source==GUIDE_DATUM){
+        if(!p)return false;
+        const GeoDatum *d=geo_datums_find(&world->datum_planes,g->datum_id);
+        GeoGuideResult result=geo_guides_evaluate(&world->guide_lines,i,&p->frame,d,NULL,NULL);
+        if(result.status==GEO_GUIDE_MISSING_DATUM)return reference_issue(0,"I7a/I9","existing datum","datum guide has missing source");
+        if(result.intersection==GEO_DATUM_INTERSECTION_COINCIDENT||result.intersection==GEO_DATUM_INTERSECTION_PARALLEL){
+            char msg[160];snprintf(msg,sizeof msg,"guide %u datum %u: %s",g->id,d->id,
+                result.intersection==GEO_DATUM_INTERSECTION_COINCIDENT?"coincident planes have no unique line":"parallel planes do not intersect");
+            return reference_issue(0,"I7a","one unique intersection line",msg);
+        }
+        if(result.status!=GEO_GUIDE_OK)return reference_issue(0,"D1/I7a","derived local position within D1","datum intersection outside supported coordinate range");
+        return true;
     }
-    if (!p || !reference_eval_expression(ctx,g,&v)) {
-        char message[256];if(g_rule_reference_error[0])snprintf(message,sizeof message,"guide %u: %.210s",g->id,g_rule_reference_error);else if(g_parameter_error[0])snprintf(message,sizeof message,"guide %u: %s",g->id,g_parameter_error);else snprintf(message,sizeof message,"guide %u: invalid/missing reference, axis/surface mismatch, cycle or rational overflow: %.120s",g->id,g->expression);
+    bool ok=false;
+    if(p){
+        g_rule_reference_error[0]=0;g_parameter_error[0]=0;
+        AppLinearContext context={ctx,g};
+        GeoGuideResult result=geo_guides_evaluate(&world->guide_lines,i,&p->frame,NULL,reference_resolve_linear,&context);
+        Coord value;ok=reference_linear_result(result.linear,g->expression.mode,expression,&value);
+    }
+    if(!ok){
+        char message[256];if(g_rule_reference_error[0])snprintf(message,sizeof message,"guide %u: %.210s",g->id,g_rule_reference_error);else if(g_parameter_error[0])snprintf(message,sizeof message,"guide %u: %s",g->id,g_parameter_error);else snprintf(message,sizeof message,"guide %u: invalid/missing reference, axis/surface mismatch, cycle or rational overflow: %.120s",g->id,expression);
         utf8_trim_tail(message);
         return reference_issue(0,"D6a/I7/I9","existing same-surface/axis references; acyclic exact rational expression",message);
     }
-    g->offset=v;
-    /* I7: a valid infinite line can have an empty visible clip. */
-    g->resolved=true; return true;
+    return true;
 }
 
 static bool reference_face_parse(const char *s, ReferenceFace *r)
@@ -494,7 +489,7 @@ static bool reference_compute_timber(ReferenceEval *ctx, size_t i)
             (void)reference_eval_timber_relation(ctx,j,GEO_DEPENDENCY_EVALUATE_BEFORE);
     if (a->anchor_kind==ANCHOR_AT_LINE) {
         bool exists=false;
-        for (size_t j=0;j<w->guide_count;++j) if (w->guides[j].id==a->ref_guide) {
+        for (size_t j=0;j<geo_guides_count(&w->guide_lines);++j) if (geo_guides_values(&w->guide_lines)[j].id==a->ref_guide) {
             exists=true; if (!reference_eval_guide(ctx,j)) ok=false;
         }
         if (!exists) ok=false;
@@ -554,12 +549,12 @@ static bool reference_check_all(const World *w)
 static bool reference_rebuild(World *w)
 {
     ReferenceEval ctx={0}; ctx.world=w; bool ok=true;
-    for (size_t i=0;i<w->guide_count;++i) w->guides[i].resolved=false;
+    geo_guides_reset_resolved(&w->guide_lines);
     for (size_t i=0;i<w->timber_count;++i) { ctx.wanted[i]=w->timbers[i].placed; w->timbers[i].placed=false; }
     if (!reference_eval_datums(&ctx)) { if (g_reference_capturing) g_reference_trial=*w; reference_sources_dispose(&ctx); return false; }
     /* Timbers drive guide evaluation as needed; remaining guides are then evaluated. */
     for (size_t i=0;i<w->timber_count;++i) if (ctx.wanted[i] && !reference_eval_timber(&ctx,i)) ok=false;
-    for (size_t i=0;i<w->guide_count;++i) if (!reference_eval_guide(&ctx,i)) ok=false;
+    for (size_t i=0;i<geo_guides_count(&w->guide_lines);++i) if (!reference_eval_guide(&ctx,i)) ok=false;
     if (g_reference_capturing) g_reference_trial=*w;
     reference_sources_dispose(&ctx);return ok;
 }
@@ -598,33 +593,28 @@ static bool apply_datum_line(const char *p,int n,char **tokens,int count,World *
 }
 static bool apply_reference_guide(const char *p,int n,char **tokens,int count,World *w)
 {
-    GuideLine g={0}; int dir;
-    if (!parse_u32(tokens[1],&g.id) || !parse_u32(tokens[2],&g.placement_id)) return false;
-    if (!strcmp(tokens[3],"datum")) {
-        if (count!=5 || !parse_u32(tokens[4],&g.datum_id)) return false;
+    GeoGuide g={0};char expression[REF_EXPR_MAX]="";int dir;
+    if(!parse_u32(tokens[1],&g.id)||!parse_u32(tokens[2],&g.placement_id))return false;
+    if(!strcmp(tokens[3],"datum")){
+        if(count!=5||!parse_u32(tokens[4],&g.datum_id))return false;
         g.source=GUIDE_DATUM;
-    } else {
-        if (!lookup_keyword(tokens[3],GUIDE_DIRECTION_WORDS,&dir) ||
-            !reference_expression(tokens,4,count,g.expression)) return false;
+    }else{
+        if(!lookup_keyword(tokens[3],GUIDE_DIRECTION_WORDS,&dir)||!reference_expression(tokens,4,count,expression))return false;
         g.direction=(GuideDirection)dir;
     }
-    size_t i=0; while (i<w->guide_count && w->guides[i].id!=g.id) ++i;
-    if (i==WORLD_MAX_GUIDES) { scene_error(p,n,"D6: guide capacity exceeded"); return false; }
-    if (i==w->guide_count) ++w->guide_count;
-    w->guides[i]=g; return reference_checked(p,n,w);
+    if(!app_guide_put(w,&g,expression)){scene_error(p,n,"D6: guide capacity exceeded");return false;}
+    return reference_checked(p,n,w);
 }
 static bool apply_reference_move(const char *p,int n,char **tokens,int count,World *w)
 {
-    uint32_t id;
-    if (!parse_u32(tokens[1],&id)) return false;
-    for (size_t i=0;i<w->guide_count;++i) if (w->guides[i].id==id) {
-        if (w->guides[i].source==GUIDE_DATUM) {
-            scene_error(p,n,"R5: shared guide cannot be moved locally; edit its datum or named spec"); return false;
-        }
-        if (!reference_expression(tokens,2,count,w->guides[i].expression)) return false;
+    uint32_t id;if(!parse_u32(tokens[1],&id))return false;
+    const GeoGuide *guide=geo_guides_find(&w->guide_lines,id);
+    if(guide){
+        if(guide->source==GUIDE_DATUM){scene_error(p,n,"R5: shared guide cannot be moved locally; edit its datum or named spec");return false;}
+        char expression[REF_EXPR_MAX];if(!reference_expression(tokens,2,count,expression)||!app_guide_put(w,guide,expression))return false;
         return reference_checked(p,n,w);
     }
-    scene_error(p,n,"I9: move guide does not exist"); return false;
+    scene_error(p,n,"I9: move guide does not exist");return false;
 }
 static bool apply_reference_place(const char *p,int n,char **tokens,int count,World *w)
 {
@@ -691,31 +681,31 @@ static void reference_dump_guide(const World *w,FILE *out,size_t i,bool *done)
 {
     if (done[i]) return;
     done[i]=true;
-    const char *p=w->guides[i].expression;
+    const char *p=app_guide_expression(w,geo_guides_values(&w->guide_lines)[i].id);
     while ((p=strstr(p,"guide:"))!=NULL) {
         char *end; unsigned long id=strtoul(p+6,&end,10);
-        for (size_t j=0;j<w->guide_count;++j) if (w->guides[j].id==id) reference_dump_guide(w,out,j,done);
+        for (size_t j=0;j<geo_guides_count(&w->guide_lines);++j) if (geo_guides_values(&w->guide_lines)[j].id==id) reference_dump_guide(w,out,j,done);
         p=end>p?end:p+6;
     }
-    const GuideLine *g=&w->guides[i];
+    const GuideLine *g=&geo_guides_values(&w->guide_lines)[i];
     if (g->source==GUIDE_DATUM) fprintf(out,"guide %u %u datum %u\n",g->id,g->placement_id,g->datum_id);
-    else fprintf(out,"guide %u %u %s %s\n",g->id,g->placement_id,g->direction==GUIDE_ALONG_U?"u":"v",g->expression);
+    else fprintf(out,"guide %u %u %s %s\n",g->id,g->placement_id,g->direction==GUIDE_ALONG_U?"u":"v",app_guide_expression(w,g->id));
 }
 static bool reference_guide_ready(const World *w,size_t i,const bool *placed,unsigned depth)
 {
     if (depth>WORLD_MAX_GUIDES) return false;
-    const char *p=w->guides[i].expression;
+    const char *p=app_guide_expression(w,geo_guides_values(&w->guide_lines)[i].id);
     while ((p=strstr(p,"timber:"))!=NULL) {
         char *end; unsigned long id=strtoul(p+7,&end,10);
         int ti=reference_timber_index(w,(uint32_t)id);
         if (ti>=0 && end[0]==':' && end[1]!='A' && end[1]!='B' && !placed[ti]) return false;
         p=end>p?end:p+7;
     }
-    p=w->guides[i].expression;
+    p=app_guide_expression(w,geo_guides_values(&w->guide_lines)[i].id);
     while ((p=strstr(p,"guide:"))!=NULL) {
         char *end; unsigned long id=strtoul(p+6,&end,10);
-        for (size_t j=0;j<w->guide_count;++j)
-            if (w->guides[j].id==id && !reference_guide_ready(w,j,placed,depth+1)) return false;
+        for (size_t j=0;j<geo_guides_count(&w->guide_lines);++j)
+            if (geo_guides_values(&w->guide_lines)[j].id==id && !reference_guide_ready(w,j,placed,depth+1)) return false;
         p=end>p?end:p+6;
     }
     return true;
@@ -734,7 +724,7 @@ static void reference_dump(const World *w,FILE *out)
         fputc('\n',out);
     }
     for (size_t k=0;k<=w->timber_count;++k) {
-        for (size_t i=0;i<w->guide_count;++i) if (!gd[i] && reference_guide_ready(w,i,placed,0)) reference_dump_guide(w,out,i,gd);
+        for (size_t i=0;i<geo_guides_count(&w->guide_lines);++i) if (!gd[i] && reference_guide_ready(w,i,placed,0)) reference_dump_guide(w,out,i,gd);
         size_t at=w->timber_count; uint64_t order=UINT64_MAX;
         for (size_t i=0;i<w->timber_count;++i) if (w->timbers[i].placed && !placed[i] && w->anchors[i].order<order) { at=i; order=w->anchors[i].order; }
         if (at==w->timber_count) break;
@@ -781,8 +771,8 @@ static bool reference_snap(World *w,uint32_t pid,GuideDirection dir,uint32_t exc
     enum { SNAP_MAX = WORLD_MAX_SPECS + WORLD_MAX_GUIDES + (POLY_MAX_HOLES+1)*POLY_MAX_VERTICES + WORLD_MAX_GRIDS*GRID_MAX_LINES + WORLD_MAX_TIMBERS*2 };
     char candidates[SNAP_MAX][REF_EXPR_MAX]; size_t n=0;
     for (size_t i=0;i<geo_named_values_count(&w->named_values) && n<SNAP_MAX;++i) snprintf(candidates[n++],REF_EXPR_MAX,"spec:%s",geo_named_values_at(&w->named_values,i)->name);
-    for (size_t i=0;i<w->guide_count && n<SNAP_MAX;++i) if (w->guides[i].id!=exclude && w->guides[i].placement_id==pid && w->guides[i].direction==dir)
-        snprintf(candidates[n++],REF_EXPR_MAX,"guide:%u",w->guides[i].id);
+    for (size_t i=0;i<geo_guides_count(&w->guide_lines) && n<SNAP_MAX;++i) if (geo_guides_values(&w->guide_lines)[i].id!=exclude && geo_guides_values(&w->guide_lines)[i].placement_id==pid && geo_guides_values(&w->guide_lines)[i].direction==dir)
+        snprintf(candidates[n++],REF_EXPR_MAX,"guide:%u",geo_guides_values(&w->guide_lines)[i].id);
     PolygonLoop2 rect; placement_outline(p,b,&rect);
     for (int h=-1; h<(b?(int)b->hole_count:0); ++h) {
         const PolygonLoop2 *loop=h<0?&rect:&b->holes[h];
@@ -817,15 +807,15 @@ static bool reference_snap(World *w,uint32_t pid,GuideDirection dir,uint32_t exc
     }
     for (size_t i=0;i<n;++i) {
         Coord value;
-        snprintf(probe.expression,sizeof probe.expression,"%s",candidates[i]);
-        if (!reference_eval_expression(&ctx,&probe,&value) || !guide_offset_in_range(p,b,dir,value)) continue;
+        g_rule_reference_error[0]=0;
+        if (!reference_eval_text(&ctx,&probe,candidates[i],&value) || !guide_offset_in_range(p,b,dir,value)) continue;
         Coord distance=value>at?value-at:at-value;
         if (distance<best) {
             /* A reference back through the moving guide/timber is not a legal snap. */
             World candidate=*w; bool legal=true;
             if (exclude) {
-                for (size_t j=0;j<candidate.guide_count;++j) if (candidate.guides[j].id==exclude) {
-                    snprintf(candidate.guides[j].expression,REF_EXPR_MAX,"%s",candidates[i]);
+                for (size_t j=0;j<geo_guides_count(&candidate.guide_lines);++j) if (geo_guides_values(&candidate.guide_lines)[j].id==exclude) {
+                    if(!app_guide_put(&candidate,&geo_guides_values(&candidate.guide_lines)[j],candidates[i])){legal=false;break;}
                     bool capture=g_reference_capturing; g_reference_capturing=false;
                     legal=world_revalidate(&candidate); g_reference_capturing=capture; break;
                 }

@@ -28,13 +28,13 @@ static void json_parameter_uses(const World *w)
             }
         }geo_json_free(&j);
     }
-    for(int kind=0;kind<2;++kind){size_t n=kind?geo_datums_count(&w->datum_planes):w->guide_count;
-        for(size_t i=0;i<n;++i){const char *expr=kind?app_datum_expression(w,geo_datums_at(&w->datum_planes,i)->id):w->guides[i].expression;uint32_t id=kind?geo_datums_at(&w->datum_planes,i)->id:w->guides[i].id;
+    for(int kind=0;kind<2;++kind){size_t n=kind?geo_datums_count(&w->datum_planes):geo_guides_count(&w->guide_lines);
+        for(size_t i=0;i<n;++i){const char *expr=kind?app_datum_expression(w,geo_datums_at(&w->datum_planes,i)->id):app_guide_expression(w,geo_guides_values(&w->guide_lines)[i].id);uint32_t id=kind?geo_datums_at(&w->datum_planes,i)->id:geo_guides_values(&w->guide_lines)[i].id;
             for(const char *p=expr;(p=strstr(p,"param:"))!=NULL;++p){char token[70];size_t k=0;while(p[k]&&(p[k]==':'||isdigit((unsigned char)p[k])||(k<6))&&k<sizeof token-1){token[k]=p[k];++k;}token[k]=0;ParameterRef r={0};if(!parameter_ref_parse(token,&r))continue;
                 printf("%s{\"parameterId\":%u,\"fieldId\":%u,\"kind\":\"%s\",\"id\":%u,\"label\":",first?"":",",r.parameter_id,r.field_id,kind?"datum":"guide",id);first=false;char label[100];snprintf(label,sizeof label,"%s %u",kind?"基準面":"參考線",id);js_string(label);
                 fputs(",\"canvasTargets\":[",stdout);bool target_first=true;
-                if(!kind)json_parameter_canvas_target(w,w->guides[i].placement_id,&target_first);
-                else for(size_t k=0;k<w->guide_count;++k)if(w->guides[k].source==GUIDE_DATUM&&w->guides[k].datum_id==id)json_parameter_canvas_target(w,w->guides[k].placement_id,&target_first);
+                if(!kind)json_parameter_canvas_target(w,geo_guides_values(&w->guide_lines)[i].placement_id,&target_first);
+                else for(size_t k=0;k<geo_guides_count(&w->guide_lines);++k)if(geo_guides_values(&w->guide_lines)[k].source==GUIDE_DATUM&&geo_guides_values(&w->guide_lines)[k].datum_id==id)json_parameter_canvas_target(w,geo_guides_values(&w->guide_lines)[k].placement_id,&target_first);
                 fputs("]}",stdout);
             }
         }

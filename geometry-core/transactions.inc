@@ -57,7 +57,7 @@ static bool reference_axis_definition_equal(const GridAxisDef *a,const GridAxisD
     if (a->source==GRID_SRC_SERIES || a->source==GRID_SRC_REPEAT)
         return a->start==z->start && a->step==z->step &&
             (a->source==GRID_SRC_REPEAT || a->series_count==z->series_count);
-    return a->panel==z->panel && a->gap==z->gap && a->anchor==z->anchor &&
+    return a->body==z->body && a->gap==z->gap && a->anchor==z->anchor &&
         a->anchor_explicit==z->anchor_explicit;
 }
 
@@ -74,7 +74,7 @@ static bool reference_system_changed(const World *before,const World *after,uint
     const GridSystem *a=world_find_grid_system(before,id),*z=world_find_grid_system(after,id);
     if (!a || !z) return a!=z;
     return a->rule_count!=z->rule_count || a->next_rule_key!=z->next_rule_key ||
-        memcmp(a->rules,z->rules,sizeof a->rules) || strcmp(a->name,z->name) || a->main_along!=z->main_along ||
+        memcmp(a->rules,z->rules,sizeof a->rules) || strcmp(a->name,z->name) || app_grid_system_main_along(before,id)!=app_grid_system_main_along(after,id) ||
         !reference_axis_definition_equal(&a->axis[0],&z->axis[0]) ||
         !reference_axis_definition_equal(&a->axis[1],&z->axis[1]);
 }
@@ -137,8 +137,8 @@ static bool reference_gdi_confirm(HWND window, World *world)
         g_preview.ready=false; return false;
     }
     reference_object_preview(details);
-    for (size_t i=0;i<g_preview.before.guide_count;++i) {
-        uint32_t id=g_preview.before.guides[i].id;
+    for (size_t i=0;i<geo_guides_count(&g_preview.before.guide_lines);++i) {
+        uint32_t id=geo_guides_values(&g_preview.before.guide_lines)[i].id;
         if (!reference_guide_changed(&g_preview.before,&g_preview.after,id)) continue;
         fprintf(details,"guide %u visible: ",id);
         reference_guide_clip_text(&g_preview.before,id,details); fputs(" -> ",details);
@@ -174,8 +174,8 @@ static bool reference_gdi_confirm(HWND window, World *world)
         reference_pose_text(&g_preview.after,j,after,sizeof after);
         n=snprintf(text+used,sizeof text-used,"  %s → %s\n",before,after); used+=(size_t)n;
     }
-    for (size_t i=0;i<g_preview.before.guide_count;++i) {
-        uint32_t id=g_preview.before.guides[i].id; char before[240],after[240];
+    for (size_t i=0;i<geo_guides_count(&g_preview.before.guide_lines);++i) {
+        uint32_t id=geo_guides_values(&g_preview.before.guide_lines)[i].id; char before[240],after[240];
         reference_guide_text(&g_preview.before,id,before,sizeof before);
         reference_guide_text(&g_preview.after,id,after,sizeof after);
         if (!strcmp(before,after)) continue;
@@ -319,7 +319,7 @@ static void reference_system_text(const World *w,uint32_t id,FILE *out)
     const GridSystem *s=world_find_grid_system(w,id);
     if (!s) { fprintf(out,"grid-system %u unavailable",id); return; }
     fprintf(out,"grid-system %u name %s mode %s main-along %s",id,s->name,
-        grid_system_is_infinite(s)?"infinite":"legacy-finite",s->main_along==1?"u":s->main_along==2?"v":"none");
+        grid_system_is_infinite(s)?"infinite":"legacy-finite",app_grid_system_main_along(w,s->id)==1?"u":app_grid_system_main_along(w,s->id)==2?"v":"none");
     for (int axis=0;axis<2;++axis) {
         const GridAxisDef *a=&s->axis[axis]; fprintf(out," %c",axis?'v':'u');
         if (a->source==GRID_SRC_NONE) fputs(" none",out);
@@ -331,7 +331,7 @@ static void reference_system_text(const World *w,uint32_t id,FILE *out)
         else if (a->source==GRID_SRC_REPEAT)
             fprintf(out," repeat %lld %lld",(long long)a->start,(long long)a->step);
         else fprintf(out," %s %lld gap %lld from %lld",a->source==GRID_SRC_REPEAT_PANEL?"repeat-panel":"panel",
-            (long long)a->panel,(long long)a->gap,(long long)a->anchor);
+            (long long)a->body,(long long)a->gap,(long long)a->anchor);
     }
     fprintf(out," rule-next %u",s->next_rule_key);
     for(size_t k=0;k<s->rule_count;++k){
@@ -393,8 +393,8 @@ static void reference_object_preview(FILE *out)
     const World *before=&g_preview.before,*after=&g_preview.after;
     for (int pass=0;pass<2;++pass) {
         const World *w=pass?after:before;
-        for (size_t i=0;i<w->grid_system_count;++i) {
-            uint32_t id=w->grid_systems[i].id;
+        for (size_t i=0;i<geo_grid_systems_count(&w->grid_store);++i) {
+            uint32_t id=(*geo_grid_systems_at(&w->grid_store,i)).id;
             if (pass?world_find_grid_system(before,id)!=NULL:!reference_system_changed(before,after,id)) continue;
             reference_system_text(before,id,out); fputs(" -> ",out); reference_system_text(after,id,out); fputc('\n',out);
         }
@@ -403,8 +403,8 @@ static void reference_object_preview(FILE *out)
             if (pass?world_find_boundary(before,id)!=NULL:!reference_boundary_changed(before,after,id)) continue;
             reference_boundary_text(before,id,out); fputs(" -> ",out); reference_boundary_text(after,id,out); fputc('\n',out);
         }
-        for (size_t i=0;i<w->grid_binding_count;++i) {
-            uint32_t id=w->grid_bindings[i].id;
+        for (size_t i=0;i<geo_grid_bindings_count(&w->grid_store);++i) {
+            uint32_t id=(*geo_grid_bindings_at(&w->grid_store,i)).id;
             if (pass?world_find_grid_binding(before,id)!=NULL:!reference_binding_changed(before,after,id)) continue;
             reference_binding_text(before,id,out); fputs(" -> ",out); reference_binding_text(after,id,out); fputc('\n',out);
         }
@@ -421,14 +421,14 @@ static bool reference_geometry_changed(const World *before,const World *after)
     /* Replay may append independent definitions without editing any earlier
      * geometry. Existing bindings still protect both changes and deletion;
      * interactive creation is separately guarded by binding_edit below. */
-    for (size_t i=0;i<before->grid_binding_count;++i)
-        if (reference_binding_changed(before,after,before->grid_bindings[i].id)) return true;
+    for (size_t i=0;i<geo_grid_bindings_count(&before->grid_store);++i)
+        if (reference_binding_changed(before,after,(*geo_grid_bindings_at(&before->grid_store,i)).id)) return true;
     for (size_t i=0;i<before->grid_count;++i)
         if ((before->grids[i].is_subgrid || before->grids[i].from_system || before->grids[i].from_binding || eng_object_bound(before,0,before->grids[i].id)) && reference_grid_changed(before,after,before->grids[i].id)) return true;
     bool has_child=false;
     for (size_t i=0;i<before->grid_count;++i) if (before->grids[i].is_subgrid) has_child=true;
-    if (has_child) for (size_t i=0;i<before->guide_count;++i)
-        if (reference_guide_changed(before,after,before->guides[i].id)) return true;
+    if (has_child) for (size_t i=0;i<geo_guides_count(&before->guide_lines);++i)
+        if (reference_guide_changed(before,after,geo_guides_values(&before->guide_lines)[i].id)) return true;
     for (size_t i=0;i<before->timber_count;++i) {
         const Timber *t=&before->timbers[i]; if (!t->placed) continue;
         int j=reference_timber_index(after,t->id);
@@ -442,7 +442,7 @@ static bool reference_may_affect(const World *w,char **tokens,int count)
 {
     bool placed=false;
     for (size_t i=0;i<w->timber_count;++i) if (w->timbers[i].placed) placed=true;
-    bool referenced=w->grid_binding_count>0;
+    bool referenced=geo_grid_bindings_count(&w->grid_store)>0;
     for (size_t i=0;i<w->grid_count;++i) if (w->grids[i].is_subgrid || w->grids[i].from_system || w->grids[i].from_binding) referenced=true;
     if ((!placed && !referenced && !w->engineering.binding_count) || !count) return false;
     const char *c=tokens[0];
@@ -467,7 +467,7 @@ static bool parameter_reference_edit(const World *w,char **tokens,int count)
         for(int i=1;i<count;++i)if(strstr(tokens[i],"param:"))return true;
         uint32_t id;if(!parse_u32(tokens[1],&id))return false;
         if(!strcmp(command,"guide") || !strcmp(command,"move")){
-            const GuideLine *g=world_find_guide(w,id);return g && strstr(g->expression,"param:")!=NULL;
+            const GuideLine *g=world_find_guide(w,id);return g && strstr(app_guide_expression(w,g->id),"param:")!=NULL;
         }
         if(!strcmp(command,"datum")){
             const GeoDatum *d=world_find_datum(w,id);return d && strstr(app_datum_expression(w,d->id),"param:")!=NULL;
@@ -523,8 +523,8 @@ static void reference_preview_text(void)
         reference_pose_text(&g_preview.after,j,after,sizeof after);
         fprintf(stderr,"  %s -> %s\n",before,after);
     }
-    for (size_t i=0;i<g_preview.before.guide_count;++i) {
-        uint32_t id=g_preview.before.guides[i].id; char before[240],after[240];
+    for (size_t i=0;i<geo_guides_count(&g_preview.before.guide_lines);++i) {
+        uint32_t id=geo_guides_values(&g_preview.before.guide_lines)[i].id; char before[240],after[240];
         reference_guide_text(&g_preview.before,id,before,sizeof before);
         reference_guide_text(&g_preview.after,id,after,sizeof after);
         if (reference_guide_changed(&g_preview.before,&g_preview.after,id)) {
