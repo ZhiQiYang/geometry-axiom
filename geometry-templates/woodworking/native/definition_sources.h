@@ -2,7 +2,7 @@
  * rebuilt coordinate cache is presented as an authored definition. */
 #ifndef GEOMETRY_WOODWORKING_DEFINITION_SOURCES_H
 #define GEOMETRY_WOODWORKING_DEFINITION_SOURCES_H
-#include "document.h"
+#include "../native/document.h"
 #ifndef GEO_KERNEL_SOURCE_H
 #include "source.h"
 #endif
