@@ -428,6 +428,24 @@ static bool reference_sources_ensure(ReferenceEval *ctx)
     if(!ctx->contact_sources){reference_sources_dispose(ctx);return false;}
     ctx->sources_registered=true;return true;
 }
+/* Complete version identities only after the candidate's ordinary rebuild
+ * has succeeded. Keep unused version fields lazy and retain this exact graph. */
+static bool app_world_candidate_version_inventory(AppWorldCandidate *candidate,ReferenceEval *ctx)
+{
+    if(!candidate||!candidate->control||!ctx||app_candidate_evaluation_state(candidate->control)!=ctx)return false;
+    GeoEvalContext *sources=geo_candidate_sources(app_candidate_core(candidate->control));
+    if(!sources)return false;
+    const EngineeringState *engineering=&candidate->after.wood.engineering;
+    if(ctx->world!=&candidate->after||ctx->sources!=sources||!ctx->sources_borrowed||
+       ctx->use_current_values||!ctx->sources_registered||
+       geo_version_sources_context(ctx->version_sources)!=sources||
+       geo_version_sources_store(ctx->version_sources)!=&candidate->after.geo.version_store||
+       wood_engineering_sources_context(ctx->engineering_sources)!=sources||
+       wood_engineering_sources_state(ctx->engineering_sources)!=engineering)return false;
+    return wood_engineering_sources_definitions(ctx->engineering_sources)&&
+        wood_engineering_sources_metadata(ctx->engineering_sources)&&
+        geo_version_sources_definitions(ctx->version_sources);
+}
 static WoodEngineeringSources *app_engineering_sources(const World *world)
 {
     if(!g_active_app_candidate||world!=&g_active_app_candidate->after)return NULL;
@@ -697,7 +715,13 @@ static bool app_contact_sources_collect(const World *world,uint32_t placement,bo
     ctx->source_failure=true;if(!g_revalidate_error[0])set_revalidate_error("I8: ordered contact source evaluation failed");return false;
 }
 static bool app_reference_sources_valid(const World *world)
-{ReferenceEval *ctx=app_reference_sources_for_world(world);return !ctx||!ctx->source_failure;}
+{
+    ReferenceEval *ctx=app_reference_sources_for_world(world);
+    if(!ctx)return true;
+    if(ctx->source_failure)return false;
+    if(!g_active_app_candidate||world!=&g_active_app_candidate->after)return true;
+    return app_world_candidate_version_inventory(g_active_app_candidate,ctx);
+}
 static bool reference_sp_bind(ReferenceEval *ctx,WoodSectionProfileContext *profiles)
 {
     if(!ctx||!ctx->section_profile_sources)return false;

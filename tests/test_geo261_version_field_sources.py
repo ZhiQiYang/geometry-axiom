@@ -98,7 +98,37 @@ class VersionFieldSources(unittest.TestCase):
         self.case("archive")
 
     def test_real_product_preview_confirm_and_undo_retain_version_provider_candidate(self):
-        self.case("product", product=True)
+        self.product_inventory_control()
+
+    def product_inventory_control(self):
+        build = native()
+        source = ROOT / "geometry-app/native/reference_sources.inc"
+        harness = ROOT / "tests/geo261_version_field_sources_harness.c"
+        originals = [ROOT / "current_geometry.c", ROOT / "geometry-core/references.inc", source,
+                     ROOT / "geometry-web/web_bridge.c", harness]
+        saved = {path: path.read_bytes() for path in originals}
+        texts = {path: data.replace(b"\r\n", b"\n").decode("utf-8") for path, data in saved.items()}
+        before = "return app_world_candidate_version_inventory(g_active_app_candidate,ctx);"
+        self.assertEqual(1, texts[source].count(before), "Product inventory control must hit exactly once")
+        texts[source] = texts[source].replace(before, "return true;")
+        copies = {path.resolve(): build.work / ("version-product-inventory-" + path.name) for path in originals}
+        try:
+            for original in originals:
+                def include(match):
+                    path = (original.parent / match.group(1)).resolve()
+                    return '#include "' + str(copies.get(path, path)).replace("\\", "/") + '"'
+                copies[original.resolve()].write_text(
+                    re.sub(r'^#include "([^"]+)"', include, texts[original], flags=re.MULTILINE), encoding="utf-8")
+            client = build.compile(copies[harness.resolve()], "version-product-inventory-control",
+                ["GEO261_VERSION_FIELD_PRODUCT=1", "GEOMETRY_KERNEL_EXTERNAL=1", "GEOMETRY_WOODWORKING_EXTERNAL=1",
+                 "GEOMETRY_HOST_HISTORY_EXTERNAL=1", "GEOMETRY_HOST_CANDIDATE_EXTERNAL=1"])
+            exe = build.link("version-product-inventory-control", [client, *build.product_objects()])
+            self.case("product", product=True)
+            self.case("product", exe=exe, product=True, failure="product-complete-version-and-metadata-inventory")
+            self.case("product", product=True)
+        finally:
+            for original, data in saved.items():
+                self.assertEqual(data, original.read_bytes(), "Inventory control changed repository source: " + str(original))
 
     def control(self, module, before, after, case, marker, *, product=False):
         build = native()
