@@ -4,6 +4,7 @@
 #include <stdarg.h>
 static bool engineering_serializable(const World *w);
 static char g_engineering_error[256];
+static WoodEngineeringSources *app_engineering_sources(const World *);
 static bool app_eng_placement(void *user,uint32_t id,bool *derived)
 {const PlacementSurface *p=world_find_placement((World *)user,id);if(derived)*derived=p&&p->derived_fill_id;return p!=NULL;}
 static bool app_eng_target(void *user,const EngTarget *t,WoodEngineeringTargetInfo *out)
@@ -23,7 +24,7 @@ static void app_eng_write(void *user,const EngTarget *t,GeoCoord value)
 static bool app_eng_serializable(void *user,char *error,size_t cap)
 {(void)error;(void)cap;return engineering_serializable((World *)user);}
 static WoodEngineeringContext app_eng_context(const World *world)
-{World *w=(World *)world;WoodEngineeringContext c={&w->engineering,w,g_engineering_error,sizeof g_engineering_error,app_eng_placement,app_eng_target,app_eng_named,app_eng_parameter,app_eng_owned,app_eng_write,app_eng_serializable};c.versions=app_eng_version_store(w);return c;}
+{World *w=(World *)world;WoodEngineeringContext c={&w->engineering,w,g_engineering_error,sizeof g_engineering_error,app_eng_placement,app_eng_target,app_eng_named,app_eng_parameter,app_eng_owned,app_eng_write,app_eng_serializable};c.versions=app_eng_version_store(w);WoodEngineeringSources *sources=app_engineering_sources(w);if(sources)wood_engineering_sources_bind(sources,&c);return c;}
 static bool eng_fail(const char *text)
 {WoodEngineeringContext c={0};c.error=g_engineering_error;c.error_capacity=sizeof g_engineering_error;return wood_eng_fail(&c,text);}
 static bool eng_id(const char *s)
@@ -126,7 +127,7 @@ static bool eng_timber_content(const World *w,const Timber *t,EngBuffer *b)
 static bool engineering_serializable(const World *w)
 {
     EngBuffer b;
-    for(size_t i=0;i<w->grid_count;++i)if(eng_object_bound(w,0,w->grids[i].id)&&!eng_grid_content(w,&w->grids[i],&b))return eng_fail("I10: bound grid definition exceeds scene record capacity");
+    for(size_t i=0;i<w->grid_applications.count;++i)if(eng_object_bound(w,0,w->grid_applications.items[i].id)&&!eng_grid_content(w,&w->grid_applications.items[i],&b))return eng_fail("I10: bound grid definition exceeds scene record capacity");
     for(size_t i=0;i<w->timber_count;++i)if(eng_object_bound(w,1,w->timbers[i].id)&&!eng_timber_content(w,&w->timbers[i],&b))return eng_fail("I10: bound timber definition exceeds scene record capacity");
     return true;
 }

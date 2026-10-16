@@ -55,7 +55,7 @@ static void json_engineering_state(const World *w,bool geometry)
     for(size_t i=0;i<geo_parameters_card_count(&w->parameters);++i){if(i)putchar(',');parameter_json_card(w,&geo_parameters_cards(&w->parameters)[i],stdout,true);}putchar(']');
     fputs(",\"assembly\":",stdout);json_assembly_state(w,false);
     fputs(",\"sectionProfiles\":",stdout);json_section_profile_state(w);
-    if(geometry){fputs(",\"geometry\":{\"grids\":[",stdout);for(size_t i=0;i<w->grid_count;++i){if(i)putchar(',');json_reference_grid(w,&w->grids[i]);}
+    if(geometry){fputs(",\"geometry\":{\"grids\":[",stdout);for(size_t i=0;i<w->grid_applications.count;++i){if(i)putchar(',');json_reference_grid(w,&w->grid_applications.items[i]);}
         fputs("],\"gridSystems\":[",stdout);for(size_t i=0;i<geo_grid_systems_count(&w->grid_store);++i){if(i)putchar(',');json_grid_system(w,geo_grid_systems_at(&w->grid_store,i));}
         fputs("],\"datums\":[",stdout);for(size_t i=0;i<geo_datums_count(&w->datum_planes);++i){const GeoDatum *d=geo_datums_at(&w->datum_planes,i);printf("%s{\"id\":%u,\"position\":%lld,\"expression\":",i?",":"",d->id,(long long)d->position);js_string(app_datum_expression(w,d->id));putchar('}');}
         fputs("],\"guides\":[",stdout);for(size_t i=0;i<geo_guides_count(&w->guide_lines);++i){if(i)putchar(',');json_reference_guide(w,i);}

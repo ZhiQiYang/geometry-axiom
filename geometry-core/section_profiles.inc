@@ -2,25 +2,32 @@
  * validation and placement; callbacks observe this same candidate World. */
 #include "../geometry-templates/woodworking/native/section_profile.h"
 #define sp_panel_spec wood_sp_panel_spec
+static bool app_section_profile_sources_bind(const World *,WoodSectionProfileContext *);
 static bool sp_error(const char *format,...)
 {
     va_list args;va_start(args,format);vsnprintf(g_engineering_error,sizeof g_engineering_error,format,args);va_end(args);
     return false;
 }
-static bool app_sp_resolve_dimension(void *user,const EngDimensionSource *source,const EngTarget *target,Coord *out)
+static bool app_sp_resolve_dimension_sources(World *w,GeoParameterSources *parameters,WoodEngineeringSources *engineering_sources,const EngDimensionSource *source,const EngTarget *target,Coord *out)
 {
-    World *w=(World *)user;
     if(source->kind==ENG_PARAMETER){
         int at=parameter_field_index(w,source->parameter.parameter_id,source->parameter.field_id);
         if(at<0)return sp_error("I38 MISSING: parameter %u field %u",source->parameter.parameter_id,source->parameter.field_id);
         GeoParameterError issue;
-        if(!geo_parameters_evaluate_field(&w->parameters,source->parameter,&issue)){
+        GeoQuantity value;
+        bool evaluated=parameters?geo_parameter_sources_value(parameters,source->parameter,&value,&issue):
+            geo_parameters_evaluate_field(&w->parameters,source->parameter,&issue);
+        if(!evaluated){
             if(issue.status==GEO_PARAMETER_MEMORY)return sp_error("I32 CAPACITY: parameter evaluation memory");
             parameter_kernel_error(w,&issue);return sp_error("%s",g_parameter_error);
         }
     }
-    return eng_resolve(w,source,target,UINT32_MAX,0,out,NULL,0);
+    WoodEngineeringContext engineering=app_eng_context(w);
+    if(engineering_sources)wood_engineering_sources_bind(engineering_sources,&engineering);
+    return wood_eng_resolve(&engineering,source,target,UINT32_MAX,0,out,NULL,0);
 }
+static bool app_sp_resolve_dimension(void *user,const EngDimensionSource *source,const EngTarget *target,Coord *out)
+{return app_sp_resolve_dimension_sources((World *)user,NULL,NULL,source,target,out);}
 
 static bool app_sp_live_host(void *user,uint32_t id,GeoFrame *frame,WoodBoundaryRegion *region,bool *derived)
 {
@@ -32,7 +39,7 @@ static bool app_sp_live_host(void *user,uint32_t id,GeoFrame *frame,WoodBoundary
     *frame=p->frame;*region=*placement_effective_boundary(p,b,region);return true;
 }
 static WoodSectionProfileContext app_sp_context(const World *world)
-{World *w=(World *)world;WoodSectionProfileContext c={&w->section_profiles,app_eng_context(w),w,g_engineering_error,sizeof g_engineering_error,app_sp_resolve_dimension,app_sp_live_host};return c;}
+{World *w=(World *)world;WoodSectionProfileContext c={&w->section_profiles,app_eng_context(w),w,g_engineering_error,sizeof g_engineering_error,app_sp_resolve_dimension,app_sp_live_host};app_section_profile_sources_bind(w,&c);return c;}
 static bool sp_used(const World *w)
 {WoodSectionProfileContext c=app_sp_context(w);return wood_sp_used(&c);}
 static SectionProfile *sp_profile(World *w,uint32_t id)

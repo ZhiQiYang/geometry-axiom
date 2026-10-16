@@ -1,6 +1,7 @@
 /* H scene codecs and same-candidate facts for W finish/fill policy. */
 #include "../geometry-templates/woodworking/native/finish.h"
 static FsDiagnosticKind g_fs_diagnostic=FS_DIAGNOSTIC_INVALID;
+static bool app_finish_sources_bind(const World *,WoodFinishContext *);
 static bool pf_rebuild(const World *);
 static bool pf_operation(World *,GeoJson *,int,bool);
 static void pf_dump(const World *,FILE *);
@@ -48,7 +49,7 @@ static WoodFinishContext app_fs_context(const World *world)
     c.state=&w->finish_surfaces;c.engineering=app_eng_context(w);c.user=w;
     c.boundary=app_fs_boundary;c.obstacle_box=app_fs_obstacle_box;
     c.parameter_coord=app_fs_parameter_coord;c.parameter_value=app_fs_parameter_value;c.parameter_error=g_parameter_error;
-    c.engineering_operation=app_fs_engineering_operation;c.derived_operation=app_fs_derived_operation;return c;
+    c.engineering_operation=app_fs_engineering_operation;c.derived_operation=app_fs_derived_operation;app_finish_sources_bind(w,&c);return c;
 }
 static bool fs_name_check(const unsigned char *name,size_t n)
 {WoodFinishContext c=app_fs_error_context();return wood_fs_name_check(&c,name,n);}

@@ -1,6 +1,8 @@
 /* H supplies geometry and reference facts from exactly this candidate. */
 static bool app_grid_coordinate(void *,GeoParameterRef,GeoCoord *);
 static bool app_grid_vertex(void *,uint32_t,uint32_t,GeoPoint2 *);
+static WoodEngineeringContext app_eng_context(const World *);
+static bool app_grid_sources_bind(const World *,WoodGridContext *);
 static bool app_grid_host(void *user,uint32_t id,WoodGridHost *out)
 {
     const World *w=(const World *)user;PlacementSurface p;SpaceBoundarySurface b;
@@ -23,7 +25,8 @@ static WoodGridContext app_grid_context(const World *world)
 {
     World *w=(World *)world;WoodGridContext c={0};
     c.state=&w->grid_applications;c.sources=&w->grid_store;c.user=w;
-    c.engineering.state=&w->engineering;c.engineering.user=w;
+    c.engineering=app_eng_context(world);
     c.host=app_grid_host;c.coordinate=app_grid_coordinate;c.vertex=app_grid_vertex;
-    c.reference=app_grid_reference;c.parameter_error=g_parameter_error;return c;
+    c.reference=app_grid_reference;c.parameter_error=g_parameter_error;
+    app_grid_sources_bind(world,&c);return c;
 }

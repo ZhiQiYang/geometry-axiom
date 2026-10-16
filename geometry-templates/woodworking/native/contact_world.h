@@ -28,4 +28,9 @@ size_t wood_contact_collect_stops(const WoodContactWorld *,bool,const WoodMember
 bool wood_contact_boundary_interval(const WoodBoundaryRegion *,bool,GeoCoord,GeoCoord,GeoCoord,GeoCoord,GeoCoord *,GeoCoord *);
 bool wood_contact_owner_extension(const WoodContactWorld *,const WoodMember *,GeoCoord,GeoCoord);
 bool wood_contact_end_faces(const WoodContactWorld *,const WoodMember *,bool,GeoCoord,GeoCoord,GeoCoord,GeoCoord,char *,size_t);
+/* The optional resolver runs at the original collection point, after span
+ * extension checks. A rejected source is not treated as an empty face list. */
+typedef bool (*WoodContactStopResolver)(void *,bool,const WoodMember *,WoodStopFace *,size_t,size_t *);
+bool wood_contact_end_faces_with_sources(const WoodContactWorld *,const WoodMember *,bool,GeoCoord,GeoCoord,GeoCoord,GeoCoord,
+    WoodContactStopResolver,void *,char *,size_t);
 #endif

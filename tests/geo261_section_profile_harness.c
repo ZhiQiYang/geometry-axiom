@@ -235,7 +235,8 @@ static int runs(void)
     REQUIRE(!r->placed&&r->resolved&&r->length==2400&&r->placement_resolved&&point_is(wood_sp_point(r,2,3,2400),2,3,2400),"run-unplaced-local");
     REQUIRE(run_record(1,1,"null")&&rebuild()&&r->length==1,"run-minimum-length");
     REQUIRE(run_record(1,0,"null")&&!rebuild()&&!r->length_resolved&&!r->resolved&&strstr(r->length_error,"I47: I35: effective dimension violates"),"run-zero-refused");
-    REQUIRE(run_record(1,-1,"null")&&!rebuild(),"run-negative-refused");
+    ProfileRun before_negative;memcpy(&before_negative,r,sizeof before_negative);
+    REQUIRE(!run_record(1,-1,"null")&&!strcmp(error,"I35: literal dimension must be integer mm in D1 range")&&!memcmp(r,&before_negative,sizeof *r),"run-negative-refused");
     REQUIRE(run_record(1,GEO_COORD_LIMIT,"null")&&rebuild()&&r->length==GEO_COORD_LIMIT,"run-upper-length");
     REQUIRE(!run_record(1,GEO_COORD_LIMIT+1,"null"),"run-input-range");
     char place[256];snprintf(place,sizeof place,"{\"kind\":\"advanced\",\"origin\":[%lld,0,0],\"N\":\"+X\",\"V\":\"+Y\"}",(long long)GEO_COORD_LIMIT-50);

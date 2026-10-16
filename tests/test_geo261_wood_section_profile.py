@@ -36,7 +36,7 @@ class SectionProfileBoundary(unittest.TestCase):
 
     def test_actual_host_delegates_authoring_geometry_placement_and_conversion(self):
         source = (ROOT / "geometry-core/section_profiles.inc").read_text(encoding="utf-8")
-        names = ("sp_used", "sp_profile", "sp_member", "sp_run", "sp_coord", "sp_axis",
+        names = ("sp_used", "sp_profile", "sp_member", "sp_run", "sp_coord",
                  "sp_put_profile", "sp_put_member", "sp_put_run", "sp_point", "sp_outside_regions",
                  "sp_intersection", "sp_rebuild")
         for name in names:
@@ -48,7 +48,8 @@ class SectionProfileBoundary(unittest.TestCase):
         for name in ("begin_conversion", "host_json", "host", "conversion_fields"):
             self.assertIn("wood_sp_" + name + "(", conversion)
         self.assertIn("geo_parameters_evaluate_field(&w->parameters,source->parameter", source)
-        self.assertIn("return eng_resolve(w,source,target,UINT32_MAX,0,out,NULL,0)", source)
+        self.assertIn("geo_parameter_sources_value(parameters,source->parameter,&value,&issue)", source)
+        self.assertIn("return wood_eng_resolve(&engineering,source,target,UINT32_MAX,0,out,NULL,0)", source)
         self.assertIn("geo_loop_rect_complement(&view,r,out,SP_OUTSIDE_MAX,&count)",
             (MODULE / "section_profile.c").read_text(encoding="utf-8"))
 
@@ -67,7 +68,7 @@ CONTROLS = (
     ("conversion-range", "section_profile", "range=geo_coord_in_range(p)&&geo_coord_in_range(q)&&wood_sp_region_point(region,(GeoPoint2){p,q})", "range=true", "conversion", "conversion-hole-capacity"),
     ("conversion-up", "section_profile", "bool legal_up=geo_vector_dot(up,r->frame.normal)==0&&geo_vector_dot(up,up)==1", "bool legal_up=true", "conversion", "conversion-up"),
     ("first-diagnostic", "section_profile", "if(!first[0])snprintf(first,cap", "if(true)snprintf(first,cap", "diagnostics", "diagnostics-first-error"),
-    ("source-cache", "section_profile", "if(!dimensions)continue;", "if(false)continue;", "diagnostics", "diagnostics-source-cache"),
+    ("source-cache", "section_profile", "if(!dimensions)return;", "if(false)return;", "diagnostics", "diagnostics-source-cache"),
     ("run-range", "section_profile", "r->resolved=p&&r->length_resolved&&r->placement_resolved&&!r->range_error;", "r->resolved=p&&r->length_resolved&&r->placement_resolved;", "runs", "run-range-cache"),
     ("profile-capacity", "section_profile", "w->state->profile_count==SP_PROFILE_MAX", "w->state->profile_count==SP_PROFILE_MAX-1", "capacity", "capacity-profile-full"),
     ("remove-tail", "section_profile", "memset((unsigned char*)base+*count*bytes,0,bytes);", "(void)bytes;", "capacity", "capacity-tail-zero"),

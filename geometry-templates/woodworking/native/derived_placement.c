@@ -47,7 +47,7 @@ typedef struct {GeoPoint2 a,b;WoodEdgeFixity fixity;char name[32];} WoodDpSource
 #define WOOD_DP_SOURCE_MAX ((GEO_REGION_MAX_HOLES+1)*GEO_LOOP_MAX_VERTICES+4*FS_OBSTACLE_MAX)
 static size_t wood_dp_sources(const WoodDerivedContext *w,const WoodFinishLayout *d,WoodDpSource *out)
 {
-    size_t n=0;WoodBoundaryRegion source;w->finish.boundary(w->finish.user,d->finish->boundary_id,&source);const WoodBoundaryRegion *f=&source;int side=d->finish->side;
+    size_t n=0;WoodBoundaryRegion source;wood_fs_boundary(&w->finish,d->finish->boundary_id,&source);const WoodBoundaryRegion *f=&source;int side=d->finish->side;
     for(size_t h=0;h<=f->hole_count;++h){const WoodBoundaryLoop *l=h?&f->holes[h-1]:&f->outline;
         for(size_t e=0;e<l->count;++e){WoodDpSource *s=&out[n++];s->a=l->v[e];s->b=l->v[(e+1)%l->count];s->a.v*=side;s->b.v*=side;s->fixity=l->fixity[e];
             if(h)snprintf(s->name,sizeof s->name,"h%zue%zu",h-1,e);else snprintf(s->name,sizeof s->name,"e%zu",e);}}
@@ -91,18 +91,28 @@ static bool wood_dp_values(const WoodDerivedContext *w,const WoodDerivedValue *p
     for(uint32_t i=0;i<d->finish->obstacle_count;++i)d->cuts[i]=d->obstacles[i].relation==FS_INTERIOR&&d->obstacles[i].q[0]<d->t+p->derived_h&&d->obstacles[i].q[1]>d->t;
     return true;
 }
-bool wood_dp_rebuild(WoodDerivedContext *w)
+bool wood_dp_height_direct(const WoodDerivedContext *w,const DerivedPlacement *def,GeoCoord *out)
 {
-    for(uint64_t i=0;i<w->finish.state->host_count;++i){const DerivedPlacement *def=&w->finish.state->hosts[i];WoodDerivedValue value;
-        WoodDerivedValue *p=w->placement_read(w->finish.user,def->id,&value)?&value:NULL;
-        if(!p||!p->derived_fill_id)return wood_fs_error(&w->finish,"D4: derived placement variant or identity missing");
-        GeoCoord h;EngTarget target={1,def->id,0,1};if(!wood_eng_resolve(&w->finish.engineering,&def->h,&target,def->id,0,&h,NULL,0))return false;
+    EngTarget target={1,def->id,0,1};
+    return wood_eng_resolve((WoodEngineeringContext *)&w->finish.engineering,&def->h,&target,def->id,0,out,NULL,0);
+}
+bool wood_dp_frame_direct(const WoodDerivedContext *w,const WoodFinishLayout *d,GeoFrame *out)
+{
+    GeoFrame frame=d->frame;frame.axis_v=(d->finish->side>0?frame.axis_v:geo_vector_negate(frame.axis_v));frame.normal=(d->finish->side>0?frame.normal:geo_vector_negate(frame.normal));
+    frame.origin.x+=d->t*frame.normal.x;frame.origin.y+=d->t*frame.normal.y;frame.origin.z+=d->t*frame.normal.z;
+    if(!geo_coord_in_range(frame.origin.x)||!geo_coord_in_range(frame.origin.y)||!geo_coord_in_range(frame.origin.z))return wood_fs_capacity_error(&w->finish,"D1/I33 CAPACITY: R41 back frame exceeds D1");
+    *out=frame;return true;
+}
+bool wood_dp_value_direct(const WoodDerivedContext *w,const DerivedPlacement *def,WoodDerivedValue *p)
+{
+        if(!w->placement_read(w->finish.user,def->id,p)||!p->derived_fill_id)return wood_fs_error(&w->finish,"D4: derived placement variant or identity missing");
+        GeoCoord h;if(w->evaluation&&w->evaluation->height){if(!w->evaluation->height(w->evaluation->user,def,&h))return false;}
+        else if(!wood_dp_height_direct(w,def,&h))return false;
         memset(p,0,sizeof *p);p->id=def->id;p->derived_fill_id=def->fill_id;p->derived_h=h;
         WoodFinishLayout d;if(!wood_dp_values(w,p,&d))return false;
-        p->frame=d.finish->frame;p->frame.axis_v=(d.finish->side>0?p->frame.axis_v:geo_vector_negate(p->frame.axis_v));p->frame.normal=(d.finish->side>0?p->frame.normal:geo_vector_negate(p->frame.normal));
-        p->frame.origin.x+=d.t*p->frame.normal.x;p->frame.origin.y+=d.t*p->frame.normal.y;p->frame.origin.z+=d.t*p->frame.normal.z;
-        if(!geo_coord_in_range(p->frame.origin.x)||!geo_coord_in_range(p->frame.origin.y)||!geo_coord_in_range(p->frame.origin.z))return wood_fs_capacity_error(&w->finish,"D1/I33 CAPACITY: R41 back frame exceeds D1");
-        WoodBoundaryRegion source;w->finish.boundary(w->finish.user,d.finish->boundary_id,&source);const WoodBoundaryRegion *f=&source;GeoRect2 bounds;GeoLoop2View outline={f->outline.v,f->outline.count};geo_loop_bbox(&outline,&bounds.min_u,&bounds.min_v,&bounds.max_u,&bounds.max_v);
+        if(w->evaluation&&w->evaluation->frame){if(!w->evaluation->frame(w->evaluation->user,def,&d,&p->frame))return false;}
+        else if(!wood_dp_frame_direct(w,&d,&p->frame))return false;
+        WoodBoundaryRegion source;wood_fs_boundary(&w->finish,d.finish->boundary_id,&source);const WoodBoundaryRegion *f=&source;GeoRect2 bounds;GeoLoop2View outline={f->outline.v,f->outline.count};geo_loop_bbox(&outline,&bounds.min_u,&bounds.min_v,&bounds.max_u,&bounds.max_v);
         d.layout.tiles=calloc(1,sizeof *d.layout.tiles);if(!d.layout.tiles)return wood_fs_capacity_error(&w->finish,"I33 CAPACITY: R41 workspace unavailable");d.layout.count=1;d.keep_collinear=true;
         WoodPanelTile *tile=d.layout.tiles;tile->body[0]=bounds.min_u;tile->body[1]=bounds.min_v;tile->body[2]=bounds.max_u;tile->body[3]=bounds.max_v;
         bool ok=wood_pf_clip(&w->finish,&d,tile);WoodDpSource *sources=calloc(WOOD_DP_SOURCE_MAX,sizeof *sources);if(!sources)ok=wood_fs_capacity_error(&w->finish,"I33 CAPACITY: R41 source workspace unavailable");size_t ns=ok?wood_dp_sources(w,&d,sources):0;
@@ -122,7 +132,14 @@ bool wood_dp_rebuild(WoodDerivedContext *w)
          * represented; readers must never silently substitute a truncated key. */
         for(size_t c=0;c<p->component_count;++c){const WoodBoundaryRegion *b=&p->components[c];for(size_t k=0;k<=b->hole_count;++k){const WoodBoundaryLoop *l=k?&b->holes[k-1]:&b->outline;
             for(size_t e=0;e<l->count;++e){char key[512];if(!wood_dp_edge_key(w,p,c,k?(int)k-1:-1,e,key,sizeof key))return false;}}}
-        if(!w->placement_write(w->finish.user,p))return false;
+    return true;
+}
+bool wood_dp_rebuild(WoodDerivedContext *w)
+{
+    for(uint64_t i=0;i<w->finish.state->host_count;++i){const DerivedPlacement *def=&w->finish.state->hosts[i];WoodDerivedValue value;
+        if(w->evaluation&&w->evaluation->value){if(!w->evaluation->value(w->evaluation->user,def,&value))return false;}
+        else if(!wood_dp_value_direct(w,def,&value))return false;
+        if(!w->placement_write(w->finish.user,&value))return false;
     }
     return true;
 }

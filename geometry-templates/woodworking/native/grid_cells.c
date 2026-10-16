@@ -204,14 +204,14 @@ invalid:
     return false;
 }
 
-bool wood_grid_axis_lines_in(const WoodGridApplication *grids,size_t count,const WoodGridApplication *grid,
-    const WoodGridHost *p,int axis,GeoCoord out[WOOD_GRID_MAX_LINES],size_t *out_count,char *err,size_t cap)
+static bool wood_grid_axis_lines_in_resolved(const WoodGridApplication *grids,size_t count,const WoodGridApplication *grid,
+    const WoodGridHost *p,int axis,GeoCoord out[WOOD_GRID_MAX_LINES],size_t *out_count,char *err,size_t cap,WoodGridCellResolver resolve,void *user)
 {
     if (!grid || axis<0 || axis>1 || !out || !out_count) return false;
     if (!grid->is_subgrid) return wood_grid_axis_lines(grid,p,axis,out,out_count,err,cap);
     *out_count=0;
     GeoRect2 cell;
-    if (!wood_grid_cell_bounds(grids,count,grid,p,&cell,err,cap)) return false;
+    if (resolve?!resolve(user,grid,p,&cell,err,cap):!wood_grid_cell_bounds(grids,count,grid,p,&cell,err,cap)) return false;
     GeoCoord lo=axis==0?cell.min_u:cell.min_v, hi=axis==0?cell.max_u:cell.max_v;
     unsigned n=grid->divisions[axis];
     if (geo_interval_subdivide(lo,hi,n,out,WOOD_GRID_MAX_LINES,out_count)!=GEO_GRID_OK) {
@@ -220,9 +220,15 @@ bool wood_grid_axis_lines_in(const WoodGridApplication *grids,size_t count,const
     }
     return true;
 }
+bool wood_grid_axis_lines_in(const WoodGridApplication *grids,size_t count,const WoodGridApplication *grid,
+    const WoodGridHost *p,int axis,GeoCoord out[WOOD_GRID_MAX_LINES],size_t *out_count,char *err,size_t cap)
+{return wood_grid_axis_lines_in_resolved(grids,count,grid,p,axis,out,out_count,err,cap,NULL,NULL);}
 
 bool wood_grid_line_coord_in(const WoodGridApplication *grids,size_t count,const WoodGridApplication *grid,
     const WoodGridHost *p,int axis,int64_t index,GeoCoord *out,size_t *total,char *err,size_t cap)
+{return wood_grid_line_coord_in_resolved(grids,count,grid,p,axis,index,out,total,err,cap,NULL,NULL);}
+bool wood_grid_line_coord_in_resolved(const WoodGridApplication *grids,size_t count,const WoodGridApplication *grid,
+    const WoodGridHost *p,int axis,int64_t index,GeoCoord *out,size_t *total,char *err,size_t cap,WoodGridCellResolver resolve,void *user)
 {
     GeoCoord coords[WOOD_GRID_MAX_LINES]; size_t n=0;
     if (total) *total=0;
@@ -233,7 +239,7 @@ bool wood_grid_line_coord_in(const WoodGridApplication *grids,size_t count,const
         }
         return true;
     }
-    if (!wood_grid_axis_lines_in(grids,count,grid,p,axis,coords,&n,err,cap)) return false;
+    if (!wood_grid_axis_lines_in_resolved(grids,count,grid,p,axis,coords,&n,err,cap,resolve,user)) return false;
     if (total) *total=n;
     if (index<0 || (uint64_t)index>=n) {
         if (err) snprintf(err,cap,"I23: 網格 %u %c 軸索引 %lld 超出範圍（本軸共 %u 條）",grid->id,axis?'v':'u',(long long)index,(unsigned)n);
@@ -247,19 +253,23 @@ bool wood_grid_line_coord_in(const WoodGridApplication *grids,size_t count,const
 bool wood_grid_anchor_line_coord(const WoodGridApplication *grids,size_t count,const WoodGridApplication *grid,
     const WoodGridHost *p,int axis,int64_t index,
     bool has_band,int64_t band,GeoCoord *out,char *err,size_t cap)
+{return wood_grid_anchor_line_coord_resolved(grids,count,grid,p,axis,index,has_band,band,out,err,cap,NULL,NULL);}
+bool wood_grid_anchor_line_coord_resolved(const WoodGridApplication *grids,size_t count,const WoodGridApplication *grid,
+    const WoodGridHost *p,int axis,int64_t index,
+    bool has_band,int64_t band,GeoCoord *out,char *err,size_t cap,WoodGridCellResolver resolve,void *user)
 {
     bool staggered;
     if(!grid || axis<0 || axis>1) return false;
     if(grid->is_subgrid || !grid->from_binding){
         if(has_band){ if(err) snprintf(err,cap,"I24: 沒有相位差的格線不能寫 band"); return false; }
-        return wood_grid_line_coord_in(grids,count,grid,p,axis,index,out,NULL,err,cap);
+        return wood_grid_line_coord_in_resolved(grids,count,grid,p,axis,index,out,NULL,err,cap,resolve,user);
     }
     staggered=grid->axis[axis].stagger_set;
     if(staggered!=has_band){
         if(err) snprintf(err,cap,staggered?"I24: 有相位差的格線必須寫 band，不默認第 0 格":"I24: 沒有相位差的格線不能寫 band");
         return false;
     }
-    if(!wood_grid_line_coord_in(grids,count,grid,p,axis,index,out,NULL,err,cap)) return false;
+    if(!wood_grid_line_coord_in_resolved(grids,count,grid,p,axis,index,out,NULL,err,cap,resolve,user)) return false;
     if(!staggered) return true;
     if(!wood_grid_lattice_coord_band(grid,axis,index,band,out)){
         if(err) snprintf(err,cap,"D10b/D1: 錯開後的格線座標超出可表達範圍");

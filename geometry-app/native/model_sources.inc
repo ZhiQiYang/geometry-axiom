@@ -7,6 +7,8 @@ struct ModelSourceItem {
     const char *kind,*slot,*name,*quantity_type;
     uint32_t id,member_id;
     bool has_member,local;
+    const char *owner_namespace;
+    unsigned char owner_key[5];
     GeoSourceDescriptor descriptor;
     GeoSourceValue value;
     GeoRegionView *regions;
@@ -50,6 +52,37 @@ static bool model_source_evaluate(void *opaque,GeoEvalContext *ctx,const GeoSour
     if(!strcmp(item->kind,"timber")){
         uint32_t id=item->id;
         return geo_eval_source(ctx,(GeoSourceRef){APP_SOURCE_MEMBER_POSE,&id,sizeof id},GEO_DEPENDENCY_VALUE_REQUIRED,out)==GEO_SOURCE_OK;
+    }
+    if(!strcmp(item->kind,"spec"))
+        return geo_eval_source(ctx,(GeoSourceRef){APP_SOURCE_NAMED,item->name,strlen(item->name)},GEO_DEPENDENCY_VALUE_REQUIRED,out)==GEO_SOURCE_OK;
+    if(!strcmp(item->kind,"parameter")){
+        uint32_t ids[]={item->id,item->member_id};
+        return geo_eval_source(ctx,(GeoSourceRef){APP_SOURCE_PARAMETER,ids,sizeof ids},GEO_DEPENDENCY_VALUE_REQUIRED,out)==GEO_SOURCE_OK;
+    }
+    if(!strcmp(item->kind,"placement")){
+        GeoPlacementSourceKey key;GeoPlacementSourceKind kind=!strcmp(item->slot,"placement.frame")?GEO_PLACEMENT_SOURCE_FRAME:GEO_PLACEMENT_SOURCE_REGIONS;
+        return geo_eval_source(ctx,geo_placement_source_ref(APP_SOURCE_PLACEMENT,kind,item->id,&key),GEO_DEPENDENCY_VALUE_REQUIRED,out)==GEO_SOURCE_OK;
+    }
+    if(!strcmp(item->kind,"column")||!strcmp(item->kind,"beam")){
+        WoodFinishSourceKey key;WoodFinishSourceKind kind=!strcmp(item->kind,"column")?WOOD_FINISH_SOURCE_COLUMN_BOX:WOOD_FINISH_SOURCE_BEAM_BOX;
+        return geo_eval_source(ctx,wood_finish_source_ref(APP_SOURCE_FINISH,kind,item->id,&key),GEO_DEPENDENCY_VALUE_REQUIRED,out)==GEO_SOURCE_OK;
+    }
+    if(!strcmp(item->kind,"profile-run")){
+        WoodSectionProfileSourceKind kind;uint32_t id=item->id;
+        if(!strcmp(item->slot,"profile.length"))kind=WOOD_SP_SOURCE_RUN_LENGTH;
+        else if(!strcmp(item->slot,"profile.region")){
+            kind=item->has_member?WOOD_SP_SOURCE_MEMBER_REGION:WOOD_SP_SOURCE_RUN_REGION;
+            if(item->has_member)id=item->member_id;
+        }else kind=WOOD_SP_SOURCE_RUN_FRAME;
+        WoodSectionProfileSourceKey key;
+        GeoSourceRef source=wood_sp_source_ref(APP_SOURCE_SECTION_PROFILE,kind,id,&key);
+        if(kind==WOOD_SP_SOURCE_RUN_FRAME&&item->local){
+            /* An unplaced run has a local display frame, but no world frame.
+             * Keep its unevaluated placement identity in the real graph. */
+            if(geo_eval_depend(ctx,source,GEO_DEPENDENCY_DEFINITION_REQUIRED)!=GEO_SOURCE_OK)return false;
+            *out=item->value;return true;
+        }
+        return geo_eval_source(ctx,source,GEO_DEPENDENCY_VALUE_REQUIRED,out)==GEO_SOURCE_OK;
     }
     *out=item->value;return true;
 }
@@ -112,6 +145,23 @@ static bool model_sources_build(ModelSources *state,World *world)
     if(!reference_sources_ensure(&state->reference))return false;
     GeoSourceProvider provider={MODEL_SOURCE_PROVIDER,"app.model-snapshot","geo261-model-snapshot/1",state,model_source_describe,model_source_evaluate};
     if(!geo_eval_register(state->reference.sources,&provider))return false;
+    GeoParameterError parameter_error;
+    if(!geo_parameter_sources_rebuild(state->reference.parameter_sources,&parameter_error))return parameter_kernel_error(world,&parameter_error);
+    WoodEngineeringContext engineering=app_eng_context(world);char engineering_error[256];
+    wood_engineering_sources_bind(state->reference.engineering_sources,&engineering);
+    if(!wood_engineering_rebuild(&engineering,engineering_error,sizeof engineering_error))return false;
+    WoodSectionProfileContext profiles_context=app_sp_context(world);
+    if(!reference_sp_bind(&state->reference,&profiles_context)||
+        !wood_sp_rebuild(&profiles_context,engineering_error,sizeof engineering_error))return false;
+    WoodDerivedContext finish_context=app_dp_context(world);
+    reference_derived_context(&state->reference,&finish_context);
+    if(!wood_finish_sources_bind(state->reference.finish_sources,&finish_context)||
+        !wood_fs_rebuild(&finish_context.finish,engineering_error,sizeof engineering_error)||
+        !wood_pf_rebuild(&finish_context.finish)||!wood_dp_rebuild(&finish_context))return false;
+    WoodGridContext grid_context=app_grid_context(world);reference_grid_context(&state->reference,&grid_context);
+    if(!wood_grid_sources_bind(state->reference.grid_sources,&grid_context)||
+        !wood_grid_systems_rebuild(&grid_context,engineering_error,sizeof engineering_error)||
+        !wood_grid_bindings_rebuild(&grid_context,engineering_error,sizeof engineering_error))return false;
     geo_guides_reset_resolved(&world->guide_lines);
     for(size_t i=0;i<world->timber_count;++i){state->reference.wanted[i]=world->timbers[i].placed;world->timbers[i].placed=false;}
     /* Re-evaluate through the actual source engine, preserving dependency order.
@@ -175,6 +225,9 @@ static bool model_sources_build(ModelSources *state,World *world)
     }
     for(size_t i=0;i<geo_eval_node_count(state->reference.sources);++i){GeoSourceNodeView node;
         if(!geo_eval_node_at(state->reference.sources,i,&node))return false;
+        if(!node.described){GeoSourceDescriptor descriptor;
+            if(geo_eval_describe(state->reference.sources,node.source,&descriptor)!=GEO_SOURCE_OK)return false;
+        }
         if(node.value&&node.value->kind==GEO_SOURCE_QUANTITY&&!model_source_quantity_type(state,&node.source,node.value))return false;
     }
     return true;
@@ -199,8 +252,29 @@ static void model_source_ref(const GeoEvalContext *ctx,GeoSourceRef ref)
 static void model_source_owner(const ModelSourceItem *item)
 {
     if(!item||!item->local){fputs("null",stdout);return;}
+    if(item->owner_namespace){
+        fputs("{\"namespace\":",stdout);model_string(stdout,item->owner_namespace);
+        fputs(",\"keyBase64\":",stdout);model_source_base64(item->owner_key,sizeof item->owner_key);putchar('}');return;
+    }
     char key[48];snprintf(key,sizeof key,"profile-run:%u",item->id);
     fputs("{\"namespace\":\"app.model-snapshot\",\"keyBase64\":",stdout);model_source_base64(key,strlen(key));putchar('}');
+}
+static const ModelSourceItem *model_source_semantics(ModelSources *state,const GeoSourceRef *ref,
+    const ModelSourceItem *item,ModelSourceItem *scratch)
+{
+    if(item||ref->provider!=APP_SOURCE_SECTION_PROFILE)return item;
+    WoodSectionProfileSourceKind kind;uint32_t id;
+    if(!wood_sp_source_decode(ref,&kind,&id))return NULL;
+    uint32_t profile=0;const SectionProfileState *profiles=&state->reference.world->section_profiles;
+    if(kind==WOOD_SP_SOURCE_MEMBER_REGION){
+        for(size_t i=0;i<profiles->member_count;++i)if(profiles->members[i].id==id){profile=profiles->members[i].profile_id;break;}
+    }else if(kind==WOOD_SP_SOURCE_RUN_REGION){
+        for(size_t i=0;i<profiles->run_count;++i)if(profiles->runs[i].id==id){profile=profiles->runs[i].profile_id;break;}
+    }else return NULL;
+    memset(scratch,0,sizeof *scratch);scratch->local=true;scratch->owner_namespace="wood.section-profile";
+    WoodSectionProfileSourceKey key;
+    (void)wood_sp_source_ref(APP_SOURCE_SECTION_PROFILE,WOOD_SP_SOURCE_PROFILE_DEFINITION,profile,&key);
+    memcpy(scratch->owner_key,key.bytes,sizeof scratch->owner_key);return scratch;
 }
 static void model_source_context(GeoSourceContext context,const ModelSourceItem *item)
 {
@@ -234,6 +308,7 @@ static void model_source_value(const GeoSourceValue *value,const ModelSourceItem
             for(size_t h=0;h<region->hole_count;++h){if(h)putchar(',');model_source_loop(region->holes[h]);}fputs("],\"vertexKeys\":",stdout);model_source_keys(item&&i<item->region_count?item->vertex_keys[i]:NULL);putchar('}');}
         fputs("]}",stdout);break;
     case GEO_SOURCE_FEATURE:fputs("{\"keyBase64\":",stdout);model_source_base64(value->as.feature.key,value->as.feature.key_size);fputs(",\"segment\":[",stdout);model_point(value->as.feature.segment.start);putchar(',');model_point(value->as.feature.segment.end);fputs("]}",stdout);break;
+    case GEO_SOURCE_DEFINITION:fputs("{\"schema\":",stdout);model_string(stdout,value->as.definition.schema);fputs(",\"contentBase64\":",stdout);model_source_base64(value->as.definition.content,value->as.definition.content_size);putchar('}');break;
     }
 }
 static void model_source_faces(const ModelSourceItem *item)
@@ -249,15 +324,16 @@ static void model_sources_write(ModelSources *state,const char *candidate)
 {
     GeoEvalContext *ctx=state->reference.sources;
     fputs("{\"schema\":\"geometry-neutral-sources/1\",\"candidate\":{\"id\":",stdout);model_string(stdout,candidate);
-    fputs(",\"baseRevision\":0},\"coverage\":{\"complete\":false,\"rootsComplete\":true,\"missingGroups\":[\"parameter-ast-edges\",\"grid-fields-and-bindings\",\"material-source-overrides\",\"profile-definition-edges\",\"derived-region-provenance\",\"ordered-stop-features\",\"datum-expression-edges\"]},\"providers\":[",stdout);
+    fputs(",\"baseRevision\":0},\"coverage\":{\"complete\":false,\"rootsComplete\":true,\"missingGroups\":[\"grid-fields-and-bindings\",\"material-source-overrides\",\"profile-definition-edges\",\"derived-region-provenance\",\"ordered-stop-features\"]},\"providers\":[",stdout);
     for(size_t i=0;i<geo_eval_provider_count(ctx);++i){const GeoSourceProvider *p=geo_eval_provider_at(ctx,i);if(i)putchar(',');fputs("{\"namespace\":",stdout);model_string(stdout,p->name_space);fputs(",\"implementationFingerprint\":",stdout);model_string(stdout,p->implementation_fingerprint);putchar('}');}
     fputs("],\"nodes\":[",stdout);
-    static const char *const types[]={"quantity","axis-position","frame","region-set","box","feature"};
+    static const char *const types[]={"quantity","axis-position","frame","region-set","box","feature","definition"};
     static const char *const status[]={"ok","missing","failed","cycle","invalid","memory"};
-    for(size_t i=0;i<geo_eval_node_count(ctx);++i){GeoSourceNodeView node;geo_eval_node_at(ctx,i,&node);ModelSourceItem *item=model_source_item(state,&node.source);
+    for(size_t i=0;i<geo_eval_node_count(ctx);++i){GeoSourceNodeView node;geo_eval_node_at(ctx,i,&node);ModelSourceItem semantic;
+        const ModelSourceItem *item=model_source_semantics(state,&node.source,model_source_item(state,&node.source),&semantic);
         if(i)putchar(',');fputs("{\"ref\":",stdout);model_source_ref(ctx,node.source);fputs(",\"descriptor\":{\"valueType\":",stdout);model_string(stdout,types[node.descriptor.kind]);
         fputs(",\"unit\":",stdout);model_string(stdout,node.descriptor.unit==GEO_UNIT_LENGTH?"length":"scalar");fputs(",\"context\":",stdout);model_source_context(node.descriptor.context,item);
-        fputs("},\"status\":",stdout);model_string(stdout,status[node.status]);fputs(",\"value\":",stdout);if(node.value)model_source_value(node.value,item,node.value->kind==GEO_SOURCE_QUANTITY?model_source_quantity_type(state,&node.source,node.value):NULL);else fputs("null",stdout);putchar('}');}
+        fputs("},\"status\":",stdout);model_string(stdout,node.state==GEO_NODE_NEW?"unevaluated":status[node.status]);fputs(",\"value\":",stdout);if(node.value)model_source_value(node.value,item,node.value->kind==GEO_SOURCE_QUANTITY?model_source_quantity_type(state,&node.source,node.value):NULL);else fputs("null",stdout);putchar('}');}
     fputs("],\"edges\":[",stdout);static const char *const relation[]={"value-required","definition-required","evaluate-before"};
     for(size_t i=0;i<geo_eval_edge_count(ctx);++i){GeoSourceEdge edge;GeoSourceNodeView a,b;geo_eval_edge_at(ctx,i,&edge);geo_eval_node_at(ctx,edge.consumer,&a);geo_eval_node_at(ctx,edge.source,&b);
         if(i)putchar(',');fputs("{\"consumer\":",stdout);model_source_ref(ctx,a.source);fputs(",\"source\":",stdout);model_source_ref(ctx,b.source);fputs(",\"kind\":",stdout);model_string(stdout,relation[edge.kind]);putchar('}');}

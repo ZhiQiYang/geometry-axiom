@@ -1,4 +1,5 @@
 #include "contact_world.h"
+#include <stdio.h>
 #include <string.h>
 
 static GeoCoord contact_min(GeoCoord a,GeoCoord b){return a<b?a:b;}
@@ -108,11 +109,19 @@ bool wood_contact_owner_extension(const WoodContactWorld *world,const WoodMember
 }
 bool wood_contact_end_faces(const WoodContactWorld *world,const WoodMember *self,bool along_v,
     GeoCoord span_lo,GeoCoord span_hi,GeoCoord cross_lo,GeoCoord cross_hi,char *error,size_t cap)
+{return wood_contact_end_faces_with_sources(world,self,along_v,span_lo,span_hi,cross_lo,cross_hi,NULL,NULL,error,cap);}
+bool wood_contact_end_faces_with_sources(const WoodContactWorld *world,const WoodMember *self,bool along_v,
+    GeoCoord span_lo,GeoCoord span_hi,GeoCoord cross_lo,GeoCoord cross_hi,
+    WoodContactStopResolver resolver,void *user,char *error,size_t cap)
 {
     GeoCoord edge_lo=0,edge_hi=0;bool has_edge=wood_contact_boundary_interval(world->role_boundary,along_v,span_lo,span_hi,cross_lo,cross_hi,&edge_lo,&edge_hi);
     if(!wood_member_span_extension_check(self,has_edge,span_lo,span_hi,edge_lo,edge_hi,error,cap))return false;
     bool ext_end[2]={has_edge&&self->role==WOOD_MEMBER_ROLE_BOUNDARY&&span_lo<edge_lo,has_edge&&self->role==WOOD_MEMBER_ROLE_BOUNDARY&&span_hi>edge_hi};
-    WoodStopFace faces[WOOD_CONTACT_FACE_CAPACITY];size_t face_count=wood_contact_collect_stops(world,along_v,self,faces,WOOD_CONTACT_FACE_CAPACITY);
+    WoodStopFace faces[WOOD_CONTACT_FACE_CAPACITY];size_t face_count;
+    if(resolver){if(!resolver(user,along_v,self,faces,WOOD_CONTACT_FACE_CAPACITY,&face_count)){
+        if(error&&cap)snprintf(error,cap,"I8: ordered contact source evaluation failed");return false;
+    }}
+    else face_count=wood_contact_collect_stops(world,along_v,self,faces,WOOD_CONTACT_FACE_CAPACITY);
     for(int end=0;end<2;++end){GeoCoord at=end==0?span_lo:span_hi;
         for(size_t i=0;i<face_count;++i){const WoodStopFace *face=&faces[i];
             if(face->fixed!=at||face->lo>cross_lo||face->hi<cross_hi||face->fixity==WOOD_STOP_FREE||ext_end[end]||wood_stop_shadowed(faces,i,cross_lo,cross_hi))continue;

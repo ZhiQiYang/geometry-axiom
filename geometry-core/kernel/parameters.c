@@ -63,7 +63,13 @@ static bool geo_parameter_binary(const char *op,GeoQuantity a,GeoQuantity b,GeoQ
     return geo_parameter_exact(e,geo_quantity_binary(operation,a,b,out));
 }
 
-typedef struct {GeoParameterStore *store;GeoParameterError *error;unsigned char marks[GEO_PARAMETER_FIELD_MAX];unsigned char fdepth[GEO_PARAMETER_FIELD_MAX];int depth,maxref;uint32_t path_card[GEO_PARAMETER_DEPTH_MAX],path_field[GEO_PARAMETER_DEPTH_MAX];} GeoParameterEval;
+struct GeoParameterEvaluation {
+    GeoParameterStore *store;GeoParameterError *error,issue;
+    GeoParameterResolve resolve;void *resolver_state;
+    unsigned char marks[GEO_PARAMETER_FIELD_MAX],fdepth[GEO_PARAMETER_FIELD_MAX];
+    int depth,maxref;uint32_t path_card[GEO_PARAMETER_DEPTH_MAX],path_field[GEO_PARAMETER_DEPTH_MAX];
+};
+typedef GeoParameterEvaluation GeoParameterEval;
 static bool geo_parameter_eval_field(GeoParameterEval *e,int index);
 static bool geo_parameter_eval_ast(GeoParameterEval *e,GeoJson *j,int t,int depth,int *nodes,GeoQuantity *out)
 {
@@ -80,9 +86,18 @@ static bool geo_parameter_eval_ast(GeoParameterEval *e,GeoJson *j,int t,int dept
     if(!strcmp(op,"ref")){
         uint32_t id,field;if(!geo_json_keys(j,t,"op,parameterId,fieldId","")||!geo_parameter_u32(j,geo_json_member(j,t,"parameterId"),&id)||!geo_parameter_u32(j,geo_json_member(j,t,"fieldId"),&field))return geo_parameter_error(e->error,GEO_PARAMETER_AST_REFERENCE,0,0);
         int i=geo_parameters_field_index(e->store,id,field);if(i<0)return geo_parameter_error(e->error,GEO_PARAMETER_MISSING_FIELD,id,field);
-        if(!geo_parameter_eval_field(e,i))return false;
+        if(e->resolve){
+            GeoParameterStatus status=e->resolve(e->resolver_state,(GeoParameterRef){true,id,field},out);
+            if(status!=GEO_PARAMETER_OK){
+                if(e->error->status==GEO_PARAMETER_OK)geo_parameter_error(e->error,status,id,field);
+                return false;
+            }
+        }else{
+            if(!geo_parameter_eval_field(e,i))return false;
+            *out=e->store->fields[i].value;
+        }
         if(e->fdepth[i]>e->maxref)e->maxref=e->fdepth[i];  /* also on cache hits: the depth comes from the field, not the stack */
-        *out=e->store->fields[i].value;return true;
+        return true;
     }
     bool neg=!strcmp(op,"neg");if(!neg&&strcmp(op,"add")&&strcmp(op,"sub")&&strcmp(op,"mul")&&strcmp(op,"div"))return geo_parameter_error(e->error,GEO_PARAMETER_UNSUPPORTED_OPERATION,0,0);
     if(!geo_json_keys(j,t,neg?"op,left":"op,left,right",""))return geo_parameter_error(e->error,GEO_PARAMETER_AST_ARITHMETIC,0,0);
@@ -110,14 +125,32 @@ static bool geo_parameter_eval_field(GeoParameterEval *e,int index)
     if(!ok){if(e->error->trace_count<GEO_PARAMETER_DEPTH_MAX)e->error->trace[e->error->trace_count++]=(GeoParameterRef){true,f->parameter_id,f->id};return false;}
     f->value=value;e->fdepth[index]=(unsigned char)own_depth;e->marks[index]=2;return true;
 }
+GeoParameterEvaluation *geo_parameter_evaluation_create(GeoParameterStore *store,GeoParameterResolve resolve,void *state)
+{
+    if(!store)return NULL;
+    GeoParameterEvaluation *e=calloc(1,sizeof *e);
+    if(e){e->store=store;e->error=&e->issue;e->resolve=resolve;e->resolver_state=state;}
+    return e;
+}
+void geo_parameter_evaluation_destroy(GeoParameterEvaluation *e){free(e);}
+const GeoParameterError *geo_parameter_evaluation_error(const GeoParameterEvaluation *e)
+{return e?e->error:NULL;}
+bool geo_parameter_evaluation_field(GeoParameterEvaluation *e,GeoParameterRef ref,GeoQuantity *out)
+{
+    if(!e||!out)return false;
+    int index=geo_parameters_field_index(e->store,ref.parameter_id,ref.field_id);
+    if(index<0)return geo_parameter_error(e->error,GEO_PARAMETER_MISSING_FIELD,ref.parameter_id,ref.field_id);
+    if(!geo_parameter_eval_field(e,index))return false;
+    *out=e->store->fields[index].value;return true;
+}
 bool geo_parameters_rebuild(GeoParameterStore *store,GeoParameterError *error)
 {
     GeoParameterError local;if(!error)error=&local;memset(error,0,sizeof *error);
-    GeoParameterEval *e=calloc(1,sizeof *e);
+    GeoParameterEvaluation *e=geo_parameter_evaluation_create(store,NULL,NULL);
     if(!e)return geo_parameter_error(error,GEO_PARAMETER_MEMORY,0,0);
-    e->store=store;e->error=error;bool ok=true;
+    bool ok=true;
     for(size_t i=0;i<store->field_count&&ok;++i)ok=geo_parameter_eval_field(e,(int)i);
-    free(e);return ok;
+    *error=*e->error;geo_parameter_evaluation_destroy(e);return ok;
 }
 bool geo_parameters_evaluate_field(GeoParameterStore *store,GeoParameterRef ref,GeoParameterError *error)
 {
@@ -125,10 +158,10 @@ bool geo_parameters_evaluate_field(GeoParameterStore *store,GeoParameterRef ref,
     if(!store)return geo_parameter_error(error,GEO_PARAMETER_INVALID_DEFINITION,ref.parameter_id,ref.field_id);
     int index=geo_parameters_field_index(store,ref.parameter_id,ref.field_id);
     if(index<0)return geo_parameter_error(error,GEO_PARAMETER_MISSING_FIELD,ref.parameter_id,ref.field_id);
-    GeoParameterEval *e=calloc(1,sizeof *e);
+    GeoParameterEvaluation *e=geo_parameter_evaluation_create(store,NULL,NULL);
     if(!e)return geo_parameter_error(error,GEO_PARAMETER_MEMORY,0,0);
-    e->store=store;e->error=error;bool ok=geo_parameter_eval_field(e,index);
-    free(e);return ok;
+    bool ok=geo_parameter_eval_field(e,index);*error=*e->error;
+    geo_parameter_evaluation_destroy(e);return ok;
 }
 
 

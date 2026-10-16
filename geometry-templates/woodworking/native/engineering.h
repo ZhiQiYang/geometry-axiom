@@ -111,6 +111,15 @@ typedef struct {
     bool (*member_owned)(void *,uint32_t);
     void (*write_dimension)(void *,const EngTarget *,GeoCoord);
     bool (*serializable)(void *,char *,size_t);
+    /* Optional candidate-local resolver hooks. The direct policy entry points
+     * below retain the same diagnostics and are used by the source provider. */
+    void *sources;
+    bool (*resolve_source)(void *,const EngDimensionSource *,const EngTarget *,uint32_t,int,GeoCoord *,char *,size_t);
+    bool (*resolve_binding)(void *,const EngBinding *,GeoCoord *,char *,size_t);
+    bool (*source_named)(void *,const char *,GeoCoord *);
+    bool (*source_parameter)(void *,GeoParameterRef,GeoCoord *,char *,size_t);
+    bool (*depend_definition)(void *,int,const char *,uint32_t);
+    bool (*validate_application)(void *,const EngApplication *);
     GeoVersionStore *versions;
 } WoodEngineeringContext;
 /* Fixed W schema field IDs. Existing dimension-source IDs remain unchanged. */
@@ -148,6 +157,9 @@ bool wood_eng_put_application(WoodEngineeringContext *w,GeoJson *j,int t);
 bool wood_eng_target_context(const WoodEngineeringContext *w,const EngTarget *t,uint32_t *pid,int *role);
 bool wood_eng_resolve(WoodEngineeringContext *w,const EngDimensionSource *s,const EngTarget *target,uint32_t pid,int role,GeoCoord *value,char *path,size_t cap);
 bool wood_eng_effective(WoodEngineeringContext *w,const EngBinding *b,GeoCoord *value,char *path,size_t cap);
+bool wood_eng_resolve_direct(WoodEngineeringContext *,const EngDimensionSource *,const EngTarget *,uint32_t,int,GeoCoord *,char *,size_t);
+bool wood_eng_effective_direct(WoodEngineeringContext *,const EngBinding *,GeoCoord *,char *,size_t);
+bool wood_eng_validate_application_direct(WoodEngineeringContext *,const EngApplication *);
 void wood_engineering_drop_owned(WoodEngineeringContext *w,const char *kind,uint32_t id);
 bool wood_engineering_follow_fragment(WoodEngineeringContext *w,uint32_t old_pid);
 bool wood_engineering_rebuild(WoodEngineeringContext *w,char *error,size_t cap);

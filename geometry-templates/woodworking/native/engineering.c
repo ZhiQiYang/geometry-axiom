@@ -341,16 +341,24 @@ bool wood_eng_target_context(const WoodEngineeringContext *w,const EngTarget *t,
 }
 bool wood_eng_resolve(WoodEngineeringContext *w,const EngDimensionSource *s,const EngTarget *target,uint32_t pid,int role,GeoCoord *value,char *path,size_t cap)
 {
+    if(w->resolve_source)return w->resolve_source(w->sources,s,target,pid,role,value,path,cap);
+    return wood_eng_resolve_direct(w,s,target,pid,role,value,path,cap);
+}
+bool wood_eng_resolve_direct(WoodEngineeringContext *w,const EngDimensionSource *s,const EngTarget *target,uint32_t pid,int role,GeoCoord *value,char *path,size_t cap)
+{
     if (s->kind==ENG_LITERAL) { *value=s->value; if (path) snprintf(path,cap,"explicit integer mm"); }
     else if (s->kind==ENG_SPEC) {
-        if (!w->named_value(w->user,s->ref,value)) return wood_eng_fail(w,"I35: named dimension spec is missing");
+        bool found=w->source_named?w->source_named(w->sources,s->ref,value):w->named_value(w->user,s->ref,value);
+        if (!found) return wood_eng_fail(w,"I35: named dimension spec is missing");
         if (path) snprintf(path,cap,"spec:%s",s->ref);
     } else if (s->kind==ENG_PARAMETER) {
-        if(!w->parameter(w->user,s->parameter,value,w->error,w->error_capacity))return false;
+        bool found=w->source_parameter?w->source_parameter(w->sources,s->parameter,value,w->error,w->error_capacity):w->parameter(w->user,s->parameter,value,w->error,w->error_capacity);
+        if(!found)return false;
         if(path)snprintf(path,cap,"param:%u:%u",s->parameter.parameter_id,s->parameter.field_id);
     } else if (s->kind==ENG_MATERIAL) {
         const EngMaterialVersion *m=wood_eng_material(w,s->ref,s->version);
         if (!m) return wood_eng_fail(w,"I34: fixed material version is missing");
+        if(w->depend_definition&&!w->depend_definition(w->sources,0,s->ref,s->version))return false;
         if (!target->kind) {
             if (target->field || m->kind || (s->field!=ENG_WIDTH&&s->field!=ENG_LENGTH)) return wood_eng_fail(w,"I35: grid panel accepts only panel material width/length; gap is separately explicit");
             *value=s->field==ENG_WIDTH?m->width:m->length;
@@ -363,6 +371,8 @@ bool wood_eng_resolve(WoodEngineeringContext *w,const EngDimensionSource *s,cons
         EngApplication *a=wood_eng_application(w,s->ref);
         const EngMethodVersion *m=a?wood_eng_method(w,a->method.id,a->method.version):NULL;
         if (!a||!m || (pid!=UINT32_MAX && a->placement_id!=pid)) return wood_eng_fail(w,"I35: application source is missing or belongs to another placement");
+        if(w->depend_definition&&(!w->depend_definition(w->sources,2,a->id,0)||
+            !w->depend_definition(w->sources,1,a->method.id,a->method.version)))return false;
         EngDimensionSource nested={0}; int override=-1;
         if (!target->kind) {
             int field=target->field?(target->axis?ENG_V_GAP:ENG_U_GAP):(target->axis?ENG_V_PANEL:ENG_U_PANEL);
@@ -390,6 +400,11 @@ bool wood_eng_resolve(WoodEngineeringContext *w,const EngDimensionSource *s,cons
 }
 bool wood_eng_effective(WoodEngineeringContext *w,const EngBinding *b,GeoCoord *value,char *path,size_t cap)
 {
+    if(w->resolve_binding)return w->resolve_binding(w->sources,b,value,path,cap);
+    return wood_eng_effective_direct(w,b,value,path,cap);
+}
+bool wood_eng_effective_direct(WoodEngineeringContext *w,const EngBinding *b,GeoCoord *value,char *path,size_t cap)
+{
     uint32_t pid; int role; if (!wood_eng_target_context(w,&b->target,&pid,&role)) return false;
     /* During scene replay a timber declaration precedes its placement. Its role
      * is already known; final revalidation after place checks the actual face. */
@@ -399,6 +414,7 @@ bool wood_eng_effective(WoodEngineeringContext *w,const EngBinding *b,GeoCoord *
     if (b->has_override && b->source.kind==ENG_APPLICATION) {
         EngApplication *a=wood_eng_application(w,b->source.ref);
         if (!a || (pid!=UINT32_MAX && a->placement_id!=pid)) return wood_eng_fail(w,"I35: overridden application source is missing or on another placement");
+        if(w->depend_definition&&!w->depend_definition(w->sources,2,a->id,0))return false;
         int expected=b->target.kind?ENG_BOUNDARY_A+role*2+b->target.field:(b->target.field?ENG_U_GAP:ENG_U_PANEL)+b->target.axis;
         if (role==3 || b->source.field!=expected) return wood_eng_fail(w,"D28: overridden source still requires a matching application field/role");
     }
@@ -465,19 +481,25 @@ bool wood_engineering_follow_fragment(WoodEngineeringContext *w,uint32_t old_pid
     }
     return true;
 }
-bool wood_engineering_rebuild(WoodEngineeringContext *w,char *error,size_t cap)
+bool wood_eng_validate_application_direct(WoodEngineeringContext *w,const EngApplication *a)
 {
-    for (size_t i=0;i<w->state->application_count;++i) {
-        const EngApplication *a=&w->state->applications[i];
         bool derived=false; bool exists=w->placement(w->user,a->placement_id,&derived);
-        if(exists&&derived){wood_eng_fail(w,"D4: derived placements cannot receive D28 face applications");goto fail;}
-        if (!exists || !wood_eng_method(w,a->method.id,a->method.version)) { wood_eng_fail(w,"I35: application has a dangling placement/method reference"); goto fail; }
+        if(exists&&derived)return wood_eng_fail(w,"D4: derived placements cannot receive D28 face applications");
+        if (!exists || !wood_eng_method(w,a->method.id,a->method.version)) return wood_eng_fail(w,"I35: application has a dangling placement/method reference");
+        if(w->depend_definition&&!w->depend_definition(w->sources,1,a->method.id,a->method.version))return false;
         for (int field=0;field<7;++field) if (a->overridden[field]) {
             EngTarget target={0}; GeoCoord ignored; int role=-1;
             if (!field) target.field=1;
             else { target.kind=1; target.field=(field-1)%2; role=(field-1)/2; }
-            if (!wood_eng_resolve(w,&a->overrides[field],&target,a->placement_id,role,&ignored,NULL,0)) goto fail;
+            if (!wood_eng_resolve(w,&a->overrides[field],&target,a->placement_id,role,&ignored,NULL,0)) return false;
         }
+    return true;
+}
+bool wood_engineering_rebuild(WoodEngineeringContext *w,char *error,size_t cap)
+{
+    for (size_t i=0;i<w->state->application_count;++i) {
+        const EngApplication *a=&w->state->applications[i];
+        if(w->validate_application?!w->validate_application(w->sources,a):!wood_eng_validate_application_direct(w,a))goto fail;
     }
     for (size_t i=0;i<w->state->binding_count;++i) {
         const EngBinding *b=&w->state->bindings[i]; GeoCoord value;

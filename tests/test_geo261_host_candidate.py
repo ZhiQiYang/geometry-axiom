@@ -99,18 +99,18 @@ class NativeHostCandidate(unittest.TestCase):
     def test_before_evaluation_hash_negative_control_fails_normal_assertion(self):
         self.control("before-evaluation-gate", "before-evaluation",
             "if(candidate->sealed)return GEO_CANDIDATE_STATE;\n"
-            "    if(!app_candidate_hash_matches(candidate->before,candidate->snapshot_size,candidate->before_hash))return GEO_CANDIDATE_STATE_CHANGED;",
+            "    if(!app_candidate_hash_matches(candidate->before,candidate->snapshot_size,candidate->before_hash,candidate->before_bytes))return GEO_CANDIDATE_STATE_CHANGED;",
             "if(candidate->sealed)return GEO_CANDIDATE_STATE;")
 
     def test_evaluated_after_hash_negative_control_fails_normal_assertion(self):
         self.control("evaluated-after-gate", "after-before-seal",
-            "if(!app_candidate_hash_matches(candidate->after,candidate->snapshot_size,candidate->after_hash))return GEO_CANDIDATE_STATE_CHANGED;",
+            "if(!app_candidate_hash_matches(candidate->after,candidate->snapshot_size,candidate->after_hash,candidate->after_bytes))return GEO_CANDIDATE_STATE_CHANGED;",
             "/* negative control: no evaluated full-after seal */")
 
     def test_full_snapshot_hash_negative_control_fails_normal_assertion(self):
         self.control("full-snapshot-gate", "sealed-after",
             "if(!app_candidate_hash_matches(candidate->before,candidate->snapshot_size,candidate->before_hash)||\n"
-            "       !app_candidate_hash_matches(candidate->after,candidate->snapshot_size,candidate->after_hash))return GEO_CANDIDATE_STATE_CHANGED;",
+            "       !app_candidate_hash_matches(candidate->after,candidate->snapshot_size,candidate->after_hash,candidate->after_bytes))return GEO_CANDIDATE_STATE_CHANGED;",
             "/* negative control: bound K stores alone cannot guard W/H bytes */")
 
     def test_live_equality_negative_control_fails_normal_assertion(self):

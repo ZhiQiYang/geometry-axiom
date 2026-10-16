@@ -9,6 +9,7 @@ typedef struct {
     void *current;
     size_t size;
     char before_hash[65],current_hash[65];
+    unsigned char *before_bytes,*current_bytes;
 } GeoCandidateBinding;
 struct GeoCandidate {
     uint64_t candidate_id,base_revision,evaluation_generation;
@@ -45,7 +46,7 @@ void geo_candidate_destroy(GeoCandidate *candidate)
 {
     if(!candidate)return;
     geo_eval_destroy(candidate->sources);
-    for(size_t i=0;i<candidate->binding_count;++i)free(candidate->bindings[i].name);
+    for(size_t i=0;i<candidate->binding_count;++i){free(candidate->bindings[i].name);free(candidate->bindings[i].before_bytes);free(candidate->bindings[i].current_bytes);}
     free(candidate->bindings);free(candidate->provider_stamp);free(candidate);
 }
 static bool geo_candidate_range(const void *pointer,size_t size,uintptr_t *start,uintptr_t *end)
@@ -84,17 +85,22 @@ GeoCandidateStatus geo_candidate_bind_state(GeoCandidate *candidate,const char *
     memset(binding,0,sizeof *binding);binding->name=copy;
     binding->before=before;binding->current=current;binding->size=size;
     geo_sha256(before,size,binding->before_hash);
+    binding->before_bytes=malloc(size);
+    if(binding->before_bytes)memcpy(binding->before_bytes,before,size);
     return GEO_CANDIDATE_OK;
+}
+static bool geo_candidate_digest_matches(const void *bytes,size_t size,const char expected[65],const void *hashed_bytes)
+{
+    if(hashed_bytes&&!memcmp(bytes,hashed_bytes,size))return true;
+    char hash[65];geo_sha256(bytes,size,hash);return !strcmp(hash,expected);
 }
 static GeoCandidateStatus geo_candidate_check_state(const GeoCandidate *candidate,bool include_current)
 {
     for(size_t i=0;i<candidate->binding_count;++i){
-        const GeoCandidateBinding *binding=&candidate->bindings[i];char hash[65];
-        geo_sha256(binding->before,binding->size,hash);
-        if(strcmp(hash,binding->before_hash))return GEO_CANDIDATE_STATE_CHANGED;
+        const GeoCandidateBinding *binding=&candidate->bindings[i];
+        if(!geo_candidate_digest_matches(binding->before,binding->size,binding->before_hash,binding->before_bytes))return GEO_CANDIDATE_STATE_CHANGED;
         if(include_current){
-            geo_sha256(binding->current,binding->size,hash);
-            if(strcmp(hash,binding->current_hash))return GEO_CANDIDATE_STATE_CHANGED;
+            if(!geo_candidate_digest_matches(binding->current,binding->size,binding->current_hash,binding->current_bytes))return GEO_CANDIDATE_STATE_CHANGED;
         }
     }
     return GEO_CANDIDATE_OK;
@@ -119,6 +125,8 @@ GeoCandidateStatus geo_candidate_evaluate(GeoCandidate *candidate,GeoCandidateEv
     for(size_t i=0;i<candidate->binding_count;++i){
         GeoCandidateBinding *binding=&candidate->bindings[i];
         geo_sha256(binding->current,binding->size,binding->current_hash);
+        if(!binding->current_bytes)binding->current_bytes=malloc(binding->size);
+        if(binding->current_bytes)memcpy(binding->current_bytes,binding->current,binding->size);
     }
     return GEO_CANDIDATE_OK;
 }

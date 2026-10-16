@@ -48,8 +48,8 @@ static void json_grid_system(const World *w,const GridSystem *system)
         printf("},\"divisions\":[%u,%u]}",r->divisions[0],r->divisions[1]);
     }
     fputs("],\"applications\":[",stdout); bool first=true;
-    for (size_t i=0;i<w->grid_count;++i) {
-        const ReferenceGrid *grid=&w->grids[i];
+    for (size_t i=0;i<w->grid_applications.count;++i) {
+        const ReferenceGrid *grid=&w->grid_applications.items[i];
         const GridBinding *binding=grid->from_binding?world_find_grid_binding(w,grid->binding_id):NULL;
         if (grid->from_binding ? (!binding || binding->system_id!=system->id) :
             (!grid->from_system || grid->system_id!=system->id)) continue;

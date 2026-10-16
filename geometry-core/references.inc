@@ -54,19 +54,62 @@ static bool reference_expression(char **tokens, int start, int count, char *out)
 static bool reference_name(const char *name)
 {return geo_named_value_name_valid(name);}
 
+static WoodEngineeringContext app_eng_context(const World *);
+static WoodSectionProfileContext app_sp_context(const World *);
+static WoodFinishContext app_fs_context(const World *);
+static WoodDerivedContext app_dp_context(const World *);
+static bool app_sp_resolve_dimension_sources(World *,GeoParameterSources *,WoodEngineeringSources *,const EngDimensionSource *,const EngTarget *,Coord *);
+static bool app_sp_live_host(void *,uint32_t,GeoFrame *,WoodBoundaryRegion *,bool *);
+static bool app_fs_boundary(void *,uint32_t,WoodBoundaryRegion *);
+static bool app_fs_obstacle_box(void *,const FinishObstacleRef *,Coord[3],Coord[3]);
+static bool app_fs_parameter_coord(void *,ParameterRef,Coord *);
+static bool app_fs_parameter_value(void *,ParameterRef,GeoQuantity *);
+static bool app_fs_engineering_operation(void *,GeoJson *,int);
+static bool app_fs_derived_operation(void *,GeoJson *,int,bool);
+static bool app_dp_read(void *,uint32_t,WoodDerivedValue *);
+static bool app_dp_write(void *,const WoodDerivedValue *);
+static bool app_dp_remove(void *,uint32_t);
+static size_t app_dp_count(void *);
+static void app_dp_remove_position(void *,uint32_t);
+
 typedef struct {
     World *world;
     GeoEvalContext *sources;
     bool sources_borrowed,sources_registered;
-    bool use_current_values;
+    GeoParameterSources *parameter_sources;
+    GeoParameterStore *parameter_snapshot;
+    WoodEngineeringSources *engineering_sources;
+    WoodSectionProfileSources *section_profile_sources;
+    WoodFinishSources *finish_sources;
+    GeoPlacementSources *placement_sources;
+    WoodGridSources *grid_sources;
+    WoodContactSources *contact_sources;
+    WoodFinishSourceKey placement_binding_key;
+    bool use_current_values,source_failure;
     bool wanted[WORLD_MAX_TIMBERS];
 } ReferenceEval;
+static ReferenceEval *g_reference_active;
 static bool reference_eval_guide(ReferenceEval *, size_t);
 static bool reference_eval_timber(ReferenceEval *, size_t);
 static bool reference_eval_timber_relation(ReferenceEval *,size_t,GeoDependencyKind);
 static bool reference_sources_ensure(ReferenceEval *);
+static bool reference_named_quantity(ReferenceEval *,const char *,Coord *);
+static bool reference_eval_datum(ReferenceEval *,size_t);
+static bool reference_placement_frame(ReferenceEval *,uint32_t,GeoFrame *);
+static bool reference_member_placement(ReferenceEval *,PlacementSurface *,SpaceBoundarySurface *);
+static bool reference_member_dimension(ReferenceEval *,uint32_t,bool,Coord *);
 static void reference_sources_dispose(ReferenceEval *ctx)
-{if(!ctx->sources_borrowed)geo_eval_destroy(ctx->sources);ctx->sources=NULL;ctx->sources_registered=false;}
+{
+    if(!ctx->sources_borrowed)geo_eval_destroy(ctx->sources);
+    geo_parameter_sources_destroy(ctx->parameter_sources);geo_parameters_destroy(ctx->parameter_snapshot);
+    wood_engineering_sources_destroy(ctx->engineering_sources);ctx->engineering_sources=NULL;
+    wood_sp_sources_destroy(ctx->section_profile_sources);ctx->section_profile_sources=NULL;
+    wood_finish_sources_destroy(ctx->finish_sources);ctx->finish_sources=NULL;
+    geo_placement_sources_destroy(ctx->placement_sources);ctx->placement_sources=NULL;
+    wood_grid_sources_destroy(ctx->grid_sources);ctx->grid_sources=NULL;
+    wood_contact_sources_destroy(ctx->contact_sources);ctx->contact_sources=NULL;
+    ctx->parameter_sources=NULL;ctx->parameter_snapshot=NULL;ctx->sources=NULL;ctx->sources_registered=false;
+}
 static bool reference_quantity(ReferenceEval *,const GuideLine *,const char *,Coord *);
 static bool reference_parameter_quantity(ReferenceEval *,ParameterRef,GeoQuantity *);
 static int reference_timber_index(const World *w, uint32_t id)
@@ -83,9 +126,7 @@ static bool reference_quantity_raw(ReferenceEval *ctx, const GuideLine *g, const
     /* D6c deliberately permits only named specs, without a placement context. */
     if (!g) {
         if (strncmp(text,"spec:",5)) return false;
-        for (size_t i=0;i<geo_named_values_count(&w->named_values);++i)
-            if (!strcmp(geo_named_values_at(&w->named_values,i)->name,text+5)) { *out=geo_named_values_at(&w->named_values,i)->value; return true; }
-        return false;
+        return reference_named_quantity(ctx,text+5,out);
     }
     const PlacementSurface *p=world_find_placement(w,g->placement_id);
     if (!p) return false;
@@ -95,7 +136,8 @@ static bool reference_quantity_raw(ReferenceEval *ctx, const GuideLine *g, const
     if(!strncmp(text,"gridrule:",9)) {
         GridRuleLineRef ref;
         return grid_rule_ref_text(text,&ref) && ref.axis==axis &&
-            grid_rule_line(w,&ref,g->placement_id,out,NULL,g_rule_reference_error,sizeof g_rule_reference_error);
+            (ctx->use_current_values?grid_rule_line(w,&ref,g->placement_id,out,NULL,g_rule_reference_error,sizeof g_rule_reference_error):
+                wood_grid_sources_rule_line(ctx->grid_sources,&ref,g->placement_id,out,NULL,g_rule_reference_error,sizeof g_rule_reference_error));
     }
     char buf[REF_EXPR_MAX], *part[5]; int n=0;
     snprintf(buf,sizeof buf,"%s",text);
@@ -108,9 +150,7 @@ static bool reference_quantity_raw(ReferenceEval *ctx, const GuideLine *g, const
     }
     uint32_t id;
     if (n==2 && !strcmp(part[0],"spec")) {
-        for (size_t i=0;i<geo_named_values_count(&w->named_values);++i)
-            if (!strcmp(geo_named_values_at(&w->named_values,i)->name,part[1])) { *out=geo_named_values_at(&w->named_values,i)->value; return true; }
-        return false;
+        return reference_named_quantity(ctx,part[1],out);
     }
     if (n==2 && !strcmp(part[0],"guide") && parse_u32(part[1],&id)) {
         for (size_t i=0;i<geo_guides_count(&w->guide_lines);++i) {
@@ -131,11 +171,12 @@ static bool reference_quantity_raw(ReferenceEval *ctx, const GuideLine *g, const
             int64_t k;
             if (grid->axis[axis].stagger_set) return false;
             return n==4 && parse_i64(part[3],&k) &&
-                grid_line_coord_in(w->grids,w->grid_count,grid,p,b,axis,k,out,NULL,NULL,0);
+                (ctx->use_current_values?grid_line_coord_in(w->grid_applications.items,w->grid_applications.count,grid,p,b,axis,k,out,NULL,NULL,0):
+                    wood_grid_sources_line(ctx->grid_sources,id,g->placement_id,axis,k,false,false,0,out,NULL,NULL,0));
         }
         if (n!=3 || grid->axis[axis].source != GRID_SRC_PANEL) return false;
-        *out=!strcmp(part[0],"panel")?grid->axis[axis].body:grid->axis[axis].gap;
-        return true;
+        if(ctx->use_current_values){*out=!strcmp(part[0],"panel")?grid->axis[axis].body:grid->axis[axis].gap;return true;}
+        return wood_grid_sources_dimension(ctx->grid_sources,id,axis,!strcmp(part[0],"gap"),out,NULL,0);
     }
     if (n>=3 && !strcmp(part[0],"timber") && parse_u32(part[1],&id)) {
         int ti=reference_timber_index(w,id);
@@ -143,7 +184,7 @@ static bool reference_quantity_raw(ReferenceEval *ctx, const GuideLine *g, const
         Timber *t=&w->timbers[ti];
         if (ctx->wanted[ti] && w->anchors[ti].placement_id!=g->placement_id) return false;
         if (n==3 && (!strcmp(part[2],"A") || !strcmp(part[2],"B"))) {
-            *out=!strcmp(part[2],"A")?t->size_a:t->size_b; return true;
+            return reference_member_dimension(ctx,id,!strcmp(part[2],"B"),out);
         }
         if (n!=4 || strcmp(part[2],axis==0?"u":"v") ||
             (strcmp(part[3],"lo") && strcmp(part[3],"hi")) ||
@@ -156,6 +197,11 @@ static bool reference_quantity_raw(ReferenceEval *ctx, const GuideLine *g, const
     }
     if (n==3 && (!strcmp(part[0],"edge") || !strcmp(part[0],"vertex") || !strcmp(part[0],"edge-key"))) {
         if (strcmp(part[2],axis==0?"u":"v")) return false;
+        PlacementSurface source_placement;SpaceBoundarySurface source_boundary;
+        if(!app_placement_read(w,p->id,&source_placement))return false;
+        const SpaceBoundarySurface *source_b=app_placement_boundary(w,&source_placement,&source_boundary);
+        if(!reference_member_placement(ctx,&source_placement,source_b?&source_boundary:NULL))return false;
+        p=&source_placement;b=placement_effective_boundary(p,source_b,&effective);
         PolygonLoop2 rect;
         const PolygonLoop2 *loop;
         int hole=-1, index=-1;
@@ -267,20 +313,25 @@ static bool reference_eval_expression(ReferenceEval *ctx, const GuideLine *g, Co
     return reference_eval_text(ctx,g,app_guide_expression(ctx->world,g->id),out);
 }
 
+static bool reference_compute_datum(ReferenceEval *ctx,size_t i)
+{
+    if(ctx->use_current_values)return true;
+    World *world=ctx->world;const GeoDatum *d=geo_datums_at(&world->datum_planes,i);
+    const char *expression=app_datum_expression(world,d->id);
+    AppLinearContext context={ctx,NULL};g_parameter_error[0]=0;
+    GeoLinearResult result=geo_datums_evaluate(&world->datum_planes,i,reference_resolve_linear,&context);
+    Coord position;
+    if(!reference_linear_result(result,d->expression.mode,expression,&position)){
+        char msg[256];if(g_parameter_error[0])snprintf(msg,sizeof msg,"datum %u: %s",d->id,g_parameter_error);else snprintf(msg,sizeof msg,"datum %u: missing spec, bare mm, unsupported reference or rational overflow",d->id);
+        return reference_issue(0,"D6c/I7a","axis X/Y/Z and exact spec-only expression within D1",msg);
+    }
+    return true;
+}
 static bool reference_eval_datums(ReferenceEval *ctx)
 {
-    bool ok=true;World *world=ctx->world;
-    for(size_t i=0;i<geo_datums_count(&world->datum_planes);++i){
-        const GeoDatum *d=geo_datums_at(&world->datum_planes,i);
-        const char *expression=app_datum_expression(world,d->id);
-        AppLinearContext context={ctx,NULL};g_parameter_error[0]=0;
-        GeoLinearResult result=geo_datums_evaluate(&world->datum_planes,i,reference_resolve_linear,&context);
-        Coord position;
-        if(!reference_linear_result(result,d->expression.mode,expression,&position)){
-            char msg[256];if(g_parameter_error[0])snprintf(msg,sizeof msg,"datum %u: %s",d->id,g_parameter_error);else snprintf(msg,sizeof msg,"datum %u: missing spec, bare mm, unsupported reference or rational overflow",d->id);
-            reference_issue(0,"D6c/I7a","axis X/Y/Z and exact spec-only expression within D1",msg);ok=false;
-        }
-    }
+    bool ok=true;
+    for(size_t i=0;i<geo_datums_count(&ctx->world->datum_planes);++i)
+        if(!reference_eval_datum(ctx,i))ok=false;
     return ok;
 }
 
@@ -289,11 +340,16 @@ static bool reference_compute_guide(ReferenceEval *ctx, size_t i)
     if(ctx->use_current_values)return true;
     World *world=ctx->world;const GeoGuide *g=geo_guides_at(&world->guide_lines,i);
     const PlacementSurface *p=world_find_placement(world,g->placement_id);
+    GeoFrame source_frame;if(p&&!reference_placement_frame(ctx,p->id,&source_frame))return false;
     const char *expression=app_guide_expression(world,g->id);
     if(g->source==GUIDE_DATUM){
         if(!p)return false;
         const GeoDatum *d=geo_datums_find(&world->datum_planes,g->datum_id);
-        GeoGuideResult result=geo_guides_evaluate(&world->guide_lines,i,&p->frame,d,NULL,NULL);
+        if(d){
+            size_t at=(size_t)(d-geo_datums_values(&world->datum_planes));
+            if(!reference_eval_datum(ctx,at))return false;
+        }
+        GeoGuideResult result=geo_guides_evaluate(&world->guide_lines,i,&source_frame,d,NULL,NULL);
         if(result.status==GEO_GUIDE_MISSING_DATUM)return reference_issue(0,"I7a/I9","existing datum","datum guide has missing source");
         if(result.intersection==GEO_DATUM_INTERSECTION_COINCIDENT||result.intersection==GEO_DATUM_INTERSECTION_PARALLEL){
             char msg[160];snprintf(msg,sizeof msg,"guide %u datum %u: %s",g->id,d->id,
@@ -307,7 +363,7 @@ static bool reference_compute_guide(ReferenceEval *ctx, size_t i)
     if(p){
         g_rule_reference_error[0]=0;g_parameter_error[0]=0;
         AppLinearContext context={ctx,g};
-        GeoGuideResult result=geo_guides_evaluate(&world->guide_lines,i,&p->frame,NULL,reference_resolve_linear,&context);
+        GeoGuideResult result=geo_guides_evaluate(&world->guide_lines,i,&source_frame,NULL,reference_resolve_linear,&context);
         Coord value;ok=reference_linear_result(result.linear,g->expression.mode,expression,&value);
     }
     if(!ok){
@@ -337,176 +393,143 @@ static void reference_face_format(FILE *out, const ReferenceFace *r)
     else fprintf(out,"e%d",r->edge);
 }
 
-static bool reference_place_geometry(World *w, size_t ti)
+#include "../geometry-templates/woodworking/native/member_reference.h"
+/* Each invocation owns its DTO scratch. Recursive K source evaluation uses
+ * the existing ReferenceEval and never borrows another invocation's cache. */
+typedef struct {
+    PlacementSurface placement;SpaceBoundarySurface boundary,effective;
+    const SpaceBoundarySurface *boundary_view;
+} AppMemberPlacementScratch;
+typedef struct {
+    ReferenceEval *evaluation;World *world;AppMemberPlacementScratch *geometry;
+} AppMemberReferenceContext;
+static bool app_member_reference_at(void *user,size_t i,WoodMemberReferenceFact *out)
 {
-    Timber *t=&w->timbers[ti]; TimberAnchor *a=&w->anchors[ti];
-    const PlacementSurface *p=world_find_placement(w,a->placement_id);
-    if (!p) return reference_issue(t->id,"I13","existing placement","placement missing");
-    if(p->derived_fill_id&&(t->size_b!=p->derived_h||a->depth_side!=SURFACE_DEPTH_POSITIVE_NORMAL)){
-        char error[180];snprintf(error,sizeof error,"V_DERIVED_TIMBER: timber %u B=%lld host h=%lld requires B=h and +n",t->id,(long long)t->size_b,(long long)p->derived_h);
-        return reference_issue(t->id,"I53","B=h and +n",error);
-    }
-    SpaceBoundarySurface effective;
-    const SpaceBoundarySurface *b=placement_effective_boundary(p,world_placement_boundary(w,p),&effective);
-    bool along=a->length_direction==SURFACE_DIRECTION_POS_V || a->length_direction==SURFACE_DIRECTION_NEG_V;
-    Coord widths[2][2], contacts[2][2]; int n=0; bool contact=false;
-    SurfaceRegion2 child_scope; bool scoped=false;
-    if (a->anchor_kind==ANCHOR_AT_GRID || a->anchor_kind==ANCHOR_AT_LINE || a->anchor_kind==ANCHOR_AT_RULE) {
-        Coord center;
-        if (a->anchor_kind==ANCHOR_AT_GRID) {
-            const ReferenceGrid *g=world_find_grid(w,a->ref_grid); char err[180]="";
-            if (!g || g->placement_id!=p->id || (a->ref_grid_axis==0)!=along)
-                return reference_issue(t->id,"I13/I23","same-face grid coordinate axis perpendicular to length","missing grid or face/axis mismatch (垂直)");
-            if (!grid_anchor_line_coord(w->grids,w->grid_count,g,p,b,a->ref_grid_axis,a->ref_grid_index,
-                    a->ref_grid_has_band,a->ref_grid_band,&center,err,sizeof err))
-                return reference_issue(t->id,"I23","referenced grid index exists",err);
-            if (g->is_subgrid) {
-                if (!grid_cell_bounds(w->grids,w->grid_count,g,p,b,&child_scope,err,sizeof err))
-                    return reference_issue(t->id,"I25","valid parent cell",err);
-                scoped=true;
-            }
-        } else if(a->anchor_kind==ANCHOR_AT_RULE) {
-            char err[180]="";
-            if((a->ref_rule.axis==0)!=along || !grid_rule_line(w,&a->ref_rule,p->id,&center,&child_scope,err,sizeof err))
-                return reference_issue(t->id,"I13/I25a","same-source rule line and axis",err[0]?err:"rule axis mismatch");
-            scoped=true;
-        } else {
-            const GuideLine *g=world_find_guide(w,a->ref_guide);
-            if (!g || g->placement_id!=p->id || (g->direction==GUIDE_ALONG_V)!=along)
-                return reference_issue(t->id,"I13","same-face line coordinate axis perpendicular to length","missing guide or face/axis mismatch (垂直)");
-            center=g->offset;
-        }
-        widths[0][0]=center-t->size_a/2; widths[0][1]=widths[0][0]+t->size_a; n=1;
-    } else if (a->anchor_kind==ANCHOR_AT_EDGE) {
-        contact=true;
-        if (a->ref_is_timber) {
-            int owner=reference_timber_index(w,a->ref_timber); SurfaceRegion2 f;
-            if (owner<0 || !w->timbers[owner].placed || w->anchors[owner].placement_id!=p->id ||
-                !timber_a0_footprint_uv(p,&w->timbers[owner],&w->anchors[owner],&f))
-                return reference_issue(t->id,"I13/I9","placed timber on same face","at-face timber missing/unplaced/different face");
-            Coord lo=along?f.min_u:f.min_v,hi=along?f.max_u:f.max_v;
-            widths[0][0]=lo-t->size_a; widths[0][1]=lo;
-            widths[1][0]=hi; widths[1][1]=hi+t->size_a;
-            contacts[0][0]=contacts[1][0]=along?f.min_v:f.min_u;
-            contacts[0][1]=contacts[1][1]=along?f.max_v:f.max_u; n=2;
-        } else {
-            PolygonLoop2 rect; const PolygonLoop2 *loop;
-            int hole=a->ref_hole,edge=a->ref_edge;
-            if(p->derived_fill_id){
-                if(!a->ref_derived_key[0])return reference_issue(t->id,"R41/I13","one exact source/segment/total key","derived edge index aliases are forbidden; an exact key is required");
-                if(!dp_edge_resolve(w,p,a->ref_derived_key,&hole,&edge))return reference_issue(t->id,"R41/I13","one exact source/segment/total key",g_engineering_error);
-                size_t component=hole<0?(size_t)edge/POLY_MAX_VERTICES:(size_t)hole/POLY_MAX_HOLES;
-                b=&p->components[component];if(hole<0)edge%=POLY_MAX_VERTICES;else hole%=POLY_MAX_HOLES;
-            } else if(a->ref_derived_key[0])return reference_issue(t->id,"D4/R41","derived placement for edge key","key on ordinary placement");
-            if (!b) { if (hole>=0) return false; placement_outline(p,NULL,&rect); loop=&rect; }
-            else {
-                if (hole>=(int)b->hole_count) return reference_issue(t->id,"I13","existing hole edge","hole missing");
-                loop=hole<0?&b->outline:&b->holes[hole];
-            }
-            SurfaceSegment2 e; SurfacePoint2 normal;
-            if (edge<0 || !loop_get_edge_segment(loop,(size_t)edge,&e) ||
-                !loop_edge_outward_normal(loop,(size_t)edge,&normal))
-                return reference_issue(t->id,"I13","existing edge","edge missing");
-            if ((e.start.u==e.end.u)!=along)
-                return reference_issue(t->id,"I13","edge parallel to length","at-face 邊必須平行於長度軸");
-            Coord c=along?e.start.u:e.start.v;
-            Coord inward=(along?normal.u:normal.v)*(hole<0?-1:1);
-            widths[0][0]=inward>0?c:c-t->size_a; widths[0][1]=widths[0][0]+t->size_a;
-            contacts[0][0]=along?coord_min(e.start.v,e.end.v):coord_min(e.start.u,e.end.u);
-            contacts[0][1]=along?coord_max(e.start.v,e.end.v):coord_max(e.start.u,e.end.u); n=1;
-        }
-    } else return reference_issue(t->id,"I12","at-line or at-face","obsolete anchor");
-
-    StopFaceRef between[2];
-    for (int i=0;i<2;++i) {
-        const ReferenceFace *r=&a->between[i];between[i]=(StopFaceRef){r->kind==1,r->hole,r->edge,r->timber};
-        if(!a->has_between)continue;
-        if(r->kind==2){if(!dp_edge_resolve(w,p,r->key,&between[i].hole,&between[i].edge))return reference_issue(t->id,"R41/D18","one exact source key","between derived key missing, stale or ambiguous");}
-        else if(p->derived_fill_id&&r->kind!=1)return reference_issue(t->id,"R41/D18","source key or timber","derived edge index aliases are forbidden");
-    }
-    Timber best=*t; TimberAnchor best_a=*a; int found=0;
-    size_t issues_before=g_reference_issue_count;
-    char last[256]="R6: 沒有任何合法跨距", candidates[180]="";
-    for (int k=0;k<n;++k) {
-        Coord start,end; char err[256]="";
-        SpanStatus status=resolve_auto_span(w,p,b,along,widths[k][0],widths[k][1],
-            contact,contact?contacts[k][0]:0,contact?contacts[k][1]:0,
-            a->has_through,a->through,a->has_between?between:NULL,scoped?&child_scope:NULL,&start,&end,err,sizeof err);
-        if (status!=SPAN_OK) { snprintf(last,sizeof last,"%s",err); continue; }
-        if (!coord_in_range(end-start)) { snprintf(last,sizeof last,"D1 auto length exceeds 100000000 mm"); continue; }
-        SurfaceRegion2 rect=along?(SurfaceRegion2){widths[k][0],start,widths[k][1],end}:
-            (SurfaceRegion2){start,widths[k][0],end,widths[k][1]};
-        if (scoped && (rect.min_u<child_scope.min_u || rect.max_u>child_scope.max_u ||
-            rect.min_v<child_scope.min_v || rect.max_v>child_scope.max_v)) {
-            snprintf(last,sizeof last,"I13：角材的完整足跡必須留在子格內"); continue;
-        }
-        Timber probe=*t; probe.length=end-start; probe.placed=false;
-        const SpaceBoundarySurface *selected=placement_boundary_for_rect(p,b,&rect);
-        SurfacePoint2 uv=anchor_corner_from_rect(p,a->length_direction,a->depth_side,&rect);
-        bool checks=true; char first_check[256]="";
-        if (!surface_primary_axis_check(w,p->id,&probe,along,err,sizeof err)) {
-            if (checks) snprintf(first_check,sizeof first_check,"%s",err);
-            checks=false; snprintf(last,sizeof last,"%s",err);
-            if (n==1) reference_issue(t->id,"D17/I21","length axis consistent with same-face roles",err);
-        }
-        if (!timber_end_face_check(w,p,selected,&probe,along,start,end,widths[k][0],widths[k][1],err,sizeof err)) {
-            if (checks) snprintf(first_check,sizeof first_check,"%s",err);
-            checks=false; snprintf(last,sizeof last,"%s",err);
-            if (n==1) reference_issue(t->id,"I19/I22","each stop has strictly higher cut priority, subject to boundary exceptions",err);
-        }
-        if (!timber_boundary_role_check(p,selected,&probe,along,start,end,widths[k][0],widths[k][1],err,sizeof err)) {
-            if (checks) snprintf(first_check,sizeof first_check,"%s",err);
-            checks=false; snprintf(last,sizeof last,"%s",err);
-            if (n==1) reference_issue(t->id,"I20/R18","boundary covers its full fixed outline edge",err);
-        }
-        if (!checks) { set_revalidate_error(first_check); continue; }
-        if (!timber_place_a0_on_surface(&probe,p,b,uv,(SurfaceDirection)a->length_direction,(SurfaceDepthSide)a->depth_side)) {
-            snprintf(last,sizeof last,"I5/I6 footprint outside effective region or FREE edge"); continue;
-        }
-        best=probe; best_a=*a; best_a.uv=uv; ++found;
-        size_t used=strlen(candidates);
-        snprintf(candidates+used,sizeof candidates-used," cross[%lld,%lld] span[%lld,%lld]",(long long)widths[k][0],(long long)widths[k][1],(long long)start,(long long)end);
-    }
-    if (found!=1) {
-        if (n==1 && g_reference_issue_count>issues_before) return false;
-        if (found>1) { snprintf(last,sizeof last,"R3/I13 ambiguous at-face candidates:%s",candidates); }
-        const char *clause=strstr(last,"V_CUT_PRIORITY")?"I19/I22":strstr(last,"V_PRIMARY_AXIS")?"D17/I21":
-            strstr(last,"V_BOUNDARY")?"I20/R18":strstr(last,"D1")?"D1":found>1?"I13/R3":"R6/I5/I6";
-        return reference_issue(t->id,clause,"one non-overlapping supported span; role and direction constraints satisfied",last);
-    }
-    *t=best; *a=best_a; return true;
+    AppMemberReferenceContext *c=user;World *w=c->world;if(i>=w->timber_count)return false;
+    const TimberAnchor *a=&w->anchors[i];out->member=w->timbers[i];out->wanted=c->evaluation&&c->evaluation->wanted[i];
+    out->anchor=(WoodMemberReference){.placement_id=a->placement_id,.anchor_kind=a->anchor_kind,.length_direction=a->length_direction,.depth_side=a->depth_side,
+        .ref_grid=a->ref_grid,.ref_grid_axis=a->ref_grid_axis,.ref_grid_index=a->ref_grid_index,.ref_grid_has_band=a->ref_grid_has_band,.ref_grid_band=a->ref_grid_band,
+        .ref_rule=a->ref_rule,.ref_hole=a->ref_hole,.ref_edge=a->ref_edge,.has_through=a->has_through,.through=a->through,
+        .ref_guide=a->ref_guide,.ref_timber=a->ref_timber,.ref_is_timber=a->ref_is_timber,.order=a->order,.has_between=a->has_between};
+    memcpy(out->anchor.ref_derived_key,a->ref_derived_key,sizeof out->anchor.ref_derived_key);
+    for(int k=0;k<2;++k){const ReferenceFace *r=&a->between[k];WoodMemberReferenceFace *d=&out->anchor.between[k];
+        d->kind=r->kind;d->hole=r->hole;d->edge=r->edge;d->timber=r->timber;memcpy(d->key,r->key,sizeof d->key);}
+    return true;
 }
-
-static bool reference_compute_timber(ReferenceEval *ctx, size_t i)
+static bool app_member_reference_guide(void *user,size_t i,WoodMemberGuideFact *out)
 {
-    World *w=ctx->world; Timber *t=&w->timbers[i]; TimberAnchor *a=&w->anchors[i];
-    if(ctx->use_current_values&&t->placed)return true;
-    if(!ctx->wanted[i])return false;
-    /* Placement order is the implicit dependency order for stop faces (I9).
-     * Clear all derived placements before replay so later timbers cannot cut predecessors. */
-    bool ok=true;
-    for (size_t j=0;j<w->timber_count;++j)
-        if (ctx->wanted[j] && w->anchors[j].order<a->order && w->anchors[j].placement_id==a->placement_id)
-            (void)reference_eval_timber_relation(ctx,j,GEO_DEPENDENCY_EVALUATE_BEFORE);
-    if (a->anchor_kind==ANCHOR_AT_LINE) {
-        bool exists=false;
-        for (size_t j=0;j<geo_guides_count(&w->guide_lines);++j) if (geo_guides_values(&w->guide_lines)[j].id==a->ref_guide) {
-            exists=true; if (!reference_eval_guide(ctx,j)) ok=false;
+    AppMemberReferenceContext *c=user;const GuideLine *g=geo_guides_at(&c->world->guide_lines,i);if(!g)return false;
+    *out=(WoodMemberGuideFact){g->id,g->placement_id,g->direction==GUIDE_ALONG_V,g->offset};return true;
+}
+static bool app_member_reference_placement(void *user,uint32_t id,WoodMemberPlacementFact *out)
+{
+    AppMemberReferenceContext *c=user;
+    if(!app_placement_read(c->world,id,&c->geometry->placement))return false;
+    const SpaceBoundarySurface *b=app_placement_boundary(c->world,&c->geometry->placement,&c->geometry->boundary);
+    if(c->evaluation&&!reference_member_placement(c->evaluation,&c->geometry->placement,b?&c->geometry->boundary:NULL))return false;
+    c->geometry->boundary_view=placement_effective_boundary(&c->geometry->placement,b,&c->geometry->effective);
+    *out=(WoodMemberPlacementFact){id,c->geometry->placement.frame,c->geometry->placement.derived_fill_id!=0,c->geometry->placement.derived_h};return true;
+}
+static bool app_member_reference_grid(void *user,uint32_t id,WoodMemberGridFact *out)
+{
+    AppMemberReferenceContext *c=user;const ReferenceGrid *g=world_find_grid(c->world,id);if(!g)return false;
+    *out=(WoodMemberGridFact){g->id,g->placement_id,g->is_subgrid};return true;
+}
+static bool app_member_reference_grid_line(void *user,const WoodMemberReference *a,Coord *out,char *err,size_t cap)
+{
+    AppMemberReferenceContext *c=user;World *w=c->world;const ReferenceGrid *g=world_find_grid(w,a->ref_grid);
+    if(c->evaluation&&!c->evaluation->use_current_values)
+        return wood_grid_sources_line(c->evaluation->grid_sources,a->ref_grid,a->placement_id,a->ref_grid_axis,a->ref_grid_index,true,a->ref_grid_has_band,a->ref_grid_band,out,NULL,err,cap);
+    return grid_anchor_line_coord(w->grid_applications.items,w->grid_applications.count,g,&c->geometry->placement,c->geometry->boundary_view,a->ref_grid_axis,a->ref_grid_index,a->ref_grid_has_band,a->ref_grid_band,out,err,cap);
+}
+static bool app_member_reference_grid_scope(void *user,uint32_t id,SurfaceRegion2 *out,char *err,size_t cap)
+{
+    AppMemberReferenceContext *c=user;World *w=c->world;const ReferenceGrid *g=world_find_grid(w,id);
+    if(c->evaluation&&!c->evaluation->use_current_values)return wood_grid_sources_cell(c->evaluation->grid_sources,id,out,err,cap);
+    return grid_cell_bounds(w->grid_applications.items,w->grid_applications.count,g,&c->geometry->placement,c->geometry->boundary_view,out,err,cap);
+}
+static bool app_member_reference_rule(void *user,const GeoGridRuleLineRef *ref,uint32_t pid,Coord *out,SurfaceRegion2 *scope,char *err,size_t cap)
+{AppMemberReferenceContext *c=user;return c->evaluation&&!c->evaluation->use_current_values?
+    wood_grid_sources_rule_line(c->evaluation->grid_sources,ref,pid,out,scope,err,cap):grid_rule_line(c->world,ref,pid,out,scope,err,cap);}
+static bool app_member_reference_footprint(void *user,size_t i,uint32_t pid,SurfaceRegion2 *out)
+{AppMemberReferenceContext *c=user;(void)pid;return timber_a0_footprint_uv(&c->geometry->placement,&c->world->timbers[i],&c->world->anchors[i],out);}
+static bool app_member_reference_key(void *user,uint32_t pid,const char *key,int *hole,int *edge,char *err,size_t cap)
+{
+    AppMemberReferenceContext *c=user;(void)pid;if(dp_edge_resolve(c->world,&c->geometry->placement,key,hole,edge))return true;
+    snprintf(err,cap,"%s",g_engineering_error);return false;
+}
+static WoodMemberEdgeStatus app_member_reference_edge(void *user,uint32_t pid,int hole,int edge,WoodMemberEdgeFact *out)
+{
+    AppMemberReferenceContext *c=user;(void)pid;const PlacementSurface *p=&c->geometry->placement;
+    const SpaceBoundarySurface *b=c->geometry->boundary_view;PolygonLoop2 rect;const PolygonLoop2 *loop;
+    if(p->derived_fill_id){size_t component=hole<0?(size_t)edge/POLY_MAX_VERTICES:(size_t)hole/POLY_MAX_HOLES;
+        b=&p->components[component];c->geometry->boundary_view=b;if(hole<0)edge%=POLY_MAX_VERTICES;else hole%=POLY_MAX_HOLES;}
+    if(!b){if(hole>=0)return WOOD_MEMBER_EDGE_NO_DOMAIN_HOLE;placement_outline(p,NULL,&rect);loop=&rect;}
+    else{if(hole>=(int)b->hole_count)return WOOD_MEMBER_EDGE_MISSING_HOLE;loop=hole<0?&b->outline:&b->holes[hole];}
+    if(edge<0||!loop_get_edge_segment(loop,(size_t)edge,&out->segment)||!loop_edge_outward_normal(loop,(size_t)edge,&out->outward))return WOOD_MEMBER_EDGE_MISSING;
+    out->hole=hole;return WOOD_MEMBER_EDGE_OK;
+}
+static bool app_member_reference_evaluate(void *user,size_t i,GeoDependencyKind relation)
+{AppMemberReferenceContext *c=user;return reference_eval_timber_relation(c->evaluation,i,relation);}
+static bool app_member_reference_evaluate_guide(void *user,size_t i)
+{AppMemberReferenceContext *c=user;return reference_eval_guide(c->evaluation,i);}
+static bool app_member_reference_span(void *user,uint32_t pid,const WoodMemberSpanRequest *r,Coord *start,Coord *end,char *err,size_t cap)
+{
+    AppMemberReferenceContext *c=user;(void)pid;return resolve_auto_span(c->world,&c->geometry->placement,c->geometry->boundary_view,r->along_v,r->cross_lo,r->cross_hi,
+        r->contact,r->contact_lo,r->contact_hi,r->through,r->through_at,r->between?r->stops:NULL,r->scoped?&r->scope:NULL,start,end,err,cap)==SPAN_OK;
+}
+static bool app_member_reference_primary(void *user,uint32_t pid,const WoodMember *member,bool along,char *err,size_t cap)
+{AppMemberReferenceContext *c=user;return surface_primary_axis_check(c->world,pid,member,along,err,cap);}
+static bool app_member_reference_end(void *user,uint32_t pid,const WoodMember *member,const WoodMemberSpanRequest *r,Coord start,Coord end,const SurfaceRegion2 *rect,char *err,size_t cap)
+{
+    AppMemberReferenceContext *c=user;(void)pid;const SpaceBoundarySurface *selected=placement_boundary_for_rect(&c->geometry->placement,c->geometry->boundary_view,rect);
+    return timber_end_face_check(c->world,&c->geometry->placement,selected,member,r->along_v,start,end,r->cross_lo,r->cross_hi,err,cap);
+}
+static bool app_member_reference_boundary(void *user,uint32_t pid,const WoodMember *member,const WoodMemberSpanRequest *r,Coord start,Coord end,const SurfaceRegion2 *rect,char *err,size_t cap)
+{
+    AppMemberReferenceContext *c=user;(void)pid;const SpaceBoundarySurface *selected=placement_boundary_for_rect(&c->geometry->placement,c->geometry->boundary_view,rect);
+    return timber_boundary_role_check(&c->geometry->placement,selected,member,r->along_v,start,end,r->cross_lo,r->cross_hi,err,cap);
+}
+static bool app_member_reference_place(void *user,uint32_t pid,WoodMember *member,SurfacePoint2 uv,int direction,int depth)
+{AppMemberReferenceContext *c=user;(void)pid;return timber_place_a0_on_surface(member,&c->geometry->placement,c->geometry->boundary_view,uv,(SurfaceDirection)direction,(SurfaceDepthSide)depth);}
+static void app_member_reference_write(void *user,size_t i,const WoodMember *member,SurfacePoint2 uv)
+{AppMemberReferenceContext *c=user;c->world->timbers[i]=*member;c->world->anchors[i].uv=uv;}
+static bool app_member_reference_issue(void *user,uint32_t id,const char *clause,const char *expected,const char *actual)
+{(void)user;return reference_issue(id,clause,expected,actual);}
+static size_t app_member_reference_issue_count(void *user)
+{(void)user;return g_reference_issue_count;}
+static void app_member_reference_first_error(void *user,const char *error)
+{(void)user;set_revalidate_error(error);}
+static WoodMemberReferenceContext app_member_reference_context(AppMemberReferenceContext *c)
+{
+    return (WoodMemberReferenceContext){.user=c,.use_current_values=c->evaluation&&c->evaluation->use_current_values,
+        .member_count=c->world->timber_count,.guide_count=geo_guides_count(&c->world->guide_lines),
+        .member_at=app_member_reference_at,.guide_at=app_member_reference_guide,.placement=app_member_reference_placement,
+        .grid=app_member_reference_grid,.grid_line=app_member_reference_grid_line,.grid_scope=app_member_reference_grid_scope,.rule_line=app_member_reference_rule,
+        .member_footprint=app_member_reference_footprint,.resolve_key=app_member_reference_key,.edge=app_member_reference_edge,
+        .evaluate_member=app_member_reference_evaluate,.evaluate_guide=app_member_reference_evaluate_guide,
+        .span=app_member_reference_span,.primary_axis=app_member_reference_primary,.end_faces=app_member_reference_end,.boundary_role=app_member_reference_boundary,
+        .place=app_member_reference_place,.write=app_member_reference_write,.issue=app_member_reference_issue,.issue_count=app_member_reference_issue_count,.first_error=app_member_reference_first_error};
+}
+static bool reference_place_geometry(ReferenceEval *evaluation,World *w,size_t ti)
+{
+    AppMemberPlacementScratch scratch;AppMemberReferenceContext c={0};c.evaluation=evaluation;c.world=w;c.geometry=&scratch;
+    WoodMemberReferenceContext context=app_member_reference_context(&c);ReferenceEval *previous=g_reference_active;
+    g_reference_active=evaluation;bool ok=wood_member_reference_place(&context,ti);g_reference_active=previous;
+    return ok&&(!evaluation||!evaluation->source_failure);
+}
+static bool reference_compute_timber(ReferenceEval *ctx,size_t i)
+{
+    if(!ctx->use_current_values&&ctx->wanted[i]){
+        WoodEngineeringContext engineering=app_eng_context(ctx->world);
+        wood_engineering_sources_bind(ctx->engineering_sources,&engineering);
+        for(int field=0;field<2;++field){EngTarget target={1,ctx->world->timbers[i].id,0,field};
+            const EngBinding *binding=wood_eng_binding(&engineering,&target);GeoCoord dimension;
+            if(binding){if(!wood_eng_effective(&engineering,binding,&dimension,NULL,0))return false;
+                if(field)ctx->world->timbers[i].size_b=dimension;else ctx->world->timbers[i].size_a=dimension;}
         }
-        if (!exists) ok=false;
     }
-    uint32_t refs[3]={a->ref_timber,a->has_between&&a->between[0].kind==1?a->between[0].timber:0,
-        a->has_between&&a->between[1].kind==1?a->between[1].timber:0};
-    bool ref_used[3]={a->ref_is_timber,a->has_between&&a->between[0].kind==1,a->has_between&&a->between[1].kind==1};
-    for (int k=0;k<3;++k) if (ref_used[k]) {
-        int j=reference_timber_index(w,refs[k]);
-        if (j<0 || w->anchors[j].order>=a->order || !reference_eval_timber(ctx,(size_t)j)) ok=false;
-    }
-    if (!ok) {
-        return reference_issue(t->id,"I9/I13","valid earlier reference dependencies","one or more referenced objects cannot be reconstructed");
-    }
-    ok=reference_place_geometry(w,i);
-    return ok;
+    AppMemberReferenceContext c={0};c.evaluation=ctx;c.world=ctx->world;WoodMemberReferenceContext context=app_member_reference_context(&c);bool place=false;if(!wood_member_reference_compute(&context,i,&place))return false;return !place||reference_place_geometry(ctx,ctx->world,i);
 }
 
 #include "../geometry-app/native/reference_sources.inc"
@@ -547,17 +570,41 @@ static bool reference_check_all(const World *w)
     return ok;
 }
 
+static void reference_sources_owned_free(void *opaque)
+{ReferenceEval *ctx=opaque;reference_sources_dispose(ctx);free(ctx);}
+static ReferenceEval *reference_sources_begin_candidate(World *w)
+{
+    if(!g_active_app_candidate||w!=&g_active_app_candidate->after)return NULL;
+    AppCandidate *owner=g_active_app_candidate->control;
+    GeoEvalContext *sources=geo_candidate_sources(app_candidate_core(owner));
+    app_candidate_set_evaluation_state(owner,NULL,NULL);
+    if(!sources||!geo_eval_reset(sources))return NULL;
+    ReferenceEval *ctx=calloc(1,sizeof *ctx);if(!ctx)return NULL;
+    ctx->world=w;ctx->sources=sources;ctx->sources_borrowed=true;
+    app_candidate_set_evaluation_state(owner,ctx,reference_sources_owned_free);
+    return reference_sources_ensure(ctx)?ctx:NULL;
+}
+/* Start the shared graph at the first evaluable definition phase. The later
+ * guide/member pass retains this context and all parameter AST edges. */
+static bool reference_parameters_rebuild(World *w,char *error,size_t cap)
+{
+    if(!g_active_app_candidate||w!=&g_active_app_candidate->after)return parameters_rebuild(w,error,cap);
+    g_parameter_error[0]=0;GeoParameterError issue;bool ok;
+    if(w->parameter_loading)ok=parameter_fail("I39: unterminated parameter block");
+    else{
+        ReferenceEval *ctx=reference_sources_begin_candidate(w);
+        if(!ctx)ok=parameter_fail("UNSUPPORTED/CAPACITY: parameter evaluation memory");
+        else{ok=geo_parameter_sources_rebuild(ctx->parameter_sources,&issue);if(!ok)parameter_kernel_error(w,&issue);}
+    }
+    if(!ok)snprintf(error,cap,"%s",g_parameter_error);return ok;
+}
 static bool reference_rebuild(World *w)
 {
     ReferenceEval local={0},*ctx=&local;bool persistent=false;
     if(g_active_app_candidate&&w==&g_active_app_candidate->after){
-        AppCandidate *owner=g_active_app_candidate->control;
-        GeoEvalContext *sources=geo_candidate_sources(app_candidate_core(owner));
-        app_candidate_set_evaluation_state(owner,NULL,NULL);
-        if(!sources||!geo_eval_reset(sources))return false;
-        ctx=calloc(1,sizeof *ctx);if(!ctx)return false;
-        ctx->sources=sources;ctx->sources_borrowed=true;persistent=true;
-        app_candidate_set_evaluation_state(owner,ctx,free);
+        ctx=app_candidate_evaluation_state(g_active_app_candidate->control);
+        if(!ctx||ctx->world!=w)ctx=reference_sources_begin_candidate(w);
+        if(!ctx)return false;persistent=true;
     }
     ctx->world=w;bool ok=true;
     geo_guides_reset_resolved(&w->guide_lines);
@@ -792,8 +839,8 @@ static bool reference_snap(World *w,uint32_t pid,GuideDirection dir,uint32_t exc
             else snprintf(candidates[n++],REF_EXPR_MAX,"vertex:h%dv%u:%c",h,(unsigned)i,axis);
         }
     }
-    for (size_t i=0;i<w->grid_count;++i) if (w->grids[i].placement_id==pid) {
-        const ReferenceGrid *grid=&w->grids[i];
+    for (size_t i=0;i<w->grid_applications.count;++i) if (w->grid_applications.items[i].placement_id==pid) {
+        const ReferenceGrid *grid=&w->grid_applications.items[i];
         Coord coords[GRID_MAX_LINES]; int64_t indices[GRID_MAX_LINES]; size_t count=0; int a=axis=='u'?0:1;
         if (grid->axis[a].stagger_set) continue;
         if (grid->from_binding) {
@@ -808,7 +855,7 @@ static bool reference_snap(World *w,uint32_t pid,GuideDirection dir,uint32_t exc
                         indices[count++]=k;
                 }
             }
-        } else if (!grid_sample_indices_in(w->grids,w->grid_count,grid,p,b,a,indices,coords,&count)) continue;
+        } else if (!grid_sample_indices_in(w->grid_applications.items,w->grid_applications.count,grid,p,b,a,indices,coords,&count)) continue;
         for (size_t j=0;j<count && n<SNAP_MAX;++j)
             snprintf(candidates[n++],REF_EXPR_MAX,"grid:%u:%c:%lld",grid->id,axis,(long long)indices[j]);
     }

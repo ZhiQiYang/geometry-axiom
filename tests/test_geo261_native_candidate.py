@@ -100,15 +100,15 @@ class NativeCandidate(unittest.TestCase):
 
     def test_before_integrity_gate_negative_control_fails_normal_assertion(self):
         self.control("before-gate", "before-seal",
-                     "if(strcmp(hash,binding->before_hash))return GEO_CANDIDATE_STATE_CHANGED;", "(void)hash;")
+                     "if(!geo_candidate_digest_matches(binding->before,binding->size,binding->before_hash,binding->before_bytes))return GEO_CANDIDATE_STATE_CHANGED;", "/* negative control: omit integrity gate */")
 
     def test_current_integrity_gate_negative_control_fails_normal_assertion(self):
         self.control("current-gate", "tampering",
-                     "if(strcmp(hash,binding->current_hash))return GEO_CANDIDATE_STATE_CHANGED;", "(void)hash;")
+                     "if(!geo_candidate_digest_matches(binding->current,binding->size,binding->current_hash,binding->current_bytes))return GEO_CANDIDATE_STATE_CHANGED;", "/* negative control: omit integrity gate */")
 
     def test_actual_provider_gate_negative_control_fails_normal_assertion(self):
         self.control("provider-gate", "providers",
-                     "if(strcmp(hash,candidate->providers_hash))return GEO_CANDIDATE_PROVIDER_CHANGED;", "(void)hash;")
+                     "if(strcmp(hash,candidate->providers_hash))return GEO_CANDIDATE_PROVIDER_CHANGED;", "/* negative control: omit integrity gate */")
 
 
 if __name__ == "__main__":

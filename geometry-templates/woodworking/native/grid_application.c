@@ -114,6 +114,8 @@ bool wood_grid_child_check(const WoodGridContext *c,const WoodGridApplication *g
 static size_t wood_grid_binding_index(const GeoGridStore *s,uint32_t id)
 {size_t i=0;while(i<geo_grid_bindings_count(s)&&geo_grid_bindings_at(s,i)->id!=id)++i;return i;}
 bool wood_grid_binding_cache(const WoodGridContext *c,const GeoGridBinding *binding,WoodGridApplication *g,char *err,size_t cap)
+{if(c->evaluation&&c->evaluation->binding)return c->evaluation->binding(c->evaluation->user,binding,g,err,cap);return wood_grid_binding_cache_direct(c,binding,g,err,cap);}
+bool wood_grid_binding_cache_direct(const WoodGridContext *c,const GeoGridBinding *binding,WoodGridApplication *g,char *err,size_t cap)
 {
     GeoGridBindingCache cache={0};GeoGridStoreError detail;
     for(int axis=0;axis<2;++axis){cache.axis[axis]=g->axis[axis];cache.lattice[axis]=(GeoLattice){g->lattice_base[axis],g->lattice_step[axis],g->lattice_index[axis]};}
@@ -140,7 +142,8 @@ bool wood_grid_bindings_rebuild(WoodGridContext *c,char *err,size_t cap)
     for(size_t i=0;i<c->state->count;++i){WoodGridApplication *g=&c->state->items[i];if(!g->from_binding)continue;
         const GeoGridBinding *binding=geo_grid_bindings_find(c->sources,g->binding_id);WoodGridHost host;
         if(!binding||!c->host(c->user,g->placement_id,&host)||!host.boundary_id||host.boundary_id!=binding->boundary_id||g->is_subgrid||g->from_system||wood_eng_object_bound(&c->engineering,0,g->id))goto invalid;
-        if(!wood_grid_binding_cache(c,binding,g,err,cap))return false;
+        if(c->evaluation&&c->evaluation->application){if(!c->evaluation->application(c->evaluation->user,g,err,cap))return false;}
+        else if(!wood_grid_binding_cache(c,binding,g,err,cap))return false;
     }
     return true;
 invalid:return wood_grid_error(err,cap,"D30/I37: invalid grid-binding identity, capacity or application");
@@ -199,33 +202,63 @@ bool wood_grid_systems_rebuild(WoodGridContext *c,char *error,size_t cap)
         snprintf(error,cap,"I37: grid-system capacity exceeded"); return false;
     }
     for(size_t i=0;i<geo_grid_systems_count(c->sources);++i){
-        GeoGridStoreError detail;
-        if(!geo_grid_system_evaluate(c->sources,i,c->coordinate,c->user,&detail))
-            return wood_grid_system_error(c,&detail,error,cap);
         const GeoGridSystem *system=geo_grid_systems_at(c->sources,i);
-        if(!wood_grid_source_main_valid(system,wood_grid_source_main_along(c->state,system->id))){
-            snprintf(error,cap,"I37: grid-system %u has an invalid definition",system->id);return false;
-        }
-        if(!wood_grid_rules_valid(system,error,cap))return false;
+        if(c->evaluation&&c->evaluation->system){if(!c->evaluation->system(c->evaluation->user,system->id,error,cap))return false;}
+        else if(!wood_grid_system_evaluate_direct(c,system->id,error,cap))return false;
         for(size_t j=0;j<i;++j)if(geo_grid_systems_at(c->sources,j)->id==system->id){
             snprintf(error,cap,"I37: duplicate grid-system identity");return false;
         }
     }
     for (size_t i=0;i<c->state->count;++i) {
         WoodGridApplication *g=&c->state->items[i]; if (!g->from_system) continue;
+        if(c->evaluation&&c->evaluation->application){if(!c->evaluation->application(c->evaluation->user,g,error,cap))return false;}
+        else if(!wood_grid_application_evaluate_direct(c,g,error,cap))return false;
+    }
+    return true;
+}
+bool wood_grid_system_evaluate_direct(WoodGridContext *c,uint32_t id,char *error,size_t cap)
+{
+    size_t index=0;while(index<geo_grid_systems_count(c->sources)&&geo_grid_systems_at(c->sources,index)->id!=id)++index;
+    GeoGridStoreError detail;
+    if(!geo_grid_system_evaluate(c->sources,index,c->coordinate,c->user,&detail))return wood_grid_system_error(c,&detail,error,cap);
+    const GeoGridSystem *system=geo_grid_systems_at(c->sources,index);
+    if(!wood_grid_source_main_valid(system,wood_grid_source_main_along(c->state,system->id)))return wood_grid_error(error,cap,"I37: grid-system %u has an invalid definition",system->id);
+    return wood_grid_rules_valid(system,error,cap);
+}
+bool wood_grid_application_dimension_direct(const WoodGridContext *c,const WoodGridApplication *g,int axis,int field,GeoCoord *out,char *error,size_t cap)
+{
+    if(!c||!g||!out||axis<0||axis>1||field<0||field>1)return false;
+    EngTarget target={0,g->id,axis,field};EngBinding *binding=wood_eng_binding((WoodEngineeringContext *)&c->engineering,&target);
+    if(binding){
+        if(!wood_eng_effective((WoodEngineeringContext *)&c->engineering,binding,out,NULL,0))return wood_grid_error(error,cap,"%s",c->engineering.error);
+    }else *out=field?g->axis[axis].gap:g->axis[axis].body;
+    return true;
+}
+bool wood_grid_application_evaluate_direct(WoodGridContext *c,WoodGridApplication *g,char *error,size_t cap)
+{
+    if(g->from_system){
         const GeoGridSystem *s=geo_grid_systems_find(c->sources,g->system_id);
-        if (!s || geo_grid_system_is_infinite(s) || g->from_binding || g->is_subgrid || !geo_coord_in_range(g->system_origin[0]) || !geo_coord_in_range(g->system_origin[1])) {
-            snprintf(error,cap,"I37: grid %u has a missing or invalid grid-system source",g->id); return false;
-        }
+        if(!s||geo_grid_system_is_infinite(s)||g->from_binding||g->is_subgrid||!geo_coord_in_range(g->system_origin[0])||!geo_coord_in_range(g->system_origin[1]))
+            return wood_grid_error(error,cap,"I37: grid %u has a missing or invalid grid-system source",g->id);
         g->main_along=wood_grid_source_main_along(c->state,s->id);
-        for (int axis=0;axis<2;++axis) {
-            GeoGridAxisDef *a=&g->axis[axis]; *a=s->axis[axis]; GeoCoord offset=g->system_origin[axis];
-            if (a->source==GEO_GRID_SOURCE_EXPLICIT) for (size_t k=0;k<a->count;++k) a->coords[k]+=offset;
-            else if (a->source==GEO_GRID_SOURCE_SERIES) a->start+=offset;
-            else if (a->source==GEO_GRID_SOURCE_BODY_GAP) a->anchor+=offset;
-            if (!geo_grid_axis_valid(a)) {
-                snprintf(error,cap,"I37: grid %u %c translated coordinates exceed D1 range",g->id,axis?'v':'u'); return false;
-            }
+        for(int axis=0;axis<2;++axis){GeoGridAxisDef *a=&g->axis[axis];*a=s->axis[axis];GeoCoord offset=g->system_origin[axis];
+            if(a->source==GEO_GRID_SOURCE_EXPLICIT)for(size_t k=0;k<a->count;++k)a->coords[k]+=offset;
+            else if(a->source==GEO_GRID_SOURCE_SERIES)a->start+=offset;
+            else if(a->source==GEO_GRID_SOURCE_BODY_GAP)a->anchor+=offset;
+            if(!geo_grid_axis_valid(a))return wood_grid_error(error,cap,"I37: grid %u %c translated coordinates exceed D1 range",g->id,axis?'v':'u');
+        }
+        return true;
+    }
+    if(g->from_binding){
+        const GeoGridBinding *binding=geo_grid_bindings_find(c->sources,g->binding_id);WoodGridHost host;
+        if(!binding||!c->host(c->user,g->placement_id,&host)||!host.boundary_id||host.boundary_id!=binding->boundary_id||g->is_subgrid||g->from_system||wood_eng_object_bound(&c->engineering,0,g->id))
+            return wood_grid_error(error,cap,"D30/I37: invalid grid-binding identity, capacity or application");
+        return wood_grid_binding_cache(c,binding,g,error,cap);
+    }
+    if(!g->is_subgrid)for(int axis=0;axis<2;++axis)if(g->axis[axis].source==GEO_GRID_SOURCE_BODY_GAP){
+        for(int field=0;field<2;++field){GeoCoord *out=field?&g->axis[axis].gap:&g->axis[axis].body;
+            bool ok=c->evaluation&&c->evaluation->dimension?c->evaluation->dimension(c->evaluation->user,g,axis,field,out,error,cap):wood_grid_application_dimension_direct(c,g,axis,field,out,error,cap);
+            if(!ok)return false;
         }
     }
     return true;

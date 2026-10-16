@@ -11,13 +11,16 @@ typedef uint32_t GeoProviderToken;
 typedef struct { GeoProviderToken provider; const void *key; size_t key_size; } GeoSourceRef;
 typedef enum {
     GEO_SOURCE_QUANTITY=0, GEO_SOURCE_AXIS_POSITION, GEO_SOURCE_FRAME,
-    GEO_SOURCE_REGION_SET, GEO_SOURCE_BOX, GEO_SOURCE_FEATURE
+    GEO_SOURCE_REGION_SET, GEO_SOURCE_BOX, GEO_SOURCE_FEATURE, GEO_SOURCE_DEFINITION
 } GeoSourceValueKind;
 typedef struct { bool has_placement; uint32_t placement; int axis; } GeoSourceContext;
 typedef struct { GeoCoord coordinate; GeoSourceContext context; } GeoAxisPosition;
 /* Feature keys and geometric views borrow the same candidate's storage until
  * the context is destroyed. Provider definitions and opaque source keys do not. */
 typedef struct { const void *key; size_t key_size; GeoSegment3 segment; } GeoFeatureValue;
+/* Schema and canonical content belong to a registered provider's candidate.
+ * K retains the typed definition identity without parsing a domain schema. */
+typedef struct { const char *schema; const void *content; size_t content_size; } GeoDefinitionValue;
 typedef struct {
     GeoSourceValueKind kind;
     union {
@@ -27,6 +30,7 @@ typedef struct {
         GeoRegionSetView regions;
         GeoBox3 box;
         GeoFeatureValue feature;
+        GeoDefinitionValue definition;
     } as;
 } GeoSourceValue;
 typedef struct {
@@ -60,6 +64,7 @@ typedef struct {
     GeoSourceState state;
     GeoSourceStatus status;
     const GeoSourceValue *value;
+    bool described;
 } GeoSourceNodeView;
 typedef struct { size_t consumer, source; GeoDependencyKind kind; } GeoSourceEdge;
 
@@ -68,6 +73,9 @@ void geo_eval_destroy(GeoEvalContext *);
 /* Registration closes when the first source is requested. Each token and
  * namespace must be unique; callbacks stay bound to one candidate snapshot. */
 bool geo_eval_register(GeoEvalContext *,const GeoSourceProvider *);
+/* A provider family is admitted atomically. Validation/allocation failure
+ * leaves every existing provider and its candidate binding unchanged. */
+bool geo_eval_register_many(GeoEvalContext *,const GeoSourceProvider *,size_t);
 uint64_t geo_eval_candidate_id(const GeoEvalContext *);
 uint64_t geo_eval_base_revision(const GeoEvalContext *);
 size_t geo_eval_provider_count(const GeoEvalContext *);
@@ -76,6 +84,10 @@ GeoSourceStatus geo_eval_source(GeoEvalContext *,GeoSourceRef,GeoDependencyKind,
 /* Records an identity dependency without evaluating it. The caller retains
  * its domain's policy for inactive values and evaluation-before failures. */
 GeoSourceStatus geo_eval_depend(GeoEvalContext *,GeoSourceRef,GeoDependencyKind);
+/* Obtain metadata without evaluating a value or adding an edge. A successful
+ * first description leaves the node NEW. Sealed graphs permit metadata reads
+ * only for already described nodes. The output is unchanged on failure. */
+GeoSourceStatus geo_eval_describe(GeoEvalContext *,GeoSourceRef,GeoSourceDescriptor *);
 size_t geo_eval_node_count(const GeoEvalContext *);
 bool geo_eval_node_at(const GeoEvalContext *,size_t,GeoSourceNodeView *);
 size_t geo_eval_edge_count(const GeoEvalContext *);

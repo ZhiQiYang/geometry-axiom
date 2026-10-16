@@ -1,6 +1,7 @@
 /* H copies caller-owned values and preserves the atomic scene codec. W owns
  * D4 identity/source policy and R41 reconstruction plus persistent edge keys. */
 #include "../geometry-templates/woodworking/native/derived_placement.h"
+static bool app_derived_sources_bind(const World *,WoodDerivedContext *);
 static void app_dp_value(const PlacementSurface *p,WoodDerivedValue *out)
 {
     memset(out,0,sizeof *out);out->id=p->id;out->derived_fill_id=p->derived_fill_id;
@@ -24,7 +25,7 @@ static void app_dp_remove_position(void *user,uint32_t id)
 static WoodDerivedContext app_dp_context(const World *w)
 {
     WoodDerivedContext c={0};c.finish=app_fs_context(w);c.placement_read=app_dp_read;c.placement_write=app_dp_write;
-    c.placement_remove=app_dp_remove;c.placement_count=app_dp_count;c.placement_capacity=WORLD_MAX_PLACEMENTS;c.remove_canvas_position=app_dp_remove_position;return c;
+    c.placement_remove=app_dp_remove;c.placement_count=app_dp_count;c.placement_capacity=WORLD_MAX_PLACEMENTS;c.remove_canvas_position=app_dp_remove_position;app_derived_sources_bind(w,&c);return c;
 }
 static const DerivedPlacement *dp_find(const World *w,uint32_t id)
 {WoodDerivedContext c=app_dp_context(w);return wood_dp_find(&c,id);}

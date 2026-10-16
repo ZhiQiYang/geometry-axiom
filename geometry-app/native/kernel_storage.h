@@ -10,6 +10,7 @@
 #include "../../geometry-core/kernel/internal/guides.h"
 #include "../../geometry-core/kernel/internal/grid_store.h"
 #include "../../geometry-core/kernel/internal/placements.h"
+#include "../../geometry-core/kernel/internal/versions.h"
 /* Legacy bridge/impact metadata: a rect supplied beside `on boundary` is
  * inactive geometry, but the historical wire response still exposes it. */
 typedef struct { GeoRect2 unused_rect; } AppPlacementMetadata;

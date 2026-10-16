@@ -193,8 +193,8 @@ static void json_grid_binding(const World *w,const GridBinding *binding,bool wit
     else fputs("null",stdout);
     printf(",\"translationRepresentable\":%s,\"applications\":[",representable?"true":"false");
     bool first=true;
-    for (size_t i=0;i<w->grid_count;++i) {
-        const ReferenceGrid *g=&w->grids[i]; if (!g->from_binding || g->binding_id!=binding->id) continue;
+    for (size_t i=0;i<w->grid_applications.count;++i) {
+        const ReferenceGrid *g=&w->grid_applications.items[i]; if (!g->from_binding || g->binding_id!=binding->id) continue;
         printf("%s{\"grid\":%u,\"surface\":%u}",first?"":",",g->id,g->placement_id); first=false;
     }
     fputs("],",stdout);

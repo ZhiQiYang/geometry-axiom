@@ -12,7 +12,7 @@ static void json_parameter_uses(const World *w)
             char label[120];snprintf(label,sizeof label,"%s %u · %s%s",b->target.kind?"角材":"網格",b->target.id,b->target.kind?(b->target.field?"B":"A"):(b->target.field?"gap":"panel"),override?" 覆寫":"");js_string(label);
             fputs(",\"canvasTargets\":[",stdout);bool target_first=true;
             if(b->target.kind){for(size_t k=0;k<w->timber_count;++k)if(w->timbers[k].id==b->target.id)json_parameter_canvas_target(w,w->anchors[k].placement_id,&target_first);}
-            else for(size_t k=0;k<w->grid_count;++k)if(w->grids[k].id==b->target.id)json_parameter_canvas_target(w,w->grids[k].placement_id,&target_first);
+            else for(size_t k=0;k<w->grid_applications.count;++k)if(w->grid_applications.items[k].id==b->target.id)json_parameter_canvas_target(w,w->grid_applications.items[k].placement_id,&target_first);
             fputs("]}",stdout);
         }
     }

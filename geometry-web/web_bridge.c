@@ -615,7 +615,7 @@ static void cmd_newid(size_t surface_count)
     WORLD_NEXT_ID_AT(mb, world_boundary_at(&g_world,i_), world_boundary_count(&g_world), true);
     WORLD_NEXT_ID_AT(mp, world_placement_at(&g_world,i_), world_placement_count(&g_world), false);
     WORLD_NEXT_ID(mg,  geo_guides_values(&g_world.guide_lines),     geo_guides_count(&g_world.guide_lines),     false);
-    WORLD_NEXT_ID(mgr, g_world.grids,      g_world.grid_count,      false);
+    WORLD_NEXT_ID(mgr, g_world.grid_applications.items,      g_world.grid_applications.count,      false);
     WORLD_NEXT_ID(mgs, geo_grid_systems_values(&g_world.grid_store), geo_grid_systems_count(&g_world.grid_store), false);
     WORLD_NEXT_ID(mgb, geo_grid_bindings_values(&g_world.grid_store), geo_grid_bindings_count(&g_world.grid_store), false);
     WORLD_NEXT_ID(mt,  g_world.timbers,    g_world.timber_count,    false);
@@ -1006,7 +1006,10 @@ static bool view_coord_in_range(Coord value)
     return value >= -4 * COORD_LIMIT && value <= 4 * COORD_LIMIT;
 }
 
-int main(void)
+#ifndef GEOMETRY_BRIDGE_ENTRYPOINT
+#define GEOMETRY_BRIDGE_ENTRYPOINT main
+#endif
+int GEOMETRY_BRIDGE_ENTRYPOINT(void)
 {
 #ifdef _WIN32
     /* 只有 Windows 需要關掉 CRLF 轉換;POSIX 的 stdio 本來就是位元組流。 */

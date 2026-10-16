@@ -49,9 +49,19 @@ typedef enum { FS_DIAGNOSTIC_INVALID, FS_DIAGNOSTIC_CAPACITY } FsDiagnosticKind;
 enum { FS_SEPARATE = 0, FS_TOUCH = 1, FS_INTERIOR = 2 };
 typedef struct {GeoCoord rect[4],q[2];int relation;} FsObstacleView;
 typedef struct {
-    WoodPanelLayout layout;GeoCoord t;const FinishSurface *finish;
+    WoodPanelLayout layout;GeoCoord t;const FinishSurface *finish;GeoFrame frame;
     FsObstacleView obstacles[FS_OBSTACLE_MAX];bool cuts[FS_OBSTACLE_MAX];bool keep_collinear;
 } WoodFinishLayout;
+enum { WOOD_PF_LENGTH,WOOD_PF_WIDTH,WOOD_PF_THICKNESS,WOOD_PF_GAP,WOOD_PF_STAGGER,WOOD_PF_THRESHOLD };
+typedef struct {
+    void *user;
+    bool (*check)(void *,const FinishSurface *);
+    bool (*values)(void *,const PanelFill *,WoodFinishLayout *);
+    bool (*field)(void *,const PanelFill *,int,GeoQuantity *);
+    bool (*finish_definition)(void *,uint32_t);
+    bool (*boundary)(void *,uint32_t,WoodBoundaryRegion *);
+    bool (*obstacle_box)(void *,const FinishObstacleRef *,GeoCoord[3],GeoCoord[3]);
+} WoodFinishEvaluation;
 /* All callbacks read facts from the very same candidate as state/engineering.
  * The H codec owns resource diagnostics; policy and authored values live in W. */
 typedef struct {
@@ -67,6 +77,7 @@ typedef struct {
     char *parameter_error;size_t parameter_error_capacity;
     bool (*engineering_operation)(void *,GeoJson *,int);
     bool (*derived_operation)(void *,GeoJson *,int,bool);
+    const WoodFinishEvaluation *evaluation;
 } WoodFinishContext;
 bool wood_fs_error(const WoodFinishContext *,const char *,...);
 bool wood_fs_capacity_error(const WoodFinishContext *,const char *,...);
@@ -82,6 +93,9 @@ const char *wood_fs_relation_name(int);
 int wood_fs_relation(const WoodBoundaryRegion *,const GeoCoord[4]);
 bool wood_fs_obstacle_view(const WoodFinishContext *,const FinishSurface *,const FinishObstacleRef *,FsObstacleView *);
 bool wood_fs_check(const WoodFinishContext *,const FinishSurface *);
+bool wood_fs_check_direct(const WoodFinishContext *,const FinishSurface *);
+bool wood_fs_boundary(const WoodFinishContext *,uint32_t,WoodBoundaryRegion *);
+bool wood_fs_obstacle_box(const WoodFinishContext *,const FinishObstacleRef *,GeoCoord[3],GeoCoord[3]);
 /* Revalidate finish definitions; H runs fill/derived phases immediately after. */
 bool wood_fs_rebuild(WoodFinishContext *,char *,size_t);
 uint32_t wood_fs_reference_owner(const WoodFinishContext *,const char *,uint32_t);
@@ -94,6 +108,8 @@ const PanelFill *wood_pf_find(const WoodFinishContext *,uint32_t);
 void wood_pf_free(WoodFinishLayout *);
 bool wood_pf_parse(const WoodFinishContext *,GeoJson *,int,PanelFill *);
 bool wood_pf_values(const WoodFinishContext *,const PanelFill *,WoodFinishLayout *);
+bool wood_pf_values_direct(const WoodFinishContext *,const PanelFill *,WoodFinishLayout *);
+bool wood_pf_field_direct(const WoodFinishContext *,const PanelFill *,int,GeoQuantity *);
 GeoRegionView wood_pf_region_view(const WoodBoundaryRegion *,GeoLoop2View *);
 size_t wood_pf_selected_cuts(const WoodFinishLayout *,GeoRect2 *);
 int wood_pf_point_order(GeoPoint2,GeoPoint2);

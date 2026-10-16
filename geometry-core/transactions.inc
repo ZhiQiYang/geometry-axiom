@@ -228,17 +228,17 @@ static bool reference_grid_changed(const World *before,const World *after,uint32
             reference_boundary_geometry_changed(ab,zb);
     }
     SurfaceRegion2 ac,zc;
-    if (a->is_subgrid && (!grid_cell_bounds(before->grids,before->grid_count,a,ap,ab,&ac,NULL,0) ||
-        !grid_cell_bounds(after->grids,after->grid_count,z,zp,zb,&zc,NULL,0) || memcmp(&ac,&zc,sizeof ac))) return true;
+    if (a->is_subgrid && (!grid_cell_bounds(before->grid_applications.items,before->grid_applications.count,a,ap,ab,&ac,NULL,0) ||
+        !grid_cell_bounds(after->grid_applications.items,after->grid_applications.count,z,zp,zb,&zc,NULL,0) || memcmp(&ac,&zc,sizeof ac))) return true;
     for (int axis=0;axis<2;++axis) {
         Coord ax[GRID_MAX_LINES],zx[GRID_MAX_LINES]; size_t an=0,zn=0;
-        bool av=grid_axis_lines_in(before->grids,before->grid_count,a,ap,ab,axis,ax,&an,NULL,0);
-        bool zv=grid_axis_lines_in(after->grids,after->grid_count,z,zp,zb,axis,zx,&zn,NULL,0);
+        bool av=grid_axis_lines_in(before->grid_applications.items,before->grid_applications.count,a,ap,ab,axis,ax,&an,NULL,0);
+        bool zv=grid_axis_lines_in(after->grid_applications.items,after->grid_applications.count,z,zp,zb,axis,zx,&zn,NULL,0);
         if (!av || !zv || an!=zn || (an && memcmp(ax,zx,an*sizeof *ax))) return true;
         for (size_t k=0;k<an;++k) {
             SurfaceSegment2 as[GUIDE_MAX_SEGMENTS],zs[GUIDE_MAX_SEGMENTS];
-            size_t na=grid_line_segments(before->grids,before->grid_count,a,ap,ab,axis,k,as,GUIDE_MAX_SEGMENTS);
-            size_t nz=grid_line_segments(after->grids,after->grid_count,z,zp,zb,axis,k,zs,GUIDE_MAX_SEGMENTS);
+            size_t na=grid_line_segments(before->grid_applications.items,before->grid_applications.count,a,ap,ab,axis,k,as,GUIDE_MAX_SEGMENTS);
+            size_t nz=grid_line_segments(after->grid_applications.items,after->grid_applications.count,z,zp,zb,axis,k,zs,GUIDE_MAX_SEGMENTS);
             if (na!=nz || (na && memcmp(as,zs,na*sizeof *as))) return true;
         }
     }
@@ -293,7 +293,7 @@ static void reference_subgrid_text(const World *w,uint32_t id,FILE *out)
     SurfaceRegion2 c;
     if (!g || !p) { fprintf(out,"grid %u unavailable",id); return; }
     if (g->is_subgrid) {
-        if (!grid_cell_bounds(w->grids,w->grid_count,g,p,world_placement_boundary(w,p),&c,NULL,0)) {
+        if (!grid_cell_bounds(w->grid_applications.items,w->grid_applications.count,g,p,world_placement_boundary(w,p),&c,NULL,0)) {
             fprintf(out,"subgrid %u unavailable",id); return;
         }
         fprintf(out,"subgrid %u parent %u cell [%lld,%lld]-[%lld,%lld]",id,g->parent_id,
@@ -407,8 +407,8 @@ static void reference_object_preview(FILE *out)
             if (pass?world_find_grid_binding(before,id)!=NULL:!reference_binding_changed(before,after,id)) continue;
             reference_binding_text(before,id,out); fputs(" -> ",out); reference_binding_text(after,id,out); fputc('\n',out);
         }
-        for (size_t i=0;i<w->grid_count;++i) {
-            uint32_t id=w->grids[i].id;
+        for (size_t i=0;i<w->grid_applications.count;++i) {
+            uint32_t id=w->grid_applications.items[i].id;
             if (pass?world_find_grid(before,id)!=NULL:!reference_grid_changed(before,after,id)) continue;
             reference_subgrid_text(before,id,out); fputs(" -> ",out); reference_subgrid_text(after,id,out); fputc('\n',out);
         }
@@ -422,10 +422,10 @@ static bool reference_geometry_changed(const World *before,const World *after)
      * interactive creation is separately guarded by binding_edit below. */
     for (size_t i=0;i<geo_grid_bindings_count(&before->grid_store);++i)
         if (reference_binding_changed(before,after,(*geo_grid_bindings_at(&before->grid_store,i)).id)) return true;
-    for (size_t i=0;i<before->grid_count;++i)
-        if ((before->grids[i].is_subgrid || before->grids[i].from_system || before->grids[i].from_binding || eng_object_bound(before,0,before->grids[i].id)) && reference_grid_changed(before,after,before->grids[i].id)) return true;
+    for (size_t i=0;i<before->grid_applications.count;++i)
+        if ((before->grid_applications.items[i].is_subgrid || before->grid_applications.items[i].from_system || before->grid_applications.items[i].from_binding || eng_object_bound(before,0,before->grid_applications.items[i].id)) && reference_grid_changed(before,after,before->grid_applications.items[i].id)) return true;
     bool has_child=false;
-    for (size_t i=0;i<before->grid_count;++i) if (before->grids[i].is_subgrid) has_child=true;
+    for (size_t i=0;i<before->grid_applications.count;++i) if (before->grid_applications.items[i].is_subgrid) has_child=true;
     if (has_child) for (size_t i=0;i<geo_guides_count(&before->guide_lines);++i)
         if (reference_guide_changed(before,after,geo_guides_values(&before->guide_lines)[i].id)) return true;
     for (size_t i=0;i<before->timber_count;++i) {
@@ -442,7 +442,7 @@ static bool reference_may_affect(const World *w,char **tokens,int count)
     bool placed=false;
     for (size_t i=0;i<w->timber_count;++i) if (w->timbers[i].placed) placed=true;
     bool referenced=geo_grid_bindings_count(&w->grid_store)>0;
-    for (size_t i=0;i<w->grid_count;++i) if (w->grids[i].is_subgrid || w->grids[i].from_system || w->grids[i].from_binding) referenced=true;
+    for (size_t i=0;i<w->grid_applications.count;++i) if (w->grid_applications.items[i].is_subgrid || w->grid_applications.items[i].from_system || w->grid_applications.items[i].from_binding) referenced=true;
     if ((!placed && !referenced && !w->engineering.binding_count) || !count) return false;
     const char *c=tokens[0];
     if (!strcmp(c,"move") || !strcmp(c,"spec") || !strcmp(c,"datum") || !strcmp(c,"boundary") || !strcmp(c,"surface") ||

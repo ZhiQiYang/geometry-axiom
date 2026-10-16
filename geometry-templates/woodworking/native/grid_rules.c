@@ -156,6 +156,9 @@ bool wood_grid_rule_target(const WoodGridContext *ctx,const char *kind,uint32_t 
 }
 bool wood_grid_rule_cell(const WoodGridContext *ctx,const char *kind,uint32_t id,uint32_t key,
     const int64_t cell[2],WoodGridRuleTarget *target,char *err,size_t cap)
+{if(!strcmp(kind,"grid")&&ctx->evaluation&&ctx->evaluation->rule_cell)return ctx->evaluation->rule_cell(ctx->evaluation->user,id,key,cell,target,err,cap);return wood_grid_rule_cell_direct(ctx,kind,id,key,cell,target,err,cap);}
+bool wood_grid_rule_cell_direct(const WoodGridContext *ctx,const char *kind,uint32_t id,uint32_t key,
+    const int64_t cell[2],WoodGridRuleTarget *target,char *err,size_t cap)
 {
     if(!wood_grid_rule_target(ctx,kind,id,target,err,cap))return false;
     target->rule=geo_grid_rule_find(target->source,key);
@@ -167,6 +170,9 @@ bool wood_grid_rule_cell(const WoodGridContext *ctx,const char *kind,uint32_t id
     target->bounds=(GeoRect2){ends[0][0],ends[1][0],ends[0][1],ends[1][1]};return true;
 }
 bool wood_grid_rule_line(const WoodGridContext *ctx,const GeoGridRuleLineRef *ref,uint32_t pid,
+    GeoCoord *coordinate,GeoRect2 *scope,char *err,size_t cap)
+{if(ctx->evaluation&&ctx->evaluation->rule_line)return ctx->evaluation->rule_line(ctx->evaluation->user,ref,pid,coordinate,scope,err,cap);return wood_grid_rule_line_direct(ctx,ref,pid,coordinate,scope,err,cap);}
+bool wood_grid_rule_line_direct(const WoodGridContext *ctx,const GeoGridRuleLineRef *ref,uint32_t pid,
     GeoCoord *coordinate,GeoRect2 *scope,char *err,size_t cap)
 {
     WoodGridRuleTarget target;

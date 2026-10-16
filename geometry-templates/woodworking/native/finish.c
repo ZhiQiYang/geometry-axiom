@@ -96,10 +96,14 @@ int wood_fs_relation(const WoodBoundaryRegion *b,const GeoCoord r[4])
     return FS_SEPARATE;
 }
 
+bool wood_fs_boundary(const WoodFinishContext *w,uint32_t id,WoodBoundaryRegion *out)
+{return w->evaluation&&w->evaluation->boundary?w->evaluation->boundary(w->evaluation->user,id,out):w->boundary(w->user,id,out);}
+bool wood_fs_obstacle_box(const WoodFinishContext *w,const FinishObstacleRef *ref,GeoCoord lo[3],GeoCoord hi[3])
+{return w->evaluation&&w->evaluation->obstacle_box?w->evaluation->obstacle_box(w->evaluation->user,ref,lo,hi):w->obstacle_box(w->user,ref,lo,hi);}
 bool wood_fs_obstacle_view(const WoodFinishContext *w,const FinishSurface *f,const FinishObstacleRef *r,FsObstacleView *out)
 {
     GeoCoord lo[3],hi[3],u[2],v[2],n[2];char text[16];wood_fs_obstacle_text(r,text);
-    if(!w->obstacle_box(w->user,r,lo,hi))return wood_fs_error(w,"I52/I55: finish surface %u obstacle %s does not exist",(unsigned)f->id,text);
+    if(!wood_fs_obstacle_box(w,r,lo,hi))return wood_fs_error(w,"I52/I55: finish surface %u obstacle %s does not exist",(unsigned)f->id,text);
     geo_aabb_project_interval(lo,hi,f->frame.origin,f->frame.axis_u,u);
     geo_aabb_project_interval(lo,hi,f->frame.origin,f->frame.axis_v,v);
     geo_aabb_project_interval(lo,hi,f->frame.origin,f->frame.normal,n);
@@ -109,18 +113,20 @@ bool wood_fs_obstacle_view(const WoodFinishContext *w,const FinishSurface *f,con
         return wood_fs_capacity_error(w,"I52/D1 CAPACITY: obstacle %s of finish surface %u has local coordinates outside D1 (I33)",text,(unsigned)f->id);
     for(int i=0;i<2;++i)if(!geo_coord_in_range(out->q[i]))
         return wood_fs_capacity_error(w,"I52/D1 CAPACITY: obstacle %s of finish surface %u has local coordinates outside D1 (I33)",text,(unsigned)f->id);
-    WoodBoundaryRegion value;const WoodBoundaryRegion *b=w->boundary(w->user,f->boundary_id,&value)?&value:NULL;
+    WoodBoundaryRegion value;const WoodBoundaryRegion *b=wood_fs_boundary(w,f->boundary_id,&value)?&value:NULL;
     if(!b)return wood_fs_error(w,"I52: finish surface %u references missing boundary %u",(unsigned)f->id,(unsigned)f->boundary_id);
     out->relation=wood_fs_relation(b,out->rect);return true;
 }
 
 bool wood_fs_check(const WoodFinishContext *w,const FinishSurface *f)
+{if(w->evaluation&&w->evaluation->check)return w->evaluation->check(w->evaluation->user,f);return wood_fs_check_direct(w,f);}
+bool wood_fs_check_direct(const WoodFinishContext *w,const FinishSurface *f)
 {
     size_t n=0;while(n<sizeof f->name&&f->name[n])++n;
     if(!f->id)return wood_fs_error(w,"D41: finish surface id must be a positive integer");
     if(!wood_fs_name_check(w,(const unsigned char*)f->name,n))return false;
     WoodBoundaryRegion boundary;
-    if(!w->boundary(w->user,f->boundary_id,&boundary))
+    if(!wood_fs_boundary(w,f->boundary_id,&boundary))
         return wood_fs_error(w,"I52: finish surface %u references missing boundary %u",(unsigned)f->id,(unsigned)f->boundary_id);
     if(!geo_frame_is_valid(&f->frame))
         return wood_fs_error(w,"I52/I1: finish surface %u frame needs an origin in D1 and unit integer axes with U x V = N",(unsigned)f->id);
@@ -264,19 +270,43 @@ bool wood_pf_parse(const WoodFinishContext *w,GeoJson *j,int t,PanelFill *p)
     return true;
 }
 
+bool wood_pf_field_direct(const WoodFinishContext *w,const PanelFill *p,int field,GeoQuantity *out)
+{
+    if(field<WOOD_PF_LENGTH||field>WOOD_PF_THRESHOLD)return false;
+    GeoCoord value=0;
+    if(field>=WOOD_PF_GAP){
+        if(field==WOOD_PF_THRESHOLD)return w->parameter_value(w->user,p->threshold,out);
+        GeoParameterRef ref=field==WOOD_PF_GAP?p->gap_ref:p->stagger_ref;
+        value=field==WOOD_PF_GAP?p->gap:p->stagger;
+        if(ref.set&&!w->parameter_coord(w->user,ref,&value))return false;
+        *out=(GeoQuantity){value,1,GEO_UNIT_LENGTH};return true;
+    }
+    const EngMaterialVersion *m=wood_eng_material(&w->engineering,p->panel.id,p->panel.version);
+    if(!m||m->kind!=0)return wood_fs_error(w,"I52: panel-fill %u needs an existing fixed panel material version",p->id);
+    if(field==WOOD_PF_LENGTH||field==WOOD_PF_WIDTH){*out=(GeoQuantity){field==WOOD_PF_LENGTH?m->length:m->width,1,GEO_UNIT_LENGTH};return true;}
+    if(field!=WOOD_PF_THICKNESS)return false;
+    if(!wood_eng_material_integer(&w->engineering,m,WOOD_ENG_VERSION_THICKNESS,1,GEO_COORD_LIMIT,&value))
+        return wood_fs_error(w,"I52: panel-fill thickness must be explicitly set positive integer mm in D1; no rounding");
+    *out=(GeoQuantity){value,1,GEO_UNIT_LENGTH};return true;
+}
+static bool wood_pf_field(const WoodFinishContext *w,const PanelFill *p,int field,GeoQuantity *out)
+{return w->evaluation&&w->evaluation->field?w->evaluation->field(w->evaluation->user,p,field,out):wood_pf_field_direct(w,p,field,out);}
 bool wood_pf_values(const WoodFinishContext *w,const PanelFill *p,WoodFinishLayout *d)
+{if(w->evaluation&&w->evaluation->values)return w->evaluation->values(w->evaluation->user,p,d);return wood_pf_values_direct(w,p,d);}
+bool wood_pf_values_direct(const WoodFinishContext *w,const PanelFill *p,WoodFinishLayout *d)
 {
     d->finish=wood_fs_find(w,p->finish_id);const EngMaterialVersion *m=wood_eng_material(&w->engineering,p->panel.id,p->panel.version);GeoQuantity x;
     if(!d->finish)return wood_fs_error(w,"I55: panel-fill %u references missing finish surface %u",p->id,p->finish_id);
     if(!m||m->kind!=0)return wood_fs_error(w,"I52: panel-fill %u needs an existing fixed panel material version",p->id);
-    d->layout.size[p->length_axis]=m->length;d->layout.size[1-p->length_axis]=m->width;
-    GeoJson j;bool ok=geo_json_parse(&j,m->content);char thickness[ENG_THICKNESS_CAPACITY];
-    if(ok)ok=geo_json_string(&j,geo_json_member(&j,0,"thickness"),thickness,sizeof thickness);geo_json_free(&j);
-    d->t=0;
-    if(ok){bool decimal=false;for(char *s=thickness;*s&&ok;++s){if(*s=='.')decimal=true;else if(decimal)ok=*s=='0';else if(*s<'0'||*s>'9'||d->t>(GEO_COORD_LIMIT-(*s-'0'))/10)ok=false;else d->t=d->t*10+(*s-'0');}}
-    if(!ok||d->t<=0)return wood_fs_error(w,"I52: panel-fill thickness must be explicitly set positive integer mm in D1; no rounding");
+    d->frame=d->finish->frame;
+    if(w->evaluation&&w->evaluation->finish_definition&&!w->evaluation->finish_definition(w->evaluation->user,p->finish_id))return false;
+    if(!wood_pf_field(w,p,WOOD_PF_LENGTH,&x))return false;d->layout.size[p->length_axis]=x.num;
+    if(!wood_pf_field(w,p,WOOD_PF_WIDTH,&x))return false;d->layout.size[1-p->length_axis]=x.num;
+    d->t=0;if(!wood_pf_field(w,p,WOOD_PF_THICKNESS,&x))return false;d->t=x.num;
     d->layout.gap=p->gap;d->layout.stagger=p->stagger;
-    if((p->gap_ref.set&&!w->parameter_coord(w->user,p->gap_ref,&d->layout.gap))||(p->stagger_ref.set&&!w->parameter_coord(w->user,p->stagger_ref,&d->layout.stagger))||!w->parameter_value(w->user,p->threshold,&x))return wood_fs_error(w,"%s",w->parameter_error);
+    if(!wood_pf_field(w,p,WOOD_PF_GAP,&x))return wood_fs_error(w,"%s",w->parameter_error);d->layout.gap=x.num;
+    if(!wood_pf_field(w,p,WOOD_PF_STAGGER,&x))return wood_fs_error(w,"%s",w->parameter_error);d->layout.stagger=x.num;
+    if(!wood_pf_field(w,p,WOOD_PF_THRESHOLD,&x))return wood_fs_error(w,"%s",w->parameter_error);
     if(x.num<=0)return wood_fs_error(w,"D44: panel-fill threshold must be a positive dimension");
     if(d->layout.gap<0)return wood_fs_error(w,"I52: panel-fill gap must be nonnegative integer mm");
     if(p->stagger_axis>=0&&(!d->layout.stagger||d->layout.stagger%geo_period_pitch(d->layout.size[p->stagger_axis],d->layout.gap)==0))return wood_fs_error(w,"I52: stagger is zero or a whole pitch; odd and even rows coincide");
@@ -317,7 +347,7 @@ bool wood_pf_clip_status(const WoodFinishContext *w,GeoClipStatus status)
 bool wood_pf_clip(const WoodFinishContext *w,WoodFinishLayout *d,WoodPanelTile *t)
 {
     GeoLoop2View holes[GEO_REGION_MAX_HOLES];GeoRect2 cuts[FS_OBSTACLE_MAX];
-    WoodBoundaryRegion boundary;if(!w->boundary(w->user,d->finish->boundary_id,&boundary))return wood_fs_error(w,"I52: finish surface %u references missing boundary %u",d->finish->id,d->finish->boundary_id);
+    WoodBoundaryRegion boundary;if(!wood_fs_boundary(w,d->finish->boundary_id,&boundary))return wood_fs_error(w,"I52: finish surface %u references missing boundary %u",d->finish->id,d->finish->boundary_id);
     GeoRegionView region=wood_pf_region_view(&boundary,holes);
     size_t count=wood_pf_selected_cuts(d,cuts);GeoRect2 body={t->body[0],t->body[1],t->body[2],t->body[3]};
     GeoClipResult result={t->fragments,t->count,t->area};
@@ -329,8 +359,8 @@ bool wood_pf_build(const WoodFinishContext *w,const PanelFill *p,WoodFinishLayou
 {
     memset(d,0,sizeof *d);if(!wood_pf_values(w,p,d))return false;
     GeoLoop2View holes[GEO_REGION_MAX_HOLES];GeoRect2 cuts[FS_OBSTACLE_MAX];WoodPanelLayoutInput input={0};
-    WoodBoundaryRegion boundary;if(!w->boundary(w->user,d->finish->boundary_id,&boundary))return wood_fs_error(w,"I52: finish surface %u references missing boundary %u",d->finish->id,d->finish->boundary_id);
-    input.region=wood_pf_region_view(&boundary,holes);input.frame=d->finish->frame;
+    WoodBoundaryRegion boundary;if(!wood_fs_boundary(w,d->finish->boundary_id,&boundary))return wood_fs_error(w,"I52: finish surface %u references missing boundary %u",d->finish->id,d->finish->boundary_id);
+    input.region=wood_pf_region_view(&boundary,holes);input.frame=d->frame;
     input.cuts=cuts;input.cut_count=wood_pf_selected_cuts(d,cuts);input.size[0]=d->layout.size[0];input.size[1]=d->layout.size[1];
     input.gap=d->layout.gap;input.stagger=d->layout.stagger;input.origin[0]=p->origin[0];input.origin[1]=p->origin[1];input.stagger_axis=p->stagger_axis;
     GeoClipStatus clip_status;WoodPanelStatus status=wood_panel_layout_build(&input,&d->layout,&clip_status);

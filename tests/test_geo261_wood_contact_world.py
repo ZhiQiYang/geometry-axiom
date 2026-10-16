@@ -48,10 +48,10 @@ class ContactWorldBoundary(unittest.TestCase):
     def test_five_real_main_consumers_delegate_and_keep_original_member_identity(self):
         source = (ROOT / "current_geometry.c").read_bytes().decode("utf-8").replace("\r\n", "\n")
         pairs = (("world_footprint_collides", "wood_contact_footprint_collides"),
-                 ("collect_stop_faces", "wood_contact_collect_stops"),
+                 ("collect_stop_faces", "app_contact_resolve_stops"),
                  ("boundary_edge_interval", "wood_contact_boundary_interval"),
                  ("stop_in_owner_extension", "wood_contact_owner_extension"),
-                 ("timber_end_face_check", "wood_contact_end_faces"))
+                 ("timber_end_face_check", "wood_contact_end_faces_with_sources"))
         for host, evaluator in pairs:
             body = function(source, host)
             self.assertIn(evaluator + "(", body)
@@ -59,6 +59,10 @@ class ContactWorldBoundary(unittest.TestCase):
         adapter = function(source, "app_contact_facts")
         self.assertRegex(adapter, r"(?:&world->timbers\[i\]|const Timber \*t\s*=\s*&world->timbers\[i\])")
         self.assertIn("placement_effective_boundary(", adapter)
+        resolver = function(source, "app_contact_resolve_stops")
+        self.assertIn("app_contact_sources_collect(", resolver)
+        self.assertIn("if(handled)return ok;", resolver)
+        self.assertIn("wood_contact_collect_stops(", resolver)
 
 
 COLLISION_FILTER = "if(!member->placed||member==exclude||fact->placement_id!=world->placement_id||!fact->footprint_valid)continue;\n        if(geo_rect_overlap_positive"
