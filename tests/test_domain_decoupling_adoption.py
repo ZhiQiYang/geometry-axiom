@@ -25,6 +25,8 @@ UPSTREAM_CHANGED = {"D9", "D25", "D29", "D31", "I8a", "I37", "I38", "I39", "R32"
 UPSTREAM_NEW = {"D64": "K", "I74": "K", "R60": "H"}
 ADDENDUM_MARKDOWN_HASH = "d9e6717e9d7312b8eeb3783e7b6014c064abf7b221ada4d7a1820780563f2249"
 ADDENDUM_MAP_HASH = "6f17044c3b554595268ba5fa63499b3e9c691a102a6bbe4dba8d758a415a8511"
+ADDENDUM_COMMIT = "c8ce964be623084af957dc2ff662abfdaf670c87"
+ADDENDUM_APPROVED_AT = "2026-10-16T15:23:52.328994Z"
 ADOPTED_HASH = "18a9a75bcf4a5d5fed28c6c5f5cb9702d173198d7d0cd198ffad9936a4b94fa5"
 
 
@@ -143,7 +145,9 @@ def verify_addendum_review(map_bytes, markdown_bytes, merged, proposal):
 
 
 def verify_addendum_approval(approval):
-    require(isinstance(approval, dict) and approval.get("scopeAddendumAnswer") == "批准三條的作用域補充（建議）"
+    require(isinstance(approval, dict) and approval.get("scopeAddendumAnswer") == "批准此追加分層提案"
+            and approval.get("scopeAddendumCommit") == ADDENDUM_COMMIT
+            and approval.get("scopeAddendumApprovedAt") == ADDENDUM_APPROVED_AT
             and approval.get("scopeAddendumMarkdownSha256LF") == ADDENDUM_MARKDOWN_HASH
             and approval.get("scopeAddendumMapSha256LF") == ADDENDUM_MAP_HASH,
             "ADDENDUM_APPROVAL", "three new scope assignments require their exact human approval")
@@ -237,10 +241,22 @@ class AdoptionIntegrity(unittest.TestCase):
     def test_original_approval_alone_never_authorizes_added_scopes(self):
         original_only = {key: value for key, value in self.approval.items() if not key.startswith("scopeAddendum")}
         self.reject("ADDENDUM_APPROVAL", verify_addendum_approval, original_only)
-        wrong_document = original_only | {"scopeAddendumAnswer": "批准三條的作用域補充（建議）",
-                                         "scopeAddendumMarkdownSha256LF": "0" * 64,
-                                         "scopeAddendumMapSha256LF": ADDENDUM_MAP_HASH}
-        self.reject("ADDENDUM_APPROVAL", verify_addendum_approval, wrong_document)
+        for field, wrong in (("scopeAddendumAnswer", "批准三條的作用域補充（建議）"),
+                             ("scopeAddendumMarkdownSha256LF", "0" * 64),
+                             ("scopeAddendumMapSha256LF", "0" * 64),
+                             ("scopeAddendumCommit", "0" * 40),
+                             ("scopeAddendumApprovedAt", "2026-10-15T00:00:00Z")):
+            with self.subTest(field=field):
+                self.reject("ADDENDUM_APPROVAL", verify_addendum_approval,
+                            self.approval | {field: wrong})
+
+    def test_actual_addendum_approval_matches_human_answer_and_frozen_review(self):
+        verify_addendum_approval(self.approval)
+
+    def test_actual_ssot_is_the_full_approved_upstream_preserving_adoption(self):
+        actual = (ROOT / "公理層.md").read_bytes()
+        validate_current_document(actual, self.expected)
+        self.assertEqual(ADOPTED_HASH, sha(actual))
 
     def test_current_source_tamper_deletion_and_layout_drift_are_rejected(self):
         original = self.expected.encode("utf-8")

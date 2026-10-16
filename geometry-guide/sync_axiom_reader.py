@@ -504,6 +504,31 @@ WITNESS_CSS = (
 )
 VIEW_LABEL = {"bottom": "仰視圖", "front": "前視圖", "side": "側視圖", "all": "三視圖"}
 
+# GEO-261: the two existing source/footer positions carry normative source,
+# not small-print hints. All content is static DOM, including in no-JS/print.
+SOURCE_SECTION_CSS = (
+    ".ssot-source-section{max-width:980px;margin:0 auto 24px;padding:22px 18px;"
+    "background:var(--paper);color:var(--ink);border:1px solid var(--line);"
+    "border-radius:14px;font-size:var(--text);line-height:1.85;text-align:left}"
+    ".ssot-source-section h1{font-size:25px;line-height:1.45;margin:0 0 20px}"
+    ".ssot-source-section h2,.ssot-source-section h3{font-size:21px;line-height:1.5;margin:22px 0 12px}"
+    ".ssot-source-section blockquote{margin:0 0 18px;padding:0 0 0 14px;border-left:3px solid var(--line)}"
+    ".ssot-source-section ul,.ssot-source-section ol{padding-left:1.4em;margin:0 0 18px}"
+    ".ssot-source-section li{margin:0 0 12px;white-space:pre-wrap}"
+    ".ssot-source-section table{width:100%;table-layout:fixed;border-collapse:collapse;margin:18px 0}"
+    ".ssot-source-section th,.ssot-source-section td{padding:8px;border:1px solid var(--line);"
+    "vertical-align:top;overflow-wrap:anywhere;white-space:pre-wrap}"
+    ".ssot-source-section th{background:var(--soft);font-weight:600}"
+    ".ssot-source-section th:first-child{width:14%}.ssot-source-section th:nth-child(2){width:16%}"
+    ".ssot-source-section .reader-source-note{font-size:13px;color:var(--muted);margin:20px 0 0}"
+    "@media print{.page-footer.ssot-source-section{display:block!important}"
+    ".ssot-source-section{border:0;padding:0;border-radius:0;max-width:none;background:transparent;color:inherit}"
+    ".ssot-source-section th,.ssot-source-section td{border-color:currentColor}"
+    ".ssot-source-section th,.ssot-source-section code{background:transparent}"
+    ".ssot-source-section a,.ssot-source-section .reader-source-note{color:inherit}"
+    ".ssot-source-section tr{break-inside:avoid}}"
+)
+
 
 def digest(value: str) -> str:
     return hashlib.sha256(value.encode("utf-8")).hexdigest()
@@ -557,6 +582,207 @@ def source_clauses(text: str) -> list[dict]:
             if ref[1] not in ids:
                 raise ValueError(f"Dangling SSOT reference {item['id']} -> {ref[1]}")
     return result
+
+
+def source_sections(text: str) -> dict[str, dict[str, str]]:
+    """Exact non-clause slices, including separators and the final newline."""
+    first = list(re.finditer(r"^## 一、.*$", text, re.M))
+    fourth = list(re.finditer(r"^## 四、.*$", text, re.M))
+    if len(first) != 1 or len(fourth) != 1 or first[0].start() >= fourth[0].start():
+        raise ValueError("SSOT source sections require unique chapters 一 and 四")
+    return {name: {"source": value, "sourceHash": digest(value)} for name, value in
+            (("preamble", text[:first[0].start()]), ("exclusions", text[fourth[0].start():]))}
+
+
+def apply_packet_source_sections(template: str) -> str:
+    """Keep normative scope in the existing agent handoff, without adding UI."""
+    script = script_text(template, "review-script")
+    guard = ("function packetSourceSection(name){const section=state.sourceSections&&state.sourceSections[name];"
+             "assert(section&&typeof section.source==='string'&&typeof section.sourceHash==='string',"
+             "'規範來源區塊缺失：'+name);assert(sha256(section.source)===section.sourceHash,"
+             "'規範來源區塊雜湊不符：'+name);return section.source;}\n")
+    script = force(script, "function packetMD(){let s=", guard +
+                   "function packetMD(){const preamble=packetSourceSection('preamble'),"
+                   "exclusions=packetSourceSection('exclusions');let s=",
+                   "GEO-261 packet source guard", marker="function packetSourceSection(name){")
+    clauses = "s+='\\n---\\n\\n## 目前條文與白話（含固定區塊 ID）\\n';"
+    script = force(script, clauses,
+                   "s+='\\n---\\n\\n## 目前規範前言（來源原文）\\n\\n'+preamble;" + clauses,
+                   "GEO-261 packet preamble")
+    revisions = "s+='\\n## 修訂紀錄\\n\\n'+JSON.stringify(state.revisions,null,2)+'\\n';"
+    script = force(script, revisions,
+                   "s+='\\n## 目前排除範圍（來源原文）\\n\\n'+exclusions;" + revisions,
+                   "GEO-261 packet exclusions")
+    return replace_script(template, "review-script", script)
+
+
+def source_section_nodes(text: str) -> list[dict]:
+    """Small deterministic block grammar; inline content uses the reader itself.
+
+    Raw HTML is never interpreted. Tables require an explicit Markdown header
+    separator and uniform cell counts, so a malformed table cannot silently turn
+    into apparently complete normative prose.
+    """
+    lines = text.splitlines()
+    nodes, index = [], 0
+
+    def leaf(tag, value):
+        return {"tag": tag, "text": value}
+
+    def cells(line):
+        return [part.strip() for part in line.strip().strip("|").split("|")]
+
+    while index < len(lines):
+        line = lines[index]
+        if not line.strip():
+            index += 1
+            continue
+        heading = re.fullmatch(r"(#{1,6})\s+(.+)", line)
+        if heading:
+            nodes.append(leaf("h" + str(len(heading[1])), heading[2]))
+            index += 1
+        elif line.startswith(">"):
+            quoted = []
+            while index < len(lines) and lines[index].startswith(">"):
+                quoted.append(re.sub(r"^> ?", "", lines[index]))
+                index += 1
+            nodes.append({"tag": "blockquote", "children": source_section_nodes("\n".join(quoted))})
+        elif line.startswith("|"):
+            header = cells(line)
+            if index + 1 >= len(lines) or not all(re.fullmatch(r":?-{3,}:?", c) for c in cells(lines[index + 1])):
+                raise ValueError("SSOT source section malformed table header")
+            if len(cells(lines[index + 1])) != len(header):
+                raise ValueError("SSOT source section table column count")
+            index += 2
+            rows = []
+            while index < len(lines) and lines[index].startswith("|"):
+                values = cells(lines[index])
+                if len(values) != len(header):
+                    raise ValueError("SSOT source section table column count")
+                rows.append({"tag": "tr", "children": [leaf("td", cell) for cell in values]})
+                index += 1
+            nodes.append({"tag": "table", "children": [
+                {"tag": "thead", "children": [{"tag": "tr", "children": [leaf("th", cell) for cell in header]}]},
+                {"tag": "tbody", "children": rows}]})
+        elif re.match(r"^(?:[-*] |\d+\. )", line):
+            ordered = bool(re.match(r"^\d+\. ", line))
+            marker = r"^\d+\. " if ordered else r"^[-*] "
+            items = []
+            while index < len(lines) and re.match(marker, lines[index]):
+                item = [re.sub(marker, "", lines[index], count=1)]
+                index += 1
+                while index < len(lines) and lines[index].startswith("  "):
+                    item.append(lines[index][2:])
+                    index += 1
+                items.append(leaf("li", "\n".join(item)))
+            nodes.append({"tag": "ol" if ordered else "ul", "children": items})
+        else:
+            paragraph = [line]
+            index += 1
+            while index < len(lines) and lines[index].strip() and not re.match(r"^(?:#|>|\||[-*] |\d+\. )", lines[index]):
+                paragraph.append(lines[index])
+                index += 1
+            nodes.append(leaf("p", "\n".join(paragraph)))
+    return nodes
+
+
+def render_source_sections(template: str, sections: dict, clauses: list[dict]) -> dict[str, str]:
+    trees = {name: source_section_nodes(section["source"]) for name, section in sections.items()}
+    texts = []
+
+    def collect(nodes):
+        for node in nodes:
+            if "text" in node:
+                texts.append(node["text"])
+            else:
+                collect(node["children"])
+
+    for nodes in trees.values():
+        collect(nodes)
+    rendered = iter(render_inline_with_reader(template, texts, clauses))
+
+    def emit(nodes):
+        return "\n".join("<" + node["tag"] + ">" +
+                         (next(rendered) if "text" in node else emit(node["children"])) +
+                         "</" + node["tag"] + ">" for node in nodes)
+
+    return {name: emit(nodes) for name, nodes in trees.items()}
+
+
+class SourceSlots(HTMLParser):
+    """Locate actual DOM elements, never strings inside JSON/scripts or CSS."""
+    VOID = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"}
+
+    def __init__(self, source):
+        super().__init__(convert_charrefs=True)
+        self.source = source
+        self.offsets = [0]
+        for match in re.finditer("\n", source):
+            self.offsets.append(match.end())
+        self.stack, self.slots, self.markers = [], {"preamble": [], "exclusions": []}, []
+        self.feed(source)
+
+    def source_offset(self):
+        line, column = self.getpos()
+        return self.offsets[line - 1] + column
+
+    def handle_starttag(self, tag, attributes):
+        attrs = dict(attributes)
+        if "data-ssot-section" in attrs:
+            self.markers.append(attrs["data-ssot-section"])
+        name = "preamble" if attrs.get("id") == "reader-source-status" else (
+            "exclusions" if tag == "footer" and "page-footer" in attrs.get("class", "").split() else None)
+        slot = None
+        if name:
+            slot = {"tag": tag, "attrs": attrs, "start": self.source_offset(),
+                    "innerStart": self.source_offset() + len(self.get_starttag_text())}
+            self.slots[name].append(slot)
+        if tag not in self.VOID:
+            self.stack.append((tag, slot))
+
+    def handle_startendtag(self, tag, attributes):
+        self.handle_starttag(tag, attributes)
+        if tag not in self.VOID:
+            self.handle_endtag(tag)
+
+    def handle_endtag(self, tag):
+        if not self.stack:
+            raise ValueError("SSOT source section unbalanced DOM")
+        opened, slot = self.stack.pop()
+        if opened != tag:
+            raise ValueError("SSOT source section unbalanced DOM: " + opened + "/" + tag)
+        if slot is not None:
+            close_at = self.source_offset()
+            slot.update(innerEnd=close_at, end=self.source.index(">", close_at) + 1)
+
+    def unique(self, name):
+        found = self.slots[name]
+        if len(found) != 1 or "end" not in found[0]:
+            raise ValueError("SSOT source section slot must occur once: " + name)
+        return found[0]
+
+
+def apply_source_sections(template: str, axiom: str, sections: dict, clauses: list[dict]) -> str:
+    slots = SourceSlots(template)
+    markup = render_source_sections(template, sections, clauses)
+    status = ("本分支的跨面共用基準條文仍為審閱提案，尚未合併正式版本。" if "跨面共用基準分支提案" in axiom else
+              "條文與白話已由目前專案來源同步；歷史批註保留原始快照。")
+    note = '<p class="reader-source-note">' + status + "原文為準，白話輔助閱讀；桌面／手機共用條文與批註，匯出新檔才會把修改帶走。</p>"
+    updates = []
+    for name in ("preamble", "exclusions"):
+        slot = slots.unique(name)
+        if name == "preamble":
+            if slot["tag"] not in {"p", "section"}:
+                raise ValueError("SSOT source preamble slot changed tag")
+            replacement = '<section id="reader-source-status" class="ssot-source-section copy" data-ssot-section="preamble">' + markup[name] + note + '</section>'
+        else:
+            replacement = '<footer class="page-footer ssot-source-section copy" data-ssot-section="exclusions">' + markup[name] + '</footer>'
+        updates.append((slot["start"], slot["end"], replacement))
+        PATCHES.expect_present("GEO-261 source " + name, 'data-ssot-section="' + name + '"')
+    # Data-derived markup is always removed and reinserted, including later runs.
+    for start, end, replacement in sorted(updates, reverse=True):
+        template = template[:start] + replacement + template[end:]
+    return inject_css(template, SOURCE_SECTION_CSS, ".ssot-source-section{max-width:980px")
 
 
 def source_plain(text: str, known: set[str]) -> dict[str, str]:
@@ -794,6 +1020,51 @@ def visible_text(source: str) -> str:
     return "".join(parser.parts)
 
 
+def markup_signature(markup: str) -> list:
+    """Compare parsed DOM structure as well as its visible text, not raw quoting."""
+    class Signature(HTMLParser):
+        def __init__(self):
+            super().__init__(convert_charrefs=True)
+            self.events = []
+
+        def handle_starttag(self, tag, attrs):
+            self.events.append(("start", tag, sorted(attrs)))
+
+        def handle_endtag(self, tag):
+            self.events.append(("end", tag))
+
+        def handle_data(self, value):
+            self.events.append(("text", value))
+
+    parser = Signature()
+    parser.feed(markup)
+    return parser.events
+
+
+def validate_source_sections(source: str, axiom: str, data: dict, clauses: list[dict]):
+    expected = source_sections(axiom)  # Independent live SSOT, not embedded source.
+    assert data.get("sourceSections") == expected, "SSOT source section slices/hash"
+    slots = SourceSlots(source)
+    assert slots.markers == ["preamble", "exclusions"], "SSOT source section unique markers/order"
+    rendered = render_source_sections(source, expected, clauses)
+    for name in ("preamble", "exclusions"):
+        slot = slots.unique(name)
+        assert slot["attrs"].get("data-ssot-section") == name, "SSOT source section marker: " + name
+        attrs = {"class": "ssot-source-section copy", "data-ssot-section": name}
+        if name == "preamble":
+            attrs["id"] = "reader-source-status"
+        else:
+            attrs["class"] = "page-footer " + attrs["class"]
+        assert slot["tag"] == ("section" if name == "preamble" else "footer") and slot["attrs"] == attrs, "SSOT source section visible container: " + name
+        actual = source[slot["innerStart"]:slot["innerEnd"]]
+        if name == "preamble":
+            actual, count = re.subn(r'<p class="reader-source-note">[^<]*</p>$', "", actual)
+            assert count == 1, "SSOT source section merged source note"
+        assert visible_text(actual) == visible_text(rendered[name]), "SSOT source section DOM text: " + name
+        assert markup_signature(actual) == markup_signature(rendered[name]), "SSOT source section DOM structure: " + name
+    assert SOURCE_SECTION_CSS in source, "SSOT source section readable screen/print styles"
+
+
 def validate(source: str, axiom: str, plain: str) -> dict:
     data = json.loads(script_text(source, "axiom-review-data"))
     clauses = json.loads(script_text(source, "clause-data"))
@@ -815,6 +1086,7 @@ def validate(source: str, axiom: str, plain: str) -> dict:
             blocks = [b for b in data["blocks"] if b["clauseId"] == actual["id"] and b["section"] == section]
             assert "".join(b["source"] + b["separator"] for b in blocks) == actual[section], "assert 3 blocks: " + actual["id"]
             assert blocks[-1]["separator"] == "", "final separator"
+    validate_source_sections(source, axiom, data, clauses)
     parser = TargetText()
     parser.feed(source)
     editable = [b for b in data["blocks"] if b["editable"]]
@@ -864,7 +1136,7 @@ def validate(source: str, axiom: str, plain: str) -> dict:
         assert "<style" not in sec, "GEO-141 Q8 圖的樣式內聯了,會汙染全域"
     assert not stale_counts(source, counts), "GEO-140 殘留硬編碼計數: " + "; ".join(stale_counts(source, counts))
     assert not re.search(r"https?://|<link\b|<script\b[^>]*\bsrc\s*=|@import", source, re.I), "external reader resource"
-    return {"clauses": len(clauses), "blocks": len(data["blocks"]), "comments": len(data["comments"]), "witness": counts["witness"], "examples": counts["examples"], "textRevision": counts["textRevision"], "five_asserts": "pass", "independent_ssot": "pass", "patches": len(PATCHES), "counts_single_source": "pass", "geo120": "pass", "search": "pass", "color_tokens": "pass", "documentHash": data["documentHash"]}
+    return {"clauses": len(clauses), "blocks": len(data["blocks"]), "comments": len(data["comments"]), "witness": counts["witness"], "examples": counts["examples"], "textRevision": counts["textRevision"], "five_asserts": "pass", "independent_ssot": "pass", "source_sections": "pass", "patches": len(PATCHES), "counts_single_source": "pass", "geo120": "pass", "search": "pass", "color_tokens": "pass", "documentHash": data["documentHash"]}
 
 
 def _patch_snippet(text: str, limit: int = 70) -> str:
@@ -1490,17 +1762,20 @@ def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
     state["clauses"] = clauses
     state["documentHash"] = digest(compact([[b["id"], b["source"], b["separator"]] for b in blocks]))
     state["sourceFileSha256"] = digest(axiom)
+    state["sourceSections"] = source_sections(axiom)
     state["plainFileSha256"] = digest(plain)
     state["baseFileName"] = CANONICAL.name
     state["baseLabel"] = "桌面 / 手機共用 · 語意校對"
     state["generator"] = {"name": "sync_axiom_reader.py", "version": 1, "source": "公理層.md", "plain": "geometry-guide/公理層-白話.md"}
     review_changed = any(state[field] != old[field] for field in ("comments", "proposals", "revisions", "draft"))
-    text_changed = state["documentHash"] != old["documentHash"]
+    # Non-clause source has its own identity. Advancing the snapshot also keeps
+    # old local drafts (keyed by snapshotId) from restoring obsolete sections.
+    text_changed = state["documentHash"] != old["documentHash"] or state["sourceSections"] != old.get("sourceSections")
     if text_changed:
         state["textRevision"] = old["textRevision"] + 1
     if text_changed or review_changed:
         state["parentSnapshotId"] = old["snapshotId"]
-        state["snapshotId"] = "ssot-" + digest(state["documentHash"] + compact([state[field] for field in ("comments", "proposals", "revisions", "draft")]))[:20]
+        state["snapshotId"] = "ssot-" + digest(state["documentHash"] + compact(state["sourceSections"]) + compact([state[field] for field in ("comments", "proposals", "revisions", "draft")]))[:20]
         state["reviewSequence"] = old["reviewSequence"] + int(review_changed)
         # Deterministic metadata: keep prior review event dates, don't invent approval events.
     editable = [b for b in blocks if b["editable"]]
@@ -1633,15 +1908,8 @@ def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
     template = apply_hover_preview(template)
     # GEO-140:所有計數由 reader_counts() 算一次,apply_counts() 填進 HTML 與腳本;此處不再寫死數字。
     template = apply_counts(template, reader_counts(template, clauses, state))
-    script_start = template.index('<script id="clause-data"')
-    head, tail = template[:script_start], template[script_start:]
-    status = "本分支的跨面共用基準條文仍為審閱提案，尚未合併正式版本。" if "跨面共用基準分支提案" in axiom else "條文與白話已由目前專案來源同步；歷史批註保留原始快照。"
-    banner = '<p class="hint" id="reader-source-status">' + status + '</p>'
-    if 'id="reader-source-status"' in head:
-        head = re.sub(r'<p class="hint" id="reader-source-status">.*?</p>', lambda _: banner, head)
-    else:
-        head = head.replace('<main aria-label="公理層完整條文"', banner + '<main aria-label="公理層完整條文"', 1)
-    result = head + tail
+    template = apply_packet_source_sections(template)
+    result = apply_source_sections(template, axiom, state["sourceSections"], clauses)
     drifted = PATCHES.verify(result)
     if drifted:
         raise ValueError(
