@@ -4,11 +4,12 @@ import importlib.util
 from pathlib import Path
 import sys
 import unittest
+from unittest import mock
 
 if importlib.util.find_spec("geometry_kernel") is None:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "geometry-core"))
 
-from geometry_kernel import (CandidateError, EvaluationError, EvaluationRequest,
+from geometry_kernel import (CandidateError, DefinitionValue, DependencyEdge, DependencyKind, EvaluationError, EvaluationRequest,
     ExportRoot, ExtrusionDef, PlacedRegionDef, ProgramBuilder, ProgramSession,
     ProvenanceTemplate, Quantity, QuantityType, RegionDef, SourceContext,
     SourceDescriptor, SourceKey, SourceRef, SourceStatus, Unit, ValueType, frame)
@@ -30,6 +31,31 @@ def fixture(height=20, status=SourceStatus.COMPLETE, partial=False):
 
 
 class KernelSessionTests(unittest.TestCase):
+    def test_definition_bytes_and_schema_participate_in_candidate_identity(self):
+        program, request = fixture()
+        key = SourceKey("definition-provider", (1,))
+
+        def with_definition(schema, content):
+            definition = SourceDescriptor(key, ValueType.DEFINITION, SourceContext(), (), DefinitionValue(schema, content))
+            geometry_source = replace(program.sources[0], dependencies=(DependencyEdge(key, DependencyKind.DEFINITION_REQUIRED),))
+            return replace(program, sources=(definition, geometry_source))
+
+        variants = (("fixture/1", b"\x00\xff\n"), ("fixture/1", b"\x00\xfe\n"), ("fixture/2", b"\x00\xff\n"))
+        tokens = []
+        for schema, content in variants:
+            # Equal nonce, revision and generation isolate the source-content
+            # portion of the real public preview/confirm token calculation.
+            with mock.patch("geometry_kernel.transactions.secrets.token_hex", return_value="f" * 64):
+                session = ProgramSession(with_definition("initial", b""), request)
+            token, candidate = session.preview(with_definition(schema, content), evaluator_stamp=STAMP)
+            tokens.append(token)
+            self.assertEqual(DefinitionValue(schema, content), candidate.program.sources[0].value)
+            self.assertEqual("8000", candidate.result.records[0].mesh["volume_mm3"])
+            accepted = session.confirm(token, evaluator_stamp=STAMP)
+            self.assertEqual(candidate.program, accepted.program)
+            self.assertEqual(1, session.revision)
+        self.assertEqual(3, len(set(tokens)), "Neither schema nor any definition byte may disappear from candidate identity")
+
     def test_confirm_recalculates_source_volume_and_is_single_use(self):
         program, request = fixture()
         session = ProgramSession(program, request)

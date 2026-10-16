@@ -11,7 +11,7 @@ from hashlib import sha256
 import json
 import re
 
-from geometry_kernel import (BoxDef, CoordinateDomain, DependencyEdge,
+from geometry_kernel import (BoxDef, CoordinateDomain, DefinitionValue, DependencyEdge,
     DependencyKind, EvaluationError, FrameDef, Program, Provenance, Quantity,
     QuantityType, RegionDef, RegionSetDef, SourceContext, SourceDescriptor,
     SourceKey, SourceRef, SourceStatus, Unit, ValueType, canonical_bytes,
@@ -23,13 +23,15 @@ from .model_common import ModelError
 
 _VALUE_TYPES = {"quantity": ValueType.QUANTITY, "axis-position": ValueType.QUANTITY,
                 "frame": ValueType.FRAME, "region-set": ValueType.REGION_SET,
-                "box": ValueType.BOX, "feature": ValueType.FEATURE}
+                "box": ValueType.BOX, "feature": ValueType.FEATURE,
+                "definition": ValueType.DEFINITION}
 _ROOT_TYPES = {"placement.frame": ValueType.FRAME,
                "placement.region": ValueType.REGION_SET, "solid.box": ValueType.BOX,
                "spec.value": ValueType.QUANTITY, "parameter.value": ValueType.QUANTITY,
                "profile.frame": ValueType.FRAME, "profile.region": ValueType.REGION_SET,
                "profile.length": ValueType.QUANTITY}
 _STATUSES = {"ok": SourceStatus.COMPLETE, "missing": SourceStatus.INCOMPLETE,
+             "unevaluated": SourceStatus.INCOMPLETE,
              "failed": SourceStatus.INCOMPLETE, "cycle": SourceStatus.INVALID,
              "invalid": SourceStatus.INVALID, "memory": SourceStatus.UNSUPPORTED}
 _QUANTITIES = {"dimension": QuantityType.DIMENSION, "count": QuantityType.COUNT,
@@ -78,6 +80,19 @@ def _bytes(value):
         raise ModelError("UNSUPPORTED", "BASE_SOURCE_PROTOCOL", "I32", "Native source key is not valid Base64.") from error
     if not result or b64encode(result).decode("ascii") != value:
         _fail("Native source key must use canonical nonempty Base64.")
+    return result
+
+
+def _content_bytes(value):
+    """Definition content may be empty; unlike source keys it is not an ID."""
+    if type(value) is not str:
+        _fail("Native definition content requires a Base64 string.")
+    try:
+        result = b64decode(value, validate=True)
+    except (ValueError, TypeError) as error:
+        raise ModelError("UNSUPPORTED", "BASE_SOURCE_PROTOCOL", "I32", "Native definition content is not valid Base64.") from error
+    if b64encode(result).decode("ascii") != value:
+        _fail("Native definition content must use canonical Base64.")
     return result
 
 
@@ -223,6 +238,9 @@ class _Decoder:
             origins = tuple(Provenance((key.namespace, *key.key), (axis, side), (axis, side))
                             for axis in range(3) for side in range(2))
             return BoxDef(self.frame(value["frame"], context), value["lo"], value["hi"], origins)
+        if kind == "definition":
+            _shape(value, ("schema", "contentBase64"))
+            return DefinitionValue(_text(value["schema"]), _content_bytes(value["contentBase64"]))
         _shape(value, ("keyBase64", "segment"))
         segment = _array(value["segment"])
         if len(segment) != 2:
@@ -242,8 +260,12 @@ class _Decoder:
                     or descriptor["unit"] not in ("length", "scalar")
                     or type(node["status"]) is not str or node["status"] not in _STATUSES):
                 _fail("Native source descriptor has an unknown type, unit or status.")
-            if descriptor["valueType"] != "quantity" and descriptor["unit"] != "length":
+            if descriptor["valueType"] == "definition" and descriptor["unit"] != "scalar":
+                _fail("Native definition source descriptors require scalar units.")
+            if descriptor["valueType"] not in ("quantity", "definition") and descriptor["unit"] != "length":
                 _fail("Native geometric source descriptors require length units.")
+            # Native NEW nodes can have complete descriptors without a value.
+            # That does not permit an ok/null or unevaluated/non-null pair.
             if (node["status"] == "ok") != (node["value"] is not None):
                 _fail("Native source status and value availability disagree.")
             parsed[key] = (descriptor, node)

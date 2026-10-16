@@ -17,6 +17,10 @@ def _plain(value):
         return {key: _plain(item) for key, item in value.items()}
     if type(value) in (tuple, list):
         return [_plain(item) for item in value]
+    if type(value) is bytes:
+        # This is an internal candidate fingerprint, not a persisted wire field.
+        # Keep every opaque definition byte, including NUL and non-UTF-8 data.
+        return {"$bytes": value.hex()}
     return value
 
 

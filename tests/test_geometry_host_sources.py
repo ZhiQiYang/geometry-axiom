@@ -21,10 +21,10 @@ import modeling._host
 from geometry_app.model_sources import decode_candidate
 from geometry_app import model_native
 from modeling import ModelError
-from geometry_kernel import (DifferenceDef, EvaluationError, EvaluationRequest,
+from geometry_kernel import (DefinitionValue, DependencyKind, DifferenceDef, EvaluationError, EvaluationRequest,
     ExportRoot, ExtrusionDef, NodeInput, PlacedRegionDef, ProgramBuilder,
     ProvenanceTemplate, QuantityType, SourceBoxDef, SourceStatus, UnionDef,
-    ValueType, evaluate)
+    ValueType, evaluate, source_closure)
 
 
 RAW_SOURCE = b"# raw fixture\nspec H 20\n"
@@ -87,6 +87,18 @@ def fixture():
 
 def decode(value):
     return decode_candidate(json.dumps(value), source_bytes=RAW_SOURCE, execution_identity=EXECUTION)
+
+
+def definition_closure_fixture():
+    value = fixture()
+    graph = value["neutralSources"]
+    graph["nodes"].extend((
+        node(b"definition-only", "definition", None, unit="scalar", status="unevaluated"),
+        node(b"ordering-only", "quantity", None, status="unevaluated", placement=3, axis=1)))
+    graph["edges"].extend((
+        {"consumer": ref(b"box"), "source": ref(b"definition-only"), "kind": "definition-required"},
+        {"consumer": ref(b"box"), "source": ref(b"ordering-only"), "kind": "evaluate-before"}))
+    return value
 
 
 class NativeSourceTests(unittest.TestCase):
@@ -231,6 +243,129 @@ class NativeSourceTests(unittest.TestCase):
         value["neutralSources"]["nodes"][-1]["status"] = "ok"
         self.rejected(value)
 
+    def test_unevaluated_definition_and_ordering_edges_keep_complete_root(self):
+        candidate = decode(definition_closure_fixture())
+        pending = candidate.sources[-2:]
+        self.assertEqual([SourceStatus.INCOMPLETE, SourceStatus.INCOMPLETE], [source.status for source in pending])
+        self.assertEqual([ValueType.DEFINITION, ValueType.QUANTITY], [source.value_type for source in pending])
+        self.assertEqual([None, None], [source.value for source in pending])
+        self.assertEqual(1, pending[-1].context.axis)
+        self.assertEqual(("native-context", 3, ()), pending[-1].context.owner)
+        box_source = candidate.sources[3]
+        self.assertEqual((DependencyKind.DEFINITION_REQUIRED, DependencyKind.EVALUATE_BEFORE),
+                         tuple(edge.kind for edge in box_source.dependencies[-2:]))
+        builder = ProgramBuilder(candidate.sources)
+        box = builder.add(SourceBoxDef(candidate.roots[-1].source))
+        result = evaluate(builder.freeze(), EvaluationRequest((ExportRoot(box),)))
+        self.assertEqual("COMPLETE", result.status)
+        self.assertEqual("8000", result.records[0].mesh["volume_mm3"])
+        closure = source_closure(builder.freeze(), (box,))
+        self.assertTrue({source.key for source in pending} <= {source.key for source in closure})
+        self.assertTrue(all(source.value is None for source in closure if source.key in {entry.key for entry in pending}))
+
+    def test_unevaluated_value_required_dependencies_are_incomplete(self):
+        for index in (-2, -1):
+            with self.subTest(edge=index):
+                value = definition_closure_fixture()
+                value["neutralSources"]["edges"][index]["kind"] = "value-required"
+                candidate = decode(value)
+                builder = ProgramBuilder(candidate.sources)
+                box = builder.add(SourceBoxDef(candidate.roots[-1].source))
+                with self.assertRaises(EvaluationError) as error:
+                    evaluate(builder.freeze(), EvaluationRequest((ExportRoot(box),)))
+                self.assertEqual(("INCOMPLETE", "SOURCE_UNAVAILABLE"), (error.exception.status, error.exception.code))
+                self.assertEqual(candidate.sources[index].key, error.exception.missing)
+                partial = evaluate(builder.freeze(), EvaluationRequest((ExportRoot(box),), True))
+                self.assertEqual(("INCOMPLETE", ()), (partial.status, partial.records))
+
+    def test_unevaluated_status_cannot_carry_a_value(self):
+        value = fixture()
+        value["neutralSources"]["nodes"][2]["status"] = "unevaluated"
+        error = self.rejected(value)
+        self.assertEqual("Native source status and value availability disagree.", error.message)
+
+    def test_ok_status_cannot_hide_a_missing_value(self):
+        value = fixture()
+        value["neutralSources"]["nodes"][2]["value"] = None
+        error = self.rejected(value)
+        self.assertEqual("Native source status and value availability disagree.", error.message)
+
+    def test_failure_statuses_keep_their_existing_outcomes(self):
+        for native_status, expected in (("failed", SourceStatus.INCOMPLETE), ("missing", SourceStatus.INCOMPLETE),
+                                       ("cycle", SourceStatus.INVALID), ("invalid", SourceStatus.INVALID),
+                                       ("memory", SourceStatus.UNSUPPORTED)):
+            with self.subTest(native_status=native_status):
+                value = fixture()
+                value["neutralSources"]["nodes"][2].update(status=native_status, value=None)
+                candidate = decode(value)
+                self.assertEqual(expected, candidate.sources[2].status)
+                builder = ProgramBuilder(candidate.sources)
+                box = builder.add(SourceBoxDef(candidate.roots[-1].source))
+                with self.assertRaises(EvaluationError) as error:
+                    evaluate(builder.freeze(), EvaluationRequest((ExportRoot(box),)))
+                self.assertEqual(expected.value, error.exception.status)
+                self.assertEqual("SOURCE_INVALID" if expected == SourceStatus.INVALID else "SOURCE_UNAVAILABLE", error.exception.code)
+
+    def test_unevaluated_descriptors_require_complete_valid_types_and_contexts(self):
+        for mutation in ("missing-type", "unknown-type", "wrong-unit", "incomplete-context", "invalid-axis"):
+            value = definition_closure_fixture()
+            descriptor = value["neutralSources"]["nodes"][-2]["descriptor"]
+            if mutation == "missing-type":
+                descriptor.pop("valueType")
+            elif mutation == "unknown-type":
+                descriptor["valueType"] = "undefined"
+            elif mutation == "wrong-unit":
+                descriptor["unit"] = "length"
+            elif mutation == "incomplete-context":
+                descriptor["context"].pop("owner")
+            else:
+                descriptor["context"]["axis"] = True
+            with self.subTest(mutation=mutation):
+                self.rejected(value)
+
+    def test_definition_sources_keep_full_bytes_schema_and_empty_content(self):
+        value = fixture()
+        expected = [("unrelated-provider/1", b"\x00\xfffull\ncontent\x00"), (" ", b"")]
+        for index, (schema, content) in enumerate(expected):
+            key = ("definition:" + str(index)).encode()
+            value["neutralSources"]["nodes"].append(node(key, "definition",
+                {"schema": schema, "contentBase64": encoded(content)}, unit="scalar"))
+            value["neutralSources"]["edges"].append({"consumer": ref(b"box"), "source": ref(key), "kind": "definition-required"})
+        candidate = decode(value)
+        definitions = candidate.sources[-2:]
+        self.assertTrue(all(source.value_type == ValueType.DEFINITION and isinstance(source.value, DefinitionValue)
+                            for source in definitions))
+        self.assertEqual(expected, [(source.value.schema, source.value.content) for source in definitions])
+        builder = ProgramBuilder(candidate.sources)
+        box = builder.add(SourceBoxDef(candidate.roots[-1].source))
+        result = evaluate(builder.freeze(), EvaluationRequest((ExportRoot(box),)))
+        self.assertEqual("8000", result.records[0].mesh["volume_mm3"])
+        self.assertTrue({source.key for source in definitions} <= {source.key for source in result.sources})
+
+    def test_definition_sources_reject_malformed_payloads_and_units(self):
+        payloads = ({"schema": "", "contentBase64": ""}, {"schema": 7, "contentBase64": ""},
+                    {"schema": "x\0y", "contentBase64": ""}, {"schema": "x"},
+                    {"schema": "x", "contentBase64": "", "extra": 0},
+                    {"schema": "x", "contentBase64": None}, {"schema": "x", "contentBase64": "!"},
+                    {"schema": "x", "contentBase64": "Zg"}, {"schema": "x", "contentBase64": "Zg==\n"})
+        for payload in payloads:
+            value = fixture()
+            value["neutralSources"]["nodes"].append(node(b"definition", "definition", payload, unit="scalar"))
+            with self.subTest(payload=payload):
+                self.rejected(value)
+        value = fixture()
+        value["neutralSources"]["nodes"].append(node(b"definition", "definition", {"schema": "x", "contentBase64": ""}))
+        self.rejected(value)
+
+    def test_definition_content_rejects_noncanonical_base64(self):
+        value = fixture()
+        # Standard decoding accepts these nonzero pad bits, but the unique
+        # encoding of b"f" is Zg==. Identity must not accept alternate spellings.
+        value["neutralSources"]["nodes"].append(node(b"definition", "definition",
+            {"schema": "x", "contentBase64": "Zh=="}, unit="scalar"))
+        error = self.rejected(value)
+        self.assertEqual("Native definition content must use canonical Base64.", error.message)
+
     def test_complete_loops_and_six_face_provenance_are_required(self):
         value = fixture()
         value["neutralSources"]["nodes"][1]["value"]["components"][0]["vertexKeys"] = [[1, 2, 3], [4, 5, 6, 7, 8]]
@@ -286,7 +421,7 @@ class NativeSourceGuardControls(unittest.TestCase):
 
             baseline = execute("NativeSourceTests")
             self.assertEqual(0, baseline.returncode, baseline.stdout + baseline.stderr)
-            self.assertIn("Ran 12 tests", baseline.stderr)
+            self.assertIn("Ran 21 tests", baseline.stderr)
             mutants = (
                 ('if coverage["complete"] is not True or coverage["rootsComplete"] is not True or _array(coverage["missingGroups"]):',
                  'if False:', "test_incomplete_coverage_is_always_rejected"),
@@ -294,6 +429,17 @@ class NativeSourceGuardControls(unittest.TestCase):
                  'if False:', "test_input_and_candidate_identity_are_bound_together"),
                 ('dependencies[consumer].append(DependencyEdge(source, relation))', 'pass',
                  "test_unused_source_cycles_are_not_hidden_by_root_selection"),
+                ('if (node["status"] == "ok") != (node["value"] is not None):', 'if False:',
+                 "test_unevaluated_status_cannot_carry_a_value"),
+                ('if (node["status"] == "ok") != (node["value"] is not None):', 'if False:',
+                 "test_ok_status_cannot_hide_a_missing_value"),
+                ('"unevaluated": SourceStatus.INCOMPLETE', '"unevaluated": SourceStatus.INVALID',
+                 "test_unevaluated_definition_and_ordering_edges_keep_complete_root"),
+                ('if b64encode(result).decode("ascii") != value:', 'if False:',
+                 "test_definition_content_rejects_noncanonical_base64"),
+                ('return DefinitionValue(_text(value["schema"]), _content_bytes(value["contentBase64"]))',
+                 'return DefinitionValue(_text(value["schema"]), b"")',
+                 "test_definition_sources_keep_full_bytes_schema_and_empty_content"),
             )
             for before, after, case in mutants:
                 with self.subTest(case=case):
