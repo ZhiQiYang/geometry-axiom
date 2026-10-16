@@ -16,6 +16,7 @@ import subprocess
 import tempfile
 
 import space_modeling
+from geometry_app import source_closure
 from modeling import ModelError, canonical_bytes
 from modeling.base import _build_adapter, load_base
 from modeling.common import digest, scene_required_capabilities, strict_json_loads
@@ -157,7 +158,7 @@ def _program(value, *, base=False):
 def _producer_hash():
     """Pin this producer and every local Python/native helper in its closure."""
     paths = {Path(__file__).resolve(), ROOT / "geometry-web" / "space_modeling.py", ROOT / "current_geometry.c"}
-    paths.update((ROOT / "geometry-core" / "modeling").glob("*.py"))
+    paths.update(path for _, path in source_closure.source_paths(ROOT))
     for directory in (ROOT / "geometry-core", ROOT / "geometry-web"):
         paths.update(path for path in directory.rglob("*") if path.suffix in (".c", ".h", ".inc") and "vendor" not in path.parts)
     paths.update(ROOT.glob("*.h"))
@@ -171,6 +172,8 @@ def _producer_hash():
 
 def _runtime(base, bridge):
     try:
+        if not source_closure.current_identity()["fresh"]:
+            _fail("UPDATE_RUNTIME", "來源更新模組已改變，請重新啟動 Python 程序。", status="UNSUPPORTED", clause="I32")
         axiom = hashlib.sha256((ROOT / "公理層.md").read_bytes().replace(b"\r\n", b"\n")).hexdigest()
     except OSError:
         _fail("UPDATE_RUNTIME", "來源更新公理版本無法核對。", status="UNSUPPORTED", clause="I32")

@@ -147,13 +147,17 @@ def placed_region_geometry(frame, region, source):
     return result
 
 
-def extrusion_geometry(frame, region, lo, hi, sources):
-    if not isinstance(frame, FrameDef) or not isinstance(region, RegionDef):
-        _invalid("GEOMETRY_INPUT", "Expected a validated frame and region")
+def extrusion_span(lo, hi):
     if type(lo) is not int or type(hi) is not int or lo >= hi:
         _invalid("EXTRUSION_SPAN", "Extrusion bounds must be exact integers with lo < hi")
     if hi-lo > _LIMIT:
         _invalid("EXTRUSION_RANGE", "Extrusion thickness exceeds the supported range")
+
+
+def extrusion_geometry(frame, region, lo, hi, sources):
+    if not isinstance(frame, FrameDef) or not isinstance(region, RegionDef):
+        _invalid("GEOMETRY_INPUT", "Expected a validated frame and region")
+    extrusion_span(lo, hi)
     if any(any(value < -_LIMIT or value > _LIMIT for value in frame.world(point, height))
            for ring in (region.outer, *region.holes) for point in ring for height in (lo, hi)):
         _invalid("EXTRUSION_RANGE", "Generated world vertices exceed the supported range")
@@ -384,7 +388,7 @@ def enclosed_geometry(faces, max_cells=DEFAULT_MAX_CELLS):
     return _Geometry(faces,inside)
 
 
-def boolean_geometry(op, operands):
+def boolean_geometry(op, operands, *, max_source_faces=MAX_SOURCE_FACES):
     if len({geometry.domain for geometry in operands}) > 1:
         _invalid("COORDINATE_DOMAIN", "Boolean inputs must use the same coordinate domain")
     if any(g.inside is None for g in operands):
@@ -393,15 +397,25 @@ def boolean_geometry(op, operands):
     # shared dependency DAG. Check before concatenation, preserving every path
     # below the limit and refusing an expansion rather than dropping sources.
     source_face_count = sum(len(g.faces) for g in operands)
-    if source_face_count > MAX_SOURCE_FACES:
-        _capacity(f"Boolean provenance requires {source_face_count} source faces; configured limit is {MAX_SOURCE_FACES}")
+    if type(max_source_faces) is not int or max_source_faces < 1:
+        _capacity("The source-face limit must be a positive integer")
+    if source_face_count > max_source_faces:
+        _capacity(f"Boolean provenance requires {source_face_count} source faces; configured limit is {max_source_faces}")
     if op == "UNION":
         inside = lambda p:any(g.inside(p) for g in operands)
     elif op == "DIFFERENCE" and operands:
         inside = lambda p:operands[0].inside(p) and not any(g.inside(p) for g in operands[1:])
     else:
         _invalid("BOOLEAN_OPERATION", "Unknown or invalid solid composition operation")
-    return _Geometry([f for g in operands for f in g.faces],inside)
+    return _Geometry([f for g in operands for f in g.faces],inside,
+                     domain=operands[0].domain if operands else CoordinateDomain())
+
+
+def prefix_geometry(geometry, path=(), contribution=None):
+    if not path and contribution is None:
+        return geometry
+    return replace(geometry, faces=tuple(replace(face, sources=tuple(
+        source.prefixed(path, contribution=contribution) for source in face.sources)) for face in geometry.faces))
 
 
 def _source_key(source):
@@ -469,6 +483,8 @@ def mesh_objects(geometry, grid, *, volume_known=None, max_cells=DEFAULT_MAX_CEL
     """
     if not isinstance(grid, _Arrangement) or grid.domain != geometry.domain:
         _invalid("COORDINATE_DOMAIN", "A mesh requires an arrangement from its coordinate domain")
+    if not geometry.faces:
+        return [{"status":"EMPTY","representation":"mesh","closure":"empty","component":None,"vertices_mm":[],"triangles":[],"face_sources":[],"boundary_shells":[],"volume_mm3":None if geometry.inside is None else "0"}]
     face_index = defaultdict(list)
     for face in geometry.faces:
         face_index[(face.axis,face.coord)].append(face)

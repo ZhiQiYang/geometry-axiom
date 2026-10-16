@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Run the PY1 suites against a frozen Git archive, without native binaries.
+"""Run a selected Python suite set from a frozen Git archive, without native binaries.
 
 Example:
-  python tests/geometry_kernel_receipt.py --source <full-commit> --out <TEMP-dir>
+  python tests/geometry_kernel_receipt.py --suite-set py2 --source <full-commit> --out <TEMP-dir>
 
 The checked-out tree may contain later WIP: the actual executable input comes
 only from the requested commit. Per-suite discovery and raw logs come from the
@@ -22,13 +22,15 @@ import tempfile
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
-SUITES = {
+PY1_SUITES = {
     "test_geometry_kernel_compatibility": 1,
     "test_geometry_kernel_geometry": 20,
     "test_geometry_kernel_isolation": 2,
 }
-PATHS = ("geometry-core/geometry_kernel", "geometry-core/modeling", "tests/__init__.py",
-         "tests/_unittest_runner.py", "tests/binaries.py", *(f"tests/{name}.py" for name in SUITES))
+PY2_SUITES = {**PY1_SUITES, "test_geometry_kernel_graph": 23,
+              "test_geometry_kernel_runtime": 2, "test_geometry_kernel_transactions": 31,
+              "test_geometry_kernel_session": 4, "test_geometry_host_world": 8}
+SUITE_SETS = {"py1": PY1_SUITES, "py2": PY2_SUITES}
 
 
 def git(*args):
@@ -39,16 +41,22 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", required=True)
     parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument("--suite-set", choices=tuple(SUITE_SETS), default="py1")
     args = parser.parse_args()
     if not re.fullmatch(r"[0-9a-f]{40}", args.source):
         parser.error("--source must be a complete commit SHA")
     source = git("rev-parse", "--verify", args.source + "^{commit}").decode().strip()
-    archive = git("archive", "--format=zip", source, *PATHS)
+    suites = SUITE_SETS[args.suite_set]
+    paths = ("geometry-core/geometry_kernel", "geometry-core/modeling", "tests/__init__.py",
+             "tests/_unittest_runner.py", "tests/binaries.py", *(f"tests/{name}.py" for name in suites))
+    if args.suite_set == "py2":
+        paths += ("geometry-app/geometry_app", "geometry-templates/woodworking/geometry_woodworking")
+    archive = git("archive", "--format=zip", source, *paths)
     output = args.out.resolve()
     output.mkdir(parents=True, exist_ok=True)
     records = []
     failed = False
-    with tempfile.TemporaryDirectory(prefix="geometry-py1-frozen-") as directory:
+    with tempfile.TemporaryDirectory(prefix="geometry-" + args.suite_set + "-frozen-") as directory:
         frozen = Path(directory).resolve()
         with zipfile.ZipFile(io.BytesIO(archive)) as bundle:
             for name in bundle.namelist():
@@ -57,7 +65,7 @@ def main():
             bundle.extractall(frozen)
         inventory = [{"path": p.relative_to(frozen).as_posix(), "sha256": hashlib.sha256(p.read_bytes()).hexdigest()}
                      for p in sorted(frozen.rglob("*")) if p.is_file()]
-        for name, expected in SUITES.items():
+        for name, expected in suites.items():
             result_path = output / (name + ".json")
             log_path = output / (name + ".log")
             command = [sys.executable, str(frozen / "tests/_unittest_runner.py"),
@@ -71,16 +79,16 @@ def main():
             records.append(record)
             failed |= process.returncode != 0 or result.get("total") != expected or result.get("skipped", 0) != 0
     receipt = {
-        "schema": "geo261-python-py1-receipt/1", "utc": datetime.now(timezone.utc).isoformat(),
+        "schema": "geo261-python-receipt/1", "suite_set": args.suite_set, "utc": datetime.now(timezone.utc).isoformat(),
         "source": source, "source_tree": git("show", "-s", "--format=%T", source).decode().strip(),
         "worktree_dirty": bool(git("status", "--porcelain")), "execution_source": "frozen git archive",
         "runner_sha256_lf": hashlib.sha256(Path(__file__).read_bytes().replace(b"\r\n", b"\n")).hexdigest(),
         "python": sys.version, "inventory": inventory, "suites": records, "native_executed": False,
-        "expected_total": sum(SUITES.values()), "success": not failed,
-        "scope": "Shared exact geometry, kernel-only installation, two shared-source negative controls; no native fixture replay or complete graph-decoupling claim",
+        "expected_total": sum(suites.values()), "success": not failed,
+        "scope": "Shared exact geometry and selected graph/host/candidate suites; no real native fixture replay, full native source DTO or complete domain-decoupling claim",
     }
     (output / "summary.json").write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(json.dumps({"source": source, "success": not failed, "expected_total": 23, "receipt": str(output / "summary.json")}, ensure_ascii=False))
+    print(json.dumps({"source": source, "success": not failed, "expected_total": sum(suites.values()), "receipt": str(output / "summary.json")}, ensure_ascii=False))
     return int(failed)
 
 

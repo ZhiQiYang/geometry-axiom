@@ -249,6 +249,16 @@
       "count": 1,
       "unit": "test"
     },
+    "py:test_domain_source_pins": {
+      "mode": "count",
+      "count": 16,
+      "unit": "test"
+    },
+    "py:test_geometry_host_world": {
+      "mode": "count",
+      "count": 8,
+      "unit": "test"
+    },
     "py:test_geometry_kernel_compatibility": {
       "mode": "count",
       "count": 1,
@@ -259,9 +269,29 @@
       "count": 20,
       "unit": "test"
     },
+    "py:test_geometry_kernel_graph": {
+      "mode": "count",
+      "count": 23,
+      "unit": "test"
+    },
     "py:test_geometry_kernel_isolation": {
       "mode": "count",
       "count": 2,
+      "unit": "test"
+    },
+    "py:test_geometry_kernel_runtime": {
+      "mode": "count",
+      "count": 2,
+      "unit": "test"
+    },
+    "py:test_geometry_kernel_session": {
+      "mode": "count",
+      "count": 4,
+      "unit": "test"
+    },
+    "py:test_geometry_kernel_transactions": {
+      "mode": "count",
+      "count": 31,
       "unit": "test"
     },
     "py:test_grid_subdivision_oracle": {
