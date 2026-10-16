@@ -40,10 +40,11 @@ static int first_error(void)
 static int rejected_cache(void)
 {
     World *world=calloc(1,sizeof *world);CHECK(world);GridSystem system=host_system();
-    CHECK(app_grid_system_put(world,&system,2));world->boundary_count=1;
-    SpaceBoundarySurface *boundary=&world->boundaries[0];boundary->id=71;boundary->outline.count=4;
+    CHECK(app_grid_system_put(world,&system,2));
+    SpaceBoundarySurface boundary_value={0},*boundary=&boundary_value;boundary->id=71;boundary->outline.count=4;
     boundary->outline.v[0]=(SurfacePoint2){400,500};boundary->outline.v[1]=(SurfacePoint2){1600,500};
     boundary->outline.v[2]=(SurfacePoint2){1600,1300};boundary->outline.v[3]=(SurfacePoint2){400,1300};
+    CHECK(app_boundary_stage(world,boundary));
     CHECK(boundary_keys_initialize(world,71));
     GridBinding binding={0};binding.id=9;binding.boundary_id=71;binding.system_id=5;
     binding.vertex_key=world_find_vertex_keys(world,71)->keys[0][0];

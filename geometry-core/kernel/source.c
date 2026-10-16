@@ -20,7 +20,7 @@ struct GeoEvalContext {
     GeoSourceEdge *edges;
     size_t edge_count;
     size_t active;
-    bool started;
+    bool started, sealed;
 };
 static char *geo_source_copy_text(const char *text)
 {
@@ -34,13 +34,17 @@ GeoEvalContext *geo_eval_create(uint64_t candidate_id,uint64_t base_revision)
     if(ctx){ctx->candidate_id=candidate_id;ctx->base_revision=base_revision;ctx->active=SIZE_MAX;}
     return ctx;
 }
-void geo_eval_destroy(GeoEvalContext *ctx)
+static void geo_eval_clear(GeoEvalContext *ctx)
 {
-    if(!ctx)return;
     for(size_t i=0;i<ctx->provider_count;++i){free((void *)ctx->providers[i].name_space);free((void *)ctx->providers[i].implementation_fingerprint);}
     for(size_t i=0;i<ctx->node_count;++i){free((void *)ctx->nodes[i]->source.key);free(ctx->nodes[i]);}
-    free(ctx->providers);free(ctx->nodes);free(ctx->edges);free(ctx);
+    free(ctx->providers);free(ctx->nodes);free(ctx->edges);
+    ctx->providers=NULL;ctx->nodes=NULL;ctx->edges=NULL;
+    ctx->provider_count=ctx->node_count=ctx->edge_count=0;
+    ctx->active=SIZE_MAX;ctx->started=false;
 }
+void geo_eval_destroy(GeoEvalContext *ctx)
+{if(ctx){geo_eval_clear(ctx);free(ctx);}}
 bool geo_eval_register(GeoEvalContext *ctx,const GeoSourceProvider *provider)
 {
     if(!ctx||ctx->started||!provider||!provider->describe||!provider->evaluate||
@@ -112,6 +116,7 @@ static bool geo_source_value_matches(const GeoSourceDescriptor *d,const GeoSourc
 }
 GeoSourceStatus geo_eval_depend(GeoEvalContext *ctx,GeoSourceRef source,GeoDependencyKind kind)
 {
+    if(ctx&&ctx->sealed)return GEO_SOURCE_INVALID;
     size_t index;GeoSourceStatus result=geo_source_node(ctx,source,&index);
     if(result!=GEO_SOURCE_OK)return result;
     return geo_source_edge(ctx,index,kind);
@@ -119,6 +124,18 @@ GeoSourceStatus geo_eval_depend(GeoEvalContext *ctx,GeoSourceRef source,GeoDepen
 GeoSourceStatus geo_eval_source(GeoEvalContext *ctx,GeoSourceRef source,GeoDependencyKind kind,GeoSourceValue *out)
 {
     if(!out)return GEO_SOURCE_INVALID;
+    if(ctx&&ctx->sealed){
+        if((source.key_size&&!source.key)||kind<GEO_DEPENDENCY_VALUE_REQUIRED||kind>GEO_DEPENDENCY_EVALUATE_BEFORE)return GEO_SOURCE_INVALID;
+        for(size_t i=0;i<ctx->node_count;++i){
+            const GeoSourceNode *node=ctx->nodes[i];const GeoSourceRef *ref=&node->source;
+            if(ref->provider==source.provider&&ref->key_size==source.key_size&&
+               (!source.key_size||!memcmp(ref->key,source.key,source.key_size))){
+                if(node->state!=GEO_NODE_VALID)return GEO_SOURCE_INVALID;
+                *out=node->value;return GEO_SOURCE_OK;
+            }
+        }
+        return GEO_SOURCE_INVALID;
+    }
     size_t index;GeoSourceStatus result=geo_source_node(ctx,source,&index);
     if(result!=GEO_SOURCE_OK)return result;
     result=geo_source_edge(ctx,index,kind);if(result!=GEO_SOURCE_OK)return result;
@@ -151,3 +168,15 @@ bool geo_eval_node_at(const GeoEvalContext *ctx,size_t i,GeoSourceNodeView *out)
 size_t geo_eval_edge_count(const GeoEvalContext *ctx){return ctx?ctx->edge_count:0;}
 bool geo_eval_edge_at(const GeoEvalContext *ctx,size_t i,GeoSourceEdge *out)
 {if(!ctx||i>=ctx->edge_count||!out)return false;*out=ctx->edges[i];return true;}
+bool geo_eval_seal(GeoEvalContext *ctx)
+{
+    if(!ctx)return false;
+    for(size_t i=0;i<ctx->node_count;++i)if(ctx->nodes[i]->state==GEO_NODE_ACTIVE)return false;
+    ctx->sealed=true;ctx->started=true;return true;
+}
+bool geo_eval_is_sealed(const GeoEvalContext *ctx){return ctx&&ctx->sealed;}
+bool geo_eval_reset(GeoEvalContext *ctx)
+{
+    if(!ctx||ctx->sealed||ctx->active!=SIZE_MAX)return false;
+    geo_eval_clear(ctx);return true;
+}

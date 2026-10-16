@@ -13,10 +13,10 @@ static int capacity_check(void)
     PfSeamLine *lines=calloc(PF_SUPPORT_MAX+1,sizeof *lines);if(!lines)return 2;
     for(size_t i=0;i<=PF_SUPPORT_MAX;++i)lines[i].coordinate=100;
     PfLayout d={0};d.layout.tiles=tiles;d.layout.count=2;d.layout.vertices=8;d.layout.seams=lines;d.layout.seam_count=PF_SUPPORT_MAX;PfSupport s;
-    bool ok=pf_support_evaluate(&d,NULL,0,(ParamValue){8,1,1},&s);
+    bool ok=pf_support_evaluate(&d,NULL,0,(GeoQuantity){8,1,1},&s);
     if(!ok||s.count!=PF_SUPPORT_MAX||s.part_count!=PF_SUPPORT_MAX){fprintf(stderr,"PF3_CAPACITY_N: complete N results required\n");pf_support_free(&s);free(lines);return 1;}
     pf_support_free(&s);d.layout.seam_count=PF_SUPPORT_MAX+1;
-    ok=pf_support_evaluate(&d,NULL,0,(ParamValue){8,1,1},&s);
+    ok=pf_support_evaluate(&d,NULL,0,(GeoQuantity){8,1,1},&s);
     bool rejected=!ok&&g_fs_diagnostic==FS_DIAGNOSTIC_CAPACITY&&strstr(g_engineering_error,"limit")&&!s.count&&!s.part_count&&!s.seams&&!s.parts;
     pf_support_free(&s);free(lines);
     if(!rejected){fprintf(stderr,"PF3_CAPACITY_N1: reject and discard whole output, never truncate\n");return 1;}
@@ -34,7 +34,7 @@ int main(int argc,char **argv)
         if(values[0]>=values[2]||values[1]>=values[3]){free(rects);return 2;}
         rects[i]=(PfFootprint){{values[0],values[1]},{values[2],values[3]}};
     }
-    PfLayout d;PfSupport s={0};ParamValue x;
+    PfLayout d;PfSupport s={0};GeoQuantity x;
     bool ok=parameter_value(&world,p->threshold,&x)&&pf_build(&world,p,&d);
     if(!ok){free(rects);return 2;}
     ok=pf_support_evaluate(&d,rects,nr,x,&s);

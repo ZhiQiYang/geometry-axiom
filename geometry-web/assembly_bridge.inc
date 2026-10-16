@@ -33,8 +33,8 @@ static void json_assembly_preview(void)
 {
     char error[512];snprintf(error,sizeof error,"%s",g_engineering_error[0]?g_engineering_error:scene_last_error());
     printf("{\"token\":%u,\"valid\":%s,\"revision\":%llu,\"before\":",g_preview.token,g_preview.valid?"true":"false",(unsigned long long)g_preview.revision);
-    json_assembly_state(&g_preview.before,true);fputs(",\"after\":",stdout);json_assembly_state(&g_preview.after,true);
-    fputs(",\"impact\":",stdout);json_candidate_geometry(&g_preview.before,&g_preview.after);
+    json_assembly_state(&g_preview.transaction->before,true);fputs(",\"after\":",stdout);json_assembly_state(&g_preview.transaction->after,true);
+    fputs(",\"impact\":",stdout);json_candidate_geometry(&g_preview.transaction->before,&g_preview.transaction->after);
     fputs(",\"violations\":[",stdout);
     if(!g_preview.valid){
         const AsmDiagnostic *d=&g_preview.assembly_diagnostic;

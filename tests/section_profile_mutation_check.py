@@ -17,7 +17,7 @@ Run on Linux/WSL (GCC), never edits the checkout:
 
 Two groups of single-point faults are injected into a disposable copy of the sources:
 
-  native  C sources (geometry-core/section_profile*.inc, geometry-web/section_profile_bridge.inc): the bridge is
+  native  W section-profile policy, K exact complement and H protocol/bridge adapters: the bridge is
           compiled from the copy and tests/test_section_profile_native.py runs against the mutated bridge;
   model   the Python producer (geometry-core/modeling/section_profile.py, engine.py): tests/
           test_section_profile_modeling.py runs inside the mutated copy against the unmutated native adapter.
@@ -66,10 +66,9 @@ MODEL_CLASS = 'SectionProfileModeling'
 # and that test is about the source graph, not about any guard injected here.
 EXCLUDED = {'test_source_index_typed_closure_and_display_identity'}
 
-V = 'geometry-core/section_profile_validation.inc'
-P = 'geometry-core/section_profiles.inc'
-PL = 'geometry-core/section_profile_placement.inc'
-CV = 'geometry-core/section_profile_conversion.inc'
+V = P = PL = CV = 'geometry-templates/woodworking/native/section_profile.c'
+H = 'geometry-core/section_profiles.inc'
+K = 'geometry-core/kernel/geometry.c'
 BR = 'geometry-web/section_profile_bridge.inc'
 MS = 'geometry-core/modeling/section_profile.py'
 ME = 'geometry-core/modeling/engine.py'
@@ -107,11 +106,11 @@ def case(identifier, clause, desc, file, before, after, tests, cause, equivalent
 ACCEPT = 'expected the candidate to be accepted'
 CASES = [
     case('SPM01', 'I44', 'drop the member-in-profile containment check', V,
-         'if(p&&sp_outside_regions(&p->outline,&m->rect,outside)){', 'if(0&&p&&sp_outside_regions(&p->outline,&m->rect,outside)){',
+         'if(p&&wood_sp_outside_regions(&p->outline,&m->rect,outside)){', 'if(0&&p&&wood_sp_outside_regions(&p->outline,&m->rect,outside)){',
          [CONCAVE, GEOM], ["expected rejection 'V_PROFILE_OUTSIDE'"]),
     case('SPM02', 'I45', 'drop the member-overlap check', V,
-         'if(sp_intersection(&s->members[i],&s->members[j],&overlap)){',
-         'if(0&&sp_intersection(&s->members[i],&s->members[j],&overlap)){',
+         'if(wood_sp_intersection(&s->members[i],&s->members[j],&overlap)){',
+         'if(0&&wood_sp_intersection(&s->members[i],&s->members[j],&overlap)){',
          [TOUCH, NAMED], ["expected rejection 'V_PROFILE_OVERLAP'"]),
     case('SPM03', 'R36', 'u overlap uses <= : edge-sharing members become overlapping', V,
          'return r->min_u<r->max_u&&r->min_v<r->max_v;', 'return r->min_u<=r->max_u&&r->min_v<r->max_v;',
@@ -120,7 +119,7 @@ CASES = [
          'return r->min_u<r->max_u&&r->min_v<r->max_v;', 'return r->min_u<r->max_u&&r->min_v<=r->max_v;',
          [TOUCH], [ACCEPT, 'V_PROFILE_OVERLAP']),
     case('SPM05', 'I46/D40', 'panel width w < 915 becomes w <= 915', P,
-         'm.width>=sp_panel_spec.width_max', 'm.width>sp_panel_spec.width_max',
+         'm.width>=wood_sp_panel_spec.width_max', 'm.width>wood_sp_panel_spec.width_max',
          [PANEL], ["expected rejection 'V_PANEL_WIDTH'"]),
     case('SPM06', 'I46', 'panel width lower bound 1 becomes 0', P,
          'm.width<1||', 'm.width<0||',
@@ -133,8 +132,8 @@ CASES = [
     case('SPM09', 'D40', 'spec w_max 915 becomes 914', P, '6,915,1830}', '6,914,1830}',
          [PANEL], [ACCEPT, 'V_PANEL_WIDTH']),
     case('SPM10', 'I43', 'drop the outline validity check', P,
-         'if(!poly_loop_is_valid(&p.outline))return sp_error("I43: profile',
-         'if(0&&!poly_loop_is_valid(&p.outline))return sp_error("I43: profile',
+         'if(!wood_sp_loop_valid(&p.outline))return wood_sp_error(w,"I43: profile',
+         'if(0&&!wood_sp_loop_valid(&p.outline))return wood_sp_error(w,"I43: profile',
          [GEOM], ["expected rejection 'I43'"]),
     case('SPM11', 'D37', 'run length accepts a D26 material source', P,
          '(length&&out->kind==ENG_MATERIAL)', '(0&&length&&out->kind==ENG_MATERIAL)',
@@ -142,7 +141,7 @@ CASES = [
     case('SPM12', 'D36', 'material A/B field identity is no longer enforced', P,
          'out->field!=(field?ENG_B:ENG_A)', '0&&out->field!=(field?ENG_B:ENG_A)',
          [PARAM], ["rejected, but not for 'D36'"]),
-    case('SPM13', 'I51', 'scene records no longer need the section-profile/1 declaration', P,
+    case('SPM13', 'I51', 'scene records no longer need the section-profile/1 declaration', H,
          'if(!sp_scene_required){scene_error(', 'if(0&&!sp_scene_required){scene_error(',
          [DUMP], ['I51: a scene with a missing requires section-profile/1 marker must be rejected']),
     case('SPM14', 'I46', 'timber orientation is not validated', P,
@@ -152,7 +151,7 @@ CASES = [
          'if(strcmp(orientation,"thickness-v")&&strcmp(orientation,"thickness-u"))return', 'if(0)return',
          [GEOM], ["expected rejection 'panel orientation must be thickness-v or thickness-u'"]),
     case('SPM16', 'R38', 'V = +up instead of -up', PL,
-         'r->frame.axis_v=sp_scaled(r->up,-1);', 'r->frame.axis_v=sp_scaled(r->up,1);',
+         'r->frame.axis_v=wood_sp_scaled(r->up,-1);', 'r->frame.axis_v=wood_sp_scaled(r->up,1);',
          [CARD], ['R38: V must be -up']),
     case('SPM17', 'R38', 'negative directions (-u,-v) lose their sign', PL,
          '(r->dir%2)?-1:1', '1',
@@ -161,69 +160,69 @@ CASES = [
          'r->dir<2?host.axis_u:host.axis_v', 'r->dir<2?host.axis_v:host.axis_u',
          [CARD], ['R38: N must equal the run direction d']),
     case('SPM19', 'I48', 'p,q may lie outside the host range', PL,
-         'bool inside=boundary_contains_point(&region,(SurfacePoint2){r->p,r->q});', 'bool inside=true;',
+         'bool inside=wood_sp_region_point(&region,(GeoPoint2){r->p,r->q});', 'bool inside=true;',
          [HOLES], ["expected rejection 'outside closed host range'"]),
     case('SPM20', 'I48', 'up need not be perpendicular to the run direction', PL,
-         'bool perpendicular=vector_dot(r->up,r->frame.normal)==0;', 'bool perpendicular=true;',
+         'bool perpendicular=geo_vector_dot(r->up,r->frame.normal)==0;', 'bool perpendicular=true;',
          [HOLES], ["expected rejection 'perpendicular'"]),
     case('SPM21', 'I48/D1', 'simple-placement origin is not range-checked', PL,
-         'bool origin=coord_in_range(r->frame.origin.x)&&coord_in_range(r->frame.origin.y)&&coord_in_range(r->frame.origin.z);',
+         'bool origin=geo_coord_in_range(r->frame.origin.x)&&geo_coord_in_range(r->frame.origin.y)&&geo_coord_in_range(r->frame.origin.z);',
          'bool origin=true;',
          [HOLES], ["rejected, but not for 'origin exceeds D1'"]),
     case('SPM22', 'R38', 'origin x component swaps p and q', PL,
-         'host.origin.x+r->p*host.axis_u.x+r->q*host.axis_v.x', 'host.origin.x+r->q*host.axis_u.x+r->p*host.axis_v.x',
+         'r->frame.origin=geo_frame_point(&host,r->p,r->q,0);', 'r->frame.origin=geo_frame_point(&host,r->p,r->q,0);r->frame.origin.x=host.origin.x+r->q*host.axis_u.x+r->p*host.axis_v.x;',
          [LIVE], ['R38/R40: O = o_H + p*U_H + q*V_H must follow the live host']),
     case('SPM23', 'D38', 'advanced->simple conversion ignores the host plane', CV,
-         'plane=vector_dot(delta,host.normal)==0', 'plane=true',
+         'plane=geo_vector_dot(delta,host->normal)==0', 'plane=true',
          [CONV], ["rejected, but not for 'origin not in host plane'"]),
     case('SPM24', 'D38', 'advanced->simple conversion accepts any V as up', CV,
-         'bool legal_up=vector_dot(up,r.frame.normal)==0&&vector_dot(up,up)==1;', 'bool legal_up=true;',
+         'bool legal_up=geo_vector_dot(up,r->frame.normal)==0&&geo_vector_dot(up,up)==1;', 'bool legal_up=true;',
          [CONV, CARD], [],
          equivalent='an advanced frame is accepted only by surface_frame_is_valid (unit cardinal axes, V perpendicular to N), '
                     'so up=-V is always a legal up: the "V has a legal up" condition of D38 can never fail here'),
     case('SPM25', 'D38', 'advanced->simple conversion takes the last host direction regardless of N', CV,
-         'if(vector_equal(axes[i],r.frame.normal))dir=i;', 'dir=i;',
+         'if(geo_vector_equal(axes[i],r->frame.normal))dir=i;', 'dir=i;',
          [CARD], ['D38: advanced->simple must recover dir/p/q/up']),
     case('SPM26', 'I49', 'PROFILE_CONTACT_LOST is never reported', BR,
          'if(!p||!m->resolved||!next||!n->resolved)return false;', 'return false;',
          [SHRINK], ['PROFILE_CONTACT_LOST']),
-    case('SPM27', 'I44', 'outside-region split drops the right-hand remainder', V,
-         'if(cursor<r->max_u)out[n++]', 'if(0&&cursor<r->max_u)out[n++]',
+    case('SPM27', 'I44', 'outside-region split drops the right-hand remainder', K,
+         'if(cursor<r->max_u){if(n==capacity)', 'if(0&&cursor<r->max_u){if(n==capacity)',
          [CONCAVE], ["expected rejection 'V_PROFILE_OUTSIDE'"]),
     case('SPM28', 'I49', 'a member may reference a deleted profile', V,
-         'if(!p){sp_error("I49: member %u references missing profile %u"', 'if(0&&!p){sp_error("I49: member %u references missing profile %u"',
+         'if(!p){wood_sp_error(w,"I49: member %u references missing profile %u"', 'if(0&&!p){wood_sp_error(w,"I49: member %u references missing profile %u"',
          [NAMED], ["expected rejection 'I49'"]),
     case('SPM29', 'I49', 'a run may reference a deleted profile', V,
-         'if(!p){sp_error("I49: run %u references missing profile %u"', 'if(0&&!p){sp_error("I49: run %u references missing profile %u"',
+         'if(!p){wood_sp_error(w,"I49: run %u references missing profile %u"', 'if(0&&!p){wood_sp_error(w,"I49: run %u references missing profile %u"',
          [NAMED], ["expected rejection 'I49'"]),
     case('SPM30', 'I47/D1', 'generated run vertices are not range-checked', V,
-         'if(!coord_in_range(point.x)||!coord_in_range(point.y)||!coord_in_range(point.z)){r->range_error=true;',
-         'if(0&&(!coord_in_range(point.x)||!coord_in_range(point.y)||!coord_in_range(point.z))){r->range_error=true;',
+         'if(!geo_coord_in_range(point.x)||!geo_coord_in_range(point.y)||!geo_coord_in_range(point.z)){r->range_error=true;',
+         'if(0&&(!geo_coord_in_range(point.x)||!geo_coord_in_range(point.y)||!geo_coord_in_range(point.z))){r->range_error=true;',
          [AC09], ["expected rejection 'I47/I48/D1'"]),
     case('SPM31', 'R36', 'A-v / thickness-u swap width and height the wrong way round', V,
-         'Coord width=m->rotated?m->b:m->a,height=m->rotated?m->a:m->b;', 'Coord width=m->rotated?m->a:m->b,height=m->rotated?m->b:m->a;',
+         'GeoCoord width=m->rotated?m->b:m->a,height=m->rotated?m->a:m->b;', 'GeoCoord width=m->rotated?m->a:m->b,height=m->rotated?m->b:m->a;',
          [AC01, AC09], [ACCEPT, 'V_PROFILE_']),
     case('SPM32', 'D36', 'panel orientation thickness-u is read as thickness-v', P,
          'm.rotated=!strcmp(orientation,"thickness-u");', 'm.rotated=!strcmp(orientation,"thickness-v");',
          [PANEL], [ACCEPT, 'V_PROFILE_OUTSIDE']),
     case('SPM33', 'D40/R37', 'the 1830 mm sheet length is misused as an upper bound for the run length', V,
-         'r->length_resolved=sp_resolve_dimension(w,&r->length_source,&target,&r->length);',
-         'r->length_resolved=sp_resolve_dimension(w,&r->length_source,&target,&r->length)&&r->length<=sp_panel_spec.sheet_length;',
+         'r->length_resolved=wood_sp_resolve_dimension(w,&r->length_source,&target,&r->length);',
+         'r->length_resolved=wood_sp_resolve_dimension(w,&r->length_source,&target,&r->length)&&r->length<=wood_sp_panel_spec.sheet_length;',
          [PANEL], [ACCEPT, 'RUN_LENGTH_INVALID']),
-    case('SPM34', 'I51', 'scene load accepts a duplicate profile id', P,
+    case('SPM34', 'I51', 'scene load accepts a duplicate profile id', H,
          'if(!strcmp(tokens[1],"profile")&&!sp_profile(w,id))ok=', 'if(!strcmp(tokens[1],"profile"))ok=',
          [DUMP], ['I51: a scene with a duplicate profile id record must be rejected']),
-    case('SPM35', 'I49', 'section-profile records may be injected line by line outside an atomic load', P,
+    case('SPM35', 'I49', 'section-profile records may be injected line by line outside an atomic load', H,
          'if(!g_parsing_scene_file){scene_error(', 'if(0&&!g_parsing_scene_file){scene_error(',
          [DUMP], ['I49: section-profile records must not be injected line by line']),
     # Discard one positive-area outside region, independent of the shared poly_contains_rect implementation.
     # The former substitution stopped being a fault after GEO-257 fixed that shared predicate.
     case('SPM41', 'I44', 'a single positive-area outside region is incorrectly treated as contained', V,
-         'return n;', 'return n>1?n:0;',
+         'GEO_GEOMETRY_OK?count:0;', 'GEO_GEOMETRY_OK?(count>1?count:0):0;',
          [CONCAVE], ["expected rejection 'V_PROFILE_OUTSIDE'"]),
     case('SPM42', 'I47/D1', 'only the start vertex of a run is range-checked, not the far end', V,
-         'Point3 point=sp_point(r,p->outline.v[v].u,p->outline.v[v].v,end?r->length:0);',
-         'Point3 point=sp_point(r,p->outline.v[v].u,p->outline.v[v].v,0);',
+         'GeoPoint3 point=wood_sp_point(r,p->outline.v[v].u,p->outline.v[v].v,end?r->length:0);',
+         'GeoPoint3 point=wood_sp_point(r,p->outline.v[v].u,p->outline.v[v].v,0);',
          [AC09], ["expected rejection 'I47/I48/D1'"]),
     # ---- model group: the Python producer (R37 / R39 / D39) against the unmutated native adapter ----
     case('SPM36', 'R37', 'the reference envelope becomes the bounding rectangle of the outline (L shape lost)', MS,
@@ -269,7 +268,7 @@ def posix_only():
 
 def copy_sources(destination: Path, python=False):
     """Disposable copy: C sources (for the bridge) and, for the model group, the Python tree and the axiom text."""
-    for parent in (ROOT, ROOT / 'geometry-core', ROOT / 'geometry-web'):
+    for parent in (ROOT, ROOT / 'geometry-core', ROOT / 'geometry-web', ROOT / 'geometry-app', ROOT / 'geometry-templates'):
         paths = parent.iterdir() if parent == ROOT else parent.rglob('*')
         for path in paths:
             if path.is_file() and path.suffix in ('.c', '.h', '.inc') and 'vendor' not in path.parts:

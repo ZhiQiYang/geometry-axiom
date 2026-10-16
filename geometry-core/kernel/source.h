@@ -80,4 +80,11 @@ size_t geo_eval_node_count(const GeoEvalContext *);
 bool geo_eval_node_at(const GeoEvalContext *,size_t,GeoSourceNodeView *);
 size_t geo_eval_edge_count(const GeoEvalContext *);
 bool geo_eval_edge_at(const GeoEvalContext *,size_t,GeoSourceEdge *);
+/* Sealing makes the graph and provider set immutable. Existing valid values
+ * remain readable; missing/rejected values cannot trigger new evaluation. */
+bool geo_eval_seal(GeoEvalContext *);
+bool geo_eval_is_sealed(const GeoEvalContext *);
+/* Restart a complete rebuild in the same candidate identity. No evaluation
+ * may be active and a sealed graph cannot be reset. */
+bool geo_eval_reset(GeoEvalContext *);
 #endif

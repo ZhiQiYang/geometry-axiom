@@ -25,7 +25,7 @@ class NativeSources(unittest.TestCase):
     def test_units_and_global_or_placed_axes_are_checked(self):self.assertEqual(0,self.case('types'))
     def test_recursive_node_growth_keeps_provider_and_node_lifetimes(self):self.assertEqual(0,self.case('growth'))
     def test_product_member_cycle_retains_all_ordered_diagnostics_and_soft_edges(self):
-        build=native();client=build.compile(ROOT/'tests/geo261_source_product_harness.c','sources-product-client',['GEOMETRY_KERNEL_EXTERNAL=1','GEOMETRY_WOODWORKING_EXTERNAL=1','GEOMETRY_HOST_HISTORY_EXTERNAL=1'])
+        build=native();client=build.compile(ROOT/'tests/geo261_source_product_harness.c','sources-product-client',['GEOMETRY_KERNEL_EXTERNAL=1','GEOMETRY_WOODWORKING_EXTERNAL=1','GEOMETRY_HOST_HISTORY_EXTERNAL=1','GEOMETRY_HOST_CANDIDATE_EXTERNAL=1'])
         exe=build.link('sources-product-client',[client,*build.product_objects()])
         run=subprocess.run([str(exe)],capture_output=True,text=True,timeout=15)
         self.assertEqual(0,run.returncode,'product source graph failure: '+run.stderr)

@@ -2,6 +2,7 @@
 #define GEOMETRY_KERNEL_GEOMETRY_IMPLEMENTATION
 #include "geometry.h"
 #include <limits.h>
+#include <stdlib.h>
 #include <string.h>
 static GeoCoord geo_coord_min(GeoCoord,GeoCoord);
 static GeoCoord geo_coord_max(GeoCoord,GeoCoord);
@@ -709,5 +710,24 @@ bool geo_region_set_intersects_rect_positive(const GeoRegionSetView *domain,cons
         if(area>0)return true;
     }
     return false;
+}
+static int geo_complement_coord_compare(const void *a,const void *b)
+{GeoCoord x=*(const GeoCoord*)a,y=*(const GeoCoord*)b;return (x>y)-(x<y);}
+GeoGeometryStatus geo_loop_rect_complement(const GeoLoop2View *p,const GeoRect2 *r,
+    GeoRect2 *out,size_t capacity,size_t *out_count)
+{
+    if(out_count)*out_count=0;
+    if(!p||!p->v||p->count>GEO_LOOP_MAX_VERTICES||!r||!out_count||(!out&&capacity))return GEO_GEOMETRY_INVALID;
+    GeoCoord ys[GEO_LOOP_MAX_VERTICES+2];size_t ny=0,n=0;ys[ny++]=r->min_v;ys[ny++]=r->max_v;
+    for(size_t i=0;i<p->count;++i)if(p->v[i].v>r->min_v&&p->v[i].v<r->max_v)ys[ny++]=p->v[i].v;
+    qsort(ys,ny,sizeof(GeoCoord),geo_complement_coord_compare);
+    for(size_t k=1;k<ny;++k){GeoCoord lo=ys[k-1],hi=ys[k];if(lo==hi)continue;GeoCoord y2=lo+hi,xs[GEO_LOOP_MAX_VERTICES];size_t nx=0;
+        for(size_t i=0;i<p->count;++i){GeoPoint2 a=p->v[i],b=p->v[(i+1)%p->count];if(a.u==b.u&&2*geo_coord_min(a.v,b.v)<y2&&y2<2*geo_coord_max(a.v,b.v))xs[nx++]=a.u;}
+        qsort(xs,nx,sizeof(GeoCoord),geo_complement_coord_compare);GeoCoord cursor=r->min_u;
+        for(size_t i=0;i+1<nx;i+=2){GeoCoord a=geo_coord_max(xs[i],r->min_u),b=geo_coord_min(xs[i+1],r->max_u);if(a>=b)continue;
+            if(cursor<a){if(n==capacity)return GEO_GEOMETRY_CAPACITY;out[n++]=(GeoRect2){cursor,lo,a,hi};}if(b>cursor)cursor=b;}
+        if(cursor<r->max_u){if(n==capacity)return GEO_GEOMETRY_CAPACITY;out[n++]=(GeoRect2){cursor,lo,r->max_u,hi};}
+    }
+    *out_count=n;return GEO_GEOMETRY_OK;
 }
 #endif

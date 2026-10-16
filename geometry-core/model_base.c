@@ -191,8 +191,8 @@ typedef struct {
 
 static void model_dep_placement(const World *world, ModelDependencies *deps, uint32_t id)
 {
-    for (size_t i = 0; i < world->placement_count; ++i)
-        if (world->placements[i].id == id) deps->placements[i] = true;
+    for (size_t i = 0; i < world_placement_count(world); ++i)
+        if (world_placement_at(world,i)->id == id) deps->placements[i] = true;
 }
 
 static void model_dep_timber(const World *world, ModelDependencies *deps, uint32_t id)
@@ -241,8 +241,8 @@ static void model_dep_space(const World *world, ModelDependencies *deps, uint32_
     const Space *space = world_find_space(world, id);
     if (!space) return; /* Successful I9 validation guarantees existence. */
     for (size_t b = 0; b < space->boundary_count; ++b)
-        for (size_t p = 0; p < world->placement_count; ++p)
-            if (world->placements[p].boundary_id == space->boundaries[b]) deps->placements[p] = true;
+        for (size_t p = 0; p < world_placement_count(world); ++p)
+            if (world_placement_at(world,p)->boundary_id == space->boundaries[b]) deps->placements[p] = true;
 }
 
 static void model_dependency_record(const World *world, const char *kind,
@@ -251,9 +251,9 @@ static void model_dependency_record(const World *world, const char *kind,
     fputs("{\"kind\":", stdout); model_string(stdout, kind);
     printf(",\"id\":%" PRIu32 ",\"refs\":[", id);
     size_t count = 0;
-    for (size_t i = 0; i < world->placement_count; ++i) if (deps->placements[i]) {
+    for (size_t i = 0; i < world_placement_count(world); ++i) if (deps->placements[i]) {
         if (count++) putchar(',');
-        printf("{\"kind\":\"placement\",\"id\":%" PRIu32 "}", world->placements[i].id);
+        printf("{\"kind\":\"placement\",\"id\":%" PRIu32 "}", world_placement_at(world,i)->id);
     }
     for (size_t i = 0; i < world->timber_count; ++i) if (deps->timbers[i]) {
         if (count++) putchar(',');
@@ -265,9 +265,9 @@ static void model_dependency_record(const World *world, const char *kind,
 static void model_dependencies(const World *world)
 {
     size_t count = 0;
-    for (size_t i = 0; i < world->placement_count; ++i) {
+    for (size_t i = 0; i < world_placement_count(world); ++i) {
         ModelDependencies deps = {0}; if (count++) putchar(',');
-        model_dependency_record(world, "placement", world->placements[i].id, &deps);
+        model_dependency_record(world, "placement", world_placement_at(world,i)->id, &deps);
     }
     for (size_t i = 0; i < world->column_count; ++i) {
         ModelDependencies deps = {0}; if (count++) putchar(',');
@@ -367,8 +367,8 @@ static void model_legacy_snapshot(World *world,const char *canonical)
         printf(",\"value\":%" PRId64 "}", geo_named_values_at(&world->named_values,i)->value);
     }
     fputs("],\"placements\":[", stdout);
-    for (size_t i = 0; i < world->placement_count; ++i) {
-        const PlacementSurface *p = &world->placements[i];
+    for (size_t i = 0; i < world_placement_count(world); ++i) {
+        const PlacementSurface *p = world_placement_at(world,i);
         const SpaceBoundarySurface *b = world_find_boundary(world, p->boundary_id);
         PolygonLoop2 outline; placement_outline(p, b, &outline);
         if (i) putchar(',');

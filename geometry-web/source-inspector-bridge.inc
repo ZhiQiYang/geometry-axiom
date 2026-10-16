@@ -137,12 +137,12 @@ static void si_rule_parts(SiIndex *s,const AsmRuleVersion *r)
 static SiIndex *si_build(const World *w)
 {
     SiIndex *s=calloc(1,sizeof *s);if(!s)return NULL;s->complete=true;char from[240],label[200];SiNode *n;
-    for(size_t i=0;i<w->boundary_count;++i){const SpaceBoundarySurface *b=&w->boundaries[i];si_reset(s);si_text(s,"%d;",b->kind);si_loop(s,&b->outline);for(size_t k=0;k<b->hole_count;++k)si_loop(s,&b->holes[k]);
+    for(size_t i=0;i<world_boundary_count(w);++i){const SpaceBoundarySurface *b=world_boundary_at(w,i);si_reset(s);si_text(s,"%d;",b->kind);si_loop(s,&b->outline);for(size_t k=0;k<b->hole_count;++k)si_loop(s,&b->holes[k]);
         const BoundaryVertexKeys *keys=world_find_vertex_keys(w,b->id);if(keys){for(size_t k=0;k<keys->loop_count;++k)for(size_t v=0;v<keys->counts[k];++v)si_text(s,"key:%zu:%zu:%u;",k,v,keys->keys[k][v]);}
         si_nnode(s,"boundary",b->id,0,0,"邊界");}
-    for(size_t i=0;i<w->placement_count;++i){const PlacementSurface *p=&w->placements[i];si_numkey(from,"placement",p->id,0,0);si_reset(s);si_text(s,"boundary%u;",p->boundary_id);si_point(s,p->frame.origin);si_vector(s,p->frame.axis_u);si_vector(s,p->frame.axis_v);si_vector(s,p->frame.normal);
+    for(size_t i=0;i<world_placement_count(w);++i){const PlacementSurface *p=world_placement_at(w,i);si_numkey(from,"placement",p->id,0,0);si_reset(s);si_text(s,"boundary%u;",p->boundary_id);si_point(s,p->frame.origin);si_vector(s,p->frame.axis_u);si_vector(s,p->frame.axis_v);si_vector(s,p->frame.normal);
         if(!p->boundary_id){PolygonLoop2 loop;placement_outline(p,NULL,&loop);si_loop(s,&loop);}else si_ref(s,from,"boundary",p->boundary_id,0,0,"position","boundary");si_nnode(s,"placement",p->id,0,0,"承載面");}
-    for(size_t i=0;i<w->space_count;++i){const Space *v=&w->spaces[i];si_numkey(from,"space",v->id,0,0);si_reset(s);for(size_t k=0;k<v->boundary_count;++k){si_text(s,"%u;",v->boundaries[k]);si_ref(s,from,"boundary",v->boundaries[k],0,0,"member","boundary");for(size_t j=0;j<w->placement_count;++j)if(w->placements[j].boundary_id==v->boundaries[k])si_ref(s,from,"placement",w->placements[j].id,0,0,"position","member-placement");}si_nnode(s,"space",v->id,0,0,"空間");}
+    for(size_t i=0;i<w->space_count;++i){const Space *v=&w->spaces[i];si_numkey(from,"space",v->id,0,0);si_reset(s);for(size_t k=0;k<v->boundary_count;++k){si_text(s,"%u;",v->boundaries[k]);si_ref(s,from,"boundary",v->boundaries[k],0,0,"member","boundary");for(size_t j=0;j<world_placement_count(w);++j)if(world_placement_at(w,j)->boundary_id==v->boundaries[k])si_ref(s,from,"placement",world_placement_at(w,j)->id,0,0,"position","member-placement");}si_nnode(s,"space",v->id,0,0,"空間");}
     for(size_t i=0;i<w->column_count;++i){const RcColumn *v=&w->columns[i];si_numkey(from,"column",v->id,0,0);si_reset(s);si_text(s,"%u:%lld:%lld:%lld:%lld:%lld:%lld",v->space_id,(long long)v->x_lo,(long long)v->x_hi,(long long)v->y_lo,(long long)v->y_hi,(long long)v->z_lo,(long long)v->z_hi);si_nnode(s,"column",v->id,0,0,"柱");if(v->space_id)si_ref(s,from,"space",v->space_id,0,0,"member","membership");}
     for(size_t i=0;i<w->beam_count;++i){const RcBeam *v=&w->beams[i];si_numkey(from,"beam",v->id,0,0);si_reset(s);si_text(s,"%u:%d:%lld:%lld:%lld:%lld:%lld:%lld",v->space_id,v->axis,(long long)v->x_lo,(long long)v->x_hi,(long long)v->y_lo,(long long)v->y_hi,(long long)v->z_lo,(long long)v->z_hi);si_nnode(s,"beam",v->id,0,0,"樑");if(v->space_id)si_ref(s,from,"space",v->space_id,0,0,"member","membership");}
     for(size_t i=0;i<geo_named_values_count(&w->named_values);++i){const SpecValue *v=geo_named_values_at(&w->named_values,i);si_reset(s);si_text(s,"%lld",(long long)v->value);si_node(s,"spec",v->name,0,0,v->name);}
@@ -198,8 +198,8 @@ static void cmd_source_inspect_file(const char *path)
 {
     size_t length=0;char *text=eng_read_file(path,&length);if(!text){eng_bridge_error("INPUT","Cannot read bounded source snapshot");return;}bool encoded=!memchr(text,0,length)&&utf8_is_valid(text);free(text);if(!encoded){eng_bridge_error("ENCODING","Snapshot must be UTF-8 without NUL");return;}
     World *candidate=calloc(1,sizeof *candidate);ReferencePreview *saved=malloc(sizeof *saved);if(!candidate||!saved){free(candidate);free(saved);eng_bridge_error("MEMORY","Cannot allocate readonly source snapshot");return;}
-    *saved=g_preview;uint32_t serial=g_preview_serial;uint64_t revision=g_definition_revision;const World *previous=g_subgrid_before;g_subgrid_before=NULL;
+    *saved=g_preview;memset(&g_preview,0,sizeof g_preview);uint32_t serial=g_preview_serial;uint64_t revision=g_definition_revision;const World *previous=g_subgrid_before;g_subgrid_before=NULL;
     bool ok=parse_scene_file(path,candidate);SiIndex *s=ok?si_build(candidate):NULL;
-    g_preview=*saved;g_preview_serial=serial;g_definition_revision=revision;g_subgrid_before=previous;
+    app_world_candidate_destroy(g_preview.transaction);g_preview=*saved;g_preview_serial=serial;g_definition_revision=revision;g_subgrid_before=previous;
     if(s){si_json(s,candidate,false);free(s);}else eng_bridge_error("SNAPSHOT_UNCHECKED","Cannot validate or index saved source snapshot");free(candidate);free(saved);
 }

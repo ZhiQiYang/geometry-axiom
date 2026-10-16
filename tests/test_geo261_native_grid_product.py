@@ -105,7 +105,7 @@ class GridStoreProduct(unittest.TestCase):
 
     def test_host_first_error_order_and_rejected_partial_cache_use_real_kernel(self):
         build=native();obj=build.compile(ROOT/'tests/geo261_grid_product_harness.c','grid-host-product',
-            ['GEOMETRY_KERNEL_EXTERNAL=1','GEOMETRY_WOODWORKING_EXTERNAL=1','GEOMETRY_HOST_HISTORY_EXTERNAL=1'])
+            ['GEOMETRY_KERNEL_EXTERNAL=1','GEOMETRY_WOODWORKING_EXTERNAL=1','GEOMETRY_HOST_HISTORY_EXTERNAL=1','GEOMETRY_HOST_CANDIDATE_EXTERNAL=1'])
         exe=build.link('grid-host-product',[obj,*build.product_objects()])
         run=subprocess.run([str(exe)],capture_output=True,text=True,timeout=15)
         self.assertEqual(0,run.returncode,run.stderr)
@@ -132,9 +132,15 @@ class GridStoreProduct(unittest.TestCase):
             self.assertTrue(session.command('engineering-confirm '+str(preview['preview']['token']))['ok'])
             before=session.command('dump')['text']
             response=session.command('line '+source(5,'u','repeat 7 120 stagger param:1:1','repeat -11 80'))
-            accepted=bool(response.get('ok') and response.get('preview',{}).get('valid',True))
-            if accepted and 'preview' in response:
-                self.assertTrue(session.command('line confirm '+str(response['preview']['token']))['ok'])
+            if 'preview' in response:
+                # Implicit I8a previews use ok:false to say nothing was yet
+                # committed. A valid preview still needs the real confirm path.
+                self.assertEqual(before,session.command('dump')['text'])
+                accepted=bool(response['preview']['valid'])
+                if accepted:
+                    confirmed=session.command('line confirm '+str(response['preview']['token']))
+                    self.assertTrue(confirmed['ok'],confirmed)
+            else:accepted=bool(response.get('ok'))
             if not accepted:self.assertEqual(before,session.command('dump')['text'])
             return accepted,response,session.command('objects')['gridSystems']
 

@@ -93,38 +93,38 @@ static void json_reference_preview(void)
 {
     printf("{\"token\":%u,\"valid\":%s,\"command\":",g_preview.token,g_preview.valid?"true":"false");
     js_string(g_preview.command);fputs(",\"timbers\":",stdout);
-    json_candidate_timbers(&g_preview.before,&g_preview.after,false);
-    fputs(",\"guides\":",stdout);json_candidate_guides(&g_preview.before,&g_preview.after);
+    json_candidate_timbers(&g_preview.transaction->before,&g_preview.transaction->after,false);
+    fputs(",\"guides\":",stdout);json_candidate_guides(&g_preview.transaction->before,&g_preview.transaction->after);
     fputs(",\"grids\":[",stdout); bool first=true;
-    for (size_t i=0;i<g_preview.before.grid_count;++i) {
-        const ReferenceGrid *g=&g_preview.before.grids[i];
-        const ReferenceGrid *after=world_find_grid(&g_preview.after,g->id);
+    for (size_t i=0;i<g_preview.transaction->before.grid_count;++i) {
+        const ReferenceGrid *g=&g_preview.transaction->before.grids[i];
+        const ReferenceGrid *after=world_find_grid(&g_preview.transaction->after,g->id);
         printf("%s{\"id\":%u,\"before\":",first?"":",",g->id); first=false;
-        json_reference_grid(&g_preview.before,g);
+        json_reference_grid(&g_preview.transaction->before,g);
         fputs(",\"after\":",stdout);
-        if (after) json_reference_grid(&g_preview.after,after); else fputs("null",stdout);
+        if (after) json_reference_grid(&g_preview.transaction->after,after); else fputs("null",stdout);
         putchar('}');
     }
-    for (size_t i=0;i<g_preview.after.grid_count;++i) {
-        const ReferenceGrid *g=&g_preview.after.grids[i];
-        if (world_find_grid(&g_preview.before,g->id)) continue;
+    for (size_t i=0;i<g_preview.transaction->after.grid_count;++i) {
+        const ReferenceGrid *g=&g_preview.transaction->after.grids[i];
+        if (world_find_grid(&g_preview.transaction->before,g->id)) continue;
         printf("%s{\"id\":%u,\"before\":null,\"after\":",first?"":",",g->id); first=false;
-        json_reference_grid(&g_preview.after,g); putchar('}');
+        json_reference_grid(&g_preview.transaction->after,g); putchar('}');
     }
     fputs("],\"datums\":[",stdout);first=true;
-    for(int pass=0;pass<2;++pass){const World *w=pass?&g_preview.after:&g_preview.before;
+    for(int pass=0;pass<2;++pass){const World *w=pass?&g_preview.transaction->after:&g_preview.transaction->before;
         for(size_t i=0;i<geo_datums_count(&w->datum_planes);++i){uint32_t id=geo_datums_at(&w->datum_planes,i)->id;
-            const GeoDatum *before=world_find_datum(&g_preview.before,id),*after=world_find_datum(&g_preview.after,id);
+            const GeoDatum *before=world_find_datum(&g_preview.transaction->before,id),*after=world_find_datum(&g_preview.transaction->after,id);
             if(pass && before)continue;
-            printf("%s{\"id\":%u,\"before\":",first?"":",",id);first=false;json_reference_datum(&g_preview.before,before);fputs(",\"after\":",stdout);json_reference_datum(&g_preview.after,after);putchar('}');
+            printf("%s{\"id\":%u,\"before\":",first?"":",",id);first=false;json_reference_datum(&g_preview.transaction->before,before);fputs(",\"after\":",stdout);json_reference_datum(&g_preview.transaction->after,after);putchar('}');
         }
     }putchar(']');
     json_grid_system_preview();
     json_grid_binding_preview();
     json_boundary_preview();
-    fputs(",\"assembly\":{\"before\":",stdout);json_assembly_state(&g_preview.before,false);
-    fputs(",\"after\":",stdout);json_assembly_state(&g_preview.after,false);putchar('}');
-    json_section_profile_impact(&g_preview.before,&g_preview.after);
+    fputs(",\"assembly\":{\"before\":",stdout);json_assembly_state(&g_preview.transaction->before,false);
+    fputs(",\"after\":",stdout);json_assembly_state(&g_preview.transaction->after,false);putchar('}');
+    json_section_profile_impact(&g_preview.transaction->before,&g_preview.transaction->after);
     fputs(",\"violations\":[",stdout);
     for (size_t i=0;i<g_preview.issue_count;++i) {
         const ReferenceIssue *e=&g_preview.issues[i];
