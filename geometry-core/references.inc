@@ -122,6 +122,7 @@ static bool reference_guide_position(ReferenceEval *,size_t,GeoAxisPosition *);
 static bool reference_placement_frame(ReferenceEval *,uint32_t,GeoFrame *);
 static bool reference_member_placement(ReferenceEval *,PlacementSurface *,SpaceBoundarySurface *);
 static bool reference_member_dimension(ReferenceEval *,uint32_t,bool,Coord *);
+static bool app_assembly_replaying(void);
 static bool reference_derived_resolve(ReferenceEval *,const PlacementSurface *,const char *,int *,int *);
 static void reference_sources_dispose(ReferenceEval *ctx)
 {
@@ -567,7 +568,7 @@ static bool reference_place_geometry(ReferenceEval *evaluation,World *w,size_t t
 }
 static bool reference_compute_timber(ReferenceEval *ctx,size_t i)
 {
-    if(!ctx->use_current_values&&ctx->wanted[i]){
+    if(!ctx->use_current_values&&!app_assembly_replaying()&&ctx->wanted[i]){
         Timber *member=&ctx->world->wood.timbers[i];
         if(assembly_owned(ctx->world,member->id)){
             GeoCoord width,depth;
