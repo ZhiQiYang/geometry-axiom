@@ -26,9 +26,17 @@ int main(void)
     const char *clauses[]={"I9/I7","I9/I7","D6a/I7/I9","I9/I13","D6a/I7/I9","I9/I13"};
     CHECK(g_reference_issue_count==6);
     for(size_t i=0;i<6;++i)CHECK(g_reference_issues[i].timber==ids[i]&&!strcmp(g_reference_issues[i].clause,clauses[i]));
-    CHECK(geo_eval_node_count(ctx.sources)==6&&geo_eval_edge_count(ctx.sources)==7);
-    size_t soft=0;for(size_t i=0;i<geo_eval_edge_count(ctx.sources);++i){GeoSourceEdge edge;
-        CHECK(geo_eval_edge_at(ctx.sources,i,&edge));if(edge.kind==GEO_DEPENDENCY_EVALUATE_BEFORE)++soft;}
+    /* Authored definitions and literal dimensions are independent leaves;
+     * the original six-node cycle and seven policy edges stay exact. */
+    size_t original_nodes=0,original_edges=0;
+    for(size_t i=0;i<geo_eval_node_count(ctx.sources);++i){GeoSourceNodeView node;CHECK(geo_eval_node_at(ctx.sources,i,&node));
+        if(node.source.provider>=APP_SOURCE_GUIDE&&node.source.provider<=APP_SOURCE_REFERENCE)++original_nodes;}
+    size_t soft=0;for(size_t i=0;i<geo_eval_edge_count(ctx.sources);++i){GeoSourceEdge edge;GeoSourceNodeView from,to;
+        CHECK(geo_eval_edge_at(ctx.sources,i,&edge)&&geo_eval_node_at(ctx.sources,edge.consumer,&from)&&geo_eval_node_at(ctx.sources,edge.source,&to));
+        if(from.source.provider>=APP_SOURCE_GUIDE&&from.source.provider<=APP_SOURCE_REFERENCE&&
+           to.source.provider>=APP_SOURCE_GUIDE&&to.source.provider<=APP_SOURCE_REFERENCE)++original_edges;
+        if(edge.kind==GEO_DEPENDENCY_EVALUATE_BEFORE)++soft;}
+    CHECK(original_nodes==6&&original_edges==7);
     CHECK(soft==1);reference_sources_dispose(&ctx);
     /* The current-cache path was historically observational even if the caller
      * supplies an unresolved cache while testing a disposable candidate. */

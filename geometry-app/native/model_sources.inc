@@ -174,6 +174,7 @@ static bool model_sources_build(ModelSources *state,World *world)
     for(size_t i=0;i<world->wood.timber_count;++i)if(!reference_eval_timber(&state->reference,i))return false;
     for(size_t i=0;i<geo_guides_count(&world->geo.guide_lines);++i)if(!reference_eval_guide(&state->reference,i))return false;
     if(!wood_assembly_generation_check(&assembly_context)||!wood_assembly_sources_definitions(state->reference.assembly_sources))return false;
+    if(!app_enclosure_sources_complete(&state->reference)||!wood_definition_sources_complete(state->reference.definition_sources))return false;
     for(size_t i=0;i<geo_placements_count(&world->geo.placement_data);++i){
         const GeoPlacementDefinition *p=geo_placements_at(&world->geo.placement_data,i);
         ModelSourceItem *frame=model_sources_add(state,"placement",p->id,"placement.frame",0,false,GEO_SOURCE_FRAME);

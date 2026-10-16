@@ -59,6 +59,9 @@ static int contact_pose_case(unsigned mode)
     ReferenceEval ctx={0};ctx.world=world;ctx.sources=geo_eval_create(8100+mode,17);CHECK("contact-h-candidate-graph",ctx.sources);
     ctx.placement_sources=geo_placement_sources_register(ctx.sources,&world->geo.placement_data,&world->geo.region_data,
         APP_SOURCE_PLACEMENT,APP_SOURCE_REGION,NULL,NULL);CHECK("contact-h-real-k-placement-provider",ctx.placement_sources);
+    WoodDefinitionContext definitions={&world->wood,&world->geo.region_data,APP_SOURCE_ENCLOSURE,APP_SOURCE_REGION};
+    ctx.definition_sources=wood_definition_sources_create(ctx.sources,APP_SOURCE_WOOD_DEFINITION,&definitions);
+    CHECK("contact-h-real-authored-definition-provider",ctx.definition_sources);
     ContactPoseInput input={0};input.graph=ctx.sources;
     input.box=(GeoBox3){{{40,70,30},{1,0,0},{0,1,0},{0,0,1}},{40,10,5}};
     if(mode)input.box.frame.origin=(GeoPoint3){47,81,30};

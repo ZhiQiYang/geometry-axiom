@@ -22,6 +22,7 @@
 #include "guides.h"
 #include "grid_store.h"
 #include "enclosure.h"
+#include "enclosure_sources.h"
 #include "document.h"
 #else
 #include "codec.c"
@@ -43,6 +44,7 @@
 #include "guides.c"
 #include "grid_store.c"
 #include "enclosure.c"
+#include "enclosure_sources.c"
 #include "document.c"
 #endif
 #endif
