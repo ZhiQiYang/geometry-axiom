@@ -46,7 +46,7 @@ class NativeBuild:
         shutil.copy2(ROOT / "geometry-core/kernel/internal/datums.h", self.kernel / "internal/datums.h")
         self.woodworking = self.work / "isolated-woodworking"
         self.woodworking.mkdir()
-        for name in ("members.h", "members.c"):
+        for name in ("members.h", "members.c", "supports.h", "supports.c"):
             shutil.copy2(ROOT / "geometry-templates/woodworking/native" / name, self.woodworking / name)
         self.windows = os.name == "nt"
         self.suffix = ".exe" if self.windows else ""
@@ -74,6 +74,7 @@ class NativeBuild:
         self.datums_object = self.compile(self.kernel / "datums.c", "datums")
         self.source_object = self.compile(self.kernel / "source.c", "source")
         self.wood_members_object = self.compile(self.woodworking / "members.c", "wood-members")
+        self.wood_supports_object = self.compile(self.woodworking / "supports.c", "wood-supports")
         exact_source = self.work / "exact-client.c"
         shutil.copy2(ROOT / "tests/geo261_exact_harness.c", exact_source)
         self.exact_client = self.compile(exact_source, "exact-client")
@@ -89,6 +90,7 @@ class NativeBuild:
         self.bridge_exe = None
         self.cli_exe = None
         self.model_base_exe = None
+        self.model_base_object = None
 
     def run_build(self, args):
         if self.windows:
@@ -134,7 +136,7 @@ class NativeBuild:
         return self.bridge_exe
 
     def product_objects(self):
-        return [*self.kernel_objects(), self.wood_members_object]
+        return [*self.kernel_objects(), self.wood_members_object, self.wood_supports_object]
 
     def cli(self):
         if self.cli_exe is None:
@@ -144,8 +146,8 @@ class NativeBuild:
 
     def model_base(self):
         if self.model_base_exe is None:
-            obj = self.compile(ROOT / "geometry-core/model_base.c", "product-model-base", ["GEOMETRY_KERNEL_EXTERNAL=1", "GEOMETRY_WOODWORKING_EXTERNAL=1"])
-            self.model_base_exe = self.link("product-model-base", [obj, *self.product_objects()])
+            self.model_base_object = self.compile(ROOT / "geometry-core/model_base.c", "product-model-base", ["GEOMETRY_KERNEL_EXTERNAL=1", "GEOMETRY_WOODWORKING_EXTERNAL=1"])
+            self.model_base_exe = self.link("product-model-base", [self.model_base_object, *self.product_objects()])
         return self.model_base_exe
 
     def kernel_objects(self):
@@ -181,7 +183,7 @@ class NativeBuild:
         if module == "datums":
             dependencies = [self.geometry_object, self.linear_object, self.exact_object]
         client = self.link(module + "-mutant-client", [client_object, changed, *dependencies])
-        product = self.link(module + "-mutant-bridge", [self.bridge_object, exact, codec, geometry, grid, parameters, linear, named_values, datums, source_object, self.wood_members_object])
+        product = self.link(module + "-mutant-bridge", [self.bridge_object, exact, codec, geometry, grid, parameters, linear, named_values, datums, source_object, self.wood_members_object, self.wood_supports_object])
         return client, product
 
 
