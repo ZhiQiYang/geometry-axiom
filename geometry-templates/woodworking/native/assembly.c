@@ -84,6 +84,8 @@ static bool wood_asm_validate_rule(WoodAssemblyContext *w,GeoJson *j,int t,AsmRu
     if(!geo_json_canonical(j,t,r->content,sizeof r->content))return wood_asm_error(w,"CAPACITY: assembly rule exceeds 8191 UTF-8 bytes");
     geo_sha256(r->content,strlen(r->content),r->fingerprint);return true;
 }
+bool wood_assembly_rule_parse(WoodAssemblyContext *w,GeoJson *j,int t,AsmRuleVersion *out)
+{return wood_asm_validate_rule(w,j,t,out);}
 bool wood_assembly_publish(WoodAssemblyContext *w,GeoJson *j,int t,const char *expected)
 {
     AsmRuleVersion rule;if(!wood_asm_validate_rule(w,j,t,&rule))return false;
@@ -104,6 +106,26 @@ bool wood_assembly_versions_immutable(const WoodAssemblyContext *before,const Wo
     }
     return true;
 }
+static bool wood_asm_binding_slot_values(WoodAssemblyContext *w,GeoJson *j,int s,AsmBinding *b,uint32_t id,bool resolve)
+{
+    for(int axis=0;axis<2;++axis){int value=geo_json_member(j,s,axis?"B":"A");
+        if(geo_json_is_null(j,value)){b->complete=false;continue;}
+        (*w->parameter_dimension_error)=(GeoParameterRef){0};
+        EngDimensionSource source={0};EngTarget target={1,0,0,axis};GeoCoord effective;char path[192];
+        if(!wood_eng_source_parse(&w->engineering,j,value,&source,false)||source.kind==ENG_APPLICATION||(resolve&&!(w->evaluation&&w->evaluation->slot_dimension?w->evaluation->slot_dimension(w->evaluation->user,b->id,id,axis,&source,&effective,path,sizeof path):wood_eng_resolve(&w->engineering,&source,&target,UINT32_MAX,0,&effective,path,sizeof path)))){
+            char error[256];snprintf(error,sizeof error,"%s",w->engineering.error);
+            bool result=wood_asm_error(w,"I40: binding %u slot %u.%c: %.155s",b->id,id,axis?'B':'A',error);
+            if(source.kind==ENG_PARAMETER && (*w->parameter_dimension_error).set &&
+                (*w->parameter_dimension_error).parameter_id==source.parameter.parameter_id &&
+                (*w->parameter_dimension_error).field_id==source.parameter.field_id)
+                (*w->diagnostic)=(AsmDiagnostic){1,source.parameter.parameter_id,source.parameter.field_id,0};
+            return result;}
+    }
+    const char *keys[]={"contactFace","orientation"};for(int axis=0;axis<2;++axis){int value=geo_json_member(j,s,keys[axis]);
+        if(!wood_asm_enum(j,value,"A,B",true))return wood_asm_error(w,"I40: binding %u slot %u needs explicit A/B or unset %s",b->id,id,keys[axis]);
+        if(geo_json_is_null(j,value))b->complete=false;}
+    return true;
+}
 static bool wood_asm_binding_parse(WoodAssemblyContext *w,GeoJson *j,int t,AsmBinding *b,bool resolve)
 {
     memset(b,0,sizeof *b);int rule=geo_json_member(j,t,"rule"),array=geo_json_member(j,t,"slots");
@@ -118,22 +140,14 @@ static bool wood_asm_binding_parse(WoodAssemblyContext *w,GeoJson *j,int t,AsmBi
         if(!geo_json_keys(j,s,"slotId,A,B,contactFace,orientation","")||!wood_eng_u32(j,geo_json_member(j,s,"slotId"),&id,true)||!wood_asm_has(ids,n,id)||wood_asm_has(seen,i,id))return wood_asm_error(w,"I40: binding %u has missing, duplicate or unknown slots",b->id);
         seen[i]=id;
         if(resolve&&w->evaluation&&w->evaluation->slot_definition&&!w->evaluation->slot_definition(w->evaluation->user,b->id,id))return false;
-        for(int axis=0;axis<2;++axis){int value=geo_json_member(j,s,axis?"B":"A");
-            if(geo_json_is_null(j,value)){b->complete=false;continue;}
-            (*w->parameter_dimension_error)=(GeoParameterRef){0};
-            EngDimensionSource source={0};EngTarget target={1,0,0,axis};GeoCoord effective;char path[192];
-            if(!wood_eng_source_parse(&w->engineering,j,value,&source,false)||source.kind==ENG_APPLICATION||(resolve&&!(w->evaluation&&w->evaluation->slot_dimension?w->evaluation->slot_dimension(w->evaluation->user,b->id,id,axis,&source,&effective,path,sizeof path):wood_eng_resolve(&w->engineering,&source,&target,UINT32_MAX,0,&effective,path,sizeof path)))){
-                char error[256];snprintf(error,sizeof error,"%s",w->engineering.error);
-                bool result=wood_asm_error(w,"I40: binding %u slot %u.%c: %.155s",b->id,id,axis?'B':'A',error);
-                if(source.kind==ENG_PARAMETER && (*w->parameter_dimension_error).set &&
-                    (*w->parameter_dimension_error).parameter_id==source.parameter.parameter_id &&
-                    (*w->parameter_dimension_error).field_id==source.parameter.field_id)
-                    (*w->diagnostic)=(AsmDiagnostic){1,source.parameter.parameter_id,source.parameter.field_id,0};
-                return result;}
-        }
-        const char *keys[]={"contactFace","orientation"};for(int axis=0;axis<2;++axis){int value=geo_json_member(j,s,keys[axis]);
-            if(!wood_asm_enum(j,value,"A,B",true))return wood_asm_error(w,"I40: binding %u slot %u needs explicit A/B or unset %s",b->id,id,keys[axis]);
-            if(geo_json_is_null(j,value))b->complete=false;}
+        if(resolve&&w->evaluation&&w->evaluation->slot_record){
+            char text[ASM_RECORD_MAX];GeoJson selected={0};uint32_t actual;
+            if(!w->evaluation->slot_record(w->evaluation->user,b->id,id,text,sizeof text))return false;
+            bool valid=w->json_parse(w->user,&selected,text)&&geo_json_keys(&selected,0,"slotId,A,B,contactFace,orientation","")&&
+                wood_eng_u32(&selected,geo_json_member(&selected,0,"slotId"),&actual,true)&&actual==id;
+            if(!valid){geo_json_free(&selected);return wood_asm_error(w,"I40: binding %u has missing, duplicate or unknown slots",b->id);}
+            bool resolved=wood_asm_binding_slot_values(w,&selected,0,b,id,resolve);geo_json_free(&selected);if(!resolved)return false;
+        }else if(!wood_asm_binding_slot_values(w,j,s,b,id,resolve))return false;
     }
     if(!geo_json_canonical(j,t,b->content,sizeof b->content))return wood_asm_error(w,"CAPACITY: binding exceeds 8191 UTF-8 bytes");return true;
 }
@@ -259,6 +273,20 @@ static bool wood_asm_instance_parse(WoodAssemblyContext *w,GeoJson *j,int t,AsmI
     }
     geo_json_free(&q);return ok||wood_asm_error(w,"D34/UNSUPPORTED: only two +v primary and one +u secondary with inward end-to-side joints");
 }
+bool wood_assembly_instance_definition_parse(WoodAssemblyContext *w,GeoJson *j,int t,AsmInstance *out)
+{
+    AsmInstance a;int source=geo_json_member(j,t,"source"),mapping=geo_json_member(j,t,"mapping");
+    if(!geo_json_keys(j,t,"source,mapping","")||!wood_asm_instance_parse(w,j,source,&a)||
+       !geo_json_is_array(j,mapping)||geo_json_size(j,mapping)!=3)return wood_asm_error(w,"I42: invalid or duplicate instance mapping");
+    for(int i=0;i<3;++i){int item=geo_json_at(j,mapping,i);uint32_t member,timber;
+        if(!geo_json_keys(j,item,"memberId,timberId","")||!wood_eng_u32(j,geo_json_member(j,item,"memberId"),&member,true)||
+           !wood_eng_u32(j,geo_json_member(j,item,"timberId"),&timber,true))return wood_asm_error(w,"I42: invalid or duplicate instance mapping");
+        int index=-1;for(int m=0;m<3;++m)if(a.member[m]==member)index=m;
+        if(index<0||a.timber[index])return wood_asm_error(w,"I42: duplicate/missing mapped member");a.timber[index]=timber;
+    }
+    if(!geo_json_canonical(j,t,a.content,sizeof a.content))return wood_asm_error(w,"CAPACITY: instance exceeds 8191 UTF-8 bytes");
+    *out=a;return true;
+}
 
 bool wood_assembly_generation_integrity(const WoodAssemblyContext *w)
 {
@@ -282,12 +310,14 @@ bool wood_assembly_member_definition_direct(WoodAssemblyContext *w,const AsmInst
     uint32_t slot=0;int members=geo_json_member(&q,0,"members"),slots=geo_json_member(&b,0,"slots");
     for(int i=0;i<geo_json_size(&q,members);++i){uint32_t id;int t=geo_json_at(&q,members,i);if(wood_eng_u32(&q,geo_json_member(&q,t,"id"),&id,true)&&id==a->member[m])wood_eng_u32(&q,geo_json_member(&q,t,"slotId"),&slot,true);}
     int selected=-1;for(int i=0;i<geo_json_size(&b,slots);++i){uint32_t id;int t=geo_json_at(&b,slots,i);if(wood_eng_u32(&b,geo_json_member(&b,t,"slotId"),&id,true)&&id==slot)selected=t;}
-    char face[8],orient[8];ok=selected>=0&&geo_json_string(&b,geo_json_member(&b,selected,"contactFace"),face,sizeof face)&&!strcmp(face,"A")&&geo_json_string(&b,geo_json_member(&b,selected,"orientation"),orient,sizeof orient)&&!strcmp(orient,"A");
-    for(int axis=0;axis<2&&ok;++axis){EngDimensionSource src;EngTarget target={1,0,0,axis};char path[192];ok=wood_eng_source_parse(&w->engineering,&b,geo_json_member(&b,selected,axis?"B":"A"),&src,false)&&(w->evaluation&&w->evaluation->generated_dimension?w->evaluation->generated_dimension(w->evaluation->user,a,m,slot,axis,&src,axis?&out->depth:&out->width,path,sizeof path):wood_eng_resolve(&w->engineering,&src,&target,UINT32_MAX,0,axis?&out->depth:&out->width,path,sizeof path));}
-    geo_json_free(&q);geo_json_free(&b);if(!ok)return wood_asm_error(w,"D34/UNSUPPORTED: generation needs complete A contact, A transverse width and B depth sources");
+    GeoJson replacement={0},*values=&b;char record[ASM_RECORD_MAX];int selected_value=selected;ok=selected>=0;
+    if(ok&&w->evaluation&&w->evaluation->slot_record){ok=w->evaluation->slot_record(w->evaluation->user,binding->id,slot,record,sizeof record)&&w->json_parse(w->user,&replacement,record);values=&replacement;selected_value=0;}
+    char face[8],orient[8];ok=ok&&geo_json_string(values,geo_json_member(values,selected_value,"contactFace"),face,sizeof face)&&!strcmp(face,"A")&&geo_json_string(values,geo_json_member(values,selected_value,"orientation"),orient,sizeof orient)&&!strcmp(orient,"A");
+    for(int axis=0;axis<2&&ok;++axis){EngDimensionSource src;EngTarget target={1,0,0,axis};char path[192];ok=wood_eng_source_parse(&w->engineering,values,geo_json_member(values,selected_value,axis?"B":"A"),&src,false)&&(w->evaluation&&w->evaluation->generated_dimension?w->evaluation->generated_dimension(w->evaluation->user,a,m,slot,axis,&src,axis?&out->depth:&out->width,path,sizeof path):wood_eng_resolve(&w->engineering,&src,&target,UINT32_MAX,0,axis?&out->depth:&out->width,path,sizeof path));}
+    geo_json_free(&replacement);geo_json_free(&q);geo_json_free(&b);if(!ok)return wood_asm_error(w,"D34/UNSUPPORTED: generation needs complete A contact, A transverse width and B depth sources");
     WoodAssemblyGuide guide;
     if(!w->surface(w->user,a->surface_id)||!w->guide(w->user,a->guide[m],&guide)||guide.surface_id!=a->surface_id||guide.direction!=(a->secondary[m]?ASM_DIR_U:ASM_DIR_V))return wood_asm_error(w,"I42: member needs a matching same-surface guide");
-    out->surface_id=a->surface_id;out->guide_id=a->guide[m];out->direction=a->secondary[m]?ASM_DIR_U:ASM_DIR_V;out->role=a->secondary[m]?WOOD_MEMBER_ROLE_SECONDARY:WOOD_MEMBER_ROLE_PRIMARY;
+    out->surface_id=a->surface_id;out->guide_id=a->guide[m];out->direction=a->secondary[m]?ASM_DIR_U:ASM_DIR_V;out->role=a->secondary[m]?WOOD_MEMBER_ROLE_SECONDARY:WOOD_MEMBER_ROLE_PRIMARY;out->timber_id=a->timber[m];out->reserved=0;
     for(int k=0;k<2;++k){uint32_t id=a->ends[m][k];if(a->secondary[m]){int target=wood_asm_member_index(a,id);if(target<0||a->secondary[target])return wood_asm_error(w,"I42: invalid secondary member dependency");id=a->timber[target];}WoodAssemblyMember member;
         if(!w->member(w->user,id,&member)||id==a->timber[m]||(!a->secondary[m]&&member.role!=WOOD_MEMBER_ROLE_BOUNDARY)||member.surface_id!=a->surface_id)return wood_asm_error(w,"I42/V_CUT_PRIORITY: primary requires existing same-face boundary supports; secondary requires its two primary members");
         out->between[k]=id;
@@ -301,17 +331,20 @@ bool wood_assembly_generated_dimension_direct(WoodAssemblyContext *w,const AsmIn
     uint32_t slot=0;int members=geo_json_member(&q,0,"members"),slots=geo_json_member(&b,0,"slots");
     for(int i=0;i<geo_json_size(&q,members);++i){uint32_t id;int t=geo_json_at(&q,members,i);if(wood_eng_u32(&q,geo_json_member(&q,t,"id"),&id,true)&&id==a->member[m])wood_eng_u32(&q,geo_json_member(&q,t,"slotId"),&slot,true);}
     int selected=-1;for(int i=0;i<geo_json_size(&b,slots);++i){uint32_t id;int t=geo_json_at(&b,slots,i);if(wood_eng_u32(&b,geo_json_member(&b,t,"slotId"),&id,true)&&id==slot)selected=t;}
-    char face[8],orient[8];ok=selected>=0&&geo_json_string(&b,geo_json_member(&b,selected,"contactFace"),face,sizeof face)&&!strcmp(face,"A")&&geo_json_string(&b,geo_json_member(&b,selected,"orientation"),orient,sizeof orient)&&!strcmp(orient,"A");
-    EngDimensionSource src;EngTarget target={1,0,0,axis};if(ok)ok=wood_eng_source_parse(&w->engineering,&b,geo_json_member(&b,selected,axis?"B":"A"),&src,false)&&(w->evaluation&&w->evaluation->slot_dimension?w->evaluation->slot_dimension(w->evaluation->user,a->binding_id,slot,axis,&src,out,path,cap):wood_eng_resolve(&w->engineering,&src,&target,UINT32_MAX,0,out,path,cap));
-    geo_json_free(&q);geo_json_free(&b);return ok||wood_asm_error(w,"D34/UNSUPPORTED: generation needs complete A contact, A transverse width and B depth sources");
+    GeoJson replacement={0},*values=&b;char record[ASM_RECORD_MAX];int selected_value=selected;ok=selected>=0;
+    if(ok&&w->evaluation&&w->evaluation->slot_record){ok=w->evaluation->slot_record(w->evaluation->user,binding->id,slot,record,sizeof record)&&w->json_parse(w->user,&replacement,record);values=&replacement;selected_value=0;}
+    char face[8],orient[8];ok=ok&&geo_json_string(values,geo_json_member(values,selected_value,"contactFace"),face,sizeof face)&&!strcmp(face,"A")&&geo_json_string(values,geo_json_member(values,selected_value,"orientation"),orient,sizeof orient)&&!strcmp(orient,"A");
+    EngDimensionSource src;EngTarget target={1,0,0,axis};if(ok)ok=wood_eng_source_parse(&w->engineering,values,geo_json_member(values,selected_value,axis?"B":"A"),&src,false)&&(w->evaluation&&w->evaluation->slot_dimension?w->evaluation->slot_dimension(w->evaluation->user,a->binding_id,slot,axis,&src,out,path,cap):wood_eng_resolve(&w->engineering,&src,&target,UINT32_MAX,0,out,path,cap));
+    geo_json_free(&replacement);geo_json_free(&q);geo_json_free(&b);return ok||wood_asm_error(w,"D34/UNSUPPORTED: generation needs complete A contact, A transverse width and B depth sources");
 }
 bool wood_assembly_generation_prepare(WoodAssemblyContext *w)
 {
     if(!w->scene_loading&&!wood_assembly_generation_integrity(w))return false;
-    for(size_t i=0;i<w->state->instance_count;++i){AsmInstance *a=&w->state->instances[i];
+    for(size_t i=0;i<w->state->instance_count;++i){const AsmInstance *a=&w->state->instances[i];
+        if(w->evaluation&&w->evaluation->instance_definition&&!w->evaluation->instance_definition(w->evaluation->user,a,&a))return false;
         for(int phase=0;phase<2;++phase)for(int m=0;m<3;++m)if(a->secondary[m]==(phase!=0)){
-            WoodAssemblyDefinition definition;if(!wood_asm_member_definition(w,a,m,&definition))return false;if(!w->member(w->user,a->timber[m],NULL))return wood_asm_error(w,"I42: missing owned timber");
-            WoodMember value;if(!wood_member_construct(a->timber[m],0,definition.width,definition.depth,true,definition.role,0,&value))return wood_asm_error(w,"D1: invalid generated section");
+            WoodAssemblyDefinition definition;if(!wood_asm_member_definition(w,a,m,&definition))return false;if(!w->member(w->user,definition.timber_id,NULL))return wood_asm_error(w,"I42: missing owned timber");
+            WoodMember value;if(!wood_member_construct(definition.timber_id,0,definition.width,definition.depth,true,definition.role,0,&value))return wood_asm_error(w,"D1: invalid generated section");
             value.placed=true;w->write_member(w->user,&value,&definition);
         }
     }return true;

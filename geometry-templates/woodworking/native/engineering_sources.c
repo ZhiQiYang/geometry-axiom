@@ -118,6 +118,7 @@ struct WoodEngineeringSources {
     unsigned char material_metadata[ENG_MATERIAL_MAX][WOOD_VERSION_METADATA_MAX];
     unsigned char method_metadata[ENG_METHOD_MAX][WOOD_VERSION_METADATA_MAX];
     EngApplication applications[ENG_APPLICATION_MAX];
+    char application_checks[ENG_APPLICATION_MAX][ENG_ID_MAX+32];
 };
 static void wood_source_dimension_copy(EngDimensionSource *out,const EngDimensionSource *in)
 {
@@ -190,11 +191,14 @@ static bool wood_source_parameter(void *opaque,GeoParameterRef ref,GeoCoord *out
     /* Retain the established field-kind/integer/range diagnostics before the
      * shared graph supplies the actual value and transitive AST dependencies. */
     if(!s->context.parameter(s->context.user,ref,out,error,cap))return false;
-    GeoCoord checked=*out;
     uint32_t key[]={ref.parameter_id,ref.field_id};GeoSourceValue value;
     GeoSourceStatus status=geo_eval_source(s->evaluation,(GeoSourceRef){s->tokens.parameter,key,sizeof key},GEO_DEPENDENCY_VALUE_REQUIRED,&value);
     if(status!=GEO_SOURCE_OK)return wood_source_failure(s,status);
-    if(value.kind!=GEO_SOURCE_QUANTITY||value.as.quantity.unit!=GEO_UNIT_LENGTH||value.as.quantity.den!=1||value.as.quantity.num!=checked)return false;
+    if(value.kind!=GEO_SOURCE_QUANTITY||value.as.quantity.unit!=GEO_UNIT_LENGTH||value.as.quantity.den!=1||!geo_coord_in_range(value.as.quantity.num)){
+        if(error&&cap)snprintf(error,cap,"I35: effective dimension violates its positive/nonnegative integer mm range");
+        return false;
+    }
+    /* The callback checks admission; the graph owns the successful value. */
     *out=value.as.quantity.num;return true;
 }
 static bool wood_source_version_field(void *opaque,int kind,const EngVersionRef *identity,uint32_t field,GeoCoord *out)
@@ -210,7 +214,7 @@ static bool wood_source_version_field(void *opaque,int kind,const EngVersionRef 
 }
 static bool wood_source_definition_key(WoodDefinitionKey *key,int kind,const char *id,uint32_t version)
 {
-    if(!id||strlen(id)>=sizeof key->id||kind<0||kind>4)return false;
+    if(!id||strlen(id)>=sizeof key->id||kind<0||kind>5)return false;
     memset(key,0,sizeof *key);key->kind=kind;key->version=version;memcpy(key->id,id,strlen(id)+1);return true;
 }
 static bool wood_source_definition(void *opaque,int kind,const char *id,uint32_t version)
@@ -252,11 +256,20 @@ static EngApplication *wood_source_application_read(void *opaque,const char *id)
 static bool wood_source_application(void *opaque,const EngApplication *a)
 {
     WoodEngineeringSources *s=opaque;WoodDefinitionKey key;GeoSourceValue value;
-    if(s->tokens.version){const EngApplication *returned=wood_source_application_read(s,a->id);
-        if(!returned||!wood_eng_validate_application_direct(&s->context,returned))return false;}
-    if(!wood_source_definition_key(&key,2,a->id,0))return false;
+    /* Kind 2 remains a metadata-only definition. Full-mode validation has its
+     * own active node so even unused overrides belong to the check closure. */
+    if(!wood_source_definition_key(&key,s->tokens.version?5:2,a->id,0))return false;
     GeoSourceStatus status=geo_eval_source(s->evaluation,(GeoSourceRef){s->tokens.definition,&key,sizeof key},GEO_DEPENDENCY_VALUE_REQUIRED,&value);
-    return status==GEO_SOURCE_OK?true:wood_source_failure(s,status);
+    if(status!=GEO_SOURCE_OK)return wood_source_failure(s,status);
+    if(!s->tokens.version)return true;
+    if(value.kind!=GEO_SOURCE_DEFINITION||!value.as.definition.schema||strcmp(value.as.definition.schema,"woodworking.face-application-check/1")||
+       !value.as.definition.content||!value.as.definition.content_size||value.as.definition.content_size>=ENG_ID_MAX+32)return false;
+    GeoJson json;char id[ENG_ID_MAX],canonical[ENG_ID_MAX+32];int valid=0;
+    bool ok=geo_json_parse_n(&json,value.as.definition.content,value.as.definition.content_size)&&
+        geo_json_keys(&json,0,"id,valid","")&&geo_json_string(&json,geo_json_member(&json,0,"id"),id,sizeof id)&&!strcmp(id,a->id)&&
+        geo_json_boolean(&json,geo_json_member(&json,0,"valid"),&valid)&&geo_json_canonical(&json,0,canonical,sizeof canonical)&&
+        strlen(canonical)==value.as.definition.content_size&&!memcmp(canonical,value.as.definition.content,value.as.definition.content_size);
+    geo_json_free(&json);return ok&&valid!=0;
 }
 void wood_engineering_sources_bind(WoodEngineeringSources *s,WoodEngineeringContext *context)
 {
@@ -274,9 +287,9 @@ static bool wood_source_describe(void *opaque,const GeoSourceRef *ref,GeoSourceD
     if(ref->provider==s->tokens.definition){
         if(ref->key_size!=sizeof(WoodDefinitionKey))return false;
         WoodDefinitionKey key;memcpy(&key,ref->key,sizeof key);
-        if(!memchr(key.id,0,sizeof key.id)||key.kind<0||key.kind>4)return false;
+        if(!memchr(key.id,0,sizeof key.id)||key.kind<0||key.kind>5||(key.kind==5&&!s->tokens.version))return false;
         bool found=false;
-        if(key.kind!=2){
+        if(key.kind!=2&&key.kind!=5){
             /* Metadata completion also runs after evaluation has been hashed.
              * Check the K version and W identity without refreshing W caches. */
             GeoVersionView version;
@@ -341,6 +354,13 @@ static bool wood_source_evaluate(void *opaque,GeoEvalContext *ctx,const GeoSourc
                     geo_eval_depend(ctx,(GeoSourceRef){s->tokens.definition,&method,sizeof method},GEO_DEPENDENCY_DEFINITION_REQUIRED)!=GEO_SOURCE_OK)return false;
             }else if(!wood_eng_validate_application_direct(&s->context,a))return false;
             content=a->content;schema="woodworking.face-application/1";content_size=strlen(content);
+        }else if(key.kind==5){
+            EngApplication *a=wood_source_application_read(s,key.id);
+            if(!a||!wood_eng_validate_application_direct(&s->context,a))return false;
+            size_t at=(size_t)(a-s->applications);if(at>=ENG_APPLICATION_MAX)return false;
+            int n=snprintf(s->application_checks[at],sizeof s->application_checks[at],"{\"id\":\"%s\",\"valid\":true}",a->id);
+            if(n<0||(size_t)n>=sizeof s->application_checks[at])return false;
+            content=s->application_checks[at];schema="woodworking.face-application-check/1";content_size=(size_t)n;
         }else if(key.kind==3||key.kind==4){
             int kind=key.kind-3;const EngineeringState *state=s->context.state;size_t count=kind?state->method_count:state->material_count,i=0;
             for(;i<count;++i){const EngVersionRef *identity=kind?&state->methods[i].ref:&state->materials[i].ref;

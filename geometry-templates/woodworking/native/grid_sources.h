@@ -30,6 +30,8 @@ WoodGridSources *wood_grid_sources_create(GeoEvalContext *,WoodGridSourceTokens,
 bool wood_grid_sources_bind(WoodGridSources *,WoodGridContext *);
 /* Enumerate authored identities without evaluating unused geometry/fields. */
 bool wood_grid_sources_definitions(WoodGridSources *,char *,size_t);
+/* Read authored application policy without requesting dimensions or geometry. */
+bool wood_grid_sources_definition(WoodGridSources *,uint32_t,WoodGridApplication *);
 bool wood_grid_sources_application(WoodGridSources *,uint32_t,char *,size_t);
 bool wood_grid_sources_dimension(WoodGridSources *,uint32_t,int,int,GeoCoord *,char *,size_t);
 /* anchor=true applies the existing band/stagger anchor policy; false invokes

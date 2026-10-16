@@ -108,7 +108,8 @@ static bool geo_source_descriptor_valid(const GeoSourceDescriptor *d)
 {
     return d->kind>=GEO_SOURCE_QUANTITY&&d->kind<=GEO_SOURCE_DEFINITION&&
         (d->unit==GEO_UNIT_SCALAR||d->unit==GEO_UNIT_LENGTH)&&
-        d->context.axis>=-1&&d->context.axis<=2;
+        d->context.axis>=-1&&d->context.axis<=2&&
+        (!d->context_from_value||d->kind==GEO_SOURCE_AXIS_POSITION);
 }
 static bool geo_source_context_equal(GeoSourceContext a,GeoSourceContext b)
 {
@@ -118,7 +119,9 @@ static bool geo_source_value_matches(const GeoSourceDescriptor *d,const GeoSourc
 {
     if(v->kind!=d->kind)return false;
     if(v->kind==GEO_SOURCE_QUANTITY)return v->as.quantity.den>0&&v->as.quantity.unit==d->unit;
-    if(v->kind==GEO_SOURCE_AXIS_POSITION)return geo_source_context_equal(d->context,v->as.position.context);
+    if(v->kind==GEO_SOURCE_AXIS_POSITION)return d->context_from_value?
+        v->as.position.context.axis>=0&&v->as.position.context.axis<=2:
+        geo_source_context_equal(d->context,v->as.position.context);
     if(v->kind==GEO_SOURCE_REGION_SET)return !v->as.regions.count||v->as.regions.regions!=NULL;
     if(v->kind==GEO_SOURCE_FEATURE)return !v->as.feature.key_size||v->as.feature.key!=NULL;
     if(v->kind==GEO_SOURCE_DEFINITION)return v->as.definition.schema&&*v->as.definition.schema&&
@@ -191,6 +194,7 @@ GeoSourceStatus geo_eval_source(GeoEvalContext *ctx,GeoSourceRef source,GeoDepen
     ctx->active=previous;node->state=GEO_NODE_FAILED;node->status=GEO_SOURCE_FAILED;
     if(!ok)return node->status;
     if(!geo_source_value_matches(&node->descriptor,&value)){node->status=GEO_SOURCE_INVALID;return node->status;}
+    if(node->descriptor.context_from_value){node->descriptor.context=value.as.position.context;node->descriptor.context_from_value=false;}
     node->value=value;node->state=GEO_NODE_VALID;node->status=GEO_SOURCE_OK;
     *out=node->value;return GEO_SOURCE_OK;
 }

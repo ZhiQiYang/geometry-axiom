@@ -164,14 +164,16 @@ static int diagnostic_case(void)
 {
     const char *messages[]={"D4: derived placement variant or identity missing","I35: named dimension spec is missing","I55/D4: derived placement 10 source fill is missing","I52: panel-fill thickness must be explicitly set positive integer mm in D1; no rounding"};
     for(int which=0;which<4;++which){Fixture *f=fixture_thickness(which==3?"9.25":"9.000"),*p=fixture_thickness(which==3?"9.25":"9.000");CHECK(f&&p,"diagnostic-fixtures");Fixture *all[]={f,p};
-        for(int k=0;k<2;++k){Fixture *x=all[k];x->diagnostic=FS_DIAGNOSTIC_CAPACITY;x->state.fills[0].threshold.field_id=99;
-            if(which<=2)x->state.hosts[0].fill_id=99;if(which<=1)x->named_ok=false;if(which==0)x->placements[0].derived_fill_id=0;}
+        for(int k=0;k<2;++k){Fixture *x=all[k];x->diagnostic=FS_DIAGNOSTIC_CAPACITY;
+            CHECK(parse(x,"{\"id\":1,\"finishSurfaceId\":1,\"panel\":{\"id\":\"board\",\"version\":1},\"lengthAlong\":\"v\",\"origin\":[0,0],\"gap\":{\"parameterId\":90,\"fieldId\":1},\"pattern\":\"stagger\",\"stagger\":{\"axis\":\"u\",\"value\":{\"parameterId\":90,\"fieldId\":2}},\"threshold\":{\"parameterId\":90,\"fieldId\":99}}",1,&x->state.fills[0]),"diagnostic-canonical-fill");
+            if(which<=2)CHECK(parse(x,"{\"id\":10,\"fillId\":99,\"h\":{\"kind\":\"spec\",\"name\":\"depth\"}}",2,&x->state.hosts[0]),"diagnostic-canonical-host");
+            if(which<=1)x->named_ok=false;if(which==0)x->placements[0].derived_fill_id=0;}
         CHECK(attach(f)&&!wood_dp_rebuild(&f->context)&&!wood_dp_rebuild(&p->context),"both-policies-reject");
         CHECK(!strcmp(f->error,messages[which])&&!strcmp(f->error,p->error)&&f->diagnostic==p->diagnostic&&f->writes==0&&p->writes==0,"original-first-error-and-diagnostic-parity");
         strcpy(f->error,"unrelated later error");CHECK(!wood_dp_rebuild(&f->context)&&!strcmp(f->error,messages[which]),"failed-policy-retries-original-diagnostic");dispose(f,false);dispose(p,true);
     }
     Fixture *f=fixture(),*p=fixture();CHECK(f&&p,"partial-write-fixtures");Fixture *all[]={f,p};
-    for(int i=0;i<2;++i){all[i]->state.hosts[1]=all[i]->state.hosts[0];all[i]->state.hosts[1].id=11;all[i]->state.hosts[1].fill_id=99;all[i]->state.host_count=2;}
+    for(int i=0;i<2;++i){CHECK(parse(all[i],"{\"id\":11,\"fillId\":99,\"h\":{\"kind\":\"spec\",\"name\":\"depth\"}}",2,&all[i]->state.hosts[1]),"partial-canonical-host");all[i]->state.host_count=2;}
     CHECK(attach(f)&&!wood_dp_rebuild(&f->context)&&!wood_dp_rebuild(&p->context)&&f->writes==1&&p->writes==1&&!strcmp(f->error,p->error)&&exact_derived(&f->placements[0],30),"original-ordered-partial-writes");dispose(f,false);dispose(p,true);return 0;
 }
 static int finish_case(void)

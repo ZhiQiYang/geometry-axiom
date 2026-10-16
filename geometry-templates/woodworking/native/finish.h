@@ -50,6 +50,7 @@ enum { FS_SEPARATE = 0, FS_TOUCH = 1, FS_INTERIOR = 2 };
 typedef struct {GeoCoord rect[4],q[2];int relation;} FsObstacleView;
 typedef struct {
     WoodPanelLayout layout;GeoCoord t;const FinishSurface *finish;GeoFrame frame;
+    const PanelFill *fill; /* Authoritative definition used by this evaluation. */
     FsObstacleView obstacles[FS_OBSTACLE_MAX];bool cuts[FS_OBSTACLE_MAX];bool keep_collinear;
 } WoodFinishLayout;
 enum { WOOD_PF_LENGTH,WOOD_PF_WIDTH,WOOD_PF_THICKNESS,WOOD_PF_GAP,WOOD_PF_STAGGER,WOOD_PF_THRESHOLD };
@@ -58,7 +59,7 @@ typedef struct {
     bool (*check)(void *,const FinishSurface *);
     bool (*values)(void *,const PanelFill *,WoodFinishLayout *);
     bool (*field)(void *,const PanelFill *,int,GeoQuantity *);
-    bool (*finish_definition)(void *,uint32_t);
+    bool (*finish_definition)(void *,uint32_t,const FinishSurface **);
     bool (*boundary)(void *,uint32_t,WoodBoundaryRegion *);
     bool (*obstacle_box)(void *,const FinishObstacleRef *,GeoCoord[3],GeoCoord[3]);
 } WoodFinishEvaluation;

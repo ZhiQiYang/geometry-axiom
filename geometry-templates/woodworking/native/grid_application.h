@@ -65,6 +65,9 @@ typedef struct {
     bool (*dimension)(void *,const WoodGridApplication *,int,int,GeoCoord *,char *,size_t);
     bool (*rule_line)(void *,const GeoGridRuleLineRef *,uint32_t,GeoCoord *,GeoRect2 *,char *,size_t);
     bool (*rule_cell)(void *,uint32_t,uint32_t,const int64_t[2],WoodGridRuleTarget *,char *,size_t);
+    const GeoGridRule *(*rule_definition)(void *,const GeoGridSystem *,uint32_t,char *,size_t);
+    bool (*world_valid)(void *,const WoodGridContext *,char *,size_t);
+    bool (*rules_valid)(void *,const WoodGridContext *,char *,size_t);
 } WoodGridEvaluation;
 struct WoodGridContext {
     WoodGridState *state;
@@ -104,6 +107,7 @@ bool wood_grid_bindings_rebuild(WoodGridContext *,char *,size_t);
 bool wood_grid_delete(WoodGridContext *,const char *,uint32_t,char *,size_t);
 bool wood_grid_rule_used(const WoodGridContext *,uint32_t,uint32_t);
 bool wood_grid_rules_world_valid(const WoodGridContext *,char *,size_t);
+bool wood_grid_rules_world_valid_direct(const WoodGridContext *,char *,size_t);
 bool wood_grid_rule_change_allowed(const WoodGridContext *,uint32_t,uint32_t,const GeoGridRule *,bool,char *,size_t);
 bool wood_grid_rules_valid(const GeoGridSystem *,char *,size_t);
 struct WoodGridRuleTarget {
@@ -135,6 +139,7 @@ bool wood_grid_anchor_line_coord_resolved(const WoodGridApplication *,size_t,con
 bool wood_grid_valid_in(const WoodGridApplication *,size_t,const WoodGridApplication *,const WoodGridHost *,char *,size_t);
 bool wood_grid_parent_count_valid(const WoodGridContext *,const WoodGridApplication *,const WoodGridHost *,char *,size_t);
 bool wood_grid_world_valid(const WoodGridContext *,char *,size_t);
+bool wood_grid_world_valid_direct(const WoodGridContext *,char *,size_t);
 bool wood_grid_family_fits(const WoodGridContext *,const WoodGridApplication *,const WoodGridHost *);
 bool wood_grid_lattice_coord(const WoodGridApplication *,int,int64_t,GeoCoord *);
 bool wood_grid_lattice_coord_band(const WoodGridApplication *,int,int64_t,int64_t,GeoCoord *);

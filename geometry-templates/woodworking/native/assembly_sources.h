@@ -1,5 +1,5 @@
-/* D32-D34 candidate provenance. Canonical definitions borrow candidate storage;
- * quantities are evaluated by the original W engineering source policy. */
+/* D32-D34 candidate provenance. Returned authored definitions are decoded into
+ * a private execution copy; quantities retain the original W source policy. */
 #ifndef GEOMETRY_WOODWORKING_ASSEMBLY_SOURCES_H
 #define GEOMETRY_WOODWORKING_ASSEMBLY_SOURCES_H
 #include "assembly.h"
@@ -34,11 +34,16 @@ bool wood_assembly_sources_bind(WoodAssemblySources *,WoodAssemblyContext *);
  * and nullable slots), without demanding quantities or running I42 checks.
  * Invoke after normal successful validation; normal rebuild also visits these. */
 bool wood_assembly_sources_definitions(WoodAssemblySources *);
+/* GENERATED returns canonical wood.assembly.result/1; this adapter decodes the
+ * returned fields, including timber_id. CHECK roots similarly return canonical
+ * binding-result/1 or check-result/1; no successful consumer reads side caches. */
 bool wood_assembly_sources_generated(WoodAssemblySources *,uint32_t instance_id,uint32_t member_id,WoodAssemblyDefinition *);
 bool wood_assembly_sources_member_dimensions(WoodAssemblySources *,uint32_t instance_id,uint32_t member_id,GeoCoord *,GeoCoord *);
 /* No placement/pose evaluation here. H can consume these returned quantities
  * in its existing owned-member pose provider without advancing I42 checks. */
 bool wood_assembly_sources_owned_dimensions(WoodAssemblySources *,uint32_t timber_id,GeoCoord *,GeoCoord *);
+/* Returned definition ownership only; no dimensions, guides or geometry. */
+bool wood_assembly_sources_owned(WoodAssemblySources *,uint32_t timber_id,bool *);
 /* Both destruction orders are safe. After this handle is destroyed the graph
  * may only be destroyed; its borrowed views/provider pointer are no longer live. */
 void wood_assembly_sources_destroy(WoodAssemblySources *);

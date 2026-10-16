@@ -14,6 +14,7 @@ struct ModelSourceItem {
     GeoRegionView *regions;
     GeoLoop2View *holes;
     const BoundaryVertexKeys **vertex_keys;
+    GeoRegionKeys *owned_vertex_keys;
     GeoPoint2 rectangle[4];
     size_t region_count;
 };
@@ -45,6 +46,34 @@ static const char *model_source_quantity_type(ModelSources *state,const GeoSourc
 }
 static bool model_source_describe(void *opaque,const GeoSourceRef *ref,GeoSourceDescriptor *out)
 {ModelSourceItem *item=model_source_item(opaque,ref);if(!item)return false;*out=item->descriptor;return true;}
+/* An optional ledger is an authored identity source. Preserve absence and
+ * decode only its actual returned bytes after the root's geometry succeeds. */
+static bool model_source_region_keys(ModelSources *state,ModelSourceItem *item,const GeoSourceValue *geometry)
+{
+    GeoPlacementDefinition placement;
+    if(!geo_placement_sources_definition(state->reference.placement_sources,item->id,&placement))return false;
+    if(placement.domain!=GEO_PLACEMENT_REGION_REF||!geo_region_keys_find(&state->reference.world->geo.region_data,placement.region_id)){
+        if(item->region_count)item->vertex_keys[0]=NULL;return true;
+    }
+    uint32_t region_id=placement.region_id;GeoRegionKeySourceKey key;GeoSourceValue ledger;
+    if(geo_eval_source(state->reference.sources,geo_region_key_source_ref(APP_SOURCE_REGION_KEYS,GEO_REGION_KEY_SOURCE_LEDGER,region_id,0,0,&key),
+        GEO_DEPENDENCY_DEFINITION_REQUIRED,&ledger)!=GEO_SOURCE_OK||ledger.kind!=GEO_SOURCE_DEFINITION||!ledger.as.definition.schema||
+        strcmp(ledger.as.definition.schema,"geometry.region-key-ledger/1"))return false;
+    GeoRegionKeys decoded;
+    if(!geo_region_key_ledger_decode(ledger.as.definition.content,ledger.as.definition.content_size,&decoded)||decoded.boundary_id!=region_id||
+        geometry->kind!=GEO_SOURCE_REGION_SET||geometry->as.regions.count!=1||!geometry->as.regions.regions)return false;
+    const GeoRegionView *region=geometry->as.regions.regions;
+    if(region->hole_count>GEO_REGION_MAX_HOLES||(region->hole_count&&!region->holes)||
+        region->outline.count>GEO_LOOP_MAX_VERTICES||(region->outline.count&&!region->outline.v))return false;
+    GeoRegionDefinition shape={0};shape.id=region_id;shape.outline.count=region->outline.count;shape.hole_count=region->hole_count;
+    for(size_t h=0;h<region->hole_count;++h){if(region->holes[h].count>GEO_LOOP_MAX_VERTICES||(region->holes[h].count&&!region->holes[h].v))return false;shape.holes[h].count=region->holes[h].count;}
+    if(!geo_region_keys_valid(&shape,&decoded))return false;
+    GeoRegionKeys *owned=item->owned_vertex_keys?item->owned_vertex_keys:malloc(sizeof *owned);if(!owned)return false;
+    const BoundaryVertexKeys **keys=item->vertex_keys?item->vertex_keys:calloc(1,sizeof *keys);
+    if(!keys){if(!item->owned_vertex_keys)free(owned);return false;}
+    item->owned_vertex_keys=owned;item->vertex_keys=keys;if(!item->region_count)item->region_count=1;
+    *item->owned_vertex_keys=decoded;item->vertex_keys[0]=item->owned_vertex_keys;return true;
+}
 static bool model_source_evaluate(void *opaque,GeoEvalContext *ctx,const GeoSourceRef *ref,GeoSourceValue *out)
 {
     ModelSources *state=opaque;ModelSourceItem *item=model_source_item(state,ref);
@@ -61,7 +90,10 @@ static bool model_source_evaluate(void *opaque,GeoEvalContext *ctx,const GeoSour
     }
     if(!strcmp(item->kind,"placement")){
         GeoPlacementSourceKey key;GeoPlacementSourceKind kind=!strcmp(item->slot,"placement.frame")?GEO_PLACEMENT_SOURCE_FRAME:GEO_PLACEMENT_SOURCE_REGIONS;
-        return geo_eval_source(ctx,geo_placement_source_ref(APP_SOURCE_PLACEMENT,kind,item->id,&key),GEO_DEPENDENCY_VALUE_REQUIRED,out)==GEO_SOURCE_OK;
+        GeoSourceValue value;
+        if(geo_eval_source(ctx,geo_placement_source_ref(APP_SOURCE_PLACEMENT,kind,item->id,&key),GEO_DEPENDENCY_VALUE_REQUIRED,&value)!=GEO_SOURCE_OK||
+            (kind==GEO_PLACEMENT_SOURCE_REGIONS&&!model_source_region_keys(state,item,&value)))return false;
+        *out=value;return true;
     }
     if(!strcmp(item->kind,"column")||!strcmp(item->kind,"beam")){
         WoodFinishSourceKey key;WoodFinishSourceKind kind=!strcmp(item->kind,"column")?WOOD_FINISH_SOURCE_COLUMN_BOX:WOOD_FINISH_SOURCE_BEAM_BOX;
@@ -89,7 +121,7 @@ static bool model_source_evaluate(void *opaque,GeoEvalContext *ctx,const GeoSour
 static void model_sources_free(ModelSources *state)
 {
     reference_sources_dispose(&state->reference);
-    for(size_t i=0;i<state->count;++i){free(state->items[i]->regions);free(state->items[i]->holes);free(state->items[i]->vertex_keys);free(state->items[i]);}
+    for(size_t i=0;i<state->count;++i){free(state->items[i]->regions);free(state->items[i]->holes);free(state->items[i]->vertex_keys);free(state->items[i]->owned_vertex_keys);free(state->items[i]);}
     free(state->items);memset(state,0,sizeof *state);
 }
 static ModelSourceItem *model_sources_add(ModelSources *state,const char *kind,uint32_t id,const char *slot,
@@ -122,15 +154,6 @@ static void model_source_region(ModelSourceItem *item,size_t i,const PolygonLoop
 {
     item->regions[i]=(GeoRegionView){{outer->v,outer->count},item->holes+i*POLY_MAX_HOLES,count};
     for(size_t h=0;h<count;++h)item->holes[i*POLY_MAX_HOLES+h]=(GeoLoop2View){holes[h].v,holes[h].count};
-    item->vertex_keys[i]=keys;
-}
-static void model_source_kernel_region(ModelSourceItem *item,size_t i,const GeoRegionView *region,
-    const BoundaryVertexKeys *keys)
-{
-    /* Vertex buffers belong to the same candidate's K store. Copy only the
-     * borrowed view descriptors; caller-owned DTO scratch must not escape. */
-    item->regions[i]=(GeoRegionView){region->outline,item->holes+i*POLY_MAX_HOLES,region->hole_count};
-    for(size_t h=0;h<region->hole_count;++h)item->holes[i*POLY_MAX_HOLES+h]=region->holes[h];
     item->vertex_keys[i]=keys;
 }
 static void model_source_rectangle(ModelSourceItem *item,GeoRect2 rect)
@@ -191,11 +214,9 @@ static bool model_sources_build(ModelSources *state,World *world)
         if(!frame||!region)return false;
         frame->descriptor.context.has_placement=region->descriptor.context.has_placement=true;
         frame->descriptor.context.placement=region->descriptor.context.placement=p->id;frame->value.as.frame=p->frame;
-        GeoPlacementViewScratch scratch;GeoRegionSetView view;
-        if(!geo_placement_domain_view(p,&world->geo.region_data,&scratch,&view)||!model_source_regions(region,view.count))return false;
-        if(p->domain==GEO_PLACEMENT_RECT)model_source_rectangle(region,p->rect);
-        else for(size_t c=0;c<view.count;++c)model_source_kernel_region(region,c,&view.regions[c],
-            p->domain==GEO_PLACEMENT_REGION_REF?world_find_vertex_keys(world,p->region_id):NULL);
+        /* Placement roots obtain their geometry and optional identities during
+         * evaluation. No raw domain view or ledger pointer is transported. */
+        if(!model_source_regions(region,0))return false;
     }
     for(size_t i=0;i<world->wood.column_count+world->wood.beam_count;++i){
         bool column=i<world->wood.column_count;Coord xl,xh,yl,yh,zl,zh;uint32_t id;

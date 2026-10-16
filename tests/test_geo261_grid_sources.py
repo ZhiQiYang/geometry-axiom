@@ -41,7 +41,7 @@ class GridSourceBoundary(unittest.TestCase):
             self.assertIn(function + "(", source)
         self.assertIn("target->bounds=scope", source)
         self.assertIn("wood_grid_scope_read(&value,&scope)", source)
-        self.assertIn("s->base.coordinate(s->base.user,ref,out)", source)
+        self.assertIn("s->base.coordinate(s->base.user,ref,&checked)", source)
         self.assertIn("wood_grid_copy_binding_cache(g,&r->cache)", source)
         self.assertNotIn("memcmp(e,a,sizeof", source)
 
@@ -72,7 +72,7 @@ class GridSources(unittest.TestCase):
     @classmethod
     def objects(cls, build, module=None, changed=None):
         return [cls.client, changed if module == "grid_sources" else cls.provider,
-                build.wood_grid_application_object, build.wood_grid_cells_object,
+                build.wood_grid_application_object, build.wood_grid_cells_object, build.wood_grid_definition_codec_object,
                 changed if module == "grid_rules" else build.wood_grid_rules_object,
                 build.wood_engineering_object, build.wood_engineering_sources_object,
                 *build.kernel_objects()]
@@ -115,8 +115,8 @@ class GridSources(unittest.TestCase):
         controls=[
             ('unused-direct','for(size_t i=0;i<s->context.state->count;++i)',
              'for(size_t i=0;i<0;++i)','unused-direct-and-child-definitions-present'),
-            ('rule-owner','if(!wood_grid_definition_depend(s,WOOD_GRID_SOURCE_SYSTEM_DEFINITION,id))return false;',
-             'if(false)return false;','unused-rule-keeps-owner-definition'),
+            ('rule-owner','WOOD_GRID_SOURCE_SYSTEM_DEFINITION,id,GEO_DEPENDENCY_DEFINITION_REQUIRED,&parent',
+             'WOOD_GRID_SOURCE_SYSTEM_DEFINITION,id,GEO_DEPENDENCY_VALUE_REQUIRED,&parent','unused-rule-keeps-owner-definition'),
             ('engineering-definition','if(!s->tokens.engineering_binding)return true;',
              'return true;','unused-engineering-binding-definition-edge'),
         ]
