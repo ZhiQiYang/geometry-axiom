@@ -108,7 +108,8 @@ static GeoCandidateStatus publish(Probe *probe)
 static int ownership(void)
 {
     Snapshot live,before,after,other,other_before,other_after;Probe p,q;initialize(&live);initialize(&other);
-    other.first.input=90;other.policy.bias=8;Snapshot original=live,other_original=other;
+    other.first.input=90;other.policy.bias=8;Snapshot original,other_original;
+    memcpy(&original,&live,sizeof original);memcpy(&other_original,&other,sizeof other_original);
     memset(&before,0xa5,sizeof before);memset(&after,0x5a,sizeof after);
     CHECK(make(&p,&live,&before,&after,UINT64_MAX)&&make(&q,&other,&other_before,&other_after,2));
     CHECK(!memcmp(&before,&original,sizeof before)&&!memcmp(&after,&original,sizeof after));
@@ -153,7 +154,7 @@ static int bindings(void)
 }
 static int failed_evaluation(void)
 {
-    Snapshot live,before,after;Probe p;initialize(&live);Snapshot original=live;
+    Snapshot live,before,after;Probe p;initialize(&live);Snapshot original;memcpy(&original,&live,sizeof original);
     CHECK(make(&p,&live,&before,&after,1));p.fail=true;
     CHECK(app_candidate_evaluate(p.candidate,evaluate,&p)==GEO_CANDIDATE_EVALUATION_FAILED);
     CHECK(after.first.result==17&&after.host.next_id==81&&p.evaluations==1&&p.provider_calls==1);
@@ -163,7 +164,7 @@ static int failed_evaluation(void)
 }
 static int before_evaluation(void)
 {
-    Snapshot live,before,after;Probe p;initialize(&live);Snapshot original=live;
+    Snapshot live,before,after;Probe p;initialize(&live);Snapshot original;memcpy(&original,&live,sizeof original);
     CHECK(make(&p,&live,&before,&after,1));++before.host.next_id;
     CHECK(app_candidate_evaluate(p.candidate,evaluate,&p)==GEO_CANDIDATE_STATE_CHANGED);
     CHECK(p.evaluations==0&&p.provider_calls==0&&!memcmp(&after,&original,sizeof after));
@@ -174,7 +175,7 @@ static int before_evaluation(void)
 }
 static int before_seal(void)
 {
-    Snapshot live,before,after;Probe p;initialize(&live);Snapshot original=live;
+    Snapshot live,before,after;Probe p;initialize(&live);Snapshot original;memcpy(&original,&live,sizeof original);
     CHECK(make(&p,&live,&before,&after,1));
     CHECK(app_candidate_evaluate(p.candidate,evaluate,&p)==GEO_CANDIDATE_OK);
     ++before.policy.bias;CHECK(app_candidate_seal(p.candidate)==GEO_CANDIDATE_STATE_CHANGED);
@@ -184,7 +185,7 @@ static int before_seal(void)
 }
 static int after_before_seal(void)
 {
-    Snapshot live,before,after;Probe p;initialize(&live);Snapshot original=live;
+    Snapshot live,before,after;Probe p;initialize(&live);Snapshot original;memcpy(&original,&live,sizeof original);
     CHECK(make(&p,&live,&before,&after,1));
     CHECK(app_candidate_evaluate(p.candidate,evaluate,&p)==GEO_CANDIDATE_OK);
     ++after.policy.bias;CHECK(app_candidate_seal(p.candidate)==GEO_CANDIDATE_STATE_CHANGED);
@@ -194,7 +195,7 @@ static int after_before_seal(void)
 }
 static int sealed_before(void)
 {
-    Snapshot live,before,after;Probe p;initialize(&live);Snapshot original=live;
+    Snapshot live,before,after;Probe p;initialize(&live);Snapshot original;memcpy(&original,&live,sizeof original);
     CHECK(make(&p,&live,&before,&after,1));
     CHECK(app_candidate_evaluate(p.candidate,evaluate,&p)==GEO_CANDIDATE_OK&&app_candidate_seal(p.candidate)==GEO_CANDIDATE_OK);
     ++before.policy.bias;CHECK(check(&p)==GEO_CANDIDATE_STATE_CHANGED&&publish(&p)==GEO_CANDIDATE_STATE_CHANGED);
@@ -204,7 +205,7 @@ static int sealed_before(void)
 }
 static int sealed_after(void)
 {
-    Snapshot live,before,after;Probe p;initialize(&live);Snapshot original=live;
+    Snapshot live,before,after;Probe p;initialize(&live);Snapshot original;memcpy(&original,&live,sizeof original);
     CHECK(make(&p,&live,&before,&after,1));
     CHECK(app_candidate_evaluate(p.candidate,evaluate,&p)==GEO_CANDIDATE_OK&&app_candidate_seal(p.candidate)==GEO_CANDIDATE_OK);
     CHECK(check(&p)==GEO_CANDIDATE_OK);
@@ -219,22 +220,23 @@ static int live_policy(void)
     Snapshot live,before,after;Probe p;initialize(&live);
     CHECK(make(&p,&live,&before,&after,1));
     CHECK(app_candidate_evaluate(p.candidate,evaluate,&p)==GEO_CANDIDATE_OK&&app_candidate_seal(p.candidate)==GEO_CANDIDATE_OK);
-    ++live.host.history;Snapshot changed=live;
+    ++live.host.history;Snapshot changed;memcpy(&changed,&live,sizeof changed);
     CHECK(check(&p)==GEO_CANDIDATE_STATE_CHANGED&&publish(&p)==GEO_CANDIDATE_STATE_CHANGED);
     CHECK(!memcmp(&live,&changed,sizeof live)&&p.publications==0);
     --live.host.history;live.host.view=99;
     CHECK(check(&p)==GEO_CANDIDATE_STATE_CHANGED);p.preserve_view=true;
     CHECK(check(&p)==GEO_CANDIDATE_OK&&publish(&p)==GEO_CANDIDATE_OK);
     CHECK(live.host.view==99&&live.host.history==7&&live.host.next_id==81&&p.publications==1);
-    Snapshot expected=after;expected.host.view=99;CHECK(!memcmp(&live,&expected,sizeof live));
+    Snapshot expected;memcpy(&expected,&after,sizeof expected);expected.host.view=99;CHECK(!memcmp(&live,&expected,sizeof live));
     app_candidate_destroy(p.candidate);CHECK(p.disposals==1&&!p.errors);return 0;
 }
 static int publication(void)
 {
-    Snapshot live,before,after;Probe p;initialize(&live);Snapshot original=live;
+    Snapshot live,before,after;Probe p;initialize(&live);Snapshot original;memcpy(&original,&live,sizeof original);
     CHECK(make(&p,&live,&before,&after,1));
     CHECK(app_candidate_evaluate(p.candidate,evaluate,&p)==GEO_CANDIDATE_OK);
-    GeoEvalContext *sources=p.sources;void *state=app_candidate_evaluation_state(p.candidate);Snapshot preview=after;
+    GeoEvalContext *sources=p.sources;void *state=app_candidate_evaluation_state(p.candidate);Snapshot preview;
+    memcpy(&preview,&after,sizeof preview);
     CHECK(p.evaluations==1&&p.provider_calls==1&&!memcmp(&live,&original,sizeof live));
     CHECK(app_candidate_seal(p.candidate)==GEO_CANDIDATE_OK&&check(&p)==GEO_CANDIDATE_OK&&publish(&p)==GEO_CANDIDATE_OK);
     CHECK(p.evaluations==1&&p.provider_calls==1&&p.publications==1&&p.disposals==0&&!p.errors);
@@ -246,7 +248,7 @@ static int publication(void)
 }
 static int revision_provider(void)
 {
-    Snapshot live,before,after;Probe p;initialize(&live);Snapshot original=live;
+    Snapshot live,before,after;Probe p;initialize(&live);Snapshot original;memcpy(&original,&live,sizeof original);
     CHECK(make(&p,&live,&before,&after,1));
     CHECK(app_candidate_evaluate(p.candidate,evaluate,&p)==GEO_CANDIDATE_OK&&app_candidate_seal(p.candidate)==GEO_CANDIDATE_OK);
     CHECK(app_candidate_publish(p.candidate,&live,p.revision+1,STAMP,equal_snapshot,publish_snapshot,&p)==GEO_CANDIDATE_REVISION_CHANGED);
@@ -259,7 +261,7 @@ static int revision_provider(void)
 }
 static int state_lifetime(void)
 {
-    Snapshot live,before,after;Probe p;initialize(&live);Snapshot original=live;
+    Snapshot live,before,after;Probe p;initialize(&live);Snapshot original;memcpy(&original,&live,sizeof original);
     CHECK(make(&p,&live,&before,&after,1));
     CHECK(app_candidate_evaluate(p.candidate,evaluate,&p)==GEO_CANDIDATE_OK&&p.disposals==0);
     CHECK(app_candidate_evaluate(p.candidate,evaluate,&p)==GEO_CANDIDATE_OK&&p.disposals==1);
