@@ -113,6 +113,23 @@ class RectangularPythonTests(unittest.TestCase):
         expected=build_mesh(view())
         self.assertEqual([r.mesh for r in expected.records],[r.mesh for r in result.records])
         self.assertEqual([r.member_path for r in expected.records],[r.member_path for r in result.records])
+        # The native recipe permits two fields to bind the same typed source.
+        aliased=fixture()
+        aliased["sources"][0]["value"]["num"]="600"
+        aliased["sources"][1]=deepcopy(aliased["sources"][0])
+        aliased["bindings"]["height"]=deepcopy(aliased["bindings"]["width"])
+        coordinates=(0,120,240,360,480,600)
+        for cell in aliased["cells"]:
+            c,r=cell["column"],cell["row"]
+            old=cell["region"]["outer"]
+            cell["region"]["outer"]=[[coordinates[c],old[0][1]],[coordinates[c+1],old[1][1]],
+                [coordinates[c+1],old[2][1]],[coordinates[c],old[3][1]]]
+        result=build_mesh(decode_view(json.dumps(aliased)))
+        self.assertEqual({"240000"},{record.mesh["volume_mm3"] for record in result.records})
+        self.assertEqual(20,len(result.sources))
+        aliased["sources"][1]["revision"]="2"
+        with self.assertRaises(RejectedView):
+            decode_view(json.dumps(aliased))
 
 
 class RectangularPythonIsolationTests(unittest.TestCase):

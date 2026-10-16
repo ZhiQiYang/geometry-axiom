@@ -68,12 +68,10 @@ def decode_view(payload, *, execution_identity=()):
         if data["recipe"] != "rectangular-grid/1" or type(data["sources"]) is not list or len(data["sources"]) != 5:
             _fail("A complete rectangular grid result needs its five typed sources")
         context = SourceContext()
-        sources, revisions = {}, []
+        sources, revisions = {}, {}
         for item in data["sources"]:
             _shape(item, ("key", "revision", "value"))
             key = _key(item["key"])
-            if key in sources:
-                _fail("Rectangular grid source keys must be unique")
             revision = _integer(item["revision"], positive=True, unsigned=True)
             value = _shape(item["value"], ("num", "den", "unit"))
             dimension = key.key[-1] == "length"
@@ -84,9 +82,11 @@ def decode_view(payload, *, execution_identity=()):
                 Unit.MM if dimension else Unit.UNITLESS)
             if quantity.denominator != 1:
                 _fail("A successful rectangular grid result must have integral source values")
-            sources[key] = SourceDescriptor(key, ValueType.QUANTITY, context, (), quantity,
-                                            origin=(key.namespace, *key.key))
-            revisions.append((key.namespace, key.key, revision))
+            source = SourceDescriptor(key, ValueType.QUANTITY, context, (), quantity,
+                                      origin=(key.namespace, *key.key))
+            if key in sources and (sources[key] != source or revisions[key] != revision):
+                _fail("Aliased rectangular grid fields disagree about one source value")
+            sources[key], revisions[key] = source, revision
         names = ("width", "height", "columns", "rows", "thickness")
         _shape(data["bindings"], names)
         bindings = {name: _key(data["bindings"][name]) for name in names}
@@ -108,7 +108,7 @@ def decode_view(payload, *, execution_identity=()):
         cells, identities = [], set()
         if type(data["cells"]) is not list or len(data["cells"]) != columns * rows:
             _fail("Rectangular grid result is missing native cells")
-        dependencies = tuple(DependencyEdge(bindings[name]) for name in names[:4])
+        dependencies = tuple(DependencyEdge(key) for key in dict.fromkeys(bindings[name] for name in names[:4]))
         for item in data["cells"]:
             _shape(item, ("column", "row", "region"))
             column, row = item["column"], item["row"]
@@ -125,6 +125,7 @@ def decode_view(payload, *, execution_identity=()):
         return RectangularGridView(tuple(descriptors), SourceRef(frame_key, ValueType.FRAME, context),
             SourceRef(bindings["thickness"], ValueType.QUANTITY, context),
             tuple(sorted(cells, key=lambda item: (item.row,item.column))),
-            ("rectangular-grid/1", tuple(sorted(revisions)), digest(data), execution_identity))
+            ("rectangular-grid/1", tuple(sorted((key.namespace,key.key,revision) for key,revision in revisions.items())),
+             digest(data), execution_identity))
     except EvaluationError as error:
         raise RejectedView("INVALID_VIEW", "Invalid exact rectangular grid result: " + error.code) from error
