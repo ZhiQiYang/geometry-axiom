@@ -38,7 +38,7 @@ class NativeBuild:
         self.work = Path(self.temp.name)
         self.kernel = self.work / "isolated-kernel"
         self.kernel.mkdir()
-        for name in ("types.h", "exact.h", "exact.c", "codec.h", "codec.c", "geometry.h", "geometry.c"):
+        for name in ("types.h", "exact.h", "exact.c", "codec.h", "codec.c", "geometry.h", "geometry.c", "grid.h", "grid.c"):
             shutil.copy2(ROOT / "geometry-core/kernel" / name, self.kernel / name)
         self.windows = os.name == "nt"
         self.suffix = ".exe" if self.windows else ""
@@ -59,6 +59,7 @@ class NativeBuild:
         self.exact_object = self.compile(self.kernel / "exact.c", "exact")
         self.codec_object = self.compile(self.kernel / "codec.c", "codec")
         self.geometry_object = self.compile(self.kernel / "geometry.c", "geometry")
+        self.grid_object = self.compile(self.kernel / "grid.c", "grid")
         exact_source = self.work / "exact-client.c"
         shutil.copy2(ROOT / "tests/geo261_exact_harness.c", exact_source)
         self.exact_client = self.compile(exact_source, "exact-client")
@@ -113,7 +114,7 @@ class NativeBuild:
     def bridge(self):
         if self.bridge_object is None:
             self.bridge_object = self.compile(ROOT / "geometry-web/web_bridge.c", "product-bridge", ["GEOMETRY_KERNEL_EXTERNAL=1"])
-            self.bridge_exe = self.link("product-bridge", [self.bridge_object, self.exact_object, self.codec_object, self.geometry_object])
+            self.bridge_exe = self.link("product-bridge", [self.bridge_object, self.exact_object, self.codec_object, self.geometry_object, self.grid_object])
         return self.bridge_exe
 
     def mutant(self, module, before, after, client_object=None):
@@ -127,10 +128,12 @@ class NativeBuild:
         exact = changed if module == "exact" else self.exact_object
         codec = changed if module == "codec" else self.codec_object
         geometry = changed if module == "geometry" else self.geometry_object
+        grid = changed if module == "grid" else self.grid_object
         if client_object is None:
             client_object = self.exact_client if module == "exact" else self.codec_client
-        client = self.link(module + "-mutant-client", [client_object, changed])
-        product = self.link(module + "-mutant-bridge", [self.bridge_object, exact, codec, geometry])
+        dependencies = [self.geometry_object] if module == "grid" else []
+        client = self.link(module + "-mutant-client", [client_object, changed, *dependencies])
+        product = self.link(module + "-mutant-bridge", [self.bridge_object, exact, codec, geometry, grid])
         return client, product
 
 

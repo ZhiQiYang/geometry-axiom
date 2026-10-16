@@ -664,4 +664,50 @@ GeoGeometryStatus geo_strip_intervals(const GeoRegionSetView *domain,bool along_
     if(open)++out->count;
     return GEO_GEOMETRY_OK;
 }
+GeoGeometryStatus geo_loop_rect_area2(const GeoLoop2View *loop,const GeoRect2 *r,GeoCoord *out)
+{
+    if(!loop||!loop->v||loop->count>GEO_LOOP_MAX_VERTICES||!r||!out)return GEO_GEOMETRY_INVALID;
+    GeoPoint2 a[GEO_LOOP_MAX_VERTICES * 4], z[GEO_LOOP_MAX_VERTICES * 4];
+    size_t n=loop->count;
+    memcpy(a,loop->v,n*sizeof *a);
+    for (int side=0;side<4 && n;++side) {
+        int axis=side/2; bool low=(side%2)==0;
+        GeoCoord bound=axis==0?(low?r->min_u:r->max_u):(low?r->min_v:r->max_v);
+        size_t m=0;
+        for (size_t i=0;i<n;++i) {
+            GeoPoint2 p=a[i], q=a[(i+1)%n];
+            GeoCoord pc=axis==0?p.u:p.v, qc=axis==0?q.u:q.v;
+            bool pin=low?pc>=bound:pc<=bound, qin=low?qc>=bound:qc<=bound;
+            if (pin != qin) {
+                GeoPoint2 hit=p;
+                if (axis==0) hit.u=bound; else hit.v=bound;
+                if (m>=GEO_LOOP_MAX_VERTICES*4) return GEO_GEOMETRY_CAPACITY;
+                z[m++]=hit;
+            }
+            if (qin) {
+                if (m>=GEO_LOOP_MAX_VERTICES*4) return GEO_GEOMETRY_CAPACITY;
+                z[m++]=q;
+            }
+        }
+        n=m; memcpy(a,z,n*sizeof *a);
+    }
+    GeoCoord area=0;
+    for (size_t i=0;i<n;++i) area+=a[i].u*a[(i+1)%n].v-a[(i+1)%n].u*a[i].v;
+    *out=area<0?-area:area;return GEO_GEOMETRY_OK;
+}
+
+bool geo_region_set_intersects_rect_positive(const GeoRegionSetView *domain,const GeoRect2 *rect)
+{
+    if(!domain||!rect||rect->min_u>=rect->max_u||rect->min_v>=rect->max_v)return false;
+    for(size_t c=0;c<domain->count;++c){
+        const GeoRegionView *part=&domain->regions[c];GeoCoord area;
+        if(geo_loop_rect_area2(&part->outline,rect,&area)!=GEO_GEOMETRY_OK)return false;
+        for(size_t h=0;h<part->hole_count;++h){GeoCoord hole;
+            if(geo_loop_rect_area2(&part->holes[h],rect,&hole)!=GEO_GEOMETRY_OK)return false;
+            area-=hole;
+        }
+        if(area>0)return true;
+    }
+    return false;
+}
 #endif

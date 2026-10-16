@@ -6,9 +6,11 @@
 #include "codec.h"
 #include "exact.h"
 #include "geometry.h"
+#include "grid.h"
 #else
 #include "codec.c"
 #include "exact.c"
 #include "geometry.c"
+#include "grid.c"
 #endif
 #endif

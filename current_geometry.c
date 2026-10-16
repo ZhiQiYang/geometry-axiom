@@ -987,16 +987,8 @@ typedef struct {
 #include "geometry-core/panel_layout_math.h"
 #include "geometry-core/grid_lattice.inc"
 
-static bool grid_coord_list_is_valid(const Coord coords[], size_t count)
-{
-    for (size_t i = 0; i < count; ++i) {
-        if (i > 0 && coords[i] <= coords[i - 1]) {
-            return false;   /* 必須嚴格遞增 */
-        }
-    }
-
-    return true;
-}
+static bool grid_coord_list_is_valid(const Coord coords[],size_t count)
+{ return geo_coordinates_increasing(coords,count); }
 
 /*
  * 唯一的展開入口（D9：只存定義，線在用時推出）。
@@ -1054,90 +1046,24 @@ static bool grid_axis_lines(
 
     const Coord lo = axis == 0 ? bounds.min_u : bounds.min_v;
     const Coord hi = axis == 0 ? bounds.max_u : bounds.max_v;
-    size_t n = 0;
-
-    if (def->source == GRID_SRC_EXPLICIT) {
-        if (def->count > GRID_MAX_LINES) {
-            return false;
-        }
-
-        for (size_t k = 0; k < def->count; ++k) {
-            out[n++] = def->coords[k];
-        }
-    } else if (def->source == GRID_SRC_SERIES) {
-        /* D10：第 k 條 = start + k·step；step > 0 本身就保證嚴格遞增。 */
-        if (def->series_count == 0 ||
-            def->series_count > GRID_MAX_LINES ||
-            def->step <= 0) {
-            return false;
-        }
-
-        for (size_t k = 0; k < def->series_count; ++k) {
-            out[n++] = def->start + (Coord)k * def->step;
-        }
-    } else if (def->source == GRID_SRC_PANEL) {
-        /*
-         * D10a：週期 T = panel + gap，第 k 條縫中心線
-         *   c_k = a + k·T + panel + gap/2，
-         * 產生條件 a+(k+1)·T < hi——整條縫落在範圍內，且其後仍有非空的面材本體。
-         * 不滿足就停：末端是裁切片，合法，不因「除不盡」而拒絕。
-         */
-        const Coord T = panel_layout_pitch(def->panel,def->gap);
-
-        if (def->panel <= 0 || def->gap < 0 ||
-            def->anchor < lo || def->anchor >= hi) {
-            if (err != NULL) {
-                snprintf(err, err_cap,
-                         "面材參數不合法（面材寬 > 0、縫寬非負、"
-                         "起算點須落在承載面範圍內）");
-            }
-            return false;
-        }
-
-        for (size_t k = 0; ; ++k) {
-            const Coord gap_hi = def->anchor + (Coord)(k + 1) * T;
-
-            if (gap_hi >= hi) {
-                break;
-            }
-
-            if (n == GRID_MAX_LINES) {
-                if (err != NULL) {
-                    snprintf(err, err_cap,
-                             "面材排法推導出的格線超過單軸上限");
-                }
-                return false;
-            }
-
-            out[n++] = panel_layout_center(def->anchor,def->panel,def->gap,(int64_t)k);
-        }
-    } else {
-        if (err != NULL) {
-            snprintf(err, err_cap, "這一軸的格線來源尚未支援");
-        }
-        return false;
+    GeoFiniteSequence sequence={.kind=GEO_SEQUENCE_NONE,.coordinates=def->coords,.count=def->count,
+        .start=def->start,.step=def->step,.body=def->panel,.gap=def->gap,.anchor=def->anchor};
+    switch(def->source){
+    case GRID_SRC_EXPLICIT:sequence.kind=GEO_SEQUENCE_EXPLICIT;break;
+    case GRID_SRC_SERIES:sequence.kind=GEO_SEQUENCE_SERIES;sequence.count=def->series_count;break;
+    case GRID_SRC_PANEL:sequence.kind=GEO_SEQUENCE_BODY_GAP;break;
+    default:if(err)snprintf(err,err_cap,"這一軸的格線來源尚未支援");return false;
     }
-
-    /* I10：嚴格遞增。 */
-    if (!grid_coord_list_is_valid(out, n)) {
-        if (err != NULL) {
-            snprintf(err, err_cap, "座標必須嚴格遞增");
-        }
-        return false;
+    GeoGridStatus status=geo_finite_sequence(&sequence,lo,hi,out,GRID_MAX_LINES,out_count);
+    if(status==GEO_GRID_OK)return true;
+    if(err){const char *message=NULL;
+        if(status==GEO_GRID_BODY_GAP_INVALID)message="面材參數不合法（面材寬 > 0、縫寬非負、起算點須落在承載面範圍內）";
+        else if(status==GEO_GRID_CAPACITY)message="面材排法推導出的格線超過單軸上限";
+        else if(status==GEO_GRID_ORDER)message="座標必須嚴格遞增";
+        else if(status==GEO_GRID_BOUNDS)message="座標要落在承載面外接範圍內";
+        if(message)snprintf(err,err_cap,"%s",message);
     }
-
-    /* I10：每條都落在該軸外接區間內——與 guide offset 同一條規則。 */
-    for (size_t k = 0; k < n; ++k) {
-        if (out[k] < lo || out[k] > hi) {
-            if (err != NULL) {
-                snprintf(err, err_cap, "座標要落在承載面外接範圍內");
-            }
-            return false;
-        }
-    }
-
-    *out_count = n;
-    return true;
+    return false;
 }
 
 static bool grid_is_valid(

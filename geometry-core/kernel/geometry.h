@@ -85,4 +85,6 @@ GeoGeometryStatus geo_strip_intervals(const GeoRegionSetView *domain,bool along_
  * Callers choose obstacles and later apply their own source/contact policies;
  * neither a selection scope nor a support concept exists in this operation.
  * A capacity failure leaves out->count zero; scratch/output storage is borrowed. */
+GeoGeometryStatus geo_loop_rect_area2(const GeoLoop2View *loop,const GeoRect2 *rect,GeoCoord *out);
+bool geo_region_set_intersects_rect_positive(const GeoRegionSetView *domain,const GeoRect2 *rect);
 #endif

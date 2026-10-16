@@ -40,3 +40,16 @@ to change. Compilation failures and crashes are not successful negative controls
 This is an intermediate extraction of shared primitives. The document stores,
 typed source graph and complete candidate transaction boundary still require
 the later GEO-261 slices; this directory alone is not a claim of full decoupling.
+# Exact coordinate sequences
+
+`grid.h` owns body/gap formulas, alternating shifts, finite sequence expansion,
+signed lattice coordinate/window evaluation and exact equal subdivision.
+The host maps its historical source variants and diagnostics onto this neutral
+API; placement, role preferences, stored source identities and rule ownership
+remain outside this primitive slice. A derived lattice base can exceed the
+output coordinate range: arbitrary signed indices are checked when evaluated.
+
+`geo_loop_rect_area2` and `geo_region_set_intersects_rect_positive` provide the
+exact clipped-area predicate used by real subgrid cells, including holes and
+all region components. Neither bounding boxes nor sampled display lines stand
+in for a cell's geometry.
