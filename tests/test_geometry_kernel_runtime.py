@@ -5,7 +5,10 @@ This suite does not replace the real native adapter replay gate.
 """
 from copy import deepcopy
 from pathlib import Path
+import shutil
+import subprocess
 import sys
+import tempfile
 import unittest
 from unittest import mock
 
@@ -163,6 +166,65 @@ FROZEN_DIGESTS = {
 
 
 class KernelRuntimeTests(unittest.TestCase):
+    def test_public_build_capabilities_gate_export_after_full_definition_validation(self):
+        import geometry_kernel
+        from modeling import build_package
+        opened_base, opened = shell_case(closed=False)
+        checks = (
+            (case(opened_base, opened, request(ref("composite_space", 10), role="clearance"), capabilities=[]),
+             ["composite-space/1", "model-export/1", "shell/1"]),
+            (case(snapshot(solids=(solid(), solid(2, (40, 40, 40)))), [],
+                  request(ref("column", 1), ref("column", 2)), capabilities=[], max_cells=1),
+             ["model-export/1"]),
+        )
+        for inputs, missing in checks:
+            with self.subTest(missing=missing), mock.patch.object(geometry_kernel, "evaluate", wraps=geometry_kernel.evaluate) as call:
+                actual = execute(build_package, inputs)
+            expected = {"error": {"status": "UNSUPPORTED", "diagnostics": [{
+                "root": None, "path": [], "code": "CAPABILITY", "clause": "I32",
+                "message": "Required capabilities are unavailable: " + ", ".join(missing),
+                "missing": missing}]}}
+            self.assertEqual(expected, actual)
+            self.assertEqual(1, call.call_count)
+            self.assertIsInstance(call.call_args.args[0], geometry_kernel.Program)
+        # The capability refusal must not hide an unselected inward interior.
+        self.assertEqual(FROZEN_DIGESTS["invalid_before_capability"],
+                         digest(execute(build_package, cases()["invalid_before_capability"])))
+
+    def test_capability_export_phase_guard_removal_is_detected(self):
+        with tempfile.TemporaryDirectory(prefix="geometry-capability-guard-") as directory:
+            copied = Path(directory)
+            for package in ("geometry-core/geometry_kernel", "geometry-core/modeling",
+                            "geometry-app/geometry_app",
+                            "geometry-templates/woodworking/geometry_woodworking"):
+                shutil.copytree(ROOT / package, copied / package,
+                                ignore=shutil.ignore_patterns("__pycache__"))
+            (copied / "tests").mkdir()
+            (copied / "tests/__init__.py").write_text("", encoding="utf-8")
+            shutil.copyfile(__file__, copied / "tests/test_geometry_kernel_runtime.py")
+            source = copied / "geometry-app/geometry_app/model_runtime.py"
+            original = source.read_text(encoding="utf-8")
+            before = "validation_only=bool(capability_errors)"
+            self.assertEqual(1, original.count(before))
+            command = [sys.executable, "-I", "-B", "-c",
+                       "import sys,unittest;sys.path.insert(0,sys.argv.pop(1));unittest.main(module=None)",
+                       str(copied), "tests.test_geometry_kernel_runtime.KernelRuntimeTests.test_public_build_capabilities_gate_export_after_full_definition_validation"]
+            def run():
+                return subprocess.run(command, cwd=copied, capture_output=True, text=True, timeout=30)
+            baseline = run()
+            self.assertEqual(0, baseline.returncode, baseline.stdout + baseline.stderr)
+            source.write_text(original.replace(before, "validation_only=False"), encoding="utf-8")
+            mutant = run()
+            details = mutant.stdout + mutant.stderr
+            self.assertEqual(1, mutant.returncode, details)
+            self.assertIn("FAILED (failures=1)", details)
+            self.assertIn("Ran 1 test", details)
+            self.assertNotIn("ImportError", details)
+            self.assertNotIn("SyntaxError", details)
+            source.write_text(original, encoding="utf-8")
+            restored = run()
+            self.assertEqual(0, restored.returncode, restored.stdout + restored.stderr)
+
     def test_product_evaluator_preserves_frozen_wire_and_diagnostics(self):
         fixtures = cases()
         self.assertEqual(set(fixtures), set(FROZEN_DIGESTS))

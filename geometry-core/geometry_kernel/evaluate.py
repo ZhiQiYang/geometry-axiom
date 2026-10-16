@@ -28,6 +28,13 @@ class RootOutcome:
 
 
 @dataclass(frozen=True)
+class DefinitionValidation:
+    """Full source/geometry definitions were evaluated; no export was attempted."""
+    order: tuple
+    snapshot_identity: tuple
+
+
+@dataclass(frozen=True)
 class EvaluationResult:
     order: tuple
     outcomes: tuple
@@ -99,7 +106,15 @@ def source_closure(program, roots, *, limits=Limits()):
     return tuple(sources[key] for key in validated.source_order if key in selected_sources)
 
 
-def evaluate(program, request, *, limits=Limits()):
+def evaluate(program, request, *, limits=Limits(), validation_only=False):
+    """Evaluate all definitions, then optionally build the selected exports.
+
+    A host may need definition diagnostics before it can authorize any output.
+    Validation-only mode still evaluates every definition and Boolean topology;
+    it returns an explicit DefinitionValidation before export grids are built.
+    """
+    if type(validation_only) is not bool:
+        invalid("EVALUATION_MODE", "Validation-only mode must be an explicit boolean")
     validated = validate_program(program, limits=limits)
     if not isinstance(request, EvaluationRequest):
         invalid("EVALUATION_REQUEST", "Expected a typed evaluation request")
@@ -226,6 +241,9 @@ def evaluate(program, request, *, limits=Limits()):
             if error.status != "INCOMPLETE":
                 errors.append(contextual)
     raise_errors(errors)
+
+    if validation_only:
+        return DefinitionValidation(validated.order, program.snapshot_identity)
 
     selected = _selected(program, (root.node for root in request.roots))
     geometries_by_domain = {}

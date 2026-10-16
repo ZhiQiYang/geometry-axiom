@@ -249,27 +249,31 @@ class ModelingRuntime:
 
     def evaluate(self, definitions, request, *, capabilities=None, max_cells=200000, base_executable=None):
         compiled = self.compile(definitions, request, max_cells=max_cells, base_executable=base_executable)
-        errors = []
-        result = None
-        try:
-            result = kernel.evaluate(compiled.program, compiled.kernel_request, limits=compiled.limits)
-        except EvaluationError as error:
-            errors.append(compiled.error(error))
+        capability_errors = []
         if capabilities is None:
             capability_set = set(self.provider.capabilities)
         elif not isinstance(capabilities, (list, tuple, set, frozenset)) or any(type(item) is not str for item in capabilities):
-            errors.append(ModelError("UNSUPPORTED", "CAPABILITY", "I32", "capabilities must be a string collection"))
+            capability_errors.append(ModelError("UNSUPPORTED", "CAPABILITY", "I32", "capabilities must be a string collection"))
             capability_set = set()
         else:
             capability_set = set(capabilities)
             unknown = capability_set - set(self.provider.capabilities)
             if unknown:
-                errors.append(ModelError("UNSUPPORTED", "CAPABILITY", "I32", "Unknown capability: " + min(unknown)))
+                capability_errors.append(ModelError("UNSUPPORTED", "CAPABILITY", "I32", "Unknown capability: " + min(unknown)))
         required = {"model-export/1"} | {self.provider.kind_capability[key[0]] for key in compiled.records} | set(compiled.base.get("required_capabilities", []))
         missing_caps = sorted(required - capability_set)
         if missing_caps:
-            errors.append(ModelError("UNSUPPORTED", "CAPABILITY", "I32", "Required capabilities are unavailable: " + ", ".join(missing_caps), missing=missing_caps))
-        _raise_errors(errors)
+            capability_errors.append(ModelError("UNSUPPORTED", "CAPABILITY", "I32", "Required capabilities are unavailable: " + ", ".join(missing_caps), missing=missing_caps))
+        errors = []
+        result = None
+        try:
+            result = kernel.evaluate(compiled.program, compiled.kernel_request, limits=compiled.limits,
+                                     validation_only=bool(capability_errors))
+        except EvaluationError as error:
+            errors.append(compiled.error(error))
+        # Definition contradictions still precede capability diagnostics. Export
+        # incompleteness/capacity is considered only after capability admission.
+        _raise_errors([*errors, *capability_errors])
         objects, diagnostics = [], []
         for outcome in result.outcomes:
             if outcome.status == "INCOMPLETE":
