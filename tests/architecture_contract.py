@@ -447,7 +447,8 @@ def javascript_numeric_index(tokens):
 
     def operator():
         for value in (">>>", "<<", ">>", "**", "|", "^", "&", "+", "-", "*", "/", "%"):
-            if [token.value for token in tokens[position:position + len(value)]] == list(value):
+            parts = tokens[position:position + len(value)]
+            if all(token.kind == "punct" for token in parts) and [token.value for token in parts] == list(value):
                 return value
         return None
 
@@ -457,11 +458,11 @@ def javascript_numeric_index(tokens):
             return None
         token = tokens[position]
         position += 1
-        if token.value in {"+", "-", "~", "++", "--"}:
+        if token.kind == "punct" and token.value in {"+", "-", "~", "++", "--"}:
             return True if primary() is not None else None
-        if token.value == "(":
+        if token.kind == "punct" and token.value == "(":
             numeric = expression(0)
-            if position >= len(tokens) or tokens[position].value != ")":
+            if position >= len(tokens) or tokens[position].kind != "punct" or tokens[position].value != ")":
                 return None
             position += 1
         elif token.kind == "number":
@@ -470,7 +471,7 @@ def javascript_numeric_index(tokens):
             numeric = False
         else:
             return None
-        if position < len(tokens) and tokens[position].value in {"++", "--"}:
+        if position < len(tokens) and tokens[position].kind == "punct" and tokens[position].value in {"++", "--"}:
             position += 1
             numeric = True
         return numeric
@@ -493,6 +494,32 @@ def javascript_numeric_index(tokens):
 
     numeric = expression(0)
     return numeric is True and position == len(tokens)
+
+
+def javascript_property_key_locations(tokens):
+    """Locate member keys and explicit object/pattern/method property keys.
+
+    A bracket after an expression is a member access. At a brace field boundary,
+    a bracket closed immediately before ':' or '(' is an object/pattern/method
+    key instead. Neither case is an ordinary array literal or ternary value.
+    """
+    computed = {offset for offset, token in enumerate(tokens) if token.kind == "member_open"}
+    literal_keys, stack = set(), []
+    for offset, token in enumerate(tokens):
+        if token.kind in {"template_expression_start", "template_expression_end"}:
+            continue
+        before = tokens[offset - 1].value if offset else None
+        after = tokens[offset + 1].value if offset + 1 < len(tokens) else None
+        field_boundary = bool(stack) and stack[-1][0] == "{" and before in {"{", ","}
+        if token.kind == "string" and field_boundary and after in {":", "("}:
+            literal_keys.add(offset)
+        if token.kind in {"punct", "member_open"} and token.value in {"(", "[", "{"}:
+            stack.append((token.value, offset, token.value == "[" and field_boundary))
+        elif token.kind == "punct" and token.value in {")", "]", "}"} and stack:
+            opening, start, object_key = stack.pop()
+            if opening == "[" and object_key and after in {":", "("}:
+                computed.add(start)
+    return computed, literal_keys
 
 
 def lex(text, path, *, c=False, line_offset=0):
@@ -881,6 +908,11 @@ class Scanner:
         return found[0] if found else None
 
     def scan_c(self, path, text):
+        embedded_bom = text.find("\ufeff", 1)
+        require(embedded_bom == -1, "C_UNSUPPORTED_BOM", path,
+                text.count("\n", 0, embedded_bom) + 1 if embedded_bom != -1 else 1,
+                "only one initial UTF-8 BOM is supported; embedded BOM characters need explicit preprocessing support")
+        text = text.removeprefix("\ufeff")
         trigraph = re.search(r"\?\?[=/'()!<>-]", text)
         require(trigraph is None, "C_UNSUPPORTED_TRIGRAPH", path,
                 text.count("\n", 0, trigraph.start()) + 1 if trigraph else 1,
@@ -1137,17 +1169,18 @@ class Scanner:
 
     def scan_javascript(self, path, text, line_offset=0):
         _, _, tokens = lex(text, path, line_offset=line_offset)
+        computed_keys, literal_keys = javascript_property_key_locations(tokens)
         self.core_tokens(path, [(t.value, t.line) for t in tokens if t.kind == "identifier"],
                          [(t.value, t.line) for t in tokens if t.kind in {"string", "template"}])
         if self.entries[path]["layer"] != "H":
             for offset, token in enumerate(tokens):
-                if token.kind != "member_open":
+                if offset not in computed_keys:
                     continue
                 end, depth = offset + 1, 1
                 while end < len(tokens) and depth:
-                    if tokens[end].value == "[":
+                    if tokens[end].kind in {"punct", "member_open"} and tokens[end].value == "[":
                         depth += 1
-                    elif tokens[end].value == "]":
+                    elif tokens[end].kind == "punct" and tokens[end].value == "]":
                         depth -= 1
                     end += 1
                 key = tokens[offset + 1:end - 1]
@@ -1160,18 +1193,20 @@ class Scanner:
                 require(token.kind != "identifier" or token.value not in JS_DYNAMIC_NAMES,
                         "JS_DYNAMIC_IMPORT", path, token.line, f"dynamic/global JS entry point {token.value!r} in core")
                 require(not (token.kind in {"string", "template"} and token.value in {"require", "eval", "import", "Function"}
-                             and offset > 0 and tokens[offset - 1].kind == "member_open"),
+                             and (offset in literal_keys or (offset > 0 and offset - 1 in computed_keys))),
                         "JS_DYNAMIC_IMPORT", path, token.line, "computed access to a known JavaScript loader")
         if self.entries[path]["layer"] != "H":
             for offset, token in enumerate(tokens):
                 require(not (token.value in JS_REFLECTIVE_NAMES and
                              (token.kind == "identifier" or
-                              (token.kind in {"string", "template"} and offset > 0 and tokens[offset - 1].kind == "member_open"))),
+                              (token.kind in {"string", "template"} and
+                               (offset in literal_keys or (offset > 0 and offset - 1 in computed_keys))))),
                         "JS_REFLECTIVE_LOADER", path, token.line,
                         "reflective function construction/prototype access is outside the static dependency subset")
                 require(not (token.value in JS_HTML_WRITER_NAMES and
                              (token.kind == "identifier" or
-                              (token.kind in {"string", "template"} and offset > 0 and tokens[offset - 1].kind == "member_open"))),
+                              (token.kind in {"string", "template"} and
+                               (offset in literal_keys or (offset > 0 and offset - 1 in computed_keys))))),
                         "JS_HTML_WRITER_UNSUPPORTED", path, token.line,
                         "DOM string/attribute writers can create executable documents and are outside the non-host static subset")
         typescript = self.entries[path]["language"] == "typescript"
@@ -1272,6 +1307,8 @@ class Scanner:
                         "base href changes dependency resolution and is outside the static HTML subset")
                 require("srcdoc" not in values, "HTML_SRCDOC_UNSUPPORTED", path, line,
                         "srcdoc embeds a separately parsed executable document and is outside the static HTML subset")
+                require(tag not in {"iframe", "frame", "object", "embed"}, "HTML_EMBED_UNSUPPORTED", path, line,
+                        "embedded document/plugin elements require a separate source and execution context parser")
                 for key, value in attrs:
                     if key.startswith("on") and value:
                         scanner.scan_javascript(path, value, line - 1)

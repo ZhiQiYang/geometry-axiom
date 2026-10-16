@@ -109,6 +109,10 @@ selection, and loop bindings conservatively retain all possible imported alias
 provenance. Assigning `sys` provenance through an attribute/subscript target is
 explicitly unsupported. This is bounded syntax handling with a
 conservative alias union, not a proof of arbitrary Python dataflow.
+One initial UTF-8 BOM is removed for C lexical analysis, matching MSVC's UTF-8
+preprocessor behavior; the inventory still hashes the original bytes. A repeated
+or noninitial BOM is explicitly unsupported. Removing the encoding marker does
+not remove an include edge or change its physical line number.
 
 JavaScript executable identifiers currently use the ASCII subset. Non-ASCII
 executable tokens are rejected by name rather than guessed to be punctuation;
@@ -132,6 +136,11 @@ string keys are explicitly unsupported. Unknown keys produce
 `JS_COMPUTED_KEY_UNSUPPORTED`; they are not mislabeled as known reflection.
 H retains its documented host runtime boundary; this restriction does not
 claim to statically verify arbitrary host effects.
+The same property policy applies to quoted and computed object, destructuring,
+and method keys. `{"constructor": C}` and `{["constructor"]: C}` do not hide
+reflection behind a local alias; unsupported assembled keys are rejected.
+Ordinary object values, ternary display strings, and literal delimiter strings
+remain data and cannot alter the key parser's nesting.
 
 HTML `<base href>` is explicitly unsupported because it changes relative URL
 resolution, including URLs used by inline code. An exact script route does not
@@ -143,6 +152,10 @@ vendor JavaScript also rejects the known DOM writers `srcdoc`, `innerHTML`,
 `outerHTML`, `insertAdjacentHTML`, `setAttribute`, and `setAttributeNS`, including
 literal-computed member names. This deliberately includes attribute setters
 whose arguments could install `srcdoc`; display strings remain permitted.
+HTML `iframe`, `frame`, `object`, and `embed` elements are also explicitly
+unsupported, including empty H placeholders. Their `src`, `data`, plugin
+parameters, and separate document contexts are not silently treated as inert
+markup or approximated as ordinary JavaScript paths.
 
 The policy's exact forbidden identifiers and strings still need responsibility
 review against the actual template APIs and specification keys. Common neutral

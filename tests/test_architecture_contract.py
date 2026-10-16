@@ -1111,6 +1111,97 @@ class ArchitectureContract(unittest.TestCase):
         self.put("src/core.js", "const labels=['srcdoc','innerHTML','setAttribute']; // frame.srcdoc\n")
         self.green()
 
+    def test_c_initial_utf8_bom_cannot_hide_template_include(self):
+        self.put("src/core.c", '\ufeff#include "w.h"\n')
+        self.put("src/w.h", "int policy;\n", "W")
+        self.rejects("LAYER_DIRECTION", path="src/core.c", line=1)
+
+    def test_c_initial_utf8_bom_preserves_neutral_dependency(self):
+        self.put("src/core.c", '\ufeff#include "neutral.h"\n')
+        self.put("src/neutral.h", "int neutral;\n")
+        self.assertEqual([(edge.target, edge.line) for edge in self.green().edges], [("src/neutral.h", 1)])
+
+    def test_c_noninitial_bom_fails_closed(self):
+        self.put("src/core.c", '/* source */\n\ufeff#include "w.h"\n')
+        self.put("src/w.h", "int policy;\n", "W")
+        self.rejects("C_UNSUPPORTED_BOM", line=2)
+
+    def test_c_multiple_initial_boms_fail_closed(self):
+        self.put("src/core.c", '\ufeff\ufeff#include "w.h"\n')
+        self.put("src/w.h", "int policy;\n", "W")
+        self.rejects("C_UNSUPPORTED_BOM", line=1)
+
+    def test_html_iframe_source_document_fails_closed(self):
+        self.put("src/core.html", '<iframe src="w/page.html"></iframe>')
+        self.put("src/w/page.html", "<script>const domain = 1;</script>", "W")
+        self.rejects("HTML_EMBED_UNSUPPORTED")
+
+    def test_html_object_data_document_fails_closed(self):
+        self.put("src/core.html", '<object data="w/page.html"></object>')
+        self.put("src/w/page.html", "<script>const domain = 1;</script>", "W")
+        self.rejects("HTML_EMBED_UNSUPPORTED")
+
+    def test_html_embed_source_document_fails_closed(self):
+        self.put("src/core.html", '<embed src="w/page.html">')
+        self.put("src/w/page.html", "<script>const domain = 1;</script>", "W")
+        self.rejects("HTML_EMBED_UNSUPPORTED")
+
+    def test_html_legacy_frame_source_fails_closed(self):
+        self.put("src/core.html", '<frameset><frame src="w/page.html"></frameset>')
+        self.put("src/w/page.html", "<script>const domain = 1;</script>", "W")
+        self.rejects("HTML_EMBED_UNSUPPORTED")
+
+    def test_html_empty_host_embed_still_requires_context_parser(self):
+        self.put("src/host.html", '<iframe></iframe>', "H")
+        self.rejects("HTML_EMBED_UNSUPPORTED")
+
+    def test_html_embed_words_in_ordinary_display_attributes_are_not_tags(self):
+        self.put("src/page.html", '<div data-kind="iframe">object embed frame</div>')
+        self.green()
+
+    def test_javascript_string_constructor_destructuring_fails_closed(self):
+        self.put("src/core.js", 'const {"constructor": C} = (()=>{}); C(\'return import("./w.js")\')();')
+        self.put("src/w.js", "export const value = 1;", "W")
+        self.rejects("JS_REFLECTIVE_LOADER")
+
+    def test_javascript_computed_constructor_destructuring_fails_closed(self):
+        self.put("src/core.js", 'const {["constructor"]: C} = (()=>{}); C(\'return import("./w.js")\')();')
+        self.put("src/w.js", "export const value = 1;", "W")
+        self.rejects("JS_REFLECTIVE_LOADER")
+
+    def test_javascript_constructed_destructuring_key_fails_closed(self):
+        self.put("src/core.js", 'const {["con"+"structor"]: C} = (()=>{}); C(\'return import("./w.js")\')();')
+        self.put("src/w.js", "export const value = 1;", "W")
+        self.rejects("JS_COMPUTED_KEY_UNSUPPORTED")
+
+    def test_javascript_variable_destructuring_key_is_not_assumed_neutral(self):
+        self.put("src/core.js", 'const key="constructor"; const {[key]: C} = (()=>{}); C("return 1")();')
+        self.rejects("JS_COMPUTED_KEY_UNSUPPORTED")
+
+    def test_javascript_quoted_reflective_method_key_fails_closed(self):
+        self.put("src/core.js", 'const object = {"constructor"() {return 1;}};')
+        self.rejects("JS_REFLECTIVE_LOADER")
+
+    def test_javascript_srcdoc_quoted_pattern_key_fails_closed(self):
+        self.put("src/core.js", 'const {"srcdoc": content} = frame;', "W")
+        self.rejects("JS_HTML_WRITER_UNSUPPORTED")
+
+    def test_javascript_neutral_object_and_pattern_keys_remain_supported(self):
+        self.put("src/core.js", 'const object={"width": 1, value:"constructor"}; '
+                 'const {"width": width} = object; const {[(1+2)]: number} = object; '
+                 'const label = condition ? "constructor" : "srcdoc";')
+        self.green()
+
+    def test_javascript_literal_delimiters_do_not_change_key_nesting(self):
+        self.put("src/core.js", 'const markers={"[":1, "]":2}; const a=markers["["]; '
+                 'const b=markers["]"]; const display="{"; const template=`}`; '
+                 'const labels=condition ? ["constructor"] : ["srcdoc"];')
+        self.green()
+
+    def test_javascript_operator_strings_are_not_numeric_coercion(self):
+        self.put("src/core.js", 'const key="constructor"; const value=object["+" + key];')
+        self.rejects("JS_COMPUTED_KEY_UNSUPPORTED")
+
     def test_manifest_order_does_not_change_diagnostics_or_graph(self):
         self.put("src/k/core.c", '#include "../w/policy.h"\n')
         self.put("src/w/policy.h", '#include "../h/host.h"\n', "W")
