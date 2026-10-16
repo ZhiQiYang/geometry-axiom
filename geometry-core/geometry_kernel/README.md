@@ -35,8 +35,8 @@ runtime source and adapter identities. The woodworking provider contributes
 admission policy and typed profile objects rather than geometry algorithms.
 
 The source snapshot in this slice is translated from the existing native
-snapshot. Complete same-candidate native source DTOs, adapter execution pinning
-and native replay evidence remain subsequent work. These Python tests do not
+snapshot. The host now pins adapter execution inputs; complete same-candidate
+native source DTOs and native replay evidence remain subsequent work. These Python tests do not
 establish the final domain-decoupling gate.
 
 Lightweight validation (no native compiler or binary):

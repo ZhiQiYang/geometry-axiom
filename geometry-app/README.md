@@ -19,6 +19,15 @@ snapshot before loading host runtime/provider modules. `ModelWorld` uses the
 same `CandidateCell` as the neutral `ProgramSession`, and additionally pins the
 loaded/current source inventory and actual selected native binary bytes.
 
+`model_native` owns compiler invocation, temporary scene files, native transport
+and protocol validation. The compatibility facade passes its historical build
+callback explicitly. Compiler cache entries bind the recursive project include
+closure, command, compiler bytes and environment, and reuse also verifies the
+actual output bytes. Scene execution checks loaded/current sources and binary
+bytes before and after the call. Source capability admission comes from the
+explicit woodworking provider. The native-host tests use real temporary file
+bytes with a mocked process boundary and include five removed-guard controls.
+
 The PY2 checkpoint has intentionally incomplete native source separation:
 native-evaluated specification values are translated to typed source descriptors,
 but the complete same-candidate source graph DTO is still required from the
