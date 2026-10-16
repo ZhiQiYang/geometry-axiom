@@ -97,10 +97,7 @@ def solid_geometry(solid, source):
 
 
 def prefix(geometry, path=(), cut=False):
-    if not path and not cut:
-        return geometry
-    return replace(geometry, faces=tuple(replace(face, sources=tuple(
-        source.prefixed(path, contribution="cut" if cut else None) for source in face.sources)) for face in geometry.faces))
+    return kernel.prefix_geometry(geometry, path, "cut" if cut else None)
 
 
 @_adapt
