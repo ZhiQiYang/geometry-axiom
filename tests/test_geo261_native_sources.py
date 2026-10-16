@@ -25,7 +25,7 @@ class NativeSources(unittest.TestCase):
     def test_units_and_global_or_placed_axes_are_checked(self):self.assertEqual(0,self.case('types'))
     def test_recursive_node_growth_keeps_provider_and_node_lifetimes(self):self.assertEqual(0,self.case('growth'))
     def test_product_member_cycle_retains_all_ordered_diagnostics_and_soft_edges(self):
-        build=native();client=build.compile(ROOT/'tests/geo261_source_product_harness.c','sources-product-client',['GEOMETRY_KERNEL_EXTERNAL=1','GEOMETRY_WOODWORKING_EXTERNAL=1'])
+        build=native();client=build.compile(ROOT/'tests/geo261_source_product_harness.c','sources-product-client',['GEOMETRY_KERNEL_EXTERNAL=1','GEOMETRY_WOODWORKING_EXTERNAL=1','GEOMETRY_HOST_HISTORY_EXTERNAL=1'])
         exe=build.link('sources-product-client',[client,*build.product_objects()])
         run=subprocess.run([str(exe)],capture_output=True,text=True,timeout=15)
         self.assertEqual(0,run.returncode,'product source graph failure: '+run.stderr)
@@ -46,11 +46,15 @@ class NativeSources(unittest.TestCase):
             self.assertEqual(before,session.command('dump')['text'])
     def test_cached_value_negative_control_changes_kernel_and_real_product(self):
         build=native();self.assertEqual(0,self.case('position'))
-        with _bridge.BridgeSession(build.bridge()) as session:self.load(session);self.assertEqual(100,session.command('references')['guides'][0]['off'])
+        # An edge coordinate is a typed axis-position input consumed by the
+        # guide expression. The guide's own published output is observational;
+        # publishing it must not write back into the K-owned guide cache.
+        scene='surface 1 origin 0 0 0 u +x v +y outline 0,0 1000,0 1000,1000 0,1000\nguide 1 1 v edge:e1:u\n'
+        with _bridge.BridgeSession(build.bridge()) as session:self.load(session,scene);self.assertEqual(1000,session.command('references')['guides'][0]['off'])
         before='node->value=value;node->state=GEO_NODE_VALID;node->status=GEO_SOURCE_OK;'
         after=before+'if(node->value.kind==GEO_SOURCE_AXIS_POSITION)++node->value.as.position.coordinate;'
         client,bridge=build.mutant('source',before,after,self.client)
         self.assertEqual(1,self.case('position',client))
-        with _bridge.BridgeSession(bridge) as session:self.load(session);self.assertEqual(101,session.command('references')['guides'][0]['off'])
+        with _bridge.BridgeSession(bridge) as session:self.load(session,scene);self.assertEqual(1001,session.command('references')['guides'][0]['off'])
         self.assertEqual(0,self.case('position'))
 if __name__=='__main__':unittest.main(verbosity=2)

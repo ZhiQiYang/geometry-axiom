@@ -30,10 +30,10 @@ static void test_frame_updates(void)
     CHECK(reference_default_world(&test_world)); history_clear();
     CHECK(!command("move 1 1/2*edge:e1:u"));
     CHECK(g_preview.ready && g_preview.valid);
-    CHECK(test_world.guides[0].offset == 500);
+    CHECK(geo_guides_at(&test_world.guide_lines,0)->offset == 500);
     char text[64]; snprintf(text,sizeof text,"confirm %u",g_preview.token);
     CHECK(command(text));
-    CHECK(test_world.guides[0].offset == 2000);
+    CHECK(geo_guides_at(&test_world.guide_lines,0)->offset == 2000);
     CHECK(!command("placement 1 on boundary 1 origin 0 0 3000 u +x v +y"));
     CHECK(g_preview.valid); snprintf(text,sizeof text,"confirm %u",g_preview.token);
     CHECK(command(text)); CHECK(test_world.timbers[2].origin.z == 3000);

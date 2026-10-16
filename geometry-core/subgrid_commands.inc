@@ -78,14 +78,14 @@ static bool apply_subgrid_line(const char *path,int line_no,char **t,int count,W
     return true;
 }
 
-static bool grid_guide_references(const GuideLine *guide,uint32_t id)
+static bool grid_guide_references(const World *world,const GuideLine *guide,uint32_t id)
 {
     char rule_key[48];snprintf(rule_key,sizeof rule_key,"gridrule:%u:",id);
-    if(strstr(guide->expression,rule_key))return true;
+    if(strstr(app_guide_expression(world,guide->id),rule_key))return true;
     char key[40]; snprintf(key,sizeof key,"grid:%u:",id);
-    const char *at=guide->expression;
+    const char *at=app_guide_expression(world,guide->id);
     while ((at=strstr(at,key))!=NULL) {
-        if (at==guide->expression || at[-1]=='+' || at[-1]=='-' || at[-1]=='*') return true;
+        if (at==app_guide_expression(world,guide->id) || at[-1]=='+' || at[-1]=='-' || at[-1]=='*') return true;
         ++at;
     }
     return false;

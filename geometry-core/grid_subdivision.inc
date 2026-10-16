@@ -4,10 +4,7 @@ static bool g_rule_scene_required;
 static bool g_rule_scene_encountered;
 
 static const GridSubdivisionRule *grid_rule_find(const GridSystem *s,uint32_t key)
-{
-    if(s)for(size_t i=0;i<s->rule_count;++i)if(s->rules[i].key==key)return &s->rules[i];
-    return NULL;
-}
+{ return geo_grid_rule_find(s,key); }
 static bool grid_rule_error(char *err,size_t cap,const char *code,uint32_t sid,uint32_t key)
 {
     if(err)snprintf(err,cap,"I25a: %s source %u rule %u",code,sid,key);
@@ -15,35 +12,23 @@ static bool grid_rule_error(char *err,size_t cap,const char *code,uint32_t sid,u
 }
 static bool grid_rules_valid(const GridSystem *s,char *err,size_t cap)
 {
-    if(s->rule_count>GRID_MAX_SUBDIVISION_RULES)return grid_rule_error(err,cap,"RULE_CAPACITY",s->id,0);
-    if(!s->rule_count)return true;
-    for(int a=0;a<2;++a)if(s->axis[a].source!=GRID_SRC_REPEAT || s->axis[a].stagger_set)
-        return grid_rule_error(err,cap,"SOURCE_KIND",s->id,0);
-    for(size_t i=0;i<s->rule_count;++i){
-        const GridSubdivisionRule *r=&s->rules[i];
-        if(!r->key || (s->next_rule_key && r->key>=s->next_rule_key))
-            return grid_rule_error(err,cap,"RULE_KEY",s->id,r->key);
-        size_t n=strlen(r->name);
-        if(!grid_system_name_valid((const unsigned char*)r->name,n))return grid_rule_error(err,cap,"RULE_NAME",s->id,r->key);
-        if(r->divisions[0]<1 || r->divisions[1]<1 || r->divisions[0]>65 || r->divisions[1]>65 ||
-            (r->divisions[0]==1 && r->divisions[1]==1))return grid_rule_error(err,cap,"DIVISION_RANGE",s->id,r->key);
-        for(int a=0;a<2;++a)if(grid_axis_pitch(&s->axis[a])%r->divisions[a])
-            return grid_rule_error(err,cap,"DIVISION_NOT_EXACT",s->id,r->key);
-        if(!r->all_cells && (r->cell[0]==INT64_MAX || r->cell[1]==INT64_MAX))
-            return grid_rule_error(err,cap,"CELL_RANGE",s->id,r->key);
-        for(size_t j=0;j<i;++j){
-            const GridSubdivisionRule *q=&s->rules[j];
-            if(q->key==r->key)return grid_rule_error(err,cap,"RULE_KEY",s->id,r->key);
-            if(q->all_cells || r->all_cells || (q->cell[0]==r->cell[0] && q->cell[1]==r->cell[1])){
-                if(err)snprintf(err,cap,"I25a: RULE_OVERLAP source %u rules %u/%u",s->id,q->key,r->key);
-                return false;
-            }
-        }
+    GeoGridStoreError detail;if(geo_grid_rules_validate(s,&detail))return true;
+    const char *code="RULE_KEY";
+    switch(detail.status){
+    case GEO_GRID_STORE_RULE_CAPACITY:code="RULE_CAPACITY";break;
+    case GEO_GRID_STORE_RULE_SOURCE:code="SOURCE_KIND";break;
+    case GEO_GRID_STORE_RULE_NAME:code="RULE_NAME";break;
+    case GEO_GRID_STORE_RULE_DIVISIONS:code="DIVISION_RANGE";break;
+    case GEO_GRID_STORE_RULE_NOT_DIVISIBLE:code="DIVISION_NOT_EXACT";break;
+    case GEO_GRID_STORE_RULE_CELL_RANGE:code="CELL_RANGE";break;
+    case GEO_GRID_STORE_RULE_OVERLAP:
+        if(err)snprintf(err,cap,"I25a: RULE_OVERLAP source %u rules %u/%u",s->id,detail.other_rule_key,detail.rule_key);return false;
+    default:break;
     }
-    return true;
+    return grid_rule_error(err,cap,code,s->id,detail.rule_key);
 }
 static bool grid_rule_matches(const GridSubdivisionRule *r,const int64_t cell[2])
-{return r->all_cells || (r->cell[0]==cell[0] && r->cell[1]==cell[1]);}
+{ return geo_grid_rule_matches(r,cell); }
 
 static bool grid_rule_ref_text(const char *text,GridRuleLineRef *r)
 {
@@ -72,7 +57,7 @@ static bool grid_rule_expression_uses(const char *expression,uint32_t sid,uint32
 }
 static bool grid_rule_used(const World *w,uint32_t sid,uint32_t key)
 {
-    for(size_t i=0;i<w->guide_count;++i)if(grid_rule_expression_uses(w->guides[i].expression,sid,key))return true;
+    for(size_t i=0;i<geo_guides_count(&w->guide_lines);++i)if(grid_rule_expression_uses(app_guide_expression(w,geo_guides_values(&w->guide_lines)[i].id),sid,key))return true;
     for(size_t i=0;i<w->timber_count;++i){const TimberAnchor *a=&w->anchors[i];
         if(w->timbers[i].placed && a->anchor_kind==ANCHOR_AT_RULE && a->ref_rule.system_id==sid && a->ref_rule.rule_key==key)return true;
     }
@@ -80,8 +65,8 @@ static bool grid_rule_used(const World *w,uint32_t sid,uint32_t key)
 }
 static bool grid_rules_world_valid(const World *w,char *err,size_t cap)
 {
-    if(g_subgrid_before)for(size_t i=0;i<g_subgrid_before->grid_system_count;++i){
-        const GridSystem *old=&g_subgrid_before->grid_systems[i],*now=world_find_grid_system(w,old->id);
+    if(g_subgrid_before)for(size_t i=0;i<geo_grid_systems_count(&g_subgrid_before->grid_store);++i){
+        const GridSystem *old=geo_grid_systems_at(&g_subgrid_before->grid_store,i),*now=world_find_grid_system(w,old->id);
         for(size_t j=0;j<old->rule_count;++j){const GridSubdivisionRule *r=&old->rules[j],*q=grid_rule_find(now,r->key);
             if(grid_rule_used(g_subgrid_before,old->id,r->key) && (!q || q->all_cells!=r->all_cells ||
                 memcmp(q->cell,r->cell,sizeof r->cell) || memcmp(q->divisions,r->divisions,sizeof r->divisions)))
@@ -168,7 +153,7 @@ static bool apply_grid_source_rule(const char *path,int line_no,char **t,int cou
     }else goto invalid;
     const GridSubdivisionRule *existing=grid_rule_find(old,key);
     if((remove || (!create && !g_parsing_scene_file)) && !existing){scene_error(path,line_no,"I25a: RULE_MISSING");return false;}
-    size_t source_slot=(size_t)(old-w->grid_systems);
+    size_t source_slot=(size_t)(old-geo_grid_systems_values(&w->grid_store));
     if(g_parsing_scene_file && g_rule_scene_highwater[source_slot]){scene_error(path,line_no,"I25a: HIGHWATER must follow all rule declarations");return false;}
     if(g_parsing_scene_file && existing){scene_error(path,line_no,"I25a: duplicate RULE_KEY");return false;}
     if(remove){if(count!=4 || g_parsing_scene_file)goto invalid;}
@@ -187,8 +172,7 @@ static bool apply_grid_source_rule(const char *path,int line_no,char **t,int cou
         memcmp(r.cell,existing->cell,sizeof r.cell) || memcmp(r.divisions,existing->divisions,sizeof r.divisions))){
         grid_rule_error(err,sizeof err,"RULE_REFERENCED",sid,key);scene_error(path,line_no,err);return false;
     }
-    World candidate=*w;GridSystem *s=NULL;
-    for(size_t i=0;i<candidate.grid_system_count;++i)if(candidate.grid_systems[i].id==sid)s=&candidate.grid_systems[i];
+    World candidate=*w;GridSystem definition=*old,*s=&definition;
     size_t slot=0;while(slot<s->rule_count && s->rules[slot].key!=key)++slot;
     if(remove){memmove(s->rules+slot,s->rules+slot+1,(s->rule_count-slot-1)*sizeof r);memset(&s->rules[--s->rule_count],0,sizeof r);}
     else{
@@ -196,6 +180,7 @@ static bool apply_grid_source_rule(const char *path,int line_no,char **t,int cou
         s->rules[slot]=r;
         if(create || (g_parsing_scene_file && s->next_rule_key && key>=s->next_rule_key))s->next_rule_key=key==UINT32_MAX?0:key+1;
     }
+    if(!app_grid_system_put(&candidate,s,app_grid_system_main_along(w,sid)))goto invalid;
     reference_capture_trial(&candidate);
     if(!world_revalidate(&candidate)){scene_error(path,line_no,g_revalidate_error);return false;}
     *w=candidate;return true;
@@ -209,16 +194,18 @@ static bool apply_grid_source_rule_highwater(const char *path,int line_no,char *
     if(!g_parsing_scene_file || count!=4 || !parse_u32(t[1],&sid) || strcmp(t[2],"next") ||
         (strcmp(t[3],"exhausted") && (!parse_u32(t[3],&next) || !next))){scene_error(path,line_no,"I25a: HIGHWATER replay-only declaration");return false;}
     if(!strcmp(t[3],"exhausted"))next=0;
-    size_t slot=0;while(slot<w->grid_system_count && w->grid_systems[slot].id!=sid)++slot;
-    if(slot==w->grid_system_count || g_rule_scene_highwater[slot] ||
-        (!w->grid_systems[slot].next_rule_key && next) ||
-        (next && next<w->grid_systems[slot].next_rule_key)){scene_error(path,line_no,"I25a: invalid HIGHWATER closure");return false;}
-    w->grid_systems[slot].next_rule_key=next;g_rule_scene_highwater[slot]=true;return true;
+    size_t slot=0;while(slot<geo_grid_systems_count(&w->grid_store) && (*geo_grid_systems_at(&w->grid_store,slot)).id!=sid)++slot;
+    if(slot==geo_grid_systems_count(&w->grid_store) || g_rule_scene_highwater[slot] ||
+        (!(*geo_grid_systems_at(&w->grid_store,slot)).next_rule_key && next) ||
+        (next && next<(*geo_grid_systems_at(&w->grid_store,slot)).next_rule_key)){scene_error(path,line_no,"I25a: invalid HIGHWATER closure");return false;}
+    GridSystem definition=*geo_grid_systems_at(&w->grid_store,slot);definition.next_rule_key=next;
+    if(!app_grid_system_put(w,&definition,app_grid_system_main_along(w,sid)))return false;
+    g_rule_scene_highwater[slot]=true;return true;
 }
 static bool grid_subdivision_used(const World *w)
 {
-    for(size_t i=0;i<w->grid_system_count;++i)if(w->grid_systems[i].rule_count || w->grid_systems[i].next_rule_key!=1)return true;
-    for(size_t i=0;i<w->guide_count;++i)if(strstr(w->guides[i].expression,"gridrule:"))return true;
+    for(size_t i=0;i<geo_grid_systems_count(&w->grid_store);++i)if((*geo_grid_systems_at(&w->grid_store,i)).rule_count || (*geo_grid_systems_at(&w->grid_store,i)).next_rule_key!=1)return true;
+    for(size_t i=0;i<geo_guides_count(&w->guide_lines);++i)if(strstr(app_guide_expression(w,geo_guides_values(&w->guide_lines)[i].id),"gridrule:"))return true;
     for(size_t i=0;i<w->timber_count;++i)if(w->timbers[i].placed && w->anchors[i].anchor_kind==ANCHOR_AT_RULE)return true;
     return false;
 }
@@ -227,7 +214,7 @@ static bool grid_rules_scene_integrity(const World *w)
     if(g_rule_scene_encountered && !g_rule_scene_required)return false;
     if(!grid_subdivision_used(w))return true;
     if(!g_rule_scene_required)return false;
-    for(size_t i=0;i<w->grid_system_count;++i)if((w->grid_systems[i].rule_count || w->grid_systems[i].next_rule_key!=1) && !g_rule_scene_highwater[i])return false;
+    for(size_t i=0;i<geo_grid_systems_count(&w->grid_store);++i)if(((*geo_grid_systems_at(&w->grid_store,i)).rule_count || (*geo_grid_systems_at(&w->grid_store,i)).next_rule_key!=1) && !g_rule_scene_highwater[i])return false;
     return true;
 }
 static void grid_rules_dump(const GridSystem *s,FILE *out)

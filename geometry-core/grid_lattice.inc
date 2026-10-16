@@ -6,13 +6,13 @@ static int64_t grid_floor_div(int64_t a,int64_t b)
 static int64_t grid_ceil_div(int64_t a,int64_t b)
 { return geo_ceil_div(a,b); }
 static bool grid_axis_is_infinite(const GridAxisDef *a)
-{ return a->source==GRID_SRC_REPEAT || a->source==GRID_SRC_REPEAT_PANEL; }
+{ return geo_grid_axis_is_infinite(a); }
 static bool grid_system_is_infinite(const GridSystem *s)
-{ return grid_axis_is_infinite(&s->axis[0]) || grid_axis_is_infinite(&s->axis[1]); }
+{ return geo_grid_system_is_infinite(s); }
 static Coord grid_axis_pitch(const GridAxisDef *a)
-{ return a->source==GRID_SRC_REPEAT?a->step:panel_layout_pitch(a->panel,a->gap); }
+{ return geo_grid_axis_pitch(a); }
 static Coord grid_axis_phase(const GridAxisDef *a)
-{ return a->source==GRID_SRC_REPEAT?a->start:panel_layout_center(a->anchor,a->panel,a->gap,0); }
+{ return geo_grid_axis_phase(a); }
 
 static bool grid_lattice_coord(const ReferenceGrid *g,int axis,int64_t k,Coord *out)
 {

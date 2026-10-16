@@ -7,6 +7,9 @@
 typedef struct { uint32_t id; int axis; char expression[REF_EXPR_MAX]; } AppDatumInput;
 /* Original host wire text is distinct from K's typed linear definition. */
 typedef struct { uint32_t id; char expression[REF_EXPR_MAX]; } AppDatumText;
-typedef enum { GUIDE_LOCAL = 0, GUIDE_DATUM = 1 } GuideSource;
+typedef GeoGuideSource GuideSource;
+#define GUIDE_LOCAL GEO_GUIDE_LOCAL
+#define GUIDE_DATUM GEO_GUIDE_DATUM
+typedef struct { uint32_t id; char expression[REF_EXPR_MAX]; } AppGuideText;
 typedef GeoNamedValue SpecValue;
 typedef struct { int kind, hole, edge; TimberId timber; char key[512]; } ReferenceFace;

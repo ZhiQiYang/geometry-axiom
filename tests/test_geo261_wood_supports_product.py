@@ -32,7 +32,7 @@ class WoodSupportsProduct(unittest.TestCase):
         path=build.woodworking/('supports-product-'+name+'.c');path.write_text(source.replace(before,after),encoding='utf-8')
         changed=build.compile(path,'supports-product-'+name);build.bridge()
         client=build.link('supports-product-'+name+'-client',[self.client,self.frozen,changed])
-        bridge=build.link('supports-product-'+name+'-bridge',[build.bridge_object,*build.kernel_objects(),build.wood_members_object,changed,build.wood_contacts_object])
+        bridge=build.link('supports-product-'+name+'-bridge',[build.bridge_object,*[changed if obj==build.wood_supports_object else obj for obj in build.product_objects()]])
         return client,bridge
 
     def load(self,exe,text):
@@ -55,7 +55,10 @@ class WoodSupportsProduct(unittest.TestCase):
         scene=(ROOT/'_test_between.scene').read_text(encoding='utf-8')
         self.assertEqual(0,self.case('references'));loaded,objects=self.load(native().bridge(),scene);self.assertTrue(loaded['ok'],loaded)
         self.assertEqual(1960,next(timber for timber in objects['_references']['timbers'] if timber['id']==2)['geometry']['length'])
-        client,bridge=self.mutant('identity','f->timber_id == r->timber','f->timber_id != r->timber')
+        # Negating equality only swaps this fixture's two named endpoints;
+        # between is insensitive to their declaration order. Removing member
+        # identity matches must instead remove both legal named supports.
+        client,bridge=self.mutant('identity','f->timber_id == r->timber','false')
         self.assertEqual(1,self.case('references',client));loaded,_=self.load(bridge,scene);self.assertFalse(loaded['ok'],loaded)
         self.assertTrue(self.load(native().bridge(),scene)[0]['ok'])
 

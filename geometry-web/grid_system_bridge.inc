@@ -18,7 +18,7 @@ static void json_grid_axis_definition(const GridAxisDef *d,bool subgrid,unsigned
         if (d->stagger_set) printf(",\"stagger\":%lld",(long long)d->stagger);
     } else if (d->source==GRID_SRC_PANEL || d->source==GRID_SRC_REPEAT_PANEL) {
         printf(",\"panel\":%lld,\"gap\":%lld,\"anchor\":%lld,\"anchorExplicit\":%s",
-            (long long)d->panel,(long long)d->gap,(long long)d->anchor,
+            (long long)d->body,(long long)d->gap,(long long)d->anchor,
             d->anchor_explicit?"true":"false");
         if (d->stagger_set) printf(",\"stagger\":%lld",(long long)d->stagger);
     }
@@ -33,8 +33,8 @@ static void json_grid_system(const World *w,const GridSystem *system)
     js_string(system->name);
     printf(",\"mode\":\"%s\"",grid_system_is_infinite(system)?"infinite":"legacy-finite");
     fputs(",\"mainAlong\":",stdout);
-    if (system->main_along==1) fputs("\"u\"",stdout);
-    else if (system->main_along==2) fputs("\"v\"",stdout);
+    if (app_grid_system_main_along(w,system->id)==1) fputs("\"u\"",stdout);
+    else if (app_grid_system_main_along(w,system->id)==2) fputs("\"v\"",stdout);
     else fputs("null",stdout);
     for (int axis=0;axis<2;++axis) {
         printf(",\"%cDefinition\":",axis?'v':'u');
@@ -57,9 +57,9 @@ static void json_grid_system(const World *w,const GridSystem *system)
         first=false;
     }
     fputs("],\"bindings\":[",stdout); first=true;
-    for (size_t i=0;i<w->grid_binding_count;++i) {
-        if (w->grid_bindings[i].system_id!=system->id) continue;
-        printf("%s%u",first?"":",",w->grid_bindings[i].id); first=false;
+    for (size_t i=0;i<geo_grid_bindings_count(&w->grid_store);++i) {
+        if ((*geo_grid_bindings_at(&w->grid_store,i)).system_id!=system->id) continue;
+        printf("%s%u",first?"":",",(*geo_grid_bindings_at(&w->grid_store,i)).id); first=false;
     }
     fputs("],",stdout);
     const CanvasPos *pos=NULL;
@@ -75,8 +75,8 @@ static void json_grid_system(const World *w,const GridSystem *system)
 static void json_grid_system_preview(void)
 {
     fputs(",\"gridSystems\":[",stdout); bool first=true;
-    for (size_t i=0;i<g_preview.before.grid_system_count;++i) {
-        const GridSystem *before=&g_preview.before.grid_systems[i];
+    for (size_t i=0;i<geo_grid_systems_count(&g_preview.before.grid_store);++i) {
+        const GridSystem *before=geo_grid_systems_at(&g_preview.before.grid_store,i);
         const GridSystem *after=world_find_grid_system(&g_preview.after,before->id);
         printf("%s{\"id\":%u,\"before\":",first?"":",",before->id); first=false;
         json_grid_system(&g_preview.before,before);
@@ -84,8 +84,8 @@ static void json_grid_system_preview(void)
         if (after) json_grid_system(&g_preview.after,after); else fputs("null",stdout);
         putchar('}');
     }
-    for (size_t i=0;i<g_preview.after.grid_system_count;++i) {
-        const GridSystem *after=&g_preview.after.grid_systems[i];
+    for (size_t i=0;i<geo_grid_systems_count(&g_preview.after.grid_store);++i) {
+        const GridSystem *after=geo_grid_systems_at(&g_preview.after.grid_store,i);
         if (world_find_grid_system(&g_preview.before,after->id)) continue;
         printf("%s{\"id\":%u,\"before\":null,\"after\":",first?"":",",after->id); first=false;
         json_grid_system(&g_preview.after,after); putchar('}');

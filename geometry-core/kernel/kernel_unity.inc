@@ -6,6 +6,7 @@
 #include "codec.h"
 #include "exact.h"
 #include "geometry.h"
+#include "clip.h"
 #include "grid.h"
 #include "parameters.h"
 #include "linear.h"
@@ -13,10 +14,13 @@
 #include "datums.h"
 #include "source.h"
 #include "regions.h"
+#include "guides.h"
+#include "grid_store.h"
 #else
 #include "codec.c"
 #include "exact.c"
 #include "geometry.c"
+#include "clip.c"
 #include "grid.c"
 #include "parameters.c"
 #include "linear.c"
@@ -24,5 +28,7 @@
 #include "datums.c"
 #include "source.c"
 #include "regions.c"
+#include "guides.c"
+#include "grid_store.c"
 #endif
 #endif

@@ -7,4 +7,6 @@
 #include "../../geometry-core/kernel/internal/named_values.h"
 #include "../../geometry-core/kernel/internal/datums.h"
 #include "../../geometry-core/kernel/internal/regions.h"
+#include "../../geometry-core/kernel/internal/guides.h"
+#include "../../geometry-core/kernel/internal/grid_store.h"
 #endif

@@ -171,13 +171,13 @@ static bool feed_line(const char *path, int line_no, const char *text, World *wo
     char line[SCENE_MAX_LINE];
     if (strlen(text) > sizeof line - 2) {
         scene_error(path, line_no, "指令超過 DSL 單行上限");
-        if (g_hist_grouping) history_group_rollback(world);
+        if (g_history.grouping) history_group_rollback(world);
         return false;
     }
     if (!utf8_is_valid(text)) {           /* 與 parse_scene_file 同一道閘門(GEO-174) */
         scene_error(path, line_no,
                     "這一行含無效的 UTF-8 位元組（場景 DSL 是 UTF-8 文字）");
-        if (g_hist_grouping) history_group_rollback(world);
+        if (g_history.grouping) history_group_rollback(world);
         return false;
     }
     snprintf(line, sizeof line, "%s", text);
@@ -189,7 +189,7 @@ static bool feed_line(const char *path, int line_no, const char *text, World *wo
     int count = split_tokens(line, tokens, SCENE_MAX_TOKENS);
     if (count < 0) {
         scene_error(path, line_no, "這一行的欄位太多");
-        if (g_hist_grouping) history_group_rollback(world);
+        if (g_history.grouping) history_group_rollback(world);
         return false;
     }
     if (count == 0) return true;   /* 空行／純註解：不算錯 */
@@ -280,10 +280,10 @@ static void cmd_pick(int v, Coord x, Coord y, Coord r)
 
 static void cmd_drag(int guide_idx, int v, Coord x, Coord y)
 {
-    if (guide_idx<0 || guide_idx>=(int)g_world.guide_count || v<0 || v>=VIEW_COUNT) {
+    if (guide_idx<0 || guide_idx>=(int)geo_guides_count(&g_world.guide_lines) || v<0 || v>=VIEW_COUNT) {
         fputs("{\"ok\":false}\n",stdout); return;
     }
-    GuideLine *g=&g_world.guides[guide_idx];
+    const GuideLine *g=&geo_guides_values(&g_world.guide_lines)[guide_idx];
     if (g->source==GUIDE_DATUM) {
         fputs("{\"ok\":false,\"error\":\"R5: 這是共用基準參考線，請編輯共同基準或具名規格\"}\n",stdout); return;
     }
@@ -335,8 +335,18 @@ static void json_deleted_objects(const World *before,bool all)
         for(size_t i=0;i<before->count;++i){bool found=false; \
             for(size_t j=0;!all && j<g_world.count;++j)if(before->array[i].id==g_world.array[j].id){found=true;break;} \
             if(!found){printf("%s{\"kind\":\"%s\",\"id\":%u}",first_deleted?"":",",kind_name,before->array[i].id);first_deleted=false;}}
-        REMOVED_ROWS(grid_systems,grid_system_count,"grid-system")
-        REMOVED_ROWS(grid_bindings,grid_binding_count,"grid-binding")
+        for(size_t i=0;i<geo_grid_systems_count(&before->grid_store);++i){
+            const GridSystem *system=geo_grid_systems_at(&before->grid_store,i);
+            if(all || !geo_grid_systems_find(&g_world.grid_store,system->id)){
+                printf("%s{\"kind\":\"grid-system\",\"id\":%u}",first_deleted?"":",",system->id);first_deleted=false;
+            }
+        }
+        for(size_t i=0;i<geo_grid_bindings_count(&before->grid_store);++i){
+            const GridBinding *binding=geo_grid_bindings_at(&before->grid_store,i);
+            if(all || !geo_grid_bindings_find(&g_world.grid_store,binding->id)){
+                printf("%s{\"kind\":\"grid-binding\",\"id\":%u}",first_deleted?"":",",binding->id);first_deleted=false;
+            }
+        }
         REMOVED_ROWS(boundaries,boundary_count,"boundary")
 #undef REMOVED_ROWS
         for(size_t i=0;i<geo_parameters_card_count(&before->parameters);++i){const ParameterSet *card=&geo_parameters_cards(&before->parameters)[i],*after=NULL;
@@ -385,7 +395,7 @@ static void cmd_loadfile(const char *path)
     /*
      * GEO-160：歷史群組進行中不得換掉整個世界。
      *
-     * g_hist_grouping / g_hist_group_base 是行程層全域,不在 World 裡,所以
+     * g_history.grouping / g_hist_group_base 是行程層全域,不在 World 裡,所以
      * 下面那個 World 快照救不到它們。原本 loadfile 直接跨過去:群組還開著,
      * 而 base 停在**載入前**的世界,之後 history-end 會把那個舊世界推進 undo 疊——
      * 使用者按一次 undo,loadfile 與其後所有編輯一起消失。成功路徑也會踩到。
@@ -395,7 +405,7 @@ static void cmd_loadfile(const char *path)
      * 只拒絕、不自動中止群組:不靜默丟掉做到一半的編輯;history-abort 是冪等的,
      * 恢復路徑一直都在。
      */
-    if (g_hist_grouping) {
+    if (g_history.grouping) {
         fputs("{\"ok\":false,\"error\":"
               "\"歷史群組進行中,不能載入檔案（請先 history-end 或 history-abort）\"}\n",
               stdout);
@@ -570,10 +580,10 @@ static void cmd_newid(size_t surface_count)
     /* boundary 的 0 是 D4 的保留值;space 的 0 表示游離柱樑。其餘類別仍允許 0。 */
     WORLD_NEXT_ID(mb,  g_world.boundaries, g_world.boundary_count, true);
     WORLD_NEXT_ID(mp,  g_world.placements, g_world.placement_count, false);
-    WORLD_NEXT_ID(mg,  g_world.guides,     g_world.guide_count,     false);
+    WORLD_NEXT_ID(mg,  geo_guides_values(&g_world.guide_lines),     geo_guides_count(&g_world.guide_lines),     false);
     WORLD_NEXT_ID(mgr, g_world.grids,      g_world.grid_count,      false);
-    WORLD_NEXT_ID(mgs, g_world.grid_systems, g_world.grid_system_count, false);
-    WORLD_NEXT_ID(mgb, g_world.grid_bindings, g_world.grid_binding_count, false);
+    WORLD_NEXT_ID(mgs, geo_grid_systems_values(&g_world.grid_store), geo_grid_systems_count(&g_world.grid_store), false);
+    WORLD_NEXT_ID(mgb, geo_grid_bindings_values(&g_world.grid_store), geo_grid_bindings_count(&g_world.grid_store), false);
     WORLD_NEXT_ID(mt,  g_world.timbers,    g_world.timber_count,    false);
     WORLD_NEXT_ID(ms,  g_world.spaces,     g_world.space_count,     true);
     WORLD_NEXT_ID(mc,  g_world.columns,    g_world.column_count,    false);
@@ -839,9 +849,9 @@ static void cmd_objects(void)
     }
 
     fputs("],\"gridSystems\":[",stdout);
-    for (size_t i=0;i<g_world.grid_system_count;++i) {
+    for (size_t i=0;i<geo_grid_systems_count(&g_world.grid_store);++i) {
         if (i) putchar(',');
-        json_grid_system(&g_world,&g_world.grid_systems[i]);
+        json_grid_system(&g_world,geo_grid_systems_at(&g_world.grid_store,i));
     }
 
     fputs("],\"parameters\":[",stdout);
@@ -857,9 +867,9 @@ static void cmd_objects(void)
     for(size_t i=0;i<g_world.assembly.binding_count;++i){const AsmBinding *b=&g_world.assembly.bindings[i];printf("%s{\"kind\":\"assembly-binding\",\"id\":%u,\"ruleId\":%u,\"version\":%u,\"complete\":%s,\"name\":",i?",":"",b->id,b->rule_id,b->rule_version,b->complete?"true":"false");js_string(b->name);putchar(',');cpos_json(CANVAS_POS_ASSEMBLY_BINDING,b->id);putchar('}');}
     fputs("],\"parameterUses\":",stdout);json_parameter_uses(&g_world);
     fputs(",\"gridBindings\":[",stdout);
-    for (size_t i=0;i<g_world.grid_binding_count;++i) {
+    for (size_t i=0;i<geo_grid_bindings_count(&g_world.grid_store);++i) {
         if (i) putchar(',');
-        json_grid_binding(&g_world,&g_world.grid_bindings[i],false);
+        json_grid_binding(&g_world,geo_grid_bindings_at(&g_world.grid_store,i),false);
     }
 
     /*

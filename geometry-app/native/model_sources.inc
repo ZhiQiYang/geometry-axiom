@@ -103,13 +103,13 @@ static bool model_sources_build(ModelSources *state,World *world)
     if(!reference_sources_ensure(&state->reference))return false;
     GeoSourceProvider provider={MODEL_SOURCE_PROVIDER,"app.model-snapshot","geo261-model-snapshot/1",state,model_source_describe,model_source_evaluate};
     if(!geo_eval_register(state->reference.sources,&provider))return false;
-    for(size_t i=0;i<world->guide_count;++i)world->guides[i].resolved=false;
+    geo_guides_reset_resolved(&world->guide_lines);
     for(size_t i=0;i<world->timber_count;++i){state->reference.wanted[i]=world->timbers[i].placed;world->timbers[i].placed=false;}
     /* Re-evaluate through the actual source engine, preserving dependency order.
      * This process owns the candidate and exposes nothing until all roots pass. */
     if(!reference_eval_datums(&state->reference))return false;
     for(size_t i=0;i<world->timber_count;++i)if(!reference_eval_timber(&state->reference,i))return false;
-    for(size_t i=0;i<world->guide_count;++i)if(!reference_eval_guide(&state->reference,i))return false;
+    for(size_t i=0;i<geo_guides_count(&world->guide_lines);++i)if(!reference_eval_guide(&state->reference,i))return false;
     for(size_t i=0;i<world->placement_count;++i){
         const PlacementSurface *p=&world->placements[i];
         ModelSourceItem *frame=model_sources_add(state,"placement",p->id,"placement.frame",0,false,GEO_SOURCE_FRAME);

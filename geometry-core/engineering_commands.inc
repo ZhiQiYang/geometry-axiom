@@ -18,7 +18,7 @@ static bool eng_operation(World *w,GeoJson *j,int t)
         EngBinding *b=eng_binding(w,&target);if(!b)return eng_fail("I38: target has no source binding");
         char error[512]="";if(!parameters_rebuild(w,error,sizeof error))return eng_fail(error);if(!eng_effective(w,b,&value,NULL,0))return false;
         if(target.kind){int i=reference_timber_index(w,target.id);if(target.field)w->timbers[i].size_b=value;else w->timbers[i].size_a=value;}
-        else {GridAxisDef *a=&world_find_grid_mut(w,target.id)->axis[target.axis];if(target.field)a->gap=value;else a->panel=value;}
+        else {GridAxisDef *a=&world_find_grid_mut(w,target.id)->axis[target.axis];if(target.field)a->gap=value;else a->body=value;}
         size_t k=(size_t)(b-w->engineering.bindings);memmove(b,b+1,(w->engineering.binding_count-k-1)*sizeof *b);memset(&w->engineering.bindings[--w->engineering.binding_count],0,sizeof *b);return true;
     }
     if (!strcmp(op,"publish-material") || !strcmp(op,"publish-method")) {
@@ -83,7 +83,7 @@ static bool eng_operation(World *w,GeoJson *j,int t)
                 if (!a->anchor_kind[axis]) return eng_fail("D28: new panel axis needs an explicit origin or chosen face edge");
                 anchor=a->anchor_kind[axis]==1?a->anchor[axis]:a->anchor_kind[axis]==2?(axis?bounds.min_v:bounds.min_u):(axis?bounds.max_v:bounds.max_u);
             }
-            memset(&g->axis[axis],0,sizeof g->axis[axis]); g->axis[axis].source=GRID_SRC_PANEL; g->axis[axis].panel=1; g->axis[axis].anchor=anchor; g->axis[axis].anchor_explicit=true;
+            memset(&g->axis[axis],0,sizeof g->axis[axis]); g->axis[axis].source=GRID_SRC_PANEL; g->axis[axis].body=1; g->axis[axis].anchor=anchor; g->axis[axis].anchor_explicit=true;
             for (int field=0;field<2;++field) { EngTarget target={0,id,axis,field}; EngDimensionSource source={0}; source.kind=ENG_APPLICATION; source.field=(field?ENG_U_GAP:ENG_U_PANEL)+axis; snprintf(source.ref,sizeof source.ref,"%s",a->id); if (!eng_bind(w,&target,&source)) return false; }
         }
         return true;
@@ -122,7 +122,7 @@ static bool eng_restore_grid(World *w,GeoJson *j,int t)
             int64_t anchor; if (!geo_json_keys(j,a,"kind,panel,gap,anchor","") || !geo_json_integer(j,geo_json_member(j,a,"anchor"),&anchor) || !coord_in_range(anchor)) return eng_fail("I36: invalid panel grid anchor");
             def->source=GRID_SRC_PANEL; def->anchor=anchor; def->anchor_explicit=true;
             EngTarget panel={0,id,axis,0},gap={0,id,axis,1};
-            if (!eng_dimension_read(w,j,geo_json_member(j,a,"panel"),&panel,&def->panel) || !eng_dimension_read(w,j,geo_json_member(j,a,"gap"),&gap,&def->gap)) return false;
+            if (!eng_dimension_read(w,j,geo_json_member(j,a,"panel"),&panel,&def->body) || !eng_dimension_read(w,j,geo_json_member(j,a,"gap"),&gap,&def->gap)) return false;
         } else if (!strcmp(kind,"series")) {
             int64_t start,step,n; if (!geo_json_keys(j,a,"kind,start,step,count","") || !geo_json_integer(j,geo_json_member(j,a,"start"),&start)||!coord_in_range(start) || !geo_json_integer(j,geo_json_member(j,a,"step"),&step)||step<1||step>COORD_LIMIT || !geo_json_integer(j,geo_json_member(j,a,"count"),&n)||n<1||n>GRID_MAX_LINES) return eng_fail("I36: invalid series axis");
             def->source=GRID_SRC_SERIES;def->start=start;def->step=step;def->series_count=(size_t)n;

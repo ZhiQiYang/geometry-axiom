@@ -1,65 +1,53 @@
 /* D29 / D10b / I37 / R32: reusable definitions, without an implicit surface. */
 static char g_grid_stagger_error[256];
 static void grid_rules_dump(const GridSystem *,FILE *);
-static bool grid_axis_stagger_ok(const GridSystem *,int,char *,size_t);
 static bool grid_parameter_token(const char *,Coord *,ParameterRef *,bool);
 static bool grid_system_axis_valid(const GridAxisDef *a)
-{
-    if (a->source==GRID_SRC_NONE) return true;
-    if (a->source==GRID_SRC_REPEAT) return coord_in_range(a->start) && a->step>0 && coord_in_range(a->step);
-    if (a->source==GRID_SRC_REPEAT_PANEL) return a->panel>0 && coord_in_range(a->panel) &&
-        a->gap>=0 && coord_in_range(a->gap) && coord_in_range(a->anchor) && a->anchor_explicit;
-    if (a->source==GRID_SRC_EXPLICIT) {
-        if (!a->count || a->count>GRID_MAX_LINES || !grid_coord_list_is_valid(a->coords,a->count)) return false;
-        for (size_t k=0;k<a->count;++k) if (!coord_in_range(a->coords[k])) return false;
-        return true;
-    }
-    if (a->source==GRID_SRC_SERIES) {
-        if (!coord_in_range(a->start) || a->step<=0 || !coord_in_range(a->step) ||
-            !a->series_count || a->series_count>GRID_MAX_LINES) return false;
-        /* Bounded operands make this multiplication safe before range checking. */
-        return coord_in_range(a->start+(Coord)(a->series_count-1)*a->step);
-    }
-    return a->source==GRID_SRC_PANEL && a->panel>0 && coord_in_range(a->panel) &&
-        a->gap>=0 && coord_in_range(a->gap) && coord_in_range(a->anchor) && a->anchor_explicit;
-}
+{ return geo_grid_axis_valid(a); }
 
 static bool grid_system_name_valid(const unsigned char *name,size_t n)
 {return geo_utf8_name_valid(name,n,GRID_SYSTEM_NAME_MAX);}
 
-static bool grid_system_valid(const GridSystem *s)
-{
-    if(grid_system_is_infinite(s)) for(int a=0;a<2;++a)
-        if(s->axis[a].source && !grid_axis_is_infinite(&s->axis[a])) return false;
-    size_t n=0; while (n<=GRID_SYSTEM_NAME_MAX && s->name[n]) ++n;
-    return grid_system_name_valid((const unsigned char*)s->name,n) &&
-        grid_system_axis_valid(&s->axis[0]) && grid_system_axis_valid(&s->axis[1]) &&
-        (s->axis[0].source || s->axis[1].source) && s->main_along>=0 && s->main_along<=2 &&
-        (s->main_along!=1 || s->axis[1].source) && (s->main_along!=2 || s->axis[0].source);
-}
+static bool grid_system_valid(const GridSystem *s,int main_along)
+{ return geo_grid_system_validate(s,NULL) && app_grid_system_main_valid(s,main_along); }
 
+static bool app_grid_coordinate(void *state,GeoParameterRef ref,GeoCoord *out)
+{ return parameter_coord((const World *)state,ref,out); }
+static bool app_grid_system_error(const GeoGridStoreError *detail,char *error,size_t cap)
+{
+    switch(detail->status){
+    case GEO_GRID_STORE_PARAMETER_AXIS: case GEO_GRID_STORE_PARAMETER_SOURCE:
+        snprintf(error,cap,"grid-system %u %c: %.190s",detail->system_id,detail->axis?'v':'u',g_parameter_error);break;
+    case GEO_GRID_STORE_STAGGER_SOURCE:
+        snprintf(error,cap,"I24: 相位差只接受兩軸都存在的無限排法");break;
+    case GEO_GRID_STORE_STAGGER_PITCH:
+        snprintf(error,cap,"I24: grid-system %u %c has no positive pitch",detail->system_id,detail->axis?'v':'u');break;
+    case GEO_GRID_STORE_STAGGER_ZERO:
+        snprintf(error,cap,"I24: 相位差為 0。要貫通線請省略 stagger，不要寫 0");break;
+    case GEO_GRID_STORE_STAGGER_MULTIPLE:
+        snprintf(error,cap,"I24: 相位差是間距的整數倍，奇數格與偶數格的線會重合。要貫通線請省略這個欄位");break;
+    case GEO_GRID_STORE_STAGGER_OVERFLOW:
+        snprintf(error,cap,"I24: 相位加相位差超出可表達範圍");break;
+    default:snprintf(error,cap,"I37: grid-system %u has an invalid definition",detail->system_id);break;
+    }
+    return false;
+}
 static bool grid_systems_rebuild(World *w,char *error,size_t cap)
 {
-    if (w->grid_system_count>WORLD_MAX_GRID_SYSTEMS) {
+    if (geo_grid_systems_count(&w->grid_store)>WORLD_MAX_GRID_SYSTEMS) {
         snprintf(error,cap,"I37: grid-system capacity exceeded"); return false;
     }
-    for (size_t i=0;i<w->grid_system_count;++i) {
-        for(int axis=0;axis<2;++axis){
-            GridAxisDef *a=&w->grid_systems[i].axis[axis];
-            Coord *values[]={&a->start,&a->step,&a->panel,&a->gap,&a->anchor,&a->stagger};
-            for(int field=0;field<6;++field)if(a->parameters[field].set){
-                if(!grid_axis_is_infinite(a)||!parameter_coord(w,a->parameters[field],values[field])){
-                    snprintf(error,cap,"grid-system %u %c: %.190s",w->grid_systems[i].id,axis?'v':'u',g_parameter_error);return false;
-                }
-            }
-            if(!grid_axis_stagger_ok(&w->grid_systems[i],axis,error,cap)) return false;
+    for(size_t i=0;i<geo_grid_systems_count(&w->grid_store);++i){
+        GeoGridStoreError detail;
+        if(!geo_grid_system_evaluate(&w->grid_store,i,app_grid_coordinate,w,&detail))
+            return app_grid_system_error(&detail,error,cap);
+        const GridSystem *system=geo_grid_systems_at(&w->grid_store,i);
+        if(!app_grid_system_main_valid(system,app_grid_system_main_along(w,system->id))){
+            snprintf(error,cap,"I37: grid-system %u has an invalid definition",system->id);return false;
         }
-        if (!grid_system_valid(&w->grid_systems[i])) {
-            snprintf(error,cap,"I37: grid-system %u has an invalid definition",w->grid_systems[i].id); return false;
-        }
-        if(!grid_rules_valid(&w->grid_systems[i],error,cap)) return false;
-        for (size_t j=0;j<i;++j) if (w->grid_systems[j].id==w->grid_systems[i].id) {
-            snprintf(error,cap,"I37: duplicate grid-system identity"); return false;
+        if(!grid_rules_valid(system,error,cap))return false;
+        for(size_t j=0;j<i;++j)if(geo_grid_systems_at(&w->grid_store,j)->id==system->id){
+            snprintf(error,cap,"I37: duplicate grid-system identity");return false;
         }
     }
     for (size_t i=0;i<w->grid_count;++i) {
@@ -68,7 +56,7 @@ static bool grid_systems_rebuild(World *w,char *error,size_t cap)
         if (!s || grid_system_is_infinite(s) || g->from_binding || g->is_subgrid || !coord_in_range(g->system_origin[0]) || !coord_in_range(g->system_origin[1])) {
             snprintf(error,cap,"I37: grid %u has a missing or invalid grid-system source",g->id); return false;
         }
-        g->main_along=s->main_along;
+        g->main_along=app_grid_system_main_along(w,s->id);
         for (int axis=0;axis<2;++axis) {
             GridAxisDef *a=&g->axis[axis]; *a=s->axis[axis]; Coord offset=g->system_origin[axis];
             if (a->source==GRID_SRC_EXPLICIT) for (size_t k=0;k<a->count;++k) a->coords[k]+=offset;
@@ -95,27 +83,7 @@ static bool grid_system_read_name(const char *hex,char out[GRID_SYSTEM_NAME_MAX+
     }
     out[n/2]=0; return grid_system_name_valid((const unsigned char*)out,n/2);
 }
-static bool grid_axis_stagger_ok(const GridSystem *s,int axis,char *error,size_t cap)
-{
-    const GridAxisDef *a=&s->axis[axis],*other=&s->axis[1-axis];
-    Coord pitch; int64_t sum;
-    if(!a->stagger_set) return true;
-    if(!grid_axis_is_infinite(a) || !grid_axis_is_infinite(other)){
-        snprintf(error,cap,"I24: 相位差只接受兩軸都存在的無限排法"); return false;
-    }
-    pitch=grid_axis_pitch(a);
-    if(pitch<=0){ snprintf(error,cap,"I24: grid-system %u %c has no positive pitch",s->id,axis?'v':'u'); return false; }
-    if(a->stagger==0){
-        snprintf(error,cap,"I24: 相位差為 0。要貫通線請省略 stagger，不要寫 0"); return false;
-    }
-    if(a->stagger%pitch==0){
-        snprintf(error,cap,"I24: 相位差是間距的整數倍，奇數格與偶數格的線會重合。要貫通線請省略這個欄位"); return false;
-    }
-    if(!grid_i64_add(grid_axis_phase(a),a->stagger,&sum)){
-        snprintf(error,cap,"I24: 相位加相位差超出可表達範圍"); return false;
-    }
-    return true;
-}
+
 static bool grid_system_read_stagger(char **t,int count,int *at,GridAxisDef *a)
 {
     int i=*at;
@@ -154,7 +122,7 @@ static bool grid_system_read_axis(char **t,int count,int *at,GridAxisDef *a)
         a->source=GRID_SRC_SERIES; a->series_count=(size_t)n; i+=4;
     } else if (!strcmp(t[i],"panel") || !strcmp(t[i],"repeat-panel")) {
         if (i+5>=count || strcmp(t[i+2],"gap") || strcmp(t[i+4],"from") ||
-            !grid_parameter_token(t[i+1],&a->panel,&a->parameters[2],!strcmp(t[i],"repeat-panel")) ||
+            !grid_parameter_token(t[i+1],&a->body,&a->parameters[2],!strcmp(t[i],"repeat-panel")) ||
             !grid_parameter_token(t[i+3],&a->gap,&a->parameters[3],!strcmp(t[i],"repeat-panel")) ||
             !grid_parameter_token(t[i+5],&a->anchor,&a->parameters[4],!strcmp(t[i],"repeat-panel"))) return false;
         a->source=!strcmp(t[i],"panel")?GRID_SRC_PANEL:GRID_SRC_REPEAT_PANEL; a->anchor_explicit=true; i+=6;
@@ -175,31 +143,23 @@ static bool grid_system_read_axis(char **t,int count,int *at,GridAxisDef *a)
 }
 static bool apply_grid_system_line(const char *path,int line_no,char **t,int count,World *w)
 {
-    GridSystem s={0}; s.next_rule_key=1; int i=6; g_grid_stagger_error[0]=0;
+    GridSystem s={0}; s.next_rule_key=1; int main_along=0,i=6; g_grid_stagger_error[0]=0;
     if (count<10 || !parse_u32(t[1],&s.id) || strcmp(t[2],"name-hex") ||
         !grid_system_read_name(t[3],s.name) || strcmp(t[4],"main-along")) goto invalid;
-    if (!strcmp(t[5],"u")) s.main_along=1;
-    else if (!strcmp(t[5],"v")) s.main_along=2;
+    if (!strcmp(t[5],"u")) main_along=1;
+    else if (!strcmp(t[5],"v")) main_along=2;
     else if (strcmp(t[5],"none")) goto invalid;
     for (int axis=0;axis<2;++axis) {
         if (i>=count || strcmp(t[i++],axis?"v":"u") || !grid_system_read_axis(t,count,&i,&s.axis[axis])) goto invalid;
     }
-    if (i!=count || !grid_system_valid(&s)) goto invalid;
-    World candidate=*w; size_t slot=0;
-    while (slot<candidate.grid_system_count && candidate.grid_systems[slot].id!=s.id) ++slot;
-    if(slot<candidate.grid_system_count && grid_system_is_infinite(&candidate.grid_systems[slot])!=grid_system_is_infinite(&s)) {
-        scene_error(path,line_no,"D29/I37: legacy-finite and infinite identities cannot be converted implicitly"); return false;
+    if (i!=count || !grid_system_valid(&s,main_along)) goto invalid;
+    World candidate=*w; GeoGridStoreError detail;
+    if(!app_grid_system_redeclare(&candidate,&s,main_along,&detail)){
+        if(detail.status==GEO_GRID_STORE_SPACE_CHANGE){scene_error(path,line_no,"D29/I37: legacy-finite and infinite identities cannot be converted implicitly");return false;}
+        if(detail.status==GEO_GRID_STORE_CAPACITY){scene_error(path,line_no,"I37: grid-system capacity is 16");return false;}
+        goto invalid;
     }
-    if (slot==candidate.grid_system_count) {
-        if (slot==WORLD_MAX_GRID_SYSTEMS) { scene_error(path,line_no,"I37: grid-system capacity is 16"); return false; }
-        ++candidate.grid_system_count;
-    }
-    if(slot<w->grid_system_count) {
-        s.rule_count=w->grid_systems[slot].rule_count;
-        s.next_rule_key=w->grid_systems[slot].next_rule_key;
-        memcpy(s.rules,w->grid_systems[slot].rules,sizeof s.rules);
-    }
-    candidate.grid_systems[slot]=s; reference_capture_trial(&candidate);
+    reference_capture_trial(&candidate);
     if (!world_revalidate(&candidate)) {
         scene_error(path,line_no,g_revalidate_error[0]?g_revalidate_error:"I37: grid-system dependencies invalid; unchanged"); return false;
     }
@@ -251,10 +211,10 @@ static bool apply_grid_system_application(const char *path,int line_no,char **t,
 
 static void grid_systems_dump(const World *w,FILE *out)
 {
-    for (size_t i=0;i<w->grid_system_count;++i) {
-        const GridSystem *s=&w->grid_systems[i]; fprintf(out,"grid-system %u name-hex ",s->id);
+    for (size_t i=0;i<geo_grid_systems_count(&w->grid_store);++i) {
+        const GridSystem *s=geo_grid_systems_at(&w->grid_store,i); fprintf(out,"grid-system %u name-hex ",s->id);
         for (size_t k=0;s->name[k];++k) fprintf(out,"%02x",(unsigned char)s->name[k]);
-        fprintf(out," main-along %s",s->main_along==1?"u":s->main_along==2?"v":"none");
+        fprintf(out," main-along %s",app_grid_system_main_along(w,s->id)==1?"u":app_grid_system_main_along(w,s->id)==2?"v":"none");
         for (int axis=0;axis<2;++axis) {
             const GridAxisDef *a=&s->axis[axis]; fprintf(out," %c",axis?'v':'u');
             if (a->source==GRID_SRC_NONE) fputs(" none",out);
@@ -265,7 +225,7 @@ static void grid_systems_dump(const World *w,FILE *out)
                 fputs(" repeat ",out);grid_parameter_dump(out,a->start,a->parameters[0]);fputc(' ',out);grid_parameter_dump(out,a->step,a->parameters[1]);
                 if(a->stagger_set){fputs(" stagger ",out);grid_parameter_dump(out,a->stagger,a->parameters[5]);}
             } else {
-                fprintf(out," %s ",a->source==GRID_SRC_REPEAT_PANEL?"repeat-panel":"panel");grid_parameter_dump(out,a->panel,a->parameters[2]);
+                fprintf(out," %s ",a->source==GRID_SRC_REPEAT_PANEL?"repeat-panel":"panel");grid_parameter_dump(out,a->body,a->parameters[2]);
                 fputs(" gap ",out);grid_parameter_dump(out,a->gap,a->parameters[3]);fputs(" from ",out);grid_parameter_dump(out,a->anchor,a->parameters[4]);
                 if(a->source==GRID_SRC_REPEAT_PANEL && a->stagger_set){fputs(" stagger ",out);grid_parameter_dump(out,a->stagger,a->parameters[5]);}
             }
