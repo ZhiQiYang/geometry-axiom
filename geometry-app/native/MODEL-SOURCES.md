@@ -5,6 +5,12 @@ process-owned candidate. The existing one-argument invocation keeps its original
 `geometry-base-snapshot/1` output. This is internal transport, not a scene or project
 file format.
 
+The opt-in mode also accepts the core's existing `finish-surface`, `panel-fill`,
+and `derived-placement` source declarations to expose derived multi-component
+regions. This does not expand the original one-argument mode's command allowlist
+or downstream modeling capabilities. Its legacy-shaped placement record can only
+carry the historical single outline; all components are in the typed region root.
+
 The envelope has `ok: true`, `schema: "geometry-neutral-source-envelope/1"`,
 `candidate: {id, baseRevision: 0}`, `source: {sha256Before, sha256After}`,
 `legacySnapshot`, and `neutralSources`. `id` is lowercase SHA-256 of UTF-8

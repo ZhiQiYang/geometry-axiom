@@ -6402,23 +6402,11 @@ static bool world_footprint_collides(
  *   lo..hi = 擋面在角材「寬度軸」上的涵蓋範圍。
  * ============================================================ */
 
-typedef enum {
-    STOP_OUTLINE_EDGE,
-    STOP_HOLE_EDGE,
-    STOP_TIMBER_SIDE
-} StopFaceKind;
-
-typedef struct {
-    int kind;               /* StopFaceKind */
-    SurfaceId boundary_id;  /* 邊類擋面：所屬邊界面 */
-    TimberId timber_id;     /* 角材側面：所屬角材 */
-    int hole_index;         /* STOP_HOLE_EDGE：孔 index，否則 -1 */
-    int edge_index;         /* 環上邊 index / 角材面序號 */
-    int fixity;             /* EdgeFixity；角材側面記 EDGE_FIXED */
-    Coord fixed;
-    Coord lo;
-    Coord hi;
-} StopFace;
+typedef WoodStopFaceKind StopFaceKind;
+#define STOP_OUTLINE_EDGE WOOD_STOP_OUTLINE_EDGE
+#define STOP_HOLE_EDGE WOOD_STOP_HOLE_EDGE
+#define STOP_TIMBER_SIDE WOOD_STOP_MEMBER_SIDE
+typedef WoodStopFace StopFace;
 
 #define STOP_FACE_MAX \
     (DP_COMPONENT_MAX * POLY_MAX_VERTICES * (POLY_MAX_HOLES + 1) + WORLD_MAX_TIMBERS * 2)
@@ -6429,29 +6417,11 @@ typedef struct {
  *   kind 1 = 已放角材的側面 t<id>（垂直於本支長度軸的那兩個面，二選一由 R21(d) 決定）
  * 參照只是「指名」，不改變擋面的任何性質，也不新增擋面來源。
  */
-typedef struct {
-    int kind;
-    int hole;
-    int edge;
-    TimberId timber;
-} StopFaceRef;
+typedef WoodStopRef StopFaceRef;
 
 static bool stop_face_matches_ref(const StopFace *f, const StopFaceRef *r)
 {
-    if (f == NULL || r == NULL) {
-        return false;
-    }
-
-    if (r->kind == 1) {
-        return f->kind == STOP_TIMBER_SIDE && f->timber_id == r->timber;
-    }
-
-    if (r->hole < 0) {
-        return f->kind == STOP_OUTLINE_EDGE && f->edge_index == r->edge;
-    }
-
-    return f->kind == STOP_HOLE_EDGE &&
-           f->hole_index == r->hole && f->edge_index == r->edge;
+    return wood_stop_matches_ref(f,r);
 }
 
 /*
@@ -6471,31 +6441,7 @@ static size_t stop_ref_candidates(
     bool *saw_narrow
 )
 {
-    size_t n = 0;
-
-    for (size_t i = 0; i < face_count; ++i) {
-        const StopFace *f = &faces[i];
-
-        if (!stop_face_matches_ref(f, r)) {
-            continue;
-        }
-
-        if (f->lo > cross_lo || f->hi < cross_hi) {
-            *saw_narrow = true;
-            continue;
-        }
-
-        if (f->fixity == EDGE_FREE) {
-            *saw_free = true;
-            continue;
-        }
-
-        if (n < out_cap) {
-            out[n++] = f;
-        }
-    }
-
-    return n;
+    return wood_stop_ref_candidates(faces,face_count,r,cross_lo,cross_hi,out,out_cap,saw_free,saw_narrow);
 }
 
 /*
@@ -6645,10 +6591,7 @@ static size_t collect_stop_faces(
  * is the earlier edge, not a second support (D11). */
 static bool stop_face_shadowed(const StopFace faces[],size_t i,Coord lo,Coord hi)
 {
-    if (faces[i].kind!=STOP_TIMBER_SIDE) return false;
-    for (size_t j=0;j<i;++j)
-        if (faces[j].fixed==faces[i].fixed && faces[j].lo<=lo && faces[j].hi>=hi) return true;
-    return false;
+    return wood_stop_shadowed(faces,i,lo,hi);
 }
 
 static size_t pick_stop(
@@ -6660,25 +6603,7 @@ static size_t pick_stop(
     const StopFace **out_face
 )
 {
-    const StopFace *found = NULL;
-    size_t hits = 0;
-
-    for (size_t i = 0; i < face_count; ++i) {
-        const StopFace *f = &faces[i];
-
-        if (f->fixed != at || f->lo > lo || f->hi < hi || stop_face_shadowed(faces,i,lo,hi)) {
-            continue;
-        }
-
-        found = f;
-        ++hits;
-    }
-
-    if (hits == 1 && out_face != NULL) {
-        *out_face = found;
-    }
-
-    return hits;
+    return wood_stop_pick(faces,face_count,at,lo,hi,out_face);
 }
 
 /* 數「合法」擋面（FREE 邊不算）：重驗只要求存在，不要求唯一。 */
@@ -6690,18 +6615,7 @@ static size_t count_legal_stops(
     Coord hi
 )
 {
-    size_t hits = 0;
-
-    for (size_t i = 0; i < face_count; ++i) {
-        const StopFace *f = &faces[i];
-
-        if (f->fixed == at && f->lo <= lo && f->hi >= hi &&
-            f->fixity != EDGE_FREE && !stop_face_shadowed(faces,i,lo,hi)) {
-            ++hits;
-        }
-    }
-
-    return hits;
+    return wood_stop_count_legal(faces,face_count,at,lo,hi);
 }
 
 /*
@@ -6733,64 +6647,9 @@ static bool timber_role_props(
     int *out_boundary_edge
 )
 {
-    int best = -1;
-    bool best_covers = false;
-    Coord best_overlap = 0;
-    size_t i;
-
-    *out_on_boundary = false;
-    *out_covers_edge = false;
-    *out_boundary_edge = -1;
-
-    if (boundary == NULL) {
-        return false;
-    }
-
-    for (i = 0; i < boundary->outline.count; ++i) {
-        SurfaceSegment2 seg;
-        bool edge_along_v, covers;
-        Coord edge_fixed, edge_lo, edge_hi, ov;
-
-        if (!loop_get_edge_segment(&boundary->outline, i, &seg)) {
-            continue;
-        }
-
-        /* 側面沿長度軸走 → 只有與長度軸平行的邊才可能共線。 */
-        edge_along_v = seg.start.u == seg.end.u;
-        if (edge_along_v != along_v) {
-            continue;
-        }
-
-        edge_fixed = edge_along_v ? seg.start.u : seg.start.v;
-        if (edge_fixed != cross_lo && edge_fixed != cross_hi) {
-            continue;
-        }
-
-        edge_lo = edge_along_v ? coord_min(seg.start.v, seg.end.v)
-                               : coord_min(seg.start.u, seg.end.u);
-        edge_hi = edge_along_v ? coord_max(seg.start.v, seg.end.v)
-                               : coord_max(seg.start.u, seg.end.u);
-
-        ov = coord_min(span_hi, edge_hi) - coord_max(span_lo, edge_lo);
-        if (ov <= 0) {
-            continue;   /* 共線但不重疊（或只點接觸）→ 不算 onBoundary */
-        }
-
-        covers = span_lo <= edge_lo && span_hi >= edge_hi;
-        if (best < 0 || (covers && !best_covers) ||
-            (covers == best_covers && ov > best_overlap)) {
-            best = (int)i;
-            best_covers = covers;
-            best_overlap = ov;
-        }
-    }
-
-    if (best >= 0) {
-        *out_on_boundary = true;
-        *out_covers_edge = best_covers;
-        *out_boundary_edge = best;
-    }
-    return true;
+    GeoLoop2View outline={0};
+    if(boundary)outline=(GeoLoop2View){boundary->outline.v,boundary->outline.count};
+    return wood_member_boundary_props(boundary?&outline:NULL,along_v,span_lo,span_hi,cross_lo,cross_hi,out_on_boundary,out_covers_edge,out_boundary_edge);
 }
 
 /*

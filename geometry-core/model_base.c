@@ -42,7 +42,7 @@ static int model_error(const char *status, const char *code,
  * This also guards the legacy fgets/strlen reader against embedded NULs.
  * The core still validates every allowed command and every dependency.
  */
-static bool model_source_check(const char *path, bool *capacity, bool *unsupported, char *error, size_t cap)
+static bool model_source_check(const char *path, bool neutral, bool *capacity, bool *unsupported, char *error, size_t cap)
 {
     static const char *allowed[] = {
         "spec", "boundary", "placement", "surface", "space", "datum", "guide",
@@ -88,6 +88,7 @@ static bool model_source_check(const char *path, bool *capacity, bool *unsupport
         if (count) {
             bool found = false;
             for (size_t i = 0; allowed[i]; ++i) if (!strcmp(tokens[0], allowed[i])) found = true;
+            if(neutral&&(!strcmp(tokens[0],"finish-surface")||!strcmp(tokens[0],"panel-fill")||!strcmp(tokens[0],"derived-placement")))found=true;
             if (!found) {
                 snprintf(error, cap, "Line %d: only scene definitions and canvas-pos are accepted.", line_no); ok = false; break;
             }
@@ -358,6 +359,7 @@ static void model_legacy_snapshot(World *world,const char *canonical)
     if(geo_parameters_card_count(&world->parameters)){if(engineering_used(world))fputc(',',stdout);model_string(stdout,"parameters/1");}
     if(grid_subdivision_used(world)){if(engineering_used(world)||geo_parameters_card_count(&world->parameters))fputc(',',stdout);model_string(stdout,GRID_SUBDIVISION_CAPABILITY);}
     if(sp_used(world)){if(engineering_used(world)||geo_parameters_card_count(&world->parameters)||grid_subdivision_used(world))fputc(',',stdout);model_string(stdout,SP_CAPABILITY);}
+    if(fs_used(world)){if(engineering_used(world)||geo_parameters_card_count(&world->parameters)||grid_subdivision_used(world)||sp_used(world))fputc(',',stdout);model_string(stdout,FS_CAPABILITY);}
     fputs("],\"specs\":[", stdout);
     for (size_t i = 0; i < geo_named_values_count(&world->named_values); ++i) {
         if (i) putchar(',');
@@ -430,7 +432,7 @@ int main(int argc, char **argv)
     const char *path=argv[neutral?2:1];char before[65];
     if(neutral&&!model_source_fingerprint(path,before))return model_error("INVALID","BASE_SOURCE","I9","Cannot fingerprint source scene.");
     char error[512] = ""; bool capacity = false, unsupported = false;
-    if (!model_source_check(path, &capacity, &unsupported, error, sizeof error))
+    if (!model_source_check(path, neutral, &capacity, &unsupported, error, sizeof error))
         return model_error(capacity||unsupported ? "UNSUPPORTED" : "INVALID", capacity ? "BASE_CAPACITY" : unsupported ? "CAPABILITY" : "BASE_SOURCE", capacity ? "I33" : unsupported ? "I32" : "I9", error);
     /* One process-owned World; nested transactions retain the 16 MiB stack budget. */
     static World world;
