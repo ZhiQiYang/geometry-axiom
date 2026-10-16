@@ -8,12 +8,14 @@ Product consumption and bridge controls belong to the native integration tests.
 from __future__ import annotations
 
 from functools import lru_cache
+import hashlib
 from pathlib import Path
 import re
 import shutil
 import subprocess
 import sys
 import unittest
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
@@ -22,6 +24,8 @@ from tests.test_geo261_native_kernel import native
 
 MODULE = ROOT / "geometry-templates/woodworking/native"
 BASELINE = "debd47ead0881f4cd15ab8a6ceae6f23f92dc81e"
+FROZEN_FIXTURE = ROOT / "tests/geo261_supports_legacy_fixture.txt"
+FROZEN_FIXTURE_SHA256 = "2b3e8d7f9c4e226e22c3764ed9045e977430097d1aa7a99aa408e850ec84e04f"
 FUNCTIONS = {
     "stop_face_matches_ref": "wood_stop_matches_ref",
     "stop_ref_candidates": "wood_stop_ref_candidates",
@@ -51,11 +55,17 @@ RENAMED = {
 
 @lru_cache(maxsize=1)
 def frozen_source():
-    # Binary read preserves the project's CRLF discipline; only this local
-    # parsing copy is normalized. Failure to obtain the baseline is an error.
-    return subprocess.check_output(
-        ["git", "show", BASELINE + ":current_geometry.c"], cwd=ROOT
-    ).replace(b"\r\n", b"\n").decode("utf-8")
+    # The judge was extracted directly from BASELINE, not from W. It travels
+    # with git archives so isolated validation needs no repository history.
+    # Checkout CRLF is normalized before hashing, not treated as source drift.
+    raw = FROZEN_FIXTURE.read_bytes().replace(b"\r\n", b"\n")
+    actual = hashlib.sha256(raw).hexdigest()
+    if actual != FROZEN_FIXTURE_SHA256:
+        raise AssertionError("Frozen support judge hash mismatch: " + actual)
+    source = raw.decode("utf-8")
+    if BASELINE + ":current_geometry.c" not in source:
+        raise AssertionError("Frozen support judge has lost its original provenance")
+    return source
 
 
 def without_comments(source):
@@ -170,7 +180,9 @@ class WoodSupportsSourcePreservation(unittest.TestCase):
             self.assertNotRegex(without_comments(source), r"\b(?:World|SpaceBoundarySurface|PlacementSurface|TimberId|SurfaceId)\b")
 
     def test_frozen_comparison_contains_actual_bodies_and_no_product_include(self):
-        source = frozen_translation_unit()
+        frozen_source.cache_clear()
+        with patch("subprocess.check_output", side_effect=AssertionError("Archive judge must not invoke Git")):
+            source = frozen_translation_unit()
         self.assertEqual(["supports.h"], re.findall(r'^\s*#include\s+"([^"]+)"', source, flags=re.M))
         self.assertIn("frozen_stop_matches_ref", source)
         self.assertIn("frozen_stop_count_legal", source)
