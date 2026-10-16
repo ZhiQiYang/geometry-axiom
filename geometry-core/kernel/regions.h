@@ -34,6 +34,9 @@ size_t geo_regions_count(const GeoRegionStore *store);
 const GeoRegionDefinition *geo_regions_at(const GeoRegionStore *store, size_t index);
 const GeoRegionDefinition *geo_regions_find(const GeoRegionStore *store, uint32_t id);
 bool geo_regions_put(GeoRegionStore *store, const GeoRegionDefinition *region);
+/* Bounded definition staging for an enclosing candidate. Geometry is checked
+ * by that candidate's ordered validation; failed staging changes no bytes. */
+bool geo_regions_stage(GeoRegionStore *store, const GeoRegionDefinition *region);
 /* Geometry and identity storage are independent. Removal does not cascade;
  * consumers apply their dependency checks and explicitly remove identities. */
 bool geo_regions_remove(GeoRegionStore *store, uint32_t id);

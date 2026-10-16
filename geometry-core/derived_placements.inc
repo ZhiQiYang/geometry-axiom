@@ -23,7 +23,7 @@ static bool dp_operation(World *w,GeoJson *j,int t,bool remove)
     if(remove){
         if(i==s->host_count)return fs_error("D4: derived placement does not exist");
         memmove(&s->hosts[i],&s->hosts[i+1],(s->host_count-i-1)*sizeof d);memset(&s->hosts[--s->host_count],0,sizeof d);
-        for(size_t k=0;k<w->placement_count;++k)if(w->placements[k].id==id){memmove(&w->placements[k],&w->placements[k+1],(w->placement_count-k-1)*sizeof *old);memset(&w->placements[--w->placement_count],0,sizeof *old);break;}
+        (void)app_placement_remove(w,id);
         asm_remove_position(w,CANVAS_POS_PLACEMENT,id);
         return true;
     }
@@ -31,8 +31,8 @@ static bool dp_operation(World *w,GeoJson *j,int t,bool remove)
     if(i<s->host_count&&s->hosts[i].fill_id!=d.fill_id)return fs_error("D4: source fill is immutable");
     for(size_t k=0;k<s->host_count;++k)if(k!=i&&s->hosts[k].fill_id==d.fill_id)return fs_error("D4: one derived placement per panel fill");
     if(i==s->host_count){
-        if(i==FS_MAX||w->placement_count==WORLD_MAX_PLACEMENTS)return fs_capacity_error("I33 CAPACITY: derived placement limit reached");
-        ++s->host_count;PlacementSurface *p=&w->placements[w->placement_count++];memset(p,0,sizeof *p);p->id=id;p->derived_fill_id=d.fill_id;
+        if(i==FS_MAX||world_placement_count(w)==WORLD_MAX_PLACEMENTS)return fs_capacity_error("I33 CAPACITY: derived placement limit reached");
+        ++s->host_count;PlacementSurface value={0};value.id=id;value.derived_fill_id=d.fill_id;if(!app_placement_stage(w,&value))return false;
     }
     s->hosts[i]=d;return true;
 }
@@ -92,8 +92,8 @@ static bool dp_values(const World *w,const PlacementSurface *p,PfLayout *d)
 }
 static bool dp_rebuild(World *w)
 {
-    for(uint64_t i=0;i<w->finish_surfaces.host_count;++i){const DerivedPlacement *def=&w->finish_surfaces.hosts[i];PlacementSurface *p=NULL;
-        for(size_t k=0;k<w->placement_count;++k)if(w->placements[k].id==def->id)p=&w->placements[k];
+    for(uint64_t i=0;i<w->finish_surfaces.host_count;++i){const DerivedPlacement *def=&w->finish_surfaces.hosts[i];PlacementSurface value;
+        PlacementSurface *p=app_placement_read(w,def->id,&value)?&value:NULL;
         if(!p||!p->derived_fill_id)return fs_error("D4: derived placement variant or identity missing");
         Coord h;EngTarget target={1,def->id,0,1};if(!eng_resolve(w,&def->h,&target,def->id,0,&h,NULL,0))return false;
         memset(p,0,sizeof *p);p->id=def->id;p->derived_fill_id=def->fill_id;p->derived_h=h;
@@ -120,6 +120,7 @@ static bool dp_rebuild(World *w)
          * represented; readers must never silently substitute a truncated key. */
         for(size_t c=0;c<p->component_count;++c){const SpaceBoundarySurface *b=&p->components[c];for(size_t k=0;k<=b->hole_count;++k){const PolygonLoop2 *l=k?&b->holes[k-1]:&b->outline;
             for(size_t e=0;e<l->count;++e){char key[512];if(!dp_edge_key(w,p,c,k?(int)k-1:-1,e,key,sizeof key))return false;}}}
+        if(!app_placement_stage(w,p))return false;
     }
     return true;
 }
@@ -175,8 +176,8 @@ static bool apply_derived_placement_line(const char *path,int line,char **t,int 
     if(!ok){scene_error(path,line,g_engineering_error);return false;}
     if(id!=p.id||dp_find(w,id)||world_find_placement(w,id)){scene_error(path,line,"D4/I56: derived placement id mismatch, duplicate or variant collision");return false;}
     for(uint64_t i=0;i<w->finish_surfaces.host_count;++i)if(w->finish_surfaces.hosts[i].fill_id==p.fill_id){scene_error(path,line,"D4: one derived placement per fill");return false;}
-    if(w->finish_surfaces.host_count==FS_MAX||w->placement_count==WORLD_MAX_PLACEMENTS){scene_error(path,line,"I33 CAPACITY: derived placement limit reached");return false;}
-    w->finish_surfaces.hosts[w->finish_surfaces.host_count++]=p;PlacementSurface *host=&w->placements[w->placement_count++];memset(host,0,sizeof *host);host->id=id;host->derived_fill_id=p.fill_id;
+    if(w->finish_surfaces.host_count==FS_MAX||world_placement_count(w)==WORLD_MAX_PLACEMENTS){scene_error(path,line,"I33 CAPACITY: derived placement limit reached");return false;}
+    w->finish_surfaces.hosts[w->finish_surfaces.host_count++]=p;PlacementSurface host={0};host.id=id;host.derived_fill_id=p.fill_id;if(!app_placement_stage(w,&host))return false;
     if(!dp_rebuild(w)){scene_error(path,line,g_engineering_error);return false;}return true;
 invalid:scene_error(path,line,"D4: derived-placement id definition-hex HEX");return false;
 }

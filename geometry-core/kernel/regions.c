@@ -41,6 +41,14 @@ const GeoRegionDefinition *geo_regions_find(const GeoRegionStore *store, uint32_
 bool geo_regions_put(GeoRegionStore *store, const GeoRegionDefinition *region)
 {
     if (!store || !geo_region_definition_valid(region)) return false;
+    return geo_regions_stage(store,region);
+}
+bool geo_regions_stage(GeoRegionStore *store, const GeoRegionDefinition *region)
+{
+    if (!store || !region || region->hole_count>GEO_REGION_MAX_HOLES ||
+        region->outline.count>GEO_LOOP_MAX_VERTICES) return false;
+    for(size_t h=0;h<region->hole_count;++h)
+        if(region->holes[h].count>GEO_LOOP_MAX_VERTICES)return false;
     size_t at = 0;
     while (at < store->count && store->regions[at].id != region->id) ++at;
     if (at >= GEO_REGION_CAPACITY) return false;

@@ -9,24 +9,6 @@ static const PolygonLoop2 *boundary_keys_loop(const SpaceBoundarySurface *b,size
     return loop ? &b->holes[loop-1] : &b->outline;
 }
 
-/* H translates the boundary shape; kind and edge fixity never enter K.
- * Preserve the declared counts so the neutral key validator reports the
- * original malformed-shape error before reading a truncated active array. */
-static GeoRegionDefinition app_boundary_region_definition(const SpaceBoundarySurface *b)
-{
-    GeoRegionDefinition region;memset(&region,0,sizeof region);
-    if(!b)return region;
-    region.id=b->id;region.hole_count=b->hole_count;region.outline.count=b->outline.count;
-    size_t count=b->outline.count<POLY_MAX_VERTICES?b->outline.count:POLY_MAX_VERTICES;
-    memcpy(region.outline.v,b->outline.v,count*sizeof region.outline.v[0]);
-    for(size_t h=0;h<b->hole_count&&h<POLY_MAX_HOLES;++h){
-        region.holes[h].count=b->holes[h].count;
-        count=b->holes[h].count<POLY_MAX_VERTICES?b->holes[h].count:POLY_MAX_VERTICES;
-        memcpy(region.holes[h].v,b->holes[h].v,count*sizeof region.holes[h].v[0]);
-    }
-    return region;
-}
-
 static const BoundaryVertexKeys *world_find_vertex_keys(const World *w,uint32_t bid)
 {return w?geo_region_keys_find(&w->region_data,bid):NULL;}
 
@@ -282,8 +264,7 @@ static bool apply_boundary_keyed_line(const char *path,int line_no,char **tokens
         scene_error(path,line_no,"D30: too many boundary identity tables"); return false;
     }
     World candidate=*world;
-    for (size_t i=0;i<candidate.boundary_count;++i)
-        if (candidate.boundaries[i].id==id) { candidate.boundaries[i]=replacement; break; }
+    if(!app_boundary_stage(&candidate,&replacement))return false;
     if(!geo_region_keys_put(&candidate.region_data,&keys))return false;
     bool previous_keyed=g_boundary_keyed_update;
     uint32_t previous_keyed_id=g_boundary_keyed_id;
@@ -304,8 +285,8 @@ static void boundary_keys_dump(const World *w,FILE *out)
     /* Keep boundary order deterministic, independent of when a first binding
      * happened to initialize its table. High-water state prevents retired keys
      * from being allocated again after a save/reload. */
-    for (size_t b=0;b<w->boundary_count;++b) {
-        const BoundaryVertexKeys *keys=world_find_vertex_keys(w,w->boundaries[b].id);
+    for (size_t b=0;b<world_boundary_count(w);++b) {
+        const BoundaryVertexKeys *keys=world_find_vertex_keys(w,geo_regions_at(&w->region_data,b)->id);
         if (!keys) continue;
         fprintf(out,"boundary-vertex-keys %u",keys->boundary_id);
         for (size_t l=0;l<keys->loop_count;++l) {
