@@ -45,8 +45,8 @@ static bool boundary_preview_changed(const SpaceBoundarySurface *before,const Sp
 static void json_boundary_preview(void)
 {
     fputs(",\"boundaries\":[",stdout); bool first=true;
-    for (size_t i=0;i<g_preview.before.boundary_count;++i) {
-        const SpaceBoundarySurface *before=&g_preview.before.boundaries[i];
+    for (size_t i=0;i<world_boundary_count(&g_preview.before);++i) {
+        const SpaceBoundarySurface *before=world_boundary_at(&g_preview.before,i);
         const SpaceBoundarySurface *after=world_find_boundary(&g_preview.after,before->id);
         if (!boundary_preview_changed(before,after)) continue;
         printf("%s{\"id\":%u,\"before\":",first?"":",",before->id); first=false;
@@ -54,8 +54,8 @@ static void json_boundary_preview(void)
         if (after) json_boundary_definition(&g_preview.after,after,false); else fputs("null",stdout);
         putchar('}');
     }
-    for (size_t i=0;i<g_preview.after.boundary_count;++i) {
-        const SpaceBoundarySurface *after=&g_preview.after.boundaries[i];
+    for (size_t i=0;i<world_boundary_count(&g_preview.after);++i) {
+        const SpaceBoundarySurface *after=world_boundary_at(&g_preview.after,i);
         if (world_find_boundary(&g_preview.before,after->id)) continue;
         printf("%s{\"id\":%u,\"before\":null,\"after\":",first?"":",",after->id); first=false;
         json_boundary_definition(&g_preview.after,after,false); putchar('}');

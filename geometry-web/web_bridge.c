@@ -331,10 +331,6 @@ static void json_deleted_objects(const World *before,bool all)
 {
     fputs(",\"deletedObjects\":[",stdout);bool first_deleted=true;
     {
-#define REMOVED_ROWS(array,count,kind_name) \
-        for(size_t i=0;i<before->count;++i){bool found=false; \
-            for(size_t j=0;!all && j<g_world.count;++j)if(before->array[i].id==g_world.array[j].id){found=true;break;} \
-            if(!found){printf("%s{\"kind\":\"%s\",\"id\":%u}",first_deleted?"":",",kind_name,before->array[i].id);first_deleted=false;}}
         for(size_t i=0;i<geo_grid_systems_count(&before->grid_store);++i){
             const GridSystem *system=geo_grid_systems_at(&before->grid_store,i);
             if(all || !geo_grid_systems_find(&g_world.grid_store,system->id)){
@@ -347,8 +343,12 @@ static void json_deleted_objects(const World *before,bool all)
                 printf("%s{\"kind\":\"grid-binding\",\"id\":%u}",first_deleted?"":",",binding->id);first_deleted=false;
             }
         }
-        REMOVED_ROWS(boundaries,boundary_count,"boundary")
-#undef REMOVED_ROWS
+        for(size_t i=0;i<world_boundary_count(before);++i){
+            const SpaceBoundarySurface *boundary=world_boundary_at(before,i);
+            if(all || !world_find_boundary(&g_world,boundary->id)){
+                printf("%s{\"kind\":\"boundary\",\"id\":%u}",first_deleted?"":",",boundary->id);first_deleted=false;
+            }
+        }
         for(size_t i=0;i<geo_parameters_card_count(&before->parameters);++i){const ParameterSet *card=&geo_parameters_cards(&before->parameters)[i],*after=NULL;
             for(size_t j=0;j<geo_parameters_card_count(&g_world.parameters);++j)if(geo_parameters_cards(&g_world.parameters)[j].id==card->id){after=&geo_parameters_cards(&g_world.parameters)[j];break;}
             for(size_t f=0;f<card->count;++f){bool found=false;
@@ -489,23 +489,25 @@ static void cmd_proj(int v, Coord u, Coord vv, uint32_t sid)
  * 回繞發出 0 的話使用者會拿到成功訊息和一個**永遠掛不上承載面的死面**。
  * 其餘八類的 id 0 實測可用,所以不一律跳過,避免無謂的行為變更。
  */
-#define WORLD_NEXT_ID(out, array, count, skip_zero)                         \
+#define WORLD_NEXT_ID_AT(out, value, count, skip_zero)                         \
     do {                                                                    \
         size_t n_ = (size_t)(count);                                        \
         uint32_t id_ = 0;                                                   \
         for (size_t i_ = 0; i_ < n_; ++i_)                                  \
-            if ((array)[i_].id > id_) id_ = (array)[i_].id;                 \
+            if ((value)->id > id_) id_ = (value)->id;                 \
         ++id_;                                                              \
         for (size_t attempt_ = 0; attempt_ <= n_; ++attempt_) {             \
             bool used_ = false;                                             \
             if ((skip_zero) && id_ == 0) id_ = 1;                           \
             for (size_t i_ = 0; i_ < n_; ++i_)                              \
-                if ((array)[i_].id == id_) { used_ = true; break; }         \
+                if ((value)->id == id_) { used_ = true; break; }         \
             if (!used_) break;                                              \
             ++id_;                                                          \
         }                                                                   \
         (out) = id_;                                                        \
     } while (0)
+#define WORLD_NEXT_ID(out, array, count, skip_zero) \
+    WORLD_NEXT_ID_AT(out, &(array)[i_], count, skip_zero)
 
 /*
  * GEO-157：`surface N` 是「boundary N + placement N」合體一行,
@@ -523,10 +525,10 @@ static void cmd_proj(int v, Coord u, Coord vv, uint32_t sid)
 
 static bool surface_id_taken(uint32_t id, const uint32_t *reserved, size_t reserved_count)
 {
-    for (size_t i = 0; i < g_world.boundary_count; ++i)
-        if (g_world.boundaries[i].id == id) return true;
-    for (size_t i = 0; i < g_world.placement_count; ++i)
-        if (g_world.placements[i].id == id) return true;
+    for (size_t i = 0; i < world_boundary_count(&g_world); ++i)
+        if (world_boundary_at(&g_world,i)->id == id) return true;
+    for (size_t i = 0; i < world_placement_count(&g_world); ++i)
+        if (world_placement_at(&g_world,i)->id == id) return true;
     for (size_t i = 0; i < reserved_count; ++i)
         if (reserved[i] == id) return true;
     return false;
@@ -537,14 +539,14 @@ static bool next_surface_ids(uint32_t *out, size_t n)
 {
     uint32_t id = 0;
 
-    for (size_t i = 0; i < g_world.boundary_count; ++i)
-        if (g_world.boundaries[i].id > id) id = g_world.boundaries[i].id;
-    for (size_t i = 0; i < g_world.placement_count; ++i)
-        if (g_world.placements[i].id > id) id = g_world.placements[i].id;
+    for (size_t i = 0; i < world_boundary_count(&g_world); ++i)
+        if (world_boundary_at(&g_world,i)->id > id) id = world_boundary_at(&g_world,i)->id;
+    for (size_t i = 0; i < world_placement_count(&g_world); ++i)
+        if (world_placement_at(&g_world,i)->id > id) id = world_placement_at(&g_world,i)->id;
     ++id;
 
     for (size_t k = 0; k < n; ++k) {
-        size_t used = g_world.boundary_count + g_world.placement_count + k;
+        size_t used = world_boundary_count(&g_world) + world_placement_count(&g_world) + k;
         bool found = false;
 
         /* 非零候選 used + 1 個且兩兩相異,被占用的至多 used 個 → 必定找得到。 */
@@ -578,8 +580,8 @@ static void cmd_newid(size_t surface_count)
     }
 
     /* boundary 的 0 是 D4 的保留值;space 的 0 表示游離柱樑。其餘類別仍允許 0。 */
-    WORLD_NEXT_ID(mb,  g_world.boundaries, g_world.boundary_count, true);
-    WORLD_NEXT_ID(mp,  g_world.placements, g_world.placement_count, false);
+    WORLD_NEXT_ID_AT(mb, world_boundary_at(&g_world,i_), world_boundary_count(&g_world), true);
+    WORLD_NEXT_ID_AT(mp, world_placement_at(&g_world,i_), world_placement_count(&g_world), false);
     WORLD_NEXT_ID(mg,  geo_guides_values(&g_world.guide_lines),     geo_guides_count(&g_world.guide_lines),     false);
     WORLD_NEXT_ID(mgr, g_world.grids,      g_world.grid_count,      false);
     WORLD_NEXT_ID(mgs, geo_grid_systems_values(&g_world.grid_store), geo_grid_systems_count(&g_world.grid_store), false);
@@ -616,8 +618,8 @@ static void cmd_newid(size_t surface_count)
 static void cmd_surfaces(void)
 {
     fputs("{\"ok\":true,\"surfaces\":[", stdout);
-    for (size_t i = 0; i < g_world.placement_count; ++i) {
-        const PlacementSurface *p = &g_world.placements[i];
+    for (size_t i = 0; i < world_placement_count(&g_world); ++i) {
+        const PlacementSurface *p = world_placement_at(&g_world,i);
         if (i) putchar(',');
         printf("{\"id\":%u,\"boundary\":%u,"
                "\"origin\":[%lld,%lld,%lld],"
@@ -693,9 +695,9 @@ static void cmd_obstacles(uint32_t id)
     }
 
     int n_axis = 2;
-    for (size_t p = 0; p < g_world.placement_count; ++p) {
-        if (g_world.placements[p].boundary_id == b->id) {
-            n_axis = axis_index(g_world.placements[p].frame.normal);
+    for (size_t p = 0; p < world_placement_count(&g_world); ++p) {
+        if (world_placement_at(&g_world,p)->boundary_id == b->id) {
+            n_axis = axis_index(world_placement_at(&g_world,p)->frame.normal);
             break;
         }
     }
@@ -747,8 +749,8 @@ static void cmd_objects(void)
 
     bool first = true;
 
-    for (size_t i = 0; i < g_world.boundary_count; ++i) {
-        const SpaceBoundarySurface *b = &g_world.boundaries[i];
+    for (size_t i = 0; i < world_boundary_count(&g_world); ++i) {
+        const SpaceBoundarySurface *b = world_boundary_at(&g_world,i);
         Coord lo_u = 0, lo_v = 0, hi_u = 0, hi_v = 0;
 
         if (b->outline.count > 0) {
@@ -763,8 +765,8 @@ static void cmd_objects(void)
         }
 
         bool placed = false;
-        for (size_t p = 0; p < g_world.placement_count; ++p) {
-            if (g_world.placements[p].boundary_id == b->id) {
+        for (size_t p = 0; p < world_placement_count(&g_world); ++p) {
+            if (world_placement_at(&g_world,p)->boundary_id == b->id) {
                 placed = true;
                 break;
             }
@@ -783,8 +785,8 @@ static void cmd_objects(void)
     }
 
     /* 自帶矩形（無邊界面）的承載面也是一張面卡。 */
-    for (size_t i = 0; i < g_world.placement_count; ++i) {
-        const PlacementSurface *p = &g_world.placements[i];
+    for (size_t i = 0; i < world_placement_count(&g_world); ++i) {
+        const PlacementSurface *p = world_placement_at(&g_world,i);
 
         if (p->boundary_id != 0) {
             continue;

@@ -42,15 +42,15 @@ static void cmd_load_prepare(const char *path)
     printf("{\"ok\":true,\"token\":%u,",g_load_token);json_engineering_capabilities(g_load_after);
     fputs(",\"final_scene\":",stdout);js_string(canonical);free(canonical);
     fputs(",\"final_objects\":{\"boundaries\":[",stdout);
-    for(size_t i=0;i<g_load_after->boundary_count;++i)printf("%s%u",i?",":"",g_load_after->boundaries[i].id);
+    for(size_t i=0;i<world_boundary_count(g_load_after);++i)printf("%s%u",i?",":"",world_boundary_at(g_load_after,i)->id);
     fputs("],\"boundaryFingerprints\":[",stdout);
     /* Same native pin as boundary reads, from the detached final candidate.
-     * One bounded row per boundary; no live World lookup or geometry copy. */
-    for(size_t i=0;i<g_load_after->boundary_count;++i){const SpaceBoundarySurface *b=&g_load_after->boundaries[i];
+     * One bounded row per boundary, read only from this candidate's K store. */
+    for(size_t i=0;i<world_boundary_count(g_load_after);++i){const SpaceBoundarySurface *b=world_boundary_at(g_load_after,i);
         char hash[65];boundary_geometry_hash(b,hash);
         printf("%s{\"id\":%u,\"geometryFingerprint\":",i?",":"",b->id);js_string(hash);putchar('}');}
     fputs("],\"placements\":[",stdout);
-    for(size_t i=0;i<g_load_after->placement_count;++i){const PlacementSurface *p=&g_load_after->placements[i];
+    for(size_t i=0;i<world_placement_count(g_load_after);++i){const PlacementSurface *p=world_placement_at(g_load_after,i);
         printf("%s{\"id\":%u,\"bid\":%u,\"horizontal\":%s}",i?",":"",p->id,p->boundary_id,
             p->frame.axis_u.z==0&&p->frame.axis_v.z==0?"true":"false");}
     fputs("]}}\n",stdout);
