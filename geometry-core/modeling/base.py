@@ -10,3 +10,9 @@ def load_base(scene_text: str, executable=None) -> dict:
     # Keep explicit historical patch points; process and protocol code live in H.
     return _native.load_base(scene_text, executable, builder=_build_adapter,
                              command_builder=_adapter_command)
+
+
+def load_candidate(scene_text: str, executable=None):
+    """Use complete typed sources while retaining the historical transport seams."""
+    return _native.load_candidate(scene_text, executable, builder=_build_adapter,
+                                  command_builder=_adapter_command)

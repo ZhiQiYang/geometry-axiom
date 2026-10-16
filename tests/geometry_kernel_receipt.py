@@ -41,6 +41,9 @@ DEFINITION_SOURCE_SUITES = {**RECTANGULAR_PYTHON_SUITES,
                            "test_geometry_kernel_graph": 30,
                            "test_geometry_kernel_session": 5,
                            "test_geometry_host_sources": 26}
+DEFAULT_SOURCE_SUITES = {**DEFINITION_SOURCE_SUITES,
+                        "test_geometry_kernel_runtime": 8,
+                        "test_geometry_host_sources": 29}
 SUITE_SETS = {"py1": PY1_SUITES, "py2": PY2_SUITES,
               "native-host": {"test_geometry_host_native": 22},
               "capability-phase": {"test_geometry_kernel_runtime": 4},
@@ -48,7 +51,8 @@ SUITE_SETS = {"py1": PY1_SUITES, "py2": PY2_SUITES,
               "source-transport": SOURCE_TRANSPORT_SUITES,
               "source-runtime": SOURCE_RUNTIME_SUITES,
               "rectangular-python": RECTANGULAR_PYTHON_SUITES,
-              "definition-sources": DEFINITION_SOURCE_SUITES}
+              "definition-sources": DEFINITION_SOURCE_SUITES,
+              "default-sources": DEFAULT_SOURCE_SUITES}
 
 
 def git(*args):

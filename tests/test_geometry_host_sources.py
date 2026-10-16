@@ -7,6 +7,7 @@ from base64 import b64encode
 from copy import deepcopy
 from hashlib import sha256
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -511,6 +512,83 @@ class NativeCandidateTransportTests(unittest.TestCase):
             return ["transport", "--literal-program", program, str(source)]
         _, command = self.invoke(fixture(), command_builder=command_builder)
         self.assertEqual(["transport", "--literal-program", "fixture-not-executed", "--neutral-sources"], command[:-1])
+
+    def test_candidate_facade_preserves_historical_builder_and_argv_seams(self):
+        from modeling import base as facade
+        commands = []
+        def process(command, **options):
+            commands.append(command)
+            self.assertEqual(RAW_SOURCE, Path(command[-1]).read_bytes())
+            return subprocess.CompletedProcess(command, 0, json.dumps(fixture()).encode(), b"")
+        def argv(program, source, **options):
+            return ["transport", "--literal-program", program, str(source)]
+        with mock.patch.dict(os.environ, {}, clear=True), \
+             mock.patch.object(facade, "_build_adapter", return_value="facade-program") as build, \
+             mock.patch.object(facade, "_adapter_command", side_effect=argv) as command, \
+             mock.patch.object(model_native, "_build_adapter", side_effect=AssertionError("default-facade-builder-bypassed")), \
+             mock.patch.object(model_native, "_adapter_command", side_effect=AssertionError("default-facade-argv-bypassed")), \
+             mock.patch.object(model_native, "_execution_identity", return_value=EXECUTION) as pin, \
+             mock.patch.object(model_native.subprocess, "run", side_effect=process):
+            candidate = facade.load_candidate(RAW_SOURCE.decode())
+        build.assert_called_once_with()
+        self.assertEqual(1, command.call_count)
+        self.assertEqual(2, pin.call_count)
+        self.assertEqual(1, len(commands))
+        self.assertEqual(["transport", "--literal-program", "facade-program", "--neutral-sources"], commands[0][:-1])
+        self.assertEqual(EXECUTION, candidate.execution_identity)
+
+    def test_public_default_rejects_incomplete_or_mismatched_transport_once(self):
+        from modeling.engine import evaluate as default_evaluate
+        from tests.test_geometry_kernel_runtime import cases
+        from tests.test_geometry_source_runtime import envelope
+        base, definitions, req, options = cases()["keep"]
+        original = envelope(base)
+        variations = [(original["legacySnapshot"], "BASE_SOURCE_PROTOCOL", False)]
+        for patch in ({"complete": False}, {"rootsComplete": False}, {"missingGroups": ["missing-definition"]}):
+            value = deepcopy(original)
+            value["neutralSources"]["coverage"].update(patch)
+            variations.append((value, "BASE_SOURCE_COVERAGE", False))
+        value = deepcopy(original)
+        value["source"]["sha256After"] = "0" * 64
+        variations.append((value, "BASE_RUNTIME_CHANGED", False))
+        value = deepcopy(original)
+        value["neutralSources"]["candidate"]["id"] = "0" * 64
+        variations.append((value, "BASE_SOURCE_PROTOCOL", False))
+        variations.append((original, "BASE_RUNTIME_CHANGED", True))
+        for value, code, drift in variations:
+            calls = []
+            def process(command, **ignored):
+                calls.append(command)
+                self.assertEqual(definitions["base_scene"].encode(), Path(command[-1]).read_bytes())
+                return subprocess.CompletedProcess(command, 0, json.dumps(value).encode(), b"")
+            identities = [EXECUTION, ("changed-binary", "c" * 64) if drift else EXECUTION]
+            with self.subTest(code=code, drift=drift), \
+                 mock.patch.object(model_native, "_execution_identity", side_effect=identities) as pin, \
+                 mock.patch.object(model_native.subprocess, "run", side_effect=process), \
+                 mock.patch("modeling.base.load_base", side_effect=AssertionError("public-default-legacy-fallback")):
+                with self.assertRaises(ModelError) as error:
+                    default_evaluate(definitions, req, base_executable="fixture-not-executed", **options)
+                self.assertEqual(code, error.exception.code)
+            self.assertEqual(1, len(calls))
+            self.assertEqual(2, pin.call_count)
+            self.assertEqual(["fixture-not-executed", "--neutral-sources"], calls[0][:-1])
+
+    def test_public_default_transport_preserves_unchanged_wire_in_one_invocation(self):
+        from modeling.engine import evaluate as default_evaluate
+        from modeling.common import digest
+        from tests.test_geometry_kernel_runtime import cases, FROZEN_DIGESTS
+        from tests.test_geometry_source_runtime import envelope
+        base, definitions, req, options = cases()["keep"]
+        def process(command, **ignored):
+            self.assertEqual(["fixture-not-executed", "--neutral-sources"], command[:-1])
+            self.assertEqual(definitions["base_scene"].encode(), Path(command[-1]).read_bytes())
+            return subprocess.CompletedProcess(command, 0, json.dumps(envelope(base)).encode(), b"")
+        with mock.patch.object(model_native, "_execution_identity", return_value=EXECUTION) as pin, \
+             mock.patch.object(model_native.subprocess, "run", side_effect=process) as run:
+            output = default_evaluate(definitions, req, base_executable="fixture-not-executed", **options)
+        self.assertEqual(FROZEN_DIGESTS["keep"], digest({"result": output}))
+        self.assertEqual(1, run.call_count)
+        self.assertEqual(2, pin.call_count)
 
 
 if __name__ == "__main__":

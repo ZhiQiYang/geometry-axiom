@@ -10,7 +10,8 @@ CAPABILITIES = default_provider().capabilities
 
 def evaluate(definitions, request, *, capabilities=None, max_cells=200000,
              base_executable=None):
-    from .base import load_base
-    runtime = ModelingRuntime(provider=default_provider(), native_loader=load_base)
+    from .base import load_candidate
+    runtime = ModelingRuntime(provider=default_provider(), native_loader=load_candidate,
+                              source_graph=True)
     return runtime.evaluate(definitions, request, capabilities=capabilities,
                             max_cells=max_cells, base_executable=base_executable)

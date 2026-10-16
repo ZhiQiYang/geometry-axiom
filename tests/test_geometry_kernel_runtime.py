@@ -4,6 +4,7 @@ The exact native snapshot fixtures are supplied at the established loader seam.
 This suite does not replace the real native adapter replay gate.
 """
 from copy import deepcopy
+from dataclasses import replace
 from pathlib import Path
 import shutil
 import subprocess
@@ -125,8 +126,9 @@ def cases():
 
 
 def execute(evaluator, inputs):
+    from tests.test_geometry_source_runtime import decode, envelope
     base, definitions, req, options = deepcopy(inputs)
-    with mock.patch("modeling.base.load_base", return_value=base):
+    with mock.patch("modeling.base.load_candidate", return_value=decode(envelope(base))):
         try:
             return {"result": evaluator(definitions, req, **options)}
         except ModelError as error:
@@ -201,7 +203,8 @@ class KernelRuntimeTests(unittest.TestCase):
                                 ignore=shutil.ignore_patterns("__pycache__"))
             (copied / "tests").mkdir()
             (copied / "tests/__init__.py").write_text("", encoding="utf-8")
-            shutil.copyfile(__file__, copied / "tests/test_geometry_kernel_runtime.py")
+            for name in ("test_geometry_kernel_runtime.py", "test_geometry_source_runtime.py"):
+                shutil.copyfile(ROOT / "tests" / name, copied / "tests" / name)
             source = copied / "geometry-app/geometry_app/model_runtime.py"
             original = source.read_text(encoding="utf-8")
             before = "validation_only=bool(capability_errors)"
@@ -239,6 +242,112 @@ class KernelRuntimeTests(unittest.TestCase):
         self.assertEqual("7000", output["result"]["derived"]["objects"][0]["volume_mm3"])
         self.assertEqual(1, call.call_count)
         self.assertIsInstance(call.call_args.args[0], geometry_kernel.Program)
+
+    def test_default_consumes_changed_typed_box_and_preserves_complete_candidate(self):
+        import geometry_kernel as kernel
+        from tests.test_geometry_source_runtime import decode, envelope
+        base, definitions, req, options = cases()["keep"]
+        candidate = decode(envelope(base))
+        changed = replace(candidate.sources[0], value=replace(candidate.sources[0].value, upper=(30, 20, 20)))
+        candidate = replace(candidate, sources=(changed, *candidate.sources[1:]))
+        original = candidate.legacy_snapshot
+        with mock.patch("modeling.base.load_candidate", return_value=candidate) as loader, \
+             mock.patch("modeling.base.load_base", side_effect=AssertionError("default-must-not-load-legacy-snapshot")), \
+             mock.patch("geometry_app.model_runtime.solid_definition", side_effect=AssertionError("default-must-not-build-literal-box")), \
+             mock.patch.object(kernel, "evaluate", wraps=kernel.evaluate) as evaluator:
+            result = evaluate(definitions, req, **options)
+        self.assertEqual(["1000", "12000"], [item["volume_mm3"] for item in result["derived"]["objects"]],
+                         "default-must-consume-returned-box")
+        loader.assert_called_once_with(definitions["base_scene"], executable=None)
+        self.assertEqual(1, evaluator.call_count)
+        program = evaluator.call_args.args[0]
+        self.assertEqual(candidate.snapshot_identity, program.snapshot_identity)
+        # H binds legacy output tokens onto opaque face provenance; it must
+        # retain every source identity, typed context and dependency edge.
+        self.assertEqual(tuple(source.key for source in candidate.sources), tuple(source.key for source in program.sources))
+        self.assertEqual(tuple((source.value_type, source.context, source.dependencies, source.status) for source in candidate.sources),
+                         tuple((source.value_type, source.context, source.dependencies, source.status) for source in program.sources))
+        self.assertEqual(original, candidate.legacy_snapshot)
+
+    def test_default_consumes_changed_typed_frame_and_quantity(self):
+        import geometry_kernel as kernel
+        from tests.test_geometry_source_runtime import decode, envelope
+        base, definitions, req, options = cases()["extrusion"]
+        candidate = decode(envelope(base))
+        changed = []
+        for source in candidate.sources:
+            if source.value_type == kernel.ValueType.FRAME:
+                source = replace(source, value=replace(source.value, origin=(3, 4, 5)))
+            elif source.value_type == kernel.ValueType.QUANTITY and source.value.numerator == 20:
+                source = replace(source, value=replace(source.value, numerator=30))
+            changed.append(source)
+        with mock.patch("modeling.base.load_candidate", return_value=replace(candidate, sources=tuple(changed))), \
+             mock.patch("geometry_app.model_runtime._inputs", side_effect=AssertionError("default-must-not-build-literal-placement")):
+            mesh = evaluate(definitions, req, **options)["derived"]["objects"][0]
+        self.assertEqual("12000", mesh["volume_mm3"], "default-must-consume-returned-quantity")
+        self.assertEqual([3, 4, 5], [min(point[a] for point in mesh["vertices_mm"]) for a in range(3)])
+        self.assertEqual([23, 24, 35], [max(point[a] for point in mesh["vertices_mm"]) for a in range(3)])
+
+    def test_default_retains_unused_definition_edges_without_forcing_values(self):
+        from tests.test_geometry_source_runtime import decode, envelope
+        base, definitions, req, options = cases()["keep"]
+        value = envelope(base)
+        graph = value["neutralSources"]
+        key = {"namespace": "runtime.fixture", "keyBase64": "dW51c2VkLWRlZmluaXRpb24="}
+        graph["nodes"].append({"ref": key, "descriptor": {"valueType": "definition", "unit": "scalar",
+            "context": {"placementId": None, "axis": None, "owner": None}}, "status": "unevaluated", "value": None})
+        graph["edges"].append({"consumer": graph["nodes"][0]["ref"], "source": key, "kind": "definition-required"})
+        candidate = decode(value)
+        with mock.patch("modeling.base.load_candidate", return_value=candidate):
+            self.assertEqual(FROZEN_DIGESTS["keep"], digest({"result": evaluate(definitions, req, **options)}))
+        graph["edges"][0]["kind"] = "value-required"
+        with mock.patch("modeling.base.load_candidate", return_value=decode(value)):
+            with self.assertRaises(ModelError) as error:
+                evaluate(definitions, req, **options)
+        self.assertEqual("INCOMPLETE", error.exception.status)
+        self.assertEqual("SOURCE_UNAVAILABLE", error.exception.code)
+
+    def test_removed_default_source_selection_is_detected(self):
+        with tempfile.TemporaryDirectory(prefix="geometry-default-source-guards-") as directory:
+            copied = Path(directory)
+            for package in ("geometry-core/geometry_kernel", "geometry-core/modeling",
+                            "geometry-app/geometry_app", "geometry-templates/woodworking/geometry_woodworking"):
+                shutil.copytree(ROOT / package, copied / package, ignore=shutil.ignore_patterns("__pycache__"))
+            (copied / "tests").mkdir()
+            (copied / "tests/__init__.py").write_text("", encoding="utf-8")
+            for name in ("test_geometry_kernel_runtime.py", "test_geometry_source_runtime.py"):
+                shutil.copyfile(ROOT / "tests" / name, copied / "tests" / name)
+            source = copied / "geometry-core/modeling/engine.py"
+            original = source.read_text(encoding="utf-8")
+            command = [sys.executable, "-I", "-B", "-c",
+                "import sys,unittest;sys.path.insert(0,sys.argv.pop(1));unittest.main(module=None)", str(copied),
+                "tests.test_geometry_kernel_runtime.KernelRuntimeTests.test_default_consumes_changed_typed_box_and_preserves_complete_candidate"]
+            def run():
+                return subprocess.run(command, cwd=copied, capture_output=True, text=True, timeout=30)
+            baseline = run()
+            self.assertEqual(0, baseline.returncode, baseline.stdout + baseline.stderr)
+            mutations = (
+                ("from .base import load_candidate", "from .base import load_base as load_candidate",
+                 "default-must-not-load-legacy-snapshot"),
+                ("native_loader=load_candidate,\n                              source_graph=True",
+                 "native_loader=lambda *a, **kw: load_candidate(*a, **kw).legacy_snapshot,\n                              source_graph=False",
+                 "default-must-not-build-literal-box"),
+            )
+            for before, after, marker in mutations:
+                with self.subTest(marker=marker):
+                    self.assertEqual(1, original.count(before))
+                    source.write_text(original.replace(before, after), encoding="utf-8")
+                    mutant = run()
+                    details = mutant.stdout + mutant.stderr
+                    self.assertEqual(1, mutant.returncode, details)
+                    self.assertIn("Ran 1 test", details)
+                    self.assertIn("FAILED (failures=1)", details)
+                    self.assertIn(marker, details)
+                    self.assertNotIn("ImportError", details)
+                    self.assertNotIn("SyntaxError", details)
+            source.write_text(original, encoding="utf-8")
+            restored = run()
+            self.assertEqual(0, restored.returncode, restored.stdout + restored.stderr)
 
 
 if __name__ == "__main__":
