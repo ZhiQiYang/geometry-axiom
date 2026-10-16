@@ -1891,6 +1891,13 @@ static const StyleSpec STYLE_SPEC[STYLE_COUNT] = {
  * 座標一律是「視圖內的 mm」；begin_view 告訴後端這個視圖要平移多少。
  */
 typedef struct {
+    const char *kind;
+    uint32_t entity_id;
+    const char *face_id;
+    const char *short_label;
+} DrawTextAnnotation;
+
+typedef struct {
     void *ctx;
     void (*begin_view)(void *ctx, Coord tx, Coord ty);
     void (*end_view)(void *ctx);
@@ -1899,6 +1906,10 @@ typedef struct {
     void (*line)(void *ctx, ViewPoint2 a, ViewPoint2 b, DrawStyle style);
     /* rotate_degrees 非 0 時，文字以自己的錨點為中心旋轉（沿直立的邊標字用）。 */
     void (*text)(void *ctx, ViewPoint2 at, DrawStyle style, const char *utf8, int rotate_degrees);
+    /* Optional structured presentation metadata; absent backends retain text. */
+    void (*annotated_text)(void *ctx, ViewPoint2 at, DrawStyle style,
+                           const char *utf8, int rotate_degrees,
+                           const DrawTextAnnotation *annotation);
 } DrawTarget;
 
 /* 點（視為從房間原點出發的位置向量）在某個軸上的分量。 */
@@ -2077,6 +2088,18 @@ static void scene_emit_text(
 {
     if (target != NULL) {
         target->text(target->ctx, at, style, text, rotate_degrees);
+    }
+}
+
+static void scene_emit_annotated_text(
+    const DrawTarget *target, ViewPoint2 at, DrawStyle style,
+    const char *text, int rotate_degrees, const DrawTextAnnotation *annotation
+)
+{
+    if (target != NULL && target->annotated_text != NULL) {
+        target->annotated_text(target->ctx, at, style, text, rotate_degrees, annotation);
+    } else {
+        scene_emit_text(target, at, style, text, rotate_degrees);
     }
 }
 
@@ -2378,9 +2401,15 @@ static void scene_draw_view(
                 at.x /= 4;
                 at.y /= 4;
 
-                snprintf(label, sizeof label, "角材%" PRIu32 " %s",
-                         timber->id, timber_face_short_name(faces[i].id));
-                scene_emit_text(target, at, STYLE_TIMBER_LABEL, label, 0);
+                char short_label[48];
+                const char *face_id = timber_face_short_name(faces[i].id);
+                snprintf(short_label, sizeof short_label, "角材%" PRIu32, timber->id);
+                snprintf(label, sizeof label, "%s %s", short_label, face_id);
+                const DrawTextAnnotation annotation = {
+                    "member-face", timber->id, face_id, short_label
+                };
+                scene_emit_annotated_text(target, at, STYLE_TIMBER_LABEL, label, 0,
+                                          &annotation);
             }
         }
     }

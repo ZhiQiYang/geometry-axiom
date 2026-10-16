@@ -133,7 +133,9 @@ static void jt_line(void *ctx, ViewPoint2 a, ViewPoint2 b, DrawStyle s)
            (int64_t)a.x, (int64_t)a.y, (int64_t)b.x, (int64_t)b.y, (int)s);
 }
 
-static void jt_text(void *ctx, ViewPoint2 at, DrawStyle s, const char *utf8, int rot)
+static void jt_annotated_text(void *ctx, ViewPoint2 at, DrawStyle s,
+                              const char *utf8, int rot,
+                              const DrawTextAnnotation *annotation)
 {
     JsonOps *j = ctx;
     jop_sep(j);
@@ -141,11 +143,24 @@ static void jt_text(void *ctx, ViewPoint2 at, DrawStyle s, const char *utf8, int
            ",\"s\":%d,\"rot\":%d,\"t\":",
            (int64_t)at.x, (int64_t)at.y, (int)s, rot);
     js_string(utf8);
+    if (annotation != NULL) {
+        fputs(",\"annotation\":{\"kind\":", stdout); js_string(annotation->kind);
+        printf(",\"entityId\":%" PRIu32 ",\"faceId\":", annotation->entity_id);
+        js_string(annotation->face_id);
+        fputs(",\"shortLabel\":", stdout); js_string(annotation->short_label);
+        putchar('}');
+    }
     putchar('}');
 }
 
+static void jt_text(void *ctx, ViewPoint2 at, DrawStyle s, const char *utf8, int rot)
+{
+    jt_annotated_text(ctx, at, s, utf8, rot, NULL);
+}
+
 static const DrawTarget JSON_TARGET = {
-    NULL, jt_begin_view, jt_end_view, jt_rect, jt_polygon, jt_line, jt_text
+    NULL, jt_begin_view, jt_end_view, jt_rect, jt_polygon, jt_line, jt_text,
+    jt_annotated_text
 };
 
 /* ---------------- 世界操作 ---------------- */
