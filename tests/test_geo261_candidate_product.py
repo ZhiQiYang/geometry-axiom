@@ -23,7 +23,7 @@ class CandidateProduct(unittest.TestCase):
         if r.returncode:self.assertIn('ASSERT:',r.stderr)
         return r
 
-    def test_preview_retains_same_resolver_through_confirm_and_one_history_step(self):
+    def test_preview_revalidates_same_candidate_through_confirm_and_one_history_step(self):
         r=self.case('lifecycle');self.assertEqual(0,r.returncode,r.stderr)
     def test_sealed_template_bytes_cannot_be_replaced(self):
         r=self.case('wood-tamper');self.assertEqual(0,r.returncode,r.stderr)
@@ -68,5 +68,15 @@ class CandidateProduct(unittest.TestCase):
             confirm=session.command('load-confirm '+str(preview['token']));self.assertTrue(confirm['ok'],confirm)
             self.assertIn('spec x 700\n',session.command('dump')['text'])
             self.assertTrue(session.line('undo')['ok']);self.assertEqual(before,session.command('dump')['text'])
+
+    def test_reset_and_default_replace_complete_world_and_keep_old_history_policy(self):
+        with _bridge.BridgeSession(native().bridge()) as session:
+            initial=session.command('dump')['text'];self.assertIn('surface',initial)
+            self.assertTrue(session.command('reset')['ok'])
+            empty=session.command('dump')['text'];self.assertNotIn('surface',empty);self.assertNotIn('timber',empty)
+            self.assertFalse(session.line('undo')['ok'])
+            self.assertTrue(session.command('default')['ok'])
+            self.assertEqual(initial,session.command('dump')['text'])
+            self.assertFalse(session.line('undo')['ok'])
 
 if __name__=='__main__':unittest.main(verbosity=2)

@@ -54,7 +54,7 @@ class NativeBuild:
             shutil.copy2(ROOT / "geometry-app/native" / name, self.host / name)
         self.woodworking = self.work / "isolated-woodworking"
         self.woodworking.mkdir()
-        for name in ("members.h", "members.c", "supports.h", "supports.c", "contacts.h", "contacts.c", "engineering.h", "engineering.c", "panel_layout.h", "panel_layout.c", "panel_support.h", "panel_support.c"):
+        for name in ("members.h", "members.c", "supports.h", "supports.c", "contacts.h", "contacts.c", "engineering.h", "engineering.c", "panel_layout.h", "panel_layout.c", "panel_support.h", "panel_support.c", "boundary_policy.h", "domain_values.h", "section_profile.h", "section_profile.c", "assembly.h", "assembly.c"):
             shutil.copy2(ROOT / "geometry-templates/woodworking/native" / name, self.woodworking / name)
         self.windows = os.name == "nt"
         self.suffix = ".exe" if self.windows else ""
@@ -95,6 +95,8 @@ class NativeBuild:
         self.wood_engineering_object = self.compile(self.woodworking / "engineering.c", "wood-engineering")
         self.wood_panel_layout_object = self.compile(self.woodworking / "panel_layout.c", "wood-panel-layout")
         self.wood_panel_support_object = self.compile(self.woodworking / "panel_support.c", "wood-panel-support")
+        self.wood_section_profile_object = self.compile(self.woodworking / "section_profile.c", "wood-section-profile")
+        self.wood_assembly_object = self.compile(self.woodworking / "assembly.c", "wood-assembly")
         exact_source = self.work / "exact-client.c"
         shutil.copy2(ROOT / "tests/geo261_exact_harness.c", exact_source)
         self.exact_client = self.compile(exact_source, "exact-client")
@@ -156,7 +158,7 @@ class NativeBuild:
         return self.bridge_exe
 
     def product_objects(self):
-        return [*self.kernel_objects(), self.wood_members_object, self.wood_supports_object, self.wood_contacts_object, self.wood_engineering_object, self.wood_panel_layout_object, self.wood_panel_support_object, self.host_history_object, self.host_candidate_object]
+        return [*self.kernel_objects(), self.wood_members_object, self.wood_supports_object, self.wood_contacts_object, self.wood_engineering_object, self.wood_panel_layout_object, self.wood_panel_support_object, self.wood_section_profile_object, self.wood_assembly_object, self.host_history_object, self.host_candidate_object]
 
     def cli(self):
         if self.cli_exe is None:

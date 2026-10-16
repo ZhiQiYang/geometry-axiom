@@ -56,4 +56,7 @@ GeoEvalContext *geo_candidate_sources(const GeoCandidate *);
 GeoCandidateState geo_candidate_state(const GeoCandidate *);
 uint64_t geo_candidate_id(const GeoCandidate *);
 uint64_t geo_candidate_base_revision(const GeoCandidate *);
+/* Number of actual evaluator invocations in this candidate identity. Reopening
+ * preserves it; seal/check/publication do not evaluate or advance it. */
+uint64_t geo_candidate_evaluation_generation(const GeoCandidate *);
 #endif

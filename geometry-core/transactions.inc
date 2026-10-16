@@ -571,6 +571,9 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
             g_preview.ready=false;
             scene_error(path,line_no,"I8a: preview is stale; preview again against the current world"); return false;
         }
+        if(!app_world_candidate_revalidate(g_preview.transaction,world)){
+            g_preview.ready=false;scene_error(path,line_no,g_revalidate_error[0]?g_revalidate_error:"I8: invalid definition/reference; World unchanged");return false;
+        }
         bool changed=!world_definitions_equal(world,&g_preview.transaction->after);
         if(!app_world_candidate_publish(g_preview.transaction,world,true)){
             g_preview.ready=false;scene_error(path,line_no,"I8a: preview is stale; preview again against the current world");return false;

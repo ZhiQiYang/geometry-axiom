@@ -187,8 +187,8 @@ static bool apply_grid_source_rule(const char *path,int line_no,char **t,int cou
     }
     if(!app_grid_system_put(&candidate,s,app_grid_system_main_along(w,sid)))goto invalid;
     reference_capture_trial(&candidate);
-    if(!world_revalidate(&candidate)){scene_error(path,line_no,g_revalidate_error);return false;}
-    *w=candidate;return true;
+    if(!app_world_revalidate_staged(w,&candidate)){scene_error(path,line_no,g_revalidate_error);return false;}
+    return true;
 invalid:
     scene_error(path,line_no,"I25a: RULE_SYNTAX requires integer divisions and valid source selector/name");return false;
 }

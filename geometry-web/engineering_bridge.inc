@@ -142,6 +142,9 @@ static void batch_confirm(const char *arg,int kind,const char *token_message,con
     if(!arg||!parse_u32(arg,&token)||!g_preview.ready||!mine||g_preview.token!=token||!g_preview.valid){eng_bridge_error("TOKEN",token_message);return;}
     if(g_history.grouping||g_preview.revision!=g_definition_revision||!app_world_candidate_current(g_preview.transaction,&g_world)){g_preview.ready=false;eng_bridge_error("STALE",stale_message);return;}
     if(!assembly_versions_immutable(&g_world,&g_preview.transaction->after)){g_preview.ready=false;eng_bridge_error("INVALID",g_engineering_error);return;}
+    if(!app_world_candidate_revalidate(g_preview.transaction,&g_world)){
+        g_preview.ready=false;eng_bridge_error("INVALID",g_revalidate_error);return;
+    }
     bool changed=!world_definitions_equal(&g_world,&g_preview.transaction->after);uint64_t before=g_definition_revision;
     if(changed)history_record(&g_world);
     if(!app_world_candidate_publish(g_preview.transaction,&g_world,true)){

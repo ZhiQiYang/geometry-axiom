@@ -87,8 +87,8 @@ static bool apply_grid_binding_line(const char *path,int line_no,char **t,int co
     if(!geo_grid_binding_normalize(&binding))goto invalid;
     if(!geo_grid_bindings_put(&candidate.grid_store,&binding)){scene_error(path,line_no,"I37: grid-binding capacity is 32");return false;}
     reference_capture_trial(&candidate);
-    if(!world_revalidate(&candidate)){scene_error(path,line_no,g_revalidate_error);return false;}
-    *w=candidate;return true;
+    if(!app_world_revalidate_staged(w,&candidate)){scene_error(path,line_no,g_revalidate_error);return false;}
+    return true;
 invalid:
     scene_error(path,line_no,"D30/I37: invalid grid-binding vertex, signed cell or rational anchor declaration");return false;
 }
@@ -108,9 +108,9 @@ static bool apply_grid_binding_application(const char *path,int line_no,char **t
     if(slot==WORLD_MAX_GRIDS)goto invalid;
     World candidate=*w;candidate.grids[slot]=g;if(slot==candidate.grid_count)++candidate.grid_count;
     const World *baseline=g_subgrid_before;if(!baseline)g_subgrid_before=w;
-    reference_capture_trial(&candidate);bool ok=world_revalidate(&candidate);g_subgrid_before=baseline;
+    reference_capture_trial(&candidate);bool ok=app_world_revalidate_staged(w,&candidate);g_subgrid_before=baseline;
     if(!ok){scene_error(path,line_no,g_revalidate_error);return false;}
-    *w=candidate;return true;
+    return true;
 invalid:
     scene_error(path,line_no,"D30/I37: from-binding requires an available lattice grid identity and the binding's boundary placement");return false;
 }

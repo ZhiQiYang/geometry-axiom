@@ -105,6 +105,16 @@ GeoCandidateStatus app_candidate_publish(AppCandidate *candidate,void *live,uint
     if(status!=GEO_CANDIDATE_OK)return status;
     publish(live,candidate->after,opaque);return GEO_CANDIDATE_OK;
 }
+GeoCandidateStatus app_candidate_reopen(AppCandidate *candidate,const void *live,uint64_t revision,
+    const char *stamp,AppCandidateEqual equal,void *opaque)
+{
+    GeoCandidateStatus status=app_candidate_check(candidate,live,revision,stamp,equal,opaque);
+    if(status!=GEO_CANDIDATE_OK)return status;
+    app_candidate_set_evaluation_state(candidate,NULL,NULL);
+    status=geo_candidate_reopen(candidate->core,revision,stamp);
+    if(status==GEO_CANDIDATE_OK)candidate->sealed=false;
+    return status;
+}
 void app_candidate_discard(AppCandidate *candidate)
 {
     if(!candidate)return;

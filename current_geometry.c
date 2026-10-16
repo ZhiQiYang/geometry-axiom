@@ -155,7 +155,7 @@ static bool surface_frame_is_valid(const SurfaceFrame *frame)
 #define DP_COMPONENT_MAX 8
 #define GUIDE_MAX_SEGMENTS (DP_COMPONENT_MAX * POLY_MAX_VERTICES * (POLY_MAX_HOLES + 1))
 
-#include "geometry-templates/woodworking/native/boundary_policy.h"
+#include "geometry-templates/woodworking/native/domain_values.h"
 typedef WoodEdgeFixity EdgeFixity;
 typedef WoodBoundaryKind BoundaryKind;
 #define EDGE_FREE WOOD_EDGE_FREE
@@ -164,11 +164,7 @@ typedef WoodBoundaryKind BoundaryKind;
 #define BOUNDARY_ROOM_PLAN WOOD_BOUNDARY_ROOM_PLAN
 #define BOUNDARY_WALL_ELEVATION WOOD_BOUNDARY_WALL_ELEVATION
 
-typedef struct {
-    SurfacePoint2 v[POLY_MAX_VERTICES];
-    size_t count;
-    EdgeFixity fixity[POLY_MAX_VERTICES];
-} PolygonLoop2;
+typedef WoodBoundaryLoop PolygonLoop2;
 
 /* Geometry views deliberately omit edge fixity and application kind. */
 static GeoLoop2View poly_geometry_view(const PolygonLoop2 *loop)
@@ -290,13 +286,7 @@ static size_t poly_clip_line(
  * 不知道自己坐在世界哪裡——3D 位置由承載面（PlacementSurface）給。
  * ============================================================ */
 
-typedef struct {
-    SurfaceId id;
-    BoundaryKind kind;
-    PolygonLoop2 outline;
-    PolygonLoop2 holes[POLY_MAX_HOLES];
-    size_t hole_count;
-} SpaceBoundarySurface;
+typedef WoodBoundaryRegion SpaceBoundarySurface;
 /* 公理 D3：空間邊界面——純局部 2D，不含世界位置。 */
 
 static GeoRegionView boundary_geometry_view(const SpaceBoundarySurface *boundary,GeoLoop2View holes[POLY_MAX_HOLES])
@@ -7689,6 +7679,47 @@ static bool world_revalidate(World *world)
     bool ok=app_world_candidate_evaluate(candidate,app_world_revalidate_evaluate,&candidate->before)==GEO_CANDIDATE_OK;
     if(ok)ok=app_world_candidate_seal(candidate)&&app_world_candidate_publish(candidate,world,false);
     app_world_candidate_destroy(candidate);return ok;
+}
+
+/* Legacy parsers stage definitions locally before asking for validation.
+ * Move those bytes into the exact H candidate before evaluating providers;
+ * retain the old bytes in the parser's scratch value for its baseline/rollback.
+ * No provider may outlive a stack World that was used only for staging. */
+static void app_world_swap(World *a,World *b)
+{
+    unsigned char scratch[4096],*x=(unsigned char*)a,*y=(unsigned char*)b;
+    for(size_t offset=0;offset<sizeof *a;){
+        size_t count=sizeof *a-offset;if(count>sizeof scratch)count=sizeof scratch;
+        memcpy(scratch,x+offset,count);memcpy(x+offset,y+offset,count);memcpy(y+offset,scratch,count);offset+=count;
+    }
+}
+static bool app_world_revalidate_staged(World *world,World *staged)
+{
+    if(g_active_app_candidate&&world==&g_active_app_candidate->after){
+        if(g_boundary_keyed_update){g_active_app_candidate->operation.boundary_keyed=true;g_active_app_candidate->operation.boundary_id=g_boundary_keyed_id;}
+        app_world_swap(world,staged);
+        const World *previous=g_subgrid_before;
+        if(previous==world)g_subgrid_before=staged;
+        bool ok=world_revalidate(world);g_subgrid_before=previous;
+        if(!ok)app_world_swap(world,staged);
+        return ok;
+    }
+    if(!world_revalidate(staged))return false;
+    memcpy(world,staged,sizeof *world);return true;
+}
+
+/* I8a confirmation revalidates the same retained candidate. The existing
+ * sealed bytes and provider set must pass before its resolver can be reopened. */
+static bool app_world_candidate_revalidate(AppWorldCandidate *candidate,const World *live)
+{
+    if(!app_world_candidate_current(candidate,live)||app_candidate_reopen(candidate->control,live,g_definition_revision,app_world_provider_stamp(),
+        app_world_candidate_equal,NULL)!=GEO_CANDIDATE_OK)return false;
+    const World *previous=g_subgrid_before;g_subgrid_before=&candidate->before;
+    bool previous_keyed=g_boundary_keyed_update;uint32_t previous_keyed_id=g_boundary_keyed_id;
+    g_boundary_keyed_update=candidate->operation.boundary_keyed;g_boundary_keyed_id=candidate->operation.boundary_id;
+    bool ok=app_world_candidate_evaluate(candidate,app_world_revalidate_evaluate,&candidate->before)==GEO_CANDIDATE_OK;
+    g_boundary_keyed_update=previous_keyed;g_boundary_keyed_id=previous_keyed_id;g_subgrid_before=previous;
+    return ok&&app_world_candidate_seal(candidate);
 }
 
 /* ---- 共用小解析工具 ---- */

@@ -11,7 +11,7 @@ typedef struct {
     char before_hash[65],current_hash[65];
 } GeoCandidateBinding;
 struct GeoCandidate {
-    uint64_t candidate_id,base_revision;
+    uint64_t candidate_id,base_revision,evaluation_generation;
     char *provider_stamp;
     GeoCandidateState state;
     GeoCandidateBinding *bindings;
@@ -104,6 +104,7 @@ GeoCandidateStatus geo_candidate_evaluate(GeoCandidate *candidate,GeoCandidateEv
     if(!candidate||!evaluate)return GEO_CANDIDATE_INVALID;
     if(candidate->state!=GEO_CANDIDATE_OPEN&&candidate->state!=GEO_CANDIDATE_EVALUATED&&
        candidate->state!=GEO_CANDIDATE_REJECTED)return GEO_CANDIDATE_STATE;
+    if(candidate->evaluation_generation==UINT64_MAX)return GEO_CANDIDATE_STATE;
     candidate->bindings_closed=true;
     GeoCandidateStatus status=geo_candidate_check_state(candidate,false);
     if(status!=GEO_CANDIDATE_OK){candidate->state=GEO_CANDIDATE_REJECTED;return status;}
@@ -111,6 +112,7 @@ GeoCandidateStatus geo_candidate_evaluate(GeoCandidate *candidate,GeoCandidateEv
     if(!sources){candidate->state=GEO_CANDIDATE_REJECTED;return GEO_CANDIDATE_MEMORY;}
     geo_eval_destroy(candidate->sources);candidate->sources=sources;
     candidate->state=GEO_CANDIDATE_EVALUATING;
+    ++candidate->evaluation_generation;
     bool ok=evaluate(state,sources);
     candidate->state=ok?GEO_CANDIDATE_EVALUATED:GEO_CANDIDATE_REJECTED;
     if(!ok)return GEO_CANDIDATE_EVALUATION_FAILED;
@@ -213,3 +215,4 @@ GeoEvalContext *geo_candidate_sources(const GeoCandidate *candidate){return cand
 GeoCandidateState geo_candidate_state(const GeoCandidate *candidate){return candidate?candidate->state:GEO_CANDIDATE_DISCARDED;}
 uint64_t geo_candidate_id(const GeoCandidate *candidate){return candidate?candidate->candidate_id:0;}
 uint64_t geo_candidate_base_revision(const GeoCandidate *candidate){return candidate?candidate->base_revision:0;}
+uint64_t geo_candidate_evaluation_generation(const GeoCandidate *candidate){return candidate?candidate->evaluation_generation:0;}

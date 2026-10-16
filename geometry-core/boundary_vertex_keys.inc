@@ -1,9 +1,6 @@
 /* D30 / I37: boundary-local vertex identities. Included after engineering.inc.
  * Geometry order is not identity: ordinary edits may only match old coordinates;
  * moving an identified point requires the complete, hash-guarded keyed command. */
-static bool g_boundary_keyed_update;
-static uint32_t g_boundary_keyed_id;
-
 static const PolygonLoop2 *boundary_keys_loop(const SpaceBoundarySurface *b,size_t loop)
 {
     return loop ? &b->holes[loop-1] : &b->outline;
@@ -180,11 +177,11 @@ static bool apply_boundary_keys_line(const char *path,int line_no,char **tokens,
     }
     World candidate=*world;
     if(!geo_region_keys_put(&candidate.region_data,&keys))return false;
-    if (!world_revalidate(&candidate)) {
+    if (!app_world_revalidate_staged(world,&candidate)) {
         scene_error(path,line_no,g_revalidate_error[0]?g_revalidate_error:
             "I37: boundary vertex identity replay failed world validation"); return false;
     }
-    *world=candidate;
+
     return true;
 }
 
@@ -270,13 +267,13 @@ static bool apply_boundary_keyed_line(const char *path,int line_no,char **tokens
     uint32_t previous_keyed_id=g_boundary_keyed_id;
     const World *previous_baseline=g_subgrid_before;
     g_boundary_keyed_update=true; g_boundary_keyed_id=id; g_subgrid_before=world;
-    bool ok=world_revalidate(&candidate);
+    bool ok=app_world_revalidate_staged(world,&candidate);
     g_boundary_keyed_update=previous_keyed; g_boundary_keyed_id=previous_keyed_id; g_subgrid_before=previous_baseline;
     if (!ok) {
         scene_error(path,line_no,g_revalidate_error[0]?g_revalidate_error:
             "I37: keyed boundary update failed dependency validation (World unchanged)"); return false;
     }
-    *world=candidate;
+
     return true;
 }
 

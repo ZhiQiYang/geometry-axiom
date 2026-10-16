@@ -23,6 +23,10 @@ GeoCandidateStatus app_candidate_evaluate(AppCandidate *,AppCandidateEvaluate,vo
 GeoCandidateStatus app_candidate_seal(AppCandidate *);
 GeoCandidateStatus app_candidate_check(const AppCandidate *,const void *live,uint64_t revision,
     const char *provider_stamp,AppCandidateEqual,void *opaque);
+/* A confirmation checks the previous seal, then revalidates this same snapshot
+ * through a fresh resolver with the same candidate identity and bindings. */
+GeoCandidateStatus app_candidate_reopen(AppCandidate *,const void *live,uint64_t revision,
+    const char *provider_stamp,AppCandidateEqual,void *opaque);
 /* publish cannot fail: all checks finish before its one complete-root replace.
  * The host callback may preserve presentation data according to its old policy. */
 GeoCandidateStatus app_candidate_publish(AppCandidate *,void *live,uint64_t revision,

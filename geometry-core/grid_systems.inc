@@ -160,10 +160,10 @@ static bool apply_grid_system_line(const char *path,int line_no,char **t,int cou
         goto invalid;
     }
     reference_capture_trial(&candidate);
-    if (!world_revalidate(&candidate)) {
+    if (!app_world_revalidate_staged(w,&candidate)) {
         scene_error(path,line_no,g_revalidate_error[0]?g_revalidate_error:"I37: grid-system dependencies invalid; unchanged"); return false;
     }
-    *w=candidate; return true;
+     return true;
 invalid:
     scene_error(path,line_no,g_grid_stagger_error[0]?g_grid_stagger_error:"D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range"); return false;
 }
@@ -201,12 +201,12 @@ static bool apply_grid_system_application(const char *path,int line_no,char **t,
     /* grid-preview calls this parser directly; retain the same I23 baseline. */
     const World *previous_baseline=g_subgrid_before;
     if (!previous_baseline) g_subgrid_before=w;
-    bool valid=world_revalidate(&candidate);
+    bool valid=app_world_revalidate_staged(w,&candidate);
     g_subgrid_before=previous_baseline;
     if (!valid) {
         scene_error(path,line_no,g_revalidate_error[0]?g_revalidate_error:"I37: application or dependent geometry invalid; unchanged"); return false;
     }
-    *w=candidate; return true;
+     return true;
 }
 
 static void grid_systems_dump(const World *w,FILE *out)

@@ -198,14 +198,30 @@ static bool feed_line(const char *path, int line_no, const char *text, World *wo
     return apply_interactive_tokens(path, line_no, tokens, count, world);
 }
 
+typedef struct { bool use_default; uint64_t completed_revision; } AppReplacement;
+static bool app_replace_evaluate(void *after,GeoEvalContext *sources,void *opaque)
+{
+    (void)sources;AppReplacement *operation=opaque;uint64_t revision=g_definition_revision;
+    bool ok=true;
+    if(operation->use_default)ok=reference_default_world(after);
+    else memset(after,0,sizeof(World));
+    /* Default construction historically advances through its constituent DSL
+     * definitions. Preserve that count, but publish it only with the full root. */
+    operation->completed_revision=g_definition_revision;g_definition_revision=revision;
+    return ok&&world_revalidate(after);
+}
+static bool app_replace_world(World *world,bool use_default)
+{
+    AppWorldCandidate *candidate=app_world_candidate_create(world);if(!candidate)return false;
+    AppReplacement operation={use_default,g_definition_revision};
+    bool ok=app_world_candidate_evaluate(candidate,app_replace_evaluate,&operation)==GEO_CANDIDATE_OK;
+    if(ok)ok=app_world_candidate_seal(candidate)&&app_world_candidate_publish(candidate,world,false);
+    if(ok){g_definition_revision=operation.completed_revision+1;history_clear();g_preview.ready=false;}
+    app_world_candidate_destroy(candidate);return ok;
+}
 /* 內建預設 = room_a.scene 的內容，走同一條解析路。 */
 static bool world_default(World *world)
-{
-    bool ok=reference_default_world(world);
-    if (ok) ++g_definition_revision;
-    history_clear(); g_preview.ready=false;
-    return ok;
-}
+{return app_replace_world(world,true);}
 
 /* ---------------- 指令處理 ---------------- */
 
@@ -383,7 +399,7 @@ static void cmd_replace_world(bool use_default)
     if(!before){fputs("{\"ok\":false,\"error\":\"Candidate memory unavailable\"}\n",stdout);return;}
     *before=g_world;bool ok=true;
     if(use_default)ok=world_default(&g_world);
-    else{memset(&g_world,0,sizeof g_world);history_clear();++g_definition_revision;}
+    else ok=app_replace_world(&g_world,false);
     printf("{\"ok\":%s",ok?"true":"false");
     if(ok)json_deleted_objects(before,true);
     else fputs(",\"error\":\"內建場景失敗\"",stdout);

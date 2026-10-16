@@ -21,6 +21,7 @@ static int lifecycle(const char *path)
     CHECK(preview(),"preview-valid");AppWorldCandidate *owner=g_preview.transaction;
     GeoCandidate *core=app_candidate_core(owner->control);GeoEvalContext *sources=geo_candidate_sources(core);
     uint64_t id=geo_candidate_id(core),revision=g_definition_revision;
+    CHECK(geo_candidate_evaluation_generation(core)==1,"preview-one-evaluation");
     CHECK(sources&&geo_eval_is_sealed(sources),"same-resolver-sealed");
     CHECK(geo_eval_candidate_id(sources)==id&&geo_eval_base_revision(sources)==revision,"same-resolver-identity");
     CHECK(geo_eval_provider_count(sources)>=4&&geo_eval_node_count(sources)>0,"actual-provider-graph");
@@ -29,7 +30,8 @@ static int lifecycle(const char *path)
     CHECK(line("canvas-pos placement 1 17 29"),"presentation-edit");
     CHECK(g_preview.transaction==owner&&geo_candidate_sources(core)==sources,"preview-retains-owner");
     CHECK(confirm(),"confirm-sealed-candidate");
-    CHECK(geo_candidate_state(core)==GEO_CANDIDATE_PUBLISHED&&geo_candidate_sources(core)==sources&&geo_candidate_id(core)==id,"confirm-no-reevaluation");
+    CHECK(geo_candidate_state(core)==GEO_CANDIDATE_PUBLISHED&&geo_candidate_id(core)==id&&geo_eval_candidate_id(geo_candidate_sources(core))==id&&geo_eval_is_sealed(geo_candidate_sources(core)),"confirm-same-candidate-revalidated");
+    CHECK(geo_candidate_evaluation_generation(core)==2,"confirm-full-revalidation");
     CHECK(g_definition_revision==revision+1&&geo_named_values_find(&g_world.named_values,"x")->value==600,"one-complete-publication");
     CHECK(g_world.canvas_pos_count==1&&g_world.canvas_pos[0].x==17&&g_world.canvas_pos[0].y==29,"presentation-preserved");
     CHECK(line("undo")&&geo_named_values_find(&g_world.named_values,"x")->value==500,"one-history-step");
