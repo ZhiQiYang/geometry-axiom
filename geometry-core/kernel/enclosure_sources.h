@@ -12,6 +12,8 @@ typedef enum {
 } GeoEnclosureSourceKind;
 typedef struct {unsigned char bytes[7];} GeoEnclosureSourceKey;
 typedef struct GeoEnclosureSources GeoEnclosureSources;
+#define GEO_ENCLOSURE_MEMBERS_BYTES (8+4*GEO_ENCLOSURE_MEMBER_CAPACITY)
+#define GEO_ENCLOSURE_RESULT_BYTES (GEO_ENCLOSURE_MEMBERS_BYTES+49)
 
 /* Key: kind, four-byte big-endian id, axis+1, slot+1. DEFINITION/RESULT
  * require axis=slot=-1. AXIS_BOUND requires axis=0..2 and slot=0..1.
@@ -20,6 +22,16 @@ typedef struct GeoEnclosureSources GeoEnclosureSources;
 GeoSourceRef geo_enclosure_source_ref(GeoProviderToken,GeoEnclosureSourceKind,uint32_t,
     int axis,int slot,GeoEnclosureSourceKey *);
 bool geo_enclosure_source_decode(const GeoSourceRef *,GeoEnclosureSourceKind *,uint32_t *,int *,int *);
+
+/* Canonical public wire codec for DEFINITION and RESULT (not AXIS_BOUND).
+ * Decoding checks schema, exact byte length, expected id, bounded count and
+ * canonical boolean. Ordered duplicates and zero members remain definitions;
+ * their geometric validity belongs to the evaluator. Unused fields and
+ * padding are zeroed. Failure leaves the output/buffer and size unchanged. */
+bool geo_enclosure_source_encode_definition(GeoEnclosureSourceKind,const GeoEnclosure *,
+    void *bytes,size_t capacity,size_t *size);
+bool geo_enclosure_source_decode_definition(GeoEnclosureSourceKind,const GeoDefinitionValue *,
+    uint32_t expected_id,GeoEnclosure *out);
 
 GeoEnclosureSources *geo_enclosure_sources_register(GeoEvalContext *,const GeoEnclosureStore *,
     const GeoRegionStore *,const GeoPlacementStore *,GeoProviderToken enclosure_token,

@@ -100,6 +100,8 @@ bool wood_grid_rule_change_allowed(const WoodGridContext *ctx,uint32_t sid,uint3
     return true;
 }
 bool wood_grid_rules_world_valid(const WoodGridContext *ctx,char *err,size_t cap)
+{if(ctx&&ctx->evaluation&&ctx->evaluation->rules_valid)return ctx->evaluation->rules_valid(ctx->evaluation->user,ctx,err,cap);return wood_grid_rules_world_valid_direct(ctx,err,cap);}
+bool wood_grid_rules_world_valid_direct(const WoodGridContext *ctx,char *err,size_t cap)
 {
     if(!ctx || !ctx->state || !ctx->sources)return false;
     if(ctx->before)for(size_t i=0;i<geo_grid_systems_count(ctx->before->sources);++i){
@@ -161,7 +163,8 @@ bool wood_grid_rule_cell_direct(const WoodGridContext *ctx,const char *kind,uint
     const int64_t cell[2],WoodGridRuleTarget *target,char *err,size_t cap)
 {
     if(!wood_grid_rule_target(ctx,kind,id,target,err,cap))return false;
-    target->rule=geo_grid_rule_find(target->source,key);
+    target->rule=ctx->evaluation&&ctx->evaluation->rule_definition?
+        ctx->evaluation->rule_definition(ctx->evaluation->user,target->source,key,err,cap):geo_grid_rule_find(target->source,key);
     if(!target->rule)return wood_grid_rule_error(err,cap,"RULE_MISSING",target->source->id,key);
     if(!geo_grid_rule_matches(target->rule,cell))return wood_grid_rule_error(err,cap,"SELECTOR_MISS",target->source->id,key);
     GeoCoord ends[2][2];

@@ -16,7 +16,8 @@ SCENE=('surface 1 origin 0 0 0 u +x v +y outline 10,20 510,20 510,520 10,520\n'
        'grid-system 2 name-hex 6c617474696365 main-along none u repeat 0 100 v repeat 0 100\n'
        'grid-binding 3 on-boundary 1 from-system 2 vertex-key 1 cell 0 0 anchor 0 1 0 1\n'
        'grid 4 on 1 from-binding 3\n'
-       'grid 5 on 1 main-along none u 100 200 300 v 100 200 300\n'
+       'placement 7 on boundary 1 origin 0 0 100 u +x v +y\n'
+       'grid 5 on 7 main-along none u 100 200 300 v 100 200 300\n'
        'subgrid 6 parent 5 cell u min line:0 v min line:0 divisions u 2 v 2\n')
 
 class GridDefinitionsProduct(unittest.TestCase):

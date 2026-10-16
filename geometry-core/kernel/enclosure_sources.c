@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-enum { GEO_ENCLOSURE_MEMBERS_BYTES=8+4*GEO_ENCLOSURE_MEMBER_CAPACITY,
-       GEO_ENCLOSURE_RESULT_BYTES=GEO_ENCLOSURE_MEMBERS_BYTES+49 };
 struct GeoEnclosureSources {
     GeoEvalContext *graph;
     const GeoEnclosureStore *enclosures;
@@ -57,6 +55,48 @@ static size_t geo_enclosure_source_members(unsigned char *bytes,const GeoEnclosu
     geo_enclosure_source_u32(bytes+4,(uint32_t)value->member_count);
     for(size_t i=0;i<value->member_count;++i)geo_enclosure_source_u32(bytes+8+4*i,value->member_ids[i]);
     return 8+4*value->member_count;
+}
+bool geo_enclosure_source_encode_definition(GeoEnclosureSourceKind kind,const GeoEnclosure *value,
+    void *bytes,size_t capacity,size_t *size)
+{
+    if((kind!=GEO_ENCLOSURE_SOURCE_DEFINITION&&kind!=GEO_ENCLOSURE_SOURCE_RESULT)||!value||!bytes||!size||
+        value->member_count>GEO_ENCLOSURE_MEMBER_CAPACITY)return false;
+    size_t length=8+4*value->member_count+(kind==GEO_ENCLOSURE_SOURCE_RESULT?49:0);
+    if(capacity<length)return false;
+    unsigned char next[GEO_ENCLOSURE_RESULT_BYTES];size_t at=geo_enclosure_source_members(next,value);
+    if(kind==GEO_ENCLOSURE_SOURCE_RESULT){
+        for(int a=0;a<3;++a){geo_enclosure_source_i64(next+at,value->min[a]);at+=8;}
+        for(int a=0;a<3;++a){geo_enclosure_source_i64(next+at,value->max[a]);at+=8;}
+        next[at++]=value->closed?1:0;
+    }
+    memcpy(bytes,next,at);*size=at;return true;
+}
+static GeoCoord geo_enclosure_source_read_i64(const unsigned char *bytes)
+{
+    uint64_t value=0;for(unsigned i=0;i<8;++i)value=(value<<8)|bytes[i];
+    return value<=INT64_MAX?(GeoCoord)value:-1-(GeoCoord)(~value);
+}
+bool geo_enclosure_source_decode_definition(GeoEnclosureSourceKind kind,const GeoDefinitionValue *value,
+    uint32_t expected_id,GeoEnclosure *out)
+{
+    const char *schema=kind==GEO_ENCLOSURE_SOURCE_DEFINITION?"geo.enclosure.members/1":
+        kind==GEO_ENCLOSURE_SOURCE_RESULT?"geo.enclosure.result/1":NULL;
+    if(!schema||!value||!out||!value->schema||strcmp(value->schema,schema)||!value->content||value->content_size<8)return false;
+    const unsigned char *bytes=value->content;uint32_t id=geo_enclosure_source_read_u32(bytes);
+    size_t count=geo_enclosure_source_read_u32(bytes+4);
+    if(id!=expected_id||count>GEO_ENCLOSURE_MEMBER_CAPACITY)return false;
+    size_t length=8+4*count+(kind==GEO_ENCLOSURE_SOURCE_RESULT?49:0);
+    if(value->content_size!=length)return false;
+    if(kind==GEO_ENCLOSURE_SOURCE_RESULT&&bytes[length-1]>1)return false;
+    GeoEnclosure next;memset(&next,0,sizeof next);next.id=id;next.member_count=count;
+    for(size_t i=0;i<count;++i)next.member_ids[i]=geo_enclosure_source_read_u32(bytes+8+4*i);
+    if(kind==GEO_ENCLOSURE_SOURCE_RESULT){
+        size_t at=8+4*count;
+        for(int a=0;a<3;++a){next.min[a]=geo_enclosure_source_read_i64(bytes+at);at+=8;}
+        for(int a=0;a<3;++a){next.max[a]=geo_enclosure_source_read_i64(bytes+at);at+=8;}
+        next.closed=bytes[at]!=0;
+    }
+    memcpy(out,&next,sizeof next);return true;
 }
 static bool geo_enclosure_sources_describe(void *opaque,const GeoSourceRef *ref,GeoSourceDescriptor *out)
 {
@@ -116,9 +156,8 @@ static const GeoPlacementDefinition *geo_enclosure_source_carrier(GeoEnclosureSo
     if(count!=1){fault->kind=count?GEO_ENCLOSURE_FAULT_AMBIGUOUS_CARRIER:GEO_ENCLOSURE_FAULT_NO_CARRIER;return NULL;}
     return carrier;
 }
-static bool geo_enclosure_source_result(GeoEnclosureSources *s,size_t at)
+static bool geo_enclosure_source_result(GeoEnclosureSources *s,size_t at,const GeoEnclosure *definition)
 {
-    const GeoEnclosure *definition=geo_enclosures_at(s->enclosures,at);
     s->has_fault[at]=false;
     GeoRegionStore *regions=geo_regions_clone(s->regions);
     GeoPlacementStore *placements=geo_placements_clone(s->placements);
@@ -153,9 +192,8 @@ static bool geo_enclosure_source_result(GeoEnclosureSources *s,size_t at)
 done:
     geo_regions_destroy(regions);geo_placements_destroy(placements);return ok;
 }
-static bool geo_enclosure_source_axis(GeoEnclosureSources *s,size_t at,int axis,int slot,GeoCoord *out)
+static bool geo_enclosure_source_axis(GeoEnclosureSources *s,const GeoEnclosure *definition,int axis,int slot,GeoCoord *out)
 {
-    const GeoEnclosure *definition=geo_enclosures_at(s->enclosures,at);
     GeoPlacementStore *placements=geo_placements_create();if(!placements)return false;
     bool ok=false;GeoCoord next;
     for(size_t i=0;i<definition->member_count;++i)for(size_t p=0;p<geo_placements_count(s->placements);++p){
@@ -172,20 +210,21 @@ static bool geo_enclosure_sources_evaluate(void *opaque,GeoEvalContext *graph,co
     GeoEnclosureSources *s=opaque;GeoEnclosureSourceKind kind;uint32_t id;int axis,slot;
     if(graph!=s->graph||ref->provider!=s->token||!geo_enclosure_source_decode(ref,&kind,&id,&axis,&slot))return false;
     size_t at=geo_enclosure_source_index(s,id);if(at==GEO_ENCLOSURE_CAPACITY)return false;
-    const GeoEnclosure *definition=geo_enclosures_at(s->enclosures,at);
     if(kind==GEO_ENCLOSURE_SOURCE_DEFINITION){
+        const GeoEnclosure *definition=geo_enclosures_at(s->enclosures,at);
         size_t size=geo_enclosure_source_members(s->definitions[at],definition);
         out->kind=GEO_SOURCE_DEFINITION;out->as.definition=(GeoDefinitionValue){"geo.enclosure.members/1",s->definitions[at],size};return true;
     }
     if(kind==GEO_ENCLOSURE_SOURCE_RESULT)s->has_fault[at]=false;
-    GeoEnclosureSourceKey key;
-    if(geo_eval_depend(graph,geo_enclosure_source_ref(s->token,GEO_ENCLOSURE_SOURCE_DEFINITION,id,-1,-1,&key),
-        GEO_DEPENDENCY_DEFINITION_REQUIRED)!=GEO_SOURCE_OK)return false;
+    GeoEnclosureSourceKey key;GeoSourceValue input;GeoEnclosure resolved;
+    if(geo_eval_source(graph,geo_enclosure_source_ref(s->token,GEO_ENCLOSURE_SOURCE_DEFINITION,id,-1,-1,&key),
+        GEO_DEPENDENCY_DEFINITION_REQUIRED,&input)!=GEO_SOURCE_OK||input.kind!=GEO_SOURCE_DEFINITION||
+        !geo_enclosure_source_decode_definition(GEO_ENCLOSURE_SOURCE_DEFINITION,&input.as.definition,id,&resolved))return false;
     if(kind==GEO_ENCLOSURE_SOURCE_AXIS_BOUND){
-        GeoCoord coordinate;if(!geo_enclosure_source_axis(s,at,axis,slot,&coordinate))return false;
+        GeoCoord coordinate;if(!geo_enclosure_source_axis(s,&resolved,axis,slot,&coordinate))return false;
         out->kind=GEO_SOURCE_AXIS_POSITION;out->as.position=(GeoAxisPosition){coordinate,{false,0,axis}};return true;
     }
-    if(!geo_enclosure_source_result(s,at))return false;
+    if(!geo_enclosure_source_result(s,at,&resolved))return false;
     const GeoEnclosure *value=&s->values[at];size_t size=geo_enclosure_source_members(s->results[at],value);
     for(int a=0;a<3;++a){geo_enclosure_source_i64(s->results[at]+size,value->min[a]);size+=8;}
     for(int a=0;a<3;++a){geo_enclosure_source_i64(s->results[at]+size,value->max[a]);size+=8;}
@@ -215,7 +254,8 @@ bool geo_enclosure_sources_value(GeoEnclosureSources *s,uint32_t id,GeoEnclosure
     GeoSourceStatus status=geo_eval_source(s->graph,geo_enclosure_source_ref(s->token,GEO_ENCLOSURE_SOURCE_RESULT,id,-1,-1,&key),
         GEO_DEPENDENCY_VALUE_REQUIRED,&value);
     if(status!=GEO_SOURCE_OK){if(status==GEO_SOURCE_FAILED&&fault&&s->has_fault[at])*fault=s->faults[at];return false;}
-    memcpy(out,&s->values[at],sizeof *out);return true;
+    return value.kind==GEO_SOURCE_DEFINITION&&
+        geo_enclosure_source_decode_definition(GEO_ENCLOSURE_SOURCE_RESULT,&value.as.definition,id,out);
 }
 bool geo_enclosure_sources_axis_bound(GeoEnclosureSources *s,uint32_t id,int axis,int slot,GeoCoord *out)
 {

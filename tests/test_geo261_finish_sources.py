@@ -51,7 +51,7 @@ class FinishSourceBoundary(unittest.TestCase):
 CONTROLS = (
     ("panel-field-bypass", "finish", "return w->evaluation&&w->evaluation->field?", "return false?", "graph", "panel-field-dependency-edge"),
     ("derived-frame-bypass", "derived_placement", "if(w->evaluation&&w->evaluation->frame){", "if(false){", "graph", "derived-actual-input-edges"),
-    ("definition-relation", "finish_sources", "wood_finish_get(s,WOOD_FINISH_SOURCE_DERIVED_DEFINITION,id,GEO_DEPENDENCY_DEFINITION_REQUIRED,&value)", "wood_finish_get(s,WOOD_FINISH_SOURCE_DERIVED_DEFINITION,id,GEO_DEPENDENCY_VALUE_REQUIRED,&value)", "graph", "derived-definition-edge"),
+    ("definition-relation", "finish_sources", "wood_finish_get(s,kind,id,GEO_DEPENDENCY_DEFINITION_REQUIRED,&value)", "wood_finish_get(s,kind,id,GEO_DEPENDENCY_VALUE_REQUIRED,&value)", "graph", "derived-definition-edge"),
     ("parameter-edge-bypass", "finish_sources", "if(!ref.set||!s->tokens.parameter){", "if(true){", "shared", "shared-parameter-field-edges"),
     ("diagnostic-retry", "finish_sources", ".retry_failure=true", ".retry_failure=false", "diagnostics", "failed-policy-retries-original-diagnostic"),
 )
