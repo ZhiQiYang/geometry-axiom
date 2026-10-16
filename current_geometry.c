@@ -5656,9 +5656,14 @@ static void space_fault_describe(
     }
 }
 
+static bool app_enclosure_sources_value(const World *,uint32_t,const SurfaceId *,size_t,Space *,SpaceFaultInfo *,bool *);
 static bool space_construct(const World *world,uint32_t id,
     const SurfaceId *members,size_t count,Space *out,SpaceFaultInfo *fault)
-{return geo_enclosure_evaluate(&world->geo.region_data,&world->geo.placement_data,id,members,count,out,fault);}
+{
+    bool handled=false;
+    bool ok=app_enclosure_sources_value(world,id,members,count,out,fault,&handled);
+    return handled?ok:geo_enclosure_evaluate(&world->geo.region_data,&world->geo.placement_data,id,members,count,out,fault);
+}
 
 /*
  * 重宣告交易（公理 I8）：
@@ -7504,6 +7509,7 @@ static bool apply_move_line(const char *p, int n, char **t, int c, World *w)
 
 #include "geometry-core/parameters.inc"
 #include "geometry-core/references.inc"
+#include "geometry-app/native/enclosure_sources.inc"
 #include "geometry-core/engineering.inc"
 #include "geometry-core/boundary_vertex_keys.inc"
 #include "geometry-core/grid_bindings.inc"
@@ -7575,7 +7581,11 @@ static Coord coord_midpoint_floor(Coord a, Coord b)
 }
 
 static bool space_axis_bound(const World *world,const Space *space,int axis,int slot,Coord *out)
-{return geo_enclosure_axis_bound(&world->geo.placement_data,space,axis,slot,out);}
+{
+    bool handled=false;
+    bool ok=app_enclosure_sources_axis_bound(world,space,axis,slot,out,&handled);
+    return handled?ok:geo_enclosure_axis_bound(&world->geo.placement_data,space,axis,slot,out);
+}
 
 static bool apply_column_line(
     const char *path,
