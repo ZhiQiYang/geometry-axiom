@@ -88,7 +88,11 @@ class NativeBuild:
     def compile(self, source, name, defines=()):
         out = self.work / (name + (".obj" if self.windows else ".o"))
         if self.windows:
-            args = ["cl", "/nologo", "/utf-8", "/Od", "/W3", "/U_WIN32", "/c", "/I" + str(self.kernel), "/Fo:" + str(out)]
+            args = ["cl", "/nologo", "/utf-8", "/Od", "/W3", "/c", "/I" + str(self.kernel), "/Fo:" + str(out)]
+            # Product CLI excludes GDI; codec clients must retain _WIN32 so
+            # their stdout stays binary during base64 round-trip assertions.
+            if source == ROOT / "geometry-web/web_bridge.c":
+                args.append("/U_WIN32")
             args += ["/D" + d for d in defines] + [str(source)]
         else:
             args = [self.cc, "-std=c11", "-O0", "-Werror=implicit-function-declaration", "-I", str(self.kernel)]
