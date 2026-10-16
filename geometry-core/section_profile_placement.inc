@@ -53,7 +53,7 @@ static bool sp_resolve_placement(World *w,ProfileRun *r)
     if(!sp_host(w,r,&host,&region)){snprintf(r->placement_error,sizeof r->placement_error,"I48: live host %u is missing or invalid",r->host_id);return false;}
     r->frame.normal=sp_scaled(r->dir<2?host.axis_u:host.axis_v,(r->dir%2)?-1:1);
     r->frame.axis_v=sp_scaled(r->up,-1);r->frame.axis_u=vector_cross(r->frame.axis_v,r->frame.normal);
-    r->frame.origin=(Point3){host.origin.x+r->p*host.axis_u.x+r->q*host.axis_v.x,host.origin.y+r->p*host.axis_u.y+r->q*host.axis_v.y,host.origin.z+r->p*host.axis_u.z+r->q*host.axis_v.z};
+    r->frame.origin=geo_frame_point(&host,r->p,r->q,0);
     bool inside=boundary_contains_point(&region,(SurfacePoint2){r->p,r->q});
     bool perpendicular=vector_dot(r->up,r->frame.normal)==0;
     bool origin=coord_in_range(r->frame.origin.x)&&coord_in_range(r->frame.origin.y)&&coord_in_range(r->frame.origin.z);

@@ -5,8 +5,10 @@
 #ifdef GEOMETRY_KERNEL_EXTERNAL
 #include "codec.h"
 #include "exact.h"
+#include "geometry.h"
 #else
 #include "codec.c"
 #include "exact.c"
+#include "geometry.c"
 #endif
 #endif
