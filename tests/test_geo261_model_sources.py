@@ -11,6 +11,7 @@ ROOT=Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:sys.path.insert(0,str(ROOT))
 from tests.test_geo261_native_kernel import native
 from tests.test_geo261_wood_product import SCENE
+from tests import _bridge
 
 def encoded(value):
     return base64.b64encode(json.dumps(value,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode()).decode()
@@ -22,10 +23,10 @@ def parameter_scene():
             'expression':{'op':'literal','num':num,'den':den,'unit':'mm' if kind==0 else '1'}}))
     return '\n'.join(rows+['parameters end'])+'\n'
 
-def profile_scene():
+def profile_scene(placed=False):
     values=[('profile',{'id':1,'name':'L','outline':[[0,0],[400,0],[400,60],[60,60],[60,250],[0,250]]}),
         ('member',{'id':4,'profileId':1,'kind':'timber','A':{'kind':'literal','value':27},'B':{'kind':'literal','value':33},'orientation':'A-u','u0':0,'v0':0}),
-        ('run',{'id':1,'profileId':1,'length':{'kind':'literal','value':2400},'placement':None}),
+        ('run',{'id':1,'profileId':1,'length':{'kind':'literal','value':2400},'placement':{'kind':'advanced','origin':[1000,2000,2700],'N':'+Y','V':'-Z'} if placed else None}),
         ('run',{'id':2,'profileId':1,'length':{'kind':'literal','value':2400},'placement':None})]
     return 'requires section-profile/1\n'+''.join('section-profile '+kind+' '+encoded(value)+'\n' for kind,value in values)
 
@@ -76,14 +77,29 @@ class ModelSources(unittest.TestCase):
         self.assertEqual([face['feature'] for face in envelope['legacySnapshot']['solids'][0]['faces']],[face['legacyFeature'] for face in root['faces']])
 
     def test_region_roots_keep_holes_and_authored_vertex_identities(self):
-        scene=('boundary 7 outline 0,0 1000,0 1000,1000 0,1000 hole 100,100 200,100 200,200 100,200\n'
+        scene=('boundary 7 outline 0,0 1000,0 1000,1000 0,1000 hole 100,100 200,100 200,200 100,200 hole 300,300 400,300 400,400 300,400\n'
                'placement 9 on boundary 7 origin 0 0 30 u +x v +y\n'
-               'boundary-vertex-keys 7 outer 1 2 3 4 hole 5 6 7 8 next-key 9\n')
+               'boundary-vertex-keys 7 outer 1 2 3 4 hole 5 6 7 8 hole 9 10 11 12 next-key 13\n')
         envelope=self.execute(scene);nodes=self.nodes(envelope)
         root=next(root for root in envelope['neutralSources']['roots'] if root['slot']=='placement.region')
         components=nodes[self.ref(root['ref'])]['value']['components'];self.assertEqual(1,len(components))
-        self.assertEqual([[1,2,3,4],[5,6,7,8]],components[0]['vertexKeys'])
-        self.assertEqual([[[100,100],[200,100],[200,200],[100,200]]],components[0]['holes'])
+        self.assertEqual([[1,2,3,4],[5,6,7,8],[9,10,11,12]],components[0]['vertexKeys'])
+        self.assertEqual([[[100,100],[200,100],[200,200],[100,200]],[[300,300],[400,300],[400,400],[300,400]]],components[0]['holes'])
+
+    def test_derived_multicomponent_root_preserves_the_excluded_strip(self):
+        from tests import test_panel_fill_host as pfh
+        build=native()
+        with _bridge.BridgeSession(build.bridge()) as bridge:
+            fixture=pfh.PanelFillHost();fixture.bridge=bridge;fixture.directory=build.work
+            self.assertTrue(bridge.command('reset')['ok'])
+            fixture.region(extra='beam 20 along x from 40 to 60 at 50 width 120 depth 30 top 39\n',obstacles=['b20'])
+            source=bridge.command('dump')['text']
+        envelope=self.execute(source);nodes=self.nodes(envelope)
+        root=next(root for root in envelope['neutralSources']['roots'] if root['id']==10 and root['slot']=='placement.region')
+        components=nodes[self.ref(root['ref'])]['value']['components']
+        self.assertEqual([[[0,0],[40,0],[40,100],[0,100]],[[60,0],[100,0],[100,100],[60,100]]],[component['outer'] for component in components])
+        self.assertEqual([[],[]],[component['holes'] for component in components])
+        self.assertIn('derived-placement 10 definition-hex ',envelope['legacySnapshot']['base_scene'])
 
     def test_parameter_quantities_retain_exact_fractions_and_field_types(self):
         envelope=self.execute(parameter_scene());nodes=self.nodes(envelope)
@@ -100,6 +116,14 @@ class ModelSources(unittest.TestCase):
         self.assertEqual([[0,0],[400,0],[400,60],[60,60],[60,250],[0,250]],outline)
         for root in roots:
             if root['slot']=='profile.length':self.assertEqual('2400',nodes[self.ref(root['ref'])]['value']['num'])
+
+    def test_placed_profile_frame_matches_native_snapshot_and_hardcoded_axes(self):
+        envelope=self.execute(profile_scene(True));nodes=self.nodes(envelope)
+        root=next(root for root in envelope['neutralSources']['roots'] if root['id']==1 and root['slot']=='profile.frame' and root['memberId']==4)
+        frame=nodes[self.ref(root['ref'])]['value']
+        self.assertEqual({'origin':[1000,2000,2700],'u':[1,0,0],'v':[0,0,-1],'n':[0,1,0],'coordinateDomain':'world','owner':None},frame)
+        legacy=envelope['legacySnapshot']['profile_runs'][0]
+        self.assertEqual({key:legacy[key] for key in ('origin','u','v','n')},{key:frame[key] for key in ('origin','u','v','n')})
 
     def test_candidate_identity_changes_with_definitions_but_ignores_canvas_positions(self):
         original=self.execute(SCENE);moved=self.execute(SCENE+'canvas-pos placement 1 31 29\n')

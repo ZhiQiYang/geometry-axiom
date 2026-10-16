@@ -24,7 +24,7 @@ class WoodProduct(unittest.TestCase):
         path=build.woodworking/('members-product-'+name+'.c');path.write_text(source.replace(before,after),encoding='utf-8')
         changed=build.compile(path,'members-product-'+name);build.bridge()
         client=build.link('members-product-'+name+'-client',[self.client,changed,build.geometry_object])
-        bridge=build.link('members-product-'+name+'-bridge',[build.bridge_object,*build.kernel_objects(),changed])
+        bridge=build.link('members-product-'+name+'-bridge',[build.bridge_object,*build.kernel_objects(),changed,build.wood_supports_object])
         return client,bridge
     def result(self,exe):
         build=native();path=build.work/'wood-product.scene';path.write_text(SCENE,encoding='utf-8')
