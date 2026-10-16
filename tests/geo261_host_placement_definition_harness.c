@@ -86,7 +86,7 @@ static int host_definition_derived(void)
     World *world=calloc(1,sizeof *world);CHECK("host-placement-derived-memory",world);
     PlacementSurface placement={.id=7,.frame={{0,0,30},{1,0,0},{0,1,0},{0,0,1}},.derived_fill_id=55};
     CHECK("host-placement-derived-stage",app_placement_stage(world,&placement));ReferenceEval context={0};context.world=world;bool derived=false;
-    CHECK("host-placement-definition-avoids-derived-geometry",reference_eng_placement(&context,7,&derived)&&derived&&geo_eval_node_count(context.sources)==1);
+    CHECK("host-placement-definition-avoids-derived-geometry",reference_eng_placement(&context,7,&derived)&&derived&&geo_eval_node_count(context.sources)==1&&geo_eval_edge_count(context.sources)==0);
     GeoSourceNodeView node;GeoPlacementSourceKind kind;uint32_t id;
     CHECK("host-placement-only-definition-evaluated",geo_eval_node_at(context.sources,0,&node)&&node.source.provider==APP_SOURCE_PLACEMENT&&geo_placement_source_decode(&node.source,&kind,&id)&&kind==GEO_PLACEMENT_SOURCE_DEFINITION&&node.value&&node.value->kind==GEO_SOURCE_DEFINITION);
     reference_sources_dispose(&context);free(world);return 0;

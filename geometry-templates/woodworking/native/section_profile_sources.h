@@ -35,6 +35,11 @@ bool wood_sp_sources_bind(WoodSectionProfileSources *,WoodSectionProfileContext 
 /* Publish and validate canonical authored records, including unused profiles,
  * before sealing. This does not request inactive run frame values. */
 bool wood_sp_sources_complete(WoodSectionProfileSources *);
+/* Read actual canonical definitions through the same graph and decoder used
+ * by evaluation. Outputs are copied only after a successful identity check. */
+bool wood_sp_sources_profile_definition(WoodSectionProfileSources *,uint32_t,SectionProfile *);
+bool wood_sp_sources_member_definition(WoodSectionProfileSources *,uint32_t,ProfileMember *);
+bool wood_sp_sources_run_definition(WoodSectionProfileSources *,uint32_t,ProfileRun *);
 /* Either teardown order is supported. After destroying the handle, do not
  * evaluate or inspect borrowed values in the graph; only destroy the graph.
  * This function does not call K, so it is also safe after graph destruction. */
