@@ -88,6 +88,7 @@ PY_NEEDS = {
     'test_geo261_wood_members': [],
     'test_geo261_wood_product': [],
     'test_geo261_native_entrypoints': [],
+    'test_geo261_model_sources': [],
     'test_grid_system_contract': ['bridge'],
     'test_grid_subdivision_oracle': ['bridge'],
     'test_grid_trial_contract': ['bridge'],
