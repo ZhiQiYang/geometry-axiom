@@ -88,8 +88,9 @@ static int support(void)
     WoodPanelLayout d;GeoClipStatus detail;CHECK("support-layout",wood_panel_layout_build(&input,&d,&detail)==WOOD_PANEL_OK);
     WoodPanelFootprint rects[]={{{90,0},{105,300}},{{105,0},{120,300}},{{-100,75},{-90,125}}};WoodPanelSupport s;const WoodPanelSupportPart *parts[32];
     CHECK("support-evaluation",wood_panel_support_evaluate(&d,rects,3,64,(GeoQuantity){8,1,1},&s)==WOOD_PANEL_SUPPORT_OK);
-    size_t n=seam_parts(&d,&s,100,parts);CHECK("support-fragment-vertices",n==3&&parts[0]->range[0]==0&&parts[0]->range[1]==50&&parts[1]->range[1]==100&&parts[2]->range[1]==300);
-    CHECK("support-touching-union",parts[0]->left==10&&parts[0]->right==20&&parts[1]->left==10&&parts[1]->right==5&&parts[2]->right==20);
+    size_t n=seam_parts(&d,&s,100,parts);CHECK("support-touching-union",n>0&&parts[0]->left==10&&parts[0]->right==20);
+    CHECK("support-fragment-vertices",n==3&&parts[0]->range[0]==0&&parts[0]->range[1]==50&&parts[1]->range[1]==100&&parts[2]->range[1]==300);
+    CHECK("support-clipped-width",parts[1]->left==10&&parts[1]->right==5&&parts[2]->right==20);
     CHECK("support-insufficient-is-result",parts[0]->supported&&!parts[1]->supported&&parts[2]->supported);wood_panel_support_free(&s);
     CHECK("support-same-colour-eval",wood_panel_support_evaluate(&d,rects,3,64,(GeoQuantity){5,1,1},&s)==WOOD_PANEL_SUPPORT_OK);
     n=seam_parts(&d,&s,100,parts);CHECK("support-widths-not-colours",n==3&&parts[0]->supported&&parts[1]->supported&&parts[2]->supported);wood_panel_support_free(&s);
