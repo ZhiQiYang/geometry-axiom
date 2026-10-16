@@ -568,8 +568,8 @@ static bool reference_place_geometry(ReferenceEval *evaluation,World *w,size_t t
 static bool reference_compute_timber(ReferenceEval *ctx,size_t i)
 {
     if(!ctx->use_current_values&&ctx->wanted[i]){
-        Timber *member=&ctx->world->wood.timbers[i];WoodAssemblyContext assembly=app_asm_context(ctx->world);
-        if(wood_assembly_owned(&assembly,member->id)){
+        Timber *member=&ctx->world->wood.timbers[i];
+        if(assembly_owned(ctx->world,member->id)){
             GeoCoord width,depth;
             if(!wood_assembly_sources_owned_dimensions(ctx->assembly_sources,member->id,&width,&depth))return false;
             member->size_a=width;member->size_b=depth;
