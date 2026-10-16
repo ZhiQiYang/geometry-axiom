@@ -8,7 +8,7 @@ from .graph import (AssemblyChild, AssemblyDef, DependencyEdge, DependencyKind,
                     DifferenceDef, EvaluationRequest, ExportRoot, ExportView,
                     ExtrusionDef, FaceUse, InteriorDef, Limits, Node, NodeInput,
                     OrientedShellDef, PlacedRegionDef, Program, ProgramBuilder,
-                    ProvenanceTemplate, SourceContext, SourceDescriptor,
+                    ProvenanceTemplate, SourceBoxDef, SourceContext, SourceDescriptor,
                     SourceRef, SourceStatus, UnionDef, ValueType, validate_program)
 from .evaluate import (EvaluationResult, GeometryRecord, RootOutcome, evaluate,
                        source_closure)
@@ -22,7 +22,7 @@ __all__ += ["AssemblyChild", "AssemblyDef", "DependencyEdge", "DependencyKind",
             "DifferenceDef", "EvaluationRequest", "ExportRoot", "ExportView",
             "ExtrusionDef", "FaceUse", "InteriorDef", "Limits", "Node", "NodeInput",
             "OrientedShellDef", "PlacedRegionDef", "Program", "ProgramBuilder",
-            "ProvenanceTemplate", "SourceContext", "SourceDescriptor", "SourceRef",
+            "ProvenanceTemplate", "SourceBoxDef", "SourceContext", "SourceDescriptor", "SourceRef",
             "SourceStatus", "UnionDef", "ValueType", "validate_program",
             "EvaluationResult", "GeometryRecord", "RootOutcome", "evaluate",
             "source_closure"]

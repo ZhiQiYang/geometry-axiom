@@ -24,6 +24,7 @@ class ValueType(Enum):
     QUANTITY = "quantity"
     FRAME = "frame"
     REGION_SET = "region-set"
+    BOX = "box"
     FEATURE = "feature"
 
 
@@ -44,12 +45,14 @@ class SourceStatus(Enum):
 class SourceContext:
     domain: CoordinateDomain | None = None
     axis: int | None = None
+    owner: tuple = ()
 
     def __post_init__(self):
         if self.domain is not None and not isinstance(self.domain, CoordinateDomain):
             invalid("SOURCE_CONTEXT", "Invalid source coordinate domain")
         if self.axis is not None and (type(self.axis) is not int or self.axis not in (0, 1, 2)):
             invalid("SOURCE_CONTEXT", "A source axis must be an exact coordinate axis")
+        _identity_tuple(self.owner)
 
 
 @dataclass(frozen=True)
@@ -82,13 +85,16 @@ class SourceDescriptor:
             invalid("SOURCE_DEPENDENCY", "A source dependency cannot be repeated")
         _identity_tuple(self.origin)
         expected = {ValueType.QUANTITY: Quantity, ValueType.FRAME: FrameDef,
-                    ValueType.REGION_SET: RegionSetDef, ValueType.FEATURE: tuple}[self.value_type]
+                    ValueType.REGION_SET: RegionSetDef, ValueType.BOX: BoxDef,
+                    ValueType.FEATURE: tuple}[self.value_type]
         if self.value is not None and not isinstance(self.value, expected):
             invalid("SOURCE_VALUE_TYPE", "Source value and declared type disagree")
         if self.value_type == ValueType.FEATURE and self.value is not None:
             _identity(self.value)
         if isinstance(self.value, FrameDef) and self.context.domain is not None and self.value.domain != self.context.domain:
             invalid("SOURCE_CONTEXT", "Source frame and declared coordinate domain disagree")
+        if isinstance(self.value, BoxDef) and self.context.domain is not None and self.value.frame.domain != self.context.domain:
+            invalid("SOURCE_CONTEXT", "Source box and declared coordinate domain disagree")
         if self.status == SourceStatus.COMPLETE and self.value is None:
             invalid("SOURCE_VALUE_MISSING", "A complete source requires its typed value")
 
@@ -125,6 +131,11 @@ class PlacedRegionDef:
     frame: FrameDef | SourceRef
     region: RegionDef | RegionSetDef | SourceRef
     source: ProvenanceTemplate
+
+
+@dataclass(frozen=True)
+class SourceBoxDef:
+    box: SourceRef
 
 
 @dataclass(frozen=True)
@@ -197,7 +208,7 @@ class DifferenceDef:
         object.__setattr__(self, "tools", _tuple(self.tools, "BOOLEAN_INPUTS", "Difference tools must be a sequence"))
 
 
-NODE_TYPES = (PlacedRegionDef, BoxDef, ExtrusionDef, OrientedShellDef,
+NODE_TYPES = (PlacedRegionDef, BoxDef, SourceBoxDef, ExtrusionDef, OrientedShellDef,
               InteriorDef, AssemblyDef, UnionDef, DifferenceDef)
 
 
@@ -316,6 +327,8 @@ def inputs(definition):
 
 
 def source_refs(definition):
+    if isinstance(definition, SourceBoxDef):
+        return (definition.box,)
     if isinstance(definition, PlacedRegionDef):
         return tuple(value for value in (definition.frame, definition.region) if isinstance(value, SourceRef))
     if isinstance(definition, ExtrusionDef):
@@ -324,7 +337,10 @@ def source_refs(definition):
 
 
 def _shape(definition):
-    if isinstance(definition, PlacedRegionDef):
+    if isinstance(definition, SourceBoxDef):
+        if not isinstance(definition.box, SourceRef) or definition.box.value_type != ValueType.BOX:
+            invalid("SOURCE_REFERENCE_TYPE", "A source box requires a typed box reference")
+    elif isinstance(definition, PlacedRegionDef):
         if not isinstance(definition.frame, (FrameDef, SourceRef)) or not isinstance(definition.region, (RegionDef, RegionSetDef, SourceRef)) or not isinstance(definition.source, ProvenanceTemplate):
             invalid("NODE_DEFINITION", "A placed region requires typed frame, region and provenance")
         for value, expected in ((definition.frame, ValueType.FRAME), (definition.region, ValueType.REGION_SET)):
@@ -420,7 +436,7 @@ def validate_program(program, *, limits=Limits()):
                 if dependency_key not in direct:
                     continue
                 dependency = nodes[dependency_key].definition
-                if isinstance(node.definition, (UnionDef, DifferenceDef)) and not isinstance(dependency, (BoxDef, ExtrusionDef, InteriorDef, UnionDef, DifferenceDef)):
+                if isinstance(node.definition, (UnionDef, DifferenceDef)) and not isinstance(dependency, (BoxDef, SourceBoxDef, ExtrusionDef, InteriorDef, UnionDef, DifferenceDef)):
                     raise EvaluationError("INVALID", "OPERAND_TYPE", "Boolean inputs require typed solid definitions", missing=dependency_key)
                 if isinstance(node.definition, ExtrusionDef) and not isinstance(dependency, PlacedRegionDef):
                     raise EvaluationError("INVALID", "OPERAND_TYPE", "An extrusion requires a placed region", missing=dependency_key)

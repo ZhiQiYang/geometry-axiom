@@ -13,7 +13,7 @@ from geometry_kernel import (AssemblyChild, AssemblyDef, BoxDef, CoordinateDomai
     EvaluationRequest, ExportRoot, ExportView, ExtrusionDef, FaceUse, InteriorDef,
     Limits, Node, NodeInput, OrientedShellDef, PlacedRegionDef, Program,
     ProgramBuilder, Provenance, ProvenanceTemplate, Quantity, QuantityType,
-    RegionDef, RegionSetDef, SourceContext, SourceDescriptor, SourceKey, SourceRef,
+    RegionDef, RegionSetDef, SourceBoxDef, SourceContext, SourceDescriptor, SourceKey, SourceRef,
     SourceStatus, UnionDef, Unit, ValueType, evaluate, frame, source_closure,
     validate_program)
 
@@ -65,6 +65,66 @@ class KernelGraphTests(unittest.TestCase):
             function()
         self.assertEqual((status, code), (caught.exception.status, caught.exception.code))
         return caught.exception
+
+    def test_source_bound_box_recomputes_and_participates_in_boolean_closure(self):
+        key = SourceKey("arbitrary-provider", ("fixed-fingerprint", "0080ff"))
+        dependency = SourceKey("arbitrary-provider", ("fixed-fingerprint", "size"))
+        source = SourceDescriptor(key, ValueType.BOX, SourceContext(FRAME.domain),
+                                  (DependencyEdge(dependency),), box_def())
+        p = ProgramBuilder((quantity_source(dependency), source))
+        original_box = p.add(SourceBoxDef(SourceRef(key, ValueType.BOX)))
+        cutter = p.add(box_def(origin=(10, 0, 0), upper=(20, 20, 20), identity=2))
+        cut = p.add(DifferenceDef(NodeInput(original_box), (NodeInput(cutter),)))
+        original = p.freeze()
+        result = evaluate(original, request(cut))
+        changed = replace(original, sources=(quantity_source(dependency, 30),
+                          replace(source, value=box_def(upper=(30, 20, 20)))))
+        expanded = evaluate(changed, request(original_box))
+        self.assertEqual("4000", result.records[0].mesh["volume_mm3"])
+        self.assertEqual("12000", expanded.records[0].mesh["volume_mm3"])
+        self.assertEqual((dependency, key), tuple(item.key for item in expanded.sources))
+        self.assertEqual((dependency, key), tuple(item.key for item in source_closure(original, (cut,))))
+        self.assertEqual((20, 20, 20), original.sources[1].value.upper)
+
+    def test_source_box_missing_wrong_type_and_domain_are_rejected(self):
+        key = SourceKey("provider", (1,))
+        absent = Program(nodes=(Node(0, SourceBoxDef(SourceRef(key, ValueType.BOX))),))
+        self.assert_code("SOURCE_MISSING_REFERENCE", lambda: evaluate(absent, request(0)))
+        wrong = Program(nodes=(Node(0, SourceBoxDef(SourceRef(key, ValueType.FRAME))),))
+        self.assert_code("SOURCE_REFERENCE_TYPE", lambda: validate_program(wrong))
+        self.assert_code("SOURCE_VALUE_TYPE", lambda: SourceDescriptor(key, ValueType.BOX, SourceContext(), (), FRAME))
+        other_domain = CoordinateDomain(("local", 7))
+        self.assert_code("SOURCE_CONTEXT", lambda: SourceDescriptor(key, ValueType.BOX,
+                         SourceContext(other_domain), (), box_def()))
+
+    def test_unavailable_source_box_obeys_root_atomic_partial_policy(self):
+        key = SourceKey("provider", (1,))
+        unavailable = SourceDescriptor(key, ValueType.BOX, SourceContext(), (), None,
+                                       SourceStatus.INCOMPLETE)
+        p = ProgramBuilder((unavailable,))
+        missing = p.add(SourceBoxDef(SourceRef(key, ValueType.BOX)))
+        solved = p.add(box_def())
+        assembly = p.add(AssemblyDef((AssemblyChild(NodeInput(solved), "solved"),
+                                      AssemblyChild(NodeInput(missing), "waiting"))))
+        program = p.freeze()
+        self.assert_code("SOURCE_UNAVAILABLE", lambda: evaluate(program, request(assembly)), "INCOMPLETE")
+        partial = evaluate(program, request(assembly, solved, allow_partial=True))
+        self.assertEqual("INCOMPLETE", partial.status)
+        self.assertEqual((), partial.outcomes[0].records)
+        self.assertEqual("8000", partial.outcomes[1].records[0].mesh["volume_mm3"])
+
+    def test_source_owner_context_is_distinct_from_coordinate_domain(self):
+        key = SourceKey("provider", ("frame",))
+        context = SourceContext(FRAME.domain, 0, ("opaque-owner", 10))
+        source = SourceDescriptor(key, ValueType.FRAME, context, (), FRAME)
+        wrong_context = replace(context, owner=("opaque-owner", 11))
+        p = ProgramBuilder((source,))
+        placed = p.add(PlacedRegionDef(SourceRef(key, ValueType.FRAME, wrong_context), RECT, provenance()))
+        self.assert_code("SOURCE_REFERENCE_TYPE", lambda: evaluate(p.freeze(), request(placed)))
+        p = ProgramBuilder((source,))
+        placed = p.add(PlacedRegionDef(SourceRef(key, ValueType.FRAME, context), RECT, provenance()))
+        self.assertEqual("COMPLETE", evaluate(p.freeze(), request(placed)).status)
+        self.assert_code("IDENTITY", lambda: SourceContext(owner=["mutable-owner"]))
 
     def test_source_bound_extrusion_recomputes_without_changing_identity(self):
         key = SourceKey("dimension", (7, "upper"))

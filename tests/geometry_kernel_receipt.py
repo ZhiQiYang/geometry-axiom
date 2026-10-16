@@ -30,9 +30,14 @@ PY1_SUITES = {
 PY2_SUITES = {**PY1_SUITES, "test_geometry_kernel_graph": 23,
               "test_geometry_kernel_runtime": 2, "test_geometry_kernel_transactions": 31,
               "test_geometry_kernel_session": 4, "test_geometry_host_world": 8}
+# Historical presets reproduce their fixed receipts; new source counts belong
+# in a new preset rather than silently rewriting an earlier evidence command.
+TYPED_SOURCE_SUITES = {**PY2_SUITES, "test_geometry_kernel_graph": 27,
+                       "test_geometry_kernel_runtime": 4, "test_geometry_host_native": 22}
 SUITE_SETS = {"py1": PY1_SUITES, "py2": PY2_SUITES,
               "native-host": {"test_geometry_host_native": 22},
-              "capability-phase": {"test_geometry_kernel_runtime": 4}}
+              "capability-phase": {"test_geometry_kernel_runtime": 4},
+              "typed-sources": TYPED_SOURCE_SUITES}
 
 
 def git(*args):
