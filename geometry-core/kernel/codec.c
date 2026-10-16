@@ -484,4 +484,22 @@ int geo_base64_decode(const char *data,size_t length,void *out,size_t capacity,s
     if(out_length)*out_length=p;
     return 1;
 }
+bool geo_utf8_name_valid(const unsigned char *name,size_t n,size_t maximum)
+{
+    if (!name || !n || n>maximum) return false;
+    for (size_t i=0;i<n;) {
+        uint32_t cp=name[i++],minimum=0; unsigned tails=0;
+        if (cp<0x80) { if (cp<0x20 || cp==0x7f) return false; continue; }
+        if (cp>=0xc2 && cp<=0xdf) { cp&=31; tails=1; minimum=0x80; }
+        else if (cp>=0xe0 && cp<=0xef) { cp&=15; tails=2; minimum=0x800; }
+        else if (cp>=0xf0 && cp<=0xf4) { cp&=7; tails=3; minimum=0x10000; }
+        else return false;
+        if (tails>n-i) return false;
+        while (tails--) { unsigned byte=name[i++]; if ((byte&0xc0)!=0x80) return false; cp=(cp<<6)|(byte&63); }
+        if (cp<minimum || cp>0x10ffff || (cp>=0xd800 && cp<=0xdfff) || (cp>=0x80 && cp<=0x9f)) return false;
+    }
+    return true;
+}
+
+
 #endif

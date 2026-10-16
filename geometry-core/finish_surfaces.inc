@@ -269,7 +269,7 @@ static void fs_dump(const World *w,FILE *out)
 {
     if(!fs_used(w))return;
     if(!engineering_used(w))fputs("requires engineering-spec/1\n",out);
-    if(!w->parameters.card_count)fputs("requires parameters/1\n",out);
+    if(!geo_parameters_card_count(&w->parameters))fputs("requires parameters/1\n",out);
     fputs("requires " FS_CAPABILITY "\n",out);
     for(uint64_t i=0;i<w->finish_surfaces.count;++i){const FinishSurface *f=&w->finish_surfaces.items[i];
         fprintf(out,"finish-surface %u on boundary %u origin %lld %lld %lld u %s v %s n %s side %s",(unsigned)f->id,(unsigned)f->boundary_id,

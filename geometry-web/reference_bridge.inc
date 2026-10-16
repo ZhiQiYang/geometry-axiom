@@ -405,9 +405,9 @@ static void json_references_world(const World *w,const char *fingerprint)
     fputs("],\"timberSupports\":",stdout);
     json_timber_supports(w,fingerprint);
     fputs(",\"specs\":[",stdout);
-    for (size_t i=0;i<w->spec_count;++i) {
-        printf("%s{\"name\":",i?",":""); js_string(w->specs[i].name);
-        printf(",\"value\":%lld}",(long long)w->specs[i].value);
+    for (size_t i=0;i<geo_named_values_count(&w->named_values);++i) {
+        printf("%s{\"name\":",i?",":""); js_string(geo_named_values_at(&w->named_values,i)->name);
+        printf(",\"value\":%lld}",(long long)geo_named_values_at(&w->named_values,i)->value);
     }
     fputs("],\"datums\":[",stdout);
     for (size_t i=0;i<w->datum_count;++i) {

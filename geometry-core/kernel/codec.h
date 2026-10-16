@@ -6,6 +6,7 @@
 #ifndef GEOMETRY_KERNEL_CODEC_H
 #define GEOMETRY_KERNEL_CODEC_H
 #include <stddef.h>
+#include <stdbool.h>
 #include <stdint.h>
 #define GEO_JSON_MAX_INPUT (1024u * 1024u)
 #define GEO_JSON_MAX_DEPTH 128
@@ -45,4 +46,5 @@ int geo_json_canonical(const GeoJson *j,int token,char *out,size_t capacity);
 void geo_sha256(const void *data,size_t length,char out[65]);
 int geo_base64_encode(const void *data,size_t length,char *out,size_t capacity,size_t *out_length);
 int geo_base64_decode(const char *data,size_t length,void *out,size_t capacity,size_t *out_length);
+bool geo_utf8_name_valid(const unsigned char *name,size_t length,size_t maximum);
 #endif
