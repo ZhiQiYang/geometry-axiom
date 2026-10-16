@@ -18,4 +18,6 @@ typedef struct {
     GeoCoord height;
     WoodBoundaryPolicy components[8];
 } WoodPlacementPolicy;
+/* I3 default attachment policy. Only the requested entries are written. */
+void wood_boundary_default_fixity(WoodEdgeFixity *,size_t);
 #endif

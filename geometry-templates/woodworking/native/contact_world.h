@@ -1,0 +1,31 @@
+/* Ordered contact policy over same-candidate geometry and member facts. */
+#ifndef GEOMETRY_WOODWORKING_CONTACT_WORLD_H
+#define GEOMETRY_WOODWORKING_CONTACT_WORLD_H
+#include "contacts.h"
+#include "domain_values.h"
+#define WOOD_CONTACT_COMPONENT_CAPACITY 8
+#define WOOD_CONTACT_MEMBER_CAPACITY 64
+#define WOOD_CONTACT_FACE_CAPACITY (WOOD_CONTACT_COMPONENT_CAPACITY*GEO_LOOP_MAX_VERTICES*(GEO_REGION_MAX_HOLES+1)+WOOD_CONTACT_MEMBER_CAPACITY*2)
+typedef struct {
+    const WoodMember *member; /* Identity is the original candidate pointer. */
+    uint32_t placement_id;
+    uint64_t order;
+    bool along_v,footprint_valid;
+    GeoRect2 footprint;
+} WoodContactMemberFact;
+typedef struct {
+    uint32_t placement_id;
+    const WoodBoundaryRegion *regions[WOOD_CONTACT_COMPONENT_CAPACITY];
+    size_t region_count;
+    /* The caller-selected effective component used by the original role
+     * derivation; stop collection separately visits every component. */
+    const WoodBoundaryRegion *role_boundary;
+    const WoodContactMemberFact *members;
+    size_t member_count;
+} WoodContactWorld;
+bool wood_contact_footprint_collides(const WoodContactWorld *,const GeoRect2 *,const WoodMember *);
+size_t wood_contact_collect_stops(const WoodContactWorld *,bool,const WoodMember *,WoodStopFace *,size_t);
+bool wood_contact_boundary_interval(const WoodBoundaryRegion *,bool,GeoCoord,GeoCoord,GeoCoord,GeoCoord,GeoCoord *,GeoCoord *);
+bool wood_contact_owner_extension(const WoodContactWorld *,const WoodMember *,GeoCoord,GeoCoord);
+bool wood_contact_end_faces(const WoodContactWorld *,const WoodMember *,bool,GeoCoord,GeoCoord,GeoCoord,GeoCoord,char *,size_t);
+#endif
