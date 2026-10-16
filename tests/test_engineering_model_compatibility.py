@@ -36,7 +36,10 @@ class EngineeringAdapterProtocol(unittest.TestCase):
 
     def adapter(self, source, snapshot):
         output = SimpleNamespace(stdout=canonical_bytes(snapshot), returncode=0)
-        with mock.patch("modeling.base.subprocess.run", return_value=output):
+        # This is a protocol fixture; the native process and its binary identity
+        # are both supplied at the same mocked boundary.
+        with mock.patch("modeling.base.subprocess.run", return_value=output), \
+                mock.patch("geometry_app.source_closure.binary_identity", return_value=("test-only-adapter",)):
             return load_base(source, executable="test-only-adapter")
 
     def test_old_snapshot_protocol_is_accepted_for_legacy_sources_only(self):

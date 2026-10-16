@@ -14,6 +14,7 @@ class PolicyIssue(ValueError):
 
 class WoodworkingModelProvider:
     identity = ("woodworking-model", 1)
+    source_capabilities = frozenset({"engineering-spec/1", "parameters/1", "section-profile/1"})
     extension_kinds = frozenset({"extrusion", "shell", "composite_space", "composition"})
     primitive_solids = frozenset({"column", "beam", "timber", "extrusion"})
     geometry_kinds = frozenset({"placement", "shell", "composition"}) | primitive_solids
