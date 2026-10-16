@@ -30,9 +30,10 @@ static bool es_quantity(const GeoSourceNodeView *node,GeoCoord expected)
     node->value->as.quantity.num==expected&&node->value->as.quantity.den==1&&node->value->as.quantity.unit==GEO_UNIT_LENGTH;}
 static size_t es_binding_node(const GeoEvalContext *ctx,GeoProviderToken token,EngTarget target)
 {
-    for(size_t i=0;i<geo_eval_node_count(ctx);++i){GeoSourceNodeView node;EngBinding binding;
-        if(!geo_eval_node_at(ctx,i,&node)||node.source.provider!=token||node.source.key_size!=sizeof binding)continue;
-        memcpy(&binding,node.source.key,sizeof binding);if(wood_eng_same_target(&binding.target,&target))return i;}
+    for(size_t i=0;i<geo_eval_node_count(ctx);++i){GeoSourceNodeView node;EngTarget decoded;WoodEngineeringBindingSourceKind kind;
+        if(!geo_eval_node_at(ctx,i,&node)||node.source.provider!=token||
+           !wood_engineering_binding_source_decode(&node.source,&kind,&decoded,NULL))continue;
+        if((kind==WOOD_BINDING_SOURCE_EFFECTIVE||kind==WOOD_BINDING_SOURCE_REQUEST_VALUE)&&wood_eng_same_target(&decoded,&target))return i;}
     return SIZE_MAX;
 }
 static size_t es_definition_node(const GeoEvalContext *ctx,GeoProviderToken token,const char *schema,const char *content)
@@ -189,7 +190,7 @@ static int es_material(void)
     ES_CHECK(wood_eng_effective(&f->context,&binding,&value,path,sizeof path)&&wood_eng_effective(&plain->context,&binding,&old,plain_path,sizeof plain_path)&&
         value==100&&old==100&&!strcmp(path,"material:p@1.width")&&!strcmp(path,plain_path),"material-exact-value-and-no-hook-path");
     ES_CHECK(es_material_chain(f->graph,es_tokens,target,100,es_panel_canonical)==0,"material-chain");
-    ES_CHECK(geo_eval_node_count(f->graph)==3&&geo_eval_edge_count(f->graph)==2,"material-exact-three-nodes-two-edges");
+    ES_CHECK(geo_eval_node_count(f->graph)==4&&geo_eval_edge_count(f->graph)==3,"material-exact-four-nodes-three-edges");
     ES_CHECK(wood_engineering_sources_state(f->engineering_sources)==&f->state&&wood_engineering_sources_context(f->engineering_sources)==f->graph,"material-provider-exact-candidate-state");
     ES_CHECK(es_owned_providers(f->graph,es_tokens,f->engineering_sources),"material-all-registered-providers-share-candidate-binding");
     int calls=f->target_calls;ES_CHECK(wood_eng_effective(&f->context,&binding,&value,path,sizeof path)&&value==100&&f->target_calls==calls,"binding-value-memoization-skips-policy-reentry");
@@ -226,7 +227,7 @@ static int es_application(void)
     EngTarget timber={1,7,0,1};source=es_source(ENG_MATERIAL,ENG_B,"t");GeoCoord value;
     ES_CHECK(wood_eng_resolve(&f->context,&source,&timber,10,1,&value,NULL,0)&&value==40&&
         es_definition_node(f->graph,ES_DEFINITION,"woodworking.material-version/1",es_member_canonical)==unused,"retained-unused-identity-is-actual-timber-material");
-    ES_CHECK(geo_eval_node_count(f->graph)==8&&geo_eval_edge_count(f->graph)==9,"application-exact-graph-after-public-identity-probe");es_free(f);es_free(plain);return 0;
+    ES_CHECK(geo_eval_node_count(f->graph)==9&&geo_eval_edge_count(f->graph)==10,"application-exact-graph-after-public-identity-probe");es_free(f);es_free(plain);return 0;
 }
 static bool es_override_setup(EsFixture *f,bool object_override)
 {
@@ -279,7 +280,7 @@ static int es_shared(void)
     ES_CHECK(geo_eval_node_at(f->graph,leaf,&node)&&node.value&&node.value->kind==GEO_SOURCE_QUANTITY&&node.value->as.quantity.num==67&&
         node.value->as.quantity.den==3&&node.value->as.quantity.unit==GEO_UNIT_LENGTH,"shared-parameter-retains-exact-fractional-leaf");
     ES_CHECK(geo_parameter_sources_store(f->parameter_sources)==f->parameters&&geo_parameter_sources_context(f->parameter_sources)==f->graph&&
-        geo_eval_node_count(f->graph)==7&&geo_eval_edge_count(f->graph)==5&&f->named_evaluations==1,"shared-provider-ownership-and-exact-graph");
+        geo_eval_node_count(f->graph)==9&&geo_eval_edge_count(f->graph)==7&&f->named_evaluations==1,"shared-provider-ownership-and-exact-graph");
     es_free(f);es_free(plain);return 0;
 }
 static int es_identity_errors(void)
@@ -318,9 +319,117 @@ static int es_rebuild_errors(void)
         es_free(f);es_free(plain);}
     return 0;
 }
+static int es_binding_codec(void)
+{
+    EngBinding value={.target={1,0x01020304,0,1},.source={.kind=ENG_LITERAL,.value=-7}};
+    unsigned char content[WOOD_ENGINEERING_BINDING_CONTENT_MAX],other[WOOD_ENGINEERING_BINDING_CONTENT_MAX];
+    size_t size=wood_engineering_binding_encode(&value,content);
+    ES_CHECK(size==50,"binding-canonical-literal-length");
+    static const unsigned char expected[50]={
+        0,0,0,1,1,2,3,4,0,0,0,0,0,0,0,1,
+        0,0,0,0,0,0,0,0,255,255,255,255,255,255,255,249,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    ES_CHECK(!memcmp(content,expected,sizeof expected),"binding-fixed-canonical-vector");
+    EngBinding decoded;memset(&decoded,0xa5,sizeof decoded);
+    ES_CHECK(wood_engineering_binding_decode(content,size,&decoded)&&decoded.source.value==-7&&
+        wood_eng_same_target(&decoded.target,&value.target)&&!decoded.has_override&&decoded.override_value.value==0,
+        "binding-canonical-roundtrip-and-inactive-zero");
+    value.override_value.value=999;memset(value.override_value.ref,0xff,sizeof value.override_value.ref);
+    ES_CHECK(wood_engineering_binding_encode(&value,other)==size&&!memcmp(content,other,size),"binding-inactive-override-is-not-definition");
+    WoodEngineeringBindingSourceKey first,second;GeoSourceRef a=wood_engineering_binding_source_ref(44,WOOD_BINDING_SOURCE_EFFECTIVE,&value,&first);
+    value.source.value=23;GeoSourceRef b=wood_engineering_binding_source_ref(44,WOOD_BINDING_SOURCE_EFFECTIVE,&value,&second);
+    static const unsigned char stable[17]={2,0,0,0,1,1,2,3,4,0,0,0,0,0,0,0,1};
+    ES_CHECK(a.key_size==sizeof stable&&b.key_size==sizeof stable&&!memcmp(a.key,b.key,sizeof stable)&&
+        !memcmp(a.key,stable,sizeof stable),"binding-target-key-stable-across-source-change");
+    EngTarget target;WoodEngineeringBindingSourceKind kind;
+    ES_CHECK(wood_engineering_binding_source_decode(&a,&kind,&target,NULL)&&kind==WOOD_BINDING_SOURCE_EFFECTIVE&&
+        wood_eng_same_target(&target,&value.target),"binding-public-key-decoder");
+    value.source.value=-7;a=wood_engineering_binding_source_ref(44,WOOD_BINDING_SOURCE_REQUEST_VALUE,&value,&first);
+    value.source.value=23;b=wood_engineering_binding_source_ref(44,WOOD_BINDING_SOURCE_REQUEST_VALUE,&value,&second);
+    ES_CHECK(a.key_size==51&&b.key_size==51&&memcmp(a.key,b.key,a.key_size),"temporary-key-keeps-full-source-payload");
+    ES_CHECK(wood_engineering_binding_source_decode(&b,&kind,&target,&decoded)&&
+        kind==WOOD_BINDING_SOURCE_REQUEST_VALUE&&decoded.source.value==23,"temporary-key-public-decodes-payload");
+    EngBinding before;memset(&decoded,0xa5,sizeof decoded);memcpy(&before,&decoded,sizeof before);
+    for(size_t cut=0;cut<size;++cut)ES_CHECK(!wood_engineering_binding_decode(content,cut,&decoded)&&
+        !memcmp(&decoded,&before,sizeof before),"binding-truncation-keeps-output");
+    memcpy(other,content,size);other[size]=0;
+    ES_CHECK(!wood_engineering_binding_decode(other,size+1,&decoded)&&!memcmp(&decoded,&before,sizeof before),"binding-trailing-byte-rejected");
+    memcpy(other,content,size);other[49]=2;
+    ES_CHECK(!wood_engineering_binding_decode(other,size,&decoded)&&!memcmp(&decoded,&before,sizeof before),"binding-noncanonical-bool-rejected");
+    memset(other,0xa5,sizeof other);memset(value.source.ref,'x',sizeof value.source.ref);
+    ES_CHECK(!wood_engineering_binding_encode(&value,other)&&other[0]==0xa5&&other[sizeof other-1]==0xa5,
+        "binding-invalid-string-keeps-output");return 0;
+}
+static int es_binding_identity(void)
+{
+    EsFixture *first=es_fixture(),*second=es_fixture();ES_CHECK(first&&second,"binding-identity-fixtures");
+    EngTarget target={0,1,0,0};EngDimensionSource source={.kind=ENG_LITERAL,.value=17};
+    ES_CHECK(wood_eng_bind(&first->context,&target,&source),"binding-first-definition");source.value=23;
+    ES_CHECK(wood_eng_bind(&second->context,&target,&source)&&es_attach(first)&&es_attach(second),"binding-second-definition");
+    GeoCoord a,b;char path[256];
+    ES_CHECK(wood_eng_effective(&first->context,wood_eng_binding(&first->context,&target),&a,path,sizeof path)&&a==17&&
+        wood_eng_effective(&second->context,wood_eng_binding(&second->context,&target),&b,path,sizeof path)&&b==23,"binding-fresh-context-values");
+    size_t left=es_binding_node(first->graph,ES_BINDING,target),right=es_binding_node(second->graph,ES_BINDING,target);
+    GeoSourceNodeView l,r;ES_CHECK(geo_eval_node_at(first->graph,left,&l)&&geo_eval_node_at(second->graph,right,&r)&&
+        l.source.key_size==17&&r.source.key_size==17&&!memcmp(l.source.key,r.source.key,17),"binding-real-stable-owned-keys");
+    size_t ld=es_child(first->graph,left,ES_BINDING,GEO_DEPENDENCY_DEFINITION_REQUIRED);
+    size_t rd=es_child(second->graph,right,ES_BINDING,GEO_DEPENDENCY_DEFINITION_REQUIRED);
+    ES_CHECK(geo_eval_node_at(first->graph,ld,&l)&&geo_eval_node_at(second->graph,rd,&r)&&
+        l.value&&r.value&&l.value->kind==GEO_SOURCE_DEFINITION&&r.value->kind==GEO_SOURCE_DEFINITION&&
+        l.source.key_size==17&&!memcmp(l.source.key,r.source.key,17),"binding-canonical-definition-edge");
+    EngBinding old,newer;ES_CHECK(wood_engineering_binding_decode(l.value->as.definition.content,l.value->as.definition.content_size,&old)&&
+        wood_engineering_binding_decode(r.value->as.definition.content,r.value->as.definition.content_size,&newer)&&
+        old.source.value==17&&newer.source.value==23,"binding-definition-content-tracks-source");
+    es_free(first);es_free(second);return 0;
+}
+static int es_binding_definition_first(void)
+{
+    EsFixture *f=es_fixture();ES_CHECK(f,"binding-definition-first-fixture");
+    EngTarget target={0,1,0,0};EngDimensionSource source={.kind=ENG_LITERAL,.value=17};
+    ES_CHECK(wood_eng_bind(&f->context,&target,&source)&&es_attach(f),"binding-definition-first-setup");
+    WoodEngineeringBindingSourceKey key;GeoSourceValue definition;
+    GeoSourceRef ref=wood_engineering_binding_source_ref(ES_BINDING,WOOD_BINDING_SOURCE_DEFINITION,
+        wood_eng_binding(&f->context,&target),&key);
+    EngBinding decoded;
+    ES_CHECK(geo_eval_source(f->graph,ref,GEO_DEPENDENCY_DEFINITION_REQUIRED,&definition)==GEO_SOURCE_OK&&
+        definition.kind==GEO_SOURCE_DEFINITION&&wood_engineering_binding_decode(definition.as.definition.content,
+        definition.as.definition.content_size,&decoded)&&decoded.source.value==17,"binding-definition-first-cached-original");
+    EngBinding *stored=wood_eng_binding(&f->context,&target);stored->source.value=23;
+    GeoCoord value=997;char path[256];strcpy(path,"sentinel");
+    ES_CHECK(!wood_eng_effective(&f->context,stored,&value,path,sizeof path)&&value==997&&!strcmp(path,"sentinel")&&
+        !strcmp(f->error,"I8: engineering binding definition changed during evaluation"),"binding-definition-first-stale-rejected");
+    ES_CHECK(geo_eval_source(f->graph,ref,GEO_DEPENDENCY_DEFINITION_REQUIRED,&definition)==GEO_SOURCE_OK&&
+        wood_engineering_binding_decode(definition.as.definition.content,definition.as.definition.content_size,&decoded)&&
+        decoded.source.value==17,"binding-definition-first-original-retained");
+    es_free(f);return 0;
+}
+static int es_binding_temporary(void)
+{
+    EsFixture *f=es_fixture();ES_CHECK(f,"binding-temporary-fixture");EngTarget target={0,1,0,0};
+    EngDimensionSource source={.kind=ENG_LITERAL,.value=17};
+    ES_CHECK(wood_eng_bind(&f->context,&target,&source)&&es_attach(f),"binding-temporary-owned-setup");
+    EngBinding owned=*wood_eng_binding(&f->context,&target),request=owned;GeoCoord value;char path[256];
+    ES_CHECK(wood_eng_effective(&f->context,&owned,&value,path,sizeof path)&&value==17,"binding-owned-first");
+    request.source.value=23;
+    ES_CHECK(wood_eng_effective(&f->context,&request,&value,path,sizeof path)&&value==23,"binding-temporary-does-not-alias-owned-target");
+    ES_CHECK(wood_eng_effective(&f->context,&owned,&value,path,sizeof path)&&value==17,"binding-owned-after-temporary");
+    size_t nodes=geo_eval_node_count(f->graph),edges=geo_eval_edge_count(f->graph);int calls=f->target_calls;
+    ES_CHECK(geo_eval_seal(f->graph)&&wood_eng_effective(&f->context,&request,&value,path,sizeof path)&&value==23&&
+        wood_eng_effective(&f->context,&owned,&value,path,sizeof path)&&value==17&&f->target_calls==calls&&
+        geo_eval_node_count(f->graph)==nodes&&geo_eval_edge_count(f->graph)==edges,"binding-sealed-independent-memoized-values");
+    request.source.value=31;value=997;strcpy(path,"sentinel");
+    ES_CHECK(!wood_eng_effective(&f->context,&request,&value,path,sizeof path)&&value==997&&!strcmp(path,"sentinel")&&
+        geo_eval_node_count(f->graph)==nodes&&geo_eval_edge_count(f->graph)==edges,"binding-sealed-new-request-rejected-without-writes");
+    es_free(f);return 0;
+}
+
 int main(int argc,char **argv)
 {
     if(argc!=2)return 2;
+    if(!strcmp(argv[1],"binding-codec"))return es_binding_codec();
+    if(!strcmp(argv[1],"binding-identity"))return es_binding_identity();
+    if(!strcmp(argv[1],"binding-definition-first"))return es_binding_definition_first();
+    if(!strcmp(argv[1],"binding-temporary"))return es_binding_temporary();
     if(!strcmp(argv[1],"material"))return es_material();
     if(!strcmp(argv[1],"application"))return es_application();
     if(!strcmp(argv[1],"overrides"))return es_overrides();

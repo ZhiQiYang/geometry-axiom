@@ -3,7 +3,8 @@
 enum { APP_SOURCE_GUIDE=1, APP_SOURCE_MEMBER_POSE, APP_SOURCE_REFERENCE, APP_SOURCE_PARAMETER,
     APP_SOURCE_NAMED=6, APP_SOURCE_DATUM, APP_SOURCE_ENGINEERING_DIMENSION,
     APP_SOURCE_ENGINEERING_BINDING,APP_SOURCE_ENGINEERING_DEFINITION,APP_SOURCE_SECTION_PROFILE,
-    APP_SOURCE_FINISH,APP_SOURCE_PLACEMENT,APP_SOURCE_REGION,APP_SOURCE_GRID,APP_SOURCE_CONTACT,APP_SOURCE_ASSEMBLY }; /* token 5 belongs to model roots */
+    APP_SOURCE_FINISH,APP_SOURCE_PLACEMENT,APP_SOURCE_REGION,APP_SOURCE_GRID,APP_SOURCE_CONTACT,APP_SOURCE_ASSEMBLY,
+    APP_SOURCE_ENCLOSURE,APP_SOURCE_WOOD_DEFINITION }; /* token 5 belongs to model roots */
 typedef struct {
     uint32_t placement;
     uint32_t guide_id;
@@ -124,6 +125,7 @@ static bool reference_source_evaluate(void *opaque,GeoEvalContext *evaluation,co
 }
 static bool reference_sp_dimension(void *opaque,const EngDimensionSource *source,const EngTarget *target,GeoCoord *out)
 {ReferenceEval *ctx=opaque;return app_sp_resolve_dimension_sources(ctx->world,ctx->parameter_sources,ctx->engineering_sources,source,target,out);}
+static bool reference_boundary_policy(ReferenceEval *,WoodBoundaryRegion *);
 static bool reference_sp_host(void *opaque,uint32_t id,GeoFrame *frame,WoodBoundaryRegion *region,bool *derived)
 {
     ReferenceEval *ctx=opaque;if(!app_sp_live_host(ctx->world,id,frame,region,derived))return false;if(*derived)return true;
@@ -134,7 +136,8 @@ static bool reference_sp_host(void *opaque,uint32_t id,GeoFrame *frame,WoodBound
     const GeoRegionView *view=&value.as.regions.regions[0];region->outline.count=view->outline.count;
     memcpy(region->outline.v,view->outline.v,view->outline.count*sizeof *view->outline.v);region->hole_count=view->hole_count;
     for(size_t h=0;h<view->hole_count;++h){region->holes[h].count=view->holes[h].count;memcpy(region->holes[h].v,view->holes[h].v,view->holes[h].count*sizeof *view->holes[h].v);}
-    return true;
+    const GeoPlacementDefinition *placement=geo_placements_find(&ctx->world->geo.placement_data,id);
+    return !placement||placement->domain!=GEO_PLACEMENT_REGION_REF||reference_boundary_policy(ctx,region);
 }
 static bool reference_placement_binding(void *opaque,uint32_t id,GeoPlacementSourceKind kind,GeoSourceRef *out)
 {
@@ -144,15 +147,32 @@ static bool reference_placement_binding(void *opaque,uint32_t id,GeoPlacementSou
     return true;
 }
 static void reference_region_geometry(SpaceBoundarySurface *,const GeoRegionView *);
+static bool reference_boundary_policy(ReferenceEval *ctx,WoodBoundaryRegion *out)
+{
+    if(ctx->use_current_values)return true;WoodBoundaryPolicy policy;
+    if(!wood_definition_sources_boundary(ctx->definition_sources,out->id,&policy))return false;
+    out->kind=(BoundaryKind)policy.kind;
+    for(size_t i=0;i<out->outline.count;++i)out->outline.fixity[i]=(EdgeFixity)policy.fixity[0][i];
+    for(size_t h=0;h<out->hole_count;++h)for(size_t i=0;i<out->holes[h].count;++i)out->holes[h].fixity[i]=(EdgeFixity)policy.fixity[h+1][i];
+    return true;
+}
 static bool reference_fs_boundary(void *opaque,uint32_t id,WoodBoundaryRegion *out)
 {
     ReferenceEval *ctx=opaque;if(!app_fs_boundary(ctx->world,id,out))return false;
     GeoRegionSourceKey key;GeoSourceValue value;
     if(geo_eval_source(ctx->sources,geo_region_source_ref(APP_SOURCE_REGION,id,&key),GEO_DEPENDENCY_VALUE_REQUIRED,&value)!=GEO_SOURCE_OK||value.as.regions.count!=1)return false;
-    reference_region_geometry(out,&value.as.regions.regions[0]);return true;
+    reference_region_geometry(out,&value.as.regions.regions[0]);return reference_boundary_policy(ctx,out);
 }
 static bool reference_fs_obstacle(void *opaque,const FinishObstacleRef *ref,Coord lo[3],Coord hi[3])
-{return app_fs_obstacle_box(((ReferenceEval *)opaque)->world,ref,lo,hi);}
+{
+    ReferenceEval *ctx=opaque;if(!app_fs_obstacle_box(ctx->world,ref,lo,hi))return false;
+    if(ctx->use_current_values)return true;
+    if(ref->kind==FS_OBSTACLE_COLUMN){WoodColumn c;if(!wood_definition_sources_column(ctx->definition_sources,ref->id,&c))return false;
+        lo[0]=c.x_lo;lo[1]=c.y_lo;lo[2]=c.z_lo;hi[0]=c.x_hi;hi[1]=c.y_hi;hi[2]=c.z_hi;
+    }else{WoodBeam b;if(!wood_definition_sources_beam(ctx->definition_sources,ref->id,&b))return false;
+        lo[0]=b.x_lo;lo[1]=b.y_lo;lo[2]=b.z_lo;hi[0]=b.x_hi;hi[1]=b.y_hi;hi[2]=b.z_hi;
+    }return true;
+}
 static bool reference_fs_parameter_coord(void *opaque,ParameterRef ref,Coord *out)
 {return app_fs_parameter_coord(((ReferenceEval *)opaque)->world,ref,out);}
 static bool reference_fs_parameter_value(void *opaque,ParameterRef ref,GeoQuantity *out)
@@ -305,6 +325,12 @@ static bool reference_sources_ensure(ReferenceEval *ctx)
     ctx->placement_sources=geo_placement_sources_register(ctx->sources,&ctx->world->geo.placement_data,&ctx->world->geo.region_data,
         APP_SOURCE_PLACEMENT,APP_SOURCE_REGION,reference_placement_binding,ctx);
     if(!ctx->placement_sources){reference_sources_dispose(ctx);return false;}
+    ctx->enclosure_sources=geo_enclosure_sources_register(ctx->sources,&ctx->world->geo.enclosures,
+        &ctx->world->geo.region_data,&ctx->world->geo.placement_data,APP_SOURCE_ENCLOSURE,APP_SOURCE_PLACEMENT,APP_SOURCE_REGION);
+    if(!ctx->enclosure_sources){reference_sources_dispose(ctx);return false;}
+    WoodDefinitionContext definitions={&ctx->world->wood,&ctx->world->geo.region_data,APP_SOURCE_ENCLOSURE,APP_SOURCE_REGION};
+    ctx->definition_sources=wood_definition_sources_create(ctx->sources,APP_SOURCE_WOOD_DEFINITION,&definitions);
+    if(!ctx->definition_sources){reference_sources_dispose(ctx);return false;}
     WoodSectionProfileContext profiles=app_sp_context(ctx->world);
     profiles.user=ctx;profiles.resolve_dimension=reference_sp_dimension;profiles.live_host=reference_sp_host;
     wood_engineering_sources_bind(ctx->engineering_sources,&profiles.engineering);
@@ -375,7 +401,7 @@ static bool reference_member_placement(ReferenceEval *ctx,PlacementSurface *plac
         }
         if(value.as.regions.count!=placement->component_count)return false;
         for(size_t i=0;i<value.as.regions.count;++i)reference_region_geometry(&placement->components[i],&value.as.regions.regions[i]);
-    }else if(boundary){if(value.as.regions.count!=1)return false;reference_region_geometry(boundary,&value.as.regions.regions[0]);}
+    }else if(boundary){if(value.as.regions.count!=1)return false;reference_region_geometry(boundary,&value.as.regions.regions[0]);if(!reference_boundary_policy(ctx,boundary))return false;}
     else{
         if(value.as.regions.count!=1)return false;GeoLoop2View loop=value.as.regions.regions[0].outline;
         geo_loop_bbox(&loop,&placement->rect.min_u,&placement->rect.min_v,&placement->rect.max_u,&placement->rect.max_v);
@@ -396,8 +422,14 @@ static bool reference_contact_facts(void *opaque,GeoEvalContext *evaluation,
     out->member_count=facts.world.member_count;
     for(size_t i=0;i<out->member_count;++i){
         WoodContactMemberFact *fact=&out->members[i];*fact=facts.members[i];
-        if(!fact->member->placed||fact->member==request->exclude||fact->placement_id!=request->placement_id||!fact->footprint_valid)continue;
+        if(!fact->member->placed||fact->member==request->exclude)continue;
         uint32_t id=fact->member->id;GeoSourceValue value;
+        if(!ctx->use_current_values){WoodMemberPlacement anchor;
+            if(!wood_definition_sources_placement(ctx->definition_sources,id,&anchor))return false;
+            fact->placement_id=anchor.placement_id;fact->order=anchor.order;
+            fact->along_v=anchor.length_direction==GEO_DIRECTION_POS_V||anchor.length_direction==GEO_DIRECTION_NEG_V;
+        }
+        if(fact->placement_id!=request->placement_id||!fact->footprint_valid)continue;
         if(geo_eval_source(ctx->sources,(GeoSourceRef){APP_SOURCE_MEMBER_POSE,&id,sizeof id},GEO_DEPENDENCY_VALUE_REQUIRED,&value)!=GEO_SOURCE_OK)return false;
         WoodMember geometry=*fact->member;geometry.origin=value.as.box.frame.origin;
         geometry.axis_length=value.as.box.frame.axis_u;geometry.axis_a=value.as.box.frame.axis_v;geometry.axis_b=value.as.box.frame.normal;
@@ -466,6 +498,7 @@ static bool reference_member_dimension(ReferenceEval *ctx,uint32_t id,bool b,Coo
         wood_engineering_sources_bind(ctx->engineering_sources,&engineering);
         EngTarget target={1,id,0,b?1:0};const EngBinding *binding=wood_eng_binding(&engineering,&target);
         if(binding)return wood_eng_effective(&engineering,binding,out,NULL,0);
+        return wood_definition_sources_dimension(ctx->definition_sources,id,b,out);
     }
     *out=b?member->size_b:member->size_a;return true;
 }

@@ -39,7 +39,7 @@ class NativeBuild:
         self.kernel_only = kernel_only
         self.kernel = self.work / "isolated-kernel"
         self.kernel.mkdir()
-        for name in ("types.h", "exact.h", "exact.c", "codec.h", "codec.c", "geometry.h", "geometry.c", "clip.h", "clip.c", "grid.h", "grid.c", "parameters.h", "parameters.c", "parameter_sources.h", "parameter_sources.c", "linear.h", "linear.c", "named_values.h", "named_values.c", "datums.h", "datums.c", "source.h", "source.c", "regions.h", "regions.c", "guides.h", "guides.c", "grid_store.h", "grid_store.c", "candidate.h", "candidate.c", "placements.h", "placements.c", "placement_sources.h", "placement_sources.c", "versions.h", "versions.c", "enclosure.h", "enclosure.c", "document.h", "document.c"):
+        for name in ("types.h", "exact.h", "exact.c", "codec.h", "codec.c", "geometry.h", "geometry.c", "clip.h", "clip.c", "grid.h", "grid.c", "parameters.h", "parameters.c", "parameter_sources.h", "parameter_sources.c", "linear.h", "linear.c", "named_values.h", "named_values.c", "datums.h", "datums.c", "source.h", "source.c", "regions.h", "regions.c", "guides.h", "guides.c", "grid_store.h", "grid_store.c", "candidate.h", "candidate.c", "placements.h", "placements.c", "placement_sources.h", "placement_sources.c", "versions.h", "versions.c", "enclosure.h", "enclosure.c", "enclosure_sources.h", "enclosure_sources.c", "document.h", "document.c"):
             shutil.copy2(ROOT / "geometry-core/kernel" / name, self.kernel / name)
         (self.kernel / "internal").mkdir()
         shutil.copy2(ROOT / "geometry-core/kernel/internal/parameter_store.h", self.kernel / "internal/parameter_store.h")
@@ -59,7 +59,7 @@ class NativeBuild:
                 shutil.copy2(ROOT / "geometry-app/native" / name, self.host / name)
             self.woodworking = self.work / "isolated-woodworking"
             self.woodworking.mkdir()
-            for name in ("members.h", "members.c", "supports.h", "supports.c", "contacts.h", "contacts.c", "contact_world.h", "contact_world.c", "contact_sources.h", "contact_sources.c", "cut_list.h", "cut_list.c", "member_declaration.h", "member_declaration.c", "world_validation.h", "world_validation.c", "engineering.h", "engineering.c", "engineering_sources.h", "engineering_sources.c", "engineering_operations.h", "engineering_operations.c", "panel_layout.h", "panel_layout.c", "panel_support.h", "panel_support.c", "boundary_policy.h", "boundary_policy.c", "domain_values.h", "section_profile.h", "section_profile.c", "section_profile_sources.h", "section_profile_sources.c", "assembly.h", "assembly.c", "assembly_sources.h", "assembly_sources.c", "finish.h", "finish.c", "derived_placement.h", "derived_placement.c", "finish_sources.h", "finish_sources.c", "grid_application.h", "grid_application.c", "grid_sources.h", "grid_sources.c", "grid_cells.c", "grid_rules.c", "member_reference.h", "member_reference.c", "document.h", "member_placement.h", "obstacles.h"):
+            for name in ("members.h", "members.c", "supports.h", "supports.c", "contacts.h", "contacts.c", "contact_world.h", "contact_world.c", "contact_sources.h", "contact_sources.c", "cut_list.h", "cut_list.c", "member_declaration.h", "member_declaration.c", "definition_sources.h", "definition_sources.c", "world_validation.h", "world_validation.c", "engineering.h", "engineering.c", "engineering_sources.h", "engineering_sources.c", "engineering_operations.h", "engineering_operations.c", "panel_layout.h", "panel_layout.c", "panel_support.h", "panel_support.c", "boundary_policy.h", "boundary_policy.c", "domain_values.h", "section_profile.h", "section_profile.c", "section_profile_sources.h", "section_profile_sources.c", "assembly.h", "assembly.c", "assembly_sources.h", "assembly_sources.c", "finish.h", "finish.c", "derived_placement.h", "derived_placement.c", "finish_sources.h", "finish_sources.c", "grid_application.h", "grid_application.c", "grid_sources.h", "grid_sources.c", "grid_cells.c", "grid_rules.c", "member_reference.h", "member_reference.c", "document.h", "member_placement.h", "obstacles.h"):
                 shutil.copy2(ROOT / "geometry-templates/woodworking/native" / name, self.woodworking / name)
         self.windows = os.name == "nt"
         self.suffix = ".exe" if self.windows else ""
@@ -93,6 +93,7 @@ class NativeBuild:
         self.placement_sources_object = self.compile(self.kernel / "placement_sources.c", "placement-sources")
         self.versions_object = self.compile(self.kernel / "versions.c", "versions")
         self.enclosure_object = self.compile(self.kernel / "enclosure.c", "enclosure")
+        self.enclosure_sources_object = self.compile(self.kernel / "enclosure_sources.c", "enclosure-sources")
         self.document_object = self.compile(self.kernel / "document.c", "document")
         self.regions_object = self.compile(self.kernel / "regions.c", "regions")
         self.grid_store_object = self.compile(self.kernel / "grid_store.c", "grid-store")
@@ -107,6 +108,7 @@ class NativeBuild:
             self.wood_contact_sources_object = self.compile(self.woodworking / "contact_sources.c", "wood-contact-sources")
             self.wood_cut_list_object = self.compile(self.woodworking / "cut_list.c", "wood-cut-list")
             self.wood_member_declaration_object = self.compile(self.woodworking / "member_declaration.c", "wood-member-declaration")
+            self.wood_definition_sources_object = self.compile(self.woodworking / "definition_sources.c", "wood-definition-sources")
             self.wood_world_validation_object = self.compile(self.woodworking / "world_validation.c", "wood-world-validation")
             self.wood_boundary_policy_object = self.compile(self.woodworking / "boundary_policy.c", "wood-boundary-policy")
             self.wood_engineering_object = self.compile(self.woodworking / "engineering.c", "wood-engineering")
@@ -191,7 +193,7 @@ class NativeBuild:
     def product_objects(self):
         if self.kernel_only:
             raise AssertionError("K-only build has no host or woodworking product")
-        return [*self.kernel_objects(), self.wood_members_object, self.wood_supports_object, self.wood_contacts_object, self.wood_contact_world_object, self.wood_contact_sources_object, self.wood_cut_list_object, self.wood_member_declaration_object, self.wood_world_validation_object, self.wood_boundary_policy_object, self.wood_engineering_object, self.wood_engineering_sources_object, self.wood_engineering_operations_object, self.wood_panel_layout_object, self.wood_panel_support_object, self.wood_section_profile_object, self.wood_section_profile_sources_object, self.wood_assembly_object, self.wood_assembly_sources_object, self.wood_finish_object, self.wood_derived_placement_object, self.wood_finish_sources_object, self.wood_grid_application_object, self.wood_grid_sources_object, self.wood_grid_cells_object, self.wood_grid_rules_object, self.wood_member_reference_object, self.host_history_object, self.host_candidate_object]
+        return [*self.kernel_objects(), self.wood_members_object, self.wood_supports_object, self.wood_contacts_object, self.wood_contact_world_object, self.wood_contact_sources_object, self.wood_cut_list_object, self.wood_member_declaration_object, self.wood_definition_sources_object, self.wood_world_validation_object, self.wood_boundary_policy_object, self.wood_engineering_object, self.wood_engineering_sources_object, self.wood_engineering_operations_object, self.wood_panel_layout_object, self.wood_panel_support_object, self.wood_section_profile_object, self.wood_section_profile_sources_object, self.wood_assembly_object, self.wood_assembly_sources_object, self.wood_finish_object, self.wood_derived_placement_object, self.wood_finish_sources_object, self.wood_grid_application_object, self.wood_grid_sources_object, self.wood_grid_cells_object, self.wood_grid_rules_object, self.wood_member_reference_object, self.host_history_object, self.host_candidate_object]
 
     def cli(self):
         if self.kernel_only:
@@ -211,7 +213,7 @@ class NativeBuild:
 
     def kernel_objects(self):
         return [self.exact_object, self.codec_object, self.geometry_object, self.clip_object, self.grid_object,
-                self.parameters_object, self.parameter_sources_object, self.linear_object, self.named_values_object, self.datums_object, self.source_object, self.candidate_object, self.placements_object, self.placement_sources_object, self.versions_object, self.enclosure_object, self.document_object, self.regions_object, self.grid_store_object, self.guides_object]
+                self.parameters_object, self.parameter_sources_object, self.linear_object, self.named_values_object, self.datums_object, self.source_object, self.candidate_object, self.placements_object, self.placement_sources_object, self.versions_object, self.enclosure_object, self.enclosure_sources_object, self.document_object, self.regions_object, self.grid_store_object, self.guides_object]
 
     def mutant(self, module, before, after, client_object=None):
         text = (self.kernel / (module + ".c")).read_text(encoding="utf-8")

@@ -96,6 +96,8 @@ typedef struct {
     WoodSectionProfileSources *section_profile_sources;
     WoodFinishSources *finish_sources;
     GeoPlacementSources *placement_sources;
+    GeoEnclosureSources *enclosure_sources;
+    WoodDefinitionSources *definition_sources;
     WoodGridSources *grid_sources;
     WoodContactSources *contact_sources;
     WoodAssemblySources *assembly_sources;
@@ -121,6 +123,8 @@ static void reference_sources_dispose(ReferenceEval *ctx)
     wood_sp_sources_destroy(ctx->section_profile_sources);ctx->section_profile_sources=NULL;
     wood_finish_sources_destroy(ctx->finish_sources);ctx->finish_sources=NULL;
     geo_placement_sources_destroy(ctx->placement_sources);ctx->placement_sources=NULL;
+    geo_enclosure_sources_destroy(ctx->enclosure_sources);ctx->enclosure_sources=NULL;
+    wood_definition_sources_destroy(ctx->definition_sources);ctx->definition_sources=NULL;
     wood_grid_sources_destroy(ctx->grid_sources);ctx->grid_sources=NULL;
     wood_contact_sources_destroy(ctx->contact_sources);ctx->contact_sources=NULL;
     wood_assembly_sources_destroy(ctx->assembly_sources);ctx->assembly_sources=NULL;
@@ -422,7 +426,12 @@ typedef struct {
 static bool app_member_reference_at(void *user,size_t i,WoodMemberReferenceFact *out)
 {
     AppMemberReferenceContext *c=user;World *w=c->world;if(i>=w->wood.timber_count)return false;
-    const TimberAnchor *a=&w->wood.anchors[i];out->member=w->wood.timbers[i];out->wanted=c->evaluation&&c->evaluation->wanted[i];
+    const TimberAnchor *a=&w->wood.anchors[i];TimberAnchor authored;out->member=w->wood.timbers[i];out->wanted=c->evaluation&&c->evaluation->wanted[i];
+    if(c->evaluation&&!c->evaluation->use_current_values){WoodMemberDefinition definition;
+        if(!wood_definition_sources_member(c->evaluation->definition_sources,out->member.id,&definition)||
+           !wood_definition_sources_placement(c->evaluation->definition_sources,out->member.id,&authored))return false;
+        out->member.role=definition.role;out->member.cut_priority=definition.priority;out->member.auto_length=definition.auto_length;a=&authored;
+    }
     out->anchor=(WoodMemberReference){.placement_id=a->placement_id,.anchor_kind=a->anchor_kind,.length_direction=a->length_direction,.depth_side=a->depth_side,
         .ref_grid=a->ref_grid,.ref_grid_axis=a->ref_grid_axis,.ref_grid_index=a->ref_grid_index,.ref_grid_has_band=a->ref_grid_has_band,.ref_grid_band=a->ref_grid_band,
         .ref_rule=a->ref_rule,.ref_hole=a->ref_hole,.ref_edge=a->ref_edge,.has_through=a->has_through,.through=a->through,
@@ -547,8 +556,9 @@ static bool reference_compute_timber(ReferenceEval *ctx,size_t i)
             wood_engineering_sources_bind(ctx->engineering_sources,&engineering);
             for(int field=0;field<2;++field){EngTarget target={1,member->id,0,field};
                 const EngBinding *binding=wood_eng_binding(&engineering,&target);GeoCoord dimension;
-                if(binding){if(!wood_eng_effective(&engineering,binding,&dimension,NULL,0))return false;
-                    if(field)member->size_b=dimension;else member->size_a=dimension;}
+                if(binding){if(!wood_eng_effective(&engineering,binding,&dimension,NULL,0))return false;}
+                else if(!wood_definition_sources_dimension(ctx->definition_sources,member->id,field!=0,&dimension))return false;
+                if(field)member->size_b=dimension;else member->size_a=dimension;
             }
         }
     }

@@ -37,7 +37,10 @@ def controls():
     result=[]
     for kind,name,field in STORES:
         target="named_values" if name!="named_values" else "parameters"
-        before=f"GEO_DOCUMENT_STORE({kind},{name},{field})"
+        before=(f"{kind} *geo_document_{name}(GeoDocument *document)\n"
+            f"{{return document?&document->{field}:NULL;}}\n"
+            f"const {kind} *geo_document_{name}_view(const GeoDocument *document)\n"
+            f"{{return document?&document->{field}:NULL;}}")
         # Wrong-field handles are compared as addresses before any store API
         # dereferences them. Casts make this a runtime oracle, not a type error.
         after=(f"{kind} *geo_document_{name}(GeoDocument *document)\n"
@@ -55,10 +58,10 @@ def controls():
             "return (GeoDocument*)source;","clone","clone-distinct-document"),
         ("clear-noop","{if(document)memset(document,0,sizeof *document);}","{(void)document;}","clear","clear-all-nine-stores"),
         ("null-clone","if(!source)return NULL;","if(!source)return geo_document_create();","null","null-clone"),
-        ("null-mutable","type *geo_document_##name(GeoDocument *document) "+chr(92)+"\n    {return document?&document->field:NULL;}",
-            "type *geo_document_##name(GeoDocument *document) "+chr(92)+"\n    {return document?&document->field:(type*)(uintptr_t)1;}","null","null-mutable-accessors"),
-        ("null-const","const type *geo_document_##name##_view(const GeoDocument *document) "+chr(92)+"\n    {return document?&document->field:NULL;}",
-            "const type *geo_document_##name##_view(const GeoDocument *document) "+chr(92)+"\n    {return document?&document->field:(const type*)(uintptr_t)1;}","null","null-const-accessors"),
+        ("null-mutable","GeoParameterStore *geo_document_parameters(GeoDocument *document)\n{return document?&document->parameters:NULL;}",
+            "GeoParameterStore *geo_document_parameters(GeoDocument *document)\n{return document?&document->parameters:(GeoParameterStore*)(uintptr_t)1;}","null","null-mutable-accessors"),
+        ("null-const","const GeoParameterStore *geo_document_parameters_view(const GeoDocument *document)\n{return document?&document->parameters:NULL;}",
+            "const GeoParameterStore *geo_document_parameters_view(const GeoDocument *document)\n{return document?&document->parameters:(const GeoParameterStore*)(uintptr_t)1;}","null","null-const-accessors"),
     ])
     return result
 
