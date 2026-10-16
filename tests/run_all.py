@@ -67,6 +67,7 @@ PY_NEEDS = {
     'test_cli_args': ['core'],
     'test_datum_contract': ['bridge'],
     'test_domain_decoupling_proposal': [],
+    'test_domain_decoupling_adoption': [],
     'test_engineering_core': ['bridge'],
     'test_engineering_json': ['engjson'],
     'test_engineering_model_compatibility': ['model-base'],
