@@ -1,0 +1,13 @@
+{
+  "phase": "git-archive-extraction-before-import",
+  "source": "2ba81689dc78005d5347644186049d10e7f56fb3",
+  "exit": 1,
+  "exception": "FileNotFoundError: Windows path length during tarfile.extractall",
+  "failed_archive_member": "tests/evidence/cloud-takeover-20261009/9eb-caption-six-public-v2/executed-source-bytes/036da891b5c0c7cdb4b8653eb36efc22fa25ff9ada868ef35fb57e78308079dc/grid_portable_browser_test.py",
+  "original_script_sha256": "f37bf7fcb55ff742a851e2ac4a28dcf6b5dc2fe44770c8b1471340325f1c2017",
+  "archive_sha256": "42efc0897682edb5d77cc8fc75215a44150d0acdab021ac326cb7957ff8f3a5b",
+  "test_modules_imported": false,
+  "test_methods_executed": false,
+  "compiler_executed": false,
+  "resolution": "Retry unchanged archive in a distinct extended-length Windows path; preserve partial first extraction."
+}
