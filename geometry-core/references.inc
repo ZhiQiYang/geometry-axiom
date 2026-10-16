@@ -96,6 +96,7 @@ typedef struct {
     WoodSectionProfileSources *section_profile_sources;
     WoodFinishSources *finish_sources;
     GeoPlacementSources *placement_sources;
+    GeoRegionKeySources *region_key_sources;
     GeoEnclosureSources *enclosure_sources;
     WoodDefinitionSources *definition_sources;
     WoodGridSources *grid_sources;
@@ -115,6 +116,7 @@ static bool reference_eval_datum(ReferenceEval *,size_t);
 static bool reference_placement_frame(ReferenceEval *,uint32_t,GeoFrame *);
 static bool reference_member_placement(ReferenceEval *,PlacementSurface *,SpaceBoundarySurface *);
 static bool reference_member_dimension(ReferenceEval *,uint32_t,bool,Coord *);
+static bool reference_derived_resolve(ReferenceEval *,const PlacementSurface *,const char *,int *,int *);
 static void reference_sources_dispose(ReferenceEval *ctx)
 {
     if(!ctx->sources_borrowed)geo_eval_destroy(ctx->sources);
@@ -123,6 +125,7 @@ static void reference_sources_dispose(ReferenceEval *ctx)
     wood_sp_sources_destroy(ctx->section_profile_sources);ctx->section_profile_sources=NULL;
     wood_finish_sources_destroy(ctx->finish_sources);ctx->finish_sources=NULL;
     geo_placement_sources_destroy(ctx->placement_sources);ctx->placement_sources=NULL;
+    geo_region_key_sources_destroy(ctx->region_key_sources);ctx->region_key_sources=NULL;
     geo_enclosure_sources_destroy(ctx->enclosure_sources);ctx->enclosure_sources=NULL;
     wood_definition_sources_destroy(ctx->definition_sources);ctx->definition_sources=NULL;
     wood_grid_sources_destroy(ctx->grid_sources);ctx->grid_sources=NULL;
@@ -228,7 +231,7 @@ static bool reference_quantity_raw(ReferenceEval *ctx, const GuideLine *g, const
         if(!strcmp(part[0],"edge-key")) {
             char encoded[1040];ReferenceFace ref;
             int len=snprintf(encoded,sizeof encoded,"key-hex:%s",part[1]);
-            if(len<0||(size_t)len>=sizeof encoded||!reference_face_parse(encoded,&ref)||!dp_edge_resolve(w,p,ref.key,&hole,&index))return false;
+            if(len<0||(size_t)len>=sizeof encoded||!reference_face_parse(encoded,&ref)||!reference_derived_resolve(ctx,p,ref.key,&hole,&index))return false;
             size_t component=hole<0?(size_t)index/POLY_MAX_VERTICES:(size_t)hole/POLY_MAX_HOLES;
             b=&p->components[component];if(hole<0)index%=POLY_MAX_VERTICES;else hole%=POLY_MAX_HOLES;
         } else if(p->derived_fill_id) return false;
@@ -480,7 +483,8 @@ static bool app_member_reference_footprint(void *user,size_t i,uint32_t pid,Surf
 {AppMemberReferenceContext *c=user;(void)pid;return timber_a0_footprint_uv(&c->geometry->placement,&c->world->wood.timbers[i],&c->world->wood.anchors[i],out);}
 static bool app_member_reference_key(void *user,uint32_t pid,const char *key,int *hole,int *edge,char *err,size_t cap)
 {
-    AppMemberReferenceContext *c=user;(void)pid;if(dp_edge_resolve(c->world,&c->geometry->placement,key,hole,edge))return true;
+    AppMemberReferenceContext *c=user;(void)pid;
+    if(c->evaluation?reference_derived_resolve(c->evaluation,&c->geometry->placement,key,hole,edge):dp_edge_resolve(c->world,&c->geometry->placement,key,hole,edge))return true;
     snprintf(err,cap,"%s",g_engineering_error);return false;
 }
 static WoodMemberEdgeStatus app_member_reference_edge(void *user,uint32_t pid,int hole,int edge,WoodMemberEdgeFact *out)
