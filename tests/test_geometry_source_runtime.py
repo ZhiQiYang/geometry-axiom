@@ -161,6 +161,14 @@ class SourceRuntimeTests(unittest.TestCase):
         base, definitions, req, options = cases()["unselected_profile_dependencies"]
         value = envelope(base)
         graph = value["neutralSources"]
+        # Native parameter roots carry the actual field name as well as card
+        # and field IDs; they remain source definitions, not geometry roots.
+        parameter = {"namespace": "runtime.fixture", "keyBase64": b64encode(b"parameter\0field").decode()}
+        graph["nodes"].append({"ref": parameter, "descriptor": {"valueType": "quantity", "unit": "scalar",
+            "context": {"placementId": None, "axis": None, "owner": None}}, "status": "ok",
+            "value": {"num": "3", "den": "7", "unit": "scalar", "quantityType": "ratio"}})
+        graph["roots"].append({"kind": "parameter", "id": 8, "slot": "parameter.value", "memberId": 3,
+                              "name": "ratio_field", "ref": parameter})
         box = graph["nodes"][0]["ref"]
         dependency = graph["nodes"][-1]["ref"]
         graph["edges"] = [{"consumer": box, "source": dependency, "kind": kind} for kind in
@@ -171,6 +179,12 @@ class SourceRuntimeTests(unittest.TestCase):
         closure = kernel.source_closure(compiled.program, (compiled.identities[("column",1)],))
         self.assertEqual({candidate.sources[0].key, candidate.sources[-1].key}, {source.key for source in closure})
         self.assertEqual(3, len(next(source for source in closure if source.key == candidate.sources[0].key).dependencies))
+        self.assertEqual(kernel.QuantityType.RATIO, candidate.sources[-1].value.value_type)
+        duplicate = deepcopy(value)
+        duplicate["neutralSources"]["roots"].append({**graph["roots"][-1], "name": "different_name"})
+        with self.assertRaises(ModelError) as error:
+            runtime(decode(duplicate)).compile(definitions, req, max_cells=200000)
+        self.assertEqual("BASE_SOURCE_BINDING", error.exception.code)
         graph["edges"].append({"consumer": dependency, "source": box, "kind": "definition-required"})
         with self.assertRaises(ModelError) as error:
             decode(value)

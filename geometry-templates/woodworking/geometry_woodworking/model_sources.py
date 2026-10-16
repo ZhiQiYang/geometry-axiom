@@ -99,11 +99,15 @@ def bind_sources(base, sources, roots):
             if values[0].context != values[1].context:
                 _fail("Native profile frame and region use different source contexts.")
             profiles.append(((run["id"], member), values))
+    parameters = set()
     for association in set(associations) - consumed:
         kind, identity, slot, member, name = association
-        if kind != "parameter" or slot != "parameter.value" or member is None or name is not None:
+        if kind != "parameter" or slot != "parameter.value" or member is None:
             _fail("Native source graph contains an unbound template root association.")
         if associations[association][0].value_type != ValueType.QUANTITY:
             _fail("Native parameter roots require typed quantities.")
+        if (identity, member) in parameters:
+            _fail("Native parameter fields cannot have multiple root names.")
+        parameters.add((identity, member))
     return TemplateSources(tuple(updates.get(source.key, source) for source in sources),
         tuple(placements), tuple(solids), tuple(specs), tuple(profiles), tuple(provenance.items()))
