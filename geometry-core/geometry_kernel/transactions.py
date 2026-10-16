@@ -45,6 +45,17 @@ def _check_stamp(stamp: tuple) -> None:
         raise TypeError("Evaluator stamp must be a tuple of tuples, strings, integers or None")
 
 
+def _token_value(value):
+    """Preserve opaque types without decimal integer conversion limits."""
+    if value is None:
+        return ("none",)
+    if type(value) is int:
+        return ("int", hex(value))
+    if type(value) is str:
+        return ("str", value)
+    return ("tuple", tuple(_token_value(item) for item in value))
+
+
 @dataclass(frozen=True)
 class _Pending(Generic[T]):
     token: str
@@ -81,6 +92,12 @@ class CandidateCell(Generic[T]):
         self._claimed: _Claim | None = None
         self._open_generation: int | None = None
         self._lock = RLock()
+
+    def __copy__(self):
+        raise TypeError("CandidateCell owners cannot be copied; create a new cell from .value")
+
+    def __deepcopy__(self, memo):
+        raise TypeError("CandidateCell owners cannot be copied; create a new cell from .value")
 
     @property
     def value(self) -> T:
@@ -119,7 +136,7 @@ class CandidateCell(Generic[T]):
         _check_stamp(evaluator_stamp)
         value = deepcopy(candidate_value)
         identity = (self._nonce, revision, generation, content_digest, evaluator_stamp)
-        token = hashlib.sha256(json.dumps(identity, ensure_ascii=True,
+        token = hashlib.sha256(json.dumps(_token_value(identity), ensure_ascii=True,
                                          separators=(",", ":")).encode("ascii")).hexdigest()
         with self._lock:
             if revision != self._revision or generation != self._generation:

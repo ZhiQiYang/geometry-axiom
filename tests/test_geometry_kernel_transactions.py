@@ -135,6 +135,17 @@ class CandidateCellTests(unittest.TestCase):
                   self.sealed(other_stamp, stamp=CHANGED_STAMP)}
         self.assertEqual(3, len(tokens))
 
+    def test_opaque_stamp_integers_have_no_decimal_conversion_limit_or_string_alias(self):
+        huge = 10 ** 5000
+        with mock.patch.object(transactions.secrets, "token_hex", return_value="fixed-test-session"):
+            cells = [CandidateCell(0) for _ in range(4)]
+        stamps = ((huge,), (-huge,), (hex(huge),), (("int", hex(huge)),))
+        tokens = [self.sealed(cell, stamp=stamp) for cell, stamp in zip(cells, stamps)]
+        self.assertEqual(4, len(set(tokens)))
+        for cell, stamp, token in zip(cells, stamps, tokens):
+            receipt, value = cell.claim(token, stamp)
+            self.assertEqual(value, cell.commit(receipt, value, stamp))
+
     def test_wrong_token_does_not_consume_current_preview(self):
         cell = CandidateCell(0)
         token = self.sealed(cell)
@@ -188,6 +199,28 @@ class CandidateCellTests(unittest.TestCase):
 
     def test_receipts_are_bound_to_the_issuing_cell(self):
         self.assert_receipt_owner_guard()
+
+    def assert_cell_copy_guard(self, cell_type=CandidateCell, error_type=CandidateError):
+        cell = cell_type(0)
+        for operation in (copy, deepcopy):
+            with self.assertRaisesRegex(TypeError, "CandidateCell owners cannot be copied"):
+                operation(cell)
+        token = self.sealed(cell)
+        for operation in (copy, deepcopy):
+            with self.assertRaisesRegex(TypeError, "CandidateCell owners cannot be copied"):
+                operation(cell)
+        receipt, value = cell.claim(token, STAMP)
+        for operation in (copy, deepcopy):
+            with self.assertRaisesRegex(TypeError, "CandidateCell owners cannot be copied"):
+                operation(cell)
+        self.assertEqual(value, cell.commit(receipt, value, STAMP))
+        self.assert_code("STALE_PREVIEW", lambda: cell.commit(receipt, value, STAMP), error_type)
+        independent = cell_type(cell.value)
+        self.assertEqual(value, independent.value)
+        self.assertEqual(0, independent.revision)
+
+    def test_transaction_owner_cannot_be_copied_with_pending_or_claimed_authority(self):
+        self.assert_cell_copy_guard()
 
     def test_cancel_matching_token_preserves_value_and_invalidates_preview(self):
         cell = CandidateCell(0)
@@ -340,6 +373,8 @@ class CandidateCellTests(unittest.TestCase):
             ("if claimed is None or claimed.receipt is not receipt:", "if claimed is None:", self.assert_receipt_owner_guard),
             ("        with self._lock:\n            if claimed.revision != self._revision or claimed.generation != self._generation:\n                raise _stale()\n            self._value = value",
              "        with self._lock:\n            self._value = value", self.assert_commit_generation_guard),
+            ('    def __copy__(self):\n        raise TypeError("CandidateCell owners cannot be copied; create a new cell from .value")\n\n',
+             "", self.assert_cell_copy_guard),
         )
         for index, (before, after, oracle) in enumerate(cases):
             with self.subTest(guard=index), tempfile.TemporaryDirectory(prefix="candidate-guard-") as directory:
