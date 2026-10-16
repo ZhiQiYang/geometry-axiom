@@ -87,8 +87,11 @@ static bool grid_rules_world_valid(const World *w,char *err,size_t cap)
     return true;
 }
 
+/* Returned DTO pointers borrow caller storage, including component boundaries
+ * inside the placement; they must outlive the complete line/cell query. */
 static bool grid_rule_target(const World *w,const char *kind,uint32_t id,ReferenceGrid *derived,
-    const GridSystem **source,const PlacementSurface **placement,const SpaceBoundarySurface **boundary,char *err,size_t cap)
+    const GridSystem **source,const PlacementSurface **placement,const SpaceBoundarySurface **boundary,
+    PlacementSurface *placement_storage,SpaceBoundarySurface *boundary_storage,char *err,size_t cap)
 {
     memset(derived,0,sizeof *derived);*source=NULL;*placement=NULL;*boundary=NULL;
     if(!strcmp(kind,"system")){
@@ -103,12 +106,12 @@ static bool grid_rule_target(const World *w,const char *kind,uint32_t id,Referen
             const ReferenceGrid *g=world_find_grid(w,id);
             if(!g || !g->from_binding || g->is_subgrid)return grid_rule_error(err,cap,"WRONG_SOURCE",0,0);
             *derived=*g;binding=world_find_grid_binding(w,g->binding_id);
-            *placement=world_find_placement(w,g->placement_id);
+            *placement=app_placement_read(w,g->placement_id,placement_storage);
             if(!*placement)return grid_rule_error(err,cap,"WRONG_SOURCE",0,0);
         }
         if(!binding || !grid_binding_cache(w,binding,derived,err,cap))return false;
         *source=world_find_grid_system(w,binding->system_id);
-        *boundary=*placement?world_placement_boundary(w,*placement):world_find_boundary(w,binding->boundary_id);
+        *boundary=*placement?app_placement_boundary(w,*placement,boundary_storage):app_boundary_read(w,binding->boundary_id,boundary_storage);
     }
     if(!*source || (*source)->axis[0].source!=GRID_SRC_REPEAT || (*source)->axis[1].source!=GRID_SRC_REPEAT ||
         (*source)->axis[0].stagger_set || (*source)->axis[1].stagger_set)return grid_rule_error(err,cap,"SOURCE_KIND",*source?(*source)->id:0,0);
@@ -116,9 +119,10 @@ static bool grid_rule_target(const World *w,const char *kind,uint32_t id,Referen
 }
 static bool grid_rule_cell(const World *w,const char *kind,uint32_t id,uint32_t key,const int64_t cell[2],
     ReferenceGrid *derived,const GridSystem **source,const GridSubdivisionRule **rule,SurfaceRegion2 *bounds,
-    const PlacementSurface **placement,const SpaceBoundarySurface **boundary,char *err,size_t cap)
+    const PlacementSurface **placement,const SpaceBoundarySurface **boundary,
+    PlacementSurface *placement_storage,SpaceBoundarySurface *boundary_storage,char *err,size_t cap)
 {
-    if(!grid_rule_target(w,kind,id,derived,source,placement,boundary,err,cap))return false;
+    if(!grid_rule_target(w,kind,id,derived,source,placement,boundary,placement_storage,boundary_storage,err,cap))return false;
     *rule=grid_rule_find(*source,key);
     if(!*rule)return grid_rule_error(err,cap,"RULE_MISSING",(*source)->id,key);
     if(!grid_rule_matches(*rule,cell))return grid_rule_error(err,cap,"SELECTOR_MISS",(*source)->id,key);
@@ -131,8 +135,9 @@ static bool grid_rule_line(const World *w,const GridRuleLineRef *ref,SurfaceId p
     SurfaceRegion2 *scope,char *err,size_t cap)
 {
     ReferenceGrid derived;const GridSystem *s;const GridSubdivisionRule *r;SurfaceRegion2 cell;
+    PlacementSurface placement_storage;SpaceBoundarySurface boundary_storage;
     const PlacementSurface *p;const SpaceBoundarySurface *b;
-    if(!grid_rule_cell(w,"grid",ref->grid_id,ref->rule_key,ref->cell,&derived,&s,&r,&cell,&p,&b,err,cap))return false;
+    if(!grid_rule_cell(w,"grid",ref->grid_id,ref->rule_key,ref->cell,&derived,&s,&r,&cell,&p,&b,&placement_storage,&boundary_storage,err,cap))return false;
     if(s->id!=ref->system_id || !p || p->id!=pid)return grid_rule_error(err,cap,"WRONG_SOURCE",ref->system_id,ref->rule_key);
     if(ref->axis<0 || ref->axis>1 || ref->inner_index>=r->divisions[ref->axis]-1)
         return grid_rule_error(err,cap,"INDEX_RANGE",s->id,r->key);

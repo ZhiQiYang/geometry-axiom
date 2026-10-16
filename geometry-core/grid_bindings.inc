@@ -199,7 +199,8 @@ static bool grid_query(const World *w,const char *kind,uint32_t id,const Coord r
     if(!limit || limit>GRID_MAX_LINES || rect[0]>rect[2] || rect[1]>rect[3])goto invalid;
     for(int a=0;a<4;++a)if(!coord_in_range(rect[a]))goto invalid;
     ReferenceGrid cache={0};const ReferenceGrid *g=&cache;
-    PlacementSurface local={0};const PlacementSurface *p=&local;const SpaceBoundarySurface *boundary=NULL;
+    PlacementSurface local={0};SpaceBoundarySurface boundary_storage;
+    const PlacementSurface *p=&local;const SpaceBoundarySurface *boundary=NULL;
     if(!strcmp(kind,"system")){
         const GridSystem *s=world_find_grid_system(w,id);if(!s || !grid_system_is_infinite(s))goto invalid;
         cache.from_binding=true;
@@ -210,11 +211,11 @@ static bool grid_query(const World *w,const char *kind,uint32_t id,const Coord r
     }else if(!strcmp(kind,"binding")){
         const GridBinding *b=world_find_grid_binding(w,id);
         if(!b || !grid_binding_cache(w,b,&cache,err,cap))goto invalid;
-        boundary=world_find_boundary(w,b->boundary_id);
+        boundary=app_boundary_read(w,b->boundary_id,&boundary_storage);
     }else if(!strcmp(kind,"grid")){
         g=world_find_grid(w,id);if(!g)goto invalid;
-        p=world_find_placement(w,g->placement_id);if(!p)goto invalid;
-        boundary=world_placement_boundary(w,p);
+        p=app_placement_read(w,g->placement_id,&local);if(!p)goto invalid;
+        boundary=app_placement_boundary(w,p,&boundary_storage);
     }else goto invalid;
     for(int a=0;a<2;++a){
         GridQueryAxis *q=&axes[a];
