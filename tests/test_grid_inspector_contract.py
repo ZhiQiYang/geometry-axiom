@@ -5,6 +5,7 @@ compares native objects, source tuples, segment geometry, history and new proces
 load. Actual DOM and full .gcanvas reopening are separate P72 browser gates.
 """
 import copy
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -17,6 +18,15 @@ from tests import test_infinite_grid_contract as infinite
 from tests.test_grid_system_contract import native_path
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def definition_fingerprint(scene):
+    # The current references contract hashes all declarations, including names,
+    # but excludes canvas positions. Calculate from the independently expected
+    # dump instead of accepting an arbitrary fingerprint from the response.
+    definition = "".join(line for line in scene.splitlines(keepends=True)
+                         if not line.startswith("canvas-pos "))
+    return hashlib.sha256(definition.encode("utf-8")).hexdigest()
 
 
 class GridInspectorContract(unittest.TestCase):
@@ -100,13 +110,23 @@ class GridInspectorContract(unittest.TestCase):
                     f"grid-system {identifier} name-hex {b'Before'.hex()} ",
                     f"grid-system {identifier} name-hex {'只改名稱'.encode().hex()} ")
                 self.assertEqual(expected_scene, self.dump())
-                self.assertEqual(before[1], self.refs(), "applied grid and reference identities remain unchanged")
+                before_hash = definition_fingerprint(before[0])
+                after_hash = definition_fingerprint(expected_scene)
+                self.assertNotEqual(before_hash, after_hash, "names are part of the source definition")
+                expected_refs = copy.deepcopy(before[1])
+                self.assertEqual(before_hash, expected_refs["sourceFingerprint"])
+                self.assertEqual(before_hash, expected_refs["timberSupports"]["sourceFingerprint"])
+                expected_refs["sourceFingerprint"] = after_hash
+                expected_refs["timberSupports"]["sourceFingerprint"] = after_hash
+                self.assertEqual(expected_refs, self.refs(),
+                                 "only the exact name-derived fingerprints change; all reference identities remain")
                 self.assertEqual(segments, self.query("binding", identifier, rect=(-900, -900, 1500, 1500), limit=64))
                 after = self.snapshot()
                 self.assertTrue(self.command("undo")["ok"])
                 self.assertEqual(before, self.snapshot())
                 self.assertTrue(self.command("redo")["ok"])
                 self.assertEqual(after, self.snapshot())
+        after = self.snapshot()
         path = Path(self.directory.name) / "renamed.scene"
         path.write_text(self.dump(), encoding="utf-8")
         old_pid = self.session.process.pid
@@ -124,6 +144,7 @@ class GridInspectorContract(unittest.TestCase):
         self.binding(cell=(0, 1))
         self.binding(1, cell=(0, -1))
         self.commit(self.rename())
+        self.assertIn("stagger param:901:1", self.dump(), "rename must retain the declared parameter source")
         query = self.query("binding", rect=(-900, -900, 1500, 1500), limit=64)
         rows = {band: (a, b) for k, band, a, b in self.band_segments(query, "u") if k == 1}
         self.assertEqual(300, rows[2][0][0])

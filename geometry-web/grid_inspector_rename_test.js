@@ -5,7 +5,10 @@
 const cdp=require('./cdp_helpers.js');
 module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
   console.log('=== P72B. 更名保留相位差及來源 ===');
-  const fs=require('fs'),path=require('path'),os=require('os'),same=require('util').isDeepStrictEqual;
+  const fs=require('fs'),path=require('path'),os=require('os'),same=require('util').isDeepStrictEqual,crypto=require('crypto');
+  // Names belong to the current source definition; canvas positions do not.
+  // Derive both expected fingerprints from the expected dump, never the reply.
+  const definitionFingerprint=scene=>crypto.createHash('sha256').update(scene.replace(/^canvas-pos [^\n]*(?:\n|$)/gm,'')).digest('hex');
   const check=cdp.makeCheck({prefix:'P72B ',throwOnFail:true}),read=cdp.makeRead(eval_),wait=cdp.makeWait(waitForUI,20000),errors=exceptionCount();
   const ctl=cdp.makeCtl({eval_,sleep,click},{scroll:'nearest',attempts:12,pollMs:70,settleMs:100});
   const key=cdp.makeKey({send,sleep}),fill=cdp.makeFill({ctl,key,send,sleep},{afterMs:60});
@@ -54,7 +57,10 @@ module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
     const after=await world(),expected=structuredClone(before);
     expected.scene=expected.scene.replace(`grid-system ${id} name-hex ${Buffer.from('Before '+index).toString('hex')} `,`grid-system ${id} name-hex ${Buffer.from(name).toString('hex')} `);
     expected.objects.gridSystems.find(o=>o.id===id).name=name;
-    check(label+' 只有名稱變更，來源及每段幾何完全相同',same(expected,after)&&same(beforeGeometry,await geometry(id)),{expected,after});
+    const beforeHash=definitionFingerprint(before.scene),afterHash=definitionFingerprint(expected.scene);
+    expected.references.sourceFingerprint=afterHash;
+    expected.references.timberSupports.sourceFingerprint=afterHash;
+    check(label+' 名稱與定義指紋更新，來源及每段幾何完全相同',before.references.sourceFingerprint===beforeHash&&before.references.timberSupports.sourceFingerprint===beforeHash&&beforeHash!==afterHash&&same(expected,after)&&same(beforeGeometry,await geometry(id)),{expected,after});
     await ctl('#btnUndo');await settle();check(label+' Undo 完整還原',same(before,await world()));
     await ctl('#btnRedo');await settle();check(label+' Redo 完整重現',same(after,await world()));
     if(index===5)await shot('compact-rename-preserved');
@@ -97,7 +103,7 @@ module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
   const originalURL=await read('location.href'),freshURL=process.env.GEOMETRY_GRID_RENAME_FRESH_URL;
   if(freshURL){const target=new URL(freshURL);if(target.href===new URL(originalURL).href)throw Error('Fresh service must have a distinct URL');await send('Page.navigate',{url:target.href});}
   else await send('Page.reload');
-  await wait(`typeof ReferenceWorkspace!=='undefined'&&connection.phase==='ready'&&!ReferenceWorkspace.busy`);await settle();
+  await wait(`typeof ReferenceWorkspace!=='undefined'&&typeof connection!=='undefined'&&connection.phase==='ready'&&!ReferenceWorkspace.busy`);await settle();
   const openedRuntime=await runtime();
   check('重開 context 使用相同 fresh 來源；指定第二服務時 PID 與 session 均不同',openedRuntime.fresh===true&&openedRuntime.version===originalRuntime.version&&openedRuntime.root===originalRuntime.root&&(!freshURL||(openedRuntime.pid!==originalRuntime.pid&&openedRuntime.session!==originalRuntime.session)),{originalRuntime,openedRuntime});
   check('新應用 context 在開檔前為空白',(await objects()).gridSystems.length===0);
@@ -108,5 +114,5 @@ module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
   await select('grid-system',705);await shot('compact-rename-reopened');
   check('更名與重開沒有未處理瀏覽器例外',exceptionCount()===errors);
   console.log('P72B saved artifact',file,'fresh native service',freshURL||'not requested; new JS context only');
-  if(freshURL){await send('Page.navigate',{url:originalURL});await wait(`typeof ReferenceWorkspace!=='undefined'&&connection.phase==='ready'&&!ReferenceWorkspace.busy`);}
+  if(freshURL){await send('Page.navigate',{url:originalURL});await wait(`typeof ReferenceWorkspace!=='undefined'&&typeof connection!=='undefined'&&connection.phase==='ready'&&!ReferenceWorkspace.busy`);}
 };
