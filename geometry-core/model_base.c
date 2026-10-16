@@ -88,7 +88,7 @@ static bool model_source_check(const char *path, bool neutral, bool *capacity, b
         if (count) {
             bool found = false;
             for (size_t i = 0; allowed[i]; ++i) if (!strcmp(tokens[0], allowed[i])) found = true;
-            if(neutral&&(!strcmp(tokens[0],"finish-surface")||!strcmp(tokens[0],"panel-fill")||!strcmp(tokens[0],"derived-placement")))found=true;
+            if(neutral&&(!strcmp(tokens[0],"finish-surface")||!strcmp(tokens[0],"panel-fill")||!strcmp(tokens[0],"derived-placement")||!strcmp(tokens[0],"owned")||!strcmp(tokens[0],"assembly")))found=true;
             if (!found) {
                 snprintf(error, cap, "Line %d: only scene definitions and canvas-pos are accepted.", line_no); ok = false; break;
             }
