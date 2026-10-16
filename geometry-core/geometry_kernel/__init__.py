@@ -12,6 +12,8 @@ from .graph import (AssemblyChild, AssemblyDef, DependencyEdge, DependencyKind,
                     SourceRef, SourceStatus, UnionDef, ValueType, validate_program)
 from .evaluate import (EvaluationResult, GeometryRecord, RootOutcome, evaluate,
                        source_closure)
+from .transactions import CandidateCell, CandidateError
+from .session import ProgramSession, ProgramSnapshot
 
 __all__ = ["BoxDef", "CoordinateDomain", "EvaluationError", "FrameDef", "Provenance",
            "Quantity", "QuantityType", "RegionDef", "RegionSetDef", "SourceKey", "Unit",
@@ -24,3 +26,4 @@ __all__ += ["AssemblyChild", "AssemblyDef", "DependencyEdge", "DependencyKind",
             "SourceStatus", "UnionDef", "ValueType", "validate_program",
             "EvaluationResult", "GeometryRecord", "RootOutcome", "evaluate",
             "source_closure"]
+__all__ += ["CandidateCell", "CandidateError", "ProgramSession", "ProgramSnapshot"]

@@ -151,7 +151,7 @@ def evaluate(program, request, *, limits=Limits()):
     def input_geometry(item, *, require_interior=False):
         state = states[item.node]
         if state.problem is not None:
-            raise state.problem
+            raise state.problem.contextualized(path=(*item.path, *state.problem.path))
         if require_interior and state.geometry.inside is None:
             if state.interior_problem is not None:
                 raise state.interior_problem
@@ -160,6 +160,13 @@ def evaluate(program, request, *, limits=Limits()):
 
     for key in validated.order:
         definition = nodes[key].definition
+        failed = [states[item.node].problem for item in inputs(definition)
+                  if states[item.node].problem is not None and states[item.node].problem.status != "INCOMPLETE"]
+        if failed:
+            # The independent failing definition already supplied its diagnostic;
+            # consumers cannot add redundant copies of the same contradiction.
+            states[key] = _State(problem=failed[0])
+            continue
         try:
             if isinstance(definition, PlacedRegionDef):
                 frame, regions = value(definition.frame), value(definition.region)

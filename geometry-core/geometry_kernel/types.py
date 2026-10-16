@@ -162,8 +162,10 @@ class FrameDef:
     domain: CoordinateDomain = CoordinateDomain()
 
     def __post_init__(self):
-        for name in ("origin", "u", "v", "n"):
-            object.__setattr__(self, name, vector(getattr(self, name)))
+        object.__setattr__(self, "origin", vector(self.origin))
+        object.__setattr__(self, "u", vector(self.u))
+        object.__setattr__(self, "v", vector(self.v))
+        object.__setattr__(self, "n", vector(self.n))
         if not isinstance(self.domain, CoordinateDomain) or any(sum(x*x for x in axis) != 1 for axis in (self.u, self.v, self.n)) or cross(self.u, self.v) != self.n:
             invalid("FACE_FRAME", "Frame requires right-handed orthogonal unit integer axes")
 

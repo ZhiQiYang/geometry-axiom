@@ -1,4 +1,5 @@
 """Domain-neutral failures from exact geometry evaluation."""
+from copy import deepcopy
 
 
 class EvaluationError(ValueError):
@@ -16,10 +17,16 @@ class EvaluationError(ValueError):
         self.phase = phase
 
     def contextualized(self, **context):
-        values = {name: getattr(self, name) for name in
-                  ("node", "path", "missing", "root", "diagnostics", "phase")}
+        values = {"node": self.node, "path": self.path, "missing": self.missing,
+                  "root": self.root, "diagnostics": self.diagnostics, "phase": self.phase}
         values.update(context)
         return EvaluationError(self.status, self.code, self.message, **values)
+
+    def __deepcopy__(self, memo):
+        return EvaluationError(self.status, self.code, self.message,
+            node=deepcopy(self.node, memo), path=deepcopy(self.path, memo),
+            missing=deepcopy(self.missing, memo), root=deepcopy(self.root, memo),
+            diagnostics=deepcopy(self.diagnostics, memo), phase=self.phase)
 
 
 def raise_errors(errors):

@@ -234,8 +234,9 @@ class Program:
     snapshot_identity: tuple = ()
 
     def __post_init__(self):
-        for name in ("sources", "nodes", "external_dependencies"):
-            object.__setattr__(self, name, _tuple(getattr(self, name), "PROGRAM", "Program collections must be sequences"))
+        object.__setattr__(self, "sources", _tuple(self.sources, "PROGRAM", "Program collections must be sequences"))
+        object.__setattr__(self, "nodes", _tuple(self.nodes, "PROGRAM", "Program collections must be sequences"))
+        object.__setattr__(self, "external_dependencies", _tuple(self.external_dependencies, "PROGRAM", "Program collections must be sequences"))
         declarations = tuple(node.key for node in self.nodes if isinstance(node, Node)) if self.declarations is None else _tuple(self.declarations, "DECLARATIONS", "Declarations must be a sequence")
         object.__setattr__(self, "declarations", declarations)
         _identity_tuple(self.snapshot_identity)
@@ -287,7 +288,7 @@ class Limits:
     max_source_faces: int = 12_000
 
     def __post_init__(self):
-        if any(type(value) is not int or value < 1 for value in vars(self).values()):
+        if any(type(value) is not int or value < 1 for value in (self.max_cells, self.max_nodes, self.max_depth, self.max_expanded_leaves, self.max_source_faces)):
             raise EvaluationError("UNSUPPORTED", "CAPACITY", "Evaluation limits must be positive exact integers")
 
 
@@ -399,29 +400,36 @@ def validate_program(program, *, limits=Limits()):
     for node in program.nodes:
         try:
             _shape(node.definition)
-            for reference in source_refs(node.definition):
+        except EvaluationError as error:
+            errors.append(error.contextualized(node=node.key, phase="declaration"))
+            continue
+        for reference in source_refs(node.definition):
+            try:
                 source = sources.get(reference.key)
                 if source is None:
                     raise EvaluationError("INVALID", "SOURCE_MISSING_REFERENCE", "Referenced source does not exist", missing=reference.key)
                 if source.value_type != reference.value_type or (reference.context is not None and source.context != reference.context):
                     raise EvaluationError("INVALID", "SOURCE_REFERENCE_TYPE", "Source reference type or context disagrees", missing=reference.key)
-            for item in inputs(node.definition):
-                if item.node not in nodes:
-                    raise EvaluationError("INVALID", "MISSING_REFERENCE", "Referenced object does not exist", missing=item.node)
-                dependency = nodes[item.node].definition
+            except EvaluationError as error:
+                errors.append(error.contextualized(node=node.key, phase="declaration"))
+        direct = {item.node for item in inputs(node.definition)}
+        for dependency_key in dict.fromkeys((*node.definition_dependencies, *(item.node for item in inputs(node.definition)))):
+            try:
+                if dependency_key not in nodes:
+                    raise EvaluationError("INVALID", "MISSING_REFERENCE", "Referenced object does not exist", missing=dependency_key)
+                if dependency_key not in direct:
+                    continue
+                dependency = nodes[dependency_key].definition
                 if isinstance(node.definition, (UnionDef, DifferenceDef)) and not isinstance(dependency, (BoxDef, ExtrusionDef, InteriorDef, UnionDef, DifferenceDef)):
-                    raise EvaluationError("INVALID", "OPERAND_TYPE", "Boolean inputs require typed solid definitions", missing=item.node)
+                    raise EvaluationError("INVALID", "OPERAND_TYPE", "Boolean inputs require typed solid definitions", missing=dependency_key)
                 if isinstance(node.definition, ExtrusionDef) and not isinstance(dependency, PlacedRegionDef):
-                    raise EvaluationError("INVALID", "OPERAND_TYPE", "An extrusion requires a placed region", missing=item.node)
+                    raise EvaluationError("INVALID", "OPERAND_TYPE", "An extrusion requires a placed region", missing=dependency_key)
                 if isinstance(node.definition, OrientedShellDef) and not isinstance(dependency, PlacedRegionDef):
-                    raise EvaluationError("INVALID", "OPERAND_TYPE", "A shell use requires a placed region", missing=item.node)
+                    raise EvaluationError("INVALID", "OPERAND_TYPE", "A shell use requires a placed region", missing=dependency_key)
                 if isinstance(node.definition, InteriorDef) and not isinstance(dependency, OrientedShellDef):
-                    raise EvaluationError("INVALID", "OPERAND_TYPE", "An interior requires an oriented shell", missing=item.node)
-            for key in node.definition_dependencies:
-                if key not in nodes:
-                    raise EvaluationError("INVALID", "MISSING_REFERENCE", "Referenced object does not exist", missing=key)
-        except EvaluationError as error:
-            errors.append(error.contextualized(node=node.key, phase="declaration"))
+                    raise EvaluationError("INVALID", "OPERAND_TYPE", "An interior requires an oriented shell", missing=dependency_key)
+            except EvaluationError as error:
+                errors.append(error.contextualized(node=node.key, phase="declaration"))
     for source in program.sources:
         for edge in source.dependencies:
             if edge.source not in sources:
@@ -458,7 +466,7 @@ def validate_program(program, *, limits=Limits()):
 
 class ProgramBuilder:
     def __init__(self, sources=(), *, snapshot_identity=()):
-        self._sources = tuple(sources)
+        self._sources = _tuple(sources, "PROGRAM", "Builder sources must be a sequence")
         self._nodes = []
         self._declarations = []
         self._snapshot_identity = snapshot_identity
@@ -468,6 +476,8 @@ class ProgramBuilder:
         return cls(sources, snapshot_identity=snapshot_identity)
 
     def add(self, definition, *, key=None, order_token=(), declared=True, definition_dependencies=()):
+        if type(declared) is not bool:
+            invalid("DECLARATIONS", "A declaration flag must be an explicit boolean")
         if key is None:
             key = max((node.key for node in self._nodes), default=-1) + 1
         node = Node(key, definition, order_token, definition_dependencies)

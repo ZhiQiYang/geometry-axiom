@@ -8,7 +8,8 @@ import tempfile
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
-PURE_TESTS = ("test_geometry_kernel_geometry", "test_geometry_kernel_graph")
+PURE_TESTS = ("test_geometry_kernel_geometry", "test_geometry_kernel_graph",
+              "test_geometry_kernel_transactions", "test_geometry_kernel_session")
 
 ISOLATED = r'''
 import importlib.abc, json, pathlib, sys, unittest
@@ -20,7 +21,8 @@ class RejectHostAndTemplate(importlib.abc.MetaPathFinder):
             raise AssertionError('Forbidden import attempted: ' + fullname)
 sys.meta_path.insert(0, RejectHostAndTemplate())
 suite = unittest.TestSuite(unittest.defaultTestLoader.loadTestsFromName(name) for name in
-    ('test_geometry_kernel_geometry.KernelGeometryTests', 'test_geometry_kernel_graph.KernelGraphTests'))
+    ('test_geometry_kernel_geometry.KernelGeometryTests', 'test_geometry_kernel_graph.KernelGraphTests',
+     'test_geometry_kernel_transactions.CandidateCellTests', 'test_geometry_kernel_session.KernelSessionTests'))
 result = unittest.TextTestRunner(verbosity=1).run(suite)
 loaded = []
 for name, module in sys.modules.items():
@@ -62,7 +64,7 @@ class KernelIsolationTests(unittest.TestCase):
             result = self.run_process(ISOLATED, root)
             self.assertEqual(0, result.returncode, result.stdout + result.stderr)
             receipt = json.loads(result.stdout.splitlines()[-1])
-            self.assertEqual(42, receipt["tests"])
+            self.assertEqual(78, receipt["tests"])
             self.assertTrue(receipt["success"])
 
     def test_shared_implementation_source_mutants_fail_both_oracles(self):
@@ -77,6 +79,8 @@ class KernelIsolationTests(unittest.TestCase):
                 root = Path(directory)
                 self.copy_pure(root)
                 shutil.copytree(ROOT / "geometry-core/modeling", root / "modeling", ignore=shutil.ignore_patterns("__pycache__"))
+                shutil.copytree(ROOT / "geometry-app/geometry_app", root / "geometry_app", ignore=shutil.ignore_patterns("__pycache__"))
+                shutil.copytree(ROOT / "geometry-templates/woodworking/geometry_woodworking", root / "geometry_woodworking", ignore=shutil.ignore_patterns("__pycache__"))
                 shutil.copy2(ROOT / "tests/test_geometry_kernel_compatibility.py", root / "test_geometry_kernel_compatibility.py")
                 legacy_oracle = "test_geometry_kernel_compatibility.GeometryKernelCompatibilityTests.test_pre_extraction_meshes_are_byte_identical"
                 baseline = self.run_process(MUTANT_RUN, root, pure_oracle, legacy_oracle)

@@ -407,7 +407,8 @@ def boolean_geometry(op, operands, *, max_source_faces=MAX_SOURCE_FACES):
         inside = lambda p:operands[0].inside(p) and not any(g.inside(p) for g in operands[1:])
     else:
         _invalid("BOOLEAN_OPERATION", "Unknown or invalid solid composition operation")
-    return _Geometry([f for g in operands for f in g.faces],inside)
+    return _Geometry([f for g in operands for f in g.faces],inside,
+                     domain=operands[0].domain if operands else CoordinateDomain())
 
 
 def prefix_geometry(geometry, path=(), contribution=None):

@@ -276,6 +276,16 @@ class KernelGraphTests(unittest.TestCase):
         self.assertEqual([None, "0"], [item.mesh["volume_mm3"] for item in result.records])
         self.assertTrue(all(not item.mesh["triangles"] for item in result.records))
 
+    def test_empty_boolean_retains_local_coordinate_domain(self):
+        domain = CoordinateDomain(("empty-local",))
+        p = ProgramBuilder()
+        surface = region_node(p, RegionSetDef(()), replace(FRAME, domain=domain))
+        solid = p.add(ExtrusionDef(surface, 0, 20, provenance()))
+        difference = p.add(DifferenceDef(NodeInput(solid), (NodeInput(solid),)))
+        result = evaluate(p.freeze(), request(difference))
+        self.assertEqual("EMPTY", result.status)
+        self.assertEqual(domain, result.records[0].domain)
+
     def test_malformed_public_collections_return_typed_errors(self):
         for code, operation in (("PROGRAM", lambda: Program(nodes=None)),
                                 ("IDENTITY", lambda: Program(snapshot_identity="x")),
