@@ -34,10 +34,12 @@ PY2_SUITES = {**PY1_SUITES, "test_geometry_kernel_graph": 23,
 # in a new preset rather than silently rewriting an earlier evidence command.
 TYPED_SOURCE_SUITES = {**PY2_SUITES, "test_geometry_kernel_graph": 27,
                        "test_geometry_kernel_runtime": 4, "test_geometry_host_native": 22}
+SOURCE_TRANSPORT_SUITES = {**TYPED_SOURCE_SUITES, "test_geometry_host_sources": 17}
 SUITE_SETS = {"py1": PY1_SUITES, "py2": PY2_SUITES,
               "native-host": {"test_geometry_host_native": 22},
               "capability-phase": {"test_geometry_kernel_runtime": 4},
-              "typed-sources": TYPED_SOURCE_SUITES}
+              "typed-sources": TYPED_SOURCE_SUITES,
+              "source-transport": SOURCE_TRANSPORT_SUITES}
 
 
 def git(*args):

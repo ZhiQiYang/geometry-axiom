@@ -28,6 +28,21 @@ bytes before and after the call. Source capability admission comes from the
 explicit woodworking provider. The native-host tests use real temporary file
 bytes with a mocked process boundary and include five removed-guard controls.
 
+`model_native.load_candidate` is the opt-in, one-invocation typed source
+transport. `model_sources` decodes the schema fixed by native source commit
+`a6d383bc6a7d7254ff3f2b61291cb280c6a8a78f`, validates the original input hash,
+canonical candidate identity, provider identities, exact source values, complete
+dependency graph and root associations, then supplies immutable K descriptors.
+Box face keys and local coordinate owners retain their complete opaque identity.
+Incomplete coverage is rejected; there is no snapshot-only fallback on this API.
+The existing `load_base` API and the product's current loader remain unchanged.
+
+The 17 source transport tests use synthetic envelopes at a mocked process
+boundary and feed their decoded descriptors to the actual K evaluator. Three
+production-source guard removals must fail the same behavioral oracles. The
+`source-transport` frozen receipt preset runs these with the prior 119 tests,
+for 136 discovered cases. These tests are not actual native execution evidence.
+
 The PY2 checkpoint has intentionally incomplete native source separation:
 native-evaluated specification values are translated to typed source descriptors,
 but the complete same-candidate source graph DTO is still required from the
