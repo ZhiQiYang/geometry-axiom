@@ -57,8 +57,8 @@ class NativeBuild:
             self.host.mkdir()
             for name in ("history.h", "history.c", "app_candidate.h", "app_candidate.c"):
                 shutil.copy2(ROOT / "geometry-app/native" / name, self.host / name)
-            self.woodworking = self.work / "isolated-woodworking"
-            self.woodworking.mkdir()
+            self.woodworking = self.work / "isolated-woodworking" / "native"
+            self.woodworking.mkdir(parents=True)
             for name in ("members.h", "members.c", "supports.h", "supports.c", "contacts.h", "contacts.c", "contact_world.h", "contact_world.c", "contact_sources.h", "contact_sources.c", "cut_list.h", "cut_list.c", "member_declaration.h", "member_declaration.c", "definition_sources.h", "definition_sources.c", "world_validation.h", "world_validation.c", "engineering.h", "engineering.c", "engineering_sources.h", "engineering_sources.c", "engineering_operations.h", "engineering_operations.c", "panel_layout.h", "panel_layout.c", "panel_support.h", "panel_support.c", "boundary_policy.h", "boundary_policy.c", "domain_values.h", "section_profile.h", "section_profile.c", "section_profile_sources.h", "section_profile_sources.c", "assembly.h", "assembly.c", "assembly_sources.h", "assembly_sources.c", "finish.h", "finish.c", "derived_placement.h", "derived_placement.c", "finish_sources.h", "finish_sources.c", "grid_application.h", "grid_application.c", "grid_sources.h", "grid_sources.c", "grid_cells.c", "grid_rules.c", "member_reference.h", "member_reference.c", "document.h", "member_placement.h", "obstacles.h"):
                 shutil.copy2(ROOT / "geometry-templates/woodworking/native" / name, self.woodworking / name)
         self.windows = os.name == "nt"
