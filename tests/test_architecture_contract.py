@@ -229,17 +229,28 @@ class ArchitectureContract(unittest.TestCase):
         self.rejects("FORBIDDEN_IDENTIFIER", path="src/k/core.c", line=1)
 
     def test_locked_vendor_is_exact_and_transitively_scanned(self):
-        self.put("src/k/core.c", '#include "../vendor/exact.h"\n')
+        self.put("src/h/host.c", '#include "../vendor/exact.h"\n', "H")
         vendor = self.put("src/vendor/exact.h", "int exact;\n", "vendor")
         self.green()
         vendor.write_text("int changed;\n", encoding="utf-8")
         self.rejects("VENDOR_DIGEST")
 
     def test_vendor_cannot_launder_a_template_dependency(self):
-        self.put("src/k/core.c", '#include "../vendor/exact.h"\n')
+        self.put("src/h/host.c", '#include "../vendor/exact.h"\n', "H")
         self.put("src/vendor/exact.h", '#include "../w/policy.h"\n', "vendor")
         self.put("src/w/policy.h", "int policy;\n", "W")
-        self.rejects("LAYER_DIRECTION", chain=["src/k/core.c", "src/vendor/exact.h", "src/w/policy.h"])
+        self.rejects("LAYER_DIRECTION", chain=["src/vendor/exact.h", "src/w/policy.h"])
+
+    def test_core_cannot_depend_on_even_digest_locked_vendor(self):
+        self.put("src/k/core.c", '#include "../vendor/exact.h"\n')
+        self.put("src/vendor/exact.h", "int exact;\n", "vendor")
+        self.rejects("LAYER_DIRECTION", chain=["src/k/core.c", "src/vendor/exact.h"])
+
+    def test_core_helper_cannot_launder_vendor(self):
+        self.put("src/k/core.c", '#include "helper.h"\n')
+        self.put("src/k/helper.h", '#include "../vendor/exact.h"\n')
+        self.put("src/vendor/exact.h", "int exact;\n", "vendor")
+        self.rejects("LAYER_DIRECTION", chain=["src/k/core.c", "src/k/helper.h", "src/vendor/exact.h"])
 
     def test_exact_exclusion_is_locked_and_cannot_be_imported(self):
         omitted = self.put("src/generated_demo.py", "value = 1\n", registered=False)
@@ -261,6 +272,13 @@ class ArchitectureContract(unittest.TestCase):
         self.put("src/k/core.py", "from . import helper as h\n")
         self.put("src/k/helper.py", "value = 1\n", "W")
         self.rejects("LAYER_DIRECTION", chain=["src/k/core.py", "src/k/helper.py"])
+
+    def test_python_relative_package_root_ignores_nonmodule_parent(self):
+        self.put("src/project-core/k/__init__.py", "")
+        self.put("src/project-core/k/core.py", "from . import helper\n")
+        self.put("src/project-core/k/helper.py", "value = 1\n")
+        self.manifest["searchRoots"]["python"] = [".", "src/project-core"]
+        self.assertTrue(any(edge.target.endswith('/helper.py') for edge in self.green().edges))
 
     def test_python_package_initializer_is_in_dependency_graph(self):
         self.put("src/core.py", "import pkg.neutral\n")
@@ -579,6 +597,130 @@ class ArchitectureContract(unittest.TestCase):
                                             "sha256": hashlib.sha256(omitted.read_bytes()).hexdigest()})
         self.route()
         self.rejects("HTML_ROUTE_TARGET")
+
+    def import_route(self, source="src/host.js", specifier="/vendor/lib.js", target="src/vendor/lib.js"):
+        route = {"source": source, "specifier": specifier, "target": target, "purpose": "Exact host lazy module route"}
+        self.manifest.setdefault("javascriptImportRoutes", []).append(route)
+        return route
+
+    def trusted_bundle(self, files=None):
+        bundle = {"id": "browser-library", "files": files or ["src/vendor/lib.js"], "layers": ["H"],
+                  "purpose": "Reviewed immutable browser library; its internal runtime behavior is explicitly trusted"}
+        self.manifest.setdefault("trustedVendorBundles", []).append(bundle)
+        return bundle
+
+    def test_host_literal_import_route_is_an_owned_edge_inside_template(self):
+        self.put("src/host.js", "const x = `${await import('/vendor/lib.js')}`;\n", "H")
+        self.put("src/vendor/lib.js", "globalThis.library = {};\n", "vendor")
+        self.import_route()
+        self.trusted_bundle()
+        result = self.green()
+        self.assertEqual([edge.target for edge in result.edges], ["src/vendor/lib.js"])
+        self.assertEqual(result.to_dict()["trustedSourcesNotParsed"], ["src/vendor/lib.js"])
+
+    def test_host_computed_import_still_fails_with_route(self):
+        path = self.put("src/host.js", "", "H")
+        self.put("src/vendor/lib.js", "globalThis.library = {};\n", "vendor")
+        self.import_route()
+        self.trusted_bundle()
+        for expression in ["import(prefix + '/vendor/lib.js')", "import(`/vendor/${name}.js`)",
+                           "import('/vendor/lib.js', {with: {type: 'json'}})"]:
+            with self.subTest(expression=expression):
+                path.write_text(expression + ';\n', encoding='utf-8')
+                self.rejects("JS_DYNAMIC_IMPORT")
+
+    def test_host_unmapped_literal_import_is_rejected(self):
+        self.put("src/host.js", "import('/vendor/lib.js');\n", "H")
+        self.put("src/vendor/lib.js", "globalThis.library = {};\n", "vendor")
+        self.trusted_bundle()
+        self.rejects("JS_DYNAMIC_IMPORT")
+
+    def test_host_import_route_does_not_apply_to_other_source(self):
+        self.put("src/host.js", "", "H")
+        self.put("src/other.js", "import('/vendor/lib.js');\n", "H")
+        self.put("src/vendor/lib.js", "globalThis.library = {};\n", "vendor")
+        self.import_route()
+        self.trusted_bundle()
+        self.rejects("JS_DYNAMIC_IMPORT", path="src/other.js")
+
+    def test_import_route_cannot_be_declared_for_core(self):
+        self.put("src/host.js", "import('/vendor/lib.js');\n")
+        self.put("src/vendor/lib.js", "const value = 1;\n", "vendor")
+        self.import_route()
+        self.rejects("JS_ROUTE_SOURCE")
+
+    def test_import_route_duplicate_and_unknown_target_are_rejected(self):
+        self.put("src/host.js", "", "H")
+        self.put("src/vendor/lib.js", "const value = 1;\n", "vendor")
+        route = self.import_route()
+        self.import_route()
+        self.rejects("JS_ROUTE_DUPLICATE")
+        self.manifest['javascriptImportRoutes'].pop()
+        route['target'] = 'src/unknown.js'
+        self.rejects("JS_ROUTE_TARGET")
+
+    def test_import_route_parent_escape_is_rejected(self):
+        self.put("src/host.js", "", "H")
+        route = self.import_route(target="../outside.js")
+        self.rejects("ROOT_ESCAPE")
+        route['target'] = 'src/vendor/lib.js'
+        route['specifier'] = '/../outside.js'
+        self.rejects("ROOT_ESCAPE")
+
+    def test_trusted_vendor_cannot_be_reached_by_core_or_template(self):
+        self.put("src/core.js", "require('./helper.js');\n")
+        self.put("src/helper.js", "require('./vendor/lib.js');\n")
+        self.put("src/w.js", "require('./vendor/lib.js');\n", "W")
+        self.put("src/vendor/lib.js", "globalThis.library = {};\n", "vendor")
+        self.trusted_bundle()
+        self.rejects("LAYER_DIRECTION", chain=['src/core.js', 'src/helper.js', 'src/vendor/lib.js'])
+        self.rejects("LAYER_DIRECTION", chain=['src/w.js', 'src/vendor/lib.js'])
+
+    def test_vendor_globals_are_not_trusted_without_explicit_bundle(self):
+        self.put("src/vendor/lib.js", "globalThis.library = {};\n", "vendor")
+        self.rejects("JS_DYNAMIC_IMPORT")
+
+    def test_trusted_vendor_digest_is_still_mandatory_and_current(self):
+        vendor = self.put("src/vendor/lib.js", "globalThis.library = {};\n", "vendor")
+        self.trusted_bundle()
+        self.green()
+        vendor.write_text("globalThis.changed = {};\n", encoding="utf-8")
+        self.rejects("VENDOR_DIGEST")
+        del self.manifest['sources'][0]['sha256']
+        self.rejects("VENDOR_DIGEST")
+
+    def test_trusted_vendor_file_cannot_be_missing(self):
+        self.put("src/vendor/lib.js", "globalThis.library = {};\n", "vendor").unlink()
+        self.trusted_bundle()
+        self.rejects("SOURCE_MISSING")
+
+    def test_trusted_vendor_bundle_cannot_omit_owned_vendor_file(self):
+        self.put("src/vendor/lib.js", "globalThis.library = {};\n", "vendor")
+        self.put("src/vendor/helper.js", "globalThis.helper = {};\n", "vendor")
+        self.trusted_bundle()
+        self.rejects("VENDOR_TRUST_UNDECLARED")
+
+    def test_trusted_vendor_bundle_cannot_cover_new_unregistered_file(self):
+        self.put("src/vendor/lib.js", "globalThis.library = {};\n", "vendor")
+        self.put("src/vendor/new.js", "globalThis.new = {};\n", registered=False)
+        self.trusted_bundle()
+        self.rejects("SOURCE_UNREGISTERED")
+
+    def test_trusted_vendor_bundle_must_be_host_only(self):
+        self.put("src/vendor/lib.js", "globalThis.library = {};\n", "vendor")
+        self.trusted_bundle()['layers'] = ['H', 'K']
+        self.rejects("VENDOR_TRUST_POLICY")
+
+    def test_trusted_vendor_bundle_cannot_relabel_host_code(self):
+        self.put("src/vendor/lib.js", "globalThis.library = {};\n", "H")
+        self.trusted_bundle()
+        self.rejects("VENDOR_TRUST_SOURCE")
+
+    def test_trusted_vendor_bundle_duplicate_file_is_rejected(self):
+        self.put("src/vendor/lib.js", "globalThis.library = {};\n", "vendor")
+        self.trusted_bundle()
+        self.trusted_bundle()['id'] = 'second-library'
+        self.rejects("VENDOR_TRUST_DUPLICATE")
 
     def test_html_route_escape_and_ambiguous_urls_are_rejected(self):
         self.put("src/page.html", "", "H")

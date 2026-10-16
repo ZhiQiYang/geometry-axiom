@@ -16,6 +16,8 @@ Manifest schema (all keys required; unknown keys rejected):
   sources: [{path, layer: K|W|H|vendor, language, purpose, [sha256]}]
   exclusions: [{path, reason, sha256}]
   htmlScriptRoutes (optional): [{source, src, target, purpose}]
+  javascriptImportRoutes (optional): [{source, specifier, target, purpose}]
+  trustedVendorBundles (optional): [{id, files, layers: [H], purpose}]
   policy: {
     cSystemHeaders: [exact include spelling, ...],
     pythonStdlib: [exact imported module, ...],
@@ -25,10 +27,16 @@ Manifest schema (all keys required; unknown keys rejected):
     forbiddenStrings: [exact decoded string value, ...],
     forbiddenModules: {c: [...], python: [...], javascript: [...]}}
 
-K -> K/vendor; W -> K/W/vendor; H composes all layers; vendor -> vendor.
+K -> K; W -> K/W/vendor; H composes all layers; vendor -> vendor.
 Reachability checks include package initializers and every local helper.
-System/stdlib policy is explicit; third-party modules used by K/W must instead
-be local locked vendor entries. The reviewed policy is a trust input, not proof
+System/stdlib policy is explicit; K never reaches vendor, including through K
+helpers. Non-host vendor is scanned normally. A trusted browser vendor bundle is
+an explicit H-only boundary: every file is separately digest-locked, inventoried,
+and listed exactly once. Its internal code/runtime dependencies are TRUSTED, NOT
+statically verified; K/W/untrusted vendor cannot reach it. An optional exact
+host import route permits only H's literal single-argument import() and adds a
+normal dependency edge. Computed/unmapped imports still fail closed.
+The reviewed policy is a trust input, not proof
 that a third-party binary or a system header has any particular behavior.
 
 Supported dependency syntax: literal C includes (all conditional branches),
@@ -76,7 +84,8 @@ LANGUAGES = {
 JS_SUFFIXES = (".js", ".mjs", ".cjs", ".ts", ".jsx", ".tsx")
 C_STRING_PREFIX = re.compile(r'(?:u8|[LuU])(?=["\'])')
 IDENTIFIER = re.compile(r"[A-Za-z_$][A-Za-z0-9_$]*")
-ALLOWED = {"K": {"K", "vendor"}, "W": {"K", "W", "vendor"},
+JS_NUMBER = re.compile(r"(?:0[xX][0-9a-fA-F_]+|0[bB][01_]+|0[oO][0-7_]+|[0-9][0-9_]*(?:\.[0-9_]*)?(?:[eE][+-]?[0-9_]+)?)(?:n)?")
+ALLOWED = {"K": {"K"}, "W": {"K", "W", "vendor"},
            "H": {"K", "W", "H", "vendor"}, "vendor": {"vendor"}}
 PY_LOADERS = {"importlib", "runpy", "pkgutil", "zipimport", "imp", "builtins"}
 PY_DYNAMIC_NAMES = {"__import__", "__builtins__", "exec", "eval", "compile", "globals",
@@ -130,6 +139,7 @@ class ScanResult:
     diagnostics: list[Diagnostic] = field(default_factory=list)
     edges: list[Edge] = field(default_factory=list)
     sources: list[str] = field(default_factory=list)
+    trusted_sources: list[str] = field(default_factory=list)
 
     @property
     def ok(self):
@@ -137,6 +147,7 @@ class ScanResult:
 
     def to_dict(self):
         return {"ok": self.ok, "sources": self.sources,
+                "trustedSourcesNotParsed": self.trusted_sources,
                 "edges": [asdict(edge) for edge in self.edges],
                 "diagnostics": [asdict(item) for item in self.diagnostics]}
 
@@ -367,7 +378,7 @@ def lex_javascript(text, path, line_offset=0):
                 continue
             if char.isdigit():
                 # Numeric spelling cannot contain a loader name or a delimiter.
-                match = re.match(r"(?:0[xX][0-9a-fA-F_]+|0[bB][01_]+|0[oO][0-7_]+|[0-9][0-9_]*(?:\.[0-9_]*)?(?:[eE][+-]?[0-9_]+)?)(?:n)?", text[index:])
+                match = JS_NUMBER.match(text, index)
                 value = match.group()
                 tokens.append(Token("number", value, line))
                 index += len(value)
@@ -514,6 +525,8 @@ class Scanner:
         self.search = {}
         self.policy = {}
         self.html_routes = {}
+        self.javascript_routes = {}
+        self.trusted_vendor = set()
 
     def safe(self, relative, context=None):
         context = context or relative
@@ -530,7 +543,7 @@ class Scanner:
     def validate_manifest(self):
         data = self.manifest
         exact_keys(data, {"schema", "sourceRoots", "searchRoots", "sources", "exclusions", "policy"}, "<manifest>",
-                   {"htmlScriptRoutes", "sourceFiles"})
+                   {"htmlScriptRoutes", "javascriptImportRoutes", "trustedVendorBundles", "sourceFiles"})
         require(data["schema"] == SCHEMA, "MANIFEST_SCHEMA", "<manifest>", 1, "unknown manifest schema")
         roots = strings(data["sourceRoots"], "sourceRoots")
         files = strings(data.get("sourceFiles", []), "sourceFiles")
@@ -613,6 +626,9 @@ class Scanner:
                     "SOURCE_UNREGISTERED", relative, 1, "executable source omitted from the complete manifest")
         self.validate_policy(data["policy"])
         self.validate_html_routes(data.get("htmlScriptRoutes", []))
+        self.validate_javascript_routes(data.get("javascriptImportRoutes", []))
+        self.validate_vendor_bundles(data.get("trustedVendorBundles", []))
+        self.result.trusted_sources = sorted(self.trusted_vendor)
         self.result.sources = sorted(self.entries)
 
     def validate_html_routes(self, routes):
@@ -638,6 +654,54 @@ class Scanner:
             require(target in self.entries and self.entries[target]["language"] == "javascript",
                     "HTML_ROUTE_TARGET", source, 1, "route target must be one exact owned JavaScript source")
             self.html_routes[key] = target
+
+    def validate_javascript_routes(self, routes):
+        require(isinstance(routes, list), "MANIFEST_SCHEMA", "javascriptImportRoutes", 1, "expected a route list")
+        seen = set()
+        for route in routes:
+            exact_keys(route, {"source", "specifier", "target", "purpose"}, "javascriptImportRoutes")
+            source = portable_path(route["source"], "javascriptImportRoutes.source")
+            target = portable_path(route["target"], "javascriptImportRoutes.target")
+            name = route["specifier"]
+            require(isinstance(name, str) and name and not any(char in name for char in "\\:%?#")
+                    and not name.startswith("//") and not any(char.isspace() for char in name),
+                    "JS_ROUTE_SYNTAX", source, 1, "host import route must be an exact local URL path")
+            portable_path(name[1:] if name.startswith("/") else name, "javascriptImportRoutes.specifier")
+            require(isinstance(route["purpose"], str) and route["purpose"].strip(),
+                    "MANIFEST_SCHEMA", source, 1, "host import route needs an explicit purpose")
+            key = (source, name)
+            folded = tuple(part.casefold() for part in key)
+            require(folded not in seen, "JS_ROUTE_DUPLICATE", source, 1, "duplicate source/specifier route")
+            seen.add(folded)
+            require(source in self.entries and self.entries[source]["layer"] == "H"
+                    and self.entries[source]["language"] in {"javascript", "typescript", "html"},
+                    "JS_ROUTE_SOURCE", source, 1, "only exact owned host script sources may declare import routes")
+            require(target in self.entries and self.entries[target]["language"] == "javascript",
+                    "JS_ROUTE_TARGET", source, 1, "host import target must be one exact owned JavaScript source")
+            self.javascript_routes[key] = target
+
+    def validate_vendor_bundles(self, bundles):
+        require(isinstance(bundles, list), "MANIFEST_SCHEMA", "trustedVendorBundles", 1, "expected a bundle list")
+        ids = set()
+        for bundle in bundles:
+            exact_keys(bundle, {"id", "files", "layers", "purpose"}, "trustedVendorBundles")
+            require(isinstance(bundle["id"], str) and bundle["id"].strip() and bundle["id"] not in ids
+                    and bundle["layers"] == ["H"] and isinstance(bundle["purpose"], str) and bundle["purpose"].strip(),
+                    "VENDOR_TRUST_POLICY", "trustedVendorBundles", 1, "bundle needs a distinct id, purpose and H-only trust boundary")
+            ids.add(bundle["id"])
+            files = strings(bundle["files"], "trustedVendorBundles.files")
+            require(bool(files), "VENDOR_TRUST_POLICY", bundle["id"], 1, "trusted bundle must list exact files")
+            for relative in files:
+                portable_path(relative, "trustedVendorBundles.files")
+                require(relative not in self.trusted_vendor, "VENDOR_TRUST_DUPLICATE", relative, 1,
+                        "trusted vendor file appears in multiple bundles")
+                require(relative in self.entries and self.entries[relative]["layer"] == "vendor"
+                        and self.entries[relative]["language"] == "javascript",
+                        "VENDOR_TRUST_SOURCE", relative, 1, "trusted file must be an exact digest-locked browser vendor source")
+                self.trusted_vendor.add(relative)
+        if bundles:
+            require(self.trusted_vendor == {path for path, entry in self.entries.items() if entry["layer"] == "vendor"},
+                    "VENDOR_TRUST_UNDECLARED", "trustedVendorBundles", 1, "when host trust is used, every vendor file must be listed exactly once")
 
     def check_digest(self, path, digest, code):
         require(isinstance(digest, str) and re.fullmatch(r"[0-9a-f]{64}", digest)
@@ -773,7 +837,8 @@ class Scanner:
         directories = self.search["python"]
         if level:
             file = self.root / source
-            owners = [root for root in directories if within(file, root)]
+            owners = [root for root in directories if within(file, root)
+                      and all(part.isidentifier() for part in file.relative_to(root).parts[:-1])]
             require(len(owners) == 1, "PYTHON_PACKAGE", source, line, "relative import needs one declared package root")
             directory = owners[0]
             package = list(file.relative_to(directory).parts[:-1])
@@ -956,6 +1021,16 @@ class Scanner:
             if value == "import":
                 require(index + 1 < len(tokens), "JS_IMPORT_SYNTAX", path, token.line, "unfinished import")
                 next_token = tokens[index + 1]
+                if next_token.value == "(":
+                    tail = tokens[index + 1:index + 4]
+                    require(self.entries[path]["layer"] == "H" and len(tail) == 3
+                            and tail[1].kind == "string" and tail[2].value == ")"
+                            and (path, tail[1].value) in self.javascript_routes,
+                            "JS_DYNAMIC_IMPORT", path, token.line,
+                            "import() requires an exact H-only route and one literal argument")
+                    self.owned(self.root / self.javascript_routes[(path, tail[1].value)], path, token.line)
+                    index += 4
+                    continue
                 require(next_token.value not in {"(", "."}, "JS_DYNAMIC_IMPORT", path, token.line,
                         "dynamic import/import.meta is outside the static dependency subset")
                 if next_token.kind == "string":
@@ -1071,7 +1146,9 @@ class Scanner:
                     source, chain = queue.popleft()
                     for edge in outgoing.get(source, []):
                         layer = self.entries[edge.target]["layer"]
-                        require(layer in ALLOWED[origin_layer], "LAYER_DIRECTION", edge.source, edge.line,
+                        require(layer in ALLOWED[origin_layer]
+                                and (edge.target not in self.trusted_vendor or origin_layer == "H"),
+                                "LAYER_DIRECTION", edge.source, edge.line,
                                 f"{origin_layer} source reaches {layer} through a local dependency",
                                 f"{origin_layer} -> {layer}", chain + (edge.target,))
                         if edge.target not in seen:
@@ -1092,6 +1169,8 @@ class Scanner:
                 require(b"\x00" not in raw, "SOURCE_ENCODING", path, 1, "NUL bytes are not silently truncated")
                 text = raw.replace(b"\r\n", b"\n").decode("utf-8")
                 require("\r" not in text, "SOURCE_ENCODING", path, 1, "unsupported bare CR line endings")
+                if path in self.trusted_vendor:
+                    continue  # Explicit H-only, per-file digest-locked trust boundary; never a parse claim.
                 language = self.entries[path]["language"]
                 require(language not in {"jsx", "tsx", "cpp"}, "UNSUPPORTED_LANGUAGE", path, 1,
                         f"{language} source was inventoried but needs a dedicated parser")
