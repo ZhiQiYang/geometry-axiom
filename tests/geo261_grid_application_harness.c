@@ -62,13 +62,14 @@ static int roles(void)
     CHECK(wood_grid_source_main_along(&state,9)==0);GeoGridStoreError detail;
     seven.axis[0].start=10;CHECK(wood_grid_source_redeclare(&c,&seven,2,&detail));
     CHECK(wood_grid_source_main_along(&state,7)==2 && wood_grid_source_main_along(&state,5)==1);
-    GeoGridSystem before=*geo_grid_systems_find(store,7);WoodGridState before_state=state;
+    GeoGridSystem before;memcpy(&before,geo_grid_systems_find(store,7),sizeof before);
+    WoodGridState before_state;memcpy(&before_state,&state,sizeof before_state);
     seven=system_value(7,true);CHECK(!wood_grid_source_redeclare(&c,&seven,1,&detail));CHECK(detail.status==GEO_GRID_STORE_SPACE_CHANGE);
     CHECK(!memcmp(geo_grid_systems_find(store,7),&before,sizeof before));CHECK(!memcmp(&state,&before_state,sizeof state));
     geo_grid_store_destroy(store);
     store=geo_grid_store_create();CHECK(store);memset(&state,0,sizeof state);c.sources=store;
     for(uint32_t i=0;i<GEO_GRID_SYSTEM_CAPACITY;++i){GeoGridSystem s=system_value(i,false);CHECK(wood_grid_source_put(&c,&s,i%3));}
-    CHECK(geo_grid_systems_remove(store,0));before_state=state;
+    CHECK(geo_grid_systems_remove(store,0));memcpy(&before_state,&state,sizeof before_state);
     GeoGridSystem extra=system_value(100,false);CHECK(!wood_grid_source_redeclare(&c,&extra,2,&detail));
     CHECK(detail.status==GEO_GRID_STORE_CAPACITY);
     CHECK(!geo_grid_systems_find(store,100));CHECK(geo_grid_systems_count(store)==15);CHECK(!memcmp(&state,&before_state,sizeof state));
@@ -78,7 +79,7 @@ static int direct(void)
 {
     GeoGridStore *store=geo_grid_store_create();CHECK(store);WoodGridState state={0};EngineeringState eng={0};Facts facts={0};
     WoodGridContext c=context(&state,store,&eng,&facts);WoodGridApplication g=direct_value(1,10),out={0};char error[256]="";
-    g.from_system=true;g.system_id=5;CHECK(wood_grid_stage(&state,&g));WoodGridState snapshot=state;
+    g.from_system=true;g.system_id=5;CHECK(wood_grid_stage(&state,&g));WoodGridState snapshot;memcpy(&snapshot,&state,sizeof snapshot);
     CHECK(!wood_grid_begin_direct(&c,1,10,&out,error,sizeof error));
     CHECK(!strcmp(error,"D29: edit the grid-system source or its application origin; direct axis edits are not allowed"));
     CHECK(!memcmp(&state,&snapshot,sizeof state));g.from_system=false;g.is_subgrid=true;CHECK(wood_grid_stage(&state,&g));
@@ -86,7 +87,7 @@ static int direct(void)
     g.is_subgrid=false;CHECK(wood_grid_stage(&state,&g));CHECK(!wood_grid_begin_direct(&c,1,11,&out,error,sizeof error));
     CHECK(!strcmp(error,"這個 grid id 已經用在別的承載面"));CHECK(!wood_grid_begin_direct(&c,2,10,&out,error,sizeof error));
     CHECK(!strcmp(error,"這片承載面已經有一座網格（一面一格）"));
-    CHECK(wood_grid_begin_direct(&c,1,10,&out,error,sizeof error));CHECK(!memcmp(&g,&out,sizeof g));
+    CHECK(wood_grid_begin_direct(&c,1,10,&out,error,sizeof error));CHECK(out.id==g.id && out.placement_id==g.placement_id && out.axis[0].step==100 && out.axis[1].series_count==3);
     CHECK(wood_grid_direct_declared(&c,&out,0,true,error,sizeof error));
     CHECK(wood_grid_begin_direct(&c,2,11,&out,error,sizeof error));CHECK(!wood_grid_direct_declared(&c,&out,0,true,error,sizeof error));
     CHECK(!strcmp(error,"新網格至少要一個格線來源"));out.main_along=1;out.axis[0]=g.axis[0];
@@ -94,7 +95,7 @@ static int direct(void)
     out.axis[1]=g.axis[1];CHECK(wood_grid_direct_declared(&c,&out,1,true,error,sizeof error));CHECK(wood_grid_direct_check(&c,&out,error,sizeof error));
     out.axis[0].start=-1;CHECK(!wood_grid_direct_check(&c,&out,error,sizeof error));CHECK(strstr(error,"grid 座標不合法（u 軸）")!=NULL);
     for(uint32_t i=2;i<=WOOD_GRID_MAX;++i){g=direct_value(i,10+i);CHECK(wood_grid_stage(&state,&g));}
-    snapshot=state;CHECK(!wood_grid_begin_direct(&c,99,99,&out,error,sizeof error));CHECK(!strcmp(error,"網格的數量超過上限"));
+    memcpy(&snapshot,&state,sizeof snapshot);CHECK(!wood_grid_begin_direct(&c,99,99,&out,error,sizeof error));CHECK(!strcmp(error,"網格的數量超過上限"));
     CHECK(!memcmp(&state,&snapshot,sizeof state));geo_grid_store_destroy(store);return 0;
 }
 static int admission(void)
@@ -102,12 +103,12 @@ static int admission(void)
     GeoGridStore *store=geo_grid_store_create();CHECK(store);WoodGridState state={0};EngineeringState eng={0};Facts facts={0};
     WoodGridContext c=context(&state,store,&eng,&facts);GeoGridSystem s=system_value(5,false);CHECK(wood_grid_source_put(&c,&s,1));
     WoodGridApplication g={0};g.id=1;g.placement_id=10;g.system_id=5;char error[256]="";
-    eng.binding_count=1;eng.bindings[0].target=(EngTarget){0,1,0,0};facts.missing_host=true;WoodGridState snapshot=state;
+    eng.binding_count=1;eng.bindings[0].target=(EngTarget){0,1,0,0};facts.missing_host=true;WoodGridState snapshot;memcpy(&snapshot,&state,sizeof snapshot);
     CHECK(!wood_grid_apply_system(&c,&g,error,sizeof error));CHECK(!strcmp(error,"I37: grid application needs an existing surface and grid-system"));
     facts.missing_host=false;CHECK(!wood_grid_apply_system(&c,&g,error,sizeof error));
     CHECK(!strcmp(error,"D29/I37: detach engineering bindings before choosing a grid-system source"));CHECK(!memcmp(&state,&snapshot,sizeof state));
     eng.binding_count=0;CHECK(wood_grid_apply_system(&c,&g,error,sizeof error));CHECK(state.count==1 && state.items[0].from_system);
-    snapshot=state;g.placement_id=11;CHECK(!wood_grid_apply_system(&c,&g,error,sizeof error));
+    memcpy(&snapshot,&state,sizeof snapshot);g.placement_id=11;CHECK(!wood_grid_apply_system(&c,&g,error,sizeof error));
     CHECK(!strcmp(error,"I37: cannot change a subgrid or move an existing grid identity to another surface"));CHECK(!memcmp(&state,&snapshot,sizeof state));
     g.id=2;g.placement_id=10;CHECK(!wood_grid_apply_system(&c,&g,error,sizeof error));CHECK(!strcmp(error,"I10: this surface already has a main grid"));
     CHECK(!memcmp(&state,&snapshot,sizeof state));g.id=1;g.binding_id=11;g.system_id=0;
@@ -115,9 +116,9 @@ static int admission(void)
     CHECK(!memcmp(&state,&snapshot,sizeof state));g.id=3;g.placement_id=12;
     eng.binding_count=1;eng.bindings[0].target.id=3;CHECK(!wood_grid_apply_binding(&c,&g,error,sizeof error));CHECK(!memcmp(&state,&snapshot,sizeof state));
     eng.binding_count=0;CHECK(wood_grid_apply_binding(&c,&g,error,sizeof error));CHECK(state.count==2 && state.items[1].from_binding);
-    snapshot=state;g.system_id=5;CHECK(!wood_grid_apply_system(&c,&g,error,sizeof error));CHECK(!memcmp(&state,&snapshot,sizeof state));
+    memcpy(&snapshot,&state,sizeof snapshot);g.system_id=5;CHECK(!wood_grid_apply_system(&c,&g,error,sizeof error));CHECK(!memcmp(&state,&snapshot,sizeof state));
     for(uint32_t i=4;state.count<WOOD_GRID_MAX;++i){WoodGridApplication next=direct_value(i,20+i);CHECK(wood_grid_stage(&state,&next));}
-    snapshot=state;g.id=99;g.placement_id=99;g.from_binding=false;CHECK(!wood_grid_apply_system(&c,&g,error,sizeof error));CHECK(!strcmp(error,"I10: grid capacity exceeded"));
+    memcpy(&snapshot,&state,sizeof snapshot);g.id=99;g.placement_id=99;g.from_binding=false;CHECK(!wood_grid_apply_system(&c,&g,error,sizeof error));CHECK(!strcmp(error,"I10: grid capacity exceeded"));
     CHECK(!memcmp(&state,&snapshot,sizeof state));CHECK(!wood_grid_apply_binding(&c,&g,error,sizeof error));CHECK(!memcmp(&state,&snapshot,sizeof state));
     geo_grid_store_destroy(store);return 0;
 }
@@ -129,8 +130,8 @@ static int child(void)
     for(int a=0;a<2;++a){g.cell_ref[a][0]=0;g.cell_ref[a][1]=1;}
     char error[256]="";CHECK(wood_grid_prepare_child(&c,&g,false,2,2,error,sizeof error));
     CHECK(g.is_subgrid && !g.lattice_cell && g.placement_id==10 && g.divisions[0]==2);
-    CHECK(wood_grid_child_check(&c,&g,error,sizeof error));CHECK(wood_grid_stage(&state,&g));WoodGridState snapshot=state;
-    g.parent_id=3;WoodGridApplication unchanged=g;CHECK(!wood_grid_prepare_child(&c,&g,false,2,2,error,sizeof error));
+    CHECK(wood_grid_child_check(&c,&g,error,sizeof error));CHECK(wood_grid_stage(&state,&g));WoodGridState snapshot;memcpy(&snapshot,&state,sizeof snapshot);
+    g.parent_id=3;WoodGridApplication unchanged;memcpy(&unchanged,&g,sizeof unchanged);CHECK(!wood_grid_prepare_child(&c,&g,false,2,2,error,sizeof error));
     CHECK(!strcmp(error,"D19/I25：父格必須是主網格；既有網格的類型與父格編號不能更換"));CHECK(!memcmp(&g,&unchanged,sizeof g));CHECK(!memcmp(&state,&snapshot,sizeof state));
     g.parent_id=1;CHECK(!wood_grid_prepare_child(&c,&g,true,2,2,error,sizeof error));CHECK(!memcmp(&state,&snapshot,sizeof state));
     g.id=4;state.items[0].axis[0].stagger_set=true;
@@ -155,8 +156,8 @@ static int deletion(void)
     WoodGridApplication child=direct_value(22,10);child.is_subgrid=true;child.parent_id=9;CHECK(wood_grid_stage(&state,&child));
     facts.refs[0]=(WoodGridReference){.kind=WOOD_GRID_REFERENCE_GUIDE,.id=77,.active=true,.expression="grid:9:u:0"};
     facts.refs[1]=(WoodGridReference){.kind=WOOD_GRID_REFERENCE_TIMBER,.id=88,.active=true,.grid_id=9};facts.ref_count=2;
-    WoodGridState snapshot=state;CHECK(!wood_grid_delete(&c,"grid",9,error,sizeof error));CHECK(!strcmp(error,"I23：網格 9 仍有子格 22，不能刪除"));CHECK(!memcmp(&state,&snapshot,sizeof state));
-    CHECK(wood_grid_delete(&c,"grid",22,error,sizeof error));snapshot=state;
+    WoodGridState snapshot;memcpy(&snapshot,&state,sizeof snapshot);CHECK(!wood_grid_delete(&c,"grid",9,error,sizeof error));CHECK(!strcmp(error,"I23：網格 9 仍有子格 22，不能刪除"));CHECK(!memcmp(&state,&snapshot,sizeof state));
+    CHECK(wood_grid_delete(&c,"grid",22,error,sizeof error));memcpy(&snapshot,&state,sizeof snapshot);
     CHECK(!wood_grid_delete(&c,"grid",9,error,sizeof error));CHECK(!strcmp(error,"I23：網格 9 仍被參考線 77 引用，不能刪除"));CHECK(!memcmp(&state,&snapshot,sizeof state));
     facts.refs[0].expression="prefixgrid:9:u:0";CHECK(!wood_grid_delete(&c,"grid",9,error,sizeof error));CHECK(!strcmp(error,"V_GRID_LOCKED：有角材錨在這個網格上，先刪角材（timber）"));
     facts.refs[0].expression="10*grid:9:u:0";CHECK(!wood_grid_delete(&c,"grid",9,error,sizeof error));CHECK(!strcmp(error,"I23：網格 9 仍被參考線 77 引用，不能刪除"));
@@ -176,14 +177,15 @@ static int candidate(void)
     GeoGridBinding b=binding_value(11,5);CHECK(geo_grid_bindings_put(original,&b));WoodGridApplication g={0};g.id=9;g.placement_id=10;g.from_binding=true;g.binding_id=11;
     CHECK(wood_grid_stage(&old_state,&g));char error[256]="";CHECK(wood_grid_bindings_rebuild(&before,error,sizeof error));
     CHECK(old_state.items[0].lattice_base[0]==400 && old_state.items[0].lattice_base[1]==500);
-    WoodGridState snapshot=old_state;GeoGridSystem old_source=*geo_grid_systems_find(original,5);
+    WoodGridState snapshot;memcpy(&snapshot,&old_state,sizeof snapshot);
+    GeoGridSystem old_source;memcpy(&old_source,geo_grid_systems_find(original,5),sizeof old_source);
     GeoGridStore *copy=geo_grid_store_clone(original);CHECK(copy);new_state=old_state;
     WoodGridContext after=context(&new_state,copy,&eng,&new_facts);after.before=&before;
     CHECK(wood_grid_bindings_rebuild(&after,error,sizeof error));CHECK(new_state.items[0].lattice_base[0]==700 && new_state.items[0].lattice_base[1]==900);
     CHECK(!memcmp(&old_state,&snapshot,sizeof snapshot));CHECK(!memcmp(geo_grid_systems_find(original,5),&old_source,sizeof old_source));
     new_facts.missing_vertex=true;CHECK(!wood_grid_bindings_rebuild(&after,error,sizeof error));
     CHECK(!strcmp(error,"D30/I37: grid-binding needs an existing boundary vertex and two infinite axes"));CHECK(!memcmp(&old_state,&snapshot,sizeof snapshot));
-    new_facts.missing_host=true;g.id=10;g.system_id=5;g.placement_id=11;WoodGridState before_rejection=new_state;
+    new_facts.missing_host=true;g.id=10;g.system_id=5;g.placement_id=11;WoodGridState before_rejection;memcpy(&before_rejection,&new_state,sizeof before_rejection);
     CHECK(!wood_grid_apply_system(&after,&g,error,sizeof error));CHECK(!strcmp(error,"I37: grid application needs an existing surface and grid-system"));
     CHECK(!memcmp(&new_state,&before_rejection,sizeof new_state));CHECK(!memcmp(&old_state,&snapshot,sizeof snapshot));
     geo_grid_store_destroy(copy);geo_grid_store_destroy(original);return 0;

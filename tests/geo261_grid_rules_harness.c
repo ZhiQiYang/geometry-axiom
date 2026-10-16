@@ -74,7 +74,7 @@ static int edits(void)
     strcpy(changed.name,"renamed");CHECK(wood_grid_rule_edit(&c,5,&changed,false,false,false,error,sizeof error));
     CHECK(!strcmp(geo_grid_rule_find(geo_grid_systems_find(store,5),7)->name,"renamed"));
     CHECK(geo_grid_systems_find(store,5)->next_rule_key==8 && wood_grid_source_main_along(&state,5)==2);
-    GeoGridSystem snapshot=*geo_grid_systems_find(store,5);changed.divisions[0]=2;
+    GeoGridSystem snapshot;memcpy(&snapshot,geo_grid_systems_find(store,5),sizeof snapshot);changed.divisions[0]=2;
     CHECK(!wood_grid_rule_edit(&c,5,&changed,false,false,false,error,sizeof error));
     CHECK(!strcmp(error,"I25a: RULE_REFERENCED source 5 rule 7"));
     CHECK(!memcmp(geo_grid_systems_find(store,5),&snapshot,sizeof snapshot));
