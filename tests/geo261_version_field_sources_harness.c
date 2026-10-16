@@ -299,6 +299,14 @@ int main(int argc,char **argv)
     if(!strcmp(argv[1],"archive"))return vf_archive();return 2;
 }
 #else
+static char *vf_product_dump(const World *world)
+{
+    FILE *stream=tmpfile();if(!stream)return NULL;world_dump_dsl(world,stream);if(fflush(stream)){fclose(stream);return NULL;}
+    long length=ftell(stream);if(length<0||fseek(stream,0,SEEK_SET)){fclose(stream);return NULL;}
+    char *text=malloc((size_t)length+1);if(!text){fclose(stream);return NULL;}
+    size_t used=fread(text,1,(size_t)length,stream);if(ferror(stream)){free(text);fclose(stream);return NULL;}
+    text[used]=0;fclose(stream);return text;
+}
 static int vf_product_graph(AppWorldCandidate *owner)
 {
     ReferenceEval *host=app_candidate_evaluation_state(owner->control);GeoEvalContext *graph=geo_candidate_sources(app_candidate_core(owner->control));
@@ -312,6 +320,14 @@ int main(int argc,char **argv)
     if(argc!=3||strcmp(argv[1],"product"))return 2;memset(&g_world,0,sizeof g_world);g_definition_revision=0;
     VF_CHECK(parse_scene_file(argv[2],&g_world),"product-existing-engineering-scene");history_clear();g_preview.ready=false;
     World *before=malloc(sizeof *before);VF_CHECK(before,"product-snapshot-memory");memcpy(before,&g_world,sizeof *before);uint64_t revision=g_definition_revision;
+    VF_CHECK(g_world.wood.engineering.material_count==1&&geo_versions_count(&g_world.geo.version_store)==1,"product-material-version-scene-loaded");
+    char *initial_dump=vf_product_dump(&g_world);VF_CHECK(initial_dump,"product-canvaspos-before-dump");
+    VF_CHECK(feed_line("version-field-witness",1,"canvas-pos placement 1 17 29",&g_world),"product-material-canvaspos-succeeds");
+    VF_CHECK(world_definitions_equal(before,&g_world)&&g_definition_revision==revision,"product-material-canvaspos-keeps-definitions");
+    char *display_dump=vf_product_dump(&g_world);size_t initial_length=strlen(initial_dump);
+    VF_CHECK(display_dump&&strlen(display_dump)>=initial_length&&!memcmp(initial_dump,display_dump,initial_length)&&
+        !strcmp(display_dump+initial_length,"canvas-pos placement 1 17 29\n"),"product-material-canvaspos-exact-dump");
+    free(initial_dump);free(display_dump);memcpy(before,&g_world,sizeof *before);
     VF_CHECK(feed_line("version-field-witness",1,"preview spec x 600",&g_world)&&g_preview.ready&&g_preview.valid,"product-valid-preview");
     AppWorldCandidate *owner=g_preview.transaction;GeoCandidate *core=app_candidate_core(owner->control);uint64_t id=geo_candidate_id(core);
     if(vf_product_graph(owner))return 1;
