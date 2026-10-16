@@ -134,6 +134,12 @@ class NativeBuildTests(unittest.TestCase):
         self.compile.side_effect = self.fake_compile
         self.assertTrue(Path(native._build_adapter()).is_file())
         self.assertEqual(2, self.compile.call_count)
+        native._BUILD_CACHE.clear()
+        self.compile.side_effect = lambda command, **options: subprocess.CompletedProcess(command, 1, b"", b"fixture failure")
+        with self.assertRaises(ModelError) as failed:
+            native._build_adapter()
+        self.assertEqual("C scene adapter compilation failed.", failed.exception.message)
+        self.assertEqual({}, native._BUILD_CACHE)
 
 
 class NativeRuntimeTests(unittest.TestCase):
@@ -263,8 +269,8 @@ class NativeGuardControls(unittest.TestCase):
                  "NativeRuntimeTests.test_binary_change_during_execution_prevents_publication"),
                 ('if not sources["fresh"]:', "if False:",
                  "NativeRuntimeTests.test_stale_loaded_source_rejects_before_execution"),
-                ("if result.returncode or _build_inputs(source, compiler) != inputs:",
-                 "if result.returncode:", "NativeBuildTests.test_source_changed_during_compilation_is_not_cached"),
+                ("if _build_inputs(source, compiler) != inputs:",
+                 "if False:", "NativeBuildTests.test_source_changed_during_compilation_is_not_cached"),
                 ("_project_source_closure(source), sha256(environment).hexdigest())",
                  "(), sha256(environment).hexdigest())", "NativeBuildTests.test_recursive_include_bytes_invalidate_cache"),
             )

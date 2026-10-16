@@ -102,8 +102,10 @@ def _build_adapter() -> str:
                 [*compiler, "-std=c11", "-O2", str(source), "-lm", "-o", str(target)],
                 capture_output=True, timeout=60, check=False,
             )
-            if result.returncode or _build_inputs(source, compiler) != inputs:
-                raise ModelError("UNSUPPORTED", "BASE_COMPILER", "I32", "C scene adapter compilation failed or its inputs changed.")
+            if result.returncode:
+                raise ModelError("UNSUPPORTED", "BASE_COMPILER", "I32", "C scene adapter compilation failed.")
+            if _build_inputs(source, compiler) != inputs:
+                raise ModelError("UNSUPPORTED", "BASE_COMPILER", "I32", "C scene adapter compilation inputs changed.")
             binary_hash = sha256(target.read_bytes()).hexdigest()
         except ModelError:
             raise
