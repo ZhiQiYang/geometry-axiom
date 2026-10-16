@@ -143,6 +143,8 @@ class Quantity:
         if self.unit != expected:
             invalid("QUANTITY_UNIT", "Quantity type and unit disagree")
         value = Fraction(self.numerator, self.denominator)
+        if self.value_type == QuantityType.COUNT and (value.denominator != 1 or value < 0):
+            invalid("QUANTITY_VALUE", "A count must be a nonnegative exact integer")
         object.__setattr__(self, "numerator", value.numerator)
         object.__setattr__(self, "denominator", value.denominator)
 
@@ -191,6 +193,8 @@ class RegionDef:
         _identity(self.vertex_keys)
         if self.vertex_keys and len(self.vertex_keys) != sum(map(len, (outer,)+holes)):
             invalid("REGION_VERTEX_KEYS", "Each region vertex must have one stable key")
+        if self.vertex_keys and len(set(self.vertex_keys)) != len(self.vertex_keys):
+            invalid("REGION_VERTEX_KEYS", "Region vertex identities must be distinct")
         object.__setattr__(self, "outer", outer)
         object.__setattr__(self, "holes", holes)
 

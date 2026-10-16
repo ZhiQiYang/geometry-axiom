@@ -60,7 +60,7 @@ class KernelIsolationTests(unittest.TestCase):
             result = self.run_process(ISOLATED, root)
             self.assertEqual(0, result.returncode, result.stdout + result.stderr)
             receipt = json.loads(result.stdout.splitlines()[-1])
-            self.assertEqual(18, receipt["tests"])
+            self.assertEqual(20, receipt["tests"])
             self.assertTrue(receipt["success"])
 
     def test_shared_implementation_source_mutants_fail_both_oracles(self):

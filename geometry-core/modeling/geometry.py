@@ -105,6 +105,10 @@ def prefix(geometry, path=(), cut=False):
 
 @_adapt
 def mesh_objects(geometry, grid, root, member_path=None, role="geometry", volume_known=None, max_cells=DEFAULT_MAX_CELLS):
+    # Preserve the legacy low-level tuple seam; product callers obtain the
+    # domain-bound arrangement from build_grid instead.
+    if type(grid) is tuple:
+        grid = kernel._Arrangement(grid, geometry.domain)
     records = kernel.mesh_objects(geometry, grid, volume_known=volume_known, max_cells=max_cells)
     for record in records:
         record.update(root=dict(root), member_path=list(member_path or []), role=role)

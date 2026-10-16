@@ -8,6 +8,10 @@ interpret legacy source kinds, read a repository, or start a native process.
 Region validation checks complete loops and holes; a box is constructed from
 positive extents and a right-handed frame. Private evaluated geometry retains
 an inside predicate; it is not a public template input.
+Exact arrangements retain their coordinate domain. Shells, Boolean inputs and
+mesh arrangements reject mixing distinct domains, including equal coordinates
+belonging to different local spaces. Counts are nonnegative exact integers;
+provided stable vertex identities must be complete and unique.
 
 `geometry.py` owns the single product implementation of region extrusion,
 exact arrangements, shell topology, regularized Boolean operations, source
@@ -26,7 +30,7 @@ Lightweight validation (no native compiler or binary):
 python -m unittest tests.test_geometry_kernel_geometry tests.test_geometry_kernel_compatibility tests.test_geometry_kernel_isolation -v
 ```
 
-The 21 tests include 18 geometry tests, a frozen pre-extraction wire digest
+The 23 tests include 20 geometry tests, a frozen pre-extraction wire digest
 oracle, and two isolation/control tests. The no-template test copies only this
 package and the neutral test module into a new temporary directory, then runs
 Python with `-I -B` and a blocking import finder for host/template/legacy names.

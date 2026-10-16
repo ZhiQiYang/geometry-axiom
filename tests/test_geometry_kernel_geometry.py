@@ -49,6 +49,9 @@ class KernelGeometryTests(unittest.TestCase):
         self.assertNotEqual(SourceKey("fixture", (1, "x")), SourceKey("fixture", (2, "x")))
         self.assert_code("QUANTITY_VALUE", lambda: Quantity(QuantityType.COUNT, True, 1, Unit.UNITLESS))
         self.assert_code("QUANTITY_UNIT", lambda: Quantity(QuantityType.COUNT, 1, 1, Unit.MM))
+        self.assert_code("QUANTITY_VALUE", lambda: Quantity(QuantityType.COUNT, -1, 1, Unit.UNITLESS))
+        self.assert_code("QUANTITY_VALUE", lambda: Quantity(QuantityType.COUNT, 1, 2, Unit.UNITLESS))
+        self.assertEqual(2, Quantity(QuantityType.COUNT, 4, 2, Unit.UNITLESS).value)
 
     def test_canonical_json_rejects_duplicate_float_and_surrogate(self):
         self.assertEqual(b'{"a":1,"b":2}', canonical_bytes({"b": 2, "a": 1}))
@@ -93,6 +96,29 @@ class KernelGeometryTests(unittest.TestCase):
         self.assertEqual(2, len(RegionSetDef((ring, island)).components))
         self.assertEqual((), RegionSetDef(()).components)
         self.assert_code("REGION_COMPONENT_OVERLAP", lambda: RegionSetDef((ring, RegionDef(RECT))))
+
+    def test_supplied_vertex_identities_are_unique_and_complete(self):
+        region = RegionDef(RECT, vertex_keys=(10, 11, 12, 13))
+        self.assertEqual((10, 11, 12, 13), region.vertex_keys)
+        self.assert_code("REGION_VERTEX_KEYS", lambda: RegionDef(RECT, vertex_keys=(1, 1, 1, 1)))
+        self.assert_code("REGION_VERTEX_KEYS", lambda: RegionDef(RECT, vertex_keys=(1, 2, 3)))
+
+    def test_coordinate_domains_survive_geometry_and_cannot_be_combined(self):
+        first = extrude(axes=replace(FRAME, domain=CoordinateDomain(("one",))))
+        second = extrude(axes=replace(FRAME, domain=CoordinateDomain(("two",))))
+        self.assertEqual(CoordinateDomain(("one",)), first.domain)
+        self.assertEqual({first.domain}, {face.domain for face in first.faces})
+        self.assertEqual("8000", meshes(first)[0]["volume_mm3"])
+        self.assertEqual("8000", meshes(second)[0]["volume_mm3"])
+        self.assert_code("COORDINATE_DOMAIN", lambda: geo.boolean_geometry("DIFFERENCE", [first, second]))
+        self.assert_code("COORDINATE_DOMAIN", lambda: geo.build_grid([first, second]))
+        self.assert_code("COORDINATE_DOMAIN", lambda: geo._Geometry([first.faces[0], second.faces[0]]))
+        self.assert_code("COORDINATE_DOMAIN", lambda: geo.analyze_shell([*first.faces, *second.faces]))
+        self.assert_code("COORDINATE_DOMAIN", lambda: geo.mesh_objects(first, geo.build_grid([second])))
+        self.assertEqual(first.domain, geo.enclosed_geometry(first.faces).domain)
+        prefixed = replace(first, faces=[replace(face, sources=[s.prefixed(("child",)) for s in face.sources]) for face in first.faces])
+        self.assertEqual(first.domain, prefixed.domain)
+        self.assertEqual("8000", meshes(prefixed)[0]["volume_mm3"])
 
     def test_public_box_constructs_real_oriented_faces(self):
         axes = frame((10, 20, 30), (0, 1, 0), (0, 0, -1))

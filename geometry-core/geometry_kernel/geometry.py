@@ -12,7 +12,7 @@ from itertools import product
 from typing import Callable, Optional
 
 from .errors import EvaluationError
-from .types import (FrameDef, RegionDef, BoxDef, Provenance, vector,
+from .types import (FrameDef, RegionDef, BoxDef, Provenance, CoordinateDomain, vector,
                     area2 as _area2, ring_location as _ring_location)
 
 
@@ -61,6 +61,7 @@ class _Face:
     sources: list = field(default_factory=list)
     # Preserved by dataclasses.replace when a shell changes the usage orientation.
     source_sign: Optional[int] = None
+    domain: CoordinateDomain = CoordinateDomain()
 
     def __post_init__(self):
         region = RegionDef(self.outer, self.holes)
@@ -72,6 +73,8 @@ class _Face:
             _invalid("FACE_FRAME", "Face requires an axis-aligned signed normal")
         if type(self.source_sign) is not int or self.source_sign not in (-1, 1) or any(not isinstance(source, Provenance) for source in self.sources):
             _invalid("PROVENANCE", "A face requires typed provenance and a signed source normal")
+        if not isinstance(self.domain, CoordinateDomain):
+            _invalid("COORDINATE_DOMAIN", "A face requires a typed coordinate domain")
 
     def vertices(self):
         return [_world(self.axis, self.coord, *p) for ring in (self.outer,)+self.holes for p in ring]
@@ -98,9 +101,18 @@ class _Geometry:
     # Boolean geometry retains all dependency source faces, not only visible ones.
     faces: list
     inside: Optional[Callable] = None
+    domain: Optional[CoordinateDomain] = None
+
+    def __post_init__(self):
+        domains = {face.domain for face in self.faces}
+        if self.domain is not None:
+            domains.add(self.domain)
+        if any(not isinstance(domain, CoordinateDomain) for domain in domains) or len(domains) > 1:
+            _invalid("COORDINATE_DOMAIN", "A geometry cannot combine distinct coordinate domains")
+        self.domain = next(iter(domains), CoordinateDomain())
 
 
-def _face_vertices(vertices, sources):
+def _face_vertices(vertices, sources, domain=CoordinateDomain()):
     points = tuple(tuple(p) for p in vertices)
     normals = [_cross(_sub(points[i],points[0]), _sub(points[i+1],points[0])) for i in range(1,len(points)-1)]
     normal = next((n for n in normals if any(n)), None)
@@ -112,7 +124,7 @@ def _face_vertices(vertices, sources):
     if any(p[axis] != coord for p in points):
         _invalid("FACE_NONPLANAR", "A source face must be planar")
     a,b = _axes(axis)
-    return _Face(axis,coord,sign,tuple((p[a],p[b]) for p in points),sources=sources)
+    return _Face(axis,coord,sign,tuple((p[a],p[b]) for p in points),sources=sources,domain=domain)
 
 
 def _placed_face(frame, region, height, sign, source):
@@ -122,7 +134,7 @@ def _placed_face(frame, region, height, sign, source):
         return tuple((frame.world(p, height)[a], frame.world(p, height)[b]) for p in points)
     coord = frame.origin[axis] + height * frame.n[axis]
     return _Face(axis, coord, sign * frame.n[axis], ring(region.outer),
-                tuple(ring(h) for h in region.holes), [source])
+                tuple(ring(h) for h in region.holes), [source], domain=frame.domain)
 
 
 def placed_region_geometry(frame, region, source):
@@ -159,7 +171,7 @@ def extrusion_geometry(frame, region, lo, hi, sources):
             points = [frame.world(a, lo), frame.world(b, lo), frame.world(b, hi), frame.world(a, hi)]
             if target < 0:
                 points.reverse()
-            faces.append(_face_vertices(points, [source("outer_side" if loop_index == 0 else "hole_side", loop_index, edge_index)]))
+            faces.append(_face_vertices(points, [source("outer_side" if loop_index == 0 else "hole_side", loop_index, edge_index)], domain=frame.domain))
     if any(any(v < -_LIMIT or v > _LIMIT for v in p) for f in faces for p in f.vertices()):
         _invalid("EXTRUSION_RANGE", "Generated world vertices exceed the supported range")
     def inside(point):
@@ -181,7 +193,7 @@ def box_geometry(definition):
             coord = (lower, upper)[side][axis]
             rectangle = _rectangle(axis, coord, sign, lower[a], upper[a], lower[b], upper[b])
             points = [frame.world(p[:2], p[2]) for p in rectangle]
-            faces.append(_face_vertices(points, [definition.face_origins[2*axis+side]]))
+            faces.append(_face_vertices(points, [definition.face_origins[2*axis+side]], domain=frame.domain))
     def inside(point):
         delta = _sub(point, frame.origin)
         local = tuple(_dot(delta, axis) for axis in (frame.u, frame.v, frame.n))
@@ -189,9 +201,28 @@ def box_geometry(definition):
     return _Geometry(faces, inside)
 
 
+@dataclass(frozen=True)
+class _Arrangement:
+    axes: tuple
+    domain: CoordinateDomain
+
+    def __iter__(self):
+        return iter(self.axes)
+
+    def __getitem__(self, index):
+        return self.axes[index]
+
+    def __len__(self):
+        return len(self.axes)
+
+
 def build_grid(geometries, max_cells=DEFAULT_MAX_CELLS):
+    """Build exact coordinate cuts bound to one coordinate domain."""
     if type(max_cells) is not int or max_cells < 1:
         _capacity("The exact arrangement cell limit must be a positive integer")
+    geometries = tuple(geometries)
+    if len({geometry.domain for geometry in geometries}) > 1:
+        _invalid("COORDINATE_DOMAIN", "An exact arrangement cannot mix coordinate domains")
     coords = [set(),set(),set()]
     for geometry in geometries:
         for face in geometry.faces:
@@ -204,7 +235,7 @@ def build_grid(geometries, max_cells=DEFAULT_MAX_CELLS):
         count *= max(0,len(axis)-1)
     if count > max_cells:
         _capacity(f"Exact arrangement requires {count} cells; configured limit is {max_cells}")
-    return grid
+    return _Arrangement(grid, next((geometry.domain for geometry in geometries), CoordinateDomain()))
 
 
 def _rectangle(axis,coord,sign,alo,ahi,blo,bhi):
@@ -354,6 +385,8 @@ def enclosed_geometry(faces, max_cells=DEFAULT_MAX_CELLS):
 
 
 def boolean_geometry(op, operands):
+    if len({geometry.domain for geometry in operands}) > 1:
+        _invalid("COORDINATE_DOMAIN", "Boolean inputs must use the same coordinate domain")
     if any(g.inside is None for g in operands):
         _invalid("BOOLEAN_NOT_SOLID", "Boolean operands must all be solved solid sets")
     # A shallow spatial grid does not bound the number of provenance paths in a
@@ -434,6 +467,8 @@ def mesh_objects(geometry, grid, *, volume_known=None, max_cells=DEFAULT_MAX_CEL
     `volume_known=False` preserves the zero-thickness semantics of a shell even
     when an executor has separately proved that the shell encloses a volume.
     """
+    if not isinstance(grid, _Arrangement) or grid.domain != geometry.domain:
+        _invalid("COORDINATE_DOMAIN", "A mesh requires an arrangement from its coordinate domain")
     face_index = defaultdict(list)
     for face in geometry.faces:
         face_index[(face.axis,face.coord)].append(face)
