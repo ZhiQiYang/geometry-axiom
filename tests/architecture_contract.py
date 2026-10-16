@@ -1050,6 +1050,9 @@ class Scanner:
                 return set().union(*(qualified(item) for item in node.elts))
             if isinstance(node, ast.Dict):
                 return set().union(*(qualified(item) for item in [*node.keys, *node.values] if item is not None))
+            if isinstance(node, (ast.ListComp, ast.SetComp, ast.DictComp, ast.GeneratorExp)):
+                values = [node.key, node.value] if isinstance(node, ast.DictComp) else [node.elt]
+                return set().union(*(qualified(item) for item in values))
             if isinstance(node, (ast.Starred, ast.Subscript, ast.NamedExpr)):
                 return qualified(node.value)
             if isinstance(node, ast.IfExp):

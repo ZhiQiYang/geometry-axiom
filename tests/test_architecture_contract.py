@@ -1029,6 +1029,44 @@ class ArchitectureContract(unittest.TestCase):
                 path.write_text(source, encoding="utf-8")
                 self.rejects("CORE_PATH_INJECTION")
 
+    def test_python_list_comprehension_unpack_cannot_read_host_loaded_template(self):
+        self.put("src/core.py", 'import sys\nalias, = [x for x in [sys]]\nmodule = alias.modules["w.policy"]\n')
+        self.put("src/w/__init__.py", "", "W")
+        self.put("src/w/policy.py", "value = 1\n", "W")
+        self.put("src/host.py", "import w.policy\nimport core\n", "H")
+        self.rejects("CORE_PATH_INJECTION", path="src/core.py", line=3)
+
+    def test_python_list_comprehension_index_cannot_read_host_loaded_template(self):
+        self.put("src/core.py", 'import sys\nbox = [x for x in [sys]]\nmodule = box[0].modules["w.policy"]\n')
+        self.put("src/w/__init__.py", "", "W")
+        self.put("src/w/policy.py", "value = 1\n", "W")
+        self.put("src/host.py", "import w.policy\nimport core\n", "H")
+        self.rejects("CORE_PATH_INJECTION", path="src/core.py", line=3)
+
+    def test_python_set_comprehension_result_preserves_sys_provenance(self):
+        self.put("src/core.py", 'import sys\nalias, = {x for x in [sys]}\nmodule = alias.modules["w.policy"]\n')
+        self.rejects("CORE_PATH_INJECTION", path="src/core.py", line=3)
+
+    def test_python_generator_result_preserves_sys_provenance(self):
+        self.put("src/core.py", 'import sys\nalias, = (x for x in [sys])\nmodule = alias.modules["w.policy"]\n')
+        self.rejects("CORE_PATH_INJECTION", path="src/core.py", line=3)
+
+    def test_python_dict_comprehension_value_preserves_sys_provenance(self):
+        self.put("src/core.py", 'import sys\nbox = {0: x for x in [sys]}\nmodule = box[0].modules["w.policy"]\n')
+        self.rejects("CORE_PATH_INJECTION", path="src/core.py", line=3)
+
+    def test_python_dict_comprehension_key_preserves_sys_provenance(self):
+        self.put("src/core.py", 'import sys\nalias, = {x: 0 for x in [sys]}\nmodule = alias.modules["w.policy"]\n')
+        self.rejects("CORE_PATH_INJECTION", path="src/core.py", line=3)
+
+    def test_python_nested_comprehension_result_preserves_sys_provenance(self):
+        self.put("src/core.py", 'import sys\nalias, = [y for row in [[x for x in [sys]]] for y in row]\nmodule = alias.modules["w.policy"]\n')
+        self.rejects("CORE_PATH_INJECTION", path="src/core.py", line=3)
+
+    def test_python_neutral_comprehension_results_remain_supported(self):
+        self.put("src/core.py", 'import math\nvalues = [x.pi for x in [math]]\nunique = {x.pi for x in [math]}\nlookup = {x.pi: x for x in [math]}\nstream = (x.pi for x in [math])\nnested = [value for row in [[x.pi for x in [math]]] for value in row]\n')
+        self.green()
+
     def test_python_sys_storage_through_attribute_target_fails_closed(self):
         self.put("src/core.py", 'import sys\nholder.alias = sys\npolicy = holder.alias.modules["w.policy"]\n')
         self.rejects("CORE_SYS_ALIAS_TARGET", line=2)

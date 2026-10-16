@@ -105,8 +105,11 @@ annotated, and named-expression assignments preserve imported alias provenance.
 C trigraphs are rejected before any comment/literal processing, including when
 they appear in comments or strings: C replaces them in an earlier translation
 phase. Python tuple/list/starred unpacking, container values, indexed container
-selection, and loop bindings conservatively retain all possible imported alias
-provenance. Assigning `sys` provenance through an attribute/subscript target is
+selection, loop bindings, and comprehension results conservatively retain all
+possible imported alias provenance. List/set/generator results propagate their
+element expression; dictionary results propagate both key and value expressions.
+Nested comprehensions use the same alias fixed point as their generator bindings.
+Assigning `sys` provenance through an attribute/subscript target is
 explicitly unsupported. This is bounded syntax handling with a
 conservative alias union, not a proof of arbitrary Python dataflow.
 One initial UTF-8 BOM is removed for C lexical analysis, matching MSVC's UTF-8
