@@ -61,6 +61,16 @@ bool geo_parameters_rebuild(GeoParameterStore *store,GeoParameterError *error);
  * update even when an unrelated field elsewhere in the store is invalid. */
 bool geo_parameters_evaluate_field(GeoParameterStore *store,GeoParameterRef ref,GeoParameterError *error);
 
+/* Reusable evaluation keeps the same parser, cache, depth and error trace as
+ * rebuild. A resolver executes each AST reference inside the caller's source
+ * graph; it must use this evaluation again for the referenced field. */
+typedef struct GeoParameterEvaluation GeoParameterEvaluation;
+typedef GeoParameterStatus (*GeoParameterResolve)(void *,GeoParameterRef,GeoQuantity *);
+GeoParameterEvaluation *geo_parameter_evaluation_create(GeoParameterStore *,GeoParameterResolve,void *);
+void geo_parameter_evaluation_destroy(GeoParameterEvaluation *);
+bool geo_parameter_evaluation_field(GeoParameterEvaluation *,GeoParameterRef,GeoQuantity *);
+const GeoParameterError *geo_parameter_evaluation_error(const GeoParameterEvaluation *);
+
 /* Definition builders preserve field identities and the exhausted high-water
  * mark. No mutation occurs until put; callers keep their candidate isolated. */
 void geo_parameters_begin_definition(const GeoParameterStore *store,uint32_t id,GeoParameterCard *card);

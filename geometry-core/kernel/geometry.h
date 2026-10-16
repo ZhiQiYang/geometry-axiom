@@ -87,4 +87,16 @@ GeoGeometryStatus geo_strip_intervals(const GeoRegionSetView *domain,bool along_
  * A capacity failure leaves out->count zero; scratch/output storage is borrowed. */
 GeoGeometryStatus geo_loop_rect_area2(const GeoLoop2View *loop,const GeoRect2 *rect,GeoCoord *out);
 bool geo_region_set_intersects_rect_positive(const GeoRegionSetView *domain,const GeoRect2 *rect);
+/* Exact positive-area complement of rect outside a simple orthogonal loop.
+ * Rectangles are emitted in horizontal-band, then increasing-u order.
+ * Inputs obey the bounded geometry contract. Failure sets out_count to zero. */
+#define GEO_LOOP_RECT_COMPLEMENT_CAPACITY ((GEO_LOOP_MAX_VERTICES+1)*(GEO_LOOP_MAX_VERTICES/2+1))
+GeoGeometryStatus geo_loop_rect_complement(const GeoLoop2View *loop,const GeoRect2 *rect,
+    GeoRect2 *out,size_t capacity,size_t *out_count);
+/* Bounded orthogonal geometry; cardinal-axis interval projection and exact
+ * rectangle/loop contact preserve closed boundary and positive-area semantics. */
+void geo_aabb_project_interval(const GeoCoord lo[3],const GeoCoord hi[3],GeoPoint3 origin,GeoVector3 axis,GeoCoord out[2]);
+GeoCoord geo_loop_rect_intersection_area(const GeoLoop2View *,const GeoRect2 *);
+bool geo_loop_touches_rect(const GeoLoop2View *,const GeoRect2 *);
+bool geo_collinear_segment_overlap(GeoPoint2,GeoPoint2,GeoPoint2,GeoPoint2,GeoCoord *,GeoCoord *);
 #endif

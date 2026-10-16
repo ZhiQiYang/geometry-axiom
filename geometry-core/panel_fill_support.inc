@@ -8,15 +8,15 @@ typedef WoodPanelSupport PfSupport;
 static void pf_support_free(PfSupport *s){wood_panel_support_free(s);}
 static bool pf_support_footprints(const World *w,const PanelFill *p,PfFootprint *rects,size_t *count)
 {
-    *count=0;const PlacementSurface *host=NULL;
-    for(size_t i=0;i<w->finish_surfaces.host_count;++i)if(w->finish_surfaces.hosts[i].fill_id==p->id)
-        host=world_find_placement(w,w->finish_surfaces.hosts[i].id);
+    *count=0;PlacementSurface host_value;const PlacementSurface *host=NULL;
+    for(size_t i=0;i<w->wood.finish_surfaces.host_count;++i)if(w->wood.finish_surfaces.hosts[i].fill_id==p->id)
+        host=app_placement_read(w,w->wood.finish_surfaces.hosts[i].id,&host_value);
     if(!host)return true;
     const FinishSurface *finish=fs_find(w,p->finish_id);
-    for(size_t i=0;i<w->timber_count;++i){
-        if(!w->timbers[i].placed||w->anchors[i].placement_id!=host->id)continue;
+    for(size_t i=0;i<w->wood.timber_count;++i){
+        if(!w->wood.timbers[i].placed||w->wood.anchors[i].placement_id!=host->id)continue;
         SurfaceRegion2 f;
-        if(!timber_a0_footprint_uv(host,&w->timbers[i],&w->anchors[i],&f))return fs_error("R43: timber %u footprint unavailable",w->timbers[i].id);
+        if(!timber_a0_footprint_uv(host,&w->wood.timbers[i],&w->wood.anchors[i],&f))return fs_error("R43: timber %u footprint unavailable",w->wood.timbers[i].id);
         PfFootprint *r=&rects[(*count)++];r->lo[0]=f.min_u;r->hi[0]=f.max_u;
         r->lo[1]=coord_min(finish->side*f.min_v,finish->side*f.max_v);
         r->hi[1]=coord_max(finish->side*f.min_v,finish->side*f.max_v);
@@ -46,7 +46,7 @@ static bool pf_support_build(const World *w,const PanelFill *p,const PfLayout *d
  * failure must reject the transaction, rather than truncate a later read. */
 static bool pf_support_rebuild(const World *w)
 {
-    for(size_t i=0;i<w->finish_surfaces.fill_count;++i){PfLayout d;PfSupport s={0};const PanelFill *p=&w->finish_surfaces.fills[i];
+    for(size_t i=0;i<w->wood.finish_surfaces.fill_count;++i){PfLayout d;PfSupport s={0};const PanelFill *p=&w->wood.finish_surfaces.fills[i];
         bool ok=pf_build(w,p,&d)&&pf_support_build(w,p,&d,&s);pf_support_free(&s);pf_free(&d);if(!ok)return false;}
     return true;
 }

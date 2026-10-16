@@ -1,0 +1,61 @@
+{
+  "kind": "stopped-stage-preflight-facts-not-native-validation",
+  "source": "2ba81689dc78005d5347644186049d10e7f56fb3",
+  "status": "STOPPED_AT_USER_STAGE_BOUNDARY",
+  "static_inventory": {
+    "original_modules": 9,
+    "original_methods": 101,
+    "added_modules": 24,
+    "added_methods": 271,
+    "total_modules": 33,
+    "total_methods": 372,
+    "evidence": "static-discovery.json"
+  },
+  "runtime_discovery": {
+    "completed": false,
+    "exact_method_ids_confirmed": false,
+    "receipt_present": false
+  },
+  "archive": {
+    "path": "discovery-source.tar",
+    "bytes": 893071360,
+    "sha256": "42efc0897682edb5d77cc8fc75215a44150d0acdab021ac326cb7957ff8f3a5b",
+    "creation": "git archive of the full immutable source SHA",
+    "full_extracted_file_byte_verification_completed": false
+  },
+  "preserved_environment_failures": [
+    "discovery-attempt-1.json: Windows long path during file extraction, before imports",
+    "discovery-attempt-2.json: Windows mixed-slash extended-path directory metadata error after file extraction, before imports"
+  ],
+  "last_preflight_attempt": {
+    "script": "discover-only-v3.py",
+    "outcome": "stopped after bounded wait exceeding 10 minutes for stage closure",
+    "owned_process_id": 23636,
+    "owned_command_line_verified_before_stop": true,
+    "process_exit": 1,
+    "new_retry_started": false,
+    "product_failure": false
+  },
+  "validation_execution": {
+    "wsl_job_queued": false,
+    "native_compiler_executed": false,
+    "product_test_methods_run": 0,
+    "planned_batch_status": "UNRUN",
+    "planned_methods_unrun": 372,
+    "pf3_layout_host_50": "UNRUN",
+    "pf3_driver_baseline_20_mutants_19_restored_20": "UNRUN",
+    "section_original_27": "UNRUN",
+    "aggregate": "UNRUN",
+    "browser": "UNRUN"
+  },
+  "prepared_controls": {
+    "recipe": "recipe.json",
+    "original_timeout_keyword_comparison": "unchanged for original 9 modules and NativeBuild",
+    "first_shared_build_failure_stop_and_UNRUN": "synthetic Python-only self-check passed",
+    "control_evidence": "preparation-check.json",
+    "independent_read_only_runner_review": "no major issue found",
+    "launcher": "../launch-native-2ba81689.ps1",
+    "launcher_was_executed": false
+  },
+  "next_action": "None in this stage. Resume authorization is required before further preflight or native execution."
+}

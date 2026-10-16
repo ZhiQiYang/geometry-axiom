@@ -1,0 +1,11 @@
+{
+  "phase": "tar-directory-metadata-restoration-after-file-extraction-before-import",
+  "source": "2ba81689dc78005d5347644186049d10e7f56fb3",
+  "exit": 1,
+  "exception": "OSError WinError 123 in tarfile.extractall directory os.lstat; mixed slash path under Windows extended-length prefix",
+  "original_script_sha256": "6bc89ee25281b591b349e69566f2a550fd24271d0ac99c00ce27843f9fdbc7de",
+  "test_modules_imported": false,
+  "test_methods_executed": false,
+  "compiler_executed": false,
+  "resolution": "Verify every extracted file against its tar-member bytes, then perform import-only discovery in the unchanged extracted tree."
+}

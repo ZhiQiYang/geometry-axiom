@@ -2,6 +2,7 @@
 #define GEOMETRY_KERNEL_GEOMETRY_IMPLEMENTATION
 #include "geometry.h"
 #include <limits.h>
+#include <stdlib.h>
 #include <string.h>
 static GeoCoord geo_coord_min(GeoCoord,GeoCoord);
 static GeoCoord geo_coord_max(GeoCoord,GeoCoord);
@@ -709,5 +710,63 @@ bool geo_region_set_intersects_rect_positive(const GeoRegionSetView *domain,cons
         if(area>0)return true;
     }
     return false;
+}
+static int geo_complement_coord_compare(const void *a,const void *b)
+{GeoCoord x=*(const GeoCoord*)a,y=*(const GeoCoord*)b;return (x>y)-(x<y);}
+GeoGeometryStatus geo_loop_rect_complement(const GeoLoop2View *p,const GeoRect2 *r,
+    GeoRect2 *out,size_t capacity,size_t *out_count)
+{
+    if(out_count)*out_count=0;
+    if(!p||!p->v||p->count>GEO_LOOP_MAX_VERTICES||!r||!out_count||(!out&&capacity))return GEO_GEOMETRY_INVALID;
+    GeoCoord ys[GEO_LOOP_MAX_VERTICES+2];size_t ny=0,n=0;ys[ny++]=r->min_v;ys[ny++]=r->max_v;
+    for(size_t i=0;i<p->count;++i)if(p->v[i].v>r->min_v&&p->v[i].v<r->max_v)ys[ny++]=p->v[i].v;
+    qsort(ys,ny,sizeof(GeoCoord),geo_complement_coord_compare);
+    for(size_t k=1;k<ny;++k){GeoCoord lo=ys[k-1],hi=ys[k];if(lo==hi)continue;GeoCoord y2=lo+hi,xs[GEO_LOOP_MAX_VERTICES];size_t nx=0;
+        for(size_t i=0;i<p->count;++i){GeoPoint2 a=p->v[i],b=p->v[(i+1)%p->count];if(a.u==b.u&&2*geo_coord_min(a.v,b.v)<y2&&y2<2*geo_coord_max(a.v,b.v))xs[nx++]=a.u;}
+        qsort(xs,nx,sizeof(GeoCoord),geo_complement_coord_compare);GeoCoord cursor=r->min_u;
+        for(size_t i=0;i+1<nx;i+=2){GeoCoord a=geo_coord_max(xs[i],r->min_u),b=geo_coord_min(xs[i+1],r->max_u);if(a>=b)continue;
+            if(cursor<a){if(n==capacity)return GEO_GEOMETRY_CAPACITY;out[n++]=(GeoRect2){cursor,lo,a,hi};}if(b>cursor)cursor=b;}
+        if(cursor<r->max_u){if(n==capacity)return GEO_GEOMETRY_CAPACITY;out[n++]=(GeoRect2){cursor,lo,r->max_u,hi};}
+    }
+    *out_count=n;return GEO_GEOMETRY_OK;
+}
+
+void geo_aabb_project_interval(const GeoCoord lo[3],const GeoCoord hi[3],GeoPoint3 origin,GeoVector3 axis,GeoCoord out[2])
+{
+    int c=axis.x?0:axis.y?1:2;GeoCoord sign=axis.x?axis.x:axis.y?axis.y:axis.z;
+    GeoCoord o=c==0?origin.x:c==1?origin.y:origin.z;
+    if(sign>0){out[0]=lo[c]-o;out[1]=hi[c]-o;}else{out[0]=o-hi[c];out[1]=o-lo[c];}
+}
+
+GeoCoord geo_loop_rect_intersection_area(const GeoLoop2View *p,const GeoRect2 *rect)
+{
+    GeoCoord u0=rect->min_u,v0=rect->min_v,u1=rect->max_u,v1=rect->max_v;
+    GeoCoord ys[GEO_LOOP_MAX_VERTICES+2],xs[GEO_LOOP_MAX_VERTICES],area=0;size_t ny=0;
+    ys[ny++]=v0;ys[ny++]=v1;
+    for(size_t i=0;i<p->count;++i)if(p->v[i].v>v0&&p->v[i].v<v1)ys[ny++]=p->v[i].v;
+    qsort(ys,ny,sizeof ys[0],geo_complement_coord_compare);
+    for(size_t k=1;k<ny;++k){
+        GeoCoord lo=ys[k-1],hi=ys[k],mid2=lo+hi;size_t nx=0;if(lo==hi)continue;
+        for(size_t i=0;i<p->count;++i){GeoPoint2 a=p->v[i],b=p->v[(i+1)%p->count];
+            if(a.u==b.u&&2*geo_coord_min(a.v,b.v)<mid2&&mid2<2*geo_coord_max(a.v,b.v))xs[nx++]=a.u;}
+        qsort(xs,nx,sizeof xs[0],geo_complement_coord_compare);
+        for(size_t i=0;i+1<nx;i+=2){GeoCoord a=geo_coord_max(xs[i],u0),b=geo_coord_min(xs[i+1],u1);if(a<b)area+=(b-a)*(hi-lo);}
+    }
+    return area;
+}
+
+bool geo_loop_touches_rect(const GeoLoop2View *p,const GeoRect2 *rect)
+{
+    GeoCoord u0=rect->min_u,v0=rect->min_v,u1=rect->max_u,v1=rect->max_v;
+    for(size_t i=0;i<p->count;++i){GeoPoint2 a=p->v[i],b=p->v[(i+1)%p->count];
+        if(geo_coord_min(a.u,b.u)<=u1&&u0<=geo_coord_max(a.u,b.u)&&geo_coord_min(a.v,b.v)<=v1&&v0<=geo_coord_max(a.v,b.v))return true;}
+    return false;
+}
+
+bool geo_collinear_segment_overlap(GeoPoint2 a,GeoPoint2 b,GeoPoint2 c,GeoPoint2 d,GeoCoord *lo,GeoCoord *hi)
+{
+    bool vertical=a.u==b.u;if(vertical!=(c.u==d.u)||(vertical?a.u!=c.u:a.v!=c.v))return false;
+    GeoCoord x=vertical?a.v:a.u,y=vertical?b.v:b.u,z=vertical?c.v:c.u,q=vertical?d.v:d.u;
+    *lo=geo_coord_max(geo_coord_min(x,y),geo_coord_min(z,q));*hi=geo_coord_min(geo_coord_max(x,y),geo_coord_max(z,q));return *lo<*hi;
 }
 #endif

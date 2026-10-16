@@ -1,6 +1,6 @@
 static void si_profile_sources(SiIndex *s,const World *w)
 {
-    const SectionProfileState *state=&w->section_profiles;char from[240],text[640];SiNode *n;
+    const SectionProfileState *state=&w->wood.section_profiles;char from[240],text[640];SiNode *n;
     for(size_t i=0;i<state->profile_count;++i){const SectionProfile *p=&state->profiles[i];si_reset(s);si_text(s,"%u;",p->id);si_loop(s,&p->outline);si_nnode(s,"section-profile",p->id,0,0,p->name);}
     bool panels=false;
     for(size_t i=0;i<state->member_count;++i){const ProfileMember *m=&state->members[i];si_numkey(from,"profile-member",m->id,0,0);

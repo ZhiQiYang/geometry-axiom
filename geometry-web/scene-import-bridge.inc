@@ -1,5 +1,6 @@
 /* Scene imports use the native parser once. Metadata is checked against these
  * final typed objects before confirmation installs this exact candidate. */
+static AppWorldCandidate *g_load_transaction;
 static World *g_load_before, *g_load_after;
 static uint32_t g_load_serial, g_load_token;
 static uint64_t g_load_revision;
@@ -10,17 +11,14 @@ static bool scene_load_prepare(const char *path)
     g_load_ready=false;
     if(g_history.grouping){eng_bridge_error("HISTORY_GROUP","Finish or cancel the current history group first");return false;}
     if(g_load_serial==UINT32_MAX){eng_bridge_error("CAPACITY","Restart the service before another scene import");return false;}
-    if(!g_load_before)g_load_before=malloc(sizeof *g_load_before);
-    if(!g_load_after)g_load_after=malloc(sizeof *g_load_after);
-    ReferencePreview *saved=malloc(sizeof *saved);
-    if(!g_load_before||!g_load_after||!saved){free(saved);eng_bridge_error("MEMORY","Cannot allocate scene import candidate");return false;}
-    *g_load_before=g_world;memset(g_load_after,0,sizeof *g_load_after);
-    *saved=g_preview;uint32_t serial=g_preview_serial;uint64_t revision=g_definition_revision;
-    const World *previous=g_subgrid_before;g_subgrid_before=NULL;
-    bool ok=parse_scene_file(path,g_load_after);
-    g_preview=*saved;g_preview_serial=serial;g_definition_revision=revision;g_subgrid_before=previous;free(saved);
-    if(!ok){eng_bridge_error("VALIDATION",scene_last_error());return false;}
-    g_load_revision=revision;g_load_token=++g_load_serial;g_load_ready=true;return true;
+    app_world_candidate_destroy(g_load_transaction);g_load_transaction=app_world_candidate_create(&g_world);
+    g_load_before=g_load_transaction?&g_load_transaction->before:NULL;
+    g_load_after=g_load_transaction?&g_load_transaction->after:NULL;
+    if(!g_load_transaction){eng_bridge_error("MEMORY","Cannot allocate scene import candidate");return false;}
+    if(app_world_candidate_evaluate(g_load_transaction,app_scene_load_evaluate,(void*)path)!=GEO_CANDIDATE_OK){
+        eng_bridge_error("VALIDATION",scene_last_error());return false;}
+    if(!app_world_candidate_seal(g_load_transaction)){eng_bridge_error("VALIDATION","Scene import candidate changed during validation");return false;}
+    g_load_revision=g_definition_revision;g_load_token=++g_load_serial;g_load_ready=true;return true;
 }
 static void cmd_load_prepare(const char *path)
 {
@@ -42,15 +40,15 @@ static void cmd_load_prepare(const char *path)
     printf("{\"ok\":true,\"token\":%u,",g_load_token);json_engineering_capabilities(g_load_after);
     fputs(",\"final_scene\":",stdout);js_string(canonical);free(canonical);
     fputs(",\"final_objects\":{\"boundaries\":[",stdout);
-    for(size_t i=0;i<g_load_after->boundary_count;++i)printf("%s%u",i?",":"",g_load_after->boundaries[i].id);
+    for(size_t i=0;i<world_boundary_count(g_load_after);++i)printf("%s%u",i?",":"",world_boundary_at(g_load_after,i)->id);
     fputs("],\"boundaryFingerprints\":[",stdout);
     /* Same native pin as boundary reads, from the detached final candidate.
-     * One bounded row per boundary; no live World lookup or geometry copy. */
-    for(size_t i=0;i<g_load_after->boundary_count;++i){const SpaceBoundarySurface *b=&g_load_after->boundaries[i];
+     * One bounded row per boundary, read only from this candidate's K store. */
+    for(size_t i=0;i<world_boundary_count(g_load_after);++i){const SpaceBoundarySurface *b=world_boundary_at(g_load_after,i);
         char hash[65];boundary_geometry_hash(b,hash);
         printf("%s{\"id\":%u,\"geometryFingerprint\":",i?",":"",b->id);js_string(hash);putchar('}');}
     fputs("],\"placements\":[",stdout);
-    for(size_t i=0;i<g_load_after->placement_count;++i){const PlacementSurface *p=&g_load_after->placements[i];
+    for(size_t i=0;i<world_placement_count(g_load_after);++i){const PlacementSurface *p=world_placement_at(g_load_after,i);
         printf("%s{\"id\":%u,\"bid\":%u,\"horizontal\":%s}",i?",":"",p->id,p->boundary_id,
             p->frame.axis_u.z==0&&p->frame.axis_v.z==0?"true":"false");}
     fputs("]}}\n",stdout);
@@ -60,9 +58,12 @@ static void cmd_load_confirm(const char *arg)
     uint32_t token;
     if(!parse_u32(arg,&token)||!g_load_ready||token!=g_load_token){eng_bridge_error("TOKEN","Missing or expired scene import candidate");return;}
     g_load_ready=false;
-    if(g_history.grouping||g_definition_revision!=g_load_revision||memcmp(&g_world,g_load_before,sizeof g_world)){
+    if(g_history.grouping||g_definition_revision!=g_load_revision||memcmp(&g_world,g_load_before,sizeof g_world)||!app_world_candidate_current(g_load_transaction,&g_world)){
         eng_bridge_error("STALE","Current World changed during scene import; open the project again");return;}
-    history_record(&g_world);g_world=*g_load_after;++g_definition_revision;g_preview.ready=false;
+    history_record(&g_world);
+    if(!app_world_candidate_publish(g_load_transaction,&g_world,false)){
+        history_unrecord();eng_bridge_error("STALE","Current World changed during scene import; open the project again");return;}
+    ++g_definition_revision;g_preview.ready=false;
     char hash[65];bool hashed=eng_definition_hash(&g_world,hash);
     printf("{\"ok\":true,\"revision\":%llu,",(unsigned long long)g_definition_revision);json_engineering_capabilities(&g_world);
     if(hashed)printf(",\"definition_sha256\":\"%s\"",hash);fputs("}\n",stdout);
@@ -70,6 +71,6 @@ static void cmd_load_confirm(const char *arg)
 static void cmd_load_cancel(const char *arg)
 {
     uint32_t token;if(!parse_u32(arg,&token)){eng_bridge_error("TOKEN","Cancel requires a scene import token");return;}
-    bool cancelled=g_load_ready&&g_load_token==token;if(cancelled)g_load_ready=false;
+    bool cancelled=g_load_ready&&g_load_token==token;if(cancelled){g_load_ready=false;app_candidate_discard(g_load_transaction->control);}
     printf("{\"ok\":true,\"cancelled\":%s}\n",cancelled?"true":"false");
 }

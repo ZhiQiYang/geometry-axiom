@@ -78,6 +78,10 @@ void geo_guides_reset_resolved(GeoGuideStore *store)
 }
 GeoGuideResult geo_guides_evaluate(GeoGuideStore *store, size_t index,
     const GeoFrame *frame, const GeoDatum *datum, GeoLinearResolver resolve, void *state)
+{return geo_guides_evaluate_definition(store,index,geo_guides_at(store,index),frame,datum,resolve,state);}
+GeoGuideResult geo_guides_evaluate_definition(GeoGuideStore *store, size_t index,
+    const GeoGuide *definition, const GeoFrame *frame, const GeoDatum *datum,
+    GeoLinearResolver resolve, void *state)
 {
     GeoGuideResult result;
     memset(&result, 0, sizeof result);
@@ -87,11 +91,15 @@ GeoGuideResult geo_guides_evaluate(GeoGuideStore *store, size_t index,
     result.linear.value.den = 1;
     result.linear.value.unit = GEO_UNIT_LENGTH;
     result.intersection = GEO_DATUM_INTERSECTION_INVALID;
-    if (!store || index >= store->count) return result;
+    if (!store || index >= store->count || !definition || definition->id != store->values[index].id) return result;
+    if (definition->source != GEO_GUIDE_LOCAL && definition->source != GEO_GUIDE_DATUM) return result;
+    if (definition->source != store->values[index].source) return result;
+    if (definition->source == GEO_GUIDE_LOCAL &&
+        definition->direction != GEO_GUIDE_ALONG_U && definition->direction != GEO_GUIDE_ALONG_V) return result;
     GeoGuide *guide = &store->values[index];
     if (!frame) { result.status = GEO_GUIDE_MISSING_FRAME; return result; }
-    if (guide->source == GEO_GUIDE_DATUM) {
-        if (!datum || datum->id != guide->datum_id) {
+    if (definition->source == GEO_GUIDE_DATUM) {
+        if (!datum || datum->id != definition->datum_id) {
             result.status = GEO_GUIDE_MISSING_DATUM;
             return result;
         }
@@ -106,7 +114,7 @@ GeoGuideResult geo_guides_evaluate(GeoGuideStore *store, size_t index,
             return result;
         }
     } else {
-        result.linear = geo_linear_evaluate(&guide->expression, resolve, state);
+        result.linear = geo_linear_evaluate(&definition->expression, resolve, state);
         if (result.linear.status != GEO_LINEAR_OK) {
             result.status = GEO_GUIDE_LINEAR_FAILED;
             return result;

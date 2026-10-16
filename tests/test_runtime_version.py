@@ -52,6 +52,27 @@ class RuntimeVersionTests(unittest.TestCase):
         (self.root / 'geometry-core/new.c').write_text('changed native code')
         self.assertFalse(snapshot.fresh())
 
+    def test_extracted_kernel_host_and_template_sources_require_restart(self):
+        for relative in ('geometry-kernel/geometry_kernel/graph.py', 'geometry-app/native/candidate.c',
+                         'geometry-templates/woodworking/native/contacts.c',
+                         'geometry-templates/woodworking/woodworking/runtime.py'):
+            with self.subTest(source=relative):
+                path = self.root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                before = runtime_version.RuntimeSnapshot(self.root)
+                path.write_bytes(b'original policy\n')
+                self.assertFalse(before.fresh(), 'Adding a source must invalidate the running server')
+                snapshot = runtime_version.RuntimeSnapshot(self.root)
+                self.assertIn(path, runtime_version.source_files(self.root))
+                stamp = path.stat()
+                path.write_bytes(b'changed policy!\n')
+                os.utime(path, ns=(stamp.st_atime_ns, stamp.st_mtime_ns))
+                self.assertFalse(snapshot.fresh(), 'Same-size policy edits cannot retain freshness')
+                self.assertNotEqual(snapshot.version, runtime_version.source_version(self.root))
+                current = runtime_version.RuntimeSnapshot(self.root)
+                path.unlink()
+                self.assertFalse(current.fresh(), 'Removing a source must invalidate the running server')
+
     def test_missing_script_refuses_startup_instead_of_opening_a_blank_editor(self):
         (self.web / 'index.html').write_bytes(b'<head><script src="grid-trial.js"></script></head>')
         with self.assertRaisesRegex(RuntimeError, 'grid-trial.js'):

@@ -4,6 +4,7 @@ import hashlib
 import json
 from pathlib import Path
 import subprocess
+import struct
 import sys
 import unittest
 
@@ -107,6 +108,41 @@ class ModelSources(unittest.TestCase):
         self.assertEqual({1:('dimension','7','2','length'),2:('count','3','1','scalar'),3:('ratio','1','3','scalar')},
             {key:(value['quantityType'],value['num'],value['den'],value['unit']) for key,value in fields.items()})
 
+    def test_parameter_ast_edges_are_evaluated_before_transport_aliases(self):
+        literal=lambda num,unit:{'op':'literal','num':str(num),'den':'1','unit':unit}
+        ref=lambda field:{'op':'ref','parameterId':8,'fieldId':field}
+        fields=[(3,0,{'op':'mul','left':ref(2),'right':ref(4)}),
+                (2,0,{'op':'mul','left':ref(1),'right':literal(2,'1')}),
+                (1,0,{'op':'literal','num':'7','den':'2','unit':'mm'}),(4,1,literal(3,'1'))]
+        scene='requires parameters/1\nparameters begin\nparameters card '+encoded({'id':8,'name':'graph','nextFieldId':5})+'\n'
+        scene+=''.join('parameters field '+encoded({'parameterId':8,'id':identifier,'name':str(identifier),'type':kind,'expression':expr})+'\n' for identifier,kind,expr in fields)
+        envelope=self.execute(scene+'parameters end\n');nodes=self.nodes(envelope);bundle=envelope['neutralSources']
+        core=lambda field:('core.parameter.field',struct.pack('=II',8,field))
+        self.assertEqual(('7','2'),(nodes[core(1)]['value']['num'],nodes[core(1)]['value']['den']))
+        self.assertEqual('7',nodes[core(2)]['value']['num']);self.assertEqual('21',nodes[core(3)]['value']['num'])
+        self.assertEqual('count',nodes[core(4)]['value']['quantityType'])
+        edges={(self.ref(edge['consumer']),self.ref(edge['source'])) for edge in bundle['edges'] if edge['kind']=='value-required'}
+        self.assertEqual({(core(3),core(2)),(core(3),core(4)),(core(2),core(1))},
+                         {edge for edge in edges if edge[0][0]=='core.parameter.field'})
+        for root in bundle['roots']:
+            if root['kind']=='parameter':self.assertIn((self.ref(root['ref']),core(root['memberId'])),edges)
+        self.assertNotIn('parameter-ast-edges',bundle['coverage']['missingGroups']);self.assertFalse(bundle['coverage']['complete'])
+
+    def test_datum_sources_preserve_world_axis_and_named_expression_edges(self):
+        from tests.test_geo261_native_datums import SCENE as DATUM_SCENE
+        envelope=self.execute(DATUM_SCENE);nodes=self.nodes(envelope);bundle=envelope['neutralSources']
+        datum=('core.datum.position',struct.pack('=I',1));guide=('app.guide',struct.pack('=I',1));named=('core.named-value',b'h')
+        self.assertEqual(-2,nodes[datum]['value']['coordinate']);self.assertEqual(7,nodes[guide]['value']['coordinate'])
+        self.assertEqual({'placementId':None,'axis':0,'owner':None},nodes[datum]['value']['context'])
+        self.assertEqual('3',nodes[named]['value']['num'])
+        edges={(self.ref(edge['consumer']),self.ref(edge['source'])) for edge in bundle['edges'] if edge['kind']=='value-required'}
+        self.assertIn((guide,datum),edges)
+        expression=next(target for source,target in edges if source==datum and target[0]=='app.legacy-reference')
+        self.assertIn((expression,named),edges)
+        root=next(root for root in bundle['roots'] if root['kind']=='spec')
+        self.assertIn((self.ref(root['ref']),named),edges)
+        self.assertNotIn('datum-expression-edges',bundle['coverage']['missingGroups']);self.assertFalse(bundle['coverage']['complete'])
+
     def test_profile_envelope_and_members_keep_distinct_local_domains(self):
         envelope=self.execute(profile_scene());nodes=self.nodes(envelope)
         roots=envelope['neutralSources']['roots'];self.assertEqual(12,len(roots))
@@ -145,7 +181,12 @@ class ModelSources(unittest.TestCase):
             nodes=self.nodes(envelope)
             return {root['memberId']:nodes[self.ref(root['ref'])]['value']['num'] for root in envelope['neutralSources']['roots'] if root['kind']=='parameter'}
         self.assertEqual({1:'7',2:'3',3:'1'},quantities(baseline))
-        self.assertEqual({1:'7',2:'4',3:'2'},quantities(mutated))
+        # The actual parameter source now feeds a separate transport alias.
+        # This mutation corrupts each scalar cache once, so aliases see +2.
+        core={struct.unpack('=II',self.ref(node['ref'])[1])[1]:node['value']['num']
+              for node in mutated['neutralSources']['nodes'] if node['ref']['namespace']=='core.parameter.field'}
+        self.assertEqual({1:'7',2:'4',3:'2'},core)
+        self.assertEqual({1:'7',2:'5',3:'3'},quantities(mutated))
         self.assertEqual(quantities(baseline),quantities(self.execute(parameter_scene())))
 
 if __name__=='__main__':unittest.main(verbosity=2)

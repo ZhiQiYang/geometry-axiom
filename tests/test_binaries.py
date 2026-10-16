@@ -134,6 +134,22 @@ class BinaryFreshnessTests(unittest.TestCase):
         (self.root / 'current_geometry.c').write_bytes(b'changed source\n')
         self.assertEqual(binaries.inspect_one(self.b).state, 'stale')
 
+    def test_host_and_template_source_bytes_invalidate_native_freshness(self):
+        for directory in ('geometry-app/native', 'geometry-templates/woodworking/native'):
+            for suffix in ('.c', '.h', '.inc'):
+                with self.subTest(directory=directory, suffix=suffix):
+                    source = self.root / directory / ('policy' + suffix)
+                    source.parent.mkdir(parents=True, exist_ok=True)
+                    source.write_bytes(b'original policy\n')
+                    self.build()
+                    self.assertEqual('fresh', binaries.inspect_one(self.b).state)
+                    self.assertIn(source.relative_to(self.root).as_posix(), binaries.compute_fingerprint(self.b)[1])
+                    source.write_bytes(b'changed policy!\n')
+                    self.assertEqual('stale', binaries.inspect_one(self.b).state)
+                    self.build()
+                    source.unlink()
+                    self.assertEqual('stale', binaries.inspect_one(self.b).state)
+
     def test_blocked_pending_retries_without_recompile_and_then_publishes(self):
         self.smoke.return_value = 'winerror=4551'
         self.assertEqual(binaries.build_one(self.b).status, 'blocked')

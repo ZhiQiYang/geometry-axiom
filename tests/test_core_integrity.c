@@ -30,15 +30,15 @@ static void test_frame_updates(void)
     CHECK(reference_default_world(&test_world)); history_clear();
     CHECK(!command("move 1 1/2*edge:e1:u"));
     CHECK(g_preview.ready && g_preview.valid);
-    CHECK(geo_guides_at(&test_world.guide_lines,0)->offset == 500);
+    CHECK(geo_guides_at(&test_world.geo.guide_lines,0)->offset == 500);
     char text[64]; snprintf(text,sizeof text,"confirm %u",g_preview.token);
     CHECK(command(text));
-    CHECK(geo_guides_at(&test_world.guide_lines,0)->offset == 2000);
+    CHECK(geo_guides_at(&test_world.geo.guide_lines,0)->offset == 2000);
     CHECK(!command("placement 1 on boundary 1 origin 0 0 3000 u +x v +y"));
     CHECK(g_preview.valid); snprintf(text,sizeof text,"confirm %u",g_preview.token);
-    CHECK(command(text)); CHECK(test_world.timbers[2].origin.z == 3000);
-    CHECK(command("undo")); CHECK(test_world.timbers[2].origin.z == 2500);
-    CHECK(command("redo")); CHECK(test_world.timbers[2].origin.z == 3000);
+    CHECK(command(text)); CHECK(test_world.wood.timbers[2].origin.z == 3000);
+    CHECK(command("undo")); CHECK(test_world.wood.timbers[2].origin.z == 2500);
+    CHECK(command("redo")); CHECK(test_world.wood.timbers[2].origin.z == 3000);
     saved_world=test_world;
     CHECK(!command("boundary 1 outline 0,0 20,0 20,3000 0,3000"));
     CHECK(memcmp(&saved_world,&test_world,sizeof test_world)==0);
@@ -50,14 +50,14 @@ static void test_space_extents(void)
     room();
     CHECK(command("space 1 boundary 1"));
     CHECK(command("boundary 1 outline 0,0 2000,0 2000,3000 0,3000"));
-    CHECK(test_world.spaces[0].room_max[0] == 2000);
+    CHECK(geo_enclosures_at(&test_world.geo.enclosures,0)->max[0] == 2000);
     saved_world = test_world;
     CHECK(!command("column 1 in 1 at 2500 100 size 100 100 z 0 2000"));
     CHECK(memcmp(&saved_world, &test_world, sizeof test_world) == 0);
     CHECK(!command("beam 1 in 1 along x from 2500 to 2800 at 500 width 100 depth 100 top 2000"));
     CHECK(memcmp(&saved_world, &test_world, sizeof test_world) == 0);
     CHECK(command("boundary 1 outline 0,0 4000,0 4000,3000 0,3000"));
-    CHECK(test_world.spaces[0].room_max[0] == 4000);
+    CHECK(geo_enclosures_at(&test_world.geo.enclosures,0)->max[0] == 4000);
     CHECK(command("column 1 in 1 at 2500 100 size 100 100 z 0 2000"));
     CHECK(command("beam 1 in 1 along x from 2500 to 2800 at 500 width 100 depth 100 top 2000"));
     saved_world = test_world;
@@ -69,8 +69,8 @@ static void test_space_extents(void)
     CHECK(memcmp(&saved_world, &test_world, sizeof test_world) == 0);
     CHECK(command("delete beam 1"));
     CHECK(command("placement 1 on boundary 1 origin 100 200 2500 u +x v +y"));
-    CHECK(test_world.spaces[0].room_min[0] == 100 && test_world.spaces[0].room_min[1] == 200);
-    CHECK(test_world.spaces[0].room_max[0] == 4100 && test_world.spaces[0].room_max[1] == 3200);
+    CHECK(geo_enclosures_at(&test_world.geo.enclosures,0)->min[0] == 100 && geo_enclosures_at(&test_world.geo.enclosures,0)->min[1] == 200);
+    CHECK(geo_enclosures_at(&test_world.geo.enclosures,0)->max[0] == 4100 && geo_enclosures_at(&test_world.geo.enclosures,0)->max[1] == 3200);
 }
 
 static void test_new_placement_transaction(void)
@@ -84,7 +84,7 @@ static void test_new_placement_transaction(void)
     CHECK(memcmp(&saved_world, &test_world, sizeof test_world) == 0);
     CHECK(command("delete space 1"));
     CHECK(command("placement 2 on boundary 1 origin 0 0 100 u +x v +y"));
-    CHECK(test_world.placement_count == 2); /* Multiple placements remain legal without Space. */
+    CHECK(world_placement_count(&test_world) == 2); /* Multiple placements remain legal without Space. */
 }
 
 static void test_grid_ref_rejects(void)
@@ -95,9 +95,9 @@ static void test_grid_ref_rejects(void)
     CHECK(!command("place 4 on 1 at-line grid 1 v 0 +v +n"));
     CHECK(memcmp(&saved_world,&test_world,sizeof test_world)==0);
     CHECK(command("place 4 on 1 at-line grid 1 u 0 +v +n"));
-    CHECK(test_world.anchors[3].anchor_kind==ANCHOR_AT_GRID);
+    CHECK(test_world.wood.anchors[3].anchor_kind==ANCHOR_AT_GRID);
     CHECK(!command("grid 1 on 1 u 2500")); CHECK(g_preview.valid);
-    CHECK(test_world.timbers[3].length==2946);
+    CHECK(test_world.wood.timbers[3].length==2946);
 }
 
 static void test_place_through_short(void)

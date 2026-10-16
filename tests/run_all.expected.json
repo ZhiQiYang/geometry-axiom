@@ -186,7 +186,7 @@
     },
     "py:test_binaries": {
       "mode": "count",
-      "count": 32,
+      "count": 33,
       "unit": "test"
     },
     "py:test_bridge_integrity": {
@@ -371,7 +371,7 @@
     },
     "py:test_runtime_version": {
       "mode": "count",
-      "count": 24,
+      "count": 25,
       "unit": "test"
     },
     "py:test_scenario_verify": {
@@ -506,7 +506,7 @@
     },
     "py:test_geo261_model_sources": {
       "mode": "count",
-      "count": 10,
+      "count": 12,
       "unit": "test"
     },
     "py:test_geo261_wood_supports": {
@@ -572,6 +572,256 @@
     "py:test_geo261_panel_native": {
       "mode": "count",
       "count": 10,
+      "unit": "test"
+    },
+    "py:test_geo261_assembly_graph_product": {
+      "mode": "count",
+      "count": 4,
+      "unit": "test"
+    },
+    "py:test_geo261_assembly_sources": {
+      "mode": "count",
+      "count": 8,
+      "unit": "test"
+    },
+    "py:test_geo261_candidate_cache": {
+      "mode": "count",
+      "count": 18,
+      "unit": "test"
+    },
+    "py:test_geo261_candidate_product": {
+      "mode": "count",
+      "count": 11,
+      "unit": "test"
+    },
+    "py:test_geo261_contact_sources": {
+      "mode": "count",
+      "count": 12,
+      "unit": "test"
+    },
+    "py:test_geo261_domain_product": {
+      "mode": "count",
+      "count": 9,
+      "unit": "test"
+    },
+    "py:test_geo261_engineering_sources": {
+      "mode": "count",
+      "count": 18,
+      "unit": "test"
+    },
+    "py:test_geo261_definition_sources": {
+      "mode": "count",
+      "count": 7,
+      "unit": "test"
+    },
+    "py:test_geo261_definition_graph_product": {
+      "mode": "count",
+      "count": 5,
+      "unit": "test"
+    },
+    "py:test_geo261_enclosure_sources": {
+      "mode": "count",
+      "count": 13,
+      "unit": "test"
+    },
+    "py:test_geo261_enclosure_product": {
+      "mode": "count",
+      "count": 5,
+      "unit": "test"
+    },
+    "py:test_geo261_finish_sources": {
+      "mode": "count",
+      "count": 8,
+      "unit": "test"
+    },
+    "py:test_geo261_graph_product": {
+      "mode": "count",
+      "count": 5,
+      "unit": "test"
+    },
+    "py:test_geo261_grid_sources": {
+      "mode": "count",
+      "count": 11,
+      "unit": "test"
+    },
+    "py:test_geo261_host_candidate": {
+      "mode": "count",
+      "count": 17,
+      "unit": "test"
+    },
+    "py:test_geo261_member_reference": {
+      "mode": "count",
+      "count": 11,
+      "unit": "test"
+    },
+    "py:test_geo261_mutation_migration": {
+      "mode": "count",
+      "count": 15,
+      "unit": "test"
+    },
+    "py:test_geo261_native_candidate": {
+      "mode": "count",
+      "count": 17,
+      "unit": "test"
+    },
+    "py:test_geo261_native_document": {
+      "mode": "count",
+      "count": 10,
+      "unit": "test"
+    },
+    "py:test_geo261_native_enclosures": {
+      "mode": "count",
+      "count": 19,
+      "unit": "test"
+    },
+    "py:test_geo261_native_grid_rules": {
+      "mode": "count",
+      "count": 9,
+      "unit": "test"
+    },
+    "py:test_geo261_native_placements": {
+      "mode": "count",
+      "count": 12,
+      "unit": "test"
+    },
+    "py:test_geo261_native_versions": {
+      "mode": "count",
+      "count": 14,
+      "unit": "test"
+    },
+    "py:test_geo261_parameter_sources": {
+      "mode": "count",
+      "count": 11,
+      "unit": "test"
+    },
+    "py:test_geo261_placement_sources": {
+      "mode": "count",
+      "count": 21,
+      "unit": "test"
+    },
+    "py:test_geo261_section_profile_sources": {
+      "mode": "count",
+      "count": 9,
+      "unit": "test"
+    },
+    "py:test_geo261_source_describe": {
+      "mode": "count",
+      "count": 7,
+      "unit": "test"
+    },
+    "py:test_geo261_staged_candidate_graph": {
+      "mode": "count",
+      "count": 7,
+      "unit": "test"
+    },
+    "py:test_geo261_version_activation": {
+      "mode": "count",
+      "count": 10,
+      "unit": "test"
+    },
+    "py:test_geo261_wood_assembly": {
+      "mode": "count",
+      "count": 13,
+      "unit": "test"
+    },
+    "py:test_geo261_wood_contact_world": {
+      "mode": "count",
+      "count": 10,
+      "unit": "test"
+    },
+    "py:test_geo261_wood_derived_placement": {
+      "mode": "count",
+      "count": 14,
+      "unit": "test"
+    },
+    "py:test_geo261_wood_engineering_operations": {
+      "mode": "count",
+      "count": 15,
+      "unit": "test"
+    },
+    "py:test_geo261_wood_finish": {
+      "mode": "count",
+      "count": 12,
+      "unit": "test"
+    },
+    "py:test_geo261_wood_grid_application": {
+      "mode": "count",
+      "count": 11,
+      "unit": "test"
+    },
+    "py:test_geo261_wood_grid_cells": {
+      "mode": "count",
+      "count": 13,
+      "unit": "test"
+    },
+    "py:test_geo261_wood_grid_engineering": {
+      "mode": "count",
+      "count": 14,
+      "unit": "test"
+    },
+    "py:test_geo261_wood_member_declaration": {
+      "mode": "count",
+      "count": 9,
+      "unit": "test"
+    },
+    "py:test_geo261_wood_report_policy": {
+      "mode": "count",
+      "count": 8,
+      "unit": "test"
+    },
+    "py:test_geo261_wood_section_profile": {
+      "mode": "count",
+      "count": 12,
+      "unit": "test"
+    },
+    "py:test_geo261_wood_world_validation": {
+      "mode": "count",
+      "count": 14,
+      "unit": "test"
+    },
+    "py:test_geo261_derived_policy_sources": {
+      "mode": "count",
+      "count": 14,
+      "unit": "test"
+    },
+    "py:test_geo261_derived_policy_graph_product": {
+      "mode": "count",
+      "count": 4,
+      "unit": "test"
+    },
+    "py:test_geo261_grid_definitions_product": {
+      "mode": "count",
+      "count": 4,
+      "unit": "test"
+    },
+    "py:test_geo261_region_key_sources": {
+      "mode": "count",
+      "count": 15,
+      "unit": "test"
+    },
+    "py:test_geo261_parameter_definition_sources": {
+      "mode": "count",
+      "count": 18,
+      "unit": "test"
+    },
+    "py:test_geo261_linear_definition_sources": {
+      "mode": "count",
+      "count": 15,
+      "unit": "test"
+    },
+    "py:test_geo261_linear_definition_graph_product": {
+      "mode": "count",
+      "count": 8,
+      "unit": "test"
+    },
+    "py:test_geo261_version_field_sources": {
+      "mode": "count",
+      "count": 19,
+      "unit": "test"
+    },
+    "py:test_geo261_section_profile_authority": {
+      "mode": "count",
+      "count": 15,
       "unit": "test"
     }
   }

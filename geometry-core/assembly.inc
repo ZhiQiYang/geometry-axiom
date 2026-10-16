@@ -1,217 +1,58 @@
-/* Transient candidate evidence. Never part of World/dump or capability data. */
-typedef struct { int kind;uint32_t id,field_id,version; } AsmDiagnostic;
+/* H: World storage, scene codec and compatibility adapters for W assembly. */
 static AsmDiagnostic g_asm_diagnostic;
 static bool asm_instance_load(World *,GeoJson *,int);
-/* Authoring validates sources and local topology; it never generates timber. */
-static const AsmRuleVersion *assembly_rule(const World *w,uint32_t id,uint32_t version)
+static void asm_remove_position(World *,int,uint32_t);
+static bool app_asm_surface(void *,uint32_t);
+static bool app_asm_guide(void *,uint32_t,WoodAssemblyGuide *);
+static bool app_asm_member(void *,uint32_t,WoodAssemblyMember *);
+static bool app_asm_footprint(void *,uint32_t,uint32_t,GeoRect2 *);
+static size_t app_asm_member_count(void *);
+static void app_asm_allocate(void *,uint32_t);
+static bool app_asm_remove(void *,uint32_t);
+static void app_asm_write(void *,const WoodMember *,const WoodAssemblyDefinition *);
+static bool app_asm_anchor_matches(void *,uint32_t,const WoodAssemblyDefinition *);
+static bool app_asm_instance_content(void *,AsmInstance *,GeoJson *,int);
+static bool app_asm_json(void *user,GeoJson *j,const char *text)
+{(void)user;return app_json_parse(j,text);}
+static void app_asm_drop_position(void *user,bool rule,uint32_t id)
+{asm_remove_position((World *)user,rule?CANVAS_POS_ASSEMBLY_RULE:CANVAS_POS_ASSEMBLY_BINDING,id);}
+static bool app_asm_other(void *user,GeoJson *j,int t)
+{return eng_operation((World *)user,j,t);}
+static bool app_assembly_sources_bind(const World *,WoodAssemblyContext *);
+static WoodAssemblyContext app_asm_context(const World *world)
 {
-    const AsmRuleVersion *found=NULL;
-    for(size_t i=0;i<w->assembly.rule_count;++i){const AsmRuleVersion *r=&w->assembly.rules[i];
-        if(r->id==id && ((!version&&(!found||r->version>found->version))||r->version==version))found=r;}
-    return found;
+    World *w=(World *)world;WoodAssemblyContext c={0};c.state=&w->wood.assembly;c.engineering=app_eng_context(w);c.diagnostic=&g_asm_diagnostic;c.parameter_dimension_error=&g_parameter_dimension_error;c.user=w;c.scene_loading=g_parsing_scene_file;
+    c.json_parse=app_asm_json;c.drop_position=app_asm_drop_position;c.other_operation=app_asm_other;c.surface=app_asm_surface;c.guide=app_asm_guide;c.member=app_asm_member;c.footprint=app_asm_footprint;c.member_count=app_asm_member_count;c.member_capacity=WORLD_MAX_TIMBERS;c.allocate_member=app_asm_allocate;c.remove_member=app_asm_remove;c.write_member=app_asm_write;c.anchor_matches=app_asm_anchor_matches;c.instance_content=app_asm_instance_content;app_assembly_sources_bind(world,&c);return c;
 }
-static AsmBinding *assembly_binding(World *w,uint32_t id)
-{
-    for(size_t i=0;i<w->assembly.binding_count;++i)if(w->assembly.bindings[i].id==id)return &w->assembly.bindings[i];
-    return NULL;
-}
-static bool assembly_used(const World *w){return w->assembly.rule_count||w->assembly.binding_count;}
 static bool asm_error(const char *format,...)
 {
     g_asm_diagnostic=(AsmDiagnostic){0};
     va_list args;va_start(args,format);vsnprintf(g_engineering_error,sizeof g_engineering_error,format,args);va_end(args);
     utf8_trim_tail(g_engineering_error);return false;
 }
-static bool asm_rule_immutable(uint32_t id,uint32_t version)
-{
-    bool result=asm_error("D32: published rule %u@%u is immutable",id,version);
-    g_asm_diagnostic=(AsmDiagnostic){2,id,0,version};return result;
-}
-static bool asm_name(GeoJson *j,int t,char out[ASM_NAME_MAX])
-{return geo_json_string(j,t,out,ASM_NAME_MAX)&&out[0];}
-static bool asm_enum(GeoJson *j,int t,const char *choices,bool nullable)
-{
-    char value[40];return (nullable&&geo_json_is_null(j,t))||
-        (geo_json_string(j,t,value,sizeof value)&&geo_json_csv_has(choices,value));
-}
-static bool asm_ids(GeoJson *j,int array,uint32_t *ids,size_t *count,size_t limit)
-{
-    if(!geo_json_is_array(j,array))return false;int n=geo_json_size(j,array);
-    if(n<1||(size_t)n>limit)return false;*count=(size_t)n;
-    for(int i=0;i<n;++i){int t=geo_json_at(j,array,i);if(!eng_u32(j,geo_json_member(j,t,"id"),&ids[i],true))return false;
-        for(int k=0;k<i;++k)if(ids[k]==ids[i])return false;}
-    return true;
-}
-static bool asm_has(const uint32_t *ids,size_t count,uint32_t id)
-{for(size_t i=0;i<count;++i)if(ids[i]==id)return true;return false;}
-static bool asm_validate_rule(GeoJson *j,int t,AsmRuleVersion *r)
-{
-    uint32_t slots[ASM_SLOT_MAX],members[ASM_MEMBER_MAX],joints[ASM_JOINT_MAX];size_t ns,nm,nj;
-    char scopes[ASM_JOINT_MAX][65];uint32_t ends[ASM_JOINT_MAX*2],end_joints[ASM_JOINT_MAX*2];int end_types[ASM_JOINT_MAX*2],end_count=0;
-    memset(r,0,sizeof *r);
-    if(!geo_json_keys(j,t,"id,version,name,slots,members,joints","")||
-       !eng_u32(j,geo_json_member(j,t,"id"),&r->id,true)||!eng_u32(j,geo_json_member(j,t,"version"),&r->version,true)||
-       !asm_name(j,geo_json_member(j,t,"name"),r->name))return asm_error("D32: rule needs positive id/version, name and typed slots/members/joints");
-    int sa=geo_json_member(j,t,"slots"),ma=geo_json_member(j,t,"members"),ja=geo_json_member(j,t,"joints");
-    if(!asm_ids(j,sa,slots,&ns,ASM_SLOT_MAX)||!asm_ids(j,ma,members,&nm,ASM_MEMBER_MAX)||!asm_ids(j,ja,joints,&nj,ASM_JOINT_MAX))
-        return asm_error("I40/CAPACITY: rule %u needs 1..8 unique slots, 1..12 unique members and 1..16 unique joints",r->id);
-    for(size_t i=0;i<ns;++i){int s=geo_json_at(j,sa,(int)i);char name[ASM_NAME_MAX];
-        if(!geo_json_keys(j,s,"id,name","")||!asm_name(j,geo_json_member(j,s,"name"),name))return asm_error("I40: slot %u needs a name; unknown fields are rejected",slots[i]);}
-    for(size_t i=0;i<nm;++i){int m=geo_json_at(j,ma,(int)i);uint32_t sid;
-        if(!geo_json_keys(j,m,"id,slotId","")||!eng_u32(j,geo_json_member(j,m,"slotId"),&sid,true)||!asm_has(slots,ns,sid))return asm_error("I40: member %u refers to a missing slot",members[i]);}
-    for(size_t i=0;i<nj;++i){int a=geo_json_at(j,ja,(int)i);char kind[32],end[16];uint32_t term[2],target;int et[2],nt;
-        if(!geo_json_string(j,geo_json_member(j,a,"kind"),kind,sizeof kind)||
-           !geo_json_string(j,geo_json_member(j,a,"scope"),scopes[i],sizeof scopes[i])||!scopes[i][0])return asm_error("I40: joint %u needs kind and stable junction scope",joints[i]);
-        for(size_t k=0;k<i;++k)if(!strcmp(scopes[k],scopes[i]))return asm_error("I40: joints %u and %u conflict at scope %s",joints[k],joints[i],scopes[i]);
-        if(!strcmp(kind,"end-to-side")){
-            if(!geo_json_keys(j,a,"id,kind,scope,terminatedMember,targetMember,end,side,dir","")||
-               !eng_u32(j,geo_json_member(j,a,"terminatedMember"),&term[0],true)||!eng_u32(j,geo_json_member(j,a,"targetMember"),&target,true)||
-               !geo_json_string(j,geo_json_member(j,a,"end"),end,sizeof end)||(strcmp(end,"start")&&strcmp(end,"finish")))return asm_error("I40: joint %u has invalid endpoint definition",joints[i]);
-            et[0]=!strcmp(end,"finish");nt=1;
-        }else if(!strcmp(kind,"ortho-split")){
-            int split=geo_json_member(j,a,"splitMembers");
-            if(!geo_json_keys(j,a,"id,kind,scope,continuousMember,splitMembers,side,dir","")||
-               !eng_u32(j,geo_json_member(j,a,"continuousMember"),&target,true)||!geo_json_is_array(j,split)||geo_json_size(j,split)!=2||
-               !eng_u32(j,geo_json_at(j,split,0),&term[0],true)||!eng_u32(j,geo_json_at(j,split,1),&term[1],true)||term[0]==term[1])return asm_error("I40: joint %u needs one continuous and two distinct split members",joints[i]);
-            et[0]=1;et[1]=0;nt=2;
-        }else return asm_error("I40: joint %u has unknown kind; nested rules are unsupported",joints[i]);
-        if(!asm_has(members,nm,target)||!asm_enum(j,geo_json_member(j,a,"side"),"+u,-u,+v,-v",false)||!asm_enum(j,geo_json_member(j,a,"dir"),"u,v",false))return asm_error("I40: joint %u has missing target or invalid local side/direction",joints[i]);
-        for(int k=0;k<nt;++k){if(term[k]==target||!asm_has(members,nm,term[k]))return asm_error("I40: joint %u needs distinct existing members",joints[i]);
-            for(int q=0;q<end_count;++q)if(ends[q]==term[k]&&end_types[q]==et[k])return asm_error("I40: joints %u and %u assign the same endpoint of member %u",end_joints[q],joints[i],term[k]);
-            ends[end_count]=term[k];end_types[end_count]=et[k];end_joints[end_count++]=joints[i];}
-    }
-    if(!geo_json_canonical(j,t,r->content,sizeof r->content))return asm_error("CAPACITY: assembly rule exceeds 8191 UTF-8 bytes");
-    geo_sha256(r->content,strlen(r->content),r->fingerprint);return true;
-}
-static bool asm_publish(World *w,GeoJson *j,int t,const char *expected)
-{
-    AsmRuleVersion rule;if(!asm_validate_rule(j,t,&rule))return false;
-    if(expected&&strcmp(expected,rule.fingerprint))return asm_error("I41: rule %u@%u fingerprint mismatch",rule.id,rule.version);
-    const AsmRuleVersion *old=assembly_rule(w,rule.id,rule.version);
-    if(old)return !strcmp(old->fingerprint,rule.fingerprint)||asm_rule_immutable(rule.id,rule.version);
-    if(w->assembly.rule_count==ASM_RULE_MAX)return asm_error("CAPACITY: at most 32 published assembly versions");
-    w->assembly.rules[w->assembly.rule_count++]=rule;return true;
-}
-/* Compare with transaction-entry identities, not only the mutable candidate.
- * Removed versions may stay absent after explicit unbinding; an identity that
- * reappears must retain its original content, including delete/copy/reinsert. */
-static bool assembly_versions_immutable(const World *before,const World *after)
-{
-    for(size_t i=0;i<before->assembly.rule_count;++i){const AsmRuleVersion *old=&before->assembly.rules[i];
-        const AsmRuleVersion *next=assembly_rule(after,old->id,old->version);
-        if(next&&strcmp(old->fingerprint,next->fingerprint))return asm_rule_immutable(old->id,old->version);
-    }
-    return true;
-}
-static bool asm_binding_parse(World *w,GeoJson *j,int t,AsmBinding *b,bool resolve)
-{
-    memset(b,0,sizeof *b);int rule=geo_json_member(j,t,"rule"),array=geo_json_member(j,t,"slots");
-    if(!geo_json_keys(j,t,"id,name,rule,slots","")||!eng_u32(j,geo_json_member(j,t,"id"),&b->id,true)||!asm_name(j,geo_json_member(j,t,"name"),b->name)||
-       !geo_json_keys(j,rule,"id,version","")||!eng_u32(j,geo_json_member(j,rule,"id"),&b->rule_id,true)||!eng_u32(j,geo_json_member(j,rule,"version"),&b->rule_version,true))return asm_error("D33: invalid binding identity or fixed rule reference");
-    const AsmRuleVersion *r=assembly_rule(w,b->rule_id,b->rule_version);if(!r)return asm_error("I40: binding %u refers to missing rule %u@%u",b->id,b->rule_id,b->rule_version);
-    GeoJson definition;if(!app_json_parse(&definition,r->content)){geo_json_free(&definition);return asm_error("I40: invalid stored rule");}
-    uint32_t ids[ASM_SLOT_MAX],seen[ASM_SLOT_MAX];size_t n;bool ok=asm_ids(&definition,geo_json_member(&definition,0,"slots"),ids,&n,ASM_SLOT_MAX);geo_json_free(&definition);
-    if(!ok||!geo_json_is_array(j,array)||geo_json_size(j,array)!=(int)n)return asm_error("I40: binding %u must explicitly map every fixed rule slot",b->id);
-    b->complete=true;
-    for(size_t i=0;i<n;++i){int s=geo_json_at(j,array,(int)i);uint32_t id;
-        if(!geo_json_keys(j,s,"slotId,A,B,contactFace,orientation","")||!eng_u32(j,geo_json_member(j,s,"slotId"),&id,true)||!asm_has(ids,n,id)||asm_has(seen,i,id))return asm_error("I40: binding %u has missing, duplicate or unknown slots",b->id);
-        seen[i]=id;
-        for(int axis=0;axis<2;++axis){int value=geo_json_member(j,s,axis?"B":"A");
-            if(geo_json_is_null(j,value)){b->complete=false;continue;}
-            g_parameter_dimension_error=(ParameterRef){0};
-            EngDimensionSource source={0};EngTarget target={1,0,0,axis};Coord effective;char path[192];
-            if(!eng_source_parse(j,value,&source,false)||source.kind==ENG_APPLICATION||(resolve&&!eng_resolve(w,&source,&target,UINT32_MAX,0,&effective,path,sizeof path))){
-                char error[256];snprintf(error,sizeof error,"%s",g_engineering_error);
-                bool result=asm_error("I40: binding %u slot %u.%c: %.155s",b->id,id,axis?'B':'A',error);
-                if(source.kind==ENG_PARAMETER && g_parameter_dimension_error.set &&
-                    g_parameter_dimension_error.parameter_id==source.parameter.parameter_id &&
-                    g_parameter_dimension_error.field_id==source.parameter.field_id)
-                    g_asm_diagnostic=(AsmDiagnostic){1,source.parameter.parameter_id,source.parameter.field_id,0};
-                return result;}
-        }
-        const char *keys[]={"contactFace","orientation"};for(int axis=0;axis<2;++axis){int value=geo_json_member(j,s,keys[axis]);
-            if(!asm_enum(j,value,"A,B",true))return asm_error("I40: binding %u slot %u needs explicit A/B or unset %s",b->id,id,keys[axis]);
-            if(geo_json_is_null(j,value))b->complete=false;}
-    }
-    if(!geo_json_canonical(j,t,b->content,sizeof b->content))return asm_error("CAPACITY: binding exceeds 8191 UTF-8 bytes");return true;
-}
-static bool asm_put_binding(World *w,GeoJson *j,int t)
-{
-    AsmBinding value;if(!asm_binding_parse(w,j,t,&value,false))return false;AsmBinding *b=assembly_binding(w,value.id);
-    if(!b){if(w->assembly.binding_count==ASM_BINDING_MAX)return asm_error("CAPACITY: at most 64 assembly bindings");b=&w->assembly.bindings[w->assembly.binding_count++];}
-    *b=value;return true;
-}
-static bool assembly_rebuild(World *w,char *error,size_t cap)
-{
-    if(w->assembly.loading){snprintf(error,cap,"I41: truncated assembly block");return false;}
-    for(size_t i=0;i<w->assembly.binding_count;++i){AsmBinding b;GeoJson j;bool ok=app_json_parse(&j,w->assembly.bindings[i].content)&&asm_binding_parse(w,&j,0,&b,true);geo_json_free(&j);
-        if(!ok){snprintf(error,cap,"%s",g_engineering_error);return false;}w->assembly.bindings[i]=b;}
-    return true;
-}
 static void asm_remove_position(World *w,int kind,uint32_t id)
 {
-    for(size_t i=w->canvas_pos_count;i>0;--i)if(w->canvas_pos[i-1].kind==kind&&w->canvas_pos[i-1].id==id){
-        memmove(&w->canvas_pos[i-1],&w->canvas_pos[i],(w->canvas_pos_count-i)*sizeof *w->canvas_pos);memset(&w->canvas_pos[--w->canvas_pos_count],0,sizeof *w->canvas_pos);}
+    for(size_t i=w->app.canvas_pos_count;i>0;--i)if(w->app.canvas_pos[i-1].kind==kind&&w->app.canvas_pos[i-1].id==id){
+        memmove(&w->app.canvas_pos[i-1],&w->app.canvas_pos[i],(w->app.canvas_pos_count-i)*sizeof *w->app.canvas_pos);memset(&w->app.canvas_pos[--w->app.canvas_pos_count],0,sizeof *w->app.canvas_pos);}
 }
-/* A legacy spec edit previews assembly consumers even without geometry. */
+static const AsmRuleVersion *assembly_rule(const World *w,uint32_t id,uint32_t version)
+{WoodAssemblyContext c=app_asm_context(w);return wood_assembly_rule(&c,id,version);}
+static AsmBinding *assembly_binding(World *w,uint32_t id)
+{WoodAssemblyContext c=app_asm_context(w);return wood_assembly_binding(&c,id);}
+static bool assembly_used(const World *w)
+{WoodAssemblyContext c=app_asm_context(w);return wood_assembly_used(&c);}
+static bool asm_publish(World *w,GeoJson *j,int t,const char *expected)
+{WoodAssemblyContext c=app_asm_context(w);return wood_assembly_publish(&c,j,t,expected);}
+static bool asm_put_binding(World *w,GeoJson *j,int t)
+{WoodAssemblyContext c=app_asm_context(w);return wood_assembly_put_binding(&c,j,t);}
+static bool assembly_versions_immutable(const World *before,const World *after)
+{WoodAssemblyContext a=app_asm_context(before),b=app_asm_context(after);return wood_assembly_versions_immutable(&a,&b);}
+static bool assembly_rebuild(World *w,char *error,size_t cap)
+{WoodAssemblyContext c=app_asm_context(w);return wood_assembly_rebuild(&c,error,cap);}
 static bool assembly_dimensions_changed(const World *before,const World *after)
-{
-    for(size_t i=0;i<before->assembly.binding_count;++i){GeoJson j;
-        if(!app_json_parse(&j,before->assembly.bindings[i].content)){geo_json_free(&j);return true;}
-        int slots=geo_json_member(&j,0,"slots");bool changed=false;
-        for(int k=0;k<geo_json_size(&j,slots)&&!changed;++k)for(int axis=0;axis<2&&!changed;++axis){
-            int t=geo_json_member(&j,geo_json_at(&j,slots,k),axis?"B":"A");if(geo_json_is_null(&j,t))continue;
-            EngDimensionSource src;EngTarget target={1,0,0,axis};Coord a,b;char path[192];
-            if(!eng_source_parse(&j,t,&src,false)||!eng_resolve((World*)before,&src,&target,UINT32_MAX,0,&a,path,sizeof path)||
-               !eng_resolve((World*)after,&src,&target,UINT32_MAX,0,&b,path,sizeof path)||a!=b)changed=true;
-        }
-        geo_json_free(&j);if(changed)return true;
-    }
-    return false;
-}
+{WoodAssemblyContext a=app_asm_context(before),b=app_asm_context(after);return wood_assembly_dimensions_changed(&a,&b);}
 static bool assembly_operation(World *w,GeoJson *j,int t)
-{
-    char op[32];if(!geo_json_string(j,geo_json_member(j,t,"op"),op,sizeof op))return asm_error("I40: assembly operation needs op");
-    if(!strcmp(op,"publish-rule"))return geo_json_keys(j,t,"op,value","")?asm_publish(w,j,geo_json_member(j,t,"value"),NULL):asm_error("I40: invalid publish operation");
-    if(!strcmp(op,"create-binding")){
-        uint32_t id;int value=geo_json_member(j,t,"value");
-        if(!geo_json_keys(j,t,"op,value","")||!eng_u32(j,geo_json_member(j,value,"id"),&id,true))return asm_error("I40: invalid new binding identity");
-        if(assembly_binding(w,id))return asm_error("I40: new binding %u already exists; edit it explicitly",id);
-        return asm_put_binding(w,j,value);
-    }
-    if(!strcmp(op,"edit-binding")){
-        uint32_t id,value_id;char expected[65],actual[65];int value=geo_json_member(j,t,"value");
-        if(!geo_json_keys(j,t,"op,id,expectedFingerprint,value","")||!eng_u32(j,geo_json_member(j,t,"id"),&id,true)||
-           !eng_u32(j,geo_json_member(j,value,"id"),&value_id,true)||value_id!=id||
-           !geo_json_string(j,geo_json_member(j,t,"expectedFingerprint"),expected,sizeof expected)||strlen(expected)!=64)
-            return asm_error("I40: invalid explicit binding edit");
-        for(size_t i=0;i<64;++i)if(!((expected[i]>='0'&&expected[i]<='9')||(expected[i]>='a'&&expected[i]<='f')))
-            return asm_error("I40: invalid binding fingerprint");
-        AsmBinding *b=assembly_binding(w,id);if(!b)return asm_error("I40: edited binding %u does not exist",id);
-        geo_sha256(b->content,strlen(b->content),actual);
-        if(strcmp(expected,actual))return asm_error("STALE: binding %u changed; reopen before editing",id);
-        return asm_put_binding(w,j,value);
-    }
-    if(!strcmp(op,"put-binding"))return geo_json_keys(j,t,"op,value","")?asm_put_binding(w,j,geo_json_member(j,t,"value")):asm_error("I40: invalid binding operation");
-    if(!strcmp(op,"delete-binding")){
-        uint32_t id;if(!geo_json_keys(j,t,"op,id","")||!eng_u32(j,geo_json_member(j,t,"id"),&id,true))return asm_error("I40: invalid binding id");
-        AsmBinding *b=assembly_binding(w,id);if(!b)return asm_error("I40: binding %u does not exist",id);size_t at=(size_t)(b-w->assembly.bindings);
-        memmove(b,b+1,(w->assembly.binding_count-at-1)*sizeof *b);memset(&w->assembly.bindings[--w->assembly.binding_count],0,sizeof *b);asm_remove_position(w,CANVAS_POS_ASSEMBLY_BINDING,id);return true;
-    }
-    if(!strcmp(op,"delete-rule")){
-        uint32_t id,version;if(!geo_json_keys(j,t,"op,id,version","")||!eng_u32(j,geo_json_member(j,t,"id"),&id,true)||!eng_u32(j,geo_json_member(j,t,"version"),&version,true))return asm_error("I40: invalid rule identity");
-        const AsmRuleVersion *r=assembly_rule(w,id,version);if(!r)return asm_error("I40: rule version does not exist");size_t at=(size_t)(r-w->assembly.rules);
-        memmove(&w->assembly.rules[at],&w->assembly.rules[at+1],(w->assembly.rule_count-at-1)*sizeof *r);memset(&w->assembly.rules[--w->assembly.rule_count],0,sizeof *r);
-        if(!assembly_rule(w,id,0))asm_remove_position(w,CANVAS_POS_ASSEMBLY_RULE,id);return true;
-    }
-    if(!strcmp(op,"copy-rule")){
-        uint32_t id,version,next;if(!geo_json_keys(j,t,"op,id,version,newId","")||!eng_u32(j,geo_json_member(j,t,"id"),&id,true)||!eng_u32(j,geo_json_member(j,t,"version"),&version,true)||!eng_u32(j,geo_json_member(j,t,"newId"),&next,true)||assembly_rule(w,next,0))return asm_error("I40: copy needs an unused rule identity");
-        const AsmRuleVersion *r=assembly_rule(w,id,version);if(!r)return asm_error("I40: copied rule does not exist");GeoJson copy;
-        if(!app_json_parse(&copy,r->content)){geo_json_free(&copy);return false;}copy.tokens[geo_json_member(&copy,0,"id")].number=next;copy.tokens[geo_json_member(&copy,0,"version")].number=1;
-        bool ok=asm_publish(w,&copy,0,NULL);geo_json_free(&copy);return ok;
-    }
-    return eng_operation(w,j,t); /* Explicit unbind/delete shares one candidate. */
-}
+{WoodAssemblyContext c=app_asm_context(w);return wood_assembly_operation(&c,j,t);}
 /* Atomic replay uses 768-byte chunks, each safely below SCENE_MAX_LINE. */
 static struct {char text[ASM_RECORD_MAX],kind[16],hash[65];size_t used,expected;bool active;} g_assembly_record;
 static void asm_dump_record(FILE *out,const char *kind,const char *text)
@@ -225,18 +66,18 @@ static void asm_dump_record(FILE *out,const char *kind,const char *text)
 static void assembly_dump(const World *w,FILE *out)
 {
     if(!assembly_used(w))return;fputs("requires assembly-rule-authoring/1\nassembly begin\n",out);
-    for(size_t i=0;i<w->assembly.rule_count;++i)asm_dump_record(out,"rule",w->assembly.rules[i].content);
-    for(size_t i=0;i<w->assembly.binding_count;++i)asm_dump_record(out,"binding",w->assembly.bindings[i].content);
-    for(size_t i=0;i<w->assembly.instance_count;++i)asm_dump_record(out,"instance",w->assembly.instances[i].content);
+    for(size_t i=0;i<w->wood.assembly.rule_count;++i)asm_dump_record(out,"rule",w->wood.assembly.rules[i].content);
+    for(size_t i=0;i<w->wood.assembly.binding_count;++i)asm_dump_record(out,"binding",w->wood.assembly.bindings[i].content);
+    for(size_t i=0;i<w->wood.assembly.instance_count;++i)asm_dump_record(out,"instance",w->wood.assembly.instances[i].content);
     fputs("assembly end\n",out);
 }
 static bool apply_assembly_line(const char *path,int line_no,char **t,int count,World *w)
 {
     bool ok=false;
     if(!g_parsing_scene_file){scene_error(path,line_no,"I41: assembly records require atomic scene loading; edit through preview/confirm");return false;}
-    if(count==2&&!strcmp(t[1],"begin")){if(w->assembly.loading)goto fail;w->assembly.loading=true;memset(&g_assembly_record,0,sizeof g_assembly_record);return true;}
-    if(!w->assembly.loading)goto fail;
-    if(count==2&&!strcmp(t[1],"end")){if(g_assembly_record.active)goto fail;w->assembly.loading=false;char e[256];if(!assembly_rebuild(w,e,sizeof e)){scene_error(path,line_no,e);return false;}return true;}
+    if(count==2&&!strcmp(t[1],"begin")){if(w->wood.assembly.loading)goto fail;w->wood.assembly.loading=true;memset(&g_assembly_record,0,sizeof g_assembly_record);return true;}
+    if(!w->wood.assembly.loading)goto fail;
+    if(count==2&&!strcmp(t[1],"end")){if(g_assembly_record.active)goto fail;w->wood.assembly.loading=false;char e[256];if(!assembly_rebuild(w,e,sizeof e)){scene_error(path,line_no,e);return false;}return true;}
     if(count==2&&!strcmp(t[1],"commit")){
         if(!g_assembly_record.active||g_assembly_record.used!=g_assembly_record.expected)goto fail;char hash[65];geo_sha256(g_assembly_record.text,g_assembly_record.used,hash);
         if(strcmp(hash,g_assembly_record.hash))goto fail;GeoJson j;

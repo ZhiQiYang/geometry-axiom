@@ -13,62 +13,10 @@ static bool grid_system_valid(const GridSystem *s,int main_along)
 
 static bool app_grid_coordinate(void *state,GeoParameterRef ref,GeoCoord *out)
 { return parameter_coord((const World *)state,ref,out); }
-static bool app_grid_system_error(const GeoGridStoreError *detail,char *error,size_t cap)
-{
-    switch(detail->status){
-    case GEO_GRID_STORE_PARAMETER_AXIS: case GEO_GRID_STORE_PARAMETER_SOURCE:
-        snprintf(error,cap,"grid-system %u %c: %.190s",detail->system_id,detail->axis?'v':'u',g_parameter_error);break;
-    case GEO_GRID_STORE_STAGGER_SOURCE:
-        snprintf(error,cap,"I24: 相位差只接受兩軸都存在的無限排法");break;
-    case GEO_GRID_STORE_STAGGER_PITCH:
-        snprintf(error,cap,"I24: grid-system %u %c has no positive pitch",detail->system_id,detail->axis?'v':'u');break;
-    case GEO_GRID_STORE_STAGGER_ZERO:
-        snprintf(error,cap,"I24: 相位差為 0。要貫通線請省略 stagger，不要寫 0");break;
-    case GEO_GRID_STORE_STAGGER_MULTIPLE:
-        snprintf(error,cap,"I24: 相位差是間距的整數倍，奇數格與偶數格的線會重合。要貫通線請省略這個欄位");break;
-    case GEO_GRID_STORE_STAGGER_OVERFLOW:
-        snprintf(error,cap,"I24: 相位加相位差超出可表達範圍");break;
-    default:snprintf(error,cap,"I37: grid-system %u has an invalid definition",detail->system_id);break;
-    }
-    return false;
-}
+
 static bool grid_systems_rebuild(World *w,char *error,size_t cap)
-{
-    if (geo_grid_systems_count(&w->grid_store)>WORLD_MAX_GRID_SYSTEMS) {
-        snprintf(error,cap,"I37: grid-system capacity exceeded"); return false;
-    }
-    for(size_t i=0;i<geo_grid_systems_count(&w->grid_store);++i){
-        GeoGridStoreError detail;
-        if(!geo_grid_system_evaluate(&w->grid_store,i,app_grid_coordinate,w,&detail))
-            return app_grid_system_error(&detail,error,cap);
-        const GridSystem *system=geo_grid_systems_at(&w->grid_store,i);
-        if(!app_grid_system_main_valid(system,app_grid_system_main_along(w,system->id))){
-            snprintf(error,cap,"I37: grid-system %u has an invalid definition",system->id);return false;
-        }
-        if(!grid_rules_valid(system,error,cap))return false;
-        for(size_t j=0;j<i;++j)if(geo_grid_systems_at(&w->grid_store,j)->id==system->id){
-            snprintf(error,cap,"I37: duplicate grid-system identity");return false;
-        }
-    }
-    for (size_t i=0;i<w->grid_count;++i) {
-        ReferenceGrid *g=&w->grids[i]; if (!g->from_system) continue;
-        const GridSystem *s=world_find_grid_system(w,g->system_id);
-        if (!s || grid_system_is_infinite(s) || g->from_binding || g->is_subgrid || !coord_in_range(g->system_origin[0]) || !coord_in_range(g->system_origin[1])) {
-            snprintf(error,cap,"I37: grid %u has a missing or invalid grid-system source",g->id); return false;
-        }
-        g->main_along=app_grid_system_main_along(w,s->id);
-        for (int axis=0;axis<2;++axis) {
-            GridAxisDef *a=&g->axis[axis]; *a=s->axis[axis]; Coord offset=g->system_origin[axis];
-            if (a->source==GRID_SRC_EXPLICIT) for (size_t k=0;k<a->count;++k) a->coords[k]+=offset;
-            else if (a->source==GRID_SRC_SERIES) a->start+=offset;
-            else if (a->source==GRID_SRC_PANEL) a->anchor+=offset;
-            if (!grid_system_axis_valid(a)) {
-                snprintf(error,cap,"I37: grid %u %c translated coordinates exceed D1 range",g->id,axis?'v':'u'); return false;
-            }
-        }
-    }
-    return true;
-}
+{WoodGridContext c=app_grid_context(w);return wood_grid_systems_rebuild(&c,error,cap);}
+
 
 static int grid_system_hex_digit(char c)
 {
@@ -160,10 +108,10 @@ static bool apply_grid_system_line(const char *path,int line_no,char **t,int cou
         goto invalid;
     }
     reference_capture_trial(&candidate);
-    if (!world_revalidate(&candidate)) {
+    if (!app_world_revalidate_staged(w,&candidate)) {
         scene_error(path,line_no,g_revalidate_error[0]?g_revalidate_error:"I37: grid-system dependencies invalid; unchanged"); return false;
     }
-    *w=candidate; return true;
+     return true;
 invalid:
     scene_error(path,line_no,g_grid_stagger_error[0]?g_grid_stagger_error:"D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range"); return false;
 }
@@ -176,43 +124,24 @@ static bool apply_grid_system_application(const char *path,int line_no,char **t,
         !parse_coord(t[7],&g.system_origin[0]) || !parse_coord(t[8],&g.system_origin[1])) {
         scene_error(path,line_no,"D29: grid id on surface from-system id origin u v"); return false;
     }
-    if (!world_find_placement(w,g.placement_id) || !world_find_grid_system(w,g.system_id)) {
-        scene_error(path,line_no,"I37: grid application needs an existing surface and grid-system"); return false;
-    }
-    if (eng_object_bound(w,0,g.id)) {
-        scene_error(path,line_no,"D29/I37: detach engineering bindings before choosing a grid-system source"); return false;
-    }
-    g.from_system=true; size_t slot=w->grid_count;
-    for (size_t k=0;k<w->grid_count;++k) {
-        const ReferenceGrid *old=&w->grids[k];
-        if (old->id==g.id) {
-            if (old->is_subgrid || old->from_binding || old->placement_id!=g.placement_id) {
-                scene_error(path,line_no,"I37: cannot change a subgrid or move an existing grid identity to another surface"); return false;
-            }
-            slot=k;
-        } else if (!old->is_subgrid && old->placement_id==g.placement_id) {
-            scene_error(path,line_no,"I10: this surface already has a main grid"); return false;
-        }
-    }
-    if (slot==w->grid_count && slot==WORLD_MAX_GRIDS) { scene_error(path,line_no,"I10: grid capacity exceeded"); return false; }
-    World candidate=*w; candidate.grids[slot]=g;
-    if (slot==candidate.grid_count) ++candidate.grid_count;
+    World candidate=*w;WoodGridContext context=app_grid_context(&candidate);char error[256]="";
+    if(!wood_grid_apply_system(&context,&g,error,sizeof error)){scene_error(path,line_no,error);return false;}
     reference_capture_trial(&candidate);
     /* grid-preview calls this parser directly; retain the same I23 baseline. */
     const World *previous_baseline=g_subgrid_before;
     if (!previous_baseline) g_subgrid_before=w;
-    bool valid=world_revalidate(&candidate);
+    bool valid=app_world_revalidate_staged(w,&candidate);
     g_subgrid_before=previous_baseline;
     if (!valid) {
         scene_error(path,line_no,g_revalidate_error[0]?g_revalidate_error:"I37: application or dependent geometry invalid; unchanged"); return false;
     }
-    *w=candidate; return true;
+     return true;
 }
 
 static void grid_systems_dump(const World *w,FILE *out)
 {
-    for (size_t i=0;i<geo_grid_systems_count(&w->grid_store);++i) {
-        const GridSystem *s=geo_grid_systems_at(&w->grid_store,i); fprintf(out,"grid-system %u name-hex ",s->id);
+    for (size_t i=0;i<geo_grid_systems_count(&w->geo.grid_store);++i) {
+        const GridSystem *s=geo_grid_systems_at(&w->geo.grid_store,i); fprintf(out,"grid-system %u name-hex ",s->id);
         for (size_t k=0;s->name[k];++k) fprintf(out,"%02x",(unsigned char)s->name[k]);
         fprintf(out," main-along %s",app_grid_system_main_along(w,s->id)==1?"u":app_grid_system_main_along(w,s->id)==2?"v":"none");
         for (int axis=0;axis<2;++axis) {
