@@ -1,7 +1,7 @@
 # Native kernel extraction
 
 The public C API in this directory is independent of application and template
-headers. Compile `exact.c`, `codec.c`, and `geometry.c` as separate translation
+headers. Compile `exact.c`, `codec.c`, `geometry.c`, `grid.c`, and `parameters.c` as separate translation
 units for a standalone client. The legacy application normally includes
 `kernel_unity.inc` once; defining `GEOMETRY_KERNEL_EXTERNAL` makes that entry
 include declarations only, so the application can link the same separate K
@@ -37,9 +37,9 @@ negative controls link the real bridge object against exactly those K objects,
 then replace one K object and require both the standalone and bridge witnesses
 to change. Compilation failures and crashes are not successful negative controls.
 
-This is an intermediate extraction of shared primitives. The document stores,
-typed source graph and complete candidate transaction boundary still require
-the later GEO-261 slices; this directory alone is not a claim of full decoupling.
+This is an intermediate extraction. The remaining document stores, typed source
+graph and complete candidate transaction boundary still require later GEO-261
+slices; this directory alone is not a claim of full decoupling.
 # Exact coordinate sequences
 
 `grid.h` owns body/gap formulas, alternating shifts, finite sequence expansion,
@@ -53,3 +53,17 @@ output coordinate range: arbitrary signed indices are checked when evaluated.
 exact clipped-area predicate used by real subgrid cells, including holes and
 all region components. Neither bounding boxes nor sampled display lines stand
 in for a cell's geometry.
+
+`parameters.h` provides an opaque parameter store, typed card/field views,
+identity/high-water mutation operations, exact dependency evaluation and clone
+ownership. `parameters.c` owns definitions and derived values; it takes no
+World, template or host state. Its neutral errors retain exact source identities
+and an ordered field trace. The host maps them to the existing diagnostics and
+owns input text, scene/package encoding, atomic-load flags and canvas cleanup.
+
+During the whole-document POD transition only the private H aggregate includes
+`kernel/internal/parameter_store.h`. That preserves complete history/preview
+value copies without adding a shallow heap pointer to World. Template consumers
+use public const views and operations; standalone clients need only the public
+header and create/clone/destroy APIs. This transitional aggregate is not the
+completed document/candidate boundary.

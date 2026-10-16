@@ -397,9 +397,9 @@ int main(int argc, char **argv)
     model_string(stdout, canonical); free(canonical);
     fputs(",\"required_capabilities\":[",stdout);
     if(engineering_used(&world))model_string(stdout,"engineering-spec/1");
-    if(world.parameters.card_count){if(engineering_used(&world))fputc(',',stdout);model_string(stdout,"parameters/1");}
-    if(grid_subdivision_used(&world)){if(engineering_used(&world)||world.parameters.card_count)fputc(',',stdout);model_string(stdout,GRID_SUBDIVISION_CAPABILITY);}
-    if(sp_used(&world)){if(engineering_used(&world)||world.parameters.card_count||grid_subdivision_used(&world))fputc(',',stdout);model_string(stdout,SP_CAPABILITY);}
+    if(geo_parameters_card_count(&world.parameters)){if(engineering_used(&world))fputc(',',stdout);model_string(stdout,"parameters/1");}
+    if(grid_subdivision_used(&world)){if(engineering_used(&world)||geo_parameters_card_count(&world.parameters))fputc(',',stdout);model_string(stdout,GRID_SUBDIVISION_CAPABILITY);}
+    if(sp_used(&world)){if(engineering_used(&world)||geo_parameters_card_count(&world.parameters)||grid_subdivision_used(&world))fputc(',',stdout);model_string(stdout,SP_CAPABILITY);}
     fputs("],\"specs\":[", stdout);
     for (size_t i = 0; i < world.spec_count; ++i) {
         if (i) putchar(',');

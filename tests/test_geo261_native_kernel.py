@@ -38,8 +38,10 @@ class NativeBuild:
         self.work = Path(self.temp.name)
         self.kernel = self.work / "isolated-kernel"
         self.kernel.mkdir()
-        for name in ("types.h", "exact.h", "exact.c", "codec.h", "codec.c", "geometry.h", "geometry.c", "grid.h", "grid.c"):
+        for name in ("types.h", "exact.h", "exact.c", "codec.h", "codec.c", "geometry.h", "geometry.c", "grid.h", "grid.c", "parameters.h", "parameters.c"):
             shutil.copy2(ROOT / "geometry-core/kernel" / name, self.kernel / name)
+        (self.kernel / "internal").mkdir()
+        shutil.copy2(ROOT / "geometry-core/kernel/internal/parameter_store.h", self.kernel / "internal/parameter_store.h")
         self.windows = os.name == "nt"
         self.suffix = ".exe" if self.windows else ""
         self.logs = []
@@ -60,6 +62,7 @@ class NativeBuild:
         self.codec_object = self.compile(self.kernel / "codec.c", "codec")
         self.geometry_object = self.compile(self.kernel / "geometry.c", "geometry")
         self.grid_object = self.compile(self.kernel / "grid.c", "grid")
+        self.parameters_object = self.compile(self.kernel / "parameters.c", "parameters")
         exact_source = self.work / "exact-client.c"
         shutil.copy2(ROOT / "tests/geo261_exact_harness.c", exact_source)
         self.exact_client = self.compile(exact_source, "exact-client")
@@ -114,7 +117,7 @@ class NativeBuild:
     def bridge(self):
         if self.bridge_object is None:
             self.bridge_object = self.compile(ROOT / "geometry-web/web_bridge.c", "product-bridge", ["GEOMETRY_KERNEL_EXTERNAL=1"])
-            self.bridge_exe = self.link("product-bridge", [self.bridge_object, self.exact_object, self.codec_object, self.geometry_object, self.grid_object])
+            self.bridge_exe = self.link("product-bridge", [self.bridge_object, self.exact_object, self.codec_object, self.geometry_object, self.grid_object, self.parameters_object])
         return self.bridge_exe
 
     def mutant(self, module, before, after, client_object=None):
@@ -129,11 +132,14 @@ class NativeBuild:
         codec = changed if module == "codec" else self.codec_object
         geometry = changed if module == "geometry" else self.geometry_object
         grid = changed if module == "grid" else self.grid_object
+        parameters = changed if module == "parameters" else self.parameters_object
         if client_object is None:
             client_object = self.exact_client if module == "exact" else self.codec_client
         dependencies = [self.geometry_object] if module == "grid" else []
+        if module == "parameters":
+            dependencies = [self.codec_object, self.exact_object, self.geometry_object]
         client = self.link(module + "-mutant-client", [client_object, changed, *dependencies])
-        product = self.link(module + "-mutant-bridge", [self.bridge_object, exact, codec, geometry, grid])
+        product = self.link(module + "-mutant-bridge", [self.bridge_object, exact, codec, geometry, grid, parameters])
         return client, product
 
 

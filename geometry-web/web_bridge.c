@@ -301,10 +301,10 @@ static bool receipt_field_deleted(uint32_t parameter,uint32_t field)
 }
 static void receipt_scan_candidate(const World *after)
 {
-    for(size_t i=0;i<g_world.parameters.field_count;++i){
-        const ParameterField *field=&g_world.parameters.fields[i];bool found=false;
-        for(size_t j=0;j<after->parameters.field_count;++j)
-            if(after->parameters.fields[j].parameter_id==field->parameter_id && after->parameters.fields[j].id==field->id){found=true;break;}
+    for(size_t i=0;i<geo_parameters_field_count(&g_world.parameters);++i){
+        const ParameterField *field=&geo_parameters_fields(&g_world.parameters)[i];bool found=false;
+        for(size_t j=0;j<geo_parameters_field_count(&after->parameters);++j)
+            if(geo_parameters_fields(&after->parameters)[j].parameter_id==field->parameter_id && geo_parameters_fields(&after->parameters)[j].id==field->id){found=true;break;}
         if(!found && !receipt_field_deleted(field->parameter_id,field->id)){
             /* There are at most PARAM_FIELD_MAX original identities. */
             g_deleted_fields[g_deleted_field_count].parameter=field->parameter_id;
@@ -324,8 +324,8 @@ static void json_deleted_objects(const World *before,bool all)
         REMOVED_ROWS(grid_bindings,grid_binding_count,"grid-binding")
         REMOVED_ROWS(boundaries,boundary_count,"boundary")
 #undef REMOVED_ROWS
-        for(size_t i=0;i<before->parameters.card_count;++i){const ParameterSet *card=&before->parameters.cards[i],*after=NULL;
-            for(size_t j=0;j<g_world.parameters.card_count;++j)if(g_world.parameters.cards[j].id==card->id){after=&g_world.parameters.cards[j];break;}
+        for(size_t i=0;i<geo_parameters_card_count(&before->parameters);++i){const ParameterSet *card=&geo_parameters_cards(&before->parameters)[i],*after=NULL;
+            for(size_t j=0;j<geo_parameters_card_count(&g_world.parameters);++j)if(geo_parameters_cards(&g_world.parameters)[j].id==card->id){after=&geo_parameters_cards(&g_world.parameters)[j];break;}
             for(size_t f=0;f<card->count;++f){bool found=false;
                 if(after && !all)for(size_t j=0;j<after->count;++j)if(after->fields[j]==card->fields[f]){found=true;break;}
                 bool intermediate=before==&g_preview.before && g_preview.engineering_batch && g_deleted_fields_token==g_preview.token && receipt_field_deleted(card->id,card->fields[f]);
@@ -564,7 +564,7 @@ static void cmd_newid(size_t surface_count)
     WORLD_NEXT_ID(mc,  g_world.columns,    g_world.column_count,    false);
     WORLD_NEXT_ID(mbm, g_world.beams,      g_world.beam_count,      false);
     WORLD_NEXT_ID(md,  g_world.datums,     g_world.datum_count,     false);
-    WORLD_NEXT_ID(mparam, g_world.parameters.cards, g_world.parameters.card_count, false);
+    WORLD_NEXT_ID(mparam, geo_parameters_cards(&g_world.parameters), geo_parameters_card_count(&g_world.parameters), false);
 
     WORLD_NEXT_ID(mar,g_world.assembly.rules,g_world.assembly.rule_count,true);
     WORLD_NEXT_ID(mab,g_world.assembly.bindings,g_world.assembly.binding_count,true);
@@ -830,8 +830,8 @@ static void cmd_objects(void)
     }
 
     fputs("],\"parameters\":[",stdout);
-    for(size_t i=0;i<g_world.parameters.card_count;++i){
-        if(i)putchar(',');const ParameterSet *c=&g_world.parameters.cards[i];
+    for(size_t i=0;i<geo_parameters_card_count(&g_world.parameters);++i){
+        if(i)putchar(',');const ParameterSet *c=&geo_parameters_cards(&g_world.parameters)[i];
         fputs("{\"kind\":\"parameter\",\"card\":",stdout);parameter_json_card(&g_world,c,stdout,true);
         printf(",\"id\":%u,\"name\":",c->id);js_string(c->name);putchar(',');cpos_json(CANVAS_POS_PARAMETER,c->id);putchar('}');
     }

@@ -7,10 +7,12 @@
 #include "exact.h"
 #include "geometry.h"
 #include "grid.h"
+#include "parameters.h"
 #else
 #include "codec.c"
 #include "exact.c"
 #include "geometry.c"
 #include "grid.c"
+#include "parameters.c"
 #endif
 #endif

@@ -80,6 +80,7 @@ PY_NEEDS = {
     'test_geo261_native_kernel': [],
     'test_geo261_native_geometry': [],
     'test_geo261_native_grid': [],
+    'test_geo261_native_parameters': [],
     'test_grid_system_contract': ['bridge'],
     'test_grid_subdivision_oracle': ['bridge'],
     'test_grid_trial_contract': ['bridge'],

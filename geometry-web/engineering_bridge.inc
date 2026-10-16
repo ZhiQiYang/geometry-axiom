@@ -19,7 +19,7 @@ static void json_engineering_capabilities(const World *w)
     /* panel-fill/1 is required by scenes holding finish surfaces (I56 adds its two prerequisites), but it is not
      * advertised as supported: PF-1 implements only the finish-surface records, and I32 forbids claiming the
      * whole capability.  panel-fill-native/1 + panel-fill-read report the supported subset. */
-    bool fs=fs_used(w),eng=engineering_used(w)||fs,par=w->parameters.card_count||fs,first=true;
+    bool fs=fs_used(w),eng=engineering_used(w)||fs,par=geo_parameters_card_count(&w->parameters)||fs,first=true;
     const struct {bool used;const char *name;} required[]={{eng,"engineering-spec/1"},{par,"parameters/1"},{assembly_used(w),ASM_CAPABILITY},
         {w->assembly.instance_count!=0,ASM_GENERATION_CAPABILITY},{grid_subdivision_used(w),GRID_SUBDIVISION_CAPABILITY},{sp_used(w),SP_CAPABILITY},{fs,FS_CAPABILITY}};
     fputs("\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\"],\"required_capabilities\":[",stdout);
@@ -52,7 +52,7 @@ static void json_engineering_state(const World *w,bool geometry)
     }
     fputs("],\"sources\":",stdout);json_engineering_sources(w);
     fputs(",\"parameters\":[",stdout);
-    for(size_t i=0;i<w->parameters.card_count;++i){if(i)putchar(',');parameter_json_card(w,&w->parameters.cards[i],stdout,true);}putchar(']');
+    for(size_t i=0;i<geo_parameters_card_count(&w->parameters);++i){if(i)putchar(',');parameter_json_card(w,&geo_parameters_cards(&w->parameters)[i],stdout,true);}putchar(']');
     fputs(",\"assembly\":",stdout);json_assembly_state(w,false);
     fputs(",\"sectionProfiles\":",stdout);json_section_profile_state(w);
     if(geometry){fputs(",\"geometry\":{\"grids\":[",stdout);for(size_t i=0;i<w->grid_count;++i){if(i)putchar(',');json_reference_grid(w,&w->grids[i]);}

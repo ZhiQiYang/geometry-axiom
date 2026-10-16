@@ -3195,6 +3195,8 @@ typedef struct {
 } CanvasPos;
 /* 公理 D12：畫布座標——純展示中繼資料，不參與任何幾何推導。 */
 
+#include "geometry-app/native/kernel_storage.h"
+
 typedef struct World {
     SpecValue specs[WORLD_MAX_SPECS];
     size_t spec_count;
@@ -3239,7 +3241,8 @@ typedef struct World {
     SectionProfileState section_profiles;
     AssemblyState assembly;
     EngineeringState engineering;
-    ParameterState parameters;
+    GeoParameterStore parameters;
+    bool parameter_loading; /* H atomic scene-input state, outside K storage. */
     FinishSurfaceState finish_surfaces;   /* D41 finish surfaces (panel-fill/1, PF-1) */
 } World;
 
@@ -12002,7 +12005,7 @@ static bool parse_scene_file(const char *path, World *out_world)
         if (out_world->assembly.loading && strcmp(tokens[0],"assembly")) {
             scene_error(path,line_no,"I41: assembly blocks may only contain assembly records"); ok=false; break;
         }
-        if (out_world->parameters.loading && strcmp(tokens[0],"parameters")) {
+        if (out_world->parameter_loading && strcmp(tokens[0],"parameters")) {
             scene_error(path,line_no,"I39: parameter block may only contain parameter records"); ok=false; break;
         }
         ok = apply_scene_line(path, line_no, tokens, count, out_world);
