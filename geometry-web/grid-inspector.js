@@ -166,7 +166,21 @@
   async function saveSource(s) {
     const name=$(s,'giName').value.trim(),bytes=new TextEncoder().encode(name);
     if(!bytes.length || bytes.length>96 || /[\u0000-\u001f\u007f]/.test(name))throw Error('名稱需為 1–96 個 UTF-8 位元組，且不可包含控制字元。');
-    const parts=axes.map(a=>{const d=s.object[a+'Definition'],token=(key,value=d[key])=>{const r=d.parameterRefs?.[key];return r?`param:${r.parameterId}:${r.fieldId}`:value;};if(d.source==='none')return a+' none';if(d.source==='repeat-panel')return `${a} repeat-panel ${token('panel')} gap ${token('gap')} from ${token('anchor')}`;if(d.source!=='repeat')throw Error('此排法請在完整工作區編輯。');const raw=$(s,'gi'+a.toUpperCase()+'Step').value.trim(),step=Number(raw);if(!/^\d+$/.test(raw)||!Number.isSafeInteger(step)||step<1||step>100000000)throw Error(a+' 間距須為 1 至 100000000 mm 的整數。');return `${a} repeat ${token('phase')} ${token('step',step)}`;});
+    const parts=axes.map(a=>{
+      const d=s.object[a+'Definition'],token=(key,value=d[key])=>{const r=d.parameterRefs?.[key];return r?`param:${r.parameterId}:${r.fieldId}`:value;};
+      if(d.source==='none')return a+' none';
+      let body;
+      if(d.source==='repeat-panel')body=`repeat-panel ${token('panel')} gap ${token('gap')} from ${token('anchor')}`;
+      else {
+        if(d.source!=='repeat')throw Error('此排法請在完整工作區編輯。');
+        const raw=$(s,'gi'+a.toUpperCase()+'Step').value.trim(),step=Number(raw);
+        if(!/^\d+$/.test(raw)||!Number.isSafeInteger(step)||step<1||step>100000000)throw Error(a+' 間距須為 1 至 100000000 mm 的整數。');
+        body=`repeat ${token('phase')} ${token('step',step)}`;
+      }
+      // A partial edit still redeclares the entire axis, including the source ref.
+      const stagger=d.parameterRefs?.stagger||d.stagger!=null?` stagger ${token('stagger')}`:'';
+      return `${a} ${body}${stagger}`;
+    });
     const hex=Array.from(bytes,b=>b.toString(16).padStart(2,'0')).join('');
     await stillSame(s);
     await commit(s,`grid-system ${s.object.id} name-hex ${hex} main-along ${s.object.mainAlong||'none'} ${parts.join(' ')}`,'更新網格來源「'+name+'」');
