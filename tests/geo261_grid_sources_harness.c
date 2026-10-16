@@ -114,7 +114,8 @@ static int engineering_case(void)
             kind==WOOD_BINDING_SOURCE_EFFECTIVE&&target.id==5&&target.axis==0&&target.field==0)binding=i;}
     CHECK(edge_at(f,grid_index(f,WOOD_GRID_SOURCE_APPLICATION,5),panel,GEO_DEPENDENCY_VALUE_REQUIRED)&&edge_at(f,panel,binding,GEO_DEPENDENCY_VALUE_REQUIRED),"panel-binding-actual-value-edges");
     uint32_t a[]={90,2},b[]={90,1};CHECK(edge_at(f,node_index(f->graph,(GeoSourceRef){GS_PARAMETER,a,sizeof a}),node_index(f->graph,(GeoSourceRef){GS_PARAMETER,b,sizeof b}),GEO_DEPENDENCY_VALUE_REQUIRED),"transitive-parameter-ast-edge");
-    CHECK(wood_grid_sources_line(f->sources,5,9,0,1,false,false,0,&value,NULL,error,sizeof error)&&value==95,"engineering-panel-drives-grid-line");dispose(f,false);return 0;
+    /* D10a: a=10, panel=50, gap=10, k=1 => 10+1*(50+10)+50+5=125. */
+    CHECK(wood_grid_sources_line(f->sources,5,9,0,1,false,false,0,&value,NULL,error,sizeof error)&&value==125,"engineering-panel-drives-grid-line");dispose(f,false);return 0;
 }
 static int diagnostic_case(void)
 {
