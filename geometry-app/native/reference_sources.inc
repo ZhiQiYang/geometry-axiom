@@ -123,21 +123,21 @@ static bool reference_sp_dimension(void *opaque,const EngDimensionSource *source
 static bool reference_boundary_policy(ReferenceEval *,WoodBoundaryRegion *);
 static bool reference_sp_host(void *opaque,uint32_t id,GeoFrame *frame,WoodBoundaryRegion *region,bool *derived)
 {
-    ReferenceEval *ctx=opaque;if(!app_sp_live_host(ctx->world,id,frame,region,derived))return false;if(*derived)return true;
-    GeoPlacementSourceKey key;GeoSourceValue value;
-    if(geo_eval_source(ctx->sources,geo_placement_source_ref(APP_SOURCE_PLACEMENT,GEO_PLACEMENT_SOURCE_FRAME,id,&key),GEO_DEPENDENCY_VALUE_REQUIRED,&value)!=GEO_SOURCE_OK)return false;
-    *frame=value.as.frame;
-    if(geo_eval_source(ctx->sources,geo_placement_source_ref(APP_SOURCE_PLACEMENT,GEO_PLACEMENT_SOURCE_REGIONS,id,&key),GEO_DEPENDENCY_VALUE_REQUIRED,&value)!=GEO_SOURCE_OK||value.as.regions.count!=1)return false;
-    const GeoRegionView *view=&value.as.regions.regions[0];region->outline.count=view->outline.count;
-    memcpy(region->outline.v,view->outline.v,view->outline.count*sizeof *view->outline.v);region->hole_count=view->hole_count;
-    for(size_t h=0;h<view->hole_count;++h){region->holes[h].count=view->holes[h].count;memcpy(region->holes[h].v,view->holes[h].v,view->holes[h].count*sizeof *view->holes[h].v);}
-    const GeoPlacementDefinition *placement=geo_placements_find(&ctx->world->geo.placement_data,id);
-    return !placement||placement->domain!=GEO_PLACEMENT_REGION_REF||reference_boundary_policy(ctx,region);
+    ReferenceEval *ctx=opaque;if(ctx->use_current_values)return app_sp_live_host(ctx->world,id,frame,region,derived);
+    if(!geo_placements_find(&ctx->world->geo.placement_data,id))return false;
+    GeoPlacementDefinition definition;
+    if(!geo_placement_sources_definition(ctx->placement_sources,id,&definition))return false;
+    if(definition.domain==GEO_PLACEMENT_REGION_SET){*derived=true;return true;}
+    PlacementSurface placement;SpaceBoundarySurface boundary;const SpaceBoundarySurface *view;
+    if(!reference_host_read(ctx,id,&placement,&boundary,&view)||!surface_frame_is_valid(&placement.frame))return false;
+    WoodBoundaryRegion actual=*placement_effective_boundary(&placement,view,&boundary);
+    *frame=placement.frame;*region=actual;*derived=false;return true;
 }
 static bool reference_placement_binding(void *opaque,uint32_t id,GeoPlacementSourceKind kind,GeoSourceRef *out)
 {
     ReferenceEval *ctx=opaque;if(ctx->use_current_values||kind==GEO_PLACEMENT_SOURCE_DEFINITION)return false;
-    const PlacementSurface *p=world_find_placement(ctx->world,id);if(!p||!p->derived_fill_id)return false;
+    GeoPlacementDefinition definition;
+    if(!geo_placement_sources_definition(ctx->placement_sources,id,&definition)||definition.domain!=GEO_PLACEMENT_REGION_SET)return false;
     *out=wood_finish_source_ref(APP_SOURCE_FINISH,kind==GEO_PLACEMENT_SOURCE_FRAME?WOOD_FINISH_SOURCE_DERIVED_FRAME:WOOD_FINISH_SOURCE_DERIVED_REGION,id,&ctx->placement_binding_key);
     return true;
 }
@@ -222,9 +222,8 @@ static bool reference_derived_resolve(ReferenceEval *ctx,const PlacementSurface 
 static bool reference_grid_host(void *opaque,uint32_t id,WoodGridHost *out)
 {
     ReferenceEval *ctx=opaque;PlacementSurface placement;SpaceBoundarySurface boundary;
-    if(!app_placement_read(ctx->world,id,&placement))return false;
-    const SpaceBoundarySurface *b=app_placement_boundary(ctx->world,&placement,&boundary);
-    if(!reference_member_placement(ctx,&placement,b?&boundary:NULL))return false;
+    const SpaceBoundarySurface *b;
+    if(!reference_host_read(ctx,id,&placement,&boundary,&b))return false;
     return app_grid_host_value(&placement,b,out);
 }
 static bool reference_grid_coordinate(void *opaque,GeoParameterRef ref,GeoCoord *out)
@@ -429,6 +428,24 @@ static bool reference_sources_ensure(ReferenceEval *ctx)
     if(!ctx->contact_sources){reference_sources_dispose(ctx);return false;}
     ctx->sources_registered=true;return true;
 }
+/* Complete version identities only after the candidate's ordinary rebuild
+ * has succeeded. Keep unused version fields lazy and retain this exact graph. */
+static bool app_world_candidate_version_inventory(AppWorldCandidate *candidate,ReferenceEval *ctx)
+{
+    if(!candidate||!candidate->control||!ctx||app_candidate_evaluation_state(candidate->control)!=ctx)return false;
+    GeoEvalContext *sources=geo_candidate_sources(app_candidate_core(candidate->control));
+    if(!sources)return false;
+    const EngineeringState *engineering=&candidate->after.wood.engineering;
+    if(ctx->world!=&candidate->after||ctx->sources!=sources||!ctx->sources_borrowed||
+       ctx->use_current_values||!ctx->sources_registered||
+       geo_version_sources_context(ctx->version_sources)!=sources||
+       geo_version_sources_store(ctx->version_sources)!=&candidate->after.geo.version_store||
+       wood_engineering_sources_context(ctx->engineering_sources)!=sources||
+       wood_engineering_sources_state(ctx->engineering_sources)!=engineering)return false;
+    return wood_engineering_sources_definitions(ctx->engineering_sources)&&
+        wood_engineering_sources_metadata(ctx->engineering_sources)&&
+        geo_version_sources_definitions(ctx->version_sources);
+}
 static WoodEngineeringSources *app_engineering_sources(const World *world)
 {
     if(!g_active_app_candidate||world!=&g_active_app_candidate->after)return NULL;
@@ -472,11 +489,11 @@ static bool reference_placement_frame(ReferenceEval *ctx,uint32_t id,GeoFrame *o
 static bool reference_member_footprint(ReferenceEval *ctx,size_t index,uint32_t placement_id,GeoRect2 *out)
 {
     World *world=ctx->world;PlacementSurface placement;
-    if(index>=world->wood.timber_count||!app_placement_read(world,placement_id,&placement)||
-       !timber_a0_footprint_uv(&placement,&world->wood.timbers[index],&world->wood.anchors[index],out))return false;
-    if(ctx->use_current_values)return true;
+    if(index>=world->wood.timber_count||!app_placement_read(world,placement_id,&placement))return false;
+    if(ctx->use_current_values)return timber_a0_footprint_uv(&placement,&world->wood.timbers[index],&world->wood.anchors[index],out);
     uint32_t id=world->wood.timbers[index].id;GeoSourceValue value;GeoFrame frame;GeoQuad3 face;unsigned axis,side;
-    if(!reference_sources_ensure(ctx)||
+    WoodMemberPlacement anchor;
+    if(!reference_sources_ensure(ctx)||!wood_definition_sources_placement(ctx->definition_sources,id,&anchor)||anchor.placement_id!=placement_id||
        geo_eval_source(ctx->sources,(GeoSourceRef){APP_SOURCE_MEMBER_POSE,&id,sizeof id},GEO_DEPENDENCY_VALUE_REQUIRED,&value)!=GEO_SOURCE_OK||
        value.kind!=GEO_SOURCE_BOX||!reference_placement_frame(ctx,placement_id,&frame)||
        !wood_member_face_spec(WOOD_MEMBER_FACE_A0,&axis,&side)||!geo_box_face(&value.as.box,axis,side,&face))return false;
@@ -491,34 +508,70 @@ static void reference_region_geometry(SpaceBoundarySurface *to,const GeoRegionVi
     to->outline.count=from->outline.count;memcpy(to->outline.v,from->outline.v,from->outline.count*sizeof *from->outline.v);to->hole_count=from->hole_count;
     for(size_t h=0;h<from->hole_count;++h){to->holes[h].count=from->holes[h].count;memcpy(to->holes[h].v,from->holes[h].v,from->holes[h].count*sizeof *from->holes[h].v);}
 }
+static bool reference_region_view_fits(const GeoRegionView *view)
+{
+    if(!view||view->outline.count>POLY_MAX_VERTICES||(view->outline.count&&!view->outline.v)||
+       view->hole_count>POLY_MAX_HOLES||(view->hole_count&&!view->holes))return false;
+    for(size_t h=0;h<view->hole_count;++h)
+        if(view->holes[h].count>POLY_MAX_VERTICES||(view->holes[h].count&&!view->holes[h].v))return false;
+    return true;
+}
+/* Compose host identity, geometry and W policy from one actual candidate.
+ * The boundary view is selected after the returned placement definition. */
+static bool reference_host_read(ReferenceEval *ctx,uint32_t id,PlacementSurface *placement,
+    SpaceBoundarySurface *boundary,const SpaceBoundarySurface **view)
+{
+    PlacementSurface actual;SpaceBoundarySurface region={0};bool has_boundary=false;
+    if(!ctx||!placement||!boundary||!view||!app_placement_read(ctx->world,id,&actual))return false;
+    if(ctx->use_current_values){
+        const SpaceBoundarySurface *raw=app_placement_boundary(ctx->world,&actual,&region);
+        if(raw&&raw!=&region)region=*raw;has_boundary=raw!=NULL;
+    }else{
+        GeoPlacementSourceKey key;GeoSourceValue geometry;GeoPlacementDefinition definition;
+        if(!reference_sources_ensure(ctx)||!reference_placement_frame(ctx,id,&actual.frame)||
+           geo_eval_source(ctx->sources,geo_placement_source_ref(APP_SOURCE_PLACEMENT,GEO_PLACEMENT_SOURCE_REGIONS,id,&key),
+               GEO_DEPENDENCY_VALUE_REQUIRED,&geometry)!=GEO_SOURCE_OK||
+           geometry.kind!=GEO_SOURCE_REGION_SET||geometry.as.regions.count>DP_COMPONENT_MAX||
+           (geometry.as.regions.count&&!geometry.as.regions.regions)||
+           !geo_placement_sources_definition(ctx->placement_sources,id,&definition))return false;
+        for(size_t i=0;i<geometry.as.regions.count;++i)if(!reference_region_view_fits(&geometry.as.regions.regions[i]))return false;
+        actual.boundary_id=0;actual.derived_fill_id=0;actual.derived_h=0;actual.component_count=0;
+        memset(actual.components,0,sizeof actual.components);
+        if(definition.domain==GEO_PLACEMENT_REGION_SET){
+            WoodDerivedValue derived;
+            if(!wood_finish_sources_read_derived(ctx->finish_sources,id,&derived)||
+               !derived.derived_fill_id||derived.component_count!=geometry.as.regions.count)return false;
+            actual.derived_fill_id=derived.derived_fill_id;actual.derived_h=derived.derived_h;actual.component_count=derived.component_count;
+            memcpy(actual.components,derived.components,sizeof actual.components);
+            for(size_t i=0;i<actual.component_count;++i)reference_region_geometry(&actual.components[i],&geometry.as.regions.regions[i]);
+            has_boundary=actual.component_count!=0;if(has_boundary)region=actual.components[0];
+        }else if(definition.domain==GEO_PLACEMENT_REGION_REF){
+            if(geometry.as.regions.count!=1)return false;
+            actual.boundary_id=definition.region_id;region.id=definition.region_id;
+            reference_region_geometry(&region,&geometry.as.regions.regions[0]);
+            if(!reference_boundary_policy(ctx,&region))return false;has_boundary=true;
+        }else{
+            if(geometry.as.regions.count!=1)return false;
+            GeoLoop2View loop=geometry.as.regions.regions[0].outline;
+            geo_loop_bbox(&loop,&actual.rect.min_u,&actual.rect.min_v,&actual.rect.max_u,&actual.rect.max_v);
+        }
+    }
+    *placement=actual;*boundary=region;
+    *view=has_boundary?(actual.derived_fill_id?&placement->components[0]:boundary):NULL;return true;
+}
 static bool reference_member_placement(ReferenceEval *ctx,PlacementSurface *placement,SpaceBoundarySurface *boundary)
 {
-    if(!reference_placement_frame(ctx,placement->id,&placement->frame))return false;
-    GeoPlacementSourceKey key;GeoSourceValue value;
-    if(geo_eval_source(ctx->sources,geo_placement_source_ref(APP_SOURCE_PLACEMENT,GEO_PLACEMENT_SOURCE_REGIONS,placement->id,&key),GEO_DEPENDENCY_VALUE_REQUIRED,&value)!=GEO_SOURCE_OK)return false;
-    if(placement->derived_fill_id){
-        if(!ctx->use_current_values){WoodDerivedValue derived;
-            if(!wood_finish_sources_read_derived(ctx->finish_sources,placement->id,&derived))return false;
-            placement->derived_h=derived.derived_h;placement->component_count=derived.component_count;
-            memcpy(placement->components,derived.components,sizeof placement->components);
-        }
-        if(value.as.regions.count!=placement->component_count)return false;
-        for(size_t i=0;i<value.as.regions.count;++i)reference_region_geometry(&placement->components[i],&value.as.regions.regions[i]);
-    }else if(boundary){if(value.as.regions.count!=1)return false;reference_region_geometry(boundary,&value.as.regions.regions[0]);if(!reference_boundary_policy(ctx,boundary))return false;}
-    else{
-        if(value.as.regions.count!=1)return false;GeoLoop2View loop=value.as.regions.regions[0].outline;
-        geo_loop_bbox(&loop,&placement->rect.min_u,&placement->rect.min_v,&placement->rect.max_u,&placement->rect.max_v);
-    }
-    return true;
+    PlacementSurface actual;SpaceBoundarySurface region;const SpaceBoundarySurface *view;
+    if(!reference_host_read(ctx,placement->id,&actual,&region,&view))return false;
+    *placement=actual;if(boundary&&view)*boundary=*view;return true;
 }
 static bool reference_contact_facts(void *opaque,GeoEvalContext *evaluation,
     const WoodContactSourceRequest *request,WoodContactSourceFacts *out)
 {
     ReferenceEval *ctx=opaque;if(evaluation!=ctx->sources)return false;
     PlacementSurface placement;SpaceBoundarySurface boundary;
-    if(!app_placement_read(ctx->world,request->placement_id,&placement))return false;
-    const SpaceBoundarySurface *b=app_placement_boundary(ctx->world,&placement,&boundary);
-    if(!reference_member_placement(ctx,&placement,b?&boundary:NULL))return false;
+    const SpaceBoundarySurface *b;
+    if(!reference_host_read(ctx,request->placement_id,&placement,&boundary,&b))return false;
     AppContactFacts facts;app_contact_facts(ctx->world,&placement,b,&facts);
     out->region_count=facts.world.region_count;
     for(size_t i=0;i<out->region_count;++i)out->regions[i]=*facts.world.regions[i];
@@ -532,7 +585,8 @@ static bool reference_contact_facts(void *opaque,GeoEvalContext *evaluation,
             fact->placement_id=anchor.placement_id;fact->order=anchor.order;
             fact->along_v=anchor.length_direction==GEO_DIRECTION_POS_V||anchor.length_direction==GEO_DIRECTION_NEG_V;
         }
-        if(fact->placement_id!=request->placement_id||!fact->footprint_valid)continue;
+        if(fact->placement_id!=request->placement_id){fact->footprint_valid=false;continue;}
+        if(ctx->use_current_values&&!fact->footprint_valid)continue;
         if(geo_eval_source(ctx->sources,(GeoSourceRef){APP_SOURCE_MEMBER_POSE,&id,sizeof id},GEO_DEPENDENCY_VALUE_REQUIRED,&value)!=GEO_SOURCE_OK)return false;
         WoodMember geometry=*fact->member;geometry.origin=value.as.box.frame.origin;
         geometry.axis_length=value.as.box.frame.axis_u;geometry.axis_a=value.as.box.frame.axis_v;geometry.axis_b=value.as.box.frame.normal;
@@ -556,6 +610,96 @@ static ReferenceEval *app_reference_sources_for_world(const World *world)
         return app_candidate_evaluation_state(g_active_app_candidate->control);
     return NULL;
 }
+static bool app_reference_host_read(const World *world,uint32_t id,PlacementSurface *placement,
+    SpaceBoundarySurface *boundary,const SpaceBoundarySurface **view)
+{
+    ReferenceEval *ctx=app_reference_sources_for_world(world);
+    if(ctx)return reference_host_read(ctx,id,placement,boundary,view);
+    if(!app_placement_read(world,id,placement))return false;*view=app_placement_boundary(world,placement,boundary);return true;
+}
+static bool app_reference_member_anchor(const World *world,size_t i,WoodMemberPlacement *out)
+{
+    if(i>=world->wood.timber_count)return false;ReferenceEval *ctx=app_reference_sources_for_world(world);
+    if(!ctx||ctx->use_current_values){*out=world->wood.anchors[i];return true;}
+    WoodMemberPlacement actual;
+    if(!reference_sources_ensure(ctx)||!wood_definition_sources_placement(ctx->definition_sources,world->wood.timbers[i].id,&actual))return false;
+    actual.uv=world->wood.anchors[i].uv;*out=actual;return true;
+}
+static bool app_reference_member_footprint(const World *world,size_t i,uint32_t id,GeoRect2 *out)
+{
+    ReferenceEval *ctx=app_reference_sources_for_world(world);
+    if(ctx)return reference_member_footprint(ctx,i,id,out);
+    PlacementSurface placement;
+    return i<world->wood.timber_count&&app_placement_read(world,id,&placement)&&
+        timber_a0_footprint_uv(&placement,&world->wood.timbers[i],&world->wood.anchors[i],out);
+}
+static bool app_reference_member_geometry(const World *world,WoodMember *member,bool *from_source)
+{
+    ReferenceEval *ctx=app_reference_sources_for_world(world);
+    if(!ctx||ctx->use_current_values){if(from_source)*from_source=false;return true;}
+    uint32_t id=member->id;GeoSourceValue value;
+    if(!reference_sources_ensure(ctx)||
+       geo_eval_source(ctx->sources,(GeoSourceRef){APP_SOURCE_MEMBER_POSE,&id,sizeof id},GEO_DEPENDENCY_VALUE_REQUIRED,&value)!=GEO_SOURCE_OK||
+       value.kind!=GEO_SOURCE_BOX)return false;
+    member->origin=value.as.box.frame.origin;member->axis_length=value.as.box.frame.axis_u;
+    member->axis_a=value.as.box.frame.axis_v;member->axis_b=value.as.box.frame.normal;
+    member->length=value.as.box.extent[0];member->size_a=value.as.box.extent[1];member->size_b=value.as.box.extent[2];
+    if(from_source)*from_source=true;return true;
+}
+typedef struct {
+    const World *world;ReferenceEval *evaluation;WoodContactWorld *target;
+    WoodContactSourceFacts facts;
+} AppReferenceContactResolve;
+static bool app_reference_end_stops(void *opaque,bool along_v,const WoodMember *exclude,
+    WoodStopFace *out,size_t capacity,size_t *count)
+{
+    AppReferenceContactResolve *context=opaque;
+    WoodContactSourceRequest request={context->target->placement_id,along_v,exclude};
+    if(!reference_contact_facts(context->evaluation,context->evaluation->sources,&request,&context->facts))return false;
+    context->target->members=context->facts.members;context->target->member_count=context->facts.member_count;
+    AppContactResolve source={context->world,context->target};
+    return app_contact_resolve_stops(&source,along_v,exclude,out,capacity,count);
+}
+static bool app_reference_end_faces(const World *world,const PlacementSurface *placement,
+    const SpaceBoundarySurface *boundary,const WoodMember *member,bool along_v,
+    Coord span_lo,Coord span_hi,Coord cross_lo,Coord cross_hi,char *error,size_t capacity)
+{
+    ReferenceEval *ctx=app_reference_sources_for_world(world);
+    if(!ctx||ctx->use_current_values)return timber_end_face_check(world,placement,boundary,member,along_v,
+        span_lo,span_hi,cross_lo,cross_hi,error,capacity);
+    AppContactFacts facts;app_contact_facts(world,placement,boundary,&facts);
+    AppReferenceContactResolve source={.world=world,.evaluation=ctx,.target=&facts.world};
+    /* W calls the resolver after its span-extension check. Refresh member
+     * facts there so source failures do not replace an earlier policy error. */
+    return wood_contact_end_faces_with_sources(&facts.world,member,along_v,span_lo,span_hi,cross_lo,cross_hi,
+        app_reference_end_stops,&source,error,capacity);
+}
+static bool app_reference_validation_room(const World *world,uint32_t id,WoodRoomBounds *out)
+{
+    ReferenceEval *ctx=app_reference_sources_for_world(world);GeoEnclosure actual;
+    const Space *space=world_find_space(world,id);if(!space)return false;
+    if(ctx&&!ctx->use_current_values){
+        if(!reference_sources_ensure(ctx)||!geo_enclosure_sources_value(ctx->enclosure_sources,id,&actual,NULL))return false;
+        space=&actual;
+    }
+    WoodRoomBounds value;
+    for(size_t axis=0;axis<3;++axis){value.min[axis]=space->min[axis];value.max[axis]=space->max[axis];}
+    *out=value;return true;
+}
+static bool app_reference_validation_obstacle(const World *world,bool column,size_t i,WoodSolidObstacle *out)
+{
+    ReferenceEval *ctx=app_reference_sources_for_world(world);WoodSolidObstacle value;
+    if(column){
+        if(i>=world->wood.column_count)return false;WoodColumn actual;const WoodColumn *box=&world->wood.columns[i];
+        if(ctx&&!ctx->use_current_values){if(!reference_sources_ensure(ctx)||!wood_definition_sources_column(ctx->definition_sources,box->id,&actual))return false;box=&actual;}
+        value=(WoodSolidObstacle){box->id,box->space_id,{box->x_lo,box->y_lo,box->z_lo},{box->x_hi,box->y_hi,box->z_hi}};
+    }else{
+        if(i>=world->wood.beam_count)return false;WoodBeam actual;const WoodBeam *box=&world->wood.beams[i];
+        if(ctx&&!ctx->use_current_values){if(!reference_sources_ensure(ctx)||!wood_definition_sources_beam(ctx->definition_sources,box->id,&actual))return false;box=&actual;}
+        value=(WoodSolidObstacle){box->id,box->space_id,{box->x_lo,box->y_lo,box->z_lo},{box->x_hi,box->y_hi,box->z_hi}};
+    }
+    *out=value;return true;
+}
 static bool reference_engineering_owned(const World *world,uint32_t id)
 {
     ReferenceEval *ctx=app_reference_sources_for_world(world);
@@ -571,7 +715,13 @@ static bool app_contact_sources_collect(const World *world,uint32_t placement,bo
     ctx->source_failure=true;if(!g_revalidate_error[0])set_revalidate_error("I8: ordered contact source evaluation failed");return false;
 }
 static bool app_reference_sources_valid(const World *world)
-{ReferenceEval *ctx=app_reference_sources_for_world(world);return !ctx||!ctx->source_failure;}
+{
+    ReferenceEval *ctx=app_reference_sources_for_world(world);
+    if(!ctx)return true;
+    if(ctx->source_failure)return false;
+    if(!g_active_app_candidate||world!=&g_active_app_candidate->after)return true;
+    return app_world_candidate_version_inventory(g_active_app_candidate,ctx);
+}
 static bool reference_sp_bind(ReferenceEval *ctx,WoodSectionProfileContext *profiles)
 {
     if(!ctx||!ctx->section_profile_sources)return false;

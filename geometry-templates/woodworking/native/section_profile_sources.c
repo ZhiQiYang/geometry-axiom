@@ -121,6 +121,21 @@ static bool wood_sp_source_load_definition(WoodSectionProfileSources *s,WoodSect
     }
     geo_json_free(&json);return ok;
 }
+bool wood_sp_sources_profile_definition(WoodSectionProfileSources *s,uint32_t id,SectionProfile *out)
+{
+    if(!s||!out||!wood_sp_source_load_definition(s,WOOD_SP_SOURCE_PROFILE_DEFINITION,id))return false;
+    const SectionProfile *value=wood_sp_profile(&s->context,id);if(!value)return false;*out=*value;return true;
+}
+bool wood_sp_sources_member_definition(WoodSectionProfileSources *s,uint32_t id,ProfileMember *out)
+{
+    if(!s||!out||!wood_sp_source_load_definition(s,WOOD_SP_SOURCE_MEMBER_DEFINITION,id))return false;
+    int i=wood_sp_source_member(s,id);if(i<0)return false;*out=s->decoded.members[i];return true;
+}
+bool wood_sp_sources_run_definition(WoodSectionProfileSources *s,uint32_t id,ProfileRun *out)
+{
+    if(!s||!out||!wood_sp_source_load_definition(s,WOOD_SP_SOURCE_RUN_DEFINITION,id))return false;
+    int i=wood_sp_source_run(s,id);if(i<0)return false;*out=s->decoded.runs[i];return true;
+}
 static bool wood_sp_source_describe(void *user,const GeoSourceRef *ref,GeoSourceDescriptor *out)
 {
     WoodSectionProfileSources *s=user;WoodSectionProfileSourceKind kind;uint32_t id;

@@ -123,7 +123,13 @@ static bool geo_parameter_eval_field(GeoParameterEval *e,int index)
     int own_depth=e->maxref+1;e->maxref=outer_maxref;
     if(ok&&own_depth>GEO_PARAMETER_DEPTH_MAX)ok=geo_parameter_error(e->error,GEO_PARAMETER_DEPTH,0,0);
     if(!ok){if(e->error->trace_count<GEO_PARAMETER_DEPTH_MAX)e->error->trace[e->error->trace_count++]=(GeoParameterRef){true,f->parameter_id,f->id};return false;}
-    f->value=value;e->fdepth[index]=(unsigned char)own_depth;e->marks[index]=2;return true;
+    /* A cache write owns the quantity members, not the surrounding bytes.
+     * Copying a temporary struct can import indeterminate padding into the
+     * candidate and break byte-exact clone/rollback comparisons. */
+    memcpy(&f->value.num,&value.num,sizeof value.num);
+    memcpy(&f->value.den,&value.den,sizeof value.den);
+    memcpy(&f->value.unit,&value.unit,sizeof value.unit);
+    e->fdepth[index]=(unsigned char)own_depth;e->marks[index]=2;return true;
 }
 GeoParameterEvaluation *geo_parameter_evaluation_create(GeoParameterStore *store,GeoParameterResolve resolve,void *state)
 {

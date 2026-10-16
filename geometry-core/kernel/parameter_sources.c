@@ -251,7 +251,13 @@ static bool geo_parameter_source_evaluate(void *opaque,GeoEvalContext *ctx,const
     out->kind=GEO_SOURCE_QUANTITY;
     if(!geo_parameter_evaluation_field(state->evaluation,ref,&out->as.quantity))return false;
     if(state->definition_token){int index=geo_parameters_field_index(state->store,ref.parameter_id,ref.field_id);
-        if(index<0)return false;state->store->fields[index].value=out->as.quantity;}
+        if(index<0)return false;
+        /* Publish only the successful quantity, preserving candidate bytes
+         * outside its members exactly as the original evaluator does. */
+        GeoQuantity *cached=&state->store->fields[index].value;
+        memcpy(&cached->num,&out->as.quantity.num,sizeof cached->num);
+        memcpy(&cached->den,&out->as.quantity.den,sizeof cached->den);
+        memcpy(&cached->unit,&out->as.quantity.unit,sizeof cached->unit);}
     return true;
 }
 GeoParameterSources *geo_parameter_sources_register(GeoEvalContext *ctx,GeoParameterStore *store,

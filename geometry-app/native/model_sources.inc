@@ -4,6 +4,7 @@ enum { MODEL_SOURCE_PROVIDER=5 };
 typedef struct ModelSourceItem ModelSourceItem;
 struct ModelSourceItem {
     char key[192];
+    char owned_name[GEO_PARAMETER_NAME_MAX];
     const char *kind,*slot,*name,*quantity_type;
     uint32_t id,member_id;
     bool has_member,local;
@@ -22,6 +23,9 @@ typedef struct {
     ReferenceEval reference;
     ModelSourceItem **items;
     size_t count,capacity;
+    ProfileMember *profile_members;
+    ProfileRun *profile_runs;
+    size_t profile_member_count,profile_run_count;
 } ModelSources;
 
 static ModelSourceItem *model_source_item(ModelSources *state,const GeoSourceRef *ref)
@@ -37,10 +41,10 @@ static const char *model_source_quantity_type(ModelSources *state,const GeoSourc
     if(item&&item->quantity_type)return item->quantity_type;
     if(ref->provider==APP_SOURCE_PARAMETER&&ref->key_size==2*sizeof(uint32_t)){
         uint32_t ids[2];memcpy(ids,ref->key,sizeof ids);
-        int index=geo_parameters_field_index(&state->reference.world->geo.parameters,ids[0],ids[1]);
-        if(index<0)return NULL;
-        int type=geo_parameters_fields(&state->reference.world->geo.parameters)[index].type;
-        return type==GEO_PARAMETER_COUNT?"count":type==GEO_PARAMETER_RATIO?"ratio":"dimension";
+        for(size_t i=0;i<state->count;++i){const ModelSourceItem *root=state->items[i];
+            if(!strcmp(root->kind,"parameter")&&root->id==ids[0]&&root->member_id==ids[1])return root->quantity_type;
+        }
+        return NULL;
     }
     return value->as.quantity.unit==GEO_UNIT_LENGTH?"dimension":NULL;
 }
@@ -85,8 +89,18 @@ static bool model_source_evaluate(void *opaque,GeoEvalContext *ctx,const GeoSour
     if(!strcmp(item->kind,"spec"))
         return geo_eval_source(ctx,(GeoSourceRef){APP_SOURCE_NAMED,item->name,strlen(item->name)},GEO_DEPENDENCY_VALUE_REQUIRED,out)==GEO_SOURCE_OK;
     if(!strcmp(item->kind,"parameter")){
-        uint32_t ids[]={item->id,item->member_id};
-        return geo_eval_source(ctx,(GeoSourceRef){APP_SOURCE_PARAMETER,ids,sizeof ids},GEO_DEPENDENCY_VALUE_REQUIRED,out)==GEO_SOURCE_OK;
+        uint32_t ids[]={item->id,item->member_id};GeoSourceValue value,definition;GeoParameterDefinitionKey key;GeoParameterField field;
+        if(geo_eval_source(ctx,(GeoSourceRef){APP_SOURCE_PARAMETER,ids,sizeof ids},GEO_DEPENDENCY_VALUE_REQUIRED,&value)!=GEO_SOURCE_OK||
+           geo_eval_source(ctx,geo_parameter_definition_source_ref(APP_SOURCE_PARAMETER_DEFINITION,GEO_PARAMETER_DEFINITION_FIELD,
+               item->id,item->member_id,&key),GEO_DEPENDENCY_DEFINITION_REQUIRED,&definition)!=GEO_SOURCE_OK||
+           definition.kind!=GEO_SOURCE_DEFINITION||!definition.as.definition.schema||
+           strcmp(definition.as.definition.schema,"geometry.parameter-field/1")||
+           !geo_parameter_field_definition_decode(definition.as.definition.content,definition.as.definition.content_size,&field)||
+           field.parameter_id!=item->id||field.id!=item->member_id||value.kind!=GEO_SOURCE_QUANTITY||
+           value.as.quantity.unit!=(field.type==GEO_PARAMETER_DIMENSION?GEO_UNIT_LENGTH:GEO_UNIT_SCALAR))return false;
+        memcpy(item->owned_name,field.name,sizeof item->owned_name);item->name=item->owned_name;
+        item->quantity_type=field.type==GEO_PARAMETER_COUNT?"count":field.type==GEO_PARAMETER_RATIO?"ratio":"dimension";
+        *out=value;return true;
     }
     if(!strcmp(item->kind,"placement")){
         GeoPlacementSourceKey key;GeoPlacementSourceKind kind=!strcmp(item->slot,"placement.frame")?GEO_PLACEMENT_SOURCE_FRAME:GEO_PLACEMENT_SOURCE_REGIONS;
@@ -122,7 +136,7 @@ static void model_sources_free(ModelSources *state)
 {
     reference_sources_dispose(&state->reference);
     for(size_t i=0;i<state->count;++i){free(state->items[i]->regions);free(state->items[i]->holes);free(state->items[i]->vertex_keys);free(state->items[i]->owned_vertex_keys);free(state->items[i]);}
-    free(state->items);memset(state,0,sizeof *state);
+    free(state->items);free(state->profile_members);free(state->profile_runs);memset(state,0,sizeof *state);
 }
 static ModelSourceItem *model_sources_add(ModelSources *state,const char *kind,uint32_t id,const char *slot,
     uint32_t member,bool has_member,GeoSourceValueKind type)
@@ -238,15 +252,23 @@ static bool model_sources_build(ModelSources *state,World *world)
     for(size_t i=0;i<geo_parameters_field_count(&world->geo.parameters);++i){
         const GeoParameterField *field=&geo_parameters_fields(&world->geo.parameters)[i];
         ModelSourceItem *item=model_sources_add(state,"parameter",field->parameter_id,"parameter.value",field->id,true,GEO_SOURCE_QUANTITY);if(!item)return false;
-        item->name=field->name;item->quantity_type=field->type==GEO_PARAMETER_COUNT?"count":field->type==GEO_PARAMETER_RATIO?"ratio":"dimension";
-        item->value.as.quantity=field->value;item->descriptor.unit=field->value.unit;
+        item->descriptor.unit=field->value.unit;
     }
     const SectionProfileState *profiles=&world->wood.section_profiles;
-    for(size_t i=0;i<profiles->run_count;++i){
-        const ProfileRun *run=&profiles->runs[i];const SectionProfile *profile=sp_profile(world,run->profile_id);
+    state->profile_member_count=profiles->member_count;state->profile_run_count=profiles->run_count;
+    if(profiles->member_count){state->profile_members=calloc(profiles->member_count,sizeof *state->profile_members);if(!state->profile_members)return false;}
+    if(profiles->run_count){state->profile_runs=calloc(profiles->run_count,sizeof *state->profile_runs);if(!state->profile_runs)return false;}
+    for(size_t m=0;m<profiles->member_count;++m)
+        if(!wood_sp_sources_member_definition(state->reference.section_profile_sources,profiles->members[m].id,&state->profile_members[m]))return false;
+    for(size_t i=0;i<profiles->run_count;++i)
+        if(!wood_sp_sources_run_definition(state->reference.section_profile_sources,profiles->runs[i].id,&state->profile_runs[i]))return false;
+    for(size_t i=0;i<state->profile_run_count;++i){
+        const ProfileRun *run=&state->profile_runs[i];SectionProfile actual_profile;
+        if(!wood_sp_sources_profile_definition(state->reference.section_profile_sources,run->profile_id,&actual_profile))return false;
+        const SectionProfile *profile=&actual_profile;
         GeoFrame frame=run->placed?run->frame:(GeoFrame){{0,0,0},{1,0,0},{0,1,0},{0,0,1}};
-        for(size_t m=0;m<=profiles->member_count;++m){
-            const ProfileMember *member=m?&profiles->members[m-1]:NULL;
+        for(size_t m=0;m<=state->profile_member_count;++m){
+            const ProfileMember *member=m?&state->profile_members[m-1]:NULL;
             if(member&&member->profile_id!=profile->id)continue;
             ModelSourceItem *f=model_sources_add(state,"profile-run",run->id,"profile.frame",member?member->id:0,member!=NULL,GEO_SOURCE_FRAME);
             ModelSourceItem *r=model_sources_add(state,"profile-run",run->id,"profile.region",member?member->id:0,member!=NULL,GEO_SOURCE_REGION_SET);
@@ -301,11 +323,11 @@ static const ModelSourceItem *model_source_semantics(ModelSources *state,const G
     if(item||ref->provider!=APP_SOURCE_SECTION_PROFILE)return item;
     WoodSectionProfileSourceKind kind;uint32_t id;
     if(!wood_sp_source_decode(ref,&kind,&id))return NULL;
-    uint32_t profile=0;const SectionProfileState *profiles=&state->reference.world->wood.section_profiles;
+    uint32_t profile=0;
     if(kind==WOOD_SP_SOURCE_MEMBER_REGION){
-        for(size_t i=0;i<profiles->member_count;++i)if(profiles->members[i].id==id){profile=profiles->members[i].profile_id;break;}
+        for(size_t i=0;i<state->profile_member_count;++i)if(state->profile_members[i].id==id){profile=state->profile_members[i].profile_id;break;}
     }else if(kind==WOOD_SP_SOURCE_RUN_REGION){
-        for(size_t i=0;i<profiles->run_count;++i)if(profiles->runs[i].id==id){profile=profiles->runs[i].profile_id;break;}
+        for(size_t i=0;i<state->profile_run_count;++i)if(state->profile_runs[i].id==id){profile=state->profile_runs[i].profile_id;break;}
     }else return NULL;
     memset(scratch,0,sizeof *scratch);scratch->local=true;scratch->owner_namespace="wood.section-profile";
     WoodSectionProfileSourceKey key;
