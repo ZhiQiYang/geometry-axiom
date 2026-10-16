@@ -65,7 +65,7 @@ static void seed(GeoDocument *d,GeoCoord tag)
     field.value=(GeoQuantity){tag+11,1,GEO_UNIT_LENGTH};
     CHECK(geo_parameters_stage_card(geo_document_parameters(d),&card),"seed-parameter-card");
     CHECK(geo_parameters_stage_field(geo_document_parameters(d),&field),"seed-parameter-field");
-    CHECK(geo_named_values_put(geo_document_named_values(d),"document-width",tag+22),"seed-named-value");
+    CHECK(geo_named_values_put(geo_document_named_values(d),"document_width",tag+22),"seed-named-value");
     GeoLinearExpression expression;geo_linear_begin(&expression,GEO_LINEAR_EXACT_INTEGER_FINAL);
     CHECK(geo_linear_append(&expression,tag+33,1,(GeoLinearSource){9,70,1,"owned-datum-key"}),"seed-linear");
     geo_linear_finish(&expression,true);
@@ -117,7 +117,7 @@ static unsigned matches(const GeoDocument *d,GeoCoord tag)
         !strcmp(fields[0].name,"width")&&!strcmp(fields[0].expression,expression)&&
         fields[0].value.num==tag+11&&fields[0].value.den==1&&fields[0].value.unit==GEO_UNIT_LENGTH)bits|=1u;
     const GeoNamedValues *named=geo_document_named_values_view(d);
-    const GeoNamedValue *value=geo_named_values_find(named,"document-width");
+    const GeoNamedValue *value=geo_named_values_find(named,"document_width");
     if(geo_named_values_count(named)==1&&value&&value->value==tag+22)bits|=2u;
     const GeoDatumStore *datums=geo_document_datums_view(d);const GeoDatum *datum=geo_datums_find(datums,33);
     if(geo_datums_count(datums)==1&&datum&&datum->axis==0&&linear_matches(&datum->expression,tag))bits|=4u;
@@ -196,7 +196,7 @@ static void case_clone(void)
     CHECK(sv.content!=cv.content&&sv.identity.key!=cv.identity.key&&sv.fields!=cv.fields&&
         sv.schema!=cv.schema&&sv.fingerprint!=cv.fingerprint,"clone-version-storage-owned");
     CHECK(geo_parameters_remove(geo_document_parameters(copy),11,NULL),"clone-remove-parameters");
-    CHECK(geo_named_values_remove(geo_document_named_values(copy),"document-width"),"clone-remove-named");
+    CHECK(geo_named_values_remove(geo_document_named_values(copy),"document_width"),"clone-remove-named");
     CHECK(geo_datums_remove(geo_document_datums(copy),33),"clone-remove-datum");
     CHECK(geo_guides_remove(geo_document_guides(copy),44),"clone-remove-guide");
     CHECK(geo_regions_remove(geo_document_regions(copy),55)&&geo_region_keys_remove(geo_document_regions(copy),55),"clone-remove-region");
