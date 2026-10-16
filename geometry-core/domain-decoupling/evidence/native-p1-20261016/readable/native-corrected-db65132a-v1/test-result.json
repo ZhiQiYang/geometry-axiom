@@ -1,0 +1,54 @@
+{
+  "tests_run": 76,
+  "failures": 1,
+  "errors": 0,
+  "failed_tests": [
+    "tests.test_geo261_native_datums.NativeDatums.test_malformed_suffix_keeps_earlier_missing_parameter_diagnostic"
+  ],
+  "error_tests": [],
+  "skipped": [],
+  "expected_failures": 0,
+  "unexpected_successes": 0,
+  "successful": false,
+  "discovered_modules": {
+    "tests.test_geo261_native_entrypoints": 3,
+    "tests.test_geo261_native_kernel": 13,
+    "tests.test_geo261_native_geometry": 7,
+    "tests.test_geo261_native_grid": 8,
+    "tests.test_geo261_native_parameters": 7,
+    "tests.test_geo261_draw_annotation": 4,
+    "tests.test_geo261_native_linear": 6,
+    "tests.test_geo261_native_datums": 7,
+    "tests.test_geo261_native_sources": 9,
+    "tests.test_geo261_wood_members": 10,
+    "tests.test_geo261_wood_product": 2
+  },
+  "subtests_by_test": {
+    "tests.test_geo261_native_kernel.KernelCodec.test_base64_rfc_vectors_binary_and_strict_padding": {
+      "passed": 11,
+      "failed": 0
+    },
+    "tests.test_geo261_native_kernel.KernelCodec.test_canonical_key_order_nested_unicode_and_controls": {
+      "passed": 30,
+      "failed": 0
+    },
+    "tests.test_geo261_native_kernel.KernelCodec.test_sha256_standard_vectors_and_padding_boundaries": {
+      "passed": 16,
+      "failed": 0
+    },
+    "tests.test_geo261_native_kernel.KernelCodec.test_strict_json_rejects_malformed_types_unicode_and_duplicates": {
+      "passed": 42,
+      "failed": 0
+    },
+    "tests.test_geo261_native_kernel.KernelExact.test_overflow_unit_failures_preserve_output": {
+      "passed": 8,
+      "failed": 0
+    },
+    "tests.test_geo261_native_kernel.KernelExact.test_public_normalization_rejects_invalid_values": {
+      "passed": 6,
+      "failed": 0
+    }
+  },
+  "compiler_commands": 77,
+  "build_artifact_count": 137
+}
