@@ -1,0 +1,69 @@
+{
+  "plans": [
+    {
+      "receipt": "native-candidate-6f1fd92f-v1",
+      "source": "6f1fd92f6886d6512c355baba4435e297b4e9664",
+      "manifest": "native-candidate-6f1fd92f-v1/source-before.json",
+      "fileCount": 15978,
+      "coverage": "complete-archived-or-clean-checkout-source",
+      "allowCrlfCheckoutVariant": false,
+      "judgeSource": null,
+      "judgeOnlyAddedFiles": {},
+      "baselineAdapterSource": null,
+      "rawSummary": "native-candidate-6f1fd92f-v1/summary.json"
+    },
+    {
+      "receipt": "section-runs-diagnostic-6f1fd92f-v1",
+      "source": "6f1fd92f6886d6512c355baba4435e297b4e9664",
+      "manifest": "section-runs-diagnostic-6f1fd92f-v1/source-before.json",
+      "fileCount": 15978,
+      "coverage": "complete-archived-or-clean-checkout-source",
+      "allowCrlfCheckoutVariant": false,
+      "judgeSource": null,
+      "judgeOnlyAddedFiles": {},
+      "baselineAdapterSource": null,
+      "rawSummary": "section-runs-diagnostic-6f1fd92f-v1/summary.json"
+    },
+    {
+      "receipt": "native-candidate-14ab395d-v1",
+      "source": "14ab395d56ce1dcabe43e65b5311776a8d3e6221",
+      "manifest": "native-candidate-14ab395d-v1/source-before.json",
+      "fileCount": 15978,
+      "coverage": "complete-archived-or-clean-checkout-source",
+      "allowCrlfCheckoutVariant": false,
+      "judgeSource": null,
+      "judgeOnlyAddedFiles": {},
+      "baselineAdapterSource": null,
+      "rawSummary": "native-candidate-14ab395d-v1/summary.json"
+    },
+    {
+      "receipt": "timeout-diagnostic-14ab395d-v1",
+      "source": "14ab395d56ce1dcabe43e65b5311776a8d3e6221",
+      "manifest": "timeout-diagnostic-14ab395d-v1/source-before.json",
+      "fileCount": 15978,
+      "coverage": "complete-archived-or-clean-checkout-source",
+      "allowCrlfCheckoutVariant": false,
+      "judgeSource": null,
+      "judgeOnlyAddedFiles": {},
+      "baselineAdapterSource": null,
+      "rawSummary": "timeout-diagnostic-14ab395d-v1/summary.json"
+    }
+  ],
+  "commits": {
+    "14ab395d56ce1dcabe43e65b5311776a8d3e6221": {
+      "file": "source-commits/14ab395d56ce1dcabe43e65b5311776a8d3e6221.commit",
+      "sha256": "b85eaaa8cfa6db6a1e5355491f5e945a8f4811bbb3c8aaf0a801403abad3d168",
+      "bytes": 501,
+      "gitCommitObjectId": "14ab395d56ce1dcabe43e65b5311776a8d3e6221",
+      "tree": "25ff045c69f93f33fd4f6831c935da51384670ae"
+    },
+    "6f1fd92f6886d6512c355baba4435e297b4e9664": {
+      "file": "source-commits/6f1fd92f6886d6512c355baba4435e297b4e9664.commit",
+      "sha256": "0c30ce98d138918a31fe9f095295eed8fed83d14bca300fad54280ae2fdd39d3",
+      "bytes": 276,
+      "gitCommitObjectId": "6f1fd92f6886d6512c355baba4435e297b4e9664",
+      "tree": "95cc1736f07cb941ef4db0c301354b5be8ed772c"
+    }
+  },
+  "note": "All four receipts retain complete source manifests; Git archive comparison verifies both exact source commits without executing product code."
+}

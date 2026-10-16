@@ -1,0 +1,13 @@
+domain-product:1: 重宣告後有物件失效（承載面/參考線/角材/空間沒全過）
+I8a preview 1: invalid; cannot apply
+boundary 1 geometry-hash d8c0cf502d85aa9f4705b301c32fbf749d9326c23d151da64786d36814f23f04 kind 0 outer unkeyed:0,0/fixity=1 unkeyed:4000,0/fixity=1 unkeyed:4000,3000/fixity=1 unkeyed:0,3000/fixity=1 -> boundary 1 geometry-hash 62b30e49afb00d3027212c1180cc2eb1b736ce5c0f4eea599d8b5f06270ce7b4 kind 0 outer unkeyed:0,0/fixity=1 unkeyed:20,0/fixity=1 unkeyed:20,3000/fixity=1 unkeyed:0,3000/fixity=1
+ timber 1 center 13 -> 13 length 4000 -> 20
+  surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 2 center 2986 -> 2986 length 4000 -> 20
+  surface 1 origin [0,2973,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,2973,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 3 center 500 -> 0 length 2946 -> 0 (unavailable/deleted)
+  surface 1 origin [514,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> unavailable
+ guide 1: surface 1 u=500 world [500,0,2500] direction [0,1,0] -> surface 1 u=500 world [500,0,2500] direction [0,1,0]
+ visible: {[500,0]-[500,3000]} -> {}
+ timber 3 R6/I5/I6 expected: one non-overlapping supported span; role and direction constraints satisfied; actual: 中線上沒有任何合法跨距
+domain-product:1: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
