@@ -87,6 +87,8 @@ class NativeBuild:
         self.codec = self.link("codec-client", [self.codec_client, self.codec_object])
         self.bridge_object = None
         self.bridge_exe = None
+        self.cli_exe = None
+        self.model_base_exe = None
 
     def run_build(self, args):
         if self.windows:
@@ -107,7 +109,7 @@ class NativeBuild:
             args = ["cl", "/nologo", "/utf-8", "/Od", "/W3", "/c", "/I" + str(self.kernel), "/Fo:" + str(out)]
             # Product CLI excludes GDI; codec clients must retain _WIN32 so
             # their stdout stays binary during base64 round-trip assertions.
-            if source == ROOT / "geometry-web/web_bridge.c":
+            if source in (ROOT / "geometry-web/web_bridge.c", ROOT / "current_geometry.c", ROOT / "geometry-core/model_base.c"):
                 args.append("/U_WIN32")
             args += ["/D" + d for d in defines] + [str(source)]
         else:
@@ -133,6 +135,18 @@ class NativeBuild:
 
     def product_objects(self):
         return [*self.kernel_objects(), self.wood_members_object]
+
+    def cli(self):
+        if self.cli_exe is None:
+            obj = self.compile(ROOT / "current_geometry.c", "product-cli", ["GEOMETRY_KERNEL_EXTERNAL=1", "GEOMETRY_WOODWORKING_EXTERNAL=1"])
+            self.cli_exe = self.link("product-cli", [obj, *self.product_objects()])
+        return self.cli_exe
+
+    def model_base(self):
+        if self.model_base_exe is None:
+            obj = self.compile(ROOT / "geometry-core/model_base.c", "product-model-base", ["GEOMETRY_KERNEL_EXTERNAL=1", "GEOMETRY_WOODWORKING_EXTERNAL=1"])
+            self.model_base_exe = self.link("product-model-base", [obj, *self.product_objects()])
+        return self.model_base_exe
 
     def kernel_objects(self):
         return [self.exact_object, self.codec_object, self.geometry_object, self.grid_object,

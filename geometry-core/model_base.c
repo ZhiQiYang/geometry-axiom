@@ -165,18 +165,12 @@ static void model_box(const char *kind, uint32_t id, Coord xl, Coord xh,
                       Coord yl, Coord yh, Coord zl, Coord zh)
 {
     static const char *names[6] = {"-X", "+X", "-Y", "+Y", "-Z", "+Z"};
-    Coord lo[3] = {xl, yl, zl}, hi[3] = {xh, yh, zh};
+    GeoBox3 box={{{xl,yl,zl},{1,0,0},{0,1,0},{0,0,1}},{xh-xl,yh-yl,zh-zl}};
     fputs("{\"kind\":", stdout); model_string(stdout, kind);
     printf(",\"id\":%" PRIu32 ",\"placement_id\":null,\"boundary_id\":null,\"faces\":[", id);
     for (int k = 0; k < 3; ++k) for (int side = 0; side < 2; ++side) {
         Quad3 face;
-        for (int j = 0; j < 4; ++j) {
-            Coord p[3]; int u = (k + 1) % 3, v = (k + 2) % 3;
-            p[k] = side ? hi[k] : lo[k];
-            p[u] = TIMBER_FACE_WALK[side][j][0] ? hi[u] : lo[u];
-            p[v] = TIMBER_FACE_WALK[side][j][1] ? hi[v] : lo[v];
-            face.vertices[j] = (Point3){p[0], p[1], p[2]};
-        }
+        (void)geo_box_face(&box,(unsigned)k,(unsigned)side,&face);
         if (k || side) putchar(',');
         model_face(names[k * 2 + side], &face);
     }
