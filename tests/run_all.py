@@ -75,6 +75,11 @@ PY_NEEDS = {
     'test_evidence_link_native': ['bridge'],
     'test_feedback_store': [],
     'test_gdi_contract': ['gdi'],
+    # These suites build isolated K objects and their actual product witness;
+    # no prebuilt repository binary is accepted as a substitute.
+    'test_geo261_native_kernel': [],
+    'test_geo261_native_geometry': [],
+    'test_geo261_native_grid': [],
     'test_grid_system_contract': ['bridge'],
     'test_grid_subdivision_oracle': ['bridge'],
     'test_grid_trial_contract': ['bridge'],
