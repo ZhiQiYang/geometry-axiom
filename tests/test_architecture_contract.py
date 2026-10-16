@@ -196,6 +196,37 @@ class ArchitectureContract(unittest.TestCase):
         self.put("src/k/core.c", "#include <unlisted.h>\n")
         self.rejects("DEPENDENCY_UNRESOLVED")
 
+    def test_unknown_c_header_cannot_be_declared_standard(self):
+        self.put("src/core.c", "int core;\n")
+        self.manifest['policy']['cSystemHeaders'].append('unknown_vendor.h')
+        self.rejects("EXTERNAL_POLICY")
+
+    def test_platform_c_header_cannot_be_declared_standard(self):
+        self.put("src/core.c", "int core;\n")
+        self.manifest['policy']['cSystemHeaders'].append('windows.h')
+        self.rejects("EXTERNAL_POLICY")
+
+    def test_explicit_host_platform_header_does_not_allow_core(self):
+        self.put("src/host.c", "#include <windows.h>\n", "H")
+        self.manifest['policy']['externalModules'].append({'language': 'c', 'name': 'windows.h',
+            'layers': ['H'], 'purpose': 'Host Win32 platform integration'})
+        self.green()
+        self.manifest['sources'][0]['layer'] = 'K'
+        self.rejects("DEPENDENCY_UNRESOLVED")
+
+    def test_host_platform_header_cannot_launder_through_core_helper(self):
+        self.put("src/core.c", '#include "helper.h"\n')
+        self.put("src/helper.h", "#include <windows.h>\n")
+        self.manifest['policy']['externalModules'].append({'language': 'c', 'name': 'windows.h',
+            'layers': ['H'], 'purpose': 'Host Win32 platform integration'})
+        self.rejects("DEPENDENCY_UNRESOLVED", path='src/helper.h')
+
+    def test_host_platform_allowance_is_exact_not_prefix(self):
+        self.put("src/host.c", "#include <windows.h/other.h>\n", "H")
+        self.manifest['policy']['externalModules'].append({'language': 'c', 'name': 'windows.h',
+            'layers': ['H'], 'purpose': 'Host Win32 platform integration'})
+        self.rejects("DEPENDENCY_UNRESOLVED")
+
     def test_concrete_template_enum_is_rejected(self):
         self.put("src/k/core.c", "\nint role = TIMBER_ROLE_PRIMARY;\n")
         self.rejects("FORBIDDEN_IDENTIFIER", path="src/k/core.c", line=2)

@@ -22,7 +22,7 @@ Manifest schema (all keys required; unknown keys rejected):
     cSystemHeaders: [exact include spelling, ...],
     pythonStdlib: [exact imported module, ...],
     javascriptBuiltins: [explicit node: builtin, ...],
-    externalModules: [{language: python|javascript, name, purpose, layers: [H]}],
+    externalModules: [{language: c|python|javascript, name, purpose, layers: [H]}],
     forbiddenIdentifiers: [exact executable identifier, ...],
     forbiddenStrings: [exact decoded string value, ...],
     forbiddenModules: {c: [...], python: [...], javascript: [...]}}
@@ -95,6 +95,12 @@ PY_PATH_FIELDS = {"path", "meta_path", "path_hooks", "path_importer_cache", "mod
 JS_DYNAMIC_NAMES = {"eval", "Function", "importScripts", "createRequire", "__webpack_require__",
                     "globalThis", "global", "window", "document", "self", "Reflect", "Proxy"}
 C_DYNAMIC_NAMES = {"dlopen", "dlsym", "LoadLibraryA", "LoadLibraryW", "GetProcAddress"}
+C_STANDARD_HEADERS = {
+    "assert.h", "complex.h", "ctype.h", "errno.h", "fenv.h", "float.h", "inttypes.h", "iso646.h",
+    "limits.h", "locale.h", "math.h", "setjmp.h", "signal.h", "stdalign.h", "stdarg.h", "stdatomic.h",
+    "stdbool.h", "stdckdint.h", "stdbit.h", "stddef.h", "stdint.h", "stdio.h", "stdlib.h", "stdnoreturn.h",
+    "string.h", "tgmath.h", "threads.h", "time.h", "uchar.h", "wchar.h", "wctype.h",
+}
 NODE_BUILTINS = {
     "assert", "assert/strict", "async_hooks", "buffer", "child_process", "cluster", "console",
     "constants", "crypto", "dgram", "diagnostics_channel", "dns", "dns/promises", "domain",
@@ -713,6 +719,9 @@ class Scanner:
                             "forbiddenIdentifiers", "forbiddenStrings", "forbiddenModules"}, "policy")
         for key in ("cSystemHeaders", "pythonStdlib", "javascriptBuiltins", "forbiddenIdentifiers", "forbiddenStrings"):
             strings(policy[key], "policy." + key)
+        for name in policy["cSystemHeaders"]:
+            require(name in C_STANDARD_HEADERS, "EXTERNAL_POLICY", name, 1,
+                    "only known standard C headers are available to all layers; platform headers need an exact H-only external allowance")
         require(hasattr(sys, "stdlib_module_names"), "PYTHON_VERSION", "policy.pythonStdlib", 1,
                 "Python 3.10+ is required for stdlib policy validation")
         for name in policy["pythonStdlib"]:
@@ -728,7 +737,7 @@ class Scanner:
         external_seen = set()
         for entry in policy["externalModules"]:
             exact_keys(entry, {"language", "name", "layers", "purpose"}, "policy.externalModules")
-            require(entry["language"] in {"python", "javascript"} and isinstance(entry["name"], str)
+            require(entry["language"] in {"c", "python", "javascript"} and isinstance(entry["name"], str)
                     and entry["name"].strip() and entry["layers"] == ["H"]
                     and isinstance(entry["purpose"], str) and entry["purpose"].strip(),
                     "EXTERNAL_POLICY", "policy.externalModules", 1,
