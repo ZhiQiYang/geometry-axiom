@@ -23,6 +23,8 @@
 native bridge，要求拒絕且 `dump` 不變；兩個移除控制要求 K 斷言失敗及產品錯誤放行同時出現。
 
 - 本地靜態檢查：Python 語法編譯通過；unittest discovery 為 8。
+- `run_all.py` 與 `run_all.expected.json` 僅登記本 suite 的新 key，數量 8 來自 discovery；未改既有
+  suite 數量。registry 登記不代表 native 或完整測試已通過。
 - native 執行：待 `p1_validation` 於共用 WSL 鎖下執行；此時沒有將靜態推論記為執行成功。
 - 凍結前版：指定 `51e9045b43078a77383afdaf5db379117ffc8871`。同一組正向斷言須對該版本的
   完整來源實際執行並獨立保存預期紅燈，不能把新 bridge 與舊 K 混合連結、不能改普通測試期待值。

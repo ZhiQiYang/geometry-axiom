@@ -75,6 +75,7 @@ PY_NEEDS = {
     'test_evidence_link_native': ['bridge'],
     'test_feedback_store': [],
     'test_gdi_contract': ['gdi'],
+    'test_geo261_region_edges': [],  # Builds isolated K and its own same-source bridge.
     'test_grid_system_contract': ['bridge'],
     'test_grid_subdivision_oracle': ['bridge'],
     'test_grid_trial_contract': ['bridge'],
