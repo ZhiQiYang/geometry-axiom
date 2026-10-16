@@ -86,6 +86,7 @@ function startBrowser() {
   "--window-size=1400,900", `--user-data-dir=${profile}`, ...EXTRA_FLAGS, "about:blank"
   ]);
   child.stderr.on('data',chunk=>{
+    _log('CHROME_STARTUP_STDERR '+JSON.stringify({utc:new Date().toISOString(),monotonicNs:process.hrtime.bigint().toString(),pid:child.pid,text:chunk.toString()}));
     browserStartupOutput=(browserStartupOutput+chunk.toString()).slice(-8192);
     const match=browserStartupOutput.match(/DevTools listening on (ws:\/\/\S+)/);
     if(match)browserEndpoint=match[1];
@@ -213,10 +214,12 @@ async function connect() {
   throw new Error("no CDP; Chrome startup output: " + browserStartupOutput);
 }
 function send(method, params = {}, sessionId = null) {
-  if(method==='Page.reload'||method==='Page.navigate')expectedBeforeUnloadUntil=Date.now()+15000;
+  const navigation=method==='Page.reload'||method==='Page.navigate';
+  if(navigation)expectedBeforeUnloadUntil=Date.now()+15000;
   return new Promise((res,rej) => {
     const id=++mid,timer=setTimeout(()=>{delete pending[id];rej(Error('CDP timed out: '+method+' at '+currentTestStep+(params.expression?' expression='+params.expression.slice(0,160):'')));},120000);
-    pending[id]=message=>{clearTimeout(timer);if(message.error)rej(Error('CDP '+method+' failed: '+JSON.stringify(message.error)));else res(message);};
+    pending[id]=message=>{clearTimeout(timer);if(navigation)_log('CDP_NAVIGATION '+JSON.stringify({phase:'reply',utc:new Date().toISOString(),monotonicNs:process.hrtime.bigint().toString(),id,method,message}));if(message.error)rej(Error('CDP '+method+' failed: '+JSON.stringify(message.error)));else res(message);};
+    if(navigation)_log('CDP_NAVIGATION '+JSON.stringify({phase:'send',utc:new Date().toISOString(),monotonicNs:process.hrtime.bigint().toString(),id,method,params,sessionId}));
     ws.send(JSON.stringify({id,method,params,...(sessionId?{sessionId}:{})}));
   });
 }
