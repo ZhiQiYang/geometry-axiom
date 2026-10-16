@@ -32,7 +32,7 @@ class WoodSupportsProduct(unittest.TestCase):
         path=build.woodworking/('supports-product-'+name+'.c');path.write_text(source.replace(before,after),encoding='utf-8')
         changed=build.compile(path,'supports-product-'+name);build.bridge()
         client=build.link('supports-product-'+name+'-client',[self.client,self.frozen,changed])
-        bridge=build.link('supports-product-'+name+'-bridge',[build.bridge_object,*build.kernel_objects(),build.wood_members_object,changed])
+        bridge=build.link('supports-product-'+name+'-bridge',[build.bridge_object,*build.kernel_objects(),build.wood_members_object,changed,build.wood_contacts_object])
         return client,bridge
 
     def load(self,exe,text):

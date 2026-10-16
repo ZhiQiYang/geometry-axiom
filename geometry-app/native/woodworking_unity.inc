@@ -4,8 +4,10 @@
 #ifdef GEOMETRY_WOODWORKING_EXTERNAL
 #include "../../geometry-templates/woodworking/native/members.h"
 #include "../../geometry-templates/woodworking/native/supports.h"
+#include "../../geometry-templates/woodworking/native/contacts.h"
 #else
 #include "../../geometry-templates/woodworking/native/members.c"
 #include "../../geometry-templates/woodworking/native/supports.c"
+#include "../../geometry-templates/woodworking/native/contacts.c"
 #endif
 #endif

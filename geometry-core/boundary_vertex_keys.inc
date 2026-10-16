@@ -9,55 +9,43 @@ static const PolygonLoop2 *boundary_keys_loop(const SpaceBoundarySurface *b,size
     return loop ? &b->holes[loop-1] : &b->outline;
 }
 
-static const BoundaryVertexKeys *world_find_vertex_keys(const World *w,uint32_t bid)
+/* H translates the boundary shape; kind and edge fixity never enter K.
+ * Preserve the declared counts so the neutral key validator reports the
+ * original malformed-shape error before reading a truncated active array. */
+static GeoRegionDefinition app_boundary_region_definition(const SpaceBoundarySurface *b)
 {
-    if (!w) return NULL;
-    for (size_t i=0;i<w->vertex_key_count;++i)
-        if (w->vertex_keys[i].boundary_id==bid) return &w->vertex_keys[i];
-    return NULL;
+    GeoRegionDefinition region;memset(&region,0,sizeof region);
+    if(!b)return region;
+    region.id=b->id;region.hole_count=b->hole_count;region.outline.count=b->outline.count;
+    size_t count=b->outline.count<POLY_MAX_VERTICES?b->outline.count:POLY_MAX_VERTICES;
+    memcpy(region.outline.v,b->outline.v,count*sizeof region.outline.v[0]);
+    for(size_t h=0;h<b->hole_count&&h<POLY_MAX_HOLES;++h){
+        region.holes[h].count=b->holes[h].count;
+        count=b->holes[h].count<POLY_MAX_VERTICES?b->holes[h].count:POLY_MAX_VERTICES;
+        memcpy(region.holes[h].v,b->holes[h].v,count*sizeof region.holes[h].v[0]);
+    }
+    return region;
 }
 
+static const BoundaryVertexKeys *world_find_vertex_keys(const World *w,uint32_t bid)
+{return w?geo_region_keys_find(&w->region_data,bid):NULL;}
+
 static bool boundary_keys_has(const BoundaryVertexKeys *keys,uint32_t key)
-{
-    if (!keys || !key) return false;
-    for (size_t l=0;l<keys->loop_count;++l)
-        for (size_t i=0;i<keys->counts[l];++i)
-            if (keys->keys[l][i]==key) return true;
-    return false;
-}
+{return geo_region_keys_has(keys,key);}
 
 static bool boundary_keys_valid(const SpaceBoundarySurface *b,const BoundaryVertexKeys *keys)
 {
-    if (!b || !keys || keys->boundary_id!=b->id || b->hole_count>POLY_MAX_HOLES ||
-        keys->loop_count!=b->hole_count+1) return false;
-    for (size_t l=0;l<keys->loop_count;++l) {
-        const PolygonLoop2 *loop=boundary_keys_loop(b,l);
-        if (loop->count>POLY_MAX_VERTICES || keys->counts[l]!=loop->count) return false;
-        for (size_t i=0;i<keys->counts[l];++i) {
-            uint32_t key=keys->keys[l][i];
-            if (!key || (keys->next_key && key>=keys->next_key)) return false;
-            for (size_t ol=0;ol<=l;++ol) {
-                size_t stop=ol==l?i:keys->counts[ol];
-                for (size_t oi=0;oi<stop;++oi)
-                    if (keys->keys[ol][oi]==key) return false;
-            }
-        }
-    }
-    return true;
+    if(!b)return false;
+    GeoRegionDefinition region=app_boundary_region_definition(b);
+    return geo_region_keys_valid(&region,keys);
 }
 
 static bool boundary_vertex_by_key(const World *w,uint32_t bid,uint32_t key,SurfacePoint2 *out)
 {
     const SpaceBoundarySurface *b=world_find_boundary(w,bid);
-    const BoundaryVertexKeys *keys=world_find_vertex_keys(w,bid);
-    if (!key || !boundary_keys_valid(b,keys)) return false;
-    for (size_t l=0;l<keys->loop_count;++l)
-        for (size_t i=0;i<keys->counts[l];++i)
-            if (keys->keys[l][i]==key) {
-                if (out) *out=boundary_keys_loop(b,l)->v[i];
-                return true;
-            }
-    return false;
+    if(!b)return false;
+    GeoRegionDefinition region=app_boundary_region_definition(b);
+    return geo_region_vertex_by_key(&region,world_find_vertex_keys(w,bid),key,out);
 }
 
 static void boundary_geometry_hash(const SpaceBoundarySurface *b,char out[65])
@@ -105,19 +93,9 @@ static bool boundary_geometry_hash_matches(const SpaceBoundarySurface *b,const c
 static bool boundary_keys_initialize(World *w,uint32_t bid)
 {
     const SpaceBoundarySurface *b=world_find_boundary(w,bid);
-    const BoundaryVertexKeys *existing=world_find_vertex_keys(w,bid);
-    if (existing) return boundary_keys_valid(b,existing);
-    if (!b || b->hole_count>POLY_MAX_HOLES || w->vertex_key_count>=WORLD_MAX_BOUNDARIES) return false;
-    BoundaryVertexKeys keys={0};
-    keys.boundary_id=bid; keys.loop_count=b->hole_count+1; keys.next_key=1;
-    for (size_t l=0;l<keys.loop_count;++l) {
-        keys.counts[l]=boundary_keys_loop(b,l)->count;
-        if (keys.counts[l]>POLY_MAX_VERTICES) return false;
-        for (size_t i=0;i<keys.counts[l];++i) keys.keys[l][i]=keys.next_key++;
-    }
-    if (!boundary_keys_valid(b,&keys)) return false;
-    w->vertex_keys[w->vertex_key_count++]=keys;
-    return true;
+    if(!b)return false;
+    GeoRegionDefinition region=app_boundary_region_definition(b);
+    return geo_region_keys_initialize(&w->region_data,&region);
 }
 
 static bool boundary_keys_error(char *error,size_t cap,const char *message)
@@ -128,79 +106,42 @@ static bool boundary_keys_error(char *error,size_t cap,const char *message)
 
 static bool boundary_keys_reconcile(World *candidate,const World *before,char *error,size_t cap)
 {
-    if (candidate->vertex_key_count>WORLD_MAX_BOUNDARIES)
+    if (geo_region_keys_count(&candidate->region_data)>WORLD_MAX_BOUNDARIES)
         return boundary_keys_error(error,cap,"too many boundary vertex identity tables");
-    if (before) for (size_t i=0;i<before->vertex_key_count;++i) {
-        uint32_t bid=before->vertex_keys[i].boundary_id;
+    if (before) for (size_t i=0;i<geo_region_keys_count(&before->region_data);++i) {
+        uint32_t bid=geo_region_keys_at(&before->region_data,i)->boundary_id;
         if (world_find_boundary(candidate,bid) && !world_find_vertex_keys(candidate,bid))
             return boundary_keys_error(error,cap,"an existing boundary identity table cannot be removed");
     }
-    for (size_t m=0;m<candidate->vertex_key_count;) {
-        BoundaryVertexKeys *keys=&candidate->vertex_keys[m];
-        const SpaceBoundarySurface *b=world_find_boundary(candidate,keys->boundary_id);
-        for (size_t other=0;other<m;++other)
-            if (candidate->vertex_keys[other].boundary_id==keys->boundary_id)
-                return boundary_keys_error(error,cap,"duplicate boundary identity table");
+    for (size_t m=0;m<geo_region_keys_count(&candidate->region_data);) {
+        GeoRegionKeys next=*geo_region_keys_at(&candidate->region_data,m);
+        const SpaceBoundarySurface *b=world_find_boundary(candidate,next.boundary_id);
         if (!b) {
             for (size_t j=0;j<candidate->grid_binding_count;++j)
-                if (candidate->grid_bindings[j].boundary_id==keys->boundary_id)
+                if (candidate->grid_bindings[j].boundary_id==next.boundary_id)
                     return boundary_keys_error(error,cap,"cannot delete a boundary referenced by a grid binding");
-            memmove(keys,keys+1,(candidate->vertex_key_count-m-1)*sizeof *keys);
-            memset(&candidate->vertex_keys[--candidate->vertex_key_count],0,sizeof *keys);
-            continue;
+            (void)geo_region_keys_remove(&candidate->region_data,next.boundary_id);continue;
         }
-        const BoundaryVertexKeys *old=world_find_vertex_keys(before,keys->boundary_id);
-        const SpaceBoundarySurface *old_boundary=before?world_find_boundary(before,keys->boundary_id):NULL;
-        bool keyed=g_boundary_keyed_update && g_boundary_keyed_id==keys->boundary_id;
-        if (old && !boundary_keys_valid(old_boundary,old))
-            return boundary_keys_error(error,cap,"the previous boundary identity table is invalid");
-        if (old && !keyed) {
-            /* Always derive from the transaction baseline, so repeated validation
-             * of one candidate cannot allocate another set of keys. */
-            BoundaryVertexKeys remapped={0};
-            remapped.boundary_id=b->id; remapped.loop_count=b->hole_count+1;
-            remapped.next_key=old->next_key;
-            if (b->hole_count>POLY_MAX_HOLES)
-                return boundary_keys_error(error,cap,"too many boundary loops");
-            for (size_t l=0;l<remapped.loop_count;++l) {
-                remapped.counts[l]=boundary_keys_loop(b,l)->count;
-                if (remapped.counts[l]>POLY_MAX_VERTICES)
-                    return boundary_keys_error(error,cap,"too many boundary vertices");
-            }
-            for (size_t ol=0;ol<old->loop_count;++ol) for (size_t oi=0;oi<old->counts[ol];++oi) {
-                SurfacePoint2 p=boundary_keys_loop(old_boundary,ol)->v[oi];
-                size_t matches=0,match_loop=0,match_index=0;
-                for (size_t l=0;l<remapped.loop_count;++l) {
-                    const PolygonLoop2 *loop=boundary_keys_loop(b,l);
-                    for (size_t i=0;i<loop->count;++i)
-                        if (loop->v[i].u==p.u && loop->v[i].v==p.v) {
-                            ++matches; match_loop=l; match_index=i;
-                        }
-                }
-                if (matches!=1 || remapped.keys[match_loop][match_index])
-                    return boundary_keys_error(error,cap,"an identified vertex moved, disappeared, or is ambiguous; use boundary-keyed with the current geometry-hash");
-                remapped.keys[match_loop][match_index]=old->keys[ol][oi];
-            }
-            for (size_t l=0;l<remapped.loop_count;++l) for (size_t i=0;i<remapped.counts[l];++i) {
-                if (remapped.keys[l][i]) continue;
-                if (!remapped.next_key)
-                    return boundary_keys_error(error,cap,"boundary vertex key space is exhausted");
-                remapped.keys[l][i]=remapped.next_key;
-                remapped.next_key=remapped.next_key==UINT32_MAX?0:remapped.next_key+1;
-            }
-            *keys=remapped;
+        const BoundaryVertexKeys *old=world_find_vertex_keys(before,next.boundary_id);
+        const SpaceBoundarySurface *old_boundary=before?world_find_boundary(before,next.boundary_id):NULL;
+        GeoRegionDefinition current=app_boundary_region_definition(b),prior=app_boundary_region_definition(old_boundary);
+        bool keyed=g_boundary_keyed_update && g_boundary_keyed_id==next.boundary_id;
+        GeoRegionKeyStatus status=geo_region_keys_reconcile(&current,&next,old_boundary?&prior:NULL,old,keyed);
+        const char *message=NULL;
+        switch(status){
+        case GEO_REGION_KEYS_OK:break;
+        case GEO_REGION_KEYS_PREVIOUS_INVALID:message="the previous boundary identity table is invalid";break;
+        case GEO_REGION_KEYS_TOO_MANY_LOOPS:message="too many boundary loops";break;
+        case GEO_REGION_KEYS_TOO_MANY_VERTICES:message="too many boundary vertices";break;
+        case GEO_REGION_KEYS_IDENTITY_CHANGED:message="an identified vertex moved, disappeared, or is ambiguous; use boundary-keyed with the current geometry-hash";break;
+        case GEO_REGION_KEYS_EXHAUSTED:message="boundary vertex key space is exhausted";break;
+        case GEO_REGION_KEYS_RETIRED_KEY:message="a retired boundary vertex key cannot be reused";break;
+        case GEO_REGION_KEYS_HIGHWATER_BACKWARDS:message="boundary vertex key allocation cannot move backwards";break;
+        default:message="invalid, zero, duplicate, or inconsistent boundary vertex keys";break;
         }
-        if (!boundary_keys_valid(b,keys))
+        if(message)return boundary_keys_error(error,cap,message);
+        if(!geo_region_keys_put(&candidate->region_data,&next))
             return boundary_keys_error(error,cap,"invalid, zero, duplicate, or inconsistent boundary vertex keys");
-        if (old && keyed) {
-            for (size_t l=0;l<keys->loop_count;++l) for (size_t i=0;i<keys->counts[l];++i) {
-                uint32_t key=keys->keys[l][i];
-                if (!boundary_keys_has(old,key) && (!old->next_key || key<old->next_key))
-                    return boundary_keys_error(error,cap,"a retired boundary vertex key cannot be reused");
-            }
-            if (!old->next_key ? keys->next_key!=0 : (keys->next_key && keys->next_key<old->next_key))
-                return boundary_keys_error(error,cap,"boundary vertex key allocation cannot move backwards");
-        }
         ++m;
     }
     for (size_t i=0;i<candidate->grid_binding_count;++i) {
@@ -212,14 +153,7 @@ static bool boundary_keys_reconcile(World *candidate,const World *before,char *e
 }
 
 static bool boundary_keys_same(const BoundaryVertexKeys *a,const BoundaryVertexKeys *b)
-{
-    if (a->boundary_id!=b->boundary_id || a->loop_count!=b->loop_count || a->next_key!=b->next_key) return false;
-    for (size_t l=0;l<a->loop_count;++l) {
-        if (a->counts[l]!=b->counts[l]) return false;
-        for (size_t i=0;i<a->counts[l];++i) if (a->keys[l][i]!=b->keys[l][i]) return false;
-    }
-    return true;
-}
+{return geo_region_keys_same(a,b);}
 
 static bool apply_boundary_keys_line(const char *path,int line_no,char **tokens,int count,World *world)
 {
@@ -259,11 +193,11 @@ static bool apply_boundary_keys_line(const char *path,int line_no,char **tokens,
         if (boundary_keys_same(existing,&keys)) return true;
         scene_error(path,line_no,"D30: boundary-vertex-keys cannot rebind an existing identity table; use boundary-keyed"); return false;
     }
-    if (world->vertex_key_count>=WORLD_MAX_BOUNDARIES) {
+    if (geo_region_keys_count(&world->region_data)>=WORLD_MAX_BOUNDARIES) {
         scene_error(path,line_no,"D30: too many boundary identity tables"); return false;
     }
     World candidate=*world;
-    candidate.vertex_keys[candidate.vertex_key_count++]=keys;
+    if(!geo_region_keys_put(&candidate.region_data,&keys))return false;
     if (!world_revalidate(&candidate)) {
         scene_error(path,line_no,g_revalidate_error[0]?g_revalidate_error:
             "I37: boundary vertex identity replay failed world validation"); return false;
@@ -344,14 +278,13 @@ static bool apply_boundary_keyed_line(const char *path,int line_no,char **tokens
     if (!boundary_keys_valid(&replacement,&keys)) {
         scene_error(path,line_no,"D30: boundary-keyed contains duplicate, missing, or inconsistent vertex keys"); return false;
     }
-    if (!old && world->vertex_key_count>=WORLD_MAX_BOUNDARIES) {
+    if (!old && geo_region_keys_count(&world->region_data)>=WORLD_MAX_BOUNDARIES) {
         scene_error(path,line_no,"D30: too many boundary identity tables"); return false;
     }
     World candidate=*world;
     for (size_t i=0;i<candidate.boundary_count;++i)
         if (candidate.boundaries[i].id==id) { candidate.boundaries[i]=replacement; break; }
-    size_t slot=old?(size_t)(old-world->vertex_keys):candidate.vertex_key_count++;
-    candidate.vertex_keys[slot]=keys;
+    if(!geo_region_keys_put(&candidate.region_data,&keys))return false;
     bool previous_keyed=g_boundary_keyed_update;
     uint32_t previous_keyed_id=g_boundary_keyed_id;
     const World *previous_baseline=g_subgrid_before;
