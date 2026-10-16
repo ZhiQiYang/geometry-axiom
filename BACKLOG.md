@@ -328,10 +328,14 @@
 
 ### GEO-261 — 幾何核心與木工模板解耦（2026-10-15）
 
-- **狀態**：2026-10-16 由 ChatGPT Astra 接手提案與實作；目前 P0 逐條提案、基線與驗收準備，**未採納、未實作**。追蹤 [issue #248](https://github.com/ZhiQiYang/geometry-axiom/issues/248)；[提案入口](geometry-core/domain-decoupling/PROPOSAL.md)。
+- **狀態**：2026-10-16 由 ChatGPT Astra 接手提案與實作；使用者已批准 P0 原 103 條逐條提案與獨立更名修正，核心／模板／宿主正分片實作及驗證。main 新增 D64／I74／R60 的封閉作用域清冊追加仍待原對話明示批准，**正式 SSOT 尚未寫入、整體尚未交付**。追蹤 [issue #248](https://github.com/ZhiQiYang/geometry-axiom/issues/248)；[提案入口](geometry-core/domain-decoupling/PROPOSAL.md)。
 - **本次委任**：使用者在本地對話要求從最新 main 完成 GEO-261，工程切片與架構由 Astra 負責，Claude 做最終品質審查及列車合併；[Claude 已於 #248 記錄接手](https://github.com/ZhiQiYang/geometry-axiom/issues/248#issuecomment-6199027870)。這項委任不取代逐條公理差異批准。下列原排程的提案責任改由 Astra，其他規範不變。
 - **本次切片**：P0 提案／完整條文差異／提案契約測試；批准後 P1 採納與 C 核心，P2 木工／Python／相容轉接，P3 前端與第二模板，P4 主線整合／全量突變／交付。必要時細分，每片 draft PR。只有 Claude 審查無品質阻擋、只差排列車，才能稱完成。
 - **拿掉／合併（GEO-219）**：本案零新增可見入口、按鈕或常駐說明；將重複的木工預設與配方收斂到唯一固定模板，既有 UI 操作維持。
+- **2026-10-16 獨立更名修正片（§6.1）**：使用者已對 PR #261、commit `17a25e92c75e8c89063e36ca329729980d8ea6a9` 明示「批准此更名缺陷修正」。本片只修精簡來源面板重送完整宣告時漏掉 `stagger`／`parameterRefs.stagger`：只改名稱仍經正式預覽及確認，兩軸原值與來源保留；取消保持整份 World。SSOT、DSL、原生「省略即清除」、完整工作區明確清空及 0／pitch 整倍數拒絕均維持。沒有新增可見 UI、按鈕或常駐說明。
+  - 驗收入口：`tests/test_grid_inspector_command.js` 執行產品序列化函式，`tests/test_grid_inspector_contract.py` 串真原生 bridge、正負 band 手算、參數後續改值及新原生程序載回；`geometry-web/grid_inspector_rename_test.js` 由 `cdp_test.js` 的 full／`GEOMETRY_COMPOSITION_ONLY=1` 載入，真實點選底部更名、取消／確認／Undo／Redo及 `.gcanvas` Save／新 context／Open。額外設定 `GEOMETRY_GRID_RENAME_FRESH_URL` 時，完整包重開使用第二個隔離服務的新原生程序。
+  - 負控制：`tests/diagnostics/grid_inspector_mutation_probe.py` 只修改 TEMP 副本，分別移除 stagger 輸出、把引用固化為值，要求紅燈後恢復綠燈；不改產品原檔。Windows VM 9／9 已通過，兩個負控均轉紅、恢復再 9／9；原生與瀏覽器待正式收據，不以 VM 取代。
+  - 本片基底 main `a898ad6e` 已有 D64 整卡公理、尚未含整卡產品實作；後續 #253 合流須按已採納契約重驗完整來源身分，不把本片逐欄相位差修復冒稱整卡整合已驗。整體 GEO-261 的公理採納與 K／W／H 實作另片處理。
 - **依據**：使用者 2026-10-12 的產品方向（#246 決策佇列補登第 1 項），以及 2026-10-15 05:15 要求「確定讓這項在工作排程內」（#246 第 14 項）；依 [P-118 追加 M2](https://github.com/ZhiQiYang/geometry-axiom/pull/247#issuecomment-6178711060) 入帳。以下只摘要 #248 的「目標」「排程」「規則(拍板前)」。
 - **目標**：核心改成與領域無關的幾何概念；木工知識（角材、面材、主支／副支、板材尺寸、承接門檻等）作為第一個被套用、可以解耦的模板。依賴只能單向：模板依賴核心，核心不依賴模板。
 - **排程**：

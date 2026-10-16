@@ -90,6 +90,7 @@ PY_NEEDS = {
     'test_geo261_region_edges': [],  # Builds isolated K and its own same-source bridge.
     'test_geo261_native_datums': [],
     'test_grid_system_contract': ['bridge'],
+    'test_grid_inspector_contract': ['bridge'],
     'test_grid_subdivision_oracle': ['bridge'],
     'test_grid_trial_contract': ['bridge'],
     'test_guide_panels': [],
@@ -182,6 +183,7 @@ NODE_DOCUMENT_SCRIPT_FILES = {
 NODE_PURE_TEST_FILES = {
     'node:draw_annotation': 'tests/test_draw_annotation.js',
     'node:woodworking_frontend': 'tests/test_woodworking_frontend.js',
+    'node:grid_inspector_command': 'tests/test_grid_inspector_command.js',
     'node:grid_lesson_control_ownership': 'tests/test_grid_lesson_control_ownership.js',
     'node:parameter_confirmation_settlement': 'tests/test_parameter_confirmation_settlement.js',
     'node:face_reference_settlement': 'tests/test_face_reference_settlement.js',

@@ -7122,6 +7122,8 @@ async function main() {
     await require('./infinite_grid_face_test.js')({send,eval_,sleep,click,waitForUI});
   if (scope.mode==='full' || process.env.GEOMETRY_COMPOSITION_ONLY)
     await require('./composition_canvas_test.js')({send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN});
+  if (scope.mode==='full' || process.env.GEOMETRY_COMPOSITION_ONLY)
+    await require('./grid_inspector_rename_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
   if (scope.mode==='full' || process.env.GEOMETRY_UIUX_FIX_ONLY)
     await require('./uiux_review_test.js')({send,eval_,sleep,click,waitForUI,captureNewToasts,expectNativeDialog,exceptionCount:()=>excN});
   if (scope.mode==='full' || process.env.GEOMETRY_UX_REFINEMENT_ONLY)
