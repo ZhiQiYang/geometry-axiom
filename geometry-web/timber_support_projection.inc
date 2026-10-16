@@ -66,8 +66,10 @@ static void json_schedule_support_face(const World *w,const PlacementSurface *p,
         if(face<0) { fputs("null",stdout); return; }
         const Timber *t=&w->timbers[ti];
         Vector3 axes[3]={t->axis_length,t->axis_a,t->axis_b};
-        Vector3 normal=axes[TIMBER_FACE_SPEC[face].axis];
-        if(!TIMBER_FACE_SPEC[face].side) normal=vector_negate(normal);
+        unsigned face_axis,face_side;
+        if(!wood_member_face_spec((WoodMemberFace)face,&face_axis,&face_side)){fputs("null",stdout);return;}
+        Vector3 normal=axes[face_axis];
+        if(!face_side) normal=vector_negate(normal);
         printf("{\"kind\":\"timber-face\",\"source\":{\"kind\":\"timber\",\"id\":%u},\"localFace\":",t->id);
         js_string(timber_face_short_name((TimberFaceId)face));
         printf(",\"normalWorld\":[%lld,%lld,%lld],\"owner\":",(long long)normal.x,(long long)normal.y,(long long)normal.z);

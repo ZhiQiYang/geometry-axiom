@@ -38,12 +38,16 @@ class NativeBuild:
         self.work = Path(self.temp.name)
         self.kernel = self.work / "isolated-kernel"
         self.kernel.mkdir()
-        for name in ("types.h", "exact.h", "exact.c", "codec.h", "codec.c", "geometry.h", "geometry.c", "grid.h", "grid.c", "parameters.h", "parameters.c", "linear.h", "linear.c", "named_values.h", "named_values.c", "datums.h", "datums.c"):
+        for name in ("types.h", "exact.h", "exact.c", "codec.h", "codec.c", "geometry.h", "geometry.c", "grid.h", "grid.c", "parameters.h", "parameters.c", "linear.h", "linear.c", "named_values.h", "named_values.c", "datums.h", "datums.c", "source.h", "source.c"):
             shutil.copy2(ROOT / "geometry-core/kernel" / name, self.kernel / name)
         (self.kernel / "internal").mkdir()
         shutil.copy2(ROOT / "geometry-core/kernel/internal/parameter_store.h", self.kernel / "internal/parameter_store.h")
         shutil.copy2(ROOT / "geometry-core/kernel/internal/named_values.h", self.kernel / "internal/named_values.h")
         shutil.copy2(ROOT / "geometry-core/kernel/internal/datums.h", self.kernel / "internal/datums.h")
+        self.woodworking = self.work / "isolated-woodworking"
+        self.woodworking.mkdir()
+        for name in ("members.h", "members.c"):
+            shutil.copy2(ROOT / "geometry-templates/woodworking/native" / name, self.woodworking / name)
         self.windows = os.name == "nt"
         self.suffix = ".exe" if self.windows else ""
         self.logs = []
@@ -68,6 +72,8 @@ class NativeBuild:
         self.linear_object = self.compile(self.kernel / "linear.c", "linear")
         self.named_values_object = self.compile(self.kernel / "named_values.c", "named-values")
         self.datums_object = self.compile(self.kernel / "datums.c", "datums")
+        self.source_object = self.compile(self.kernel / "source.c", "source")
+        self.wood_members_object = self.compile(self.woodworking / "members.c", "wood-members")
         exact_source = self.work / "exact-client.c"
         shutil.copy2(ROOT / "tests/geo261_exact_harness.c", exact_source)
         self.exact_client = self.compile(exact_source, "exact-client")
@@ -81,6 +87,8 @@ class NativeBuild:
         self.codec = self.link("codec-client", [self.codec_client, self.codec_object])
         self.bridge_object = None
         self.bridge_exe = None
+        self.cli_exe = None
+        self.model_base_exe = None
 
     def run_build(self, args):
         if self.windows:
@@ -101,7 +109,7 @@ class NativeBuild:
             args = ["cl", "/nologo", "/utf-8", "/Od", "/W3", "/c", "/I" + str(self.kernel), "/Fo:" + str(out)]
             # Product CLI excludes GDI; codec clients must retain _WIN32 so
             # their stdout stays binary during base64 round-trip assertions.
-            if source == ROOT / "geometry-web/web_bridge.c":
+            if source in (ROOT / "geometry-web/web_bridge.c", ROOT / "current_geometry.c", ROOT / "geometry-core/model_base.c"):
                 args.append("/U_WIN32")
             args += ["/D" + d for d in defines] + [str(source)]
         else:
@@ -121,13 +129,28 @@ class NativeBuild:
 
     def bridge(self):
         if self.bridge_object is None:
-            self.bridge_object = self.compile(ROOT / "geometry-web/web_bridge.c", "product-bridge", ["GEOMETRY_KERNEL_EXTERNAL=1"])
-            self.bridge_exe = self.link("product-bridge", [self.bridge_object, *self.kernel_objects()])
+            self.bridge_object = self.compile(ROOT / "geometry-web/web_bridge.c", "product-bridge", ["GEOMETRY_KERNEL_EXTERNAL=1", "GEOMETRY_WOODWORKING_EXTERNAL=1"])
+            self.bridge_exe = self.link("product-bridge", [self.bridge_object, *self.product_objects()])
         return self.bridge_exe
+
+    def product_objects(self):
+        return [*self.kernel_objects(), self.wood_members_object]
+
+    def cli(self):
+        if self.cli_exe is None:
+            obj = self.compile(ROOT / "current_geometry.c", "product-cli", ["GEOMETRY_KERNEL_EXTERNAL=1", "GEOMETRY_WOODWORKING_EXTERNAL=1"])
+            self.cli_exe = self.link("product-cli", [obj, *self.product_objects()])
+        return self.cli_exe
+
+    def model_base(self):
+        if self.model_base_exe is None:
+            obj = self.compile(ROOT / "geometry-core/model_base.c", "product-model-base", ["GEOMETRY_KERNEL_EXTERNAL=1", "GEOMETRY_WOODWORKING_EXTERNAL=1"])
+            self.model_base_exe = self.link("product-model-base", [obj, *self.product_objects()])
+        return self.model_base_exe
 
     def kernel_objects(self):
         return [self.exact_object, self.codec_object, self.geometry_object, self.grid_object,
-                self.parameters_object, self.linear_object, self.named_values_object, self.datums_object]
+                self.parameters_object, self.linear_object, self.named_values_object, self.datums_object, self.source_object]
 
     def mutant(self, module, before, after, client_object=None):
         text = (self.kernel / (module + ".c")).read_text(encoding="utf-8")
@@ -145,6 +168,7 @@ class NativeBuild:
         linear = changed if module == "linear" else self.linear_object
         named_values = changed if module == "named_values" else self.named_values_object
         datums = changed if module == "datums" else self.datums_object
+        source_object = changed if module == "source" else self.source_object
         if client_object is None:
             client_object = self.exact_client if module == "exact" else self.codec_client
         dependencies = [self.geometry_object] if module == "grid" else []
@@ -157,7 +181,7 @@ class NativeBuild:
         if module == "datums":
             dependencies = [self.geometry_object, self.linear_object, self.exact_object]
         client = self.link(module + "-mutant-client", [client_object, changed, *dependencies])
-        product = self.link(module + "-mutant-bridge", [self.bridge_object, exact, codec, geometry, grid, parameters, linear, named_values, datums])
+        product = self.link(module + "-mutant-bridge", [self.bridge_object, exact, codec, geometry, grid, parameters, linear, named_values, datums, source_object, self.wood_members_object])
         return client, product
 
 

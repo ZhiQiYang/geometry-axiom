@@ -23,6 +23,7 @@ static int reference_fragment_candidate(const World *base,SurfaceId source,Surfa
     char previous_error[sizeof g_revalidate_error]; memcpy(previous_error,g_revalidate_error,sizeof previous_error);
     g_reference_capturing=false;
     bool valid=timber?reference_eval_timber(&ctx,index):reference_eval_guide(&ctx,index);
+    reference_sources_dispose(&ctx);
     g_reference_capturing=capture; g_reference_issue_count=issues;
     memcpy(g_revalidate_error,previous_error,sizeof previous_error);
     if (!valid) { free(candidate); return false; }
