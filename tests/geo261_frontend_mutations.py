@@ -38,14 +38,20 @@ FILES = (
     'tests/test_grid_definition_diagram.js',
     'tests/test_runtime_version.py',
     'tests/test_assembly_workspace.js',
+    'tests/test_draw_annotation.js',
 )
 SUITES = {
     'recipes': (['node', '--test', '--test-reporter=tap', 'tests/test_woodworking_frontend.js'], 17),
     'assembly': (['node', '--test', '--test-reporter=tap', 'tests/test_assembly_workspace.js'], 52),
+    'annotation': (['node', '--test', '--test-reporter=tap', 'tests/test_draw_annotation.js'], 7),
     'grid': (['node', '--test', '--test-reporter=tap', 'tests/test_grid_definition_diagram.js'], 13),
     'runtime': ([sys.executable, 'tests/test_runtime_version.py'], 30),
 }
 MUTATIONS = (
+    ('annotation-parses-label', 'annotation', 'geometry-web/app.js',
+     'annotation = o.annotation;',
+     "annotation = (()=>{const m=String(o.t).match(/^(角材\\s*(\\d+))\\s+(A[01]|B[01]|START|END)$/);return m?{kind:'member-face',entityId:Number(m[2]),faceId:m[3],shortLabel:m[1]}:null;})();",
+     'member identity survives translated labels'),
     ('instance-bypasses-recipe', 'assembly', 'geometry-web/assembly-workspace.js',
      'GeometryApplication.woodworking.assemblyInstanceMembers(rule.value)',
      "((r)=>{if(r.members.length!==3||r.joints.length!==2||r.joints.some(j=>j.kind!=='end-to-side')||r.joints[0].terminatedMember!==r.joints[1].terminatedMember)throw Error('首版只支援兩支主支與一支端接副支。');const sec=r.joints[0].terminatedMember,start=r.joints.find(j=>j.end==='start'),finish=r.joints.find(j=>j.end==='finish');if(!start||!finish)throw Error('副支必須有起端與末端接合。');return r.members.map(m=>({memberId:m.id,role:m.id===sec?'secondary':'primary',guideId:0,dir:m.id===sec?'+u':'+v',depthSide:'+n',ends:m.id===sec?{start:{kind:'member',memberId:start.targetMember},finish:{kind:'member',memberId:finish.targetMember}}:{start:{kind:'timber',id:0},finish:{kind:'timber',id:0}}}));})(rule.value)",

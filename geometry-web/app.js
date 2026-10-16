@@ -881,7 +881,11 @@ function replay(ops, root) {
         "stroke-dasharray": st.dash || "none",
         "vector-effect": "non-scaling-stroke" }, g);
     } else if (o.op === "text") {
-      const fullLabel = String(o.t), timberLabel = fullLabel.match(/^(角材\s*(\d+))\s+(A[01]|B[01]|START|END)$/);
+      const fullLabel = String(o.t), annotation = o.annotation;
+      const memberFace = annotation?.kind === "member-face" &&
+        Number.isInteger(annotation.entityId) && annotation.entityId > 0 && annotation.entityId <= 0xffffffff &&
+        ["A0", "A1", "B0", "B1", "START", "END"].includes(annotation.faceId) &&
+        typeof annotation.shortLabel === "string";
       const t = el("text", { x:o.x, y:o.y, fill: st.line,
         "font-size": st.text, "font-weight": st.bold ? "bold" : "normal",
         "text-anchor": st.anchor || "start", "data-label-full":fullLabel,
@@ -891,9 +895,9 @@ function replay(ops, root) {
       t.setAttribute("data-fs0", o.s === 1 ? 15 : 11);
       if (st.mid) t.setAttribute("dominant-baseline", "middle");
       if (o.rot) t.setAttribute("transform", `rotate(${o.rot} ${o.x} ${o.y})`);
-      t.textContent = timberLabel ? timberLabel[1] : fullLabel;
-      if (timberLabel) {
-        t.dataset.timberId = timberLabel[2]; t.dataset.timberFace = timberLabel[3];
+      t.textContent = memberFace ? annotation.shortLabel : fullLabel;
+      if (memberFace) {
+        t.dataset.timberId = String(annotation.entityId); t.dataset.timberFace = annotation.faceId;
         t.setAttribute("aria-label", fullLabel);
         el("title", {}, t).textContent = fullLabel;
       }
