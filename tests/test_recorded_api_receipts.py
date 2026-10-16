@@ -134,6 +134,26 @@ class RecordedApiReceipts(unittest.TestCase):
                 self.assertEqual({'ok': True, 'result': self.result}, self.send(receipt=ids[0]), msg='T1_CAPACITY')
                 self.assertEqual(int(count == 255), self.bridge.call_count, msg='T1_CAPACITY')
 
+    def test_full_table_ack_in_same_request_frees_capacity_and_runs_new_command_once(self):
+        ids = [str(uuid.UUID(int=i + 1)) for i in range(256)]
+        old_result = self.encode({'ok': True, 'transaction_id': 16, 'revision': 8})
+        self.native.api_receipts.update((key, ('engineering-confirm 16', old_result)) for key in ids)
+        self.assertEqual(256, len(self.native.api_receipts), msg='T1_ACK_CAPACITY')
+        self.assert_bridge_calls()
+        expected = self.native.api_receipts.copy()
+        del expected[ids[0]]
+        request_id = str(uuid.UUID(int=257))
+        response = self.send(requestId=request_id, cmd='engineering-confirm 17', ack=[ids[0]])
+        self.assertEqual(self.result, response,
+                         msg='T1_ACK_CAPACITY: clear this request ack before checking new-id capacity')
+        self.assert_bridge_calls('engineering-confirm 17')
+        expected[request_id] = ('engineering-confirm 17', self.encode(self.result))
+        self.assertEqual(expected, self.native.api_receipts,
+                         msg='T1_ACK_CAPACITY: replace only the acknowledged receipt with the new result')
+        self.assertEqual({'ok': True, 'result': self.result}, self.send(receipt=request_id),
+                         msg='T1_ACK_CAPACITY: new result remains recoverable without another bridge call')
+        self.assert_bridge_calls('engineering-confirm 17')
+
     def test_ack_clears_old_result_and_later_lookup_does_not_restore_history(self):
         request_id, ack_id = str(uuid.uuid4()), str(uuid.uuid4())
         self.assertEqual(self.result, self.send(requestId=request_id, cmd='engineering-confirm 17'), msg='T1_ACK_HISTORY')
