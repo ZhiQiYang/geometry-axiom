@@ -10,6 +10,7 @@
 #include "parameters.h"
 #include "linear.h"
 #include "named_values.h"
+#include "datums.h"
 #else
 #include "codec.c"
 #include "exact.c"
@@ -18,5 +19,6 @@
 #include "parameters.c"
 #include "linear.c"
 #include "named_values.c"
+#include "datums.c"
 #endif
 #endif

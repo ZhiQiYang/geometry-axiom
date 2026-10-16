@@ -39,10 +39,10 @@ static void json_reference_guide(const World *w,size_t i)
         (long long)segments[j].end.u,(long long)segments[j].end.v);
     fputs("]}",stdout);
 }
-static void json_reference_datum(const DatumPlane *d)
+static void json_reference_datum(const World *w,const GeoDatum *d)
 {
     if(!d){fputs("null",stdout);return;}
-    printf("{\"id\":%u,\"axis\":\"%c\",\"position\":%lld,\"expression\":",d->id,'X'+d->axis,(long long)d->position);js_string(d->expression);putchar('}');
+    printf("{\"id\":%u,\"axis\":\"%c\",\"position\":%lld,\"expression\":",d->id,'X'+d->axis,(long long)d->position);js_string(app_datum_expression(w,d->id));putchar('}');
 }
 /* Serialize the rebuilt candidate, never an ownership-selected dependency set.
  * Reference previews retain their existing before-only timber list; assembly
@@ -113,10 +113,10 @@ static void json_reference_preview(void)
     }
     fputs("],\"datums\":[",stdout);first=true;
     for(int pass=0;pass<2;++pass){const World *w=pass?&g_preview.after:&g_preview.before;
-        for(size_t i=0;i<w->datum_count;++i){uint32_t id=w->datums[i].id;
-            const DatumPlane *before=world_find_datum(&g_preview.before,id),*after=world_find_datum(&g_preview.after,id);
+        for(size_t i=0;i<geo_datums_count(&w->datum_planes);++i){uint32_t id=geo_datums_at(&w->datum_planes,i)->id;
+            const GeoDatum *before=world_find_datum(&g_preview.before,id),*after=world_find_datum(&g_preview.after,id);
             if(pass && before)continue;
-            printf("%s{\"id\":%u,\"before\":",first?"":",",id);first=false;json_reference_datum(before);fputs(",\"after\":",stdout);json_reference_datum(after);putchar('}');
+            printf("%s{\"id\":%u,\"before\":",first?"":",",id);first=false;json_reference_datum(&g_preview.before,before);fputs(",\"after\":",stdout);json_reference_datum(&g_preview.after,after);putchar('}');
         }
     }putchar(']');
     json_grid_system_preview();
@@ -410,10 +410,10 @@ static void json_references_world(const World *w,const char *fingerprint)
         printf(",\"value\":%lld}",(long long)geo_named_values_at(&w->named_values,i)->value);
     }
     fputs("],\"datums\":[",stdout);
-    for (size_t i=0;i<w->datum_count;++i) {
-        const DatumPlane *d=&w->datums[i];
+    for (size_t i=0;i<geo_datums_count(&w->datum_planes);++i) {
+        const GeoDatum *d=geo_datums_at(&w->datum_planes,i);
         printf("%s{\"id\":%u,\"axis\":\"%c\",\"position\":%lld,\"expression\":",i?",":"",d->id,"XYZ"[d->axis],(long long)d->position);
-        js_string(d->expression); fputs(",\"guides\":[",stdout); bool first=true;
+        js_string(app_datum_expression(w,d->id)); fputs(",\"guides\":[",stdout); bool first=true;
         for (size_t j=0;j<w->guide_count;++j) if (w->guides[j].source==GUIDE_DATUM && w->guides[j].datum_id==d->id) {
             printf("%s%u",first?"":",",w->guides[j].id); first=false;
         }

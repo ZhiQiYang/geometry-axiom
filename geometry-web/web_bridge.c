@@ -578,7 +578,7 @@ static void cmd_newid(size_t surface_count)
     WORLD_NEXT_ID(ms,  g_world.spaces,     g_world.space_count,     true);
     WORLD_NEXT_ID(mc,  g_world.columns,    g_world.column_count,    false);
     WORLD_NEXT_ID(mbm, g_world.beams,      g_world.beam_count,      false);
-    WORLD_NEXT_ID(md,  g_world.datums,     g_world.datum_count,     false);
+    WORLD_NEXT_ID(md, geo_datums_values(&g_world.datum_planes), geo_datums_count(&g_world.datum_planes), false);
     WORLD_NEXT_ID(mparam, geo_parameters_cards(&g_world.parameters), geo_parameters_card_count(&g_world.parameters), false);
 
     WORLD_NEXT_ID(mar,g_world.assembly.rules,g_world.assembly.rule_count,true);

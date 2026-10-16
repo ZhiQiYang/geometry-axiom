@@ -18,9 +18,12 @@ bool geo_linear_append(GeoLinearExpression *expression,int64_t numerator,int64_t
     if(!expression||expression->count>=GEO_LINEAR_MAX_TERMS||expression->key_bytes>GEO_LINEAR_KEY_BYTES||numerator==INT64_MIN||denominator<=0||!source.provider)return false;
     const char *key=source.key?source.key:""; size_t length=strlen(key)+1;
     if(length>GEO_LINEAR_KEY_BYTES-expression->key_bytes)return false;
-    GeoLinearTerm term={numerator,denominator,source.provider,source.id,source.field,expression->key_bytes};
+    GeoLinearTerm *term=&expression->terms[expression->count];
+    memset(term,0,sizeof *term);
+    term->numerator=numerator;term->denominator=denominator;
+    term->provider=source.provider;term->id=source.id;term->field=source.field;term->key_offset=expression->key_bytes;
     memcpy(expression->keys+expression->key_bytes,key,length); expression->key_bytes+=length;
-    expression->terms[expression->count++]=term; return true;
+    ++expression->count; return true;
 }
 void geo_linear_finish(GeoLinearExpression *expression,bool complete)
 {if(expression)expression->complete=complete;}
