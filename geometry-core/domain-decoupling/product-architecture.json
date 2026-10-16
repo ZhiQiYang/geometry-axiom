@@ -153,6 +153,12 @@
       "purpose": "Application/runtime/protocol or workspace host domains; composes explicit K/W providers where needed"
     },
     {
+      "path": "geometry-app/native/enclosure_sources.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Same-candidate enclosure graph composition and host parser/rebuild routing; enumerates actual enclosure slots during model inspection"
+    },
+    {
       "path": "geometry-app/native/grid_adapter.inc",
       "layer": "H",
       "language": "c",
@@ -451,6 +457,18 @@
       "layer": "K",
       "language": "c",
       "purpose": "Neutral native enclosure API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/enclosure_sources.c",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral enclosure member definitions, evaluated enclosure results and actual axis slots using typed K region/frame sources and shared enclosure evaluation"
+    },
+    {
+      "path": "geometry-core/kernel/enclosure_sources.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Public neutral enclosure source identities, typed evaluation accessors, canonical schemas and candidate lifetime contract"
     },
     {
       "path": "geometry-core/kernel/exact.c",
@@ -1075,6 +1093,18 @@
       "layer": "W",
       "language": "c",
       "purpose": "Woodworking template cut list policy/provider/presentation using public K APIs"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/definition_sources.c",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking authored member/anchor/RC/boundary-policy definitions; canonical typed values and K enclosure/region dependency edges"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/definition_sources.h",
+      "layer": "W",
+      "language": "c",
+      "purpose": "Woodworking definition provider API and typed declaration readers over public K source/enclosure capabilities"
     },
     {
       "path": "geometry-templates/woodworking/native/derived_placement.c",
@@ -3574,6 +3604,13 @@
       "WOOD_CONTACT_SOURCE_METADATA_SIZE",
       "WOOD_CONTACT_SOURCE_RECORD_SIZE",
       "WOOD_CUT_LIST_MEMBER_CAPACITY",
+      "WOOD_DEFINITION_BEAM",
+      "WOOD_DEFINITION_BOUNDARY",
+      "WOOD_DEFINITION_COLUMN",
+      "WOOD_DEFINITION_MEMBER",
+      "WOOD_DEFINITION_MEMBER_A",
+      "WOOD_DEFINITION_MEMBER_B",
+      "WOOD_DEFINITION_PLACEMENT",
       "WOOD_DEPTH_NEGATIVE_NORMAL",
       "WOOD_DEPTH_POSITIVE_NORMAL",
       "WOOD_DERIVED_COMPONENT_MAX",
@@ -3730,7 +3767,13 @@
       "WoodContactWorld",
       "WoodCutGroup",
       "WoodCutList",
+      "WoodDefinitionContext",
       "WoodDefinitionKey",
+      "WoodDefinitionKind",
+      "WoodDefinitionReader",
+      "WoodDefinitionResult",
+      "WoodDefinitionSources",
+      "WoodDefinitionWriter",
       "WoodDerivedContext",
       "WoodDerivedEvaluation",
       "WoodDerivedValue",
@@ -3774,6 +3817,7 @@
       "WoodMemberAnchorKind",
       "WoodMemberAxisFact",
       "WoodMemberDeclarationContext",
+      "WoodMemberDefinition",
       "WoodMemberDepth",
       "WoodMemberEdgeFact",
       "WoodMemberEdgeStatus",
@@ -3911,6 +3955,17 @@
       "wood_contact_sources_create",
       "wood_contact_sources_destroy",
       "wood_cut_list_collect",
+      "wood_definition_source_decode",
+      "wood_definition_source_ref",
+      "wood_definition_sources_beam",
+      "wood_definition_sources_boundary",
+      "wood_definition_sources_column",
+      "wood_definition_sources_complete",
+      "wood_definition_sources_create",
+      "wood_definition_sources_destroy",
+      "wood_definition_sources_dimension",
+      "wood_definition_sources_member",
+      "wood_definition_sources_placement",
       "wood_dp_edge_key",
       "wood_dp_edge_resolve",
       "wood_dp_find",
@@ -4267,8 +4322,15 @@
     ],
     "forbiddenStrings": [
       "calcium-silicate-6",
-      "woodworking/1",
-      "woodworking-model"
+      "wood-authored-definition/1",
+      "wood.boundary-policy/1",
+      "wood.definition",
+      "wood.member.declaration/1",
+      "wood.member.placement/1",
+      "wood.rc-beam/1",
+      "wood.rc-column/1",
+      "woodworking-model",
+      "woodworking/1"
     ],
     "forbiddenModules": {
       "c": [

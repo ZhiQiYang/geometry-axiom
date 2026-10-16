@@ -1,24 +1,68 @@
 {
   "schema": "geometry-product-architecture-receipt/1",
-  "createdUtc": "2026-10-16T15:50:03.589063+00:00",
-  "basis": "Integration working tree plus root-approved getter/include fixes; exact file hashes, not a claim about a future Git commit.",
+  "createdUtc": "2026-10-16T16:10:00.422787+00:00",
+  "basis": "Committed integration product sources at sourceBaseHead, plus this reviewed manifest/scan/report/receipt refresh.",
+  "sourceBaseHead": "47160841738e38c24ef4ee05c291467c760d1e99",
+  "headObservedBefore": "47160841738e38c24ef4ee05c291467c760d1e99",
+  "headObservedAfter": "47160841738e38c24ef4ee05c291467c760d1e99",
+  "headBinding": "The source closure excludes derived audit artifacts; a later audit-only commit does not recursively change the certified product inputs.",
   "hashMode": "sha256 after CRLF-to-LF normalization",
-  "manifestSha256": "4d8e98bd4fe47c2179e453170512ddf80bd55ad6d361d6e442b64ef01582d306",
+  "manifestSha256": "c774171a066d499fb0eadb195b8fd9636e92c4e2c5060ed03e515e08f9cc3642",
   "scannerSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
-  "scanSha256": "8f0fc4c585554d61a53f9c836498549d9ab59f1aed69c1329a4f2107f238e1ef",
-  "inputClosureSha256": "f951c87311cc84fc582407c35e68d4bf1f6e156a65dcb322870ece274ee713f2",
+  "scanSha256": "1cd9a59ac613632441f0e7523d3063d7c8065d6672047c1389cb730ef5b03a5f",
+  "inputClosureSha256": "4bf7fb002b256911eb21cda9bf18d5f2cf28da3a47ce6bc5d8459c38a7b2eef0",
+  "inputClosureExcludes": [
+    "geometry-core/domain-decoupling/product-architecture.json",
+    "geometry-core/domain-decoupling/product-architecture-scan.json",
+    "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+    "geometry-core/domain-decoupling/product-architecture-receipt.json"
+  ],
+  "inputClosureExclusionReason": "These non-executable audit artifacts are not product source inputs. Manifest/scan are hashed separately; the receipt never hashes itself.",
   "counts": {
-    "executableFiles": 556,
-    "ownedSources": 319,
+    "executableFiles": 561,
+    "ownedSources": 324,
     "exclusions": 237,
-    "edges": 756,
+    "edges": 768,
     "diagnostics": 0,
     "layers": {
-      "H": 189,
-      "K": 61,
-      "W": 63,
+      "H": 190,
+      "K": 63,
+      "W": 65,
       "vendor": 6
     }
+  },
+  "manifestRefresh": {
+    "previousManifestSha256": "4d8e98bd4fe47c2179e453170512ddf80bd55ad6d361d6e442b64ef01582d306",
+    "firstObservedHead": "85900b63ff67c1967f6b4cb6f9ccb16d34e64256",
+    "priorManifestCheck": {
+      "exitCode": 1,
+      "code": "SOURCE_UNREGISTERED",
+      "path": "geometry-app/native/enclosure_sources.inc"
+    },
+    "addedSources": [
+      {
+        "path": "geometry-app/native/enclosure_sources.inc",
+        "layer": "H"
+      },
+      {
+        "path": "geometry-core/kernel/enclosure_sources.c",
+        "layer": "K"
+      },
+      {
+        "path": "geometry-core/kernel/enclosure_sources.h",
+        "layer": "K"
+      },
+      {
+        "path": "geometry-templates/woodworking/native/definition_sources.c",
+        "layer": "W"
+      },
+      {
+        "path": "geometry-templates/woodworking/native/definition_sources.h",
+        "layer": "W"
+      }
+    ],
+    "staleExcludedVendorOrEmbedDigests": [],
+    "sourceFix": "W definition_sources.h uses ../native/document.h after the real dependency scan rejected the ambiguous document.h include; no guard weakened."
   },
   "scanPassed": true,
   "validation": [
@@ -29,7 +73,12 @@
       "passed": 204,
       "failed": 0,
       "skipped": 1,
-      "skipReason": "Windows cannot create the real symlink fixture: WinError 1314; not counted as passed."
+      "skipReason": "Windows cannot create the real symlink fixture: WinError 1314; not counted as passed.",
+      "reusedFrom": {
+        "receiptSha256": "1dcfef36844477e12f0239be6605eca57cf9aea62ab83fd56dbf44165199d9b0",
+        "createdUtc": "2026-10-16T15:50:03.589063+00:00"
+      },
+      "reuseReason": "Scanner and generic test source hashes are unchanged; no unnecessary rerun."
     },
     {
       "command": "python -B tests/test_product_architecture.py",
@@ -38,8 +87,8 @@
       "passed": 18,
       "failed": 0,
       "skipped": 0,
-      "seconds": 80.658,
-      "scope": "Real-root setup inventory before copying, static full product graph, actual-file mutations, audited iframe controls, and K-only source tree without H/W."
+      "seconds": 53.378,
+      "scope": "Real-root setup inventory before copying, static full product graph, actual-file mutations, audited iframe controls, and all 63 K files without H/W."
     }
   ],
   "notClaimed": [
@@ -53,7 +102,7 @@
   "inputs": [
     {
       "path": "current_geometry.c",
-      "sha256": "a1a3d3990aa3052736d40544bac37c1b2db0a7239867baf1f5c68bae381322e8"
+      "sha256": "090f6f928849be8ab2d4d1b327538c0563aeec2d251ce4c73f581885f982ce69"
     },
     {
       "path": "geometry-app/application.js",
@@ -132,6 +181,10 @@
       "sha256": "34f9ac6e18bbb11f9e1d33df0773eae7b8733888ca062b35fa2f3e4fa7d7019d"
     },
     {
+      "path": "geometry-app/native/enclosure_sources.inc",
+      "sha256": "5166462c06b4d5375a5eba8888e8f98dc6ecdfe351a9b4e2437ed2497ad6fce6"
+    },
+    {
       "path": "geometry-app/native/grid_adapter.inc",
       "sha256": "dc2f189dd525513f03133a9d608a4196ca150bce220e740f73e4bd6051a2cd46"
     },
@@ -161,11 +214,11 @@
     },
     {
       "path": "geometry-app/native/model_sources.inc",
-      "sha256": "fe5fa1f5636b213892940c633a5a986a7a1bf863b2bd76d0da39a89fc34e9d23"
+      "sha256": "28015c7692bcd43d3d84ecfa0e7f3fbb87fbed6a0fc3a569cfe5a111513d53db"
     },
     {
       "path": "geometry-app/native/reference_sources.inc",
-      "sha256": "d160237aadda87c7deb6e345e441485993a29e3db4cfbdf3a6a1ba881caf0f81"
+      "sha256": "a0e920a2b42e8bb2db9bc51fee7ab9556d17157125922180fbfdaa87cf05ca7f"
     },
     {
       "path": "geometry-app/native/versions_adapter.inc",
@@ -173,7 +226,7 @@
     },
     {
       "path": "geometry-app/native/woodworking_unity.inc",
-      "sha256": "fc23f741a3511d667e8e79f78090161d84b9de5187f8037b79f09677c4c7ec33"
+      "sha256": "5029ecbcdddf04031115d6c4eddb47a9835142e5fbd1a8bc2bdf41ffb6515381"
     },
     {
       "path": "geometry-app/native/world_candidate.inc",
@@ -676,6 +729,14 @@
       "sha256": "8e6162fee153af7ff6a1d8e13d8b3e01db90c51d9d41b846025876dfb3c5c7f5"
     },
     {
+      "path": "geometry-core/kernel/enclosure_sources.c",
+      "sha256": "259adf566e67f30d676e756c8efc85817213967720e267f7ed5d38c4e67444ee"
+    },
+    {
+      "path": "geometry-core/kernel/enclosure_sources.h",
+      "sha256": "bf839f7ca1f2fa0a4729051245bbf8565db8bd5e1338bc2f246ef67d90d6642d"
+    },
+    {
       "path": "geometry-core/kernel/exact.c",
       "sha256": "4091d2100fc953f08bc2ea66de18503e6ed87e725a952ec14318779af9fd3cbf"
     },
@@ -757,7 +818,7 @@
     },
     {
       "path": "geometry-core/kernel/kernel_unity.inc",
-      "sha256": "f60574a3e8dc68656d588c5d2dca564e66644b5da8554d58e7aa08829052bcce"
+      "sha256": "f5d18a5406a764f0670fd18a0bc4f178a26f2235ae192957bb20e79567a622c0"
     },
     {
       "path": "geometry-core/kernel/linear.c",
@@ -841,7 +902,7 @@
     },
     {
       "path": "geometry-core/modeling/__init__.py",
-      "sha256": "e6423d3f86f086f2f8fd4084c7aa6e492cee6749dec2b3b4c7956d33c8087f4b"
+      "sha256": "6af3df790a3d13eb8efed307d1d3a826b573cc2effec2d3c93a7acf2ff1d45ac"
     },
     {
       "path": "geometry-core/modeling/_host.py",
@@ -901,7 +962,7 @@
     },
     {
       "path": "geometry-core/references.inc",
-      "sha256": "f49fc61603e71973c4f8a657916da0fb41493eaefdbd04e81f1f86c348d924f8"
+      "sha256": "a3db3f0d3aea770f0c22ec4685fcc8f85524f8a926149ec2305f171a150785e4"
     },
     {
       "path": "geometry-core/rule_cases/__init__.py",
@@ -989,7 +1050,7 @@
     },
     {
       "path": "geometry-guide/sync_axiom_reader.py",
-      "sha256": "ac3eee122090819b2470ea64e65cdc8c73a713be02deb4fc76641aaeae0089c4"
+      "sha256": "a9f8bb8869219b3abbfdc06ef5acf3dbc84b1ffceec926f67a9d28e2656136f6"
     },
     {
       "path": "geometry-guide/witness.py",
@@ -997,7 +1058,7 @@
     },
     {
       "path": "geometry-guide/公理層-閱讀器.html",
-      "sha256": "e1fb9173a4ef641880b364b16c7abb00e4b9dde1febe8fc3d53318bcc0aadb4f"
+      "sha256": "8c670a0138ef44107efc65501cd25607988e0f6ed42c88e3c2f9637c6d0d2b4d"
     },
     {
       "path": "geometry-templates/rectangular-grid/geometry_rectangular/__init__.py",
@@ -1092,6 +1153,14 @@
       "sha256": "86be5c1322fb704a36ac8a17ef3ff630b730715b0308244c63cea29b661abdda"
     },
     {
+      "path": "geometry-templates/woodworking/native/definition_sources.c",
+      "sha256": "f22fe0aac839b4269a9c06f2ea0b266207cc8ef5a6c4031b35be3e0796505645"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/definition_sources.h",
+      "sha256": "eb0874ea9c8bf463b9450695fe69d774ed14704758e89ea4c5533e657e03346d"
+    },
+    {
       "path": "geometry-templates/woodworking/native/derived_placement.c",
       "sha256": "84ac2ae7e911833e7ef894a54c575935c5e6223c9f52a10496306911e58325c8"
     },
@@ -1125,11 +1194,11 @@
     },
     {
       "path": "geometry-templates/woodworking/native/engineering_sources.c",
-      "sha256": "46f929e56f0ed04f35619abe9527bba2c4dacc6644bd1ad41a9ce57ceb74d476"
+      "sha256": "3a1e2816902731a88be0854671180dbe76c52a1429fee2509d40fc3d5891e4ab"
     },
     {
       "path": "geometry-templates/woodworking/native/engineering_sources.h",
-      "sha256": "7a47b3177645b1305ec426e8dadea898a8f7edcfeec0d916c5477294c9a154b5"
+      "sha256": "1c62edb68ab07ab7d7bc9f6261eb64fbefe0c2b43db3bf40f921f2549d03fb26"
     },
     {
       "path": "geometry-templates/woodworking/native/finish.c",
