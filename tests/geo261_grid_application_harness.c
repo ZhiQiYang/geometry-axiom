@@ -160,6 +160,9 @@ static int deletion(void)
     WoodGridState snapshot;memcpy(&snapshot,&state,sizeof snapshot);CHECK(!wood_grid_delete(&c,"grid",9,error,sizeof error));CHECK(!strcmp(error,"I23：網格 9 仍有子格 22，不能刪除"));CHECK(!memcmp(&state,&snapshot,sizeof state));
     CHECK(wood_grid_delete(&c,"grid",22,error,sizeof error));memcpy(&snapshot,&state,sizeof snapshot);
     CHECK(!wood_grid_delete(&c,"grid",9,error,sizeof error));CHECK_NAMED(!strcmp(error,"I23：網格 9 仍被參考線 77 引用，不能刪除"),"grid-guide-delete-before-timber");CHECK(!memcmp(&state,&snapshot,sizeof state));
+    WoodGridReference first=facts.refs[0];facts.refs[0]=facts.refs[1];facts.refs[1]=first;
+    CHECK(!wood_grid_delete(&c,"grid",9,error,sizeof error));CHECK_NAMED(!strcmp(error,"I23：網格 9 仍被參考線 77 引用，不能刪除"),"grid-guide-delete-order-is-template-policy");CHECK(!memcmp(&state,&snapshot,sizeof state));
+    first=facts.refs[0];facts.refs[0]=facts.refs[1];facts.refs[1]=first;
     facts.refs[0].expression="prefixgrid:9:u:0";CHECK(!wood_grid_delete(&c,"grid",9,error,sizeof error));CHECK(!strcmp(error,"V_GRID_LOCKED：有角材錨在這個網格上，先刪角材（timber）"));
     facts.refs[0].expression="10*grid:9:u:0";CHECK(!wood_grid_delete(&c,"grid",9,error,sizeof error));CHECK(!strcmp(error,"I23：網格 9 仍被參考線 77 引用，不能刪除"));
     facts.refs[0].expression="gridrule:9:5:7:0:0:u:0";CHECK(!wood_grid_delete(&c,"grid",9,error,sizeof error));CHECK(strstr(error,"參考線 77")!=NULL);

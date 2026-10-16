@@ -28,39 +28,20 @@ static bool apply_subgrid_line(const char *path,int line_no,char **t,int count,W
         return false;
     }
     ReferenceGrid *existing=world_find_grid_mut(world,candidate.id);
-    const ReferenceGrid *parent=world_find_grid(world,candidate.parent_id);
-    if (!parent || parent->is_subgrid || candidate.id==candidate.parent_id ||
-        (existing && (!existing->is_subgrid || existing->parent_id!=candidate.parent_id || existing->lattice_cell!=lattice))) {
-        scene_error(path,line_no,"D19/I25：父格必須是主網格；既有網格的類型與父格編號不能更換"); return false;
+    WoodGridContext context=app_grid_context(world);char prepare_error[256]="";
+    if(!wood_grid_prepare_child(&context,&candidate,lattice,du,dv,prepare_error,sizeof prepare_error)){
+        scene_error(path,line_no,prepare_error);return false;
     }
-    if (parent->axis[0].stagger_set || parent->axis[1].stagger_set) {
-        scene_error(path,line_no,"I24：有相位差的主格不能建立子網格"); return false;
-    }
-    if (parent->from_binding!=lattice) {
-        char message[192];
-        snprintf(message,sizeof message,"D19/I25：子格 %u 的父格 %u 必須使用 %s 參照形式",
-                    candidate.id,parent->id,parent->from_binding?"lattice-cell":"cell");
-        scene_error(path,line_no,message);
-        return false;
-    }
-    candidate.is_subgrid=true; candidate.lattice_cell=lattice; candidate.placement_id=parent->placement_id;
-    candidate.divisions[0]=du; candidate.divisions[1]=dv;
     /* I8a: invalid candidates must never masquerade as the old definition. */
     World *trial=malloc(sizeof *trial);
     if(!trial){scene_error(path,line_no,"I32: subgrid trial allocation failed");return false;}
     *trial=*world;
-    if (existing) trial->grids[existing-world->grids]=candidate;
-    else if (trial->grid_count<WORLD_MAX_GRIDS) trial->grids[trial->grid_count++]=candidate;
+    if (existing) trial->grid_applications.items[existing-world->grid_applications.items]=candidate;
+    else if (trial->grid_applications.count<WORLD_MAX_GRIDS) trial->grid_applications.items[trial->grid_applications.count++]=candidate;
     reference_capture_trial(trial);
     free(trial);
-    const PlacementSurface *p=world_find_placement(world,parent->placement_id);
     char err[256]="";
-    if (!p || !grid_is_valid_in(world->grids,world->grid_count,&candidate,p,world_placement_boundary(world,p),err,sizeof err)) {
-        scene_error(path,line_no,err[0]?err:"I25：找不到父格所屬的面"); return false;
-    }
-    if (!existing && world->grid_count>=WORLD_MAX_GRIDS) {
-        scene_error(path,line_no,"I10：主網格與子網格合計不能超過 16 組"); return false;
-    }
+    if(!wood_grid_child_check(&context,&candidate,err,sizeof err)){scene_error(path,line_no,err);return false;}
     if (existing) {
         if (!world_replace_object(world,existing,&candidate,sizeof candidate)) {
             scene_error(path,line_no,g_revalidate_error[0]?g_revalidate_error:"I25：子格變更導致引用失效，已回滾");
@@ -68,7 +49,7 @@ static bool apply_subgrid_line(const char *path,int line_no,char **t,int count,W
         }
     } else {
         World backup=*world;
-        world->grids[world->grid_count++]=candidate;
+        world->grid_applications.items[world->grid_applications.count++]=candidate;
         if (!world_revalidate(world)) {
             *world=backup;
             scene_error(path,line_no,g_revalidate_error[0]?g_revalidate_error:"I25：新子格不合法，已回滾");
