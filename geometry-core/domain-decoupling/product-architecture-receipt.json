@@ -1,16 +1,18 @@
 {
   "schema": "geometry-product-architecture-receipt/1",
-  "createdUtc": "2026-10-16T16:23:35.201222+00:00",
+  "createdUtc": "2026-10-16T17:36:55.562677+00:00",
   "basis": "Committed integration product sources at sourceBaseHead, plus this reviewed manifest/scan/report/receipt refresh.",
-  "sourceBaseHead": "1ee2a890d7a734f381eac8c716910939818315db",
-  "headObservedBefore": "1ee2a890d7a734f381eac8c716910939818315db",
-  "headObservedAfter": "1ee2a890d7a734f381eac8c716910939818315db",
+  "sourceBaseHead": "d371420ec1922adb3df382a6cc2799b39bef7370",
+  "headObservedBefore": "d371420ec1922adb3df382a6cc2799b39bef7370",
+  "headObservedAfter": "d371420ec1922adb3df382a6cc2799b39bef7370",
   "headBinding": "The source closure excludes derived audit artifacts; a later audit-only commit does not recursively change the certified product inputs.",
   "hashMode": "sha256 after CRLF-to-LF normalization",
-  "manifestSha256": "740c40ef00013c2ed20b27d6af274ecf624bdd2bb4a40b4b34daee1ee38302ad",
+  "manifestSha256": "fb4d70a23e75b3171551be581832810affd1a942f64ee54fac34ec8c276e8446",
   "scannerSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
-  "scanSha256": "54d1e13b8ae8fc3581f69f6d33faa14f39975cdb2196f74001657efef7f24eca",
-  "inputClosureSha256": "6a2de24c8e50a8722c9a30ea47405bca1e0ef87ba9cd74289c83f35b6eda4d8f",
+  "scanSha256": "aa6cb8af2e4bc6635626159b7948d6b485377eb1c6a4216186b81d04ff25e7cd",
+  "reportSha256": "75092c951bcd418d5faaba2cf70e54209a632ee361b543f78cf499b486823331",
+  "inputClosureSha256": "78121d86bcafb9b3af424155707de32478d6acae9d8dbcd2239c690c54f96889",
+  "inputClosureHashSerialization": "SHA-256 of UTF-8 JSON for the path-sorted inputs array, with ensure_ascii=false and separators=(comma,colon); each entry has path then sha256, and no trailing newline.",
   "inputClosureExcludes": [
     "geometry-core/domain-decoupling/product-architecture.json",
     "geometry-core/domain-decoupling/product-architecture-scan.json",
@@ -19,40 +21,85 @@
   ],
   "inputClosureExclusionReason": "These non-executable audit artifacts are not product source inputs. Manifest/scan are hashed separately; the receipt never hashes itself.",
   "counts": {
-    "executableFiles": 563,
-    "ownedSources": 326,
+    "executableFiles": 567,
+    "ownedSources": 330,
     "exclusions": 237,
-    "edges": 776,
+    "edges": 790,
     "diagnostics": 0,
     "layers": {
       "H": 190,
-      "K": 65,
+      "K": 69,
       "W": 65,
       "vendor": 6
+    },
+    "languages": {
+      "c": 187,
+      "html": 4,
+      "javascript": 64,
+      "python": 75
     }
   },
   "manifestRefresh": {
-    "previousManifestSha256": "c774171a066d499fb0eadb195b8fd9636e92c4e2c5060ed03e515e08f9cc3642",
-    "firstObservedHead": "1ee2a890d7a734f381eac8c716910939818315db",
+    "previousManifestSha256": "740c40ef00013c2ed20b27d6af274ecf624bdd2bb4a40b4b34daee1ee38302ad",
+    "previousReceiptSha256": "0606b3545910a41e46cc1711f5933026057643edcc288c4975054f90152bbd42",
+    "previousReceiptCreatedUtc": "2026-10-16T16:23:35.201222+00:00",
+    "firstObservedHead": "d371420ec1922adb3df382a6cc2799b39bef7370",
     "priorManifestCheck": {
+      "command": "python -B tests/architecture_contract.py --root . --manifest geometry-core/domain-decoupling/product-architecture.json",
       "exitCode": 1,
+      "startedUtc": "2026-10-16T17:33:46.565509+00:00",
+      "finishedUtc": "2026-10-16T17:33:50.257646+00:00",
+      "seconds": 3.688,
+      "diagnostics": [
+        {
+          "path": "geometry-core/kernel/linear_definition_sources.c",
+          "line": 1,
+          "code": "SOURCE_UNREGISTERED",
+          "message": "executable source omitted from the complete manifest",
+          "direction": "",
+          "chain": []
+        }
+      ],
       "code": "SOURCE_UNREGISTERED",
-      "path": "geometry-core/kernel/region_key_sources.c"
+      "path": "geometry-core/kernel/linear_definition_sources.c"
     },
     "addedSources": [
       {
-        "path": "geometry-core/kernel/region_key_sources.c",
-        "layer": "K"
+        "path": "geometry-core/kernel/linear_definition_sources.c",
+        "layer": "K",
+        "language": "c",
+        "purpose": "Neutral candidate-local datum/guide authored-definition provider and portable codec; preserves expression mode, completeness, ordered signed terms and opaque source keys without evaluating quantities"
       },
       {
-        "path": "geometry-core/kernel/region_key_sources.h",
-        "layer": "K"
+        "path": "geometry-core/kernel/linear_definition_sources.h",
+        "layer": "K",
+        "language": "c",
+        "purpose": "Public neutral datum/guide authored-definition source and codec API; candidate-local registration and complete definition inventory without evaluating terms or positions"
+      },
+      {
+        "path": "geometry-core/kernel/version_sources.c",
+        "layer": "K",
+        "language": "c",
+        "purpose": "Neutral immutable-version definition/field provider and portable codec; preserves complete opaque identity, content, fingerprint, schema and typed fields, deriving field quantities from the returned typed definition"
+      },
+      {
+        "path": "geometry-core/kernel/version_sources.h",
+        "layer": "K",
+        "language": "c",
+        "purpose": "Public neutral immutable-version source and codec API; complete definitions, typed field source identities and candidate-local immutable-store registration without template-specific interpretation"
       }
     ],
     "staleExcludedVendorOrEmbedDigests": [],
-    "sourceFix": "No source or guard change in this refresh; two individually reviewed K ledger/coordinate provider entries cover normally merged product files."
+    "sourceFix": "No product source, prior classification, exclusion, policy or scanner/test change in this refresh; four individually reviewed K datum/guide authored-definition and immutable-version provider/API entries cover normally merged product files."
   },
   "scanPassed": true,
+  "actualCliScan": {
+    "command": "python -B tests/architecture_contract.py --root . --manifest geometry-core/domain-decoupling/product-architecture.json",
+    "exitCode": 0,
+    "startedUtc": "2026-10-16T17:35:17.864629+00:00",
+    "finishedUtc": "2026-10-16T17:35:37.371899+00:00",
+    "seconds": 19.503
+  },
   "validation": [
     {
       "command": "python -B tests/test_architecture_contract.py",
@@ -63,20 +110,30 @@
       "skipped": 1,
       "skipReason": "Windows cannot create the real symlink fixture: WinError 1314; not counted as passed.",
       "reusedFrom": {
-        "receiptSha256": "6f485e64ae8bf75010da8ceee02e8ec29e03d1656173b5fe2ca8e487215289fb",
-        "createdUtc": "2026-10-16T16:10:00.422787+00:00"
+        "receiptSha256": "0606b3545910a41e46cc1711f5933026057643edcc288c4975054f90152bbd42",
+        "createdUtc": "2026-10-16T16:23:35.201222+00:00",
+        "sourceBaseHead": "1ee2a890d7a734f381eac8c716910939818315db",
+        "priorProvenance": {
+          "receiptSha256": "6f485e64ae8bf75010da8ceee02e8ec29e03d1656173b5fe2ca8e487215289fb",
+          "createdUtc": "2026-10-16T16:10:00.422787+00:00"
+        }
       },
-      "reuseReason": "Scanner and generic test source hashes are unchanged; no unnecessary rerun."
+      "reuseReason": "Scanner and generic test LF-normalized source hashes match the previous receipt and remain unchanged before/after this verification; the 205-test suite was not rerun.",
+      "scannerSha256AtReuse": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e"
     },
     {
       "command": "python -B tests/test_product_architecture.py",
-      "sha256": "12e83386323afbffda89babcaea46eaa337ade1383f85cf63ec17e114238713e",
+      "exitCode": 0,
+      "startedUtc": "2026-10-16T17:35:45.187691+00:00",
+      "finishedUtc": "2026-10-16T17:36:43.197082+00:00",
+      "seconds": 58.008,
       "tests": 18,
       "passed": 18,
       "failed": 0,
       "skipped": 0,
-      "seconds": 56.959,
-      "scope": "Real-root setup inventory before copying, static full product graph, actual-file mutations, audited iframe controls, and all 65 K files without H/W."
+      "unittestSeconds": 56.677,
+      "sha256": "12e83386323afbffda89babcaea46eaa337ade1383f85cf63ec17e114238713e",
+      "scope": "Real-root setup inventory before copying, static full product graph, actual-file mutations, audited iframe controls, and all 69 K files without H/W."
     }
   ],
   "notClaimed": [
@@ -202,11 +259,11 @@
     },
     {
       "path": "geometry-app/native/model_sources.inc",
-      "sha256": "d15a4b21ae6cd4d183f297a2898eac45bd739288cdd93b73ba45078c6b83bce7"
+      "sha256": "936f22fcdb2b331454e2ed0f9e6bb511333375f4fc37cc3485bdb52ea09efa06"
     },
     {
       "path": "geometry-app/native/reference_sources.inc",
-      "sha256": "b10b01f9deb24997876ef2dd2087cb8c07c0b3d2a020d33fbf664e8cf99fb05f"
+      "sha256": "8479c06388d698e7e84facea55d94c4f7547515863c897bc369a8354146eb8de"
     },
     {
       "path": "geometry-app/native/versions_adapter.inc",
@@ -230,7 +287,7 @@
     },
     {
       "path": "geometry-core/assembly_generation.inc",
-      "sha256": "ecd07799806a677ccaebde0e78ef3d9defca64d182f4fa7550de985d3440da40"
+      "sha256": "9955eb79dd177739624b1b9b40e3751ce45121ed6925756bbe0d0aac3ee55547"
     },
     {
       "path": "geometry-core/assembly_types.h",
@@ -694,11 +751,11 @@
     },
     {
       "path": "geometry-core/kernel/datums.c",
-      "sha256": "5bb1777c66f8bcd4a675b36214cdc7b070a0262bc3585259e12c4e98cd656b3a"
+      "sha256": "f5d385df8d01b9d4399371ecd0dc02dfbe2ae0c62c988262ef5cd990676e065d"
     },
     {
       "path": "geometry-core/kernel/datums.h",
-      "sha256": "b2ceb4acd34931fd83f32bd4e499799b9b976f131d1b57ef86104c38348a57e8"
+      "sha256": "9b23a1c746c2a0f46d55e2bb19309167d76c7be34bed7ecc35a11df633d49607"
     },
     {
       "path": "geometry-core/kernel/document.c",
@@ -758,11 +815,11 @@
     },
     {
       "path": "geometry-core/kernel/guides.c",
-      "sha256": "eb6fa3b7a87c821ea707a919bc6373b47b42d1fcdb1f31876d892f2858593391"
+      "sha256": "1548a5f72bf3e9904a64c871d2658409aab300786af598e7ca69a4fb82e4897e"
     },
     {
       "path": "geometry-core/kernel/guides.h",
-      "sha256": "6f293517bd83f8dac4a018a81c9a226d4759994690a1ffe585f8884c40576682"
+      "sha256": "14e7f9444057120309666923378240a28ea7f1607a0c780ac5279c60a1099be1"
     },
     {
       "path": "geometry-core/kernel/internal/datums.h",
@@ -806,7 +863,7 @@
     },
     {
       "path": "geometry-core/kernel/kernel_unity.inc",
-      "sha256": "5e19bcc73bdc0abd02bc8844c27fc1f537ab5b0f6f63da17fbf428de75caa02e"
+      "sha256": "7c86958b0166f4a69301cc78ab4999ba2ffc1e8694daaf2d70a05baa7cf8cdfc"
     },
     {
       "path": "geometry-core/kernel/linear.c",
@@ -815,6 +872,14 @@
     {
       "path": "geometry-core/kernel/linear.h",
       "sha256": "7701f7e77f9ae34ee74004606a5c88bbc9158c0bb463ec55fa116d7d2ad245be"
+    },
+    {
+      "path": "geometry-core/kernel/linear_definition_sources.c",
+      "sha256": "acc6312b9d438f0ef1e705e1b977e2ce8ad6ca2853248636eb241f40aab62266"
+    },
+    {
+      "path": "geometry-core/kernel/linear_definition_sources.h",
+      "sha256": "c533ad62f5ddda634591ca42b5680c7e381fb0352c2f9c932eb900f3eb2f579f"
     },
     {
       "path": "geometry-core/kernel/named_values.c",
@@ -826,11 +891,11 @@
     },
     {
       "path": "geometry-core/kernel/parameter_sources.c",
-      "sha256": "1278051ec70e65cdefb18468afd1ae59d88479c61cdd764e96462a36e0739d23"
+      "sha256": "7314f6029f44bf102191a59957f370f5a845ea09d7d15ef4d6673bf466f7c88d"
     },
     {
       "path": "geometry-core/kernel/parameter_sources.h",
-      "sha256": "8a36e9912b295a827daf9bb8962ffe058609de69eaac356b439f99f5418caf8f"
+      "sha256": "7da1bd225d939fe1e628a971b68102eb5e45ecebae4b5f00bf184e5975d88fac"
     },
     {
       "path": "geometry-core/kernel/parameters.c",
@@ -885,6 +950,14 @@
       "sha256": "8e2db361ebbd20b9cb58a57a10ac80897a622b244f421e86a95039428544458f"
     },
     {
+      "path": "geometry-core/kernel/version_sources.c",
+      "sha256": "0fc25f0def85da7d29f7e2a8547e769de3917f01f7c16280048c1ec869c41236"
+    },
+    {
+      "path": "geometry-core/kernel/version_sources.h",
+      "sha256": "7c2b12a089b4525ec9e1bfd1742fa31fd40baf686f1461ada82deb3ad2dca671"
+    },
+    {
       "path": "geometry-core/kernel/versions.c",
       "sha256": "f499860f308efb046b575497cff613b3a59b18b74eba8acc040c90a0f46ab632"
     },
@@ -894,7 +967,7 @@
     },
     {
       "path": "geometry-core/model_base.c",
-      "sha256": "c3342bc58ad94b7e678bc6465c0761d7a99af873ef641281228187827b4ce634"
+      "sha256": "839f9530ef2778f22851b08767721fd78c755108424c21d538c21837d382f15b"
     },
     {
       "path": "geometry-core/modeling/__init__.py",
@@ -958,7 +1031,7 @@
     },
     {
       "path": "geometry-core/references.inc",
-      "sha256": "af63e9964a8dc5f3361640ab80e94302263d4bf40c7d6c0877900290841ec9c3"
+      "sha256": "80876accae40905593d5e5076b663cb5c7a757965105ac6d8c48364cb8fd3d16"
     },
     {
       "path": "geometry-core/rule_cases/__init__.py",
@@ -1102,7 +1175,7 @@
     },
     {
       "path": "geometry-templates/woodworking/native/assembly_sources.c",
-      "sha256": "75a6f6c385bfb307416617d40b4ebc5b9e99bebe6f5d4cd20b568c99ad395290"
+      "sha256": "a4cd810b8ea5f117cdc86540d8ee8a40fa691f75cef62a62944edac544b27abd"
     },
     {
       "path": "geometry-templates/woodworking/native/assembly_sources.h",
@@ -1174,11 +1247,11 @@
     },
     {
       "path": "geometry-templates/woodworking/native/engineering.c",
-      "sha256": "ef73fcbd7b40e26bb0eede36e66b2b7753364b644ad78945efa477f4948d64cb"
+      "sha256": "3f89d10d2ea927f61212f5752e732f42f609c68e42fd247b6197b44d6f75d858"
     },
     {
       "path": "geometry-templates/woodworking/native/engineering.h",
-      "sha256": "bbc97a53be268682c9eee2685befb80b6e45e9f0a8df60b1ebebaab4a9823bee"
+      "sha256": "e83c7c66c1aaab0268eaa6f36cc937650c02615e0440f6653cc27686dd9fae7b"
     },
     {
       "path": "geometry-templates/woodworking/native/engineering_operations.c",
@@ -1190,11 +1263,11 @@
     },
     {
       "path": "geometry-templates/woodworking/native/engineering_sources.c",
-      "sha256": "d76ca3b22deb8e6cc602a02ef106851178d3f628314610078d79095a3144ed11"
+      "sha256": "9ed8c4198f23d3298baba872b2481e26c0b69c084ac9a20d218ec565e614c9a6"
     },
     {
       "path": "geometry-templates/woodworking/native/engineering_sources.h",
-      "sha256": "7445abb9a63288e3ea64e40c86014b5c82f5885826a8dee84b16da1d59a525cc"
+      "sha256": "f1a5d22feeb0256c60f08d02841b80d21b8f9221fdf06eaf43a3133fc02b6893"
     },
     {
       "path": "geometry-templates/woodworking/native/finish.c",
@@ -1206,7 +1279,7 @@
     },
     {
       "path": "geometry-templates/woodworking/native/finish_sources.c",
-      "sha256": "65cb3c4ea55433eca8e15ef27b9d441dea5c2afc9a97fdebbb830668d88681bf"
+      "sha256": "81c78c2f44d18ac8a69a05454f30b40b6f836a13f7a7f188e40f7c254a1262d7"
     },
     {
       "path": "geometry-templates/woodworking/native/finish_sources.h",
@@ -1230,7 +1303,7 @@
     },
     {
       "path": "geometry-templates/woodworking/native/grid_sources.c",
-      "sha256": "8f0058094a290369a6c8df83e93c6faa98cbd917c150d34506812fffce8c158c"
+      "sha256": "7367f72a5cc70d549a7a5eb003438db9240360c0cff29827b043d18377bea464"
     },
     {
       "path": "geometry-templates/woodworking/native/grid_sources.h",
@@ -1286,19 +1359,19 @@
     },
     {
       "path": "geometry-templates/woodworking/native/section_profile.c",
-      "sha256": "b6b55180e07793d0e723d578f7d78e6e4a120f582986b5acdf6fd675ed9b5c30"
+      "sha256": "a0fa9004ea689b0f4964dbe90f1ff80d0c968dde7e166993d675659ecfeec55d"
     },
     {
       "path": "geometry-templates/woodworking/native/section_profile.h",
-      "sha256": "3299003c964e56c042e26476eed560241a5e566bec263b0028bd7fba85362fde"
+      "sha256": "0cf13d05dfe3a09b0087b5cc73b680ebe4ee5e0de8eed58fd5fae28139c7d4c4"
     },
     {
       "path": "geometry-templates/woodworking/native/section_profile_sources.c",
-      "sha256": "b0e35e7f2c22d07d706ab398ad638fb4517331edeff69cb02677d2f02af06d99"
+      "sha256": "777c7518f99f59daaec889a6367579829fcf872c7de5155c97872f8423a1a1ad"
     },
     {
       "path": "geometry-templates/woodworking/native/section_profile_sources.h",
-      "sha256": "6bd75cbca9b11b135fca7dc5b2f77d4414ea0e2bfc0c90aa254f86364eef2da2"
+      "sha256": "22a7bc39f3559b107ed7033259029c36bb8c223438d841f72cb5732deeaecc8f"
     },
     {
       "path": "geometry-templates/woodworking/native/supports.c",
@@ -2342,12 +2415,62 @@
     }
   ],
   "completeInventoryVerification": {
-    "method": "Independent enumeration of every executable suffix under all five roots plus exact standalone sources; compared to the manifest before verification and to every sealed input after verification.",
-    "filesBefore": 563,
-    "filesAfter": 563,
+    "method": "Independent os.walk enumeration of every executable suffix under all five roots plus three exact standalone sources, without importing the scanner or taking inventory from manifest entries; compared to the manifest and every sealed input before/after verification.",
+    "sourceRoots": [
+      "geometry-core",
+      "geometry-app",
+      "geometry-templates",
+      "geometry-web",
+      "geometry-guide"
+    ],
+    "sourceFiles": [
+      "current_geometry.c",
+      "tests/__init__.py",
+      "tests/binaries.py"
+    ],
+    "executableSuffixes": [
+      ".c",
+      ".cc",
+      ".cjs",
+      ".cpp",
+      ".cxx",
+      ".h",
+      ".hh",
+      ".hpp",
+      ".htm",
+      ".html",
+      ".inc",
+      ".js",
+      ".jsx",
+      ".mjs",
+      ".py",
+      ".ts",
+      ".tsx"
+    ],
+    "filesBefore": 567,
+    "filesAfter": 567,
+    "unregisteredBeforeRefresh": [
+      "geometry-core/kernel/linear_definition_sources.c",
+      "geometry-core/kernel/linear_definition_sources.h",
+      "geometry-core/kernel/version_sources.c",
+      "geometry-core/kernel/version_sources.h"
+    ],
     "unregisteredAfter": [],
     "missingAfter": [],
-    "headObservedAfterIndependentAudit": "1ee2a890d7a734f381eac8c716910939818315db",
-    "checkedUtc": "2026-10-16T16:24:02.992741+00:00"
+    "changedInputs": [],
+    "inputClosureSha256Before": "78121d86bcafb9b3af424155707de32478d6acae9d8dbcd2239c690c54f96889",
+    "inputClosureSha256After": "78121d86bcafb9b3af424155707de32478d6acae9d8dbcd2239c690c54f96889",
+    "toolHashesBefore": {
+      "tests/architecture_contract.py": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
+      "tests/test_architecture_contract.py": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
+      "tests/test_product_architecture.py": "12e83386323afbffda89babcaea46eaa337ade1383f85cf63ec17e114238713e"
+    },
+    "toolHashesAfter": {
+      "tests/architecture_contract.py": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
+      "tests/test_architecture_contract.py": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
+      "tests/test_product_architecture.py": "12e83386323afbffda89babcaea46eaa337ade1383f85cf63ec17e114238713e"
+    },
+    "headObservedAfterIndependentAudit": "d371420ec1922adb3df382a6cc2799b39bef7370",
+    "checkedUtc": "2026-10-16T17:36:55.972038+00:00"
   }
 }

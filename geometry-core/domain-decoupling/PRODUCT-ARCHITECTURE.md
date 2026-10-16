@@ -16,7 +16,7 @@ runtime import blocking, mutation receipts, browser acceptance, or SSOT checks.
 
 ## Complete inventory and responsibilities
 
-The current inventory contains 563 executable files: 326 owned sources and 237
+The current inventory contains 567 executable files: 330 owned sources and 237
 individually named exclusions. The five complete roots are `geometry-core`,
 `geometry-app`, `geometry-templates`, `geometry-web`, and `geometry-guide`.
 `current_geometry.c` is an additional standalone source. The real
@@ -26,12 +26,12 @@ New executable files anywhere under these roots fail until accounted for.
 
 | Layer | Files | Actual responsibility |
 |---|---:|---|
-| K | 65 | Public neutral C stores/evaluators/source/transaction APIs and the Python geometry kernel, including their private implementation headers |
+| K | 69 | Public neutral C stores/evaluators/source/transaction APIs and the Python geometry kernel, including their private implementation headers |
 | W | 65 | Woodworking policy, material/recipe interpretation, construction, layout, support and presentation; rectangular-grid second-template witness |
 | H | 190 | Native World/scene/command/transaction adapters and composition, Python application and compatibility facades, browser/server UI, guide authoring, and workspace tooling |
 | vendor | 6 | Individually digest-locked browser PDF and ZIP dependencies, accessible only from H |
 
-The 326 sources contain 183 C/header/include files, 75 Python files, 64 JavaScript
+The 330 sources contain 187 C/header/include files, 75 Python files, 64 JavaScript
 files, and 4 HTML files. The canonical self-contained axiom reader and its
 generator are included. The separate work-manager is included as H tooling,
 although its own instructions distinguish it from the Geometry product UI.
@@ -107,7 +107,7 @@ ambiguous W `document.h` include; the source owner changed it to
 `../native/document.h` and merged that fix normally. The refreshed verification
 used integration source HEAD `47160841738e38c24ef4ee05c291467c760d1e99`.
 
-The latest region-key ledger integration refresh first ran that manifest against
+The preceding region-key ledger integration refresh first ran that manifest against
 source HEAD `1ee2a890d7a734f381eac8c716910939818315db` and correctly failed with
 `SOURCE_UNREGISTERED` for `geometry-core/kernel/region_key_sources.c`.
 Independent inventory found exactly two new K files, its implementation and
@@ -117,6 +117,22 @@ for coordinates in the same candidate. The refresh adds their individual
 responsibilities without changing any previous classification, scanner guard,
 test or product source. The final scan and 18-test run require this HEAD and
 every source input hash to remain unchanged throughout verification.
+
+The latest linear-definition/version-source refresh first ran the previous
+manifest through the actual CLI against source HEAD
+`d371420ec1922adb3df382a6cc2799b39bef7370`. It exited 1 with
+`SOURCE_UNREGISTERED` for `geometry-core/kernel/linear_definition_sources.c`.
+Independent enumeration found exactly four new K files: the public headers and
+implementations for `linear_definition_sources` and `version_sources`. No
+exclusion, vendor, driver or router digest was stale. The linear-definition
+provider serializes authored datum/guide definitions, preserving expression
+mode, completeness, ordered signed terms and complete opaque source keys without
+evaluating quantities. The version provider serializes immutable identity,
+content, fingerprint, schema and typed fields; field quantities consume the
+returned complete definition. Their individually reviewed K responsibilities do
+not introduce a W/H dependency. This refresh changes only the manifest and its
+derived scan, report and receipt, retaining every previous classification,
+exclusion and scanner guard.
 
 The manifest, scan, report and receipt are excluded from the product
 input closure because they are derived audit artifacts. Manifest and scan are
@@ -137,18 +153,21 @@ changed exclusion. The iframe controls cover external/unmapped source URLs,
 extra queries, `srcdoc`, unregistered element IDs, non-H routes, driver/router
 digest changes, and an external assignment even after updating its digest.
 
-The removal check creates a separate tree containing **all 65 actual K files**
+The removal check creates a separate tree containing **all 69 actual K files**
 and no `geometry-app` or `geometry-templates` directory, then scans that complete
 K tree. This is static missing-template evidence only. It neither compiles C nor
 executes Python product modules, and must not be reported as native/runtime
 no-template validation. Native execution remains in the serialized P1 queue.
 
-At the latest sealed source HEAD, the full scan passes with 326 owned sources,
-776 dependency edges and no diagnostics; all 18 product tests pass with no
-skips. Independent enumeration after the run matches every one of the 563
+At the latest sealed source HEAD, the actual CLI scan exits 0 with 330 owned sources,
+790 dependency edges and no diagnostics; all 18 product tests pass with no
+skips. Independent enumeration after the run matches every one of the 567
 sealed source hashes. The generic scanner's previous 205-test result (204 pass,
 one Windows symlink-permission skip) is reused only because both its scanner
-and test source hashes remain unchanged; the receipt records that provenance.
+and test source hashes remain unchanged; the receipt records the previous
+receipt's LF-normalized hash and original validation provenance. HEAD and every
+product/scanner/test input hash remain unchanged from before the fail-closed
+run through final verification.
 
 When new provider files are integrated, the root inventory must first fail
 closed, then receive individually reviewed source entries. Re-run the product

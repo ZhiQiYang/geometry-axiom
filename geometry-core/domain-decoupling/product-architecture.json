@@ -609,6 +609,18 @@
       "purpose": "Neutral native linear API/implementation; no application/template dependency"
     },
     {
+      "path": "geometry-core/kernel/linear_definition_sources.c",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral candidate-local datum/guide authored-definition provider and portable codec; preserves expression mode, completeness, ordered signed terms and opaque source keys without evaluating quantities"
+    },
+    {
+      "path": "geometry-core/kernel/linear_definition_sources.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Public neutral datum/guide authored-definition source and codec API; candidate-local registration and complete definition inventory without evaluating terms or positions"
+    },
+    {
       "path": "geometry-core/kernel/named_values.c",
       "layer": "K",
       "language": "c",
@@ -709,6 +721,18 @@
       "layer": "K",
       "language": "c",
       "purpose": "Neutral native types API/implementation; no application/template dependency"
+    },
+    {
+      "path": "geometry-core/kernel/version_sources.c",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral immutable-version definition/field provider and portable codec; preserves complete opaque identity, content, fingerprint, schema and typed fields, deriving field quantities from the returned typed definition"
+    },
+    {
+      "path": "geometry-core/kernel/version_sources.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Public neutral immutable-version source and codec API; complete definitions, typed field source identities and candidate-local immutable-store registration without template-specific interpretation"
     },
     {
       "path": "geometry-core/kernel/versions.c",

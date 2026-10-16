@@ -97,6 +97,8 @@
     "geometry-core/kernel/kernel_unity.inc",
     "geometry-core/kernel/linear.c",
     "geometry-core/kernel/linear.h",
+    "geometry-core/kernel/linear_definition_sources.c",
+    "geometry-core/kernel/linear_definition_sources.h",
     "geometry-core/kernel/named_values.c",
     "geometry-core/kernel/named_values.h",
     "geometry-core/kernel/parameter_sources.c",
@@ -114,6 +116,8 @@
     "geometry-core/kernel/source.c",
     "geometry-core/kernel/source.h",
     "geometry-core/kernel/types.h",
+    "geometry-core/kernel/version_sources.c",
+    "geometry-core/kernel/version_sources.h",
     "geometry-core/kernel/versions.c",
     "geometry-core/kernel/versions.h",
     "geometry-core/model_base.c",
@@ -1885,7 +1889,7 @@
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/candidate.c",
-      "line": 40
+      "line": 42
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
@@ -1895,7 +1899,7 @@
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/clip.c",
-      "line": 32
+      "line": 34
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
@@ -1905,7 +1909,7 @@
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/codec.c",
-      "line": 29
+      "line": 31
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
@@ -1915,7 +1919,7 @@
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/datums.c",
-      "line": 38
+      "line": 40
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
@@ -1925,37 +1929,37 @@
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/document.c",
-      "line": 50
+      "line": 54
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/document.h",
-      "line": 27
+      "line": 29
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/enclosure.c",
-      "line": 48
+      "line": 52
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/enclosure.h",
-      "line": 25
+      "line": 27
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/enclosure_sources.c",
-      "line": 49
+      "line": 53
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/enclosure_sources.h",
-      "line": 26
+      "line": 28
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/exact.c",
-      "line": 30
+      "line": 32
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
@@ -1965,7 +1969,7 @@
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/geometry.c",
-      "line": 31
+      "line": 33
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
@@ -1975,7 +1979,7 @@
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/grid.c",
-      "line": 33
+      "line": 35
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
@@ -1985,27 +1989,27 @@
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/grid_store.c",
-      "line": 47
+      "line": 51
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/grid_store.h",
-      "line": 24
+      "line": 26
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/guides.c",
-      "line": 46
+      "line": 50
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/guides.h",
-      "line": 23
+      "line": 25
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/linear.c",
-      "line": 36
+      "line": 38
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
@@ -2014,8 +2018,18 @@
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/linear_definition_sources.c",
+      "line": 48
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/linear_definition_sources.h",
+      "line": 23
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/named_values.c",
-      "line": 37
+      "line": 39
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
@@ -2025,7 +2039,7 @@
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/parameter_sources.c",
-      "line": 35
+      "line": 37
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
@@ -2035,7 +2049,7 @@
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/parameters.c",
-      "line": 34
+      "line": 36
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
@@ -2045,7 +2059,7 @@
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/placement_sources.c",
-      "line": 42
+      "line": 44
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
@@ -2055,7 +2069,7 @@
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/placements.c",
-      "line": 41
+      "line": 43
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
@@ -2065,7 +2079,7 @@
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/region_key_sources.c",
-      "line": 45
+      "line": 47
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
@@ -2075,7 +2089,7 @@
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/regions.c",
-      "line": 44
+      "line": 46
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
@@ -2085,7 +2099,7 @@
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/source.c",
-      "line": 39
+      "line": 41
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
@@ -2094,8 +2108,18 @@
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/version_sources.c",
+      "line": 49
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/version_sources.h",
+      "line": 24
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/versions.c",
-      "line": 43
+      "line": 45
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
@@ -2118,6 +2142,21 @@
       "line": 4
     },
     {
+      "source": "geometry-core/kernel/linear_definition_sources.c",
+      "target": "geometry-core/kernel/linear_definition_sources.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/kernel/linear_definition_sources.h",
+      "target": "geometry-core/kernel/guides.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/kernel/linear_definition_sources.h",
+      "target": "geometry-core/kernel/source.h",
+      "line": 4
+    },
+    {
       "source": "geometry-core/kernel/named_values.c",
       "target": "geometry-core/kernel/geometry.h",
       "line": 2
@@ -2131,6 +2170,16 @@
       "source": "geometry-core/kernel/named_values.h",
       "target": "geometry-core/kernel/geometry.h",
       "line": 3
+    },
+    {
+      "source": "geometry-core/kernel/parameter_sources.c",
+      "target": "geometry-core/kernel/codec.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/kernel/parameter_sources.c",
+      "target": "geometry-core/kernel/internal/parameter_store.h",
+      "line": 2
     },
     {
       "source": "geometry-core/kernel/parameter_sources.c",
@@ -2236,6 +2285,26 @@
       "source": "geometry-core/kernel/source.h",
       "target": "geometry-core/kernel/geometry.h",
       "line": 3
+    },
+    {
+      "source": "geometry-core/kernel/version_sources.c",
+      "target": "geometry-core/kernel/codec.h",
+      "line": 2
+    },
+    {
+      "source": "geometry-core/kernel/version_sources.c",
+      "target": "geometry-core/kernel/version_sources.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/kernel/version_sources.h",
+      "target": "geometry-core/kernel/source.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-core/kernel/version_sources.h",
+      "target": "geometry-core/kernel/versions.h",
+      "line": 4
     },
     {
       "source": "geometry-core/kernel/versions.c",
@@ -2590,12 +2659,12 @@
     {
       "source": "geometry-core/references.inc",
       "target": "geometry-app/native/reference_sources.inc",
-      "line": 572
+      "line": 591
     },
     {
       "source": "geometry-core/references.inc",
       "target": "geometry-templates/woodworking/native/member_reference.h",
-      "line": 419
+      "line": 436
     },
     {
       "source": "geometry-core/rule_cases/__init__.py",
@@ -3145,7 +3214,12 @@
     {
       "source": "geometry-templates/woodworking/native/engineering_sources.h",
       "target": "geometry-core/kernel/source.h",
-      "line": 5
+      "line": 6
+    },
+    {
+      "source": "geometry-templates/woodworking/native/engineering_sources.h",
+      "target": "geometry-core/kernel/version_sources.h",
+      "line": 4
     },
     {
       "source": "geometry-templates/woodworking/native/engineering_sources.h",
