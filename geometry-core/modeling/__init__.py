@@ -16,7 +16,7 @@ from .common import (ModelError, canonical_bytes, digest, strict_json_loads,
 
 # The source commit contains the adopted axiom bytes identified by this digest.
 # Update only after committing the corresponding SSOT change (MODELING-CONTRACT).
-AXIOM_REVISION = "b3c79615d0cde89bbdca72c1223d214324bc5f8f"
+AXIOM_REVISION = "e744f5316fd7c896275bdee4c34ad22ae97d9d8e"
 AXIOM_SHA256 = "18a9a75bcf4a5d5fed28c6c5f5cb9702d173198d7d0cd198ffad9936a4b94fa5"
 # GEO-261 separates general geometry from the default woodworking template;
 # it does not change these saved packages' geometry, formats or capabilities.
