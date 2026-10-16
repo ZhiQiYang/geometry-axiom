@@ -57,6 +57,10 @@ class RegionEdges(unittest.TestCase):
 
     def test_hole_contacts_stay_invalid_and_rectangle_contacts_stay_valid(self):
         self.check("contact-controls")
+        with _bridge.BridgeSession(native().bridge()) as session:
+            self.assertTrue(session.command("reset")["ok"])
+            response = session.command("loadfile " + str(ROOT / "_ax_i5_hole_vertex_touches_rect_edge.scene"))
+            self.assertTrue(response["ok"], response)
 
     def test_unit_rectangles_exclude_hole_interiors_at_coordinate_limits(self):
         self.check("unit-rectangles")
