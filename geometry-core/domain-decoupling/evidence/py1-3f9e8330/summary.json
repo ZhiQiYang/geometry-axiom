@@ -1,0 +1,199 @@
+{
+  "schema": "geo261-python-py1-receipt/1",
+  "utc": "2026-10-16T00:58:35.597104+00:00",
+  "source": "3f9e833008cb6f4db2ec7bc075be55745016b245",
+  "source_tree": "737f62f17e562d4f5dec9d4cb18639236bfb0210",
+  "worktree_dirty": true,
+  "execution_source": "frozen git archive",
+  "runner_sha256_lf": "ba86ae1197934627151e019fc313fb93727fe9958542826b0f392bbd2fa09591",
+  "python": "3.14.4 (tags/v3.14.4:23116f9, Apr  7 2026, 14:10:54) [MSC v.1944 64 bit (AMD64)]",
+  "inventory": [
+    {
+      "path": "geometry-core/geometry_kernel/__init__.py",
+      "sha256": "b6fa367c4b7d358e31b54086c4cc83dce2b4bfea8a390af08ea4b5008f39c025"
+    },
+    {
+      "path": "geometry-core/geometry_kernel/canonical.py",
+      "sha256": "23820796664dfc34871e232e50a06dad8f0399f9be3f72b747331a3dde3eb893"
+    },
+    {
+      "path": "geometry-core/geometry_kernel/errors.py",
+      "sha256": "93b6838a888c55ccbcdde550fbc778ab537729392ca93c3a0bd58fa749418bce"
+    },
+    {
+      "path": "geometry-core/geometry_kernel/geometry.py",
+      "sha256": "a6502c3fa2e5abe187a9e8976bf05bfcf1ee292436f289ea239ce699302b5c6e"
+    },
+    {
+      "path": "geometry-core/geometry_kernel/README.md",
+      "sha256": "488656eb1fab419b52888f5332b2eadbf625a2713188de959b3db524ab357281"
+    },
+    {
+      "path": "geometry-core/geometry_kernel/types.py",
+      "sha256": "790885363a057d13d8d6510186bb70461d4f657e86410ca3e2a0b8fbefaec000"
+    },
+    {
+      "path": "geometry-core/modeling/__init__.py",
+      "sha256": "7cf7319ae7571dff2f24f1e308ceda7d8c7bcdc9393720a6c40101d0f7d9f31c"
+    },
+    {
+      "path": "geometry-core/modeling/base.py",
+      "sha256": "8b1d2b6a03a1ffbeb3fd50fe46bee771e9a5b6df55a1d0a053afbe134c8f0fe3"
+    },
+    {
+      "path": "geometry-core/modeling/common.py",
+      "sha256": "1ac364867c3ae2f1b92cb02e7672039e700505cf3bb6dfc2a7e2a6e804157f9c"
+    },
+    {
+      "path": "geometry-core/modeling/engine.py",
+      "sha256": "0e30bd9998dbdb789f87dc12669e759ed8fdf59b2a1616b5b6af04722ea67e0c"
+    },
+    {
+      "path": "geometry-core/modeling/geometry.py",
+      "sha256": "59370a53ef407e21541aaccab1a348965ac334f54d8fb92d74eb33dd8978d7b5"
+    },
+    {
+      "path": "geometry-core/modeling/kernel_errors.py",
+      "sha256": "f0ebfc7c950d16b5c4023170d9d7fb444c59470413ebccf975a0a688801845b3"
+    },
+    {
+      "path": "geometry-core/modeling/section_profile.py",
+      "sha256": "ef100cf4bb3b980dfb444ca040ca603b9d41bcdf01a9c173886b54f4e86b581c"
+    },
+    {
+      "path": "tests/__init__.py",
+      "sha256": "565941012899e8d6dec54bef732c6974b643a63befdafa6c16d559305f6f1c95"
+    },
+    {
+      "path": "tests/_unittest_runner.py",
+      "sha256": "403f9505dc8c2194dfa0eb274ea61c9a5834f149bc0e56560e69ef2a05496e48"
+    },
+    {
+      "path": "tests/binaries.py",
+      "sha256": "3c1d887dba829150cca3b084b40f394d6b52d8c6fee265b5fd1ea52cb5323696"
+    },
+    {
+      "path": "tests/test_geometry_kernel_compatibility.py",
+      "sha256": "559674d76fadcaa4ac1f75ca33eb5efa36f4fd5c6a4cbad0f15c19f13822f087"
+    },
+    {
+      "path": "tests/test_geometry_kernel_geometry.py",
+      "sha256": "e848191f19ae2a346d0894c9f83e6bffa9771b8b3eab3f15c72d691cd00c1c44"
+    },
+    {
+      "path": "tests/test_geometry_kernel_isolation.py",
+      "sha256": "87788d1adfe0cca9c439b3876c4f8e5816015700e6ef3edfb627f2e0223483e6"
+    }
+  ],
+  "suites": [
+    {
+      "suite": "test_geometry_kernel_compatibility",
+      "command": [
+        "C:\\Python314\\python.exe",
+        "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-py1-frozen-a11_8e2r\\tests\\_unittest_runner.py",
+        "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-py1-frozen-a11_8e2r\\tests\\test_geometry_kernel_compatibility.py",
+        "--json-out",
+        "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\geo261-py1-3f9e8330-rerun\\test_geometry_kernel_compatibility.json",
+        "--log",
+        "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\geo261-py1-3f9e8330-rerun\\test_geometry_kernel_compatibility.log"
+      ],
+      "cwd": "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-py1-frozen-a11_8e2r",
+      "exit": 0,
+      "expected": 1,
+      "result": {
+        "file": "tests/test_geometry_kernel_compatibility.py",
+        "total": 1,
+        "run": 1,
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0,
+        "explicit_skipped": 0,
+        "unrun_skipped": 0,
+        "blocked_by_error": 0,
+        "expected_failed": 0,
+        "expected_failures": [],
+        "failures": [],
+        "skip_reasons": {},
+        "skip_items": [],
+        "import_error": null,
+        "extra_errors": 0,
+        "seconds": 0.74
+      },
+      "raw_log": "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\geo261-py1-3f9e8330-rerun\\test_geometry_kernel_compatibility.log"
+    },
+    {
+      "suite": "test_geometry_kernel_geometry",
+      "command": [
+        "C:\\Python314\\python.exe",
+        "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-py1-frozen-a11_8e2r\\tests\\_unittest_runner.py",
+        "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-py1-frozen-a11_8e2r\\tests\\test_geometry_kernel_geometry.py",
+        "--json-out",
+        "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\geo261-py1-3f9e8330-rerun\\test_geometry_kernel_geometry.json",
+        "--log",
+        "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\geo261-py1-3f9e8330-rerun\\test_geometry_kernel_geometry.log"
+      ],
+      "cwd": "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-py1-frozen-a11_8e2r",
+      "exit": 0,
+      "expected": 20,
+      "result": {
+        "file": "tests/test_geometry_kernel_geometry.py",
+        "total": 20,
+        "run": 20,
+        "passed": 20,
+        "failed": 0,
+        "skipped": 0,
+        "explicit_skipped": 0,
+        "unrun_skipped": 0,
+        "blocked_by_error": 0,
+        "expected_failed": 0,
+        "expected_failures": [],
+        "failures": [],
+        "skip_reasons": {},
+        "skip_items": [],
+        "import_error": null,
+        "extra_errors": 0,
+        "seconds": 0.27
+      },
+      "raw_log": "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\geo261-py1-3f9e8330-rerun\\test_geometry_kernel_geometry.log"
+    },
+    {
+      "suite": "test_geometry_kernel_isolation",
+      "command": [
+        "C:\\Python314\\python.exe",
+        "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-py1-frozen-a11_8e2r\\tests\\_unittest_runner.py",
+        "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-py1-frozen-a11_8e2r\\tests\\test_geometry_kernel_isolation.py",
+        "--json-out",
+        "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\geo261-py1-3f9e8330-rerun\\test_geometry_kernel_isolation.json",
+        "--log",
+        "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\geo261-py1-3f9e8330-rerun\\test_geometry_kernel_isolation.log"
+      ],
+      "cwd": "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-py1-frozen-a11_8e2r",
+      "exit": 0,
+      "expected": 2,
+      "result": {
+        "file": "tests/test_geometry_kernel_isolation.py",
+        "total": 2,
+        "run": 2,
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0,
+        "explicit_skipped": 0,
+        "unrun_skipped": 0,
+        "blocked_by_error": 0,
+        "expected_failed": 0,
+        "expected_failures": [],
+        "failures": [],
+        "skip_reasons": {},
+        "skip_items": [],
+        "import_error": null,
+        "extra_errors": 0,
+        "seconds": 6.66
+      },
+      "raw_log": "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\geo261-py1-3f9e8330-rerun\\test_geometry_kernel_isolation.log"
+    }
+  ],
+  "native_executed": false,
+  "expected_total": 23,
+  "success": true,
+  "scope": "Shared exact geometry, kernel-only installation, two shared-source negative controls; no native fixture replay or complete graph-decoupling claim"
+}
