@@ -57,6 +57,9 @@ int geo_parameters_field_index(const GeoParameterStore *store,uint32_t id,uint32
 bool geo_parameters_dimension_value(const GeoParameterStore *store,GeoParameterRef ref,GeoQuantity *out,GeoParameterError *error);
 bool geo_parameters_coordinate(const GeoParameterStore *store,GeoParameterRef ref,GeoCoord *out,GeoParameterError *error);
 bool geo_parameters_rebuild(GeoParameterStore *store,GeoParameterError *error);
+/* Re-evaluates only this field and its dependency closure. Successful caches
+ * update even when an unrelated field elsewhere in the store is invalid. */
+bool geo_parameters_evaluate_field(GeoParameterStore *store,GeoParameterRef ref,GeoParameterError *error);
 
 /* Definition builders preserve field identities and the exhausted high-water
  * mark. No mutation occurs until put; callers keep their candidate isolated. */

@@ -62,6 +62,15 @@ int main(int argc,char **argv)
         literal(f,12,4,0,"9","1");CHECK(geo_parameters_stage_field(s,f));CHECK(!geo_parameters_stage_field(s,f));CHECK(geo_parameters_rebuild(s,&e));
         CHECK(geo_parameters_find(s,12)->fields[0]==4&&geo_parameters_fields(s)[0].value.num==9);
         literal(f,12,5,0,"10","1");CHECK(!geo_parameters_stage_field(s,f));
+        /* A profile dimension's own closure must not inherit an unrelated
+         * failed field or consume a stale zero cache after a definition edit. */
+        literal(f,1,1,0,"4","1");strcpy(f[0].expression,"{\"op\":\"ref\",\"parameterId\":99,\"fieldId\":1}");
+        CHECK(put(s,1,f,1,&e));literal(f,12,4,0,"17","1");CHECK(put(s,12,f,1,&e));
+        CHECK(!geo_parameters_rebuild(s,&e)&&e.status==GEO_PARAMETER_MISSING_FIELD);
+        CHECK(geo_parameters_evaluate_field(s,(GeoParameterRef){true,12,4},&e));
+        CHECK(geo_parameters_fields(s)[geo_parameters_field_index(s,12,4)].value.num==17);
+        CHECK(!geo_parameters_evaluate_field(s,(GeoParameterRef){true,1,1},&e)&&e.trace_count==1);
+        CHECK(e.trace[0].parameter_id==1&&e.source.parameter_id==99);
     }else{geo_parameters_destroy(s);return 2;}
     geo_parameters_destroy(s);return 0;
 }
