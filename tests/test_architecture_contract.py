@@ -291,6 +291,55 @@ class ArchitectureContract(unittest.TestCase):
         self.put("src/core.py", "import generated_demo\n")
         self.rejects("DEPENDENCY_EXCLUDED")
 
+    def exclude_text(self, raw=b"value = 1\r\n", mode="lf"):
+        omitted = self.put("src/omitted.py", raw, registered=False)
+        digest_bytes = raw.replace(b"\r\n", b"\n") if mode == "lf" else raw
+        entry = {"path": "src/omitted.py", "reason": "Synthetic excluded text", "sha256": hashlib.sha256(digest_bytes).hexdigest()}
+        if mode is not None:
+            entry['hashMode'] = mode
+        self.manifest['exclusions'].append(entry)
+        return omitted, entry
+
+    def test_lf_exclusion_same_content_accepts_crlf_and_lf(self):
+        omitted, _ = self.exclude_text()
+        self.green()
+        omitted.write_bytes(b"value = 1\n")
+        self.green()
+
+    def test_lf_exclusion_changed_character_is_rejected(self):
+        omitted, _ = self.exclude_text()
+        self.green()
+        omitted.write_bytes(b"value = 2\r\n")
+        self.rejects("EXCLUSION_DIGEST")
+
+    def test_raw_exclusion_remains_byte_exact_by_default(self):
+        omitted, _ = self.exclude_text(mode=None)
+        self.green()
+        omitted.write_bytes(b"value = 1\n")
+        self.rejects("EXCLUSION_DIGEST")
+
+    def test_exclusion_rejects_unknown_hash_mode(self):
+        self.exclude_text(mode="text")
+        self.rejects("EXCLUSION_HASH_MODE")
+
+    def test_lf_exclusion_cannot_be_imported(self):
+        self.exclude_text()
+        self.put("src/core.py", "import omitted\n")
+        self.rejects("DEPENDENCY_EXCLUDED")
+
+    def test_lf_exclusion_preserves_bare_carriage_return(self):
+        omitted, _ = self.exclude_text(raw=b"value = 1\rvalue = 2\r\n")
+        self.green()
+        omitted.write_bytes(b"value = 1\nvalue = 2\n")
+        self.rejects("EXCLUSION_DIGEST")
+
+    def test_vendor_cannot_choose_any_hash_mode(self):
+        self.put("src/vendor/exact.h", "int exact;\n", "vendor")
+        for mode in ['lf', 'raw']:
+            with self.subTest(mode=mode):
+                self.manifest['sources'][0]['hashMode'] = mode
+                self.rejects("MANIFEST_SCHEMA")
+
     def test_python_direct_alias_import_follows_real_module(self):
         self.put("src/k/core.py", "import w.policy as p\n")
         self.put("src/w/__init__.py", "")

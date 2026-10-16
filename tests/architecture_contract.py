@@ -14,7 +14,7 @@ Manifest schema (all keys required; unknown keys rejected):
   sourceFiles (optional): [repository-relative standalone executable file, ...]
   searchRoots: {c: [...], python: [...], javascript: [...]}
   sources: [{path, layer: K|W|H|vendor, language, purpose, [sha256]}]
-  exclusions: [{path, reason, sha256}]
+  exclusions: [{path, reason, sha256, [hashMode: raw|lf]}]
   htmlScriptRoutes (optional): [{source, src, target, purpose}]
   javascriptImportRoutes (optional): [{source, specifier, target, purpose}]
   trustedVendorBundles (optional): [{id, files, layers: [H], purpose}]
@@ -602,7 +602,7 @@ class Scanner:
                 require("sha256" not in entry, "MANIFEST_SCHEMA", relative, 1, "only vendor entries use immutable source digests")
             self.entries[relative] = entry
         for entry in data["exclusions"]:
-            exact_keys(entry, {"path", "reason", "sha256"}, "exclusions")
+            exact_keys(entry, {"path", "reason", "sha256"}, "exclusions", {"hashMode"})
             relative = portable_path(entry["path"], "exclusions")
             require(relative.casefold() not in seen, "SOURCE_DUPLICATE", relative, 1, "source/exclusion appears more than once")
             seen.add(relative.casefold())
@@ -613,7 +613,10 @@ class Scanner:
                     "SOURCE_MISSING", relative, 1, "exclusion must name an existing executable source")
             require(path.resolve() in physical_files or any(within(path.resolve(), root) for root in physical_roots),
                     "SOURCE_OUTSIDE_ROOTS", relative, 1, "exclusion is outside product roots")
-            self.check_digest(path, entry["sha256"], "EXCLUSION_DIGEST")
+            mode = entry.get("hashMode", "raw")
+            require(isinstance(mode, str) and mode in {"raw", "lf"}, "EXCLUSION_HASH_MODE", relative, 1,
+                    "exclusion hash mode must be raw or explicit CRLF-to-LF normalization")
+            self.check_digest(path, entry["sha256"], "EXCLUSION_DIGEST", mode=mode)
             self.exclusions[relative] = entry
         discovered = {path.relative_to(self.root).as_posix() for path in physical_files}
         for directory in physical_roots:
@@ -709,10 +712,13 @@ class Scanner:
             require(self.trusted_vendor == {path for path, entry in self.entries.items() if entry["layer"] == "vendor"},
                     "VENDOR_TRUST_UNDECLARED", "trustedVendorBundles", 1, "when host trust is used, every vendor file must be listed exactly once")
 
-    def check_digest(self, path, digest, code):
+    def check_digest(self, path, digest, code, mode="raw"):
+        raw = path.read_bytes()
+        if mode == "lf":
+            raw = raw.replace(b"\r\n", b"\n")
         require(isinstance(digest, str) and re.fullmatch(r"[0-9a-f]{64}", digest)
-                and hashlib.sha256(path.read_bytes()).hexdigest() == digest,
-                code, path.relative_to(self.root).as_posix(), 1, "immutable raw-byte digest is absent or mismatched")
+                and hashlib.sha256(raw).hexdigest() == digest,
+                code, path.relative_to(self.root).as_posix(), 1, f"immutable {mode} digest is absent or mismatched")
 
     def validate_policy(self, policy):
         exact_keys(policy, {"cSystemHeaders", "pythonStdlib", "javascriptBuiltins", "externalModules",

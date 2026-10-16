@@ -26,8 +26,13 @@ keys. Unknown keys and duplicate JSON keys are rejected.
   dependencies such as a helper physically located under `tests/`.
 - Every executable source needs one exact `sources` entry with `path`, `layer`,
   `language`, and `purpose`, or one exact `exclusions` entry with `path`, `reason`,
-  and its current raw-byte `sha256`. Importing an exclusion is an error.
+  and its current `sha256`. Importing an exclusion is an error.
+- Exclusions default to raw-byte hashing. An explicit `hashMode: "lf"` permits
+  only CRLF-to-LF normalization before hashing, so the same excluded text can
+  be checked out on Windows and Linux. Bare CR bytes, all other whitespace,
+  and every content character remain significant. Unknown modes are rejected.
 - Every `vendor` source also requires its own current raw-byte `sha256`.
+  Vendor entries cannot declare any `hashMode`; vendor bytes are always exact.
   Directory-wide vendor or exclusion exemptions do not exist.
 - Paths are repository-relative POSIX paths. Escapes, source symlinks, missing
   sources, duplicate or case-colliding ownership, and unregistered source files
