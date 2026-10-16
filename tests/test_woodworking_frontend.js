@@ -201,3 +201,32 @@ test('actual section kind switch requests its recipe while preserving identity a
   assert.deepEqual(plain(state.draft),{id:8,profileId:2,kind:'panel',u0:17,v0:23,
     panelSpec:'injected',width:86,orientation:'thickness-u'});
 });
+
+test('assembly creation preserves typed roles, directions and endpoint sources without sharing mutable defaults', () => {
+  const rule={members:[{id:17},{id:23},{id:41}],joints:[
+    {kind:'end-to-side',terminatedMember:23,targetMember:17,end:'start'},
+    {kind:'end-to-side',terminatedMember:23,targetMember:41,end:'finish'}]};
+  const before=plain(rule),members=provider.assemblyInstanceMembers(rule);
+  assert.deepEqual(members,[
+    {memberId:17,role:'primary',guideId:0,dir:'+v',depthSide:'+n',ends:{start:{kind:'timber',id:0},finish:{kind:'timber',id:0}}},
+    {memberId:23,role:'secondary',guideId:0,dir:'+u',depthSide:'+n',ends:{start:{kind:'member',memberId:17},finish:{kind:'member',memberId:41}}},
+    {memberId:41,role:'primary',guideId:0,dir:'+v',depthSide:'+n',ends:{start:{kind:'timber',id:0},finish:{kind:'timber',id:0}}},
+  ]);
+  members[0].ends.start.id=300;members[1].ends.finish.memberId=17;
+  const next=provider.assemblyInstanceMembers(rule);
+  assert.equal(next[0].ends.start.id,0);assert.equal(next[1].ends.finish.memberId,41);assert.deepEqual(rule,before);
+});
+
+test('assembly retargeting retains identities and the original secondary role constraints', () => {
+  const members=[{memberId:17,role:'primary'},{memberId:23,role:'secondary'},{memberId:41,role:'primary'}];
+  const rule={members:[{id:17},{id:23},{id:41}],joints:[
+    {kind:'end-to-side',terminatedMember:23,targetMember:41,end:'start'},
+    {kind:'end-to-side',terminatedMember:23,targetMember:17,end:'finish'}]};
+  assert.equal(provider.canRetargetAssemblyInstance(members,rule),true);
+  for(const change of [r=>r.members.pop(),r=>r.members[0].id=99,r=>r.joints.pop(),r=>r.joints[0].kind='ortho-split',r=>r.joints[0].terminatedMember=17]){
+    const changed=plain(rule);change(changed);assert.equal(provider.canRetargetAssemblyInstance(members,changed),false);
+  }
+  assert.deepEqual(provider.assemblyInstanceEnd(rule,'start'),{kind:'member',memberId:41});
+  assert.deepEqual(provider.assemblyInstanceEnd(rule,'finish'),{kind:'member',memberId:17});
+  assert.throws(()=>provider.assemblyInstanceEnd({...rule,joints:rule.joints.slice(1)},'start'),/新版缺少副支端接來源/);
+});
