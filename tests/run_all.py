@@ -84,6 +84,8 @@ PY_NEEDS = {
     'test_geo261_native_grid': [],
     'test_domain_source_pins': [],
     'test_geometry_host_native': [],
+    'test_geometry_host_sources': [],
+    'test_geometry_source_runtime': [],
     'test_geometry_host_world': [],
     'test_geometry_kernel_compatibility': [],
     'test_geometry_kernel_geometry': [],

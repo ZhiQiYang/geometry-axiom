@@ -157,7 +157,8 @@ def _adapter_command(program, source, *, wsl_distro=None):
     return [*prefix, os.fspath(program), path]
 
 
-def load_base(scene_text: str, executable=None, *, builder=None, command_builder=None, provider=None) -> dict:
+def _load_base_or_candidate(scene_text: str, executable=None, *, builder=None,
+                            command_builder=None, provider=None, neutral_sources=False):
     """Validate the whole scene atomically and return geometry-base-snapshot/1.
 
     Explicit executable wins over GEOMETRY_MODEL_BASE. The override is a trusted
@@ -187,9 +188,11 @@ def load_base(scene_text: str, executable=None, *, builder=None, command_builder
         with tempfile.TemporaryDirectory(prefix="geometry-model-scene-") as directory:
             source = Path(directory) / "input.scene"
             source.write_bytes(encoded)
+            command = (command_builder or _adapter_command)(program, source, wsl_distro=wsl_distro)
+            if neutral_sources:
+                command = [*command[:-1], "--neutral-sources", command[-1]]
             result = subprocess.run(
-                (command_builder or _adapter_command)(program, source, wsl_distro=wsl_distro), capture_output=True,
-                timeout=20, check=False,
+                command, capture_output=True, timeout=20, check=False,
             )
     except subprocess.TimeoutExpired as exc:
         raise ModelError("UNSUPPORTED", "BASE_TIMEOUT", "I33", "C scene validation exceeded its execution budget.") from exc
@@ -214,6 +217,12 @@ def load_base(scene_text: str, executable=None, *, builder=None, command_builder
         if status not in {"INVALID", "UNSUPPORTED"}:
             raise ModelError("UNSUPPORTED", "BASE_PROTOCOL", "I32", "C scene adapter returned an unknown error status.")
         raise ModelError(status, snapshot.get("code", "BASE_INVALID"), snapshot.get("clause", "I9"), snapshot.get("message", "Scene rejected."))
+    candidate = None
+    if neutral_sources and not result.returncode:
+        from .model_sources import decode_candidate
+        candidate = decode_candidate(result.stdout, source_bytes=encoded,
+                                     execution_identity=current)
+        snapshot = candidate.legacy_snapshot
     if result.returncode or snapshot.get("schema") != "geometry-base-snapshot/1":
         raise ModelError("UNSUPPORTED", "BASE_PROTOCOL", "I32", "C scene adapter failed or returned an unsupported schema.")
     required = {"base_scene", "specs", "placements", "solids", "unplaced_timbers", "dependencies"}
@@ -230,4 +239,20 @@ def load_base(scene_text: str, executable=None, *, builder=None, command_builder
         raise ModelError("UNSUPPORTED", "BASE_PROTOCOL", "I36", "C scene adapter did not preserve engineering source definitions and capability.")
     if SECTION_PROFILE_CAPABILITY in source_capabilities and not isinstance(snapshot.get("profile_runs"), list):
         raise ModelError("UNSUPPORTED", "BASE_PROTOCOL", "I51", "C scene adapter omitted section-profile definitions.")
-    return snapshot
+    return candidate if neutral_sources else snapshot
+
+
+def load_base(scene_text: str, executable=None, *, builder=None, command_builder=None, provider=None) -> dict:
+    """Retain the existing snapshot API and its validation/error contract."""
+    return _load_base_or_candidate(scene_text, executable, builder=builder,
+        command_builder=command_builder, provider=provider)
+
+
+def load_candidate(scene_text: str, executable=None, *, builder=None, command_builder=None, provider=None):
+    """Read one complete typed candidate in one pinned native invocation.
+
+    An old adapter or incomplete native graph is rejected. This opt-in transport
+    is not the product default until the native source coverage gate is complete.
+    """
+    return _load_base_or_candidate(scene_text, executable, builder=builder,
+        command_builder=command_builder, provider=provider, neutral_sources=True)
