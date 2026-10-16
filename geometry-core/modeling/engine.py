@@ -255,19 +255,8 @@ def _parse_extensions(extensions, base):
 
 
 def _prefix(geometry, path=(), cut=False):
-    if not path and not cut:
-        return geometry
-    faces = []
-    for face in geometry.faces:
-        sources = []
-        for original in face.sources:
-            source = dict(original)
-            source["operation_path"] = [*path, *source["operation_path"]]
-            if cut:
-                source["role"] = "cut"
-            sources.append(source)
-        faces.append(replace(face, sources=tuple(sources)))
-    return replace(geometry, faces=tuple(faces))
+    from .geometry import prefix
+    return prefix(geometry, path, cut)
 
 
 def _source(key):
