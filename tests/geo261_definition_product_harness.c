@@ -34,6 +34,21 @@ int main(int argc,char **argv)
     }else if(!strcmp(argv[1],"rc")){
         FinishObstacleRef ref={FS_OBSTACLE_COLUMN,29};GeoCoord lo[3],hi[3];CHECK("definition-product-obstacle-read",reference_fs_obstacle(&ctx,&ref,lo,hi));
         CHECK("definition-product-RC-is-returned-value",lo[0]==100&&lo[1]==100&&lo[2]==0&&hi[0]==130&&hi[1]==140&&hi[2]==300);
+    }else if(!strcmp(argv[1],"unplaced")){
+        /* I9 rejects an unplaced member at scene EOF. Its authored identity is
+         * still available inside an unfinished candidate without a pose root. */
+        CHECK("definition-product-unplaced-is-staged",!world->wood.timbers[0].placed);
+        CHECK("definition-product-unplaced-definitions",wood_definition_sources_complete(ctx.definition_sources));
+        bool member=false,anchor=false,dimensions=false;
+        for(size_t i=0;i<geo_eval_node_count(ctx.sources);++i){GeoSourceNodeView node;WoodDefinitionKind kind;uint32_t id;
+            if(geo_eval_node_at(ctx.sources,i,&node)&&node.source.provider==APP_SOURCE_WOOD_DEFINITION&&
+                wood_definition_source_decode(&node.source,&kind,&id)&&id==11){
+                if(kind==WOOD_DEFINITION_MEMBER)member=node.state==GEO_NODE_VALID;
+                if(kind==WOOD_DEFINITION_PLACEMENT)anchor=node.state==GEO_NODE_VALID;
+                if(kind==WOOD_DEFINITION_MEMBER_A||kind==WOOD_DEFINITION_MEMBER_B)dimensions=true;
+            }
+        }
+        CHECK("definition-product-unplaced-has-definitions-without-dimensions",member&&anchor&&!dimensions);
     }else return 2;
     CHECK("definition-product-world-is-unchanged",!memcmp(before,world,sizeof *world));
     reference_sources_dispose(&ctx);free(before);free(world);return 0;
