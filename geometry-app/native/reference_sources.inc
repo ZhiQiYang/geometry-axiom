@@ -1,3 +1,4 @@
+static GeoVersionStore *app_eng_version_store(const World *);
 /* H binds every resolver to the exact ReferenceEval candidate. K sees opaque
  * keys and typed outputs; legacy token parsing remains in reference_quantity_raw. */
 enum { APP_SOURCE_GUIDE=1, APP_SOURCE_MEMBER_POSE, APP_SOURCE_REFERENCE, APP_SOURCE_PARAMETER,
