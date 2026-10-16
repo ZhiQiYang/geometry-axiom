@@ -295,11 +295,12 @@ bool wood_pf_values(const WoodFinishContext *w,const PanelFill *p,WoodFinishLayo
 {if(w->evaluation&&w->evaluation->values)return w->evaluation->values(w->evaluation->user,p,d);return wood_pf_values_direct(w,p,d);}
 bool wood_pf_values_direct(const WoodFinishContext *w,const PanelFill *p,WoodFinishLayout *d)
 {
+    d->fill=p;
     d->finish=wood_fs_find(w,p->finish_id);const EngMaterialVersion *m=wood_eng_material(&w->engineering,p->panel.id,p->panel.version);GeoQuantity x;
     if(!d->finish)return wood_fs_error(w,"I55: panel-fill %u references missing finish surface %u",p->id,p->finish_id);
     if(!m||m->kind!=0)return wood_fs_error(w,"I52: panel-fill %u needs an existing fixed panel material version",p->id);
+    if(w->evaluation&&w->evaluation->finish_definition&&!w->evaluation->finish_definition(w->evaluation->user,p->finish_id,&d->finish))return false;
     d->frame=d->finish->frame;
-    if(w->evaluation&&w->evaluation->finish_definition&&!w->evaluation->finish_definition(w->evaluation->user,p->finish_id))return false;
     if(!wood_pf_field(w,p,WOOD_PF_LENGTH,&x))return false;d->layout.size[p->length_axis]=x.num;
     if(!wood_pf_field(w,p,WOOD_PF_WIDTH,&x))return false;d->layout.size[1-p->length_axis]=x.num;
     d->t=0;if(!wood_pf_field(w,p,WOOD_PF_THICKNESS,&x))return false;d->t=x.num;
@@ -362,7 +363,7 @@ bool wood_pf_build(const WoodFinishContext *w,const PanelFill *p,WoodFinishLayou
     WoodBoundaryRegion boundary;if(!wood_fs_boundary(w,d->finish->boundary_id,&boundary))return wood_fs_error(w,"I52: finish surface %u references missing boundary %u",d->finish->id,d->finish->boundary_id);
     input.region=wood_pf_region_view(&boundary,holes);input.frame=d->frame;
     input.cuts=cuts;input.cut_count=wood_pf_selected_cuts(d,cuts);input.size[0]=d->layout.size[0];input.size[1]=d->layout.size[1];
-    input.gap=d->layout.gap;input.stagger=d->layout.stagger;input.origin[0]=p->origin[0];input.origin[1]=p->origin[1];input.stagger_axis=p->stagger_axis;
+    input.gap=d->layout.gap;input.stagger=d->layout.stagger;input.origin[0]=d->fill->origin[0];input.origin[1]=d->fill->origin[1];input.stagger_axis=d->fill->stagger_axis;
     GeoClipStatus clip_status;WoodPanelStatus status=wood_panel_layout_build(&input,&d->layout,&clip_status);
     if(status==WOOD_PANEL_OK)return true;wood_pf_free(d);
     switch(status){

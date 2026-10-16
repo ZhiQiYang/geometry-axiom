@@ -340,9 +340,13 @@ bool wood_grid_parent_count_valid(const WoodGridContext *before,const WoodGridAp
 }
 
 bool wood_grid_world_valid(const WoodGridContext *world,char *err,size_t cap)
+{if(world&&world->evaluation&&world->evaluation->world_valid)return world->evaluation->world_valid(world->evaluation->user,world,err,cap);return wood_grid_world_valid_direct(world,err,cap);}
+bool wood_grid_world_valid_direct(const WoodGridContext *world,char *err,size_t cap)
 {
+    if(!world||!world->state||!world->host)return false;
     for (size_t i=0;i<world->state->count;++i) {
-        const WoodGridApplication *g=&world->state->items[i];
+        WoodGridApplication *g=&world->state->items[i];
+        if(world->evaluation&&world->evaluation->application&&!world->evaluation->application(world->evaluation->user,g,err,cap))return false;
         WoodGridHost host;const WoodGridHost *p=world->host(world->user,g->placement_id,&host)?&host:NULL;
         if (!p || !wood_grid_valid_in(world->state->items,world->state->count,g,p,err,cap)) return false;
         if (!g->is_subgrid) {

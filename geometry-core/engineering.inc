@@ -18,7 +18,7 @@ static bool app_eng_named(void *user,const char *name,GeoCoord *out)
 {const GeoNamedValue *v=geo_named_values_find(&((World *)user)->geo.named_values,name);if(!v)return false;*out=v->value;return true;}
 static bool app_eng_parameter(void *user,GeoParameterRef ref,GeoCoord *out,char *error,size_t cap)
 {if(parameter_coord((World *)user,ref,out))return true;snprintf(error,cap,"%s",g_parameter_error);utf8_trim_tail(error);return false;}
-static bool app_eng_owned(void *user,uint32_t id){return assembly_owned((World *)user,id);}
+static bool app_eng_owned(void *user,uint32_t id){return reference_engineering_owned((World *)user,id);}
 static void app_eng_write(void *user,const EngTarget *t,GeoCoord value)
 {World *w=(World *)user;if(!t->kind){ReferenceGrid *g=world_find_grid_mut(w,t->id);if(t->field)g->axis[t->axis].gap=value;else g->axis[t->axis].body=value;}else{int i=reference_timber_index(w,t->id);if(t->field)w->wood.timbers[i].size_b=value;else w->wood.timbers[i].size_a=value;}}
 static bool app_eng_serializable(void *user,char *error,size_t cap)

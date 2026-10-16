@@ -55,6 +55,14 @@ static bool reference_name(const char *name)
 {return geo_named_value_name_valid(name);}
 
 static WoodEngineeringContext app_eng_context(const World *);
+static bool app_eng_placement(void *,uint32_t,bool *);
+static bool app_eng_target(void *,const EngTarget *,WoodEngineeringTargetInfo *);
+static bool app_eng_named(void *,const char *,GeoCoord *);
+static bool app_eng_parameter(void *,GeoParameterRef,GeoCoord *,char *,size_t);
+static bool app_eng_owned(void *,uint32_t);
+static bool app_assembly_replaying(void);
+static void app_eng_write(void *,const EngTarget *,GeoCoord);
+static bool app_eng_serializable(void *,char *,size_t);
 static WoodSectionProfileContext app_sp_context(const World *);
 static WoodFinishContext app_fs_context(const World *);
 static WoodDerivedContext app_dp_context(const World *);
@@ -122,7 +130,9 @@ static bool reference_guide_position(ReferenceEval *,size_t,GeoAxisPosition *);
 static bool reference_placement_frame(ReferenceEval *,uint32_t,GeoFrame *);
 static bool reference_member_placement(ReferenceEval *,PlacementSurface *,SpaceBoundarySurface *);
 static bool reference_member_dimension(ReferenceEval *,uint32_t,bool,Coord *);
-static bool app_assembly_replaying(void);
+static bool reference_member_owned(ReferenceEval *,uint32_t,bool *);
+static bool reference_member_footprint(ReferenceEval *,size_t,uint32_t,GeoRect2 *);
+static bool reference_grid_definition(ReferenceEval *,uint32_t,WoodGridApplication *);
 static bool reference_derived_resolve(ReferenceEval *,const PlacementSurface *,const char *,int *,int *);
 static void reference_sources_dispose(ReferenceEval *ctx)
 {
@@ -188,6 +198,8 @@ static bool reference_quantity_raw(ReferenceEval *ctx, const GuideLine *g, const
         for (size_t i=0;i<geo_guides_count(&w->geo.guide_lines);++i) {
             const GuideLine *q=&geo_guides_values(&w->geo.guide_lines)[i];
             if (q->id!=id) continue;
+            GeoGuide definition;
+            if(!ctx->use_current_values){if(!geo_linear_definition_sources_guide(ctx->linear_definition_sources,id,&definition))return false;q=&definition;}
             GeoAxisPosition position;
             if (q->placement_id!=g->placement_id || !reference_guide_position(ctx,i,&position) ||
                 !position.context.has_placement||position.context.placement!=g->placement_id||position.context.axis!=axis) return false;
@@ -198,8 +210,10 @@ static bool reference_quantity_raw(ReferenceEval *ctx, const GuideLine *g, const
     if ((n==3 || n==4) &&
         (!strcmp(part[0],"grid") || !strcmp(part[0],"panel") || !strcmp(part[0],"gap"))) {
         if (!parse_u32(part[1],&id) || strcmp(part[2],axis==0?"u":"v")) return false;
-        const ReferenceGrid *grid=world_find_grid(w,id);
-        if (!grid || grid->placement_id!=g->placement_id) return false;
+        const ReferenceGrid *grid=world_find_grid(w,id);WoodGridApplication grid_definition;
+        if (!grid) return false;
+        if(!ctx->use_current_values){if(!reference_grid_definition(ctx,id,&grid_definition))return false;grid=&grid_definition;}
+        if (grid->placement_id!=g->placement_id) return false;
         if (!strcmp(part[0],"grid")) {
             int64_t k;
             if (grid->axis[axis].stagger_set) return false;
@@ -215,7 +229,11 @@ static bool reference_quantity_raw(ReferenceEval *ctx, const GuideLine *g, const
         int ti=reference_timber_index(w,id);
         if (ti<0) return false;
         Timber *t=&w->wood.timbers[ti];
-        if (ctx->wanted[ti] && w->wood.anchors[ti].placement_id!=g->placement_id) return false;
+        if(ctx->wanted[ti]){uint32_t placement=w->wood.anchors[ti].placement_id;
+            if(!ctx->use_current_values){WoodMemberPlacement authored;
+                if(!wood_definition_sources_placement(ctx->definition_sources,id,&authored))return false;placement=authored.placement_id;}
+            if(placement!=g->placement_id)return false;
+        }
         if (n==3 && (!strcmp(part[2],"A") || !strcmp(part[2],"B"))) {
             return reference_member_dimension(ctx,id,!strcmp(part[2],"B"),out);
         }
@@ -223,7 +241,7 @@ static bool reference_quantity_raw(ReferenceEval *ctx, const GuideLine *g, const
             (strcmp(part[3],"lo") && strcmp(part[3],"hi")) ||
             !reference_eval_timber(ctx,(size_t)ti)) return false;
         SurfaceRegion2 f;
-        if (!timber_a0_footprint_uv(p,t,&w->wood.anchors[ti],&f)) return false;
+        if (!reference_member_footprint(ctx,(size_t)ti,g->placement_id,&f)) return false;
         *out=axis==0 ? (!strcmp(part[3],"lo")?f.min_u:f.max_u)
                      : (!strcmp(part[3],"lo")?f.min_v:f.max_v);
         return true;
@@ -480,6 +498,8 @@ static bool app_member_reference_placement(void *user,uint32_t id,WoodMemberPlac
 static bool app_member_reference_grid(void *user,uint32_t id,WoodMemberGridFact *out)
 {
     AppMemberReferenceContext *c=user;const ReferenceGrid *g=world_find_grid(c->world,id);if(!g)return false;
+    WoodGridApplication definition;
+    if(c->evaluation&&!c->evaluation->use_current_values){if(!reference_grid_definition(c->evaluation,id,&definition))return false;g=&definition;}
     *out=(WoodMemberGridFact){g->id,g->placement_id,g->is_subgrid};return true;
 }
 static bool app_member_reference_grid_line(void *user,const WoodMemberReference *a,Coord *out,char *err,size_t cap)
@@ -499,7 +519,9 @@ static bool app_member_reference_rule(void *user,const GeoGridRuleLineRef *ref,u
 {AppMemberReferenceContext *c=user;return c->evaluation&&!c->evaluation->use_current_values?
     wood_grid_sources_rule_line(c->evaluation->grid_sources,ref,pid,out,scope,err,cap):grid_rule_line(c->world,ref,pid,out,scope,err,cap);}
 static bool app_member_reference_footprint(void *user,size_t i,uint32_t pid,SurfaceRegion2 *out)
-{AppMemberReferenceContext *c=user;(void)pid;return timber_a0_footprint_uv(&c->geometry->placement,&c->world->wood.timbers[i],&c->world->wood.anchors[i],out);}
+{AppMemberReferenceContext *c=user;
+ if(c->evaluation)return reference_member_footprint(c->evaluation,i,pid,out);
+ return timber_a0_footprint_uv(&c->geometry->placement,&c->world->wood.timbers[i],&c->world->wood.anchors[i],out);}
 static bool app_member_reference_key(void *user,uint32_t pid,const char *key,int *hole,int *edge,char *err,size_t cap)
 {
     AppMemberReferenceContext *c=user;(void)pid;
@@ -569,8 +591,9 @@ static bool reference_place_geometry(ReferenceEval *evaluation,World *w,size_t t
 static bool reference_compute_timber(ReferenceEval *ctx,size_t i)
 {
     if(!ctx->use_current_values&&!app_assembly_replaying()&&ctx->wanted[i]){
-        Timber *member=&ctx->world->wood.timbers[i];
-        if(assembly_owned(ctx->world,member->id)){
+        Timber *member=&ctx->world->wood.timbers[i];bool owned;
+        if(!reference_member_owned(ctx,member->id,&owned))return false;
+        if(owned){
             GeoCoord width,depth;
             if(!wood_assembly_sources_owned_dimensions(ctx->assembly_sources,member->id,&width,&depth))return false;
             member->size_a=width;member->size_b=depth;

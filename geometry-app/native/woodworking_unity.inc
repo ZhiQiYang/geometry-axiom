@@ -26,6 +26,7 @@
 #include "../../geometry-templates/woodworking/native/finish_sources.h"
 #include "../../geometry-templates/woodworking/native/grid_application.h"
 #include "../../geometry-templates/woodworking/native/grid_sources.h"
+#include "../../geometry-templates/woodworking/native/grid_definition_codec.h"
 #include "../../geometry-templates/woodworking/native/member_reference.h"
 #else
 #include "../../geometry-templates/woodworking/native/members.c"
@@ -51,6 +52,7 @@
 #include "../../geometry-templates/woodworking/native/finish_sources.c"
 #include "../../geometry-templates/woodworking/native/grid_application.c"
 #include "../../geometry-templates/woodworking/native/grid_sources.c"
+#include "../../geometry-templates/woodworking/native/grid_definition_codec.c"
 #include "../../geometry-templates/woodworking/native/member_reference.c"
 #include "../../geometry-templates/woodworking/native/grid_cells.c"
 #include "../../geometry-templates/woodworking/native/grid_rules.c"

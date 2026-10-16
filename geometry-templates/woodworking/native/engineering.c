@@ -59,9 +59,9 @@ bool wood_eng_version_view_direct(const WoodEngineeringContext *w,int kind,const
 }
 bool wood_eng_version_view(const WoodEngineeringContext *w,int kind,const char *id,uint32_t version,GeoVersionView *out)
 {return wood_eng_version_view_direct(w,kind,id,version,out);}
-static bool wood_eng_read_version(const WoodEngineeringContext *w,int kind,const char *id,uint32_t version,GeoVersionView *out,GeoVersionField fields[GEO_VERSION_FIELD_CAPACITY])
+bool wood_eng_read_version(const WoodEngineeringContext *w,int kind,const char *id,uint32_t version,GeoVersionView *out,GeoVersionField fields[GEO_VERSION_FIELD_CAPACITY])
 {
-    if(!w||!id||!wood_eng_id(id)||!version)return false;
+    if(!w||!id||!out||!fields||(kind!=0&&kind!=1)||!wood_eng_id(id)||!version)return false;
     if(w->source_version_definition){EngVersionRef identity={0};memcpy(identity.id,id,strlen(id)+1);identity.version=version;
         return w->source_version_definition(w->sources,kind,&identity,out,fields);}
     return wood_eng_version_view_direct(w,kind,id,version,out);
@@ -216,7 +216,7 @@ static GeoVersionDefinition wood_eng_version_definition(int kind,const EngVersio
     GeoVersionDefinition definition={wood_eng_version_identity(kind,ref,key),content,strlen(content),fingerprint,strlen(fingerprint),fields,field_count,schema,strlen(schema)};
     return definition;
 }
-bool wood_eng_publish_material(WoodEngineeringContext *w,GeoJson *j,int t,const char *fingerprint)
+static bool wood_eng_material_parse(WoodEngineeringContext *w,GeoJson *j,int t,EngMaterialVersion *out)
 {
     EngMaterialVersion m;memset(&m,0,sizeof m);char kind[16],name[192],thickness[ENG_THICKNESS_CAPACITY];
     if (!geo_json_string(j,geo_json_member(j,t,"kind"),kind,sizeof kind)) return wood_eng_fail(w,"D26: material kind is required");
@@ -240,6 +240,19 @@ bool wood_eng_publish_material(WoodEngineeringContext *w,GeoJson *j,int t,const 
     }
     if (!geo_json_canonical(j,t,m.content,sizeof m.content)) return wood_eng_fail(w,"I10: material content exceeds record capacity");
     geo_sha256(m.content,strlen(m.content),m.fingerprint);
+    *out=m;return true;
+}
+bool wood_eng_material_decode(const void *data,size_t size,EngMaterialVersion *out)
+{
+    if(!data||!out||!size||size>=ENG_RECORD_MAX)return false;
+    GeoJson json;bool ok=geo_json_parse_n(&json,data,size);EngMaterialVersion material;
+    char error[256];WoodEngineeringContext context={.error=error,.error_capacity=sizeof error};
+    if(ok)ok=wood_eng_material_parse(&context,&json,0,&material)&&strlen(material.content)==size&&!memcmp(material.content,data,size);
+    geo_json_free(&json);if(!ok)return false;*out=material;return true;
+}
+bool wood_eng_publish_material(WoodEngineeringContext *w,GeoJson *j,int t,const char *fingerprint)
+{
+    EngMaterialVersion m;if(!wood_eng_material_parse(w,j,t,&m))return false;
     GeoVersionField fields[4]={0};size_t count=3;
     fields[0]=(GeoVersionField){WOOD_ENG_VERSION_KIND,{m.kind,1,GEO_UNIT_SCALAR}};
     fields[1]=(GeoVersionField){m.kind?ENG_A:ENG_WIDTH,{m.kind?m.a:m.width,1,GEO_UNIT_LENGTH}};
