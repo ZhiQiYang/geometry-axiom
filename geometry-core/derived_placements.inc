@@ -2,22 +2,22 @@
  * cache; persistence contains only id, source fill and the typed h source. */
 static const DerivedPlacement *dp_find(const World *w,uint32_t id)
 {for(uint64_t i=0;i<w->finish_surfaces.host_count;++i)if(w->finish_surfaces.hosts[i].id==id)return &w->finish_surfaces.hosts[i];return NULL;}
-static bool dp_parse(EngJson *j,int t,DerivedPlacement *p)
+static bool dp_parse(GeoJson *j,int t,DerivedPlacement *p)
 {
-    memset(p,0,sizeof *p);int h=eng_json_member(j,t,"h");
-    if(!eng_json_keys(j,t,"id,fillId,h","")||!eng_u32(j,eng_json_member(j,t,"id"),&p->id,false)||
-       !eng_u32(j,eng_json_member(j,t,"fillId"),&p->fill_id,true))return fs_error("D4: host requires id, fillId and a typed h source");
-    if(eng_json_integer(j,h,&p->h.value))p->h.kind=ENG_LITERAL;
+    memset(p,0,sizeof *p);int h=geo_json_member(j,t,"h");
+    if(!geo_json_keys(j,t,"id,fillId,h","")||!eng_u32(j,geo_json_member(j,t,"id"),&p->id,false)||
+       !eng_u32(j,geo_json_member(j,t,"fillId"),&p->fill_id,true))return fs_error("D4: host requires id, fillId and a typed h source");
+    if(geo_json_integer(j,h,&p->h.value))p->h.kind=ENG_LITERAL;
     else if(!eng_source_parse(j,h,&p->h,false))return false;
     if(p->h.kind==ENG_MATERIAL&&p->h.field!=ENG_B)return fs_error("D4: h material source must be timber B");
-    if(!eng_json_canonical(j,t,p->definition,sizeof p->definition))return fs_capacity_error("I33 CAPACITY: D4 definition exceeds 1023 bytes");
+    if(!geo_json_canonical(j,t,p->definition,sizeof p->definition))return fs_capacity_error("I33 CAPACITY: D4 definition exceeds 1023 bytes");
     return true;
 }
-static bool dp_operation(World *w,EngJson *j,int t,bool remove)
+static bool dp_operation(World *w,GeoJson *j,int t,bool remove)
 {
     DerivedPlacement d;uint32_t id;FinishSurfaceState *s=&w->finish_surfaces;
-    if(remove){if(!eng_json_keys(j,t,"op,id","")||!eng_u32(j,eng_json_member(j,t,"id"),&id,false))return fs_error("D4: delete-derived-placement needs id");}
-    else {if(!eng_json_keys(j,t,"op,value","")||!dp_parse(j,eng_json_member(j,t,"value"),&d))return false;id=d.id;}
+    if(remove){if(!geo_json_keys(j,t,"op,id","")||!eng_u32(j,geo_json_member(j,t,"id"),&id,false))return fs_error("D4: delete-derived-placement needs id");}
+    else {if(!geo_json_keys(j,t,"op,value","")||!dp_parse(j,geo_json_member(j,t,"value"),&d))return false;id=d.id;}
     size_t i=0;while(i<s->host_count&&s->hosts[i].id!=id)++i;
     const PlacementSurface *old=world_find_placement(w,id);
     if(remove){
@@ -171,7 +171,7 @@ static bool apply_derived_placement_line(const char *path,int line,char **t,int 
     uint32_t id;char definition[1024];size_t n=strlen(t[3]);
     if(count!=4||strcmp(t[2],"definition-hex")||!parse_u32(t[1],&id)||!n||n%2||n/2>=sizeof definition)goto invalid;
     for(size_t i=0;i<n/2;++i){int a=grid_system_hex_digit(t[3][2*i]),b=grid_system_hex_digit(t[3][2*i+1]);if(a<0||b<0||!(a*16+b))goto invalid;definition[i]=(char)(a*16+b);}definition[n/2]=0;
-    EngJson j;DerivedPlacement p;bool ok=eng_json_parse(&j,definition);if(ok)ok=dp_parse(&j,0,&p);eng_json_free(&j);
+    GeoJson j;DerivedPlacement p;bool ok=app_json_parse(&j,definition);if(ok)ok=dp_parse(&j,0,&p);geo_json_free(&j);
     if(!ok){scene_error(path,line,g_engineering_error);return false;}
     if(id!=p.id||dp_find(w,id)||world_find_placement(w,id)){scene_error(path,line,"D4/I56: derived placement id mismatch, duplicate or variant collision");return false;}
     for(uint64_t i=0;i<w->finish_surfaces.host_count;++i)if(w->finish_surfaces.hosts[i].fill_id==p.fill_id){scene_error(path,line,"D4: one derived placement per fill");return false;}

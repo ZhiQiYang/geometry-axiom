@@ -6,7 +6,7 @@
 #define PARAM_EXPR_MAX 2048
 #define PARAM_NODE_MAX 128
 #define PARAM_DEPTH_MAX 64
-typedef struct { int64_t num, den; int unit; } ParamValue;
+#include "kernel/types.h"
 typedef struct { bool set; uint32_t parameter_id, field_id; } ParameterRef;
 typedef struct {
     uint32_t id, next_field_id;
@@ -19,7 +19,7 @@ typedef struct {
     char name[PARAM_NAME_MAX];
     int type; /* 0=dimension, 1=count, 2=ratio */
     char expression[PARAM_EXPR_MAX];
-    ParamValue value; /* deterministic cache, never a serialized definition */
+    GeoQuantity value; /* deterministic cache, never a serialized definition */
 } ParameterField;
 typedef struct {
     ParameterSet cards[PARAM_CARD_MAX]; size_t card_count;

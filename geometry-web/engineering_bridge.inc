@@ -12,7 +12,7 @@ static bool eng_definition_hash(const World *w,char hash[65])
     long n=ftell(file);if(n<0||n>ENG_INPUT_MAX||fseek(file,0,SEEK_SET)){fclose(file);return false;}
     char *text=malloc((size_t)n+1);if(!text){fclose(file);return false;}
     size_t got=fread(text,1,(size_t)n,file);bool ok=got==(size_t)n&&!ferror(file);fclose(file);
-    if(ok)eng_sha256(text,got,hash);free(text);return ok;
+    if(ok)geo_sha256(text,got,hash);free(text);return ok;
 }
 static void json_engineering_capabilities(const World *w)
 {
@@ -88,23 +88,23 @@ static void json_engineering_preview(void)
     for(size_t i=0;i<g_preview.issue_count;++i){const ReferenceIssue *e=&g_preview.issues[i];printf("%s{\"timber\":%u,\"clause\":",(!g_preview.valid||i)?",":"",e->timber);js_string(e->clause);fputs(",\"expected\":",stdout);js_string(e->expected);fputs(",\"message\":",stdout);js_string(e->actual);putchar('}');}fputs("]}",stdout);
 }
 /* Shared candidate flow. Each caller keeps its schema, operation, preview JSON, and token kind. */
-static void batch_preview(const char *path,const char *schema_name,const char *schema_error,const char *stale_message,const char *memory_message,const char *label,int kind,bool (*operation)(World *,EngJson *,int),void (*write_preview)(void))
+static void batch_preview(const char *path,const char *schema_name,const char *schema_error,const char *stale_message,const char *memory_message,const char *label,int kind,bool (*operation)(World *,GeoJson *,int),void (*write_preview)(void))
 {
     g_asm_diagnostic=(AsmDiagnostic){0};
     if(g_hist_grouping){eng_bridge_error("HISTORY_GROUP","Finish or cancel the current history group first");return;}
     size_t size;char *text=eng_read_file(path,&size);if(!text){eng_bridge_error("INPUT",g_engineering_error);return;}
-    EngJson j;if(!eng_json_parse_n(&j,text,size)){eng_bridge_error("JSON",j.error);eng_json_free(&j);free(text);return;}
-    char schema[40];int64_t revision;int operations=eng_json_member(&j,0,"operations");
-    if(!eng_json_keys(&j,0,"schema,expectedRevision,operations","")||!eng_json_string(&j,eng_json_member(&j,0,"schema"),schema,sizeof schema)||strcmp(schema,schema_name)||!eng_json_integer(&j,eng_json_member(&j,0,"expectedRevision"),&revision)||revision<0||!eng_json_is_array(&j,operations)){
-        eng_bridge_error("SCHEMA",schema_error);eng_json_free(&j);free(text);return;
+    GeoJson j;if(!app_json_parse_n(&j,text,size)){eng_bridge_error("JSON",j.error);geo_json_free(&j);free(text);return;}
+    char schema[40];int64_t revision;int operations=geo_json_member(&j,0,"operations");
+    if(!geo_json_keys(&j,0,"schema,expectedRevision,operations","")||!geo_json_string(&j,geo_json_member(&j,0,"schema"),schema,sizeof schema)||strcmp(schema,schema_name)||!geo_json_integer(&j,geo_json_member(&j,0,"expectedRevision"),&revision)||revision<0||!geo_json_is_array(&j,operations)){
+        eng_bridge_error("SCHEMA",schema_error);geo_json_free(&j);free(text);return;
     }
-    if((uint64_t)revision!=g_definition_revision){eng_bridge_error("STALE",stale_message);eng_json_free(&j);free(text);return;}
-    int count=eng_json_size(&j,operations);if(count<1||count>ENG_OPERATION_MAX){eng_bridge_error("CAPACITY","Transaction needs 1..256 operations");eng_json_free(&j);free(text);return;}
-    World *candidate=malloc(sizeof *candidate);if(!candidate){eng_bridge_error("MEMORY",memory_message);eng_json_free(&j);free(text);return;}*candidate=g_world;
+    if((uint64_t)revision!=g_definition_revision){eng_bridge_error("STALE",stale_message);geo_json_free(&j);free(text);return;}
+    int count=geo_json_size(&j,operations);if(count<1||count>ENG_OPERATION_MAX){eng_bridge_error("CAPACITY","Transaction needs 1..256 operations");geo_json_free(&j);free(text);return;}
+    World *candidate=malloc(sizeof *candidate);if(!candidate){eng_bridge_error("MEMORY",memory_message);geo_json_free(&j);free(text);return;}*candidate=g_world;
     g_engineering_error[0]=0;g_scene_last_error[0]=0;g_reference_issue_count=0;bool ok=true;
     g_deleted_field_count=0;g_deleted_fields_token=0;
     for(int i=0;i<count&&ok;++i){
-        ok=operation(candidate,&j,eng_json_at(&j,operations,i));
+        ok=operation(candidate,&j,geo_json_at(&j,operations,i));
         if(ok)receipt_scan_candidate(candidate);
         if(ok)ok=assembly_versions_immutable(&g_world,candidate);
     }
@@ -116,7 +116,7 @@ static void batch_preview(const char *path,const char *schema_name,const char *s
     g_deleted_fields_token=g_preview.token;
     if(!ok)g_preview.assembly_diagnostic=g_asm_diagnostic;
     fputs("{\"ok\":true,\"preview\":",stdout);write_preview();fputs("}\n",stdout);
-    free(candidate);eng_json_free(&j);free(text);
+    free(candidate);geo_json_free(&j);free(text);
 }
 static bool batch_token_kind(int kind)
 {

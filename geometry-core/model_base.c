@@ -305,16 +305,16 @@ static void model_dependencies(const World *world)
         /* Source metadata only: the authoritative native core has already
          * resolved placement. A live simple host contributes its real faces
          * to R29; a sampled wall contributes no live Space dependency. */
-        EngJson j = {0};
-        if (eng_json_parse(&j, run->content)) {
-            int placement = eng_json_member(&j, 0, "placement");
-            int host = eng_json_member(&j, placement, "host");
+        GeoJson j = {0};
+        if (app_json_parse(&j, run->content)) {
+            int placement = geo_json_member(&j, 0, "placement");
+            int host = geo_json_member(&j, placement, "host");
             char kind[32]; uint32_t id;
-            if (eng_json_string(&j, eng_json_member(&j, host, "kind"), kind, sizeof kind) &&
-                !strcmp(kind, "placement") && eng_u32(&j, eng_json_member(&j, host, "placementId"), &id, false))
+            if (geo_json_string(&j, geo_json_member(&j, host, "kind"), kind, sizeof kind) &&
+                !strcmp(kind, "placement") && eng_u32(&j, geo_json_member(&j, host, "placementId"), &id, false))
                 model_dep_placement(world, &deps, id);
         }
-        eng_json_free(&j);
+        geo_json_free(&j);
         if (count++) putchar(',');
         model_dependency_record(world, "profile-run", run->id, &deps);
     }

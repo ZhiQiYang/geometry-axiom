@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
+#include "geometry-core/kernel/kernel_unity.inc"
+#include "geometry-app/native/legacy_json.inc"
 #ifdef _MSC_VER
 #include <intrin.h>
 #endif

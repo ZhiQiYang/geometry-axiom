@@ -17,7 +17,7 @@ static Coord pf_component(SurfacePoint2 p,int axis) {return axis?p.v:p.u;}
 static int pf_interval_compare(const void *a,const void *b)
 {const PfInterval *x=a,*y=b;return x->lo!=y->lo?(x->lo<y->lo?-1:1):x->hi!=y->hi?(x->hi<y->hi?-1:1):0;}
 /* Compare a nonnegative integer width to positive num/den without overflow. */
-static bool pf_support_enough(Coord d,ParamValue x)
+static bool pf_support_enough(Coord d,GeoQuantity x)
 {return d>x.num/x.den||(d==x.num/x.den&&x.num%x.den==0);}
 static bool pf_support_footprints(const World *w,const PanelFill *p,PfFootprint *rects,size_t *count)
 {
@@ -76,7 +76,7 @@ static bool pf_support_append_seam(PfEffectiveSeam *out,size_t *count,size_t lin
 }
 /* Pure evaluator shared with the algorithm-only P-103 harness. Production
  * callers can supply footprints only through the validated World above. */
-static bool pf_support_evaluate(const PfLayout *d,const PfFootprint *rects,size_t nr,ParamValue threshold,PfSupport *s)
+static bool pf_support_evaluate(const PfLayout *d,const PfFootprint *rects,size_t nr,GeoQuantity threshold,PfSupport *s)
 {
     memset(s,0,sizeof *s);bool ok=false;
     if(nr>WORLD_MAX_TIMBERS)return fs_capacity_error("I33 CAPACITY: PF-3 footprint limit is %d",WORLD_MAX_TIMBERS);
@@ -127,7 +127,7 @@ done:free(cuts);free(crossings);free(un);if(!ok)pf_support_free(s);return ok;
 }
 static bool pf_support_build(const World *w,const PanelFill *p,const PfLayout *d,PfSupport *s)
 {
-    memset(s,0,sizeof *s);PfFootprint *rects=malloc(WORLD_MAX_TIMBERS*sizeof *rects);ParamValue threshold;size_t count;
+    memset(s,0,sizeof *s);PfFootprint *rects=malloc(WORLD_MAX_TIMBERS*sizeof *rects);GeoQuantity threshold;size_t count;
     if(!rects)return fs_capacity_error("I33 CAPACITY: PF-3 footprints unavailable");
     bool ok=parameter_value(w,p->threshold,&threshold)&&pf_support_footprints(w,p,rects,&count)&&pf_support_evaluate(d,rects,count,threshold,s);
     free(rects);return ok;
