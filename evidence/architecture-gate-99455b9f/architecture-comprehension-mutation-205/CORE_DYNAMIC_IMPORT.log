@@ -1,0 +1,44 @@
+test_python_dynamic_import_alias_is_rejected (__main__.ArchitectureContract.test_python_dynamic_import_alias_is_rejected) ... FAIL
+test_python_from_loader_alias_is_rejected (__main__.ArchitectureContract.test_python_from_loader_alias_is_rejected) ... FAIL
+test_python_builtin_loader_escape_is_rejected (__main__.ArchitectureContract.test_python_builtin_loader_escape_is_rejected) ... FAIL
+
+======================================================================
+FAIL: test_python_dynamic_import_alias_is_rejected (__main__.ArchitectureContract.test_python_dynamic_import_alias_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 382, in test_python_dynamic_import_alias_is_rejected
+    self.rejects("CORE_DYNAMIC_IMPORT", path="src/core.py", line=1)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+======================================================================
+FAIL: test_python_from_loader_alias_is_rejected (__main__.ArchitectureContract.test_python_from_loader_alias_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 386, in test_python_from_loader_alias_is_rejected
+    self.rejects("CORE_DYNAMIC_IMPORT", path="src/core.py", line=1)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 66, in rejects
+    self.assertTrue(matches, result.to_dict())
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [] is not true : {'ok': False, 'sources': ['src/core.py'], 'trustedSourcesNotParsed': [], 'edges': [], 'diagnostics': [{'path': 'src/core.py', 'line': 1, 'code': 'DEPENDENCY_UNRESOLVED', 'message': "unresolved Python module 'importlib'", 'direction': '', 'chain': ()}]}
+
+======================================================================
+FAIL: test_python_builtin_loader_escape_is_rejected (__main__.ArchitectureContract.test_python_builtin_loader_escape_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 398, in test_python_builtin_loader_escape_is_rejected
+    self.rejects("CORE_DYNAMIC_IMPORT", path="src/core.py", line=1)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.043s
+
+FAILED (failures=3)

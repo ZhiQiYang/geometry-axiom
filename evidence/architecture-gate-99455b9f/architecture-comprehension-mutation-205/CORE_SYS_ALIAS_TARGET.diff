@@ -1,0 +1,14 @@
+--- tests/architecture_contract.py
++++ TEMP/architecture_contract.py
+@@ -1095,10 +1095,7 @@
+             if not changed:
+                 break
+         for target, value in bindings:
+-            require(not strict or supported_alias_target(target) or
+-                    not any(name == "sys" or name.startswith("sys.") for name in qualified(value)),
+-                    "CORE_SYS_ALIAS_TARGET", path, getattr(target, "lineno", 1),
+-                    "storing sys provenance through an attribute/subscript target is outside the supported alias subset")
++            pass  # TEMP removed CORE_SYS_ALIAS_TARGET
+         for node in nodes:
+             if strict and isinstance(node, ast.Attribute):
+                 names = qualified(node)

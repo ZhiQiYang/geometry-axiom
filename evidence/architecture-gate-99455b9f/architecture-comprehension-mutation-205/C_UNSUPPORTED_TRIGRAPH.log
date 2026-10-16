@@ -1,0 +1,31 @@
+test_c_trigraph_cannot_hide_template_include (__main__.ArchitectureContract.test_c_trigraph_cannot_hide_template_include) ... FAIL
+test_c_trigraph_splicing_is_rejected_before_comment_processing (__main__.ArchitectureContract.test_c_trigraph_splicing_is_rejected_before_comment_processing) ... FAIL
+
+======================================================================
+FAIL: test_c_trigraph_cannot_hide_template_include (__main__.ArchitectureContract.test_c_trigraph_cannot_hide_template_include)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 984, in test_c_trigraph_cannot_hide_template_include
+    self.rejects("C_UNSUPPORTED_TRIGRAPH", path="src/core.c", line=1)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+======================================================================
+FAIL: test_c_trigraph_splicing_is_rejected_before_comment_processing (__main__.ArchitectureContract.test_c_trigraph_splicing_is_rejected_before_comment_processing)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 989, in test_c_trigraph_splicing_is_rejected_before_comment_processing
+    self.rejects("C_UNSUPPORTED_TRIGRAPH", line=1)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 66, in rejects
+    self.assertTrue(matches, result.to_dict())
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [] is not true : {'ok': False, 'sources': ['src/core.c', 'src/w.h'], 'trustedSourcesNotParsed': [], 'edges': [{'source': 'src/core.c', 'target': 'src/w.h', 'line': 2}], 'diagnostics': [{'path': 'src/core.c', 'line': 2, 'code': 'LAYER_DIRECTION', 'message': 'K source reaches W through a local dependency', 'direction': 'K -> W', 'chain': ('src/core.c', 'src/w.h')}]}
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.039s
+
+FAILED (failures=2)

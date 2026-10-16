@@ -1,0 +1,90 @@
+"""Immutable TEMP controls for adjacent alias, computed-key and embedded-source gaps."""
+import ast
+import hashlib
+import importlib.machinery
+import importlib.util
+import json
+from pathlib import Path
+import sys
+
+BASE = Path(__file__).with_name('mutate_architecture_adversarial_v6.py.txt')
+loader = importlib.machinery.SourceFileLoader('architecture_mutation_v6', str(BASE))
+spec = importlib.util.spec_from_loader(loader.name, loader)
+prior = importlib.util.module_from_spec(spec)
+loader.exec_module(prior)
+runner = prior.runner
+previous_mutate = prior.mutate
+
+NEW = {
+    'C_UNSUPPORTED_TRIGRAPH': ['test_c_trigraph_cannot_hide_template_include',
+                              'test_c_trigraph_splicing_is_rejected_before_comment_processing'],
+    'PY_DESTRUCTURING_TARGETS': ['test_python_destructured_sys_alias_cannot_read_loaded_template'],
+    'PY_CONTAINER_PROVENANCE': ['test_python_destructured_sys_alias_cannot_read_loaded_template',
+                                'test_python_container_index_preserves_sys_provenance'],
+    'CORE_SYS_ALIAS_TARGET': ['test_python_sys_storage_through_attribute_target_fails_closed',
+                              'test_python_mixed_nested_sys_storage_target_fails_closed'],
+    'JS_COMPUTED_KEY_UNSUPPORTED': ['test_javascript_parenthesized_constructor_key_fails_closed',
+                                    'test_javascript_bare_index_variable_is_not_assumed_numeric',
+                                    'test_javascript_constructed_srcdoc_key_fails_closed'],
+    'JS_HTML_WRITER_UNSUPPORTED': ['test_javascript_template_srcdoc_property_is_not_a_static_dependency',
+                                   'test_javascript_literal_srcdoc_property_fails_closed',
+                                   'test_javascript_attribute_writer_cannot_hide_srcdoc'],
+    'HTML_SRCDOC_UNSUPPORTED': ['test_html_srcdoc_document_is_explicitly_unsupported',
+                                'test_html_empty_or_host_srcdoc_still_requires_document_parser'],
+    'JS_MEMBER_CLASSIFICATION': ['test_javascript_parenthesized_constructor_key_fails_closed',
+                                  'test_javascript_literal_srcdoc_property_fails_closed'],
+    'JS_NUMERIC_INDEX_PROOF': ['test_javascript_bare_index_variable_is_not_assumed_numeric',
+                               'test_javascript_unknown_addition_key_is_not_assumed_numeric'],
+    'JS_ARRAY_LITERAL_CLASSIFICATION': ['test_javascript_arrays_and_destructuring_are_not_member_keys'],
+}
+runner.CONTROLS.update(NEW)
+runner.COUNTS.update({name: 1 for name in NEW})
+
+def mutate(source, control):
+    special = {'PY_TYPED_ALIAS_PROPAGATION', 'PY_DESTRUCTURING_TARGETS', 'PY_CONTAINER_PROVENANCE',
+               'JS_MEMBER_CLASSIFICATION', 'JS_NUMERIC_INDEX_PROOF', 'JS_ARRAY_LITERAL_CLASSIFICATION'}
+    if control not in special:
+        return previous_mutate(source, control)
+    tree = ast.parse(source)
+    selected = []
+    replacement = 'pass'
+    for node in ast.walk(tree):
+        text = ast.unparse(node)
+        if control == 'PY_TYPED_ALIAS_PROPAGATION':
+            match = isinstance(node, ast.Expr) and text.startswith('bindings.extend(') and 'ast.AnnAssign' in text
+        elif control == 'PY_DESTRUCTURING_TARGETS':
+            match = isinstance(node, ast.If) and ast.unparse(node.test) == 'isinstance(target, (ast.Tuple, ast.List))' and 'assignment_names(item)' in text
+        elif control == 'PY_CONTAINER_PROVENANCE':
+            match = isinstance(node, ast.If) and ast.unparse(node.test) == 'isinstance(node, (ast.Tuple, ast.List, ast.Set))'
+        elif control == 'JS_MEMBER_CLASSIFICATION':
+            match = isinstance(node, ast.Assign) and text == "token_kind = 'member_open'"
+            replacement = "token_kind = 'punct'"
+        elif control == 'JS_NUMERIC_INDEX_PROOF':
+            match = isinstance(node, ast.Return) and text == 'return numeric is True and position == len(tokens)'
+            replacement = 'return True'
+        else:
+            match = isinstance(node, ast.If) and ast.unparse(node.test) == "char == '[' and regex_goal is not True"
+            replacement = "if char == '[':\n                    token_kind = 'member_open'"
+        if match:
+            selected.append(node)
+    runner.check(len(selected) == 1, control + ': wrong AST guard count')
+    node = selected[0]
+    lines = source.splitlines(keepends=True)
+    lines[node.lineno - 1:node.end_lineno] = [' ' * node.col_offset + replacement + '  # TEMP removed ' + control + '\n']
+    result = ''.join(lines)
+    ast.parse(result)
+    return result
+
+runner.mutate = mutate
+runner.__file__ = __file__
+if __name__ == '__main__':
+    status = runner.main()
+    out = Path(sys.argv[sys.argv.index('--out') + 1])
+    path = out / 'mutation-results.json'
+    report = json.loads(path.read_text(encoding='utf-8'))
+    report['baseRunners'] = [{'path': str(item), 'sha256': hashlib.sha256(item.read_bytes()).hexdigest()}
+                             for item in [BASE, prior.BASE]]
+    report['adjacentGuardControls'] = list(NEW)
+    report['priorAdversarialGuardControls'] = list(prior.NEW)
+    path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    raise SystemExit(status)

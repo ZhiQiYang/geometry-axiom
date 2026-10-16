@@ -6,3 +6,5 @@ geometry-guide/witness/*.joints.json -text
 geometry-guide/witness/manifest.json -text
 # GEO-198: keep bundled upstream bytes and licence formatting intact on checkout.
 geometry-web/vendor/** -text -whitespace
+# GEO-261: archive receipts, runners, logs and diffs without checkout conversion.
+evidence/architecture-gate-99455b9f/** -text

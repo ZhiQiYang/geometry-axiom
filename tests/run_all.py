@@ -48,6 +48,7 @@ EXPECTED_FILE = HERE / 'run_all.expected.json'
 # Every tests/test_*.py MUST appear here (value = native binaries it needs; [] is a deliberate "needs none").
 # A test file that is on disk but not listed makes run_all fail and name it.
 PY_NEEDS = {
+    'test_architecture_contract': [],
     'test_assembly_capacity': ['bridge'],
     'test_assembly_candidate_impact': ['bridge'],
     'test_assembly_parameter_refs': ['bridge'],

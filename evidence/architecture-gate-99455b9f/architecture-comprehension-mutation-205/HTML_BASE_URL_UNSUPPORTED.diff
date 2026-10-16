@@ -1,0 +1,12 @@
+--- tests/architecture_contract.py
++++ TEMP/architecture_contract.py
+@@ -1306,8 +1306,7 @@
+                 names = [key for key, _ in attrs]
+                 require(len(names) == len(set(names)), "HTML_SCRIPT_SYNTAX", path, line, "duplicate attributes are ambiguous")
+                 values = dict(attrs)
+-                require(tag != "base" or "href" not in values, "HTML_BASE_URL_UNSUPPORTED", path, line,
+-                        "base href changes dependency resolution and is outside the static HTML subset")
++                pass  # TEMP removed HTML_BASE_URL_UNSUPPORTED
+                 require("srcdoc" not in values, "HTML_SRCDOC_UNSUPPORTED", path, line,
+                         "srcdoc embeds a separately parsed executable document and is outside the static HTML subset")
+                 require(tag not in {"iframe", "frame", "object", "embed"}, "HTML_EMBED_UNSUPPORTED", path, line,

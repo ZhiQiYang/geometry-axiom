@@ -1,0 +1,31 @@
+test_python_destructured_sys_alias_cannot_read_loaded_template (__main__.ArchitectureContract.test_python_destructured_sys_alias_cannot_read_loaded_template) ... FAIL
+test_python_container_index_preserves_sys_provenance (__main__.ArchitectureContract.test_python_container_index_preserves_sys_provenance) ... FAIL
+
+======================================================================
+FAIL: test_python_destructured_sys_alias_cannot_read_loaded_template (__main__.ArchitectureContract.test_python_destructured_sys_alias_cannot_read_loaded_template)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 1002, in test_python_destructured_sys_alias_cannot_read_loaded_template
+    self.rejects("CORE_PATH_INJECTION", path="src/core.py", line=3)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+======================================================================
+FAIL: test_python_container_index_preserves_sys_provenance (__main__.ArchitectureContract.test_python_container_index_preserves_sys_provenance)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 1021, in test_python_container_index_preserves_sys_provenance
+    self.rejects("CORE_PATH_INJECTION", line=3)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.048s
+
+FAILED (failures=2)

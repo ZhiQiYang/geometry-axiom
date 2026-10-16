@@ -1,0 +1,45 @@
+{
+  "head": "99455b9f73c4175c1154f7e7be514204019930b8",
+  "branch": "architecture/geo261-dependency-20261016",
+  "workingTreeStatus": [],
+  "files": {
+    "tests/architecture_contract.py": {
+      "rawSha256": "f07d2d8513de23af62ac7bf0a58251249cc17e6a6f752e5a546735ebdf05d7a9",
+      "lfSha256": "f07d2d8513de23af62ac7bf0a58251249cc17e6a6f752e5a546735ebdf05d7a9",
+      "commitBlobMatches": true
+    },
+    "tests/test_architecture_contract.py": {
+      "rawSha256": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
+      "lfSha256": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
+      "commitBlobMatches": true
+    },
+    "tests/run_all.py": {
+      "rawSha256": "12bc15a411f295fb961209b1cc25535c7f5674607495a048f1dc1d9c6166b6f4",
+      "lfSha256": "c11eccc175e41d81b9e4f1d4b273d837d90383a1b0f107e1e4f243239e0e058d",
+      "commitBlobMatches": true
+    },
+    "tests/run_all.expected.json": {
+      "rawSha256": "ca1773b5a4f8b5dac9d65013100a3d53da78a7ce69336ef792060d80bcfb37c1",
+      "lfSha256": "5b2cb95846067cae262d85ef137636a6e5087048c0c627afbc476d508a2ed3ee",
+      "commitBlobMatches": true
+    }
+  },
+  "receipt": "D:\\geometry-axiom-work\\geo261-research\\architecture-comprehension-mutation-205\\mutation-results.json",
+  "receiptSha256": "826ee3469cdd4fe25699f4c3d40ec0cca7e6509a0b017336688a99142244a138",
+  "testsRun": 205,
+  "skips": [
+    "test_symlink_escape_is_rejected"
+  ],
+  "focusedNegativeControls": 43,
+  "expectedTestFailures": 99,
+  "actualTestFailures": 99,
+  "mutationErrors": 0,
+  "inputsUnchanged": {
+    "tests/architecture_contract.py": true,
+    "tests/test_architecture_contract.py": true,
+    "tests/run_all.py": true,
+    "tests/run_all.expected.json": true
+  },
+  "temporaryCopiesDeleted": true,
+  "scope": "Full synthetic suite baseline and focused removal controls only. Await final frozen product manifest before product-completion claims."
+}

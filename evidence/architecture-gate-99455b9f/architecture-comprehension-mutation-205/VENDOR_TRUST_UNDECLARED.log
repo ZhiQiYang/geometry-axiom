@@ -1,0 +1,18 @@
+test_trusted_vendor_bundle_cannot_omit_owned_vendor_file (__main__.ArchitectureContract.test_trusted_vendor_bundle_cannot_omit_owned_vendor_file) ... FAIL
+
+======================================================================
+FAIL: test_trusted_vendor_bundle_cannot_omit_owned_vendor_file (__main__.ArchitectureContract.test_trusted_vendor_bundle_cannot_omit_owned_vendor_file)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 781, in test_trusted_vendor_bundle_cannot_omit_owned_vendor_file
+    self.rejects("VENDOR_TRUST_UNDECLARED")
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 66, in rejects
+    self.assertTrue(matches, result.to_dict())
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [] is not true : {'ok': False, 'sources': ['src/vendor/helper.js', 'src/vendor/lib.js'], 'trustedSourcesNotParsed': ['src/vendor/lib.js'], 'edges': [], 'diagnostics': [{'path': 'src/vendor/helper.js', 'line': 1, 'code': 'JS_DYNAMIC_IMPORT', 'message': "dynamic/global JS entry point 'globalThis' in core", 'direction': '', 'chain': ()}]}
+
+----------------------------------------------------------------------
+Ran 1 test in 0.021s
+
+FAILED (failures=1)

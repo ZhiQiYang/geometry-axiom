@@ -1,0 +1,16 @@
+--- tests/architecture_contract.py
++++ TEMP/architecture_contract.py
+@@ -1206,12 +1206,7 @@
+                                (offset in literal_keys or (offset > 0 and offset - 1 in computed_keys))))),
+                         "JS_REFLECTIVE_LOADER", path, token.line,
+                         "reflective function construction/prototype access is outside the static dependency subset")
+-                require(not (token.value in JS_HTML_WRITER_NAMES and
+-                             (token.kind == "identifier" or
+-                              (token.kind in {"string", "template"} and
+-                               (offset in literal_keys or (offset > 0 and offset - 1 in computed_keys))))),
+-                        "JS_HTML_WRITER_UNSUPPORTED", path, token.line,
+-                        "DOM string/attribute writers can create executable documents and are outside the non-host static subset")
++                pass  # TEMP removed JS_HTML_WRITER_UNSUPPORTED
+         typescript = self.entries[path]["language"] == "typescript"
+         index = 0
+         while index < len(tokens):
