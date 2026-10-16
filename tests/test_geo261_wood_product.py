@@ -9,7 +9,7 @@ if str(ROOT) not in sys.path:sys.path.insert(0,str(ROOT))
 from tests import _bridge
 from tests.test_geo261_native_kernel import native
 
-SCENE='surface 1 origin 0 0 0 u +x v +y rect 0 0 1000 1000\nspec x 500\nguide 1 1 v spec:x\ntimber 1 40 50 role primary\nplace 1 on 1 at-line guide 1 +v +n\n'
+SCENE='surface 1 origin 0 0 0 u +x v +y outline 0,0 1000,0 1000,1000 0,1000\nspec x 500\nguide 1 1 v spec:x\ntimber 1 40 50 role boundary\nplace 1 on 1 at-face e0 +u +n\n'
 class WoodProduct(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -35,10 +35,10 @@ class WoodProduct(unittest.TestCase):
             return objects,rendered
     def test_role_priority_mutation_changes_standalone_and_real_product(self):
         self.assertEqual(0,self.case(self.exe,'construction'));control,_=self.result(native().bridge())
-        self.assertEqual(2,control['timbers'][0]['priority'])
+        self.assertEqual(1,control['timbers'][0]['priority'])
         client,bridge=self.mutant('priority','(GeoCoord)role + 1','(GeoCoord)role + 2')
         self.assertEqual(1,self.case(client,'construction'));changed,_=self.result(bridge)
-        self.assertEqual(3,changed['timbers'][0]['priority']);self.assertEqual(0,self.case(self.exe,'construction'))
+        self.assertEqual(2,changed['timbers'][0]['priority']);self.assertEqual(0,self.case(self.exe,'construction'))
     def test_contact_face_mutation_changes_standalone_and_real_render_geometry(self):
         self.assertEqual(0,self.case(self.exe,'faces'));_,control=self.result(native().bridge())
         client,bridge=self.mutant('contact-face','[WOOD_MEMBER_FACE_A0]    = { 2, 0 }','[WOOD_MEMBER_FACE_A0]    = { 1, 0 }')

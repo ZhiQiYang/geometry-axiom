@@ -31,9 +31,11 @@ static bool sp_resolve_dimension(World *w,const EngDimensionSource *source,const
     if(source->kind==ENG_PARAMETER){
         int at=parameter_field_index(w,source->parameter.parameter_id,source->parameter.field_id);
         if(at<0)return sp_error("I38 MISSING: parameter %u field %u",source->parameter.parameter_id,source->parameter.field_id);
-        ParameterEval *eval=calloc(1,sizeof *eval);if(!eval)return sp_error("I32 CAPACITY: parameter evaluation memory");
-        eval->w=w;bool ok=parameter_eval_field(eval,at);free(eval);
-        if(!ok)return sp_error("%s",g_parameter_error);
+        GeoParameterError issue;
+        if(!geo_parameters_evaluate_field(&w->parameters,source->parameter,&issue)){
+            if(issue.status==GEO_PARAMETER_MEMORY)return sp_error("I32 CAPACITY: parameter evaluation memory");
+            parameter_kernel_error(w,&issue);return sp_error("%s",g_parameter_error);
+        }
     }
     return eng_resolve(w,source,target,UINT32_MAX,0,out,NULL,0);
 }
