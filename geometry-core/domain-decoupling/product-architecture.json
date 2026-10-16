@@ -669,6 +669,18 @@
       "purpose": "Neutral native placements API/implementation; no application/template dependency"
     },
     {
+      "path": "geometry-core/kernel/region_key_sources.c",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Neutral canonical vertex-key ledger definitions and typed region coordinate consumers; evaluates declared geometry through registered K sources in the same candidate"
+    },
+    {
+      "path": "geometry-core/kernel/region_key_sources.h",
+      "layer": "K",
+      "language": "c",
+      "purpose": "Public neutral vertex-key ledger serialization, provider identity and typed coordinate accessor API with candidate lifetime and atomic output contracts"
+    },
+    {
       "path": "geometry-core/kernel/regions.c",
       "layer": "K",
       "language": "c",

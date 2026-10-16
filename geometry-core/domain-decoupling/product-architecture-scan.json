@@ -107,6 +107,8 @@
     "geometry-core/kernel/placement_sources.h",
     "geometry-core/kernel/placements.c",
     "geometry-core/kernel/placements.h",
+    "geometry-core/kernel/region_key_sources.c",
+    "geometry-core/kernel/region_key_sources.h",
     "geometry-core/kernel/regions.c",
     "geometry-core/kernel/regions.h",
     "geometry-core/kernel/source.c",
@@ -1883,7 +1885,7 @@
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/candidate.c",
-      "line": 39
+      "line": 40
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
@@ -1893,7 +1895,7 @@
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/clip.c",
-      "line": 31
+      "line": 32
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
@@ -1903,7 +1905,7 @@
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/codec.c",
-      "line": 28
+      "line": 29
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
@@ -1913,7 +1915,7 @@
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/datums.c",
-      "line": 37
+      "line": 38
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
@@ -1923,37 +1925,37 @@
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/document.c",
-      "line": 48
+      "line": 50
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/document.h",
-      "line": 26
+      "line": 27
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/enclosure.c",
-      "line": 46
+      "line": 48
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/enclosure.h",
-      "line": 24
-    },
-    {
-      "source": "geometry-core/kernel/kernel_unity.inc",
-      "target": "geometry-core/kernel/enclosure_sources.c",
-      "line": 47
-    },
-    {
-      "source": "geometry-core/kernel/kernel_unity.inc",
-      "target": "geometry-core/kernel/enclosure_sources.h",
       "line": 25
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/enclosure_sources.c",
+      "line": 49
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/enclosure_sources.h",
+      "line": 26
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/exact.c",
-      "line": 29
+      "line": 30
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
@@ -1963,7 +1965,7 @@
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/geometry.c",
-      "line": 30
+      "line": 31
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
@@ -1973,7 +1975,7 @@
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/grid.c",
-      "line": 32
+      "line": 33
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
@@ -1983,27 +1985,27 @@
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/grid_store.c",
-      "line": 45
+      "line": 47
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/grid_store.h",
-      "line": 23
+      "line": 24
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/guides.c",
-      "line": 44
+      "line": 46
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/guides.h",
-      "line": 22
+      "line": 23
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/linear.c",
-      "line": 35
+      "line": 36
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
@@ -2013,7 +2015,7 @@
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/named_values.c",
-      "line": 36
+      "line": 37
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
@@ -2023,7 +2025,7 @@
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/parameter_sources.c",
-      "line": 34
+      "line": 35
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
@@ -2033,7 +2035,7 @@
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/parameters.c",
-      "line": 33
+      "line": 34
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
@@ -2043,7 +2045,7 @@
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/placement_sources.c",
-      "line": 41
+      "line": 42
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
@@ -2053,7 +2055,7 @@
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/placements.c",
-      "line": 40
+      "line": 41
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
@@ -2062,8 +2064,18 @@
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/region_key_sources.c",
+      "line": 45
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/region_key_sources.h",
+      "line": 22
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/regions.c",
-      "line": 43
+      "line": 44
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
@@ -2073,7 +2085,7 @@
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/source.c",
-      "line": 38
+      "line": 39
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
@@ -2083,7 +2095,7 @@
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
       "target": "geometry-core/kernel/versions.c",
-      "line": 42
+      "line": 43
     },
     {
       "source": "geometry-core/kernel/kernel_unity.inc",
@@ -2184,6 +2196,26 @@
       "source": "geometry-core/kernel/placements.h",
       "target": "geometry-core/kernel/regions.h",
       "line": 5
+    },
+    {
+      "source": "geometry-core/kernel/region_key_sources.c",
+      "target": "geometry-core/kernel/placement_sources.h",
+      "line": 2
+    },
+    {
+      "source": "geometry-core/kernel/region_key_sources.c",
+      "target": "geometry-core/kernel/region_key_sources.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/kernel/region_key_sources.h",
+      "target": "geometry-core/kernel/regions.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-core/kernel/region_key_sources.h",
+      "target": "geometry-core/kernel/source.h",
+      "line": 6
     },
     {
       "source": "geometry-core/kernel/regions.c",
@@ -2558,12 +2590,12 @@
     {
       "source": "geometry-core/references.inc",
       "target": "geometry-app/native/reference_sources.inc",
-      "line": 568
+      "line": 572
     },
     {
       "source": "geometry-core/references.inc",
       "target": "geometry-templates/woodworking/native/member_reference.h",
-      "line": 416
+      "line": 419
     },
     {
       "source": "geometry-core/rule_cases/__init__.py",
@@ -3199,6 +3231,16 @@
       "source": "geometry-templates/woodworking/native/grid_rules.c",
       "target": "geometry-templates/woodworking/native/grid_application.h",
       "line": 3
+    },
+    {
+      "source": "geometry-templates/woodworking/native/grid_sources.c",
+      "target": "geometry-core/kernel/region_key_sources.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-templates/woodworking/native/grid_sources.c",
+      "target": "geometry-templates/woodworking/native/engineering_sources.h",
+      "line": 2
     },
     {
       "source": "geometry-templates/woodworking/native/grid_sources.c",
