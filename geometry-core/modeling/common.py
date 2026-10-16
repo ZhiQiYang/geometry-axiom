@@ -68,30 +68,18 @@ class ModelError(ValueError):
                 "diagnostics": self.diagnostics or [self.diagnostic()]}
 
 
+def _canonical_call(function, *args):
+    from geometry_kernel.errors import EvaluationError
+    from .kernel_errors import translate
+    try:
+        return function(*args)
+    except EvaluationError as error:
+        raise translate(error) from error
+
+
 def canonical_bytes(value):
-    """The integer-only canonical JSON specified in MODELING-CONTRACT §5."""
-    def check(item):
-        if item is None or type(item) in (bool, int):
-            return
-        if isinstance(item, str):
-            try:
-                item.encode("utf-8")
-            except UnicodeEncodeError as exc:
-                raise ModelError("INVALID", "UNICODE", "D25", "Unpaired Unicode surrogate") from exc
-            return
-        if isinstance(item, list):
-            for child in item:
-                check(child)
-            return
-        if isinstance(item, dict) and all(isinstance(key, str) for key in item):
-            for key, child in item.items():
-                check(key)
-                check(child)
-            return
-        raise ModelError("INVALID", "JSON_TYPE", "D25", "Only JSON objects, arrays, strings, booleans, null and integers are supported")
-    check(value)
-    return json.dumps(value, ensure_ascii=False, sort_keys=True,
-                      separators=(",", ":"), allow_nan=False).encode("utf-8")
+    from geometry_kernel.canonical import canonical_bytes as encode
+    return _canonical_call(encode, value)
 
 
 def digest(value):
@@ -99,19 +87,5 @@ def digest(value):
 
 
 def strict_json_loads(text):
-    def pairs(items):
-        result = {}
-        for key, value in items:
-            if key in result:
-                raise ModelError("INVALID", "DUPLICATE_KEY", "D25", "Duplicate JSON key: " + key)
-            result[key] = value
-        return result
-    def forbidden(value):
-        raise ModelError("INVALID", "JSON_TYPE", "D25", "Non-integer JSON number: " + value)
-    try:
-        result = json.loads(text, object_pairs_hook=pairs,
-                            parse_float=forbidden, parse_constant=forbidden)
-        canonical_bytes(result)
-        return result
-    except (json.JSONDecodeError, UnicodeDecodeError) as exc:
-        raise ModelError("INVALID", "JSON_PARSE", "D25", str(exc)) from exc
+    from geometry_kernel.canonical import strict_json_loads as decode
+    return _canonical_call(decode, text)
