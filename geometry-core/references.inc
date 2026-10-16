@@ -92,6 +92,10 @@ typedef struct {
     bool sources_borrowed,sources_registered;
     GeoParameterSources *parameter_sources;
     GeoParameterStore *parameter_snapshot;
+    GeoLinearDefinitionSources *linear_definition_sources;
+    GeoVersionSources *version_sources;
+    GeoAxisPosition guide_values[GEO_GUIDE_CAPACITY];
+    bool guide_values_valid[GEO_GUIDE_CAPACITY];
     WoodEngineeringSources *engineering_sources;
     WoodSectionProfileSources *section_profile_sources;
     WoodFinishSources *finish_sources;
@@ -113,6 +117,8 @@ static bool reference_eval_timber_relation(ReferenceEval *,size_t,GeoDependencyK
 static bool reference_sources_ensure(ReferenceEval *);
 static bool reference_named_quantity(ReferenceEval *,const char *,Coord *);
 static bool reference_eval_datum(ReferenceEval *,size_t);
+static bool reference_datum_position(ReferenceEval *,size_t,GeoAxisPosition *);
+static bool reference_guide_position(ReferenceEval *,size_t,GeoAxisPosition *);
 static bool reference_placement_frame(ReferenceEval *,uint32_t,GeoFrame *);
 static bool reference_member_placement(ReferenceEval *,PlacementSurface *,SpaceBoundarySurface *);
 static bool reference_member_dimension(ReferenceEval *,uint32_t,bool,Coord *);
@@ -121,6 +127,8 @@ static void reference_sources_dispose(ReferenceEval *ctx)
 {
     if(!ctx->sources_borrowed)geo_eval_destroy(ctx->sources);
     geo_parameter_sources_destroy(ctx->parameter_sources);geo_parameters_destroy(ctx->parameter_snapshot);
+    geo_linear_definition_sources_destroy(ctx->linear_definition_sources);ctx->linear_definition_sources=NULL;
+    geo_version_sources_destroy(ctx->version_sources);ctx->version_sources=NULL;
     wood_engineering_sources_destroy(ctx->engineering_sources);ctx->engineering_sources=NULL;
     wood_sp_sources_destroy(ctx->section_profile_sources);ctx->section_profile_sources=NULL;
     wood_finish_sources_destroy(ctx->finish_sources);ctx->finish_sources=NULL;
@@ -179,9 +187,10 @@ static bool reference_quantity_raw(ReferenceEval *ctx, const GuideLine *g, const
         for (size_t i=0;i<geo_guides_count(&w->geo.guide_lines);++i) {
             const GuideLine *q=&geo_guides_values(&w->geo.guide_lines)[i];
             if (q->id!=id) continue;
-            if (q->placement_id!=g->placement_id || !reference_eval_guide(ctx,i) ||
-                q->direction!=g->direction) return false;
-            *out=q->offset; return true;
+            GeoAxisPosition position;
+            if (q->placement_id!=g->placement_id || !reference_guide_position(ctx,i,&position) ||
+                !position.context.has_placement||position.context.placement!=g->placement_id||position.context.axis!=axis) return false;
+            *out=position.coordinate; return true;
         }
         return false;
     }
@@ -336,18 +345,20 @@ static bool reference_eval_expression(ReferenceEval *ctx, const GuideLine *g, Co
     return reference_eval_text(ctx,g,app_guide_expression(ctx->world,g->id),out);
 }
 
-static bool reference_compute_datum(ReferenceEval *ctx,size_t i)
+static bool reference_compute_datum(ReferenceEval *ctx,size_t i,GeoAxisPosition *out)
 {
-    if(ctx->use_current_values)return true;
     World *world=ctx->world;const GeoDatum *d=geo_datums_at(&world->geo.datum_planes,i);
+    if(ctx->use_current_values){*out=(GeoAxisPosition){d->position,{false,0,d->axis}};return true;}
+    GeoDatum definition;if(!geo_linear_definition_sources_datum(ctx->linear_definition_sources,d->id,&definition))return false;
     const char *expression=app_datum_expression(world,d->id);
     AppLinearContext context={ctx,NULL};g_parameter_error[0]=0;
-    GeoLinearResult result=geo_datums_evaluate(&world->geo.datum_planes,i,reference_resolve_linear,&context);
+    GeoLinearResult result=geo_datums_evaluate_definition(&world->geo.datum_planes,i,&definition,reference_resolve_linear,&context);
     Coord position;
-    if(!reference_linear_result(result,d->expression.mode,expression,&position)){
+    if(!reference_linear_result(result,definition.expression.mode,expression,&position)){
         char msg[256];if(g_parameter_error[0])snprintf(msg,sizeof msg,"datum %u: %s",d->id,g_parameter_error);else snprintf(msg,sizeof msg,"datum %u: missing spec, bare mm, unsupported reference or rational overflow",d->id);
         return reference_issue(0,"D6c/I7a","axis X/Y/Z and exact spec-only expression within D1",msg);
     }
+    *out=(GeoAxisPosition){position,{false,0,definition.axis}};
     return true;
 }
 static bool reference_eval_datums(ReferenceEval *ctx)
@@ -358,21 +369,23 @@ static bool reference_eval_datums(ReferenceEval *ctx)
     return ok;
 }
 
-static bool reference_compute_guide(ReferenceEval *ctx, size_t i)
+static bool reference_compute_guide(ReferenceEval *ctx, size_t i,GeoAxisPosition *out)
 {
-    if(ctx->use_current_values)return true;
     World *world=ctx->world;const GeoGuide *g=geo_guides_at(&world->geo.guide_lines,i);
+    if(ctx->use_current_values){*out=(GeoAxisPosition){g->offset,{true,g->placement_id,g->direction==GUIDE_ALONG_V?0:1}};return true;}
+    GeoGuide definition;if(!geo_linear_definition_sources_guide(ctx->linear_definition_sources,g->id,&definition))return false;g=&definition;
     const PlacementSurface *p=world_find_placement(world,g->placement_id);
     GeoFrame source_frame;if(p&&!reference_placement_frame(ctx,p->id,&source_frame))return false;
     const char *expression=app_guide_expression(world,g->id);
     if(g->source==GUIDE_DATUM){
         if(!p)return false;
-        const GeoDatum *d=geo_datums_find(&world->geo.datum_planes,g->datum_id);
+        const GeoDatum *d=geo_datums_find(&world->geo.datum_planes,g->datum_id);GeoDatum actual_datum;
         if(d){
             size_t at=(size_t)(d-geo_datums_values(&world->geo.datum_planes));
-            if(!reference_eval_datum(ctx,at))return false;
+            GeoAxisPosition position;if(!reference_datum_position(ctx,at,&position)||position.context.has_placement||position.context.axis<0||position.context.axis>2)return false;
+            memset(&actual_datum,0,sizeof actual_datum);actual_datum.id=d->id;actual_datum.axis=position.context.axis;actual_datum.position=position.coordinate;d=&actual_datum;
         }
-        GeoGuideResult result=geo_guides_evaluate(&world->geo.guide_lines,i,&source_frame,d,NULL,NULL);
+        GeoGuideResult result=geo_guides_evaluate_definition(&world->geo.guide_lines,i,g,&source_frame,d,NULL,NULL);
         if(result.status==GEO_GUIDE_MISSING_DATUM)return reference_issue(0,"I7a/I9","existing datum","datum guide has missing source");
         if(result.intersection==GEO_DATUM_INTERSECTION_COINCIDENT||result.intersection==GEO_DATUM_INTERSECTION_PARALLEL){
             char msg[160];snprintf(msg,sizeof msg,"guide %u datum %u: %s",g->id,d->id,
@@ -380,14 +393,17 @@ static bool reference_compute_guide(ReferenceEval *ctx, size_t i)
             return reference_issue(0,"I7a","one unique intersection line",msg);
         }
         if(result.status!=GEO_GUIDE_OK)return reference_issue(0,"D1/I7a","derived local position within D1","datum intersection outside supported coordinate range");
+        const GeoGuide *computed=geo_guides_at(&world->geo.guide_lines,i);
+        *out=(GeoAxisPosition){computed->offset,{true,g->placement_id,computed->direction==GUIDE_ALONG_V?0:1}};
         return true;
     }
     bool ok=false;
     if(p){
         g_rule_reference_error[0]=0;g_parameter_error[0]=0;
         AppLinearContext context={ctx,g};
-        GeoGuideResult result=geo_guides_evaluate(&world->geo.guide_lines,i,&source_frame,NULL,reference_resolve_linear,&context);
+        GeoGuideResult result=geo_guides_evaluate_definition(&world->geo.guide_lines,i,g,&source_frame,NULL,reference_resolve_linear,&context);
         Coord value;ok=reference_linear_result(result.linear,g->expression.mode,expression,&value);
+        if(ok)*out=(GeoAxisPosition){value,{true,g->placement_id,g->direction==GUIDE_ALONG_V?0:1}};
     }
     if(!ok){
         char message[256];if(g_rule_reference_error[0])snprintf(message,sizeof message,"guide %u: %.210s",g->id,g_rule_reference_error);else if(g_parameter_error[0])snprintf(message,sizeof message,"guide %u: %s",g->id,g_parameter_error);else snprintf(message,sizeof message,"guide %u: invalid/missing reference, axis/surface mismatch, cycle or rational overflow: %.120s",g->id,expression);
@@ -447,6 +463,8 @@ static bool app_member_reference_at(void *user,size_t i,WoodMemberReferenceFact 
 static bool app_member_reference_guide(void *user,size_t i,WoodMemberGuideFact *out)
 {
     AppMemberReferenceContext *c=user;const GuideLine *g=geo_guides_at(&c->world->geo.guide_lines,i);if(!g)return false;
+    if(c->evaluation&&c->evaluation->guide_values_valid[i]){GeoAxisPosition value=c->evaluation->guide_values[i];
+        *out=(WoodMemberGuideFact){g->id,value.context.placement,value.context.axis==0,value.coordinate};return true;}
     *out=(WoodMemberGuideFact){g->id,g->placement_id,g->direction==GUIDE_ALONG_V,g->offset};return true;
 }
 static bool app_member_reference_placement(void *user,uint32_t id,WoodMemberPlacementFact *out)

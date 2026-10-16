@@ -55,15 +55,15 @@ class SectionProfileSourceBoundary(unittest.TestCase):
 CONTROLS = (
     ("dimension-outside-node", "section_profile", "?w->evaluation->member_dimension(w->evaluation->user,w,i,f,f?&m->b:&m->a)", "?wood_sp_member_dimension_direct(w,i,f,f?&m->b:&m->a)", "graph", "callbacks-inside-active-values"),
     ("frame-outside-node", "section_profile", "?w->evaluation->run_placement(w->evaluation->user,w,i)", "?wood_sp_resolve_placement(w,r)", "graph", "run-inputs-drive-region"),
-    ("definition-relation", "section_profile_sources", "wood_sp_source_get(s,WOOD_SP_SOURCE_MEMBER_DEFINITION,id,GEO_DEPENDENCY_DEFINITION_REQUIRED,&definition)", "wood_sp_source_get(s,WOOD_SP_SOURCE_MEMBER_DEFINITION,id,GEO_DEPENDENCY_VALUE_REQUIRED,&definition)", "graph", "member-definition-edge"),
-    ("profile-dependency", "section_profile_sources", "(void)wood_sp_source_get(s,WOOD_SP_SOURCE_PROFILE_DEFINITION,id,GEO_DEPENDENCY_DEFINITION_REQUIRED,&value);", "(void)id;", "graph", "member-profile-edge"),
+    ("definition-relation", "section_profile_sources", "wood_sp_source_get(s,kind,id,GEO_DEPENDENCY_DEFINITION_REQUIRED,&definition)", "wood_sp_source_get(s,kind,id,GEO_DEPENDENCY_VALUE_REQUIRED,&definition)", "graph", "member-definition-edge"),
+    ("profile-dependency", "section_profile_sources", "if(!wood_sp_source_load_definition(s,WOOD_SP_SOURCE_PROFILE_DEFINITION,id))return false;", "(void)id;", "graph", "member-profile-edge"),
     ("unplaced-frame-value", "section_profile_sources", "if(!r->placed){", "if(false){", "inactive", "unplaced-rebuild-without-frame-value"),
     ("outside-region-value", "section_profile_sources", "if(!m->resolved||m->missing_profile||m->outside||m->range_error)return false;", "if(!m->resolved||m->missing_profile||m->range_error)return false;", "regions", "outside-source-refused"),
     ("range-run-value", "section_profile_sources", "if(!r->resolved)return false;SectionProfile *p=", "if(!r->resolved&&!r->range_error)return false;SectionProfile *p=", "regions", "range-source-refused"),
-    ("host-region-dependency", "section_profile_sources", "if(status!=GEO_SOURCE_OK||wood_sp_source_get(s,WOOD_SP_SOURCE_HOST_REGION,id,GEO_DEPENDENCY_VALUE_REQUIRED,&r)!=GEO_SOURCE_OK)return false;", "if(status!=GEO_SOURCE_OK)return false;", "graph", "live-host-value-edges"),
-    ("candidate-binding", "section_profile_sources", "if(!s||!w||w->state!=s->context.state||w->user!=s->context.user||w->error!=s->context.error||w->error_capacity!=s->context.error_capacity||w->resolve_dimension!=s->context.resolve_dimension||w->live_host!=s->context.live_host)return false;", "if(!s||!w)return false;", "lifetime", "bind-rejects-other-candidate"),
+    ("host-region-dependency", "section_profile_sources", "if(status!=GEO_SOURCE_OK||wood_sp_source_get(s,WOOD_SP_SOURCE_HOST_REGION,id,GEO_DEPENDENCY_VALUE_REQUIRED,&r)!=GEO_SOURCE_OK)return false;", "if(status!=GEO_SOURCE_OK)return false;*derived=false;*frame=f.as.frame;*region=host->region;return true;", "graph", "live-host-value-edges"),
+    ("candidate-binding", "section_profile_sources", "if(!s||!w||!wood_sp_source_context_matches(s,w))return false;", "if(!s||!w)return false;", "lifetime", "bind-rejects-other-candidate"),
     ("diagnostic-retry", "section_profile_sources", ".retry_failure=true", ".retry_failure=false", "diagnostics", "diagnostic-retry-preserves-first"),
-    ("definition-content", "section_profile_sources", "out->as.definition=(GeoDefinitionValue){schema,content,strlen(content)};", "out->as.definition=(GeoDefinitionValue){schema,content,strlen(content)-1};", "graph", "definition-canonical-content"),
+    ("definition-content", "section_profile_sources", "out->as.definition=(GeoDefinitionValue){schema,content,strlen(content)};", "out->as.definition=(GeoDefinitionValue){schema,content,strlen(content)-1};", "graph", "actual-rebuild-positive"),
     ("geometry-units", "section_profile_sources", "if(d.kind!=GEO_SOURCE_DEFINITION)d.unit=GEO_UNIT_LENGTH;", "(void)d;", "graph", "geometry-descriptor-length-units"),
     ("member-failed-cache-write", "section_profile_sources", "GeoCoord *value=field?&m->b:&m->a;", "GeoCoord local;GeoCoord *value=&local;", "diagnostics", "failed-member-dimension-cache-write"),
     ("run-failed-cache-write", "section_profile_sources", "GeoCoord *value=&r->length;", "GeoCoord local;GeoCoord *value=&local;", "diagnostics", "failed-run-length-cache-write"),
@@ -88,8 +88,11 @@ class SectionProfileSources(unittest.TestCase):
     def case(self, name, executable=None):
         result = subprocess.run([str(executable or self.exe), name], capture_output=True, text=True, timeout=20)
         self.assertIn(result.returncode, (0, 1), "Native crash/setup failure is not a graph verdict: " + result.stderr)
+        self.assertEqual("", result.stdout)
         if result.returncode:
             self.assertRegex(result.stderr, r"ASSERT:[a-z0-9-]+")
+        else:
+            self.assertEqual("", result.stderr)
         return result
 
     def test_actual_active_nodes_numeric_values_definition_content_and_parameter_closure(self):
@@ -123,7 +126,7 @@ class SectionProfileSources(unittest.TestCase):
                 executable = build.link("profile-sources-mutant-" + name, self.objects(build, changed, module))
                 result = self.case(case, executable)
                 self.assertEqual(1, result.returncode, "Control survived: " + name)
-                self.assertIn("ASSERT:" + marker, result.stderr)
+                self.assertEqual("ASSERT:" + marker + "\n", result.stderr)
                 self.assertEqual(0, self.case(case).returncode)
 
 

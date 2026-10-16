@@ -134,7 +134,7 @@ static bool wood_sp_placement_json(WoodSectionProfileContext *w,GeoJson *j,int t
     return wood_sp_host_json(w,j,geo_json_member(j,token,"host"),r);
 }
 
-bool wood_sp_put_profile(WoodSectionProfileContext *w,GeoJson *j,int t)
+bool wood_sp_parse_profile(WoodSectionProfileContext *w,GeoJson *j,int t,SectionProfile *out)
 {
     SectionProfile p={0};int loop=geo_json_member(j,t,"outline");
     if(!geo_json_keys(j,t,"id,name,outline","")||!wood_eng_u32(j,geo_json_member(j,t,"id"),&p.id,false)||
@@ -145,12 +145,17 @@ bool wood_sp_put_profile(WoodSectionProfileContext *w,GeoJson *j,int t)
         !wood_sp_coord(j,geo_json_at(j,v,0),&p.outline.v[i].u)||!wood_sp_coord(j,geo_json_at(j,v,1),&p.outline.v[i].v))return wood_sp_error(w,"I43/D1: profile vertices must be integer mm in range");}
     if(!wood_sp_loop_valid(&p.outline))return wood_sp_error(w,"I43: profile %u outline is not a simple closed orthogonal polygon",p.id);
     if(!geo_json_canonical(j,t,p.content,sizeof p.content))return wood_sp_error(w,"I51 CAPACITY: profile record exceeds 2047 bytes");
+    *out=p;return true;
+}
+bool wood_sp_put_profile(WoodSectionProfileContext *w,GeoJson *j,int t)
+{
+    SectionProfile p;if(!wood_sp_parse_profile(w,j,t,&p))return false;
     SectionProfile *target=wood_sp_profile(w,p.id);
     if(!target){if(w->state->profile_count==SP_PROFILE_MAX)return wood_sp_error(w,"I51 CAPACITY: profile limit is %d",SP_PROFILE_MAX);target=&w->state->profiles[w->state->profile_count++];}
     *target=p;return true;
 }
 
-bool wood_sp_put_member(WoodSectionProfileContext *w,GeoJson *j,int t)
+bool wood_sp_parse_member(WoodSectionProfileContext *w,GeoJson *j,int t,ProfileMember *out)
 {
     ProfileMember m={0};char kind[12],orientation[24],spec[32];
     if(!wood_eng_u32(j,geo_json_member(j,t,"id"),&m.id,false)||!wood_eng_u32(j,geo_json_member(j,t,"profileId"),&m.profile_id,false)||
@@ -171,12 +176,17 @@ bool wood_sp_put_member(WoodSectionProfileContext *w,GeoJson *j,int t)
         m.rotated=!strcmp(orientation,"thickness-u");
     }else return wood_sp_error(w,"D36: member kind must be timber or panel");
     if(!geo_json_canonical(j,t,m.content,sizeof m.content))return wood_sp_error(w,"I51 CAPACITY: member record exceeds 2047 bytes");
+    *out=m;return true;
+}
+bool wood_sp_put_member(WoodSectionProfileContext *w,GeoJson *j,int t)
+{
+    ProfileMember m;if(!wood_sp_parse_member(w,j,t,&m))return false;
     ProfileMember *target=wood_sp_member(w,m.id);
     if(!target){if(w->state->member_count==SP_MEMBER_MAX)return wood_sp_error(w,"I51 CAPACITY: member limit is %d",SP_MEMBER_MAX);target=&w->state->members[w->state->member_count++];}
     *target=m;return true;
 }
 
-bool wood_sp_put_run(WoodSectionProfileContext *w,GeoJson *j,int t)
+bool wood_sp_parse_run(WoodSectionProfileContext *w,GeoJson *j,int t,ProfileRun *out)
 {
     ProfileRun r={0};int place=geo_json_member(j,t,"placement");
     if(!geo_json_keys(j,t,"id,profileId,length,placement","")||!wood_eng_u32(j,geo_json_member(j,t,"id"),&r.id,false)||
@@ -184,6 +194,11 @@ bool wood_sp_put_run(WoodSectionProfileContext *w,GeoJson *j,int t)
     if(!wood_sp_source(w,j,geo_json_member(j,t,"length"),&r.length_source,true,0))return false;
     if(!wood_sp_placement_json(w,j,place,&r))return false;
     if(!geo_json_canonical(j,t,r.content,sizeof r.content))return wood_sp_error(w,"I51 CAPACITY: run record exceeds 8191 bytes");
+    *out=r;return true;
+}
+bool wood_sp_put_run(WoodSectionProfileContext *w,GeoJson *j,int t)
+{
+    ProfileRun r;if(!wood_sp_parse_run(w,j,t,&r))return false;
     ProfileRun *target=wood_sp_run(w,r.id);
     if(!target){if(w->state->run_count==SP_RUN_MAX)return wood_sp_error(w,"I51 CAPACITY: run limit is %d",SP_RUN_MAX);target=&w->state->runs[w->state->run_count++];}
     *target=r;return true;
@@ -223,9 +238,11 @@ void wood_sp_evaluate_member_direct(WoodSectionProfileContext *w,size_t i,char *
 {
     SectionProfileState *s=w->state;GeoRect2 outside[SP_OUTSIDE_MAX];
     ProfileMember *m=&s->members[i];SectionProfile *p=wood_sp_profile(w,m->profile_id);
-    if(w->evaluation&&w->evaluation->profile_definition)w->evaluation->profile_definition(w->evaluation->user,w,m->profile_id);
-    m->resolved=false;m->outside=false;m->range_error=false;m->missing_profile=!p;memset(m->source_error,0,sizeof m->source_error);
-    if(!p){wood_sp_error(w,"I49: member %u references missing profile %u",m->id,m->profile_id);wood_sp_first_error(first,capacity,w->error);}
+    bool exists=p!=NULL,profile_ok=true;
+    if(w->evaluation&&w->evaluation->profile_definition)profile_ok=w->evaluation->profile_definition(w->evaluation->user,w,m->profile_id,&p);
+    m->resolved=false;m->outside=false;m->range_error=false;m->missing_profile=!exists||!profile_ok;memset(m->source_error,0,sizeof m->source_error);
+    if(!exists){wood_sp_error(w,"I49: member %u references missing profile %u",m->id,m->profile_id);wood_sp_first_error(first,capacity,w->error);}
+    else if(!profile_ok){wood_sp_first_error(first,capacity,w->error);p=NULL;}
     bool dimensions=true;
     for(int f=0;f<2;++f){
         bool ok=w->evaluation&&w->evaluation->member_dimension
@@ -245,9 +262,11 @@ void wood_sp_evaluate_run_direct(WoodSectionProfileContext *w,size_t i,char *fir
 {
     SectionProfileState *s=w->state;
     ProfileRun *r=&s->runs[i];SectionProfile *p=wood_sp_profile(w,r->profile_id);
-    if(w->evaluation&&w->evaluation->profile_definition)w->evaluation->profile_definition(w->evaluation->user,w,r->profile_id);
-    r->resolved=false;r->range_error=false;r->missing_profile=!p;r->length_error[0]=0;
-    if(!p){wood_sp_error(w,"I49: run %u references missing profile %u",r->id,r->profile_id);wood_sp_first_error(first,capacity,w->error);}
+    bool exists=p!=NULL,profile_ok=true;
+    if(w->evaluation&&w->evaluation->profile_definition)profile_ok=w->evaluation->profile_definition(w->evaluation->user,w,r->profile_id,&p);
+    r->resolved=false;r->range_error=false;r->missing_profile=!exists||!profile_ok;r->length_error[0]=0;
+    if(!exists){wood_sp_error(w,"I49: run %u references missing profile %u",r->id,r->profile_id);wood_sp_first_error(first,capacity,w->error);}
+    else if(!profile_ok){wood_sp_first_error(first,capacity,w->error);p=NULL;}
     r->length_resolved=w->evaluation&&w->evaluation->run_length
         ?w->evaluation->run_length(w->evaluation->user,w,i,&r->length):wood_sp_run_length_direct(w,i,&r->length);
     if(!r->length_resolved){snprintf(r->length_error,sizeof r->length_error,"I47: %.180s",w->error);wood_sp_first_error(first,capacity,r->length_error);}
@@ -267,7 +286,9 @@ bool wood_sp_rebuild(WoodSectionProfileContext *w,char *error,size_t capacity)
         if(w->evaluation&&w->evaluation->member)w->evaluation->member(w->evaluation->user,w,i,first,sizeof first);
         else wood_sp_evaluate_member_direct(w,i,first,sizeof first);
     }
-    for(size_t i=0;i<s->member_count;++i)for(size_t j=0;j<i;++j){GeoRect2 overlap;if(wood_sp_intersection(&s->members[i],&s->members[j],&overlap)){
+    for(size_t i=0;i<s->member_count;++i)for(size_t j=0;j<i;++j){
+        if(w->evaluation&&w->evaluation->pair){w->evaluation->pair(w->evaluation->user,w,j,i,first,sizeof first);continue;}
+        GeoRect2 overlap;if(wood_sp_intersection(&s->members[i],&s->members[j],&overlap)){
         wood_sp_error(w,"V_PROFILE_OVERLAP I45: members %u,%u intersection [%lld,%lld]x[%lld,%lld]",s->members[j].id,s->members[i].id,(long long)overlap.min_u,(long long)overlap.max_u,(long long)overlap.min_v,(long long)overlap.max_v);wood_sp_first_error(first,sizeof first,w->error);}}
     for(size_t i=0;i<s->run_count;++i){
         if(w->evaluation&&w->evaluation->run)w->evaluation->run(w->evaluation->user,w,i,first,sizeof first);

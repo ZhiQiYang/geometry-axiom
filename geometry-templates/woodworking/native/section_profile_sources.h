@@ -18,16 +18,23 @@ typedef enum {
     WOOD_SP_SOURCE_RUN_FRAME,
     WOOD_SP_SOURCE_RUN_REGION,
     WOOD_SP_SOURCE_HOST_FRAME,
-    WOOD_SP_SOURCE_HOST_REGION
+    WOOD_SP_SOURCE_HOST_REGION,
+    WOOD_SP_SOURCE_MEMBER_PAIR_CHECK
 } WoodSectionProfileSourceKind;
 typedef struct {unsigned char bytes[5];} WoodSectionProfileSourceKey;
+typedef struct {unsigned char bytes[9];} WoodSectionProfilePairKey;
 typedef struct WoodSectionProfileSources WoodSectionProfileSources;
 GeoSourceRef wood_sp_source_ref(GeoProviderToken,WoodSectionProfileSourceKind,uint32_t,WoodSectionProfileSourceKey *);
 bool wood_sp_source_decode(const GeoSourceRef *,WoodSectionProfileSourceKind *,uint32_t *);
+GeoSourceRef wood_sp_pair_source_ref(GeoProviderToken,uint32_t,uint32_t,WoodSectionProfilePairKey *);
+bool wood_sp_pair_source_decode(const GeoSourceRef *,uint32_t *,uint32_t *);
 /* Copies the base context, not the candidate state. Base callbacks stay bound
  * to that candidate. Does not evaluate or describe any source during create. */
 WoodSectionProfileSources *wood_sp_sources_create(GeoEvalContext *,GeoProviderToken,const WoodSectionProfileContext *);
 bool wood_sp_sources_bind(WoodSectionProfileSources *,WoodSectionProfileContext *);
+/* Publish and validate canonical authored records, including unused profiles,
+ * before sealing. This does not request inactive run frame values. */
+bool wood_sp_sources_complete(WoodSectionProfileSources *);
 /* Either teardown order is supported. After destroying the handle, do not
  * evaluate or inspect borrowed values in the graph; only destroy the graph.
  * This function does not call K, so it is also safe after graph destruction. */

@@ -365,7 +365,7 @@ bool wood_finish_sources_bind_finish(WoodFinishSources *s,WoodFinishContext *w)
        w->parameter_error!=b->parameter_error||w->parameter_error_capacity!=b->parameter_error_capacity||w->engineering_operation!=b->engineering_operation||w->derived_operation!=b->derived_operation||
        e->state!=a->state||e->versions!=a->versions||e->user!=a->user||e->error!=a->error||e->error_capacity!=a->error_capacity||e->sources!=a->sources||
        e->placement!=a->placement||e->target!=a->target||e->named_value!=a->named_value||e->parameter!=a->parameter||e->member_owned!=a->member_owned||e->write_dimension!=a->write_dimension||e->serializable!=a->serializable||
-       e->resolve_source!=a->resolve_source||e->resolve_binding!=a->resolve_binding||e->source_named!=a->source_named||e->source_parameter!=a->source_parameter||e->depend_definition!=a->depend_definition||e->validate_application!=a->validate_application)return false;
+       e->resolve_source!=a->resolve_source||e->resolve_binding!=a->resolve_binding||e->source_named!=a->source_named||e->source_parameter!=a->source_parameter||e->depend_definition!=a->depend_definition||e->validate_application!=a->validate_application||e->source_version_field!=a->source_version_field||e->source_version_definition!=a->source_version_definition||e->source_application!=a->source_application)return false;
     w->evaluation=&s->finish_hooks;return true;
 }
 bool wood_finish_sources_bind(WoodFinishSources *s,WoodDerivedContext *w)

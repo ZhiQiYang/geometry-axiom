@@ -51,4 +51,10 @@ void geo_guides_reset_resolved(GeoGuideStore *store);
  * success sets it true. Call reset_resolved separately when recomputing. */
 GeoGuideResult geo_guides_evaluate(GeoGuideStore *store, size_t index,
     const GeoFrame *frame, const GeoDatum *datum, GeoLinearResolver resolve, void *state);
+/* Same result/cache contract, using returned authored data for this identity.
+ * Source kind must match the stored definition; change kind through put first.
+ * Authored fields in the store are retained; DATUM direction is a cache. */
+GeoGuideResult geo_guides_evaluate_definition(GeoGuideStore *store, size_t index,
+    const GeoGuide *definition, const GeoFrame *frame, const GeoDatum *datum,
+    GeoLinearResolver resolve, void *state);
 #endif
