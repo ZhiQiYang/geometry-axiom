@@ -457,10 +457,8 @@ static bool reference_may_affect(const World *w,char **tokens,int count)
 }
 /* I8a: parameter bindings need approval even without downstream geometry.
  * Inspect the previous expression as well, so removing a binding is guarded. */
-static const DatumPlane *world_find_datum(const World *w,uint32_t id)
-{
-    for(size_t i=0;i<w->datum_count;++i)if(w->datums[i].id==id)return &w->datums[i];return NULL;
-}
+static const GeoDatum *world_find_datum(const World *w,uint32_t id)
+{return geo_datums_find(&w->datum_planes,id);}
 static bool parameter_reference_edit(const World *w,char **tokens,int count)
 {
     if(g_parsing_scene_file || count<2)return false;
@@ -472,7 +470,7 @@ static bool parameter_reference_edit(const World *w,char **tokens,int count)
             const GuideLine *g=world_find_guide(w,id);return g && strstr(g->expression,"param:")!=NULL;
         }
         if(!strcmp(command,"datum")){
-            const DatumPlane *d=world_find_datum(w,id);return d && strstr(d->expression,"param:")!=NULL;
+            const GeoDatum *d=world_find_datum(w,id);return d && strstr(app_datum_expression(w,d->id),"param:")!=NULL;
         }
     }
     if(!strcmp(command,"delete") && count==3){

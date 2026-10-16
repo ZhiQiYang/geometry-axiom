@@ -3228,8 +3228,8 @@ typedef struct {
 
 typedef struct World {
     GeoNamedValues named_values;
-    DatumPlane datums[WORLD_MAX_DATUMS];
-    size_t datum_count;
+    GeoDatumStore datum_planes;
+    AppDatumText datum_texts[WORLD_MAX_DATUMS];
     uint64_t next_order;
     SpaceBoundarySurface boundaries[WORLD_MAX_BOUNDARIES];
     size_t boundary_count;
@@ -3273,6 +3273,21 @@ typedef struct World {
     bool parameter_loading; /* H atomic scene-input state, outside K storage. */
     FinishSurfaceState finish_surfaces;   /* D41 finish surfaces (panel-fill/1, PF-1) */
 } World;
+
+static const char *app_datum_expression(const World *world,uint32_t id)
+{
+    for(size_t i=0;i<geo_datums_count(&world->datum_planes);++i)
+        if(world->datum_texts[i].id==id)return world->datum_texts[i].expression;
+    return "";
+}
+static bool app_datum_remove(World *world,uint32_t id)
+{
+    size_t count=geo_datums_count(&world->datum_planes),at=0;
+    while(at<count&&geo_datums_at(&world->datum_planes,at)->id!=id)++at;
+    if(at==count||!geo_datums_remove(&world->datum_planes,id))return false;
+    memmove(world->datum_texts+at,world->datum_texts+at+1,(count-at-1)*sizeof *world->datum_texts);
+    memset(&world->datum_texts[count-1],0,sizeof *world->datum_texts);return true;
+}
 
 static const GridSystem *world_find_grid_system(const World *w,uint32_t id)
 {
@@ -11151,15 +11166,13 @@ static bool apply_delete_line(
         world_drop_canvas_pos(world, CANVAS_POS_PLACEMENT, id);
     } else if (strcmp(kind, "datum") == 0) {
         size_t di = SIZE_MAX;
-        for (size_t i=0;i<world->datum_count;++i) if (world->datums[i].id==id) di=i;
+        for (size_t i=0;i<geo_datums_count(&world->datum_planes);++i) if (geo_datums_at(&world->datum_planes,i)->id==id) di=i;
         if (di==SIZE_MAX) { scene_error(path,line_no,"I7a: datum does not exist"); return false; }
         for (size_t i=0;i<world->guide_count;++i)
             if (world->guides[i].source==GUIDE_DATUM && world->guides[i].datum_id==id) {
                 scene_error(path,line_no,"I7a: datum is still referenced by a guide"); return false;
             }
-        memmove(&world->datums[di],&world->datums[di+1],(world->datum_count-di-1)*sizeof(DatumPlane));
-        --world->datum_count;
-        memset(&world->datums[world->datum_count],0,sizeof(DatumPlane));
+        (void)app_datum_remove(world,id);
     } else if (strcmp(kind, "guide") == 0) {
         size_t gi = SIZE_MAX;
 

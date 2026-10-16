@@ -235,18 +235,22 @@ static bool reference_resolve_linear(void *opaque,const GeoLinearSource *source,
     *value=(GeoQuantity){0,1,GEO_UNIT_LENGTH};
     return reference_quantity(context->evaluation,context->guide,source->key,&value->num);
 }
+static bool reference_linear_result(GeoLinearResult result,GeoLinearMode mode,const char *expression,Coord *out)
+{
+    if(result.status==GEO_LINEAR_ARITHMETIC&&mode==GEO_LINEAR_EXACT_INTEGER_FINAL)
+        return parameter_exact_status(result.exact_status);
+    if(result.status==GEO_LINEAR_NOT_INTEGER)
+        return parameter_fail("I38 GEOMETRY: %s must resolve to integer mm (got %lld/%lld)",expression,(long long)result.value.num,(long long)result.value.den);
+    if(result.status==GEO_LINEAR_OK||result.status==GEO_LINEAR_RANGE)*out=result.value.num;
+    return result.status==GEO_LINEAR_OK;
+}
 static bool reference_eval_text(ReferenceEval *ctx,const GuideLine *g,const char *expression,Coord *out)
 {
     g_parameter_error[0]=0;GeoLinearExpression compiled;
     (void)reference_compile_text(expression,&compiled);
     AppLinearContext context={ctx,g};
     GeoLinearResult result=geo_linear_evaluate(&compiled,reference_resolve_linear,&context);
-    if(result.status==GEO_LINEAR_ARITHMETIC&&compiled.mode==GEO_LINEAR_EXACT_INTEGER_FINAL)
-        return parameter_exact_status(result.exact_status);
-    if(result.status==GEO_LINEAR_NOT_INTEGER)
-        return parameter_fail("I38 GEOMETRY: %s must resolve to integer mm (got %lld/%lld)",expression,(long long)result.value.num,(long long)result.value.den);
-    if(result.status==GEO_LINEAR_OK||result.status==GEO_LINEAR_RANGE)*out=result.value.num;
-    return result.status==GEO_LINEAR_OK;
+    return reference_linear_result(result,compiled.mode,expression,out);
 }
 
 static bool reference_eval_expression(ReferenceEval *ctx, const GuideLine *g, Coord *out)
@@ -257,36 +261,36 @@ static bool reference_eval_expression(ReferenceEval *ctx, const GuideLine *g, Co
 
 static bool reference_eval_datums(ReferenceEval *ctx)
 {
-    bool ok=true;
-    for (size_t i=0;i<ctx->world->datum_count;++i) {
-        DatumPlane *d=&ctx->world->datums[i];
-        if (d->axis<0 || d->axis>2 || !reference_eval_text(ctx,NULL,d->expression,&d->position)) {
+    bool ok=true;World *world=ctx->world;
+    for(size_t i=0;i<geo_datums_count(&world->datum_planes);++i){
+        const GeoDatum *d=geo_datums_at(&world->datum_planes,i);
+        const char *expression=app_datum_expression(world,d->id);
+        AppLinearContext context={ctx,NULL};g_parameter_error[0]=0;
+        GeoLinearResult result=geo_datums_evaluate(&world->datum_planes,i,reference_resolve_linear,&context);
+        Coord position;
+        if(!reference_linear_result(result,d->expression.mode,expression,&position)){
             char msg[256];if(g_parameter_error[0])snprintf(msg,sizeof msg,"datum %u: %s",d->id,g_parameter_error);else snprintf(msg,sizeof msg,"datum %u: missing spec, bare mm, unsupported reference or rational overflow",d->id);
-            reference_issue(0,"D6c/I7a","axis X/Y/Z and exact spec-only expression within D1",msg); ok=false;
+            reference_issue(0,"D6c/I7a","axis X/Y/Z and exact spec-only expression within D1",msg);ok=false;
         }
     }
     return ok;
 }
 
-static Coord datum_component(Vector3 v,int axis) { return axis==0?v.x:axis==1?v.y:v.z; }
-
-/* D6c/I7a: solve in world coordinates, then transform the unique line to uv. */
+/* H maps neutral plane-intersection results to the existing diagnostics. */
 static bool datum_guide_geometry(const World *w,const PlacementSurface *p,GuideLine *g)
 {
-    const DatumPlane *d=NULL;
-    for (size_t i=0;i<w->datum_count;++i) if (w->datums[i].id==g->datum_id) d=&w->datums[i];
-    if (!d) return reference_issue(0,"I7a/I9","existing datum","datum guide has missing source");
-    Coord origin=d->axis==0?p->frame.origin.x:d->axis==1?p->frame.origin.y:p->frame.origin.z;
-    Coord u=datum_component(p->frame.axis_u,d->axis),v=datum_component(p->frame.axis_v,d->axis);
-    if (!u && !v) {
-        char msg[160]; snprintf(msg,sizeof msg,"guide %u datum %u: %s",g->id,d->id,
-            origin==d->position?"coincident planes have no unique line":"parallel planes do not intersect");
+    const GeoDatum *d=geo_datums_find(&w->datum_planes,g->datum_id);
+    if(!d)return reference_issue(0,"I7a/I9","existing datum","datum guide has missing source");
+    GeoDatumIntersection intersection;
+    GeoDatumIntersectionStatus status=geo_datum_intersection(d,&p->frame,&intersection);
+    if(status==GEO_DATUM_INTERSECTION_COINCIDENT||status==GEO_DATUM_INTERSECTION_PARALLEL){
+        char msg[160];snprintf(msg,sizeof msg,"guide %u datum %u: %s",g->id,d->id,
+            status==GEO_DATUM_INTERSECTION_COINCIDENT?"coincident planes have no unique line":"parallel planes do not intersect");
         return reference_issue(0,"I7a","one unique intersection line",msg);
     }
-    g->direction=u?GUIDE_ALONG_V:GUIDE_ALONG_U;
-    g->offset=(u?u:v)*(d->position-origin);
-    if (!coord_in_range(g->offset)) return reference_issue(0,"D1/I7a","derived local position within D1","datum intersection outside supported coordinate range");
-    return true;
+    if(status!=GEO_DATUM_INTERSECTION_OK)return reference_issue(0,"D1/I7a","derived local position within D1","datum intersection outside supported coordinate range");
+    g->direction=intersection.coordinate_axis==0?GUIDE_ALONG_V:GUIDE_ALONG_U;
+    g->offset=intersection.coordinate;return true;
 }
 
 static bool reference_eval_guide(ReferenceEval *ctx, size_t i)
@@ -573,16 +577,18 @@ static bool apply_spec_line(const char *p,int n,char **tokens,int count,World *w
 }
 static bool apply_datum_line(const char *p,int n,char **tokens,int count,World *w)
 {
-    DatumPlane d={0};
+    AppDatumInput d={0};
     if (!parse_u32(tokens[1],&d.id) || strlen(tokens[2])!=1 ||
         !strchr("xyzXYZ",tokens[2][0]) || !reference_expression(tokens,3,count,d.expression)) {
         scene_error(p,n,"D6c: datum id x|y|z spec-only position expression"); return false;
     }
     d.axis=tolower((unsigned char)tokens[2][0])=='x'?0:tolower((unsigned char)tokens[2][0])=='y'?1:2;
-    size_t i=0; while (i<w->datum_count && w->datums[i].id!=d.id) ++i;
-    if (i==WORLD_MAX_DATUMS) { scene_error(p,n,"D6c: datum capacity exceeded"); return false; }
-    if (i==w->datum_count) ++w->datum_count;
-    w->datums[i]=d;
+    size_t i=0;while(i<geo_datums_count(&w->datum_planes)&&geo_datums_at(&w->datum_planes,i)->id!=d.id)++i;
+    if(i==WORLD_MAX_DATUMS){scene_error(p,n,"D6c: datum capacity exceeded");return false;}
+    GeoLinearExpression compiled;(void)reference_compile_text(d.expression,&compiled);
+    if(!geo_datums_put(&w->datum_planes,d.id,d.axis,&compiled)){scene_error(p,n,"D6c: datum capacity exceeded");return false;}
+    memset(&w->datum_texts[i],0,sizeof w->datum_texts[i]);w->datum_texts[i].id=d.id;
+    snprintf(w->datum_texts[i].expression,sizeof w->datum_texts[i].expression,"%s",d.expression);
     return reference_checked(p,n,w);
 }
 static bool apply_reference_guide(const char *p,int n,char **tokens,int count,World *w)
@@ -712,8 +718,8 @@ static bool reference_guide_ready(const World *w,size_t i,const bool *placed,uns
 static void reference_dump(const World *w,FILE *out)
 {
     bool gd[WORLD_MAX_GUIDES]={0},placed[WORLD_MAX_TIMBERS]={0};
-    for (size_t i=0;i<w->datum_count;++i)
-        fprintf(out,"datum %u %c %s\n",w->datums[i].id,"xyz"[w->datums[i].axis],w->datums[i].expression);
+    for (size_t i=0;i<geo_datums_count(&w->datum_planes);++i)
+        fprintf(out,"datum %u %c %s\n",geo_datums_at(&w->datum_planes,i)->id,"xyz"[geo_datums_at(&w->datum_planes,i)->axis],app_datum_expression(w,geo_datums_at(&w->datum_planes,i)->id));
     for (size_t i=0;i<w->timber_count;++i) {
         const Timber *t=&w->timbers[i];
         if (engineering_dump_timber(w,t,out)) continue;
